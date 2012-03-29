@@ -30,8 +30,13 @@
 	<security:http security="none" pattern="/web/security/**" />
 	<security:http security="none" pattern="/ws/**" />
 	
+	<security:http pattern="/api/**" use-expressions="true" create-session="never" realm="inera-statistics-service">
+		<security:intercept-url pattern="/api/**" access="hasRole('ROLE_API_CLIENT')"/>
+		<security:http-basic/>
+	</security:http>
+	
 	<security:http use-expressions="true">
-		<security:intercept-url pattern="/**" access="hasRole('ROLE_CITIZEN')"/>
+		<security:intercept-url pattern="/**" access="hasRole('ROLE_CAREGIVER')"/>
 		<security:form-login login-page="/web/security/login" default-target-url="/web/start"/>
 		<security:logout logout-url="/web/security/logout"/>
 	</security:http>
@@ -43,6 +48,7 @@
 				<security:user name="19010101-0101" password="0000" authorities="ROLE_CAREGIVER"/>
 				<security:user name="19010101-0102" password="0000" authorities="ROLE_CAREGIVER"/>
 				<security:user name="19010101-0103" password="0000" authorities="ROLE_CAREGIVER"/>
+				<security:user name="api-user" password="password" authorities="ROLE_API_CLIENT"/>
 			</security:user-service>
 		</security:authentication-provider>
 	</security:authentication-manager>
