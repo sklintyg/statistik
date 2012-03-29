@@ -9,4 +9,16 @@
   
   <artifactId>statistics-model</artifactId>
   <name>Inera Statistics Service - Model Module</name>
+  
+  <dependencies>
+  	<dependency>
+  		<groupId>org.hibernate</groupId>
+  		<artifactId>hibernate-core</artifactId>
+  	</dependency>
+  	<dependency>
+  		<groupId>org.hibernate</groupId>
+  		<artifactId>hibernate-entitymanager</artifactId>
+  	</dependency>
+  </dependencies>
+  
 </project>

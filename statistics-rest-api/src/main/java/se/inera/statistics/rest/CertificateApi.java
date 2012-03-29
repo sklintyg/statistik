@@ -15,4 +15,9 @@ public class CertificateApi {
 	public String registerMedicalCertificate(@RequestBody final MedicalCertificate certificate) {
 		throw new UnsupportedOperationException();
 	}
+	
+	@RequestMapping(value="/test", method=RequestMethod.GET) 
+	public String test() {
+		return "Success";
+	}
 }
