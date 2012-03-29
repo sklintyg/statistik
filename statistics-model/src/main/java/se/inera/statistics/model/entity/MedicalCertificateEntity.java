@@ -28,13 +28,10 @@ public class MedicalCertificateEntity {
 	private int age;
 	
 	@Column(nullable=false)
-	private int gender;
+	private boolean female;
 	
-	@Column(nullable=false)
+	@Column
 	private String diagnose;
-	
-	@Column(nullable=false)
-	private int workCapability;
 	
 	@Column
 	@Temporal(TemporalType.TIMESTAMP)
@@ -45,20 +42,29 @@ public class MedicalCertificateEntity {
 	private Date endDate;
 	
 	@Column
-	private boolean doctorExamined;
+	private CertificateOption businessRehab;
 	
 	@Column
-	private boolean selfExamined;
+	private CertificateOption abilityToReturnToPresentWork;
 	
 	@Column
-	private boolean personalContact;
+	private WorkCapability workCapability;
 	
 	@Column
-	private boolean phoneContact;
+	private MedicalCertificateBase basedOn;
 	
-	@Column
-	private boolean businessRehab;
+	MedicalCertificateEntity() {}
 	
+	public static MedicalCertificateEntity newEntity(final int age, final boolean female, final Date startDate, final Date endDate) {
+		final MedicalCertificateEntity ent = new MedicalCertificateEntity();
+		ent.setAge(age);
+		ent.setFemale(female);
+		ent.setStartDate(startDate);
+		ent.setEndDate(endDate);
+		
+		return ent;
+	}
+
 	public Long getId() {
 		return id;
 	}
@@ -75,87 +81,68 @@ public class MedicalCertificateEntity {
 		this.age = age;
 	}
 
-	public int getGender() {
-		return gender;
+	public boolean isFemale() {
+		return female;
 	}
 
-	void setGender(int gender) {
-		this.gender = gender;
-	}
-
-	public String getDiagnose() {
-		return diagnose;
-	}
-
-	void setDiagnos(String diagnose) {
-		this.diagnose = diagnose;
-	}
-
-	public int getWorkCapability() {
-		return workCapability;
-	}
-
-	void setWorkCapability(int workCapability) {
-		this.workCapability = workCapability;
-	}
-
-	public Date getStartDate() {
-		return startDate;
-	}
-
-	public void setStartDate(Date startDate) {
-		this.startDate = startDate;
+	void setFemale(boolean female) {
+		this.female = female;
 	}
 
 	public Date getEndDate() {
 		return endDate;
 	}
 
-	public void setEndDate(Date endDate) {
+	void setEndDate(Date endDate) {
 		this.endDate = endDate;
 	}
 
-	public boolean isDoctorExamined() {
-		return doctorExamined;
-	}
-
-	public void setDoctorExamined(boolean doctorExamined) {
-		this.doctorExamined = doctorExamined;
-	}
-
-	public boolean isSelfExamined() {
-		return selfExamined;
-	}
-
-	public void setSelfExamined(boolean selfExamined) {
-		this.selfExamined = selfExamined;
-	}
-
-	public boolean isPersonalContact() {
-		return personalContact;
-	}
-
-	public void setPersonalContact(boolean personalContact) {
-		this.personalContact = personalContact;
-	}
-
-	public boolean isPhoneContact() {
-		return phoneContact;
-	}
-
-	public void setPhoneContact(boolean phoneContact) {
-		this.phoneContact = phoneContact;
-	}
-
-	public boolean isBusinessRehab() {
-		return businessRehab;
-	}
-
-	public void setBusinessRehab(boolean businessRehab) {
-		this.businessRehab = businessRehab;
+	public String getDiagnose() {
+		return diagnose;
 	}
 
 	public void setDiagnose(String diagnose) {
 		this.diagnose = diagnose;
+	}
+
+	public Date getStartDate() {
+		return startDate;
+	}
+
+	void setStartDate(Date startDate) {
+		this.startDate = startDate;
+	}
+
+	public CertificateOption getBusinessRehab() {
+		return businessRehab;
+	}
+
+	public void setBusinessRehab(CertificateOption businessRehab) {
+		this.businessRehab = businessRehab;
+	}
+
+	public CertificateOption getAbilityToReturnToPresentWork() {
+		return abilityToReturnToPresentWork;
+	}
+
+	public void setAbilityToReturnToPresentWork(
+			CertificateOption abilityToReturnToPresentWork) {
+		this.abilityToReturnToPresentWork = abilityToReturnToPresentWork;
+	}
+
+	public WorkCapability getWorkCapability() {
+		return workCapability;
+	}
+
+	public void setWorkCapability(WorkCapability workCapability) {
+		this.workCapability = workCapability;
+	}
+
+	public MedicalCertificateBase getBasedOn() {
+		return basedOn;
+	}
+
+	public void setBasedOn(MedicalCertificateBase basedOn) {
+		this.basedOn = basedOn;
 	}
 }
