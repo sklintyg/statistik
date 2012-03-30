@@ -14,11 +14,6 @@ import javax.persistence.TemporalType;
 @Entity
 @Table
 public class MedicalCertificateEntity {
-	
-	public static final int NO_WORKING_CAPABILITY = 0;
-	public static final int ONE_QUARTER_WORKING_CAPABILITY = 1;
-	public static final int HALF_WORKING_CAPABILITY = 2;
-	public static final int THREE_QUARTER_WORKING_CAPABILITY = 3;
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
@@ -31,8 +26,20 @@ public class MedicalCertificateEntity {
 	private boolean female;
 	
 	@Column
-	private String diagnose;
+	private boolean diagnose;
 	
+	@Column
+	private String icd10;
+	
+	@Column
+	private boolean actualSicknessProcess;
+	
+	@Column
+	private boolean examinationResults;
+	
+	@Column
+	private boolean limitedActivity;
+
 	@Column
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date startDate;
@@ -51,7 +58,16 @@ public class MedicalCertificateEntity {
 	private WorkCapability workCapability;
 	
 	@Column
-	private MedicalCertificateBase basedOn;
+	private boolean basedOnExamination;
+	
+	@Column
+	private boolean basedOnTelephoneContact;
+	
+	@Column
+	private boolean basedOnJournal;
+	
+	@Column
+	private boolean basedOnOther;
 	
 	MedicalCertificateEntity() {}
 	
@@ -97,11 +113,11 @@ public class MedicalCertificateEntity {
 		this.endDate = endDate;
 	}
 
-	public String getDiagnose() {
+	public boolean getDiagnose() {
 		return diagnose;
 	}
 
-	public void setDiagnose(String diagnose) {
+	public void setDiagnose(boolean diagnose) {
 		this.diagnose = diagnose;
 	}
 
@@ -137,12 +153,68 @@ public class MedicalCertificateEntity {
 	public void setWorkCapability(WorkCapability workCapability) {
 		this.workCapability = workCapability;
 	}
-
-	public MedicalCertificateBase getBasedOn() {
-		return basedOn;
+	
+	public boolean isActualSicknessProcess() {
+		return actualSicknessProcess;
 	}
 
-	public void setBasedOn(MedicalCertificateBase basedOn) {
-		this.basedOn = basedOn;
+	public void setActualSicknessProcess(boolean actualSicknessProcess) {
+		this.actualSicknessProcess = actualSicknessProcess;
+	}
+
+	public boolean isExaminationResults() {
+		return examinationResults;
+	}
+
+	public void setExaminationResults(boolean examinationResults) {
+		this.examinationResults = examinationResults;
+	}
+
+	public boolean isLimitedActivity() {
+		return limitedActivity;
+	}
+
+	public void setLimitedActivity(boolean limitedActivity) {
+		this.limitedActivity = limitedActivity;
+	}
+
+	public String getIcd10() {
+		return icd10;
+	}
+
+	public void setIcd10(String icd10) {
+		this.icd10 = icd10;
+	}
+
+	public boolean isBasedOnExamination() {
+		return basedOnExamination;
+	}
+
+	public void setBasedOnExamination(boolean basedOnExamination) {
+		this.basedOnExamination = basedOnExamination;
+	}
+
+	public boolean isBasedOnTelephoneContact() {
+		return basedOnTelephoneContact;
+	}
+
+	public void setBasedOnTelephoneContact(boolean basedOnTelephoneContact) {
+		this.basedOnTelephoneContact = basedOnTelephoneContact;
+	}
+
+	public boolean isBasedOnJournal() {
+		return basedOnJournal;
+	}
+
+	public void setBasedOnJournal(boolean basedOnJournal) {
+		this.basedOnJournal = basedOnJournal;
+	}
+
+	public boolean isBasedOnOther() {
+		return basedOnOther;
+	}
+
+	public void setBasedOnOther(boolean basedOnOther) {
+		this.basedOnOther = basedOnOther;
 	}
 }

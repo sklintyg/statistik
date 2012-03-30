@@ -9,7 +9,12 @@ public class MedicalCertificate {
 	private String startDate;
 	private String endDate;
 	
-	private String diagnose;
+	private String icdDiagnose;
+	private boolean diagnose;
+	
+	private boolean actualSicknessProcess;
+	private boolean examinationResults;
+	private boolean limitedActivity;
 	
 	private int businessRehab;
 	private int abilityToReturnToPresentWork;
@@ -49,11 +54,11 @@ public class MedicalCertificate {
 		this.endDate = endDate;
 	}
 	
-	public String getDiagnose() {
+	public boolean getDiagnose() {
 		return diagnose;
 	}
 	
-	public void setDiagnose(String diagnose) {
+	public void setDiagnose(boolean diagnose) {
 		this.diagnose = diagnose;
 	}
 	
@@ -87,5 +92,37 @@ public class MedicalCertificate {
 	
 	public void setBasedOn(int basedOn) {
 		this.basedOn = basedOn;
+	}
+
+	public String getIcdDiagnose() {
+		return icdDiagnose;
+	}
+
+	public void setIcdDiagnose(String icdDiagnose) {
+		this.icdDiagnose = icdDiagnose;
+	}
+
+	public boolean isActualSicknessProcess() {
+		return actualSicknessProcess;
+	}
+
+	public void setActualSicknessProcess(boolean actualSicknessProcess) {
+		this.actualSicknessProcess = actualSicknessProcess;
+	}
+
+	public boolean isExaminationResults() {
+		return examinationResults;
+	}
+
+	public void setExaminationResults(boolean examinationResults) {
+		this.examinationResults = examinationResults;
+	}
+
+	public boolean isLimitedActivity() {
+		return limitedActivity;
+	}
+
+	public void setLimitedActivity(boolean limitedActivity) {
+		this.limitedActivity = limitedActivity;
 	}
 }
