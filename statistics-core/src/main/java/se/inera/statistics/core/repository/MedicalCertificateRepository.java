@@ -13,7 +13,7 @@ public interface MedicalCertificateRepository extends JpaRepository<MedicalCerti
 
 	
 	@Query(value="select e from MedicalCertificateEntity as e where " +
-			"(e.startDate >= :startDate and e.endDate <= endDate) and " +
+			"(e.startDate >= :startDate and e.endDate <= :endDate) and " +
 			"e.basedOnExamination = :basedOnExamination and " +
 			"e.basedOnTelephoneContact = :basedOnTelephoneContact")
 	List<MedicalCertificateEntity> loadBySearch(
