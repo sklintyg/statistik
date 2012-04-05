@@ -28,13 +28,16 @@ public class RegisterStatisticsServiceImpl implements RegisterStatisticsService 
 	public boolean registerMedicalCertificateStatistics(
 			MedicalCertificate certificate) {
 		
-		final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+		//final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+		final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		
 		try {
 			final Date start = sdf.parse(certificate.getStartDate());
 			final Date end = sdf.parse(certificate.getEndDate());
 			
 			final MedicalCertificateEntity ent = MedicalCertificateEntity.newEntity(certificate.getAge(), certificate.isFemale(), start, end);
+			ent.setBasedOnExamination(certificate.isBasedOnExamination());
+			ent.setBasedOnTelephoneContact(certificate.isBasedOnTelephoneContact());
 			this.repo.save(ent);
 			
 			log.info("Medical certificate statistics data successfully registered.");
