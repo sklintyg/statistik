@@ -34,8 +34,8 @@
 	</inera:header>
 	<inera:body>
 		<form method="post" action="<c:url value="/j_spring_security_check" />">
-			<inera-ui:modal id="loginModal" title="Logga in">
-				<inera-ui:field name="j_username" label="Personnummer">
+			<inera-ui:modal id="loginModal" titleCode="label.login">
+				<inera-ui:field name="j_username" labelCode="label.hsa">
 					<input name="j_username" type="text" class="xlarge" />
 				</inera-ui:field>
 				

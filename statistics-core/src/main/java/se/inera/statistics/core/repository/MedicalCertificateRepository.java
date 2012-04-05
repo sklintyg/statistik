@@ -1,14 +1,28 @@
 package se.inera.statistics.core.repository;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import se.inera.statistics.model.entity.MedicalCertificateEntity;
 
 public interface MedicalCertificateRepository extends JpaRepository<MedicalCertificateEntity, Long> {
 
+	
+	@Query(value="select e from MedicalCertificateEntity as e where " +
+			"(e.startDate >= :startDate and e.endDate <= endDate) and " +
+			"e.basedOnExamination = :basedOnExamination and " +
+			"e.basedOnTelephoneContact = :basedOnTelephoneContact")
+	List<MedicalCertificateEntity> loadBySearch(
+			@Param("startDate") final Date start,
+			@Param("endDate") final Date end,
+			@Param("basedOnExamination") final boolean basedOnExamination,
+			@Param("basedOnTelephoneContact") final boolean basedOnTelephoneContact);
+	
+	
 	@Query(value="select e from MedicalCertificateEntity as e where " +
 			"e.diagnose = 1 and " +
 			"e.examinationResults = 1 " +

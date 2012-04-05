@@ -29,58 +29,83 @@
 	<inera:header>
 		<script type="text/javascript">
 			$(function() {
-				var inera = new INERA.Cert();
 				
-				inera.list(function(data) {
-					if (data.data.length > 0) {
-						$.each(data.data, function(i, v) {
-							
-							var tr = $('<tr>');
-							tr.append(
-								$('<td>').html(v.sentDate)
-							);
-							
-							tr.append(
-								$('<td>').html(v.type)
-							);
-							
-							tr.append(
-								$('<td>').html(v.caregiverName)
-							);
-							
-							tr.append(
-								$('<td>').html(v.careunitName)
-							);
-							
-							tr.append(
-								$('<td>').html(v.status)
-							);
-							
-							$('#certTable').append(tr);
-						});
-					}
+				var ajax = new INERA.Ajax();
+				
+				$('#statistics-form').submit(function(e) {
+					e.preventDefault();
+					
+					var criterias = new Object();
+					criterias.startDate = $('input[name="fromDate"]').val();
+					criterias.endDate = $('input[name="toDate"]').val();
+					
+					criterias.basedOnExamination = $('input[name="basedOnExamination"]:checked').val() == 1 ? true : false;
+					criterias.basedOnTelephoneContact = $('input[name="basedOnTelephoneContact"]:checked').val() == 1 ? true : false;
+					
+					ajax.post('/statistics/search', criterias, function(data) {
+						
+					});
 				});
-				
 			});
 		</script>
 	</inera:header>
 	<inera:body>
-		<h2><spring:message code="certificates.header" /></h2>
-		<p><spring:message code="certificates.desc" /></p>
+		<h2><spring:message code="search.title" /></h2>
+		<p><spring:message code="search.desc" /></p>
 		
-		<inera-ui:table id="certTable">
-			<thead>
-				<tr>
-					<th><spring:message code="certificates.date" /></th>
-					<th><spring:message code="certificates.type" /></th>
-					<th><spring:message code="certificates.issuedBy" /></th>
-					<th><spring:message code="certificates.careUnit" /></th>
-					<th><spring:message code="certificates.status" /></th>
-				</tr>
-			</thead>
-			<tbody></tbody>
-		</inera-ui:table>
-		
+		<form id="statistics-form">
+			<fieldset>
+				<legend><spring:message code="search.criteria.period" /></legend>
+				
+				<inera:row>
+					<inera:col span="3">
+						<inera-ui:field labelCode="search.criteria.startDate" name="fromDate">
+							<inera-ui:dateField name="fromDate" />
+						</inera-ui:field>
+					</inera:col>
+					<inera:col span="3">
+						<inera-ui:field labelCode="search.criteria.endDate" name="toDate">
+							<inera-ui:dateField name="toDate" />
+						</inera-ui:field>
+					</inera:col>
+				</inera:row>
+				
+			</fieldset>
+			
+			<fieldset>
+				<legend><spring:message code="search.criteria.basedOn" /></legend>
+				
+				<inera:row>
+					<inera:col span="2">
+						<inera-ui:field name="basedOnExamination" labelCode="search.criteria.basedOn.examination">
+							<input name="basedOnExamination" type="checkbox" value="1"/>
+						</inera-ui:field>
+					</inera:col>
+					
+					<inera:col span="2">
+						<inera-ui:field name="basedOnTelephoneContact" labelCode="search.criteria.basedOn.telephone">
+							<input name="basedOnTelephoneContact" type="checkbox" value="1"/>
+						</inera-ui:field>
+					</inera:col>
+					
+<%-- 					<inera:col span="2"> --%>
+<%-- 						<inera-ui:field name="basedOnJournal" labelCode="search.criteria.basedOn.journal"> --%>
+<!-- 							<input name="basedOnJournal" type="checkbox" /> -->
+<%-- 						</inera-ui:field> --%>
+<%-- 					</inera:col> --%>
+					
+<%-- 					<inera:col span="2"> --%>
+<%-- 						<inera-ui:field name="basedOnOther" labelCode="search.criteria.basedOn.other"> --%>
+<!-- 							<input name="basedOnOther" type="checkbox" /> -->
+<%-- 						</inera-ui:field> --%>
+<%-- 					</inera:col> --%>
+				</inera:row>
+			</fieldset>
+			
+			<div class="form-actions">
+				<button type="submit" class="btn btn-primary"><spring:message code="search.criteria.submitSearch" /></button>
+			</div>
+		</form>
 		
 		<a href="<c:url value="/web/security/logout" />"><spring:message code="label.logout" /></a>
 	</inera:body>

@@ -5,6 +5,13 @@ import java.util.List;
 import se.inera.statistics.core.api.MedicalCertificate;
 
 public interface StatisticsService {
+	
+	/**
+	 * Load certificates based on search criterion
+	 * @param search
+	 * @return
+	 */
+	List<MedicalCertificate> loadBySearch(final MedicalCertificate search);
 
 	/**
 	 * Measure 3:

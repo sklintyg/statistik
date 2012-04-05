@@ -1,26 +1,57 @@
 package se.inera.statistics.core.api;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
+
+import se.inera.statistics.model.entity.MedicalCertificateEntity;
+
 
 public class MedicalCertificate {
 
 	private int age;
 	private boolean female;
+	private boolean diagnose;
+	
+	private String icd10;
 	
 	private String startDate;
 	private String endDate;
 	
-	private String icdDiagnose;
-	private boolean diagnose;
+	private boolean basedOnExamination;
+	private boolean basedOnTelephoneContact;
 	
-	private boolean actualSicknessProcess;
-	private boolean examinationResults;
-	private boolean limitedActivity;
+	public static List<MedicalCertificate> newFromEntities(final List<MedicalCertificateEntity> ents) {
+		final List<MedicalCertificate> dtos = new ArrayList<MedicalCertificate>();
+		for (final MedicalCertificateEntity ent : ents) {
+			dtos.add(newFromEntity(ent));
+		}
+		
+		return dtos;
+	}
 	
-	private int businessRehab;
-	private int abilityToReturnToPresentWork;
+	public static MedicalCertificate newFromEntity(final MedicalCertificateEntity ent) {
+		
+		final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		
+		final MedicalCertificate dto = new MedicalCertificate();
+		dto.setAge(ent.getAge());
+		
+		dto.setFemale(ent.isFemale());
+		dto.setIcd10(ent.getIcd10());
+		
+		dto.setBasedOnExamination(ent.isBasedOnExamination());
+		dto.setBasedOnTelephoneContact(ent.isBasedOnTelephoneContact());
+		
+		dto.setStartDate(sdf.format(ent.getStartDate()));
+		dto.setEndDate(sdf.format(ent.getEndDate()));
+		
+		return dto;
+	}
 	
-	private int workCapability;
-	private int basedOn;
+	public MedicalCertificate() {
+	
+	}
 	
 	public int getAge() {
 		return age;
@@ -36,6 +67,22 @@ public class MedicalCertificate {
 	
 	public void setFemale(boolean female) {
 		this.female = female;
+	}
+	
+	public boolean isDiagnose() {
+		return diagnose;
+	}
+	
+	public void setDiagnose(boolean diagnose) {
+		this.diagnose = diagnose;
+	}
+	
+	public String getIcd10() {
+		return icd10;
+	}
+	
+	public void setIcd10(String icd10) {
+		this.icd10 = icd10;
 	}
 	
 	public String getStartDate() {
@@ -54,75 +101,19 @@ public class MedicalCertificate {
 		this.endDate = endDate;
 	}
 	
-	public boolean getDiagnose() {
-		return diagnose;
+	public boolean isBasedOnExamination() {
+		return basedOnExamination;
 	}
 	
-	public void setDiagnose(boolean diagnose) {
-		this.diagnose = diagnose;
+	public void setBasedOnExamination(boolean basedOnExamination) {
+		this.basedOnExamination = basedOnExamination;
 	}
 	
-	public int getBusinessRehab() {
-		return businessRehab;
+	public boolean isBasedOnTelephoneContact() {
+		return basedOnTelephoneContact;
 	}
 	
-	public void setBusinessRehab(int businessRehab) {
-		this.businessRehab = businessRehab;
-	}
-	
-	public int getAbilityToReturnToPresentWork() {
-		return abilityToReturnToPresentWork;
-	}
-	
-	public void setAbilityToReturnToPresentWork(int abilityToReturnToPresentWork) {
-		this.abilityToReturnToPresentWork = abilityToReturnToPresentWork;
-	}
-	
-	public int getWorkCapability() {
-		return workCapability;
-	}
-	
-	public void setWorkCapability(int workCapability) {
-		this.workCapability = workCapability;
-	}
-	
-	public int getBasedOn() {
-		return basedOn;
-	}
-	
-	public void setBasedOn(int basedOn) {
-		this.basedOn = basedOn;
-	}
-
-	public String getIcdDiagnose() {
-		return icdDiagnose;
-	}
-
-	public void setIcdDiagnose(String icdDiagnose) {
-		this.icdDiagnose = icdDiagnose;
-	}
-
-	public boolean isActualSicknessProcess() {
-		return actualSicknessProcess;
-	}
-
-	public void setActualSicknessProcess(boolean actualSicknessProcess) {
-		this.actualSicknessProcess = actualSicknessProcess;
-	}
-
-	public boolean isExaminationResults() {
-		return examinationResults;
-	}
-
-	public void setExaminationResults(boolean examinationResults) {
-		this.examinationResults = examinationResults;
-	}
-
-	public boolean isLimitedActivity() {
-		return limitedActivity;
-	}
-
-	public void setLimitedActivity(boolean limitedActivity) {
-		this.limitedActivity = limitedActivity;
+	public void setBasedOnTelephoneContact(boolean basedOnTelephoneContact) {
+		this.basedOnTelephoneContact = basedOnTelephoneContact;
 	}
 }
