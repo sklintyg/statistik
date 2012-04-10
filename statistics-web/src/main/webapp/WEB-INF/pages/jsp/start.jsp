@@ -42,8 +42,10 @@
 					criterias.basedOnExamination = $('input[name="basedOnExamination"]:checked').val() == 1 ? true : false;
 					criterias.basedOnTelephoneContact = $('input[name="basedOnTelephoneContact"]:checked').val() == 1 ? true : false;
 					
+					criterias.viewRange = $('select option:selected').prop('value');
+					
 					ajax.post('/statistics/search', criterias, function(data) {
-						
+						INERA.log("Success");
 					});
 				});
 			});
@@ -69,12 +71,10 @@
 						</inera-ui:field>
 					</inera:col>
 				</inera:row>
-				
 			</fieldset>
 			
 			<fieldset>
 				<legend><spring:message code="search.criteria.basedOn" /></legend>
-				
 				<inera:row>
 					<inera:col span="2">
 						<inera-ui:field name="basedOnExamination" labelCode="search.criteria.basedOn.examination">
@@ -87,25 +87,32 @@
 							<input name="basedOnTelephoneContact" type="checkbox" value="1"/>
 						</inera-ui:field>
 					</inera:col>
-					
-<%-- 					<inera:col span="2"> --%>
-<%-- 						<inera-ui:field name="basedOnJournal" labelCode="search.criteria.basedOn.journal"> --%>
-<!-- 							<input name="basedOnJournal" type="checkbox" /> -->
-<%-- 						</inera-ui:field> --%>
-<%-- 					</inera:col> --%>
-					
-<%-- 					<inera:col span="2"> --%>
-<%-- 						<inera-ui:field name="basedOnOther" labelCode="search.criteria.basedOn.other"> --%>
-<!-- 							<input name="basedOnOther" type="checkbox" /> -->
-<%-- 						</inera-ui:field> --%>
-<%-- 					</inera:col> --%>
 				</inera:row>
 			</fieldset>
+			
+			<fieldset>
+				<legend>Visa statistik</legend>
+				<inera:row>
+					<inera:col span="2">
+						<inera-ui:field name="viewRange" labelCode="search.criteria.range">
+							<select name="viewRange">
+								<option value="0">Dagsvis</option>
+								<option value="1">Veckovis</option>
+								<option value="2">Månadsvis</option>
+								<option value="3">Årsvis</option>
+							</select>
+						</inera-ui:field>
+					</inera:col>
+				</inera:row>
+			</fieldset>
+			
 			
 			<div class="form-actions">
 				<button type="submit" class="btn btn-primary"><spring:message code="search.criteria.submitSearch" /></button>
 			</div>
 		</form>
+		
+		<div id="diagram"></div>
 		
 		<a href="<c:url value="/web/security/logout" />"><spring:message code="label.logout" /></a>
 	</inera:body>

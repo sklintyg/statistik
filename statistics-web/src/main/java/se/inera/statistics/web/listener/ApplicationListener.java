@@ -16,11 +16,19 @@
  */
 package se.inera.statistics.web.listener;
 
+import java.util.Calendar;
+import java.util.Date;
+
 import javax.servlet.ServletContextEvent;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.context.ContextLoaderListener;
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.context.support.WebApplicationContextUtils;
+
+import se.inera.statistics.core.repository.MedicalCertificateRepository;
+import se.inera.statistics.model.entity.MedicalCertificateEntity;
 
 /**
  * Called when Spring initialize, destroys, or refreshes the application
@@ -34,7 +42,28 @@ public class ApplicationListener extends ContextLoaderListener {
 	
 	@Override
 	public void contextInitialized(ServletContextEvent event) {
-		super.contextInitialized(event);		
+		super.contextInitialized(event);
+		
+		final WebApplicationContext wc = WebApplicationContextUtils.getWebApplicationContext(event.getServletContext());
+		final MedicalCertificateRepository repo = wc.getBean(MedicalCertificateRepository.class);
+		
+		final Calendar c = Calendar.getInstance();
+		c.set(Calendar.YEAR, 2012);
+		c.set(Calendar.MONTH, 1);
+		c.set(Calendar.DAY_OF_MONTH, 15);
+		
+		final Date start = c.getTime();
+		
+		c.roll(Calendar.MONTH, true);
+		
+		final Date end = c.getTime();
+		
+		final MedicalCertificateEntity entity = MedicalCertificateEntity.newEntity(18, false, start, end);
+		for (int i = 0; i < 100; i++) {
+			log.debug("Creating certificate: " + (i+1));
+			repo.save(entity);
+		}
+		
 		log.info("==== INERA STATISTICS SERVICE STARTED ====");
 	}
 	

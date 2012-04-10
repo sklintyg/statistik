@@ -2,7 +2,9 @@ package se.inera.statistics.core.spi;
 
 import java.util.List;
 
+import se.inera.commons.support.ServiceResult;
 import se.inera.statistics.core.api.MedicalCertificate;
+import se.inera.statistics.core.api.StatisticsResult;
 
 public interface StatisticsService {
 	
@@ -11,7 +13,7 @@ public interface StatisticsService {
 	 * @param search
 	 * @return
 	 */
-	List<MedicalCertificate> loadBySearch(final MedicalCertificate search);
+	ServiceResult<StatisticsResult> loadBySearch(final MedicalCertificate search);
 
 	/**
 	 * Measure 3:

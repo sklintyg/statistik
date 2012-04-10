@@ -8,7 +8,7 @@ import se.inera.statistics.model.entity.MedicalCertificateEntity;
 
 
 public class MedicalCertificate {
-
+	private int viewRange;
 	private int age;
 	private boolean female;
 	private boolean diagnose;
@@ -115,5 +115,13 @@ public class MedicalCertificate {
 	
 	public void setBasedOnTelephoneContact(boolean basedOnTelephoneContact) {
 		this.basedOnTelephoneContact = basedOnTelephoneContact;
+	}
+
+	public int getViewRange() {
+		return viewRange;
+	}
+
+	public void setViewRange(int viewRange) {
+		this.viewRange = viewRange;
 	}
 }
