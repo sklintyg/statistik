@@ -27,7 +27,7 @@ public class CertificateRegistrationRestIT {
 	@Test
 	public void testMedicalCertificateRegistration() throws Exception {
 		
-		final String url = "http://localhost:8080/api/certificate/medical/register";
+		final String url = "http://localhost:8080/statistics-web/api/certificate/medical/register";
 		
 		final DefaultHttpClient client = new DefaultHttpClient();
 		client.addRequestInterceptor(new HttpRequestInterceptor() {

@@ -87,6 +87,9 @@
   					</goals>
   					<phase>pre-integration-test</phase>
   					<configuration>
+  						<webApp>
+		  					<contextPath>/statistics-web</contextPath>
+		  				</webApp>
   						<daemon>true</daemon>
   						<systemProperties>
   							<systemProperty>
