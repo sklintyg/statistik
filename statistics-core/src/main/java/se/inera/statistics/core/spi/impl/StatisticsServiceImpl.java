@@ -58,25 +58,25 @@ public class StatisticsServiceImpl implements StatisticsService {
 			, final List<MedicalCertificateEntity> matches) throws Exception {
 		
 		final StatisticsResult result = new StatisticsResult(matches.size(), totals.size(), range);
-		
+		int type;
 		switch (result.getView()) {
 		case DAILY:
-			result.setMatches(this.getStatsFromCollection(matches, Calendar.DAY_OF_YEAR));
-			result.setTotals(this.getStatsFromCollection(totals, Calendar.DAY_OF_YEAR));
+			type = Calendar.DAY_OF_YEAR;
 			break;
 		case WEEKLY:
-			result.setMatches(this.getStatsFromCollection(matches, Calendar.WEEK_OF_YEAR));
-			result.setTotals(this.getStatsFromCollection(totals, Calendar.WEEK_OF_YEAR));
+			type = Calendar.WEEK_OF_YEAR;
 			break;
 		case MONTHLY:
-			result.setMatches(this.getStatsFromCollection(matches, Calendar.MONTH));
-			result.setTotals(this.getStatsFromCollection(totals, Calendar.MONTH));
+			type = Calendar.MONTH;
 			break;
 		case YEARLY:
-			result.setMatches(this.getStatsFromCollection(matches, Calendar.YEAR));
-			result.setTotals(this.getStatsFromCollection(totals, Calendar.YEAR));
+			type = Calendar.YEAR;
 			break;
+		default:
+			type = Calendar.YEAR;
 		}
+		result.setMatches(this.getStatsFromCollection(matches, type));
+		result.setTotals(this.getStatsFromCollection(totals, type));
 		
 		return result;
 	}
@@ -84,50 +84,46 @@ public class StatisticsServiceImpl implements StatisticsService {
 	private List<PeriodResult> getStatsFromCollection(final List<MedicalCertificateEntity> list, final int period) throws Exception {
 		final List<PeriodResult> result = new ArrayList<PeriodResult>();
 		
-		Calendar cal = null;
-		PeriodResult currentPeriod = null;
-		for (int i = 0; i < list.size(); i++) {
-			final MedicalCertificateEntity e = list.get(i);
-			
-			if (cal == null) {
-				log.debug("Processing entity list");
-				cal = Calendar.getInstance();
-				cal.setTime(e.getStartDate());
-				
-				currentPeriod = PeriodResult.newResult();
-				currentPeriod.setStart(e.getStartDate());
-			}
-			
+		if (!list.isEmpty()) {
+			final Calendar cal = Calendar.getInstance();
 			final Calendar current = Calendar.getInstance();
-			current.setTime(e.getStartDate());
-			
+			PeriodResult currentPeriod = null;
 			final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-			log.debug("Comparing {} with {}", sdf.format(cal.getTime()), sdf.format(current.getTime()));
-			if (cal.get(period) == current.get(period)) {
-				currentPeriod.increaseValue();
+			
+			log.debug("Processing entity list");
+			for (MedicalCertificateEntity e: list) {
 				
-				if (i == list.size() - 1) {
-					currentPeriod.setEnd(cal.getTime());
-					result.add(currentPeriod);
-					log.debug("Adding period starting at {} with count {}", new Object[] {currentPeriod.getStart(), currentPeriod.getValue()});
+				if (currentPeriod == null) {
+					cal.setTime(e.getStartDate());					
+					currentPeriod = PeriodResult.newResult(e.getStartDate());
 				}
 				
-			} else {
-				/*
-				 * Calculation finished - add
-				 */
-				currentPeriod.setEnd(cal.getTime());
-				result.add(currentPeriod);
-				log.debug("Adding period starting at {} with count {}", new Object[] {currentPeriod.getStart(), currentPeriod.getValue()});
+				current.setTime(e.getStartDate());
 				
-				/*
-				 * Reset counters
-				 */
-				currentPeriod = PeriodResult.newResult();
-				currentPeriod.setStart(e.getStartDate());
-				currentPeriod.increaseValue();
-				cal.setTime(e.getStartDate());
+				log.debug("Comparing {} with {}", sdf.format(cal.getTime()), sdf.format(current.getTime()));
+				if (cal.get(period) == current.get(period)) {
+					currentPeriod.increaseValue();								
+				} else {
+					/*
+					 * Calculation finished - add
+					 */
+					currentPeriod.setEnd(cal.getTime());
+					result.add(currentPeriod);
+					log.debug("Adding period starting at {} with count {}", array(currentPeriod.getStart(), currentPeriod.getValue()));
+					
+					/*
+					 * Reset counters
+					 */
+					cal.setTime(e.getStartDate());
+					currentPeriod = PeriodResult.newResult(e.getStartDate());
+					currentPeriod.increaseValue();
+				}
 			}
+			
+			// add last group
+			currentPeriod.setEnd(cal.getTime());
+			result.add(currentPeriod);
+			log.debug("Adding period starting at {} with count {}", array(currentPeriod.getStart(), currentPeriod.getValue()));
 		}
 		
 		log.debug("Found {} periods in total.", result.size());
@@ -135,6 +131,10 @@ public class StatisticsServiceImpl implements StatisticsService {
 	}
 	
 	
+
+	private Object[] array(Object...data) {
+		return data;
+	}
 
 	@Override
 	public List<MedicalCertificate> loadMesasureThreeStatistics() {

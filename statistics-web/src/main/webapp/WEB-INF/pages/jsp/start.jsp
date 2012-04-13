@@ -27,7 +27,10 @@
 
 <inera:page>
 	<inera:header>
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
 		<script type="text/javascript">
+	      google.load("visualization", "1", {packages:["corechart"]});
+
 			$(function() {
 				
 				var ajax = new INERA.Ajax();
@@ -45,6 +48,37 @@
 					criterias.viewRange = $('select option:selected').prop('value');
 					
 					ajax.post('/statistics/search', criterias, function(data) {
+				        var drawdata = new google.visualization.DataTable();
+				        drawdata.addColumn('date', 'Year');
+				        drawdata.addColumn('number', 'Totalt');
+				        drawdata.addColumn('number', 'Urval');
+				        var totals = data.data.totals;
+				        var matched = data.data.matches;
+				        var max = 0;
+				        var urval_i = 0;
+				        for (var i = 0; i < totals.length; i++) {
+				        	var v1 = totals[i].start;
+				        	var v2 = totals[i].value;
+
+				        	if (v2 > max) {
+				        		max = v2;
+				        	}
+				        	
+				        	var v3 = 0;
+				        	if (urval_i < matched.length && matched[urval_i].end <= totals[i].end) {
+				        		v3 = matched[urval_i].value;
+				        		urval_i++;
+				        	}
+					        drawdata.addRow(new Array(new Date(v1), v2, v3));				        	
+				        }
+
+                           // Create and draw the visualization.
+                           new google.visualization.LineChart(document.getElementById('diagram')).
+                               draw(drawdata, {curveType: "none",
+                                           width: 500, height: 400,
+                                           vAxis: {maxValue: max}}
+                                   );
+
 						INERA.log("Success");
 					});
 				});

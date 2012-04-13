@@ -14,8 +14,10 @@ public class PeriodResult {
 	PeriodResult() {
 	}
 	
-	public static PeriodResult newResult() {
-		return new PeriodResult();
+	public static PeriodResult newResult(Date date) {
+		PeriodResult result = new PeriodResult();
+		result.setStart(date);
+		return result;
 	}
 
 	public Date getStart() {
