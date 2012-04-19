@@ -37,7 +37,7 @@ public class PeriodResult {
 	}
 
 	public int getValue() {
-		return value;
+		return value >= 5 ? value : -1;
 	}
 
 	public String getLabel() {
