@@ -76,8 +76,27 @@
                            new google.visualization.LineChart(document.getElementById('diagram')).
                                draw(drawdata, {curveType: "none",
                                            width: 500, height: 400,
-                                           vAxis: {maxValue: max}}
+                                           vAxis: {maxValue: max, minValue: 0}}
                                    );
+                           
+                           var data2 = new google.visualization.DataTable();
+                           data2.addColumn('string', 'Ålder');
+                           data2.addColumn('number', 'Total');
+                           data2.addColumn('number', 'Urval');
+                           data2.addRows([
+                             ['0-29', 124, 37],
+                             ['30-39', 55, 12],
+                             ['40-49', 100, 100],
+                             ['50-59', 77, 60],
+                             ['60-', 80, 99]
+                           ]);
+
+                           var options = {
+                             hAxis: {title: 'Ålder', titleTextStyle: {color: 'red'}}
+                           };
+
+                           var chart = new google.visualization.ColumnChart(document.getElementById('diagram2'));
+                           chart.draw(data2, options);
 
 						INERA.log("Success");
 					});
@@ -147,6 +166,7 @@
 		</form>
 		
 		<div id="diagram"></div>
+		<div id="diagram2"></div>
 		
 		<a href="<c:url value="/web/security/logout" />"><spring:message code="label.logout" /></a>
 	</inera:body>
