@@ -108,7 +108,7 @@
 		<h2><spring:message code="search.title" /></h2>
 		<p><spring:message code="search.desc" /></p>
 		
-		<form id="statistics-form">
+		<form id="statistics-form" class="form-inline">
 			<fieldset>
 				<legend><spring:message code="search.criteria.period" /></legend>
 				
