@@ -2,14 +2,17 @@ package se.inera.statistics.model.entity;
 
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.ManyToOne;
 
 @Entity
 @Table
@@ -19,12 +22,18 @@ public class MedicalCertificateEntity {
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Long id;
 	
+//	@ManyToOne(cascade=CascadeType.PERSIST)
+//	@JoinColumn(name="PERSON_ID")
+//	private PersonEntity person;
 	@Column(nullable=false)
-	private int age;
-	
-	@Column(nullable=false)
-	private boolean female;
-	
+	private Long personId;
+
+	//	@Column(nullable=false)
+//	private int age;
+//	
+//	@Column(nullable=false)
+//	private boolean female;
+//	
 	@Column
 	private boolean diagnose;
 	
@@ -71,10 +80,11 @@ public class MedicalCertificateEntity {
 	
 	MedicalCertificateEntity() {}
 	
-	public static MedicalCertificateEntity newEntity(final int age, final boolean female, final Date startDate, final Date endDate) {
+	public static MedicalCertificateEntity newEntity(final Date startDate, final Date endDate) {
 		final MedicalCertificateEntity ent = new MedicalCertificateEntity();
-		ent.setAge(age);
-		ent.setFemale(female);
+//		final PersonEntity person = PersonEntity.newEntity(age, female);
+//		ent.setPerson(person);
+
 		ent.setStartDate(startDate);
 		ent.setEndDate(endDate);
 		
@@ -88,22 +98,38 @@ public class MedicalCertificateEntity {
 	void setId(Long id) {
 		this.id = id;
 	}
-
-	public int getAge() {
-		return age;
+//
+//	public PersonEntity getPerson() {
+//		return person;
+//	}
+//
+//	public void setPerson(PersonEntity person) {
+//		this.person = person;
+//	}
+	
+	public Long getPersonId() {
+		return personId;
 	}
 
-	void setAge(int age) {
-		this.age = age;
+	public void setPersonId(Long personId) {
+		this.personId = personId;
 	}
 
-	public boolean isFemale() {
-		return female;
-	}
-
-	void setFemale(boolean female) {
-		this.female = female;
-	}
+//	public int getAge() {
+//		return age;
+//	}
+//
+//	void setAge(int age) {
+//		this.age = age;
+//	}
+//
+//	public boolean isFemale() {
+//		return female;
+//	}
+//
+//	void setFemale(boolean female) {
+//		this.female = female;
+//	}
 
 	public Date getEndDate() {
 		return endDate;

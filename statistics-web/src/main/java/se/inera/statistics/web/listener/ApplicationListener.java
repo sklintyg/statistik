@@ -28,7 +28,9 @@ import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import se.inera.statistics.core.repository.MedicalCertificateRepository;
+import se.inera.statistics.core.repository.PersonRepository;
 import se.inera.statistics.model.entity.MedicalCertificateEntity;
+import se.inera.statistics.model.entity.PersonEntity;
 
 /**
  * Called when Spring initialize, destroys, or refreshes the application
@@ -46,6 +48,8 @@ public class ApplicationListener extends ContextLoaderListener {
 		
 		final WebApplicationContext wc = WebApplicationContextUtils.getWebApplicationContext(event.getServletContext());
 		final MedicalCertificateRepository repo = wc.getBean(MedicalCertificateRepository.class);
+		final PersonRepository personRepository = wc.getBean(PersonRepository.class);
+
 		
 		final Calendar c = Calendar.getInstance();
 		c.set(Calendar.YEAR, 2012);
@@ -58,7 +62,11 @@ public class ApplicationListener extends ContextLoaderListener {
 		
 		final Date end = c.getTime();
 		
-		final MedicalCertificateEntity entity = MedicalCertificateEntity.newEntity(18, false, start, end);
+		//TODO: Are we just generating sample data ?
+		final MedicalCertificateEntity entity = MedicalCertificateEntity.newEntity( start, end);
+		final PersonEntity person = PersonEntity.newEntity(18, "Male");
+		personRepository.save(person);
+		entity.setPersonId(person.getId());
 		for (int i = 0; i < 100; i++) {
 			log.debug("Creating certificate: " + (i+1));
 			repo.save(entity);

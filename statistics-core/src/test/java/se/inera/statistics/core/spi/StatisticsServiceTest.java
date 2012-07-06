@@ -22,15 +22,21 @@ import se.inera.statistics.core.api.MedicalCertificate;
 import se.inera.statistics.core.api.StatisticsResult;
 import se.inera.statistics.core.api.StatisticsViewRange;
 import se.inera.statistics.core.repository.MedicalCertificateRepository;
+import se.inera.statistics.core.repository.PersonRepository;
 import se.inera.statistics.model.entity.MedicalCertificateEntity;
+import se.inera.statistics.model.entity.PersonEntity;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations="classpath:statistics-config.xml")
-@ActiveProfiles(profiles={"db-embedded","test"}, inheritProfiles=true)
+@ActiveProfiles(profiles={"db-psql","test"}, inheritProfiles=true)
 public class StatisticsServiceTest {
 
-	@Autowired private MedicalCertificateRepository repo;
-	@Autowired private StatisticsService service;
+	@Autowired 
+	private MedicalCertificateRepository certificateRepository;
+	@Autowired 
+	private PersonRepository personRepository;
+	@Autowired 
+	private StatisticsService service;
 	
 	@Test
 	@Rollback(true)
@@ -57,7 +63,11 @@ public class StatisticsServiceTest {
 		final Calendar cal = Calendar.getInstance();
 		cal.set(1990, 0, 1, 0, 0, 0);
 		
-		
+		PersonEntity person = personRepository.findByAgeAndGender(18, "Male");
+		if (null == person){
+			person = PersonEntity.newEntity(18, "Male");
+			personRepository.save(person);
+		}
 		for (int i = 0; i < numberOfPeriods; i++) {
 			
 			final Random r = new Random();
@@ -75,7 +85,9 @@ public class StatisticsServiceTest {
 				
 				final Date d2 = start.getTime();
 				
-				final MedicalCertificateEntity e = MedicalCertificateEntity.newEntity(18, true, d1, d2);
+				
+				final MedicalCertificateEntity e = MedicalCertificateEntity.newEntity(d1, d2);
+				e.setPersonId(person.getId());
 				e.setBasedOnExamination(r.nextBoolean());
 				e.setBasedOnTelephoneContact(r.nextBoolean());
 				
@@ -85,6 +97,6 @@ public class StatisticsServiceTest {
 			cal.roll(period, true);
 		}
 		
-		this.repo.save(certs);
+		this.certificateRepository.save(certs);
 	}
 }

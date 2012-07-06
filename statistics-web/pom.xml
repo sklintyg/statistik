@@ -23,8 +23,8 @@
 			<version>${project.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>se.inera.certificate</groupId>
-			<artifactId>certificate-static-resources</artifactId>
+			<groupId>se.inera.commons</groupId>
+			<artifactId>inera-commons-ui</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 		<dependency>

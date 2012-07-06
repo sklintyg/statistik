@@ -40,6 +40,7 @@
 
         <persistence-unit name="statistics-pu" transaction-type="RESOURCE_LOCAL">
                 <class>se.inera.statistics.model.entity.MedicalCertificateEntity</class>
+                <class>se.inera.statistics.model.entity.PersonEntity</class>
         </persistence-unit>
 
 </persistence>
