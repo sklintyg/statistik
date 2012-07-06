@@ -15,7 +15,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import se.inera.statistics.core.api.MedicalCertificate;
+import se.inera.statistics.core.api.MedicalCertificateDto;
 import se.inera.statistics.core.api.StatisticsViewRange;
 import se.inera.statistics.core.repository.MedicalCertificateRepository;
 import se.inera.statistics.core.repository.PersonRepository;
@@ -43,7 +43,7 @@ public class RegisterStatisticsServiceTest {
 		final Date startDate = sdf.parse(startDateString);
 		final Date endDate = sdf.parse(endDateString);
 
-		final MedicalCertificate cert = new MedicalCertificate();
+		final MedicalCertificateDto cert = new MedicalCertificateDto();
 		cert.setAge(18);
 		cert.setFemale(true);
 		cert.setStartDate(startDateString);

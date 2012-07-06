@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import se.inera.statistics.core.api.MedicalCertificate;
+import se.inera.statistics.core.api.MedicalCertificateDto;
 import se.inera.statistics.core.repository.MedicalCertificateRepository;
 import se.inera.statistics.core.repository.PersonRepository;
 import se.inera.statistics.core.spi.RegisterStatisticsService;
@@ -31,7 +31,7 @@ public class RegisterStatisticsServiceImpl implements RegisterStatisticsService 
 	
 	@Override
 	public boolean registerMedicalCertificateStatistics(
-			MedicalCertificate certificate) {
+			MedicalCertificateDto certificate) {
 		
 		//final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 		final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -40,12 +40,14 @@ public class RegisterStatisticsServiceImpl implements RegisterStatisticsService 
 			final Date start = sdf.parse(certificate.getStartDate());
 			final Date end = sdf.parse(certificate.getEndDate());
 			
+
+			final MedicalCertificateEntity ent = MedicalCertificateEntity.newEntity(start, end);
 			final PersonEntity person = getPerson(certificate.getAge(), certificate.isFemale());
 			
-			final MedicalCertificateEntity ent = MedicalCertificateEntity.newEntity(start, end);
+			ent.setPersonId(person.getId());
 			ent.setBasedOnExamination(certificate.isBasedOnExamination());
 			ent.setBasedOnTelephoneContact(certificate.isBasedOnTelephoneContact());
-			ent.setPersonId(person.getId());
+			ent.setIcd10(certificate.getIcd10());
 			this.certificateRepository.save(ent);
 			
 			log.info("Medical certificate statistics data successfully registered.");

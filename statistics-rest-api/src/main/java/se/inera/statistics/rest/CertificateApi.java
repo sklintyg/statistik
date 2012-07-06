@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import se.inera.statistics.core.api.MedicalCertificate;
+import se.inera.statistics.core.api.MedicalCertificateDto;
 import se.inera.statistics.core.spi.RegisterStatisticsService;
 
 @Controller
@@ -19,7 +19,7 @@ public class CertificateApi {
 	
 	@RequestMapping(value="/medical/register", method=RequestMethod.POST, consumes="application/json", produces="application/json")
 	@ResponseBody
-	public Boolean registerMedicalCertificate(@RequestBody final MedicalCertificate certificate) {
+	public Boolean registerMedicalCertificate(@RequestBody final MedicalCertificateDto certificate) {
 		return this.service.registerMedicalCertificateStatistics(certificate);
 	}
 	

@@ -17,7 +17,7 @@ import se.inera.commons.support.ServiceMessageType;
 import se.inera.commons.support.ServiceResult;
 import se.inera.commons.support.impl.DefaultServiceMessage;
 import se.inera.commons.support.impl.ServiceResultImpl;
-import se.inera.statistics.core.api.MedicalCertificate;
+import se.inera.statistics.core.api.MedicalCertificateDto;
 import se.inera.statistics.core.api.PeriodResult;
 import se.inera.statistics.core.api.StatisticsResult;
 import se.inera.statistics.core.api.StatisticsViewRange;
@@ -35,7 +35,7 @@ public class StatisticsServiceImpl implements StatisticsService {
 	private MedicalCertificateRepository repo;
 	
 	@Override
-	public ServiceResult<StatisticsResult> loadBySearch(MedicalCertificate search) {
+	public ServiceResult<StatisticsResult> loadBySearch(MedicalCertificateDto search) {
 		try {
 			final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 			final Date start = sdf.parse(search.getStartDate());
@@ -137,32 +137,32 @@ public class StatisticsServiceImpl implements StatisticsService {
 	}
 
 	@Override
-	public List<MedicalCertificate> loadMesasureThreeStatistics() {
+	public List<MedicalCertificateDto> loadMesasureThreeStatistics() {
 		throw new UnsupportedOperationException("Not yet implemented");
 	}
 
 	@Override
-	public List<MedicalCertificate> loadMeasureNineStatistics() {
+	public List<MedicalCertificateDto> loadMeasureNineStatistics() {
 		throw new UnsupportedOperationException("Not yet implemented");
 	}
 
 	@Override
-	public List<MedicalCertificate> loadMeasureTenStatistics() {
+	public List<MedicalCertificateDto> loadMeasureTenStatistics() {
 		throw new UnsupportedOperationException("Not yet implemented");
 	}
 
 	@Override
-	public List<MedicalCertificate> loadMeasureElevenStatistics() {
+	public List<MedicalCertificateDto> loadMeasureElevenStatistics() {
 		throw new UnsupportedOperationException("Not yet implemented");
 	}
 
 	@Override
-	public List<MedicalCertificate> loadMeasureTwelveStatistics() {
+	public List<MedicalCertificateDto> loadMeasureTwelveStatistics() {
 		throw new UnsupportedOperationException("Not yet implemented");
 	}
 
 	@Override
-	public List<MedicalCertificate> loadMeasureFifteenStatistics() {
+	public List<MedicalCertificateDto> loadMeasureFifteenStatistics() {
 		throw new UnsupportedOperationException("Not yet implemented");
 	}
 

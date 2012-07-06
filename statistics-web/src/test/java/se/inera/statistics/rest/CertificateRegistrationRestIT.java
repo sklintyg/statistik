@@ -20,7 +20,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.web.client.RestTemplate;
 
-import se.inera.statistics.core.api.MedicalCertificate;
+import se.inera.statistics.core.api.MedicalCertificateDto;
 
 public class CertificateRegistrationRestIT {
 
@@ -44,7 +44,7 @@ public class CertificateRegistrationRestIT {
 		final HttpComponentsClientHttpRequestFactory rf = new HttpComponentsClientHttpRequestFactory(client);
 		final RestTemplate rt = new RestTemplate(rf);
 		
-		final MedicalCertificate mc = new MedicalCertificate();
+		final MedicalCertificateDto mc = new MedicalCertificateDto();
 		mc.setAge(18);
 		mc.setFemale(false);
 		mc.setStartDate("2012-02-25 10:00");

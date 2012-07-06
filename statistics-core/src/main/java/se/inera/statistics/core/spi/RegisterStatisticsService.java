@@ -1,6 +1,6 @@
 package se.inera.statistics.core.spi;
 
-import se.inera.statistics.core.api.MedicalCertificate;
+import se.inera.statistics.core.api.MedicalCertificateDto;
 
 public interface RegisterStatisticsService {
 
@@ -9,5 +9,5 @@ public interface RegisterStatisticsService {
 	 * @param certificate
 	 * @return
 	 */
-	boolean registerMedicalCertificateStatistics(final MedicalCertificate certificate);
+	boolean registerMedicalCertificateStatistics(final MedicalCertificateDto certificate);
 }

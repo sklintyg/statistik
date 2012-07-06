@@ -7,7 +7,7 @@ import java.util.List;
 import se.inera.statistics.model.entity.MedicalCertificateEntity;
 
 
-public class MedicalCertificate {
+public class MedicalCertificateDto {
 	private int viewRange;
 	private int age;
 	private boolean female;
@@ -49,7 +49,7 @@ public class MedicalCertificate {
 //		return dto;
 //	}
 	
-	public MedicalCertificate() {
+	public MedicalCertificateDto() {
 	
 	}
 	

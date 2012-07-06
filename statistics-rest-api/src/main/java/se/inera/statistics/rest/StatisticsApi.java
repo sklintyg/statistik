@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import se.inera.commons.support.ServiceResult;
-import se.inera.statistics.core.api.MedicalCertificate;
+import se.inera.statistics.core.api.MedicalCertificateDto;
 import se.inera.statistics.core.api.StatisticsResult;
 import se.inera.statistics.core.spi.StatisticsService;
 
@@ -21,7 +21,7 @@ public class StatisticsApi {
 	
 	@RequestMapping(value="/search", method=RequestMethod.POST, consumes="application/json", produces="application/json")
 	@ResponseBody
-	public ServiceResult<StatisticsResult> loadStatisticsFromSearch(@RequestBody final MedicalCertificate criterias) {
+	public ServiceResult<StatisticsResult> loadStatisticsFromSearch(@RequestBody final MedicalCertificateDto criterias) {
 		return this.service.loadBySearch(criterias);
 	}
 }

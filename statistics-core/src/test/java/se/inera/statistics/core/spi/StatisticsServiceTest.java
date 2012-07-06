@@ -18,7 +18,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import se.inera.commons.support.ServiceResult;
-import se.inera.statistics.core.api.MedicalCertificate;
+import se.inera.statistics.core.api.MedicalCertificateDto;
 import se.inera.statistics.core.api.StatisticsResult;
 import se.inera.statistics.core.api.StatisticsViewRange;
 import se.inera.statistics.core.repository.MedicalCertificateRepository;
@@ -43,7 +43,7 @@ public class StatisticsServiceTest {
 	public void testStatistics() throws Exception {
 		this.setupTestData(10, 10, Calendar.MONTH);
 		
-		final MedicalCertificate cert = new MedicalCertificate();
+		final MedicalCertificateDto cert = new MedicalCertificateDto();
 		cert.setAge(18);
 		cert.setFemale(true);
 		cert.setStartDate("1990-01-01");
