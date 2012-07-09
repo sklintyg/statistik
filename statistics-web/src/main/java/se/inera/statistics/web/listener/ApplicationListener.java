@@ -27,8 +27,10 @@ import org.springframework.web.context.ContextLoaderListener;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
+import se.inera.statistics.core.repository.DiagnosisRepository;
 import se.inera.statistics.core.repository.MedicalCertificateRepository;
 import se.inera.statistics.core.repository.PersonRepository;
+import se.inera.statistics.model.entity.DiagnosisEntity;
 import se.inera.statistics.model.entity.MedicalCertificateEntity;
 import se.inera.statistics.model.entity.PersonEntity;
 
@@ -49,6 +51,7 @@ public class ApplicationListener extends ContextLoaderListener {
 		final WebApplicationContext wc = WebApplicationContextUtils.getWebApplicationContext(event.getServletContext());
 		final MedicalCertificateRepository repo = wc.getBean(MedicalCertificateRepository.class);
 		final PersonRepository personRepository = wc.getBean(PersonRepository.class);
+		final DiagnosisRepository diagnosisRepository = wc.getBean(DiagnosisRepository.class);
 
 		
 		final Calendar c = Calendar.getInstance();
@@ -66,7 +69,11 @@ public class ApplicationListener extends ContextLoaderListener {
 		final MedicalCertificateEntity entity = MedicalCertificateEntity.newEntity( start, end);
 		final PersonEntity person = PersonEntity.newEntity(18, "Male");
 		personRepository.save(person);
+		final DiagnosisEntity diagnosis = DiagnosisEntity.newEntity("544334bg", false);
+		diagnosisRepository.save(diagnosis);
+		
 		entity.setPersonId(person.getId());
+		entity.setDiagnosisId(diagnosis.getId());
 		for (int i = 0; i < 100; i++) {
 			log.debug("Creating certificate: " + (i+1));
 			repo.save(entity);

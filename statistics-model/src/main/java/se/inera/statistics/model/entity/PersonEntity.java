@@ -23,9 +23,6 @@ public class PersonEntity {
 	private String gender;
 	//TODO: make it enum may be 
 	
-//	@OneToMany(mappedBy="person", cascade=CascadeType.PERSIST)
-//	private Collection<MedicalCertificateEntity> certificates = new ArrayList<MedicalCertificateEntity>(); 
-	
 	PersonEntity(){
 	}
 	
@@ -67,14 +64,6 @@ public class PersonEntity {
 	public Long getId() {
 		return id;
 	}
-
-//	public Collection<MedicalCertificateEntity> getCertificates() {
-//		return certificates;
-//	}
-//
-//	public void setCertificates(Collection<MedicalCertificateEntity> certificates) {
-//		this.certificates = certificates;
-//	}
 
 	public void setId(Long id) {
 		this.id = id;

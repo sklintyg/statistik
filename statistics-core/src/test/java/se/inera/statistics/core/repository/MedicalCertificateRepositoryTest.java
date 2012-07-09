@@ -1,6 +1,7 @@
 package se.inera.statistics.core.repository;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 import java.util.Date;
 import org.junit.Before;
@@ -13,6 +14,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import se.inera.statistics.model.entity.DiagnosisEntity;
 import se.inera.statistics.model.entity.MedicalCertificateEntity;
 import se.inera.statistics.model.entity.PersonEntity;
 
@@ -25,11 +27,19 @@ public class MedicalCertificateRepositoryTest {
 	private MedicalCertificateRepository repo;
 	@Autowired 
 	private PersonRepository personRepository;
+	@Autowired 
+	private DiagnosisRepository diagnosisRepository;
 	
 	@Before
 	public void setUp(){
 		this.repo.deleteAll();
 		this.personRepository.deleteAll();
+		
+		PersonEntity person = PersonEntity.newEntity(18, "Male");
+		this.personRepository.save(person);
+		
+		DiagnosisEntity diagnosis = DiagnosisEntity.newEntity("544334bg", false);
+		this.diagnosisRepository.save(diagnosis);
 	}
 	
 	@Test
@@ -42,106 +52,6 @@ public class MedicalCertificateRepositoryTest {
 		assertEquals(1, this.repo.count());
 	}
 	
-//	@Test
-//	public void test
-//	
-	
-//	@Test
-//	@Rollback(true)
-//	@Transactional
-//	public void testMeasureThree() throws Exception {
-//		final List<MedicalCertificateEntity> ents = new ArrayList<MedicalCertificateEntity>();
-//		ents.add(this.createMeasureThreeDiagnose());
-//		ents.add(this.createMeasureThreeDiagnose());
-//		ents.add(this.createMeasureThreeDiagnose());
-//		ents.add(this.createMeasureThreeDiagnose());
-//		ents.add(this.createMeasureThreeDiagnose());
-//		ents.add(this.createEmptyCertificate());
-//		ents.add(this.createEmptyCertificate());
-//		ents.add(this.createEmptyCertificate());
-//		ents.add(this.createEmptyCertificate());
-//		ents.add(this.createEmptyCertificate());
-//		ents.add(this.createEmptyCertificate());
-//		ents.add(this.createEmptyCertificate());
-//		ents.add(this.createEmptyCertificate());
-//		ents.add(this.createEmptyCertificate());
-//		ents.add(this.createEmptyCertificate());
-//		
-//		this.repo.save(ents);
-//		
-//		final List<MedicalCertificateEntity> m3 = this.repo.loadMeasureThreeStatistics();
-//		assertEquals(5, m3.size());
-//	}
-//	
-//	@Test
-//	@Rollback(true)
-//	@Transactional
-//	public void testMeasureNine() throws Exception {
-//		final List<MedicalCertificateEntity> ents = new ArrayList<MedicalCertificateEntity>();
-//		ents.add(this.createMeasureNineCertificate());
-//		ents.add(this.createMeasureNineCertificate());
-//		ents.add(this.createMeasureNineCertificate());
-//		ents.add(this.createMeasureNineCertificate());
-//		ents.add(this.createMeasureNineCertificate());
-//		ents.add(this.createEmptyCertificate());
-//		ents.add(this.createEmptyCertificate());
-//		ents.add(this.createEmptyCertificate());
-//		ents.add(this.createEmptyCertificate());
-//		ents.add(this.createEmptyCertificate());
-//		ents.add(this.createEmptyCertificate());
-//		
-//		this.repo.save(ents);
-//		
-//		final List<MedicalCertificateEntity> results = this.repo.loadMeasureNineStatistics();
-//		assertEquals(5, results.size());
-//	}
-//	
-//	@Test
-//	@Rollback(true)
-//	@Transactional
-//	public void testMeasureTen() throws Exception {
-//		
-//		final List<MedicalCertificateEntity> ents = new ArrayList<MedicalCertificateEntity>();
-//		ents.add(this.createMeasureTenCertificate());
-//		ents.add(this.createMeasureTenCertificate());
-//		ents.add(this.createMeasureTenCertificate());
-//		ents.add(this.createMeasureTenCertificate());
-//		ents.add(this.createMeasureTenCertificate());
-//		ents.add(this.createEmptyCertificate());
-//		ents.add(this.createEmptyCertificate());
-//		ents.add(this.createEmptyCertificate());
-//		ents.add(this.createEmptyCertificate());
-//		ents.add(this.createEmptyCertificate());
-//		
-//		this.repo.save(ents);
-//		
-//		final List<MedicalCertificateEntity> results = this.repo.loadMeasureTenStatistics();
-//		assertEquals(5, results.size());
-//	}
-//	
-//	private MedicalCertificateEntity createMeasureThreeDiagnose() {
-//		final MedicalCertificateEntity ent = createEmptyCertificate();
-//		ent.setDiagnose(true);
-//		ent.setActualSicknessProcess(true);
-//		ent.setExaminationResults(true);
-//		
-//		return ent;
-//	}
-//	
-//	private MedicalCertificateEntity createMeasureNineCertificate() {
-//		final MedicalCertificateEntity ent = createEmptyCertificate();
-//		ent.setIcd10("icd-code-10");
-//		
-//		return ent;
-//	}
-//	
-//	private MedicalCertificateEntity createMeasureTenCertificate() {
-//		final MedicalCertificateEntity ent = createEmptyCertificate();
-//		ent.setBasedOnTelephoneContact(true);
-//		
-//		return ent;
-//	}
-//	
 	private MedicalCertificateEntity createEmptyCertificate() {
 		final Date start = new Date();
 		final Date end = new Date(start.getTime() + (60000 * 24 * 30));
@@ -149,10 +59,16 @@ public class MedicalCertificateRepositoryTest {
 		final MedicalCertificateEntity ent = MedicalCertificateEntity.newEntity(start, end);
 		PersonEntity person = this.personRepository.findByAgeAndGender(18, "Male");
 		if (null == person){
-			person = PersonEntity.newEntity(18, "Male");
-			this.personRepository.save(person);
+			fail("Encountered null person where we should not!");
 		}
 		ent.setPersonId(person.getId());
+		
+		DiagnosisEntity diagnosis = this.diagnosisRepository.findByIcd10("544334bg");
+		if (null == diagnosis){
+			fail("Encountered null diagnosis where we should not!");
+		}
+		ent.setDiagnosisId(diagnosis.getId());
+		
 		return ent;
 	}
 }

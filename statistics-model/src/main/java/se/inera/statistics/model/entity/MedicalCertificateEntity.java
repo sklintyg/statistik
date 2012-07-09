@@ -2,17 +2,14 @@ package se.inera.statistics.model.entity;
 
 import java.util.Date;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.persistence.ManyToOne;
 
 @Entity
 @Table
@@ -21,19 +18,13 @@ public class MedicalCertificateEntity {
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Long id;
-	
-//	@ManyToOne(cascade=CascadeType.PERSIST)
-//	@JoinColumn(name="PERSON_ID")
-//	private PersonEntity person;
+
 	@Column(nullable=false)
 	private Long personId;
-
-	//	@Column(nullable=false)
-//	private int age;
-//	
-//	@Column(nullable=false)
-//	private boolean female;
-//	
+	
+	@Column(nullable=false)
+	private Long DiagnosisId;
+	
 	@Column
 	private boolean diagnose;
 	
@@ -82,8 +73,6 @@ public class MedicalCertificateEntity {
 	
 	public static MedicalCertificateEntity newEntity(final Date startDate, final Date endDate) {
 		final MedicalCertificateEntity ent = new MedicalCertificateEntity();
-//		final PersonEntity person = PersonEntity.newEntity(age, female);
-//		ent.setPerson(person);
 
 		ent.setStartDate(startDate);
 		ent.setEndDate(endDate);
@@ -98,14 +87,6 @@ public class MedicalCertificateEntity {
 	void setId(Long id) {
 		this.id = id;
 	}
-//
-//	public PersonEntity getPerson() {
-//		return person;
-//	}
-//
-//	public void setPerson(PersonEntity person) {
-//		this.person = person;
-//	}
 	
 	public Long getPersonId() {
 		return personId;
@@ -114,22 +95,6 @@ public class MedicalCertificateEntity {
 	public void setPersonId(Long personId) {
 		this.personId = personId;
 	}
-
-//	public int getAge() {
-//		return age;
-//	}
-//
-//	void setAge(int age) {
-//		this.age = age;
-//	}
-//
-//	public boolean isFemale() {
-//		return female;
-//	}
-//
-//	void setFemale(boolean female) {
-//		this.female = female;
-//	}
 
 	public Date getEndDate() {
 		return endDate;
@@ -242,5 +207,13 @@ public class MedicalCertificateEntity {
 
 	public void setBasedOnOther(boolean basedOnOther) {
 		this.basedOnOther = basedOnOther;
+	}
+
+	public Long getDiagnosisId() {
+		return DiagnosisId;
+	}
+
+	public void setDiagnosisId(Long diagnosisId) {
+		DiagnosisId = diagnosisId;
 	}
 }

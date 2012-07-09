@@ -11,9 +11,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import se.inera.statistics.core.api.MedicalCertificateDto;
+import se.inera.statistics.core.repository.DiagnosisRepository;
 import se.inera.statistics.core.repository.MedicalCertificateRepository;
 import se.inera.statistics.core.repository.PersonRepository;
 import se.inera.statistics.core.spi.RegisterStatisticsService;
+import se.inera.statistics.model.entity.DiagnosisEntity;
 import se.inera.statistics.model.entity.MedicalCertificateEntity;
 import se.inera.statistics.model.entity.PersonEntity;
 
@@ -29,6 +31,9 @@ public class RegisterStatisticsServiceImpl implements RegisterStatisticsService 
 	@Autowired
 	private PersonRepository personRepository;
 	
+	@Autowired
+	private DiagnosisRepository diagnosisRepository;
+	
 	@Override
 	public boolean registerMedicalCertificateStatistics(
 			MedicalCertificateDto certificate) {
@@ -43,11 +48,13 @@ public class RegisterStatisticsServiceImpl implements RegisterStatisticsService 
 
 			final MedicalCertificateEntity ent = MedicalCertificateEntity.newEntity(start, end);
 			final PersonEntity person = getPerson(certificate.getAge(), certificate.isFemale());
+			final DiagnosisEntity diagnosis = getDiagnosis(certificate.getIcd10(), certificate.isDiagnose());
 			
 			ent.setPersonId(person.getId());
+			ent.setDiagnosisId(diagnosis.getId());
 			ent.setBasedOnExamination(certificate.isBasedOnExamination());
 			ent.setBasedOnTelephoneContact(certificate.isBasedOnTelephoneContact());
-			ent.setIcd10(certificate.getIcd10());
+//			ent.setIcd10(certificate.getIcd10());
 			this.certificateRepository.save(ent);
 			
 			log.info("Medical certificate statistics data successfully registered.");
@@ -65,6 +72,16 @@ public class RegisterStatisticsServiceImpl implements RegisterStatisticsService 
 			this.personRepository.save(person);
 		}
 		return person;
+	}
+	
+	private DiagnosisEntity getDiagnosis(final String Icd10, final boolean diagnose){
+		DiagnosisEntity diagnosis = this.diagnosisRepository.findByIcd10(Icd10);
+		//TODO: Understand semantics of diagnose boolean and implement strategy for creating/updating the values
+		if (null == diagnosis){
+			diagnosis = DiagnosisEntity.newEntity(Icd10, diagnose);
+			this.diagnosisRepository.save(diagnosis);
+		}
+		return diagnosis;
 	}
 	
 	private String getGender(boolean female){
