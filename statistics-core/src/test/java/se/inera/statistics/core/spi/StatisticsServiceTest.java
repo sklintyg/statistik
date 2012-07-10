@@ -21,12 +21,16 @@ import se.inera.commons.support.ServiceResult;
 import se.inera.statistics.core.api.MedicalCertificateDto;
 import se.inera.statistics.core.api.StatisticsResult;
 import se.inera.statistics.core.api.StatisticsViewRange;
+import se.inera.statistics.core.repository.CareUnitRepository;
+import se.inera.statistics.core.repository.DateRepository;
 import se.inera.statistics.core.repository.DiagnosisRepository;
 import se.inera.statistics.core.repository.MedicalCertificateRepository;
 import se.inera.statistics.core.repository.PersonRepository;
+import se.inera.statistics.model.entity.CareUnitEntity;
 import se.inera.statistics.model.entity.DiagnosisEntity;
 import se.inera.statistics.model.entity.MedicalCertificateEntity;
 import se.inera.statistics.model.entity.PersonEntity;
+import se.inera.statistics.model.entity.WorkCapability;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations="classpath:statistics-config.xml")
@@ -38,7 +42,11 @@ public class StatisticsServiceTest {
 	@Autowired 
 	private PersonRepository personRepository;	
 	@Autowired 
-	private DiagnosisRepository diagnosisRepository;
+	private DiagnosisRepository diagnosisRepository;	
+	@Autowired 
+	private DateRepository dateRepository;
+	@Autowired 
+	private CareUnitRepository careUnitRepository;
 	@Autowired 
 	private StatisticsService service;
 	
@@ -50,8 +58,8 @@ public class StatisticsServiceTest {
 		final MedicalCertificateDto cert = new MedicalCertificateDto();
 		cert.setAge(18);
 		cert.setFemale(true);
-		cert.setStartDate("1990-01-01");
-		cert.setEndDate("1991-01-01");
+		cert.setStartDate("2011-01-01");
+		cert.setEndDate("2012-01-01");
 		cert.setViewRange(StatisticsViewRange.MONTHLY.getCode());
 		
 		final ServiceResult<StatisticsResult> result = this.service.loadBySearch(cert);
@@ -65,12 +73,18 @@ public class StatisticsServiceTest {
 		final List<MedicalCertificateEntity> certs = new ArrayList<MedicalCertificateEntity>();
 		
 		final Calendar cal = Calendar.getInstance();
-		cal.set(1990, 0, 1, 0, 0, 0);
+		cal.set(2011, 0, 1, 0, 0, 0);
+		
+		this.personRepository.deleteAll();
+		this.diagnosisRepository.deleteAll();
+		this.careUnitRepository.deleteAll();
 		
 		PersonEntity person = PersonEntity.newEntity(18, "Male");
-		personRepository.save(person);
-		DiagnosisEntity diagnosis = DiagnosisEntity.newEntity("544334bg", false);
+		this.personRepository.save(person);
+		DiagnosisEntity diagnosis = DiagnosisEntity.newEntity("544334bg", false, WorkCapability.NO_WORKING_CAPABILITY);
 		this.diagnosisRepository.save(diagnosis);
+		CareUnitEntity careUnit = CareUnitEntity.newEntity("Gårda");
+		this.careUnitRepository.save(careUnit);
 		
 		for (int i = 0; i < numberOfPeriods; i++) {
 			
@@ -89,10 +103,13 @@ public class StatisticsServiceTest {
 				
 				final Date d2 = start.getTime();
 				
+				final long d1Id = this.dateRepository.findByCalendarDate(d1).getId();
+				final long d2Id = this.dateRepository.findByCalendarDate(d2).getId();
 				
-				final MedicalCertificateEntity e = MedicalCertificateEntity.newEntity(d1, d2);
+				final MedicalCertificateEntity e = MedicalCertificateEntity.newEntity(d1Id, d2Id);
 				e.setPersonId(person.getId());
 				e.setDiagnosisId(diagnosis.getId());
+				e.setCareUnitId(careUnit.getId());
 				e.setBasedOnExamination(r.nextBoolean());
 				e.setBasedOnTelephoneContact(r.nextBoolean());
 				

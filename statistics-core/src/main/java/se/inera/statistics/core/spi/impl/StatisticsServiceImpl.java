@@ -21,6 +21,7 @@ import se.inera.statistics.core.api.MedicalCertificateDto;
 import se.inera.statistics.core.api.PeriodResult;
 import se.inera.statistics.core.api.StatisticsResult;
 import se.inera.statistics.core.api.StatisticsViewRange;
+import se.inera.statistics.core.repository.DateRepository;
 import se.inera.statistics.core.repository.MedicalCertificateRepository;
 import se.inera.statistics.core.spi.StatisticsService;
 import se.inera.statistics.model.entity.MedicalCertificateEntity;
@@ -32,17 +33,20 @@ public class StatisticsServiceImpl implements StatisticsService {
 	private static final Logger log = LoggerFactory.getLogger(StatisticsServiceImpl.class);
 	
 	@Autowired
-	private MedicalCertificateRepository repo;
+	private MedicalCertificateRepository certificateRepository;
+	
+	@Autowired
+	private DateRepository dateRepository;
 	
 	@Override
 	public ServiceResult<StatisticsResult> loadBySearch(MedicalCertificateDto search) {
 		try {
 			final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-			final Date start = sdf.parse(search.getStartDate());
-			final Date end = sdf.parse(search.getEndDate());
+			final long start = this.dateRepository.findByCalendarDate(sdf.parse(search.getStartDate())).getId();
+			final long end = this.dateRepository.findByCalendarDate(sdf.parse(search.getEndDate())).getId();
 			
-			final List<MedicalCertificateEntity> total = this.repo.findCertificatesInRange(start, end);
-			final List<MedicalCertificateEntity> matches = this.repo.findBySearch(start, end, search.isBasedOnExamination(), search.isBasedOnTelephoneContact());
+			final List<MedicalCertificateEntity> total = this.certificateRepository.findCertificatesInRange(start, end);
+			final List<MedicalCertificateEntity> matches = this.certificateRepository.findBySearch(start, end, search.isBasedOnExamination(), search.isBasedOnTelephoneContact());
 			
 			/*
 			 * Slice the result
@@ -89,16 +93,18 @@ public class StatisticsServiceImpl implements StatisticsService {
 			final Calendar current = Calendar.getInstance();
 			PeriodResult currentPeriod = null;
 			final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			Date startDate;
 			
 			log.debug("Processing entity list");
 			for (MedicalCertificateEntity e: list) {
 				
 				if (currentPeriod == null) {
-					cal.setTime(e.getStartDate());					
-					currentPeriod = PeriodResult.newResult(e.getStartDate());
+					startDate = this.dateRepository.findOne(e.getStartDate()).getCalendarDate();
+					cal.setTime(startDate);					
+					currentPeriod = PeriodResult.newResult(startDate);
 				}
 				
-				current.setTime(e.getStartDate());
+				current.setTime(this.dateRepository.findOne(e.getStartDate()).getCalendarDate());
 				
 				log.debug("Comparing {} with {}", sdf.format(cal.getTime()), sdf.format(current.getTime()));
 				if (cal.get(period) == current.get(period)) {
@@ -114,8 +120,9 @@ public class StatisticsServiceImpl implements StatisticsService {
 					/*
 					 * Reset counters
 					 */
-					cal.setTime(e.getStartDate());
-					currentPeriod = PeriodResult.newResult(e.getStartDate());
+					startDate = this.dateRepository.findOne(e.getStartDate()).getCalendarDate();
+					cal.setTime(startDate);
+					currentPeriod = PeriodResult.newResult(startDate);
 					currentPeriod.increaseValue();
 				}
 			}

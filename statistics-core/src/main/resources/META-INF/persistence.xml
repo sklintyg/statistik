@@ -42,7 +42,8 @@
                 <class>se.inera.statistics.model.entity.MedicalCertificateEntity</class>
                 <class>se.inera.statistics.model.entity.PersonEntity</class>
                 <class>se.inera.statistics.model.entity.DiagnosisEntity</class>
-                
+                <class>se.inera.statistics.model.entity.DateEntity</class>
+                <class>se.inera.statistics.model.entity.CareUnitEntity</class>
         </persistence-unit>
 
 </persistence>

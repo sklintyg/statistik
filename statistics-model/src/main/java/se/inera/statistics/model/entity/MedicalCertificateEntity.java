@@ -8,8 +8,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 @Entity
 @Table
@@ -23,14 +21,11 @@ public class MedicalCertificateEntity {
 	private Long personId;
 	
 	@Column(nullable=false)
-	private Long DiagnosisId;
+	private Long diagnosisId;
 	
-	@Column
-	private boolean diagnose;
-	
-	@Column
-	private String icd10;
-	
+	@Column(nullable=false)
+	private Long careUnitId;
+
 	@Column
 	private boolean actualSicknessProcess;
 	
@@ -41,21 +36,10 @@ public class MedicalCertificateEntity {
 	private boolean limitedActivity;
 
 	@Column
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date startDate;
+	private Long startDate;
 	
 	@Column
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date endDate;
-	
-	@Column
-	private CertificateOption businessRehab;
-	
-	@Column
-	private CertificateOption abilityToReturnToPresentWork;
-	
-	@Column
-	private WorkCapability workCapability;
+	private Long endDate;
 	
 	@Column
 	private boolean basedOnExamination;
@@ -71,7 +55,7 @@ public class MedicalCertificateEntity {
 	
 	MedicalCertificateEntity() {}
 	
-	public static MedicalCertificateEntity newEntity(final Date startDate, final Date endDate) {
+	public static MedicalCertificateEntity newEntity(final Long startDate, final Long endDate) {
 		final MedicalCertificateEntity ent = new MedicalCertificateEntity();
 
 		ent.setStartDate(startDate);
@@ -96,54 +80,22 @@ public class MedicalCertificateEntity {
 		this.personId = personId;
 	}
 
-	public Date getEndDate() {
+	public Long getEndDate() {
 		return endDate;
 	}
 
-	void setEndDate(Date endDate) {
+	void setEndDate(Long endDate) {
 		this.endDate = endDate;
 	}
 
-	public boolean getDiagnose() {
-		return diagnose;
-	}
-
-	public void setDiagnose(boolean diagnose) {
-		this.diagnose = diagnose;
-	}
-
-	public Date getStartDate() {
+	public Long getStartDate() {
 		return startDate;
 	}
 
-	void setStartDate(Date startDate) {
+	void setStartDate(Long startDate) {
 		this.startDate = startDate;
 	}
 
-	public CertificateOption getBusinessRehab() {
-		return businessRehab;
-	}
-
-	public void setBusinessRehab(CertificateOption businessRehab) {
-		this.businessRehab = businessRehab;
-	}
-
-	public CertificateOption getAbilityToReturnToPresentWork() {
-		return abilityToReturnToPresentWork;
-	}
-
-	public void setAbilityToReturnToPresentWork(
-			CertificateOption abilityToReturnToPresentWork) {
-		this.abilityToReturnToPresentWork = abilityToReturnToPresentWork;
-	}
-
-	public WorkCapability getWorkCapability() {
-		return workCapability;
-	}
-
-	public void setWorkCapability(WorkCapability workCapability) {
-		this.workCapability = workCapability;
-	}
 	
 	public boolean isActualSicknessProcess() {
 		return actualSicknessProcess;
@@ -167,14 +119,6 @@ public class MedicalCertificateEntity {
 
 	public void setLimitedActivity(boolean limitedActivity) {
 		this.limitedActivity = limitedActivity;
-	}
-
-	public String getIcd10() {
-		return icd10;
-	}
-
-	public void setIcd10(String icd10) {
-		this.icd10 = icd10;
 	}
 
 	public boolean isBasedOnExamination() {
@@ -210,10 +154,18 @@ public class MedicalCertificateEntity {
 	}
 
 	public Long getDiagnosisId() {
-		return DiagnosisId;
+		return diagnosisId;
 	}
 
 	public void setDiagnosisId(Long diagnosisId) {
-		DiagnosisId = diagnosisId;
+		this.diagnosisId = diagnosisId;
+	}
+	
+	public Long getCareUnitId() {
+		return careUnitId;
+	}
+
+	public void setCareUnitId(Long careUnitId) {
+		this.careUnitId = careUnitId;
 	}
 }

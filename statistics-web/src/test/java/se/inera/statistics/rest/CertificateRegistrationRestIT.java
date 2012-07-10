@@ -45,12 +45,17 @@ public class CertificateRegistrationRestIT {
 		final RestTemplate rt = new RestTemplate(rf);
 		
 		final MedicalCertificateDto mc = new MedicalCertificateDto();
-		mc.setAge(18);
-		mc.setFemale(false);
+		mc.setAge(32);
+		mc.setFemale(true);
+		
 		mc.setStartDate("2012-02-25 10:00");
 		mc.setEndDate("2012-03-25 10:00");
+		
 		mc.setDiagnose(false);
 		mc.setIcd10("boogiesss");
+		mc.setWorkCapability(3);
+		
+		mc.setCareUnit("ateegoog");
 		
 		final ResponseEntity<Boolean> responseEntity = rt.postForEntity(new URI(url), mc, Boolean.class);
 		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());

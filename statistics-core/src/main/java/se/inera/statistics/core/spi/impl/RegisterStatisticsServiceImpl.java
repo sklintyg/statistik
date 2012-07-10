@@ -11,13 +11,18 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import se.inera.statistics.core.api.MedicalCertificateDto;
+import se.inera.statistics.core.repository.CareUnitRepository;
+import se.inera.statistics.core.repository.DateRepository;
 import se.inera.statistics.core.repository.DiagnosisRepository;
 import se.inera.statistics.core.repository.MedicalCertificateRepository;
 import se.inera.statistics.core.repository.PersonRepository;
 import se.inera.statistics.core.spi.RegisterStatisticsService;
+import se.inera.statistics.model.entity.CareUnitEntity;
+import se.inera.statistics.model.entity.DateEntity;
 import se.inera.statistics.model.entity.DiagnosisEntity;
 import se.inera.statistics.model.entity.MedicalCertificateEntity;
 import se.inera.statistics.model.entity.PersonEntity;
+import se.inera.statistics.model.entity.WorkCapability;
 
 @Service
 @Transactional
@@ -29,29 +34,38 @@ public class RegisterStatisticsServiceImpl implements RegisterStatisticsService 
 	private MedicalCertificateRepository certificateRepository;
 
 	@Autowired
-	private PersonRepository personRepository;
+	private PersonRepository personRepository;	
+	
+	@Autowired
+	private DateRepository dateRepository;
 	
 	@Autowired
 	private DiagnosisRepository diagnosisRepository;
+	
+	@Autowired
+	private CareUnitRepository careUnitRepository;
 	
 	@Override
 	public boolean registerMedicalCertificateStatistics(
 			MedicalCertificateDto certificate) {
 		
-		//final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-		final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-		
 		try {
-			final Date start = sdf.parse(certificate.getStartDate());
-			final Date end = sdf.parse(certificate.getEndDate());
+			final DateEntity startDate = getDateEntity(certificate.getStartDate());
+			final DateEntity endDate = getDateEntity(certificate.getEndDate());
 			
-
-			final MedicalCertificateEntity ent = MedicalCertificateEntity.newEntity(start, end);
+			final MedicalCertificateEntity ent = MedicalCertificateEntity.newEntity(startDate.getId(), endDate.getId());
 			final PersonEntity person = getPerson(certificate.getAge(), certificate.isFemale());
-			final DiagnosisEntity diagnosis = getDiagnosis(certificate.getIcd10(), certificate.isDiagnose());
+			final DiagnosisEntity diagnosis = getDiagnosis(certificate.getIcd10(), certificate.isDiagnose(), certificate.getWorkCapability());
+			
+			if (certificate.getCareUnit() == null) {
+				throw new NullPointerException("Care unit name is null.");
+			}
+			
+			final CareUnitEntity careUnit = getCareUnit(certificate.getCareUnit());
 			
 			ent.setPersonId(person.getId());
 			ent.setDiagnosisId(diagnosis.getId());
+			ent.setCareUnitId(careUnit.getId());
 			ent.setBasedOnExamination(certificate.isBasedOnExamination());
 			ent.setBasedOnTelephoneContact(certificate.isBasedOnTelephoneContact());
 //			ent.setIcd10(certificate.getIcd10());
@@ -74,14 +88,35 @@ public class RegisterStatisticsServiceImpl implements RegisterStatisticsService 
 		return person;
 	}
 	
-	private DiagnosisEntity getDiagnosis(final String Icd10, final boolean diagnose){
-		DiagnosisEntity diagnosis = this.diagnosisRepository.findByIcd10(Icd10);
+	private DiagnosisEntity getDiagnosis(final String Icd10, final boolean diagnose, final int workCapabilityInteger){
+		WorkCapability workCapability = WorkCapability.fromInteger(workCapabilityInteger);
+		DiagnosisEntity diagnosis = this.diagnosisRepository.findByIcd10AndWorkCapability(Icd10, workCapability);
 		//TODO: Understand semantics of diagnose boolean and implement strategy for creating/updating the values
 		if (null == diagnosis){
-			diagnosis = DiagnosisEntity.newEntity(Icd10, diagnose);
+			diagnosis = DiagnosisEntity.newEntity(Icd10, diagnose, workCapability);
 			this.diagnosisRepository.save(diagnosis);
 		}
 		return diagnosis;
+	}
+	
+	private DateEntity getDateEntity(final String dateString) throws ParseException{
+		final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		final Date calendarDate = sdf.parse(dateString);
+		
+		DateEntity dateEntity = this.dateRepository.findByCalendarDate(calendarDate);
+		if (null == dateEntity){
+			throw new IllegalArgumentException("Cannot find date Id for date " + calendarDate.toString() + ".");
+		}
+		return dateEntity;
+	}
+	
+	private CareUnitEntity getCareUnit(final String name){
+		CareUnitEntity careUnit = this.careUnitRepository.findByName(name);
+		if (null == careUnit){
+			careUnit = CareUnitEntity.newEntity(name);
+			this.careUnitRepository.save(careUnit);
+		}
+		return careUnit;
 	}
 	
 	private String getGender(boolean female){

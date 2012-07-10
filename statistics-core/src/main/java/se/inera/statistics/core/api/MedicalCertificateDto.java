@@ -1,15 +1,12 @@
 package se.inera.statistics.core.api;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.List;
-
-import se.inera.statistics.model.entity.MedicalCertificateEntity;
-
 
 public class MedicalCertificateDto {
 	private int viewRange;
 	private int age;
+	private int workCapability;
+	private String careUnit;
+
 	private boolean female;
 	private boolean diagnose;
 	
@@ -123,5 +120,21 @@ public class MedicalCertificateDto {
 
 	public void setViewRange(int viewRange) {
 		this.viewRange = viewRange;
+	}
+	
+	public int getWorkCapability() {
+		return workCapability;
+	}
+
+	public void setWorkCapability(int workCapability) {
+		this.workCapability = workCapability;
+	}
+	
+	public String getCareUnit() {
+		return careUnit;
+	}
+
+	public void setCareUnit(String careUnit) {
+		this.careUnit = careUnit;
 	}
 }

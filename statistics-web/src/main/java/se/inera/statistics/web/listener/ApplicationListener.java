@@ -17,8 +17,6 @@
 package se.inera.statistics.web.listener;
 
 import java.util.Calendar;
-import java.util.Date;
-
 import javax.servlet.ServletContextEvent;
 
 import org.slf4j.Logger;
@@ -27,12 +25,17 @@ import org.springframework.web.context.ContextLoaderListener;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
+import se.inera.statistics.core.repository.CareUnitRepository;
+import se.inera.statistics.core.repository.DateRepository;
 import se.inera.statistics.core.repository.DiagnosisRepository;
 import se.inera.statistics.core.repository.MedicalCertificateRepository;
 import se.inera.statistics.core.repository.PersonRepository;
+import se.inera.statistics.model.entity.CareUnitEntity;
+import se.inera.statistics.model.entity.DateEntity;
 import se.inera.statistics.model.entity.DiagnosisEntity;
 import se.inera.statistics.model.entity.MedicalCertificateEntity;
 import se.inera.statistics.model.entity.PersonEntity;
+import se.inera.statistics.model.entity.WorkCapability;
 
 /**
  * Called when Spring initialize, destroys, or refreshes the application
@@ -52,28 +55,40 @@ public class ApplicationListener extends ContextLoaderListener {
 		final MedicalCertificateRepository repo = wc.getBean(MedicalCertificateRepository.class);
 		final PersonRepository personRepository = wc.getBean(PersonRepository.class);
 		final DiagnosisRepository diagnosisRepository = wc.getBean(DiagnosisRepository.class);
-
+		final DateRepository dateRepository = wc.getBean(DateRepository.class);
+		final CareUnitRepository careUnitRepository = wc.getBean(CareUnitRepository.class);
+		repo.deleteAll();
+		personRepository.deleteAll();
+		diagnosisRepository.deleteAll();
+		careUnitRepository.deleteAll();
 		
 		final Calendar c = Calendar.getInstance();
 		c.set(Calendar.YEAR, 2012);
 		c.set(Calendar.MONTH, 1);
 		c.set(Calendar.DAY_OF_MONTH, 15);
 		
-		final Date start = c.getTime();
+		DateEntity dateEntity = dateRepository.findByCalendarDate(c.getTime());
+		if (null == dateEntity){
+			throw new NullPointerException("Date entity is found to be null when it should not. Calendar value is " + c.getTime());
+		}
+		final long start = dateEntity.getId();
 		
 		c.roll(Calendar.MONTH, true);
 		
-		final Date end = c.getTime();
+		final long end = dateRepository.findByCalendarDate(c.getTime()).getId();
 		
 		//TODO: Are we just generating sample data ?
-		final MedicalCertificateEntity entity = MedicalCertificateEntity.newEntity( start, end);
+		final MedicalCertificateEntity entity = MedicalCertificateEntity.newEntity(start, end);
 		final PersonEntity person = PersonEntity.newEntity(18, "Male");
 		personRepository.save(person);
-		final DiagnosisEntity diagnosis = DiagnosisEntity.newEntity("544334bg", false);
+		final DiagnosisEntity diagnosis = DiagnosisEntity.newEntity("544334bg", false, WorkCapability.fromInteger(1));
 		diagnosisRepository.save(diagnosis);
+		final CareUnitEntity careUnit = CareUnitEntity.newEntity("Nyköping");
+		careUnitRepository.save(careUnit);
 		
 		entity.setPersonId(person.getId());
 		entity.setDiagnosisId(diagnosis.getId());
+		entity.setCareUnitId(careUnit.getId());
 		for (int i = 0; i < 100; i++) {
 			log.debug("Creating certificate: " + (i+1));
 			repo.save(entity);

@@ -21,12 +21,17 @@ public class DiagnosisEntity {
 	@Column(nullable=false)
 	private boolean diagnose;
 	
+	@Column(nullable=false)
+	private WorkCapability workCapability;
+	//TODO: May be default to full working capability?
+	
 	DiagnosisEntity(){}
 	
-	public static DiagnosisEntity newEntity(final String Icd10, final boolean diagnose) {
+	public static DiagnosisEntity newEntity(final String Icd10, final boolean diagnose, final WorkCapability workCapability) {
 		final DiagnosisEntity diagnosis = new DiagnosisEntity();
 		diagnosis.setIcd10(Icd10);
 		diagnosis.setDiagnose(diagnose);
+		diagnosis.setWorkCapability(workCapability);
 		
 		return diagnosis;
 	}
@@ -53,5 +58,13 @@ public class DiagnosisEntity {
 
 	public void setDiagnose(boolean diagnose) {
 		this.diagnose = diagnose;
+	}
+	
+	public WorkCapability getWorkCapability() {
+		return workCapability;
+	}
+
+	public void setWorkCapability(WorkCapability workCapability) {
+		this.workCapability = workCapability;
 	}
 }

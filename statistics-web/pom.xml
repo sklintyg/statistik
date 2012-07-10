@@ -109,7 +109,7 @@
 							<systemProperties>
 								<systemProperty>
 									<name>spring.profiles.active</name>
-									<value>test,db-embedded</value>
+									<value>test,db-psql</value>
 								</systemProperty>
 							</systemProperties>
 						</configuration>
