@@ -92,6 +92,8 @@ public class MedicalCertificateRepositoryTest {
 		
 		ent.setDiagnosisId(diagnosis.getId());
 		ent.setCareUnitId(careUnit.getId());
+		ent.setBasedOnExamination(Boolean.FALSE);
+		ent.setBasedOnTelephoneContact(Boolean.TRUE);
 		return ent;
 	}
 }

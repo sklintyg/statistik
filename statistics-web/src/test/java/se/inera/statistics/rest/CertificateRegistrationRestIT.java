@@ -51,9 +51,12 @@ public class CertificateRegistrationRestIT {
 		mc.setStartDate("2012-02-25 10:00");
 		mc.setEndDate("2012-03-25 10:00");
 		
-		mc.setDiagnose(false);
+		mc.setBasedOnExamination(Boolean.FALSE);
+		mc.setBasedOnTelephoneContact(Boolean.TRUE);
+		
+		mc.setDiagnose(Boolean.FALSE);
 		mc.setIcd10("boogiesss");
-		mc.setWorkCapability(3);
+		mc.setworkDisability(25);
 		
 		mc.setCareUnit("ateegoog");
 		

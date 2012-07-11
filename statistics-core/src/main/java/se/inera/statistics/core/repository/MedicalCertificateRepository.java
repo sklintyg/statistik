@@ -18,8 +18,8 @@ public interface MedicalCertificateRepository extends JpaRepository<MedicalCerti
 	List<MedicalCertificateEntity> findBySearch(
 			@Param("startDate") final long start,
 			@Param("endDate") final long end,
-			@Param("basedOnExamination") final boolean basedOnExamination,
-			@Param("basedOnTelephoneContact") final boolean basedOnTelephoneContact);
+			@Param("basedOnExamination") final Boolean basedOnExamination,
+			@Param("basedOnTelephoneContact") final Boolean basedOnTelephoneContact);
 	
 	@Query("select e from MedicalCertificateEntity as e where " +
 			"(e.startDate >= :startDate and e.endDate <= :endDate) order by e.startDate asc")

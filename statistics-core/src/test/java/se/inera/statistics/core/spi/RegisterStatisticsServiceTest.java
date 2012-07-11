@@ -81,6 +81,9 @@ public class RegisterStatisticsServiceTest {
 		assertEquals(true, diagnosis.isDiagnose());
 		assertEquals(WorkCapability.THREE_QUARTER_WORKING_CAPABILITY, diagnosis.getWorkCapability());
 		assertEquals("Torslanda", careUnit.getName());
+		
+		assertEquals(Boolean.TRUE, certificate.getBasedOnExamination());
+		assertEquals(Boolean.FALSE, certificate.getBasedOnTelephoneContact());
 	}
 	
 	private MedicalCertificateDto generateCertificate(){
@@ -94,8 +97,11 @@ public class RegisterStatisticsServiceTest {
 		cert.setEndDate(endDateString);
 		cert.setDiagnose(true);
 		cert.setIcd10("879444-22");
-		cert.setWorkCapability(3);
+		cert.setworkDisability(25);
 		cert.setCareUnit("Torslanda");
+		
+		cert.setBasedOnExamination(Boolean.TRUE);
+		cert.setBasedOnTelephoneContact(Boolean.FALSE);
 //			cert.setViewRange(StatisticsViewRange.MONTHLY.getCode());
 		return cert;
 	}

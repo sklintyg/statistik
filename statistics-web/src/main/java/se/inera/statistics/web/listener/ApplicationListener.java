@@ -81,7 +81,7 @@ public class ApplicationListener extends ContextLoaderListener {
 		final MedicalCertificateEntity entity = MedicalCertificateEntity.newEntity(start, end);
 		final PersonEntity person = PersonEntity.newEntity(18, "Male");
 		personRepository.save(person);
-		final DiagnosisEntity diagnosis = DiagnosisEntity.newEntity("544334bg", false, WorkCapability.fromInteger(1));
+		final DiagnosisEntity diagnosis = DiagnosisEntity.newEntity("544334bg", false, WorkCapability.fromWorkDisabilityPercentage(50));
 		diagnosisRepository.save(diagnosis);
 		final CareUnitEntity careUnit = CareUnitEntity.newEntity("Nyköping");
 		careUnitRepository.save(careUnit);
@@ -89,6 +89,9 @@ public class ApplicationListener extends ContextLoaderListener {
 		entity.setPersonId(person.getId());
 		entity.setDiagnosisId(diagnosis.getId());
 		entity.setCareUnitId(careUnit.getId());
+		
+		entity.setBasedOnExamination(Boolean.FALSE);
+		entity.setBasedOnTelephoneContact(Boolean.TRUE);
 		for (int i = 0; i < 100; i++) {
 			log.debug("Creating certificate: " + (i+1));
 			repo.save(entity);

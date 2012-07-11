@@ -1,7 +1,5 @@
 package se.inera.statistics.model.entity;
 
-import java.util.Date;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -26,32 +24,32 @@ public class MedicalCertificateEntity {
 	@Column(nullable=false)
 	private Long careUnitId;
 
-	@Column
-	private boolean actualSicknessProcess;
+//	@Column
+//	private boolean actualSicknessProcess;
 	
-	@Column
-	private boolean examinationResults;
+//	@Column
+//	private boolean examinationResults;
 	
-	@Column
-	private boolean limitedActivity;
+//	@Column
+//	private boolean limitedActivity;
 
-	@Column
+	@Column(nullable=false)
 	private Long startDate;
 	
-	@Column
+	@Column(nullable=false)
 	private Long endDate;
 	
-	@Column
-	private boolean basedOnExamination;
+	@Column(nullable=false)
+	private Boolean basedOnExamination;
 	
-	@Column
-	private boolean basedOnTelephoneContact;
+	@Column(nullable=false)
+	private Boolean basedOnTelephoneContact;
 	
-	@Column
-	private boolean basedOnJournal;
+//	@Column
+//	private boolean basedOnJournal;
 	
-	@Column
-	private boolean basedOnOther;
+//	@Column
+//	private boolean basedOnOther;
 	
 	MedicalCertificateEntity() {}
 	
@@ -97,61 +95,61 @@ public class MedicalCertificateEntity {
 	}
 
 	
-	public boolean isActualSicknessProcess() {
-		return actualSicknessProcess;
-	}
+//	public boolean isActualSicknessProcess() {
+//		return actualSicknessProcess;
+//	}
+//
+//	public void setActualSicknessProcess(boolean actualSicknessProcess) {
+//		this.actualSicknessProcess = actualSicknessProcess;
+//	}
+//
+//	public boolean isExaminationResults() {
+//		return examinationResults;
+//	}
+//
+//	public void setExaminationResults(boolean examinationResults) {
+//		this.examinationResults = examinationResults;
+//	}
+//
+//	public boolean isLimitedActivity() {
+//		return limitedActivity;
+//	}
+//
+//	public void setLimitedActivity(boolean limitedActivity) {
+//		this.limitedActivity = limitedActivity;
+//	}
 
-	public void setActualSicknessProcess(boolean actualSicknessProcess) {
-		this.actualSicknessProcess = actualSicknessProcess;
-	}
-
-	public boolean isExaminationResults() {
-		return examinationResults;
-	}
-
-	public void setExaminationResults(boolean examinationResults) {
-		this.examinationResults = examinationResults;
-	}
-
-	public boolean isLimitedActivity() {
-		return limitedActivity;
-	}
-
-	public void setLimitedActivity(boolean limitedActivity) {
-		this.limitedActivity = limitedActivity;
-	}
-
-	public boolean isBasedOnExamination() {
+	public Boolean getBasedOnExamination() {
 		return basedOnExamination;
 	}
 
-	public void setBasedOnExamination(boolean basedOnExamination) {
+	public void setBasedOnExamination(Boolean basedOnExamination) {
 		this.basedOnExamination = basedOnExamination;
 	}
 
-	public boolean isBasedOnTelephoneContact() {
+	public boolean getBasedOnTelephoneContact() {
 		return basedOnTelephoneContact;
 	}
 
-	public void setBasedOnTelephoneContact(boolean basedOnTelephoneContact) {
+	public void setBasedOnTelephoneContact(Boolean basedOnTelephoneContact) {
 		this.basedOnTelephoneContact = basedOnTelephoneContact;
 	}
 
-	public boolean isBasedOnJournal() {
-		return basedOnJournal;
-	}
-
-	public void setBasedOnJournal(boolean basedOnJournal) {
-		this.basedOnJournal = basedOnJournal;
-	}
-
-	public boolean isBasedOnOther() {
-		return basedOnOther;
-	}
-
-	public void setBasedOnOther(boolean basedOnOther) {
-		this.basedOnOther = basedOnOther;
-	}
+//	public boolean isBasedOnJournal() {
+//		return basedOnJournal;
+//	}
+//
+//	public void setBasedOnJournal(boolean basedOnJournal) {
+//		this.basedOnJournal = basedOnJournal;
+//	}
+//
+//	public boolean isBasedOnOther() {
+//		return basedOnOther;
+//	}
+//
+//	public void setBasedOnOther(boolean basedOnOther) {
+//		this.basedOnOther = basedOnOther;
+//	}
 
 	public Long getDiagnosisId() {
 		return diagnosisId;

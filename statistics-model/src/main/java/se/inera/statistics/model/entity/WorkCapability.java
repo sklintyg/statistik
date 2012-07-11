@@ -20,19 +20,20 @@ public enum WorkCapability {
 		return this.code;
 	}
 	
-	public static WorkCapability fromInteger(int capability){
-		switch(capability) {
-		case 0:
+	public static WorkCapability fromWorkDisabilityPercentage(Integer workingDisabilityPercentage){
+		switch(workingDisabilityPercentage) {
+		case 100:
 			return WorkCapability.NO_WORKING_CAPABILITY;
-		case 1:
+		case 75:
 			return WorkCapability.ONE_QUARTER_WORKING_CAPABILITY;
-		case 2:
+		case 50:
 			return WorkCapability.HALF_WORKING_CAPABILITY;
-		case 3:
+		case 25:
 			return WorkCapability.THREE_QUARTER_WORKING_CAPABILITY;
-		case 4:
+		case 0:
 			return WorkCapability.FULL_WORKING_CAPABILITY;
 		}
-		throw new InvalidParameterException("Work capability is out of range. " + capability + " is not a valid capability integer.");
+		throw new InvalidParameterException("Work capability is out of range. " + workingDisabilityPercentage + " is not a valid percentage. Values allowed are," +
+				" 0, 25, 50, 75, 100");
 	}
 }

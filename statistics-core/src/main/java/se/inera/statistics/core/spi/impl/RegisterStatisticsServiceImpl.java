@@ -54,8 +54,8 @@ public class RegisterStatisticsServiceImpl implements RegisterStatisticsService 
 			final DateEntity endDate = getDateEntity(certificate.getEndDate());
 			
 			final MedicalCertificateEntity ent = MedicalCertificateEntity.newEntity(startDate.getId(), endDate.getId());
-			final PersonEntity person = getPerson(certificate.getAge(), certificate.isFemale());
-			final DiagnosisEntity diagnosis = getDiagnosis(certificate.getIcd10(), certificate.isDiagnose(), certificate.getWorkCapability());
+			final PersonEntity person = getPerson(certificate.getAge(), certificate.getFemale());
+			final DiagnosisEntity diagnosis = getDiagnosis(certificate.getIcd10(), certificate.getDiagnose(), certificate.getworkDisability());
 			
 			if (certificate.getCareUnit() == null) {
 				throw new NullPointerException("Care unit name is null.");
@@ -66,9 +66,8 @@ public class RegisterStatisticsServiceImpl implements RegisterStatisticsService 
 			ent.setPersonId(person.getId());
 			ent.setDiagnosisId(diagnosis.getId());
 			ent.setCareUnitId(careUnit.getId());
-			ent.setBasedOnExamination(certificate.isBasedOnExamination());
-			ent.setBasedOnTelephoneContact(certificate.isBasedOnTelephoneContact());
-//			ent.setIcd10(certificate.getIcd10());
+			ent.setBasedOnExamination(certificate.getBasedOnExamination());
+			ent.setBasedOnTelephoneContact(certificate.getBasedOnTelephoneContact());
 			this.certificateRepository.save(ent);
 			
 			log.info("Medical certificate statistics data successfully registered.");
@@ -88,8 +87,8 @@ public class RegisterStatisticsServiceImpl implements RegisterStatisticsService 
 		return person;
 	}
 	
-	private DiagnosisEntity getDiagnosis(final String Icd10, final boolean diagnose, final int workCapabilityInteger){
-		WorkCapability workCapability = WorkCapability.fromInteger(workCapabilityInteger);
+	private DiagnosisEntity getDiagnosis(final String Icd10, final boolean diagnose, final int workDisability){
+		WorkCapability workCapability = WorkCapability.fromWorkDisabilityPercentage(workDisability);
 		DiagnosisEntity diagnosis = this.diagnosisRepository.findByIcd10AndWorkCapability(Icd10, workCapability);
 		//TODO: Understand semantics of diagnose boolean and implement strategy for creating/updating the values
 		if (null == diagnosis){

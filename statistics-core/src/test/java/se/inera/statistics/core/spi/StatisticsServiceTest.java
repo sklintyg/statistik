@@ -60,6 +60,9 @@ public class StatisticsServiceTest {
 		cert.setFemale(true);
 		cert.setStartDate("2011-01-01");
 		cert.setEndDate("2012-01-01");
+		cert.setDiagnose(true);
+		cert.setBasedOnExamination(false);
+		cert.setBasedOnTelephoneContact(true);
 		cert.setViewRange(StatisticsViewRange.MONTHLY.getCode());
 		
 		final ServiceResult<StatisticsResult> result = this.service.loadBySearch(cert);

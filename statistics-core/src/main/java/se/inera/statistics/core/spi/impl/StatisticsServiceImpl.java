@@ -46,7 +46,7 @@ public class StatisticsServiceImpl implements StatisticsService {
 			final long end = this.dateRepository.findByCalendarDate(sdf.parse(search.getEndDate())).getId();
 			
 			final List<MedicalCertificateEntity> total = this.certificateRepository.findCertificatesInRange(start, end);
-			final List<MedicalCertificateEntity> matches = this.certificateRepository.findBySearch(start, end, search.isBasedOnExamination(), search.isBasedOnTelephoneContact());
+			final List<MedicalCertificateEntity> matches = this.certificateRepository.findBySearch(start, end, search.getBasedOnExamination(), search.getBasedOnTelephoneContact());
 			
 			/*
 			 * Slice the result
