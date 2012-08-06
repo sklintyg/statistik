@@ -17,7 +17,7 @@ public class DateEntity {
 	}
 	
 	@Id
-	private Long id;
+	private long id;
 
 	@Column(nullable=false)
 	@Temporal(TemporalType.DATE)
@@ -31,7 +31,7 @@ public class DateEntity {
 	@Column
 	private int calendarMonth;
 	
-	@SuppressWarnings("unused")
+//	@SuppressWarnings("unused")
 	@Column
 	private String monthName;
 	
@@ -63,7 +63,7 @@ public class DateEntity {
 	@Column
 	private String yearQuartal;
 	
-	@SuppressWarnings("unused")
+//	@SuppressWarnings("unused")
 	@Column
 	private String yearMonth;
 	
@@ -85,22 +85,23 @@ public class DateEntity {
 	@Temporal(TemporalType.DATE)
 	private Date currentWeekEnd;
 
-	@SuppressWarnings("unused")
+//	@SuppressWarnings("unused")
 	@Column
 	@Temporal(TemporalType.DATE)
 	private Date monthStart;
 	
-	@SuppressWarnings("unused")
+//	@SuppressWarnings("unused")
 	@Column
 	@Temporal(TemporalType.DATE)
 	private Date monthEnd;
 
-	public Long getId() {
+	public long getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(long id) {
 		this.id = id;
+		
 	}
 
 	public Date getCalendarDate() {
@@ -109,5 +110,21 @@ public class DateEntity {
 
 	public void setCalendarDate(Date calendarDate) {
 		this.calendarDate = calendarDate;
+	}
+
+	public Date getMonthStart() {
+		return monthStart;
+	}
+
+	public Date getMonthEnd() {
+		return monthEnd;
+	}
+
+	public String getMonthName() {
+		return monthName;
+	}
+
+	public String getYearMonth() {
+		return yearMonth;
 	}
 }

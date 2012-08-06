@@ -24,4 +24,22 @@ public class StatisticsApi {
 	public ServiceResult<StatisticsResult> loadStatisticsFromSearch(@RequestBody final MedicalCertificateDto criterias) {
 		return this.service.loadBySearch(criterias);
 	}
+	
+	@RequestMapping(value="/duration", method=RequestMethod.POST, consumes="application/json", produces="application/json")
+	@ResponseBody
+	public ServiceResult<StatisticsResult> loadDurationStatistics(@RequestBody final MedicalCertificateDto criterias) {
+		return this.service.loadStatisticsByDuration(criterias);
+	}
+	
+	@RequestMapping(value="/monthwise", method=RequestMethod.POST, consumes="application/json", produces="application/json")
+	@ResponseBody
+	public ServiceResult<StatisticsResult> loadMonthwiseStatistics(@RequestBody final MedicalCertificateDto criterias) {
+		return this.service.loadStatisticsByMonth(criterias);
+	}
+	
+	@RequestMapping(value="/careunit", method=RequestMethod.POST, consumes="application/json", produces="application/json")
+	@ResponseBody
+	public ServiceResult<StatisticsResult> loadCareUnitStatistics(@RequestBody final MedicalCertificateDto criterias) {
+		return this.service.loadStatisticsByCareUnit(criterias);
+	}
 }

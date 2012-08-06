@@ -16,7 +16,12 @@
  */
 package se.inera.statistics.web.listener;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+import java.util.Random;
+
 import javax.servlet.ServletContextEvent;
 
 import org.slf4j.Logger;
@@ -31,7 +36,6 @@ import se.inera.statistics.core.repository.DiagnosisRepository;
 import se.inera.statistics.core.repository.MedicalCertificateRepository;
 import se.inera.statistics.core.repository.PersonRepository;
 import se.inera.statistics.model.entity.CareUnitEntity;
-import se.inera.statistics.model.entity.DateEntity;
 import se.inera.statistics.model.entity.DiagnosisEntity;
 import se.inera.statistics.model.entity.MedicalCertificateEntity;
 import se.inera.statistics.model.entity.PersonEntity;
@@ -51,53 +55,82 @@ public class ApplicationListener extends ContextLoaderListener {
 	public void contextInitialized(ServletContextEvent event) {
 		super.contextInitialized(event);
 		
+		this.setupInitialData(event, 10, 100, Calendar.MONTH);
+		
+		log.info("==== INERA STATISTICS SERVICE STARTED ====");
+	}
+	
+	private void setupInitialData(ServletContextEvent event, final int numberOfPeriods, final int certificatesPerPeriod, final int period) {
 		final WebApplicationContext wc = WebApplicationContextUtils.getWebApplicationContext(event.getServletContext());
-		final MedicalCertificateRepository repo = wc.getBean(MedicalCertificateRepository.class);
+		final MedicalCertificateRepository certificateRepository = wc.getBean(MedicalCertificateRepository.class);
 		final PersonRepository personRepository = wc.getBean(PersonRepository.class);
 		final DiagnosisRepository diagnosisRepository = wc.getBean(DiagnosisRepository.class);
 		final DateRepository dateRepository = wc.getBean(DateRepository.class);
 		final CareUnitRepository careUnitRepository = wc.getBean(CareUnitRepository.class);
-		repo.deleteAll();
+		certificateRepository.deleteAll();
 		personRepository.deleteAll();
 		diagnosisRepository.deleteAll();
 		careUnitRepository.deleteAll();
 		
-		final Calendar c = Calendar.getInstance();
-		c.set(Calendar.YEAR, 2012);
-		c.set(Calendar.MONTH, 1);
-		c.set(Calendar.DAY_OF_MONTH, 15);
+		final List<MedicalCertificateEntity> certs = new ArrayList<MedicalCertificateEntity>();
 		
-		DateEntity dateEntity = dateRepository.findByCalendarDate(c.getTime());
-		if (null == dateEntity){
-			throw new NullPointerException("Date entity is found to be null when it should not. Calendar value is " + c.getTime());
-		}
-		final long start = dateEntity.getId();
+		final Calendar cal = Calendar.getInstance();
+		cal.set(2012, 0, 1, 0, 0, 0);
 		
-		c.roll(Calendar.MONTH, true);
 		
-		final long end = dateRepository.findByCalendarDate(c.getTime()).getId();
-		
-		//TODO: Are we just generating sample data ?
-		final MedicalCertificateEntity entity = MedicalCertificateEntity.newEntity(start, end);
-		final PersonEntity person = PersonEntity.newEntity(18, "Male");
-		personRepository.save(person);
-		final DiagnosisEntity diagnosis = DiagnosisEntity.newEntity("544334bg", false, WorkCapability.fromWorkDisabilityPercentage(50));
+		DiagnosisEntity diagnosis = DiagnosisEntity.newEntity("544334bg", false, WorkCapability.NO_WORKING_CAPABILITY);
 		diagnosisRepository.save(diagnosis);
-		final CareUnitEntity careUnit = CareUnitEntity.newEntity("Nyköping");
-		careUnitRepository.save(careUnit);
+		CareUnitEntity careUnit1 = CareUnitEntity.newEntity("Gårda");
+		careUnitRepository.save(careUnit1);
+		CareUnitEntity careUnit2 = CareUnitEntity.newEntity("Askim");
+		careUnitRepository.save(careUnit2);
 		
-		entity.setPersonId(person.getId());
-		entity.setDiagnosisId(diagnosis.getId());
-		entity.setCareUnitId(careUnit.getId());
-		
-		entity.setBasedOnExamination(Boolean.FALSE);
-		entity.setBasedOnTelephoneContact(Boolean.TRUE);
-		for (int i = 0; i < 100; i++) {
-			log.debug("Creating certificate: " + (i+1));
-			repo.save(entity);
+		for (int i = 0; i < numberOfPeriods; i++) {
+			
+			final Random r = new Random();
+			for (int j = 0; j < certificatesPerPeriod; j++) {
+				
+				//int age = r.nextInt(60) + 10;
+				//boolean female = r.nextBoolean();
+				int day = r.nextInt(27) + 1;
+				
+				final Calendar start = Calendar.getInstance();
+				start.set(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), day);
+				
+				final Date d1 = start.getTime();
+//				start.roll(Calendar.DAY_OF_YEAR, true);
+				start.add(Calendar.DAY_OF_YEAR, r.nextInt(130));
+				
+				final Date d2 = start.getTime();
+				
+				final long d1Id = dateRepository.findByCalendarDate(d1).getId();
+				final long d2Id = dateRepository.findByCalendarDate(d2).getId();
+
+				final int age = r.nextInt(80);
+				final String gender = r.nextBoolean() ? "Male" : "Female";
+				PersonEntity person = personRepository.findByAgeAndGender(age, gender);
+				if (null == person){
+					person = PersonEntity.newEntity(age, gender);
+					personRepository.save(person);
+				}
+				
+				final MedicalCertificateEntity e = MedicalCertificateEntity.newEntity(d1Id, d2Id);
+				e.setPersonId(person.getId());
+				e.setDiagnosisId(diagnosis.getId());
+				e.setCareUnitId(r.nextBoolean() ? careUnit1.getId() : careUnit2.getId());
+				e.setBasedOnExamination(false);
+				e.setBasedOnTelephoneContact(false);
+
+//				e.setBasedOnExamination(r.nextBoolean());
+//				e.setBasedOnTelephoneContact(r.nextBoolean());
+//				
+				certs.add(e);
+			}
+			
+			cal.roll(period, true);
 		}
 		
-		log.info("==== INERA STATISTICS SERVICE STARTED ====");
+		certificateRepository.save(certs);
 	}
 	
 	@Override

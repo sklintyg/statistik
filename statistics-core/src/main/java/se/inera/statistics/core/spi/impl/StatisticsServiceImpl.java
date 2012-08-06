@@ -4,8 +4,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,13 +18,14 @@ import se.inera.commons.support.ServiceResult;
 import se.inera.commons.support.impl.DefaultServiceMessage;
 import se.inera.commons.support.impl.ServiceResultImpl;
 import se.inera.statistics.core.api.MedicalCertificateDto;
-import se.inera.statistics.core.api.PeriodResult;
+import se.inera.statistics.core.api.RowResult;
 import se.inera.statistics.core.api.StatisticsResult;
-import se.inera.statistics.core.api.StatisticsViewRange;
+import se.inera.statistics.core.repository.CareUnitRepository;
 import se.inera.statistics.core.repository.DateRepository;
 import se.inera.statistics.core.repository.MedicalCertificateRepository;
 import se.inera.statistics.core.spi.StatisticsService;
-import se.inera.statistics.model.entity.MedicalCertificateEntity;
+import se.inera.statistics.model.entity.CareUnitEntity;
+import se.inera.statistics.model.entity.DateEntity;
 
 @Service
 @Transactional
@@ -36,141 +37,206 @@ public class StatisticsServiceImpl implements StatisticsService {
 	private MedicalCertificateRepository certificateRepository;
 	
 	@Autowired
-	private DateRepository dateRepository;
+	private DateRepository dateRepository;	
+	
+	@Autowired
+	private CareUnitRepository careUnitRepository;
 	
 	@Override
-	public ServiceResult<StatisticsResult> loadBySearch(MedicalCertificateDto search) {
+	public ServiceResult<StatisticsResult> loadStatisticsByDuration(final MedicalCertificateDto search) {
 		try {
-			final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-			final long start = this.dateRepository.findByCalendarDate(sdf.parse(search.getStartDate())).getId();
-			final long end = this.dateRepository.findByCalendarDate(sdf.parse(search.getEndDate())).getId();
+			final SimpleDateFormat sdf = new SimpleDateFormat("MMM yy", new Locale("sv"));
 			
-			final List<MedicalCertificateEntity> total = this.certificateRepository.findCertificatesInRange(start, end);
-			final List<MedicalCertificateEntity> matches = this.certificateRepository.findBySearch(start, end, search.getBasedOnExamination(), search.getBasedOnTelephoneContact());
+			final DateEntity startDate = this.dateRepository.findByCalendarDate(sdf.parse(search.getStartDate()));
+			final DateEntity endDate = this.dateRepository.findByCalendarDate(sdf.parse(search.getEndDate()));
+			final long start = this.dateRepository.findByCalendarDate(startDate.getMonthStart()).getId();
+			final long end = this.dateRepository.findByCalendarDate(endDate.getMonthEnd()).getId();
+
+			final StatisticsResult result = new StatisticsResult();	
+			result.setMatches(this.getRowResultsByDuration(start, end, search.getBasedOnExamination(), search.getBasedOnTelephoneContact()));
 			
-			/*
-			 * Slice the result
-			 */
-			return ServiceResultImpl.newSuccessfulResult(this.processResults(StatisticsViewRange.fromCode(search.getViewRange()), total, matches), Collections.singletonList(new DefaultServiceMessage("Test", ServiceMessageType.SUCCESS)));
+			return ServiceResultImpl.newSuccessfulResult(
+					result,
+					Collections.singletonList(new DefaultServiceMessage("Test", ServiceMessageType.SUCCESS))
+					);
 		} catch (final Exception e) {
 			throw new RuntimeException(e);
 		}
 	}
 	
-	private StatisticsResult processResults(final StatisticsViewRange range
-			, final List<MedicalCertificateEntity> totals
-			, final List<MedicalCertificateEntity> matches) throws Exception {
-		
-		final StatisticsResult result = new StatisticsResult(matches.size(), totals.size(), range);
-		int type;
-		switch (result.getView()) {
-		case DAILY:
-			type = Calendar.DAY_OF_YEAR;
-			break;
-		case WEEKLY:
-			type = Calendar.WEEK_OF_YEAR;
-			break;
-		case MONTHLY:
-			type = Calendar.MONTH;
-			break;
-		case YEARLY:
-			type = Calendar.YEAR;
-			break;
-		default:
-			type = Calendar.YEAR;
-		}
-		result.setMatches(this.getStatsFromCollection(matches, type));
-		result.setTotals(this.getStatsFromCollection(totals, type));
-		
-		return result;
-	}
-	
-	private List<PeriodResult> getStatsFromCollection(final List<MedicalCertificateEntity> list, final int period) throws Exception {
-		final List<PeriodResult> result = new ArrayList<PeriodResult>();
-		
-		if (!list.isEmpty()) {
-			final Calendar cal = Calendar.getInstance();
-			final Calendar current = Calendar.getInstance();
-			PeriodResult currentPeriod = null;
-			final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-			Date startDate;
+	@Override
+	public ServiceResult<StatisticsResult> loadStatisticsByMonth(final MedicalCertificateDto search) {
+		try {
+			final SimpleDateFormat sdf = new SimpleDateFormat("MMM yy", new Locale("sv"));
 			
-			log.debug("Processing entity list");
-			for (MedicalCertificateEntity e: list) {
-				
-				if (currentPeriod == null) {
-					startDate = this.dateRepository.findOne(e.getStartDate()).getCalendarDate();
-					cal.setTime(startDate);					
-					currentPeriod = PeriodResult.newResult(startDate);
-				}
-				
-				current.setTime(this.dateRepository.findOne(e.getStartDate()).getCalendarDate());
-				
-				log.debug("Comparing {} with {}", sdf.format(cal.getTime()), sdf.format(current.getTime()));
-				if (cal.get(period) == current.get(period)) {
-					currentPeriod.increaseValue();								
-				} else {
-					/*
-					 * Calculation finished - add
-					 */
-					currentPeriod.setEnd(cal.getTime());
-					result.add(currentPeriod);
-					log.debug("Adding period starting at {} with count {}", array(currentPeriod.getStart(), currentPeriod.getValue()));
-					
-					/*
-					 * Reset counters
-					 */
-					startDate = this.dateRepository.findOne(e.getStartDate()).getCalendarDate();
-					cal.setTime(startDate);
-					currentPeriod = PeriodResult.newResult(startDate);
-					currentPeriod.increaseValue();
-				}
-			}
+			final DateEntity startDate = this.dateRepository.findByCalendarDate(sdf.parse(search.getStartDate()));
+			final DateEntity start = this.dateRepository.findByCalendarDate(startDate.getMonthStart());
+
+			final StatisticsResult result = new StatisticsResult();	
+			result.setMatches(this.getRowResultsByMonth(start, search.getBasedOnExamination(), search.getBasedOnTelephoneContact()));
 			
-			// add last group
-			currentPeriod.setEnd(cal.getTime());
-			result.add(currentPeriod);
-			log.debug("Adding period starting at {} with count {}", array(currentPeriod.getStart(), currentPeriod.getValue()));
+			return ServiceResultImpl.newSuccessfulResult(
+					result,
+					Collections.singletonList(new DefaultServiceMessage("Test", ServiceMessageType.SUCCESS))
+					);
+		} catch (final Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+	
+	@Override
+	public ServiceResult<StatisticsResult> loadStatisticsByCareUnit(final MedicalCertificateDto search) {
+		try {
+			final SimpleDateFormat sdf = new SimpleDateFormat("MMM yy", new Locale("sv"));
+			
+			final DateEntity startDate = this.dateRepository.findByCalendarDate(sdf.parse(search.getStartDate()));
+			final DateEntity endDate = this.dateRepository.findByCalendarDate(sdf.parse(search.getEndDate()));
+			final long start = this.dateRepository.findByCalendarDate(startDate.getMonthStart()).getId();
+			final long end = this.dateRepository.findByCalendarDate(endDate.getMonthEnd()).getId();
+
+			final StatisticsResult result = new StatisticsResult();	
+			result.setMatches(this.getRowResultsByCareUnit(start, end, search.getBasedOnExamination(), search.getBasedOnTelephoneContact()));
+			
+			return ServiceResultImpl.newSuccessfulResult(
+					result,
+					Collections.singletonList(new DefaultServiceMessage("Test", ServiceMessageType.SUCCESS))
+					);
+		} catch (final Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+	
+	@Override
+	public ServiceResult<StatisticsResult> loadBySearch(MedicalCertificateDto search) {
+		try {
+			final SimpleDateFormat sdf = new SimpleDateFormat("MMM yy", new Locale("sv"));
+//			log.error("the parsed date is: " + sdf.parse(search.getStartDate()));
+//			log.error("the parsed date is: " + sdf.parse(search.getEndDate()));
+			
+			final DateEntity startDate = this.dateRepository.findByCalendarDate(sdf.parse(search.getStartDate()));
+			final DateEntity endDate = this.dateRepository.findByCalendarDate(sdf.parse(search.getEndDate()));
+//			log.error(endDate.getId() + " the end month date is: " + endDate.getMonthEnd());
+
+			final long start = this.dateRepository.findByCalendarDate(startDate.getMonthStart()).getId();
+			final long end = this.dateRepository.findByCalendarDate(endDate.getMonthEnd()).getId();
+
+//			log.error("calculated end month date is: " + end);
+			
+//			final List<MedicalCertificateEntity>
+//			final List<MedicalCertificateEntity> total = this.certificateRepository.findCertificatesInRange(start, end);
+//			final List<MedicalCertificateEntity> matches = this.certificateRepository.findBySearch(start, end, search.getBasedOnExamination(), search.getBasedOnTelephoneContact());
+//			StatisticsResult result = this.getResults(start, end, search.getBasedOnExamination(), search.getBasedOnTelephoneContact());
+			final StatisticsResult result = new StatisticsResult();	
+			result.setMatches(this.getRowResultsByAge(start, end, search.getBasedOnExamination(), search.getBasedOnTelephoneContact()));
+			/*
+			 * Slice the result
+			 */
+			return ServiceResultImpl.newSuccessfulResult(
+					result,
+					Collections.singletonList(new DefaultServiceMessage("Test", ServiceMessageType.SUCCESS))
+					);
+
+		} catch (final Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+	
+//	private StatisticsResult getResults(long start, long end, Boolean basedOnExamination, Boolean basedOnTelephoneContact){
+//		final StatisticsResult result = new StatisticsResult();	
+//		result.setMatches(this.getRowResultsByAge(start, end, basedOnExamination, basedOnTelephoneContact));
+//		
+//		return result;
+//	}
+	
+	private List<RowResult> getRowResultsByDuration(long start, long end, Boolean basedOnExamination, Boolean basedOnTelephoneContact){
+		List<RowResult> rowResults = new ArrayList<RowResult>();
+
+		rowResults.add(getRowResultByDuration(0, 14, start, end, basedOnExamination, basedOnTelephoneContact));
+		rowResults.add(getRowResultByDuration(15, 30, start, end, basedOnExamination, basedOnTelephoneContact));
+		rowResults.add(getRowResultByDuration(31, 90, start, end, basedOnExamination, basedOnTelephoneContact));
+		rowResults.add(getRowResultByDuration(91, 360, start, end, basedOnExamination, basedOnTelephoneContact));
+//		rowResults.add(getRowResultByDuration(361, 1500, start, end, basedOnExamination, basedOnTelephoneContact));
+		
+		return rowResults;
+	}
+	
+	private RowResult getRowResultByDuration(long minDuration, long maxDuration, long start, long end, Boolean basedOnExamination, Boolean basedOnTelephoneContact){
+		final int count_male = (int)this.certificateRepository.findCountByDuration(minDuration, maxDuration, "Male", start, end, basedOnExamination, basedOnTelephoneContact);
+		final int count_female = (int)this.certificateRepository.findCountByDuration(minDuration, maxDuration, "Female", start, end, basedOnExamination, basedOnTelephoneContact);
+		RowResult row = RowResult.newResult("" + minDuration + "-" + maxDuration, count_male, count_female);
+
+		if (0 == minDuration){
+			row.setxValue("<" + maxDuration);
 		}
 		
-		log.debug("Found {} periods in total.", result.size());
-		return result;
+		return row;
 	}
 	
+	private List<RowResult> getRowResultsByAge(long start, long end, Boolean basedOnExamination, Boolean basedOnTelephoneContact){
+		List<RowResult> rowResults = new ArrayList<RowResult>();
+
+		rowResults.add(getRowResultByAge(0, 19, start, end, basedOnExamination, basedOnTelephoneContact));	
+		for(int i=20; i<70; i=i+10){
+			rowResults.add(getRowResultByAge(i, i+9, start, end, basedOnExamination, basedOnTelephoneContact));
+		}
+		rowResults.add(getRowResultByAge(70, 150, start, end, basedOnExamination, basedOnTelephoneContact));
+		
+		return rowResults;
+	}
 	
-
-	private Object[] array(Object...data) {
-		return data;
+	private RowResult getRowResultByAge(Integer minAge, Integer maxAge, long start, long end, Boolean basedOnExamination, Boolean basedOnTelephoneContact){
+		final int count_male = (int)this.certificateRepository.findCountBySearchAndAge(minAge, maxAge, "Male", start, end, basedOnExamination, basedOnTelephoneContact);
+		final int count_female = (int)this.certificateRepository.findCountBySearchAndAge(minAge, maxAge, "Female", start, end, basedOnExamination, basedOnTelephoneContact);
+		RowResult row = RowResult.newResult("" + minAge + "-" + maxAge, count_male, count_female);
+		if (150 == maxAge){
+			row.setxValue(">" + minAge);
+		}else if (0 == minAge){
+			row.setxValue("<" + maxAge);
+		}
+		
+		return row;
 	}
+	
+	private List<RowResult> getRowResultsByMonth(DateEntity start, Boolean basedOnExamination, Boolean basedOnTelephoneContact){
+		List<RowResult> rowResults = new ArrayList<RowResult>();
+		final Calendar cal = Calendar.getInstance();
+		
+		cal.setTime(start.getMonthStart());
+		for(int i=0; i<12; i++){
+			final DateEntity month = this.dateRepository.findByCalendarDate(cal.getTime());
+			rowResults.add(getRowResultByMonth(month, basedOnExamination, basedOnTelephoneContact));
 
-	@Override
-	public List<MedicalCertificateDto> loadMesasureThreeStatistics() {
-		throw new UnsupportedOperationException("Not yet implemented");
+			cal.add(Calendar.MONTH, 1);
+		}
+		
+		return rowResults;
 	}
-
-	@Override
-	public List<MedicalCertificateDto> loadMeasureNineStatistics() {
-		throw new UnsupportedOperationException("Not yet implemented");
+	
+	private RowResult getRowResultByMonth(DateEntity month, Boolean basedOnExamination, Boolean basedOnTelephoneContact){
+		final int count_male = (int)this.certificateRepository.findCountByMonth("Male", month.getMonthStart(), basedOnExamination, basedOnTelephoneContact);
+		final int count_female = (int)this.certificateRepository.findCountByMonth("Female", month.getMonthStart(), basedOnExamination, basedOnTelephoneContact);
+		RowResult row = RowResult.newResult("" + month.getMonthName(), count_male, count_female);
+		
+		return row;
 	}
+	
+	private List<RowResult> getRowResultsByCareUnit(long start, long end, Boolean basedOnExamination, Boolean basedOnTelephoneContact){
+		List<RowResult> rowResults = new ArrayList<RowResult>();
 
-	@Override
-	public List<MedicalCertificateDto> loadMeasureTenStatistics() {
-		throw new UnsupportedOperationException("Not yet implemented");
+		List<CareUnitEntity> careUnits = this.careUnitRepository.findAll();
+		for (CareUnitEntity careUnit : careUnits){
+			rowResults.add(getRowResultByCareUnit(careUnit, start, end, basedOnExamination, basedOnTelephoneContact));
+		}
+
+		return rowResults;
 	}
-
-	@Override
-	public List<MedicalCertificateDto> loadMeasureElevenStatistics() {
-		throw new UnsupportedOperationException("Not yet implemented");
-	}
-
-	@Override
-	public List<MedicalCertificateDto> loadMeasureTwelveStatistics() {
-		throw new UnsupportedOperationException("Not yet implemented");
-	}
-
-	@Override
-	public List<MedicalCertificateDto> loadMeasureFifteenStatistics() {
-		throw new UnsupportedOperationException("Not yet implemented");
+	
+	private RowResult getRowResultByCareUnit(CareUnitEntity careUnit, long start, long end, Boolean basedOnExamination, Boolean basedOnTelephoneContact){
+		final int count_male = (int)this.certificateRepository.findCountByCareUnit(careUnit.getId(), start, end, basedOnExamination, basedOnTelephoneContact);
+		final int count_female = (int)this.certificateRepository.findCountByCareUnit(careUnit.getId(), start, end, basedOnExamination, basedOnTelephoneContact);
+		RowResult row = RowResult.newResult("" + careUnit.getName(), count_male, count_female);
+		
+		return row;
 	}
 
 }

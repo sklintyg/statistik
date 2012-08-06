@@ -82,7 +82,7 @@ public class MedicalCertificateEntity {
 		return endDate;
 	}
 
-	void setEndDate(Long endDate) {
+	public void setEndDate(Long endDate) {
 		this.endDate = endDate;
 	}
 
@@ -90,7 +90,7 @@ public class MedicalCertificateEntity {
 		return startDate;
 	}
 
-	void setStartDate(Long startDate) {
+	public void setStartDate(Long startDate) {
 		this.startDate = startDate;
 	}
 

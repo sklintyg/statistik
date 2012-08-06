@@ -51,6 +51,7 @@ public class RegisterStatisticsServiceTest {
 		certificateRepository.deleteAll();
 		diagnosisRepository.deleteAll();
 		personRepository.deleteAll();
+		careUnitRepository.deleteAll();
 	}
 	
 	@Test
@@ -74,6 +75,7 @@ public class RegisterStatisticsServiceTest {
 		assertNotNull(certificate);
 		assertNotNull(person);
 		assertNotNull(diagnosis);
+		assertNotNull(careUnit);
 		
 		assertEquals(18, person.getAge());
 		assertEquals("Female", person.getGender());

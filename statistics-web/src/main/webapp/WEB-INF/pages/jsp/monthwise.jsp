@@ -31,14 +31,12 @@
  	<script type="text/javascript">
 	      google.load("visualization", "1", {packages:["corechart"]});
 	</script>
-	<script type="text/javascript" src="<c:url value="/resources/javascript/start.js" />"></script>
-	<script type="text/javascript" src="<c:url value="/resources/javascript/monthpicker.js" />"></script>
-	
+	<script type="text/javascript" src="<c:url value="/resources/javascript/monthwise.js" />"></script>
     
 	</inera:statistics-header>
 	<inera:statistics_body>
-		<h2><spring:message code="search.title" /></h2>
-		<p><spring:message code="search.desc" /></p>
+		<h2><spring:message code="monthly.title" /></h2>
+		<p><spring:message code="duration.desc" /></p>
 		
 		<form id="statistics-form" class="form-inline">
 			<fieldset>
@@ -50,47 +48,25 @@
 							<inera-ui:monthYearField name="fromDate" />
 						</inera-ui:field>
 					</inera:col>
-					<inera:col span="3">
-						<inera-ui:field labelCode="search.criteria.endDate" name="toDate">
-							<inera-ui:monthYearField name="toDate" />
-						</inera-ui:field>
-					</inera:col>
 				</inera:row>
 			</fieldset>
 			
 			<fieldset>
 				<legend><spring:message code="search.criteria.basedOn" /></legend>
 				<inera:row>
-					<inera:col span="3">
+					<inera:col span="2">
 						<inera-ui:field name="basedOnExamination" labelCode="search.criteria.basedOn.examination">
 							<input name="basedOnExamination" type="checkbox" value="1"/>
 						</inera-ui:field>
 					</inera:col>
 					
-					<inera:col span="3">
+					<inera:col span="2">
 						<inera-ui:field name="basedOnTelephoneContact" labelCode="search.criteria.basedOn.telephone">
 							<input name="basedOnTelephoneContact" type="checkbox" value="1"/>
 						</inera-ui:field>
 					</inera:col>
 				</inera:row>
 			</fieldset>
-			
-<%-- 		<fieldset>
-				<legend>Visa statistik</legend>
-				<inera:row>
-					<inera:col span="2">
-						<inera-ui:field name="viewRange" labelCode="search.criteria.range">
-							<select name="viewRange">
-								<option value="0">Dagsvis</option>
-								<option value="1">Veckovis</option>
-								<option value="2">Månadsvis</option>
-								<option value="3">Årsvis</option>
-							</select>
-						</inera-ui:field>
-					</inera:col>
-				</inera:row>
-			</fieldset> --%>
-			
 			
 			<div class="form-actions">
 				<button type="submit" class="btn btn-primary"><spring:message code="search.criteria.submitSearch" /></button>

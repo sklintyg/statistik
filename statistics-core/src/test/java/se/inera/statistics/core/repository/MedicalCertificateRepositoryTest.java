@@ -38,11 +38,15 @@ public class MedicalCertificateRepositoryTest {
 	@Autowired 
 	private CareUnitRepository careUnitRepository;
 	
+	private long startId;
+	private long endId;
+	
 	@Before
 	public void setUp(){
 		this.repo.deleteAll();
 		this.personRepository.deleteAll();
 		this.diagnosisRepository.deleteAll();
+		this.careUnitRepository.deleteAll();
 		
 		PersonEntity person = PersonEntity.newEntity(18, "Male");
 		this.personRepository.save(person);
@@ -52,6 +56,11 @@ public class MedicalCertificateRepositoryTest {
 		
 		CareUnitEntity careUnit = CareUnitEntity.newEntity("Gaminia");
 		this.careUnitRepository.save(careUnit);
+		
+		final Date start = new Date();
+		final Date end = new Date(start.getTime() + (60000 * 24 * 30));
+		this.startId = this.dateRepository.findByCalendarDate(start).getId();
+		this.endId = this.dateRepository.findByCalendarDate(end).getId();
 	}
 	
 	@Test
@@ -64,13 +73,87 @@ public class MedicalCertificateRepositoryTest {
 		assertEquals(1, this.repo.count());
 	}
 	
-	private MedicalCertificateEntity createEmptyCertificate() {
-		final Date start = new Date();
-		final Date end = new Date(start.getTime() + (60000 * 24 * 30));
-		final long startId = this.dateRepository.findByCalendarDate(start).getId();
-		final long endId = this.dateRepository.findByCalendarDate(end).getId();
+	@Test
+	public void testGetCorrectCountByDuration() throws Exception{
+		for (int i = 0; i < 10; i++){
+			MedicalCertificateEntity ent = createEmptyCertificate();
+			this.repo.save(ent);
+		}
 		
-		final MedicalCertificateEntity ent = MedicalCertificateEntity.newEntity(startId, endId);
+		for (int i = 0; i < 12; i++){
+			MedicalCertificateEntity ent = createEmptyCertificate();
+			ent.setEndDate(this.startId + 55);
+			this.repo.save(ent);
+		}
+		long result = this.repo.findCountByDuration(0, 30, "Male", this.startId, this.endId, Boolean.FALSE, Boolean.TRUE);
+		assertEquals(10, result);
+		assertEquals(12, this.repo.findCountByDuration(31, 60, "Male", this.startId, this.endId, Boolean.FALSE, Boolean.TRUE));
+	}
+	
+	@Test
+	public void testGetCorrectCountByAge() throws Exception{
+		this.personRepository.save(PersonEntity.newEntity(35, "Female"));
+		PersonEntity person1 = this.personRepository.findByAgeAndGender(35, "Female");
+		for (int i = 0; i < 10; i++){
+			MedicalCertificateEntity ent = createEmptyCertificate();
+			ent.setPersonId(person1.getId());
+			this.repo.save(ent);
+		}
+		
+		this.personRepository.save(PersonEntity.newEntity(26, "Male"));
+		PersonEntity person2 = this.personRepository.findByAgeAndGender(26, "Male");
+		for (int i = 0; i < 12; i++){
+			MedicalCertificateEntity ent = createEmptyCertificate();
+			ent.setPersonId(person2.getId());
+			this.repo.save(ent);
+		}
+		long result = this.repo.findCountBySearchAndAge(35, 39, "Female", this.startId, this.endId, Boolean.FALSE, Boolean.TRUE);
+		assertEquals(10, result);
+		assertEquals(12, this.repo.findCountBySearchAndAge(25, 29, "Male", this.startId, this.endId, Boolean.FALSE, Boolean.TRUE));
+	}
+		
+	@Test
+	public void testGetCorrectCountByMonth() throws Exception{
+		for (int i = 0; i < 10; i++){
+			MedicalCertificateEntity ent = createEmptyCertificate();
+			this.repo.save(ent);
+		}
+		final long result1 = this.repo.findCountByMonth("Male", this.dateRepository.findOne(this.startId).getMonthStart(), Boolean.FALSE, Boolean.TRUE);
+		assertEquals(10, result1);
+
+		final long dateId = this.startId + 180;
+		for (int i = 0; i < 12; i++){
+			MedicalCertificateEntity ent = createEmptyCertificate();
+			ent.setStartDate(dateId);
+			this.repo.save(ent);
+		}
+		final long result2 = this.repo.findCountByMonth("Male", this.dateRepository.findOne(dateId).getMonthStart(), Boolean.FALSE, Boolean.TRUE);
+		assertEquals(12, result2);
+	}
+		
+	@Test
+	public void testGetCorrectCountByCareUnit() throws Exception{
+		for (int i = 0; i < 10; i++){
+			MedicalCertificateEntity ent = createEmptyCertificate();
+			this.repo.save(ent);
+		}
+		final long result1 = this.repo.findCountByCareUnit(this.careUnitRepository.findByName("Gaminia").getId(), this.startId, this.endId, Boolean.FALSE, Boolean.TRUE);
+		assertEquals(10, result1);
+	
+		CareUnitEntity careUnit = CareUnitEntity.newEntity("care unit 2");
+		this.careUnitRepository.save(careUnit);
+		for (int i = 0; i < 12; i++){
+			MedicalCertificateEntity ent = createEmptyCertificate();
+			ent.setCareUnitId(careUnit.getId());
+			this.repo.save(ent);
+		}
+		final long result2 = this.repo.findCountByCareUnit(this.careUnitRepository.findByName("care unit 2").getId(), this.startId, this.endId, Boolean.FALSE, Boolean.TRUE);
+		assertEquals(12, result2);
+	}
+	
+	private MedicalCertificateEntity createEmptyCertificate() {
+		
+		final MedicalCertificateEntity ent = MedicalCertificateEntity.newEntity(this.startId, this.endId);
 		PersonEntity person = this.personRepository.findByAgeAndGender(18, "Male");
 		if (null == person){
 			fail("Encountered null person where we should not!");

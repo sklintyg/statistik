@@ -28,4 +28,19 @@ public class NavigationController {
 	public String displayStart() {
 		return "start";
 	}
+	
+	@RequestMapping(value="/duration", method=RequestMethod.GET)
+	public String displayDuration() {
+		return "duration";
+	}
+	
+	@RequestMapping(value="/monthwise", method=RequestMethod.GET)
+	public String displayMonthwise() {
+		return "monthwise";
+	}
+	
+	@RequestMapping(value="/careunit", method=RequestMethod.GET)
+	public String displayCareunit() {
+		return "careunit";
+	}
 }
