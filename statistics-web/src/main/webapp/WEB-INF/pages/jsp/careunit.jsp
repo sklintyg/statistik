@@ -28,6 +28,7 @@
 <inera:page>
 	<inera:statistics-header>
 	<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+	<script type="text/javascript" src="<c:url value="/resources/javascript/table.js" />"></script>
 	<script type="text/javascript" src="<c:url value="/resources/javascript/careunit.js" />"></script>
     
 	</inera:statistics-header>

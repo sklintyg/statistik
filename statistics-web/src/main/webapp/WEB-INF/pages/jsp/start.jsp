@@ -29,10 +29,11 @@
 	<inera:statistics-header>
 	<script type="text/javascript" src="https://www.google.com/jsapi"></script>
  	<script type="text/javascript">
-	      google.load("visualization", "1", {packages:["corechart"]});
+	      google.load("visualization", "1", {packages:["corechart", "table"]});
 	</script>
+	<script type="text/javascript" src="<c:url value="/resources/javascript/columnchart.js" />"></script>
+	<script type="text/javascript" src="<c:url value="/resources/javascript/table.js" />"></script>
 	<script type="text/javascript" src="<c:url value="/resources/javascript/start.js" />"></script>
-	<script type="text/javascript" src="<c:url value="/resources/javascript/monthpicker.js" />"></script>
 	
     
 	</inera:statistics-header>

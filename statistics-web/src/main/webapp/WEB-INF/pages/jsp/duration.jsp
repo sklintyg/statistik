@@ -31,6 +31,8 @@
  	<script type="text/javascript">
 	      google.load("visualization", "1", {packages:["corechart"]});
 	</script>
+	<script type="text/javascript" src="<c:url value="/resources/javascript/columnchart.js" />"></script>
+	<script type="text/javascript" src="<c:url value="/resources/javascript/table.js" />"></script>
 	<script type="text/javascript" src="<c:url value="/resources/javascript/duration.js" />"></script>
     
 	</inera:statistics-header>
