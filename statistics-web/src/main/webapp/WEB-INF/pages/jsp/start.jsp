@@ -76,22 +76,6 @@
 				</inera:row>
 			</fieldset>
 			
-<%-- 		<fieldset>
-				<legend>Visa statistik</legend>
-				<inera:row>
-					<inera:col span="2">
-						<inera-ui:field name="viewRange" labelCode="search.criteria.range">
-							<select name="viewRange">
-								<option value="0">Dagsvis</option>
-								<option value="1">Veckovis</option>
-								<option value="2">Månadsvis</option>
-								<option value="3">Årsvis</option>
-							</select>
-						</inera-ui:field>
-					</inera:col>
-				</inera:row>
-			</fieldset> --%>
-			
 			
 			<div class="form-actions">
 				<button type="submit" class="btn btn-primary"><spring:message code="search.criteria.submitSearch" /></button>
