@@ -56,8 +56,7 @@ public class StatisticsServiceImpl implements StatisticsService {
 			final long start = this.dateRepository.findByCalendarDate(startDate.getMonthStart()).getId();
 			final long end = this.dateRepository.findByCalendarDate(endDate.getMonthEnd()).getId();
 
-			final StatisticsResult result = new StatisticsResult();	
-			result.setMatches(this.getRowResultsByDuration(start, end, search.getBasedOnExamination(), search.getBasedOnTelephoneContact()));
+			final StatisticsResult result = new StatisticsResult(this.getRowResultsByDuration(start, end, search.getBasedOnExamination(), search.getBasedOnTelephoneContact()));
 			
 			return ServiceResultImpl.newSuccessfulResult(
 					result,
@@ -76,8 +75,7 @@ public class StatisticsServiceImpl implements StatisticsService {
 			final DateEntity startDate = this.dateRepository.findByCalendarDate(sdf.parse(search.getStartDate()));
 			final DateEntity start = this.dateRepository.findByCalendarDate(startDate.getMonthStart());
 
-			final StatisticsResult result = new StatisticsResult();	
-			result.setMatches(this.getRowResultsByMonth(start, search.getBasedOnExamination(), search.getBasedOnTelephoneContact()));
+			final StatisticsResult result = new StatisticsResult(this.getRowResultsByMonth(start, search.getBasedOnExamination(), search.getBasedOnTelephoneContact()));
 			
 			return ServiceResultImpl.newSuccessfulResult(
 					result,
@@ -98,8 +96,7 @@ public class StatisticsServiceImpl implements StatisticsService {
 			final long start = this.dateRepository.findByCalendarDate(startDate.getMonthStart()).getId();
 			final long end = this.dateRepository.findByCalendarDate(endDate.getMonthEnd()).getId();
 
-			final StatisticsResult result = new StatisticsResult();	
-			result.setMatches(this.getRowResultsByCareUnit(start, end, search.getBasedOnExamination(), search.getBasedOnTelephoneContact()));
+			final StatisticsResult result = new StatisticsResult(this.getRowResultsByCareUnit(start, end, search.getBasedOnExamination(), search.getBasedOnTelephoneContact()));
 			
 			return ServiceResultImpl.newSuccessfulResult(
 					result,
@@ -121,8 +118,7 @@ public class StatisticsServiceImpl implements StatisticsService {
 			final long start = this.dateRepository.findByCalendarDate(startDate.getMonthStart()).getId();
 			final long end = this.dateRepository.findByCalendarDate(endDate.getMonthEnd()).getId();
 
-			final StatisticsResult result = new StatisticsResult();	
-			result.setMatches(this.getRowResultsByAge(start, end, search.getBasedOnExamination(), search.getBasedOnTelephoneContact()));
+			final StatisticsResult result = new StatisticsResult(this.getRowResultsByAge(start, end, search.getBasedOnExamination(), search.getBasedOnTelephoneContact()));
 			
 			return ServiceResultImpl.newSuccessfulResult(
 					result,
