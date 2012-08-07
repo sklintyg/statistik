@@ -120,6 +120,6 @@ public class RegisterStatisticsServiceImpl implements RegisterStatisticsService 
 	
 	private String getGender(boolean female){
 		//TODO: move the enums to better place
-		return female ? "Female": "Male";
+		return female ? MedicalCertificateRepository.GENDER_FEMALE: MedicalCertificateRepository.GENDER_MALE;
 	}
 }

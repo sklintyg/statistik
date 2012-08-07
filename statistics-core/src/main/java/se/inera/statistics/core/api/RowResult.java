@@ -2,16 +2,16 @@ package se.inera.statistics.core.api;
 
 public class RowResult {
 
-	private	String xValue;
+	private	final String xValue;
 	private int yValue1;
 	private int yValue2;
 	
-	RowResult() {
+	RowResult(String xValue) {
+		this.xValue = xValue;
 	}
 	
 	public static RowResult newResult(String x, int y1, int y2) {
-		RowResult result = new RowResult();
-		result.setxValue(x);
+		RowResult result = new RowResult(x);
 		result.setyValue1(y1);
 		result.setyValue2(y2);
 
@@ -20,10 +20,6 @@ public class RowResult {
 
 	public String getxValue() {
 		return xValue;
-	}
-
-	public void setxValue(String xValue) {
-		this.xValue = xValue;
 	}
 
 	public int getyValue1() {

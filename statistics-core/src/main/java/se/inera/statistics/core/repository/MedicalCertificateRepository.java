@@ -11,6 +11,9 @@ import se.inera.statistics.model.entity.MedicalCertificateEntity;
 
 public interface MedicalCertificateRepository extends JpaRepository<MedicalCertificateEntity, Long> {
 
+	String GENDER_MALE = "Male";
+	String GENDER_FEMALE = "Female";
+			
 	@Query(value="select e from MedicalCertificateEntity as e where " +
 			"(e.startDate >= :startDate and e.endDate <= :endDate) and " +
 			"e.basedOnExamination = :basedOnExamination and " +

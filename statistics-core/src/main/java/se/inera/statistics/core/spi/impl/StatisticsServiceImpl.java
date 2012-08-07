@@ -31,6 +31,16 @@ import se.inera.statistics.model.entity.DateEntity;
 @Transactional
 public class StatisticsServiceImpl implements StatisticsService {
 
+	private static final int MIN_AGE = 0;
+
+	private static final int MAX_AGE = 150;
+
+	private static final int[] AGE_RANGES = { MIN_AGE, 20, 30, 40, 50 , 60, 70, MAX_AGE };
+	
+	private static final String TIME_TEXT_FORMAT = "MMM yy";
+
+	private static final Locale LOCALE = new Locale("sv");
+
 	private static final Logger log = LoggerFactory.getLogger(StatisticsServiceImpl.class);
 	
 	@Autowired
@@ -45,15 +55,14 @@ public class StatisticsServiceImpl implements StatisticsService {
 	@Override
 	public ServiceResult<StatisticsResult> loadStatisticsByDuration(final MedicalCertificateDto search) {
 		try {
-			final SimpleDateFormat sdf = new SimpleDateFormat("MMM yy", new Locale("sv"));
+			final SimpleDateFormat sdf = new SimpleDateFormat(TIME_TEXT_FORMAT, LOCALE);
 			
 			final DateEntity startDate = this.dateRepository.findByCalendarDate(sdf.parse(search.getStartDate()));
 			final DateEntity endDate = this.dateRepository.findByCalendarDate(sdf.parse(search.getEndDate()));
 			final long start = this.dateRepository.findByCalendarDate(startDate.getMonthStart()).getId();
 			final long end = this.dateRepository.findByCalendarDate(endDate.getMonthEnd()).getId();
 
-			final StatisticsResult result = new StatisticsResult();	
-			result.setMatches(this.getRowResultsByDuration(start, end, search.getBasedOnExamination(), search.getBasedOnTelephoneContact()));
+			final StatisticsResult result = new StatisticsResult(this.getRowResultsByDuration(start, end, search.getBasedOnExamination(), search.getBasedOnTelephoneContact()));
 			
 			return ServiceResultImpl.newSuccessfulResult(
 					result,
@@ -67,13 +76,12 @@ public class StatisticsServiceImpl implements StatisticsService {
 	@Override
 	public ServiceResult<StatisticsResult> loadStatisticsByMonth(final MedicalCertificateDto search) {
 		try {
-			final SimpleDateFormat sdf = new SimpleDateFormat("MMM yy", new Locale("sv"));
+			final SimpleDateFormat sdf = new SimpleDateFormat(TIME_TEXT_FORMAT, LOCALE);
 			
 			final DateEntity startDate = this.dateRepository.findByCalendarDate(sdf.parse(search.getStartDate()));
 			final DateEntity start = this.dateRepository.findByCalendarDate(startDate.getMonthStart());
 
-			final StatisticsResult result = new StatisticsResult();	
-			result.setMatches(this.getRowResultsByMonth(start, search.getBasedOnExamination(), search.getBasedOnTelephoneContact()));
+			final StatisticsResult result = new StatisticsResult(this.getRowResultsByMonth(start, search.getBasedOnExamination(), search.getBasedOnTelephoneContact()));
 			
 			return ServiceResultImpl.newSuccessfulResult(
 					result,
@@ -87,15 +95,14 @@ public class StatisticsServiceImpl implements StatisticsService {
 	@Override
 	public ServiceResult<StatisticsResult> loadStatisticsByCareUnit(final MedicalCertificateDto search) {
 		try {
-			final SimpleDateFormat sdf = new SimpleDateFormat("MMM yy", new Locale("sv"));
+			final SimpleDateFormat sdf = new SimpleDateFormat(TIME_TEXT_FORMAT, LOCALE);
 			
 			final DateEntity startDate = this.dateRepository.findByCalendarDate(sdf.parse(search.getStartDate()));
 			final DateEntity endDate = this.dateRepository.findByCalendarDate(sdf.parse(search.getEndDate()));
 			final long start = this.dateRepository.findByCalendarDate(startDate.getMonthStart()).getId();
 			final long end = this.dateRepository.findByCalendarDate(endDate.getMonthEnd()).getId();
 
-			final StatisticsResult result = new StatisticsResult();	
-			result.setMatches(this.getRowResultsByCareUnit(start, end, search.getBasedOnExamination(), search.getBasedOnTelephoneContact()));
+			final StatisticsResult result = new StatisticsResult(this.getRowResultsByCareUnit(start, end, search.getBasedOnExamination(), search.getBasedOnTelephoneContact()));
 			
 			return ServiceResultImpl.newSuccessfulResult(
 					result,
@@ -109,28 +116,16 @@ public class StatisticsServiceImpl implements StatisticsService {
 	@Override
 	public ServiceResult<StatisticsResult> loadByAge(MedicalCertificateDto search) {
 		try {
-			final SimpleDateFormat sdf = new SimpleDateFormat("MMM yy", new Locale("sv"));
-//			log.error("the parsed date is: " + sdf.parse(search.getStartDate()));
-//			log.error("the parsed date is: " + sdf.parse(search.getEndDate()));
+			final SimpleDateFormat sdf = new SimpleDateFormat(TIME_TEXT_FORMAT, LOCALE);
 			
 			final DateEntity startDate = this.dateRepository.findByCalendarDate(sdf.parse(search.getStartDate()));
 			final DateEntity endDate = this.dateRepository.findByCalendarDate(sdf.parse(search.getEndDate()));
-//			log.error(endDate.getId() + " the end month date is: " + endDate.getMonthEnd());
 
 			final long start = this.dateRepository.findByCalendarDate(startDate.getMonthStart()).getId();
 			final long end = this.dateRepository.findByCalendarDate(endDate.getMonthEnd()).getId();
 
-//			log.error("calculated end month date is: " + end);
+			final StatisticsResult result = new StatisticsResult(this.getRowResultsByAge(start, end, search.getBasedOnExamination(), search.getBasedOnTelephoneContact()));
 			
-//			final List<MedicalCertificateEntity>
-//			final List<MedicalCertificateEntity> total = this.certificateRepository.findCertificatesInRange(start, end);
-//			final List<MedicalCertificateEntity> matches = this.certificateRepository.findBySearch(start, end, search.getBasedOnExamination(), search.getBasedOnTelephoneContact());
-//			StatisticsResult result = this.getResults(start, end, search.getBasedOnExamination(), search.getBasedOnTelephoneContact());
-			final StatisticsResult result = new StatisticsResult();	
-			result.setMatches(this.getRowResultsByAge(start, end, search.getBasedOnExamination(), search.getBasedOnTelephoneContact()));
-			/*
-			 * Slice the result
-			 */
 			return ServiceResultImpl.newSuccessfulResult(
 					result,
 					Collections.singletonList(new DefaultServiceMessage("Test", ServiceMessageType.SUCCESS))
@@ -140,14 +135,7 @@ public class StatisticsServiceImpl implements StatisticsService {
 			throw new RuntimeException(e);
 		}
 	}
-	
-//	private StatisticsResult getResults(long start, long end, Boolean basedOnExamination, Boolean basedOnTelephoneContact){
-//		final StatisticsResult result = new StatisticsResult();	
-//		result.setMatches(this.getRowResultsByAge(start, end, basedOnExamination, basedOnTelephoneContact));
-//		
-//		return result;
-//	}
-	
+		
 	private List<RowResult> getRowResultsByDuration(long start, long end, Boolean basedOnExamination, Boolean basedOnTelephoneContact){
 		List<RowResult> rowResults = new ArrayList<RowResult>();
 
@@ -163,40 +151,46 @@ public class StatisticsServiceImpl implements StatisticsService {
 	private RowResult getRowResultByDuration(long minDuration, long maxDuration, long start, long end, Boolean basedOnExamination, Boolean basedOnTelephoneContact){
 		final int count_male = (int)this.certificateRepository.findCountByDuration(minDuration, maxDuration, "Male", start, end, basedOnExamination, basedOnTelephoneContact);
 		final int count_female = (int)this.certificateRepository.findCountByDuration(minDuration, maxDuration, "Female", start, end, basedOnExamination, basedOnTelephoneContact);
-		RowResult row = RowResult.newResult("" + minDuration + "-" + maxDuration, count_male, count_female);
+		RowResult row = RowResult.newResult(formatDuration(minDuration, maxDuration), count_male, count_female);
 
-		if (0 == minDuration){
-			row.setxValue("<" + maxDuration);
-		}
-		
 		return row;
+	}
+
+	private String formatDuration(long minDuration, long maxDuration) {
+		if (0 == minDuration){
+			return "<" + maxDuration;
+		} else {
+			return minDuration + "-" + maxDuration;
+		}
 	}
 	
 	private List<RowResult> getRowResultsByAge(long start, long end, Boolean basedOnExamination, Boolean basedOnTelephoneContact){
 		List<RowResult> rowResults = new ArrayList<RowResult>();
 
-		rowResults.add(getRowResultByAge(0, 19, start, end, basedOnExamination, basedOnTelephoneContact));	
-		for(int i=20; i<70; i=i+10){
-			rowResults.add(getRowResultByAge(i, i+9, start, end, basedOnExamination, basedOnTelephoneContact));
+		for (int ageIndex = 0; ageIndex < AGE_RANGES.length -1; ageIndex++) {
+			rowResults.add(getRowResultByAge(AGE_RANGES[ageIndex], AGE_RANGES[ageIndex + 1] - 1, start, end, basedOnExamination, basedOnTelephoneContact));	
 		}
-		rowResults.add(getRowResultByAge(70, 150, start, end, basedOnExamination, basedOnTelephoneContact));
-		
 		return rowResults;
 	}
 	
 	private RowResult getRowResultByAge(Integer minAge, Integer maxAge, long start, long end, Boolean basedOnExamination, Boolean basedOnTelephoneContact){
 		final int count_male = (int)this.certificateRepository.findCountBySearchAndAge(minAge, maxAge, "Male", start, end, basedOnExamination, basedOnTelephoneContact);
 		final int count_female = (int)this.certificateRepository.findCountBySearchAndAge(minAge, maxAge, "Female", start, end, basedOnExamination, basedOnTelephoneContact);
-		RowResult row = RowResult.newResult("" + minAge + "-" + maxAge, count_male, count_female);
-		if (150 == maxAge){
-			row.setxValue(">" + minAge);
-		}else if (0 == minAge){
-			row.setxValue("<" + maxAge);
-		}
+		RowResult row = RowResult.newResult(formatAgeRange(minAge, maxAge), count_male, count_female);
 		
 		return row;
 	}
 	
+	private String formatAgeRange(Integer minAge, Integer maxAge) {
+		if (MAX_AGE == maxAge + 1){
+			return ">" + minAge;
+		} else if (MIN_AGE == minAge){
+			return "<" + maxAge;
+		} else {
+			return minAge + "-" + maxAge;
+		}
+	}
+
 	private List<RowResult> getRowResultsByMonth(DateEntity start, Boolean basedOnExamination, Boolean basedOnTelephoneContact){
 		List<RowResult> rowResults = new ArrayList<RowResult>();
 		final Calendar cal = Calendar.getInstance();
