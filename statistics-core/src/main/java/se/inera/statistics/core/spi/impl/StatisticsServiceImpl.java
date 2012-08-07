@@ -31,6 +31,10 @@ import se.inera.statistics.model.entity.DateEntity;
 @Transactional
 public class StatisticsServiceImpl implements StatisticsService {
 
+	private static final String TIME_TEXT_FORMAT = "MMM yy";
+
+	private static final Locale LOCALE = new Locale("sv");
+
 	private static final Logger log = LoggerFactory.getLogger(StatisticsServiceImpl.class);
 	
 	@Autowired
@@ -45,7 +49,7 @@ public class StatisticsServiceImpl implements StatisticsService {
 	@Override
 	public ServiceResult<StatisticsResult> loadStatisticsByDuration(final MedicalCertificateDto search) {
 		try {
-			final SimpleDateFormat sdf = new SimpleDateFormat("MMM yy", new Locale("sv"));
+			final SimpleDateFormat sdf = new SimpleDateFormat(TIME_TEXT_FORMAT, LOCALE);
 			
 			final DateEntity startDate = this.dateRepository.findByCalendarDate(sdf.parse(search.getStartDate()));
 			final DateEntity endDate = this.dateRepository.findByCalendarDate(sdf.parse(search.getEndDate()));
@@ -67,7 +71,7 @@ public class StatisticsServiceImpl implements StatisticsService {
 	@Override
 	public ServiceResult<StatisticsResult> loadStatisticsByMonth(final MedicalCertificateDto search) {
 		try {
-			final SimpleDateFormat sdf = new SimpleDateFormat("MMM yy", new Locale("sv"));
+			final SimpleDateFormat sdf = new SimpleDateFormat(TIME_TEXT_FORMAT, LOCALE);
 			
 			final DateEntity startDate = this.dateRepository.findByCalendarDate(sdf.parse(search.getStartDate()));
 			final DateEntity start = this.dateRepository.findByCalendarDate(startDate.getMonthStart());
@@ -87,7 +91,7 @@ public class StatisticsServiceImpl implements StatisticsService {
 	@Override
 	public ServiceResult<StatisticsResult> loadStatisticsByCareUnit(final MedicalCertificateDto search) {
 		try {
-			final SimpleDateFormat sdf = new SimpleDateFormat("MMM yy", new Locale("sv"));
+			final SimpleDateFormat sdf = new SimpleDateFormat(TIME_TEXT_FORMAT, LOCALE);
 			
 			final DateEntity startDate = this.dateRepository.findByCalendarDate(sdf.parse(search.getStartDate()));
 			final DateEntity endDate = this.dateRepository.findByCalendarDate(sdf.parse(search.getEndDate()));
@@ -109,7 +113,7 @@ public class StatisticsServiceImpl implements StatisticsService {
 	@Override
 	public ServiceResult<StatisticsResult> loadBySearch(MedicalCertificateDto search) {
 		try {
-			final SimpleDateFormat sdf = new SimpleDateFormat("MMM yy", new Locale("sv"));
+			final SimpleDateFormat sdf = new SimpleDateFormat(TIME_TEXT_FORMAT, LOCALE);
 //			log.error("the parsed date is: " + sdf.parse(search.getStartDate()));
 //			log.error("the parsed date is: " + sdf.parse(search.getEndDate()));
 			
