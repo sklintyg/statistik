@@ -58,7 +58,7 @@ public class MedicalCertificateRepositoryTest {
 		this.careUnitRepository.save(careUnit);
 		
 		final Date start = new Date();
-		final Date end = new Date(start.getTime() + (60000 * 24 * 30));
+		final Date end = new Date(start.getTime() + (60000 * 60 * 24 * 10));
 		this.startId = this.dateRepository.findByCalendarDate(start).getId();
 		this.endId = this.dateRepository.findByCalendarDate(end).getId();
 	}

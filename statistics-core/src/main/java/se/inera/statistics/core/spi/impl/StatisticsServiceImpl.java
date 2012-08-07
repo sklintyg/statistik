@@ -107,7 +107,7 @@ public class StatisticsServiceImpl implements StatisticsService {
 	}
 	
 	@Override
-	public ServiceResult<StatisticsResult> loadBySearch(MedicalCertificateDto search) {
+	public ServiceResult<StatisticsResult> loadByAge(MedicalCertificateDto search) {
 		try {
 			final SimpleDateFormat sdf = new SimpleDateFormat("MMM yy", new Locale("sv"));
 //			log.error("the parsed date is: " + sdf.parse(search.getStartDate()));

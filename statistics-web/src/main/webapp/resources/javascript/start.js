@@ -13,7 +13,7 @@ $(function() {
 		criterias.basedOnExamination = $('input[name="basedOnExamination"]:checked').val() == 1 ? true : false;
 		criterias.basedOnTelephoneContact = $('input[name="basedOnTelephoneContact"]:checked').val() == 1 ? true : false;
 		
-		ajax.post('/statistics/search', criterias, function(data) {
+		ajax.post('/statistics/age', criterias, function(data) {
 	        var drawdata = new google.visualization.DataTable();
 	        drawdata.addColumn('string', 'Ålder');
 	        drawdata.addColumn('number', 'Män');

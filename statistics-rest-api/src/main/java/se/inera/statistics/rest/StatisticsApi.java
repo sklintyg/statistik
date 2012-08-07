@@ -19,10 +19,10 @@ public class StatisticsApi {
 	@Autowired
 	private StatisticsService service;
 	
-	@RequestMapping(value="/search", method=RequestMethod.POST, consumes="application/json", produces="application/json")
+	@RequestMapping(value="/age", method=RequestMethod.POST, consumes="application/json", produces="application/json")
 	@ResponseBody
-	public ServiceResult<StatisticsResult> loadStatisticsFromSearch(@RequestBody final MedicalCertificateDto criterias) {
-		return this.service.loadBySearch(criterias);
+	public ServiceResult<StatisticsResult> loadAgeStatistics(@RequestBody final MedicalCertificateDto criterias) {
+		return this.service.loadByAge(criterias);
 	}
 	
 	@RequestMapping(value="/duration", method=RequestMethod.POST, consumes="application/json", produces="application/json")

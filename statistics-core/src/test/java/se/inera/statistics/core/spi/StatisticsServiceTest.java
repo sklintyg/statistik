@@ -64,7 +64,7 @@ public class StatisticsServiceTest {
 		cert.setBasedOnTelephoneContact(false);
 //		cert.setViewRange(StatisticsViewRange.MONTHLY.getCode());
 		
-		final ServiceResult<StatisticsResult> result = this.service.loadBySearch(cert);
+		final ServiceResult<StatisticsResult> result = this.service.loadByAge(cert);
 		assertNotNull(result);
 		//TODO: add more tests
 		assertFalse(result.getData().getMatches().isEmpty());

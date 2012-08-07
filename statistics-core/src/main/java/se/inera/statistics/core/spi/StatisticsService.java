@@ -11,7 +11,7 @@ public interface StatisticsService {
 	 * @param search
 	 * @return
 	 */
-	ServiceResult<StatisticsResult> loadBySearch(final MedicalCertificateDto search);
+	ServiceResult<StatisticsResult> loadByAge(final MedicalCertificateDto search);
 
 	ServiceResult<StatisticsResult> loadStatisticsByDuration(final MedicalCertificateDto search);
 
