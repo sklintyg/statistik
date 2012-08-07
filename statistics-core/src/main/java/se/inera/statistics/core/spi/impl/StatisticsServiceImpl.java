@@ -114,27 +114,16 @@ public class StatisticsServiceImpl implements StatisticsService {
 	public ServiceResult<StatisticsResult> loadBySearch(MedicalCertificateDto search) {
 		try {
 			final SimpleDateFormat sdf = new SimpleDateFormat(TIME_TEXT_FORMAT, LOCALE);
-//			log.error("the parsed date is: " + sdf.parse(search.getStartDate()));
-//			log.error("the parsed date is: " + sdf.parse(search.getEndDate()));
 			
 			final DateEntity startDate = this.dateRepository.findByCalendarDate(sdf.parse(search.getStartDate()));
 			final DateEntity endDate = this.dateRepository.findByCalendarDate(sdf.parse(search.getEndDate()));
-//			log.error(endDate.getId() + " the end month date is: " + endDate.getMonthEnd());
 
 			final long start = this.dateRepository.findByCalendarDate(startDate.getMonthStart()).getId();
 			final long end = this.dateRepository.findByCalendarDate(endDate.getMonthEnd()).getId();
 
-//			log.error("calculated end month date is: " + end);
-			
-//			final List<MedicalCertificateEntity>
-//			final List<MedicalCertificateEntity> total = this.certificateRepository.findCertificatesInRange(start, end);
-//			final List<MedicalCertificateEntity> matches = this.certificateRepository.findBySearch(start, end, search.getBasedOnExamination(), search.getBasedOnTelephoneContact());
-//			StatisticsResult result = this.getResults(start, end, search.getBasedOnExamination(), search.getBasedOnTelephoneContact());
 			final StatisticsResult result = new StatisticsResult();	
 			result.setMatches(this.getRowResultsByAge(start, end, search.getBasedOnExamination(), search.getBasedOnTelephoneContact()));
-			/*
-			 * Slice the result
-			 */
+			
 			return ServiceResultImpl.newSuccessfulResult(
 					result,
 					Collections.singletonList(new DefaultServiceMessage("Test", ServiceMessageType.SUCCESS))
@@ -144,14 +133,7 @@ public class StatisticsServiceImpl implements StatisticsService {
 			throw new RuntimeException(e);
 		}
 	}
-	
-//	private StatisticsResult getResults(long start, long end, Boolean basedOnExamination, Boolean basedOnTelephoneContact){
-//		final StatisticsResult result = new StatisticsResult();	
-//		result.setMatches(this.getRowResultsByAge(start, end, basedOnExamination, basedOnTelephoneContact));
-//		
-//		return result;
-//	}
-	
+		
 	private List<RowResult> getRowResultsByDuration(long start, long end, Boolean basedOnExamination, Boolean basedOnTelephoneContact){
 		List<RowResult> rowResults = new ArrayList<RowResult>();
 
