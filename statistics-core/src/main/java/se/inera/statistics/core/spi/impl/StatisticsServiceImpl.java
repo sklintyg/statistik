@@ -31,6 +31,12 @@ import se.inera.statistics.model.entity.DateEntity;
 @Transactional
 public class StatisticsServiceImpl implements StatisticsService {
 
+	private static final int MIN_AGE = 0;
+
+	private static final int MAX_AGE = 150;
+
+	private static final int[] AGE_RANGES = { MIN_AGE, 20, 30, 40, 50 , 60, 70, MAX_AGE };
+	
 	private static final String TIME_TEXT_FORMAT = "MMM yy";
 
 	private static final Locale LOCALE = new Locale("sv");
@@ -145,40 +151,46 @@ public class StatisticsServiceImpl implements StatisticsService {
 	private RowResult getRowResultByDuration(long minDuration, long maxDuration, long start, long end, Boolean basedOnExamination, Boolean basedOnTelephoneContact){
 		final int count_male = (int)this.certificateRepository.findCountByDuration(minDuration, maxDuration, "Male", start, end, basedOnExamination, basedOnTelephoneContact);
 		final int count_female = (int)this.certificateRepository.findCountByDuration(minDuration, maxDuration, "Female", start, end, basedOnExamination, basedOnTelephoneContact);
-		RowResult row = RowResult.newResult("" + minDuration + "-" + maxDuration, count_male, count_female);
+		RowResult row = RowResult.newResult(formatDuration(minDuration, maxDuration), count_male, count_female);
 
-		if (0 == minDuration){
-			row.setxValue("<" + maxDuration);
-		}
-		
 		return row;
+	}
+
+	private String formatDuration(long minDuration, long maxDuration) {
+		if (0 == minDuration){
+			return "<" + maxDuration;
+		} else {
+			return minDuration + "-" + maxDuration;
+		}
 	}
 	
 	private List<RowResult> getRowResultsByAge(long start, long end, Boolean basedOnExamination, Boolean basedOnTelephoneContact){
 		List<RowResult> rowResults = new ArrayList<RowResult>();
 
-		rowResults.add(getRowResultByAge(0, 19, start, end, basedOnExamination, basedOnTelephoneContact));	
-		for(int i=20; i<70; i=i+10){
-			rowResults.add(getRowResultByAge(i, i+9, start, end, basedOnExamination, basedOnTelephoneContact));
+		for (int ageIndex = 0; ageIndex < AGE_RANGES.length -1; ageIndex++) {
+			rowResults.add(getRowResultByAge(AGE_RANGES[ageIndex], AGE_RANGES[ageIndex + 1] - 1, start, end, basedOnExamination, basedOnTelephoneContact));	
 		}
-		rowResults.add(getRowResultByAge(70, 150, start, end, basedOnExamination, basedOnTelephoneContact));
-		
 		return rowResults;
 	}
 	
 	private RowResult getRowResultByAge(Integer minAge, Integer maxAge, long start, long end, Boolean basedOnExamination, Boolean basedOnTelephoneContact){
 		final int count_male = (int)this.certificateRepository.findCountBySearchAndAge(minAge, maxAge, "Male", start, end, basedOnExamination, basedOnTelephoneContact);
 		final int count_female = (int)this.certificateRepository.findCountBySearchAndAge(minAge, maxAge, "Female", start, end, basedOnExamination, basedOnTelephoneContact);
-		RowResult row = RowResult.newResult("" + minAge + "-" + maxAge, count_male, count_female);
-		if (150 == maxAge){
-			row.setxValue(">" + minAge);
-		}else if (0 == minAge){
-			row.setxValue("<" + maxAge);
-		}
+		RowResult row = RowResult.newResult(formatAgeRange(minAge, maxAge), count_male, count_female);
 		
 		return row;
 	}
 	
+	private String formatAgeRange(Integer minAge, Integer maxAge) {
+		if (MAX_AGE == maxAge + 1){
+			return ">" + minAge;
+		} else if (MIN_AGE == minAge){
+			return "<" + maxAge;
+		} else {
+			return minAge + "-" + maxAge;
+		}
+	}
+
 	private List<RowResult> getRowResultsByMonth(DateEntity start, Boolean basedOnExamination, Boolean basedOnTelephoneContact){
 		List<RowResult> rowResults = new ArrayList<RowResult>();
 		final Calendar cal = Calendar.getInstance();
