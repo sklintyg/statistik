@@ -10,6 +10,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,21 +51,21 @@ public class StatisticsServiceTest {
 	@Autowired 
 	private StatisticsService service;
 	
+	@Before
+	public void setUp(){
+		this.personRepository.deleteAll();
+		this.diagnosisRepository.deleteAll();
+		this.careUnitRepository.deleteAll();
+		
+		this.setupTestData(10, 10, Calendar.MONTH);
+	}
+	
 	@Test
 	@Rollback(true)
-	public void testLoadBySearch() throws Exception {
-		this.setupTestData(10, 10, Calendar.MONTH);
+	public void testLoadAgeBySearch() throws Exception {
+		final MedicalCertificateDto search_parameters = getSearchParameters();		
+		final ServiceResult<StatisticsResult> result = this.service.loadByAge(search_parameters);
 		
-		final MedicalCertificateDto cert = new MedicalCertificateDto();
-		cert.setAge(18);
-		cert.setStartDate("Januari 2011");
-		cert.setEndDate("December 2011");
-		cert.setDiagnose(true);
-		cert.setBasedOnExamination(true);
-		cert.setBasedOnTelephoneContact(false);
-//		cert.setViewRange(StatisticsViewRange.MONTHLY.getCode());
-		
-		final ServiceResult<StatisticsResult> result = this.service.loadByAge(cert);
 		assertNotNull(result);
 		//TODO: add more tests
 		assertFalse(result.getData().getMatches().isEmpty());
@@ -72,25 +73,15 @@ public class StatisticsServiceTest {
 		assertEquals("20-29", result.getData().getMatches().get(1).getxValue());
 		assertEquals(100, result.getData().getMatches().get(1).getyValue1());
 		assertEquals(0, result.getData().getMatches().get(1).getyValue2());
-//		assertFalse(result.getData().getMatches().isEmpty());
 	}
 	
 	@Test
 	@Rollback(true)
 	public void testLoadDurationBySearch() throws Exception {
-		this.setupTestData(10, 10, Calendar.MONTH);
-		
-		final MedicalCertificateDto search_parameters = new MedicalCertificateDto();
-		search_parameters.setAge(18);
-		search_parameters.setStartDate("Januari 2011");
-		search_parameters.setEndDate("December 2011");
-		search_parameters.setDiagnose(true);
-		search_parameters.setBasedOnExamination(true);
-		search_parameters.setBasedOnTelephoneContact(false);
-		
+		final MedicalCertificateDto search_parameters = getSearchParameters();
 		final ServiceResult<StatisticsResult> result = this.service.loadStatisticsByDuration(search_parameters);
+		
 		assertNotNull(result);
-		//TODO: add more tests
 		assertFalse(result.getData().getMatches().isEmpty());
 		assertEquals(4, result.getData().getMatches().size());
 		assertEquals("15-30", result.getData().getMatches().get(1).getxValue());
@@ -98,42 +89,46 @@ public class StatisticsServiceTest {
 		assertEquals(10, result.getData().getMatches().get(1).getyValue1());
 		assertEquals(40, result.getData().getMatches().get(2).getyValue1());
 		assertEquals(40, result.getData().getMatches().get(3).getyValue1());
-//		assertEquals(0, result.getData().getMatches().get(4).getyValue1());
-//		assertEquals(0, result.getData().getMatches().get(1).getyValue2());
-//		assertFalse(result.getData().getMatches().isEmpty());
+	}
+	
+	@Test
+	@Rollback(true)
+	public void testLoadMonthsBySearch() throws Exception {
+		final MedicalCertificateDto search_parameters = getSearchParameters();
+		final ServiceResult<StatisticsResult> result = this.service.loadStatisticsByMonth(search_parameters);
+		
+		assertNotNull(result);
+		assertFalse(result.getData().getMatches().isEmpty());
+		assertEquals(12, result.getData().getMatches().size());
+		assertEquals("Februari", result.getData().getMatches().get(1).getxValue());
+		for (int month=0; month<10; month++){
+			assertEquals(10, result.getData().getMatches().get(month).getyValue1());
+			assertEquals(0, result.getData().getMatches().get(month).getyValue2());
+		}
+		assertEquals(0, result.getData().getMatches().get(10).getyValue1());
+		assertEquals(0, result.getData().getMatches().get(10).getyValue2());
+		assertEquals(0, result.getData().getMatches().get(11).getyValue1());
+		assertEquals(0, result.getData().getMatches().get(11).getyValue2());
 	}
 	
 	@Test
 	@Rollback(true)
 	public void testLoadCareUnitBySearch() throws Exception {
-		this.setupTestData(10, 10, Calendar.MONTH);
-		
-		final MedicalCertificateDto search_parameters = new MedicalCertificateDto();
-		search_parameters.setStartDate("Januari 2011");
-		search_parameters.setEndDate("December 2011");
-//		search_parameters.setDiagnose(true);
-		search_parameters.setBasedOnExamination(true);
-		search_parameters.setBasedOnTelephoneContact(false);
-		
+		final MedicalCertificateDto search_parameters = getSearchParameters();
 		final ServiceResult<StatisticsResult> result = this.service.loadStatisticsByCareUnit(search_parameters);
+		
 		assertNotNull(result);
 		assertFalse(result.getData().getMatches().isEmpty());
 		assertEquals(1, result.getData().getMatches().size());
 		assertEquals("Gårda", result.getData().getMatches().get(0).getxValue());
 		assertEquals(100, result.getData().getMatches().get(0).getyValue1());
-//		assertFalse(result.getData().getMatches().isEmpty());
 	}
 	
 	private void setupTestData(final int numberOfPeriods, final int certificatesPerPeriod, final int period) {
-		
 		final List<MedicalCertificateEntity> certs = new ArrayList<MedicalCertificateEntity>();
 		
 		final Calendar cal = Calendar.getInstance();
 		cal.set(2011, 0, 1, 0, 0, 0);
-		
-		this.personRepository.deleteAll();
-		this.diagnosisRepository.deleteAll();
-		this.careUnitRepository.deleteAll();
 		
 		PersonEntity person = PersonEntity.newEntity(28, "Male");
 		this.personRepository.save(person);
@@ -143,21 +138,15 @@ public class StatisticsServiceTest {
 		this.careUnitRepository.save(careUnit);
 		
 		for (int i = 0; i < numberOfPeriods; i++) {
-			
 			final Random r = new Random();
 			for (int j = 0; j < certificatesPerPeriod; j++) {
-				
-				//int age = r.nextInt(60) + 10;
-				//boolean female = r.nextBoolean();
 				int day = r.nextInt(27) + 1;
 				
 				final Calendar start = Calendar.getInstance();
 				start.set(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), day);
 				
 				final Date d1 = start.getTime();
-//				start.roll(Calendar.DAY_OF_YEAR, true);
 				start.add(Calendar.DAY_OF_MONTH, 10 + (15 * i));
-				
 				final Date d2 = start.getTime();
 				
 				final long d1Id = this.dateRepository.findByCalendarDate(d1).getId();
@@ -169,13 +158,20 @@ public class StatisticsServiceTest {
 				e.setCareUnitId(careUnit.getId());
 				e.setBasedOnExamination(true);
 				e.setBasedOnTelephoneContact(false);
-
 				certs.add(e);
-			}
-			
-			cal.roll(period, true);
+			}			
+			cal.add(period, 1);
 		}
-		
 		this.certificateRepository.save(certs);
+	}
+
+	private MedicalCertificateDto getSearchParameters() {
+		final MedicalCertificateDto search_parameters = new MedicalCertificateDto();
+		search_parameters.setStartDate("Januari 2011");
+		search_parameters.setEndDate("December 2011");
+		search_parameters.setBasedOnExamination(true);
+		search_parameters.setBasedOnTelephoneContact(false);
+		
+		return search_parameters;
 	}
 }

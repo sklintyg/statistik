@@ -104,7 +104,6 @@ public class RegisterStatisticsServiceTest {
 		
 		cert.setBasedOnExamination(Boolean.TRUE);
 		cert.setBasedOnTelephoneContact(Boolean.FALSE);
-//			cert.setViewRange(StatisticsViewRange.MONTHLY.getCode());
 		return cert;
 	}
 }

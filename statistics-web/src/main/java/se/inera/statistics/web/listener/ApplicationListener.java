@@ -55,7 +55,7 @@ public class ApplicationListener extends ContextLoaderListener {
 	public void contextInitialized(ServletContextEvent event) {
 		super.contextInitialized(event);
 		
-		this.setupInitialData(event, 10, 100, Calendar.MONTH);
+		this.setupInitialData(event, 18, 100, Calendar.MONTH);
 		
 		log.info("==== INERA STATISTICS SERVICE STARTED ====");
 	}
@@ -86,19 +86,14 @@ public class ApplicationListener extends ContextLoaderListener {
 		careUnitRepository.save(careUnit2);
 		
 		for (int i = 0; i < numberOfPeriods; i++) {
-			
 			final Random r = new Random();
 			for (int j = 0; j < certificatesPerPeriod; j++) {
-				
-				//int age = r.nextInt(60) + 10;
-				//boolean female = r.nextBoolean();
 				int day = r.nextInt(27) + 1;
 				
 				final Calendar start = Calendar.getInstance();
 				start.set(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), day);
 				
 				final Date d1 = start.getTime();
-//				start.roll(Calendar.DAY_OF_YEAR, true);
 				start.add(Calendar.DAY_OF_YEAR, r.nextInt(130));
 				
 				final Date d2 = start.getTime();
@@ -121,15 +116,10 @@ public class ApplicationListener extends ContextLoaderListener {
 				e.setBasedOnExamination(false);
 				e.setBasedOnTelephoneContact(false);
 
-//				e.setBasedOnExamination(r.nextBoolean());
-//				e.setBasedOnTelephoneContact(r.nextBoolean());
-//				
 				certs.add(e);
-			}
-			
-			cal.roll(period, true);
+			}		
+			cal.add(period, 1);
 		}
-		
 		certificateRepository.save(certs);
 	}
 	

@@ -1,5 +1,6 @@
 package se.inera.statistics.core.spi.impl;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -55,12 +56,8 @@ public class StatisticsServiceImpl implements StatisticsService {
 	@Override
 	public ServiceResult<StatisticsResult> loadStatisticsByDuration(final MedicalCertificateDto search) {
 		try {
-			final SimpleDateFormat sdf = new SimpleDateFormat(TIME_TEXT_FORMAT, LOCALE);
-			
-			final DateEntity startDate = this.dateRepository.findByCalendarDate(sdf.parse(search.getStartDate()));
-			final DateEntity endDate = this.dateRepository.findByCalendarDate(sdf.parse(search.getEndDate()));
-			final long start = this.dateRepository.findByCalendarDate(startDate.getMonthStart()).getId();
-			final long end = this.dateRepository.findByCalendarDate(endDate.getMonthEnd()).getId();
+			final long start = getStartDate(search.getStartDate());
+			final long end = getEndDate(search.getEndDate());
 
 			final StatisticsResult result = new StatisticsResult(this.getRowResultsByDuration(start, end, search.getBasedOnExamination(), search.getBasedOnTelephoneContact()));
 			
@@ -76,10 +73,7 @@ public class StatisticsServiceImpl implements StatisticsService {
 	@Override
 	public ServiceResult<StatisticsResult> loadStatisticsByMonth(final MedicalCertificateDto search) {
 		try {
-			final SimpleDateFormat sdf = new SimpleDateFormat(TIME_TEXT_FORMAT, LOCALE);
-			
-			final DateEntity startDate = this.dateRepository.findByCalendarDate(sdf.parse(search.getStartDate()));
-			final DateEntity start = this.dateRepository.findByCalendarDate(startDate.getMonthStart());
+			final long start = getStartDate(search.getStartDate());
 
 			final StatisticsResult result = new StatisticsResult(this.getRowResultsByMonth(start, search.getBasedOnExamination(), search.getBasedOnTelephoneContact()));
 			
@@ -95,12 +89,8 @@ public class StatisticsServiceImpl implements StatisticsService {
 	@Override
 	public ServiceResult<StatisticsResult> loadStatisticsByCareUnit(final MedicalCertificateDto search) {
 		try {
-			final SimpleDateFormat sdf = new SimpleDateFormat(TIME_TEXT_FORMAT, LOCALE);
-			
-			final DateEntity startDate = this.dateRepository.findByCalendarDate(sdf.parse(search.getStartDate()));
-			final DateEntity endDate = this.dateRepository.findByCalendarDate(sdf.parse(search.getEndDate()));
-			final long start = this.dateRepository.findByCalendarDate(startDate.getMonthStart()).getId();
-			final long end = this.dateRepository.findByCalendarDate(endDate.getMonthEnd()).getId();
+			final long start = getStartDate(search.getStartDate());
+			final long end = getEndDate(search.getEndDate());
 
 			final StatisticsResult result = new StatisticsResult(this.getRowResultsByCareUnit(start, end, search.getBasedOnExamination(), search.getBasedOnTelephoneContact()));
 			
@@ -116,13 +106,8 @@ public class StatisticsServiceImpl implements StatisticsService {
 	@Override
 	public ServiceResult<StatisticsResult> loadByAge(MedicalCertificateDto search) {
 		try {
-			final SimpleDateFormat sdf = new SimpleDateFormat(TIME_TEXT_FORMAT, LOCALE);
-			
-			final DateEntity startDate = this.dateRepository.findByCalendarDate(sdf.parse(search.getStartDate()));
-			final DateEntity endDate = this.dateRepository.findByCalendarDate(sdf.parse(search.getEndDate()));
-
-			final long start = this.dateRepository.findByCalendarDate(startDate.getMonthStart()).getId();
-			final long end = this.dateRepository.findByCalendarDate(endDate.getMonthEnd()).getId();
+			final long start = getStartDate(search.getStartDate());
+			final long end = getEndDate(search.getEndDate());
 
 			final StatisticsResult result = new StatisticsResult(this.getRowResultsByAge(start, end, search.getBasedOnExamination(), search.getBasedOnTelephoneContact()));
 			
@@ -191,11 +176,12 @@ public class StatisticsServiceImpl implements StatisticsService {
 		}
 	}
 
-	private List<RowResult> getRowResultsByMonth(DateEntity start, Boolean basedOnExamination, Boolean basedOnTelephoneContact){
+	private List<RowResult> getRowResultsByMonth(long start, Boolean basedOnExamination, Boolean basedOnTelephoneContact){
 		List<RowResult> rowResults = new ArrayList<RowResult>();
 		final Calendar cal = Calendar.getInstance();
 		
-		cal.setTime(start.getMonthStart());
+		DateEntity startDate = this.dateRepository.findOne(start);
+		cal.setTime(startDate.getMonthStart());
 		for(int i=0; i<12; i++){
 			final DateEntity month = this.dateRepository.findByCalendarDate(cal.getTime());
 			rowResults.add(getRowResultByMonth(month, basedOnExamination, basedOnTelephoneContact));
@@ -231,6 +217,20 @@ public class StatisticsServiceImpl implements StatisticsService {
 		RowResult row = RowResult.newResult("" + careUnit.getName(), count_male, count_female);
 		
 		return row;
+	}
+	
+	private long getStartDate(final String date) throws ParseException{
+		final SimpleDateFormat sdf = new SimpleDateFormat(TIME_TEXT_FORMAT, LOCALE);
+		
+		final DateEntity startDate = this.dateRepository.findByCalendarDate(sdf.parse(date));
+		return this.dateRepository.findByCalendarDate(startDate.getMonthStart()).getId();	
+	}
+	
+	private long getEndDate(final String date) throws ParseException{
+		final SimpleDateFormat sdf = new SimpleDateFormat(TIME_TEXT_FORMAT, LOCALE);
+		
+		final DateEntity endDate = this.dateRepository.findByCalendarDate(sdf.parse(date));
+		return this.dateRepository.findByCalendarDate(endDate.getMonthEnd()).getId();
 	}
 
 }
