@@ -137,8 +137,8 @@ public class StatisticsServiceTest {
 		CareUnitEntity careUnit = CareUnitEntity.newEntity("Gårda");
 		this.careUnitRepository.save(careUnit);
 		
+		final Random r = new Random();
 		for (int i = 0; i < numberOfPeriods; i++) {
-			final Random r = new Random();
 			for (int j = 0; j < certificatesPerPeriod; j++) {
 				int day = r.nextInt(27) + 1;
 				
