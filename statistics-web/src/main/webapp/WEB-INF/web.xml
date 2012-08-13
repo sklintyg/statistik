@@ -24,13 +24,13 @@
 
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
-		<param-value>/WEB-INF/iss-security.xml, classpath:/statistics-config.xml</param-value>
+		<param-value>/WEB-INF/iss-security.xml, /WEB-INF/statistics-web-config.xml, classpath:/statistics-config.xml</param-value>
 	</context-param>
 
 	<listener>
-		<listener-class>se.inera.statistics.web.listener.ApplicationListener</listener-class>
+		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
 	</listener>
-	
+
 	<servlet>
 		<servlet-name>web</servlet-name>
 		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>

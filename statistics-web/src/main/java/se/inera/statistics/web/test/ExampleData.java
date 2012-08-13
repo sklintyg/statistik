@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package se.inera.statistics.web.listener;
+package se.inera.statistics.web.test;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -22,13 +22,11 @@ import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
-import javax.servlet.ServletContextEvent;
+import javax.annotation.PostConstruct;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.web.context.ContextLoaderListener;
-import org.springframework.web.context.WebApplicationContext;
-import org.springframework.web.context.support.WebApplicationContextUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import se.inera.statistics.core.repository.CareUnitRepository;
 import se.inera.statistics.core.repository.DateRepository;
@@ -42,31 +40,37 @@ import se.inera.statistics.model.entity.PersonEntity;
 import se.inera.statistics.model.entity.WorkCapability;
 
 /**
- * Called when Spring initialize, destroys, or refreshes the application
- * context.
+ * Generates example data (for testing and qa)
  *
- * @author Marcus Krantz [marcus.krantz@callistaenterprise.se]
+ * @author Roger Lindsjo [roger.lindsjo@callistaenterprise.se]
  */
-public class ApplicationListener extends ContextLoaderListener {
+public class ExampleData {
 	
-	private static final Logger log = LoggerFactory.getLogger(ApplicationListener.class);
+	private static final Logger log = LoggerFactory.getLogger(ExampleData.class);
+
+	@Autowired
+	private MedicalCertificateRepository certificateRepository;
+
+	@Autowired
+	private PersonRepository personRepository;
 	
-	@Override
-	public void contextInitialized(ServletContextEvent event) {
-		super.contextInitialized(event);
-		
-		this.setupInitialData(event, 18, 100, Calendar.MONTH);
-		
-		log.info("==== INERA STATISTICS SERVICE STARTED ====");
+	@Autowired
+	private DiagnosisRepository diagnosisRepository;
+	
+	@Autowired
+	private DateRepository dateRepository;
+	
+	@Autowired
+	private CareUnitRepository careUnitRepository;
+	
+	@PostConstruct
+	private void generate() {
+		log.info("==== INERA STATISTICS GENERATING SAMPLE DATA ====");
+		setupInitialData(18, 100, Calendar.MONTH);
 	}
 	
-	private void setupInitialData(ServletContextEvent event, final int numberOfPeriods, final int certificatesPerPeriod, final int period) {
-		final WebApplicationContext wc = WebApplicationContextUtils.getWebApplicationContext(event.getServletContext());
-		final MedicalCertificateRepository certificateRepository = wc.getBean(MedicalCertificateRepository.class);
-		final PersonRepository personRepository = wc.getBean(PersonRepository.class);
-		final DiagnosisRepository diagnosisRepository = wc.getBean(DiagnosisRepository.class);
-		final DateRepository dateRepository = wc.getBean(DateRepository.class);
-		final CareUnitRepository careUnitRepository = wc.getBean(CareUnitRepository.class);
+	private void setupInitialData(final int numberOfPeriods, final int certificatesPerPeriod, final int period) {
+
 		certificateRepository.deleteAll();
 		personRepository.deleteAll();
 		diagnosisRepository.deleteAll();
@@ -121,11 +125,5 @@ public class ApplicationListener extends ContextLoaderListener {
 			cal.add(period, 1);
 		}
 		certificateRepository.save(certs);
-	}
-	
-	@Override
-	public void contextDestroyed(ServletContextEvent event) {
-		super.contextDestroyed(event);
-		log.info("==== INERA STATISTICS SERVICE STOPPED ====");
-	}
+	}	
 }
