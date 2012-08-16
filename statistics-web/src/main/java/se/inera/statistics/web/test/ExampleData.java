@@ -62,7 +62,7 @@ public class ExampleData {
 	
 	@Autowired
 	private CareUnitRepository careUnitRepository;
-	
+
 	@PostConstruct
 	private void generate() {
 		log.info("==== INERA STATISTICS GENERATING SAMPLE DATA ====");
@@ -89,8 +89,8 @@ public class ExampleData {
 		CareUnitEntity careUnit2 = CareUnitEntity.newEntity("Askim");
 		careUnitRepository.save(careUnit2);
 		
+		final Random r = new Random(1234);
 		for (int i = 0; i < numberOfPeriods; i++) {
-			final Random r = new Random();
 			for (int j = 0; j < certificatesPerPeriod; j++) {
 				int day = r.nextInt(27) + 1;
 				
