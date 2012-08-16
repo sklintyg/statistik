@@ -33,7 +33,7 @@
 	<logger name="org.springframework.web" level="DEBUG" />
 	<logger name="org.springframework.http" level="WARN" />
 
-	<logger name="se.inera.certificate" level="DEBUG" />
+	<logger name="se.inera.statistics" level="DEBUG" />
 
 	<root level="WARN">
 		<appender-ref ref="STDOUT" />
