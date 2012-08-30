@@ -19,6 +19,12 @@ public class DiagnosisEntity {
 	private String icd10;
 	
 	@Column(nullable=false)
+	private String icd10Group;
+	
+	@Column(nullable=false)
+	private String icd10GroupDescription;
+	
+	@Column(nullable=false)
 	private boolean diagnose;
 	
 	@Column(nullable=false)
@@ -27,11 +33,14 @@ public class DiagnosisEntity {
 	
 	DiagnosisEntity(){}
 	
-	public static DiagnosisEntity newEntity(final String Icd10, final boolean diagnose, final WorkCapability workCapability) {
+	public static DiagnosisEntity newEntity(final String Icd10, final boolean diagnose, final WorkCapability workCapability,
+			final String icd10Group, final String icd10GroupDescription) {
 		final DiagnosisEntity diagnosis = new DiagnosisEntity();
 		diagnosis.setIcd10(Icd10);
 		diagnosis.setDiagnose(diagnose);
 		diagnosis.setWorkCapability(workCapability);
+		diagnosis.setIcd10Group(icd10Group);
+		diagnosis.setIcd10GroupDescription(icd10GroupDescription);
 		
 		return diagnosis;
 	}
@@ -66,5 +75,21 @@ public class DiagnosisEntity {
 
 	public void setWorkCapability(WorkCapability workCapability) {
 		this.workCapability = workCapability;
+	}
+
+	public String getIcd10Group() {
+		return icd10Group;
+	}
+
+	public void setIcd10Group(String icd10Group) {
+		this.icd10Group = icd10Group;
+	}
+
+	public String getIcd10GroupDescription() {
+		return icd10GroupDescription;
+	}
+
+	public void setIcd10GroupDescription(String icd10GroupDescription) {
+		this.icd10GroupDescription = icd10GroupDescription;
 	}
 }

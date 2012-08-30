@@ -55,7 +55,7 @@ public class CertificateRegistrationRestIT {
 		mc.setBasedOnTelephoneContact(Boolean.TRUE);
 		
 		mc.setDiagnose(Boolean.FALSE);
-		mc.setIcd10("boogiesss");
+		mc.setIcd10("B1044333");
 		mc.setworkDisability(25);
 		
 		mc.setCareUnit("ateegoog");

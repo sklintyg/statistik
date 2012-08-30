@@ -1,0 +1,68 @@
+package se.inera.statistics.core.repository;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import se.inera.statistics.model.entity.CareUnitEntity;
+import se.inera.statistics.model.entity.DiagnosisEntity;
+import se.inera.statistics.model.entity.MedicalCertificateEntity;
+import se.inera.statistics.model.entity.PersonEntity;
+import se.inera.statistics.model.entity.WorkCapability;
+
+
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations="classpath:statistics-config.xml")
+@ActiveProfiles(profiles={"db-psql","test"}, inheritProfiles=true)
+public class DiagnosisRepositoryTest {
+
+	@Autowired 
+	private DiagnosisRepository diagnosisRepository;
+	
+	
+	@Before
+	public void setUp(){
+		this.diagnosisRepository.deleteAll();
+		
+		DiagnosisEntity diagnosis = DiagnosisEntity.newEntity("C5442244", false, WorkCapability.HALF_WORKING_CAPABILITY, "II", "Tumörer");
+		this.diagnosisRepository.save(diagnosis);
+		DiagnosisEntity diagnosis2 = DiagnosisEntity.newEntity("L45-9433", false, WorkCapability.FULL_WORKING_CAPABILITY, "XII", "Hudens och underhudens sjukdomar");
+		this.diagnosisRepository.save(diagnosis2);
+		DiagnosisEntity diagnosis3 = DiagnosisEntity.newEntity("L45-3123", false, WorkCapability.FULL_WORKING_CAPABILITY, "XII", "Hudens och underhudens sjukdomar");
+		this.diagnosisRepository.save(diagnosis3);
+	}
+	
+	@Test
+	public void testFindAllSicknessGroups() throws Exception{
+		List<String> result = this.diagnosisRepository.findAllSicknessGroups();
+		assertEquals(2, result.size());
+		assertEquals("II", result.get(0));
+		assertEquals("XII", result.get(1));
+//		assertTrue(result.contains("II"));
+//		assertTrue(result.contains("XII"));
+	}
+	
+	@Test
+	public void testFindIcdsByIcd10group() throws Exception{
+		List<Long> firstGroupIds = this.diagnosisRepository.findIdsByIcd10group("II");
+		assertEquals(1, firstGroupIds.size());
+		assertEquals("C5442244", this.diagnosisRepository.findOne(firstGroupIds.get(0)).getIcd10());
+		
+		List<Long> secondGroupIds = this.diagnosisRepository.findIdsByIcd10group("XII");
+		assertEquals(2, secondGroupIds.size());
+		assertEquals("L45-9433", this.diagnosisRepository.findOne(secondGroupIds.get(0)).getIcd10());
+		assertEquals("L45-3123", this.diagnosisRepository.findOne(secondGroupIds.get(1)).getIcd10());
+	}
+}

@@ -20,6 +20,8 @@ import se.inera.statistics.core.spi.RegisterStatisticsService;
 import se.inera.statistics.model.entity.CareUnitEntity;
 import se.inera.statistics.model.entity.DateEntity;
 import se.inera.statistics.model.entity.DiagnosisEntity;
+import se.inera.statistics.model.entity.IcdGroup;
+import se.inera.statistics.model.entity.IcdGroupList;
 import se.inera.statistics.model.entity.MedicalCertificateEntity;
 import se.inera.statistics.model.entity.PersonEntity;
 import se.inera.statistics.model.entity.WorkCapability;
@@ -44,6 +46,9 @@ public class RegisterStatisticsServiceImpl implements RegisterStatisticsService 
 	
 	@Autowired
 	private CareUnitRepository careUnitRepository;
+	
+	@Autowired
+	private IcdGroupList icdGroupList;
 	
 	@Override
 	public boolean registerMedicalCertificateStatistics(
@@ -87,12 +92,13 @@ public class RegisterStatisticsServiceImpl implements RegisterStatisticsService 
 		return person;
 	}
 	
-	private DiagnosisEntity getDiagnosis(final String Icd10, final boolean diagnose, final int workDisability){
+	private DiagnosisEntity getDiagnosis(final String icd10, final boolean diagnose, final int workDisability){
 		WorkCapability workCapability = WorkCapability.fromWorkDisabilityPercentage(workDisability);
-		DiagnosisEntity diagnosis = this.diagnosisRepository.findByIcd10AndWorkCapability(Icd10, workCapability);
+		DiagnosisEntity diagnosis = this.diagnosisRepository.findByIcd10AndWorkCapability(icd10, workCapability);
 		//TODO: Understand semantics of diagnose boolean and implement strategy for creating/updating the values
 		if (null == diagnosis){
-			diagnosis = DiagnosisEntity.newEntity(Icd10, diagnose, workCapability);
+			final IcdGroup icdGroup = icdGroupList.getGroup(icd10);
+			diagnosis = DiagnosisEntity.newEntity(icd10, diagnose, workCapability, icdGroup.getChapter(), icdGroup.getDescription());
 			this.diagnosisRepository.save(diagnosis);
 		}
 		return diagnosis;

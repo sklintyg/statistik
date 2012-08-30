@@ -17,5 +17,7 @@ public interface StatisticsService {
 
 	ServiceResult<StatisticsResult> loadStatisticsByMonth(final MedicalCertificateDto search);
 
+	ServiceResult<StatisticsResult> loadStatisticsBySicknessGroups(final MedicalCertificateDto search);
+
 	ServiceResult<StatisticsResult> loadStatisticsByCareUnit(final MedicalCertificateDto search);
 }

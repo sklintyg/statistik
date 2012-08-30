@@ -23,10 +23,12 @@ import se.inera.statistics.core.api.RowResult;
 import se.inera.statistics.core.api.StatisticsResult;
 import se.inera.statistics.core.repository.CareUnitRepository;
 import se.inera.statistics.core.repository.DateRepository;
+import se.inera.statistics.core.repository.DiagnosisRepository;
 import se.inera.statistics.core.repository.MedicalCertificateRepository;
 import se.inera.statistics.core.spi.StatisticsService;
 import se.inera.statistics.model.entity.CareUnitEntity;
 import se.inera.statistics.model.entity.DateEntity;
+import se.inera.statistics.model.entity.DiagnosisEntity;
 
 @Service
 @Transactional
@@ -48,7 +50,10 @@ public class StatisticsServiceImpl implements StatisticsService {
 	private MedicalCertificateRepository certificateRepository;
 	
 	@Autowired
-	private DateRepository dateRepository;	
+	private DateRepository dateRepository;
+	
+	@Autowired
+	private DiagnosisRepository diagnosisRepository;
 	
 	@Autowired
 	private CareUnitRepository careUnitRepository;
@@ -76,6 +81,23 @@ public class StatisticsServiceImpl implements StatisticsService {
 			final long start = getStartDate(search.getStartDate());
 
 			final StatisticsResult result = new StatisticsResult(this.getRowResultsByMonth(start, search.getBasedOnExamination(), search.getBasedOnTelephoneContact()));
+			
+			return ServiceResultImpl.newSuccessfulResult(
+					result,
+					Collections.singletonList(new DefaultServiceMessage("Test", ServiceMessageType.SUCCESS))
+					);
+		} catch (final Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+	
+	@Override
+	public ServiceResult<StatisticsResult> loadStatisticsBySicknessGroups(final MedicalCertificateDto search) {
+		try {
+			final long start = getStartDate(search.getStartDate());
+			final long end = getEndDate(search.getEndDate());
+
+			final StatisticsResult result = new StatisticsResult(this.getRowResultsBySicknessGroups(start, end, search.getBasedOnExamination(), search.getBasedOnTelephoneContact()));
 			
 			return ServiceResultImpl.newSuccessfulResult(
 					result,
@@ -200,6 +222,26 @@ public class StatisticsServiceImpl implements StatisticsService {
 		return row;
 	}
 	
+	private List<RowResult> getRowResultsBySicknessGroups(long start, long end, Boolean basedOnExamination, Boolean basedOnTelephoneContact){
+		List<RowResult> rowResults = new ArrayList<RowResult>();
+
+		List<String> sicknessGroups = this.diagnosisRepository.findAllSicknessGroups();
+		for (String sicknessGroup : sicknessGroups){
+			List<Long> icd10Ids = this.diagnosisRepository.findIdsByIcd10group(sicknessGroup);
+			rowResults.add(getRowResultBySicknessGroup(sicknessGroup, icd10Ids, start, end, basedOnExamination, basedOnTelephoneContact));
+		}
+		
+		return rowResults;
+	}
+	
+	private RowResult getRowResultBySicknessGroup(String sicknessGroup, List<Long> icd10Ids, long start, long end, Boolean basedOnExamination, Boolean basedOnTelephoneContact){
+		final int count_male = (int)this.certificateRepository.findCountBySicknessGroup("Male", icd10Ids, start, end, basedOnExamination, basedOnTelephoneContact);
+		final int count_female = (int)this.certificateRepository.findCountBySicknessGroup("Female", icd10Ids, start, end, basedOnExamination, basedOnTelephoneContact);
+		RowResult row = RowResult.newResult(sicknessGroup, count_male, count_female);
+
+		return row;
+	}
+	
 	private List<RowResult> getRowResultsByCareUnit(long start, long end, Boolean basedOnExamination, Boolean basedOnTelephoneContact){
 		List<RowResult> rowResults = new ArrayList<RowResult>();
 
@@ -212,8 +254,8 @@ public class StatisticsServiceImpl implements StatisticsService {
 	}
 	
 	private RowResult getRowResultByCareUnit(CareUnitEntity careUnit, long start, long end, Boolean basedOnExamination, Boolean basedOnTelephoneContact){
-		final int count_male = (int)this.certificateRepository.findCountByCareUnit(careUnit.getId(), start, end, basedOnExamination, basedOnTelephoneContact);
-		final int count_female = (int)this.certificateRepository.findCountByCareUnit(careUnit.getId(), start, end, basedOnExamination, basedOnTelephoneContact);
+		final int count_male = (int)this.certificateRepository.findCountByCareUnit("Male", careUnit.getId(), start, end, basedOnExamination, basedOnTelephoneContact);
+		final int count_female = (int)this.certificateRepository.findCountByCareUnit("Female", careUnit.getId(), start, end, basedOnExamination, basedOnTelephoneContact);
 		RowResult row = RowResult.newResult("" + careUnit.getName(), count_male, count_female);
 		
 		return row;

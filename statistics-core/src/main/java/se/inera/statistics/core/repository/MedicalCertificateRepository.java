@@ -13,21 +13,10 @@ public interface MedicalCertificateRepository extends JpaRepository<MedicalCerti
 
 	String GENDER_MALE = "Male";
 	String GENDER_FEMALE = "Female";
-			
-	@Query(value="select e from MedicalCertificateEntity as e where " +
-			"(e.startDate >= :startDate and e.endDate <= :endDate) and " +
-			"e.basedOnExamination = :basedOnExamination and " +
-			"e.basedOnTelephoneContact = :basedOnTelephoneContact order by e.startDate asc")
-	List<MedicalCertificateEntity> findBySearch(
-			@Param("startDate") final long start,
-			@Param("endDate") final long end,
-			@Param("basedOnExamination") final Boolean basedOnExamination,
-			@Param("basedOnTelephoneContact") final Boolean basedOnTelephoneContact);
 	
 	@Query("select e from MedicalCertificateEntity as e where " +
-			"(e.startDate >= :startDate and e.endDate <= :endDate) order by e.startDate asc")
+			"(e.startDate >= :startDate and e.startDate <= :endDate) order by e.startDate asc")
 	List<MedicalCertificateEntity> findCertificatesInRange(@Param("startDate") final long start, @Param("endDate") final long end);
-	
 
 	@Query(value="select count(e.id) from MedicalCertificateEntity as e, " +
 			"PersonEntity as p " +
@@ -81,13 +70,34 @@ public interface MedicalCertificateRepository extends JpaRepository<MedicalCerti
 			@Param("basedOnExamination") final Boolean basedOnExamination,
 			@Param("basedOnTelephoneContact") final Boolean basedOnTelephoneContact);
 	
-	@Query(value="select count(e.id) from MedicalCertificateEntity as e " +
+	@Query(value="select count(e.id) from MedicalCertificateEntity as e, " +
+			"PersonEntity as p " +
 			" where " +
+			"e.personId = p.id and " +
+			"p.gender = :gender and " +
+			"e.diagnosisId in (:diagnosisIds) and " +
+			"(e.startDate >= :startDate and e.startDate <= :endDate) and " +
+			"e.basedOnExamination = :basedOnExamination and " +
+			"e.basedOnTelephoneContact = :basedOnTelephoneContact")
+	long findCountBySicknessGroup(
+			@Param("gender") final String gender,
+			@Param("diagnosisIds") final List<Long> diagnosisIds,
+			@Param("startDate") final long start,
+			@Param("endDate") final long end,
+			@Param("basedOnExamination") final Boolean basedOnExamination,
+			@Param("basedOnTelephoneContact") final Boolean basedOnTelephoneContact);
+	
+	@Query(value="select count(e.id) from MedicalCertificateEntity as e, " +
+			"PersonEntity as p " +
+			" where " +
+			"e.personId = p.id and " +
+			"p.gender = :gender and " +
 			"e.careUnitId = :careUnitId and " +
 			"(e.startDate >= :startDate and e.startDate <= :endDate) and " +
 			"e.basedOnExamination = :basedOnExamination and " +
 			"e.basedOnTelephoneContact = :basedOnTelephoneContact")
 	long findCountByCareUnit(
+			@Param("gender") final String gender,
 			@Param("careUnitId") final long careUnitId,
 			@Param("startDate") final long start,
 			@Param("endDate") final long end,

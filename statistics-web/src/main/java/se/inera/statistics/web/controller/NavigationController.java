@@ -39,6 +39,11 @@ public class NavigationController {
 		return "monthwise";
 	}
 	
+	@RequestMapping(value="/sicknessgroups", method=RequestMethod.GET)
+	public String displaySickneessGroups() {
+		return "sicknessgroups";
+	}
+	
 	@RequestMapping(value="/careunit", method=RequestMethod.GET)
 	public String displayCareunit() {
 		return "careunit";

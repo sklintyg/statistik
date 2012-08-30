@@ -3,6 +3,8 @@ package se.inera.statistics.core.spi;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertThat;
+import static org.hamcrest.CoreMatchers.*;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -113,6 +115,26 @@ public class StatisticsServiceTest {
 	
 	@Test
 	@Rollback(true)
+	public void testLoadSicknessGroupsBySearch() throws Exception {
+		final MedicalCertificateDto search_parameters = getSearchParameters();
+		final ServiceResult<StatisticsResult> result = this.service.loadStatisticsBySicknessGroups(search_parameters);
+		
+		assertNotNull(result);
+		assertFalse(result.getData().getMatches().isEmpty());
+		assertEquals(3, result.getData().getMatches().size());
+		
+		
+		assertEquals("I", result.getData().getMatches().get(0).getxValue());
+		assertEquals("II", result.getData().getMatches().get(1).getxValue());
+		assertEquals("XII", result.getData().getMatches().get(2).getxValue());
+		
+		assertThat(result.getData().getMatches().get(0).getyValue1(), not(equalTo(0)));
+		assertThat(result.getData().getMatches().get(1).getyValue1(), not(equalTo(0)));
+		assertThat(result.getData().getMatches().get(2).getyValue1(), not(equalTo(0)));
+	}
+	
+	@Test
+	@Rollback(true)
 	public void testLoadCareUnitBySearch() throws Exception {
 		final MedicalCertificateDto search_parameters = getSearchParameters();
 		final ServiceResult<StatisticsResult> result = this.service.loadStatisticsByCareUnit(search_parameters);
@@ -132,8 +154,18 @@ public class StatisticsServiceTest {
 		
 		PersonEntity person = PersonEntity.newEntity(28, "Male");
 		this.personRepository.save(person);
-		DiagnosisEntity diagnosis = DiagnosisEntity.newEntity("544334bg", false, WorkCapability.NO_WORKING_CAPABILITY);
-		this.diagnosisRepository.save(diagnosis);
+		
+		List<DiagnosisEntity> diagnosisList = new ArrayList<DiagnosisEntity>();
+		DiagnosisEntity diagnosis1 = DiagnosisEntity.newEntity("A05442244", false, WorkCapability.NO_WORKING_CAPABILITY, "I", "Vissa infektionssjukdomar och parasitsjukdomar");
+		this.diagnosisRepository.save(diagnosis1);
+		diagnosisList.add(diagnosis1);
+		DiagnosisEntity diagnosis2 = DiagnosisEntity.newEntity("C5442244", false, WorkCapability.HALF_WORKING_CAPABILITY, "II", "Tumörer");
+		this.diagnosisRepository.save(diagnosis2);
+		diagnosisList.add(diagnosis2);
+		DiagnosisEntity diagnosis3 = DiagnosisEntity.newEntity("L45-9433", false, WorkCapability.FULL_WORKING_CAPABILITY, "XII", "Hudens och underhudens sjukdomar");
+		this.diagnosisRepository.save(diagnosis3);
+		diagnosisList.add(diagnosis3);
+		
 		CareUnitEntity careUnit = CareUnitEntity.newEntity("Gårda");
 		this.careUnitRepository.save(careUnit);
 		
@@ -154,7 +186,7 @@ public class StatisticsServiceTest {
 				
 				final MedicalCertificateEntity e = MedicalCertificateEntity.newEntity(d1Id, d2Id);
 				e.setPersonId(person.getId());
-				e.setDiagnosisId(diagnosis.getId());
+				e.setDiagnosisId(diagnosisList.get(r.nextInt(3)).getId());
 				e.setCareUnitId(careUnit.getId());
 				e.setBasedOnExamination(true);
 				e.setBasedOnTelephoneContact(false);

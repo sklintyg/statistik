@@ -51,7 +51,7 @@ public class MedicalCertificateRepositoryTest {
 		PersonEntity person = PersonEntity.newEntity(18, "Male");
 		this.personRepository.save(person);
 		
-		DiagnosisEntity diagnosis = DiagnosisEntity.newEntity("544334bg", false, WorkCapability.HALF_WORKING_CAPABILITY);
+		DiagnosisEntity diagnosis = DiagnosisEntity.newEntity("C5442244", false, WorkCapability.HALF_WORKING_CAPABILITY, "II", "Tumörer");
 		this.diagnosisRepository.save(diagnosis);
 		
 		CareUnitEntity careUnit = CareUnitEntity.newEntity("Gaminia");
@@ -137,7 +137,7 @@ public class MedicalCertificateRepositoryTest {
 			MedicalCertificateEntity ent = createEmptyCertificate();
 			this.repo.save(ent);
 		}
-		final long result1 = this.repo.findCountByCareUnit(this.careUnitRepository.findByName("Gaminia").getId(), this.startId, this.endId, Boolean.FALSE, Boolean.TRUE);
+		final long result1 = this.repo.findCountByCareUnit("Male", this.careUnitRepository.findByName("Gaminia").getId(), this.startId, this.endId, Boolean.FALSE, Boolean.TRUE);
 		assertEquals(10, result1);
 	
 		CareUnitEntity careUnit = CareUnitEntity.newEntity("care unit 2");
@@ -147,7 +147,7 @@ public class MedicalCertificateRepositoryTest {
 			ent.setCareUnitId(careUnit.getId());
 			this.repo.save(ent);
 		}
-		final long result2 = this.repo.findCountByCareUnit(this.careUnitRepository.findByName("care unit 2").getId(), this.startId, this.endId, Boolean.FALSE, Boolean.TRUE);
+		final long result2 = this.repo.findCountByCareUnit("Male", this.careUnitRepository.findByName("care unit 2").getId(), this.startId, this.endId, Boolean.FALSE, Boolean.TRUE);
 		assertEquals(12, result2);
 	}
 	
@@ -160,7 +160,7 @@ public class MedicalCertificateRepositoryTest {
 		}
 		ent.setPersonId(person.getId());
 		
-		DiagnosisEntity diagnosis = this.diagnosisRepository.findByIcd10AndWorkCapability("544334bg", WorkCapability.HALF_WORKING_CAPABILITY);
+		DiagnosisEntity diagnosis = this.diagnosisRepository.findByIcd10AndWorkCapability("C5442244", WorkCapability.HALF_WORKING_CAPABILITY);
 		if (null == diagnosis){
 			fail("Encountered null diagnosis where we should not!");
 		}

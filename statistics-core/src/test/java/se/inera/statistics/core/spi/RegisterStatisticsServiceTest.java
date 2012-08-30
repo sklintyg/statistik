@@ -79,7 +79,7 @@ public class RegisterStatisticsServiceTest {
 		
 		assertEquals(18, person.getAge());
 		assertEquals("Female", person.getGender());
-		assertEquals("879444-22", diagnosis.getIcd10());
+		assertEquals("C879422", diagnosis.getIcd10());
 		assertEquals(true, diagnosis.isDiagnose());
 		assertEquals(WorkCapability.THREE_QUARTER_WORKING_CAPABILITY, diagnosis.getWorkCapability());
 		assertEquals("Torslanda", careUnit.getName());
@@ -98,7 +98,7 @@ public class RegisterStatisticsServiceTest {
 		cert.setStartDate(startDateString);
 		cert.setEndDate(endDateString);
 		cert.setDiagnose(true);
-		cert.setIcd10("879444-22");
+		cert.setIcd10("C879422");
 		cert.setworkDisability(25);
 		cert.setCareUnit("Torslanda");
 		

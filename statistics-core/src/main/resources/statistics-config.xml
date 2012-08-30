@@ -52,6 +52,9 @@
 	</beans>
 
 	<beans>
+	    <bean class="se.inera.statistics.model.entity.IcdGroupList">
+	       <property name="mappings" value="classpath:icd10groups.txt"/>
+	    </bean>
 		<import resource="statistics-common-config.xml" />
 	</beans>
 </beans>

@@ -81,9 +81,17 @@ public class ExampleData {
 		final Calendar cal = Calendar.getInstance();
 		cal.set(2012, 0, 1, 0, 0, 0);
 		
+		List<DiagnosisEntity> diagnosisList = new ArrayList<DiagnosisEntity>();
+		DiagnosisEntity diagnosis1 = DiagnosisEntity.newEntity("P005433", false, WorkCapability.NO_WORKING_CAPABILITY, "XVI", "Vissa perinatala tillstånd");
+		diagnosisRepository.save(diagnosis1);
+		diagnosisList.add(diagnosis1);
+		DiagnosisEntity diagnosis2 = DiagnosisEntity.newEntity("C5442244", false, WorkCapability.HALF_WORKING_CAPABILITY, "II", "Tumörer");
+		this.diagnosisRepository.save(diagnosis2);
+		diagnosisList.add(diagnosis2);
+		DiagnosisEntity diagnosis3 = DiagnosisEntity.newEntity("L45-9433", false, WorkCapability.FULL_WORKING_CAPABILITY, "XII", "Hudens och underhudens sjukdomar");
+		this.diagnosisRepository.save(diagnosis3);
+		diagnosisList.add(diagnosis3);
 		
-		DiagnosisEntity diagnosis = DiagnosisEntity.newEntity("544334bg", false, WorkCapability.NO_WORKING_CAPABILITY);
-		diagnosisRepository.save(diagnosis);
 		CareUnitEntity careUnit1 = CareUnitEntity.newEntity("Gårda");
 		careUnitRepository.save(careUnit1);
 		CareUnitEntity careUnit2 = CareUnitEntity.newEntity("Askim");
@@ -115,7 +123,8 @@ public class ExampleData {
 				
 				final MedicalCertificateEntity e = MedicalCertificateEntity.newEntity(d1Id, d2Id);
 				e.setPersonId(person.getId());
-				e.setDiagnosisId(diagnosis.getId());
+//				e.setDiagnosisId(diagnosis.getId());
+				e.setDiagnosisId(diagnosisList.get(r.nextInt(3)).getId());
 				e.setCareUnitId(r.nextBoolean() ? careUnit1.getId() : careUnit2.getId());
 				e.setBasedOnExamination(false);
 				e.setBasedOnTelephoneContact(false);
