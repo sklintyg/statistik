@@ -1,15 +1,9 @@
 $(document).ready(function() {
 	/*
-	 * Default to swedish
-	 */
-//	$.datepicker.setDefaults( $.datepicker.regional[ 'sv' ] );
-
-	/*
 	 * Process all datefields, add datepicker 
 	 * as well as date icon
 	 */
 	$('.monthField').each(function(i, v) {
-//		$(v).datepicker($.datepicker.regional['sv']);
 		$(v).datepicker( {
 			closeText: 'Stäng',
 	        prevText: '&laquo;Förra',
@@ -39,13 +33,5 @@ $(document).ready(function() {
 	        }
 	    });
 		INERA.log('Binding datepicker...');
-//		$(v).datepicker({
-//			dateFormat : 'yy-mm-dd',
-//			firstDay : 1
-//		});
-//		
-//		$(v).siblings('span').css('cursor', 'pointer').click(function(e) {
-//			$(v).datepicker('show');
-//		});
 	});
 });
