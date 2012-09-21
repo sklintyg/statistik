@@ -8,8 +8,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,7 +26,6 @@ import se.inera.statistics.core.repository.MedicalCertificateRepository;
 import se.inera.statistics.core.spi.StatisticsService;
 import se.inera.statistics.model.entity.CareUnitEntity;
 import se.inera.statistics.model.entity.DateEntity;
-import se.inera.statistics.model.entity.DiagnosisEntity;
 
 @Service
 @Transactional
@@ -44,8 +41,6 @@ public class StatisticsServiceImpl implements StatisticsService {
 
 	private static final Locale LOCALE = new Locale("sv");
 
-	private static final Logger log = LoggerFactory.getLogger(StatisticsServiceImpl.class);
-	
 	@Autowired
 	private MedicalCertificateRepository certificateRepository;
 	

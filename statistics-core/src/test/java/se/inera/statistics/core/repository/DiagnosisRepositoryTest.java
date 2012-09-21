@@ -1,12 +1,8 @@
 package se.inera.statistics.core.repository;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
-import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -16,10 +12,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import se.inera.statistics.model.entity.CareUnitEntity;
 import se.inera.statistics.model.entity.DiagnosisEntity;
-import se.inera.statistics.model.entity.MedicalCertificateEntity;
-import se.inera.statistics.model.entity.PersonEntity;
 import se.inera.statistics.model.entity.WorkCapability;
 
 
