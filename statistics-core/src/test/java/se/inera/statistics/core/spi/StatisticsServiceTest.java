@@ -65,8 +65,7 @@ public class StatisticsServiceTest {
 	@Test
 	@Rollback(true)
 	public void testLoadAgeBySearch() throws Exception {
-		final MedicalCertificateDto search_parameters = getSearchParameters();		
-		final ServiceResult<StatisticsResult> result = this.service.loadByAge(search_parameters);
+		final ServiceResult<StatisticsResult> result = this.service.loadByAge("January 2011", "December 2011", "all", "all");
 		
 		assertNotNull(result);
 		//TODO: add more tests
@@ -128,9 +127,9 @@ public class StatisticsServiceTest {
 		assertEquals("II", result.getData().getMatches().get(1).getxValue());
 		assertEquals("XII", result.getData().getMatches().get(2).getxValue());
 		
-		assertThat(result.getData().getMatches().get(0).getyValue1(), not(equalTo(0)));
-		assertThat(result.getData().getMatches().get(1).getyValue1(), not(equalTo(0)));
-		assertThat(result.getData().getMatches().get(2).getyValue1(), not(equalTo(0)));
+		assertThat(result.getData().getMatches().get(0).getyValue1(), not(equalTo(0L)));
+		assertThat(result.getData().getMatches().get(1).getyValue1(), not(equalTo(0L)));
+		assertThat(result.getData().getMatches().get(2).getyValue1(), not(equalTo(0L)));
 	}
 	
 	@Test
