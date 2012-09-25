@@ -21,7 +21,7 @@ function columnchart(data, horizontalHeader) {
      var options = {
              hAxis: {title: horizontalHeader, titleTextStyle: {color: 'green'},
          		textStyle: {fontSize: 9.5}},
-             legend: {position: 'top'},
+             legend: {position: 'right'},
              colors: ['green', 'orange'],
              vAxis: {minValue: 0, baseline: 0}
            };
