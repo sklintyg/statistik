@@ -17,35 +17,7 @@ public class MedicalCertificateDto {
 	
 	private Boolean basedOnExamination;
 	private Boolean basedOnTelephoneContact;
-	
-//	public static List<MedicalCertificate> newFromEntities(final List<MedicalCertificateEntity> ents) {
-//		final List<MedicalCertificate> dtos = new ArrayList<MedicalCertificate>();
-//		for (final MedicalCertificateEntity ent : ents) {
-//			dtos.add(newFromEntity(ent));
-//		}
-//		
-//		return dtos;
-//	}
-//	
-//	public static MedicalCertificate newFromEntity(final MedicalCertificateEntity ent, final PersonEntity person) {
-//		
-//		final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-//		
-//		final MedicalCertificate dto = new MedicalCertificate();
-//		dto.setAge(ent.getPerson().getAge());
-//		
-//		dto.setFemale(ent.getPerson().isFemale());
-//		dto.setIcd10(ent.getIcd10());
-//		
-//		dto.setBasedOnExamination(ent.isBasedOnExamination());
-//		dto.setBasedOnTelephoneContact(ent.isBasedOnTelephoneContact());
-//		
-//		dto.setStartDate(sdf.format(ent.getStartDate()));
-//		dto.setEndDate(sdf.format(ent.getEndDate()));
-//		
-//		return dto;
-//	}
-	
+		
 	public MedicalCertificateDto() {
 	
 	}
