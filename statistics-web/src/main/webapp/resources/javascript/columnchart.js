@@ -1,8 +1,8 @@
 function columnchart(data, horizontalHeader) {
 	 var drawdata = new google.visualization.DataTable();
      drawdata.addColumn('string', horizontalHeader);
-     drawdata.addColumn('number', 'Män');
      drawdata.addColumn('number', 'Kvinnor');
+     drawdata.addColumn('number', 'Män');
      
      if (data == null){
      	alert("null data");
@@ -27,7 +27,4 @@ function columnchart(data, horizontalHeader) {
            };
      var columnchart = new google.visualization.ColumnChart(document.getElementById('diagram'));
      columnchart.draw(drawdata, options);
-//     
-//     var table = new google.visualization.Table(document.getElementById('diagram2'));
-//     table.draw(drawdata, {showRowNumber: true});
 };

@@ -28,7 +28,12 @@ public class NavigationController {
 	public String displayStart() {
 		return "start";
 	}
-	
+
+	@RequestMapping(value="/age", method=RequestMethod.GET)
+	public String displayAge() {
+		return "age";
+	}
+
 	@RequestMapping(value="/duration", method=RequestMethod.GET)
 	public String displayDuration() {
 		return "duration";

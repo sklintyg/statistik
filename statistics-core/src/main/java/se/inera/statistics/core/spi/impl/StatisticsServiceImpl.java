@@ -121,12 +121,9 @@ public class StatisticsServiceImpl implements StatisticsService {
 	}
 	
 	@Override
-	public ServiceResult<StatisticsResult> loadByAge(MedicalCertificateDto search) {
+	public ServiceResult<StatisticsResult> loadByAge(String from, String to, String disability, String group) {
 		try {
-			final long start = getStartDate(search.getStartDate());
-			final long end = getEndDate(search.getEndDate());
-
-			final StatisticsResult result = new StatisticsResult(this.getRowResultsByAge(start, end, search.getBasedOnExamination(), search.getBasedOnTelephoneContact()));
+			final StatisticsResult result = new StatisticsResult(getRowResultsByAge(getStartDate(from), getEndDate(to), disability, group));
 			
 			return ServiceResultImpl.newSuccessfulResult(
 					result,
@@ -166,24 +163,22 @@ public class StatisticsServiceImpl implements StatisticsService {
 		}
 	}
 	
-	private List<RowResult> getRowResultsByAge(long start, long end, Boolean basedOnExamination, Boolean basedOnTelephoneContact){
+	private List<RowResult> getRowResultsByAge(long start, long end, String disability, String group){
 		List<RowResult> rowResults = new ArrayList<RowResult>();
 
-		for (int ageIndex = 0; ageIndex < AGE_RANGES.length -1; ageIndex++) {
-			rowResults.add(getRowResultByAge(AGE_RANGES[ageIndex], AGE_RANGES[ageIndex + 1] - 1, start, end, basedOnExamination, basedOnTelephoneContact));	
+		for (int ageIndex = 0; ageIndex < AGE_RANGES.length - 1; ageIndex++) {
+			rowResults.add(getRowResultByAge(AGE_RANGES[ageIndex], AGE_RANGES[ageIndex + 1] - 1, start, end, disability, group));	
 		}
 		return rowResults;
 	}
 	
-	private RowResult getRowResultByAge(Integer minAge, Integer maxAge, long start, long end, Boolean basedOnExamination, Boolean basedOnTelephoneContact){
-		final int count_male = (int)this.certificateRepository.findCountBySearchAndAge(minAge, maxAge, "Male", start, end, basedOnExamination, basedOnTelephoneContact);
-		final int count_female = (int)this.certificateRepository.findCountBySearchAndAge(minAge, maxAge, "Female", start, end, basedOnExamination, basedOnTelephoneContact);
-		RowResult row = RowResult.newResult(formatAgeRange(minAge, maxAge), count_male, count_female);
-		
-		return row;
+	private RowResult getRowResultByAge(int minAge, int maxAge, long start, long end, String disability, String group) {
+		final long count_male = certificateRepository.findCountBySearchAndAge(minAge, maxAge, "Male", start, end);
+		final long count_female = certificateRepository.findCountBySearchAndAge(minAge, maxAge, "Female", start, end);
+		return RowResult.newResult(formatAgeRange(minAge, maxAge), count_female, count_male);
 	}
 	
-	private String formatAgeRange(Integer minAge, Integer maxAge) {
+	private String formatAgeRange(int minAge, int maxAge) {
 		if (MAX_AGE == maxAge + 1){
 			return ">" + minAge;
 		} else if (MIN_AGE == minAge){

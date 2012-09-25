@@ -24,6 +24,20 @@ public interface MedicalCertificateRepository extends JpaRepository<MedicalCerti
 			"e.personId = p.id and " +
 			"p.gender = :gender and " +
 			"(p.age >= :minAge and p.age <= :maxAge) and " +
+			"(e.startDate >= :startDate and e.startDate <= :endDate)")
+	long findCountBySearchAndAge(
+			@Param("minAge") final int minAge,
+			@Param("maxAge") final int maxAge,
+			@Param("gender") final String gender,
+			@Param("startDate") final long start,
+			@Param("endDate") final long end);
+
+	@Query(value="select count(e.id) from MedicalCertificateEntity as e, " +
+			"PersonEntity as p " +
+			" where " +
+			"e.personId = p.id and " +
+			"p.gender = :gender and " +
+			"(p.age >= :minAge and p.age <= :maxAge) and " +
 			"(e.startDate >= :startDate and e.startDate <= :endDate) and " +
 			"e.basedOnExamination = :basedOnExamination and " +
 			"e.basedOnTelephoneContact = :basedOnTelephoneContact")
@@ -35,7 +49,7 @@ public interface MedicalCertificateRepository extends JpaRepository<MedicalCerti
 			@Param("endDate") final long end,
 			@Param("basedOnExamination") final Boolean basedOnExamination,
 			@Param("basedOnTelephoneContact") final Boolean basedOnTelephoneContact);
-	
+
 	@Query(value="select count(e.id) from MedicalCertificateEntity as e, " +
 			"PersonEntity as p " +
 			" where " +

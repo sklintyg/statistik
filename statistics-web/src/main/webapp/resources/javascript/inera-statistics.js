@@ -17,7 +17,7 @@ $(document).ready(function() {
 	        changeYear: true,
 	        showButtonPanel: true,
 	        dateFormat: 'MM yy',
-			initStatus: 'Välj månand',
+			initStatus: 'Välj månad',
 	        onClose: function(dateText, inst) { 
 	            var month = $("#ui-datepicker-div .ui-datepicker-month :selected").val();
 	            var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val();
@@ -32,6 +32,8 @@ $(document).ready(function() {
 	            }
 	        }
 	    });
+		var now = new Date();
+		$(v).datepicker('setDate', new Date(now.getFullYear(), now.getMonth(), 1));
 		INERA.log('Binding datepicker...');
 	});
 });

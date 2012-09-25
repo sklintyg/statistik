@@ -21,8 +21,8 @@ public class StatisticsApi {
 	
 	@RequestMapping(value="/age", method=RequestMethod.POST, consumes="application/json", produces="application/json")
 	@ResponseBody
-	public ServiceResult<StatisticsResult> loadAgeStatistics(@RequestBody final MedicalCertificateDto criterias) {
-		return this.service.loadByAge(criterias);
+	public ServiceResult<StatisticsResult> loadAgeStatistics(@RequestBody final AgeForm criterias) {
+		return this.service.loadByAge(criterias.getFromDate(), criterias.getToDate(), criterias.getDisability(), criterias.getGroup());
 	}
 	
 	@RequestMapping(value="/duration", method=RequestMethod.POST, consumes="application/json", produces="application/json")
