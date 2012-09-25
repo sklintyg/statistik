@@ -173,8 +173,16 @@ public class StatisticsServiceImpl implements StatisticsService {
 	}
 	
 	private RowResult getRowResultByAge(int minAge, int maxAge, long start, long end, String disability, String group) {
-		final long count_male = certificateRepository.findCountBySearchAndAge(minAge, maxAge, "Male", start, end);
-		final long count_female = certificateRepository.findCountBySearchAndAge(minAge, maxAge, "Female", start, end);
+		final long count_male;
+		final long count_female;
+		
+		if ("all".equals(group)) {
+			count_male = certificateRepository.findCountBySearchAndAge(minAge, maxAge, "Male", start, end);		
+			count_female = certificateRepository.findCountBySearchAndAge(minAge, maxAge, "Female", start, end);
+		} else {
+			count_male = certificateRepository.findCountByAgeAndIcd10Group(minAge, maxAge, "Male", start, end, group);		
+			count_female = certificateRepository.findCountByAgeAndIcd10Group(minAge, maxAge, "Female", start, end, group);
+		}
 		return RowResult.newResult(formatAgeRange(minAge, maxAge), count_female, count_male);
 	}
 	

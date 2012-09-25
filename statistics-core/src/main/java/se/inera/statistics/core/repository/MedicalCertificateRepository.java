@@ -33,6 +33,22 @@ public interface MedicalCertificateRepository extends JpaRepository<MedicalCerti
 			@Param("endDate") final long end);
 
 	@Query(value="select count(e.id) from MedicalCertificateEntity as e, " +
+			"PersonEntity as p, DiagnosisEntity as d " +
+			" where " +
+			"e.personId = p.id and " +
+			"e.diagnosisId = d.id and " +
+			"p.gender = :gender and " +
+			"(p.age >= :minAge and p.age <= :maxAge) and " +
+			"(e.startDate >= :startDate and e.startDate <= :endDate) and d.icd10Group = :icd10Group")
+	long findCountByAgeAndIcd10Group(
+			@Param("minAge") final int minAge,
+			@Param("maxAge") final int maxAge,
+			@Param("gender") final String gender,
+			@Param("startDate") final long start,
+			@Param("endDate") final long end,
+			@Param("icd10Group") final String icd10Group);
+	
+	@Query(value="select count(e.id) from MedicalCertificateEntity as e, " +
 			"PersonEntity as p " +
 			" where " +
 			"e.personId = p.id and " +
