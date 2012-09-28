@@ -37,7 +37,19 @@ public class MedicalCertificateEntity {
 	private Boolean basedOnTelephoneContact;
 
 	@Column(nullable=false)
-	private Long careGiverId;
+	private String careGiverId;
+
+	@Column(nullable=false)
+	private String issuerId;
+
+	@Column(nullable=false)
+	private Integer issuerAge;
+
+	@Column(nullable=false)
+	private String issuerGender;
+
+	@Column(nullable=false)
+	private Integer workDisability;
 	
 	MedicalCertificateEntity() {}
 	
@@ -115,11 +127,43 @@ public class MedicalCertificateEntity {
 		this.careUnitId = careUnitId;
 	}
 
-	public Long getCareGiverId() {
-		return careUnitId;
+	public String getCareGiverId() {
+		return careGiverId;
 	}
 
-	public void setCareGiverId(Long careGiverId) {
+	public void setCareGiverId(String careGiverId) {
 		this.careGiverId = careGiverId;
+	}
+
+	public String getIssuerId() {
+		return issuerId;
+	}
+
+	public void setIssuerId(String issuerId) {
+		this.issuerId = issuerId;
+	}
+
+	public void setIssuerAge(Integer issuerAge) {
+		this.issuerAge = issuerAge;
+	}
+	
+	public Integer getIssuerAge() {
+		return issuerAge;
+	}
+	
+	public void setIssuerGender(String issuerGender) {
+		this.issuerGender = issuerGender;
+	}
+	
+	public String getIssuerGender() {
+		return issuerGender;
+	}
+
+	public void setWorkDisability(Integer workDisability) {
+		this.workDisability = workDisability;
+	}
+	
+	public Integer getWorkDisability() {
+		return workDisability;
 	}
 }

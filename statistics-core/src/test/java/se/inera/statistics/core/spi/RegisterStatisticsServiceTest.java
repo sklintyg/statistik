@@ -99,7 +99,7 @@ public class RegisterStatisticsServiceTest {
 		cert.setEndDate(endDateString);
 		cert.setDiagnose(true);
 		cert.setIcd10("C879422");
-		cert.setworkDisability(25);
+		cert.setWorkDisability(25);
 		cert.setCareUnit("Torslanda");
 		
 		cert.setBasedOnExamination(Boolean.TRUE);

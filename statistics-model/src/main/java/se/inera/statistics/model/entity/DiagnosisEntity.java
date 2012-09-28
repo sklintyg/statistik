@@ -9,7 +9,7 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
 @Entity
-@Table(uniqueConstraints=@UniqueConstraint(columnNames={"icd10"}))
+@Table()//;uniqueConstraints=@UniqueConstraint(columnNames={"icd10"}))
 public class DiagnosisEntity {
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)

@@ -177,11 +177,21 @@ public class StatisticsServiceImpl implements StatisticsService {
 		final long count_female;
 		
 		if ("all".equals(group)) {
-			count_male = certificateRepository.findCountBySearchAndAge(minAge, maxAge, "Male", start, end);		
-			count_female = certificateRepository.findCountBySearchAndAge(minAge, maxAge, "Female", start, end);
+			if ("all".equals(disability)) {
+				count_male = certificateRepository.findCountBySearchAndAge(minAge, maxAge, "Male", start, end);		
+				count_female = certificateRepository.findCountBySearchAndAge(minAge, maxAge, "Female", start, end);
+			} else {
+				count_male = certificateRepository.findCountByAgeAndWorkDisability(minAge, maxAge, "Male", start, end, Integer.parseInt(disability));		
+				count_female = certificateRepository.findCountByAgeAndWorkDisability(minAge, maxAge, "Female", start, end, Integer.parseInt(disability));
+			}
 		} else {
-			count_male = certificateRepository.findCountByAgeAndIcd10Group(minAge, maxAge, "Male", start, end, group);		
-			count_female = certificateRepository.findCountByAgeAndIcd10Group(minAge, maxAge, "Female", start, end, group);
+			if ("all".equals(disability)) {
+				count_male = certificateRepository.findCountByAgeAndIcd10Group(minAge, maxAge, "Male", start, end, group);		
+				count_female = certificateRepository.findCountByAgeAndIcd10Group(minAge, maxAge, "Female", start, end, group);
+			} else {
+				count_male = certificateRepository.findCountByAgeAndIcd10GroupAndWorkDisability(minAge, maxAge, "Male", start, end, group, Integer.parseInt(disability));		
+				count_female = certificateRepository.findCountByAgeAndIcd10GroupAndWorkDisability(minAge, maxAge, "Female", start, end, group, Integer.parseInt(disability));
+			}
 		}
 		return RowResult.newResult(formatAgeRange(minAge, maxAge), count_female, count_male);
 	}

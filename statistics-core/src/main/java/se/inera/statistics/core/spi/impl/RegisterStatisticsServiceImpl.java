@@ -51,16 +51,14 @@ public class RegisterStatisticsServiceImpl implements RegisterStatisticsService 
 	private IcdGroupList icdGroupList;
 	
 	@Override
-	public boolean registerMedicalCertificateStatistics(
-			MedicalCertificateDto certificate) {
-		
+	public boolean registerMedicalCertificateStatistics(MedicalCertificateDto certificate) {		
 		try {
 			final DateEntity startDate = getDateEntity(certificate.getStartDate());
 			final DateEntity endDate = getDateEntity(certificate.getEndDate());
 			
 			final MedicalCertificateEntity ent = MedicalCertificateEntity.newEntity(startDate.getId(), endDate.getId());
 			final PersonEntity person = getPerson(certificate.getAge(), certificate.getFemale());
-			final DiagnosisEntity diagnosis = getDiagnosis(certificate.getIcd10(), certificate.getDiagnose(), certificate.getworkDisability());
+			final DiagnosisEntity diagnosis = getDiagnosis(certificate.getIcd10(), certificate.getDiagnose(), certificate.getWorkDisability());
 			
 			if (certificate.getCareUnit() == null) {
 				throw new NullPointerException("Care unit name is null.");
@@ -73,6 +71,11 @@ public class RegisterStatisticsServiceImpl implements RegisterStatisticsService 
 			ent.setCareUnitId(careUnit.getId());
 			ent.setBasedOnExamination(certificate.getBasedOnExamination());
 			ent.setBasedOnTelephoneContact(certificate.getBasedOnTelephoneContact());
+			ent.setCareGiverId(certificate.getCareGiver());
+			ent.setIssuerId(certificate.getIssuer());
+			ent.setIssuerGender(certificate.getIssuerGender());
+			ent.setIssuerAge(certificate.getIssuerAge());
+			ent.setWorkDisability(certificate.getWorkDisability());
 			this.certificateRepository.save(ent);
 			
 			log.info("Medical certificate statistics data successfully registered.");

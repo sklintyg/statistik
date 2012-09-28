@@ -6,6 +6,10 @@ public class MedicalCertificateDto {
 	private Integer age;
 	private Integer workDisability;
 	private String careUnit;
+	private String careGiver;
+	private String issuer;
+	private Integer issuerAge;
+	private String issuerGender;
 
 	private Boolean female;
 	private Boolean diagnose;
@@ -18,8 +22,7 @@ public class MedicalCertificateDto {
 	private Boolean basedOnExamination;
 	private Boolean basedOnTelephoneContact;
 		
-	public MedicalCertificateDto() {
-	
+	public MedicalCertificateDto() {	
 	}
 
 	public int getViewRange() {
@@ -38,11 +41,11 @@ public class MedicalCertificateDto {
 		this.age = age;
 	}
 
-	public Integer getworkDisability() {
+	public Integer getWorkDisability() {
 		return workDisability;
 	}
 
-	public void setworkDisability(Integer workDisability) {
+	public void setWorkDisability(Integer workDisability) {
 		this.workDisability = workDisability;
 	}
 
@@ -108,5 +111,37 @@ public class MedicalCertificateDto {
 
 	public void setBasedOnTelephoneContact(Boolean basedOnTelephoneContact) {
 		this.basedOnTelephoneContact = basedOnTelephoneContact;
+	}
+	
+	public void setCareGiver(String careGiver) {
+		this.careGiver = careGiver;
+	}
+	
+	public String getCareGiver() {
+		return careGiver;
+	}
+	
+	public String getIssuer() {
+		return issuer;
+	}
+	
+	public void setIssuer(String issuer) {
+		this.issuer = issuer;
+	}
+	
+	public Integer getIssuerAge() {
+		return issuerAge;
+	}
+	
+	public void setIssuerAge(Integer issuerAge) {
+		this.issuerAge = issuerAge;
+	}
+	
+	public String getIssuerGender() {
+		return issuerGender;
+	}
+	
+	public void setIssuerGender(String issuerGender) {
+		this.issuerGender = issuerGender;
 	}
 }
