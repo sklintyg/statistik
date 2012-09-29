@@ -27,23 +27,13 @@
 
 <inera:page>
 	<inera:statistics-header>
-	<script type="text/javascript" src="https://www.google.com/jsapi"></script>
- 	<script type="text/javascript">
-	      google.load("visualization", "1", {packages:["corechart", "table"]});
-	</script>
-	<script type="text/javascript" src="<c:url value="/resources/javascript/columnchart.js" />"></script>
-	<script type="text/javascript" src="<c:url value="/resources/javascript/table.js" />"></script>
-	<script type="text/javascript" src="<c:url value="/resources/javascript/start.js" />"></script>
-	
-    
+		<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+		<script type="text/javascript" src="<c:url value="/resources/javascript/start.js" />"></script>
 	</inera:statistics-header>
 	<inera:statistics_body>
-		<h2><spring:message code="search.title" /></h2>
-		<p><spring:message code="search.desc" /></p>
-		
-		Välj söktyp via flikarna till vänster eller länkarna härunder.
-		
-		<a href="<c:url value="/web/security/logout" />"><spring:message code="label.logout" /></a>
+		<h2>Översikt</h2>
+		<p>Visa intygsstatistik för vårdgivare i Sverige. Det är möjligt att göra utsökningar som begränsar urvalet utifrån sjukskrivningsgard och / eller sjukdomskategori</p>
+		<p>Välj typ av sökning med flikarna till vänster. Just nu är Ålder åch intygslängd implementerade</p>		
 	</inera:statistics_body>
 </inera:page> 
     
