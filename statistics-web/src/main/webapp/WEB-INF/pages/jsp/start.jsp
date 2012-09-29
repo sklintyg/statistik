@@ -33,7 +33,7 @@
 	<inera:statistics_body>
 		<h2>Översikt</h2>
 		<p>Visa intygsstatistik för vårdgivare i Sverige. Det är möjligt att göra utsökningar som begränsar urvalet utifrån sjukskrivningsgard och / eller sjukdomskategori</p>
-		<p>Välj typ av sökning med flikarna till vänster. Just nu är Ålder åch intygslängd implementerade</p>		
+		<p>Välj typ av sökning med flikarna till vänster. Just nu är Åldersgrupper och Längd på intyget implementerade</p>		
 	</inera:statistics_body>
 </inera:page> 
     
