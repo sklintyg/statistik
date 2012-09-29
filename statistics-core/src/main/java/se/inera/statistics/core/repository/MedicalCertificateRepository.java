@@ -104,18 +104,62 @@ public interface MedicalCertificateRepository extends JpaRepository<MedicalCerti
 			"e.personId = p.id and " +
 			"p.gender = :gender and " +
 			"((e.endDate - e.startDate) >= :minDuration and (e.endDate - e.startDate) <= :maxDuration) and " +
-			"(e.startDate >= :startDate and e.startDate <= :endDate) and " +
-			"e.basedOnExamination = :basedOnExamination and " +
-			"e.basedOnTelephoneContact = :basedOnTelephoneContact")
+			"(e.startDate >= :startDate and e.startDate <= :endDate)")
 	long findCountByDuration(
 			@Param("minDuration") final long minDuration,
 			@Param("maxDuration") final long maxDuration,
 			@Param("gender") final String gender,
 			@Param("startDate") final long start,
+			@Param("endDate") final long end);
+
+	@Query(value="select count(e.id) from MedicalCertificateEntity as e, " +
+			"PersonEntity as p, DiagnosisEntity as d " +
+			" where " +
+			"e.personId = p.id and " +
+			"e.diagnosisId = d.id and " +
+			"p.gender = :gender and " +
+			"((e.endDate - e.startDate) >= :minDuration and (e.endDate - e.startDate) <= :maxDuration) and " +
+			"(e.startDate >= :startDate and e.startDate <= :endDate) and d.icd10Group = :icd10Group")
+	long findCountByDurationAndIcd10Group(
+			@Param("minDuration") final long minDuration,
+			@Param("maxDuration") final long maxDuration,
+			@Param("gender") final String gender,
+			@Param("startDate") final long start,
 			@Param("endDate") final long end,
-			@Param("basedOnExamination") final Boolean basedOnExamination,
-			@Param("basedOnTelephoneContact") final Boolean basedOnTelephoneContact);
-	
+			@Param("icd10Group") final String icd10Group);
+
+	@Query(value="select count(e.id) from MedicalCertificateEntity as e, " +
+			"PersonEntity as p " +
+			" where " +
+			"e.personId = p.id and " +
+			"p.gender = :gender and " +
+			"((e.endDate - e.startDate) >= :minDuration and (e.endDate - e.startDate) <= :maxDuration) and " +
+			"(e.startDate >= :startDate and e.startDate <= :endDate) and e.workDisability = :workDisability")
+	long findCountByDurationAndWorkDisability(
+			@Param("minDuration") final long minDuration,
+			@Param("maxDuration") final long maxDuration,
+			@Param("gender") final String gender,
+			@Param("startDate") final long start,
+			@Param("endDate") final long end,
+			@Param("workDisability") final int workDisability);
+
+	@Query(value="select count(e.id) from MedicalCertificateEntity as e, " +
+			"PersonEntity as p, DiagnosisEntity as d " +
+			" where " +
+			"e.personId = p.id and " +
+			"e.diagnosisId = d.id and " +
+			"p.gender = :gender and " +
+			"((e.endDate - e.startDate) >= :minDuration and (e.endDate - e.startDate) <= :maxDuration) and " +
+			"(e.startDate >= :startDate and e.startDate <= :endDate) and d.icd10Group = :icd10Group and e.workDisability = :workDisability")
+	long findCountByDurationAndIcd10GroupAndWorkDisability(
+			@Param("minDuration") final long minDuration,
+			@Param("maxDuration") final long maxDuration,
+			@Param("gender") final String gender,
+			@Param("startDate") final long start,
+			@Param("endDate") final long end,
+			@Param("icd10Group") final String icd10Group,
+			@Param("workDisability") final int workDisability);
+
 	@Query(value="select count(e.id) from MedicalCertificateEntity as e, " +
 			"PersonEntity as p, " +
 			"DateEntity as d " +

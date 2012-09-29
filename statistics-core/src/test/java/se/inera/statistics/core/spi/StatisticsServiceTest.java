@@ -79,8 +79,7 @@ public class StatisticsServiceTest {
 	@Test
 	@Rollback(true)
 	public void testLoadDurationBySearch() throws Exception {
-		final MedicalCertificateDto search_parameters = getSearchParameters();
-		final ServiceResult<StatisticsResult> result = this.service.loadStatisticsByDuration(search_parameters);
+		final ServiceResult<StatisticsResult> result = this.service.loadStatisticsByDuration("January 2011", "December 2011", "all", "all");
 		
 		assertNotNull(result);
 		assertFalse(result.getData().getMatches().isEmpty());

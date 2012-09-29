@@ -54,22 +54,19 @@ public class StatisticsServiceImpl implements StatisticsService {
 	private CareUnitRepository careUnitRepository;
 	
 	@Override
-	public ServiceResult<StatisticsResult> loadStatisticsByDuration(final MedicalCertificateDto search) {
+	public ServiceResult<StatisticsResult> loadStatisticsByDuration(String from, String to, String disability, String group) {
 		try {
-			final long start = getStartDate(search.getStartDate());
-			final long end = getEndDate(search.getEndDate());
+			final long start = getStartDate(from);
+			final long end = getEndDate(to);
 
-			final StatisticsResult result = new StatisticsResult(this.getRowResultsByDuration(start, end, search.getBasedOnExamination(), search.getBasedOnTelephoneContact()));
+			final StatisticsResult result = new StatisticsResult(this.getRowResultsByDuration(start, end, disability, group));
 			
-			return ServiceResultImpl.newSuccessfulResult(
-					result,
-					Collections.singletonList(new DefaultServiceMessage("Test", ServiceMessageType.SUCCESS))
-					);
+			return ok(result);
 		} catch (final Exception e) {
 			throw new RuntimeException(e);
 		}
 	}
-	
+
 	@Override
 	public ServiceResult<StatisticsResult> loadStatisticsByMonth(final MedicalCertificateDto search) {
 		try {
@@ -77,10 +74,7 @@ public class StatisticsServiceImpl implements StatisticsService {
 
 			final StatisticsResult result = new StatisticsResult(this.getRowResultsByMonth(start, search.getBasedOnExamination(), search.getBasedOnTelephoneContact()));
 			
-			return ServiceResultImpl.newSuccessfulResult(
-					result,
-					Collections.singletonList(new DefaultServiceMessage("Test", ServiceMessageType.SUCCESS))
-					);
+			return ok(result);
 		} catch (final Exception e) {
 			throw new RuntimeException(e);
 		}
@@ -94,10 +88,7 @@ public class StatisticsServiceImpl implements StatisticsService {
 
 			final StatisticsResult result = new StatisticsResult(this.getRowResultsBySicknessGroups(start, end, search.getBasedOnExamination(), search.getBasedOnTelephoneContact()));
 			
-			return ServiceResultImpl.newSuccessfulResult(
-					result,
-					Collections.singletonList(new DefaultServiceMessage("Test", ServiceMessageType.SUCCESS))
-					);
+			return ok(result);
 		} catch (final Exception e) {
 			throw new RuntimeException(e);
 		}
@@ -111,10 +102,7 @@ public class StatisticsServiceImpl implements StatisticsService {
 
 			final StatisticsResult result = new StatisticsResult(this.getRowResultsByCareUnit(start, end, search.getBasedOnExamination(), search.getBasedOnTelephoneContact()));
 			
-			return ServiceResultImpl.newSuccessfulResult(
-					result,
-					Collections.singletonList(new DefaultServiceMessage("Test", ServiceMessageType.SUCCESS))
-					);
+			return ok(result);
 		} catch (final Exception e) {
 			throw new RuntimeException(e);
 		}
@@ -125,31 +113,48 @@ public class StatisticsServiceImpl implements StatisticsService {
 		try {
 			final StatisticsResult result = new StatisticsResult(getRowResultsByAge(getStartDate(from), getEndDate(to), disability, group));
 			
-			return ServiceResultImpl.newSuccessfulResult(
-					result,
-					Collections.singletonList(new DefaultServiceMessage("Test", ServiceMessageType.SUCCESS))
-					);
+			return ok(result);
 
 		} catch (final Exception e) {
 			throw new RuntimeException(e);
 		}
 	}
 		
-	private List<RowResult> getRowResultsByDuration(long start, long end, Boolean basedOnExamination, Boolean basedOnTelephoneContact){
+	private List<RowResult> getRowResultsByDuration(long start, long end, String disability, String group){
 		List<RowResult> rowResults = new ArrayList<RowResult>();
 
-		rowResults.add(getRowResultByDuration(0, 14, start, end, basedOnExamination, basedOnTelephoneContact));
-		rowResults.add(getRowResultByDuration(15, 30, start, end, basedOnExamination, basedOnTelephoneContact));
-		rowResults.add(getRowResultByDuration(31, 90, start, end, basedOnExamination, basedOnTelephoneContact));
-		rowResults.add(getRowResultByDuration(91, 360, start, end, basedOnExamination, basedOnTelephoneContact));
-//		rowResults.add(getRowResultByDuration(361, 1500, start, end, basedOnExamination, basedOnTelephoneContact));
+		rowResults.add(getRowResultByDuration(0, 14, start, end, disability, group));
+		rowResults.add(getRowResultByDuration(15, 30, start, end, disability, group));
+		rowResults.add(getRowResultByDuration(31, 90, start, end, disability, group));
+		rowResults.add(getRowResultByDuration(91, 360, start, end, disability, group));
+		// TODO How to handle longer than 360 days? Limit for "a lot of days"?
+
 		
 		return rowResults;
 	}
 	
-	private RowResult getRowResultByDuration(long minDuration, long maxDuration, long start, long end, Boolean basedOnExamination, Boolean basedOnTelephoneContact){
-		final int count_male = (int)this.certificateRepository.findCountByDuration(minDuration, maxDuration, "Male", start, end, basedOnExamination, basedOnTelephoneContact);
-		final int count_female = (int)this.certificateRepository.findCountByDuration(minDuration, maxDuration, "Female", start, end, basedOnExamination, basedOnTelephoneContact);
+	private RowResult getRowResultByDuration(long minDuration, long maxDuration, long start, long end, String disability, String group){
+		final long count_male;
+		final long count_female;
+
+		if ("all".equals(disability)) {
+			if ("all".equals(group)) {
+				count_male= this.certificateRepository.findCountByDuration(minDuration, maxDuration, "Male", start, end);
+				count_female= this.certificateRepository.findCountByDuration(minDuration, maxDuration, "Female", start, end);
+			} else {
+				count_male= this.certificateRepository.findCountByDurationAndIcd10Group(minDuration, maxDuration, "Male", start, end, group);
+				count_female= this.certificateRepository.findCountByDurationAndIcd10Group(minDuration, maxDuration, "Female", start, end, group);
+			}
+		} else {
+			int disabilityInt = Integer.parseInt(disability);
+			if ("all".equals(group)) {
+				count_male= this.certificateRepository.findCountByDurationAndWorkDisability(minDuration, maxDuration, "Male", start, end, disabilityInt);
+				count_female= this.certificateRepository.findCountByDurationAndWorkDisability(minDuration, maxDuration, "Female", start, end, disabilityInt);
+			} else {
+				count_male= this.certificateRepository.findCountByDurationAndIcd10GroupAndWorkDisability(minDuration, maxDuration, "Male", start, end, group, disabilityInt);
+				count_female= this.certificateRepository.findCountByDurationAndIcd10GroupAndWorkDisability(minDuration, maxDuration, "Female", start, end, group, disabilityInt);
+			}
+		}
 		RowResult row = RowResult.newResult(formatDuration(minDuration, maxDuration), count_male, count_female);
 
 		return row;
@@ -269,6 +274,10 @@ public class StatisticsServiceImpl implements StatisticsService {
 		return row;
 	}
 	
+	private ServiceResult<StatisticsResult> ok(final StatisticsResult result) {
+		return ServiceResultImpl.newSuccessfulResult( result, Collections.singletonList(new DefaultServiceMessage("Test", ServiceMessageType.SUCCESS)));
+	}	
+
 	private long getStartDate(final String date) throws ParseException{
 		final SimpleDateFormat sdf = new SimpleDateFormat(TIME_TEXT_FORMAT, LOCALE);
 		

@@ -13,7 +13,7 @@ public interface StatisticsService {
 	 */
 	ServiceResult<StatisticsResult> loadByAge(String from, String to, String disability, String group);
 
-	ServiceResult<StatisticsResult> loadStatisticsByDuration(final MedicalCertificateDto search);
+	ServiceResult<StatisticsResult> loadStatisticsByDuration(String from, String to, String disability, String group);
 
 	ServiceResult<StatisticsResult> loadStatisticsByMonth(final MedicalCertificateDto search);
 

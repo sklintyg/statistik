@@ -85,9 +85,9 @@ public class MedicalCertificateRepositoryTest {
 			ent.setEndDate(this.startId + 55);
 			this.repo.save(ent);
 		}
-		long result = this.repo.findCountByDuration(0, 30, "Male", this.startId, this.endId, Boolean.FALSE, Boolean.TRUE);
+		long result = this.repo.findCountByDuration(0, 30, "Male", this.startId, this.endId);
 		assertEquals(10, result);
-		assertEquals(12, this.repo.findCountByDuration(31, 60, "Male", this.startId, this.endId, Boolean.FALSE, Boolean.TRUE));
+		assertEquals(12, this.repo.findCountByDuration(31, 60, "Male", this.startId, this.endId));
 	}
 	
 	@Test
