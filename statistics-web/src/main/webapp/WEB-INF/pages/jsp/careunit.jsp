@@ -81,8 +81,6 @@
 			
 		</inera-ui:table>
 		</div>
-		
-		<a href="<c:url value="/web/security/logout" />"><spring:message code="label.logout" /></a>
 	</inera:statistics_body>
 </inera:page> 
     
