@@ -40,6 +40,6 @@ public class IcdGroupList {
 				}
 			}
 		}
-		throw new RuntimeException("Could not find icd code. Illegal state!");
+		throw new RuntimeException("Could not find icd code '" + icd10 + "' . Illegal state!");
 	}
 }
