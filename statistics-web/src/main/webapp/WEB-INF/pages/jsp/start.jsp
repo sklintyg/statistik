@@ -23,17 +23,18 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
 <%@ taglib prefix="inera" uri="http://www.inera.se/certificates/layout/tags" %>
+<%@ taglib prefix="statistics" uri="http://www.inera.se/certificate/statistics/layout/tags" %>
 <%@ taglib prefix="inera-ui" uri="http://www.inera.se/certificates/component/tags" %>
 
 <inera:page>
-	<inera:statistics-header>
+	<statistics:header>
 		<script type="text/javascript" src="https://www.google.com/jsapi"></script>
 		<script type="text/javascript" src="<c:url value="/resources/javascript/start.js" />"></script>
-	</inera:statistics-header>
-	<inera:statistics_body>
+	</statistics:header>
+	<statistics:body>
 		<h2>Översikt</h2>
 		<p>Visa intygsstatistik för vårdgivare i Sverige. Det är möjligt att göra utsökningar som begränsar urvalet utifrån sjukskrivningsgard och / eller sjukdomskategori</p>
 		<p>Välj typ av sökning med flikarna till vänster. Just nu är Åldersgrupper och Längd på intyget implementerade</p>		
-	</inera:statistics_body>
+	</statistics:body>
 </inera:page> 
     
