@@ -38,7 +38,7 @@
 	
     
 	</statistics:header>
-	<statistics:body>
+	<statistics:body tabid="2">
 		<h2>Antal vs ålder</h2>
 		<p>Antal intyg i varje åldersgrupp</p>
 		

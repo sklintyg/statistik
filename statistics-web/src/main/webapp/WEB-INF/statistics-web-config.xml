@@ -24,7 +24,14 @@
         http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd">
 
 	<beans profile="test">
+<!-- 
 	    <bean class="se.inera.statistics.web.test.ExampleData" lazy-init="false" />
+ -->
+	</beans>
+
+	<beans>
+		<context:property-placeholder
+			location="classpath:/db-psql.properties,classpath:/application.properties" />
 	</beans>
 	
 </beans>

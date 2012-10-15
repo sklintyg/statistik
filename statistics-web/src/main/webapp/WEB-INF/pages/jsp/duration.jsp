@@ -37,7 +37,7 @@
 	<script type="text/javascript" src="<c:url value="/resources/javascript/duration.js" />"></script>
     
 	</statistics:header>
-	<statistics:body>
+	<statistics:body tabid="3">
 		<h2><spring:message code="duration.title" /></h2>
 		<p><spring:message code="duration.desc" /></p>
 		

@@ -23,16 +23,17 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
 <%@ taglib prefix="inera" uri="http://www.inera.se/certificates/layout/tags" %>
+<%@ taglib prefix="statistics" uri="http://www.inera.se/certificate/statistics/layout/tags" %>
 <%@ taglib prefix="inera-ui" uri="http://www.inera.se/certificates/component/tags" %>
 
 <inera:page>
-	<inera:statistics-header>
+	<statistics:header>
 	<script type="text/javascript" src="https://www.google.com/jsapi"></script>
 	<script type="text/javascript" src="<c:url value="/resources/javascript/table.js" />"></script>
 	<script type="text/javascript" src="<c:url value="/resources/javascript/careunit.js" />"></script>
     
-	</inera:statistics-header>
-	<inera:statistics_body>
+	</statistics:header>
+	<statistics:body tabid="6">
 		<h2><spring:message code="careunit.title" /></h2>
 		<p><spring:message code="duration.desc" /></p>
 		
@@ -81,6 +82,6 @@
 			
 		</inera-ui:table>
 		</div>
-	</inera:statistics_body>
+	</statistics:body>
 </inera:page> 
     

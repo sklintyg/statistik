@@ -21,6 +21,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib prefix="inera-ui" uri="http://www.inera.se/certificates/component/tags" %>
+<%@ attribute name="tabid" %>
 <body>     
     <div class="container-fluid">
     	<div id="page-header">
@@ -60,7 +61,7 @@
 						</div>
 					</fieldset>
 		  		</div>
-				<div id="left-tabs">
+				<div id="left-tabs" class="select${tabid}">
 					<ul >
 					  <li onclick="javascript:window.location.replace('<c:url value="/web/start" />');">Info</li>
 					  <li onclick="javascript:window.location.replace('<c:url value="/web/age" />');">Åldersgrupper</li>
