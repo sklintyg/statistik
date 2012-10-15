@@ -38,7 +38,7 @@
 	</statistics:header>
 	
 	<statistics:body tabid="3">
-		<h2><spring:message code="monthly.title" /></h2>
+		<h2>Månadsvis</h2>
 		<p><spring:message code="duration.desc" /></p>
 		
 		<%@ include file="form.inc" %>

@@ -44,8 +44,8 @@ public class NavigationController {
 		return "monthwise";
 	}
 	
-	@RequestMapping(value="/sicknessgroups", method=RequestMethod.GET)
-	public String displaySickneessGroups() {
+	@RequestMapping(value="/diagnosegroups", method=RequestMethod.GET)
+	public String displayDiagnoseGroups() {
 		return "sicknessgroups";
 	}
 	

@@ -20,6 +20,7 @@ $(function() {
 	var ajax = new INERA.Ajax();
 	
 	$('#statistics-form').submit(function(e) {
+		e.preventDefault();
 		var criterias = $('#statistics-form').serializeObject();
 		
 		ajax.post('/statistics/monthwise', criterias, function(data) {
