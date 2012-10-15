@@ -66,7 +66,7 @@
 					  <li onclick="javascript:window.location.replace('<c:url value="/web/age" />');">Åldersgrupper</li>
 					  <li onclick="javascript:window.location.replace('<c:url value="/web/duration" />');">Längd på intyget</li>
 					  <li onclick="javascript:window.location.replace('<c:url value="/web/monthwise" />');">Månadsvis</li>
-					  <li onclick="javascript:window.location.replace('<c:url value="/web/sicknessgroups" />');">Sjukdomsgrupper</li>
+					  <li onclick="javascript:window.location.replace('<c:url value="/web/sicknessgroups" />');">Diagnosgrupper</li>
 					  <li onclick="javascript:window.location.replace('<c:url value="/web/careunit" />');">Enhet</li>
 					</ul>	
 				</div>
