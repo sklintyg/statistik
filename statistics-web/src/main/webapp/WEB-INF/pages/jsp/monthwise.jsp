@@ -37,7 +37,7 @@
 	<script type="text/javascript" src="<c:url value="/resources/javascript/monthwise.js" />"></script>    
 	</statistics:header>
 	
-	<statistics:body tabid="4">
+	<statistics:body tabid="3">
 		<h2><spring:message code="monthly.title" /></h2>
 		<p><spring:message code="duration.desc" /></p>
 		

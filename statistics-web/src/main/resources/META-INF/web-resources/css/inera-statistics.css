@@ -296,10 +296,9 @@ div.table-bottom {
 	padding: 0px 0px 10px 10px;
 	border-style: solid;
 	border-color: #aaaaaa;
-	border-width: 1px 0px 1px 1px;
+	border-width: 1px 1px 1px 1px;
 	margin-bottom: 20px;
-	border-top-left-radius: 5px;
-	border-bottom-left-radius: 5px;
+	border-radius: 5px;
 }
 
 #left-tabs {
@@ -317,13 +316,14 @@ div.table-bottom {
 
 #left-tabs ul li {
 	clear: both;
-	padding: 5px 10px 5px 2px;
+	padding: 5px 10px 5px 10px;
     background-repeat: no-repeat;
-    text-align: right;
+    text-align: left;
     margin-bottom: 0px;
     border-style: solid;
-    border-width: 1px 0px 0px 1px;
+    border-width: 1px 1px 0px 1px;
     border-color: #aaaaaa;
+    cursor: pointer;
 }
 
 #left-tabs.select1 ul li:nth-child(1),
@@ -334,11 +334,13 @@ div.table-bottom {
 #left-tabs.select6 ul li:nth-child(6) { font-weight: bolder; }
 
 #left-tabs ul li:first-child {
-	border-top-left-radius: 5px
+	border-top-left-radius: 5px;
+	border-top-right-radius: 5px;
 }
 
 #left-tabs ul li:last-child {
 	border-bottom-left-radius: 5px;
+	border-bottom-right-radius: 5px;
 	border-bottom-width: 1px;
 }
 

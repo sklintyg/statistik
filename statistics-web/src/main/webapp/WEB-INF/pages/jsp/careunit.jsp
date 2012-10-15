@@ -33,7 +33,7 @@
 	<script type="text/javascript" src="<c:url value="/resources/javascript/careunit.js" />"></script>
     
 	</statistics:header>
-	<statistics:body tabid="6">
+	<statistics:body tabid="5">
 		<h2><spring:message code="careunit.title" /></h2>
 		<p><spring:message code="duration.desc" /></p>
 		

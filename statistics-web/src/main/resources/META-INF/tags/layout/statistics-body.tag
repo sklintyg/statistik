@@ -63,7 +63,6 @@
 		  		</div>
 				<div id="left-tabs" class="select${tabid}">
 					<ul >
-					  <li onclick="javascript:window.location.replace('<c:url value="/web/start" />');">Info</li>
 					  <li onclick="javascript:window.location.replace('<c:url value="/web/age" />');">Åldersgrupper</li>
 					  <li onclick="javascript:window.location.replace('<c:url value="/web/duration" />');">Längd på intyget</li>
 					  <li onclick="javascript:window.location.replace('<c:url value="/web/monthwise" />');">Månadsvis</li>
