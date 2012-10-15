@@ -72,7 +72,7 @@ public class StatisticsServiceImpl implements StatisticsService {
 		try {
 			final long start = getStartDate(search.getStartDate());
 
-			final StatisticsResult result = new StatisticsResult(this.getRowResultsByMonth(start, search.getBasedOnExamination(), search.getBasedOnTelephoneContact()));
+			final StatisticsResult result = null;//new StatisticsResult(this.getRowResultsByMonth(start, search.getBasedOnExamination(), search.getBasedOnTelephoneContact()));
 			
 			return ok(result);
 		} catch (final Exception e) {
@@ -211,7 +211,7 @@ public class StatisticsServiceImpl implements StatisticsService {
 		}
 	}
 
-	private List<RowResult> getRowResultsByMonth(long start, Boolean basedOnExamination, Boolean basedOnTelephoneContact){
+	private List<RowResult> getRowResultsByMonth(long start, long end){
 		List<RowResult> rowResults = new ArrayList<RowResult>();
 		final Calendar cal = Calendar.getInstance();
 		
@@ -219,7 +219,7 @@ public class StatisticsServiceImpl implements StatisticsService {
 		cal.setTime(startDate.getMonthStart());
 		for(int i=0; i<12; i++){
 			final DateEntity month = this.dateRepository.findByCalendarDate(cal.getTime());
-			rowResults.add(getRowResultByMonth(month, basedOnExamination, basedOnTelephoneContact));
+			//rowResults.add(getRowResultByMonth(month, basedOnExamination, basedOnTelephoneContact));
 
 			cal.add(Calendar.MONTH, 1);
 		}
