@@ -22,15 +22,15 @@
 <%@ taglib prefix="statistics" uri="http://www.inera.se/certificate/statistics/layout/tags" %>
 <%@ taglib prefix="inera-ui" uri="http://www.inera.se/certificates/component/tags" %>
 <inera:page>
-	<inera:header>
+	<statistics:header>
 		<script type="text/javascript">
 			$(function() {
 				$('#loginModal').modal('show');
 				$('input[name="j_username"]').focus();
 			});
 		</script>
-	</inera:header>
-	<inera:body>
+	</statistics:header>
+	<statistics:body-plain>
 		<form method="post" action="<c:url value="/j_spring_security_check" />">
 			<inera-ui:modal id="loginModal" titleCode="label.login">
 				<inera-ui:field name="j_username" labelCode="label.hsa">
@@ -40,6 +40,6 @@
 				<input type="hidden" name="j_password" value="0000" />
 			</inera-ui:modal>
 		</form>
-	</inera:body>
+	</statistics:body-plain>
 </inera:page> 
     

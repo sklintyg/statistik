@@ -27,6 +27,7 @@
 
 	<security:http security="none" pattern="/favicon.ico" />
 	<security:http security="none" pattern="/web/resources/**" />
+	<security:http security="none" pattern="/resources/**" />
 	<security:http security="none" pattern="/web/security/**" />
 	<security:http security="none" pattern="/ws/**" />
 	
