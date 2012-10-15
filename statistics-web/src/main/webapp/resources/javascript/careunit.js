@@ -14,7 +14,7 @@ $(function() {
 		criterias.basedOnTelephoneContact = $('input[name="basedOnTelephoneContact"]:checked').val() == 1 ? true : false;
 		
 		ajax.post('/statistics/careunit', criterias, function(data) {
-			table(data, 'Månand');			
+			table(data, 'Månad');			
 			INERA.log("Success");
 		});
 	});

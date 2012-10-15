@@ -23,7 +23,7 @@ $(function() {
 		var criterias = $('#statistics-form').serializeObject();
 		
 		ajax.post('/statistics/monthwise', criterias, function(data) {
-			columnchart(data, 'Månand');
+			columnchart(data, 'Månad');
 			table(data, 'Månad');
 			
 			INERA.log("Success");

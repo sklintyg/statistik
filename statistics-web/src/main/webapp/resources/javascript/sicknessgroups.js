@@ -24,8 +24,8 @@ $(function() {
 		var criterias = $('#statistics-form').serializeObject();
 		
 		ajax.post('/statistics/sicknessgroups', criterias, function(data) {
-			columnchart(data, 'Sjukdomsgrupper');
-			table(data, 'Sjukdomsgrupper');
+			columnchart(data, 'Diagnosgrupper');
+			table(data, 'Diagnosgrupper');
 			
 			INERA.log("Success");
 		});
