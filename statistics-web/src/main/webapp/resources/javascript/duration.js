@@ -1,32 +1,9 @@
-$.fn.serializeObject = function()
-{
-    var o = {};
-    var a = this.serializeArray();
-    $.each(a, function() {
-        if (o[this.name] !== undefined) {
-            if (!o[this.name].push) {
-                o[this.name] = [o[this.name]];
-            }
-            o[this.name].push(this.value || '');
-        } else {
-            o[this.name] = this.value || '';
-        }
-    });
-    return o;
-};
-
 $(function() {
-	
-	var ajax = new INERA.Ajax();
-
-	$('#statistics-form').submit(function(e) {
-		e.preventDefault();
-		
-		var criterias = $('#statistics-form').serializeObject();
-		ajax.post('/statistics/duration', criterias, function(data) {
-			columnchart(data, 'Dagar');
-			table(data, 'Dagar');
-			INERA.log("Success");
-		});
-	});
+	$('#statistics-form')[0].callback = {
+		url : '/statistics/duration', 
+		func: function(data) {
+				columnchart(data, 'Dagar');
+				table(data, 'Dagar');
+		}
+	};
 });

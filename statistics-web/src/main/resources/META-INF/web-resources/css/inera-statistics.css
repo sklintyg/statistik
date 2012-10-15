@@ -344,6 +344,15 @@ div.table-bottom {
 	border-bottom-width: 1px;
 }
 
+.loader {
+	position: absolute;
+	top: 20px;
+	left: 50%;
+	margin-left: -70px;
+	background-color: #ffffff;	
+	z-index: 1010;
+}
+
 .ui-datepicker-calendar {
     display: none;
     }

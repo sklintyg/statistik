@@ -36,4 +36,8 @@
 		<name>body</name>
 		<path>/META-INF/tags/layout/statistics-body.tag</path>
 	</tag-file> 
+	<tag-file>
+		<name>body-plain</name>
+		<path>/META-INF/tags/layout/statistics-body-plain.tag</path>
+	</tag-file> 
 </taglib>

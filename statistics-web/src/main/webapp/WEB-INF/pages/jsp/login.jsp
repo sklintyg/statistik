@@ -17,12 +17,10 @@
 
 --%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-
 <%@ taglib prefix="inera" uri="http://www.inera.se/certificates/layout/tags" %>
+<%@ taglib prefix="statistics" uri="http://www.inera.se/certificate/statistics/layout/tags" %>
 <%@ taglib prefix="inera-ui" uri="http://www.inera.se/certificates/component/tags" %>
- 
 <inera:page>
 	<inera:header>
 		<script type="text/javascript">

@@ -29,7 +29,6 @@
 <inera:page>
 	<statistics:header>
 		<script type="text/javascript" src="https://www.google.com/jsapi"></script>
-		<script type="text/javascript" src="<c:url value="/resources/javascript/start.js" />"></script>
 	</statistics:header>
 	<statistics:body>
 		<h2>Översikt</h2>
