@@ -20,6 +20,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<%@ taglib prefix="inera-ui" uri="http://www.inera.se/certificates/component/tags" %>
 <body>     
     <div class="container-fluid">
     	<div id="page-header">
@@ -32,25 +33,51 @@
         	    <strong><sec:authentication property="principal.username" /> | <a href="<c:url value="/web/security/logout" />"><spring:message code="label.logout" /></a></strong>
 	        </div>
 		</div>
-
-        <div class="row-fluid">
-			<div id="left-tabs">
-				<ul >
-				  <li onclick="javascript:window.location.replace('<c:url value="/web/start" />');"><img src="<c:url value="/web/resources/img/inkorg.png" />" />Info</li>
-				  <li onclick="javascript:window.location.replace('<c:url value="/web/age" />');"><img src="<c:url value="/web/resources/img/inkorg.png" />" />Åldersgrupper</li>
-				  <li onclick="javascript:window.location.replace('<c:url value="/web/duration" />');"><img src="<c:url value="/web/resources/img/inkorg.png" />" />Längd på intyget</li>
-				  <li onclick="javascript:window.location.replace('<c:url value="/web/monthwise" />');"><img src="<c:url value="/web/resources/img/inkorg.png" />" />Månadsvis</li>
-				  <li onclick="javascript:window.location.replace('<c:url value="/web/sicknessgroups" />');"><img src="<c:url value="/web/resources/img/inkorg.png" />" />Sjukdomsgrupper</li>
-				  <li onclick="javascript:window.location.replace('<c:url value="/web/careunit" />');"><img src="<c:url value="/web/resources/img/inkorg.png" />" />Enhet</li>
-				</ul>	
-			</div>
-			
-			<div class="row-fluid box">
-				<div class="span12">
-					<jsp:doBody />
-				</div>
-			</div>			
+		<div id="menu">
+		
 		</div>
+
+<form id="statistics-form" class="form-inline">
+        <div class="row-fluid">
+			<div class="span2">
+				<div id="timespan">
+					<fieldset>
+						<legend><spring:message code="search.criteria.period" /></legend>
+						<label class="control-label" for="fromDate"><spring:message code="search.criteria.startDate" /></label>
+						<div class="controls">
+						<span class="input-append">
+							<input name="fromDate" type="text" class="monthField input-medium" /><span class="add-on"><i class="icon-calendar"></i></span>
+						</span>
+						</div>
+		
+						<label class="control-label" for="toDate"><spring:message code="search.criteria.endDate" /></label>
+						<div class="input-append">
+							<div class="controls">
+								<span class="input-append">
+									<input name="toDate" type="text" pattern="" class="monthField input-medium" /><span class="add-on"><i class="icon-calendar"></i></span>
+								</span>
+							</div>
+						</div>
+					</fieldset>
+		  		</div>
+				<div id="left-tabs">
+					<ul >
+					  <li onclick="javascript:window.location.replace('<c:url value="/web/start" />');">Info</li>
+					  <li onclick="javascript:window.location.replace('<c:url value="/web/age" />');">Åldersgrupper</li>
+					  <li onclick="javascript:window.location.replace('<c:url value="/web/duration" />');">Längd på intyget</li>
+					  <li onclick="javascript:window.location.replace('<c:url value="/web/monthwise" />');">Månadsvis</li>
+					  <li onclick="javascript:window.location.replace('<c:url value="/web/sicknessgroups" />');">Sjukdomsgrupper</li>
+					  <li onclick="javascript:window.location.replace('<c:url value="/web/careunit" />');">Enhet</li>
+					</ul>	
+				</div>
+			</div>
+			<div class="span10">			
+				<div class="box">
+					<jsp:doBody />
+				</div>			
+			</div>
+		</div>
+</form>
 		<div class="footer">
 			<div style="height: 15px; padding-top: 7px;">
 				<span style="vertical-align: middle;">Intygsstatistik</span>

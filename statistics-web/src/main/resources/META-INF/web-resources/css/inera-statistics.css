@@ -292,9 +292,21 @@ div.table-bottom {
 	width: 350px;
 }
 
+#timespan {
+	padding: 0px 0px 10px 10px;
+	border-style: solid;
+	border-color: #aaaaaa;
+	border-width: 1px 0px 1px 1px;
+	margin-bottom: 20px;
+	border-top-left-radius: 5px;
+	border-bottom-left-radius: 5px;
+}
+
 #left-tabs {
     margin: 0;
     padding: 0;
+    float: left;
+    width: 100%;
 }
 
 #left-tabs ul {
@@ -305,19 +317,22 @@ div.table-bottom {
 
 #left-tabs ul li {
 	clear: both;
-	padding: 0px;
-	height: 70px;	
-    width: 110px; 
-    background-image: url("../img/flik.png");
+	padding: 5px 10px 5px 2px;
     background-repeat: no-repeat;
-    text-align: center;
-    margin-bottom: 5px;
+    text-align: right;
+    margin-bottom: 0px;
+    border-style: solid;
+    border-width: 1px 0px 0px 1px;
+    border-color: #aaaaaa;
 }
 
-#left-tabs ul li img {
-	display: block;
-	margin: auto;
-	padding: 12px 0 0 0;
+#left-tabs ul li:first-child {
+	border-top-left-radius: 5px
+}
+
+#left-tabs ul li:last-child {
+	border-bottom-left-radius: 5px;
+	border-bottom-width: 1px;
 }
 
 .ui-datepicker-calendar {

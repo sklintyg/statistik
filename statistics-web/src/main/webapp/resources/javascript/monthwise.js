@@ -1,20 +1,30 @@
+$.fn.serializeObject = function()
+{
+    var o = {};
+    var a = this.serializeArray();
+    $.each(a, function() {
+        if (o[this.name] !== undefined) {
+            if (!o[this.name].push) {
+                o[this.name] = [o[this.name]];
+            }
+            o[this.name].push(this.value || '');
+        } else {
+            o[this.name] = this.value || '';
+        }
+    });
+    return o;
+};
+
 $(function() {
 	
 	var ajax = new INERA.Ajax();
 	
 	$('#statistics-form').submit(function(e) {
-		e.preventDefault();
-		
-		var criterias = new Object();
-        
-		criterias.startDate = $('input[name="fromDate"]').val();
-		
-		criterias.basedOnExamination = $('input[name="basedOnExamination"]:checked').val() == 1 ? true : false;
-		criterias.basedOnTelephoneContact = $('input[name="basedOnTelephoneContact"]:checked').val() == 1 ? true : false;
+		var criterias = $('#statistics-form').serializeObject();
 		
 		ajax.post('/statistics/monthwise', criterias, function(data) {
 			columnchart(data, 'Månand');
-			table(data, 'Månand');
+			table(data, 'Månad');
 			
 			INERA.log("Success");
 		});

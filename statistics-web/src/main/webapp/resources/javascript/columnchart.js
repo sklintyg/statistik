@@ -1,6 +1,7 @@
 function columnchart(data, horizontalHeader) {
 	 var drawdata = new google.visualization.DataTable();
-     drawdata.addColumn('string', horizontalHeader);
+     
+	 drawdata.addColumn('string', horizontalHeader);
      drawdata.addColumn('number', 'Kvinnor');
      drawdata.addColumn('number', 'Män');
      
@@ -18,13 +19,17 @@ function columnchart(data, horizontalHeader) {
      for (var i = 0; i < rows.length; i++) {
      	drawdata.addRow(new Array(rows[i].xValue, rows[i].yValue1, rows[i].yValue2));
      }
+     var dataview = new google.visualization.DataView(drawdata)
      var options = {
              hAxis: {title: horizontalHeader, titleTextStyle: {color: 'green'},
          		textStyle: {fontSize: 9.5}},
              legend: {position: 'right'},
-             colors: ['green', 'orange'],
+             colors: ['#e3ba4b','#6dbba0', '#84c3cd', '#e78db5'],
              vAxis: {minValue: 0, baseline: 0}
            };
-     var columnchart = new google.visualization.ColumnChart(document.getElementById('diagram'));
-     columnchart.draw(drawdata, options);
+     var div = document.getElementById('diagram');
+     var columnchart = new google.visualization.ColumnChart(div);
+     columnchart.draw(dataview, options);
+     div.chart = columnchart;
+     div.view = dataview;
 };

@@ -33,54 +33,19 @@
 	</script>
 	<script type="text/javascript" src="<c:url value="/resources/javascript/columnchart.js" />"></script>
 	<script type="text/javascript" src="<c:url value="/resources/javascript/table.js" />"></script>
-	<script type="text/javascript" src="<c:url value="/resources/javascript/monthwise.js" />"></script>
-    
+	<script type="text/javascript" src="<c:url value="/resources/javascript/monthwise.js" />"></script>    
 	</inera:statistics-header>
+	
 	<inera:statistics_body>
 		<h2><spring:message code="monthly.title" /></h2>
 		<p><spring:message code="duration.desc" /></p>
 		
-		<form id="statistics-form" class="form-inline">
-			<fieldset>
-				<legend><spring:message code="search.criteria.period" /></legend>
-				
-				<inera:row>
-					<inera:col span="3">
-						<inera-ui:field labelCode="search.criteria.startDate" name="fromDate">
-							<inera-ui:monthYearField name="fromDate" />
-						</inera-ui:field>
-					</inera:col>
-				</inera:row>
-			</fieldset>
-			
-			<fieldset>
-				<legend><spring:message code="search.criteria.basedOn" /></legend>
-				<inera:row>
-					<inera:col span="2">
-						<inera-ui:field name="basedOnExamination" labelCode="search.criteria.basedOn.examination">
-							<input name="basedOnExamination" type="checkbox" value="1"/>
-						</inera-ui:field>
-					</inera:col>
-					
-					<inera:col span="2">
-						<inera-ui:field name="basedOnTelephoneContact" labelCode="search.criteria.basedOn.telephone">
-							<input name="basedOnTelephoneContact" type="checkbox" value="1"/>
-						</inera-ui:field>
-					</inera:col>
-				</inera:row>
-			</fieldset>
-			
-			<div class="form-actions">
-				<button type="submit" class="btn btn-primary"><spring:message code="search.criteria.submitSearch" /></button>
-			</div>
-		</form>
+		<%@ include file="form.inc" %>
 		
 		<div id="diagram"></div>
-		<div id="diagram2"></div>
 		<div id="table">
-		<inera-ui:table id="resultTable">
-			
-		</inera-ui:table>
+			<inera-ui:table id="resultTable">			
+			</inera-ui:table>
 		</div>
 	</inera:statistics_body>
 </inera:page> 
