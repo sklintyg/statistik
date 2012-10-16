@@ -34,8 +34,12 @@
         	    <strong><sec:authentication property="principal.username" /> | <a href="<c:url value="/web/security/logout" />"><spring:message code="label.logout" /></a></strong>
 	        </div>
 		</div>
-		<div id="menu">
-		
+		<div id="menu" class="row">
+			<ul>
+				<li class="span2 offset2" onclick="javascript:window.location.replace('<c:url value="/web/start" />');">Översikt</li>
+				<li class="span2">Statistik<div class="arrow-down"></div></li>
+				<li class="span2">Kvalitetsmått</li>
+			</ul>
 		</div>
 
 <form id="statistics-form" class="form-inline">
@@ -46,18 +50,12 @@
 						<legend><spring:message code="search.criteria.period" /></legend>
 						<label class="control-label" for="fromDate"><spring:message code="search.criteria.startDate" /></label>
 						<div class="controls">
-						<span class="input-append">
-							<input name="fromDate" type="text" class="monthField input-medium" /><span class="add-on"><i class="icon-calendar"></i></span>
-						</span>
+							<input name="fromDate" type="text" class="monthField input-medium" />
 						</div>
 		
 						<label class="control-label" for="toDate"><spring:message code="search.criteria.endDate" /></label>
-						<div class="input-append">
-							<div class="controls">
-								<span class="input-append">
-									<input name="toDate" type="text" pattern="" class="monthField input-medium" /><span class="add-on"><i class="icon-calendar"></i></span>
-								</span>
-							</div>
+						<div class="controls">
+							<input name="toDate" type="text" pattern="" class="monthField input-medium" />
 						</div>
 					</fieldset>
 		  		</div>

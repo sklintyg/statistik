@@ -34,7 +34,12 @@
         	    <strong>Inte inloggad | <a href="<c:url value="/web/security/logout" />"><spring:message code="label.logout" /></a></strong>
 	        </div>
 		</div>
-		<div id="menu">		
+		<div id="menu" class="row">
+			<ul>
+				<li class="span2 offset2">Översikt<div class="arrow-down"></div></li>
+				<li class="span2" onclick="javascript:window.location.replace('<c:url value="/web/age" />');">Statistik</li>
+				<li class="span2">Kvalitetsmått</li>
+			</ul>
 		</div>
 
         <div class="row-fluid">

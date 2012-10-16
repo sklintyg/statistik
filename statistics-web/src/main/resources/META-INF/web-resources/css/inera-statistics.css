@@ -235,7 +235,6 @@ div.inera-box .box-body {
 	margin-right: 10px;
 	margin-bottom: 10px;
 	height: 82px;
-	border-bottom: 1px #aaaaaa solid;
 }
 
 #page-header-left {
@@ -353,6 +352,50 @@ div.table-bottom {
 	z-index: 1010;
 }
 
+.arrow-down {
+	width: 0; 
+	height: 0; 
+	border-left: 10px solid transparent;
+	border-right: 10px solid transparent;	
+	border-top: 10px solid #aaaaaa;
+}
+
+.arrow-down:after {
+	content: ""; 
+	margin-left: -10px;
+	margin-top: -12px;
+	border-left: 10px solid transparent;
+	border-right: 10px solid transparent;	
+	border-top: 10px solid #ffffff;
+	display: block;
+}
+
+#menu ul {
+	border-top: 1px solid #aaaaaa;
+	border-bottom: 1px solid #aaaaaa;
+	list-style: none;
+	margin: 0px;
+	padding: 0px;
+	height: 27px;
+}
+
+#menu ul li {
+	padding: 5px 10px 5px 10px;
+    background-repeat: no-repeat;
+    text-align: center;
+    margin-bottom: 0px;
+    cursor: pointer;
+}
+
+#menu ul li .arrow-down {
+	margin-top: 5px;	
+	margin-left: auto;
+	margin-right: auto;
+}
+
+legend {
+	margin-bottom: 5px;
+}
 .ui-datepicker-calendar {
     display: none;
-    }
+}

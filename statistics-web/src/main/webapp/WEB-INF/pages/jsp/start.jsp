@@ -30,10 +30,10 @@
 	<statistics:header>
 		<script type="text/javascript" src="https://www.google.com/jsapi"></script>
 	</statistics:header>
-	<statistics:body>
+	<statistics:body-plain>
 		<h2>Översikt</h2>
 		<p>Visa intygsstatistik för vårdgivare i Sverige. Det är möjligt att göra utsökningar som begränsar urvalet utifrån sjukskrivningsgard och / eller sjukdomskategori</p>
 		<p>Välj typ av sökning med flikarna till vänster. Just nu är Åldersgrupper och Längd på intyget implementerade</p>		
-	</statistics:body>
+	</statistics:body-plain>
 </inera:page> 
     
