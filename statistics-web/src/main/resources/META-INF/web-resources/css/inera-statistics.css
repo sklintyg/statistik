@@ -345,11 +345,14 @@ div.table-bottom {
 
 .loader {
 	position: absolute;
-	top: 20px;
+	top: 100px;
 	left: 50%;
-	margin-left: -70px;
+	margin-left: -100px;
 	background-color: #ffffff;	
 	z-index: 1010;
+	padding: 50px;
+	border: 1px solid #aaaaaa;
+	border-radius: 5px;
 }
 
 .arrow-down {
@@ -396,6 +399,6 @@ div.table-bottom {
 legend {
 	margin-bottom: 5px;
 }
-.ui-datepicker-calendar {
-    display: none;
-}
+
+.ui-widget-header { 
+	border: 1px solid #aaaaaa; background-color: #aaaaaa; background-image: none; color: #ffffff; font-weight: bold; }

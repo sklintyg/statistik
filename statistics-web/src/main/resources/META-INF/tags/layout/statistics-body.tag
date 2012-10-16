@@ -50,12 +50,11 @@
 						<legend><spring:message code="search.criteria.period" /></legend>
 						<label class="control-label" for="fromDate"><spring:message code="search.criteria.startDate" /></label>
 						<div class="controls">
-							<input name="fromDate" type="text" class="monthField input-medium" />
+							<input id="fromDate" name="fromDate" type="text" class="monthField input-medium" value="Jan 2012"/>
 						</div>
-		
 						<label class="control-label" for="toDate"><spring:message code="search.criteria.endDate" /></label>
 						<div class="controls">
-							<input name="toDate" type="text" pattern="" class="monthField input-medium" />
+							<input id="toDate" name="toDate" type="text" pattern="" class="monthField input-medium" value="Okt 2012"/>
 						</div>
 					</fieldset>
 		  		</div>

@@ -35,13 +35,13 @@
 	<script type="text/javascript" src="<inera-ui:resource name="jquery-1.7.1.min.js" type="js" />"></script>
 	<script type="text/javascript" src="<inera-ui:resource name="jquery-ui-1.8.18.custom.min.js" type="js" />"></script>
 	<script type="text/javascript" src="<inera-ui:resource name="bootstrap-2.0.2.min.js" type="js" />"></script>
-	<script type="text/javascript" src="<inera-ui:resource name="jquery.ui.monthpicker-sv.js" type="js" />"></script>
 	
 	<script type="text/javascript">
 		var GLOB_CTX_PATH = '<c:out value="${pageContext.request.contextPath}" />';
 	</script>
 	<script type="text/javascript" src="<inera-ui:resource name="inera.js" type="js" />"></script>
 	<script type="text/javascript" src="<c:url value="/resources/javascript/inera-statistics.js" />"></script>
+	<script type="text/javascript" src="<c:url value="/resources/javascript/monthpicker.js" />"></script>
 	
 	<jsp:doBody />
 </head>
