@@ -54,7 +54,7 @@
 						</div>
 						<label class="control-label" for="toDate"><spring:message code="search.criteria.endDate" /></label>
 						<div class="controls">
-							<input id="toDate" name="toDate" type="text" pattern="" class="monthField input-medium" value="Okt 2012"/>
+							<input id="toDate" name="toDate" type="text" class="monthField input-medium" value="Okt 2012"/>
 						</div>
 					</fieldset>
 		  		</div>
