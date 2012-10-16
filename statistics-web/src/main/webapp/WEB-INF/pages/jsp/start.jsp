@@ -33,7 +33,9 @@
 	<statistics:body-plain>
 		<h2>Översikt</h2>
 		<p>Visa intygsstatistik för vårdgivare i Sverige. Det är möjligt att göra utsökningar som begränsar urvalet utifrån sjukskrivningsgard och / eller sjukdomskategori</p>
-		<p>Välj typ av sökning med flikarna till vänster. Just nu är Åldersgrupper och Längd på intyget implementerade</p>		
+		<p>Flera typer av sökningar finns med gruppering på åldersgrupper, intygens längd, månad etc.
+		<p>Välj Statistik i menyn ovan för att börja. Du måste välja vilken typ av mätning du vill göra samt tidspannet för denna.</p>		
+		<p>Inga kvalitetsmått visas ännu.</p>		
 	</statistics:body-plain>
 </inera:page> 
     
