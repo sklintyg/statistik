@@ -45,7 +45,17 @@
 		
 		<div id="diagram"></div>
 		<div id="table">
-			<inera-ui:table id="resultTable">			
+			<inera-ui:table id="resultTable">
+			  <thead>
+			    <tr><th>Månad</th><th>Antal intyg/män</th><th>Antal intyg/kvinnor</th><th>Antal intyg totalt</th></tr>
+			  </thead>
+			  <tbody>
+			  </tbody>		
+			  <tfoot>
+			    <tr>
+			      <th>Totalt</th><td>0</td><td>0</td><td>0</td>
+			    </tr>
+			  </tfoot>
 			</inera-ui:table>
 		</div>
 	</statistics:body>
