@@ -15,7 +15,7 @@ public interface StatisticsService {
 
 	ServiceResult<StatisticsResult> loadStatisticsByDuration(String from, String to, String disability, String group);
 
-	ServiceResult<StatisticsResult> loadStatisticsByMonth(final MedicalCertificateDto search);
+	ServiceResult<StatisticsResult> loadStatisticsByMonth(String from, String to, String disability, String group);
 
 	ServiceResult<StatisticsResult> loadStatisticsBySicknessGroups(final MedicalCertificateDto search);
 

@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -68,11 +69,12 @@ public class StatisticsServiceImpl implements StatisticsService {
 	}
 
 	@Override
-	public ServiceResult<StatisticsResult> loadStatisticsByMonth(final MedicalCertificateDto search) {
+	public ServiceResult<StatisticsResult> loadStatisticsByMonth(String from, String to, String disability, String group) {
 		try {
-			final long start = getStartDate(search.getStartDate());
+			final long start = getStartDate(from);
+			final long end = getEndDate(to);
 
-			final StatisticsResult result = null;//new StatisticsResult(this.getRowResultsByMonth(start, search.getBasedOnExamination(), search.getBasedOnTelephoneContact()));
+			final StatisticsResult result = new StatisticsResult(this.getRowResultsByMonth(start, end, disability, group));
 			
 			return ok(result);
 		} catch (final Exception e) {
@@ -211,26 +213,37 @@ public class StatisticsServiceImpl implements StatisticsService {
 		}
 	}
 
-	private List<RowResult> getRowResultsByMonth(long start, long end){
+	private List<RowResult> getRowResultsByMonth(long start, long end, String disability, String group){
 		List<RowResult> rowResults = new ArrayList<RowResult>();
-		final Calendar cal = Calendar.getInstance();
-		
-		DateEntity startDate = this.dateRepository.findOne(start);
-		cal.setTime(startDate.getMonthStart());
-		for(int i=0; i<12; i++){
-			final DateEntity month = this.dateRepository.findByCalendarDate(cal.getTime());
-			//rowResults.add(getRowResultByMonth(month, basedOnExamination, basedOnTelephoneContact));
 
-			cal.add(Calendar.MONTH, 1);
+		final Calendar current = Calendar.getInstance();
+		final Calendar last = Calendar.getInstance();
+		current.setTime(dateRepository.findOne(start).getMonthStart());
+		last.setTime(dateRepository.findOne(end).getMonthEnd());
+		
+		
+		while(current.before(last)){
+			final DateEntity month = this.dateRepository.findByCalendarDate(current.getTime());
+			rowResults.add(getRowResultByMonth(month, disability, group));
+			current.add(Calendar.MONTH, 1);
 		}
 		
 		return rowResults;
 	}
 	
-	private RowResult getRowResultByMonth(DateEntity month, Boolean basedOnExamination, Boolean basedOnTelephoneContact){
-		final int count_male = (int)this.certificateRepository.findCountByMonth("Male", month.getMonthStart(), basedOnExamination, basedOnTelephoneContact);
-		final int count_female = (int)this.certificateRepository.findCountByMonth("Female", month.getMonthStart(), basedOnExamination, basedOnTelephoneContact);
-		RowResult row = RowResult.newResult("" + month.getMonthName(), count_male, count_female);
+	private RowResult getRowResultByMonth(DateEntity month, String disability, String group){
+		final long count_male;
+		final long count_female;
+		if ("all".equals(disability)) {
+			count_male = certificateRepository.findCountByMonth("Male", month.getMonthStart());
+			count_female = certificateRepository.findCountByMonth("Female", month.getMonthStart());
+		} else {
+			int workDisability = Integer.parseInt(disability);
+			count_male = certificateRepository.findCountByMonthAndDisability("Male", month.getMonthStart(), workDisability);
+			count_female = certificateRepository.findCountByMonthAndDisability("Female", month.getMonthStart(), workDisability);			
+		}
+		System.err.println(count_male + " " + count_female);
+		RowResult row = RowResult.newResult(month.getMonthName(), count_male, count_female);
 		
 		return row;
 	}

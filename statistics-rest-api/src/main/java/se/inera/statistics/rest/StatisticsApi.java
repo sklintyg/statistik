@@ -33,8 +33,8 @@ public class StatisticsApi {
 	
 	@RequestMapping(value="/monthwise", method=RequestMethod.POST, consumes="application/json", produces="application/json")
 	@ResponseBody
-	public ServiceResult<StatisticsResult> loadMonthwiseStatistics(@RequestBody final MedicalCertificateDto criterias) {
-		return this.service.loadStatisticsByMonth(criterias);
+	public ServiceResult<StatisticsResult> loadMonthwiseStatistics(@RequestBody final MonthwiseForm criterias) {
+		return this.service.loadStatisticsByMonth(criterias.getFromDate(), criterias.getToDate(), criterias.getDisability(), criterias.getGroup());
 	}
 	
 	@RequestMapping(value="/sicknessgroups", method=RequestMethod.POST, consumes="application/json", produces="application/json")

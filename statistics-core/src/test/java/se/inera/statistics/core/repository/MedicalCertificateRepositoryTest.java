@@ -118,7 +118,7 @@ public class MedicalCertificateRepositoryTest {
 			MedicalCertificateEntity ent = createEmptyCertificate();
 			this.repo.save(ent);
 		}
-		final long result1 = this.repo.findCountByMonth("Male", this.dateRepository.findOne(this.startId).getMonthStart(), Boolean.FALSE, Boolean.TRUE);
+		final long result1 = this.repo.findCountByMonth("Male", this.dateRepository.findOne(this.startId).getMonthStart());
 		assertEquals(10, result1);
 
 		final long dateId = this.startId + 180;
@@ -127,7 +127,7 @@ public class MedicalCertificateRepositoryTest {
 			ent.setStartDate(dateId);
 			this.repo.save(ent);
 		}
-		final long result2 = this.repo.findCountByMonth("Male", this.dateRepository.findOne(dateId).getMonthStart(), Boolean.FALSE, Boolean.TRUE);
+		final long result2 = this.repo.findCountByMonth("Male", this.dateRepository.findOne(dateId).getMonthStart());
 		assertEquals(12, result2);
 	}
 		

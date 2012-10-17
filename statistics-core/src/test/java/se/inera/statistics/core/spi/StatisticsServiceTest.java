@@ -94,8 +94,7 @@ public class StatisticsServiceTest {
 	@Test
 	@Rollback(true)
 	public void testLoadMonthsBySearch() throws Exception {
-		final MedicalCertificateDto search_parameters = getSearchParameters();
-		final ServiceResult<StatisticsResult> result = this.service.loadStatisticsByMonth(search_parameters);
+		final ServiceResult<StatisticsResult> result = this.service.loadStatisticsByMonth("January 2011", "December 2011", "all", "all");
 		
 		assertNotNull(result);
 		assertFalse(result.getData().getMatches().isEmpty());
