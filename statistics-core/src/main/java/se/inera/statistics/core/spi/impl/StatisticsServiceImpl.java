@@ -222,7 +222,7 @@ public class StatisticsServiceImpl implements StatisticsService {
 		
 		
 		while(current.before(last)){
-			final DateEntity month = this.dateRepository.findByCalendarDate(current.getTime());
+			final DateEntity month = dateRepository.findByCalendarDate(current.getTime());
 			rowResults.add(getRowResultByMonth(month, disability, group));
 			current.add(Calendar.MONTH, 1);
 		}
@@ -241,10 +241,8 @@ public class StatisticsServiceImpl implements StatisticsService {
 			count_male = certificateRepository.findCountByMonthAndDisability("Male", month.getMonthStart(), workDisability);
 			count_female = certificateRepository.findCountByMonthAndDisability("Female", month.getMonthStart(), workDisability);			
 		}
-		System.err.println(count_male + " " + count_female);
-		RowResult row = RowResult.newResult(month.getMonthName(), count_male, count_female);
-		
-		return row;
+
+		return RowResult.newResult(month.getMonthName(), count_male, count_female);
 	}
 	
 	private List<RowResult> getRowResultsBySicknessGroups(long start, long end, Boolean basedOnExamination, Boolean basedOnTelephoneContact){
