@@ -3,7 +3,7 @@ $(function() {
 		url : '/statistics/monthwise', 
 		func: function(data) {
 				columnchart(data, 'Månad');
-				table(data, 'Mpnad');
+				table(data, 'Månad');
 		}
 	};
 });
