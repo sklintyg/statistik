@@ -187,6 +187,35 @@ public interface MedicalCertificateRepository extends JpaRepository<MedicalCerti
 			@Param("workDisability") final int workDisability);
 
 	@Query(value="select count(e.id) from MedicalCertificateEntity as e, " +
+			"PersonEntity as p, DiagnosisEntity as d, " +
+			"DateEntity as de " +
+			" where " +
+			"e.personId = p.id and " +
+			"e.diagnosisId = d.id and " +
+			"e.startDate = de.id and " +
+			"p.gender = :gender and " +
+			"de.monthStart = :monthStart and d.icd10Group = :icd10Group")
+	long findCountByMonthAndIcd10Group(
+			@Param("gender") final String gender,
+			@Param("monthStart") final Date monthStart,
+			@Param("icd10Group") final String icd10Group);
+
+	@Query(value="select count(e.id) from MedicalCertificateEntity as e, " +
+			"PersonEntity as p, DiagnosisEntity as d, " +
+			"DateEntity as de " +
+			" where " +
+			"e.personId = p.id and " +
+			"e.diagnosisId = d.id and " +
+			"e.startDate = de.id and " +
+			"p.gender = :gender and " +
+			"de.monthStart = :monthStart and d.icd10Group = :icd10Group and e.workDisability = :workDisability")
+	long findCountByMonthAndIcd10GroupAndWorkDisability(
+			@Param("gender") final String gender,
+			@Param("monthStart") final Date monthStart,
+			@Param("icd10Group") final String icd10Group,
+			@Param("workDisability") final int workDisability);
+
+	@Query(value="select count(e.id) from MedicalCertificateEntity as e, " +
 			"PersonEntity as p " +
 			" where " +
 			"e.personId = p.id and " +

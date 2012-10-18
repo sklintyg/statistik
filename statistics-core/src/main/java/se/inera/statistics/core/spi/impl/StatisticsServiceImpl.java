@@ -234,12 +234,22 @@ public class StatisticsServiceImpl implements StatisticsService {
 		final long count_male;
 		final long count_female;
 		if ("all".equals(disability)) {
-			count_male = certificateRepository.findCountByMonth("Male", month.getMonthStart());
-			count_female = certificateRepository.findCountByMonth("Female", month.getMonthStart());
+			if ("all".equals(group)) {
+				count_male = certificateRepository.findCountByMonth("Male", month.getMonthStart());
+				count_female = certificateRepository.findCountByMonth("Female", month.getMonthStart());
+			} else {
+				count_male = certificateRepository.findCountByMonthAndIcd10Group("Male", month.getMonthStart(), group);
+				count_female = certificateRepository.findCountByMonthAndIcd10Group("Female", month.getMonthStart(), group);
+			}
 		} else {
 			int workDisability = Integer.parseInt(disability);
-			count_male = certificateRepository.findCountByMonthAndDisability("Male", month.getMonthStart(), workDisability);
-			count_female = certificateRepository.findCountByMonthAndDisability("Female", month.getMonthStart(), workDisability);			
+			if ("all".equals(group)) {
+				count_male = certificateRepository.findCountByMonthAndDisability("Male", month.getMonthStart(), workDisability);
+				count_female = certificateRepository.findCountByMonthAndDisability("Female", month.getMonthStart(), workDisability);
+			} else {
+				count_male = certificateRepository.findCountByMonthAndIcd10GroupAndWorkDisability("Male", month.getMonthStart(), group, workDisability);
+				count_female = certificateRepository.findCountByMonthAndIcd10GroupAndWorkDisability("Female", month.getMonthStart(), group, workDisability);				
+			}
 		}
 
 		return RowResult.newResult(month.getMonthName(), count_male, count_female);
