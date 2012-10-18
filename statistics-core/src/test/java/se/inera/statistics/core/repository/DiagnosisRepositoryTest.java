@@ -18,7 +18,7 @@ import se.inera.statistics.model.entity.WorkCapability;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations="classpath:statistics-config.xml")
-@ActiveProfiles(profiles={"db-psql","test"}, inheritProfiles=true)
+@ActiveProfiles(profiles={"db-embedded","test"}, inheritProfiles=true)
 public class DiagnosisRepositoryTest {
 
 	@Autowired 

@@ -19,6 +19,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import se.inera.statistics.core.api.MedicalCertificateDto;
 import se.inera.statistics.core.repository.CareUnitRepository;
 import se.inera.statistics.core.repository.DateRepository;
+import se.inera.statistics.core.repository.DateUtil;
 import se.inera.statistics.core.repository.DiagnosisRepository;
 import se.inera.statistics.core.repository.MedicalCertificateRepository;
 import se.inera.statistics.core.repository.PersonRepository;
@@ -31,7 +32,7 @@ import se.inera.statistics.model.entity.WorkCapability;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations="classpath:statistics-config.xml")
-@ActiveProfiles(profiles={"db-psql","test"}, inheritProfiles=true)
+@ActiveProfiles(profiles={"db-embedded","test"}, inheritProfiles=true)
 public class RegisterStatisticsServiceTest {
 	@Autowired 
 	private MedicalCertificateRepository certificateRepository;
@@ -52,14 +53,14 @@ public class RegisterStatisticsServiceTest {
 		diagnosisRepository.deleteAll();
 		personRepository.deleteAll();
 		careUnitRepository.deleteAll();
+		DateUtil.createDates(dateRepository);
 	}
 	
 	@Test
 	@Rollback(true)
 	public void testRegisterStatisitcs() throws ParseException {
-		final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-		final long startDate = this.dateRepository.findByCalendarDate(sdf.parse("2010-01-01")).getId();
-		final long endDate = this.dateRepository.findByCalendarDate(sdf.parse("2011-01-01")).getId();
+		final long startDate = lookupDate("2010-01-01");
+		final long endDate = lookupDate("2011-01-01");
 		
 		assertNotNull(startDate);
 		assertNotNull(endDate);
@@ -87,23 +88,31 @@ public class RegisterStatisticsServiceTest {
 		assertEquals(Boolean.TRUE, certificate.getBasedOnExamination());
 		assertEquals(Boolean.FALSE, certificate.getBasedOnTelephoneContact());
 	}
+
+	private long lookupDate(String date) throws ParseException {
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		return this.dateRepository.findByCalendarDate(sdf.parse(date)).getId();
+	}
 	
 	private MedicalCertificateDto generateCertificate(){
-		final String startDateString = new String("2010-01-01");
 		final String endDateString = new String("2011-01-01");
 
 		final MedicalCertificateDto cert = new MedicalCertificateDto();
+		cert.setStartDate(new String("2010-01-01"));
+		cert.setEndDate(endDateString);
+
 		cert.setAge(18);
 		cert.setFemale(true);
-		cert.setStartDate(startDateString);
-		cert.setEndDate(endDateString);
+		cert.setBasedOnExamination(Boolean.TRUE);
+		cert.setBasedOnTelephoneContact(Boolean.FALSE);
 		cert.setDiagnose(true);
 		cert.setIcd10("C879422");
 		cert.setWorkDisability(25);
 		cert.setCareUnit("Torslanda");
-		
-		cert.setBasedOnExamination(Boolean.TRUE);
-		cert.setBasedOnTelephoneContact(Boolean.FALSE);
+		cert.setCareGiver("careGiver");
+		cert.setIssuer("issuer");
+		cert.setIssuerAge(50);
+		cert.setIssuerGender("F");
 		return cert;
 	}
 }

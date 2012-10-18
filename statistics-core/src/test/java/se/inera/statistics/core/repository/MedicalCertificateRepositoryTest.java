@@ -24,7 +24,7 @@ import se.inera.statistics.model.entity.WorkCapability;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations="classpath:statistics-config.xml")
-@ActiveProfiles(profiles={"db-psql","test"}, inheritProfiles=true)
+@ActiveProfiles(profiles={"db-embedded","test"}, inheritProfiles=true)
 public class MedicalCertificateRepositoryTest {
 
 	@Autowired 
@@ -47,11 +47,12 @@ public class MedicalCertificateRepositoryTest {
 		this.personRepository.deleteAll();
 		this.diagnosisRepository.deleteAll();
 		this.careUnitRepository.deleteAll();
+		DateUtil.createDates(dateRepository);
 		
 		PersonEntity person = PersonEntity.newEntity(18, "Male");
 		this.personRepository.save(person);
 		
-		DiagnosisEntity diagnosis = DiagnosisEntity.newEntity("C5442244", false, WorkCapability.HALF_WORKING_CAPABILITY, "II", "Tumörer");
+		DiagnosisEntity diagnosis = DiagnosisEntity.newEntity("C54", false, WorkCapability.HALF_WORKING_CAPABILITY, "II", "Tumörer");
 		this.diagnosisRepository.save(diagnosis);
 		
 		CareUnitEntity careUnit = CareUnitEntity.newEntity("Gaminia");
@@ -59,8 +60,12 @@ public class MedicalCertificateRepositoryTest {
 		
 		final Date start = new Date();
 		final Date end = new Date(start.getTime() + (60000 * 60 * 24 * 10));
-		this.startId = this.dateRepository.findByCalendarDate(start).getId();
-		this.endId = this.dateRepository.findByCalendarDate(end).getId();
+		this.startId = lookupDate(start);
+		this.endId = lookupDate(end);
+	}
+
+	private long lookupDate(Date date) {
+		return this.dateRepository.findByCalendarDate(date).getId();
 	}
 	
 	@Test
@@ -160,7 +165,7 @@ public class MedicalCertificateRepositoryTest {
 		}
 		ent.setPersonId(person.getId());
 		
-		DiagnosisEntity diagnosis = this.diagnosisRepository.findByIcd10AndWorkCapability("C5442244", WorkCapability.HALF_WORKING_CAPABILITY);
+		DiagnosisEntity diagnosis = this.diagnosisRepository.findByIcd10AndWorkCapability("C54", WorkCapability.HALF_WORKING_CAPABILITY);
 		if (null == diagnosis){
 			fail("Encountered null diagnosis where we should not!");
 		}
@@ -175,8 +180,13 @@ public class MedicalCertificateRepositoryTest {
 		
 		ent.setDiagnosisId(diagnosis.getId());
 		ent.setCareUnitId(careUnit.getId());
+		ent.setCareGiverId("careGiverId");
+		ent.setIssuerId("issuerId");
+		ent.setIssuerAge(50);
+		ent.setIssuerGender("Female");
 		ent.setBasedOnExamination(Boolean.FALSE);
 		ent.setBasedOnTelephoneContact(Boolean.TRUE);
+		ent.setWorkDisability(100);
 		return ent;
 	}
 }

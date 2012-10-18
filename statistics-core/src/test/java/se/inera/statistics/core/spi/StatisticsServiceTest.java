@@ -26,6 +26,7 @@ import se.inera.statistics.core.api.MedicalCertificateDto;
 import se.inera.statistics.core.api.StatisticsResult;
 import se.inera.statistics.core.repository.CareUnitRepository;
 import se.inera.statistics.core.repository.DateRepository;
+import se.inera.statistics.core.repository.DateUtil;
 import se.inera.statistics.core.repository.DiagnosisRepository;
 import se.inera.statistics.core.repository.MedicalCertificateRepository;
 import se.inera.statistics.core.repository.PersonRepository;
@@ -37,7 +38,7 @@ import se.inera.statistics.model.entity.WorkCapability;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations="classpath:statistics-config.xml")
-@ActiveProfiles(profiles={"db-psql","test"}, inheritProfiles=true)
+@ActiveProfiles(profiles={"db-embedded","test"}, inheritProfiles=true)
 public class StatisticsServiceTest {
 
 	@Autowired 
@@ -58,28 +59,29 @@ public class StatisticsServiceTest {
 		this.personRepository.deleteAll();
 		this.diagnosisRepository.deleteAll();
 		this.careUnitRepository.deleteAll();
-		
+		DateUtil.createDates(dateRepository);
 		this.setupTestData(10, 10, Calendar.MONTH);
+		
 	}
 	
 	@Test
 	@Rollback(true)
 	public void testLoadAgeBySearch() throws Exception {
-		final ServiceResult<StatisticsResult> result = this.service.loadByAge("January 2011", "December 2011", "all", "all");
+		final ServiceResult<StatisticsResult> result = this.service.loadByAge("Januari 2011", "December 2011", "all", "all");
 		
 		assertNotNull(result);
 		//TODO: add more tests
 		assertFalse(result.getData().getMatches().isEmpty());
 		assertEquals(7, result.getData().getMatches().size());
 		assertEquals("20-29", result.getData().getMatches().get(1).getxValue());
-		assertEquals(100, result.getData().getMatches().get(1).getyValue1());
-		assertEquals(0, result.getData().getMatches().get(1).getyValue2());
+		assertEquals(100, result.getData().getMatches().get(1).getyValue2());
+		assertEquals(0, result.getData().getMatches().get(1).getyValue1());
 	}
 	
 	@Test
 	@Rollback(true)
 	public void testLoadDurationBySearch() throws Exception {
-		final ServiceResult<StatisticsResult> result = this.service.loadStatisticsByDuration("January 2011", "December 2011", "all", "all");
+		final ServiceResult<StatisticsResult> result = this.service.loadStatisticsByDuration("Januari 2011", "December 2011", "all", "all");
 		
 		assertNotNull(result);
 		assertFalse(result.getData().getMatches().isEmpty());
@@ -94,12 +96,12 @@ public class StatisticsServiceTest {
 	@Test
 	@Rollback(true)
 	public void testLoadMonthsBySearch() throws Exception {
-		final ServiceResult<StatisticsResult> result = this.service.loadStatisticsByMonth("January 2011", "December 2011", "all", "all");
+		final ServiceResult<StatisticsResult> result = this.service.loadStatisticsByMonth("Januari 2011", "December 2011", "all", "all");
 		
 		assertNotNull(result);
 		assertFalse(result.getData().getMatches().isEmpty());
 		assertEquals(12, result.getData().getMatches().size());
-		assertEquals("Februari", result.getData().getMatches().get(1).getxValue());
+		assertEquals("februari", result.getData().getMatches().get(1).getxValue());
 		for (int month=0; month<10; month++){
 			assertEquals(10, result.getData().getMatches().get(month).getyValue1());
 			assertEquals(0, result.getData().getMatches().get(month).getyValue2());
@@ -185,8 +187,13 @@ public class StatisticsServiceTest {
 				e.setPersonId(person.getId());
 				e.setDiagnosisId(diagnosisList.get(r.nextInt(3)).getId());
 				e.setCareUnitId(careUnit.getId());
+				e.setCareGiverId("careGiverId");
+				e.setIssuerId("issuerId");
+				e.setIssuerAge(50);
+				e.setIssuerGender("Female");
 				e.setBasedOnExamination(true);
 				e.setBasedOnTelephoneContact(false);
+				e.setWorkDisability(100);
 				certs.add(e);
 			}			
 			cal.add(period, 1);
