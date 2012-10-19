@@ -99,13 +99,14 @@ public class StatisticsServiceTest {
 		final ServiceResult<StatisticsResult> result = this.service.loadStatisticsByMonth("Januari 2011", "December 2011", "all", "all");
 		
 		assertNotNull(result);
-		assertFalse(result.getData().getMatches().isEmpty());
+		
 		assertEquals(12, result.getData().getMatches().size());
 		assertEquals("februari", result.getData().getMatches().get(1).getxValue());
 		for (int month=0; month<10; month++){
 			assertEquals(10, result.getData().getMatches().get(month).getyValue1());
 			assertEquals(0, result.getData().getMatches().get(month).getyValue2());
 		}
+		
 		assertEquals(0, result.getData().getMatches().get(10).getyValue1());
 		assertEquals(0, result.getData().getMatches().get(10).getyValue2());
 		assertEquals(0, result.getData().getMatches().get(11).getyValue1());

@@ -2,9 +2,9 @@ package se.inera.statistics.core.repository;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.fail;
 
 import java.util.Date;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -21,12 +21,13 @@ import se.inera.statistics.model.entity.MedicalCertificateEntity;
 import se.inera.statistics.model.entity.PersonEntity;
 import se.inera.statistics.model.entity.WorkCapability;
 
-
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations="classpath:statistics-config.xml")
 @ActiveProfiles(profiles={"db-embedded","test"}, inheritProfiles=true)
 public class MedicalCertificateRepositoryTest {
 
+	private static final String FEMALE = "Female";
+	private static final String MALE = "Male";
 	@Autowired 
 	private MedicalCertificateRepository repo;
 	@Autowired 
@@ -42,30 +43,29 @@ public class MedicalCertificateRepositoryTest {
 	private long endId;
 	
 	@Before
-	public void setUp(){
-		this.repo.deleteAll();
-		this.personRepository.deleteAll();
-		this.diagnosisRepository.deleteAll();
-		this.careUnitRepository.deleteAll();
+	public void setUp() throws Exception {
+		repo.deleteAll();
+		personRepository.deleteAll();
+		diagnosisRepository.deleteAll();
+		careUnitRepository.deleteAll();
 		DateUtil.createDates(dateRepository);
 		
-		PersonEntity person = PersonEntity.newEntity(18, "Male");
-		this.personRepository.save(person);
+		PersonEntity person = PersonEntity.newEntity(18, MALE);
+		personRepository.save(person);
 		
 		DiagnosisEntity diagnosis = DiagnosisEntity.newEntity("C54", false, WorkCapability.HALF_WORKING_CAPABILITY, "II", "Tumörer");
-		this.diagnosisRepository.save(diagnosis);
+		diagnosisRepository.save(diagnosis);
 		
 		CareUnitEntity careUnit = CareUnitEntity.newEntity("Gaminia");
-		this.careUnitRepository.save(careUnit);
+		careUnitRepository.save(careUnit);
 		
-		final Date start = new Date();
-		final Date end = new Date(start.getTime() + (60000 * 60 * 24 * 10));
-		this.startId = lookupDate(start);
-		this.endId = lookupDate(end);
+		final Date start = DateUtil.parse("2011-01-01");
+		startId = lookupDate(start);
+		endId = startId + 10;
 	}
 
 	private long lookupDate(Date date) {
-		return this.dateRepository.findByCalendarDate(date).getId();
+		return dateRepository.findByCalendarDate(date).getId();
 	}
 	
 	@Test
@@ -73,107 +73,106 @@ public class MedicalCertificateRepositoryTest {
 	@Transactional
 	public void testInsertFind() throws Exception {
 		MedicalCertificateEntity ent = createEmptyCertificate();
-		this.repo.save(ent);
+		repo.save(ent);
 		
-		assertEquals(1, this.repo.count());
+		assertEquals(1, repo.count());
 	}
 	
 	@Test
 	public void testGetCorrectCountByDuration() throws Exception{
-		for (int i = 0; i < 10; i++){
-			MedicalCertificateEntity ent = createEmptyCertificate();
-			this.repo.save(ent);
-		}
-		
-		for (int i = 0; i < 12; i++){
-			MedicalCertificateEntity ent = createEmptyCertificate();
-			ent.setEndDate(this.startId + 55);
-			this.repo.save(ent);
-		}
-		long result = this.repo.findCountByDuration(0, 30, "Male", this.startId, this.endId);
-		assertEquals(10, result);
-		assertEquals(12, this.repo.findCountByDuration(31, 60, "Male", this.startId, this.endId));
+		createEmptyCertificates(10, startId, 10);		
+		createEmptyCertificates(12, startId, 55);
+
+		long between0And30 = repo.findCountByDuration(0, 30, MALE, startId, endId + 100);
+		long between31And60 = repo.findCountByDuration(31, 60, MALE, startId, endId);
+
+		assertEquals(10, between0And30);
+		assertEquals(12, between31And60);
 	}
 	
 	@Test
 	public void testGetCorrectCountByAge() throws Exception{
-		this.personRepository.save(PersonEntity.newEntity(35, "Female"));
-		PersonEntity person1 = this.personRepository.findByAgeAndGender(35, "Female");
+		personRepository.save(PersonEntity.newEntity(35, FEMALE));
+		PersonEntity person1 = personRepository.findByAgeAndGender(35, FEMALE);
 		for (int i = 0; i < 10; i++){
 			MedicalCertificateEntity ent = createEmptyCertificate();
 			ent.setPersonId(person1.getId());
-			this.repo.save(ent);
+			repo.save(ent);
 		}
 		
-		this.personRepository.save(PersonEntity.newEntity(26, "Male"));
-		PersonEntity person2 = this.personRepository.findByAgeAndGender(26, "Male");
+		personRepository.save(PersonEntity.newEntity(26, MALE));
+		PersonEntity person2 = personRepository.findByAgeAndGender(26, MALE);
 		for (int i = 0; i < 12; i++){
 			MedicalCertificateEntity ent = createEmptyCertificate();
 			ent.setPersonId(person2.getId());
-			this.repo.save(ent);
+			repo.save(ent);
 		}
-		long result = this.repo.findCountBySearchAndAge(35, 39, "Female", this.startId, this.endId, Boolean.FALSE, Boolean.TRUE);
+		long result = repo.findCountBySearchAndAge(35, 39, FEMALE, startId, endId, Boolean.FALSE, Boolean.TRUE);
 		assertEquals(10, result);
-		assertEquals(12, this.repo.findCountBySearchAndAge(25, 29, "Male", this.startId, this.endId, Boolean.FALSE, Boolean.TRUE));
+		assertEquals(12, repo.findCountBySearchAndAge(25, 29, MALE, startId, endId, Boolean.FALSE, Boolean.TRUE));
 	}
 		
 	@Test
 	public void testGetCorrectCountByMonth() throws Exception{
-		for (int i = 0; i < 10; i++){
-			MedicalCertificateEntity ent = createEmptyCertificate();
-			this.repo.save(ent);
-		}
-		final long result1 = this.repo.findCountByMonth("Male", this.dateRepository.findOne(this.startId).getMonthStart());
+		createEmptyCertificates(10, startId, 10);
+		
+		final long result1 = repo.findCountByMonth(MALE, getMonthStart(startId));
 		assertEquals(10, result1);
 
-		final long dateId = this.startId + 180;
-		for (int i = 0; i < 12; i++){
-			MedicalCertificateEntity ent = createEmptyCertificate();
-			ent.setStartDate(dateId);
-			this.repo.save(ent);
-		}
-		final long result2 = this.repo.findCountByMonth("Male", this.dateRepository.findOne(dateId).getMonthStart());
+		long dateId = startId + 180;
+		createEmptyCertificates(12, dateId, dateId + 10);
+
+		final long result2 = repo.findCountByMonth(MALE, getMonthStart(dateId));
 		assertEquals(12, result2);
 	}
-		
+
 	@Test
 	public void testGetCorrectCountByCareUnit() throws Exception{
-		for (int i = 0; i < 10; i++){
-			MedicalCertificateEntity ent = createEmptyCertificate();
-			this.repo.save(ent);
-		}
-		final long result1 = this.repo.findCountByCareUnit("Male", this.careUnitRepository.findByName("Gaminia").getId(), this.startId, this.endId, Boolean.FALSE, Boolean.TRUE);
+		createEmptyCertificates(10, startId, 10);
+
+		final long result1 = repo.findCountByCareUnit(MALE, careUnitRepository.findByName("Gaminia").getId(), startId, endId, Boolean.FALSE, Boolean.TRUE);
 		assertEquals(10, result1);
 	
 		CareUnitEntity careUnit = CareUnitEntity.newEntity("care unit 2");
-		this.careUnitRepository.save(careUnit);
+		careUnitRepository.save(careUnit);
 		for (int i = 0; i < 12; i++){
-			MedicalCertificateEntity ent = createEmptyCertificate();
+			MedicalCertificateEntity ent = createEmptyCertificate(startId, 10);
 			ent.setCareUnitId(careUnit.getId());
-			this.repo.save(ent);
+			repo.save(ent);
 		}
-		final long result2 = this.repo.findCountByCareUnit("Male", this.careUnitRepository.findByName("care unit 2").getId(), this.startId, this.endId, Boolean.FALSE, Boolean.TRUE);
+		final long result2 = repo.findCountByCareUnit(MALE, careUnitRepository.findByName("care unit 2").getId(), startId, endId, Boolean.FALSE, Boolean.TRUE);
 		assertEquals(12, result2);
 	}
+
+	private void createEmptyCertificates(int count, long start, long duration) {
+		for (int i = 0; i < count; i++){
+			MedicalCertificateEntity ent = createEmptyCertificate(start, duration);
+			repo.save(ent);
+		}
+	}
+	
+	private Date getMonthStart(long id) {
+		return dateRepository.findOne(id).getMonthStart();
+	}
+	
 	
 	private MedicalCertificateEntity createEmptyCertificate() {
+		return createEmptyCertificate(startId, 10);
+	}
+	
+	private MedicalCertificateEntity createEmptyCertificate(long from, long duration) {
 		
-		final MedicalCertificateEntity ent = MedicalCertificateEntity.newEntity(this.startId, this.endId);
-		PersonEntity person = this.personRepository.findByAgeAndGender(18, "Male");
-		if (null == person){
-			fail("Encountered null person where we should not!");
-		}
+		final MedicalCertificateEntity ent = MedicalCertificateEntity.newEntity(from, from + duration);
+
+		PersonEntity person = personRepository.findByAgeAndGender(18, MALE);
+		assertNotNull("Encountered null person where we should not!", person);
 		ent.setPersonId(person.getId());
 		
-		DiagnosisEntity diagnosis = this.diagnosisRepository.findByIcd10AndWorkCapability("C54", WorkCapability.HALF_WORKING_CAPABILITY);
-		if (null == diagnosis){
-			fail("Encountered null diagnosis where we should not!");
-		}
+		DiagnosisEntity diagnosis = diagnosisRepository.findByIcd10AndWorkCapability("C54", WorkCapability.HALF_WORKING_CAPABILITY);
+		assertNotNull("Encountered null diagnosis where we should not!", diagnosis);
 		
-		CareUnitEntity careUnit = this.careUnitRepository.findByName("Gaminia");
-		if (null == careUnit){
-			fail("Encountered null careUnit where we should not!");
-		}
+		CareUnitEntity careUnit = careUnitRepository.findByName("Gaminia");
+		assertNotNull("Encountered null careUnit where we should not!", careUnit);
 		
 		assertNotNull(diagnosis.getId());
 		assertNotNull(careUnit.getId());
@@ -183,7 +182,7 @@ public class MedicalCertificateRepositoryTest {
 		ent.setCareGiverId("careGiverId");
 		ent.setIssuerId("issuerId");
 		ent.setIssuerAge(50);
-		ent.setIssuerGender("Female");
+		ent.setIssuerGender(FEMALE);
 		ent.setBasedOnExamination(Boolean.FALSE);
 		ent.setBasedOnTelephoneContact(Boolean.TRUE);
 		ent.setWorkDisability(100);
