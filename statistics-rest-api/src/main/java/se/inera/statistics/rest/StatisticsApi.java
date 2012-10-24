@@ -37,10 +37,10 @@ public class StatisticsApi {
 		return this.service.loadStatisticsByMonth(criterias.getFromDate(), criterias.getToDate(), criterias.getDisability(), criterias.getGroup());
 	}
 	
-	@RequestMapping(value="/sicknessgroups", method=RequestMethod.POST, consumes="application/json", produces="application/json")
+	@RequestMapping(value="/diagnosisgroups", method=RequestMethod.POST, consumes="application/json", produces="application/json")
 	@ResponseBody
-	public ServiceResult<StatisticsResult> loadSicknessGroupsStatistics(@RequestBody final MedicalCertificateDto criterias) {
-		return this.service.loadStatisticsBySicknessGroups(criterias);
+	public ServiceResult<StatisticsResult> loadDiagnosisGroupsStatistics(@RequestBody final MedicalCertificateDto criterias) {
+		return this.service.loadStatisticsByDiagnosisGroups(criterias);
 	}
 	
 	@RequestMapping(value="/careunit", method=RequestMethod.POST, consumes="application/json", produces="application/json")

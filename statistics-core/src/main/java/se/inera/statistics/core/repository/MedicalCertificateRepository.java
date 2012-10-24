@@ -224,7 +224,7 @@ public interface MedicalCertificateRepository extends JpaRepository<MedicalCerti
 			"(e.startDate >= :startDate and e.startDate <= :endDate) and " +
 			"e.basedOnExamination = :basedOnExamination and " +
 			"e.basedOnTelephoneContact = :basedOnTelephoneContact")
-	long findCountBySicknessGroup(
+	long findCountByDiagnosisGroup(
 			@Param("gender") final String gender,
 			@Param("diagnosisIds") final List<Long> diagnosisIds,
 			@Param("startDate") final long start,

@@ -82,12 +82,12 @@ public class StatisticsServiceImpl implements StatisticsService {
 	}
 	
 	@Override
-	public ServiceResult<StatisticsResult> loadStatisticsBySicknessGroups(final MedicalCertificateDto search) {
+	public ServiceResult<StatisticsResult> loadStatisticsByDiagnosisGroups(final MedicalCertificateDto search) {
 		try {
 			final long start = getStartDate(search.getStartDate());
 			final long end = getEndDate(search.getEndDate());
 
-			final StatisticsResult result = new StatisticsResult(this.getRowResultsBySicknessGroups(start, end, search.getBasedOnExamination(), search.getBasedOnTelephoneContact()));
+			final StatisticsResult result = new StatisticsResult(this.getRowResultsByDiagnosisGroups(start, end, search.getBasedOnExamination(), search.getBasedOnTelephoneContact()));
 			
 			return ok(result);
 		} catch (final Exception e) {
@@ -255,22 +255,22 @@ public class StatisticsServiceImpl implements StatisticsService {
 		return RowResult.newResult(month.getMonthName(), count_male, count_female);
 	}
 	
-	private List<RowResult> getRowResultsBySicknessGroups(long start, long end, Boolean basedOnExamination, Boolean basedOnTelephoneContact){
+	private List<RowResult> getRowResultsByDiagnosisGroups(long start, long end, Boolean basedOnExamination, Boolean basedOnTelephoneContact){
 		List<RowResult> rowResults = new ArrayList<RowResult>();
 
-		List<String> sicknessGroups = this.diagnosisRepository.findAllSicknessGroups();
-		for (String sicknessGroup : sicknessGroups){
-			List<Long> icd10Ids = this.diagnosisRepository.findIdsByIcd10group(sicknessGroup);
-			rowResults.add(getRowResultBySicknessGroup(sicknessGroup, icd10Ids, start, end, basedOnExamination, basedOnTelephoneContact));
+		List<String> diagnosisGroups = this.diagnosisRepository.findAllDiagnosisGroups();
+		for (String diagnosisGroup : diagnosisGroups){
+			List<Long> icd10Ids = this.diagnosisRepository.findIdsByIcd10group(diagnosisGroup);
+			rowResults.add(getRowResultByDiagnosisGroup(diagnosisGroup, icd10Ids, start, end, basedOnExamination, basedOnTelephoneContact));
 		}
 		
 		return rowResults;
 	}
 	
-	private RowResult getRowResultBySicknessGroup(String sicknessGroup, List<Long> icd10Ids, long start, long end, Boolean basedOnExamination, Boolean basedOnTelephoneContact){
-		final int count_male = (int)this.certificateRepository.findCountBySicknessGroup("Male", icd10Ids, start, end, basedOnExamination, basedOnTelephoneContact);
-		final int count_female = (int)this.certificateRepository.findCountBySicknessGroup("Female", icd10Ids, start, end, basedOnExamination, basedOnTelephoneContact);
-		RowResult row = RowResult.newResult(sicknessGroup, count_male, count_female);
+	private RowResult getRowResultByDiagnosisGroup(String diagnosisGroup, List<Long> icd10Ids, long start, long end, Boolean basedOnExamination, Boolean basedOnTelephoneContact){
+		final long count_male = this.certificateRepository.findCountByDiagnosisGroup("Male", icd10Ids, start, end, basedOnExamination, basedOnTelephoneContact);
+		final long count_female = this.certificateRepository.findCountByDiagnosisGroup("Female", icd10Ids, start, end, basedOnExamination, basedOnTelephoneContact);
+		RowResult row = RowResult.newResult(diagnosisGroup, count_male, count_female);
 
 		return row;
 	}

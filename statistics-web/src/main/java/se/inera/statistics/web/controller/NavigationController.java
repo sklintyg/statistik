@@ -45,8 +45,8 @@ public class NavigationController {
 	}
 	
 	@RequestMapping(value="/diagnosegroups", method=RequestMethod.GET)
-	public String displayDiagnoseGroups() {
-		return "sicknessgroups";
+	public String displayDiagnosisGroups() {
+		return "diagnosisgroups";
 	}
 	
 	@RequestMapping(value="/careunit", method=RequestMethod.GET)

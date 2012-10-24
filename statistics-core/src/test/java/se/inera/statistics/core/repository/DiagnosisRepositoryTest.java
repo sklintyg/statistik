@@ -37,7 +37,7 @@ public class DiagnosisRepositoryTest {
 	
 	@Test
 	public void testFindAllSicknessGroups() throws Exception{
-		List<String> result = this.diagnosisRepository.findAllSicknessGroups();
+		List<String> result = this.diagnosisRepository.findAllDiagnosisGroups();
 		assertEquals(2, result.size());
 		assertEquals("II", result.get(0));
 		assertEquals("XII", result.get(1));

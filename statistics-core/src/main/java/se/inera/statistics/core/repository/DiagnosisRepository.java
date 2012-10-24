@@ -20,5 +20,5 @@ public interface DiagnosisRepository extends JpaRepository<DiagnosisEntity, Long
 	//TODO: Look into better ordering. In current form, IX will come before V, VI, VII
 	@Query("select e.icd10Group from DiagnosisEntity as e " +
 			"group by icd10Group order by icd10Group")
-	List<String> findAllSicknessGroups();
+	List<String> findAllDiagnosisGroups();
 }

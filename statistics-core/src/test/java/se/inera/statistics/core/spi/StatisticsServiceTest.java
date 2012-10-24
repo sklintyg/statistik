@@ -117,7 +117,7 @@ public class StatisticsServiceTest {
 	@Rollback(true)
 	public void testLoadSicknessGroupsBySearch() throws Exception {
 		final MedicalCertificateDto search_parameters = getSearchParameters();
-		final ServiceResult<StatisticsResult> result = this.service.loadStatisticsBySicknessGroups(search_parameters);
+		final ServiceResult<StatisticsResult> result = this.service.loadStatisticsByDiagnosisGroups(search_parameters);
 		
 		assertNotNull(result);
 		assertFalse(result.getData().getMatches().isEmpty());
