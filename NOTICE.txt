@@ -1,0 +1,38 @@
+====
+    Copyright (C) 2012 Callista Enterprise AB <info@callistaenterprise.se>
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+====
+
+Inera Statistics
+Copyright (C) 2012 Inera AB
+
+This application includes the following software:
+
+Springsource, Spring Framework 3.1
+Licensed under Apache Software License 2.0
+http://www.springsource.org/
+
+Simple Logging Facade for Java, slf4j 1.6
+Licensed under MIT license
+http://www.slf4j.org/
+
+Apache Foundation, HttpClient, 
+Licensed under Apache Software License 2.0
+http://velocity.apache.org/
+
+Hamcrest, hamcrest-api 1.0
+License under The BSD 3-Clause License
+http://hamcrest.org
+

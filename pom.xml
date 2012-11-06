@@ -326,18 +326,22 @@
 							<year>2012</year>
 						</properties>
 						<strictCheck>true</strictCheck>
-						<header>src/license/lgpl_v3/header.txt</header>
+						<header>header.txt</header>
 						<encoding>UTF-8</encoding>
 						<includes>
 							<include>src/main/**</include>
 							<include>src/test/**</include>
 						</includes>
 						<excludes>
-							<!-- Exclude JQuery files -->
-							<exclude>**/*jquery*</exclude>
-							<exclude>**/*bootstrap*</exclude>
-							<exclude>**/*json2*</exclude>
-							<exclude>**/*.xsd</exclude>
+						  <!-- Exclude .properties due to  encoding issues (iso-88590-1) -->
+						  <exclude>**/*.properties</exclude>
+						  <exclude>**/*.pdf</exclude>
+						  <exclude>**/icd10groups.txt</exclude>
+						  <!-- Exclude JQuery files -->
+						  <exclude>**/*jquery*</exclude>
+						  <exclude>**/*bootstrap*</exclude>
+						  <exclude>**/*json2*</exclude>
+						  <exclude>**/*.xsd</exclude>
 						</excludes>
 						<mapping>
 							<tag>DYNASCRIPT_STYLE</tag>
