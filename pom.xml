@@ -333,6 +333,8 @@
 							<include>src/test/**</include>
 						</includes>
 						<excludes>
+						  <exclude>**/NOTICE.txt</exclude>
+						  <exclude>**/LICENSE.txt</exclude>
 						  <!-- Exclude .properties due to  encoding issues (iso-88590-1) -->
 						  <exclude>**/*.properties</exclude>
 						  <exclude>**/*.pdf</exclude>
