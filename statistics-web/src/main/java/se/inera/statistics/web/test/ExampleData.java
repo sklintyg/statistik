@@ -66,7 +66,7 @@ public class ExampleData {
 	private CareUnitRepository careUnitRepository;
 
 	@PostConstruct
-	private void generate() {
+	public void generate() {
 		log.info("==== INERA STATISTICS GENERATING SAMPLE DATA ====");
 		setupInitialData(18, 100, Calendar.MONTH);
 	}
