@@ -86,43 +86,6 @@
 					</execution>
 				</executions>
 			</plugin>
-			<plugin>
-				<groupId>org.mortbay.jetty</groupId>
-				<artifactId>jetty-maven-plugin</artifactId>
-				<version>8.1.2.v20120308</version>
-				<configuration>
-					<stopPort>9999</stopPort>
-					<stopKey>quit</stopKey>
-				</configuration>
-				<executions>
-					<execution>
-						<id>start-jetty</id>
-						<goals>
-							<goal>start</goal>
-						</goals>
-						<phase>pre-integration-test</phase>
-						<configuration>
-							<webApp>
-								<contextPath>/statistics-web</contextPath>
-							</webApp>
-							<daemon>true</daemon>
-							<systemProperties>
-								<systemProperty>
-									<name>spring.profiles.active</name>
-									<value>test,db-psql</value>
-								</systemProperty>
-							</systemProperties>
-						</configuration>
-					</execution>
-					<execution>
-						<id>stop-jetty</id>
-						<goals>
-							<goal>stop</goal>
-						</goals>
-						<phase>post-integration-test</phase>
-					</execution>
-				</executions>
-			</plugin>
 		</plugins>
 	</build>
 
