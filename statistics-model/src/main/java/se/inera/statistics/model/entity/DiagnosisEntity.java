@@ -50,10 +50,10 @@ public class DiagnosisEntity {
 	
 	DiagnosisEntity(){}
 	
-	public static DiagnosisEntity newEntity(final String Icd10, final boolean diagnose, final WorkCapability workCapability,
+	public static DiagnosisEntity newEntity(final String icd10, final boolean diagnose, final WorkCapability workCapability,
 			final String icd10Group, final String icd10GroupDescription) {
 		final DiagnosisEntity diagnosis = new DiagnosisEntity();
-		diagnosis.setIcd10(Icd10);
+		diagnosis.setIcd10(icd10);
 		diagnosis.setDiagnose(diagnose);
 		diagnosis.setWorkCapability(workCapability);
 		diagnosis.setIcd10Group(icd10Group);
