@@ -23,6 +23,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -73,70 +74,49 @@ public class StatisticsServiceImpl implements StatisticsService {
 	
 	@Override
 	public ServiceResult<StatisticsResult> loadStatisticsByDuration(String from, String to, String disability, String group) {
-		try {
-			final long start = getStartDate(from);
-			final long end = getEndDate(to);
+		final long start = getStartDate(from);
+		final long end = getEndDate(to);
 
-			final StatisticsResult result = new StatisticsResult(this.getRowResultsByDuration(start, end, disability, group));
-			
-			return ok(result);
-		} catch (final Exception e) {
-			throw new RuntimeException(e);
-		}
+		final StatisticsResult result = new StatisticsResult(this.getRowResultsByDuration(start, end, disability, group));
+		
+		return ok(result);
 	}
 
 	@Override
 	public ServiceResult<StatisticsResult> loadStatisticsByMonth(String from, String to, String disability, String group) {
-		try {
-			final long start = getStartDate(from);
-			final long end = getEndDate(to);
+		final long start = getStartDate(from);
+		final long end = getEndDate(to);
 
-			final StatisticsResult result = new StatisticsResult(this.getRowResultsByMonth(start, end, disability, group));
-			
-			return ok(result);
-		} catch (final Exception e) {
-			throw new RuntimeException(e);
-		}
+		final StatisticsResult result = new StatisticsResult(this.getRowResultsByMonth(start, end, disability, group));
+		
+		return ok(result);
 	}
 	
 	@Override
 	public ServiceResult<StatisticsResult> loadStatisticsByDiagnosisGroups(final MedicalCertificateDto search) {
-		try {
-			final long start = getStartDate(search.getStartDate());
-			final long end = getEndDate(search.getEndDate());
+		final long start = getStartDate(search.getStartDate());
+		final long end = getEndDate(search.getEndDate());
 
-			final StatisticsResult result = new StatisticsResult(this.getRowResultsByDiagnosisGroups(start, end, search.getBasedOnExamination(), search.getBasedOnTelephoneContact()));
-			
-			return ok(result);
-		} catch (final Exception e) {
-			throw new RuntimeException(e);
-		}
+		final StatisticsResult result = new StatisticsResult(this.getRowResultsByDiagnosisGroups(start, end, search.getBasedOnExamination(), search.getBasedOnTelephoneContact()));
+		
+		return ok(result);
 	}
 	
 	@Override
 	public ServiceResult<StatisticsResult> loadStatisticsByCareUnit(final MedicalCertificateDto search) {
-		try {
-			final long start = getStartDate(search.getStartDate());
-			final long end = getEndDate(search.getEndDate());
+		final long start = getStartDate(search.getStartDate());
+		final long end = getEndDate(search.getEndDate());
 
-			final StatisticsResult result = new StatisticsResult(this.getRowResultsByCareUnit(start, end, search.getBasedOnExamination(), search.getBasedOnTelephoneContact()));
+		final StatisticsResult result = new StatisticsResult(this.getRowResultsByCareUnit(start, end, search.getBasedOnExamination(), search.getBasedOnTelephoneContact()));
 			
-			return ok(result);
-		} catch (final Exception e) {
-			throw new RuntimeException(e);
-		}
+		return ok(result);
 	}
 	
 	@Override
 	public ServiceResult<StatisticsResult> loadByAge(String from, String to, String disability, String group) {
-		try {
-			final StatisticsResult result = new StatisticsResult(getRowResultsByAge(getStartDate(from), getEndDate(to), disability, group));
+		final StatisticsResult result = new StatisticsResult(getRowResultsByAge(getStartDate(from), getEndDate(to), disability, group));
 			
-			return ok(result);
-
-		} catch (final Exception e) {
-			throw new RuntimeException(e);
-		}
+		return ok(result);
 	}
 		
 	private List<RowResult> getRowResultsByDuration(long start, long end, String disability, String group){
@@ -311,18 +291,23 @@ public class StatisticsServiceImpl implements StatisticsService {
 		return ServiceResultImpl.newSuccessfulResult( result, Collections.singletonList(new DefaultServiceMessage("Test", ServiceMessageType.SUCCESS)));
 	}	
 
-	private long getStartDate(final String date) throws ParseException{
-		final SimpleDateFormat sdf = new SimpleDateFormat(TIME_TEXT_FORMAT, LOCALE);
-		
-		final DateEntity startDate = this.dateRepository.findByCalendarDate(sdf.parse(date));
+	private long getStartDate(final String date) {
+		final DateEntity startDate = this.dateRepository.findByCalendarDate(parse(date));
 		return this.dateRepository.findByCalendarDate(startDate.getMonthStart()).getId();	
 	}
 	
-	private long getEndDate(final String date) throws ParseException{
-		final SimpleDateFormat sdf = new SimpleDateFormat(TIME_TEXT_FORMAT, LOCALE);
-		
-		final DateEntity endDate = this.dateRepository.findByCalendarDate(sdf.parse(date));
+	private long getEndDate(final String date) {
+		final DateEntity endDate = this.dateRepository.findByCalendarDate(parse(date));
 		return this.dateRepository.findByCalendarDate(endDate.getMonthEnd()).getId();
+	}
+
+	private Date parse(final String date) {
+		try {
+			final SimpleDateFormat sdf = new SimpleDateFormat(TIME_TEXT_FORMAT, LOCALE);		
+			return sdf.parse(date);
+		} catch (ParseException e) {
+			throw new IllegalArgumentException("Could not parse date " + date, e);
+		}
 	}
 
 }
