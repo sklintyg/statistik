@@ -37,9 +37,9 @@ public class PersonEntity {
 	@Column(nullable=false)
 	private int age;
 	
+	//TODO: make it enum may be 
 	@Column(nullable=false)
 	private String gender;
-	//TODO: make it enum may be 
 	
 	PersonEntity(){
 	}
@@ -76,7 +76,7 @@ public class PersonEntity {
 		}	
 	}
 	public boolean isFemale() {
-		return gender == "Female";
+		return "Female".equals(gender);
 	}
 
 	public Long getId() {
