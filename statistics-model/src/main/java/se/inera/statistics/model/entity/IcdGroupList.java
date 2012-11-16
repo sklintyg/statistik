@@ -56,7 +56,7 @@ public class IcdGroupList {
 				return group;
 			}
 		}
-		throw new RuntimeException("Could not find icd code '" + icd10 + "' . Illegal state!");
+		throw new IllegalArgumentException("Could not find icd code '" + icd10 + "' . Illegal state!");
 	}
 
 	private boolean inRange(final String icd10FirstThreeCharacters, IcdGroup group) {
