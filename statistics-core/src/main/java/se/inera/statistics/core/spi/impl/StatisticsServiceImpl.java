@@ -147,36 +147,33 @@ public class StatisticsServiceImpl implements StatisticsService {
 		rowResults.add(getRowResultByDuration(31, 90, start, end, disability, group));
 		rowResults.add(getRowResultByDuration(91, 360, start, end, disability, group));
 		// TODO How to handle longer than 360 days? Limit for "a lot of days"?
-
 		
 		return rowResults;
 	}
 	
 	private RowResult getRowResultByDuration(long minDuration, long maxDuration, long start, long end, String disability, String group){
-		final long count_male;
-		final long count_female;
+		final long countMale;
+		final long countFemale;
 
 		if ("all".equals(disability)) {
 			if ("all".equals(group)) {
-				count_male= this.certificateRepository.findCountByDuration(minDuration, maxDuration, "Male", start, end);
-				count_female= this.certificateRepository.findCountByDuration(minDuration, maxDuration, "Female", start, end);
+				countMale= this.certificateRepository.findCountByDuration(minDuration, maxDuration, "Male", start, end);
+				countFemale= this.certificateRepository.findCountByDuration(minDuration, maxDuration, "Female", start, end);
 			} else {
-				count_male= this.certificateRepository.findCountByDurationAndIcd10Group(minDuration, maxDuration, "Male", start, end, group);
-				count_female= this.certificateRepository.findCountByDurationAndIcd10Group(minDuration, maxDuration, "Female", start, end, group);
+				countMale= this.certificateRepository.findCountByDurationAndIcd10Group(minDuration, maxDuration, "Male", start, end, group);
+				countFemale= this.certificateRepository.findCountByDurationAndIcd10Group(minDuration, maxDuration, "Female", start, end, group);
 			}
 		} else {
 			int disabilityInt = Integer.parseInt(disability);
 			if ("all".equals(group)) {
-				count_male= this.certificateRepository.findCountByDurationAndWorkDisability(minDuration, maxDuration, "Male", start, end, disabilityInt);
-				count_female= this.certificateRepository.findCountByDurationAndWorkDisability(minDuration, maxDuration, "Female", start, end, disabilityInt);
+				countMale= this.certificateRepository.findCountByDurationAndWorkDisability(minDuration, maxDuration, "Male", start, end, disabilityInt);
+				countFemale= this.certificateRepository.findCountByDurationAndWorkDisability(minDuration, maxDuration, "Female", start, end, disabilityInt);
 			} else {
-				count_male= this.certificateRepository.findCountByDurationAndIcd10GroupAndWorkDisability(minDuration, maxDuration, "Male", start, end, group, disabilityInt);
-				count_female= this.certificateRepository.findCountByDurationAndIcd10GroupAndWorkDisability(minDuration, maxDuration, "Female", start, end, group, disabilityInt);
+				countMale= this.certificateRepository.findCountByDurationAndIcd10GroupAndWorkDisability(minDuration, maxDuration, "Male", start, end, group, disabilityInt);
+				countFemale= this.certificateRepository.findCountByDurationAndIcd10GroupAndWorkDisability(minDuration, maxDuration, "Female", start, end, group, disabilityInt);
 			}
 		}
-		RowResult row = RowResult.newResult(formatDuration(minDuration, maxDuration), count_male, count_female);
-
-		return row;
+		return RowResult.newResult(formatDuration(minDuration, maxDuration), countMale, countFemale);
 	}
 
 	private String formatDuration(long minDuration, long maxDuration) {
@@ -197,27 +194,27 @@ public class StatisticsServiceImpl implements StatisticsService {
 	}
 	
 	private RowResult getRowResultByAge(int minAge, int maxAge, long start, long end, String disability, String group) {
-		final long count_male;
-		final long count_female;
+		final long countMale;
+		final long countFemale;
 		
 		if ("all".equals(group)) {
 			if ("all".equals(disability)) {
-				count_male = certificateRepository.findCountBySearchAndAge(minAge, maxAge, "Male", start, end);		
-				count_female = certificateRepository.findCountBySearchAndAge(minAge, maxAge, "Female", start, end);
+				countMale = certificateRepository.findCountBySearchAndAge(minAge, maxAge, "Male", start, end);		
+				countFemale = certificateRepository.findCountBySearchAndAge(minAge, maxAge, "Female", start, end);
 			} else {
-				count_male = certificateRepository.findCountByAgeAndWorkDisability(minAge, maxAge, "Male", start, end, Integer.parseInt(disability));		
-				count_female = certificateRepository.findCountByAgeAndWorkDisability(minAge, maxAge, "Female", start, end, Integer.parseInt(disability));
+				countMale = certificateRepository.findCountByAgeAndWorkDisability(minAge, maxAge, "Male", start, end, Integer.parseInt(disability));		
+				countFemale = certificateRepository.findCountByAgeAndWorkDisability(minAge, maxAge, "Female", start, end, Integer.parseInt(disability));
 			}
 		} else {
 			if ("all".equals(disability)) {
-				count_male = certificateRepository.findCountByAgeAndIcd10Group(minAge, maxAge, "Male", start, end, group);		
-				count_female = certificateRepository.findCountByAgeAndIcd10Group(minAge, maxAge, "Female", start, end, group);
+				countMale = certificateRepository.findCountByAgeAndIcd10Group(minAge, maxAge, "Male", start, end, group);		
+				countFemale = certificateRepository.findCountByAgeAndIcd10Group(minAge, maxAge, "Female", start, end, group);
 			} else {
-				count_male = certificateRepository.findCountByAgeAndIcd10GroupAndWorkDisability(minAge, maxAge, "Male", start, end, group, Integer.parseInt(disability));		
-				count_female = certificateRepository.findCountByAgeAndIcd10GroupAndWorkDisability(minAge, maxAge, "Female", start, end, group, Integer.parseInt(disability));
+				countMale = certificateRepository.findCountByAgeAndIcd10GroupAndWorkDisability(minAge, maxAge, "Male", start, end, group, Integer.parseInt(disability));		
+				countFemale = certificateRepository.findCountByAgeAndIcd10GroupAndWorkDisability(minAge, maxAge, "Female", start, end, group, Integer.parseInt(disability));
 			}
 		}
-		return RowResult.newResult(formatAgeRange(minAge, maxAge), count_female, count_male);
+		return RowResult.newResult(formatAgeRange(minAge, maxAge), countFemale, countMale);
 	}
 	
 	private String formatAgeRange(int minAge, int maxAge) {
@@ -249,28 +246,28 @@ public class StatisticsServiceImpl implements StatisticsService {
 	}
 	
 	private RowResult getRowResultByMonth(DateEntity month, String disability, String group){
-		final long count_male;
-		final long count_female;
+		final long countMale;
+		final long countFemale;
 		if ("all".equals(disability)) {
 			if ("all".equals(group)) {
-				count_male = certificateRepository.findCountByMonth("Male", month.getMonthStart());
-				count_female = certificateRepository.findCountByMonth("Female", month.getMonthStart());
+				countMale = certificateRepository.findCountByMonth("Male", month.getMonthStart());
+				countFemale = certificateRepository.findCountByMonth("Female", month.getMonthStart());
 			} else {
-				count_male = certificateRepository.findCountByMonthAndIcd10Group("Male", month.getMonthStart(), group);
-				count_female = certificateRepository.findCountByMonthAndIcd10Group("Female", month.getMonthStart(), group);
+				countMale = certificateRepository.findCountByMonthAndIcd10Group("Male", month.getMonthStart(), group);
+				countFemale = certificateRepository.findCountByMonthAndIcd10Group("Female", month.getMonthStart(), group);
 			}
 		} else {
 			int workDisability = Integer.parseInt(disability);
 			if ("all".equals(group)) {
-				count_male = certificateRepository.findCountByMonthAndDisability("Male", month.getMonthStart(), workDisability);
-				count_female = certificateRepository.findCountByMonthAndDisability("Female", month.getMonthStart(), workDisability);
+				countMale = certificateRepository.findCountByMonthAndDisability("Male", month.getMonthStart(), workDisability);
+				countFemale = certificateRepository.findCountByMonthAndDisability("Female", month.getMonthStart(), workDisability);
 			} else {
-				count_male = certificateRepository.findCountByMonthAndIcd10GroupAndWorkDisability("Male", month.getMonthStart(), group, workDisability);
-				count_female = certificateRepository.findCountByMonthAndIcd10GroupAndWorkDisability("Female", month.getMonthStart(), group, workDisability);				
+				countMale = certificateRepository.findCountByMonthAndIcd10GroupAndWorkDisability("Male", month.getMonthStart(), group, workDisability);
+				countFemale = certificateRepository.findCountByMonthAndIcd10GroupAndWorkDisability("Female", month.getMonthStart(), group, workDisability);				
 			}
 		}
 
-		return RowResult.newResult(month.getMonthName(), count_male, count_female);
+		return RowResult.newResult(month.getMonthName(), countMale, countFemale);
 	}
 	
 	private List<RowResult> getRowResultsByDiagnosisGroups(long start, long end, Boolean basedOnExamination, Boolean basedOnTelephoneContact){
@@ -286,9 +283,9 @@ public class StatisticsServiceImpl implements StatisticsService {
 	}
 	
 	private RowResult getRowResultByDiagnosisGroup(String diagnosisGroup, List<Long> icd10Ids, long start, long end, Boolean basedOnExamination, Boolean basedOnTelephoneContact){
-		final long count_male = this.certificateRepository.findCountByDiagnosisGroup("Male", icd10Ids, start, end, basedOnExamination, basedOnTelephoneContact);
-		final long count_female = this.certificateRepository.findCountByDiagnosisGroup("Female", icd10Ids, start, end, basedOnExamination, basedOnTelephoneContact);
-		RowResult row = RowResult.newResult(diagnosisGroup, count_male, count_female);
+		final long countMale = this.certificateRepository.findCountByDiagnosisGroup("Male", icd10Ids, start, end, basedOnExamination, basedOnTelephoneContact);
+		final long countFemale = this.certificateRepository.findCountByDiagnosisGroup("Female", icd10Ids, start, end, basedOnExamination, basedOnTelephoneContact);
+		RowResult row = RowResult.newResult(diagnosisGroup, countMale, countFemale);
 
 		return row;
 	}
@@ -305,11 +302,9 @@ public class StatisticsServiceImpl implements StatisticsService {
 	}
 	
 	private RowResult getRowResultByCareUnit(CareUnitEntity careUnit, long start, long end, Boolean basedOnExamination, Boolean basedOnTelephoneContact){
-		final int count_male = (int)this.certificateRepository.findCountByCareUnit("Male", careUnit.getId(), start, end, basedOnExamination, basedOnTelephoneContact);
-		final int count_female = (int)this.certificateRepository.findCountByCareUnit("Female", careUnit.getId(), start, end, basedOnExamination, basedOnTelephoneContact);
-		RowResult row = RowResult.newResult("" + careUnit.getName(), count_male, count_female);
-		
-		return row;
+		final int countMale = (int)this.certificateRepository.findCountByCareUnit("Male", careUnit.getId(), start, end, basedOnExamination, basedOnTelephoneContact);
+		final int countFemale = (int)this.certificateRepository.findCountByCareUnit("Female", careUnit.getId(), start, end, basedOnExamination, basedOnTelephoneContact);
+		return RowResult.newResult(careUnit.getName(), countMale, countFemale);
 	}
 	
 	private ServiceResult<StatisticsResult> ok(final StatisticsResult result) {
