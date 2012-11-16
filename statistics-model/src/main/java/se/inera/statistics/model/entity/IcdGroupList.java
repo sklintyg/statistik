@@ -52,12 +52,14 @@ public class IcdGroupList {
 		//TODO: a better search mechanism
 		final String icd10FirstThreeCharacters = icd10.substring(0, 3);
 		for (IcdGroup group : mapping){
-			if (group.getIcd10RangeStart().compareTo(icd10FirstThreeCharacters) <= 0) {
-				if (group.getIcd10RangeEnd().compareTo(icd10FirstThreeCharacters) >= 0) {
-					return group;
-				}
+			if (inRange(icd10FirstThreeCharacters, group)) {
+				return group;
 			}
 		}
 		throw new RuntimeException("Could not find icd code '" + icd10 + "' . Illegal state!");
+	}
+
+	private boolean inRange(final String icd10FirstThreeCharacters, IcdGroup group) {
+		return group.getIcd10RangeStart().compareTo(icd10FirstThreeCharacters) <= 0 && group.getIcd10RangeEnd().compareTo(icd10FirstThreeCharacters) >= 0;
 	}
 }
