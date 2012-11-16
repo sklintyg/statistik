@@ -21,9 +21,9 @@ package se.inera.statistics.rest;
 public class DurationForm {
 
 	private String from;
-	String to;
-	String disability;
-	String group;
+	private String to;
+	private String disability;
+	private String group;
 	
 	public DurationForm() {		
 	}
