@@ -48,7 +48,7 @@ import se.inera.statistics.model.entity.WorkCapability;
  */
 public class ExampleData {
 	
-	private static final Logger log = LoggerFactory.getLogger(ExampleData.class);
+	private static final Logger LOG = LoggerFactory.getLogger(ExampleData.class);
 
 	@Autowired
 	private MedicalCertificateRepository certificateRepository;
@@ -67,7 +67,7 @@ public class ExampleData {
 
 	@PostConstruct
 	public void generate() {
-		log.info("==== INERA STATISTICS GENERATING SAMPLE DATA ====");
+		LOG.info("==== INERA STATISTICS GENERATING SAMPLE DATA ====");
 		setupInitialData(18, 100, Calendar.MONTH);
 	}
 	

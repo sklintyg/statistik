@@ -48,7 +48,7 @@ import se.inera.statistics.model.entity.WorkCapability;
 @Transactional
 public class RegisterStatisticsServiceImpl implements RegisterStatisticsService {
 
-	private static final Logger log = LoggerFactory.getLogger(RegisterStatisticsServiceImpl.class);
+	private static final Logger LOG = LoggerFactory.getLogger(RegisterStatisticsServiceImpl.class);
 	
 	@Autowired
 	private MedicalCertificateRepository certificateRepository;
@@ -96,10 +96,10 @@ public class RegisterStatisticsServiceImpl implements RegisterStatisticsService 
 			ent.setWorkDisability(certificate.getWorkDisability());
 			this.certificateRepository.save(ent);
 			
-			log.info("Medical certificate statistics data successfully registered.");
+			LOG.info("Medical certificate statistics data successfully registered.");
 			return true;
 		} catch (final ParseException e) {
-			log.error("Unable to parse incoming dates", e);
+			LOG.error("Unable to parse incoming dates", e);
 			return false;
 		}
 	}
