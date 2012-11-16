@@ -79,7 +79,7 @@ public class RegisterStatisticsServiceImpl implements RegisterStatisticsService 
 			final DiagnosisEntity diagnosis = getDiagnosis(certificate.getIcd10(), certificate.getDiagnose(), certificate.getWorkDisability());
 			
 			if (certificate.getCareUnit() == null) {
-				throw new NullPointerException("Care unit name is null.");
+				throw new IllegalArgumentException("Care unit name is null.");
 			}
 			
 			final CareUnitEntity careUnit = getCareUnit(certificate.getCareUnit());
