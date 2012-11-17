@@ -125,7 +125,6 @@ public class ExampleData {
 				
 				final MedicalCertificateEntity e = MedicalCertificateEntity.newEntity(d1Id, d2Id);
 				e.setPersonId(person.getId());
-//				e.setDiagnosisId(diagnosis.getId());
 				e.setDiagnosisId(diagnosisList.get(r.nextInt(3)).getId());
 				e.setCareUnitId(r.nextBoolean() ? careUnit1.getId() : careUnit2.getId());
 				e.setBasedOnExamination(false);
