@@ -135,8 +135,8 @@ public class StatisticsServiceImpl implements StatisticsService {
 		final long countMale;
 		final long countFemale;
 
-		if ("all".equals(disability)) {
-			if ("all".equals(group)) {
+		if (isAllSelected(disability)) {
+			if (isAllSelected(group)) {
 				countMale= this.certificateRepository.findCountByDuration(minDuration, maxDuration, "Male", start, end);
 				countFemale= this.certificateRepository.findCountByDuration(minDuration, maxDuration, "Female", start, end);
 			} else {
@@ -145,7 +145,7 @@ public class StatisticsServiceImpl implements StatisticsService {
 			}
 		} else {
 			int disabilityInt = Integer.parseInt(disability);
-			if ("all".equals(group)) {
+			if (isAllSelected(group)) {
 				countMale= this.certificateRepository.findCountByDurationAndWorkDisability(minDuration, maxDuration, "Male", start, end, disabilityInt);
 				countFemale= this.certificateRepository.findCountByDurationAndWorkDisability(minDuration, maxDuration, "Female", start, end, disabilityInt);
 			} else {
@@ -177,8 +177,8 @@ public class StatisticsServiceImpl implements StatisticsService {
 		final long countMale;
 		final long countFemale;
 		
-		if ("all".equals(group)) {
-			if ("all".equals(disability)) {
+		if (isAllSelected(group)) {
+			if (isAllSelected(disability)) {
 				countMale = certificateRepository.findCountBySearchAndAge(minAge, maxAge, "Male", start, end);		
 				countFemale = certificateRepository.findCountBySearchAndAge(minAge, maxAge, "Female", start, end);
 			} else {
@@ -186,7 +186,7 @@ public class StatisticsServiceImpl implements StatisticsService {
 				countFemale = certificateRepository.findCountByAgeAndWorkDisability(minAge, maxAge, "Female", start, end, Integer.parseInt(disability));
 			}
 		} else {
-			if ("all".equals(disability)) {
+			if (isAllSelected(disability)) {
 				countMale = certificateRepository.findCountByAgeAndIcd10Group(minAge, maxAge, "Male", start, end, group);		
 				countFemale = certificateRepository.findCountByAgeAndIcd10Group(minAge, maxAge, "Female", start, end, group);
 			} else {
@@ -228,8 +228,8 @@ public class StatisticsServiceImpl implements StatisticsService {
 	private RowResult getRowResultByMonth(DateEntity month, String disability, String group){
 		final long countMale;
 		final long countFemale;
-		if ("all".equals(disability)) {
-			if ("all".equals(group)) {
+		if (isAllSelected(disability)) {
+			if (isAllSelected(group)) {
 				countMale = certificateRepository.findCountByMonth("Male", month.getMonthStart());
 				countFemale = certificateRepository.findCountByMonth("Female", month.getMonthStart());
 			} else {
@@ -238,7 +238,7 @@ public class StatisticsServiceImpl implements StatisticsService {
 			}
 		} else {
 			int workDisability = Integer.parseInt(disability);
-			if ("all".equals(group)) {
+			if (isAllSelected(group)) {
 				countMale = certificateRepository.findCountByMonthAndDisability("Male", month.getMonthStart(), workDisability);
 				countFemale = certificateRepository.findCountByMonthAndDisability("Female", month.getMonthStart(), workDisability);
 			} else {
@@ -290,6 +290,10 @@ public class StatisticsServiceImpl implements StatisticsService {
 	private ServiceResult<StatisticsResult> ok(final StatisticsResult result) {
 		return ServiceResultImpl.newSuccessfulResult( result, Collections.singletonList(new DefaultServiceMessage("Test", ServiceMessageType.SUCCESS)));
 	}	
+
+	private boolean isAllSelected(String disability) {
+		return "all".equals(disability);
+	}
 
 	private long getStartDate(final String date) {
 		final DateEntity startDate = this.dateRepository.findByCalendarDate(parse(date));
