@@ -114,17 +114,25 @@ public class RegisterStatisticsServiceImpl implements RegisterStatisticsService 
 	}
 	
 	private DiagnosisEntity getDiagnosis(final String icd10, final boolean diagnose, final int workDisability){
+		String normalizedIcd10 = normalizeIcd10(icd10);
 		WorkCapability workCapability = WorkCapability.fromWorkDisabilityPercentage(workDisability);
-		DiagnosisEntity diagnosis = this.diagnosisRepository.findByIcd10AndWorkCapability(icd10, workCapability);
+		DiagnosisEntity diagnosis = this.diagnosisRepository.findByIcd10AndWorkCapability(normalizedIcd10, workCapability);
 		//TODO: Understand semantics of diagnose boolean and implement strategy for creating/updating the values
 		if (null == diagnosis){
-			final IcdGroup icdGroup = icdGroupList.getGroup(icd10);
+			final IcdGroup icdGroup = icdGroupList.getGroup(normalizedIcd10);
 			diagnosis = DiagnosisEntity.newEntity(icd10, diagnose, workCapability, icdGroup.getChapter(), icdGroup.getDescription());
 			this.diagnosisRepository.save(diagnosis);
 		}
 		return diagnosis;
 	}
 	
+	private String normalizeIcd10(String icd10) {
+		if (icd10 != null) {
+			return icd10.toUpperCase();
+		}
+		return icd10;
+	}
+
 	private DateEntity getDateEntity(final String dateString) throws ParseException{
 		final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		final Date calendarDate = sdf.parse(dateString);
