@@ -25,38 +25,50 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class IcdGroupList {
 
+	private static final Logger LOG = LoggerFactory.getLogger(IcdGroupList.class);
+	
 	private List<IcdGroup> mapping = new ArrayList<IcdGroup>();
+	private final IcdGroup unknownIcd;
+	
+	public IcdGroupList() {
+		 unknownIcd = new IcdGroup("Okänd", null, null, "Okända ICDtexter");
+	}
 	
 	public void setMappings(URL url) throws IOException {
 		final BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(url.openStream(), "ISO-8859-1"));
-		String line = null;
+		String line;
 		
-		while (null != (line = bufferedReader.readLine())){
-			final IcdGroup icdGroup = new IcdGroup();
+		while ((line = bufferedReader.readLine()) != null){
 			final String[] tokens = line.split("\\t");
 			final String[] icds = tokens[1].split("-");
 			
-			icdGroup.setChapter(tokens[0]);
-			icdGroup.setIcd10RangeStart(icds[0]);
-			icdGroup.setIcd10RangeEnd(icds[1]);
-			icdGroup.setDescription(tokens[2]);
-
-			mapping.add(icdGroup);
+			String icd10RangeStart = icds[0];
+			String icd10RangeEnd = icds[1];
+			String description = tokens[2];
+			
+			mapping.add(new IcdGroup(tokens[0], icd10RangeStart, icd10RangeEnd, description));
 		}
-		bufferedReader.close();
+		bufferedReader.close();		
 	}
 	
 	public IcdGroup getGroup(String icd10) {
-		//TODO: a better search mechanism
-		final String icd10FirstThreeCharacters = icd10.substring(0, 3);
-		for (IcdGroup group : mapping){
-			if (inRange(icd10FirstThreeCharacters, group)) {
-				return group;
+		if (icd10 != null && icd10.length() >=3) {
+			final String icd10FirstThreeCharacters = icd10.substring(0, 3);
+			for (IcdGroup group : mapping){
+				if (inRange(icd10FirstThreeCharacters, group)) {
+					return group;
+				}
 			}
 		}
-		throw new IllegalArgumentException("Could not find icd code '" + icd10 + "' . Illegal state!");
+		
+		LOG.warn("Could not find icd code '{0}'", icd10);
+		return unknownIcd;
+		
 	}
 
 	private boolean inRange(final String icd10FirstThreeCharacters, IcdGroup group) {
