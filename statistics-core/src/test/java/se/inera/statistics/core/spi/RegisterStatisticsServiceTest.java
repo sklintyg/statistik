@@ -20,9 +20,12 @@ package se.inera.statistics.core.spi;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertFalse;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import org.junit.Before;
@@ -46,7 +49,6 @@ import se.inera.statistics.model.entity.DiagnosisEntity;
 import se.inera.statistics.model.entity.MedicalCertificateEntity;
 import se.inera.statistics.model.entity.PersonEntity;
 import se.inera.statistics.model.entity.WorkCapability;
-
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations="classpath:statistics-config.xml")
@@ -73,15 +75,20 @@ public class RegisterStatisticsServiceTest {
 		careUnitRepository.deleteAll();
 		DateUtil.createDates(dateRepository);
 	}
+
 	
 	@Test
 	@Rollback(true)
-	public void testRegisterStatisitcs() throws ParseException {
+	public void lookupDate() throws ParseException {
+        long dateId = lookupDate("2010-01-01");
+        assertTrue(dateId > 0);
+	}
+
+	@Test
+	@Rollback(true)
+	public void testRegisterStatisitcs() {
 		final long startDate = lookupDate("2010-01-01");
 		final long endDate = lookupDate("2011-01-01");
-		
-		assertNotNull(startDate);
-		assertNotNull(endDate);
 		
 		registerService.registerMedicalCertificateStatistics(generateCertificate());
 		
@@ -98,33 +105,37 @@ public class RegisterStatisticsServiceTest {
 		
 		assertEquals(18, person.getAge());
 		assertEquals("Female", person.getGender());
-		assertEquals("C879422", diagnosis.getIcd10());
-		assertEquals(true, diagnosis.isDiagnose());
+		assertEquals("C879", diagnosis.getIcd10());
+		assertTrue(diagnosis.isDiagnose());
 		assertEquals(WorkCapability.THREE_QUARTER_WORKING_CAPABILITY, diagnosis.getWorkCapability());
 		assertEquals("Torslanda", careUnit.getName());
 		
-		assertEquals(Boolean.TRUE, certificate.getBasedOnExamination());
-		assertEquals(Boolean.FALSE, certificate.getBasedOnTelephoneContact());
+		assertTrue(certificate.getBasedOnExamination());
+		assertFalse(certificate.getBasedOnTelephoneContact());
 	}
 
-	private long lookupDate(String date) throws ParseException {
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-		return this.dateRepository.findByCalendarDate(sdf.parse(date)).getId();
+	private long lookupDate(String dateTest) {
+	    try {
+    		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+    		Date date = sdf.parse(dateTest);
+            return dateRepository.findByCalendarDate(date).getId();
+	    } catch (ParseException e) {
+	        throw new RuntimeException(e);
+	    }
 	}
 	
 	private MedicalCertificateDto generateCertificate(){
-		final String endDateString = new String("2011-01-01");
-
-		final MedicalCertificateDto cert = new MedicalCertificateDto();
-		cert.setStartDate(new String("2010-01-01"));
-		cert.setEndDate(endDateString);
+		MedicalCertificateDto cert = new MedicalCertificateDto();
+		
+		cert.setStartDate("2010-01-01");
+		cert.setEndDate("2011-01-01");
 
 		cert.setAge(18);
 		cert.setFemale(true);
 		cert.setBasedOnExamination(Boolean.TRUE);
 		cert.setBasedOnTelephoneContact(Boolean.FALSE);
 		cert.setDiagnose(true);
-		cert.setIcd10("C879422");
+		cert.setIcd10("C879");
 		cert.setWorkDisability(25);
 		cert.setCareUnit("Torslanda");
 		cert.setCareGiver("careGiver");
