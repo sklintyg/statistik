@@ -51,7 +51,7 @@ public class DiagnosisEntity {
 	DiagnosisEntity(){}
 	
 	public static DiagnosisEntity newEntity(final String icd10, final boolean diagnose, final WorkCapability workCapability,
-			final String icd10Group, final String icd10GroupDescription) {
+		final String icd10Group, final String icd10GroupDescription) {
 		final DiagnosisEntity diagnosis = new DiagnosisEntity();
 		diagnosis.setIcd10(icd10);
 		diagnosis.setDiagnose(diagnose);
@@ -64,10 +64,6 @@ public class DiagnosisEntity {
 	
 	public Long getId() {
 		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
 	}
 
 	public String getIcd10() {
