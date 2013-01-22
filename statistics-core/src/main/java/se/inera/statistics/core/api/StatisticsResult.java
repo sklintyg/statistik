@@ -25,10 +25,6 @@ public class StatisticsResult {
 	
 	private final List<RowResult> matches;
 	
-	public StatisticsResult() {
-		this.matches = Collections.emptyList();
-	}
-	
 	public StatisticsResult(List<RowResult> matches) {
 		this.matches = matches;
 	}
