@@ -20,35 +20,34 @@ package se.inera.statistics.model.entity;
 
 public class IcdGroup {
 
-	private final String icd10RangeStart;
-	
-	private final String icd10RangeEnd;
-	
-	private final String chapter;
-	
-	private final String description;
-	
-	IcdGroup(String chapter, String icd10RangeStart, String icd10RangeEnd, String description){
-		this.chapter = chapter;
-		this.icd10RangeStart = icd10RangeStart;
-		this.icd10RangeEnd = icd10RangeEnd;
-		this.description = description;
-	}
+    private final String icd10RangeStart;
 
-	public String getIcd10RangeStart() {
-		return icd10RangeStart;
-	}
+    private final String icd10RangeEnd;
 
-	public String getIcd10RangeEnd() {
-		return icd10RangeEnd;
-	}
+    private final String chapter;
 
-	public String getChapter() {
-		return chapter;
-	}
+    private final String description;
 
-	public String getDescription() {
-		return description;
-	}
+    IcdGroup(String chapter, String icd10RangeStart, String icd10RangeEnd, String description) {
+        this.chapter = chapter;
+        this.icd10RangeStart = icd10RangeStart;
+        this.icd10RangeEnd = icd10RangeEnd;
+        this.description = description;
+    }
 
+    public String getIcd10RangeStart() {
+        return icd10RangeStart;
+    }
+
+    public String getIcd10RangeEnd() {
+        return icd10RangeEnd;
+    }
+
+    public String getChapter() {
+        return chapter;
+    }
+
+    public String getDescription() {
+        return description;
+    }
 }
