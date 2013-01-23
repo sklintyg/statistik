@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
 
-public class IcdGroupListParser {
+public final class IcdGroupListParser {
 
     private IcdGroupListParser() {
         // prevent instantiation
