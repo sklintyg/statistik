@@ -26,6 +26,8 @@ import org.slf4j.LoggerFactory;
 
 public class IcdGroupList {
 
+    private static final int MINIMUM_ICD_LENGTH = 3;
+
     private static final Logger LOG = LoggerFactory.getLogger(IcdGroupList.class);
 
     private List<IcdGroup> mapping = new ArrayList<IcdGroup>();
@@ -36,8 +38,8 @@ public class IcdGroupList {
     }
 
     public IcdGroup getGroup(String icd10) {
-        if (icd10 != null && icd10.length() >= 3) {
-            final String icd10FirstThreeCharacters = icd10.substring(0, 3);
+        if (icd10 != null && icd10.length() >= MINIMUM_ICD_LENGTH) {
+            final String icd10FirstThreeCharacters = icd10.substring(0, MINIMUM_ICD_LENGTH);
             for (IcdGroup group : mapping) {
                 if (inRange(icd10FirstThreeCharacters, group)) {
                     return group;
