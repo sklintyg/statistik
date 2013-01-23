@@ -7,6 +7,10 @@ import java.net.URL;
 
 public class IcdGroupListParser {
 
+    private IcdGroupListParser() {
+        // prevent instantiation
+    }
+    
     public static IcdGroupList parseUrl(URL url) throws IOException {
         final BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(url.openStream(), "ISO-8859-1"));
 
