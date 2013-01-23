@@ -34,34 +34,35 @@ import se.inera.statistics.core.spi.StatisticsService;
 @RequestMapping(value="/statistics")
 public class StatisticsApi {
 
-	@Autowired
+	private static final String JSON = "application/json";
+    @Autowired
 	private StatisticsService service;
 	
-	@RequestMapping(value="/age", method=RequestMethod.POST, consumes="application/json", produces="application/json")
+	@RequestMapping(value="/age", method=RequestMethod.POST, consumes=JSON, produces=JSON)
 	@ResponseBody
 	public ServiceResult<StatisticsResult> loadAgeStatistics(@RequestBody final AgeForm criterias) {
 		return this.service.loadByAge(criterias.getFromDate(), criterias.getToDate(), criterias.getDisability(), criterias.getGroup());
 	}
 	
-	@RequestMapping(value="/duration", method=RequestMethod.POST, consumes="application/json", produces="application/json")
+	@RequestMapping(value="/duration", method=RequestMethod.POST, consumes=JSON, produces=JSON)
 	@ResponseBody
 	public ServiceResult<StatisticsResult> loadDurationStatistics(@RequestBody final DurationForm criterias) {
 		return this.service.loadStatisticsByDuration(criterias.getFromDate(), criterias.getToDate(), criterias.getDisability(), criterias.getGroup());
 	}
 	
-	@RequestMapping(value="/monthwise", method=RequestMethod.POST, consumes="application/json", produces="application/json")
+	@RequestMapping(value="/monthwise", method=RequestMethod.POST, consumes=JSON, produces=JSON)
 	@ResponseBody
 	public ServiceResult<StatisticsResult> loadMonthwiseStatistics(@RequestBody final MonthwiseForm criterias) {
 		return this.service.loadStatisticsByMonth(criterias.getFromDate(), criterias.getToDate(), criterias.getDisability(), criterias.getGroup());
 	}
 	
-	@RequestMapping(value="/diagnosisgroups", method=RequestMethod.POST, consumes="application/json", produces="application/json")
+	@RequestMapping(value="/diagnosisgroups", method=RequestMethod.POST, consumes=JSON, produces=JSON)
 	@ResponseBody
 	public ServiceResult<StatisticsResult> loadDiagnosisGroupsStatistics(@RequestBody final MedicalCertificateDto criterias) {
 		return this.service.loadStatisticsByDiagnosisGroups(criterias);
 	}
 	
-	@RequestMapping(value="/careunit", method=RequestMethod.POST, consumes="application/json", produces="application/json")
+	@RequestMapping(value="/careunit", method=RequestMethod.POST, consumes=JSON, produces=JSON)
 	@ResponseBody
 	public ServiceResult<StatisticsResult> loadCareUnitStatistics(@RequestBody final MedicalCertificateDto criterias) {
 		return this.service.loadStatisticsByCareUnit(criterias);
