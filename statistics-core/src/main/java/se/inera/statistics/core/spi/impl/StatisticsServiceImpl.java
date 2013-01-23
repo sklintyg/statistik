@@ -50,7 +50,11 @@ import se.inera.statistics.model.entity.DateEntity;
 @Transactional
 public class StatisticsServiceImpl implements StatisticsService {
 
-	private static final int MIN_AGE = 0;
+	private static final String FEMALE = "Female";
+
+    private static final String MALE = "Male";
+
+    private static final int MIN_AGE = 0;
 
 	private static final int MAX_AGE = 150;
 
@@ -137,20 +141,20 @@ public class StatisticsServiceImpl implements StatisticsService {
 
 		if (isAllSelected(disability)) {
 			if (isAllSelected(group)) {
-				countMale= this.certificateRepository.findCountByDuration(minDuration, maxDuration, "Male", start, end);
-				countFemale= this.certificateRepository.findCountByDuration(minDuration, maxDuration, "Female", start, end);
+				countMale= this.certificateRepository.findCountByDuration(minDuration, maxDuration, MALE, start, end);
+				countFemale= this.certificateRepository.findCountByDuration(minDuration, maxDuration, FEMALE, start, end);
 			} else {
-				countMale= this.certificateRepository.findCountByDurationAndIcd10Group(minDuration, maxDuration, "Male", start, end, group);
-				countFemale= this.certificateRepository.findCountByDurationAndIcd10Group(minDuration, maxDuration, "Female", start, end, group);
+				countMale= this.certificateRepository.findCountByDurationAndIcd10Group(minDuration, maxDuration, MALE, start, end, group);
+				countFemale= this.certificateRepository.findCountByDurationAndIcd10Group(minDuration, maxDuration, FEMALE, start, end, group);
 			}
 		} else {
 			int disabilityInt = Integer.parseInt(disability);
 			if (isAllSelected(group)) {
-				countMale= this.certificateRepository.findCountByDurationAndWorkDisability(minDuration, maxDuration, "Male", start, end, disabilityInt);
-				countFemale= this.certificateRepository.findCountByDurationAndWorkDisability(minDuration, maxDuration, "Female", start, end, disabilityInt);
+				countMale= this.certificateRepository.findCountByDurationAndWorkDisability(minDuration, maxDuration, MALE, start, end, disabilityInt);
+				countFemale= this.certificateRepository.findCountByDurationAndWorkDisability(minDuration, maxDuration, FEMALE, start, end, disabilityInt);
 			} else {
-				countMale= this.certificateRepository.findCountByDurationAndIcd10GroupAndWorkDisability(minDuration, maxDuration, "Male", start, end, group, disabilityInt);
-				countFemale= this.certificateRepository.findCountByDurationAndIcd10GroupAndWorkDisability(minDuration, maxDuration, "Female", start, end, group, disabilityInt);
+				countMale= this.certificateRepository.findCountByDurationAndIcd10GroupAndWorkDisability(minDuration, maxDuration, MALE, start, end, group, disabilityInt);
+				countFemale= this.certificateRepository.findCountByDurationAndIcd10GroupAndWorkDisability(minDuration, maxDuration, FEMALE, start, end, group, disabilityInt);
 			}
 		}
 		return RowResult.newResult(formatDuration(minDuration, maxDuration), countMale, countFemale);
@@ -179,19 +183,19 @@ public class StatisticsServiceImpl implements StatisticsService {
 		
 		if (isAllSelected(group)) {
 			if (isAllSelected(disability)) {
-				countMale = certificateRepository.findCountBySearchAndAge(minAge, maxAge, "Male", start, end);		
-				countFemale = certificateRepository.findCountBySearchAndAge(minAge, maxAge, "Female", start, end);
+				countMale = certificateRepository.findCountBySearchAndAge(minAge, maxAge, MALE, start, end);		
+				countFemale = certificateRepository.findCountBySearchAndAge(minAge, maxAge, FEMALE, start, end);
 			} else {
-				countMale = certificateRepository.findCountByAgeAndWorkDisability(minAge, maxAge, "Male", start, end, Integer.parseInt(disability));		
-				countFemale = certificateRepository.findCountByAgeAndWorkDisability(minAge, maxAge, "Female", start, end, Integer.parseInt(disability));
+				countMale = certificateRepository.findCountByAgeAndWorkDisability(minAge, maxAge, MALE, start, end, Integer.parseInt(disability));		
+				countFemale = certificateRepository.findCountByAgeAndWorkDisability(minAge, maxAge, FEMALE, start, end, Integer.parseInt(disability));
 			}
 		} else {
 			if (isAllSelected(disability)) {
-				countMale = certificateRepository.findCountByAgeAndIcd10Group(minAge, maxAge, "Male", start, end, group);		
-				countFemale = certificateRepository.findCountByAgeAndIcd10Group(minAge, maxAge, "Female", start, end, group);
+				countMale = certificateRepository.findCountByAgeAndIcd10Group(minAge, maxAge, MALE, start, end, group);		
+				countFemale = certificateRepository.findCountByAgeAndIcd10Group(minAge, maxAge, FEMALE, start, end, group);
 			} else {
-				countMale = certificateRepository.findCountByAgeAndIcd10GroupAndWorkDisability(minAge, maxAge, "Male", start, end, group, Integer.parseInt(disability));		
-				countFemale = certificateRepository.findCountByAgeAndIcd10GroupAndWorkDisability(minAge, maxAge, "Female", start, end, group, Integer.parseInt(disability));
+				countMale = certificateRepository.findCountByAgeAndIcd10GroupAndWorkDisability(minAge, maxAge, MALE, start, end, group, Integer.parseInt(disability));		
+				countFemale = certificateRepository.findCountByAgeAndIcd10GroupAndWorkDisability(minAge, maxAge, FEMALE, start, end, group, Integer.parseInt(disability));
 			}
 		}
 		return RowResult.newResult(formatAgeRange(minAge, maxAge), countFemale, countMale);
@@ -230,20 +234,20 @@ public class StatisticsServiceImpl implements StatisticsService {
 		final long countFemale;
 		if (isAllSelected(disability)) {
 			if (isAllSelected(group)) {
-				countMale = certificateRepository.findCountByMonth("Male", month.getMonthStart());
-				countFemale = certificateRepository.findCountByMonth("Female", month.getMonthStart());
+				countMale = certificateRepository.findCountByMonth(MALE, month.getMonthStart());
+				countFemale = certificateRepository.findCountByMonth(FEMALE, month.getMonthStart());
 			} else {
-				countMale = certificateRepository.findCountByMonthAndIcd10Group("Male", month.getMonthStart(), group);
-				countFemale = certificateRepository.findCountByMonthAndIcd10Group("Female", month.getMonthStart(), group);
+				countMale = certificateRepository.findCountByMonthAndIcd10Group(MALE, month.getMonthStart(), group);
+				countFemale = certificateRepository.findCountByMonthAndIcd10Group(FEMALE, month.getMonthStart(), group);
 			}
 		} else {
 			int workDisability = Integer.parseInt(disability);
 			if (isAllSelected(group)) {
-				countMale = certificateRepository.findCountByMonthAndDisability("Male", month.getMonthStart(), workDisability);
-				countFemale = certificateRepository.findCountByMonthAndDisability("Female", month.getMonthStart(), workDisability);
+				countMale = certificateRepository.findCountByMonthAndDisability(MALE, month.getMonthStart(), workDisability);
+				countFemale = certificateRepository.findCountByMonthAndDisability(FEMALE, month.getMonthStart(), workDisability);
 			} else {
-				countMale = certificateRepository.findCountByMonthAndIcd10GroupAndWorkDisability("Male", month.getMonthStart(), group, workDisability);
-				countFemale = certificateRepository.findCountByMonthAndIcd10GroupAndWorkDisability("Female", month.getMonthStart(), group, workDisability);				
+				countMale = certificateRepository.findCountByMonthAndIcd10GroupAndWorkDisability(MALE, month.getMonthStart(), group, workDisability);
+				countFemale = certificateRepository.findCountByMonthAndIcd10GroupAndWorkDisability(FEMALE, month.getMonthStart(), group, workDisability);				
 			}
 		}
 
@@ -263,8 +267,8 @@ public class StatisticsServiceImpl implements StatisticsService {
 	}
 	
 	private RowResult getRowResultByDiagnosisGroup(String diagnosisGroup, List<Long> icd10Ids, long start, long end, Boolean basedOnExamination, Boolean basedOnTelephoneContact){
-		final long countMale = this.certificateRepository.findCountByDiagnosisGroup("Male", icd10Ids, start, end, basedOnExamination, basedOnTelephoneContact);
-		final long countFemale = this.certificateRepository.findCountByDiagnosisGroup("Female", icd10Ids, start, end, basedOnExamination, basedOnTelephoneContact);
+		final long countMale = this.certificateRepository.findCountByDiagnosisGroup(MALE, icd10Ids, start, end, basedOnExamination, basedOnTelephoneContact);
+		final long countFemale = this.certificateRepository.findCountByDiagnosisGroup(FEMALE, icd10Ids, start, end, basedOnExamination, basedOnTelephoneContact);
 		RowResult row = RowResult.newResult(diagnosisGroup, countMale, countFemale);
 
 		return row;
@@ -282,8 +286,8 @@ public class StatisticsServiceImpl implements StatisticsService {
 	}
 	
 	private RowResult getRowResultByCareUnit(CareUnitEntity careUnit, long start, long end, Boolean basedOnExamination, Boolean basedOnTelephoneContact){
-		final int countMale = (int)this.certificateRepository.findCountByCareUnit("Male", careUnit.getId(), start, end, basedOnExamination, basedOnTelephoneContact);
-		final int countFemale = (int)this.certificateRepository.findCountByCareUnit("Female", careUnit.getId(), start, end, basedOnExamination, basedOnTelephoneContact);
+		final int countMale = (int)this.certificateRepository.findCountByCareUnit(MALE, careUnit.getId(), start, end, basedOnExamination, basedOnTelephoneContact);
+		final int countFemale = (int)this.certificateRepository.findCountByCareUnit(FEMALE, careUnit.getId(), start, end, basedOnExamination, basedOnTelephoneContact);
 		return RowResult.newResult(careUnit.getName(), countMale, countFemale);
 	}
 	
