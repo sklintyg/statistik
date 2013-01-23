@@ -31,11 +31,7 @@ public class IcdGroupList {
     private static final Logger LOG = LoggerFactory.getLogger(IcdGroupList.class);
 
     private List<IcdGroup> mapping = new ArrayList<IcdGroup>();
-    private final IcdGroup unknownIcd;
-
-    public IcdGroupList() {
-        unknownIcd = new IcdGroup("Okänd", null, null, "Okända ICDtexter");
-    }
+    public final static IcdGroup UNKNOWN_ICD = new IcdGroup("Okänd", null, null, "Okända ICDtexter");
 
     public IcdGroup getGroup(String icd10) {
         if (icd10 != null && icd10.length() >= MINIMUM_ICD_LENGTH) {
@@ -48,7 +44,7 @@ public class IcdGroupList {
         }
 
         LOG.warn("Could not find icd code '{0}'", icd10);
-        return unknownIcd;
+        return UNKNOWN_ICD;
     }
 
     private boolean inRange(final String icd10FirstThreeCharacters, IcdGroup group) {
