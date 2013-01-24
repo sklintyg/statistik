@@ -45,17 +45,10 @@ public class DateEntity {
     private int calendarYear;
 
     @Column
-    private int calendarMonth;
-
-    // @SuppressWarnings("unused")
-    @Column
     private String monthName;
 
     @Column(nullable = false)
     private int calendarDay;
-
-    @Column
-    private int dayOfYear;
 
     @Column
     private String weekDay;
@@ -67,27 +60,10 @@ public class DateEntity {
     private String formattedDate;
 
     @Column
-    private String quartal;
-
-    @Column
     private String yearQuartal;
 
     @Column
     private String yearMonth;
-
-    @Column
-    private String yearCalendarWeek;
-
-    @Column
-    private String weekend;
-
-    @Column
-    @Temporal(TemporalType.DATE)
-    private Date currentWeekStart;
-
-    @Column
-    @Temporal(TemporalType.DATE)
-    private Date currentWeekEnd;
 
     @Column
     @Temporal(TemporalType.DATE)
@@ -103,15 +79,10 @@ public class DateEntity {
 
     public void setId(long id) {
         this.id = id;
-
     }
 
     public Date getCalendarDate() {
         return calendarDate;
-    }
-
-    public void setCalendarDate(Date calendarDate) {
-        this.calendarDate = calendarDate;
     }
 
     public Date getMonthStart() {
@@ -128,5 +99,9 @@ public class DateEntity {
 
     public String getYearMonth() {
         return yearMonth;
+    }
+
+    public int getCalendarYear() {
+        return calendarYear;
     }
 }
