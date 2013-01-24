@@ -33,6 +33,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import se.inera.statistics.core.repository.util.DateUtil;
 import se.inera.statistics.model.entity.CareUnitEntity;
 import se.inera.statistics.model.entity.DiagnosisEntity;
 import se.inera.statistics.model.entity.MedicalCertificateEntity;

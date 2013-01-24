@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package se.inera.statistics.core.repository;
+package se.inera.statistics.core.repository.util;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
@@ -27,6 +27,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Locale;
 
+import se.inera.statistics.core.repository.DateRepository;
 import se.inera.statistics.model.entity.DateEntity;
 
 public class DateUtil {

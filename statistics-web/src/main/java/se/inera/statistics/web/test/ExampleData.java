@@ -35,6 +35,7 @@ import se.inera.statistics.core.repository.DateRepository;
 import se.inera.statistics.core.repository.DiagnosisRepository;
 import se.inera.statistics.core.repository.MedicalCertificateRepository;
 import se.inera.statistics.core.repository.PersonRepository;
+import se.inera.statistics.core.repository.util.DateUtil;
 import se.inera.statistics.model.entity.CareUnitEntity;
 import se.inera.statistics.model.entity.DiagnosisEntity;
 import se.inera.statistics.model.entity.MedicalCertificateEntity;
@@ -68,7 +69,8 @@ public class ExampleData {
 	@PostConstruct
 	public void generate() {
 		LOG.info("==== INERA STATISTICS GENERATING SAMPLE DATA ====");
-		setupInitialData(18, 100, Calendar.MONTH);
+		DateUtil.createDates(dateRepository, "2010-01-01", "2014-12-31");
+		setupInitialData(24, 1100, Calendar.MONTH);
 	}
 	
 	private void setupInitialData(final int numberOfPeriods, final int certificatesPerPeriod, final int period) {
@@ -84,20 +86,23 @@ public class ExampleData {
 		cal.set(2012, 0, 1, 0, 0, 0);
 		
 		List<DiagnosisEntity> diagnosisList = new ArrayList<DiagnosisEntity>();
-		DiagnosisEntity diagnosis1 = DiagnosisEntity.newEntity("P005433", false, WorkCapability.NO_WORKING_CAPABILITY, "XVI", "Vissa perinatala tillstånd");
+		DiagnosisEntity diagnosis1 = DiagnosisEntity.newEntity("P00.5", false, WorkCapability.NO_WORKING_CAPABILITY, "XVI", "Vissa perinatala tillstånd");
 		diagnosisRepository.save(diagnosis1);
 		diagnosisList.add(diagnosis1);
-		DiagnosisEntity diagnosis2 = DiagnosisEntity.newEntity("C5442244", false, WorkCapability.HALF_WORKING_CAPABILITY, "II", "Tumörer");
+		DiagnosisEntity diagnosis2 = DiagnosisEntity.newEntity("C54.4", false, WorkCapability.HALF_WORKING_CAPABILITY, "II", "Tumörer");
 		this.diagnosisRepository.save(diagnosis2);
 		diagnosisList.add(diagnosis2);
-		DiagnosisEntity diagnosis3 = DiagnosisEntity.newEntity("L45-9433", false, WorkCapability.FULL_WORKING_CAPABILITY, "XII", "Hudens och underhudens sjukdomar");
+		DiagnosisEntity diagnosis3 = DiagnosisEntity.newEntity("L45.0", false, WorkCapability.FULL_WORKING_CAPABILITY, "XII", "Hudens och underhudens sjukdomar");
 		this.diagnosisRepository.save(diagnosis3);
 		diagnosisList.add(diagnosis3);
 		
 		CareUnitEntity careUnit1 = CareUnitEntity.newEntity("Gårda");
+        System.err.println("Saving " + careUnit1);
 		careUnitRepository.save(careUnit1);
 		CareUnitEntity careUnit2 = CareUnitEntity.newEntity("Askim");
+		System.err.println("Saving " + careUnit2);
 		careUnitRepository.save(careUnit2);
+		
 		
 		final Random r = new Random(1234);
 		for (int i = 0; i < numberOfPeriods; i++) {
@@ -127,9 +132,13 @@ public class ExampleData {
 				e.setPersonId(person.getId());
 				e.setDiagnosisId(diagnosisList.get(r.nextInt(3)).getId());
 				e.setCareUnitId(r.nextBoolean() ? careUnit1.getId() : careUnit2.getId());
+				e.setCareGiverId("careGiverId");
 				e.setBasedOnExamination(false);
 				e.setBasedOnTelephoneContact(false);
-
+				e.setIssuerAge(39);
+				e.setIssuerGender("Female");
+				e.setIssuerId("issuerId");
+				e.setWorkDisability(100);
 				certs.add(e);
 			}		
 			cal.add(period, 1);
