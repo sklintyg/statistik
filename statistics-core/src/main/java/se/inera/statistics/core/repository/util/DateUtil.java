@@ -32,7 +32,7 @@ import se.inera.statistics.model.entity.DateEntity;
 
 public class DateUtil {
 	
-	private static Locale LOCALE = new Locale("sv");
+	private static final Locale LOCALE = new Locale("sv");
 
 	public static void createDates(DateRepository dateRepository, String from, String to) {
 		if (dateRepository.count() > 0) {
