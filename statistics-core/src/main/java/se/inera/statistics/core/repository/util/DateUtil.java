@@ -27,8 +27,6 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Locale;
 
-import javax.management.RuntimeErrorException;
-
 import se.inera.statistics.core.repository.DateRepository;
 import se.inera.statistics.model.entity.DateEntity;
 
@@ -84,11 +82,11 @@ public class DateUtil {
 		return field;
 	}
 	
-    private static void set(String fieldName, Object object, Object value) throws RuntimeException, IllegalAccessException, NoSuchFieldException {
+    private static void set(String fieldName, Object object, Object value) throws IllegalAccessException, NoSuchFieldException {
         field(fieldName).set(object, value);
     }
 
-    private static void set(String fieldName, Object object, long value) throws RuntimeException, IllegalAccessException, NoSuchFieldException {
+    private static void set(String fieldName, Object object, long value) throws IllegalAccessException, NoSuchFieldException {
         field(fieldName).setLong(object, value);
     }
 
