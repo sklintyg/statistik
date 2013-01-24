@@ -27,6 +27,8 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Locale;
 
+import javax.management.RuntimeErrorException;
+
 import se.inera.statistics.core.repository.DateRepository;
 import se.inera.statistics.model.entity.DateEntity;
 
@@ -64,7 +66,7 @@ public class DateUtil {
 				id ++;
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			throw new RuntimeException(e);
 		}
 	}
 
