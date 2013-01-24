@@ -77,7 +77,7 @@ public class StatisticsServiceTest {
 		this.personRepository.deleteAll();
 		this.diagnosisRepository.deleteAll();
 		this.careUnitRepository.deleteAll();
-		DateUtil.createDates(dateRepository);
+		DateUtil.createDates(dateRepository, "2010-01-01", "2015-01-01");
 		this.setupTestData(10, 10, Calendar.MONTH);
 		
 	}

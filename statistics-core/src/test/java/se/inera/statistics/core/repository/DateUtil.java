@@ -33,34 +33,34 @@ public class DateUtil {
 	
 	private static Locale LOCALE = new Locale("sv");
 
-	public static void createDates(DateRepository dateRepository) {
+	public static void createDates(DateRepository dateRepository, String from, String to) {
 		if (dateRepository.count() > 0) {
 			return;
 		}
 		Calendar c = GregorianCalendar.getInstance();
-		c.setTime(parse("2010-01-01"));
+		c.setTime(parse(from));
 
 		Calendar end = (Calendar) c.clone();
-		end.add(Calendar.YEAR, 5);
+		end.setTime(parse(to));
 		long id = 1;
 		try {
 			Constructor<DateEntity> dateEntityConstructor = DateEntity.class.getDeclaredConstructor();
 			dateEntityConstructor.setAccessible(true);
 			while (c.before(end)) {
 				DateEntity dateEntity = dateEntityConstructor.newInstance();
-				field("id").setLong(dateEntity, id);
-				field("calendarDate").set(dateEntity, c.getTime());
-				field("monthName").set(dateEntity, getMonthName(c));
+				set("id", dateEntity, id);
+				set("calendarDate", dateEntity, c.getTime());
+				set("monthName", dateEntity, getMonthName(c));
 				Calendar month = (Calendar) c.clone();
 				month.set(Calendar.DAY_OF_MONTH, 1);
-				field("monthStart").set(dateEntity, month.getTime());
+				set("monthStart", dateEntity, month.getTime());
 				month.roll(Calendar.DAY_OF_MONTH, -1);
-				field("monthEnd").set(dateEntity, month.getTime());
+				set("monthEnd", dateEntity, month.getTime());
 
 				dateRepository.save(dateEntity);
 
 				nextDay(c);
-				id ++;				
+				id ++;
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -80,6 +80,14 @@ public class DateUtil {
 		field.setAccessible(true);
 		return field;
 	}
+	
+    private static void set(String fieldName, Object object, Object value) throws RuntimeException, IllegalAccessException, NoSuchFieldException {
+        field(fieldName).set(object, value);
+    }
+
+    private static void set(String fieldName, Object object, long value) throws RuntimeException, IllegalAccessException, NoSuchFieldException {
+        field(fieldName).setLong(object, value);
+    }
 
 	public static Date parse(String dateString) {
 		try {

@@ -66,7 +66,7 @@ public class MedicalCertificateRepositoryTest {
 		personRepository.deleteAll();
 		diagnosisRepository.deleteAll();
 		careUnitRepository.deleteAll();
-		DateUtil.createDates(dateRepository);
+		DateUtil.createDates(dateRepository, "2010-01-01", "2013-01-01");
 		
 		PersonEntity person = PersonEntity.newEntity(18, MALE);
 		personRepository.save(person);

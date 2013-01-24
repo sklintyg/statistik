@@ -73,7 +73,7 @@ public class RegisterStatisticsServiceTest {
 		diagnosisRepository.deleteAll();
 		personRepository.deleteAll();
 		careUnitRepository.deleteAll();
-		DateUtil.createDates(dateRepository);
+		DateUtil.createDates(dateRepository, "2010-01-01", "2013-01-01");
 	}
 
 	
