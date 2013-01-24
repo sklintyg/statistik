@@ -31,7 +31,7 @@ public class IcdGroupList {
     private static final Logger LOG = LoggerFactory.getLogger(IcdGroupList.class);
 
     private List<IcdGroup> mapping = new ArrayList<IcdGroup>();
-    public final static IcdGroup UNKNOWN_ICD = new IcdGroup("Okänd", null, null, "Okända ICDtexter");
+    public static final IcdGroup UNKNOWN_ICD = new IcdGroup("Okänd", null, null, "Okända ICDtexter");
 
     public IcdGroup getGroup(String icd10) {
         if (icd10 != null && icd10.length() >= MINIMUM_ICD_LENGTH) {
