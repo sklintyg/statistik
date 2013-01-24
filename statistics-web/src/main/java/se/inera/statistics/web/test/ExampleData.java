@@ -66,6 +66,8 @@ public class ExampleData {
 	@Autowired
 	private CareUnitRepository careUnitRepository;
 
+	private final Random r = new Random(1234);
+	
 	@PostConstruct
 	public void generate() {
 		LOG.info("==== INERA STATISTICS GENERATING SAMPLE DATA ====");
@@ -75,36 +77,17 @@ public class ExampleData {
 	
 	private void setupInitialData(final int numberOfPeriods, final int certificatesPerPeriod, final int period) {
 
-		certificateRepository.deleteAll();
-		personRepository.deleteAll();
-		diagnosisRepository.deleteAll();
-		careUnitRepository.deleteAll();
+		resetRepositories();
 		
 		final List<MedicalCertificateEntity> certs = new ArrayList<MedicalCertificateEntity>();
 		
 		final Calendar cal = Calendar.getInstance();
 		cal.set(2012, 0, 1, 0, 0, 0);
 		
-		List<DiagnosisEntity> diagnosisList = new ArrayList<DiagnosisEntity>();
-		DiagnosisEntity diagnosis1 = DiagnosisEntity.newEntity("P00.5", false, WorkCapability.NO_WORKING_CAPABILITY, "XVI", "Vissa perinatala tillstånd");
-		diagnosisRepository.save(diagnosis1);
-		diagnosisList.add(diagnosis1);
-		DiagnosisEntity diagnosis2 = DiagnosisEntity.newEntity("C54.4", false, WorkCapability.HALF_WORKING_CAPABILITY, "II", "Tumörer");
-		this.diagnosisRepository.save(diagnosis2);
-		diagnosisList.add(diagnosis2);
-		DiagnosisEntity diagnosis3 = DiagnosisEntity.newEntity("L45.0", false, WorkCapability.FULL_WORKING_CAPABILITY, "XII", "Hudens och underhudens sjukdomar");
-		this.diagnosisRepository.save(diagnosis3);
-		diagnosisList.add(diagnosis3);
+		List<DiagnosisEntity> diagnosisList = createDiagnoses();
 		
-		CareUnitEntity careUnit1 = CareUnitEntity.newEntity("Gårda");
-        System.err.println("Saving " + careUnit1);
-		careUnitRepository.save(careUnit1);
-		CareUnitEntity careUnit2 = CareUnitEntity.newEntity("Askim");
-		System.err.println("Saving " + careUnit2);
-		careUnitRepository.save(careUnit2);
+		List<CareUnitEntity> careUnitList = createCareUnits();
 		
-		
-		final Random r = new Random(1234);
 		for (int i = 0; i < numberOfPeriods; i++) {
 			for (int j = 0; j < certificatesPerPeriod; j++) {
 				int day = r.nextInt(27) + 1;
@@ -130,8 +113,8 @@ public class ExampleData {
 				
 				final MedicalCertificateEntity e = MedicalCertificateEntity.newEntity(d1Id, d2Id);
 				e.setPersonId(person.getId());
-				e.setDiagnosisId(diagnosisList.get(r.nextInt(3)).getId());
-				e.setCareUnitId(r.nextBoolean() ? careUnit1.getId() : careUnit2.getId());
+				e.setDiagnosisId(getRandom(diagnosisList).getId());
+				e.setCareUnitId(getRandom(careUnitList).getId());
 				e.setCareGiverId("careGiverId");
 				e.setBasedOnExamination(false);
 				e.setBasedOnTelephoneContact(false);
@@ -144,5 +127,43 @@ public class ExampleData {
 			cal.add(period, 1);
 		}
 		certificateRepository.save(certs);
-	}	
+	}
+
+    private List<DiagnosisEntity> createDiagnoses() {
+        List<DiagnosisEntity> diagnosisList = new ArrayList<DiagnosisEntity>();
+		DiagnosisEntity diagnosis1 = DiagnosisEntity.newEntity("P00.5", false, WorkCapability.NO_WORKING_CAPABILITY, "XVI", "Vissa perinatala tillstånd");
+		diagnosisRepository.save(diagnosis1);
+		diagnosisList.add(diagnosis1);
+		DiagnosisEntity diagnosis2 = DiagnosisEntity.newEntity("C54.4", false, WorkCapability.HALF_WORKING_CAPABILITY, "II", "Tumörer");
+		this.diagnosisRepository.save(diagnosis2);
+		diagnosisList.add(diagnosis2);
+		DiagnosisEntity diagnosis3 = DiagnosisEntity.newEntity("L45.0", false, WorkCapability.FULL_WORKING_CAPABILITY, "XII", "Hudens och underhudens sjukdomar");
+		this.diagnosisRepository.save(diagnosis3);
+		diagnosisList.add(diagnosis3);
+        return diagnosisList;
+    }
+
+    private List<CareUnitEntity> createCareUnits() {
+        List<CareUnitEntity> careUnitList = new ArrayList<CareUnitEntity>();
+		careUnitList.add(createAndSaveCareUnit("gårda"));
+		careUnitList.add(createAndSaveCareUnit("Askim"));
+        return careUnitList;
+    }
+	
+	private <T> T getRandom(List<T> items) {
+	    return items.get(r.nextInt(items.size()));
+	}
+
+    private void resetRepositories() {
+        certificateRepository.deleteAll();
+		personRepository.deleteAll();
+		diagnosisRepository.deleteAll();
+		careUnitRepository.deleteAll();
+    }
+
+    private CareUnitEntity createAndSaveCareUnit(String name) {
+        CareUnitEntity careUnit = CareUnitEntity.newEntity(name);
+		careUnitRepository.save(careUnit);
+        return careUnit;
+    }	
 }

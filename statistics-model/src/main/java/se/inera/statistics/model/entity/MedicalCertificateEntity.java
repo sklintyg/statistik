@@ -80,6 +80,10 @@ public class MedicalCertificateEntity {
 		return ent;
 	}
 
+    public static MedicalCertificateEntity newEntity(final DateEntity startDate, final DateEntity endDate) {
+        return MedicalCertificateEntity.newEntity(startDate.getId(), endDate.getId());
+    }
+
 	public Long getId() {
 		return id;
 	}
