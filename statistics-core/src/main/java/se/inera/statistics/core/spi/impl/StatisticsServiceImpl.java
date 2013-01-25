@@ -50,272 +50,283 @@ import se.inera.statistics.model.entity.DateEntity;
 @Transactional
 public class StatisticsServiceImpl implements StatisticsService {
 
-	private static final String FEMALE = "Female";
+    private static final String FEMALE = "Female";
 
     private static final String MALE = "Male";
 
     private static final int MIN_AGE = 0;
 
-	private static final int MAX_AGE = 150;
+    private static final int MAX_AGE = 150;
 
-	private static final int[] AGE_RANGES = { MIN_AGE, 20, 30, 40, 50 , 60, 70, MAX_AGE };
-	
-	private static final String TIME_TEXT_FORMAT = "MMM yy";
+    private static final int[] AGE_RANGES = { MIN_AGE, 20, 30, 40, 50, 60, 70, MAX_AGE };
 
-	private static final Locale LOCALE = new Locale("sv");
+    private static final String TIME_TEXT_FORMAT = "MMM yy";
 
-	@Autowired
-	private MedicalCertificateRepository certificateRepository;
-	
-	@Autowired
-	private DateRepository dateRepository;
-	
-	@Autowired
-	private DiagnosisRepository diagnosisRepository;
-	
-	@Autowired
-	private CareUnitRepository careUnitRepository;
-	
-	@Override
-	public ServiceResult<StatisticsResult> loadStatisticsByDuration(String from, String to, String disability, String group) {
-		final long start = getStartDate(from);
-		final long end = getEndDate(to);
+    private static final Locale LOCALE = new Locale("sv");
 
-		final StatisticsResult result = new StatisticsResult(this.getRowResultsByDuration(start, end, disability, group));
-		
-		return ok(result);
-	}
+    @Autowired
+    private MedicalCertificateRepository certificateRepository;
 
-	@Override
-	public ServiceResult<StatisticsResult> loadStatisticsByMonth(String from, String to, String disability, String group) {
-		final long start = getStartDate(from);
-		final long end = getEndDate(to);
+    @Autowired
+    private DateRepository dateRepository;
 
-		final StatisticsResult result = new StatisticsResult(this.getRowResultsByMonth(start, end, disability, group));
-		
-		return ok(result);
-	}
-	
-	@Override
-	public ServiceResult<StatisticsResult> loadStatisticsByDiagnosisGroups(final MedicalCertificateDto search) {
-		final long start = getStartDate(search.getStartDate());
-		final long end = getEndDate(search.getEndDate());
+    @Autowired
+    private DiagnosisRepository diagnosisRepository;
 
-		final StatisticsResult result = new StatisticsResult(this.getRowResultsByDiagnosisGroups(start, end, search.getBasedOnExamination(), search.getBasedOnTelephoneContact()));
-		
-		return ok(result);
-	}
-	
-	@Override
-	public ServiceResult<StatisticsResult> loadStatisticsByCareUnit(final MedicalCertificateDto search) {
-		final long start = getStartDate(search.getStartDate());
-		final long end = getEndDate(search.getEndDate());
+    @Autowired
+    private CareUnitRepository careUnitRepository;
 
-		final StatisticsResult result = new StatisticsResult(this.getRowResultsByCareUnit(start, end, search.getBasedOnExamination(), search.getBasedOnTelephoneContact()));
-			
-		return ok(result);
-	}
-	
-	@Override
-	public ServiceResult<StatisticsResult> loadByAge(String from, String to, String disability, String group) {
-		final StatisticsResult result = new StatisticsResult(getRowResultsByAge(getStartDate(from), getEndDate(to), disability, group));
-			
-		return ok(result);
-	}
-		
-	private List<RowResult> getRowResultsByDuration(long start, long end, String disability, String group){
-		List<RowResult> rowResults = new ArrayList<RowResult>();
+    @Override
+    public ServiceResult<StatisticsResult> loadStatisticsByDuration(String from, String to, String disability, String group) {
+        long start = getStartDateId(from);
+        long end = getEndDateId(to);
 
-		rowResults.add(getRowResultByDuration(0, 14, start, end, disability, group));
-		rowResults.add(getRowResultByDuration(15, 30, start, end, disability, group));
-		rowResults.add(getRowResultByDuration(31, 90, start, end, disability, group));
-		rowResults.add(getRowResultByDuration(91, 360, start, end, disability, group));
-		// TODO How to handle longer than 360 days? Limit for "a lot of days"?
-		
-		return rowResults;
-	}
-	
-	private RowResult getRowResultByDuration(long minDuration, long maxDuration, long start, long end, String disability, String group){
-		final long countMale;
-		final long countFemale;
+        StatisticsResult result = new StatisticsResult(getByDuration(start, end, disability, group));
 
-		if (isAllSelected(disability)) {
-			if (isAllSelected(group)) {
-				countMale= this.certificateRepository.findCountByDuration(minDuration, maxDuration, MALE, start, end);
-				countFemale= this.certificateRepository.findCountByDuration(minDuration, maxDuration, FEMALE, start, end);
-			} else {
-				countMale= this.certificateRepository.findCountByDurationAndIcd10Group(minDuration, maxDuration, MALE, start, end, group);
-				countFemale= this.certificateRepository.findCountByDurationAndIcd10Group(minDuration, maxDuration, FEMALE, start, end, group);
-			}
-		} else {
-			int disabilityInt = Integer.parseInt(disability);
-			if (isAllSelected(group)) {
-				countMale= this.certificateRepository.findCountByDurationAndWorkDisability(minDuration, maxDuration, MALE, start, end, disabilityInt);
-				countFemale= this.certificateRepository.findCountByDurationAndWorkDisability(minDuration, maxDuration, FEMALE, start, end, disabilityInt);
-			} else {
-				countMale= this.certificateRepository.findCountByDurationAndIcd10GroupAndWorkDisability(minDuration, maxDuration, MALE, start, end, group, disabilityInt);
-				countFemale= this.certificateRepository.findCountByDurationAndIcd10GroupAndWorkDisability(minDuration, maxDuration, FEMALE, start, end, group, disabilityInt);
-			}
-		}
-		return RowResult.newResult(formatDuration(minDuration, maxDuration), countMale, countFemale);
-	}
+        return ok(result);
+    }
 
-	private String formatDuration(long minDuration, long maxDuration) {
-		if (0 == minDuration){
-			return "<" + maxDuration;
-		} else {
-			return minDuration + "-" + maxDuration;
-		}
-	}
-	
-	private List<RowResult> getRowResultsByAge(long start, long end, String disability, String group){
-		List<RowResult> rowResults = new ArrayList<RowResult>();
+    @Override
+    public ServiceResult<StatisticsResult> loadStatisticsByMonth(String from, String to, String disability, String group) {
+        final long start = getStartDateId(from);
+        final long end = getEndDateId(to);
 
-		for (int ageIndex = 0; ageIndex < AGE_RANGES.length - 1; ageIndex++) {
-			rowResults.add(getRowResultByAge(AGE_RANGES[ageIndex], AGE_RANGES[ageIndex + 1] - 1, start, end, disability, group));	
-		}
-		return rowResults;
-	}
-	
-	private RowResult getRowResultByAge(int minAge, int maxAge, long start, long end, String disability, String group) {
-		final long countMale;
-		final long countFemale;
-		
-		if (isAllSelected(group)) {
-			if (isAllSelected(disability)) {
-				countMale = certificateRepository.findCountBySearchAndAge(minAge, maxAge, MALE, start, end);		
-				countFemale = certificateRepository.findCountBySearchAndAge(minAge, maxAge, FEMALE, start, end);
-			} else {
-				countMale = certificateRepository.findCountByAgeAndWorkDisability(minAge, maxAge, MALE, start, end, Integer.parseInt(disability));		
-				countFemale = certificateRepository.findCountByAgeAndWorkDisability(minAge, maxAge, FEMALE, start, end, Integer.parseInt(disability));
-			}
-		} else {
-			if (isAllSelected(disability)) {
-				countMale = certificateRepository.findCountByAgeAndIcd10Group(minAge, maxAge, MALE, start, end, group);		
-				countFemale = certificateRepository.findCountByAgeAndIcd10Group(minAge, maxAge, FEMALE, start, end, group);
-			} else {
-				countMale = certificateRepository.findCountByAgeAndIcd10GroupAndWorkDisability(minAge, maxAge, MALE, start, end, group, Integer.parseInt(disability));		
-				countFemale = certificateRepository.findCountByAgeAndIcd10GroupAndWorkDisability(minAge, maxAge, FEMALE, start, end, group, Integer.parseInt(disability));
-			}
-		}
-		return RowResult.newResult(formatAgeRange(minAge, maxAge), countFemale, countMale);
-	}
-	
-	private String formatAgeRange(int minAge, int maxAge) {
-		if (MAX_AGE == maxAge + 1){
-			return ">" + minAge;
-		} else if (MIN_AGE == minAge){
-			return "<" + maxAge;
-		} else {
-			return minAge + "-" + maxAge;
-		}
-	}
+        final StatisticsResult result = new StatisticsResult(this.getByMonth(start, end, disability, group));
 
-	private List<RowResult> getRowResultsByMonth(long start, long end, String disability, String group){
-		List<RowResult> rowResults = new ArrayList<RowResult>();
+        return ok(result);
+    }
 
-		final Calendar current = Calendar.getInstance();
-		final Calendar last = Calendar.getInstance();
-		current.setTime(dateRepository.findOne(start).getMonthStart());
-		last.setTime(dateRepository.findOne(end).getMonthEnd());
-		
-		
-		while(current.before(last)){
-			final DateEntity month = dateRepository.findByCalendarDate(current.getTime());
-			rowResults.add(getRowResultByMonth(month, disability, group));
-			current.add(Calendar.MONTH, 1);
-		}
-		
-		return rowResults;
-	}
-	
-	private RowResult getRowResultByMonth(DateEntity month, String disability, String group){
-		final long countMale;
-		final long countFemale;
-		if (isAllSelected(disability)) {
-			if (isAllSelected(group)) {
-				countMale = certificateRepository.findCountByMonth(MALE, month.getMonthStart());
-				countFemale = certificateRepository.findCountByMonth(FEMALE, month.getMonthStart());
-			} else {
-				countMale = certificateRepository.findCountByMonthAndIcd10Group(MALE, month.getMonthStart(), group);
-				countFemale = certificateRepository.findCountByMonthAndIcd10Group(FEMALE, month.getMonthStart(), group);
-			}
-		} else {
-			int workDisability = Integer.parseInt(disability);
-			if (isAllSelected(group)) {
-				countMale = certificateRepository.findCountByMonthAndDisability(MALE, month.getMonthStart(), workDisability);
-				countFemale = certificateRepository.findCountByMonthAndDisability(FEMALE, month.getMonthStart(), workDisability);
-			} else {
-				countMale = certificateRepository.findCountByMonthAndIcd10GroupAndWorkDisability(MALE, month.getMonthStart(), group, workDisability);
-				countFemale = certificateRepository.findCountByMonthAndIcd10GroupAndWorkDisability(FEMALE, month.getMonthStart(), group, workDisability);				
-			}
-		}
+    @Override
+    public ServiceResult<StatisticsResult> loadStatisticsByDiagnosisGroups(String from, String to, String disability) {
+        final long start = getStartDateId(from);
+        final long end = getEndDateId(to);
 
-		return RowResult.newResult(month.getMonthName(), countMale, countFemale);
-	}
-	
-	private List<RowResult> getRowResultsByDiagnosisGroups(long start, long end, Boolean basedOnExamination, Boolean basedOnTelephoneContact){
-		List<RowResult> rowResults = new ArrayList<RowResult>();
+        final StatisticsResult result = new StatisticsResult(getByDiagnosisGroups(start, end, disability));
 
-		List<String> diagnosisGroups = this.diagnosisRepository.findAllDiagnosisGroups();
-		for (String diagnosisGroup : diagnosisGroups){
-			List<Long> icd10Ids = this.diagnosisRepository.findIdsByIcd10group(diagnosisGroup);
-			rowResults.add(getRowResultByDiagnosisGroup(diagnosisGroup, icd10Ids, start, end, basedOnExamination, basedOnTelephoneContact));
-		}
-		
-		return rowResults;
-	}
-	
-	private RowResult getRowResultByDiagnosisGroup(String diagnosisGroup, List<Long> icd10Ids, long start, long end, Boolean basedOnExamination, Boolean basedOnTelephoneContact){
-		final long countMale = this.certificateRepository.findCountByDiagnosisGroup(MALE, icd10Ids, start, end, basedOnExamination, basedOnTelephoneContact);
-		final long countFemale = this.certificateRepository.findCountByDiagnosisGroup(FEMALE, icd10Ids, start, end, basedOnExamination, basedOnTelephoneContact);
-		RowResult row = RowResult.newResult(diagnosisGroup, countMale, countFemale);
+        return ok(result);
+    }
 
-		return row;
-	}
-	
-	private List<RowResult> getRowResultsByCareUnit(long start, long end, Boolean basedOnExamination, Boolean basedOnTelephoneContact){
-		List<RowResult> rowResults = new ArrayList<RowResult>();
+    @Override
+    public ServiceResult<StatisticsResult> loadStatisticsByCareUnit(final MedicalCertificateDto search) {
+        final long start = getStartDateId(search.getStartDate());
+        final long end = getEndDateId(search.getEndDate());
 
-		List<CareUnitEntity> careUnits = this.careUnitRepository.findAll();
-		for (CareUnitEntity careUnit : careUnits){
-			rowResults.add(getRowResultByCareUnit(careUnit, start, end, basedOnExamination, basedOnTelephoneContact));
-		}
+        final StatisticsResult result = new StatisticsResult(this.getRowResultsByCareUnit(start, end, search.getBasedOnExamination(),
+                search.getBasedOnTelephoneContact()));
 
-		return rowResults;
-	}
-	
-	private RowResult getRowResultByCareUnit(CareUnitEntity careUnit, long start, long end, Boolean basedOnExamination, Boolean basedOnTelephoneContact){
-		final int countMale = (int)this.certificateRepository.findCountByCareUnit(MALE, careUnit.getId(), start, end, basedOnExamination, basedOnTelephoneContact);
-		final int countFemale = (int)this.certificateRepository.findCountByCareUnit(FEMALE, careUnit.getId(), start, end, basedOnExamination, basedOnTelephoneContact);
-		return RowResult.newResult(careUnit.getName(), countMale, countFemale);
-	}
-	
-	private ServiceResult<StatisticsResult> ok(final StatisticsResult result) {
-		return ServiceResultImpl.newSuccessfulResult( result, Collections.singletonList(new DefaultServiceMessage("Test", ServiceMessageType.SUCCESS)));
-	}	
+        return ok(result);
+    }
 
-	private boolean isAllSelected(String disability) {
-		return "all".equals(disability);
-	}
+    @Override
+    public ServiceResult<StatisticsResult> loadByAge(String from, String to, String disability, String group) {
+        final StatisticsResult result = new StatisticsResult(getRowResultsByAge(getStartDateId(from), getEndDateId(to), disability, group));
 
-	private long getStartDate(final String date) {
-		final DateEntity startDate = this.dateRepository.findByCalendarDate(parse(date));
-		return this.dateRepository.findByCalendarDate(startDate.getMonthStart()).getId();	
-	}
-	
-	private long getEndDate(final String date) {
-		final DateEntity endDate = this.dateRepository.findByCalendarDate(parse(date));
-		return this.dateRepository.findByCalendarDate(endDate.getMonthEnd()).getId();
-	}
+        return ok(result);
+    }
 
-	private Date parse(final String date) {
-		try {
-			final SimpleDateFormat sdf = new SimpleDateFormat(TIME_TEXT_FORMAT, LOCALE);		
-			return sdf.parse(date);
-		} catch (ParseException e) {
-			throw new IllegalArgumentException("Could not parse date " + date, e);
-		}
-	}
+    private List<RowResult> getByDuration(long start, long end, String disability, String group) {
+        List<RowResult> rowResults = new ArrayList<RowResult>();
+
+        rowResults.add(getRowResultByDuration(0, 14, start, end, disability, group));
+        rowResults.add(getRowResultByDuration(15, 30, start, end, disability, group));
+        rowResults.add(getRowResultByDuration(31, 90, start, end, disability, group));
+        rowResults.add(getRowResultByDuration(91, 360, start, end, disability, group));
+        rowResults.add(getRowResultByDuration(361, 36000, start, end, disability, group));
+
+        return rowResults;
+    }
+
+    private RowResult getRowResultByDuration(long minDuration, long maxDuration, long start, long end, String disability, String group) {
+        final long countMale;
+        final long countFemale;
+
+        if (isAllSelected(disability)) {
+            if (isAllSelected(group)) {
+                countMale = this.certificateRepository.findCountByDuration(minDuration, maxDuration, MALE, start, end);
+                countFemale = this.certificateRepository.findCountByDuration(minDuration, maxDuration, FEMALE, start, end);
+            } else {
+                countMale = this.certificateRepository.findCountByDurationAndIcd10Group(minDuration, maxDuration, MALE, start, end, group);
+                countFemale = this.certificateRepository.findCountByDurationAndIcd10Group(minDuration, maxDuration, FEMALE, start, end, group);
+            }
+        } else {
+            int disabilityInt = Integer.parseInt(disability);
+            if (isAllSelected(group)) {
+                countMale = this.certificateRepository
+                        .findCountByDurationAndWorkDisability(minDuration, maxDuration, MALE, start, end, disabilityInt);
+                countFemale = this.certificateRepository.findCountByDurationAndWorkDisability(minDuration, maxDuration, FEMALE, start, end,
+                        disabilityInt);
+            } else {
+                countMale = this.certificateRepository.findCountByDurationAndIcd10GroupAndWorkDisability(minDuration, maxDuration, MALE, start, end,
+                        group, disabilityInt);
+                countFemale = this.certificateRepository.findCountByDurationAndIcd10GroupAndWorkDisability(minDuration, maxDuration, FEMALE, start,
+                        end, group, disabilityInt);
+            }
+        }
+        return RowResult.newResult(formatDuration(minDuration, maxDuration), countMale, countFemale);
+    }
+
+    private String formatDuration(long minDuration, long maxDuration) {
+        if (0 == minDuration) {
+            return "<" + maxDuration;
+        } else {
+            return minDuration + "-" + maxDuration;
+        }
+    }
+
+    private List<RowResult> getRowResultsByAge(long start, long end, String disability, String group) {
+        List<RowResult> rowResults = new ArrayList<RowResult>();
+
+        for (int ageIndex = 0; ageIndex < AGE_RANGES.length - 1; ageIndex++) {
+            rowResults.add(getRowResultByAge(AGE_RANGES[ageIndex], AGE_RANGES[ageIndex + 1] - 1, start, end, disability, group));
+        }
+        return rowResults;
+    }
+
+    private RowResult getRowResultByAge(int minAge, int maxAge, long start, long end, String disability, String group) {
+        final long countMale;
+        final long countFemale;
+
+        if (isAllSelected(group)) {
+            if (isAllSelected(disability)) {
+                countMale = certificateRepository.findCountBySearchAndAge(minAge, maxAge, MALE, start, end);
+                countFemale = certificateRepository.findCountBySearchAndAge(minAge, maxAge, FEMALE, start, end);
+            } else {
+                countMale = certificateRepository.findCountByAgeAndWorkDisability(minAge, maxAge, MALE, start, end, Integer.parseInt(disability));
+                countFemale = certificateRepository.findCountByAgeAndWorkDisability(minAge, maxAge, FEMALE, start, end, Integer.parseInt(disability));
+            }
+        } else {
+            if (isAllSelected(disability)) {
+                countMale = certificateRepository.findCountByAgeAndIcd10Group(minAge, maxAge, MALE, start, end, group);
+                countFemale = certificateRepository.findCountByAgeAndIcd10Group(minAge, maxAge, FEMALE, start, end, group);
+            } else {
+                countMale = certificateRepository.findCountByAgeAndIcd10GroupAndWorkDisability(minAge, maxAge, MALE, start, end, group,
+                        Integer.parseInt(disability));
+                countFemale = certificateRepository.findCountByAgeAndIcd10GroupAndWorkDisability(minAge, maxAge, FEMALE, start, end, group,
+                        Integer.parseInt(disability));
+            }
+        }
+        return RowResult.newResult(formatAgeRange(minAge, maxAge), countFemale, countMale);
+    }
+
+    private String formatAgeRange(int minAge, int maxAge) {
+        if (MAX_AGE == maxAge + 1) {
+            return ">" + minAge;
+        } else if (MIN_AGE == minAge) {
+            return "<" + maxAge;
+        } else {
+            return minAge + "-" + maxAge;
+        }
+    }
+
+    private List<RowResult> getByMonth(long start, long end, String disability, String group) {
+        List<RowResult> rowResults = new ArrayList<RowResult>();
+
+        final Calendar current = Calendar.getInstance();
+        final Calendar last = Calendar.getInstance();
+        current.setTime(dateRepository.findOne(start).getMonthStart());
+        last.setTime(dateRepository.findOne(end).getMonthEnd());
+
+        while (current.before(last)) {
+            final DateEntity month = dateRepository.findByCalendarDate(current.getTime());
+            rowResults.add(getByMonth(month, disability, group));
+            current.add(Calendar.MONTH, 1);
+        }
+
+        return rowResults;
+    }
+
+    private RowResult getByMonth(DateEntity month, String disability, String group) {
+        final long countMale;
+        final long countFemale;
+        if (isAllSelected(disability)) {
+            if (isAllSelected(group)) {
+                countMale = certificateRepository.findCountByMonth(MALE, month.getMonthStart());
+                countFemale = certificateRepository.findCountByMonth(FEMALE, month.getMonthStart());
+            } else {
+                countMale = certificateRepository.findCountByMonthAndIcd10Group(MALE, month.getMonthStart(), group);
+                countFemale = certificateRepository.findCountByMonthAndIcd10Group(FEMALE, month.getMonthStart(), group);
+            }
+        } else {
+            int workDisability = Integer.parseInt(disability);
+            if (isAllSelected(group)) {
+                countMale = certificateRepository.findCountByMonthAndDisability(MALE, month.getMonthStart(), workDisability);
+                countFemale = certificateRepository.findCountByMonthAndDisability(FEMALE, month.getMonthStart(), workDisability);
+            } else {
+                countMale = certificateRepository.findCountByMonthAndIcd10GroupAndWorkDisability(MALE, month.getMonthStart(), group, workDisability);
+                countFemale = certificateRepository.findCountByMonthAndIcd10GroupAndWorkDisability(FEMALE, month.getMonthStart(), group,
+                        workDisability);
+            }
+        }
+
+        return RowResult.newResult(month.getMonthName(), countMale, countFemale);
+    }
+
+    private List<RowResult> getByDiagnosisGroups(long start, long end, String disability) {
+        List<RowResult> rowResults = new ArrayList<RowResult>();
+
+        List<String> diagnosisGroups = diagnosisRepository.findAllDiagnosisGroups();
+        for (String diagnosisGroup : diagnosisGroups) {
+            List<Long> icd10Ids = diagnosisRepository.findIdsByIcd10group(diagnosisGroup);
+            rowResults.add(getRowResultByDiagnosisGroup(diagnosisGroup, icd10Ids, start, end));
+        }
+
+        return rowResults;
+    }
+
+    private RowResult getRowResultByDiagnosisGroup(String diagnosisGroup, List<Long> icd10Ids, long start, long end) {
+        final long countMale = certificateRepository.findCountByDiagnosisGroup(MALE, icd10Ids, start, end);
+        final long countFemale = certificateRepository.findCountByDiagnosisGroup(FEMALE, icd10Ids, start, end);
+        RowResult row = RowResult.newResult(diagnosisGroup, countMale, countFemale);
+
+        return row;
+    }
+
+    private List<RowResult> getRowResultsByCareUnit(long start, long end, Boolean basedOnExamination, Boolean basedOnTelephoneContact) {
+        List<RowResult> rowResults = new ArrayList<RowResult>();
+
+        List<CareUnitEntity> careUnits = this.careUnitRepository.findAll();
+        for (CareUnitEntity careUnit : careUnits) {
+            rowResults.add(getRowResultByCareUnit(careUnit, start, end, basedOnExamination, basedOnTelephoneContact));
+        }
+
+        return rowResults;
+    }
+
+    private RowResult getRowResultByCareUnit(CareUnitEntity careUnit, long start, long end, Boolean basedOnExamination,
+            Boolean basedOnTelephoneContact) {
+        final int countMale = (int) this.certificateRepository.findCountByCareUnit(MALE, careUnit.getId(), start, end, basedOnExamination,
+                basedOnTelephoneContact);
+        final int countFemale = (int) this.certificateRepository.findCountByCareUnit(FEMALE, careUnit.getId(), start, end, basedOnExamination,
+                basedOnTelephoneContact);
+        return RowResult.newResult(careUnit.getName(), countMale, countFemale);
+    }
+
+    private ServiceResult<StatisticsResult> ok(final StatisticsResult result) {
+        return ServiceResultImpl
+                .newSuccessfulResult(result, Collections.singletonList(new DefaultServiceMessage("Test", ServiceMessageType.SUCCESS)));
+    }
+
+    private boolean isAllSelected(String disability) {
+        return "all".equals(disability);
+    }
+
+    private long getStartDateId(final String date) {
+        final DateEntity startDate = this.dateRepository.findByCalendarDate(parse(date));
+        return this.dateRepository.findByCalendarDate(startDate.getMonthStart()).getId();
+    }
+
+    private long getEndDateId(final String date) {
+        DateEntity endDate = this.dateRepository.findByCalendarDate(parse(date));
+        return this.dateRepository.findByCalendarDate(endDate.getMonthEnd()).getId();
+    }
+
+    private Date parse(final String date) {
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat(TIME_TEXT_FORMAT, LOCALE);
+            return sdf.parse(date);
+        } catch (ParseException e) {
+            throw new IllegalArgumentException("Could not parse date " + date, e);
+        }
+    }
 
 }

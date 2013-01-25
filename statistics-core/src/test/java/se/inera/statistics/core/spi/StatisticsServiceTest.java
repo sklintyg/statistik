@@ -103,7 +103,7 @@ public class StatisticsServiceTest {
 		
 		assertNotNull(result);
 		assertFalse(result.getData().getMatches().isEmpty());
-		assertEquals(4, result.getData().getMatches().size());
+		assertEquals(5, result.getData().getMatches().size());
 		assertEquals("15-30", result.getData().getMatches().get(1).getxValue());
 		assertEquals(10, result.getData().getMatches().get(0).getyValue1());
 		assertEquals(10, result.getData().getMatches().get(1).getyValue1());
@@ -133,9 +133,8 @@ public class StatisticsServiceTest {
 	
 	@Test
 	@Rollback(true)
-	public void testLoadSicknessGroupsBySearch() throws Exception {
-		final MedicalCertificateDto search_parameters = getSearchParameters();
-		final ServiceResult<StatisticsResult> result = this.service.loadStatisticsByDiagnosisGroups(search_parameters);
+	public void testLoadDiagnosisGroupsBySearch() throws Exception {
+		final ServiceResult<StatisticsResult> result = service.loadStatisticsByDiagnosisGroups("Januari 2011", "December 2011", "all");
 		
 		assertNotNull(result);
 		assertFalse(result.getData().getMatches().isEmpty());

@@ -36,12 +36,12 @@
 	</script>
 	<script type="text/javascript" src="<c:url value="/resources/javascript/columnchart.js" />"></script>
 	<script type="text/javascript" src="<c:url value="/resources/javascript/table.js" />"></script>
-	<script type="text/javascript" src="<c:url value="/resources/javascript/sicknessgroups.js" />"></script>
+	<script type="text/javascript" src="<c:url value="/resources/javascript/diagnosisgroups.js" />"></script>
     
 	</statistics:header>
 	<statistics:body tabid="4">
-		<h2><spring:message code="sicknessgroups.title" /></h2>
-		<p><spring:message code="duration.desc" /></p>
+		<h2><spring:message code="diagnosisgroups.title" /></h2>
+		<p><spring:message code="diagnosisgroups.desc" /></p>
 		
 		<%@include file="form.inc" %>		
 		

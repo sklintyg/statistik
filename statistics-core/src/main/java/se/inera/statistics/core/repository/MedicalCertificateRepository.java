@@ -239,16 +239,12 @@ public interface MedicalCertificateRepository extends JpaRepository<MedicalCerti
 			"e.personId = p.id and " +
 			"p.gender = :gender and " +
 			"e.diagnosisId in (:diagnosisIds) and " +
-			"(e.startDate >= :startDate and e.startDate <= :endDate) and " +
-			"e.basedOnExamination = :basedOnExamination and " +
-			"e.basedOnTelephoneContact = :basedOnTelephoneContact")
+			"(e.startDate >= :startDate and e.startDate <= :endDate)")
 	long findCountByDiagnosisGroup(
 			@Param("gender") final String gender,
 			@Param("diagnosisIds") final List<Long> diagnosisIds,
 			@Param("startDate") final long start,
-			@Param("endDate") final long end,
-			@Param("basedOnExamination") final Boolean basedOnExamination,
-			@Param("basedOnTelephoneContact") final Boolean basedOnTelephoneContact);
+			@Param("endDate") final long end);
 	
 	@Query(value="select count(e.id) from MedicalCertificateEntity as e, " +
 			"PersonEntity as p " +

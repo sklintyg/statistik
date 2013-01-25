@@ -18,7 +18,7 @@
  */
 $(function() {
 	$('#statistics-form')[0].callback = {
-		url : '/statistics/sicknessgroups', 
+		url : '/statistics/diagnosisgroups', 
 		func: function(data) {
 				columnchart(data, 'Diagnosgrupper');
 				table(data, 'Diagnosgrupper');
