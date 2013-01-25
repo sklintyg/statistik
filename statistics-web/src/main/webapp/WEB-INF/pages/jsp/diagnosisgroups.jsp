@@ -26,6 +26,7 @@
 
 <%@ taglib prefix="inera" uri="http://www.inera.se/certificates/layout/tags" %>
 <%@ taglib prefix="statistics" uri="http://www.inera.se/certificate/statistics/layout/tags" %>
+<%@ taglib prefix="form" uri="http://www.inera.se/certificate/statistics/form/tags" %>
 <%@ taglib prefix="inera-ui" uri="http://www.inera.se/certificates/component/tags" %>
 
 <inera:page>
@@ -43,8 +44,18 @@
 		<h2><spring:message code="diagnosisgroups.title" /></h2>
 		<p><spring:message code="diagnosisgroups.desc" /></p>
 		
-		<%@include file="form.inc" %>		
-		
+        <fieldset>
+            <legend><spring:message code="search.criteria.basedOn" /></legend>
+            <inera:row>
+            <div class="controls controls-row">
+                <form:option-disability />
+                <form:option-diagnoses />
+            </div>
+            </inera:row>
+        </fieldset>
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary"><spring:message code="search.criteria.submitSearch" /></button>
+        </div>
 		<div id="diagram"></div>
 
 		<div id="table">
