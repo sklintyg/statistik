@@ -37,6 +37,7 @@ import se.inera.statistics.core.repository.MedicalCertificateRepository;
 import se.inera.statistics.core.repository.PersonRepository;
 import se.inera.statistics.core.repository.util.DateUtil;
 import se.inera.statistics.model.entity.CareUnitEntity;
+import se.inera.statistics.model.entity.DateEntity;
 import se.inera.statistics.model.entity.DiagnosisEntity;
 import se.inera.statistics.model.entity.MedicalCertificateEntity;
 import se.inera.statistics.model.entity.PersonEntity;
@@ -84,34 +85,17 @@ public class ExampleData {
 		final Calendar cal = Calendar.getInstance();
 		cal.set(2012, 0, 1, 0, 0, 0);
 		
-		List<DiagnosisEntity> diagnosisList = createDiagnoses();
-		
+		List<DiagnosisEntity> diagnosisList = createDiagnoses();		
 		List<CareUnitEntity> careUnitList = createCareUnits();
 		
 		for (int i = 0; i < numberOfPeriods; i++) {
 			for (int j = 0; j < certificatesPerPeriod; j++) {
-				int day = r.nextInt(27) + 1;
-				
-				final Calendar start = Calendar.getInstance();
-				start.set(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), day);
-				
-				final Date d1 = start.getTime();
-				start.add(Calendar.DAY_OF_YEAR, r.nextInt(130));
-				
-				final Date d2 = start.getTime();
-				
-				final long d1Id = dateRepository.findByCalendarDate(d1).getId();
-				final long d2Id = dateRepository.findByCalendarDate(d2).getId();
+				Calendar start = randomDate(cal, 27);
+				Calendar end = randomDate(start,  130);
 
-				final int age = r.nextInt(80);
-				final String gender = r.nextBoolean() ? "Male" : "Female";
-				PersonEntity person = personRepository.findByAgeAndGender(age, gender);
-				if (null == person){
-					person = PersonEntity.newEntity(age, gender);
-					personRepository.save(person);
-				}
+				PersonEntity person = createRandomPerson();
 				
-				final MedicalCertificateEntity e = MedicalCertificateEntity.newEntity(d1Id, d2Id);
+				final MedicalCertificateEntity e = MedicalCertificateEntity.newEntity(getDate(start), getDate(end));
 				e.setPersonId(person.getId());
 				e.setDiagnosisId(getRandom(diagnosisList).getId());
 				e.setCareUnitId(getRandom(careUnitList).getId());
@@ -128,6 +112,27 @@ public class ExampleData {
 		}
 		certificateRepository.save(certs);
 	}
+
+    private Calendar randomDate(final Calendar cal, int randomOffset) {
+        Calendar newDate = (Calendar) cal.clone();
+        newDate.add(Calendar.DATE, r.nextInt(randomOffset));
+        return newDate;
+    }
+
+    private DateEntity getDate(Calendar start) {
+        return dateRepository.findByCalendarDate(start.getTime());
+    }
+
+    private PersonEntity createRandomPerson() {
+        int age = r.nextInt(80);
+        String gender = r.nextBoolean() ? "Male" : "Female";
+        PersonEntity person = personRepository.findByAgeAndGender(age, gender);
+        if (null == person){
+        	person = PersonEntity.newEntity(age, gender);
+        	personRepository.save(person);
+        }
+        return person;
+    }
 
     private List<DiagnosisEntity> createDiagnoses() {
         List<DiagnosisEntity> diagnosisList = new ArrayList<DiagnosisEntity>();
