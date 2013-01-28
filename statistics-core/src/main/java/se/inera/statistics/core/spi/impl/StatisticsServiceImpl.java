@@ -97,11 +97,11 @@ public class StatisticsServiceImpl implements StatisticsService {
     }
 
     @Override
-    public ServiceResult<StatisticsResult> loadStatisticsByDiagnosisGroups(String from, String to, String disability) {
+    public ServiceResult<StatisticsResult> loadStatisticsByDiagnosisGroups(String from, String to) {
         final long start = getStartDateId(from);
         final long end = getEndDateId(to);
 
-        final StatisticsResult result = new StatisticsResult(getByDiagnosisGroups(start, end, disability));
+        final StatisticsResult result = new StatisticsResult(getByDiagnosisGroups(start, end));
 
         return ok(result);
     }
@@ -261,7 +261,7 @@ public class StatisticsServiceImpl implements StatisticsService {
         return RowResult.newResult(month.getMonthName(), countMale, countFemale);
     }
 
-    private List<RowResult> getByDiagnosisGroups(long start, long end, String disability) {
+    private List<RowResult> getByDiagnosisGroups(long start, long end) {
         List<RowResult> rowResults = new ArrayList<RowResult>();
 
         List<String> diagnosisGroups = diagnosisRepository.findAllDiagnosisGroups();

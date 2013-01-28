@@ -134,7 +134,7 @@ public class StatisticsServiceTest {
 	@Test
 	@Rollback(true)
 	public void testLoadDiagnosisGroupsBySearch() throws Exception {
-		final ServiceResult<StatisticsResult> result = service.loadStatisticsByDiagnosisGroups("Januari 2011", "December 2011", "all");
+		final ServiceResult<StatisticsResult> result = service.loadStatisticsByDiagnosisGroups("Januari 2011", "December 2011");
 		
 		assertNotNull(result);
 		assertFalse(result.getData().getMatches().isEmpty());
