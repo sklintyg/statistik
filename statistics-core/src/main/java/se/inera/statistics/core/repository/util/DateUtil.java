@@ -30,10 +30,14 @@ import java.util.Locale;
 import se.inera.statistics.core.repository.DateRepository;
 import se.inera.statistics.model.entity.DateEntity;
 
-public class DateUtil {
+public final class DateUtil {
 	
 	private static final Locale LOCALE = new Locale("sv");
 
+	private DateUtil() {
+        // Hide constuctor for static utilicy class.
+    }
+	
 	public static void createDates(DateRepository dateRepository, String from, String to) {
 		if (dateRepository.count() > 0) {
 			return;
