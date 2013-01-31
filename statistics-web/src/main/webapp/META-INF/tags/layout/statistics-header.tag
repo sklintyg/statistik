@@ -31,12 +31,12 @@
 	<link rel="icon" href="<c:url value="/favicon.ico" />" type="image/vnd.microsoft.icon"/>
 	
 	<link rel="stylesheet" href="<inera-ui:resource name="ui-lightness/jquery-ui-1.8.18.custom.css" type="css" />" />
-	<link rel="stylesheet" href="<inera-ui:resource name="bootstrap-2.0.2.min.css" type="css" />" />
+	<link rel="stylesheet" href="<inera-ui:resource name="bootstrap.min.css" type="css" />" />
 	<link rel="stylesheet" href="<inera-ui:resource name="inera-statistics.css" type="css" />" />
 	
 	<script type="text/javascript" src="<inera-ui:resource name="jquery-1.7.1.min.js" type="js" />"></script>
 	<script type="text/javascript" src="<inera-ui:resource name="jquery-ui-1.8.18.custom.min.js" type="js" />"></script>
-	<script type="text/javascript" src="<inera-ui:resource name="bootstrap-2.0.2.min.js" type="js" />"></script>
+	<script type="text/javascript" src="<inera-ui:resource name="bootstrap.min.js" type="js" />"></script>
 	
 	<script type="text/javascript">
 		var GLOB_CTX_PATH = '<c:out value="${pageContext.request.contextPath}" />';
