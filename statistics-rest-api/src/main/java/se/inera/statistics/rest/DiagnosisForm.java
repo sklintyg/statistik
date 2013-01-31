@@ -22,8 +22,6 @@ public class DiagnosisForm {
 
     private String from;
     private String to;
-    private String disability;
-    private String group;
 
     public DiagnosisForm() {
     }
@@ -43,21 +41,4 @@ public class DiagnosisForm {
     public void setToDate(String to) {
         this.to = to;
     }
-
-    public String getDisability() {
-        return disability;
-    }
-
-    public void setDisability(String disability) {
-        this.disability = disability;
-    }
-
-    public String getGroup() {
-        return group;
-    }
-
-    public void setGroup(String group) {
-        this.group = group;
-    }
-
 }

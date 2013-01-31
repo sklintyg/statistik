@@ -45,11 +45,8 @@
 		<p><spring:message code="diagnosisgroups.desc" /></p>
 		
         <fieldset>
-            <legend><spring:message code="search.criteria.basedOn" /></legend>
             <inera:row>
             <div class="controls controls-row">
-                <form:option-disability />
-                <form:option-diagnoses />
             </div>
             </inera:row>
         </fieldset>
