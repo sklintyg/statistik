@@ -48,8 +48,25 @@ import se.inera.statistics.model.entity.WorkCapability;
  * @author Roger Lindsjo [roger.lindsjo@callistaenterprise.se]
  */
 public class ExampleData {
-	
-	private static final Logger LOG = LoggerFactory.getLogger(ExampleData.class);
+
+    private static final Logger LOG = LoggerFactory.getLogger(ExampleData.class);
+
+    private static final String FEMALE = "Female";
+    private static final String MALE = "Male";
+
+    private static final int DISABILITY_100_PERCENT = 100;
+
+    private static final String CARE_GIVER_ID = "careGiverId";
+    private static final int ISSUER_AGE = 39;
+
+    private static final int MAX_AGE = 80;
+	private static final int MIN_AGE = 16;
+
+    private static final int MAX_CERTIFICATE_LENGTH = 60;
+
+    private static final int START_YEAR = 2012;
+    private static final int NUMBER_OF_PERIODS = 24;
+    private static final int CERTIFICATES_PER_PERIOD = 1100;
 
 	@Autowired
 	private MedicalCertificateRepository certificateRepository;
@@ -72,7 +89,7 @@ public class ExampleData {
 	public void generate() {
 		LOG.info("==== INERA STATISTICS GENERATING SAMPLE DATA ====");
 		DateUtil.createDates(dateRepository, "2010-01-01", "2014-12-31");
-		setupInitialData(24, 1100, Calendar.MONTH);
+		setupInitialData(NUMBER_OF_PERIODS, CERTIFICATES_PER_PERIOD, Calendar.MONTH);
 	}
 	
 	private void setupInitialData(final int numberOfPeriods, final int certificatesPerPeriod, final int period) {
@@ -82,15 +99,15 @@ public class ExampleData {
 		final List<MedicalCertificateEntity> certs = new ArrayList<MedicalCertificateEntity>();
 		
 		final Calendar cal = Calendar.getInstance();
-		cal.set(2012, 0, 1, 0, 0, 0);
+		cal.set(START_YEAR, 0, 1, 0, 0, 0);
 		
 		List<DiagnosisEntity> diagnosisList = createDiagnoses();		
 		List<CareUnitEntity> careUnitList = createCareUnits();
 		
 		for (int i = 0; i < numberOfPeriods; i++) {
 			for (int j = 0; j < certificatesPerPeriod; j++) {
-				Calendar start = randomDate(cal, 27);
-				Calendar end = randomDate(start,  130);
+				Calendar start = randomDate(cal, cal.getActualMaximum(Calendar.DAY_OF_MONTH));
+				Calendar end = randomDate(start,  MAX_CERTIFICATE_LENGTH);
 
 				PersonEntity person = createRandomPerson();
 				
@@ -98,13 +115,13 @@ public class ExampleData {
 				e.setPersonId(person.getId());
 				e.setDiagnosisId(getRandom(diagnosisList).getId());
 				e.setCareUnitId(getRandom(careUnitList).getId());
-				e.setCareGiverId("careGiverId");
+				e.setCareGiverId(CARE_GIVER_ID);
 				e.setBasedOnExamination(false);
 				e.setBasedOnTelephoneContact(false);
-				e.setIssuerAge(39);
-				e.setIssuerGender("Female");
+				e.setIssuerAge(ISSUER_AGE);
+				e.setIssuerGender(FEMALE);
 				e.setIssuerId("issuerId");
-				e.setWorkDisability(100);
+				e.setWorkDisability(DISABILITY_100_PERCENT);
 				certs.add(e);
 			}		
 			cal.add(period, 1);
@@ -123,8 +140,8 @@ public class ExampleData {
     }
 
     private PersonEntity createRandomPerson() {
-        int age = r.nextInt(80);
-        String gender = r.nextBoolean() ? "Male" : "Female";
+        int age = MIN_AGE + r.nextInt(MAX_AGE-MIN_AGE);
+        String gender = r.nextBoolean() ? MALE : FEMALE;
         PersonEntity person = personRepository.findByAgeAndGender(age, gender);
         if (null == person){
         	person = PersonEntity.newEntity(age, gender);
@@ -169,5 +186,5 @@ public class ExampleData {
         CareUnitEntity careUnit = CareUnitEntity.newEntity(name);
 		careUnitRepository.save(careUnit);
         return careUnit;
-    }	
+    }
 }
