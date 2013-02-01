@@ -28,7 +28,13 @@ public enum WorkCapability {
 	THREE_QUARTER_WORKING_CAPABILITY(3),
 	FULL_WORKING_CAPABILITY(4);
 	
-	private final int code;
+    public static final int DISABILITY_100_PERCENT = 100;
+    public static final int DISABILITY_75_PERCENT = 75;
+    public static final int DISABILITY_50_PERCENT = 50;
+    public static final int DISABILITY_25_PERCENT = 25;
+    public static final int DISABILITY_0_PERCENT = 0;
+
+    private final int code;
 	
 	private WorkCapability(final int code) {
 		this.code = code;
@@ -40,15 +46,15 @@ public enum WorkCapability {
 	
 	public static WorkCapability fromWorkDisabilityPercentage(Integer workingDisabilityPercentage){
 		switch(workingDisabilityPercentage) {
-		case 100:
+		case DISABILITY_100_PERCENT:
 			return WorkCapability.NO_WORKING_CAPABILITY;
-		case 75:
+		case DISABILITY_75_PERCENT:
 			return WorkCapability.ONE_QUARTER_WORKING_CAPABILITY;
-		case 50:
+		case DISABILITY_50_PERCENT:
 			return WorkCapability.HALF_WORKING_CAPABILITY;
-		case 25:
+		case DISABILITY_25_PERCENT:
 			return WorkCapability.THREE_QUARTER_WORKING_CAPABILITY;
-		case 0:
+		case DISABILITY_0_PERCENT:
 			return WorkCapability.FULL_WORKING_CAPABILITY;
 		}
 		throw new InvalidParameterException("Work capability is out of range. " + workingDisabilityPercentage + " is not a valid percentage. Values allowed are," +

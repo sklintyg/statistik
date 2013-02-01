@@ -54,8 +54,6 @@ public class ExampleData {
     private static final String FEMALE = "Female";
     private static final String MALE = "Male";
 
-    private static final int DISABILITY_100_PERCENT = 100;
-
     private static final String CARE_GIVER_ID = "careGiverId";
     private static final int ISSUER_AGE = 39;
 
@@ -121,7 +119,7 @@ public class ExampleData {
 				e.setIssuerAge(ISSUER_AGE);
 				e.setIssuerGender(FEMALE);
 				e.setIssuerId("issuerId");
-				e.setWorkDisability(DISABILITY_100_PERCENT);
+				e.setWorkDisability(WorkCapability.DISABILITY_100_PERCENT);
 				certs.add(e);
 			}		
 			cal.add(period, 1);
