@@ -47,21 +47,6 @@ public class DateEntity {
     @Column
     private String monthName;
 
-    @Column(nullable = false)
-    private int calendarDay;
-
-    @Column
-    private String weekDay;
-
-    @Column
-    private int calendarWeek;
-
-    @Column
-    private String formattedDate;
-
-    @Column
-    private String yearQuartal;
-
     @Column
     private String yearMonth;
 
