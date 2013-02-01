@@ -18,6 +18,10 @@
  */
 package se.inera.statistics.core.spi.impl;
 
+import static se.inera.statistics.core.spi.impl.QueryUtil.isAllSelected;
+import static se.inera.statistics.core.spi.impl.QueryUtil.MALE;
+import static se.inera.statistics.core.spi.impl.QueryUtil.FEMALE;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -50,10 +54,6 @@ import se.inera.statistics.model.entity.DateEntity;
 @Transactional
 public class StatisticsServiceImpl implements StatisticsService {
 
-    private static final String FEMALE = "Female";
-
-    private static final String MALE = "Male";
-
     private static final int MIN_AGE = 0;
 
     private static final int MAX_AGE = 150;
@@ -81,7 +81,7 @@ public class StatisticsServiceImpl implements StatisticsService {
         long start = getStartDateId(from);
         long end = getEndDateId(to);
 
-        StatisticsResult result = new StatisticsResult(getByDuration(start, end, disability, group));
+        StatisticsResult result = new StatisticsResult(new DurationQuery(certificateRepository).getByDuration(start, end, disability, group));
 
         return ok(result);
     }
@@ -122,55 +122,6 @@ public class StatisticsServiceImpl implements StatisticsService {
         final StatisticsResult result = new StatisticsResult(getRowResultsByAge(getStartDateId(from), getEndDateId(to), disability, group));
 
         return ok(result);
-    }
-
-    private List<RowResult> getByDuration(long start, long end, String disability, String group) {
-        List<RowResult> rowResults = new ArrayList<RowResult>();
-
-        rowResults.add(getRowResultByDuration(0, 14, start, end, disability, group));
-        rowResults.add(getRowResultByDuration(15, 30, start, end, disability, group));
-        rowResults.add(getRowResultByDuration(31, 90, start, end, disability, group));
-        rowResults.add(getRowResultByDuration(91, 360, start, end, disability, group));
-        rowResults.add(getRowResultByDuration(361, 36000, start, end, disability, group));
-
-        return rowResults;
-    }
-
-    private RowResult getRowResultByDuration(long minDuration, long maxDuration, long start, long end, String disability, String group) {
-        final long countMale;
-        final long countFemale;
-
-        if (isAllSelected(disability)) {
-            if (isAllSelected(group)) {
-                countMale = this.certificateRepository.findCountByDuration(minDuration, maxDuration, MALE, start, end);
-                countFemale = this.certificateRepository.findCountByDuration(minDuration, maxDuration, FEMALE, start, end);
-            } else {
-                countMale = this.certificateRepository.findCountByDurationAndIcd10Group(minDuration, maxDuration, MALE, start, end, group);
-                countFemale = this.certificateRepository.findCountByDurationAndIcd10Group(minDuration, maxDuration, FEMALE, start, end, group);
-            }
-        } else {
-            int disabilityInt = Integer.parseInt(disability);
-            if (isAllSelected(group)) {
-                countMale = this.certificateRepository
-                        .findCountByDurationAndWorkDisability(minDuration, maxDuration, MALE, start, end, disabilityInt);
-                countFemale = this.certificateRepository.findCountByDurationAndWorkDisability(minDuration, maxDuration, FEMALE, start, end,
-                        disabilityInt);
-            } else {
-                countMale = this.certificateRepository.findCountByDurationAndIcd10GroupAndWorkDisability(minDuration, maxDuration, MALE, start, end,
-                        group, disabilityInt);
-                countFemale = this.certificateRepository.findCountByDurationAndIcd10GroupAndWorkDisability(minDuration, maxDuration, FEMALE, start,
-                        end, group, disabilityInt);
-            }
-        }
-        return RowResult.newResult(formatDuration(minDuration, maxDuration), countMale, countFemale);
-    }
-
-    private String formatDuration(long minDuration, long maxDuration) {
-        if (0 == minDuration) {
-            return "<" + maxDuration;
-        } else {
-            return minDuration + "-" + maxDuration;
-        }
     }
 
     private List<RowResult> getRowResultsByAge(long start, long end, String disability, String group) {
@@ -304,10 +255,6 @@ public class StatisticsServiceImpl implements StatisticsService {
     private ServiceResult<StatisticsResult> ok(final StatisticsResult result) {
         return ServiceResultImpl
                 .newSuccessfulResult(result, Collections.singletonList(new DefaultServiceMessage("Test", ServiceMessageType.SUCCESS)));
-    }
-
-    private boolean isAllSelected(String disability) {
-        return "all".equals(disability);
     }
 
     private long getStartDateId(final String date) {
