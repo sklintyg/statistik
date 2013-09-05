@@ -13,21 +13,6 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>se.inera.statistics</groupId>
-			<artifactId>statistics-core</artifactId>
-			<version>${project.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>se.inera.statistics</groupId>
-			<artifactId>statistics-rest-api</artifactId>
-			<version>${project.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>se.inera.commons</groupId>
-			<artifactId>inera-commons-ui</artifactId>
-			<version>${project.version}</version>
-		</dependency>
-		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>servlet-api</artifactId>
 		</dependency>
@@ -52,25 +37,10 @@
 			<artifactId>spring-webmvc</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>org.apache.httpcomponents</groupId>
-			<artifactId>httpclient</artifactId>
-		</dependency>
-		<dependency>
 			<groupId>jstl</groupId>
 			<artifactId>jstl</artifactId>
 		</dependency>
 	</dependencies>
-	<profiles>
-		<profile>
-			<id>withMysql</id>
-			<dependencies>
-				<dependency>
- 					<groupId>mysql</groupId>
-					<artifactId>mysql-connector-java</artifactId>
-				</dependency>
-			</dependencies>
-		</profile>
-	</profiles>
 	<build>
 		<plugins>
 			<plugin>

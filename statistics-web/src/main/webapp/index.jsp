@@ -26,10 +26,8 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Inera Statistics Service</title>
 
-<meta http-equiv="refresh" content="0;url=<c:out value="${pageContext.request.contextPath}" />/web/start">
-
 </head>
 <body>
-
+Inera Statistics
 </body>
 </html>

@@ -1,1 +1,0 @@
-include "statistics-model", "statistics-core", "statistics-rest-api", "statistics-web"
