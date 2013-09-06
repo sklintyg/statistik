@@ -22,6 +22,8 @@
         <hibernate.version>3.6.8.Final</hibernate.version>
         <hsqldb.version>1.8.0.10</hsqldb.version>
         <slf4j.version>1.6.4</slf4j.version>
+        <cxf.version>2.7.4</cxf.version>
+	<jackson.version>2.1.1</jackson.version>
     </properties>
 
     <dependencyManagement>
@@ -228,9 +230,15 @@
                 <version>${hsqldb.version}</version>
             </dependency>
 
+	    <dependency>
+        	<groupId>com.fasterxml.jackson.jaxrs</groupId>
+        	<artifactId>jackson-jaxrs-json-provider</artifactId>
+        	<version>${jackson.version}</version>
+            </dependency>
+
             <dependency>
                 <groupId>org.apache.cxf</groupId>
-                <artifactId>cxf-rt-frontend-jaxws</artifactId>
+                <artifactId>cxf-rt-frontend-jaxrs</artifactId>
                 <version>${cxf.version}</version>
             </dependency>
             <dependency>
