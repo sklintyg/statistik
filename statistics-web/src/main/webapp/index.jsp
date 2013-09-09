@@ -25,9 +25,65 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Inera Statistics Service</title>
+<!-- Styles -->
+<link href="/css/inera-statistics.css" rel="stylesheet">
+<link href="http://getbootstrap.com/2.3.2/assets/css/bootstrap.css" rel="stylesheet">
+<!-- link href="http://getbootstrap.com/2.3.2/assets/css/bootstrap-responsive.css" rel="stylesheet" -->
 
 </head>
 <body>
-Inera Statistics
+<div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+          <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="brand" href="#">Statistiktjänsten</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+		<div id="content-container">
+			<div class="content">
+				<div class="row-fluid">
+					<div id="content-body">
+						<div id="view">
+							<div id="overview-statistics-root-menu" class="span3">
+								<ul class="nav nav-tabs nav-stacked">
+									<li class="active"><a href="#">Nationell statistik</a></li>
+									<li><a href="#">Sjukfall, totalt</a></li>
+								</ul>
+							</div>
+						</div>
+					</div>
+					<div class="span9">
+						<div id="overview-statistics-root-nationell-statistik">
+							<h2 tabindex="-1">Nationell statistik</h2>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+    </div> <!-- /container -->
+	
+	<!-- Scripts -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="http://code.jquery.com/jquery.js"></script>
+    <script src="http://getbootstrap.com/2.3.2/assets/js/bootstrap.min.js"></script>
+    <script src="http://getbootstrap.com/2.3.2/assets/js/bootstrap-transition.js"></script>
+    <script src="http://getbootstrap.com/2.3.2/assets/js/bootstrap-alert.js"></script>
+    <script src="http://getbootstrap.com/2.3.2/assets/js/bootstrap-modal.js"></script>
+    <script src="http://getbootstrap.com/2.3.2/assets/js/bootstrap-dropdown.js"></script>
+    <script src="http://getbootstrap.com/2.3.2/assets/js/bootstrap-scrollspy.js"></script>
+    <script src="http://getbootstrap.com/2.3.2/assets/js/bootstrap-tab.js"></script>
+    <script src="http://getbootstrap.com/2.3.2/assets/js/bootstrap-tooltip.js"></script>
+    <script src="http://getbootstrap.com/2.3.2/assets/js/bootstrap-popover.js"></script>
+    <script src="http://getbootstrap.com/2.3.2/assets/js/bootstrap-button.js"></script>
+    <script src="http://getbootstrap.com/2.3.2/assets/js/bootstrap-collapse.js"></script>
+    <script src="http://getbootstrap.com/2.3.2/assets/js/bootstrap-carousel.js"></script>
+    <script src="http://getbootstrap.com/2.3.2/assets/js/bootstrap-typeahead.js"></script>
 </body>
 </html>
