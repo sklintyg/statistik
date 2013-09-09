@@ -28,7 +28,7 @@
 <!-- Styles -->
 <link href="/css/inera-statistics.css" rel="stylesheet">
 <link href="http://getbootstrap.com/2.3.2/assets/css/bootstrap.css" rel="stylesheet">
-<!-- link href="http://getbootstrap.com/2.3.2/assets/css/bootstrap-responsive.css" rel="stylesheet" -->
+<link href="http://getbootstrap.com/2.3.2/assets/css/bootstrap-responsive.css" rel="stylesheet">
 
 </head>
 <body>
@@ -46,25 +46,108 @@
     </div>
 
     <div class="container">
-		<div id="content-container">
-			<div class="content">
-				<div class="row-fluid">
-					<div id="content-body">
-						<div id="view">
-							<div id="overview-statistics-root-menu" class="span3">
-								<ul class="nav nav-tabs nav-stacked">
-									<li class="active"><a href="#">Nationell statistik</a></li>
-									<li><a href="#">Sjukfall, totalt</a></li>
-								</ul>
+		<div class="row-fluid">
+			<div id="content-body">
+				<div class="span3 bs-docs-sidebar"> <!-- Start: Overview navigation menu -->
+					<ul class="nav nav-tabs nav-stacked">
+						<li class="active"><a href="#">Nationell statistik</a></li>
+						<li><a href="#">Sjukfall, totalt</a></li>
+					</ul>
+				</div>
+				<!-- End: Overview navigation menu -->
+				
+				<div class="span9" id="overview-content"> <!-- Start: Overview content -->
+					<div class="row-fluid">
+						<div class="span4">
+							<h1 tabindex="-1">Nationell statistik</h1>
+						</div>
+						<div class="span4 offset2" id="overview-print-button">
+							<button class="btn">Skriv ut...</button>
+						</div>
+					</div>
+					<div class="row-fluid">
+						<span class="span12" ng-bind-html-unsafe="resultValue" message="" key="overview.description" class="ng-binding">Utvecklingen i landet de senaste 3 månaderna</span>
+					</div>
+					<div class="row-fluid">
+						<div class="span3">
+							<div class="overview-box-header">
+								<h2>Könsfördelning sjukfall</h2>
+							</div>
+							<div id="overview-distribution-per-sex-container"></div>
+							<div class="overview-box-information-container">
+								<!-- span>Förändring av antalet sjukfall jämfört med föregående tre månader.</span -->
+							</div>
+						</div>
+						<div class="span3">
+							<div class="overview-box-header">
+								<h2>Förändring</h2>
+							</div>
+							<div id="overview-change-container"></div>
+							<div class="overview-box-information-container">
+								<span class="overview-small-box-information">Förändring av antalet sjukfall jämfört med föregående tre månader.</span>
+							</div>
+						</div>
+						<div class="span6">
+							<div class="overview-box-header">
+								<h2>Fördelning diagnosgrupper</h2>
+							</div>
+							<div id="overview-distribution-diagnostic-groups-container"></div>
+							<div class="overview-box-information-container">
+								<span>Förändring av antalet sjukfall jämfört med föregående tre månader.</span>
 							</div>
 						</div>
 					</div>
-					<div class="span9">
-						<div id="overview-statistics-root-nationell-statistik">
-							<h2 tabindex="-1">Nationell statistik</h2>
+					<div class="row-fluid">
+						<div class="span6">
+							<div class="overview-box-container">
+								<div class="overview-box-header">
+									<h2>Fördelning åldersgrupper</h2>
+								</div>
+								<div id="overview-distribution-of-age-groups-container"></div>
+								<div class="overview-box-information-container">
+									<span>Förändring av antalet sjukfall jämfört med föregående tre månader.</span>
+								</div>
+							</div>
+						</div>
+						<div class="span6">
+							<div class="overview-box-container">
+								<div class="overview-box-header">
+									<h2>Fördelning sjukskrivningsgrad</h2>
+								</div>
+								<div id="overview-distribution-of-sick-degree-container"></div>
+								<div class="overview-box-information-container">
+									<span>Förändring av antalet sjukfall jämfört med föregående tre månader.</span>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row-fluid">
+						<div class="span6">
+							<div class="overview-box-container">
+								<div class="overview-box-header">
+									<h2>Fördelning sjukskrivningslängd</h2>
+								</div>
+								<div id="overview-distribution-sick-length-container"></div>
+								<div class="overview-box-information-container">
+									<span>Förändring av antalet sjukfall jämfört med föregående tre månader.</span>
+								</div>
+							</div>
+						</div>
+						<div class="span6">
+							<div class="overview-box-container">
+								<div class="overview-box-header">
+									<h2>Fördelning per län</h2>
+								</div>
+								<div id="overview-distribution-by-county-container"></div>
+								<div class="overview-box-information-container">
+									<span>Förändring av antalet sjukfall jämfört med föregående tre månader.</span>
+								</div>
+							</div>
 						</div>
 					</div>
 				</div>
+				<!-- End: Overview content -->
+				
 			</div>
 		</div>
     </div> <!-- /container -->
