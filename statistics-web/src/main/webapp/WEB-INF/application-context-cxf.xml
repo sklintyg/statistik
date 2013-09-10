@@ -11,16 +11,12 @@
 
 	<beans>
 
-		<bean id="jacksonJsonProvider"
-			class="com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider">
-		</bean>
-
-		<bean id="numberOfCasesPerMonthService"
-			class="se.inera.statistics.web.service.impl.NumberOfCasesPerMonthServiceImpl" />
+		<bean id="jacksonJsonProvider" class="com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider" />
+		<bean id="chartDataService" class="se.inera.statistics.web.service.ChartDataService" />
 
 		<jaxrs:server id="restContainer" address="/">
 			<jaxrs:serviceBeans>
-				<ref bean="numberOfCasesPerMonthService" />
+				<ref bean="chartDataService" />
 			</jaxrs:serviceBeans>
 			<jaxrs:providers>
 				<ref bean="jacksonJsonProvider" />
