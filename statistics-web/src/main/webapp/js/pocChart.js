@@ -25,11 +25,11 @@ var getChartSeries = function(ajaxResult) {
 	return dataSeries;
 }
 
-var paintChart = function(chartCategories, chartSeries) {
+var paintChart = function(chartCategories, chartSeries, chartTitle) {
 	$(function() {
 		$('#container').highcharts({
 			title : {
-				text : result.title,
+				text : chartTitle,
 				x : -20
 			// center
 			},
@@ -63,9 +63,9 @@ var updateDataTable = function($scope, ajaxResult) {
 }
 
 var updateChart = function(ajaxResult) {
-	var chartCategories = getChartCategories(result);
-	var chartSeries = getChartSeries(result);
-	paintChart(chartCategories, chartSeries);
+	var chartCategories = getChartCategories(ajaxResult);
+	var chartSeries = getChartSeries(ajaxResult);
+	paintChart(chartCategories, chartSeries, ajaxResult.title);
 }
 
 function ChartDataLoader($scope, $http) {
@@ -76,4 +76,11 @@ function ChartDataLoader($scope, $http) {
 		alert("Failed to download chart data")
 	});
 
+};
+
+function ToggleCtrl($scope, $http) {
+	$scope.customHide = false;
+    $scope.toggleVisibility = function() {
+        $scope.customHide = $scope.customHide === false ? true: false;
+    };	
 };
