@@ -1,57 +1,35 @@
 <!DOCTYPE html>
-<html>
+<html ng-app>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
-<script type="text/javascript"
-	src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<title>Proof of concept for chart</title>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 <script src="http://code.highcharts.com/highcharts.js"></script>
 <script src="http://code.highcharts.com/modules/exporting.js"></script>
-
-<script type="text/javascript">
-	$(document).ready(function() {
-		$.ajax({
-			url : "api/getNumberOfCasesPerMonth",
-			context : document.body,
-			success : function(result) {
-				$(function() {
-					$('#container').highcharts({
-						title : {
-							text : result.title,
-							x : -20
-						//center
-						},
-						xAxis : {
-							categories : result.categories
-						},
-						yAxis : {
-							title : {
-								text : ''
-							},
-							plotLines : [ {
-								value : 0,
-								width : 1,
-								color : '#808080'
-							} ]
-						},
-						legend : {
-							layout : 'vertical',
-							align : 'right',
-							verticalAlign : 'middle',
-							borderWidth : 0
-						},
-						series : result.dataSeries
-					});
-				});
-			}
-		});
-	});
-</script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular.min.js"></script>
+<script type="text/javascript" src="js/pocChart.js"></script>
 </head>
 <body>
 
 	<div id="container"
 		style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+
+	<div ng-controller="ChartDataLoader">
+		<table id="datatable">
+			<thead>
+				<tr>
+					<td></td>
+					<td ng-repeat="header in headers">{{header}}</td>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="row in rows">
+					<td>{{row.name}}</td>
+					<td ng-repeat="fieldData in row.data">{{fieldData}}</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
 
 </body>
 </html>

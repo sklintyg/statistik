@@ -1,9 +1,9 @@
 package se.inera.statistics.web.service;
 
-import se.inera.statistics.web.model.ChartData;
+import se.inera.statistics.web.model.TableData;
 
 public interface ChartDataService {
 
-    public ChartData getChartData();
+    public TableData getChartData();
 
 }
