@@ -85,7 +85,17 @@
 									</a>
 								</div>
 							</div>
-							<div id="overview-distribution-per-sex-container"></div>
+							<div id="overview-distribution-per-sex-container">
+								<figure>
+									<label class="span6" id="overview-distribution-female-lbl">50%</label>
+									<label class="span6" id="overview-distribution-male-lbl">50%</label>
+									<img src="../img/distribution_per_sex_stat_bg.png" />
+								</figure>
+								<!--div id="distribution-per-sex-lbl-container">
+									<label class="span6" id="overview-distribution-female-lbl">50%</label>
+									<label class="span6" id="overview-distribution-male-lbl">50%</label>
+								</div-->
+							</div>
 							<div class="overview-box-information-container">
 								<!-- span class="overview-small-box-information">Förändring av antalet sjukfall jämfört med föregående tre månader.</span -->
 							</div>
@@ -99,7 +109,9 @@
 									</a>
 								</div>
 							</div>
-							<div id="overview-change-container"></div>
+							<div id="overview-change-container">
+								<canvas id="myCanvas" width="198" height="100"></canvas>
+							</div>
 							<div class="overview-box-information-container">
 								<span class="overview-small-box-information">Förändring av antalet sjukfall jämfört med föregående tre månader.</span>
 							</div>
@@ -215,5 +227,57 @@
     <script src="http://getbootstrap.com/2.3.2/assets/js/bootstrap-collapse.js"></script>
     <script src="http://getbootstrap.com/2.3.2/assets/js/bootstrap-carousel.js"></script>
     <script src="http://getbootstrap.com/2.3.2/assets/js/bootstrap-typeahead.js"></script>
+    <script src="http://code.highcharts.com/highcharts.js"></script>
+	<script src="http://code.highcharts.com/modules/exporting.js"></script>
+	
+	<!-- MOVE THESE SCRIPTS TO FILE -->
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$.ajax({
+				url : "api/getNumberOfCasesPerMonth",
+				context : document.body,
+				success : function(result) {
+					$(function() {
+						$('#overview-distribution-by-county-container').highcharts({
+							title : {
+								text : result.title,
+								x : -20
+							//center
+							},
+							xAxis : {
+								categories : result.categories
+							},
+							yAxis : {
+								title : {
+									text : ''
+								},
+								plotLines : [ {
+									value : 0,
+									width : 1,
+									color : '#808080'
+								} ]
+							},
+							legend : {
+								layout : 'vertical',
+								align : 'right',
+								verticalAlign : 'middle',
+								borderWidth : 0
+							},
+							series : result.dataSeries
+						});
+					});
+				}
+			});
+		});
+	</script>
+	<script type="text/javascript">
+		var c=document.getElementById("myCanvas");
+		var ctx=c.getContext("2d");
+		ctx.beginPath();
+		ctx.arc(95,50,40,0,2*Math.PI);
+		ctx.stroke("#11b73c");
+		ctx.fillStyle = '#11b73c';
+		ctx.fill();
+	</script>
 </body>
 </html>

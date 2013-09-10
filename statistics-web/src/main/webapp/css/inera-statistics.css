@@ -479,7 +479,7 @@ legend {
 	}
 	
 	#overview-content .overview-box-header-container:hover { background: #28b4c4; }
-	#overview-content .overview-box-header-container h2 { color: #fff; margin: 0; margin-top: 0px; padding: 5px 5px 5px 10px; }
+	#overview-content .overview-box-header-container h2 { color: #fff; margin: 0; margin-top: 0px; padding: 5px 5px 5px 15px; }
 	#overview-content .overview-box-header-container a:hover { text-decoration: none; }
 	#overview-content .overview-box-header-container span.overview-box-header-icon { float: right; top: 0px; position: relative; right: 0px; padding: 15px; border-left: 1px solid #fff; }
 	
@@ -493,6 +493,37 @@ legend {
 		border-right: 1px solid #C4C4C4;
 		border-bottom: none;
 		border-top: 1px solid #fff;
+	}
+	
+	#overview-content #overview-distribution-per-sex-container #distribution-per-sex-lbl-container {
+		padding: 55px 0px 55px 0px;
+	}
+	
+	#overview-distribution-female-lbl,
+	#overview-distribution-male-lbl {
+		position: relative;
+		text-align: center;
+		color: #fff;
+		font-weight: bold;
+		font-size: 30px;
+		font-family: Helvetica;
+		top: 65px;
+		-webkit-transition: all 0.7s ease;
+		-moz-transition: all 1s ease;
+	}
+	
+	#overview-content #overview-distribution-per-sex-container figure {
+		float: left;
+		margin: 0px 10px 0px 0px;
+		background: transparent;
+		-webkit-transition: all 0.7s ease;
+		-moz-transition: all 1s ease;
+		position: relative;
+		padding: 5px 0px 20px 10px;
+	}
+	
+	#overview-content #overview-distribution-per-sex-container figure img { 
+		width: 100%; /* Scale down */
 	}
 	
 	#overview-content .overview-box-information-container { 
@@ -517,7 +548,7 @@ legend {
 		color: #000; 
 		text-align: center; 
 		float: left;
-		margin: 0 4%; 
+		width: 100%; 
 	}
 	
 	#overview-content .overview-box-information-container span.overview-small-box-information { position: relative; top: -30px; }
@@ -548,3 +579,11 @@ legend {
 		}
 
 /****** End: Overview content styles  ******/
+
+/****** Start: Overrides styles of highcharts ******/
+#overview-content .overview-box-container #overview-distribution-per-sex-container rect, #overview-content .overview-box-container #overview-change-container rect,
+#overview-content .overview-box-container #overview-distribution-of-sick-degree-container rect, #overview-content .overview-box-container #overview-distribution-diagnostic-groups-container rect,
+#overview-content .overview-box-container #overview-distribution-of-age-groups-container rect, #overview-content .overview-box-container #overview-distribution-sick-length-container rect, 
+#overview-content .overview-box-container #overview-distribution-by-county-container rect { fill: transparent !important; }
+
+/****** End: Overrides styles of highcharts ******/
