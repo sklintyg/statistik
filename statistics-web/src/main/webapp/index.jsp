@@ -21,7 +21,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
-<html>
+<html ng-app>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Inera Statistics Service</title>
@@ -29,6 +29,9 @@
 <link href="/css/inera-statistics.css" rel="stylesheet">
 <link href="http://getbootstrap.com/2.3.2/assets/css/bootstrap.css" rel="stylesheet">
 <link href="http://getbootstrap.com/2.3.2/assets/css/bootstrap-responsive.css" rel="stylesheet">
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular.min.js"></script>
+<script type="text/javascript" src="js/overview.js"></script>
 
 </head>
 <body>
@@ -56,7 +59,7 @@
 				</div>
 				<!-- End: Overview navigation menu -->
 				
-				<div class="span9" id="overview-content"> <!-- Start: Overview content -->
+				<div class="span9" id="overview-content" ng-controller="OverviewCtrl"> <!-- Start: Overview content -->
 					<div class="row-fluid">
 						<div class="span4">
 							<h1 tabindex="-1">Nationell statistik</h1>
@@ -75,6 +78,8 @@
 							</div>
 							<div id="overview-distribution-per-sex-container"></div>
 							<div class="overview-box-information-container">
+								Män: {{casesPerMonthMaleProportion}}%<br/>
+								Kvinnor: {{casesPerMonthFemaleProportion}}%
 								<!-- span>Förändring av antalet sjukfall jämfört med föregående tre månader.</span -->
 							</div>
 						</div>
@@ -84,6 +89,7 @@
 							</div>
 							<div id="overview-change-container"></div>
 							<div class="overview-box-information-container">
+								{{casesPerMonthAlteration}}%
 								<span class="overview-small-box-information">Förändring av antalet sjukfall jämfört med föregående tre månader.</span>
 							</div>
 						</div>
