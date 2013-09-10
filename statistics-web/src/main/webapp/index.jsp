@@ -53,7 +53,14 @@
 						<li class="active"><a href="#">Nationell statistik</a></li>
 						<li><a href="#">Sjukfall, totalt</a></li>
 					</ul>
+					<div class="row-fluid">
+						<div class="span12 bs-docs-sidebar">
+							<label class="login-button-label" for="login-button">Verksamhetsstatistik</label>
+							<button class="btn login-button" id="login-button">Logga in</button>
+						</div>
+					</div>
 				</div>
+				
 				<!-- End: Overview navigation menu -->
 				
 				<div class="span9" id="overview-content"> <!-- Start: Overview content -->
@@ -66,21 +73,31 @@
 						</div>
 					</div>
 					<div class="row-fluid">
-						<span class="span12" ng-bind-html-unsafe="resultValue" message="" key="overview.description" class="ng-binding">Utvecklingen i landet de senaste 3 månaderna</span>
+						<span class="span12 overview-ingress" ng-bind-html-unsafe="resultValue" message="" key="overview.description" class="ng-binding">Utvecklingen i landet de senaste 3 månaderna</span>
 					</div>
 					<div class="row-fluid">
 						<div class="span3">
-							<div class="overview-box-header">
-								<h2>Könsfördelning sjukfall</h2>
+							<div class="overview-box-header-container">
+								<div class="row-fluid">
+									<a href="#">	
+										<span class="overview-box-header-icon"><i class="icon-chevron-right icon-white"></i></span>
+										<h2>Könsfördelning</h2>
+									</a>
+								</div>
 							</div>
 							<div id="overview-distribution-per-sex-container"></div>
 							<div class="overview-box-information-container">
-								<!-- span>Förändring av antalet sjukfall jämfört med föregående tre månader.</span -->
+								<!-- span class="overview-small-box-information">Förändring av antalet sjukfall jämfört med föregående tre månader.</span -->
 							</div>
 						</div>
 						<div class="span3">
-							<div class="overview-box-header">
-								<h2>Förändring</h2>
+							<div class="overview-box-header-container">
+								<div class="row-fluid">
+									<a href="#">	
+										<span class="overview-box-header-icon"><i class="icon-chevron-right icon-white"></i></span>
+										<h2>Förändring</h2>
+									</a>
+								</div>
 							</div>
 							<div id="overview-change-container"></div>
 							<div class="overview-box-information-container">
@@ -88,35 +105,50 @@
 							</div>
 						</div>
 						<div class="span6">
-							<div class="overview-box-header">
-								<h2>Fördelning diagnosgrupper</h2>
+							<div class="overview-box-header-container">
+								<div class="row-fluid">
+									<a href="#">	
+										<span class="overview-box-header-icon"><i class="icon-chevron-right icon-white"></i></span>
+										<h2>Fördelning diagnosgrupper</h2>
+									</a>
+								</div>
 							</div>
 							<div id="overview-distribution-diagnostic-groups-container"></div>
 							<div class="overview-box-information-container">
-								<span>Förändring av antalet sjukfall jämfört med föregående tre månader.</span>
+								<span class="overview-standard-box-information">Förändring av antalet sjukfall jämfört med föregående tre månader.</span>
 							</div>
 						</div>
 					</div>
 					<div class="row-fluid">
 						<div class="span6">
 							<div class="overview-box-container">
-								<div class="overview-box-header">
-									<h2>Fördelning åldersgrupper</h2>
+								<div class="overview-box-header-container">
+									<div class="row-fluid">
+										<a href="#">	
+											<span class="overview-box-header-icon"><i class="icon-chevron-right icon-white"></i></span>
+											<h2>Fördelning åldersgrupper</h2>
+										</a>
+									</div>
 								</div>
 								<div id="overview-distribution-of-age-groups-container"></div>
 								<div class="overview-box-information-container">
-									<span>Förändring av antalet sjukfall jämfört med föregående tre månader.</span>
+									<span class="overview-standard-box-information">Förändring av antalet sjukfall jämfört med föregående tre månader.</span>
 								</div>
 							</div>
 						</div>
 						<div class="span6">
 							<div class="overview-box-container">
-								<div class="overview-box-header">
-									<h2>Fördelning sjukskrivningsgrad</h2>
+								<div class="overview-box-header-container">
+									<div class="row-fluid">
+										<a href="#">	
+											<span class="overview-box-header-icon"><i class="icon-chevron-right icon-white"></i></span>
+											<h2>Fördelning sjukskrivningsgrad</h2>
+										</a>
+									</div>
 								</div>
 								<div id="overview-distribution-of-sick-degree-container"></div>
 								<div class="overview-box-information-container">
-									<span>Förändring av antalet sjukfall jämfört med föregående tre månader.</span>
+									<span class="overview-standard-box-information">Förändring av antalet sjukfall jämfört med föregående tre månader.</span>
 								</div>
 							</div>
 						</div>
@@ -124,33 +156,48 @@
 					<div class="row-fluid">
 						<div class="span6">
 							<div class="overview-box-container">
-								<div class="overview-box-header">
-									<h2>Fördelning sjukskrivningslängd</h2>
+								<div class="overview-box-header-container">
+									<div class="row-fluid">
+										<a href="#">	
+											<span class="overview-box-header-icon"><i class="icon-chevron-right icon-white"></i></span>
+											<h2>Fördelning sjukskrivningslängd</h2>
+										</a>
+									</div>
 								</div>
 								<div id="overview-distribution-sick-length-container"></div>
 								<div class="overview-box-information-container">
-									<span>Förändring av antalet sjukfall jämfört med föregående tre månader.</span>
+									<span class="overview-standard-box-information">Förändring av antalet sjukfall jämfört med föregående tre månader.</span>
 								</div>
 							</div>
 						</div>
 						<div class="span6">
 							<div class="overview-box-container">
-								<div class="overview-box-header">
-									<h2>Fördelning per län</h2>
+								<div class="overview-box-header-container">
+									<div class="row-fluid">
+										<a href="#">	
+											<span class="overview-box-header-icon"><i class="icon-chevron-right icon-white"></i></span>
+											<h2>Fördelning per län</h2>
+										</a>
+									</div>
 								</div>
 								<div id="overview-distribution-by-county-container"></div>
 								<div class="overview-box-information-container">
-									<span>Förändring av antalet sjukfall jämfört med föregående tre månader.</span>
+									<span class="overview-standard-box-information">Förändring av antalet sjukfall jämfört med föregående tre månader.</span>
 								</div>
 							</div>
 						</div>
 					</div>
 				</div>
 				<!-- End: Overview content -->
-				
 			</div>
 		</div>
     </div> <!-- /container -->
+    <div id="footer">
+      <div class="container">
+      	<p>Footer</p>
+      </div>
+    </div>
+
 	
 	<!-- Scripts -->
     <!-- Placed at the end of the document so the pages load faster -->
