@@ -47,7 +47,13 @@
 
     <%-- ng-view that holds dynamic content managed by angular app --%>
     <div id="view" ng-view></div>
-	
+
+	<div id="footer">
+		<div class="container">
+			<p>Footer</p>
+		</div>
+	</div>
+
 	<!-- Scripts -->
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="http://code.jquery.com/jquery.js"></script>
@@ -64,13 +70,64 @@
     <script src="http://getbootstrap.com/2.3.2/assets/js/bootstrap-collapse.js"></script>
     <script src="http://getbootstrap.com/2.3.2/assets/js/bootstrap-carousel.js"></script>
     <script src="http://getbootstrap.com/2.3.2/assets/js/bootstrap-typeahead.js"></script>
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular.min.js"></script>
+    <script type="text/javascript" src="<c:url value="/js/app/app.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/js/app/controllers.js"/>"></script>
+	<script src="http://code.highcharts.com/highcharts.js"></script>
+	<script src="http://code.highcharts.com/modules/exporting.js"></script>
     
-<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular.min.js"></script>
-      <script type="text/javascript" src="<c:url value="/js/app/app.js"/>"></script>
-      <script type="text/javascript" src="<c:url value="/js/app/controllers.js"/>"></script>
-<script src="http://code.highcharts.com/highcharts.js"></script>
-<script src="http://code.highcharts.com/modules/exporting.js"></script>
+    
+    	<!-- MOVE THESE SCRIPTS TO FILE -->
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$.ajax({
+				url : "api/getNumberOfCasesPerMonth",
+				context : document.body,
+				success : function(result) {
+					$(function() {
+						$('#overview-distribution-by-county-container').highcharts({
+							title : {
+								text : result.title,
+								x : -20
+							//center
+							},
+							xAxis : {
+								categories : result.categories
+							},
+							yAxis : {
+								title : {
+									text : ''
+								},
+								plotLines : [ {
+									value : 0,
+									width : 1,
+									color : '#808080'
+								} ]
+							},
+							legend : {
+								layout : 'vertical',
+								align : 'right',
+								verticalAlign : 'middle',
+								borderWidth : 0
+							},
+							series : result.dataSeries
+						});
+					});
+				}
+			});
+		});
+	</script>
+	<script type="text/javascript">
+		var c=document.getElementById("myCanvas");
+		var ctx=c.getContext("2d");
+		ctx.beginPath();
+		ctx.arc(95,50,40,0,2*Math.PI);
+		ctx.stroke("#11b73c");
+		ctx.fillStyle = '#11b73c';
+		ctx.fill();
+	</script>
+    
     
 </body>
 </html>
