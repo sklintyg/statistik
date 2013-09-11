@@ -33,47 +33,47 @@
 </head>
 <body>
 <div class="navbar navbar-inverse navbar-fixed-top">
-      <div class="navbar-inner">
-        <div class="container">
-          <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="brand" href="#">Statistiktjänsten</a>
-        </div>
-      </div>
-    </div>
+  <div class="navbar-inner">
     <div class="container">
-    	<div class="row-fluid">
-    		<div id="content-body">
-		    	<div class="span3 bs-docs-sidebar"> <!-- Start: Views navigation menu -->
-					<ul class="nav nav-tabs nav-stacked">
-						<li class="active"><a href="#">Nationell statistik</a></li>
-						<li><a ng-href="#/sjukfallPerManad">Sjukfall, totalt</a></li>
-					</ul>
-					<div class="row-fluid">
-						<div class="span12 bs-docs-sidebar">
-							<label class="login-button-label" for="login-button">Verksamhetsstatistik</label>
-							<button class="btn login-button" id="login-button">Logga in</button>
-						</div>
-					</div>
-				</div> <!-- End: Views navigation menu -->
-			</div>
-			<div class="span9">
-				<%-- ng-view that holds dynamic content managed by angular app --%>
-	    		<div id="view" ng-view></div>
-			</div>
-		</div>
+      <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="brand" href="#">Statistiktjänsten</a>
     </div>
-		
-    
-
-	<div id="footer">
-		<div class="container">
-			<p>Footer</p>
+  </div>
+</div>
+<div class="container">
+	<div class="row-fluid">
+		<div id="content-body">
+		  	<div class="span3 bs-docs-sidebar"> <!-- Start: Views navigation menu -->
+				<ul class="nav nav-tabs nav-stacked">
+					<li class="active"><a href="#">Nationell statistik</a></li>
+					<li><a ng-href="#/sjukfallPerManad">Sjukfall, totalt</a></li>
+				</ul>
+				<div class="row-fluid">
+					<div class="span12 bs-docs-sidebar">
+						<label class="login-button-label" for="login-button">Verksamhetsstatistik</label>
+						<button class="btn login-button" id="login-button">Logga in</button>
+					</div>
+				</div>
+			</div> <!-- End: Views navigation menu -->
+		</div>
+		<div class="span9">
+			<%-- ng-view that holds dynamic content managed by angular app --%>
+		   	<div id="view" ng-view></div>
 		</div>
 	</div>
+</div>
+<div id="footer">
+	<div class="container">
+		<p>Footer</p>
+	</div>
+</div>	
+    
+
+	
 
 	<!-- Scripts -->
     <!-- Placed at the end of the document so the pages load faster -->
@@ -99,7 +99,7 @@
 	<script src="http://code.highcharts.com/modules/exporting.js"></script>
     
     
-    	<!-- MOVE THESE SCRIPTS TO FILE -->
+    <!-- MOVE THESE SCRIPTS TO FILE -->
 	<script type="text/javascript">
 		$(document).ready(function() {
 			$.ajax({
@@ -139,16 +139,6 @@
 			});
 		});
 	</script>
-	<script type="text/javascript">
-		var c=document.getElementById("myCanvas");
-		var ctx=c.getContext("2d");
-		ctx.beginPath();
-		ctx.arc(95,50,40,0,2*Math.PI);
-		ctx.stroke("#11b73c");
-		ctx.fillStyle = '#11b73c';
-		ctx.fill();
-	</script>
-    
     
 </body>
 </html>

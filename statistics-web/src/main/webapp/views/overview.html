@@ -24,7 +24,7 @@
 						</div>
 						<div id="overview-distribution-per-sex-container">
 							<figure>
-								<div id="overview-female-male-info-container">
+								<div class="row-fluid sex-distribution-row">
 									<label class="span6" id="overview-distribution-female-lbl">{{casesPerMonthFemaleProportion}}%</label>
 									<label class="span6" id="overview-distribution-male-lbl">{{casesPerMonthMaleProportion}}%</label>
 									<img src="../img/distribution_per_sex_stat_bg.png" />
@@ -45,8 +45,18 @@
 							</div>
 						</div>
 						<div id="overview-change-container">
-							<canvas id="myCanvas" width="198" height="100"></canvas>
-							{{casesPerMonthAlteration}}%
+							<!-- 						
+							<div class="overview-change-responsive-circle"><span>{{casesPerMonthAlteration}}%</span></div>
+							 -->	
+							 <div class="overview-change-responsive-circle">
+							 	<div>
+							 		<div>
+							 			<div>
+							 				<div>{{casesPerMonthAlteration}}%</div>
+							 			</div>
+							 		</div>
+							 	</div>
+							 </div>
 						</div>
 						<div class="overview-box-information-container">
 							<span class="overview-small-box-information">Förändring av antalet sjukfall jämfört med föregående tre månader.</span>
@@ -139,3 +149,7 @@
 			<!-- End: Overview content -->
 		</div>
     </div> <!-- /container -->
+    
+    <script src="../js/app/inera-statistics-temp.js"></script>
+    
+    
