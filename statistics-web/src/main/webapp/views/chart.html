@@ -5,22 +5,37 @@
 	style="min-width: 310px; height: 400px; margin: 0 auto"></div>
 
 <div>
-	<button ng-click="toggleVisibility()">Visa/Dölj tabell</button>
+<!-- 
+	<div ng-click="toggleVisibility()">Visa/Dölj tabell</div>
 
 	<div ng-hide="customHide">
-		<table id="datatable">
-			<thead>
-				<tr>
-					<td></td>
-					<td ng-repeat="header in headers">{{header}}</td>
-				</tr>
-			</thead>
-			<tbody>
-				<tr ng-repeat="row in rows">
-					<td>{{row.name}}</td>
-					<td ng-repeat="fieldData in row.data">{{fieldData}}</td>
-				</tr>
-			</tbody>
-		</table>
+ -->
+<div class="accordion" id="accordion2">
+	<div class="accordion-group">
+	  <div class="accordion-heading">
+	    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne">
+	      Visa datatabell
+	    </a>
+	  </div>
+	  <div id="collapseOne" class="accordion-body collapse">
+	    <div class="accordion-inner">
+		    <table id="datatable" class="table table-striped">
+				<thead>
+					<tr>
+						<td></td>
+						<td ng-repeat="header in headers">{{header}}</td>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="row in rows">
+						<td>{{row.name}}</td>
+						<td ng-repeat="fieldData in row.data">{{fieldData}}</td>
+					</tr>
+				</tbody>
+		 	</table>
+	    </div>
+	  </div>
+	</div>
 	</div>
 </div>
+<!-- </div>  -->
