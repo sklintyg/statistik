@@ -40,7 +40,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="brand" href="#">Statistiktjänsten</a>
+          <a class="brand" ng-href="/">Statistiktjänsten</a>
         </div>
       </div>
     </div>
@@ -49,7 +49,7 @@
     		<div id="content-body">
 		    	<div class="span3 bs-docs-sidebar"> <!-- Start: Views navigation menu -->
 					<ul class="nav nav-tabs nav-stacked">
-						<li class="active"><a href="#">Nationell statistik</a></li>
+						<li class="active"><a ng-href="#/oversikt">Nationell statistik</a></li>
 						<li><a ng-href="#/sjukfallPerManad">Sjukfall, totalt</a></li>
 					</ul>
 					<div class="row-fluid">
