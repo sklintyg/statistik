@@ -44,9 +44,30 @@
         </div>
       </div>
     </div>
-
-    <%-- ng-view that holds dynamic content managed by angular app --%>
-    <div id="view" ng-view></div>
+    <div class="container">
+    	<div class="row-fluid">
+    		<div id="content-body">
+		    	<div class="span3 bs-docs-sidebar"> <!-- Start: Views navigation menu -->
+					<ul class="nav nav-tabs nav-stacked">
+						<li class="active"><a href="#">Nationell statistik</a></li>
+						<li><a ng-href="#/sjukfallPerManad">Sjukfall, totalt</a></li>
+					</ul>
+					<div class="row-fluid">
+						<div class="span12 bs-docs-sidebar">
+							<label class="login-button-label" for="login-button">Verksamhetsstatistik</label>
+							<button class="btn login-button" id="login-button">Logga in</button>
+						</div>
+					</div>
+				</div> <!-- End: Views navigation menu -->
+			</div>
+			<div class="span9">
+				<%-- ng-view that holds dynamic content managed by angular app --%>
+	    		<div id="view" ng-view></div>
+			</div>
+		</div>
+    </div>
+		
+    
 
 	<div id="footer">
 		<div class="container">

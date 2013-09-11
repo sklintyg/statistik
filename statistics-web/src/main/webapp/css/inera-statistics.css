@@ -481,7 +481,7 @@ legend {
 	#overview-content .overview-box-header-container:hover { background: #28b4c4; }
 	#overview-content .overview-box-header-container h2 { color: #fff; margin: 0; margin-top: 0px; padding: 5px 5px 5px 15px; }
 	#overview-content .overview-box-header-container a:hover { text-decoration: none; }
-	#overview-content .overview-box-header-container span.overview-box-header-icon { float: right; top: 0px; position: relative; right: 0px; padding: 15px; border-left: 1px solid #fff; }
+	#overview-content .overview-box-header-container span.overview-box-header-icon { float: right; top: 0px; position: relative; right: 0px; padding: 15px 10px 15px 10px; border-left: 1px solid #fff; }
 	
 	#overview-content #overview-distribution-per-sex-container, #overview-content #overview-change-container, #overview-content #overview-distribution-diagnostic-groups-container,
 	#overview-content #overview-distribution-of-age-groups-container, #overview-content #overview-distribution-of-sick-degree-container,
@@ -510,6 +510,7 @@ legend {
 		top: 65px;
 		-webkit-transition: all 0.7s ease;
 		-moz-transition: all 1s ease;
+		cursor: inherit;
 	}
 	
 	#overview-content #overview-distribution-per-sex-container figure {
