@@ -42,35 +42,37 @@ statisticsApp.controller('CasesPerMonthCtrl', [ '$scope', '$http',
 	}
 
 	var paintChart = function(chartCategories, chartSeries, chartTitle) {
-		$(function() {
-			$('#container').highcharts({
+		var chartOptions = {
+			chart : {
+				renderTo : 'container',
+			},
+			title : {
+				text : chartTitle,
+				x : -20
+			// center
+			},
+			xAxis : {
+				categories : chartCategories
+			},
+			yAxis : {
 				title : {
-					text : chartTitle,
-					x : -20
-				// center
+					text : ''
 				},
-				xAxis : {
-					categories : chartCategories
-				},
-				yAxis : {
-					title : {
-						text : ''
-					},
-					plotLines : [ {
-						value : 0,
-						width : 1,
-						color : '#808080'
-					} ]
-				},
-				legend : {
-					layout : 'vertical',
-					align : 'right',
-					verticalAlign : 'middle',
-					borderWidth : 0
-				},
-				series : chartSeries
-			});
-		});
+				plotLines : [ {
+					value : 0,
+					width : 1,
+					color : '#808080'
+				} ]
+			},
+			legend : {
+				layout : 'vertical',
+				align : 'right',
+				verticalAlign : 'middle',
+				borderWidth : 0
+			},
+			series : chartSeries
+		};
+		new Highcharts.Chart(chartOptions);
 	}
 
 	var updateDataTable = function($scope, ajaxResult) {
@@ -85,7 +87,7 @@ statisticsApp.controller('CasesPerMonthCtrl', [ '$scope', '$http',
 	}
 
 	$scope.customHide = false;
-    var toggleVisibility = function() {
+    $scope.toggleVisibility = function() {
         $scope.customHide = $scope.customHide === false ? true: false;
     };	
 

@@ -76,7 +76,7 @@
     <script type="text/javascript" src="<c:url value="/js/app/controllers.js"/>"></script>
 	<script src="http://code.highcharts.com/highcharts.js"></script>
 	<script src="http://code.highcharts.com/modules/exporting.js"></script>
-    
+    <script type="text/javascript" src="js/table2Csv.js" ></script>
     
     	<!-- MOVE THESE SCRIPTS TO FILE -->
 	<script type="text/javascript">

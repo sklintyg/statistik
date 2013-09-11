@@ -1,16 +1,10 @@
-<!DOCTYPE html>
-<html ng-app>
-<head>
-<meta charset="UTF-8">
-<title>Proof of concept for chart</title>
-</head>
-<body>
-
 	<div id="container"
 		style="min-width: 310px; height: 400px; margin: 0 auto"></div>
 
 	<div>
 		<button ng-click="toggleVisibility()">Visa/Dölj tabell</button>
+
+		<input value="Export as CSV" type="button" onclick="$('#datatable').table2CSV()">
 
 		<div ng-hide="customHide">
 			<table id="datatable">
@@ -29,6 +23,3 @@
 			</table>
 		</div>
 	</div>
-
-</body>
-</html>
