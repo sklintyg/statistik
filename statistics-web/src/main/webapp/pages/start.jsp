@@ -24,7 +24,8 @@
 <html ng-app="StatisticsApp">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Inera Statistics Service</title>
+<title ng-bind="$root.page_title">Inera Statistics Service</title>
+
 <!-- Styles -->
 <link href="/css/inera-statistics.css" rel="stylesheet">
 <link href="http://getbootstrap.com/2.3.2/assets/css/bootstrap.css" rel="stylesheet">
