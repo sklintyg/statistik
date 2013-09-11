@@ -56,16 +56,14 @@
 
 })(jQuery);
 
-jQuery.fn.table2CSV = function(options) {
+var table2CSV = function(table, options) {
 	var options = jQuery.extend({
 		separator : ',',
 		header : [],
-		delivery : 'popup' // popup, value
 	}, options);
 
 	var csvData = [];
 	var headerArr = [];
-	var el = this;
 
 	// header
 	var numCols = options.header.length;
@@ -76,7 +74,7 @@ jQuery.fn.table2CSV = function(options) {
 			tmpRow[tmpRow.length] = formatData(options.header[i]);
 		}
 	} else {
-		$(el).find('th').each(function() {
+		$(table).find('th').each(function() {
 			tmpRow[tmpRow.length] = formatData($(this).html());
 		});
 	}
@@ -84,20 +82,15 @@ jQuery.fn.table2CSV = function(options) {
 	row2CSV(tmpRow);
 
 	// actual data
-	$(el).find('tr').each(function() {
+	$(table).find('tr').each(function() {
 		var tmpRow = [];
 		$(this).find('td').each(function() {
 			tmpRow[tmpRow.length] = formatData($(this).html());
 		});
 		row2CSV(tmpRow);
 	});
-	if (options.delivery == 'popup') {
-		var mydata = csvData.join('\n');
-		return popup(mydata);
-	} else {
-		var mydata = csvData.join('\n');
-		return mydata;
-	}
+	var mydata = csvData.join('\n');
+	return mydata;
 
 	function row2CSV(tmpRow) {
 		var tmp = tmpRow.join('') // to remove any blank rows
@@ -108,8 +101,6 @@ jQuery.fn.table2CSV = function(options) {
 		}
 	}
 	function formatData(input) {
-		// return input;
-		// replace " with “
 		var regexp = new RegExp(/["]/g);
 		var output = input.replace(regexp, "'");
 		// HTML
@@ -118,17 +109,5 @@ jQuery.fn.table2CSV = function(options) {
 		if (output == "")
 			return '';
 		return '"' + output + '"';
-	}
-	function popup(data) {
-
-		$.generateFile({
-			filename : 'export.csv',
-			content : data,
-			script : 'fileDownload.jsp'
-		});
-
-		e.preventDefault();
-
-		return true;
 	}
 };

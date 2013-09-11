@@ -91,6 +91,16 @@ statisticsApp.controller('CasesPerMonthCtrl', [ '$scope', '$http',
         $scope.customHide = $scope.customHide === false ? true: false;
     };	
 
+    $scope.exportTableData = function() {
+    	var dt = $('#datatable');
+    	var csvData = table2CSV(dt);
+        $.generateFile({
+            filename : 'export.csv',
+            content : csvData,
+            script : 'fileDownload.jsp'
+        });
+    };	
+    
 	$http.get("api/getNumberOfCasesPerMonth").success(function(result) {
 		updateDataTable($scope, result);
 		updateChart(result);

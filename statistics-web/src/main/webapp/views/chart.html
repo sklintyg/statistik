@@ -1,25 +1,26 @@
-	<div id="container"
-		style="min-width: 310px; height: 400px; margin: 0 auto"></div>
 
-	<div>
-		<button ng-click="toggleVisibility()">Visa/Dölj tabell</button>
+<button ng-click="exportTableData()">Export as CSV</button>
 
-		<input value="Export as CSV" type="button" onclick="$('#datatable').table2CSV()">
+<div id="container"
+	style="min-width: 310px; height: 400px; margin: 0 auto"></div>
 
-		<div ng-hide="customHide">
-			<table id="datatable">
-				<thead>
-					<tr>
-						<td></td>
-						<td ng-repeat="header in headers">{{header}}</td>
-					</tr>
-				</thead>
-				<tbody>
-					<tr ng-repeat="row in rows">
-						<td>{{row.name}}</td>
-						<td ng-repeat="fieldData in row.data">{{fieldData}}</td>
-					</tr>
-				</tbody>
-			</table>
-		</div>
+<div>
+	<button ng-click="toggleVisibility()">Visa/Dölj tabell</button>
+
+	<div ng-hide="customHide">
+		<table id="datatable">
+			<thead>
+				<tr>
+					<td></td>
+					<td ng-repeat="header in headers">{{header}}</td>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="row in rows">
+					<td>{{row.name}}</td>
+					<td ng-repeat="fieldData in row.data">{{fieldData}}</td>
+				</tr>
+			</tbody>
+		</table>
 	</div>
+</div>
