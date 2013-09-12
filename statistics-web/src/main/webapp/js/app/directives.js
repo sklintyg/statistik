@@ -12,7 +12,6 @@ angular.module('StatisticsApp').directive("navigationaware", ['$rootScope', '$lo
                 elem.parent().removeClass("active");
                 if ($attrs.ngHref.endsWith($location.$$path)){
                     elem.parent().addClass("active");
-                    console.log("Matching:" + $location.$$path);
                 }
               });
         }
