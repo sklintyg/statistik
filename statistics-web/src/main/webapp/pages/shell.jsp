@@ -50,8 +50,8 @@
     		<div id="content-body">
 		    	<div class="span3 bs-docs-sidebar"> <!-- Start: Views navigation menu -->
 					<ul class="nav nav-tabs nav-stacked">
-						<li class="active"><a ng-href="#/oversikt">Nationell statistik</a></li>
-						<li><a ng-href="#/sjukfallPerManad" id="navCasesPerMonthLink">Sjukfall, totalt</a></li>
+						<li><a ng-href="#/oversikt" navigationaware>Nationell statistik</a></li>
+						<li><a ng-href="#/sjukfallPerManad" id="navCasesPerMonthLink" navigationaware>Sjukfall, totalt</a></li>
 					</ul>
 					<div class="row-fluid">
 						<div class="span12 bs-docs-sidebar">
@@ -96,6 +96,7 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular.min.js"></script>
     <script type="text/javascript" src="<c:url value="/js/app/app.js"/>"></script>
     <script type="text/javascript" src="<c:url value="/js/app/controllers.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/js/app/directives.js"/>"></script>
 	<script src="http://code.highcharts.com/highcharts.js"></script>
 	<script src="http://code.highcharts.com/modules/exporting.js"></script>
     <script type="text/javascript" src="js/exportTableData.js" ></script>
