@@ -101,56 +101,5 @@
 	<script src="http://code.highcharts.com/modules/exporting.js"></script>
     <script type="text/javascript" src="js/exportTableData.js" ></script>
     
-    	<!-- MOVE THESE SCRIPTS TO FILE -->
-	<script type="text/javascript">
-		$(document).ready(function() {
-			$.ajax({
-				url : "api/getNumberOfCasesPerMonth",
-				context : document.body,
-				success : function(result) {
-					$(function() {
-						$('#overview-distribution-by-county-container').highcharts({
-							title : {
-								text : result.title,
-								x : -20
-							//center
-							},
-							xAxis : {
-								categories : result.categories
-							},
-							yAxis : {
-								title : {
-									text : ''
-								},
-								plotLines : [ {
-									value : 0,
-									width : 1,
-									color : '#808080'
-								} ]
-							},
-							legend : {
-								layout : 'vertical',
-								align : 'right',
-								verticalAlign : 'middle',
-								borderWidth : 0
-							},
-							series : result.dataSeries
-						});
-					});
-				}
-			});
-		});
-	</script>
-	<script type="text/javascript">
-		var c=document.getElementById("myCanvas");
-		var ctx=c.getContext("2d");
-		ctx.beginPath();
-		ctx.arc(95,50,40,0,2*Math.PI);
-		ctx.stroke("#11b73c");
-		ctx.fillStyle = '#11b73c';
-		ctx.fill();
-	</script>
-    
-    
 </body>
 </html>
