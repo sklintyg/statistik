@@ -1,0 +1,9 @@
+|Import|
+|se.inera.statistics.spec|
+|se.inera.statistics.web.spec|
+
+!|Config|
+|property|value|
+|geb.env|${geb.env}|
+|geb.build.baseUrl|${statistics.web.baseUrl}|
+|statistics.baseUrl|${statistics.baseUrl}|

@@ -32,6 +32,6 @@
 
 </head>
 <body>
-	<jsp:forward page="pages/start.jsp" />
+	<jsp:forward page="pages/shell.jsp" />
 </body>
 </html>

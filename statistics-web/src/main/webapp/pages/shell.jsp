@@ -51,7 +51,7 @@
 		    	<div class="span3 bs-docs-sidebar"> <!-- Start: Views navigation menu -->
 					<ul class="nav nav-tabs nav-stacked">
 						<li class="active"><a ng-href="#/oversikt">Nationell statistik</a></li>
-						<li><a ng-href="#/sjukfallPerManad">Sjukfall, totalt</a></li>
+						<li><a ng-href="#/sjukfallPerManad" id="navCasesPerMonthLink">Sjukfall, totalt</a></li>
 					</ul>
 					<div class="row-fluid">
 						<div class="span12 bs-docs-sidebar">
