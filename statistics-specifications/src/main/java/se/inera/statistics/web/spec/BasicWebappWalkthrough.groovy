@@ -91,4 +91,46 @@ public class BasicWebappWalkthrough {
         }
     }
     
+    public boolean ettDiagramVisas() {
+        def result = false
+        Browser.drive {
+            waitFor {
+                at CasesPerMonthPage
+            }
+            result = page.chart.isDisplayed()
+        }
+        result
+    }
+    
+    public boolean enTabellVisas() {
+        def result = false
+        Browser.drive {
+            waitFor {
+                at CasesPerMonthPage
+            }
+            result = page.isDatatableVisible()
+        }
+        result
+    }
+    
+    public void klickaPåDöljTabell() {
+        Browser.drive {
+            waitFor {
+                at CasesPerMonthPage
+            }
+            page.toggleDataTableVisibility()
+        }
+    }
+    
+    public boolean tabellenVisasEj() {
+        def result = false
+        Browser.drive {
+            waitFor {
+                at CasesPerMonthPage
+            }
+            result = !page.isDatatableVisible()
+        }
+        result
+    }
+    
 }

@@ -86,11 +86,6 @@ statisticsApp.controller('CasesPerMonthCtrl', [ '$scope', '$http',
 		paintChart(chartCategories, chartSeries, ajaxResult.title);
 	}
 
-	$scope.customHide = false;
-    $scope.toggleVisibility = function() {
-        $scope.customHide = $scope.customHide === false ? true: false;
-    };	
-
     $scope.exportTableData = function() {
     	var dt = $('#datatable');
     	var csvData = table2CSV(dt);

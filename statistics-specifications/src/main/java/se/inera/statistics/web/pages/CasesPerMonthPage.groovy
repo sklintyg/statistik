@@ -8,8 +8,18 @@ class CasesPerMonthPage extends Page {
 
     static content = {
         
+        chart { $("#container > div > svg") }
+        datatable(required:false, wait: false) { $("#datatable") }
+        toggleDataTableVisibilityBtn { $("#toggleDataTableVisibility") }
 
     }
-
     
+    def toggleDataTableVisibility() {
+        toggleDataTableVisibilityBtn.click()
+    }
+    
+    def boolean isDatatableVisible(){
+        return datatable.height != 0 && datatable.displayed;
+    }
+
 }
