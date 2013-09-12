@@ -33,17 +33,41 @@
 
 </head>
 <body>
-<div class="navbar navbar-inverse navbar-fixed-top">
-      <div class="navbar-inner">
-        <div class="container">
-          <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="brand" ng-href="/">Statistiktjänsten</a>
-        </div>
-      </div>
+<div id="wrap">
+	<div class="navbar navbar-inverse navbar-fixed-top">
+	    <div class="navbar-inner">
+		    <div class="container header">
+		    	<!--a class="brand" ng-href="/">Statistiktjänsten</a-->
+		    	<div class="row-fluid">
+					<div class="span2">
+						<div class="headerbox-logo"><a href="/web/start"><img alt="Till startsidan" src="/img/statistics_logo.png"/></a></div>
+					</div>
+					<div class="span2">
+						<span>Statistiktjänst för ordinerad sjukskrivning</span>
+					</div>
+					<div class="span5 headerbox-user">
+						<div class="span2"><img src="/img/avatar.png"/></div>
+						<div class="span10" ng-show="userName.length">
+							<span ng-switch="isDoctor">
+							<strong ng-switch-when="true">L‰kare</strong>
+							<strong ng-switch-default>Admin</strong>
+							</span>
+							 - <span class="logged-in">{{userName}}</span><br>
+							<span class="location">{{caregiverName}}</span>
+						</div>
+					</div>
+					<div class="span1">
+						<div class="dropdown pull-right">
+							<a class="dropdown-toggle settings" data-toggle="dropdown" href="#"></a>
+							<ul class="dropdown-menu dropdown-menu-center" role="menu" aria-labelledby="dLabel">
+								<li><a tabindex="-1" href="#">Hj‰lp</a></li>
+								<li><a tabindex="-1" href="#">Logga ut</a></li>
+							</ul>
+						</div>				
+					</div>
+				</div>
+		    </div>
+	    </div>
     </div>
     <div class="container">
     	<div class="row-fluid">
@@ -67,14 +91,14 @@
 			</div>
 		</div>
     </div>
-		
-    
-
-	<div id="footer">
-		<div class="container">
-			<p>Footer</p>
-		</div>
+</div>
+<div id="footer">
+	<div class="container">
+		<p class="footer-content">
+			<a href="#">Om tjänsten</a>
+		</p>
 	</div>
+</div>
 
 	<!-- Scripts -->
     <!-- Placed at the end of the document so the pages load faster -->
