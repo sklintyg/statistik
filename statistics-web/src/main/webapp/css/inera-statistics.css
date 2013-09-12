@@ -532,6 +532,45 @@ legend {
 .login-button { width: 100%; }
 .login-button-label { color: #008391; font-weight: bold; }
 
+.national-statistic-h1 {  
+	font-family: Helvetica;
+	color: #008391;
+	font-weight: bold;
+	font-size: 20px;
+	margin-bottom: -5px;
+}
+
+.graph-ingress {
+	font-weight: bold;
+	margin-bottom: 30px;
+}
+
+#view .btn {
+	color: #ffffff;
+	text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+	background-color: #363636;
+	background-image: -moz-linear-gradient(top, #444444, #222222);
+	background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#444444), to(#222222));
+	background-image: -webkit-linear-gradient(top, #444444, #222222);
+	background-image: -o-linear-gradient(top, #444444, #222222);
+	background-image: linear-gradient(to bottom, #444444, #222222);
+	background-repeat: repeat-x;
+	border-color: #222222 #222222 #000000;
+	border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff444444', endColorstr='#ff222222', GradientType=0);
+	filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);
+	float: right;
+}
+
+#view .btn.statistic-btn:hover, #view .btn.statistic-btn.btn-large:hover { background-color: #000; }
+
+#view .btn.statistic-btn { 
+	float: right;
+	position: relative;
+	top: 20px;
+	margin-left: 10px; 
+}
+
 /****** End: Statistics general styles  ******/
 
 /****** Start: Shell general styles 	******/
@@ -612,7 +651,7 @@ div.headerbox-user { font-size: 13px; line-height: 16px;}
 	#overview-content h1 { font-weight: bold; font-size: 20px; margin-bottom: -5px; }
 	#overview-content h2 { font-weight: bold; font-size: 14px; }
 	
-	#overview-content span.overview-ingress { font-weight: bold; }
+	#overview-content span.overview-ingress { font-weight: bold; margin-bottom: 10px; }
 	
 	#overview-content .overview-box-header-container { 
 		background: #008391; /* Old browsers */
