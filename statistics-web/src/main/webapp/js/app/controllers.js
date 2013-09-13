@@ -51,6 +51,7 @@ statisticsApp.controller('OverviewCtrl', [ '$scope', '$http',
 
 statisticsApp.controller('CasesPerMonthCtrl', [ '$scope', '$http', 
    function ($scope, $http) {
+    
 	var getChartCategories = function(ajaxResult) {
 		return ajaxResult.rows.map(function(e) {
 			return e.name;
@@ -171,6 +172,8 @@ statisticsApp.controller('CasesPerMonthCtrl', [ '$scope', '$http',
 	$http.get("api/getNumberOfCasesPerMonth").success(function(result) {
 		updateDataTable($scope, result);
 		updateChart(result);
+		$scope.startDate = result.rows[0].name;
+		$scope.endDate = result.rows[result.rows.length-1].name;
 	}).error(function(data, status, headers, config) {
 		alert("Failed to download chart data")
 	});
