@@ -1,19 +1,20 @@
 'use strict';
 
 angular.module('StatisticsApp').directive("navigationaware", ['$rootScope', '$location', function ($rootScope, $location) {
+    
+    var matchingPath = function(navigationHref, currentPath){
+        return navigationHref.length >= currentPath.length && navigationHref.substr(navigationHref.length - currentPath.length) == currentPath;
+    }
+    
     return {
         restrict: "A",
         link: function ($scope, elem, $attrs) {
-            String.prototype.endsWith = function (s) {
-                return this.length >= s.length && this.substr(this.length - s.length) == s;
-            }
-            
             $rootScope.$on('$routeChangeSuccess', function() {
                 elem.parent().removeClass("active");
-                if ($attrs.ngHref.endsWith($location.$$path)){
+                if (matchingPath($attrs.ngHref, $location.$$path)){
                     elem.parent().addClass("active");
                 }
-              });
+            });
         }
     };
 }]);
