@@ -44,17 +44,6 @@
 					<div class="span2">
 						<span>Statistiktjänst för ordinerad sjukskrivning</span>
 					</div>
-					<div class="span5 headerbox-user">
-						<div class="span2"><img src="/img/avatar.png"/></div>
-						<div class="span10" ng-show="userName.length">
-							<span ng-switch="isDoctor">
-							<strong ng-switch-when="true">L‰kare</strong>
-							<strong ng-switch-default>Admin</strong>
-							</span>
-							 - <span class="logged-in">{{userName}}</span><br>
-							<span class="location">{{caregiverName}}</span>
-						</div>
-					</div>
 					<div class="span1">
 						<div class="dropdown pull-right">
 							<a class="dropdown-toggle settings" data-toggle="dropdown" href="#"></a>
