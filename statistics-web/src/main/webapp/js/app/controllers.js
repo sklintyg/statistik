@@ -89,15 +89,13 @@ statisticsApp.controller('CasesPerMonthCtrl', [ '$scope', '$http',
 				x : -20,
 			// center
 			},
-			legend : {
-				align : 'left',
-				verticalAlign : 'top',
-				borderWidth : 0,
-				useHTML : true,
-				floating : true,
-				x: 0,
+			legend: {
+	            align: 'top left',
+	            verticalAlign: 'top',
+	            x: 80,
 	            y: 0,
-			},
+	            borderWidth: 0,
+	        },	
 			xAxis : {
 				labels: {
                 	rotation: 310
@@ -110,7 +108,9 @@ statisticsApp.controller('CasesPerMonthCtrl', [ '$scope', '$http',
 					align : 'high',
 					verticalAlign : 'top',
 					rotation : 0,
-					floating: true
+					floating: true,
+					x: 30,
+		            y: -10
 				},
 				plotLines : [ {
 					value : 0,

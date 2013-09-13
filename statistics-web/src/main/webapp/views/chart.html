@@ -1,15 +1,15 @@
 <div class="row-fluid">
-	<div class="span4">
+	<div class="span3">
 		<h1 tabindex="-1" class="national-statistic-h1">Nationell statistik</h1>
 	</div>
-	<div class="span4 offset4" id="overview-print-button">
+	<div class="span6 offset3" id="overview-print-button">
 		<button class="btn statistic-btn">Skriv ut..</button>
 		<button class="btn statistic-btn" ng-click="exportTableData()">Export as CSV</button>
 	</div>
 </div>
 <!-- Start ingress -->
 <div class="row-fluid">
-	<span class="span12 graph-ingress">Antal sjukfall per månad "Lägg in månad-år till månad år här"</span>
+	<span class="span12 graph-ingress">Antal sjukfall per månad {{startDate | lowercase}} - {{endDate | lowercase}}</span>
 </div>
 <!-- Start graph -->
 <div class="row-fluid">
