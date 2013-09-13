@@ -12,6 +12,9 @@ var statisticsApp = angular.module('StatisticsApp', [  ]).config(
                 templateUrl : '/views/chart.html',
                 controller : 'CasesPerMonthCtrl',
 			    title: 'Sjukfall per månad'
+            }).when('/om', {
+                templateUrl : '/views/about.html',
+                title: 'Om tjänsten'
             }).otherwise({
                 redirectTo : '/oversikt'
             });
@@ -30,3 +33,4 @@ statisticsApp.run([ '$rootScope', '$route', function($rootScope, $route) {
 	  }
     });
 } ]);
+

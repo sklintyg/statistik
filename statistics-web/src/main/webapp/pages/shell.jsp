@@ -65,6 +65,12 @@
 						<li><a ng-href="#/oversikt" navigationaware>Nationell statistik</a></li>
 						<li><a ng-href="#/sjukfallPerManad" id="navCasesPerMonthLink" navigationaware>Sjukfall, totalt</a></li>
 					</ul>
+					<ul class="nav nav-tabs nav-stacked">
+						<li><a ng-href="#/om#about" navigationaware>Om tjänsten</a></li>
+						<li><a ng-href="#/om#login" navigationaware>Inloggning och behörighet</a></li>
+						<li><a ng-href="#/om#faq" navigationaware>Vanliga frågor och svar</a></li>
+						<li><a ng-href="#/om#contact" navigationaware>Kontakt till support</a></li>
+					</ul>
 					<div class="row-fluid">
 						<div class="span12 bs-docs-sidebar">
 							<label class="login-button-label" for="login-button">Verksamhetsstatistik</label>
@@ -83,7 +89,7 @@
 <div id="footer">
 	<div class="container">
 		<p class="footer-content">
-			<a href="#">Om tjänsten</a>
+			<a href="#/om">Om tjänsten</a>
 		</p>
 	</div>
 </div>
