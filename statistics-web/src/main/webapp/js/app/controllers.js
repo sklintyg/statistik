@@ -19,7 +19,7 @@ statisticsApp.controller('OverviewCtrl', [ '$scope', '$http',
 		                text: ''
 		            },
 		            series: [{
-		                name: 'Grupper',
+		                name: 'Antal',
 		                data: chartData,
 		                innerSize: '40%',
 		                dataLabels: {
@@ -31,7 +31,7 @@ statisticsApp.controller('OverviewCtrl', [ '$scope', '$http',
 		        };
 		        new Highcharts.Chart(chartOptions);
 		    }
-		    var color = ["#ec8e0e", "#2ca2c6", "#11b73c", "#d165df", "#fcc733", "#008391", "#535353"];
+		    var color = ["#fbb10c", "#2ca2c6", "#11b73c", "#d165df", "#9c734d", "#008391", "#535353"];
 	        var diagnosisData = [];
 		    for (var i = 0; i < result.diagnosisGroups.length; i++) {
 	            result.diagnosisGroups[i].color = color[i];
@@ -141,7 +141,7 @@ statisticsApp.controller('CasesPerMonthCtrl', [ '$scope', '$http',
                 } 
             },
             tooltip: {
-		        crosshairs: true
+		        /*crosshairs: true*/ // True if crosshair. Not specified in design document for Statistiktjänsten 1.0.
             },
 			series : chartSeries
 		};

@@ -44,10 +44,7 @@
 								</a>
 							</div>
 						</div>
-						<div id="overview-change-container">
-							<!-- 						
-							<div class="overview-change-responsive-circle"><span>{{casesPerMonthAlteration}}%</span></div>
-							 -->	
+						<div id="overview-change-container">	
 							 <div class="overview-change-responsive-circle">
 							 	<div>
 							 		<div>
@@ -71,27 +68,33 @@
 								</a>
 							</div>
 						</div>
-						<div id="overview-distribution-diagnostic-groups-container"></div>
+						<div id="overview-distribution-diagnostic-groups-container">
+							<div class="row-fluid">
+								<div class="span6" id="diagnosisChart"></div>
+								<div class="span6">
+									<table id="datatable" class="table table-striped overview-graph-table">
+										<thead>
+											<tr>
+												<td>Grupp</td>
+												<td>Antal</td>
+												<td>Förändring</td>
+											</tr>
+										</thead>
+										<tbody>
+											<tr ng-repeat="group in diagnosisGroups">
+												<td><span style="height:10px; width:10px; background-color: {{group.color}};"></span>{{group.name}}</td>
+												<td>{{group.quantity}}</td>
+												<td>{{group.alternation}}</td>
+											</tr>
+										</tbody>
+								 	</table>
+								</div>
+							</div>
+						</div>
 						<div class="overview-box-information-container">
 							<span class="overview-standard-box-information">
-							<div id="diagnosisChart" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
-						    <table id="datatable" class="table table-striped">
-								<thead>
-									<tr>
-										<td>Grupp</td>
-										<td>Antal</td>
-										<td>Förändring</td>
-									</tr>
-								</thead>
-								<tbody>
-									<tr ng-repeat="group in diagnosisGroups">
-										<td><span style="height:10px; width:10px; background-color: {{group.color}};"></span>{{group.name}}</td>
-										<td>{{group.quantity}}</td>
-										<td>{{group.alternation}}</td>
-									</tr>
-								</tbody>
-						 	</table>
-							Förändring av antalet sjukfall jämfört med föregående tre månader.</span>
+								Förändring av antalet sjukfall jämfört med föregående tre månader.
+							</span>
 						</div>
 					</div>
 				</div>

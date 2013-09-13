@@ -417,6 +417,28 @@ legend {
     font-weight: bold;
 }
 
+.table.table-striped.overview-graph-table thead tr td {
+	line-height: 10px;
+	text-align: left;
+	font-size: 10px;
+	margin-left: 0px;
+	padding: 15px 5px 5px 0px;
+	border-right: 1px solid transparent !important;
+} 
+.table.table-striped.overview-graph-table tbody tr td {
+	line-height: 10px;
+	text-align: left;
+	font-size: 10px;
+	margin-left: 0px;
+	padding: 15px 5px 5px 0px;
+	border-right: 1px solid #c2c2c2;
+}
+
+.table.table-striped.overview-graph-table td span{
+	float: left;
+	margin-right: 2px;
+}
+
 /****** Start: Bootstrap style overrides ******/
 
 .nav-stacked > li > a {
@@ -852,6 +874,12 @@ div.headerbox-user { font-size: 13px; line-height: 16px;}
 			color: #ffffff;
 			background-color: #222222;
 		}
+	
+	#overview-content #diagnosisChart { 
+		width: 180px;
+		height: 180px;
+		padding: 5px;
+	}
 
 /****** End: Overview content styles  ******/
 
