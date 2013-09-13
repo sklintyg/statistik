@@ -13,9 +13,9 @@ import org.springframework.stereotype.Service;
 
 import se.inera.statistics.web.model.TableData;
 import se.inera.statistics.web.model.TableRow;
+import se.inera.statistics.web.model.overview.DonutChartData;
 import se.inera.statistics.web.model.overview.NumberOfCasesPerMonthOverview;
 import se.inera.statistics.web.model.overview.OverviewData;
-import se.inera.statistics.web.service.ChartDataService;
 
 @Service("chartService")
 public class ChartDataService {
@@ -47,6 +47,12 @@ public class ChartDataService {
     }
 
     private OverviewData createMockOverviewData() {
-        return new OverviewData(new NumberOfCasesPerMonthOverview(56, 44, 5));
+        ArrayList<DonutChartData> diagnosisGroups = new ArrayList<DonutChartData>();
+        diagnosisGroups.add(new DonutChartData("A-E G-L N Somatiska", 140, 2));
+        diagnosisGroups.add(new DonutChartData("M - Muskuloskeletala", 140, -4));
+        diagnosisGroups.add(new DonutChartData("F - Psykiska", 40, 5));
+        diagnosisGroups.add(new DonutChartData("S - Skador", 5, 3));
+        diagnosisGroups.add(new DonutChartData("O - Graviditet och förlossning", 3, -3));
+        return new OverviewData(new NumberOfCasesPerMonthOverview(56, 44, 5), diagnosisGroups);
     }
 }

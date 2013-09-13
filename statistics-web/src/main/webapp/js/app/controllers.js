@@ -1,4 +1,4 @@
-'use strict';
+ 'use strict';
 
 /* Controllers */
 statisticsApp.controller('OverviewCtrl', [ '$scope', '$http', 
@@ -7,6 +7,43 @@ statisticsApp.controller('OverviewCtrl', [ '$scope', '$http',
 			$scope.casesPerMonthMaleProportion = result.casesPerMonth.proportionMale;
 			$scope.casesPerMonthFemaleProportion = result.casesPerMonth.proportionFemale;
 			$scope.casesPerMonthAlteration = result.casesPerMonth.alteration;
+			
+		    var paintDonutChart = function(containerId, chartData) {
+		        
+	            var chartOptions = {
+		            chart: {
+                        renderTo : containerId,
+		                type: 'pie'
+		            },
+		            title: {
+		                text: ''
+		            },
+		            series: [{
+		                name: 'Grupper',
+		                data: chartData,
+		                innerSize: '40%',
+		                dataLabels: {
+		                    formatter: function() {
+		                        return null;
+		                    },
+		                }
+		            }]
+		        };
+		        new Highcharts.Chart(chartOptions);
+		    }
+		    var color = ["#ec8e0e", "#2ca2c6", "#11b73c", "#d165df", "#fcc733", "#008391", "#535353"];
+	        var diagnosisData = [];
+		    for (var i = 0; i < result.diagnosisGroups.length; i++) {
+	            result.diagnosisGroups[i].color = color[i];
+	            // add browser data
+	            diagnosisData.push({
+	                y: result.diagnosisGroups[i].quantity,
+	                color: result.diagnosisGroups[i].color
+	            });
+	        }
+			paintDonutChart("diagnosisChart", diagnosisData);
+			$scope.diagnosisGroups = result.diagnosisGroups;
+			
 		}).error(function(data, status, headers, config) {
 			alert("Failed to download overview data")
 		});
