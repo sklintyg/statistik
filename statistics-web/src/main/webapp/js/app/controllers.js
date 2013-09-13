@@ -80,20 +80,37 @@ statisticsApp.controller('CasesPerMonthCtrl', [ '$scope', '$http',
 
 	var paintChart = function(chartCategories, chartSeries, chartTitle) {
 		var chartOptions = {
+				
 			chart : {
 				renderTo : 'container',
 			},
 			title : {
 				text : chartTitle,
-				x : -20
+				x : -20,
 			// center
 			},
+			legend : {
+				align : 'left',
+				verticalAlign : 'top',
+				borderWidth : 0,
+				useHTML : true,
+				floating : true,
+				x: 0,
+	            y: 0,
+			},
 			xAxis : {
+				labels: {
+                	rotation: 310
+                },
 				categories : chartCategories
 			},
 			yAxis : {
 				title : {
-					text : ''
+					text : 'Antal',
+					align : 'high',
+					verticalAlign : 'top',
+					rotation : 0,
+					floating: true
 				},
 				plotLines : [ {
 					value : 0,
@@ -101,12 +118,30 @@ statisticsApp.controller('CasesPerMonthCtrl', [ '$scope', '$http',
 					color : '#808080'
 				} ]
 			},
-			legend : {
-				layout : 'vertical',
-				align : 'right',
-				verticalAlign : 'middle',
-				borderWidth : 0
-			},
+			exporting: {
+            	enabled: false /* This removes the built in highchart export */           
+            },
+            plotOptions: {
+            	line: {
+                    allowPointSelect: false,
+                	marker: {
+                		symbol: 'circle'
+                	},
+                    cursor: 'pointer',
+                    dataLabels: {
+                        enabled: false
+                    },
+                    events: {
+                    	legendItemClick: function () { // This function removes interaction for plot and legend-items
+                        	return false;
+                    	}
+                	},
+                    showInLegend: true
+                } 
+            },
+            tooltip: {
+		        crosshairs: true
+            },
 			series : chartSeries
 		};
 		new Highcharts.Chart(chartOptions);

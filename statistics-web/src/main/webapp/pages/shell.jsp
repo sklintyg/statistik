@@ -37,10 +37,9 @@
 	<div class="navbar navbar-inverse navbar-fixed-top">
 	    <div class="navbar-inner">
 		    <div class="container header">
-		    	<!--a class="brand" ng-href="/">Statistiktjänsten</a-->
 		    	<div class="row-fluid">
 					<div class="span2">
-						<div class="headerbox-logo"><a href="/web/start"><img alt="Till startsidan" src="/img/statistics_logo.png"/></a></div>
+						<div class="headerbox-logo"><a href="/"><img alt="Till startsidan" src="/img/statistics_logo.png"/></a></div>
 					</div>
 					<div class="span2">
 						<span>Statistiktjänst för ordinerad sjukskrivning</span>
