@@ -367,5 +367,17 @@
             </plugin>
         </plugins>
     </build>
+  <pluginRepositories>
+    <pluginRepository>
+      <id>thirdparty-plugin</id>
+      <url>https://repository-callistasoftware.forge.cloudbees.com/3rdparty</url>
+      <releases>
+        <enabled>true</enabled>
+      </releases>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+    </pluginRepository>
+  </pluginRepositories>
 
 </project>

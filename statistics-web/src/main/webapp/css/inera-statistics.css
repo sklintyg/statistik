@@ -417,7 +417,7 @@ legend {
     font-weight: bold;
 }
 
-.table.table-striped.overview-graph-table thead tr td {
+.table.table-bordered.table-striped.table-condensed.overview-graph-table thead tr td {
 	line-height: 10px;
 	text-align: left;
 	font-size: 10px;
@@ -426,12 +426,11 @@ legend {
 	border-right: 1px solid transparent !important;
 } 
 .table.table-striped.overview-graph-table tbody tr td {
-	line-height: 10px;
+	line-height: 9px;
 	text-align: left;
-	font-size: 10px;
+	font-size: 11px;
 	margin-left: 0px;
-	padding: 15px 5px 5px 0px;
-	border-right: 1px solid #c2c2c2;
+	padding: 10px 0px 10px 10px;
 }
 
 .table.table-striped.overview-graph-table td span{
@@ -490,11 +489,13 @@ legend {
 	border-top-right-radius: 10px;
 	border-bottom-left-radius: 10px;
 	border-bottom-right-radius: 10px;
+	color: #fff;
 }
 
 .accordion-toggle:hover {
 	background: #28b4c4;
 	text-decoration: none;
+	color: #fff;
 }
 
 .accordion-toggle.collapsed {  
@@ -874,10 +875,9 @@ div.headerbox-user { font-size: 13px; line-height: 16px;}
 			background-color: #222222;
 		}
 	
-	#overview-content #diagnosisChart { 
-		width: 180px;
-		height: 180px;
-		padding: 5px;
+	.highcharts-container {
+		margin: 0 auto;
+		padding: 0px;
 	}
 
 /****** End: Overview content styles  ******/
