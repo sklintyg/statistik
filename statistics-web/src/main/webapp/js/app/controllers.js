@@ -13,10 +13,21 @@ statisticsApp.controller('OverviewCtrl', [ '$scope', '$http',
 	            var chartOptions = {
 		            chart: {
                         renderTo : containerId,
-		                type: 'pie'
+		                type: 'pie',
+		                backgroundColor: 'transparent',
+		                height: 185,
+		                margin: [10, 10, 10, 10]
+		                
+		            },
+		            exporting: {
+		            	enabled: false /* This removes the built in highchart export */           
 		            },
 		            title: {
 		                text: ''
+		            },
+		            tooltip: {
+		                backgroundColor: '#fff',
+		                borderWidth: 2
 		            },
 		            series: [{
 		                name: 'Antal',
