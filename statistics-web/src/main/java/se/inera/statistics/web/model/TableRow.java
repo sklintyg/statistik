@@ -1,5 +1,6 @@
 package se.inera.statistics.web.model;
 
+import java.util.Collections;
 import java.util.List;
 
 public class TableRow {
@@ -9,7 +10,7 @@ public class TableRow {
 
     public TableRow(String name, List<Number> data) {
         this.name = name;
-        this.data = data;
+        this.data = Collections.unmodifiableList(data);
     }
 
     public String getName() {
