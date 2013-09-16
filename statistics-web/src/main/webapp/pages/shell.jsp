@@ -33,34 +33,34 @@
 
 </head>
 <body>
-<div id="wrap">
-	<div class="navbar navbar-inverse navbar-fixed-top">
-	    <div class="navbar-inner">
-		    <div class="container header">
-		    	<div class="row-fluid">
-					<div class="span2">
-						<div class="headerbox-logo"><a href="/"><img alt="Till startsidan" src="/img/statistics_logo.png"/></a></div>
-					</div>
-					<div class="span2">
-						<span>Statistiktjänst för ordinerad sjukskrivning</span>
-					</div>
-					<div class="span1">
-						<div class="dropdown pull-right">
-							<a class="dropdown-toggle settings" data-toggle="dropdown" href="#"></a>
-							<ul class="dropdown-menu dropdown-menu-center" role="menu" aria-labelledby="dLabel">
-								<li><a tabindex="-1" href="#">Hj‰lp</a></li>
-								<li><a tabindex="-1" href="#">Logga ut</a></li>
-							</ul>
-						</div>				
-					</div>
+<div class="navbar navbar-inverse navbar-fixed-top">
+    <div class="navbar-inner">
+	    <div class="container header">
+	    	<div class="row-fluid">
+				<div class="span2">
+					<div class="headerbox-logo"><a href="/"><img alt="Till startsidan" src="/img/statistics_logo.png"/></a></div>
 				</div>
-		    </div>
+				<div class="span2">
+					<span>Statistiktjänst för ordinerad sjukskrivning</span>
+				</div>
+				<div class="span1 offset7">
+					<div class="dropdown pull-right">
+						<a class="dropdown-toggle settings" data-toggle="dropdown" href="#" role="menu"></a>
+						<ul class="dropdown-menu dropdown-menu-center" role="menu" aria-labelledby="dLabel" id="settings-dropdown">
+							<li><a tabindex="-1" href="#/om#about">Om tjänsten</a></li>
+							<li><a tabindex="-1" href="#">Logga ut</a></li>
+						</ul>
+					</div>				
+				</div>
+			</div>
 	    </div>
     </div>
-    <div class="container">
-    	<div class="row-fluid">
-    		<div id="content-body">
-		    	<div class="span3 bs-docs-sidebar"> <!-- Start: Views navigation menu -->
+   </div>
+   <div class="container">
+   	<div class="row-fluid">
+   		<div id="content-body">
+	    	<div class="span3 bs-docs-sidebar"> <!-- Start: Views navigation menu -->
+	    		<div class="affix">
 					<ul class="nav nav-tabs nav-stacked">
 						<li><a ng-href="#/oversikt" navigationaware>Nationell statistik</a></li>
 						<li><a ng-href="#/sjukfallPerManad" id="navCasesPerMonthLink" navigationaware>Sjukfall, totalt</a></li>
@@ -77,15 +77,15 @@
 							<button class="btn login-button" id="login-button">Logga in</button>
 						</div>
 					</div>
-				</div> <!-- End: Views navigation menu -->
-			</div>
-			<div class="span9">
-				<%-- ng-view that holds dynamic content managed by angular app --%>
-	    		<div id="view" ng-view></div>
-			</div>
+				</div>
+			</div> <!-- End: Views navigation menu -->
 		</div>
-    </div>
-</div>
+		<div class="span9">
+			<%-- ng-view that holds dynamic content managed by angular app --%>
+    		<div id="view" ng-view></div>
+		</div>
+	</div>
+   </div>
 <div id="footer">
 	<div class="container">
 		<p class="footer-content">
@@ -93,24 +93,11 @@
 		</p>
 	</div>
 </div>
-
+	
 	<!-- Scripts -->
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="http://code.jquery.com/jquery.js"></script>
-    <script src="http://getbootstrap.com/2.3.2/assets/js/bootstrap.min.js"></script>
-    <script src="http://getbootstrap.com/2.3.2/assets/js/bootstrap-transition.js"></script>
-    <script src="http://getbootstrap.com/2.3.2/assets/js/bootstrap-alert.js"></script>
-    <script src="http://getbootstrap.com/2.3.2/assets/js/bootstrap-modal.js"></script>
-    <script src="http://getbootstrap.com/2.3.2/assets/js/bootstrap-dropdown.js"></script>
-    <script src="http://getbootstrap.com/2.3.2/assets/js/bootstrap-scrollspy.js"></script>
-    <script src="http://getbootstrap.com/2.3.2/assets/js/bootstrap-tab.js"></script>
-    <script src="http://getbootstrap.com/2.3.2/assets/js/bootstrap-tooltip.js"></script>
-    <script src="http://getbootstrap.com/2.3.2/assets/js/bootstrap-popover.js"></script>
-    <script src="http://getbootstrap.com/2.3.2/assets/js/bootstrap-button.js"></script>
-    <script src="http://getbootstrap.com/2.3.2/assets/js/bootstrap-collapse.js"></script>
-    <script src="http://getbootstrap.com/2.3.2/assets/js/bootstrap-carousel.js"></script>
-    <script src="http://getbootstrap.com/2.3.2/assets/js/bootstrap-typeahead.js"></script>
-	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular.min.js"></script>
     <script type="text/javascript" src="<c:url value="/js/app/app.js"/>"></script>
     <script type="text/javascript" src="<c:url value="/js/app/factories.js"/>"></script>
@@ -119,6 +106,8 @@
 	<script src="http://code.highcharts.com/highcharts.js"></script>
 	<script src="http://code.highcharts.com/modules/exporting.js"></script>
     <script type="text/javascript" src="js/exportTableData.js" ></script>
-    
+	<script type="text/javascript">
+		$('.dropdown-toggle').dropdown();
+	</script>
 </body>
 </html>

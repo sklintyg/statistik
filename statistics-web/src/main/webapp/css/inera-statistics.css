@@ -626,18 +626,25 @@ div.headerbox-date { font-weight: bold; line-height: 34px; }
 div.headerbox-user { font-size: 13px; line-height: 16px;}
 
 .settings {
-  /*padding: 28px 0 0 28px;*/
   display: block;
-  width: 40px;
-  height: 34px; 
-  background-image: url(../img/settings_ikon.png); 
-  background-repeat: no-repeat;
-  background-position: 50% 50%;
+	width: 40px;
+	height: 25px;
+	background-image: url(../img/settings_sprite.png);
+	background-repeat: no-repeat;
+	background-position: 0px 0px;
+	top: 10px;
+	position: relative;
 }
 
-.settings:hover {
-  background-image: url(../img/settings_hoover.png); 
+.dropdown.pull-right.open .settings {
+  background-image: url(../img/settings_sprite.png);
+  background-position: 0px -25px; 
 }
+
+#settings-dropdown { 
+	top: 35px;
+}
+
 .dropdown-menu > li > a:hover, .dropdown-menu > li > a:focus, .dropdown-submenu:hover > a, .dropdown-submenu:focus > a {
   background: none;
   background-color: #28b4c4;
