@@ -889,3 +889,7 @@ div.headerbox-user { font-size: 13px; line-height: 16px;}
 #overview-content .overview-box-container #overview-distribution-by-county-container rect { fill: transparent !important; }
 
 /****** End: Overrides styles of highcharts ******/
+
+.page-anchor {
+	padding-top: 80px;
+}
