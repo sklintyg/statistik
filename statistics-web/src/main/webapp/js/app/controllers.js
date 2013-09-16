@@ -1,56 +1,57 @@
  'use strict';
 
 /* Controllers */
-statisticsApp.controller('OverviewCtrl', [ '$scope', '$http', 
-    function OverviewCtrl($scope, $http) {
-		$http.get("api/getOverview").success(function(result) {
-			$scope.casesPerMonthMaleProportion = result.casesPerMonth.proportionMale;
-			$scope.casesPerMonthFemaleProportion = result.casesPerMonth.proportionFemale;
-			$scope.casesPerMonthAlteration = result.casesPerMonth.alteration;
-			
-		    var paintDonutChart = function(containerId, chartData) {
-		        
-	            var chartOptions = {
-		            chart: {
-                        renderTo : containerId,
-		                type: 'pie'
-		            },
-		            title: {
-		                text: ''
-		            },
-		            series: [{
-		                name: 'Antal',
-		                data: chartData,
-		                innerSize: '40%',
-		                dataLabels: {
-		                    formatter: function() {
-		                        return null;
-		                    },
-		                }
-		            }]
-		        };
-		        new Highcharts.Chart(chartOptions);
-		    }
-		    var color = ["#fbb10c", "#2ca2c6", "#11b73c", "#d165df", "#9c734d", "#008391", "#535353"];
-	        var diagnosisData = [];
-		    for (var i = 0; i < result.diagnosisGroups.length; i++) {
-	            result.diagnosisGroups[i].color = color[i];
-	            // add browser data
-	            diagnosisData.push({
-	                y: result.diagnosisGroups[i].quantity,
-	                color: result.diagnosisGroups[i].color
-	            });
-	        }
-			paintDonutChart("diagnosisChart", diagnosisData);
-			$scope.diagnosisGroups = result.diagnosisGroups;
-			
-		}).error(function(data, status, headers, config) {
-			alert("Failed to download overview data")
-		});
-	} ]);
+statisticsApp.controller('OverviewCtrl', function ($scope, statisticsData) {
+    var populatePageWithData = function(result){
+        $scope.casesPerMonthMaleProportion = result.casesPerMonth.proportionMale;
+        $scope.casesPerMonthFemaleProportion = result.casesPerMonth.proportionFemale;
+        $scope.casesPerMonthAlteration = result.casesPerMonth.alteration;
+        
+        var paintDonutChart = function(containerId, chartData) {
+            
+            var chartOptions = {
+                chart: {
+                    renderTo : containerId,
+                    type: 'pie'
+                },
+                title: {
+                    text: ''
+                },
+                series: [{
+                    name: 'Antal',
+                    data: chartData,
+                    innerSize: '40%',
+                    dataLabels: {
+                        formatter: function() {
+                            return null;
+                        },
+                    }
+                }]
+            };
+            new Highcharts.Chart(chartOptions);
+        }
+        var color = ["#fbb10c", "#2ca2c6", "#11b73c", "#d165df", "#9c734d", "#008391", "#535353"];
+        var diagnosisData = [];
+        for (var i = 0; i < result.diagnosisGroups.length; i++) {
+            result.diagnosisGroups[i].color = color[i];
+            // add browser data
+            diagnosisData.push({
+                y: result.diagnosisGroups[i].quantity,
+                color: result.diagnosisGroups[i].color
+            });
+        }
+        paintDonutChart("diagnosisChart", diagnosisData);
+        $scope.diagnosisGroups = result.diagnosisGroups;
+    };
+    
+    var dataDownloadFailed = function () {
+        alert("Failed to download overview data");
+    }
+    
+    statisticsData.getOverview(populatePageWithData, dataDownloadFailed);
+});
 
-statisticsApp.controller('CasesPerMonthCtrl', [ '$scope', '$http', 
-   function ($scope, $http) {
+statisticsApp.controller('CasesPerMonthCtrl', function ($scope, statisticsData) {
     
 	var getChartCategories = function(ajaxResult) {
 		return ajaxResult.rows.map(function(e) {
@@ -169,14 +170,18 @@ statisticsApp.controller('CasesPerMonthCtrl', [ '$scope', '$http',
         });
     };	
     
-	$http.get("api/getNumberOfCasesPerMonth").success(function(result) {
-		updateDataTable($scope, result);
-		updateChart(result);
-		$scope.startDate = result.rows[0].name;
-		$scope.endDate = result.rows[result.rows.length-1].name;
-	}).error(function(data, status, headers, config) {
-		alert("Failed to download chart data")
-	});
-} ]);
+    var populatePageWithData = function(result){
+        updateDataTable($scope, result);
+        updateChart(result);
+        $scope.startDate = result.rows[0].name;
+        $scope.endDate = result.rows[result.rows.length-1].name;
+    }
+
+    var dataDownloadFailed = function () {
+        alert("Failed to download chart data");
+    }
+
+    statisticsData.getNumberOfCasesPerMonth(populatePageWithData, dataDownloadFailed);
+});
 
 

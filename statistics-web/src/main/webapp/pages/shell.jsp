@@ -113,6 +113,7 @@
 	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular.min.js"></script>
     <script type="text/javascript" src="<c:url value="/js/app/app.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/js/app/factories.js"/>"></script>
     <script type="text/javascript" src="<c:url value="/js/app/controllers.js"/>"></script>
     <script type="text/javascript" src="<c:url value="/js/app/directives.js"/>"></script>
 	<script src="http://code.highcharts.com/highcharts.js"></script>

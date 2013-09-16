@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('StatisticsApp').directive("navigationaware", ['$rootScope', '$location', function ($rootScope, $location) {
+statisticsApp.directive("navigationaware", function ($rootScope, $location) {
     
     var matchingPath = function(navigationHref, currentPath){
         return navigationHref.length >= currentPath.length && navigationHref.substr(navigationHref.length - currentPath.length) == currentPath;
@@ -17,4 +17,4 @@ angular.module('StatisticsApp').directive("navigationaware", ['$rootScope', '$lo
             });
         }
     };
-}]);
+});
