@@ -11,7 +11,7 @@ angular.module('StatisticsApp').directive("navigationaware", ['$rootScope', '$lo
         link: function ($scope, elem, $attrs) {
             $rootScope.$on('$routeChangeSuccess', function() {
                 elem.parent().removeClass("active");
-                if (matchingPath($attrs.ngHref, $location.$$path)){
+                if (matchingPath($attrs.ngHref, $location.$$url)){
                     elem.parent().addClass("active");
                 }
             });
