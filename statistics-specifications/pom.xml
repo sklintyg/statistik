@@ -23,7 +23,7 @@
     <groovy.version>2.0.7</groovy.version>
     <selenium.version>2.33.0</selenium.version>
     <geb.env>firefox</geb.env>
-    <fitnesse.port>9124</fitnesse.port>
+    <fitnesse.port>9125</fitnesse.port>
     <fitnesse.working>${project.basedir}/src/test/fitnesse</fitnesse.working>
     <fitnesse.root>FitNesseRoot</fitnesse.root>
     <!-- This example has no unit tests, just integration tests -->
