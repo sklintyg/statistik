@@ -21,8 +21,8 @@
 	<div class="accordion" id="accordion2">
 		<div class="accordion-group">
 		  <div class="accordion-heading">
-		    <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne" id="toggleDataTableVisibility">
-		      Visa datatabell
+		    <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne" id="toggleDataTableVisibility" ng-click="toggleTableVisibility($event)">
+		      {{showHideDataTable}}
 		    </a>
 		  </div>
 		  <div id="collapseOne" class="accordion-body in collapse">

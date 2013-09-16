@@ -193,6 +193,15 @@ statisticsApp.controller('CasesPerMonthCtrl', function ($scope, statisticsData) 
     }
 
     statisticsData.getNumberOfCasesPerMonth(populatePageWithData, dataDownloadFailed);
+    
+    $scope.showHideDataTable = "Dölj datatabell";
+    $scope.toggleTableVisibility = function(event){
+        var elem = $(event.target);
+        var accordionGroup = $(elem.parents('.accordion-group')[0]);
+        var accordionBody = $(accordionGroup.children('.accordion-body'));
+        var wasTableVisible = accordionBody.hasClass("in");
+        $scope.showHideDataTable = wasTableVisible ? "Visa datatabell" : "Dölj datatabell"; 
+    }
 });
 
 

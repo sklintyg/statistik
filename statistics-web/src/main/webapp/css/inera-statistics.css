@@ -489,13 +489,13 @@ legend {
 	border-top-right-radius: 10px;
 	border-bottom-left-radius: 10px;
 	border-bottom-right-radius: 10px;
-	color: #fff;
+	color: #fff !important;
 }
 
 .accordion-toggle:hover {
 	background: #28b4c4;
 	text-decoration: none;
-	color: #fff;
+	color: #fff !important;
 }
 
 .accordion-toggle.collapsed {  
