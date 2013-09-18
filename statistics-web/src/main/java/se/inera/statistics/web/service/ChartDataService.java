@@ -35,8 +35,7 @@ public class ChartDataService {
         rows.add(new TableRow("Apr 2013", Arrays.asList(new Number[] { 4, 3, 7 })));
         rows.add(new TableRow("Maj 2013", Arrays.asList(new Number[] { 3, 1, 4 })));
         List<String> headers = Arrays.asList(new String[] { "Antal män", "Antal kvinnor", "Totalt antal" });
-        TableData tableData = new TableData(rows, headers);
-        return tableData;
+        return new TableData(rows, headers);
     }
 
     @GET
