@@ -81,7 +81,14 @@ public class ChartDataService {
         sickLeaveLengthData.add(new BarChartData("<360", 12));
         SickLeaveLengthOverview sickLeaveLength = new SickLeaveLengthOverview(sickLeaveLengthData, 105, 10);
         
-        return new OverviewData(casesPerMonth, diagnosisGroups, ageGroups, degreeOfSickLeaveGroups, sickLeaveLength);
+        ArrayList<DonutChartData> perCounty = new ArrayList<DonutChartData>();
+        perCounty.add(new DonutChartData("Stockholms län", 15, 2));
+        perCounty.add(new DonutChartData("Västra götalands län", 12, -4));
+        perCounty.add(new DonutChartData("Skåne län", 6, 5));
+        perCounty.add(new DonutChartData("Östergötlands län", 5, 0));
+        perCounty.add(new DonutChartData("Uppsala län", 4, -4));
+        
+        return new OverviewData(casesPerMonth, diagnosisGroups, ageGroups, degreeOfSickLeaveGroups, sickLeaveLength, perCounty);
     }
 
 }

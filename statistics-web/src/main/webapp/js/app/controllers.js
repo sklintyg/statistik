@@ -55,6 +55,10 @@ statisticsApp.controller('OverviewCtrl', function ($scope, statisticsData) {
         paintBarChart("sickLeaveLengthChart", result.sickLeaveLength.chartData);
         $scope.longSickLeavesTotal = result.sickLeaveLength.longSickLeavesTotal;
         $scope.longSickLeavesAlteration = result.sickLeaveLength.longSickLeavesAlternation;
+
+        addColor(result.perCounty);
+        paintSickLeavePerCountyChart("sickLeavePerCountyChart", result.perCounty);
+        $scope.sickLeavePerCountyGroups = result.perCounty;
     };
     
     function paintBarChart(containerId, chartData) {
@@ -111,12 +115,81 @@ statisticsApp.controller('OverviewCtrl', function ($scope, statisticsData) {
         new Highcharts.Chart(chartOptions);
     }
     
+    function paintSickLeavePerCountyChart(containerId, chartData) {
+
+        var chartOptions = {
+            chart : {
+                renderTo : containerId,
+                height : 185,
+                width: 133,
+                type : 'bubble'
+            },
+            credits : {
+                enabled : false
+            },
+            exporting : {
+                enabled : false
+            },
+            title : {
+                text : ''
+            },
+            legend : {
+                enabled : false
+            },
+            xAxis : [ {
+                min: 0,
+                max: 100,
+                minPadding: 0,
+                maxPadding: 0,
+                minorGridLineWidth : 0,
+                labels : {
+                    enabled : false
+                },
+                gridLineWidth : 0
+            } ],
+            yAxis : [ {
+                min: 0,
+                max: 100,
+                minPadding: 0,
+                maxPadding: 0,
+                minorGridLineWidth : 0,
+                labels : {
+                    enabled : false
+                },
+                gridLineWidth : 0,
+                title : ''
+            } ],
+            series : chartData.map(function(e) {
+                    var coords = getCoordinates(e);
+                    return {"data": [[coords.x, coords.y, e.quantity]], color: e.color }; 
+                })
+        };
+        new Highcharts.Chart(chartOptions, function(chart) { // on complete
+            chart.renderer.image('img/sweden_graph.png', 30, 10, 69, 160).add();
+        });
+    }
+    
+    function getCoordinates(perCountyObject){
+        var county = perCountyObject.name.toLowerCase();
+        if (county.contains("stockholm")){
+            return {"x": 55, "y": 28};
+        } else if (county.contains("västra götaland")){
+            return {"x": 25, "y": 23};
+        } else if (county.contains("skåne")){
+            return {"x": 29, "y": 5};
+        } else if (county.contains("östergötland")){
+            return {"x": 47, "y": 20};
+        } else if (county.contains("uppsala")){
+            return {"x": 57, "y": 34};
+        } else {
+            return {"x": 10, "y": 80}; //Default point should not match any part of sweden
+        }
+    }
+    
     function extractDonutData(rawData){
-        var color = ["#fbb10c", "#2ca2c6", "#11b73c", "#d165df", "#9c734d", "#008391", "#535353"];
+        addColor(rawData);
         var donutData = [];
         for (var i = 0; i < rawData.length; i++) {
-            rawData[i].color = color[i];
-            // add browser data
             donutData.push({
                 name: rawData[i].name,
                 y: rawData[i].quantity,
@@ -124,6 +197,13 @@ statisticsApp.controller('OverviewCtrl', function ($scope, statisticsData) {
             });
         }
         return donutData;
+    }
+    
+    function addColor(rawData){
+        var color = ["#fbb10c", "#2ca2c6", "#11b73c", "#d165df", "#9c734d", "#008391", "#535353"];
+        for (var i = 0; i < rawData.length; i++) {
+            rawData[i].color = color[i];
+        }
     }
     
     var dataDownloadFailed = function () {
