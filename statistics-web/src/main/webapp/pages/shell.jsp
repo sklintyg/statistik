@@ -29,14 +29,19 @@
 <!-- Styles -->
 <link href="/css/inera-statistics.css" rel="stylesheet">
 <link href="http://getbootstrap.com/2.3.2/assets/css/bootstrap.css" rel="stylesheet">
-<link href="http://getbootstrap.com/2.3.2/assets/css/bootstrap-responsive.css" rel="stylesheet">
+<link href="/css/inera-statistics-responsive.css" rel="stylesheet">
+<link href="/css/bootstrap-responsive.css" rel="stylesheet">
+
 
 </head>
-<body data-spy="scroll">
+<body data-spy="scroll" data-target=".bs-docs-sidebar">
+
+<!-- Navbar
+================================================== -->
 <div class="navbar navbar-inverse navbar-fixed-top">
-    <div class="navbar-inner">
-	    <div class="container header">
-	    	<div class="row-fluid">
+	<div class="navbar-inner">
+		<div class="container">
+			<div class="row-fluid" id="navigation-container">
 				<div class="span2">
 					<div class="headerbox-logo"><a href="/"><img alt="Till startsidan" src="/img/statistics_logo.png"/></a></div>
 				</div>
@@ -53,61 +58,70 @@
 					</div>				
 				</div>
 			</div>
-	    </div>
-    </div>
+		</div>
+	</div>
 </div>
-<div class="container">
-	<div id="content-body">
-	   	<div class="row-fluid">
-	    	<div class="span3 bs-docs-sidebar"> <!-- Start: Views navigation menu -->
-	    		<div class="affix" data-offset-top="200">
-					<ul class="nav nav-tabs nav-stacked">
-						<li><a ng-href="#/oversikt" navigationaware>Nationell statistik</a></li>
-						<li><a ng-href="#/sjukfallPerManad" id="navCasesPerMonthLink" navigationaware>Sjukfall, totalt</a></li>
+
+
+<div id="wrap">
+	<div class="container">
+	
+		<!-- Docs nav
+		================================================== -->
+		<div class="row">
+			<div class="span3 bs-docs-sidebar">
+				<div id="statistics-left-menu">
+					<ul class="nav nav-list bs-docs-sidenav" id="national-statistic-menu">
+						<li><a ng-href="#/oversikt" navigationaware>Nationell statistik<i class="icon-chevron-right"></i></a></li>
+						<li><a ng-href="#/sjukfallPerManad" id="navCasesPerMonthLink" navigationaware>Sjukfall, totalt<i class="icon-chevron-right"></i></a></li>
 					</ul>
-					<ul class="nav nav-tabs nav-stacked">
+					<ul class="nav nav-list bs-docs-sidenav" id="business-statistics-menu">
 						<li><a ng-href="#/om#about" navigationaware>Om tjänsten</a></li>
 						<li><a ng-href="#/om#login" navigationaware>Inloggning och behörighet</a></li>
 						<li><a ng-href="#/om#faq" navigationaware>Vanliga frågor och svar</a></li>
 						<li><a ng-href="#/om#contact" navigationaware>Kontakt till support</a></li>
 					</ul>
-					<div class="row-fluid">
-						<div class="span12 bs-docs-sidebar">
-							<label class="login-button-label" for="login-button">Verksamhetsstatistik</label>
-							<button class="btn login-button" id="login-button">Logga in</button>
-						</div>
-					</div>
 				</div>
-			</div> <!-- End: Views navigation menu -->
+			</div>
+		      
 			<div class="span9">
 				<%-- ng-view that holds dynamic content managed by angular app --%>
-	    		<div id="view" ng-view></div>
+				<div id="view" ng-view></div>
 			</div>
 		</div>
-	</div>
-</div>
-<div id="footer">
-	<div class="container">
-		<p class="footer-content">
-			<a href="#/om">Om tjänsten</a>
-		</p>
-	</div>
-</div>
 	
-	<!-- Scripts -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script src="http://code.jquery.com/jquery.js"></script>
-    <script type="text/javascript" src="js/bootstrap.min.js"></script>
-	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular.min.js"></script>
-    <script type="text/javascript" src="<c:url value="/js/app/app.js"/>"></script>
-    <script type="text/javascript" src="<c:url value="/js/app/factories.js"/>"></script>
-    <script type="text/javascript" src="<c:url value="/js/app/controllers.js"/>"></script>
-    <script type="text/javascript" src="<c:url value="/js/app/directives.js"/>"></script>
-	<script src="http://code.highcharts.com/highcharts.js"></script>
-	<script src="http://code.highcharts.com/modules/exporting.js"></script>
-    <script type="text/javascript" src="js/exportTableData.js" ></script>
-	<script type="text/javascript">
-		$('.dropdown-toggle').dropdown();
-	</script>
+	</div>
+</div>
+<!-- Footer
+================================================== -->
+<footer class="footer">
+	<div class="container">
+		<p>Om tjänsten länk.</p>
+	</div>
+</footer>
+
+<!-- Scripts -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="http://code.jquery.com/jquery.js"></script>
+<script type="text/javascript" src="js/bootstrap.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular.min.js"></script>
+<script type="text/javascript" src="<c:url value="/js/app/app.js"/>"></script>
+<script type="text/javascript" src="<c:url value="/js/app/factories.js"/>"></script>
+<script type="text/javascript" src="<c:url value="/js/app/controllers.js"/>"></script>
+<script type="text/javascript" src="<c:url value="/js/app/directives.js"/>"></script>
+<script src="http://code.highcharts.com/highcharts.js"></script>
+<script src="http://code.highcharts.com/highcharts-more.js"></script>
+<script src="http://code.highcharts.com/modules/exporting.js"></script>
+<script type="text/javascript" src="js/exportTableData.js" ></script>
+<script type="text/javascript">
+	$('.dropdown-toggle').dropdown();
+	$('.bs-docs-sidenav').scrollspy();
+	$('#national-statistic-menu').affix();
+	$('#business-statistics-menu').affix();
+	$('#statistics-left-menu').affix();
+</script>
+
+
+
 </body>
 </html>

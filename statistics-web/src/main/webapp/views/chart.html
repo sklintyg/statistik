@@ -1,10 +1,16 @@
-<div class="row-fluid">
-	<div class="span4">
-		<h1 tabindex="-1" class="national-statistic-h1">Nationell statistik</h1>
+<div id="chart-content">
+	<div class="row-fluid">
+		<div class="span4">
+			<h1 tabindex="-1" class="national-statistic-h1">Nationell statistik</h1>
+		</div>
+		<div class="span5 offset3" id="overview-print-button">
+			<button class="btn statistic-btn"  onclick="window.print();">Skriv ut..</button>
+			<button class="btn statistic-btn" ng-click="exportTableData()">Spara som...</button>
+		</div>
 	</div>
-	<div class="span5 offset3" id="overview-print-button">
-		<button class="btn statistic-btn"  onclick="window.print();">Skriv ut..</button>
-		<button class="btn statistic-btn" ng-click="exportTableData()">Spara som...</button>
+	<!-- Start ingress -->
+	<div class="row-fluid">
+		<span class="span12 graph-ingress">Antal sjukfall per månad {{startDate | lowercase}} - {{endDate | lowercase}}</span>
 	</div>
 </div>
 <!-- Start ingress -->
@@ -21,7 +27,7 @@
 	<div class="accordion" id="accordion2">
 		<div class="accordion-group">
 		  <div class="accordion-heading">
-		    <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne" id="toggleDataTableVisibility" ng-click="toggleTableVisibility($event)">
+		    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne" id="toggleDataTableVisibility" ng-click="toggleTableVisibility($event)">
 		      {{showHideDataTable}}
 		    </a>
 		  </div>
@@ -46,4 +52,3 @@
 		</div>
 	</div>
 </div>
-

@@ -1,6 +1,6 @@
-    <div class="container">
+    <div>
 		<div class="row-fluid">
-			<div class="span9" id="overview-content"> <!-- Start: Overview content -->
+			<div id="overview-content"> <!-- Start: Overview content -->
 				<div class="row-fluid">
 					<div class="span4">
 						<h1 tabindex="-1" id="nationalOverviewHeading">Nationell statistik</h1>
@@ -23,16 +23,22 @@
 							</div>
 						</div>
 						<div id="overview-distribution-per-sex-container">
-							<figure>
-								<div class="row-fluid sex-distribution-row">
-									<label class="span6" id="overview-distribution-female-lbl">{{casesPerMonthFemaleProportion}}%</label>
-									<label class="span6" id="overview-distribution-male-lbl">{{casesPerMonthMaleProportion}}%</label>
-									<img src="../img/distribution_per_sex_stat_bg.png" />
-								</div>
-							</figure>
+							<div class="overview-sex-distribution-responsive">
+							 	<div>
+							 		<div>
+							 			<div>
+							 				<div>
+							 					<div class="row-fluid sex-distribution-row">
+										         	<div class="span4 offset2" id="overview-distribution-female-lbl">{{casesPerMonthFemaleProportion}}%</div>
+										         	<div class="span4" id="overview-distribution-male-lbl">{{casesPerMonthMaleProportion}}%</div>
+										        </div>
+							 				</div>
+							 			</div>
+							 		</div>
+							 	</div>
+							 </div>
 						</div>
 						<div class="overview-box-information-container">
-							<!-- span class="overview-small-box-information">Förändring av antalet sjukfall jämfört med föregående tre månader.</span -->
 						</div>
 					</div>
 					<div class="span3">
@@ -212,7 +218,29 @@
 									</a>
 								</div>
 							</div>
-							<div id="overview-distribution-by-county-container"></div>
+							<div id="overview-distribution-by-county-container">
+								<div class="row-fluid">
+									<div class="span4 chart-container" id="sickLeavePerCountyChart"></div>
+									<div class="span8">
+										<table id="datatable" class="table table-bordered table-striped table-condensed overview-graph-table">
+											<thead>
+												<tr>
+													<td>Län</td>
+													<td>Antal</td>
+													<td>Förändring</td>
+												</tr>
+											</thead>
+											<tbody>
+												<tr ng-repeat="group in sickLeavePerCountyGroups">
+													<td><span style="height:10px; width:10px; background-color: {{group.color}};"></span>{{group.name}}</td>
+													<td>{{group.quantity}}</td>
+													<td>{{group.alternation}}%</td>
+												</tr>
+											</tbody>
+									 	</table>
+									</div>
+								</div>
+							</div>
 							<div class="overview-box-information-container">
 								<span class="overview-standard-box-information">Förändring av antalet sjukfall jämfört med föregående tre månader.</span>
 							</div>
