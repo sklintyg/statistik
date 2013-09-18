@@ -7,7 +7,7 @@ statisticsApp.controller('OverviewCtrl', function ($scope, statisticsData) {
         $scope.casesPerMonthFemaleProportion = result.casesPerMonth.proportionFemale;
         $scope.casesPerMonthAlteration = result.casesPerMonth.alteration;
         
-        var paintDonutChart = function(containerId, chartData) {
+        function paintDonutChart(containerId, chartData) {
             
             var chartOptions = {
                 chart: {
@@ -28,6 +28,9 @@ statisticsApp.controller('OverviewCtrl', function ($scope, statisticsData) {
                     backgroundColor: '#fff',
                     borderWidth: 2
                 },
+                credits: {
+                    enabled: false
+                },
                 series: [{
                     name: 'Antal',
                     data: chartData,
@@ -41,19 +44,87 @@ statisticsApp.controller('OverviewCtrl', function ($scope, statisticsData) {
             };
             new Highcharts.Chart(chartOptions);
         }
+
+        paintDonutChart("diagnosisChart", extractDonutData(result.diagnosisGroups));
+        $scope.diagnosisGroups = result.diagnosisGroups;
+        paintDonutChart("ageChart", extractDonutData(result.ageGroups));
+        $scope.ageGroups = result.ageGroups;
+        paintDonutChart("degreeOfSickLeaveChart", extractDonutData(result.degreeOfSickLeaveGroups));
+        $scope.degreeOfSickLeaveGroups = result.degreeOfSickLeaveGroups;
+        
+        paintBarChart("sickLeaveLengthChart", result.sickLeaveLength.chartData);
+        $scope.longSickLeavesTotal = result.sickLeaveLength.longSickLeavesTotal;
+        $scope.longSickLeavesAlteration = result.sickLeaveLength.longSickLeavesAlternation;
+    };
+    
+    function paintBarChart(containerId, chartData) {
+        
+        var chartOptions = {
+                chart: {
+                    renderTo : containerId,
+                    type: 'column',
+                    height: 185,
+                },
+                title: {
+                    text: ''
+                },
+                plotOptions: {
+                    series: {
+                        color: '#11b73c'
+                    }
+                },
+                xAxis: {
+                    categories: chartData.map(function(e) { return e.name; }),
+                    min: 0,
+                    title: {
+                        text: 'DAGAR'
+                    },
+                    labels: {
+                        rotation: -45,
+                        align: 'right',
+                    }
+                },
+                yAxis: {
+                    min: 0,
+                    title: {
+                        text: 'ANTAL'
+                    }
+                },
+                exporting: {
+                    enabled: false /* This removes the built in highchart export */           
+                },
+                legend: {
+                    enabled: false
+                },
+                tooltip: {
+                    backgroundColor: '#fff',
+                    borderWidth: 2
+                },
+                credits: {
+                    enabled: false
+                },
+                series: [{
+                    name: "Antal",
+                    data: chartData.map(function(e) { return e.quantity; })
+                }]
+        };
+        new Highcharts.Chart(chartOptions);
+    }
+    
+    function extractDonutData(rawData){
         var color = ["#fbb10c", "#2ca2c6", "#11b73c", "#d165df", "#9c734d", "#008391", "#535353"];
-        var diagnosisData = [];
-        for (var i = 0; i < result.diagnosisGroups.length; i++) {
-            result.diagnosisGroups[i].color = color[i];
+        var donutData = [];
+        for (var i = 0; i < rawData.length; i++) {
+            rawData[i].color = color[i];
             // add browser data
-            diagnosisData.push({
-                y: result.diagnosisGroups[i].quantity,
-                color: result.diagnosisGroups[i].color
+            donutData.push({
+                name: rawData[i].name,
+                y: rawData[i].quantity,
+                color: rawData[i].color
             });
         }
-        paintDonutChart("diagnosisChart", diagnosisData);
-        $scope.diagnosisGroups = result.diagnosisGroups;
-    };
+        return donutData;
+    }
     
     var dataDownloadFailed = function () {
         alert("Failed to download overview data");
@@ -154,6 +225,9 @@ statisticsApp.controller('CasesPerMonthCtrl', function ($scope, statisticsData) 
             },
             tooltip: {
 		        /*crosshairs: true*/ // True if crosshair. Not specified in design document for Statistiktjänsten 1.0.
+            },
+            credits: {
+                enabled: false
             },
 			series : chartSeries
 		};
