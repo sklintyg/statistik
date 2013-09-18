@@ -109,7 +109,29 @@
 									</a>
 								</div>
 							</div>
-							<div id="overview-distribution-of-age-groups-container"></div>
+							<div id="overview-distribution-of-age-groups-container">
+								<div class="row-fluid">
+									<div class="span4 chart-container" id="ageChart"></div>
+									<div class="span8">
+										<table id="datatable" class="table table-bordered table-striped table-condensed overview-graph-table">
+											<thead>
+												<tr>
+													<td>Grupp</td>
+													<td>Antal</td>
+													<td>Förändring</td>
+												</tr>
+											</thead>
+											<tbody>
+												<tr ng-repeat="group in ageGroups">
+													<td><span style="height:10px; width:10px; background-color: {{group.color}};"></span>{{group.name}}</td>
+													<td>{{group.quantity}}</td>
+													<td>{{group.alternation}}%</td>
+												</tr>
+											</tbody>
+									 	</table>
+									</div>
+								</div>
+							</div>
 							<div class="overview-box-information-container">
 								<span class="overview-standard-box-information">Förändring av antalet sjukfall jämfört med föregående tre månader.</span>
 							</div>
@@ -125,7 +147,29 @@
 									</a>
 								</div>
 							</div>
-							<div id="overview-distribution-of-sick-degree-container"></div>
+							<div id="overview-distribution-of-sick-degree-container">
+								<div class="row-fluid">
+									<div class="span4 chart-container" id="degreeOfSickLeaveChart"></div>
+									<div class="span8">
+										<table id="datatable" class="table table-bordered table-striped table-condensed overview-graph-table">
+											<thead>
+												<tr>
+													<td>Grad</td>
+													<td>Antal</td>
+													<td>Förändring</td>
+												</tr>
+											</thead>
+											<tbody>
+												<tr ng-repeat="group in degreeOfSickLeaveGroups">
+													<td><span style="height:10px; width:10px; background-color: {{group.color}};"></span>{{group.name}}</td>
+													<td>{{group.quantity}}</td>
+													<td>{{group.alternation}}%</td>
+												</tr>
+											</tbody>
+									 	</table>
+									</div>
+								</div>
+							</div>
 							<div class="overview-box-information-container">
 								<span class="overview-standard-box-information">Förändring av antalet sjukfall jämfört med föregående tre månader.</span>
 							</div>

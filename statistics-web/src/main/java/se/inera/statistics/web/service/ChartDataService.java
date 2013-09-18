@@ -53,18 +53,19 @@ public class ChartDataService {
         diagnosisGroups.add(new DonutChartData("S - Skador", 5, 3));
         diagnosisGroups.add(new DonutChartData("O - Graviditet och förlossning", 3, -3));
         ArrayList<DonutChartData> ageGroups = new ArrayList<DonutChartData>();
-        diagnosisGroups.add(new DonutChartData("<35 år", 140, 2));
-        diagnosisGroups.add(new DonutChartData("36-40 år", 140, -4));
-        diagnosisGroups.add(new DonutChartData("41-45 år", 40, 5));
-        diagnosisGroups.add(new DonutChartData("46-50 år", 25, 0));
-        diagnosisGroups.add(new DonutChartData("51-55 år", 32, -3));
-        diagnosisGroups.add(new DonutChartData("56-60 år", 20, -4));
-        diagnosisGroups.add(new DonutChartData(">60 år", 15, 5));
+        ageGroups.add(new DonutChartData("<35 år", 140, 2));
+        ageGroups.add(new DonutChartData("36-40 år", 140, -4));
+        ageGroups.add(new DonutChartData("41-45 år", 40, 5));
+        ageGroups.add(new DonutChartData("46-50 år", 25, 0));
+        ageGroups.add(new DonutChartData("51-55 år", 32, -3));
+        ageGroups.add(new DonutChartData("56-60 år", 20, -4));
+        ageGroups.add(new DonutChartData(">60 år", 15, 5));
         ArrayList<DonutChartData> degreeOfSickLeaveGroups = new ArrayList<DonutChartData>();
-        diagnosisGroups.add(new DonutChartData("25%", 3, 15));
-        diagnosisGroups.add(new DonutChartData("50%", 15, 0));
-        diagnosisGroups.add(new DonutChartData("75%", 7, -15));
-        diagnosisGroups.add(new DonutChartData("100%", 75, 15));
+        degreeOfSickLeaveGroups.add(new DonutChartData("25%", 3, 15));
+        degreeOfSickLeaveGroups.add(new DonutChartData("50%", 15, 0));
+        degreeOfSickLeaveGroups.add(new DonutChartData("75%", 7, -15));
+        degreeOfSickLeaveGroups.add(new DonutChartData("100%", 75, 15));
         return new OverviewData(new NumberOfCasesPerMonthOverview(56, 44, 5), diagnosisGroups, ageGroups, degreeOfSickLeaveGroups);
     }
+
 }
