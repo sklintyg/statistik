@@ -440,10 +440,15 @@ legend {
 
 /****** Start: Bootstrap style overrides ******/
 
+.nav-tabs.nav-stacked {
+	border-bottom: 0;
+}
+
 .nav-stacked > li > a {
 	font: 14px/1.5 Helvetica !important;
 	text-align: left !important;
 	color: #000 !important;
+	width: 100%;
 }
 	.nav-stacked > li > a:hover {
 		background-color: #dbdbdb !important;

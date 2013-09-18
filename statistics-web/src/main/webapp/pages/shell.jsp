@@ -32,7 +32,7 @@
 <link href="http://getbootstrap.com/2.3.2/assets/css/bootstrap-responsive.css" rel="stylesheet">
 
 </head>
-<body>
+<body data-spy="scroll">
 <div class="navbar navbar-inverse navbar-fixed-top">
     <div class="navbar-inner">
 	    <div class="container header">
@@ -55,12 +55,12 @@
 			</div>
 	    </div>
     </div>
-   </div>
-   <div class="container">
-   	<div class="row-fluid">
-   		<div id="content-body">
+</div>
+<div class="container">
+	<div id="content-body">
+	   	<div class="row-fluid">
 	    	<div class="span3 bs-docs-sidebar"> <!-- Start: Views navigation menu -->
-	    		<div class="affix">
+	    		<div class="affix" data-offset-top="200">
 					<ul class="nav nav-tabs nav-stacked">
 						<li><a ng-href="#/oversikt" navigationaware>Nationell statistik</a></li>
 						<li><a ng-href="#/sjukfallPerManad" id="navCasesPerMonthLink" navigationaware>Sjukfall, totalt</a></li>
@@ -79,13 +79,13 @@
 					</div>
 				</div>
 			</div> <!-- End: Views navigation menu -->
-		</div>
-		<div class="span9">
-			<%-- ng-view that holds dynamic content managed by angular app --%>
-    		<div id="view" ng-view></div>
+			<div class="span9">
+				<%-- ng-view that holds dynamic content managed by angular app --%>
+	    		<div id="view" ng-view></div>
+			</div>
 		</div>
 	</div>
-   </div>
+</div>
 <div id="footer">
 	<div class="container">
 		<p class="footer-content">
