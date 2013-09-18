@@ -35,8 +35,7 @@ public class ChartDataService {
         rows.add(new TableRow("Apr 2013", Arrays.asList(new Number[] { 4, 3, 7 })));
         rows.add(new TableRow("Maj 2013", Arrays.asList(new Number[] { 3, 1, 4 })));
         List<String> headers = Arrays.asList(new String[] { "Antal män", "Antal kvinnor", "Totalt antal" });
-        TableData tableData = new TableData(rows, headers);
-        return tableData;
+        return new TableData(rows, headers);
     }
 
     @GET
@@ -53,6 +52,19 @@ public class ChartDataService {
         diagnosisGroups.add(new DonutChartData("F - Psykiska", 40, 5));
         diagnosisGroups.add(new DonutChartData("S - Skador", 5, 3));
         diagnosisGroups.add(new DonutChartData("O - Graviditet och förlossning", 3, -3));
-        return new OverviewData(new NumberOfCasesPerMonthOverview(56, 44, 5), diagnosisGroups);
+        ArrayList<DonutChartData> ageGroups = new ArrayList<DonutChartData>();
+        diagnosisGroups.add(new DonutChartData("<35 år", 140, 2));
+        diagnosisGroups.add(new DonutChartData("36-40 år", 140, -4));
+        diagnosisGroups.add(new DonutChartData("41-45 år", 40, 5));
+        diagnosisGroups.add(new DonutChartData("46-50 år", 25, 0));
+        diagnosisGroups.add(new DonutChartData("51-55 år", 32, -3));
+        diagnosisGroups.add(new DonutChartData("56-60 år", 20, -4));
+        diagnosisGroups.add(new DonutChartData(">60 år", 15, 5));
+        ArrayList<DonutChartData> degreeOfSickLeaveGroups = new ArrayList<DonutChartData>();
+        diagnosisGroups.add(new DonutChartData("25%", 3, 15));
+        diagnosisGroups.add(new DonutChartData("50%", 15, 0));
+        diagnosisGroups.add(new DonutChartData("75%", 7, -15));
+        diagnosisGroups.add(new DonutChartData("100%", 75, 15));
+        return new OverviewData(new NumberOfCasesPerMonthOverview(56, 44, 5), diagnosisGroups, ageGroups, degreeOfSickLeaveGroups);
     }
 }
