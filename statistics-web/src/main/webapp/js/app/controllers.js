@@ -51,7 +51,65 @@ statisticsApp.controller('OverviewCtrl', function ($scope, statisticsData) {
         $scope.ageGroups = result.ageGroups;
         paintDonutChart("degreeOfSickLeaveChart", extractDonutData(result.degreeOfSickLeaveGroups));
         $scope.degreeOfSickLeaveGroups = result.degreeOfSickLeaveGroups;
+        
+        paintBarChart("sickLeaveLengthChart", result.sickLeaveLength.chartData);
+        $scope.longSickLeavesTotal = result.sickLeaveLength.longSickLeavesTotal;
+        $scope.longSickLeavesAlteration = result.sickLeaveLength.longSickLeavesAlternation;
     };
+    
+    function paintBarChart(containerId, chartData) {
+        
+        var chartOptions = {
+                chart: {
+                    renderTo : containerId,
+                    type: 'column',
+                    height: 185,
+                },
+                title: {
+                    text: ''
+                },
+                plotOptions: {
+                    series: {
+                        color: '#11b73c'
+                    }
+                },
+                xAxis: {
+                    categories: chartData.map(function(e) { return e.name; }),
+                    min: 0,
+                    title: {
+                        text: 'DAGAR'
+                    },
+                    labels: {
+                        rotation: -45,
+                        align: 'right',
+                    }
+                },
+                yAxis: {
+                    min: 0,
+                    title: {
+                        text: 'ANTAL'
+                    }
+                },
+                exporting: {
+                    enabled: false /* This removes the built in highchart export */           
+                },
+                legend: {
+                    enabled: false
+                },
+                tooltip: {
+                    backgroundColor: '#fff',
+                    borderWidth: 2
+                },
+                credits: {
+                    enabled: false
+                },
+                series: [{
+                    name: "Antal",
+                    data: chartData.map(function(e) { return e.quantity; })
+                }]
+        };
+        new Highcharts.Chart(chartOptions);
+    }
     
     function extractDonutData(rawData){
         var color = ["#fbb10c", "#2ca2c6", "#11b73c", "#d165df", "#9c734d", "#008391", "#535353"];

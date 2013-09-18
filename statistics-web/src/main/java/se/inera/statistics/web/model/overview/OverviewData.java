@@ -8,13 +8,15 @@ public class OverviewData {
     private final List<DonutChartData> diagnosisGroups;
     private final List<DonutChartData> ageGroups;
     private final List<DonutChartData> degreeOfSickLeaveGroups;
+    private final SickLeaveLengthOverview sickLeaveLength;
 
     public OverviewData(NumberOfCasesPerMonthOverview casesPerMonth, List<DonutChartData> diagnosisGroups,
-            List<DonutChartData> ageGroups, List<DonutChartData> degreeOfSickLeaveGroups) {
+            List<DonutChartData> ageGroups, List<DonutChartData> degreeOfSickLeaveGroups, SickLeaveLengthOverview sickLeaveLength) {
         this.casesPerMonth = casesPerMonth;
         this.diagnosisGroups = diagnosisGroups;
         this.ageGroups = ageGroups;
         this.degreeOfSickLeaveGroups = degreeOfSickLeaveGroups;
+        this.sickLeaveLength = sickLeaveLength;
     }
 
     public NumberOfCasesPerMonthOverview getCasesPerMonth() {
@@ -31,6 +33,10 @@ public class OverviewData {
 
     public List<DonutChartData> getDegreeOfSickLeaveGroups() {
         return degreeOfSickLeaveGroups;
+    }
+    
+    public SickLeaveLengthOverview getSickLeaveLength() {
+        return sickLeaveLength;
     }
 
 }

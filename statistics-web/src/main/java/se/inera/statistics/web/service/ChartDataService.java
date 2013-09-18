@@ -13,9 +13,11 @@ import org.springframework.stereotype.Service;
 
 import se.inera.statistics.web.model.TableData;
 import se.inera.statistics.web.model.TableRow;
+import se.inera.statistics.web.model.overview.BarChartData;
 import se.inera.statistics.web.model.overview.DonutChartData;
 import se.inera.statistics.web.model.overview.NumberOfCasesPerMonthOverview;
 import se.inera.statistics.web.model.overview.OverviewData;
+import se.inera.statistics.web.model.overview.SickLeaveLengthOverview;
 
 @Service("chartService")
 public class ChartDataService {
@@ -46,12 +48,15 @@ public class ChartDataService {
     }
 
     private OverviewData createMockOverviewData() {
+        NumberOfCasesPerMonthOverview casesPerMonth = new NumberOfCasesPerMonthOverview(56, 44, 5);
+
         ArrayList<DonutChartData> diagnosisGroups = new ArrayList<DonutChartData>();
         diagnosisGroups.add(new DonutChartData("A-E G-L N Somatiska", 140, 2));
         diagnosisGroups.add(new DonutChartData("M - Muskuloskeletala", 140, -4));
         diagnosisGroups.add(new DonutChartData("F - Psykiska", 40, 5));
         diagnosisGroups.add(new DonutChartData("S - Skador", 5, 3));
         diagnosisGroups.add(new DonutChartData("O - Graviditet och förlossning", 3, -3));
+        
         ArrayList<DonutChartData> ageGroups = new ArrayList<DonutChartData>();
         ageGroups.add(new DonutChartData("<35 år", 140, 2));
         ageGroups.add(new DonutChartData("36-40 år", 140, -4));
@@ -60,12 +65,23 @@ public class ChartDataService {
         ageGroups.add(new DonutChartData("51-55 år", 32, -3));
         ageGroups.add(new DonutChartData("56-60 år", 20, -4));
         ageGroups.add(new DonutChartData(">60 år", 15, 5));
+        
         ArrayList<DonutChartData> degreeOfSickLeaveGroups = new ArrayList<DonutChartData>();
         degreeOfSickLeaveGroups.add(new DonutChartData("25%", 3, 15));
         degreeOfSickLeaveGroups.add(new DonutChartData("50%", 15, 0));
         degreeOfSickLeaveGroups.add(new DonutChartData("75%", 7, -15));
         degreeOfSickLeaveGroups.add(new DonutChartData("100%", 75, 15));
-        return new OverviewData(new NumberOfCasesPerMonthOverview(56, 44, 5), diagnosisGroups, ageGroups, degreeOfSickLeaveGroups);
+        
+        ArrayList<BarChartData> sickLeaveLengthData = new ArrayList<BarChartData>();
+        sickLeaveLengthData.add(new BarChartData("<14", 12));
+        sickLeaveLengthData.add(new BarChartData("15-30", 17));
+        sickLeaveLengthData.add(new BarChartData("31-90", 14));
+        sickLeaveLengthData.add(new BarChartData("91-180", 17));
+        sickLeaveLengthData.add(new BarChartData("181-360", 9));
+        sickLeaveLengthData.add(new BarChartData("<360", 12));
+        SickLeaveLengthOverview sickLeaveLength = new SickLeaveLengthOverview(sickLeaveLengthData, 105, 10);
+        
+        return new OverviewData(casesPerMonth, diagnosisGroups, ageGroups, degreeOfSickLeaveGroups, sickLeaveLength);
     }
 
 }
