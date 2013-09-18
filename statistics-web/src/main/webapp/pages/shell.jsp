@@ -104,6 +104,7 @@
     <script type="text/javascript" src="<c:url value="/js/app/controllers.js"/>"></script>
     <script type="text/javascript" src="<c:url value="/js/app/directives.js"/>"></script>
 	<script src="http://code.highcharts.com/highcharts.js"></script>
+	<script src="http://code.highcharts.com/highcharts-more.js"></script>
 	<script src="http://code.highcharts.com/modules/exporting.js"></script>
     <script type="text/javascript" src="js/exportTableData.js" ></script>
 	<script type="text/javascript">
