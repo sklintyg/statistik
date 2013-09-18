@@ -41,7 +41,7 @@
 <div class="navbar navbar-inverse navbar-fixed-top">
 	<div class="navbar-inner">
 		<div class="container">
-			<div class="row-fluid">
+			<div class="row-fluid" id="navigation-container">
 				<div class="span2">
 					<div class="headerbox-logo"><a href="/"><img alt="Till startsidan" src="/img/statistics_logo.png"/></a></div>
 				</div>
@@ -70,14 +70,18 @@
 		================================================== -->
 		<div class="row">
 			<div class="span3 bs-docs-sidebar">
-				<ul class="nav nav-list bs-docs-sidenav">
-					<li><a ng-href="#/oversikt" navigationaware>Nationell statistik<i class="icon-chevron-right"></i></a></li>
-					<li><a ng-href="#/sjukfallPerManad" id="navCasesPerMonthLink" navigationaware>Sjukfall, totalt<i class="icon-chevron-right"></i></a></li>
-					<li><a ng-href="#/om#about" navigationaware>Om tjänsten</a></li>
-					<li><a ng-href="#/om#login" navigationaware>Inloggning och behörighet</a></li>
-					<li><a ng-href="#/om#faq" navigationaware>Vanliga frågor och svar</a></li>
-					<li><a ng-href="#/om#contact" navigationaware>Kontakt till support</a></li>
-				</ul>
+				<div id="statistics-left-menu">
+					<ul class="nav nav-list bs-docs-sidenav" id="national-statistic-menu">
+						<li><a ng-href="#/oversikt" navigationaware>Nationell statistik<i class="icon-chevron-right"></i></a></li>
+						<li><a ng-href="#/sjukfallPerManad" id="navCasesPerMonthLink" navigationaware>Sjukfall, totalt<i class="icon-chevron-right"></i></a></li>
+					</ul>
+					<ul class="nav nav-list bs-docs-sidenav" id="business-statistics-menu">
+						<li><a ng-href="#/om#about" navigationaware>Om tjänsten</a></li>
+						<li><a ng-href="#/om#login" navigationaware>Inloggning och behörighet</a></li>
+						<li><a ng-href="#/om#faq" navigationaware>Vanliga frågor och svar</a></li>
+						<li><a ng-href="#/om#contact" navigationaware>Kontakt till support</a></li>
+					</ul>
+				</div>
 			</div>
 		      
 			<div class="span9">
@@ -111,7 +115,9 @@
 <script type="text/javascript">
 	$('.dropdown-toggle').dropdown();
 	$('.bs-docs-sidenav').scrollspy();
-	$('.nav-list').affix()
+	$('#national-statistic-menu').affix();
+	$('#business-statistics-menu').affix();
+	$('#statistics-left-menu').affix();
 </script>
 
 
