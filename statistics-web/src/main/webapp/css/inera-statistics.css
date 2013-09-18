@@ -485,16 +485,16 @@ legend {
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#008391', endColorstr='#00687d',GradientType=0 ); /* IE6-9 */
 	-webkit-border-top-left-radius: 10px;
 	-webkit-border-top-right-radius: 10px;
-	-webkit-border-bottom-left-radius: 10px;
-	-webkit-border-bottom-right-radius: 10px;
+	-webkit-border-bottom-left-radius: 0px;
+	-webkit-border-bottom-right-radius: 0px;
 	-moz-border-radius-topleft: 10px;
 	-moz-border-radius-topright: 10px;
-	-moz-border-radius-bottomleft: 10px;
-	-moz-border-radius-bottomright: 10px;
+	-moz-border-radius-bottomleft: 0px;
+	-moz-border-radius-bottomright: 0px;
 	border-top-left-radius: 10px;
 	border-top-right-radius: 10px;
-	border-bottom-left-radius: 10px;
-	border-bottom-right-radius: 10px;
+	border-bottom-left-radius: 0px;
+	border-bottom-right-radius: 0px;
 	color: #fff !important;
 }
 
@@ -507,16 +507,16 @@ legend {
 .accordion-toggle.collapsed {  
 	-webkit-border-top-left-radius: 10px;
 	-webkit-border-top-right-radius: 10px;
-	-webkit-border-bottom-left-radius: 0px;
-	-webkit-border-bottom-right-radius: 0px;
+	-webkit-border-bottom-left-radius: 10px;
+	-webkit-border-bottom-right-radius: 10px;
 	-moz-border-radius-topleft: 10px;
 	-moz-border-radius-topright: 10px;
-	-moz-border-radius-bottomleft: 0px;
-	-moz-border-radius-bottomright: 0px;
+	-moz-border-radius-bottomleft: 10px;
+	-moz-border-radius-bottomright: 10px;
 	border-top-left-radius: 10px;
 	border-top-right-radius: 10px;
-	border-bottom-left-radius: 0px;
-	border-bottom-right-radius: 0px;
+	border-bottom-left-radius: 10px;
+	border-bottom-right-radius: 10px;
 	color: #fff !important;
 }
 
