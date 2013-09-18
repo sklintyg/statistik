@@ -13,6 +13,7 @@
 
     <modules>
         <module>statistics-web</module>
+		<module>statistics-service</module>
 		<module>statistics-specifications</module>
     </modules>
 
