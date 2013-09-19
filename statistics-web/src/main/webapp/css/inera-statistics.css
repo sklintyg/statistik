@@ -707,29 +707,16 @@ div.headerbox-user { font-size: 13px; line-height: 16px;}
 }
 	#overview-content h1, #overview-content h2, #overview-content h3, #overview-content h4 { font-family: Helvetica; color: #008391; }
 	#overview-content h1 { font-weight: bold; font-size: 20px; margin-bottom: -5px; }
-	#overview-content h2 { font-weight: bold; font-size: 14px; }
+	#overview-content h2 { font-weight: bold; }
 	
 	#overview-content span.overview-ingress { font-weight: bold; margin-bottom: 10px; }
 	
 	#overview-content .overview-box-header-container { 
-		background: #008391; /* Old browsers */
-		background: -moz-linear-gradient(top,  #008391 0%, #00687d 100%); /* FF3.6+ */
-		background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#008391), color-stop(100%,#00687d)); /* Chrome,Safari4+ */
-		background: -webkit-linear-gradient(top,  #008391 0%,#00687d 100%); /* Chrome10+,Safari5.1+ */
-		background: -o-linear-gradient(top,  #008391 0%,#00687d 100%); /* Opera 11.10+ */
-		background: -ms-linear-gradient(top,  #008391 0%,#00687d 100%); /* IE10+ */
-		background: linear-gradient(to bottom,  #008391 0%,#00687d 100%); /* W3C */
-		filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#008391', endColorstr='#00687d',GradientType=0 ); /* IE6-9 */
-		-webkit-border-top-left-radius: 10px;
-		-webkit-border-top-right-radius: 10px;
-		-moz-border-radius-topleft: 10px;
-		-moz-border-radius-topright: 10px;
-		border-top-left-radius: 10px;
-		border-top-right-radius: 10px;
+		
 	}
 	
-	#overview-content .overview-box-header-container:hover { background: #28b4c4; }
-	#overview-content .overview-box-header-container h2 { color: #fff; margin: 0; margin-top: 0px; padding: 5px 5px 5px 15px; }
+	#overview-content .overview-box-header-container:hover {  }
+	#overview-content .overview-box-header-container h2 { }
 	#overview-content .overview-box-header-container a:hover { text-decoration: none; }
 	#overview-content .overview-box-header-container span.overview-box-header-icon { float: right; top: 0px; position: relative; right: 0px; padding: 15px 10px 15px 10px; border-left: 1px solid #fff; }
 	
@@ -1080,4 +1067,78 @@ div.headerbox-user { font-size: 13px; line-height: 16px;}
 		top: 0;
 	}
 }
-	
+
+
+/********
+Move this below content to right place
+*********/
+ul.overview-box-header {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+@media (min-width: 1200px){
+	ul.overview-box-header {
+		width: 100%;
+	}	
+}
+
+@media (max-width: 979px) and (min-width: 768px){
+	ul.overview-box-header {
+		width: 100%;
+	}
+}
+
+li.overview-box-header-listItem {
+	line-height: 20px;
+}
+	li.overview-box-header-listItem a {
+		display: block;
+		margin: 0 0 -1px;
+		padding: 0;
+		color: #000;
+		background: #008391;
+		background: -moz-linear-gradient(top, #008391 0%, #00687d 100%);
+		background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#008391), color-stop(100%,#00687d));
+		background: -webkit-linear-gradient(top, #008391 0%,#00687d 100%);
+		background: -o-linear-gradient(top, #008391 0%,#00687d 100%);
+		background: -ms-linear-gradient(top, #008391 0%,#00687d 100%);
+		background: linear-gradient(to bottom, #008391 0%,#00687d 100%);
+		filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#008391', endColorstr='#00687d',GradientType=0 );
+		-webkit-border-top-left-radius: 10px;
+		-webkit-border-top-right-radius: 10px;
+		-moz-border-radius-topleft: 10px;
+		-moz-border-radius-topright: 10px;
+		border-top-left-radius: 10px;
+		border-top-right-radius: 10px;
+		position: relative;
+	}
+	li.overview-box-header-listItem a:hover{
+		background: #28b4c4;
+	}
+		li.overview-box-header-listItem a h2 {
+			color: #fff !important;
+			margin: 0;
+			margin-top: 0px;
+			padding: 5px 0px 5px 10px;
+			font-size: 1em;
+		}
+		@media (min-width: 1200px){
+			li.overview-box-header-listItem a h2 {
+				font-size: 1em;
+			}	
+		}
+		
+		@media (max-width: 979px) and (min-width: 768px){
+			li.overview-box-header-listItem a h2 {
+				font-size: 0.8em;
+			}
+		}
+		li.overview-box-header-listItem a h2 i {
+			background-image: url("../img/glyphicons-halflings-white.png");
+		}
+			li.overview-box-header-listItem a h2 i.icon-chevron-right{
+				float: right;
+				margin-top: 13px;
+				margin-right: 10px;
+			}
