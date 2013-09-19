@@ -165,7 +165,7 @@ statisticsApp.controller('OverviewCtrl', function ($scope, statisticsData) {
                 })
         };
         new Highcharts.Chart(chartOptions, function(chart) { // on complete
-            chart.renderer.image('/img/sweden_graph.png', 30, 10, 69, 160).add();
+            chart.renderer.image('img/sweden_graph.png', 30, 10, 69, 160).add();
         });
     }
     
