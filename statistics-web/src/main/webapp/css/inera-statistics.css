@@ -737,7 +737,7 @@ div.headerbox-user { font-size: 13px; line-height: 16px;}
 	#overview-content #overview-distribution-of-age-groups-container, #overview-content #overview-distribution-of-sick-degree-container,
 	#overview-content #overview-distribution-sick-length-container, #overview-content #overview-distribution-by-county-container { 
 		background-color: #dbdbdb; 
-		height: 200px; 
+		min-height: 250px; 
 		padding-bottom: 20px; 
 		border-left: 1px solid #C4C4C4;
 		border-right: 1px solid #C4C4C4;
@@ -1061,7 +1061,7 @@ div.headerbox-user { font-size: 13px; line-height: 16px;}
 #overview-content .overview-box-container #overview-distribution-per-sex-container rect, #overview-content .overview-box-container #overview-change-container rect,
 #overview-content .overview-box-container #overview-distribution-of-sick-degree-container rect, #overview-content .overview-box-container #overview-distribution-diagnostic-groups-container rect,
 #overview-content .overview-box-container #overview-distribution-of-age-groups-container rect, #overview-content .overview-box-container #overview-distribution-sick-length-container rect, 
-#overview-content .overview-box-container #overview-distribution-by-county-container rect { fill: transparent !important; }
+#overview-content .overview-box-container #overview-distribution-by-county-container rect { }
 
 /****** End: Overrides styles of highcharts ******/
 

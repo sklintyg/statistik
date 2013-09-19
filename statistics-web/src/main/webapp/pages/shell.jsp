@@ -34,7 +34,7 @@
 
 
 </head>
-<body data-spy="scroll" data-target=".bs-docs-sidebar">
+<body data-spy="scroll" data-target="#business-statistics-menu">
 
 <!-- Navbar
 ================================================== -->
@@ -96,7 +96,6 @@
 ================================================== -->
 <footer class="footer">
 	<div class="container">
-		<p>Om tjänsten länk.</p>
 	</div>
 </footer>
 
@@ -115,7 +114,7 @@
 <script type="text/javascript" src="js/exportTableData.js" ></script>
 <script type="text/javascript">
 	$('.dropdown-toggle').dropdown();
-	$('.bs-docs-sidenav').scrollspy();
+	$('#business-statistics-menu').scrollspy();
 	$('#national-statistic-menu').affix();
 	$('#business-statistics-menu').affix();
 	$('#statistics-left-menu').affix();
