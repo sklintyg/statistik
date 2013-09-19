@@ -28,10 +28,10 @@
 <title ng-bind="$root.page_title">Inera Statistics Service</title>
 
 <!-- Styles -->
-<link href="/css/inera-statistics.css" rel="stylesheet">
+<link href="<c:url value='/css/inera-statistics.css'/>" rel="stylesheet">
 <link href="http://getbootstrap.com/2.3.2/assets/css/bootstrap.css" rel="stylesheet">
-<link href="/css/inera-statistics-responsive.css" rel="stylesheet">
-<link href="/css/bootstrap-responsive.css" rel="stylesheet">
+<link href="<c:url value='/css/inera-statistics-responsive.css'/>" rel="stylesheet">
+<link href="<c:url value='/css/bootstrap-responsive.css'/>" rel="stylesheet">
 
 
 </head>
@@ -44,7 +44,7 @@
 		<div class="container">
 			<div class="row-fluid" id="navigation-container">
 				<div class="span2">
-					<div class="headerbox-logo"><a href="/"><img alt="Till startsidan" src="/img/statistics_logo.png"/></a></div>
+					<div class="headerbox-logo"><a href="<c:url value='/'/>"><img alt="Till startsidan" src="<c:url value='/img/statistics_logo.png'/>"/></a></div>
 				</div>
 				<div class="span2">
 					<span>Statistiktjänst för ordinerad sjukskrivning</span>
@@ -103,7 +103,7 @@
 <!-- Scripts -->
 <!-- Placed at the end of the document so the pages load faster -->
 <script src="http://code.jquery.com/jquery.js"></script>
-<script type="text/javascript" src="js/bootstrap.min.js"></script>
+<script type="text/javascript" src="<c:url value='/js/bootstrap.min.js'/>"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular.min.js"></script>
 <script type="text/javascript" src="<c:url value="/js/app/app.js"/>"></script>
 <script type="text/javascript" src="<c:url value="/js/app/factories.js"/>"></script>
@@ -112,7 +112,7 @@
 <script src="http://code.highcharts.com/highcharts.js"></script>
 <script src="http://code.highcharts.com/highcharts-more.js"></script>
 <script src="http://code.highcharts.com/modules/exporting.js"></script>
-<script type="text/javascript" src="js/exportTableData.js" ></script>
+<script type="text/javascript" src="<c:url value='/js/exportTableData.js'/>" ></script>
 <script type="text/javascript">
 	$('.dropdown-toggle').dropdown();
 	$('#business-statistics-menu').scrollspy();
