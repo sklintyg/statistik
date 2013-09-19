@@ -171,21 +171,25 @@ statisticsApp.controller('OverviewCtrl', function ($scope, statisticsData) {
     
     function getCoordinates(perCountyObject){
         var county = perCountyObject.name.toLowerCase();
-        if (county.contains("stockholm")){
+        if (contains(county, "stockholm")){
             return {"x": 55, "y": 28};
-        } else if (county.contains("västra götaland")){
+        } else if (contains(county, "västra götaland")){
             return {"x": 25, "y": 23};
-        } else if (county.contains("skåne")){
+        } else if (contains(county, "skåne")){
             return {"x": 29, "y": 5};
-        } else if (county.contains("östergötland")){
+        } else if (contains(county, "östergötland")){
             return {"x": 47, "y": 20};
-        } else if (county.contains("uppsala")){
+        } else if (contains(county, "uppsala")){
             return {"x": 57, "y": 34};
         } else {
             return {"x": 10, "y": 80}; //Default point should not match any part of sweden
         }
     }
     
+	function contains(master, substring) {
+		return master.indexOf(substring) != -1;
+	}
+	
     function extractDonutData(rawData){
         addColor(rawData);
         var donutData = [];
