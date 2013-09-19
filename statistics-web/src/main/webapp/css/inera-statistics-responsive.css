@@ -1143,6 +1143,16 @@ form.bs-docs-example {
 	#overview-content #overview-distribution-per-sex-container .overview-sex-distribution-responsive > div > div > div > div #overview-distribution-male-lbl {
 		margin-left: 26px !important;
 		font-size: 1em !important;
+		margin-top: 31px;
+	}
+	.chart-container {
+		width: 43%;
+		margin: 36px 0 0 0;
+		float: left;
+	}
+	table#datatable {
+		width: 55%;
+		margin: 20px 0 0 0;
 	}
 }
  
@@ -1184,19 +1194,22 @@ form.bs-docs-example {
 		z-index: 9;
 		margin-left: 35px !important;
 	}
-	
+	#overview-content .overview-box-information-container {
+		margin-bottom: 20px;
+	}
 }
 
-@media (min-width: 801px) and (max-width: 979px){
+@media (min-width: 801px) and (max-width: 979px) {
 	#overview-content #overview-distribution-per-sex-container .overview-sex-distribution-responsive > div > div > div > div #overview-distribution-female-lbl, 
 	#overview-content #overview-distribution-per-sex-container .overview-sex-distribution-responsive > div > div > div > div #overview-distribution-male-lbl {
 		margin-left: 33px !important;
 		font-size: 1em !important;
+		margin-top: 31px;
 	}
 }
 
 
-@media (max-width: 800px) and (min-width: 321px){
+@media (max-width: 800px) and (min-width: 321px) {
 	#overview-content #overview-distribution-per-sex-container .overview-sex-distribution-responsive {
 		background-size: 80%;
 		background-position: 50% 35%;
@@ -1211,11 +1224,12 @@ form.bs-docs-example {
 		font-size: 1em !important;
 	}
 }
-@media (max-width: 800px){
+@media (max-width: 800px) {
 	#overview-content #overview-distribution-per-sex-container .overview-sex-distribution-responsive > div > div > div > div #overview-distribution-female-lbl, 
 	#overview-content #overview-distribution-per-sex-container .overview-sex-distribution-responsive > div > div > div > div #overview-distribution-male-lbl {
 		margin-left: 32px !important;
 		font-size: 1em !important;
+		margin-top: 0px;
 	}
 }
  
@@ -1241,6 +1255,5 @@ form.bs-docs-example {
  
 /* Landscape phones and down */
 @media (max-width: 480px) { 
-
 	
 }

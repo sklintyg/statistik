@@ -14,9 +14,7 @@ statisticsApp.controller('OverviewCtrl', function ($scope, statisticsData) {
                     renderTo : containerId,
                     type: 'pie',
                     backgroundColor: 'transparent',
-                    height: 185,
-                    margin: [10, 10, 10, 10]
-                    
+                    height: 180,
                 },
                 exporting: {
                     enabled: false /* This removes the built in highchart export */           

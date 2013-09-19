@@ -717,7 +717,7 @@ div.headerbox-user { font-size: 13px; line-height: 16px;}
 	#overview-content #overview-distribution-of-age-groups-container, #overview-content #overview-distribution-of-sick-degree-container,
 	#overview-content #overview-distribution-sick-length-container, #overview-content #overview-distribution-by-county-container { 
 		background-color: #dbdbdb; 
-		min-height: 250px; 
+		min-height: 230px; 
 		padding-bottom: 20px; 
 		border-left: 1px solid #C4C4C4;
 		border-right: 1px solid #C4C4C4;
@@ -742,6 +742,7 @@ div.headerbox-user { font-size: 13px; line-height: 16px;}
 		cursor: inherit;
 		z-index: 9;
 		margin-left: 21px !important;
+		margin-top: 25px;
 	}
 	#overview-content #overview-change-container .overview-change-responsive-circle {
 		margin:0px auto;
@@ -886,9 +887,7 @@ div.headerbox-user { font-size: 13px; line-height: 16px;}
 			margin: 10% 0% 0% 10%;
 	    }
 	    #overview-content #overview-change-container .overview-change-responsive-circle > div {
-	    	/*padding: 14%;
-			margin: 2% 0% 0% 33%;*/
-			padding: 40%;
+	    	padding: 35%;
 			margin: 10% 0% 0% 10%;
 	    }
 	    
@@ -913,7 +912,7 @@ div.headerbox-user { font-size: 13px; line-height: 16px;}
 		}
 		#overview-content #overview-distribution-per-sex-container .overview-sex-distribution-responsive > div { 
 	    	padding: 35%;
-			margin: 15%; 
+			margin: 46% 15% 15% 15%; 
 		}
 		#overview-content #overview-change-container .overview-change-responsive-circle {
 	    	width: 100%;
@@ -922,7 +921,7 @@ div.headerbox-user { font-size: 13px; line-height: 16px;}
 	    }
 		#overview-content #overview-change-container .overview-change-responsive-circle > div { 
 	    	padding: 35%;
-			margin: 15%; 
+			margin: 18% 15% 15% 15%; 
 		}
 	    
 	}
@@ -1083,6 +1082,7 @@ li.overview-box-header-listItem {
 	}
 	li.overview-box-header-listItem a:hover{
 		background: #28b4c4;
+		text-decoration: none;
 	}
 		li.overview-box-header-listItem a h2 {
 			color: #fff !important;
@@ -1099,3 +1099,15 @@ li.overview-box-header-listItem {
 				margin-top: 13px;
 				margin-right: 10px;
 			}
+
+.chart-container {
+	width: 39%;
+	margin: 15px 0 0 0;
+	float: left;
+}
+
+.chart-container svg { width: 100%;}
+
+table#datatable {
+	width: 60%;
+}
