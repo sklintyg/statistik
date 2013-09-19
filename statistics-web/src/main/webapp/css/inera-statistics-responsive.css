@@ -1130,3 +1130,117 @@ form.bs-docs-example {
     padding-bottom: 20px;
   }
 }
+
+/* Large desktop */
+@media (min-width: 1200px) {
+	ul.overview-box-header {
+		width: 100%;
+	}	
+	li.overview-box-header-listItem a h2 {
+		font-size: 1em;
+	}
+	#overview-content #overview-distribution-per-sex-container .overview-sex-distribution-responsive > div > div > div > div #overview-distribution-female-lbl, 
+	#overview-content #overview-distribution-per-sex-container .overview-sex-distribution-responsive > div > div > div > div #overview-distribution-male-lbl {
+		margin-left: 26px !important;
+		font-size: 1em !important;
+	}
+}
+ 
+/* Portrait tablet to landscape and desktop */
+@media (min-width: 768px) and (max-width: 979px) { 
+	.row-fluid {
+		width: 100%;
+	}
+	#wrap {
+		margin-top: 20px;
+	}
+	#overview-content, #chart-content {
+		margin: 10px 0px 0px 0px;
+	}
+	#overview-content .span3 {
+		width: 48%;
+	}
+	#overview-content .span6 {
+		width: 98.618785%;
+		margin-left: 0px;
+	}
+	ul.overview-box-header {
+		width: 100%;
+	}
+	li.overview-box-header-listItem a h2 {
+		font-size: 1em;
+	}
+	#overview-content #overview-distribution-per-sex-container .overview-sex-distribution-responsive > div > div > div > div #overview-distribution-female-lbl, 
+	#overview-content #overview-distribution-per-sex-container .overview-sex-distribution-responsive > div > div > div > div #overview-distribution-male-lbl {
+		position: relative;
+		text-align: center;
+		color: #fff;
+		font-weight: bold;
+		font-size: .7em !important;
+		font-family: Helvetica;
+		-webkit-transition: all 0.7s ease;
+		-moz-transition: all 1s ease;
+		cursor: inherit;
+		z-index: 9;
+		margin-left: 35px !important;
+	}
+	
+}
+
+@media (min-width: 801px) and (max-width: 979px){
+	#overview-content #overview-distribution-per-sex-container .overview-sex-distribution-responsive > div > div > div > div #overview-distribution-female-lbl, 
+	#overview-content #overview-distribution-per-sex-container .overview-sex-distribution-responsive > div > div > div > div #overview-distribution-male-lbl {
+		margin-left: 33px !important;
+		font-size: 1em !important;
+	}
+}
+
+
+@media (max-width: 800px) and (min-width: 321px){
+	#overview-content #overview-distribution-per-sex-container .overview-sex-distribution-responsive {
+		background-size: 80%;
+		background-position: 50% 35%;
+	}	
+	#overview-content #overview-distribution-per-sex-container .overview-sex-distribution-responsive > div {
+		padding: 27%;
+		margin: 60% 0% 0% 0%;
+	}
+	#overview-content #overview-distribution-per-sex-container .overview-sex-distribution-responsive > div > div > div > div #overview-distribution-female-lbl, 
+	#overview-content #overview-distribution-per-sex-container .overview-sex-distribution-responsive > div > div > div > div #overview-distribution-male-lbl {
+		margin-left: 26px !important;
+		font-size: 1em !important;
+	}
+}
+@media (max-width: 800px){
+	#overview-content #overview-distribution-per-sex-container .overview-sex-distribution-responsive > div > div > div > div #overview-distribution-female-lbl, 
+	#overview-content #overview-distribution-per-sex-container .overview-sex-distribution-responsive > div > div > div > div #overview-distribution-male-lbl {
+		margin-left: 32px !important;
+		font-size: 1em !important;
+	}
+}
+ 
+/* Landscape phone to portrait tablet */
+@media (max-width: 767px) { 
+	.affix{
+		position: relative;
+	}
+	#overview-content #overview-distribution-per-sex-container .overview-sex-distribution-responsive {
+		background-size: 30%;
+		background-position: 50% 35%;
+	}
+	#overview-content #overview-distribution-per-sex-container .overview-sex-distribution-responsive > div {
+		padding: 0%;
+		margin: 40% 0% 0% 0%;
+	}
+	#overview-content #overview-distribution-per-sex-container .overview-sex-distribution-responsive > div > div > div > div #overview-distribution-female-lbl, 
+	#overview-content #overview-distribution-per-sex-container .overview-sex-distribution-responsive > div > div > div > div #overview-distribution-male-lbl {
+		margin-left: 32px !important;
+		font-size: 1em !important;
+	}
+}
+ 
+/* Landscape phones and down */
+@media (max-width: 480px) { 
+
+	
+}
