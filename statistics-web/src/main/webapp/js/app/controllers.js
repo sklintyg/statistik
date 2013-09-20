@@ -10,7 +10,7 @@
  
  var dataDownloadFailed = function () {
      alert("Failed to download chart data");
- }
+ };
 
  var showHideDataTableDefault = "Dölj datatabell";
  var toggleTableVisibilityGeneric = function(event, $scope){
@@ -19,7 +19,7 @@
      var accordionBody = $(accordionGroup.children('.accordion-body'));
      var wasTableVisible = accordionBody.hasClass("in");
      $scope.showHideDataTable = wasTableVisible ? "Visa datatabell" : "Dölj datatabell"; 
- }
+ };
  
  var exportTableDataGeneric = function() {
      var dt = $('#datatable');
@@ -35,7 +35,7 @@
      return ajaxResult.rows.map(function(e) {
          return e.name;
      });
- }
+ };
 
  var getChartSeries = function(ajaxResult) {
      var dataSeries = [];
@@ -56,7 +56,7 @@
          }
      }
      return dataSeries;
- }
+ };
 
 /* Controllers */
 statisticsApp.controller('OverviewCtrl', function ($scope, statisticsData) {
@@ -332,18 +332,18 @@ statisticsApp.controller('CasesPerMonthCtrl', function ($scope, statisticsData) 
 			series : chartSeries
 		};
 		new Highcharts.Chart(chartOptions);
-	}
+	};
 
 	var updateDataTable = function($scope, ajaxResult) {
 		$scope.headers = ajaxResult.headers;
 		$scope.rows = ajaxResult.rows;
-	}
+	};
 
 	var updateChart = function(ajaxResult) {
 		var chartCategories = getChartCategories(ajaxResult);
 		var chartSeries = getChartSeries(ajaxResult);
 		paintChart(chartCategories, chartSeries);
-	}
+	};
 
     $scope.exportTableData = exportTableDataGeneric;
     
@@ -352,14 +352,14 @@ statisticsApp.controller('CasesPerMonthCtrl', function ($scope, statisticsData) 
         updateChart(result);
         $scope.startDate = result.rows[0].name;
         $scope.endDate = result.rows[result.rows.length-1].name;
-    }
+    };
 
     statisticsData.getNumberOfCasesPerMonth(populatePageWithData, dataDownloadFailed);
     
     $scope.showHideDataTable = showHideDataTableDefault;
     $scope.toggleTableVisibility = function(event){
         toggleTableVisibilityGeneric(event, $scope);
-    }
+    };
 });
 
 
@@ -422,20 +422,33 @@ statisticsApp.controller('DiagnosisGroupsCtrl', function ($scope, statisticsData
             series : chartSeries
         };
         chart = new Highcharts.Chart(chartOptions);
-    }
+    };
 
     var updateDataTable = function($scope, ajaxResult) {
         $scope.headers = ajaxResult.headers;
         $scope.rows = ajaxResult.rows;
-    }
+    };
 
     var updateChart = function(ajaxResult) {
         var chartCategories = getChartCategories(ajaxResult.female);
         var chartSeries = getChartSeries(ajaxResult.female);
-        addColor(chartSeries);
-        paintChart(chartCategories.slice(0,7), chartSeries.slice(0,7));
-//        chart.series[0].hide();
-        $scope.series = chartSeries.slice(0,7);
+        var chartSeriesTop = chartSeries.slice(0,6).concat(sumSeries(chartSeries.slice(0,chartSeries.length)));
+        addColor(chartSeriesTop);
+        paintChart(chartCategories.slice(0,6), chartSeriesTop);
+        $scope.series = chartSeriesTop;
+    };
+    
+    function sumSeries(series){
+        var sum = [];
+        series.map(function(e) {
+            for ( var i = 0; i < e.data.length; i++) {
+                sum[i] = (sum[i] ? sum[i] : 0) + e.data[i];
+            }
+        });
+        var summedSeries = {};
+        summedSeries.name = "Övrigt";
+        summedSeries.data = sum;
+        return summedSeries;
     }
     
     $scope.toggleSeriesVisibility = function (index){
@@ -445,20 +458,20 @@ statisticsApp.controller('DiagnosisGroupsCtrl', function ($scope, statisticsData
         } else {
             s.show();
         }
-    }
+    };
 
     $scope.exportTableData = exportTableDataGeneric;
     
     var populatePageWithData = function(result){
         updateDataTable($scope, result);
         updateChart(result);
-    }
+    };
 
     statisticsData.getDiagnosisGroup(populatePageWithData, dataDownloadFailed);
     
     $scope.showHideDataTable = showHideDataTableDefault;
     $scope.toggleTableVisibility = function(event){
         toggleTableVisibilityGeneric(event, $scope);
-    }
+    };
 });
 
