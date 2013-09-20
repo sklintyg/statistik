@@ -887,8 +887,8 @@ div.headerbox-user { font-size: 13px; line-height: 16px;}
 			margin: 10% 0% 0% 10%;
 	    }
 	    #overview-content #overview-change-container .overview-change-responsive-circle > div {
-	    	padding: 35%;
-			margin: 10% 0% 0% 10%;
+	    	padding: 13%;
+			margin: 3% 0% 0% 35%;
 	    }
 	    
 	    #overview-content #overview-distribution-per-sex-container figure img {
@@ -911,8 +911,8 @@ div.headerbox-user { font-size: 13px; line-height: 16px;}
 			background-size: 85%;
 		}
 		#overview-content #overview-distribution-per-sex-container .overview-sex-distribution-responsive > div { 
-	    	padding: 35%;
-			margin: 46% 15% 15% 15%; 
+	    	padding: 25%;
+			margin: 66% 15% 15% 15%;
 		}
 		#overview-content #overview-change-container .overview-change-responsive-circle {
 	    	width: 100%;
@@ -921,7 +921,7 @@ div.headerbox-user { font-size: 13px; line-height: 16px;}
 	    }
 		#overview-content #overview-change-container .overview-change-responsive-circle > div { 
 	    	padding: 35%;
-			margin: 18% 15% 15% 15%; 
+			margin: 30% 15% 15% 15%; 
 		}
 	    
 	}

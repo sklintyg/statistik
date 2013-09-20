@@ -1143,16 +1143,24 @@ form.bs-docs-example {
 	#overview-content #overview-distribution-per-sex-container .overview-sex-distribution-responsive > div > div > div > div #overview-distribution-male-lbl {
 		margin-left: 26px !important;
 		font-size: 1em !important;
-		margin-top: 31px;
+		margin-top: 5px;
 	}
 	.chart-container {
 		width: 43%;
-		margin: 36px 0 0 0;
+		margin: 18px 0 0 0;
 		float: left;
 	}
 	table#datatable {
 		width: 55%;
-		margin: 20px 0 0 0;
+		margin: 0px 0 0 0;
+	}
+	#overview-content #overview-distribution-per-sex-container .overview-sex-distribution-responsive > div {
+		padding: 25%;
+		margin: 50% 15% 15% 15%;
+	}
+	#overview-content #overview-change-container .overview-change-responsive-circle > div {
+		padding: 35%;
+		margin: 18% 15% 15% 15%;
 	}
 }
  
@@ -1197,6 +1205,14 @@ form.bs-docs-example {
 	#overview-content .overview-box-information-container {
 		margin-bottom: 20px;
 	}
+	#overview-content #overview-distribution-per-sex-container .overview-sex-distribution-responsive > div {
+		padding: 25%;
+		margin: 48% 15% 15% 15%;
+	}
+	#overview-content #overview-change-container .overview-change-responsive-circle > div {
+		padding: 35%;
+		margin: 9% 15% 15% 15%;
+	}
 }
 
 @media (min-width: 801px) and (max-width: 979px) {
@@ -1231,6 +1247,10 @@ form.bs-docs-example {
 		font-size: 1em !important;
 		margin-top: 0px;
 	}
+	#overview-content #overview-change-container .overview-change-responsive-circle > div {
+		padding: 30%;
+		margin: 15% 0% 0% 20%;
+	}
 }
  
 /* Landscape phone to portrait tablet */
@@ -1239,17 +1259,38 @@ form.bs-docs-example {
 		position: relative;
 	}
 	#overview-content #overview-distribution-per-sex-container .overview-sex-distribution-responsive {
-		background-size: 30%;
-		background-position: 50% 35%;
+		background-size: 32%;
+		background-position: 53% 42%;
 	}
 	#overview-content #overview-distribution-per-sex-container .overview-sex-distribution-responsive > div {
 		padding: 0%;
-		margin: 40% 0% 0% 0%;
+		margin: 40% 3% 0% 19%;
 	}
 	#overview-content #overview-distribution-per-sex-container .overview-sex-distribution-responsive > div > div > div > div #overview-distribution-female-lbl, 
 	#overview-content #overview-distribution-per-sex-container .overview-sex-distribution-responsive > div > div > div > div #overview-distribution-male-lbl {
-		margin-left: 32px !important;
 		font-size: 1em !important;
+		margin-top: 0px;
+		margin-left: 37px !important;
+		display: initial;
+		position: relative;
+	}
+	#overview-content #overview-change-container .overview-change-responsive-circle > div {
+		padding: 13%;
+		margin: 3% 0% 0% 36%;
+	}
+	#overview-content .overview-box-information-container {
+		margin-bottom: 20px;
+	}
+	#navigation-container .span2 {
+		width: 25%;
+		float: left;
+		margin-left: 20px;
+	}
+	table#datatable {
+		width: 100%;
+	}
+	#overview-content table#datatable {
+		width: 60%;
 	}
 }
  
