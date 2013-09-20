@@ -124,6 +124,7 @@ statisticsApp.controller('OverviewCtrl', function ($scope, statisticsData) {
                     renderTo : containerId,
                     type: 'column',
                     height: 185,
+                    backgroundColor: 'transparent',
                 },
                 title: {
                     text: ''
@@ -147,15 +148,20 @@ statisticsApp.controller('OverviewCtrl', function ($scope, statisticsData) {
                 yAxis: {
                     min: 0,
                     title: {
-                        text: 'ANTAL'
+                        text: 'ANTAL',
                     }
                 },
                 exporting: {
                     enabled: false /* This removes the built in highchart export */           
                 },
                 legend: {
-                    enabled: false
-                },
+    	            align: 'top left',
+    	            verticalAlign: 'top',
+    	            x: 80,
+    	            y: 0,
+    	            borderWidth: 0,
+    	            enabled: false,
+    	        },
                 tooltip: {
                     backgroundColor: '#fff',
                     borderWidth: 2
@@ -178,7 +184,8 @@ statisticsApp.controller('OverviewCtrl', function ($scope, statisticsData) {
                 renderTo : containerId,
                 height : 185,
                 width: 133,
-                type : 'bubble'
+                type : 'bubble',
+                backgroundColor: 'transparent',
             },
             credits : {
                 enabled : false
