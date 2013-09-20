@@ -44,31 +44,25 @@ public class ProcessLogImpl implements ProcessLog {
     }
 
     private long getLastId() {
-        TypedQuery<EventPointer> allQuery = getPointerQuery();
-        List<EventPointer> resultList = allQuery.getResultList();
-        if (resultList.isEmpty()) {
+        EventPointer pointer = getPointerQuery();
+        if (pointer == null) {
             return Long.MIN_VALUE;
         } else {
-            return resultList.get(0).getEventId();
+            return pointer.getEventId();
         }
     }
 
     protected void confirm(long id) {
-        TypedQuery<EventPointer> allQuery = getPointerQuery();
-        List<EventPointer> resultList = allQuery.getResultList();
-        EventPointer pointer = null;
-        if (resultList.isEmpty()) {
+        EventPointer pointer = getPointerQuery();
+        if (pointer == null) {
             pointer = new EventPointer(PROCESSED_HSA, id);
         } else {
-            pointer = resultList.get(0);
             pointer.setEventId(id);
         }
         manager.persist(pointer);
     }
 
-    private TypedQuery<EventPointer> getPointerQuery() {
-        TypedQuery<EventPointer> allQuery = manager.createQuery("SELECT ep from EventPointer ep WHERE ep.name = :name", EventPointer.class);
-        allQuery.setParameter("name", PROCESSED_HSA);
-        return allQuery;
+    private EventPointer getPointerQuery() {
+        return manager.find(EventPointer.class, PROCESSED_HSA);
     }
 }
