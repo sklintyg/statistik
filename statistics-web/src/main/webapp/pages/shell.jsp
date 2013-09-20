@@ -29,9 +29,9 @@
 
 <!-- Styles -->
 <link href="<c:url value='/css/inera-statistics.css'/>" rel="stylesheet">
-<link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap.css" rel="stylesheet">
+<link href="<c:url value='/css/bootstrap/2.3.2/bootstrap.min.css'/>" rel="stylesheet">
 <link href="<c:url value='/css/inera-statistics-responsive.css'/>" rel="stylesheet">
-<link href="<c:url value='/css/bootstrap-responsive.css'/>" rel="stylesheet">
+<link href="<c:url value='/css/bootstrap/2.3.2/bootstrap-responsive.css'/>" rel="stylesheet">
 
 
 </head>
@@ -75,6 +75,7 @@
 					<ul class="nav nav-list bs-docs-sidenav" id="national-statistic-menu">
 						<li><a ng-href="#/oversikt" navigationaware>Nationell statistik<i class="icon-chevron-right"></i></a></li>
 						<li><a ng-href="#/sjukfallPerManad" id="navCasesPerMonthLink" navigationaware>Sjukfall, totalt<i class="icon-chevron-right"></i></a></li>
+						<li><a ng-href="#/diagnosgrupper" id="navDiagnosisGroupsLink" navigationaware>Diagnosgrupp<i class="icon-chevron-right"></i></a></li>
 					</ul>
 					<ul class="nav nav-list bs-docs-sidenav" id="business-statistics-menu">
 						<li><a ng-href="#/om#about" navigationaware>Om tjänsten</a></li>
@@ -102,16 +103,16 @@
 
 <!-- Scripts -->
 <!-- Placed at the end of the document so the pages load faster -->
-<script src="//code.jquery.com/jquery.js"></script>
-<script type="text/javascript" src="<c:url value='/js/bootstrap.min.js'/>"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular.min.js"></script>
-<script type="text/javascript" src="<c:url value="/js/app/app.js"/>"></script>
-<script type="text/javascript" src="<c:url value="/js/app/factories.js"/>"></script>
-<script type="text/javascript" src="<c:url value="/js/app/controllers.js"/>"></script>
-<script type="text/javascript" src="<c:url value="/js/app/directives.js"/>"></script>
-<script src="http://code.highcharts.com/highcharts.js"></script>
-<script src="http://code.highcharts.com/highcharts-more.js"></script>
-<script src="http://code.highcharts.com/modules/exporting.js"></script>
+<script type="text/javascript" src="<c:url value='/js/jquery/1.10.2/jquery.min.js'/>"></script>
+<script type="text/javascript" src="<c:url value='/js/bootstrap/2.3.2/bootstrap.min.js'/>"></script>
+<script type="text/javascript" src="<c:url value='/js/angularjs/1.0.8/angular.min.js'/>"></script>
+<script type="text/javascript" src="<c:url value='/js/app/app.js'/>"></script>
+<script type="text/javascript" src="<c:url value='/js/app/factories.js'/>"></script>
+<script type="text/javascript" src="<c:url value='/js/app/controllers.js'/>"></script>
+<script type="text/javascript" src="<c:url value='/js/app/directives.js'/>"></script>
+<script type="text/javascript" src="<c:url value='js/highcharts/3.0.5/highcharts.js'/>"></script>
+<script type="text/javascript" src="<c:url value='js/highcharts/3.0.5/highcharts-more.js'/>"></script>
+<script type="text/javascript" src="<c:url value='js/highcharts/3.0.5/modules/exporting.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/exportTableData.js'/>" ></script>
 <script type="text/javascript">
 	$('.dropdown-toggle').dropdown();
