@@ -72,9 +72,7 @@ statisticsApp.controller('OverviewCtrl', function ($scope, statisticsData) {
                     renderTo : containerId,
                     type: 'pie',
                     backgroundColor: 'transparent',
-                    height: 185,
-                    margin: [10, 10, 10, 10]
-                    
+                    height: 180,
                 },
                 exporting: {
                     enabled: false /* This removes the built in highchart export */           
@@ -223,7 +221,7 @@ statisticsApp.controller('OverviewCtrl', function ($scope, statisticsData) {
                 })
         };
         new Highcharts.Chart(chartOptions, function(chart) { // on complete
-            chart.renderer.image('/img/sweden_graph.png', 30, 10, 69, 160).add();
+            chart.renderer.image('img/sweden_graph.png', 30, 10, 69, 160).add();
         });
     }
     
