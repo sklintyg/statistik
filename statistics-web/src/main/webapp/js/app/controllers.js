@@ -263,6 +263,8 @@ statisticsApp.controller('OverviewCtrl', function ($scope, statisticsData) {
 });
 
 statisticsApp.controller('CasesPerMonthCtrl', function ($scope, statisticsData) {
+
+    $scope.chartContainers = ["container"];
     
 	var paintChart = function(chartCategories, chartSeries) {
 		var chartOptions = {
@@ -350,8 +352,7 @@ statisticsApp.controller('CasesPerMonthCtrl', function ($scope, statisticsData) 
     var populatePageWithData = function(result){
         updateDataTable($scope, result);
         updateChart(result);
-        $scope.startDate = result.rows[0].name;
-        $scope.endDate = result.rows[result.rows.length-1].name;
+        $scope.subTitle = "Antal sjukfall per månad " + result.rows[0].name + " - " + result.rows[result.rows.length-1].name;
     };
 
     statisticsData.getNumberOfCasesPerMonth(populatePageWithData, dataDownloadFailed);
@@ -366,14 +367,15 @@ statisticsApp.controller('CasesPerMonthCtrl', function ($scope, statisticsData) 
 
 
 statisticsApp.controller('DiagnosisGroupsCtrl', function ($scope, statisticsData) {
-    var chart;
+    var chart1, chart2;
+    $scope.chartContainers = ["container1", "container2"];
     
-    var paintChart = function(chartCategories, chartSeries) {
+    var paintChart = function(containerId, yAxisTitle, chartCategories, chartSeries) {
         var chartOptions = {
                 
             chart : {
                 type: 'area',
-                renderTo : 'container',
+                renderTo : containerId,
             },
             title : {
                 text : '',
@@ -389,7 +391,7 @@ statisticsApp.controller('DiagnosisGroupsCtrl', function ($scope, statisticsData
             },
             yAxis : {
                 title : {
-                    text : 'Antal kvinnor',
+                    text : yAxisTitle,
                     align : 'high',
                     verticalAlign : 'top',
                 },
@@ -421,7 +423,7 @@ statisticsApp.controller('DiagnosisGroupsCtrl', function ($scope, statisticsData
             },
             series : chartSeries
         };
-        chart = new Highcharts.Chart(chartOptions);
+        return new Highcharts.Chart(chartOptions);
     };
 
     var updateDataTable = function($scope, ajaxResult) {
@@ -430,12 +432,19 @@ statisticsApp.controller('DiagnosisGroupsCtrl', function ($scope, statisticsData
     };
 
     var updateChart = function(ajaxResult) {
-        var chartCategories = getChartCategories(ajaxResult.female);
-        var chartSeries = getChartSeries(ajaxResult.female);
-        var chartSeriesTop = chartSeries.slice(0,6).concat(sumSeries(chartSeries.slice(0,chartSeries.length)));
-        addColor(chartSeriesTop);
-        paintChart(chartCategories.slice(0,6), chartSeriesTop);
-        $scope.series = chartSeriesTop;
+        var chartCategories = getChartCategories(ajaxResult.female).slice(0,6);
+
+        var chartSeriesFemale = getChartSeries(ajaxResult.female);
+        var chartSeriesTopFemale = chartSeriesFemale.slice(0,6).concat(sumSeries(chartSeriesFemale.slice(0,chartSeriesFemale.length)));
+        addColor(chartSeriesTopFemale);
+        chart1 = paintChart('container1', 'Antal kvinnor', chartCategories, chartSeriesTopFemale);
+        
+        var chartSeriesMale = getChartSeries(ajaxResult.male);
+        var chartSeriesTopMale = chartSeriesMale.slice(0,6).concat(sumSeries(chartSeriesMale.slice(0,chartSeriesMale.length)));
+        addColor(chartSeriesTopMale);
+        chart2 = paintChart('container2', 'Antal män', chartCategories, chartSeriesTopMale);
+        
+        $scope.series = chartSeriesTopMale;
     };
     
     function sumSeries(series){
@@ -452,11 +461,14 @@ statisticsApp.controller('DiagnosisGroupsCtrl', function ($scope, statisticsData
     }
     
     $scope.toggleSeriesVisibility = function (index){
-        var s = chart.series[index];
-        if (s.visible){
-            s.hide();
+        var s1 = chart1.series[index];
+        var s2 = chart2.series[index];
+        if (s1.visible){
+            s1.hide();
+            s2.hide();
         } else {
-            s.show();
+            s1.show();
+            s2.show();
         }
     };
 
@@ -466,6 +478,8 @@ statisticsApp.controller('DiagnosisGroupsCtrl', function ($scope, statisticsData
         updateDataTable($scope, result);
         updateChart(result);
     };
+
+    $scope.subTitle = "Antal sjukfall per diagnosgrupp";
 
     statisticsData.getDiagnosisGroup(populatePageWithData, dataDownloadFailed);
     
