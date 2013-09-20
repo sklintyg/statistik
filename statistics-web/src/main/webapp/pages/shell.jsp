@@ -29,7 +29,7 @@
 
 <!-- Styles -->
 <link href="<c:url value='/css/inera-statistics.css'/>" rel="stylesheet">
-<link href="http://getbootstrap.com/2.3.2/assets/css/bootstrap.css" rel="stylesheet">
+<link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap.css" rel="stylesheet">
 <link href="<c:url value='/css/inera-statistics-responsive.css'/>" rel="stylesheet">
 <link href="<c:url value='/css/bootstrap-responsive.css'/>" rel="stylesheet">
 
@@ -102,7 +102,7 @@
 
 <!-- Scripts -->
 <!-- Placed at the end of the document so the pages load faster -->
-<script src="http://code.jquery.com/jquery.js"></script>
+<script src="//code.jquery.com/jquery.js"></script>
 <script type="text/javascript" src="<c:url value='/js/bootstrap.min.js'/>"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular.min.js"></script>
 <script type="text/javascript" src="<c:url value="/js/app/app.js"/>"></script>
