@@ -12,6 +12,10 @@ var statisticsApp = angular.module('StatisticsApp', [  ]).config(
                 templateUrl : '/views/chart.html',
                 controller : 'CasesPerMonthCtrl',
 			    title: 'Sjukfall per månad'
+            }).when('/diagnosgrupper', {
+                templateUrl : '/views/chart.html',
+                controller : 'DiagnosisGroupsCtrl',
+                title: 'Diagnosgrupper'
             }).when('/om', {
                 templateUrl : '/views/about.html',
                 title: 'Om tjänsten'

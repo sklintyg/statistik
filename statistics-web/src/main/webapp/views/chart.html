@@ -16,6 +16,9 @@
 <!-- Start graph -->
 <div class="row-fluid">
 	<div id="container"	style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+	<label ng-repeat="seriesData in series">
+		<input type="checkbox" ng-click="toggleSeriesVisibility($index)" /> <span style="display: inline-block; height: 10px; width: 10px; background-color: {{seriesData.color}};"></span> {{seriesData.name}}
+	</label>
 </div>
 
 <!-- Starting data-table -->

@@ -1,5 +1,63 @@
  'use strict';
 
+
+ function addColor(rawData){
+     var color = ["#fbb10c", "#2ca2c6", "#11b73c", "#d165df", "#9c734d", "#008391", "#535353"];
+     for (var i = 0; i < rawData.length; i++) {
+         rawData[i].color = color[i];
+     }
+ }
+ 
+ var dataDownloadFailed = function () {
+     alert("Failed to download chart data");
+ }
+
+ var showHideDataTableDefault = "Dölj datatabell";
+ var toggleTableVisibilityGeneric = function(event, $scope){
+     var elem = $(event.target);
+     var accordionGroup = $(elem.parents('.accordion-group')[0]);
+     var accordionBody = $(accordionGroup.children('.accordion-body'));
+     var wasTableVisible = accordionBody.hasClass("in");
+     $scope.showHideDataTable = wasTableVisible ? "Visa datatabell" : "Dölj datatabell"; 
+ }
+ 
+ var exportTableDataGeneric = function() {
+     var dt = $('#datatable');
+     var csvData = table2CSV(dt);
+     $.generateFile({
+         filename : 'export.csv',
+         content : csvData,
+         script : 'fileDownload.jsp'
+     });
+ };
+ 
+ var getChartCategories = function(ajaxResult) {
+     return ajaxResult.rows.map(function(e) {
+         return e.name;
+     });
+ }
+
+ var getChartSeries = function(ajaxResult) {
+     var dataSeries = [];
+     var length = ajaxResult.headers.length;
+     for ( var i = 0; i < length; i++) {
+         var ds = {};
+         ds.name = ajaxResult.headers[i];
+         ds.data = [];
+         dataSeries.push(ds);
+     }
+
+     var length = ajaxResult.rows.length;
+     for ( var i = 0; i < length; i++) {
+         var rowdata = ajaxResult.rows[i].data;
+         var rowdatalength = rowdata.length;
+         for ( var c = 0; c < rowdatalength; c++) {
+             dataSeries[c].data.push(rowdata[c]);
+         }
+     }
+     return dataSeries;
+ }
+
 /* Controllers */
 statisticsApp.controller('OverviewCtrl', function ($scope, statisticsData) {
     var populatePageWithData = function(result){
@@ -203,60 +261,20 @@ statisticsApp.controller('OverviewCtrl', function ($scope, statisticsData) {
         return donutData;
     }
     
-    function addColor(rawData){
-        var color = ["#fbb10c", "#2ca2c6", "#11b73c", "#d165df", "#9c734d", "#008391", "#535353"];
-        for (var i = 0; i < rawData.length; i++) {
-            rawData[i].color = color[i];
-        }
-    }
-    
-    var dataDownloadFailed = function () {
-        alert("Failed to download overview data");
-    }
-    
     statisticsData.getOverview(populatePageWithData, dataDownloadFailed);
 });
 
 statisticsApp.controller('CasesPerMonthCtrl', function ($scope, statisticsData) {
     
-	var getChartCategories = function(ajaxResult) {
-		return ajaxResult.rows.map(function(e) {
-			return e.name;
-		});
-	}
-
-	var getChartSeries = function(ajaxResult) {
-		var dataSeries = [];
-		var length = ajaxResult.headers.length;
-		for ( var i = 0; i < length; i++) {
-			var ds = [];
-			ds.name = ajaxResult.headers[i];
-			ds.data = [];
-			dataSeries.push(ds);
-		}
-
-		var length = ajaxResult.rows.length;
-		for ( var i = 0; i < length; i++) {
-			var rowdata = ajaxResult.rows[i].data;
-			var rowdatalength = rowdata.length;
-			for ( var c = 0; c < rowdatalength; c++) {
-				dataSeries[c].data.push(rowdata[c]);
-			}
-		}
-		return dataSeries;
-	}
-
-	var paintChart = function(chartCategories, chartSeries, chartTitle) {
+	var paintChart = function(chartCategories, chartSeries) {
 		var chartOptions = {
 				
 			chart : {
 				renderTo : 'container',
 			},
-			title : {
-				text : chartTitle,
-				x : -20,
-			// center
-			},
+            title : {
+                text : '',
+            },
 			legend: {
 	            align: 'top left',
 	            verticalAlign: 'top',
@@ -326,18 +344,10 @@ statisticsApp.controller('CasesPerMonthCtrl', function ($scope, statisticsData) 
 	var updateChart = function(ajaxResult) {
 		var chartCategories = getChartCategories(ajaxResult);
 		var chartSeries = getChartSeries(ajaxResult);
-		paintChart(chartCategories, chartSeries, ajaxResult.title);
+		paintChart(chartCategories, chartSeries);
 	}
 
-    $scope.exportTableData = function() {
-    	var dt = $('#datatable');
-    	var csvData = table2CSV(dt);
-        $.generateFile({
-            filename : 'export.csv',
-            content : csvData,
-            script : 'fileDownload.jsp'
-        });
-    };	
+    $scope.exportTableData = exportTableDataGeneric;
     
     var populatePageWithData = function(result){
         updateDataTable($scope, result);
@@ -346,20 +356,111 @@ statisticsApp.controller('CasesPerMonthCtrl', function ($scope, statisticsData) 
         $scope.endDate = result.rows[result.rows.length-1].name;
     }
 
-    var dataDownloadFailed = function () {
-        alert("Failed to download chart data");
-    }
-
     statisticsData.getNumberOfCasesPerMonth(populatePageWithData, dataDownloadFailed);
     
-    $scope.showHideDataTable = "Dölj datatabell";
+    $scope.showHideDataTable = showHideDataTableDefault;
     $scope.toggleTableVisibility = function(event){
-        var elem = $(event.target);
-        var accordionGroup = $(elem.parents('.accordion-group')[0]);
-        var accordionBody = $(accordionGroup.children('.accordion-body'));
-        var wasTableVisible = accordionBody.hasClass("in");
-        $scope.showHideDataTable = wasTableVisible ? "Visa datatabell" : "Dölj datatabell"; 
+        toggleTableVisibilityGeneric(event, $scope);
     }
 });
 
+
+
+
+statisticsApp.controller('DiagnosisGroupsCtrl', function ($scope, statisticsData) {
+    var chart;
+    
+    var paintChart = function(chartCategories, chartSeries) {
+        var chartOptions = {
+                
+            chart : {
+                type: 'area',
+                renderTo : 'container',
+            },
+            title : {
+                text : '',
+            },
+            legend: {
+                enabled: false
+            },  
+            xAxis : {
+                labels: {
+                    rotation: 310
+                },
+                categories : chartCategories
+            },
+            yAxis : {
+                title : {
+                    text : 'Antal kvinnor',
+                    align : 'high',
+                    verticalAlign : 'top',
+                },
+                plotLines : [ {
+                    value : 0,
+                    width : 1,
+                    color : '#808080'
+                } ]
+            },
+            exporting: {
+                enabled: false /* This removes the built in highchart export */           
+            },
+            plotOptions: {
+                area: {
+                    stacking: 'normal',
+                    lineColor: '#666666',
+                    lineWidth: 1,
+                    marker: {
+                        lineWidth: 1,
+                        lineColor: '#666666'
+                    }
+                }
+            },
+            tooltip: {
+                /*crosshairs: true*/ // True if crosshair. Not specified in design document for Statistiktjänsten 1.0.
+            },
+            credits: {
+                enabled: false
+            },
+            series : chartSeries
+        };
+        chart = new Highcharts.Chart(chartOptions);
+    }
+
+    var updateDataTable = function($scope, ajaxResult) {
+        $scope.headers = ajaxResult.headers;
+        $scope.rows = ajaxResult.rows;
+    }
+
+    var updateChart = function(ajaxResult) {
+        var chartCategories = getChartCategories(ajaxResult.female);
+        var chartSeries = getChartSeries(ajaxResult.female);
+        addColor(chartSeries);
+        paintChart(chartCategories.slice(0,7), chartSeries.slice(0,7));
+//        chart.series[0].hide();
+        $scope.series = chartSeries.slice(0,7);
+    }
+    
+    $scope.toggleSeriesVisibility = function (index){
+        var s = chart.series[index];
+        if (s.visible){
+            s.hide();
+        } else {
+            s.show();
+        }
+    }
+
+    $scope.exportTableData = exportTableDataGeneric;
+    
+    var populatePageWithData = function(result){
+        updateDataTable($scope, result);
+        updateChart(result);
+    }
+
+    statisticsData.getDiagnosisGroup(populatePageWithData, dataDownloadFailed);
+    
+    $scope.showHideDataTable = showHideDataTableDefault;
+    $scope.toggleTableVisibility = function(event){
+        toggleTableVisibilityGeneric(event, $scope);
+    }
+});
 
