@@ -84,14 +84,6 @@ i.inera-icon {
     height: 16px;
 }
 
-i.inera-icon.status {
-    background-image: url(../../../../webapp/img/status_icon.png);
-}
-
-i.inera-icon.delete {
-    background-image: url(../../../../webapp/img/delete.png);
-}
-
 [class^="formgroup-"], [class*=" formgroup-"] {
     border: 1px;
 }
@@ -284,15 +276,6 @@ div.footer {
     -moz-border-radius: 0px 0px 6px 6px;
     border-radius: 0px 0px 6px 6px;
     font: bold 13px/16px arial, verdana, sans-serif;
-}
-
-div.table-bottom {
-    background-image: url("../../../../webapp/img/list_shadow_left.png"), url("../../../../webapp/img/list_shadow_right.png");
-    background-repeat: no-repeat, no-repeat;
-    background-position: top left, top right;
-    margin-top: 0px;
-    padding: 0px;
-    margin-bottom: 10px;
 }
 
 .popover-inner {
