@@ -2,8 +2,11 @@ package se.inera.statistics.web.service;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
 
@@ -25,6 +28,10 @@ import se.inera.statistics.web.model.overview.SickLeaveLengthOverview;
 @Service("chartService")
 public class ChartDataService {
 
+    private static List<String> PERIODS = createPeriods();
+
+    private Random random = new Random();
+
     @GET
     @Path("getNumberOfCasesPerMonth")
     @Produces({ MediaType.APPLICATION_JSON })
@@ -32,15 +39,31 @@ public class ChartDataService {
         return createCasesPerMonthTableMockData();
     }
 
+    private static List<String> createPeriods() {
+        Locale sweden = new Locale("SV", "se");
+        Calendar c = new GregorianCalendar(sweden);
+        c.add(Calendar.MONTH, -18);
+        List<String> names = new ArrayList<>();
+        for (int i = 0; i < 18; i ++) {
+            names.add(String.format(sweden, "%1$tb %1$tY", c));
+            c.add(Calendar.MONTH, 1);
+        }
+        return names;
+    }
+
     private TableData createCasesPerMonthTableMockData() {
-        ArrayList<TableRow> rows = new ArrayList<TableRow>();
-        rows.add(new TableRow("Jan 2013", Arrays.asList(new Number[] { 1, 3, 4 })));
-        rows.add(new TableRow("Feb 2013", Arrays.asList(new Number[] { 2, 2, 4 })));
-        rows.add(new TableRow("Mar 2013", Arrays.asList(new Number[] { 4, 2, 6 })));
-        rows.add(new TableRow("Apr 2013", Arrays.asList(new Number[] { 4, 3, 7 })));
-        rows.add(new TableRow("Maj 2013", Arrays.asList(new Number[] { 3, 1, 4 })));
         List<String> headers = Arrays.asList(new String[] { "Antal män", "Antal kvinnor", "Totalt antal" });
+        ArrayList<TableRow> rows = new ArrayList<TableRow>();
+        for (String periodName: PERIODS) {
+            rows.add(new TableRow(periodName, randomCasesPerMonthData()));
+        }
         return new TableData(rows, headers);
+    }
+
+    private List<Number> randomCasesPerMonthData() {
+        int men = (int) (random.nextGaussian() * 2000 + 10000);
+        int women = (int) (random.nextGaussian() * 2000 + 10000);
+        return Arrays.asList(new Number[] { men, women, men + women });
     }
 
     @GET
@@ -52,44 +75,46 @@ public class ChartDataService {
         diagnosisGroupData.put("female", createDiagnosisGroupTableMockData());
         return diagnosisGroupData;
     }
-    
+
     private TableData createDiagnosisGroupTableMockData() {
+        List<String> headers = Arrays.asList(new String[] {
+                "A00-B99 Vissa infektionssjukdomar och parasitsjukdomar",
+                "C00-D48 Tumörer",
+                "D50-D89 Sjukdomar i blod och blodbildande organ samt vissa rubbningar i immunsystemet",
+                "E00-E90 Endokrina sjukdomar, nutritionsrubbningar och ämnesomsättningssjukdomar",
+                "F00-F99 Psykiska sjukdomar och syndrom samt beteendestörningar",
+                "G00-G99 Sjukdomar i nervsystemet",
+                "H00-H59 Sjukdomar i ögat och närliggande organ",
+                "H60-H95 Sjukdomar i örat och mastoidutskottet",
+                "I00-I99 Cirkulationsorganens sjukdomar",
+                "J00-J99 Andningsorganens sjukdomar",
+                "K00-K93 Matsmältningsorganens sjukdomar",
+                "L00-L99 Hudens och underhudens sjukdomar",
+                "M00-M99 Sjukdomar i muskuloskeletala systemet och bindväven",
+                "N00-N99 Sjukdomar i urin- och könsorganen",
+                "O00-O99 Graviditet, förlossning och barnsängstid",
+                "P00-P96 Vissa perinatala tillstånd",
+                "Q00-Q99 Medfödda missbildningar, deformiteter och kromosomavvikelser",
+                "R00-R99 Symtom, sjukdomstecken och onormala kliniska fynd och laboratoriefynd som ej klassificeras annorstädes",
+                "S00-T98 Skador, förgiftningar och vissa andra följder av yttre orsaker",
+                "V01-Y98 Yttre orsaker till sjukdom och död",
+                "Z00-Z99 Faktorer av betydelse för hälsotillståndet och för kontakter med hälso- och sjukvården",
+                "U00-U99 Koder för särskilda ändamål" });
         ArrayList<TableRow> rows = new ArrayList<TableRow>();
-        rows.add(new TableRow("Jan 2013", Arrays.asList(new Number[] { g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g()})));
-        rows.add(new TableRow("Feb 2013", Arrays.asList(new Number[] { g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g()})));
-        rows.add(new TableRow("Mar 2013", Arrays.asList(new Number[] { g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g()})));
-        rows.add(new TableRow("Apr 2013", Arrays.asList(new Number[] { g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g()})));
-        rows.add(new TableRow("Maj 2013", Arrays.asList(new Number[] { g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g()})));
-        rows.add(new TableRow("Jun 2013", Arrays.asList(new Number[] { g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g()})));
-        rows.add(new TableRow("Jul 2013", Arrays.asList(new Number[] { g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g()})));
-        rows.add(new TableRow("Aug 2013", Arrays.asList(new Number[] { g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g()})));
-        List<String> headers = Arrays
-                .asList(new String[] {
-                        "A00-B99     Vissa infektionssjukdomar och parasitsjukdomar",
-                        "C00-D48     Tumörer",
-                        "D50-D89     Sjukdomar i blod och blodbildande organ samt vissa rubbningar i immunsystemet",
-                        "E00-E90     Endokrina sjukdomar, nutritionsrubbningar och ämnesomsättningssjukdomar",
-                        "F00-F99     Psykiska sjukdomar och syndrom samt beteendestörningar",
-                        "G00-G99     Sjukdomar i nervsystemet",
-                        "H00-H59     Sjukdomar i ögat och närliggande organ",
-                        "H60-H95     Sjukdomar i örat och mastoidutskottet",
-                        "I00-I99     Cirkulationsorganens sjukdomar",
-                        "J00-J99     Andningsorganens sjukdomar",
-                        "K00-K93     Matsmältningsorganens sjukdomar",
-                        "L00-L99     Hudens och underhudens sjukdomar",
-                        "M00-M99     Sjukdomar i muskuloskeletala systemet och bindväven",
-                        "N00-N99     Sjukdomar i urin- och könsorganen",
-                        "O00-O99     Graviditet, förlossning och barnsängstid",
-                        "P00-P96     Vissa perinatala tillstånd",
-                        "Q00-Q99     Medfödda missbildningar, deformiteter och kromosomavvikelser",
-                        "R00-R99     Symtom, sjukdomstecken och onormala kliniska fynd och laboratoriefynd som ej klassificeras annorstädes",
-                        "S00-T98     Skador, förgiftningar och vissa andra följder av yttre orsaker",
-                        "V01-Y98     Yttre orsaker till sjukdom och död",
-                        "Z00-Z99     Faktorer av betydelse för hälsotillståndet och för kontakter med hälso- och sjukvården",
-                        "U00-U99     Koder för särskilda ändamål" });
-        return new TableData(rows, headers);
+       for (String periodName: PERIODS) {
+           rows.add(new TableRow(periodName, randomData(headers.size())));
+       }
+       return new TableData(rows, headers);
     }
-    
+
+    private List<Number> randomData(int size) {
+        Number[] data = new Number[size];
+        for (int i = 0; i < size; i++ ){
+            data[i] = g();
+        }
+        return Arrays.asList(data);
+    }
+
     private Number g() {
         return new Random().nextInt(100);
     }

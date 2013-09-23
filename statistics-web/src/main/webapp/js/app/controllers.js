@@ -318,7 +318,8 @@ statisticsApp.controller('CasesPerMonthCtrl', function ($scope, statisticsData) 
             	line: {
                     allowPointSelect: false,
                 	marker: {
-                		symbol: 'circle'
+						enabled: false,
+						symbol: 'circle'
                 	},
                     cursor: 'pointer',
                     dataLabels: {
@@ -337,6 +338,7 @@ statisticsApp.controller('CasesPerMonthCtrl', function ($scope, statisticsData) 
             },
             credits: {
                 enabled: false
+				
             },
 			series : chartSeries
 		};
@@ -419,8 +421,8 @@ statisticsApp.controller('DiagnosisGroupsCtrl', function ($scope, statisticsData
                     lineColor: '#666666',
                     lineWidth: 1,
                     marker: {
-                        lineWidth: 1,
-                        lineColor: '#666666'
+						enabled: false,
+						symbol: 'circle'
                     }
                 }
             },
