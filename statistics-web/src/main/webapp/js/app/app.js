@@ -5,15 +5,19 @@
 var statisticsApp = angular.module('StatisticsApp', [  ]).config(
         [ '$routeProvider', '$httpProvider', function($routeProvider, $httpProvider) {
             $routeProvider.when('/oversikt', {
-                templateUrl : '/views/overview.html',
+                templateUrl : 'views/overview.html',
                 controller : 'OverviewCtrl',
 	            title: 'Översikt'
             }).when('/sjukfallPerManad', {
-                templateUrl : '/views/chart.html',
+                templateUrl : 'views/chart.html',
                 controller : 'CasesPerMonthCtrl',
 			    title: 'Sjukfall per månad'
+            }).when('/diagnosgrupper', {
+                templateUrl : 'views/chart.html',
+                controller : 'DiagnosisGroupsCtrl',
+                title: 'Diagnosgrupper'
             }).when('/om', {
-                templateUrl : '/views/about.html',
+                templateUrl : 'views/about.html',
                 title: 'Om tjänsten'
             }).otherwise({
                 redirectTo : '/oversikt'

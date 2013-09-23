@@ -1,5 +1,63 @@
  'use strict';
 
+
+ function addColor(rawData){
+     var color = ["#fbb10c", "#2ca2c6", "#11b73c", "#d165df", "#9c734d", "#008391", "#535353"];
+     for (var i = 0; i < rawData.length; i++) {
+         rawData[i].color = color[i];
+     }
+ }
+ 
+ var dataDownloadFailed = function () {
+     alert("Failed to download chart data");
+ };
+
+ var showHideDataTableDefault = "Dölj datatabell";
+ var toggleTableVisibilityGeneric = function(event, $scope){
+     var elem = $(event.target);
+     var accordionGroup = $(elem.parents('.accordion-group')[0]);
+     var accordionBody = $(accordionGroup.children('.accordion-body'));
+     var wasTableVisible = accordionBody.hasClass("in");
+     $scope.showHideDataTable = wasTableVisible ? "Visa datatabell" : "Dölj datatabell"; 
+ };
+ 
+ var exportTableDataGeneric = function() {
+     var dt = $('#datatable');
+     var csvData = table2CSV(dt);
+     $.generateFile({
+         filename : 'export.csv',
+         content : csvData,
+         script : 'fileDownload.jsp'
+     });
+ };
+ 
+ var getChartCategories = function(ajaxResult) {
+     return ajaxResult.rows.map(function(e) {
+         return e.name;
+     });
+ };
+
+ var getChartSeries = function(ajaxResult) {
+     var dataSeries = [];
+     var length = ajaxResult.headers.length;
+     for ( var i = 0; i < length; i++) {
+         var ds = {};
+         ds.name = ajaxResult.headers[i];
+         ds.data = [];
+         dataSeries.push(ds);
+     }
+
+     var length = ajaxResult.rows.length;
+     for ( var i = 0; i < length; i++) {
+         var rowdata = ajaxResult.rows[i].data;
+         var rowdatalength = rowdata.length;
+         for ( var c = 0; c < rowdatalength; c++) {
+             dataSeries[c].data.push(rowdata[c]);
+         }
+     }
+     return dataSeries;
+ };
+
 /* Controllers */
 statisticsApp.controller('OverviewCtrl', function ($scope, statisticsData) {
     var populatePageWithData = function(result){
@@ -14,9 +72,7 @@ statisticsApp.controller('OverviewCtrl', function ($scope, statisticsData) {
                     renderTo : containerId,
                     type: 'pie',
                     backgroundColor: 'transparent',
-                    height: 185,
-                    margin: [10, 10, 10, 10]
-                    
+                    height: 180,
                 },
                 exporting: {
                     enabled: false /* This removes the built in highchart export */           
@@ -68,6 +124,7 @@ statisticsApp.controller('OverviewCtrl', function ($scope, statisticsData) {
                     renderTo : containerId,
                     type: 'column',
                     height: 185,
+                    backgroundColor: 'transparent',
                 },
                 title: {
                     text: ''
@@ -91,15 +148,20 @@ statisticsApp.controller('OverviewCtrl', function ($scope, statisticsData) {
                 yAxis: {
                     min: 0,
                     title: {
-                        text: 'ANTAL'
+                        text: 'ANTAL',
                     }
                 },
                 exporting: {
                     enabled: false /* This removes the built in highchart export */           
                 },
                 legend: {
-                    enabled: false
-                },
+    	            align: 'top left',
+    	            verticalAlign: 'top',
+    	            x: 80,
+    	            y: 0,
+    	            borderWidth: 0,
+    	            enabled: false,
+    	        },
                 tooltip: {
                     backgroundColor: '#fff',
                     borderWidth: 2
@@ -122,7 +184,8 @@ statisticsApp.controller('OverviewCtrl', function ($scope, statisticsData) {
                 renderTo : containerId,
                 height : 185,
                 width: 133,
-                type : 'bubble'
+                type : 'bubble',
+                backgroundColor: 'transparent',
             },
             credits : {
                 enabled : false
@@ -165,7 +228,7 @@ statisticsApp.controller('OverviewCtrl', function ($scope, statisticsData) {
                 })
         };
         new Highcharts.Chart(chartOptions, function(chart) { // on complete
-            chart.renderer.image('/img/sweden_graph.png', 30, 10, 69, 160).add();
+            chart.renderer.image('img/sweden_graph.png', 30, 10, 69, 160).add();
         });
     }
     
@@ -203,60 +266,22 @@ statisticsApp.controller('OverviewCtrl', function ($scope, statisticsData) {
         return donutData;
     }
     
-    function addColor(rawData){
-        var color = ["#fbb10c", "#2ca2c6", "#11b73c", "#d165df", "#9c734d", "#008391", "#535353"];
-        for (var i = 0; i < rawData.length; i++) {
-            rawData[i].color = color[i];
-        }
-    }
-    
-    var dataDownloadFailed = function () {
-        alert("Failed to download overview data");
-    }
-    
     statisticsData.getOverview(populatePageWithData, dataDownloadFailed);
 });
 
 statisticsApp.controller('CasesPerMonthCtrl', function ($scope, statisticsData) {
+
+    $scope.chartContainers = ["container"];
     
-	var getChartCategories = function(ajaxResult) {
-		return ajaxResult.rows.map(function(e) {
-			return e.name;
-		});
-	}
-
-	var getChartSeries = function(ajaxResult) {
-		var dataSeries = [];
-		var length = ajaxResult.headers.length;
-		for ( var i = 0; i < length; i++) {
-			var ds = [];
-			ds.name = ajaxResult.headers[i];
-			ds.data = [];
-			dataSeries.push(ds);
-		}
-
-		var length = ajaxResult.rows.length;
-		for ( var i = 0; i < length; i++) {
-			var rowdata = ajaxResult.rows[i].data;
-			var rowdatalength = rowdata.length;
-			for ( var c = 0; c < rowdatalength; c++) {
-				dataSeries[c].data.push(rowdata[c]);
-			}
-		}
-		return dataSeries;
-	}
-
-	var paintChart = function(chartCategories, chartSeries, chartTitle) {
+	var paintChart = function(chartCategories, chartSeries) {
 		var chartOptions = {
 				
 			chart : {
 				renderTo : 'container',
 			},
-			title : {
-				text : chartTitle,
-				x : -20,
-			// center
-			},
+            title : {
+                text : '',
+            },
 			legend: {
 	            align: 'top left',
 	            verticalAlign: 'top',
@@ -316,50 +341,158 @@ statisticsApp.controller('CasesPerMonthCtrl', function ($scope, statisticsData) 
 			series : chartSeries
 		};
 		new Highcharts.Chart(chartOptions);
-	}
+	};
 
 	var updateDataTable = function($scope, ajaxResult) {
 		$scope.headers = ajaxResult.headers;
 		$scope.rows = ajaxResult.rows;
-	}
+	};
 
 	var updateChart = function(ajaxResult) {
 		var chartCategories = getChartCategories(ajaxResult);
 		var chartSeries = getChartSeries(ajaxResult);
-		paintChart(chartCategories, chartSeries, ajaxResult.title);
-	}
+		paintChart(chartCategories, chartSeries);
+	};
 
-    $scope.exportTableData = function() {
-    	var dt = $('#datatable');
-    	var csvData = table2CSV(dt);
-        $.generateFile({
-            filename : 'export.csv',
-            content : csvData,
-            script : 'fileDownload.jsp'
-        });
-    };	
+    $scope.exportTableData = exportTableDataGeneric;
     
     var populatePageWithData = function(result){
         updateDataTable($scope, result);
         updateChart(result);
-        $scope.startDate = result.rows[0].name;
-        $scope.endDate = result.rows[result.rows.length-1].name;
-    }
-
-    var dataDownloadFailed = function () {
-        alert("Failed to download chart data");
-    }
+        $scope.subTitle = "Antal sjukfall per månad " + result.rows[0].name + " - " + result.rows[result.rows.length-1].name;
+    };
 
     statisticsData.getNumberOfCasesPerMonth(populatePageWithData, dataDownloadFailed);
     
-    $scope.showHideDataTable = "Dölj datatabell";
+    $scope.showHideDataTable = showHideDataTableDefault;
     $scope.toggleTableVisibility = function(event){
-        var elem = $(event.target);
-        var accordionGroup = $(elem.parents('.accordion-group')[0]);
-        var accordionBody = $(accordionGroup.children('.accordion-body'));
-        var wasTableVisible = accordionBody.hasClass("in");
-        $scope.showHideDataTable = wasTableVisible ? "Visa datatabell" : "Dölj datatabell"; 
-    }
+        toggleTableVisibilityGeneric(event, $scope);
+    };
 });
 
+
+
+
+statisticsApp.controller('DiagnosisGroupsCtrl', function ($scope, statisticsData) {
+    var chart1, chart2;
+    $scope.chartContainers = ["container1", "container2"];
+    
+    var paintChart = function(containerId, yAxisTitle, chartCategories, chartSeries) {
+        var chartOptions = {
+                
+            chart : {
+                type: 'area',
+                renderTo : containerId,
+            },
+            title : {
+                text : '',
+            },
+            legend: {
+                enabled: false
+            },  
+            xAxis : {
+                labels: {
+                    rotation: 310
+                },
+                categories : chartCategories
+            },
+            yAxis : {
+                title : {
+                    text : yAxisTitle,
+                    align : 'high',
+                    verticalAlign : 'top',
+                },
+                plotLines : [ {
+                    value : 0,
+                    width : 1,
+                    color : '#808080'
+                } ]
+            },
+            exporting: {
+                enabled: false /* This removes the built in highchart export */           
+            },
+            plotOptions: {
+                area: {
+                    stacking: 'normal',
+                    lineColor: '#666666',
+                    lineWidth: 1,
+                    marker: {
+                        lineWidth: 1,
+                        lineColor: '#666666'
+                    }
+                }
+            },
+            tooltip: {
+                /*crosshairs: true*/ // True if crosshair. Not specified in design document for Statistiktjänsten 1.0.
+            },
+            credits: {
+                enabled: false
+            },
+            series : chartSeries
+        };
+        return new Highcharts.Chart(chartOptions);
+    };
+
+    var updateDataTable = function($scope, ajaxResult) {
+        $scope.headers = ajaxResult.headers;
+        $scope.rows = ajaxResult.rows;
+    };
+
+    var updateChart = function(ajaxResult) {
+        var chartCategories = getChartCategories(ajaxResult.female).slice(0,6);
+
+        var chartSeriesFemale = getChartSeries(ajaxResult.female);
+        var chartSeriesTopFemale = chartSeriesFemale.slice(0,6).concat(sumSeries(chartSeriesFemale.slice(0,chartSeriesFemale.length)));
+        addColor(chartSeriesTopFemale);
+        chart1 = paintChart('container1', 'Antal kvinnor', chartCategories, chartSeriesTopFemale);
+        
+        var chartSeriesMale = getChartSeries(ajaxResult.male);
+        var chartSeriesTopMale = chartSeriesMale.slice(0,6).concat(sumSeries(chartSeriesMale.slice(0,chartSeriesMale.length)));
+        addColor(chartSeriesTopMale);
+        chart2 = paintChart('container2', 'Antal män', chartCategories, chartSeriesTopMale);
+        
+        $scope.series = chartSeriesTopMale;
+    };
+    
+    function sumSeries(series){
+        var sum = [];
+        series.map(function(e) {
+            for ( var i = 0; i < e.data.length; i++) {
+                sum[i] = (sum[i] ? sum[i] : 0) + e.data[i];
+            }
+        });
+        var summedSeries = {};
+        summedSeries.name = "Övrigt";
+        summedSeries.data = sum;
+        return summedSeries;
+    }
+    
+    $scope.toggleSeriesVisibility = function (index){
+        var s1 = chart1.series[index];
+        var s2 = chart2.series[index];
+        if (s1.visible){
+            s1.hide();
+            s2.hide();
+        } else {
+            s1.show();
+            s2.show();
+        }
+    };
+
+    $scope.exportTableData = exportTableDataGeneric;
+    
+    var populatePageWithData = function(result){
+        updateDataTable($scope, result);
+        updateChart(result);
+    };
+
+    $scope.subTitle = "Antal sjukfall per diagnosgrupp";
+
+    statisticsData.getDiagnosisGroup(populatePageWithData, dataDownloadFailed);
+    
+    $scope.showHideDataTable = showHideDataTableDefault;
+    $scope.toggleTableVisibility = function(event){
+        toggleTableVisibilityGeneric(event, $scope);
+    };
+});
 

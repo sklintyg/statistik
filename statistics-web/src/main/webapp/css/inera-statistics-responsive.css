@@ -1130,3 +1130,231 @@ form.bs-docs-example {
     padding-bottom: 20px;
   }
 }
+
+/* Large desktop */
+@media (min-width: 1200px) {
+	ul.overview-box-header {
+		width: 100%;
+	}	
+	li.overview-box-header-listItem a h2 {
+		font-size: 1em;
+	}
+	#overview-content #overview-distribution-per-sex-container .overview-sex-distribution-responsive > div > div > div > div #overview-distribution-female-lbl, 
+	#overview-content #overview-distribution-per-sex-container .overview-sex-distribution-responsive > div > div > div > div #overview-distribution-male-lbl {
+		margin-left: 26px !important;
+		font-size: 1em !important;
+		margin-top: 5px;
+	}
+	.chart-container {
+		width: 43%;
+		margin: 18px 0 0 0;
+		float: left;
+	}
+	.chart-container#sickLeaveLengthChart{
+		width: 62%;
+		margin: 25px 0 0 0;
+	}
+	#chart-data-table table#datatable {
+		width: 100%;
+		margin: 0px 0 0 0;
+	}
+	#overview-content #overview-distribution-per-sex-container .overview-sex-distribution-responsive > div {
+		padding: 25%;
+		margin: 50% 15% 15% 15%;
+	}
+	#overview-content #overview-change-container .overview-change-responsive-circle > div {
+		padding: 35%;
+		margin: 18% 15% 15% 15%;
+	}
+	.overview-chart-info{
+		float: left;
+		width: 38%;
+	}
+	
+}
+ 
+/* Portrait tablet to landscape and desktop */
+@media (min-width: 768px) and (max-width: 979px) { 
+	.row-fluid {
+		width: 100%;
+	}
+	#navigation-container .span2 {
+		width: 25%;
+		float: left;
+		margin-left: 20px;
+	}
+	#navigation-container .span1.offset7 {
+		margin-left: 33.707182% !important;
+	}
+	#wrap {
+		margin-top: 20px;
+	}
+	#overview-content, #chart-content {
+		margin: 10px 0px 0px 0px;
+	}
+	#overview-content .span3 {
+		width: 48%;
+	}
+	#overview-content .span6 {
+		width: 98.618785%;
+		margin-left: 0px;
+	}
+	ul.overview-box-header {
+		width: 100%;
+	}
+	li.overview-box-header-listItem a h2 {
+		font-size: 1em;
+	}
+	#overview-content #overview-distribution-per-sex-container .overview-sex-distribution-responsive > div > div > div > div #overview-distribution-female-lbl, 
+	#overview-content #overview-distribution-per-sex-container .overview-sex-distribution-responsive > div > div > div > div #overview-distribution-male-lbl {
+		position: relative;
+		text-align: center;
+		color: #fff;
+		font-weight: bold;
+		font-size: .7em !important;
+		font-family: Helvetica;
+		-webkit-transition: all 0.7s ease;
+		-moz-transition: all 1s ease;
+		cursor: inherit;
+		z-index: 9;
+		margin-left: 35px !important;
+	}
+	#overview-content .overview-box-information-container {
+		margin-bottom: 20px;
+	}
+	#overview-content #overview-distribution-per-sex-container .overview-sex-distribution-responsive > div {
+		padding: 25%;
+		margin: 48% 15% 15% 15%;
+	}
+	#overview-content #overview-change-container .overview-change-responsive-circle > div {
+		padding: 35%;
+		margin: 9% 15% 15% 15%;
+	}
+	.chart-container#sickLeaveLengthChart{
+		width: 62%;
+	}
+	.overview-chart-info {
+		width: 38%;
+		float: left;
+		margin: 25px 0px 0px 0px;
+	}
+	span.longSickLeavesValue {
+		color: #919191;
+		font-weight: bold;
+		font-size: 2em;
+		margin: 0px 10px 10px 60px;
+	}
+	
+}
+
+@media (min-width: 801px) and (max-width: 979px) {
+	#overview-content #overview-distribution-per-sex-container .overview-sex-distribution-responsive > div > div > div > div #overview-distribution-female-lbl, 
+	#overview-content #overview-distribution-per-sex-container .overview-sex-distribution-responsive > div > div > div > div #overview-distribution-male-lbl {
+		margin-left: 33px !important;
+		font-size: 1em !important;
+		margin-top: 31px;
+	}
+	table#datatable {
+		width: 100%;
+	}
+	.chart-container#sickLeaveLengthChart{
+		width: 62%;
+		margin: 40px 0 0 0;
+	}
+}
+
+
+@media (max-width: 800px) and (min-width: 321px) {
+	#overview-content #overview-distribution-per-sex-container .overview-sex-distribution-responsive {
+		background-size: 80%;
+		background-position: 50% 35%;
+	}	
+	#overview-content #overview-distribution-per-sex-container .overview-sex-distribution-responsive > div {
+		padding: 27%;
+		margin: 60% 0% 0% 0%;
+	}
+	#overview-content #overview-distribution-per-sex-container .overview-sex-distribution-responsive > div > div > div > div #overview-distribution-female-lbl, 
+	#overview-content #overview-distribution-per-sex-container .overview-sex-distribution-responsive > div > div > div > div #overview-distribution-male-lbl {
+		margin-left: 26px !important;
+		font-size: 1em !important;
+	}
+	.chart-container#sickLeaveLengthChart{
+		width: 62%;
+	}
+}
+@media (max-width: 800px) {
+	#overview-content #overview-distribution-per-sex-container .overview-sex-distribution-responsive > div > div > div > div #overview-distribution-female-lbl, 
+	#overview-content #overview-distribution-per-sex-container .overview-sex-distribution-responsive > div > div > div > div #overview-distribution-male-lbl {
+		margin-left: 32px !important;
+		font-size: 1em !important;
+		margin-top: 0px;
+	}
+	#overview-content #overview-change-container .overview-change-responsive-circle > div {
+		padding: 30%;
+		margin: 15% 0% 0% 20%;
+	}
+	.chart-container#sickLeaveLengthChart{
+		width: 62%;
+	}
+}
+ 
+/* Landscape phone to portrait tablet */
+@media (max-width: 767px) { 
+	.affix{
+		position: relative;
+	}
+	#overview-content #overview-distribution-per-sex-container .overview-sex-distribution-responsive {
+		background-size: 32%;
+		background-position: 53% 42%;
+	}
+	#overview-content #overview-distribution-per-sex-container .overview-sex-distribution-responsive > div {
+		padding: 0%;
+		margin: 40% 3% 0% 19%;
+	}
+	#overview-content #overview-distribution-per-sex-container .overview-sex-distribution-responsive > div > div > div > div #overview-distribution-female-lbl, 
+	#overview-content #overview-distribution-per-sex-container .overview-sex-distribution-responsive > div > div > div > div #overview-distribution-male-lbl {
+		font-size: 1em !important;
+		margin-top: 0px;
+		margin-left: 37px !important;
+		display: initial;
+		position: relative;
+	}
+	#overview-content #overview-change-container .overview-change-responsive-circle > div {
+		padding: 13%;
+		margin: 3% 0% 0% 36%;
+	}
+	#overview-content .overview-box-information-container {
+		margin-bottom: 20px;
+	}
+	#navigation-container .span2 {
+		width: 25%;
+		float: left;
+		margin-left: 20px;
+	}
+	table#datatable {
+		width: 100%;
+	}
+	#overview-content table#datatable {
+		width: 60%;
+	}
+	.chart-container#sickLeaveLengthChart{
+		width: 62%;
+		margin: 45px 0 0 0;
+	}
+	.overview-chart-info {
+		width: 38%;
+		float: left;
+		margin: 25px 0px 0px 0px;
+	}
+	span.longSickLeavesValue {
+		color: #919191;
+		font-weight: bold;
+		font-size: 2em;
+		margin: 0px 10px 10px 82px;
+	}
+}
+ 
+/* Landscape phones and down */
+@media (max-width: 480px) { 
+	
+}

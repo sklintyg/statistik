@@ -2,6 +2,7 @@
 
 statisticsApp.factory('statisticsData', function($http){
    var factory = {};
+   
    factory.getOverview = function (successCallback, failureCallback){
        $http.get("api/getOverview").success(function(result) {
            successCallback(result);
@@ -17,5 +18,14 @@ statisticsApp.factory('statisticsData', function($http){
            failureCallback();
        });
    };
+
+   factory.getDiagnosisGroup = function (successCallback, failureCallback){
+       $http.get("api/getDiagnosisGroupStatistics").success(function(result) {
+           successCallback(result);
+       }).error(function(data, status, headers, config) {
+           failureCallback();
+       });
+   };
+   
    return factory;
 });

@@ -84,27 +84,23 @@
 							</ul>
 						</div>
 						<div id="overview-distribution-diagnostic-groups-container">
-							<div class="row-fluid">
-								<div class="span4 chart-container" id="diagnosisChart"></div>
-								<div class="span8">
-									<table id="datatable" class="table table-bordered table-striped table-condensed overview-graph-table">
-										<thead>
-											<tr>
-												<td>Grupp</td>
-												<td>Antal</td>
-												<td>Förändring</td>
-											</tr>
-										</thead>
-										<tbody>
-											<tr ng-repeat="group in diagnosisGroups">
-												<td><span style="height:10px; width:10px; background-color: {{group.color}};"></span>{{group.name}}</td>
-												<td>{{group.quantity}}</td>
-												<td>{{group.alternation}}%</td>
-											</tr>
-										</tbody>
-								 	</table>
-								</div>
-							</div>
+							<div class="chart-container" id="diagnosisChart"></div>
+							<table id="datatable" class="table table-bordered table-striped table-condensed overview-graph-table">
+								<thead>
+									<tr>
+										<td>Grupp</td>
+										<td>Antal</td>
+										<td>Förändring</td>
+									</tr>
+								</thead>
+								<tbody>
+									<tr ng-repeat="group in diagnosisGroups">
+										<td><span style="height:10px; width:10px; background-color: {{group.color}};"></span>{{group.name}}</td>
+										<td>{{group.quantity}}</td>
+										<td>{{group.alternation}}%</td>
+									</tr>
+								</tbody>
+						 	</table>
 						</div>
 						<div class="overview-box-information-container">
 							<span class="overview-standard-box-information">
@@ -127,25 +123,23 @@
 							</ul>
 							<div id="overview-distribution-of-age-groups-container">
 								<div class="row-fluid">
-									<div class="span4 chart-container" id="ageChart"></div>
-									<div class="span8">
-										<table id="datatable" class="table table-bordered table-striped table-condensed overview-graph-table">
-											<thead>
-												<tr>
-													<td>Grupp</td>
-													<td>Antal</td>
-													<td>Förändring</td>
-												</tr>
-											</thead>
-											<tbody>
-												<tr ng-repeat="group in ageGroups">
-													<td><span style="height:10px; width:10px; background-color: {{group.color}};"></span>{{group.name}}</td>
-													<td>{{group.quantity}}</td>
-													<td>{{group.alternation}}%</td>
-												</tr>
-											</tbody>
-									 	</table>
-									</div>
+									<div class="chart-container" id="ageChart"></div>
+									<table id="datatable" class="table table-bordered table-striped table-condensed overview-graph-table">
+										<thead>
+											<tr>
+												<td>Grupp</td>
+												<td>Antal</td>
+												<td>Förändring</td>
+											</tr>
+										</thead>
+										<tbody>
+											<tr ng-repeat="group in ageGroups">
+												<td><span style="height:10px; width:10px; background-color: {{group.color}};"></span>{{group.name}}</td>
+												<td>{{group.quantity}}</td>
+												<td>{{group.alternation}}%</td>
+											</tr>
+										</tbody>
+								 	</table>
 								</div>
 							</div>
 							<div class="overview-box-information-container">
@@ -168,25 +162,23 @@
 							</div>
 							<div id="overview-distribution-of-sick-degree-container">
 								<div class="row-fluid">
-									<div class="span4 chart-container" id="degreeOfSickLeaveChart"></div>
-									<div class="span8">
-										<table id="datatable" class="table table-bordered table-striped table-condensed overview-graph-table">
-											<thead>
-												<tr>
-													<td>Grad</td>
-													<td>Antal</td>
-													<td>Förändring</td>
-												</tr>
-											</thead>
-											<tbody>
-												<tr ng-repeat="group in degreeOfSickLeaveGroups">
-													<td><span style="height:10px; width:10px; background-color: {{group.color}};"></span>{{group.name}}</td>
-													<td>{{group.quantity}}</td>
-													<td>{{group.alternation}}%</td>
-												</tr>
-											</tbody>
-									 	</table>
-									</div>
+									<div class="chart-container" id="degreeOfSickLeaveChart"></div>
+									<table id="datatable" class="table table-bordered table-striped table-condensed overview-graph-table">
+										<thead>
+											<tr>
+												<td>Grad</td>
+												<td>Antal</td>
+												<td>Förändring</td>
+											</tr>
+										</thead>
+										<tbody>
+											<tr ng-repeat="group in degreeOfSickLeaveGroups">
+												<td><span style="height:10px; width:10px; background-color: {{group.color}};"></span>{{group.name}}</td>
+												<td>{{group.quantity}}</td>
+												<td>{{group.alternation}}%</td>
+											</tr>
+										</tbody>
+								 	</table>
 								</div>
 							</div>
 							<div class="overview-box-information-container">
@@ -211,11 +203,16 @@
 							</div>
 							<div id="overview-distribution-sick-length-container">
 								<div class="row-fluid">
-									<div class="span8 chart-container" id="sickLeaveLengthChart"></div>
-									<div class="span4">
-										{{longSickLeavesTotal}}<br/>Antalet sjukfall som övergår 90 dagar
-										<br/>
-										{{longSickLeavesAlteration}}%<br/>Förändring av antalet sjukfall som övergår 90 dagar jämfört med föregående kvartal
+									<div class="chart-container" id="sickLeaveLengthChart"></div>
+									<div class="overview-chart-info">
+										<div class="overview-chart-info-section">
+											<span class="longSickLeavesValue">{{longSickLeavesTotal}}</span>
+											<span class="longSickLeavesText">Antalet sjukfall som övergår 90 dagar</span>
+										</div>
+										<div class="overview-chart-info-section">
+											<span class="longSickLeavesValue">{{longSickLeavesAlteration}}%</span>
+											<span class="longSickLeavesText">Förändring av antalet sjukfall som övergår 90 dagar jämfört med föregående kvartal</span>
+										</div>
 									</div>
 								</div>
 							</div>
@@ -239,25 +236,23 @@
 							</div>
 							<div id="overview-distribution-by-county-container">
 								<div class="row-fluid">
-									<div class="span4 chart-container" id="sickLeavePerCountyChart"></div>
-									<div class="span8">
-										<table id="datatable" class="table table-bordered table-striped table-condensed overview-graph-table">
-											<thead>
-												<tr>
-													<td>Län</td>
-													<td>Antal</td>
-													<td>Förändring</td>
-												</tr>
-											</thead>
-											<tbody>
-												<tr ng-repeat="group in sickLeavePerCountyGroups">
-													<td><span style="height:10px; width:10px; background-color: {{group.color}};"></span>{{group.name}}</td>
-													<td>{{group.quantity}}</td>
-													<td>{{group.alternation}}%</td>
-												</tr>
-											</tbody>
-									 	</table>
-									</div>
+									<div class="chart-container" id="sickLeavePerCountyChart"></div>
+									<table id="datatable" class="table table-bordered table-striped table-condensed overview-graph-table">
+										<thead>
+											<tr>
+												<td>Län</td>
+												<td>Antal</td>
+												<td>Förändring</td>
+											</tr>
+										</thead>
+										<tbody>
+											<tr ng-repeat="group in sickLeavePerCountyGroups">
+												<td><span style="height:10px; width:10px; background-color: {{group.color}};"></span>{{group.name}}</td>
+												<td>{{group.quantity}}</td>
+												<td>{{group.alternation}}%</td>
+											</tr>
+										</tbody>
+								 	</table>
 								</div>
 							</div>
 							<div class="overview-box-information-container">
