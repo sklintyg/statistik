@@ -4,7 +4,7 @@ statisticsApp.directive("navigationaware", function ($rootScope, $location) {
     
     var matchingPath = function(navigationHref, currentPath){
         return navigationHref.length >= currentPath.length && navigationHref.substr(navigationHref.length - currentPath.length) == currentPath;
-    }
+    };
     
     return {
         restrict: "A",

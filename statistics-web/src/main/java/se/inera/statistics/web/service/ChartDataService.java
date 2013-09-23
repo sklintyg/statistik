@@ -55,9 +55,14 @@ public class ChartDataService {
     
     private TableData createDiagnosisGroupTableMockData() {
         ArrayList<TableRow> rows = new ArrayList<TableRow>();
-        rows.add(new TableRow("Jan 2013", Arrays.asList(new Number[] { g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g() })));
-        rows.add(new TableRow("Feb 2013", Arrays.asList(new Number[] { g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g() })));
-        rows.add(new TableRow("Mar 2013", Arrays.asList(new Number[] { g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g() })));
+        rows.add(new TableRow("Jan 2013", Arrays.asList(new Number[] { g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g()})));
+        rows.add(new TableRow("Feb 2013", Arrays.asList(new Number[] { g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g()})));
+        rows.add(new TableRow("Mar 2013", Arrays.asList(new Number[] { g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g()})));
+        rows.add(new TableRow("Apr 2013", Arrays.asList(new Number[] { g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g()})));
+        rows.add(new TableRow("Maj 2013", Arrays.asList(new Number[] { g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g()})));
+        rows.add(new TableRow("Jun 2013", Arrays.asList(new Number[] { g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g()})));
+        rows.add(new TableRow("Jul 2013", Arrays.asList(new Number[] { g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g()})));
+        rows.add(new TableRow("Aug 2013", Arrays.asList(new Number[] { g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g()})));
         List<String> headers = Arrays
                 .asList(new String[] {
                         "A00-B99     Vissa infektionssjukdomar och parasitsjukdomar",
@@ -107,13 +112,13 @@ public class ChartDataService {
         diagnosisGroups.add(new DonutChartData("O - Graviditet och förlossning", 3, -3));
         
         ArrayList<DonutChartData> ageGroups = new ArrayList<DonutChartData>();
-        ageGroups.add(new DonutChartData("&lt;35 år", 140, 2));
+        ageGroups.add(new DonutChartData("<35 år", 140, 2));
         ageGroups.add(new DonutChartData("36-40 år", 140, -4));
         ageGroups.add(new DonutChartData("41-45 år", 40, 5));
         ageGroups.add(new DonutChartData("46-50 år", 25, 0));
         ageGroups.add(new DonutChartData("51-55 år", 32, -3));
         ageGroups.add(new DonutChartData("56-60 år", 20, -4));
-        ageGroups.add(new DonutChartData("&gt;60 år", 15, 5));
+        ageGroups.add(new DonutChartData(">60 år", 15, 5));
         
         ArrayList<DonutChartData> degreeOfSickLeaveGroups = new ArrayList<DonutChartData>();
         degreeOfSickLeaveGroups.add(new DonutChartData("25%", 3, 15));

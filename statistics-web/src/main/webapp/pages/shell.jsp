@@ -29,9 +29,9 @@
 
 <!-- Styles -->
 <link href="<c:url value='/css/inera-statistics.css'/>" rel="stylesheet">
-<link href="<c:url value='/css/bootstrap/2.3.2/bootstrap.min.css'/>" rel="stylesheet">
+<link href="<c:url value='/bootstrap/2.3.2/css/bootstrap.min.css'/>" rel="stylesheet">
 <link href="<c:url value='/css/inera-statistics-responsive.css'/>" rel="stylesheet">
-<link href="<c:url value='/css/bootstrap/2.3.2/bootstrap-responsive.css'/>" rel="stylesheet">
+<link href="<c:url value='/bootstrap/2.3.2/css/bootstrap-responsive.css'/>" rel="stylesheet">
 
 
 </head>
@@ -105,7 +105,7 @@
 <!-- Scripts -->
 <!-- Placed at the end of the document so the pages load faster -->
 <script type="text/javascript" src="<c:url value='/js/jquery/1.10.2/jquery.min.js'/>"></script>
-<script type="text/javascript" src="<c:url value='/js/bootstrap/2.3.2/bootstrap.min.js'/>"></script>
+<script type="text/javascript" src="<c:url value='/bootstrap/2.3.2/js/bootstrap.min.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/angularjs/1.0.8/angular.min.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/app.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/factories.js'/>"></script>
