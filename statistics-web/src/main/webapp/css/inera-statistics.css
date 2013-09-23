@@ -84,14 +84,6 @@ i.inera-icon {
     height: 16px;
 }
 
-i.inera-icon.status {
-    background-image: url(../../../../webapp/img/status_icon.png);
-}
-
-i.inera-icon.delete {
-    background-image: url(../../../../webapp/img/delete.png);
-}
-
 [class^="formgroup-"], [class*=" formgroup-"] {
     border: 1px;
 }
@@ -286,15 +278,6 @@ div.footer {
     font: bold 13px/16px arial, verdana, sans-serif;
 }
 
-div.table-bottom {
-    background-image: url("../../../../webapp/img/list_shadow_left.png"), url("../../../../webapp/img/list_shadow_right.png");
-    background-repeat: no-repeat, no-repeat;
-    background-position: top left, top right;
-    margin-top: 0px;
-    padding: 0px;
-    margin-bottom: 10px;
-}
-
 .popover-inner {
     width: 350px;
 }
@@ -418,25 +401,33 @@ legend {
     font-weight: bold;
 }
 
-.table.table-bordered.table-striped.table-condensed.overview-graph-table thead tr td {
+#overview-content .table.table-bordered.table-striped.table-condensed.overview-graph-table thead tr td {
 	line-height: 10px;
 	text-align: left;
 	font-size: 10px;
 	margin-left: 0px;
 	padding: 15px 5px 5px 0px;
-	border-right: 1px solid transparent !important;
-} 
+	border: 1px solid transparent !important;
+}
+#overview-content .table.table-striped.overview-graph-table tbody tr td {
+	border-right: 1px solid #dddddd;
+}
+#overview-content table#datatable {
+	width: 55%;
+	border: 1px solid transparent;
+	border-bottom: 1px solid #dddddd;
+}
 .table.table-striped.overview-graph-table tbody tr td {
 	line-height: 9px;
 	text-align: left;
 	font-size: 11px;
 	margin-left: 0px;
-	padding: 10px 0px 10px 10px;
+	padding: 10px 0px 10px 4px;
 }
 
 .table.table-striped.overview-graph-table td span{
 	float: left;
-	margin-right: 2px;
+	margin-right: 5px;
 }
 
 /****** Start: Bootstrap style overrides ******/
@@ -616,6 +607,8 @@ legend {
 	margin-left: 10px; 
 }
 
+#sickLeavePerCountyChart g.highcharts-axis { display: none; }
+
 /****** End: Statistics general styles  ******/
 
 /****** Start: Shell general styles 	******/
@@ -716,7 +709,7 @@ div.headerbox-user { font-size: 13px; line-height: 16px;}
 	#overview-content #overview-distribution-per-sex-container, #overview-content #overview-change-container, #overview-content #overview-distribution-diagnostic-groups-container,
 	#overview-content #overview-distribution-of-age-groups-container, #overview-content #overview-distribution-of-sick-degree-container,
 	#overview-content #overview-distribution-sick-length-container, #overview-content #overview-distribution-by-county-container { 
-		background-color: #dbdbdb; 
+		background-color: #ededed; 
 		min-height: 230px; 
 		padding-bottom: 20px; 
 		border-left: 1px solid #C4C4C4;
@@ -944,7 +937,7 @@ div.headerbox-user { font-size: 13px; line-height: 16px;}
 	}
 	
 	#overview-content .overview-box-information-container { 
-		background-color: #dbdbdb; 
+		background-color: #ededed; 
 		padding: 0px 0px 35px 0px;
 		-webkit-border-bottom-right-radius: 10px;
 		-webkit-border-bottom-left-radius: 10px;
@@ -1104,6 +1097,29 @@ li.overview-box-header-listItem {
 	width: 39%;
 	margin: 15px 0 0 0;
 	float: left;
+}
+.chart-container#sickLeaveLengthChart{
+	width: 62%;
+	margin: 25px 0 0 0;
+}
+.overview-chart-info{
+	width: 38%;
+	float: left;
+	margin: 18px 0 0 0;
+}
+.overview-chart-info-section{
+	float: left;
+}
+span.longSickLeavesValue {
+	color: #919191;
+	font-weight: bold;
+	font-size: 2em;
+	margin: 0px 10px 10px 28px;
+}
+span.longSickLeavesText{
+	float: left;
+	position: relative;
+	padding: 0px 0px 15px 0px;
 }
 
 .chart-container svg { width: 100%;}

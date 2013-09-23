@@ -1150,8 +1150,12 @@ form.bs-docs-example {
 		margin: 18px 0 0 0;
 		float: left;
 	}
-	table#datatable {
-		width: 55%;
+	.chart-container#sickLeaveLengthChart{
+		width: 62%;
+		margin: 25px 0 0 0;
+	}
+	#chart-data-table table#datatable {
+		width: 100%;
 		margin: 0px 0 0 0;
 	}
 	#overview-content #overview-distribution-per-sex-container .overview-sex-distribution-responsive > div {
@@ -1162,12 +1166,25 @@ form.bs-docs-example {
 		padding: 35%;
 		margin: 18% 15% 15% 15%;
 	}
+	.overview-chart-info{
+		float: left;
+		width: 38%;
+	}
+	
 }
  
 /* Portrait tablet to landscape and desktop */
 @media (min-width: 768px) and (max-width: 979px) { 
 	.row-fluid {
 		width: 100%;
+	}
+	#navigation-container .span2 {
+		width: 25%;
+		float: left;
+		margin-left: 20px;
+	}
+	#navigation-container .span1.offset7 {
+		margin-left: 33.707182% !important;
 	}
 	#wrap {
 		margin-top: 20px;
@@ -1213,6 +1230,21 @@ form.bs-docs-example {
 		padding: 35%;
 		margin: 9% 15% 15% 15%;
 	}
+	.chart-container#sickLeaveLengthChart{
+		width: 62%;
+	}
+	.overview-chart-info {
+		width: 38%;
+		float: left;
+		margin: 25px 0px 0px 0px;
+	}
+	span.longSickLeavesValue {
+		color: #919191;
+		font-weight: bold;
+		font-size: 2em;
+		margin: 0px 10px 10px 60px;
+	}
+	
 }
 
 @media (min-width: 801px) and (max-width: 979px) {
@@ -1221,6 +1253,13 @@ form.bs-docs-example {
 		margin-left: 33px !important;
 		font-size: 1em !important;
 		margin-top: 31px;
+	}
+	table#datatable {
+		width: 100%;
+	}
+	.chart-container#sickLeaveLengthChart{
+		width: 62%;
+		margin: 40px 0 0 0;
 	}
 }
 
@@ -1239,6 +1278,9 @@ form.bs-docs-example {
 		margin-left: 26px !important;
 		font-size: 1em !important;
 	}
+	.chart-container#sickLeaveLengthChart{
+		width: 62%;
+	}
 }
 @media (max-width: 800px) {
 	#overview-content #overview-distribution-per-sex-container .overview-sex-distribution-responsive > div > div > div > div #overview-distribution-female-lbl, 
@@ -1250,6 +1292,9 @@ form.bs-docs-example {
 	#overview-content #overview-change-container .overview-change-responsive-circle > div {
 		padding: 30%;
 		margin: 15% 0% 0% 20%;
+	}
+	.chart-container#sickLeaveLengthChart{
+		width: 62%;
 	}
 }
  
@@ -1291,6 +1336,21 @@ form.bs-docs-example {
 	}
 	#overview-content table#datatable {
 		width: 60%;
+	}
+	.chart-container#sickLeaveLengthChart{
+		width: 62%;
+		margin: 45px 0 0 0;
+	}
+	.overview-chart-info {
+		width: 38%;
+		float: left;
+		margin: 25px 0px 0px 0px;
+	}
+	span.longSickLeavesValue {
+		color: #919191;
+		font-weight: bold;
+		font-size: 2em;
+		margin: 0px 10px 10px 82px;
 	}
 }
  
