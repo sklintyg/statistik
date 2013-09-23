@@ -337,7 +337,9 @@ statisticsApp.controller('CasesPerMonthCtrl', function ($scope, statisticsData) 
 	};
 
 	var updateDataTable = function($scope, ajaxResult) {
-		$scope.headers = ajaxResult.headers;
+		$scope.headerrows = [[{ "text" : "Period", "colspan" : "1" }].concat(ajaxResult.headers.map(function(e) {
+            return { "text" : e, "colspan" : "1" };
+        }))];
 		$scope.rows = ajaxResult.rows;
 	};
 
@@ -427,8 +429,24 @@ statisticsApp.controller('DiagnosisGroupsCtrl', function ($scope, statisticsData
     };
 
     var updateDataTable = function($scope, ajaxResult) {
-        $scope.headers = ajaxResult.headers;
-        $scope.rows = ajaxResult.rows;
+        var topheaders = [{"text": "", "colspan" : "1"}];
+        for ( var i = 0; i < ajaxResult.female.headers.length; i++) {
+            topheaders.push({"text": ajaxResult.female.headers[i], "colspan" : "2"});
+        }
+        
+        var subheaders = [{"text": "Period", "colspan" : "1"}];
+        for ( var i = 0; i < ajaxResult.female.headers.length; i++) {
+            subheaders.push({"text": "Kvinnor", "colspan" : "1"});
+            subheaders.push({"text": "Män", "colspan" : "1"});
+        }
+        
+        $scope.headerrows = [topheaders, subheaders];
+        
+        var rows = [];
+        for ( var i = 0; i < ajaxResult.female.rows.length; i++) {
+            rows.push({"name":ajaxResult.female.rows[i].name, "data":zipArrays(ajaxResult.female.rows[i].data, ajaxResult.male.rows[i].data)});
+        }
+        $scope.rows = rows;
     };
 
     var updateChart = function(ajaxResult) {
@@ -471,6 +489,17 @@ statisticsApp.controller('DiagnosisGroupsCtrl', function ($scope, statisticsData
             s2.show();
         }
     };
+    
+    function zipArrays(d1, d2){
+        var zipped = new Array();
+
+        for(var i = 0; i < d1.length; i++)
+        {
+            zipped.push(d1[i]);
+            zipped.push(d2[i]);
+        }
+        return zipped;
+    }
 
     $scope.exportTableData = exportTableDataGeneric;
     

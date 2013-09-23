@@ -35,18 +35,17 @@
 		    </a>
 		  </div>
 		  <div id="collapseOne" class="accordion-body in collapse">
-		    <div class="accordion-inner">
+		    <div class="accordion-inner datatablescrollable">
 			    <table id="datatable" class="table table-striped">
 					<thead>
-						<tr>
-							<td></td>
-							<td ng-repeat="header in headers">{{header}}</td>
+						<tr ng-repeat="headerrow in headerrows">
+							<td class="datatablescrollable" ng-class="{headcol: $first}" colspan="{{header.colspan}}" ng-repeat="header in headerrow" style="max-width: 100px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">{{header.text}}</td>
 						</tr>
 					</thead>
 					<tbody>
 						<tr ng-repeat="row in rows">
-							<td>{{row.name}}</td>
-							<td ng-repeat="fieldData in row.data">{{fieldData}}</td>
+							<td class="datatablescrollable headcol">{{row.name}}</td>
+							<td class="datatablescrollable" ng-repeat="fieldData in row.data" >{{fieldData}}</td>
 						</tr>
 					</tbody>
 			 	</table>

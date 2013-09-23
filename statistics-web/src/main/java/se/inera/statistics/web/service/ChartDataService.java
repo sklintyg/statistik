@@ -55,9 +55,14 @@ public class ChartDataService {
     
     private TableData createDiagnosisGroupTableMockData() {
         ArrayList<TableRow> rows = new ArrayList<TableRow>();
-        rows.add(new TableRow("Jan 2013", Arrays.asList(new Number[] { g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g() })));
-        rows.add(new TableRow("Feb 2013", Arrays.asList(new Number[] { g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g() })));
-        rows.add(new TableRow("Mar 2013", Arrays.asList(new Number[] { g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g() })));
+        rows.add(new TableRow("Jan 2013", Arrays.asList(new Number[] { g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g()})));
+        rows.add(new TableRow("Feb 2013", Arrays.asList(new Number[] { g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g()})));
+        rows.add(new TableRow("Mar 2013", Arrays.asList(new Number[] { g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g()})));
+        rows.add(new TableRow("Apr 2013", Arrays.asList(new Number[] { g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g()})));
+        rows.add(new TableRow("Maj 2013", Arrays.asList(new Number[] { g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g()})));
+        rows.add(new TableRow("Jun 2013", Arrays.asList(new Number[] { g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g()})));
+        rows.add(new TableRow("Jul 2013", Arrays.asList(new Number[] { g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g()})));
+        rows.add(new TableRow("Aug 2013", Arrays.asList(new Number[] { g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g()})));
         List<String> headers = Arrays
                 .asList(new String[] {
                         "A00-B99     Vissa infektionssjukdomar och parasitsjukdomar",

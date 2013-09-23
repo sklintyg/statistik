@@ -1111,3 +1111,22 @@ li.overview-box-header-listItem {
 table#datatable {
 	width: 60%;
 }
+
+td.datatablescrollable {
+    white-space:nowrap;
+    margin:0;
+}
+
+.headcol.datatablescrollable {
+    position:absolute;
+    width:5em;
+    top:auto;
+    left:0;
+}
+
+div.datatablescrollable {
+    overflow-x:auto;  
+    margin-left:5em;
+    overflow-y:visible;
+    padding-bottom:1px;
+}
