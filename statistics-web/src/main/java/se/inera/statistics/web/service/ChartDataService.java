@@ -2,8 +2,11 @@ package se.inera.statistics.web.service;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
 
@@ -25,6 +28,10 @@ import se.inera.statistics.web.model.overview.SickLeaveLengthOverview;
 @Service("chartService")
 public class ChartDataService {
 
+    private static List<String> PERIODS = createPeriods();
+
+    private Random random = new Random();
+
     @GET
     @Path("getNumberOfCasesPerMonth")
     @Produces({ MediaType.APPLICATION_JSON })
@@ -32,15 +39,31 @@ public class ChartDataService {
         return createCasesPerMonthTableMockData();
     }
 
+    private static List<String> createPeriods() {
+        Locale sweden = new Locale("SV", "se");
+        Calendar c = new GregorianCalendar(sweden);
+        c.add(Calendar.MONTH, -18);
+        List<String> names = new ArrayList<>();
+        for (int i = 0; i < 18; i ++) {
+            names.add(String.format(sweden, "%1$tb %1$tY", c));
+            c.add(Calendar.MONTH, 1);
+        }
+        return names;
+    }
+
     private TableData createCasesPerMonthTableMockData() {
-        ArrayList<TableRow> rows = new ArrayList<TableRow>();
-        rows.add(new TableRow("Jan 2013", Arrays.asList(new Number[] { 1, 3, 4 })));
-        rows.add(new TableRow("Feb 2013", Arrays.asList(new Number[] { 2, 2, 4 })));
-        rows.add(new TableRow("Mar 2013", Arrays.asList(new Number[] { 4, 2, 6 })));
-        rows.add(new TableRow("Apr 2013", Arrays.asList(new Number[] { 4, 3, 7 })));
-        rows.add(new TableRow("Maj 2013", Arrays.asList(new Number[] { 3, 1, 4 })));
         List<String> headers = Arrays.asList(new String[] { "Antal män", "Antal kvinnor", "Totalt antal" });
+        ArrayList<TableRow> rows = new ArrayList<TableRow>();
+        for (String periodName: PERIODS) {
+            rows.add(new TableRow(periodName, randomCasesPerMonthData()));
+        }
         return new TableData(rows, headers);
+    }
+
+    private List<Number> randomCasesPerMonthData() {
+        int men = (int) (random.nextGaussian() * 2000 + 10000);
+        int women = (int) (random.nextGaussian() * 2000 + 10000);
+        return Arrays.asList(new Number[] { men, women, men + women });
     }
 
     @GET
@@ -52,17 +75,8 @@ public class ChartDataService {
         diagnosisGroupData.put("female", createDiagnosisGroupTableMockData());
         return diagnosisGroupData;
     }
-    
+
     private TableData createDiagnosisGroupTableMockData() {
-        ArrayList<TableRow> rows = new ArrayList<TableRow>();
-        rows.add(new TableRow("Jan 2013", Arrays.asList(new Number[] { g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g()})));
-        rows.add(new TableRow("Feb 2013", Arrays.asList(new Number[] { g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g()})));
-        rows.add(new TableRow("Mar 2013", Arrays.asList(new Number[] { g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g()})));
-        rows.add(new TableRow("Apr 2013", Arrays.asList(new Number[] { g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g()})));
-        rows.add(new TableRow("Maj 2013", Arrays.asList(new Number[] { g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g()})));
-        rows.add(new TableRow("Jun 2013", Arrays.asList(new Number[] { g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g()})));
-        rows.add(new TableRow("Jul 2013", Arrays.asList(new Number[] { g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g()})));
-        rows.add(new TableRow("Aug 2013", Arrays.asList(new Number[] { g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g(), g()})));
         List<String> headers = Arrays
                 .asList(new String[] {
                         "A00-B99     Vissa infektionssjukdomar och parasitsjukdomar",
@@ -87,9 +101,21 @@ public class ChartDataService {
                         "V01-Y98     Yttre orsaker till sjukdom och död",
                         "Z00-Z99     Faktorer av betydelse för hälsotillståndet och för kontakter med hälso- och sjukvården",
                         "U00-U99     Koder för särskilda ändamål" });
-        return new TableData(rows, headers);
+        ArrayList<TableRow> rows = new ArrayList<TableRow>();
+       for (String periodName: PERIODS) {
+           rows.add(new TableRow(periodName, randomData(headers.size())));
+       }
+       return new TableData(rows, headers);
     }
-    
+
+    private List<Number> randomData(int size) {
+        Number[] data = new Number[size];
+        for (int i = 0; i < size; i++ ){
+            data[i] = g();
+        }
+        return Arrays.asList(data);
+    }
+
     private Number g() {
         return new Random().nextInt(100);
     }
