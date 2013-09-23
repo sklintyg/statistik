@@ -442,18 +442,20 @@ statisticsApp.controller('DiagnosisGroupsCtrl', function ($scope, statisticsData
         for ( var i = 0; i < ajaxResult.female.headers.length; i++) {
             topheaders.push({"text": ajaxResult.female.headers[i], "colspan" : "2"});
         }
+        topheaders.push({"text": "", "colspan" : "1"});
         
         var subheaders = [{"text": "Period", "colspan" : "1"}];
         for ( var i = 0; i < ajaxResult.female.headers.length; i++) {
             subheaders.push({"text": "Kvinnor", "colspan" : "1"});
             subheaders.push({"text": "Män", "colspan" : "1"});
         }
+        subheaders.push({"text": "Summering", "colspan" : "1"});
         
         $scope.headerrows = [topheaders, subheaders];
         
         var rows = [];
         for ( var i = 0; i < ajaxResult.female.rows.length; i++) {
-            rows.push({"name":ajaxResult.female.rows[i].name, "data":zipArrays(ajaxResult.female.rows[i].data, ajaxResult.male.rows[i].data)});
+            rows.push({"name":ajaxResult.female.rows[i].name, "data":appendSum(zipArrays(ajaxResult.female.rows[i].data, ajaxResult.male.rows[i].data))});
         }
         $scope.rows = rows;
     };
@@ -510,6 +512,14 @@ statisticsApp.controller('DiagnosisGroupsCtrl', function ($scope, statisticsData
         return zipped;
     }
 
+    function appendSum(numberArray){
+        var sum = 0;
+        for ( var i = 0; i < numberArray.length; i++) {
+            sum += numberArray[i];
+        }
+        return numberArray.concat([sum]);
+    }
+    
     $scope.exportTableData = exportTableDataGeneric;
     
     var populatePageWithData = function(result){

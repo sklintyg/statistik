@@ -1,6 +1,7 @@
 package se.inera.statistics.service.processlog;
 
 import org.apache.activemq.ActiveMQConnectionFactory;
+import org.apache.activemq.broker.BrokerService;
 import org.apache.activemq.command.ActiveMQQueue;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -27,22 +28,23 @@ public class ReceiverQueueTest {
     private Receiver receiver = new Receiver();
 
     private JmsTemplate jmsTemplate;
-    private Queue queue;
-
-    private ConnectionFactory cf;
 
     @Before
     public void setup() {
-        cf = new ActiveMQConnectionFactory("tcp://localhost:61616");
+        BrokerService broker = new BrokerService();
+        broker.setPersistent(false);
+        try {
+            broker.addConnector("tcp://localhost:61616");
+            broker.start();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        ConnectionFactory cf = new ActiveMQConnectionFactory("tcp://localhost:61616");
         setConnectionFactory(cf);
     }
 
     public void setConnectionFactory(ConnectionFactory cf) {
         this.jmsTemplate = new JmsTemplate(cf);
-    }
-
-    public void setQueue(Queue queue) {
-        this.queue = queue;
     }
 
     public void simpleSend() {
@@ -55,7 +57,9 @@ public class ReceiverQueueTest {
         });
     }
 
-    @Ignore
+    /**
+     *
+     */
     @Test
     public void send() {
         simpleSend();
