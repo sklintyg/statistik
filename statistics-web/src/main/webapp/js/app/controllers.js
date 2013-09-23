@@ -457,15 +457,15 @@ statisticsApp.controller('DiagnosisGroupsCtrl', function ($scope, statisticsData
     };
 
     var updateChart = function(ajaxResult) {
-        var chartCategories = getChartCategories(ajaxResult.female).slice(0,6);
+        var chartCategories = getChartCategories(ajaxResult.female);
 
         var chartSeriesFemale = getChartSeries(ajaxResult.female);
-        var chartSeriesTopFemale = chartSeriesFemale.slice(0,6).concat(sumSeries(chartSeriesFemale.slice(0,chartSeriesFemale.length)));
+        var chartSeriesTopFemale = chartSeriesFemale.slice(0,6).concat(sumSeries(chartSeriesFemale.slice(6,chartSeriesFemale.length)));
         addColor(chartSeriesTopFemale);
         chart1 = paintChart('container1', 'Antal kvinnor', chartCategories, chartSeriesTopFemale);
         
         var chartSeriesMale = getChartSeries(ajaxResult.male);
-        var chartSeriesTopMale = chartSeriesMale.slice(0,6).concat(sumSeries(chartSeriesMale.slice(0,chartSeriesMale.length)));
+        var chartSeriesTopMale = chartSeriesMale.slice(0,6).concat(sumSeries(chartSeriesMale.slice(6,chartSeriesMale.length)));
         addColor(chartSeriesTopMale);
         chart2 = paintChart('container2', 'Antal män', chartCategories, chartSeriesTopMale);
         
