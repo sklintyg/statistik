@@ -77,6 +77,11 @@
 						<li><a ng-href="#/sjukfallPerManad" id="navCasesPerMonthLink" navigationaware>Sjukfall, totalt<i class="icon-chevron-right"></i></a></li>
 						<li><a ng-href="#/diagnosgrupper" id="navDiagnosisGroupsLink" navigationaware>Diagnosgrupp<i class="icon-chevron-right"></i></a></li>
 						<li><a ng-href="#/underdiagnosgrupper" id="navDiagnosisSubGroupsLink" navigationaware>Underdiagnosgrupp<i class="icon-chevron-right"></i></a></li>
+						<li><a ng-href="#/aldersgrupper" id="navAgeGroupsLink" navigationaware>Ålderssgrupp<i class="icon-chevron-right"></i></a></li>
+						<li><a ng-href="#/sjukskrivningsgrad" id="navSickLeaveDegreeLink" navigationaware>Sjukskrivningsgrad<i class="icon-chevron-right"></i></a></li>
+						<li><a ng-href="#/sjukskrivningslangd" id="navSickLeaveLengthLink" navigationaware>Sjukskrivningslängd<i class="icon-chevron-right"></i></a></li>
+						<li><a ng-href="#/lan" id="navCountyLink" navigationaware>Län<i class="icon-chevron-right"></i></a></li>
+						<li><a ng-href="#/andelSjukfallPerKon" id="navCasesPerSexLink" navigationaware>Andel sjukfall per kön<i class="icon-chevron-right"></i></a></li>
 					</ul>
 					<ul class="nav nav-list bs-docs-sidenav" id="business-statistics-menu">
 						<li><a ng-href="#/om#about" navigationaware>Om tjänsten</a></li>

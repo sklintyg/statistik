@@ -28,7 +28,8 @@ var statisticsApp = angular.module('StatisticsApp', [  ]).config(
                 templateUrl : 'views/about.html',
                 title: 'Om tjänsten'
             }).otherwise({
-                redirectTo : '/oversikt'
+                templateUrl : 'views/404.html',
+                title: 'Fel'
             });
 
         } ]);
