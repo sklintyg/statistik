@@ -833,7 +833,7 @@ form.bs-docs-example {
   top: 90px;
 }
 .bs-docs-sidenav.affix#business-statistics-menu{
-  top: 196px;
+  top: 233px;
 }
 .bs-docs-sidenav.affix-bottom {
   position: absolute;
@@ -1159,17 +1159,24 @@ form.bs-docs-example {
 		margin: 0px 0 0 0;
 	}
 	#overview-content #overview-distribution-per-sex-container .overview-sex-distribution-responsive > div {
-		padding: 25%;
-		margin: 50% 15% 15% 15%;
+		padding: 40%;
+		margin: 0%;
+		top: 0;
+		right: 0;
+		bottom: 0;
+		left: 0;
 	}
 	#overview-content #overview-change-container .overview-change-responsive-circle > div {
-		padding: 35%;
-		margin: 18% 15% 15% 15%;
+		padding: 25%;
+		margin: 12% 25% 12% 25%;
 	}
 	.overview-chart-info{
 		float: left;
 		width: 38%;
 	}
+	
+}
+@media (min-width: 979px) and (max-width: 1104px) {
 	
 }
  
@@ -1222,13 +1229,22 @@ form.bs-docs-example {
 	#overview-content .overview-box-information-container {
 		margin-bottom: 20px;
 	}
+	#overview-content #overview-distribution-per-sex-container .overview-sex-distribution-responsive {
+		width: 100%;
+		float: left;
+		position: relative;
+		background-image: url("../img/distribution_per_sex_stat_bg.png");
+		background-repeat: no-repeat;
+		background-position: 50% 25%;
+		background-size: 72%;
+	}
 	#overview-content #overview-distribution-per-sex-container .overview-sex-distribution-responsive > div {
 		padding: 25%;
 		margin: 48% 15% 15% 15%;
 	}
 	#overview-content #overview-change-container .overview-change-responsive-circle > div {
-		padding: 35%;
-		margin: 9% 15% 15% 15%;
+		padding: 28%;
+		margin: 10% 15% 15% 21%;
 	}
 	.chart-container#sickLeaveLengthChart{
 		width: 62%;
@@ -1283,19 +1299,7 @@ form.bs-docs-example {
 	}
 }
 @media (max-width: 800px) {
-	#overview-content #overview-distribution-per-sex-container .overview-sex-distribution-responsive > div > div > div > div #overview-distribution-female-lbl, 
-	#overview-content #overview-distribution-per-sex-container .overview-sex-distribution-responsive > div > div > div > div #overview-distribution-male-lbl {
-		margin-left: 32px !important;
-		font-size: 1em !important;
-		margin-top: 0px;
-	}
-	#overview-content #overview-change-container .overview-change-responsive-circle > div {
-		padding: 30%;
-		margin: 15% 0% 0% 20%;
-	}
-	.chart-container#sickLeaveLengthChart{
-		width: 62%;
-	}
+
 }
  
 /* Landscape phone to portrait tablet */
@@ -1331,11 +1335,15 @@ form.bs-docs-example {
 		float: left;
 		margin-left: 20px;
 	}
+	.chart-container {
+		width: 100%;
+		float: left;
+	}
 	table#datatable {
 		width: 100%;
 	}
 	#overview-content table#datatable {
-		width: 60%;
+		width: 100%;
 	}
 	.chart-container#sickLeaveLengthChart{
 		width: 62%;
