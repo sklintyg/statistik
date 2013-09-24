@@ -15,23 +15,23 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations={"classpath:process-log-impl-test.xml"} )
+@ContextConfiguration(locations = { "classpath:process-log-impl-test.xml" })
 @Transactional
 public class ProcessLogImplTest extends ProcessLogImpl {
 
-    @PersistenceContext(unitName="IneraStatisticsLog")
+    @PersistenceContext(unitName = "IneraStatisticsLog")
     EntityManager manager;
 
     @Test
     public void storedEventCanBeFetched() throws InterruptedException, NotSupportedException, SystemException {
         long id = store(EventType.CREATED, "data");
-        Event event = get(id);
+        IntygEvent event = get(id);
         assertEquals("data", event.getData());
     }
 
     @Test
     public void withNoNewEventsPollReturnsNothing() {
-        Event pending = getPending();
+        IntygEvent pending = getPending();
         assertNull(pending);
     }
 
@@ -39,8 +39,8 @@ public class ProcessLogImplTest extends ProcessLogImpl {
     public void withTwoPendingEventPollReturnsFirstEvent() {
         store(EventType.CREATED, "1");
         store(EventType.CREATED, "2");
-        
-        Event pending = getPending();
+
+        IntygEvent pending = getPending();
         assertEquals("1", pending.getData());
         assertEquals("1", pending.getData());
     }
@@ -49,11 +49,11 @@ public class ProcessLogImplTest extends ProcessLogImpl {
     public void withTwoPendingEventEacheEventCanBeGottenInOrderAfterConfirm() {
         store(EventType.CREATED, "1");
         store(EventType.CREATED, "2");
-        
-        Event pending = getPending();
+
+        IntygEvent pending = getPending();
         assertEquals("1", pending.getData());
         confirm(pending.getId());
-        
+
         pending = getPending();
         assertEquals("2", pending.getData());
         confirm(pending.getId());

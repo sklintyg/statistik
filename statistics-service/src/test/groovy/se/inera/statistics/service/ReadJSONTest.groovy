@@ -15,7 +15,7 @@ import static org.junit.Assert.*
 class ReadJSONTest {
     @Test
     void read_fk7263_M_template() {
-        def result = readTemplate()
+        def result = JSONSource.readTemplate()
 
         println result
         assertEquals "2011-01-24", result.validFromDate
