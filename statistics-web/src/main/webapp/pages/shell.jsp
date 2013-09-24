@@ -35,13 +35,13 @@
 
 
 </head>
-<body data-spy="scroll" data-target="#business-statistics-menu">
+<body data-spy="scroll">
 
 <!-- Navbar
 ================================================== -->
 <div class="navbar navbar-inverse navbar-fixed-top">
 	<div class="navbar-inner">
-		<div class="container">
+		<div class="container-fluid">
 			<div class="row-fluid" id="navigation-container">
 				<div class="span2">
 					<div class="headerbox-logo"><a href="<c:url value='/'/>"><img alt="Till startsidan" src="<c:url value='/img/statistics_logo.png'/>"/></a></div>
@@ -65,14 +65,13 @@
 
 
 <div id="wrap">
-	<div class="container">
+	<div class="container-fluid">
 	
 		<!-- Docs nav
 		================================================== -->
-		<div class="row">
+		<div class="row-fluid">
 			<div class="span3 bs-docs-sidebar">
 				<div id="statistics-left-menu">
-					
 					<ul class="nav nav-list bs-docs-sidenav" id="national-statistic-menu">
 						<li><a ng-href="#/oversikt" navigationaware>Nationell statistik<i class="icon-chevron-right"></i></a></li>
 						<li><a ng-href="#/sjukfallPerManad" id="navCasesPerMonthLink" navigationaware>Sjukfall, totalt<i class="icon-chevron-right"></i></a></li>
@@ -98,7 +97,7 @@
 <!-- Footer
 ================================================== -->
 <footer class="footer">
-	<div class="container">
+	<div class="container-fluid">
 	</div>
 </footer>
 
