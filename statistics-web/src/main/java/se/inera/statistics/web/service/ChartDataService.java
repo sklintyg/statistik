@@ -114,15 +114,6 @@ public class ChartDataService {
         return new TableData(rows, headers);
     }
     
-    private List<String> getAllDiagnosisGroupsAsList() {
-        List<String> groups = new ArrayList<>();
-        List<DiagnosisGroup> entries = getAllDiagnosisGroups();
-        for (DiagnosisGroup entry : entries) {
-            groups.add(entry.toString());
-        }
-        return groups;
-    }
-    
     private List<String> getTopDiagnosisGroupsAsList() {
         List<String> diagnosisGroups = new ArrayList<>();
         diagnosisGroups.add("F00-F99 Psykiska sjukdomar och syndrom samt beteendestörningar");
