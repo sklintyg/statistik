@@ -1,0 +1,26 @@
+package se.inera.statistics.web.model;
+
+import static org.junit.Assert.*;
+
+import org.junit.Test;
+
+public class DiagnosisGroupTest {
+
+    @Test
+    public void test() {
+        assertCodeInGroup("A00-A99", "A00", true);
+        assertCodeInGroup("A00-A99", "A99", true);
+        assertCodeInGroup("A00-A99", "A05", true);
+        assertCodeInGroup("A00-B99", "A05", true);
+        assertCodeInGroup("A00-B99", "B05", true);
+        assertCodeInGroup("B00-B99", "A05", false);
+        assertCodeInGroup("B00-B49", "B50", false);
+        assertCodeInGroup("B00-B49", "B150", false);
+    }
+
+    private void assertCodeInGroup(String groupId, String code, boolean isInGroup) {
+        DiagnosisGroup diagnosisGroup = new DiagnosisGroup(groupId, "");
+        assertEquals(isInGroup, diagnosisGroup.isCodeInGroup(code));
+    }
+
+}

@@ -12,48 +12,56 @@
 	<div class="row-fluid">
 		<span class="span12 graph-ingress">{{subTitle}}</span>
 	</div>
-</div>
-
-<select ng-model="detailsOption" ng-show="showDetailsOptions" ng-options="do.id + ' ' + do.name for do in detailsOptions"></select><br>
-
-<!-- Start graph -->
-<div class="row-fluid">
-	<table><tr>
-		<td ng-repeat="chartContainer in chartContainers" id="{{chartContainer}}" style="height: 400px; margin: 0 auto"></span>
-	</tr></table>
-</div>
-<div class="row-fluid">
-	<label ng-repeat="seriesData in series">
-		<input type="checkbox" checked="" ng-click="toggleSeriesVisibility($index)" /> <span style="display: inline-block; height: 10px; width: 10px; background-color: {{seriesData.color}};"></span> {{seriesData.name}}
-	</label>
-</div>
-
-<!-- Starting data-table -->
-<div id="chart-data-table">
-	<div class="accordion" id="accordion2">
-		<div class="accordion-group">
-		  <div class="accordion-heading">
-		    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne" id="toggleDataTableVisibility" ng-click="toggleTableVisibility($event)">
-		      {{showHideDataTable}}
-		    </a>
-		  </div>
-		  <div id="collapseOne" class="accordion-body in collapse">
-		    <div class="accordion-inner datatablescrollable">
-			    <table id="datatable" class="table table-striped">
-					<thead>
-						<tr ng-repeat="headerrow in headerrows">
-							<td class="datatablescrollable" ng-class="{headcol: $first}" colspan="{{header.colspan}}" ng-repeat="header in headerrow" style="max-width: 100px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="{{header.text}}">{{header.text}}</td>
-						</tr>
-					</thead>
-					<tbody>
-						<tr ng-repeat="row in rows">
-							<td class="datatablescrollable headcol">{{row.name}}</td>
-							<td class="datatablescrollable" ng-repeat="fieldData in row.data" >{{fieldData}}</td>
-						</tr>
-					</tbody>
-			 	</table>
-		    </div>
-		  </div>
+	<!-- Start detailsOptions if any -->
+	<div class="row-fluid">
+		<select class="span3" ng-model="detailsOption" ng-show="showDetailsOptions" ng-options="do.id + ' ' + do.name for do in detailsOptions"></select>
+	</div>
+	<!-- Start graph -->
+	<div class="row-fluid">
+		<div class="span12">
+			<div ng-class="{span12: chartContainers.length == 1, span6: chartContainers.length == 2}" ng-repeat="chartContainer in chartContainers" id="{{chartContainer}}" style="height: 400px; margin: 0 auto"></div>
+		</div>
+		<!-- table><tr>
+			<td ng-repeat="chartContainer in chartContainers" id="{{chartContainer}}" style="height: 400px; margin: 0 auto"></span>
+		</tr></table -->
+	</div>
+	<div class="row-fluid">
+		<label ng-repeat="seriesData in series">
+			<input type="checkbox" checked="" ng-click="toggleSeriesVisibility($index)" /> <span style="display: inline-block; height: 10px; width: 10px; background-color: {{seriesData.color}};"></span> {{seriesData.name}}
+		</label>
+	</div>
+	
+	<!-- Starting data-table -->
+	<div id="chart-data-table">
+		<div class="accordion" id="accordion2">
+			<div class="accordion-group">
+			  <div class="accordion-heading">
+			    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne" id="toggleDataTableVisibility" ng-click="toggleTableVisibility($event)">
+			      {{showHideDataTable}}
+			    </a>
+			  </div>
+			  <div id="collapseOne" class="accordion-body in collapse">
+			    <div class="accordion-inner datatablescrollable">
+				    <table id="datatable" class="table table-striped">
+						<thead>
+							<tr ng-repeat="headerrow in headerrows">
+								<td class="datatablescrollable" ng-class="{headcol: $first}" colspan="{{header.colspan}}" ng-repeat="header in headerrow" style="max-width: 100px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="{{header.text}}">{{header.text}}</td>
+							</tr>
+						</thead>
+						<tbody>
+							<tr ng-repeat="row in rows">
+								<td class="datatablescrollable headcol">{{row.name}}</td>
+								<td class="datatablescrollable" ng-repeat="fieldData in row.data" >{{fieldData}}</td>
+							</tr>
+						</tbody>
+				 	</table>
+			    </div>
+			  </div>
+			</div>
 		</div>
 	</div>
 </div>
+
+
+
+
