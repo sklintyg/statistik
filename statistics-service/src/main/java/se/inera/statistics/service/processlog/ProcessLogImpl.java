@@ -14,11 +14,11 @@ public class ProcessLogImpl implements ProcessLog {
 
     private static final String PROCESSED_HSA = "PROCESSED_HSA";
     @PersistenceContext(unitName = "IneraStatisticsLog")
-    EntityManager manager;
+    private EntityManager manager;
 
     @Override
     @Transactional
-    public long store(EventType type, String data) {
+    public final long store(EventType type, String data) {
         IntygEvent event = new IntygEvent(type, data);
         manager.persist(event);
         return event.getId();

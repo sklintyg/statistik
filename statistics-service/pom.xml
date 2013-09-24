@@ -180,7 +180,7 @@
                       <pluginExecutionFilter>
                         <groupId>org.codehaus.mojo</groupId>
                         <artifactId>build-helper-maven-plugin</artifactId>
-                        <versionRange>[1.8,)</versionRange>
+                        <version>1.8</version>
                         <goals>
                           <goal>add-test-source</goal>
                         </goals>

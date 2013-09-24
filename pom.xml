@@ -271,7 +271,6 @@
         <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
-            <version>${logback.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
@@ -305,9 +304,24 @@
                     <version>9.0.5.v20130815</version>
                 </plugin>
                 <plugin>
-                    <groupId>com.mycila</groupId>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-checkstyle-plugin</artifactId>
+                    <version>2.10</version>
+                    <configuration>
+                        <configLocation>checkstyle.xml</configLocation>
+                    </configuration>
+                    <dependencies>
+                        <dependency>
+                            <groupId>se.inera.statistics</groupId>
+                            <artifactId>build-tools</artifactId>
+                            <version>1.0-SNAPSHOT</version>
+                        </dependency>
+                    </dependencies>
+                </plugin>
+                <plugin>
+                    <groupId>com.mycila.maven-license-plugin</groupId>
                     <artifactId>maven-license-plugin</artifactId>
-                    <version>2.3</version>
+                    <version>1.9.0</version>
                     <configuration>
                         <properties>
                             <year>2013</year>
@@ -358,17 +372,6 @@
             <plugin>
               <groupId>org.apache.maven.plugins</groupId>
               <artifactId>maven-checkstyle-plugin</artifactId>
-              <version>2.10</version>
-              <configuration>
-                <configLocation>checkstyle.xml</configLocation>
-              </configuration>
-              <dependencies>
-                <dependency>
-                  <groupId>se.inera.statistics</groupId>
-                  <artifactId>build-tools</artifactId>
-                  <version>1.0-SNAPSHOT</version>
-                </dependency>
-              </dependencies>
             </plugin>
         </plugins>
     </build>
@@ -384,16 +387,4 @@
             </snapshots>
         </pluginRepository>
     </pluginRepositories>
-    <reporting>
-      <plugins>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-checkstyle-plugin</artifactId>
-          <version>2.10</version>
-          <configuration>
-            <configLocation>checkstyle.xml</configLocation>
-          </configuration>
-        </plugin>
-      </plugins>
-    </reporting>
 </project>

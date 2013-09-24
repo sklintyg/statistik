@@ -1,6 +1,10 @@
 package se.inera.statistics.service.processlog;
 
-import javax.persistence.*;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.MappedSuperclass;
 
 @MappedSuperclass
 public class Event {
@@ -15,10 +19,9 @@ public class Event {
     private String data;
 
     /**
-     * Empty constructor (as required by JPA spec)
+     * Empty constructor (as required by JPA spec).
      */
     public Event() {
-
     }
 
     public Event(EventType type, String data) {

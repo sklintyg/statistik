@@ -19,7 +19,7 @@ public class EventPointer {
     }
 
     /**
-     * Empty constructor (as required by JPA spec)
+     * Empty constructor (as required by JPA spec).
      */
     public EventPointer() {
     }
