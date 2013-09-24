@@ -377,7 +377,7 @@ statisticsApp.controller('CasesPerMonthCtrl', function ($scope, statisticsData) 
 
 
 
-statisticsApp.controller('DiagnosisGroupsCtrl', function ($scope, statisticsData) {
+statisticsApp.controller('DiagnosisGroupsCtrl', function ($scope, $routeParams, $window, statisticsData, dataFetcher, showDetailsOptions) {
     var chart1, chart2;
     $scope.chartContainers = ["container1", "container2"];
     
@@ -526,14 +526,40 @@ statisticsApp.controller('DiagnosisGroupsCtrl', function ($scope, statisticsData
         updateDataTable($scope, result);
         updateChart(result);
     };
+    
+    var populateDetailsOptions = function(result){
+        $scope.detailsOption = result[0];
+        for ( var i = 0; i < result.length; i++) {
+            if (result[i].id == $routeParams.groupId){
+                $scope.detailsOption = result[i];
+                break;
+            }
+        }
+        if (!$scope.detailsOption){
+            // Selected sub diagnos group not found, redirect to default sub driagnos group
+            $window.location="#/underdiagnosgrupper";
+        }
+        $scope.$watch(function(){return $scope.detailsOption;}, function() {
+            if ($scope.detailsOption.id != $routeParams.groupId){
+                $window.location="#/underdiagnosgrupper/" + $scope.detailsOption.id;
+            }
+        });
+        $scope.detailsOptions = result;
+    };
 
     $scope.subTitle = "Antal sjukfall per diagnosgrupp";
-
-    statisticsData.getDiagnosisGroup(populatePageWithData, dataDownloadFailed);
+    
+    statisticsData[dataFetcher](populatePageWithData, dataDownloadFailed, $routeParams.groupId);
     
     $scope.showHideDataTable = showHideDataTableDefault;
     $scope.toggleTableVisibility = function(event){
         toggleTableVisibilityGeneric(event, $scope);
     };
+
+    $scope.showDetailsOptions = showDetailsOptions;
+    if (showDetailsOptions){
+        statisticsData.getDiagnosisGroups(populateDetailsOptions, dataDownloadFailed);
+    }
+
 });
 
