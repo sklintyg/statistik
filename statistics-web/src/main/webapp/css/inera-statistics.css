@@ -431,7 +431,6 @@ legend {
 }
 
 /****** Start: Bootstrap style overrides ******/
-
 .nav-tabs.nav-stacked {
 	border-bottom: 0;
 }
@@ -847,7 +846,7 @@ div.headerbox-user { font-size: 13px; line-height: 16px;}
 	#overview-content #overview-distribution-per-sex-container .overview-sex-distribution-responsive > div > div > div {
 	    display: table;
 	    width: 100%;
-	    height: 60%;
+	    height: 100%;
 	}
 	#overview-content #overview-change-container .overview-change-responsive-circle > div > div > div > div{
 	    display: table-cell;
@@ -901,7 +900,7 @@ div.headerbox-user { font-size: 13px; line-height: 16px;}
 			background-image: url("../img/distribution_per_sex_stat_bg.png");
 			background-repeat: no-repeat;
 			background-position: 50%;
-			background-size: 85%;
+			background-size: 60%;
 		}
 		#overview-content #overview-distribution-per-sex-container .overview-sex-distribution-responsive > div { 
 	    	padding: 25%;
@@ -914,7 +913,7 @@ div.headerbox-user { font-size: 13px; line-height: 16px;}
 	    }
 		#overview-content #overview-change-container .overview-change-responsive-circle > div { 
 	    	padding: 35%;
-			margin: 30% 15% 15% 15%; 
+			margin: 20% 15% 15% 15%; 
 		}
 	    
 	}
@@ -1008,6 +1007,7 @@ div.headerbox-user { font-size: 13px; line-height: 16px;}
 
 #navigation-container {
 	margin-top: 20px;
+	margin-bottom: 20px;
 }
 
 #navigation-container span {

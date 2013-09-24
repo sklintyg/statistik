@@ -13,6 +13,9 @@
 		<span class="span12 graph-ingress">{{subTitle}}</span>
 	</div>
 </div>
+
+<select ng-model="detailsOption" ng-show="showDetailsOptions" ng-options="do.id + ' ' + do.name for do in detailsOptions"></select><br>
+
 <!-- Start graph -->
 <div class="row-fluid">
 	<table><tr>

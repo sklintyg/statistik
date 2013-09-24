@@ -15,12 +15,21 @@ var statisticsApp = angular.module('StatisticsApp', [  ]).config(
             }).when('/diagnosgrupper', {
                 templateUrl : 'views/chart.html',
                 controller : 'DiagnosisGroupsCtrl',
+                resolve : {dataFetcher: function(){ return "getDiagnosisGroupData"; }, showDetailsOptions: function(){ return false; } }, 
                 title: 'Diagnosgrupper'
+            }).when('/underdiagnosgrupper/:groupId', {
+                templateUrl : 'views/chart.html',
+                controller : 'DiagnosisGroupsCtrl',
+                resolve : {dataFetcher: function(){ return "getSubDiagnosisGroupData"; }, showDetailsOptions: function(){ return true; } },
+                title: 'Underdiagnosgrupper'
+            }).when('/underdiagnosgrupper', {
+                redirectTo : '/underdiagnosgrupper/A00-B99'
             }).when('/om', {
                 templateUrl : 'views/about.html',
                 title: 'Om tjänsten'
             }).otherwise({
-                redirectTo : '/oversikt'
+                templateUrl : 'views/404.html',
+                title: 'Fel'
             });
 
         } ]);
