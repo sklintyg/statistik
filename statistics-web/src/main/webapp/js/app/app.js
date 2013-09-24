@@ -27,6 +27,8 @@ var statisticsApp = angular.module('StatisticsApp', [  ]).config(
             }).when('/om', {
                 templateUrl : 'views/about.html',
                 title: 'Om tjänsten'
+            }).when('/', {
+                redirectTo : '/oversikt'
             }).otherwise({
                 templateUrl : 'views/404.html',
                 title: 'Fel'
