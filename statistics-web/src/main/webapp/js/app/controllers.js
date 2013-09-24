@@ -473,9 +473,13 @@ statisticsApp.controller('DiagnosisGroupsCtrl', function ($scope, $routeParams, 
         addColor(chartSeriesTopMale);
         chart2 = paintChart('container2', 'Antal män', chartCategories, chartSeriesTopMale);
         
+        var yMax = Math.max(chart1.yAxis[0].dataMax, chart2.yAxis[0].dataMax);
+        chart1.yAxis[0].setExtremes(0,yMax);
+        chart2.yAxis[0].setExtremes(0,yMax);
+        
         $scope.series = chartSeriesTopMale;
     };
-    
+
     function sumSeries(series){
         var sum = [];
         series.map(function(e) {
