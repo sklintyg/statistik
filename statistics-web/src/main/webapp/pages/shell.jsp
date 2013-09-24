@@ -76,6 +76,7 @@
 						<li><a ng-href="#/oversikt" navigationaware>Nationell statistik<i class="icon-chevron-right"></i></a></li>
 						<li><a ng-href="#/sjukfallPerManad" id="navCasesPerMonthLink" navigationaware>Sjukfall, totalt<i class="icon-chevron-right"></i></a></li>
 						<li><a ng-href="#/diagnosgrupper" id="navDiagnosisGroupsLink" navigationaware>Diagnosgrupp<i class="icon-chevron-right"></i></a></li>
+						<li><a ng-href="#/underdiagnosgrupper" id="navDiagnosisSubGroupsLink" navigationaware>Underdiagnosgrupp<i class="icon-chevron-right"></i></a></li>
 					</ul>
 					<ul class="nav nav-list bs-docs-sidenav" id="business-statistics-menu">
 						<li><a ng-href="#/om#about" navigationaware>Om tjänsten</a></li>
