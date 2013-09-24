@@ -40,7 +40,7 @@
         "vardenhet": {
             "id": {
                 "root": "1.2.752.129.2.1.4.1",
-                "extension": ""
+                "extension": "enhetId"
             },
             "arbetsplatskod": {
                 "root": "1.2.752.29.4.71",
