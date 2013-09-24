@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
+    <changeSet id="1a_create_event_table" author="pierre.sandboge">
+        <createTable tableName="event">
+            <column name="id" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="type" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="data" type="text"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="1b_add_event_sequence" author="pierre.sandboge">
+        <createSequence sequenceName="hibernate_sequence" startValue="218281828"/>
+    </changeSet>
+
+</databaseChangeLog>
