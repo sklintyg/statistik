@@ -7,8 +7,10 @@ import javax.persistence.Id;
 @Entity
 public class EventPointer {
 
+    private static final int MAX_NAME_LENGTH = 50;
+
     @Id
-    @Column(length = 50)
+    @Column(length = MAX_NAME_LENGTH)
     private String name;
 
     private long eventId;
