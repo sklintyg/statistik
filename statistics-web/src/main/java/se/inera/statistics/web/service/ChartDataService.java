@@ -67,6 +67,7 @@ public class ChartDataService {
         return new TableData(rows, headers);
     }
 
+    // CHECKSTYLE:OFF MagicNumber
     private List<Number> randomCasesPerMonthData() {
         int men = (int) (random.nextGaussian() * 2000 + 10000);
         int women = (int) (random.nextGaussian() * 2000 + 10000);
@@ -287,5 +288,6 @@ public class ChartDataService {
 
         return new OverviewData(casesPerMonth, diagnosisGroups, ageGroups, degreeOfSickLeaveGroups, sickLeaveLength, perCounty);
     }
+    // CHECKSTYLE:ON MagicNumber
 
 }

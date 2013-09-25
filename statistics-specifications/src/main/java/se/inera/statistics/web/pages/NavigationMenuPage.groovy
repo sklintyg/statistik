@@ -7,7 +7,7 @@ class NavigationMenuPage extends Page {
     static at = { casesPerMonthLink.isDisplayed() }
 
     static content = {
-        
+
         casesPerMonthLink { $("#navCasesPerMonthLink") }
 
     }
@@ -15,5 +15,4 @@ class NavigationMenuPage extends Page {
     def goToCasesPerMonth() {
         casesPerMonthLink.click()
     }
-    
 }
