@@ -7,7 +7,7 @@ class NationalOverviewPage extends Page {
     static at = { nationalOverviewHeading.isDisplayed() }
 
     static content = {
-        
+
         casesPerMonthProportionPerSexLink { $("#casesPerMonthProportionPerSexLink") }
         casesPerMonthFemaleProportionLabel { $("#overview-distribution-female-lbl") }
         casesPerMonthMaleProportionLabel { $("#overview-distribution-male-lbl") }
@@ -37,5 +37,4 @@ class NationalOverviewPage extends Page {
     def String getCasesPerMonthAlteration() {
         return casesPerMonthAlterationLabel.text()
     }
-    
 }
