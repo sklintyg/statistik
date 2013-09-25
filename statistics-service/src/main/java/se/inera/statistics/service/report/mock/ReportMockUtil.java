@@ -9,7 +9,6 @@ import java.util.Random;
 
 public class ReportMockUtil {
 
-    
     private static final int NR_OF_PERIODS = 18;
     static final List<String> PERIODS = createPeriods();
 
@@ -26,6 +25,4 @@ public class ReportMockUtil {
         }
         return names;
     }
-
-    
 }
