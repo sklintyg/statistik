@@ -833,7 +833,7 @@ form.bs-docs-example {
   top: 90px;
 }
 .bs-docs-sidenav.affix#business-statistics-menu{
-  top: 233px;
+  top: 268px
 }
 .bs-docs-sidenav.affix-bottom {
   position: absolute;
@@ -909,6 +909,11 @@ form.bs-docs-example {
   }
 }
 
+@media (max-width: 1200px) {
+	#chart-content .span6 {
+  		width: 100%;
+  	}
+}
 /* Desktop
 ------------------------- */
 @media (max-width: 980px) {
@@ -965,6 +970,9 @@ form.bs-docs-example {
   }
   .bs-docs-sidenav.affix {
     top: 110px;
+  }
+  #chart-content .span6 {
+  	width: 100%;
   }
 }
 

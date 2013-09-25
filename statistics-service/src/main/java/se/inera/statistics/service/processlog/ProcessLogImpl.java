@@ -13,29 +13,29 @@ import org.springframework.transaction.annotation.Transactional;
 public class ProcessLogImpl implements ProcessLog {
 
     private static final String PROCESSED_HSA = "PROCESSED_HSA";
-    @PersistenceContext(unitName="IneraStatisticsLog")
-    EntityManager manager;
-    
+    @PersistenceContext(unitName = "IneraStatisticsLog")
+    private EntityManager manager;
+
     @Override
     @Transactional
-    public long store(EventType type, String data) {
-        Event event = new Event(type, data);
+    public final long store(EventType type, String data) {
+        IntygEvent event = new IntygEvent(type, data);
         manager.persist(event);
         return event.getId();
     }
 
     @Transactional
-    public Event get(long id) {
-        return manager.find(Event.class, id);
+    public IntygEvent get(long id) {
+        return manager.find(IntygEvent.class, id);
     }
 
     @Transactional
-    public Event getPending() {
+    public IntygEvent getPending() {
         long lastEventId = getLastId();
-        TypedQuery<Event> allQuery = manager.createQuery("SELECT e from Event e WHERE e.id > :lastId ORDER BY e.id ASC", Event.class);
+        TypedQuery<IntygEvent> allQuery = manager.createQuery("SELECT e from IntygEvent e WHERE e.id > :lastId ORDER BY e.id ASC", IntygEvent.class);
         allQuery.setParameter("lastId", lastEventId);
-        
-        List<Event> found = allQuery.getResultList();
+
+        List<IntygEvent> found = allQuery.getResultList();
         if (found.isEmpty()) {
             return null;
         } else {

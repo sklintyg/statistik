@@ -31,7 +31,9 @@ import se.inera.statistics.web.util.DiagnosisGroupsUtil;
 @Service("chartService")
 public class ChartDataService {
 
-    private static List<String> PERIODS = createPeriods();
+    private static final int NR_OF_PERIDS = 18;
+
+    private static final List<String> PERIODS = createPeriods();
 
     private Random random = new Random();
 
@@ -45,9 +47,9 @@ public class ChartDataService {
     private static List<String> createPeriods() {
         Locale sweden = new Locale("SV", "se");
         Calendar c = new GregorianCalendar(sweden);
-        c.add(Calendar.MONTH, -18);
+        c.add(Calendar.MONTH, -NR_OF_PERIDS);
         List<String> names = new ArrayList<>();
-        for (int i = 0; i < 18; i ++) {
+        for (int i = 0; i < NR_OF_PERIDS; i++) {
             names.add(String.format(sweden, "%1$tb %1$tY", c));
             c.add(Calendar.MONTH, 1);
         }
@@ -55,9 +57,9 @@ public class ChartDataService {
     }
 
     private TableData createCasesPerMonthTableMockData() {
-        List<String> headers = Arrays.asList(new String[] { "Antal män", "Antal kvinnor", "Totalt antal" });
+        List<String> headers = Arrays.asList(new String[] {"Antal män", "Antal kvinnor", "Totalt antal"});
         ArrayList<TableRow> rows = new ArrayList<TableRow>();
-        for (String periodName: PERIODS) {
+        for (String periodName : PERIODS) {
             rows.add(new TableRow(periodName, randomCasesPerMonthData()));
         }
         return new TableData(rows, headers);
@@ -66,7 +68,7 @@ public class ChartDataService {
     private List<Number> randomCasesPerMonthData() {
         int men = (int) (random.nextGaussian() * 2000 + 10000);
         int women = (int) (random.nextGaussian() * 2000 + 10000);
-        return Arrays.asList(new Number[] { men, women, men + women });
+        return Arrays.asList(new Number[] {men, women, men + women });
     }
 
     @GET
@@ -85,7 +87,7 @@ public class ChartDataService {
         diagnosisGroupData.put("female", createDiagnosisGroupTableMockData());
         return diagnosisGroupData;
     }
-    
+
     @GET
     @Path("getDiagnosisSubGroupStatistics")
     @Produces({ MediaType.APPLICATION_JSON })
@@ -95,25 +97,25 @@ public class ChartDataService {
         diagnosisGroupData.put("female", createSubDiagnosisGroupTableMockData(groupId));
         return diagnosisGroupData;
     }
-    
+
     private TableData createDiagnosisGroupTableMockData() {
         List<String> headers = getTopDiagnosisGroupsAsList();
         ArrayList<TableRow> rows = new ArrayList<TableRow>();
-       for (String periodName: PERIODS) {
-           rows.add(new TableRow(periodName, randomData(headers.size())));
-       }
-       return new TableData(rows, headers);
+        for (String periodName : PERIODS) {
+            rows.add(new TableRow(periodName, randomData(headers.size())));
+        }
+        return new TableData(rows, headers);
     }
 
     private TableData createSubDiagnosisGroupTableMockData(String groupId) {
         List<String> headers = getSubDiagnosisGroupsAsList(groupId);
         ArrayList<TableRow> rows = new ArrayList<TableRow>();
-        for (String periodName: PERIODS) {
+        for (String periodName : PERIODS) {
             rows.add(new TableRow(periodName, randomData(headers.size())));
         }
         return new TableData(rows, headers);
     }
-    
+
     private List<String> getTopDiagnosisGroupsAsList() {
         List<String> diagnosisGroups = new ArrayList<>();
         diagnosisGroups.add("F00-F99 Psykiska sjukdomar och syndrom samt beteendestörningar");
@@ -125,7 +127,7 @@ public class ChartDataService {
         diagnosisGroups.add("Övrigt");
         return diagnosisGroups;
     }
-    
+
     private List<String> getSubDiagnosisGroupsAsList(String groupId) {
         List<DiagnosisGroup> subGroups = DiagnosisGroupsUtil.getSubGroups(groupId);
         List<String> subGroupStrings = new ArrayList<>();
@@ -134,14 +136,14 @@ public class ChartDataService {
         }
         return subGroupStrings;
     }
-    
+
     private List<DiagnosisGroup> getAllDiagnosisGroups() {
         return DiagnosisGroupsUtil.getAllDiagnosisGroups();
     }
-    
+
     private List<Number> randomData(int size) {
         Number[] data = new Number[size];
-        for (int i = 0; i < size; i++ ){
+        for (int i = 0; i < size; i++) {
             data[i] = g();
         }
         return Arrays.asList(data);
@@ -167,7 +169,7 @@ public class ChartDataService {
         diagnosisGroups.add(new DonutChartData("F - Psykiska", 40, 5));
         diagnosisGroups.add(new DonutChartData("S - Skador", 5, 3));
         diagnosisGroups.add(new DonutChartData("O - Graviditet och förlossning", 3, -3));
-        
+
         ArrayList<DonutChartData> ageGroups = new ArrayList<DonutChartData>();
         ageGroups.add(new DonutChartData("<35 år", 140, 2));
         ageGroups.add(new DonutChartData("36-40 år", 140, -4));
@@ -176,13 +178,13 @@ public class ChartDataService {
         ageGroups.add(new DonutChartData("51-55 år", 32, -3));
         ageGroups.add(new DonutChartData("56-60 år", 20, -4));
         ageGroups.add(new DonutChartData(">60 år", 15, 5));
-        
+
         ArrayList<DonutChartData> degreeOfSickLeaveGroups = new ArrayList<DonutChartData>();
         degreeOfSickLeaveGroups.add(new DonutChartData("25%", 3, 15));
         degreeOfSickLeaveGroups.add(new DonutChartData("50%", 15, 0));
         degreeOfSickLeaveGroups.add(new DonutChartData("75%", 7, -15));
         degreeOfSickLeaveGroups.add(new DonutChartData("100%", 75, 15));
-        
+
         ArrayList<BarChartData> sickLeaveLengthData = new ArrayList<BarChartData>();
         sickLeaveLengthData.add(new BarChartData("&lt;14", 12));
         sickLeaveLengthData.add(new BarChartData("15-30", 17));
@@ -191,14 +193,14 @@ public class ChartDataService {
         sickLeaveLengthData.add(new BarChartData("181-360", 9));
         sickLeaveLengthData.add(new BarChartData("&gt;360", 12));
         SickLeaveLengthOverview sickLeaveLength = new SickLeaveLengthOverview(sickLeaveLengthData, 105, 10);
-        
+
         ArrayList<DonutChartData> perCounty = new ArrayList<DonutChartData>();
         perCounty.add(new DonutChartData("Stockholms län", 15, 2));
         perCounty.add(new DonutChartData("Västra götalands län", 12, -4));
         perCounty.add(new DonutChartData("Skåne län", 6, 5));
         perCounty.add(new DonutChartData("Östergötlands län", 5, 0));
         perCounty.add(new DonutChartData("Uppsala län", 4, -4));
-        
+
         return new OverviewData(casesPerMonth, diagnosisGroups, ageGroups, degreeOfSickLeaveGroups, sickLeaveLength, perCounty);
     }
 

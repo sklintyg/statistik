@@ -4,9 +4,9 @@ import java.util.List;
 
 public class SickLeaveLengthOverview {
 
-    final private List<BarChartData> chartData;
-    final private int longSickLeavesTotal;
-    final private int longSickLeavesAlternation;
+    private final List<BarChartData> chartData;
+    private final int longSickLeavesTotal;
+    private final int longSickLeavesAlternation;
 
     public SickLeaveLengthOverview(List<BarChartData> chartData, int longSickLeavesTotal, int longSickLeavesAlternation) {
         this.chartData = chartData;
