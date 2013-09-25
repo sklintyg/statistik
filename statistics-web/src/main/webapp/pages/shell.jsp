@@ -72,23 +72,45 @@
 		<div class="row-fluid">
 			<div class="span3 bs-docs-sidebar">
 				<div id="statistics-left-menu">
-					<ul class="nav nav-list bs-docs-sidenav" id="national-statistic-menu">
-						<li><a ng-href="#/oversikt" navigationaware>Nationell statistik<i class="icon-chevron-right"></i></a></li>
-						<li><a ng-href="#/sjukfallPerManad" id="navCasesPerMonthLink" navigationaware>Sjukfall, totalt<i class="icon-chevron-right"></i></a></li>
-						<li><a ng-href="#/diagnosgrupper" id="navDiagnosisGroupsLink" navigationaware>Diagnosgrupp<i class="icon-chevron-right"></i></a></li>
-						<li><a ng-href="#/underdiagnosgrupper" id="navDiagnosisSubGroupsLink" navigationaware>Underdiagnosgrupp<i class="icon-chevron-right"></i></a></li>
-						<li><a ng-href="#/aldersgrupper" id="navAgeGroupsLink" navigationaware>Ålderssgrupp<i class="icon-chevron-right"></i></a></li>
-						<li><a ng-href="#/sjukskrivningsgrad" id="navSickLeaveDegreeLink" navigationaware>Sjukskrivningsgrad<i class="icon-chevron-right"></i></a></li>
-						<li><a ng-href="#/sjukskrivningslangd" id="navSickLeaveLengthLink" navigationaware>Sjukskrivningslängd<i class="icon-chevron-right"></i></a></li>
-						<li><a ng-href="#/lan" id="navCountyLink" navigationaware>Län<i class="icon-chevron-right"></i></a></li>
-						<li><a ng-href="#/andelSjukfallPerKon" id="navCasesPerSexLink" navigationaware>Andel sjukfall per kön<i class="icon-chevron-right"></i></a></li>
-					</ul>
-					<ul class="nav nav-list bs-docs-sidenav" id="business-statistics-menu">
-						<li><a ng-href="#/om#about" navigationaware>Om tjänsten</a></li>
-						<li><a ng-href="#/om#login" navigationaware>Inloggning och behörighet</a></li>
-						<li><a ng-href="#/om#faq" navigationaware>Vanliga frågor och svar</a></li>
-						<li><a ng-href="#/om#contact" navigationaware>Kontakt till support</a></li>
-					</ul>
+					<div>
+						<ul class="nav nav-list bs-docs-sidenav" id="national-statistic-menu">
+							<li class="statistics-left-menu-header"><a class="accordion-toggle" data-toggle="collapse" href="#national-statistic-menu-content">Nationell statistik<i class="statistict-left-menu-expand-icon"></i></a></li>
+							<ul id="national-statistic-menu-content" class="nav nav-list accordion-body in collapse">
+								<li><a ng-href="#/oversikt" navigationaware>Översikt</a></li>
+							 	<li><a ng-href="#/sjukfallPerManad" id="navCasesPerMonthLink" navigationaware>Sjukfall, totalt</a></li>
+								<li><a ng-href="#/diagnosgrupper" id="navDiagnosisGroupsLink" navigationaware>Diagnosgrupp</a></li>
+								<ul class="nav nav-list sub-nav-list">
+									<li><a ng-href="#/underdiagnosgrupper" id="navDiagnosisSubGroupsLink" navigationaware>Underdiagnosgrupp</a></li>
+								</ul>
+								<li><a ng-href="#/aldersgrupper" id="navAgeGroupsLink" navigationaware>Ålderssgrupp</a></li>
+								<li><a ng-href="#/sjukskrivningsgrad" id="navSickLeaveDegreeLink" navigationaware>Sjukskrivningsgrad</a></li>
+								<li><a ng-href="#/sjukskrivningslangd" id="navSickLeaveLengthLink" navigationaware>Sjukskrivningslängd</a></li>
+								<li><a ng-href="#/lan" id="navCountyLink" navigationaware>Län</a></li>
+								<ul class="nav nav-list">
+									<li><a ng-href="#/andelSjukfallPerKon" id="navCasesPerSexLink" navigationaware>Andel sjukfall per kön</a></li>
+								</ul>
+							</ul>
+						</ul>	
+						<!-- 
+						<ul class="nav nav-list bs-docs-sidenav" id="national-statistic-menu">
+							<li><a ng-href="#/oversikt" navigationaware>Nationell statistik<i class="icon-chevron-right"></i></a></li>
+						 	<li><a ng-href="#/sjukfallPerManad" id="navCasesPerMonthLink" navigationaware>Sjukfall, totalt</a></li>
+							<li><a ng-href="#/diagnosgrupper" id="navDiagnosisGroupsLink" navigationaware>Diagnosgrupp<i class="icon-chevron-right"></i></a></li>
+							<li><a ng-href="#/underdiagnosgrupper" id="navDiagnosisSubGroupsLink" navigationaware>Underdiagnosgrupp</a></li>
+							<li><a ng-href="#/aldersgrupper" id="navAgeGroupsLink" navigationaware>Ålderssgrupp</a></li>
+							<li><a ng-href="#/sjukskrivningsgrad" id="navSickLeaveDegreeLink" navigationaware>Sjukskrivningsgrad</a></li>
+							<li><a ng-href="#/sjukskrivningslangd" id="navSickLeaveLengthLink" navigationaware>Sjukskrivningslängd</a></li>
+							<li><a ng-href="#/lan" id="navCountyLink" navigationaware>Län<i class="icon-chevron-right"></i></a></li>
+							<li><a ng-href="#/andelSjukfallPerKon" id="navCasesPerSexLink" navigationaware>Andel sjukfall per kön<i class="icon-chevron-right"></i></a></li>
+						</ul>
+						<!-- ul class="nav nav-list bs-docs-sidenav accordion-group" id="business-statistics-menu">
+							<li><a ng-href="#/om#about" navigationaware>Om tjänsten</a></li>
+							<li><a ng-href="#/om#login" navigationaware>Inloggning och behörighet</a></li>
+							<li><a ng-href="#/om#faq" navigationaware>Vanliga frågor och svar</a></li>
+							<li><a ng-href="#/om#contact" navigationaware>Kontakt till support</a></li>
+						</ul> -->
+					
+					</div>
 				</div>
 			</div>
 		      
@@ -123,8 +145,6 @@
 <script type="text/javascript">
 	$('.dropdown-toggle').dropdown();
 	$('#business-statistics-menu').scrollspy();
-	$('#national-statistic-menu').affix();
-	$('#business-statistics-menu').affix();
 	$('#statistics-left-menu').affix();
 </script>
 

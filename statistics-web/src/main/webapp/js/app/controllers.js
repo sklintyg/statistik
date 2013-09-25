@@ -164,7 +164,8 @@ statisticsApp.controller('OverviewCtrl', function ($scope, statisticsData) {
     	        },
                 tooltip: {
                     backgroundColor: '#fff',
-                    borderWidth: 2
+                    borderWidth: 2,
+                    crosshairs: true // True if crosshair. Not specified in design document for Statistiktjänsten 1.0.
                 },
                 credits: {
                     enabled: false
@@ -334,7 +335,7 @@ statisticsApp.controller('CasesPerMonthCtrl', function ($scope, statisticsData) 
                 } 
             },
             tooltip: {
-		        /*crosshairs: true*/ // True if crosshair. Not specified in design document for Statistiktjänsten 1.0.
+		        crosshairs: true // True if crosshair. Not specified in design document for Statistiktjänsten 1.0.
             },
             credits: {
                 enabled: false
@@ -427,7 +428,7 @@ statisticsApp.controller('DiagnosisGroupsCtrl', function ($scope, $routeParams, 
                 }
             },
             tooltip: {
-                /*crosshairs: true*/ // True if crosshair. Not specified in design document for Statistiktjänsten 1.0.
+                crosshairs: true // True if crosshair. Not specified in design document for Statistiktjänsten 1.0.
             },
             credits: {
                 enabled: false
