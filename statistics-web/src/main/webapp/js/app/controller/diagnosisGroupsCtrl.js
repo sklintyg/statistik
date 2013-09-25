@@ -62,13 +62,13 @@ var diagnosisGroupsCtrl = function ($scope, $routeParams, $window, statisticsDat
 
     var updateDataTable = function($scope, ajaxResult) {
         var topheaders = [{"text": "", "colspan" : "1"}];
-        for ( var i = 0; i < ajaxResult.female.headers.length; i++) {
-            topheaders.push({"text": ajaxResult.female.headers[i], "colspan" : "2"});
+        for ( var i = 0; i < ajaxResult.femaleTable.headers.length; i++) {
+            topheaders.push({"text": ajaxResult.femaleTable.headers[i], "colspan" : "2"});
         }
         topheaders.push({"text": "", "colspan" : "1"});
         
         var subheaders = [{"text": "Period", "colspan" : "1"}];
-        for ( var i = 0; i < ajaxResult.female.headers.length; i++) {
+        for ( var i = 0; i < ajaxResult.femaleTable.headers.length; i++) {
             subheaders.push({"text": "Kvinnor", "colspan" : "1"});
             subheaders.push({"text": "Män", "colspan" : "1"});
         }
@@ -77,30 +77,28 @@ var diagnosisGroupsCtrl = function ($scope, $routeParams, $window, statisticsDat
         $scope.headerrows = [topheaders, subheaders];
         
         var rows = [];
-        for ( var i = 0; i < ajaxResult.female.rows.length; i++) {
-            rows.push({"name":ajaxResult.female.rows[i].name, "data":appendSum(zipArrays(ajaxResult.female.rows[i].data, ajaxResult.male.rows[i].data))});
+        for ( var i = 0; i < ajaxResult.femaleTable.rows.length; i++) {
+            rows.push({"name":ajaxResult.femaleTable.rows[i].name, "data":appendSum(zipArrays(ajaxResult.femaleTable.rows[i].data, ajaxResult.maleTable.rows[i].data))});
         }
         $scope.rows = rows;
     };
 
     var updateChart = function(ajaxResult) {
-        var chartCategories = getChartCategories(ajaxResult.female);
+        var chartCategories = ajaxResult.femaleChart.headers;
 
-        var chartSeriesFemale = getChartSeries(ajaxResult.female);
-        var chartSeriesTopFemale = chartSeriesFemale.slice(0,6).concat(sumSeries(chartSeriesFemale.slice(6,chartSeriesFemale.length)));
-        addColor(chartSeriesTopFemale);
-        chart1 = paintChart('container1', 'Antal kvinnor', chartCategories, chartSeriesTopFemale);
+        var chartSeriesFemale = ajaxResult.femaleChart.rows;
+        addColor(chartSeriesFemale);
+        chart1 = paintChart('container1', 'Antal kvinnor', chartCategories, chartSeriesFemale);
         
-        var chartSeriesMale = getChartSeries(ajaxResult.male);
-        var chartSeriesTopMale = chartSeriesMale.slice(0,6).concat(sumSeries(chartSeriesMale.slice(6,chartSeriesMale.length)));
-        addColor(chartSeriesTopMale);
-        chart2 = paintChart('container2', 'Antal män', chartCategories, chartSeriesTopMale);
+        var chartSeriesMale = ajaxResult.maleChart.rows;
+        addColor(chartSeriesMale);
+        chart2 = paintChart('container2', 'Antal män', chartCategories, chartSeriesMale);
         
         var yMax = Math.max(chart1.yAxis[0].dataMax, chart2.yAxis[0].dataMax);
         chart1.yAxis[0].setExtremes(0,yMax);
         chart2.yAxis[0].setExtremes(0,yMax);
         
-        $scope.series = chartSeriesTopMale;
+        $scope.series = chartSeriesMale;
     };
 
     function sumSeries(series){
