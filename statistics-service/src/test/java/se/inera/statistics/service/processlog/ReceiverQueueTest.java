@@ -20,7 +20,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "/process-log-qm-test.xml" })
+@ContextConfiguration(locations = { "/process-log-qm-test.xml", "/process-log-impl-test.xml" })
 public class ReceiverQueueTest {
 
     private ProcessLog processLog = Mockito.mock(ProcessLog.class);
@@ -52,7 +52,9 @@ public class ReceiverQueueTest {
 
         this.jmsTemplate.send(destination, new MessageCreator() {
             public Message createMessage(Session session) throws JMSException {
-                return session.createTextMessage("hello queue world");
+                TextMessage message = session.createTextMessage("hello queue world");
+                message.setJMSCorrelationID("C12");
+                return message;
             }
         });
     }
@@ -63,6 +65,12 @@ public class ReceiverQueueTest {
     @Test
     public void send() {
         simpleSend();
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            e.printStackTrace(); // To change body of catch statement use File |
+                                 // Settings | File Templates.
+        }
     }
 
 }

@@ -10,8 +10,8 @@ public class IntygEvent extends Event {
     public IntygEvent() {
     }
 
-    public IntygEvent(EventType type, String data) {
-        super(type, data);
+    public IntygEvent(EventType type, String data, String correlationId, long timestamp) {
+        super(type, data, correlationId, timestamp);
     }
 
 }
