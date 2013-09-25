@@ -12,9 +12,10 @@
     </description>
 
     <modules>
+        <module>build-tools</module>
         <module>statistics-web</module>
-		<module>statistics-service</module>
-		<module>statistics-specifications</module>
+        <module>statistics-service</module>
+        <module>statistics-specifications</module>
     </modules>
 
     <properties>
@@ -23,9 +24,9 @@
         <spring.security.version>3.1.4.RELEASE</spring.security.version>
         <hibernate.version>3.6.8.Final</hibernate.version>
         <hsqldb.version>1.8.0.10</hsqldb.version>
-        <slf4j.version>1.6.4</slf4j.version>
         <cxf.version>2.7.4</cxf.version>
-	<jackson.version>2.1.1</jackson.version>
+        <logback.version>1.0.13</logback.version>
+        <jackson.version>2.1.1</jackson.version>
     </properties>
 
     <dependencyManagement>
@@ -203,24 +204,6 @@
             </dependency>
 
             <dependency>
-                <groupId>org.slf4j</groupId>
-                <artifactId>slf4j-api</artifactId>
-                <version>${slf4j.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.slf4j</groupId>
-                <artifactId>jcl-over-slf4j</artifactId>
-                <version>${slf4j.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.slf4j</groupId>
-                <artifactId>log4j-over-slf4j</artifactId>
-                <version>${slf4j.version}</version>
-            </dependency>
-
-            <dependency>
                 <groupId>ch.qos.logback</groupId>
                 <artifactId>logback-classic</artifactId>
                 <version>1.0.0</version>
@@ -232,10 +215,10 @@
                 <version>${hsqldb.version}</version>
             </dependency>
 
-	    <dependency>
-        	<groupId>com.fasterxml.jackson.jaxrs</groupId>
-        	<artifactId>jackson-jaxrs-json-provider</artifactId>
-        	<version>${jackson.version}</version>
+            <dependency>
+                <groupId>com.fasterxml.jackson.jaxrs</groupId>
+                <artifactId>jackson-jaxrs-json-provider</artifactId>
+                <version>${jackson.version}</version>
             </dependency>
 
             <dependency>
@@ -286,6 +269,10 @@
 
     <dependencies>
         <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-test</artifactId>
         </dependency>
@@ -317,8 +304,24 @@
                     <version>9.0.5.v20130815</version>
                 </plugin>
                 <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-checkstyle-plugin</artifactId>
+                    <version>2.10</version>
+                    <configuration>
+                        <configLocation>checkstyle.xml</configLocation>
+                    </configuration>
+                    <dependencies>
+                        <dependency>
+                            <groupId>se.inera.statistics</groupId>
+                            <artifactId>build-tools</artifactId>
+                            <version>1.0-SNAPSHOT</version>
+                        </dependency>
+                    </dependencies>
+                </plugin>
+                <plugin>
                     <groupId>com.mycila.maven-license-plugin</groupId>
                     <artifactId>maven-license-plugin</artifactId>
+                    <version>1.9.0</version>
                     <configuration>
                         <properties>
                             <year>2013</year>
@@ -366,19 +369,22 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
             </plugin>
+            <plugin>
+              <groupId>org.apache.maven.plugins</groupId>
+              <artifactId>maven-checkstyle-plugin</artifactId>
+            </plugin>
         </plugins>
     </build>
-  <pluginRepositories>
-    <pluginRepository>
-      <id>thirdparty-plugin</id>
-      <url>https://repository-callistasoftware.forge.cloudbees.com/3rdparty</url>
-      <releases>
-        <enabled>true</enabled>
-      </releases>
-      <snapshots>
-        <enabled>false</enabled>
-      </snapshots>
-    </pluginRepository>
-  </pluginRepositories>
-
+    <pluginRepositories>
+        <pluginRepository>
+            <id>thirdparty-plugin</id>
+            <url>https://repository-callistasoftware.forge.cloudbees.com/3rdparty</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </pluginRepository>
+    </pluginRepositories>
 </project>
