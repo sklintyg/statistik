@@ -21,7 +21,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "/process-log-qm-test.xml", "/process-log-impl-test.xml" })
-public class ReceiverQueueTest {
+public class ReceiverQueueFunctionalTest {
 
     private ProcessLog processLog = Mockito.mock(ProcessLog.class);
 
