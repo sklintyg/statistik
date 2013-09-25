@@ -3,12 +3,12 @@ package se.inera.statistics.web.model;
 import java.util.Collections;
 import java.util.List;
 
-public class TableRow {
+public class NamedData {
 
     private final String name;
     private final List<Number> data;
 
-    public TableRow(String name, List<Number> data) {
+    public NamedData(String name, List<Number> data) {
         this.name = name;
         this.data = Collections.unmodifiableList(data);
     }

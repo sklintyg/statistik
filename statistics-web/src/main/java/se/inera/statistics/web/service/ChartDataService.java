@@ -15,12 +15,15 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import se.inera.statistics.service.report.api.CasesPerMonth;
+import se.inera.statistics.service.report.model.CasesPerMonthRow;
 import se.inera.statistics.web.model.DiagnosisGroup;
 import se.inera.statistics.web.model.DiagnosisGroupsData;
 import se.inera.statistics.web.model.TableData;
-import se.inera.statistics.web.model.TableRow;
+import se.inera.statistics.web.model.NamedData;
 import se.inera.statistics.web.model.overview.BarChartData;
 import se.inera.statistics.web.model.overview.DonutChartData;
 import se.inera.statistics.web.model.overview.NumberOfCasesPerMonthOverview;
@@ -37,13 +40,23 @@ public class ChartDataService {
 
     private static final List<String> PERIODS = createPeriods();
 
-    private Random random = new Random();
+    @Autowired
+    private CasesPerMonth datasourceCasesPerMonth;
 
     @GET
     @Path("getNumberOfCasesPerMonth")
     @Produces({ MediaType.APPLICATION_JSON })
     public TableData getNumberOfCasesPerMonth() {
-        return createCasesPerMonthTableMockData();
+        List<CasesPerMonthRow> casesPerMonth = datasourceCasesPerMonth.getCasesPerMonth();
+        return new TableData(convertCasesPerMonthData(casesPerMonth), Arrays.asList(new String[]{"Period", "Antal kvinnor", "Antal män", "Summering"}));
+    }
+
+    private List<NamedData> convertCasesPerMonthData(List<CasesPerMonthRow> casesPerMonth) {
+        List<NamedData> data = new ArrayList<>();
+        for (CasesPerMonthRow row : casesPerMonth) {
+            data.add(new NamedData(row.getPeriod(), Arrays.asList(new Number[]{row.getFemale(), row.getMale(), row.getFemale() + row.getMale()})));
+        }
+        return data;
     }
 
     private static List<String> createPeriods() {
@@ -58,22 +71,7 @@ public class ChartDataService {
         return names;
     }
 
-    private TableData createCasesPerMonthTableMockData() {
-        List<String> headers = Arrays.asList(new String[] {"Antal män", "Antal kvinnor", "Totalt antal"});
-        ArrayList<TableRow> rows = new ArrayList<TableRow>();
-        for (String periodName : PERIODS) {
-            rows.add(new TableRow(periodName, randomCasesPerMonthData()));
-        }
-        return new TableData(rows, headers);
-    }
-
     // CHECKSTYLE:OFF MagicNumber
-    private List<Number> randomCasesPerMonthData() {
-        int men = (int) (random.nextGaussian() * 2000 + 10000);
-        int women = (int) (random.nextGaussian() * 2000 + 10000);
-        return Arrays.asList(new Number[] {men, women, men + women });
-    }
-
     @GET
     @Path("getDiagnosisGroups")
     @Produces({ MediaType.APPLICATION_JSON })
@@ -101,27 +99,27 @@ public class ChartDataService {
     }
 
     private TableData extractChartData(TableData data, List<Integer> topIndexes) {
-        List<TableRow> topColumns = getTopColumns(data, topIndexes);
+        List<NamedData> topColumns = getTopColumns(data, topIndexes);
         return new TableData(topColumns, getDataRowNames(data));
     }
 
-    private List<TableRow> getTopColumns(TableData data, List<Integer> topIndexes) {
-        List<TableRow> topColumns = new ArrayList<>();
+    private List<NamedData> getTopColumns(TableData data, List<Integer> topIndexes) {
+        List<NamedData> topColumns = new ArrayList<>();
         for (Integer index : topIndexes) {
             List<Number> indexData = getDataAtIndex(index, data);
-            topColumns.add(new TableRow(data.getHeaders().get(index), indexData));
+            topColumns.add(new NamedData(data.getHeaders().get(index), indexData));
         }
         if (data.getHeaders().size() > NUMBER_OF_CHART_SERIES) {
             List<Number> remainingData = sumRemaining(topIndexes, data);
-            topColumns.add(new TableRow("Övrigt", remainingData));
+            topColumns.add(new NamedData("Övrigt", remainingData));
         }
         return topColumns;
     }
 
     private ArrayList<String> getDataRowNames(TableData data) {
-        List<TableRow> rows = data.getRows();
+        List<NamedData> rows = data.getRows();
         ArrayList<String> names = new ArrayList<String>();
-        for (TableRow tableRow : rows) {
+        for (NamedData tableRow : rows) {
             names.add(tableRow.getName());
         }
         return names;
@@ -132,7 +130,7 @@ public class ChartDataService {
         for (int i = 0; i < data.getRows().size(); i++) {
             remaining.add(0);
         }
-        List<TableRow> rows = data.getRows();
+        List<NamedData> rows = data.getRows();
         for (int r = 0; r < rows.size(); r++) {
             List<Number> data2 = rows.get(r).getData();
             for (int i = 0; i < data2.size(); i++) {
@@ -154,8 +152,8 @@ public class ChartDataService {
 
     private List<Number> getDataAtIndex(Integer index, TableData data) {
         List<Number> indexData = new ArrayList<>(data.getRows().size());
-        List<TableRow> rows = data.getRows();
-        for (TableRow tableRow : rows) {
+        List<NamedData> rows = data.getRows();
+        for (NamedData tableRow : rows) {
             List<Number> data2 = tableRow.getData();
             for (int i = 0; i < data2.size(); i++) {
                 if (i == index) {
@@ -178,27 +176,27 @@ public class ChartDataService {
 
     private TableData createDiagnosisGroupTableMockData() {
         List<String> headers = toListOfStrings(DiagnosisGroupsUtil.getAllDiagnosisGroups());
-        ArrayList<TableRow> rows = new ArrayList<TableRow>();
+        ArrayList<NamedData> rows = new ArrayList<NamedData>();
         for (String periodName : PERIODS) {
-            rows.add(new TableRow(periodName, randomData(headers.size())));
+            rows.add(new NamedData(periodName, randomData(headers.size())));
         }
         return new TableData(rows, headers);
     }
 
     private TableData createDiagnosisGroupChartMockData() {
         List<String> headers = PERIODS;
-        ArrayList<TableRow> rows = new ArrayList<TableRow>();
+        ArrayList<NamedData> rows = new ArrayList<NamedData>();
         for (String periodName : getTopDiagnosisGroupsAsList()) {
-            rows.add(new TableRow(periodName, randomData(headers.size())));
+            rows.add(new NamedData(periodName, randomData(headers.size())));
         }
         return new TableData(rows, headers);
     }
 
     private TableData createSubDiagnosisGroupTableMockData(String groupId) {
         List<String> headers = toListOfStrings(DiagnosisGroupsUtil.getSubGroups(groupId));
-        ArrayList<TableRow> rows = new ArrayList<TableRow>();
+        ArrayList<NamedData> rows = new ArrayList<NamedData>();
         for (String periodName : PERIODS) {
-            rows.add(new TableRow(periodName, randomData(headers.size())));
+            rows.add(new NamedData(periodName, randomData(headers.size())));
         }
         return new TableData(rows, headers);
     }
