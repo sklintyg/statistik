@@ -24,7 +24,7 @@ public class ProcessLogImplTest extends ProcessLogImpl {
 
     @Test
     public void storedEventCanBeFetched() throws InterruptedException, NotSupportedException, SystemException {
-        long id = store(EventType.CREATED, "data");
+        long id = store(EventType.CREATED, "data", "corr", 123L);
         IntygEvent event = get(id);
         assertEquals("data", event.getData());
     }
@@ -37,8 +37,8 @@ public class ProcessLogImplTest extends ProcessLogImpl {
 
     @Test
     public void withTwoPendingEventPollReturnsFirstEvent() {
-        store(EventType.CREATED, "1");
-        store(EventType.CREATED, "2");
+        store(EventType.CREATED, "1", "corr", 123L);
+        store(EventType.CREATED, "2", "corr", 123L);
 
         IntygEvent pending = getPending();
         assertEquals("1", pending.getData());
@@ -47,8 +47,8 @@ public class ProcessLogImplTest extends ProcessLogImpl {
 
     @Test
     public void withTwoPendingEventEacheEventCanBeGottenInOrderAfterConfirm() {
-        store(EventType.CREATED, "1");
-        store(EventType.CREATED, "2");
+        store(EventType.CREATED, "1", "corr", 123L);
+        store(EventType.CREATED, "2", "corr", 123L);
 
         IntygEvent pending = getPending();
         assertEquals("1", pending.getData());

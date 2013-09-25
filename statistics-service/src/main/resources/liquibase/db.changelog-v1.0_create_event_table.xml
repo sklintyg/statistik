@@ -11,10 +11,12 @@
                 <constraints nullable="false"/>
             </column>
             <column name="data" type="text"/>
+            <column name="correlationId" type="text"/>
+            <column name="timestamp" type="bigint"/>
         </createTable>
     </changeSet>
     <changeSet id="1b_add_event_sequence" author="pierre.sandboge">
-        <createSequence sequenceName="hibernate_sequence" startValue="218281828"/>
+        <createSequence sequenceName="hibernate_sequence" startValue="42"/>
     </changeSet>
 
 </databaseChangeLog>
