@@ -113,6 +113,7 @@
       <property name="severity" value="warning"/>
     </module>
     <module name="UpperEll"/>
+    <module name="FileContentsHolder"/>
   </module>
   <module name="JavadocPackage">
     <property name="severity" value="ignore"/>
@@ -125,5 +126,10 @@
   <module name="RegexpSingleline">
     <property name="format" value="\s+$"/>
     <property name="message" value="Line has trailing spaces."/>
+  </module>
+  <module name="SuppressionCommentFilter">
+    <property name="offCommentFormat" value="CHECKSTYLE\:OFF ([\w\|]+)"/>
+    <property name="onCommentFormat" value="CHECKSTYLE\:ON ([\w\|]+)"/>
+    <property name="checkFormat" value="$1"/>
   </module>
 </module>

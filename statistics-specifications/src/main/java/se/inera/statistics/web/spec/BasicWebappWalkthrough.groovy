@@ -8,33 +8,25 @@ import se.inera.statistics.web.pages.CasesPerMonthPage
 public class BasicWebappWalkthrough {
 
     public void öppnaFörstasidan() {
-        Browser.drive {
-            go "/"
-        }
+        Browser.drive { go "/" }
     }
 
     public boolean nationellaÖversiktssidanVisas() {
         Browser.drive {
-            waitFor {
-                at NationalOverviewPage
-            }
+            waitFor { at NationalOverviewPage }
         }
     }
 
     public boolean sidanSjukfallPerMånadVisas() {
         Browser.drive {
-            waitFor {
-                at CasesPerMonthPage
-            }
+            waitFor { at CasesPerMonthPage }
         }
     }
-    
+
     public boolean statistikFörKönsfördelningFörKvinnorVisas() {
         def result = false
         Browser.drive {
-            waitFor {
-                at NationalOverviewPage
-            }
+            waitFor { at NationalOverviewPage }
             String value = page.casesPerMonthFemaleProportion
             result = value.matches("[0-9]+%")
         }
@@ -44,21 +36,16 @@ public class BasicWebappWalkthrough {
     public boolean statistikFörKönsfördelningFörMänVisas() {
         def result = false
         Browser.drive {
-            waitFor {
-                at NationalOverviewPage
-            }
+            waitFor { at NationalOverviewPage }
             String value = page.casesPerMonthMaleProportion
             result = value.matches("[0-9]+%")
         }
         result
     }
-    
     public boolean totalsummanFörKönsfördelningBlir100Procent() {
         def result = false
         Browser.drive {
-            waitFor {
-                at NationalOverviewPage
-            }
+            waitFor { at NationalOverviewPage }
             String femaleText = page.casesPerMonthFemaleProportion
             String maleText = page.casesPerMonthMaleProportion
             int femaleNumber = (Integer.parseInt(femaleText.replace("%", "")))
@@ -67,70 +54,57 @@ public class BasicWebappWalkthrough {
         }
         result
     }
-    
+
     public boolean förändringAvAntalSjukfallÄrMellan0Och100Procent() {
         def result = false
         Browser.drive {
-            waitFor {
-                at NationalOverviewPage
-            }
+            waitFor { at NationalOverviewPage }
             String alterationText = page.casesPerMonthAlteration
             int alterationNumber = (Integer.parseInt(alterationText.replace("%", "")))
             result = alterationNumber >= 0 && alterationNumber <= 100
         }
         result
     }
-    
+
     public void gåTillSjukfallstatistiksidanViaVänsterNavigationsmeny() {
         def result = false
         Browser.drive {
-            waitFor {
-                at NavigationMenuPage
-            }
+            waitFor { at NavigationMenuPage }
             page.goToCasesPerMonth()
         }
     }
-    
+
     public boolean ettDiagramVisas() {
         def result = false
         Browser.drive {
-            waitFor {
-                at CasesPerMonthPage
-            }
+            waitFor { at CasesPerMonthPage }
             result = page.chart.isDisplayed()
         }
         result
     }
-    
+
     public boolean enTabellVisas() {
         def result = false
         Browser.drive {
-            waitFor {
-                at CasesPerMonthPage
-            }
+            waitFor { at CasesPerMonthPage }
             result = page.isDatatableVisible()
         }
         result
     }
-    
+
     public void klickaPåDöljTabell() {
         Browser.drive {
-            waitFor {
-                at CasesPerMonthPage
-            }
+            waitFor { at CasesPerMonthPage }
             page.toggleDataTableVisibility()
         }
     }
-    
+
     public boolean tabellenVisasEj() {
         def result = false
         Browser.drive {
-            waitFor {
-                at CasesPerMonthPage
-            }
+            waitFor { at CasesPerMonthPage }
             result = !page.isDatatableVisible()
         }
         result
     }
-    
 }

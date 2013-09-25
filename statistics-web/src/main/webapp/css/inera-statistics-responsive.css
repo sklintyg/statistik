@@ -833,7 +833,9 @@ form.bs-docs-example {
   top: 90px;
 }
 .bs-docs-sidenav.affix#business-statistics-menu{
-  top: 268px
+  	top: 362px;
+	clear: left;
+	position: relative;
 }
 .bs-docs-sidenav.affix-bottom {
   position: absolute;
