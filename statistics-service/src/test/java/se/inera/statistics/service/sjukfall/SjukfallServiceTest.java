@@ -19,9 +19,9 @@ import org.springframework.transaction.annotation.Transactional;
 @ContextConfiguration(locations = { "classpath:process-log-impl-test.xml" })
 @Transactional
 public class SjukfallServiceTest extends SjukfallService {
-    
+
     private DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-    
+
     @Test
     public void registering_period_returns_id() {
         String id = register("personnummer", "vardgivare", date("2013-01-01"), date("2013-01-25"));

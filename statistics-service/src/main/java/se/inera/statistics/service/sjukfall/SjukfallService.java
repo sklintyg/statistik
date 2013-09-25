@@ -20,6 +20,9 @@ public class SjukfallService {
 
     private static final long MILLIS_PER_DAY = 24 * 60 * 60 * 1000;
 
+    public String register(SjukfallKey key) {
+        return register(key.getPersonId(), key.getVardgivareId(), key.getStart(), key.getEnd());
+    }
     public String register(String personId, String vardgivareId, Date start, Date end) {
         Sjukfall currentSjukfall = getCurrentSjukfall(personId, vardgivareId);
         if (currentSjukfall != null) {
