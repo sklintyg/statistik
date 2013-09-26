@@ -1,8 +1,10 @@
-package se.inera.statistics.service.processlog;
+package se.inera.statistics.service.queue;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import se.inera.statistics.service.processlog.EventType;
+import se.inera.statistics.service.processlog.ProcessLog;
 
 import javax.jms.JMSException;
 import javax.jms.Message;

@@ -7,25 +7,18 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mockito;
-
-import static org.mockito.Mockito.verify;
 
 import javax.jms.*;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.core.MessageCreator;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import se.inera.statistics.service.queue.Receiver;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "/process-log-qm-test.xml", "/process-log-impl-test.xml" })
 public class ReceiverQueueFunctionalTest {
-
-    private ProcessLog processLog = Mockito.mock(ProcessLog.class);
-
-    private Receiver receiver = new Receiver();
 
     private JmsTemplate jmsTemplate;
 
@@ -60,16 +53,18 @@ public class ReceiverQueueFunctionalTest {
     }
 
     /**
-     *
+     * Functional test to check if a message is consumed. The proof is in the
+     * pudding. Check output for "Received intyg" and inspect its
+     * representation.
      */
+    @Ignore
     @Test
     public void send() {
         simpleSend();
         try {
             Thread.sleep(5000);
         } catch (InterruptedException e) {
-            e.printStackTrace(); // To change body of catch statement use File |
-                                 // Settings | File Templates.
+            e.printStackTrace();
         }
     }
 
