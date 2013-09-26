@@ -37,6 +37,7 @@
     <bean class="se.inera.statistics.service.report.mock.CasesPerMonthMock"></bean>
     <bean class="se.inera.statistics.service.report.mock.DiagnosisGroupsMock"></bean>
     <bean class="se.inera.statistics.service.report.mock.DiagnosisSubGroupsMock"></bean>
+    <bean class="se.inera.statistics.service.report.mock.OverviewMock"></bean>
 
     <context:annotation-config/>
     <context:component-scan base-package="se.inera.statistics"/>

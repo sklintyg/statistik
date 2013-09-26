@@ -86,6 +86,7 @@ var casesPerMonthCtrl = function ($scope, statisticsData) {
 	var updateChart = function(ajaxResult) {
 		var chartCategories = getChartCategories(ajaxResult);
 		var chartSeries = getChartSeries(ajaxResult);
+		chartSeries.pop();
 		paintChart(chartCategories, chartSeries);
 	};
 

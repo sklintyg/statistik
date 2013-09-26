@@ -82,6 +82,10 @@
         <artifactId>jetty-maven-plugin</artifactId>
         <configuration>
           <scanIntervalSeconds>1</scanIntervalSeconds>
+          <systemProperty>
+            <name>java.awt.headless</name>
+            <value>true</value>
+          </systemProperty>            
         </configuration>
       </plugin>
       <plugin>
