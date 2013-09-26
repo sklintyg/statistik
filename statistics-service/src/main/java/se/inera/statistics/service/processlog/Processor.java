@@ -17,7 +17,7 @@ public class Processor {
 
     public void accept(JsonNode utlatande, JsonNode hsa) {
         SjukfallKey sjukfallKey = extractSjukfallKey(utlatande);
-        String sjukfallId = sjukfallService.register(sjukfallKey);
+        sjukfallService.register(sjukfallKey);
     }
 
     protected SjukfallKey extractSjukfallKey(JsonNode utlatande) {

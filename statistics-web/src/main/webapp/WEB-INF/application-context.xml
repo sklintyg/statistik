@@ -35,6 +35,7 @@
     <import resource="application-context-security.xml"/>
     
     <bean class="se.inera.statistics.service.report.mock.CasesPerMonthMock"></bean>
+    <bean class="se.inera.statistics.service.report.mock.DiagnosisGroupsMock"></bean>
 
     <context:annotation-config/>
     <context:component-scan base-package="se.inera.statistics"/>

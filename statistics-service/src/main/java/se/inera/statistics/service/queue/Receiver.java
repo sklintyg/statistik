@@ -62,11 +62,6 @@ public class Receiver implements MessageListener {
                 eventType = EventType.TEST;
             }
             correlationId = jmsCorrelationID;
-
-        }
-
-        private EventType getEventType() {
-            return eventType;
         }
     }
 }

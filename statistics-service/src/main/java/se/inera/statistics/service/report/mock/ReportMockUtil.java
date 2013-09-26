@@ -5,14 +5,14 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Locale;
-import java.util.Random;
 
-public class ReportMockUtil {
+public final class ReportMockUtil {
 
     private static final int NR_OF_PERIODS = 18;
     static final List<String> PERIODS = createPeriods();
 
-    private Random random = new Random();
+    private ReportMockUtil() {
+    }
 
     private static List<String> createPeriods() {
         Locale sweden = new Locale("SV", "se");

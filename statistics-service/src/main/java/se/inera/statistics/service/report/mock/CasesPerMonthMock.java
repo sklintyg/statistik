@@ -11,6 +11,7 @@ public class CasesPerMonthMock implements CasesPerMonth {
 
     private Random random = new Random();
 
+    // CHECKSTYLE:OFF MagicNumber
     @Override
     public List<CasesPerMonthRow> getCasesPerMonth() {
         List<CasesPerMonthRow> rows = new ArrayList<>();
@@ -21,5 +22,6 @@ public class CasesPerMonthMock implements CasesPerMonth {
         }
         return rows;
     }
+    // CHECKSTYLE:ON
 
 }

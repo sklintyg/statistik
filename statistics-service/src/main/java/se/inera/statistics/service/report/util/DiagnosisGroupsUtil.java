@@ -1,4 +1,4 @@
-package se.inera.statistics.web.util;
+package se.inera.statistics.service.report.util;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import se.inera.statistics.web.model.DiagnosisGroup;
+import se.inera.statistics.service.report.model.DiagnosisGroup;
 
 public final class DiagnosisGroupsUtil {
 

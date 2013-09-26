@@ -23,41 +23,41 @@ public class SjukfallServiceTest extends SjukfallService {
     private DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
     @Test
-    public void registering_period_returns_id() {
+    public void registeringPeriodReturnsId() {
         String id = register("personnummer", "vardgivare", date("2013-01-01"), date("2013-01-25"));
         assertNotNull(id);
     }
 
     @Test
-    public void registering_same_period_different_users_returns_different_id() {
+    public void registeringSamePeriodDifferentUsersReturnsDifferentId() {
         String id1 = register("personnummer1", "vardgivare", date("2013-01-01"), date("2013-01-25"));
         String id2 = register("personnummer2", "vardgivare", date("2013-01-01"), date("2013-01-25"));
         assertFalse(id1.equals(id2));
     }
 
     @Test
-    public void registering_same_period_user_user_different_vardgivare_returns_different_id() {
+    public void registeringSamePeriodDifferentVardgivareReturnsDifferentId() {
         String id1 = register("personnummer", "vardgivare1", date("2013-01-01"), date("2013-01-25"));
         String id2 = register("personnummer", "vardgivare2", date("2013-01-01"), date("2013-01-25"));
         assertFalse(id1.equals(id2));
     }
 
     @Test
-    public void registering_overlapping_periods_returns_same_id() {
+    public void registeringOverlappingPeriodsReturnsSameId() {
         String id1 = register("personnummer", "vardgivare", date("2013-01-01"), date("2013-01-28"));
         String id2 = register("personnummer", "vardgivare", date("2013-01-25"), date("2013-02-15"));
         assertEquals(id1, id2);
     }
 
     @Test
-    public void registering_close_periods_returns_same_id() {
+    public void registeringClosePeriodsReturnsSameId() {
         String id1 = register("personnummer", "vardgivare", date("2013-01-01"), date("2013-01-28"));
         String id2 = register("personnummer", "vardgivare", date("2013-01-25"), date("2013-02-15"));
         assertEquals(id1, id2);
     }
 
     @Test
-    public void registering_not_close_periods_returns_different_id() {
+    public void registeringNotClosePeriodsReturnsDifferentId() {
         String id1 = register("personnummer", "vardgivare", date("2013-01-01"), date("2013-01-28"));
         int expired = expire(date("2013-02-05"));
         String id2 = register("personnummer", "vardgivare", date("2013-02-10"), date("2013-02-25"));
@@ -66,7 +66,7 @@ public class SjukfallServiceTest extends SjukfallService {
     }
 
     @Test
-    public void expire_expires_only_old() {
+    public void expireExpiresOnlyOld() {
         String shouldExpire = register("personnummer", "vardgivare", date("2013-01-01"), date("2013-01-28"));
         String active = register("personnummer", "vardgivare2", date("2013-01-01"), date("2013-02-01"));
 
