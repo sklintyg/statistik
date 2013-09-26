@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class ProcessLogImplTest extends ProcessLogImpl {
 
+    // CHECKSTYLE:OFF MagicNumber
     @Test
     public void storedEventCanBeFetched() throws InterruptedException, NotSupportedException, SystemException {
         long id = store(EventType.CREATED, "data", "corr", 123L);
@@ -56,5 +57,5 @@ public class ProcessLogImplTest extends ProcessLogImpl {
         pending = getPending();
         assertNull(pending);
     }
-
+    // CHECKSTYLE:ON MagicNumber
 }

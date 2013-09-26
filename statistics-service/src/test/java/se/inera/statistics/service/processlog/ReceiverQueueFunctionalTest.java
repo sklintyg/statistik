@@ -1,21 +1,20 @@
 package se.inera.statistics.service.processlog;
 
+import javax.jms.ConnectionFactory;
+import javax.jms.Destination;
+import javax.jms.JMSException;
+import javax.jms.Message;
+import javax.jms.Session;
+import javax.jms.TextMessage;
+
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.apache.activemq.broker.BrokerService;
 import org.apache.activemq.command.ActiveMQQueue;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mockito;
-
-import static org.mockito.Mockito.verify;
-
-import javax.jms.*;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jms.core.MessageCreator;
 import org.springframework.jms.core.JmsTemplate;
+import org.springframework.jms.core.MessageCreator;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -23,10 +22,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ContextConfiguration(locations = { "/process-log-qm-test.xml", "/process-log-impl-test.xml" })
 public class ReceiverQueueFunctionalTest {
 
-    private ProcessLog processLog = Mockito.mock(ProcessLog.class);
-
-    private Receiver receiver = new Receiver();
-
+    private static final int DELAY = 5000;
     private JmsTemplate jmsTemplate;
 
     @Before
@@ -66,7 +62,7 @@ public class ReceiverQueueFunctionalTest {
     public void send() {
         simpleSend();
         try {
-            Thread.sleep(5000);
+            Thread.sleep(DELAY);
         } catch (InterruptedException e) {
             e.printStackTrace(); // To change body of catch statement use File |
                                  // Settings | File Templates.

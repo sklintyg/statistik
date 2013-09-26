@@ -17,11 +17,12 @@ public class ReceiverTest {
         receiver.setProcessLog(processLog);
     }
 
+    // CHECKSTYLE:OFF MagicNumber
     @Test
     public void acceptedEventdataIsStored() {
         String data = "data";
         receiver.accept(EventType.CREATED, data, "corr", 123L);
         verify(processLog).store(EventType.CREATED, "data", "corr", 123L);
     }
-
+    // CHECKSTYLE:ON MagicNumber
 }
