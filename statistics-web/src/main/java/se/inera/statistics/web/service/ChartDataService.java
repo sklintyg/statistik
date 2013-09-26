@@ -20,10 +20,14 @@ import org.springframework.stereotype.Service;
 import se.inera.statistics.service.report.api.CasesPerMonth;
 import se.inera.statistics.service.report.api.DiagnosisGroups;
 import se.inera.statistics.service.report.api.DiagnosisSubGroups;
+import se.inera.statistics.service.report.api.Overview;
 import se.inera.statistics.service.report.model.CasesPerMonthRow;
 import se.inera.statistics.service.report.model.DiagnosisGroup;
 import se.inera.statistics.service.report.model.DiagnosisGroupResponse;
 import se.inera.statistics.service.report.model.DiagnosisGroupRow;
+import se.inera.statistics.service.report.model.OverviewChartRow;
+import se.inera.statistics.service.report.model.OverviewChartRowExtended;
+import se.inera.statistics.service.report.model.OverviewResponse;
 import se.inera.statistics.service.report.model.Sex;
 import se.inera.statistics.service.report.util.DiagnosisGroupsUtil;
 import se.inera.statistics.web.model.DiagnosisGroupsData;
@@ -56,6 +60,9 @@ public class ChartDataService {
 
     @Autowired
     private DiagnosisSubGroups datasourceDiagnosisSubGroups;
+
+    @Autowired
+    private Overview datasourceOverview;
 
     @GET
     @Path("getNumberOfCasesPerMonth")
@@ -277,52 +284,44 @@ public class ChartDataService {
     @Path("getOverview")
     @Produces({ MediaType.APPLICATION_JSON })
     public OverviewData getOverviewData() {
-        return createMockOverviewData();
+        OverviewResponse response = datasourceOverview.getOverview();
+        return convertToOverviewData(response);
     }
 
-    private OverviewData createMockOverviewData() {
-        NumberOfCasesPerMonthOverview casesPerMonth = new NumberOfCasesPerMonthOverview(56, 44, 5);
+    private OverviewData convertToOverviewData(OverviewResponse resp) {
+        NumberOfCasesPerMonthOverview casesPerMonth = new NumberOfCasesPerMonthOverview(
+                resp.getCasesPerMonthProportionMale(), resp.getCasesPerMonthProportionFemale(),
+                resp.getCasesPerMonthAlteration());
 
         ArrayList<DonutChartData> diagnosisGroups = new ArrayList<DonutChartData>();
-        diagnosisGroups.add(new DonutChartData("A-E G-L N Somatiska", 140, 2));
-        diagnosisGroups.add(new DonutChartData("M - Muskuloskeletala", 140, -4));
-        diagnosisGroups.add(new DonutChartData("F - Psykiska", 40, 5));
-        diagnosisGroups.add(new DonutChartData("S - Skador", 5, 3));
-        diagnosisGroups.add(new DonutChartData("O - Graviditet och förlossning", 3, -3));
+        for (OverviewChartRowExtended row : resp.getDiagnosisGroups()) {
+            diagnosisGroups.add(new DonutChartData(row.getName(), row.getQuantity(), row.getAlternation()));
+        }
 
         ArrayList<DonutChartData> ageGroups = new ArrayList<DonutChartData>();
-        ageGroups.add(new DonutChartData("<35 år", 140, 2));
-        ageGroups.add(new DonutChartData("36-40 år", 140, -4));
-        ageGroups.add(new DonutChartData("41-45 år", 40, 5));
-        ageGroups.add(new DonutChartData("46-50 år", 25, 0));
-        ageGroups.add(new DonutChartData("51-55 år", 32, -3));
-        ageGroups.add(new DonutChartData("56-60 år", 20, -4));
-        ageGroups.add(new DonutChartData(">60 år", 15, 5));
+        for (OverviewChartRowExtended row : resp.getAgeGroups()) {
+            ageGroups.add(new DonutChartData(row.getName(), row.getQuantity(), row.getAlternation()));
+        }
 
         ArrayList<DonutChartData> degreeOfSickLeaveGroups = new ArrayList<DonutChartData>();
-        degreeOfSickLeaveGroups.add(new DonutChartData("25%", 3, 15));
-        degreeOfSickLeaveGroups.add(new DonutChartData("50%", 15, 0));
-        degreeOfSickLeaveGroups.add(new DonutChartData("75%", 7, -15));
-        degreeOfSickLeaveGroups.add(new DonutChartData("100%", 75, 15));
+        for (OverviewChartRowExtended row : resp.getDegreeOfSickLeaveGroups()) {
+            degreeOfSickLeaveGroups.add(new DonutChartData(row.getName(), row.getQuantity(), row.getAlternation()));
+        }
 
         ArrayList<BarChartData> sickLeaveLengthData = new ArrayList<BarChartData>();
-        sickLeaveLengthData.add(new BarChartData("&lt;14", 12));
-        sickLeaveLengthData.add(new BarChartData("15-30", 17));
-        sickLeaveLengthData.add(new BarChartData("31-90", 14));
-        sickLeaveLengthData.add(new BarChartData("91-180", 17));
-        sickLeaveLengthData.add(new BarChartData("181-360", 9));
-        sickLeaveLengthData.add(new BarChartData("&gt;360", 12));
-        SickLeaveLengthOverview sickLeaveLength = new SickLeaveLengthOverview(sickLeaveLengthData, 105, 10);
+        for (OverviewChartRow row : resp.getSickLeaveLengthGroups()) {
+            sickLeaveLengthData.add(new BarChartData(row.getName(), row.getQuantity()));
+        }
+        SickLeaveLengthOverview sickLeaveLength = new SickLeaveLengthOverview(sickLeaveLengthData, resp.getLongSickLeavesTotal(), resp.getLongSickLeavesAlternation());
 
         ArrayList<DonutChartData> perCounty = new ArrayList<DonutChartData>();
-        perCounty.add(new DonutChartData("Stockholms län", 15, 2));
-        perCounty.add(new DonutChartData("Västra götalands län", 12, -4));
-        perCounty.add(new DonutChartData("Skåne län", 6, 5));
-        perCounty.add(new DonutChartData("Östergötlands län", 5, 0));
-        perCounty.add(new DonutChartData("Uppsala län", 4, -4));
+        for (OverviewChartRowExtended row : resp.getPerCounty()) {
+            perCounty.add(new DonutChartData(row.getName(), row.getQuantity(), row.getAlternation()));
+        }
 
         return new OverviewData(casesPerMonth, diagnosisGroups, ageGroups, degreeOfSickLeaveGroups, sickLeaveLength, perCounty);
     }
+
     // CHECKSTYLE:ON MagicNumber
 
 }
