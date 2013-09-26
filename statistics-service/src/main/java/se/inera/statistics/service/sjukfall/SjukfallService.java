@@ -20,13 +20,15 @@ public class SjukfallService {
 
     private static final long MILLIS_PER_DAY = 24 * 60 * 60 * 1000;
 
-    public String register(SjukfallKey key) {
+    public SjukfallInfo register(SjukfallKey key) {
         return register(key.getPersonId(), key.getVardgivareId(), key.getStart(), key.getEnd());
     }
-    public String register(String personId, String vardgivareId, Date start, Date end) {
+    public SjukfallInfo register(String personId, String vardgivareId, Date start, Date end) {
         Sjukfall currentSjukfall = getCurrentSjukfall(personId, vardgivareId);
+        Date prevEnd = null;
         if (currentSjukfall != null) {
-            if (end.after(currentSjukfall.getEnd())) {
+            prevEnd = currentSjukfall.getEnd();
+            if (end.after(prevEnd)) {
                 currentSjukfall.setEnd(end);
                 currentSjukfall = manager.merge(currentSjukfall);
             }
@@ -35,7 +37,7 @@ public class SjukfallService {
             manager.persist(currentSjukfall);
         }
 
-        return currentSjukfall.getId();
+        return new SjukfallInfo(currentSjukfall.getId(), prevEnd);
     }
 
     public int expire(Date now) {

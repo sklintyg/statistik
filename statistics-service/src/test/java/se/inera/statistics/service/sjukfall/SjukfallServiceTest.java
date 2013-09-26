@@ -24,56 +24,56 @@ public class SjukfallServiceTest extends SjukfallService {
 
     @Test
     public void registeringPeriodReturnsId() {
-        String id = register("personnummer", "vardgivare", date("2013-01-01"), date("2013-01-25"));
+        SjukfallInfo id = register("personnummer", "vardgivare", date("2013-01-01"), date("2013-01-25"));
         assertNotNull(id);
     }
 
     @Test
     public void registeringSamePeriodDifferentUsersReturnsDifferentId() {
-        String id1 = register("personnummer1", "vardgivare", date("2013-01-01"), date("2013-01-25"));
-        String id2 = register("personnummer2", "vardgivare", date("2013-01-01"), date("2013-01-25"));
+        SjukfallInfo id1 = register("personnummer1", "vardgivare", date("2013-01-01"), date("2013-01-25"));
+        SjukfallInfo id2 = register("personnummer2", "vardgivare", date("2013-01-01"), date("2013-01-25"));
         assertFalse(id1.equals(id2));
     }
 
     @Test
     public void registeringSamePeriodDifferentVardgivareReturnsDifferentId() {
-        String id1 = register("personnummer", "vardgivare1", date("2013-01-01"), date("2013-01-25"));
-        String id2 = register("personnummer", "vardgivare2", date("2013-01-01"), date("2013-01-25"));
+        SjukfallInfo id1 = register("personnummer", "vardgivare1", date("2013-01-01"), date("2013-01-25"));
+        SjukfallInfo id2 = register("personnummer", "vardgivare2", date("2013-01-01"), date("2013-01-25"));
         assertFalse(id1.equals(id2));
     }
 
     @Test
     public void registeringOverlappingPeriodsReturnsSameId() {
-        String id1 = register("personnummer", "vardgivare", date("2013-01-01"), date("2013-01-28"));
-        String id2 = register("personnummer", "vardgivare", date("2013-01-25"), date("2013-02-15"));
+        SjukfallInfo id1 = register("personnummer", "vardgivare", date("2013-01-01"), date("2013-01-28"));
+        SjukfallInfo id2 = register("personnummer", "vardgivare", date("2013-01-25"), date("2013-02-15"));
         assertEquals(id1, id2);
     }
 
     @Test
     public void registeringClosePeriodsReturnsSameId() {
-        String id1 = register("personnummer", "vardgivare", date("2013-01-01"), date("2013-01-28"));
-        String id2 = register("personnummer", "vardgivare", date("2013-01-25"), date("2013-02-15"));
+        SjukfallInfo id1 = register("personnummer", "vardgivare", date("2013-01-01"), date("2013-01-28"));
+        SjukfallInfo id2 = register("personnummer", "vardgivare", date("2013-01-25"), date("2013-02-15"));
         assertEquals(id1, id2);
     }
 
     @Test
     public void registeringNotClosePeriodsReturnsDifferentId() {
-        String id1 = register("personnummer", "vardgivare", date("2013-01-01"), date("2013-01-28"));
+        SjukfallInfo id1 = register("personnummer", "vardgivare", date("2013-01-01"), date("2013-01-28"));
         int expired = expire(date("2013-02-05"));
-        String id2 = register("personnummer", "vardgivare", date("2013-02-10"), date("2013-02-25"));
+        SjukfallInfo id2 = register("personnummer", "vardgivare", date("2013-02-10"), date("2013-02-25"));
         assertEquals(1, expired);
         assertFalse(id1.equals(id2));
     }
 
     @Test
     public void expireExpiresOnlyOld() {
-        String shouldExpire = register("personnummer", "vardgivare", date("2013-01-01"), date("2013-01-28"));
-        String active = register("personnummer", "vardgivare2", date("2013-01-01"), date("2013-02-01"));
+        SjukfallInfo shouldExpire = register("personnummer", "vardgivare", date("2013-01-01"), date("2013-01-28"));
+        SjukfallInfo active = register("personnummer", "vardgivare2", date("2013-01-01"), date("2013-02-01"));
 
         int expired = expire(date("2013-02-05"));
 
-        String newSjukfall = register("personnummer", "vardgivare", date("2013-02-10"), date("2013-02-25"));
-        String stillActive = register("personnummer", "vardgivare2", date("2013-02-10"), date("2013-02-25"));
+        SjukfallInfo newSjukfall = register("personnummer", "vardgivare", date("2013-02-10"), date("2013-02-25"));
+        SjukfallInfo stillActive = register("personnummer", "vardgivare2", date("2013-02-10"), date("2013-02-25"));
 
         assertEquals(1, expired);
         assertFalse(shouldExpire.equals(newSjukfall));
