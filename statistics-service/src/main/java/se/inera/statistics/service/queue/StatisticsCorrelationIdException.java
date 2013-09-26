@@ -1,4 +1,4 @@
-package se.inera.statistics.service.processlog;
+package se.inera.statistics.service.queue;
 
 public class StatisticsCorrelationIdException extends RuntimeException {
     public StatisticsCorrelationIdException(String s) {

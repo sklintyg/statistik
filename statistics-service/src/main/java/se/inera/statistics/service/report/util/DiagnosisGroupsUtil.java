@@ -65,8 +65,8 @@ public final class DiagnosisGroupsUtil {
     }
 
     /**
-     * Only used for creating mock data.
-     * TODO Remove method when mock data is no longer needed.
+     * Only used for creating mock data. TODO Remove method when mock data is no
+     * longer needed.
      */
     public static List<DiagnosisGroup> getSubGroups(String groupId) {
         return SUB_GROUPS.get(groupId);
@@ -160,7 +160,8 @@ public final class DiagnosisGroupsUtil {
         gGroups.add(group("G40-G47", "Episodiska och paroxysmala sjukdomar"));
         gGroups.add(group("G50-G59", "Sjukdomar i nerver, nervrötter och nervplexus"));
         gGroups.add(group("G60-G64", "Polyneuropatier (samtidig sjukdom i flera perifera nerver) och andra sjukdomar i perifera nervsystemet"));
-        gGroups.add(group("G70-G73", "Neuromuskulära transmissionsrubbningar (rubbningar i överföring av impulser mellan nerver och muskler) och sjukdomar i muskler"));
+        gGroups.add(group("G70-G73",
+                "Neuromuskulära transmissionsrubbningar (rubbningar i överföring av impulser mellan nerver och muskler) och sjukdomar i muskler"));
         gGroups.add(group("G80-G83", "Cerebral pares och andra förlamningssyndrom"));
         gGroups.add(group("G90-G99", "Andra sjukdomar i nervsystemet"));
 
@@ -372,7 +373,9 @@ public final class DiagnosisGroupsUtil {
         vGroups.add(group("Y40-Y59", "Läkemedel, droger och biologiska substanser i terapeutiskt bruk som orsak till ogynnsam effekt"));
         vGroups.add(group("Y60-Y69", "Missöden som inträffat med patienter under kirurgisk och medicinsk vård"));
         vGroups.add(group("Y70-Y82", "Missöden orsakade av medicinska instrument i diagnostiskt och terapeutiskt bruk"));
-        vGroups.add(group("Y83-Y84", "Kirurgiska och andra medicinska åtgärder som orsak till onormal reaktion eller sen komplikation hos patient utan anknytning till missöde vid operations- eller behandlingstillfället"));
+        vGroups.add(group(
+                "Y83-Y84",
+                "Kirurgiska och andra medicinska åtgärder som orsak till onormal reaktion eller sen komplikation hos patient utan anknytning till missöde vid operations- eller behandlingstillfället"));
         vGroups.add(group("Y85-Y89", "Sena effekter av yttre orsaker till sjukdom och död"));
         vGroups.add(group("Y90-Y98", "Bidragande faktorer som har samband med yttre orsaker till sjukdom och död, vilka klassificeras annorstädes"));
 
@@ -383,7 +386,8 @@ public final class DiagnosisGroupsUtil {
         zGroups.add(group("Z40-Z54", "Kontakter med hälso- och sjukvården för speciella åtgärder och vård"));
         zGroups.add(group("Z55-Z65", "Potentiella hälsorisker avseende socioekonomiska och psykosociala förhållanden"));
         zGroups.add(group("Z70-Z76", "Kontakter med hälso- och sjukvården i andra situationer"));
-        zGroups.add(group("Z80-Z99", "Potentiella hälsorisker i familjens och patientens sjukhistoria samt vissa tillstånd och förhållanden som påverkar hälsan"));
+        zGroups.add(group("Z80-Z99",
+                "Potentiella hälsorisker i familjens och patientens sjukhistoria samt vissa tillstånd och förhållanden som påverkar hälsan"));
 
         Map<String, List<DiagnosisGroup>> subGroups = new HashMap<>();
         subGroups.put("A00-B99", aGroups);

@@ -23,7 +23,7 @@ public class DiagnosisGroupsMock implements DiagnosisGroups {
         }
         return new DiagnosisGroupResponse(headers, rows);
     }
-    
+
     private List<DualSexField> randomData(int size) {
         DualSexField[] data = new DualSexField[size];
         for (int i = 0; i < size; i++) {
@@ -35,6 +35,5 @@ public class DiagnosisGroupsMock implements DiagnosisGroups {
     private int g() {
         return new Random().nextInt(100);
     }
-
 
 }
