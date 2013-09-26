@@ -1,6 +1,5 @@
 package se.inera.statistics.service.sjukfall;
 
-import java.util.Date;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -8,6 +7,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
+import org.joda.time.LocalDate;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -18,17 +18,15 @@ public class SjukfallService {
 
     private static final int MAX_DAYS_BETWEEN_CERTIFICATES = 5;
 
-    private static final long MILLIS_PER_DAY = 24 * 60 * 60 * 1000;
-
     public SjukfallInfo register(SjukfallKey key) {
         return register(key.getPersonId(), key.getVardgivareId(), key.getStart(), key.getEnd());
     }
-    public SjukfallInfo register(String personId, String vardgivareId, Date start, Date end) {
+    public SjukfallInfo register(String personId, String vardgivareId, LocalDate start, LocalDate end) {
         Sjukfall currentSjukfall = getCurrentSjukfall(personId, vardgivareId);
-        Date prevEnd = null;
+        LocalDate prevEnd = null;
         if (currentSjukfall != null) {
             prevEnd = currentSjukfall.getEnd();
-            if (end.after(prevEnd)) {
+            if (end.isAfter(prevEnd)) {
                 currentSjukfall.setEnd(end);
                 currentSjukfall = manager.merge(currentSjukfall);
             }
@@ -40,10 +38,10 @@ public class SjukfallService {
         return new SjukfallInfo(currentSjukfall.getId(), prevEnd);
     }
 
-    public int expire(Date now) {
+    public int expire(LocalDate now) {
         Query query = manager.createQuery("DELETE FROM Sjukfall s WHERE s.end < :end");
-        Date lastValid = new Date(now.getTime() - MAX_DAYS_BETWEEN_CERTIFICATES * MILLIS_PER_DAY);
-        query.setParameter("end", lastValid);
+        LocalDate lastValid = now.minusDays(MAX_DAYS_BETWEEN_CERTIFICATES);
+        query.setParameter("end", lastValid.toString());
         return query.executeUpdate();
     }
 

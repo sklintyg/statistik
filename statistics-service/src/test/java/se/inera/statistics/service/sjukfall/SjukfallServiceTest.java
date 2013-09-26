@@ -4,11 +4,9 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
+import org.joda.time.LocalDate;
+import org.joda.time.format.DateTimeFormatter;
+import org.joda.time.format.DateTimeFormatterBuilder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
@@ -20,7 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class SjukfallServiceTest extends SjukfallService {
 
-    private DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+    DateTimeFormatter formatter = new DateTimeFormatterBuilder().appendYear(4,4).appendLiteral('-').appendMonthOfYear(2).appendLiteral('-').appendDayOfMonth(2).toFormatter();
 
     @Test
     public void registeringPeriodReturnsId() {
@@ -80,11 +78,7 @@ public class SjukfallServiceTest extends SjukfallService {
         assertEquals(active, stillActive);
     }
 
-    private Date date(String stringDate) {
-        try {
-            return dateFormat.parse(stringDate);
-        } catch (ParseException e) {
-            throw new IllegalArgumentException(e);
-        }
+    private LocalDate date(String stringDate) {
+        return formatter.parseLocalDate(stringDate);
     }
 }

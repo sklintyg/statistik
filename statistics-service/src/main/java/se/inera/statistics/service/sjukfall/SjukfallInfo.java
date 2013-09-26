@@ -1,13 +1,13 @@
 package se.inera.statistics.service.sjukfall;
 
-import java.util.Date;
+import org.joda.time.LocalDate;
 
 public class SjukfallInfo {
 
     private String id;
-    private Date prevEnd;
+    private LocalDate prevEnd;
 
-    public SjukfallInfo(String id, Date prevEnd) {
+    public SjukfallInfo(String id, LocalDate prevEnd) {
         this.id = id;
         this.prevEnd = prevEnd;
     }
@@ -16,7 +16,7 @@ public class SjukfallInfo {
         return id;
     }
 
-    public Date getPrevEnd() {
+    public LocalDate getPrevEnd() {
         return prevEnd;
     }
 

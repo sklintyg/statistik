@@ -1,15 +1,15 @@
 package se.inera.statistics.service.sjukfall;
 
-import java.util.Date;
+import org.joda.time.LocalDate;
 
 public class SjukfallKey {
 
     private final String personId;
     private final String vardgivareId;
-    private final Date start;
-    private final Date end;
+    private final LocalDate start;
+    private final LocalDate end;
 
-    public SjukfallKey(String personId, String vardgivareId, Date start, Date end) {
+    public SjukfallKey(String personId, String vardgivareId, LocalDate start, LocalDate end) {
         this.personId = personId;
         this.vardgivareId = vardgivareId;
         this.start = start;
@@ -24,11 +24,11 @@ public class SjukfallKey {
         return vardgivareId;
     }
 
-    public Date getStart() {
+    public LocalDate getStart() {
         return start;
     }
 
-    public Date getEnd() {
+    public LocalDate getEnd() {
         return end;
     }
 }

@@ -1,15 +1,13 @@
 package se.inera.statistics.service.processlog;
 
-import static junit.framework.Assert.*;
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertNull;
 import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
-import junit.framework.Assert;
+import org.joda.time.LocalDate;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -25,8 +23,6 @@ import se.inera.statistics.service.sjukfall.SjukfallKey;
 import se.inera.statistics.service.sjukfall.SjukfallService;
 
 import com.fasterxml.jackson.databind.JsonNode;
-
-import java.util.Date;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ProcessorTest {
@@ -70,7 +66,7 @@ public class ProcessorTest {
     @Test
     public void processor_extract_alder_from_intyg() {
         String personId = "19121212-1212";
-        Date date = new Date(0L); // 1970
+        LocalDate date = new LocalDate(0L); // 1970
 
         int alder = processor.extractAlder(personId, date);
 

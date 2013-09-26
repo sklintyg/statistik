@@ -25,6 +25,7 @@ import java.util.Date;
 import static se.inera.statistics.service.helper.DocumentHelper.*;
 
 public class Processor {
+    private DateTimeFormatter formatter = new DateTimeFormatterBuilder().appendYear(4,4).appendLiteral('-').appendMonthOfYear(2).appendLiteral('-').appendDayOfMonth(2).toFormatter();
 
     @Autowired
     private ProcessorListener listener;
@@ -55,7 +56,7 @@ public class Processor {
         return personId.charAt(11) % 2 == 0 ? "kvinna" : "man";
     }
 
-    protected int extractAlder(String personId, Date start) {
+    protected int extractAlder(String personId, LocalDate start) {
         DateTimeFormatter formatter = new DateTimeFormatterBuilder().appendYear(4,4).appendMonthOfYear(2).appendDayOfMonth(2).toFormatter();
         LocalDate birthDate = org.joda.time.LocalDate.parse(personId.substring(0,8), formatter);
         LocalDate referenceDate = new LocalDate(start);
@@ -70,12 +71,11 @@ public class Processor {
             String vardgivareId = getVardgivareId(utlatande);
             String startString = getForstaNedsattningsdag(utlatande);
             String endString = getSistaNedsattningsdag(utlatande);
-            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-            Date start = dateFormat.parse(startString);
-            Date end = dateFormat.parse(endString);
+            LocalDate start = formatter.parseLocalDate(startString);
+            LocalDate end = formatter.parseLocalDate(endString);
 
             return new SjukfallKey(personId, vardgivareId, start, end);
-        } catch (ParseException | NullPointerException e) {
+        } catch (NullPointerException e) {
             throw new StatisticsMalformedDocument("Could not parse dates from intyg.", e);
         }
     }
