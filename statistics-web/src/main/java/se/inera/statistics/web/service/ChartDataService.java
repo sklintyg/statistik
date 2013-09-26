@@ -2,14 +2,10 @@ package se.inera.statistics.web.service;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Random;
 import java.util.TreeMap;
 
 import javax.ws.rs.GET;
@@ -23,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import se.inera.statistics.service.report.api.CasesPerMonth;
 import se.inera.statistics.service.report.api.DiagnosisGroups;
+import se.inera.statistics.service.report.api.DiagnosisSubGroups;
 import se.inera.statistics.service.report.model.CasesPerMonthRow;
 import se.inera.statistics.service.report.model.DiagnosisGroup;
 import se.inera.statistics.service.report.model.DiagnosisGroupResponse;
@@ -51,15 +48,14 @@ public class ChartDataService {
 
     private static final int NUMBER_OF_CHART_SERIES = 6;
 
-    private static final int NR_OF_PERIDS = 18;
-
-    private static final List<String> PERIODS = createPeriods();
-
     @Autowired
     private CasesPerMonth datasourceCasesPerMonth;
 
     @Autowired
     private DiagnosisGroups datasourceDiagnosisGroups;
+
+    @Autowired
+    private DiagnosisSubGroups datasourceDiagnosisSubGroups;
 
     @GET
     @Path("getNumberOfCasesPerMonth")
@@ -75,18 +71,6 @@ public class ChartDataService {
             data.add(new NamedData(row.getPeriod(), Arrays.asList(new Integer[] { row.getFemale(), row.getMale(), row.getFemale() + row.getMale() })));
         }
         return data;
-    }
-
-    private static List<String> createPeriods() {
-        Locale sweden = new Locale("SV", "se");
-        Calendar c = new GregorianCalendar(sweden);
-        c.add(Calendar.MONTH, -NR_OF_PERIDS);
-        List<String> names = new ArrayList<>();
-        for (int i = 0; i < NR_OF_PERIDS; i++) {
-            names.add(String.format(sweden, "%1$tb %1$tY", c));
-            c.add(Calendar.MONTH, 1);
-        }
-        return names;
     }
 
     // CHECKSTYLE:OFF MagicNumber
@@ -107,16 +91,6 @@ public class ChartDataService {
         TableData maleChart = convertDiagnosisGroupsChartData(diagnosisGroups, Sex.Male);
         TableData femaleChart = convertDiagnosisGroupsChartData(diagnosisGroups, Sex.Female);
         return new DiagnosisGroupsData(maleTable, femaleTable, maleChart, femaleChart);
-    }
-
-    private TableData convertDiagnosisSubGroupsChartData(DiagnosisGroupResponse resp, Sex sex) {
-        List<String> headers = resp.getPeriods();
-        ArrayList<NamedData> rows = new ArrayList<NamedData>();
-        for (int i = 0; i < resp.getDiagnosisGroups().size(); i++) {
-            String periodName = resp.getDiagnosisGroups().get(i).toString();
-            rows.add(new NamedData(periodName, resp.getDataFromIndex(i, sex)));
-        }
-        return new TableData(rows, headers);
     }
 
     private TableData convertDiagnosisGroupsChartData(DiagnosisGroupResponse resp, Sex sex) {
@@ -215,12 +189,13 @@ public class ChartDataService {
     @Path("getDiagnosisSubGroupStatistics")
     @Produces({ MediaType.APPLICATION_JSON })
     public DiagnosisGroupsData getDiagnosisSubGroupStatistics(@QueryParam("groupId") String groupId) {
-        TableData maleData = createSubDiagnosisGroupTableMockData(groupId);
-        TableData femaleData = createSubDiagnosisGroupTableMockData(groupId);
-        List<Integer> topIndexes = getTopColumnIndexes(maleData, femaleData);
-        TableData maleChartData = extractChartData(maleData, topIndexes);
-        TableData femaleChartData = extractChartData(femaleData, topIndexes);
-        return new DiagnosisGroupsData(maleData, femaleData, maleChartData, femaleChartData);
+        DiagnosisGroupResponse diagnosisGroups = datasourceDiagnosisSubGroups.getDiagnosisSubGroups(groupId);
+        TableData maleTable = convertDiagnosisSubGroupsTableData(diagnosisGroups, Sex.Male);
+        TableData femaleTable = convertDiagnosisSubGroupsTableData(diagnosisGroups, Sex.Female);
+        List<Integer> topIndexes = getTopColumnIndexes(maleTable, femaleTable);
+        TableData maleChart = extractChartData(maleTable, topIndexes);
+        TableData femaleChart = extractChartData(femaleTable, topIndexes);
+        return new DiagnosisGroupsData(maleTable, femaleTable, maleChart, femaleChart);
     }
 
     private TableData extractChartData(TableData data, List<Integer> topIndexes) {
@@ -297,38 +272,6 @@ public class ChartDataService {
         }
         ArrayList<Integer> arrayList = new ArrayList<>(columnSums.descendingMap().values());
         return arrayList.subList(0, Math.min(NUMBER_OF_CHART_SERIES, arrayList.size()));
-    }
-
-    private TableData createSubDiagnosisGroupTableMockData(String groupId) {
-        List<String> headers = toListOfStrings(DiagnosisGroupsUtil.getSubGroups(groupId));
-        ArrayList<NamedData> rows = new ArrayList<NamedData>();
-        for (String periodName : PERIODS) {
-            rows.add(new NamedData(periodName, randomData(headers.size())));
-        }
-        return new TableData(rows, headers);
-    }
-
-    private List<String> toListOfStrings(List<DiagnosisGroup> subGroups) {
-        if (subGroups == null) {
-            return new ArrayList<>();
-        }
-        List<String> subGroupStrings = new ArrayList<>();
-        for (DiagnosisGroup diagnosisGroup : subGroups) {
-            subGroupStrings.add(diagnosisGroup.toString());
-        }
-        return subGroupStrings;
-    }
-
-    private List<Integer> randomData(int size) {
-        Integer[] data = new Integer[size];
-        for (int i = 0; i < size; i++) {
-            data[i] = g();
-        }
-        return Arrays.asList(data);
-    }
-
-    private Integer g() {
-        return new Random().nextInt(100);
     }
 
     @GET
