@@ -1,4 +1,4 @@
-package se.inera.statistics.web.util;
+package se.inera.statistics.service.report.util;
 
 import static org.junit.Assert.assertEquals;
 
@@ -6,7 +6,7 @@ import java.util.List;
 
 import org.junit.Test;
 
-import se.inera.statistics.web.model.DiagnosisGroup;
+import se.inera.statistics.service.report.model.DiagnosisGroup;
 
 public class DiagnosisGroupsUtilTest {
 

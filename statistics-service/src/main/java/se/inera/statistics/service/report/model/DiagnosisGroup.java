@@ -1,4 +1,4 @@
-package se.inera.statistics.web.model;
+package se.inera.statistics.service.report.model;
 
 public class DiagnosisGroup {
 
