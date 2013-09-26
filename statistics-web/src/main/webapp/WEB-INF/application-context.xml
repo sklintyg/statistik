@@ -30,12 +30,13 @@
 	http://cxf.apache.org/transports/http/configuration http://cxf.apache.org/schemas/configuration/http-conf.xsd
 	http://cxf.apache.org/core http://cxf.apache.org/schemas/core.xsd">
 
-	<import resource="classpath*:process-log-impl.xml" />
+    <import resource="classpath*:process-log-impl.xml"/>
     <import resource="application-context-cxf.xml"/>
     <import resource="application-context-security.xml"/>
-    
+
     <bean class="se.inera.statistics.service.report.mock.CasesPerMonthMock"></bean>
     <bean class="se.inera.statistics.service.report.mock.DiagnosisGroupsMock"></bean>
+    <bean class="se.inera.statistics.service.report.mock.DiagnosisSubGroupsMock"></bean>
 
     <context:annotation-config/>
     <context:component-scan base-package="se.inera.statistics"/>

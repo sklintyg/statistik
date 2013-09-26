@@ -11,10 +11,12 @@ import org.apache.activemq.ActiveMQConnectionFactory;
 import org.apache.activemq.broker.BrokerService;
 import org.apache.activemq.command.ActiveMQQueue;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.jms.core.JmsTemplate;
+
 import org.springframework.jms.core.MessageCreator;
+import org.springframework.jms.core.JmsTemplate;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -56,8 +58,11 @@ public class ReceiverQueueFunctionalTest {
     }
 
     /**
-     *
+     * Functional test to check if a message is consumed. The proof is in the
+     * pudding. Check output for "Received intyg" and inspect its
+     * representation.
      */
+    @Ignore
     @Test
     public void send() {
         simpleSend();

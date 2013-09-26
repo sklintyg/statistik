@@ -16,7 +16,7 @@ public class DiagnosisGroupResponse {
     public List<DiagnosisGroup> getDiagnosisGroups() {
         return diagnosisGroups;
     }
-    
+
     public List<String> getDiagnosisGroupsAsStrings() {
         if (diagnosisGroups == null) {
             return new ArrayList<>();
@@ -27,7 +27,6 @@ public class DiagnosisGroupResponse {
         }
         return subGroupStrings;
     }
-
 
     public List<DiagnosisGroupRow> getRows() {
         return rows;

@@ -5,6 +5,7 @@ import static org.mockito.Mockito.verify;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
+import se.inera.statistics.service.queue.Receiver;
 
 public class ReceiverTest {
 
