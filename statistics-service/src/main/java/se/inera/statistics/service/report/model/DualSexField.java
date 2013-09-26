@@ -17,9 +17,9 @@ public class DualSexField {
     public int getMale() {
         return male;
     }
-    
-    int getValue(Sex sex){
-        if (Sex.Female.equals(sex)){
+
+    int getValue(Sex sex) {
+        if (Sex.Female.equals(sex)) {
             return female;
         } else {
             return male;

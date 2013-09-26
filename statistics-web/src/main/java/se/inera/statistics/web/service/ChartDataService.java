@@ -66,13 +66,13 @@ public class ChartDataService {
     @Produces({ MediaType.APPLICATION_JSON })
     public TableData getNumberOfCasesPerMonth() {
         List<CasesPerMonthRow> casesPerMonth = datasourceCasesPerMonth.getCasesPerMonth();
-        return new TableData(convertCasesPerMonthData(casesPerMonth), Arrays.asList(new String[]{"Period", "Antal kvinnor", "Antal män", "Summering"}));
+        return new TableData(convertCasesPerMonthData(casesPerMonth), Arrays.asList(new String[] { "Period", "Antal kvinnor", "Antal män", "Summering" }));
     }
 
     private List<NamedData> convertCasesPerMonthData(List<CasesPerMonthRow> casesPerMonth) {
         List<NamedData> data = new ArrayList<>();
         for (CasesPerMonthRow row : casesPerMonth) {
-            data.add(new NamedData(row.getPeriod(), Arrays.asList(new Integer[]{row.getFemale(), row.getMale(), row.getFemale() + row.getMale()})));
+            data.add(new NamedData(row.getPeriod(), Arrays.asList(new Integer[] { row.getFemale(), row.getMale(), row.getFemale() + row.getMale() })));
         }
         return data;
     }
@@ -156,7 +156,7 @@ public class ChartDataService {
         } else {
             mergedGroups.put(mergedName, values);
         }
-        }
+    }
 
     private List<Integer> sumLists(List<Integer> list, List<Integer> values) {
         assert list.size() == values.size();
@@ -168,14 +168,14 @@ public class ChartDataService {
     }
 
     private String getMergedChartGroupName(String groupId) {
-        List<String> g1 = Arrays.asList(new String[] {"A00-B99", "C00-D48", "D50-D89", "E00-E90", "G00-G99",
-                "H00-H59", "H00-H59", "H60-H95", "I00-I99", "J00-J99", "K00-K93", "L00-L99", "N00-N99"});
-        List<String> g2 = Arrays.asList(new String[] {"F00-F99"});
-        List<String> g3 = Arrays.asList(new String[] {"M00-M99"});
-        List<String> g4 = Arrays.asList(new String[] {"O00-O99"});
-        List<String> g5 = Arrays.asList(new String[] {"P00-P96", "Q00-Q99", "S00-T98", "U00-U99", "V01-Y98"});
-        List<String> g6 = Arrays.asList(new String[] {"R00-R99"});
-        List<String> g7 = Arrays.asList(new String[] {"Z00-Z99"});
+        List<String> g1 = Arrays.asList(new String[] { "A00-B99", "C00-D48", "D50-D89", "E00-E90", "G00-G99", "H00-H59", "H00-H59", "H60-H95", "I00-I99",
+                "J00-J99", "K00-K93", "L00-L99", "N00-N99" });
+        List<String> g2 = Arrays.asList(new String[] { "F00-F99" });
+        List<String> g3 = Arrays.asList(new String[] { "M00-M99" });
+        List<String> g4 = Arrays.asList(new String[] { "O00-O99" });
+        List<String> g5 = Arrays.asList(new String[] { "P00-P96", "Q00-Q99", "S00-T98", "U00-U99", "V01-Y98" });
+        List<String> g6 = Arrays.asList(new String[] { "R00-R99" });
+        List<String> g7 = Arrays.asList(new String[] { "Z00-Z99" });
         if (g1.contains(groupId)) {
             return DIAGNOSIS_CHART_GROUP_1;
         } else if (g2.contains(groupId)) {
@@ -191,7 +191,8 @@ public class ChartDataService {
         } else if (g7.contains(groupId)) {
             return DIAGNOSIS_CHART_GROUP_7;
         } else {
-            // Unknown groups should never occur, but if it do than add it to the Ovrigt-group (or fail in development)
+            // Unknown groups should never occur, but if it do than add it to
+            // the Ovrigt-group (or fail in development)
             assert false;
             return DIAGNOSIS_CHART_GROUP_5;
         }
