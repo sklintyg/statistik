@@ -14,7 +14,7 @@ public class SjukfallJob {
     @Autowired
     protected SjukfallService sjukfallService;
 
-    @Scheduled(cron = "* * 2 * * *")
+    @Scheduled(cron = "0 0 2 * * *")
     public void cleanupSjukfall() {
         LOG.info("Running nightly clean up of sjukfall ...");
         int result = sjukfallService.expire(new Date());
