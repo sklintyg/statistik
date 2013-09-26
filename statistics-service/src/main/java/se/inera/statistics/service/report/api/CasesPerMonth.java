@@ -6,6 +6,5 @@ import se.inera.statistics.service.report.model.CasesPerMonthRow;
 
 public interface CasesPerMonth {
 
-    public List<CasesPerMonthRow> getCasesPerMonth();
-    
+    List<CasesPerMonthRow> getCasesPerMonth();
 }

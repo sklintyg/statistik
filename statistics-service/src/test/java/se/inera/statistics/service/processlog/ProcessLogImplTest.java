@@ -3,8 +3,6 @@ package se.inera.statistics.service.processlog;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.transaction.NotSupportedException;
 import javax.transaction.SystemException;
 
@@ -19,9 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class ProcessLogImplTest extends ProcessLogImpl {
 
-    @PersistenceContext(unitName = "IneraStatisticsLog")
-    EntityManager manager;
-
+    // CHECKSTYLE:OFF MagicNumber
     @Test
     public void storedEventCanBeFetched() throws InterruptedException, NotSupportedException, SystemException {
         long id = store(EventType.CREATED, "data", "corr", 123L);
@@ -61,5 +57,5 @@ public class ProcessLogImplTest extends ProcessLogImpl {
         pending = getPending();
         assertNull(pending);
     }
-
+    // CHECKSTYLE:ON MagicNumber
 }
