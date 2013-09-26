@@ -12,10 +12,13 @@ public class CasesPerMonthConverter {
 
     TableData convertCasesPerMonthData(List<CasesPerMonthRow> casesPerMonth) {
         List<NamedData> data = new ArrayList<>();
+        int accumulatedSum = 0;
         for (CasesPerMonthRow row : casesPerMonth) {
-            data.add(new NamedData(row.getPeriod(), Arrays.asList(new Integer[] {row.getFemale(), row.getMale(), row.getFemale() + row.getMale()})));
+            int rowSum = row.getFemale() + row.getMale();
+            accumulatedSum += rowSum;
+            data.add(new NamedData(row.getPeriod(), Arrays.asList(new Integer[] {rowSum, row.getFemale(), row.getMale(), accumulatedSum})));
         }
-        return new TableData(data, Arrays.asList(new String[] {"Period", "Antal kvinnor", "Antal män", "Summering"}));
+        return new TableData(data, Arrays.asList(new String[] {"Antal sjukfall", "Antal kvinnor", "Antal män", "Summering"}));
     }
 
 }
