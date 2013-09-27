@@ -18,13 +18,17 @@ public class Event {
 
     private String data;
 
+    private String correlationId;
+
+    private long timestamp;
+
     /**
      * Empty constructor (as required by JPA spec).
      */
     public Event() {
     }
 
-    public Event(EventType type, String data) {
+    public Event(EventType type, String data, String correlationId, long timestamp) {
         this.type = type;
         this.data = data;
     }
@@ -41,4 +45,11 @@ public class Event {
         return id;
     }
 
+    public String getCorrelationId() {
+        return correlationId;
+    }
+
+    public long getTimestamp() {
+        return timestamp;
+    }
 }

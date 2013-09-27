@@ -5,15 +5,15 @@ import java.util.List;
 
 public class TableData {
 
-    private final List<TableRow> rows;
+    private final List<NamedData> rows;
     private final List<String> headers;
 
-    public TableData(List<TableRow> rows, List<String> headers) {
+    public TableData(List<NamedData> rows, List<String> headers) {
         this.rows = rows;
         this.headers = Collections.unmodifiableList(headers);
     }
 
-    public List<TableRow> getRows() {
+    public List<NamedData> getRows() {
         return rows;
     }
 

@@ -1,6 +1,5 @@
 package se.inera.statistics.web.model;
 
-
 public class DiagnosisGroupsData {
 
     private final TableData maleTable;

@@ -18,8 +18,8 @@ public class ProcessLogImpl implements ProcessLog {
 
     @Override
     @Transactional
-    public final long store(EventType type, String data) {
-        IntygEvent event = new IntygEvent(type, data);
+    public final long store(EventType type, String data, String correlationId, long timestamp) {
+        IntygEvent event = new IntygEvent(type, data, correlationId, timestamp);
         manager.persist(event);
         return event.getId();
     }

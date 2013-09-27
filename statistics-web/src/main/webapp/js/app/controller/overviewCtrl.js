@@ -76,7 +76,7 @@ var overviewCtrl = function ($scope, statisticsData) {
                     }
                 },
                 xAxis: {
-                    categories: chartData.map(function(e) { return e.name; }),
+                    categories: chartData.map(function(e) { return htmlsafe(e.name); }),
                     min: 0,
                     title: {
                         text: 'DAGAR'
@@ -193,13 +193,13 @@ var overviewCtrl = function ($scope, statisticsData) {
 	function contains(master, substring) {
 		return master.indexOf(substring) != -1;
 	}
-	
+
     function extractDonutData(rawData){
         addColor(rawData);
         var donutData = [];
         for (var i = 0; i < rawData.length; i++) {
             donutData.push({
-                name: rawData[i].name,
+                name: htmlsafe(rawData[i].name),
                 y: rawData[i].quantity,
                 color: rawData[i].color
             });
@@ -207,5 +207,9 @@ var overviewCtrl = function ($scope, statisticsData) {
         return donutData;
     }
     
+	function htmlsafe(string) {
+		return string.replace(/&/g,'&amp;').replace(/</g,'&lt;');
+	}
+
     statisticsData.getOverview(populatePageWithData, dataDownloadFailed);
 };

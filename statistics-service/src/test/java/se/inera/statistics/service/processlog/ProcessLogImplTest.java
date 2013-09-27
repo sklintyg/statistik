@@ -3,8 +3,6 @@ package se.inera.statistics.service.processlog;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.transaction.NotSupportedException;
 import javax.transaction.SystemException;
 
@@ -19,12 +17,10 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class ProcessLogImplTest extends ProcessLogImpl {
 
-    @PersistenceContext(unitName = "IneraStatisticsLog")
-    EntityManager manager;
-
+    // CHECKSTYLE:OFF MagicNumber
     @Test
     public void storedEventCanBeFetched() throws InterruptedException, NotSupportedException, SystemException {
-        long id = store(EventType.CREATED, "data");
+        long id = store(EventType.CREATED, "data", "corr", 123L);
         IntygEvent event = get(id);
         assertEquals("data", event.getData());
     }
@@ -37,8 +33,8 @@ public class ProcessLogImplTest extends ProcessLogImpl {
 
     @Test
     public void withTwoPendingEventPollReturnsFirstEvent() {
-        store(EventType.CREATED, "1");
-        store(EventType.CREATED, "2");
+        store(EventType.CREATED, "1", "corr", 123L);
+        store(EventType.CREATED, "2", "corr", 123L);
 
         IntygEvent pending = getPending();
         assertEquals("1", pending.getData());
@@ -47,8 +43,8 @@ public class ProcessLogImplTest extends ProcessLogImpl {
 
     @Test
     public void withTwoPendingEventEacheEventCanBeGottenInOrderAfterConfirm() {
-        store(EventType.CREATED, "1");
-        store(EventType.CREATED, "2");
+        store(EventType.CREATED, "1", "corr", 123L);
+        store(EventType.CREATED, "2", "corr", 123L);
 
         IntygEvent pending = getPending();
         assertEquals("1", pending.getData());
@@ -61,5 +57,5 @@ public class ProcessLogImplTest extends ProcessLogImpl {
         pending = getPending();
         assertNull(pending);
     }
-
+    // CHECKSTYLE:ON MagicNumber
 }
