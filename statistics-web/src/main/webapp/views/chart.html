@@ -18,17 +18,18 @@
 	</div>
 	<!-- Start graph -->
 	<div class="row-fluid">
-		<div class="span12">
+		<div class="span12" style="margin-bottom: 20px;">
 			<div ng-class="{span12: chartContainers.length == 1, span6: chartContainers.length == 2}" ng-repeat="chartContainer in chartContainers" id="{{chartContainer}}" style="height: 400px; margin: 0 auto"></div>
 		</div>
-		<!-- table><tr>
-			<td ng-repeat="chartContainer in chartContainers" id="{{chartContainer}}" style="height: 400px; margin: 0 auto"></span>
-		</tr></table -->
 	</div>
 	<div class="row-fluid">
-		<label ng-repeat="seriesData in series">
-			<input type="checkbox" checked="" ng-click="toggleSeriesVisibility($index)" /> <span style="display: inline-block; height: 10px; width: 10px; background-color: {{seriesData.color}};"></span> {{seriesData.name}}
-		</label>
+		<div class="span12">
+			<label ng-repeat="seriesData in series" class="span4" style="margin-left: 0px; margin-right: 20px;">
+				<input type="checkbox" checked="" ng-click="toggleSeriesVisibility($index)" /> 
+				<span style="display: inline-block; height: 10px; width: 10px; background-color: {{seriesData.color}};"></span>
+				{{seriesData.name}}
+			</label>
+		</div>
 	</div>
 	
 	<!-- Starting data-table -->
@@ -41,7 +42,7 @@
 			      {{showHideDataTable}}
 			    </a>
 			  </div>
-			  <div id="collapseOne" class="accordion-body in collapse">
+			  <div id="collapseOne" class="accordion-body in collapse chart-table-body">
 			    <div class="accordion-inner datatablescrollable">
 				    <table id="datatable" class="table table-striped">
 						<thead>
