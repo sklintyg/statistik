@@ -131,9 +131,9 @@
 
 <!-- Scripts -->
 <!-- Placed at the end of the document so the pages load faster -->
-<script type="text/javascript" src="<c:url value='/js/jquery/1.10.2/jquery.min.js'/>"></script>
+<script type="text/javascript" src="<c:url value='/js/lib/jquery/1.10.2/jquery.min.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/bootstrap/2.3.2/js/bootstrap.min.js'/>"></script>
-<script type="text/javascript" src="<c:url value='/js/angularjs/1.0.8/angular.min.js'/>"></script>
+<script type="text/javascript" src="<c:url value='/js/lib/angularjs/1.0.8/angular.min.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/app.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/factories.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/controller/common.js'/>"></script>
@@ -142,9 +142,9 @@
 <script type="text/javascript" src="<c:url value='/js/app/controller/overviewCtrl.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/controllers.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/directives.js'/>"></script>
-<script type="text/javascript" src="<c:url value='js/highcharts/3.0.5/highcharts.js'/>"></script>
-<script type="text/javascript" src="<c:url value='js/highcharts/3.0.5/highcharts-more.js'/>"></script>
-<script type="text/javascript" src="<c:url value='js/highcharts/3.0.5/modules/exporting.js'/>"></script>
+<script type="text/javascript" src="<c:url value='js/lib/highcharts/3.0.5/highcharts.js'/>"></script>
+<script type="text/javascript" src="<c:url value='js/lib/highcharts/3.0.5/modules/highcharts-more.js'/>"></script>
+<script type="text/javascript" src="<c:url value='js/lib/highcharts/3.0.5/modules/exporting.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/exportTableData.js'/>" ></script>
 <script type="text/javascript">
 	$('.dropdown-toggle').dropdown();
