@@ -4,10 +4,15 @@ public class DiagnosisGroup {
 
     private final String id;
     private final String name;
+    private final String firstId;
+    private final String lastId;
 
     public DiagnosisGroup(String id, String name) {
         this.id = id;
         this.name = name;
+        String[] split = id.split("-");
+        firstId = split[0];
+        lastId = split[1];
     }
 
     public String getId() {
@@ -24,9 +29,16 @@ public class DiagnosisGroup {
     }
 
     public boolean isCodeInGroup(String icd10Code) {
-        String[] split = id.split("-");
-        return split[0].length() == icd10Code.length() && split[0].compareTo(icd10Code.toUpperCase()) <= 0 && split[1].length() == icd10Code.length()
-                && split[1].compareTo(icd10Code.toUpperCase()) >= 0;
+        String normalizedCode = normalizeCode(icd10Code);
+        return firstId.compareTo(normalizedCode) <= 0 && lastId.compareTo(normalizedCode) >= 0;
+    }
+
+    private String normalizeCode(String icd10Code) {
+        String normalizedCode = icd10Code.toUpperCase();
+        if (icd10Code.length() > 3) {
+            normalizedCode = normalizedCode.substring(0, 3);
+        }
+        return normalizedCode;
     }
 
 }

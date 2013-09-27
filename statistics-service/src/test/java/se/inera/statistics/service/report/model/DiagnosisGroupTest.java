@@ -15,7 +15,7 @@ public class DiagnosisGroupTest {
         assertCodeInGroup("A00-B99", "B05", true);
         assertCodeInGroup("B00-B99", "A05", false);
         assertCodeInGroup("B00-B49", "B50", false);
-        assertCodeInGroup("B00-B49", "B150", false);
+        assertCodeInGroup("B00-B49", "B150", true);
     }
 
     private void assertCodeInGroup(String groupId, String code, boolean isInGroup) {
