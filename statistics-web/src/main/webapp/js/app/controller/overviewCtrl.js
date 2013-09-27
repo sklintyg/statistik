@@ -53,7 +53,7 @@ var overviewCtrl = function ($scope, statisticsData) {
         $scope.longSickLeavesTotal = result.sickLeaveLength.longSickLeavesTotal;
         $scope.longSickLeavesAlteration = result.sickLeaveLength.longSickLeavesAlternation;
 
-        addColor(result.perCounty);
+        ControllerCommons.addColor(result.perCounty);
         paintSickLeavePerCountyChart("sickLeavePerCountyChart", result.perCounty);
         $scope.sickLeavePerCountyGroups = result.perCounty;
     };
@@ -195,7 +195,7 @@ var overviewCtrl = function ($scope, statisticsData) {
 	}
 
     function extractDonutData(rawData){
-        addColor(rawData);
+        ControllerCommons.addColor(rawData);
         var donutData = [];
         for (var i = 0; i < rawData.length; i++) {
             donutData.push({
@@ -211,5 +211,5 @@ var overviewCtrl = function ($scope, statisticsData) {
 		return string.replace(/&/g,'&amp;').replace(/</g,'&lt;');
 	}
 
-    statisticsData.getOverview(populatePageWithData, dataDownloadFailed);
+    statisticsData.getOverview(populatePageWithData, ControllerCommons.dataDownloadFailed);
 };

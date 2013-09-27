@@ -84,13 +84,13 @@ var casesPerMonthCtrl = function ($scope, statisticsData) {
 	};
 
 	var updateChart = function(ajaxResult) {
-		var chartCategories = getChartCategories(ajaxResult);
-		var chartSeries = getChartSeries(ajaxResult);
+		var chartCategories = ControllerCommons.getChartCategories(ajaxResult);
+		var chartSeries = ControllerCommons.getChartSeries(ajaxResult);
 		chartSeries.pop();
 		paintChart(chartCategories, chartSeries);
 	};
 
-    $scope.exportTableData = exportTableDataGeneric;
+    $scope.exportTableData = ControllerCommons.exportTableDataGeneric;
     
     var populatePageWithData = function(result){
         updateDataTable($scope, result);
@@ -98,9 +98,9 @@ var casesPerMonthCtrl = function ($scope, statisticsData) {
         $scope.subTitle = "Antal sjukfall per månad " + result.rows[0].name + " - " + result.rows[result.rows.length-1].name;
     };
 
-    statisticsData.getNumberOfCasesPerMonth(populatePageWithData, dataDownloadFailed);
+    statisticsData.getNumberOfCasesPerMonth(populatePageWithData, ControllerCommons.dataDownloadFailed);
     
-    $scope.showHideDataTable = showHideDataTableDefault;
+    $scope.showHideDataTable = ControllerCommons.showHideDataTableDefault;
     $scope.toggleTableVisibility = function(event){
         toggleTableVisibilityGeneric(event, $scope);
     };

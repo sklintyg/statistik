@@ -17,7 +17,7 @@
 						<div class="overview-box-header-container">
 							<ul class="overview-box-header">
 								<li class="overview-box-header-listItem">
-									<a ng-href="#/sjukfallPerManad">
+									<a ng-href="#/sjukfallPerManad" id="casesPerMonthProportionPerSexLink">
 										<h2>Könsfördelning
 											<i class="icon-chevron-right icon-white"></i>
 										</h2>
@@ -27,8 +27,8 @@
 						</div>
 						<div id="overview-distribution-per-sex-container" style="padding: 4% 4% auto 4%;">
 							<p style="text-align: center; vertical-align: middle; font-size: 2em; font-weight: bold; color: #fff; margin-left: auto; margin-right: auto; position: relative; top: 70px;">
-								<span style="margin-right: 10px;">{{casesPerMonthFemaleProportion}}% </span>
-								<span style="margin-left: 10px;">{{casesPerMonthMaleProportion}}% </span>
+								<span style="margin-right: 10px;" id="overview-distribution-female-lbl">{{casesPerMonthFemaleProportion}}% </span>
+								<span style="margin-left: 10px;" id="overview-distribution-male-lbl">{{casesPerMonthMaleProportion}}% </span>
 							</p>
 							<img src="../img/distribution_per_sex_stat_bg.png" style="display: block; margin-left: auto; margin-right: auto; margin-top: 5%;"/>
 						</div>
@@ -39,7 +39,7 @@
 						<div class="overview-box-header-container">
 							<ul class="overview-box-header">
 								<li class="overview-box-header-listItem">
-									<a ng-href="#/sjukfallPerManad">
+									<a ng-href="#/sjukfallPerManad" id="casesPerMonthAlterationLink">
 										<h2>Förändring
 											<i class="icon-chevron-right icon-white"></i>
 										</h2>

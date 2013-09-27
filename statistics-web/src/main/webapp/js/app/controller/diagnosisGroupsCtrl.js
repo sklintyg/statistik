@@ -87,11 +87,11 @@ var diagnosisGroupsCtrl = function ($scope, $routeParams, $window, statisticsDat
         var chartCategories = ajaxResult.femaleChart.headers;
 
         var chartSeriesFemale = ajaxResult.femaleChart.rows;
-        addColor(chartSeriesFemale);
+        ControllerCommons.addColor(chartSeriesFemale);
         chart1 = paintChart('container1', 'Antal kvinnor', chartCategories, chartSeriesFemale);
         
         var chartSeriesMale = ajaxResult.maleChart.rows;
-        addColor(chartSeriesMale);
+        ControllerCommons.addColor(chartSeriesMale);
         chart2 = paintChart('container2', 'Antal män', chartCategories, chartSeriesMale);
         
         var yMax = Math.max(chart1.yAxis[0].dataMax, chart2.yAxis[0].dataMax);
@@ -145,7 +145,7 @@ var diagnosisGroupsCtrl = function ($scope, $routeParams, $window, statisticsDat
         return numberArray.concat([sum]);
     }
     
-    $scope.exportTableData = exportTableDataGeneric;
+    $scope.exportTableData = ControllerCommons.exportTableDataGeneric;
     
     var populatePageWithData = function(result){
         updateDataTable($scope, result);
@@ -174,16 +174,16 @@ var diagnosisGroupsCtrl = function ($scope, $routeParams, $window, statisticsDat
 
     $scope.subTitle = "Antal sjukfall per diagnosgrupp";
     
-    statisticsData[dataFetcher](populatePageWithData, dataDownloadFailed, $routeParams.groupId);
+    statisticsData[dataFetcher](populatePageWithData, ControllerCommons.dataDownloadFailed, $routeParams.groupId);
     
-    $scope.showHideDataTable = showHideDataTableDefault;
+    $scope.showHideDataTable = ControllerCommons.showHideDataTableDefault;
     $scope.toggleTableVisibility = function(event){
         toggleTableVisibilityGeneric(event, $scope);
     };
 
     $scope.showDetailsOptions = showDetailsOptions;
     if (showDetailsOptions){
-        statisticsData.getDiagnosisGroups(populateDetailsOptions, dataDownloadFailed);
+        statisticsData.getDiagnosisGroups(populateDetailsOptions, ControllerCommons.dataDownloadFailed);
     }
 
 };

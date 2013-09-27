@@ -1,19 +1,20 @@
- 'use strict';
+'use strict';
 
+var ControllerCommons = new function(){
 
- function addColor(rawData){
+ this.addColor = function(rawData){
      var color = ["#fbb10c", "#2ca2c6", "#11b73c", "#d165df", "#9c734d", "#008391", "#535353"];
      for (var i = 0; i < rawData.length; i++) {
          rawData[i].color = color[i];
      }
- }
+ };
  
- var dataDownloadFailed = function () {
+ this.dataDownloadFailed = function () {
      alert("Failed to download chart data");
  };
 
- var showHideDataTableDefault = "Dölj datatabell";
- var toggleTableVisibilityGeneric = function(event, $scope){
+ this.showHideDataTableDefault = "Dölj datatabell";
+ this.toggleTableVisibilityGeneric = function(event, $scope){
      var elem = $(event.target);
      var accordionGroup = $(elem.parents('.accordion-group')[0]);
      var accordionBody = $(accordionGroup.children('.accordion-body'));
@@ -21,7 +22,7 @@
      $scope.showHideDataTable = wasTableVisible ? "Visa datatabell" : "Dölj datatabell"; 
  };
  
- var exportTableDataGeneric = function() {
+ this.exportTableDataGeneric = function() {
      var dt = $('#datatable');
      var csvData = table2CSV(dt);
      $.generateFile({
@@ -31,13 +32,13 @@
      });
  };
  
- var getChartCategories = function(ajaxResult) {
+ this.getChartCategories = function(ajaxResult) {
      return ajaxResult.rows.map(function(e) {
          return e.name;
      });
  };
 
- var getChartSeries = function(ajaxResult) {
+ this.getChartSeries = function(ajaxResult) {
      var dataSeries = [];
      var length = ajaxResult.headers.length;
      for ( var i = 0; i < length; i++) {
@@ -57,3 +58,5 @@
      }
      return dataSeries;
  };
+
+};
