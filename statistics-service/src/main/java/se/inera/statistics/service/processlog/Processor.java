@@ -1,9 +1,10 @@
 package se.inera.statistics.service.processlog;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
-import org.joda.time.Duration;
-import org.joda.time.Interval;
+import static se.inera.statistics.service.helper.DocumentHelper.getForstaNedsattningsdag;
+import static se.inera.statistics.service.helper.DocumentHelper.getPersonId;
+import static se.inera.statistics.service.helper.DocumentHelper.getSistaNedsattningsdag;
+import static se.inera.statistics.service.helper.DocumentHelper.getVardgivareId;
+
 import org.joda.time.LocalDate;
 import org.joda.time.Period;
 import org.joda.time.format.DateTimeFormatter;
@@ -15,14 +16,7 @@ import se.inera.statistics.service.sjukfall.SjukfallKey;
 import se.inera.statistics.service.sjukfall.SjukfallService;
 
 import com.fasterxml.jackson.databind.JsonNode;
-
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-
-import static se.inera.statistics.service.helper.DocumentHelper.*;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 public class Processor {
     private DateTimeFormatter formatter = new DateTimeFormatterBuilder().appendYear(4,4).appendLiteral('-').appendMonthOfYear(2).appendLiteral('-').appendDayOfMonth(2).toFormatter();
