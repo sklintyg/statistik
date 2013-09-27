@@ -1,14 +1,13 @@
 package se.inera.statistics.service.sjukfall;
 
-import java.util.Date;
 import java.util.UUID;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+
+import org.joda.time.LocalDate;
 
 @Entity
 @NamedQueries(value = { @NamedQuery(name = "SjukfallByPersonIdAndVardgivareId", query = "SELECT s FROM Sjukfall s WHERE s.personId = :personId and s.vardgivareId = :vardgivareId") })
@@ -19,10 +18,8 @@ public class Sjukfall {
 
     private String personId;
     private String vardgivareId;
-    @Temporal(TemporalType.DATE)
-    private Date start;
-    @Temporal(TemporalType.DATE)
-    private Date end;
+    private String start;
+    private String end;
 
     /**
      * Empty constructor (as required by JPA spec).
@@ -30,12 +27,12 @@ public class Sjukfall {
     public Sjukfall() {
     }
 
-    public Sjukfall(String personId, String vardgivareId, Date start, Date end) {
+    public Sjukfall(String personId, String vardgivareId, LocalDate start, LocalDate end) {
         id = UUID.randomUUID().toString();
         this.personId = personId;
         this.vardgivareId = vardgivareId;
-        this.start = start;
-        this.end = end;
+        this.start = start.toString();
+        this.end = end.toString();
     }
 
     public String getPersonId() {
@@ -46,16 +43,16 @@ public class Sjukfall {
         return vardgivareId;
     }
 
-    public Date getStart() {
-        return start;
+    public LocalDate getStart() {
+        return new LocalDate(start);
     }
 
-    public Date getEnd() {
-        return end;
+    public LocalDate getEnd() {
+        return new LocalDate(end);
     }
 
-    public void setEnd(Date end) {
-        this.end = end;
+    public void setEnd(LocalDate end) {
+        this.end = end.toString();
     }
 
     public String getId() {

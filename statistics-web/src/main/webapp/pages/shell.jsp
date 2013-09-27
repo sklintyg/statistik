@@ -86,7 +86,7 @@
 								<li><a ng-href="#/sjukskrivningsgrad" id="navSickLeaveDegreeLink" navigationaware>Sjukskrivningsgrad</a></li>
 								<li><a ng-href="#/sjukskrivningslangd" id="navSickLeaveLengthLink" navigationaware>Sjukskrivningslängd</a></li>
 								<li><a ng-href="#/lan" id="navCountyLink" navigationaware>Län</a></li>
-								<ul class="nav nav-list">
+								<ul class="nav nav-list sub-nav-list">
 									<li><a ng-href="#/andelSjukfallPerKon" id="navCasesPerSexLink" navigationaware>Andel sjukfall per kön</a></li>
 								</ul>
 							</ul>
