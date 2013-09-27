@@ -33,7 +33,7 @@
 <link href="<c:url value='/css/inera-statistics-responsive.css'/>" rel="stylesheet">
 <link href="<c:url value='/bootstrap/2.3.2/css/bootstrap-responsive.css'/>" rel="stylesheet">
 
-
+<link rel="icon" type="image/png" href="../img/favicon.ico">
 </head>
 <body data-spy="scroll" data-target=".bs-docs-sidenav">
 
