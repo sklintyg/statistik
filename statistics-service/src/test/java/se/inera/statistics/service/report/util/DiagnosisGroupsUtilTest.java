@@ -18,7 +18,7 @@ public class DiagnosisGroupsUtilTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void testGetGroupIdForIllegalCode() {
-        DiagnosisGroupsUtil.getGroupIdForCode("R150");
+        DiagnosisGroupsUtil.getGroupIdForCode("D99");
     }
 
     @Test
@@ -27,9 +27,15 @@ public class DiagnosisGroupsUtilTest {
         assertEquals("T51-T65", subGroupForCode.getId());
     }
 
+    @Test
+    public void testGetSubGroupForLongCode() {
+        DiagnosisGroup subGroupForCode = DiagnosisGroupsUtil.getSubGroupForCode("T5712");
+        assertEquals("T51-T65", subGroupForCode.getId());
+    }
+
     @Test(expected = IllegalArgumentException.class)
     public void testGetSubGroupForIllegalCode() {
-        DiagnosisGroupsUtil.getSubGroupForCode("T150");
+        DiagnosisGroupsUtil.getSubGroupForCode("T99");
     }
 
     @Test
