@@ -74,19 +74,21 @@
 				<div id="statistics-left-menu">
 					<div>
 						<div class="nav nav-list bs-docs-sidenav" id="national-statistic-menu">
-							<div class="statistics-left-menu-header"><a class="accordion-toggle" data-toggle="collapse" href="#national-statistic-menu-content">Nationell statistik<i class="statistict-left-menu-expand-icon"></i></a></div>
+							<div class="statistics-left-menu-header">
+								<a class="accordion-toggle" data-toggle="collapse" href="#national-statistic-menu-content">Nationell statistik<i class="statistict-left-menu-expand-icon"></i></a>
+							</div>
 							<ul id="national-statistic-menu-content" class="nav nav-list accordion-body in collapse">
 								<li><a ng-href="#/oversikt" navigationaware>Översikt</a></li>
 							 	<li><a ng-href="#/sjukfallPerManad" id="navCasesPerMonthLink" navigationaware>Sjukfall, totalt</a></li>
-								<li><a ng-href="#/diagnosgrupper" id="navDiagnosisGroupsLink" navigationaware>Diagnosgrupp</a></li>
-								<ul class="nav nav-list sub-nav-list">
+								<li><a ng-href="#/diagnosgrupper" id="navDiagnosisGroupsLink" navigationaware>Diagnosgrupp</a><i class="statistict-left-menu-expand-icon" class="accordion-toggle" data-toggle="collapse" href="#sub-menu-diagnostics"></i></li>
+								<ul id="sub-menu-diagnostics" class="nav nav-list sub-nav-list accordion-body in collapse">
 									<li><a ng-href="#/underdiagnosgrupper" id="navDiagnosisSubGroupsLink" navigationaware>Underdiagnosgrupp</a></li>
 								</ul>
 								<li><a ng-href="#/aldersgrupper" id="navAgeGroupsLink" navigationaware>Ålderssgrupp</a></li>
 								<li><a ng-href="#/sjukskrivningsgrad" id="navSickLeaveDegreeLink" navigationaware>Sjukskrivningsgrad</a></li>
 								<li><a ng-href="#/sjukskrivningslangd" id="navSickLeaveLengthLink" navigationaware>Sjukskrivningslängd</a></li>
-								<li><a ng-href="#/lan" id="navCountyLink" navigationaware>Län</a></li>
-								<ul class="nav nav-list sub-nav-list">
+								<li><a ng-href="#/lan" id="navCountyLink" navigationaware>Län</a><i class="statistict-left-menu-expand-icon" class="accordion-toggle" data-toggle="collapse" href="#sub-menu-cases-per-county"></i></li>
+								<ul id="sub-menu-cases-per-county" class="nav nav-list sub-nav-list accordion-body in collapse">
 									<li><a class="last-item-in-menu" ng-href="#/andelSjukfallPerKon" id="navCasesPerSexLink" navigationaware>Andel sjukfall per kön</a></li>
 								</ul>
 							</ul>
