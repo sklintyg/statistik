@@ -3,6 +3,10 @@ package se.inera.statistics.service.report.listener;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
+import java.util.Iterator;
+import java.util.List;
+import java.util.NoSuchElementException;
+
 import org.hibernate.ejb.criteria.expression.SearchedCaseExpression.WhenClause;
 import org.joda.time.LocalDate;
 import org.junit.Test;
@@ -50,7 +54,27 @@ public class SjukfallPerKonListenerTest {
         LocalDate lastDate = new LocalDate("2013-01-01");
         listener.loopOverPeriod(null, null, null, firstDate, lastDate);
 
-        assertNull(capture.getValue());
+        assertEquals(firstDate, capture.getValue());
+    }
+
+    @Test
+    public void acceptWithNoPreviousCallsFromStartMonthToEndMonth() {
+        ArgumentCaptor<LocalDate> capture = ArgumentCaptor.forClass(LocalDate.class);
+        doNothing().when(listener).accept(capture.capture(), any(SjukfallInfo.class), any(JsonNode.class), any(JsonNode.class));
+
+        LocalDate firstDate = new LocalDate("2013-01-01");
+        LocalDate lastDate = new LocalDate("2013-03-01");
+        listener.loopOverPeriod(null, null, null, firstDate, lastDate);
+
+        Iterator<LocalDate> allValues = capture.getAllValues().iterator();
+        assertEquals(firstDate, allValues.next());
+        assertEquals(firstDate.plusMonths(1), allValues.next());
+        assertEquals(firstDate.plusMonths(2), allValues.next());
+        try {
+            allValues.next();
+            fail();
+        } catch (NoSuchElementException e) {
+        }
     }
 
 }
