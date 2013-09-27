@@ -495,19 +495,46 @@ legend {
 	background: linear-gradient(to bottom,  #666666 0%,#0d0d0d 57%); /* W3C */
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#666666', endColorstr='#0d0d0d',GradientType=0 ); /* IE6-8 */
 	cursor: pointer;
-	-webkit-border-radius: 4px 4px 0 0;
-	-moz-border-radius: 6px 6px 0 0;
-	border-radius: 4px 4px 0 0;
+	-webkit-border-radius: 8px 8px 0 0;
+	-moz-border-radius: 8px 8px 0 0;
+	border-radius: 8px 8px 0 0;
+}
+#statistics-left-menu .nav-list {
+	padding-left: 0px;
+	padding-right: 0px;
+}
+.statistics-left-menu-header{
+	display: block;
+	margin: 0 0 -1px;
+	padding: 0px 0px;
+}
+.statistics-left-menu-header a{
+	display: block;
+	margin: 0 0 1px;
+	padding: 11px 11px;
 }
 
 #statistics-left-menu li a {
-	
+	color: #0b0b0b;
+	margin: 0 0 0px;
+	padding: 10px 11px;
+	border-left: 1px solid #BABABA;
+	border-right: 1px solid #BABABA;
+	border-bottom: 1px solid #BABABA;
 }
 #statistics-left-menu li a:hover {
 	background: #e8e8e8;
 }
 #statistics-left-menu #national-statistic-menu-content li.active a {
-	background: #bebebe;
+	background: #CCCCCC;
+	color: #0b0b0b !important;
+}
+#statistics-left-menu li a.last-item-in-menu {
+	border-radius: 0px 0px 8px 8px;
+}
+
+#national-statistic-menu-content .sub-nav-list li a {
+	
 }
 
 #statistics-left-menu a.accordion-toggle i.statistict-left-menu-expand-icon {
@@ -516,13 +543,13 @@ legend {
 	float: right;
 	margin-top: 3px;
 	margin-right: 0px;
-	width: 13px;
-	height: 13px;
+	width: 14px;
+	height: 14px;
 }
 #statistics-left-menu a.accordion-toggle.collapsed {
-	-webkit-border-radius: 6px 6px 6px 6px;
-	-moz-border-radius: 6px 6px 6px 6px;
-	border-radius: 6px 6px 6px 6px;
+	-webkit-border-radius: 8px 8px 8px 8px;
+	-moz-border-radius: 8px 8px 8px 8px;
+	border-radius: 8px 8px 8px 8px;
 }
 #statistics-left-menu a.accordion-toggle.collapsed i.statistict-left-menu-expand-icon {
 	background-image: url("../img/glyphicons-halflings-white.png");
@@ -530,8 +557,8 @@ legend {
 	float: right;
 	margin-top: 3px;
 	margin-right: 0px;
-	width: 13px;
-	height: 13px;
+	width: 14px;
+	height: 14px;
 }
 #statistics-left-menu .nav.nav-list.sub-nav-list {
 	padding-left: 0px;
@@ -560,7 +587,7 @@ legend {
 	border-top-right-radius: 10px;
 	border-bottom-left-radius: 0px;
 	border-bottom-right-radius: 0px;
-	color: #fff !important;
+	color: #fff;
 }
 
 .accordion-toggle:hover {
@@ -748,7 +775,7 @@ div.headerbox-user { font-size: 13px; line-height: 16px;}
 	#footer .footer-content a:hover { text-decoration: underline; }
 
 .nav-list>li>a {
-	padding: 8px 16px !important;
+	/*padding: 8px 16px !important;*/
 }
 a.listheader.collapsed {
 	-webkit-border-radius: 6px 6px 6px 6px !important;
@@ -1172,6 +1199,7 @@ li.overview-box-header-listItem {
 	width: 38%;
 	float: left;
 	margin: 18px 0 0 0;
+	text-align: center;
 }
 .overview-chart-info-section{
 	float: left;
@@ -1180,7 +1208,6 @@ span.longSickLeavesValue {
 	color: #919191;
 	font-weight: bold;
 	font-size: 2em;
-	margin: 0px 10px 10px 28px;
 }
 span.longSickLeavesText{
 	float: left;

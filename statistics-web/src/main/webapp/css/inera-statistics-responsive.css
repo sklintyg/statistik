@@ -782,7 +782,6 @@ form.bs-docs-example {
   -webkit-box-shadow: 0 1px 4px rgba(0,0,0,.065);
   -moz-box-shadow: 0 1px 4px rgba(0,0,0,.065);
   box-shadow: 0 1px 4px rgba(0,0,0,.065);
-  border: 1px solid #0d0d0d;
 }
 .bs-docs-sidenav > li > a {
   display: block;
@@ -1177,8 +1176,8 @@ form.bs-docs-example {
 		left: 0;
 	}
 	#overview-content #overview-change-container .overview-change-responsive-circle > div {
-		padding: 30%;
-		margin: 16% 25% 11% 20%;
+		padding: 25%;
+		margin: 7% 25% 6% 25%;
 	}
 	.overview-chart-info{
 		float: left;
