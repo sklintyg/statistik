@@ -1,19 +1,35 @@
 package se.inera.statistics.service.report.model;
 
+import javax.persistence.Embedded;
+import javax.persistence.EmbeddedId;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+
+@Entity
 public class CasesPerMonthRow {
 
-    private final String period;
-    private final int female;
-    private final int male;
+    @EmbeddedId
+    private CasesPerMonthKey casesPerMonthKey;
+    private int female;
+    private int male;
+
+    public CasesPerMonthRow() {
+    }
 
     public CasesPerMonthRow(String period, int female, int male) {
-        this.period = period;
+        this.casesPerMonthKey = new CasesPerMonthKey(period, "nationell");
+        this.female = female;
+        this.male = male;
+    }
+
+    public CasesPerMonthRow(String period, String hsaId, int female, int male) {
+        this.casesPerMonthKey = new CasesPerMonthKey(period, hsaId);
         this.female = female;
         this.male = male;
     }
 
     public String getPeriod() {
-        return period;
+        return casesPerMonthKey.getPeriod();
     }
 
     public int getFemale() {
@@ -24,4 +40,11 @@ public class CasesPerMonthRow {
         return male;
     }
 
+    public void setFemale(int female) {
+        this.female = female;
+    }
+
+    public void setMale(int male) {
+        this.male = male;
+    }
 }

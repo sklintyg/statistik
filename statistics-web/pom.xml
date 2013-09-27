@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <artifactId>statistics</artifactId>
@@ -10,9 +11,9 @@
   <packaging>war</packaging>
   <name>Inera Statistics Service - Web Module</name>
 
-    <properties>
-	  <jasmine-plugin-version>1.3.1.2</jasmine-plugin-version>
-    </properties>
+  <properties>
+    <jasmine-plugin-version>1.3.1.2</jasmine-plugin-version>
+  </properties>
 
   <dependencies>
     <dependency>
@@ -89,7 +90,7 @@
           <systemProperty>
             <name>java.awt.headless</name>
             <value>true</value>
-          </systemProperty>            
+          </systemProperty>
         </configuration>
       </plugin>
       <plugin>
@@ -119,27 +120,27 @@
         </configuration>
       </plugin>
       <plugin>
-	      <groupId>com.github.searls</groupId>
-	      <artifactId>jasmine-maven-plugin</artifactId>
-	      <version>${jasmine-plugin-version}</version>
-	      <executions>
-	        <execution>
-	          <goals>
-	            <goal>test</goal>
-	          </goals>
-	        </execution>
-	      </executions>
-	      <configuration>
-            <jsSrcDir>src/main/webapp/js</jsSrcDir>
-            <jsTestSrcDir>src/test/javascript</jsTestSrcDir>
-			<sourceIncludes>
-                <include>lib/**/*.js</include>
-                <include>app/controller/*.js</include>
-                <include>app/*.js</include>
-                <include>**/*.js</include>
-             </sourceIncludes>
-	      </configuration>
-	    </plugin>
+        <groupId>com.github.searls</groupId>
+        <artifactId>jasmine-maven-plugin</artifactId>
+        <version>${jasmine-plugin-version}</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>test</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <jsSrcDir>src/main/webapp/js</jsSrcDir>
+          <jsTestSrcDir>src/test/javascript</jsTestSrcDir>
+          <sourceIncludes>
+            <include>lib/**/*.js</include>
+            <include>app/controller/*.js</include>
+            <include>app/*.js</include>
+            <include>**/*.js</include>
+          </sourceIncludes>
+        </configuration>
+      </plugin>
     </plugins>
   </build>
 
