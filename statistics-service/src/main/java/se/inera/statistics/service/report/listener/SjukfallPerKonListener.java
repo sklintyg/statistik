@@ -1,30 +1,42 @@
 package se.inera.statistics.service.report.listener;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import org.joda.time.LocalDate;
-import org.joda.time.Period;
 import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.DateTimeFormatterBuilder;
+
 import se.inera.statistics.service.helper.DocumentHelper;
 import se.inera.statistics.service.processlog.ProcessorListener;
 import se.inera.statistics.service.sjukfall.SjukfallInfo;
 
-import java.util.Date;
+import com.fasterxml.jackson.databind.JsonNode;
 
 public class SjukfallPerKonListener implements ProcessorListener {
+    private static final DateTimeFormatter formatter = new DateTimeFormatterBuilder().appendYear(4,4).appendLiteral('-').appendMonthOfYear(2).appendLiteral('-').appendDayOfMonth(2).toFormatter();
+    
     @Override
     public void accept(SjukfallInfo sjukfallInfo, JsonNode utlatande, JsonNode hsa) {
-        String start = DocumentHelper.getForstaNedsattningsdag(utlatande);
-        String end = DocumentHelper.getSistaNedsattningsdag(utlatande);
-
+        LocalDate start = formatter.parseLocalDate(DocumentHelper.getForstaNedsattningsdag(utlatande));
+        LocalDate endMonth = formatter.parseLocalDate(DocumentHelper.getSistaNedsattningsdag(utlatande));
+        
+        LocalDate firstMonth = getFirstDateMonth(sjukfallInfo.getPrevEnd(), start);
+        loopOverPeriod(sjukfallInfo, utlatande, hsa, firstMonth, endMonth);
     }
 
-    protected int getMonthsDiff(String start, String end) {
-        DateTimeFormatter formatter = new DateTimeFormatterBuilder().appendYear(4,4).appendLiteral('-').appendMonthOfYear(2).appendLiteral('-').appendDayOfMonth(2).toFormatter();
-        LocalDate startDate = org.joda.time.LocalDate.parse(start, formatter);
-        LocalDate endDate = org.joda.time.LocalDate.parse(end, formatter);
-        Period period = new Period(startDate, endDate);
-        return period.getMonths();
+    protected void loopOverPeriod(SjukfallInfo sjukfallInfo, JsonNode utlatande, JsonNode hsa, LocalDate firstMonth, LocalDate endMonth) {
+        for (LocalDate month = firstMonth; !month.isAfter(endMonth); month = month.plusMonths(1)) {
+            accept(month, sjukfallInfo, utlatande, hsa);
+        }
     }
 
+    protected void accept(LocalDate month, SjukfallInfo sjukfallInfo, JsonNode utlatande, JsonNode hsa) {
+        // Uppdatera räknare
+    }
+
+    static protected LocalDate getFirstDateMonth(LocalDate previousEnd, LocalDate start) {
+        if (previousEnd == null) {
+            return start.withDayOfMonth(1);
+        } else {
+            return previousEnd.withDayOfMonth(1).plusMonths(1);
+        }
+    }
 }
