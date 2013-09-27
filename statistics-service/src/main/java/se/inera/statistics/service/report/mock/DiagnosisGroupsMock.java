@@ -33,7 +33,8 @@ public class DiagnosisGroupsMock implements DiagnosisGroups {
     }
 
     private int g() {
-        return new Random().nextInt(100);
+        final int maxValue = 100;
+        return new Random().nextInt(maxValue);
     }
 
 }

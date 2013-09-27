@@ -23,7 +23,7 @@ public class DiagnosisSubGroupsMock implements DiagnosisSubGroups {
         }
         return new DiagnosisGroupResponse(headers, rows);
     }
-    
+
     private List<DualSexField> randomData(int size) {
         DualSexField[] data = new DualSexField[size];
         for (int i = 0; i < size; i++) {
@@ -33,7 +33,8 @@ public class DiagnosisSubGroupsMock implements DiagnosisSubGroups {
     }
 
     private int g() {
-        return new Random().nextInt(1000);
+        final int maxNumber = 100;
+        return new Random().nextInt(maxNumber);
     }
-    
+
 }

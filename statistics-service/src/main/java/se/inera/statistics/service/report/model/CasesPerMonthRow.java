@@ -1,9 +1,7 @@
 package se.inera.statistics.service.report.model;
 
-import javax.persistence.Embedded;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.Id;
 
 @Entity
 public class CasesPerMonthRow {
