@@ -8,4 +8,5 @@
     <include file="liquibase/db.changelog-v1.0_create_event_table.xml"/>
     <include file="liquibase/db.changelog-v2.0_create_event_pointer_table.xml"/>
     <include file="liquibase/db.changelog-v3.0_create_sjukfall_table.xml"/>
+    <include file="liquibase/db.changelog-v4.0_create_cases_per_month_row_table.xml"/>
 </databaseChangeLog>
