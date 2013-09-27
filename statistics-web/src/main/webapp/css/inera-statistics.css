@@ -586,6 +586,16 @@ legend {
 	height: 14px;
 	margin-left: 0px;
 }
+.chart-table-body.in.collapse {
+	border-left: 1px solid #BABABA;
+	border-right: 1px solid #BABABA;
+	border-bottom: 1px solid #BABABA;
+	border-radius: 0px 0px 8px 8px;
+	background-color: #f9f9f9;
+}
+.chart-table-body.collapse {
+	border-bottom: 1px solid transparent;
+}
 #statistics-left-menu .nav.nav-list.sub-nav-list {
 	padding-left: 0px;
 	padding-right: 0px;
