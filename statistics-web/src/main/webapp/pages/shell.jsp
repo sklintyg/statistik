@@ -33,9 +33,9 @@
 <link href="<c:url value='/css/inera-statistics-responsive.css'/>" rel="stylesheet">
 <link href="<c:url value='/bootstrap/2.3.2/css/bootstrap-responsive.css'/>" rel="stylesheet">
 
-
+<link rel="icon" type="image/png" href="../img/favicon.ico">
 </head>
-<body data-spy="scroll">
+<body data-spy="scroll" data-target=".bs-docs-sidenav">
 
 <!-- Navbar
 ================================================== -->
@@ -91,25 +91,15 @@
 								</ul>
 							</ul>
 						</div>	
-						<!-- 
-						<ul class="nav nav-list bs-docs-sidenav" id="national-statistic-menu">
-							<li><a ng-href="#/oversikt" navigationaware>Nationell statistik<i class="icon-chevron-right"></i></a></li>
-						 	<li><a ng-href="#/sjukfallPerManad" id="navCasesPerMonthLink" navigationaware>Sjukfall, totalt</a></li>
-							<li><a ng-href="#/diagnosgrupper" id="navDiagnosisGroupsLink" navigationaware>Diagnosgrupp<i class="icon-chevron-right"></i></a></li>
-							<li><a ng-href="#/underdiagnosgrupper" id="navDiagnosisSubGroupsLink" navigationaware>Underdiagnosgrupp</a></li>
-							<li><a ng-href="#/aldersgrupper" id="navAgeGroupsLink" navigationaware>Ålderssgrupp</a></li>
-							<li><a ng-href="#/sjukskrivningsgrad" id="navSickLeaveDegreeLink" navigationaware>Sjukskrivningsgrad</a></li>
-							<li><a ng-href="#/sjukskrivningslangd" id="navSickLeaveLengthLink" navigationaware>Sjukskrivningslängd</a></li>
-							<li><a ng-href="#/lan" id="navCountyLink" navigationaware>Län<i class="icon-chevron-right"></i></a></li>
-							<li><a ng-href="#/andelSjukfallPerKon" id="navCasesPerSexLink" navigationaware>Andel sjukfall per kön<i class="icon-chevron-right"></i></a></li>
-						</ul>
-						<!-- ul class="nav nav-list bs-docs-sidenav accordion-group" id="business-statistics-menu">
-							<li><a ng-href="#/om#about" navigationaware>Om tjänsten</a></li>
-							<li><a ng-href="#/om#login" navigationaware>Inloggning och behörighet</a></li>
-							<li><a ng-href="#/om#faq" navigationaware>Vanliga frågor och svar</a></li>
-							<li><a ng-href="#/om#contact" navigationaware>Kontakt till support</a></li>
-						</ul> -->
-					
+						
+						<div class="nav nav-list bs-docs-sidenav" id="about-statistic-menu">
+							<ul class="nav nav-list bs-docs-sidenav accordion-group" id="business-statistics-menu">
+								<li><a class="first-item-in-menu" ng-href="#/om#about" navigationaware>Om tjänsten</a></li>
+								<li><a ng-href="#/om#login" navigationaware>Inloggning och behörighet</a></li>
+								<li><a ng-href="#/om#faq" navigationaware>Vanliga frågor och svar</a></li>
+								<li><a ng-href="#/om#contact" navigationaware>Kontakt till support</a></li>
+							</ul>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -148,7 +138,7 @@
 <script type="text/javascript" src="<c:url value='/js/exportTableData.js'/>" ></script>
 <script type="text/javascript">
 	$('.dropdown-toggle').dropdown();
-	$('#business-statistics-menu').scrollspy();
+	$('#about-statistic-menu').scrollspy();
 	$('#statistics-left-menu').affix();
 </script>
 
