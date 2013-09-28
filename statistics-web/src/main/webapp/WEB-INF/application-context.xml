@@ -30,6 +30,10 @@
 	http://cxf.apache.org/transports/http/configuration http://cxf.apache.org/schemas/configuration/http-conf.xsd
 	http://cxf.apache.org/core http://cxf.apache.org/schemas/core.xsd">
 
+    <bean id="chartDataService" class="se.inera.statistics.web.service.ChartDataService">
+        <constructor-arg ref="casesPerMonth"/>
+    </bean>
+
     <import resource="classpath*:process-log-impl.xml"/>
     <import resource="application-context-cxf.xml"/>
     <import resource="application-context-security.xml"/>
@@ -40,6 +44,6 @@
     <bean class="se.inera.statistics.service.report.mock.OverviewMock"></bean>
 
     <context:annotation-config/>
-    <context:component-scan base-package="se.inera.statistics"/>
+    <context:component-scan base-package="se.inera.statistics.service"/>
 
 </beans>
