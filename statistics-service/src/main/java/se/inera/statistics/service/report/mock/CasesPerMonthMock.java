@@ -6,6 +6,7 @@ import java.util.Random;
 
 import se.inera.statistics.service.report.api.CasesPerMonth;
 import se.inera.statistics.service.report.model.CasesPerMonthRow;
+import se.inera.statistics.service.report.util.ReportUtil;
 
 public class CasesPerMonthMock implements CasesPerMonth {
 
@@ -15,7 +16,7 @@ public class CasesPerMonthMock implements CasesPerMonth {
     @Override
     public List<CasesPerMonthRow> getCasesPerMonth() {
         List<CasesPerMonthRow> rows = new ArrayList<>();
-        for (String periodName : ReportMockUtil.PERIODS) {
+        for (String periodName : ReportUtil.PERIODS) {
             int men = (int) (random.nextGaussian() * 2000 + 10000);
             int women = (int) (random.nextGaussian() * 2000 + 10000);
             rows.add(new CasesPerMonthRow(periodName, men, women));

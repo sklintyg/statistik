@@ -5,10 +5,8 @@ import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
+import se.inera.statistics.service.report.model.CasesPerMonthRow;
 import se.inera.statistics.service.report.model.Sex;
-
-import javax.transaction.NotSupportedException;
-import javax.transaction.SystemException;
 
 import static org.junit.Assert.assertEquals;
 
@@ -19,15 +17,43 @@ public class CasesPerMonthPersistenceTest extends CasesPerMonthPersistenceHandle
 
     // CHECKSTYLE:OFF MagicNumber
     @Test
-    public void storedEventCanBeFetched() throws InterruptedException, NotSupportedException, SystemException {
+    public void store_nonexisting_row_female() {
+
         this.count("201302", "nationell", Sex.Female);
 
-
+        CasesPerMonthRow check = this.getCasesPerMonthRow("201302", "nationell");
+        assertEquals(check.getFemale(), 1);
     }
-
 
     @Test
-    public void store_nonexisting_row() {
-        CasesPerMonthPersistenceHandler casesPerMonthPersistenceHandler;
+    public void store_existing_row_female() {
+        this.count("201302", "nationell", Sex.Female);
+
+        this.count("201302", "nationell", Sex.Female);
+
+        CasesPerMonthRow check = this.getCasesPerMonthRow("201302", "nationell");
+        assertEquals(check.getFemale(), 2);
     }
+
+    @Test
+    public void store_nonexisting_row_male() {
+
+        this.count("201302", "nationell", Sex.Male);
+
+        CasesPerMonthRow check = this.getCasesPerMonthRow("201302", "nationell");
+        assertEquals(check.getMale(), 1);
+    }
+
+    @Test
+    public void store_existing_row_male() {
+        this.count("201302", "nationell", Sex.Female);
+
+        this.count("201302", "nationell", Sex.Male);
+
+        CasesPerMonthRow check = this.getCasesPerMonthRow("201302", "nationell");
+        assertEquals(check.getMale(), 1);
+    }
+
+    // CHECKSTYLE:ON
+
 }

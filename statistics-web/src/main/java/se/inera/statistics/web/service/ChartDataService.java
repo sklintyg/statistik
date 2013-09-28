@@ -19,6 +19,7 @@ import se.inera.statistics.service.report.model.CasesPerMonthRow;
 import se.inera.statistics.service.report.model.DiagnosisGroup;
 import se.inera.statistics.service.report.model.DiagnosisGroupResponse;
 import se.inera.statistics.service.report.model.OverviewResponse;
+import se.inera.statistics.service.report.repository.CasesPerMonthPersistenceHandler;
 import se.inera.statistics.service.report.util.DiagnosisGroupsUtil;
 import se.inera.statistics.web.model.DiagnosisGroupsData;
 import se.inera.statistics.web.model.TableData;
@@ -27,7 +28,6 @@ import se.inera.statistics.web.model.overview.OverviewData;
 @Service("chartService")
 public class ChartDataService {
 
-    @Autowired
     private CasesPerMonth datasourceCasesPerMonth;
 
     @Autowired
@@ -38,6 +38,10 @@ public class ChartDataService {
 
     @Autowired
     private Overview datasourceOverview;
+
+    public ChartDataService(CasesPerMonth casesPerMonthPersistenceHandler) {
+        datasourceCasesPerMonth = casesPerMonthPersistenceHandler;
+    }
 
     @GET
     @Path("getNumberOfCasesPerMonth")

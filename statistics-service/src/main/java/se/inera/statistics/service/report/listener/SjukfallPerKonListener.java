@@ -4,15 +4,20 @@ import org.joda.time.LocalDate;
 import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.DateTimeFormatterBuilder;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import se.inera.statistics.service.helper.DocumentHelper;
 import se.inera.statistics.service.processlog.ProcessorListener;
+import se.inera.statistics.service.report.repository.CasesPerMonthPersistenceHandler;
 import se.inera.statistics.service.sjukfall.SjukfallInfo;
 
 import com.fasterxml.jackson.databind.JsonNode;
 
 public class SjukfallPerKonListener implements ProcessorListener {
     private static final DateTimeFormatter formatter = new DateTimeFormatterBuilder().appendYear(4,4).appendLiteral('-').appendMonthOfYear(2).appendLiteral('-').appendDayOfMonth(2).toFormatter();
-    
+
+    @Autowired
+    private CasesPerMonthPersistenceHandler casesPerMonthPersistenceHandler;
+
     @Override
     public void accept(SjukfallInfo sjukfallInfo, JsonNode utlatande, JsonNode hsa) {
         LocalDate start = formatter.parseLocalDate(DocumentHelper.getForstaNedsattningsdag(utlatande));
@@ -29,7 +34,7 @@ public class SjukfallPerKonListener implements ProcessorListener {
     }
 
     protected void accept(LocalDate month, SjukfallInfo sjukfallInfo, JsonNode utlatande, JsonNode hsa) {
-        // Uppdatera räknare
+        casesPerMonthPersistenceHandler.count(null,null,null);
     }
 
     static protected LocalDate getFirstDateMonth(LocalDate previousEnd, LocalDate start) {

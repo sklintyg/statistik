@@ -11,6 +11,7 @@ import se.inera.statistics.service.report.model.DiagnosisGroupResponse;
 import se.inera.statistics.service.report.model.DiagnosisGroupRow;
 import se.inera.statistics.service.report.model.DualSexField;
 import se.inera.statistics.service.report.util.DiagnosisGroupsUtil;
+import se.inera.statistics.service.report.util.ReportUtil;
 
 public class DiagnosisGroupsMock implements DiagnosisGroups {
 
@@ -18,7 +19,7 @@ public class DiagnosisGroupsMock implements DiagnosisGroups {
     public DiagnosisGroupResponse getDiagnosisGroups() {
         List<DiagnosisGroup> headers = DiagnosisGroupsUtil.getAllDiagnosisGroups();
         List<DiagnosisGroupRow> rows = new ArrayList<>();
-        for (String periodName : ReportMockUtil.PERIODS) {
+        for (String periodName : ReportUtil.PERIODS) {
             rows.add(new DiagnosisGroupRow(periodName, randomData(headers.size())));
         }
         return new DiagnosisGroupResponse(headers, rows);

@@ -1,4 +1,4 @@
-package se.inera.statistics.service.report.mock;
+package se.inera.statistics.service.report.util;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -6,12 +6,12 @@ import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Locale;
 
-public final class ReportMockUtil {
+public final class ReportUtil {
 
     private static final int NR_OF_PERIODS = 18;
-    static final List<String> PERIODS = createPeriods();
+    static public final List<String> PERIODS = createPeriods();
 
-    private ReportMockUtil() {
+    private ReportUtil() {
     }
 
     private static List<String> createPeriods() {
