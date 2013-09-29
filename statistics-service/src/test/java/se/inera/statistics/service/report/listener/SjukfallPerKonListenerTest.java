@@ -1,21 +1,21 @@
 package se.inera.statistics.service.report.listener;
 
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.doNothing;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-import org.hibernate.ejb.criteria.expression.SearchedCaseExpression.WhenClause;
 import org.joda.time.LocalDate;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
-import org.mockito.runners.MockitoJUnitRunner;
-
-import com.fasterxml.jackson.databind.JsonNode;
 
 import se.inera.statistics.service.sjukfall.SjukfallInfo;
+
+import com.fasterxml.jackson.databind.JsonNode;
 
 public class SjukfallPerKonListenerTest {
 
