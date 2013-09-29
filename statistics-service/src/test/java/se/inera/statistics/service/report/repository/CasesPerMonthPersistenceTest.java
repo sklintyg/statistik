@@ -19,38 +19,38 @@ public class CasesPerMonthPersistenceTest extends CasesPerMonthPersistenceHandle
     @Test
     public void store_nonexisting_row_female() {
 
-        this.count("201302", "nationell", Sex.Female);
+        this.count("201302", Sex.Female);
 
-        CasesPerMonthRow check = this.getCasesPerMonthRow("201302", "nationell");
+        CasesPerMonthRow check = this.getCasesPerMonthRow("201302");
         assertEquals(check.getFemale(), 1);
     }
 
     @Test
     public void store_existing_row_female() {
-        this.count("201302", "nationell", Sex.Female);
+        this.count("201302", Sex.Female);
 
-        this.count("201302", "nationell", Sex.Female);
+        this.count("201302", Sex.Female);
 
-        CasesPerMonthRow check = this.getCasesPerMonthRow("201302", "nationell");
+        CasesPerMonthRow check = this.getCasesPerMonthRow("201302");
         assertEquals(check.getFemale(), 2);
     }
 
     @Test
     public void store_nonexisting_row_male() {
 
-        this.count("201302", "nationell", Sex.Male);
+        this.count("201302", Sex.Male);
 
-        CasesPerMonthRow check = this.getCasesPerMonthRow("201302", "nationell");
+        CasesPerMonthRow check = this.getCasesPerMonthRow("201302");
         assertEquals(check.getMale(), 1);
     }
 
     @Test
     public void store_existing_row_male() {
-        this.count("201302", "nationell", Sex.Female);
+        this.count("201302", Sex.Female);
 
-        this.count("201302", "nationell", Sex.Male);
+        this.count("201302", Sex.Male);
 
-        CasesPerMonthRow check = this.getCasesPerMonthRow("201302", "nationell");
+        CasesPerMonthRow check = this.getCasesPerMonthRow("201302");
         assertEquals(check.getMale(), 1);
     }
 

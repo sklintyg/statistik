@@ -18,13 +18,13 @@ public class CasesPerMonthPersistenceHandler implements CasesPerMonth {
     private EntityManager manager;
 
     @Transactional
-    public void count(String period, String enhet, Sex sex) {
-        CasesPerMonthRow existingRow = manager.find(CasesPerMonthRow.class, new CasesPerMonthKey(period, enhet));
+    public void count(String period, Sex sex) {
+        CasesPerMonthRow existingRow = manager.find(CasesPerMonthRow.class, new CasesPerMonthKey(period, "nationell"));
         int female = Sex.Female.equals(sex) ? 1 : 0;
         int male = Sex.Male.equals(sex) ? 1 : 0;
 
         if(existingRow == null) {
-            CasesPerMonthRow row = new CasesPerMonthRow(period, enhet, female, male);
+            CasesPerMonthRow row = new CasesPerMonthRow(period, "nationell", female, male);
             manager.persist(row);
         } else {
             existingRow.setFemale(existingRow.getFemale() + female);
@@ -34,8 +34,8 @@ public class CasesPerMonthPersistenceHandler implements CasesPerMonth {
     }
 
     @Transactional
-    public CasesPerMonthRow getCasesPerMonthRow(String period, String enhet) {
-        return manager.find(CasesPerMonthRow.class, new CasesPerMonthKey(period, enhet));
+    public CasesPerMonthRow getCasesPerMonthRow(String period) {
+        return manager.find(CasesPerMonthRow.class, new CasesPerMonthKey(period, "nationell"));
     }
 
     @Override

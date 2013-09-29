@@ -1,10 +1,12 @@
-package se.inera.statistics.service.processlog;
+package se.inera.statistics.service.queue;
 
 import static org.mockito.Mockito.verify;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
+import se.inera.statistics.service.processlog.EventType;
+import se.inera.statistics.service.processlog.ProcessLog;
 import se.inera.statistics.service.queue.Receiver;
 
 public class ReceiverTest {

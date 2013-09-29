@@ -25,4 +25,8 @@ public class DocumentHelper {
         return document.path("validToDate").textValue();
     }
 
+    public static String getKon(JsonNode document) {
+        return document.path("kon").textValue();
+    }
+
 }

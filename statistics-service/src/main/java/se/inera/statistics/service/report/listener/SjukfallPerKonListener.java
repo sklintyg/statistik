@@ -7,6 +7,7 @@ import org.joda.time.format.DateTimeFormatterBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import se.inera.statistics.service.helper.DocumentHelper;
 import se.inera.statistics.service.processlog.ProcessorListener;
+import se.inera.statistics.service.report.model.Sex;
 import se.inera.statistics.service.report.repository.CasesPerMonthPersistenceHandler;
 import se.inera.statistics.service.sjukfall.SjukfallInfo;
 
@@ -34,7 +35,10 @@ public class SjukfallPerKonListener implements ProcessorListener {
     }
 
     protected void accept(LocalDate month, SjukfallInfo sjukfallInfo, JsonNode utlatande, JsonNode hsa) {
-        casesPerMonthPersistenceHandler.count(null,null,null);
+        String period = month.getYear() + "-" + month.monthOfYear();
+        String enhet = DocumentHelper.getEnhetId(utlatande);
+        Sex sex = DocumentHelper.getKon(utlatande).equals("man") ? Sex.Male : Sex.Female;
+        casesPerMonthPersistenceHandler.count(period, sex);
     }
 
     static protected LocalDate getFirstDateMonth(LocalDate previousEnd, LocalDate start) {

@@ -1,4 +1,4 @@
-package se.inera.statistics.service.processlog;
+package se.inera.statistics.service.queue;
 
 import javax.jms.ConnectionFactory;
 import javax.jms.Destination;
