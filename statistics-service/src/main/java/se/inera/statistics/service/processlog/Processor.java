@@ -68,8 +68,8 @@ public class Processor {
             String vardgivareId = getVardgivareId(utlatande);
             String startString = getForstaNedsattningsdag(utlatande);
             String endString = getSistaNedsattningsdag(utlatande);
-            LocalDate start = formatter.parseLocalDate(startString);
-            LocalDate end = formatter.parseLocalDate(endString);
+            LocalDate start = FORMATTER.parseLocalDate(startString);
+            LocalDate end = FORMATTER.parseLocalDate(endString);
 
             return new SjukfallKey(personId, vardgivareId, start, end);
         } catch (NullPointerException e) {
