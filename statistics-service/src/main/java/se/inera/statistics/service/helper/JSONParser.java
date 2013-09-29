@@ -7,7 +7,11 @@ import se.inera.statistics.service.processlog.StatisticsMalformedDocument;
 import java.io.IOException;
 import java.io.InputStream;
 
-public class JSONParser {
+public final class JSONParser {
+
+    private JSONParser() {
+    }
+
     public static JsonNode parse(String doc) {
         ObjectMapper mapper = new ObjectMapper();
         try {
@@ -16,6 +20,7 @@ public class JSONParser {
             throw new StatisticsMalformedDocument("Could not parse document", e);
         }
     }
+
     public static JsonNode parse(InputStream doc) {
         ObjectMapper mapper = new ObjectMapper();
         try {

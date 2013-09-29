@@ -19,7 +19,11 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 public class Processor {
-    private DateTimeFormatter formatter = new DateTimeFormatterBuilder().appendYear(4,4).appendLiteral('-').appendMonthOfYear(2).appendLiteral('-').appendDayOfMonth(2).toFormatter();
+    public static final int YEAR_FIELD_LEN = 4;
+    private static final DateTimeFormatter FORMATTER = new DateTimeFormatterBuilder().appendYear(YEAR_FIELD_LEN, YEAR_FIELD_LEN).appendLiteral('-')
+            .appendMonthOfYear(2).appendLiteral('-').appendDayOfMonth(2).toFormatter();
+    public static final int SEX_DIGIT = 11;
+    public static final int DATE_PART_OF_PERSON_ID = 8;
 
     @Autowired
     private ProcessorListener listener;
@@ -36,7 +40,7 @@ public class Processor {
         String kon = extractKon(sjukfallKey.getPersonId());
 
         ObjectNode anonymous = utlatande.deepCopy();
-        ObjectNode patientNode = (ObjectNode)anonymous.path("patient");
+        ObjectNode patientNode = (ObjectNode) anonymous.path("patient");
         patientNode.remove("id");
         patientNode.remove("fornamn");
         patientNode.remove("efternamn");
@@ -47,17 +51,16 @@ public class Processor {
     }
 
     protected String extractKon(String personId) {
-        return personId.charAt(11) % 2 == 0 ? "kvinna" : "man";
+        return personId.charAt(SEX_DIGIT) % 2 == 0 ? "kvinna" : "man";
     }
 
     protected int extractAlder(String personId, LocalDate start) {
-        DateTimeFormatter formatter = new DateTimeFormatterBuilder().appendYear(4,4).appendMonthOfYear(2).appendDayOfMonth(2).toFormatter();
-        LocalDate birthDate = org.joda.time.LocalDate.parse(personId.substring(0,8), formatter);
+        DateTimeFormatter formatter = new DateTimeFormatterBuilder().appendYear(YEAR_FIELD_LEN, YEAR_FIELD_LEN).appendMonthOfYear(2).appendDayOfMonth(2).toFormatter();
+        LocalDate birthDate = org.joda.time.LocalDate.parse(personId.substring(0, DATE_PART_OF_PERSON_ID), formatter);
         LocalDate referenceDate = new LocalDate(start);
         Period period = new Period(birthDate, referenceDate);
         return period.getYears();
     }
-
 
     protected SjukfallKey extractSjukfallKey(JsonNode utlatande) {
         try {

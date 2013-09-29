@@ -14,16 +14,18 @@ import se.inera.statistics.service.sjukfall.SjukfallInfo;
 import com.fasterxml.jackson.databind.JsonNode;
 
 public class SjukfallPerKonListener implements ProcessorListener {
-    private static final DateTimeFormatter formatter = new DateTimeFormatterBuilder().appendYear(4,4).appendLiteral('-').appendMonthOfYear(2).appendLiteral('-').appendDayOfMonth(2).toFormatter();
+    public static final int YEAR_FIELD_LEN = 4;
+    private static final DateTimeFormatter FORMATTER = new DateTimeFormatterBuilder().appendYear(YEAR_FIELD_LEN, YEAR_FIELD_LEN).appendLiteral('-')
+            .appendMonthOfYear(2).appendLiteral('-').appendDayOfMonth(2).toFormatter();
 
     @Autowired
     private CasesPerMonthPersistenceHandler casesPerMonthPersistenceHandler;
 
     @Override
     public void accept(SjukfallInfo sjukfallInfo, JsonNode utlatande, JsonNode hsa) {
-        LocalDate start = formatter.parseLocalDate(DocumentHelper.getForstaNedsattningsdag(utlatande));
-        LocalDate endMonth = formatter.parseLocalDate(DocumentHelper.getSistaNedsattningsdag(utlatande));
-        
+        LocalDate start = FORMATTER.parseLocalDate(DocumentHelper.getForstaNedsattningsdag(utlatande));
+        LocalDate endMonth = FORMATTER.parseLocalDate(DocumentHelper.getSistaNedsattningsdag(utlatande));
+
         LocalDate firstMonth = getFirstDateMonth(sjukfallInfo.getPrevEnd(), start);
         loopOverPeriod(sjukfallInfo, utlatande, hsa, firstMonth, endMonth);
     }

@@ -13,5 +13,4 @@ public class OverviewChartRowExtended extends OverviewChartRow {
         return alternation;
     }
 
-    
 }

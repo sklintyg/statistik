@@ -2,6 +2,7 @@ package se.inera.statistics.service.report.model;
 
 public class DiagnosisGroup {
 
+    public static final int ICD10_CODE_MAX_LEN = 3;
     private final String id;
     private final String name;
     private final String firstId;
@@ -35,8 +36,8 @@ public class DiagnosisGroup {
 
     private String normalizeCode(String icd10Code) {
         String normalizedCode = icd10Code.toUpperCase();
-        if (icd10Code.length() > 3) {
-            normalizedCode = normalizedCode.substring(0, 3);
+        if (icd10Code.length() > ICD10_CODE_MAX_LEN) {
+            normalizedCode = normalizedCode.substring(0, ICD10_CODE_MAX_LEN);
         }
         return normalizedCode;
     }

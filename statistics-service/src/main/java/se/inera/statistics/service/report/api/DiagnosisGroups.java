@@ -4,6 +4,6 @@ import se.inera.statistics.service.report.model.DiagnosisGroupResponse;
 
 public interface DiagnosisGroups {
 
-    public DiagnosisGroupResponse getDiagnosisGroups();
+    DiagnosisGroupResponse getDiagnosisGroups();
 
 }

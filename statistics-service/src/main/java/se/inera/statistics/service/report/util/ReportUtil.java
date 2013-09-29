@@ -9,7 +9,7 @@ import java.util.Locale;
 public final class ReportUtil {
 
     private static final int NR_OF_PERIODS = 18;
-    static public final List<String> PERIODS = createPeriods();
+    public static final List<String> PERIODS = createPeriods();
 
     private ReportUtil() {
     }

@@ -23,7 +23,7 @@ public class CasesPerMonthPersistenceHandler implements CasesPerMonth {
         int female = Sex.Female.equals(sex) ? 1 : 0;
         int male = Sex.Male.equals(sex) ? 1 : 0;
 
-        if(existingRow == null) {
+        if (existingRow == null) {
             CasesPerMonthRow row = new CasesPerMonthRow(period, "nationell", female, male);
             manager.persist(row);
         } else {

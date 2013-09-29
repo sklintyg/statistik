@@ -19,7 +19,6 @@ import se.inera.statistics.service.report.model.CasesPerMonthRow;
 import se.inera.statistics.service.report.model.DiagnosisGroup;
 import se.inera.statistics.service.report.model.DiagnosisGroupResponse;
 import se.inera.statistics.service.report.model.OverviewResponse;
-import se.inera.statistics.service.report.repository.CasesPerMonthPersistenceHandler;
 import se.inera.statistics.service.report.util.DiagnosisGroupsUtil;
 import se.inera.statistics.web.model.DiagnosisGroupsData;
 import se.inera.statistics.web.model.TableData;
