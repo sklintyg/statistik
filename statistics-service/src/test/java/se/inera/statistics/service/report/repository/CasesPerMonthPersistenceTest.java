@@ -1,7 +1,8 @@
 package se.inera.statistics.service.report.repository;
 
+import static org.junit.Assert.assertEquals;
+
 import java.util.Iterator;
-import java.util.List;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -11,7 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import se.inera.statistics.service.report.model.CasesPerMonthRow;
 import se.inera.statistics.service.report.model.Sex;
-import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath:process-log-impl-test.xml" })
