@@ -1,13 +1,16 @@
 package se.inera.statistics.service.report.repository;
 
+import java.util.Iterator;
+import java.util.List;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
+
 import se.inera.statistics.service.report.model.CasesPerMonthRow;
 import se.inera.statistics.service.report.model.Sex;
-
 import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -52,6 +55,18 @@ public class CasesPerMonthPersistenceTest extends CasesPerMonthPersistenceHandle
 
         CasesPerMonthRow check = this.getCasesPerMonthRow("201302");
         assertEquals(check.getMale(), 1);
+    }
+
+    @Test
+    public void getCasesPerMonthReturnsOldestFirst() {
+        this.count("201302", Sex.Female);
+        this.count("201304", Sex.Female);
+        this.count("201301", Sex.Female);
+
+        Iterator<CasesPerMonthRow> check = this.getCasesPerMonth().iterator();
+        assertEquals("201301", check.next().getPeriod());
+        assertEquals("201302", check.next().getPeriod());
+        assertEquals("201304", check.next().getPeriod());
     }
 
     // CHECKSTYLE:ON
