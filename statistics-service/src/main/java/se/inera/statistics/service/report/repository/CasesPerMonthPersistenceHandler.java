@@ -26,11 +26,9 @@ public class CasesPerMonthPersistenceHandler implements CasesPerMonth {
         if (existingRow == null) {
             CasesPerMonthRow row = new CasesPerMonthRow(period, "nationell", female, male);
             manager.persist(row);
-            System.err.println("Create " + row.getPeriod() + " " + period);
         } else {
             existingRow.setFemale(existingRow.getFemale() + female);
             existingRow.setMale(existingRow.getMale() + male);
-            System.err.println("Update " + existingRow.getPeriod() + " " + period);
             manager.merge(existingRow);
         }
     }
