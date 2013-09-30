@@ -12,6 +12,7 @@ import javax.jms.Session;
 import javax.jms.TextMessage;
 
 import org.apache.activemq.command.ActiveMQQueue;
+import org.joda.time.LocalDate;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -54,7 +55,7 @@ public class ReceiverIntegrationTest {
 
         sleep();
 
-        List<CasesPerMonthRow> webData = casesPerMonth.getCasesPerMonth();
+        List<CasesPerMonthRow> webData = casesPerMonth.getCasesPerMonth(new LocalDate("2011-01"), new LocalDate("2011-12"));
 
         assertEquals(3, webData.size());
     }

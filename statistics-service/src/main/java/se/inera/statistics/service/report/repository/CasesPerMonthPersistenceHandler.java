@@ -1,5 +1,6 @@
 package se.inera.statistics.service.report.repository;
 
+import org.joda.time.LocalDate;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.springframework.stereotype.Component;
@@ -50,8 +51,10 @@ public class CasesPerMonthPersistenceHandler implements CasesPerMonth {
 
     @Override
     @Transactional
-    public List<CasesPerMonthRow> getCasesPerMonth() {
-        TypedQuery<CasesPerMonthRow> query = manager.createQuery("SELECT c FROM CasesPerMonthRow c ORDER BY c.casesPerMonthKey.period", CasesPerMonthRow.class);
+    public List<CasesPerMonthRow> getCasesPerMonth(LocalDate from, LocalDate to) {
+        TypedQuery<CasesPerMonthRow> query = manager.createQuery("SELECT c FROM CasesPerMonthRow c WHERE c.casesPerMonthKey.period >= :from AND c.casesPerMonthKey.period <= :to ORDER BY c.casesPerMonthKey.period", CasesPerMonthRow.class);
+        query.setParameter("from", inputFormatter.print(from));
+        query.setParameter("to", inputFormatter.print(to));
 
         return translateForOutput(query.getResultList());
     }

@@ -8,6 +8,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
+import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,6 +27,8 @@ import se.inera.statistics.web.model.overview.OverviewData;
 
 @Service("chartService")
 public class ChartDataService {
+
+    private static final int INCUSIVE_PERIOD = 18;
 
     private CasesPerMonth datasourceCasesPerMonth;
 
@@ -46,7 +49,10 @@ public class ChartDataService {
     @Path("getNumberOfCasesPerMonth")
     @Produces({ MediaType.APPLICATION_JSON })
     public TableData getNumberOfCasesPerMonth() {
-        List<CasesPerMonthRow> casesPerMonth = datasourceCasesPerMonth.getCasesPerMonth();
+        LocalDate lastMonth = new LocalDate().withDayOfMonth(1).minusMonths(1);
+
+        List<CasesPerMonthRow> casesPerMonth = datasourceCasesPerMonth.getCasesPerMonth(lastMonth.minusMonths(INCUSIVE_PERIOD - 1), lastMonth);
+
         return new CasesPerMonthConverter().convertCasesPerMonthData(casesPerMonth);
     }
 
