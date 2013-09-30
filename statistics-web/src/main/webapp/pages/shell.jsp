@@ -71,11 +71,12 @@
 		================================================== -->
 		<div class="row-fluid">
 			<div class="span3 bs-docs-sidebar">
+				<h1 class="hidden-header">Sidans huvudnavigering</h1>
 				<div id="statistics-left-menu">
 					<div>
 						<div class="nav nav-list bs-docs-sidenav" id="national-statistic-menu">
 							<div class="statistics-left-menu-header">
-								<a class="accordion-toggle" data-toggle="collapse" href="#national-statistic-menu-content">Nationell statistik<i class="statistict-left-menu-expand-icon"></i></a>
+								<span class="accordion-toggle" data-toggle="collapse" href="#national-statistic-menu-content">Nationell statistik<i class="statistict-left-menu-expand-icon"></i></span>
 							</div>
 							<ul id="national-statistic-menu-content" class="nav nav-list accordion-body in collapse">
 								<li><a ng-href="#/oversikt" navigationaware>Översikt</a></li>
