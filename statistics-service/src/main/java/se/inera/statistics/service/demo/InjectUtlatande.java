@@ -20,17 +20,13 @@ import se.inera.statistics.service.helper.JSONParser;
 import javax.annotation.PostConstruct;
 import javax.jms.*;
 import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 
 import static java.lang.Math.random;
 
 public class InjectUtlatande {
     private static final Logger LOG = LoggerFactory.getLogger(InjectUtlatande.class);
-
-    private static String[] personNummers = { "19500118-2046", "19500118-2061", "19500123-2296", "19500213-2461", "19500219-2382", "19500228-1839",
-            "19500304-2222", "19500307-2260", "19500315-1858", "19500328-2265", "19500411-2354", "19500430-2120", "19500505-0975", "19500520-2360",
-            "19500525-1599", "19500614-2524", "19500626-2546", "19500627-2354", "19500728-2162", "19500729-2435", "19500731-2589", "19500807-2307",
-            "19500812-1856", "19500818-2304", "19500821-2226", "19500907-2553", "19500910-1824", "19500916-2040", "19500930-1770", "19501017-2483",
-            "19501023-2618", "19501101-2365", "19501105-2478", "19501113-2098" };
 
     JmsTemplate jmsTemplate;
     private ActiveMQQueue destination;
@@ -60,9 +56,10 @@ public class InjectUtlatande {
         String intyg = readTemplate("/json/fk7263_M_template.json");
         JsonNode intygTree = JSONParser.parse(intyg);
 
+        List<String> personNummers = readList("/personnr/testpersoner.log");
+
         for (String id : personNummers) {
             JsonNode newPermutation = permutate(intygTree, id);
-
 
             simpleSend(newPermutation.toString(), "C" + id);
         }
@@ -76,8 +73,8 @@ public class InjectUtlatande {
 
         DateTimeFormatter formatter = DateTimeFormat.forPattern("yyyy-MM-dd");
 
-        LocalDate start = formatter.parseLocalDate("2012-02-01");
-        start = start.plusMonths((int) (Math.random() * 16)).plusDays((int) (Math.random()*30));
+        LocalDate start = formatter.parseLocalDate("2012-03-01");
+        start = start.plusMonths((int) (Math.random() * 19)).plusDays((int) (Math.random() * 30));
         LocalDate end = start.plusDays((int) (Math.random() * 30 + 7));
         newPermutation.remove("validFromDate");
         newPermutation.remove("validToDate");
@@ -107,6 +104,20 @@ public class InjectUtlatande {
                 sb.append(line).append('\n');
             }
             return sb.toString();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+
+    private List<String> readList(String path) {
+        try {
+            BufferedReader in = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream(path), "utf8"));
+            List list = new ArrayList();
+            for (String line = in.readLine(); line != null; line = in.readLine()) {
+                list.add(line);
+            }
+            return list;
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
