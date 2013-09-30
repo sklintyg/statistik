@@ -1,7 +1,5 @@
 package se.inera.statistics.service.report.listener;
 
-import java.util.Locale;
-
 import org.joda.time.LocalDate;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
@@ -11,8 +9,8 @@ import org.springframework.stereotype.Component;
 
 import se.inera.statistics.service.helper.DocumentHelper;
 import se.inera.statistics.service.processlog.ProcessorListener;
-import se.inera.statistics.service.report.model.Sex;
 import se.inera.statistics.service.report.api.CasesPerMonth;
+import se.inera.statistics.service.report.model.Sex;
 import se.inera.statistics.service.sjukfall.SjukfallInfo;
 
 import com.fasterxml.jackson.databind.JsonNode;

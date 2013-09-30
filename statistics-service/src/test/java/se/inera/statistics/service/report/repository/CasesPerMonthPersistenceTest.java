@@ -61,14 +61,14 @@ public class CasesPerMonthPersistenceTest extends CasesPerMonthPersistenceHandle
 
     @Test
     public void getCasesPerMonthReturnsOldestFirst() {
-        this.count("201302", Sex.Female);
-        this.count("201304", Sex.Female);
-        this.count("201301", Sex.Female);
+        this.count("2013-02", Sex.Female);
+        this.count("2013-4", Sex.Female);
+        this.count("2013-01", Sex.Female);
 
         Iterator<CasesPerMonthRow> check = this.getCasesPerMonth().iterator();
-        assertEquals("201301", check.next().getPeriod());
-        assertEquals("201302", check.next().getPeriod());
-        assertEquals("201304", check.next().getPeriod());
+        assertEquals("jan 2013", check.next().getPeriod());
+        assertEquals("feb 2013", check.next().getPeriod());
+        assertEquals("apr 2013", check.next().getPeriod());
     }
 
     // CHECKSTYLE:ON
