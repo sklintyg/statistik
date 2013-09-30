@@ -5,6 +5,12 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.apache.activemq.broker.BrokerService;
 import org.apache.activemq.command.ActiveMQQueue;
+import org.joda.time.LocalDate;
+import org.joda.time.LocalTime;
+import org.joda.time.Period;
+import org.joda.time.ReadablePeriod;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.jms.core.JmsTemplate;
@@ -14,6 +20,8 @@ import se.inera.statistics.service.helper.JSONParser;
 import javax.annotation.PostConstruct;
 import javax.jms.*;
 import java.io.*;
+
+import static java.lang.Math.random;
 
 public class InjectUtlatande {
     private static final Logger LOG = LoggerFactory.getLogger(InjectUtlatande.class);
@@ -51,6 +59,7 @@ public class InjectUtlatande {
     private void publishUtlatanden() {
         String intyg = readTemplate("/json/fk7263_M_template.json");
         JsonNode intygTree = JSONParser.parse(intyg);
+
         for (String id : personNummers) {
             JsonNode newPermutation = permutate(intygTree, id);
 
@@ -64,6 +73,17 @@ public class InjectUtlatande {
         ObjectNode patientIdNode = (ObjectNode) newPermutation.path("patient").path("id");
         patientIdNode.remove("extension");
         patientIdNode.put("extension", id);
+
+        DateTimeFormatter formatter = DateTimeFormat.forPattern("yyyy-MM-dd");
+
+        LocalDate start = formatter.parseLocalDate("2012-02-01");
+        start = start.plusMonths((int) (Math.random() * 16)).plusDays((int) (Math.random()*30));
+        LocalDate end = start.plusDays((int) (Math.random() * 30 + 7));
+        newPermutation.remove("validFromDate");
+        newPermutation.remove("validToDate");
+        newPermutation.put("validFromDate", formatter.print(start));
+        newPermutation.put("validToDate", formatter.print(end));
+
         LOG.info("New permutation" + newPermutation.toString());
         return newPermutation;
     }
