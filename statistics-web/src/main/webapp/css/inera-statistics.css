@@ -573,7 +573,7 @@ i.statistict-left-menu-expand-icon {
 	-moz-border-radius: 8px 8px 8px 8px;
 	border-radius: 8px 8px 8px 8px;
 }
-#statistics-left-menu a.accordion-toggle.collapsed i.statistict-left-menu-expand-icon {
+#statistics-left-menu span.accordion-toggle.collapsed i.statistict-left-menu-expand-icon {
 	background-image: url("../img/glyphicons-halflings-white.png");
 	background-position: 0px -97px;
 	float: right;
@@ -842,7 +842,7 @@ a.listheader.collapsed {
 /****** Start: Overview content styles  ******/
 
 #overview-content, #chart-content{
-	margin: 30px 0px 0px 0px;
+	margin: 20px 0px 0px 0px;
 	
 }
 	#overview-content h1, #overview-content h2, #overview-content h3, #overview-content h4 { font-family: Helvetica; color: #008391; }
