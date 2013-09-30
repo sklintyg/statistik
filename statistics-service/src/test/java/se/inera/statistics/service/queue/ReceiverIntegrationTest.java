@@ -56,7 +56,7 @@ public class ReceiverIntegrationTest {
 
         List<CasesPerMonthRow> webData = casesPerMonth.getCasesPerMonth();
 
-        assertEquals(1, webData.size());
+        assertEquals(3, webData.size());
     }
 
     private void sleep() {
