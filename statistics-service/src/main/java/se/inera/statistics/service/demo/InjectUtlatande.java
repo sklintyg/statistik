@@ -6,9 +6,6 @@ import org.apache.activemq.ActiveMQConnectionFactory;
 import org.apache.activemq.broker.BrokerService;
 import org.apache.activemq.command.ActiveMQQueue;
 import org.joda.time.LocalDate;
-import org.joda.time.LocalTime;
-import org.joda.time.Period;
-import org.joda.time.ReadablePeriod;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.slf4j.Logger;
@@ -18,12 +15,15 @@ import org.springframework.jms.core.MessageCreator;
 import se.inera.statistics.service.helper.JSONParser;
 
 import javax.annotation.PostConstruct;
-import javax.jms.*;
-import java.io.*;
+import javax.jms.ConnectionFactory;
+import javax.jms.JMSException;
+import javax.jms.Message;
+import javax.jms.Session;
+import javax.jms.TextMessage;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
-
-import static java.lang.Math.random;
 
 public class InjectUtlatande {
     private static final Logger LOG = LoggerFactory.getLogger(InjectUtlatande.class);
