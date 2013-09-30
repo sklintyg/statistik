@@ -11,6 +11,7 @@ import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.DateTimeFormatterBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import org.springframework.stereotype.Component;
 import se.inera.statistics.service.sjukfall.SjukfallInfo;
 import se.inera.statistics.service.sjukfall.SjukfallKey;
 import se.inera.statistics.service.sjukfall.SjukfallService;
@@ -18,6 +19,7 @@ import se.inera.statistics.service.sjukfall.SjukfallService;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
+@Component
 public class Processor {
     public static final int YEAR_FIELD_LEN = 4;
     private static final DateTimeFormatter FORMATTER = new DateTimeFormatterBuilder().appendYear(YEAR_FIELD_LEN, YEAR_FIELD_LEN).appendLiteral('-')

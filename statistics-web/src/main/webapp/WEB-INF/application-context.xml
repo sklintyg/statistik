@@ -34,8 +34,11 @@
         <constructor-arg ref="casesPerMonth"/>
     </bean>
 
+    <bean class="se.inera.statistics.service.demo.InjectUtlatande" lazy-init="false" />
+
     <import resource="classpath*:process-log-impl.xml"/>
     <import resource="application-context-cxf.xml"/>
+    <import resource="application-context-qm.xml"/>
     <import resource="application-context-security.xml"/>
 
     <bean class="se.inera.statistics.service.report.repository.CasesPerMonthPersistenceHandler" id="casesPerMonth"></bean>

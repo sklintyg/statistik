@@ -6,6 +6,7 @@ import java.util.Random;
 
 import se.inera.statistics.service.report.api.CasesPerMonth;
 import se.inera.statistics.service.report.model.CasesPerMonthRow;
+import se.inera.statistics.service.report.model.Sex;
 import se.inera.statistics.service.report.util.ReportUtil;
 
 public class CasesPerMonthMock implements CasesPerMonth {
@@ -22,6 +23,10 @@ public class CasesPerMonthMock implements CasesPerMonth {
             rows.add(new CasesPerMonthRow(periodName, men, women));
         }
         return rows;
+    }
+
+    @Override
+    public void count(String period, Sex sex) {
     }
     // CHECKSTYLE:ON
 
