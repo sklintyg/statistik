@@ -63,8 +63,7 @@ public class ReceiverQueueFunctionalTest {
         try {
             Thread.sleep(DELAY);
         } catch (InterruptedException e) {
-            e.printStackTrace(); // To change body of catch statement use File |
-                                 // Settings | File Templates.
+            e.printStackTrace();
         }
     }
 
