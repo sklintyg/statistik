@@ -10,7 +10,7 @@ import org.junit.Test;
 
 import se.inera.statistics.service.sjukfall.SjukfallService;
 
-public class testSjukfallJob extends SjukfallJob {
+public class TestSjukfallJob extends SjukfallJob {
 
     @Test
     public void test_run_sjukfall_job() {
