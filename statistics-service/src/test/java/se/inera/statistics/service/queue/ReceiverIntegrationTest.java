@@ -1,7 +1,16 @@
 package se.inera.statistics.service.queue;
 
-import org.apache.activemq.ActiveMQConnectionFactory;
-import org.apache.activemq.broker.BrokerService;
+import static org.junit.Assert.assertEquals;
+
+import java.util.List;
+
+import javax.jms.ConnectionFactory;
+import javax.jms.Destination;
+import javax.jms.JMSException;
+import javax.jms.Message;
+import javax.jms.Session;
+import javax.jms.TextMessage;
+
 import org.apache.activemq.command.ActiveMQQueue;
 import org.junit.Before;
 import org.junit.Test;
@@ -9,19 +18,19 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.jms.core.MessageCreator;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.transaction.annotation.Transactional;
+
 import se.inera.statistics.service.JSONSource;
 import se.inera.statistics.service.report.api.CasesPerMonth;
 import se.inera.statistics.service.report.model.CasesPerMonthRow;
 
-import javax.jms.*;
-import java.util.List;
-
-import static org.junit.Assert.assertEquals;
-
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "/process-log-qm-test.xml", "/process-log-impl-test.xml" })
+@ContextConfiguration(locations = { "classpath:process-log-impl-test.xml", "classpath:process-log-qm-test.xml" })
+@Transactional
+@DirtiesContext
 public class ReceiverIntegrationTest {
 
     private JmsTemplate jmsTemplate;
@@ -29,18 +38,12 @@ public class ReceiverIntegrationTest {
     @Autowired
     private CasesPerMonth casesPerMonth;
 
+    @Autowired
+    private ConnectionFactory connectionFactory;
+
     @Before
     public void setup() {
-        BrokerService broker = new BrokerService();
-        broker.setPersistent(false);
-        try {
-            broker.addConnector("tcp://localhost:61616");
-            broker.start();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        ConnectionFactory cf = new ActiveMQConnectionFactory("tcp://localhost:61616");
-        this.jmsTemplate = new JmsTemplate(cf);
+        this.jmsTemplate = new JmsTemplate(connectionFactory);
     }
 
     @Test
@@ -49,15 +52,19 @@ public class ReceiverIntegrationTest {
 
         simpleSend(data, "B123");
 
-        try {
-            Thread.sleep(5000L);
-        } catch (InterruptedException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        }
+        sleep();
+
         List<CasesPerMonthRow> webData = casesPerMonth.getCasesPerMonth();
 
         assertEquals(1, webData.size());
+    }
 
+    private void sleep() {
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     private void simpleSend(final String intyg, final String correlationId) {

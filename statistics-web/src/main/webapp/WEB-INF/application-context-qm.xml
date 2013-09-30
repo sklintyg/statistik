@@ -6,15 +6,12 @@
         http://activemq.apache.org/schema/core http://activemq.apache.org/schema/core/activemq-core-5.8.0.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd"
         >
 
-    <amq:connectionFactory id="connectionFactory" brokerURL="tcp://localhost:61616"/>
     <amq:queue id="queue" physicalName="intyg.queue"/>
 
     <bean id="jmsFactory" class="org.apache.activemq.pool.PooledConnectionFactory" destroy-method="stop">
         <property name="connectionFactory">
             <bean class="org.apache.activemq.ActiveMQConnectionFactory">
-                <property name="brokerURL">
-                    <value>tcp://localhost:61616</value>
-                </property>
+                <property name="brokerURL" value="tcp://localhost:61616"/>
             </bean>
         </property>
     </bean>
@@ -22,7 +19,7 @@
     <bean id="receiver" class="se.inera.statistics.service.queue.Receiver"/>
 
     <bean id="jmsContainer" class="org.springframework.jms.listener.DefaultMessageListenerContainer">
-        <property name="connectionFactory" ref="connectionFactory"/>
+        <property name="connectionFactory" ref="jmsFactory"/>
         <property name="destination" ref="queue"/>
         <property name="messageListener" ref="receiver"/>
     </bean>
