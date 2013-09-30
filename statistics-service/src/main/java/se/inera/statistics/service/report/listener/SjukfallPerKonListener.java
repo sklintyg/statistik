@@ -1,6 +1,7 @@
 package se.inera.statistics.service.report.listener;
 
 import org.joda.time.LocalDate;
+import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.DateTimeFormatterBuilder;
 
@@ -39,7 +40,8 @@ public class SjukfallPerKonListener implements ProcessorListener {
     }
 
     protected void accept(LocalDate month, SjukfallInfo sjukfallInfo, JsonNode utlatande, JsonNode hsa) {
-        String period = month.getYear() + "-" + month.monthOfYear();
+        DateTimeFormatter outputFormatter = DateTimeFormat.forPattern("yyyy-MMMM");
+        String period = outputFormatter.print(month);
         String enhet = DocumentHelper.getEnhetId(utlatande);
         Sex sex = DocumentHelper.getKon(utlatande).equals("man") ? Sex.Male : Sex.Female;
         casesPerMonthPersistenceHandler.count(period, sex);
