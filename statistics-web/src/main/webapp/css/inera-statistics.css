@@ -841,7 +841,7 @@ a.listheader.collapsed {
 
 /****** Start: Overview content styles  ******/
 
-#overview-content, #chart-content{
+#overview-content, #chart-content, #about-content{
 	margin: 20px 0px 0px 0px;
 	
 }
@@ -1293,4 +1293,7 @@ div.datatablescrollable {
     margin-left:5em;
     overflow-y:visible;
     padding-bottom:1px;
+}
+#about-content section {
+	
 }

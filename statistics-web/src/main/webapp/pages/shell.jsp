@@ -35,7 +35,7 @@
 
 <link rel="icon" type="image/png" href="../img/favicon.ico">
 </head>
-<body data-spy="scroll" data-target=".bs-docs-sidenav">
+<body data-spy="scroll" data-target=".bs-docs-sidebar">
 
 <!-- Navbar
 ================================================== -->
@@ -141,7 +141,7 @@
 <script type="text/javascript" src="<c:url value='/js/exportTableData.js'/>" ></script>
 <script type="text/javascript">
 	$('.dropdown-toggle').dropdown();
-	$('#about-statistic-menu').scrollspy();
+	$('#business-statistics-menu').scrollspy();
 	$('#statistics-left-menu').affix();
 </script>
 
