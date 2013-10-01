@@ -7,38 +7,32 @@ import javax.jms.Message;
 import javax.jms.Session;
 import javax.jms.TextMessage;
 
-import org.apache.activemq.ActiveMQConnectionFactory;
-import org.apache.activemq.broker.BrokerService;
 import org.apache.activemq.command.ActiveMQQueue;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
-import org.springframework.jms.core.MessageCreator;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.core.JmsTemplate;
+import org.springframework.jms.core.MessageCreator;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "/process-log-qm-test.xml", "/process-log-impl-test.xml" })
+@DirtiesContext
 public class ReceiverQueueFunctionalTest {
 
     private static final int DELAY = 5000;
     private JmsTemplate jmsTemplate;
 
+    @Autowired
+    private ConnectionFactory connectionFactory;
+    
     @Before
     public void setup() {
-        BrokerService broker = new BrokerService();
-        broker.setPersistent(false);
-        try {
-            broker.addConnector("tcp://localhost:61616");
-            broker.start();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        ConnectionFactory cf = new ActiveMQConnectionFactory("tcp://localhost:61616");
-        setConnectionFactory(cf);
+        setConnectionFactory(connectionFactory);
     }
 
     public void setConnectionFactory(ConnectionFactory cf) {
@@ -69,8 +63,7 @@ public class ReceiverQueueFunctionalTest {
         try {
             Thread.sleep(DELAY);
         } catch (InterruptedException e) {
-            e.printStackTrace(); // To change body of catch statement use File |
-                                 // Settings | File Templates.
+            e.printStackTrace();
         }
     }
 

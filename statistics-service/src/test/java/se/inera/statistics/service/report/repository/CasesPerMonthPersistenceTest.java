@@ -4,8 +4,10 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.Iterator;
 
+import org.joda.time.LocalDate;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,6 +18,7 @@ import se.inera.statistics.service.report.model.Sex;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath:process-log-impl-test.xml" })
 @Transactional
+@DirtiesContext
 public class CasesPerMonthPersistenceTest extends CasesPerMonthPersistenceHandler {
 
     // CHECKSTYLE:OFF MagicNumber
@@ -59,14 +62,17 @@ public class CasesPerMonthPersistenceTest extends CasesPerMonthPersistenceHandle
 
     @Test
     public void getCasesPerMonthReturnsOldestFirst() {
-        this.count("201302", Sex.Female);
-        this.count("201304", Sex.Female);
-        this.count("201301", Sex.Female);
+        this.count("2013-02", Sex.Female);
+        this.count("2013-04", Sex.Female);
+        this.count("2013-01", Sex.Female);
 
-        Iterator<CasesPerMonthRow> check = this.getCasesPerMonth().iterator();
-        assertEquals("201301", check.next().getPeriod());
-        assertEquals("201302", check.next().getPeriod());
-        assertEquals("201304", check.next().getPeriod());
+        LocalDate from = new LocalDate("2013-01");
+        LocalDate to = new LocalDate("2013-04");
+
+        Iterator<CasesPerMonthRow> check = this.getCasesPerMonth(from, to).iterator();
+        assertEquals("jan 2013", check.next().getPeriod());
+        assertEquals("feb 2013", check.next().getPeriod());
+        assertEquals("apr 2013", check.next().getPeriod());
     }
 
     // CHECKSTYLE:ON

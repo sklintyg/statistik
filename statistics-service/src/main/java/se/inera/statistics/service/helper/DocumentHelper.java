@@ -32,7 +32,7 @@ public final class DocumentHelper {
     }
 
     public static String getKon(JsonNode document) {
-        return document.path("kon").textValue();
+        return document.path("patient").path("kon").textValue();
     }
 
 }

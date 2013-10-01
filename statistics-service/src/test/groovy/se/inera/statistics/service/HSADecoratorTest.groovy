@@ -12,7 +12,7 @@ class HSADecoratorTest {
     @Before
     void setup() {
         hsaService = {
-            new HSAInfo("län för " + it.vardgivareId + "," + it.enhetId + "," + it.lakareId)
+            new HSAInfo("län för " + it.vardgivareId + "," + it.enhetId + "," + it.lakareId, null)
         } as HSAService
     }
 
@@ -35,7 +35,7 @@ class HSADecoratorTest {
     @Test
     void hsa_decorator_extract_key_from_document() {
         def doc = new InputStreamReader(this.getClass().getResourceAsStream("/json/fk7263_M_template.json")).text
-        hsaDecorator.service = { assertEquals "enhetId", it.enhetId; new HSAInfo("Västa Götaland") } as HSAService
+        hsaDecorator.service = { assertEquals "enhetId", it.enhetId; new HSAInfo("Västa Götaland",) } as HSAService
 
         def key = hsaDecorator.extractHSAKey(doc)
 

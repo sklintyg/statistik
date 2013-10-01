@@ -9,6 +9,7 @@ import se.inera.statistics.service.report.model.OverviewResponse;
 
 public class OverviewMock implements Overview {
 
+    // CHECKSTYLE:OFF MagicNumber
     @Override
     public OverviewResponse getOverview() {
         ArrayList<OverviewChartRowExtended> diagnosisGroups = new ArrayList<OverviewChartRowExtended>();
@@ -50,5 +51,5 @@ public class OverviewMock implements Overview {
 
         return new OverviewResponse(56, 44, 3, diagnosisGroups, ageGroups, degreeOfSickLeaveGroups, sickLeaveLengthData, 105, 10, perCounty);
     }
-    
+    //CHECKSTYLE:ON MagicNumber
 }

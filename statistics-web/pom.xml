@@ -13,6 +13,7 @@
 
   <properties>
     <jasmine-plugin-version>1.3.1.2</jasmine-plugin-version>
+    <casesPerMonthclass>se.inera.statistics.service.report.mock.CasesPerMonthMock</casesPerMonthclass>
   </properties>
 
   <dependencies>
@@ -87,10 +88,12 @@
         <artifactId>jetty-maven-plugin</artifactId>
         <configuration>
           <scanIntervalSeconds>1</scanIntervalSeconds>
-          <systemProperty>
-            <name>java.awt.headless</name>
-            <value>true</value>
-          </systemProperty>
+            <systemProperties>
+              <systemProperty>
+                <name>java.awt.headless</name>
+                <value>true</value>
+              </systemProperty>
+            </systemProperties>
         </configuration>
       </plugin>
       <plugin>
@@ -142,6 +145,30 @@
         </configuration>
       </plugin>
     </plugins>
+      <resources>
+          <resource>
+              <directory>src/main/resources</directory>
+              <filtering>true</filtering>
+              <includes>
+                  <include>**/*.properties</include>
+              </includes>
+          </resource>
+          <resource>
+              <directory>src/main/resources</directory>
+              <filtering>false</filtering>
+              <excludes>
+                  <exclude>**/*.properties</exclude>
+              </excludes>
+          </resource>
+      </resources>
   </build>
+    <profiles>
+        <profile>
+            <id>demo</id>
+            <properties>
+                <casesPerMonthclass>se.inera.statistics.service.report.repository.CasesPerMonthPersistenceHandler</casesPerMonthclass>
+            </properties>
+        </profile>
+    </profiles>
 
 </project>

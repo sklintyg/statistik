@@ -24,7 +24,7 @@ public class DiagnosisSubGroupsMock implements DiagnosisSubGroups {
         }
         return new DiagnosisGroupResponse(headers, rows);
     }
-    
+
     private List<DualSexField> randomData(int size) {
         DualSexField[] data = new DualSexField[size];
         for (int i = 0; i < size; i++) {
@@ -33,8 +33,9 @@ public class DiagnosisSubGroupsMock implements DiagnosisSubGroups {
         return Arrays.asList(data);
     }
 
+    // CHECKSTYLE:OFF MagicNumber
     private int g() {
         return new Random().nextInt(1000);
     }
-    
+    // CHECKSTYLE:ON MagicNumber
 }

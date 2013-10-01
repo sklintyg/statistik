@@ -6,22 +6,12 @@
         http://activemq.apache.org/schema/core http://activemq.apache.org/schema/core/activemq-core-5.8.0.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd"
         >
 
-    <context:component-scan
-            base-package="se.inera.statistics">
-    </context:component-scan>
-
     <amq:queue id="queue" physicalName="intyg.queue"/>
-
-    <amq:broker persistent="false">
-      <amq:transportConnectors>
-        <amq:transportConnector uri="tcp://localhost:61616" />
-      </amq:transportConnectors>
-    </amq:broker>
 
     <bean id="jmsFactory" class="org.apache.activemq.pool.PooledConnectionFactory" destroy-method="stop">
         <property name="connectionFactory">
             <bean class="org.apache.activemq.ActiveMQConnectionFactory">
-                <property name="brokerURL" value="tcp://localhost:61616" />
+                <property name="brokerURL" value="tcp://localhost:61616"/>
             </bean>
         </property>
     </bean>

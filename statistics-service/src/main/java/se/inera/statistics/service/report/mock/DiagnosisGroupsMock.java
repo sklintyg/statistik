@@ -33,8 +33,9 @@ public class DiagnosisGroupsMock implements DiagnosisGroups {
         return Arrays.asList(data);
     }
 
+    // CHECKSTYLE:OFF MagicNumber
     private int g() {
         return new Random().nextInt(100);
     }
-
+    // CHECKSTYLE:ON MagicNumber
 }

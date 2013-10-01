@@ -1,10 +1,13 @@
 package se.inera.statistics.service.queue;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import se.inera.statistics.service.helper.JSONParser;
 import se.inera.statistics.service.processlog.EventType;
 import se.inera.statistics.service.processlog.ProcessLog;
+import se.inera.statistics.service.processlog.Processor;
 
 import javax.jms.JMSException;
 import javax.jms.Message;
@@ -17,8 +20,14 @@ public class Receiver implements MessageListener {
     @Autowired
     private ProcessLog processLog;
 
+    @Autowired
+    private Processor processor;
+
     public void accept(EventType type, String data, String documentId, long timestamp) {
         processLog.store(type, data, documentId, timestamp);
+        JsonNode utlatande = JSONParser.parse(data);
+
+        processor.accept(utlatande, null);
     }
 
     public void onMessage(Message rawData) {
