@@ -48,7 +48,7 @@ public class SjukfallPerKonListener implements ProcessorListener {
         casesPerMonthPersistenceHandler.count(period, sex);
     }
 
-    static protected LocalDate getFirstDateMonth(LocalDate previousEnd, LocalDate start) {
+    protected static LocalDate getFirstDateMonth(LocalDate previousEnd, LocalDate start) {
         if (previousEnd == null) {
             return start.withDayOfMonth(1);
         } else {
