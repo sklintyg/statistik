@@ -53,7 +53,6 @@
 					<div class="dropdown pull-right">
 						<a class="dropdown-toggle settings" data-toggle="dropdown" href="#" role="menu"></a>
 						<ul class="dropdown-menu dropdown-menu-center" role="menu" aria-labelledby="dLabel" id="settings-dropdown">
-							<li><a tabindex="-1" href="#/om#about">Om tjänsten</a></li>
 							<li><a tabindex="-1" href="#">Logga ut</a></li>
 						</ul>
 					</div>				
@@ -96,11 +95,14 @@
 						</div>	
 						
 						<div class="nav nav-list bs-docs-sidenav" id="about-statistic-menu">
-							<ul class="nav nav-list bs-docs-sidenav accordion-group" id="business-statistics-menu">
-								<li><a class="first-item-in-menu" ng-href="#/om#about" navigationaware>Om tjänsten</a></li>
+							<div class="statistics-left-menu-header">
+								<span class="accordion-toggle collapsed" data-toggle="collapse" href="#business-statistics-menu">Om tjänsten<i class="statistict-left-menu-expand-icon "></i></span>
+							</div>
+							<ul id="business-statistics-menu" class="nav nav-list accordion-body collapse" >
+								<li><a class="first-item-in-menu" ng-href="#/om#about" navigationaware>Allmänt om tjänsten</a></li>
 								<li><a ng-href="#/om#login" navigationaware>Inloggning och behörighet</a></li>
 								<li><a ng-href="#/om#faq" navigationaware>Vanliga frågor och svar</a></li>
-								<li><a ng-href="#/om#contact" navigationaware>Kontakt till support</a></li>
+								<li><a class="last-item-in-menu" ng-href="#/om#contact" navigationaware>Kontakt till support</a></li>
 							</ul>
 						</div>
 					</div>
