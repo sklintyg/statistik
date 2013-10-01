@@ -24,7 +24,7 @@ public class CasesPerMonthPersistenceHandler implements CasesPerMonth {
     @PersistenceContext(unitName = "IneraStatisticsLog")
     private EntityManager manager;
 
-    private static Locale SWEDEN = new Locale("SV", "se");
+    private static final Locale SWEDEN = new Locale("SV", "se");
     private DateTimeFormatter outputFormatter = DateTimeFormat.forPattern("MMM yyyy").withLocale(SWEDEN);
     private DateTimeFormatter inputFormatter = DateTimeFormat.forPattern("yyyy-MM");
 
