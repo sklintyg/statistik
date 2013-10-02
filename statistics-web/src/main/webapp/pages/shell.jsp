@@ -50,12 +50,16 @@
 					<span>Statistiktjänst för ordinerad sjukskrivning</span>
 				</div>
 				<div class="span1 offset7">
+					<a tabindex="-1" href="#">Logga in / Logga ut ??</a>
+					<!-- 
 					<div class="dropdown pull-right">
 						<a class="dropdown-toggle settings" data-toggle="dropdown" href="#" role="menu"></a>
 						<ul class="dropdown-menu dropdown-menu-center" role="menu" aria-labelledby="dLabel" id="settings-dropdown">
+							<li><a tabindex="-1" href="#/om#about">Om tjänsten</a></li>
 							<li><a tabindex="-1" href="#">Logga ut</a></li>
 						</ul>
-					</div>				
+					</div>	
+					-->			
 				</div>
 			</div>
 		</div>
@@ -72,12 +76,13 @@
 			<div class="span3 bs-docs-sidebar">
 				<h1 class="hidden-header">Sidans huvudnavigering</h1>
 				<div id="statistics-left-menu">
-					<div>
-						<div class="nav nav-list bs-docs-sidenav" id="national-statistic-menu">
-							<div class="statistics-left-menu-header">
-								<span class="accordion-toggle" data-toggle="collapse" href="#national-statistic-menu-content">Nationell statistik<i class="statistict-left-menu-expand-icon"></i></span>
+					<div class="accordion" id="left-menu-accordion">
+						<!-- NATIONAL STATISTIC MENU -->
+						<div class="nav nav-list bs-docs-sidenav accordion-group" id="national-statistic-menu">
+							<div class="statistics-left-menu-header accordion-heading">
+								<span class="accordion-toggle" data-toggle="collapse" data-parent="#left-menu-accordion" href="#national-statistic-menu-content">Nationell statistik<i class="statistict-left-menu-expand-icon"></i></span>
 							</div>
-							<ul id="national-statistic-menu-content" class="nav nav-list accordion-body in collapse">
+							<ul id="national-statistic-menu-content" class="nav nav-list accordion-body collapse in">
 								<li><a ng-href="#/oversikt" navigationaware>Översikt</a></li>
 							 	<li><a ng-href="#/sjukfallPerManad" id="navCasesPerMonthLink" navigationaware>Sjukfall, totalt</a></li>
 								<li><a ng-href="#/diagnosgrupper" id="navDiagnosisGroupsLink" navigationaware>Diagnosgrupp</a><i class="statistict-left-menu-expand-icon" class="accordion-toggle" data-toggle="collapse" href="#sub-menu-diagnostics"></i></li>
@@ -94,11 +99,34 @@
 							</ul>
 						</div>	
 						
+						<!-- BUSINESS STATISTIC MENU -->
+						<div class="nav nav-list bs-docs-sidenav accordion-group" id="business-statistic-menu">
+							<div class="statistics-left-menu-header accordion-heading">
+								<span class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#left-menu-accordion" href="#business-statistic-menu-content">Verksamhetsstatistik<i class="statistict-left-menu-expand-icon collapsed"></i></span>
+							</div>
+							<ul id="business-statistic-menu-content" class="nav nav-list accordion-body collapse">
+								<li><a ng-href="#" navigationaware>Översikt</a></li>
+							 	<li><a ng-href="#" id="" navigationaware>Sjukskrivn. totalt</a></li>
+								<li><a ng-href="#" id="" navigationaware>Diagnosgrupp</a><i class="statistict-left-menu-expand-icon" class="accordion-toggle" data-toggle="collapse" href="#sub-menu-diagnostics"></i></li>
+								<ul id="sub-menu-diagnostics" class="nav nav-list sub-nav-list accordion-body in collapse">
+									<li><a ng-href="#" id="navDiagnosisSubGroupsLink" navigationaware>Underdiagnosgrupp</a></li>
+								</ul>
+								<li><a ng-href="#" id="" navigationaware>Ålderssgrupp</a></li>
+								<li><a ng-href="#" id="" navigationaware>Sjukskrivningsgrad</a></li>
+								<li><a ng-href="#" id="" navigationaware>Sjukskrivningslängd</a></li>
+								<li><a ng-href="#" id="" navigationaware>Län</a><i class="statistict-left-menu-expand-icon" class="accordion-toggle" data-toggle="collapse" href="#sub-menu-cases-per-county"></i></li>
+								<ul id="" class="nav nav-list sub-nav-list accordion-body in collapse">
+									<li><a class="last-item-in-menu" ng-href="#" id="" navigationaware>Andel sjukfall per kön</a></li>
+								</ul>
+							</ul>
+						</div>
+						
+						<!-- ABOUT MENU -->
 						<div class="nav nav-list bs-docs-sidenav" id="about-statistic-menu">
 							<div class="statistics-left-menu-header">
-								<span class="accordion-toggle collapsed" data-toggle="collapse" href="#business-statistics-menu">Om tjänsten<i class="statistict-left-menu-expand-icon "></i></span>
+								<span class="accordion-toggle collapsed" data-toggle="collapse" href="#about-statistics-menu">Om tjänsten<i class="statistict-left-menu-expand-icon "></i></span>
 							</div>
-							<ul id="business-statistics-menu" class="nav nav-list accordion-body collapse" >
+							<ul id="about-statistics-menu" class="nav nav-list accordion-body collapse" >
 								<li><a class="first-item-in-menu" ng-href="#/om#about" navigationaware>Allmänt om tjänsten</a></li>
 								<li><a ng-href="#/om#login" navigationaware>Inloggning och behörighet</a></li>
 								<li><a ng-href="#/om#faq" navigationaware>Vanliga frågor och svar</a></li>
@@ -143,8 +171,8 @@
 <script type="text/javascript" src="<c:url value='/js/exportTableData.js'/>" ></script>
 <script type="text/javascript">
 	$('.dropdown-toggle').dropdown();
-	$('#business-statistics-menu').scrollspy();
-	$('#statistics-left-menu').affix();
+	//$('#business-statistics-menu').scrollspy();
+	//$('#statistics-left-menu').affix();
 </script>
 
 
