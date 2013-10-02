@@ -8,6 +8,12 @@
 
     <amq:queue id="queue" physicalName="intyg.queue"/>
 
+    <amq:broker persistent="false">
+      <amq:transportConnectors>
+        <amq:transportConnector uri="tcp://localhost:61616" />
+      </amq:transportConnectors>
+    </amq:broker>
+
     <bean id="jmsFactory" class="org.apache.activemq.pool.PooledConnectionFactory" destroy-method="stop">
         <property name="connectionFactory">
             <bean class="org.apache.activemq.ActiveMQConnectionFactory">
