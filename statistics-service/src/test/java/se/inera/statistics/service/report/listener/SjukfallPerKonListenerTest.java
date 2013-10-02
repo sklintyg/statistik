@@ -8,14 +8,13 @@ import static org.mockito.Mockito.doNothing;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import org.joda.time.LocalDate;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
-
+import se.inera.statistics.service.report.model.Sex;
 import se.inera.statistics.service.sjukfall.SjukfallInfo;
-
-import com.fasterxml.jackson.databind.JsonNode;
 
 public class SjukfallPerKonListenerTest {
 
@@ -47,11 +46,11 @@ public class SjukfallPerKonListenerTest {
     @Test
     public void acceptWithNoPreviousStartsCallingAtStartMonth() {
         ArgumentCaptor<LocalDate> capture = ArgumentCaptor.forClass(LocalDate.class);
-        doNothing().when(listener).accept(capture.capture(), any(SjukfallInfo.class), any(JsonNode.class), any(JsonNode.class));
+        doNothing().when(listener).accept(capture.capture(), any(Sex.class));
 
         LocalDate firstDate = new LocalDate("2013-01-01");
         LocalDate lastDate = new LocalDate("2013-01-01");
-        listener.loopOverPeriod(null, null, null, firstDate, lastDate);
+        listener.acceptPeriod(firstDate, lastDate, Sex.Female);
 
         assertEquals(firstDate, capture.getValue());
     }
@@ -59,11 +58,11 @@ public class SjukfallPerKonListenerTest {
     @Test
     public void acceptWithNoPreviousCallsFromStartMonthToEndMonth() {
         ArgumentCaptor<LocalDate> capture = ArgumentCaptor.forClass(LocalDate.class);
-        doNothing().when(listener).accept(capture.capture(), any(SjukfallInfo.class), any(JsonNode.class), any(JsonNode.class));
+        doNothing().when(listener).accept(capture.capture(), any(Sex.class));
 
         LocalDate firstDate = new LocalDate("2013-01-01");
         LocalDate lastDate = new LocalDate("2013-03-01");
-        listener.loopOverPeriod(null, null, null, firstDate, lastDate);
+        listener.acceptPeriod(firstDate, lastDate, Sex.Female);
 
         Iterator<LocalDate> allValues = capture.getAllValues().iterator();
         assertEquals(firstDate, allValues.next());

@@ -33,9 +33,9 @@ public class DiagnosisSubGroupsMock implements DiagnosisSubGroups {
         return Arrays.asList(data);
     }
 
-    // CHECKSTYLE:OFF MagicNumber
     private int g() {
-        return new Random().nextInt(1000);
+        final int maxNumber = 100;
+        return new Random().nextInt(maxNumber);
     }
-    // CHECKSTYLE:ON MagicNumber
+
 }

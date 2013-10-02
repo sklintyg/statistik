@@ -1,6 +1,6 @@
 'use strict';
 
-statisticsApp.factory('statisticsData', function($http){
+app.statisticsApp.factory('statisticsData', function($http){
    var factory = {};
    
    factory.getOverview = function (successCallback, failureCallback){

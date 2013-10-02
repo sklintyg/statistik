@@ -12,21 +12,20 @@ import javax.jms.Message;
 import javax.jms.Session;
 import javax.jms.TextMessage;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
-
-import org.apache.activemq.ActiveMQConnectionFactory;
-import org.apache.activemq.broker.BrokerService;
 import org.apache.activemq.command.ActiveMQQueue;
 import org.joda.time.LocalDate;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.jms.core.MessageCreator;
 
 import se.inera.statistics.service.helper.JSONParser;
+
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 public class InjectUtlatande {
     private static final Logger LOG = LoggerFactory.getLogger(InjectUtlatande.class);
@@ -34,22 +33,16 @@ public class InjectUtlatande {
     private static final DateTimeFormatter FORMATTER = DateTimeFormat.forPattern("yyyy-MM-dd");
     private static final LocalDate BASE = new LocalDate("2012-03-01");
 
-    private JmsTemplate jmsTemplate;
+    @Autowired
     private ActiveMQQueue destination;
 
-    public void setup() {
-        BrokerService broker = new BrokerService();
-        broker.setPersistent(false);
-        try {
-            broker.addConnector("tcp://localhost:61616");
-            broker.start();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        ConnectionFactory cf = new ActiveMQConnectionFactory("tcp://localhost:61616");
-        this.jmsTemplate = new JmsTemplate(cf);
-        destination = new ActiveMQQueue("intyg.queue");
+    @Autowired
+    private ConnectionFactory connectionFactory;
 
+    private JmsTemplate jmsTemplate;
+
+    public void setup() {
+        this.jmsTemplate = new JmsTemplate(connectionFactory);
     }
 
     @PostConstruct
