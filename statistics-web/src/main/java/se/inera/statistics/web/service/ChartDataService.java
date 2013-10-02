@@ -8,6 +8,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
+import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,23 +28,31 @@ import se.inera.statistics.web.model.overview.OverviewData;
 @Service("chartService")
 public class ChartDataService {
 
-    @Autowired
+    private static final int INCUSIVE_PERIOD = 18;
+
+    private Overview datasourceOverview;
     private CasesPerMonth datasourceCasesPerMonth;
-
-    @Autowired
     private DiagnosisGroups datasourceDiagnosisGroups;
-
-    @Autowired
     private DiagnosisSubGroups datasourceDiagnosisSubGroups;
 
-    @Autowired
-    private Overview datasourceOverview;
+    public ChartDataService(Overview overviewPersistenceHandler,
+                            CasesPerMonth casesPerMonthPersistenceHandler,
+                            DiagnosisGroups diagnosisGroupsPersistenceHandler,
+                            DiagnosisSubGroups diagnosisSubGroupsPersistenceHandler) {
+        datasourceOverview = overviewPersistenceHandler;
+        datasourceCasesPerMonth = casesPerMonthPersistenceHandler;
+        datasourceDiagnosisGroups = diagnosisGroupsPersistenceHandler;
+        datasourceDiagnosisSubGroups = diagnosisSubGroupsPersistenceHandler;
+    }
 
     @GET
     @Path("getNumberOfCasesPerMonth")
     @Produces({ MediaType.APPLICATION_JSON })
     public TableData getNumberOfCasesPerMonth() {
-        List<CasesPerMonthRow> casesPerMonth = datasourceCasesPerMonth.getCasesPerMonth();
+        LocalDate lastMonth = new LocalDate().withDayOfMonth(1).minusMonths(1);
+
+        List<CasesPerMonthRow> casesPerMonth = datasourceCasesPerMonth.getCasesPerMonth(lastMonth.minusMonths(INCUSIVE_PERIOD - 1), lastMonth);
+
         return new CasesPerMonthConverter().convertCasesPerMonthData(casesPerMonth);
     }
 

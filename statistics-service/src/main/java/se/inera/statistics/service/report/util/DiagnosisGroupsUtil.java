@@ -76,6 +76,7 @@ public final class DiagnosisGroupsUtil {
         return new DiagnosisGroup(code, description);
     }
 
+    // CHECKSTYLE:OFF MethodLengthCheck
     private static Map<String, List<DiagnosisGroup>> initSubGroups() {
         List<DiagnosisGroup> aGroups = new ArrayList<>();
         aGroups.add(group("A00-A09", "Infektionssjukdomar utgående från mag-tarmkanalen"));
@@ -414,5 +415,6 @@ public final class DiagnosisGroupsUtil {
         subGroups.put("U00-U99", uGroups);
         return subGroups;
     }
+    // CHECKSTYLE:ON MethodLengthCheck
 
 }

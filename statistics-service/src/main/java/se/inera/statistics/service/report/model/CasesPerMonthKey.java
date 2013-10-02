@@ -11,6 +11,8 @@ public class CasesPerMonthKey implements Serializable {
     private String hsaId;
 
     public CasesPerMonthKey(String period, String enhet) {
+        this.period = period;
+        hsaId = enhet;
     }
 
     public CasesPerMonthKey() {
@@ -20,15 +22,8 @@ public class CasesPerMonthKey implements Serializable {
         return period;
     }
 
-    public void setPeriod(String period) {
-        this.period = period;
-    }
-
     public String getHsaId() {
         return hsaId;
     }
 
-    public void setHsaId(String hsaId) {
-        this.hsaId = hsaId;
-    }
 }

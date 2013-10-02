@@ -1334,6 +1334,9 @@ form.bs-docs-example {
 		display: initial;
 		position: relative;
 	}
+	#overview-content #overview-distribution-per-sex-container p {
+		top: 90px !important;
+	}
 	#overview-content #overview-change-container .overview-change-responsive-circle > div {
 		padding: 13%;
 		margin: 3% 0% 0% 36%;
@@ -1369,7 +1372,7 @@ form.bs-docs-example {
 		color: #919191;
 		font-weight: bold;
 		font-size: 2em;
-		margin: 0px 10px 10px 82px;
+		margin: 0px 0px 0px 0px;
 	}
 }
  

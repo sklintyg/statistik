@@ -12,7 +12,7 @@ public class SjukfallJob {
     private static final Logger LOG = LoggerFactory.getLogger(SjukfallJob.class);
 
     @Autowired
-    protected SjukfallService sjukfallService;
+    private SjukfallService sjukfallService;
 
     @Scheduled(cron = "0 0 2 * * *")
     public void cleanupSjukfall() {

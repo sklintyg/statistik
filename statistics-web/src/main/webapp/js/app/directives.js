@@ -1,6 +1,6 @@
 'use strict';
 
-statisticsApp.directive("navigationaware", function ($rootScope, $location) {
+app.statisticsApp.directive("navigationaware", function ($rootScope, $location) {
     
     var matchingPath = function(navigationHref, currentPath){
         return currentPath.indexOf(navigationHref) >= 0;

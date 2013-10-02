@@ -21,4 +21,8 @@ public class NamedData {
         return data;
     }
 
+    @Override
+    public String toString() {
+        return name + ": " + data.toString();
+    }
 }

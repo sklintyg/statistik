@@ -9,7 +9,7 @@ import se.inera.statistics.service.report.model.OverviewResponse;
 
 public class OverviewMock implements Overview {
 
-    //CHECKSTYLE:OFF MagicNumber
+    // CHECKSTYLE:OFF MagicNumber
     @Override
     public OverviewResponse getOverview() {
         ArrayList<OverviewChartRowExtended> diagnosisGroups = new ArrayList<OverviewChartRowExtended>();

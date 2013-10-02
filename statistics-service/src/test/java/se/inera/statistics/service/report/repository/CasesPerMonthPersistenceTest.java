@@ -1,33 +1,80 @@
 package se.inera.statistics.service.report.repository;
 
+import static org.junit.Assert.assertEquals;
+
+import java.util.Iterator;
+
+import org.joda.time.LocalDate;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
+
+import se.inera.statistics.service.report.model.CasesPerMonthRow;
 import se.inera.statistics.service.report.model.Sex;
-
-import javax.transaction.NotSupportedException;
-import javax.transaction.SystemException;
-
-import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath:process-log-impl-test.xml" })
 @Transactional
+@DirtiesContext
 public class CasesPerMonthPersistenceTest extends CasesPerMonthPersistenceHandler {
 
     // CHECKSTYLE:OFF MagicNumber
     @Test
-    public void storedEventCanBeFetched() throws InterruptedException, NotSupportedException, SystemException {
-        this.count("201302", "nationell", Sex.Female);
+    public void store_nonexisting_row_female() {
 
+        this.count("201302", Sex.Female);
 
+        CasesPerMonthRow check = this.getCasesPerMonthRow("201302");
+        assertEquals(check.getFemale(), 1);
     }
-
 
     @Test
-    public void store_nonexisting_row() {
-        CasesPerMonthPersistenceHandler casesPerMonthPersistenceHandler;
+    public void store_existing_row_female() {
+        this.count("201302", Sex.Female);
+
+        this.count("201302", Sex.Female);
+
+        CasesPerMonthRow check = this.getCasesPerMonthRow("201302");
+        assertEquals(check.getFemale(), 2);
     }
+
+    @Test
+    public void store_nonexisting_row_male() {
+
+        this.count("201302", Sex.Male);
+
+        CasesPerMonthRow check = this.getCasesPerMonthRow("201302");
+        assertEquals(check.getMale(), 1);
+    }
+
+    @Test
+    public void store_existing_row_male() {
+        this.count("201302", Sex.Female);
+
+        this.count("201302", Sex.Male);
+
+        CasesPerMonthRow check = this.getCasesPerMonthRow("201302");
+        assertEquals(check.getMale(), 1);
+    }
+
+    @Test
+    public void getCasesPerMonthReturnsOldestFirst() {
+        this.count("2013-02", Sex.Female);
+        this.count("2013-04", Sex.Female);
+        this.count("2013-01", Sex.Female);
+
+        LocalDate from = new LocalDate("2013-01");
+        LocalDate to = new LocalDate("2013-04");
+
+        Iterator<CasesPerMonthRow> check = this.getCasesPerMonth(from, to).iterator();
+        assertEquals("jan 2013", check.next().getPeriod());
+        assertEquals("feb 2013", check.next().getPeriod());
+        assertEquals("apr 2013", check.next().getPeriod());
+    }
+
+    // CHECKSTYLE:ON
+
 }
