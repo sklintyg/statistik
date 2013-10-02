@@ -31,7 +31,7 @@ environments {
         driver = {
             DesiredCapabilities capabillities = DesiredCapabilities.firefox();
             capabillities.setCapability("version", "23");
-            capabillities.setCapability("platform", Platform.XP);
+            capabillities.setCapability("platform", Platform.WIN8);
             new RemoteWebDriver(
                           new URL("http://fredrikengstrom:8abb0a52-2709-4c9c-90f0-767523be1b80@ondemand.saucelabs.com:80/wd/hub"),
                           capabillities);
