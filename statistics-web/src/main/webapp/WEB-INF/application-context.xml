@@ -41,7 +41,6 @@
 
     <import resource="classpath*:process-log-impl.xml"/>
     <import resource="application-context-cxf.xml"/>
-    <import resource="application-context-qm.xml"/>
     <import resource="application-context-security.xml"/>
 
     <context:annotation-config/>
@@ -55,6 +54,8 @@
     </beans>
     
     <beans profile="demo">
+      <import resource="application-context-qm.xml"/>
+
       <bean class="se.inera.statistics.service.report.repository.CasesPerMonthPersistenceHandler" id="casesPerMonth" />
       <bean class="se.inera.statistics.service.report.mock.DiagnosisGroupsMock" id="diagnosisGroups"/>
       <bean class="se.inera.statistics.service.report.mock.DiagnosisSubGroupsMock" id="diagnosisSubGroups"/>
