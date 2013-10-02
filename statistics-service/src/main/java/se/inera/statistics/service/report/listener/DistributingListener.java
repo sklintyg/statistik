@@ -18,7 +18,7 @@ public class DistributingListener implements ProcessorListener {
             .appendMonthOfYear(2).appendLiteral('-').appendDayOfMonth(2).toFormatter();
 
     @Autowired
-    SjukfallPerKonListener sjukfallPerKonListener;
+    private SjukfallPerKonListener sjukfallPerKonListener;
 
     @Override
     public void accept(SjukfallInfo sjukfallInfo, JsonNode utlatande, JsonNode hsa) {
