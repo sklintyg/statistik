@@ -7,12 +7,8 @@ import org.joda.time.format.DateTimeFormatterBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import se.inera.statistics.service.helper.DocumentHelper;
 import se.inera.statistics.service.report.api.CasesPerMonth;
 import se.inera.statistics.service.report.model.Sex;
-import se.inera.statistics.service.sjukfall.SjukfallInfo;
-
-import com.fasterxml.jackson.databind.JsonNode;
 
 @Component
 public class SjukfallPerKonListener {

@@ -7,6 +7,8 @@ import javax.persistence.Embeddable;
 @Embeddable
 public class CasesPerMonthKey implements Serializable {
     private static final long serialVersionUID = 1L;
+    public static final String NATIONELL = "nationell";
+
     private String period;
     private String hsaId;
 
@@ -47,8 +49,7 @@ public class CasesPerMonthKey implements Serializable {
 
         if (hsaId != null ? !hsaId.equals(that.hsaId) : that.hsaId != null) {
             return false;
-        }
-        if (period != null ? !period.equals(that.period) : that.period != null) {
+        } else if (period != null ? !period.equals(that.period) : that.period != null) {
             return false;
         }
 

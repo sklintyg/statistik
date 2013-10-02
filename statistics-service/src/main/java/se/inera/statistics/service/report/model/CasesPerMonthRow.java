@@ -15,7 +15,7 @@ public class CasesPerMonthRow {
     }
 
     public CasesPerMonthRow(String period, int female, int male) {
-        this.casesPerMonthKey = new CasesPerMonthKey(period, "nationell");
+        this.casesPerMonthKey = new CasesPerMonthKey(period, CasesPerMonthKey.NATIONELL);
         this.female = female;
         this.male = male;
     }
