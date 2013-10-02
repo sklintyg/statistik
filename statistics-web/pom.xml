@@ -162,13 +162,4 @@
           </resource>
       </resources>
   </build>
-    <profiles>
-        <profile>
-            <id>demo</id>
-            <properties>
-                <casesPerMonthclass>se.inera.statistics.service.report.repository.CasesPerMonthPersistenceHandler</casesPerMonthclass>
-            </properties>
-        </profile>
-    </profiles>
-
 </project>
