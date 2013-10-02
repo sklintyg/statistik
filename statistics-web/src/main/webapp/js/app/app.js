@@ -1,8 +1,9 @@
 'use strict';
 
 /* App Module */
+var app = {};
 
-var statisticsApp = angular.module('StatisticsApp', [  ]).config(
+app.statisticsApp = angular.module('StatisticsApp', [  ]).config(
         [ '$routeProvider', '$httpProvider', function($routeProvider, $httpProvider) {
             $routeProvider.when('/oversikt', {
                 templateUrl : 'views/overview.html',
@@ -36,7 +37,7 @@ var statisticsApp = angular.module('StatisticsApp', [  ]).config(
 
         } ]);
 
-statisticsApp.run([ '$rootScope', '$route', function($rootScope, $route) {
+app.statisticsApp.run([ '$rootScope', '$route', function($rootScope, $route) {
     $rootScope.lang = 'sv';
     $rootScope.DEFAULT_LANG = 'sv';
 
@@ -48,4 +49,3 @@ statisticsApp.run([ '$rootScope', '$route', function($rootScope, $route) {
 	  }
     });
 } ]);
-

@@ -1,6 +1,6 @@
  'use strict';
 
-var casesPerMonthCtrl = function ($scope, statisticsData) {
+ app.casesPerMonthCtrl = function ($scope, statisticsData) {
 
     $scope.chartContainers = ["container"];
     
@@ -8,17 +8,17 @@ var casesPerMonthCtrl = function ($scope, statisticsData) {
 		var chartOptions = {
 				
 			chart : {
-				renderTo : 'container',
+				renderTo : 'container'
 			},
             title : {
-                text : '',
+                text : ''
             },
 			legend: {
 	            align: 'top left',
 	            verticalAlign: 'top',
 	            x: 80,
 	            y: 0,
-	            borderWidth: 0,
+	            borderWidth: 0
 	        },	
 			xAxis : {
 				labels: {

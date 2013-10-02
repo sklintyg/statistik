@@ -33,7 +33,10 @@
     <context:property-placeholder location="classpath:/application-context.properties"/>
 
     <bean id="chartDataService" class="se.inera.statistics.web.service.ChartDataService">
+        <constructor-arg ref="overview"/>
         <constructor-arg ref="casesPerMonth"/>
+        <constructor-arg ref="diagnosisGroups"/>
+        <constructor-arg ref="diagnosisSubGroups"/>
     </bean>
 
     <bean class="se.inera.statistics.service.demo.InjectUtlatande" lazy-init="false" />
@@ -44,9 +47,9 @@
     <import resource="application-context-security.xml"/>
 
     <bean class="${casesPerMonthclass}" id="casesPerMonth"></bean>
-    <bean class="se.inera.statistics.service.report.mock.DiagnosisGroupsMock"></bean>
-    <bean class="se.inera.statistics.service.report.mock.DiagnosisSubGroupsMock"></bean>
-    <bean class="se.inera.statistics.service.report.mock.OverviewMock"></bean>
+    <bean class="se.inera.statistics.service.report.mock.DiagnosisGroupsMock" id="diagnosisGroups"></bean>
+    <bean class="se.inera.statistics.service.report.mock.DiagnosisSubGroupsMock" id="diagnosisSubGroups"></bean>
+    <bean class="se.inera.statistics.service.report.mock.OverviewMock" id ="overview"></bean>
 
     <context:annotation-config/>
     <context:component-scan base-package="se.inera.statistics.service"/>

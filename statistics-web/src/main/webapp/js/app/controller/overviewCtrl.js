@@ -1,6 +1,6 @@
  'use strict';
 
-var overviewCtrl = function ($scope, statisticsData) {
+ app.overviewCtrl = function ($scope, statisticsData) {
     var populatePageWithData = function(result){
         $scope.casesPerMonthMaleProportion = result.casesPerMonth.proportionMale;
         $scope.casesPerMonthFemaleProportion = result.casesPerMonth.proportionFemale;

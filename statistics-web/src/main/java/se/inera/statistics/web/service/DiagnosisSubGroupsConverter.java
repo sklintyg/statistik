@@ -86,6 +86,9 @@ public class DiagnosisSubGroupsConverter {
     }
 
     private List<Integer> getTopColumnIndexes(TableData maleData, TableData femaleData) {
+        if (maleData.getRows().isEmpty()){
+            return new ArrayList<Integer>();
+        }
         TreeMap<Integer, Integer> columnSums = new TreeMap<>();
         int dataSize = maleData.getRows().get(0).getData().size();
         for (int i = 0; i < dataSize; i++) {

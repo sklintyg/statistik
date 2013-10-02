@@ -30,19 +30,19 @@ public class ChartDataService {
 
     private static final int INCUSIVE_PERIOD = 18;
 
+    private Overview datasourceOverview;
     private CasesPerMonth datasourceCasesPerMonth;
-
-    @Autowired
     private DiagnosisGroups datasourceDiagnosisGroups;
-
-    @Autowired
     private DiagnosisSubGroups datasourceDiagnosisSubGroups;
 
-    @Autowired
-    private Overview datasourceOverview;
-
-    public ChartDataService(CasesPerMonth casesPerMonthPersistenceHandler) {
+    public ChartDataService(Overview overviewPersistenceHandler,
+                            CasesPerMonth casesPerMonthPersistenceHandler,
+                            DiagnosisGroups diagnosisGroupsPersistenceHandler,
+                            DiagnosisSubGroups diagnosisSubGroupsPersistenceHandler) {
+        datasourceOverview = overviewPersistenceHandler;
         datasourceCasesPerMonth = casesPerMonthPersistenceHandler;
+        datasourceDiagnosisGroups = diagnosisGroupsPersistenceHandler;
+        datasourceDiagnosisSubGroups = diagnosisSubGroupsPersistenceHandler;
     }
 
     @GET
