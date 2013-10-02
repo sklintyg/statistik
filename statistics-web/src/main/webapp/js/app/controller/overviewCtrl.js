@@ -140,6 +140,15 @@
             legend : {
                 enabled : false
             },
+			plotOptions: {
+				bubble: {
+					tooltip : {
+						headerFormat: '{series.name}<br/>',
+			            pointFormat: '<b>{point.z}</b>',
+			            shared: true
+			        }
+				}
+			},
             xAxis : [ {
                 min: 0,
                 max: 100,
@@ -165,7 +174,7 @@
             } ],
             series : chartData.map(function(e) {
                     var coords = getCoordinates(e);
-                    return {"data": [[coords.x, coords.y, e.quantity]], color: e.color }; 
+                    return {"data": [[coords.x, coords.y, e.quantity]], color: e.color, name: htmlsafe(e.name) };
                 })
         };
         new Highcharts.Chart(chartOptions, function(chart) { // on complete
