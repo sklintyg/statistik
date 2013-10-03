@@ -1,4 +1,4 @@
-package se.inera.statistics.service;
+package se.inera.statistics.service.hsa;
 
 public class HSAKey {
     private final String vardgivareId;

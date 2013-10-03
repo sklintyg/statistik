@@ -1,4 +1,4 @@
-package se.inera.statistics.service;
+package se.inera.statistics.service.hsa;
 
 import com.fasterxml.jackson.databind.JsonNode;
 
