@@ -507,7 +507,8 @@ legend {
 	border-radius: 8px 8px 8px 8px;
 }
 
-#statistics-menu-accordion .nav-list {
+#statistics-menu-accordion .nav-list,
+#statistics-about-menu-accordion .nav-list {
 	padding-left: 0px;
 	padding-right: 0px;
 }
@@ -521,18 +522,20 @@ legend {
 	margin: 0 0 1px;
 	padding: 11px 11px;
 }
-
-#statistics-menu-accordion li a {
+#statistics-menu-accordion li a,
+#statistics-about-menu-accordion li a {
 	color: #0b0b0b;
 	margin: 0 0 0px;
 	padding: 10px 11px;
 	border-bottom: 1px solid #BABABA;
 	font-family: helvetica;
 }
-#statistics-menu-accordion li a:hover {
+#statistics-menu-accordion li a:hover,
+#statistics-about-menu-accordion li a:hover {
 	background: #e8e8e8;
 }
-#statistics-menu-accordion .last-item-in-menu {
+#statistics-menu-accordion .last-item-in-menu,
+#statistics-about-menu-accordion .last-item-in-menu {
 	border-bottom: 1px solid transparent;
 }
 #statistics-menu-accordion li a.menu-item-has-childs {
@@ -540,7 +543,7 @@ legend {
 }
 #statistics-menu-accordion #national-statistic-menu-content li.active a,
 #statistics-menu-accordion #business-statistic-menu-content li.active a,
-#statistics-menu-accordion #about-statistic-menu li.active a {
+#statistics-about-menu-accordion #about-statistic-menu-content li.active a {
 	background: #CCCCCC;
 	color: #0b0b0b !important;	
 }
@@ -675,13 +678,13 @@ i.statistict-left-menu-expand-icon {
 .accordion-toggle {
 	background: #666666;
 	background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJod…IgaGVpZ2h0PSIxIiBmaWxsPSJ1cmwoI2dyYWQtdWNnZy1nZW5lcmF0ZWQpIiAvPgo8L3N2Zz4=);
-	background: -moz-linear-gradient(top, #666666 0%, #0d0d0d 57%);
-	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#666666), color-stop(57%,#0d0d0d));
-	background: -webkit-linear-gradient(top, #666666 0%,#0d0d0d 57%);
-	background: -o-linear-gradient(top, #666666 0%,#0d0d0d 57%);
-	background: -ms-linear-gradient(top, #666666 0%,#0d0d0d 57%);
-	background: linear-gradient(to bottom, #666666 0%,#0d0d0d 57%);
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#666666', endColorstr='#0d0d0d',GradientType=0 );
+	background: -moz-linear-gradient(top, #666666 0%, #212633 57%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#666666), color-stop(57%,#212633));
+	background: -webkit-linear-gradient(top, #666666 0%,#212633 57%);
+	background: -o-linear-gradient(top, #666666 0%,#212633 57%);
+	background: -ms-linear-gradient(top, #666666 0%,#212633 57%);
+	background: linear-gradient(to bottom, #666666 0%,#212633 57%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#666666', endColorstr='#212633',GradientType=0 );
 	cursor: pointer;
 	-webkit-border-top-left-radius: 10px;
 	-webkit-border-top-right-radius: 10px;
@@ -725,13 +728,13 @@ div.accordion-body.in.collapse > div.accordion-heading a.accordion-toggle{
 .accordion-toggle.collapsed { 
 	background: #666666;
 	background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJod…IgaGVpZ2h0PSIxIiBmaWxsPSJ1cmwoI2dyYWQtdWNnZy1nZW5lcmF0ZWQpIiAvPgo8L3N2Zz4=);
-	background: -moz-linear-gradient(top, #666666 0%, #0d0d0d 57%);
-	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#666666), color-stop(57%,#0d0d0d));
-	background: -webkit-linear-gradient(top, #666666 0%,#0d0d0d 57%);
-	background: -o-linear-gradient(top, #666666 0%,#0d0d0d 57%);
-	background: -ms-linear-gradient(top, #666666 0%,#0d0d0d 57%);
-	background: linear-gradient(to bottom, #666666 0%,#0d0d0d 57%);
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#666666', endColorstr='#0d0d0d',GradientType=0 );
+	background: -moz-linear-gradient(top, #666666 0%, #212633 57%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#666666), color-stop(57%,#212633));
+	background: -webkit-linear-gradient(top, #666666 0%,#212633 57%);
+	background: -o-linear-gradient(top, #666666 0%,#212633 57%);
+	background: -ms-linear-gradient(top, #666666 0%,#212633 57%);
+	background: linear-gradient(to bottom, #666666 0%,#212633 57%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#666666', endColorstr='#212633',GradientType=0 );
 	cursor: pointer;
 	-webkit-border-top-left-radius: 10px;
 	-webkit-border-top-right-radius: 10px;
@@ -760,7 +763,11 @@ div.accordion-body.in.collapse > div.accordion-heading a.accordion-toggle{
 	-moz-border-radius: 4px;
 	border-radius: 4px;
 }
-#statistics-menu-accordion .accordion-inner{
+#statistics-menu-accordion {
+	margin-top: 30px !important;
+}
+#statistics-menu-accordion .accordion-inner,
+#statistics-about-menu-accordion .accordion-inner {
 	padding: 0px 0px 4px !important;
 	border: 1px solid #BABABA !important;
 }
@@ -785,9 +792,6 @@ div.accordion-body.in.collapse > div.accordion-heading a.accordion-toggle{
 	border-top: 1px solid #dddddd;
 }
 
-/****** End: Bootstrap style overrides ******/
-
-/****** Start: Statistics general styles  ******/
 .login-button { width: 100%; }
 .login-button-label { color: #008391; font-weight: bold; }
 
@@ -832,9 +836,6 @@ div.accordion-body.in.collapse > div.accordion-heading a.accordion-toggle{
 
 #sickLeavePerCountyChart g.highcharts-axis { display: none; }
 
-/****** End: Statistics general styles  ******/
-
-/****** Start: Shell general styles 	******/
 .container.header { 
 	margin-bottom: 0px; 
 	padding-top: 15px;
@@ -921,17 +922,15 @@ a.listheader.collapsed {
 	-moz-border-radius: 6px 6px 6px 6px !important;
 	border-radius: 6px 6px 6px 6px !important;
 }
-/****** End: Shell general styles 	******/
-
-/****** Start: Overview content styles  ******/
 
 #overview-content, #chart-content, #about-content{
 	margin: 20px 0px 0px 0px;
 	
 }
-	#overview-content h1, #overview-content h2, #overview-content h3, #overview-content h4 { font-family: Helvetica; color: #008391; }
-	#overview-content h1 { font-weight: bold; font-size: 20px; margin-bottom: -5px; }
-	#overview-content h2 { font-weight: bold; }
+	#overview-content h1, #overview-content h2, #overview-content h3, #overview-content h4,
+	#about-content h1, #about-content h2, #about-content h3, #about-content h4 { font-family: Helvetica; color: #008391; }
+	#overview-content h1, #about-content h1 { font-weight: bold; font-size: 20px; margin-bottom: 0px; }
+	#overview-content h2, #about-content h2 { font-weight: bold; }
 	
 	#overview-content span.overview-ingress { font-weight: bold; margin-bottom: 10px; }
 	#overview-content .overview-box-header-container a:hover { text-decoration: none; }
@@ -1180,6 +1179,16 @@ a.listheader.collapsed {
 		border-right: 1px solid #C4C4C4;
 		border-bottom: 1px solid #C4C4C4;
 		border-top: 1px solid none; 
+	}
+	
+	div.box-bottom {
+		background-image: url("../img/list_shadow_left.png"), url("../img/list_shadow_right.png");
+		background-repeat: no-repeat, no-repeat;
+		background-position: top left, top right;
+		margin-top: 0px;
+		padding: 0px;
+		margin-bottom: 10px;
+		min-height: 10px;
 	}
 	
 	#overview-content .overview-box-information-container span { 

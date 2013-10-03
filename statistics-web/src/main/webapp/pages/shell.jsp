@@ -81,7 +81,7 @@
 							 	<li><a ng-href="#/sjukfallPerManad" id="navCasesPerMonthLink" navigationaware>Sjukfall, totalt</a></li>
 								<li>
 									<a class="menu-item-has-childs" ng-href="#/diagnosgrupper" id="navDiagnosisGroupsLink" navigationaware>Diagnosgrupp</a>
-									<i class="statistict-left-menu-expand-icon" class="accordion-toggle" data-toggle="collapse" data-parent="" href="#sub-menu-diagnostics"></i>
+									<i class="statistict-left-menu-expand-icon" class="accordion-toggle" data-toggle="collapse" href="#sub-menu-diagnostics"></i>
 								</li>
 									
 								<ul id="sub-menu-diagnostics" class="nav nav-list sub-nav-list accordion-body in collapse">
@@ -114,20 +114,23 @@
 					</div>
 				</div>
 				
-				<div class="accordion" id="statistics-about-accordion">
-					<div class="accordion-group">
+				<div class="about accordion" id="statistics-about-menu-accordion">
 					<!-- ABOUT STATISTIC MENU -->
 					  <div class="accordion-heading statistics-menu">
-					    <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#statistics-about-accordion" href="#about-statistics-collapse">
+					    <a class="accordion-toggle first-level-menu" data-toggle="collapse" href="#about-statistics-collapse">
 					      Om tjänsten<i class="statistict-left-menu-expand-icon"></i>
 					    </a>
 					  </div>
 					  <div id="about-statistics-collapse" class="accordion-body collapse">
 					    <div class="accordion-inner">
-					      Anim pariatur cliche...
+					    	<ul id="about-statistic-menu-content" class="nav nav-list">
+								<li><a class="first-item-in-menu" ng-href="#/om/tjansten" navigationaware>Allmänt om tjänsten</a></li>
+								<li><a ng-href="#/om/inloggning" navigationaware>Inloggning och behörighet</a></li>
+								<li><a ng-href="#/om/vanligafragor" navigationaware>Vanliga frågor och svar</a></li>
+								<li><a class="last-item-in-menu" ng-href="#/om/kontakt" navigationaware>Kontakt till support</a></li>
+							</ul>
 					    </div>
 					  </div>
-					</div>
 				</div>
 				<!-- 
 				<div id="statistics-left-menu">
