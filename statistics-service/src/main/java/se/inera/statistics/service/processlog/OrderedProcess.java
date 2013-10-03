@@ -31,7 +31,7 @@ public class OrderedProcess {
                 break;
             }
         }
-        if(!found) {
+        if (!found) {
             LOG.error("Not found");
         }
 
