@@ -27,6 +27,7 @@
 				categories : chartCategories
 			},
 			yAxis : {
+				min : 0,
 				title : {
 					text : 'Antal',
 					align : 'high',
