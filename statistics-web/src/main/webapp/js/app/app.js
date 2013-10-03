@@ -25,9 +25,18 @@ app.statisticsApp = angular.module('StatisticsApp', [  ]).config(
                 title: 'Underdiagnosgrupper'
             }).when('/underdiagnosgrupper', {
                 redirectTo : '/underdiagnosgrupper/A00-B99'
-            }).when('/om', {
-                templateUrl : 'views/about.html',
+            }).when('/om/tjansten', {
+                templateUrl : 'views/about/about.html',
                 title: 'Om tjänsten'
+            }).when('/om/kontakt', {
+                templateUrl : 'views/about/contact.html',
+                title: 'Kontakt till support'
+            }).when('/om/vanligafragor', {
+                templateUrl : 'views/about/faq.html',
+                title: 'Vanliga frågor och svar'
+            }).when('/om/inloggning', {
+                templateUrl : 'views/about/login.html',
+                title: 'Inloggning och behörighet'
             }).when('/', {
                 redirectTo : '/oversikt'
             }).otherwise({

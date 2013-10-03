@@ -182,10 +182,10 @@
 								<span class="accordion-toggle collapsed" data-toggle="collapse" href="#about-statistics-menu">Om tjänsten<i class="statistict-left-menu-expand-icon "></i></span>
 							</div>
 							<ul id="about-statistics-menu" class="nav nav-list accordion-body collapse" >
-								<li><a class="first-item-in-menu" ng-href="#/om#about" navigationaware>Allmänt om tjänsten</a></li>
-								<li><a ng-href="#/om#login" navigationaware>Inloggning och behörighet</a></li>
-								<li><a ng-href="#/om#faq" navigationaware>Vanliga frågor och svar</a></li>
-								<li><a class="last-item-in-menu" ng-href="#/om#contact" navigationaware>Kontakt till support</a></li>
+								<li><a class="first-item-in-menu" ng-href="#/om/tjansten" navigationaware>Allmänt om tjänsten</a></li>
+								<li><a ng-href="#/om/inloggning" navigationaware>Inloggning och behörighet</a></li>
+								<li><a ng-href="#/om/vanligafragor" navigationaware>Vanliga frågor och svar</a></li>
+								<li><a class="last-item-in-menu" ng-href="#/om/kontakt" navigationaware>Kontakt till support</a></li>
 							</ul>
 						</div>
 					</div>

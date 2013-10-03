@@ -27,6 +27,7 @@
 				categories : chartCategories
 			},
 			yAxis : {
+				min : 0,
 				title : {
 					text : 'Antal',
 					align : 'high',
@@ -102,6 +103,6 @@
     
     $scope.showHideDataTable = ControllerCommons.showHideDataTableDefault;
     $scope.toggleTableVisibility = function(event){
-        toggleTableVisibilityGeneric(event, $scope);
+        ControllerCommons.toggleTableVisibilityGeneric(event, $scope);
     };
 };
