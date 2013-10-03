@@ -2,6 +2,9 @@
 
  app.overviewCtrl = function ($scope, statisticsData) {
     var populatePageWithData = function(result){
+        $scope.doneLoading = true;
+        $scope.$apply();
+
         $scope.casesPerMonthMaleProportion = result.casesPerMonth.proportionMale;
         $scope.casesPerMonthFemaleProportion = result.casesPerMonth.proportionFemale;
         $scope.casesPerMonthAlteration = result.casesPerMonth.alteration;
@@ -13,7 +16,7 @@
                     renderTo : containerId,
                     type: 'pie',
                     backgroundColor: 'transparent',
-                    height: 180,
+                    height: 180
                 },
                 exporting: {
                     enabled: false /* This removes the built in highchart export */           
@@ -35,7 +38,7 @@
                     dataLabels: {
                         formatter: function() {
                             return null;
-                        },
+                        }
                     }
                 }]
             };
@@ -65,7 +68,7 @@
                     renderTo : containerId,
                     type: 'column',
                     height: 185,
-                    backgroundColor: 'transparent',
+                    backgroundColor: 'transparent'
                 },
                 title: {
                     text: ''
@@ -83,13 +86,13 @@
                     },
                     labels: {
                         rotation: -45,
-                        align: 'right',
+                        align: 'right'
                     }
                 },
                 yAxis: {
                     min: 0,
                     title: {
-                        text: 'ANTAL',
+                        text: 'ANTAL'
                     }
                 },
                 exporting: {
@@ -101,7 +104,7 @@
     	            x: 80,
     	            y: 0,
     	            borderWidth: 0,
-    	            enabled: false,
+    	            enabled: false
     	        },
                 tooltip: {
                     backgroundColor: '#fff',
@@ -126,7 +129,7 @@
                 height : 185,
                 width: 133,
                 type : 'bubble',
-                backgroundColor: 'transparent',
+                backgroundColor: 'transparent'
             },
             credits : {
                 enabled : false
@@ -221,4 +224,6 @@
 	}
 
     statisticsData.getOverview(populatePageWithData, ControllerCommons.dataDownloadFailed);
+    $scope.spinnerText = "Laddar data...";
+    $scope.doneLoading = false;
 };

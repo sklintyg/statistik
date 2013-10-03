@@ -18,3 +18,28 @@ app.statisticsApp.directive("navigationaware", function ($rootScope, $location) 
         }
     };
 });
+
+app.statisticsApp.directive("spinner", ['$rootScope', function($rootScope) {
+    return {
+        restrict : "A",
+        transclude : true,
+        replace : true,
+        scope : {
+          label: "@",
+          showSpinner: "=",
+          showContent: "="
+        },
+        template :
+            '<div>'
+           +'  <div ng-show="showSpinner" class="spinner">'
+           +'    <img aria-labelledby="loading-message" src="/img/ajax-loader.gif"/>'
+           +'    <p id="loading-message">'
+           +'      <strong><span message key="{{ label }}"></span></strong>'
+           +'    </p>'
+           +'  </div>'
+           +'  <div ng-show="showContent">'
+           +'    <div ng-transclude></div>'
+           +'  </div>'
+           +'</div>'
+    }
+} ]);

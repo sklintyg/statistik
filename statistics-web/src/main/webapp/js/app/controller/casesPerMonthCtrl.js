@@ -96,6 +96,7 @@
         updateDataTable($scope, result);
         updateChart(result);
         $scope.subTitle = "Antal sjukfall per månad " + result.rows[0].name + " - " + result.rows[result.rows.length-1].name;
+        $scope.doneLoading = true;
     };
 
     statisticsData.getNumberOfCasesPerMonth(populatePageWithData, ControllerCommons.dataDownloadFailed);
@@ -104,4 +105,7 @@
     $scope.toggleTableVisibility = function(event){
         ControllerCommons.toggleTableVisibilityGeneric(event, $scope);
     };
+    
+    $scope.spinnerText = "Laddar data...";
+    $scope.doneLoading = false;
 };

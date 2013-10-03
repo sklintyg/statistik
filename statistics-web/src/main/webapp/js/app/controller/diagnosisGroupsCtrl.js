@@ -138,6 +138,7 @@
     var populatePageWithData = function(result){
         updateDataTable($scope, result);
         updateChart(result);
+        $scope.doneLoading = true;
     };
     
     var populateDetailsOptions = function(result){
@@ -160,35 +161,40 @@
         $scope.detailsOptions = result;
     };
 
-         $scope.chartContainers = ["container1", "container2"];
+    $scope.chartContainers = [ "container1", "container2" ];
 
-         $scope.toggleSeriesVisibility = function (index){
-             var s1 = chart1.series[index];
-             var s2 = chart2.series[index];
-             if (s1.visible){
-                 s1.hide();
-                 s2.hide();
-             } else {
-                 s1.show();
-                 s2.show();
-             }
-         };
+    $scope.toggleSeriesVisibility = function(index) {
+        var s1 = chart1.series[index];
+        var s2 = chart2.series[index];
+        if (s1.visible) {
+            s1.hide();
+            s2.hide();
+        } else {
+            s1.show();
+            s2.show();
+        }
+    };
 
-         $scope.exportTableData = ControllerCommons.exportTableDataGeneric;
+    $scope.exportTableData = ControllerCommons.exportTableDataGeneric;
 
-         $scope.subTitle = "Antal sjukfall per diagnosgrupp";
+    $scope.subTitle = "Antal sjukfall per diagnosgrupp";
 
-         statisticsData[dataFetcher](populatePageWithData, ControllerCommons.dataDownloadFailed, $routeParams.groupId);
+    statisticsData[dataFetcher](populatePageWithData,
+            ControllerCommons.dataDownloadFailed, $routeParams.groupId);
 
-         $scope.showHideDataTable = ControllerCommons.showHideDataTableDefault;
-         $scope.toggleTableVisibility = function(event){
-             ControllerCommons.toggleTableVisibilityGeneric(event, $scope);
-         };
+    $scope.showHideDataTable = ControllerCommons.showHideDataTableDefault;
+    $scope.toggleTableVisibility = function(event) {
+        ControllerCommons.toggleTableVisibilityGeneric(event, $scope);
+    };
 
-         $scope.showDetailsOptions = showDetailsOptions;
-         if (showDetailsOptions){
-             statisticsData.getDiagnosisGroups(populateDetailsOptions, ControllerCommons.dataDownloadFailed);
-         }
+    $scope.showDetailsOptions = showDetailsOptions;
+    if (showDetailsOptions) {
+        statisticsData.getDiagnosisGroups(populateDetailsOptions,
+                ControllerCommons.dataDownloadFailed);
+    }
+
+    $scope.spinnerText = "Laddar data...";
+    $scope.doneLoading = false;
 
      return this;
 
