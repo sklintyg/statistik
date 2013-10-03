@@ -182,7 +182,7 @@
 
          $scope.showHideDataTable = ControllerCommons.showHideDataTableDefault;
          $scope.toggleTableVisibility = function(event){
-             toggleTableVisibilityGeneric(event, $scope);
+             ControllerCommons.toggleTableVisibilityGeneric(event, $scope);
          };
 
          $scope.showDetailsOptions = showDetailsOptions;
