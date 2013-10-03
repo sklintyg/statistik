@@ -24,6 +24,7 @@
                  categories : chartCategories
              },
              yAxis : {
+				 min : 0,
                  title : {
                      text : yAxisTitle,
                      align : 'high',
