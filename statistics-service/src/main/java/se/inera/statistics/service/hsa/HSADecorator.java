@@ -39,7 +39,7 @@ public class HSADecorator {
     }
 
     protected void storeHSAInfo(String documentId, JsonNode info) {
-        storedInfo.put(documentId, info);
+        //storedInfo.put(documentId, info);
     }
 
     protected HSAKey extractHSAKey(JsonNode document) {
