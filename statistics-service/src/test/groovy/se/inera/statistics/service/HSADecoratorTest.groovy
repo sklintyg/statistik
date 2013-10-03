@@ -1,7 +1,15 @@
 package se.inera.statistics.service
 
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.databind.node.ObjectNode
+import groovy.json.JsonBuilder
 import org.junit.Before
 import org.junit.Test
+import se.inera.statistics.service.helper.JSONParser
+import se.inera.statistics.service.hsa.HSADecorator
+import se.inera.statistics.service.hsa.HSAInfo
+import se.inera.statistics.service.hsa.HSAKey
+import se.inera.statistics.service.hsa.HSAService
 
 import static org.junit.Assert.*
 
@@ -11,9 +19,14 @@ class HSADecoratorTest {
 
     @Before
     void setup() {
-        hsaService = {
-            new HSAInfo("län för " + it.vardgivareId + "," + it.enhetId + "," + it.lakareId, null)
-        } as HSAService
+        hsaService = [
+            getHSAInfo : { HSAKey that ->
+                def builder = new JsonBuilder()
+                def root = builder { lan ("län för " + that.vardgivareId + "," + that.enhetId + "," + that.lakareId) }
+
+                new ObjectMapper().readTree(builder.toString());
+            }
+        ] as HSAService
     }
 
     @Test
@@ -25,16 +38,15 @@ class HSADecoratorTest {
     void hsa_get_hsa_data_from_hsa_mock() {
         HSAKey key = new HSAKey("vardgivareId", "enhetId", "lakareId")
 
-        def result = hsaService.getHSAInfo(key)
+        ObjectNode result = hsaService.getHSAInfo(key)
 
-        println result
-        assertEquals "län för vardgivareId,enhetId,lakareId", result.lan
+        assertEquals "län för vardgivareId,enhetId,lakareId", result.findPath("lan").textValue()
 
     }
 
     @Test
     void hsa_decorator_extract_key_from_document() {
-        def doc = new InputStreamReader(this.getClass().getResourceAsStream("/json/fk7263_M_template.json")).text
+        def doc = JSONParser.parse(JSONSource.readTemplateAsString().toString())
         hsaDecorator.service = { assertEquals "enhetId", it.enhetId; new HSAInfo("Västa Götaland",) } as HSAService
 
         def key = hsaDecorator.extractHSAKey(doc)

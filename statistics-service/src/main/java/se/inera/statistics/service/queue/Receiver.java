@@ -4,8 +4,14 @@ import com.fasterxml.jackson.databind.JsonNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import se.inera.statistics.service.hsa.HSADecorator;
+import se.inera.statistics.service.hsa.HSAInfo;
+import se.inera.statistics.service.hsa.HSAKey;
+import se.inera.statistics.service.hsa.HSAService;
+import se.inera.statistics.service.helper.DocumentHelper;
 import se.inera.statistics.service.helper.JSONParser;
 import se.inera.statistics.service.processlog.EventType;
+import se.inera.statistics.service.processlog.OrderedProcess;
 import se.inera.statistics.service.processlog.ProcessLog;
 import se.inera.statistics.service.processlog.Processor;
 
@@ -23,11 +29,19 @@ public class Receiver implements MessageListener {
     @Autowired
     private Processor processor;
 
+    @Autowired
+    private HSADecorator hsaDecorator;
+
+    @Autowired
+    private OrderedProcess orderedProcess;
+
     public void accept(EventType type, String data, String documentId, long timestamp) {
         processLog.store(type, data, documentId, timestamp);
         JsonNode utlatande = JSONParser.parse(data);
 
-        processor.accept(utlatande, null);
+        orderedProcess.register(utlatande, documentId);
+        hsaDecorator.decorate(utlatande, documentId);
+
     }
 
     public void onMessage(Message rawData) {

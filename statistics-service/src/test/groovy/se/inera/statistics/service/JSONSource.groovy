@@ -18,7 +18,7 @@ class JSONSource {
         result
     }
 
-    static def readTemplateAsString() {
+    static String readTemplateAsString() {
         def doc = new InputStreamReader(this.getClass().getResourceAsStream("/json/fk7263_M_template.json"))
         doc.text
     }
