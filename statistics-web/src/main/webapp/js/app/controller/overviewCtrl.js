@@ -223,7 +223,8 @@
 		return string.replace(/&/g,'&amp;').replace(/</g,'&lt;');
 	}
 
-    statisticsData.getOverview(populatePageWithData, ControllerCommons.dataDownloadFailed);
+    statisticsData.getOverview(populatePageWithData, function() { $scope.dataLoadingError = true; });
     $scope.spinnerText = "Laddar data...";
     $scope.doneLoading = false;
+    $scope.dataLoadingError = false;
 };

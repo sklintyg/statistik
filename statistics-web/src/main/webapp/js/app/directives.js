@@ -19,7 +19,7 @@ app.statisticsApp.directive("navigationaware", function ($rootScope, $location) 
     };
 });
 
-app.statisticsApp.directive("spinner", ['$rootScope', function($rootScope) {
+app.statisticsApp.directive("spinner", function() {
     return {
         restrict : "A",
         transclude : true,
@@ -42,4 +42,25 @@ app.statisticsApp.directive("spinner", ['$rootScope', function($rootScope) {
            +'  </div>'
            +'</div>'
     }
-} ]);
+});
+
+app.statisticsApp.directive("dataerrorview", function() {
+    return {
+        restrict : "A",
+        transclude : true,
+        replace : true,
+        scope : {
+            errorPageUrl: "=",
+            showError: "="
+        },
+        template :
+            '<div>'+
+                '<div ng-show="showError">'
+                    +'<div ng-include="\'views/error/failedToFetchData.html\'"></div>'
+                +'</div>'
+                +'  <div ng-show="!showError">'
+                +'    <div ng-transclude></div>'
+                +'  </div>'
+            +'</div>'
+    }
+});

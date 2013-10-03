@@ -40,7 +40,7 @@ app.statisticsApp = angular.module('StatisticsApp', [  ]).config(
             }).when('/', {
                 redirectTo : '/oversikt'
             }).otherwise({
-                templateUrl : 'views/404.html',
+                templateUrl : 'views/error/pageNotFound.html',
                 title: 'Fel'
             });
 

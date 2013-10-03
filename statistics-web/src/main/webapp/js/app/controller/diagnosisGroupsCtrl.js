@@ -179,8 +179,7 @@
 
     $scope.subTitle = "Antal sjukfall per diagnosgrupp";
 
-    statisticsData[dataFetcher](populatePageWithData,
-            ControllerCommons.dataDownloadFailed, $routeParams.groupId);
+    statisticsData[dataFetcher](populatePageWithData, function() { $scope.dataLoadingError = true; }, $routeParams.groupId);
 
     $scope.showHideDataTable = ControllerCommons.showHideDataTableDefault;
     $scope.toggleTableVisibility = function(event) {
@@ -189,12 +188,12 @@
 
     $scope.showDetailsOptions = showDetailsOptions;
     if (showDetailsOptions) {
-        statisticsData.getDiagnosisGroups(populateDetailsOptions,
-                ControllerCommons.dataDownloadFailed);
+        statisticsData.getDiagnosisGroups(populateDetailsOptions, function() { $scope.dataLoadingError = true; });
     }
 
     $scope.spinnerText = "Laddar data...";
     $scope.doneLoading = false;
+    $scope.dataLoadingError = false;
 
      return this;
 

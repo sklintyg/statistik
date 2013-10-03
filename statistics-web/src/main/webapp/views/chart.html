@@ -9,59 +9,62 @@
 		</div>
 	</div>
 	<!-- Start ingress -->
+    <div ng-include="errorPageUrl"></div>
 	<div class="row-fluid">
 		<span class="span12 graph-ingress">{{subTitle}}</span>
 	</div>
-    <div spinner label="spinnerText" show-spinner="!doneLoading" show-content="doneLoading">
-		<!-- Start detailsOptions if any -->
-		<div class="row-fluid">
-			<select class="span3" ng-model="detailsOption" ng-show="showDetailsOptions" ng-options="do.id + ' ' + do.name for do in detailsOptions"></select>
-		</div>
-		<!-- Start graph -->
-		<div class="row-fluid">
-			<div class="span12" style="margin-bottom: 20px;">
-				<div ng-class="{span12: chartContainers.length == 1, span6: chartContainers.length == 2}" ng-repeat="chartContainer in chartContainers" id="{{chartContainer}}" style="height: 400px; margin: 0 auto"></div>
-			</div>
-		</div>
-		<div class="row-fluid">
-			<div class="span12">
-				<label ng-repeat="seriesData in series" class="span4" style="margin-left: 0px; margin-right: 20px;">
-					<input type="checkbox" checked="" ng-click="toggleSeriesVisibility($index)" /> 
-					<span style="display: inline-block; height: 10px; width: 10px; background-color: {{seriesData.color}};"></span>
-					{{seriesData.name}}
-				</label>
-			</div>
-		</div>
-    
-    	<!-- Starting data-table -->
-		<div id="chart-data-table">
-			<div class="accordion" id="accordion2">
-				<div class="accordion-group">
-				  <div class="accordion-heading">
-				    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne" id="toggleDataTableVisibility" ng-click="toggleTableVisibility($event)">
-				      <i class="chart-table-expand-icon"></i>
-				      {{showHideDataTable}}
-				    </a>
-				  </div>
-				  <div id="collapseOne" class="accordion-body in collapse chart-table-body">
-				    <div class="accordion-inner datatablescrollable">
-					    <table id="datatable" class="table table-striped">
-							<thead>
-								<tr ng-repeat="headerrow in headerrows">
-									<td class="datatablescrollable" ng-class="{headcol: $first}" colspan="{{header.colspan}}" ng-repeat="header in headerrow" style="max-width: 100px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="{{header.text}}">{{header.text}}</td>
-								</tr>
-							</thead>
-							<tbody>
-								<tr ng-repeat="row in rows">
-									<td class="datatablescrollable headcol">{{row.name}}</td>
-									<td class="datatablescrollable" ng-repeat="fieldData in row.data" >{{fieldData}}</td>
-								</tr>
-							</tbody>
-					 	</table>
-				    </div>
-				  </div>
-				</div>
-			</div>
-		</div>
-	</div>
+    <div dataerrorview show-error="dataLoadingError">
+        <div spinner label="spinnerText" show-spinner="!doneLoading" show-content="doneLoading">
+            <!-- Start detailsOptions if any -->
+            <div class="row-fluid">
+                <select class="span3" ng-model="detailsOption" ng-show="showDetailsOptions" ng-options="do.id + ' ' + do.name for do in detailsOptions"></select>
+            </div>
+            <!-- Start graph -->
+            <div class="row-fluid">
+                <div class="span12" style="margin-bottom: 20px;">
+                    <div ng-class="{span12: chartContainers.length == 1, span6: chartContainers.length == 2}" ng-repeat="chartContainer in chartContainers" id="{{chartContainer}}" style="height: 400px; margin: 0 auto"></div>
+                </div>
+            </div>
+            <div class="row-fluid">
+                <div class="span12">
+                    <label ng-repeat="seriesData in series" class="span4" style="margin-left: 0px; margin-right: 20px;">
+                        <input type="checkbox" checked="" ng-click="toggleSeriesVisibility($index)" />
+                        <span style="display: inline-block; height: 10px; width: 10px; background-color: {{seriesData.color}};"></span>
+                        {{seriesData.name}}
+                    </label>
+                </div>
+            </div>
+
+            <!-- Starting data-table -->
+            <div id="chart-data-table">
+                <div class="accordion" id="accordion2">
+                    <div class="accordion-group">
+                      <div class="accordion-heading">
+                        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne" id="toggleDataTableVisibility" ng-click="toggleTableVisibility($event)">
+                          <i class="chart-table-expand-icon"></i>
+                          {{showHideDataTable}}
+                        </a>
+                      </div>
+                      <div id="collapseOne" class="accordion-body in collapse chart-table-body">
+                        <div class="accordion-inner datatablescrollable">
+                            <table id="datatable" class="table table-striped">
+                                <thead>
+                                    <tr ng-repeat="headerrow in headerrows">
+                                        <td class="datatablescrollable" ng-class="{headcol: $first}" colspan="{{header.colspan}}" ng-repeat="header in headerrow" style="max-width: 100px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="{{header.text}}">{{header.text}}</td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="row in rows">
+                                        <td class="datatablescrollable headcol">{{row.name}}</td>
+                                        <td class="datatablescrollable" ng-repeat="fieldData in row.data" >{{fieldData}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

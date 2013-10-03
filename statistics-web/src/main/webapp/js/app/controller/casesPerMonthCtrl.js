@@ -99,7 +99,7 @@
         $scope.doneLoading = true;
     };
 
-    statisticsData.getNumberOfCasesPerMonth(populatePageWithData, ControllerCommons.dataDownloadFailed);
+    statisticsData.getNumberOfCasesPerMonth(populatePageWithData, function() { $scope.dataLoadingError = true; });
     
     $scope.showHideDataTable = ControllerCommons.showHideDataTableDefault;
     $scope.toggleTableVisibility = function(event){
@@ -108,4 +108,5 @@
     
     $scope.spinnerText = "Laddar data...";
     $scope.doneLoading = false;
+    $scope.dataLoadingError = false;
 };
