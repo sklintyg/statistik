@@ -18,27 +18,39 @@ public class OrderedProcess {
 
     private List<IntygRecord> records = new LinkedList<IntygRecord>();
 
-    public void register(JsonNode intyg, String dokumentId) {
-        records.add(new IntygRecord(dokumentId, intyg));
+    synchronized public void register(JsonNode intyg, String dokumentId) {
+        putIntygRecord(intyg, dokumentId);
     }
 
-    public void updateSlot(JsonNode info, String documentId) {
-        boolean found = false;
-        for (IntygRecord record: records) {
-            if (record.getDocumentId().equals(documentId)) {
-                record.setInfo(info);
-                found = true;
-                break;
-            }
-        }
-        if(!found) {
-            LOG.error("Not found");
-        }
+    synchronized public void updateSlot(JsonNode intyg, JsonNode info, String documentId) {
+        // Try to register to avoid race condition when updateSlot() is called before register()
+        register(intyg, documentId);
 
+        IntygRecord record = getIntygRecord(documentId);
+        record.setInfo(info);
+        sendUnlockedRecords();
+    }
+
+    private void sendUnlockedRecords() {
         while (records.size() > 0 && records.get(0).isComplete()) {
             IntygRecord record = records.remove(0);
             processor.accept(record.getIntyg(), record.getInfo());
         }
+    }
+
+    private void putIntygRecord(JsonNode intyg, String dokumentId) {
+        if(getIntygRecord(dokumentId) == null) {
+            records.add(new IntygRecord(dokumentId, intyg));
+        }
+    }
+
+    private IntygRecord getIntygRecord(String documentId) {
+        for (IntygRecord record: records) {
+            if (record.getDocumentId().equals(documentId)) {
+                return record;
+            }
+        }
+        return null;
     }
 
     private static class IntygRecord {
