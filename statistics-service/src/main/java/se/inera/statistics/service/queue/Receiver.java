@@ -1,24 +1,22 @@
 package se.inera.statistics.service.queue;
 
-import com.fasterxml.jackson.databind.JsonNode;
+import javax.jms.JMSException;
+import javax.jms.Message;
+import javax.jms.MessageListener;
+import javax.jms.TextMessage;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import se.inera.statistics.service.hsa.HSADecorator;
-import se.inera.statistics.service.hsa.HSAInfo;
-import se.inera.statistics.service.hsa.HSAKey;
-import se.inera.statistics.service.hsa.HSAService;
-import se.inera.statistics.service.helper.DocumentHelper;
+
 import se.inera.statistics.service.helper.JSONParser;
+import se.inera.statistics.service.hsa.HSADecorator;
 import se.inera.statistics.service.processlog.EventType;
 import se.inera.statistics.service.processlog.OrderedProcess;
 import se.inera.statistics.service.processlog.ProcessLog;
 import se.inera.statistics.service.processlog.Processor;
 
-import javax.jms.JMSException;
-import javax.jms.Message;
-import javax.jms.MessageListener;
-import javax.jms.TextMessage;
+import com.fasterxml.jackson.databind.JsonNode;
 
 public class Receiver implements MessageListener {
     private static final Logger LOG = LoggerFactory.getLogger(Receiver.class);

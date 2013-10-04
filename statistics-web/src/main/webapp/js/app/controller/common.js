@@ -9,10 +9,6 @@ var ControllerCommons = new function(){
      }
  };
  
- this.dataDownloadFailed = function () {
-     alert("Failed to download chart data");
- };
-
  this.showHideDataTableDefault = "Dölj datatabell";
  this.toggleTableVisibilityGeneric = function(event, $scope){
      var elem = $(event.target);
