@@ -554,7 +554,8 @@ legend {
 	border-top: 1px solid #cccccc;
 }
 
-#national-statistic-menu-content .sub-nav-list li a {
+#national-statistic-menu-content .sub-nav-list li a,
+#business-statistic-menu-content .sub-nav-list li a {
 	font-size: 0.9em;
 }
 
