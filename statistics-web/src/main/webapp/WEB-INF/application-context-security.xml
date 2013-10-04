@@ -7,9 +7,9 @@
            http://www.springframework.org/schema/security
            http://www.springframework.org/schema/security/spring-security-3.1.xsd">
 
-    <http auto-config="true">
-        <intercept-url pattern="/login.jsp*" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
-        <intercept-url pattern="/restricted/**" access="ROLE_ADMIN"/>
+    <http auto-config="true" use-expressions="true">
+        <intercept-url pattern="/login.jsp*" access="isAnonymous()"/>
+        <intercept-url pattern="/restricted/**" access="hasRole('ROLE_ADMIN')"/>
         <form-login login-page='/login.jsp'/>
     </http>
 

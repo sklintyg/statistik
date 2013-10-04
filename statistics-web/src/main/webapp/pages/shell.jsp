@@ -20,6 +20,7 @@
 --%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="security" uri="http://www.springframework.org/security/tags" %>
 <!DOCTYPE html>
 <html ng-app="StatisticsApp">
 <head>
@@ -99,6 +100,7 @@
 					    </div>
 					  </div>
 					</div>
+                    <security:authorize access="isAuthenticated()">
 					<div class="accordion-group">
 					<!-- BUSINESS STATISTIC MENU -->
 					  <div class="accordion-heading statistics-menu">
@@ -112,6 +114,7 @@
 					    </div>
 					  </div>
 					</div>
+                    </security:authorize>
 				</div>
 				
 				<div class="about accordion" id="statistics-about-menu-accordion">
@@ -217,6 +220,7 @@
 <script type="text/javascript" src="<c:url value='/bootstrap/2.3.2/js/bootstrap.min.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/lib/angularjs/1.0.8/angular.min.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/app.js'/>"></script>
+<script type="text/javascript" src="<c:url value='/js/app/loginService.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/factories.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/controller/common.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/controller/casesPerMonthCtrl.js'/>"></script>
