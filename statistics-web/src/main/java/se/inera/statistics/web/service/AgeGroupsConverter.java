@@ -4,10 +4,7 @@ import se.inera.statistics.service.report.model.AgeGroupsResponse;
 import se.inera.statistics.service.report.model.AgeGroupsRow;
 import se.inera.statistics.service.report.model.CasesPerMonthRow;
 import se.inera.statistics.service.report.model.Sex;
-import se.inera.statistics.web.model.ChartData;
-import se.inera.statistics.web.model.ChartSeries;
-import se.inera.statistics.web.model.NamedData;
-import se.inera.statistics.web.model.TableData;
+import se.inera.statistics.web.model.*;
 
 import java.util.*;
 
@@ -35,11 +32,10 @@ public class AgeGroupsConverter {
         return new ChartData(series, groups);
     }
 
-    Map<String, ?> convert(AgeGroupsResponse resp){
-        HashMap<String, Object> data = new HashMap<>();
-        data.put("tableData", convertToTable(resp.getRows()));
-        data.put("chartData", convertToChart(resp));
-        data.put("monthsIncluded", resp.getNumberOfMonthsCalculated());
-        return data;
+    AgeGroupsData convert(AgeGroupsResponse resp){
+        TableData tableData = convertToTable(resp.getRows());
+        ChartData chartData = convertToChart(resp);
+        int monthsIncluded = resp.getNumberOfMonthsCalculated();
+        return new AgeGroupsData(tableData, chartData, monthsIncluded);
     }
 }

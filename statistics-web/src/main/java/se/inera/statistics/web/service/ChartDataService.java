@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import se.inera.statistics.service.report.api.*;
 import se.inera.statistics.service.report.model.*;
 import se.inera.statistics.service.report.util.DiagnosisGroupsUtil;
+import se.inera.statistics.web.model.AgeGroupsData;
 import se.inera.statistics.web.model.DiagnosisGroupsData;
 import se.inera.statistics.web.model.TableData;
 import se.inera.statistics.web.model.overview.OverviewData;
@@ -89,7 +90,7 @@ public class ChartDataService {
     @GET
     @Path("getAgeGroupsStatistics")
     @Produces({ MediaType.APPLICATION_JSON })
-    public Map<String, ?> getAgeGroupsStatistics() {
+    public AgeGroupsData getAgeGroupsStatistics() {
         final int numberOfMonthsToShow = 12;
         LocalDate lastMonth = new LocalDate().withDayOfMonth(1).minusMonths(1);
         AgeGroupsResponse ageGroups = datasourceAgeGroups.getAgeGroups(lastMonth.minusMonths(numberOfMonthsToShow), lastMonth);
