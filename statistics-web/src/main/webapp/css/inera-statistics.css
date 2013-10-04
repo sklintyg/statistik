@@ -701,6 +701,18 @@ i.statistict-left-menu-expand-icon {
 	border-bottom-right-radius: 10px;
 	color: #fff;
 }
+.accordion-toggle.disabled {
+	background: #F2F2F2;
+	cursor: default;
+	color: #A8A8A8;
+}
+.accordion-toggle.disabled:hover {
+	color: #A8A8A8 !important;
+} 
+.accordion-toggle.disabled i.statistict-left-menu-expand-icon {
+	opacity: .8;
+	cursor: default;
+} 
 .accordion-toggle.active {
 	-webkit-border-top-left-radius: 10px;
 	-webkit-border-top-right-radius: 10px;

@@ -1,6 +1,7 @@
 package se.inera.statistics.web.service;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -11,15 +12,10 @@ import javax.ws.rs.core.MediaType;
 import org.joda.time.LocalDate;
 import org.springframework.stereotype.Service;
 
-import se.inera.statistics.service.report.api.CasesPerMonth;
-import se.inera.statistics.service.report.api.DiagnosisGroups;
-import se.inera.statistics.service.report.api.DiagnosisSubGroups;
-import se.inera.statistics.service.report.api.Overview;
-import se.inera.statistics.service.report.model.CasesPerMonthRow;
-import se.inera.statistics.service.report.model.DiagnosisGroup;
-import se.inera.statistics.service.report.model.DiagnosisGroupResponse;
-import se.inera.statistics.service.report.model.OverviewResponse;
+import se.inera.statistics.service.report.api.*;
+import se.inera.statistics.service.report.model.*;
 import se.inera.statistics.service.report.util.DiagnosisGroupsUtil;
+import se.inera.statistics.web.model.AgeGroupsData;
 import se.inera.statistics.web.model.DiagnosisGroupsData;
 import se.inera.statistics.web.model.TableData;
 import se.inera.statistics.web.model.overview.OverviewData;
@@ -33,15 +29,19 @@ public class ChartDataService {
     private CasesPerMonth datasourceCasesPerMonth;
     private DiagnosisGroups datasourceDiagnosisGroups;
     private DiagnosisSubGroups datasourceDiagnosisSubGroups;
+    private AgeGroups datasourceAgeGroups;
 
     public ChartDataService(Overview overviewPersistenceHandler,
                             CasesPerMonth casesPerMonthPersistenceHandler,
                             DiagnosisGroups diagnosisGroupsPersistenceHandler,
-                            DiagnosisSubGroups diagnosisSubGroupsPersistenceHandler) {
+                            DiagnosisSubGroups diagnosisSubGroupsPersistenceHandler,
+                            AgeGroups ageGroupsPersistenceHandler) {
         datasourceOverview = overviewPersistenceHandler;
         datasourceCasesPerMonth = casesPerMonthPersistenceHandler;
         datasourceDiagnosisGroups = diagnosisGroupsPersistenceHandler;
         datasourceDiagnosisSubGroups = diagnosisSubGroupsPersistenceHandler;
+        datasourceAgeGroups = ageGroupsPersistenceHandler;
+
     }
 
     @GET
@@ -85,6 +85,16 @@ public class ChartDataService {
     public OverviewData getOverviewData() {
         OverviewResponse response = datasourceOverview.getOverview();
         return new OverviewConverter().convert(response);
+    }
+
+    @GET
+    @Path("getAgeGroupsStatistics")
+    @Produces({ MediaType.APPLICATION_JSON })
+    public AgeGroupsData getAgeGroupsStatistics() {
+        final int numberOfMonthsToShow = 12;
+        LocalDate lastMonth = new LocalDate().withDayOfMonth(1).minusMonths(1);
+        AgeGroupsResponse ageGroups = datasourceAgeGroups.getAgeGroups(lastMonth.minusMonths(numberOfMonthsToShow), lastMonth);
+        return new AgeGroupsConverter().convert(ageGroups);
     }
 
 }

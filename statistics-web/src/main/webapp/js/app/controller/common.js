@@ -7,6 +7,7 @@ var ControllerCommons = new function(){
      for (var i = 0; i < rawData.length; i++) {
          rawData[i].color = color[i];
      }
+     return rawData;
  };
  
  this.showHideDataTableDefault = "Dölj datatabell";
