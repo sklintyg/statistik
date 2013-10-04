@@ -51,8 +51,8 @@ public class DiagnosisGroupsConverter {
             }
 
         });
-        Collection<List<Integer>> values = allGroups.values();
-        int listSize = values.isEmpty() ? 0 : values.toArray().length;
+        List<List<Integer>> values = new ArrayList<List<Integer>>(allGroups.values());
+        int listSize = values.isEmpty() ? 0 : values.get(0).toArray().length;
         for(String groupName : DIAGNOSIS_CHART_GROUPS){
             mergedGroups.put(groupName, createZeroFilledList(listSize));
         }

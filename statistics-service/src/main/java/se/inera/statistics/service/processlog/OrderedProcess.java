@@ -1,13 +1,15 @@
 package se.inera.statistics.service.processlog;
 
-import com.fasterxml.jackson.databind.JsonNode;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.LinkedList;
-import java.util.List;
+import com.fasterxml.jackson.databind.JsonNode;
 
 @Component
 public class OrderedProcess {
@@ -18,33 +20,47 @@ public class OrderedProcess {
 
     private List<IntygRecord> records = new LinkedList<IntygRecord>();
 
-    synchronized public void register(JsonNode intyg, String dokumentId) {
-        putIntygRecord(intyg, dokumentId);
-    }
+    private Object listLockObject = new Object();
+    private Object processLockObject = new Object();
 
-    synchronized public void updateSlot(JsonNode intyg, JsonNode info, String documentId) {
-        // Try to register to avoid race condition when updateSlot() is called before register()
-        register(intyg, documentId);
-
-        IntygRecord record = getIntygRecord(documentId);
-        record.setInfo(info);
-        sendUnlockedRecords();
-    }
-
-    private void sendUnlockedRecords() {
-        while (records.size() > 0 && records.get(0).isComplete()) {
-            IntygRecord record = records.remove(0);
-            processor.accept(record.getIntyg(), record.getInfo());
-        }
-    }
-
-    private void putIntygRecord(JsonNode intyg, String dokumentId) {
-        if(getIntygRecord(dokumentId) == null) {
+    public void register(JsonNode intyg, String dokumentId) {
+        synchronized (listLockObject) {
             records.add(new IntygRecord(dokumentId, intyg));
         }
     }
 
-    private IntygRecord getIntygRecord(String documentId) {
+    public void updateSlot(JsonNode info, String documentId) {
+        synchronized (processLockObject) {
+            List<IntygRecord> completed;
+            synchronized (listLockObject) {
+                IntygRecord record = findRecord(documentId);
+                if (record != null) {
+                    record.setInfo(info);
+                } else {
+                    LOG.error("Not found");
+                }
+
+                completed = extractRecordsForProcessing();
+            }
+            processRecords(completed);
+        }
+    }
+
+    private void processRecords(List<IntygRecord> completed) {
+        for (IntygRecord record: completed) {
+            processor.accept(record.getIntyg(), record.getInfo());
+        }
+    }
+
+    private List<IntygRecord> extractRecordsForProcessing() {
+        List<IntygRecord> completed = new ArrayList<>();
+        while (records.size() > 0 && records.get(0).isComplete()) {
+            completed.add(records.remove(0));
+        }
+        return completed;
+    }
+
+    private IntygRecord findRecord(String documentId) {
         for (IntygRecord record: records) {
             if (record.getDocumentId().equals(documentId)) {
                 return record;
@@ -52,7 +68,6 @@ public class OrderedProcess {
         }
         return null;
     }
-
     private static class IntygRecord {
         private final String documentId;
         private JsonNode intyg;
