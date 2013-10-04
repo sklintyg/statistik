@@ -37,7 +37,7 @@ public class OrderedProcessTest {
         JsonNode hsaInfo = JSONParser.parse("{}");
 
         orderedProcess.register(intyg, dokumentId);
-        orderedProcess.updateSlot(intyg, hsaInfo, dokumentId);
+        orderedProcess.updateSlot(hsaInfo, dokumentId);
 
         verify(processor).accept(intyg, hsaInfo);
     }
@@ -54,11 +54,11 @@ public class OrderedProcessTest {
         orderedProcess.register(intyg1, dokumentId1);
         orderedProcess.register(intyg2, dokumentId2);
 
-        orderedProcess.updateSlot(intyg2, hsaInfo2, dokumentId2);
+        orderedProcess.updateSlot(hsaInfo2, dokumentId2);
 
         verify(processor, never()).accept(any(JsonNode.class), any(JsonNode.class));
 
-        orderedProcess.updateSlot(intyg1, hsaInfo1, dokumentId1);
+        orderedProcess.updateSlot(hsaInfo1, dokumentId1);
 
         InOrder order = inOrder(processor);
 

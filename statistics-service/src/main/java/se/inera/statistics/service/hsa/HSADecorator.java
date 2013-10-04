@@ -35,7 +35,7 @@ public class HSADecorator {
         LOG.debug(key.toString());
         JsonNode info = service.getHSAInfo(key);
         storeHSAInfo(documentId, info);
-        orderedProcess.updateSlot(doc, info, documentId);
+        orderedProcess.updateSlot(info, documentId);
     }
 
     protected void storeHSAInfo(String documentId, JsonNode info) {
