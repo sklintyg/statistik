@@ -822,15 +822,12 @@ div.accordion-body.in.collapse > div.accordion-heading a.accordion-toggle{
 	border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
 	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff444444', endColorstr='#ff222222', GradientType=0);
 	filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);
-	float: right;
 }
 
 #view .btn.statistic-btn:hover, #view .btn.statistic-btn.btn-large:hover { background-color: #000; }
 
 #view .btn.statistic-btn { 
-	float: right;
 	position: relative;
-	top: 20px;
 	margin-left: 10px; 
 }
 
@@ -1181,7 +1178,7 @@ a.listheader.collapsed {
 		border-top: 1px solid none; 
 	}
 	
-	div.box-bottom {
+	/*div.box-bottom {
 		background-image: url("../img/list_shadow_left.png"), url("../img/list_shadow_right.png");
 		background-repeat: no-repeat, no-repeat;
 		background-position: top left, top right;
@@ -1189,6 +1186,35 @@ a.listheader.collapsed {
 		padding: 0px;
 		margin-bottom: 10px;
 		min-height: 10px;
+	}*/
+	div.box-bottom {
+		padding: 10px;
+	    margin: 15px auto;
+	    width: 80%;
+	    height: 150px;
+	    background: #fff;
+	    text-align: center;
+	}
+	
+	div.shadow {
+		position:relative;
+	}
+	div.shadow:after {
+		z-index: -1;
+		content: '';
+		width: 30%;
+		position: absolute;
+		top: 50%;
+		bottom: 15px;
+		right: 10px;
+		left: auto;
+		background: #777;
+		-webkit-box-shadow: 0 15px 10px #777;
+		-moz-box-shadow: 0 15px 10px #777;
+		box-shadow: 0 15px 10px #777;
+		-webkit-transform: rotate(3deg);
+		-moz-transform: rotate(3deg);
+		transform: rotate(3deg);
 	}
 	
 	#overview-content .overview-box-information-container span { 
@@ -1204,7 +1230,15 @@ a.listheader.collapsed {
 	#overview-content .overview-box-information-container span.overview-small-box-information { position: relative; top: -30px; }
 	#overview-content .overview-box-information-container span.overview-standard-box-information { position: relative; top: -10px; padding-bottom: 40px; }
 	
-	#overview-content #overview-print-button { float: right; position: relative; top: 20px; }
+	#action-buttons-container { position: relative; top: 20px; }
+	.btn-group.btn-group-statistics {
+		float: right;
+	}
+	.dropdown-menu.dropdown-menu-statistics {
+		min-width: 130px;
+		padding: 1px 0;
+		margin: 1px -5px 0;
+	}
 	#overview-content #overview-print-button .btn { 
 		color: #ffffff;
 		text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);

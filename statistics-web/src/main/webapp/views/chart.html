@@ -3,9 +3,30 @@
 		<div class="span4">
 			<h1 tabindex="-1" class="national-statistic-h1">Nationell statistik</h1>
 		</div>
-		<div class="span5 offset3" id="overview-print-button">
+		<div class="span3 offset5" id="action-buttons-container">
+			<div class="btn-group btn-group-statistics">
+			  <button class="btn statistic-btn dropdown-toggle" data-toggle="dropdown">
+			  	Skriv ut i..
+			    <span class="caret"></span>
+			  </button>
+			  <ul class="dropdown-menu dropdown-menu-statistics">
+			    <li><a onclick="window.print();">Färg</a></li>
+			    <li><a>Svart-vitt (n/a)</a>
+			  </ul>
+			</div>
+			<div class="btn-group btn-group-statistics">
+			  <button class="btn statistic-btn dropdown-toggle" data-toggle="dropdown">
+			  	Spara som..
+			    <span class="caret"></span>
+			  </button>
+			  <ul class="dropdown-menu dropdown-menu-statistics">
+			    <li><a ng-click="exportTableData()">Excel</a></li>
+			  </ul>
+			</div>
+			<!-- 
 			<button class="btn statistic-btn"  onclick="window.print();">Skriv ut..</button>
 			<button class="btn statistic-btn" ng-click="exportTableData()">Spara som...</button>
+			 -->
 		</div>
 	</div>
 	<!-- Start ingress -->
