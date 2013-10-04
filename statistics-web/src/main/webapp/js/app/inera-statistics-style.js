@@ -21,7 +21,7 @@ $(function() {
     });
 
 });
-
+/*
 $(document).ready(function(){
 	$("#business-statistics-menu-group").hide();
 	
@@ -36,5 +36,16 @@ $(document).ready(function(){
 		$("#business-statistics-toggle").addClass('active');
 		$("#business-statistics-collapse").addClass('in'); 
 	});
+});
+*/
 
+$(document).ready(function(){
+	var toggleHref = $('#business-statistics-toggle').attr("href"); // Saves href for later
+	$("#business-statistics-toggle").removeAttr("href"); 
+	$("#business-statistics-toggle").addClass("disabled");
+	
+	$('#business-login-btn').click(function(){
+		$("#business-statistics-toggle").removeClass("disabled");
+		$("#business-statistics-toggle").attr("href", toggleHref);
+	});
 });

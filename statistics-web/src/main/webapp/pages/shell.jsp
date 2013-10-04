@@ -49,9 +49,13 @@
 				<div class="span2">
 					<span>Statistiktjänst för ordinerad sjukskrivning</span>
 				</div>
-				<div class="span1 offset7" id="log-out-container">
-					<a tabindex="-1" href="#">Logga ut</a>	
-				</div> 
+				
+				<div class="span1 offset7">
+					<div id="business-login-container">
+						<button class="btn" type="button" id="business-login-btn" value="Logga in">Logga in</button>
+					</div>
+				</div>					
+				
 			</div>
 		</div>
 	</div>
@@ -97,11 +101,6 @@
 							</ul>
 					    </div>
 					  </div>
-					</div>
-					
-					<div id="business-login-container">
-						<label for="business-login-btn">Verksamhetsstatistik</label>
-						<button class="btn btn-large btn-block" type="button" id="business-login-btn">Logga in</button>
 					</div>
 					
 					<div class="accordion-group" id="business-statistics-menu-group">
