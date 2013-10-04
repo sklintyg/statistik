@@ -21,3 +21,20 @@ $(function() {
     });
 
 });
+
+$(document).ready(function(){
+	$("#business-statistics-menu-group").hide();
+	
+	$("#log-out-container a").hide();
+	
+	$('#business-login-btn').click(function(){
+		$("#national-statistics-toggle").removeClass('active');
+		$("#national-statistics-collapse").removeClass('in'); 
+		$("#business-login-container").hide();
+		$("#business-statistics-menu-group").show();
+		$("#log-out-container a").show();
+		$("#business-statistics-toggle").addClass('active');
+		$("#business-statistics-collapse").addClass('in'); 
+	});
+
+});

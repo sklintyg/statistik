@@ -49,9 +49,9 @@
 				<div class="span2">
 					<span>Statistiktjänst för ordinerad sjukskrivning</span>
 				</div>
-				<!-- div class="span1 offset7">
-					<a tabindex="-1" href="#">Logga in / Logga ut ??</a>	
-				</div --> 
+				<div class="span1 offset7" id="log-out-container">
+					<a tabindex="-1" href="#">Logga ut</a>	
+				</div> 
 			</div>
 		</div>
 	</div>
@@ -67,11 +67,11 @@
 			<div class="span3 bs-docs-sidebar">
 				<h1 class="hidden-header">Sidans huvudnavigering</h1>
 				<div class="statistics accordion" id="statistics-menu-accordion">
-					<div class="accordion-group">
+					<div class="accordion-group" id="national-statistics-menu-group">
 					<h2 class="hidden-header">Navigering för nationell statistik</h2>
 					<!-- NATIONAL STATISTIC MENU -->
 					  <div class="accordion-heading statistics-menu">
-					    <a class="accordion-toggle first-level-menu active" data-toggle="collapse" data-parent="#statistics-menu-accordion" href="#national-statistics-collapse">
+					    <a class="accordion-toggle first-level-menu active" id="national-statistics-toggle" data-toggle="collapse" data-parent="#statistics-menu-accordion" href="#national-statistics-collapse">
 					      Nationell statistik<i class="statistict-left-menu-expand-icon"></i>
 					    </a>
 					  </div>
@@ -98,11 +98,17 @@
 					    </div>
 					  </div>
 					</div>
-					<div class="accordion-group">
+					
+					<div id="business-login-container">
+						<label for="business-login-btn">Verksamhetsstatistik</label>
+						<button class="btn btn-large btn-block" type="button" id="business-login-btn">Logga in</button>
+					</div>
+					
+					<div class="accordion-group" id="business-statistics-menu-group">
 					<h2 class="hidden-header">Navigering för verksamhetsstatistik</h2>
 					<!-- BUSINESS STATISTIC MENU -->
 					  <div class="accordion-heading statistics-menu">
-					    <a class="accordion-toggle first-level-menu" data-toggle="collapse" data-parent="#statistics-menu-accordion" href="#business-statistics-collapse">
+					    <a class="accordion-toggle first-level-menu" id="business-statistics-toggle" data-toggle="collapse" data-parent="#statistics-menu-accordion" href="#business-statistics-collapse">
 					      Verksamhetsstatistik<i class="statistict-left-menu-expand-icon"></i>
 					    </a>
 					  </div>
