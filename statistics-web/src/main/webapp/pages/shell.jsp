@@ -69,6 +69,7 @@
 				<h1 class="hidden-header">Sidans huvudnavigering</h1>
 				<div class="statistics accordion" id="statistics-menu-accordion">
 					<div class="accordion-group">
+					<h2 class="hidden-header">Navigering för nationell statistik</h2>
 					<!-- NATIONAL STATISTIC MENU -->
 					  <div class="accordion-heading statistics-menu">
 					    <a class="accordion-toggle first-level-menu active" data-toggle="collapse" data-parent="#statistics-menu-accordion" href="#national-statistics-collapse">
@@ -84,11 +85,9 @@
 									<a class="menu-item-has-childs" ng-href="#/diagnosgrupper" id="navDiagnosisGroupsLink" navigationaware>Diagnosgrupp</a>
 									<i class="statistict-left-menu-expand-icon" class="accordion-toggle" data-toggle="collapse" href="#sub-menu-diagnostics"></i>
 								</li>
-									
 								<ul id="sub-menu-diagnostics" class="nav nav-list sub-nav-list accordion-body in collapse">
 									<li><a ng-href="#/underdiagnosgrupper" id="navDiagnosisSubGroupsLink" navigationaware>Underdiagnosgrupp</a></li>
 								</ul>
-									
 								<li><a ng-href="#/aldersgrupper" id="navAgeGroupsLink" navigationaware>Ålderssgrupp</a></li>
 								<li><a ng-href="#/sjukskrivningsgrad" id="navSickLeaveDegreeLink" navigationaware>Sjukskrivningsgrad</a></li>
 								<li><a ng-href="#/sjukskrivningslangd" id="navSickLeaveLengthLink" navigationaware>Sjukskrivningslängd</a></li>
@@ -102,6 +101,7 @@
 					</div>
                     <security:authorize access="isAuthenticated()">
 					<div class="accordion-group">
+					<h2 class="hidden-header">Navigering för verksamhetsstatistik</h2>
 					<!-- BUSINESS STATISTIC MENU -->
 					  <div class="accordion-heading statistics-menu">
 					    <a class="accordion-toggle first-level-menu" data-toggle="collapse" data-parent="#statistics-menu-accordion" href="#business-statistics-collapse">
@@ -110,7 +110,33 @@
 					  </div>
 					  <div id="business-statistics-collapse" class="accordion-body collapse">
 					    <div class="accordion-inner">
-					      Anim pariatur cliche...
+					      <ul id="business-statistic-menu-content" class="nav nav-list">
+								<li><a ng-href="#/verksamhetOversikt" navigationaware>Översikt</a></li>
+							 	<li><a ng-href="#/verksamhetsjukfallPerManad" id="navBusinessCasesPerMonthLink" navigationaware>Sjukfall, totalt</a></li>
+								<li>
+									<a class="menu-item-has-childs" ng-href="#/verksamhetdiagnosgrupp" id="navBusinessDiagnosisGroupsLink" navigationaware>Diagnosgrupp</a>
+									<i class="statistict-left-menu-expand-icon" class="accordion-toggle" data-toggle="collapse" href="#sub-menu-business-diagnostics"></i>
+								</li>
+								<ul id="sub-menu-business-diagnostics" class="nav nav-list sub-nav-list accordion-body in collapse">
+									<li><a ng-href="#/verksamhetunderdiagnosgrupp" id="navBusinessDiagnosisSubGroupsLink" navigationaware>Underdiagnosgrupp</a></li>
+								</ul>
+								<li>
+									<a ng-href="#/verksamhetsaldersgrupper" id="navBusinessAgeGroupsLink" navigationaware>Ålderssgrupp</a>
+									<i class="statistict-left-menu-expand-icon" class="accordion-toggle" data-toggle="collapse" href="#sub-menu-business-age-group"></i>
+								</li>
+								<ul id="sub-menu-business-age-group" class="nav nav-list sub-nav-list accordion-body in collapse">
+									<li><a ng-href="#/verksamhetpagaendeavslutadealdersgrupper" id="navBusinessOngoingAndCompletedLink" navigationaware>Pågående och avslutade</a></li>
+								</ul>
+								<li><a ng-href="#/verksamhetsjukskrivningsgrad" id="navBusinessSickLeaveDegreeLink" navigationaware>Sjukskrivningsgrad</a></li>
+								<li>
+									<a class="menu-item-has-childs" ng-href="#/verksamhetsjukskrivningslangd" id="navBusinessSickLeaveLengthLink" navigationaware>Sjukskrivningslängd</a>
+									<i class="statistict-left-menu-expand-icon" class="accordion-toggle" data-toggle="collapse" href="#sub-menu-business-sick-leave-length"></i>
+								</li>
+								<ul id="sub-menu-business-sick-leave-length" class="nav nav-list sub-nav-list accordion-body in collapse">
+									<li><a ng-href="#/pagaendeavslutadesjukskrivningslangd" id="navBusinessOngoingAndCompletedSickLeaveLink" navigationaware>Pågående och avslutade</a></li>
+									<li><a class="last-item-in-menu" ng-href="#/merannittiodagarsjukskrivningslangd" id="navBusinessMoreNinetyDaysSickLeaveLink" navigationaware>Mer än 90 dagar</a></li>
+								</ul>
+							</ul>
 					    </div>
 					  </div>
 					</div>
@@ -118,6 +144,7 @@
 				</div>
 				
 				<div class="about accordion" id="statistics-about-menu-accordion">
+					<h2 class="hidden-header">Navigering för information om tjänsten</h2>
 					<!-- ABOUT STATISTIC MENU -->
 					  <div class="accordion-heading statistics-menu">
 					    <a class="accordion-toggle first-level-menu" data-toggle="collapse" href="#about-statistics-collapse">
