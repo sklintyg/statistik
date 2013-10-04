@@ -21,7 +21,7 @@ public class ChartDataServiceTest {
     @Test
     public void getOverviewDataTest(){
         Overview mock = Mockito.mock(Overview.class);
-        ChartDataService chartDataService = new ChartDataService(mock, null, null, null);
+        ChartDataService chartDataService = new ChartDataService(mock, null, null, null, null);
         try {
             chartDataService.getOverviewData();
         } catch (NullPointerException e) {}
@@ -31,14 +31,14 @@ public class ChartDataServiceTest {
     @Test
     public void getNumberOfCasesPerMonthTest(){
         CasesPerMonth mock = Mockito.mock(CasesPerMonth.class);
-        ChartDataService chartDataService = new ChartDataService(null, mock, null, null);
+        ChartDataService chartDataService = new ChartDataService(null, mock, null, null, null);
         chartDataService.getNumberOfCasesPerMonth();
         Mockito.verify(mock).getCasesPerMonth(Mockito.any(LocalDate.class), Mockito.any(LocalDate.class));
     }
 
     @Test
     public void getDiagnosisGroupsTest(){
-        ChartDataService chartDataService = new ChartDataService(null, null, null, null);
+        ChartDataService chartDataService = new ChartDataService(null, null, null, null, null);
         List<DiagnosisGroup> diagnosisGroups = chartDataService.getDiagnosisGroups();
         assertEquals(22, diagnosisGroups.size());
         assertTrue(diagnosisGroups.toString().contains("E00-E90 Endokrina sjukdomar"));
@@ -47,7 +47,7 @@ public class ChartDataServiceTest {
     @Test
     public void getDiagnosisGroupStatisticsTest(){
         DiagnosisGroups mock = Mockito.mock(DiagnosisGroups.class);
-        ChartDataService chartDataService = new ChartDataService(null, null, mock, null);
+        ChartDataService chartDataService = new ChartDataService(null, null, mock, null, null);
         try {
             chartDataService.getDiagnosisGroupStatistics();
         } catch (NullPointerException e) {}
@@ -57,7 +57,7 @@ public class ChartDataServiceTest {
     @Test
     public void getDiagnosisSubGroupStatisticsTest(){
         DiagnosisSubGroups mock = Mockito.mock(DiagnosisSubGroups.class);
-        ChartDataService chartDataService = new ChartDataService(null, null, null, mock);
+        ChartDataService chartDataService = new ChartDataService(null, null, null, mock, null);
         try {
             chartDataService.getDiagnosisSubGroupStatistics("testId");
         } catch (NullPointerException e) {}

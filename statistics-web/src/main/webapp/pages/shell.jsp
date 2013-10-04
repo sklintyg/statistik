@@ -222,6 +222,7 @@
 <script type="text/javascript" src="<c:url value='/js/app/controller/casesPerMonthCtrl.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/controller/diagnosisGroupsCtrl.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/controller/overviewCtrl.js'/>"></script>
+<script type="text/javascript" src="<c:url value='/js/app/controller/ageGroupsCtrl.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/controllers.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/directives.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/inera-statistics-style.js'/>" ></script>
