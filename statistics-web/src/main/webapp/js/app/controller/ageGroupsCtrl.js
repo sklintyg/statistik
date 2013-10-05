@@ -78,9 +78,7 @@
 	};
 
 	var updateDataTable = function($scope, ajaxResult) {
-		$scope.headerrows = [ajaxResult.headers.map(function(e) {
-            return { "text" : e, "colspan" : "1" };
-        })];
+		$scope.headerrows = ajaxResult.headers;
 		$scope.rows = ajaxResult.rows;
 	};
 

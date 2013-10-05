@@ -78,9 +78,7 @@
 	};
 
 	var updateDataTable = function($scope, ajaxResult) {
-		$scope.headerrows = [[{ "text" : "Period", "colspan" : "1" }].concat(ajaxResult.headers.map(function(e) {
-            return { "text" : e, "colspan" : "1" };
-        }))];
+		$scope.headerrows = [[{ "text" : "Period", "colspan" : "1" }].concat(ajaxResult.headers[0])];
 		$scope.rows = ajaxResult.rows;
 	};
 

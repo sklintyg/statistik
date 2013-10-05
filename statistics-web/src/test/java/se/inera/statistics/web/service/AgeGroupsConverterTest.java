@@ -29,7 +29,7 @@ public class AgeGroupsConverterTest {
 
         //Then
         TableData tableDataResult = result.getTableData();
-        assertEquals("[Åldersgrupper, Antal sjukfall, Antal kvinnor, Antal män, Summering]", tableDataResult.getHeaders().toString());
+        assertEquals("[[Åldersgrupper;1, Antal sjukfall;1, Antal kvinnor;1, Antal män;1, Summering;1]]", tableDataResult.getHeaders().toString());
         List<NamedData> rows = tableDataResult.getRows();
         assertEquals(3, rows.size());
         assertEquals("<20", rows.get(0).getName());
@@ -47,7 +47,7 @@ public class AgeGroupsConverterTest {
         assertEquals("Antal sjukskrivningar Kvinnor", series.get(1).getName());
         assertEquals("[14, 15, 9]", series.get(0).getData().toString());
         assertEquals("[13, 24, 3]", series.get(1).getData().toString());
-        
+
         assertEquals(7, result.getMonthsIncluded());
     }
 

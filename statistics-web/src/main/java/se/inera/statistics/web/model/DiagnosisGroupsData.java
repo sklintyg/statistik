@@ -2,31 +2,25 @@ package se.inera.statistics.web.model;
 
 public class DiagnosisGroupsData {
 
-    private final TableData maleTable;
-    private final TableData femaleTable;
-    private final TableData maleChart;
-    private final TableData femaleChart;
+    private final TableData tableData;
+    private final ChartData maleChart;
+    private final ChartData femaleChart;
 
-    public DiagnosisGroupsData(TableData maleTable, TableData femaleTable, TableData maleChart, TableData femaleChart) {
-        this.maleTable = maleTable;
-        this.femaleTable = femaleTable;
+    public DiagnosisGroupsData(TableData tableData, ChartData maleChart, ChartData femaleChart) {
+        this.tableData = tableData;
         this.maleChart = maleChart;
         this.femaleChart = femaleChart;
     }
 
-    public TableData getMaleTable() {
-        return maleTable;
+    public TableData getTableData() {
+        return tableData;
     }
 
-    public TableData getFemaleTable() {
-        return femaleTable;
-    }
-
-    public TableData getMaleChart() {
+    public ChartData getMaleChart() {
         return maleChart;
     }
 
-    public TableData getFemaleChart() {
+    public ChartData getFemaleChart() {
         return femaleChart;
     }
 

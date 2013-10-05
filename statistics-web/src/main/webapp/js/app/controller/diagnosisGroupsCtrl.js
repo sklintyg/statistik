@@ -61,71 +61,19 @@
          return new Highcharts.Chart(chartOptions);
      };
 
-     this.getTopHeaders = function (ajaxResult) {
-         var topheaders = [
-             {"text": "", "colspan": "1"}
-         ];
-         for (var i = 0; i < ajaxResult.femaleTable.headers.length; i++) {
-             topheaders.push({"text": ajaxResult.femaleTable.headers[i], "colspan": "2"});
-         }
-         topheaders.push({"text": "", "colspan": "1"});
-         return topheaders;
-     };
-
-     this.getSubHeaders = function(ajaxResult) {
-         var subheaders = [
-             {"text": "Period", "colspan": "1"}
-         ];
-         for (var i = 0; i < ajaxResult.femaleTable.headers.length; i++) {
-             subheaders.push({"text": "Kvinnor", "colspan": "1"});
-             subheaders.push({"text": "Män", "colspan": "1"});
-         }
-         subheaders.push({"text": "Summering", "colspan": "1"});
-         return subheaders;
-     };
-
-     this.getRows = function(ajaxResult) {
-         var rows = [];
-         for (var i = 0; i < ajaxResult.femaleTable.rows.length; i++) {
-             rows.push({"name": ajaxResult.femaleTable.rows[i].name, "data": that.appendSum(that.zipArrays(ajaxResult.femaleTable.rows[i].data, ajaxResult.maleTable.rows[i].data))});
-         }
-         return rows;
-     };
-
-     this.zipArrays = function (d1, d2){
-         var zipped = new Array();
-
-         for(var i = 0; i < d1.length; i++)
-         {
-             zipped.push(d1[i]);
-             zipped.push(d2[i]);
-         }
-         return zipped;
-     };
-
-     this.appendSum = function (numberArray){
-         var sum = 0;
-         for ( var i = 0; i < numberArray.length; i++) {
-             sum += numberArray[i];
-         }
-         return numberArray.concat([sum]);
-     };
-
     var updateDataTable = function($scope, ajaxResult) {
-        var topheaders = that.getTopHeaders(ajaxResult);
-        var subheaders = that.getSubHeaders(ajaxResult);
-        $scope.headerrows = [topheaders, subheaders];
-        $scope.rows = that.getRows(ajaxResult);
+        $scope.headerrows = ajaxResult.tableData.headers;
+        $scope.rows = ajaxResult.tableData.rows;
     };
 
     var updateChart = function(ajaxResult) {
-        var chartCategories = ajaxResult.femaleChart.headers;
+        var chartCategories = ajaxResult.femaleChart.categories;
 
-        var chartSeriesFemale = ajaxResult.femaleChart.rows;
+        var chartSeriesFemale = ajaxResult.femaleChart.series;
         ControllerCommons.addColor(chartSeriesFemale);
         chart1 = that.paintChart('container1', 'Antal kvinnor', chartCategories, chartSeriesFemale);
         
-        var chartSeriesMale = ajaxResult.maleChart.rows;
+        var chartSeriesMale = ajaxResult.maleChart.series;
         ControllerCommons.addColor(chartSeriesMale);
         chart2 = that.paintChart('container2', 'Antal män', chartCategories, chartSeriesMale);
         
@@ -151,7 +99,7 @@
             }
         }
         if (!$scope.detailsOption){
-            // Selected sub diagnos group not found, redirect to default sub driagnos group
+            // Selected sub diagnosis group not found, redirect to default sub diagnosis group
             $window.location="#/underdiagnosgrupper";
         }
         $scope.$watch(function(){return $scope.detailsOption;}, function() {
@@ -189,7 +137,7 @@
 
     $scope.showDetailsOptions = showDetailsOptions;
     if (showDetailsOptions) {
-        statisticsData.getDiagnosisGroups(populateDetailsOptions, function() { $scope.dataLoadingError = true; });
+        statisticsData.getDiagnosisGroups(populateDetailsOptions, function() { alert("Kunde inte ladda data"); });
     }
 
     $scope.spinnerText = "Laddar data...";

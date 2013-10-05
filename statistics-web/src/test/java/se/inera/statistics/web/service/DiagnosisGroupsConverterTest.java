@@ -14,8 +14,8 @@ public class DiagnosisGroupsConverterTest {
     @Test
     public void tableConverterTestEmptyInput(){
         DiagnosisGroupResponse resp = new DiagnosisGroupResponse(new ArrayList<DiagnosisGroup>(), new ArrayList<DiagnosisGroupRow>());
-        TableData tableData = DiagnosisGroupsConverter.convertDiagnosisGroupsTableData(resp, Sex.Male);
-        assertEquals("[]", tableData.getHeaders().toString());
+        TableData tableData = DiagnosisGroupsConverter.convertTable(resp);
+        assertEquals("[[;1], [Period;1, Summering;1]]", tableData.getHeaders().toString());
         assertEquals("[]", tableData.getRows().toString());
     }
 
@@ -31,22 +31,19 @@ public class DiagnosisGroupsConverterTest {
         DiagnosisGroupResponse resp = new DiagnosisGroupResponse(diagnosisGroups, rows);
 
         //When
-        TableData femaleTableData = DiagnosisGroupsConverter.convertDiagnosisGroupsTableData(resp, Sex.Female);
-        TableData maleTableData = DiagnosisGroupsConverter.convertDiagnosisGroupsTableData(resp, Sex.Male);
+        TableData tableData = DiagnosisGroupsConverter.convertTable(resp);
 
         //Then
-        assertEquals("[A01-B99 name1]", maleTableData.getHeaders().toString());
-        assertEquals("[period1: [2]]", maleTableData.getRows().toString());
-        assertEquals("[A01-B99 name1]", femaleTableData.getHeaders().toString());
-        assertEquals("[period1: [3]]", femaleTableData.getRows().toString());
+        assertEquals("[[;1, A01-B99 name1;2], [Period;1, Kvinnor;1, Män;1, Summering;1]]", tableData.getHeaders().toString());
+        assertEquals("[period1: [3, 2, 5]]", tableData.getRows().toString());
     }
 
     @Test
     public void converterTestEmpty(){
         DiagnosisGroupResponse resp = new DiagnosisGroupResponse(new ArrayList<DiagnosisGroup>(), new ArrayList<DiagnosisGroupRow>());
         DiagnosisGroupsData data = new DiagnosisGroupsConverter().convert(resp);
-        assertEquals("[]", data.getFemaleChart().getHeaders().toString());
-        assertEquals("[Somatiska sjukdomar (A00-E90, G00-L99, N00-N99): [], Psykiska sjukdomar (F00-F99): [], Muskuloskeletala sjukdomar (M00-M99): [], Graviditet och förlossning (O00-O99): [], Övrigt (P00-P96, Q00-Q99, S00-Y98): [], Symtomdiagnoser (R00-R99): [], Faktorer av betydelse för hälsotillståndet och för kontakter med hälso- och sjukvården (Z00-Z99): []]", data.getFemaleChart().getRows().toString());
+        assertEquals("[]", data.getFemaleChart().getCategories().toString());
+        assertEquals("[Somatiska sjukdomar (A00-E90, G00-L99, N00-N99): [], Psykiska sjukdomar (F00-F99): [], Muskuloskeletala sjukdomar (M00-M99): [], Graviditet och förlossning (O00-O99): [], Övrigt (P00-P96, Q00-Q99, S00-Y98): [], Symtomdiagnoser (R00-R99): [], Faktorer av betydelse för hälsotillståndet och för kontakter med hälso- och sjukvården (Z00-Z99): []]", data.getFemaleChart().getSeries().toString());
     }
 
     @Test
@@ -65,15 +62,14 @@ public class DiagnosisGroupsConverterTest {
         DiagnosisGroupsData data = converter.convert(resp);
 
         //Then
-        assertEquals("[period1]", data.getFemaleChart().getHeaders().toString());
-        assertTrue(data.getFemaleChart().getRows().toString(), data.getFemaleChart().getRows().toString().contains("Somatiska sjukdomar (A00-E90, G00-L99, N00-N99): [3]"));
-        assertEquals("[A00-B99 name1]", data.getFemaleTable().getHeaders().toString());
-        assertEquals("[period1: [3]]", data.getFemaleTable().getRows().toString());
+        assertEquals("[period1]", data.getFemaleChart().getCategories().toString());
+        assertTrue(data.getFemaleChart().getSeries().toString(), data.getFemaleChart().getSeries().toString().contains("Somatiska sjukdomar (A00-E90, G00-L99, N00-N99): [3]"));
 
-        assertEquals("[period1]", data.getMaleChart().getHeaders().toString());
-        assertTrue(data.getMaleChart().getRows().toString(), data.getMaleChart().getRows().toString().contains("Somatiska sjukdomar (A00-E90, G00-L99, N00-N99): [2]"));
-        assertEquals("[A00-B99 name1]", data.getMaleTable().getHeaders().toString());
-        assertEquals("[period1: [2]]", data.getMaleTable().getRows().toString());
+        assertEquals("[period1]", data.getMaleChart().getCategories().toString());
+        assertTrue(data.getMaleChart().getSeries().toString(), data.getMaleChart().getSeries().toString().contains("Somatiska sjukdomar (A00-E90, G00-L99, N00-N99): [2]"));
+
+        assertEquals("[[;1, A00-B99 name1;2], [Period;1, Kvinnor;1, Män;1, Summering;1]]", data.getTableData().getHeaders().toString());
+        assertEquals("[period1: [3, 2, 5]]", data.getTableData().getRows().toString());
     }
 
 }
