@@ -23,29 +23,6 @@ public class SjukfallPerKonListenerTest {
     private SjukfallPerKonListener listener = Mockito.spy(new SjukfallPerKonListener());
 
     @Test
-    public void noPrevousEndReturnsNewStartMonth() {
-        LocalDate startMonth = new LocalDate("2013-08-05");
-        LocalDate firstDateMonth = SjukfallPerKonListener.getFirstDateMonth(null, startMonth);
-        assertEquals(startMonth.withDayOfMonth(1), firstDateMonth);
-    }
-
-    @Test
-    public void prevousEndBeforeNewMonthReturnsNewStartMonth() {
-        LocalDate previousEnd = new LocalDate("2013-07-21");
-        LocalDate startMonth = new LocalDate("2013-08-05");
-        LocalDate firstDateMonth = SjukfallPerKonListener.getFirstDateMonth(previousEnd, startMonth);
-        assertEquals(startMonth.withDayOfMonth(1), firstDateMonth);
-    }
-
-    @Test
-    public void prevousEndSameAsNewMonthReturnsNextMonth() {
-        LocalDate previousEnd = new LocalDate("2013-08-02");
-        LocalDate startMonth = new LocalDate("2013-08-05");
-        LocalDate firstDateMonth = SjukfallPerKonListener.getFirstDateMonth(previousEnd, startMonth);
-        assertEquals(startMonth.withDayOfMonth(1).plusMonths(1), firstDateMonth);
-    }
-
-    @Test
     public void acceptWithNoPreviousStartsCallingAtStartMonth() {
         ArgumentCaptor<LocalDate> capture = ArgumentCaptor.forClass(LocalDate.class);
         doNothing().when(listener).accept(capture.capture(), any(Sex.class));
