@@ -34,7 +34,7 @@ public class DiagnosgroupPersistenceHandler implements DiagnosisGroups {
 
     @Transactional
     public void count(String period, String diagnosgrupp, Sex sex) {
-        DiagnosisGroupData existingRow = manager.find(DiagnosisGroupData.class, new DiagnosisGroupKey(period, "nationell", diagnosgrupp));
+        DiagnosisGroupData existingRow = manager.find(DiagnosisGroupData.class, new DiagnosisGroupData.DiagnosisGroupKey(period, "nationell", diagnosgrupp));
         int female = Sex.Female.equals(sex) ? 1 : 0;
         int male = Sex.Male.equals(sex) ? 1 : 0;
 
