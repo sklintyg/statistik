@@ -3,17 +3,15 @@ package se.inera.statistics.web.service;
 import org.junit.Test;
 import se.inera.statistics.service.report.model.*;
 import se.inera.statistics.web.model.DiagnosisGroupsData;
-import se.inera.statistics.web.model.TableData;
 
 import java.util.ArrayList;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 public class DiagnosisSubGroupsConverterTest {
 
     @Test
-    public void converterTestEmpty(){
+    public void converterTestEmpty() {
         DiagnosisGroupResponse resp = new DiagnosisGroupResponse(new ArrayList<DiagnosisGroup>(), new ArrayList<DiagnosisGroupRow>());
         DiagnosisGroupsData data = new DiagnosisSubGroupsConverter().convert(resp);
         assertEquals("[]", data.getFemaleChart().getCategories().toString());

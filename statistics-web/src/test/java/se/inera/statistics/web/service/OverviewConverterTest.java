@@ -2,7 +2,6 @@ package se.inera.statistics.web.service;
 
 import org.junit.Test;
 import se.inera.statistics.service.report.model.*;
-import se.inera.statistics.web.model.DiagnosisGroupsData;
 import se.inera.statistics.web.model.overview.DonutChartData;
 import se.inera.statistics.web.model.overview.NumberOfCasesPerMonthOverview;
 import se.inera.statistics.web.model.overview.OverviewData;
@@ -16,7 +15,7 @@ import static org.junit.Assert.assertEquals;
 public class OverviewConverterTest {
 
     @Test
-    public void converterTestEmpty(){
+    public void converterTestEmpty() {
         //Given
         int casesPerMonthProportionMale = 0;
         int casesPerMonthProportionFemale = 1;
