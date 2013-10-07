@@ -1,22 +1,24 @@
 package se.inera.statistics.service.report.listener;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.doNothing;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import org.joda.time.LocalDate;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
+
 import se.inera.statistics.service.report.model.Sex;
-import se.inera.statistics.service.sjukfall.SjukfallInfo;
 
 public class SjukfallPerKonListenerTest {
+    @Rule
+    public ExpectedException thrown = ExpectedException.none();
 
     private SjukfallPerKonListener listener = Mockito.spy(new SjukfallPerKonListener());
 
@@ -42,7 +44,7 @@ public class SjukfallPerKonListenerTest {
         LocalDate firstDateMonth = SjukfallPerKonListener.getFirstDateMonth(previousEnd, startMonth);
         assertEquals(startMonth.withDayOfMonth(1).plusMonths(1), firstDateMonth);
     }
-    
+
     @Test
     public void acceptWithNoPreviousStartsCallingAtStartMonth() {
         ArgumentCaptor<LocalDate> capture = ArgumentCaptor.forClass(LocalDate.class);
@@ -68,11 +70,8 @@ public class SjukfallPerKonListenerTest {
         assertEquals(firstDate, allValues.next());
         assertEquals(firstDate.plusMonths(1), allValues.next());
         assertEquals(firstDate.plusMonths(2), allValues.next());
-        try {
-            allValues.next();
-            fail();
-        } catch (NoSuchElementException e) {
-        }
+        
+        thrown.expect(NoSuchElementException.class);
+        allValues.next();
     }
-
 }

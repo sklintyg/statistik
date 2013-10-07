@@ -10,8 +10,7 @@ describe("Test of common functions for controllers", function() {
             "name" : "maj 2012",
             "data" : [ 21259, 9737, 11522, 66252 ]
         } ],
-        "headers" : [ "Antal sjukfall", "Antal kvinnor", "Antal mÃ¤n",
-                "Summering" ]
+        "headers" : [[{"text":"Antal sjukfall","colspan":1},{"text":"Antal kvinnor","colspan":1},{"text":"Antal män","colspan":1},{"text":"Summering","colspan":1}]]
     };
 
     it("addColor", function() {

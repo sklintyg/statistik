@@ -20,4 +20,9 @@ public class ChartSeries {
         return data;
     }
 
+    @Override
+    public String toString() {
+        return name + ": " + data.toString();
+    }
+
 }
