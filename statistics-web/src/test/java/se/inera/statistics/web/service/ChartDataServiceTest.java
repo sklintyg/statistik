@@ -1,20 +1,19 @@
 package se.inera.statistics.web.service;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
+import java.util.List;
+
 import org.joda.time.LocalDate;
 import org.junit.Test;
-import static org.junit.Assert.*;
 import org.mockito.Mockito;
-import org.mockito.verification.VerificationMode;
+
 import se.inera.statistics.service.report.api.CasesPerMonth;
 import se.inera.statistics.service.report.api.DiagnosisGroups;
 import se.inera.statistics.service.report.api.DiagnosisSubGroups;
 import se.inera.statistics.service.report.api.Overview;
 import se.inera.statistics.service.report.model.DiagnosisGroup;
-import se.inera.statistics.web.model.DiagnosisGroupsData;
-import se.inera.statistics.web.model.TableData;
-import se.inera.statistics.web.model.overview.OverviewData;
-
-import java.util.List;
 
 public class ChartDataServiceTest {
 
@@ -51,7 +50,7 @@ public class ChartDataServiceTest {
         try {
             chartDataService.getDiagnosisGroupStatistics();
         } catch (NullPointerException e) {}
-        Mockito.verify(mock).getDiagnosisGroups();
+        Mockito.verify(mock).getDiagnosisGroups(Mockito.any(LocalDate.class), Mockito.any(LocalDate.class));
     }
 
     @Test

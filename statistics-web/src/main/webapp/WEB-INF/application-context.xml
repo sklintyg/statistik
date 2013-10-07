@@ -59,7 +59,7 @@
       <import resource="application-context-qm.xml"/>
 
       <bean class="se.inera.statistics.service.report.repository.CasesPerMonthPersistenceHandler" id="casesPerMonth" />
-      <bean class="se.inera.statistics.service.report.mock.DiagnosisGroupsMock" id="diagnosisGroups"/>
+      <bean class="se.inera.statistics.service.report.repository.DiagnosgroupPersistenceHandler" id="diagnosisGroups" />
       <bean class="se.inera.statistics.service.report.mock.DiagnosisSubGroupsMock" id="diagnosisSubGroups"/>
       <bean class="se.inera.statistics.service.report.mock.OverviewMock" id="overview"/>
       <bean class="se.inera.statistics.service.report.mock.AgeGroupsMock" id="ageGroups"/>

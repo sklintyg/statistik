@@ -1,7 +1,6 @@
 package se.inera.statistics.web.service;
 
 import java.util.List;
-import java.util.Map;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -66,7 +65,8 @@ public class ChartDataService {
     @Path("getDiagnosisGroupStatistics")
     @Produces({ MediaType.APPLICATION_JSON })
     public DiagnosisGroupsData getDiagnosisGroupStatistics() {
-        DiagnosisGroupResponse diagnosisGroups = datasourceDiagnosisGroups.getDiagnosisGroups();
+        LocalDate lastMonth = new LocalDate().withDayOfMonth(1).minusMonths(1);
+        DiagnosisGroupResponse diagnosisGroups = datasourceDiagnosisGroups.getDiagnosisGroups(lastMonth.minusMonths(INCUSIVE_PERIOD - 1), lastMonth);
         return new DiagnosisGroupsConverter().convert(diagnosisGroups);
     }
 

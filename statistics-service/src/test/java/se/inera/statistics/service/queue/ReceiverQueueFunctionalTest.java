@@ -29,7 +29,7 @@ public class ReceiverQueueFunctionalTest {
 
     @Autowired
     private ConnectionFactory connectionFactory;
-    
+
     @Before
     public void setup() {
         setConnectionFactory(connectionFactory);
