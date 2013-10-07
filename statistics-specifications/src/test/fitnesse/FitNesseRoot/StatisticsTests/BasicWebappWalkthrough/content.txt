@@ -13,5 +13,3 @@
 |sidan sjukfall per månad visas|
 |ett diagram visas|
 |en tabell visas|
-|klicka på dölj tabell|
-|tabellen visas ej|
