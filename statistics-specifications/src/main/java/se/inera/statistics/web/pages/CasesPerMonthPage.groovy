@@ -23,7 +23,7 @@ class CasesPerMonthPage extends Page {
     }
 
     def boolean isDatatableVisible() {
-        return datatable.height != 0 && datatable.displayed;
+        return "Dölj datatabell".equals(toggleDataTableVisibilityBtn.text())
     }
     
 }
