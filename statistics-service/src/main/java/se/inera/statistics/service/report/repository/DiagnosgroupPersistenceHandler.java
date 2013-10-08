@@ -56,7 +56,7 @@ public class DiagnosgroupPersistenceHandler implements DiagnosisGroups {
     @Override
     @Transactional
     public DiagnosisGroupResponse getDiagnosisGroups(LocalDate from, LocalDate to) {
-        TypedQuery<DiagnosisGroupData> query = manager.createQuery("SELECT c FROM CasesPerMonthRow c WHERE c.casesPerMonthKey.period >= :from AND c.casesPerMonthKey.period <= :to ORDER BY c.casesPerMonthKey.period", DiagnosisGroupData.class);
+        TypedQuery<DiagnosisGroupData> query = manager.createQuery("SELECT c FROM DiagnosisGroupData c WHERE c.diagnosisGroupKey.period >= :from AND c.diagnosisGroupKey.period <= :to ORDER BY c.diagnosisGroupKey.period, c.diagnosisGroupKey.diagnosgrupp", DiagnosisGroupData.class);
         query.setParameter("from", inputFormatter.print(from));
         query.setParameter("to", inputFormatter.print(to));
 
