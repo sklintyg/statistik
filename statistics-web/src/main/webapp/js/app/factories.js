@@ -51,5 +51,13 @@ app.statisticsApp.factory('statisticsData', function($http){
        });
    };
 
+   factory.getDegreeOfSickLeave = function (successCallback, failureCallback){
+       $http.get("api/getDegreeOfSickLeaveStatistics").success(function(result) {
+           successCallback(result);
+       }).error(function(data, status, headers, config) {
+           failureCallback();
+       });
+   };
+
    return factory;
 });

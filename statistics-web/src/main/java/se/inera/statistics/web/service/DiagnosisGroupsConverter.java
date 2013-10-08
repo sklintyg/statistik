@@ -17,11 +17,11 @@ public class DiagnosisGroupsConverter {
             "Symtomdiagnoser (R00-R99)",
             "Faktorer av betydelse för hälsotillståndet och för kontakter med hälso- och sjukvården (Z00-Z99)");
 
-    DiagnosisGroupsData convert(DiagnosisGroupResponse diagnosisGroups) {
+    DualSexStatisticsData convert(DiagnosisGroupResponse diagnosisGroups) {
         TableData tableData = convertTable(diagnosisGroups);
         ChartData maleChart = convertChart(diagnosisGroups, Sex.Male);
         ChartData femaleChart = convertChart(diagnosisGroups, Sex.Female);
-        return new DiagnosisGroupsData(tableData, maleChart, femaleChart);
+        return new DualSexStatisticsData(tableData, maleChart, femaleChart);
     }
 
     private ChartData convertChart(DiagnosisGroupResponse resp, Sex sex) {
@@ -133,8 +133,8 @@ public class DiagnosisGroupsConverter {
     private static List<NamedData> getTableRows(DiagnosisGroupResponse resp) {
         List<NamedData> rows = new ArrayList<>();
         for (DiagnosisGroupRow row : resp.getRows()) {
-            List<Integer> mergedSexData = getMergedSexData(row);
-            List<Integer> mergedAndSummed = getAppendedSum(mergedSexData);
+            List<Integer> mergedSexData = ServiceUtil.getMergedSexData(row);
+            List<Integer> mergedAndSummed = ServiceUtil.getAppendedSum(mergedSexData);
             rows.add(new NamedData(row.getPeriod(), mergedAndSummed));
         }
         return rows;
@@ -160,25 +160,6 @@ public class DiagnosisGroupsConverter {
         headers.add(topHeaderRow);
         headers.add(subHeaderRow);
         return headers;
-    }
-
-    private static List<Integer> getAppendedSum(List<Integer> data){
-        int sum = 0;
-        for (Integer dataField : data) {
-            sum += dataField;
-        }
-        List<Integer> dataWithSum = new ArrayList<Integer>(data);
-        dataWithSum.add(sum);
-        return dataWithSum;
-    }
-
-    private static List<Integer> getMergedSexData(DiagnosisGroupRow row) {
-        List<Integer> data = new ArrayList<>();
-        for (DualSexField dualSexField : row.getDiagnosisGroupData()) {
-            data.add(dualSexField.getFemale());
-            data.add(dualSexField.getMale());
-        }
-        return data;
     }
 
 }

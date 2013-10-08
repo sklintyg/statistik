@@ -2,7 +2,7 @@ package se.inera.statistics.web.service;
 
 import org.junit.Test;
 import se.inera.statistics.service.report.model.*;
-import se.inera.statistics.web.model.DiagnosisGroupsData;
+import se.inera.statistics.web.model.DualSexStatisticsData;
 import se.inera.statistics.web.model.TableData;
 
 import java.util.ArrayList;
@@ -15,7 +15,7 @@ public class DiagnosisSubGroupsConverterTest {
     @Test
     public void converterTestEmpty(){
         DiagnosisGroupResponse resp = new DiagnosisGroupResponse(new ArrayList<DiagnosisGroup>(), new ArrayList<DiagnosisGroupRow>());
-        DiagnosisGroupsData data = new DiagnosisSubGroupsConverter().convert(resp);
+        DualSexStatisticsData data = new DiagnosisSubGroupsConverter().convert(resp);
         assertEquals("[]", data.getFemaleChart().getCategories().toString());
         assertEquals("[]", data.getFemaleChart().getSeries().toString());
     }
@@ -33,7 +33,7 @@ public class DiagnosisSubGroupsConverterTest {
 
         //When
         DiagnosisSubGroupsConverter converter = new DiagnosisSubGroupsConverter();
-        DiagnosisGroupsData data = converter.convert(resp);
+        DualSexStatisticsData data = converter.convert(resp);
 
         //Then
         assertEquals("[period1]", data.getFemaleChart().getCategories().toString());

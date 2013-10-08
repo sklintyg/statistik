@@ -13,12 +13,12 @@ public class DiagnosisSubGroupsConverter {
 
     private static final int NUMBER_OF_CHART_SERIES = 6;
 
-    DiagnosisGroupsData convert(DiagnosisGroupResponse diagnosisGroups) {
+    DualSexStatisticsData convert(DiagnosisGroupResponse diagnosisGroups) {
         TableData tableData = DiagnosisGroupsConverter.convertTable(diagnosisGroups);
         List<Integer> topIndexes = getTopColumnIndexes(diagnosisGroups);
         ChartData maleChart = extractChartData(diagnosisGroups, topIndexes, Sex.Male);
         ChartData femaleChart = extractChartData(diagnosisGroups, topIndexes, Sex.Female);
-        return new DiagnosisGroupsData(tableData, maleChart, femaleChart);
+        return new DualSexStatisticsData(tableData, maleChart, femaleChart);
     }
 
     private ChartData extractChartData(DiagnosisGroupResponse data, List<Integer> topIndexes, Sex sex) {
@@ -46,7 +46,7 @@ public class DiagnosisSubGroupsConverter {
         }
         List<DiagnosisGroupRow> rows = data.getRows();
         for (int r = 0; r < rows.size(); r++) {
-            List<Integer> dataForCurrentSex = rows.get(r).getDiagnosisGroupData(sex);
+            List<Integer> dataForCurrentSex = rows.get(r).getDataForSex(sex);
             for (int i = 0; i < dataForCurrentSex.size(); i++) {
                 if (!topIndexes.contains(i)) {
                     remaining.set(r, remaining.get(r) + dataForCurrentSex.get(i));
@@ -61,7 +61,7 @@ public class DiagnosisSubGroupsConverter {
             return new ArrayList<Integer>();
         }
         TreeMap<Integer, Integer> columnSums = new TreeMap<>();
-        int dataSize = diagnosisGroups.getRows().get(0).getDiagnosisGroupData().size();
+        int dataSize = diagnosisGroups.getRows().get(0).getData().size();
         for (int i = 0; i < dataSize; i++) {
             columnSums.put(sum(diagnosisGroups.getDataFromIndex(i, Sex.Male)) + sum(diagnosisGroups.getDataFromIndex(i, Sex.Male)), i);
         }

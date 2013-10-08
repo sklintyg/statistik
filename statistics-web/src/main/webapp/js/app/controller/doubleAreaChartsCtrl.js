@@ -1,6 +1,30 @@
  'use strict';
 
- app.diagnosisGroupsCtrl = function ($scope, $routeParams, $window, statisticsData, dataFetcher, showDetailsOptions) {
+ app.diagnosisGroupConfig = function() {
+     var conf = {};
+     conf.dataFetcher = "getDiagnosisGroupData",
+     conf.showDetailsOptions = false,
+     conf.title = "Antal sjukfall per diagnosgrupp"
+     return conf;
+ }
+ 
+ app.diagnosisSubGroupConfig = function() {
+     var conf = {};
+     conf.dataFetcher = "getSubDiagnosisGroupData",
+     conf.showDetailsOptions = true,
+     conf.title = "Antal sjukfall per diagnosgrupp"
+     return conf;
+ }
+ 
+ app.degreeOfSickLeaveConfig = function() {
+     var conf = {};
+     conf.dataFetcher = "getDegreeOfSickLeave",
+     conf.showDetailsOptions = false,
+     conf.title = "Antal sjukfall per sjukskrivningsgrad"
+     return conf;
+ }
+ 
+ app.diagnosisGroupsCtrl = function ($scope, $routeParams, $window, statisticsData, config) {
     var chart1, chart2;
      var that = this;
 
@@ -126,17 +150,17 @@
 
     $scope.exportTableData = ControllerCommons.exportTableDataGeneric;
 
-    $scope.subTitle = "Antal sjukfall per diagnosgrupp";
+    $scope.subTitle = config.title;
 
-    statisticsData[dataFetcher](populatePageWithData, function() { $scope.dataLoadingError = true; }, $routeParams.groupId);
+    statisticsData[config.dataFetcher](populatePageWithData, function() { $scope.dataLoadingError = true; }, $routeParams.groupId);
 
     $scope.showHideDataTable = ControllerCommons.showHideDataTableDefault;
     $scope.toggleTableVisibility = function(event) {
         ControllerCommons.toggleTableVisibilityGeneric(event, $scope);
     };
 
-    $scope.showDetailsOptions = showDetailsOptions;
-    if (showDetailsOptions) {
+    $scope.showDetailsOptions = config.showDetailsOptions;
+    if (config.showDetailsOptions) {
         statisticsData.getDiagnosisGroups(populateDetailsOptions, function() { alert("Kunde inte ladda data"); });
     }
 

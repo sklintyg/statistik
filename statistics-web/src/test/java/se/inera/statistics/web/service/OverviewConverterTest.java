@@ -2,7 +2,7 @@ package se.inera.statistics.web.service;
 
 import org.junit.Test;
 import se.inera.statistics.service.report.model.*;
-import se.inera.statistics.web.model.DiagnosisGroupsData;
+import se.inera.statistics.web.model.DualSexStatisticsData;
 import se.inera.statistics.web.model.overview.DonutChartData;
 import se.inera.statistics.web.model.overview.NumberOfCasesPerMonthOverview;
 import se.inera.statistics.web.model.overview.OverviewData;
