@@ -15,11 +15,13 @@ import com.fasterxml.jackson.databind.JsonNode;
 
 @Component
 public class DistributingListener implements ProcessorListener {
-    public static final int YEAR_FIELD_LEN = 4;
     private static final DateTimeFormatter PERIOD_DATE_TIME_FORMATTERFORMATTER = DateTimeFormat.forPattern("yyyy-MM-dd");
 
     @Autowired
     private SjukfallPerKonListener sjukfallPerKonListener;
+    
+    @Autowired
+    private SjukfallPerDiagnosgruppListener sjukfallPerDiagnosgruppListenerListener;
 
     @Override
     public void accept(SjukfallInfo sjukfallInfo, JsonNode utlatande, JsonNode hsa) {
@@ -29,11 +31,13 @@ public class DistributingListener implements ProcessorListener {
         LocalDate firstMonth = getFirstDateMonth(sjukfallInfo.getPrevEnd(), start);
         String enhet = DocumentHelper.getEnhetId(utlatande);
         Sex sex = DocumentHelper.getKon(utlatande).equals("man") ? Sex.Male : Sex.Female;
+        String diagnosGrupp = DocumentHelper.getDiagnos(utlatande);
 
         sjukfallPerKonListener.acceptPeriod(firstMonth, endMonth, sex);
+        sjukfallPerDiagnosgruppListenerListener.acceptPeriod(firstMonth, endMonth, diagnosGrupp, sex);
     }
 
-    protected static LocalDate getFirstDateMonth(LocalDate previousEnd, LocalDate start) {
+    static LocalDate getFirstDateMonth(LocalDate previousEnd, LocalDate start) {
         if (previousEnd == null) {
             return start.withDayOfMonth(1);
         } else {

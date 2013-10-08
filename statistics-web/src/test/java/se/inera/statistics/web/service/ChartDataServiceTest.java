@@ -50,7 +50,7 @@ public class ChartDataServiceTest {
         try {
             chartDataService.getDiagnosisGroupStatistics();
         } catch (NullPointerException e) {}
-        Mockito.verify(mock).getDiagnosisGroups();
+        Mockito.verify(mock).getDiagnosisGroups(Mockito.any(LocalDate.class), Mockito.any(LocalDate.class));
     }
 
     @Test
