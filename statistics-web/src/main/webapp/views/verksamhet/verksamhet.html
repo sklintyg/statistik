@@ -1,0 +1,210 @@
+    <div>
+		<div class="row-fluid">
+			<div id="overview-content"> <!-- Start: Overview content -->
+				<div class="row-fluid">
+					<div class="span4">
+						<h1 tabindex="-1" id="nationalOverviewHeading">Verksamhetsstatistik</h1>
+					</div>
+					<div class="span5 offset3">
+						<div class="btn-group statistics-btn-group">
+						  <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+						    Skriv ut i..
+						    <span class="caret"></span>
+						  </a>
+						  <ul class="dropdown-menu">
+						    <li><a onclick="window.print();">Färg</a></li>
+						    <li><a class="disabled">Svart-vitt (n/a)</a></li>
+						  </ul>
+						</div>
+					</div>
+				</div>
+				<div class="row-fluid">
+					<span class="span12 overview-ingress">Utvecklingen senaste 3 månaderna</span>
+				</div>
+                <div dataerrorview show-error="dataLoadingError">
+                    <div spinner label="spinnerText" show-spinner="!doneLoading" show-content="doneLoading">
+                        <div class="row-fluid">
+                            <div class="span3">
+                                <div class="overview-box-header-container">
+                                    <ul class="overview-box-header">
+                                        <li class="overview-box-header-listItem">
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div id="overview-distribution-per-sex-container" style="padding: 4% 4% auto 4%;">
+                                    <p style="text-align: center; vertical-align: middle; font-size: 2em; font-weight: bold; color: #fff; margin-left: auto; margin-right: auto; position: relative; top: 70px;">
+                                        <span style="margin-right: 10px;" id="overview-distribution-female-lbl">{{casesPerMonthFemaleProportion}}% </span>
+                                        <span style="margin-left: 10px;" id="overview-distribution-male-lbl">{{casesPerMonthMaleProportion}}% </span>
+                                    </p>
+                                    <img src="../../img/distribution_per_sex_stat_bg.png" style="display: block; margin-left: auto; margin-right: auto; margin-top: 5%;"/>
+                                </div>
+						<div class="overview-box-information-container"></div>
+						<div class="box-bottom"></div>
+                                </div>
+                            <div class="span3">
+                                <div class="overview-box-header-container">
+                                    <ul class="overview-box-header">
+                                        <li class="overview-box-header-listItem">
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div id="overview-change-container">
+                                     <div class="overview-change-responsive-circle">
+                                        <div>
+                                            <div>
+                                                <div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                     </div>
+                                </div>
+                                <div class="overview-box-information-container">
+                                    <span class="overview-small-box-information">Förändring av antalet sjukfall jämfört med föregående tre månader.</span>
+                                </div>
+						<div class="box-bottom"></div>
+                            </div>
+                            <div class="span6">
+                                <div class="overview-box-header-container">
+                                    <ul class="overview-box-header">
+                                        <li class="overview-box-header-listItem">
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div id="overview-distribution-diagnostic-groups-container">
+                                    <div class="chart-container" id="diagnosisChart"></div>
+                                    <table id="datatable" class="table table-bordered table-striped table-condensed overview-graph-table">
+                                        <thead>
+                                            <tr>
+                                                <td>Grupp</td>
+                                                <td>Antal</td>
+                                                <td>Förändring</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="overview-box-information-container">
+                                    <span class="overview-standard-box-information">
+                                    </span>
+                                </div>
+						<div class="box-bottom"></div>
+                            </div>
+                        </div>
+                        <div class="row-fluid">
+                            <div class="span6">
+                                <div class="overview-box-container">
+                                    <ul class="overview-box-header">
+                                        <li class="overview-box-header-listItem">
+                                        </li>
+                                    </ul>
+                                    <div id="overview-distribution-of-age-groups-container">
+                                        <div class="row-fluid">
+                                            <div class="chart-container" id="ageChart"></div>
+                                            <table id="datatable" class="table table-bordered table-striped table-condensed overview-graph-table">
+                                                <thead>
+                                                    <tr>
+                                                        <td>Grupp</td>
+                                                        <td>Antal</td>
+                                                        <td>Förändring</td>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <div class="overview-box-information-container">
+                                    </div>
+							<div class="box-bottom"></div>
+                                </div>
+                            </div>
+                            <div class="span6">
+                                <div class="overview-box-container">
+                                    <div class="overview-box-header-container">
+                                        <ul class="overview-box-header">
+                                            <li class="overview-box-header-listItem">
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div id="overview-distribution-of-sick-degree-container">
+                                        <div class="row-fluid">
+                                            <div class="chart-container" id="degreeOfSickLeaveChart"></div>
+                                            <table id="datatable" class="table table-bordered table-striped table-condensed overview-graph-table">
+                                                <thead>
+                                                    <tr>
+                                                        <td>Grad</td>
+                                                        <td>Antal</td>
+                                                        <td>Förändring</td>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <div class="overview-box-information-container">
+                                    </div>
+							<div class="box-bottom"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row-fluid">
+                            <div class="span6">
+                                <div class="overview-box-container">
+                                    <div class="overview-box-header-container">
+                                        <ul class="overview-box-header">
+                                            <li class="overview-box-header-listItem">
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div id="overview-distribution-sick-length-container">
+                                        <div class="row-fluid">
+                                            <div class="chart-container" id="sickLeaveLengthChart"></div>
+                                            <div class="overview-chart-info">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="overview-box-information-container">
+                                    </div>
+							<div class="box-bottom"></div>
+                                </div>
+                            </div>
+                            <div class="span6">
+                                <div class="overview-box-container">
+                                    <div class="overview-box-header-container">
+                                        <ul class="overview-box-header">
+                                            <li class="overview-box-header-listItem">
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div id="overview-distribution-by-county-container">
+                                        <div class="row-fluid">
+                                            <div class="chart-container" id="sickLeavePerCountyChart"></div>
+                                            <table id="datatable" class="table table-bordered table-striped table-condensed overview-graph-table">
+                                                <thead>
+                                                    <tr>
+                                                        <td>Län</td>
+                                                        <td>Antal</td>
+                                                        <td>Förändring</td>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <div class="overview-box-information-container">
+                                    </div>
+							<div class="box-bottom"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+			</div>
+		</div> <!-- End: Overview content -->
+    </div> <!-- /container -->
+    
+    
+    

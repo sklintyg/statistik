@@ -9,6 +9,10 @@ app.statisticsApp = angular.module('StatisticsApp', [  ]).config(
                 templateUrl : 'views/overview.html',
                 controller : 'OverviewCtrl',
 	            title: 'Översikt'
+            }).when('/verksamhet/oversikt', {
+                    templateUrl : 'views/verksamhet/verksamhet.html',
+                    controller : 'VOverviewCtrl',
+                    title: 'Verksamhetsöversikt'
             }).when('/sjukfallPerManad', {
                     templateUrl : 'views/chart.html',
                     controller : 'CasesPerMonthCtrl',

@@ -3,15 +3,32 @@
              xmlns:beans="http://www.springframework.org/schema/beans"
              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
              xsi:schemaLocation="http://www.springframework.org/schema/beans
-           http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+           http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
            http://www.springframework.org/schema/security
            http://www.springframework.org/schema/security/spring-security-3.1.xsd">
 
-    <http auto-config="true">
-        <intercept-url pattern="/login.jsp*" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
-        <intercept-url pattern="/restricted/**" access="ROLE_ADMIN"/>
-        <form-login login-page='/login.jsp'/>
+    <beans:bean id="ep403" class="org.springframework.security.web.authentication.Http403ForbiddenEntryPoint"/>
+
+    <http pattern="/api/verksamhet/**" entry-point-ref="ep403" use-expressions="true">
+        <intercept-url pattern="/**" access="isAuthenticated()"/>
     </http>
+
+    <beans:bean id="epauth" class="org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint">
+        <beans:constructor-arg value="/login.html"/>
+    </beans:bean>
+
+    <http pattern="/**" entry-point-ref="epauth" use-expressions="true">
+        <intercept-url pattern="/login/**" access="isAuthenticated()"/>
+        <intercept-url pattern="/login.jsp*" access="isAnonymous()"/>
+        <intercept-url pattern="/api/login/**" access="permitAll()"/>
+        <form-login login-page="/login.jsp" always-use-default-target="true" default-target-url="/#/verksamhet/oversikt"/>
+        <http-basic/>
+        <logout/>
+    </http>
+
+    <global-method-security pre-post-annotations="enabled">
+        <protect-pointcut expression="execution(* se.inera.statistics.web.service.ProtectedChartDataService.*(..))" access="ROLE_ADMIN" />
+    </global-method-security>
 
     <authentication-manager>
         <authentication-provider>

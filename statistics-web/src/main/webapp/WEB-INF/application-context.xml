@@ -22,13 +22,8 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
-       xmlns:jaxws="http://cxf.apache.org/jaxws" xmlns:http="http://cxf.apache.org/transports/http/configuration"
-       xmlns:cxf="http://cxf.apache.org/core" xmlns:aop="http://www.springframework.org/schema/aop"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-    http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
-    http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd
-    http://cxf.apache.org/transports/http/configuration http://cxf.apache.org/schemas/configuration/http-conf.xsd
-    http://cxf.apache.org/core http://cxf.apache.org/schemas/core.xsd">
+    http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd">
 
     <context:property-placeholder location="classpath:/application-context.properties"/>
 
@@ -40,6 +35,16 @@
         <constructor-arg ref="ageGroups"/>
         <constructor-arg ref="degreeOfSickLeave"/>
     </bean>
+
+    <bean id="protectedChartDataService" class="se.inera.statistics.web.service.ProtectedChartDataService">
+        <constructor-arg ref="overview"/>
+        <constructor-arg ref="casesPerMonth"/>
+        <constructor-arg ref="diagnosisGroups"/>
+        <constructor-arg ref="diagnosisSubGroups"/>
+        <constructor-arg ref="ageGroups"/>
+    </bean>
+
+    <bean id="loginInfoService" class="se.inera.statistics.web.service.LoginInfoService" />
 
     <import resource="classpath*:process-log-impl.xml"/>
     <import resource="application-context-cxf.xml"/>

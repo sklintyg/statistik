@@ -1,36 +1,25 @@
 package se.inera.statistics.web.service;
 
-import java.util.List;
-
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
-import javax.ws.rs.core.MediaType;
-
 import org.joda.time.LocalDate;
 import org.springframework.stereotype.Service;
-
-import se.inera.statistics.service.report.api.AgeGroups;
-import se.inera.statistics.service.report.api.CasesPerMonth;
-import se.inera.statistics.service.report.api.DegreeOfSickLeave;
-import se.inera.statistics.service.report.api.DiagnosisGroups;
-import se.inera.statistics.service.report.api.DiagnosisSubGroups;
-import se.inera.statistics.service.report.api.Overview;
-import se.inera.statistics.service.report.model.AgeGroupsResponse;
-import se.inera.statistics.service.report.model.CasesPerMonthRow;
-import se.inera.statistics.service.report.model.DegreeOfSickLeaveResponse;
-import se.inera.statistics.service.report.model.DiagnosisGroup;
-import se.inera.statistics.service.report.model.DiagnosisGroupResponse;
-import se.inera.statistics.service.report.model.OverviewResponse;
+import se.inera.statistics.service.report.api.*;
+import se.inera.statistics.service.report.model.*;
 import se.inera.statistics.service.report.util.DiagnosisGroupsUtil;
 import se.inera.statistics.web.model.AgeGroupsData;
 import se.inera.statistics.web.model.DualSexStatisticsData;
 import se.inera.statistics.web.model.TableData;
 import se.inera.statistics.web.model.overview.OverviewData;
 
-@Service("chartService")
-public class ChartDataService {
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.MediaType;
+import java.util.List;
+
+@Service("protectedChartService")
+@Path("/verksamhet")
+public class ProtectedChartDataService {
 
     private static final int INCUSIVE_PERIOD = 18;
 
@@ -41,18 +30,21 @@ public class ChartDataService {
     private AgeGroups datasourceAgeGroups;
     private DegreeOfSickLeave dataSourceDegreeOfSickLeave;
 
-    public ChartDataService(Overview overviewPersistenceHandler,
-                            CasesPerMonth casesPerMonthPersistenceHandler,
-                            DiagnosisGroups diagnosisGroupsPersistenceHandler,
-                            DiagnosisSubGroups diagnosisSubGroupsPersistenceHandler,
-                            AgeGroups ageGroupsPersistenceHandler,
-                            DegreeOfSickLeave degreeOfSickLeavePersistenceHandler) {
+    public ProtectedChartDataService() {
+
+    }
+
+    public ProtectedChartDataService(Overview overviewPersistenceHandler,
+                                     CasesPerMonth casesPerMonthPersistenceHandler,
+                                     DiagnosisGroups diagnosisGroupsPersistenceHandler,
+                                     DiagnosisSubGroups diagnosisSubGroupsPersistenceHandler,
+                                     AgeGroups ageGroupsPersistenceHandler) {
         datasourceOverview = overviewPersistenceHandler;
         datasourceCasesPerMonth = casesPerMonthPersistenceHandler;
         datasourceDiagnosisGroups = diagnosisGroupsPersistenceHandler;
         datasourceDiagnosisSubGroups = diagnosisSubGroupsPersistenceHandler;
         datasourceAgeGroups = ageGroupsPersistenceHandler;
-        dataSourceDegreeOfSickLeave = degreeOfSickLeavePersistenceHandler;
+
     }
 
     @GET
@@ -82,6 +74,7 @@ public class ChartDataService {
         return new DiagnosisGroupsConverter().convert(diagnosisGroups);
     }
 
+
     @GET
     @Path("getDiagnosisSubGroupStatistics")
     @Produces({ MediaType.APPLICATION_JSON })
@@ -108,12 +101,4 @@ public class ChartDataService {
         return new AgeGroupsConverter().convert(ageGroups);
     }
 
-    @GET
-    @Path("getDegreeOfSickLeaveStatistics")
-    @Produces({ MediaType.APPLICATION_JSON })
-    public DualSexStatisticsData getDegreeOfSickLeaveStatistics() {
-        DegreeOfSickLeaveResponse degreeOfSickLeaveStatistics = dataSourceDegreeOfSickLeave.getStatistics();
-        return new DegreeOfSickLeaveConverter().convert(degreeOfSickLeaveStatistics);
-    }
-    
 }
