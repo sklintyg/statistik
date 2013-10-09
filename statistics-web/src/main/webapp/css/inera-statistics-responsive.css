@@ -911,7 +911,7 @@ form.bs-docs-example {
 }
 
 @media (max-width: 1200px) {
-	#chart-content .span6 {
+	#chart-content .chart-page-chart.span6 {
   		width: 100%;
   	}
 }
@@ -950,6 +950,7 @@ form.bs-docs-example {
     width: auto !important;
     margin-top: 30px !important;
   }
+  
 
 }
 
@@ -972,8 +973,14 @@ form.bs-docs-example {
   .bs-docs-sidenav.affix {
     top: 110px;
   }
-  #chart-content .span6 {
+  #chart-content .chart-page-chart chart-page-chart.span6 {
   	width: 100%;
+  }
+  #navigation-container div.row-fluid div.span4 {
+  
+  }
+  #navigation-container div.row-fluid div.offset4 {
+  	margin-left: 10.58011%;
   }
 }
 

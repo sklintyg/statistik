@@ -50,33 +50,33 @@
 	<div class="navbar-inner">
 		<div class="container-fluid">
 			<div class="row-fluid" id="navigation-container">
-				<div class="span2">
-					<div class="headerbox-logo"><a href="<c:url value='/'/>"><img alt="Till startsidan" src="<c:url value='/img/statistics_logo.png'/>"/></a></div>
-				</div>
-				<div class="span2">
-					<span>Statistiktjänst för ordinerad sjukskrivning</span>
-				</div>
-				
-				<div class="span3 offset5">
-					<div id="business-login-container">
-						<button class="btn" type="button" id="business-login-btn" value="Logga in">Logga in</button>
-					</div>
-					<div id="business-logged-in-user-container" style="display: none; position: absolute; right: 0; margin-right: 25px;">
-						<span class="business-me" style="right: 0; height: 40px; display: inline-block;">
-							<span class="business-me-link-span">
-								Inloggad som: 
-								<a class="business-me-link" style="cursor: pointer;">
-									<span class="business-me-name">Johan Lindholm
-										<div id="business-me-icon">
-											<img alt="Bild på inloggad användare" src="<c:url value='/img/statistic-user-icon-test.png'/>"/>
-										</div>
+				<div class="span12">
+					<div class="row-fluid">
+						<div class="span2">
+							<div class="headerbox-logo"><a href="<c:url value='/'/>"><img alt="Till startsidan" src="<c:url value='/img/statistics_logo.png'/>"/></a></div>
+						</div>
+						<div class="span2">
+							<span>Statistiktjänst för ordinerad sjukskrivning</span>
+						</div>
+						
+						<div class="span4 offset4">
+							<div id="business-login-container">
+								<button class="btn" type="button" id="business-login-btn" value="Logga in">Logga in</button>
+							</div>
+							<div id="business-logged-in-user-container" style="display: none; position: absolute; right: 0; margin-right: 25px;">
+								<div class="pull-right">
+									<img id="business-me-icon" alt="Bild på inloggad användare" src="<c:url value='/img/avatar.png'/>"/>
+								</div>
+								<div class="header-box-user-profile pull-right" style="margin-right: 10px;">
+									<span class="user-name pull-right">Användare Andersson</span><br>
+									<span class="user-logout pull-right">
+										<a tabindex="-1" href="#">Logga ut</a>
 									</span>
-								</a>
-							</span>
-						</span>
+								</div>
+							</div>
+						</div>	
 					</div>
-				</div>					
-				
+				</div>
 			</div>
 		</div>
 	</div>

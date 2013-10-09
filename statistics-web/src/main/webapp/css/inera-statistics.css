@@ -910,6 +910,7 @@ div.headerbox-user { font-size: 13px; line-height: 16px;}
 .statistics-btn-group {
 	float: right;
 	margin-right: 2px;
+	top: 20px;
 }
 .statistics-btn-group ul.dropdown-menu {
 	min-width: 130px;
