@@ -14,16 +14,43 @@ class NationalOverviewPage extends Page {
 
         casesPerMonthAlterationLink { $("#casesPerMonthAlterationLink") }
         casesPerMonthAlterationLabel { $("#casesPerMonthAlterationLabel") }
+
+        diagnosisGroupsHeaderLink { $("#diagnosisGroupsHeaderLink") }
+        ageGroupsHeaderLink { $("#ageGroupsHeaderLink") }
+        degreeOfSickLeaveHeaderLink { $("#degreeOfSickLeaveHeaderLink") }
+        sickLeaveLengthHeaderLink { $("#sickLeaveLengthHeaderLink") }
+        perCountyHeaderLink { $("#perCountyHeaderLink") }
+
         nationalOverviewHeading { $("#nationalOverviewHeading") }
 
     }
 
-    def goToCasesPerMonthProportionPerSexDetailPage() {
+    def clickCasesPerMonthProportionPerSexHeader() {
         casesPerMonthProportionPerSexLink.click()
     }
 
-    def goToCasesPerMonthAlterationDetailsPage() {
+    def clickCasesPerMonthAlterationHeader() {
         casesPerMonthAlterationLink.click()
+    }
+    
+    def clickDiagnosisGroupsHeader() {
+        diagnosisGroupsHeaderLink.click()
+    }
+    
+    def clickAgeGroupsHeader() {
+        ageGroupsHeaderLink.click()
+    }
+    
+    def clickDegreeOfSickLeaveHeader() {
+        degreeOfSickLeaveHeaderLink.click()
+    }
+    
+    def clickSickLeaveLengthHeader() {
+        sickLeaveLengthHeaderLink.click()
+    }
+    
+    def clickPerCountyHeader() {
+        perCountyHeaderLink.click()
     }
 
     def String getCasesPerMonthMaleProportion() {

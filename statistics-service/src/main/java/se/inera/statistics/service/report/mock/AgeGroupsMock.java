@@ -1,19 +1,16 @@
 package se.inera.statistics.service.report.mock;
 
-import org.joda.time.LocalDate;
-import org.joda.time.Period;
-import se.inera.statistics.service.report.api.AgeGroups;
-import se.inera.statistics.service.report.api.CasesPerMonth;
-import se.inera.statistics.service.report.model.AgeGroupsResponse;
-import se.inera.statistics.service.report.model.AgeGroupsRow;
-import se.inera.statistics.service.report.model.CasesPerMonthRow;
-import se.inera.statistics.service.report.model.Sex;
-import se.inera.statistics.service.report.util.ReportUtil;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
+
+import org.joda.time.LocalDate;
+import org.joda.time.Period;
+
+import se.inera.statistics.service.report.api.AgeGroups;
+import se.inera.statistics.service.report.model.AgeGroupsResponse;
+import se.inera.statistics.service.report.model.AgeGroupsRow;
 
 public class AgeGroupsMock implements AgeGroups {
 

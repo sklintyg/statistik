@@ -10,8 +10,14 @@
 |totalsumman för könsfördelning blir 100 procent|
 |förändring av antal sjukfall är mellan 0 och 100 procent|
 |gå till sjukfallstatistiksidan via vänster navigationsmeny|
-|sidan sjukfall per månad visas|
-|ett diagram visas|
-|en tabell visas|
-|klicka på dölj tabell|
-|tabellen visas ej|
+|sidan sjukfall per månad visas med ett diagram och en tabell|
+|använd vänster navigationsmeny för att gå tillbaka till översiktssidan|
+|nationella översiktssidan visas|
+|klicka på rubriken för diagnosgrupper|
+|detaljsidan för diagnosgrupper visas med två diagram och en tabell|
+|öppna detaljsidan för underdiagnosgrupper|
+|detaljsidan för underdiagnosgrupper visas med två diagram och en tabell och en dropdown|
+|öppna detaljsidan för åldersgrupp|
+|detaljsidan för åldersgrupper visas med ett diagram och en tabell|
+|öppna detaljsidan för sjukskrivningsgrad|
+|detaljsidan för sjukskrivningsgrad visas med två diagram och en tabell|

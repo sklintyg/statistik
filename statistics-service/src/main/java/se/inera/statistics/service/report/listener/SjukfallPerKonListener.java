@@ -26,12 +26,4 @@ public class SjukfallPerKonListener {
         String period = PERIOD_FORMATTER.print(month);
         casesPerMonthPersistenceHandler.count(period, sex);
     }
-
-    protected static LocalDate getFirstDateMonth(LocalDate previousEnd, LocalDate start) {
-        if (previousEnd == null) {
-            return start.withDayOfMonth(1);
-        } else {
-            return previousEnd.withDayOfMonth(1).plusMonths(1);
-        }
-    }
 }

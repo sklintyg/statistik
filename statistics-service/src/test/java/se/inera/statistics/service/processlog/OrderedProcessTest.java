@@ -1,17 +1,22 @@
 package se.inera.statistics.service.processlog;
 
-import com.fasterxml.jackson.databind.JsonNode;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.atLeastOnce;
+import static org.mockito.Mockito.inOrder;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InOrder;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+
 import se.inera.statistics.service.JSONSource;
 import se.inera.statistics.service.helper.JSONParser;
 
-import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.*;
+import com.fasterxml.jackson.databind.JsonNode;
 
 @RunWith(MockitoJUnitRunner.class)
 public class OrderedProcessTest {

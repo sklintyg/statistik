@@ -43,7 +43,7 @@ public class DiagnosisGroupResponse {
     public List<Integer> getDataFromIndex(int index, Sex sex) {
         List<Integer> indexData = new ArrayList<>();
         for (DiagnosisGroupRow row : rows) {
-            List<DualSexField> data = row.getDiagnosisGroupData();
+            List<DualSexField> data = row.getData();
             indexData.add(data.get(index).getValue(sex));
         }
         return indexData;

@@ -1,12 +1,17 @@
 package se.inera.statistics.web.service;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import se.inera.statistics.service.report.model.AgeGroupsResponse;
 import se.inera.statistics.service.report.model.AgeGroupsRow;
-import se.inera.statistics.service.report.model.CasesPerMonthRow;
 import se.inera.statistics.service.report.model.Sex;
-import se.inera.statistics.web.model.*;
-
-import java.util.*;
+import se.inera.statistics.web.model.AgeGroupsData;
+import se.inera.statistics.web.model.ChartData;
+import se.inera.statistics.web.model.ChartSeries;
+import se.inera.statistics.web.model.NamedData;
+import se.inera.statistics.web.model.TableData;
 
 public class AgeGroupsConverter {
 

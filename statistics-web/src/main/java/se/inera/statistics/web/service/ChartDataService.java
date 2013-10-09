@@ -23,7 +23,7 @@ import se.inera.statistics.service.report.model.DiagnosisGroupResponse;
 import se.inera.statistics.service.report.model.OverviewResponse;
 import se.inera.statistics.service.report.util.DiagnosisGroupsUtil;
 import se.inera.statistics.web.model.AgeGroupsData;
-import se.inera.statistics.web.model.DiagnosisGroupsData;
+import se.inera.statistics.web.model.DualSexStatisticsData;
 import se.inera.statistics.web.model.TableData;
 import se.inera.statistics.web.model.overview.OverviewData;
 
@@ -37,18 +37,20 @@ public class ChartDataService {
     private DiagnosisGroups datasourceDiagnosisGroups;
     private DiagnosisSubGroups datasourceDiagnosisSubGroups;
     private AgeGroups datasourceAgeGroups;
+    private DegreeOfSickLeave dataSourceDegreeOfSickLeave;
 
     public ChartDataService(Overview overviewPersistenceHandler,
                             CasesPerMonth casesPerMonthPersistenceHandler,
                             DiagnosisGroups diagnosisGroupsPersistenceHandler,
                             DiagnosisSubGroups diagnosisSubGroupsPersistenceHandler,
-                            AgeGroups ageGroupsPersistenceHandler) {
+                            AgeGroups ageGroupsPersistenceHandler,
+                            DegreeOfSickLeave degreeOfSickLeavePersistenceHandler) {
         datasourceOverview = overviewPersistenceHandler;
         datasourceCasesPerMonth = casesPerMonthPersistenceHandler;
         datasourceDiagnosisGroups = diagnosisGroupsPersistenceHandler;
         datasourceDiagnosisSubGroups = diagnosisSubGroupsPersistenceHandler;
         datasourceAgeGroups = ageGroupsPersistenceHandler;
-
+        dataSourceDegreeOfSickLeave = degreeOfSickLeavePersistenceHandler;
     }
 
     @GET
@@ -72,16 +74,16 @@ public class ChartDataService {
     @GET
     @Path("getDiagnosisGroupStatistics")
     @Produces({ MediaType.APPLICATION_JSON })
-    public DiagnosisGroupsData getDiagnosisGroupStatistics() {
-        DiagnosisGroupResponse diagnosisGroups = datasourceDiagnosisGroups.getDiagnosisGroups();
+    public DualSexStatisticsData getDiagnosisGroupStatistics() {
+        LocalDate lastMonth = new LocalDate().withDayOfMonth(1).minusMonths(1);
+        DiagnosisGroupResponse diagnosisGroups = datasourceDiagnosisGroups.getDiagnosisGroups(lastMonth.minusMonths(INCUSIVE_PERIOD - 1), lastMonth);
         return new DiagnosisGroupsConverter().convert(diagnosisGroups);
     }
-
 
     @GET
     @Path("getDiagnosisSubGroupStatistics")
     @Produces({ MediaType.APPLICATION_JSON })
-    public DiagnosisGroupsData getDiagnosisSubGroupStatistics(@QueryParam("groupId") String groupId) {
+    public DualSexStatisticsData getDiagnosisSubGroupStatistics(@QueryParam("groupId") String groupId) {
         DiagnosisGroupResponse diagnosisGroups = datasourceDiagnosisSubGroups.getDiagnosisSubGroups(groupId);
         return new DiagnosisSubGroupsConverter().convert(diagnosisGroups);
     }
@@ -104,4 +106,12 @@ public class ChartDataService {
         return new AgeGroupsConverter().convert(ageGroups);
     }
 
+    @GET
+    @Path("getDegreeOfSickLeaveStatistics")
+    @Produces({ MediaType.APPLICATION_JSON })
+    public DualSexStatisticsData getDegreeOfSickLeaveStatistics() {
+        DegreeOfSickLeaveResponse degreeOfSickLeaveStatistics = dataSourceDegreeOfSickLeave.getStatistics();
+        return new DegreeOfSickLeaveConverter().convert(degreeOfSickLeaveStatistics);
+    }
+    
 }

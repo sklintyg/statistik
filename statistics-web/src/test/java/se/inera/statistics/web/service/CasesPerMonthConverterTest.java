@@ -7,7 +7,6 @@ import se.inera.statistics.web.model.NamedData;
 import se.inera.statistics.web.model.TableData;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class CasesPerMonthConverterTest {

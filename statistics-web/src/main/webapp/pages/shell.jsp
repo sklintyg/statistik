@@ -57,9 +57,23 @@
 					<span>Statistiktjänst för ordinerad sjukskrivning</span>
 				</div>
 				
-				<div class="span1 offset7">
+				<div class="span3 offset5">
 					<div id="business-login-container">
 						<button class="btn" type="button" id="business-login-btn" value="Logga in">Logga in</button>
+					</div>
+					<div id="business-logged-in-user-container" style="display: none; position: absolute; right: 0; margin-right: 25px;">
+						<span class="business-me" style="right: 0; height: 40px; display: inline-block;">
+							<span class="business-me-link-span">
+								Inloggad som: 
+								<a class="business-me-link" style="cursor: pointer;">
+									<span class="business-me-name">Johan Lindholm
+										<div id="business-me-icon">
+											<img alt="Bild på inloggad användare" src="<c:url value='/img/statistic-user-icon-test.png'/>"/>
+										</div>
+									</span>
+								</a>
+							</span>
+						</span>
 					</div>
 				</div>					
 				
@@ -89,7 +103,7 @@
 					  <div id="national-statistics-collapse" class="accordion-body collapse in">
 					    <div class="accordion-inner">
 					    	<ul id="national-statistic-menu-content" class="nav nav-list">
-								<li><a ng-href="#/oversikt" navigationaware>Översikt</a></li>
+								<li><a ng-href="#/oversikt" id="navOverviewLink" navigationaware>Översikt</a></li>
 							 	<li><a ng-href="#/sjukfallPerManad" id="navCasesPerMonthLink" navigationaware>Sjukfall, totalt</a></li>
 								<li>
 									<a class="menu-item-has-childs" ng-href="#/diagnosgrupper" id="navDiagnosisGroupsLink" navigationaware>Diagnosgrupp</a>
@@ -114,7 +128,7 @@
 					<!-- BUSINESS STATISTIC MENU -->
 					  <div class="accordion-heading statistics-menu">
 					    <a class="accordion-toggle first-level-menu" id="business-statistics-toggle" data-toggle="collapse" data-parent="#statistics-menu-accordion" href="#business-statistics-collapse">
-					      Verksamhetsstatistik<i class="statistict-left-menu-expand-icon"></i>
+					      Logga in för Verksamhetsstatistik <i class="statistict-left-menu-expand-icon"></i> <!-- Inloggad: Enbart "Verksamhetsstatistik" -->
 					    </a>
 					  </div>
 					  <div id="business-statistics-collapse" class="accordion-body collapse">
@@ -258,7 +272,7 @@
 <script type="text/javascript" src="<c:url value='/js/app/factories.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/controller/common.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/controller/casesPerMonthCtrl.js'/>"></script>
-<script type="text/javascript" src="<c:url value='/js/app/controller/diagnosisGroupsCtrl.js'/>"></script>
+<script type="text/javascript" src="<c:url value='/js/app/controller/doubleAreaChartsCtrl.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/controller/overviewCtrl.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/controller/verksamhet/overviewCtrl.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/controller/ageGroupsCtrl.js'/>"></script>

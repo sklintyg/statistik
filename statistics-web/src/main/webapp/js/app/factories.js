@@ -5,7 +5,11 @@ app.statisticsApp.factory('statisticsData', function($http){
 
     factory.getOverview = function (successCallback, failureCallback){
         $http.get("api/getOverview").success(function(result) {
-            successCallback(result);
+            try {
+                successCallback(result);
+            } catch (e) {
+                failureCallback();
+            }
         }).error(function(data, status, headers, config) {
                 failureCallback();
             });
@@ -24,7 +28,11 @@ app.statisticsApp.factory('statisticsData', function($http){
 
     factory.getNumberOfCasesPerMonth = function (successCallback, failureCallback){
        $http.get("api/getNumberOfCasesPerMonth").success(function(result) {
-           successCallback(result);
+           try {
+               successCallback(result);
+           } catch (e) {
+               failureCallback();
+           }
        }).error(function(data, status, headers, config) {
            failureCallback();
        });
@@ -32,7 +40,11 @@ app.statisticsApp.factory('statisticsData', function($http){
 
    factory.getDiagnosisGroupData = function (successCallback, failureCallback){
        $http.get("api/getDiagnosisGroupStatistics").success(function(result) {
-           successCallback(result);
+           try {
+               successCallback(result);
+           } catch (e) {
+               failureCallback();
+           }
        }).error(function(data, status, headers, config) {
            failureCallback();
        });
@@ -40,7 +52,11 @@ app.statisticsApp.factory('statisticsData', function($http){
    
    factory.getSubDiagnosisGroupData = function (successCallback, failureCallback, groupId){
        $http.get("api/getDiagnosisSubGroupStatistics",{params: {'groupId':groupId}}).success(function(result) {
-           successCallback(result);
+           try {
+               successCallback(result);
+           } catch (e) {
+               failureCallback();
+           }
        }).error(function(data, status, headers, config) {
            failureCallback();
        });
@@ -48,7 +64,11 @@ app.statisticsApp.factory('statisticsData', function($http){
    
    factory.getDiagnosisGroups = function (successCallback, failureCallback){
        $http.get("api/getDiagnosisGroups").success(function(result) {
-           successCallback(result);
+           try {
+               successCallback(result);
+           } catch (e) {
+               failureCallback();
+           }
        }).error(function(data, status, headers, config) {
            failureCallback();
        });
@@ -56,6 +76,18 @@ app.statisticsApp.factory('statisticsData', function($http){
 
    factory.getAgeGroups = function (successCallback, failureCallback){
        $http.get("api/getAgeGroupsStatistics").success(function(result) {
+           try {
+               successCallback(result);
+           } catch (e) {
+               failureCallback();
+           }
+       }).error(function(data, status, headers, config) {
+           failureCallback();
+       });
+   };
+
+   factory.getDegreeOfSickLeave = function (successCallback, failureCallback){
+       $http.get("api/getDegreeOfSickLeaveStatistics").success(function(result) {
            successCallback(result);
        }).error(function(data, status, headers, config) {
            failureCallback();

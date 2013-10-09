@@ -33,6 +33,7 @@
         <constructor-arg ref="diagnosisGroups"/>
         <constructor-arg ref="diagnosisSubGroups"/>
         <constructor-arg ref="ageGroups"/>
+        <constructor-arg ref="degreeOfSickLeave"/>
     </bean>
 
     <bean id="protectedChartDataService" class="se.inera.statistics.web.service.ProtectedChartDataService">
@@ -58,16 +59,18 @@
       <bean class="se.inera.statistics.service.report.mock.DiagnosisSubGroupsMock" id="diagnosisSubGroups"/>
       <bean class="se.inera.statistics.service.report.mock.OverviewMock" id="overview"/>
       <bean class="se.inera.statistics.service.report.mock.AgeGroupsMock" id="ageGroups"/>
+      <bean class="se.inera.statistics.service.report.mock.DegreeOfSickLeaveMock" id="degreeOfSickLeave"/>
     </beans>
     
     <beans profile="demo">
       <import resource="application-context-qm.xml"/>
 
       <bean class="se.inera.statistics.service.report.repository.CasesPerMonthPersistenceHandler" id="casesPerMonth" />
-      <bean class="se.inera.statistics.service.report.mock.DiagnosisGroupsMock" id="diagnosisGroups"/>
+      <bean class="se.inera.statistics.service.report.repository.DiagnosgroupPersistenceHandler" id="diagnosisGroups" />
       <bean class="se.inera.statistics.service.report.mock.DiagnosisSubGroupsMock" id="diagnosisSubGroups"/>
       <bean class="se.inera.statistics.service.report.mock.OverviewMock" id="overview"/>
       <bean class="se.inera.statistics.service.report.mock.AgeGroupsMock" id="ageGroups"/>
+      <bean class="se.inera.statistics.service.report.mock.DegreeOfSickLeaveMock" id="degreeOfSickLeave"/>
 
       <bean class="se.inera.statistics.service.demo.InjectUtlatande" lazy-init="false" />
     </beans>

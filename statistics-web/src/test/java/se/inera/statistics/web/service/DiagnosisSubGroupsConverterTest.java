@@ -1,21 +1,23 @@
 package se.inera.statistics.web.service;
 
-import org.junit.Test;
-import se.inera.statistics.service.report.model.*;
-import se.inera.statistics.web.model.DiagnosisGroupsData;
-import se.inera.statistics.web.model.TableData;
+import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import org.junit.Test;
+
+import se.inera.statistics.service.report.model.DiagnosisGroup;
+import se.inera.statistics.service.report.model.DiagnosisGroupResponse;
+import se.inera.statistics.service.report.model.DiagnosisGroupRow;
+import se.inera.statistics.service.report.model.DualSexField;
+import se.inera.statistics.web.model.DualSexStatisticsData;
 
 public class DiagnosisSubGroupsConverterTest {
 
     @Test
-    public void converterTestEmpty(){
+    public void converterTestEmpty() {
         DiagnosisGroupResponse resp = new DiagnosisGroupResponse(new ArrayList<DiagnosisGroup>(), new ArrayList<DiagnosisGroupRow>());
-        DiagnosisGroupsData data = new DiagnosisSubGroupsConverter().convert(resp);
+        DualSexStatisticsData data = new DiagnosisSubGroupsConverter().convert(resp);
         assertEquals("[]", data.getFemaleChart().getCategories().toString());
         assertEquals("[]", data.getFemaleChart().getSeries().toString());
     }
@@ -33,7 +35,7 @@ public class DiagnosisSubGroupsConverterTest {
 
         //When
         DiagnosisSubGroupsConverter converter = new DiagnosisSubGroupsConverter();
-        DiagnosisGroupsData data = converter.convert(resp);
+        DualSexStatisticsData data = converter.convert(resp);
 
         //Then
         assertEquals("[period1]", data.getFemaleChart().getCategories().toString());

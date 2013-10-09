@@ -1,12 +1,12 @@
 package se.inera.statistics.web.model;
 
-public class DiagnosisGroupsData {
+public class DualSexStatisticsData {
 
     private final TableData tableData;
     private final ChartData maleChart;
     private final ChartData femaleChart;
 
-    public DiagnosisGroupsData(TableData tableData, ChartData maleChart, ChartData femaleChart) {
+    public DualSexStatisticsData(TableData tableData, ChartData maleChart, ChartData femaleChart) {
         this.tableData = tableData;
         this.maleChart = maleChart;
         this.femaleChart = femaleChart;

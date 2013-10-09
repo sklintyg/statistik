@@ -126,8 +126,8 @@
         var chartOptions = {
             chart : {
                 renderTo : containerId,
-                height : 185,
-                width: 133,
+                height : 230,
+                width: 188,
                 type : 'bubble',
                 backgroundColor: 'transparent'
             },
@@ -181,7 +181,7 @@
                 })
         };
         new Highcharts.Chart(chartOptions, function(chart) { // on complete
-            chart.renderer.image('img/sweden_graph.png', 30, 10, 69, 160).add();
+            chart.renderer.image('img/sweden_graph.png', 43, 10, 88, 206).add();
         });
     }
     
