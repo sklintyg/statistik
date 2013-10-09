@@ -21,31 +21,16 @@ $(function() {
     });
 
 });
-/*
-$(document).ready(function(){
-	$("#business-statistics-menu-group").hide();
-	
-	$("#log-out-container a").hide();
-	
-	$('#business-login-btn').click(function(){
-		$("#national-statistics-toggle").removeClass('active');
-		$("#national-statistics-collapse").removeClass('in'); 
-		$("#business-login-container").hide();
-		$("#business-statistics-menu-group").show();
-		$("#log-out-container a").show();
-		$("#business-statistics-toggle").addClass('active');
-		$("#business-statistics-collapse").addClass('in'); 
-	});
-});
-*/
 
 $(document).ready(function(){
-	var toggleHref = $('#business-statistics-toggle').attr("href"); // Saves href for later
+	var toggleHref = $('#business-statistics-toggle').attr("href"); 
 	$("#business-statistics-toggle").removeAttr("href"); 
 	$("#business-statistics-toggle").addClass("disabled");
 	
 	$('#business-login-btn').click(function(){
 		$("#business-statistics-toggle").removeClass("disabled");
 		$("#business-statistics-toggle").attr("href", toggleHref);
+		$("#business-login-container").css("display","none");
+		$("#business-logged-in-user-container").css("display","block");
 	});
 });

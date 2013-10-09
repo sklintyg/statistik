@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 import se.inera.statistics.service.helper.DocumentHelper;
 import se.inera.statistics.service.processlog.ProcessorListener;
 import se.inera.statistics.service.report.model.Sex;
+import se.inera.statistics.service.report.util.DiagnosisGroupsUtil;
 import se.inera.statistics.service.sjukfall.SjukfallInfo;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -31,7 +32,7 @@ public class DistributingListener implements ProcessorListener {
         LocalDate firstMonth = getFirstDateMonth(sjukfallInfo.getPrevEnd(), start);
         String enhet = DocumentHelper.getEnhetId(utlatande);
         Sex sex = DocumentHelper.getKon(utlatande).equals("man") ? Sex.Male : Sex.Female;
-        String diagnosGrupp = DocumentHelper.getDiagnos(utlatande);
+        String diagnosGrupp = DiagnosisGroupsUtil.getGroupIdForCode(DocumentHelper.getDiagnos(utlatande));
 
         sjukfallPerKonListener.acceptPeriod(firstMonth, endMonth, sex);
         sjukfallPerDiagnosgruppListenerListener.acceptPeriod(firstMonth, endMonth, diagnosGrupp, sex);

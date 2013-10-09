@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import javax.annotation.PostConstruct;
 import javax.jms.ConnectionFactory;
@@ -23,6 +24,8 @@ import org.springframework.jms.core.JmsTemplate;
 import org.springframework.jms.core.MessageCreator;
 
 import se.inera.statistics.service.helper.JSONParser;
+import se.inera.statistics.service.report.model.DiagnosisGroup;
+import se.inera.statistics.service.report.util.DiagnosisGroupsUtil;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -32,6 +35,10 @@ public class InjectUtlatande {
 
     private static final DateTimeFormatter FORMATTER = DateTimeFormat.forPattern("yyyy-MM-dd");
     private static final LocalDate BASE = new LocalDate("2012-03-01");
+
+    private static final List<String> DIAGNOSER = new ArrayList<>();
+
+    private static Random random = new Random(1234);
 
     @Autowired
     private ActiveMQQueue destination;
@@ -43,6 +50,14 @@ public class InjectUtlatande {
 
     public void setup() {
         this.jmsTemplate = new JmsTemplate(connectionFactory);
+    }
+
+    static {
+        for(DiagnosisGroup mainGroup: DiagnosisGroupsUtil.getAllDiagnosisGroups()) {
+            for (DiagnosisGroup group: DiagnosisGroupsUtil.getSubGroups(mainGroup.getId())) {
+                DIAGNOSER.add(group.getId().split("-")[0]);
+            }
+        }
     }
 
     @PostConstruct
@@ -77,6 +92,13 @@ public class InjectUtlatande {
         newPermutation.remove("validToDate");
         newPermutation.put("validFromDate", FORMATTER.print(start));
         newPermutation.put("validToDate", FORMATTER.print(end));
+
+        for (JsonNode observation: newPermutation.path("observations")) {
+            if ("1.2.752.116.2.1.1.1".equals(observation.path("observationsKategori").path("codeSystem").textValue()) && "439401001".equals(observation.path("observationsKategori").path("code").textValue())) {
+                String newDiagnosis = DIAGNOSER.get(random.nextInt(DIAGNOSER.size()));
+                ((ObjectNode)observation.path("observationsKod")).put("code", newDiagnosis);
+            }
+        }
 
         LOG.info("New permutation" + newPermutation.toString());
         return newPermutation;

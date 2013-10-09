@@ -876,6 +876,9 @@ div.headerbox-logo img {}
 div.headerbox-date { font-weight: bold; line-height: 34px; }
 div.headerbox-user { font-size: 13px; line-height: 16px;}
 
+#business-login-container {
+	float: right;
+}
 .settings {
   display: block;
 	width: 40px;
@@ -1444,6 +1447,7 @@ span.longSickLeavesText{
 	float: left;
 	position: relative;
 	padding: 0px 0px 15px 0px;
+	font-size: 12px;
 }
 
 .chart-container svg { width: 100%;}
