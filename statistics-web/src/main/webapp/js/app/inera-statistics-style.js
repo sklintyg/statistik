@@ -30,5 +30,7 @@ $(document).ready(function(){
 	$('#business-login-btn').click(function(){
 		$("#business-statistics-toggle").removeClass("disabled");
 		$("#business-statistics-toggle").attr("href", toggleHref);
+		$("#business-login-container").css("display","none");
+		$("#business-logged-in-user-container").css("display","block");
 	});
 });
