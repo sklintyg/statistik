@@ -6,7 +6,7 @@ import se.inera.statistics.service.report.api.*;
 import se.inera.statistics.service.report.model.*;
 import se.inera.statistics.service.report.util.DiagnosisGroupsUtil;
 import se.inera.statistics.web.model.AgeGroupsData;
-import se.inera.statistics.web.model.DiagnosisGroupsData;
+import se.inera.statistics.web.model.DualSexStatisticsData;
 import se.inera.statistics.web.model.TableData;
 import se.inera.statistics.web.model.overview.OverviewData;
 
@@ -28,6 +28,7 @@ public class ProtectedChartDataService {
     private DiagnosisGroups datasourceDiagnosisGroups;
     private DiagnosisSubGroups datasourceDiagnosisSubGroups;
     private AgeGroups datasourceAgeGroups;
+    private DegreeOfSickLeave dataSourceDegreeOfSickLeave;
 
     public ProtectedChartDataService() {
 
@@ -67,8 +68,9 @@ public class ProtectedChartDataService {
     @GET
     @Path("getDiagnosisGroupStatistics")
     @Produces({ MediaType.APPLICATION_JSON })
-    public DiagnosisGroupsData getDiagnosisGroupStatistics() {
-        DiagnosisGroupResponse diagnosisGroups = datasourceDiagnosisGroups.getDiagnosisGroups();
+    public DualSexStatisticsData getDiagnosisGroupStatistics() {
+        LocalDate lastMonth = new LocalDate().withDayOfMonth(1).minusMonths(1);
+        DiagnosisGroupResponse diagnosisGroups = datasourceDiagnosisGroups.getDiagnosisGroups(lastMonth.minusMonths(INCUSIVE_PERIOD - 1), lastMonth);
         return new DiagnosisGroupsConverter().convert(diagnosisGroups);
     }
 
@@ -76,7 +78,7 @@ public class ProtectedChartDataService {
     @GET
     @Path("getDiagnosisSubGroupStatistics")
     @Produces({ MediaType.APPLICATION_JSON })
-    public DiagnosisGroupsData getDiagnosisSubGroupStatistics(@QueryParam("groupId") String groupId) {
+    public DualSexStatisticsData getDiagnosisSubGroupStatistics(@QueryParam("groupId") String groupId) {
         DiagnosisGroupResponse diagnosisGroups = datasourceDiagnosisSubGroups.getDiagnosisSubGroups(groupId);
         return new DiagnosisSubGroupsConverter().convert(diagnosisGroups);
     }
