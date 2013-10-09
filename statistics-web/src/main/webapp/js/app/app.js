@@ -16,7 +16,7 @@ app.statisticsApp = angular.module('StatisticsApp', [  ]).config(
             }).when('/aldersgrupper', {
                 templateUrl : 'views/chart.html',
                 controller : 'AgeGroupsCtrl',
-                title: 'Sjukfall per månad'
+                title: 'Åldersgrupper'
             }).when('/diagnosgrupper', {
                 templateUrl : 'views/chart.html',
                 controller : 'DiagnosisGroupsCtrl',
@@ -27,13 +27,13 @@ app.statisticsApp = angular.module('StatisticsApp', [  ]).config(
                 controller : 'DiagnosisGroupsCtrl',
                 resolve : { config: app.diagnosisSubGroupConfig },
                 title: 'Underdiagnosgrupper'
+            }).when('/underdiagnosgrupper', {
+                redirectTo : '/underdiagnosgrupper/A00-B99'
             }).when('/sjukskrivningsgrad', {
                 templateUrl : 'views/chart.html',
                 controller : 'DiagnosisGroupsCtrl',
                 resolve : { config: app.degreeOfSickLeaveConfig },
-                title: 'Underdiagnosgrupper'
-            }).when('/underdiagnosgrupper', {
-                redirectTo : '/underdiagnosgrupper/A00-B99'
+                title: 'Sjukskrivningsgrad'
             }).when('/om/tjansten', {
                 templateUrl : 'views/about/about.html',
                 title: 'Om tjänsten'

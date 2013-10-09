@@ -2,15 +2,14 @@ package se.inera.statistics.web.pages
 
 import geb.Page
 import org.openqa.selenium.By
+import org.openqa.selenium.support.ui.*
 
-class CasesPerMonthPage extends Page {
-
-    static at = { title == "Sjukfall per månad | Statistiktjänsten" }
+class DetailsPage extends Page {
 
     static content = {
 
-        chart { $("#container > div > svg") }
         datatable(required:false, wait: false) { $("#datatable") }
+        detailsOptions(required:false, wait: false) { $("#detailsOptionsDropdown") }
         toggleDataTableVisibilityBtn(required:true, wait: true) { $("#toggleDataTableVisibility") }
 
     }
@@ -24,6 +23,10 @@ class CasesPerMonthPage extends Page {
 
     def boolean isDatatableVisible() {
         return datatable.height != 0 && datatable.displayed;
+    }
+    
+    def boolean isDetailsOptionsVisible() {
+        return detailsOptions.displayed
     }
     
 }

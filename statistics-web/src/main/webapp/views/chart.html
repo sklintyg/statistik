@@ -36,7 +36,7 @@
 	</div>
     <!-- Start detailsOptions if any -->
     <div class="row-fluid">
-        <select class="span3" ng-model="detailsOption" ng-show="showDetailsOptions" ng-options="do.id + ' ' + do.name for do in detailsOptions"></select>
+        <select id="detailsOptionsDropdown" class="span3" ng-model="detailsOption" ng-show="showDetailsOptions" ng-options="do.id + ' ' + do.name for do in detailsOptions"></select>
     </div>
     <div dataerrorview show-error="dataLoadingError">
         <div spinner label="{{spinnerText}}" show-spinner="!doneLoading" show-content="doneLoading">
