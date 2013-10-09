@@ -96,7 +96,7 @@
 					  <div id="national-statistics-collapse" class="accordion-body collapse in">
 					    <div class="accordion-inner">
 					    	<ul id="national-statistic-menu-content" class="nav nav-list">
-								<li><a ng-href="#/oversikt" navigationaware>Översikt</a></li>
+								<li><a ng-href="#/oversikt" id="navOverviewLink" navigationaware>Översikt</a></li>
 							 	<li><a ng-href="#/sjukfallPerManad" id="navCasesPerMonthLink" navigationaware>Sjukfall, totalt</a></li>
 								<li>
 									<a class="menu-item-has-childs" ng-href="#/diagnosgrupper" id="navDiagnosisGroupsLink" navigationaware>Diagnosgrupp</a>
