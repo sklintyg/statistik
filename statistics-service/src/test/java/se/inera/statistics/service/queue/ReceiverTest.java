@@ -11,10 +11,8 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import se.inera.statistics.service.hsa.HSADecorator;
-import se.inera.statistics.service.hsa.HSAKey;
-import se.inera.statistics.service.hsa.HSAService;
 import se.inera.statistics.service.JSONSource;
+import se.inera.statistics.service.hsa.HSADecorator;
 import se.inera.statistics.service.processlog.EventType;
 import se.inera.statistics.service.processlog.OrderedProcess;
 import se.inera.statistics.service.processlog.ProcessLog;

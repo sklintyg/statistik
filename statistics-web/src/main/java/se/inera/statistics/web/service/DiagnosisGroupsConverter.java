@@ -3,13 +3,8 @@ package se.inera.statistics.web.service;
 import java.util.*;
 import java.util.Map.Entry;
 
-import se.inera.statistics.service.report.model.DiagnosisGroup;
-import se.inera.statistics.service.report.model.DiagnosisGroupResponse;
-import se.inera.statistics.service.report.model.DiagnosisGroupRow;
-import se.inera.statistics.service.report.model.Sex;
-import se.inera.statistics.web.model.DiagnosisGroupsData;
-import se.inera.statistics.web.model.NamedData;
-import se.inera.statistics.web.model.TableData;
+import se.inera.statistics.service.report.model.*;
+import se.inera.statistics.web.model.*;
 
 public class DiagnosisGroupsConverter {
 
@@ -22,24 +17,23 @@ public class DiagnosisGroupsConverter {
             "Symtomdiagnoser (R00-R99)",
             "Faktorer av betydelse för hälsotillståndet och för kontakter med hälso- och sjukvården (Z00-Z99)");
 
-    DiagnosisGroupsData convert(DiagnosisGroupResponse diagnosisGroups) {
-        TableData maleTable = convertDiagnosisGroupsTableData(diagnosisGroups, Sex.Male);
-        TableData femaleTable = convertDiagnosisGroupsTableData(diagnosisGroups, Sex.Female);
-        TableData maleChart = convertDiagnosisGroupsChartData(diagnosisGroups, Sex.Male);
-        TableData femaleChart = convertDiagnosisGroupsChartData(diagnosisGroups, Sex.Female);
-        return new DiagnosisGroupsData(maleTable, femaleTable, maleChart, femaleChart);
+    DualSexStatisticsData convert(DiagnosisGroupResponse diagnosisGroups) {
+        TableData tableData = convertTable(diagnosisGroups);
+        ChartData maleChart = convertChart(diagnosisGroups, Sex.Male);
+        ChartData femaleChart = convertChart(diagnosisGroups, Sex.Female);
+        return new DualSexStatisticsData(tableData, maleChart, femaleChart);
     }
 
-    private TableData convertDiagnosisGroupsChartData(DiagnosisGroupResponse resp, Sex sex) {
+    private ChartData convertChart(DiagnosisGroupResponse resp, Sex sex) {
         Map<String, List<Integer>> allGroups = extractAllGroups(resp, sex);
         Map<String, List<Integer>> mergedGroups = mergeChartGroups(allGroups);
-        ArrayList<NamedData> rows = new ArrayList<>();
+        ArrayList<ChartSeries> rows = new ArrayList<>();
         for (Entry<String, List<Integer>> entry : mergedGroups.entrySet()) {
-            rows.add(new NamedData(entry.getKey(), entry.getValue()));
+            rows.add(new ChartSeries(entry.getKey(), entry.getValue()));
         }
 
         List<String> headers = resp.getPeriods();
-        return new TableData(rows, headers);
+        return new ChartData(rows, headers);
     }
 
     private Map<String, List<Integer>> mergeChartGroups(Map<String, List<Integer>> allGroups) {
@@ -130,13 +124,42 @@ public class DiagnosisGroupsConverter {
         }
     }
 
-    static TableData convertDiagnosisGroupsTableData(DiagnosisGroupResponse resp, Sex sex) {
-        List<String> headers = resp.getDiagnosisGroupsAsStrings();
-        ArrayList<NamedData> rows = new ArrayList<NamedData>();
-        for (DiagnosisGroupRow row : resp.getRows()) {
-            rows.add(new NamedData(row.getPeriod(), row.getDiagnosisGroupData(sex)));
-        }
+    static TableData convertTable(DiagnosisGroupResponse resp) {
+        List<NamedData> rows = getTableRows(resp);
+        List<List<TableHeader>> headers = getTableHeaders(resp);
         return new TableData(rows, headers);
+    }
+
+    private static List<NamedData> getTableRows(DiagnosisGroupResponse resp) {
+        List<NamedData> rows = new ArrayList<>();
+        for (DiagnosisGroupRow row : resp.getRows()) {
+            List<Integer> mergedSexData = ServiceUtil.getMergedSexData(row);
+            List<Integer> mergedAndSummed = ServiceUtil.getAppendedSum(mergedSexData);
+            rows.add(new NamedData(row.getPeriod(), mergedAndSummed));
+        }
+        return rows;
+    }
+
+    private static List<List<TableHeader>> getTableHeaders(DiagnosisGroupResponse resp) {
+        List<TableHeader> topHeaderRow = new ArrayList<>();
+        topHeaderRow.add(new TableHeader(""));
+        List<String> diagnosisGroups = resp.getDiagnosisGroupsAsStrings();
+        for (String groupName : diagnosisGroups) {
+                topHeaderRow.add(new TableHeader(groupName, 2));
+        }
+
+        List<TableHeader> subHeaderRow = new ArrayList<>();
+        subHeaderRow.add(new TableHeader("Period"));
+        for (int i = 0; i < diagnosisGroups.size(); i++) {
+            subHeaderRow.add(new TableHeader("Kvinnor"));
+            subHeaderRow.add(new TableHeader("Män"));
+        }
+        subHeaderRow.add(new TableHeader("Summering"));
+
+        List<List<TableHeader>> headers = new ArrayList<>();
+        headers.add(topHeaderRow);
+        headers.add(subHeaderRow);
+        return headers;
     }
 
 }

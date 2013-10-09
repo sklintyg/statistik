@@ -3,7 +3,6 @@ package se.inera.statistics.service.report.repository;
 import org.joda.time.LocalDate;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
-import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import se.inera.statistics.service.report.api.CasesPerMonth;
@@ -19,7 +18,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-@Component
 public class CasesPerMonthPersistenceHandler implements CasesPerMonth {
     @PersistenceContext(unitName = "IneraStatisticsLog")
     private EntityManager manager;

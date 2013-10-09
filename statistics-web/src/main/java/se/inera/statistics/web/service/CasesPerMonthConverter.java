@@ -18,7 +18,8 @@ public class CasesPerMonthConverter {
             accumulatedSum += rowSum;
             data.add(new NamedData(row.getPeriod(), Arrays.asList(new Integer[] {rowSum, row.getFemale(), row.getMale(), accumulatedSum})));
         }
-        return new TableData(data, Arrays.asList(new String[] {"Antal sjukfall", "Antal kvinnor", "Antal män", "Summering"}));
+
+        return TableData.createWithSingleHeadersRow(data, Arrays.asList("Antal sjukfall", "Antal kvinnor", "Antal män", "Summering"));
     }
 
 }

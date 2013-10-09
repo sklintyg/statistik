@@ -34,12 +34,12 @@
 	<div class="row-fluid">
 		<span class="span12 graph-ingress">{{subTitle}}</span>
 	</div>
+    <!-- Start detailsOptions if any -->
+    <div class="row-fluid">
+        <select class="span3" ng-model="detailsOption" ng-show="showDetailsOptions" ng-options="do.id + ' ' + do.name for do in detailsOptions"></select>
+    </div>
     <div dataerrorview show-error="dataLoadingError">
         <div spinner label="spinnerText" show-spinner="!doneLoading" show-content="doneLoading">
-            <!-- Start detailsOptions if any -->
-            <div class="row-fluid">
-                <select class="span3" ng-model="detailsOption" ng-show="showDetailsOptions" ng-options="do.id + ' ' + do.name for do in detailsOptions"></select>
-            </div>
             <!-- Start graph -->
             <div class="row-fluid">
                 <div class="span12" style="margin-bottom: 20px;">

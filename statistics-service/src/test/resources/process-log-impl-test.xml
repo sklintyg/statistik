@@ -50,4 +50,6 @@
         <property name="entityManagerFactory" ref="entityManagerFactory"/>
     </bean>
 
+    <bean class="se.inera.statistics.service.report.repository.CasesPerMonthPersistenceHandler" id="casesPerMonth" />
+    <bean class="se.inera.statistics.service.report.repository.DiagnosgroupPersistenceHandler" id="diagnosisGroups" />
 </beans>

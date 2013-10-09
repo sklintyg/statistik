@@ -7,7 +7,6 @@ import se.inera.statistics.web.model.NamedData;
 import se.inera.statistics.web.model.TableData;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class CasesPerMonthConverterTest {
@@ -20,7 +19,7 @@ public class CasesPerMonthConverterTest {
         casesPerMonth.add(new CasesPerMonthRow("feb 12", 20, 30));
         casesPerMonth.add(new CasesPerMonthRow("mar 12", 5, 25));
         TableData tableData = converter.convertCasesPerMonthData(casesPerMonth);
-        assertEquals("[Antal sjukfall, Antal kvinnor, Antal män, Summering]", tableData.getHeaders().toString());
+        assertEquals("[[Antal sjukfall;1, Antal kvinnor;1, Antal män;1, Summering;1]]", tableData.getHeaders().toString());
         List<NamedData> rows = tableData.getRows();
         assertEquals(3, rows.size());
         assertEquals("jan 12", rows.get(0).getName());

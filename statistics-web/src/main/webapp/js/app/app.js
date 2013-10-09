@@ -10,18 +10,27 @@ app.statisticsApp = angular.module('StatisticsApp', [  ]).config(
                 controller : 'OverviewCtrl',
 	            title: 'Översikt'
             }).when('/sjukfallPerManad', {
+                    templateUrl : 'views/chart.html',
+                    controller : 'CasesPerMonthCtrl',
+                    title: 'Sjukfall per månad'
+            }).when('/aldersgrupper', {
                 templateUrl : 'views/chart.html',
-                controller : 'CasesPerMonthCtrl',
-			    title: 'Sjukfall per månad'
+                controller : 'AgeGroupsCtrl',
+                title: 'Sjukfall per månad'
             }).when('/diagnosgrupper', {
                 templateUrl : 'views/chart.html',
                 controller : 'DiagnosisGroupsCtrl',
-                resolve : {dataFetcher: function(){ return "getDiagnosisGroupData"; }, showDetailsOptions: function(){ return false; } }, 
+                resolve : { config: app.diagnosisGroupConfig }, 
                 title: 'Diagnosgrupper'
             }).when('/underdiagnosgrupper/:groupId', {
                 templateUrl : 'views/chart.html',
                 controller : 'DiagnosisGroupsCtrl',
-                resolve : {dataFetcher: function(){ return "getSubDiagnosisGroupData"; }, showDetailsOptions: function(){ return true; } },
+                resolve : { config: app.diagnosisSubGroupConfig },
+                title: 'Underdiagnosgrupper'
+            }).when('/sjukskrivningsgrad', {
+                templateUrl : 'views/chart.html',
+                controller : 'DiagnosisGroupsCtrl',
+                resolve : { config: app.degreeOfSickLeaveConfig },
                 title: 'Underdiagnosgrupper'
             }).when('/underdiagnosgrupper', {
                 redirectTo : '/underdiagnosgrupper/A00-B99'

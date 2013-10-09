@@ -7,6 +7,7 @@ var ControllerCommons = new function(){
      for (var i = 0; i < rawData.length; i++) {
          rawData[i].color = color[i];
      }
+     return rawData;
  };
  
  this.showHideDataTableDefault = "Dölj datatabell";
@@ -36,10 +37,10 @@ var ControllerCommons = new function(){
 
  this.getChartSeries = function(ajaxResult) {
      var dataSeries = [];
-     var length = ajaxResult.headers.length;
+     var length = ajaxResult.headers[0].length;
      for ( var i = 0; i < length; i++) {
          var ds = {};
-         ds.name = ajaxResult.headers[i];
+         ds.name = ajaxResult.headers[0][i].text;
          ds.data = [];
          dataSeries.push(ds);
      }
