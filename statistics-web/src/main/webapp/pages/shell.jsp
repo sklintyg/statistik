@@ -35,6 +35,12 @@
 <link href="<c:url value='/bootstrap/2.3.2/css/bootstrap-responsive.css'/>" rel="stylesheet">
 
 <link rel="icon" type="image/png" href="../img/favicon.ico">
+<security:authorize access="isAuthenticated()">
+    <script>var isLoggedIn = true;</script>
+</security:authorize>
+<security:authorize access="not isAuthenticated()">
+    <script>var isLoggedIn = false;</script>
+</security:authorize>
 </head>
 <body data-spy="scroll" data-target=".bs-docs-sidebar">
 
@@ -103,7 +109,6 @@
 					    </div>
 					  </div>
 					</div>
-                    <security:authorize access="isAuthenticated()">					
 					<div class="accordion-group" id="business-statistics-menu-group">
 					<h2 class="hidden-header">Navigering för verksamhetsstatistik</h2>
 					<!-- BUSINESS STATISTIC MENU -->
@@ -115,25 +120,25 @@
 					  <div id="business-statistics-collapse" class="accordion-body collapse">
 					    <div class="accordion-inner">
 					      <ul id="business-statistic-menu-content" class="nav nav-list">
-								<li><a ng-href="#/verksamhetOversikt" navigationaware>Översikt</a></li>
-							 	<li><a ng-href="#/verksamhetsjukfallPerManad" id="navBusinessCasesPerMonthLink" navigationaware>Sjukfall, totalt</a></li>
+								<li><a ng-href="#/verksamhet/oversikt" navigationaware>Översikt</a></li>
+							 	<li><a ng-href="#/verksamhet/sjukfallPerManad" id="navBusinessCasesPerMonthLink" navigationaware>Sjukfall, totalt</a></li>
 								<li>
-									<a class="menu-item-has-childs" ng-href="#/verksamhetdiagnosgrupp" id="navBusinessDiagnosisGroupsLink" navigationaware>Diagnosgrupp</a>
+									<a class="menu-item-has-childs" ng-href="#/verksamhet/diagnosgrupp" id="navBusinessDiagnosisGroupsLink" navigationaware>Diagnosgrupp</a>
 									<i class="statistict-left-menu-expand-icon" class="accordion-toggle" data-toggle="collapse" href="#sub-menu-business-diagnostics"></i>
 								</li>
 								<ul id="sub-menu-business-diagnostics" class="nav nav-list sub-nav-list accordion-body in collapse">
-									<li><a ng-href="#/verksamhetunderdiagnosgrupp" id="navBusinessDiagnosisSubGroupsLink" navigationaware>Underdiagnosgrupp</a></li>
+									<li><a ng-href="#/verksamhet/underdiagnosgrupp" id="navBusinessDiagnosisSubGroupsLink" navigationaware>Underdiagnosgrupp</a></li>
 								</ul>
 								<li>
-									<a ng-href="#/verksamhetsaldersgrupper" id="navBusinessAgeGroupsLink" navigationaware>Ålderssgrupp</a>
+									<a ng-href="#/verksamhet/aldersgrupper" id="navBusinessAgeGroupsLink" navigationaware>Ålderssgrupp</a>
 									<i class="statistict-left-menu-expand-icon" class="accordion-toggle" data-toggle="collapse" href="#sub-menu-business-age-group"></i>
 								</li>
 								<ul id="sub-menu-business-age-group" class="nav nav-list sub-nav-list accordion-body in collapse">
-									<li><a ng-href="#/verksamhetpagaendeavslutadealdersgrupper" id="navBusinessOngoingAndCompletedLink" navigationaware>Pågående och avslutade</a></li>
+									<li><a ng-href="#/verksamhet/pagaendeavslutadealdersgrupper" id="navBusinessOngoingAndCompletedLink" navigationaware>Pågående och avslutade</a></li>
 								</ul>
-								<li><a ng-href="#/verksamhetsjukskrivningsgrad" id="navBusinessSickLeaveDegreeLink" navigationaware>Sjukskrivningsgrad</a></li>
+								<li><a ng-href="#/verksamhet/sjukskrivningsgrad" id="navBusinessSickLeaveDegreeLink" navigationaware>Sjukskrivningsgrad</a></li>
 								<li>
-									<a class="menu-item-has-childs" ng-href="#/verksamhetsjukskrivningslangd" id="navBusinessSickLeaveLengthLink" navigationaware>Sjukskrivningslängd</a>
+									<a class="menu-item-has-childs" ng-href="#/verksamhet/sjukskrivningslangd" id="navBusinessSickLeaveLengthLink" navigationaware>Sjukskrivningslängd</a>
 									<i class="statistict-left-menu-expand-icon" class="accordion-toggle" data-toggle="collapse" href="#sub-menu-business-sick-leave-length"></i>
 								</li>
 								<ul id="sub-menu-business-sick-leave-length" class="nav nav-list sub-nav-list accordion-body in collapse">
@@ -144,7 +149,6 @@
 					    </div>
 					  </div>
 					</div>
-                    </security:authorize>
 				</div>
 				
 				<div class="about accordion" id="statistics-about-menu-accordion">
@@ -251,12 +255,12 @@
 <script type="text/javascript" src="<c:url value='/bootstrap/2.3.2/js/bootstrap.min.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/lib/angularjs/1.0.8/angular.min.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/app.js'/>"></script>
-<script type="text/javascript" src="<c:url value='/js/app/loginService.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/factories.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/controller/common.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/controller/casesPerMonthCtrl.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/controller/diagnosisGroupsCtrl.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/controller/overviewCtrl.js'/>"></script>
+<script type="text/javascript" src="<c:url value='/js/app/controller/verksamhet/overviewCtrl.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/controller/ageGroupsCtrl.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/controllers.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/directives.js'/>"></script>

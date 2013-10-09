@@ -43,9 +43,13 @@ $(document).ready(function(){
 	var toggleHref = $('#business-statistics-toggle').attr("href"); // Saves href for later
 	$("#business-statistics-toggle").removeAttr("href"); 
 	$("#business-statistics-toggle").addClass("disabled");
-	
+
+    if(isLoggedIn) {
+        $("#business-statistics-toggle").removeClass("disabled");
+        $("#business-statistics-toggle").attr("href", toggleHref);
+    }
+
 	$('#business-login-btn').click(function(){
-		$("#business-statistics-toggle").removeClass("disabled");
-		$("#business-statistics-toggle").attr("href", toggleHref);
+        window.location.replace("/login.jsp");
 	});
 });
