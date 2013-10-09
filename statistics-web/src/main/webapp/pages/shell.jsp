@@ -128,7 +128,7 @@
 					<!-- BUSINESS STATISTIC MENU -->
 					  <div class="accordion-heading statistics-menu">
 					    <a class="accordion-toggle first-level-menu" id="business-statistics-toggle" data-parent="#statistics-menu-accordion" href="#business-statistics-collapse" ng-class="{active: showOperation, collapsed: !showOperation}" ng-click="toggleOperationAccordion()">
-					      Logga in för Verksamhetsstatistik <i class="statistict-left-menu-expand-icon"></i> <!-- Inloggad: Enbart "Verksamhetsstatistik" -->
+					      {{ organisationMenuLabel }} <i class="statistict-left-menu-expand-icon"></i> <!-- Inloggad: Enbart "Verksamhetsstatistik" -->
 					    </a>
 					  </div>
 					  <div id="business-statistics-collapse" class="accordion-body collapse" ng-class="{in: showOperation}">

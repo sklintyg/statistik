@@ -2,6 +2,8 @@
 
  app.navigationMenuCtrl = function ($scope) {
 
+     $scope.organisationMenuLabel = isLoggedIn ? "Verksamhetsstatistik" : "Logga in för verksamhetsstatistik";
+     
      $scope.showNational = false;
      $scope.showOperation = false;
      $scope.showAbout = false;
