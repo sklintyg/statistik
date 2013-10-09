@@ -13,6 +13,8 @@ app.statisticsApp.directive("navigationaware", function ($rootScope, $location) 
                 elem.parent().removeClass("active");
                 if (matchingPath($attrs.ngHref, $location.$$absUrl)){
                     elem.parent().addClass("active");
+                    var groupId = elem.closest(".accordion-body").attr('id');
+                    $rootScope.$broadcast('navigationUpdate', groupId);
                 }
             });
         }

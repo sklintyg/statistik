@@ -82,18 +82,18 @@
 		<!-- Docs nav
 		================================================== -->
 		<div class="row-fluid">
-			<div class="span3 bs-docs-sidebar">
+			<div class="span3 bs-docs-sidebar" ng-controller="NavigationMenuCtrl">
 				<h1 class="hidden-header">Sidans huvudnavigering</h1>
 				<div class="statistics accordion" id="statistics-menu-accordion">
 					<div class="accordion-group" id="national-statistics-menu-group">
 					<h2 class="hidden-header">Navigering för nationell statistik</h2>
 					<!-- NATIONAL STATISTIC MENU -->
 					  <div class="accordion-heading statistics-menu">
-					    <a class="accordion-toggle first-level-menu active" id="national-statistics-toggle" data-toggle="collapse" data-parent="#statistics-menu-accordion" href="#national-statistics-collapse">
+					    <div class="accordion-toggle first-level-menu" id="national-statistics-toggle" data-parent="#statistics-menu-accordion" ng-class="{active: showNational, collapsed: !showNational}" ng-click="toggleNationalAccordion()">
 					      Nationell statistik<i class="statistict-left-menu-expand-icon"></i>
-					    </a>
+					    </div>
 					  </div>
-					  <div id="national-statistics-collapse" class="accordion-body collapse in">
+					  <div id="national-statistics-collapse" class="accordion-body collapse" ng-class="{in: showNational}">
 					    <div class="accordion-inner">
 					    	<ul id="national-statistic-menu-content" class="nav nav-list">
 								<li><a ng-href="#/oversikt" id="navOverviewLink" navigationaware>Översikt</a></li>
@@ -121,11 +121,11 @@
 					<h2 class="hidden-header">Navigering för verksamhetsstatistik</h2>
 					<!-- BUSINESS STATISTIC MENU -->
 					  <div class="accordion-heading statistics-menu">
-					    <a class="accordion-toggle first-level-menu" id="business-statistics-toggle" data-toggle="collapse" data-parent="#statistics-menu-accordion" href="#business-statistics-collapse">
+					    <a class="accordion-toggle first-level-menu" id="business-statistics-toggle" data-parent="#statistics-menu-accordion" href="#business-statistics-collapse" ng-class="{active: showOperation, collapsed: !showOperation}" ng-click="toggleOperationAccordion()">
 					      Logga in för Verksamhetsstatistik <i class="statistict-left-menu-expand-icon"></i> <!-- Inloggad: Enbart "Verksamhetsstatistik" -->
 					    </a>
 					  </div>
-					  <div id="business-statistics-collapse" class="accordion-body collapse">
+					  <div id="business-statistics-collapse" class="accordion-body collapse" ng-class="{in: showOperation}">
 					    <div class="accordion-inner">
 					      <ul id="business-statistic-menu-content" class="nav nav-list">
 								<li><a ng-href="#/verksamhetOversikt" navigationaware>Översikt</a></li>
@@ -157,98 +157,33 @@
 					    </div>
 					  </div>
 					</div>
-				</div>
-				
-				<div class="about accordion" id="statistics-about-menu-accordion">
-					<h2 class="hidden-header">Navigering för information om tjänsten</h2>
-					<!-- ABOUT STATISTIC MENU -->
-					  <div class="accordion-heading statistics-menu">
-					    <a class="accordion-toggle first-level-menu" data-toggle="collapse" href="#about-statistics-collapse">
-					      Om tjänsten<i class="statistict-left-menu-expand-icon"></i>
-					    </a>
-					  </div>
-					  <div id="about-statistics-collapse" class="accordion-body collapse">
-					    <div class="accordion-inner">
-					    	<ul id="about-statistic-menu-content" class="nav nav-list">
-								<li><a class="first-item-in-menu" ng-href="#/om/tjansten" navigationaware>Allmänt om tjänsten</a></li>
-								<li><a ng-href="#/om/inloggning" navigationaware>Inloggning och behörighet</a></li>
-								<li><a ng-href="#/om/vanligafragor" navigationaware>Vanliga frågor och svar</a></li>
-								<li><a class="last-item-in-menu" ng-href="#/om/kontakt" navigationaware>Kontakt till support</a></li>
-							</ul>
-					    </div>
-					  </div>
-				</div>
-				<!-- 
-				<div id="statistics-left-menu">
-					<div class="accordion" id="left-menu-accordion">
-						
-						<div class="nav nav-list bs-docs-sidenav accordion-group" id="national-statistic-menu">
-							<div class="statistics-left-menu-header accordion-heading">
-								<span class="accordion-toggle" data-toggle="collapse" data-parent="#left-menu-accordion" href="#national-statistic-menu-content">Nationell statistik<i class="statistict-left-menu-expand-icon"></i></span>
-							</div>
-							<ul id="national-statistic-menu-content" class="nav nav-list accordion-body collapse in">
-								<li><a ng-href="#/oversikt" navigationaware>Översikt</a></li>
-							 	<li><a ng-href="#/sjukfallPerManad" id="navCasesPerMonthLink" navigationaware>Sjukfall, totalt</a></li>
-								<li><a ng-href="#/diagnosgrupper" id="navDiagnosisGroupsLink" navigationaware>Diagnosgrupp</a><i class="statistict-left-menu-expand-icon" class="accordion-toggle" data-toggle="collapse" href="#sub-menu-diagnostics"></i></li>
-								<ul id="sub-menu-diagnostics" class="nav nav-list sub-nav-list accordion-body in collapse">
-									<li><a ng-href="#/underdiagnosgrupper" id="navDiagnosisSubGroupsLink" navigationaware>Underdiagnosgrupp</a></li>
+    				<div class="accordion-group" id="about-statistics-menu-group">
+						<h2 class="hidden-header">Navigering för information om tjänsten</h2>
+						<!-- ABOUT STATISTIC MENU -->
+						  <div class="accordion-heading statistics-menu">
+						    <div class="accordion-toggle first-level-menu" ng-class="{active: showAbout, collapsed: !showAbout}" ng-click="toggleAboutAccordion()">
+						      Om tjänsten<i class="statistict-left-menu-expand-icon"></i>
+						    </div>
+						  </div>
+						  <div id="about-statistics-collapse" class="accordion-body collapse" ng-class="{in: showAbout}">
+						    <div class="accordion-inner">
+						    	<ul id="about-statistic-menu-content" class="nav nav-list">
+									<li><a class="first-item-in-menu" ng-href="#/om/tjansten" navigationaware>Allmänt om tjänsten</a></li>
+									<li><a ng-href="#/om/inloggning" navigationaware>Inloggning och behörighet</a></li>
+									<li><a ng-href="#/om/vanligafragor" navigationaware>Vanliga frågor och svar</a></li>
+									<li><a class="last-item-in-menu" ng-href="#/om/kontakt" navigationaware>Kontakt till support</a></li>
 								</ul>
-								<li><a ng-href="#/aldersgrupper" id="navAgeGroupsLink" navigationaware>Ålderssgrupp</a></li>
-								<li><a ng-href="#/sjukskrivningsgrad" id="navSickLeaveDegreeLink" navigationaware>Sjukskrivningsgrad</a></li>
-								<li><a ng-href="#/sjukskrivningslangd" id="navSickLeaveLengthLink" navigationaware>Sjukskrivningslängd</a></li>
-								<li><a ng-href="#/lan" id="navCountyLink" navigationaware>Län</a><i class="statistict-left-menu-expand-icon" class="accordion-toggle" data-toggle="collapse" href="#sub-menu-cases-per-county"></i></li>
-								<ul id="sub-menu-cases-per-county" class="nav nav-list sub-nav-list accordion-body in collapse">
-									<li><a class="last-item-in-menu" ng-href="#/andelSjukfallPerKon" id="navCasesPerSexLink" navigationaware>Andel sjukfall per kön</a></li>
-								</ul>
-							</ul>
-						</div>	
-						
-						
-						<div class="nav nav-list bs-docs-sidenav accordion-group" id="business-statistic-menu">
-							<div class="statistics-left-menu-header accordion-heading">
-								<span class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#left-menu-accordion" href="#business-statistic-menu-content">Verksamhetsstatistik<i class="statistict-left-menu-expand-icon collapsed"></i></span>
-							</div>
-							<ul id="business-statistic-menu-content" class="nav nav-list accordion-body collapse">
-								<li><a ng-href="#" navigationaware>Översikt</a></li>
-							 	<li><a ng-href="#" id="" navigationaware>Sjukskrivn. totalt</a></li>
-								<li><a ng-href="#" id="" navigationaware>Diagnosgrupp</a><i class="statistict-left-menu-expand-icon" class="accordion-toggle" data-toggle="collapse" href="#sub-menu-diagnostics"></i></li>
-								<ul id="sub-menu-diagnostics" class="nav nav-list sub-nav-list accordion-body in collapse">
-									<li><a ng-href="#" id="navDiagnosisSubGroupsLink" navigationaware>Underdiagnosgrupp</a></li>
-								</ul>
-								<li><a ng-href="#" id="" navigationaware>Ålderssgrupp</a></li>
-								<li><a ng-href="#" id="" navigationaware>Sjukskrivningsgrad</a></li>
-								<li><a ng-href="#" id="" navigationaware>Sjukskrivningslängd</a></li>
-								<li><a ng-href="#" id="" navigationaware>Län</a><i class="statistict-left-menu-expand-icon" class="accordion-toggle" data-toggle="collapse" href="#sub-menu-cases-per-county"></i></li>
-								<ul id="" class="nav nav-list sub-nav-list accordion-body in collapse">
-									<li><a class="last-item-in-menu" ng-href="#" id="" navigationaware>Andel sjukfall per kön</a></li>
-								</ul>
-							</ul>
-						</div>
-						
-
-						<div class="nav nav-list bs-docs-sidenav" id="about-statistic-menu">
-							<div class="statistics-left-menu-header">
-								<span class="accordion-toggle collapsed" data-toggle="collapse" href="#about-statistics-menu">Om tjänsten<i class="statistict-left-menu-expand-icon "></i></span>
-							</div>
-							<ul id="about-statistics-menu" class="nav nav-list accordion-body collapse" >
-								<li><a class="first-item-in-menu" ng-href="#/om/tjansten" navigationaware>Allmänt om tjänsten</a></li>
-								<li><a ng-href="#/om/inloggning" navigationaware>Inloggning och behörighet</a></li>
-								<li><a ng-href="#/om/vanligafragor" navigationaware>Vanliga frågor och svar</a></li>
-								<li><a class="last-item-in-menu" ng-href="#/om/kontakt" navigationaware>Kontakt till support</a></li>
-							</ul>
-						</div>
-					</div>
-				</div>
-				 -->
-			</div>
-		      
+						    </div>
+						  </div>
+				    </div>
+                </div>
+		    </div>
 			<div class="span9">
 				<%-- ng-view that holds dynamic content managed by angular app --%>
 				<div id="view" ng-view></div>
 			</div>
-		</div>
-	
-	</div>
+	    </div>  
+    </div>
 </div>
 <!-- Footer
 ================================================== -->
@@ -269,6 +204,7 @@
 <script type="text/javascript" src="<c:url value='/js/app/controller/doubleAreaChartsCtrl.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/controller/overviewCtrl.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/controller/ageGroupsCtrl.js'/>"></script>
+<script type="text/javascript" src="<c:url value='/js/app/controller/navigationMenuCtrl.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/controllers.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/directives.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/inera-statistics-style.js'/>" ></script>
