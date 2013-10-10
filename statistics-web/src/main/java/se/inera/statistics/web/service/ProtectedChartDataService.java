@@ -1,9 +1,19 @@
 package se.inera.statistics.web.service;
 
 import org.joda.time.LocalDate;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
-import se.inera.statistics.service.report.api.*;
-import se.inera.statistics.service.report.model.*;
+import se.inera.statistics.service.report.api.AgeGroups;
+import se.inera.statistics.service.report.api.CasesPerMonth;
+import se.inera.statistics.service.report.api.DegreeOfSickLeave;
+import se.inera.statistics.service.report.api.DiagnosisGroups;
+import se.inera.statistics.service.report.api.DiagnosisSubGroups;
+import se.inera.statistics.service.report.api.Overview;
+import se.inera.statistics.service.report.model.AgeGroupsResponse;
+import se.inera.statistics.service.report.model.CasesPerMonthRow;
+import se.inera.statistics.service.report.model.DiagnosisGroup;
+import se.inera.statistics.service.report.model.DiagnosisGroupResponse;
+import se.inera.statistics.service.report.model.OverviewResponse;
 import se.inera.statistics.service.report.util.DiagnosisGroupsUtil;
 import se.inera.statistics.web.model.AgeGroupsData;
 import se.inera.statistics.web.model.DualSexStatisticsData;
@@ -12,6 +22,7 @@ import se.inera.statistics.web.model.overview.OverviewData;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
@@ -84,10 +95,11 @@ public class ProtectedChartDataService {
     }
 
     @GET
-    @Path("getOverview")
+    @Path("getOverview/{verksamhetId}")
     @Produces({ MediaType.APPLICATION_JSON })
-    public OverviewData getOverviewData() {
-        OverviewResponse response = datasourceOverview.getOverview();
+    @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(authentication.name, #verksamhetId)")
+    public OverviewData getOverviewData(@PathParam("verksamhetId") Long verksamhetId) {
+        OverviewResponse response = datasourceOverview.getOverview(verksamhetId);
         return new OverviewConverter().convert(response);
     }
 
@@ -99,6 +111,10 @@ public class ProtectedChartDataService {
         LocalDate lastMonth = new LocalDate().withDayOfMonth(1).minusMonths(1);
         AgeGroupsResponse ageGroups = datasourceAgeGroups.getAgeGroups(lastMonth.minusMonths(numberOfMonthsToShow), lastMonth);
         return new AgeGroupsConverter().convert(ageGroups);
+    }
+
+    public boolean hasAccessTo(String user, Long verksamhetId) {
+        return "admin".equals(user);
     }
 
 }

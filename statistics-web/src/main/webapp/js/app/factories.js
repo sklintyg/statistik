@@ -16,7 +16,7 @@ app.statisticsApp.factory('statisticsData', function($http){
     };
 
     factory.getVOverview = function (successCallback, failureCallback){
-        $http.get("api/verksamhet/getOverview").success(function(result) {
+        $http.get("api/verksamhet/getOverview/1").success(function(result) {
             successCallback(result);
         }).error(function(data, status, headers, config) {
                 if(status == 403) {
