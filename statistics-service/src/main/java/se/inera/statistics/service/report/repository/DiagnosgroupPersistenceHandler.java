@@ -1,7 +1,6 @@
 package se.inera.statistics.service.report.repository;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -65,13 +64,13 @@ public class DiagnosgroupPersistenceHandler implements DiagnosisGroups {
 
         // Span all
         Map<String, DualSexField> map = map(list);
+
         for (LocalDate currentPeriod = from; !currentPeriod.isAfter(to); currentPeriod = currentPeriod.plusMonths(1)) {
             String displayDate = outputFormatter.print(currentPeriod);
             String period = inputFormatter.print(currentPeriod);
             List<DualSexField> values = new ArrayList<>(HEADERS.size());
             for (DiagnosisGroup group: HEADERS) {
-                DualSexField data = map.get(period + group.getId());
-                values.add(data);
+                values.add(map.get(period + group.getId()));
             }
             translatedCasesPerMonthRows.add(new DiagnosisGroupRow(displayDate, values));
         }
@@ -87,15 +86,4 @@ public class DiagnosgroupPersistenceHandler implements DiagnosisGroups {
         return resultMap;
     }
 
-    private static final class DefaultHashMap<K,V> extends HashMap<K,V> {
-        private V defaultValue;
-        public DefaultHashMap(V defaultValue) {
-          this.defaultValue = defaultValue;
-        }
-        @Override
-        public V get(Object k) {
-          V v = super.get(k);
-          return ((v == null) && !this.containsKey(k)) ? this.defaultValue : v;
-        }
-    }
 }

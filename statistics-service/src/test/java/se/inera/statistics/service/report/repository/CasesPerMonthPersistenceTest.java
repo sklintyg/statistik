@@ -72,6 +72,7 @@ public class CasesPerMonthPersistenceTest extends CasesPerMonthPersistenceHandle
         Iterator<CasesPerMonthRow> check = this.getCasesPerMonth(from, to).iterator();
         assertEquals("jan 2013", check.next().getPeriod());
         assertEquals("feb 2013", check.next().getPeriod());
+        assertEquals("mar 2013", check.next().getPeriod());
         assertEquals("apr 2013", check.next().getPeriod());
     }
 

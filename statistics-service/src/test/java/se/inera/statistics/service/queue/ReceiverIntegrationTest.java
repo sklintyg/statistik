@@ -57,7 +57,16 @@ public class ReceiverIntegrationTest {
 
         List<CasesPerMonthRow> webData = casesPerMonth.getCasesPerMonth(new LocalDate("2011-01"), new LocalDate("2011-12"));
 
-        assertEquals(3, webData.size());
+        assertEquals(12, webData.size());
+
+        for (int i = 0; i < 3; i++) {
+            assertEquals(0, webData.get(i).getFemale());
+            assertEquals(1, webData.get(i).getMale());
+        }
+        for (int i = 3; i < 12; i++) {
+            assertEquals(0, webData.get(i).getFemale());
+            assertEquals(0, webData.get(i).getMale());
+        }
     }
 
     private void sleep() {

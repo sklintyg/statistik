@@ -1,5 +1,14 @@
 package se.inera.statistics.service.report.repository;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
+
 import org.joda.time.LocalDate;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
@@ -8,15 +17,8 @@ import org.springframework.transaction.annotation.Transactional;
 import se.inera.statistics.service.report.api.CasesPerMonth;
 import se.inera.statistics.service.report.model.CasesPerMonthKey;
 import se.inera.statistics.service.report.model.CasesPerMonthRow;
+import se.inera.statistics.service.report.model.DualSexField;
 import se.inera.statistics.service.report.model.Sex;
-
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.TypedQuery;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
 
 public class CasesPerMonthPersistenceHandler implements CasesPerMonth {
     @PersistenceContext(unitName = "IneraStatisticsLog")
@@ -54,15 +56,22 @@ public class CasesPerMonthPersistenceHandler implements CasesPerMonth {
         query.setParameter("from", inputFormatter.print(from));
         query.setParameter("to", inputFormatter.print(to));
 
-        return translateForOutput(query.getResultList());
+        return translateForOutput(from, to, query.getResultList());
     }
 
-    private List<CasesPerMonthRow> translateForOutput(List<CasesPerMonthRow> list) {
+    private List<CasesPerMonthRow> translateForOutput(LocalDate from, LocalDate to, List<CasesPerMonthRow> list) {
         List<CasesPerMonthRow> translatedCasesPerMonthRows = new ArrayList<>();
 
+        Map<String, DualSexField> map = new DefaultHashMap<>(new DualSexField(0, 0));
         for (CasesPerMonthRow row: list) {
-            String displayDate = outputFormatter.print(inputFormatter.parseLocalDate(row.getPeriod()));
-            translatedCasesPerMonthRows.add(new CasesPerMonthRow(displayDate, row.getFemale(), row.getMale()));
+            map.put(row.getPeriod(), new DualSexField(row.getFemale(), row.getMale()));
+        }
+
+        for (LocalDate currentPeriod = from; !currentPeriod.isAfter(to); currentPeriod = currentPeriod.plusMonths(1)) {
+            String displayDate = outputFormatter.print(currentPeriod);
+            String period = inputFormatter.print(currentPeriod);
+            DualSexField dualSexField = map.get(period);
+            translatedCasesPerMonthRows.add(new CasesPerMonthRow(displayDate, dualSexField.getFemale(), dualSexField.getMale()));
         }
 
         return translatedCasesPerMonthRows;
