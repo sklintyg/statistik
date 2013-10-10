@@ -5,8 +5,8 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 
 import org.joda.time.LocalDate;
+import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
-import org.joda.time.format.DateTimeFormatterBuilder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.annotation.DirtiesContext;
@@ -20,7 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 @DirtiesContext
 public class SjukfallServiceTest extends SjukfallService {
 
-    DateTimeFormatter formatter = new DateTimeFormatterBuilder().appendYear(4,4).appendLiteral('-').appendMonthOfYear(2).appendLiteral('-').appendDayOfMonth(2).toFormatter();
+    private static final DateTimeFormatter FORMATTER = DateTimeFormat.forPattern("yyyy-MM-dd");
 
     @Test
     public void registeringPeriodReturnsId() {
@@ -81,6 +81,6 @@ public class SjukfallServiceTest extends SjukfallService {
     }
 
     private LocalDate date(String stringDate) {
-        return formatter.parseLocalDate(stringDate);
+        return FORMATTER.parseLocalDate(stringDate);
     }
 }
