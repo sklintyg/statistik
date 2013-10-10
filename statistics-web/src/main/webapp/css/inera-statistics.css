@@ -935,7 +935,8 @@ div.headerbox-user { font-size: 13px; line-height: 16px;}
 	background: transparent;
 	cursor: default;
 }
-.statistics-btn-group ul.dropdown-menu li a:hover {
+.statistics-btn-group ul.dropdown-menu li a:hover,
+ul.dropdown-menu li a:hover {
 	background: #CCCCCC;
 	color: #0b0b0b !important;
 	cursor: pointer;
@@ -944,7 +945,9 @@ div.headerbox-user { font-size: 13px; line-height: 16px;}
 	border-top-color: #ffffff !important;
 	border-bottom-color: #ffffff;
 }
-
+span.caret {
+	border-top-color: #ffffff !important;
+}
 #push, #footer {
 	height: 60px;
 }
@@ -1481,4 +1484,8 @@ div.datatablescrollable {
 }
 #about-content section {
 	
+}
+
+.row-margin-bottom {
+	margin-bottom: 15px;
 }
