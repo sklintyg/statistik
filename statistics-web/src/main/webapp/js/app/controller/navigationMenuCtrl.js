@@ -7,6 +7,7 @@
      $scope.showNational = false;
      $scope.showOperation = false;
      $scope.showAbout = false;
+     $scope.is_loggedin = isLoggedIn;
 
      $scope.toggleNationalAccordion = function() {
          $scope.showNational = !$scope.showNational;
@@ -15,9 +16,11 @@
      }
      
      $scope.toggleOperationAccordion = function() {
-         $scope.showOperation = !$scope.showOperation;
-         $scope.showNational = false;
-         $scope.showAbout = false;
+         if (isLoggedIn) {
+             $scope.showOperation = !$scope.showOperation;
+             $scope.showNational = false;
+             $scope.showAbout = false;
+         }
      }
      
      $scope.toggleAboutAccordion = function() {

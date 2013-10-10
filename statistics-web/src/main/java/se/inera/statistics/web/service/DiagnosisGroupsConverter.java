@@ -61,7 +61,7 @@ public class DiagnosisGroupsConverter {
         });
         List<List<Integer>> values = new ArrayList<List<Integer>>(allGroups.values());
         int listSize = values.isEmpty() ? 0 : values.get(0).toArray().length;
-        for (String groupName : DIAGNOSIS_CHART_GROUPS) {
+        for(String groupName : DIAGNOSIS_CHART_GROUPS) {
             mergedGroups.put(groupName, createZeroFilledList(listSize));
         }
         for (Entry<String, List<Integer>> entry : allGroups.entrySet()) {
@@ -72,7 +72,7 @@ public class DiagnosisGroupsConverter {
 
     private List<Integer> createZeroFilledList(int listSize) {
         ArrayList<Integer> listOfZeros = new ArrayList<>();
-        for (int i = 0; i < listSize; i++) {
+        for( int i = 0; i < listSize; i++) {
             listOfZeros.add(0);
         }
         return listOfZeros;
