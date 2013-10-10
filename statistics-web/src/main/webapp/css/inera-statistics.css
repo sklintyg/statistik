@@ -703,7 +703,7 @@ i.statistict-left-menu-expand-icon {
 	color: #fff;
 }
 .accordion-toggle.disabled {
-	background: #F2F2F2;
+	background: #F2F2F2 !important;
 	cursor: default;
 	color: #A8A8A8;
 }
