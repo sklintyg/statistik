@@ -1162,7 +1162,8 @@ form.bs-docs-example {
 		margin-top: 5px;
 	}
 	.chart-container {
-		width: 43%;
+		/*width: 43%;*/
+		width: 38%;
 		margin: 18px 0 0 0;
 		float: left;
 	}
