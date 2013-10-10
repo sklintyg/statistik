@@ -70,7 +70,7 @@
 								<div class="header-box-user-profile pull-right" style="margin-right: 10px;">
 									<span class="user-name pull-right">Användare Andersson</span><br>
 									<span class="user-logout pull-right">
-										<a tabindex="-1" href="#">Logga ut</a>
+										<a tabindex="-1" href="/j_spring_security_logout">Logga ut</a>
 									</span>
 								</div>
 							</div>
