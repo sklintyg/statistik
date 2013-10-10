@@ -1,6 +1,6 @@
  'use strict';
 
- app.vOverviewCtrl = function ($scope, statisticsData) {
+ app.businessOverviewCtrl = function ($scope, statisticsData, $routeParams) {
     var populatePageWithData = function(result){
         $scope.doneLoading = true;
         $scope.$apply();
@@ -223,8 +223,11 @@
 		return string.replace(/&/g,'&amp;').replace(/</g,'&lt;');
 	}
 
-    statisticsData.getVOverview(populatePageWithData, function() { $scope.dataLoadingError = true; });
+    statisticsData.getBusinessOverview($routeParams.businessId, populatePageWithData, function() { $scope.dataLoadingError = true; });
     $scope.spinnerText = "Laddar data...";
     $scope.doneLoading = false;
     $scope.dataLoadingError = false;
+
+    statisticsData.getLoginInfo(function(loginInfo){ $scope.businesses = loginInfo.businesses; }, function() { $scope.dataLoadingError = true; });
+    
 };
