@@ -413,7 +413,8 @@ legend {
 	border-right: 1px solid #dddddd;
 }
 #overview-content table#datatable {
-	width: 55%;
+	/*width: 55%;*/
+	width: 61%;
 	border: 1px solid transparent;
 	border-bottom: 1px solid #dddddd;
 }
@@ -1240,6 +1241,7 @@ a.listheader.collapsed {
 		min-height: 10px;
 	}*/
 	div.box-bottom {
+		/*background-image: url("../img/list_shadow_left.png"), url("../img/list_shadow_right.png");*/
 		background-image: url("../img/list_shadow_left.png"), url("../img/list_shadow_right.png");
 		background-repeat: no-repeat, no-repeat;
 		background-position: top left, top right;
@@ -1337,7 +1339,9 @@ a.listheader.collapsed {
 	margin-top: 20px;
 	margin-bottom: 20px;
 }
-
+#navigation-container a, #navigation-container a:hover {
+	color: #28b4c4;
+}
 #navigation-container span {
 	color: #fff;
 }
