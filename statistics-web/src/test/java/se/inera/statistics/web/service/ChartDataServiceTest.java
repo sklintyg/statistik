@@ -2,6 +2,8 @@ package se.inera.statistics.web.service;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.eq;
 
 import java.util.List;
 
@@ -32,7 +34,7 @@ public class ChartDataServiceTest {
         CasesPerMonth mock = Mockito.mock(CasesPerMonth.class);
         ChartDataService chartDataService = new ChartDataService(null, mock, null, null, null, null);
         chartDataService.getNumberOfCasesPerMonth();
-        Mockito.verify(mock).getCasesPerMonth(Mockito.any(LocalDate.class), Mockito.any(LocalDate.class));
+        Mockito.verify(mock).getCasesPerMonth(any(LocalDate.class), any(LocalDate.class));
     }
 
     @Test
@@ -50,7 +52,7 @@ public class ChartDataServiceTest {
         try {
             chartDataService.getDiagnosisGroupStatistics();
         } catch (NullPointerException e) {}
-        Mockito.verify(mock).getDiagnosisGroups(Mockito.any(LocalDate.class), Mockito.any(LocalDate.class));
+        Mockito.verify(mock).getDiagnosisGroups(any(LocalDate.class), any(LocalDate.class));
     }
 
     @Test
@@ -60,7 +62,7 @@ public class ChartDataServiceTest {
         try {
             chartDataService.getDiagnosisSubGroupStatistics("testId");
         } catch (NullPointerException e) {}
-        Mockito.verify(mock).getDiagnosisSubGroups("testId");
+        Mockito.verify(mock).getDiagnosisGroups(any(LocalDate.class), any(LocalDate.class), eq("testId"));
     }
 
 }

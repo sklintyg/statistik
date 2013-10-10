@@ -26,6 +26,10 @@ public final class DiagnosisGroupsUtil {
         throw new IllegalArgumentException("ICD-10-SE code not found: " + icd10Code);
     }
 
+    public static String getSubGroupIdForCode(String icd10Code) {
+        return getSubGroupForCode(icd10Code).getId();
+    }
+
     public static DiagnosisGroup getSubGroupForCode(String icd10Code) {
         for (Entry<String, List<DiagnosisGroup>> entry : SUB_GROUPS.entrySet()) {
             for (DiagnosisGroup diagnosisGroup : entry.getValue()) {

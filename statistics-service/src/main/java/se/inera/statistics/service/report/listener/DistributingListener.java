@@ -24,6 +24,9 @@ public class DistributingListener implements ProcessorListener {
     @Autowired
     private SjukfallPerDiagnosgruppListener sjukfallPerDiagnosgruppListenerListener;
 
+    @Autowired
+    private SjukfallPerDiagnosundergruppListener sjukfallPerDiagnosundergruppListenerListener;
+
     @Override
     public void accept(SjukfallInfo sjukfallInfo, JsonNode utlatande, JsonNode hsa) {
         LocalDate start = PERIOD_DATE_TIME_FORMATTERFORMATTER.parseLocalDate(DocumentHelper.getForstaNedsattningsdag(utlatande));
@@ -32,10 +35,13 @@ public class DistributingListener implements ProcessorListener {
         LocalDate firstMonth = getFirstDateMonth(sjukfallInfo.getPrevEnd(), start);
         String enhet = DocumentHelper.getEnhetId(utlatande);
         Sex sex = DocumentHelper.getKon(utlatande).equals("man") ? Sex.Male : Sex.Female;
-        String diagnosGrupp = DiagnosisGroupsUtil.getGroupIdForCode(DocumentHelper.getDiagnos(utlatande));
+        String diagnos = DocumentHelper.getDiagnos(utlatande);
+        String diagnosGrupp = DiagnosisGroupsUtil.getGroupIdForCode(diagnos);
+        String diagnosunderGrupp = DiagnosisGroupsUtil.getSubGroupIdForCode(diagnos);
 
         sjukfallPerKonListener.acceptPeriod(firstMonth, endMonth, sex);
         sjukfallPerDiagnosgruppListenerListener.acceptPeriod(firstMonth, endMonth, diagnosGrupp, sex);
+        sjukfallPerDiagnosundergruppListenerListener.acceptPeriod(firstMonth, endMonth, diagnosGrupp, diagnosunderGrupp, sex);
     }
 
     static LocalDate getFirstDateMonth(LocalDate previousEnd, LocalDate start) {

@@ -50,10 +50,8 @@ public class ProtectedChartDataService {
     @Path("getNumberOfCasesPerMonth")
     @Produces({ MediaType.APPLICATION_JSON })
     public TableData getNumberOfCasesPerMonth() {
-        LocalDate lastMonth = new LocalDate().withDayOfMonth(1).minusMonths(1);
-
-        List<CasesPerMonthRow> casesPerMonth = datasourceCasesPerMonth.getCasesPerMonth(lastMonth.minusMonths(INCUSIVE_PERIOD - 1), lastMonth);
-
+        Range range = new Range();
+        List<CasesPerMonthRow> casesPerMonth = datasourceCasesPerMonth.getCasesPerMonth(range.from, range.to);
         return new CasesPerMonthConverter().convertCasesPerMonthData(casesPerMonth);
     }
 
@@ -68,8 +66,8 @@ public class ProtectedChartDataService {
     @Path("getDiagnosisGroupStatistics")
     @Produces({ MediaType.APPLICATION_JSON })
     public DualSexStatisticsData getDiagnosisGroupStatistics() {
-        LocalDate lastMonth = new LocalDate().withDayOfMonth(1).minusMonths(1);
-        DiagnosisGroupResponse diagnosisGroups = datasourceDiagnosisGroups.getDiagnosisGroups(lastMonth.minusMonths(INCUSIVE_PERIOD - 1), lastMonth);
+        Range range = new Range();
+        DiagnosisGroupResponse diagnosisGroups = datasourceDiagnosisGroups.getDiagnosisGroups(range.from, range.to);
         return new DiagnosisGroupsConverter().convert(diagnosisGroups);
     }
 
@@ -78,7 +76,8 @@ public class ProtectedChartDataService {
     @Path("getDiagnosisSubGroupStatistics")
     @Produces({ MediaType.APPLICATION_JSON })
     public DualSexStatisticsData getDiagnosisSubGroupStatistics(@QueryParam("groupId") String groupId) {
-        DiagnosisGroupResponse diagnosisGroups = datasourceDiagnosisSubGroups.getDiagnosisSubGroups(groupId);
+        Range range = new Range();
+        DiagnosisGroupResponse diagnosisGroups = datasourceDiagnosisSubGroups.getDiagnosisGroups(range.from, range.to, groupId);
         return new DiagnosisSubGroupsConverter().convert(diagnosisGroups);
     }
 
@@ -100,4 +99,17 @@ public class ProtectedChartDataService {
         return new AgeGroupsConverter().convert(ageGroups);
     }
 
+    private static class Range {
+        private final LocalDate from;
+        private final LocalDate to;
+
+        private Range() {
+            this(INCUSIVE_PERIOD);
+        }
+
+        public Range(int months) {
+            to = new LocalDate().withDayOfMonth(1).minusMonths(1);
+            from = to.minusMonths(months);
+        }
+    }
 }
