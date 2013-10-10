@@ -115,5 +115,4 @@ public class ChartDataService {
         DegreeOfSickLeaveResponse degreeOfSickLeaveStatistics = dataSourceDegreeOfSickLeave.getStatistics();
         return new DegreeOfSickLeaveConverter().convert(degreeOfSickLeaveStatistics);
     }
-    
 }

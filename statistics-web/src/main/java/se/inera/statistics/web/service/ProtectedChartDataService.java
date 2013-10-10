@@ -28,7 +28,6 @@ public class ProtectedChartDataService {
     private DiagnosisGroups datasourceDiagnosisGroups;
     private DiagnosisSubGroups datasourceDiagnosisSubGroups;
     private AgeGroups datasourceAgeGroups;
-    private DegreeOfSickLeave dataSourceDegreeOfSickLeave;
 
     public ProtectedChartDataService() {
 

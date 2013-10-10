@@ -16,7 +16,7 @@ public class TableData {
 
     public static TableData createWithSingleHeadersRow(List<NamedData> rows, List<String> headers) {
         List<TableHeader> tableHeaders = new ArrayList<>();
-        for(String headerName : headers) {
+        for (String headerName : headers) {
             tableHeaders.add(new TableHeader(headerName));
         }
         List<List<TableHeader>> headerRows = new ArrayList<>();
