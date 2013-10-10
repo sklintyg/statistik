@@ -5,12 +5,12 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
-import org.joda.time.LocalDate;
 import org.joda.time.Period;
 
 import se.inera.statistics.service.report.api.AgeGroups;
 import se.inera.statistics.service.report.model.AgeGroupsResponse;
 import se.inera.statistics.service.report.model.AgeGroupsRow;
+import se.inera.statistics.service.report.model.Range;
 
 public class AgeGroupsMock implements AgeGroups {
 
@@ -19,14 +19,14 @@ public class AgeGroupsMock implements AgeGroups {
 
     // CHECKSTYLE:OFF MagicNumber
     @Override
-    public AgeGroupsResponse getAgeGroups(LocalDate from, LocalDate to) {
+    public AgeGroupsResponse getAgeGroups(Range range) {
         final List<AgeGroupsRow> rows = new ArrayList<AgeGroupsRow>();
         for (String group : GROUPS) {
             int women = (int) (random.nextGaussian() * 2000 + 10000);
             int men = (int) (random.nextGaussian() * 2000 + 10000);
             rows.add(new AgeGroupsRow(group, women, men));
         }
-        final Period period = new Period(from, to);
+        final Period period = new Period(range.getFrom(), range.getTo());
         final int monthsInPeriod = period.getMonths() + period.getYears() * 12;
         return new AgeGroupsResponse(rows, monthsInPeriod);
     }

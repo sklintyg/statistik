@@ -13,6 +13,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import se.inera.statistics.service.report.model.CasesPerMonthRow;
+import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.Sex;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -66,10 +67,9 @@ public class CasesPerMonthPersistenceTest extends CasesPerMonthPersistenceHandle
         this.count("2013-04", Sex.Female);
         this.count("2013-01", Sex.Female);
 
-        LocalDate from = new LocalDate("2013-01");
-        LocalDate to = new LocalDate("2013-04");
+        Range range = new Range(new LocalDate("2013-01"), new LocalDate("2013-04"));
 
-        Iterator<CasesPerMonthRow> check = this.getCasesPerMonth(from, to).iterator();
+        Iterator<CasesPerMonthRow> check = this.getCasesPerMonth(range).iterator();
         assertEquals("jan 2013", check.next().getPeriod());
         assertEquals("feb 2013", check.next().getPeriod());
         assertEquals("mar 2013", check.next().getPeriod());

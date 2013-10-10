@@ -1,11 +1,10 @@
 package se.inera.statistics.service.report.api;
 
-import org.joda.time.LocalDate;
-
 import se.inera.statistics.service.report.model.AgeGroupsResponse;
+import se.inera.statistics.service.report.model.Range;
 
 public interface AgeGroups {
 
-    AgeGroupsResponse getAgeGroups(LocalDate from, LocalDate to);
+    AgeGroupsResponse getAgeGroups(Range range);
 
 }

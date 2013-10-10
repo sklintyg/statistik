@@ -18,6 +18,7 @@ import se.inera.statistics.service.report.api.CasesPerMonth;
 import se.inera.statistics.service.report.model.CasesPerMonthKey;
 import se.inera.statistics.service.report.model.CasesPerMonthRow;
 import se.inera.statistics.service.report.model.DualSexField;
+import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.Sex;
 
 public class CasesPerMonthPersistenceHandler implements CasesPerMonth {
@@ -51,15 +52,15 @@ public class CasesPerMonthPersistenceHandler implements CasesPerMonth {
 
     @Override
     @Transactional
-    public List<CasesPerMonthRow> getCasesPerMonth(LocalDate from, LocalDate to) {
+    public List<CasesPerMonthRow> getCasesPerMonth(Range range) {
         TypedQuery<CasesPerMonthRow> query = manager.createQuery("SELECT c FROM CasesPerMonthRow c WHERE c.casesPerMonthKey.period >= :from AND c.casesPerMonthKey.period <= :to ORDER BY c.casesPerMonthKey.period", CasesPerMonthRow.class);
-        query.setParameter("from", inputFormatter.print(from));
-        query.setParameter("to", inputFormatter.print(to));
+        query.setParameter("from", inputFormatter.print(range.getFrom()));
+        query.setParameter("to", inputFormatter.print(range.getTo()));
 
-        return translateForOutput(from, to, query.getResultList());
+        return translateForOutput(range, query.getResultList());
     }
 
-    private List<CasesPerMonthRow> translateForOutput(LocalDate from, LocalDate to, List<CasesPerMonthRow> list) {
+    private List<CasesPerMonthRow> translateForOutput(Range range, List<CasesPerMonthRow> list) {
         List<CasesPerMonthRow> translatedCasesPerMonthRows = new ArrayList<>();
 
         Map<String, DualSexField> map = new DefaultHashMap<>(new DualSexField(0, 0));
@@ -67,7 +68,7 @@ public class CasesPerMonthPersistenceHandler implements CasesPerMonth {
             map.put(row.getPeriod(), new DualSexField(row.getFemale(), row.getMale()));
         }
 
-        for (LocalDate currentPeriod = from; !currentPeriod.isAfter(to); currentPeriod = currentPeriod.plusMonths(1)) {
+        for (LocalDate currentPeriod = range.getFrom(); !currentPeriod.isAfter(range.getTo()); currentPeriod = currentPeriod.plusMonths(1)) {
             String displayDate = outputFormatter.print(currentPeriod);
             String period = inputFormatter.print(currentPeriod);
             DualSexField dualSexField = map.get(period);

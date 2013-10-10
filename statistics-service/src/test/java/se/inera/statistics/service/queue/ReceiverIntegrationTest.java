@@ -27,6 +27,7 @@ import org.springframework.transaction.annotation.Transactional;
 import se.inera.statistics.service.JSONSource;
 import se.inera.statistics.service.report.api.CasesPerMonth;
 import se.inera.statistics.service.report.model.CasesPerMonthRow;
+import se.inera.statistics.service.report.model.Range;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath:process-log-impl-test.xml", "classpath:process-log-qm-test.xml" })
@@ -55,7 +56,7 @@ public class ReceiverIntegrationTest {
 
         sleep();
 
-        List<CasesPerMonthRow> webData = casesPerMonth.getCasesPerMonth(new LocalDate("2011-01"), new LocalDate("2011-12"));
+        List<CasesPerMonthRow> webData = casesPerMonth.getCasesPerMonth(new Range(new LocalDate("2011-01"), new LocalDate("2011-12")));
 
         assertEquals(12, webData.size());
 

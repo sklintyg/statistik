@@ -23,6 +23,7 @@ import se.inera.statistics.service.report.model.DegreeOfSickLeaveResponse;
 import se.inera.statistics.service.report.model.DiagnosisGroup;
 import se.inera.statistics.service.report.model.DiagnosisGroupResponse;
 import se.inera.statistics.service.report.model.OverviewResponse;
+import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.util.DiagnosisGroupsUtil;
 import se.inera.statistics.web.model.AgeGroupsData;
 import se.inera.statistics.web.model.DualSexStatisticsData;
@@ -33,8 +34,6 @@ import se.inera.statistics.web.model.overview.OverviewData;
 public class ChartDataService {
 
     private static final int AGE_PERIOD = 12;
-
-    private static final int INCUSIVE_PERIOD = 18;
 
     private Overview datasourceOverview;
     private CasesPerMonth datasourceCasesPerMonth;
@@ -63,7 +62,7 @@ public class ChartDataService {
     public TableData getNumberOfCasesPerMonth() {
         Range range = new Range();
 
-        List<CasesPerMonthRow> casesPerMonth = datasourceCasesPerMonth.getCasesPerMonth(range.from, range.to);
+        List<CasesPerMonthRow> casesPerMonth = datasourceCasesPerMonth.getCasesPerMonth(range);
 
         return new CasesPerMonthConverter().convertCasesPerMonthData(casesPerMonth);
     }
@@ -80,7 +79,7 @@ public class ChartDataService {
     @Produces({ MediaType.APPLICATION_JSON })
     public DualSexStatisticsData getDiagnosisGroupStatistics() {
         Range range = new Range();
-        DiagnosisGroupResponse diagnosisGroups = datasourceDiagnosisGroups.getDiagnosisGroups(range.from, range.to);
+        DiagnosisGroupResponse diagnosisGroups = datasourceDiagnosisGroups.getDiagnosisGroups(range);
         return new DiagnosisGroupsConverter().convert(diagnosisGroups);
     }
 
@@ -89,7 +88,7 @@ public class ChartDataService {
     @Produces({ MediaType.APPLICATION_JSON })
     public DualSexStatisticsData getDiagnosisSubGroupStatistics(@QueryParam("groupId") String groupId) {
         Range range = new Range();
-        DiagnosisGroupResponse diagnosisGroups = datasourceDiagnosisSubGroups.getDiagnosisGroups(range.from, range.to, groupId);
+        DiagnosisGroupResponse diagnosisGroups = datasourceDiagnosisSubGroups.getDiagnosisGroups(range, groupId);
         return new DiagnosisSubGroupsConverter().convert(diagnosisGroups);
     }
 
@@ -106,7 +105,7 @@ public class ChartDataService {
     @Produces({ MediaType.APPLICATION_JSON })
     public AgeGroupsData getAgeGroupsStatistics() {
         Range range = new Range(AGE_PERIOD);
-        AgeGroupsResponse ageGroups = datasourceAgeGroups.getAgeGroups(range.from, range.to);
+        AgeGroupsResponse ageGroups = datasourceAgeGroups.getAgeGroups(range);
         return new AgeGroupsConverter().convert(ageGroups);
     }
 
@@ -116,19 +115,5 @@ public class ChartDataService {
     public DualSexStatisticsData getDegreeOfSickLeaveStatistics() {
         DegreeOfSickLeaveResponse degreeOfSickLeaveStatistics = dataSourceDegreeOfSickLeave.getStatistics();
         return new DegreeOfSickLeaveConverter().convert(degreeOfSickLeaveStatistics);
-    }
-
-    private static class Range {
-        private final LocalDate from;
-        private final LocalDate to;
-
-        private Range() {
-            this(INCUSIVE_PERIOD);
-        }
-
-        public Range(int months) {
-            to = new LocalDate().withDayOfMonth(1).minusMonths(1);
-            from = to.minusMonths(months);
-        }
     }
 }

@@ -2,12 +2,11 @@ package se.inera.statistics.web.service;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.any;
-import static org.mockito.Mockito.eq;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.eq;
 
 import java.util.List;
 
-import org.joda.time.LocalDate;
 import org.junit.Test;
 import org.mockito.Mockito;
 
@@ -16,6 +15,7 @@ import se.inera.statistics.service.report.api.DiagnosisGroups;
 import se.inera.statistics.service.report.api.DiagnosisSubGroups;
 import se.inera.statistics.service.report.api.Overview;
 import se.inera.statistics.service.report.model.DiagnosisGroup;
+import se.inera.statistics.service.report.model.Range;
 
 public class ChartDataServiceTest {
 
@@ -34,7 +34,7 @@ public class ChartDataServiceTest {
         CasesPerMonth mock = Mockito.mock(CasesPerMonth.class);
         ChartDataService chartDataService = new ChartDataService(null, mock, null, null, null, null);
         chartDataService.getNumberOfCasesPerMonth();
-        Mockito.verify(mock).getCasesPerMonth(any(LocalDate.class), any(LocalDate.class));
+        Mockito.verify(mock).getCasesPerMonth(any(Range.class));
     }
 
     @Test
@@ -52,7 +52,7 @@ public class ChartDataServiceTest {
         try {
             chartDataService.getDiagnosisGroupStatistics();
         } catch (NullPointerException e) {}
-        Mockito.verify(mock).getDiagnosisGroups(any(LocalDate.class), any(LocalDate.class));
+        Mockito.verify(mock).getDiagnosisGroups(any(Range.class));
     }
 
     @Test
@@ -62,7 +62,7 @@ public class ChartDataServiceTest {
         try {
             chartDataService.getDiagnosisSubGroupStatistics("testId");
         } catch (NullPointerException e) {}
-        Mockito.verify(mock).getDiagnosisGroups(any(LocalDate.class), any(LocalDate.class), eq("testId"));
+        Mockito.verify(mock).getDiagnosisGroups(any(Range.class), eq("testId"));
     }
 
 }

@@ -21,7 +21,7 @@ import java.util.List;
 @Path("/business")
 public class ProtectedChartDataService {
 
-    private static final int INCUSIVE_PERIOD = 18;
+    private static final int AGE_PERIOD = 12;
 
     private Overview datasourceOverview;
     private CasesPerMonth datasourceCasesPerMonth;
@@ -51,7 +51,7 @@ public class ProtectedChartDataService {
     @Produces({ MediaType.APPLICATION_JSON })
     public TableData getNumberOfCasesPerMonth() {
         Range range = new Range();
-        List<CasesPerMonthRow> casesPerMonth = datasourceCasesPerMonth.getCasesPerMonth(range.from, range.to);
+        List<CasesPerMonthRow> casesPerMonth = datasourceCasesPerMonth.getCasesPerMonth(range);
         return new CasesPerMonthConverter().convertCasesPerMonthData(casesPerMonth);
     }
 
@@ -67,7 +67,7 @@ public class ProtectedChartDataService {
     @Produces({ MediaType.APPLICATION_JSON })
     public DualSexStatisticsData getDiagnosisGroupStatistics() {
         Range range = new Range();
-        DiagnosisGroupResponse diagnosisGroups = datasourceDiagnosisGroups.getDiagnosisGroups(range.from, range.to);
+        DiagnosisGroupResponse diagnosisGroups = datasourceDiagnosisGroups.getDiagnosisGroups(range);
         return new DiagnosisGroupsConverter().convert(diagnosisGroups);
     }
 
@@ -77,7 +77,7 @@ public class ProtectedChartDataService {
     @Produces({ MediaType.APPLICATION_JSON })
     public DualSexStatisticsData getDiagnosisSubGroupStatistics(@QueryParam("groupId") String groupId) {
         Range range = new Range();
-        DiagnosisGroupResponse diagnosisGroups = datasourceDiagnosisSubGroups.getDiagnosisGroups(range.from, range.to, groupId);
+        DiagnosisGroupResponse diagnosisGroups = datasourceDiagnosisSubGroups.getDiagnosisGroups(range, groupId);
         return new DiagnosisSubGroupsConverter().convert(diagnosisGroups);
     }
 
@@ -93,23 +93,8 @@ public class ProtectedChartDataService {
     @Path("getAgeGroupsStatistics")
     @Produces({ MediaType.APPLICATION_JSON })
     public AgeGroupsData getAgeGroupsStatistics() {
-        final int numberOfMonthsToShow = 12;
-        LocalDate lastMonth = new LocalDate().withDayOfMonth(1).minusMonths(1);
-        AgeGroupsResponse ageGroups = datasourceAgeGroups.getAgeGroups(lastMonth.minusMonths(numberOfMonthsToShow), lastMonth);
+        Range range = new Range(AGE_PERIOD);
+        AgeGroupsResponse ageGroups = datasourceAgeGroups.getAgeGroups(range);
         return new AgeGroupsConverter().convert(ageGroups);
-    }
-
-    private static class Range {
-        private final LocalDate from;
-        private final LocalDate to;
-
-        private Range() {
-            this(INCUSIVE_PERIOD);
-        }
-
-        public Range(int months) {
-            to = new LocalDate().withDayOfMonth(1).minusMonths(1);
-            from = to.minusMonths(months);
-        }
     }
 }
