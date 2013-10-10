@@ -96,7 +96,6 @@ public class InjectUtlatande {
 
         for (JsonNode observation: newPermutation.path("observations")) {
             if (DocumentHelper.DIAGNOS_MATCHER.match(observation)) {
-                System.err.println(observation);
                 String newDiagnosis = DIAGNOSER.get(random.nextInt(DIAGNOSER.size()));
                 ((ObjectNode)observation.path("observationsKod")).put("code", newDiagnosis);
             }
