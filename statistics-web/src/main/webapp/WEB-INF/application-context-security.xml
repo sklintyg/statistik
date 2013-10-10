@@ -21,7 +21,7 @@
         <intercept-url pattern="/login/**" access="isAuthenticated()"/>
         <intercept-url pattern="/login.jsp*" access="isAnonymous()"/>
         <intercept-url pattern="/api/login/**" access="permitAll()"/>
-        <form-login login-page="/login.jsp" always-use-default-target="true" default-target-url="/#/verksamhet/oversikt"/>
+        <form-login login-page="/login.jsp" always-use-default-target="true" default-target-url="/#/verksamhet"/>
         <http-basic/>
         <logout/>
     </http>
