@@ -18,7 +18,7 @@ import javax.ws.rs.core.MediaType;
 import java.util.List;
 
 @Service("protectedChartService")
-@Path("/verksamhet")
+@Path("/business")
 public class ProtectedChartDataService {
 
     private static final int INCUSIVE_PERIOD = 18;
@@ -85,7 +85,7 @@ public class ProtectedChartDataService {
     @GET
     @Path("getOverview")
     @Produces({ MediaType.APPLICATION_JSON })
-    public OverviewData getOverviewData() {
+    public OverviewData getOverviewData(@QueryParam("businessId") String businessId) {
         OverviewResponse response = datasourceOverview.getOverview();
         return new OverviewConverter().convert(response);
     }

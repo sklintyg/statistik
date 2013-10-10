@@ -1,6 +1,6 @@
  'use strict';
 
- app.navigationMenuCtrl = function ($scope) {
+ app.navigationMenuCtrl = function ($scope, $rootScope) {
 
      $scope.organisationMenuLabel = isLoggedIn ? "Verksamhetsstatistik" : "Logga in för verksamhetsstatistik";
      
@@ -44,5 +44,9 @@
              $scope.showAbout = false;
          }
      }); 
-     
+
+    $rootScope.$on('$routeChangeSuccess', function(angularEvent, current) {
+        $scope.businessId = current.params.businessId;
+    });
+
  };
