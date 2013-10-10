@@ -1,10 +1,24 @@
 package se.inera.statistics.web.service;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
+import java.util.TreeMap;
 
-import se.inera.statistics.service.report.model.*;
-import se.inera.statistics.web.model.*;
+import se.inera.statistics.service.report.model.DiagnosisGroup;
+import se.inera.statistics.service.report.model.DiagnosisGroupResponse;
+import se.inera.statistics.service.report.model.DiagnosisGroupRow;
+import se.inera.statistics.service.report.model.Sex;
+import se.inera.statistics.web.model.ChartData;
+import se.inera.statistics.web.model.ChartSeries;
+import se.inera.statistics.web.model.DualSexStatisticsData;
+import se.inera.statistics.web.model.NamedData;
+import se.inera.statistics.web.model.TableData;
+import se.inera.statistics.web.model.TableHeader;
 
 public class DiagnosisGroupsConverter {
 
@@ -37,7 +51,7 @@ public class DiagnosisGroupsConverter {
     }
 
     private Map<String, List<Integer>> mergeChartGroups(Map<String, List<Integer>> allGroups) {
-        Map<String, List<Integer>> mergedGroups = new TreeMap<>(new Comparator<String>(){
+        Map<String, List<Integer>> mergedGroups = new TreeMap<>(new Comparator<String>() {
 
             @Override
             public int compare(String o1, String o2) {
@@ -47,7 +61,7 @@ public class DiagnosisGroupsConverter {
         });
         List<List<Integer>> values = new ArrayList<List<Integer>>(allGroups.values());
         int listSize = values.isEmpty() ? 0 : values.get(0).toArray().length;
-        for(String groupName : DIAGNOSIS_CHART_GROUPS){
+        for (String groupName : DIAGNOSIS_CHART_GROUPS) {
             mergedGroups.put(groupName, createZeroFilledList(listSize));
         }
         for (Entry<String, List<Integer>> entry : allGroups.entrySet()) {
@@ -58,7 +72,7 @@ public class DiagnosisGroupsConverter {
 
     private List<Integer> createZeroFilledList(int listSize) {
         ArrayList<Integer> listOfZeros = new ArrayList<>();
-        for( int i = 0; i < listSize; i++){
+        for (int i = 0; i < listSize; i++) {
             listOfZeros.add(0);
         }
         return listOfZeros;

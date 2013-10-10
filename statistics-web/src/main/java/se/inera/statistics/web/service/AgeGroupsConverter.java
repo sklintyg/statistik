@@ -37,7 +37,7 @@ public class AgeGroupsConverter {
         return new ChartData(series, groups);
     }
 
-    AgeGroupsData convert(AgeGroupsResponse resp){
+    AgeGroupsData convert(AgeGroupsResponse resp) {
         TableData tableData = convertToTable(resp.getRows());
         ChartData chartData = convertToChart(resp);
         int monthsIncluded = resp.getNumberOfMonthsCalculated();
