@@ -29,7 +29,7 @@ import javax.ws.rs.core.MediaType;
 import java.util.List;
 
 @Service("protectedChartService")
-@Path("/verksamhet")
+@Path("/business")
 public class ProtectedChartDataService {
 
     private static final int INCUSIVE_PERIOD = 18;
@@ -39,7 +39,6 @@ public class ProtectedChartDataService {
     private DiagnosisGroups datasourceDiagnosisGroups;
     private DiagnosisSubGroups datasourceDiagnosisSubGroups;
     private AgeGroups datasourceAgeGroups;
-    private DegreeOfSickLeave dataSourceDegreeOfSickLeave;
 
     public ProtectedChartDataService() {
 

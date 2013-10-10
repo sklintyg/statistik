@@ -15,8 +15,8 @@ app.statisticsApp.factory('statisticsData', function($http){
             });
     };
 
-    factory.getVOverview = function (successCallback, failureCallback){
-        $http.get("api/verksamhet/getOverview/1").success(function(result) {
+    factory.getBusinessOverview = function (businessId, successCallback, failureCallback){
+        $http.get("api/business/getOverview",{params: {'businessId':businessId}}).success(function(result) {
             successCallback(result);
         }).error(function(data, status, headers, config) {
                 if(status == 403) {
@@ -94,5 +94,13 @@ app.statisticsApp.factory('statisticsData', function($http){
        });
    };
 
+   factory.getLoginInfo = function (successCallback, failureCallback){
+       $http.get("api/login/getLoginInfo").success(function(result) {
+           successCallback(result);
+       }).error(function(data, status, headers, config) {
+           failureCallback();
+       });
+   };
+   
    return factory;
 });

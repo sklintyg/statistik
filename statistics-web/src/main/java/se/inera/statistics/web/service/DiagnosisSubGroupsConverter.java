@@ -7,7 +7,10 @@ import java.util.TreeMap;
 import se.inera.statistics.service.report.model.DiagnosisGroupResponse;
 import se.inera.statistics.service.report.model.DiagnosisGroupRow;
 import se.inera.statistics.service.report.model.Sex;
-import se.inera.statistics.web.model.*;
+import se.inera.statistics.web.model.ChartData;
+import se.inera.statistics.web.model.ChartSeries;
+import se.inera.statistics.web.model.DualSexStatisticsData;
+import se.inera.statistics.web.model.TableData;
 
 public class DiagnosisSubGroupsConverter {
 
@@ -57,7 +60,7 @@ public class DiagnosisSubGroupsConverter {
     }
 
     private List<Integer> getTopColumnIndexes(DiagnosisGroupResponse diagnosisGroups) {
-        if (diagnosisGroups.getRows().isEmpty()){
+        if (diagnosisGroups.getRows().isEmpty()) {
             return new ArrayList<Integer>();
         }
         TreeMap<Integer, Integer> columnSums = new TreeMap<>();

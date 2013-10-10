@@ -127,9 +127,9 @@
 					<h2 class="hidden-header">Navigering för verksamhetsstatistik</h2>
 					<!-- BUSINESS STATISTIC MENU -->
 					  <div class="accordion-heading statistics-menu">
-					    <a class="accordion-toggle first-level-menu" id="business-statistics-toggle" data-parent="#statistics-menu-accordion" href="#business-statistics-collapse" ng-class="{active: showOperation, collapsed: !showOperation}" ng-click="toggleOperationAccordion()">
+					    <div class="accordion-toggle first-level-menu" id="business-statistics-toggle" data-parent="#statistics-menu-accordion" ng-class="{active: showOperation, collapsed: !showOperation, disabled: !is_loggedin}" ng-click="toggleOperationAccordion()">
 					      {{ organisationMenuLabel }} <i class="statistict-left-menu-expand-icon"></i> <!-- Inloggad: Enbart "Verksamhetsstatistik" -->
-					    </a>
+					    </div>
 					  </div>
 					  <div id="business-statistics-collapse" class="accordion-body collapse" ng-class="{in: showOperation}">
 					    <div class="accordion-inner">
@@ -209,7 +209,7 @@
 <script type="text/javascript" src="<c:url value='/js/app/controller/casesPerMonthCtrl.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/controller/doubleAreaChartsCtrl.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/controller/overviewCtrl.js'/>"></script>
-<script type="text/javascript" src="<c:url value='/js/app/controller/verksamhet/overviewCtrl.js'/>"></script>
+<script type="text/javascript" src="<c:url value='/js/app/controller/business/businessOverviewCtrl.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/controller/ageGroupsCtrl.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/controller/navigationMenuCtrl.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/controllers.js'/>"></script>

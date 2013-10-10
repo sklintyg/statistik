@@ -6,9 +6,12 @@ import java.util.List;
 import se.inera.statistics.service.report.model.DualSexDataRow;
 import se.inera.statistics.service.report.model.DualSexField;
 
-public class ServiceUtil {
+public final class ServiceUtil {
 
-    static List<Integer> getAppendedSum(List<Integer> data){
+    private ServiceUtil() {
+    }
+
+    static List<Integer> getAppendedSum(List<Integer> data) {
         int sum = 0;
         for (Integer dataField : data) {
             sum += dataField;
@@ -26,6 +29,4 @@ public class ServiceUtil {
         }
         return data;
     }
-
-    
 }
