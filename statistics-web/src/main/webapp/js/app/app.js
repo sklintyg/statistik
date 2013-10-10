@@ -10,31 +10,31 @@ app.statisticsApp = angular.module('StatisticsApp', [  ]).config(
                 controller : 'OverviewCtrl',
 	            title: 'Översikt'
             }).when('/verksamhet/oversikt', {
-                    templateUrl : 'views/verksamhet/verksamhet.html',
-                    controller : 'VOverviewCtrl',
-                    title: 'Verksamhetsöversikt'
+                templateUrl : 'views/verksamhet/verksamhet.html',
+                controller : 'VOverviewCtrl',
+                title: 'Verksamhetsöversikt'
             }).when('/sjukfallPerManad', {
-                    templateUrl : 'views/chart.html',
-                    controller : 'CasesPerMonthCtrl',
-                    title: 'Sjukfall per månad'
+                templateUrl : 'views/detailsView.html',
+                controller : 'CasesPerMonthCtrl',
+                title: 'Sjukfall per månad'
             }).when('/aldersgrupper', {
-                templateUrl : 'views/chart.html',
+                templateUrl : 'views/detailsView.html',
                 controller : 'AgeGroupsCtrl',
                 title: 'Åldersgrupper'
             }).when('/diagnosgrupper', {
-                templateUrl : 'views/chart.html',
+                templateUrl : 'views/detailsView.html',
                 controller : 'DiagnosisGroupsCtrl',
                 resolve : { config: app.diagnosisGroupConfig }, 
                 title: 'Diagnosgrupper'
             }).when('/underdiagnosgrupper/:groupId', {
-                templateUrl : 'views/chart.html',
+                templateUrl : 'views/detailsView.html',
                 controller : 'DiagnosisGroupsCtrl',
                 resolve : { config: app.diagnosisSubGroupConfig },
                 title: 'Underdiagnosgrupper'
             }).when('/underdiagnosgrupper', {
                 redirectTo : '/underdiagnosgrupper/A00-B99'
             }).when('/sjukskrivningsgrad', {
-                templateUrl : 'views/chart.html',
+                templateUrl : 'views/detailsView.html',
                 controller : 'DiagnosisGroupsCtrl',
                 resolve : { config: app.degreeOfSickLeaveConfig },
                 title: 'Sjukskrivningsgrad'
