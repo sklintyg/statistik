@@ -2,12 +2,14 @@ package se.inera.statistics.web.service;
 
 import org.joda.time.LocalDate;
 import org.springframework.stereotype.Service;
+
 import se.inera.statistics.service.report.api.*;
 import se.inera.statistics.service.report.model.*;
 import se.inera.statistics.service.report.util.DiagnosisGroupsUtil;
 import se.inera.statistics.web.model.AgeGroupsData;
 import se.inera.statistics.web.model.DualSexStatisticsData;
 import se.inera.statistics.web.model.TableData;
+import se.inera.statistics.web.model.Verksamhet;
 import se.inera.statistics.web.model.overview.OverviewData;
 
 import javax.ws.rs.GET;
@@ -15,6 +17,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
+
 import java.util.List;
 
 @Service("protectedChartService")
@@ -84,7 +87,8 @@ public class ProtectedChartDataService {
     @GET
     @Path("getOverview")
     @Produces({ MediaType.APPLICATION_JSON })
-    public OverviewData getOverviewData(@QueryParam("businessId") String businessId) {
+    public OverviewData getOverviewData(@QueryParam("businessId") String encodedVerksamhetId) {
+        String verksamhetId = Verksamhet.decodeId(encodedVerksamhetId); //To be used when requesting data from datasourceOverview
         OverviewResponse response = datasourceOverview.getOverview();
         return new OverviewConverter().convert(response);
     }

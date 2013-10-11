@@ -12,7 +12,7 @@ import javax.ws.rs.core.MediaType;
 
 import org.springframework.stereotype.Service;
 
-import se.inera.statistics.web.model.Business;
+import se.inera.statistics.web.model.Verksamhet;
 import se.inera.statistics.web.model.LoginInfo;
 
 @Service("loginService")
@@ -34,7 +34,7 @@ public class LoginInfoService {
             name = user.getName();
         }
 
-        return new LoginInfo(name, loggedIn, Arrays.asList(new Business("verksamhet1", "Närhälsan i Småmåla"), new Business("verksamhet2", "Småmålas akutmottagning")));
+        return new LoginInfo(name, loggedIn, Arrays.asList(new Verksamhet("verksamhet1", "Närhälsan i Småmåla"), new Verksamhet("verksamhet2", "Småmålas akutmottagning")));
     }
 
 }
