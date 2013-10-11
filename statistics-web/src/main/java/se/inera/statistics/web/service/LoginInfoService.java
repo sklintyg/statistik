@@ -20,7 +20,7 @@ import se.inera.statistics.web.model.LoginInfo;
 @Path("/login")
 public class LoginInfoService {
 
-    public LoginInfoService() {}
+    public LoginInfoService() { }
 
     @GET
     @Path("getLoginInfo")

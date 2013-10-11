@@ -1,18 +1,23 @@
 package se.inera.statistics.web.service;
 
-import org.junit.Test;
-import static org.junit.Assert.*;
-
-import se.inera.statistics.service.report.model.*;
-import se.inera.statistics.web.model.DualSexStatisticsData;
-import se.inera.statistics.web.model.TableData;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
+
+import org.junit.Test;
+
+import se.inera.statistics.service.report.model.DiagnosisGroup;
+import se.inera.statistics.service.report.model.DiagnosisGroupResponse;
+import se.inera.statistics.service.report.model.DiagnosisGroupRow;
+import se.inera.statistics.service.report.model.DualSexField;
+import se.inera.statistics.web.model.DualSexStatisticsData;
+import se.inera.statistics.web.model.TableData;
 
 public class DiagnosisGroupsConverterTest {
 
     @Test
-    public void tableConverterTestEmptyInput(){
+    public void tableConverterTestEmptyInput() {
         DiagnosisGroupResponse resp = new DiagnosisGroupResponse(new ArrayList<DiagnosisGroup>(), new ArrayList<DiagnosisGroupRow>());
         TableData tableData = DiagnosisGroupsConverter.convertTable(resp);
         assertEquals("[[;1], [Period;1, Summering;1]]", tableData.getHeaders().toString());
@@ -20,13 +25,15 @@ public class DiagnosisGroupsConverterTest {
     }
 
     @Test
-    public void tableConverterTest(){
+    public void tableConverterTest() {
         //Given
         ArrayList<DiagnosisGroup> diagnosisGroups = new ArrayList<DiagnosisGroup>();
         diagnosisGroups.add(new DiagnosisGroup("A01-B99", "name1"));
         ArrayList<DiagnosisGroupRow> rows = new ArrayList<DiagnosisGroupRow>();
         ArrayList<DualSexField> diagnosisGroupData = new ArrayList<DualSexField>();
+        // CHECKSTYLE:OFF MagicNumber
         diagnosisGroupData.add(new DualSexField(3, 2));
+        // CHECKSTYLE:ON MagicNumber
         rows.add(new DiagnosisGroupRow("period1", diagnosisGroupData));
         DiagnosisGroupResponse resp = new DiagnosisGroupResponse(diagnosisGroups, rows);
 
@@ -39,7 +46,7 @@ public class DiagnosisGroupsConverterTest {
     }
 
     @Test
-    public void converterTestEmpty(){
+    public void converterTestEmpty() {
         DiagnosisGroupResponse resp = new DiagnosisGroupResponse(new ArrayList<DiagnosisGroup>(), new ArrayList<DiagnosisGroupRow>());
         DualSexStatisticsData data = new DiagnosisGroupsConverter().convert(resp);
         assertEquals("[]", data.getFemaleChart().getCategories().toString());
@@ -47,13 +54,15 @@ public class DiagnosisGroupsConverterTest {
     }
 
     @Test
-    public void converterTest(){
+    public void converterTest() {
         //Given
         ArrayList<DiagnosisGroup> diagnosisGroups = new ArrayList<DiagnosisGroup>();
         diagnosisGroups.add(new DiagnosisGroup("A00-B99", "name1"));
         ArrayList<DiagnosisGroupRow> rows = new ArrayList<DiagnosisGroupRow>();
         ArrayList<DualSexField> diagnosisGroupData = new ArrayList<DualSexField>();
+        // CHECKSTYLE:OFF MagicNumber
         diagnosisGroupData.add(new DualSexField(3, 2));
+        // CHECKSTYLE:ON MagicNumber
         rows.add(new DiagnosisGroupRow("period1", diagnosisGroupData));
         DiagnosisGroupResponse resp = new DiagnosisGroupResponse(diagnosisGroups, rows);
 

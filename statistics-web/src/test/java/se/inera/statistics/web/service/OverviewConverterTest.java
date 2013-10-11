@@ -17,6 +17,8 @@ import se.inera.statistics.web.model.overview.SickLeaveLengthOverview;
 
 public class OverviewConverterTest {
 
+    // CHECKSTYLE:OFF MagicNumber
+
     @Test
     public void converterTestEmpty() {
         //Given
@@ -40,7 +42,7 @@ public class OverviewConverterTest {
     }
 
     @Test
-    public void converterTestCasesPerMonth(){
+    public void converterTestCasesPerMonth() {
         //Given
         int casesPerMonthProportionMale = 0;
         int casesPerMonthProportionFemale = 1;
@@ -100,4 +102,5 @@ public class OverviewConverterTest {
         assertEquals(3, sickGroupsResult.getLongSickLeavesTotal());
     }
 
+    // CHECKSTYLE:ON MagicNumber
 }

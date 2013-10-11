@@ -1,7 +1,5 @@
 package se.inera.statistics.web.service;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -25,10 +23,10 @@ import se.inera.statistics.web.model.TableHeader;
 
 public class DiagnosisGroupsConverter {
 
-    private static final LinkedHashMap<String, List<String>> DIAGNOSIS_CHART_GROUPS = createDiagnosisGroupsMap(); 
+    private static final LinkedHashMap<String, List<String>> DIAGNOSIS_CHART_GROUPS = createDiagnosisGroupsMap();
     private static final String OVRIGT_CHART_GROUP = "Övrigt (P00-P96, Q00-Q99, S00-Y98)";
 
-    private static LinkedHashMap<String, List<String>> createDiagnosisGroupsMap(){
+    private static LinkedHashMap<String, List<String>> createDiagnosisGroupsMap() {
         final LinkedHashMap<String, List<String>> diagnosisGroups = new LinkedHashMap<>();
         diagnosisGroups.put("Somatiska sjukdomar (A00-E90, G00-L99, N00-N99)", Arrays.asList("A00-B99", "C00-D48", "D50-D89", "E00-E90", "G00-G99", "H00-H59",
                 "H00-H59", "H60-H95", "I00-I99", "J00-J99", "K00-K93", "L00-L99", "N00-N99"));
@@ -41,10 +39,10 @@ public class DiagnosisGroupsConverter {
         return diagnosisGroups;
     }
 
-    private static List<String> getDiagnosisChartGroupsAsList(){
+    private static List<String> getDiagnosisChartGroupsAsList() {
         return new ArrayList<>(DIAGNOSIS_CHART_GROUPS.keySet());
     }
-    
+
     DualSexStatisticsData convert(DiagnosisGroupResponse diagnosisGroups) {
         TableData tableData = convertTable(diagnosisGroups);
         ChartData maleChart = convertChart(diagnosisGroups, Sex.Male);
@@ -122,7 +120,7 @@ public class DiagnosisGroupsConverter {
 
     private String getMergedChartGroupName(String groupId) {
         for (Entry<String, List<String>> entry : DIAGNOSIS_CHART_GROUPS.entrySet()) {
-            if (entry.getValue().contains(groupId)){
+            if (entry.getValue().contains(groupId)) {
                 return entry.getKey();
             }
         }
