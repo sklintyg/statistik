@@ -806,6 +806,47 @@ div.accordion-body.in.collapse > div.accordion-heading a.accordion-toggle{
 	border-top: 1px solid #dddddd;
 }
 
+#faq-accordion {
+	
+}
+.faq-accordion-group {
+	margin-bottom: 10px !important;
+	border: 1px solid #e5e5e5 !important;
+	-webkit-border-radius: 8px !important;
+	-moz-border-radius: 8px !important;
+	border-radius: 8px !important;
+}
+.faq-accordion-heading {
+	border-bottom: 0;
+}
+.faq-accordion-toggle {
+	display: block;
+	padding: 8px 15px !important;
+	cursor: pointer !important;
+	background: transparent !important;
+}
+.faq-accordion-toggle h2 {
+	line-height: 5px;
+	font-size: 14px !important;
+}
+.faq-accordion-body {
+	
+}
+.faq-accordion-inner {
+	background: #fff !important;
+	padding: 9px 15px !important;
+	border-top: 1px solid #e5e5e5;
+	border: 1px solid transparent !important;
+	-webkit-border-bottom-right-radius: 8px !important;
+	-webkit-border-bottom-left-radius: 8px !important;
+	-moz-border-radius-bottomright: 8px !important;
+	-moz-border-radius-bottomleft: 8px !important;
+	border-bottom-right-radius: 8px !important;
+	border-bottom-left-radius: 8px !important;
+}
+.faq-accordion-inner p {
+	
+}
 .login-button { width: 100%; }
 .login-button-label { color: #008391; font-weight: bold; }
 
@@ -980,10 +1021,13 @@ a.listheader.collapsed {
 	margin: 20px 0px 0px 0px;
 	
 }
+#about-content {
+	width: 65%;
+}
 	#overview-content h1, #overview-content h2, #overview-content h3, #overview-content h4,
 	#about-content h1, #about-content h2, #about-content h3, #about-content h4 { font-family: Helvetica; color: #008391; }
 	#overview-content h1, #about-content h1 { font-weight: bold; font-size: 20px; margin-bottom: 0px; }
-	#overview-content h2, #about-content h2 { font-weight: bold; }
+	#overview-content h2, #about-content h2 { font-weight: bold; font-size: 18px; }
 	
 	#overview-content span.overview-ingress { font-weight: bold; margin-bottom: 10px; }
 	#overview-content .overview-box-header-container a:hover { text-decoration: none; }
@@ -1231,7 +1275,9 @@ a.listheader.collapsed {
 		border-left: 1px solid #C4C4C4;
 		border-right: 1px solid #C4C4C4;
 		border-bottom: 1px solid #C4C4C4;
-		border-top: 1px solid none; 
+		border-top: 1px solid transparent;
+		padding-left: 2px;
+		padding-right: 2px;
 	}
 	
 	/*div.box-bottom {
@@ -1485,7 +1531,17 @@ div.datatablescrollable {
 #about-content section {
 	
 }
-
 .row-margin-bottom {
 	margin-bottom: 15px;
+}
+.spinner {
+	position: relative;
+	width: 100%;
+	left: 0%;
+	margin: 5% 0px 0px 0px;
+	text-align: center;
+}
+.spinner #loading-message {
+	margin-top: 10px;
+	text-align: center;
 }
