@@ -3,12 +3,43 @@
 /* App Module */
 var app = {};
 
-app.statisticsApp = angular.module('StatisticsApp', [  ]).config(
+app.statisticsApp = angular.module('StatisticsApp', [ 'ngCookies' ]).config(
         [ '$routeProvider', '$httpProvider', function($routeProvider, $httpProvider) {
-            $routeProvider.when('/oversikt', {
+            $routeProvider.when('/nationell/oversikt', {
                 templateUrl : 'views/overview.html',
                 controller : 'OverviewCtrl',
+                controllerAs : 'NationalOverviewCtrl',
 	            title: 'Översikt'
+            }).when('/nationell/sjukfallPerManad', {
+                templateUrl : 'views/detailsView.html',
+                controller : 'CasesPerMonthCtrl',
+                controllerAs : 'NationalCasesPerMonthCtrl',
+                title: 'Sjukfall per månad'
+            }).when('/nationell/aldersgrupper', {
+                templateUrl : 'views/detailsView.html',
+                controller : 'AgeGroupsCtrl',
+                controllerAs : 'NationalAgeGroupCtrl',
+                title: 'Åldersgrupper'
+            }).when('/nationell/diagnosgrupper', {
+                templateUrl : 'views/detailsView.html',
+                controller : 'DiagnosisGroupsCtrl',
+                controllerAs : 'NationalDiagnosisGroupsCtrl',
+                resolve : { config: app.diagnosisGroupConfig }, 
+                title: 'Diagnosgrupper'
+            }).when('/nationell/underdiagnosgrupper/:groupId', {
+                templateUrl : 'views/detailsView.html',
+                controller : 'DiagnosisGroupsCtrl',
+                controllerAs : 'NationalDiagnosisSubGroupsCtrl',
+                resolve : { config: app.diagnosisSubGroupConfig },
+                title: 'Underdiagnosgrupper'
+            }).when('/nationell/underdiagnosgrupper', {
+                redirectTo : '/nationell/underdiagnosgrupper/A00-B99'
+            }).when('/nationell/sjukskrivningsgrad', {
+                templateUrl : 'views/detailsView.html',
+                controller : 'DiagnosisGroupsCtrl',
+                controllerAs : 'NationalDegreeOfSickLeaveCtrl',
+                resolve : { config: app.degreeOfSickLeaveConfig },
+                title: 'Sjukskrivningsgrad'
             }).when('/verksamhet', {
                 templateUrl : 'views/empty.html',
                 controller : 'BusinessLandingPageCtrl',
@@ -16,46 +47,26 @@ app.statisticsApp = angular.module('StatisticsApp', [  ]).config(
             }).when('/verksamhet/:businessId/oversikt', {
                 templateUrl : 'views/business/businessOverview.html',
                 controller : 'BusinessOverviewCtrl',
+                controllerAs : 'BusinessOverviewCtrl',
                 title: 'Verksamhetsöversikt'
-            }).when('/sjukfallPerManad', {
-                templateUrl : 'views/detailsView.html',
-                controller : 'CasesPerMonthCtrl',
-                title: 'Sjukfall per månad'
-            }).when('/aldersgrupper', {
-                templateUrl : 'views/detailsView.html',
-                controller : 'AgeGroupsCtrl',
-                title: 'Åldersgrupper'
-            }).when('/diagnosgrupper', {
-                templateUrl : 'views/detailsView.html',
-                controller : 'DiagnosisGroupsCtrl',
-                resolve : { config: app.diagnosisGroupConfig }, 
-                title: 'Diagnosgrupper'
-            }).when('/underdiagnosgrupper/:groupId', {
-                templateUrl : 'views/detailsView.html',
-                controller : 'DiagnosisGroupsCtrl',
-                resolve : { config: app.diagnosisSubGroupConfig },
-                title: 'Underdiagnosgrupper'
-            }).when('/underdiagnosgrupper', {
-                redirectTo : '/underdiagnosgrupper/A00-B99'
-            }).when('/sjukskrivningsgrad', {
-                templateUrl : 'views/detailsView.html',
-                controller : 'DiagnosisGroupsCtrl',
-                resolve : { config: app.degreeOfSickLeaveConfig },
-                title: 'Sjukskrivningsgrad'
             }).when('/om/tjansten', {
                 templateUrl : 'views/about/about.html',
+                controllerAs : 'AboutServiceCtrl',
                 title: 'Om tjänsten'
             }).when('/om/kontakt', {
                 templateUrl : 'views/about/contact.html',
+                controllerAs : 'AboutContactCtrl',
                 title: 'Kontakt till support'
             }).when('/om/vanligafragor', {
                 templateUrl : 'views/about/faq.html',
+                controllerAs : 'AboutFaqCtrl',
                 title: 'Vanliga frågor och svar'
             }).when('/om/inloggning', {
                 templateUrl : 'views/about/login.html',
+                controllerAs : 'AboutLoginCtrl',
                 title: 'Inloggning och behörighet'
             }).when('/', {
-                redirectTo : '/oversikt'
+                redirectTo : '/nationell/oversikt'
             }).otherwise({
                 templateUrl : 'views/error/pageNotFound.html',
                 title: 'Fel'

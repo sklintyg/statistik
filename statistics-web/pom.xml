@@ -78,6 +78,10 @@
       <groupId>com.fasterxml.jackson.jaxrs</groupId>
       <artifactId>jackson-jaxrs-json-provider</artifactId>
     </dependency>
+    <dependency>
+        <groupId>org.apache.commons</groupId>
+        <artifactId>commons-lang3</artifactId>
+    </dependency>
   </dependencies>
 
   <build>
@@ -149,10 +153,7 @@
           <jsSrcDir>src/main/webapp/js</jsSrcDir>
           <jsTestSrcDir>src/test/javascript</jsTestSrcDir>
           <sourceIncludes>
-            <include>lib/**/*.js</include>
-            <include>app/app.js</include>
             <include>app/controller/common.js</include>
-            <include>app/controller/diagnosisGroupsCtrl.js</include>
           </sourceIncludes>
         </configuration>
       </plugin>

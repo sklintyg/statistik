@@ -6,9 +6,9 @@ public class LoginInfo {
 
     private final String name;
     private final boolean loggedIn;
-    private final List<Business> businesses;
+    private final List<Verksamhet> businesses;
 
-    public LoginInfo(String name, boolean loggedIn, List<Business> businesses) {
+    public LoginInfo(String name, boolean loggedIn, List<Verksamhet> businesses) {
         this.name = name;
         this.loggedIn = loggedIn;
         this.businesses = businesses;
@@ -22,7 +22,7 @@ public class LoginInfo {
         return loggedIn;
     }
 
-    public List<Business> getBusinesses() {
+    public List<Verksamhet> getBusinesses() {
         return businesses;
     }
 
