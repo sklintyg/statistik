@@ -14,7 +14,7 @@ import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.springframework.transaction.annotation.Transactional;
 
-import se.inera.statistics.service.report.api.DiagnosisGroups;
+import se.inera.statistics.service.report.api.DiagnosisSubGroups;
 import se.inera.statistics.service.report.model.DiagnosisGroup;
 import se.inera.statistics.service.report.model.DiagnosisGroupResponse;
 import se.inera.statistics.service.report.model.DiagnosisGroupRow;
@@ -23,9 +23,7 @@ import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.Sex;
 import se.inera.statistics.service.report.util.DiagnosisGroupsUtil;
 
-public class DiagnosgroupPersistenceHandler implements DiagnosisGroups {
-    private static final List<DiagnosisGroup> HEADERS = DiagnosisGroupsUtil.getAllDiagnosisGroups();
-
+public class DiagnossubgroupPersistenceHandler implements DiagnosisSubGroups {
     @PersistenceContext(unitName = "IneraStatisticsLog")
     private EntityManager manager;
 
@@ -34,13 +32,13 @@ public class DiagnosgroupPersistenceHandler implements DiagnosisGroups {
     private DateTimeFormatter inputFormatter = DateTimeFormat.forPattern("yyyy-MM");
 
     @Transactional
-    public void count(String period, String diagnosgrupp, Sex sex) {
-        DiagnosisGroupData existingRow = manager.find(DiagnosisGroupData.class, new DiagnosisGroupData.DiagnosisGroupKey(period, "nationell", diagnosgrupp));
+    public void count(String period, String diagnosgrupp, String undergrupp, Sex sex) {
+        DiagnosisSubGroupData existingRow = manager.find(DiagnosisSubGroupData.class, new DiagnosisSubGroupData.Key(period, "nationell", diagnosgrupp, undergrupp));
         int female = Sex.Female.equals(sex) ? 1 : 0;
         int male = Sex.Male.equals(sex) ? 1 : 0;
 
         if (existingRow == null) {
-            DiagnosisGroupData row = new DiagnosisGroupData(period, "nationell", diagnosgrupp, female, male);
+            DiagnosisSubGroupData row = new DiagnosisSubGroupData(period, "nationell", diagnosgrupp, undergrupp, female, male);
             manager.persist(row);
         } else {
             existingRow.setFemale(existingRow.getFemale() + female);
@@ -51,16 +49,18 @@ public class DiagnosgroupPersistenceHandler implements DiagnosisGroups {
 
     @Override
     @Transactional
-    public DiagnosisGroupResponse getDiagnosisGroups(Range range) {
-        TypedQuery<DiagnosisGroupData> query = manager.createQuery("SELECT c FROM DiagnosisGroupData c WHERE c.diagnosisGroupKey.hsaId = :hsaId AND c.diagnosisGroupKey.period >= :from AND c.diagnosisGroupKey.period <= :to", DiagnosisGroupData.class);
+    public DiagnosisGroupResponse getDiagnosisGroups(Range range, String group) {
+        TypedQuery<DiagnosisSubGroupData> query = manager.createQuery("SELECT c FROM DiagnosisSubGroupData c WHERE c.diagnosisGroupKey.hsaId = :hsaId AND c.diagnosisGroupKey.diagnosgrupp = :group and c.diagnosisGroupKey.period >= :from AND c.diagnosisGroupKey.period <= :to", DiagnosisSubGroupData.class);
         query.setParameter("hsaId", "nationell");
+        query.setParameter("group", group);
         query.setParameter("from", inputFormatter.print(range.getFrom()));
         query.setParameter("to", inputFormatter.print(range.getTo()));
 
-        return new DiagnosisGroupResponse(HEADERS, translateForOutput(range, query.getResultList()));
+        List<DiagnosisGroup> header = DiagnosisGroupsUtil.getSubGroups(group);
+        return new DiagnosisGroupResponse(header, translateForOutput(range, header, query.getResultList()));
     }
 
-    private List<DiagnosisGroupRow> translateForOutput(Range range, List<DiagnosisGroupData> list) {
+    private List<DiagnosisGroupRow> translateForOutput(Range range, List<DiagnosisGroup> header, List<DiagnosisSubGroupData> list) {
         List<DiagnosisGroupRow> translatedCasesPerMonthRows = new ArrayList<>();
 
         // Span all
@@ -69,8 +69,8 @@ public class DiagnosgroupPersistenceHandler implements DiagnosisGroups {
         for (LocalDate currentPeriod = range.getFrom(); !currentPeriod.isAfter(range.getTo()); currentPeriod = currentPeriod.plusMonths(1)) {
             String displayDate = outputFormatter.print(currentPeriod);
             String period = inputFormatter.print(currentPeriod);
-            List<DualSexField> values = new ArrayList<>(HEADERS.size());
-            for (DiagnosisGroup group: HEADERS) {
+            List<DualSexField> values = new ArrayList<>(header.size());
+            for (DiagnosisGroup group: header) {
                 values.add(map.get(period + group.getId()));
             }
             translatedCasesPerMonthRows.add(new DiagnosisGroupRow(displayDate, values));
@@ -78,11 +78,11 @@ public class DiagnosgroupPersistenceHandler implements DiagnosisGroups {
         return translatedCasesPerMonthRows;
     }
 
-    private static Map<String, DualSexField> map(List<DiagnosisGroupData> data) {
+    private static Map<String, DualSexField> map(List<DiagnosisSubGroupData> list) {
         Map<String, DualSexField> resultMap = new DefaultHashMap<>(new DualSexField(0, 0));
 
-        for (DiagnosisGroupData item: data) {
-            resultMap.put(item.getPeriod() + item.getGroup(), new DualSexField(item.getFemale(), item.getMale()));
+        for (DiagnosisSubGroupData item: list) {
+            resultMap.put(item.getPeriod() + item.getSubGroup(), new DualSexField(item.getFemale(), item.getMale()));
         }
         return resultMap;
     }

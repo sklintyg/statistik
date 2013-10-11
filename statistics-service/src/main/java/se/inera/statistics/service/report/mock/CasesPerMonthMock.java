@@ -4,10 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import org.joda.time.LocalDate;
-
 import se.inera.statistics.service.report.api.CasesPerMonth;
 import se.inera.statistics.service.report.model.CasesPerMonthRow;
+import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.Sex;
 import se.inera.statistics.service.report.util.ReportUtil;
 
@@ -17,7 +16,7 @@ public class CasesPerMonthMock implements CasesPerMonth {
 
     // CHECKSTYLE:OFF MagicNumber
     @Override
-    public List<CasesPerMonthRow> getCasesPerMonth(LocalDate from, LocalDate to) {
+    public List<CasesPerMonthRow> getCasesPerMonth(Range range) {
         List<CasesPerMonthRow> rows = new ArrayList<>();
         for (String periodName : ReportUtil.PERIODS) {
             int men = (int) (random.nextGaussian() * 2000 + 10000);

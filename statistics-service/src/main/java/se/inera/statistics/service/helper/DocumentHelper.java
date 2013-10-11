@@ -1,8 +1,14 @@
 package se.inera.statistics.service.helper;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.fasterxml.jackson.databind.JsonNode;
 
 public final class DocumentHelper {
+
+    public static Matcher DIAGNOS_MATCHER = Matcher.Builder.matcher("observationsKategori").add(Matcher.Builder.matcher("code", "439401001")).add((Matcher.Builder.matcher("codeSystem", "1.2.752.116.2.1.1.1")));
+    public static Matcher ARBETSFORMAGA_MATCHER = Matcher.Builder.matcher("observationsKod").add(Matcher.Builder.matcher("code", "302119000")).add((Matcher.Builder.matcher("codeSystem", "1.2.752.116.2.1.1.1")));
 
     private DocumentHelper() {
     }
@@ -37,16 +43,22 @@ public final class DocumentHelper {
 
     public static String getDiagnos(JsonNode document) {
         for (JsonNode node: document.path("observations")) {
-            if (isDiagnosObservation(node)) {
+            if (DIAGNOS_MATCHER.match(node)) {
                 return node.path("observationsKod").path("code").textValue();
             }
         }
         return null;
     }
 
-    private static boolean isDiagnosObservation(JsonNode node) {
-        JsonNode kategori = node.path("observationsKategori");
-        return "439401001".equals(kategori.path("code").textValue()) && "1.2.752.116.2.1.1.1".equals(kategori.path("codeSystem").textValue()); 
+    public static List<String> getArbetsformaga(JsonNode document) {
+        List<String> result = new ArrayList<>();
+        for (JsonNode node: document.path("observations")) {
+            if (ARBETSFORMAGA_MATCHER.match(node)) {
+                for (JsonNode varde: node.path("varde")) {
+                    result.add(varde.path("quantity").asText());
+                }
+            }
+        }
+        return result;
     }
-
 }

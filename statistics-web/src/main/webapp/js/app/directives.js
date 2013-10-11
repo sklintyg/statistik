@@ -2,16 +2,16 @@
 
 app.statisticsApp.directive("navigationaware", function ($rootScope, $location) {
     
-    var matchingPath = function(navigationHref, currentPath){
-        return currentPath.indexOf(navigationHref) >= 0;
-    };
+    var isActivePage = function(currentRoute, navLinkAttrs) {
+        return currentRoute.controllerAs === navLinkAttrs.ctrlname;
+    }
     
     return {
         restrict: "A",
         link: function ($scope, elem, $attrs) {
-            $rootScope.$on('$routeChangeSuccess', function() {
+            $rootScope.$on('$routeChangeSuccess', function(angularEvent, current, previous) {
                 elem.parent().removeClass("active");
-                if (matchingPath($attrs.ngHref, $location.$$absUrl)){
+                if (isActivePage(current, $attrs)){
                     elem.parent().addClass("active");
                     var groupId = elem.closest(".accordion-body").attr('id');
                     $rootScope.$broadcast('navigationUpdate', groupId);

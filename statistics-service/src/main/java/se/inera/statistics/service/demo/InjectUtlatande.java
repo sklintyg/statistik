@@ -23,6 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.jms.core.MessageCreator;
 
+import se.inera.statistics.service.helper.DocumentHelper;
 import se.inera.statistics.service.helper.JSONParser;
 import se.inera.statistics.service.report.model.DiagnosisGroup;
 import se.inera.statistics.service.report.util.DiagnosisGroupsUtil;
@@ -94,9 +95,16 @@ public class InjectUtlatande {
         newPermutation.put("validToDate", FORMATTER.print(end));
 
         for (JsonNode observation: newPermutation.path("observations")) {
-            if ("1.2.752.116.2.1.1.1".equals(observation.path("observationsKategori").path("codeSystem").textValue()) && "439401001".equals(observation.path("observationsKategori").path("code").textValue())) {
+            if (DocumentHelper.DIAGNOS_MATCHER.match(observation)) {
                 String newDiagnosis = DIAGNOSER.get(random.nextInt(DIAGNOSER.size()));
                 ((ObjectNode)observation.path("observationsKod")).put("code", newDiagnosis);
+            }
+        }
+
+        for (JsonNode observation: newPermutation.path("observations")) {
+            if (DocumentHelper.ARBETSFORMAGA_MATCHER.match(observation)) {
+                int arbetsformaga = random.nextInt(3) * 25;
+                ((ObjectNode)observation.path("varde").path(0)).put("quantity", arbetsformaga);
             }
         }
 

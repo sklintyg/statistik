@@ -36,7 +36,7 @@ import java.util.List;
 @Path("/business")
 public class ProtectedChartDataService {
 
-    private static final int INCLUSIVE_PERIOD = 18;
+    private static final int AGE_PERIOD = 12;
 
     private Overview datasourceOverview;
     private CasesPerMonth datasourceCasesPerMonth;
@@ -65,10 +65,8 @@ public class ProtectedChartDataService {
     @Path("getNumberOfCasesPerMonth")
     @Produces({ MediaType.APPLICATION_JSON })
     public TableData getNumberOfCasesPerMonth() {
-        LocalDate lastMonth = new LocalDate().withDayOfMonth(1).minusMonths(1);
-
-        List<CasesPerMonthRow> casesPerMonth = datasourceCasesPerMonth.getCasesPerMonth(lastMonth.minusMonths(INCLUSIVE_PERIOD - 1), lastMonth);
-
+        Range range = new Range();
+        List<CasesPerMonthRow> casesPerMonth = datasourceCasesPerMonth.getCasesPerMonth(range);
         return new CasesPerMonthConverter().convertCasesPerMonthData(casesPerMonth);
     }
 
@@ -83,8 +81,8 @@ public class ProtectedChartDataService {
     @Path("getDiagnosisGroupStatistics")
     @Produces({ MediaType.APPLICATION_JSON })
     public DualSexStatisticsData getDiagnosisGroupStatistics() {
-        LocalDate lastMonth = new LocalDate().withDayOfMonth(1).minusMonths(1);
-        DiagnosisGroupResponse diagnosisGroups = datasourceDiagnosisGroups.getDiagnosisGroups(lastMonth.minusMonths(INCLUSIVE_PERIOD - 1), lastMonth);
+        Range range = new Range();
+        DiagnosisGroupResponse diagnosisGroups = datasourceDiagnosisGroups.getDiagnosisGroups(range);
         return new DiagnosisGroupsConverter().convert(diagnosisGroups);
     }
 
@@ -93,7 +91,8 @@ public class ProtectedChartDataService {
     @Path("getDiagnosisSubGroupStatistics")
     @Produces({ MediaType.APPLICATION_JSON })
     public DualSexStatisticsData getDiagnosisSubGroupStatistics(@QueryParam("groupId") String groupId) {
-        DiagnosisGroupResponse diagnosisGroups = datasourceDiagnosisSubGroups.getDiagnosisSubGroups(groupId);
+        Range range = new Range();
+        DiagnosisGroupResponse diagnosisGroups = datasourceDiagnosisSubGroups.getDiagnosisGroups(range, groupId);
         return new DiagnosisSubGroupsConverter().convert(diagnosisGroups);
     }
 
@@ -124,9 +123,8 @@ public class ProtectedChartDataService {
     @Path("getAgeGroupsStatistics")
     @Produces({ MediaType.APPLICATION_JSON })
     public AgeGroupsData getAgeGroupsStatistics() {
-        final int numberOfMonthsToShow = 12;
-        LocalDate lastMonth = new LocalDate().withDayOfMonth(1).minusMonths(1);
-        AgeGroupsResponse ageGroups = datasourceAgeGroups.getAgeGroups(lastMonth.minusMonths(numberOfMonthsToShow), lastMonth);
+        Range range = new Range(AGE_PERIOD);
+        AgeGroupsResponse ageGroups = datasourceAgeGroups.getAgeGroups(range);
         return new AgeGroupsConverter().convert(ageGroups);
     }
 
@@ -155,5 +153,4 @@ public class ProtectedChartDataService {
         }
         return false;
     }
-
 }

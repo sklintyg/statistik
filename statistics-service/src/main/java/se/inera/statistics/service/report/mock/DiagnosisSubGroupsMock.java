@@ -10,13 +10,15 @@ import se.inera.statistics.service.report.model.DiagnosisGroup;
 import se.inera.statistics.service.report.model.DiagnosisGroupResponse;
 import se.inera.statistics.service.report.model.DiagnosisGroupRow;
 import se.inera.statistics.service.report.model.DualSexField;
+import se.inera.statistics.service.report.model.Range;
+import se.inera.statistics.service.report.model.Sex;
 import se.inera.statistics.service.report.util.DiagnosisGroupsUtil;
 import se.inera.statistics.service.report.util.ReportUtil;
 
 public class DiagnosisSubGroupsMock implements DiagnosisSubGroups {
 
     @Override
-    public DiagnosisGroupResponse getDiagnosisSubGroups(String diagnosisGroupId) {
+    public DiagnosisGroupResponse getDiagnosisGroups(Range range, String diagnosisGroupId) {
         List<DiagnosisGroup> headers = DiagnosisGroupsUtil.getSubGroups(diagnosisGroupId);
         List<DiagnosisGroupRow> rows = new ArrayList<>();
         for (String periodName : ReportUtil.PERIODS) {
@@ -36,6 +38,10 @@ public class DiagnosisSubGroupsMock implements DiagnosisSubGroups {
     private int g() {
         final int maxNumber = 100;
         return new Random().nextInt(maxNumber);
+    }
+
+    @Override
+    public void count(String period, String diagnosgrupp, String undergrupp, Sex sex) {
     }
 
 }
