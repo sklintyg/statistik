@@ -124,11 +124,11 @@
         }
         if (!$scope.detailsOption){
             // Selected sub diagnosis group not found, redirect to default sub diagnosis group
-            $window.location="#/underdiagnosgrupper";
+            $window.location="#/nationell/underdiagnosgrupper";
         }
         $scope.$watch(function(){return $scope.detailsOption;}, function() {
             if ($scope.detailsOption.id != $routeParams.groupId){
-                $window.location="#/underdiagnosgrupper/" + $scope.detailsOption.id;
+                $window.location="#/nationell/underdiagnosgrupper/" + $scope.detailsOption.id;
             }
         });
         $scope.detailsOptions = result;

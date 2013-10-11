@@ -32,13 +32,13 @@ public class DiagnossubgroupPersistenceHandler implements DiagnosisSubGroups {
     private DateTimeFormatter inputFormatter = DateTimeFormat.forPattern("yyyy-MM");
 
     @Transactional
-    public void count(String period, String diagnosgrupp, String undergrupp, Sex sex) {
-        DiagnosisSubGroupData existingRow = manager.find(DiagnosisSubGroupData.class, new DiagnosisSubGroupData.Key(period, "nationell", diagnosgrupp, undergrupp));
+    public void count(String hsaId, String period, String diagnosgrupp, String undergrupp, Sex sex) {
+        DiagnosisSubGroupData existingRow = manager.find(DiagnosisSubGroupData.class, new DiagnosisSubGroupData.Key(period, hsaId, diagnosgrupp, undergrupp));
         int female = Sex.Female.equals(sex) ? 1 : 0;
         int male = Sex.Male.equals(sex) ? 1 : 0;
 
         if (existingRow == null) {
-            DiagnosisSubGroupData row = new DiagnosisSubGroupData(period, "nationell", diagnosgrupp, undergrupp, female, male);
+            DiagnosisSubGroupData row = new DiagnosisSubGroupData(period, hsaId, diagnosgrupp, undergrupp, female, male);
             manager.persist(row);
         } else {
             existingRow.setFemale(existingRow.getFemale() + female);
@@ -49,9 +49,9 @@ public class DiagnossubgroupPersistenceHandler implements DiagnosisSubGroups {
 
     @Override
     @Transactional
-    public DiagnosisGroupResponse getDiagnosisGroups(Range range, String group) {
+    public DiagnosisGroupResponse getDiagnosisGroups(String hsaId, Range range, String group) {
         TypedQuery<DiagnosisSubGroupData> query = manager.createQuery("SELECT c FROM DiagnosisSubGroupData c WHERE c.diagnosisGroupKey.hsaId = :hsaId AND c.diagnosisGroupKey.diagnosgrupp = :group and c.diagnosisGroupKey.period >= :from AND c.diagnosisGroupKey.period <= :to", DiagnosisSubGroupData.class);
-        query.setParameter("hsaId", "nationell");
+        query.setParameter("hsaId", hsaId);
         query.setParameter("group", group);
         query.setParameter("from", inputFormatter.print(range.getFrom()));
         query.setParameter("to", inputFormatter.print(range.getTo()));

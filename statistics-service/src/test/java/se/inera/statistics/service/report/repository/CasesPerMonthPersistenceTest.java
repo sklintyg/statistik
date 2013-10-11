@@ -3,6 +3,7 @@ package se.inera.statistics.service.report.repository;
 import static org.junit.Assert.assertEquals;
 
 import java.util.Iterator;
+import java.util.List;
 
 import org.joda.time.LocalDate;
 import org.junit.Test;
@@ -25,51 +26,51 @@ public class CasesPerMonthPersistenceTest extends CasesPerMonthPersistenceHandle
     // CHECKSTYLE:OFF MagicNumber
     @Test
     public void store_nonexisting_row_female() {
+        this.count("hsaid", "2013-02", Sex.Female);
 
-        this.count("201302", Sex.Female);
-
-        CasesPerMonthRow check = this.getCasesPerMonthRow("201302");
-        assertEquals(check.getFemale(), 1);
+        Range range = new Range(new LocalDate("2013-02"), new LocalDate("2013-02"));
+        List<CasesPerMonthRow> check = this.getCasesPerMonth("hsaid", range);
+        assertEquals(1, check.get(0).getFemale());
     }
 
     @Test
     public void store_existing_row_female() {
-        this.count("201302", Sex.Female);
+        this.count("hsaid", "2013-02", Sex.Female);
+        this.count("hsaid", "2013-02", Sex.Female);
 
-        this.count("201302", Sex.Female);
-
-        CasesPerMonthRow check = this.getCasesPerMonthRow("201302");
-        assertEquals(check.getFemale(), 2);
+        Range range = new Range(new LocalDate("2013-02"), new LocalDate("2013-02"));
+        List<CasesPerMonthRow> check = this.getCasesPerMonth("hsaid", range);
+        assertEquals(2, check.get(0).getFemale());
     }
 
     @Test
     public void store_nonexisting_row_male() {
+        this.count("hsaid", "2013-02", Sex.Male);
 
-        this.count("201302", Sex.Male);
-
-        CasesPerMonthRow check = this.getCasesPerMonthRow("201302");
-        assertEquals(check.getMale(), 1);
+        Range range = new Range(new LocalDate("2013-02"), new LocalDate("2013-02"));
+        List<CasesPerMonthRow> check = this.getCasesPerMonth("hsaid", range);
+        assertEquals(1, check.get(0).getMale());
     }
 
     @Test
     public void store_existing_row_male() {
-        this.count("201302", Sex.Female);
+        this.count("hsaid", "2013-02", Sex.Female);
+        this.count("hsaid", "2013-02", Sex.Male);
 
-        this.count("201302", Sex.Male);
-
-        CasesPerMonthRow check = this.getCasesPerMonthRow("201302");
-        assertEquals(check.getMale(), 1);
+        Range range = new Range(new LocalDate("2013-02"), new LocalDate("2013-02"));
+        List<CasesPerMonthRow> check = this.getCasesPerMonth("hsaid", range);
+        assertEquals(1, check.get(0).getMale());
     }
 
     @Test
     public void getCasesPerMonthReturnsOldestFirst() {
-        this.count("2013-02", Sex.Female);
-        this.count("2013-04", Sex.Female);
-        this.count("2013-01", Sex.Female);
+        this.count("hsaid", "2013-02", Sex.Female);
+        this.count("hsaid", "2013-04", Sex.Female);
+        this.count("hsaid", "2013-01", Sex.Female);
 
         Range range = new Range(new LocalDate("2013-01"), new LocalDate("2013-04"));
 
-        Iterator<CasesPerMonthRow> check = this.getCasesPerMonth(range).iterator();
+        Iterator<CasesPerMonthRow> check = this.getCasesPerMonth("hsaid", range).iterator();
         assertEquals("jan 2013", check.next().getPeriod());
         assertEquals("feb 2013", check.next().getPeriod());
         assertEquals("mar 2013", check.next().getPeriod());

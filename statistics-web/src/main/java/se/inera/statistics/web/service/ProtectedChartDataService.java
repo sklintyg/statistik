@@ -8,7 +8,6 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
@@ -34,7 +33,7 @@ import se.inera.statistics.web.model.Verksamhet;
 import se.inera.statistics.web.model.overview.OverviewData;
 
 @Service("protectedChartService")
-@Path("/business")
+@Path("/verksamhet")
 public class ProtectedChartDataService {
 
     private static final int AGE_PERIOD = 12;
@@ -63,11 +62,11 @@ public class ProtectedChartDataService {
     }
 
     @GET
-    @Path("getNumberOfCasesPerMonth")
+    @Path("getNumberOfCasesPerMonth/{verksamhetId}")
     @Produces({ MediaType.APPLICATION_JSON })
-    public TableData getNumberOfCasesPerMonth() {
+    public TableData getNumberOfCasesPerMonth(@PathParam("verksamhetId") String verksamhetId) {
         Range range = new Range();
-        List<CasesPerMonthRow> casesPerMonth = datasourceCasesPerMonth.getCasesPerMonth(range);
+        List<CasesPerMonthRow> casesPerMonth = datasourceCasesPerMonth.getCasesPerMonth(Verksamhet.decodeId(verksamhetId), range);
         return new CasesPerMonthConverter().convertCasesPerMonthData(casesPerMonth);
     }
 
@@ -79,26 +78,26 @@ public class ProtectedChartDataService {
     }
 
     @GET
-    @Path("getDiagnosisGroupStatistics")
+    @Path("{verksamhetId}/getDiagnosisGroupStatistics")
     @Produces({ MediaType.APPLICATION_JSON })
-    public DualSexStatisticsData getDiagnosisGroupStatistics() {
+    public DualSexStatisticsData getDiagnosisGroupStatistics(@PathParam("verksamhetId") String verksamhetId) {
         Range range = new Range();
-        DiagnosisGroupResponse diagnosisGroups = datasourceDiagnosisGroups.getDiagnosisGroups(range);
+        DiagnosisGroupResponse diagnosisGroups = datasourceDiagnosisGroups.getDiagnosisGroups(verksamhetId, range);
         return new DiagnosisGroupsConverter().convert(diagnosisGroups);
     }
 
 
     @GET
-    @Path("getDiagnosisSubGroupStatistics")
+    @Path("{verksamhetId}/getDiagnosisSubGroupStatistics/{groupId}")
     @Produces({ MediaType.APPLICATION_JSON })
-    public DualSexStatisticsData getDiagnosisSubGroupStatistics(@QueryParam("groupId") String groupId) {
+    public DualSexStatisticsData getDiagnosisSubGroupStatistics(@PathParam("verksamhetId") String verksamhetId, @PathParam("groupId") String groupId) {
         Range range = new Range();
-        DiagnosisGroupResponse diagnosisGroups = datasourceDiagnosisSubGroups.getDiagnosisGroups(range, groupId);
+        DiagnosisGroupResponse diagnosisGroups = datasourceDiagnosisSubGroups.getDiagnosisGroups(Verksamhet.decodeId(verksamhetId), range, groupId);
         return new DiagnosisSubGroupsConverter().convert(diagnosisGroups);
     }
 
     @GET
-    @Path("getOverview/{verksamhetId}")
+    @Path("{verksamhetId}/getOverview")
     @Produces({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request, #verksamhetId)")
     public OverviewData getOverviewData(@Context HttpServletRequest request, @PathParam("verksamhetId") String verksamhetId) {
@@ -107,26 +106,16 @@ public class ProtectedChartDataService {
     }
 
     @GET
-    @Path("getOverview")
+    @Path("{verksamhetId}/getAgeGroupsStatistics")
     @Produces({ MediaType.APPLICATION_JSON })
-    @PreAuthorize(value = "@protectedChartDataService.hasAccessToAtLeastOne(#request)")
-    public OverviewData getOverviewData(@Context HttpServletRequest request) {
-        String verksamhetId = ((List<Verksamhet>) getSession(request).getAttribute("verksamhets")).get(0).getId();
-        OverviewResponse response = datasourceOverview.getOverview(verksamhetId);
-        return new OverviewConverter().convert(response);
+    public AgeGroupsData getAgeGroupsStatistics(@PathParam("verksamhetId") String verksamhetId) {
+        Range range = new Range(AGE_PERIOD);
+        AgeGroupsResponse ageGroups = datasourceAgeGroups.getAgeGroups("hsaid", range);
+        return new AgeGroupsConverter().convert(ageGroups);
     }
 
     private HttpSession getSession(HttpServletRequest request) {
         return request.getSession();
-    }
-
-    @GET
-    @Path("getAgeGroupsStatistics")
-    @Produces({ MediaType.APPLICATION_JSON })
-    public AgeGroupsData getAgeGroupsStatistics() {
-        Range range = new Range(AGE_PERIOD);
-        AgeGroupsResponse ageGroups = datasourceAgeGroups.getAgeGroups(range);
-        return new AgeGroupsConverter().convert(ageGroups);
     }
 
     public boolean hasAccessTo(HttpServletRequest request, String verksamhetId) {

@@ -16,14 +16,14 @@ public class SjukfallPerKonListener {
     @Autowired
     private CasesPerMonth casesPerMonthPersistenceHandler;
 
-    public void acceptPeriod(LocalDate firstMonth, LocalDate endMonth, Sex sex) {
+    public void acceptPeriod(String hsaId, LocalDate firstMonth, LocalDate endMonth, Sex sex) {
         for (LocalDate month = firstMonth; !month.isAfter(endMonth); month = month.plusMonths(1)) {
-            accept(month, sex);
+            accept(hsaId, month, sex);
         }
     }
 
-    protected void accept(LocalDate month, Sex sex) {
+    protected void accept(String hsaId, LocalDate month, Sex sex) {
         String period = PERIOD_FORMATTER.print(month);
-        casesPerMonthPersistenceHandler.count(period, sex);
+        casesPerMonthPersistenceHandler.count(hsaId, period, sex);
     }
 }

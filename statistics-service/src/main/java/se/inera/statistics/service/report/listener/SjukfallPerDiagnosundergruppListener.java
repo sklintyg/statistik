@@ -16,14 +16,14 @@ public class SjukfallPerDiagnosundergruppListener {
     @Autowired
     private DiagnosisSubGroups diagnosisgroupPersistenceHandler;
 
-    public void acceptPeriod(LocalDate firstMonth, LocalDate endMonth, String group, String subgroup, Sex sex) {
+    public void acceptPeriod(String hsaId, LocalDate firstMonth, LocalDate endMonth, String group, String subgroup, Sex sex) {
         for (LocalDate month = firstMonth; !month.isAfter(endMonth); month = month.plusMonths(1)) {
-            accept(month, group, subgroup, sex);
+            accept(hsaId, month, group, subgroup, sex);
         }
     }
 
-    protected void accept(LocalDate month, String diagnosgrupp, String subgroup, Sex sex) {
+    protected void accept(String hsaId, LocalDate month, String diagnosgrupp, String subgroup, Sex sex) {
         String period = PERIOD_FORMATTER.print(month);
-        diagnosisgroupPersistenceHandler.count(period, diagnosgrupp, subgroup, sex);
+        diagnosisgroupPersistenceHandler.count(hsaId, period, diagnosgrupp, subgroup, sex);
     }
 }
