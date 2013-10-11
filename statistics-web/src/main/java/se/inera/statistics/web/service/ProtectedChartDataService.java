@@ -1,6 +1,5 @@
 package se.inera.statistics.web.service;
 
-import org.joda.time.LocalDate;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import se.inera.statistics.service.report.api.AgeGroups;
@@ -13,6 +12,7 @@ import se.inera.statistics.service.report.model.CasesPerMonthRow;
 import se.inera.statistics.service.report.model.DiagnosisGroup;
 import se.inera.statistics.service.report.model.DiagnosisGroupResponse;
 import se.inera.statistics.service.report.model.OverviewResponse;
+import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.util.DiagnosisGroupsUtil;
 import se.inera.statistics.web.model.AgeGroupsData;
 import se.inera.statistics.web.model.Business;
@@ -29,7 +29,6 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
-import org.apache.cxf.jaxrs.ext.MessageContext;
 import java.util.List;
 
 @Service("protectedChartService")
