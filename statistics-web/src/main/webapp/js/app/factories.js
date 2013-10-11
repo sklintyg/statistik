@@ -16,7 +16,7 @@ app.statisticsApp.factory('statisticsData', function($http){
     };
 
     factory.getBusinessOverview = function (businessId, successCallback, failureCallback){
-        $http.get("api/business/getOverview/" + businessId).success(function(result) {
+        $http.get("api/verksamhet/" + businessId + "/getOverview/").success(function(result) {
             successCallback(result);
         }).error(function(data, status, headers, config) {
                 if(status == 403) {
