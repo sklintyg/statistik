@@ -45,8 +45,10 @@
          }
      }); 
 
-    $rootScope.$on('$routeChangeSuccess', function(angularEvent, current) {
-        $scope.businessId = current.params.businessId;
+    $rootScope.$on('$routeChangeSuccess', function(angularEvent, next, current) {
+        if (next.params.businessId) {
+            $scope.businessId = next.params.businessId;
+        }
     });
 
  };
