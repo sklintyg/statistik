@@ -7,8 +7,9 @@ import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.Sex;
 
 public interface CasesPerMonth {
+    String HSA_NATIONELL = "nationell";
 
-    List<CasesPerMonthRow> getCasesPerMonth(Range range);
+    List<CasesPerMonthRow> getCasesPerMonth(String hsaId, Range range);
 
-    void count(String period, Sex sex);
+    void count(String hsaId, String period, Sex sex);
 }

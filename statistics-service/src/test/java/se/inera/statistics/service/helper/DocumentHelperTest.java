@@ -21,5 +21,4 @@ public class DocumentHelperTest {
     public void get_diagnos() {
         assertEquals("H81", DocumentHelper.getDiagnos(document));
     }
-
 }

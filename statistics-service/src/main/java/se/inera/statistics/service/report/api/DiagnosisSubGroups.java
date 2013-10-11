@@ -5,8 +5,8 @@ import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.Sex;
 
 public interface DiagnosisSubGroups {
-
-    DiagnosisGroupResponse getDiagnosisGroups(Range range, String diagnosisGroupId);
-    void count(String period, String diagnosgrupp, String undergrupp, Sex sex);
+    public static final String HSA_NATIONELL = "nationell";
+    DiagnosisGroupResponse getDiagnosisGroups(String hsaId, Range range, String diagnosisGroupId);
+    void count(String hsaId, String period, String diagnosgrupp, String undergrupp, Sex sex);
 
 }
