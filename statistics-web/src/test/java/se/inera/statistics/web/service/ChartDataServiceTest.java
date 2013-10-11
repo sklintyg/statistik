@@ -20,18 +20,21 @@ import se.inera.statistics.service.report.model.Range;
 
 public class ChartDataServiceTest {
 
+    // CHECKSTYLE:OFF EmptyBlock
+    // CHECKSTYLE:OFF MagicNumber
+
     @Test
-    public void getOverviewDataTest(){
+    public void getOverviewDataTest() {
         Overview mock = Mockito.mock(Overview.class);
         ChartDataService chartDataService = new ChartDataService(mock, null, null, null, null, null);
         try {
             chartDataService.getOverviewData();
-        } catch (NullPointerException e) {}
+        } catch (NullPointerException e) { }
         Mockito.verify(mock).getOverview();
     }
 
     @Test
-    public void getNumberOfCasesPerMonthTest(){
+    public void getNumberOfCasesPerMonthTest() {
         CasesPerMonth mock = Mockito.mock(CasesPerMonth.class);
         ChartDataService chartDataService = new ChartDataService(null, mock, null, null, null, null);
         chartDataService.getNumberOfCasesPerMonth();
@@ -39,7 +42,7 @@ public class ChartDataServiceTest {
     }
 
     @Test
-    public void getDiagnosisGroupsTest(){
+    public void getDiagnosisGroupsTest() {
         ChartDataService chartDataService = new ChartDataService(null, null, null, null, null, null);
         List<DiagnosisGroup> diagnosisGroups = chartDataService.getDiagnosisGroups();
         assertEquals(22, diagnosisGroups.size());
@@ -47,23 +50,26 @@ public class ChartDataServiceTest {
     }
 
     @Test
-    public void getDiagnosisGroupStatisticsTest(){
+    public void getDiagnosisGroupStatisticsTest() {
         DiagnosisGroups mock = Mockito.mock(DiagnosisGroups.class);
         ChartDataService chartDataService = new ChartDataService(null, null, mock, null, null, null);
         try {
             chartDataService.getDiagnosisGroupStatistics();
-        } catch (NullPointerException e) {}
+        } catch (NullPointerException e) { }
         Mockito.verify(mock).getDiagnosisGroups(anyString(), any(Range.class));
     }
 
     @Test
-    public void getDiagnosisSubGroupStatisticsTest(){
+    public void getDiagnosisSubGroupStatisticsTest() {
         DiagnosisSubGroups mock = Mockito.mock(DiagnosisSubGroups.class);
         ChartDataService chartDataService = new ChartDataService(null, null, null, mock, null, null);
         try {
             chartDataService.getDiagnosisSubGroupStatistics("testId");
-        } catch (NullPointerException e) {}
+        } catch (NullPointerException e) { }
         Mockito.verify(mock).getDiagnosisGroups(anyString(), any(Range.class), eq("testId"));
     }
+
+    // CHECKSTYLE:ON MagicNumber
+    // CHECKSTYLE:ON EmptyBlock
 
 }
