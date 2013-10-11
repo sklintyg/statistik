@@ -5,7 +5,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import se.inera.statistics.service.report.api.AgeGroups;
 import se.inera.statistics.service.report.api.CasesPerMonth;
-import se.inera.statistics.service.report.api.DegreeOfSickLeave;
 import se.inera.statistics.service.report.api.DiagnosisGroups;
 import se.inera.statistics.service.report.api.DiagnosisSubGroups;
 import se.inera.statistics.service.report.api.Overview;
@@ -16,23 +15,28 @@ import se.inera.statistics.service.report.model.DiagnosisGroupResponse;
 import se.inera.statistics.service.report.model.OverviewResponse;
 import se.inera.statistics.service.report.util.DiagnosisGroupsUtil;
 import se.inera.statistics.web.model.AgeGroupsData;
+import se.inera.statistics.web.model.Business;
 import se.inera.statistics.web.model.DualSexStatisticsData;
 import se.inera.statistics.web.model.TableData;
 import se.inera.statistics.web.model.overview.OverviewData;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
+import org.apache.cxf.jaxrs.ext.MessageContext;
 import java.util.List;
 
 @Service("protectedChartService")
 @Path("/business")
 public class ProtectedChartDataService {
 
-    private static final int INCUSIVE_PERIOD = 18;
+    private static final int INCLUSIVE_PERIOD = 18;
 
     private Overview datasourceOverview;
     private CasesPerMonth datasourceCasesPerMonth;
@@ -63,7 +67,7 @@ public class ProtectedChartDataService {
     public TableData getNumberOfCasesPerMonth() {
         LocalDate lastMonth = new LocalDate().withDayOfMonth(1).minusMonths(1);
 
-        List<CasesPerMonthRow> casesPerMonth = datasourceCasesPerMonth.getCasesPerMonth(lastMonth.minusMonths(INCUSIVE_PERIOD - 1), lastMonth);
+        List<CasesPerMonthRow> casesPerMonth = datasourceCasesPerMonth.getCasesPerMonth(lastMonth.minusMonths(INCLUSIVE_PERIOD - 1), lastMonth);
 
         return new CasesPerMonthConverter().convertCasesPerMonthData(casesPerMonth);
     }
@@ -80,7 +84,7 @@ public class ProtectedChartDataService {
     @Produces({ MediaType.APPLICATION_JSON })
     public DualSexStatisticsData getDiagnosisGroupStatistics() {
         LocalDate lastMonth = new LocalDate().withDayOfMonth(1).minusMonths(1);
-        DiagnosisGroupResponse diagnosisGroups = datasourceDiagnosisGroups.getDiagnosisGroups(lastMonth.minusMonths(INCUSIVE_PERIOD - 1), lastMonth);
+        DiagnosisGroupResponse diagnosisGroups = datasourceDiagnosisGroups.getDiagnosisGroups(lastMonth.minusMonths(INCLUSIVE_PERIOD - 1), lastMonth);
         return new DiagnosisGroupsConverter().convert(diagnosisGroups);
     }
 
@@ -96,10 +100,24 @@ public class ProtectedChartDataService {
     @GET
     @Path("getOverview/{verksamhetId}")
     @Produces({ MediaType.APPLICATION_JSON })
-    @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(authentication.name, #verksamhetId)")
-    public OverviewData getOverviewData(@PathParam("verksamhetId") Long verksamhetId) {
+    @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request, #verksamhetId)")
+    public OverviewData getOverviewData(@Context HttpServletRequest request, @PathParam("verksamhetId") String verksamhetId) {
         OverviewResponse response = datasourceOverview.getOverview(verksamhetId);
         return new OverviewConverter().convert(response);
+    }
+
+    @GET
+    @Path("getOverview")
+    @Produces({ MediaType.APPLICATION_JSON })
+    @PreAuthorize(value = "@protectedChartDataService.hasAccessToAtLeastOne(#request)")
+    public OverviewData getOverviewData(@Context HttpServletRequest request) {
+        String verksamhetId = ((List<Business>) getSession(request).getAttribute("verksamhetId")).get(0).getId();
+        OverviewResponse response = datasourceOverview.getOverview(verksamhetId);
+        return new OverviewConverter().convert(response);
+    }
+
+    private HttpSession getSession(HttpServletRequest request) {
+        return request.getSession();
     }
 
     @GET
@@ -112,8 +130,30 @@ public class ProtectedChartDataService {
         return new AgeGroupsConverter().convert(ageGroups);
     }
 
-    public boolean hasAccessTo(String user, Long verksamhetId) {
-        return "admin".equals(user);
+    public boolean hasAccessTo(HttpServletRequest request, String verksamhetId) {
+        if (request == null) {
+            return false;
+        }
+        List<Business> verksamhets = (List<Business>) getSession(request).getAttribute("verksamhets");
+        if (verksamhetId != null && verksamhets != null) {
+            for (Business verksamhet : verksamhets) {
+                if (verksamhetId.equals(verksamhet.getId())) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public boolean hasAccessToAtLeastOne(HttpServletRequest request) {
+        if (request == null) {
+            return false;
+        }
+        List<Business> verksamhets = (List<Business>) getSession(request).getAttribute("verksamhets");
+        if (verksamhets == null || verksamhets.isEmpty()) {
+            return true;
+        }
+        return false;
     }
 
 }

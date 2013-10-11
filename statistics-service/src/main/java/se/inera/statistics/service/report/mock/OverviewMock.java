@@ -2,7 +2,6 @@ package se.inera.statistics.service.report.mock;
 
 import java.util.ArrayList;
 
-import org.springframework.security.access.prepost.PreAuthorize;
 import se.inera.statistics.service.report.api.Overview;
 import se.inera.statistics.service.report.model.OverviewChartRow;
 import se.inera.statistics.service.report.model.OverviewChartRowExtended;
@@ -54,7 +53,7 @@ public class OverviewMock implements Overview {
     }
 
     @Override
-    public OverviewResponse getOverview(long verksamhetId) {
+    public OverviewResponse getOverview(String verksamhetId) {
 
         ArrayList<OverviewChartRowExtended> diagnosisGroups = new ArrayList<OverviewChartRowExtended>();
         diagnosisGroups.add(new OverviewChartRowExtended("A-E G-L N Somatiska", 19, 2));
