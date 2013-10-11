@@ -1,6 +1,6 @@
  'use strict';
 
- app.navigationMenuCtrl = function ($scope, $rootScope) {
+ app.navigationMenuCtrl = function ($scope, $rootScope, $cookies) {
 
      $scope.organisationMenuLabel = isLoggedIn ? "Verksamhetsstatistik" : "Logga in för verksamhetsstatistik";
      
@@ -48,6 +48,9 @@
     $rootScope.$on('$routeChangeSuccess', function(angularEvent, next, current) {
         if (next.params.businessId) {
             $scope.businessId = next.params.businessId;
+            $cookies.verksamhetId = next.params.businessId;
+        } else if ($cookies.verksamhetId) {
+            $scope.businessId = $cookies.verksamhetId;
         }
     });
 

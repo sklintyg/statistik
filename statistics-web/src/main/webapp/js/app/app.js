@@ -3,7 +3,7 @@
 /* App Module */
 var app = {};
 
-app.statisticsApp = angular.module('StatisticsApp', [  ]).config(
+app.statisticsApp = angular.module('StatisticsApp', [ 'ngCookies' ]).config(
         [ '$routeProvider', '$httpProvider', function($routeProvider, $httpProvider) {
             $routeProvider.when('/nationell/oversikt', {
                 templateUrl : 'views/overview.html',
@@ -66,7 +66,7 @@ app.statisticsApp = angular.module('StatisticsApp', [  ]).config(
                 controllerAs : 'AboutLoginCtrl',
                 title: 'Inloggning och behörighet'
             }).when('/', {
-                redirectTo : '/oversikt'
+                redirectTo : '/nationell/oversikt'
             }).otherwise({
                 templateUrl : 'views/error/pageNotFound.html',
                 title: 'Fel'
