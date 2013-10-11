@@ -109,7 +109,7 @@ public class ProtectedChartDataService {
     @Produces({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedChartDataService.hasAccessToAtLeastOne(#request)")
     public OverviewData getOverviewData(@Context HttpServletRequest request) {
-        String verksamhetId = ((List<Business>) getSession(request).getAttribute("verksamhetId")).get(0).getId();
+        String verksamhetId = ((List<Business>) getSession(request).getAttribute("verksamhets")).get(0).getId();
         OverviewResponse response = datasourceOverview.getOverview(verksamhetId);
         return new OverviewConverter().convert(response);
     }
@@ -148,8 +148,8 @@ public class ProtectedChartDataService {
         }
         List<Business> verksamhets = (List<Business>) getSession(request).getAttribute("verksamhets");
         if (verksamhets == null || verksamhets.isEmpty()) {
-            return true;
+            return false;
         }
-        return false;
+        return true;
     }
 }
