@@ -1,32 +1,31 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
-<head><title>Login Page</title></head>
-<body onload='document.f.j_username.focus();'>
-<h3>Login with Username and Password</h3>
+<head>
+	<title>Login Page</title>
+	<!-- Styles -->
+	<link href="/css/inera-statistics.css" rel="stylesheet">
+	<link href="/bootstrap/2.3.2/css/bootstrap.min.css" rel="stylesheet">
+	<link href="/css/inera-statistics-responsive.css" rel="stylesheet">
+	<link href="/bootstrap/2.3.2/css/bootstrap-responsive.css" rel="stylesheet">
 
-<form name='f' method='POST'
-      action='/j_spring_security_check'>
-    <table>
-        <tr>
-            <td>User:</td>
-            <td>
-                <input type='text' name='j_username' value=''>
-            </td>
-        </tr>
-        <tr>
-            <td>Password:</td>
-            <td>
-                <input type='password' name='j_password'/>
-            </td>
-        </tr>
-        ￼￼￼
-        <tr>
-            <td colspan='2'><input name="submit" type="submit"/></td>
-        </tr>
-        <tr>
-            <td colspan='2'><input name="reset" type="reset"/></td>
-        </tr>
-    </table>
-</form>
+</head>
+<body onload='document.f.j_username.focus();'>
+
+<div class="container">
+    <div class="row-fluid center">
+        <div class="span12">
+        	<legend>Logga in för verksamhetsstatistik - demo</legend>
+            <form name='f' method='POST' action='/j_spring_security_check'>
+			    <label>Användarnamn:</label>
+			    <input type='text' name='j_username' value='' placeholder="Ange användanamn.." style="height: 30px;">
+			    <label>Lösenord:</label>
+                <input type='password' name='j_password' placeholder="Ange lösenord.." style="height: 30px;"/>
+                <br>
+				<input class="btn" name="Login" type="submit"/>
+			    <input class="btn" name="Återställ" type="reset"/>
+			</form>
+        </div>
+    </div>
+</div>
 </body>
 </html>

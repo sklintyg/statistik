@@ -8,6 +8,8 @@ import org.springframework.stereotype.Component;
 
 import se.inera.statistics.service.helper.DocumentHelper;
 import se.inera.statistics.service.processlog.ProcessorListener;
+import se.inera.statistics.service.report.api.CasesPerMonth;
+import se.inera.statistics.service.report.api.DiagnosisSubGroups;
 import se.inera.statistics.service.report.model.Sex;
 import se.inera.statistics.service.report.util.DiagnosisGroupsUtil;
 import se.inera.statistics.service.sjukfall.SjukfallInfo;
@@ -39,9 +41,12 @@ public class DistributingListener implements ProcessorListener {
         String diagnosGrupp = DiagnosisGroupsUtil.getGroupIdForCode(diagnos);
         String diagnosunderGrupp = DiagnosisGroupsUtil.getSubGroupIdForCode(diagnos);
 
-        sjukfallPerKonListener.acceptPeriod(firstMonth, endMonth, sex);
-        sjukfallPerDiagnosgruppListenerListener.acceptPeriod(firstMonth, endMonth, diagnosGrupp, sex);
-        sjukfallPerDiagnosundergruppListenerListener.acceptPeriod(firstMonth, endMonth, diagnosGrupp, diagnosunderGrupp, sex);
+        sjukfallPerKonListener.acceptPeriod(CasesPerMonth.HSA_NATIONELL, firstMonth, endMonth, sex);
+        sjukfallPerKonListener.acceptPeriod(enhet, firstMonth, endMonth, sex);
+        sjukfallPerDiagnosgruppListenerListener.acceptPeriod(DiagnosisSubGroups.HSA_NATIONELL, firstMonth, endMonth, diagnosGrupp, sex);
+        sjukfallPerDiagnosgruppListenerListener.acceptPeriod(enhet, firstMonth, endMonth, diagnosGrupp, sex);
+        sjukfallPerDiagnosundergruppListenerListener.acceptPeriod(DiagnosisSubGroups.HSA_NATIONELL, firstMonth, endMonth, diagnosGrupp, diagnosunderGrupp, sex);
+        sjukfallPerDiagnosundergruppListenerListener.acceptPeriod(enhet, firstMonth, endMonth, diagnosGrupp, diagnosunderGrupp, sex);
     }
 
     static LocalDate getFirstDateMonth(LocalDate previousEnd, LocalDate start) {

@@ -56,7 +56,7 @@ public class ReceiverIntegrationTest {
 
         sleep();
 
-        List<CasesPerMonthRow> webData = casesPerMonth.getCasesPerMonth(new Range(new LocalDate("2011-01"), new LocalDate("2011-12")));
+        List<CasesPerMonthRow> webData = casesPerMonth.getCasesPerMonth(CasesPerMonth.HSA_NATIONELL, new Range(new LocalDate("2011-01"), new LocalDate("2011-12")));
 
         assertEquals(12, webData.size());
 

@@ -13,14 +13,14 @@ import javax.ws.rs.core.MediaType;
 
 import org.springframework.stereotype.Service;
 
-import se.inera.statistics.web.model.Business;
+import se.inera.statistics.web.model.Verksamhet;
 import se.inera.statistics.web.model.LoginInfo;
 
 @Service("loginService")
 @Path("/login")
 public class LoginInfoService {
 
-    public LoginInfoService() {}
+    public LoginInfoService() { }
 
     @GET
     @Path("getLoginInfo")
@@ -33,7 +33,7 @@ public class LoginInfoService {
             loggedIn = true;
             name = user.getName();
         }
-        List<Business> verksamhets = Arrays.asList(new Business("verksamhet1", "Närhälsan i Småmåla"), new Business("verksamhet2", "Småmålas akutmottagning"));
+        List<Verksamhet> verksamhets = Arrays.asList(new Verksamhet("verksamhet1", "Närhälsan i Småmåla"), new Verksamhet("verksamhet2", "Småmålas akutmottagning"));
         request.getSession(true).setAttribute("verksamhets", verksamhets);
         return new LoginInfo(name, loggedIn, verksamhets);
     }

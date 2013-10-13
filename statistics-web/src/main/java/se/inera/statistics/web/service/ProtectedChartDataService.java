@@ -1,7 +1,18 @@
 package se.inera.statistics.web.service;
 
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.MediaType;
+
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
+
 import se.inera.statistics.service.report.api.AgeGroups;
 import se.inera.statistics.service.report.api.CasesPerMonth;
 import se.inera.statistics.service.report.api.DiagnosisGroups;
@@ -15,24 +26,13 @@ import se.inera.statistics.service.report.model.OverviewResponse;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.util.DiagnosisGroupsUtil;
 import se.inera.statistics.web.model.AgeGroupsData;
-import se.inera.statistics.web.model.Business;
 import se.inera.statistics.web.model.DualSexStatisticsData;
 import se.inera.statistics.web.model.TableData;
+import se.inera.statistics.web.model.Verksamhet;
 import se.inera.statistics.web.model.overview.OverviewData;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.MediaType;
-import java.util.List;
-
 @Service("protectedChartService")
-@Path("/business")
+@Path("/verksamhet")
 public class ProtectedChartDataService {
 
     private static final int AGE_PERIOD = 12;
@@ -61,11 +61,11 @@ public class ProtectedChartDataService {
     }
 
     @GET
-    @Path("getNumberOfCasesPerMonth")
+    @Path("getNumberOfCasesPerMonth/{verksamhetId}")
     @Produces({ MediaType.APPLICATION_JSON })
-    public TableData getNumberOfCasesPerMonth() {
+    public TableData getNumberOfCasesPerMonth(@PathParam("verksamhetId") String verksamhetId) {
         Range range = new Range();
-        List<CasesPerMonthRow> casesPerMonth = datasourceCasesPerMonth.getCasesPerMonth(range);
+        List<CasesPerMonthRow> casesPerMonth = datasourceCasesPerMonth.getCasesPerMonth(Verksamhet.decodeId(verksamhetId), range);
         return new CasesPerMonthConverter().convertCasesPerMonthData(casesPerMonth);
     }
 
@@ -77,49 +77,39 @@ public class ProtectedChartDataService {
     }
 
     @GET
-    @Path("getDiagnosisGroupStatistics")
+    @Path("{verksamhetId}/getDiagnosisGroupStatistics")
     @Produces({ MediaType.APPLICATION_JSON })
-    public DualSexStatisticsData getDiagnosisGroupStatistics() {
+    public DualSexStatisticsData getDiagnosisGroupStatistics(@PathParam("verksamhetId") String verksamhetId) {
         Range range = new Range();
-        DiagnosisGroupResponse diagnosisGroups = datasourceDiagnosisGroups.getDiagnosisGroups(range);
+        DiagnosisGroupResponse diagnosisGroups = datasourceDiagnosisGroups.getDiagnosisGroups(verksamhetId, range);
         return new DiagnosisGroupsConverter().convert(diagnosisGroups);
     }
 
 
     @GET
-    @Path("getDiagnosisSubGroupStatistics")
+    @Path("{verksamhetId}/getDiagnosisSubGroupStatistics/{groupId}")
     @Produces({ MediaType.APPLICATION_JSON })
-    public DualSexStatisticsData getDiagnosisSubGroupStatistics(@QueryParam("groupId") String groupId) {
+    public DualSexStatisticsData getDiagnosisSubGroupStatistics(@PathParam("verksamhetId") String verksamhetId, @PathParam("groupId") String groupId) {
         Range range = new Range();
-        DiagnosisGroupResponse diagnosisGroups = datasourceDiagnosisSubGroups.getDiagnosisGroups(range, groupId);
+        DiagnosisGroupResponse diagnosisGroups = datasourceDiagnosisSubGroups.getDiagnosisGroups(Verksamhet.decodeId(verksamhetId), range, groupId);
         return new DiagnosisSubGroupsConverter().convert(diagnosisGroups);
     }
 
     @GET
-    @Path("getOverview/{verksamhetId}")
+    @Path("{verksamhetId}/getOverview")
     @Produces({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request, #verksamhetId)")
     public OverviewData getOverviewData(@Context HttpServletRequest request, @PathParam("verksamhetId") String verksamhetId) {
-        OverviewResponse response = datasourceOverview.getOverview(verksamhetId);
+        OverviewResponse response = datasourceOverview.getOverview(Verksamhet.decodeId(verksamhetId));
         return new OverviewConverter().convert(response);
     }
 
     @GET
-    @Path("getOverview")
+    @Path("{verksamhetId}/getAgeGroupsStatistics")
     @Produces({ MediaType.APPLICATION_JSON })
-    @PreAuthorize(value = "@protectedChartDataService.hasAccessToAtLeastOne(#request)")
-    public OverviewData getOverviewData(@Context HttpServletRequest request) {
-        String verksamhetId = ((List<Business>) request.getSession().getAttribute("verksamhets")).get(0).getId();
-        OverviewResponse response = datasourceOverview.getOverview(verksamhetId);
-        return new OverviewConverter().convert(response);
-    }
-
-    @GET
-    @Path("getAgeGroupsStatistics")
-    @Produces({ MediaType.APPLICATION_JSON })
-    public AgeGroupsData getAgeGroupsStatistics() {
+    public AgeGroupsData getAgeGroupsStatistics(@PathParam("verksamhetId") String verksamhetId) {
         Range range = new Range(AGE_PERIOD);
-        AgeGroupsResponse ageGroups = datasourceAgeGroups.getAgeGroups(range);
+        AgeGroupsResponse ageGroups = datasourceAgeGroups.getAgeGroups("hsaid", range);
         return new AgeGroupsConverter().convert(ageGroups);
     }
 
@@ -127,9 +117,9 @@ public class ProtectedChartDataService {
         if (request == null) {
             return false;
         }
-        List<Business> verksamhets = (List<Business>) request.getSession().getAttribute("verksamhets");
+        List<Verksamhet> verksamhets = (List<Verksamhet>) request.getSession().getAttribute("verksamhets");
         if (verksamhetId != null && verksamhets != null) {
-            for (Business verksamhet : verksamhets) {
+            for (Verksamhet verksamhet : verksamhets) {
                 if (verksamhetId.equals(verksamhet.getId())) {
                     return true;
                 }
@@ -150,7 +140,7 @@ public class ProtectedChartDataService {
         if (request == null) {
             return false;
         }
-        List<Business> verksamhets = (List<Business>) request.getSession().getAttribute("verksamhets");
+        List<Verksamhet> verksamhets = (List<Verksamhet>) request.getSession().getAttribute("verksamhets");
         if (verksamhets == null || verksamhets.isEmpty()) {
             return false;
         }

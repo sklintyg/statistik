@@ -34,13 +34,13 @@ public class DiagnosgroupPersistenceHandler implements DiagnosisGroups {
     private DateTimeFormatter inputFormatter = DateTimeFormat.forPattern("yyyy-MM");
 
     @Transactional
-    public void count(String period, String diagnosgrupp, Sex sex) {
-        DiagnosisGroupData existingRow = manager.find(DiagnosisGroupData.class, new DiagnosisGroupData.DiagnosisGroupKey(period, "nationell", diagnosgrupp));
+    public void count(String hsaId, String period, String diagnosgrupp, Sex sex) {
+        DiagnosisGroupData existingRow = manager.find(DiagnosisGroupData.class, new DiagnosisGroupData.DiagnosisGroupKey(period, hsaId, diagnosgrupp));
         int female = Sex.Female.equals(sex) ? 1 : 0;
         int male = Sex.Male.equals(sex) ? 1 : 0;
 
         if (existingRow == null) {
-            DiagnosisGroupData row = new DiagnosisGroupData(period, "nationell", diagnosgrupp, female, male);
+            DiagnosisGroupData row = new DiagnosisGroupData(period, hsaId, diagnosgrupp, female, male);
             manager.persist(row);
         } else {
             existingRow.setFemale(existingRow.getFemale() + female);
@@ -51,9 +51,9 @@ public class DiagnosgroupPersistenceHandler implements DiagnosisGroups {
 
     @Override
     @Transactional
-    public DiagnosisGroupResponse getDiagnosisGroups(Range range) {
+    public DiagnosisGroupResponse getDiagnosisGroups(String hsaId, Range range) {
         TypedQuery<DiagnosisGroupData> query = manager.createQuery("SELECT c FROM DiagnosisGroupData c WHERE c.diagnosisGroupKey.hsaId = :hsaId AND c.diagnosisGroupKey.period >= :from AND c.diagnosisGroupKey.period <= :to", DiagnosisGroupData.class);
-        query.setParameter("hsaId", "nationell");
+        query.setParameter("hsaId", hsaId);
         query.setParameter("from", inputFormatter.print(range.getFrom()));
         query.setParameter("to", inputFormatter.print(range.getTo()));
 

@@ -23,13 +23,15 @@ public class DiagnosisSubGroupsConverterTest {
     }
 
     @Test
-    public void converterTest(){
+    public void converterTest() {
         //Given
         ArrayList<DiagnosisGroup> diagnosisGroups = new ArrayList<DiagnosisGroup>();
         diagnosisGroups.add(new DiagnosisGroup("A00-B99", "name1"));
         ArrayList<DiagnosisGroupRow> rows = new ArrayList<DiagnosisGroupRow>();
         ArrayList<DualSexField> diagnosisGroupData = new ArrayList<DualSexField>();
+        // CHECKSTYLE:OFF MagicNumber
         diagnosisGroupData.add(new DualSexField(3, 2));
+        // CHECKSTYLE:ON MagicNumber
         rows.add(new DiagnosisGroupRow("period1", diagnosisGroupData));
         DiagnosisGroupResponse resp = new DiagnosisGroupResponse(diagnosisGroups, rows);
 
