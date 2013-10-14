@@ -57,7 +57,7 @@ public class DiagnosisSubGroupData {
     }
 
     @Embeddable
-    public final static class Key implements Serializable {
+    public static final class Key implements Serializable {
         private static final long serialVersionUID = 1L;
 
         private String period;
