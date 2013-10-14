@@ -1189,7 +1189,8 @@ form.bs-docs-example {
 	}
 	.overview-chart-info{
 		float: left;
-		width: 38%;
+		width: 30%;
+		margin: 20px 15px 10px 15px;
 	}
 	
 }
@@ -1286,7 +1287,7 @@ form.bs-docs-example {
 		color: #919191;
 		font-weight: bold;
 		font-size: 2em;
-		margin: 0px 10px 10px 60px;
+		margin: 0px 10px 10px 0px;
 	}
 	#about-content {
 		width: 95%;
