@@ -1,33 +1,29 @@
 package se.inera.statistics.web.service;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.mockito.Mockito;
-import se.inera.statistics.service.report.api.CasesPerMonth;
-import se.inera.statistics.service.report.api.DiagnosisGroups;
-import se.inera.statistics.service.report.api.DiagnosisSubGroups;
-import se.inera.statistics.service.report.api.Overview;
-import se.inera.statistics.service.report.model.DiagnosisGroup;
-import se.inera.statistics.service.report.model.Range;
-import se.inera.statistics.web.model.Verksamhet;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+import static org.mockito.Matchers.anyString;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Matchers.eq;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
+import org.junit.Before;
+import org.junit.Test;
+import org.mockito.Mockito;
+
+import se.inera.statistics.service.report.api.Overview;
+import se.inera.statistics.web.model.Verksamhet;
 
 public class ProtectedChartDataServiceTest {
-    Overview mock;
-    HttpServletRequest request;
-    HttpSession session;
-    List<Verksamhet> verksamhets;
+    private Overview mock;
+    private HttpServletRequest request;
+    private HttpSession session;
+    private List<Verksamhet> verksamhets;
 
     @Before
     public void init() {
@@ -47,7 +43,10 @@ public class ProtectedChartDataServiceTest {
         ProtectedChartDataService chartDataService = new ProtectedChartDataService(mock, null, null, null, null);
         try {
             chartDataService.getOverviewData(request, "verksamhet2");
-        } catch (NullPointerException e) {}
+            fail("Current implemnetaion can not use null data");
+        } catch (NullPointerException e) {
+            assertTrue(true);
+        }
         Mockito.verify(mock).getOverview("verksamhet2");
     }
 
@@ -69,7 +68,7 @@ public class ProtectedChartDataServiceTest {
 
     @Test
     public void checkAllowedAccessToDefaultTest() {
-        verksamhets = Arrays.asList(new Verksamhet("1","a"));
+        verksamhets = Arrays.asList(new Verksamhet("1", "a"));
         Mockito.when(session.getAttribute(anyString())).thenReturn(verksamhets);
 
         ProtectedChartDataService chartDataService = new ProtectedChartDataService(mock, null, null, null, null);
