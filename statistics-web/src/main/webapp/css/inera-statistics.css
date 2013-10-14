@@ -1503,6 +1503,8 @@ span.longSickLeavesValue {
 	color: #919191;
 	font-weight: bold;
 	font-size: 2em;
+	position: relative;
+	display: inline-block;
 }
 span.longSickLeavesText{
 	float: left;

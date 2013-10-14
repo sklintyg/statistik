@@ -21,8 +21,8 @@
 			    <label>Lösenord:</label>
                 <input type='password' name='j_password' placeholder="Ange lösenord.." style="height: 30px;"/>
                 <br>
-				<input class="btn" name="Login" type="submit"/>
-			    <input class="btn" name="Återställ" type="reset"/>
+				<button class="btn btn-success" name="Login" type="submit">Logga in</button>
+			    <button class="btn" name="Återställ" type="reset">Återställ</button>
 			</form>
         </div>
     </div>
