@@ -10,7 +10,7 @@ public interface Matcher {
     boolean match(JsonNode node);
     Matcher add(Matcher matcher);
 
-    public static final class Builder {
+    class Builder {
         public static Matcher matcher(String name, String value) {
             return new ValueMatcher(name, value);
         }
@@ -19,7 +19,7 @@ public interface Matcher {
         }
     }
 
-    public static final class NodeMatcher implements Matcher {
+    class NodeMatcher implements Matcher {
 
         private final List<Matcher> matchers = new ArrayList<Matcher>();
         private final String name;
@@ -50,7 +50,7 @@ public interface Matcher {
         }
     }
 
-    public static final class ValueMatcher implements Matcher {
+    class ValueMatcher implements Matcher {
 
         private final String name;
         private final String value;
