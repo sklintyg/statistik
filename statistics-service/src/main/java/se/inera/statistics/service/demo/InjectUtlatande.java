@@ -127,8 +127,7 @@ public class InjectUtlatande {
     }
 
     private String readTemplate(String path) {
-        try {
-            BufferedReader in = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream(path), "utf8"));
+        try (BufferedReader in = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream(path), "utf8"));){
             StringBuilder sb = new StringBuilder();
             for (String line = in.readLine(); line != null; line = in.readLine()) {
                 sb.append(line).append('\n');
@@ -137,12 +136,10 @@ public class InjectUtlatande {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-
     }
 
     private List<String> readList(String path) {
-        try {
-            BufferedReader in = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream(path), "utf8"));
+        try (BufferedReader in = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream(path), "utf8"));){
             List<String> list = new ArrayList<>();
             for (String line = in.readLine(); line != null; line = in.readLine()) {
                 list.add(line);
@@ -151,7 +148,6 @@ public class InjectUtlatande {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-
     }
 
 }
