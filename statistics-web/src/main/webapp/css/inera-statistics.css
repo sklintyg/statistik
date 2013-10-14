@@ -1376,6 +1376,7 @@ a.listheader.collapsed {
 	.highcharts-container {
 		margin: 0 auto;
 		padding: 0px;
+		width: auto !important;
 	}
 
 .navbar-inverse .navbar-inner {
