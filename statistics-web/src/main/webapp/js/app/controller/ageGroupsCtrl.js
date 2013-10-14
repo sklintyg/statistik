@@ -20,12 +20,10 @@
 	            y: 0,
 	            borderWidth: 0
 	        },	
-			xAxis : {
-				labels: {
-                	rotation: 310
-                },
-				categories : chartCategories
-			},
+            xAxis : {
+                labels : { rotation : 310 },
+                categories : chartCategories.map(function(name) { return ControllerCommons.htmlsafe(name); })
+            },
 			yAxis : {
 				min : 0,
 				title : {
