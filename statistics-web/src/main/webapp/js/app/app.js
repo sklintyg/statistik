@@ -77,7 +77,11 @@ app.statisticsApp = angular.module('StatisticsApp', [ 'ngCookies' ]).config(
 app.statisticsApp.run([ '$rootScope', '$route', function($rootScope, $route) {
     $rootScope.lang = 'sv';
     $rootScope.DEFAULT_LANG = 'sv';
-
+    
+    Highcharts.setOptions({
+        lang: { thousandsSep: ' ' }
+    });
+    
 	// Update page title
 	$rootScope.page_title = 'Titel';
     $rootScope.$on('$routeChangeSuccess', function() {
