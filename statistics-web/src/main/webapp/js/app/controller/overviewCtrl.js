@@ -1,10 +1,15 @@
  'use strict';
 
- app.overviewCtrl = function ($scope, statisticsData) {
-    var populatePageWithData = function(result){
-        $scope.doneLoading = true;
-        $scope.$apply();
+ app.overviewCtrl = function ($scope, $timeout, statisticsData) {
 
+     var dataReceived = function(result) {
+         $scope.doneLoading = true;
+         $timeout(function() {
+             populatePageWithData(result);
+         }, 1);
+     };
+     
+     var populatePageWithData = function(result) {
         $scope.casesPerMonthMaleProportion = result.casesPerMonth.proportionMale;
         $scope.casesPerMonthFemaleProportion = result.casesPerMonth.proportionFemale;
         $scope.casesPerMonthAlteration = result.casesPerMonth.alteration;
@@ -219,7 +224,7 @@
         return donutData;
     }
     
-    statisticsData.getOverview(populatePageWithData, function() { $scope.dataLoadingError = true; });
+    statisticsData.getOverview(dataReceived, function() { $scope.dataLoadingError = true; });
     $scope.spinnerText = "Laddar information...";
     $scope.doneLoading = false;
     $scope.dataLoadingError = false;

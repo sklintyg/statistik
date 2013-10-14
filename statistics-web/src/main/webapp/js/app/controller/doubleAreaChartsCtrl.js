@@ -25,7 +25,7 @@
      return conf;
  }
  
- app.diagnosisGroupsCtrl = function ($scope, $routeParams, $window, statisticsData, config) {
+ app.diagnosisGroupsCtrl = function ($scope, $routeParams, $window, $timeout, statisticsData, config) {
     var chart1, chart2;
      var that = this;
 
@@ -110,9 +110,11 @@
     };
 
     var populatePageWithData = function(result){
-        updateDataTable($scope, result);
-        updateChart(result);
         $scope.doneLoading = true;
+        $timeout(function() {
+            updateDataTable($scope, result);
+            updateChart(result);
+        }, 1);
     };
     
     var populateDetailsOptions = function(result){
