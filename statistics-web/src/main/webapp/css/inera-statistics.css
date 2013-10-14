@@ -832,8 +832,9 @@ div.accordion-body.in.collapse > div.accordion-heading a.accordion-toggle{
 	background: transparent !important;
 }
 .faq-accordion-toggle h2 {
-	line-height: 5px;
+	line-height: 20px;
 	font-size: 14px !important;
+	margin: 0px;
 }
 .faq-accordion-body {
 	
