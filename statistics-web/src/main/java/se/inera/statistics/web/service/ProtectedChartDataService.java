@@ -17,12 +17,12 @@ import se.inera.statistics.service.report.api.AgeGroups;
 import se.inera.statistics.service.report.api.CasesPerMonth;
 import se.inera.statistics.service.report.api.DiagnosisGroups;
 import se.inera.statistics.service.report.api.DiagnosisSubGroups;
-import se.inera.statistics.service.report.api.Overview;
+import se.inera.statistics.service.report.api.VerksamhetOverview;
 import se.inera.statistics.service.report.model.AgeGroupsResponse;
 import se.inera.statistics.service.report.model.CasesPerMonthRow;
 import se.inera.statistics.service.report.model.DiagnosisGroup;
 import se.inera.statistics.service.report.model.DiagnosisGroupResponse;
-import se.inera.statistics.service.report.model.OverviewResponse;
+import se.inera.statistics.service.report.model.VerksamhetOverviewResponse;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.util.DiagnosisGroupsUtil;
 import se.inera.statistics.web.model.AgeGroupsData;
@@ -37,7 +37,7 @@ public class ProtectedChartDataService {
 
     private static final int AGE_PERIOD = 12;
 
-    private Overview datasourceOverview;
+    private VerksamhetOverview datasourceOverview;
     private CasesPerMonth datasourceCasesPerMonth;
     private DiagnosisGroups datasourceDiagnosisGroups;
     private DiagnosisSubGroups datasourceDiagnosisSubGroups;
@@ -47,7 +47,7 @@ public class ProtectedChartDataService {
 
     }
 
-    public ProtectedChartDataService(Overview overviewPersistenceHandler,
+    public ProtectedChartDataService(VerksamhetOverview overviewPersistenceHandler,
                                      CasesPerMonth casesPerMonthPersistenceHandler,
                                      DiagnosisGroups diagnosisGroupsPersistenceHandler,
                                      DiagnosisSubGroups diagnosisSubGroupsPersistenceHandler,
@@ -100,8 +100,9 @@ public class ProtectedChartDataService {
     @Produces({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request, #verksamhetId)")
     public OverviewData getOverviewData(@Context HttpServletRequest request, @PathParam("verksamhetId") String verksamhetId) {
-        OverviewResponse response = datasourceOverview.getOverview(Verksamhet.decodeId(verksamhetId));
-        return new OverviewConverter().convert(response);
+        Range range = new Range();
+        VerksamhetOverviewResponse response = datasourceOverview.getOverview(Verksamhet.decodeId(verksamhetId), range);
+        return new VerksamhetOverviewConverter().convert(response);
     }
 
     @GET

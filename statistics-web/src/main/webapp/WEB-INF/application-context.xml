@@ -37,7 +37,7 @@
     </bean>
 
     <bean id="protectedChartDataService" class="se.inera.statistics.web.service.ProtectedChartDataService">
-        <constructor-arg ref="overview"/>
+        <constructor-arg ref="verksamhetOverview"/>
         <constructor-arg ref="casesPerMonth"/>
         <constructor-arg ref="diagnosisGroups"/>
         <constructor-arg ref="diagnosisSubGroups"/>
@@ -58,6 +58,7 @@
       <bean class="se.inera.statistics.service.report.mock.DiagnosisGroupsMock" id="diagnosisGroups"/>
       <bean class="se.inera.statistics.service.report.mock.DiagnosisSubGroupsMock" id="diagnosisSubGroups"/>
       <bean class="se.inera.statistics.service.report.mock.OverviewMock" id="overview"/>
+      <bean class="se.inera.statistics.service.report.mock.VerksamhetOverviewMock" id="verksamhetOverview"/>
       <bean class="se.inera.statistics.service.report.mock.AgeGroupsMock" id="ageGroups"/>
       <bean class="se.inera.statistics.service.report.mock.DegreeOfSickLeaveMock" id="degreeOfSickLeave"/>
     </beans>
@@ -69,6 +70,7 @@
       <bean class="se.inera.statistics.service.report.repository.DiagnosgroupPersistenceHandler" id="diagnosisGroups" />
       <bean class="se.inera.statistics.service.report.repository.DiagnossubgroupPersistenceHandler" id="diagnosisSubGroups"/>
       <bean class="se.inera.statistics.service.report.mock.OverviewMock" id="overview"/>
+      <bean class="se.inera.statistics.service.report.mock.VerksamhetOverviewMock" id="verksamhetOverview"/>
       <bean class="se.inera.statistics.service.report.mock.AgeGroupsMock" id="ageGroups"/>
       <bean class="se.inera.statistics.service.report.mock.DegreeOfSickLeaveMock" id="degreeOfSickLeave"/>
 

@@ -6,5 +6,4 @@ public interface Overview {
 
     OverviewResponse getOverview();
 
-    OverviewResponse getOverview(String verksamhetId);
 }

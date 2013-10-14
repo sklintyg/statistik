@@ -3,11 +3,7 @@ package se.inera.statistics.web.service;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
-import se.inera.statistics.service.report.api.CasesPerMonth;
-import se.inera.statistics.service.report.api.DiagnosisGroups;
-import se.inera.statistics.service.report.api.DiagnosisSubGroups;
-import se.inera.statistics.service.report.api.Overview;
-import se.inera.statistics.service.report.model.DiagnosisGroup;
+import se.inera.statistics.service.report.api.*;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.web.model.Verksamhet;
 
@@ -18,20 +14,18 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
-import static org.mockito.Matchers.eq;
 
 public class ProtectedChartDataServiceTest {
-    Overview mock;
+    VerksamhetOverview mock;
     HttpServletRequest request;
     HttpSession session;
     List<Verksamhet> verksamhets;
 
     @Before
     public void init() {
-        mock = Mockito.mock(Overview.class);
+        mock = Mockito.mock(VerksamhetOverview.class);
         request = Mockito.mock(HttpServletRequest.class);
         session = Mockito.mock(HttpSession.class);
         verksamhets = Arrays.asList(new Verksamhet("verksamhet1", "Närhälsan i Småmåla"), new Verksamhet("verksamhet2", "Småmålas akutmottagning"));
@@ -48,7 +42,7 @@ public class ProtectedChartDataServiceTest {
         try {
             chartDataService.getOverviewData(request, "verksamhet2");
         } catch (NullPointerException e) {}
-        Mockito.verify(mock).getOverview("verksamhet2");
+        Mockito.verify(mock).getOverview(anyString(), any(Range.class));
     }
 
     @Test
