@@ -80,7 +80,7 @@
                 },
                 plotOptions: {
                     series: {
-                        color: '#11b73c'
+                        color: '#12BC3A'
                     }
                 },
                 xAxis: {
