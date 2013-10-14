@@ -79,7 +79,7 @@
                     }
                 },
                 xAxis: {
-                    categories: chartData.map(function(e) { return htmlsafe(e.name); }),
+                    categories: chartData.map(function(e) { return ControllerCommons.htmlsafe(e.name); }),
                     min: 0,
                     title: {
                         text: 'DAGAR'
@@ -177,7 +177,7 @@
             } ],
             series : chartData.map(function(e) {
                     var coords = getCoordinates(e);
-                    return {"data": [[coords.x, coords.y, e.quantity]], color: e.color, name: htmlsafe(e.name) };
+                    return {"data": [[coords.x, coords.y, e.quantity]], color: e.color, name: ControllerCommons.htmlsafe(e.name) };
                 })
         };
         new Highcharts.Chart(chartOptions, function(chart) { // on complete
@@ -211,17 +211,13 @@
         var donutData = [];
         for (var i = 0; i < rawData.length; i++) {
             donutData.push({
-                name: htmlsafe(rawData[i].name),
+                name: ControllerCommons.htmlsafe(rawData[i].name),
                 y: rawData[i].quantity,
                 color: rawData[i].color
             });
         }
         return donutData;
     }
-
-	function htmlsafe(string) {
-		return string.replace(/&/g,'&amp;').replace(/</g,'&lt;');
-	}
 
     statisticsData.getBusinessOverview($routeParams.businessId, populatePageWithData, function() { $scope.dataLoadingError = true; });
     $scope.spinnerText = "Laddar information...";

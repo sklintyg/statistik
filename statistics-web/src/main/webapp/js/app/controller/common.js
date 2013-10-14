@@ -56,4 +56,8 @@ var ControllerCommons = new function(){
      return dataSeries;
  };
 
+ this.htmlsafe = function(string) {
+     return string.replace(/&/g,'&amp;').replace(/</g,'&lt;');
+ }
+
 };
