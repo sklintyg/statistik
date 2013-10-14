@@ -31,6 +31,7 @@ public class Event {
     public Event(EventType type, String data, String correlationId, long timestamp) {
         this.type = type;
         this.data = data;
+        this.correlationId = correlationId;
     }
 
     public EventType getType() {
