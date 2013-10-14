@@ -219,11 +219,23 @@
         return donutData;
     }
 
+    var getSelectedVerksamhet = function(selectedVerksamhetId, verksamhets) {
+        for (var i = 0; i < verksamhets.length; i++) {
+            if (verksamhets[i].id === selectedVerksamhetId) {
+                return verksamhets[i];
+            }
+        }
+        return {}; //Selected verksamhet not found
+    }
+
     statisticsData.getBusinessOverview($routeParams.businessId, populatePageWithData, function() { $scope.dataLoadingError = true; });
     $scope.spinnerText = "Laddar information...";
     $scope.doneLoading = false;
     $scope.dataLoadingError = false;
 
-    statisticsData.getLoginInfo(function(loginInfo){ $scope.businesses = loginInfo.businesses; }, function() { $scope.dataLoadingError = true; });
-    
+    statisticsData.getLoginInfo(function(loginInfo){ 
+        $scope.businesses = loginInfo.businesses;
+        $scope.verksamhetName = getSelectedVerksamhet($routeParams.businessId, loginInfo.businesses).name;
+        }, function() { $scope.dataLoadingError = true; });
+
 };
