@@ -7,8 +7,8 @@ import com.fasterxml.jackson.databind.JsonNode;
 
 public final class DocumentHelper {
 
-    public static Matcher DIAGNOS_MATCHER = Matcher.Builder.matcher("observationsKategori").add(Matcher.Builder.matcher("code", "439401001")).add((Matcher.Builder.matcher("codeSystem", "1.2.752.116.2.1.1.1")));
-    public static Matcher ARBETSFORMAGA_MATCHER = Matcher.Builder.matcher("observationsKod").add(Matcher.Builder.matcher("code", "302119000")).add((Matcher.Builder.matcher("codeSystem", "1.2.752.116.2.1.1.1")));
+    public static final Matcher DIAGNOS_MATCHER = Matcher.Builder.matcher("observationsKategori").add(Matcher.Builder.matcher("code", "439401001")).add((Matcher.Builder.matcher("codeSystem", "1.2.752.116.2.1.1.1")));
+    public static final Matcher ARBETSFORMAGA_MATCHER = Matcher.Builder.matcher("observationsKod").add(Matcher.Builder.matcher("code", "302119000")).add((Matcher.Builder.matcher("codeSystem", "1.2.752.116.2.1.1.1")));
 
     private DocumentHelper() {
     }
