@@ -224,7 +224,7 @@
 	}
 
     statisticsData.getOverview(populatePageWithData, function() { $scope.dataLoadingError = true; });
-    $scope.spinnerText = "Laddar data...";
+    $scope.spinnerText = "Laddar information...";
     $scope.doneLoading = false;
     $scope.dataLoadingError = false;
 };

@@ -845,7 +845,7 @@ div.accordion-body.in.collapse > div.accordion-heading a.accordion-toggle{
 	border-bottom-left-radius: 8px !important;
 }
 .faq-accordion-inner p {
-	
+	line-height: 20px;
 }
 .login-button { width: 100%; }
 .login-button-label { color: #008391; font-weight: bold; }
@@ -1022,12 +1022,13 @@ a.listheader.collapsed {
 	
 }
 #about-content {
-	width: 65%;
+	width: 75%;
 }
 	#overview-content h1, #overview-content h2, #overview-content h3, #overview-content h4,
 	#about-content h1, #about-content h2, #about-content h3, #about-content h4 { font-family: Helvetica; color: #008391; }
 	#overview-content h1, #about-content h1 { font-weight: bold; font-size: 20px; margin-bottom: 0px; }
-	#overview-content h2, #about-content h2 { font-weight: bold; font-size: 18px; }
+	#overview-content h2 { font-weight: bold; font-size: 14px; }
+	#about-content h2 { font-weight: bold; font-size: 18px; } 
 	
 	#overview-content span.overview-ingress { font-weight: bold; margin-bottom: 10px; }
 	#overview-content .overview-box-header-container a:hover { text-decoration: none; }

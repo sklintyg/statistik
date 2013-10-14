@@ -21,6 +21,7 @@
      conf.dataFetcher = "getDegreeOfSickLeave",
      conf.showDetailsOptions = false,
      conf.title = "Antal sjukfall per sjukskrivningsgrad"
+     conf.tooltipHelpText ="Begreppet sjukskrivningsgrad beskriver hur många procent av en heltidsarbetstid (25 %, 50 %, 75 % eller 100 %) patienten rekommenderas sjukskrivning."	 
      return conf;
  }
  
@@ -164,7 +165,7 @@
         statisticsData.getDiagnosisGroups(populateDetailsOptions, function() { alert("Kunde inte ladda data"); });
     }
 
-    $scope.spinnerText = "Laddar data...";
+    $scope.spinnerText = "Laddar information...";
     $scope.doneLoading = false;
     $scope.dataLoadingError = false;
 
