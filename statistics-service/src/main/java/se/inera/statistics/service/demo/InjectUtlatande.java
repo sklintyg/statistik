@@ -33,6 +33,10 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 public class InjectUtlatande {
+    private static final int DAYS = 30;
+
+    private static final int MONTHS = 19;
+
     private static final Logger LOG = LoggerFactory.getLogger(InjectUtlatande.class);
 
     private static final DateTimeFormatter FORMATTER = DateTimeFormat.forPattern("yyyy-MM-dd");
@@ -87,8 +91,8 @@ public class InjectUtlatande {
         patientIdNode.put("extension", id);
 
         // CHECKSTYLE:OFF MagicNumber
-        LocalDate start = BASE.plusMonths((int) (Math.random() * 19)).plusDays((int) (Math.random() * 30));
-        LocalDate end = start.plusDays((int) (Math.random() * 30 + 7));
+        LocalDate start = BASE.plusMonths(random.nextInt(MONTHS)).plusDays(random.nextInt(DAYS));
+        LocalDate end = start.plusDays(random.nextInt(DAYS) + 7);
         // CHECKSTYLE:ON MagicNumber
 
         newPermutation.put("validFromDate", FORMATTER.print(start));
