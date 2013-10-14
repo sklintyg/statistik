@@ -3,7 +3,7 @@
 var ControllerCommons = new function(){
 
  this.addColor = function(rawData){
-     var color = ["#fbb10c", "#2ca2c6", "#11b73c", "#d165df", "#9c734d", "#008391", "#535353"];
+     var color = ["#fbb10c", "#2ca2c6", "#B0B0B0", "#12BC3A", "#9c734d", "#D35ABB", "#4A4A4A"];
      for (var i = 0; i < rawData.length; i++) {
          rawData[i].color = color[i];
      }
