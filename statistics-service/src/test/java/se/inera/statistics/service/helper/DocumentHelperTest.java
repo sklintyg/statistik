@@ -1,6 +1,6 @@
 package se.inera.statistics.service.helper;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
