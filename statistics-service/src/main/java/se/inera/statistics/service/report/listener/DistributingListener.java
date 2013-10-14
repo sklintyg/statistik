@@ -22,7 +22,7 @@ public class DistributingListener implements ProcessorListener {
 
     @Autowired
     private SjukfallPerKonListener sjukfallPerKonListener;
-    
+
     @Autowired
     private SjukfallPerDiagnosgruppListener sjukfallPerDiagnosgruppListenerListener;
 

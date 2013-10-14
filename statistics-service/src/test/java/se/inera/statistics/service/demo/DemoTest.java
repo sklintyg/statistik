@@ -22,7 +22,7 @@ public class DemoTest {
         JsonNode result = InjectUtlatande.permutate(intygTree, "19121212-1212");
 
         assertEquals("19121212-1212", result.path("patient").path("id").path("extension").asText());
-        assertEquals( "G90", DocumentHelper.getDiagnos(result));
+        assertEquals("G90", DocumentHelper.getDiagnos(result));
         assertEquals(Arrays.asList("0"), DocumentHelper.getArbetsformaga(result));
     }
 

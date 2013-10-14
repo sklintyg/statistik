@@ -10,7 +10,9 @@ public interface Matcher {
     boolean match(JsonNode node);
     Matcher add(Matcher matcher);
 
-    class Builder {
+    final class Builder {
+        private Builder() {
+        }
         public static Matcher matcher(String name, String value) {
             return new ValueMatcher(name, value);
         }
@@ -69,6 +71,5 @@ public interface Matcher {
         public Matcher add(Matcher matcher) {
             throw new IllegalArgumentException("Can not add matcher to ValueMatcher");
         }
-        
     }
 }

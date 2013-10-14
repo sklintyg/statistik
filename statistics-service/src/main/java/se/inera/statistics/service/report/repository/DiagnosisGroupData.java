@@ -12,7 +12,7 @@ public class DiagnosisGroupData {
 
     @EmbeddedId
     private DiagnosisGroupKey diagnosisGroupKey;
-    
+
     private int male;
     private int female;
 
@@ -24,7 +24,7 @@ public class DiagnosisGroupData {
         this.female = female;
         this.male = male;
     }
-    
+
     @Transient
     public String getPeriod() {
         return diagnosisGroupKey.getPeriod();
@@ -38,7 +38,7 @@ public class DiagnosisGroupData {
     public int getFemale() {
         return female;
     }
-    
+
     public int getMale() {
         return male;
     }
@@ -62,7 +62,7 @@ public class DiagnosisGroupData {
         public DiagnosisGroupKey() {
             // TODO Auto-generated constructor stub
         }
-        
+
         public DiagnosisGroupKey(String period, String hsaId, String group) {
             this.period = period;
             this.hsaId = hsaId;

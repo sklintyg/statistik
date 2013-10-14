@@ -60,7 +60,7 @@ public class InjectUtlatande {
     }
 
     static {
-        for(DiagnosisGroup mainGroup: DiagnosisGroupsUtil.getAllDiagnosisGroups()) {
+        for (DiagnosisGroup mainGroup: DiagnosisGroupsUtil.getAllDiagnosisGroups()) {
             for (DiagnosisGroup group: DiagnosisGroupsUtil.getSubGroups(mainGroup.getId())) {
                 DIAGNOSER.add(group.getId().split("-")[0]);
             }
@@ -98,17 +98,17 @@ public class InjectUtlatande {
         newPermutation.put("validFromDate", FORMATTER.print(start));
         newPermutation.put("validToDate", FORMATTER.print(end));
 
-        ((ObjectNode) newPermutation.path("skapadAv").path("vardenhet").path("id")).put("extension",random(VARDENHETER));
+        ((ObjectNode) newPermutation.path("skapadAv").path("vardenhet").path("id")).put("extension", random(VARDENHETER));
         for (JsonNode observation: newPermutation.path("observations")) {
             if (DocumentHelper.DIAGNOS_MATCHER.match(observation)) {
-                ((ObjectNode)observation.path("observationsKod")).put("code", random(DIAGNOSER));
+                ((ObjectNode) observation.path("observationsKod")).put("code", random(DIAGNOSER));
             }
         }
 
         for (JsonNode observation: newPermutation.path("observations")) {
             if (DocumentHelper.ARBETSFORMAGA_MATCHER.match(observation)) {
                 int arbetsformaga = random.nextInt(3) * 25;
-                ((ObjectNode)observation.path("varde").path(0)).put("quantity", arbetsformaga);
+                ((ObjectNode) observation.path("varde").path(0)).put("quantity", arbetsformaga);
             }
         }
 
@@ -131,7 +131,7 @@ public class InjectUtlatande {
     }
 
     private String readTemplate(String path) {
-        try (BufferedReader in = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream(path), "utf8"));){
+        try (BufferedReader in = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream(path), "utf8"));) {
             StringBuilder sb = new StringBuilder();
             for (String line = in.readLine(); line != null; line = in.readLine()) {
                 sb.append(line).append('\n');
@@ -143,7 +143,7 @@ public class InjectUtlatande {
     }
 
     private List<String> readList(String path) {
-        try (BufferedReader in = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream(path), "utf8"));){
+        try (BufferedReader in = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream(path), "utf8"));) {
             List<String> list = new ArrayList<>();
             for (String line = in.readLine(); line != null; line = in.readLine()) {
                 list.add(line);

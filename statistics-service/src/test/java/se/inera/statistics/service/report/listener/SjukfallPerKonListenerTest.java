@@ -48,7 +48,7 @@ public class SjukfallPerKonListenerTest {
         assertEquals(firstDate, allValues.next());
         assertEquals(firstDate.plusMonths(1), allValues.next());
         assertEquals(firstDate.plusMonths(2), allValues.next());
-        
+
         thrown.expect(NoSuchElementException.class);
         allValues.next();
     }
