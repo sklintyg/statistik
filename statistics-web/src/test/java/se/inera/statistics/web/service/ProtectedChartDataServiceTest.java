@@ -9,7 +9,7 @@ import se.inera.statistics.service.report.api.DiagnosisSubGroups;
 import se.inera.statistics.service.report.api.Overview;
 import se.inera.statistics.service.report.model.DiagnosisGroup;
 import se.inera.statistics.service.report.model.Range;
-import se.inera.statistics.web.model.Business;
+import se.inera.statistics.web.model.Verksamhet;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -27,28 +27,17 @@ public class ProtectedChartDataServiceTest {
     Overview mock;
     HttpServletRequest request;
     HttpSession session;
-    List<Business> verksamhets;
+    List<Verksamhet> verksamhets;
 
     @Before
     public void init() {
         mock = Mockito.mock(Overview.class);
         request = Mockito.mock(HttpServletRequest.class);
         session = Mockito.mock(HttpSession.class);
-        verksamhets = Arrays.asList(new Business("verksamhet1", "Närhälsan i Småmåla"), new Business("verksamhet2", "Småmålas akutmottagning"));
+        verksamhets = Arrays.asList(new Verksamhet("verksamhet1", "Närhälsan i Småmåla"), new Verksamhet("verksamhet2", "Småmålas akutmottagning"));
 
         Mockito.when(request.getSession()).thenReturn(session);
         Mockito.when(session.getAttribute(anyString())).thenReturn(verksamhets);
-    }
-
-    @Test
-    public void getOverviewDataWithDefaultVerksamhetTest() {
-        init();
-
-        ProtectedChartDataService chartDataService = new ProtectedChartDataService(mock, null, null, null, null);
-        try {
-            chartDataService.getOverviewData(request);
-        } catch (NullPointerException e) {}
-        Mockito.verify(mock).getOverview("verksamhet1");
     }
 
     @Test
@@ -80,7 +69,7 @@ public class ProtectedChartDataServiceTest {
 
     @Test
     public void checkAllowedAccessToDefaultTest() {
-        verksamhets = Arrays.asList(new Business("1","a"));
+        verksamhets = Arrays.asList(new Verksamhet("1","a"));
         Mockito.when(session.getAttribute(anyString())).thenReturn(verksamhets);
 
         ProtectedChartDataService chartDataService = new ProtectedChartDataService(mock, null, null, null, null);
