@@ -1,18 +1,22 @@
 package se.inera.statistics.web.service;
 
-import org.junit.Test;
-import static org.junit.Assert.*;
-import se.inera.statistics.service.report.model.CasesPerMonthRow;
-import se.inera.statistics.web.model.NamedData;
-import se.inera.statistics.web.model.TableData;
+import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import org.junit.Test;
+
+import se.inera.statistics.service.report.model.CasesPerMonthRow;
+import se.inera.statistics.web.model.NamedData;
+import se.inera.statistics.web.model.TableData;
+
 public class CasesPerMonthConverterTest {
 
+    // CHECKSTYLE:OFF MagicNumber
+
     @Test
-    public void convertCasesPerMonthDataTest(){
+    public void convertCasesPerMonthDataTest() {
         CasesPerMonthConverter converter = new CasesPerMonthConverter();
         ArrayList<CasesPerMonthRow> casesPerMonth = new ArrayList<CasesPerMonthRow>();
         casesPerMonth.add(new CasesPerMonthRow("jan 12", 12, 13));
@@ -29,5 +33,7 @@ public class CasesPerMonthConverterTest {
         assertEquals("[50, 20, 30, 75]", rows.get(1).getData().toString());
         assertEquals("[30, 5, 25, 105]", rows.get(2).getData().toString());
     }
+
+    // CHECKSTYLE:ON MagicNumber
 
 }

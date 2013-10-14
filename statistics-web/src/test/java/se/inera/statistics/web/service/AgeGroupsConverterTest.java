@@ -1,19 +1,26 @@
 package se.inera.statistics.web.service;
 
-import org.junit.Test;
-import se.inera.statistics.service.report.model.AgeGroupsResponse;
-import se.inera.statistics.service.report.model.AgeGroupsRow;
-import se.inera.statistics.web.model.*;
+import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import org.junit.Test;
+
+import se.inera.statistics.service.report.model.AgeGroupsResponse;
+import se.inera.statistics.service.report.model.AgeGroupsRow;
+import se.inera.statistics.web.model.AgeGroupsData;
+import se.inera.statistics.web.model.ChartData;
+import se.inera.statistics.web.model.ChartSeries;
+import se.inera.statistics.web.model.NamedData;
+import se.inera.statistics.web.model.TableData;
 
 public class AgeGroupsConverterTest {
 
+    // CHECKSTYLE:OFF MagicNumber
+
     @Test
-    public void convertCasesPerMonthDataTest(){
+    public void convertCasesPerMonthDataTest() {
         //Given
         AgeGroupsConverter converter = new AgeGroupsConverter();
         ArrayList<AgeGroupsRow> ageGroupsRows = new ArrayList<>();
@@ -49,4 +56,5 @@ public class AgeGroupsConverterTest {
         assertEquals(7, result.getMonthsIncluded());
     }
 
+    // CHECKSTYLE:ON MagicNumber
 }

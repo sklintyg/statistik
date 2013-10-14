@@ -16,7 +16,7 @@ public class CasesPerMonthMock implements CasesPerMonth {
 
     // CHECKSTYLE:OFF MagicNumber
     @Override
-    public List<CasesPerMonthRow> getCasesPerMonth(Range range) {
+    public List<CasesPerMonthRow> getCasesPerMonth(String hsaId, Range range) {
         List<CasesPerMonthRow> rows = new ArrayList<>();
         for (String periodName : ReportUtil.PERIODS) {
             int men = (int) (random.nextGaussian() * 2000 + 10000);
@@ -27,7 +27,7 @@ public class CasesPerMonthMock implements CasesPerMonth {
     }
 
     @Override
-    public void count(String period, Sex sex) {
+    public void count(String hsaId, String period, Sex sex) {
     }
     // CHECKSTYLE:ON
 

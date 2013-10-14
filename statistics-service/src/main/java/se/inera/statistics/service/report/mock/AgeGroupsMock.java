@@ -19,7 +19,7 @@ public class AgeGroupsMock implements AgeGroups {
 
     // CHECKSTYLE:OFF MagicNumber
     @Override
-    public AgeGroupsResponse getAgeGroups(Range range) {
+    public AgeGroupsResponse getAgeGroups(String hsaId, Range range) {
         final List<AgeGroupsRow> rows = new ArrayList<AgeGroupsRow>();
         for (String group : GROUPS) {
             int women = (int) (random.nextGaussian() * 2000 + 10000);

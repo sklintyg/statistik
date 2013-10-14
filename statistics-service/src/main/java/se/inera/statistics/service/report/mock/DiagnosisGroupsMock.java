@@ -18,7 +18,7 @@ import se.inera.statistics.service.report.util.ReportUtil;
 public class DiagnosisGroupsMock implements DiagnosisGroups {
 
     @Override
-    public DiagnosisGroupResponse getDiagnosisGroups(Range range) {
+    public DiagnosisGroupResponse getDiagnosisGroups(String hsaId, Range range) {
         List<DiagnosisGroup> headers = DiagnosisGroupsUtil.getAllDiagnosisGroups();
         List<DiagnosisGroupRow> rows = new ArrayList<>();
         for (String periodName : ReportUtil.PERIODS) {
@@ -43,6 +43,6 @@ public class DiagnosisGroupsMock implements DiagnosisGroups {
     // CHECKSTYLE:ON MagicNumber
 
     @Override
-    public void count(String period, String diagnosgrupp, Sex sex) {
+    public void count(String hsaId, String period, String diagnosgrupp, Sex sex) {
     }
 }

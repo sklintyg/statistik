@@ -30,13 +30,13 @@ public class CasesPerMonthPersistenceHandler implements CasesPerMonth {
     private DateTimeFormatter inputFormatter = DateTimeFormat.forPattern("yyyy-MM");
 
     @Transactional
-    public void count(String period, Sex sex) {
-        CasesPerMonthRow existingRow = manager.find(CasesPerMonthRow.class, new CasesPerMonthKey(period, "nationell"));
+    public void count(String hsaId, String period, Sex sex) {
+        CasesPerMonthRow existingRow = manager.find(CasesPerMonthRow.class, new CasesPerMonthKey(period, hsaId));
         int female = Sex.Female.equals(sex) ? 1 : 0;
         int male = Sex.Male.equals(sex) ? 1 : 0;
 
         if (existingRow == null) {
-            CasesPerMonthRow row = new CasesPerMonthRow(period, "nationell", female, male);
+            CasesPerMonthRow row = new CasesPerMonthRow(period, hsaId, female, male);
             manager.persist(row);
         } else {
             existingRow.setFemale(existingRow.getFemale() + female);
@@ -45,15 +45,11 @@ public class CasesPerMonthPersistenceHandler implements CasesPerMonth {
         }
     }
 
-    @Transactional
-    public CasesPerMonthRow getCasesPerMonthRow(String period) {
-        return manager.find(CasesPerMonthRow.class, new CasesPerMonthKey(period, "nationell"));
-    }
-
     @Override
     @Transactional
-    public List<CasesPerMonthRow> getCasesPerMonth(Range range) {
-        TypedQuery<CasesPerMonthRow> query = manager.createQuery("SELECT c FROM CasesPerMonthRow c WHERE c.casesPerMonthKey.period >= :from AND c.casesPerMonthKey.period <= :to ORDER BY c.casesPerMonthKey.period", CasesPerMonthRow.class);
+    public List<CasesPerMonthRow> getCasesPerMonth(String hsaId, Range range) {
+        TypedQuery<CasesPerMonthRow> query = manager.createQuery("SELECT c FROM CasesPerMonthRow c WHERE c.casesPerMonthKey.hsaId = :hsaId AND c.casesPerMonthKey.period >= :from AND c.casesPerMonthKey.period <= :to ORDER BY c.casesPerMonthKey.period", CasesPerMonthRow.class);
+        query.setParameter("hsaId", hsaId);
         query.setParameter("from", inputFormatter.print(range.getFrom()));
         query.setParameter("to", inputFormatter.print(range.getTo()));
 

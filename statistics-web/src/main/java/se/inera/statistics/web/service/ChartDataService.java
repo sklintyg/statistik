@@ -8,7 +8,6 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
-import org.joda.time.LocalDate;
 import org.springframework.stereotype.Service;
 
 import se.inera.statistics.service.report.api.AgeGroups;
@@ -62,7 +61,7 @@ public class ChartDataService {
     public TableData getNumberOfCasesPerMonth() {
         Range range = new Range();
 
-        List<CasesPerMonthRow> casesPerMonth = datasourceCasesPerMonth.getCasesPerMonth(range);
+        List<CasesPerMonthRow> casesPerMonth = datasourceCasesPerMonth.getCasesPerMonth(CasesPerMonth.HSA_NATIONELL, range);
 
         return new CasesPerMonthConverter().convertCasesPerMonthData(casesPerMonth);
     }
@@ -79,7 +78,7 @@ public class ChartDataService {
     @Produces({ MediaType.APPLICATION_JSON })
     public DualSexStatisticsData getDiagnosisGroupStatistics() {
         Range range = new Range();
-        DiagnosisGroupResponse diagnosisGroups = datasourceDiagnosisGroups.getDiagnosisGroups(range);
+        DiagnosisGroupResponse diagnosisGroups = datasourceDiagnosisGroups.getDiagnosisGroups(DiagnosisSubGroups.HSA_NATIONELL, range);
         return new DiagnosisGroupsConverter().convert(diagnosisGroups);
     }
 
@@ -88,7 +87,7 @@ public class ChartDataService {
     @Produces({ MediaType.APPLICATION_JSON })
     public DualSexStatisticsData getDiagnosisSubGroupStatistics(@QueryParam("groupId") String groupId) {
         Range range = new Range();
-        DiagnosisGroupResponse diagnosisGroups = datasourceDiagnosisSubGroups.getDiagnosisGroups(range, groupId);
+        DiagnosisGroupResponse diagnosisGroups = datasourceDiagnosisSubGroups.getDiagnosisGroups(DiagnosisSubGroups.HSA_NATIONELL, range, groupId);
         return new DiagnosisSubGroupsConverter().convert(diagnosisGroups);
     }
 
@@ -105,7 +104,7 @@ public class ChartDataService {
     @Produces({ MediaType.APPLICATION_JSON })
     public AgeGroupsData getAgeGroupsStatistics() {
         Range range = new Range(AGE_PERIOD);
-        AgeGroupsResponse ageGroups = datasourceAgeGroups.getAgeGroups(range);
+        AgeGroupsResponse ageGroups = datasourceAgeGroups.getAgeGroups(AgeGroups.HSA_NATIONELL, range);
         return new AgeGroupsConverter().convert(ageGroups);
     }
 
@@ -113,7 +112,7 @@ public class ChartDataService {
     @Path("getDegreeOfSickLeaveStatistics")
     @Produces({ MediaType.APPLICATION_JSON })
     public DualSexStatisticsData getDegreeOfSickLeaveStatistics() {
-        DegreeOfSickLeaveResponse degreeOfSickLeaveStatistics = dataSourceDegreeOfSickLeave.getStatistics();
+        DegreeOfSickLeaveResponse degreeOfSickLeaveStatistics = dataSourceDegreeOfSickLeave.getStatistics(DegreeOfSickLeave.HSA_NATIONELL);
         return new DegreeOfSickLeaveConverter().convert(degreeOfSickLeaveStatistics);
     }
 }

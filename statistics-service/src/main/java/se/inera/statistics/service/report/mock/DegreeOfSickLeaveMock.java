@@ -14,7 +14,7 @@ import se.inera.statistics.service.report.util.ReportUtil;
 public class DegreeOfSickLeaveMock implements DegreeOfSickLeave {
 
     @Override
-    public DegreeOfSickLeaveResponse getStatistics() {
+    public DegreeOfSickLeaveResponse getStatistics(String hsaId) {
         List<String> headers = Arrays.asList("Antal sjukfall per 25%", "Antal sjukfall per 50%", "Antal sjukfall per 75%", "Antal sjukfall per 100%");
         List<DegreeOFSickLeaveRow> rows = new ArrayList<>();
         for (String periodName : ReportUtil.PERIODS) {

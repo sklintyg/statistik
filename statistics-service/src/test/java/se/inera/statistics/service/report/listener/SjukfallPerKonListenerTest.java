@@ -2,6 +2,7 @@ package se.inera.statistics.service.report.listener;
 
 import static org.junit.Assert.*;
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.doNothing;
 
 import java.util.Iterator;
@@ -25,11 +26,11 @@ public class SjukfallPerKonListenerTest {
     @Test
     public void acceptWithNoPreviousStartsCallingAtStartMonth() {
         ArgumentCaptor<LocalDate> capture = ArgumentCaptor.forClass(LocalDate.class);
-        doNothing().when(listener).accept(capture.capture(), any(Sex.class));
+        doNothing().when(listener).accept(anyString(), capture.capture(), any(Sex.class));
 
         LocalDate firstDate = new LocalDate("2013-01-01");
         LocalDate lastDate = new LocalDate("2013-01-01");
-        listener.acceptPeriod(firstDate, lastDate, Sex.Female);
+        listener.acceptPeriod("hsaId", firstDate, lastDate, Sex.Female);
 
         assertEquals(firstDate, capture.getValue());
     }
@@ -37,11 +38,11 @@ public class SjukfallPerKonListenerTest {
     @Test
     public void acceptWithNoPreviousCallsFromStartMonthToEndMonth() {
         ArgumentCaptor<LocalDate> capture = ArgumentCaptor.forClass(LocalDate.class);
-        doNothing().when(listener).accept(capture.capture(), any(Sex.class));
+        doNothing().when(listener).accept(anyString(), capture.capture(), any(Sex.class));
 
         LocalDate firstDate = new LocalDate("2013-01-01");
         LocalDate lastDate = new LocalDate("2013-03-01");
-        listener.acceptPeriod(firstDate, lastDate, Sex.Female);
+        listener.acceptPeriod("hsaId", firstDate, lastDate, Sex.Female);
 
         Iterator<LocalDate> allValues = capture.getAllValues().iterator();
         assertEquals(firstDate, allValues.next());
