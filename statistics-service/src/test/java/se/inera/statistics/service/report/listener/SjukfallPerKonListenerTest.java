@@ -1,6 +1,6 @@
 package se.inera.statistics.service.report.listener;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.doNothing;
@@ -48,7 +48,7 @@ public class SjukfallPerKonListenerTest {
         assertEquals(firstDate, allValues.next());
         assertEquals(firstDate.plusMonths(1), allValues.next());
         assertEquals(firstDate.plusMonths(2), allValues.next());
-        
+
         thrown.expect(NoSuchElementException.class);
         allValues.next();
     }

@@ -27,7 +27,7 @@ public class HSADecoratorTest {
 
 
     @InjectMocks
-    HSADecorator hsaDecorator = new HSADecorator();
+    private HSADecorator hsaDecorator = new HSADecorator();
 
     @Test
     public void decorate_document() throws IOException {

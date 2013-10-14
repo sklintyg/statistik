@@ -1189,7 +1189,8 @@ form.bs-docs-example {
 	}
 	.overview-chart-info{
 		float: left;
-		width: 38%;
+		width: 30%;
+		margin: 20px 15px 10px 15px;
 	}
 	
 }
@@ -1219,9 +1220,16 @@ form.bs-docs-example {
 	#overview-content .span3 {
 		width: 48%;
 	}
+	#business-overview .span3 {
+		width: 100%;
+	}
 	#overview-content .span6 {
-		width: 98.618785%;
+		width: 100%;
 		margin-left: 0px;
+	}
+	#overview-content .span9 {
+		width: 100%;
+		margin-left: 0;
 	}
 	ul.overview-box-header {
 		width: 100%;
@@ -1259,6 +1267,10 @@ form.bs-docs-example {
 		padding: 25%;
 		margin: 48% 15% 15% 15%;
 	}
+	#business-overview #overview-content #overview-change-container .overview-change-responsive-circle > div {
+		padding: 15%;
+		margin: 3% 9% 8% 33%;
+	}
 	#overview-content #overview-change-container .overview-change-responsive-circle > div {
 		padding: 28%;
 		margin: 10% 15% 15% 21%;
@@ -1275,7 +1287,10 @@ form.bs-docs-example {
 		color: #919191;
 		font-weight: bold;
 		font-size: 2em;
-		margin: 0px 10px 10px 60px;
+		margin: 0px 10px 10px 0px;
+	}
+	#about-content {
+		width: 95%;
 	}
 	
 }
@@ -1379,6 +1394,9 @@ form.bs-docs-example {
 		font-weight: bold;
 		font-size: 2em;
 		margin: 0px 0px 0px 0px;
+	}
+	#about-content {
+		width: 100%;
 	}
 }
  

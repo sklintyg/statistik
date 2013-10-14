@@ -12,7 +12,7 @@ public class DiagnosisSubGroupData {
 
     @EmbeddedId
     private Key diagnosisGroupKey;
-    
+
     private int male;
     private int female;
 
@@ -24,7 +24,7 @@ public class DiagnosisSubGroupData {
         this.female = female;
         this.male = male;
     }
-    
+
     @Transient
     public String getPeriod() {
         return diagnosisGroupKey.getPeriod();
@@ -39,11 +39,11 @@ public class DiagnosisSubGroupData {
     public String getSubGroup() {
         return diagnosisGroupKey.getSubGroup();
     }
-    
+
     public int getFemale() {
         return female;
     }
-    
+
     public int getMale() {
         return male;
     }
@@ -57,7 +57,7 @@ public class DiagnosisSubGroupData {
     }
 
     @Embeddable
-    public final static class Key implements Serializable {
+    public static final class Key implements Serializable {
         private static final long serialVersionUID = 1L;
 
         private String period;

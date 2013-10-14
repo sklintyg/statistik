@@ -5,7 +5,7 @@ import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.Sex;
 
 public interface DiagnosisGroups {
-    public static final String HSA_NATIONELL = "nationell";
+    String HSA_NATIONELL = "nationell";
 
     DiagnosisGroupResponse getDiagnosisGroups(String hsaId, Range range);
 

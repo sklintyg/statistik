@@ -42,6 +42,10 @@
              $scope.showNational = false;
              $scope.showOperation = true;
              $scope.showAbout = false;
+         } else {
+             $scope.showNational = true;
+             $scope.showOperation = false;
+             $scope.showAbout = false;
          }
      }); 
 

@@ -14,14 +14,16 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
 
 public class ProtectedChartDataServiceTest {
-    VerksamhetOverview mock;
-    HttpServletRequest request;
-    HttpSession session;
-    List<Verksamhet> verksamhets;
+    private VerksamhetOverview mock;
+    private HttpServletRequest request;
+    private HttpSession session;
+    private List<Verksamhet> verksamhets;
 
     @Before
     public void init() {
@@ -41,7 +43,10 @@ public class ProtectedChartDataServiceTest {
         ProtectedChartDataService chartDataService = new ProtectedChartDataService(mock, null, null, null, null);
         try {
             chartDataService.getOverviewData(request, "verksamhet2");
-        } catch (NullPointerException e) {}
+            fail("Current implemnetaion can not use null data");
+        } catch (NullPointerException e) {
+            assertTrue(true);
+        }
         Mockito.verify(mock).getOverview(anyString(), any(Range.class));
     }
 
@@ -63,7 +68,7 @@ public class ProtectedChartDataServiceTest {
 
     @Test
     public void checkAllowedAccessToDefaultTest() {
-        verksamhets = Arrays.asList(new Verksamhet("1","a"));
+        verksamhets = Arrays.asList(new Verksamhet("1", "a"));
         Mockito.when(session.getAttribute(anyString())).thenReturn(verksamhets);
 
         ProtectedChartDataService chartDataService = new ProtectedChartDataService(mock, null, null, null, null);

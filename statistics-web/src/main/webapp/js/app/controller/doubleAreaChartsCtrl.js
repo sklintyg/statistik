@@ -21,10 +21,11 @@
      conf.dataFetcher = "getDegreeOfSickLeave",
      conf.showDetailsOptions = false,
      conf.title = "Antal sjukfall per sjukskrivningsgrad"
+     conf.tooltipHelpText ="Begreppet sjukskrivningsgrad beskriver hur många procent av en heltidsarbetstid (25 %, 50 %, 75 % eller 100 %) patienten rekommenderas sjukskrivning."	 
      return conf;
  }
  
- app.diagnosisGroupsCtrl = function ($scope, $routeParams, $window, statisticsData, config) {
+ app.diagnosisGroupsCtrl = function ($scope, $routeParams, $window, $timeout, statisticsData, config) {
     var chart1, chart2;
      var that = this;
 
@@ -109,9 +110,11 @@
     };
 
     var populatePageWithData = function(result){
-        updateDataTable($scope, result);
-        updateChart(result);
         $scope.doneLoading = true;
+        $timeout(function() {
+            updateDataTable($scope, result);
+            updateChart(result);
+        }, 1);
     };
     
     var populateDetailsOptions = function(result){
@@ -164,7 +167,7 @@
         statisticsData.getDiagnosisGroups(populateDetailsOptions, function() { alert("Kunde inte ladda data"); });
     }
 
-    $scope.spinnerText = "Laddar data...";
+    $scope.spinnerText = "Laddar information...";
     $scope.doneLoading = false;
     $scope.dataLoadingError = false;
 

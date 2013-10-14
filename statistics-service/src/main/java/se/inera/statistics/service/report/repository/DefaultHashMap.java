@@ -2,7 +2,7 @@ package se.inera.statistics.service.report.repository;
 
 import java.util.HashMap;
 
-public final class DefaultHashMap<K,V> extends HashMap<K,V> {
+public final class DefaultHashMap<K, V> extends HashMap<K, V> {
 
     private V defaultValue;
 

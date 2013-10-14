@@ -105,7 +105,7 @@
         ControllerCommons.toggleTableVisibilityGeneric(event, $scope);
     };
     
-    $scope.spinnerText = "Laddar data...";
+    $scope.spinnerText = "Laddar information...";
     $scope.doneLoading = false;
     $scope.dataLoadingError = false;
 };

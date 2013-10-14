@@ -118,7 +118,7 @@ public class ProtectedChartDataService {
         if (request == null) {
             return false;
         }
-        List<Verksamhet> verksamhets = (List<Verksamhet>) request.getSession().getAttribute("verksamhets");
+        List<Verksamhet> verksamhets = getVerksamhets(request);
         if (verksamhetId != null && verksamhets != null) {
             for (Verksamhet verksamhet : verksamhets) {
                 if (verksamhetId.equals(verksamhet.getId())) {
@@ -141,11 +141,15 @@ public class ProtectedChartDataService {
         if (request == null) {
             return false;
         }
-        List<Verksamhet> verksamhets = (List<Verksamhet>) request.getSession().getAttribute("verksamhets");
+        List<Verksamhet> verksamhets = getVerksamhets(request);
         if (verksamhets == null || verksamhets.isEmpty()) {
             return false;
         }
         return true;
     }
 
+    @SuppressWarnings("unchecked")
+    private List<Verksamhet> getVerksamhets(HttpServletRequest request) {
+        return (List<Verksamhet>) request.getSession().getAttribute("verksamhets");
+    }
 }

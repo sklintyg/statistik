@@ -20,12 +20,10 @@
 	            y: 0,
 	            borderWidth: 0
 	        },	
-			xAxis : {
-				labels: {
-                	rotation: 310
-                },
-				categories : chartCategories
-			},
+            xAxis : {
+                labels : { rotation : 310 },
+                categories : chartCategories.map(function(name) { return ControllerCommons.htmlsafe(name); })
+            },
 			yAxis : {
 				min : 0,
 				title : {
@@ -102,7 +100,7 @@
         ControllerCommons.toggleTableVisibilityGeneric(event, $scope);
     };
     
-    $scope.spinnerText = "Laddar data...";
+    $scope.spinnerText = "Laddar information...";
     $scope.doneLoading = false;
     $scope.dataLoadingError = false;
 };

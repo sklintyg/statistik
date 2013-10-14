@@ -8,3 +8,4 @@
     <class>se.inera.statistics.service.sjukfall.Sjukfall</class>
   </persistence-unit>
 </persistence>
+

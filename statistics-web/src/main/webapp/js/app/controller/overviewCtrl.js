@@ -1,10 +1,15 @@
  'use strict';
 
- app.overviewCtrl = function ($scope, statisticsData) {
-    var populatePageWithData = function(result){
-        $scope.doneLoading = true;
-        $scope.$apply();
+ app.overviewCtrl = function ($scope, $timeout, statisticsData) {
 
+     var dataReceived = function(result) {
+         $scope.doneLoading = true;
+         $timeout(function() {
+             populatePageWithData(result);
+         }, 1);
+     };
+     
+     var populatePageWithData = function(result) {
         $scope.casesPerMonthMaleProportion = result.casesPerMonth.proportionMale;
         $scope.casesPerMonthFemaleProportion = result.casesPerMonth.proportionFemale;
         $scope.casesPerMonthAlteration = result.casesPerMonth.alteration;
@@ -79,7 +84,7 @@
                     }
                 },
                 xAxis: {
-                    categories: chartData.map(function(e) { return htmlsafe(e.name); }),
+                    categories: chartData.map(function(e) { return ControllerCommons.htmlsafe(e.name); }),
                     min: 0,
                     title: {
                         text: 'DAGAR'
@@ -177,7 +182,7 @@
             } ],
             series : chartData.map(function(e) {
                     var coords = getCoordinates(e);
-                    return {"data": [[coords.x, coords.y, e.quantity]], color: e.color, name: htmlsafe(e.name) };
+                    return {"data": [[coords.x, coords.y, e.quantity]], color: e.color, name: ControllerCommons.htmlsafe(e.name) };
                 })
         };
         new Highcharts.Chart(chartOptions, function(chart) { // on complete
@@ -211,7 +216,7 @@
         var donutData = [];
         for (var i = 0; i < rawData.length; i++) {
             donutData.push({
-                name: htmlsafe(rawData[i].name),
+                name: ControllerCommons.htmlsafe(rawData[i].name),
                 y: rawData[i].quantity,
                 color: rawData[i].color
             });
@@ -219,12 +224,8 @@
         return donutData;
     }
     
-	function htmlsafe(string) {
-		return string.replace(/&/g,'&amp;').replace(/</g,'&lt;');
-	}
-
-    statisticsData.getOverview(populatePageWithData, function() { $scope.dataLoadingError = true; });
-    $scope.spinnerText = "Laddar data...";
+    statisticsData.getOverview(dataReceived, function() { $scope.dataLoadingError = true; });
+    $scope.spinnerText = "Laddar information...";
     $scope.doneLoading = false;
     $scope.dataLoadingError = false;
 };

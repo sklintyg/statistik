@@ -702,14 +702,17 @@ i.statistict-left-menu-expand-icon {
 	border-bottom-right-radius: 10px;
 	color: #fff;
 }
-.accordion-toggle.disabled {
-	background: #F2F2F2 !important;
+.accordion-toggle.disabled, .accordion-toggle.disabled:hover {
+	background: #ffffff !important;
 	cursor: default;
-	color: #A8A8A8;
+	color: #C7C7C7 !important;
+	border: 1px solid #DDDDDD;
+	cursor: default !important;
+	font-weight: normal !important;
 }
-.accordion-toggle.disabled:hover {
-	color: #A8A8A8 !important;
-} 
+.accordion-toggle.disabled i.statistict-left-menu-expand-icon{
+	display: none;
+}
 .accordion-toggle.disabled i.statistict-left-menu-expand-icon {
 	opacity: .8;
 	cursor: default;
@@ -728,7 +731,10 @@ i.statistict-left-menu-expand-icon {
 	border-bottom-left-radius: 0px;
 	border-bottom-right-radius: 0px;
 }
-
+.accordion-heading .accordion-toggle {
+	display: block;
+	padding: 8px 9px !important;
+}
 div.accordion-body.in.collapse > div.accordion-heading a.accordion-toggle{
 	background:lime;
 }
@@ -762,7 +768,7 @@ div.accordion-body.in.collapse > div.accordion-heading a.accordion-toggle{
 	border-top-right-radius: 10px;
 	border-bottom-left-radius: 10px;
 	border-bottom-right-radius: 10px;
-	color: #fff !important;
+	color: #fff;
 }
 
 .accordion {
@@ -845,7 +851,7 @@ div.accordion-body.in.collapse > div.accordion-heading a.accordion-toggle{
 	border-bottom-left-radius: 8px !important;
 }
 .faq-accordion-inner p {
-	
+	line-height: 20px;
 }
 .login-button { width: 100%; }
 .login-button-label { color: #008391; font-weight: bold; }
@@ -1022,12 +1028,13 @@ a.listheader.collapsed {
 	
 }
 #about-content {
-	width: 65%;
+	width: 75%;
 }
 	#overview-content h1, #overview-content h2, #overview-content h3, #overview-content h4,
 	#about-content h1, #about-content h2, #about-content h3, #about-content h4 { font-family: Helvetica; color: #008391; }
 	#overview-content h1, #about-content h1 { font-weight: bold; font-size: 20px; margin-bottom: 0px; }
-	#overview-content h2, #about-content h2 { font-weight: bold; font-size: 18px; }
+	#overview-content h2 { font-weight: bold; font-size: 14px; }
+	#about-content h2 { font-weight: bold; font-size: 18px; } 
 	
 	#overview-content span.overview-ingress { font-weight: bold; margin-bottom: 10px; }
 	#overview-content .overview-box-header-container a:hover { text-decoration: none; }

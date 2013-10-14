@@ -74,7 +74,7 @@ public class Processor {
             LocalDate end = FORMATTER.parseLocalDate(endString);
 
             return new SjukfallKey(personId, vardgivareId, start, end);
-        } catch (NullPointerException e) {
+        } catch (RuntimeException e) {
             throw new StatisticsMalformedDocument("Could not parse dates from intyg.", e);
         }
     }

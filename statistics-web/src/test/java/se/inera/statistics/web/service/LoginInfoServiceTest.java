@@ -14,8 +14,8 @@ import static org.mockito.Matchers.anyObject;
 import static org.mockito.Matchers.anyString;
 
 public class LoginInfoServiceTest {
-    HttpServletRequest request;
-    HttpSession session;
+    private HttpServletRequest request;
+    private HttpSession session;
 
     @Before
     public void init() {

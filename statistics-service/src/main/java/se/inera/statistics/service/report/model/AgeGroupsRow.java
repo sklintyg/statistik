@@ -15,7 +15,7 @@ public class AgeGroupsRow {
         this.male = male;
     }
 
-    public String getGroup(){
+    public String getGroup() {
         return group;
     }
 
@@ -36,7 +36,7 @@ public class AgeGroupsRow {
     }
 
     public int getValueForSex(Sex sex) {
-        if (Sex.Female.equals(sex)){
+        if (Sex.Female.equals(sex)) {
             return female;
         } else {
             return male;
