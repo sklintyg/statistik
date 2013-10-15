@@ -55,6 +55,11 @@
                      align : 'high',
                      verticalAlign : 'top'
                  },
+                 labels: {
+                     formatter: function() {
+                         return this.value
+                     }
+                 },
                  plotLines : [ {
                      value : 0,
                      width : 1,

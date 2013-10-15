@@ -37,6 +37,11 @@
 					x: 30,
 		            y: -10
 				},
+				labels: {
+					formatter: function() {
+						return this.value
+					}
+				},
 				plotLines : [ {
 					value : 0,
 					width : 1,
