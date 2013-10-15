@@ -57,11 +57,6 @@
                     dataLabels: {
                         enabled: false
                     },
-                    events: {
-                    	legendItemClick: function () { // This function removes interaction for plot and legend-items
-                        	return false;
-                    	}
-                	},
                     showInLegend: true
                 } 
             },
