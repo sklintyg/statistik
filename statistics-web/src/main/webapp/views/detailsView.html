@@ -32,7 +32,10 @@
 	<!-- Start ingress -->
     <div ng-include="errorPageUrl"></div>
 	<div class="row-fluid">
-		<span class="span12 graph-ingress">{{subTitle}}</span>
+		<span class="span12 graph-ingress">
+			{{subTitle}}
+			<a id="pageHelpToolTip" popover-title="{{popoverTextTitle}}" popover="{{popoverText}}" popover-trigger="mouseenter" popover-placement="right" ng-show="popoverText"><img src="/img/questionmark.png" alt=""></a>
+		</span>
 	</div>
     <!-- Start detailsOptions if any -->
     <div class="row-fluid">

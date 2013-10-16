@@ -279,7 +279,7 @@ div.footer {
 }
 
 .popover-inner {
-    width: 350px;
+    width: auto;
 }
 
 #timespan {
@@ -868,6 +868,12 @@ div.accordion-body.in.collapse > div.accordion-heading a.accordion-toggle{
 .graph-ingress {
 	font-weight: bold;
 	margin-bottom: 5px;
+}
+.popover {
+	z-index: 9999 !important;
+}
+.popover-content {
+	font-weight: normal;
 }
 
 #view .btn {

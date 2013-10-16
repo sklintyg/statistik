@@ -204,6 +204,7 @@
 <script type="text/javascript" src="<c:url value='/bootstrap/2.3.2/js/bootstrap.min.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/lib/angularjs/1.0.8/angular.min.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/lib/angularjs/1.0.8/angular-cookies.min.js'/>"></script>
+<script type="text/javascript" src="<c:url value='/js/app/lib/ui-bootstrap/0.6.0/ui-bootstrap-tpls-0.6.0.min.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/app.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/factories.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/controller/common.js'/>"></script>
@@ -225,6 +226,7 @@
 
 <script type="text/javascript">
 	$('.dropdown-toggle').dropdown();
+	$('#pageHelpToolTip').popover();
 </script>
 
 
