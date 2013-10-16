@@ -19,7 +19,14 @@ app.statisticsApp = angular.module('StatisticsApp', [ 'ngCookies' ]).config(
                 templateUrl : 'views/detailsView.html',
                 controller : 'AgeGroupsCtrl',
                 controllerAs : 'NationalAgeGroupCtrl',
+                resolve : { config: app.nationalAgeGroupConfig }, 
                 title: 'Åldersgrupper'
+            }).when('/nationell/sjukskrivningslangd', {
+                templateUrl : 'views/detailsView.html',
+                controller : 'SickLeaveLengthCtrl',
+                controllerAs : 'NationalSickLeaveLengthCtrl',
+                resolve : { config: app.nationalSickLeaveLengthConfig }, 
+                title: 'Sjukskrivningslängd'
             }).when('/nationell/diagnosgrupper', {
                 templateUrl : 'views/detailsView.html',
                 controller : 'DiagnosisGroupsCtrl',
