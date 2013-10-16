@@ -108,4 +108,6 @@
     $scope.spinnerText = "Laddar information...";
     $scope.doneLoading = false;
     $scope.dataLoadingError = false;
+    $scope.popoverTextTitle = "Vad innebär sjukfall?";
+    $scope.popoverText = "Ett sjukfall omfattar alla de läkarintyg (FK 7263) som rör en viss patient och vars giltighet följer på varandra med max 5 dagars uppehåll. Exempel: Om intyg 1 gäller till och med 14 augusti och intyg 2 gäller från och med17 augusti ses de båda intygen som samma sjukfall. Men om intyg 2 istället varit giltigt från och med 21 augusti räknas intygen som två skilda sjukfall.";
 };
