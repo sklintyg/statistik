@@ -8,9 +8,11 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
+import org.joda.time.LocalDate;
 import org.springframework.stereotype.Service;
 
 import se.inera.statistics.service.report.api.AgeGroups;
+import se.inera.statistics.service.report.api.CasesPerCounty;
 import se.inera.statistics.service.report.api.CasesPerMonth;
 import se.inera.statistics.service.report.api.DegreeOfSickLeave;
 import se.inera.statistics.service.report.api.DiagnosisGroups;
@@ -18,6 +20,7 @@ import se.inera.statistics.service.report.api.DiagnosisSubGroups;
 import se.inera.statistics.service.report.api.Overview;
 import se.inera.statistics.service.report.api.SickLeaveLength;
 import se.inera.statistics.service.report.model.AgeGroupsResponse;
+import se.inera.statistics.service.report.model.CasesPerCountyResponse;
 import se.inera.statistics.service.report.model.CasesPerMonthRow;
 import se.inera.statistics.service.report.model.DegreeOfSickLeaveResponse;
 import se.inera.statistics.service.report.model.DiagnosisGroup;
@@ -27,6 +30,7 @@ import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.SickLeaveLengthResponse;
 import se.inera.statistics.service.report.util.DiagnosisGroupsUtil;
 import se.inera.statistics.web.model.AgeGroupsData;
+import se.inera.statistics.web.model.CasesPerCountyData;
 import se.inera.statistics.web.model.DualSexStatisticsData;
 import se.inera.statistics.web.model.SickLeaveLengthData;
 import se.inera.statistics.web.model.TableData;
@@ -42,8 +46,9 @@ public class ChartDataService {
     private DiagnosisGroups datasourceDiagnosisGroups;
     private DiagnosisSubGroups datasourceDiagnosisSubGroups;
     private AgeGroups datasourceAgeGroups;
-    private DegreeOfSickLeave dataSourceDegreeOfSickLeave;
-    private SickLeaveLength dataSourceSickLeaveLength;
+    private DegreeOfSickLeave datasourceDegreeOfSickLeave;
+    private SickLeaveLength datasourceSickLeaveLength;
+    private CasesPerCounty datasourceCasesPerCounty;
 
     public ChartDataService(Overview overviewPersistenceHandler,
                             CasesPerMonth casesPerMonthPersistenceHandler,
@@ -51,14 +56,16 @@ public class ChartDataService {
                             DiagnosisSubGroups diagnosisSubGroupsPersistenceHandler,
                             AgeGroups ageGroupsPersistenceHandler,
                             DegreeOfSickLeave degreeOfSickLeavePersistenceHandler,
-                            SickLeaveLength sickLeaveLengthPersistenceHandler) {
+                            SickLeaveLength sickLeaveLengthPersistenceHandler,
+                            CasesPerCounty casesPerCountyHandler) {
         datasourceOverview = overviewPersistenceHandler;
         datasourceCasesPerMonth = casesPerMonthPersistenceHandler;
         datasourceDiagnosisGroups = diagnosisGroupsPersistenceHandler;
         datasourceDiagnosisSubGroups = diagnosisSubGroupsPersistenceHandler;
         datasourceAgeGroups = ageGroupsPersistenceHandler;
-        dataSourceDegreeOfSickLeave = degreeOfSickLeavePersistenceHandler;
-        dataSourceSickLeaveLength = sickLeaveLengthPersistenceHandler;
+        datasourceDegreeOfSickLeave = degreeOfSickLeavePersistenceHandler;
+        datasourceSickLeaveLength = sickLeaveLengthPersistenceHandler;
+        datasourceCasesPerCounty = casesPerCountyHandler;
     }
 
     @GET
@@ -118,7 +125,7 @@ public class ChartDataService {
     @Path("getDegreeOfSickLeaveStatistics")
     @Produces({ MediaType.APPLICATION_JSON })
     public DualSexStatisticsData getDegreeOfSickLeaveStatistics() {
-        DegreeOfSickLeaveResponse degreeOfSickLeaveStatistics = dataSourceDegreeOfSickLeave.getStatistics(DegreeOfSickLeave.HSA_NATIONELL);
+        DegreeOfSickLeaveResponse degreeOfSickLeaveStatistics = datasourceDegreeOfSickLeave.getStatistics(DegreeOfSickLeave.HSA_NATIONELL);
         return new DegreeOfSickLeaveConverter().convert(degreeOfSickLeaveStatistics);
     }
 
@@ -128,8 +135,26 @@ public class ChartDataService {
     public SickLeaveLengthData getSickLeaveLengthData() {
         final int numberOfMonthsToRequest = 12;
         Range range = new Range(numberOfMonthsToRequest);
-        SickLeaveLengthResponse sickLeaveLength = dataSourceSickLeaveLength.getStatistics(SickLeaveLength.HSA_NATIONELL, range);
+        SickLeaveLengthResponse sickLeaveLength = datasourceSickLeaveLength.getStatistics(SickLeaveLength.HSA_NATIONELL, range);
         return new SickLeaveLengthConverter().convert(sickLeaveLength);
+    }
+
+    @GET
+    @Path("getCountyStatistics")
+    @Produces({ MediaType.APPLICATION_JSON })
+    public CasesPerCountyData getCountyStatistics() {
+        final int numberOfMonthsInRanges = 3;
+        LocalDate range1To = new LocalDate().withDayOfMonth(1).minusMonths(1);
+        LocalDate range1From = range1To.minusMonths(numberOfMonthsInRanges);
+        final Range range1 = new Range(range1From, range1To);
+
+        LocalDate range2To = range1From.minusMonths(1);
+        LocalDate range2From = range2To.minusMonths(numberOfMonthsInRanges);
+        final Range range2 = new Range(range2From, range2To);
+
+        CasesPerCountyResponse countyStatRange1 = datasourceCasesPerCounty.getStatistics(SickLeaveLength.HSA_NATIONELL, range1);
+        CasesPerCountyResponse countyStatRange2 = datasourceCasesPerCounty.getStatistics(SickLeaveLength.HSA_NATIONELL, range2);
+        return new CasesPerCountyConverter(countyStatRange1, countyStatRange2, range1, range2).convert();
     }
 
 }

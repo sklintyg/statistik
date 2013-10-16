@@ -5,16 +5,16 @@ import java.util.List;
 
 public class DualSexDataRow {
 
-    private final String period;
+    private final String name;
     private final List<DualSexField> data;
 
-    public DualSexDataRow(String period, List<DualSexField> data) {
-        this.period = period;
+    public DualSexDataRow(String name, List<DualSexField> data) {
+        this.name = name;
         this.data = data;
     }
 
-    public String getPeriod() {
-        return period;
+    public String getName() {
+        return name;
     }
 
     public List<DualSexField> getData() {

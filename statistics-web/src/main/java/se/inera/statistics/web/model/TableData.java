@@ -15,14 +15,19 @@ public class TableData {
     }
 
     public static TableData createWithSingleHeadersRow(List<NamedData> rows, List<String> headers) {
-        List<TableHeader> tableHeaders = new ArrayList<>();
-        for (String headerName : headers) {
-            tableHeaders.add(new TableHeader(headerName));
-        }
+        List<TableHeader> tableHeaders = toTableHeaderList(headers, 1);
         List<List<TableHeader>> headerRows = new ArrayList<>();
         headerRows.add(tableHeaders);
         return new TableData(rows, headerRows);
 
+    }
+
+    public static List<TableHeader> toTableHeaderList(List<String> headers, int span) {
+        List<TableHeader> tableHeaders = new ArrayList<>();
+        for (String headerName : headers) {
+            tableHeaders.add(new TableHeader(headerName, span));
+        }
+        return tableHeaders;
     }
 
     public List<NamedData> getRows() {
