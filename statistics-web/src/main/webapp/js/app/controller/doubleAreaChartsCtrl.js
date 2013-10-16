@@ -4,7 +4,7 @@
      var conf = {};
      conf.dataFetcher = "getDiagnosisGroupData",
      conf.showDetailsOptions = false,
-     conf.title = "Antal sjukfall per diagnosgrupp"
+     conf.title = "Antal sjukfall per diagnosgrupp"	
      return conf;
  }
  
@@ -20,8 +20,9 @@
      var conf = {};
      conf.dataFetcher = "getDegreeOfSickLeave",
      conf.showDetailsOptions = false,
-     conf.title = "Antal sjukfall per sjukskrivningsgrad"
-     conf.tooltipHelpText ="Begreppet sjukskrivningsgrad beskriver hur många procent av en heltidsarbetstid (25 %, 50 %, 75 % eller 100 %) patienten rekommenderas sjukskrivning."	 
+     conf.title = "Antal sjukfall per sjukskrivningsgrad",
+     conf.tooltipHelpTextTitle ="Vad innebär sjukskrivningsgrad?",
+     conf.tooltipHelpText ="Begreppet sjukskrivningsgrad beskriver hur många procent av en heltidsarbetstid (25 %, 50 %, 75 % eller 100 %) patienten rekommenderas sjukskrivning.";	 
      return conf;
  }
  
@@ -154,6 +155,8 @@
     $scope.exportTableData = ControllerCommons.exportTableDataGeneric;
 
     $scope.subTitle = config.title;
+    $scope.popoverTextTitle = config.tooltipHelpTextTitle;
+    $scope.popoverText = config.tooltipHelpText;
 
     statisticsData[config.dataFetcher](populatePageWithData, function() { $scope.dataLoadingError = true; }, $routeParams.groupId);
 

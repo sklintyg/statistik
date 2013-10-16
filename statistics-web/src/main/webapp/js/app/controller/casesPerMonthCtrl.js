@@ -92,7 +92,7 @@
         $scope.subTitle = "Antal sjukfall per månad " + result.rows[0].name + " - " + result.rows[result.rows.length-1].name;
         $scope.doneLoading = true;
     };
-
+    
     statisticsData.getNumberOfCasesPerMonth(populatePageWithData, function() { $scope.dataLoadingError = true; });
     
     $scope.showHideDataTable = ControllerCommons.showHideDataTableDefault;

@@ -279,7 +279,7 @@ div.footer {
 }
 
 .popover-inner {
-    width: 350px;
+    width: auto;
 }
 
 #timespan {
