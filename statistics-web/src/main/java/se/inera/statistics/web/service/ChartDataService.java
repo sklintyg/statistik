@@ -16,6 +16,7 @@ import se.inera.statistics.service.report.api.DegreeOfSickLeave;
 import se.inera.statistics.service.report.api.DiagnosisGroups;
 import se.inera.statistics.service.report.api.DiagnosisSubGroups;
 import se.inera.statistics.service.report.api.Overview;
+import se.inera.statistics.service.report.api.SickLeaveLength;
 import se.inera.statistics.service.report.model.AgeGroupsResponse;
 import se.inera.statistics.service.report.model.CasesPerMonthRow;
 import se.inera.statistics.service.report.model.DegreeOfSickLeaveResponse;
@@ -23,9 +24,11 @@ import se.inera.statistics.service.report.model.DiagnosisGroup;
 import se.inera.statistics.service.report.model.DiagnosisGroupResponse;
 import se.inera.statistics.service.report.model.OverviewResponse;
 import se.inera.statistics.service.report.model.Range;
+import se.inera.statistics.service.report.model.SickLeaveLengthResponse;
 import se.inera.statistics.service.report.util.DiagnosisGroupsUtil;
 import se.inera.statistics.web.model.AgeGroupsData;
 import se.inera.statistics.web.model.DualSexStatisticsData;
+import se.inera.statistics.web.model.SickLeaveLengthData;
 import se.inera.statistics.web.model.TableData;
 import se.inera.statistics.web.model.overview.OverviewData;
 
@@ -40,19 +43,22 @@ public class ChartDataService {
     private DiagnosisSubGroups datasourceDiagnosisSubGroups;
     private AgeGroups datasourceAgeGroups;
     private DegreeOfSickLeave dataSourceDegreeOfSickLeave;
+    private SickLeaveLength dataSourceSickLeaveLength;
 
     public ChartDataService(Overview overviewPersistenceHandler,
                             CasesPerMonth casesPerMonthPersistenceHandler,
                             DiagnosisGroups diagnosisGroupsPersistenceHandler,
                             DiagnosisSubGroups diagnosisSubGroupsPersistenceHandler,
                             AgeGroups ageGroupsPersistenceHandler,
-                            DegreeOfSickLeave degreeOfSickLeavePersistenceHandler) {
+                            DegreeOfSickLeave degreeOfSickLeavePersistenceHandler,
+                            SickLeaveLength sickLeaveLengthPersistenceHandler) {
         datasourceOverview = overviewPersistenceHandler;
         datasourceCasesPerMonth = casesPerMonthPersistenceHandler;
         datasourceDiagnosisGroups = diagnosisGroupsPersistenceHandler;
         datasourceDiagnosisSubGroups = diagnosisSubGroupsPersistenceHandler;
         datasourceAgeGroups = ageGroupsPersistenceHandler;
         dataSourceDegreeOfSickLeave = degreeOfSickLeavePersistenceHandler;
+        dataSourceSickLeaveLength = sickLeaveLengthPersistenceHandler;
     }
 
     @GET
@@ -115,4 +121,16 @@ public class ChartDataService {
         DegreeOfSickLeaveResponse degreeOfSickLeaveStatistics = dataSourceDegreeOfSickLeave.getStatistics(DegreeOfSickLeave.HSA_NATIONELL);
         return new DegreeOfSickLeaveConverter().convert(degreeOfSickLeaveStatistics);
     }
+
+    @GET
+    @Path("getSickLeaveLengthData")
+    @Produces({ MediaType.APPLICATION_JSON })
+    public SickLeaveLengthData getSickLeaveLengthData() {
+        final int numberOfMonthsToRequest = 12;
+        Range range = new Range(numberOfMonthsToRequest);
+        SickLeaveLengthResponse sickLeaveLength = dataSourceSickLeaveLength.getStatistics(SickLeaveLength.HSA_NATIONELL, range);
+        return new SickLeaveLengthConverter().convert(sickLeaveLength);
+    }
+
 }
+

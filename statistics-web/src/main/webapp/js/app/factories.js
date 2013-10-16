@@ -94,6 +94,18 @@ app.statisticsApp.factory('statisticsData', function($http){
        });
    };
 
+   factory.getNationalSickLeaveLengthData = function (successCallback, failureCallback){
+       $http.get("api/getSickLeaveLengthData").success(function(result) {
+           try {
+               successCallback(result);
+           } catch (e) {
+               failureCallback();
+           }
+       }).error(function(data, status, headers, config) {
+           failureCallback();
+       });
+   };
+   
    factory.getLoginInfo = function (successCallback, failureCallback){
        $http.get("api/login/getLoginInfo").success(function(result) {
            successCallback(result);
