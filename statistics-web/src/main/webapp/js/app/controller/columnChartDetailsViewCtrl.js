@@ -1,6 +1,20 @@
  'use strict';
 
- app.ageGroupsCtrl = function ($scope, statisticsData) {
+ app.nationalSickLeaveLengthConfig = function() {
+     var conf = {};
+     conf.dataFetcher = "getNationalSickLeaveLengthData",
+     conf.title = "Antal sjukfall baserat på sjukskrivningslängd"
+     return conf;
+ }
+
+ app.nationalAgeGroupConfig = function() {
+     var conf = {};
+     conf.dataFetcher = "getAgeGroups",
+     conf.title = "Antal sjukfall baserat på patientens ålder"
+     return conf;
+ }
+ 
+ app.columnChartDetailsViewCtrl = function ($scope, statisticsData, config) {
 
     $scope.chartContainers = ["container"];
     
@@ -34,6 +48,11 @@
 					floating: true,
 					x: 30,
 		            y: -10
+				},
+				labels: {
+					formatter: function() {
+						return this.value
+					}
 				},
 				plotLines : [ {
 					value : 0,
@@ -89,11 +108,11 @@
     var populatePageWithData = function(result){
         updateDataTable($scope, result.tableData);
         updateChart(result.chartData);
-        $scope.subTitle = "Antal sjukfall baserat på patientens ålder senaste " + result.monthsIncluded + " månaderna";
+        $scope.subTitle = config.title + " senaste " + result.monthsIncluded + " månaderna";
         $scope.doneLoading = true;
     };
 
-    statisticsData.getAgeGroups(populatePageWithData, function() { $scope.dataLoadingError = true; });
+    statisticsData[config.dataFetcher](populatePageWithData, function() { $scope.dataLoadingError = true; });
     
     $scope.showHideDataTable = ControllerCommons.showHideDataTableDefault;
     $scope.toggleTableVisibility = function(event){

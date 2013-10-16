@@ -34,6 +34,7 @@
         <constructor-arg ref="diagnosisSubGroups"/>
         <constructor-arg ref="ageGroups"/>
         <constructor-arg ref="degreeOfSickLeave"/>
+        <constructor-arg ref="sickLeaveLength"/>
     </bean>
 
     <bean id="protectedChartDataService" class="se.inera.statistics.web.service.ProtectedChartDataService">
@@ -60,6 +61,7 @@
       <bean class="se.inera.statistics.service.report.mock.OverviewMock" id="overview"/>
       <bean class="se.inera.statistics.service.report.mock.AgeGroupsMock" id="ageGroups"/>
       <bean class="se.inera.statistics.service.report.mock.DegreeOfSickLeaveMock" id="degreeOfSickLeave"/>
+      <bean class="se.inera.statistics.service.report.mock.SickLeaveLengthMock" id="sickLeaveLength"/>
     </beans>
     
     <beans profile="demo">
@@ -71,6 +73,7 @@
       <bean class="se.inera.statistics.service.report.mock.OverviewMock" id="overview"/>
       <bean class="se.inera.statistics.service.report.mock.AgeGroupsMock" id="ageGroups"/>
       <bean class="se.inera.statistics.service.report.mock.DegreeOfSickLeaveMock" id="degreeOfSickLeave"/>
+      <bean class="se.inera.statistics.service.report.mock.SickLeaveLengthMock" id="sickLeaveLength"/>
 
       <bean class="se.inera.statistics.service.demo.InjectUtlatande" lazy-init="false" />
     </beans>
