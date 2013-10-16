@@ -21,7 +21,7 @@ public class AgeGroupsConverter {
         for (AgeGroupsRow row : ageGroups) {
             int rowSum = row.getFemale() + row.getMale();
             accumulatedSum += rowSum;
-            data.add(new NamedData(row.getGroup(), Arrays.asList(rowSum, row.getFemale(), row.getMale(), accumulatedSum)));
+            data.add(new NamedData(row.getName(), Arrays.asList(rowSum, row.getFemale(), row.getMale(), accumulatedSum)));
         }
         return TableData.createWithSingleHeadersRow(data, Arrays.asList("Åldersgrupper", "Antal sjukfall", "Antal kvinnor", "Antal män", "Summering"));
     }

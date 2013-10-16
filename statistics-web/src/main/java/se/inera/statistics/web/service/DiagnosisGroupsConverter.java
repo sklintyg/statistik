@@ -142,7 +142,7 @@ public class DiagnosisGroupsConverter {
         for (DiagnosisGroupRow row : resp.getRows()) {
             List<Integer> mergedSexData = ServiceUtil.getMergedSexData(row);
             List<Integer> mergedAndSummed = ServiceUtil.getAppendedSum(mergedSexData);
-            rows.add(new NamedData(row.getPeriod(), mergedAndSummed));
+            rows.add(new NamedData(row.getName(), mergedAndSummed));
         }
         return rows;
     }

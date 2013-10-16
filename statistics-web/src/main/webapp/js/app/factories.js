@@ -106,6 +106,18 @@ app.statisticsApp.factory('statisticsData', function($http){
        });
    };
    
+   factory.getNationalCountyData = function (successCallback, failureCallback){
+       $http.get("api/getCountyStatistics").success(function(result) {
+           try {
+               successCallback(result);
+           } catch (e) {
+               failureCallback();
+           }
+       }).error(function(data, status, headers, config) {
+           failureCallback();
+       });
+   };
+   
    factory.getLoginInfo = function (successCallback, failureCallback){
        $http.get("api/login/getLoginInfo").success(function(result) {
            successCallback(result);

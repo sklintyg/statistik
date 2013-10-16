@@ -115,7 +115,7 @@
 								<li><a ng-href="#/nationell/aldersgrupper" id="navAgeGroupsLink" ctrlname="NationalAgeGroupCtrl" navigationaware>Åldersgrupp</a></li>
 								<li><a ng-href="#/nationell/sjukskrivningsgrad" id="navSickLeaveDegreeLink" ctrlname="NationalDegreeOfSickLeaveCtrl" navigationaware>Sjukskrivningsgrad</a></li>
 								<li><a ng-href="#/nationell/sjukskrivningslangd" id="navSickLeaveLengthLink" ctrlname="NationalSickLeaveLengthCtrl" navigationaware>Sjukskrivningslängd</a></li>
-								<li><a ng-href="#/nationell/lan" id="navCountyLink" ctrlname="NationalCountyCtrl" navigationaware>Län</a><i class="statistict-left-menu-expand-icon" class="accordion-toggle" data-toggle="collapse" href="#sub-menu-cases-per-county"></i></li>
+								<li><a ng-href="#/nationell/lan" id="navCountyLink" ctrlname="NationalCasesPerCountyCtrl" navigationaware>Län</a><i class="statistict-left-menu-expand-icon" class="accordion-toggle" data-toggle="collapse" href="#sub-menu-cases-per-county"></i></li>
 								<ul id="sub-menu-cases-per-county" class="nav nav-list sub-nav-list accordion-body in collapse">
 									<li><a class="last-item-in-menu" ng-href="#/nationell/andelSjukfallPerKon" id="navCasesPerSexLink" ctrlname="NationalCasesPerSexCtrl" navigationaware>Andel sjukfall per kön</a></li>
 								</ul>
@@ -214,6 +214,7 @@
 <script type="text/javascript" src="<c:url value='/js/app/controller/business/businessOverviewCtrl.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/controller/business/businessLandingPageCtrl.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/controller/columnChartDetailsViewCtrl.js'/>"></script>
+<script type="text/javascript" src="<c:url value='/js/app/controller/casesPerCountyCtrl.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/controller/navigationMenuCtrl.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/controllers.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/directives.js'/>"></script>
