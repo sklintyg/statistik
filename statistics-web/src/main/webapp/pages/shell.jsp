@@ -112,7 +112,7 @@
 								<ul id="sub-menu-diagnostics" class="nav nav-list sub-nav-list accordion-body in collapse">
 									<li><a ng-href="#/nationell/underdiagnosgrupper" id="navDiagnosisSubGroupsLink" ctrlname="NationalDiagnosisSubGroupsCtrl" navigationaware>Underdiagnosgrupp</a></li>
 								</ul>
-								<li><a ng-href="#/nationell/aldersgrupper" id="navAgeGroupsLink" ctrlname="NationalAgeGroupCtrl" navigationaware>Ålderssgrupp</a></li>
+								<li><a ng-href="#/nationell/aldersgrupper" id="navAgeGroupsLink" ctrlname="NationalAgeGroupCtrl" navigationaware>Åldersgrupp</a></li>
 								<li><a ng-href="#/nationell/sjukskrivningsgrad" id="navSickLeaveDegreeLink" ctrlname="NationalDegreeOfSickLeaveCtrl" navigationaware>Sjukskrivningsgrad</a></li>
 								<li><a ng-href="#/nationell/sjukskrivningslangd" id="navSickLeaveLengthLink" ctrlname="NationalSickLeaveLengthCtrl" navigationaware>Sjukskrivningslängd</a></li>
 								<li><a ng-href="#/nationell/lan" id="navCountyLink" ctrlname="NationalCountyCtrl" navigationaware>Län</a><i class="statistict-left-menu-expand-icon" class="accordion-toggle" data-toggle="collapse" href="#sub-menu-cases-per-county"></i></li>
@@ -144,7 +144,7 @@
 									<li><a ng-href="#/verksamhet/{{businessId}}/underdiagnosgrupp" id="navBusinessDiagnosisSubGroupsLink" ctrlname="" navigationaware>Underdiagnosgrupp</a></li>
 								</ul>
 								<li>
-									<a ng-href="#/verksamhet/{{businessId}}/aldersgrupper" id="navBusinessAgeGroupsLink" ctrlname="" navigationaware>Ålderssgrupp</a>
+									<a ng-href="#/verksamhet/{{businessId}}/aldersgrupper" id="navBusinessAgeGroupsLink" ctrlname="" navigationaware>Åldersgrupp</a>
 									<i class="statistict-left-menu-expand-icon" class="accordion-toggle" data-toggle="collapse" href="#sub-menu-business-age-group"></i>
 								</li>
 								<ul id="sub-menu-business-age-group" class="nav nav-list sub-nav-list accordion-body in collapse">

@@ -37,6 +37,11 @@
 					x: 30,
 		            y: -10
 				},
+				labels: {
+					formatter: function() {
+						return this.value
+					}
+				},
 				plotLines : [ {
 					value : 0,
 					width : 1,
@@ -57,11 +62,6 @@
                     dataLabels: {
                         enabled: false
                     },
-                    events: {
-                    	legendItemClick: function () { // This function removes interaction for plot and legend-items
-                        	return false;
-                    	}
-                	},
                     showInLegend: true
                 } 
             },
