@@ -11,6 +11,7 @@ public class OverviewSexProportion {
     public static final int PERCENT = 100;
     private final int male;
     private final int female;
+    private final Range period;
 
     /**
      * If male + female != 100 then normalize the sum to 100.
@@ -18,7 +19,7 @@ public class OverviewSexProportion {
      * @param male male
      * @param female female
      */
-    public OverviewSexProportion(int male, int female) {
+    public OverviewSexProportion(int male, int female, Range period) {
         if (male == 0 && female == 0) {
             this.male = FIFTY;
             this.female = FIFTY;
@@ -26,6 +27,7 @@ public class OverviewSexProportion {
             this.male = (male * PERCENT) / (male + female);
             this.female = (female * PERCENT) / (male + female);
         }
+        this.period = period;
     }
 
     public int getMale() {
@@ -34,6 +36,10 @@ public class OverviewSexProportion {
 
     public int getFemale() {
         return female;
+    }
+
+    public Range getPeriod() {
+        return period;
     }
 
 }

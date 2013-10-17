@@ -1,28 +1,53 @@
  'use strict';
 
- app.businessOverviewCtrl = function ($scope, statisticsData, $routeParams) {
-    var populatePageWithData = function(result){
+ app.businessOverviewCtrl = function ($scope, $timeout, statisticsData, $routeParams) {
+ 
+    var dataReceived = function(result) {
         $scope.doneLoading = true;
-        $scope.$apply();
+        $timeout(function() {
+            populatePageWithData(result);
+        }, 1);
+    };
+     
+    var populatePageWithData = function(result) {
+        $scope.totalCasesPerMonth = result.casesPerMonth.totalCases;
 
-        $scope.casesPerMonthMaleProportion = result.casesPerMonth.proportionMale;
-        $scope.casesPerMonthFemaleProportion = result.casesPerMonth.proportionFemale;
-        $scope.casesPerMonthAlteration = result.casesPerMonth.alteration;
-
-        function paintDonutChart(containerId, chartData) {
-
+        function paintSexProportionChart(containerId, male, female, period) {
+            
             var chartOptions = {
                 chart: {
                     renderTo : containerId,
-                    type: 'pie',
                     backgroundColor: 'transparent',
                     height: 180
                 },
+                title: {
+                    text: period,
+                    verticalAlign: 'bottom'
+                },
+                plotOptions: {
+                    pie: {
+                        cursor: 'pointer',
+                        dataLabels: {
+                            enabled: false,
+                        },
+                        showInLegend: true
+                    }
+                },
+                legend: {
+                    labelFormat: '{name} {y}%',
+                    align: 'center',
+                    verticalAlign: 'top'
+                },
+                series: [{
+                    type: 'pie',
+                    name: 'Könsfördelning',
+                    data: [
+                        {name: 'Kvinnor', y: female, color: "#ec8e0e"},
+                        {name: 'Män', y: male, color: "#2ca2c6"}
+                    ]
+                }],
                 exporting: {
                     enabled: false /* This removes the built in highchart export */
-                },
-                title: {
-                    text: ''
                 },
                 tooltip: {
                     backgroundColor: '#fff',
@@ -30,21 +55,50 @@
                 },
                 credits: {
                     enabled: false
-                },
-                series: [{
-                    name: 'Antal',
-                    data: chartData,
-                    innerSize: '40%',
-                    dataLabels: {
-                        formatter: function() {
-                            return null;
-                        }
-                    }
-                }]
+                }
             };
             new Highcharts.Chart(chartOptions);
         }
 
+        function paintDonutChart(containerId, chartData) {
+            
+            var chartOptions = {
+                    chart: {
+                        renderTo : containerId,
+                        type: 'pie',
+                        backgroundColor: 'transparent',
+                        height: 180
+                    },
+                    exporting: {
+                        enabled: false /* This removes the built in highchart export */
+                    },
+                    title: {
+                        text: ''
+                    },
+                    tooltip: {
+                        backgroundColor: '#fff',
+                        borderWidth: 2
+                    },
+                    credits: {
+                        enabled: false
+                    },
+                    series: [{
+                        name: 'Antal',
+                        data: chartData,
+                        innerSize: '40%',
+                        dataLabels: {
+                            formatter: function() {
+                                return null;
+                            }
+                        }
+                    }]
+            };
+            new Highcharts.Chart(chartOptions);
+        }
+
+        paintSexProportionChart("sexProportionChartOld", result.casesPerMonth.proportionMaleOld, result.casesPerMonth.proportionFemaleOld, result.casesPerMonth.oldPeriod);
+        paintSexProportionChart("sexProportionChartNew", result.casesPerMonth.proportionMaleNew, result.casesPerMonth.proportionFemaleNew, result.casesPerMonth.newPeriod);
+        
         paintDonutChart("diagnosisChart", extractDonutData(result.diagnosisGroups));
         $scope.diagnosisGroups = result.diagnosisGroups;
         paintDonutChart("ageChart", extractDonutData(result.ageGroups));
@@ -55,10 +109,6 @@
         paintBarChart("sickLeaveLengthChart", result.sickLeaveLength.chartData);
         $scope.longSickLeavesTotal = result.sickLeaveLength.longSickLeavesTotal;
         $scope.longSickLeavesAlteration = result.sickLeaveLength.longSickLeavesAlternation;
-
-        ControllerCommons.addColor(result.perCounty);
-        paintSickLeavePerCountyChart("sickLeavePerCountyChart", result.perCounty);
-        $scope.sickLeavePerCountyGroups = result.perCounty;
     };
 
     function paintBarChart(containerId, chartData) {
@@ -121,91 +171,6 @@
         new Highcharts.Chart(chartOptions);
     }
 
-    function paintSickLeavePerCountyChart(containerId, chartData) {
-
-        var chartOptions = {
-            chart : {
-                renderTo : containerId,
-                height : 185,
-                width: 133,
-                type : 'bubble',
-                backgroundColor: 'transparent'
-            },
-            credits : {
-                enabled : false
-            },
-            exporting : {
-                enabled : false
-            },
-            title : {
-                text : ''
-            },
-            legend : {
-                enabled : false
-            },
-			plotOptions: {
-				bubble: {
-					tooltip : {
-						headerFormat: '{series.name}<br/>',
-			            pointFormat: '<b>{point.z}</b>',
-			            shared: true
-			        }
-				}
-			},
-            xAxis : [ {
-                min: 0,
-                max: 100,
-                minPadding: 0,
-                maxPadding: 0,
-                minorGridLineWidth : 0,
-                labels : {
-                    enabled : false
-                },
-                gridLineWidth : 0
-            } ],
-            yAxis : [ {
-                min: 0,
-                max: 100,
-                minPadding: 0,
-                maxPadding: 0,
-                minorGridLineWidth : 0,
-                labels : {
-                    enabled : false
-                },
-                gridLineWidth : 0,
-                title : ''
-            } ],
-            series : chartData.map(function(e) {
-                    var coords = getCoordinates(e);
-                    return {"data": [[coords.x, coords.y, e.quantity]], color: e.color, name: ControllerCommons.htmlsafe(e.name) };
-                })
-        };
-        new Highcharts.Chart(chartOptions, function(chart) { // on complete
-            chart.renderer.image('img/sweden_graph.png', 30, 10, 69, 160).add();
-        });
-    }
-
-    function getCoordinates(perCountyObject){
-        var county = perCountyObject.name.toLowerCase();
-        if (contains(county, "stockholm")){
-            return {"x": 55, "y": 28};
-        } else if (contains(county, "västra götaland")){
-            return {"x": 25, "y": 23};
-        } else if (contains(county, "skåne")){
-            return {"x": 29, "y": 5};
-        } else if (contains(county, "östergötland")){
-            return {"x": 47, "y": 20};
-        } else if (contains(county, "uppsala")){
-            return {"x": 57, "y": 34};
-        } else {
-            return {"x": 10, "y": 80}; //Default point should not match any part of sweden
-        }
-    }
-
-	function contains(master, substring) {
-		return master.indexOf(substring) != -1;
-	}
-
     function extractDonutData(rawData){
         ControllerCommons.addColor(rawData);
         var donutData = [];
@@ -228,7 +193,7 @@
         return {}; //Selected verksamhet not found
     }
 
-    statisticsData.getBusinessOverview($routeParams.businessId, populatePageWithData, function() { $scope.dataLoadingError = true; });
+    statisticsData.getBusinessOverview($routeParams.businessId, dataReceived, function() { $scope.dataLoadingError = true; });
     $scope.spinnerText = "Laddar information...";
     $scope.doneLoading = false;
     $scope.dataLoadingError = false;
