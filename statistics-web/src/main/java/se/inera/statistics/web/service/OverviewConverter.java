@@ -15,7 +15,7 @@ public class OverviewConverter {
 
     OverviewData convert(OverviewResponse resp) {
         NumberOfCasesPerMonthOverview casesPerMonth = new NumberOfCasesPerMonthOverview(
-                resp.getCasesPerMonthProportionMale(), resp.getCasesPerMonthProportionFemale(),
+                resp.getCasesPerMonthSexProportion().getMale(), resp.getCasesPerMonthSexProportion().getFemale(),
                 resp.getCasesPerMonthAlteration());
 
         ArrayList<DonutChartData> diagnosisGroups = new ArrayList<>();

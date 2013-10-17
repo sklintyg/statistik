@@ -4,6 +4,7 @@ import se.inera.statistics.service.report.api.VerksamhetOverview;
 import se.inera.statistics.service.report.model.DualSexField;
 import se.inera.statistics.service.report.model.OverviewChartRow;
 import se.inera.statistics.service.report.model.OverviewChartRowExtended;
+import se.inera.statistics.service.report.model.OverviewSexProportion;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.VerksamhetOverviewResponse;
 
@@ -17,6 +18,8 @@ public class VerksamhetOverviewMock implements VerksamhetOverview {
     // CHECKSTYLE:OFF MagicNumber
     @Override
     public VerksamhetOverviewResponse getOverview(String verksamhetId, Range range) {
+        OverviewSexProportion sexProportionNew = new OverviewSexProportion(40, 60);
+        OverviewSexProportion sexProportionOld = new OverviewSexProportion(42, 58);
 
         ArrayList<OverviewChartRowExtended> diagnosisGroups = new ArrayList<OverviewChartRowExtended>();
         diagnosisGroups.add(new OverviewChartRowExtended("A-E G-L N Somatiska", 19583, 2));
@@ -56,7 +59,7 @@ public class VerksamhetOverviewMock implements VerksamhetOverview {
         perCounty.add(new OverviewChartRowExtended("Uppsala län", 3365, -4));
 
 
-        return new VerksamhetOverviewResponse(56, 44, 3, diagnosisGroups, ageGroups, degreeOfSickLeaveGroups, sickLeaveLengthData, 105, 10, perCounty);
+        return new VerksamhetOverviewResponse(147, sexProportionNew, sexProportionOld, diagnosisGroups, ageGroups, degreeOfSickLeaveGroups, sickLeaveLengthData, 12, 10);
     }
 
     private int g() {
