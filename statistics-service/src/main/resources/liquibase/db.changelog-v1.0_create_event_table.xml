@@ -4,7 +4,7 @@
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
     <changeSet id="1a_create_event_table" author="pierre.sandboge">
         <createTable tableName="intygevent">
-            <column name="id" type="bigint">
+            <column name="id" type="bigint" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="type" type="int">
@@ -14,9 +14,6 @@
             <column name="correlationId" type="text"/>
             <column name="timestamp" type="bigint"/>
         </createTable>
-    </changeSet>
-    <changeSet id="1b_add_event_sequence" author="pierre.sandboge">
-        <createSequence sequenceName="hibernate_sequence" startValue="42"/>
     </changeSet>
 
 </databaseChangeLog>

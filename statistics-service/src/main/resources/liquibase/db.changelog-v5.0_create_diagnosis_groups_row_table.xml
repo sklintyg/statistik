@@ -4,13 +4,13 @@
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
     <changeSet id="5a_create_diagnosis_group_data_table" author="roger.lindsjo">
         <createTable tableName="diagnosisgroupdata">
-            <column name="period" type="text">
+            <column name="period" type="varchar(20)">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="hsaid" type="text">
+            <column name="hsaid" type="varchar(60)">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="diagnosgrupp" type="text">
+            <column name="diagnosgrupp" type="varchar(20)">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="female" type="int"/>
