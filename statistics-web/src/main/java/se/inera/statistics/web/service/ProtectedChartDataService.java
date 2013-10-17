@@ -26,6 +26,7 @@ import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.VerksamhetOverviewResponse;
 import se.inera.statistics.service.report.util.DiagnosisGroupsUtil;
 import se.inera.statistics.web.model.AgeGroupsData;
+import se.inera.statistics.web.model.CasesPerMonthData;
 import se.inera.statistics.web.model.DualSexStatisticsData;
 import se.inera.statistics.web.model.TableData;
 import se.inera.statistics.web.model.Verksamhet;
@@ -63,10 +64,10 @@ public class ProtectedChartDataService {
     @GET
     @Path("getNumberOfCasesPerMonth/{verksamhetId}")
     @Produces({ MediaType.APPLICATION_JSON })
-    public TableData getNumberOfCasesPerMonth(@PathParam("verksamhetId") String verksamhetId) {
+    public CasesPerMonthData getNumberOfCasesPerMonth(@PathParam("verksamhetId") String verksamhetId) {
         Range range = new Range();
         List<CasesPerMonthRow> casesPerMonth = datasourceCasesPerMonth.getCasesPerMonth(Verksamhet.decodeId(verksamhetId), range);
-        return new CasesPerMonthConverter().convertCasesPerMonthData(casesPerMonth);
+        return new CasesPerMonthConverter().convert(casesPerMonth);
     }
 
     @GET

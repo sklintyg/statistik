@@ -83,18 +83,15 @@
 	};
 
 	var updateChart = function(ajaxResult) {
-		var chartCategories = ControllerCommons.getChartCategories(ajaxResult);
-		var chartSeries = ControllerCommons.getChartSeries(ajaxResult);
-		chartSeries.pop();
-		paintChart(chartCategories, chartSeries);
+		paintChart(ajaxResult.categories, ControllerCommons.addColor(ajaxResult.series));
 	};
 
     $scope.exportTableData = ControllerCommons.exportTableDataGeneric;
     
     var populatePageWithData = function(result){
-        updateDataTable($scope, result);
-        updateChart(result);
-        $scope.subTitle = "Antal sjukfall per månad " + result.rows[0].name + " - " + result.rows[result.rows.length-1].name;
+        updateDataTable($scope, result.tableData);
+        updateChart(result.chartData);
+        $scope.subTitle = "Antal sjukfall per månad " + result.tableData.rows[0].name + " - " + result.tableData.rows[result.tableData.rows.length-1].name;
         $scope.doneLoading = true;
     };
     

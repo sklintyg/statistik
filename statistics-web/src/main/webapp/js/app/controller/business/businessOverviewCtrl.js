@@ -42,8 +42,8 @@
                     type: 'pie',
                     name: 'Könsfördelning',
                     data: [
-                        {name: 'Kvinnor', y: female, color: "#ec8e0e"},
-                        {name: 'Män', y: male, color: "#2ca2c6"}
+                        {name: 'Kvinnor', y: female, color: "#EA8025"},
+                        {name: 'Män', y: male, color: "#008391"}
                     ]
                 }],
                 exporting: {
