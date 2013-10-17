@@ -18,8 +18,10 @@ public class VerksamhetOverviewMock implements VerksamhetOverview {
     // CHECKSTYLE:OFF MagicNumber
     @Override
     public VerksamhetOverviewResponse getOverview(String verksamhetId, Range range) {
-        OverviewSexProportion sexProportionNew = new OverviewSexProportion(40, 60);
-        OverviewSexProportion sexProportionOld = new OverviewSexProportion(42, 58);
+        final Range newPeriod = new Range(3);
+        OverviewSexProportion sexProportionNew = new OverviewSexProportion(40, 60, newPeriod);
+        Range oldPeriod = new Range(newPeriod.getFrom().minusMonths(3), newPeriod.getTo().minusMonths(3));
+        OverviewSexProportion sexProportionOld = new OverviewSexProportion(42, 58, oldPeriod);
 
         ArrayList<OverviewChartRowExtended> diagnosisGroups = new ArrayList<OverviewChartRowExtended>();
         diagnosisGroups.add(new OverviewChartRowExtended("A-E G-L N Somatiska", 19583, 2));

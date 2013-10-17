@@ -11,6 +11,7 @@ import se.inera.statistics.service.report.model.OverviewChartRow;
 import se.inera.statistics.service.report.model.OverviewChartRowExtended;
 import se.inera.statistics.service.report.model.OverviewResponse;
 import se.inera.statistics.service.report.model.OverviewSexProportion;
+import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.web.model.overview.DonutChartData;
 import se.inera.statistics.web.model.overview.NumberOfCasesPerMonthOverview;
 import se.inera.statistics.web.model.overview.OverviewData;
@@ -25,7 +26,7 @@ public class OverviewConverterTest {
         //Given
         int casesPerMonthProportionMale = 0;
         int casesPerMonthProportionFemale = 1;
-        OverviewSexProportion overviewSexProportion = new OverviewSexProportion(casesPerMonthProportionMale, casesPerMonthProportionFemale);
+        OverviewSexProportion overviewSexProportion = new OverviewSexProportion(casesPerMonthProportionMale, casesPerMonthProportionFemale, new Range());
         int casesPerMonthAlteration = 2;
         ArrayList<OverviewChartRowExtended> diagnosisGroups = new ArrayList<OverviewChartRowExtended>();
         ArrayList<OverviewChartRowExtended> ageGroups = new ArrayList<OverviewChartRowExtended>();
@@ -49,7 +50,7 @@ public class OverviewConverterTest {
         //Given
         int casesPerMonthProportionMale = 0;
         int casesPerMonthProportionFemale = 1;
-        OverviewSexProportion overviewSexProportion = new OverviewSexProportion(casesPerMonthProportionMale, casesPerMonthProportionFemale);
+        OverviewSexProportion overviewSexProportion = new OverviewSexProportion(casesPerMonthProportionMale, casesPerMonthProportionFemale, new Range());
         int casesPerMonthAlteration = 2;
         ArrayList<OverviewChartRowExtended> diagnosisGroups = new ArrayList<OverviewChartRowExtended>();
         diagnosisGroups.add(new OverviewChartRowExtended("diagName", 1, 2));

@@ -1,5 +1,7 @@
 package se.inera.statistics.service.report.model;
 
+import java.util.Locale;
+
 import org.joda.time.LocalDate;
 
 public final class Range {
@@ -28,4 +30,14 @@ public final class Range {
     public LocalDate getTo() {
         return to;
     }
+    
+    public String toString(){
+        Locale sv = new Locale("sv", "SE");
+        if (from.getYear() == to.getYear()) {
+            return from.toString("MMM", sv) + "-" + to.toString("MMM yyyy", sv);
+        } else {
+            return from.toString("MMM yyyy", sv) + "-" + to.toString("MMM yyyy", sv);
+        }
+    }
+    
 }
