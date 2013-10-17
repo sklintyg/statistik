@@ -4,9 +4,9 @@ import java.util.List;
 
 public class VerksamhetOverviewResponse {
 
-    private final int casesPerMonthProportionMale;
-    private final int casesPerMonthProportionFemale;
-    private final int casesPerMonthAlteration;
+    private final int totalCases;
+    private final OverviewSexProportion casesPerMonthSexProportionPreviousPeriod;
+    private final OverviewSexProportion casesPerMonthSexProportionBeforePreviousPeriod;
 
     private final List<OverviewChartRowExtended> diagnosisGroups;
 
@@ -18,35 +18,31 @@ public class VerksamhetOverviewResponse {
     private final int longSickLeavesTotal;
     private final int longSickLeavesAlternation;
 
-    private final List<OverviewChartRowExtended> perCounty;
-
-    public VerksamhetOverviewResponse(int casesPerMonthProportionMale, int casesPerMonthProportionFemale,
-                                      int casesPerMonthAlteration, List<OverviewChartRowExtended> diagnosisGroups,
-                                      List<OverviewChartRowExtended> ageGroups, List<OverviewChartRowExtended> degreeOfSickLeaveGroups,
-                                      List<OverviewChartRow> sickLeaveLengthGroups, int longSickLeavesTotal, int longSickLeavesAlternation,
-                                      List<OverviewChartRowExtended> perCounty) {
-        this.casesPerMonthProportionMale = casesPerMonthProportionMale;
-        this.casesPerMonthProportionFemale = casesPerMonthProportionFemale;
-        this.casesPerMonthAlteration = casesPerMonthAlteration;
+    public VerksamhetOverviewResponse(int totalCases, OverviewSexProportion casesPerMonthSexProportionPreviousPeriod,
+            OverviewSexProportion casesPerMonthSexProportionBeforePreviousPeriod, List<OverviewChartRowExtended> diagnosisGroups,
+            List<OverviewChartRowExtended> ageGroups, List<OverviewChartRowExtended> degreeOfSickLeaveGroups, List<OverviewChartRow> sickLeaveLengthGroups,
+            int longSickLeavesTotal, int longSickLeavesAlternation) {
+        this.totalCases = totalCases;
+        this.casesPerMonthSexProportionPreviousPeriod = casesPerMonthSexProportionPreviousPeriod;
+        this.casesPerMonthSexProportionBeforePreviousPeriod = casesPerMonthSexProportionBeforePreviousPeriod;
         this.diagnosisGroups = diagnosisGroups;
         this.ageGroups = ageGroups;
         this.degreeOfSickLeaveGroups = degreeOfSickLeaveGroups;
         this.sickLeaveLengthGroups = sickLeaveLengthGroups;
         this.longSickLeavesTotal = longSickLeavesTotal;
         this.longSickLeavesAlternation = longSickLeavesAlternation;
-        this.perCounty = perCounty;
     }
 
-    public int getCasesPerMonthProportionMale() {
-        return casesPerMonthProportionMale;
+    public int getTotalCases() {
+        return totalCases;
     }
-
-    public int getCasesPerMonthProportionFemale() {
-        return casesPerMonthProportionFemale;
+    
+    public OverviewSexProportion getCasesPerMonthSexProportionPreviousPeriod() {
+        return casesPerMonthSexProportionPreviousPeriod;
     }
-
-    public int getCasesPerMonthAlteration() {
-        return casesPerMonthAlteration;
+    
+    public OverviewSexProportion getCasesPerMonthSexProportionBeforePreviousPeriod() {
+        return casesPerMonthSexProportionBeforePreviousPeriod;
     }
 
     public List<OverviewChartRowExtended>  getDiagnosisGroups() {
@@ -71,10 +67,6 @@ public class VerksamhetOverviewResponse {
 
     public int getLongSickLeavesAlternation() {
         return longSickLeavesAlternation;
-    }
-
-    public List<OverviewChartRowExtended> getPerCounty() {
-        return perCounty;
     }
 
 }

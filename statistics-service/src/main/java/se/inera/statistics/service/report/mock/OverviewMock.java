@@ -6,12 +6,15 @@ import se.inera.statistics.service.report.api.Overview;
 import se.inera.statistics.service.report.model.OverviewChartRow;
 import se.inera.statistics.service.report.model.OverviewChartRowExtended;
 import se.inera.statistics.service.report.model.OverviewResponse;
+import se.inera.statistics.service.report.model.OverviewSexProportion;
 
 public class OverviewMock implements Overview {
 
     // CHECKSTYLE:OFF MagicNumber
     @Override
     public OverviewResponse getOverview() {
+        OverviewSexProportion sexProportion = new OverviewSexProportion(56, 44);
+        
         ArrayList<OverviewChartRowExtended> diagnosisGroups = new ArrayList<OverviewChartRowExtended>();
         diagnosisGroups.add(new OverviewChartRowExtended("A-E G-L N Somatiska", 19583, 2));
         diagnosisGroups.add(new OverviewChartRowExtended("M - Muskuloskeletala", 20513, -4));
@@ -49,7 +52,7 @@ public class OverviewMock implements Overview {
         perCounty.add(new OverviewChartRowExtended("Östergötlands län", 3631, 0));
         perCounty.add(new OverviewChartRowExtended("Uppsala län", 3365, -4));
 
-        return new OverviewResponse(56, 44, 3, diagnosisGroups, ageGroups, degreeOfSickLeaveGroups, sickLeaveLengthData, 105, 10, perCounty);
+        return new OverviewResponse(sexProportion, 3, diagnosisGroups, ageGroups, degreeOfSickLeaveGroups, sickLeaveLengthData, 105, 10, perCounty);
     }
 
     //CHECKSTYLE:ON MagicNumber

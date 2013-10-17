@@ -4,8 +4,7 @@ import java.util.List;
 
 public class OverviewResponse {
 
-    private final int casesPerMonthProportionMale;
-    private final int casesPerMonthProportionFemale;
+    private final OverviewSexProportion casesPerMonthSexProportion;
     private final int casesPerMonthAlteration;
 
     private final List<OverviewChartRowExtended> diagnosisGroups;
@@ -20,13 +19,12 @@ public class OverviewResponse {
 
     private final List<OverviewChartRowExtended> perCounty;
 
-    public OverviewResponse(int casesPerMonthProportionMale, int casesPerMonthProportionFemale,
+    public OverviewResponse(OverviewSexProportion casesPerMonthSexProportion,
             int casesPerMonthAlteration, List<OverviewChartRowExtended> diagnosisGroups,
             List<OverviewChartRowExtended> ageGroups, List<OverviewChartRowExtended> degreeOfSickLeaveGroups,
             List<OverviewChartRow> sickLeaveLengthGroups, int longSickLeavesTotal, int longSickLeavesAlternation,
             List<OverviewChartRowExtended> perCounty) {
-        this.casesPerMonthProportionMale = casesPerMonthProportionMale;
-        this.casesPerMonthProportionFemale = casesPerMonthProportionFemale;
+        this.casesPerMonthSexProportion = casesPerMonthSexProportion;
         this.casesPerMonthAlteration = casesPerMonthAlteration;
         this.diagnosisGroups = diagnosisGroups;
         this.ageGroups = ageGroups;
@@ -37,12 +35,8 @@ public class OverviewResponse {
         this.perCounty = perCounty;
     }
 
-    public int getCasesPerMonthProportionMale() {
-        return casesPerMonthProportionMale;
-    }
-
-    public int getCasesPerMonthProportionFemale() {
-        return casesPerMonthProportionFemale;
+    public OverviewSexProportion getCasesPerMonthSexProportion() {
+        return casesPerMonthSexProportion;
     }
 
     public int getCasesPerMonthAlteration() {

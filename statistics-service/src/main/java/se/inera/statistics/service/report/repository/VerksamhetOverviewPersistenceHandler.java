@@ -27,7 +27,7 @@ public class VerksamhetOverviewPersistenceHandler implements VerksamhetOverview 
         List<OverviewChartRowExtended> diagnosisGroups = getDiagnosisGroups(verksamhetId, range);
         List<OverviewChartRowExtended> ageGroups = getAgeGroups(verksamhetId, range);
 
-        return new VerksamhetOverviewResponse(0, 0, 0, diagnosisGroups, ageGroups, null, null, 0, 0, null);
+        return new VerksamhetOverviewResponse(0, null, null, diagnosisGroups, ageGroups, null, null, 0, 0);
     }
 
     @Transactional
