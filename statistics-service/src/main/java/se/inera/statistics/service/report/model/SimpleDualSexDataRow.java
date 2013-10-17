@@ -1,6 +1,5 @@
 package se.inera.statistics.service.report.model;
 
-
 public class SimpleDualSexDataRow {
 
     private final String name;
@@ -22,13 +21,13 @@ public class SimpleDualSexDataRow {
     public Integer getDataForSex(Sex sex) {
         return data.getValue(sex);
     }
-    
-    public Integer getFemale(){
+
+    public Integer getFemale() {
         return data.getValue(Sex.Female);
     }
 
-    public Integer getMale(){
+    public Integer getMale() {
         return data.getValue(Sex.Male);
     }
-    
+
 }

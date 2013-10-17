@@ -1,33 +1,33 @@
 package se.inera.statistics.web.service;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-import static org.mockito.Matchers.anyString;
+import org.junit.Before;
+import org.junit.Test;
+import org.mockito.Mockito;
+import se.inera.statistics.service.report.api.*;
+import se.inera.statistics.service.report.model.Range;
+import se.inera.statistics.web.model.Verksamhet;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-
-import org.junit.Before;
-import org.junit.Test;
-import org.mockito.Mockito;
-
-import se.inera.statistics.service.report.api.Overview;
-import se.inera.statistics.web.model.Verksamhet;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyString;
 
 public class ProtectedChartDataServiceTest {
-    private Overview mock;
+    private VerksamhetOverview mock;
     private HttpServletRequest request;
     private HttpSession session;
     private List<Verksamhet> verksamhets;
 
     @Before
     public void init() {
-        mock = Mockito.mock(Overview.class);
+        mock = Mockito.mock(VerksamhetOverview.class);
         request = Mockito.mock(HttpServletRequest.class);
         session = Mockito.mock(HttpSession.class);
         verksamhets = Arrays.asList(new Verksamhet("verksamhet1", "Närhälsan i Småmåla"), new Verksamhet("verksamhet2", "Småmålas akutmottagning"));
@@ -47,7 +47,7 @@ public class ProtectedChartDataServiceTest {
         } catch (NullPointerException e) {
             assertTrue(true);
         }
-        Mockito.verify(mock).getOverview("verksamhet2");
+        Mockito.verify(mock).getOverview(anyString(), any(Range.class));
     }
 
     @Test

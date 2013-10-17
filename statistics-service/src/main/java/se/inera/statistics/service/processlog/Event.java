@@ -10,7 +10,7 @@ import javax.persistence.MappedSuperclass;
 public class Event {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
     @Enumerated
@@ -32,6 +32,7 @@ public class Event {
         this.type = type;
         this.data = data;
         this.correlationId = correlationId;
+        this.timestamp = timestamp;
     }
 
     public EventType getType() {
