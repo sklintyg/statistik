@@ -4,13 +4,17 @@ import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.springframework.transaction.annotation.Transactional;
 import se.inera.statistics.service.report.api.VerksamhetOverview;
+import se.inera.statistics.service.report.model.OverviewChartRow;
 import se.inera.statistics.service.report.model.OverviewChartRowExtended;
+import se.inera.statistics.service.report.model.OverviewSexProportion;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.VerksamhetOverviewResponse;
+import se.inera.statistics.service.report.util.ReportUtil;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,17 +24,53 @@ public class VerksamhetOverviewPersistenceHandler implements VerksamhetOverview 
     @PersistenceContext(unitName = "IneraStatisticsLog")
     private EntityManager manager;
 
+    @Transactional
     @Override
     public VerksamhetOverviewResponse getOverview(String verksamhetId, Range range) {
-
-
+        OverviewSexProportion sexProportion = getSexProportion(verksamhetId, range);
+        OverviewSexProportion prevSexProportion = getSexProportion(verksamhetId, ReportUtil.getPreviousPeriod(range));
         List<OverviewChartRowExtended> diagnosisGroups = getDiagnosisGroups(verksamhetId, range);
         List<OverviewChartRowExtended> ageGroups = getAgeGroups(verksamhetId, range);
+        List<OverviewChartRowExtended> degreeOfSickLeaveGroups = getDegreeOfSickLeaveGroups(verksamhetId, range);
+        List<OverviewChartRow> sickLeaveLengthGroups = getSickLeaveLengthGroups(verksamhetId, range);
+        int casesPerMonth = getCasesPerMonth(verksamhetId, range);
 
-        return new VerksamhetOverviewResponse(0, null, null, diagnosisGroups, ageGroups, null, null, 0, 0);
+        return new VerksamhetOverviewResponse(casesPerMonth, sexProportion, prevSexProportion, diagnosisGroups, ageGroups, degreeOfSickLeaveGroups, sickLeaveLengthGroups, 0, 0);
     }
 
-    @Transactional
+    private List<OverviewChartRow> getSickLeaveLengthGroups(String verksamhetId, Range range) {
+        List<OverviewChartRow> result = new ArrayList<>();
+        result.add(new OverviewChartRow("10-20", 2));
+        return result;
+    }
+
+    private List<OverviewChartRowExtended> getDegreeOfSickLeaveGroups(String verksamhetId, Range range) {
+        List<OverviewChartRowExtended> result = new ArrayList<>();
+        result.add(new OverviewChartRowExtended("10-20", 2, 1));
+        return result;
+    }
+
+    @SuppressWarnings("unchecked")
+    private OverviewSexProportion getSexProportion(String verksamhetId, Range range) {
+        Query query = manager.createQuery("SELECT SUM(c.male), SUM(c.female) FROM CasesPerMonthRow c WHERE c.casesPerMonthKey.hsaId = :hsaId AND c.casesPerMonthKey.period >= :from AND c.casesPerMonthKey.period <= :to");
+        query.setParameter("hsaId", verksamhetId);
+        query.setParameter("from", inputFormatter.print(range.getFrom()));
+        query.setParameter("to", inputFormatter.print(range.getTo()));
+        Object[] row = (Object[]) query.getSingleResult();
+        if (row == null || row[0] == null || row[1] == null) {
+            return new OverviewSexProportion(0, 0);
+        }
+        return new OverviewSexProportion(((Long) row[0]).intValue(), ((Long) row[1]).intValue());
+    }
+
+    private int getCasesPerMonth(String verksamhetId, Range range) {
+        TypedQuery<Long> query = manager.createQuery("SELECT SUM(c.male) + SUM(c.female) FROM CasesPerMonthRow c WHERE c.casesPerMonthKey.hsaId = :hsaId AND c.casesPerMonthKey.period >= :from AND c.casesPerMonthKey.period <= :to", Long.class);
+        query.setParameter("hsaId", verksamhetId);
+        query.setParameter("from", inputFormatter.print(range.getFrom()));
+        query.setParameter("to", inputFormatter.print(range.getTo()));
+        return query.getSingleResult().intValue();
+    }
+
     @SuppressWarnings("unchecked")
     private List<OverviewChartRowExtended> getDiagnosisGroups(String verksamhetId, Range range) {
         Query query = manager.createQuery("SELECT c.diagnosisGroupKey.diagnosgrupp, sum(c.female) + sum(c.male), c.diagnosisGroupKey.diagnosgrupp  FROM DiagnosisGroupData c WHERE c.diagnosisGroupKey.hsaId = :hsaId AND c.diagnosisGroupKey.period >= :from AND c.diagnosisGroupKey.period <= :to  GROUP BY c.diagnosisGroupKey.diagnosgrupp");
@@ -49,9 +89,10 @@ public class VerksamhetOverviewPersistenceHandler implements VerksamhetOverview 
         return result;
     }
 
-    @Transactional
     private List<OverviewChartRowExtended> getAgeGroups(String verksamhetId, Range range) {
-        return null;
+        List<OverviewChartRowExtended> result = new ArrayList<>();
+        result.add(new OverviewChartRowExtended("10-20", 2, 1));
+        return result;
     }
 
 }

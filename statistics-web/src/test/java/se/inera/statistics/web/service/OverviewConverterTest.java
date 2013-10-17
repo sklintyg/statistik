@@ -72,7 +72,7 @@ public class OverviewConverterTest {
         //Then
         NumberOfCasesPerMonthOverview casesPerMonth = data.getCasesPerMonth();
         assertEquals(2, casesPerMonth.getAlteration());
-        assertEquals(1, casesPerMonth.getProportionFemale());
+        assertEquals(100, casesPerMonth.getProportionFemale());
         assertEquals(0, casesPerMonth.getProportionMale());
 
         List<DonutChartData> diagnosisGroupsResult = data.getDiagnosisGroups();

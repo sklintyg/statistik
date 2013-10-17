@@ -1,5 +1,9 @@
 package se.inera.statistics.service.report.util;
 
+import org.joda.time.LocalDate;
+import org.joda.time.Period;
+import se.inera.statistics.service.report.model.Range;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -24,5 +28,13 @@ public final class ReportUtil {
             c.add(Calendar.MONTH, 1);
         }
         return names;
+    }
+
+    public static Range getPreviousPeriod(Range range) {
+        LocalDate prevFrom = range.getFrom();
+        LocalDate prevTo = range.getTo();
+        Period period = new Period(prevFrom, prevTo);
+
+        return new Range(range.getFrom().minusMonths(period.getMonths() + 1).minusYears(period.getYears()), range.getFrom().minusMonths(1));
     }
 }
