@@ -129,25 +129,6 @@ public class ProtectedChartDataService {
         return false;
     }
 
-    /**
-     * The default verksamhet to be used is determined later.
-     * This method only ensures that user has access to at least one verksamhet from which to select a default.
-     * (This is enough since the exact verksamhet to use is picked from a list of authorized verksamhets.)
-     *
-     * @param request http request
-     * @return
-     */
-    public boolean hasAccessToAtLeastOne(HttpServletRequest request) {
-        if (request == null) {
-            return false;
-        }
-        List<Verksamhet> verksamhets = getVerksamhets(request);
-        if (verksamhets == null || verksamhets.isEmpty()) {
-            return false;
-        }
-        return true;
-    }
-
     @SuppressWarnings("unchecked")
     private List<Verksamhet> getVerksamhets(HttpServletRequest request) {
         return (List<Verksamhet>) request.getSession().getAttribute("verksamhets");

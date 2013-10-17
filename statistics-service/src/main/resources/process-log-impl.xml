@@ -13,8 +13,6 @@
 
     <context:component-scan base-package="se.inera.statistics.service" />
 
-    <context:property-placeholder location="classpath*:db.properties"/>
-
     <tx:annotation-driven/>
 
     <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
