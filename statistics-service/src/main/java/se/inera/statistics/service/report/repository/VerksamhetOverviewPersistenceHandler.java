@@ -58,9 +58,9 @@ public class VerksamhetOverviewPersistenceHandler implements VerksamhetOverview 
         query.setParameter("to", inputFormatter.print(range.getTo()));
         Object[] row = (Object[]) query.getSingleResult();
         if (row == null || row[0] == null || row[1] == null) {
-            return new OverviewSexProportion(0, 0);
+            return new OverviewSexProportion(0, 0, range);
         }
-        return new OverviewSexProportion(((Long) row[0]).intValue(), ((Long) row[1]).intValue());
+        return new OverviewSexProportion(((Long) row[0]).intValue(), ((Long) row[1]).intValue(), range);
     }
 
     private int getCasesPerMonth(String verksamhetId, Range range) {
