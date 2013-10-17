@@ -66,26 +66,4 @@ public class ProtectedChartDataServiceTest {
         assertEquals(true, result);
     }
 
-    @Test
-    public void checkAllowedAccessToDefaultTest() {
-        verksamhets = Arrays.asList(new Verksamhet("1", "a"));
-        Mockito.when(session.getAttribute(anyString())).thenReturn(verksamhets);
-
-        ProtectedChartDataService chartDataService = new ProtectedChartDataService(mock, null, null, null, null);
-        boolean result = chartDataService.hasAccessToAtLeastOne(request);
-
-        assertEquals(true, result);
-    }
-
-    @Test
-    public void checkDeniedAccessToDefaultTest() {
-        verksamhets = new ArrayList<>();
-        Mockito.when(session.getAttribute(anyString())).thenReturn(verksamhets);
-
-        ProtectedChartDataService chartDataService = new ProtectedChartDataService(mock, null, null, null, null);
-        boolean result = chartDataService.hasAccessToAtLeastOne(request);
-
-        assertEquals(false, result);
-    }
-
 }

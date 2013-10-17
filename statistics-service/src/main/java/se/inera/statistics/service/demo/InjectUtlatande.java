@@ -24,6 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.jms.core.MessageCreator;
 
+import se.inera.statistics.service.common.CommonPersistence;
 import se.inera.statistics.service.helper.DocumentHelper;
 import se.inera.statistics.service.helper.JSONParser;
 import se.inera.statistics.service.report.model.DiagnosisGroup;
@@ -53,6 +54,9 @@ public class InjectUtlatande {
     @Autowired
     private ConnectionFactory connectionFactory;
 
+    @Autowired
+    private CommonPersistence persistence;
+
     private JmsTemplate jmsTemplate;
 
     public void setup() {
@@ -70,7 +74,12 @@ public class InjectUtlatande {
     @PostConstruct
     public void init() {
         setup();
+        cleanupDB();
         publishUtlatanden();
+    }
+
+    private void cleanupDB() {
+        persistence.cleanDb();
     }
 
     private void publishUtlatanden() {

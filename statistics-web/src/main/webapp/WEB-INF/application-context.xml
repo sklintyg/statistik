@@ -79,6 +79,7 @@
     <beans profile="demo">
       <import resource="application-context-qm.xml"/>
 
+      <bean class="se.inera.statistics.service.common.CommonPersistenceHandler" id="commonPersistenceHandler" />
       <bean class="se.inera.statistics.service.report.repository.CasesPerMonthPersistenceHandler" id="casesPerMonth" />
       <bean class="se.inera.statistics.service.report.repository.DiagnosgroupPersistenceHandler" id="diagnosisGroups" />
       <bean class="se.inera.statistics.service.report.repository.DiagnossubgroupPersistenceHandler" id="diagnosisSubGroups"/>
