@@ -1,9 +1,11 @@
 package se.inera.statistics.service.report.mock;
 
 import se.inera.statistics.service.report.api.VerksamhetOverview;
-import se.inera.statistics.service.report.model.*;
-import se.inera.statistics.service.report.util.DiagnosisGroupsUtil;
-import se.inera.statistics.service.report.util.ReportUtil;
+import se.inera.statistics.service.report.model.DualSexField;
+import se.inera.statistics.service.report.model.OverviewChartRow;
+import se.inera.statistics.service.report.model.OverviewChartRowExtended;
+import se.inera.statistics.service.report.model.Range;
+import se.inera.statistics.service.report.model.VerksamhetOverviewResponse;
 
 import java.util.ArrayList;
 import java.util.Arrays;

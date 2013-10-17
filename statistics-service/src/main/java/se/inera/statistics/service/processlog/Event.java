@@ -32,6 +32,7 @@ public class Event {
         this.type = type;
         this.data = data;
         this.correlationId = correlationId;
+        this.timestamp = timestamp;
     }
 
     public EventType getType() {
