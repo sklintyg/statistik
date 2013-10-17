@@ -3,7 +3,7 @@
 /* App Module */
 var app = {};
 
-app.statisticsApp = angular.module('StatisticsApp', [ 'ngCookies' ]).config(
+app.statisticsApp = angular.module('StatisticsApp', [ 'ngCookies', 'ui.bootstrap' ]).config(
         [ '$routeProvider', '$httpProvider', function($routeProvider, $httpProvider) {
             $routeProvider.when('/nationell/oversikt', {
                 templateUrl : 'views/overview.html',
@@ -27,6 +27,11 @@ app.statisticsApp = angular.module('StatisticsApp', [ 'ngCookies' ]).config(
                 controllerAs : 'NationalSickLeaveLengthCtrl',
                 resolve : { config: app.nationalSickLeaveLengthConfig }, 
                 title: 'Sjukskrivningslängd'
+            }).when('/nationell/lan', {
+                templateUrl : 'views/detailsView.html',
+                controller : 'CasesPerCountyCtrl',
+                controllerAs : 'NationalCasesPerCountyCtrl',
+                title: 'Län'
             }).when('/nationell/diagnosgrupper', {
                 templateUrl : 'views/detailsView.html',
                 controller : 'DiagnosisGroupsCtrl',

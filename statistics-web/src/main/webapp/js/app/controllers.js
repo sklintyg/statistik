@@ -6,6 +6,7 @@ app.statisticsApp.controller('CasesPerMonthCtrl', app.casesPerMonthCtrl);
 app.statisticsApp.controller('DiagnosisGroupsCtrl', app.diagnosisGroupsCtrl);
 app.statisticsApp.controller('AgeGroupsCtrl', app.columnChartDetailsViewCtrl);
 app.statisticsApp.controller('SickLeaveLengthCtrl', app.columnChartDetailsViewCtrl);
+app.statisticsApp.controller('CasesPerCountyCtrl', app.casesPerCountyCtrl);
 
 app.statisticsApp.controller('BusinessOverviewCtrl', app.businessOverviewCtrl);
 app.statisticsApp.controller('BusinessLandingPageCtrl', app.businessLandingPageCtrl);

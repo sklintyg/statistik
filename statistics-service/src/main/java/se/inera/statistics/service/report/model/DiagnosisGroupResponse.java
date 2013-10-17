@@ -35,7 +35,7 @@ public class DiagnosisGroupResponse {
     public List<String> getPeriods() {
         List<String> periods = new ArrayList<>();
         for (DiagnosisGroupRow row : rows) {
-            periods.add(row.getPeriod());
+            periods.add(row.getName());
         }
         return periods;
     }

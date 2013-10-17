@@ -24,7 +24,7 @@ public class DegreeOfSickLeaveResponse {
     public List<String> getPeriods() {
         List<String> periods = new ArrayList<>();
         for (DualSexDataRow row : rows) {
-            periods.add(row.getPeriod());
+            periods.add(row.getName());
         }
         return periods;
     }
