@@ -163,5 +163,38 @@ public class BasicWebappWalkthrough {
         }
         result
     }
+
+    public void öppnaDetaljsidanFörSjukskrivningslängd() {
+        Browser.drive {
+            waitFor { at NavigationMenuPage }
+            page.goToSickLeaveLength()
+        }
+    }
     
+    public boolean detaljsidanFörSjukskrivningslängdVisasMedEttDiagramOchEnTabell() {
+        def result = false
+                Browser.drive {
+            waitFor { at SickLeaveLengthPage }
+            result = page.chart.isDisplayed() && page.isDatatableVisible() && !page.isDetailsOptionsVisible()
+        }
+        result
+    }
+    
+    public void öppnaDetaljsidanFörLän() {
+        Browser.drive {
+            waitFor { at NavigationMenuPage }
+            page.goToCasesPerCounty()
+        }
+    }
+    
+    public boolean detaljsidanFörLänVisasMedEttDiagramOchEnTabell() {
+        def result = false
+                Browser.drive {
+            waitFor { at CasesPerCountyPage }
+            result = page.chart.isDisplayed() && page.isDatatableVisible() && !page.isDetailsOptionsVisible()
+        }
+        result
+    }
+    
+        
 }
