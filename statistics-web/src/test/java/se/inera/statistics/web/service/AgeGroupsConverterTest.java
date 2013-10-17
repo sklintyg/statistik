@@ -48,8 +48,8 @@ public class AgeGroupsConverterTest {
         assertEquals("[<20, 20-50, >50]", chartDataResult.getCategories().toString());
         List<ChartSeries> series = chartDataResult.getSeries();
         assertEquals(2, series.size());
-        assertEquals("Antal sjukskrivningar Män", series.get(0).getName());
-        assertEquals("Antal sjukskrivningar Kvinnor", series.get(1).getName());
+        assertEquals("Antal sjukfall män", series.get(0).getName());
+        assertEquals("Antal sjukfall kvinnor", series.get(1).getName());
         assertEquals("[14, 15, 9]", series.get(0).getData().toString());
         assertEquals("[13, 24, 3]", series.get(1).getData().toString());
 
