@@ -21,3 +21,7 @@
 |detaljsidan för åldersgrupper visas med ett diagram och en tabell|
 |öppna detaljsidan för sjukskrivningsgrad|
 |detaljsidan för sjukskrivningsgrad visas med två diagram och en tabell|
+|öppna detaljsidan för sjukskrivningslängd|
+|detaljsidan för sjukskrivningslängd visas med ett diagram och en tabell|
+|öppna detaljsidan för län|
+|detaljsidan för län visas med ett diagram och en tabell|

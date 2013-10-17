@@ -48,7 +48,7 @@ class NavigationMenuPage extends Page {
         sickLeaveLengthLink.click()
     }
     
-    def goToPerCounty() {
+    def goToCasesPerCounty() {
         countyLink.click()
     }
     
