@@ -31,6 +31,7 @@ import se.inera.statistics.service.report.model.SickLeaveLengthResponse;
 import se.inera.statistics.service.report.util.DiagnosisGroupsUtil;
 import se.inera.statistics.web.model.AgeGroupsData;
 import se.inera.statistics.web.model.CasesPerCountyData;
+import se.inera.statistics.web.model.CasesPerMonthData;
 import se.inera.statistics.web.model.DualSexStatisticsData;
 import se.inera.statistics.web.model.SickLeaveLengthData;
 import se.inera.statistics.web.model.TableData;
@@ -71,12 +72,12 @@ public class ChartDataService {
     @GET
     @Path("getNumberOfCasesPerMonth")
     @Produces({ MediaType.APPLICATION_JSON })
-    public TableData getNumberOfCasesPerMonth() {
+    public CasesPerMonthData getNumberOfCasesPerMonth() {
         Range range = new Range();
 
         List<CasesPerMonthRow> casesPerMonth = datasourceCasesPerMonth.getCasesPerMonth(CasesPerMonth.HSA_NATIONELL, range);
 
-        return new CasesPerMonthConverter().convertCasesPerMonthData(casesPerMonth);
+        return new CasesPerMonthConverter().convert(casesPerMonth);
     }
 
     @GET

@@ -4,8 +4,19 @@ var ControllerCommons = new function(){
 
  this.addColor = function(rawData){
      var color = ["#fbb10c", "#2ca2c6", "#B0B0B0", "#12BC3A", "#9c734d", "#D35ABB", "#4A4A4A"];
+     var maleColor = ["#008391", "#00CDE3"]
+     var femaleColor = ["#EA8025", "#FFC18C"]
+     var colorSelector = 0;
+     var maleColorSelector = 0;
+     var femaleColorSelector = 0;
      for (var i = 0; i < rawData.length; i++) {
-         rawData[i].color = color[i];
+         if (rawData[i].sex === "Male") {
+             rawData[i].color = maleColor[maleColorSelector++];
+         } else if (rawData[i].sex === "Female") {
+             rawData[i].color = femaleColor[femaleColorSelector++];
+         } else {
+             rawData[i].color = color[colorSelector++];
+         }
      }
      return rawData;
  };
@@ -29,33 +40,6 @@ var ControllerCommons = new function(){
      });
  };
  
- this.getChartCategories = function(ajaxResult) {
-     return ajaxResult.rows.map(function(e) {
-         return e.name;
-     });
- };
-
- this.getChartSeries = function(ajaxResult) {
-     var dataSeries = [];
-     var length = ajaxResult.headers[0].length;
-     for ( var i = 0; i < length; i++) {
-         var ds = {};
-         ds.name = ajaxResult.headers[0][i].text;
-         ds.data = [];
-         dataSeries.push(ds);
-     }
-
-     var length = ajaxResult.rows.length;
-     for ( var i = 0; i < length; i++) {
-         var rowdata = ajaxResult.rows[i].data;
-         var rowdatalength = rowdata.length;
-         for ( var c = 0; c < rowdatalength; c++) {
-             dataSeries[c].data.push(rowdata[c]);
-         }
-     }
-     return dataSeries;
- };
-
  this.htmlsafe = function(string) {
      return string.replace(/&/g,'&amp;').replace(/</g,'&lt;');
  }

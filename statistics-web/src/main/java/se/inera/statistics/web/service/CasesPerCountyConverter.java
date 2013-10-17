@@ -65,13 +65,13 @@ public class CasesPerCountyConverter {
         List<String> groups = respNewest.getGroups();
         ArrayList<ChartSeries> series = new ArrayList<>();
         List<Integer> femaleDataOld = respOldest.getDataForSex(Sex.Female);
-        series.add(new ChartSeries("Sjukfall " + rangeTextOld + " Kvinnor", femaleDataOld, "old"));
+        series.add(new ChartSeries("Sjukfall " + rangeTextOld + " Kvinnor", femaleDataOld, "old", Sex.Female));
         List<Integer> maleDataOld = respOldest.getDataForSex(Sex.Male);
-        series.add(new ChartSeries("Sjukfall " + rangeTextOld + " Män", maleDataOld, "old"));
+        series.add(new ChartSeries("Sjukfall " + rangeTextOld + " Män", maleDataOld, "old", Sex.Male));
         List<Integer> femaleDataNew = respNewest.getDataForSex(Sex.Female);
-        series.add(new ChartSeries("Sjukfall " + rangeTextNew + " Kvinnor", femaleDataNew, "new"));
+        series.add(new ChartSeries("Sjukfall " + rangeTextNew + " Kvinnor", femaleDataNew, "new", Sex.Female));
         List<Integer> maleDataNew = respNewest.getDataForSex(Sex.Male);
-        series.add(new ChartSeries("Sjukfall " + rangeTextNew + " Män", maleDataNew, "new"));
+        series.add(new ChartSeries("Sjukfall " + rangeTextNew + " Män", maleDataNew, "new", Sex.Male));
         return new ChartData(series, groups);
     }
 
