@@ -36,16 +36,16 @@ public class VerksamhetOverviewResponse {
     public int getTotalCases() {
         return totalCases;
     }
-    
+
     public OverviewSexProportion getCasesPerMonthSexProportionPreviousPeriod() {
         return casesPerMonthSexProportionPreviousPeriod;
     }
-    
+
     public OverviewSexProportion getCasesPerMonthSexProportionBeforePreviousPeriod() {
         return casesPerMonthSexProportionBeforePreviousPeriod;
     }
 
-    public List<OverviewChartRowExtended>  getDiagnosisGroups() {
+    public List<OverviewChartRowExtended> getDiagnosisGroups() {
         return diagnosisGroups;
     }
 
