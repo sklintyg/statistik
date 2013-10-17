@@ -50,7 +50,7 @@ public class ReceiverIntegrationTest {
 
     @Test
     public void deliver_document_from_in_queue_to_statistics_repository() {
-        String data = JSONSource.readTemplateAsString().toString();
+        String data = JSONSource.readTemplateAsString();
 
         simpleSend(data, "B123");
 
