@@ -29,7 +29,7 @@ public class AldersgruppPersistenceHandler implements AgeGroups {
     @Override
     @Transactional
     public AgeGroupsResponse getAgeGroups(String hsaId, Range range) {
-        TypedQuery<AgeGroupsRow> query = manager.createQuery("SELECT c FROM AgeGroupsRow c WHERE c.aldersgruppKey.hsaId = :hsaId AND c.aldersgruppKey.period >= :from AND c.aldersgruppKey.period <= :to", AgeGroupsRow.class);
+        TypedQuery<AgeGroupsRow> query = manager.createQuery("SELECT a FROM AgeGroupsRow a WHERE a.key.hsaId = :hsaId AND a.key.period BETWEEN :from AND :to", AgeGroupsRow.class);
         query.setParameter("hsaId", hsaId);
         query.setParameter("from", INPUT_FORMATTER.print(range.getFrom()));
         query.setParameter("to", INPUT_FORMATTER.print(range.getTo()));

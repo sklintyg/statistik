@@ -13,7 +13,7 @@ import se.inera.statistics.service.report.util.Verksamhet;
 @Table(name = "aldersgrupp")
 public class AgeGroupsRow {
     @EmbeddedId
-    private AldersgruppKey aldersgruppKey;
+    private AldersgruppKey key;
     private int male;
     private int female;
 
@@ -24,26 +24,26 @@ public class AgeGroupsRow {
     }
 
     public AgeGroupsRow(String period, String hsaId, String group, Verksamhet typ, int female, int male) {
-        aldersgruppKey = new AldersgruppKey(period, hsaId, group);
+        key = new AldersgruppKey(period, hsaId, group);
         this.male = male;
         this.female = female;
         this.typ = typ;
     }
 
     public AgeGroupsRow(String period, String group, int female, int male) {
-        aldersgruppKey = new AldersgruppKey(period, Verksamhet.NATIONELL.toString(), group);
+        key = new AldersgruppKey(period, Verksamhet.NATIONELL.toString(), group);
         this.male = male;
         this.female = female;
     }
 
     @Transient
     public String getPeriod() {
-        return aldersgruppKey.getPeriod();
+        return key.getPeriod();
     }
 
     @Transient
     public String getGroup() {
-        return aldersgruppKey.getGroup();
+        return key.getGroup();
     }
 
     public Verksamhet getTyp() {
@@ -72,14 +72,14 @@ public class AgeGroupsRow {
 
     @Transient
     public String getHsaId() {
-        return aldersgruppKey.getHsaId();
+        return key.getHsaId();
     }
 
     public AldersgruppKey getAldersgruppKey() {
-        return aldersgruppKey;
+        return key;
     }
 
     public void setAldersgruppKey(AldersgruppKey aldersgruppKey) {
-        this.aldersgruppKey = aldersgruppKey;
+        this.key = aldersgruppKey;
     }
 }
