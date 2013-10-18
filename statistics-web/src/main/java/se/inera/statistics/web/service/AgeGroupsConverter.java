@@ -21,7 +21,7 @@ public class AgeGroupsConverter {
         for (AgeGroupsRow row : ageGroups) {
             int rowSum = row.getFemale() + row.getMale();
             accumulatedSum += rowSum;
-            data.add(new NamedData(row.getName(), Arrays.asList(rowSum, row.getFemale(), row.getMale(), accumulatedSum)));
+            data.add(new NamedData(row.getGroup(), Arrays.asList(rowSum, row.getFemale(), row.getMale(), accumulatedSum)));
         }
         return TableData.createWithSingleHeadersRow(data, Arrays.asList("Åldersgrupper", "Antal sjukfall", "Antal kvinnor", "Antal män", "Summering"));
     }
@@ -38,9 +38,9 @@ public class AgeGroupsConverter {
     }
 
     AgeGroupsData convert(AgeGroupsResponse resp) {
-        TableData tableData = convertToTable(resp.getRows());
+        TableData tableData = convertToTable(resp.getAgeGroupsRows());
         ChartData chartData = convertToChart(resp);
-        int monthsIncluded = resp.getNumberOfMonthsCalculated();
+        int monthsIncluded = resp.getMonths();
         return new AgeGroupsData(tableData, chartData, monthsIncluded);
     }
 }

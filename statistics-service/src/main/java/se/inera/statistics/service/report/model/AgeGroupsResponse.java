@@ -1,11 +1,43 @@
 package se.inera.statistics.service.report.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class AgeGroupsResponse extends SimpleDualSexResponse<AgeGroupsRow> {
+public class AgeGroupsResponse extends AgeGroupsRow {
+
+    private final List<AgeGroupsRow> ageGroupsRows;
+    private final int months;
 
     public AgeGroupsResponse(List<AgeGroupsRow> rows, int numberOfMonthsCalculated) {
-        super(rows, numberOfMonthsCalculated);
+        this.ageGroupsRows = rows;
+        this.months = numberOfMonthsCalculated;
     }
 
+    public List<String> getGroups() {
+        List<String> groups = new ArrayList<>();
+        for (AgeGroupsRow row : ageGroupsRows) {
+            groups.add(row.getGroup());
+        }
+        return groups;
+    }
+
+    public List<Integer> getDataForSex(Sex sex) {
+        List<Integer> data = new ArrayList<>();
+        for (AgeGroupsRow row : ageGroupsRows) {
+            if (sex == Sex.Female) {
+                data.add(row.getFemale());
+            } else {
+                data.add(row.getMale());
+            }
+        }
+        return data;
+    }
+
+    public List<AgeGroupsRow> getAgeGroupsRows() {
+        return ageGroupsRows;
+    }
+
+    public int getMonths() {
+        return months;
+    }
 }

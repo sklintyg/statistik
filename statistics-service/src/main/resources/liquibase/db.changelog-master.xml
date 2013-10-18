@@ -10,4 +10,5 @@
     <include file="liquibase/db.changelog-v4.0_create_cases_per_month_row_table.xml"/>
     <include file="liquibase/db.changelog-v5.0_create_diagnosis_groups_row_table.xml"/>
     <include file="liquibase/db.changelog-v6.0_create_diagnosis_sub_groups_row_table.xml"/>
+    <include file="liquibase/db.changelog-v7.0_create_aldersgrupp_row_table.xml"/>
 </databaseChangeLog>
