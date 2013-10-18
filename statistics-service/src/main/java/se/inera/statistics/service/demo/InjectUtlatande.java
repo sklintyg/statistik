@@ -74,7 +74,7 @@ public class InjectUtlatande {
         // CHECKSTYLE:ON MagicNumber
 
         String vardenhet = random(VARDENHETER);
-        
+
         String diagnos = random(DIAGNOSER);
 
         int arbetsformaga = random.nextInt(3) * 25;

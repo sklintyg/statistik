@@ -1,0 +1,50 @@
+package se.inera.statistics.service.report.listener;
+
+import com.fasterxml.jackson.databind.JsonNode;
+
+import se.inera.statistics.service.helper.DocumentHelper;
+import se.inera.statistics.service.report.model.Sex;
+import se.inera.statistics.service.report.util.DiagnosisGroupsUtil;
+
+public class GenericHolder {
+
+    private final String enhetId;
+    private final String vardgivareId;
+    private final Sex kon;
+    private String diagnos;
+    private String diagnosgrupp;
+    private String diagnosundergrupp;
+
+    public GenericHolder(JsonNode utlatande) {
+        enhetId = DocumentHelper.getEnhetId(utlatande);
+        vardgivareId = DocumentHelper.getVardgivareId(utlatande);
+        kon = "man".equalsIgnoreCase(DocumentHelper.getKon(utlatande)) ? Sex.Male : Sex.Female;
+        diagnos = DocumentHelper.getDiagnos(utlatande);
+        diagnosgrupp = DiagnosisGroupsUtil.getGroupIdForCode(diagnos);
+        diagnosundergrupp = DiagnosisGroupsUtil.getSubGroupForCode(diagnos).getId();
+    }
+
+    public String getEnhetId() {
+        return enhetId;
+    }
+
+    public String getVardgivareId() {
+        return vardgivareId;
+    }
+
+    public Sex getKon() {
+        return kon;
+    }
+
+    public String getDiagnos() {
+        return diagnos;
+    }
+
+    public String getDiagnosgrupp() {
+        return diagnosgrupp;
+    }
+
+    public String getDiagnosundergrupp() {
+        return diagnosundergrupp;
+    }
+}
