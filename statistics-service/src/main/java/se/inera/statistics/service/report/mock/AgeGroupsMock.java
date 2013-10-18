@@ -12,6 +12,7 @@ import se.inera.statistics.service.report.model.AgeGroupsResponse;
 import se.inera.statistics.service.report.model.AgeGroupsRow;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.Sex;
+import se.inera.statistics.service.report.util.Verksamhet;
 
 public class AgeGroupsMock implements AgeGroups {
 
@@ -33,7 +34,7 @@ public class AgeGroupsMock implements AgeGroups {
     }
 
     @Override
-    public void count(String period, String hsaId, String group, Sex sex) {
+    public void count(String period, String hsaId, String group, Verksamhet typ, Sex sex) {
     }
 
     // CHECKSTYLE:ON

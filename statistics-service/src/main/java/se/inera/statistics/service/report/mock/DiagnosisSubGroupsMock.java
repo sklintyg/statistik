@@ -14,6 +14,7 @@ import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.Sex;
 import se.inera.statistics.service.report.util.DiagnosisGroupsUtil;
 import se.inera.statistics.service.report.util.ReportUtil;
+import se.inera.statistics.service.report.util.Verksamhet;
 
 public class DiagnosisSubGroupsMock implements DiagnosisSubGroups {
 
@@ -41,7 +42,7 @@ public class DiagnosisSubGroupsMock implements DiagnosisSubGroups {
     }
 
     @Override
-    public void count(String hsaId, String period, String diagnosgrupp, String undergrupp, Sex sex) {
+    public void count(String hsaId, String period, String diagnosgrupp, String undergrupp, Verksamhet typ, Sex sex) {
     }
 
 }

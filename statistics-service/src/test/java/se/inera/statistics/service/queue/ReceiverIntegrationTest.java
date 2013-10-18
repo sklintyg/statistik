@@ -53,7 +53,8 @@ public class ReceiverIntegrationTest {
     public void deliver_document_from_in_queue_to_statistics_repository() {
         String data = JSONSource.readTemplateAsString();
 
-        simpleSend(data, "B123");
+        simpleSend(data, "C001");
+        simpleSend(data, "C002");
 
         sleep();
 
@@ -63,7 +64,7 @@ public class ReceiverIntegrationTest {
 
         for (int i = 0; i < 3; i++) {
             assertEquals(0, webData.get(i).getFemale());
-            assertEquals(1, webData.get(i).getMale());
+            assertEquals(2, webData.get(i).getMale());
         }
         for (int i = 3; i < 12; i++) {
             assertEquals(0, webData.get(i).getFemale());

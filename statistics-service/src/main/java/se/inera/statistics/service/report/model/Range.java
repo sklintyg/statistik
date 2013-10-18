@@ -3,6 +3,7 @@ package se.inera.statistics.service.report.model;
 import java.util.Locale;
 
 import org.joda.time.LocalDate;
+import org.joda.time.Period;
 
 public final class Range {
     private static final int DEFAULT_PERIOD = 18;
@@ -38,5 +39,9 @@ public final class Range {
         } else {
             return from.toString("MMM yyyy", sv) + "-" + to.toString("MMM yyyy", sv);
         }
+    }
+
+    public int getMonths() {
+        return new Period(from, to).getMonths();
     }
 }

@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import se.inera.statistics.service.report.model.CasesPerMonthRow;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.Sex;
+import se.inera.statistics.service.report.util.Verksamhet;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath:process-log-impl-test.xml" })
@@ -26,7 +27,7 @@ public class CasesPerMonthPersistenceTest extends CasesPerMonthPersistenceHandle
     // CHECKSTYLE:OFF MagicNumber
     @Test
     public void store_nonexisting_row_female() {
-        this.count("hsaid", "2013-02", Sex.Female);
+        this.count("hsaid", "2013-02", Verksamhet.ENHET, Sex.Female);
 
         Range range = new Range(new LocalDate("2013-02"), new LocalDate("2013-02"));
         List<CasesPerMonthRow> check = this.getCasesPerMonth("hsaid", range);
@@ -35,8 +36,8 @@ public class CasesPerMonthPersistenceTest extends CasesPerMonthPersistenceHandle
 
     @Test
     public void store_existing_row_female() {
-        this.count("hsaid", "2013-02", Sex.Female);
-        this.count("hsaid", "2013-02", Sex.Female);
+        this.count("hsaid", "2013-02", Verksamhet.ENHET, Sex.Female);
+        this.count("hsaid", "2013-02", Verksamhet.ENHET, Sex.Female);
 
         Range range = new Range(new LocalDate("2013-02"), new LocalDate("2013-02"));
         List<CasesPerMonthRow> check = this.getCasesPerMonth("hsaid", range);
@@ -45,7 +46,7 @@ public class CasesPerMonthPersistenceTest extends CasesPerMonthPersistenceHandle
 
     @Test
     public void store_nonexisting_row_male() {
-        this.count("hsaid", "2013-02", Sex.Male);
+        this.count("hsaid", "2013-02", Verksamhet.ENHET, Sex.Male);
 
         Range range = new Range(new LocalDate("2013-02"), new LocalDate("2013-02"));
         List<CasesPerMonthRow> check = this.getCasesPerMonth("hsaid", range);
@@ -54,8 +55,8 @@ public class CasesPerMonthPersistenceTest extends CasesPerMonthPersistenceHandle
 
     @Test
     public void store_existing_row_male() {
-        this.count("hsaid", "2013-02", Sex.Female);
-        this.count("hsaid", "2013-02", Sex.Male);
+        this.count("hsaid", "2013-02", Verksamhet.ENHET, Sex.Female);
+        this.count("hsaid", "2013-02", Verksamhet.ENHET, Sex.Male);
 
         Range range = new Range(new LocalDate("2013-02"), new LocalDate("2013-02"));
         List<CasesPerMonthRow> check = this.getCasesPerMonth("hsaid", range);
@@ -64,9 +65,9 @@ public class CasesPerMonthPersistenceTest extends CasesPerMonthPersistenceHandle
 
     @Test
     public void getCasesPerMonthReturnsOldestFirst() {
-        this.count("hsaid", "2013-02", Sex.Female);
-        this.count("hsaid", "2013-04", Sex.Female);
-        this.count("hsaid", "2013-01", Sex.Female);
+        this.count("hsaid", "2013-02", Verksamhet.ENHET, Sex.Female);
+        this.count("hsaid", "2013-04", Verksamhet.ENHET, Sex.Female);
+        this.count("hsaid", "2013-01", Verksamhet.ENHET, Sex.Female);
 
         Range range = new Range(new LocalDate("2013-01"), new LocalDate("2013-04"));
 

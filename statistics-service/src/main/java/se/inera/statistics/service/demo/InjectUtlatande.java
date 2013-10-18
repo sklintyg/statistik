@@ -10,6 +10,8 @@ import java.util.Random;
 import javax.annotation.PostConstruct;
 
 import org.joda.time.LocalDate;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import se.inera.statistics.service.common.CommonPersistence;

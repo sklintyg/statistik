@@ -6,6 +6,10 @@ import java.io.Serializable;
 import javax.persistence.Embeddable;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+
+import se.inera.statistics.service.report.util.Verksamhet;
 
 @Entity
 public class DiagnosisGroupData {
@@ -13,14 +17,17 @@ public class DiagnosisGroupData {
     @EmbeddedId
     private DiagnosisGroupKey diagnosisGroupKey;
 
+    @Enumerated(EnumType.STRING)
+    private Verksamhet typ;
     private int male;
     private int female;
 
     public DiagnosisGroupData() {
     }
 
-    public DiagnosisGroupData(String period, String hsaId, String group, int female, int male) {
+    public DiagnosisGroupData(String period, String hsaId, String group, Verksamhet typ, int female, int male) {
         diagnosisGroupKey = new DiagnosisGroupKey(period, hsaId, group);
+        this.typ = typ;
         this.female = female;
         this.male = male;
     }
@@ -33,6 +40,14 @@ public class DiagnosisGroupData {
     @Transient
     public String getGroup() {
         return diagnosisGroupKey.getDiagnosgrupp();
+    }
+
+    public Verksamhet getTyp() {
+        return typ;
+    }
+
+    public void setTyp(Verksamhet typ) {
+        this.typ = typ;
     }
 
     public int getFemale() {

@@ -14,6 +14,7 @@ import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.Sex;
 import se.inera.statistics.service.report.util.DiagnosisGroupsUtil;
 import se.inera.statistics.service.report.util.ReportUtil;
+import se.inera.statistics.service.report.util.Verksamhet;
 
 public class DiagnosisGroupsMock implements DiagnosisGroups {
 
@@ -43,6 +44,6 @@ public class DiagnosisGroupsMock implements DiagnosisGroups {
     // CHECKSTYLE:ON MagicNumber
 
     @Override
-    public void count(String hsaId, String period, String diagnosgrupp, Sex sex) {
+    public void count(String hsaId, String period, String diagnosgrupp, Verksamhet typ,Sex sex) {
     }
 }

@@ -10,7 +10,10 @@
             <column name="hsaid" type="varchar(60)">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="group" type="varchar(30)">
+            <column name="grupp" type="varchar(30)">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="typ" type="varchar(60)">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="female" type="int"/>

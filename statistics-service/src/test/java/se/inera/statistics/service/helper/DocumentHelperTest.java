@@ -1,7 +1,9 @@
 package se.inera.statistics.service.helper;
 
+import static junit.framework.Assert.assertEquals;
 import static org.junit.Assert.assertEquals;
 
+import org.joda.time.LocalDate;
 import org.junit.Test;
 
 import se.inera.statistics.service.JSONSource;
@@ -21,4 +23,38 @@ public class DocumentHelperTest {
     public void get_diagnos() {
         assertEquals("H81", DocumentHelper.getDiagnos(document));
     }
+
+    @Test
+    public void get_age() {
+        assertEquals(33, DocumentHelper.getAge(DocumentHelper.anonymize(document)));
+    }
+
+    @Test
+    public void processor_extract_alder_from_intyg() {
+        String personId = "19121212-1212";
+        LocalDate date = new LocalDate(0L); // 1970
+
+        int alder = DocumentHelper.extractAlder(personId, date);
+
+        assertEquals(57, alder);
+    }
+
+    @Test
+    public void processor_extract_kon_man_from_intyg() {
+        String personId = "19121212-1212";
+
+        String kon = DocumentHelper.extractKon(personId);
+
+        assertEquals("man", kon);
+    }
+
+    @Test
+    public void processor_extract_kon_kvinna_from_intyg() {
+        String personId = "19121212-0000";
+
+        String kon = DocumentHelper.extractKon(personId);
+
+        assertEquals("kvinna", kon);
+    }
+
 }

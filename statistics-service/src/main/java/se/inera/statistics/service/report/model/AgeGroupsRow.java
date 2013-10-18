@@ -2,30 +2,36 @@ package se.inera.statistics.service.report.model;
 
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+
+import se.inera.statistics.service.report.util.Verksamhet;
 
 @Entity
 @Table(name = "aldersgrupp")
 public class AgeGroupsRow {
-    public static final String NATIONELL = "nationell";
-
     @EmbeddedId
     private AldersgruppKey aldersgruppKey;
     private int male;
     private int female;
 
+    @Enumerated(EnumType.STRING)
+    private Verksamhet typ;
+
     public AgeGroupsRow() {
     }
 
-    public AgeGroupsRow(String period, String hsaId, String group, int female, int male) {
+    public AgeGroupsRow(String period, String hsaId, String group, Verksamhet typ, int female, int male) {
         aldersgruppKey = new AldersgruppKey(period, hsaId, group);
         this.male = male;
         this.female = female;
+        this.typ = typ;
     }
 
     public AgeGroupsRow(String period, String group, int female, int male) {
-        aldersgruppKey = new AldersgruppKey(period, NATIONELL, group);
+        aldersgruppKey = new AldersgruppKey(period, Verksamhet.NATIONELL.toString(), group);
         this.male = male;
         this.female = female;
     }
@@ -38,6 +44,14 @@ public class AgeGroupsRow {
     @Transient
     public String getGroup() {
         return aldersgruppKey.getGroup();
+    }
+
+    public Verksamhet getTyp() {
+        return typ;
+    }
+
+    public void setTyp(Verksamhet typ) {
+        this.typ = typ;
     }
 
     public int getMale() {

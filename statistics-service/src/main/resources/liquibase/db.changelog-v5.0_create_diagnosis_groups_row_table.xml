@@ -13,6 +13,9 @@
             <column name="diagnosgrupp" type="varchar(20)">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
+            <column name="typ" type="varchar(60)">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
             <column name="female" type="int"/>
             <column name="male" type="int"/>
         </createTable>

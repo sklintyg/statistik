@@ -5,11 +5,10 @@ import java.util.List;
 import se.inera.statistics.service.report.model.CasesPerMonthRow;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.Sex;
+import se.inera.statistics.service.report.util.Verksamhet;
 
 public interface CasesPerMonth {
-    String HSA_NATIONELL = "nationell";
-
     List<CasesPerMonthRow> getCasesPerMonth(String hsaId, Range range);
 
-    void count(String hsaId, String period, Sex sex);
+    void count(String hsaId, String period, Verksamhet typ, Sex sex);
 }

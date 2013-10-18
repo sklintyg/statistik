@@ -22,6 +22,7 @@ import se.inera.statistics.service.report.model.DualSexField;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.Sex;
 import se.inera.statistics.service.report.util.DiagnosisGroupsUtil;
+import se.inera.statistics.service.report.util.Verksamhet;
 
 public class DiagnosgroupPersistenceHandler implements DiagnosisGroups {
     private static final List<DiagnosisGroup> HEADERS = DiagnosisGroupsUtil.getAllDiagnosisGroups();
@@ -34,13 +35,13 @@ public class DiagnosgroupPersistenceHandler implements DiagnosisGroups {
     private DateTimeFormatter inputFormatter = DateTimeFormat.forPattern("yyyy-MM");
 
     @Transactional
-    public void count(String hsaId, String period, String diagnosgrupp, Sex sex) {
+    public void count(String hsaId, String period, String diagnosgrupp, Verksamhet typ, Sex sex) {
         DiagnosisGroupData existingRow = manager.find(DiagnosisGroupData.class, new DiagnosisGroupData.DiagnosisGroupKey(period, hsaId, diagnosgrupp));
         int female = Sex.Female.equals(sex) ? 1 : 0;
         int male = Sex.Male.equals(sex) ? 1 : 0;
 
         if (existingRow == null) {
-            DiagnosisGroupData row = new DiagnosisGroupData(period, hsaId, diagnosgrupp, female, male);
+            DiagnosisGroupData row = new DiagnosisGroupData(period, hsaId, diagnosgrupp, typ, female, male);
             manager.persist(row);
         } else {
             existingRow.setFemale(existingRow.getFemale() + female);

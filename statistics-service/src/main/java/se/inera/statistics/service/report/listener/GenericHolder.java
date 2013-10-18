@@ -1,10 +1,10 @@
 package se.inera.statistics.service.report.listener;
 
-import com.fasterxml.jackson.databind.JsonNode;
-
 import se.inera.statistics.service.helper.DocumentHelper;
 import se.inera.statistics.service.report.model.Sex;
 import se.inera.statistics.service.report.util.DiagnosisGroupsUtil;
+
+import com.fasterxml.jackson.databind.JsonNode;
 
 public class GenericHolder {
 
@@ -14,6 +14,7 @@ public class GenericHolder {
     private String diagnos;
     private String diagnosgrupp;
     private String diagnosundergrupp;
+    private int age;
 
     public GenericHolder(JsonNode utlatande) {
         enhetId = DocumentHelper.getEnhetId(utlatande);
@@ -22,6 +23,7 @@ public class GenericHolder {
         diagnos = DocumentHelper.getDiagnos(utlatande);
         diagnosgrupp = DiagnosisGroupsUtil.getGroupIdForCode(diagnos);
         diagnosundergrupp = DiagnosisGroupsUtil.getSubGroupForCode(diagnos).getId();
+        age = DocumentHelper.getAge(utlatande);
     }
 
     public String getEnhetId() {
@@ -46,5 +48,9 @@ public class GenericHolder {
 
     public String getDiagnosundergrupp() {
         return diagnosundergrupp;
+    }
+
+    public int getAge() {
+        return age;
     }
 }

@@ -10,11 +10,13 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
+
 import se.inera.statistics.service.report.api.CasesPerMonth;
 import se.inera.statistics.service.report.api.DiagnosisGroups;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.Sex;
 import se.inera.statistics.service.report.model.VerksamhetOverviewResponse;
+import se.inera.statistics.service.report.util.Verksamhet;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath:process-log-impl-test.xml" })
@@ -30,15 +32,15 @@ public class VerksamhetOverviewPersistanceHandlerTest extends VerksamhetOverview
 
     @Before
     public void init() {
-        diagnosgroupPersistenceHandler.count("id1", "2013-09", "g1", Sex.Female);
-        diagnosgroupPersistenceHandler.count("id1", "2013-09", "g1", Sex.Female);
-        diagnosgroupPersistenceHandler.count("id3", "2013-09", "g1", Sex.Male);
-        diagnosgroupPersistenceHandler.count("id1", "2013-06", "g1", Sex.Male);
+        diagnosgroupPersistenceHandler.count("id1", "2013-09", "g1", Verksamhet.ENHET, Sex.Female);
+        diagnosgroupPersistenceHandler.count("id1", "2013-09", "g1", Verksamhet.ENHET, Sex.Female);
+        diagnosgroupPersistenceHandler.count("id3", "2013-09", "g1", Verksamhet.ENHET, Sex.Male);
+        diagnosgroupPersistenceHandler.count("id1", "2013-06", "g1", Verksamhet.ENHET, Sex.Male);
 
-        casesPerMonth.count("id1", "2013-09", Sex.Female);
-        casesPerMonth.count("id1", "2013-09", Sex.Female);
-        casesPerMonth.count("id3", "2013-09", Sex.Male);
-        casesPerMonth.count("id1", "2013-06", Sex.Male);
+        casesPerMonth.count("id1", "2013-09", Verksamhet.ENHET, Sex.Female);
+        casesPerMonth.count("id1", "2013-09", Verksamhet.ENHET, Sex.Female);
+        casesPerMonth.count("id3", "2013-09", Verksamhet.ENHET, Sex.Male);
+        casesPerMonth.count("id1", "2013-06", Verksamhet.ENHET, Sex.Male);
     }
 
     @Test

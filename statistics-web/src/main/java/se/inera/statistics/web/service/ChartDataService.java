@@ -29,6 +29,7 @@ import se.inera.statistics.service.report.model.OverviewResponse;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.SickLeaveLengthResponse;
 import se.inera.statistics.service.report.util.DiagnosisGroupsUtil;
+import se.inera.statistics.service.report.util.Verksamhet;
 import se.inera.statistics.web.model.AgeGroupsData;
 import se.inera.statistics.web.model.CasesPerCountyData;
 import se.inera.statistics.web.model.CasesPerMonthData;
@@ -74,7 +75,7 @@ public class ChartDataService {
     public CasesPerMonthData getNumberOfCasesPerMonth() {
         Range range = new Range();
 
-        List<CasesPerMonthRow> casesPerMonth = datasourceCasesPerMonth.getCasesPerMonth(CasesPerMonth.HSA_NATIONELL, range);
+        List<CasesPerMonthRow> casesPerMonth = datasourceCasesPerMonth.getCasesPerMonth(Verksamhet.NATIONELL.toString(), range);
 
         return new CasesPerMonthConverter().convert(casesPerMonth);
     }
@@ -91,7 +92,7 @@ public class ChartDataService {
     @Produces({ MediaType.APPLICATION_JSON })
     public DualSexStatisticsData getDiagnosisGroupStatistics() {
         Range range = new Range();
-        DiagnosisGroupResponse diagnosisGroups = datasourceDiagnosisGroups.getDiagnosisGroups(DiagnosisSubGroups.HSA_NATIONELL, range);
+        DiagnosisGroupResponse diagnosisGroups = datasourceDiagnosisGroups.getDiagnosisGroups(Verksamhet.NATIONELL.toString(), range);
         return new DiagnosisGroupsConverter().convert(diagnosisGroups);
     }
 
@@ -100,7 +101,7 @@ public class ChartDataService {
     @Produces({ MediaType.APPLICATION_JSON })
     public DualSexStatisticsData getDiagnosisSubGroupStatistics(@QueryParam("groupId") String groupId) {
         Range range = new Range();
-        DiagnosisGroupResponse diagnosisGroups = datasourceDiagnosisSubGroups.getDiagnosisGroups(DiagnosisSubGroups.HSA_NATIONELL, range, groupId);
+        DiagnosisGroupResponse diagnosisGroups = datasourceDiagnosisSubGroups.getDiagnosisGroups(Verksamhet.NATIONELL.toString(), range, groupId);
         return new DiagnosisSubGroupsConverter().convert(diagnosisGroups);
     }
 
@@ -117,7 +118,7 @@ public class ChartDataService {
     @Produces({ MediaType.APPLICATION_JSON })
     public AgeGroupsData getAgeGroupsStatistics() {
         Range range = new Range(AGE_PERIOD);
-        AgeGroupsResponse ageGroups = datasourceAgeGroups.getAgeGroups(AgeGroups.HSA_NATIONELL, range);
+        AgeGroupsResponse ageGroups = datasourceAgeGroups.getAgeGroups(Verksamhet.NATIONELL.toString(), range);
         return new AgeGroupsConverter().convert(ageGroups);
     }
 

@@ -9,6 +9,7 @@ import se.inera.statistics.service.report.model.CasesPerMonthRow;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.Sex;
 import se.inera.statistics.service.report.util.ReportUtil;
+import se.inera.statistics.service.report.util.Verksamhet;
 
 public class CasesPerMonthMock implements CasesPerMonth {
 
@@ -27,7 +28,7 @@ public class CasesPerMonthMock implements CasesPerMonth {
     }
 
     @Override
-    public void count(String hsaId, String period, Sex sex) {
+    public void count(String hsaId, String period, Verksamhet typ, Sex sex) {
     }
     // CHECKSTYLE:ON
 

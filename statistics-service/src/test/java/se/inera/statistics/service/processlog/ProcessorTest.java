@@ -7,7 +7,6 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import org.joda.time.LocalDate;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -61,34 +60,6 @@ public class ProcessorTest {
         processor.accept(utlatande, hsa);
 
         verify(sjukfallService).register(any(SjukfallKey.class));
-    }
-
-    @Test
-    public void processor_extract_alder_from_intyg() {
-        String personId = "19121212-1212";
-        LocalDate date = new LocalDate(0L); // 1970
-
-        int alder = processor.extractAlder(personId, date);
-
-        assertEquals(57, alder);
-    }
-
-    @Test
-    public void processor_extract_kon_man_from_intyg() {
-        String personId = "19121212-1212";
-
-        String kon = processor.extractKon(personId);
-
-        assertEquals("man", kon);
-    }
-
-    @Test
-    public void processor_extract_kon_kvinna_from_intyg() {
-        String personId = "19121212-0000";
-
-        String kon = processor.extractKon(personId);
-
-        assertEquals("kvinna", kon);
     }
 
     @Test

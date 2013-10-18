@@ -20,23 +20,24 @@ import se.inera.statistics.service.report.model.CasesPerMonthRow;
 import se.inera.statistics.service.report.model.DualSexField;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.Sex;
+import se.inera.statistics.service.report.util.Verksamhet;
 
 public class CasesPerMonthPersistenceHandler implements CasesPerMonth {
     @PersistenceContext(unitName = "IneraStatisticsLog")
     private EntityManager manager;
 
     private static final Locale SWEDEN = new Locale("SV", "se");
-    private DateTimeFormatter outputFormatter = DateTimeFormat.forPattern("MMM yyyy").withLocale(SWEDEN);
-    private DateTimeFormatter inputFormatter = DateTimeFormat.forPattern("yyyy-MM");
+    private static final DateTimeFormatter OUTPUT_FORMATTER = DateTimeFormat.forPattern("MMM yyyy").withLocale(SWEDEN);
+    private static final DateTimeFormatter INPUT_FORMATTER = DateTimeFormat.forPattern("yyyy-MM");
 
     @Transactional
-    public void count(String hsaId, String period, Sex sex) {
+    public void count(String hsaId, String period, Verksamhet typ, Sex sex) {
         CasesPerMonthRow existingRow = manager.find(CasesPerMonthRow.class, new CasesPerMonthKey(period, hsaId));
         int female = Sex.Female.equals(sex) ? 1 : 0;
         int male = Sex.Male.equals(sex) ? 1 : 0;
 
         if (existingRow == null) {
-            CasesPerMonthRow row = new CasesPerMonthRow(period, hsaId, female, male);
+            CasesPerMonthRow row = new CasesPerMonthRow(period, hsaId, typ, female, male);
             manager.persist(row);
         } else {
             existingRow.setFemale(existingRow.getFemale() + female);
@@ -50,8 +51,8 @@ public class CasesPerMonthPersistenceHandler implements CasesPerMonth {
     public List<CasesPerMonthRow> getCasesPerMonth(String hsaId, Range range) {
         TypedQuery<CasesPerMonthRow> query = manager.createQuery("SELECT c FROM CasesPerMonthRow c WHERE c.casesPerMonthKey.hsaId = :hsaId AND c.casesPerMonthKey.period >= :from AND c.casesPerMonthKey.period <= :to ORDER BY c.casesPerMonthKey.period", CasesPerMonthRow.class);
         query.setParameter("hsaId", hsaId);
-        query.setParameter("from", inputFormatter.print(range.getFrom()));
-        query.setParameter("to", inputFormatter.print(range.getTo()));
+        query.setParameter("from", INPUT_FORMATTER.print(range.getFrom()));
+        query.setParameter("to", INPUT_FORMATTER.print(range.getTo()));
 
         return translateForOutput(range, query.getResultList());
     }
@@ -65,8 +66,8 @@ public class CasesPerMonthPersistenceHandler implements CasesPerMonth {
         }
 
         for (LocalDate currentPeriod = range.getFrom(); !currentPeriod.isAfter(range.getTo()); currentPeriod = currentPeriod.plusMonths(1)) {
-            String displayDate = outputFormatter.print(currentPeriod);
-            String period = inputFormatter.print(currentPeriod);
+            String displayDate = OUTPUT_FORMATTER.print(currentPeriod);
+            String period = INPUT_FORMATTER.print(currentPeriod);
             DualSexField dualSexField = map.get(period);
             translatedCasesPerMonthRows.add(new CasesPerMonthRow(displayDate, dualSexField.getFemale(), dualSexField.getMale()));
         }
