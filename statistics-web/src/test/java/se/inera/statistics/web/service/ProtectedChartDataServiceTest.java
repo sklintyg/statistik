@@ -1,23 +1,24 @@
 package se.inera.statistics.web.service;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.mockito.Mockito;
-import se.inera.statistics.service.report.api.*;
-import se.inera.statistics.service.report.model.Range;
-import se.inera.statistics.web.model.Verksamhet;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
+
+import java.util.Arrays;
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
+import org.junit.Before;
+import org.junit.Test;
+import org.mockito.Mockito;
+
+import se.inera.statistics.service.report.api.VerksamhetOverview;
+import se.inera.statistics.service.report.model.Range;
+import se.inera.statistics.web.model.Verksamhet;
 
 public class ProtectedChartDataServiceTest {
     private VerksamhetOverview mock;

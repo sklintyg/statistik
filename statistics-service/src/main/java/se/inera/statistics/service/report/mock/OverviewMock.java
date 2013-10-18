@@ -15,7 +15,7 @@ public class OverviewMock implements Overview {
     @Override
     public OverviewResponse getOverview() {
         OverviewSexProportion sexProportion = new OverviewSexProportion(56, 44, new Range(3));
-        
+
         ArrayList<OverviewChartRowExtended> diagnosisGroups = new ArrayList<OverviewChartRowExtended>();
         diagnosisGroups.add(new OverviewChartRowExtended("A-E G-L N Somatiska", 19583, 2));
         diagnosisGroups.add(new OverviewChartRowExtended("M - Muskuloskeletala", 20513, -4));

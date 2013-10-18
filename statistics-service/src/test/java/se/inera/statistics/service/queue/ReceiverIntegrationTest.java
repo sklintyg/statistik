@@ -29,6 +29,7 @@ import se.inera.statistics.service.report.api.CasesPerMonth;
 import se.inera.statistics.service.report.model.CasesPerMonthRow;
 import se.inera.statistics.service.report.model.Range;
 
+// CHECKSTYLE:OFF MagicNumber
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath:process-log-impl-test.xml", "classpath:process-log-qm-test.xml" })
 @Transactional
@@ -56,7 +57,7 @@ public class ReceiverIntegrationTest {
 
         sleep();
 
-        List<CasesPerMonthRow> webData = casesPerMonth.getCasesPerMonth(CasesPerMonth.HSA_NATIONELL, new Range(new LocalDate("2011-01"), new LocalDate("2011-12")));
+        List<CasesPerMonthRow> webData = casesPerMonth.getCasesPerMonth("enhetId", new Range(new LocalDate("2011-01"), new LocalDate("2011-12")));
 
         assertEquals(12, webData.size());
 
@@ -89,5 +90,5 @@ public class ReceiverIntegrationTest {
             }
         });
     }
-
 }
+//CHECKSTYLE:ON MagicNumber
