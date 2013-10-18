@@ -20,17 +20,5 @@ public class DocumentHelperTest {
     @Test
     public void get_diagnos() {
         assertEquals("H81", DocumentHelper.getDiagnos(document));
-        test(null, null);
-    }
-
-    private void test(Object a, Object b) {
-        if ( a!= null && b != null && !a.equals(b)) {
-            
-        } else if (a != null ^ b != null) {
-            
-        } else {
-            
-        }
-        
     }
 }

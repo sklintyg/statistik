@@ -30,8 +30,8 @@ public final class Range {
     public LocalDate getTo() {
         return to;
     }
-    
-    public String toString(){
+
+    public String toString() {
         Locale sv = new Locale("sv", "SE");
         if (from.getYear() == to.getYear()) {
             return from.toString("MMM", sv) + "-" + to.toString("MMM yyyy", sv);
@@ -39,5 +39,4 @@ public final class Range {
             return from.toString("MMM yyyy", sv) + "-" + to.toString("MMM yyyy", sv);
         }
     }
-    
 }

@@ -28,7 +28,6 @@ import se.inera.statistics.service.report.util.DiagnosisGroupsUtil;
 import se.inera.statistics.web.model.AgeGroupsData;
 import se.inera.statistics.web.model.CasesPerMonthData;
 import se.inera.statistics.web.model.DualSexStatisticsData;
-import se.inera.statistics.web.model.TableData;
 import se.inera.statistics.web.model.Verksamhet;
 import se.inera.statistics.web.model.overview.VerksamhetOverviewData;
 

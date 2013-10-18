@@ -34,7 +34,6 @@ import se.inera.statistics.web.model.CasesPerCountyData;
 import se.inera.statistics.web.model.CasesPerMonthData;
 import se.inera.statistics.web.model.DualSexStatisticsData;
 import se.inera.statistics.web.model.SickLeaveLengthData;
-import se.inera.statistics.web.model.TableData;
 import se.inera.statistics.web.model.overview.OverviewData;
 
 @Service("chartService")

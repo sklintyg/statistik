@@ -53,5 +53,4 @@ public class CasesPerMonthConverter {
         ChartData chartData = convertToChartData(casesPerMonth, tableData);
         return new CasesPerMonthData(tableData, chartData, 0);
     }
-
 }

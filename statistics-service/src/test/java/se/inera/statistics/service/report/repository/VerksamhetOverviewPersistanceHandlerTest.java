@@ -43,8 +43,8 @@ public class VerksamhetOverviewPersistanceHandlerTest extends VerksamhetOverview
 
     @Test
     public void getOverviewTest() {
-        LocalDate from = new LocalDate(2013,8,1);
-        LocalDate to = new LocalDate(2013,10,1);
+        LocalDate from = new LocalDate(2013, 8, 1);
+        LocalDate to = new LocalDate(2013, 10, 1);
         Range range = new Range(from, to);
 
         VerksamhetOverviewResponse result = this.getOverview("id1", range);
