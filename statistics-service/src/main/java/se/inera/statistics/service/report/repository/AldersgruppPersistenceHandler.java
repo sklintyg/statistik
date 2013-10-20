@@ -10,12 +10,13 @@ import javax.persistence.TypedQuery;
 import org.springframework.transaction.annotation.Transactional;
 
 import se.inera.statistics.service.report.api.AgeGroups;
-import se.inera.statistics.service.report.listener.AldersGruppListener;
 import se.inera.statistics.service.report.model.AgeGroupsResponse;
 import se.inera.statistics.service.report.model.AgeGroupsRow;
 import se.inera.statistics.service.report.model.AldersgruppKey;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.Sex;
+import se.inera.statistics.service.report.util.AldersgroupUtil;
+import se.inera.statistics.service.report.util.AldersgroupUtil.Group;
 import se.inera.statistics.service.report.util.ReportUtil;
 import se.inera.statistics.service.report.util.Verksamhet;
 
@@ -37,7 +38,7 @@ public class AldersgruppPersistenceHandler implements AgeGroups {
     private AgeGroupsResponse translateForOutput(Range range, List<AgeGroupsRow> list) {
         List<AgeGroupsRow> translatedCasesPerMonthRows = new ArrayList<>();
 
-        for (AldersGruppListener.GroupTableRow s: AldersGruppListener.GROUPS) {
+        for (Group s: AldersgroupUtil.GROUPS) {
             int female = 0;
             int male = 0;
             String group = s.getGroupName();
