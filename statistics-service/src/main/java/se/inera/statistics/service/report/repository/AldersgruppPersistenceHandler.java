@@ -7,8 +7,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
 import org.springframework.transaction.annotation.Transactional;
 
 import se.inera.statistics.service.report.api.AgeGroups;
