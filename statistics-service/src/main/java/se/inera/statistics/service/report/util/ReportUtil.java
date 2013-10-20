@@ -2,6 +2,9 @@ package se.inera.statistics.service.report.util;
 
 import org.joda.time.LocalDate;
 import org.joda.time.Period;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
+
 import se.inera.statistics.service.report.model.Range;
 
 import java.util.ArrayList;
@@ -14,6 +17,8 @@ public final class ReportUtil {
 
     private static final int NR_OF_PERIODS = 18;
     public static final List<String> PERIODS = createPeriods();
+
+    private static final DateTimeFormatter INPUT_FORMATTER = DateTimeFormat.forPattern("yyyy-MM");
 
     private ReportUtil() {
     }
@@ -36,5 +41,9 @@ public final class ReportUtil {
         Period period = new Period(prevFrom, prevTo);
 
         return new Range(range.getFrom().minusMonths(period.getMonths() + 1).minusYears(period.getYears()), range.getFrom().minusMonths(1));
+    }
+
+    public static String toPeriod(LocalDate date) {
+        return INPUT_FORMATTER.print(date);
     }
 }

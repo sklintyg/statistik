@@ -1,8 +1,15 @@
 package se.inera.statistics.service.report.repository;
 
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+import javax.persistence.TypedQuery;
+
 import org.springframework.transaction.annotation.Transactional;
+
 import se.inera.statistics.service.report.api.VerksamhetOverview;
 import se.inera.statistics.service.report.model.OverviewChartRow;
 import se.inera.statistics.service.report.model.OverviewChartRowExtended;
@@ -11,15 +18,7 @@ import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.VerksamhetOverviewResponse;
 import se.inera.statistics.service.report.util.ReportUtil;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
-import javax.persistence.TypedQuery;
-import java.util.ArrayList;
-import java.util.List;
-
 public class VerksamhetOverviewPersistenceHandler implements VerksamhetOverview {
-    private DateTimeFormatter inputFormatter = DateTimeFormat.forPattern("yyyy-MM");
 
     @PersistenceContext(unitName = "IneraStatisticsLog")
     private EntityManager manager;
@@ -53,8 +52,8 @@ public class VerksamhetOverviewPersistenceHandler implements VerksamhetOverview 
     private OverviewSexProportion getSexProportion(String verksamhetId, Range range) {
         Query query = manager.createQuery("SELECT SUM(c.male), SUM(c.female) FROM CasesPerMonthRow c WHERE c.key.hsaId = :hsaId AND c.key.period BETWEEN :from AND :to");
         query.setParameter("hsaId", verksamhetId);
-        query.setParameter("from", inputFormatter.print(range.getFrom()));
-        query.setParameter("to", inputFormatter.print(range.getTo()));
+        query.setParameter("from", ReportUtil.toPeriod(range.getFrom()));
+        query.setParameter("to", ReportUtil.toPeriod(range.getTo()));
         Object[] row = (Object[]) query.getSingleResult();
         if (row == null || row[0] == null || row[1] == null) {
             return new OverviewSexProportion(0, 0, range);
@@ -65,8 +64,8 @@ public class VerksamhetOverviewPersistenceHandler implements VerksamhetOverview 
     private int getCasesPerMonth(String verksamhetId, Range range) {
         TypedQuery<Long> query = manager.createQuery("SELECT SUM(c.male) + SUM(c.female) FROM CasesPerMonthRow c WHERE c.key.hsaId = :hsaId AND c.key.period BETWEEN :from AND:to", Long.class);
         query.setParameter("hsaId", verksamhetId);
-        query.setParameter("from", inputFormatter.print(range.getFrom()));
-        query.setParameter("to", inputFormatter.print(range.getTo()));
+        query.setParameter("from", ReportUtil.toPeriod(range.getFrom()));
+        query.setParameter("to", ReportUtil.toPeriod(range.getTo()));
         return query.getSingleResult().intValue();
     }
 
@@ -74,8 +73,8 @@ public class VerksamhetOverviewPersistenceHandler implements VerksamhetOverview 
     private List<OverviewChartRowExtended> getDiagnosisGroups(String verksamhetId, Range range) {
         Query query = manager.createQuery("SELECT c.key.diagnosgrupp, sum(c.female) + sum(c.male), c.key.diagnosgrupp  FROM DiagnosisGroupData c WHERE c.key.hsaId = :hsaId AND c.key.period BETWEEN :from AND :to  GROUP BY c.key.diagnosgrupp");
         query.setParameter("hsaId", verksamhetId);
-        query.setParameter("from", inputFormatter.print(range.getFrom()));
-        query.setParameter("to", inputFormatter.print(range.getTo()));
+        query.setParameter("from", ReportUtil.toPeriod(range.getFrom()));
+        query.setParameter("to", ReportUtil.toPeriod(range.getTo()));
 
         List<Object[]> queryResult;
         queryResult = (List<Object[]>) query.getResultList();

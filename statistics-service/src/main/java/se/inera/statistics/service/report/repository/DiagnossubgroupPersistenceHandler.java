@@ -22,6 +22,7 @@ import se.inera.statistics.service.report.model.DualSexField;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.Sex;
 import se.inera.statistics.service.report.util.DiagnosisGroupsUtil;
+import se.inera.statistics.service.report.util.ReportUtil;
 import se.inera.statistics.service.report.util.Verksamhet;
 
 public class DiagnossubgroupPersistenceHandler implements DiagnosisSubGroups {
@@ -30,7 +31,6 @@ public class DiagnossubgroupPersistenceHandler implements DiagnosisSubGroups {
 
     private static final Locale SWEDEN = new Locale("SV", "se");
     private DateTimeFormatter outputFormatter = DateTimeFormat.forPattern("MMM yyyy").withLocale(SWEDEN);
-    private DateTimeFormatter inputFormatter = DateTimeFormat.forPattern("yyyy-MM");
 
     @Transactional
     public void count(String hsaId, String period, String diagnosgrupp, String undergrupp, Verksamhet typ, Sex sex) {
@@ -54,8 +54,8 @@ public class DiagnossubgroupPersistenceHandler implements DiagnosisSubGroups {
         TypedQuery<DiagnosisSubGroupData> query = manager.createQuery("SELECT c FROM DiagnosisSubGroupData c WHERE c.key.hsaId = :hsaId AND c.key.diagnosgrupp = :group and c.key.period BETWEEN :from AND :to", DiagnosisSubGroupData.class);
         query.setParameter("hsaId", hsaId);
         query.setParameter("group", group);
-        query.setParameter("from", inputFormatter.print(range.getFrom()));
-        query.setParameter("to", inputFormatter.print(range.getTo()));
+        query.setParameter("from", ReportUtil.toPeriod(range.getFrom()));
+        query.setParameter("to", ReportUtil.toPeriod(range.getTo()));
 
         List<DiagnosisGroup> header = DiagnosisGroupsUtil.getSubGroups(group);
         return new DiagnosisGroupResponse(header, translateForOutput(range, header, query.getResultList()));
@@ -69,7 +69,7 @@ public class DiagnossubgroupPersistenceHandler implements DiagnosisSubGroups {
 
         for (LocalDate currentPeriod = range.getFrom(); !currentPeriod.isAfter(range.getTo()); currentPeriod = currentPeriod.plusMonths(1)) {
             String displayDate = outputFormatter.print(currentPeriod);
-            String period = inputFormatter.print(currentPeriod);
+            String period = ReportUtil.toPeriod(currentPeriod);
             List<DualSexField> values = new ArrayList<>(header.size());
             for (DiagnosisGroup group: header) {
                 values.add(map.get(period + group.getId()));

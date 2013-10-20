@@ -20,6 +20,7 @@ import se.inera.statistics.service.report.model.CasesPerMonthRow;
 import se.inera.statistics.service.report.model.DualSexField;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.Sex;
+import se.inera.statistics.service.report.util.ReportUtil;
 import se.inera.statistics.service.report.util.Verksamhet;
 
 public class CasesPerMonthPersistenceHandler implements CasesPerMonth {
@@ -28,7 +29,6 @@ public class CasesPerMonthPersistenceHandler implements CasesPerMonth {
 
     private static final Locale SWEDEN = new Locale("SV", "se");
     private static final DateTimeFormatter OUTPUT_FORMATTER = DateTimeFormat.forPattern("MMM yyyy").withLocale(SWEDEN);
-    private static final DateTimeFormatter INPUT_FORMATTER = DateTimeFormat.forPattern("yyyy-MM");
 
     @Transactional
     public void count(String hsaId, String period, Verksamhet typ, Sex sex) {
@@ -51,8 +51,8 @@ public class CasesPerMonthPersistenceHandler implements CasesPerMonth {
     public List<CasesPerMonthRow> getCasesPerMonth(String hsaId, Range range) {
         TypedQuery<CasesPerMonthRow> query = manager.createQuery("SELECT c FROM CasesPerMonthRow c WHERE c.key.hsaId = :hsaId AND c.key.period BETWEEN :from AND :to", CasesPerMonthRow.class);
         query.setParameter("hsaId", hsaId);
-        query.setParameter("from", INPUT_FORMATTER.print(range.getFrom()));
-        query.setParameter("to", INPUT_FORMATTER.print(range.getTo()));
+        query.setParameter("from", ReportUtil.toPeriod(range.getFrom()));
+        query.setParameter("to", ReportUtil.toPeriod(range.getTo()));
 
         return translateForOutput(range, query.getResultList());
     }
@@ -67,7 +67,7 @@ public class CasesPerMonthPersistenceHandler implements CasesPerMonth {
 
         for (LocalDate currentPeriod = range.getFrom(); !currentPeriod.isAfter(range.getTo()); currentPeriod = currentPeriod.plusMonths(1)) {
             String displayDate = OUTPUT_FORMATTER.print(currentPeriod);
-            String period = INPUT_FORMATTER.print(currentPeriod);
+            String period = ReportUtil.toPeriod(currentPeriod);
             DualSexField dualSexField = map.get(period);
             translatedCasesPerMonthRows.add(new CasesPerMonthRow(displayDate, dualSexField.getFemale(), dualSexField.getMale()));
         }

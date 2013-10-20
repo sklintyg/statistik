@@ -18,21 +18,20 @@ import se.inera.statistics.service.report.model.AgeGroupsRow;
 import se.inera.statistics.service.report.model.AldersgruppKey;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.Sex;
+import se.inera.statistics.service.report.util.ReportUtil;
 import se.inera.statistics.service.report.util.Verksamhet;
 
 public class AldersgruppPersistenceHandler implements AgeGroups {
     @PersistenceContext(unitName = "IneraStatisticsLog")
     private EntityManager manager;
 
-    private static final DateTimeFormatter INPUT_FORMATTER = DateTimeFormat.forPattern("yyyy-MM");
-
     @Override
     @Transactional
     public AgeGroupsResponse getAgeGroups(String hsaId, Range range) {
         TypedQuery<AgeGroupsRow> query = manager.createQuery("SELECT a FROM AgeGroupsRow a WHERE a.key.hsaId = :hsaId AND a.key.period BETWEEN :from AND :to", AgeGroupsRow.class);
         query.setParameter("hsaId", hsaId);
-        query.setParameter("from", INPUT_FORMATTER.print(range.getFrom()));
-        query.setParameter("to", INPUT_FORMATTER.print(range.getTo()));
+        query.setParameter("from", ReportUtil.toPeriod(range.getFrom()));
+        query.setParameter("to", ReportUtil.toPeriod(range.getTo()));
 
         return translateForOutput(range, query.getResultList());
     }
