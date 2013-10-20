@@ -51,7 +51,7 @@ public class DiagnossubgroupPersistenceHandler implements DiagnosisSubGroups {
     @Override
     @Transactional
     public DiagnosisGroupResponse getDiagnosisGroups(String hsaId, Range range, String group) {
-        TypedQuery<DiagnosisSubGroupData> query = manager.createQuery("SELECT c FROM DiagnosisSubGroupData c WHERE c.diagnosisGroupKey.hsaId = :hsaId AND c.diagnosisGroupKey.diagnosgrupp = :group and c.diagnosisGroupKey.period >= :from AND c.diagnosisGroupKey.period <= :to", DiagnosisSubGroupData.class);
+        TypedQuery<DiagnosisSubGroupData> query = manager.createQuery("SELECT c FROM DiagnosisSubGroupData c WHERE c.key.hsaId = :hsaId AND c.key.diagnosgrupp = :group and c.key.period BETWEEN :from AND :to", DiagnosisSubGroupData.class);
         query.setParameter("hsaId", hsaId);
         query.setParameter("group", group);
         query.setParameter("from", inputFormatter.print(range.getFrom()));
