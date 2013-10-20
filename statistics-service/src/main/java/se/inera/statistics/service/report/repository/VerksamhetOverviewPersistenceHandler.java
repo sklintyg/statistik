@@ -72,7 +72,7 @@ public class VerksamhetOverviewPersistenceHandler implements VerksamhetOverview 
 
     @SuppressWarnings("unchecked")
     private List<OverviewChartRowExtended> getDiagnosisGroups(String verksamhetId, Range range) {
-        Query query = manager.createQuery("SELECT c.diagnosisGroupKey.diagnosgrupp, sum(c.female) + sum(c.male), c.diagnosisGroupKey.diagnosgrupp  FROM DiagnosisGroupData c WHERE c.diagnosisGroupKey.hsaId = :hsaId AND c.diagnosisGroupKey.period >= :from AND c.diagnosisGroupKey.period <= :to  GROUP BY c.diagnosisGroupKey.diagnosgrupp");
+        Query query = manager.createQuery("SELECT c.key.diagnosgrupp, sum(c.female) + sum(c.male), c.key.diagnosgrupp  FROM DiagnosisGroupData c WHERE c.key.hsaId = :hsaId AND c.key.period BETWEEN :from AND :to  GROUP BY c.key.diagnosgrupp");
         query.setParameter("hsaId", verksamhetId);
         query.setParameter("from", inputFormatter.print(range.getFrom()));
         query.setParameter("to", inputFormatter.print(range.getTo()));

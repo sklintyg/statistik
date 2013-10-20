@@ -15,7 +15,7 @@ import se.inera.statistics.service.report.util.Verksamhet;
 public class DiagnosisGroupData {
 
     @EmbeddedId
-    private DiagnosisGroupKey diagnosisGroupKey;
+    private DiagnosisGroupKey key;
 
     @Enumerated(EnumType.STRING)
     private Verksamhet typ;
@@ -26,7 +26,7 @@ public class DiagnosisGroupData {
     }
 
     public DiagnosisGroupData(String period, String hsaId, String group, Verksamhet typ, int female, int male) {
-        diagnosisGroupKey = new DiagnosisGroupKey(period, hsaId, group);
+        key = new DiagnosisGroupKey(period, hsaId, group);
         this.typ = typ;
         this.female = female;
         this.male = male;
@@ -34,12 +34,12 @@ public class DiagnosisGroupData {
 
     @Transient
     public String getPeriod() {
-        return diagnosisGroupKey.getPeriod();
+        return key.getPeriod();
     }
 
     @Transient
     public String getGroup() {
-        return diagnosisGroupKey.getDiagnosgrupp();
+        return key.getDiagnosgrupp();
     }
 
     public Verksamhet getTyp() {
