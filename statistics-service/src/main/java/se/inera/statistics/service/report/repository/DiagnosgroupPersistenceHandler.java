@@ -2,7 +2,6 @@ package se.inera.statistics.service.report.repository;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
 import javax.persistence.EntityManager;
@@ -10,8 +9,6 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
 import org.joda.time.LocalDate;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
 import org.springframework.transaction.annotation.Transactional;
 
 import se.inera.statistics.service.report.api.DiagnosisGroups;
@@ -30,9 +27,6 @@ public class DiagnosgroupPersistenceHandler implements DiagnosisGroups {
 
     @PersistenceContext(unitName = "IneraStatisticsLog")
     private EntityManager manager;
-
-    private static final Locale SWEDEN = new Locale("SV", "se");
-    private DateTimeFormatter outputFormatter = DateTimeFormat.forPattern("MMM yyyy").withLocale(SWEDEN);
 
     @Transactional
     public void count(String hsaId, String period, String diagnosgrupp, Verksamhet typ, Sex sex) {
@@ -68,7 +62,7 @@ public class DiagnosgroupPersistenceHandler implements DiagnosisGroups {
         Map<String, DualSexField> map = map(list);
 
         for (LocalDate currentPeriod = range.getFrom(); !currentPeriod.isAfter(range.getTo()); currentPeriod = currentPeriod.plusMonths(1)) {
-            String displayDate = outputFormatter.print(currentPeriod);
+            String displayDate = ReportUtil.toDiagramPeriod(currentPeriod);
             String period = ReportUtil.toPeriod(currentPeriod);
             List<DualSexField> values = new ArrayList<>(HEADERS.size());
             for (DiagnosisGroup group: HEADERS) {

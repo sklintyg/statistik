@@ -17,6 +17,8 @@ public final class ReportUtil {
 
     private static final int NR_OF_PERIODS = 18;
     public static final List<String> PERIODS = createPeriods();
+    private static final Locale SWEDEN = new Locale("SV", "se");
+    private static final DateTimeFormatter OUTPUT_FORMATTER = DateTimeFormat.forPattern("MMM yyyy").withLocale(SWEDEN);
 
     private static final DateTimeFormatter INPUT_FORMATTER = DateTimeFormat.forPattern("yyyy-MM");
 
@@ -45,5 +47,9 @@ public final class ReportUtil {
 
     public static String toPeriod(LocalDate date) {
         return INPUT_FORMATTER.print(date);
+    }
+
+    public static String toDiagramPeriod(LocalDate currentPeriod) {
+        return OUTPUT_FORMATTER.print(currentPeriod);
     }
 }

@@ -2,7 +2,6 @@ package se.inera.statistics.service.report.repository;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
 import javax.persistence.EntityManager;
@@ -10,8 +9,6 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
 import org.joda.time.LocalDate;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
 import org.springframework.transaction.annotation.Transactional;
 
 import se.inera.statistics.service.report.api.CasesPerMonth;
@@ -26,9 +23,6 @@ import se.inera.statistics.service.report.util.Verksamhet;
 public class CasesPerMonthPersistenceHandler implements CasesPerMonth {
     @PersistenceContext(unitName = "IneraStatisticsLog")
     private EntityManager manager;
-
-    private static final Locale SWEDEN = new Locale("SV", "se");
-    private static final DateTimeFormatter OUTPUT_FORMATTER = DateTimeFormat.forPattern("MMM yyyy").withLocale(SWEDEN);
 
     @Transactional
     public void count(String hsaId, String period, Verksamhet typ, Sex sex) {
@@ -66,7 +60,7 @@ public class CasesPerMonthPersistenceHandler implements CasesPerMonth {
         }
 
         for (LocalDate currentPeriod = range.getFrom(); !currentPeriod.isAfter(range.getTo()); currentPeriod = currentPeriod.plusMonths(1)) {
-            String displayDate = OUTPUT_FORMATTER.print(currentPeriod);
+            String displayDate = ReportUtil.toDiagramPeriod(currentPeriod);
             String period = ReportUtil.toPeriod(currentPeriod);
             DualSexField dualSexField = map.get(period);
             translatedCasesPerMonthRows.add(new CasesPerMonthRow(displayDate, dualSexField.getFemale(), dualSexField.getMale()));
