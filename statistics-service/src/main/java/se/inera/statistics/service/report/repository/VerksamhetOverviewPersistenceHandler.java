@@ -50,9 +50,8 @@ public class VerksamhetOverviewPersistenceHandler implements VerksamhetOverview 
         return result;
     }
 
-    @SuppressWarnings("unchecked")
     private OverviewSexProportion getSexProportion(String verksamhetId, Range range) {
-        Query query = manager.createQuery("SELECT SUM(c.male), SUM(c.female) FROM CasesPerMonthRow c WHERE c.casesPerMonthKey.hsaId = :hsaId AND c.casesPerMonthKey.period >= :from AND c.casesPerMonthKey.period <= :to");
+        Query query = manager.createQuery("SELECT SUM(c.male), SUM(c.female) FROM CasesPerMonthRow c WHERE c.key.hsaId = :hsaId AND c.key.period BETWEEN :from AND :to");
         query.setParameter("hsaId", verksamhetId);
         query.setParameter("from", inputFormatter.print(range.getFrom()));
         query.setParameter("to", inputFormatter.print(range.getTo()));
@@ -64,7 +63,7 @@ public class VerksamhetOverviewPersistenceHandler implements VerksamhetOverview 
     }
 
     private int getCasesPerMonth(String verksamhetId, Range range) {
-        TypedQuery<Long> query = manager.createQuery("SELECT SUM(c.male) + SUM(c.female) FROM CasesPerMonthRow c WHERE c.casesPerMonthKey.hsaId = :hsaId AND c.casesPerMonthKey.period >= :from AND c.casesPerMonthKey.period <= :to", Long.class);
+        TypedQuery<Long> query = manager.createQuery("SELECT SUM(c.male) + SUM(c.female) FROM CasesPerMonthRow c WHERE c.key.hsaId = :hsaId AND c.key.period BETWEEN :from AND:to", Long.class);
         query.setParameter("hsaId", verksamhetId);
         query.setParameter("from", inputFormatter.print(range.getFrom()));
         query.setParameter("to", inputFormatter.print(range.getTo()));

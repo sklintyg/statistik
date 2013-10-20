@@ -49,7 +49,7 @@ public class CasesPerMonthPersistenceHandler implements CasesPerMonth {
     @Override
     @Transactional
     public List<CasesPerMonthRow> getCasesPerMonth(String hsaId, Range range) {
-        TypedQuery<CasesPerMonthRow> query = manager.createQuery("SELECT c FROM CasesPerMonthRow c WHERE c.casesPerMonthKey.hsaId = :hsaId AND c.casesPerMonthKey.period >= :from AND c.casesPerMonthKey.period <= :to ORDER BY c.casesPerMonthKey.period", CasesPerMonthRow.class);
+        TypedQuery<CasesPerMonthRow> query = manager.createQuery("SELECT c FROM CasesPerMonthRow c WHERE c.key.hsaId = :hsaId AND c.key.period BETWEEN :from AND :to", CasesPerMonthRow.class);
         query.setParameter("hsaId", hsaId);
         query.setParameter("from", INPUT_FORMATTER.print(range.getFrom()));
         query.setParameter("to", INPUT_FORMATTER.print(range.getTo()));

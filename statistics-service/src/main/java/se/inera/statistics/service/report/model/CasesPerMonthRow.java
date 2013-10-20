@@ -11,7 +11,7 @@ import se.inera.statistics.service.report.util.Verksamhet;
 public class CasesPerMonthRow {
 
     @EmbeddedId
-    private CasesPerMonthKey casesPerMonthKey;
+    private CasesPerMonthKey key;
     @Enumerated(EnumType.STRING)
     private Verksamhet typ;
     private int female;
@@ -21,21 +21,21 @@ public class CasesPerMonthRow {
     }
 
     public CasesPerMonthRow(String period, int female, int male) {
-        this.casesPerMonthKey = new CasesPerMonthKey(period, CasesPerMonthKey.NATIONELL);
+        this.key = new CasesPerMonthKey(period, CasesPerMonthKey.NATIONELL);
         this.female = female;
         this.male = male;
         this.typ = Verksamhet.NATIONELL;
     }
 
     public CasesPerMonthRow(String period, String hsaId, Verksamhet typ, int female, int male) {
-        this.casesPerMonthKey = new CasesPerMonthKey(period, hsaId);
+        this.key = new CasesPerMonthKey(period, hsaId);
         this.typ = typ;
         this.female = female;
         this.male = male;
     }
 
     public String getPeriod() {
-        return casesPerMonthKey.getPeriod();
+        return key.getPeriod();
     }
 
     public int getFemale() {
