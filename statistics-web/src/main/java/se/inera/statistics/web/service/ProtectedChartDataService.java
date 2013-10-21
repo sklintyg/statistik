@@ -107,6 +107,7 @@ public class ProtectedChartDataService {
     @Path("{verksamhetId}/getAgeGroupsStatistics")
     @Produces({ MediaType.APPLICATION_JSON })
     public AgeGroupsData getAgeGroupsStatistics(@PathParam("verksamhetId") String verksamhetId) {
+        LOG.info("Calling getAgeGroupsStatistics with verksamhetId: " + verksamhetId);
         AgeGroupsResponse ageGroups = datasourceAgeGroups.getAgeGroups("hsaid", new LocalDate().minusMonths(1));
         return new AgeGroupsConverter().convert(ageGroups);
     }
