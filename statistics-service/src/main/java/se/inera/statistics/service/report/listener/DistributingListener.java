@@ -22,6 +22,9 @@ public class DistributingListener implements ProcessorListener {
     
     @Autowired
     private AldersGruppListener aldersgruppListener;
+    
+    @Autowired
+    private SjukfallslangdListener sjukfallsLangdListener;
 
     @Override
     public void accept(SjukfallInfo sjukfallInfo, JsonNode utlatande, JsonNode hsa) {
@@ -29,6 +32,7 @@ public class DistributingListener implements ProcessorListener {
         sjukfallPerDiagnosgruppListenerListener.accept(sjukfallInfo, utlatande, hsa);
         sjukfallPerDiagnosundergruppListenerListener.accept(sjukfallInfo, utlatande, hsa);
         aldersgruppListener.accept(sjukfallInfo, utlatande, hsa);
+        sjukfallsLangdListener.accept(sjukfallInfo, utlatande, hsa);
     }
 
 }

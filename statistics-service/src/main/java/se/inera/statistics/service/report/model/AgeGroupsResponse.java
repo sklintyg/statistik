@@ -3,7 +3,7 @@ package se.inera.statistics.service.report.model;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AgeGroupsResponse extends AgeGroupsRow {
+public class AgeGroupsResponse {
 
     private final List<AgeGroupsRow> ageGroupsRows;
     private final int months;
