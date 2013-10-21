@@ -1385,6 +1385,10 @@ a.listheader.collapsed {
 		padding: 0px;
 		width: auto !important;
 	}
+	
+	.highcharts-tooltip span {
+	   white-space: pre-wrap !important;
+	}
 
 .navbar-inverse .navbar-inner {
 	background: #212633 !important; /* Old browsers */

@@ -82,6 +82,7 @@
                  }
              },
              tooltip: {
+                 useHTML: true,
                  /*crosshairs: true*/ // True if crosshair. Not specified in design document for Statistiktjänsten 1.0.
              },
              credits: {
