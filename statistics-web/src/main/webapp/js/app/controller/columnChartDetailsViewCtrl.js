@@ -4,7 +4,7 @@
      var conf = {};
      conf.dataFetcher = "getNationalSickLeaveLengthData",
      conf.dataFetcherVerksamhet = "getNationalSickLeaveLengthDataVerksamhet",
-     conf.title = "Antal sjukfall baserat på sjukskrivningslängd"
+     conf.title = function(){return "Antal sjukfall baserat på sjukskrivningslängd";}
      return conf;
  }
 
@@ -12,8 +12,15 @@
      var conf = {};
      conf.dataFetcher = "getAgeGroups",
      conf.dataFetcherVerksamhet = "getAgeGroupsVerksamhet",
-     conf.title = "Antal sjukfall baserat på patientens ålder"
+     conf.title = function(){return "Antal pågående sjukfall baserat på patientens ålder";}
      return conf;
+ }
+ 
+ app.nationalAgeGroupHistoricalConfig = function() {
+     var conf = {};
+     conf.dataFetcherVerksamhet = "getAgeGroupsHistoricalVerksamhet",
+     conf.title = function(monthsIncluded){return "Antal pågående samt avslutade sjukfall baserat på patientens ålder senaste " + monthsIncluded + " månaderna";}
+         return conf;
  }
  
  app.columnChartDetailsViewCtrl = function ($scope, $routeParams, statisticsData, config) {
@@ -111,7 +118,7 @@
     var populatePageWithData = function(result){
         updateDataTable($scope, result.tableData);
         updateChart(result.chartData);
-        $scope.subTitle = config.title + " senaste " + result.monthsIncluded + " månaderna";
+        $scope.subTitle = config.title(result.monthsIncluded);
         $scope.doneLoading = true;
     };
 

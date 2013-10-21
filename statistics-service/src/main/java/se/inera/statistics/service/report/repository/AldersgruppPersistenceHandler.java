@@ -26,13 +26,20 @@ public class AldersgruppPersistenceHandler implements AgeGroups {
 
     @Override
     @Transactional
-    public AgeGroupsResponse getAgeGroups(String hsaId, LocalDate when, int periods) {
+    public AgeGroupsResponse getHistoricalAgeGroups(String hsaId, LocalDate when, int periods) {
         TypedQuery<AgeGroupsRow> query = manager.createQuery("SELECT a FROM AgeGroupsRow a WHERE a.key.hsaId = :hsaId AND a.key.period = :when a.key.periods = :periods ", AgeGroupsRow.class);
         query.setParameter("hsaId", hsaId);
         query.setParameter("when", ReportUtil.toPeriod(when));
         query.setParameter("periods", periods);
 
         return translateForOutput(query.getResultList(), periods);
+    }
+    
+
+    @Override
+    public AgeGroupsResponse getCurrentAgeGroups(String hsaId) {
+        // TODO Auto-generated method stub
+        throw new RuntimeException("Not yet implemented");
     }
 
     private AgeGroupsResponse translateForOutput(List<AgeGroupsRow> list, int periods) {
@@ -66,4 +73,5 @@ public class AldersgruppPersistenceHandler implements AgeGroups {
             manager.merge(existingRow);
         }
     }
+
 }

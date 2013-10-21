@@ -86,6 +86,12 @@ app.statisticsApp = angular.module('StatisticsApp', [ 'ngCookies', 'ui.bootstrap
                 controllerAs : 'VerksamhetAgeGroupCtrl',
                 resolve : { config: app.nationalAgeGroupConfig }, 
                 title: 'Åldersgrupper'
+            }).when('/verksamhet/:verksamhetId/aldersgrupperhistoriskt', {
+                templateUrl : 'views/detailsView.html',
+                controller : 'AgeGroupsCtrl',
+                controllerAs : 'VerksamhetAgeGroupHistoricalCtrl',
+                resolve : { config: app.nationalAgeGroupHistoricalConfig }, 
+                title: 'Åldersgrupper'
             }).when('/verksamhet/:verksamhetId/sjukskrivningsgrad', {
                 templateUrl : 'views/detailsView.html',
                 controller : 'DegreeOfSickLeaveCtrl',
