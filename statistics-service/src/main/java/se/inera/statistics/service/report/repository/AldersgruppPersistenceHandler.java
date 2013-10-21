@@ -7,13 +7,14 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
+import org.joda.time.LocalDate;
 import org.springframework.transaction.annotation.Transactional;
 
 import se.inera.statistics.service.report.api.AgeGroups;
+import se.inera.statistics.service.report.listener.AldersGruppListener;
 import se.inera.statistics.service.report.model.AgeGroupsResponse;
 import se.inera.statistics.service.report.model.AgeGroupsRow;
 import se.inera.statistics.service.report.model.AldersgruppKey;
-import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.Sex;
 import se.inera.statistics.service.report.util.AldersgroupUtil;
 import se.inera.statistics.service.report.util.AldersgroupUtil.Group;
@@ -26,32 +27,27 @@ public class AldersgruppPersistenceHandler implements AgeGroups {
 
     @Override
     @Transactional
-    public AgeGroupsResponse getAgeGroups(String hsaId, Range range) {
-        TypedQuery<AgeGroupsRow> query = manager.createQuery("SELECT a FROM AgeGroupsRow a WHERE a.key.hsaId = :hsaId AND a.key.period BETWEEN :from AND :to", AgeGroupsRow.class);
+    public AgeGroupsResponse getAgeGroups(String hsaId, LocalDate when) {
+        TypedQuery<AgeGroupsRow> query = manager.createQuery("SELECT a FROM AgeGroupsRow a WHERE a.key.hsaId = :hsaId AND a.key.period = :when", AgeGroupsRow.class);
         query.setParameter("hsaId", hsaId);
-        query.setParameter("from", ReportUtil.toPeriod(range.getFrom()));
-        query.setParameter("to", ReportUtil.toPeriod(range.getTo()));
+        query.setParameter("when", ReportUtil.toPeriod(when));
 
-        return translateForOutput(range, query.getResultList());
+        return translateForOutput(query.getResultList());
     }
 
-    private AgeGroupsResponse translateForOutput(Range range, List<AgeGroupsRow> list) {
+    private AgeGroupsResponse translateForOutput(List<AgeGroupsRow> list) {
         List<AgeGroupsRow> translatedCasesPerMonthRows = new ArrayList<>();
 
         for (Group s: AldersgroupUtil.GROUPS) {
-            int female = 0;
-            int male = 0;
             String group = s.getGroupName();
             for (AgeGroupsRow r: list) {
                 if (group.equals(r.getGroup())) {
-                    female += r.getFemale();
-                    male += r.getMale();
+                    translatedCasesPerMonthRows.add(r);
                 }
             }
-            translatedCasesPerMonthRows.add(new AgeGroupsRow(null, group, female, male));
         }
 
-        return new AgeGroupsResponse(translatedCasesPerMonthRows, range.getMonths());
+        return new AgeGroupsResponse(translatedCasesPerMonthRows, AldersGruppListener.PERIODS);
     }
 
     @Transactional

@@ -10,6 +10,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
+import org.joda.time.LocalDate;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
@@ -34,8 +35,6 @@ import se.inera.statistics.web.model.overview.VerksamhetOverviewData;
 @Service("protectedChartService")
 @Path("/verksamhet")
 public class ProtectedChartDataService {
-
-    private static final int AGE_PERIOD = 12;
 
     private VerksamhetOverview datasourceOverview;
     private CasesPerMonth datasourceCasesPerMonth;
@@ -109,8 +108,7 @@ public class ProtectedChartDataService {
     @Path("{verksamhetId}/getAgeGroupsStatistics")
     @Produces({ MediaType.APPLICATION_JSON })
     public AgeGroupsData getAgeGroupsStatistics(@PathParam("verksamhetId") String verksamhetId) {
-        Range range = new Range(AGE_PERIOD);
-        AgeGroupsResponse ageGroups = datasourceAgeGroups.getAgeGroups("hsaid", range);
+        AgeGroupsResponse ageGroups = datasourceAgeGroups.getAgeGroups("hsaid", new LocalDate().minusMonths(1));
         return new AgeGroupsConverter().convert(ageGroups);
     }
 

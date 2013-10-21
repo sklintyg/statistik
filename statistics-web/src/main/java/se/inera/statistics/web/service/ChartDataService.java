@@ -40,8 +40,6 @@ import se.inera.statistics.web.model.overview.OverviewData;
 @Service("chartService")
 public class ChartDataService {
 
-    private static final int AGE_PERIOD = 12;
-
     private Overview datasourceOverview;
     private CasesPerMonth datasourceCasesPerMonth;
     private DiagnosisGroups datasourceDiagnosisGroups;
@@ -117,8 +115,7 @@ public class ChartDataService {
     @Path("getAgeGroupsStatistics")
     @Produces({ MediaType.APPLICATION_JSON })
     public AgeGroupsData getAgeGroupsStatistics() {
-        Range range = new Range(AGE_PERIOD);
-        AgeGroupsResponse ageGroups = datasourceAgeGroups.getAgeGroups(Verksamhet.NATIONELL.toString(), range);
+        AgeGroupsResponse ageGroups = datasourceAgeGroups.getAgeGroups(Verksamhet.NATIONELL.toString(), new LocalDate().minusMonths(1));
         return new AgeGroupsConverter().convert(ageGroups);
     }
 
