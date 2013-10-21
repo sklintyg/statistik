@@ -13,7 +13,7 @@ app.statisticsApp.directive("navigationaware", function ($rootScope, $location) 
                 elem.parent().removeClass("active");
                 if (isActivePage(current, $attrs)){
                     elem.parent().addClass("active");
-                    var groupId = elem.closest(".accordion-body").attr('id');
+                    var groupId = elem.closest(".navigation-group").attr('id');
                     $rootScope.$broadcast('navigationUpdate', groupId);
                 }
             });

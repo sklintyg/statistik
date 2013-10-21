@@ -100,7 +100,7 @@
 					      Nationell statistik<i class="statistict-left-menu-expand-icon"></i>
 					    </div>
 					  </div>
-					  <div id="national-statistics-collapse" class="accordion-body collapse" ng-class="{in: showNational}">
+					  <div id="national-statistics-collapse" class="accordion-body collapse navigation-group" ng-class="{in: showNational}">
 					    <div class="accordion-inner">
 					    	<ul id="national-statistic-menu-content" class="nav nav-list">
 								<li><a ng-href="#/nationell/oversikt" id="navOverviewLink" ctrlname="NationalOverviewCtrl" navigationaware>Översikt</a></li>
@@ -131,7 +131,7 @@
 					      <span ng-bind="organisationMenuLabel"></span><i class="statistict-left-menu-expand-icon"></i> <!-- Inloggad: Enbart "Verksamhetsstatistik" -->
 					    </div>
 					  </div>
-					  <div id="business-statistics-collapse" class="accordion-body collapse" ng-class="{in: showOperation}">
+					  <div id="business-statistics-collapse" class="accordion-body collapse navigation-group" ng-class="{in: showOperation}">
 					    <div class="accordion-inner">
 					      <ul id="business-statistic-menu-content" class="nav nav-list">
 								<li><a ng-href="#/verksamhet/{{businessId}}/oversikt" ctrlname="BusinessOverviewCtrl" navigationaware>Översikt</a></li>
@@ -141,7 +141,7 @@
 									<i class="statistict-left-menu-expand-icon" class="accordion-toggle" data-toggle="collapse" href="#sub-menu-business-diagnostics"></i>
 								</li>
 								<ul id="sub-menu-business-diagnostics" class="nav nav-list sub-nav-list accordion-body in collapse">
-									<li><a ng-href="#/verksamhet/{{businessId}}/underdiagnosgrupper" id="navBusinessDiagnosisSubGroupsLink" ctrlname="" navigationaware>Underdiagnosgrupp</a></li>
+									<li><a ng-href="#/verksamhet/{{businessId}}/underdiagnosgrupper" id="navBusinessDiagnosisSubGroupsLink" ctrlname="VerksamhetDiagnosisSubGroupsCtrl" navigationaware>Underdiagnosgrupp</a></li>
 								</ul>
 								<li>
 									<a ng-href="#/verksamhet/{{businessId}}/aldersgrupper" id="navBusinessAgeGroupsLink" ctrlname="" navigationaware>Åldersgrupp</a>
@@ -171,7 +171,7 @@
 						      Om tjänsten<i class="statistict-left-menu-expand-icon"></i>
 						    </div>
 						  </div>
-						  <div id="about-statistics-collapse" class="accordion-body collapse" ng-class="{in: showAbout}">
+						  <div id="about-statistics-collapse" class="accordion-body collapse navigation-group" ng-class="{in: showAbout}">
 						    <div class="accordion-inner">
 						    	<ul id="about-statistic-menu-content" class="nav nav-list">
 									<li><a class="first-item-in-menu" ng-href="#/om/tjansten" ctrlname="AboutServiceCtrl" navigationaware>Allmänt om tjänsten</a></li>

@@ -103,6 +103,7 @@ public class ChartDataService {
     @Path("getDiagnosisSubGroupStatistics")
     @Produces({ MediaType.APPLICATION_JSON })
     public DualSexStatisticsData getDiagnosisSubGroupStatistics(@QueryParam("groupId") String groupId) {
+        LOG.info("Calling getDiagnosisSubGroupStatistics for national with groupId: " + groupId);
         Range range = new Range();
         DiagnosisGroupResponse diagnosisGroups = datasourceDiagnosisSubGroups.getDiagnosisGroups(Verksamhet.NATIONELL.toString(), range, groupId);
         return new DiagnosisSubGroupsConverter().convert(diagnosisGroups);

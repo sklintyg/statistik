@@ -75,7 +75,19 @@ app.statisticsApp.factory('statisticsData', function($http){
    };
    
    factory.getSubDiagnosisGroupData = function (successCallback, failureCallback, groupId){
-       $http.get("api/getDiagnosisSubGroupStatistics",{params: {'groupId':groupId}}).success(function(result) {
+       $http.get("api/getDiagnosisSubGroupStatistics", {params: {'groupId':groupId}}).success(function(result) {
+           try {
+               successCallback(result);
+           } catch (e) {
+               failureCallback();
+           }
+       }).error(function(data, status, headers, config) {
+           failureCallback();
+       });
+   };
+   
+   factory.getSubDiagnosisGroupDataVerksamhet = function (verksamhetId, successCallback, failureCallback, groupId){
+       $http.get("api/verksamhet/" + verksamhetId + "/getDiagnosisSubGroupStatistics/" + groupId).success(function(result) {
            try {
                successCallback(result);
            } catch (e) {

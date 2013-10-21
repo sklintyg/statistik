@@ -12,6 +12,7 @@
  app.diagnosisSubGroupConfig = function() {
      var conf = {};
      conf.dataFetcher = "getSubDiagnosisGroupData",
+     conf.dataFetcherVerksamhet = "getSubDiagnosisGroupDataVerksamhet",
      conf.showDetailsOptions = true,
      conf.title = "Antal sjukfall per diagnosgrupp"
      return conf;
@@ -28,8 +29,9 @@
  }
  
  app.diagnosisGroupsCtrl = function ($scope, $routeParams, $window, $timeout, statisticsData, config) {
-    var chart1, chart2;
+     var chart1, chart2;
      var that = this;
+     var isVerksamhet = $routeParams.verksamhetId ? true : false;
 
      this.paintChart = function(containerId, yAxisTitle, chartCategories, chartSeries) {
          var chartOptions = {
@@ -126,6 +128,7 @@
     };
     
     var populateDetailsOptions = function(result){
+        var basePath = isVerksamhet ? "#/verksamhet/" + $routeParams.verksamhetId + "/underdiagnosgrupper" : "#/nationell/underdiagnosgrupper"
         $scope.detailsOption = result[0];
         for ( var i = 0; i < result.length; i++) {
             if (result[i].id == $routeParams.groupId){
@@ -135,11 +138,11 @@
         }
         if (!$scope.detailsOption){
             // Selected sub diagnosis group not found, redirect to default sub diagnosis group
-            $window.location="#/nationell/underdiagnosgrupper";
+            $window.location = basePath;
         }
         $scope.$watch(function(){return $scope.detailsOption;}, function() {
             if ($scope.detailsOption.id != $routeParams.groupId){
-                $window.location="#/nationell/underdiagnosgrupper/" + $scope.detailsOption.id;
+                $window.location = basePath + "/" + $scope.detailsOption.id;
             }
         });
         $scope.detailsOptions = result;
@@ -165,7 +168,7 @@
     $scope.popoverTextTitle = config.tooltipHelpTextTitle;
     $scope.popoverText = config.tooltipHelpText;
 
-    if ($routeParams.verksamhetId){
+    if (isVerksamhet){
         statisticsData[config.dataFetcherVerksamhet]($routeParams.verksamhetId, populatePageWithData, function() { $scope.dataLoadingError = true; }, $routeParams.groupId);
     } else {
         statisticsData[config.dataFetcher](populatePageWithData, function() { $scope.dataLoadingError = true; }, $routeParams.groupId);

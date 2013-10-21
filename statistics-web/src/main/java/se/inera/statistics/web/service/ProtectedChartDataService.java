@@ -87,6 +87,7 @@ public class ProtectedChartDataService {
     @Path("{verksamhetId}/getDiagnosisSubGroupStatistics/{groupId}")
     @Produces({ MediaType.APPLICATION_JSON })
     public DualSexStatisticsData getDiagnosisSubGroupStatistics(@PathParam("verksamhetId") String verksamhetId, @PathParam("groupId") String groupId) {
+        LOG.info("Calling getDiagnosisSubGroupStatistics with verksamhetId: '" + verksamhetId + "' and groupId: " + groupId);
         Range range = new Range();
         DiagnosisGroupResponse diagnosisGroups = datasourceDiagnosisSubGroups.getDiagnosisGroups(Verksamhet.decodeId(verksamhetId), range, groupId);
         return new DiagnosisSubGroupsConverter().convert(diagnosisGroups);

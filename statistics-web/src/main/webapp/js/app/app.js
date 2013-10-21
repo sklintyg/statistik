@@ -72,6 +72,14 @@ app.statisticsApp = angular.module('StatisticsApp', [ 'ngCookies', 'ui.bootstrap
                 controllerAs : 'VerksamhetDiagnosisGroupsCtrl',
                 resolve : { config: app.diagnosisGroupConfig }, 
                 title: 'Diagnosgrupper'
+            }).when('/verksamhet/:verksamhetId/underdiagnosgrupper/:groupId', {
+                templateUrl : 'views/detailsView.html',
+                controller : 'DiagnosisGroupsCtrl',
+                controllerAs : 'VerksamhetDiagnosisSubGroupsCtrl',
+                resolve : { config: app.diagnosisSubGroupConfig },
+                title: 'Underdiagnosgrupper'
+            }).when('/verksamhet/:verksamhetId/underdiagnosgrupper', {
+                redirectTo : '/verksamhet/:verksamhetId/underdiagnosgrupper/A00-B99'
             }).when('/om/tjansten', {
                 templateUrl : 'views/about/about.html',
                 controllerAs : 'AboutServiceCtrl',
