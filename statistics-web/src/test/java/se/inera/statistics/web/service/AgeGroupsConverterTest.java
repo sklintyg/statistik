@@ -24,9 +24,9 @@ public class AgeGroupsConverterTest {
         //Given
         AgeGroupsConverter converter = new AgeGroupsConverter();
         ArrayList<AgeGroupsRow> ageGroupsRows = new ArrayList<>();
-        ageGroupsRows.add(new AgeGroupsRow(null, "<20", 13, 14));
-        ageGroupsRows.add(new AgeGroupsRow(null, "20-50", 24, 15));
-        ageGroupsRows.add(new AgeGroupsRow(null, ">50", 3, 9));
+        ageGroupsRows.add(new AgeGroupsRow(null, "<20", 3, 13, 14));
+        ageGroupsRows.add(new AgeGroupsRow(null, "20-50", 3, 24, 15));
+        ageGroupsRows.add(new AgeGroupsRow(null, ">50", 3, 3, 9));
         AgeGroupsResponse ageGroupsResponse = new AgeGroupsResponse(ageGroupsRows, 7);
 
         //When

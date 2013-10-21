@@ -24,9 +24,9 @@ public class SickLeaveLengthConverterTest {
         //Given
         SickLeaveLengthConverter converter = new SickLeaveLengthConverter();
         ArrayList<SickLeaveLengthRow> sickLeaveLengthRows = new ArrayList<>();
-        sickLeaveLengthRows.add(new SickLeaveLengthRow("< 20 dagar", 13, 14));
-        sickLeaveLengthRows.add(new SickLeaveLengthRow("20-50 dagar", 24, 15));
-        sickLeaveLengthRows.add(new SickLeaveLengthRow("> 50 dagar", 3, 9));
+        sickLeaveLengthRows.add(new SickLeaveLengthRow(null, "< 20 dagar", 3, 13, 14));
+        sickLeaveLengthRows.add(new SickLeaveLengthRow(null, "20-50 dagar", 3, 24, 15));
+        sickLeaveLengthRows.add(new SickLeaveLengthRow(null, "> 50 dagar", 3, 3, 9));
         SickLeaveLengthResponse sickLeaveLengthResponse = new SickLeaveLengthResponse(sickLeaveLengthRows, 7);
 
         //When

@@ -2,6 +2,7 @@ package se.inera.statistics.service.report.listener;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyInt;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.doNothing;
@@ -43,14 +44,14 @@ public class AldersgruppListenerTest {
     
     @Before 
     public void setup() {
-        doNothing().when(agegroups).count(captor.capture(), eq("enhetId"), anyString(), any(Verksamhet.class), any(Sex.class));
+        doNothing().when(agegroups).count(captor.capture(), eq("enhetId"), anyString(), eq(12), any(Verksamhet.class), any(Sex.class));
 
         utlatande = utlatandeBuilder.build("patientId", new LocalDate("2011-01-05"), new LocalDate("2011-03-27"), "enhetId", "A00", 0);
     }
 
     @Test
     public void threeMonthsNoExistingSjukfall() {
-        SjukfallInfo sjukfallInfo = new SjukfallInfo("sjukfallid", null);
+        SjukfallInfo sjukfallInfo = new SjukfallInfo("sjukfallid", null, null, null);
         listener.accept(sjukfallInfo, utlatande, null);
         LocalDate period = new LocalDate("2011-01");
         List<String> allValues = captor.getAllValues();
@@ -63,7 +64,7 @@ public class AldersgruppListenerTest {
 
     @Test
     public void twoThreeMonthsIntygNoExistingSjukfall() {
-        SjukfallInfo sjukfallInfo = new SjukfallInfo("sjukfallid", null);
+        SjukfallInfo sjukfallInfo = new SjukfallInfo("sjukfallid", null, null, null);
 
         listener.accept(sjukfallInfo, utlatande, null);
         utlatande = utlatandeBuilder.build("patientId2", new LocalDate("2011-02-05"), new LocalDate("2011-03-27"), "enhetId", "A00", 0);
@@ -86,7 +87,7 @@ public class AldersgruppListenerTest {
 
     @Test
     public void threeMonthsWithExistingSjukfall() {
-        SjukfallInfo sjukfallInfo = new SjukfallInfo("sjukfallid", new LocalDate("2011-02-01"));
+        SjukfallInfo sjukfallInfo = new SjukfallInfo("sjukfallid", new LocalDate("2010-11-01"), new LocalDate("2010-11-01"), new LocalDate("2011-02-01"));
         listener.accept(sjukfallInfo, utlatande, null);
         LocalDate period = new LocalDate("2012-02");
         List<String> allValues = captor.getAllValues();
@@ -100,7 +101,7 @@ public class AldersgruppListenerTest {
     @Test
     public void threeMonthsWithExistingFullyOverlappingSjukfall() {
         
-        SjukfallInfo sjukfallInfo = new SjukfallInfo("sjukfallid", new LocalDate("2011-03-20"));
+        SjukfallInfo sjukfallInfo = new SjukfallInfo("sjukfallid", new LocalDate("2010-11-01"), new LocalDate("2010-11-01"), new LocalDate("2011-03-20"));
         listener.accept(sjukfallInfo, utlatande, null);
         List<String> allValues = captor.getAllValues();
         assertEquals(0,  allValues.size());

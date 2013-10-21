@@ -23,9 +23,10 @@ public class SjukfallServiceTest extends SjukfallService {
     private static final DateTimeFormatter FORMATTER = DateTimeFormat.forPattern("yyyy-MM-dd");
 
     @Test
-    public void registeringPeriodReturnsId() {
-        SjukfallInfo id = register("personnummer", "vardgivare", date("2013-01-01"), date("2013-01-25"));
-        assertNotNull(id);
+    public void registeringPeriodReturnsSjukfallsInfo() {
+        SjukfallInfo info = register("personnummer", "vardgivare", date("2013-01-01"), date("2013-01-25"));
+        assertNotNull(info);
+        assertEquals(25, info.getLangd());
     }
 
     @Test
@@ -78,6 +79,23 @@ public class SjukfallServiceTest extends SjukfallService {
         assertEquals(1, expired);
         assertFalse(shouldExpire.equals(newSjukfall));
         assertEquals(active, stillActive);
+    }
+
+    @Test
+    public void keepOriginalStartDate() {
+        SjukfallInfo id1 = register("personnummer", "vardgivare", date("2013-01-01"), date("2013-01-28"));
+        SjukfallInfo id2 = register("personnummer", "vardgivare", date("2013-01-25"), date("2013-02-15"));
+        assertEquals(date("2013-01-01"), id1.getStart());
+        assertEquals(date("2013-01-28"), id1.getEnd());
+        assertEquals(date("2013-01-01"), id2.getStart());
+        assertEquals(date("2013-02-15"), id2.getEnd());
+    }
+
+    @Test
+    public void overlappingKeepsPreviousEndDate() {
+        register("personnummer", "vardgivare", date("2013-01-01"), date("2013-01-28"));
+        SjukfallInfo id2 = register("personnummer", "vardgivare", date("2013-01-25"), date("2013-02-15"));
+        assertEquals(date("2013-01-28"), id2.getPrevEnd());
     }
 
     private LocalDate date(String stringDate) {
