@@ -57,7 +57,7 @@ public class InjectUtlatande {
             public void run() {
                 publishUtlatanden();
             }
-        });
+        }).start();
     }
 
     private void cleanupDB() {
