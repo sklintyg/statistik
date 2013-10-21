@@ -139,6 +139,7 @@ public class ChartDataService {
     @Path("getSickLeaveLengthData")
     @Produces({ MediaType.APPLICATION_JSON })
     public SickLeaveLengthData getSickLeaveLengthData() {
+        LOG.info("Calling getSickLeaveLengthData for national");
         final int numberOfMonthsToRequest = 12;
         Range range = new Range(numberOfMonthsToRequest);
         SickLeaveLengthResponse sickLeaveLength = datasourceSickLeaveLength.getStatistics(SickLeaveLength.HSA_NATIONELL, range);

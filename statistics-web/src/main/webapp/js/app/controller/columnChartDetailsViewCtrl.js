@@ -3,6 +3,7 @@
  app.nationalSickLeaveLengthConfig = function() {
      var conf = {};
      conf.dataFetcher = "getNationalSickLeaveLengthData",
+     conf.dataFetcherVerksamhet = "getNationalSickLeaveLengthDataVerksamhet",
      conf.title = "Antal sjukfall baserat på sjukskrivningslängd"
      return conf;
  }

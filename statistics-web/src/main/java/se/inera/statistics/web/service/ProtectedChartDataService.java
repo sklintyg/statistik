@@ -28,10 +28,12 @@ import se.inera.statistics.service.report.model.CasesPerMonthRow;
 import se.inera.statistics.service.report.model.DegreeOfSickLeaveResponse;
 import se.inera.statistics.service.report.model.DiagnosisGroupResponse;
 import se.inera.statistics.service.report.model.Range;
+import se.inera.statistics.service.report.model.SickLeaveLengthResponse;
 import se.inera.statistics.service.report.model.VerksamhetOverviewResponse;
 import se.inera.statistics.web.model.AgeGroupsData;
 import se.inera.statistics.web.model.CasesPerMonthData;
 import se.inera.statistics.web.model.DualSexStatisticsData;
+import se.inera.statistics.web.model.SickLeaveLengthData;
 import se.inera.statistics.web.model.Verksamhet;
 import se.inera.statistics.web.model.overview.VerksamhetOverviewData;
 
@@ -125,6 +127,17 @@ public class ProtectedChartDataService {
         LOG.info("Calling getDegreeOfSickLeaveStatistics with verksamhetId: " + verksamhetId);
         DegreeOfSickLeaveResponse degreeOfSickLeaveStatistics = datasourceDegreeOfSickLeave.getStatistics(Verksamhet.decodeId(verksamhetId));
         return new DegreeOfSickLeaveConverter().convert(degreeOfSickLeaveStatistics);
+    }
+
+    @GET
+    @Path("{verksamhetId}/getSickLeaveLengthData")
+    @Produces({ MediaType.APPLICATION_JSON })
+    public SickLeaveLengthData getSickLeaveLengthData(@PathParam("verksamhetId") String verksamhetId) {
+        LOG.info("Calling getSickLeaveLengthData with verksamhetId: " + verksamhetId);
+        final int numberOfMonthsToRequest = 12;
+        Range range = new Range(numberOfMonthsToRequest);
+        SickLeaveLengthResponse sickLeaveLength = datasourceSickLeaveLength.getStatistics(Verksamhet.decodeId(verksamhetId), range);
+        return new SickLeaveLengthConverter().convert(sickLeaveLength);
     }
 
     public boolean hasAccessTo(HttpServletRequest request, String verksamhetId) {

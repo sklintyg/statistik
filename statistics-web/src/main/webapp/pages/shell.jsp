@@ -152,7 +152,7 @@
 								</ul>
 								<li><a ng-href="#/verksamhet/{{businessId}}/sjukskrivningsgrad" id="navBusinessSickLeaveDegreeLink" ctrlname="VerksamhetDegreeOfSickLeaveCtrl" navigationaware>Sjukskrivningsgrad</a></li>
 								<li>
-									<a class="menu-item-has-childs" ng-href="#/verksamhet/{{businessId}}/sjukskrivningslangd" id="navBusinessSickLeaveLengthLink" ctrlname="" navigationaware>Sjukskrivningslängd</a>
+									<a class="menu-item-has-childs" ng-href="#/verksamhet/{{businessId}}/sjukskrivningslangd" id="navBusinessSickLeaveLengthLink" ctrlname="VerksamhetSickLeaveLengthCtrl" navigationaware>Sjukskrivningslängd</a>
 									<i class="statistict-left-menu-expand-icon" class="accordion-toggle" data-toggle="collapse" href="#sub-menu-business-sick-leave-length"></i>
 								</li>
 								<ul id="sub-menu-business-sick-leave-length" class="nav nav-list sub-nav-list accordion-body in collapse">
