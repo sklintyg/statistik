@@ -25,7 +25,6 @@ public class AldersGruppListener extends GenericAbstractListener {
         }
         LocalDate lastMonth = endMonth.plusMonths(PERIODS - 1);
         for (LocalDate currentMonth = firstDate; !currentMonth.isAfter(lastMonth); currentMonth = currentMonth.plusMonths(1)) {
-            System.err.println(currentMonth);
             accept(token, currentMonth);
         }
     }
