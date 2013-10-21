@@ -11,8 +11,8 @@
 			    <span class="caret"></span>
 			  </a>
 			  <ul class="dropdown-menu right">
-			    <li><a onclick="window.print();">Färg</a></li>
-			    <li><a class="disabled">Svart-vitt (n/a)</a></li>
+			    <li><a onclick="window.print();"><img src="/img/colour_print_icon.png"/> Färg</a></li>
+			    <li><a class="disabled"><img src="/img/bw_print_icon.png"/> Svart-vitt (n/a)</a></li>
 			  </ul>
 			</div>
 			<!-- SAVE AS BUTTON GROUP -->
@@ -22,7 +22,7 @@
 			    <span class="caret"></span>
 			  </a>
 			  <ul class="dropdown-menu left">
-			    <li><a tabindex="-1" ng-click="exportTableData()">Excel</a></li>
+			    <li><a tabindex="-1" ng-click="exportTableData()"><img src="/img/excel_icon_small.gif"/> Excel</a></li>
 			    <li><a class="disabled">PDF</a></li>
 			    <li><a class="disabled">PNG</a></li>
 			  </ul>
@@ -34,7 +34,7 @@
 	<div class="row-fluid">
 		<span class="span12 graph-ingress">
 			{{subTitle}}
-			<a id="pageHelpToolTip" popover-title="{{popoverTextTitle}}" popover="{{popoverText}}" popover-trigger="mouseenter" popover-placement="right" ng-show="popoverText"><img src="/img/questionmark.png" alt=""></a>
+			<a id="pageHelpToolTip" popover-title="{{popoverTextTitle}}" popover="{{popoverText}}" popover-trigger="mouseenter" popover-placement="right" ng-show="popoverText"><img src="/img/questionmark2.png" alt=""></a>
 		</span>
 	</div>
     <!-- Start detailsOptions if any -->
@@ -74,7 +74,7 @@
                             <table id="datatable" class="table table-striped">
                                 <thead>
                                     <tr ng-repeat="headerrow in headerrows">
-                                        <td class="datatablescrollable" ng-class="{headcol: $first}" colspan="{{header.colspan}}" ng-repeat="header in headerrow" style="max-width: 100%; overflow: hidden; text-overflow: ellipsis; " title="{{header.text}}">{{header.text}}</td>
+                                        <td class="datatablescrollable" ng-class="{headcol: $first}" colspan="{{header.colspan}}" ng-repeat="header in headerrow" style="max-width: 100%; overflow: hidden; text-overflow: ellipsis; font-weight: bold;" title="{{header.text}}">{{header.text}}</td>
                                     </tr>
                                 </thead>
                                 <tbody>

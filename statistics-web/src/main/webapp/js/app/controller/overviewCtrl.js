@@ -229,6 +229,7 @@
     $scope.doneLoading = false;
     $scope.dataLoadingError = false;
     $scope.popoverTextTitle = "Förklaring";
-    $scope.popoverTextAmount = "Antal = Totala antalet sjukfall senaste tre månaderna.";
-    $scope.popoverTextChangeProcentage = "Förändring = Procentsatsen visar förändringen av antalet sjukfall senaste tre månaderna jämfört med föregående tre månader.";
+    $scope.popoverTextAmount = "Totala antalet sjukfall senaste tre månaderna.";
+    $scope.popoverTextChangeProcentage = "Procentsatsen visar förändringen av antalet sjukfall senaste tre månaderna jämfört med föregående tre månader.";
+    $scope.popoverTextSexDistribution = "Könsfördelningen av totala antalet sjukfall senaste tre månaderna.";
 };
