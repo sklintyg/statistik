@@ -164,6 +164,7 @@
                     </includes>
                     <excludes>
                         <exclude>**/*FunctionalTest.*</exclude>
+                        <exclude>**/*IntegrationTest.*</exclude>
                     </excludes>
                 </configuration>
             </plugin>
