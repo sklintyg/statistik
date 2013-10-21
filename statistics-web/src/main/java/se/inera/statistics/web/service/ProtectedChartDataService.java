@@ -76,21 +76,14 @@ public class ProtectedChartDataService {
     }
 
     @GET
-    @Path("getDiagnosisGroups")
-    @Produces({ MediaType.APPLICATION_JSON })
-    public List<DiagnosisGroup> getDiagnosisGroups() {
-        return DiagnosisGroupsUtil.getAllDiagnosisGroups();
-    }
-
-    @GET
     @Path("{verksamhetId}/getDiagnosisGroupStatistics")
     @Produces({ MediaType.APPLICATION_JSON })
     public DualSexStatisticsData getDiagnosisGroupStatistics(@PathParam("verksamhetId") String verksamhetId) {
+        LOG.info("Calling getDiagnosisGroupStatistics with verksamhetId: " + verksamhetId);
         Range range = new Range();
         DiagnosisGroupResponse diagnosisGroups = datasourceDiagnosisGroups.getDiagnosisGroups(verksamhetId, range);
         return new DiagnosisGroupsConverter().convert(diagnosisGroups);
     }
-
 
     @GET
     @Path("{verksamhetId}/getDiagnosisSubGroupStatistics/{groupId}")

@@ -66,6 +66,12 @@ app.statisticsApp = angular.module('StatisticsApp', [ 'ngCookies', 'ui.bootstrap
                 controller : 'CasesPerMonthCtrl',
                 controllerAs : 'VerksamhetCasesPerMonthCtrl',
                 title: 'Sjukfall per månad'
+            }).when('/verksamhet/:verksamhetId/diagnosgrupper', {
+                templateUrl : 'views/detailsView.html',
+                controller : 'DiagnosisGroupsCtrl',
+                controllerAs : 'VerksamhetDiagnosisGroupsCtrl',
+                resolve : { config: app.diagnosisGroupConfig }, 
+                title: 'Diagnosgrupper'
             }).when('/om/tjansten', {
                 templateUrl : 'views/about/about.html',
                 controllerAs : 'AboutServiceCtrl',

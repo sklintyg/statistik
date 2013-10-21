@@ -3,6 +3,7 @@
  app.diagnosisGroupConfig = function() {
      var conf = {};
      conf.dataFetcher = "getDiagnosisGroupData",
+     conf.dataFetcherVerksamhet = "getDiagnosisGroupDataVerksamhet",
      conf.showDetailsOptions = false,
      conf.title = "Antal sjukfall per diagnosgrupp"	
      return conf;
@@ -164,7 +165,11 @@
     $scope.popoverTextTitle = config.tooltipHelpTextTitle;
     $scope.popoverText = config.tooltipHelpText;
 
-    statisticsData[config.dataFetcher](populatePageWithData, function() { $scope.dataLoadingError = true; }, $routeParams.groupId);
+    if ($routeParams.verksamhetId){
+        statisticsData[config.dataFetcherVerksamhet]($routeParams.verksamhetId, populatePageWithData, function() { $scope.dataLoadingError = true; }, $routeParams.groupId);
+    } else {
+        statisticsData[config.dataFetcher](populatePageWithData, function() { $scope.dataLoadingError = true; }, $routeParams.groupId);
+    }
 
     $scope.showHideDataTable = ControllerCommons.showHideDataTableDefault;
     $scope.toggleTableVisibility = function(event) {

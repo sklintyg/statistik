@@ -87,6 +87,7 @@ public class ChartDataService {
     @Path("getDiagnosisGroups")
     @Produces({ MediaType.APPLICATION_JSON })
     public List<DiagnosisGroup> getDiagnosisGroups() {
+        LOG.info("Calling getDiagnosisGroups");
         return DiagnosisGroupsUtil.getAllDiagnosisGroups();
     }
 
@@ -94,6 +95,7 @@ public class ChartDataService {
     @Path("getDiagnosisGroupStatistics")
     @Produces({ MediaType.APPLICATION_JSON })
     public DualSexStatisticsData getDiagnosisGroupStatistics() {
+        LOG.info("Calling getDiagnosisGroupStatistics for national");
         Range range = new Range();
         DiagnosisGroupResponse diagnosisGroups = datasourceDiagnosisGroups.getDiagnosisGroups(Verksamhet.NATIONELL.toString(), range);
         return new DiagnosisGroupsConverter().convert(diagnosisGroups);

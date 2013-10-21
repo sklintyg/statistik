@@ -137,11 +137,11 @@
 								<li><a ng-href="#/verksamhet/{{businessId}}/oversikt" ctrlname="BusinessOverviewCtrl" navigationaware>Översikt</a></li>
 							 	<li><a ng-href="#/verksamhet/{{businessId}}/sjukfallPerManad" id="navBusinessCasesPerMonthLink" ctrlname="VerksamhetCasesPerMonthCtrl" navigationaware>Sjukfall, totalt</a></li>
 								<li>
-									<a class="menu-item-has-childs" ng-href="#/verksamhet/{{businessId}}/diagnosgrupp" id="navBusinessDiagnosisGroupsLink" ctrlname="" navigationaware>Diagnosgrupp</a>
+									<a class="menu-item-has-childs" ng-href="#/verksamhet/{{businessId}}/diagnosgrupper" id="navBusinessDiagnosisGroupsLink" ctrlname="VerksamhetDiagnosisGroupsCtrl" navigationaware>Diagnosgrupp</a>
 									<i class="statistict-left-menu-expand-icon" class="accordion-toggle" data-toggle="collapse" href="#sub-menu-business-diagnostics"></i>
 								</li>
 								<ul id="sub-menu-business-diagnostics" class="nav nav-list sub-nav-list accordion-body in collapse">
-									<li><a ng-href="#/verksamhet/{{businessId}}/underdiagnosgrupp" id="navBusinessDiagnosisSubGroupsLink" ctrlname="" navigationaware>Underdiagnosgrupp</a></li>
+									<li><a ng-href="#/verksamhet/{{businessId}}/underdiagnosgrupper" id="navBusinessDiagnosisSubGroupsLink" ctrlname="" navigationaware>Underdiagnosgrupp</a></li>
 								</ul>
 								<li>
 									<a ng-href="#/verksamhet/{{businessId}}/aldersgrupper" id="navBusinessAgeGroupsLink" ctrlname="" navigationaware>Åldersgrupp</a>
