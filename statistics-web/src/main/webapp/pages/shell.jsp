@@ -150,9 +150,9 @@
 								<ul id="sub-menu-business-age-group" class="nav nav-list sub-nav-list accordion-body in collapse">
 									<li><a ng-href="#/verksamhet/{{businessId}}/pagaendeavslutadealdersgrupper" id="navBusinessOngoingAndCompletedLink" ctrlname="" navigationaware>Pågående och avslutade</a></li>
 								</ul>
-								<li><a ng-href="#/verksamhet/{{businessId}}/sjukskrivningsgrad" id="navBusinessSickLeaveDegreeLink" ctrlname="" navigationaware>Sjukskrivningsgrad</a></li>
+								<li><a ng-href="#/verksamhet/{{businessId}}/sjukskrivningsgrad" id="navBusinessSickLeaveDegreeLink" ctrlname="VerksamhetDegreeOfSickLeaveCtrl" navigationaware>Sjukskrivningsgrad</a></li>
 								<li>
-									<a class="menu-item-has-childs" ng-href="#/verksamhet/{{businessId}}/sjukskrivningslangd" id="navBusinessSickLeaveLengthLink" ctrlname="" navigationaware>Sjukskrivningslängd</a>
+									<a class="menu-item-has-childs" ng-href="#/verksamhet/{{businessId}}/sjukskrivningslangd" id="navBusinessSickLeaveLengthLink" ctrlname="VerksamhetSickLeaveLengthCtrl" navigationaware>Sjukskrivningslängd</a>
 									<i class="statistict-left-menu-expand-icon" class="accordion-toggle" data-toggle="collapse" href="#sub-menu-business-sick-leave-length"></i>
 								</li>
 								<ul id="sub-menu-business-sick-leave-length" class="nav nav-list sub-nav-list accordion-body in collapse">

@@ -18,19 +18,22 @@ import org.springframework.stereotype.Service;
 
 import se.inera.statistics.service.report.api.AgeGroups;
 import se.inera.statistics.service.report.api.CasesPerMonth;
+import se.inera.statistics.service.report.api.DegreeOfSickLeave;
 import se.inera.statistics.service.report.api.DiagnosisGroups;
 import se.inera.statistics.service.report.api.DiagnosisSubGroups;
+import se.inera.statistics.service.report.api.SjukfallslangdGrupp;
 import se.inera.statistics.service.report.api.VerksamhetOverview;
 import se.inera.statistics.service.report.model.AgeGroupsResponse;
 import se.inera.statistics.service.report.model.CasesPerMonthRow;
-import se.inera.statistics.service.report.model.DiagnosisGroup;
+import se.inera.statistics.service.report.model.DegreeOfSickLeaveResponse;
 import se.inera.statistics.service.report.model.DiagnosisGroupResponse;
 import se.inera.statistics.service.report.model.Range;
+import se.inera.statistics.service.report.model.SickLeaveLengthResponse;
 import se.inera.statistics.service.report.model.VerksamhetOverviewResponse;
-import se.inera.statistics.service.report.util.DiagnosisGroupsUtil;
 import se.inera.statistics.web.model.AgeGroupsData;
 import se.inera.statistics.web.model.CasesPerMonthData;
 import se.inera.statistics.web.model.DualSexStatisticsData;
+import se.inera.statistics.web.model.SickLeaveLengthData;
 import se.inera.statistics.web.model.Verksamhet;
 import se.inera.statistics.web.model.overview.VerksamhetOverviewData;
 
@@ -45,6 +48,8 @@ public class ProtectedChartDataService {
     private DiagnosisGroups datasourceDiagnosisGroups;
     private DiagnosisSubGroups datasourceDiagnosisSubGroups;
     private AgeGroups datasourceAgeGroups;
+    private DegreeOfSickLeave datasourceDegreeOfSickLeave;
+    private SjukfallslangdGrupp datasourceSickLeaveLength;
 
     public ProtectedChartDataService() {
 
@@ -54,13 +59,16 @@ public class ProtectedChartDataService {
                                      CasesPerMonth casesPerMonthPersistenceHandler,
                                      DiagnosisGroups diagnosisGroupsPersistenceHandler,
                                      DiagnosisSubGroups diagnosisSubGroupsPersistenceHandler,
-                                     AgeGroups ageGroupsPersistenceHandler) {
+                                     AgeGroups ageGroupsPersistenceHandler,
+                                     DegreeOfSickLeave degreeOfSickLeavePersistenceHandler,
+                                     SjukfallslangdGrupp sickLeaveLengthPersistenceHandler) {
         datasourceOverview = overviewPersistenceHandler;
         datasourceCasesPerMonth = casesPerMonthPersistenceHandler;
         datasourceDiagnosisGroups = diagnosisGroupsPersistenceHandler;
         datasourceDiagnosisSubGroups = diagnosisSubGroupsPersistenceHandler;
         datasourceAgeGroups = ageGroupsPersistenceHandler;
-
+        datasourceDegreeOfSickLeave = degreeOfSickLeavePersistenceHandler;
+        datasourceSickLeaveLength = sickLeaveLengthPersistenceHandler;
     }
 
     @GET
@@ -108,8 +116,26 @@ public class ProtectedChartDataService {
     @Produces({ MediaType.APPLICATION_JSON })
     public AgeGroupsData getAgeGroupsStatistics(@PathParam("verksamhetId") String verksamhetId) {
         LOG.info("Calling getAgeGroupsStatistics with verksamhetId: " + verksamhetId);
-        AgeGroupsResponse ageGroups = datasourceAgeGroups.getAgeGroups("hsaid", new LocalDate().minusMonths(1), 3);
+        AgeGroupsResponse ageGroups = datasourceAgeGroups.getAgeGroups("hsaid", previousMonth(), 3);
         return new AgeGroupsConverter().convert(ageGroups);
+    }
+
+    @GET
+    @Path("{verksamhetId}/getDegreeOfSickLeaveStatistics")
+    @Produces({ MediaType.APPLICATION_JSON })
+    public DualSexStatisticsData getDegreeOfSickLeaveStatistics(@PathParam("verksamhetId") String verksamhetId) {
+        LOG.info("Calling getDegreeOfSickLeaveStatistics with verksamhetId: " + verksamhetId);
+        DegreeOfSickLeaveResponse degreeOfSickLeaveStatistics = datasourceDegreeOfSickLeave.getStatistics(Verksamhet.decodeId(verksamhetId));
+        return new DegreeOfSickLeaveConverter().convert(degreeOfSickLeaveStatistics);
+    }
+
+    @GET
+    @Path("{verksamhetId}/getSickLeaveLengthData")
+    @Produces({ MediaType.APPLICATION_JSON })
+    public SickLeaveLengthData getSickLeaveLengthData(@PathParam("verksamhetId") String verksamhetId) {
+        LOG.info("Calling getSickLeaveLengthData with verksamhetId: " + verksamhetId);
+        SickLeaveLengthResponse sickLeaveLength = datasourceSickLeaveLength.getStatistics(Verksamhet.decodeId(verksamhetId), previousMonth(), 12);
+        return new SickLeaveLengthConverter().convert(sickLeaveLength);
     }
 
     public boolean hasAccessTo(HttpServletRequest request, String verksamhetId) {
@@ -130,5 +156,9 @@ public class ProtectedChartDataService {
     @SuppressWarnings("unchecked")
     private List<Verksamhet> getVerksamhets(HttpServletRequest request) {
         return (List<Verksamhet>) request.getSession().getAttribute("verksamhets");
+    }
+
+    private LocalDate previousMonth() {
+        return new LocalDate().withDayOfMonth(1).minusMonths(1);
     }
 }

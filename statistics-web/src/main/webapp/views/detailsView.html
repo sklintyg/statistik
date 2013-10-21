@@ -74,7 +74,7 @@
                             <table id="datatable" class="table table-striped">
                                 <thead>
                                     <tr ng-repeat="headerrow in headerrows">
-                                        <td class="datatablescrollable" ng-class="{headcol: $first}" colspan="{{header.colspan}}" ng-repeat="header in headerrow" style="max-width: 100px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="{{header.text}}">{{header.text}}</td>
+                                        <td class="datatablescrollable" ng-class="{headcol: $first}" colspan="{{header.colspan}}" ng-repeat="header in headerrow" style="max-width: 100%; overflow: hidden; text-overflow: ellipsis; " title="{{header.text}}">{{header.text}}</td>
                                     </tr>
                                 </thead>
                                 <tbody>

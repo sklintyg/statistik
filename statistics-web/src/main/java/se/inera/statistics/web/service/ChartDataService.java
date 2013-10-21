@@ -130,6 +130,7 @@ public class ChartDataService {
     @Path("getDegreeOfSickLeaveStatistics")
     @Produces({ MediaType.APPLICATION_JSON })
     public DualSexStatisticsData getDegreeOfSickLeaveStatistics() {
+        LOG.info("Calling getDegreeOfSickLeaveStatistics for national");
         DegreeOfSickLeaveResponse degreeOfSickLeaveStatistics = datasourceDegreeOfSickLeave.getStatistics(DegreeOfSickLeave.HSA_NATIONELL);
         return new DegreeOfSickLeaveConverter().convert(degreeOfSickLeaveStatistics);
     }
@@ -138,12 +139,9 @@ public class ChartDataService {
     @Path("getSickLeaveLengthData")
     @Produces({ MediaType.APPLICATION_JSON })
     public SickLeaveLengthData getSickLeaveLengthData() {
+        LOG.info("Calling getSickLeaveLengthData for national");
         SickLeaveLengthResponse sickLeaveLength = datasourceSickLeaveLength.getStatistics(Verksamhet.NATIONELL.toString(), previousMonth(), 12);
         return new SickLeaveLengthConverter().convert(sickLeaveLength);
-    }
-
-    private LocalDate previousMonth() {
-        return new LocalDate().withDayOfMonth(1).minusMonths(1);
     }
 
     @GET
@@ -162,6 +160,10 @@ public class ChartDataService {
         CasesPerCountyResponse countyStatRange1 = datasourceCasesPerCounty.getStatistics(Verksamhet.NATIONELL.toString(), range1);
         CasesPerCountyResponse countyStatRange2 = datasourceCasesPerCounty.getStatistics(Verksamhet.NATIONELL.toString(), range2);
         return new CasesPerCountyConverter(countyStatRange1, countyStatRange2, range1, range2).convert();
+    }
+
+    private LocalDate previousMonth() {
+        return new LocalDate().withDayOfMonth(1).minusMonths(1);
     }
 
 }

@@ -41,7 +41,7 @@ public class ProtectedChartDataServiceTest {
     public void getOverviewDataForSpecificVerksamhetTest() {
         init();
 
-        ProtectedChartDataService chartDataService = new ProtectedChartDataService(mock, null, null, null, null);
+        ProtectedChartDataService chartDataService = new ProtectedChartDataService(mock, null, null, null, null, null, null);
         try {
             chartDataService.getOverviewData(request, "verksamhet2");
             fail("Current implemnetaion can not use null data");
@@ -53,7 +53,7 @@ public class ProtectedChartDataServiceTest {
 
     @Test
     public void checkDeniedAccessToVerksamhetTest() {
-        ProtectedChartDataService chartDataService = new ProtectedChartDataService(mock, null, null, null, null);
+        ProtectedChartDataService chartDataService = new ProtectedChartDataService(mock, null, null, null, null, null, null);
         boolean result = chartDataService.hasAccessTo(request, "verksamhet3");
 
         assertEquals(false, result);
@@ -61,7 +61,7 @@ public class ProtectedChartDataServiceTest {
 
     @Test
     public void checkAllowedAccessToVerksamhetTest() {
-        ProtectedChartDataService chartDataService = new ProtectedChartDataService(mock, null, null, null, null);
+        ProtectedChartDataService chartDataService = new ProtectedChartDataService(mock, null, null, null, null, null, null);
         boolean result = chartDataService.hasAccessTo(request, "verksamhet2");
 
         assertEquals(true, result);

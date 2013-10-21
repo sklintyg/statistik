@@ -1538,14 +1538,14 @@ td.datatablescrollable {
 
 .headcol.datatablescrollable {
     position:absolute;
-    width:5em;
+    width: 13.9em;;
     top:auto;
     left:0;
 }
 
 div.datatablescrollable {
     overflow-x:auto;  
-    margin-left:5em;
+    margin-left: 13em;
     overflow-y:visible;
     padding-bottom:1px;
 }
