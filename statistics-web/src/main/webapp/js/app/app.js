@@ -48,7 +48,7 @@ app.statisticsApp = angular.module('StatisticsApp', [ 'ngCookies', 'ui.bootstrap
                 redirectTo : '/nationell/underdiagnosgrupper/A00-B99'
             }).when('/nationell/sjukskrivningsgrad', {
                 templateUrl : 'views/detailsView.html',
-                controller : 'DiagnosisGroupsCtrl',
+                controller : 'DegreeOfSickLeaveCtrl',
                 controllerAs : 'NationalDegreeOfSickLeaveCtrl',
                 resolve : { config: app.degreeOfSickLeaveConfig },
                 title: 'Sjukskrivningsgrad'
@@ -86,6 +86,12 @@ app.statisticsApp = angular.module('StatisticsApp', [ 'ngCookies', 'ui.bootstrap
                 controllerAs : 'VerksamhetAgeGroupCtrl',
                 resolve : { config: app.nationalAgeGroupConfig }, 
                 title: 'Åldersgrupper'
+            }).when('/verksamhet/:verksamhetId/sjukskrivningsgrad', {
+                templateUrl : 'views/detailsView.html',
+                controller : 'DegreeOfSickLeaveCtrl',
+                controllerAs : 'VerksamhetDegreeOfSickLeaveCtrl',
+                resolve : { config: app.degreeOfSickLeaveConfig },
+                title: 'Sjukskrivningsgrad'
             }).when('/om/tjansten', {
                 templateUrl : 'views/about/about.html',
                 controllerAs : 'AboutServiceCtrl',

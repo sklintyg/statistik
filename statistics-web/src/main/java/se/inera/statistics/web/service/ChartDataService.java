@@ -130,6 +130,7 @@ public class ChartDataService {
     @Path("getDegreeOfSickLeaveStatistics")
     @Produces({ MediaType.APPLICATION_JSON })
     public DualSexStatisticsData getDegreeOfSickLeaveStatistics() {
+        LOG.info("Calling getDegreeOfSickLeaveStatistics for national");
         DegreeOfSickLeaveResponse degreeOfSickLeaveStatistics = datasourceDegreeOfSickLeave.getStatistics(DegreeOfSickLeave.HSA_NATIONELL);
         return new DegreeOfSickLeaveConverter().convert(degreeOfSickLeaveStatistics);
     }

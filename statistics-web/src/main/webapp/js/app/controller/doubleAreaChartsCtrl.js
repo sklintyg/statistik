@@ -21,6 +21,7 @@
  app.degreeOfSickLeaveConfig = function() {
      var conf = {};
      conf.dataFetcher = "getDegreeOfSickLeave",
+     conf.dataFetcherVerksamhet = "getDegreeOfSickLeaveVerksamhet",
      conf.showDetailsOptions = false,
      conf.title = "Antal sjukfall per sjukskrivningsgrad",
      conf.tooltipHelpTextTitle ="Vad innebär sjukskrivningsgrad?",
@@ -28,7 +29,7 @@
      return conf;
  }
  
- app.diagnosisGroupsCtrl = function ($scope, $routeParams, $window, $timeout, statisticsData, config) {
+ app.doubleAreaChartsCtrl = function ($scope, $routeParams, $window, $timeout, statisticsData, config) {
      var chart1, chart2;
      var that = this;
      var isVerksamhet = $routeParams.verksamhetId ? true : false;
