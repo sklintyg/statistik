@@ -9,6 +9,8 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 import org.joda.time.LocalDate;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import se.inera.statistics.service.report.api.AgeGroups;
@@ -39,6 +41,8 @@ import se.inera.statistics.web.model.overview.OverviewData;
 
 @Service("chartService")
 public class ChartDataService {
+
+    private static final Logger LOG = LoggerFactory.getLogger(ChartDataService.class);
 
     private Overview datasourceOverview;
     private CasesPerMonth datasourceCasesPerMonth;
@@ -71,10 +75,9 @@ public class ChartDataService {
     @Path("getNumberOfCasesPerMonth")
     @Produces({ MediaType.APPLICATION_JSON })
     public CasesPerMonthData getNumberOfCasesPerMonth() {
+        LOG.info("Calling getNumberOfCasesPerMonth for national");
         Range range = new Range();
-
         List<CasesPerMonthRow> casesPerMonth = datasourceCasesPerMonth.getCasesPerMonth(Verksamhet.NATIONELL.toString(), range);
-
         return new CasesPerMonthConverter().convert(casesPerMonth);
     }
 

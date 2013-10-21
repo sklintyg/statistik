@@ -135,7 +135,7 @@
 					    <div class="accordion-inner">
 					      <ul id="business-statistic-menu-content" class="nav nav-list">
 								<li><a ng-href="#/verksamhet/{{businessId}}/oversikt" ctrlname="BusinessOverviewCtrl" navigationaware>Översikt</a></li>
-							 	<li><a ng-href="#/verksamhet/{{businessId}}/sjukfallPerManad" id="navBusinessCasesPerMonthLink" ctrlname="" navigationaware>Sjukfall, totalt</a></li>
+							 	<li><a ng-href="#/verksamhet/{{businessId}}/sjukfallPerManad" id="navBusinessCasesPerMonthLink" ctrlname="VerksamhetCasesPerMonthCtrl" navigationaware>Sjukfall, totalt</a></li>
 								<li>
 									<a class="menu-item-has-childs" ng-href="#/verksamhet/{{businessId}}/diagnosgrupp" id="navBusinessDiagnosisGroupsLink" ctrlname="" navigationaware>Diagnosgrupp</a>
 									<i class="statistict-left-menu-expand-icon" class="accordion-toggle" data-toggle="collapse" href="#sub-menu-business-diagnostics"></i>

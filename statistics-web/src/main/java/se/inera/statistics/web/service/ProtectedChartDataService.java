@@ -11,6 +11,8 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
 import org.joda.time.LocalDate;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
@@ -36,6 +38,8 @@ import se.inera.statistics.web.model.overview.VerksamhetOverviewData;
 @Path("/verksamhet")
 public class ProtectedChartDataService {
 
+    private static final Logger LOG = LoggerFactory.getLogger(ProtectedChartDataService.class);
+
     private VerksamhetOverview datasourceOverview;
     private CasesPerMonth datasourceCasesPerMonth;
     private DiagnosisGroups datasourceDiagnosisGroups;
@@ -60,9 +64,10 @@ public class ProtectedChartDataService {
     }
 
     @GET
-    @Path("getNumberOfCasesPerMonth/{verksamhetId}")
+    @Path("{verksamhetId}/getNumberOfCasesPerMonth")
     @Produces({ MediaType.APPLICATION_JSON })
     public CasesPerMonthData getNumberOfCasesPerMonth(@PathParam("verksamhetId") String verksamhetId) {
+        LOG.info("Calling getNumberOfCasesPerMonth with verksamhetId: " + verksamhetId);
         Range range = new Range();
         List<CasesPerMonthRow> casesPerMonth = datasourceCasesPerMonth.getCasesPerMonth(Verksamhet.decodeId(verksamhetId), range);
         return new CasesPerMonthConverter().convert(casesPerMonth);
