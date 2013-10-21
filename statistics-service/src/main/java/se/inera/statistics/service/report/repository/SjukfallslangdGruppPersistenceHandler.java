@@ -10,44 +10,44 @@ import javax.persistence.TypedQuery;
 import org.joda.time.LocalDate;
 import org.springframework.transaction.annotation.Transactional;
 
-import se.inera.statistics.service.report.api.AgeGroups;
-import se.inera.statistics.service.report.model.AgeGroupsResponse;
+import se.inera.statistics.service.report.api.SjukfallslangdGrupp;
 import se.inera.statistics.service.report.model.AgeGroupsRow;
 import se.inera.statistics.service.report.model.AldersgruppKey;
 import se.inera.statistics.service.report.model.Sex;
-import se.inera.statistics.service.report.util.AldersgroupUtil;
-import se.inera.statistics.service.report.util.AldersgroupUtil.Group;
+import se.inera.statistics.service.report.model.SickLeaveLengthResponse;
+import se.inera.statistics.service.report.model.SickLeaveLengthRow;
 import se.inera.statistics.service.report.util.ReportUtil;
+import se.inera.statistics.service.report.util.SjukfallslangdUtil;
 import se.inera.statistics.service.report.util.Verksamhet;
 
-public class AldersgruppPersistenceHandler implements AgeGroups {
+public class SjukfallslangdGruppPersistenceHandler implements SjukfallslangdGrupp {
     @PersistenceContext(unitName = "IneraStatisticsLog")
     private EntityManager manager;
 
     @Override
     @Transactional
-    public AgeGroupsResponse getAgeGroups(String hsaId, LocalDate when, int periods) {
-        TypedQuery<AgeGroupsRow> query = manager.createQuery("SELECT a FROM AgeGroupsRow a WHERE a.key.hsaId = :hsaId AND a.key.period = :when a.key.periods = :periods ", AgeGroupsRow.class);
+    public SickLeaveLengthResponse getStatistics(String hsaId, LocalDate when, int periods) {
+        TypedQuery<SickLeaveLengthRow> query = manager.createQuery("SELECT a FROM AgeGroupsRow a WHERE a.key.hsaId = :hsaId AND a.key.period = :when a.key.size = :size ", SickLeaveLengthRow.class);
         query.setParameter("hsaId", hsaId);
         query.setParameter("when", ReportUtil.toPeriod(when));
-        query.setParameter("periods", periods);
+        query.setParameter("size", periods);
 
         return translateForOutput(query.getResultList(), periods);
     }
 
-    private AgeGroupsResponse translateForOutput(List<AgeGroupsRow> list, int periods) {
-        List<AgeGroupsRow> translatedCasesPerMonthRows = new ArrayList<>();
+    private SickLeaveLengthResponse translateForOutput(List<SickLeaveLengthRow> list, int periods) {
+        List<SickLeaveLengthRow> translatedCasesPerMonthRows = new ArrayList<>();
 
-        for (Group s: AldersgroupUtil.GROUPS) {
+        for (se.inera.statistics.service.report.util.SjukfallslangdUtil.Group s: SjukfallslangdUtil.GROUPS) {
             String group = s.getGroupName();
-            for (AgeGroupsRow r: list) {
-                if (group.equals(r.getGroup())) {
+            for (SickLeaveLengthRow r: list) {
+                if (group.equals(r.getName())) {
                     translatedCasesPerMonthRows.add(r);
                 }
             }
         }
 
-        return new AgeGroupsResponse(translatedCasesPerMonthRows, periods);
+        return new SickLeaveLengthResponse(translatedCasesPerMonthRows, periods);
     }
 
     @Transactional

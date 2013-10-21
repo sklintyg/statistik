@@ -1,16 +1,19 @@
 package se.inera.statistics.service.sjukfall;
 
+import org.joda.time.Days;
 import org.joda.time.LocalDate;
 
 public class SjukfallInfo {
 
     private String id;
-    private LocalDate prevEnd;
     private LocalDate start;
+    private LocalDate end;
+    private LocalDate prevEnd;
 
-    public SjukfallInfo(String id, LocalDate start, LocalDate prevEnd) {
+    public SjukfallInfo(String id, LocalDate start, LocalDate end, LocalDate prevEnd) {
         this.id = id;
         this.start = start;
+        this.end = end;
         this.prevEnd = prevEnd;
     }
 
@@ -38,5 +41,13 @@ public class SjukfallInfo {
 
     public LocalDate getStart() {
         return start;
+    }
+
+    public LocalDate getEnd() {
+        return end;
+    }
+
+    public int getLangd() {
+        return Days.daysBetween(start, end).getDays() + 1;
     }
 }

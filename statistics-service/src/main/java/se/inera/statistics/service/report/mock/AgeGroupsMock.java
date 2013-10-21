@@ -20,18 +20,18 @@ public class AgeGroupsMock implements AgeGroups {
 
     // CHECKSTYLE:OFF MagicNumber
     @Override
-    public AgeGroupsResponse getAgeGroups(String hsaId, LocalDate when) {
+    public AgeGroupsResponse getAgeGroups(String hsaId, LocalDate when, int periods) {
         final List<AgeGroupsRow> rows = new ArrayList<>();
         for (String group : GROUPS) {
             int women = (int) (random.nextGaussian() * 2000 + 10000);
             int men = (int) (random.nextGaussian() * 2000 + 10000);
-            rows.add(new AgeGroupsRow(null, group, women, men));
+            rows.add(new AgeGroupsRow(null, group, periods, women, men));
         }
         return new AgeGroupsResponse(rows, 12);
     }
 
     @Override
-    public void count(String period, String hsaId, String group, Verksamhet typ, Sex sex) {
+    public void count(String period, String hsaId, String group, int periods, Verksamhet typ, Sex sex) {
     }
 
     // CHECKSTYLE:ON

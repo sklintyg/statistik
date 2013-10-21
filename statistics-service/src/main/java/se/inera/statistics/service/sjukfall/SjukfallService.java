@@ -35,7 +35,7 @@ public class SjukfallService {
             manager.persist(currentSjukfall);
         }
 
-        return new SjukfallInfo(currentSjukfall.getId(), currentSjukfall.getStart(), prevEnd);
+        return new SjukfallInfo(currentSjukfall.getId(), currentSjukfall.getStart(), currentSjukfall.getEnd(), prevEnd);
     }
 
     public int expire(LocalDate now) {

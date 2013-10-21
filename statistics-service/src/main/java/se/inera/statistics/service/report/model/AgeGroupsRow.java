@@ -23,15 +23,15 @@ public class AgeGroupsRow {
     public AgeGroupsRow() {
     }
 
-    public AgeGroupsRow(String period, String hsaId, String group, Verksamhet typ, int female, int male) {
-        key = new AldersgruppKey(period, hsaId, group);
+    public AgeGroupsRow(String period, String hsaId, String group, int periods, Verksamhet typ, int female, int male) {
+        key = new AldersgruppKey(period, hsaId, group, periods);
         this.male = male;
         this.female = female;
         this.typ = typ;
     }
 
-    public AgeGroupsRow(String period, String group, int female, int male) {
-        key = new AldersgruppKey(period, Verksamhet.NATIONELL.toString(), group);
+    public AgeGroupsRow(String period, String group, int periods, int female, int male) {
+        key = new AldersgruppKey(period, Verksamhet.NATIONELL.toString(), group, periods);
         this.male = male;
         this.female = female;
     }

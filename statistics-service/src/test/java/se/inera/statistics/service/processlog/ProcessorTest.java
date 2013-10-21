@@ -55,7 +55,7 @@ public class ProcessorTest {
     public void processorExtractsSjukfallsId() {
         JsonNode hsa = null;
 
-        when(sjukfallService.register(any(SjukfallKey.class))).thenReturn(new SjukfallInfo(null, null, null));
+        when(sjukfallService.register(any(SjukfallKey.class))).thenReturn(new SjukfallInfo(null, null, null, null));
 
         processor.accept(utlatande, hsa);
 

@@ -4,16 +4,16 @@ import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import se.inera.statistics.service.report.api.AgeGroups;
-import se.inera.statistics.service.report.util.AldersgroupUtil;
+import se.inera.statistics.service.report.api.SjukfallslangdGrupp;
 import se.inera.statistics.service.report.util.ReportUtil;
+import se.inera.statistics.service.report.util.SjukfallslangdUtil;
 import se.inera.statistics.service.report.util.Verksamhet;
 
 @Component
-public class AldersGruppListener extends GenericAbstractListener {
+public class SjukfallslangdListener extends GenericAbstractListener {
 
     @Autowired
-    private AgeGroups ageGroups;
+    private SjukfallslangdGrupp langdGrupp;
 
     @Override
     void accept(GenericHolder token, LocalDate firstMonth, LocalDate endMonth) {
@@ -33,15 +33,16 @@ public class AldersGruppListener extends GenericAbstractListener {
             accept(token, period, periods);
         }
     }
-
-    private void accept(GenericHolder token, String period, int periods) {
-        String group = AldersgroupUtil.lookupGroupForAge(token.getAge());
-        ageGroups.count(period, token.getEnhetId(), group, periods, Verksamhet.ENHET, token.getKon());
-        ageGroups.count(period, token.getVardgivareId(), group, periods, Verksamhet.VARDGIVARE, token.getKon());
+    
+    void accept(GenericHolder token, String period, int periods) {
+        String group = SjukfallslangdUtil.lookupGroupForLangd(token.getSjukfallInfo().getLangd());
+        langdGrupp.count(period, token.getEnhetId(), group, periods, Verksamhet.ENHET, token.getKon());
+        langdGrupp.count(period, token.getVardgivareId(), group, periods, Verksamhet.VARDGIVARE, token.getKon());
     }
 
     @Override
     void accept(GenericHolder token, String period) {
         throw new NoSuchMethodError("Not implemented");
     }
+
 }

@@ -10,14 +10,16 @@ public class AldersgruppKey implements Serializable {
     private String period;
     private String hsaId;
     private String grupp;
+    private int periods;
 
     public AldersgruppKey() {
     }
 
-    public AldersgruppKey(String period, String hsaId, String group) {
+    public AldersgruppKey(String period, String hsaId, String group, int periods) {
         this.period = period;
         this.hsaId = hsaId;
         this.grupp = group;
+        this.periods = periods;
     }
 
     public String getPeriod() {
@@ -42,5 +44,13 @@ public class AldersgruppKey implements Serializable {
 
     public void setGroup(String group) {
         this.grupp = group;
+    }
+
+    public int getPeriods() {
+        return periods;
+    }
+
+    public void setPeriods(int periods) {
+        this.periods = periods;
     }
 }

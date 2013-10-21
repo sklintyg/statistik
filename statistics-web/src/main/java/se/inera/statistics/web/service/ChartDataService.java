@@ -20,7 +20,7 @@ import se.inera.statistics.service.report.api.DegreeOfSickLeave;
 import se.inera.statistics.service.report.api.DiagnosisGroups;
 import se.inera.statistics.service.report.api.DiagnosisSubGroups;
 import se.inera.statistics.service.report.api.Overview;
-import se.inera.statistics.service.report.api.SickLeaveLength;
+import se.inera.statistics.service.report.api.SjukfallslangdGrupp;
 import se.inera.statistics.service.report.model.AgeGroupsResponse;
 import se.inera.statistics.service.report.model.CasesPerCountyResponse;
 import se.inera.statistics.service.report.model.CasesPerMonthRow;
@@ -50,7 +50,7 @@ public class ChartDataService {
     private DiagnosisSubGroups datasourceDiagnosisSubGroups;
     private AgeGroups datasourceAgeGroups;
     private DegreeOfSickLeave datasourceDegreeOfSickLeave;
-    private SickLeaveLength datasourceSickLeaveLength;
+    private SjukfallslangdGrupp datasourceSickLeaveLength;
     private CasesPerCounty datasourceCasesPerCounty;
 
     public ChartDataService(Overview overviewPersistenceHandler,
@@ -59,7 +59,7 @@ public class ChartDataService {
                             DiagnosisSubGroups diagnosisSubGroupsPersistenceHandler,
                             AgeGroups ageGroupsPersistenceHandler,
                             DegreeOfSickLeave degreeOfSickLeavePersistenceHandler,
-                            SickLeaveLength sickLeaveLengthPersistenceHandler,
+                            SjukfallslangdGrupp sickLeaveLengthPersistenceHandler,
                             CasesPerCounty casesPerCountyHandler) {
         datasourceOverview = overviewPersistenceHandler;
         datasourceCasesPerMonth = casesPerMonthPersistenceHandler;
@@ -122,7 +122,7 @@ public class ChartDataService {
     @Produces({ MediaType.APPLICATION_JSON })
     public AgeGroupsData getAgeGroupsStatistics() {
         LOG.info("Calling getAgeGroupsStatistics for national");
-        AgeGroupsResponse ageGroups = datasourceAgeGroups.getAgeGroups(Verksamhet.NATIONELL.toString(), new LocalDate().minusMonths(1));
+        AgeGroupsResponse ageGroups = datasourceAgeGroups.getAgeGroups(Verksamhet.NATIONELL.toString(), new LocalDate().minusMonths(1), 3);
         return new AgeGroupsConverter().convert(ageGroups);
     }
 
@@ -138,10 +138,12 @@ public class ChartDataService {
     @Path("getSickLeaveLengthData")
     @Produces({ MediaType.APPLICATION_JSON })
     public SickLeaveLengthData getSickLeaveLengthData() {
-        final int numberOfMonthsToRequest = 12;
-        Range range = new Range(numberOfMonthsToRequest);
-        SickLeaveLengthResponse sickLeaveLength = datasourceSickLeaveLength.getStatistics(SickLeaveLength.HSA_NATIONELL, range);
+        SickLeaveLengthResponse sickLeaveLength = datasourceSickLeaveLength.getStatistics(Verksamhet.NATIONELL.toString(), previousMonth(), 12);
         return new SickLeaveLengthConverter().convert(sickLeaveLength);
+    }
+
+    private LocalDate previousMonth() {
+        return new LocalDate().withDayOfMonth(1).minusMonths(1);
     }
 
     @GET
@@ -157,8 +159,8 @@ public class ChartDataService {
         LocalDate range2From = range2To.minusMonths(numberOfMonthsInRanges);
         final Range range2 = new Range(range2From, range2To);
 
-        CasesPerCountyResponse countyStatRange1 = datasourceCasesPerCounty.getStatistics(SickLeaveLength.HSA_NATIONELL, range1);
-        CasesPerCountyResponse countyStatRange2 = datasourceCasesPerCounty.getStatistics(SickLeaveLength.HSA_NATIONELL, range2);
+        CasesPerCountyResponse countyStatRange1 = datasourceCasesPerCounty.getStatistics(Verksamhet.NATIONELL.toString(), range1);
+        CasesPerCountyResponse countyStatRange2 = datasourceCasesPerCounty.getStatistics(Verksamhet.NATIONELL.toString(), range2);
         return new CasesPerCountyConverter(countyStatRange1, countyStatRange2, range1, range2).convert();
     }
 
