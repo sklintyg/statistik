@@ -80,6 +80,12 @@ app.statisticsApp = angular.module('StatisticsApp', [ 'ngCookies', 'ui.bootstrap
                 title: 'Underdiagnosgrupper'
             }).when('/verksamhet/:verksamhetId/underdiagnosgrupper', {
                 redirectTo : '/verksamhet/:verksamhetId/underdiagnosgrupper/A00-B99'
+            }).when('/verksamhet/:verksamhetId/aldersgrupper', {
+                templateUrl : 'views/detailsView.html',
+                controller : 'AgeGroupsCtrl',
+                controllerAs : 'VerksamhetAgeGroupCtrl',
+                resolve : { config: app.nationalAgeGroupConfig }, 
+                title: 'Åldersgrupper'
             }).when('/om/tjansten', {
                 templateUrl : 'views/about/about.html',
                 controllerAs : 'AboutServiceCtrl',

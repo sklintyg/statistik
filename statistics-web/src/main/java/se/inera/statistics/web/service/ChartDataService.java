@@ -121,6 +121,7 @@ public class ChartDataService {
     @Path("getAgeGroupsStatistics")
     @Produces({ MediaType.APPLICATION_JSON })
     public AgeGroupsData getAgeGroupsStatistics() {
+        LOG.info("Calling getAgeGroupsStatistics for national");
         AgeGroupsResponse ageGroups = datasourceAgeGroups.getAgeGroups(Verksamhet.NATIONELL.toString(), new LocalDate().minusMonths(1));
         return new AgeGroupsConverter().convert(ageGroups);
     }

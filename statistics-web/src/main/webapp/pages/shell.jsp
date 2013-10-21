@@ -144,7 +144,7 @@
 									<li><a ng-href="#/verksamhet/{{businessId}}/underdiagnosgrupper" id="navBusinessDiagnosisSubGroupsLink" ctrlname="VerksamhetDiagnosisSubGroupsCtrl" navigationaware>Underdiagnosgrupp</a></li>
 								</ul>
 								<li>
-									<a ng-href="#/verksamhet/{{businessId}}/aldersgrupper" id="navBusinessAgeGroupsLink" ctrlname="" navigationaware>Åldersgrupp</a>
+									<a ng-href="#/verksamhet/{{businessId}}/aldersgrupper" id="navBusinessAgeGroupsLink" ctrlname="VerksamhetAgeGroupCtrl" navigationaware>Åldersgrupp</a>
 									<i class="statistict-left-menu-expand-icon" class="accordion-toggle" data-toggle="collapse" href="#sub-menu-business-age-group"></i>
 								</li>
 								<ul id="sub-menu-business-age-group" class="nav nav-list sub-nav-list accordion-body in collapse">

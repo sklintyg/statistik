@@ -122,6 +122,18 @@ app.statisticsApp.factory('statisticsData', function($http){
        });
    };
 
+   factory.getAgeGroupsVerksamhet = function (verksamhetId, successCallback, failureCallback){
+       $http.get("api/verksamhet/" + verksamhetId + "/getAgeGroupsStatistics").success(function(result) {
+           try {
+               successCallback(result);
+           } catch (e) {
+               failureCallback();
+           }
+       }).error(function(data, status, headers, config) {
+           failureCallback();
+       });
+   };
+   
    factory.getDegreeOfSickLeave = function (successCallback, failureCallback){
        $http.get("api/getDegreeOfSickLeaveStatistics").success(function(result) {
            successCallback(result);

@@ -10,11 +10,13 @@
  app.nationalAgeGroupConfig = function() {
      var conf = {};
      conf.dataFetcher = "getAgeGroups",
+     conf.dataFetcherVerksamhet = "getAgeGroupsVerksamhet",
      conf.title = "Antal sjukfall baserat på patientens ålder"
      return conf;
  }
  
- app.columnChartDetailsViewCtrl = function ($scope, statisticsData, config) {
+ app.columnChartDetailsViewCtrl = function ($scope, $routeParams, statisticsData, config) {
+     var isVerksamhet = $routeParams.verksamhetId ? true : false;
 
     $scope.chartContainers = ["container"];
     
@@ -112,7 +114,11 @@
         $scope.doneLoading = true;
     };
 
-    statisticsData[config.dataFetcher](populatePageWithData, function() { $scope.dataLoadingError = true; });
+    if (isVerksamhet){
+        statisticsData[config.dataFetcherVerksamhet]($routeParams.verksamhetId, populatePageWithData, function() { $scope.dataLoadingError = true; });
+    } else {
+        statisticsData[config.dataFetcher](populatePageWithData, function() { $scope.dataLoadingError = true; });
+    }
     
     $scope.showHideDataTable = ControllerCommons.showHideDataTableDefault;
     $scope.toggleTableVisibility = function(event){
