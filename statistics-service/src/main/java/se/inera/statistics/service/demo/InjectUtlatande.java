@@ -10,8 +10,8 @@ import java.util.Random;
 import javax.annotation.PostConstruct;
 
 import org.joda.time.LocalDate;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import se.inera.statistics.service.common.CommonPersistence;
@@ -23,6 +23,8 @@ import se.inera.statistics.service.report.util.DiagnosisGroupsUtil;
 import com.fasterxml.jackson.databind.JsonNode;
 
 public class InjectUtlatande {
+    private static final Logger LOG = LoggerFactory.getLogger(InjectUtlatande.class);
+
     private static final int DAYS = 30;
 
     private static final int MONTHS = 19;
@@ -51,7 +53,11 @@ public class InjectUtlatande {
     @PostConstruct
     public void init() {
         cleanupDB();
-        publishUtlatanden();
+        new Thread(new Runnable() {
+            public void run() {
+                publishUtlatanden();
+            }
+        });
     }
 
     private void cleanupDB() {
@@ -63,10 +69,12 @@ public class InjectUtlatande {
 
         List<String> personNummers = readList("/personnr/testpersoner.log");
 
+        LOG.info("Inserting " + personNummers.size() + " certificates");
         for (String id : personNummers) {
             JsonNode newPermutation = permutate(builder, id);
             accept(newPermutation.toString(), id);
         }
+        LOG.info("Inserting " + personNummers.size() + " certificates completed");
     }
 
     public static JsonNode permutate(UtlatandeBuilder builder, String patientId) {
