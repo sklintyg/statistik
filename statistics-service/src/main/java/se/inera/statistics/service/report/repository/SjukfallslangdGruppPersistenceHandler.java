@@ -26,10 +26,10 @@ public class SjukfallslangdGruppPersistenceHandler implements SjukfallslangdGrup
     @Override
     @Transactional
     public SickLeaveLengthResponse getStatistics(String hsaId, LocalDate when, RollingLength length) {
-        TypedQuery<SickLeaveLengthRow> query = manager.createQuery("SELECT a FROM SjukfallslangdGrupp a WHERE a.key.hsaId = :hsaId AND a.key.period = :when a.key.size = :size ", SickLeaveLengthRow.class);
+        TypedQuery<SickLeaveLengthRow> query = manager.createQuery("SELECT a FROM SickLeaveLengthRow a WHERE a.key.hsaId = :hsaId AND a.key.period = :when AND a.key.periods = :periods ", SickLeaveLengthRow.class);
         query.setParameter("hsaId", hsaId);
         query.setParameter("when", ReportUtil.toPeriod(when));
-        query.setParameter("size", length.getPeriods());
+        query.setParameter("periods", length.getPeriods());
 
         return translateForOutput(query.getResultList(), length.getPeriods());
     }

@@ -27,7 +27,7 @@ public class AldersgruppPersistenceHandler implements AgeGroups {
     @Override
     @Transactional
     public AgeGroupsResponse getHistoricalAgeGroups(String hsaId, LocalDate when, RollingLength rolling) {
-        TypedQuery<AgeGroupsRow> query = manager.createQuery("SELECT a FROM AgeGroupsRow a WHERE a.key.hsaId = :hsaId AND a.key.period = :when a.key.periods = :periods ", AgeGroupsRow.class);
+        TypedQuery<AgeGroupsRow> query = manager.createQuery("SELECT a FROM AgeGroupsRow a WHERE a.key.hsaId = :hsaId AND a.key.period = :when AND a.key.periods = :periods ", AgeGroupsRow.class);
         query.setParameter("hsaId", hsaId);
         query.setParameter("when", ReportUtil.toPeriod(when));
         query.setParameter("periods", rolling.getPeriods());
