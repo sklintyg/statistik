@@ -25,6 +25,10 @@ public abstract class AbstractListener<T> {
 
         T token = setup(sjukfallInfo, utlatande, hsa, firstMonth, endMonth);
 
+        accept(token, firstMonth, endMonth);
+    }
+
+    void accept(T token, LocalDate firstMonth, LocalDate endMonth) {
         for (LocalDate currentMonth = firstMonth; !currentMonth.isAfter(endMonth); currentMonth = currentMonth.plusMonths(1)) {
             accept(token, currentMonth);
         }

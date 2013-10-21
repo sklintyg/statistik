@@ -38,6 +38,18 @@ app.statisticsApp.factory('statisticsData', function($http){
        });
    };
 
+   factory.getNumberOfCasesPerMonthVerksamhet = function (verksamhetId, successCallback, failureCallback){
+       $http.get("api/verksamhet/" + verksamhetId + "/getNumberOfCasesPerMonth").success(function(result) {
+           try {
+               successCallback(result);
+           } catch (e) {
+               failureCallback();
+           }
+       }).error(function(data, status, headers, config) {
+           failureCallback();
+       });
+   };
+   
    factory.getDiagnosisGroupData = function (successCallback, failureCallback){
        $http.get("api/getDiagnosisGroupStatistics").success(function(result) {
            try {
@@ -50,8 +62,32 @@ app.statisticsApp.factory('statisticsData', function($http){
        });
    };
    
+   factory.getDiagnosisGroupDataVerksamhet = function (verksamhetId, successCallback, failureCallback){
+       $http.get("api/verksamhet/" + verksamhetId + "/getDiagnosisGroupStatistics").success(function(result) {
+           try {
+               successCallback(result);
+           } catch (e) {
+               failureCallback();
+           }
+       }).error(function(data, status, headers, config) {
+           failureCallback();
+       });
+   };
+   
    factory.getSubDiagnosisGroupData = function (successCallback, failureCallback, groupId){
-       $http.get("api/getDiagnosisSubGroupStatistics",{params: {'groupId':groupId}}).success(function(result) {
+       $http.get("api/getDiagnosisSubGroupStatistics", {params: {'groupId':groupId}}).success(function(result) {
+           try {
+               successCallback(result);
+           } catch (e) {
+               failureCallback();
+           }
+       }).error(function(data, status, headers, config) {
+           failureCallback();
+       });
+   };
+   
+   factory.getSubDiagnosisGroupDataVerksamhet = function (verksamhetId, successCallback, failureCallback, groupId){
+       $http.get("api/verksamhet/" + verksamhetId + "/getDiagnosisSubGroupStatistics/" + groupId).success(function(result) {
            try {
                successCallback(result);
            } catch (e) {
@@ -86,6 +122,18 @@ app.statisticsApp.factory('statisticsData', function($http){
        });
    };
 
+   factory.getAgeGroupsVerksamhet = function (verksamhetId, successCallback, failureCallback){
+       $http.get("api/verksamhet/" + verksamhetId + "/getAgeGroupsStatistics").success(function(result) {
+           try {
+               successCallback(result);
+           } catch (e) {
+               failureCallback();
+           }
+       }).error(function(data, status, headers, config) {
+           failureCallback();
+       });
+   };
+   
    factory.getDegreeOfSickLeave = function (successCallback, failureCallback){
        $http.get("api/getDegreeOfSickLeaveStatistics").success(function(result) {
            successCallback(result);
@@ -94,8 +142,28 @@ app.statisticsApp.factory('statisticsData', function($http){
        });
    };
 
+   factory.getDegreeOfSickLeaveVerksamhet = function (verksamhetId, successCallback, failureCallback){
+       $http.get("api/verksamhet/" + verksamhetId + "/getDegreeOfSickLeaveStatistics").success(function(result) {
+           successCallback(result);
+       }).error(function(data, status, headers, config) {
+           failureCallback();
+       });
+   };
+   
    factory.getNationalSickLeaveLengthData = function (successCallback, failureCallback){
        $http.get("api/getSickLeaveLengthData").success(function(result) {
+           try {
+               successCallback(result);
+           } catch (e) {
+               failureCallback();
+           }
+       }).error(function(data, status, headers, config) {
+           failureCallback();
+       });
+   };
+   
+   factory.getNationalSickLeaveLengthDataVerksamhet = function (verksamhetId, successCallback, failureCallback){
+       $http.get("api/verksamhet/" + verksamhetId + "/getSickLeaveLengthData").success(function(result) {
            try {
                successCallback(result);
            } catch (e) {

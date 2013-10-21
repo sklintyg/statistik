@@ -9,6 +9,8 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 import org.joda.time.LocalDate;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import se.inera.statistics.service.report.api.AgeGroups;
@@ -40,7 +42,7 @@ import se.inera.statistics.web.model.overview.OverviewData;
 @Service("chartService")
 public class ChartDataService {
 
-    private static final int AGE_PERIOD = 12;
+    private static final Logger LOG = LoggerFactory.getLogger(ChartDataService.class);
 
     private Overview datasourceOverview;
     private CasesPerMonth datasourceCasesPerMonth;
@@ -73,10 +75,9 @@ public class ChartDataService {
     @Path("getNumberOfCasesPerMonth")
     @Produces({ MediaType.APPLICATION_JSON })
     public CasesPerMonthData getNumberOfCasesPerMonth() {
+        LOG.info("Calling getNumberOfCasesPerMonth for national");
         Range range = new Range();
-
         List<CasesPerMonthRow> casesPerMonth = datasourceCasesPerMonth.getCasesPerMonth(Verksamhet.NATIONELL.toString(), range);
-
         return new CasesPerMonthConverter().convert(casesPerMonth);
     }
 
@@ -84,6 +85,7 @@ public class ChartDataService {
     @Path("getDiagnosisGroups")
     @Produces({ MediaType.APPLICATION_JSON })
     public List<DiagnosisGroup> getDiagnosisGroups() {
+        LOG.info("Calling getDiagnosisGroups");
         return DiagnosisGroupsUtil.getAllDiagnosisGroups();
     }
 
@@ -91,6 +93,7 @@ public class ChartDataService {
     @Path("getDiagnosisGroupStatistics")
     @Produces({ MediaType.APPLICATION_JSON })
     public DualSexStatisticsData getDiagnosisGroupStatistics() {
+        LOG.info("Calling getDiagnosisGroupStatistics for national");
         Range range = new Range();
         DiagnosisGroupResponse diagnosisGroups = datasourceDiagnosisGroups.getDiagnosisGroups(Verksamhet.NATIONELL.toString(), range);
         return new DiagnosisGroupsConverter().convert(diagnosisGroups);
@@ -100,6 +103,7 @@ public class ChartDataService {
     @Path("getDiagnosisSubGroupStatistics")
     @Produces({ MediaType.APPLICATION_JSON })
     public DualSexStatisticsData getDiagnosisSubGroupStatistics(@QueryParam("groupId") String groupId) {
+        LOG.info("Calling getDiagnosisSubGroupStatistics for national with groupId: " + groupId);
         Range range = new Range();
         DiagnosisGroupResponse diagnosisGroups = datasourceDiagnosisSubGroups.getDiagnosisGroups(Verksamhet.NATIONELL.toString(), range, groupId);
         return new DiagnosisSubGroupsConverter().convert(diagnosisGroups);
@@ -117,8 +121,8 @@ public class ChartDataService {
     @Path("getAgeGroupsStatistics")
     @Produces({ MediaType.APPLICATION_JSON })
     public AgeGroupsData getAgeGroupsStatistics() {
-        Range range = new Range(AGE_PERIOD);
-        AgeGroupsResponse ageGroups = datasourceAgeGroups.getAgeGroups(Verksamhet.NATIONELL.toString(), range);
+        LOG.info("Calling getAgeGroupsStatistics for national");
+        AgeGroupsResponse ageGroups = datasourceAgeGroups.getAgeGroups(Verksamhet.NATIONELL.toString(), new LocalDate().minusMonths(1));
         return new AgeGroupsConverter().convert(ageGroups);
     }
 
@@ -126,6 +130,7 @@ public class ChartDataService {
     @Path("getDegreeOfSickLeaveStatistics")
     @Produces({ MediaType.APPLICATION_JSON })
     public DualSexStatisticsData getDegreeOfSickLeaveStatistics() {
+        LOG.info("Calling getDegreeOfSickLeaveStatistics for national");
         DegreeOfSickLeaveResponse degreeOfSickLeaveStatistics = datasourceDegreeOfSickLeave.getStatistics(DegreeOfSickLeave.HSA_NATIONELL);
         return new DegreeOfSickLeaveConverter().convert(degreeOfSickLeaveStatistics);
     }
@@ -134,6 +139,7 @@ public class ChartDataService {
     @Path("getSickLeaveLengthData")
     @Produces({ MediaType.APPLICATION_JSON })
     public SickLeaveLengthData getSickLeaveLengthData() {
+        LOG.info("Calling getSickLeaveLengthData for national");
         final int numberOfMonthsToRequest = 12;
         Range range = new Range(numberOfMonthsToRequest);
         SickLeaveLengthResponse sickLeaveLength = datasourceSickLeaveLength.getStatistics(SickLeaveLength.HSA_NATIONELL, range);

@@ -100,7 +100,7 @@
 					      Nationell statistik<i class="statistict-left-menu-expand-icon"></i>
 					    </div>
 					  </div>
-					  <div id="national-statistics-collapse" class="accordion-body collapse" ng-class="{in: showNational}">
+					  <div id="national-statistics-collapse" class="accordion-body collapse navigation-group" ng-class="{in: showNational}">
 					    <div class="accordion-inner">
 					    	<ul id="national-statistic-menu-content" class="nav nav-list">
 								<li><a ng-href="#/nationell/oversikt" id="navOverviewLink" ctrlname="NationalOverviewCtrl" navigationaware>Översikt</a></li>
@@ -131,28 +131,28 @@
 					      <span ng-bind="organisationMenuLabel"></span><i class="statistict-left-menu-expand-icon"></i> <!-- Inloggad: Enbart "Verksamhetsstatistik" -->
 					    </div>
 					  </div>
-					  <div id="business-statistics-collapse" class="accordion-body collapse" ng-class="{in: showOperation}">
+					  <div id="business-statistics-collapse" class="accordion-body collapse navigation-group" ng-class="{in: showOperation}">
 					    <div class="accordion-inner">
 					      <ul id="business-statistic-menu-content" class="nav nav-list">
 								<li><a ng-href="#/verksamhet/{{businessId}}/oversikt" ctrlname="BusinessOverviewCtrl" navigationaware>Översikt</a></li>
-							 	<li><a ng-href="#/verksamhet/{{businessId}}/sjukfallPerManad" id="navBusinessCasesPerMonthLink" ctrlname="" navigationaware>Sjukfall, totalt</a></li>
+							 	<li><a ng-href="#/verksamhet/{{businessId}}/sjukfallPerManad" id="navBusinessCasesPerMonthLink" ctrlname="VerksamhetCasesPerMonthCtrl" navigationaware>Sjukfall, totalt</a></li>
 								<li>
-									<a class="menu-item-has-childs" ng-href="#/verksamhet/{{businessId}}/diagnosgrupp" id="navBusinessDiagnosisGroupsLink" ctrlname="" navigationaware>Diagnosgrupp</a>
+									<a class="menu-item-has-childs" ng-href="#/verksamhet/{{businessId}}/diagnosgrupper" id="navBusinessDiagnosisGroupsLink" ctrlname="VerksamhetDiagnosisGroupsCtrl" navigationaware>Diagnosgrupp</a>
 									<i class="statistict-left-menu-expand-icon" class="accordion-toggle" data-toggle="collapse" href="#sub-menu-business-diagnostics"></i>
 								</li>
 								<ul id="sub-menu-business-diagnostics" class="nav nav-list sub-nav-list accordion-body in collapse">
-									<li><a ng-href="#/verksamhet/{{businessId}}/underdiagnosgrupp" id="navBusinessDiagnosisSubGroupsLink" ctrlname="" navigationaware>Underdiagnosgrupp</a></li>
+									<li><a ng-href="#/verksamhet/{{businessId}}/underdiagnosgrupper" id="navBusinessDiagnosisSubGroupsLink" ctrlname="VerksamhetDiagnosisSubGroupsCtrl" navigationaware>Underdiagnosgrupp</a></li>
 								</ul>
 								<li>
-									<a ng-href="#/verksamhet/{{businessId}}/aldersgrupper" id="navBusinessAgeGroupsLink" ctrlname="" navigationaware>Åldersgrupp</a>
+									<a ng-href="#/verksamhet/{{businessId}}/aldersgrupper" id="navBusinessAgeGroupsLink" ctrlname="VerksamhetAgeGroupCtrl" navigationaware>Åldersgrupp</a>
 									<i class="statistict-left-menu-expand-icon" class="accordion-toggle" data-toggle="collapse" href="#sub-menu-business-age-group"></i>
 								</li>
 								<ul id="sub-menu-business-age-group" class="nav nav-list sub-nav-list accordion-body in collapse">
 									<li><a ng-href="#/verksamhet/{{businessId}}/pagaendeavslutadealdersgrupper" id="navBusinessOngoingAndCompletedLink" ctrlname="" navigationaware>Pågående och avslutade</a></li>
 								</ul>
-								<li><a ng-href="#/verksamhet/{{businessId}}/sjukskrivningsgrad" id="navBusinessSickLeaveDegreeLink" ctrlname="" navigationaware>Sjukskrivningsgrad</a></li>
+								<li><a ng-href="#/verksamhet/{{businessId}}/sjukskrivningsgrad" id="navBusinessSickLeaveDegreeLink" ctrlname="VerksamhetDegreeOfSickLeaveCtrl" navigationaware>Sjukskrivningsgrad</a></li>
 								<li>
-									<a class="menu-item-has-childs" ng-href="#/verksamhet/{{businessId}}/sjukskrivningslangd" id="navBusinessSickLeaveLengthLink" ctrlname="" navigationaware>Sjukskrivningslängd</a>
+									<a class="menu-item-has-childs" ng-href="#/verksamhet/{{businessId}}/sjukskrivningslangd" id="navBusinessSickLeaveLengthLink" ctrlname="VerksamhetSickLeaveLengthCtrl" navigationaware>Sjukskrivningslängd</a>
 									<i class="statistict-left-menu-expand-icon" class="accordion-toggle" data-toggle="collapse" href="#sub-menu-business-sick-leave-length"></i>
 								</li>
 								<ul id="sub-menu-business-sick-leave-length" class="nav nav-list sub-nav-list accordion-body in collapse">
@@ -171,7 +171,7 @@
 						      Om tjänsten<i class="statistict-left-menu-expand-icon"></i>
 						    </div>
 						  </div>
-						  <div id="about-statistics-collapse" class="accordion-body collapse" ng-class="{in: showAbout}">
+						  <div id="about-statistics-collapse" class="accordion-body collapse navigation-group" ng-class="{in: showAbout}">
 						    <div class="accordion-inner">
 						    	<ul id="about-statistic-menu-content" class="nav nav-list">
 									<li><a class="first-item-in-menu" ng-href="#/om/tjansten" ctrlname="AboutServiceCtrl" navigationaware>Allmänt om tjänsten</a></li>

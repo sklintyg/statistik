@@ -1,6 +1,6 @@
  'use strict';
 
- app.casesPerMonthCtrl = function ($scope, statisticsData) {
+ app.casesPerMonthCtrl = function ($scope, $routeParams, statisticsData) {
 
     $scope.chartContainers = ["container"];
     
@@ -95,7 +95,11 @@
         $scope.doneLoading = true;
     };
     
-    statisticsData.getNumberOfCasesPerMonth(populatePageWithData, function() { $scope.dataLoadingError = true; });
+    if ($routeParams.verksamhetId){
+        statisticsData.getNumberOfCasesPerMonthVerksamhet($routeParams.verksamhetId, populatePageWithData, function() { $scope.dataLoadingError = true; });
+    } else {
+        statisticsData.getNumberOfCasesPerMonth(populatePageWithData, function() { $scope.dataLoadingError = true; });
+    }
     
     $scope.showHideDataTable = ControllerCommons.showHideDataTableDefault;
     $scope.toggleTableVisibility = function(event){
