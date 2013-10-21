@@ -8,7 +8,7 @@ import java.util.Random;
 import se.inera.statistics.service.report.api.DiagnosisSubGroups;
 import se.inera.statistics.service.report.model.DiagnosisGroup;
 import se.inera.statistics.service.report.model.DiagnosisGroupResponse;
-import se.inera.statistics.service.report.model.DiagnosisGroupRow;
+import se.inera.statistics.service.report.model.DualSexDataRow;
 import se.inera.statistics.service.report.model.DualSexField;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.Sex;
@@ -21,9 +21,9 @@ public class DiagnosisSubGroupsMock implements DiagnosisSubGroups {
     @Override
     public DiagnosisGroupResponse getDiagnosisGroups(String hsaId, Range range, String diagnosisGroupId) {
         List<DiagnosisGroup> headers = DiagnosisGroupsUtil.getSubGroups(diagnosisGroupId);
-        List<DiagnosisGroupRow> rows = new ArrayList<>();
+        List<DualSexDataRow> rows = new ArrayList<>();
         for (String periodName : ReportUtil.PERIODS) {
-            rows.add(new DiagnosisGroupRow(periodName, randomData(headers.size())));
+            rows.add(new DualSexDataRow(periodName, randomData(headers.size())));
         }
         return new DiagnosisGroupResponse(headers, rows);
     }

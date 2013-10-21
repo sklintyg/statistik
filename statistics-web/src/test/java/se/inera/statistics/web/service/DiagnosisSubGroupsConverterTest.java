@@ -8,7 +8,7 @@ import org.junit.Test;
 
 import se.inera.statistics.service.report.model.DiagnosisGroup;
 import se.inera.statistics.service.report.model.DiagnosisGroupResponse;
-import se.inera.statistics.service.report.model.DiagnosisGroupRow;
+import se.inera.statistics.service.report.model.DualSexDataRow;
 import se.inera.statistics.service.report.model.DualSexField;
 import se.inera.statistics.web.model.DualSexStatisticsData;
 
@@ -16,7 +16,7 @@ public class DiagnosisSubGroupsConverterTest {
 
     @Test
     public void converterTestEmpty() {
-        DiagnosisGroupResponse resp = new DiagnosisGroupResponse(new ArrayList<DiagnosisGroup>(), new ArrayList<DiagnosisGroupRow>());
+        DiagnosisGroupResponse resp = new DiagnosisGroupResponse(new ArrayList<DiagnosisGroup>(), new ArrayList<DualSexDataRow>());
         DualSexStatisticsData data = new DiagnosisSubGroupsConverter().convert(resp);
         assertEquals("[]", data.getFemaleChart().getCategories().toString());
         assertEquals("[]", data.getFemaleChart().getSeries().toString());
@@ -27,12 +27,12 @@ public class DiagnosisSubGroupsConverterTest {
         //Given
         ArrayList<DiagnosisGroup> diagnosisGroups = new ArrayList<DiagnosisGroup>();
         diagnosisGroups.add(new DiagnosisGroup("A00-B99", "name1"));
-        ArrayList<DiagnosisGroupRow> rows = new ArrayList<DiagnosisGroupRow>();
+        ArrayList<DualSexDataRow> rows = new ArrayList<DualSexDataRow>();
         ArrayList<DualSexField> diagnosisGroupData = new ArrayList<DualSexField>();
         // CHECKSTYLE:OFF MagicNumber
         diagnosisGroupData.add(new DualSexField(3, 2));
         // CHECKSTYLE:ON MagicNumber
-        rows.add(new DiagnosisGroupRow("period1", diagnosisGroupData));
+        rows.add(new DualSexDataRow("period1", diagnosisGroupData));
         DiagnosisGroupResponse resp = new DiagnosisGroupResponse(diagnosisGroups, rows);
 
         //When

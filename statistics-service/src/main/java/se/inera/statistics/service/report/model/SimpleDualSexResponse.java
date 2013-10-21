@@ -3,7 +3,7 @@ package se.inera.statistics.service.report.model;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class SimpleDualSexResponse<T extends SimpleDualSexDataRow> {
+public class SimpleDualSexResponse<T extends SimpleDualSexDataRow> {
 
     private final List<T> rows;
     private final int numberOfMonthsCalculated;

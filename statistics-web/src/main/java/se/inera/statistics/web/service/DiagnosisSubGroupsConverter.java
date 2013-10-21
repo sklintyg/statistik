@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.TreeMap;
 
 import se.inera.statistics.service.report.model.DiagnosisGroupResponse;
-import se.inera.statistics.service.report.model.DiagnosisGroupRow;
+import se.inera.statistics.service.report.model.DualSexDataRow;
 import se.inera.statistics.service.report.model.Sex;
 import se.inera.statistics.web.model.ChartData;
 import se.inera.statistics.web.model.ChartSeries;
@@ -47,7 +47,7 @@ public class DiagnosisSubGroupsConverter {
         for (int i = 0; i < data.getRows().size(); i++) {
             remaining.add(0);
         }
-        List<DiagnosisGroupRow> rows = data.getRows();
+        List<DualSexDataRow> rows = data.getRows();
         for (int r = 0; r < rows.size(); r++) {
             List<Integer> dataForCurrentSex = rows.get(r).getDataForSex(sex);
             for (int i = 0; i < dataForCurrentSex.size(); i++) {

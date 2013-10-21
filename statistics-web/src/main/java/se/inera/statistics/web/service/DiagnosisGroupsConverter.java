@@ -12,7 +12,7 @@ import java.util.TreeMap;
 
 import se.inera.statistics.service.report.model.DiagnosisGroup;
 import se.inera.statistics.service.report.model.DiagnosisGroupResponse;
-import se.inera.statistics.service.report.model.DiagnosisGroupRow;
+import se.inera.statistics.service.report.model.DualSexDataRow;
 import se.inera.statistics.service.report.model.Sex;
 import se.inera.statistics.web.model.ChartData;
 import se.inera.statistics.web.model.ChartSeries;
@@ -139,7 +139,7 @@ public class DiagnosisGroupsConverter {
 
     private static List<NamedData> getTableRows(DiagnosisGroupResponse resp) {
         List<NamedData> rows = new ArrayList<>();
-        for (DiagnosisGroupRow row : resp.getRows()) {
+        for (DualSexDataRow row : resp.getRows()) {
             List<Integer> mergedSexData = ServiceUtil.getMergedSexData(row);
             List<Integer> mergedAndSummed = ServiceUtil.getAppendedSum(mergedSexData);
             rows.add(new NamedData(row.getName(), mergedAndSummed));
