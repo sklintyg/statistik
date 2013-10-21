@@ -26,20 +26,19 @@ public class AldersgruppPersistenceHandler implements AgeGroups {
 
     @Override
     @Transactional
-    public AgeGroupsResponse getHistoricalAgeGroups(String hsaId, LocalDate when, int periods) {
+    public AgeGroupsResponse getHistoricalAgeGroups(String hsaId, LocalDate when, RollingLength rolling) {
         TypedQuery<AgeGroupsRow> query = manager.createQuery("SELECT a FROM AgeGroupsRow a WHERE a.key.hsaId = :hsaId AND a.key.period = :when a.key.periods = :periods ", AgeGroupsRow.class);
         query.setParameter("hsaId", hsaId);
         query.setParameter("when", ReportUtil.toPeriod(when));
-        query.setParameter("periods", periods);
+        query.setParameter("periods", rolling.getPeriods());
 
-        return translateForOutput(query.getResultList(), periods);
+        return translateForOutput(query.getResultList(), rolling.getPeriods());
     }
     
 
     @Override
     public AgeGroupsResponse getCurrentAgeGroups(String hsaId) {
-        // TODO Auto-generated method stub
-        throw new RuntimeException("Not yet implemented");
+        return getHistoricalAgeGroups(hsaId, new LocalDate().withDayOfMonth(1), RollingLength.SINGLE_MONTH);
     }
 
     private AgeGroupsResponse translateForOutput(List<AgeGroupsRow> list, int periods) {
@@ -59,13 +58,13 @@ public class AldersgruppPersistenceHandler implements AgeGroups {
 
     @Transactional
     @Override
-    public void count(String period, String hsaId, String group, int periods, Verksamhet typ, Sex sex) {
-        AgeGroupsRow existingRow = manager.find(AgeGroupsRow.class, new AldersgruppKey(period, hsaId, group, periods));
+    public void count(String period, String hsaId, String group, RollingLength length, Verksamhet typ, Sex sex) {
+        AgeGroupsRow existingRow = manager.find(AgeGroupsRow.class, new AldersgruppKey(period, hsaId, group, length.getPeriods()));
         int female = Sex.Female.equals(sex) ? 1 : 0;
         int male = Sex.Male.equals(sex) ? 1 : 0;
 
         if (existingRow == null) {
-            AgeGroupsRow row = new AgeGroupsRow(period, hsaId, group, periods, typ, female, male);
+            AgeGroupsRow row = new AgeGroupsRow(period, hsaId, group, length.getPeriods(), typ, female, male);
             manager.persist(row);
         } else {
             existingRow.setFemale(existingRow.getFemale() + female);

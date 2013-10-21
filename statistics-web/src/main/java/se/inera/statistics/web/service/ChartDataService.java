@@ -31,6 +31,7 @@ import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.SickLeaveLengthResponse;
 import se.inera.statistics.service.report.model.SimpleDualSexDataRow;
 import se.inera.statistics.service.report.model.SimpleDualSexResponse;
+import se.inera.statistics.service.report.repository.RollingLength;
 import se.inera.statistics.service.report.util.DiagnosisGroupsUtil;
 import se.inera.statistics.service.report.util.Verksamhet;
 import se.inera.statistics.web.model.AgeGroupsData;
@@ -141,7 +142,7 @@ public class ChartDataService {
     @Produces({ MediaType.APPLICATION_JSON })
     public SickLeaveLengthData getSickLeaveLengthData() {
         LOG.info("Calling getSickLeaveLengthData for national");
-        SickLeaveLengthResponse sickLeaveLength = datasourceSickLeaveLength.getStatistics(Verksamhet.NATIONELL.toString(), previousMonth(), 12);
+        SickLeaveLengthResponse sickLeaveLength = datasourceSickLeaveLength.getStatistics(Verksamhet.NATIONELL.toString(), previousMonth(), RollingLength.YEAR);
         return new SickLeaveLengthConverter().convert(sickLeaveLength);
     }
 
