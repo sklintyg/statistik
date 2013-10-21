@@ -6,9 +6,11 @@ public class SjukfallInfo {
 
     private String id;
     private LocalDate prevEnd;
+    private LocalDate start;
 
-    public SjukfallInfo(String id, LocalDate prevEnd) {
+    public SjukfallInfo(String id, LocalDate start, LocalDate prevEnd) {
         this.id = id;
+        this.start = start;
         this.prevEnd = prevEnd;
     }
 
@@ -32,5 +34,9 @@ public class SjukfallInfo {
         } else {
             return false;
         }
+    }
+
+    public LocalDate getStart() {
+        return start;
     }
 }

@@ -80,6 +80,20 @@ public class SjukfallServiceTest extends SjukfallService {
         assertEquals(active, stillActive);
     }
 
+    @Test
+    public void keepOriginalStartDate() {
+        register("personnummer", "vardgivare", date("2013-01-01"), date("2013-01-28"));
+        SjukfallInfo id2 = register("personnummer", "vardgivare", date("2013-01-25"), date("2013-02-15"));
+        assertEquals(date("2013-01-01"), id2.getStart());
+    }
+
+    @Test
+    public void overlappingKeepsPreviousEndDate() {
+        register("personnummer", "vardgivare", date("2013-01-01"), date("2013-01-28"));
+        SjukfallInfo id2 = register("personnummer", "vardgivare", date("2013-01-25"), date("2013-02-15"));
+        assertEquals(date("2013-01-28"), id2.getPrevEnd());
+    }
+
     private LocalDate date(String stringDate) {
         return FORMATTER.parseLocalDate(stringDate);
     }
