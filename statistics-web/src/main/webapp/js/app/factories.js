@@ -38,6 +38,18 @@ app.statisticsApp.factory('statisticsData', function($http){
        });
    };
 
+   factory.getNumberOfCasesPerMonthVerksamhet = function (verksamhetId, successCallback, failureCallback){
+       $http.get("api/verksamhet/" + verksamhetId + "/getNumberOfCasesPerMonth").success(function(result) {
+           try {
+               successCallback(result);
+           } catch (e) {
+               failureCallback();
+           }
+       }).error(function(data, status, headers, config) {
+           failureCallback();
+       });
+   };
+   
    factory.getDiagnosisGroupData = function (successCallback, failureCallback){
        $http.get("api/getDiagnosisGroupStatistics").success(function(result) {
            try {
