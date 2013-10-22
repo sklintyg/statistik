@@ -2,10 +2,8 @@ package se.inera.statistics.service.report.model;
 
 import java.util.Locale;
 
-import org.joda.time.Days;
 import org.joda.time.LocalDate;
 import org.joda.time.Months;
-import org.joda.time.Period;
 
 public final class Range {
     private static final int DEFAULT_PERIOD = 18;
@@ -23,7 +21,7 @@ public final class Range {
 
     public Range(int months) {
         to = new LocalDate().withDayOfMonth(1).minusMonths(1);
-        from = to.minusMonths(months);
+        from = to.minusMonths(months - 1);
     }
 
     public LocalDate getFrom() {

@@ -197,6 +197,10 @@
     $scope.spinnerText = "Laddar information...";
     $scope.doneLoading = false;
     $scope.dataLoadingError = false;
+    $scope.popoverTextTitle = "Förklaring";
+    $scope.popoverTextAmount = "Totala antalet sjukfall senaste tre månaderna.";
+    $scope.popoverTextChangeProcentage = "Procentsatsen visar förändringen av antalet sjukfall senaste tre månaderna jämfört med föregående tre månader.";
+    $scope.popoverTextSexDistribution = "Könsfördelningen av totala antalet sjukfall senaste tre månaderna.";
 
     statisticsData.getLoginInfo(function(loginInfo){ 
         $scope.businesses = loginInfo.businesses;
