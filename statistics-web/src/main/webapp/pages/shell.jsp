@@ -147,7 +147,7 @@
 									<i class="statistict-left-menu-expand-icon" class="accordion-toggle" data-toggle="collapse" href="#sub-menu-business-age-group"></i>
 								</li>
 								<ul id="sub-menu-business-age-group" class="nav nav-list sub-nav-list accordion-body in collapse">
-									<li><a ng-href="#/verksamhet/{{businessId}}/aldersgrupperhistoriskt" id="navBusinessOngoingAndCompletedLink" ctrlname="VerksamhetAgeGroupHistoricalCtrl" navigationaware>Pågående och avslutade</a></li>
+									<li><a ng-href="#/verksamhet/{{businessId}}/aldersgrupperpagaende" id="navBusinessOngoingAndCompletedLink" ctrlname="VerksamhetAgeGroupCurrentCtrl" navigationaware>Pågående</a></li>
 								</ul>
 								<li><a ng-href="#/verksamhet/{{businessId}}/sjukskrivningsgrad" id="navBusinessSickLeaveDegreeLink" ctrlname="VerksamhetDegreeOfSickLeaveCtrl" navigationaware>Sjukskrivningsgrad</a></li>
 								<li>
@@ -155,7 +155,7 @@
 									<i class="statistict-left-menu-expand-icon" class="accordion-toggle" data-toggle="collapse" href="#sub-menu-business-sick-leave-length"></i>
 								</li>
 								<ul id="sub-menu-business-sick-leave-length" class="nav nav-list sub-nav-list accordion-body in collapse">
-									<li><a ng-href="#/verksamhet/{{businessId}}/sjukskrivningslangdhistoriskt" id="navBusinessOngoingAndCompletedSickLeaveLink" ctrlname="VerksamhetSickLeaveLengthHistoricalCtrl" navigationaware>Pågående och avslutade</a></li>
+									<li><a ng-href="#/verksamhet/{{businessId}}/sjukskrivningslangdpagaende" id="navBusinessOngoingAndCompletedSickLeaveLink" ctrlname="VerksamhetSickLeaveLengthCurrentCtrl" navigationaware>Pågående</a></li>
 									<li><a class="last-item-in-menu" ng-href="#/verksamhet/{{businessId}}/langasjukskrivningar" id="navBusinessMoreNinetyDaysSickLeaveLink" ctrlname="VerksamhetLongSickLeavesCtrl" navigationaware>Mer än 90 dagar</a></li>
 								</ul>
 							</ul>
