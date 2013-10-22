@@ -994,7 +994,7 @@ div.headerbox-user { font-size: 13px; line-height: 16px;}
 }
 .statistics-btn-group .dropdown-menu>li>a {
 	display: block;
-	padding: 3px 10px;
+	padding: 3px 1px;
 }
 .statistics-btn-group ul.dropdown-menu li a.disabled {
 	color: #E3E3E3;
