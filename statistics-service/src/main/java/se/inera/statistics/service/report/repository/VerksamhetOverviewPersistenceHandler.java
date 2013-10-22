@@ -18,12 +18,16 @@ import se.inera.statistics.service.report.model.OverviewChartRowExtended;
 import se.inera.statistics.service.report.model.OverviewSexProportion;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.VerksamhetOverviewResponse;
+import se.inera.statistics.service.report.util.AldersgroupUtil;
 import se.inera.statistics.service.report.util.ReportUtil;
 
 public class VerksamhetOverviewPersistenceHandler implements VerksamhetOverview {
 
     public static final int DISPLAYED_DIAGNOSIS_GROUPS = 5;
     public static final int PERCENT = 100;
+    private static final int DISPLAYED_AGE_GROUPS = 7;
+    private static final int ROLLING_LENGTH = RollingLength.QUARTER.getPeriods();
+
     @PersistenceContext(unitName = "IneraStatisticsLog")
     private EntityManager manager;
 
@@ -80,7 +84,7 @@ public class VerksamhetOverviewPersistenceHandler implements VerksamhetOverview 
 
         Comparator<? super Object[]> comparator = new Comparator() {
             public int compare(Object o1, Object o2) {
-                return ((Long) ((Object[])o2)[1]).intValue() - ((Long) ((Object[])o1)[1]).intValue();
+                return ((Long) ((Object[]) o2)[1]).intValue() - ((Long) ((Object[]) o1)[1]).intValue();
             }
         };
 
@@ -97,12 +101,50 @@ public class VerksamhetOverviewPersistenceHandler implements VerksamhetOverview 
         return result;
     }
 
+    @SuppressWarnings("unchecked")
+    private List<OverviewChartRowExtended> getAgeGroups(String verksamhetId, Range range) {
+        List<Object[]> queryResult = getAgeGroupsFromDb(verksamhetId, range);
+        List<Object[]> queryResultForPrevPeriod = getAgeGroupsFromDb(verksamhetId, ReportUtil.getPreviousPeriod(range));
+
+        Comparator<? super Object[]> comparator = new Comparator() {
+            @Override
+            public int compare(Object o1, Object o2) {
+                return ((Long) ((Object[]) o2)[1]).intValue() - ((Long) ((Object[]) o1)[1]).intValue();
+            }
+        };
+
+        Collections.sort(queryResult, comparator);
+        ArrayList<OverviewChartRowExtended> result = new ArrayList<>();
+
+        for (int x = 0; x < DISPLAYED_AGE_GROUPS && x < queryResult.size(); x++) {
+            Object[] row = queryResult.get(x);
+
+            int change = lookupChange(row, queryResultForPrevPeriod);
+            result.add(new OverviewChartRowExtended((String) row[0], ((Long) row[1]).intValue(), change));
+        }
+
+        Comparator<? super OverviewChartRowExtended> ageComparator = new Comparator<OverviewChartRowExtended>() {
+            @Override
+            public int compare(OverviewChartRowExtended o1, OverviewChartRowExtended o2) {
+                Integer i1 = AldersgroupUtil.GROUP_MAP.get(o1.getName());
+                Integer i2 = AldersgroupUtil.GROUP_MAP.get(o2.getName());
+                if (i1 == null || i2 == null) {
+                    throw new IllegalStateException("Groups have not been defined correctly.");
+                }
+                return i1 - i2;
+            }
+        };
+        Collections.sort(result, ageComparator);
+
+        return result;
+    }
+
     private int lookupChange(Object[] row, List<Object[]> queryResultForPrevPeriod) {
         String key = (String)row[0];
         int current = ((Long) row[1]).intValue();
         int prev = 0;
         for (Object[] prevRow : queryResultForPrevPeriod) {
-            if(key.equals(prevRow[0])) {
+            if (key.equals(prevRow[0])) {
                 prev = ((Long) prevRow[1]).intValue();
                 break;
             }
@@ -112,7 +154,7 @@ public class VerksamhetOverviewPersistenceHandler implements VerksamhetOverview 
 
     @SuppressWarnings("unchecked")
     private List<Object[]> getDiagnosisGroupsFromDb(String verksamhetId, Range range) {
-        Query query = manager.createQuery("SELECT c.key.diagnosgrupp, sum(c.female) + sum(c.male), c.key.diagnosgrupp  FROM DiagnosisGroupData c WHERE c.key.hsaId = :hsaId AND c.key.period BETWEEN :from AND :to  GROUP BY c.key.diagnosgrupp");
+        Query query = manager.createQuery("SELECT c.key.diagnosgrupp, sum(c.female) + sum(c.male) FROM DiagnosisGroupData c WHERE c.key.hsaId = :hsaId AND c.key.period BETWEEN :from AND :to  GROUP BY c.key.diagnosgrupp");
         query.setParameter("hsaId", verksamhetId);
         query.setParameter("from", ReportUtil.toPeriod(range.getFrom()));
         query.setParameter("to", ReportUtil.toPeriod(range.getTo()));
@@ -122,10 +164,17 @@ public class VerksamhetOverviewPersistenceHandler implements VerksamhetOverview 
         return queryResult;
     }
 
-    private List<OverviewChartRowExtended> getAgeGroups(String verksamhetId, Range range) {
-        List<OverviewChartRowExtended> result = new ArrayList<>();
-        result.add(new OverviewChartRowExtended("10-20", 2, 1));
-        return result;
+    @SuppressWarnings("unchecked")
+    private List<Object[]> getAgeGroupsFromDb(String verksamhetId, Range range) {
+        Query query = manager.createQuery("SELECT r.key.grupp, sum(r.female) + sum(r.male) FROM AgeGroupsRow r WHERE r.key.periods = :periods AND r.key.hsaId = :hsaId AND r.key.period BETWEEN :from AND :to  GROUP BY r.key.grupp");
+        query.setParameter("periods", ROLLING_LENGTH);
+        query.setParameter("hsaId", verksamhetId);
+        query.setParameter("from", ReportUtil.toPeriod(range.getFrom()));
+        query.setParameter("to", ReportUtil.toPeriod(range.getTo()));
+
+        List<Object[]> queryResult;
+        queryResult = (List<Object[]>) query.getResultList();
+        return queryResult;
     }
 
 }

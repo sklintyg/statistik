@@ -38,11 +38,11 @@ public class AldersgruppKey implements Serializable {
         this.hsaId = hsaId;
     }
 
-    public String getGroup() {
+    public String getGrupp() {
         return grupp;
     }
 
-    public void setGroup(String group) {
+    public void setGrupp(String group) {
         this.grupp = group;
     }
 
