@@ -8,6 +8,13 @@
      return conf;
  }
 
+ app.nationalSickLeaveLengthHistoricalConfig = function() {
+     var conf = {};
+     conf.dataFetcherVerksamhet = "getNationalSickLeaveLengthHistoricalDataVerksamhet",
+     conf.title = function(monthsIncluded){return "Antal pågående samt avslutade sjukfall baserat på sjukskrivningslängd senaste " + monthsIncluded + " månaderna";}
+     return conf;
+ }
+ 
  app.nationalAgeGroupConfig = function() {
      var conf = {};
      conf.dataFetcher = "getAgeGroups",

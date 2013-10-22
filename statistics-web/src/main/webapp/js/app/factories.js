@@ -186,6 +186,18 @@ app.statisticsApp.factory('statisticsData', function($http){
        });
    };
    
+   factory.getNationalSickLeaveLengthHistoricalDataVerksamhet = function (verksamhetId, successCallback, failureCallback){
+       $http.get("api/verksamhet/" + verksamhetId + "/getSickLeaveLengthHistoricalData").success(function(result) {
+           try {
+               successCallback(result);
+           } catch (e) {
+               failureCallback();
+           }
+       }).error(function(data, status, headers, config) {
+           failureCallback();
+       });
+   };
+   
    factory.getNationalCountyData = function (successCallback, failureCallback){
        $http.get("api/getCountyStatistics").success(function(result) {
            try {

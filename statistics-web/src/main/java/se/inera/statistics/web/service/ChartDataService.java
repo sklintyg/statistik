@@ -142,7 +142,7 @@ public class ChartDataService {
     @Produces({ MediaType.APPLICATION_JSON })
     public SickLeaveLengthData getSickLeaveLengthData() {
         LOG.info("Calling getSickLeaveLengthData for national");
-        SickLeaveLengthResponse sickLeaveLength = datasourceSickLeaveLength.getStatistics(Verksamhet.NATIONELL.toString(), previousMonth(), RollingLength.YEAR);
+        SickLeaveLengthResponse sickLeaveLength = datasourceSickLeaveLength.getCurrentStatistics(Verksamhet.NATIONELL.toString());
         return new SickLeaveLengthConverter().convert(sickLeaveLength);
     }
 

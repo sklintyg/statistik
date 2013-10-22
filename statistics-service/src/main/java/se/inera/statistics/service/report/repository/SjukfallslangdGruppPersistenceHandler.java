@@ -25,13 +25,19 @@ public class SjukfallslangdGruppPersistenceHandler implements SjukfallslangdGrup
 
     @Override
     @Transactional
-    public SickLeaveLengthResponse getStatistics(String hsaId, LocalDate when, RollingLength length) {
+    public SickLeaveLengthResponse getHistoricalStatistics(String hsaId, LocalDate when, RollingLength length) {
         TypedQuery<SickLeaveLengthRow> query = manager.createQuery("SELECT a FROM SickLeaveLengthRow a WHERE a.key.hsaId = :hsaId AND a.key.period = :when AND a.key.periods = :periods ", SickLeaveLengthRow.class);
         query.setParameter("hsaId", hsaId);
         query.setParameter("when", ReportUtil.toPeriod(when));
         query.setParameter("periods", length.getPeriods());
 
         return translateForOutput(query.getResultList(), length.getPeriods());
+    }
+
+    @Override
+    public SickLeaveLengthResponse getCurrentStatistics(String hsaId) {
+        // TODO Auto-generated method stub
+        throw new RuntimeException("Not yet implemented");
     }
 
     private SickLeaveLengthResponse translateForOutput(List<SickLeaveLengthRow> list, int periods) {
@@ -65,4 +71,5 @@ public class SjukfallslangdGruppPersistenceHandler implements SjukfallslangdGrup
             manager.merge(existingRow);
         }
     }
+
 }

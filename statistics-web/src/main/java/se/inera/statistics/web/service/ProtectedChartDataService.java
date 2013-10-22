@@ -117,7 +117,7 @@ public class ProtectedChartDataService {
     @Produces({ MediaType.APPLICATION_JSON })
     public AgeGroupsData getAgeGroupsStatistics(@PathParam("verksamhetId") String verksamhetId) {
         LOG.info("Calling getAgeGroupsStatistics with verksamhetId: " + verksamhetId);
-        AgeGroupsResponse ageGroups = datasourceAgeGroups.getCurrentAgeGroups("hsaid");
+        AgeGroupsResponse ageGroups = datasourceAgeGroups.getCurrentAgeGroups(Verksamhet.decodeId(verksamhetId));
         return new AgeGroupsConverter().convert(ageGroups);
     }
 
@@ -126,7 +126,7 @@ public class ProtectedChartDataService {
     @Produces({ MediaType.APPLICATION_JSON })
     public AgeGroupsData getAgeGroupsHistoricalStatistics(@PathParam("verksamhetId") String verksamhetId) {
         LOG.info("Calling getAgeGroupsHistoricalStatistics with verksamhetId: " + verksamhetId);
-        AgeGroupsResponse ageGroups = datasourceAgeGroups.getHistoricalAgeGroups("hsaid", previousMonth(), RollingLength.QUARTER);
+        AgeGroupsResponse ageGroups = datasourceAgeGroups.getHistoricalAgeGroups(Verksamhet.decodeId(verksamhetId), previousMonth(), RollingLength.QUARTER);
         return new AgeGroupsConverter().convert(ageGroups);
     }
 
@@ -144,7 +144,16 @@ public class ProtectedChartDataService {
     @Produces({ MediaType.APPLICATION_JSON })
     public SickLeaveLengthData getSickLeaveLengthData(@PathParam("verksamhetId") String verksamhetId) {
         LOG.info("Calling getSickLeaveLengthData with verksamhetId: " + verksamhetId);
-        SickLeaveLengthResponse sickLeaveLength = datasourceSickLeaveLength.getStatistics(Verksamhet.decodeId(verksamhetId), previousMonth(), RollingLength.YEAR);
+        SickLeaveLengthResponse sickLeaveLength = datasourceSickLeaveLength.getCurrentStatistics(Verksamhet.decodeId(verksamhetId));
+        return new SickLeaveLengthConverter().convert(sickLeaveLength);
+    }
+
+    @GET
+    @Path("{verksamhetId}/getSickLeaveLengthHistoricalData")
+    @Produces({ MediaType.APPLICATION_JSON })
+    public SickLeaveLengthData getSickLeaveLengthHistoricalData(@PathParam("verksamhetId") String verksamhetId) {
+        LOG.info("Calling getSickLeaveLengthHistoricalData with verksamhetId: " + verksamhetId);
+        SickLeaveLengthResponse sickLeaveLength = datasourceSickLeaveLength.getHistoricalStatistics(Verksamhet.decodeId(verksamhetId), previousMonth(), RollingLength.YEAR);
         return new SickLeaveLengthConverter().convert(sickLeaveLength);
     }
 

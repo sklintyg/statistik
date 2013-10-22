@@ -21,7 +21,7 @@ public class SjukfallslangdGruppMock implements SjukfallslangdGrupp {
 
     // CHECKSTYLE:OFF MagicNumber
     @Override
-    public SickLeaveLengthResponse getStatistics(String hsaId, LocalDate when, RollingLength length) {
+    public SickLeaveLengthResponse getHistoricalStatistics(String hsaId, LocalDate when, RollingLength length) {
         final List<SickLeaveLengthRow> rows = new ArrayList<>();
         for (Group group : SjukfallslangdUtil.GROUPS) {
             int women = (int) (random.nextGaussian() * 2000 + 10000);
@@ -32,7 +32,13 @@ public class SjukfallslangdGruppMock implements SjukfallslangdGrupp {
     }
 
     @Override
+    public SickLeaveLengthResponse getCurrentStatistics(String hsaId) {
+        return getHistoricalStatistics(hsaId, null, RollingLength.SINGLE_MONTH);
+    }
+
+    @Override
     public void count(String period, String hsaId, String group, RollingLength length, Verksamhet typ, Sex sex) {
     }
     // CHECKSTYLE:ON
+
 }

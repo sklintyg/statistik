@@ -104,6 +104,12 @@ app.statisticsApp = angular.module('StatisticsApp', [ 'ngCookies', 'ui.bootstrap
                 controllerAs : 'VerksamhetSickLeaveLengthCtrl',
                 resolve : { config: app.nationalSickLeaveLengthConfig }, 
                 title: 'Sjukskrivningslängd'
+            }).when('/verksamhet/:verksamhetId/sjukskrivningslangdhistoriskt', {
+                templateUrl : 'views/detailsView.html',
+                controller : 'SickLeaveLengthCtrl',
+                controllerAs : 'VerksamhetSickLeaveLengthHistoricalCtrl',
+                resolve : { config: app.nationalSickLeaveLengthHistoricalConfig }, 
+                title: 'Sjukskrivningslängd'
             }).when('/om/tjansten', {
                 templateUrl : 'views/about/about.html',
                 controllerAs : 'AboutServiceCtrl',
