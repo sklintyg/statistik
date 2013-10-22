@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -26,7 +27,6 @@ public class VerksamhetOverviewPersistenceHandler implements VerksamhetOverview 
     public static final int DISPLAYED_DIAGNOSIS_GROUPS = 5;
     public static final int PERCENT = 100;
     private static final int DISPLAYED_AGE_GROUPS = 7;
-    private static final int ROLLING_LENGTH = RollingLength.QUARTER.getPeriods();
 
     @PersistenceContext(unitName = "IneraStatisticsLog")
     private EntityManager manager;
@@ -53,7 +53,28 @@ public class VerksamhetOverviewPersistenceHandler implements VerksamhetOverview 
 
     private List<OverviewChartRowExtended> getDegreeOfSickLeaveGroups(String verksamhetId, Range range) {
         List<OverviewChartRowExtended> result = new ArrayList<>();
-        result.add(new OverviewChartRowExtended("10-20", 2, 1));
+        Map<Integer, Integer> queryResult = getDegreeOfSickLeaveGroupsFromDb(verksamhetId, range);
+        Map<Integer, Integer> queryResultPreviousPeriod = getDegreeOfSickLeaveGroupsFromDb(verksamhetId, ReportUtil.getPreviousPeriod(range));
+        
+        for (int grad: new int[] {25, 50, 75, 100}) {
+            int current = queryResult.get(grad);
+            int previous = queryResultPreviousPeriod.get(grad);
+            int change = previous == 0 ? 0 : (current * 100 / previous - 100);
+            result.add(new OverviewChartRowExtended(grad + "%", current, change));
+        }
+        return result;
+    }
+
+    private Map<Integer, Integer> getDegreeOfSickLeaveGroupsFromDb(String verksamhetId, Range range) {
+        Query query = manager.createQuery("SELECT c.key.grad, SUM(c.male) + SUM(c.female) FROM SjukskrivningsgradData c WHERE c.key.hsaId = :hsaId AND c.key.period BETWEEN :from AND :to GROUP BY c.key.grad");
+        query.setParameter("hsaId", verksamhetId);
+        query.setParameter("from", ReportUtil.toPeriod(range.getFrom()));
+        query.setParameter("to", ReportUtil.toPeriod(range.getTo()));
+        
+        Map<Integer, Integer> result = new DefaultHashMap<Integer, Integer>(0);
+        for (Object[] row: ((List<Object[]>) query.getResultList())) {
+            result.put(asInt(row[0]), asInt(row[1]));
+        }
         return result;
     }
 
@@ -166,15 +187,23 @@ public class VerksamhetOverviewPersistenceHandler implements VerksamhetOverview 
 
     @SuppressWarnings("unchecked")
     private List<Object[]> getAgeGroupsFromDb(String verksamhetId, Range range) {
-        Query query = manager.createQuery("SELECT r.key.grupp, sum(r.female) + sum(r.male) FROM AgeGroupsRow r WHERE r.key.periods = :periods AND r.key.hsaId = :hsaId AND r.key.period BETWEEN :from AND :to  GROUP BY r.key.grupp");
-        query.setParameter("periods", ROLLING_LENGTH);
+        Query query = manager.createQuery("SELECT r.key.grupp, sum(r.female) + sum(r.male) FROM AgeGroupsRow r WHERE r.key.periods = :periods AND r.key.hsaId = :hsaId AND r.key.period = :period  GROUP BY r.key.grupp");
+        query.setParameter("periods", range.getMonths());
         query.setParameter("hsaId", verksamhetId);
-        query.setParameter("from", ReportUtil.toPeriod(range.getFrom()));
-        query.setParameter("to", ReportUtil.toPeriod(range.getTo()));
+        query.setParameter("period", ReportUtil.toPeriod(range.getTo()));
 
         List<Object[]> queryResult;
         queryResult = (List<Object[]>) query.getResultList();
         return queryResult;
     }
 
+    private int asInt(Object object) {
+        if (object instanceof Integer) {
+            return ((Integer) object).intValue();
+        } else if (object instanceof Long) {
+            return ((Long) object).intValue();
+        } else {
+            return 0;
+        }
+    }
 }

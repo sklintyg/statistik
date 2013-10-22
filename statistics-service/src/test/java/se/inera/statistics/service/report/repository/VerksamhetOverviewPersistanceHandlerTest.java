@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import se.inera.statistics.service.report.api.AgeGroups;
 import se.inera.statistics.service.report.api.CasesPerMonth;
+import se.inera.statistics.service.report.api.DegreeOfSickLeave;
 import se.inera.statistics.service.report.api.DiagnosisGroups;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.Sex;
@@ -34,6 +35,9 @@ public class VerksamhetOverviewPersistanceHandlerTest extends VerksamhetOverview
     @Autowired
     private AgeGroups aldersgruppPersistenceHandler;
 
+    @Autowired
+    private DegreeOfSickLeave sjukskrivningsgrad;
+
     @Before
     public void init() {
         diagnosgroupPersistenceHandler.count("id1", "2013-09", "g1", Verksamhet.ENHET, Sex.Female);
@@ -54,12 +58,18 @@ public class VerksamhetOverviewPersistanceHandlerTest extends VerksamhetOverview
         aldersgruppPersistenceHandler.count("2013-09", "id1", "26-30", RollingLength.QUARTER, Verksamhet.ENHET, Sex.Female);
         aldersgruppPersistenceHandler.count("2013-09", "id3", "<21", RollingLength.QUARTER, Verksamhet.ENHET, Sex.Male);
         aldersgruppPersistenceHandler.count("2013-06", "id1", "<21", RollingLength.QUARTER, Verksamhet.ENHET, Sex.Male);
+
+        sjukskrivningsgrad.count("id1", "2013-09", 25, Verksamhet.ENHET, Sex.Female);
+        sjukskrivningsgrad.count("id1", "2013-09", 100, Verksamhet.ENHET, Sex.Female);
+        sjukskrivningsgrad.count("id1", "2013-09", 100, Verksamhet.ENHET, Sex.Female);
+        sjukskrivningsgrad.count("id1", "2013-06", 25, Verksamhet.ENHET, Sex.Female);
+        sjukskrivningsgrad.count("id1", "2013-06", 100, Verksamhet.ENHET, Sex.Female);
     }
 
     @Test
     public void getOverviewTest() {
-        LocalDate from = new LocalDate(2013, 8, 1);
-        LocalDate to = new LocalDate(2013, 10, 1);
+        LocalDate from = new LocalDate(2013, 7, 1);
+        LocalDate to = new LocalDate(2013, 9, 1);
         Range range = new Range(from, to);
 
         VerksamhetOverviewResponse result = this.getOverview("id1", range);
@@ -73,5 +83,10 @@ public class VerksamhetOverviewPersistanceHandlerTest extends VerksamhetOverview
         Assert.assertEquals(3, result.getAgeGroups().size());
         Assert.assertEquals(2, result.getAgeGroups().get(0).getQuantity());
         Assert.assertEquals(100, result.getAgeGroups().get(0).getAlternation());
+        
+        Assert.assertEquals(1, result.getDegreeOfSickLeaveGroups().get(0).getQuantity());
+        Assert.assertEquals(2, result.getDegreeOfSickLeaveGroups().get(3).getQuantity());
+        Assert.assertEquals(0, result.getDegreeOfSickLeaveGroups().get(0).getAlternation());
+        Assert.assertEquals(100, result.getDegreeOfSickLeaveGroups().get(3).getAlternation());
     }
 }

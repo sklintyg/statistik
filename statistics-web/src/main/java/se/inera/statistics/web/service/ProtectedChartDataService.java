@@ -108,7 +108,7 @@ public class ProtectedChartDataService {
     @Produces({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request, #verksamhetId)")
     public VerksamhetOverviewData getOverviewData(@Context HttpServletRequest request, @PathParam("verksamhetId") String verksamhetId) {
-        Range range = new Range();
+        Range range = new Range(RollingLength.QUARTER.getPeriods());
         VerksamhetOverviewResponse response = datasourceOverview.getOverview(Verksamhet.decodeId(verksamhetId), range);
         return new VerksamhetOverviewConverter().convert(response);
     }
