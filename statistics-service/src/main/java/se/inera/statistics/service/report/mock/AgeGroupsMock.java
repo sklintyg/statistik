@@ -1,7 +1,6 @@
 package se.inera.statistics.service.report.mock;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
@@ -12,20 +11,21 @@ import se.inera.statistics.service.report.model.AgeGroupsResponse;
 import se.inera.statistics.service.report.model.AgeGroupsRow;
 import se.inera.statistics.service.report.model.Sex;
 import se.inera.statistics.service.report.repository.RollingLength;
+import se.inera.statistics.service.report.util.AldersgroupUtil;
+import se.inera.statistics.service.report.util.AldersgroupUtil.Group;
 import se.inera.statistics.service.report.util.Verksamhet;
 
 public class AgeGroupsMock implements AgeGroups {
 
     private Random random = new Random();
-    public static final List<String> GROUPS = Arrays.asList("<21", "21-25", "26-30", "31-35", "36-40", "41-45", "46-50", "51-55", "56-60", ">60");
 
     // CHECKSTYLE:OFF MagicNumber
     public AgeGroupsResponse getAgeGroups(int periods) {
         final List<AgeGroupsRow> rows = new ArrayList<>();
-        for (String group : GROUPS) {
+        for (Group group : AldersgroupUtil.GROUPS) {
             int women = (int) (random.nextGaussian() * 2000 + 10000);
             int men = (int) (random.nextGaussian() * 2000 + 10000);
-            rows.add(new AgeGroupsRow(null, group, periods, women, men));
+            rows.add(new AgeGroupsRow(null, group.getGroupName(), periods, women, men));
         }
         return new AgeGroupsResponse(rows, 12);
     }
