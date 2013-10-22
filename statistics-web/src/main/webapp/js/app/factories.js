@@ -186,8 +186,8 @@ app.statisticsApp.factory('statisticsData', function($http){
        });
    };
    
-   factory.getSickLeaveLengthHistoricalDataVerksamhet = function (verksamhetId, successCallback, failureCallback){
-       $http.get("api/verksamhet/" + verksamhetId + "/getSickLeaveLengthHistoricalData").success(function(result) {
+   factory.getSickLeaveLengthCurrentDataVerksamhet = function (verksamhetId, successCallback, failureCallback){
+       $http.get("api/verksamhet/" + verksamhetId + "/getSickLeaveLengthCurrentData").success(function(result) {
            try {
                successCallback(result);
            } catch (e) {
