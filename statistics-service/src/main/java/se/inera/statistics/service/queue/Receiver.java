@@ -62,7 +62,7 @@ public class Receiver implements MessageListener {
         this.processLog = processLog;
     }
 
-    private class CorrelationId {
+    private static class CorrelationId {
         private String correlationId;
         private EventType eventType;
 

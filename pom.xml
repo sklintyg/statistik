@@ -520,7 +520,7 @@
     </build>
     <repositories>
         <repository>
-            <id>thirdparty-plugin</id>
+            <id>thirdparty</id>
             <url>https://repository-callistasoftware.forge.cloudbees.com/3rdparty</url>
             <releases>
                 <enabled>true</enabled>
@@ -530,4 +530,16 @@
             </snapshots>
         </repository>
     </repositories>
+    <pluginRepositories>
+      <pluginRepository>
+        <id>thirdparty-plugin</id>
+        <url>https://repository-callistasoftware.forge.cloudbees.com/3rdparty</url>
+        <releases>
+          <enabled>true</enabled>
+        </releases>
+        <snapshots>
+          <enabled>false</enabled>
+        </snapshots>
+      </pluginRepository>
+    </pluginRepositories>
 </project>

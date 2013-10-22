@@ -1,17 +1,13 @@
 package se.inera.statistics.service.report.mock;
 
+import java.util.ArrayList;
+
 import se.inera.statistics.service.report.api.VerksamhetOverview;
-import se.inera.statistics.service.report.model.DualSexField;
 import se.inera.statistics.service.report.model.OverviewChartRow;
 import se.inera.statistics.service.report.model.OverviewChartRowExtended;
 import se.inera.statistics.service.report.model.OverviewSexProportion;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.VerksamhetOverviewResponse;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Random;
 
 public class VerksamhetOverviewMock implements VerksamhetOverview {
 
@@ -63,18 +59,5 @@ public class VerksamhetOverviewMock implements VerksamhetOverview {
 
         return new VerksamhetOverviewResponse(147, sexProportionNew, sexProportionOld, diagnosisGroups, ageGroups, degreeOfSickLeaveGroups, sickLeaveLengthData, 12, 10);
     }
-
-    private int g() {
-        final int maxValue = 100;
-        return new Random().nextInt(maxValue);
-    }
     //CHECKSTYLE:ON MagicNumber
-
-    private List<DualSexField> randomData(int size) {
-        DualSexField[] data = new DualSexField[size];
-        for (int i = 0; i < size; i++) {
-            data[i] = new DualSexField(g(), g());
-        }
-        return Arrays.asList(data);
-    }
 }

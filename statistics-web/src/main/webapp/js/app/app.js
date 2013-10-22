@@ -14,6 +14,7 @@ app.statisticsApp = angular.module('StatisticsApp', [ 'ngCookies', 'ui.bootstrap
                 templateUrl : 'views/detailsView.html',
                 controller : 'CasesPerMonthCtrl',
                 controllerAs : 'NationalCasesPerMonthCtrl',
+                resolve : { config: app.casesPerMonthConfig }, 
                 title: 'Sjukfall per månad'
             }).when('/nationell/aldersgrupper', {
                 templateUrl : 'views/detailsView.html',
@@ -65,6 +66,7 @@ app.statisticsApp = angular.module('StatisticsApp', [ 'ngCookies', 'ui.bootstrap
                 templateUrl : 'views/detailsView.html',
                 controller : 'CasesPerMonthCtrl',
                 controllerAs : 'VerksamhetCasesPerMonthCtrl',
+                resolve : { config: app.casesPerMonthConfig }, 
                 title: 'Sjukfall per månad'
             }).when('/verksamhet/:verksamhetId/diagnosgrupper', {
                 templateUrl : 'views/detailsView.html',
@@ -104,6 +106,18 @@ app.statisticsApp = angular.module('StatisticsApp', [ 'ngCookies', 'ui.bootstrap
                 controllerAs : 'VerksamhetSickLeaveLengthCtrl',
                 resolve : { config: app.nationalSickLeaveLengthConfig }, 
                 title: 'Sjukskrivningslängd'
+            }).when('/verksamhet/:verksamhetId/sjukskrivningslangdhistoriskt', {
+                templateUrl : 'views/detailsView.html',
+                controller : 'SickLeaveLengthCtrl',
+                controllerAs : 'VerksamhetSickLeaveLengthHistoricalCtrl',
+                resolve : { config: app.nationalSickLeaveLengthHistoricalConfig }, 
+                title: 'Sjukskrivningslängd'
+            }).when('/verksamhet/:verksamhetId/langasjukskrivningar', {
+                templateUrl : 'views/detailsView.html',
+                controller : 'LongSickLeavesCtrl',
+                controllerAs : 'VerksamhetLongSickLeavesCtrl',
+                resolve : { config: app.longSickLeavesConfig }, 
+                title: 'Sjukskrivningslängd mer än 90 dagar'
             }).when('/om/tjansten', {
                 templateUrl : 'views/about/about.html',
                 controllerAs : 'AboutServiceCtrl',

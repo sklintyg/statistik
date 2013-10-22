@@ -174,8 +174,32 @@ app.statisticsApp.factory('statisticsData', function($http){
        });
    };
    
-   factory.getNationalSickLeaveLengthDataVerksamhet = function (verksamhetId, successCallback, failureCallback){
+   factory.getSickLeaveLengthDataVerksamhet = function (verksamhetId, successCallback, failureCallback){
        $http.get("api/verksamhet/" + verksamhetId + "/getSickLeaveLengthData").success(function(result) {
+           try {
+               successCallback(result);
+           } catch (e) {
+               failureCallback();
+           }
+       }).error(function(data, status, headers, config) {
+           failureCallback();
+       });
+   };
+   
+   factory.getSickLeaveLengthHistoricalDataVerksamhet = function (verksamhetId, successCallback, failureCallback){
+       $http.get("api/verksamhet/" + verksamhetId + "/getSickLeaveLengthHistoricalData").success(function(result) {
+           try {
+               successCallback(result);
+           } catch (e) {
+               failureCallback();
+           }
+       }).error(function(data, status, headers, config) {
+           failureCallback();
+       });
+   };
+   
+   factory.getLongSickLeavesDataVerksamhet = function (verksamhetId, successCallback, failureCallback){
+       $http.get("api/verksamhet/" + verksamhetId + "/getLongSickLeavesData").success(function(result) {
            try {
                successCallback(result);
            } catch (e) {

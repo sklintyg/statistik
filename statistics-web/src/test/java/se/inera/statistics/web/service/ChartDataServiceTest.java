@@ -37,7 +37,9 @@ public class ChartDataServiceTest {
     public void getNumberOfCasesPerMonthTest() {
         CasesPerMonth mock = Mockito.mock(CasesPerMonth.class);
         ChartDataService chartDataService = new ChartDataService(null, mock, null, null, null, null, null, null);
+        try {
         chartDataService.getNumberOfCasesPerMonth();
+        } catch (NullPointerException e) { }
         Mockito.verify(mock).getCasesPerMonth(anyString(), any(Range.class));
     }
 

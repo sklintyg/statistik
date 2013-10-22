@@ -1,11 +1,14 @@
 package se.inera.statistics.web.model;
 
+import java.io.Serializable;
+
 import org.apache.commons.lang3.text.translate.CharSequenceTranslator;
 import org.apache.commons.lang3.text.translate.UnicodeEscaper;
 import org.apache.commons.lang3.text.translate.UnicodeUnescaper;
 
-public class Verksamhet {
+public class Verksamhet implements Serializable {
 
+    private static final long serialVersionUID = 1L;
     private final String id;
     private final String name;
 
