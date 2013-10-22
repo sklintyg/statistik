@@ -94,11 +94,11 @@ app.statisticsApp = angular.module('StatisticsApp', [ 'ngCookies', 'ui.bootstrap
                 controllerAs : 'VerksamhetAgeGroupCtrl',
                 resolve : { config: app.nationalAgeGroupConfig }, 
                 title: 'Åldersgrupper'
-            }).when('/verksamhet/:verksamhetId/aldersgrupperhistoriskt', {
+            }).when('/verksamhet/:verksamhetId/aldersgrupperpagaende', {
                 templateUrl : 'views/detailsView.html',
                 controller : 'AgeGroupsCtrl',
-                controllerAs : 'VerksamhetAgeGroupHistoricalCtrl',
-                resolve : { config: app.nationalAgeGroupHistoricalConfig }, 
+                controllerAs : 'VerksamhetAgeGroupCurrentCtrl',
+                resolve : { config: app.nationalAgeGroupCurrentConfig }, 
                 title: 'Åldersgrupper'
             }).when('/verksamhet/:verksamhetId/sjukskrivningsgrad', {
                 templateUrl : 'views/detailsView.html',

@@ -30,6 +30,7 @@ import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.SickLeaveLengthResponse;
 import se.inera.statistics.service.report.model.SimpleDualSexDataRow;
 import se.inera.statistics.service.report.model.SimpleDualSexResponse;
+import se.inera.statistics.service.report.repository.RollingLength;
 import se.inera.statistics.service.report.util.DiagnosisGroupsUtil;
 import se.inera.statistics.service.report.util.Verksamhet;
 import se.inera.statistics.web.model.AgeGroupsData;
@@ -122,7 +123,7 @@ public class ChartDataService {
     @Produces({ MediaType.APPLICATION_JSON })
     public AgeGroupsData getAgeGroupsStatistics() {
         LOG.info("Calling getAgeGroupsStatistics for national");
-        AgeGroupsResponse ageGroups = datasourceAgeGroups.getCurrentAgeGroups(Verksamhet.NATIONELL.toString());
+        AgeGroupsResponse ageGroups = datasourceAgeGroups.getHistoricalAgeGroups(Verksamhet.NATIONELL.toString(), previousMonth(), RollingLength.QUARTER);
         return new AgeGroupsConverter().convert(ageGroups);
     }
 
@@ -171,6 +172,10 @@ public class ChartDataService {
         Range range = new Range(rangeLength);
         SimpleDualSexResponse<SimpleDualSexDataRow> casesPerMonth = datasourceCasesPerCounty.getStatistics(Verksamhet.NATIONELL.toString(), range);
         return new SjukfallPerSexConverter().convert(casesPerMonth);
+    }
+
+    private LocalDate previousMonth() {
+        return new LocalDate().withDayOfMonth(1).minusMonths(1);
     }
 
 }

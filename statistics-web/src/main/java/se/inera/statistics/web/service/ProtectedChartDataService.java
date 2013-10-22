@@ -118,16 +118,16 @@ public class ProtectedChartDataService {
     @Produces({ MediaType.APPLICATION_JSON })
     public AgeGroupsData getAgeGroupsStatistics(@PathParam("verksamhetId") String verksamhetId) {
         LOG.info("Calling getAgeGroupsStatistics with verksamhetId: " + verksamhetId);
-        AgeGroupsResponse ageGroups = datasourceAgeGroups.getCurrentAgeGroups(Verksamhet.decodeId(verksamhetId));
+        AgeGroupsResponse ageGroups = datasourceAgeGroups.getHistoricalAgeGroups(Verksamhet.decodeId(verksamhetId), previousMonth(), RollingLength.QUARTER);
         return new AgeGroupsConverter().convert(ageGroups);
     }
 
     @GET
-    @Path("{verksamhetId}/getAgeGroupsHistoricalStatistics")
+    @Path("{verksamhetId}/getAgeGroupsCurrentStatistics")
     @Produces({ MediaType.APPLICATION_JSON })
-    public AgeGroupsData getAgeGroupsHistoricalStatistics(@PathParam("verksamhetId") String verksamhetId) {
-        LOG.info("Calling getAgeGroupsHistoricalStatistics with verksamhetId: " + verksamhetId);
-        AgeGroupsResponse ageGroups = datasourceAgeGroups.getHistoricalAgeGroups(Verksamhet.decodeId(verksamhetId), previousMonth(), RollingLength.QUARTER);
+    public AgeGroupsData getAgeGroupsCurrentStatistics(@PathParam("verksamhetId") String verksamhetId) {
+        LOG.info("Calling getAgeGroupsCurrentStatistics with verksamhetId: " + verksamhetId);
+        AgeGroupsResponse ageGroups = datasourceAgeGroups.getCurrentAgeGroups(Verksamhet.decodeId(verksamhetId));
         return new AgeGroupsConverter().convert(ageGroups);
     }
 

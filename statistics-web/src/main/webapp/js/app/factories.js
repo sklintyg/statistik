@@ -134,8 +134,8 @@ app.statisticsApp.factory('statisticsData', function($http){
        });
    };
    
-   factory.getAgeGroupsHistoricalVerksamhet = function (verksamhetId, successCallback, failureCallback){
-       $http.get("api/verksamhet/" + verksamhetId + "/getAgeGroupsHistoricalStatistics").success(function(result) {
+   factory.getAgeGroupsCurrentVerksamhet = function (verksamhetId, successCallback, failureCallback){
+       $http.get("api/verksamhet/" + verksamhetId + "/getAgeGroupsCurrentStatistics").success(function(result) {
            try {
                successCallback(result);
            } catch (e) {
