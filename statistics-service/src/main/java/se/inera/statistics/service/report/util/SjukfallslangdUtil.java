@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public final class SjukfallslangdUtil {
-    public static final List<Group> GROUPS = Arrays.asList(new Group("<15 dagar", 15), new Group("15-30 dagar", 31), new Group("31-90 dagar", 91), new Group("90-365 dagar", 366), new Group(">365 dagar", Integer.MAX_VALUE));
+    public static final List<Group> GROUPS = Arrays.asList(new Group("<15 dagar", 15), new Group("15-30 dagar", 31), new Group("31-90 dagar", 91), new Group("90-180 dagar", 181), new Group("181-365 dagar", 366), new Group(">365 dagar", Integer.MAX_VALUE));
 
     private SjukfallslangdUtil() {
     }
