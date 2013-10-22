@@ -3,14 +3,14 @@
  app.nationalSickLeaveLengthConfig = function() {
      var conf = {};
      conf.dataFetcher = "getNationalSickLeaveLengthData",
-     conf.dataFetcherVerksamhet = "getNationalSickLeaveLengthDataVerksamhet",
+     conf.dataFetcherVerksamhet = "getSickLeaveLengthDataVerksamhet",
      conf.title = function(){return "Antal sjukfall baserat på sjukskrivningslängd";}
      return conf;
  }
 
  app.nationalSickLeaveLengthHistoricalConfig = function() {
      var conf = {};
-     conf.dataFetcherVerksamhet = "getNationalSickLeaveLengthHistoricalDataVerksamhet",
+     conf.dataFetcherVerksamhet = "getSickLeaveLengthHistoricalDataVerksamhet",
      conf.title = function(monthsIncluded){return "Antal pågående samt avslutade sjukfall baserat på sjukskrivningslängd senaste " + monthsIncluded + " månaderna";}
      return conf;
  }

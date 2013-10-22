@@ -1,6 +1,21 @@
  'use strict';
 
- app.casesPerMonthCtrl = function ($scope, $routeParams, statisticsData) {
+ app.casesPerMonthConfig = function() {
+     var conf = {};
+     conf.dataFetcher = "getNumberOfCasesPerMonth";
+     conf.dataFetcherVerksamhet = "getNumberOfCasesPerMonthVerksamhet";
+     conf.title = function(months){return "Antal sjukfall per månad " + months;};
+     return conf;
+ }
+ 
+ app.longSickLeavesConfig = function() {
+     var conf = {};
+     conf.dataFetcherVerksamhet = "getLongSickLeavesDataVerksamhet";
+     conf.title = function(){return "Antal långa sjukfall - mer än 90 dagar";};
+     return conf;
+ }
+ 
+ app.singleLineChartCtrl = function ($scope, $routeParams, statisticsData, config) {
 
     $scope.chartContainers = ["container"];
     
@@ -91,14 +106,14 @@
     var populatePageWithData = function(result){
         updateDataTable($scope, result.tableData);
         updateChart(result.chartData);
-        $scope.subTitle = "Antal sjukfall per månad " + result.tableData.rows[0].name + " - " + result.tableData.rows[result.tableData.rows.length-1].name;
+        $scope.subTitle = config.title(result.tableData.rows[0].name + " - " + result.tableData.rows[result.tableData.rows.length-1].name);
         $scope.doneLoading = true;
     };
     
     if ($routeParams.verksamhetId){
-        statisticsData.getNumberOfCasesPerMonthVerksamhet($routeParams.verksamhetId, populatePageWithData, function() { $scope.dataLoadingError = true; });
+        statisticsData[config.dataFetcherVerksamhet]($routeParams.verksamhetId, populatePageWithData, function() { $scope.dataLoadingError = true; });
     } else {
-        statisticsData.getNumberOfCasesPerMonth(populatePageWithData, function() { $scope.dataLoadingError = true; });
+        statisticsData[config.dataFetcher](populatePageWithData, function() { $scope.dataLoadingError = true; });
     }
     
     $scope.showHideDataTable = ControllerCommons.showHideDataTableDefault;

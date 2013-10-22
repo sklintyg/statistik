@@ -11,10 +11,14 @@ import org.joda.time.LocalDate;
 import org.springframework.transaction.annotation.Transactional;
 
 import se.inera.statistics.service.report.api.SjukfallslangdGrupp;
+import se.inera.statistics.service.report.model.CasesPerMonthRow;
+import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.Sex;
 import se.inera.statistics.service.report.model.SickLeaveLengthKey;
 import se.inera.statistics.service.report.model.SickLeaveLengthResponse;
 import se.inera.statistics.service.report.model.SickLeaveLengthRow;
+import se.inera.statistics.service.report.model.SimpleDualSexDataRow;
+import se.inera.statistics.service.report.model.SimpleDualSexResponse;
 import se.inera.statistics.service.report.util.ReportUtil;
 import se.inera.statistics.service.report.util.SjukfallslangdUtil;
 import se.inera.statistics.service.report.util.Verksamhet;
@@ -36,6 +40,12 @@ public class SjukfallslangdGruppPersistenceHandler implements SjukfallslangdGrup
 
     @Override
     public SickLeaveLengthResponse getCurrentStatistics(String hsaId) {
+        // TODO Auto-generated method stub
+        throw new RuntimeException("Not yet implemented");
+    }
+
+    @Override
+    public SimpleDualSexResponse<SimpleDualSexDataRow> getLongSickLeaves(String decodeId, Range range) {
         // TODO Auto-generated method stub
         throw new RuntimeException("Not yet implemented");
     }

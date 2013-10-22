@@ -2,8 +2,6 @@ package se.inera.statistics.service.queue;
 
 import static org.junit.Assert.assertEquals;
 
-import java.util.List;
-
 import javax.jms.ConnectionFactory;
 import javax.jms.Destination;
 import javax.jms.JMSException;
@@ -26,8 +24,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import se.inera.statistics.service.JSONSource;
 import se.inera.statistics.service.report.api.CasesPerMonth;
-import se.inera.statistics.service.report.model.CasesPerMonthRow;
 import se.inera.statistics.service.report.model.Range;
+import se.inera.statistics.service.report.model.SimpleDualSexDataRow;
+import se.inera.statistics.service.report.model.SimpleDualSexResponse;
 
 // CHECKSTYLE:OFF MagicNumber
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -58,17 +57,17 @@ public class ReceiverIntegrationTest {
 
         sleep();
 
-        List<CasesPerMonthRow> webData = casesPerMonth.getCasesPerMonth("enhetId", new Range(new LocalDate("2011-01"), new LocalDate("2011-12")));
+        SimpleDualSexResponse<SimpleDualSexDataRow> webData = casesPerMonth.getCasesPerMonth("enhetId", new Range(new LocalDate("2011-01"), new LocalDate("2011-12")));
 
-        assertEquals(12, webData.size());
+        assertEquals(12, webData.getRows().size());
 
         for (int i = 0; i < 3; i++) {
-            assertEquals(0, webData.get(i).getFemale());
-            assertEquals(2, webData.get(i).getMale());
+            assertEquals(0, webData.getRows().get(i).getFemale().intValue());
+            assertEquals(2, webData.getRows().get(i).getMale().intValue());
         }
         for (int i = 3; i < 12; i++) {
-            assertEquals(0, webData.get(i).getFemale());
-            assertEquals(0, webData.get(i).getMale());
+            assertEquals(0, webData.getRows().get(i).getFemale().intValue());
+            assertEquals(0, webData.getRows().get(i).getMale().intValue());
         }
     }
 

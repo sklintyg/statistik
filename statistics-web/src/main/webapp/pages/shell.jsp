@@ -156,7 +156,7 @@
 								</li>
 								<ul id="sub-menu-business-sick-leave-length" class="nav nav-list sub-nav-list accordion-body in collapse">
 									<li><a ng-href="#/verksamhet/{{businessId}}/sjukskrivningslangdhistoriskt" id="navBusinessOngoingAndCompletedSickLeaveLink" ctrlname="VerksamhetSickLeaveLengthHistoricalCtrl" navigationaware>Pågående och avslutade</a></li>
-									<li><a class="last-item-in-menu" ng-href="#/verksamhet/{{businessId}}/merannittiodagarsjukskrivningslangd" id="navBusinessMoreNinetyDaysSickLeaveLink" ctrlname="" navigationaware>Mer än 90 dagar</a></li>
+									<li><a class="last-item-in-menu" ng-href="#/verksamhet/{{businessId}}/langasjukskrivningar" id="navBusinessMoreNinetyDaysSickLeaveLink" ctrlname="VerksamhetLongSickLeavesCtrl" navigationaware>Mer än 90 dagar</a></li>
 								</ul>
 							</ul>
 					    </div>
@@ -207,7 +207,7 @@
 <script type="text/javascript" src="<c:url value='/js/app/app.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/factories.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/controller/common.js'/>"></script>
-<script type="text/javascript" src="<c:url value='/js/app/controller/casesPerMonthCtrl.js'/>"></script>
+<script type="text/javascript" src="<c:url value='/js/app/controller/singleLineChartCtrl.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/controller/doubleAreaChartsCtrl.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/controller/overviewCtrl.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/controller/business/businessOverviewCtrl.js'/>"></script>

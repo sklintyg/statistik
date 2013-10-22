@@ -4,32 +4,33 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import se.inera.statistics.service.report.model.CasesPerMonthRow;
 import se.inera.statistics.service.report.model.Sex;
-import se.inera.statistics.web.model.CasesPerMonthData;
+import se.inera.statistics.service.report.model.SimpleDualSexDataRow;
+import se.inera.statistics.service.report.model.SimpleDualSexResponse;
 import se.inera.statistics.web.model.ChartData;
 import se.inera.statistics.web.model.ChartSeries;
 import se.inera.statistics.web.model.NamedData;
+import se.inera.statistics.web.model.SimpleDetailsData;
 import se.inera.statistics.web.model.TableData;
 
-public class CasesPerMonthConverter {
+public class SimpleDualSexConverter {
 
-    private TableData convertToTableData(List<CasesPerMonthRow> casesPerMonth) {
+    private TableData convertToTableData(List<SimpleDualSexDataRow> list) {
         List<NamedData> data = new ArrayList<>();
         int accumulatedSum = 0;
-        for (CasesPerMonthRow row : casesPerMonth) {
+        for (SimpleDualSexDataRow row : list) {
             int rowSum = row.getFemale() + row.getMale();
             accumulatedSum += rowSum;
-            data.add(new NamedData(row.getPeriod(), Arrays.asList(new Integer[] {rowSum, row.getFemale(), row.getMale(), accumulatedSum})));
+            data.add(new NamedData(row.getName(), Arrays.asList(new Integer[] {rowSum, row.getFemale(), row.getMale(), accumulatedSum})));
         }
 
         return TableData.createWithSingleHeadersRow(data, Arrays.asList("Antal sjukfall", "Antal kvinnor", "Antal män", "Summering"));
     }
 
-    private ChartData convertToChartData(List<CasesPerMonthRow> casesPerMonth, TableData tableData) {
+    private ChartData convertToChartData(List<SimpleDualSexDataRow> list, TableData tableData) {
         final ArrayList<String> categories = new ArrayList<String>();
-        for (CasesPerMonthRow casesPerMonthRow : casesPerMonth) {
-            categories.add(casesPerMonthRow.getPeriod());
+        for (SimpleDualSexDataRow casesPerMonthRow : list) {
+            categories.add(casesPerMonthRow.getName());
         }
 
         final ArrayList<ChartSeries> series = new ArrayList<ChartSeries>();
@@ -48,9 +49,9 @@ public class CasesPerMonthConverter {
         return data;
     }
 
-    public CasesPerMonthData convert(List<CasesPerMonthRow> casesPerMonth) {
-        TableData tableData = convertToTableData(casesPerMonth);
-        ChartData chartData = convertToChartData(casesPerMonth, tableData);
-        return new CasesPerMonthData(tableData, chartData, 0);
+    public SimpleDetailsData convert(SimpleDualSexResponse<SimpleDualSexDataRow> casesPerMonth) {
+        TableData tableData = convertToTableData(casesPerMonth.getRows());
+        ChartData chartData = convertToChartData(casesPerMonth.getRows(), tableData);
+        return new SimpleDetailsData(tableData, chartData, 0);
     }
 }

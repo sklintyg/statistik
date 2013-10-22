@@ -17,6 +17,8 @@ import se.inera.statistics.service.report.model.CasesPerMonthRow;
 import se.inera.statistics.service.report.model.DualSexField;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.Sex;
+import se.inera.statistics.service.report.model.SimpleDualSexDataRow;
+import se.inera.statistics.service.report.model.SimpleDualSexResponse;
 import se.inera.statistics.service.report.util.ReportUtil;
 import se.inera.statistics.service.report.util.Verksamhet;
 
@@ -42,7 +44,7 @@ public class CasesPerMonthPersistenceHandler implements CasesPerMonth {
 
     @Override
     @Transactional
-    public List<CasesPerMonthRow> getCasesPerMonth(String hsaId, Range range) {
+    public SimpleDualSexResponse<SimpleDualSexDataRow> getCasesPerMonth(String hsaId, Range range) {
         TypedQuery<CasesPerMonthRow> query = manager.createQuery("SELECT c FROM CasesPerMonthRow c WHERE c.key.hsaId = :hsaId AND c.key.period BETWEEN :from AND :to", CasesPerMonthRow.class);
         query.setParameter("hsaId", hsaId);
         query.setParameter("from", ReportUtil.toPeriod(range.getFrom()));
@@ -51,8 +53,8 @@ public class CasesPerMonthPersistenceHandler implements CasesPerMonth {
         return translateForOutput(range, query.getResultList());
     }
 
-    private List<CasesPerMonthRow> translateForOutput(Range range, List<CasesPerMonthRow> list) {
-        List<CasesPerMonthRow> translatedCasesPerMonthRows = new ArrayList<>();
+    private SimpleDualSexResponse<SimpleDualSexDataRow> translateForOutput(Range range, List<CasesPerMonthRow> list) {
+        List<SimpleDualSexDataRow> translatedCasesPerMonthRows = new ArrayList<>();
 
         Map<String, DualSexField> map = new DefaultHashMap<>(new DualSexField(0, 0));
         for (CasesPerMonthRow row: list) {
@@ -63,9 +65,9 @@ public class CasesPerMonthPersistenceHandler implements CasesPerMonth {
             String displayDate = ReportUtil.toDiagramPeriod(currentPeriod);
             String period = ReportUtil.toPeriod(currentPeriod);
             DualSexField dualSexField = map.get(period);
-            translatedCasesPerMonthRows.add(new CasesPerMonthRow(displayDate, dualSexField.getFemale(), dualSexField.getMale()));
+            translatedCasesPerMonthRows.add(new SimpleDualSexDataRow(displayDate, dualSexField.getFemale(), dualSexField.getMale()));
         }
 
-        return translatedCasesPerMonthRows;
+        return new SimpleDualSexResponse<SimpleDualSexDataRow>(translatedCasesPerMonthRows, range.getMonths());
     }
 }

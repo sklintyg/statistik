@@ -7,10 +7,14 @@ import java.util.Random;
 import org.joda.time.LocalDate;
 
 import se.inera.statistics.service.report.api.SjukfallslangdGrupp;
+import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.Sex;
 import se.inera.statistics.service.report.model.SickLeaveLengthResponse;
 import se.inera.statistics.service.report.model.SickLeaveLengthRow;
+import se.inera.statistics.service.report.model.SimpleDualSexDataRow;
+import se.inera.statistics.service.report.model.SimpleDualSexResponse;
 import se.inera.statistics.service.report.repository.RollingLength;
+import se.inera.statistics.service.report.util.ReportUtil;
 import se.inera.statistics.service.report.util.SjukfallslangdUtil;
 import se.inera.statistics.service.report.util.SjukfallslangdUtil.Group;
 import se.inera.statistics.service.report.util.Verksamhet;
@@ -34,6 +38,17 @@ public class SjukfallslangdGruppMock implements SjukfallslangdGrupp {
     @Override
     public SickLeaveLengthResponse getCurrentStatistics(String hsaId) {
         return getHistoricalStatistics(hsaId, null, RollingLength.SINGLE_MONTH);
+    }
+
+    @Override
+    public SimpleDualSexResponse<SimpleDualSexDataRow> getLongSickLeaves(String decodeId, Range range) {
+        List<SimpleDualSexDataRow> rows = new ArrayList<>();
+        for (String periodName : ReportUtil.PERIODS) {
+            int men = (int) (random.nextGaussian() * 2000 + 10000);
+            int women = (int) (random.nextGaussian() * 2000 + 10000);
+            rows.add(new SimpleDualSexDataRow(periodName, women, men));
+        }
+        return new SimpleDualSexResponse<SimpleDualSexDataRow>(rows, 18);
     }
 
     @Override
