@@ -131,7 +131,7 @@ public class ChartDataService {
     @Produces({ MediaType.APPLICATION_JSON })
     public DualSexStatisticsData getDegreeOfSickLeaveStatistics() {
         LOG.info("Calling getDegreeOfSickLeaveStatistics for national");
-        DegreeOfSickLeaveResponse degreeOfSickLeaveStatistics = datasourceDegreeOfSickLeave.getStatistics(DegreeOfSickLeave.HSA_NATIONELL);
+        DegreeOfSickLeaveResponse degreeOfSickLeaveStatistics = datasourceDegreeOfSickLeave.getStatistics(Verksamhet.NATIONELL.toString(), new Range());
         return new DegreeOfSickLeaveConverter().convert(degreeOfSickLeaveStatistics);
     }
 

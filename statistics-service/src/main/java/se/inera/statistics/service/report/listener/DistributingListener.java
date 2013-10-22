@@ -2,6 +2,7 @@ package se.inera.statistics.service.report.listener;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import se.inera.statistics.service.processlog.ProcessorListener;
 import se.inera.statistics.service.sjukfall.SjukfallInfo;
@@ -26,13 +27,18 @@ public class DistributingListener implements ProcessorListener {
     @Autowired
     private SjukfallslangdListener sjukfallsLangdListener;
 
+    @Autowired
+    private SjukskrivningsgradListener sjukskrivningsgradListener;
+
     @Override
+    @Transactional
     public void accept(SjukfallInfo sjukfallInfo, JsonNode utlatande, JsonNode hsa) {
         sjukfallPerKonListener.accept(sjukfallInfo, utlatande, hsa);
         sjukfallPerDiagnosgruppListenerListener.accept(sjukfallInfo, utlatande, hsa);
         sjukfallPerDiagnosundergruppListenerListener.accept(sjukfallInfo, utlatande, hsa);
         aldersgruppListener.accept(sjukfallInfo, utlatande, hsa);
         sjukfallsLangdListener.accept(sjukfallInfo, utlatande, hsa);
+        sjukskrivningsgradListener.accept(sjukfallInfo, utlatande, hsa);
     }
 
 }
