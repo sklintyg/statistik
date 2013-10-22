@@ -50,4 +50,48 @@ public class DiagnosisSubGroupsConverterTest {
         assertEquals("[period1: [3, 2, 5]]", data.getTableData().getRows().toString());
     }
 
+    @Test
+    public void converterTopColumnsTest() {
+        //Given
+        ArrayList<DiagnosisGroup> diagnosisGroups = new ArrayList<DiagnosisGroup>();
+        diagnosisGroups.add(new DiagnosisGroup("A00-B90", "name1"));
+        diagnosisGroups.add(new DiagnosisGroup("A00-B91", "name1"));
+        diagnosisGroups.add(new DiagnosisGroup("A00-B92", "name1"));
+        diagnosisGroups.add(new DiagnosisGroup("A00-B93", "name1"));
+        diagnosisGroups.add(new DiagnosisGroup("A00-B94", "name1"));
+        diagnosisGroups.add(new DiagnosisGroup("A00-B95", "name1"));
+        diagnosisGroups.add(new DiagnosisGroup("A00-B96", "name1"));
+        diagnosisGroups.add(new DiagnosisGroup("A00-B97", "name1"));
+        ArrayList<DualSexDataRow> rows = new ArrayList<DualSexDataRow>();
+        ArrayList<DualSexField> diagnosisGroupData = new ArrayList<DualSexField>();
+        // CHECKSTYLE:OFF MagicNumber
+        diagnosisGroupData.add(new DualSexField(3, 30));
+        diagnosisGroupData.add(new DualSexField(4, 40));
+        diagnosisGroupData.add(new DualSexField(1, 10));
+        diagnosisGroupData.add(new DualSexField(7, 70));
+        diagnosisGroupData.add(new DualSexField(55, 50));
+        diagnosisGroupData.add(new DualSexField(8, 80));
+        diagnosisGroupData.add(new DualSexField(2, 20));
+        diagnosisGroupData.add(new DualSexField(6, 60));
+        rows.add(new DualSexDataRow("period1", diagnosisGroupData));
+        DiagnosisGroupResponse resp = new DiagnosisGroupResponse(diagnosisGroups, rows);
+
+        //When
+        DiagnosisSubGroupsConverter converter = new DiagnosisSubGroupsConverter();
+        DualSexStatisticsData data = converter.convert(resp);
+
+        //Then
+        assertEquals(7, data.getFemaleChart().getSeries().size());
+        // CHECKSTYLE:ON MagicNumber
+
+        assertEquals("[period1]", data.getFemaleChart().getCategories().toString());
+        assertEquals("[A00-B94 name1: [55], A00-B95 name1: [8], A00-B93 name1: [7], A00-B97 name1: [6], A00-B91 name1: [4], A00-B90 name1: [3], Övrigt: [3]]", data.getFemaleChart().getSeries().toString());
+
+        assertEquals("[period1]", data.getMaleChart().getCategories().toString());
+        assertEquals("[A00-B94 name1: [50], A00-B95 name1: [80], A00-B93 name1: [70], A00-B97 name1: [60], A00-B91 name1: [40], A00-B90 name1: [30], Övrigt: [30]]", data.getMaleChart().getSeries().toString());
+
+        assertEquals("[[;1, A00-B90 name1;2, A00-B91 name1;2, A00-B92 name1;2, A00-B93 name1;2, A00-B94 name1;2, A00-B95 name1;2, A00-B96 name1;2, A00-B97 name1;2], [Period;1, Kvinnor;1, Män;1, Kvinnor;1, Män;1, Kvinnor;1, Män;1, Kvinnor;1, Män;1, Kvinnor;1, Män;1, Kvinnor;1, Män;1, Kvinnor;1, Män;1, Kvinnor;1, Män;1, Summering;1]]", data.getTableData().getHeaders().toString());
+        assertEquals("[period1: [3, 30, 4, 40, 1, 10, 7, 70, 55, 50, 8, 80, 2, 20, 6, 60, 446]]", data.getTableData().getRows().toString());
+    }
+
 }

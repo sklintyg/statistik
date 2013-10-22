@@ -66,7 +66,7 @@ public class DiagnosisSubGroupsConverter {
         TreeMap<Integer, Integer> columnSums = new TreeMap<>();
         int dataSize = diagnosisGroups.getRows().get(0).getData().size();
         for (int i = 0; i < dataSize; i++) {
-            columnSums.put(sum(diagnosisGroups.getDataFromIndex(i, Sex.Male)) + sum(diagnosisGroups.getDataFromIndex(i, Sex.Male)), i);
+            columnSums.put(sum(diagnosisGroups.getDataFromIndex(i, Sex.Male)) + sum(diagnosisGroups.getDataFromIndex(i, Sex.Female)), i);
         }
         ArrayList<Integer> arrayList = new ArrayList<>(columnSums.descendingMap().values());
         return arrayList.subList(0, Math.min(NUMBER_OF_CHART_SERIES, arrayList.size()));
