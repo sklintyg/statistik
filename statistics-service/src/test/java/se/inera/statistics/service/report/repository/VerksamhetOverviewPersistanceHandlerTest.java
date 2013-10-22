@@ -11,6 +11,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import se.inera.statistics.service.report.api.AgeGroups;
 import se.inera.statistics.service.report.api.CasesPerMonth;
 import se.inera.statistics.service.report.api.DiagnosisGroups;
 import se.inera.statistics.service.report.model.Range;
@@ -30,10 +31,15 @@ public class VerksamhetOverviewPersistanceHandlerTest extends VerksamhetOverview
     @Autowired
     private CasesPerMonth casesPerMonth;
 
+    @Autowired
+    private AgeGroups aldersgruppPersistenceHandler;
+
     @Before
     public void init() {
         diagnosgroupPersistenceHandler.count("id1", "2013-09", "g1", Verksamhet.ENHET, Sex.Female);
         diagnosgroupPersistenceHandler.count("id1", "2013-09", "g1", Verksamhet.ENHET, Sex.Female);
+        diagnosgroupPersistenceHandler.count("id1", "2013-09", "g2", Verksamhet.ENHET, Sex.Female);
+        diagnosgroupPersistenceHandler.count("id1", "2013-09", "g3", Verksamhet.ENHET, Sex.Female);
         diagnosgroupPersistenceHandler.count("id3", "2013-09", "g1", Verksamhet.ENHET, Sex.Male);
         diagnosgroupPersistenceHandler.count("id1", "2013-06", "g1", Verksamhet.ENHET, Sex.Male);
 
@@ -41,6 +47,13 @@ public class VerksamhetOverviewPersistanceHandlerTest extends VerksamhetOverview
         casesPerMonth.count("id1", "2013-09", Verksamhet.ENHET, Sex.Female);
         casesPerMonth.count("id3", "2013-09", Verksamhet.ENHET, Sex.Male);
         casesPerMonth.count("id1", "2013-06", Verksamhet.ENHET, Sex.Male);
+
+        aldersgruppPersistenceHandler.count("2013-09", "id1", "<21", RollingLength.QUARTER, Verksamhet.ENHET, Sex.Female);
+        aldersgruppPersistenceHandler.count("2013-09", "id1", "<21", RollingLength.QUARTER, Verksamhet.ENHET, Sex.Female);
+        aldersgruppPersistenceHandler.count("2013-09", "id1", "21-25", RollingLength.QUARTER, Verksamhet.ENHET, Sex.Female);
+        aldersgruppPersistenceHandler.count("2013-09", "id1", "26-30", RollingLength.QUARTER, Verksamhet.ENHET, Sex.Female);
+        aldersgruppPersistenceHandler.count("2013-09", "id3", "<21", RollingLength.QUARTER, Verksamhet.ENHET, Sex.Male);
+        aldersgruppPersistenceHandler.count("2013-06", "id1", "<21", RollingLength.QUARTER, Verksamhet.ENHET, Sex.Male);
     }
 
     @Test
@@ -56,5 +69,9 @@ public class VerksamhetOverviewPersistanceHandlerTest extends VerksamhetOverview
         Assert.assertEquals(0, result.getCasesPerMonthSexProportionPreviousPeriod().getMale());
         Assert.assertEquals(100, result.getCasesPerMonthSexProportionBeforePreviousPeriod().getMale());
         Assert.assertEquals(2, result.getTotalCases());
+        Assert.assertEquals(100, result.getDiagnosisGroups().get(0).getAlternation());
+        Assert.assertEquals(3, result.getAgeGroups().size());
+        Assert.assertEquals(2, result.getAgeGroups().get(0).getQuantity());
+        Assert.assertEquals(100, result.getAgeGroups().get(0).getAlternation());
     }
 }
