@@ -4,14 +4,14 @@
      var conf = {};
      conf.dataFetcher = "getNationalSickLeaveLengthData",
      conf.dataFetcherVerksamhet = "getSickLeaveLengthDataVerksamhet",
-     conf.title = function(){return "Antal sjukfall baserat på sjukskrivningslängd";}
+     conf.title = function(monthsIncluded){return "Antal pågående samt avslutade sjukfall baserat på sjukskrivningslängd senaste " + monthsIncluded + " månaderna";}
      return conf;
  }
 
- app.nationalSickLeaveLengthHistoricalConfig = function() {
+ app.nationalSickLeaveLengthCurrentConfig = function() {
      var conf = {};
-     conf.dataFetcherVerksamhet = "getSickLeaveLengthHistoricalDataVerksamhet",
-     conf.title = function(monthsIncluded){return "Antal pågående samt avslutade sjukfall baserat på sjukskrivningslängd senaste " + monthsIncluded + " månaderna";}
+     conf.dataFetcherVerksamhet = "getSickLeaveLengthCurrentDataVerksamhet",
+     conf.title = function(){return "Antal sjukfall baserat på sjukskrivningslängd";}
      return conf;
  }
  
@@ -19,15 +19,15 @@
      var conf = {};
      conf.dataFetcher = "getAgeGroups",
      conf.dataFetcherVerksamhet = "getAgeGroupsVerksamhet",
-     conf.title = function(){return "Antal pågående sjukfall baserat på patientens ålder";}
+     conf.title = function(monthsIncluded){return "Antal pågående samt avslutade sjukfall baserat på patientens ålder senaste " + monthsIncluded + " månaderna";}
      return conf;
  }
  
- app.nationalAgeGroupHistoricalConfig = function() {
+ app.nationalAgeGroupCurrentConfig = function() {
      var conf = {};
-     conf.dataFetcherVerksamhet = "getAgeGroupsHistoricalVerksamhet",
-     conf.title = function(monthsIncluded){return "Antal pågående samt avslutade sjukfall baserat på patientens ålder senaste " + monthsIncluded + " månaderna";}
-         return conf;
+     conf.dataFetcherVerksamhet = "getAgeGroupsCurrentVerksamhet",
+     conf.title = function(){return "Antal pågående sjukfall baserat på patientens ålder";}
+     return conf;
  }
  
  app.casesPerSexConfig = function() {

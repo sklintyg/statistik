@@ -18,4 +18,16 @@ public class RangeTest {
         Range range = new Range(new LocalDate(2013, 10, 01), new LocalDate(2014, 12, 01));
         assertEquals("okt 2013-dec 2014", range.toString());
     }
+
+    @Test
+    public void defaultRangeIs18Months() {
+        Range range = new Range();
+        assertEquals(18, range.getMonths());
+    }
+
+    @Test
+    public void settingRangeMonths() {
+        Range range = new Range(3);
+        assertEquals(3, range.getMonths());
+    }
 }
