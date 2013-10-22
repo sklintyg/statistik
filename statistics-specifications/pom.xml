@@ -129,7 +129,7 @@
         <artifactId>maven-compiler-plugin</artifactId>
         <configuration>
           <compilerId>groovy-eclipse-compiler</compilerId>
-          <verbose>true</verbose>
+          <verbose>false</verbose>
         </configuration>
         <dependencies>
           <dependency>
