@@ -2,7 +2,9 @@ package se.inera.statistics.service.report.model;
 
 import java.util.Locale;
 
+import org.joda.time.Days;
 import org.joda.time.LocalDate;
+import org.joda.time.Months;
 import org.joda.time.Period;
 
 public final class Range {
@@ -42,6 +44,6 @@ public final class Range {
     }
 
     public int getMonths() {
-        return new Period(from, to).getMonths();
+        return Months.monthsBetween(from, to).getMonths() + 1;
     }
 }
