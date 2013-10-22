@@ -32,6 +32,7 @@ import se.inera.statistics.service.report.model.SimpleDualSexDataRow;
 import se.inera.statistics.service.report.model.SimpleDualSexResponse;
 import se.inera.statistics.service.report.repository.RollingLength;
 import se.inera.statistics.service.report.util.DiagnosisGroupsUtil;
+import se.inera.statistics.service.report.util.ReportUtil;
 import se.inera.statistics.service.report.util.Verksamhet;
 import se.inera.statistics.web.model.AgeGroupsData;
 import se.inera.statistics.web.model.CasesPerCountyData;
@@ -149,14 +150,8 @@ public class ChartDataService {
     @Path("getCountyStatistics")
     @Produces({ MediaType.APPLICATION_JSON })
     public CasesPerCountyData getCountyStatistics() {
-        final int numberOfMonthsInRanges = 3;
-        LocalDate range1To = new LocalDate().withDayOfMonth(1).minusMonths(1);
-        LocalDate range1From = range1To.minusMonths(numberOfMonthsInRanges);
-        final Range range1 = new Range(range1From, range1To);
-
-        LocalDate range2To = range1From.minusMonths(1);
-        LocalDate range2From = range2To.minusMonths(numberOfMonthsInRanges);
-        final Range range2 = new Range(range2From, range2To);
+        Range range1 = new Range(3);
+        Range range2 = ReportUtil.getPreviousPeriod(range1);
 
         SimpleDualSexResponse<SimpleDualSexDataRow> countyStatRange1 = datasourceCasesPerCounty.getStatistics(Verksamhet.NATIONELL.toString(), range1);
         SimpleDualSexResponse<SimpleDualSexDataRow> countyStatRange2 = datasourceCasesPerCounty.getStatistics(Verksamhet.NATIONELL.toString(), range2);

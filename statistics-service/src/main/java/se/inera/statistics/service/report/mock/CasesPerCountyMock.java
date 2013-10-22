@@ -5,8 +5,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
-import org.joda.time.Period;
-
 import se.inera.statistics.service.report.api.CasesPerCounty;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.SimpleDualSexDataRow;
@@ -28,8 +26,7 @@ public class CasesPerCountyMock implements CasesPerCounty {
             int men = (int) (random.nextGaussian() * 2000 + 10000);
             rows.add(new SimpleDualSexDataRow(group, women, men));
         }
-        final Period period = new Period(range.getFrom(), range.getTo());
-        final int monthsInPeriod = period.getMonths() + period.getYears() * 12;
+        final int monthsInPeriod = range.getMonths();
         return new SimpleDualSexResponse<SimpleDualSexDataRow>(rows, monthsInPeriod);
     }
 
