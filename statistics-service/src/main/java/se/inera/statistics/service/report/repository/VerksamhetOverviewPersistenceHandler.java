@@ -1,6 +1,8 @@
 package se.inera.statistics.service.report.repository;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -20,6 +22,8 @@ import se.inera.statistics.service.report.util.ReportUtil;
 
 public class VerksamhetOverviewPersistenceHandler implements VerksamhetOverview {
 
+    public static final int DISPLAYED_DIAGNOSIS_GROUPS = 5;
+    public static final int PERCENT = 100;
     @PersistenceContext(unitName = "IneraStatisticsLog")
     private EntityManager manager;
 
@@ -71,6 +75,43 @@ public class VerksamhetOverviewPersistenceHandler implements VerksamhetOverview 
 
     @SuppressWarnings("unchecked")
     private List<OverviewChartRowExtended> getDiagnosisGroups(String verksamhetId, Range range) {
+        List<Object[]> queryResult = getDiagnosisGroupsFromDb(verksamhetId, range);
+        List<Object[]> queryResultForPrevPeriod = getDiagnosisGroupsFromDb(verksamhetId, ReportUtil.getPreviousPeriod(range));
+
+        Comparator<? super Object[]> comparator = new Comparator() {
+            public int compare(Object o1, Object o2) {
+                return ((Long) ((Object[])o2)[1]).intValue() - ((Long) ((Object[])o1)[1]).intValue();
+            }
+        };
+
+        Collections.sort(queryResult, comparator);
+        ArrayList<OverviewChartRowExtended> result = new ArrayList<>();
+
+        for (int x = 0; x < DISPLAYED_DIAGNOSIS_GROUPS && x < queryResult.size(); x++) {
+            Object[] row = queryResult.get(x);
+
+            int change = lookupChange(row, queryResultForPrevPeriod);
+            result.add(new OverviewChartRowExtended((String) row[0], ((Long) row[1]).intValue(), change));
+        }
+
+        return result;
+    }
+
+    private int lookupChange(Object[] row, List<Object[]> queryResultForPrevPeriod) {
+        String key = (String)row[0];
+        int current = ((Long) row[1]).intValue();
+        int prev = 0;
+        for (Object[] prevRow : queryResultForPrevPeriod) {
+            if(key.equals(prevRow[0])) {
+                prev = ((Long) prevRow[1]).intValue();
+                break;
+            }
+        }
+        return prev > 0 ? (PERCENT * current) / prev - PERCENT : 0;
+    }
+
+    @SuppressWarnings("unchecked")
+    private List<Object[]> getDiagnosisGroupsFromDb(String verksamhetId, Range range) {
         Query query = manager.createQuery("SELECT c.key.diagnosgrupp, sum(c.female) + sum(c.male), c.key.diagnosgrupp  FROM DiagnosisGroupData c WHERE c.key.hsaId = :hsaId AND c.key.period BETWEEN :from AND :to  GROUP BY c.key.diagnosgrupp");
         query.setParameter("hsaId", verksamhetId);
         query.setParameter("from", ReportUtil.toPeriod(range.getFrom()));
@@ -78,13 +119,7 @@ public class VerksamhetOverviewPersistenceHandler implements VerksamhetOverview 
 
         List<Object[]> queryResult;
         queryResult = (List<Object[]>) query.getResultList();
-
-        ArrayList<OverviewChartRowExtended> result = new ArrayList<>();
-        for (Object[] row : queryResult) {
-            result.add(new OverviewChartRowExtended((String) row[0], ((Long) row[1]).intValue(), 0));
-        }
-
-        return result;
+        return queryResult;
     }
 
     private List<OverviewChartRowExtended> getAgeGroups(String verksamhetId, Range range) {

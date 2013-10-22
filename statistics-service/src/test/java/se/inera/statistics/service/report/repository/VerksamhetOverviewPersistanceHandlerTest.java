@@ -34,6 +34,8 @@ public class VerksamhetOverviewPersistanceHandlerTest extends VerksamhetOverview
     public void init() {
         diagnosgroupPersistenceHandler.count("id1", "2013-09", "g1", Verksamhet.ENHET, Sex.Female);
         diagnosgroupPersistenceHandler.count("id1", "2013-09", "g1", Verksamhet.ENHET, Sex.Female);
+        diagnosgroupPersistenceHandler.count("id1", "2013-09", "g2", Verksamhet.ENHET, Sex.Female);
+        diagnosgroupPersistenceHandler.count("id1", "2013-09", "g3", Verksamhet.ENHET, Sex.Female);
         diagnosgroupPersistenceHandler.count("id3", "2013-09", "g1", Verksamhet.ENHET, Sex.Male);
         diagnosgroupPersistenceHandler.count("id1", "2013-06", "g1", Verksamhet.ENHET, Sex.Male);
 
@@ -56,5 +58,6 @@ public class VerksamhetOverviewPersistanceHandlerTest extends VerksamhetOverview
         Assert.assertEquals(0, result.getCasesPerMonthSexProportionPreviousPeriod().getMale());
         Assert.assertEquals(100, result.getCasesPerMonthSexProportionBeforePreviousPeriod().getMale());
         Assert.assertEquals(2, result.getTotalCases());
+        Assert.assertEquals(100, result.getDiagnosisGroups().get(0).getAlternation());
     }
 }
