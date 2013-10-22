@@ -88,7 +88,7 @@
       <bean class="se.inera.statistics.service.report.mock.OverviewMock" id="overview"/>
       <bean class="se.inera.statistics.service.report.repository.VerksamhetOverviewPersistenceHandler" id="verksamhetOverview"/>
       <bean class="se.inera.statistics.service.report.repository.AldersgruppPersistenceHandler" id="ageGroups"/>
-      <bean class="se.inera.statistics.service.report.mock.DegreeOfSickLeaveMock" id="degreeOfSickLeave"/>
+      <bean class="se.inera.statistics.service.report.repository.SjukskrivningsgradPersistenceHandler" id="degreeOfSickLeave" />
       <bean class="se.inera.statistics.service.report.repository.SjukfallslangdGruppPersistenceHandler" id="sickLeaveLength"/>
       <bean class="se.inera.statistics.service.report.mock.CasesPerCountyMock" id="casesPerCounty"/>
 

@@ -1,10 +1,11 @@
 package se.inera.statistics.service.report.api;
 
 import se.inera.statistics.service.report.model.DegreeOfSickLeaveResponse;
+import se.inera.statistics.service.report.model.Range;
+import se.inera.statistics.service.report.model.Sex;
+import se.inera.statistics.service.report.util.Verksamhet;
 
 public interface DegreeOfSickLeave {
-    String HSA_NATIONELL = "nationell";
-
-    DegreeOfSickLeaveResponse getStatistics(String hsaId);
-
+    DegreeOfSickLeaveResponse getStatistics(String hsaId, Range range);
+    void count(String hsaId, String period, int degree, Verksamhet typ, Sex sex);
 }

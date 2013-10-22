@@ -9,12 +9,15 @@ import se.inera.statistics.service.report.api.DegreeOfSickLeave;
 import se.inera.statistics.service.report.model.DegreeOfSickLeaveResponse;
 import se.inera.statistics.service.report.model.DualSexDataRow;
 import se.inera.statistics.service.report.model.DualSexField;
+import se.inera.statistics.service.report.model.Range;
+import se.inera.statistics.service.report.model.Sex;
 import se.inera.statistics.service.report.util.ReportUtil;
+import se.inera.statistics.service.report.util.Verksamhet;
 
 public class DegreeOfSickLeaveMock implements DegreeOfSickLeave {
 
     @Override
-    public DegreeOfSickLeaveResponse getStatistics(String hsaId) {
+    public DegreeOfSickLeaveResponse getStatistics(String hsaId, Range range) {
         List<String> headers = Arrays.asList("Antal sjukfall per 25%", "Antal sjukfall per 50%", "Antal sjukfall per 75%", "Antal sjukfall per 100%");
         List<DualSexDataRow> rows = new ArrayList<>();
         for (String periodName : ReportUtil.PERIODS) {
@@ -37,5 +40,9 @@ public class DegreeOfSickLeaveMock implements DegreeOfSickLeave {
         return new Random().nextInt(maxValue);
     }
     // CHECKSTYLE:ON MagicNumber
+
+    @Override
+    public void count(String hsaId, String period, int degree, Verksamhet typ, Sex sex) {
+    }
 
 }

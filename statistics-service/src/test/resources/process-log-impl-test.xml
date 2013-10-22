@@ -55,6 +55,7 @@
     <bean class="se.inera.statistics.service.report.repository.DiagnossubgroupPersistenceHandler" id="diagnosisSubGroups" />
     <bean class="se.inera.statistics.service.report.repository.AldersgruppPersistenceHandler" id="ageGroups" />
     <bean class="se.inera.statistics.service.report.repository.SjukfallslangdGruppPersistenceHandler" id="caseLengthGroups" />
+    <bean class="se.inera.statistics.service.report.repository.SjukskrivningsgradPersistenceHandler" id="caseDegree" />
 
     <context:component-scan base-package="se.inera.statistics.service.report.repository"/>
 </beans>
