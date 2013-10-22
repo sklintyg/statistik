@@ -140,7 +140,7 @@ public class VerksamhetOverviewPersistenceHandler implements VerksamhetOverview 
     }
 
     private int lookupChange(Object[] row, List<Object[]> queryResultForPrevPeriod) {
-        String key = (String)row[0];
+        String key = (String) row[0];
         int current = ((Long) row[1]).intValue();
         int prev = 0;
         for (Object[] prevRow : queryResultForPrevPeriod) {
