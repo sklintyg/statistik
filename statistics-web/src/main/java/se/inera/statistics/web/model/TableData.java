@@ -19,7 +19,6 @@ public class TableData {
         List<List<TableHeader>> headerRows = new ArrayList<>();
         headerRows.add(tableHeaders);
         return new TableData(rows, headerRows);
-
     }
 
     public static List<TableHeader> toTableHeaderList(List<String> headers, int span) {

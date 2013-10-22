@@ -30,6 +30,15 @@
          return conf;
  }
  
+ app.casesPerSexConfig = function() {
+     var conf = {};
+     conf.dataFetcher = "getNationalSjukfallPerSexData",
+     conf.title = function(){return "Andel sjukfall per kön per län det senaste året";};
+     conf.yAxisTitle = "Andel";
+     conf.percentChart = true;
+     return conf;
+ }
+
  app.columnChartDetailsViewCtrl = function ($scope, $routeParams, statisticsData, config) {
      var isVerksamhet = $routeParams.verksamhetId ? true : false;
 
@@ -58,7 +67,7 @@
 			yAxis : {
 				min : 0,
 				title : {
-					text : 'Antal',
+					text : config.percentChart ? "Andel" : 'Antal',
 					align : 'high',
 					verticalAlign : 'top',
 					rotation : 0,
@@ -68,7 +77,7 @@
 				},
 				labels: {
 					formatter: function() {
-						return this.value
+						return this.value + (config.percentChart ? "%" : "")
 					}
 				},
 				plotLines : [ {
@@ -97,7 +106,10 @@
                     	}
                 	},
                     showInLegend: true
-                } 
+                },
+                column: {
+                    stacking: config.percentChart ? 'percent' : 'normal',
+                }
             },
             tooltip: {
 		        /*crosshairs: true*/ // True if crosshair. Not specified in design document for Statistiktjänsten 1.0.

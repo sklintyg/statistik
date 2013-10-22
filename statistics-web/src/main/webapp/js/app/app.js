@@ -53,6 +53,12 @@ app.statisticsApp = angular.module('StatisticsApp', [ 'ngCookies', 'ui.bootstrap
                 controllerAs : 'NationalDegreeOfSickLeaveCtrl',
                 resolve : { config: app.degreeOfSickLeaveConfig },
                 title: 'Sjukskrivningsgrad'
+            }).when('/nationell/andelSjukfallPerKon', {
+                templateUrl : 'views/detailsView.html',
+                controller : 'CasesPerSexCtrl',
+                controllerAs : 'NationalCasesPerSexCtrl',
+                resolve : { config: app.casesPerSexConfig },
+                title: 'Sjukskrivningsgrad'
             }).when('/verksamhet', {
                 templateUrl : 'views/empty.html',
                 controller : 'BusinessLandingPageCtrl',

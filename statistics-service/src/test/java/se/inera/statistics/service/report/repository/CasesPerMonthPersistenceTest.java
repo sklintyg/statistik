@@ -3,7 +3,6 @@ package se.inera.statistics.service.report.repository;
 import static org.junit.Assert.assertEquals;
 
 import java.util.Iterator;
-import java.util.List;
 
 import org.joda.time.LocalDate;
 import org.junit.Test;
@@ -13,7 +12,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import se.inera.statistics.service.report.model.CasesPerMonthRow;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.Sex;
 import se.inera.statistics.service.report.model.SimpleDualSexDataRow;

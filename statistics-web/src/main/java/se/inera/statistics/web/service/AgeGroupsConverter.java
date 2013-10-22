@@ -32,8 +32,8 @@ public class AgeGroupsConverter {
         List<Integer> femaleData = resp.getDataForSex(Sex.Female);
         List<Integer> maleData = resp.getDataForSex(Sex.Male);
         ArrayList<ChartSeries> series = new ArrayList<>();
-        series.add(new ChartSeries("Antal sjukfall män", maleData, Sex.Male));
-        series.add(new ChartSeries("Antal sjukfall kvinnor", femaleData, Sex.Female));
+        series.add(new ChartSeries("Antal sjukfall män", maleData, false, Sex.Male));
+        series.add(new ChartSeries("Antal sjukfall kvinnor", femaleData, false, Sex.Female));
         return new ChartData(series, groups);
     }
 

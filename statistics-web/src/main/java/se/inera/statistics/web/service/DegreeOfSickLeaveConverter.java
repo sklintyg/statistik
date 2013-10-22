@@ -31,7 +31,7 @@ public class DegreeOfSickLeaveConverter {
         List<ChartSeries> series = new ArrayList<>();
         for (int i = 0; i < data.getDegreesOfSickLeave().size(); i++) {
             List<Integer> indexData = data.getDataFromIndex(i, sex);
-            series.add(new ChartSeries(data.getDegreesOfSickLeave().get(i), indexData));
+            series.add(new ChartSeries(data.getDegreesOfSickLeave().get(i), indexData, true));
         }
         return series;
     }
