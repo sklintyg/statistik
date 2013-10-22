@@ -11,10 +11,13 @@ import org.joda.time.LocalDate;
 import org.springframework.transaction.annotation.Transactional;
 
 import se.inera.statistics.service.report.api.SjukfallslangdGrupp;
+import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.Sex;
 import se.inera.statistics.service.report.model.SickLeaveLengthKey;
 import se.inera.statistics.service.report.model.SickLeaveLengthResponse;
 import se.inera.statistics.service.report.model.SickLeaveLengthRow;
+import se.inera.statistics.service.report.model.SimpleDualSexDataRow;
+import se.inera.statistics.service.report.model.SimpleDualSexResponse;
 import se.inera.statistics.service.report.util.ReportUtil;
 import se.inera.statistics.service.report.util.SjukfallslangdUtil;
 import se.inera.statistics.service.report.util.Verksamhet;
@@ -25,13 +28,25 @@ public class SjukfallslangdGruppPersistenceHandler implements SjukfallslangdGrup
 
     @Override
     @Transactional
-    public SickLeaveLengthResponse getStatistics(String hsaId, LocalDate when, RollingLength length) {
+    public SickLeaveLengthResponse getHistoricalStatistics(String hsaId, LocalDate when, RollingLength length) {
         TypedQuery<SickLeaveLengthRow> query = manager.createQuery("SELECT a FROM SickLeaveLengthRow a WHERE a.key.hsaId = :hsaId AND a.key.period = :when AND a.key.periods = :periods ", SickLeaveLengthRow.class);
         query.setParameter("hsaId", hsaId);
         query.setParameter("when", ReportUtil.toPeriod(when));
         query.setParameter("periods", length.getPeriods());
 
         return translateForOutput(query.getResultList(), length.getPeriods());
+    }
+
+    @Override
+    public SickLeaveLengthResponse getCurrentStatistics(String hsaId) {
+        // TODO Auto-generated method stub
+        throw new RuntimeException("Not yet implemented");
+    }
+
+    @Override
+    public SimpleDualSexResponse<SimpleDualSexDataRow> getLongSickLeaves(String decodeId, Range range) {
+        // TODO Auto-generated method stub
+        throw new RuntimeException("Not yet implemented");
     }
 
     private SickLeaveLengthResponse translateForOutput(List<SickLeaveLengthRow> list, int periods) {
@@ -65,4 +80,5 @@ public class SjukfallslangdGruppPersistenceHandler implements SjukfallslangdGrup
             manager.merge(existingRow);
         }
     }
+
 }

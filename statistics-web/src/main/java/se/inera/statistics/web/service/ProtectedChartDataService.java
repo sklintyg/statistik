@@ -24,17 +24,18 @@ import se.inera.statistics.service.report.api.DiagnosisSubGroups;
 import se.inera.statistics.service.report.api.SjukfallslangdGrupp;
 import se.inera.statistics.service.report.api.VerksamhetOverview;
 import se.inera.statistics.service.report.model.AgeGroupsResponse;
-import se.inera.statistics.service.report.model.CasesPerMonthRow;
 import se.inera.statistics.service.report.model.DegreeOfSickLeaveResponse;
 import se.inera.statistics.service.report.model.DiagnosisGroupResponse;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.SickLeaveLengthResponse;
+import se.inera.statistics.service.report.model.SimpleDualSexDataRow;
+import se.inera.statistics.service.report.model.SimpleDualSexResponse;
 import se.inera.statistics.service.report.model.VerksamhetOverviewResponse;
 import se.inera.statistics.service.report.repository.RollingLength;
 import se.inera.statistics.web.model.AgeGroupsData;
-import se.inera.statistics.web.model.CasesPerMonthData;
 import se.inera.statistics.web.model.DualSexStatisticsData;
 import se.inera.statistics.web.model.SickLeaveLengthData;
+import se.inera.statistics.web.model.SimpleDetailsData;
 import se.inera.statistics.web.model.Verksamhet;
 import se.inera.statistics.web.model.overview.VerksamhetOverviewData;
 
@@ -75,11 +76,11 @@ public class ProtectedChartDataService {
     @GET
     @Path("{verksamhetId}/getNumberOfCasesPerMonth")
     @Produces({ MediaType.APPLICATION_JSON })
-    public CasesPerMonthData getNumberOfCasesPerMonth(@PathParam("verksamhetId") String verksamhetId) {
+    public SimpleDetailsData getNumberOfCasesPerMonth(@PathParam("verksamhetId") String verksamhetId) {
         LOG.info("Calling getNumberOfCasesPerMonth with verksamhetId: " + verksamhetId);
         Range range = new Range();
-        List<CasesPerMonthRow> casesPerMonth = datasourceCasesPerMonth.getCasesPerMonth(Verksamhet.decodeId(verksamhetId), range);
-        return new CasesPerMonthConverter().convert(casesPerMonth);
+        SimpleDualSexResponse<SimpleDualSexDataRow> casesPerMonth = datasourceCasesPerMonth.getCasesPerMonth(Verksamhet.decodeId(verksamhetId), range);
+        return new SimpleDualSexConverter().convert(casesPerMonth);
     }
 
     @GET
@@ -117,7 +118,7 @@ public class ProtectedChartDataService {
     @Produces({ MediaType.APPLICATION_JSON })
     public AgeGroupsData getAgeGroupsStatistics(@PathParam("verksamhetId") String verksamhetId) {
         LOG.info("Calling getAgeGroupsStatistics with verksamhetId: " + verksamhetId);
-        AgeGroupsResponse ageGroups = datasourceAgeGroups.getCurrentAgeGroups("hsaid");
+        AgeGroupsResponse ageGroups = datasourceAgeGroups.getCurrentAgeGroups(Verksamhet.decodeId(verksamhetId));
         return new AgeGroupsConverter().convert(ageGroups);
     }
 
@@ -126,7 +127,7 @@ public class ProtectedChartDataService {
     @Produces({ MediaType.APPLICATION_JSON })
     public AgeGroupsData getAgeGroupsHistoricalStatistics(@PathParam("verksamhetId") String verksamhetId) {
         LOG.info("Calling getAgeGroupsHistoricalStatistics with verksamhetId: " + verksamhetId);
-        AgeGroupsResponse ageGroups = datasourceAgeGroups.getHistoricalAgeGroups("hsaid", previousMonth(), RollingLength.QUARTER);
+        AgeGroupsResponse ageGroups = datasourceAgeGroups.getHistoricalAgeGroups(Verksamhet.decodeId(verksamhetId), previousMonth(), RollingLength.QUARTER);
         return new AgeGroupsConverter().convert(ageGroups);
     }
 
@@ -144,8 +145,27 @@ public class ProtectedChartDataService {
     @Produces({ MediaType.APPLICATION_JSON })
     public SickLeaveLengthData getSickLeaveLengthData(@PathParam("verksamhetId") String verksamhetId) {
         LOG.info("Calling getSickLeaveLengthData with verksamhetId: " + verksamhetId);
-        SickLeaveLengthResponse sickLeaveLength = datasourceSickLeaveLength.getStatistics(Verksamhet.decodeId(verksamhetId), previousMonth(), RollingLength.YEAR);
+        SickLeaveLengthResponse sickLeaveLength = datasourceSickLeaveLength.getCurrentStatistics(Verksamhet.decodeId(verksamhetId));
         return new SickLeaveLengthConverter().convert(sickLeaveLength);
+    }
+
+    @GET
+    @Path("{verksamhetId}/getSickLeaveLengthHistoricalData")
+    @Produces({ MediaType.APPLICATION_JSON })
+    public SickLeaveLengthData getSickLeaveLengthHistoricalData(@PathParam("verksamhetId") String verksamhetId) {
+        LOG.info("Calling getSickLeaveLengthHistoricalData with verksamhetId: " + verksamhetId);
+        SickLeaveLengthResponse sickLeaveLength = datasourceSickLeaveLength.getHistoricalStatistics(Verksamhet.decodeId(verksamhetId), previousMonth(), RollingLength.YEAR);
+        return new SickLeaveLengthConverter().convert(sickLeaveLength);
+    }
+
+    @GET
+    @Path("{verksamhetId}/getLongSickLeavesData")
+    @Produces({ MediaType.APPLICATION_JSON })
+    public SimpleDetailsData getLongSickLeavesData(@PathParam("verksamhetId") String verksamhetId) {
+        LOG.info("Calling getLongSickLeavesData with verksamhetId: " + verksamhetId);
+        Range range = new Range();
+        SimpleDualSexResponse<SimpleDualSexDataRow> longSickLeaves = datasourceSickLeaveLength.getLongSickLeaves(Verksamhet.decodeId(verksamhetId), range);
+        return new SimpleDualSexConverter().convert(longSickLeaves);
     }
 
     public boolean hasAccessTo(HttpServletRequest request, String verksamhetId) {

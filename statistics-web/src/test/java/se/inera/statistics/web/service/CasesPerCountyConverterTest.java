@@ -28,7 +28,7 @@ public class CasesPerCountyConverterTest {
         perCountyRows1.add(new SimpleDualSexDataRow("<20", 13, 14));
         perCountyRows1.add(new SimpleDualSexDataRow("20-50", 24, 15));
         perCountyRows1.add(new SimpleDualSexDataRow(">50", 3, 9));
-        SimpleDualSexResponse ageGroupsResponseNew = new SimpleDualSexResponse<>(perCountyRows1, 1);
+        SimpleDualSexResponse<SimpleDualSexDataRow> ageGroupsResponseNew = new SimpleDualSexResponse<>(perCountyRows1, 1);
 
         ArrayList<SimpleDualSexDataRow> perCountyRowsOld = new ArrayList<>();
         perCountyRowsOld.add(new SimpleDualSexDataRow("<20", 3, 4));
