@@ -11,7 +11,6 @@ import org.joda.time.LocalDate;
 import org.springframework.transaction.annotation.Transactional;
 
 import se.inera.statistics.service.report.api.SjukfallslangdGrupp;
-import se.inera.statistics.service.report.model.CasesPerMonthRow;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.Sex;
 import se.inera.statistics.service.report.model.SickLeaveLengthKey;
