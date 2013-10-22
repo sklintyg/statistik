@@ -44,6 +44,6 @@ public class DiagnosisGroupsMock implements DiagnosisGroups {
     // CHECKSTYLE:ON MagicNumber
 
     @Override
-    public void count(String hsaId, String period, String diagnosgrupp, Verksamhet typ,Sex sex) {
+    public void count(String hsaId, String period, String diagnosgrupp, Verksamhet typ, Sex sex) {
     }
 }

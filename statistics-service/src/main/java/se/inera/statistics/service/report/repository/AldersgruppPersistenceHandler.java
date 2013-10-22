@@ -34,7 +34,6 @@ public class AldersgruppPersistenceHandler implements AgeGroups {
 
         return translateForOutput(query.getResultList(), rolling.getPeriods());
     }
-    
 
     @Override
     public AgeGroupsResponse getCurrentAgeGroups(String hsaId) {

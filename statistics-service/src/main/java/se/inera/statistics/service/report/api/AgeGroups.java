@@ -14,5 +14,5 @@ public interface AgeGroups {
     AgeGroupsResponse getCurrentAgeGroups(String hsaId);
 
     AgeGroupsResponse getHistoricalAgeGroups(String hsaId, LocalDate when, RollingLength rollingLength);
-    
+
 }

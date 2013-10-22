@@ -95,7 +95,7 @@ public final class DocumentHelper {
         }
         return result;
     }
-    
+
     public static int getAge(JsonNode document) {
         return document.path("patient").path("alder").intValue();
     }

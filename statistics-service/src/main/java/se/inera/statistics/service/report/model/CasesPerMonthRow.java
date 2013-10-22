@@ -53,7 +53,6 @@ public class CasesPerMonthRow {
     public void setMale(int male) {
         this.male = male;
     }
-    
 
     public Verksamhet getTyp() {
         return typ;

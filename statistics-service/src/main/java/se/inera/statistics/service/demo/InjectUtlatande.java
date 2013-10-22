@@ -23,6 +23,8 @@ import se.inera.statistics.service.report.util.DiagnosisGroupsUtil;
 import com.fasterxml.jackson.databind.JsonNode;
 
 public class InjectUtlatande {
+    private static final int SEED = 1234;
+
     private static final Logger LOG = LoggerFactory.getLogger(InjectUtlatande.class);
 
     private static final int DAYS = 30;
@@ -33,8 +35,9 @@ public class InjectUtlatande {
 
     private static final List<String> DIAGNOSER = new ArrayList<>();
     private static final List<String> VARDENHETER = Arrays.asList("verksamhet1", "verksamhet2");
+    private static final List<Integer> ARBETSFORMAGOR = Arrays.asList(0, 25, 50, 75);
 
-    private static Random random = new Random(1234);
+    private static Random random = new Random(SEED);
 
     @Autowired
     private CommonPersistence persistence;
@@ -87,7 +90,7 @@ public class InjectUtlatande {
 
         String diagnos = random(DIAGNOSER);
 
-        int arbetsformaga = random.nextInt(3) * 25;
+        int arbetsformaga = random(ARBETSFORMAGOR);
         return builder.build(patientId, start, end, vardenhet, diagnos, arbetsformaga);
     }
 
