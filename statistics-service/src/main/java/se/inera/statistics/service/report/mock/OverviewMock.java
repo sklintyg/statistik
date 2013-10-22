@@ -24,8 +24,8 @@ public class OverviewMock implements Overview {
         diagnosisGroups.add(new OverviewChartRowExtended("O - Graviditet och förlossning", 1869, -3));
 
         ArrayList<OverviewChartRowExtended> ageGroups = new ArrayList<OverviewChartRowExtended>();
-        ageGroups.add(new OverviewChartRowExtended("<35 år", 18848, 2));
-        ageGroups.add(new OverviewChartRowExtended("36-40 år", 9495, -4));
+        ageGroups.add(new OverviewChartRowExtended("<21 år", 18848, 2));
+        ageGroups.add(new OverviewChartRowExtended("21-25 år", 9495, -4));
         ageGroups.add(new OverviewChartRowExtended("41-45 år", 10363, 5));
         ageGroups.add(new OverviewChartRowExtended("46-50 år", 11745, 0));
         ageGroups.add(new OverviewChartRowExtended("51-55 år", 12435, -3));
