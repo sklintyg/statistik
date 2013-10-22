@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
+import java.util.UUID;
 
 import javax.annotation.PostConstruct;
 
@@ -75,7 +76,7 @@ public class InjectUtlatande {
         LOG.info("Inserting " + personNummers.size() + " certificates");
         for (String id : personNummers) {
             JsonNode newPermutation = permutate(builder, id);
-            accept(newPermutation.toString(), id);
+            accept(newPermutation.toString(), newPermutation.path("id").path("extension").textValue());
         }
         LOG.info("Inserting " + personNummers.size() + " certificates completed");
     }

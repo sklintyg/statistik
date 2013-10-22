@@ -13,4 +13,5 @@
     <include file="liquibase/db.changelog-v7.0_create_aldersgrupp_row_table.xml"/>
     <include file="liquibase/db.changelog-v8.0_create_sjukfallslangdgrupp_row_table.xml"/>
     <include file="liquibase/db.changelog-v9.0_create_sjukskrivningsgrad_row_table.xml"/>
+    <include file="liquibase/db.changelog-v10.0_create_hsa_table.xml"/>
 </databaseChangeLog>

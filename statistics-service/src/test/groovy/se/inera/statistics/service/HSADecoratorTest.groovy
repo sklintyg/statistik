@@ -7,7 +7,6 @@ import org.junit.Before
 import org.junit.Test
 import se.inera.statistics.service.helper.JSONParser
 import se.inera.statistics.service.hsa.HSADecorator
-import se.inera.statistics.service.hsa.HSAInfo
 import se.inera.statistics.service.hsa.HSAKey
 import se.inera.statistics.service.hsa.HSAService
 
@@ -47,7 +46,6 @@ class HSADecoratorTest {
     @Test
     void hsa_decorator_extract_key_from_document() {
         def doc = JSONParser.parse(JSONSource.readTemplateAsString().toString())
-        hsaDecorator.service = { assertEquals "enhetId", it.enhetId; new HSAInfo("Västa Götaland",) } as HSAService
 
         def key = hsaDecorator.extractHSAKey(doc)
 

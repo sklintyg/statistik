@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class ProcessLogImpl implements ProcessLog {
 
     private static final String PROCESSED_HSA = "PROCESSED_HSA";
+
     @PersistenceContext(unitName = "IneraStatisticsLog")
     private EntityManager manager;
 

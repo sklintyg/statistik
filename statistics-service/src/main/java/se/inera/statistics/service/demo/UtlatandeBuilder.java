@@ -2,6 +2,7 @@ package se.inera.statistics.service.demo;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.util.UUID;
 
 import org.joda.time.LocalDate;
 import org.joda.time.format.DateTimeFormat;
@@ -30,6 +31,9 @@ public class UtlatandeBuilder {
         ObjectNode intyg = template.deepCopy();
         ObjectNode patientIdNode = (ObjectNode) intyg.path("patient").path("id");
         patientIdNode.put("extension", patientId);
+
+        ObjectNode idNode = (ObjectNode) intyg.path("id");
+        idNode.put("extension", UUID.randomUUID().toString());
 
         intyg.put("validFromDate", FORMATTER.print(start));
         intyg.put("validToDate", FORMATTER.print(end));
