@@ -37,4 +37,12 @@ public class SimpleDualSexResponse<T extends SimpleDualSexDataRow> {
         return data;
     }
 
+    public List<Integer> getSummedData() {
+        List<Integer> data = new ArrayList<>();
+        for (SimpleDualSexDataRow row : rows) {
+            data.add(row.getFemale() + row.getMale());
+        }
+        return data;
+    }
+    
 }

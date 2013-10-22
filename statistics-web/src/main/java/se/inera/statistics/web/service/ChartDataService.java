@@ -162,5 +162,16 @@ public class ChartDataService {
         return new CasesPerCountyConverter(countyStatRange1, countyStatRange2, range1, range2).convert();
     }
 
+    @GET
+    @Path("getSjukfallPerSexStatistics")
+    @Produces({ MediaType.APPLICATION_JSON })
+    public SimpleDetailsData getSjukfallPerSexStatistics() {
+        LOG.info("Calling getSjukfallPerSexStatistics for national");
+        final int rangeLength = 12;
+        Range range = new Range(rangeLength);
+        SimpleDualSexResponse<SimpleDualSexDataRow> casesPerMonth = datasourceCasesPerCounty.getStatistics(Verksamhet.NATIONELL.toString(), range);
+        return new SjukfallPerSexConverter().convert(casesPerMonth);
+    }
+
 }
 

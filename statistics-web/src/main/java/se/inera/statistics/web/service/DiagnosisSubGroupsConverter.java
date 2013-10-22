@@ -33,11 +33,11 @@ public class DiagnosisSubGroupsConverter {
         List<ChartSeries> topColumns = new ArrayList<>();
         for (Integer index : topIndexes) {
             List<Integer> indexData = data.getDataFromIndex(index, sex);
-            topColumns.add(new ChartSeries(data.getDiagnosisGroupsAsStrings().get(index), indexData));
+            topColumns.add(new ChartSeries(data.getDiagnosisGroupsAsStrings().get(index), indexData, true));
         }
         if (data.getDiagnosisGroupsAsStrings().size() > NUMBER_OF_CHART_SERIES) {
             List<Integer> remainingData = sumRemaining(topIndexes, data, sex);
-            topColumns.add(new ChartSeries("Övrigt", remainingData));
+            topColumns.add(new ChartSeries("Övrigt", remainingData, true));
         }
         return topColumns;
     }

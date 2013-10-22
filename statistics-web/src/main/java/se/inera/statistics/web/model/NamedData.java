@@ -6,9 +6,9 @@ import java.util.List;
 public class NamedData {
 
     private final String name;
-    private final List<Integer> data;
+    private final List<Object> data;
 
-    public NamedData(String name, List<Integer> data) {
+    public NamedData(String name, List<? extends Object> data) {
         this.name = name;
         this.data = Collections.unmodifiableList(data);
     }
@@ -17,7 +17,7 @@ public class NamedData {
         return name;
     }
 
-    public List<Integer> getData() {
+    public List<Object> getData() {
         return data;
     }
 

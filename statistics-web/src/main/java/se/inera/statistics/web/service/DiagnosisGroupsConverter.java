@@ -55,7 +55,7 @@ public class DiagnosisGroupsConverter {
         Map<String, List<Integer>> mergedGroups = mergeChartGroups(allGroups);
         ArrayList<ChartSeries> rows = new ArrayList<>();
         for (Entry<String, List<Integer>> entry : mergedGroups.entrySet()) {
-            rows.add(new ChartSeries(entry.getKey(), entry.getValue()));
+            rows.add(new ChartSeries(entry.getKey(), entry.getValue(), true));
         }
 
         List<String> headers = resp.getPeriods();
