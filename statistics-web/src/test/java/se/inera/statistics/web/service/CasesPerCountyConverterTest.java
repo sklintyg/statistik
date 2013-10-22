@@ -8,9 +8,9 @@ import java.util.List;
 import org.joda.time.LocalDate;
 import org.junit.Test;
 
-import se.inera.statistics.service.report.model.CasesPerCountyResponse;
-import se.inera.statistics.service.report.model.CasesPerCountyRow;
 import se.inera.statistics.service.report.model.Range;
+import se.inera.statistics.service.report.model.SimpleDualSexDataRow;
+import se.inera.statistics.service.report.model.SimpleDualSexResponse;
 import se.inera.statistics.web.model.CasesPerCountyData;
 import se.inera.statistics.web.model.ChartData;
 import se.inera.statistics.web.model.ChartSeries;
@@ -24,17 +24,17 @@ public class CasesPerCountyConverterTest {
     @Test
     public void convertCasesPerCountyDataTest() {
         //Given
-        ArrayList<CasesPerCountyRow> perCountyRows1 = new ArrayList<>();
-        perCountyRows1.add(new CasesPerCountyRow("<20", 13, 14));
-        perCountyRows1.add(new CasesPerCountyRow("20-50", 24, 15));
-        perCountyRows1.add(new CasesPerCountyRow(">50", 3, 9));
-        CasesPerCountyResponse ageGroupsResponseNew = new CasesPerCountyResponse(perCountyRows1, 1);
+        ArrayList<SimpleDualSexDataRow> perCountyRows1 = new ArrayList<>();
+        perCountyRows1.add(new SimpleDualSexDataRow("<20", 13, 14));
+        perCountyRows1.add(new SimpleDualSexDataRow("20-50", 24, 15));
+        perCountyRows1.add(new SimpleDualSexDataRow(">50", 3, 9));
+        SimpleDualSexResponse ageGroupsResponseNew = new SimpleDualSexResponse<>(perCountyRows1, 1);
 
-        ArrayList<CasesPerCountyRow> perCountyRowsOld = new ArrayList<>();
-        perCountyRowsOld.add(new CasesPerCountyRow("<20", 3, 4));
-        perCountyRowsOld.add(new CasesPerCountyRow("20-50", 4, 5));
-        perCountyRowsOld.add(new CasesPerCountyRow(">50", 2, 8));
-        CasesPerCountyResponse ageGroupsResponseOld = new CasesPerCountyResponse(perCountyRowsOld, 2);
+        ArrayList<SimpleDualSexDataRow> perCountyRowsOld = new ArrayList<>();
+        perCountyRowsOld.add(new SimpleDualSexDataRow("<20", 3, 4));
+        perCountyRowsOld.add(new SimpleDualSexDataRow("20-50", 4, 5));
+        perCountyRowsOld.add(new SimpleDualSexDataRow(">50", 2, 8));
+        SimpleDualSexResponse<SimpleDualSexDataRow> ageGroupsResponseOld = new SimpleDualSexResponse<>(perCountyRowsOld, 2);
 
         LocalDate fromOld = new LocalDate(2013, 2, 1);
         LocalDate toOld = new LocalDate(2013, 4, 1);

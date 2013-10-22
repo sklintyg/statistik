@@ -25,13 +25,13 @@ public class SjukfallslangdGruppPersistenceHandler implements SjukfallslangdGrup
 
     @Override
     @Transactional
-    public SickLeaveLengthResponse getStatistics(String hsaId, LocalDate when, int periods) {
-        TypedQuery<SickLeaveLengthRow> query = manager.createQuery("SELECT a FROM SjukfallslangdGrupp a WHERE a.key.hsaId = :hsaId AND a.key.period = :when a.key.size = :size ", SickLeaveLengthRow.class);
+    public SickLeaveLengthResponse getStatistics(String hsaId, LocalDate when, RollingLength length) {
+        TypedQuery<SickLeaveLengthRow> query = manager.createQuery("SELECT a FROM SickLeaveLengthRow a WHERE a.key.hsaId = :hsaId AND a.key.period = :when AND a.key.periods = :periods ", SickLeaveLengthRow.class);
         query.setParameter("hsaId", hsaId);
         query.setParameter("when", ReportUtil.toPeriod(when));
-        query.setParameter("size", periods);
+        query.setParameter("periods", length.getPeriods());
 
-        return translateForOutput(query.getResultList(), periods);
+        return translateForOutput(query.getResultList(), length.getPeriods());
     }
 
     private SickLeaveLengthResponse translateForOutput(List<SickLeaveLengthRow> list, int periods) {
@@ -51,13 +51,13 @@ public class SjukfallslangdGruppPersistenceHandler implements SjukfallslangdGrup
 
     @Transactional
     @Override
-    public void count(String period, String hsaId, String group, int periods, Verksamhet typ, Sex sex) {
-        SickLeaveLengthRow existingRow = manager.find(SickLeaveLengthRow.class, new SickLeaveLengthKey(period, hsaId, group, periods));
+    public void count(String period, String hsaId, String group, RollingLength length, Verksamhet typ, Sex sex) {
+        SickLeaveLengthRow existingRow = manager.find(SickLeaveLengthRow.class, new SickLeaveLengthKey(period, hsaId, group, length.getPeriods()));
         int female = Sex.Female.equals(sex) ? 1 : 0;
         int male = Sex.Male.equals(sex) ? 1 : 0;
 
         if (existingRow == null) {
-            SickLeaveLengthRow row = new SickLeaveLengthRow(period, hsaId, group, periods, typ, female, male);
+            SickLeaveLengthRow row = new SickLeaveLengthRow(period, hsaId, group, length.getPeriods(), typ, female, male);
             manager.persist(row);
         } else {
             existingRow.setFemale(existingRow.getFemale() + female);

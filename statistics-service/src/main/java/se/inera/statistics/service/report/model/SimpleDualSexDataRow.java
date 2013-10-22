@@ -10,6 +10,10 @@ public class SimpleDualSexDataRow {
         this.data = data;
     }
 
+    public SimpleDualSexDataRow(String name, int female, int male) {
+        this(name, new DualSexField(female, male));
+    }
+
     public String getName() {
         return name;
     }

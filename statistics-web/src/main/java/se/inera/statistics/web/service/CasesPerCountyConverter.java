@@ -5,10 +5,10 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
-import se.inera.statistics.service.report.model.CasesPerCountyResponse;
-import se.inera.statistics.service.report.model.CasesPerCountyRow;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.Sex;
+import se.inera.statistics.service.report.model.SimpleDualSexDataRow;
+import se.inera.statistics.service.report.model.SimpleDualSexResponse;
 import se.inera.statistics.web.model.CasesPerCountyData;
 import se.inera.statistics.web.model.ChartData;
 import se.inera.statistics.web.model.ChartSeries;
@@ -18,12 +18,12 @@ import se.inera.statistics.web.model.TableHeader;
 
 public class CasesPerCountyConverter {
 
-    private final CasesPerCountyResponse respNewest;
-    private final CasesPerCountyResponse respOldest;
+    private final SimpleDualSexResponse<SimpleDualSexDataRow> respNewest;
+    private final SimpleDualSexResponse<SimpleDualSexDataRow> respOldest;
     private final String rangeTextOld;
     private final String rangeTextNew;
 
-    public CasesPerCountyConverter(CasesPerCountyResponse respNewest, CasesPerCountyResponse respOldest, Range rangeNewest, Range rangeOldest) {
+    public CasesPerCountyConverter(SimpleDualSexResponse<SimpleDualSexDataRow> respNewest, SimpleDualSexResponse<SimpleDualSexDataRow> respOldest, Range rangeNewest, Range rangeOldest) {
         assert respNewest.getRows().size() == respOldest.getRows().size();
         this.respNewest = respNewest;
         this.respOldest = respOldest;
@@ -37,8 +37,8 @@ public class CasesPerCountyConverter {
         int accumulatedSumNewest = 0;
         int accumulatedSumOldest = 0;
         for (int i = 0; i < respNewest.getRows().size(); i++) {
-            CasesPerCountyRow newestRow = respNewest.getRows().get(i);
-            CasesPerCountyRow oldestRow = respOldest.getRows().get(i);
+            SimpleDualSexDataRow newestRow = respNewest.getRows().get(i);
+            SimpleDualSexDataRow oldestRow = respOldest.getRows().get(i);
             assert newestRow.getName().equals(oldestRow.getName());
 
             int rowSumNewest = newestRow.getFemale() + newestRow.getMale();
@@ -63,7 +63,7 @@ public class CasesPerCountyConverter {
     private ChartData convertToChart() {
         assert respNewest.getGroups().equals(respOldest.getGroups());
         List<String> groups = respNewest.getGroups();
-        ArrayList<ChartSeries> series = new ArrayList<>();
+        List<ChartSeries> series = new ArrayList<>();
         List<Integer> femaleDataOld = respOldest.getDataForSex(Sex.Female);
         series.add(new ChartSeries("Sjukfall " + rangeTextOld + " Kvinnor", femaleDataOld, "old", Sex.Female));
         List<Integer> maleDataOld = respOldest.getDataForSex(Sex.Male);

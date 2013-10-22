@@ -2,7 +2,6 @@ package se.inera.statistics.service.report.listener;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyInt;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.doNothing;
@@ -22,6 +21,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 import se.inera.statistics.service.demo.UtlatandeBuilder;
 import se.inera.statistics.service.report.api.AgeGroups;
 import se.inera.statistics.service.report.model.Sex;
+import se.inera.statistics.service.report.repository.RollingLength;
 import se.inera.statistics.service.report.util.ReportUtil;
 import se.inera.statistics.service.report.util.Verksamhet;
 import se.inera.statistics.service.sjukfall.SjukfallInfo;
@@ -44,7 +44,7 @@ public class AldersgruppListenerTest {
     
     @Before 
     public void setup() {
-        doNothing().when(agegroups).count(captor.capture(), eq("enhetId"), anyString(), eq(12), any(Verksamhet.class), any(Sex.class));
+        doNothing().when(agegroups).count(captor.capture(), eq("enhetId"), anyString(), eq(RollingLength.YEAR), any(Verksamhet.class), any(Sex.class));
 
         utlatande = utlatandeBuilder.build("patientId", new LocalDate("2011-01-05"), new LocalDate("2011-03-27"), "enhetId", "A00", 0);
     }

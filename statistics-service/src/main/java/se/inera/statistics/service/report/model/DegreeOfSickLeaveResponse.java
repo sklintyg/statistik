@@ -6,9 +6,9 @@ import java.util.List;
 public class DegreeOfSickLeaveResponse {
 
     private final List<String> degreesOfSickLeave;
-    private final List<DegreeOFSickLeaveRow> rows;
+    private final List<DualSexDataRow> rows;
 
-    public DegreeOfSickLeaveResponse(List<String> degreesOfSickLeave, List<DegreeOFSickLeaveRow> rows) {
+    public DegreeOfSickLeaveResponse(List<String> degreesOfSickLeave, List<DualSexDataRow> rows) {
         this.degreesOfSickLeave = degreesOfSickLeave;
         this.rows = rows;
     }
@@ -17,7 +17,7 @@ public class DegreeOfSickLeaveResponse {
         return degreesOfSickLeave;
     }
 
-    public List<DegreeOFSickLeaveRow> getRows() {
+    public List<DualSexDataRow> getRows() {
         return rows;
     }
 

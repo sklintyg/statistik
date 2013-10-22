@@ -8,9 +8,9 @@ import java.util.Random;
 import org.joda.time.Period;
 
 import se.inera.statistics.service.report.api.CasesPerCounty;
-import se.inera.statistics.service.report.model.CasesPerCountyResponse;
-import se.inera.statistics.service.report.model.CasesPerCountyRow;
 import se.inera.statistics.service.report.model.Range;
+import se.inera.statistics.service.report.model.SimpleDualSexDataRow;
+import se.inera.statistics.service.report.model.SimpleDualSexResponse;
 
 public class CasesPerCountyMock implements CasesPerCounty {
 
@@ -21,16 +21,16 @@ public class CasesPerCountyMock implements CasesPerCounty {
 
     // CHECKSTYLE:OFF MagicNumber
     @Override
-    public CasesPerCountyResponse getStatistics(String hsaId, Range range) {
-        final List<CasesPerCountyRow> rows = new ArrayList<>();
+    public SimpleDualSexResponse<SimpleDualSexDataRow> getStatistics(String hsaId, Range range) {
+        final List<SimpleDualSexDataRow> rows = new ArrayList<>();
         for (String group : GROUPS) {
             int women = (int) (random.nextGaussian() * 2000 + 10000);
             int men = (int) (random.nextGaussian() * 2000 + 10000);
-            rows.add(new CasesPerCountyRow(group, women, men));
+            rows.add(new SimpleDualSexDataRow(group, women, men));
         }
         final Period period = new Period(range.getFrom(), range.getTo());
         final int monthsInPeriod = period.getMonths() + period.getYears() * 12;
-        return new CasesPerCountyResponse(rows, monthsInPeriod);
+        return new SimpleDualSexResponse<SimpleDualSexDataRow>(rows, monthsInPeriod);
     }
 
     // CHECKSTYLE:ON

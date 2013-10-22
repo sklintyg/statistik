@@ -22,7 +22,6 @@ import se.inera.statistics.service.report.api.DiagnosisSubGroups;
 import se.inera.statistics.service.report.api.Overview;
 import se.inera.statistics.service.report.api.SjukfallslangdGrupp;
 import se.inera.statistics.service.report.model.AgeGroupsResponse;
-import se.inera.statistics.service.report.model.CasesPerCountyResponse;
 import se.inera.statistics.service.report.model.CasesPerMonthRow;
 import se.inera.statistics.service.report.model.DegreeOfSickLeaveResponse;
 import se.inera.statistics.service.report.model.DiagnosisGroup;
@@ -30,6 +29,9 @@ import se.inera.statistics.service.report.model.DiagnosisGroupResponse;
 import se.inera.statistics.service.report.model.OverviewResponse;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.SickLeaveLengthResponse;
+import se.inera.statistics.service.report.model.SimpleDualSexDataRow;
+import se.inera.statistics.service.report.model.SimpleDualSexResponse;
+import se.inera.statistics.service.report.repository.RollingLength;
 import se.inera.statistics.service.report.util.DiagnosisGroupsUtil;
 import se.inera.statistics.service.report.util.Verksamhet;
 import se.inera.statistics.web.model.AgeGroupsData;
@@ -122,7 +124,7 @@ public class ChartDataService {
     @Produces({ MediaType.APPLICATION_JSON })
     public AgeGroupsData getAgeGroupsStatistics() {
         LOG.info("Calling getAgeGroupsStatistics for national");
-        AgeGroupsResponse ageGroups = datasourceAgeGroups.getAgeGroups(Verksamhet.NATIONELL.toString(), new LocalDate().minusMonths(1), 3);
+        AgeGroupsResponse ageGroups = datasourceAgeGroups.getCurrentAgeGroups(Verksamhet.NATIONELL.toString());
         return new AgeGroupsConverter().convert(ageGroups);
     }
 
@@ -140,7 +142,7 @@ public class ChartDataService {
     @Produces({ MediaType.APPLICATION_JSON })
     public SickLeaveLengthData getSickLeaveLengthData() {
         LOG.info("Calling getSickLeaveLengthData for national");
-        SickLeaveLengthResponse sickLeaveLength = datasourceSickLeaveLength.getStatistics(Verksamhet.NATIONELL.toString(), previousMonth(), 12);
+        SickLeaveLengthResponse sickLeaveLength = datasourceSickLeaveLength.getStatistics(Verksamhet.NATIONELL.toString(), previousMonth(), RollingLength.YEAR);
         return new SickLeaveLengthConverter().convert(sickLeaveLength);
     }
 
@@ -157,8 +159,8 @@ public class ChartDataService {
         LocalDate range2From = range2To.minusMonths(numberOfMonthsInRanges);
         final Range range2 = new Range(range2From, range2To);
 
-        CasesPerCountyResponse countyStatRange1 = datasourceCasesPerCounty.getStatistics(Verksamhet.NATIONELL.toString(), range1);
-        CasesPerCountyResponse countyStatRange2 = datasourceCasesPerCounty.getStatistics(Verksamhet.NATIONELL.toString(), range2);
+        SimpleDualSexResponse<SimpleDualSexDataRow> countyStatRange1 = datasourceCasesPerCounty.getStatistics(Verksamhet.NATIONELL.toString(), range1);
+        SimpleDualSexResponse<SimpleDualSexDataRow> countyStatRange2 = datasourceCasesPerCounty.getStatistics(Verksamhet.NATIONELL.toString(), range2);
         return new CasesPerCountyConverter(countyStatRange1, countyStatRange2, range1, range2).convert();
     }
 

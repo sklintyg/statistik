@@ -14,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import se.inera.statistics.service.report.api.DiagnosisGroups;
 import se.inera.statistics.service.report.model.DiagnosisGroup;
 import se.inera.statistics.service.report.model.DiagnosisGroupResponse;
-import se.inera.statistics.service.report.model.DiagnosisGroupRow;
+import se.inera.statistics.service.report.model.DualSexDataRow;
 import se.inera.statistics.service.report.model.DualSexField;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.Sex;
@@ -55,8 +55,8 @@ public class DiagnosgroupPersistenceHandler implements DiagnosisGroups {
         return new DiagnosisGroupResponse(HEADERS, translateForOutput(range, query.getResultList()));
     }
 
-    private List<DiagnosisGroupRow> translateForOutput(Range range, List<DiagnosisGroupData> list) {
-        List<DiagnosisGroupRow> translatedCasesPerMonthRows = new ArrayList<>();
+    private List<DualSexDataRow> translateForOutput(Range range, List<DiagnosisGroupData> list) {
+        List<DualSexDataRow> translatedCasesPerMonthRows = new ArrayList<>();
 
         // Span all
         Map<String, DualSexField> map = map(list);
@@ -68,7 +68,7 @@ public class DiagnosgroupPersistenceHandler implements DiagnosisGroups {
             for (DiagnosisGroup group: HEADERS) {
                 values.add(map.get(period + group.getId()));
             }
-            translatedCasesPerMonthRows.add(new DiagnosisGroupRow(displayDate, values));
+            translatedCasesPerMonthRows.add(new DualSexDataRow(displayDate, values));
         }
         return translatedCasesPerMonthRows;
     }

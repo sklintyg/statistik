@@ -30,6 +30,7 @@ import se.inera.statistics.service.report.model.DiagnosisGroupResponse;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.SickLeaveLengthResponse;
 import se.inera.statistics.service.report.model.VerksamhetOverviewResponse;
+import se.inera.statistics.service.report.repository.RollingLength;
 import se.inera.statistics.web.model.AgeGroupsData;
 import se.inera.statistics.web.model.CasesPerMonthData;
 import se.inera.statistics.web.model.DualSexStatisticsData;
@@ -116,7 +117,16 @@ public class ProtectedChartDataService {
     @Produces({ MediaType.APPLICATION_JSON })
     public AgeGroupsData getAgeGroupsStatistics(@PathParam("verksamhetId") String verksamhetId) {
         LOG.info("Calling getAgeGroupsStatistics with verksamhetId: " + verksamhetId);
-        AgeGroupsResponse ageGroups = datasourceAgeGroups.getAgeGroups("hsaid", previousMonth(), 3);
+        AgeGroupsResponse ageGroups = datasourceAgeGroups.getCurrentAgeGroups("hsaid");
+        return new AgeGroupsConverter().convert(ageGroups);
+    }
+
+    @GET
+    @Path("{verksamhetId}/getAgeGroupsHistoricalStatistics")
+    @Produces({ MediaType.APPLICATION_JSON })
+    public AgeGroupsData getAgeGroupsHistoricalStatistics(@PathParam("verksamhetId") String verksamhetId) {
+        LOG.info("Calling getAgeGroupsHistoricalStatistics with verksamhetId: " + verksamhetId);
+        AgeGroupsResponse ageGroups = datasourceAgeGroups.getHistoricalAgeGroups("hsaid", previousMonth(), RollingLength.QUARTER);
         return new AgeGroupsConverter().convert(ageGroups);
     }
 
@@ -134,7 +144,7 @@ public class ProtectedChartDataService {
     @Produces({ MediaType.APPLICATION_JSON })
     public SickLeaveLengthData getSickLeaveLengthData(@PathParam("verksamhetId") String verksamhetId) {
         LOG.info("Calling getSickLeaveLengthData with verksamhetId: " + verksamhetId);
-        SickLeaveLengthResponse sickLeaveLength = datasourceSickLeaveLength.getStatistics(Verksamhet.decodeId(verksamhetId), previousMonth(), 12);
+        SickLeaveLengthResponse sickLeaveLength = datasourceSickLeaveLength.getStatistics(Verksamhet.decodeId(verksamhetId), previousMonth(), RollingLength.YEAR);
         return new SickLeaveLengthConverter().convert(sickLeaveLength);
     }
 

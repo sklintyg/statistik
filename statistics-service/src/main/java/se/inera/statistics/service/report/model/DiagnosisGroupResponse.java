@@ -6,9 +6,9 @@ import java.util.List;
 public class DiagnosisGroupResponse {
 
     private final List<DiagnosisGroup> diagnosisGroups;
-    private final List<DiagnosisGroupRow> rows;
+    private final List<DualSexDataRow> rows;
 
-    public DiagnosisGroupResponse(List<DiagnosisGroup> diagnosisGroups, List<DiagnosisGroupRow> rows) {
+    public DiagnosisGroupResponse(List<DiagnosisGroup> diagnosisGroups, List<DualSexDataRow> rows) {
         this.diagnosisGroups = diagnosisGroups;
         this.rows = rows;
     }
@@ -28,13 +28,13 @@ public class DiagnosisGroupResponse {
         return subGroupStrings;
     }
 
-    public List<DiagnosisGroupRow> getRows() {
+    public List<DualSexDataRow> getRows() {
         return rows;
     }
 
     public List<String> getPeriods() {
         List<String> periods = new ArrayList<>();
-        for (DiagnosisGroupRow row : rows) {
+        for (DualSexDataRow row : rows) {
             periods.add(row.getName());
         }
         return periods;
@@ -42,7 +42,7 @@ public class DiagnosisGroupResponse {
 
     public List<Integer> getDataFromIndex(int index, Sex sex) {
         List<Integer> indexData = new ArrayList<>();
-        for (DiagnosisGroupRow row : rows) {
+        for (DualSexDataRow row : rows) {
             List<DualSexField> data = row.getData();
             indexData.add(data.get(index).getValue(sex));
         }

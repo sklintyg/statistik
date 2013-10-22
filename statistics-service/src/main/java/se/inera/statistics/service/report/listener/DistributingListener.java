@@ -19,10 +19,10 @@ public class DistributingListener implements ProcessorListener {
 
     @Autowired
     private SjukfallPerDiagnosundergruppListener sjukfallPerDiagnosundergruppListenerListener;
-    
+
     @Autowired
     private AldersGruppListener aldersgruppListener;
-    
+
     @Autowired
     private SjukfallslangdListener sjukfallsLangdListener;
 

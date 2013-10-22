@@ -11,6 +11,7 @@ import se.inera.statistics.service.report.api.AgeGroups;
 import se.inera.statistics.service.report.model.AgeGroupsResponse;
 import se.inera.statistics.service.report.model.AgeGroupsRow;
 import se.inera.statistics.service.report.model.Sex;
+import se.inera.statistics.service.report.repository.RollingLength;
 import se.inera.statistics.service.report.util.Verksamhet;
 
 public class AgeGroupsMock implements AgeGroups {
@@ -19,8 +20,7 @@ public class AgeGroupsMock implements AgeGroups {
     public static final List<String> GROUPS = Arrays.asList("<21", "21-25", "26-30", "31-35", "36-40", "41-45", "46-50", "51-55", "56-60", ">60");
 
     // CHECKSTYLE:OFF MagicNumber
-    @Override
-    public AgeGroupsResponse getAgeGroups(String hsaId, LocalDate when, int periods) {
+    public AgeGroupsResponse getAgeGroups(int periods) {
         final List<AgeGroupsRow> rows = new ArrayList<>();
         for (String group : GROUPS) {
             int women = (int) (random.nextGaussian() * 2000 + 10000);
@@ -31,7 +31,17 @@ public class AgeGroupsMock implements AgeGroups {
     }
 
     @Override
-    public void count(String period, String hsaId, String group, int periods, Verksamhet typ, Sex sex) {
+    public void count(String period, String hsaId, String group, RollingLength length, Verksamhet typ, Sex sex) {
+    }
+
+    @Override
+    public AgeGroupsResponse getCurrentAgeGroups(String hsaId) {
+        return getAgeGroups(1);
+    }
+
+    @Override
+    public AgeGroupsResponse getHistoricalAgeGroups(String hsaId, LocalDate when, RollingLength rollignLength) {
+        return getAgeGroups(12);
     }
 
     // CHECKSTYLE:ON

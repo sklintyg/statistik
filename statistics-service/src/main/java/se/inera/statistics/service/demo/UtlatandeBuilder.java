@@ -6,8 +6,6 @@ import java.io.InputStreamReader;
 import org.joda.time.LocalDate;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import se.inera.statistics.service.helper.DocumentHelper;
 import se.inera.statistics.service.helper.JSONParser;
@@ -16,8 +14,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 public class UtlatandeBuilder {
-    private static final Logger LOG = LoggerFactory.getLogger(UtlatandeBuilder.class);
-
     private static final DateTimeFormatter FORMATTER = DateTimeFormat.forPattern("yyyy-MM-dd");
 
     private final JsonNode template;
@@ -51,7 +47,6 @@ public class UtlatandeBuilder {
             }
         }
 
-        LOG.info("New permutation" + intyg.toString());
         return intyg;
     }
 

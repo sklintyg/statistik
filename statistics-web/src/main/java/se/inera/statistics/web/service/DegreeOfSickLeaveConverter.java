@@ -3,8 +3,8 @@ package se.inera.statistics.web.service;
 import java.util.ArrayList;
 import java.util.List;
 
-import se.inera.statistics.service.report.model.DegreeOFSickLeaveRow;
 import se.inera.statistics.service.report.model.DegreeOfSickLeaveResponse;
+import se.inera.statistics.service.report.model.DualSexDataRow;
 import se.inera.statistics.service.report.model.Sex;
 import se.inera.statistics.web.model.ChartData;
 import se.inera.statistics.web.model.ChartSeries;
@@ -44,7 +44,7 @@ public class DegreeOfSickLeaveConverter {
 
     private static List<NamedData> getTableRows(DegreeOfSickLeaveResponse resp) {
         List<NamedData> rows = new ArrayList<>();
-        for (DegreeOFSickLeaveRow row : resp.getRows()) {
+        for (DualSexDataRow row : resp.getRows()) {
             List<Integer> mergedSexData = ServiceUtil.getMergedSexData(row);
             List<Integer> mergedAndSummed = ServiceUtil.getAppendedSum(mergedSexData);
             rows.add(new NamedData(row.getName(), mergedAndSummed));
