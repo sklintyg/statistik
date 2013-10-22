@@ -1584,3 +1584,8 @@ div.datatablescrollable {
 #pageHelpToolTip:hover {
 	cursor: pointer;
 }
+
+.small-info-box .popover.left.in.fade {
+	top: -38px !important;
+	left: -76px !important;
+}
