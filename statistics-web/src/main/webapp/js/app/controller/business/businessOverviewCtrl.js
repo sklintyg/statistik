@@ -1,7 +1,9 @@
  'use strict';
 
  app.businessOverviewCtrl = function ($scope, $timeout, statisticsData, $routeParams) {
- 
+
+    $scope.baseUrl = "#/verksamhet/" + $routeParams.businessId;  
+     
     var dataReceived = function(result) {
         $scope.doneLoading = true;
         $timeout(function() {
@@ -119,7 +121,7 @@
     $scope.popoverTextChangeProcentage = "Procentsatsen visar förändringen av antalet sjukfall senaste tre månaderna jämfört med föregående tre månader.";
     $scope.popoverTextSexDistribution = "Könsfördelningen av totala antalet sjukfall senaste tre månaderna.";
 
-    statisticsData.getLoginInfo(function(loginInfo){ 
+    statisticsData.getLoginInfo(function(loginInfo){
         $scope.businesses = loginInfo.businesses;
         $scope.verksamhetName = getSelectedVerksamhet($routeParams.businessId, loginInfo.businesses).name;
         }, function() { $scope.dataLoadingError = true; });
