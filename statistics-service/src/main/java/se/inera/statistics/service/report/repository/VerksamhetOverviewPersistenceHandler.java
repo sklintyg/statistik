@@ -55,8 +55,8 @@ public class VerksamhetOverviewPersistenceHandler implements VerksamhetOverview 
         List<OverviewChartRowExtended> result = new ArrayList<>();
         Map<Integer, Integer> queryResult = getDegreeOfSickLeaveGroupsFromDb(verksamhetId, range);
         Map<Integer, Integer> queryResultPreviousPeriod = getDegreeOfSickLeaveGroupsFromDb(verksamhetId, ReportUtil.getPreviousPeriod(range));
-        
-        for (int grad: new int[] {25, 50, 75, 100}) {
+
+        for (int grad: SjukskrivningsgradPersistenceHandler.GRAD) {
             int current = queryResult.get(grad);
             int previous = queryResultPreviousPeriod.get(grad);
             int change = previous == 0 ? 0 : (current * 100 / previous - 100);
@@ -70,7 +70,7 @@ public class VerksamhetOverviewPersistenceHandler implements VerksamhetOverview 
         query.setParameter("hsaId", verksamhetId);
         query.setParameter("from", ReportUtil.toPeriod(range.getFrom()));
         query.setParameter("to", ReportUtil.toPeriod(range.getTo()));
-        
+
         Map<Integer, Integer> result = new DefaultHashMap<Integer, Integer>(0);
         for (Object[] row: ((List<Object[]>) query.getResultList())) {
             result.put(asInt(row[0]), asInt(row[1]));

@@ -23,8 +23,8 @@ import se.inera.statistics.service.report.util.Verksamhet;
 
 public class SjukskrivningsgradPersistenceHandler implements DegreeOfSickLeave {
 
-    private static List<String> HEADERS = Arrays.asList("Antal sjukfall per 25%", "Antal sjukfall per 50%", "Antal sjukfall per 75%", "Antal sjukfall per 100%");
-    private static List<Integer> GRAD = Arrays.asList(25, 50, 75, 100);
+    private static final List<String> HEADERS = Arrays.asList("Antal sjukfall per 25%", "Antal sjukfall per 50%", "Antal sjukfall per 75%", "Antal sjukfall per 100%");
+    public static final List<Integer> GRAD = Arrays.asList(25, 50, 75, 100);
 
     @PersistenceContext(unitName = "IneraStatisticsLog")
     private EntityManager manager;
