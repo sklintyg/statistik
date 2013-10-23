@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
-import java.util.UUID;
 
 import javax.annotation.PostConstruct;
 
@@ -28,7 +27,9 @@ public class InjectUtlatande {
 
     private static final Logger LOG = LoggerFactory.getLogger(InjectUtlatande.class);
 
-    private static final int DAYS = 30;
+    private static final int LONG_PERIOD_DAYS = 365;
+    private static final int SHORT_PERIOD_DAYS = 30;
+    private static final float LONG_PERIOD_FRACTION = 0.1f;
 
     private static final int MONTHS = 19;
 
@@ -83,8 +84,8 @@ public class InjectUtlatande {
 
     public static JsonNode permutate(UtlatandeBuilder builder, String patientId) {
         // CHECKSTYLE:OFF MagicNumber
-        LocalDate start = BASE.plusMonths(random.nextInt(MONTHS)).plusDays(random.nextInt(DAYS));
-        LocalDate end = start.plusDays(random.nextInt(DAYS) + 7);
+        LocalDate start = BASE.plusMonths(random.nextInt(MONTHS)).plusDays(random.nextInt(SHORT_PERIOD_DAYS));
+        LocalDate end = random.nextFloat() < LONG_PERIOD_FRACTION ? start.plusDays(random.nextInt(LONG_PERIOD_DAYS) + 7) : start.plusDays(random.nextInt(SHORT_PERIOD_DAYS) + 7);
         // CHECKSTYLE:ON MagicNumber
 
         String vardenhet = random(VARDENHETER);
