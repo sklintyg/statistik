@@ -28,7 +28,8 @@ public class SjukfallPerSexConverter {
     }
 
     private String toTableString(final Integer value, int rowSum) {
-        return Math.round(100.0 * value / rowSum) + "% (" + value + ")";
+        final float toPercentFactor = 100.0F;
+        return Math.round(toPercentFactor * value / rowSum) + "% (" + value + ")";
     }
 
     private ChartData convertToChartData(SimpleDualSexResponse<SimpleDualSexDataRow> casesPerMonth) {
