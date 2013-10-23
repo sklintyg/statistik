@@ -1,13 +1,18 @@
 package se.inera.statistics.service.report.repository;
 
-import org.springframework.transaction.annotation.Transactional;
-import se.inera.statistics.service.report.api.Overview;
-import se.inera.statistics.service.report.model.*;
-import se.inera.statistics.service.report.util.ReportUtil;
-import se.inera.statistics.service.report.util.Verksamhet;
-
 import java.util.Collections;
 import java.util.List;
+
+import org.springframework.transaction.annotation.Transactional;
+
+import se.inera.statistics.service.report.api.Overview;
+import se.inera.statistics.service.report.model.OverviewChartRow;
+import se.inera.statistics.service.report.model.OverviewChartRowExtended;
+import se.inera.statistics.service.report.model.OverviewResponse;
+import se.inera.statistics.service.report.model.OverviewSexProportion;
+import se.inera.statistics.service.report.model.Range;
+import se.inera.statistics.service.report.util.ReportUtil;
+import se.inera.statistics.service.report.util.Verksamhet;
 
 public class OverviewPersistenceHandler extends OverviewBasePersistenceHandler implements Overview {
     private static final String NATIONELL = Verksamhet.NATIONELL.name();
@@ -36,6 +41,4 @@ public class OverviewPersistenceHandler extends OverviewBasePersistenceHandler i
     private List<OverviewChartRowExtended> getCasesPerCounty(Range range) {
         return Collections.emptyList();
     }
-
-
 }
