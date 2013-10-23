@@ -7,5 +7,5 @@ import se.inera.statistics.service.report.util.Verksamhet;
 
 public interface DegreeOfSickLeave {
     DegreeOfSickLeaveResponse getStatistics(String hsaId, Range range);
-    void count(String hsaId, String period, int degree, Verksamhet typ, Sex sex);
+    void count(String hsaId, String period, String grad, Verksamhet typ, Sex sex);
 }

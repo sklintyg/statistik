@@ -3,7 +3,6 @@ package se.inera.statistics.service.report.repository;
 import org.joda.time.LocalDate;
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +10,12 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
-import se.inera.statistics.service.report.api.*;
+
+import se.inera.statistics.service.report.api.AgeGroups;
+import se.inera.statistics.service.report.api.CasesPerMonth;
+import se.inera.statistics.service.report.api.DegreeOfSickLeave;
+import se.inera.statistics.service.report.api.DiagnosisGroups;
+import se.inera.statistics.service.report.api.SjukfallslangdGrupp;
 import se.inera.statistics.service.report.model.OverviewResponse;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.Sex;
@@ -63,11 +67,11 @@ public class OverviewPersistanceHandlerTest extends OverviewPersistenceHandler {
         aldersgruppPersistenceHandler.count("2013-09", "id3", "<21", RollingLength.QUARTER, Verksamhet.VARDGIVARE, Sex.Male);
         aldersgruppPersistenceHandler.count("2013-06", "id1", "<21", RollingLength.QUARTER, Verksamhet.VARDGIVARE, Sex.Male);
 
-        sjukskrivningsgrad.count("id1", "2013-09", 25, Verksamhet.VARDGIVARE, Sex.Female);
-        sjukskrivningsgrad.count("id1", "2013-09", 100, Verksamhet.VARDGIVARE, Sex.Female);
-        sjukskrivningsgrad.count("id1", "2013-09", 100, Verksamhet.VARDGIVARE, Sex.Female);
-        sjukskrivningsgrad.count("id1", "2013-06", 25, Verksamhet.VARDGIVARE, Sex.Female);
-        sjukskrivningsgrad.count("id1", "2013-06", 100, Verksamhet.VARDGIVARE, Sex.Female);
+        sjukskrivningsgrad.count("id1", "2013-09", "25", Verksamhet.VARDGIVARE, Sex.Female);
+        sjukskrivningsgrad.count("id1", "2013-09", "100", Verksamhet.VARDGIVARE, Sex.Female);
+        sjukskrivningsgrad.count("id1", "2013-09", "100", Verksamhet.VARDGIVARE, Sex.Female);
+        sjukskrivningsgrad.count("id1", "2013-06", "25", Verksamhet.VARDGIVARE, Sex.Female);
+        sjukskrivningsgrad.count("id1", "2013-06", "100", Verksamhet.VARDGIVARE, Sex.Female);
 
         sjukfallslangdGrupp.count("2013-09", "id1","<15 dagar", RollingLength.QUARTER, Verksamhet.VARDGIVARE, Sex.Female);
         sjukfallslangdGrupp.count("2013-09", "id1","<15 dagar", RollingLength.QUARTER, Verksamhet.VARDGIVARE, Sex.Male);

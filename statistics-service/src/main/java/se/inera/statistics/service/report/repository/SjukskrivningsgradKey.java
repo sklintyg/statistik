@@ -10,12 +10,12 @@ public final class SjukskrivningsgradKey implements Serializable {
 
     private String period;
     private String hsaId;
-    private int grad;
+    private String grad;
 
     public SjukskrivningsgradKey() {
     }
 
-    public SjukskrivningsgradKey(String period, String hsaId, int grad) {
+    public SjukskrivningsgradKey(String period, String hsaId, String grad) {
         this.period = period;
         this.hsaId = hsaId;
         this.grad = grad;
@@ -29,20 +29,20 @@ public final class SjukskrivningsgradKey implements Serializable {
         return hsaId;
     }
 
-    public int getGrad() {
+    public String getGrad() {
         return grad;
     }
 
     @Override
     public int hashCode() {
-        return period.hashCode() + hsaId.hashCode() + grad;
+        return period.hashCode() + hsaId.hashCode() + grad.hashCode();
     }
 
     @Override
     public boolean equals(Object obj) {
         if (obj instanceof SjukskrivningsgradKey) {
             SjukskrivningsgradKey other = (SjukskrivningsgradKey) obj;
-            return period.equals(other.period) && hsaId.equals(other.hsaId) && grad == other.grad;
+            return period.equals(other.period) && hsaId.equals(other.hsaId) && grad.equals(other.grad);
         } else {
             return false;
         }

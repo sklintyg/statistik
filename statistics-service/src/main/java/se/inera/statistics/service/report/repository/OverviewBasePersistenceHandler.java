@@ -12,6 +12,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -81,10 +82,10 @@ public class OverviewBasePersistenceHandler {
 
     protected List<OverviewChartRowExtended> getDegreeOfSickLeaveGroups(String verksamhetId, Range range) {
         List<OverviewChartRowExtended> result = new ArrayList<>();
-        Map<Integer, Integer> queryResult = getDegreeOfSickLeaveGroupsFromDb(verksamhetId, range);
-        Map<Integer, Integer> queryResultPreviousPeriod = getDegreeOfSickLeaveGroupsFromDb(verksamhetId, ReportUtil.getPreviousPeriod(range));
+        Map<String, Integer> queryResult = getDegreeOfSickLeaveGroupsFromDb(verksamhetId, range);
+        Map<String, Integer> queryResultPreviousPeriod = getDegreeOfSickLeaveGroupsFromDb(verksamhetId, ReportUtil.getPreviousPeriod(range));
 
-        for (int grad : SjukskrivningsgradPersistenceHandler.GRAD) {
+        for (String grad : SjukskrivningsgradPersistenceHandler.GRAD) {
             int current = queryResult.get(grad);
             int previous = queryResultPreviousPeriod.get(grad);
             int change = changeInPercent(current, previous);
@@ -94,16 +95,16 @@ public class OverviewBasePersistenceHandler {
     }
 
     @SuppressWarnings("unchecked")
-    private Map<Integer, Integer> getDegreeOfSickLeaveGroupsFromDb(String verksamhetId, Range range) {
+    private Map<String, Integer> getDegreeOfSickLeaveGroupsFromDb(String verksamhetId, Range range) {
         Query query = getManager()
                 .createQuery("SELECT c.key.grad, SUM(c.male) + SUM(c.female) FROM SjukskrivningsgradData c WHERE c.key.hsaId = :hsaId AND c.key.period BETWEEN :from AND :to GROUP BY c.key.grad");
         query.setParameter("hsaId", verksamhetId);
         query.setParameter("from", ReportUtil.toPeriod(range.getFrom()));
         query.setParameter("to", ReportUtil.toPeriod(range.getTo()));
 
-        Map<Integer, Integer> result = new DefaultHashMap<>(0);
+        Map<String, Integer> result = new DefaultHashMap<>(0);
         for (Object[] row : ((List<Object[]>) query.getResultList())) {
-            result.put(asInt(row[0]), asInt(row[1]));
+            result.put(String.valueOf(row[0]), asInt(row[1]));
         }
         return result;
     }
