@@ -4,8 +4,8 @@ import java.util.List;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 import org.joda.time.LocalDate;
@@ -102,9 +102,9 @@ public class ChartDataService {
     }
 
     @GET
-    @Path("getDiagnosisSubGroupStatistics")
+    @Path("getDiagnosisSubGroupStatistics/{groupId}")
     @Produces({ MediaType.APPLICATION_JSON })
-    public DualSexStatisticsData getDiagnosisSubGroupStatistics(@QueryParam("groupId") String groupId) {
+    public DualSexStatisticsData getDiagnosisSubGroupStatistics(@PathParam("groupId") String groupId) {
         LOG.info("Calling getDiagnosisSubGroupStatistics for national with groupId: " + groupId);
         Range range = new Range();
         DiagnosisGroupResponse diagnosisGroups = datasourceDiagnosisSubGroups.getDiagnosisGroups(Verksamhet.NATIONELL.toString(), range, groupId);
