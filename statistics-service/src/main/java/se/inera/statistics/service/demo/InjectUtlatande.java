@@ -18,6 +18,7 @@ import se.inera.statistics.service.common.CommonPersistence;
 import se.inera.statistics.service.processlog.EventType;
 import se.inera.statistics.service.queue.Receiver;
 import se.inera.statistics.service.report.model.DiagnosisGroup;
+import se.inera.statistics.service.report.repository.NationellUpdater;
 import se.inera.statistics.service.report.util.DiagnosisGroupsUtil;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -47,6 +48,9 @@ public class InjectUtlatande {
     @Autowired
     private Receiver receiver;
 
+    @Autowired
+    private NationellUpdater nationellUpdater;
+
     static {
         for (DiagnosisGroup mainGroup: DiagnosisGroupsUtil.getAllDiagnosisGroups()) {
             for (DiagnosisGroup group: DiagnosisGroupsUtil.getSubGroups(mainGroup.getId())) {
@@ -61,8 +65,18 @@ public class InjectUtlatande {
         new Thread(new Runnable() {
             public void run() {
                 publishUtlatanden();
+                updateNationell();
             }
         }).start();
+    }
+
+    private void updateNationell() {
+        nationellUpdater.updateSjukskrivningsgrad();
+        nationellUpdater.updateSjukfallslangd();
+        nationellUpdater.updateDiagnosundergrupp();
+        nationellUpdater.updateDiagnosgrupp();
+        nationellUpdater.updateAldersgrupp();
+        nationellUpdater.updateCasesPerMonth();
     }
 
     private void cleanupDB() {

@@ -115,7 +115,8 @@ public class ChartDataService {
     @Path("getOverview")
     @Produces({ MediaType.APPLICATION_JSON })
     public OverviewData getOverviewData() {
-        OverviewResponse response = datasourceOverview.getOverview();
+        Range range = new Range(RollingLength.QUARTER.getPeriods());
+        OverviewResponse response = datasourceOverview.getOverview(range);
         return new OverviewConverter().convert(response);
     }
 

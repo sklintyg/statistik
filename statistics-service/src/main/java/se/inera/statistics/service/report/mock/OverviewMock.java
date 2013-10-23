@@ -13,7 +13,7 @@ public class OverviewMock implements Overview {
 
     // CHECKSTYLE:OFF MagicNumber
     @Override
-    public OverviewResponse getOverview() {
+    public OverviewResponse getOverview(Range range) {
         OverviewSexProportion sexProportion = new OverviewSexProportion(56, 44, new Range(3));
 
         ArrayList<OverviewChartRowExtended> diagnosisGroups = new ArrayList<OverviewChartRowExtended>();

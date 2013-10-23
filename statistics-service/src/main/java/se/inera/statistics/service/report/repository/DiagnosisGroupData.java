@@ -3,17 +3,15 @@ package se.inera.statistics.service.report.repository;
 import java.beans.Transient;
 import java.io.Serializable;
 
-import javax.persistence.Embeddable;
-import javax.persistence.EmbeddedId;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
+import javax.persistence.*;
 
 import se.inera.statistics.service.report.util.Verksamhet;
 
 @Entity
+@Table(name = DiagnosisGroupData.TABLE)
 public class DiagnosisGroupData {
 
+    public static final String TABLE = "DiagnosisGroupData";
     @EmbeddedId
     private DiagnosisGroupKey key;
 

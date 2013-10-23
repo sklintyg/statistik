@@ -3,25 +3,23 @@ package se.inera.statistics.service.report.repository;
 import java.beans.Transient;
 import java.io.Serializable;
 
-import javax.persistence.Embeddable;
-import javax.persistence.EmbeddedId;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
+import javax.persistence.*;
 
 import se.inera.statistics.service.report.util.Verksamhet;
 
 @Entity
+@Table(name = DiagnosisSubGroupData.TABLE)
 public class DiagnosisSubGroupData {
 
+    public static final String TABLE = "DiagnosisSubGroupData";
     @EmbeddedId
     private Key key;
 
-    private int male;
-    private int female;
-
     @Enumerated(EnumType.STRING)
     private Verksamhet typ;
+
+    private int male;
+    private int female;
 
     public DiagnosisSubGroupData() {
     }

@@ -30,7 +30,7 @@ public class ChartDataServiceTest {
         try {
             chartDataService.getOverviewData();
         } catch (NullPointerException e) { }
-        Mockito.verify(mock).getOverview();
+        Mockito.verify(mock).getOverview(any(Range.class));
     }
 
     @Test

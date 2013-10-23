@@ -11,9 +11,10 @@ import javax.persistence.Table;
 import se.inera.statistics.service.report.util.Verksamhet;
 
 @Entity
-@Table(name = "sjukskrivningsgrad")
+@Table(name = SjukskrivningsgradData.TABLE)
 public class SjukskrivningsgradData {
 
+    public static final String TABLE = "sjukskrivningsgrad";
     @EmbeddedId
     private SjukskrivningsgradKey key;
 

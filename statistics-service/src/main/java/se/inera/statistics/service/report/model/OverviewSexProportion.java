@@ -24,8 +24,8 @@ public class OverviewSexProportion {
             this.male = FIFTY;
             this.female = FIFTY;
         } else {
-            this.male = (male * PERCENT) / (male + female);
-            this.female = (female * PERCENT) / (male + female);
+            this.male = Math.round(((float) male * PERCENT) / (male + female));
+            this.female = Math.round(((float) female * PERCENT) / (male + female));
         }
         this.period = period;
     }
