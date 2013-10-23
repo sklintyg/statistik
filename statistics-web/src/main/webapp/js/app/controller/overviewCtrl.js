@@ -15,38 +15,20 @@
         $scope.casesPerMonthAlteration = result.casesPerMonth.alteration;
         
         function paintDonutChart(containerId, chartData) {
-            
-            var chartOptions = {
-                chart: {
-                    renderTo : containerId,
-                    type: 'pie',
-                    backgroundColor: 'transparent',
-                    height: 180
-                },
-                exporting: {
-                    enabled: false /* This removes the built in highchart export */           
-                },
-                title: {
-                    text: ''
-                },
-                tooltip: {
-                    backgroundColor: '#fff',
-                    borderWidth: 2
-                },
-                credits: {
-                    enabled: false
-                },
-                series: [{
-                    name: 'Antal',
-                    data: chartData,
-                    innerSize: '40%',
-                    dataLabels: {
-                        formatter: function() {
-                            return null;
-                        }
+            var series = [{
+                name: 'Antal',
+                data: chartData,
+                innerSize: '40%',
+                dataLabels: {
+                    formatter: function() {
+                        return null;
                     }
-                }]
-            };
+                }
+            }];
+            var chartOptions = ControllerCommons.getHighChartConfigBase([], series);
+            chartOptions.chart.type = 'pie';
+            chartOptions.chart.renderTo = containerId;
+            chartOptions.chart.height = 180;
             new Highcharts.Chart(chartOptions);
         }
 
@@ -67,123 +49,69 @@
     };
     
     function paintBarChart(containerId, chartData) {
-        
-        var chartOptions = {
-                chart: {
-                    renderTo : containerId,
-                    type: 'column',
-                    height: 185,
-                    backgroundColor: 'transparent'
-                },
-                title: {
-                    text: ''
-                },
-                plotOptions: {
-                    series: {
-                        color: '#12BC3A'
-                    }
-                },
-                xAxis: {
-                    categories: chartData.map(function(e) { return ControllerCommons.htmlsafe(e.name); }),
-                    min: 0,
-                    title: {
-                        text: 'DAGAR'
-                    },
-                    labels: {
-                        rotation: -45,
-                        align: 'right'
-                    }
-                },
-                yAxis: {
-                    min: 0,
-                    title: {
-                        text: 'ANTAL'
-                    }
-                },
-                exporting: {
-                    enabled: false /* This removes the built in highchart export */           
-                },
-                legend: {
-    	            align: 'top left',
-    	            verticalAlign: 'top',
-    	            x: 80,
-    	            y: 0,
-    	            borderWidth: 0,
-    	            enabled: false
-    	        },
-                tooltip: {
-                    backgroundColor: '#fff',
-                    borderWidth: 2
-                },
-                credits: {
-                    enabled: false
-                },
-                series: [{
-                    name: "Antal",
-                    data: chartData.map(function(e) { return e.quantity; })
-                }]
-        };
+        var series = [{
+            name: "Antal",
+            data: chartData.map(function(e) { return e.quantity; }),
+            color: '#12BC3A'
+        }];
+        var categories = chartData.map(function(e) { return e.name; });
+        var chartOptions = ControllerCommons.getHighChartConfigBase(categories, series);
+        chartOptions.chart.type = 'column';
+        chartOptions.chart.renderTo = containerId;
+        chartOptions.chart.height = 185;
+        chartOptions.xAxis.title = { text: 'DAGAR' };
+        chartOptions.yAxis.title = { text: 'ANTAL' };
+        chartOptions.legend.enabled = false;
         new Highcharts.Chart(chartOptions);
     }
     
     function paintSickLeavePerCountyChart(containerId, chartData) {
+        var series = chartData.map(function(e) {
+            var coords = getCoordinates(e);
+            return {"data": [[coords.x, coords.y, e.quantity]], color: e.color, name: ControllerCommons.htmlsafe(e.name) };
+        });
 
-        var chartOptions = {
-            chart : {
-                renderTo : containerId,
-                height : 230,
-                width: 188,
-                type : 'bubble',
-                backgroundColor: 'transparent'
-            },
-            credits : {
+        var chartOptions = ControllerCommons.getHighChartConfigBase([], series);
+        chartOptions.chart = {
+            renderTo : containerId,
+            height : 230,
+            width: 188,
+            type : 'bubble',
+            backgroundColor: 'transparent'
+        };
+        chartOptions.legend.enabled = false;
+
+        chartOptions.plotOptions = {
+            bubble: {
+                tooltip : {
+                    headerFormat: '{series.name}<br/>',
+                    pointFormat: '<b>{point.z}</b>',
+                    shared: true
+                }
+            }
+        };
+        chartOptions.xAxis = {
+            min: 0,
+            max: 100,
+            minPadding: 0,
+            maxPadding: 0,
+            minorGridLineWidth : 0,
+            labels : {
                 enabled : false
             },
-            exporting : {
+            gridLineWidth : 0
+        };
+        chartOptions.yAxis = {
+            min: 0,
+            max: 100,
+            minPadding: 0,
+            maxPadding: 0,
+            minorGridLineWidth : 0,
+            labels : {
                 enabled : false
             },
-            title : {
-                text : ''
-            },
-            legend : {
-                enabled : false
-            },
-			plotOptions: {
-				bubble: {
-					tooltip : {
-						headerFormat: '{series.name}<br/>',
-			            pointFormat: '<b>{point.z}</b>',
-			            shared: true
-			        }
-				}
-			},
-            xAxis : [ {
-                min: 0,
-                max: 100,
-                minPadding: 0,
-                maxPadding: 0,
-                minorGridLineWidth : 0,
-                labels : {
-                    enabled : false
-                },
-                gridLineWidth : 0
-            } ],
-            yAxis : [ {
-                min: 0,
-                max: 100,
-                minPadding: 0,
-                maxPadding: 0,
-                minorGridLineWidth : 0,
-                labels : {
-                    enabled : false
-                },
-                gridLineWidth : 0,
-                title : ''
-            } ],
-            series : chartData.map(function(e) {
-                    var coords = getCoordinates(e);
-                    return {"data": [[coords.x, coords.y, e.quantity]], color: e.color, name: ControllerCommons.htmlsafe(e.name) };
-                })
+            gridLineWidth : 0,
+            title : ''
         };
         new Highcharts.Chart(chartOptions, function(chart) { // on complete
             chart.renderer.image('img/sweden_graph.png', 43, 10, 88, 206).add();

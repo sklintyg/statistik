@@ -35,65 +35,15 @@
      var isVerksamhet = $routeParams.verksamhetId ? true : false;
 
      this.paintChart = function(containerId, yAxisTitle, chartCategories, chartSeries) {
-         var chartOptions = {
-
-             chart : {
-                 type: 'area',
-                 renderTo : containerId
-             },
-             title : {
-                 text : ''
-             },
-             legend: {
-                 enabled: false
-             },
-             xAxis : {
-                 labels: {
-                     rotation: 310
-                 },
-                 categories : chartCategories
-             },
-             yAxis : {
-				 min : 0,
-                 title : {
-                     text : yAxisTitle,
-                     align : 'high',
-                     verticalAlign : 'top'
-                 },
-                 labels: {
-                     formatter: function() {
-                         return this.value
-                     }
-                 },
-                 plotLines : [ {
-                     value : 0,
-                     width : 1,
-                     color : '#808080'
-                 } ]
-             },
-             exporting: {
-                 enabled: false /* This removes the built in highchart export */
-             },
-             plotOptions: {
-                 area: {
-                     stacking: 'normal',
-                     lineColor: '#666666',
-                     lineWidth: 1,
-                     marker: {
-                         enabled: false,
-                         symbol: 'circle'
-                     }
-                 }
-             },
-             tooltip: {
-                 useHTML: true,
-                 /*crosshairs: true*/ // True if crosshair. Not specified in design document for Statistiktjänsten 1.0.
-             },
-             credits: {
-                 enabled: false
-             },
-             series : chartSeries
-         };
+         var chartOptions = ControllerCommons.getHighChartConfigBase(chartCategories, chartSeries);
+         chartOptions.chart.type = 'area';
+         chartOptions.chart.renderTo = containerId;
+         chartOptions.legend.enabled = false;
+         chartOptions.yAxis.title.text = yAxisTitle;
+         chartOptions.tooltip.useHTML = true;
+         chartOptions.yAxis.title.rotation = 270;
+         chartOptions.yAxis.title.x= 0;
+         chartOptions.yAxis.title.y= 0;
          return new Highcharts.Chart(chartOptions);
      };
 

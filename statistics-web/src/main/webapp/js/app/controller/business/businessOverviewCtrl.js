@@ -13,86 +13,46 @@
         $scope.totalCasesPerMonth = result.casesPerMonth.totalCases;
 
         function paintSexProportionChart(containerId, male, female, period) {
-            
-            var chartOptions = {
-                chart: {
-                    renderTo : containerId,
-                    backgroundColor: 'transparent',
-                    height: 180
-                },
-                title: {
-                    text: period,
-                    verticalAlign: 'bottom'
-                },
-                plotOptions: {
-                    pie: {
-                        cursor: 'pointer',
-                        dataLabels: {
-                            enabled: false,
-                        },
-                        showInLegend: true
-                    }
-                },
-                legend: {
-                    labelFormat: '{name} {y}%',
-                    align: 'center',
-                    verticalAlign: 'top'
-                },
-                series: [{
-                    type: 'pie',
-                    name: 'Könsfördelning',
-                    data: [
-                        {name: 'Kvinnor', y: female, color: "#EA8025"},
-                        {name: 'Män', y: male, color: "#008391"}
-                    ]
-                }],
-                exporting: {
-                    enabled: false /* This removes the built in highchart export */
-                },
-                tooltip: {
-                    backgroundColor: '#fff',
-                    borderWidth: 2
-                },
-                credits: {
-                    enabled: false
-                }
+            var series = [{
+                type: 'pie',
+                name: 'Könsfördelning',
+                showInLegend: true,
+                data: [
+                    {name: 'Kvinnor', y: female, color: "#EA8025"},
+                    {name: 'Män', y: male, color: "#008391"}
+                ]
+            }];
+            var chartOptions = ControllerCommons.getHighChartConfigBase([], series);
+            chartOptions.chart.type = 'pie';
+            chartOptions.chart.renderTo = containerId;
+            chartOptions.chart.height = 180;
+            chartOptions.title = {
+                text: period,
+                verticalAlign: 'bottom'
+            };
+            chartOptions.legend = {
+                labelFormat: '{name} {y}%',
+                align: 'center',
+                verticalAlign: 'top'
             };
             new Highcharts.Chart(chartOptions);
         }
 
         function paintDonutChart(containerId, chartData) {
-            
-            var chartOptions = {
-                    chart: {
-                        renderTo : containerId,
-                        type: 'pie',
-                        backgroundColor: 'transparent',
-                        height: 180
-                    },
-                    exporting: {
-                        enabled: false /* This removes the built in highchart export */
-                    },
-                    title: {
-                        text: ''
-                    },
-                    tooltip: {
-                        backgroundColor: '#fff',
-                        borderWidth: 2
-                    },
-                    credits: {
-                        enabled: false
-                    },
-                    series: [{
-                        name: 'Antal',
-                        data: chartData,
-                        innerSize: '40%',
-                        dataLabels: {
-                            formatter: function() {
-                                return null;
-                            }
-                        }
-                    }]
-            };
+            var chartOptions = ControllerCommons.getHighChartConfigBase([], []);
+            chartOptions.chart.type = 'pie';
+            chartOptions.chart.renderTo = containerId;
+            chartOptions.chart.height = 180;
+            chartOptions.series = [{
+                name: 'Antal',
+                data: chartData,
+                innerSize: '40%',
+                dataLabels: {
+                    formatter: function() {
+                        return null;
+                    }
+                }
+            }];
             new Highcharts.Chart(chartOptions);
         }
 
@@ -112,62 +72,19 @@
     };
 
     function paintBarChart(containerId, chartData) {
-
-        var chartOptions = {
-                chart: {
-                    renderTo : containerId,
-                    type: 'column',
-                    height: 185,
-                    backgroundColor: 'transparent'
-                },
-                title: {
-                    text: ''
-                },
-                plotOptions: {
-                    series: {
-                        color: '#11b73c'
-                    }
-                },
-                xAxis: {
-                    categories: chartData.map(function(e) { return ControllerCommons.htmlsafe(e.name); }),
-                    min: 0,
-                    title: {
-                        text: 'DAGAR'
-                    },
-                    labels: {
-                        rotation: -45,
-                        align: 'right'
-                    }
-                },
-                yAxis: {
-                    min: 0,
-                    title: {
-                        text: 'ANTAL'
-                    }
-                },
-                exporting: {
-                    enabled: false /* This removes the built in highchart export */
-                },
-                legend: {
-    	            align: 'top left',
-    	            verticalAlign: 'top',
-    	            x: 80,
-    	            y: 0,
-    	            borderWidth: 0,
-    	            enabled: false
-    	        },
-                tooltip: {
-                    backgroundColor: '#fff',
-                    borderWidth: 2
-                },
-                credits: {
-                    enabled: false
-                },
-                series: [{
-                    name: "Antal",
-                    data: chartData.map(function(e) { return e.quantity; })
-                }]
-        };
+        var series = [{
+            name: "Antal",
+            data: chartData.map(function(e) { return e.quantity; }),
+            color: '#12BC3A'
+        }];
+        var categories = chartData.map(function(e) { return e.name; });
+        var chartOptions = ControllerCommons.getHighChartConfigBase(categories, series);
+        chartOptions.chart.type = 'column';
+        chartOptions.chart.renderTo = containerId;
+        chartOptions.chart.height = 185;
+        chartOptions.xAxis.title = { text: 'DAGAR' };
+        chartOptions.yAxis.title = { text: 'ANTAL' };
+        chartOptions.legend.enabled = false;
         new Highcharts.Chart(chartOptions);
     }
 
