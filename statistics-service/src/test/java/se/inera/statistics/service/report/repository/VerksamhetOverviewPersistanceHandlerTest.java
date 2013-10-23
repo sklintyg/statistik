@@ -15,6 +15,7 @@ import se.inera.statistics.service.report.api.AgeGroups;
 import se.inera.statistics.service.report.api.CasesPerMonth;
 import se.inera.statistics.service.report.api.DegreeOfSickLeave;
 import se.inera.statistics.service.report.api.DiagnosisGroups;
+import se.inera.statistics.service.report.api.SjukfallslangdGrupp;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.Sex;
 import se.inera.statistics.service.report.model.VerksamhetOverviewResponse;
@@ -37,6 +38,9 @@ public class VerksamhetOverviewPersistanceHandlerTest extends VerksamhetOverview
 
     @Autowired
     private DegreeOfSickLeave sjukskrivningsgrad;
+
+    @Autowired
+    private SjukfallslangdGrupp sjukfallslangdGrupp;
 
     @Before
     public void init() {
@@ -64,6 +68,12 @@ public class VerksamhetOverviewPersistanceHandlerTest extends VerksamhetOverview
         sjukskrivningsgrad.count("id1", "2013-09", 100, Verksamhet.ENHET, Sex.Female);
         sjukskrivningsgrad.count("id1", "2013-06", 25, Verksamhet.ENHET, Sex.Female);
         sjukskrivningsgrad.count("id1", "2013-06", 100, Verksamhet.ENHET, Sex.Female);
+
+        sjukfallslangdGrupp.count("2013-09", "id1","<15 dagar", RollingLength.QUARTER, Verksamhet.ENHET, Sex.Female);
+        sjukfallslangdGrupp.count("2013-09", "id1","<15 dagar", RollingLength.QUARTER, Verksamhet.ENHET, Sex.Male);
+        sjukfallslangdGrupp.count("2013-09", "id3","<15 dagar", RollingLength.QUARTER, Verksamhet.ENHET, Sex.Female);
+        sjukfallslangdGrupp.count("2013-09", "id1",">365 dagar", RollingLength.QUARTER, Verksamhet.ENHET, Sex.Male);
+
     }
 
     @Test
@@ -88,5 +98,11 @@ public class VerksamhetOverviewPersistanceHandlerTest extends VerksamhetOverview
         Assert.assertEquals(2, result.getDegreeOfSickLeaveGroups().get(3).getQuantity());
         Assert.assertEquals(0, result.getDegreeOfSickLeaveGroups().get(0).getAlternation());
         Assert.assertEquals(100, result.getDegreeOfSickLeaveGroups().get(3).getAlternation());
+
+        Assert.assertEquals(2, result.getSickLeaveLengthGroups().get(0).getQuantity());
+        Assert.assertEquals(1, result.getSickLeaveLengthGroups().get(1).getQuantity());
+
+        Assert.assertEquals(1, result.getLongSickLeavesTotal());
+        Assert.assertEquals(0, result.getLongSickLeavesAlternation());
     }
 }

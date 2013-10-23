@@ -43,7 +43,7 @@ public class SickLeaveLengthRow {
 
     @Transient
     public String getGroup() {
-        return key.getGroup();
+        return key.getGrupp();
     }
 
     public Verksamhet getTyp() {
