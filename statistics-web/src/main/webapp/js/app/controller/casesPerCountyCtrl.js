@@ -1,6 +1,6 @@
  'use strict';
  
- app.casesPerCountyCtrl = function ($scope, statisticsData) {
+ app.casesPerCountyCtrl = function ($scope, $timeout, statisticsData) {
 
     $scope.chartContainers = ["container"];
     
@@ -95,12 +95,14 @@
     $scope.exportTableData = ControllerCommons.exportTableDataGeneric;
     
     var populatePageWithData = function(result){
-        updateDataTable($scope, result.tableData);
-        updateChart(result.chartData);
         $scope.subTitle = "Antal sjukfall per län de senaste " + result.monthsIncluded + " månaderna";
         $scope.doneLoading = true;
+        $timeout(function() {
+            updateDataTable($scope, result.tableData);
+            updateChart(result.chartData);
+        }, 1);
     };
-
+    
     statisticsData.getNationalCountyData(populatePageWithData, function() { $scope.dataLoadingError = true; });
     
     $scope.showHideDataTable = ControllerCommons.showHideDataTableDefault;

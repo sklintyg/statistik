@@ -39,7 +39,7 @@
      return conf;
  }
 
- app.columnChartDetailsViewCtrl = function ($scope, $routeParams, statisticsData, config) {
+ app.columnChartDetailsViewCtrl = function ($scope, $routeParams, $timeout, statisticsData, config) {
      var isVerksamhet = $routeParams.verksamhetId ? true : false;
 
     $scope.chartContainers = ["container"];
@@ -135,12 +135,14 @@
     $scope.exportTableData = ControllerCommons.exportTableDataGeneric;
     
     var populatePageWithData = function(result){
-        updateDataTable($scope, result.tableData);
-        updateChart(result.chartData);
         $scope.subTitle = config.title(result.monthsIncluded);
         $scope.doneLoading = true;
+        $timeout(function() {
+            updateDataTable($scope, result.tableData);
+            updateChart(result.chartData);
+        }, 1);
     };
-
+    
     if (isVerksamhet){
         statisticsData[config.dataFetcherVerksamhet]($routeParams.verksamhetId, populatePageWithData, function() { $scope.dataLoadingError = true; });
     } else {

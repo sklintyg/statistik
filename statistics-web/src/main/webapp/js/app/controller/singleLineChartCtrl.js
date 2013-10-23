@@ -15,7 +15,7 @@
      return conf;
  }
  
- app.singleLineChartCtrl = function ($scope, $routeParams, statisticsData, config) {
+ app.singleLineChartCtrl = function ($scope, $routeParams, $timeout, statisticsData, config) {
 
     $scope.chartContainers = ["container"];
     
@@ -104,10 +104,12 @@
     $scope.exportTableData = ControllerCommons.exportTableDataGeneric;
     
     var populatePageWithData = function(result){
-        updateDataTable($scope, result.tableData);
-        updateChart(result.chartData);
         $scope.subTitle = config.title(result.tableData.rows[0].name + " - " + result.tableData.rows[result.tableData.rows.length-1].name);
         $scope.doneLoading = true;
+        $timeout(function() {
+            updateDataTable($scope, result.tableData);
+            updateChart(result.chartData);
+        }, 1);
     };
     
     if ($routeParams.verksamhetId){
