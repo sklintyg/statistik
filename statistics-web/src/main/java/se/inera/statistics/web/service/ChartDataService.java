@@ -151,7 +151,7 @@ public class ChartDataService {
     @Path("getCountyStatistics")
     @Produces({ MediaType.APPLICATION_JSON })
     public CasesPerCountyData getCountyStatistics() {
-        Range range1 = new Range(3);
+        Range range1 = new Range(RollingLength.QUARTER.getPeriods());
         Range range2 = ReportUtil.getPreviousPeriod(range1);
 
         SimpleDualSexResponse<SimpleDualSexDataRow> countyStatRange1 = datasourceCasesPerCounty.getStatistics(Verksamhet.NATIONELL.toString(), range1);

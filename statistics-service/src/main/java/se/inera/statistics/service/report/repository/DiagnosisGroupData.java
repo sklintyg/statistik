@@ -3,7 +3,12 @@ package se.inera.statistics.service.report.repository;
 import java.beans.Transient;
 import java.io.Serializable;
 
-import javax.persistence.*;
+import javax.persistence.Embeddable;
+import javax.persistence.EmbeddedId;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.Table;
 
 import se.inera.statistics.service.report.util.Verksamhet;
 

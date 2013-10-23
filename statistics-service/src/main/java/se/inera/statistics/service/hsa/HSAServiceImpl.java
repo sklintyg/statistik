@@ -9,7 +9,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 
 @Component
 public class HSAServiceImpl implements HSAService {
-    JsonNodeFactory factory = JsonNodeFactory.instance;
+    private JsonNodeFactory factory = JsonNodeFactory.instance;
 
     @Override
     public JsonNode getHSAInfo(HSAKey key) {
