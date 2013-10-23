@@ -37,7 +37,7 @@ public class AldersGruppListener extends GenericAbstractListener {
     }
 
     private void accept(GenericHolder token, String period, RollingLength length) {
-        String group = AldersgroupUtil.lookupGroupForAge(token.getAge());
+        String group = AldersgroupUtil.RANGES.rangeFor(token.getAge()).getName();
         ageGroups.count(period, token.getEnhetId(), group, length, Verksamhet.ENHET, token.getKon());
         ageGroups.count(period, token.getVardgivareId(), group, length, Verksamhet.VARDGIVARE, token.getKon());
     }

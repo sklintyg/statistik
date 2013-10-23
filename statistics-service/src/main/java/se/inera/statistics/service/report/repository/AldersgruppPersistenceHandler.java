@@ -16,7 +16,7 @@ import se.inera.statistics.service.report.model.AgeGroupsRow;
 import se.inera.statistics.service.report.model.AldersgruppKey;
 import se.inera.statistics.service.report.model.Sex;
 import se.inera.statistics.service.report.util.AldersgroupUtil;
-import se.inera.statistics.service.report.util.AldersgroupUtil.Group;
+import se.inera.statistics.service.report.util.Ranges.Range;
 import se.inera.statistics.service.report.util.ReportUtil;
 import se.inera.statistics.service.report.util.Verksamhet;
 
@@ -43,8 +43,8 @@ public class AldersgruppPersistenceHandler implements AgeGroups {
     private AgeGroupsResponse translateForOutput(List<AgeGroupsRow> list, int periods) {
         List<AgeGroupsRow> translatedCasesPerMonthRows = new ArrayList<>();
 
-        for (Group s: AldersgroupUtil.GROUPS) {
-            String group = s.getGroupName();
+        for (Range s: AldersgroupUtil.RANGES) {
+            String group = s.getName();
             for (AgeGroupsRow r: list) {
                 if (group.equals(r.getGroup())) {
                     translatedCasesPerMonthRows.add(r);

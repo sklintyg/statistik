@@ -146,15 +146,14 @@ public class OverviewBasePersistenceHandler {
         return result;
     }
 
-    @SuppressWarnings("unchecked")
     protected List<OverviewChartRowExtended> getAgeGroups(String verksamhetId, Range range, int numberOfGroups) {
         List<Object[]> queryResult = getAgeGroupsFromDb(verksamhetId, range);
         List<Object[]> queryResultForPrevPeriod = getAgeGroupsFromDb(verksamhetId, ReportUtil.getPreviousPeriod(range));
 
-        Comparator<? super Object[]> comparator = new Comparator() {
+        Comparator<? super Object[]> comparator = new Comparator<Object[]>() {
             @Override
-            public int compare(Object o1, Object o2) {
-                return ((Long) ((Object[]) o2)[1]).intValue() - ((Long) ((Object[]) o1)[1]).intValue();
+            public int compare(Object[] o1, Object[] o2) {
+                return asInt(o2[1]) - asInt(o1[1]);
             }
         };
 
@@ -171,12 +170,7 @@ public class OverviewBasePersistenceHandler {
         Comparator<? super OverviewChartRowExtended> ageComparator = new Comparator<OverviewChartRowExtended>() {
             @Override
             public int compare(OverviewChartRowExtended o1, OverviewChartRowExtended o2) {
-                Integer i1 = AldersgroupUtil.GROUP_MAP.get(o1.getName());
-                Integer i2 = AldersgroupUtil.GROUP_MAP.get(o2.getName());
-                if (i1 == null || i2 == null) {
-                    throw new IllegalStateException("Groups have not been defined correctly.");
-                }
-                return i1 - i2;
+                return AldersgroupUtil.RANGES.rangeFor(o1.getName()).getCutoff() - AldersgroupUtil.RANGES.rangeFor(o2.getName()).getCutoff();
             }
         };
         Collections.sort(result, ageComparator);
