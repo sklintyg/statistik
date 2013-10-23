@@ -37,7 +37,7 @@ public class SjukfallslangdListener extends GenericAbstractListener {
     }
 
     void accept(GenericHolder token, String period, RollingLength length) {
-        String group = SjukfallslangdUtil.lookupGroupForLangd(token.getSjukfallInfo().getLangd());
+        String group = SjukfallslangdUtil.RANGES.rangeFor(token.getSjukfallInfo().getLangd()).getName();
         langdGrupp.count(period, token.getEnhetId(), group, length, Verksamhet.ENHET, token.getKon());
         langdGrupp.count(period, token.getVardgivareId(), group, length, Verksamhet.VARDGIVARE, token.getKon());
     }

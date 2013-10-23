@@ -13,6 +13,8 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
+import org.apache.cxf.ws.addressing.Names;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -38,19 +40,27 @@ public class OverviewBasePersistenceHandler {
         query.setParameter("periods", range.getMonths());
         query.setParameter("hsaId", verksamhetId);
         query.setParameter("period", ReportUtil.toPeriod(range.getTo()));
-        query.setParameter("grupper", SjukfallslangdUtil.lookupGroupsLongerThan(cutoff));
+        query.setParameter("grupper", names(SjukfallslangdUtil.RANGES.lookupRangesLongerThan(cutoff)));
 
         return asInt(query.getSingleResult());
     }
 
-    @SuppressWarnings("unchecked")
+    private List<String> names(List<se.inera.statistics.service.report.util.Ranges.Range> ranges) {
+        List<String> names = new ArrayList<>(ranges.size());
+        for (se.inera.statistics.service.report.util.Ranges.Range range: ranges) {
+            names.add(range.getName());
+        }
+        return names;
+    }
+
     protected List<OverviewChartRow> getSickLeaveLengthGroups(String verksamhetId, Range range, int numberOfGroups) {
         List<Object[]> queryResult = getSickLeaveLengthGroupsFromDb(verksamhetId, range);
 
-        Comparator<? super Object[]> comparator = new Comparator() {
+        Comparator<? super Object[]> comparator = new Comparator<Object[]>() {
+
             @Override
-            public int compare(Object o1, Object o2) {
-                return ((Long) ((Object[]) o2)[1]).intValue() - ((Long) ((Object[]) o1)[1]).intValue();
+            public int compare(Object[] o1, Object[] o2) {
+                return asInt(o2[1]) - asInt(o2[1]);
             }
         };
 
@@ -67,12 +77,7 @@ public class OverviewBasePersistenceHandler {
         Comparator<? super OverviewChartRow> lengthComparator = new Comparator<OverviewChartRow>() {
             @Override
             public int compare(OverviewChartRow o1, OverviewChartRow o2) {
-                Integer i1 = SjukfallslangdUtil.GROUP_MAP.get(o1.getName());
-                Integer i2 = SjukfallslangdUtil.GROUP_MAP.get(o2.getName());
-                if (i1 == null || i2 == null) {
-                    throw new IllegalStateException("Groups have not been defined correctly for : " + o1.getName() + " or " + o2.getName());
-                }
-                return i1 - i2;
+                return SjukfallslangdUtil.RANGES.rangeFor(o1.getName()).getCutoff() - SjukfallslangdUtil.RANGES.rangeFor(o2.getName()).getCutoff();
             }
         };
         Collections.sort(result, lengthComparator);

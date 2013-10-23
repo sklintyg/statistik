@@ -39,21 +39,19 @@ public class SjukfallslangdGruppPersistenceHandler implements SjukfallslangdGrup
 
     @Override
     public SickLeaveLengthResponse getCurrentStatistics(String hsaId) {
-        // TODO Auto-generated method stub
         throw new RuntimeException("Not yet implemented");
     }
 
     @Override
     public SimpleDualSexResponse<SimpleDualSexDataRow> getLongSickLeaves(String decodeId, Range range) {
-        // TODO Auto-generated method stub
         throw new RuntimeException("Not yet implemented");
     }
 
     private SickLeaveLengthResponse translateForOutput(List<SickLeaveLengthRow> list, int periods) {
         List<SickLeaveLengthRow> translatedCasesPerMonthRows = new ArrayList<>();
 
-        for (se.inera.statistics.service.report.util.SjukfallslangdUtil.Group s: SjukfallslangdUtil.GROUPS) {
-            String group = s.getGroupName();
+        for (se.inera.statistics.service.report.util.Ranges.Range s: SjukfallslangdUtil.RANGES) {
+            String group = s.getName();
             for (SickLeaveLengthRow r: list) {
                 if (group.equals(r.getGroup())) {
                     translatedCasesPerMonthRows.add(r);
