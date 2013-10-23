@@ -32,4 +32,3 @@ public class SjukfallKey {
         return end;
     }
 }
-
