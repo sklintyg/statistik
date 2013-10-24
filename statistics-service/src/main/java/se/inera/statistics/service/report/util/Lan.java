@@ -4,9 +4,9 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-public class Lan implements Iterable<String>{
+public class Lan implements Iterable<String> {
 
-    private static final String OVRIGT = "Övrigt";
+    public static final String OVRIGT = "Övrigt";
     private final Map<String, String> kodToName = new LinkedHashMap<>();
 
     public Lan() {
@@ -41,11 +41,11 @@ public class Lan implements Iterable<String>{
 
     @Override
     public Iterator<String> iterator() {
-        return kodToName.values().iterator();
+        return kodToName.keySet().iterator();
     }
 
     public static void main(String[] args) {
-        for(String n: new Lan()) {
+        for (String n: new Lan()) {
             System.err.println(n);
         }
     }

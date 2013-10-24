@@ -1,11 +1,7 @@
 package se.inera.statistics.service.report.model;
 
-import se.inera.statistics.service.report.util.Verksamhet;
-
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -16,8 +12,6 @@ public class SjukfallPerLanRow {
     public static final String TABLE = "SjukfallPerLanRow";
     @EmbeddedId
     private SjukfallPerLanKey key;
-    @Enumerated(EnumType.STRING)
-    private Verksamhet typ;
     private long female;
     private long male;
 
@@ -26,14 +20,6 @@ public class SjukfallPerLanRow {
 
     public SjukfallPerLanRow(String period, String hsaId, String lanId, long female, long male) {
         this.key = new SjukfallPerLanKey(period, hsaId, lanId);
-        this.typ = Verksamhet.LAN;
-        this.female = female;
-        this.male = male;
-    }
-
-    public SjukfallPerLanRow(String period, String hsaId, String lanId, Verksamhet typ, long female, long male) {
-        this.key = new SjukfallPerLanKey(period, hsaId, lanId);
-        this.typ = typ;
         this.female = female;
         this.male = male;
     }
@@ -69,13 +55,5 @@ public class SjukfallPerLanRow {
 
     public void setMale(int male) {
         this.male = male;
-    }
-
-    public Verksamhet getTyp() {
-        return typ;
-    }
-
-    public void setTyp(Verksamhet typ) {
-        this.typ = typ;
     }
 }
