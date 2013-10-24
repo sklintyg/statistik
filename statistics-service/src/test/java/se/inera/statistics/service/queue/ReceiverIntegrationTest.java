@@ -22,7 +22,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import se.inera.statistics.service.JSONSource;
+import se.inera.statistics.service.demo.UtlatandeBuilder;
 import se.inera.statistics.service.report.api.CasesPerMonth;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.SimpleDualSexDataRow;
@@ -50,10 +50,9 @@ public class ReceiverIntegrationTest {
 
     @Test
     public void deliver_document_from_in_queue_to_statistics_repository() {
-        String data = JSONSource.readTemplateAsString();
-
-        simpleSend(data, "C001");
-        simpleSend(data, "C002");
+        UtlatandeBuilder builder = new UtlatandeBuilder();
+        simpleSend(builder.build("19121212-0010", new LocalDate("2011-01-20"), new LocalDate("2011-03-11"), "enhetId", "A00", 0).toString(), "C001");
+        simpleSend(builder.build("19121212-0011", new LocalDate("2011-01-20"), new LocalDate("2011-03-11"), "enhetId", "A00", 0).toString(), "C002");
 
         sleep();
 
