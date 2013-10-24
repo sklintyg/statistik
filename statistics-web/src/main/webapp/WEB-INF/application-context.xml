@@ -56,7 +56,7 @@
         <constructor-arg ref="sickLeaveLength"/>
     </bean>
 
-    <bean class="se.inera.statistics.service.report.util.Lan" id="lan" />
+    <bean class="se.inera.statistics.service.report.model.Lan" id="lan" />
     <bean id="loginInfoService" class="se.inera.statistics.web.service.LoginInfoService" />
 
     <import resource="application-context-cxf.xml"/>

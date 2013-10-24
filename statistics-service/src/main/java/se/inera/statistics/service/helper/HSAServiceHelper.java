@@ -1,11 +1,11 @@
 package se.inera.statistics.service.helper;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import se.inera.statistics.service.report.util.Lan;
+import se.inera.statistics.service.report.model.Lan;
 
-public final class HsaHelper {
+public final class HSAServiceHelper {
 
-    private HsaHelper() {
+    private HSAServiceHelper() {
     }
 
     public static String getLan(JsonNode hsaData) {

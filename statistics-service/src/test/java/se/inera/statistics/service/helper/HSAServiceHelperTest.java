@@ -7,13 +7,13 @@ import se.inera.statistics.service.hsa.HSAKey;
 import se.inera.statistics.service.hsa.HSAService;
 import se.inera.statistics.service.hsa.HSAServiceImpl;
 
-public class HsaHelperTest {
+public class HSAServiceHelperTest {
     @Test
     public void getLanTest() {
         HSAService hsaService = new HSAServiceImpl();
         JsonNode info = hsaService.getHSAInfo(new HSAKey("", "", ""));
 
-        String lan = HsaHelper.getLan(info);
+        String lan = HSAServiceHelper.getLan(info);
 
         Assert.assertEquals("14", lan);
 

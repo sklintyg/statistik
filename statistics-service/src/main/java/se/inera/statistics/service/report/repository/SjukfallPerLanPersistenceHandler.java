@@ -10,7 +10,7 @@ import se.inera.statistics.service.report.model.SimpleDualSexDataRow;
 import se.inera.statistics.service.report.model.SimpleDualSexResponse;
 import se.inera.statistics.service.report.model.SjukfallPerLanKey;
 import se.inera.statistics.service.report.model.SjukfallPerLanRow;
-import se.inera.statistics.service.report.util.Lan;
+import se.inera.statistics.service.report.model.Lan;
 import se.inera.statistics.service.report.util.ReportUtil;
 
 import javax.persistence.EntityManager;

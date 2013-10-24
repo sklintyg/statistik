@@ -1,4 +1,4 @@
-package se.inera.statistics.service.report.util;
+package se.inera.statistics.service.report.model;
 
 import java.util.Iterator;
 import java.util.LinkedHashMap;

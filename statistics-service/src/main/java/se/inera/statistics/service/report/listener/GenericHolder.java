@@ -1,7 +1,7 @@
 package se.inera.statistics.service.report.listener;
 
 import se.inera.statistics.service.helper.DocumentHelper;
-import se.inera.statistics.service.helper.HsaHelper;
+import se.inera.statistics.service.helper.HSAServiceHelper;
 import se.inera.statistics.service.report.model.Sex;
 import se.inera.statistics.service.report.util.DiagnosisGroupsUtil;
 import se.inera.statistics.service.sjukfall.SjukfallInfo;
@@ -26,7 +26,7 @@ public class GenericHolder {
         this.utlatande = utlatande;
         enhetId = DocumentHelper.getEnhetId(utlatande);
         vardgivareId = DocumentHelper.getVardgivareId(utlatande);
-        lanId = HsaHelper.getLan(hsa);
+        lanId = HSAServiceHelper.getLan(hsa);
         kon = "man".equalsIgnoreCase(DocumentHelper.getKon(utlatande)) ? Sex.Male : Sex.Female;
         diagnos = DocumentHelper.getDiagnos(utlatande);
         diagnosgrupp = DiagnosisGroupsUtil.getGroupIdForCode(diagnos);
