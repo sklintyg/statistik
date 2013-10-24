@@ -196,7 +196,7 @@ public class OverviewBasePersistenceHandler {
         return query.getResultList();
     }
 
-    private int asInt(Object object) {
+    protected int asInt(Object object) {
         if (object instanceof Integer) {
             return (Integer) object;
         } else if (object instanceof Long) {

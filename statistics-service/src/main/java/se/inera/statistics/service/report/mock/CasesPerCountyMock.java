@@ -7,8 +7,11 @@ import java.util.Random;
 
 import se.inera.statistics.service.report.api.CasesPerCounty;
 import se.inera.statistics.service.report.model.Range;
+import se.inera.statistics.service.report.model.Sex;
 import se.inera.statistics.service.report.model.SimpleDualSexDataRow;
 import se.inera.statistics.service.report.model.SimpleDualSexResponse;
+import se.inera.statistics.service.report.repository.RollingLength;
+import se.inera.statistics.service.report.util.Verksamhet;
 
 public class CasesPerCountyMock implements CasesPerCounty {
 
@@ -19,7 +22,7 @@ public class CasesPerCountyMock implements CasesPerCounty {
 
     // CHECKSTYLE:OFF MagicNumber
     @Override
-    public SimpleDualSexResponse<SimpleDualSexDataRow> getStatistics(String hsaId, Range range) {
+    public SimpleDualSexResponse<SimpleDualSexDataRow> getStatistics(Range range) {
         final List<SimpleDualSexDataRow> rows = new ArrayList<>();
         for (String group : GROUPS) {
             int women = (int) (random.nextGaussian() * 2000 + 10000);
@@ -31,5 +34,9 @@ public class CasesPerCountyMock implements CasesPerCounty {
     }
 
     // CHECKSTYLE:ON
+
+    @Override
+    public void count(String period, String enhetId, String lanId, RollingLength length, Verksamhet enhet, Sex kon) {
+    }
 
 }
