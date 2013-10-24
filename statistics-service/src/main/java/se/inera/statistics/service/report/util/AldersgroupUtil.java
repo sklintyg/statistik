@@ -25,7 +25,7 @@ public final class AldersgroupUtil {
                 return row.groupName;
             }
         }
-        throw new IllegalStateException("Groups have no tbeen defines correctly. Missing group for " + age);
+        throw new IllegalStateException("Groups have not been defined correctly. Missing group for " + age);
     }
 
     public static final class Group {
