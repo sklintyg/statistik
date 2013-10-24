@@ -25,3 +25,25 @@
 |detaljsidan för sjukskrivningslängd visas med ett diagram och en tabell|
 |öppna detaljsidan för län|
 |detaljsidan för län visas med ett diagram och en tabell|
+|öppna detaljsidan för andel sjukfall per kön|
+|detaljsidan för andel sjukfall per kön visas med ett diagram och en tabell|
+|logga in|
+|översiktssidan för verksamhet visas|
+|öppna detaljsidan för sjukfall totalt för verksamhet|
+|sidan sjukfall totalt för verksamhet visas med ett diagram och en tabell|
+|öppna detaljsidan för diagnosgrupp för verksamhet|
+|detaljsidan för diagnosgrupper för verksamhet visas med två diagram och en tabell|
+|öppna detaljsidan för underdiagnosgrupp för verksamhet|
+|detaljsidan för underdiagnosgrupper för verksamhet visas med två diagram och en tabell och en dropdown|
+|öppna detaljsidan för åldersgrupp för verksamhet|
+|detaljsidan för åldersgrupper för verksamhet visas med ett diagram och en tabell|
+|öppna detaljsidan för pågående åldersgrupp för verksamhet|
+|detaljsidan för pågående åldersgrupper för verksamhet visas med ett diagram och en tabell|
+|öppna detaljsidan för sjukskrivningsgrad för verksamhet|
+|detaljsidan för sjukskrivningsgrad för verksamhet visas med två diagram och en tabell|
+|öppna detaljsidan för sjukskrivningslängd för verksmahet|
+|detaljsidan för sjukskrivningslängd för verksamhet visas med ett diagram och en tabell|
+|öppna detaljsidan för pågående sjukskrivningslängd för verksamhet|
+|detaljsidan för pågående sjukskrivningslängd för verksamhet visas med ett diagram och en tabell|
+|öppna detaljsidan för långa sjukskrivningar för verksamhet| 
+|detaljsidan för långa sjukskrivningar för verksamhet visas med ett diagram och en tabell|

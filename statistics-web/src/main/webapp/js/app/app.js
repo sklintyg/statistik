@@ -58,7 +58,7 @@ app.statisticsApp = angular.module('StatisticsApp', [ 'ngCookies', 'ui.bootstrap
                 controller : 'CasesPerSexCtrl',
                 controllerAs : 'NationalCasesPerSexCtrl',
                 resolve : { config: app.casesPerSexConfig },
-                title: 'Sjukskrivningsgrad'
+                title: 'Andel sjukfall per kön'
             }).when('/verksamhet', {
                 templateUrl : 'views/empty.html',
                 controller : 'BusinessLandingPageCtrl',
