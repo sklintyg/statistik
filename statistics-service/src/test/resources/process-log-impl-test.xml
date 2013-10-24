@@ -57,6 +57,7 @@
     <bean class="se.inera.statistics.service.report.repository.SjukfallslangdGruppPersistenceHandler" id="caseLengthGroups" />
     <bean class="se.inera.statistics.service.report.repository.SjukskrivningsgradPersistenceHandler" id="caseDegree" />
     <bean class="se.inera.statistics.service.report.repository.NationellPersistenceHandler" id="nationellPersistenceHandler" />
+    <bean class="se.inera.statistics.service.report.util.Lan" id="lan" />
 
     <context:component-scan base-package="se.inera.statistics.service.report.repository"/>
 </beans>

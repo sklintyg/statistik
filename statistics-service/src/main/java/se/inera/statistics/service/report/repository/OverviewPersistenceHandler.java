@@ -10,6 +10,7 @@ import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.util.ReportUtil;
 import se.inera.statistics.service.report.util.Verksamhet;
 
+import javax.persistence.TypedQuery;
 import java.util.Collections;
 import java.util.List;
 
@@ -38,7 +39,20 @@ public class OverviewPersistenceHandler extends OverviewBasePersistenceHandler i
     }
 
     private List<OverviewChartRowExtended> getCasesPerCounty(Range range) {
+
         return Collections.emptyList();
+    }
+
+    private List<Object[]> getCasesPerCountyFromDb(Range range) {
+        TypedQuery<Long> query = getManager().createQuery(
+                "SELECT SUM(c.male) + SUM(c.female) FROM CasesPerMonthRow c WHERE c.typ = :typ AND c.key.period BETWEEN :from AND:to GROUP BY c.key.hsaId", Long.class);
+        query.setParameter("typ", Verksamhet.LAN);
+        query.setParameter("from", ReportUtil.toPeriod(range.getFrom()));
+        query.setParameter("to", ReportUtil.toPeriod(range.getTo()));
+
+        List<Object[]> queryResult;
+        queryResult = null;
+        return queryResult;
     }
 
 

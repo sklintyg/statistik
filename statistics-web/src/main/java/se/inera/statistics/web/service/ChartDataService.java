@@ -154,8 +154,8 @@ public class ChartDataService {
         Range range1 = new Range(RollingLength.QUARTER.getPeriods());
         Range range2 = ReportUtil.getPreviousPeriod(range1);
 
-        SimpleDualSexResponse<SimpleDualSexDataRow> countyStatRange1 = datasourceCasesPerCounty.getStatistics(Verksamhet.NATIONELL.toString(), range1);
-        SimpleDualSexResponse<SimpleDualSexDataRow> countyStatRange2 = datasourceCasesPerCounty.getStatistics(Verksamhet.NATIONELL.toString(), range2);
+        SimpleDualSexResponse<SimpleDualSexDataRow> countyStatRange1 = datasourceCasesPerCounty.getStatistics(range1);
+        SimpleDualSexResponse<SimpleDualSexDataRow> countyStatRange2 = datasourceCasesPerCounty.getStatistics(range2);
         return new CasesPerCountyConverter(countyStatRange1, countyStatRange2, range1, range2).convert();
     }
 
@@ -166,7 +166,7 @@ public class ChartDataService {
         LOG.info("Calling getSjukfallPerSexStatistics for national");
         final int rangeLength = 12;
         Range range = new Range(rangeLength);
-        SimpleDualSexResponse<SimpleDualSexDataRow> casesPerMonth = datasourceCasesPerCounty.getStatistics(Verksamhet.NATIONELL.toString(), range);
+        SimpleDualSexResponse<SimpleDualSexDataRow> casesPerMonth = datasourceCasesPerCounty.getStatistics(range);
         return new SjukfallPerSexConverter().convert(casesPerMonth);
     }
 
