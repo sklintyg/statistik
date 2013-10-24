@@ -56,6 +56,7 @@
         <constructor-arg ref="sickLeaveLength"/>
     </bean>
 
+    <bean class="se.inera.statistics.service.report.util.Lan" id="lan" />
     <bean id="loginInfoService" class="se.inera.statistics.web.service.LoginInfoService" />
 
     <import resource="application-context-cxf.xml"/>
@@ -90,7 +91,7 @@
       <bean class="se.inera.statistics.service.report.repository.AldersgruppPersistenceHandler" id="ageGroups"/>
       <bean class="se.inera.statistics.service.report.repository.SjukskrivningsgradPersistenceHandler" id="degreeOfSickLeave" />
       <bean class="se.inera.statistics.service.report.repository.SjukfallslangdGruppPersistenceHandler" id="sickLeaveLength"/>
-      <bean class="se.inera.statistics.service.report.mock.CasesPerCountyMock" id="casesPerCounty"/>
+      <bean class="se.inera.statistics.service.report.repository.SjukfallPerLanPersistenceHandler" id="casesPerCounty"/>
 
       <bean class="se.inera.statistics.service.demo.InjectUtlatande" lazy-init="false" />
     </beans>
