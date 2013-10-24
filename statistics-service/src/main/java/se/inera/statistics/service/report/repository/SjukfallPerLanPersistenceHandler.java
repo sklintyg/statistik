@@ -14,6 +14,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -59,8 +60,8 @@ public class SjukfallPerLanPersistenceHandler implements CasesPerCounty {
             map.put(row.getLanId(), new DualSexField((int)row.getFemale(), (int)row.getMale()));
         }
 
-        for (String lanId : lans.getLans().keySet()) {
-            String displayLan = lans.getLans().get(lanId);
+        for (String lanId : lans) {
+            String displayLan = lans.getNamn(lanId);
             DualSexField dualSexField = map.get(lanId);
             translatedCasesPerMonthRows.add(new SimpleDualSexDataRow(displayLan, dualSexField.getFemale(), dualSexField.getMale()));
         }
