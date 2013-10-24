@@ -14,7 +14,6 @@ import se.inera.statistics.service.hsa.HSADecorator;
 import se.inera.statistics.service.processlog.EventType;
 import se.inera.statistics.service.processlog.OrderedProcess;
 import se.inera.statistics.service.processlog.ProcessLog;
-import se.inera.statistics.service.processlog.Processor;
 
 import com.fasterxml.jackson.databind.JsonNode;
 
@@ -23,9 +22,6 @@ public class Receiver implements MessageListener {
 
     @Autowired
     private ProcessLog processLog;
-
-    @Autowired
-    private Processor processor;
 
     @Autowired
     private HSADecorator hsaDecorator;

@@ -1,44 +1,10 @@
 package se.inera.statistics.service.report.util;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
+import static se.inera.statistics.service.report.util.Ranges.range;
 
 public final class AldersgroupUtil {
-    public static final List<Group> GROUPS = Arrays.asList(new Group("<21", 21), new Group("21-25", 26), new Group("26-30", 31), new Group("31-35", 36), new Group("36-40", 41), new Group("41-45", 46), new Group("46-50", 51), new Group("51-55", 56), new Group("56-60", 61), new Group(">60", Integer.MAX_VALUE));
-
-    public static final Map<String, Integer> GROUP_MAP = new TreeMap<>();
-
-    static {
-        for (Group g : GROUPS) {
-            GROUP_MAP.put(g.groupName, g.cutoff);
-        }
-    }
+    public static final Ranges RANGES = new Ranges(range("<21", 21), range("21-25", 26), range("26-30", 31), range("31-35", 36), range("36-40", 41), range("41-45", 46), range("46-50", 51), range("51-55", 56), range("56-60", 61), range(">60", Integer.MAX_VALUE));
 
     private AldersgroupUtil() {
-    }
-
-    public static String lookupGroupForAge(int age) {
-        for (Group row : GROUPS) {
-            if (age < row.cutoff) {
-                return row.groupName;
-            }
-        }
-        throw new IllegalStateException("Groups have not been defined correctly. Missing group for " + age);
-    }
-
-    public static final class Group {
-        private final String groupName;
-        private final int cutoff;
-
-        private Group(String groupName, int cutoff) {
-            this.groupName = groupName;
-            this.cutoff = cutoff;
-        }
-
-        public String getGroupName() {
-            return groupName;
-        }
     }
 }

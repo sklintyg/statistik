@@ -44,5 +44,4 @@ public class SimpleDualSexResponse<T extends SimpleDualSexDataRow> {
         }
         return data;
     }
-
 }

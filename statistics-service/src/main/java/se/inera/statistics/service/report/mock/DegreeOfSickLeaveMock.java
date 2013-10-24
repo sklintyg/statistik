@@ -42,7 +42,7 @@ public class DegreeOfSickLeaveMock implements DegreeOfSickLeave {
     // CHECKSTYLE:ON MagicNumber
 
     @Override
-    public void count(String hsaId, String period, int degree, Verksamhet typ, Sex sex) {
+    public void count(String hsaId, String period, String grad, Verksamhet typ, Sex sex) {
     }
 
 }

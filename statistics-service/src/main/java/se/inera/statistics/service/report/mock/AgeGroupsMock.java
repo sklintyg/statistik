@@ -12,7 +12,7 @@ import se.inera.statistics.service.report.model.AgeGroupsRow;
 import se.inera.statistics.service.report.model.Sex;
 import se.inera.statistics.service.report.repository.RollingLength;
 import se.inera.statistics.service.report.util.AldersgroupUtil;
-import se.inera.statistics.service.report.util.AldersgroupUtil.Group;
+import se.inera.statistics.service.report.util.Ranges.Range;
 import se.inera.statistics.service.report.util.Verksamhet;
 
 public class AgeGroupsMock implements AgeGroups {
@@ -22,10 +22,10 @@ public class AgeGroupsMock implements AgeGroups {
     // CHECKSTYLE:OFF MagicNumber
     public AgeGroupsResponse getAgeGroups(int periods) {
         final List<AgeGroupsRow> rows = new ArrayList<>();
-        for (Group group : AldersgroupUtil.GROUPS) {
+        for (Range group : AldersgroupUtil.RANGES) {
             int women = (int) (random.nextGaussian() * 2000 + 10000);
             int men = (int) (random.nextGaussian() * 2000 + 10000);
-            rows.add(new AgeGroupsRow(null, group.getGroupName(), periods, women, men));
+            rows.add(new AgeGroupsRow(null, group.getName(), periods, women, men));
         }
         return new AgeGroupsResponse(rows, 12);
     }

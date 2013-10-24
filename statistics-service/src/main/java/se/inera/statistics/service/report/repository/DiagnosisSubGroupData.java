@@ -85,7 +85,6 @@ public class DiagnosisSubGroupData {
         private String undergrupp;
 
         public Key() {
-            // TODO Auto-generated constructor stub
         }
 
         public Key(String period, String hsaId, String group, String subgroup) {

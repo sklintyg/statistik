@@ -44,6 +44,8 @@ import se.inera.statistics.web.model.overview.OverviewData;
 @Service("chartService")
 public class ChartDataService {
 
+    private static final String NATIONELL = Verksamhet.NATIONELL.toString();
+
     private static final Logger LOG = LoggerFactory.getLogger(ChartDataService.class);
 
     private Overview datasourceOverview;
@@ -79,7 +81,7 @@ public class ChartDataService {
     public SimpleDetailsData getNumberOfCasesPerMonth() {
         LOG.info("Calling getNumberOfCasesPerMonth for national");
         Range range = new Range();
-        SimpleDualSexResponse<SimpleDualSexDataRow> casesPerMonth = datasourceCasesPerMonth.getCasesPerMonth(Verksamhet.NATIONELL.toString(), range);
+        SimpleDualSexResponse<SimpleDualSexDataRow> casesPerMonth = datasourceCasesPerMonth.getCasesPerMonth(NATIONELL, range);
         return new SimpleDualSexConverter().convert(casesPerMonth);
     }
 
@@ -97,7 +99,7 @@ public class ChartDataService {
     public DualSexStatisticsData getDiagnosisGroupStatistics() {
         LOG.info("Calling getDiagnosisGroupStatistics for national");
         Range range = new Range();
-        DiagnosisGroupResponse diagnosisGroups = datasourceDiagnosisGroups.getDiagnosisGroups(Verksamhet.NATIONELL.toString(), range);
+        DiagnosisGroupResponse diagnosisGroups = datasourceDiagnosisGroups.getDiagnosisGroups(NATIONELL, range);
         return new DiagnosisGroupsConverter().convert(diagnosisGroups);
     }
 
@@ -107,7 +109,7 @@ public class ChartDataService {
     public DualSexStatisticsData getDiagnosisSubGroupStatistics(@PathParam("groupId") String groupId) {
         LOG.info("Calling getDiagnosisSubGroupStatistics for national with groupId: " + groupId);
         Range range = new Range();
-        DiagnosisGroupResponse diagnosisGroups = datasourceDiagnosisSubGroups.getDiagnosisGroups(Verksamhet.NATIONELL.toString(), range, groupId);
+        DiagnosisGroupResponse diagnosisGroups = datasourceDiagnosisSubGroups.getDiagnosisGroups(NATIONELL, range, groupId);
         return new DiagnosisSubGroupsConverter().convert(diagnosisGroups);
     }
 
@@ -115,7 +117,7 @@ public class ChartDataService {
     @Path("getOverview")
     @Produces({ MediaType.APPLICATION_JSON })
     public OverviewData getOverviewData() {
-        Range range = new Range(RollingLength.QUARTER.getPeriods());
+        Range range = Range.quarter();
         OverviewResponse response = datasourceOverview.getOverview(range);
         return new OverviewConverter().convert(response);
     }
@@ -125,7 +127,7 @@ public class ChartDataService {
     @Produces({ MediaType.APPLICATION_JSON })
     public AgeGroupsData getAgeGroupsStatistics() {
         LOG.info("Calling getAgeGroupsStatistics for national");
-        AgeGroupsResponse ageGroups = datasourceAgeGroups.getHistoricalAgeGroups(Verksamhet.NATIONELL.toString(), previousMonth(), RollingLength.QUARTER);
+        AgeGroupsResponse ageGroups = datasourceAgeGroups.getHistoricalAgeGroups(NATIONELL, previousMonth(), RollingLength.QUARTER);
         return new AgeGroupsConverter().convert(ageGroups);
     }
 
@@ -134,7 +136,7 @@ public class ChartDataService {
     @Produces({ MediaType.APPLICATION_JSON })
     public DualSexStatisticsData getDegreeOfSickLeaveStatistics() {
         LOG.info("Calling getDegreeOfSickLeaveStatistics for national");
-        DegreeOfSickLeaveResponse degreeOfSickLeaveStatistics = datasourceDegreeOfSickLeave.getStatistics(Verksamhet.NATIONELL.toString(), new Range());
+        DegreeOfSickLeaveResponse degreeOfSickLeaveStatistics = datasourceDegreeOfSickLeave.getStatistics(NATIONELL, new Range());
         return new DegreeOfSickLeaveConverter().convert(degreeOfSickLeaveStatistics);
     }
 
@@ -143,7 +145,7 @@ public class ChartDataService {
     @Produces({ MediaType.APPLICATION_JSON })
     public SickLeaveLengthData getSickLeaveLengthData() {
         LOG.info("Calling getSickLeaveLengthData for national");
-        SickLeaveLengthResponse sickLeaveLength = datasourceSickLeaveLength.getHistoricalStatistics(Verksamhet.NATIONELL.toString(), previousMonth(), RollingLength.YEAR);
+        SickLeaveLengthResponse sickLeaveLength = datasourceSickLeaveLength.getHistoricalStatistics(NATIONELL, previousMonth(), RollingLength.YEAR);
         return new SickLeaveLengthConverter().convert(sickLeaveLength);
     }
 
@@ -151,7 +153,7 @@ public class ChartDataService {
     @Path("getCountyStatistics")
     @Produces({ MediaType.APPLICATION_JSON })
     public CasesPerCountyData getCountyStatistics() {
-        Range range1 = new Range(RollingLength.QUARTER.getPeriods());
+        Range range1 = Range.quarter();
         Range range2 = ReportUtil.getPreviousPeriod(range1);
 
         SimpleDualSexResponse<SimpleDualSexDataRow> countyStatRange1 = datasourceCasesPerCounty.getStatistics(range1);

@@ -13,7 +13,7 @@
             <column name="typ" type="varchar(60)">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="grad" type="int">
+            <column name="grad" type="varchar(20)">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="female" type="int"/>

@@ -1,6 +1,10 @@
 package se.inera.statistics.service.report.repository;
 
+import java.util.Collections;
+import java.util.List;
+
 import org.springframework.transaction.annotation.Transactional;
+
 import se.inera.statistics.service.report.api.Overview;
 import se.inera.statistics.service.report.model.OverviewChartRow;
 import se.inera.statistics.service.report.model.OverviewChartRowExtended;
@@ -54,6 +58,4 @@ public class OverviewPersistenceHandler extends OverviewBasePersistenceHandler i
         queryResult = null;
         return queryResult;
     }
-
-
 }
