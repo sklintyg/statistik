@@ -18,26 +18,23 @@ public class AldersGruppListener extends GenericAbstractListener {
 
     @Override
     void accept(GenericHolder token, LocalDate firstMonth, LocalDate endMonth) {
-        LocalDate firstDate = firstMonth;
         LocalDate prevEnd = token.getSjukfallInfo().getPrevEnd();
         for (RollingLength length: RollingLength.values()) {
-            accept(token, endMonth, firstDate, prevEnd, length);
+            accept(token, firstMonth, endMonth, prevEnd, length);
         }
     }
 
-    private void accept(GenericHolder token, LocalDate endMonth, LocalDate firstDate, LocalDate prevEnd, RollingLength length) {
-        if (prevEnd != null) {
-            firstDate = prevEnd.plusMonths(length.getPeriods());
-        }
+    private void accept(GenericHolder token, LocalDate firstMonth, LocalDate endMonth, LocalDate prevEnd, RollingLength length) {
+        LocalDate startMonth = prevEnd == null ? firstMonth : prevEnd.plusMonths(length.getPeriods());
         LocalDate lastMonth = endMonth.plusMonths(length.getPeriods() - 1);
-        for (LocalDate currentMonth = firstDate; !currentMonth.isAfter(lastMonth); currentMonth = currentMonth.plusMonths(1)) {
+        for (LocalDate currentMonth = startMonth; !currentMonth.isAfter(lastMonth); currentMonth = currentMonth.plusMonths(1)) {
             String period = ReportUtil.toPeriod(currentMonth);
             accept(token, period, length);
         }
     }
 
     private void accept(GenericHolder token, String period, RollingLength length) {
-        String group = AldersgroupUtil.lookupGroupForAge(token.getAge());
+        String group = AldersgroupUtil.RANGES.rangeFor(token.getAge()).getName();
         ageGroups.count(period, token.getEnhetId(), group, length, Verksamhet.ENHET, token.getKon());
         ageGroups.count(period, token.getVardgivareId(), group, length, Verksamhet.VARDGIVARE, token.getKon());
     }

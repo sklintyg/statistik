@@ -10,15 +10,16 @@ import javax.persistence.Transient;
 import se.inera.statistics.service.report.util.Verksamhet;
 
 @Entity
-@Table(name = "sjukfallslangdgrupp")
+@Table(name = SickLeaveLengthRow.TABLE)
 public class SickLeaveLengthRow {
+    public static final String TABLE = "sjukfallslangdgrupp";
     @EmbeddedId
     private SickLeaveLengthKey key;
-    private int male;
-    private int female;
-
     @Enumerated(EnumType.STRING)
     private Verksamhet typ;
+
+    private int male;
+    private int female;
 
     public SickLeaveLengthRow() {
     }

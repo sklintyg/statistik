@@ -4,12 +4,15 @@ import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.Table;
 
 import se.inera.statistics.service.report.util.Verksamhet;
 
 @Entity
+@Table(name = CasesPerMonthRow.TABLE)
 public class CasesPerMonthRow {
 
+    public static final String TABLE = "CasesPerMonthRow";
     @EmbeddedId
     private CasesPerMonthKey key;
     @Enumerated(EnumType.STRING)

@@ -11,9 +11,10 @@ import javax.persistence.Table;
 import se.inera.statistics.service.report.util.Verksamhet;
 
 @Entity
-@Table(name = "sjukskrivningsgrad")
+@Table(name = SjukskrivningsgradData.TABLE)
 public class SjukskrivningsgradData {
 
+    public static final String TABLE = "sjukskrivningsgrad";
     @EmbeddedId
     private SjukskrivningsgradKey key;
 
@@ -25,8 +26,8 @@ public class SjukskrivningsgradData {
     public SjukskrivningsgradData() {
     }
 
-    public SjukskrivningsgradData(String period, String hsaId, int formaga, Verksamhet typ, int female, int male) {
-        key = new SjukskrivningsgradKey(period, hsaId, formaga);
+    public SjukskrivningsgradData(String period, String hsaId, String grad, Verksamhet typ, int female, int male) {
+        key = new SjukskrivningsgradKey(period, hsaId, grad);
         this.typ = typ;
         this.female = female;
         this.male = male;
@@ -38,7 +39,7 @@ public class SjukskrivningsgradData {
     }
 
     @Transient
-    public int getGrad() {
+    public String getGrad() {
         return key.getGrad();
     }
 

@@ -10,6 +10,10 @@ public class OverviewChartRow {
         this.quantity = quantity;
     }
 
+    public OverviewChartRow(String name, long quantity) {
+        this(name,  (int) quantity);
+    }
+
     public String getName() {
         return name;
     }

@@ -16,7 +16,6 @@ import se.inera.statistics.service.report.model.SimpleDualSexResponse;
 import se.inera.statistics.service.report.repository.RollingLength;
 import se.inera.statistics.service.report.util.ReportUtil;
 import se.inera.statistics.service.report.util.SjukfallslangdUtil;
-import se.inera.statistics.service.report.util.SjukfallslangdUtil.Group;
 import se.inera.statistics.service.report.util.Verksamhet;
 
 public class SjukfallslangdGruppMock implements SjukfallslangdGrupp {
@@ -27,10 +26,10 @@ public class SjukfallslangdGruppMock implements SjukfallslangdGrupp {
     @Override
     public SickLeaveLengthResponse getHistoricalStatistics(String hsaId, LocalDate when, RollingLength length) {
         final List<SickLeaveLengthRow> rows = new ArrayList<>();
-        for (Group group : SjukfallslangdUtil.GROUPS) {
+        for (se.inera.statistics.service.report.util.Ranges.Range group : SjukfallslangdUtil.RANGES) {
             int women = (int) (random.nextGaussian() * 2000 + 10000);
             int men = (int) (random.nextGaussian() * 2000 + 10000);
-            rows.add(new SickLeaveLengthRow(null, group.getGroupName(), length.getPeriods(), women, men));
+            rows.add(new SickLeaveLengthRow(null, group.getName(), length.getPeriods(), women, men));
         }
         return new SickLeaveLengthResponse(rows, length.getPeriods());
     }

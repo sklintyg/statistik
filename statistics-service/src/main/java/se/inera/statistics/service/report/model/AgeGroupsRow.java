@@ -10,8 +10,9 @@ import javax.persistence.Transient;
 import se.inera.statistics.service.report.util.Verksamhet;
 
 @Entity
-@Table(name = "aldersgrupp")
+@Table(name = AgeGroupsRow.TABLE)
 public class AgeGroupsRow {
+    public static final String TABLE = "aldersgrupp";
     @EmbeddedId
     private AldersgruppKey key;
     private int male;

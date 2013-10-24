@@ -63,11 +63,11 @@ public class VerksamhetOverviewPersistanceHandlerTest extends VerksamhetOverview
         aldersgruppPersistenceHandler.count("2013-09", "id3", "<21", RollingLength.QUARTER, Verksamhet.ENHET, Sex.Male);
         aldersgruppPersistenceHandler.count("2013-06", "id1", "<21", RollingLength.QUARTER, Verksamhet.ENHET, Sex.Male);
 
-        sjukskrivningsgrad.count("id1", "2013-09", 25, Verksamhet.ENHET, Sex.Female);
-        sjukskrivningsgrad.count("id1", "2013-09", 100, Verksamhet.ENHET, Sex.Female);
-        sjukskrivningsgrad.count("id1", "2013-09", 100, Verksamhet.ENHET, Sex.Female);
-        sjukskrivningsgrad.count("id1", "2013-06", 25, Verksamhet.ENHET, Sex.Female);
-        sjukskrivningsgrad.count("id1", "2013-06", 100, Verksamhet.ENHET, Sex.Female);
+        sjukskrivningsgrad.count("id1", "2013-09", "25", Verksamhet.ENHET, Sex.Female);
+        sjukskrivningsgrad.count("id1", "2013-09", "100", Verksamhet.ENHET, Sex.Female);
+        sjukskrivningsgrad.count("id1", "2013-09", "100", Verksamhet.ENHET, Sex.Female);
+        sjukskrivningsgrad.count("id1", "2013-06", "25", Verksamhet.ENHET, Sex.Female);
+        sjukskrivningsgrad.count("id1", "2013-06", "100", Verksamhet.ENHET, Sex.Female);
 
         sjukfallslangdGrupp.count("2013-09", "id1","<15 dagar", RollingLength.QUARTER, Verksamhet.ENHET, Sex.Female);
         sjukfallslangdGrupp.count("2013-09", "id1","<15 dagar", RollingLength.QUARTER, Verksamhet.ENHET, Sex.Male);

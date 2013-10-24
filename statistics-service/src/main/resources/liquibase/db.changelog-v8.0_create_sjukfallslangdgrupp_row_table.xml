@@ -10,13 +10,13 @@
             <column name="hsaid" type="varchar(60)">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
+            <column name="typ" type="varchar(60)">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
             <column name="grupp" type="varchar(30)">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="periods" type="int">
-                <constraints primaryKey="true" nullable="false"/>
-            </column>
-            <column name="typ" type="varchar(60)">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="female" type="int"/>

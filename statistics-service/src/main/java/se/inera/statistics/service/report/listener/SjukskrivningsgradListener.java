@@ -20,20 +20,20 @@ public class SjukskrivningsgradListener extends GenericAbstractListener {
     void accept(GenericHolder token, String period) {
         List<String> arbetsformagor = DocumentHelper.getArbetsformaga(token.getUtlatande());
         for (String formaga: arbetsformagor) {
-            int grad = arbetsformagaTillSjukskrivning(formaga);
+            String grad = arbetsformagaTillSjukskrivning(formaga);
             api.count(token.getEnhetId(), period, grad, Verksamhet.ENHET, token.getKon());
             api.count(token.getVardgivareId(), period, grad, Verksamhet.VARDGIVARE, token.getKon());
         }
     }
 
-    private int arbetsformagaTillSjukskrivning(String formaga) {
+    private String arbetsformagaTillSjukskrivning(String formaga) {
         switch(formaga) {
-        case "0": return 100;
-        case "25": return 75;
-        case "50": return 50;
-        case "75": return 25;
+        case "0": return "100";
+        case "25": return "75";
+        case "50": return "50";
+        case "75": return "25";
         default:
-            return 100;
+            return "100";
         }
     }
 }

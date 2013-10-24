@@ -8,20 +8,23 @@ import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.Table;
 
 import se.inera.statistics.service.report.util.Verksamhet;
 
 @Entity
+@Table(name = DiagnosisSubGroupData.TABLE)
 public class DiagnosisSubGroupData {
 
+    public static final String TABLE = "DiagnosisSubGroupData";
     @EmbeddedId
     private Key key;
 
-    private int male;
-    private int female;
-
     @Enumerated(EnumType.STRING)
     private Verksamhet typ;
+
+    private int male;
+    private int female;
 
     public DiagnosisSubGroupData() {
     }
@@ -82,7 +85,6 @@ public class DiagnosisSubGroupData {
         private String undergrupp;
 
         public Key() {
-            // TODO Auto-generated constructor stub
         }
 
         public Key(String period, String hsaId, String group, String subgroup) {

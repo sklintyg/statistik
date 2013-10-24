@@ -8,12 +8,15 @@ import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.Table;
 
 import se.inera.statistics.service.report.util.Verksamhet;
 
 @Entity
+@Table(name = DiagnosisGroupData.TABLE)
 public class DiagnosisGroupData {
 
+    public static final String TABLE = "DiagnosisGroupData";
     @EmbeddedId
     private DiagnosisGroupKey key;
 
@@ -111,5 +114,4 @@ public class DiagnosisGroupData {
             }
         }
     }
-
 }
