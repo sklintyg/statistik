@@ -7,6 +7,8 @@ import org.joda.time.Months;
 
 public final class Range {
     private static final int DEFAULT_PERIOD = 18;
+    private static final int YEAR_PERIOD = 12;
+    private static final int QUARTER_PERIOD = 3;
     private final LocalDate from;
     private final LocalDate to;
 
@@ -43,5 +45,13 @@ public final class Range {
 
     public int getMonths() {
         return Months.monthsBetween(from, to).getMonths() + 1;
+    }
+    
+    public static Range year() {
+        return new Range(YEAR_PERIOD);
+    }
+
+    public static Range quarter() {
+        return new Range(QUARTER_PERIOD);
     }
 }
