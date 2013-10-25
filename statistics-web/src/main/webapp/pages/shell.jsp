@@ -47,7 +47,7 @@
 
 <!-- Navbar
 ================================================== -->
-<div class="navbar navbar-inverse navbar-fixed-top">
+<div class="navbar navbar-inverse navbar-fixed-top" ng-controller="PageHeaderCtrl">
 	<div class="navbar-inner">
 		<div class="container-fluid">
 			<div class="row-fluid" id="navigation-container">
@@ -59,6 +59,8 @@
 						<div class="span2">
 							<span>Statistiktjänst för ordinerad sjukskrivning</span>
 						</div>
+						<span style="display:none;">{{currentUrl}}</span>
+						<span style="display:none;">Nationella statistiktjänsten {{currentTime}}</span>
 						<div class="span4 offset4">
 							<div id="business-login-container">
 								<button class="btn" type="button" id="business-login-btn" value="Logga in">Logga in</button>
@@ -215,6 +217,7 @@
 <script type="text/javascript" src="<c:url value='/js/app/controller/business/businessLandingPageCtrl.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/controller/columnChartDetailsViewCtrl.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/controller/casesPerCountyCtrl.js'/>"></script>
+<script type="text/javascript" src="<c:url value='/js/app/controller/pageHeaderCtrl.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/controller/navigationMenuCtrl.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/controllers.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/directives.js'/>"></script>

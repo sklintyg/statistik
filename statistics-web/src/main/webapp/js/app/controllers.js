@@ -1,5 +1,6 @@
 'use strict';
 
+app.statisticsApp.controller('PageHeaderCtrl', app.pageHeaderCtrl);
 app.statisticsApp.controller('NavigationMenuCtrl', app.navigationMenuCtrl);
 app.statisticsApp.controller('OverviewCtrl', app.overviewCtrl);
 app.statisticsApp.controller('CasesPerMonthCtrl', app.singleLineChartCtrl);
