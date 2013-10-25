@@ -1,5 +1,5 @@
 <div id="chart-content">
-	<div class="row-fluid">
+	<div class="row-fluid dontprint">
 		<div class="span4">
 			<h1 tabindex="-1" class="national-statistic-h1">Nationell statistik</h1>
 		</div>
@@ -34,7 +34,7 @@
     <div ng-include="errorPageUrl"></div>
     <div dataerrorview show-error="dataLoadingError">
         <div spinner label="{{spinnerText}}" show-spinner="!doneLoading" show-content="doneLoading">
-        	 <div class="rotate-print">
+        	 <div class="">
         	 	<div class="row-fluid">
 					<span class="span12 graph-ingress">
 						{{subTitle}}
@@ -82,7 +82,7 @@
 	                            <table id="datatable" class="table table-striped">
 	                                <thead>
 	                                    <tr ng-repeat="headerrow in headerrows">
-	                                        <td class="datatablescrollable" ng-class="{headcol: $first}" colspan="{{header.colspan}}" ng-repeat="header in headerrow" style="max-width: 100%; overflow: hidden; text-overflow: ellipsis; font-weight: bold;" title="{{header.text}}">{{header.text}}</td>
+	                                        <td class="datatablescrollable details-table-data ellipsis details-th" ng-class="{headcol: $first}" colspan="{{header.colspan}}" ng-repeat="header in headerrow" title="{{header.text}}">{{header.text}}</td>
 	                                    </tr>
 	                                </thead>
 	                                <tbody>

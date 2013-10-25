@@ -1603,3 +1603,9 @@ div.datatablescrollable {
 	display: none;
 }
 
+.details-table-data {
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-weight: bold;
+}
