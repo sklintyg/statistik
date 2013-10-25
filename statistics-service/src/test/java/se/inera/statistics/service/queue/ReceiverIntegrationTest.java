@@ -23,6 +23,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import se.inera.statistics.service.demo.UtlatandeBuilder;
+import se.inera.statistics.service.processlog.LogConsumer;
 import se.inera.statistics.service.report.api.CasesPerMonth;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.SimpleDualSexDataRow;
@@ -43,6 +44,9 @@ public class ReceiverIntegrationTest {
     @Autowired
     private ConnectionFactory connectionFactory;
 
+    @Autowired
+    private LogConsumer consumer;
+
     @Before
     public void setup() {
         this.jmsTemplate = new JmsTemplate(connectionFactory);
@@ -55,6 +59,8 @@ public class ReceiverIntegrationTest {
         simpleSend(builder.build("19121212-0011", new LocalDate("2011-01-20"), new LocalDate("2011-03-11"), "enhetId", "A00", 0).toString(), "C002");
 
         sleep();
+
+        assertEquals(2, consumer.processBatch());
 
         SimpleDualSexResponse<SimpleDualSexDataRow> webData = casesPerMonth.getCasesPerMonth("enhetId", new Range(new LocalDate("2011-01"), new LocalDate("2011-12")));
 

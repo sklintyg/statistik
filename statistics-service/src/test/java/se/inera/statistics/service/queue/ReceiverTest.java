@@ -44,7 +44,6 @@ public class ReceiverTest {
 
         verify(processLog).store(EventType.CREATED, data, "corr", 123L);
         verify(hsaDecorator).decorate(any(JsonNode.class), anyString());
-        verify(orderedProcess).register(any(JsonNode.class), anyString());
     }
     // CHECKSTYLE:ON MagicNumber
 }

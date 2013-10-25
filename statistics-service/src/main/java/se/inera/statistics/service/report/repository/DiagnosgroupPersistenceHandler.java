@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Map;
 
 import javax.persistence.EntityManager;
-import javax.persistence.LockModeType;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
@@ -31,7 +30,7 @@ public class DiagnosgroupPersistenceHandler implements DiagnosisGroups {
 
     @Transactional
     public void count(String hsaId, String period, String diagnosgrupp, Verksamhet typ, Sex sex) {
-        DiagnosisGroupData existingRow = manager.find(DiagnosisGroupData.class, new DiagnosisGroupData.DiagnosisGroupKey(period, hsaId, diagnosgrupp), LockModeType.PESSIMISTIC_READ);
+        DiagnosisGroupData existingRow = manager.find(DiagnosisGroupData.class, new DiagnosisGroupData.DiagnosisGroupKey(period, hsaId, diagnosgrupp));
         int female = Sex.Female.equals(sex) ? 1 : 0;
         int male = Sex.Male.equals(sex) ? 1 : 0;
 

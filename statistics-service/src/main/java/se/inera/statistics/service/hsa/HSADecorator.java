@@ -30,13 +30,16 @@ public class HSADecorator {
     @Autowired
     private HSAService service;
 
-
     @Autowired
     private OrderedProcess orderedProcess;
 
     @Async
     @Transactional
     public void decorate(JsonNode doc, String documentId) {
+        syncDecorate(doc, documentId);
+    }
+
+    public JsonNode syncDecorate(JsonNode doc, String documentId) {
         JsonNode info = getHSAInfo(documentId);
         if (info == null) {
             HSAKey key = extractHSAKey(doc);
@@ -44,15 +47,15 @@ public class HSADecorator {
             info = service.getHSAInfo(key);
             storeHSAInfo(documentId, info);
         }
-        orderedProcess.updateSlot(info, documentId);
+        return info;
     }
-
+    
     protected void storeHSAInfo(String documentId, JsonNode info) {
         HSAStore entity = new HSAStore(documentId, info.toString());
         manager.persist(entity);
     }
 
-    protected JsonNode getHSAInfo(String documentId) {
+    public JsonNode getHSAInfo(String documentId) {
         HSAStore hsaStore = manager.find(HSAStore.class, documentId);
         if (hsaStore != null) {
             return JSONParser.parse(hsaStore.getData());

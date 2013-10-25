@@ -32,10 +32,7 @@ public class Receiver implements MessageListener {
     public void accept(EventType type, String data, String documentId, long timestamp) {
         processLog.store(type, data, documentId, timestamp);
         JsonNode utlatande = JSONParser.parse(data);
-
-        orderedProcess.register(utlatande, documentId);
         hsaDecorator.decorate(utlatande, documentId);
-
     }
 
     public void onMessage(Message rawData) {

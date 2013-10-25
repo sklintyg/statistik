@@ -1,7 +1,9 @@
 package se.inera.statistics.service.processlog;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+
+import java.util.List;
 
 import javax.transaction.NotSupportedException;
 import javax.transaction.SystemException;
@@ -29,8 +31,8 @@ public class ProcessLogImplTest extends ProcessLogImpl {
 
     @Test
     public void withNoNewEventsPollReturnsNothing() {
-        IntygEvent pending = getPending();
-        assertNull(pending);
+        List<IntygEvent> pending = getPending(2);
+        assertTrue(pending.isEmpty());
     }
 
     @Test
@@ -38,9 +40,9 @@ public class ProcessLogImplTest extends ProcessLogImpl {
         store(EventType.CREATED, "1", "corr", 123L);
         store(EventType.CREATED, "2", "corr", 123L);
 
-        IntygEvent pending = getPending();
-        assertEquals("1", pending.getData());
-        assertEquals("1", pending.getData());
+        List<IntygEvent> pending = getPending(2);
+        assertEquals(2, pending.size());
+        assertEquals("1", pending.get(0).getData());
     }
 
     @Test
@@ -48,16 +50,16 @@ public class ProcessLogImplTest extends ProcessLogImpl {
         store(EventType.CREATED, "1", "corr", 123L);
         store(EventType.CREATED, "2", "corr", 123L);
 
-        IntygEvent pending = getPending();
-        assertEquals("1", pending.getData());
-        confirm(pending.getId());
+        List<IntygEvent> pending = getPending(2);
+        assertEquals("1", pending.get(0).getData());
+        confirm(pending.get(0).getId());
 
-        pending = getPending();
-        assertEquals("2", pending.getData());
-        confirm(pending.getId());
+        pending = getPending(2);
+        assertEquals("2", pending.get(0).getData());
+        confirm(pending.get(0).getId());
 
-        pending = getPending();
-        assertNull(pending);
+        pending = getPending(2);
+        assertTrue(pending.isEmpty());
     }
     // CHECKSTYLE:ON MagicNumber
 }
