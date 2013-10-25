@@ -4,6 +4,7 @@ import java.util.List;
 
 public class OverviewData {
 
+    private final String  periodText;
     private final NumberOfCasesPerMonthOverview casesPerMonth;
     private final List<DonutChartData> diagnosisGroups;
     private final List<DonutChartData> ageGroups;
@@ -11,15 +12,20 @@ public class OverviewData {
     private final SickLeaveLengthOverview sickLeaveLength;
     private final List<DonutChartData> perCounty;
 
-    public OverviewData(NumberOfCasesPerMonthOverview casesPerMonth, List<DonutChartData> diagnosisGroups,
+    public OverviewData(String periodText, NumberOfCasesPerMonthOverview casesPerMonth, List<DonutChartData> diagnosisGroups,
             List<DonutChartData> ageGroups, List<DonutChartData> degreeOfSickLeaveGroups,
             SickLeaveLengthOverview sickLeaveLength, List<DonutChartData> perCounty) {
+        this.periodText = periodText;
         this.casesPerMonth = casesPerMonth;
         this.diagnosisGroups = diagnosisGroups;
         this.ageGroups = ageGroups;
         this.degreeOfSickLeaveGroups = degreeOfSickLeaveGroups;
         this.sickLeaveLength = sickLeaveLength;
         this.perCounty = perCounty;
+    }
+
+    public String getPeriodText() {
+        return periodText;
     }
 
     public NumberOfCasesPerMonthOverview getCasesPerMonth() {

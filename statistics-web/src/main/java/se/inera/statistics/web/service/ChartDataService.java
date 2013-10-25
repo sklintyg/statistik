@@ -119,7 +119,7 @@ public class ChartDataService {
     public OverviewData getOverviewData() {
         Range range = Range.quarter();
         OverviewResponse response = datasourceOverview.getOverview(range);
-        return new OverviewConverter().convert(response);
+        return new OverviewConverter().convert(response, range);
     }
 
     @GET

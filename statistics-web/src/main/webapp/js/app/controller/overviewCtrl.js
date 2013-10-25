@@ -3,6 +3,7 @@
  app.overviewCtrl = function ($scope, $timeout, statisticsData) {
 
      var dataReceived = function(result) {
+         $scope.subTitle = "Utvecklingen i landet " + result.periodText;
          $scope.doneLoading = true;
          $timeout(function() {
              populatePageWithData(result);
