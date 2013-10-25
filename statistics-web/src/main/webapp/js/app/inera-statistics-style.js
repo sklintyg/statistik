@@ -13,4 +13,13 @@ $(document).ready(function(){
 	$('#business-login-btn').click(function(){
         window.location.replace("/login.jsp");
 	});
+	
 });
+
+function divPrint() {
+// Some logic determines which div should be printed...
+// This example uses div3.
+	$(".overview-box-header-container").addClass("printable");
+    window.print();
+}
+

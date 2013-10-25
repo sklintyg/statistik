@@ -1,0 +1,13 @@
+@media print {
+	.navbar,
+	.footer,
+	#statistics-menu-accordion,
+	#pageHelpToolTip,
+	.btn-group.statistics-btn-group {
+		display: none;
+	}
+	
+	a#casesPerMonthProportionPerSexLink {
+		background: lime !important;
+	}
+}
