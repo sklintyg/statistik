@@ -35,7 +35,7 @@ public class LogConsumerImpl implements LogConsumer {
     public int processBatch() {
         try {
             setRunning(true);
-            List<IntygEvent> result = processLog.getPending(1000);
+            List<IntygEvent> result = processLog.getPending(100);
             if (result.isEmpty()) {
                 return 0;
             }
