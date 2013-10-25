@@ -33,8 +33,7 @@ public class SjukfallPerLanPersistenceHandler implements CasesPerCounty {
     @Override
     @Transactional
     public SimpleDualSexResponse<SimpleDualSexDataRow> getStatistics(Range range) {
-        TypedQuery<SjukfallPerLanRow> query = manager.createQuery("SELECT new SjukfallPerLanRow(c.key.period, 'dummy', c.key.lanId, SUM (c.female), sum (c.male)) FROM SjukfallPerLanRow c WHERE c.key.period BETWEEN :from AND :to GROUP BY c.key.period, c.key.lanId", SjukfallPerLanRow.class);
-        query.setParameter("from", ReportUtil.toPeriod(range.getFrom()));
+        TypedQuery<SjukfallPerLanRow> query = manager.createQuery("SELECT new SjukfallPerLanRow(c.key.period, 'dummy', c.key.lanId, SUM (c.female), sum (c.male)) FROM SjukfallPerLanRow c WHERE c.key.period = :to GROUP BY c.key.period, c.key.lanId", SjukfallPerLanRow.class);
         query.setParameter("to", ReportUtil.toPeriod(range.getTo()));
 
         return translateForOutput(range, query.getResultList());
