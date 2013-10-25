@@ -1513,6 +1513,10 @@ li.overview-box-header-listItem {
 	margin: 15px 0 0 0;
 	float: left;
 }
+#sexProportionChartOld,
+#sexProportionChartNew {
+	width: 50%;
+}
 .chart-container#sickLeaveLengthChart{
 	width: 62%;
 	margin: 25px 0 0 0;
@@ -1585,11 +1589,3 @@ div.datatablescrollable {
 	cursor: pointer;
 }
 
-.small-info-box .popover.left.in.fade {
-	top: -38px !important;
-	left: -76px !important;
-}
-#business-overview  .small-info-box .popover.left.in.fade {
-	top: -67px !important;
-	left: -79px !important;
-}

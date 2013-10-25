@@ -30,6 +30,9 @@ public class DistributingListener implements ProcessorListener {
     @Autowired
     private SjukskrivningsgradListener sjukskrivningsgradListener;
 
+    @Autowired
+    private SjukfallPerLanListener sjukfallPerLanListener;
+
     @Override
     @Transactional
     public void accept(SjukfallInfo sjukfallInfo, JsonNode utlatande, JsonNode hsa) {
@@ -39,6 +42,7 @@ public class DistributingListener implements ProcessorListener {
         aldersgruppListener.accept(sjukfallInfo, utlatande, hsa);
         sjukfallsLangdListener.accept(sjukfallInfo, utlatande, hsa);
         sjukskrivningsgradListener.accept(sjukfallInfo, utlatande, hsa);
+        sjukfallPerLanListener.accept(sjukfallInfo, utlatande, hsa);
     }
 
 }

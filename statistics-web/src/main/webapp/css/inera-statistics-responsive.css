@@ -1162,10 +1162,13 @@ form.bs-docs-example {
 		margin-top: 5px;
 	}
 	.chart-container {
-		/*width: 43%;*/
 		width: 38%;
 		margin: 18px 0 0 0;
 		float: left;
+	}
+	#sexProportionChartOld,
+	#sexProportionChartNew {
+		width: 50%;
 	}
 	.chart-container#sickLeaveLengthChart{
 		width: 62%;
@@ -1328,6 +1331,16 @@ form.bs-docs-example {
 	}
 	.chart-container#sickLeaveLengthChart{
 		width: 62%;
+	}
+	.small-info-box .popover.left.in.fade {
+		left: -50px !important;
+	}
+	.small-info-box.overview-change-box .popover.left.in.fade {
+		top: -46.5px !important;
+	}
+	#business-overview  .small-info-box .popover.left.in.fade {
+		top: -38px !important;
+		left: 236px !important;
 	}
 }
 @media (max-width: 800px) {
