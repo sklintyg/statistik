@@ -1,9 +1,11 @@
 package se.inera.statistics.service.report.repository;
 
+import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import javax.persistence.EntityManager;
@@ -54,7 +56,6 @@ public class OverviewBasePersistenceHandler {
         Collections.sort(queryResult, CHART_ROW_COMPARATOR);
 
         ArrayList<OverviewChartRow> result = new ArrayList<>();
-        
         for (OverviewChartRow row: queryResult) {
             result.add(row);
             if (result.size() == numberOfGroups) {
@@ -135,9 +136,7 @@ public class OverviewBasePersistenceHandler {
         List<OverviewChartRow> queryResultForPrevPeriod = getAgeGroupsFromDb(verksamhetId, ReportUtil.getPreviousPeriod(range));
 
         Collections.sort(queryResult, CHART_ROW_COMPARATOR);
-        
         ArrayList<OverviewChartRowExtended> result = new ArrayList<>();
-
         for (int x = 0; x < numberOfGroups && x < queryResult.size(); x++) {
             OverviewChartRow row = queryResult.get(x);
 
@@ -156,7 +155,7 @@ public class OverviewBasePersistenceHandler {
         return result;
     }
 
-    private int lookupChange(OverviewChartRow row, List<OverviewChartRow> queryResultForPrevPeriod) {
+    protected int lookupChange(OverviewChartRow row, List<OverviewChartRow> queryResultForPrevPeriod) {
         String key = row.getName();
         int current = row.getQuantity();
         int prev = 0;
@@ -221,11 +220,22 @@ public class OverviewBasePersistenceHandler {
         return Math.round(((float) current) * VerksamhetOverviewPersistenceHandler.PERCENT / previous - VerksamhetOverviewPersistenceHandler.PERCENT);
     }
 
-    private static final Comparator<OverviewChartRow> CHART_ROW_COMPARATOR = new Comparator<OverviewChartRow>() {
+    protected static final Comparator<OverviewChartRow> CHART_ROW_COMPARATOR = new Comparator<OverviewChartRow>() {
         @Override
         public int compare(OverviewChartRow o1, OverviewChartRow o2) {
             return o2.getQuantity() - o1.getQuantity();
         }
     };
 
+    protected void sortWithCollation(List<OverviewChartRowExtended> rows) {
+        final Collator collator = Collator.getInstance(new Locale("SV"));
+        collator.setStrength(Collator.SECONDARY);
+
+        Collections.sort(rows, new Comparator<OverviewChartRowExtended>() {
+            @Override
+            public int compare(OverviewChartRowExtended o1, OverviewChartRowExtended o2) {
+                return collator.compare(o1.getName(), o2.getName());
+            }
+        });
+    }
 }
