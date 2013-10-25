@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.LockModeType;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
@@ -58,7 +59,7 @@ public class AldersgruppPersistenceHandler implements AgeGroups {
     @Transactional
     @Override
     public void count(String period, String hsaId, String group, RollingLength length, Verksamhet typ, Sex sex) {
-        AgeGroupsRow existingRow = manager.find(AgeGroupsRow.class, new AldersgruppKey(period, hsaId, group, length.getPeriods()));
+        AgeGroupsRow existingRow = manager.find(AgeGroupsRow.class, new AldersgruppKey(period, hsaId, group, length.getPeriods()), LockModeType.PESSIMISTIC_READ);
         int female = Sex.Female.equals(sex) ? 1 : 0;
         int male = Sex.Male.equals(sex) ? 1 : 0;
 

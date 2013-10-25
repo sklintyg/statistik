@@ -2,6 +2,7 @@ package se.inera.statistics.service.report.repository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
+
 import se.inera.statistics.service.report.api.CasesPerCounty;
 import se.inera.statistics.service.report.model.DualSexField;
 import se.inera.statistics.service.report.model.Range;
@@ -14,8 +15,10 @@ import se.inera.statistics.service.report.model.Lan;
 import se.inera.statistics.service.report.util.ReportUtil;
 
 import javax.persistence.EntityManager;
+import javax.persistence.LockModeType;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -40,7 +43,7 @@ public class SjukfallPerLanPersistenceHandler implements CasesPerCounty {
     @Override
     @Transactional
     public void count(String period, String enhetId, String lanId, RollingLength length, Sex kon) {
-        SjukfallPerLanRow existingRow = manager.find(SjukfallPerLanRow.class, new SjukfallPerLanKey(period, enhetId, lanId));
+        SjukfallPerLanRow existingRow = manager.find(SjukfallPerLanRow.class, new SjukfallPerLanKey(period, enhetId, lanId), LockModeType.PESSIMISTIC_READ);
         int female = Sex.Female.equals(kon) ? 1 : 0;
         int male = Sex.Male.equals(kon) ? 1 : 0;
 
