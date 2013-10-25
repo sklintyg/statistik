@@ -58,7 +58,7 @@
 
 var table2CSV = function(table, options) {
 	var options = jQuery.extend({
-		separator : ',',
+		separator : ';',
 		header : [],
 	}, options);
 
@@ -75,7 +75,9 @@ var table2CSV = function(table, options) {
 		}
 	} else {
 		$(table).find('th').each(function() {
-			tmpRow[tmpRow.length] = formatData($(this).html());
+		    for(var i = 0; i < $(this).attr("colspan"); i++) {
+		        tmpRow[tmpRow.length] = formatData($(this).html());
+		    }
 		});
 	}
 
@@ -83,9 +85,12 @@ var table2CSV = function(table, options) {
 
 	// actual data
 	$(table).find('tr').each(function() {
-		var tmpRow = [];
-		$(this).find('td').each(function() {
-			tmpRow[tmpRow.length] = formatData($(this).html());
+	    var tmpRow = [];
+	    $(this).find('td').each(function() {
+		    var thisColspan = $(this).attr("colspan") ? $(this).attr("colspan") : 1;
+            for(var i = 0; i < thisColspan; i++) {
+                tmpRow[tmpRow.length] = formatData($(this).html());
+            }
 		});
 		row2CSV(tmpRow);
 	});
@@ -108,6 +113,6 @@ var table2CSV = function(table, options) {
 		var output = output.replace(regexp, "");
 		if (output == "")
 			return '';
-		return '"' + output + '"';
+		return encodeURI('"' + $('<div />').html(output).text() + '"');
 	}
 };
