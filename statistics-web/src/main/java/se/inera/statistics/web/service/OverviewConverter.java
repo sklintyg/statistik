@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import se.inera.statistics.service.report.model.OverviewChartRow;
 import se.inera.statistics.service.report.model.OverviewChartRowExtended;
 import se.inera.statistics.service.report.model.OverviewResponse;
+import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.web.model.overview.BarChartData;
 import se.inera.statistics.web.model.overview.DonutChartData;
 import se.inera.statistics.web.model.overview.NumberOfCasesPerMonthOverview;
@@ -13,7 +14,7 @@ import se.inera.statistics.web.model.overview.SickLeaveLengthOverview;
 
 public class OverviewConverter {
 
-    OverviewData convert(OverviewResponse resp) {
+    OverviewData convert(OverviewResponse resp, Range range) {
         NumberOfCasesPerMonthOverview casesPerMonth = new NumberOfCasesPerMonthOverview(
                 resp.getCasesPerMonthSexProportion().getMale(), resp.getCasesPerMonthSexProportion().getFemale(),
                 resp.getCasesPerMonthAlteration());
@@ -44,7 +45,7 @@ public class OverviewConverter {
             perCounty.add(new DonutChartData(row.getName(), row.getQuantity(), row.getAlternation()));
         }
 
-        return new OverviewData(casesPerMonth, diagnosisGroups, ageGroups, degreeOfSickLeaveGroups, sickLeaveLength, perCounty);
+        return new OverviewData(range.toString(), casesPerMonth, diagnosisGroups, ageGroups, degreeOfSickLeaveGroups, sickLeaveLength, perCounty);
     }
 
 }

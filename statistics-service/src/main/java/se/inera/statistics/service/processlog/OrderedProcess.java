@@ -20,8 +20,8 @@ public class OrderedProcess {
 
     private List<IntygRecord> records = new LinkedList<IntygRecord>();
 
-    private Object listLockObject = new Object();
-    private Object processLockObject = new Object();
+    private final Object listLockObject = new Object();
+    private final Object processLockObject = new Object();
 
     public void register(JsonNode intyg, String dokumentId) {
         synchronized (listLockObject) {

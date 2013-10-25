@@ -1,20 +1,22 @@
 package se.inera.statistics.service.report.repository;
 
-import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import se.inera.statistics.service.report.api.CasesPerCounty;
-import se.inera.statistics.service.report.api.CasesPerMonth;
-import se.inera.statistics.service.report.model.*;
-import se.inera.statistics.service.report.util.Lan;
+import se.inera.statistics.service.report.model.DualSexField;
+import se.inera.statistics.service.report.model.Range;
+import se.inera.statistics.service.report.model.Sex;
+import se.inera.statistics.service.report.model.SimpleDualSexDataRow;
+import se.inera.statistics.service.report.model.SimpleDualSexResponse;
+import se.inera.statistics.service.report.model.SjukfallPerLanKey;
+import se.inera.statistics.service.report.model.SjukfallPerLanRow;
+import se.inera.statistics.service.report.model.Lan;
 import se.inera.statistics.service.report.util.ReportUtil;
-import se.inera.statistics.service.report.util.Verksamhet;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -37,13 +39,13 @@ public class SjukfallPerLanPersistenceHandler implements CasesPerCounty {
 
     @Override
     @Transactional
-    public void count(String period, String enhetId, String lanId, RollingLength length, Verksamhet enhet, Sex kon) {
+    public void count(String period, String enhetId, String lanId, RollingLength length, Sex kon) {
         SjukfallPerLanRow existingRow = manager.find(SjukfallPerLanRow.class, new SjukfallPerLanKey(period, enhetId, lanId));
         int female = Sex.Female.equals(kon) ? 1 : 0;
         int male = Sex.Male.equals(kon) ? 1 : 0;
 
         if (existingRow == null) {
-            SjukfallPerLanRow row = new SjukfallPerLanRow(period, enhetId, lanId, Verksamhet.ENHET, female, male);
+            SjukfallPerLanRow row = new SjukfallPerLanRow(period, enhetId, lanId, female, male);
             manager.persist(row);
         } else {
             existingRow.setFemale((int) (existingRow.getFemale() + female));
@@ -57,7 +59,7 @@ public class SjukfallPerLanPersistenceHandler implements CasesPerCounty {
 
         Map<String, DualSexField> map = new DefaultHashMap<>(new DualSexField(0, 0));
         for (SjukfallPerLanRow row: list) {
-            map.put(row.getLanId(), new DualSexField((int)row.getFemale(), (int)row.getMale()));
+            map.put(row.getLanId(), new DualSexField((int) row.getFemale(), (int) row.getMale()));
         }
 
         for (String lanId : lans) {

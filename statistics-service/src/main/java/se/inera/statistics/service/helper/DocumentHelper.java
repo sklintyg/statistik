@@ -99,8 +99,4 @@ public final class DocumentHelper {
     public static int getAge(JsonNode document) {
         return document.path("patient").path("alder").intValue();
     }
-
-    public static String getLan(JsonNode hsaData) {
-        return "\u00d7vrigt";
-    }
 }
