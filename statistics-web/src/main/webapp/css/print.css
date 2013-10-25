@@ -2,12 +2,32 @@
 	.navbar,
 	.footer,
 	#statistics-menu-accordion,
+	.national-statistic-h1,
 	#pageHelpToolTip,
-	.btn-group.statistics-btn-group {
+	.btn-group.statistics-btn-group,
+	#chart-data-table .accordion-heading {
 		display: none;
 	}
-	
-	a#casesPerMonthProportionPerSexLink {
-		background: lime !important;
+	.print-pagebreak {page-break-after:always;}
+	#wrap {
+		margin-top: 0px;
+	}
+	.rotate-print {
+		/* Rotate div */
+		-webkit-transform: rotate(270deg);
+		-moz-transform: rotate(270deg);
+		-ms-transform: rotate(270deg);
+		-o-transform: rotate(270deg);
+		transform: rotate(270deg);
+		filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
+		position: relative;
+		margin: 45% auto;
+		width: 100%;
+		height: auto;
+	}
+	.chart-table-body.in.collapse {
+		border-left: 0px solid transparent;
+		border-right: 0px solid transparent;
+		border-bottom: 0px solid transparent;
 	}
 }
