@@ -6,11 +6,13 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.Table;
 
 import org.joda.time.LocalDate;
 
 @Entity
 @NamedQueries(value = { @NamedQuery(name = "SjukfallByPersonIdAndVardgivareId", query = "SELECT s FROM Sjukfall s WHERE s.personId = :personId and s.vardgivareId = :vardgivareId") })
+@Table(name = "sjukfall")
 public class Sjukfall {
 
     @Id

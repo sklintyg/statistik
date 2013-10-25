@@ -17,9 +17,9 @@
 
     <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
         <property name="driverClassName" value="com.mysql.jdbc.Driver" />
-        <property name="url" value="jdbc:mysql://localhost/stat" />
-        <property name="username" value="stat" />
-        <property name="password" value="stat" />
+        <property name="url" value="jdbc:mysql://localhost/statistik" />
+        <property name="username" value="statistik" />
+        <property name="password" value="statistik" />
     </bean>
 
     <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
@@ -49,6 +49,6 @@
     </bean>
 
     <task:annotation-driven executor="taskExecutor"/>
-    <task:executor id="taskExecutor" pool-size="5-10" queue-capacity="25" rejection-policy="CALLER_RUNS" />
+    <task:executor id="taskExecutor" pool-size="1" queue-capacity="1" rejection-policy="CALLER_RUNS" />
 
 </beans>
