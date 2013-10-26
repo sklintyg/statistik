@@ -14,24 +14,22 @@ public class CommonPersistenceHandler implements CommonPersistence {
     @Override
     public void cleanDb() {
 
-        Query deleteIntygEvent = manager.createQuery("delete from IntygEvent ");
-        deleteIntygEvent.executeUpdate();
+        delete("IntygEvent");
+        delete("HSAStore");
+        delete("EventPointer");
+        delete("CasesPerMonthRow");
+        delete("DiagnosisGroupData");
+        delete("DiagnosisSubGroupData");
+        delete("AgeGroupsRow");
+        delete("SickLeaveLengthRow");
+        delete("SjukfallPerLanRow");
+        delete("SjukskrivningsgradData");
+        delete("Sjukfall");
+    }
 
-        Query deleteCasesPerMonthRow = manager.createQuery("delete from CasesPerMonthRow ");
-        deleteCasesPerMonthRow.executeUpdate();
-
-        Query deleteDiagnosisGroupData = manager.createQuery("delete from DiagnosisGroupData ");
-        deleteDiagnosisGroupData.executeUpdate();
-
-        Query deleteDiagnosisSubGroupData = manager.createQuery("delete from DiagnosisSubGroupData ");
-        deleteDiagnosisSubGroupData.executeUpdate();
-
-        Query deleteEventPointer = manager.createQuery("delete from EventPointer ");
-        deleteEventPointer.executeUpdate();
-
-        Query deleteSjukfall = manager.createQuery("delete from Sjukfall ");
-        deleteSjukfall.executeUpdate();
-
+    private void delete(String entity) {
+        Query query = manager.createQuery("delete from " + entity);
+        query.executeUpdate();
     }
 
 }
