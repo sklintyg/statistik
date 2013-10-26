@@ -24,7 +24,7 @@ public class OverviewPersistenceHandler extends OverviewBasePersistenceHandler i
     private static final int DISPLAYED_LANS = 5;
     private static final int DISPLAYED_AGE_GROUPS = 7;
     private static final int DISPLAYED_SJUKFALLSLANGD_GROUPS = 5;
-    private static final int LONG_SICKLEAVE_CUTOFF = 90;
+    private static final int LONG_SICKLEAVE_CUTOFF = 91;
 
     @Autowired
     private Lan lan;
