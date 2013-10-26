@@ -61,7 +61,8 @@ public class HSAServiceImpl implements HSAService {
 
     private JsonNode createLan(HSAKey key) {
         ObjectNode root = factory.objectNode();
-        String kod = LAN_CODES.get(key.hashCode() % LAN_CODES.size());
+        int keyIndex = key != null && key.getVardgivareId() != null ? Math.abs(key.getVardgivareId().hashCode()) : 0;
+        String kod = LAN_CODES.get(keyIndex % LAN_CODES.size());
         root.put("kod", kod);
         root.put("namn", LAN.getNamn(kod));
         return root;

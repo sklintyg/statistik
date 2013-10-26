@@ -64,11 +64,31 @@ public final class DocumentHelper {
     }
 
     public static String getForstaNedsattningsdag(JsonNode document) {
-        return document.path("validFromDate").textValue();
+        String from = null;
+        for (JsonNode node: document.path("observations")) {
+            if (ARBETSFORMAGA_MATCHER.match(node)) {
+                JsonNode varde = node.path("observationsPeriod");
+                String candidate = varde.path("from").asText();
+                if (from == null || from.compareTo(candidate) > 0) {
+                    from = candidate;
+                }
+            }
+        }
+        return from;
     }
 
     public static String getSistaNedsattningsdag(JsonNode document) {
-        return document.path("validToDate").textValue();
+        String to = null;
+        for (JsonNode node: document.path("observations")) {
+            if (ARBETSFORMAGA_MATCHER.match(node)) {
+                JsonNode varde = node.path("observationsPeriod");
+                String candidate = varde.path("tom").asText();
+                if (to == null || to.compareTo(candidate) < 0) {
+                    to = candidate;
+                }
+            }
+        }
+        return to;
     }
 
     public static String getKon(JsonNode document) {

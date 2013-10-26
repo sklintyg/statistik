@@ -38,6 +38,14 @@ public class UtlatandeBuilder {
         intyg.put("validFromDate", FORMATTER.print(start));
         intyg.put("validToDate", FORMATTER.print(end));
 
+        for (JsonNode node: intyg.path("observations")) {
+            if (DocumentHelper.ARBETSFORMAGA_MATCHER.match(node)) {
+                ObjectNode varde = (ObjectNode) node.path("observationsPeriod");
+                varde.put("from", FORMATTER.print(start));
+                varde.put("tom", FORMATTER.print(end));
+            }
+        }
+
         ((ObjectNode) intyg.path("skapadAv").path("vardenhet").path("id")).put("extension", vardenhet);
         for (JsonNode observation: intyg.path("observations")) {
             if (DocumentHelper.DIAGNOS_MATCHER.match(observation)) {

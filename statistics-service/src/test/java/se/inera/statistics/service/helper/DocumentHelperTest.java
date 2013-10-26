@@ -57,4 +57,17 @@ public class DocumentHelperTest {
         assertEquals("kvinna", kon);
     }
 
+    @Test
+    public void getForstaDag() {
+        String date = DocumentHelper.getForstaNedsattningsdag(document);
+
+        assertEquals("2011-01-24", date);
+    }
+
+    @Test
+    public void getSistaDag() {
+        String date = DocumentHelper.getSistaNedsattningsdag(document);
+
+        assertEquals("2011-02-20", date);
+    }
 }

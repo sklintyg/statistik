@@ -12,12 +12,14 @@ import org.joda.time.LocalDate;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 
+import se.inera.statistics.service.demo.UtlatandeBuilder;
 import se.inera.statistics.service.helper.JSONParser;
 import se.inera.statistics.service.sjukfall.SjukfallInfo;
 
 import com.fasterxml.jackson.databind.JsonNode;
 
 public class AbstractListenerTest {
+    
     private AbstractListener<String> listener = spy(new AbstractListener<String>() {
         String setup(SjukfallInfo sjukfallInfo, JsonNode utlatande, JsonNode hsa, LocalDate start, LocalDate end) {
             return "Context";
@@ -52,7 +54,9 @@ public class AbstractListenerTest {
 
     @Test
     public void eachMonthIsCalledFormatted() {
-        JsonNode utlatande = JSONParser.parse("{\"validFromDate\":\"2013-08-02\",\"validToDate\":\"2013-09-05\"}");
+        UtlatandeBuilder builder = new UtlatandeBuilder();
+
+        JsonNode utlatande = builder.build("19121212-1212", new LocalDate("2013-08-02"), new LocalDate("2013-09-05"), "vardenhet", "A00", 50);
         SjukfallInfo sjukfall = mock(SjukfallInfo.class);
 
         ArgumentCaptor<String> captor = ArgumentCaptor.forClass(String.class);
