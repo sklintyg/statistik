@@ -1,7 +1,5 @@
 package se.inera.statistics.service.demo;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -23,10 +21,10 @@ import se.inera.statistics.service.report.util.DiagnosisGroupsUtil;
 
 import com.fasterxml.jackson.databind.JsonNode;
 
-public class InjectUtlatande {
+public class InjectUtlatande2 {
     private static final int SEED = 1234;
 
-    private static final Logger LOG = LoggerFactory.getLogger(InjectUtlatande.class);
+    private static final Logger LOG = LoggerFactory.getLogger(InjectUtlatande2.class);
 
     private static final int LONG_PERIOD_DAYS = 365;
     private static final int SHORT_PERIOD_DAYS = 30;
@@ -35,10 +33,12 @@ public class InjectUtlatande {
     private static final int MONTHS = 19;
 
     private static final LocalDate BASE = new LocalDate("2012-03-01");
+    private static final LocalDate BASE_AGE = new LocalDate("1930-01-01");
 
+    private static final int AGE_DAYS = 365 * 80;
+    
     private static final List<String> DIAGNOSER = new ArrayList<>();
-    private static final List<String> VARDENHETER = Arrays.asList("verksamhet1", "verksamhet2");
-    private static final List<Integer> ARBETSFORMAGOR = Arrays.asList(0, 25, 50, 75);
+    private static final List<Integer> ARBETSFORMAGOR = Arrays.asList(0, 0, 0, 25, 50, 75);
 
     private static Random random = new Random(SEED);
 
@@ -86,28 +86,37 @@ public class InjectUtlatande {
     private void publishUtlatanden() {
         UtlatandeBuilder builder = new UtlatandeBuilder();
 
-        List<String> personNummers = readList("/personnr/testpersoner.log");
 
-        LOG.info("Inserting " + personNummers.size() + " certificates");
-        for (String id : personNummers) {
-            JsonNode newPermutation = permutate(builder, id);
-            accept(newPermutation.toString(), newPermutation.path("id").path("extension").textValue());
+        for (int month = 0; month < MONTHS; month++) {
+            LocalDate base = BASE.plusMonths(month);
+            for (int i = 0; i < 80000; i++) {
+                String id = randomPerson();
+                JsonNode newPermutation = permutate(builder, id, base);
+                accept(newPermutation.toString(), newPermutation.path("id").path("extension").textValue());
+            }
         }
-        LOG.info("Inserting " + personNummers.size() + " certificates completed");
+        LOG.info("Inserting certificates completed");
     }
 
-    public static JsonNode permutate(UtlatandeBuilder builder, String patientId) {
+    private String randomPerson() {
+        LocalDate birthDate = BASE_AGE.plusDays(random.nextInt(AGE_DAYS));
+        return birthDate.toString("yyyyMMdd") + String.format("%1$04d", random.nextInt(10000));
+    }
+
+    public static JsonNode permutate(UtlatandeBuilder builder, String patientId, LocalDate base) {
         // CHECKSTYLE:OFF MagicNumber
-        LocalDate start = BASE.plusMonths(random.nextInt(MONTHS)).plusDays(random.nextInt(SHORT_PERIOD_DAYS));
+        LocalDate start = base.plusDays(random.nextInt(SHORT_PERIOD_DAYS));
         LocalDate end = random.nextFloat() < LONG_PERIOD_FRACTION ? start.plusDays(random.nextInt(LONG_PERIOD_DAYS) + 7) : start.plusDays(random.nextInt(SHORT_PERIOD_DAYS) + 7);
         // CHECKSTYLE:ON MagicNumber
 
-        String vardenhet = random(VARDENHETER);
+        int vardId = random.nextInt(6000);
+        String vardenhet = "vardenhet" + vardId;
+        String vardgivare = "vardgivare" + (vardId / 3);
 
         String diagnos = random(DIAGNOSER);
 
         int arbetsformaga = random(ARBETSFORMAGOR);
-        return builder.build(patientId, start, end, vardenhet, "vg-" + vardenhet, diagnos, arbetsformaga);
+        return builder.build(patientId, start, end, vardenhet, vardgivare, diagnos, arbetsformaga);
     }
 
     private static <T> T random(List<T> list) {
@@ -117,17 +126,4 @@ public class InjectUtlatande {
     private void accept(final String intyg, final String correlationId) {
         receiver.accept(EventType.CREATED, intyg, correlationId, System.currentTimeMillis());
     }
-
-    private List<String> readList(String path) {
-        try (BufferedReader in = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream(path), "utf8"));) {
-            List<String> list = new ArrayList<>();
-            for (String line = in.readLine(); line != null; line = in.readLine()) {
-                list.add(line);
-            }
-            return list;
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
-
 }
