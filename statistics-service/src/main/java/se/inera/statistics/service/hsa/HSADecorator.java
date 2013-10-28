@@ -49,7 +49,7 @@ public class HSADecorator {
         }
         return info;
     }
-    
+
     protected void storeHSAInfo(String documentId, JsonNode info) {
         HSAStore entity = new HSAStore(documentId, info.toString());
         manager.persist(entity);

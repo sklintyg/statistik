@@ -18,14 +18,14 @@ public class HSAServiceImpl implements HSAService {
 
     private static final Lan LAN = new Lan();
     private static final List<String> LAN_CODES;
-    
+
     static {
         LAN_CODES = new ArrayList<>();
         for (String kod: LAN) {
             LAN_CODES.add(kod);
         }
     }
-    
+
     @Override
     public JsonNode getHSAInfo(HSAKey key) {
         ObjectNode root = factory.objectNode();

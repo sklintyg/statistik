@@ -6,7 +6,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table (name="eventpointer")
+@Table (name = "eventpointer")
 public class EventPointer {
 
     private static final int MAX_NAME_LENGTH = 50;

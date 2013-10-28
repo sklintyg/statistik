@@ -19,10 +19,10 @@ public class LogConsumerImpl implements LogConsumer {
 
     @Autowired
     private ProcessLog processLog;
-    
+
     @Autowired
     private Processor processor;
-    
+
     @Autowired
     private HSADecorator hsa;
 
@@ -30,7 +30,7 @@ public class LogConsumerImpl implements LogConsumer {
 
     public LogConsumerImpl() {
     }
-    
+
     @Transactional
     public int processBatch() {
         try {

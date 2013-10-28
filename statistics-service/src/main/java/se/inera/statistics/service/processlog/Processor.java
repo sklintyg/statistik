@@ -49,7 +49,7 @@ public class Processor {
             String endString = getSistaNedsattningsdag(utlatande);
             LocalDate start = FORMATTER.parseLocalDate(startString);
             LocalDate end = FORMATTER.parseLocalDate(endString);
-            if (cleanedup == null ) {
+            if (cleanedup == null) {
                 cleanedup = start;
             } else if (start.isAfter(cleanedup)) {
                 sjukfallService.expire(cleanedup);
