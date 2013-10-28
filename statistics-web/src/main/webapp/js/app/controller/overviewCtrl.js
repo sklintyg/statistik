@@ -2,9 +2,15 @@
 
  app.overviewCtrl = function ($scope, $timeout, statisticsData) {
 
+     var setTooltipText = function(result) {
+         $scope.popoverTextAmount = "Totala antalet sjukfall under perioden " + result.periodText;
+         $scope.popoverTextChangeProcentage = "Förändring visar den procentuella förändringen mellan perioden " + result.periodText + " och föregående period " + result.casesPerMonth.previousPeriodText;
+         $scope.popoverTextSexDistribution = "Könsfördelningen av totala antalet sjukfall under perioden " + result.periodText;
+     }
+
      var dataReceived = function(result) {
          $scope.subTitle = "Utvecklingen i landet " + result.periodText;
-         $scope.popoverTextPeriod = result.periodText;
+         setTooltipText(result);
          $scope.doneLoading = true;
          $timeout(function() {
              populatePageWithData(result);
@@ -158,9 +164,5 @@
     $scope.spinnerText = "Laddar information...";
     $scope.doneLoading = false;
     $scope.dataLoadingError = false;
-    $scope.popoverTextTitle = "Förklaring";
-    $scope.popoverTextAmount = "Totala antalet sjukfall under perioden ";
-    $scope.popoverTextChangeProcentage = "Procentsatsen visar förändringen av antalet sjukfall under perioden ";  
-    $scope.popoverTextChangeProcentage2 = " jämfört med dess föregående tre månader.";
-    $scope.popoverTextSexDistribution = "Könsfördelningen av totala antalet sjukfall under perioden ";
+
 };
