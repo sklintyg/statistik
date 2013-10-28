@@ -6,6 +6,7 @@ import se.inera.statistics.service.report.model.OverviewChartRow;
 import se.inera.statistics.service.report.model.OverviewChartRowExtended;
 import se.inera.statistics.service.report.model.OverviewSexProportion;
 import se.inera.statistics.service.report.model.VerksamhetOverviewResponse;
+import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.web.model.overview.BarChartData;
 import se.inera.statistics.web.model.overview.DonutChartData;
 import se.inera.statistics.web.model.overview.SickLeaveLengthOverview;
@@ -14,7 +15,7 @@ import se.inera.statistics.web.model.overview.VerksamhetOverviewData;
 
 public class VerksamhetOverviewConverter {
 
-    VerksamhetOverviewData convert(VerksamhetOverviewResponse resp) {
+    VerksamhetOverviewData convert(VerksamhetOverviewResponse resp, Range range) {
         final OverviewSexProportion casesPerMonthNew = resp.getCasesPerMonthSexProportionPreviousPeriod();
         final OverviewSexProportion casesPerMonthOld = resp.getCasesPerMonthSexProportionBeforePreviousPeriod();
 
@@ -44,7 +45,7 @@ public class VerksamhetOverviewConverter {
         }
         SickLeaveLengthOverview sickLeaveLength = new SickLeaveLengthOverview(sickLeaveLengthData, resp.getLongSickLeavesTotal(), resp.getLongSickLeavesAlternation());
 
-        return new VerksamhetOverviewData(casesPerMonth, diagnosisGroups, ageGroups, degreeOfSickLeaveGroups, sickLeaveLength);
+        return new VerksamhetOverviewData(range.toString(), casesPerMonth, diagnosisGroups, ageGroups, degreeOfSickLeaveGroups, sickLeaveLength);
     }
 
 }

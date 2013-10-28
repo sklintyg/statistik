@@ -110,7 +110,7 @@ public class ProtectedChartDataService {
     public VerksamhetOverviewData getOverviewData(@Context HttpServletRequest request, @PathParam("verksamhetId") String verksamhetId) {
         Range range = Range.quarter();
         VerksamhetOverviewResponse response = datasourceOverview.getOverview(Verksamhet.decodeId(verksamhetId), range);
-        return new VerksamhetOverviewConverter().convert(response);
+        return new VerksamhetOverviewConverter().convert(response, range);
     }
 
     @GET
