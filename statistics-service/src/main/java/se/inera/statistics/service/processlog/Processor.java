@@ -29,6 +29,8 @@ public class Processor {
     @Autowired
     private SjukfallService sjukfallService;
 
+    private LocalDate cleanedup;
+
     public void accept(JsonNode utlatande, JsonNode hsa) {
         SjukfallKey sjukfallKey = extractSjukfallKey(utlatande);
 
@@ -47,7 +49,12 @@ public class Processor {
             String endString = getSistaNedsattningsdag(utlatande);
             LocalDate start = FORMATTER.parseLocalDate(startString);
             LocalDate end = FORMATTER.parseLocalDate(endString);
-
+            if (cleanedup == null ) {
+                cleanedup = start;
+            } else if (start.isAfter(cleanedup)) {
+                sjukfallService.expire(cleanedup);
+                cleanedup = start;
+            }
             return new SjukfallKey(personId, vardgivareId, start, end);
         } catch (RuntimeException e) {
             throw new StatisticsMalformedDocument("Could not parse dates from intyg.", e);
