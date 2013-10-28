@@ -67,7 +67,7 @@
 
     </beans>
 
-    <beans profile="!demo">
+    <beans profile="!demo,!test">
       <bean class="se.inera.statistics.service.report.mock.CasesPerMonthMock" id="casesPerMonth" />
       <bean class="se.inera.statistics.service.report.mock.DiagnosisGroupsMock" id="diagnosisGroups"/>
       <bean class="se.inera.statistics.service.report.mock.DiagnosisSubGroupsMock" id="diagnosisSubGroups"/>
@@ -79,7 +79,7 @@
       <bean class="se.inera.statistics.service.report.mock.CasesPerCountyMock" id="casesPerCounty"/>
     </beans>
     
-    <beans profile="demo">
+    <beans profile="demo,test">
       <import resource="application-context-qm.xml"/>
 
       <bean class="se.inera.statistics.service.common.CommonPersistenceHandler" id="commonPersistenceHandler" />
@@ -92,8 +92,14 @@
       <bean class="se.inera.statistics.service.report.repository.SjukskrivningsgradPersistenceHandler" id="degreeOfSickLeave" />
       <bean class="se.inera.statistics.service.report.repository.SjukfallslangdGruppPersistenceHandler" id="sickLeaveLength"/>
       <bean class="se.inera.statistics.service.report.repository.SjukfallPerLanPersistenceHandler" id="casesPerCounty"/>
-
-      <bean class="se.inera.statistics.service.demo.InjectUtlatande" lazy-init="false" />
     </beans>
 
+    <beans profile="demo">
+      <bean class="se.inera.statistics.service.demo.InjectUtlatande" lazy-init="false" />
+    </beans>
+    <!-- For generating data in test. Warning, this takes hours. 
+    <beans profile="test">
+      <bean class="se.inera.statistics.service.demo.InjectUtlatande2" lazy-init="false" />
+    </beans>
+     -->
 </beans>

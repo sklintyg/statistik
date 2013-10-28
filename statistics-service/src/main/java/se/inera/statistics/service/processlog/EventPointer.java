@@ -3,8 +3,10 @@ package se.inera.statistics.service.processlog;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Entity
+@Table (name="eventpointer")
 public class EventPointer {
 
     private static final int MAX_NAME_LENGTH = 50;

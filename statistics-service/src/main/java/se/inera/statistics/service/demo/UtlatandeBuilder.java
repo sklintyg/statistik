@@ -26,8 +26,11 @@ public class UtlatandeBuilder {
     public UtlatandeBuilder(String templateText) {
         template = JSONParser.parse(templateText);
     }
-
     public JsonNode build(String patientId, LocalDate start, LocalDate end, String vardenhet, String diagnos, int arbetsformaga) {
+        return build(patientId, start, end, vardenhet, "vardgivarId", diagnos, arbetsformaga);
+    }
+
+    public JsonNode build(String patientId, LocalDate start, LocalDate end, String vardenhet, String vardgivare, String diagnos, int arbetsformaga) {
         ObjectNode intyg = template.deepCopy();
         ObjectNode patientIdNode = (ObjectNode) intyg.path("patient").path("id");
         patientIdNode.put("extension", patientId);
@@ -38,7 +41,16 @@ public class UtlatandeBuilder {
         intyg.put("validFromDate", FORMATTER.print(start));
         intyg.put("validToDate", FORMATTER.print(end));
 
+        for (JsonNode node: intyg.path("observations")) {
+            if (DocumentHelper.ARBETSFORMAGA_MATCHER.match(node)) {
+                ObjectNode varde = (ObjectNode) node.path("observationsPeriod");
+                varde.put("from", FORMATTER.print(start));
+                varde.put("tom", FORMATTER.print(end));
+            }
+        }
+
         ((ObjectNode) intyg.path("skapadAv").path("vardenhet").path("id")).put("extension", vardenhet);
+        ((ObjectNode) intyg.path("skapadAv").path("vardenhet").path("vardgivare").path("id")).put("extension", vardgivare);
         for (JsonNode observation: intyg.path("observations")) {
             if (DocumentHelper.DIAGNOS_MATCHER.match(observation)) {
                 ((ObjectNode) observation.path("observationsKod")).put("code", diagnos);

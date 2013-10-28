@@ -9,7 +9,7 @@ import javax.persistence.Transient;
 @Table(name = SjukfallPerLanRow.TABLE)
 public class SjukfallPerLanRow {
 
-    public static final String TABLE = "SjukfallPerLanRow";
+    public static final String TABLE = "sjukfallperlanrow";
     @EmbeddedId
     private SjukfallPerLanKey key;
     private long female;

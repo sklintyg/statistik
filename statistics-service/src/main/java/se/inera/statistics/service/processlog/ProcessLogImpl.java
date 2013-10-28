@@ -30,18 +30,15 @@ public class ProcessLogImpl implements ProcessLog {
         return manager.find(IntygEvent.class, id);
     }
 
+    @Override
     @Transactional
-    public IntygEvent getPending() {
+    public List<IntygEvent> getPending(int max) {
         long lastEventId = getLastId();
         TypedQuery<IntygEvent> allQuery = manager.createQuery("SELECT e from IntygEvent e WHERE e.id > :lastId ORDER BY e.id ASC", IntygEvent.class);
         allQuery.setParameter("lastId", lastEventId);
-
+        allQuery.setMaxResults(max);
         List<IntygEvent> found = allQuery.getResultList();
-        if (found.isEmpty()) {
-            return null;
-        } else {
-            return found.get(0);
-        }
+        return found;
     }
 
     private long getLastId() {
@@ -53,7 +50,7 @@ public class ProcessLogImpl implements ProcessLog {
         }
     }
 
-    protected void confirm(long id) {
+    public void confirm(long id) {
         EventPointer pointer = getPointerQuery();
         if (pointer == null) {
             pointer = new EventPointer(PROCESSED_HSA, id);

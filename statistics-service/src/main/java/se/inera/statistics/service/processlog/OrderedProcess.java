@@ -39,7 +39,6 @@ public class OrderedProcess {
                 } else {
                     LOG.error("Not found");
                 }
-
                 completed = extractRecordsForProcessing();
             }
             processRecords(completed);

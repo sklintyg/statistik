@@ -11,11 +11,11 @@ public class HSAServiceHelperTest {
     @Test
     public void getLanTest() {
         HSAService hsaService = new HSAServiceImpl();
-        JsonNode info = hsaService.getHSAInfo(new HSAKey("", "", ""));
+        JsonNode info = hsaService.getHSAInfo(new HSAKey("vardgivarId", "enhetId", "lakareId"));
 
         String lan = HSAServiceHelper.getLan(info);
 
-        Assert.assertEquals("14", lan);
+        Assert.assertEquals("08", lan);
 
     }
 }
