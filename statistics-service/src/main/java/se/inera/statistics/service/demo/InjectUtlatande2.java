@@ -96,7 +96,11 @@ public class InjectUtlatande2 {
             for (int i = 0; i < INTYG_PER_MONTH; i++) {
                 String id = randomPerson();
                 JsonNode newPermutation = permutate(builder, id, base);
-                accept(newPermutation.toString(), newPermutation.path("id").path("extension").textValue());
+                try {
+                    accept(newPermutation.toString(), newPermutation.path("id").path("extension").textValue());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         }
         LOG.info("Inserting certificates completed");
@@ -114,7 +118,7 @@ public class InjectUtlatande2 {
         // CHECKSTYLE:ON MagicNumber
 
         int vardId = random.nextInt(NUMBER_OF_UNITS);
-        String vardenhet = "vardenhet" + vardId;
+        String vardenhet = "verksamhet" + vardId;
         String vardgivare = "vardgivare" + (vardId / 3);
 
         String diagnos = random(DIAGNOSER);
