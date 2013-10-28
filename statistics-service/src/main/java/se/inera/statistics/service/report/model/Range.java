@@ -46,7 +46,7 @@ public final class Range {
     public int getMonths() {
         return Months.monthsBetween(from, to).getMonths() + 1;
     }
-    
+
     public static Range year() {
         return new Range(YEAR_PERIOD);
     }

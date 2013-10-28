@@ -20,6 +20,6 @@ public class LogJob {
         LOG.info("Log Job");
         while (consumer.processBatch() > 0) {
             System.err.println("Processed batch");
-        };
+        }
     }
 }

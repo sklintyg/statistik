@@ -1,13 +1,11 @@
 package se.inera.statistics.service.report.listener;
 
-import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import se.inera.statistics.service.report.api.AgeGroups;
 import se.inera.statistics.service.report.repository.RollingLength;
 import se.inera.statistics.service.report.util.AldersgroupUtil;
-import se.inera.statistics.service.report.util.ReportUtil;
 import se.inera.statistics.service.report.util.Verksamhet;
 
 @Component

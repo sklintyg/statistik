@@ -8,7 +8,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 public final class Ranges implements Iterable<Ranges.Range> {
-    private final List<Range> ranges; 
+    private final List<Range> ranges;
     private final Map<String, Range> idMap = new TreeMap<>();
 
     public Ranges(Range...ranges) {

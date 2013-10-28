@@ -40,7 +40,7 @@ public class InjectUtlatande2 {
     private static final LocalDate BASE_AGE = new LocalDate("1930-01-01");
 
     private static final int AGE_DAYS = 365 * 80;
-    
+
     private static final List<String> DIAGNOSER = new ArrayList<>();
     private static final List<Integer> ARBETSFORMAGOR = Arrays.asList(0, 0, 0, 25, 50, 75);
 
