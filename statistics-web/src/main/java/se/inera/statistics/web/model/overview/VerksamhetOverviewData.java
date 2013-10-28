@@ -4,20 +4,26 @@ import java.util.List;
 
 public class VerksamhetOverviewData {
 
+    private final String periodText;
     private final VerksamhetNumberOfCasesPerMonthOverview casesPerMonth;
     private final List<DonutChartData> diagnosisGroups;
     private final List<DonutChartData> ageGroups;
     private final List<DonutChartData> degreeOfSickLeaveGroups;
     private final SickLeaveLengthOverview sickLeaveLength;
 
-    public VerksamhetOverviewData(VerksamhetNumberOfCasesPerMonthOverview casesPerMonth, List<DonutChartData> diagnosisGroups,
+    public VerksamhetOverviewData(String periodText, VerksamhetNumberOfCasesPerMonthOverview casesPerMonth, List<DonutChartData> diagnosisGroups,
             List<DonutChartData> ageGroups, List<DonutChartData> degreeOfSickLeaveGroups,
             SickLeaveLengthOverview sickLeaveLength) {
+        this.periodText = periodText;
         this.casesPerMonth = casesPerMonth;
         this.diagnosisGroups = diagnosisGroups;
         this.ageGroups = ageGroups;
         this.degreeOfSickLeaveGroups = degreeOfSickLeaveGroups;
         this.sickLeaveLength = sickLeaveLength;
+    }
+
+    public String getPeriodText() {
+        return periodText;
     }
 
     public VerksamhetNumberOfCasesPerMonthOverview getCasesPerMonth() {

@@ -4,7 +4,7 @@ import java.util.List;
 
 public class OverviewData {
 
-    private final String  periodText;
+    private final String periodText;
     private final NumberOfCasesPerMonthOverview casesPerMonth;
     private final List<DonutChartData> diagnosisGroups;
     private final List<DonutChartData> ageGroups;
