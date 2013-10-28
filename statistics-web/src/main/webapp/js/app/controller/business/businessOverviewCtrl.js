@@ -122,7 +122,7 @@
     $scope.popoverTextAmount = "Totala antalet sjukfall under perioden ";
     $scope.popoverTextChangeProcentage = "Procentsatsen visar förändringen av antalet sjukfall under perioden ";  
     $scope.popoverTextChangeProcentage2 = " jämfört med dess föregående tre månader.";
-    $scope.popoverTextSexDistribution = "Könsfördelningen av totala antalet sjukfall under perioden ";
+    $scope.popoverTextSexDistribution = "Könsfördelningen av totala antalet sjukfall under perioden jämfört med föregående tre månader.";
 
     statisticsData.getLoginInfo(function(loginInfo){
         $scope.businesses = loginInfo.businesses;
