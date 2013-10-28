@@ -35,11 +35,16 @@
     <div dataerrorview show-error="dataLoadingError">
         <div spinner label="{{spinnerText}}" show-spinner="!doneLoading" show-content="doneLoading">
         	 <div class="">
+        	 	<div class="row-fluid" id="print-logo-display">
+        	 		<div class="span12">
+        	 			<img src="/img/statistic_logo_printversion.png">
+        	 		</div>
+        	 	</div>
         	 	<div class="row-fluid">
-					<span class="span12 graph-ingress">
+					<h2 class="span12 graph-ingress">
 						{{subTitle}}
 						<a id="pageHelpToolTip" popover-title="{{popoverTextTitle}}" popover="{{popoverText}}" popover-trigger="mouseenter" popover-placement="right" ng-show="popoverText"><img src="/img/questionmark2.png" alt=""></a>
-					</span>
+					</h2>
 				</div>
 			    <!-- Start detailsOptions if any -->
 			    <div class="row-fluid">

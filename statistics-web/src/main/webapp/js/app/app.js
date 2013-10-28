@@ -161,7 +161,7 @@ app.statisticsApp.run([ '$rootScope', '$route', function($rootScope, $route) {
 	$rootScope.page_title = 'Titel';
     $rootScope.$on('$routeChangeSuccess', function() {
 	  if ($route.current.$$route){
-		  $rootScope.page_title = $route.current.$$route.title + ' | Statistiktjänsten';
+		  $rootScope.page_title = $route.current.$$route.title + ' | Nationella statistiktjänsten';
 	  }
     });
 } ]);

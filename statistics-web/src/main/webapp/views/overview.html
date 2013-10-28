@@ -12,8 +12,8 @@
 						    <span class="caret"></span>
 						  </a>
 						  <ul class="dropdown-menu left">
-						    <li><a onclick="window.print();"><img src="/img/dropdown-icons/print-colour.png"/> Färg</a></li>
-			    			<li><a onclick="divPrint()" class="disabled"><img src="/img/dropdown-icons/print-bw-inactive.png"/> Svart-vitt</a></li>
+						    <li tabindex="-1"><a onclick="window.print();"><img src="/img/dropdown-icons/print-colour.png"/> Färg</a></li>
+			    			<li tabindex="-1"><a onclick="divPrint()" class="disabled"><img src="/img/dropdown-icons/print-bw-inactive.png"/> Svart-vitt</a></li>
 						  </ul>
 						</div>
 					</div>
@@ -44,7 +44,7 @@
                                     <img src="../img/distribution_sex_stat.png" style="display: block; margin-left: auto; margin-right: auto; margin-top: 5%;"/>
                                 </div>
 								<div class="overview-box-information-container small-info-box" style="position: relative">
-									<a id="pageHelpToolTip" popover-title="{{popoverTextTitle}}" popover="{{popoverTextSexDistribution}}" popover-trigger="mouseenter" popover-placement="left" style="float: right; margin-right: 10px;"><img src="/img/questionmark2.png" alt=""></a>
+									<a id="pageHelpToolTip" tooltip-html-unsafe="<div class=popover-content>{{popoverTextSexDistribution}}</div>" tooltip-trigger="mouseenter" tooltip-placement="left" style="float: right; margin-right: 10px;"><img src="/img/questionmark2.png" alt=""></a>
 								</div>
 								<div class="box-bottom"></div>
                             </div>
@@ -72,7 +72,7 @@
                                      </div>
                                 </div>
                                 <div class="overview-box-information-container small-info-box overview-change-box" style="position: relative">
-                                	<a id="pageHelpToolTip" popover-title="{{popoverTextTitle}}" popover="{{popoverTextChangeProcentage}}" popover-trigger="mouseenter" popover-placement="left" style="float: right; margin-right: 10px;"><img src="/img/questionmark2.png" alt=""></a>
+                                	<a id="pageHelpToolTip" tooltip-html-unsafe="<div class=popover-content>{{popoverTextChangeProcentage}}</div>" tooltip-trigger="mouseenter" tooltip-placement="left" style="float: right; margin-right: 10px;"><img src="/img/questionmark2.png" alt=""></a>
                                 </div>
 								<div class="box-bottom"></div>
                             </div>
@@ -112,7 +112,7 @@
                                     </table>
                                 </div>
                                 <div class="overview-box-information-container" style="position: relative">
-                                    <a id="pageHelpToolTip" tooltip-html-unsafe="<h3>{{popoverTextTitle}}</h3>{{popoverTextAmount}}<br/>{{popoverTextChangeProcentage}}" tooltip-placement="left" style="float: right; margin-right: 10px;"><img src="/img/questionmark2.png" alt=""></a>
+                                    <a id="pageHelpToolTip" tooltip-html-unsafe="<div class=popover-content>{{popoverTextAmount}}</div><div class=popover-content>{{popoverTextChangeProcentage}}</div>" tooltip-trigger="mouseenter" tooltip-placement="left" style="float: right; margin-right: 10px;"><img src="/img/questionmark2.png" alt=""></a>
                                 </div>
 								<div class="box-bottom"></div>
                             </div>
@@ -151,7 +151,7 @@
                                         </div>
                                     </div>
                                     <div class="overview-box-information-container" style="position: relative">
-                                        <a id="pageHelpToolTip" tooltip-html-unsafe="<h3>{{popoverTextTitle}}</h3>{{popoverTextAmount}}<br/>{{popoverTextChangeProcentage}}" tooltip-placement="left" style="float: right; margin-right: 10px;"><img src="/img/questionmark2.png" alt=""></a>
+                                        <a id="pageHelpToolTip" tooltip-html-unsafe="<div class=popover-content>{{popoverTextAmount}}</div><div class=popover-content>{{popoverTextChangeProcentage}}</div>" tooltip-trigger="mouseenter" tooltip-placement="left" style="float: right; margin-right: 10px;"><img src="/img/questionmark2.png" alt=""></a>
                                     </div>
 									<div class="box-bottom"></div>
                                 </div>
@@ -191,7 +191,7 @@
                                         </div>
                                     </div>
                                     <div class="overview-box-information-container" style="position: relative">
-                                        <a id="pageHelpToolTip" tooltip-html-unsafe="<h3>{{popoverTextTitle}}</h3>{{popoverTextAmount}}<br/>{{popoverTextChangeProcentage}}" tooltip-placement="left" style="float: right; margin-right: 10px;"><img src="/img/questionmark2.png" alt=""></a>
+                                        <a id="pageHelpToolTip" tooltip-html-unsafe="<div class=popover-content>{{popoverTextAmount}}</div><div class=popover-content>{{popoverTextChangeProcentage}}</div>" tooltip-trigger="mouseenter" tooltip-placement="left" style="float: right; margin-right: 10px;"><img src="/img/questionmark2.png" alt=""></a>
                                     </div>
 									<div class="box-bottom"></div>
                                 </div>
@@ -227,7 +227,7 @@
                                         </div>
                                     </div>
                                     <div class="overview-box-information-container" style="position: relative">
-                                        <a id="pageHelpToolTip" tooltip-html-unsafe="<h3>{{popoverTextTitle}}</h3>{{popoverTextAmount}}<br/>{{popoverTextChangeProcentage}}" tooltip-placement="left" style="float: right; margin-right: 10px;"><img src="/img/questionmark2.png" alt=""></a>
+                                        <a id="pageHelpToolTip" tooltip-html-unsafe="<div class=popover-content>{{popoverTextAmount}}</div><div class=popover-content>{{popoverTextChangeProcentage}}</div>" tooltip-trigger="mouseenter" tooltip-placement="left" style="float: right; margin-right: 10px;"><img src="/img/questionmark2.png" alt=""></a>
                                     </div>
 									<div class="box-bottom"></div>
                                 </div>
@@ -267,7 +267,7 @@
                                         </div>
                                     </div>
                                     <div class="overview-box-information-container" style="position: relative">
-                                        <a id="pageHelpToolTip" tooltip-html-unsafe="<h3>{{popoverTextTitle}}</h3>{{popoverTextAmount}}<br/>{{popoverTextChangeProcentage}}" tooltip-placement="left" style="float: right; margin-right: 10px;"><img src="/img/questionmark2.png" alt=""></a>
+                                        <a id="pageHelpToolTip" tooltip-html-unsafe="<div class=popover-content>{{popoverTextAmount}}</div><div class=popover-content>{{popoverTextChangeProcentage}}</div>" tooltip-trigger="mouseenter" tooltip-placement="left" style="float: right; margin-right: 10px;"><img src="/img/questionmark2.png" alt=""></a>
                                     </div>
 									<div class="box-bottom"></div>
                                 </div>

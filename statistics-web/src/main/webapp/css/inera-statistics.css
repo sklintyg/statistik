@@ -896,6 +896,8 @@ div.accordion-body.in.collapse > div.accordion-heading a.accordion-toggle{
 }
 .popover-content {
 	font-weight: normal;
+	font-size: 12px;
+	line-height: 20px;
 }
 
 #view .btn {
@@ -1608,4 +1610,7 @@ div.datatablescrollable {
     overflow: hidden;
     text-overflow: ellipsis;
     font-weight: bold;
+}
+#print-logo-display {
+	display: none;
 }
