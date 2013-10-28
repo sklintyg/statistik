@@ -4,6 +4,7 @@
 
      var dataReceived = function(result) {
          $scope.subTitle = "Utvecklingen i landet " + result.periodText;
+         $scope.popoverTextPeriod = result.periodText;
          $scope.doneLoading = true;
          $timeout(function() {
              populatePageWithData(result);
@@ -158,7 +159,8 @@
     $scope.doneLoading = false;
     $scope.dataLoadingError = false;
     $scope.popoverTextTitle = "Förklaring";
-    $scope.popoverTextAmount = "Totala antalet sjukfall senaste tre månaderna.";
-    $scope.popoverTextChangeProcentage = "Procentsatsen visar förändringen av antalet sjukfall senaste tre månaderna jämfört med föregående tre månader.";
-    $scope.popoverTextSexDistribution = "Könsfördelningen av totala antalet sjukfall senaste tre månaderna.";
+    $scope.popoverTextAmount = "Totala antalet sjukfall under perioden ";
+    $scope.popoverTextChangeProcentage = "Procentsatsen visar förändringen av antalet sjukfall under perioden ";  
+    $scope.popoverTextChangeProcentage2 = " jämfört med dess föregående tre månader.";
+    $scope.popoverTextSexDistribution = "Könsfördelningen av totala antalet sjukfall under perioden ";
 };
