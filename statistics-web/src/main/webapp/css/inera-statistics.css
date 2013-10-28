@@ -1601,10 +1601,9 @@ div.datatablescrollable {
 #pageHelpToolTip:hover {
 	cursor: pointer;
 }
-.data-table-print-header {
+#data-table-print-header {
 	display: none;
 }
-
 .details-table-data {
     max-width: 100%;
     overflow: hidden;
