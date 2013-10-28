@@ -43,11 +43,11 @@
     <script>var isLoggedIn = false;</script>
 </security:authorize>
 </head>
-<body data-spy="scroll" data-target=".bs-docs-sidebar">
+<body data-spy="scroll" data-target=".bs-docs-sidebar" ng-controller="PageHeaderCtrl">
 
 <!-- Navbar
 ================================================== -->
-<div class="navbar navbar-inverse navbar-fixed-top" ng-controller="PageHeaderCtrl">
+<div class="navbar navbar-inverse navbar-fixed-top">
 	<div class="navbar-inner">
 		<div class="container-fluid">
 			<div class="row-fluid" id="navigation-container">
@@ -59,8 +59,6 @@
 						<div class="span2">
 							<span>Statistiktjänst för ordinerad sjukskrivning</span>
 						</div>
-						<span style="display:none;">{{currentUrl}}</span>
-						<span style="display:none;">Nationella statistiktjänsten {{currentTime}}</span>
 						<div class="span4 offset4">
 							<div id="business-login-container">
 								<button class="btn" type="button" id="business-login-btn" value="Logga in">Logga in</button>

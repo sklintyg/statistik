@@ -1602,4 +1602,7 @@ div.datatablescrollable {
 .data-table-print-header {
 	display: none;
 }
-
+.print-url,
+.print-current-time {
+	display: none;
+}
