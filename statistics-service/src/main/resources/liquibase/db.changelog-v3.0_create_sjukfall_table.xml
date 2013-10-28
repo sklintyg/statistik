@@ -7,11 +7,15 @@
             <column name="id" type="varchar(60)" >
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="personId" type="text"/>
-            <column name="vardgivareId" type="text"/>
+            <column name="personId" type="varchar(20)"/>
+            <column name="vardgivareId" type="varchar(20)"/>
             <column name="start" type="date"/>
             <column name="end" type="date"/>
         </createTable>
+        <createIndex tableName="sjukfall" indexName="idx_sjukfall">
+            <column name="personId"/>
+            <column name="vardgivareId"/>
+        </createIndex>
     </changeSet>
 
 </databaseChangeLog>
