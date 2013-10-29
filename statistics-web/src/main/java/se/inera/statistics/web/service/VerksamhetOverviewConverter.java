@@ -19,9 +19,9 @@ public class VerksamhetOverviewConverter {
         final OverviewSexProportion casesPerMonthNew = resp.getCasesPerMonthSexProportionPreviousPeriod();
         final OverviewSexProportion casesPerMonthOld = resp.getCasesPerMonthSexProportionBeforePreviousPeriod();
 
-        VerksamhetNumberOfCasesPerMonthOverview casesPerMonth = new VerksamhetNumberOfCasesPerMonthOverview(casesPerMonthNew.getMale(),
-                casesPerMonthNew.getFemale(), casesPerMonthNew.getPeriod().toString(), casesPerMonthOld.getMale(), casesPerMonthOld.getFemale(),
-                casesPerMonthOld.getPeriod().toString(), resp.getTotalCases());
+        VerksamhetNumberOfCasesPerMonthOverview casesPerMonth = new VerksamhetNumberOfCasesPerMonthOverview(casesPerMonthNew.getMaleAmount(),
+                casesPerMonthNew.getFemaleAmount(), casesPerMonthNew.getPeriod().toString(), casesPerMonthOld.getMaleAmount(),
+                casesPerMonthOld.getFemaleAmount(), casesPerMonthOld.getPeriod().toString(), resp.getTotalCases());
 
         ArrayList<DonutChartData> diagnosisGroups = new ArrayList<>();
 

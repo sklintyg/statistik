@@ -35,10 +35,11 @@
                 verticalAlign: 'bottom'
             };
             chartOptions.legend = {
-                labelFormat: '{name} {y}%',
+                labelFormat: '{name} {percentage:.0f}% (antal: {y}st)',
                 align: 'center',
                 verticalAlign: 'top'
             };
+            chartOptions.tooltip.pointFormat = '{point.percentage:.0f}% (antal: {point.y}st)';
             new Highcharts.Chart(chartOptions);
         }
 
@@ -60,8 +61,8 @@
             new Highcharts.Chart(chartOptions);
         }
 
-        paintSexProportionChart("sexProportionChartOld", result.casesPerMonth.proportionMaleOld, result.casesPerMonth.proportionFemaleOld, result.casesPerMonth.oldPeriod);
-        paintSexProportionChart("sexProportionChartNew", result.casesPerMonth.proportionMaleNew, result.casesPerMonth.proportionFemaleNew, result.casesPerMonth.newPeriod);
+        paintSexProportionChart("sexProportionChartOld", result.casesPerMonth.amountMaleOld, result.casesPerMonth.amountFemaleOld, result.casesPerMonth.oldPeriod);
+        paintSexProportionChart("sexProportionChartNew", result.casesPerMonth.amountMaleNew, result.casesPerMonth.amountFemaleNew, result.casesPerMonth.newPeriod);
         
         paintDonutChart("diagnosisChart", extractDonutData(result.diagnosisGroups));
         $scope.diagnosisGroups = result.diagnosisGroups;

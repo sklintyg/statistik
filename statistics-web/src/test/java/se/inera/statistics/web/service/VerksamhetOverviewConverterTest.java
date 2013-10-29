@@ -77,10 +77,10 @@ public class VerksamhetOverviewConverterTest {
         assertEquals(totalCases, data.getCasesPerMonth().getTotalCases());
 
         VerksamhetNumberOfCasesPerMonthOverview casesPerMonth = data.getCasesPerMonth();
-        assertEquals(100, casesPerMonth.getProportionFemaleNew());
-        assertEquals(0, casesPerMonth.getProportionMaleNew());
-        assertEquals(60, casesPerMonth.getProportionFemaleOld());
-        assertEquals(40, casesPerMonth.getProportionMaleOld());
+        assertEquals(1, casesPerMonth.getAmountFemaleNew());
+        assertEquals(0, casesPerMonth.getAmountMaleNew());
+        assertEquals(3, casesPerMonth.getAmountFemaleOld());
+        assertEquals(2, casesPerMonth.getAmountMaleOld());
 
         List<DonutChartData> diagnosisGroupsResult = data.getDiagnosisGroups();
         assertEquals(1, diagnosisGroupsResult.size());

@@ -102,8 +102,8 @@ public class OverviewPersistanceHandlerTest extends OverviewPersistenceHandler {
 
         OverviewResponse result = this.getOverview(range);
 
-        Assert.assertEquals(67, result.getCasesPerMonthSexProportion().getFemale());
-        Assert.assertEquals(33, result.getCasesPerMonthSexProportion().getMale());
+        Assert.assertEquals(67, result.getCasesPerMonthSexProportion().getFemaleProportion());
+        Assert.assertEquals(33, result.getCasesPerMonthSexProportion().getMaleProportion());
         Assert.assertEquals(3, result.getDiagnosisGroups().get(0).getQuantity());
         Assert.assertEquals(200, result.getDiagnosisGroups().get(0).getAlternation());
         Assert.assertEquals(3, result.getAgeGroups().size());
