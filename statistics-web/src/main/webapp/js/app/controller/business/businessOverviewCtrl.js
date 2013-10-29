@@ -43,7 +43,7 @@
             new Highcharts.Chart(chartOptions);
         }
 
-        function paintDonutChart(containerId, chartData) {
+        function paintDonutChart(containerId, chartData, tooltipHeaderPrefix) {
             var chartOptions = ControllerCommons.getHighChartConfigBase([], []);
             chartOptions.chart.type = 'pie';
             chartOptions.chart.renderTo = containerId;
@@ -58,6 +58,7 @@
                     }
                 }
             }];
+            chartOptions.tooltip.headerFormat = '<span style="font-size: 10px">' + (tooltipHeaderPrefix ? tooltipHeaderPrefix : "") + '{point.key}</span><br/>';
             new Highcharts.Chart(chartOptions);
         }
 
@@ -68,7 +69,7 @@
         $scope.diagnosisGroups = result.diagnosisGroups;
         paintDonutChart("ageChart", extractDonutData(result.ageGroups));
         $scope.ageGroups = result.ageGroups;
-        paintDonutChart("degreeOfSickLeaveChart", extractDonutData(result.degreeOfSickLeaveGroups));
+        paintDonutChart("degreeOfSickLeaveChart", extractDonutData(result.degreeOfSickLeaveGroups), "Sjukskrivningsgrad ");
         $scope.degreeOfSickLeaveGroups = result.degreeOfSickLeaveGroups;
 
         paintBarChart("sickLeaveLengthChart", result.sickLeaveLength.chartData);
