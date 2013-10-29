@@ -85,9 +85,9 @@ public class VerksamhetOverviewPersistanceHandlerTest extends VerksamhetOverview
         VerksamhetOverviewResponse result = this.getOverview("id1", range);
 
         Assert.assertEquals(2, result.getDiagnosisGroups().get(0).getQuantity());
-        Assert.assertEquals(100, result.getCasesPerMonthSexProportionPreviousPeriod().getFemale());
-        Assert.assertEquals(0, result.getCasesPerMonthSexProportionPreviousPeriod().getMale());
-        Assert.assertEquals(100, result.getCasesPerMonthSexProportionBeforePreviousPeriod().getMale());
+        Assert.assertEquals(100, result.getCasesPerMonthSexProportionPreviousPeriod().getFemaleProportion());
+        Assert.assertEquals(0, result.getCasesPerMonthSexProportionPreviousPeriod().getMaleProportion());
+        Assert.assertEquals(100, result.getCasesPerMonthSexProportionBeforePreviousPeriod().getMaleProportion());
         Assert.assertEquals(2, result.getTotalCases());
         Assert.assertEquals(100, result.getDiagnosisGroups().get(0).getAlternation());
         Assert.assertEquals(3, result.getAgeGroups().size());

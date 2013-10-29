@@ -7,6 +7,7 @@
 	var paintChart = function(chartCategories, chartSeries) {
 	    var chartOptions = ControllerCommons.getHighChartConfigBase(chartCategories, chartSeries);
 	    chartOptions.chart.type = 'column';
+        chartOptions.xAxis.title.text = "Län";
 		new Highcharts.Chart(chartOptions);
 	};
 

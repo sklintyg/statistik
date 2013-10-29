@@ -15,9 +15,10 @@ import se.inera.statistics.web.model.overview.SickLeaveLengthOverview;
 public class OverviewConverter {
 
     OverviewData convert(OverviewResponse resp, Range range) {
+        Range previousPeriod = new Range(range.getFrom().minusMonths(3), range.getTo().minusMonths(3));
         NumberOfCasesPerMonthOverview casesPerMonth = new NumberOfCasesPerMonthOverview(
-                resp.getCasesPerMonthSexProportion().getMale(), resp.getCasesPerMonthSexProportion().getFemale(),
-                resp.getCasesPerMonthAlteration());
+                resp.getCasesPerMonthSexProportion().getMaleProportion(), resp.getCasesPerMonthSexProportion().getFemaleProportion(),
+                resp.getCasesPerMonthAlteration(), previousPeriod.toString());
 
         ArrayList<DonutChartData> diagnosisGroups = new ArrayList<>();
         for (OverviewChartRowExtended row : resp.getDiagnosisGroups()) {

@@ -2,30 +2,33 @@
 
  app.diagnosisGroupConfig = function() {
      var conf = {};
-     conf.dataFetcher = "getDiagnosisGroupData",
-     conf.dataFetcherVerksamhet = "getDiagnosisGroupDataVerksamhet",
-     conf.showDetailsOptions = false,
-     conf.title = "Antal sjukfall per diagnosgrupp"	
+     conf.dataFetcher = "getDiagnosisGroupData";
+     conf.dataFetcherVerksamhet = "getDiagnosisGroupDataVerksamhet";
+     conf.showDetailsOptions = false;
+     conf.title = "Antal sjukfall per diagnosgrupp";
+     conf.chartFootnotes = ["Notera att samma sjukfall kan visas fler än en gång i grafen då ett sjukfall kan tilldelas flera diagnoser under samma månad", "Endast de sex vanligast förekommande diagnosgrupperna redovisas med namn. Övriga diagnosgrupper redovisas som övrigt."]; 
      return conf;
  }
  
  app.diagnosisSubGroupConfig = function() {
      var conf = {};
-     conf.dataFetcher = "getSubDiagnosisGroupData",
-     conf.dataFetcherVerksamhet = "getSubDiagnosisGroupDataVerksamhet",
-     conf.showDetailsOptions = true,
-     conf.title = "Antal sjukfall per diagnosgrupp"
+     conf.dataFetcher = "getSubDiagnosisGroupData";
+     conf.dataFetcherVerksamhet = "getSubDiagnosisGroupDataVerksamhet";
+     conf.showDetailsOptions = true;
+     conf.title = "Antal sjukfall per diagnosgrupp";
+     conf.chartFootnotes = ["Notera att samma sjukfall kan visas fler än en gång i grafen då ett sjukfall kan tilldelas flera diagnoser under samma månad", "Endast de sex vanligast förekommande undergrupper redovisas med namn. Övriga underdiagnoser redovisas som övrigt."]; 
      return conf;
  }
  
  app.degreeOfSickLeaveConfig = function() {
      var conf = {};
-     conf.dataFetcher = "getDegreeOfSickLeave",
-     conf.dataFetcherVerksamhet = "getDegreeOfSickLeaveVerksamhet",
-     conf.showDetailsOptions = false,
-     conf.title = "Antal sjukfall per sjukskrivningsgrad",
-     conf.tooltipHelpTextTitle ="Vad innebär sjukskrivningsgrad?",
+     conf.dataFetcher = "getDegreeOfSickLeave";
+     conf.dataFetcherVerksamhet = "getDegreeOfSickLeaveVerksamhet";
+     conf.showDetailsOptions = false;
+     conf.title = "Antal sjukfall per sjukskrivningsgrad";
+     conf.tooltipHelpTextTitle ="Vad innebär sjukskrivningsgrad?";
      conf.tooltipHelpText ="Begreppet sjukskrivningsgrad beskriver hur många procent av en heltidsarbetstid (25 %, 50 %, 75 % eller 100 %) patienten rekommenderas sjukskrivning.";	 
+     conf.chartFootnotes = ["Notera att samma sjukfall kan visas fler än en gång i grafen då ett sjukfall kan ha olika sjukskrivningsgrad under samma månad."]; 
      return conf;
  }
  
@@ -39,6 +42,7 @@
          chartOptions.chart.type = 'area';
          chartOptions.chart.renderTo = containerId;
          chartOptions.legend.enabled = false;
+         chartOptions.xAxis.title.text = "Period";
          chartOptions.yAxis.title.text = yAxisTitle;
          chartOptions.tooltip.useHTML = true;
          chartOptions.yAxis.title.rotation = 270;
@@ -99,6 +103,8 @@
         $scope.detailsOptions = result;
     };
 
+    $scope.chartFootnotes = config.chartFootnotes;
+    
     $scope.chartContainers = [ "container1", "container2" ];
 
     $scope.toggleSeriesVisibility = function(index) {

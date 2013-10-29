@@ -13,31 +13,30 @@ public class OverviewSexProportion {
     private final int female;
     private final Range period;
 
-    /**
-     * If male + female != 100 then normalize the sum to 100.
-     *
-     * @param male male
-     * @param female female
-     */
-    public OverviewSexProportion(int male, int female, Range period) {
-        if (male == 0 && female == 0) {
-            this.male = FIFTY;
-            this.female = FIFTY;
-        } else {
-            this.male = Math.round(((float) male * PERCENT) / (male + female));
-            this.female = Math.round(((float) female * PERCENT) / (male + female));
-        }
+    public OverviewSexProportion(int maleAmount, int femaleAmount, Range period) {
+        this.male = maleAmount;
+        this.female = femaleAmount;
         this.period = period;
     }
 
-    public int getMale() {
+    public int getMaleProportion() {
+        if (male == 0 && female == 0) return FIFTY;
+        return Math.round(((float) male * PERCENT) / (male + female));
+    }
+
+    public int getFemaleProportion() {
+        if (male == 0 && female == 0) return FIFTY;
+        return Math.round(((float) female * PERCENT) / (male + female));
+    }
+
+    public int getMaleAmount() {
         return male;
     }
-
-    public int getFemale() {
+    
+    public int getFemaleAmount() {
         return female;
     }
-
+    
     public Range getPeriod() {
         return period;
     }

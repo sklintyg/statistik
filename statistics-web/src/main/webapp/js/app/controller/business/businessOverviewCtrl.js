@@ -35,14 +35,15 @@
                 verticalAlign: 'bottom'
             };
             chartOptions.legend = {
-                labelFormat: '{name} {y}%',
+                labelFormat: '{name} {percentage:.0f}% (antal: {y}st)',
                 align: 'center',
                 verticalAlign: 'top'
             };
+            chartOptions.tooltip.pointFormat = '{point.percentage:.0f}% (antal: {point.y}st)';
             new Highcharts.Chart(chartOptions);
         }
 
-        function paintDonutChart(containerId, chartData) {
+        function paintDonutChart(containerId, chartData, tooltipHeaderPrefix) {
             var chartOptions = ControllerCommons.getHighChartConfigBase([], []);
             chartOptions.chart.type = 'pie';
             chartOptions.chart.renderTo = containerId;
@@ -57,17 +58,18 @@
                     }
                 }
             }];
+            chartOptions.tooltip.headerFormat = '<span style="font-size: 10px">' + (tooltipHeaderPrefix ? tooltipHeaderPrefix : "") + '{point.key}</span><br/>';
             new Highcharts.Chart(chartOptions);
         }
 
-        paintSexProportionChart("sexProportionChartOld", result.casesPerMonth.proportionMaleOld, result.casesPerMonth.proportionFemaleOld, result.casesPerMonth.oldPeriod);
-        paintSexProportionChart("sexProportionChartNew", result.casesPerMonth.proportionMaleNew, result.casesPerMonth.proportionFemaleNew, result.casesPerMonth.newPeriod);
+        paintSexProportionChart("sexProportionChartOld", result.casesPerMonth.amountMaleOld, result.casesPerMonth.amountFemaleOld, result.casesPerMonth.oldPeriod);
+        paintSexProportionChart("sexProportionChartNew", result.casesPerMonth.amountMaleNew, result.casesPerMonth.amountFemaleNew, result.casesPerMonth.newPeriod);
         
         paintDonutChart("diagnosisChart", extractDonutData(result.diagnosisGroups));
         $scope.diagnosisGroups = result.diagnosisGroups;
         paintDonutChart("ageChart", extractDonutData(result.ageGroups));
         $scope.ageGroups = result.ageGroups;
-        paintDonutChart("degreeOfSickLeaveChart", extractDonutData(result.degreeOfSickLeaveGroups));
+        paintDonutChart("degreeOfSickLeaveChart", extractDonutData(result.degreeOfSickLeaveGroups), "Sjukskrivningsgrad ");
         $scope.degreeOfSickLeaveGroups = result.degreeOfSickLeaveGroups;
 
         paintBarChart("sickLeaveLengthChart", result.sickLeaveLength.chartData);
@@ -87,6 +89,8 @@
         chartOptions.chart.renderTo = containerId;
         chartOptions.chart.height = 185;
         chartOptions.xAxis.title = { text: 'DAGAR' };
+        chartOptions.xAxis.labels.format = '{value} dagar';
+        chartOptions.tooltip.pointFormat = '{point.y} dagar';
         chartOptions.yAxis.title = { text: 'ANTAL' };
         chartOptions.legend.enabled = false;
         new Highcharts.Chart(chartOptions);

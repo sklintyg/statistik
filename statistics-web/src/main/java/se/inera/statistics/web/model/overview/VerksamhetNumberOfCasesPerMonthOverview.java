@@ -2,43 +2,27 @@ package se.inera.statistics.web.model.overview;
 
 public class VerksamhetNumberOfCasesPerMonthOverview {
 
-    private final int proportionMaleNew;
-    private final int proportionFemaleNew;
+    private final int amountMaleNew;
+    private final int amountFemaleNew;
     private final String newPeriod;
-    private final int proportionMaleOld;
-    private final int proportionFemaleOld;
+    private final int amountMaleOld;
+    private final int amountFemaleOld;
     private final String oldPeriod;
     private final int totalCases;
 
-    public VerksamhetNumberOfCasesPerMonthOverview(int proportionMaleNew, int proportionFemaleNew, String newPeriod, int proportionMaleOld,
-            int proportionFemaleOld, String oldPeriod, int totalCases) {
-        this.proportionMaleNew = proportionMaleNew;
-        this.proportionFemaleNew = proportionFemaleNew;
+    public VerksamhetNumberOfCasesPerMonthOverview(int amountMaleNew, int amountFemaleNew, String newPeriod, int amountMaleOld, int amountFemaleOld,
+            String oldPeriod, int totalCases) {
+        this.amountMaleNew = amountMaleNew;
+        this.amountFemaleNew = amountFemaleNew;
         this.newPeriod = newPeriod;
-        this.proportionMaleOld = proportionMaleOld;
-        this.proportionFemaleOld = proportionFemaleOld;
+        this.amountMaleOld = amountMaleOld;
+        this.amountFemaleOld = amountFemaleOld;
         this.oldPeriod = oldPeriod;
         this.totalCases = totalCases;
     }
 
-    public int getProportionMaleNew() {
-        return proportionMaleNew;
-    }
-
-    public int getProportionFemaleNew() {
-        return proportionFemaleNew;
-    }
-
     public String getNewPeriod() {
         return newPeriod;
-    }
-
-    public int getProportionMaleOld() {
-        return proportionMaleOld;
-    }
-
-    public int getProportionFemaleOld() {
-        return proportionFemaleOld;
     }
 
     public String getOldPeriod() {
@@ -47,6 +31,22 @@ public class VerksamhetNumberOfCasesPerMonthOverview {
 
     public int getTotalCases() {
         return totalCases;
+    }
+
+    public int getAmountMaleNew() {
+        return amountMaleNew;
+    }
+
+    public int getAmountFemaleNew() {
+        return amountFemaleNew;
+    }
+
+    public int getAmountMaleOld() {
+        return amountMaleOld;
+    }
+
+    public int getAmountFemaleOld() {
+        return amountFemaleOld;
     }
 
 }

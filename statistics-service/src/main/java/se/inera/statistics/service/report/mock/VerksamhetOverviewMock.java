@@ -15,9 +15,9 @@ public class VerksamhetOverviewMock implements VerksamhetOverview {
     @Override
     public VerksamhetOverviewResponse getOverview(String verksamhetId, Range range) {
         final Range newPeriod = new Range(3);
-        OverviewSexProportion sexProportionNew = new OverviewSexProportion(40, 60, newPeriod);
+        OverviewSexProportion sexProportionNew = new OverviewSexProportion(120, 180, newPeriod);
         Range oldPeriod = new Range(newPeriod.getFrom().minusMonths(3), newPeriod.getTo().minusMonths(3));
-        OverviewSexProportion sexProportionOld = new OverviewSexProportion(42, 58, oldPeriod);
+        OverviewSexProportion sexProportionOld = new OverviewSexProportion(126, 174, oldPeriod);
 
         ArrayList<OverviewChartRowExtended> diagnosisGroups = new ArrayList<OverviewChartRowExtended>();
         diagnosisGroups.add(new OverviewChartRowExtended("A-E G-L N Somatiska", 19583, 2));
