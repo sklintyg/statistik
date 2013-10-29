@@ -20,9 +20,10 @@
     $scope.chartContainers = ["container"];
     
 	var paintChart = function(chartCategories, chartSeries) {
-		var chartOptions = ControllerCommons.getHighChartConfigBase(chartCategories, chartSeries);
+        var chartOptions = ControllerCommons.getHighChartConfigBase(chartCategories, chartSeries);
         chartOptions.chart.type = 'line';
-		new Highcharts.Chart(chartOptions);
+        chartOptions.xAxis.title.text = "Period";
+        new Highcharts.Chart(chartOptions);
 	};
 
 	var updateDataTable = function($scope, ajaxResult) {

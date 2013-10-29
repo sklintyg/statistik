@@ -67,7 +67,8 @@ var ControllerCommons = new function(){
                 },
                 categories : chartCategories.map(function(name) {
                     return ControllerCommons.htmlsafe(name);
-                })
+                }),
+                title: { align: 'high' }
             },
             yAxis : {
                 min : 0,

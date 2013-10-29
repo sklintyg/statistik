@@ -39,6 +39,7 @@
          chartOptions.chart.type = 'area';
          chartOptions.chart.renderTo = containerId;
          chartOptions.legend.enabled = false;
+         chartOptions.xAxis.title.text = "Period";
          chartOptions.yAxis.title.text = yAxisTitle;
          chartOptions.tooltip.useHTML = true;
          chartOptions.yAxis.title.rotation = 270;
