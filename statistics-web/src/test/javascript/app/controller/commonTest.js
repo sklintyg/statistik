@@ -7,4 +7,11 @@ describe("Test of common functions for controllers", function() {
         expect(list[1].color).toBe("#2ca2c6");
     });
 
+    it("makeThousandSeparated", function() {
+        expect(ControllerCommons.makeThousandSeparated(0)).toBe("0");
+        expect(ControllerCommons.makeThousandSeparated(1000)).toBe("1 000");
+        expect(ControllerCommons.makeThousandSeparated(9999999)).toBe("9 999 999");
+        expect(ControllerCommons.makeThousandSeparated(-5000)).toBe("-5 000");
+    });
+    
 });
