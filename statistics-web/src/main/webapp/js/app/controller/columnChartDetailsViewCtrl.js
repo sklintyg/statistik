@@ -54,7 +54,7 @@
         chartOptions.chart.type = 'column';
         chartOptions.xAxis.title.text = config.chartXAxisTitle;
         chartOptions.yAxis.title.text = config.percentChart ? "Andel" : 'Antal';
-        chartOptions.yAxis.labels.formatter = function() { return this.value + (config.percentChart ? "%" : "") };
+        chartOptions.yAxis.labels.formatter = function() { return ControllerCommons.makeThousandSeparated(this.value) + (config.percentChart ? "%" : "") };
         chartOptions.plotOptions.column.stacking = config.percentChart ? 'percent' : 'normal',
 		new Highcharts.Chart(chartOptions);
 	};

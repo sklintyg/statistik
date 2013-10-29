@@ -56,7 +56,7 @@
                                         <div>
                                             <div>
                                                 <div>
-                                                    <div id="totalCasesPerMonthLabel">{{totalCasesPerMonth}}</div>
+                                                    <div id="totalCasesPerMonthLabel">{{totalCasesPerMonth | thousandseparated}}</div>
                                                 </div>
                                             </div>
                                         </div>
@@ -115,7 +115,7 @@
                                         <tbody>
                                             <tr ng-repeat="group in diagnosisGroups">
                                                 <td><span style="height:10px; width:10px; background-color: {{group.color}};"></span>{{group.name}}</td>
-                                                <td>{{group.quantity}}</td>
+                                                <td>{{group.quantity | thousandseparated}}</td>
                                                 <td>{{group.alternation}}%</td>
                                             </tr>
                                         </tbody>
@@ -152,7 +152,7 @@
                                                 <tbody>
                                                     <tr ng-repeat="group in ageGroups">
                                                         <td><span style="height:10px; width:10px; background-color: {{group.color}};"></span>{{group.name}}</td>
-                                                        <td>{{group.quantity}}</td>
+                                                        <td>{{group.quantity | thousandseparated}}</td>
                                                         <td>{{group.alternation}}%</td>
                                                     </tr>
                                                 </tbody>
@@ -186,7 +186,7 @@
                                             <div class="chart-container" id="sickLeaveLengthChart"></div>
                                             <div class="overview-chart-info">
                                                 <div class="overview-chart-info-section">
-                                                    <span class="longSickLeavesValue">{{longSickLeavesTotal}}</span>
+                                                    <span class="longSickLeavesValue">{{longSickLeavesTotal | thousandseparated}}</span>
                                                     <span class="longSickLeavesText">Antalet sjukfall som övergår 90 dagar</span>
                                                 </div>
                                                 <div class="overview-chart-info-section">
@@ -230,7 +230,7 @@
                                                 <tbody>
                                                     <tr ng-repeat="group in degreeOfSickLeaveGroups">
                                                         <td><span style="height:10px; width:10px; background-color: {{group.color}};"></span>{{group.name}}</td>
-                                                        <td>{{group.quantity}}</td>
+                                                        <td>{{group.quantity | thousandseparated}}</td>
                                                         <td>{{group.alternation}}%</td>
                                                     </tr>
                                                 </tbody>

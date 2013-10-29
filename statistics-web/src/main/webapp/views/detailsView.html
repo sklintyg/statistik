@@ -46,10 +46,16 @@
 						<a id="pageHelpToolTip" popover-title="{{popoverTextTitle}}" popover="{{popoverText}}" popover-trigger="mouseenter" popover-placement="right" ng-show="popoverText"><img src="/img/questionmark2.png" alt=""></a>
 					</span>
 				</div>
-			    <!-- Start detailsOptions if any -->
-			    <div class="row-fluid">
-			        <select id="detailsOptionsDropdown" class="span3" ng-model="detailsOption" ng-show="showDetailsOptions" ng-options="do.id + ' ' + do.name for do in detailsOptions"></select>
-			    </div>
+                <!-- Start detailsOptions if any -->
+                <div class="row-fluid btn-group statistics-btn-group" ng-show="showDetailsOptions">
+                  <a class="btn dropdown-toggle" data-toggle="dropdown" href="#" >
+                    {{selectedDetailsOption.id}} {{selectedDetailsOption.name}}
+                    <span class="caret"></span>
+                  </a>
+                  <ul class="dropdown-menu left">
+                    <li ng-repeat="detailsOption in detailsOptions"><a href="{{detailsOption.url}}">{{detailsOption.id}} {{detailsOption.name}}</a></li>
+                  </ul>
+                </div>
         	 	<!-- Start graph -->
 	            <div class="row-fluid">
 	                <div class="span12" style="margin-bottom: 20px;">
@@ -98,7 +104,7 @@
 	                                <tbody>
 	                                    <tr ng-repeat="row in rows">
 	                                        <td class="datatablescrollable headcol">{{row.name}}</td>
-	                                        <td class="datatablescrollable" ng-repeat="fieldData in row.data" >{{fieldData}}</td>
+	                                        <td class="datatablescrollable" ng-repeat="fieldData in row.data" >{{fieldData | thousandseparated}}</td>
 	                                    </tr>
 	                                </tbody>
 	                            </table>

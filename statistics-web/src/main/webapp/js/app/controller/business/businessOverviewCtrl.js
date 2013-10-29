@@ -58,7 +58,7 @@
                     }
                 }
             }];
-            chartOptions.tooltip.headerFormat = '<span style="font-size: 10px">' + (tooltipHeaderPrefix ? tooltipHeaderPrefix : "") + '{point.key}</span><br/>';
+            chartOptions.tooltip.headerFormat = '<span style="font-size: 10px">' + (tooltipHeaderPrefix || "") + '{point.key}</span><br/>';
             new Highcharts.Chart(chartOptions);
         }
 

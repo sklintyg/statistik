@@ -16,14 +16,14 @@
  }
  
  app.singleLineChartCtrl = function ($scope, $routeParams, $timeout, statisticsData, config) {
-
+    var chart;
     $scope.chartContainers = ["container"];
     
 	var paintChart = function(chartCategories, chartSeries) {
         var chartOptions = ControllerCommons.getHighChartConfigBase(chartCategories, chartSeries);
         chartOptions.chart.type = 'line';
         chartOptions.xAxis.title.text = "Period";
-        new Highcharts.Chart(chartOptions);
+        return new Highcharts.Chart(chartOptions);
 	};
 
 	var updateDataTable = function($scope, ajaxResult) {
@@ -31,9 +31,10 @@
 		$scope.rows = ajaxResult.rows;
 	};
 
-	var updateChart = function(ajaxResult) {
-		paintChart(ajaxResult.categories, ControllerCommons.addColor(ajaxResult.series));
-	};
+    var updateChart = function(ajaxResult) {
+	    $scope.series = ControllerCommons.addColor(ajaxResult.series);
+	    chart = paintChart(ajaxResult.categories, $scope.series);
+    };
 
     $scope.exportTableData = ControllerCommons.exportTableDataGeneric;
     
@@ -46,6 +47,15 @@
         }, 1);
     };
     
+    $scope.toggleSeriesVisibility = function(index) {
+        var series = chart.series[index];
+        if (series.visible) {
+            series.hide();
+        } else {
+            series.show();
+        }
+    };
+
     if ($routeParams.verksamhetId){
         statisticsData[config.dataFetcherVerksamhet]($routeParams.verksamhetId, populatePageWithData, function() { $scope.dataLoadingError = true; });
     } else {

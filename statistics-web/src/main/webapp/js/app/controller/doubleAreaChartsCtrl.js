@@ -83,24 +83,19 @@
     };
     
     var populateDetailsOptions = function(result){
-        var basePath = isVerksamhet ? "#/verksamhet/" + $routeParams.verksamhetId + "/underdiagnosgrupper" : "#/nationell/underdiagnosgrupper"
-        $scope.detailsOption = result[0];
+        var basePath = isVerksamhet ? "#/verksamhet/" + $routeParams.verksamhetId + "/diagnoskapitel" : "#/nationell/diagnoskapitel"
+
         for ( var i = 0; i < result.length; i++) {
             if (result[i].id == $routeParams.groupId){
-                $scope.detailsOption = result[i];
+                $scope.selectedDetailsOption = result[i];
                 break;
             }
         }
-        if (!$scope.detailsOption){
-            // Selected sub diagnosis group not found, redirect to default sub diagnosis group
-            $window.location = basePath;
-        }
-        $scope.$watch(function(){return $scope.detailsOption;}, function() {
-            if ($scope.detailsOption.id != $routeParams.groupId){
-                $window.location = basePath + "/" + $scope.detailsOption.id;
-            }
+        
+        $scope.detailsOptions = result.map(function(e){
+            e.url = basePath + "/" + e.id;
+            return e;
         });
-        $scope.detailsOptions = result;
     };
 
     $scope.chartFootnotes = config.chartFootnotes;

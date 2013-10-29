@@ -110,7 +110,7 @@
 									<i class="statistict-left-menu-expand-icon" class="accordion-toggle" data-toggle="collapse" href="#sub-menu-diagnostics"></i>
 								</li>
 								<ul id="sub-menu-diagnostics" class="nav nav-list sub-nav-list accordion-body in collapse">
-									<li><a ng-href="#/nationell/underdiagnosgrupper" id="navDiagnosisSubGroupsLink" ctrlname="NationalDiagnosisSubGroupsCtrl" navigationaware>Enskilt diagnoskapitel</a></li>
+									<li><a ng-href="#/nationell/diagnoskapitel" id="navDiagnosisSubGroupsLink" ctrlname="NationalDiagnosisSubGroupsCtrl" navigationaware>Enskilt diagnoskapitel</a></li>
 								</ul>
 								<li><a ng-href="#/nationell/aldersgrupper" id="navAgeGroupsLink" ctrlname="NationalAgeGroupCtrl" navigationaware>Åldersgrupp</a></li>
 								<li><a ng-href="#/nationell/sjukskrivningsgrad" id="navSickLeaveDegreeLink" ctrlname="NationalDegreeOfSickLeaveCtrl" navigationaware>Sjukskrivningsgrad</a></li>
@@ -141,7 +141,7 @@
 									<i class="statistict-left-menu-expand-icon" class="accordion-toggle" data-toggle="collapse" href="#sub-menu-business-diagnostics"></i>
 								</li>
 								<ul id="sub-menu-business-diagnostics" class="nav nav-list sub-nav-list accordion-body in collapse">
-									<li><a ng-href="#/verksamhet/{{businessId}}/underdiagnosgrupper" id="navBusinessDiagnosisSubGroupsLink" ctrlname="VerksamhetDiagnosisSubGroupsCtrl" navigationaware>Enskilt diagnoskapitel</a></li>
+									<li><a ng-href="#/verksamhet/{{businessId}}/diagnoskapitel" id="navBusinessDiagnosisSubGroupsLink" ctrlname="VerksamhetDiagnosisSubGroupsCtrl" navigationaware>Enskilt diagnoskapitel</a></li>
 								</ul>
 								<li>
 									<a ng-href="#/verksamhet/{{businessId}}/aldersgrupper" id="navBusinessAgeGroupsLink" ctrlname="VerksamhetAgeGroupCtrl" navigationaware>Åldersgrupp</a>
@@ -219,6 +219,7 @@
 <script type="text/javascript" src="<c:url value='/js/app/controller/navigationMenuCtrl.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/controllers.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/directives.js'/>"></script>
+<script type="text/javascript" src="<c:url value='/js/app/filters.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/inera-statistics-style.js'/>" ></script>
 <script type="text/javascript" src="<c:url value='js/lib/highcharts/3.0.5/highcharts.js'/>"></script>
 <script type="text/javascript" src="<c:url value='js/lib/highcharts/3.0.5/modules/highcharts-more.js'/>"></script>
