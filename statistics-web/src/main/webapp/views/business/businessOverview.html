@@ -16,18 +16,16 @@
                     <div spinner label="{{spinnerText}}" show-spinner="!doneLoading" show-content="doneLoading">
 						<div class="row-fluid row-margin-bottom">
 							<!-- CHOOSE BUSINESS BUTTON -->
-							<div class="span6">
-							<div class="btn-group">
-								<a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-									Välj verksamhet<span class="caret"></span>
-								</a>
-								<ul class="dropdown-menu left">
-									<li ng-repeat="business in businesses" ><a tabindex="-1" ng-href="#/verksamhet/{{business.id}}/oversikt">{{business.name}}</a></li>
-								</ul>
-	                        </div>
-	                        </div>
-	                        <div class="span6">
-								<div class="btn-group statistics-btn-group">
+							<div class="span12">
+								<div class="btn-group" style="float: left;">
+									<a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+										Välj verksamhet<span class="caret"></span>
+									</a>
+									<ul class="dropdown-menu left">
+										<li ng-repeat="business in businesses" ><a tabindex="-1" ng-href="#/verksamhet/{{business.id}}/oversikt">{{business.name}}</a></li>
+									</ul>
+		                        </div>
+		                        <div class="btn-group statistics-btn-group" style="float: right;">
 								  <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
 								    Skriv ut
 								    <span class="caret"></span>
