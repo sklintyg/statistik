@@ -5,7 +5,7 @@
     $scope.baseUrl = "#/verksamhet/" + $routeParams.businessId;  
      
     var dataReceived = function(result) {
-    	$scope.subTitle = "Utvecklingen för enheten " + result.periodText;
+    	$scope.subTitle = "Utvecklingen för verksamheten " + result.periodText;
         $scope.popoverTextPeriod = result.periodText;
         $scope.doneLoading = true;
         $timeout(function() {
