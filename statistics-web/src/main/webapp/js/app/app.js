@@ -39,14 +39,14 @@ app.statisticsApp = angular.module('StatisticsApp', [ 'ngCookies', 'ui.bootstrap
                 controllerAs : 'NationalDiagnosisGroupsCtrl',
                 resolve : { config: app.diagnosisGroupConfig }, 
                 title: 'Diagnosgrupper'
-            }).when('/nationell/underdiagnosgrupper/:groupId', {
+            }).when('/nationell/diagnoskapitel/:groupId', {
                 templateUrl : 'views/detailsView.html',
                 controller : 'DiagnosisGroupsCtrl',
                 controllerAs : 'NationalDiagnosisSubGroupsCtrl',
                 resolve : { config: app.diagnosisSubGroupConfig },
-                title: 'Underdiagnosgrupper'
-            }).when('/nationell/underdiagnosgrupper', {
-                redirectTo : '/nationell/underdiagnosgrupper/A00-B99'
+                title: 'Enskilt diagnoskapitel'
+            }).when('/nationell/diagnoskapitel', {
+                redirectTo : '/nationell/diagnoskapitel/A00-B99'
             }).when('/nationell/sjukskrivningsgrad', {
                 templateUrl : 'views/detailsView.html',
                 controller : 'DegreeOfSickLeaveCtrl',
@@ -80,14 +80,14 @@ app.statisticsApp = angular.module('StatisticsApp', [ 'ngCookies', 'ui.bootstrap
                 controllerAs : 'VerksamhetDiagnosisGroupsCtrl',
                 resolve : { config: app.diagnosisGroupConfig }, 
                 title: 'Diagnosgrupper'
-            }).when('/verksamhet/:verksamhetId/underdiagnosgrupper/:groupId', {
+            }).when('/verksamhet/:verksamhetId/diagnoskapitel/:groupId', {
                 templateUrl : 'views/detailsView.html',
                 controller : 'DiagnosisGroupsCtrl',
                 controllerAs : 'VerksamhetDiagnosisSubGroupsCtrl',
                 resolve : { config: app.diagnosisSubGroupConfig },
-                title: 'Underdiagnosgrupper'
-            }).when('/verksamhet/:verksamhetId/underdiagnosgrupper', {
-                redirectTo : '/verksamhet/:verksamhetId/underdiagnosgrupper/A00-B99'
+                title: 'Enskilt diagnoskapitel'
+            }).when('/verksamhet/:verksamhetId/diagnoskapitel', {
+                redirectTo : '/verksamhet/:verksamhetId/diagnoskapitel/A00-B99'
             }).when('/verksamhet/:verksamhetId/aldersgrupper', {
                 templateUrl : 'views/detailsView.html',
                 controller : 'AgeGroupsCtrl',

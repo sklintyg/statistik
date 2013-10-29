@@ -83,8 +83,8 @@
     };
     
     var populateDetailsOptions = function(result){
-        var basePath = isVerksamhet ? "#/verksamhet/" + $routeParams.verksamhetId + "/underdiagnosgrupper" : "#/nationell/underdiagnosgrupper"
-        
+        var basePath = isVerksamhet ? "#/verksamhet/" + $routeParams.verksamhetId + "/diagnoskapitel" : "#/nationell/diagnoskapitel"
+
         for ( var i = 0; i < result.length; i++) {
             if (result[i].id == $routeParams.groupId){
                 $scope.selectedDetailsOption = result[i];
