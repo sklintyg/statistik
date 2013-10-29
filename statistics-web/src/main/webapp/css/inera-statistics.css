@@ -890,6 +890,7 @@ div.accordion-body.in.collapse > div.accordion-heading a.accordion-toggle{
 .graph-ingress {
 	font-weight: bold;
 	margin-bottom: 5px;
+	margin-top: 10px;
 }
 .popover {
 	z-index: 9999 !important;
@@ -989,7 +990,11 @@ div.headerbox-user { font-size: 13px; line-height: 16px;}
 .statistics-btn-group {
 	float: right;
 	margin-right: 2px;
-	top: 20px;
+	top: 0px;
+}
+#chart-content .statistics-btn-group,
+#national-overview .statistics-btn-group {
+	top: 15px;
 }
 .statistics-btn-group ul.dropdown-menu {
 	min-width: 130px;
@@ -1029,6 +1034,7 @@ ul.dropdown-menu li a:hover {
 }
 span.caret {
 	border-top-color: #ffffff !important;
+	margin-left: 10px !important;
 }
 #push, #footer {
 	height: 60px;
