@@ -5,7 +5,7 @@
     $scope.baseUrl = "#/verksamhet/" + $routeParams.businessId;  
      
     var dataReceived = function(result) {
-    	$scope.subTitle = "Utvecklingen för enheten " + result.periodText;
+    	$scope.subTitle = "Utveckling för verksamheten " + result.periodText;
         $scope.popoverTextPeriod = result.periodText;
         $scope.doneLoading = true;
         $timeout(function() {
@@ -122,7 +122,8 @@
     $scope.popoverTextAmount = "Totala antalet sjukfall under perioden ";
     $scope.popoverTextChangeProcentage = "Procentsatsen visar förändringen av antalet sjukfall under perioden ";  
     $scope.popoverTextChangeProcentage2 = " jämfört med dess föregående tre månader.";
-    $scope.popoverTextSexDistribution = "Könsfördelningen av totala antalet sjukfall under perioden jämfört med föregående tre månader.";
+    $scope.popoverTextSexDistribution = "Könsfördelningen av totala antalet sjukfall under perioden ";
+    $scope.popoverTextSexDistribution2 = " jämfört med föregående tre månader.";
 
     statisticsData.getLoginInfo(function(loginInfo){
         $scope.businesses = loginInfo.businesses;

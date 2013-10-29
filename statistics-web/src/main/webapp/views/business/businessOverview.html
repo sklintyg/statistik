@@ -2,41 +2,41 @@
 		<div class="row-fluid">
 			<div id="overview-content"> <!-- Start: Overview content -->
 				<div class="row-fluid">
-					<div class="span4">
-						<h1 tabindex="-1" id="verksamhetOverviewHeading">Verksamhetsstatistik</h1>
+					<div class="span3" style="width: auto !important;">
+						<h1 id="verksamhetOverviewHeading">Verksamhetsstatistik</h1>
 					</div>
-					<div class="span5 offset3">
-						<div class="btn-group statistics-btn-group">
-						  <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-						    Skriv ut i..
-						    <span class="caret"></span>
-						  </a>
-						  <ul class="dropdown-menu left">
-						    <li><a onclick="window.print();"><img src="/img/dropdown-icons/print-colour.png"/> Färg</a></li>
-			    			<li><a class="disabled"><img src="/img/dropdown-icons/print-bw-inactive.png"/> Svart-vitt</a></li>
-						  </ul>
-						</div>
+					<div class="span9" style="margin-left: 5px;">
+						<h2> - {{ verksamhetName }}</h2> 
 					</div>
 				</div>
 				<div class="row-fluid">
-					<div class="span12">
-						<h2 style="line-height: 10px;">{{ verksamhetName }}</h2> 
-					</div>
-				</div>
-				<div class="row-fluid">
-					<span class="span12 overview-ingress" ng-bind="subTitle">Utvecklingen senaste 3 månaderna</span>
+					<span class="span12 overview-ingress" ng-bind="subTitle">Utveckling senaste 3 månaderna</span>
 				</div>
                 <div dataerrorview show-error="dataLoadingError">
                     <div spinner label="{{spinnerText}}" show-spinner="!doneLoading" show-content="doneLoading">
 						<div class="row-fluid row-margin-bottom">
 							<!-- CHOOSE BUSINESS BUTTON -->
+							<div class="span6">
 							<div class="btn-group">
 								<a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-									Välj verksamhet...<span class="caret"></span>
+									Välj verksamhet<span class="caret"></span>
 								</a>
 								<ul class="dropdown-menu left">
 									<li ng-repeat="business in businesses" ><a tabindex="-1" ng-href="#/verksamhet/{{business.id}}/oversikt">{{business.name}}</a></li>
 								</ul>
+	                        </div>
+	                        </div>
+	                        <div class="span6">
+								<div class="btn-group statistics-btn-group">
+								  <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+								    Skriv ut
+								    <span class="caret"></span>
+								  </a>
+								  <ul class="dropdown-menu left">
+								    <li><a onclick="window.print();"><img src="/img/dropdown-icons/print-colour.png"/> Färg</a></li>
+					    			<li><a class="disabled"><img src="/img/dropdown-icons/print-bw-inactive.png"/> Svart-vitt</a></li>
+								  </ul>
+								</div>
 	                        </div>
 						</div>
 						<!-- Start business overview boxes -->
@@ -86,7 +86,7 @@
                                     <div class="chart-container" id="sexProportionChartNew"></div>
                                 </div>
                                 <div class="overview-box-information-container" style="position: relative">
-                                	<a id="pageHelpToolTip" tooltip-html-unsafe="<div class=popover-content>{{popoverTextSexDistribution}}{{popoverTextPeriod}}</div>" tooltip-trigger="mouseenter" tooltip-placement="left" style="float: right; margin-right: 10px;"><img src="/img/questionmark2.png" alt=""></a>
+                                	<a id="pageHelpToolTip" tooltip-html-unsafe="<div class=popover-content>{{popoverTextSexDistribution}}{{popoverTextPeriod}}{{popoverTextSexDistribution2}}</div>" tooltip-trigger="mouseenter" tooltip-placement="left" style="float: right; margin-right: 10px;"><img src="/img/questionmark2.png" alt=""></a>
                                 </div>
 								<div class="box-bottom"></div>
                             </div>
