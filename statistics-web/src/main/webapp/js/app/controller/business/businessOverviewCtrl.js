@@ -88,6 +88,8 @@
         chartOptions.chart.renderTo = containerId;
         chartOptions.chart.height = 185;
         chartOptions.xAxis.title = { text: 'DAGAR' };
+        chartOptions.xAxis.labels.format = '{value} dagar';
+        chartOptions.tooltip.pointFormat = '{point.y} dagar';
         chartOptions.yAxis.title = { text: 'ANTAL' };
         chartOptions.legend.enabled = false;
         new Highcharts.Chart(chartOptions);
