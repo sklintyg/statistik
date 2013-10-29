@@ -98,7 +98,7 @@
 	                                <tbody>
 	                                    <tr ng-repeat="row in rows">
 	                                        <td class="datatablescrollable headcol">{{row.name}}</td>
-	                                        <td class="datatablescrollable" ng-repeat="fieldData in row.data" >{{fieldData}}</td>
+	                                        <td class="datatablescrollable" ng-repeat="fieldData in row.data" >{{fieldData | thousandseparated}}</td>
 	                                    </tr>
 	                                </tbody>
 	                            </table>

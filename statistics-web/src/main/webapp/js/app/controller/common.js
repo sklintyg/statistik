@@ -43,6 +43,10 @@ var ControllerCommons = new function(){
     this.htmlsafe = function(string) {
         return string.replace(/&/g, '&amp;').replace(/</g, '&lt;');
     }
+    
+    this.makeThousandSeparated = function(input) {
+        return input.toString().split('').reverse().join('').match(/.{1,3}/g).join(' ').split('').reverse().join('');
+    };
 
     this.getHighChartConfigBase = function(chartCategories, chartSeries) {
         return {
@@ -83,7 +87,7 @@ var ControllerCommons = new function(){
                 },
                 labels : {
                     formatter : function() {
-                        return this.value
+                        return ControllerCommons.makeThousandSeparated(this.value);
                     }
                 },
                 plotLines : [ {
