@@ -8,7 +8,7 @@ import org.joda.time.LocalDate;
 
 import se.inera.statistics.service.report.api.AgeGroups;
 import se.inera.statistics.service.report.model.AgeGroupsResponse;
-import se.inera.statistics.service.report.model.AgeGroupsRow;
+import se.inera.statistics.service.report.model.db.AgeGroupsRow;
 import se.inera.statistics.service.report.model.Sex;
 import se.inera.statistics.service.report.repository.RollingLength;
 import se.inera.statistics.service.report.util.AldersgroupUtil;

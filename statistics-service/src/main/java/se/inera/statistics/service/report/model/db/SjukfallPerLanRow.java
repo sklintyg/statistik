@@ -1,4 +1,4 @@
-package se.inera.statistics.service.report.model;
+package se.inera.statistics.service.report.model.db;
 
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;

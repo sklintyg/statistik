@@ -2,9 +2,9 @@ package se.inera.statistics.service.report.repository;
 
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-import se.inera.statistics.service.report.model.AgeGroupsRow;
-import se.inera.statistics.service.report.model.CasesPerMonthRow;
-import se.inera.statistics.service.report.model.SickLeaveLengthRow;
+import se.inera.statistics.service.report.model.db.AgeGroupsRow;
+import se.inera.statistics.service.report.model.db.CasesPerMonthRow;
+import se.inera.statistics.service.report.model.db.SickLeaveLengthRow;
 import se.inera.statistics.service.report.util.Verksamhet;
 
 import javax.persistence.EntityManager;

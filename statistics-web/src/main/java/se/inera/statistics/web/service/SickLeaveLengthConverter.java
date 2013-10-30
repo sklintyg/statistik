@@ -6,7 +6,7 @@ import java.util.List;
 
 import se.inera.statistics.service.report.model.Sex;
 import se.inera.statistics.service.report.model.SickLeaveLengthResponse;
-import se.inera.statistics.service.report.model.SickLeaveLengthRow;
+import se.inera.statistics.service.report.model.db.SickLeaveLengthRow;
 import se.inera.statistics.web.model.ChartData;
 import se.inera.statistics.web.model.ChartSeries;
 import se.inera.statistics.web.model.NamedData;

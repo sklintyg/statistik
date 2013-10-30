@@ -18,8 +18,8 @@ import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.Sex;
 import se.inera.statistics.service.report.model.SimpleDualSexDataRow;
 import se.inera.statistics.service.report.model.SimpleDualSexResponse;
-import se.inera.statistics.service.report.model.SjukfallPerLanKey;
-import se.inera.statistics.service.report.model.SjukfallPerLanRow;
+import se.inera.statistics.service.report.model.db.SjukfallPerLanKey;
+import se.inera.statistics.service.report.model.db.SjukfallPerLanRow;
 import se.inera.statistics.service.report.util.ReportUtil;
 
 public class SjukfallPerLanPersistenceHandler implements CasesPerCounty {

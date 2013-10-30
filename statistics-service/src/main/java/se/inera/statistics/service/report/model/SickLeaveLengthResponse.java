@@ -1,5 +1,7 @@
 package se.inera.statistics.service.report.model;
 
+import se.inera.statistics.service.report.model.db.SickLeaveLengthRow;
+
 import java.util.ArrayList;
 import java.util.List;
 
