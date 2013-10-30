@@ -2,7 +2,7 @@
 
  app.businessOverviewCtrl = function ($scope, $timeout, statisticsData, $routeParams) {
 
-    $scope.baseUrl = "#/verksamhet/" + $routeParams.businessId;  
+    $scope.baseUrl = "#/verksamhet/" + $routeParams.verksamhetId;  
      
     var dataReceived = function(result) {
     	$scope.subTitle = "Utveckling för verksamheten " + result.periodText;
@@ -109,16 +109,7 @@
         return donutData;
     }
 
-    var getSelectedVerksamhet = function(selectedVerksamhetId, verksamhets) {
-        for (var i = 0; i < verksamhets.length; i++) {
-            if (verksamhets[i].id === selectedVerksamhetId) {
-                return verksamhets[i];
-            }
-        }
-        return {}; //Selected verksamhet not found
-    }
-
-    statisticsData.getBusinessOverview($routeParams.businessId, dataReceived, function() { $scope.dataLoadingError = true; });
+    statisticsData.getBusinessOverview($routeParams.verksamhetId, dataReceived, function() { $scope.dataLoadingError = true; });
     $scope.spinnerText = "Laddar information...";
     $scope.doneLoading = false;
     $scope.dataLoadingError = false;
@@ -128,10 +119,5 @@
     $scope.popoverTextChangeProcentage2 = " jämfört med dess föregående tre månader.";
     $scope.popoverTextSexDistribution = "Könsfördelningen av totala antalet sjukfall under perioden ";
     $scope.popoverTextSexDistribution2 = " jämfört med föregående tre månader.";
-
-    statisticsData.getLoginInfo(function(loginInfo){
-        $scope.businesses = loginInfo.businesses;
-        $scope.verksamhetName = getSelectedVerksamhet($routeParams.businessId, loginInfo.businesses).name;
-        }, function() { $scope.dataLoadingError = true; });
 
 };

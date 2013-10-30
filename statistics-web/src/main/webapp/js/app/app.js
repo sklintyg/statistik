@@ -63,7 +63,7 @@ app.statisticsApp = angular.module('StatisticsApp', [ 'ngCookies', 'ui.bootstrap
                 templateUrl : 'views/empty.html',
                 controller : 'BusinessLandingPageCtrl',
                 title: 'Verksamhet'
-            }).when('/verksamhet/:businessId/oversikt', {
+            }).when('/verksamhet/:verksamhetId/oversikt', {
                 templateUrl : 'views/business/businessOverview.html',
                 controller : 'BusinessOverviewCtrl',
                 controllerAs : 'BusinessOverviewCtrl',

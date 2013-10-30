@@ -5,7 +5,7 @@ import org.openqa.selenium.By
 
 class VerksamhetSickLeaveLengthCurrentPage extends DetailsPage {
 
-    static at = { title == "Sjukskrivningslängd | Statistiktjänsten" }
+    static at = { title == "Sjukskrivningslängd | Nationella statistiktjänsten" }
 
     static content = {
 

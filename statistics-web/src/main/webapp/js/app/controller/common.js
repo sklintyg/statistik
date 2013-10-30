@@ -45,7 +45,7 @@ var ControllerCommons = new function(){
     }
     
     this.makeThousandSeparated = function(input) {
-        return input.toString().split('').reverse().join('').match(/.{1,3}/g).join(' ').split('').reverse().join('');
+        return input ? input.toString().split('').reverse().join('').match(/.{1,3}/g).join(' ').split('').reverse().join('') : "";
     };
 
     this.getHighChartConfigBase = function(chartCategories, chartSeries) {

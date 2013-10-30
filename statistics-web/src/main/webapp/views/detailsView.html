@@ -1,8 +1,11 @@
 <div id="chart-content">
 	<div class="row-fluid dontprint">
-		<div class="span4">
+		<div class="span2">
 			<h1 class="national-statistic-h1" ng-bind="viewHeader"></h1>
 		</div>
+        <div class="span2" style="margin-left: 5px;" ng-show="verksamhetName">
+             <h2> - {{ verksamhetName }}</h2> 
+        </div>
 		<div class="span6 offset2">
 			<!-- PRINT BUTTON GROUP -->
 			<div class="btn-group statistics-btn-group">
@@ -47,9 +50,9 @@
 					</span>
 				</div>
                 <!-- Start detailsOptions if any -->
-                <div class="row-fluid">
+                <div class="row-fluid" id="detailsOptionsDropdown" ng-show="showDetailsOptions">
                 	<div class="span12">
-                		<div class="btn-group" ng-show="showDetailsOptions" style="margin-bottom: 15px;">
+                		<div class="btn-group" style="margin-bottom: 15px;">
 		                  <a class="btn dropdown-toggle" data-toggle="dropdown" href="#" >
 		                    {{selectedDetailsOption.id}} {{selectedDetailsOption.name}}
 		                    <span class="caret"></span>
