@@ -1,8 +1,11 @@
 <div id="chart-content">
 	<div class="row-fluid dontprint">
-		<div class="span4">
+		<div class="span2">
 			<h1 class="national-statistic-h1" ng-bind="viewHeader"></h1>
 		</div>
+        <div class="span2" style="margin-left: 5px;" ng-show="verksamhetName">
+             <h2> - {{ verksamhetName }}</h2> 
+        </div>
 		<div class="span6 offset2">
 			<!-- PRINT BUTTON GROUP -->
 			<div class="btn-group statistics-btn-group">

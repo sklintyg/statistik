@@ -50,9 +50,9 @@
      }); 
 
     $rootScope.$on('$routeChangeSuccess', function(angularEvent, next, current) {
-        if (next.params.businessId) {
-            $scope.businessId = next.params.businessId;
-            $cookies.verksamhetId = next.params.businessId;
+        if (next.params.verksamhetId) {
+            $scope.businessId = next.params.verksamhetId;
+            $cookies.verksamhetId = next.params.verksamhetId;
         } else if ($cookies.verksamhetId) {
             $scope.businessId = $cookies.verksamhetId;
         }
