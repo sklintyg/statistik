@@ -904,7 +904,10 @@ div.accordion-body.in.collapse > div.accordion-heading a.accordion-toggle{
 	font-size: 12px;
 	line-height: 20px;
 }
-
+.overflow-menu-options {
+	max-height: 255px;
+	overflow-y: auto;
+}
 #view .btn {
 	color: #ffffff;
 	text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
