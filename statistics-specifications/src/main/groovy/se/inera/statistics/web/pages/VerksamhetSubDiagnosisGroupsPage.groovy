@@ -5,7 +5,7 @@ import org.openqa.selenium.By
 
 class VerksamhetSubDiagnosisGroupsPage extends DetailsPage {
 
-    static at = { title == "Underdiagnosgrupper | Statistiktjänsten" }
+    static at = { title == "Enskilt diagnoskapitel | Nationella statistiktjänsten" }
 
     static content = {
 
