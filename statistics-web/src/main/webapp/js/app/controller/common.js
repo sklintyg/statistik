@@ -44,8 +44,12 @@ var ControllerCommons = new function(){
         return string.replace(/&/g, '&amp;').replace(/</g, '&lt;');
     }
     
+    this.isNumber = function(n) {
+        return !isNaN(parseFloat(n)) && isFinite(n);
+      }
+    
     this.makeThousandSeparated = function(input) {
-        return input ? input.toString().split('').reverse().join('').match(/.{1,3}/g).join(' ').split('').reverse().join('') : "";
+        return ControllerCommons.isNumber(input) ? input.toString().split('').reverse().join('').match(/.{1,3}/g).join(' ').split('').reverse().join('') : input;
     };
 
     this.getHighChartConfigBase = function(chartCategories, chartSeries) {
