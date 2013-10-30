@@ -292,7 +292,14 @@ div.footer {
 .popover-inner {
     width: auto;
 }
-
+.rounded-bottom {
+	-webkit-border-bottom-right-radius: 5px;
+	-webkit-border-bottom-left-radius: 5px;
+	-moz-border-radius-bottomright: 5px;
+	-moz-border-radius-bottomleft: 5px;
+	border-bottom-right-radius: 5px;
+	border-bottom-left-radius: 5px;
+}
 #timespan {
     padding: 0px 0px 10px 10px;
     border-style: solid;
@@ -551,7 +558,6 @@ legend {
 	border-bottom: 1px solid transparent;
 }
 #statistics-menu-accordion li a.menu-item-has-childs {
-	
 }
 #statistics-menu-accordion #national-statistic-menu-content li.active a,
 #statistics-menu-accordion #business-statistic-menu-content li.active a,
@@ -799,7 +805,7 @@ div.accordion-body.in.collapse > div.accordion-heading a.accordion-toggle{
 }
 #statistics-menu-accordion .accordion-inner,
 #statistics-about-menu-accordion .accordion-inner {
-	padding: 0px 0px 4px !important;
+	padding: 0px 0px 0px !important;
 	border: 1px solid #BABABA !important;
 }
 #chart-data-table .accordion-inner {
@@ -834,9 +840,7 @@ div.accordion-body.in.collapse > div.accordion-heading a.accordion-toggle{
 	border-left: 1px solid #dddddd;
 }
 
-#faq-accordion {
-	
-}
+#faq-accordion {}
 .faq-accordion-group {
 	margin-bottom: 10px !important;
 	border: 1px solid #e5e5e5 !important;

@@ -47,15 +47,20 @@
 					</span>
 				</div>
                 <!-- Start detailsOptions if any -->
-                <div class="row-fluid btn-group statistics-btn-group" ng-show="showDetailsOptions">
-                  <a class="btn dropdown-toggle" data-toggle="dropdown" href="#" >
-                    {{selectedDetailsOption.id}} {{selectedDetailsOption.name}}
-                    <span class="caret"></span>
-                  </a>
-                  <ul class="dropdown-menu left">
-                    <li ng-repeat="detailsOption in detailsOptions"><a href="{{detailsOption.url}}">{{detailsOption.id}} {{detailsOption.name}}</a></li>
-                  </ul>
+                <div class="row-fluid">
+                	<div class="span12">
+                		<div class="btn-group" ng-show="showDetailsOptions" style="margin-bottom: 15px;">
+		                  <a class="btn dropdown-toggle" data-toggle="dropdown" href="#" >
+		                    {{selectedDetailsOption.id}} {{selectedDetailsOption.name}}
+		                    <span class="caret"></span>
+		                  </a>
+		                  <ul class="dropdown-menu left">
+		                    <li ng-repeat="detailsOption in detailsOptions"><a href="{{detailsOption.url}}">{{detailsOption.id}} {{detailsOption.name}}</a></li>
+		                  </ul>
+		                </div>
+                	</div>
                 </div>
+                
         	 	<!-- Start graph -->
 	            <div class="row-fluid">
 	                <div class="span12" style="margin-bottom: 20px;">
