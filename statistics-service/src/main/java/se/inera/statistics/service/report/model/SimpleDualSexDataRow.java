@@ -14,6 +14,10 @@ public class SimpleDualSexDataRow {
         this(name, new DualSexField(female, male));
     }
 
+    public SimpleDualSexDataRow(String name, long female, long male) {
+        this(name, new DualSexField((int) female, (int) male));
+    }
+
     public String getName() {
         return name;
     }
