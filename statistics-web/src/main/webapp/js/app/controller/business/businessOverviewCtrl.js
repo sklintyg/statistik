@@ -21,6 +21,7 @@
                 type: 'pie',
                 name: 'Könsfördelning',
                 showInLegend: true,
+                useHTML: true,
                 data: [
                     {name: 'Kvinnor', y: female, color: "#EA8025"},
                     {name: 'Män', y: male, color: "#008391"}
@@ -29,15 +30,26 @@
             var chartOptions = ControllerCommons.getHighChartConfigBase([], series);
             chartOptions.chart.type = 'pie';
             chartOptions.chart.renderTo = containerId;
-            chartOptions.chart.height = 180;
+            chartOptions.chart.height = 220;
             chartOptions.title = {
                 text: period,
-                verticalAlign: 'bottom'
+                verticalAlign: 'bottom',
+                x: -3,
+                y: 5,
+                style: {
+                    color: '#274b6d',
+                    fontWeight: 'bold',
+                    fontSize: '12px'
+                }
+                
             };
             chartOptions.legend = {
                 labelFormat: '{name} {percentage:.0f}% (antal: {y}st)',
-                align: 'center',
-                verticalAlign: 'top'
+                align: 'top left',
+                verticalAlign: 'top',
+                borderWidth: 0,
+                useHTML: true,
+                layout: 'vertical',
             };
             chartOptions.tooltip.pointFormat = '{point.percentage:.0f}% (antal: {point.y}st)';
             new Highcharts.Chart(chartOptions);
