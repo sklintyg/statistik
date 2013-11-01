@@ -1,10 +1,10 @@
-package se.inera.statistics.service.report.model;
+package se.inera.statistics.service.report.model.db;
 
 import javax.persistence.Embeddable;
 import java.io.Serializable;
 
 @Embeddable
-public class AldersgruppKey implements Serializable {
+public class SickLeaveLengthKey implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private String period;
@@ -12,10 +12,10 @@ public class AldersgruppKey implements Serializable {
     private String grupp;
     private int periods;
 
-    public AldersgruppKey() {
+    public SickLeaveLengthKey() {
     }
 
-    public AldersgruppKey(String period, String hsaId, String group, int periods) {
+    public SickLeaveLengthKey(String period, String hsaId, String group, int periods) {
         this.period = period;
         this.hsaId = hsaId;
         this.grupp = group;

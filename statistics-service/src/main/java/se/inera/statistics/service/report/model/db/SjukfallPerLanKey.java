@@ -1,23 +1,24 @@
-package se.inera.statistics.service.report.model;
-
-import java.io.Serializable;
+package se.inera.statistics.service.report.model.db;
 
 import javax.persistence.Embeddable;
+import java.io.Serializable;
 
 @Embeddable
-public class CasesPerMonthKey implements Serializable {
+public class SjukfallPerLanKey implements Serializable {
     private static final long serialVersionUID = 1L;
     public static final String NATIONELL = "nationell";
 
     private String period;
     private String hsaId;
+    private String lanId;
 
-    public CasesPerMonthKey(String period, String enhet) {
+    public SjukfallPerLanKey(String period, String enhet, String lan) {
         this.period = period;
         hsaId = enhet;
+        lanId = lan;
     }
 
-    public CasesPerMonthKey() {
+    public SjukfallPerLanKey() {
     }
 
     public String getPeriod() {
@@ -36,6 +37,14 @@ public class CasesPerMonthKey implements Serializable {
         this.hsaId = hsaId;
     }
 
+    public String getLanId() {
+        return lanId;
+    }
+
+    public void setLanId(String lanId) {
+        this.lanId = lanId;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -45,7 +54,7 @@ public class CasesPerMonthKey implements Serializable {
             return false;
         }
 
-        CasesPerMonthKey that = (CasesPerMonthKey) o;
+        SjukfallPerLanKey that = (SjukfallPerLanKey) o;
 
         if (hsaId != null ? !hsaId.equals(that.hsaId) : that.hsaId != null) {
             return false;

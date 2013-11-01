@@ -6,7 +6,7 @@ import java.util.Map;
 
 public class Lan implements Iterable<String> {
 
-    public static final String OVRIGT = "Övrigt";
+    public static final String OVRIGT = "Okänt län";
     private final Map<String, String> kodToName = new LinkedHashMap<>();
 
     public Lan() {

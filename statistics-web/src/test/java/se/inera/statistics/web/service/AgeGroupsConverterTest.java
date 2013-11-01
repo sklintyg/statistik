@@ -8,7 +8,7 @@ import java.util.List;
 import org.junit.Test;
 
 import se.inera.statistics.service.report.model.AgeGroupsResponse;
-import se.inera.statistics.service.report.model.AgeGroupsRow;
+import se.inera.statistics.service.report.model.db.AgeGroupsRow;
 import se.inera.statistics.web.model.AgeGroupsData;
 import se.inera.statistics.web.model.ChartData;
 import se.inera.statistics.web.model.ChartSeries;

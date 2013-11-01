@@ -11,7 +11,7 @@ import javax.persistence.Table;
 import org.joda.time.LocalDate;
 
 @Entity
-@NamedQueries(value = { @NamedQuery(name = "SjukfallByPersonIdAndVardgivareId", query = "SELECT s FROM Sjukfall s WHERE s.personId = :personId and s.vardgivareId = :vardgivareId") })
+@NamedQueries(value = { @NamedQuery(name = "SjukfallByPersonIdAndVardgivareId", query = "SELECT s FROM Sjukfall s WHERE s.personId = :personId AND s.vardgivareId = :vardgivareId ORDER BY s.start DESC ") })
 @Table(name = "sjukfall")
 public class Sjukfall {
 

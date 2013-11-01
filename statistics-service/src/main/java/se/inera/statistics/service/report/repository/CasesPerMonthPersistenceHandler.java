@@ -12,8 +12,8 @@ import org.joda.time.LocalDate;
 import org.springframework.transaction.annotation.Transactional;
 
 import se.inera.statistics.service.report.api.CasesPerMonth;
-import se.inera.statistics.service.report.model.CasesPerMonthKey;
-import se.inera.statistics.service.report.model.CasesPerMonthRow;
+import se.inera.statistics.service.report.model.db.CasesPerMonthKey;
+import se.inera.statistics.service.report.model.db.CasesPerMonthRow;
 import se.inera.statistics.service.report.model.DualSexField;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.Sex;

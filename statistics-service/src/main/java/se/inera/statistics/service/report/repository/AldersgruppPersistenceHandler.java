@@ -12,8 +12,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import se.inera.statistics.service.report.api.AgeGroups;
 import se.inera.statistics.service.report.model.AgeGroupsResponse;
-import se.inera.statistics.service.report.model.AgeGroupsRow;
-import se.inera.statistics.service.report.model.AldersgruppKey;
+import se.inera.statistics.service.report.model.db.AgeGroupsRow;
+import se.inera.statistics.service.report.model.db.AldersgruppKey;
 import se.inera.statistics.service.report.model.Sex;
 import se.inera.statistics.service.report.util.AldersgroupUtil;
 import se.inera.statistics.service.report.util.Ranges.Range;
