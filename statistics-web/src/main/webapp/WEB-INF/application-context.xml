@@ -27,6 +27,7 @@
 
     <context:property-placeholder location="classpath:/application-context.properties"/>
 
+    
     <beans profile="!embedded">
         <import resource="classpath*:process-log-impl.xml"/>
     </beans>
