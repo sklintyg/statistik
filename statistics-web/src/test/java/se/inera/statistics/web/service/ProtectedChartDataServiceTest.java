@@ -54,7 +54,7 @@ public class ProtectedChartDataServiceTest {
     @Test
     public void checkDeniedAccessToVerksamhetTest() {
         ProtectedChartDataService chartDataService = new ProtectedChartDataService(mock, null, null, null, null, null, null);
-        boolean result = chartDataService.hasAccessTo(request, "verksamhet3");
+        boolean result = ProtectedChartDataService.Helper.hasAccessTo(request, "verksamhet3");
 
         assertEquals(false, result);
     }
@@ -62,7 +62,7 @@ public class ProtectedChartDataServiceTest {
     @Test
     public void checkAllowedAccessToVerksamhetTest() {
         ProtectedChartDataService chartDataService = new ProtectedChartDataService(mock, null, null, null, null, null, null);
-        boolean result = chartDataService.hasAccessTo(request, "verksamhet2");
+        boolean result = ProtectedChartDataService.Helper.hasAccessTo(request, "verksamhet2");
 
         assertEquals(true, result);
     }
