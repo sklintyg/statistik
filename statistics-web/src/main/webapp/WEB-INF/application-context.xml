@@ -29,17 +29,6 @@
 
     <context:property-placeholder location="classpath:/application-context.properties"/>
 
-    <bean id="aoplog" class="se.inera.statistics.service.common.AccessLogger"/>
-    <!--aop:config>
-        <aop:aspect ref="aoplog">
-            <aop:pointcut id="logProtected" expression=
-                    "execution(* se.inera.statistics.web.service.ProtectedChartDataService.*(..))" />
-            <aop:around
-                    pointcut-ref="logProtected"
-                    method="logCall" />
-        </aop:aspect>
-    </aop:config-->
-
     <beans profile="!embedded">
         <import resource="classpath*:process-log-impl.xml"/>
     </beans>
