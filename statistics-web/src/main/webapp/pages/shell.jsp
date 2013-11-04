@@ -65,13 +65,24 @@
 							</div>
 							<div id="business-logged-in-user-container" style="display: none; position: absolute; right: 0; margin-right: 25px;">
 								<div class="pull-right">
+									<span class="user-logout pull-right">
+										<a tabindex="-1" href="/j_spring_security_logout">Logga ut</a>
+									</span>
+		                        </div>
+								
+								<div class="pull-right">
 									<img id="business-me-icon" alt="Bild på inloggad användare" src="<c:url value='/img/avatar.png'/>"/>
 								</div>
 								<div class="header-box-user-profile pull-right" style="margin-right: 10px;">
 									<span class="user-name pull-right">Användare Andersson</span><br>
-									<span class="user-logout pull-right">
-										<a tabindex="-1" href="/j_spring_security_logout">Logga ut</a>
-									</span>
+									<div class="btn-group">
+										<a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+											Välj verksamhet<span class="caret"></span>
+										</a>
+										<ul class="dropdown-menu left">
+											<li ng-repeat="business in businesses" ><a tabindex="-1" ng-href="#/verksamhet/{{business.id}}/oversikt">{{business.name}}</a></li>
+										</ul>
+									</div>
 								</div>
 							</div>
 						</div>	

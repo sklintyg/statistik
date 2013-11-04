@@ -16,7 +16,7 @@
      conf.dataFetcherVerksamhet = "getSubDiagnosisGroupDataVerksamhet";
      conf.showDetailsOptions = true;
      conf.title = "Antal sjukfall per enskilt diagnoskapitel";
-     conf.chartFootnotes = ["Notera att samma sjukfall kan visas fler än en gång i grafen då ett sjukfall kan tilldelas flera diagnoser under samma månad", "Endast de sex vanligast förekommande undergrupper redovisas med namn. Övriga underdiagnoser redovisas som övrigt."]; 
+     conf.chartFootnotes = ["Notera att samma sjukfall kan visas fler än en gång i grafen då ett sjukfall kan tilldelas flera diagnoser under samma månad", "Endast de sex vanligast förekommande undergrupper redovisas med namn. Övriga diagnoskapitel redovisas som 'Övriga diagnoskapitel'."]; 
      return conf;
  }
  
