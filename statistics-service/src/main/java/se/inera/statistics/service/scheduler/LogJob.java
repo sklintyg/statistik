@@ -17,7 +17,7 @@ public class LogJob {
 
     @Scheduled(cron = "0/10 * * * * ?")
     public void checkLog() {
-        LOG.info("Log Job");
+        LOG.debug("Log Job");
         while (consumer.processBatch() > 0) {
             System.err.println("Processed batch");
         }
