@@ -13,6 +13,7 @@
 
     <modules>
         <module>build-tools</module>
+        <module>hsa-integration</module>
         <module>statistics-web</module>
         <module>statistics-service</module>
         <module>statistics-specifications</module>
@@ -356,6 +357,17 @@
                 <version>${jackson.version}</version>
             </dependency>
 
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-annotations</artifactId>
+                <version>${jackson.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.cxf</groupId>
+                <artifactId>cxf-rt-frontend-jaxws</artifactId>
+                <version>${cxf.version}</version>
+            </dependency>
             <dependency>
                 <groupId>org.apache.cxf</groupId>
                 <artifactId>cxf-rt-frontend-jaxrs</artifactId>

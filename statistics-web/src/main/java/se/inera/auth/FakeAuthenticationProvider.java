@@ -85,7 +85,7 @@ public class FakeAuthenticationProvider implements AuthenticationProvider {
 
         NameID nameId = new NameIDBuilder().buildObject();
         nameId.setValue(token.getCredentials().toString());
-        return new SAMLCredential(nameId, assertion, "fake-idp", "webcert");
+        return new SAMLCredential(nameId, assertion, "fake-idp", "statistics");
     }
 
     private Attribute createAttribute(String name, String value) {

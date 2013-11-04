@@ -29,6 +29,8 @@
 
     <context:property-placeholder location="classpath:/application-context.properties"/>
 
+    <bean class="se.inera.statistics.hsa.services.HsaOrganizationsServiceImpl"/>
+
     <beans profile="!embedded">
         <import resource="classpath*:process-log-impl.xml"/>
     </beans>
@@ -61,7 +63,8 @@
     <bean class="se.inera.statistics.service.report.model.Lan" id="lan" />
     <bean id="loginInfoService" class="se.inera.statistics.web.service.LoginInfoService" />
 
-    <import resource="application-context-cxf.xml"/>
+        <import resource="classpath*:hsa-services-config.xml"/>
+        <import resource="application-context-cxf.xml"/>
     <import resource="application-context-security.xml"/>
 
     <context:annotation-config/>

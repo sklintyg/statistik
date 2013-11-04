@@ -27,7 +27,7 @@
     <security:http security="none" pattern="/favicon.ico"/>
 
     <beans profile="test">
-        <context:property-placeholder location="file:${user.home}/.test.webcert.se/config.properties" order="1"
+        <context:property-placeholder location="file:${user.home}/.test.statistics.se/config.properties" order="1"
                                       ignore-resource-not-found="false" ignore-unresolvable="false"/>
     </beans>
     <beans profile="test">
@@ -45,7 +45,7 @@
         <!-- Logger for SAML messages and events -->
         <bean id="samlLogger" class="org.springframework.security.saml.log.SAMLDefaultLogger"/>
 
-        <bean id="userDetailsService" class="se.inera.auth.WebCertUserDetailsService"/>
+        <bean id="userDetailsService" class="se.inera.auth.UserDetailsService"/>
 
         <!-- Initialization of OpenSAML library-->
         <bean class="org.springframework.security.saml.SAMLBootstrap"/>
