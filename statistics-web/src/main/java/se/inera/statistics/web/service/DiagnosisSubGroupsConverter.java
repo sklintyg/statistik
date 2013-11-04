@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.TreeMap;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import se.inera.statistics.service.report.model.DiagnosisGroupResponse;
 import se.inera.statistics.service.report.model.DualSexDataRow;
 import se.inera.statistics.service.report.model.Sex;
@@ -13,6 +16,8 @@ import se.inera.statistics.web.model.DualSexStatisticsData;
 import se.inera.statistics.web.model.TableData;
 
 public class DiagnosisSubGroupsConverter {
+
+    private static final Logger LOG = LoggerFactory.getLogger(DiagnosisGroupsConverter.class);
 
     private static final int NUMBER_OF_CHART_SERIES = 6;
 
@@ -68,6 +73,8 @@ public class DiagnosisSubGroupsConverter {
         for (int i = 0; i < dataSize; i++) {
             columnSums.put(sum(diagnosisGroups.getDataFromIndex(i, Sex.Male)) + sum(diagnosisGroups.getDataFromIndex(i, Sex.Female)), i);
         }
+        LOG.debug("Columns: " + diagnosisGroups.getDiagnosisGroupsAsStrings());
+        LOG.debug("TopColumnIndexes: " + columnSums);
         ArrayList<Integer> arrayList = new ArrayList<>(columnSums.descendingMap().values());
         return arrayList.subList(0, Math.min(NUMBER_OF_CHART_SERIES, arrayList.size()));
     }
