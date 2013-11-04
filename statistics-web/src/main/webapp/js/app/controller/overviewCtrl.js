@@ -128,16 +128,48 @@
     
     function getCoordinates(perCountyObject){
         var county = perCountyObject.name.toLowerCase();
-        if (contains(county, "stockholm")){
-            return {"x": 55, "y": 28};
-        } else if (contains(county, "västra götaland")){
-            return {"x": 25, "y": 23};
+        if (contains(county, "blekinge")){
+            return {"x": 39, "y": 7};
+        } else if (contains(county, "dalarna")){
+            return {"x": 36, "y": 39};
+        } else if (contains(county, "halland")){
+            return {"x": 27, "y": 12};
+        } else if (contains(county, "kalmar")){
+            return {"x": 44, "y": 12};
+        } else if (contains(county, "kronoberg")){
+            return {"x": 34, "y": 9};
+        } else if (contains(county, "gotland")){
+            return {"x": 55, "y": 15};
+        } else if (contains(county, "gävleborg")){
+            return {"x": 45, "y": 43};
+        } else if (contains(county, "jämtland")){
+            return {"x": 36, "y": 56};
+        } else if (contains(county, "jönköping")){
+            return {"x": 33, "y": 15};
+        } else if (contains(county, "norrbotten")){
+            return {"x": 55, "y": 85};
         } else if (contains(county, "skåne")){
-            return {"x": 29, "y": 5};
-        } else if (contains(county, "östergötland")){
-            return {"x": 47, "y": 20};
+            return {"x": 30, "y": 3};
+        } else if (contains(county, "stockholm")){
+            return {"x": 53, "y": 29};
+        } else if (contains(county, "södermanland")){
+            return {"x": 46, "y": 24};
         } else if (contains(county, "uppsala")){
-            return {"x": 57, "y": 34};
+            return {"x": 50, "y": 34};
+        } else if (contains(county, "värmland")){
+            return {"x": 29, "y": 31};
+        } else if (contains(county, "västerbotten")){
+            return {"x": 51, "y": 68};
+        } else if (contains(county, "västernorrland")){
+            return {"x": 49, "y": 58};
+        } else if (contains(county, "västmanland")){
+            return {"x": 45, "y": 30};
+        } else if (contains(county, "västra götaland")){
+            return {"x": 27, "y": 18};
+        } else if (contains(county, "örebro")){
+            return {"x": 38, "y": 27};
+        } else if (contains(county, "östergötland")){
+            return {"x": 43, "y": 19};
         } else {
             return {"x": 10, "y": 80}; //Default point should not match any part of sweden
         }
