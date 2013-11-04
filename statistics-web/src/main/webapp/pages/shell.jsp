@@ -59,24 +59,31 @@
 						<div class="span2">
 							<span>Statistiktjänst för ordinerad sjukskrivning</span>
 						</div>
-						<div class="span4 offset4">
+						<div class="span4 pull-right" style="width: auto !important;">
 							<div id="business-login-container">
+								<span id="business-login-span">För verksamhetsstatistik: </span>
 								<button class="btn" type="button" id="business-login-btn" value="Logga in">Logga in</button>
 							</div>
 							<div id="business-logged-in-user-container" style="display: none; position: absolute; right: 0; margin-right: 25px;">
+								<!-- 
 								<div class="pull-right">
 									<span class="user-logout pull-right">
 										<a tabindex="-1" href="/j_spring_security_logout">Logga ut</a>
 									</span>
 		                        </div>
-								
-								<div class="pull-right">
+								 -->
+								<!-- div class="pull-right">
 									<img id="business-me-icon" alt="Bild på inloggad användare" src="<c:url value='/img/avatar.png'/>"/>
-								</div>
-								<div class="header-box-user-profile pull-right" style="margin-right: 10px;">
-									<span class="user-name pull-right">Användare Andersson</span><br>
+								</div -->
+								<div class="header-box-user-profile pull-right">
+									<span class="user-logout pull-right">
+										<a tabindex="-1" href="/j_spring_security_logout">Logga ut</a>
+									</span>
+									<span class="user-name pull-right" style="margin-right: 10px;">Användare Andersson</span>
+									<br>
+									<span>Vald verksamhet:</span>
 									<div class="btn-group">
-										<a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+										<a class="btn dropdown-toggle" id="business-select-business" data-toggle="dropdown" href="#">
 											Välj verksamhet<span class="caret"></span>
 										</a>
 										<ul class="dropdown-menu left">
@@ -188,7 +195,7 @@
 									<li><a class="first-item-in-menu" ng-href="#/om/tjansten" ctrlname="AboutServiceCtrl" navigationaware>Allmänt om tjänsten</a></li>
 									<li><a ng-href="#/om/inloggning" ctrlname="AboutLoginCtrl" navigationaware>Inloggning och behörighet</a></li>
 									<li><a ng-href="#/om/vanligafragor" ctrlname="AboutFaqCtrl" navigationaware>Vanliga frågor och svar</a></li>
-									<li><a class="last-item-in-menu rounded-bottom" ng-href="#/om/kontakt" ctrlname="AboutContactCtrl" navigationaware>Kontakt till support</a></li>
+									<li><a class="last-item-in-menu no-border-top rounded-bottom" ng-href="#/om/kontakt" ctrlname="AboutContactCtrl" navigationaware>Kontakt till support</a></li>
 								</ul>
 						    </div>
 						  </div>
