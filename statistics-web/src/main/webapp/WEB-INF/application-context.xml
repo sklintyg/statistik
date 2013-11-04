@@ -22,10 +22,14 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-    http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd">
+    http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd
+    http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.2.xsd">
 
     <context:property-placeholder location="classpath:/application-context.properties"/>
+
+    <bean class="se.inera.statistics.hsa.services.HsaOrganizationsServiceImpl"/>
 
     <beans profile="!embedded">
         <import resource="classpath*:process-log-impl.xml"/>
@@ -59,7 +63,8 @@
     <bean class="se.inera.statistics.service.report.model.Lan" id="lan" />
     <bean id="loginInfoService" class="se.inera.statistics.web.service.LoginInfoService" />
 
-    <import resource="application-context-cxf.xml"/>
+        <import resource="classpath*:hsa-services-config.xml"/>
+        <import resource="application-context-cxf.xml"/>
     <import resource="application-context-security.xml"/>
 
     <context:annotation-config/>

@@ -1,9 +1,9 @@
 package se.inera.statistics.service.report.model;
 
 /**
- *
+ * 
  * Represents relative proportions of men and women.
- *
+ * 
  */
 public class OverviewSexProportion {
 
@@ -20,23 +20,27 @@ public class OverviewSexProportion {
     }
 
     public int getMaleProportion() {
-        if (male == 0 && female == 0) return FIFTY;
+        if (male == 0 && female == 0) {
+            return FIFTY;
+        }
         return Math.round(((float) male * PERCENT) / (male + female));
     }
 
     public int getFemaleProportion() {
-        if (male == 0 && female == 0) return FIFTY;
+        if (male == 0 && female == 0) {
+            return FIFTY;
+        }
         return Math.round(((float) female * PERCENT) / (male + female));
     }
 
     public int getMaleAmount() {
         return male;
     }
-    
+
     public int getFemaleAmount() {
         return female;
     }
-    
+
     public Range getPeriod() {
         return period;
     }

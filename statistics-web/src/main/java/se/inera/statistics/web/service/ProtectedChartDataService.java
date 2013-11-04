@@ -13,6 +13,7 @@ import javax.ws.rs.core.MediaType;
 import org.joda.time.LocalDate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
@@ -52,6 +53,7 @@ public class ProtectedChartDataService {
     private AgeGroups datasourceAgeGroups;
     private DegreeOfSickLeave datasourceDegreeOfSickLeave;
     private SjukfallslangdGrupp datasourceSickLeaveLength;
+    public final Helper helper = new Helper();
 
     public ProtectedChartDataService() {
 
@@ -76,7 +78,9 @@ public class ProtectedChartDataService {
     @GET
     @Path("{verksamhetId}/getNumberOfCasesPerMonth")
     @Produces({ MediaType.APPLICATION_JSON })
-    public SimpleDetailsData getNumberOfCasesPerMonth(@PathParam("verksamhetId") String verksamhetId) {
+    @PreAuthorize(value = "@protectedChartDataService.helper.hasAccessTo(#request, #verksamhetId)")
+    @PostAuthorize(value = "@protectedChartDataService.helper.userAccess(#request, #verksamhetId)")
+    public SimpleDetailsData getNumberOfCasesPerMonth(@Context HttpServletRequest request, @PathParam("verksamhetId") String verksamhetId) {
         LOG.info("Calling getNumberOfCasesPerMonth with verksamhetId: " + verksamhetId);
         Range range = new Range();
         SimpleDualSexResponse<SimpleDualSexDataRow> casesPerMonth = datasourceCasesPerMonth.getCasesPerMonth(Verksamhet.decodeId(verksamhetId), range);
@@ -86,7 +90,9 @@ public class ProtectedChartDataService {
     @GET
     @Path("{verksamhetId}/getDiagnosisGroupStatistics")
     @Produces({ MediaType.APPLICATION_JSON })
-    public DualSexStatisticsData getDiagnosisGroupStatistics(@PathParam("verksamhetId") String verksamhetId) {
+    @PreAuthorize(value = "@protectedChartDataService.helper.hasAccessTo(#request, #verksamhetId)")
+    @PostAuthorize(value = "@protectedChartDataService.helper.userAccess(#request, #verksamhetId)")
+    public DualSexStatisticsData getDiagnosisGroupStatistics(@Context HttpServletRequest request, @PathParam("verksamhetId") String verksamhetId) {
         LOG.info("Calling getDiagnosisGroupStatistics with verksamhetId: " + verksamhetId);
         Range range = new Range();
         DiagnosisGroupResponse diagnosisGroups = datasourceDiagnosisGroups.getDiagnosisGroups(verksamhetId, range);
@@ -96,7 +102,9 @@ public class ProtectedChartDataService {
     @GET
     @Path("{verksamhetId}/getDiagnosisSubGroupStatistics/{groupId}")
     @Produces({ MediaType.APPLICATION_JSON })
-    public DualSexStatisticsData getDiagnosisSubGroupStatistics(@PathParam("verksamhetId") String verksamhetId, @PathParam("groupId") String groupId) {
+    @PreAuthorize(value = "@protectedChartDataService.helper.hasAccessTo(#request, #verksamhetId)")
+    @PostAuthorize(value = "@protectedChartDataService.helper.userAccess(#request, #verksamhetId)")
+    public DualSexStatisticsData getDiagnosisSubGroupStatistics(@Context HttpServletRequest request, @PathParam("verksamhetId") String verksamhetId, @PathParam("groupId") String groupId) {
         LOG.info("Calling getDiagnosisSubGroupStatistics with verksamhetId: '" + verksamhetId + "' and groupId: " + groupId);
         Range range = new Range();
         DiagnosisGroupResponse diagnosisGroups = datasourceDiagnosisSubGroups.getDiagnosisGroups(Verksamhet.decodeId(verksamhetId), range, groupId);
@@ -106,7 +114,8 @@ public class ProtectedChartDataService {
     @GET
     @Path("{verksamhetId}/getOverview")
     @Produces({ MediaType.APPLICATION_JSON })
-    @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request, #verksamhetId)")
+    @PreAuthorize(value = "@protectedChartDataService.helper.hasAccessTo(#request, #verksamhetId)")
+    @PostAuthorize(value = "@protectedChartDataService.helper.userAccess(#request, #verksamhetId)")
     public VerksamhetOverviewData getOverviewData(@Context HttpServletRequest request, @PathParam("verksamhetId") String verksamhetId) {
         Range range = Range.quarter();
         VerksamhetOverviewResponse response = datasourceOverview.getOverview(Verksamhet.decodeId(verksamhetId), range);
@@ -116,16 +125,20 @@ public class ProtectedChartDataService {
     @GET
     @Path("{verksamhetId}/getAgeGroupsStatistics")
     @Produces({ MediaType.APPLICATION_JSON })
-    public AgeGroupsData getAgeGroupsStatistics(@PathParam("verksamhetId") String verksamhetId) {
+    @PreAuthorize(value = "@protectedChartDataService.helper.hasAccessTo(#request, #verksamhetId)")
+    @PostAuthorize(value = "@protectedChartDataService.helper.userAccess(#request, #verksamhetId)")
+    public AgeGroupsData getAgeGroupsStatistics(@Context HttpServletRequest request, @PathParam("verksamhetId") String verksamhetId) {
         LOG.info("Calling getAgeGroupsStatistics with verksamhetId: " + verksamhetId);
-        AgeGroupsResponse ageGroups = datasourceAgeGroups.getHistoricalAgeGroups(Verksamhet.decodeId(verksamhetId), previousMonth(), RollingLength.QUARTER);
+        AgeGroupsResponse ageGroups = datasourceAgeGroups.getHistoricalAgeGroups(Verksamhet.decodeId(verksamhetId), Helper.previousMonth(), RollingLength.QUARTER);
         return new AgeGroupsConverter().convert(ageGroups);
     }
 
     @GET
     @Path("{verksamhetId}/getAgeGroupsCurrentStatistics")
     @Produces({ MediaType.APPLICATION_JSON })
-    public AgeGroupsData getAgeGroupsCurrentStatistics(@PathParam("verksamhetId") String verksamhetId) {
+    @PreAuthorize(value = "@protectedChartDataService.helper.hasAccessTo(#request, #verksamhetId)")
+    @PostAuthorize(value = "@protectedChartDataService.helper.userAccess(#request, #verksamhetId)")
+    public AgeGroupsData getAgeGroupsCurrentStatistics(@Context HttpServletRequest request, @PathParam("verksamhetId") String verksamhetId) {
         LOG.info("Calling getAgeGroupsCurrentStatistics with verksamhetId: " + verksamhetId);
         AgeGroupsResponse ageGroups = datasourceAgeGroups.getCurrentAgeGroups(Verksamhet.decodeId(verksamhetId));
         return new AgeGroupsConverter().convert(ageGroups);
@@ -134,7 +147,9 @@ public class ProtectedChartDataService {
     @GET
     @Path("{verksamhetId}/getDegreeOfSickLeaveStatistics")
     @Produces({ MediaType.APPLICATION_JSON })
-    public DualSexStatisticsData getDegreeOfSickLeaveStatistics(@PathParam("verksamhetId") String verksamhetId) {
+    @PreAuthorize(value = "@protectedChartDataService.helper.hasAccessTo(#request, #verksamhetId)")
+    @PostAuthorize(value = "@protectedChartDataService.helper.userAccess(#request, #verksamhetId)")
+    public DualSexStatisticsData getDegreeOfSickLeaveStatistics(@Context HttpServletRequest request, @PathParam("verksamhetId") String verksamhetId) {
         LOG.info("Calling getDegreeOfSickLeaveStatistics with verksamhetId: " + verksamhetId);
         DegreeOfSickLeaveResponse degreeOfSickLeaveStatistics = datasourceDegreeOfSickLeave.getStatistics(Verksamhet.decodeId(verksamhetId), new Range());
         return new DegreeOfSickLeaveConverter().convert(degreeOfSickLeaveStatistics);
@@ -143,16 +158,21 @@ public class ProtectedChartDataService {
     @GET
     @Path("{verksamhetId}/getSickLeaveLengthData")
     @Produces({ MediaType.APPLICATION_JSON })
-    public SickLeaveLengthData getSickLeaveLengthData(@PathParam("verksamhetId") String verksamhetId) {
+    @PreAuthorize(value = "@protectedChartDataService.helper.hasAccessTo(#request, #verksamhetId)")
+    @PostAuthorize(value = "@protectedChartDataService.helper.userAccess(#request, #verksamhetId)")
+    public SickLeaveLengthData getSickLeaveLengthData(@Context HttpServletRequest request, @PathParam("verksamhetId") String verksamhetId) {
         LOG.info("Calling getSickLeaveLengthData with verksamhetId: " + verksamhetId);
-        SickLeaveLengthResponse sickLeaveLength = datasourceSickLeaveLength.getHistoricalStatistics(Verksamhet.decodeId(verksamhetId), previousMonth(), RollingLength.YEAR);
+        SickLeaveLengthResponse sickLeaveLength = datasourceSickLeaveLength.getHistoricalStatistics(Verksamhet.decodeId(verksamhetId), Helper.previousMonth(),
+                RollingLength.YEAR);
         return new SickLeaveLengthConverter().convert(sickLeaveLength);
     }
 
     @GET
     @Path("{verksamhetId}/getSickLeaveLengthCurrentData")
     @Produces({ MediaType.APPLICATION_JSON })
-    public SickLeaveLengthData getSickLeaveLengthCurrentData(@PathParam("verksamhetId") String verksamhetId) {
+    @PreAuthorize(value = "@protectedChartDataService.helper.hasAccessTo(#request, #verksamhetId)")
+    @PostAuthorize(value = "@protectedChartDataService.helper.userAccess(#request, #verksamhetId)")
+    public SickLeaveLengthData getSickLeaveLengthCurrentData(@Context HttpServletRequest request, @PathParam("verksamhetId") String verksamhetId) {
         LOG.info("Calling getSickLeaveLengthCurrentData with verksamhetId: " + verksamhetId);
         SickLeaveLengthResponse sickLeaveLength = datasourceSickLeaveLength.getCurrentStatistics(Verksamhet.decodeId(verksamhetId));
         return new SickLeaveLengthConverter().convert(sickLeaveLength);
@@ -161,34 +181,45 @@ public class ProtectedChartDataService {
     @GET
     @Path("{verksamhetId}/getLongSickLeavesData")
     @Produces({ MediaType.APPLICATION_JSON })
-    public SimpleDetailsData getLongSickLeavesData(@PathParam("verksamhetId") String verksamhetId) {
+    @PreAuthorize(value = "@protectedChartDataService.helper.hasAccessTo(#request, #verksamhetId)")
+    @PostAuthorize(value = "@protectedChartDataService.helper.userAccess(#request, #verksamhetId)")
+    public SimpleDetailsData getLongSickLeavesData(@Context HttpServletRequest request, @PathParam("verksamhetId") String verksamhetId) {
         LOG.info("Calling getLongSickLeavesData with verksamhetId: " + verksamhetId);
         Range range = new Range();
         SimpleDualSexResponse<SimpleDualSexDataRow> longSickLeaves = datasourceSickLeaveLength.getLongSickLeaves(Verksamhet.decodeId(verksamhetId), range);
         return new SimpleDualSexConverter().convert(longSickLeaves);
     }
 
-    public boolean hasAccessTo(HttpServletRequest request, String verksamhetId) {
-        if (request == null) {
-            return false;
-        }
-        List<Verksamhet> verksamhets = getVerksamhets(request);
-        if (verksamhetId != null && verksamhets != null) {
-            for (Verksamhet verksamhet : verksamhets) {
-                if (verksamhetId.equals(verksamhet.getId())) {
-                    return true;
+    protected static class Helper {
+
+        public static boolean hasAccessTo(HttpServletRequest request, String verksamhetId) {
+            if (request == null) {
+                return false;
+            }
+            List<Verksamhet> verksamhets = getVerksamhets(request);
+            if (verksamhetId != null && verksamhets != null) {
+                for (Verksamhet verksamhet : verksamhets) {
+                    if (verksamhetId.equals(verksamhet.getId())) {
+                        return true;
+                    }
                 }
             }
+            return false;
         }
-        return false;
+
+        public static boolean userAccess(HttpServletRequest request, String verksamhetId) {
+            LOG.info("User " + request.getUserPrincipal().getName() + " accessed verksamhet " + verksamhetId + "(" + request.getRequestURI() + ")");
+            return true;
+        }
+
+        @SuppressWarnings("unchecked")
+        private static List<Verksamhet> getVerksamhets(HttpServletRequest request) {
+            return (List<Verksamhet>) request.getSession().getAttribute("verksamhets");
+        }
+
+        private static LocalDate previousMonth() {
+            return new LocalDate().withDayOfMonth(1).minusMonths(1);
+        }
     }
 
-    @SuppressWarnings("unchecked")
-    private List<Verksamhet> getVerksamhets(HttpServletRequest request) {
-        return (List<Verksamhet>) request.getSession().getAttribute("verksamhets");
-    }
-
-    private LocalDate previousMonth() {
-        return new LocalDate().withDayOfMonth(1).minusMonths(1);
-    }
 }
