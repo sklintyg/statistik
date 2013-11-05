@@ -1,9 +1,9 @@
 <div id="chart-content">
 	<div class="row-fluid dontprint">
-		<div class="span3 pull-left">
+		<div class="span6 pull-left" style="width: auto !important; float: left;">
 			<h1 class="national-statistic-h1" ng-bind="viewHeader"></h1>
 		</div>
-		<div class="span9 pull-right"  style="margin-top: 10px;">
+		<div class="span6 pull-right"  style="margin-top: 10px; width: auto;">
 			<!-- PRINT BUTTON GROUP -->
 			<div class="btn-group statistics-btn-group">
 			  <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
@@ -44,9 +44,9 @@
 	<!-- Start detailsOptions if any -->
     <div class="row-fluid" id="detailsOptionsDropdown">
        	<div class="span12">
-       		<label>Välj annat diagnoskapitel:</label>
+       		<label for="selectDiagnosticChapter">Välj annat diagnoskapitel:</label>
        		<div class="btn-group margin-bottom" ng-show="showDetailsOptions">
-           		<a class="btn dropdown-toggle" data-toggle="dropdown" href="#" >{{selectedDetailsOption.id}} {{selectedDetailsOption.name}}<span class="caret"></span></a>
+           		<a class="btn dropdown-toggle" id="selectDiagnosticChapter" data-toggle="dropdown" href="#" style="width: 317px; overflow: hidden; text-overflow: ellipsis;"><span class="caret pull-right"></span><span>{{selectedDetailsOption.id}} {{selectedDetailsOption.name}}</span></a>
 	        	<ul class="dropdown-menu left overflow-menu-options">
 	               <li ng-repeat="detailsOption in detailsOptions"><a href="{{detailsOption.url}}">{{detailsOption.id}} {{detailsOption.name}}</a></li>
 	        	</ul>
