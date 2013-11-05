@@ -5,7 +5,10 @@
 					<div class="span6 pull-left" style="width: auto !important; float: left;">
 						<h1 id="nationalOverviewHeading">Nationell statistik</h1>
 					</div>
-					<div class="span6 pull-right"  style="margin-top: 10px; width: auto;">
+				</div>
+				<div class="row-fluid">
+					<span class="span6 overview-ingress pull-left" style="width: auto !important; float: left;" ng-bind="subTitle"></span>
+					<div class="span6 pull-right" style="width: auto;">
 						<div class="btn-group statistics-btn-group">
 						  <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
 						    Skriv ut
@@ -17,9 +20,6 @@
 						  </ul>
 						</div>
 					</div>
-				</div>
-				<div class="row-fluid">
-					<span class="span12 overview-ingress" ng-bind="subTitle"></span>
 				</div>
                 <div dataerrorview show-error="dataLoadingError">
                     <div spinner label="{{spinnerText}}" show-spinner="!doneLoading" show-content="doneLoading">

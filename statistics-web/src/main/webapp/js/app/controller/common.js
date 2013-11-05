@@ -142,7 +142,6 @@ var ControllerCommons = new function(){
                 }
             },
             tooltip : {
-                /* crosshairs: true */// True if crosshair. Not specified in design document for Statistiktjänsten 1.0.
                 backgroundColor : '#fff',
                 borderWidth : 2
             },
