@@ -17,18 +17,17 @@
     <security:http security="none" pattern="/css/**"/>
     <security:http security="none" pattern="/js/**"/>
     <security:http security="none" pattern="/img/**"/>
-    <security:http security="none" pattern="/welcome.jsp"/>
-    <security:http security="none" pattern="/version.jsp"/>
+    <security:http security="none" pattern="/pages/**"/>
+    <security:http security="none" pattern="/views/**"/>
     <security:http security="none" pattern="/index.jsp"/>
     <security:http security="none" pattern="/error.jsp"/>
-    <security:http security="none" pattern="/logout.jsp"/>
     <security:http security="none" pattern="/saml/web/**"/>
-    <security:http security="none" pattern="/services/**"/>
+    <security:http security="none" pattern="/api/login/**"/>
     <security:http security="none" pattern="/favicon.ico"/>
 
     <beans profile="test">
-        <context:property-placeholder location="file:${user.home}/.test.statistics.se/config.properties" order="1"
-                                      ignore-resource-not-found="false" ignore-unresolvable="false"/>
+        <context:property-placeholder location="file:${user.home}/.test.webcert.se/config.properties" order="1"
+                                      ignore-resource-not-found="true" ignore-unresolvable="true"/>
     </beans>
     <beans profile="test">
         <context:property-placeholder
