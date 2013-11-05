@@ -42,10 +42,10 @@
 	</div>
 
 	<!-- Start detailsOptions if any -->
-    <div class="row-fluid" id="detailsOptionsDropdown">
+    <div class="row-fluid" id="detailsOptionsDropdown" ng-show="showDetailsOptions">
        	<div class="span12">
        		<label for="selectDiagnosticChapter">Välj annat diagnoskapitel:</label>
-       		<div class="btn-group margin-bottom" ng-show="showDetailsOptions">
+       		<div class="btn-group margin-bottom">
            		<a class="btn dropdown-toggle" id="selectDiagnosticChapter" data-toggle="dropdown" href="#" style="width: 317px; overflow: hidden; text-overflow: ellipsis;"><span class="caret pull-right"></span><span>{{selectedDetailsOption.id}} {{selectedDetailsOption.name}}</span></a>
 	        	<ul class="dropdown-menu left overflow-menu-options">
 	               <li ng-repeat="detailsOption in detailsOptions"><a href="{{detailsOption.url}}">{{detailsOption.id}} {{detailsOption.name}}</a></li>
