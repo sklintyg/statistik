@@ -1,37 +1,10 @@
 <div id="chart-content">
-	<div class="row-fluid dontprint">
+	<div class="row-fluid">
 		<div class="span6 pull-left" style="width: auto !important; float: left;">
 			<h1 class="national-statistic-h1" ng-bind="viewHeader"></h1>
 		</div>
-		<div class="span6 pull-right"  style="margin-top: 10px; width: auto;">
-			<!-- PRINT BUTTON GROUP -->
-			<div class="btn-group statistics-btn-group">
-			  <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-			    Skriv ut
-			    <span class="caret"></span>
-			  </a>
-			  <ul class="dropdown-menu right">
-			    <li><a onclick="window.print();"><img src="/img/dropdown-icons/print-colour.png"/> Färg</a></li>
-			    <li><a class="disabled"><img src="/img/dropdown-icons/print-bw-inactive.png"/> Svart-vitt</a></li>
-			  </ul>
-			</div>
-			<!-- SAVE AS BUTTON GROUP -->
-			<div class="btn-group statistics-btn-group">
-			  <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-			    Spara som
-			    <span class="caret"></span>
-			  </a>
-			  <ul class="dropdown-menu left">
-			    <li><a tabindex="-1" ng-click="exportTableData()"><img src="/img/dropdown-icons/excel.png"/> Excel</a></li>
-			    <li><a class="disabled"><img src="/img/dropdown-icons/pdf-inactive.png"/>PDF</a></li>
-			    <li><a class="disabled"><img src="/img/dropdown-icons/png-inactive.png"/>PNG</a></li>
-			  </ul>
-			</div>
-		</div>
-    </div>
-    <div class="row-fluid">
-    	<div class="span12 pull-left" ng-show="verksamhetName">
-			<h2 style="line-height: 10px;">{{ verksamhetName }}</h2> 
+    	<div class="span6 pull-left" ng-show="verksamhetName" style="width: auto !important; float: left; margin-left: 0px;">
+			<h2 class="business-name-header">- {{ verksamhetName }}</h2> 
 		</div>
     </div>
 	<div class="row-fluid">
@@ -42,16 +15,43 @@
 	</div>
 
 	<!-- Start detailsOptions if any -->
-    <div class="row-fluid" id="detailsOptionsDropdown" ng-show="showDetailsOptions">
-       	<div class="span12">
-       		<label for="selectDiagnosticChapter">Välj annat diagnoskapitel:</label>
-       		<div class="btn-group margin-bottom">
-           		<a class="btn dropdown-toggle" id="selectDiagnosticChapter" data-toggle="dropdown" href="#" style="width: 317px; overflow: hidden; text-overflow: ellipsis;"><span class="caret pull-right"></span><span>{{selectedDetailsOption.id}} {{selectedDetailsOption.name}}</span></a>
-	        	<ul class="dropdown-menu left overflow-menu-options">
-	               <li ng-repeat="detailsOption in detailsOptions"><a href="{{detailsOption.url}}">{{detailsOption.id}} {{detailsOption.name}}</a></li>
-	        	</ul>
-         	</div>
-       	</div>
+    <div class="row-fluid" id="detailsOptionsDropdown" style="width: auto !important;">
+    	<div class="span12">
+    		<div class="span6 pull-left" ng-show="showDetailsOptions" style="width: auto; float: left;">
+	       		<label for="selectDiagnosticChapter">Välj annat diagnoskapitel:</label>
+	       		<div class="btn-group margin-bottom">
+	           		<a class="btn dropdown-toggle" id="selectDiagnosticChapter" data-toggle="dropdown" href="#" style="width: 280px; overflow: hidden; text-overflow: ellipsis;"><span class="caret pull-right"></span><span>{{selectedDetailsOption.id}} {{selectedDetailsOption.name}}</span></a>
+		        	<ul class="dropdown-menu left overflow-menu-options">
+		               <li ng-repeat="detailsOption in detailsOptions"><a href="{{detailsOption.url}}">{{detailsOption.id}} {{detailsOption.name}}</a></li>
+		        	</ul>
+	         	</div>
+	       	</div>
+	       	<div class="span6 pull-right" ng-class="{margin_top_button_group: showDetailsOptions}" style="width: auto;">
+				<!-- PRINT BUTTON GROUP -->
+				<div class="btn-group statistics-btn-group">
+				  <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+				    Skriv ut
+				    <span class="caret"></span>
+				  </a>
+				  <ul class="dropdown-menu right">
+				    <li><a onclick="window.print();"><img src="/img/dropdown-icons/print-colour.png"/> Färg</a></li>
+				    <li><a class="disabled"><img src="/img/dropdown-icons/print-bw-inactive.png"/> Svart-vitt</a></li>
+				  </ul>
+				</div>
+				<!-- SAVE AS BUTTON GROUP -->
+				<div class="btn-group statistics-btn-group">
+				  <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+				    Spara som
+				    <span class="caret"></span>
+				  </a>
+				  <ul class="dropdown-menu left">
+				    <li><a tabindex="-1" ng-click="exportTableData()"><img src="/img/dropdown-icons/excel.png"/> Excel</a></li>
+				    <li><a class="disabled"><img src="/img/dropdown-icons/pdf-inactive.png"/>PDF</a></li>
+				    <li><a class="disabled"><img src="/img/dropdown-icons/png-inactive.png"/>PNG</a></li>
+				  </ul>
+				</div>
+			</div>
+    	</div>
     </div>
 	
 	<!-- Start ingress -->
