@@ -15,7 +15,8 @@
      conf.dataFetcher = "getSubDiagnosisGroupData";
      conf.dataFetcherVerksamhet = "getSubDiagnosisGroupDataVerksamhet";
      conf.showDetailsOptions = true;
-     conf.title = "Antal sjukfall per enskilt diagnoskapitel";
+     conf.detailsOptionsTitlePrefix = "Antal sjukfall för";
+     conf.title = "";
      conf.chartFootnotes = ["Notera att samma sjukfall kan visas fler än en gång i grafen då ett sjukfall kan tilldelas flera diagnoser under samma månad", "Endast de sex vanligast förekommande undergrupper redovisas med namn. Övriga diagnoskapitel redovisas som 'Övriga diagnoskapitel'."]; 
      return conf;
  }
@@ -91,6 +92,7 @@
                 break;
             }
         }
+        $scope.subTitle = config.detailsOptionsTitlePrefix + (($scope.selectedDetailsOption && $scope.selectedDetailsOption.name && $scope.selectedDetailsOption.id) ?  " " + $scope.selectedDetailsOption.id + " " + $scope.selectedDetailsOption.name : "");
         
         $scope.detailsOptions = result.map(function(e){
             e.url = basePath + "/" + e.id;
@@ -140,7 +142,7 @@
     $scope.doneLoading = false;
     $scope.dataLoadingError = false;
 
-     return this;
+    return this;
 
 };
 
