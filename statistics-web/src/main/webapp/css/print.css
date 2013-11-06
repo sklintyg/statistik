@@ -1,5 +1,7 @@
 @media print {
-	.navbar,.footer,#statistics-menu-accordion,.national-statistic-h1,#pageHelpToolTip,.btn-group.statistics-btn-group,#chart-data-table .accordion-heading,.dontprint,.hidden-header, #detailsOptionsDropdown,.browserTable {
+	.navbar,.footer,#statistics-menu-accordion,.national-statistic-h1,#pageHelpToolTip,
+	.btn-group.statistics-btn-group,#chart-data-table .accordion-heading,.dontprint,
+	.hidden-header, #detailsOptionsDropdown,.browserTable, #chart-footnote-trigger {
 		display: none;
 	}
 	.print-pagebreak-before {
@@ -18,14 +20,6 @@
 		display: block;
 	}
 	.rotate-print {
-		/* Rotate div */
-		/*-webkit-transform: rotate(90deg);
-		-moz-transform: rotate(90deg);
-		-ms-transform: rotate(90deg);
-		-o-transform: rotate(90deg);
-		transform: rotate(90deg);
-		transform-origin: 45% bottom;
-		filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);*/
 		width: 100%;
 		height: 100%;
 		margin-top: 2cm;
