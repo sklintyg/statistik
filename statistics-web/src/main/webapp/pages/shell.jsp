@@ -83,7 +83,7 @@
 									<br>
 									<span>Vald verksamhet:</span>
 									<div class="btn-group">
-										<a class="btn dropdown-toggle" id="business-select-business" data-toggle="dropdown" href="#">
+										<a class="btn dropdown-toggle" id="business-select-business" data-toggle="dropdown" href="#" ng-bind="verksamhetName">
 											Välj verksamhet<span class="caret"></span>
 										</a>
 										<ul class="dropdown-menu left">
