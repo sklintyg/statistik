@@ -1,6 +1,6 @@
  'use strict';
 
- app.pageCtrl = function ($scope, $rootScope, $window, statisticsData) {
+ app.pageCtrl = function ($scope, $rootScope, $window, $cookies, statisticsData) {
 
     var getSelectedVerksamhet = function(selectedVerksamhetId, verksamhets) {
         for (var i = 0; i < verksamhets.length; i++) {
@@ -13,8 +13,8 @@
 
     $rootScope.$on('$routeChangeSuccess', function(angularEvent, next, current) {
         var verksamhetId = next.params.verksamhetId;
-        $scope.selectedVerksamhetId = verksamhetId;
-        
+        $scope.verksamhetIdParam = verksamhetId;
+
         $scope.currentUrl = window.location.href;
 
         var d = new Date();
@@ -26,17 +26,26 @@
         $scope.viewHeader = verksamhetId ? "Verksamhetsstatistik" : "Nationell statistik";
         
         $scope.businesses = [];
-        $scope.verksamhetName = "";
-        if (verksamhetId) {
+        if (isLoggedIn) {
+            if (verksamhetId) {
+                $scope.businessId = verksamhetId;
+                $cookies.verksamhetId = verksamhetId;
+            } else if ($cookies.verksamhetId) {
+                $scope.businessId = $cookies.verksamhetId;
+            }
+            
             statisticsData.getLoginInfo(function(loginInfo){
                     $scope.businesses = loginInfo.businesses;
-                    $scope.verksamhetName = getSelectedVerksamhet(verksamhetId, loginInfo.businesses).name;
+                    $scope.verksamhetName = getSelectedVerksamhet($scope.businessId, loginInfo.businesses).name;
                 }, function() { $scope.dataLoadingError = true; });
         }
     });
     
     $scope.selectVerksamhet = function(verksamhetId) {
-        $window.location.replace($scope.currentUrl.replace(new RegExp($scope.selectedVerksamhetId, 'g'), verksamhetId));
+        $cookies.verksamhetId = verksamhetId;
+        $scope.verksamhetName = getSelectedVerksamhet(verksamhetId, $scope.businesses).name;
+        $window.location.replace($scope.currentUrl.replace(new RegExp($scope.businessId, 'g'), verksamhetId));
+        $scope.businessId = verksamhetId;
     }
-
+    
  };
