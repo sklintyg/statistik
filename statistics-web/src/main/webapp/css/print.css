@@ -1,6 +1,5 @@
 @media print {
-	.navbar,.footer,#statistics-menu-accordion,.national-statistic-h1,#pageHelpToolTip,.btn-group.statistics-btn-group,
-	#chart-data-table .accordion-heading,.dontprint,.hidden-header, #detailsOptionsDropdown {
+	.navbar,.footer,#statistics-menu-accordion,.national-statistic-h1,#pageHelpToolTip,.btn-group.statistics-btn-group,#chart-data-table .accordion-heading,.dontprint,.hidden-header, #detailsOptionsDropdown,.browserTable {
 		display: none;
 	}
 	.print-pagebreak-before {
@@ -36,7 +35,7 @@
 		/*max-width: 40px;*/
 	}
 
-	#datatable {
+	.printTable #datatable {
 		width: 100%;
 	}
 	svg {
@@ -62,7 +61,9 @@
 		vertical-align: top;
 		border-bottom: 1px solid #dddddd;
 	}
-
+	.printTable {
+	   display:inline !important;
+    }
 	div.chart-page-chart.span6 div.highcharts-container{
 		width: 100% !important;
 	}

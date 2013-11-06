@@ -57,6 +57,66 @@
         $scope.rows = ajaxResult.tableData.rows;
     };
 
+    //Expects the table to consist of two headers where the first header has a colspan of two
+    var updatePrintDataTable = function($scope, ajaxResult) {
+        var headers = ajaxResult.tableData.headers;
+        var rows = ajaxResult.tableData.rows;
+        var printTables = [];
+        var totWidth = 0;
+        var maxWidth = 500;
+        var colWidth = 50;
+        var currentDataColumn = 1;
+        
+        for (var c = 1; c < headers[0].length - 2;) {
+            var printTable = {};
+            printTable.headers = [];
+            printTable.rows = [];
+
+            var totWidth = colWidth * 2; //total width of table frame (first and last column which should be used on all print tables) 
+            
+            //Add headers for first column
+            for (var i = 0; i < headers.length; i++) {
+                printTable.headers[i] = [];
+                printTable.headers[i].push(headers[i][0]);
+            }
+            
+            //Add all row names (first column)
+            for (var r = 0; r < rows.length; r++) {
+                var row = {};
+                row.name = rows[r].name
+                row.data = [];
+                printTable.rows.push(row);
+            }
+            
+            //Add columns until table is too wide or all columns has been added
+            for (var i = 0; (c < headers[0].length - 2) && ((totWidth + colWidth) < maxWidth); i++) {
+                printTable.headers[0].push(headers[0][c]);
+                for (var s = 0; s < 2; s++){
+                    printTable.headers[1].push(headers[1][currentDataColumn]);
+                    for (var r = 0; r < rows.length; r++) {
+                        printTable.rows[r].data.push(rows[r].data[currentDataColumn]);
+                    }
+                    currentDataColumn++;
+                }
+                c++;
+                totWidth += colWidth;
+            }
+
+            //Add headers for last column (sum)
+            for (var i = 0; i < headers.length; i++) {
+                printTable.headers[i].push(headers[i][headers[i].length - 1]);
+            }
+
+            //Add all row sum (last column)
+            for (var r = 0; r < rows.length; r++) {
+                printTable.rows[r].data.push(rows[r].data[rows[r].data.length - 1]);
+            }
+
+            printTables.push(printTable);
+        }
+        $scope.printDataTables = printTables;
+    };
+    
     var updateChart = function(ajaxResult) {
         var chartCategories = ajaxResult.femaleChart.categories;
 
@@ -81,6 +141,9 @@
             updateDataTable($scope, result);
             updateChart(result);
         }, 1);
+        $timeout(function() {
+            updatePrintDataTable($scope, result);
+        }, 100);
     };
     
     var populateDetailsOptions = function(result){
@@ -141,6 +204,8 @@
     $scope.spinnerText = "Laddar information...";
     $scope.doneLoading = false;
     $scope.dataLoadingError = false;
+    
+    $scope.useSpecialPrintTable = true;
 
     return this;
 

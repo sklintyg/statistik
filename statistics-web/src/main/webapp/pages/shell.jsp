@@ -43,7 +43,7 @@
     <script>var isLoggedIn = false;</script>
 </security:authorize>
 </head>
-<body data-spy="scroll" data-target=".bs-docs-sidebar" ng-controller="PageHeaderCtrl">
+<body data-spy="scroll" data-target=".bs-docs-sidebar" ng-controller="PageCtrl">
 
 <!-- Navbar
 ================================================== -->
@@ -83,7 +83,7 @@
 									<br>
 									<span>Vald verksamhet:</span>
 									<div class="btn-group">
-										<a class="btn dropdown-toggle" id="business-select-business" data-toggle="dropdown" href="#">
+										<a class="btn dropdown-toggle" id="business-select-business" data-toggle="dropdown" href="#" ng-bind="verksamhetName">
 											Välj verksamhet<span class="caret"></span>
 										</a>
 										<ul class="dropdown-menu left">
@@ -233,7 +233,7 @@
 <script type="text/javascript" src="<c:url value='/js/app/controller/business/businessLandingPageCtrl.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/controller/columnChartDetailsViewCtrl.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/controller/casesPerCountyCtrl.js'/>"></script>
-<script type="text/javascript" src="<c:url value='/js/app/controller/pageHeaderCtrl.js'/>"></script>
+<script type="text/javascript" src="<c:url value='/js/app/controller/pageCtrl.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/controller/navigationMenuCtrl.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/controllers.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/directives.js'/>"></script>

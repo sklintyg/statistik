@@ -1,6 +1,6 @@
  'use strict';
 
- app.pageHeaderCtrl = function ($scope, $rootScope, statisticsData) {
+ app.pageCtrl = function ($scope, $rootScope, statisticsData) {
 
     var getSelectedVerksamhet = function(selectedVerksamhetId, verksamhets) {
         for (var i = 0; i < verksamhets.length; i++) {
