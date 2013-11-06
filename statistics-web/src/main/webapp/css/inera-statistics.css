@@ -67,6 +67,7 @@ legend {
     color: #333333;
     border: 0;
 }
+.dropdown-label { font-size: 0.9em; }
 .hidden-header { display: none; }
 div.content {
     background-color: #ffffff;
@@ -888,8 +889,8 @@ div.accordion-body.in.collapse > div.accordion-heading a.accordion-toggle{
 
 .graph-ingress {
 	font-weight: bold;
-	margin-bottom: 5px;
-	margin-top: 10px;
+	margin-bottom: 0px;
+	margin-top: 0px;
 }
 .popover {
 	z-index: 9999 !important;
@@ -901,7 +902,9 @@ div.accordion-body.in.collapse > div.accordion-heading a.accordion-toggle{
 }
 .overflow-menu-options {
 	max-height: 255px;
+	max-width: 600px;
 	overflow-y: auto;
+	overflow-x: hidden;
 }
 #business-login-span {
 	top: 3px;
@@ -1131,11 +1134,6 @@ a.listheader.collapsed {
 		border-bottom: none;
 		border-top: 1px solid #fff;
 	}
-	
-	#overview-content #overview-distribution-per-sex-container .sex-distribution-row {
-		/*padding: 10% 0px 0px 0px;*/
-	}
-	
 	#overview-content #overview-distribution-per-sex-container .overview-sex-distribution-responsive > div > div > div > div #overview-distribution-female-lbl, 
 	#overview-content #overview-distribution-per-sex-container .overview-sex-distribution-responsive > div > div > div > div #overview-distribution-male-lbl {
 		position: relative;
@@ -1367,15 +1365,6 @@ a.listheader.collapsed {
 		padding-right: 2px;
 	}
 	
-	/*div.box-bottom {
-		background-image: url("../img/list_shadow_left.png"), url("../img/list_shadow_right.png");
-		background-repeat: no-repeat, no-repeat;
-		background-position: top left, top right;
-		margin-top: 0px;
-		padding: 0px;
-		margin-bottom: 10px;
-		min-height: 10px;
-	}*/
 	div.box-bottom {
 		/*background-image: url("../img/list_shadow_left.png"), url("../img/list_shadow_right.png");*/
 		background-image: url("../img/list_shadow_left.png"), url("../img/list_shadow_right.png");
@@ -1417,7 +1406,7 @@ a.listheader.collapsed {
 		float: left;
 		width: 100%; 
 	}
-	
+	.diagnostics-group-quantity, .diagnostics-group-alternation { width: 50px; text-align: center !important; }
 	#overview-content .overview-box-information-container span.overview-small-box-information { position: relative; top: -30px; }
 	#overview-content .overview-box-information-container span.overview-standard-box-information { position: relative; top: -10px; padding-bottom: 40px; }
 	
@@ -1674,7 +1663,7 @@ a.has-collapse {
 	margin-top: 25px;
 }
 .dropdown-menu>li>a {
-	width: 300px;
+	max-width: 490px;
 	overflow: hidden;
 	text-overflow: ellipsis;
 }
