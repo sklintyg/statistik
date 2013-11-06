@@ -28,7 +28,7 @@
     </beans>
 
     <beans profile="test">
-        <context:property-placeholder location="file:${user.home}/.test.webcert.se/config.properties" order="1"
+        <context:property-placeholder location="file:${user.home}/.test.statistik.se/config.properties" order="1"
                                       ignore-resource-not-found="true" ignore-unresolvable="true"/>
     </beans>
     <beans profile="test">
