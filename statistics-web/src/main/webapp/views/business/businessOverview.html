@@ -2,30 +2,30 @@
 		<div class="row-fluid">
 			<div id="overview-content"> <!-- Start: Overview content -->
 				<div class="row-fluid">
-					<div class="span3 pull-left">
-						<h1 id="verksamhetOverviewHeading">Verksamhetsstatistik</h1>
+					<div class="span6 pull-left" style="width: auto !important; float: left;">
+						<h1 class="national-statistic-h1" ng-bind="viewHeader"></h1>
 					</div>
-					<div class="span9 pull-right" style="margin-top: 10px;">
+			    	<div class="span6 pull-left" ng-show="verksamhetName" style="width: auto !important; float: left; margin-left: 0px;">
+						<h2 class="business-name-header">- {{ verksamhetName }}</h2> 
+					</div>
+			    </div>
+				<div class="row-fluid">
+					<span class="span6 overview-ingress pull-left" ng-bind="subTitle"></span>
+					<div class="span6 pull-right" ng-class="{margin_top_button_group: showDetailsOptions}" style="width: auto;">
+						<!-- PRINT BUTTON GROUP -->
 						<div class="btn-group statistics-btn-group">
 						  <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
 						    Skriv ut
 						    <span class="caret"></span>
 						  </a>
-						  <ul class="dropdown-menu left">
+						  <ul class="dropdown-menu right">
 						    <li><a onclick="window.print();"><img src="/img/dropdown-icons/print-colour.png"/> Färg</a></li>
-			    			<li><a class="disabled"><img src="/img/dropdown-icons/print-bw-inactive.png"/> Svart-vitt</a></li>
+						    <li><a class="disabled"><img src="/img/dropdown-icons/print-bw-inactive.png"/> Svart-vitt</a></li>
 						  </ul>
 						</div>
 					</div>
 				</div>
-				<div class="row-fluid">
-					<div class="span12 pull-left">
-						<h2 style="line-height: 10px;">{{ verksamhetName }}</h2> 
-					</div>
-				</div>
-				<div class="row-fluid">
-					<span class="span12 overview-ingress" ng-bind="subTitle"></span>
-				</div>
+				
                 <div dataerrorview show-error="dataLoadingError">
                     <div spinner label="{{spinnerText}}" show-spinner="!doneLoading" show-content="doneLoading">
 						<div class="row-fluid row-margin-bottom">
