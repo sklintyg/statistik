@@ -1,6 +1,6 @@
  'use strict';
 
- app.navigationMenuCtrl = function ($scope, $rootScope, $cookies) {
+ app.navigationMenuCtrl = function ($scope, $rootScope) {
 
      $scope.organisationMenuLabel = isLoggedIn ? "Verksamhetsstatistik" : "Logga in för verksamhetsstatistik";
      
@@ -48,14 +48,5 @@
              $scope.showAbout = false;
          }
      }); 
-
-    $rootScope.$on('$routeChangeSuccess', function(angularEvent, next, current) {
-        if (next.params.verksamhetId) {
-            $scope.businessId = next.params.verksamhetId;
-            $cookies.verksamhetId = next.params.verksamhetId;
-        } else if ($cookies.verksamhetId) {
-            $scope.businessId = $cookies.verksamhetId;
-        }
-    });
 
  };

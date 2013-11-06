@@ -2,10 +2,10 @@
 <wsdl:definitions name="HsaWsInteraction" targetNamespace="urn:riv:hsa:HsaWs:3" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tjs="urn:riv:hsa:HsaWsResponder:3" xmlns:tns="urn:riv:hsa:HsaWs:3" xmlns:wsa="http://www.w3.org/2005/08/addressing" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:xs="http://www.w3.org/2001/XMLSchema">
     <wsdl:types>
         <xs:schema>
-            <xs:import namespace="urn:riv:hsa:HsaWsResponder:3" schemaLocation="https://testhotell2.carelink.sjunet.org/svr-hsaws2-226/hsaws?xsd=../schemas/HsaWsResponder_3.18.xsd"/>
+            <xs:import namespace="urn:riv:hsa:HsaWsResponder:3" schemaLocation="../schemas/HsaWsResponder_3.18.xsd"/>
         </xs:schema>
         <xs:schema>
-            <xs:import namespace="http://www.w3.org/2005/08/addressing" schemaLocation="https://testhotell2.carelink.sjunet.org/svr-hsaws2-226/hsaws?xsd=../schemas/ws-addressing-1.0.xsd"/>
+            <xs:import namespace="http://www.w3.org/2005/08/addressing" schemaLocation="../schemas/ws-addressing-1.0.xsd"/>
         </xs:schema>
     </wsdl:types>
     <wsdl:message name="GetHsaPersonRequest">
