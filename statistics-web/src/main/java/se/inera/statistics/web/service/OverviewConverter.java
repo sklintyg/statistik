@@ -1,6 +1,8 @@
 package se.inera.statistics.web.service;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 import se.inera.statistics.service.report.model.OverviewChartRow;
 import se.inera.statistics.service.report.model.OverviewChartRowExtended;
@@ -45,6 +47,12 @@ public class OverviewConverter {
         for (OverviewChartRowExtended row : resp.getPerCounty()) {
             perCounty.add(new DonutChartData(row.getName(), row.getQuantity(), row.getAlternation()));
         }
+        Collections.sort(perCounty, new Comparator<DonutChartData>() {
+            @Override
+            public int compare(DonutChartData o1, DonutChartData o2) {
+                return o2.getQuantity() - o1.getQuantity();
+            }
+        });
 
         return new OverviewData(range.toString(), casesPerMonth, diagnosisGroups, ageGroups, degreeOfSickLeaveGroups, sickLeaveLength, perCounty);
     }
