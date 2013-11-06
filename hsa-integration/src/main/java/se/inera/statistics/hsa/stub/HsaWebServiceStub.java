@@ -14,6 +14,8 @@ import se.inera.ifv.hsawsresponder.v3.CareUnitType;
 import se.inera.ifv.hsawsresponder.v3.GetCareUnitListResponseType;
 import se.inera.ifv.hsawsresponder.v3.GetCareUnitMembersResponseType;
 import se.inera.ifv.hsawsresponder.v3.GetCareUnitResponseType;
+import se.inera.ifv.hsawsresponder.v3.GetHospLastUpdateResponseType;
+import se.inera.ifv.hsawsresponder.v3.GetHospLastUpdateType;
 import se.inera.ifv.hsawsresponder.v3.GetHospPersonResponseType;
 import se.inera.ifv.hsawsresponder.v3.GetHospPersonType;
 import se.inera.ifv.hsawsresponder.v3.GetHsaPersonResponseType;
@@ -25,6 +27,16 @@ import se.inera.ifv.hsawsresponder.v3.GetMiuForPersonResponseType;
 import se.inera.ifv.hsawsresponder.v3.GetMiuForPersonType;
 import se.inera.ifv.hsawsresponder.v3.GetPriceUnitsForAuthResponseType;
 import se.inera.ifv.hsawsresponder.v3.GetPriceUnitsForAuthType;
+import se.inera.ifv.hsawsresponder.v3.GetStatisticsCareGiverResponseType;
+import se.inera.ifv.hsawsresponder.v3.GetStatisticsCareGiverType;
+import se.inera.ifv.hsawsresponder.v3.GetStatisticsHsaUnitResponseType;
+import se.inera.ifv.hsawsresponder.v3.GetStatisticsHsaUnitType;
+import se.inera.ifv.hsawsresponder.v3.GetStatisticsNamesResponseType;
+import se.inera.ifv.hsawsresponder.v3.GetStatisticsNamesType;
+import se.inera.ifv.hsawsresponder.v3.GetStatisticsPersonResponseType;
+import se.inera.ifv.hsawsresponder.v3.GetStatisticsPersonType;
+import se.inera.ifv.hsawsresponder.v3.HandleCertifierResponseType;
+import se.inera.ifv.hsawsresponder.v3.HandleCertifierType;
 import se.inera.ifv.hsawsresponder.v3.HsawsSimpleLookupResponseType;
 import se.inera.ifv.hsawsresponder.v3.HsawsSimpleLookupType;
 import se.inera.ifv.hsawsresponder.v3.IsAuthorizedToSystemResponseType;
@@ -42,6 +54,8 @@ import se.inera.statistics.hsa.model.Vardgivare;
 import com.google.common.base.Function;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
+
+import javax.jws.WebParam;
 
 /**
  * @author johannesc
@@ -96,6 +110,11 @@ public class HsaWebServiceStub implements HsaWsResponderInterface {
         return response;
     }
 
+    @Override
+    public GetStatisticsCareGiverResponseType getStatisticsCareGiver(@WebParam(partName = "LogicalAddress", name = "To", targetNamespace = "http://www.w3.org/2005/08/addressing", header = true) AttributedURIType logicalAddress, @WebParam(partName = "Id", name = "MessageID", targetNamespace = "http://www.w3.org/2005/08/addressing", header = true) AttributedURIType id, @WebParam(partName = "parameters", name = "GetStatisticsCareGiver", targetNamespace = "urn:riv:hsa:HsaWsResponder:3") GetStatisticsCareGiverType parameters) throws HsaWsFault {
+        return null;
+    }
+
     private List<MiuInformationType> miuInformationTypesForEnhetsIds(Medarbetaruppdrag medarbetaruppdrag) {
         List<MiuInformationType> informationTypes = new ArrayList<>();
 
@@ -131,6 +150,11 @@ public class HsaWebServiceStub implements HsaWsResponderInterface {
         }
 
         return response;
+    }
+
+    @Override
+    public GetStatisticsHsaUnitResponseType getStatisticsHsaUnit(@WebParam(partName = "LogicalAddress", name = "To", targetNamespace = "http://www.w3.org/2005/08/addressing", header = true) AttributedURIType logicalAddress, @WebParam(partName = "Id", name = "MessageID", targetNamespace = "http://www.w3.org/2005/08/addressing", header = true) AttributedURIType id, @WebParam(partName = "parameters", name = "GetStatisticsHsaUnit", targetNamespace = "urn:riv:hsa:HsaWsResponder:3") GetStatisticsHsaUnitType parameters) throws HsaWsFault {
+        return null;
     }
 
     private AttributeValueListType createAttributeValueListForEnhet(String enhetsId) {
@@ -182,6 +206,11 @@ public class HsaWebServiceStub implements HsaWsResponderInterface {
     }
 
     @Override
+    public GetStatisticsPersonResponseType getStatisticsPerson(@WebParam(partName = "LogicalAddress", name = "To", targetNamespace = "http://www.w3.org/2005/08/addressing", header = true) AttributedURIType logicalAddress, @WebParam(partName = "Id", name = "MessageID", targetNamespace = "http://www.w3.org/2005/08/addressing", header = true) AttributedURIType id, @WebParam(partName = "parameters", name = "GetStatisticsPerson", targetNamespace = "urn:riv:hsa:HsaWsResponder:3") GetStatisticsPersonType parameters) throws HsaWsFault {
+        return null;
+    }
+
+    @Override
     public IsAuthorizedToSystemResponseType isAuthorizedToSystem(AttributedURIType logicalAddress,
             AttributedURIType id, IsAuthorizedToSystemType parameters) throws HsaWsFault {
         return null;
@@ -221,6 +250,11 @@ public class HsaWebServiceStub implements HsaWsResponderInterface {
     }
 
     @Override
+    public GetHospLastUpdateResponseType getHospLastUpdate(@WebParam(partName = "LogicalAddress", name = "To", targetNamespace = "http://www.w3.org/2005/08/addressing", header = true) AttributedURIType logicalAddress, @WebParam(partName = "Id", name = "MessageID", targetNamespace = "http://www.w3.org/2005/08/addressing", header = true) AttributedURIType id, @WebParam(partName = "parameters", name = "GetHospLastUpdate", targetNamespace = "urn:riv:hsa:HsaWsResponder:3") GetHospLastUpdateType parameters) throws HsaWsFault {
+        return null;
+    }
+
+    @Override
     public GetPriceUnitsForAuthResponseType getPriceUnitsForAuth(AttributedURIType logicalAddress,
             AttributedURIType id, GetPriceUnitsForAuthType parameters) throws HsaWsFault {
         return null;
@@ -229,6 +263,11 @@ public class HsaWebServiceStub implements HsaWsResponderInterface {
     @Override
     public GetHsaPersonResponseType getHsaPerson(AttributedURIType logicalAddress, AttributedURIType id,
             GetHsaPersonType parameters) throws HsaWsFault {
+        return null;
+    }
+
+    @Override
+    public GetStatisticsNamesResponseType getStatisticsNames(@WebParam(partName = "LogicalAddress", name = "To", targetNamespace = "http://www.w3.org/2005/08/addressing", header = true) AttributedURIType logicalAddress, @WebParam(partName = "Id", name = "MessageID", targetNamespace = "http://www.w3.org/2005/08/addressing", header = true) AttributedURIType id, @WebParam(partName = "parameters", name = "GetStatisticsNames", targetNamespace = "urn:riv:hsa:HsaWsResponder:3") GetStatisticsNamesType parameters) throws HsaWsFault {
         return null;
     }
 
@@ -253,6 +292,11 @@ public class HsaWebServiceStub implements HsaWsResponderInterface {
     @Override
     public GetInformationListResponseType getInformationList(AttributedURIType logicalAddress, AttributedURIType id,
             GetInformationListType parameters) throws HsaWsFault {
+        return null;
+    }
+
+    @Override
+    public HandleCertifierResponseType handleCertifier(@WebParam(partName = "LogicalAddress", name = "To", targetNamespace = "http://www.w3.org/2005/08/addressing", header = true) AttributedURIType logicalAddress, @WebParam(partName = "Id", name = "MessageID", targetNamespace = "http://www.w3.org/2005/08/addressing", header = true) AttributedURIType id, @WebParam(partName = "parameters", name = "HandleCertifier", targetNamespace = "urn:riv:hsa:HsaWsResponder:3") HandleCertifierType parameters) throws HsaWsFault {
         return null;
     }
 }
