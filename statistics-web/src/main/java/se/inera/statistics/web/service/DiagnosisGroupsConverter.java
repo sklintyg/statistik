@@ -154,6 +154,7 @@ public class DiagnosisGroupsConverter {
         for (String groupName : diagnosisGroups) {
                 topHeaderRow.add(new TableHeader(groupName, 2));
         }
+        topHeaderRow.add(new TableHeader(""));
 
         List<TableHeader> subHeaderRow = new ArrayList<>();
         subHeaderRow.add(new TableHeader("Period"));
