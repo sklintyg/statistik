@@ -104,9 +104,9 @@
                                         </thead>
                                         <tbody>
                                             <tr ng-repeat="group in diagnosisGroups">
-                                                <td><span style="height:10px; width:10px; background-color: {{group.color}};"></span>{{group.name}}</td>
-                                                <td>{{group.quantity | thousandseparated}}</td>
-                                                <td>{{group.alternation}}%</td>
+                                                <td class="diagnostics-group-name"><span style="height:10px; width:10px; background-color: {{group.color}};"></span>{{group.name}}</td>
+                                                <td class="diagnostics-group-quantity">{{group.quantity | thousandseparated}}</td>
+                                                <td class="diagnostics-group-alternation">{{group.alternation}}%</td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -142,9 +142,9 @@
                                                 </thead>
                                                 <tbody>
                                                     <tr ng-repeat="group in ageGroups">
-                                                        <td><span style="height:10px; width:10px; background-color: {{group.color}};"></span>{{group.name}}</td>
-                                                        <td>{{group.quantity | thousandseparated}}</td>
-                                                        <td>{{group.alternation}}%</td>
+                                                        <td class="diagnostics-group-name"><span style="height:10px; width:10px; background-color: {{group.color}};"></span>{{group.name}}</td>
+                                                        <td class="diagnostics-group-quantity">{{group.quantity | thousandseparated}}</td>
+                                                        <td class="diagnostics-group-alternation">{{group.alternation}}%</td>
                                                     </tr>
                                                 </tbody>
                                             </table>
@@ -175,7 +175,7 @@
                                             <table id="datatable" class="table table-bordered table-striped table-condensed overview-graph-table">
                                                 <thead>
                                                     <tr>
-                                                        <td>Grad</td>
+                                                        <td class="diagnostics-group-name">Grad</td>
                                                         <td>Antal</td>
                                                         <td>Förändring</td>
                                                     </tr>
@@ -183,8 +183,8 @@
                                                 <tbody>
                                                     <tr ng-repeat="group in degreeOfSickLeaveGroups">
                                                         <td><span style="height:10px; width:10px; background-color: {{group.color}};"></span>{{group.name}}</td>
-                                                        <td>{{group.quantity | thousandseparated}}</td>
-                                                        <td>{{group.alternation}}%</td>
+                                                        <td class="diagnostics-group-quantity">{{group.quantity | thousandseparated}}</td>
+                                                        <td class="diagnostics-group-alternation">{{group.alternation}}%</td>
                                                     </tr>
                                                 </tbody>
                                             </table>
@@ -258,9 +258,9 @@
                                                 </thead>
                                                 <tbody>
                                                     <tr ng-repeat="group in sickLeavePerCountyGroups">
-                                                        <td><span style="height:10px; width:10px; background-color: {{group.color}};"></span>{{group.name}}</td>
-                                                        <td>{{group.quantity | thousandseparated}}</td>
-                                                        <td>{{group.alternation}}%</td>
+                                                        <td class="diagnostics-group-name"><span style="height:10px; width:10px; background-color: {{group.color}};"></span>{{group.name}}</td>
+                                                        <td class="diagnostics-group-quantity">{{group.quantity | thousandseparated}}</td>
+                                                        <td class="diagnostics-group-alternation">{{group.alternation}}%</td>
                                                     </tr>
                                                 </tbody>
                                             </table>

@@ -29,7 +29,7 @@ var ControllerCommons = new function(){
         var wasTableVisible = accordionBody.hasClass("in");
         $scope.showHideDataTable = wasTableVisible ? "Visa datatabell" : "Dölj datatabell";
     };
-
+    
     this.exportTableDataGeneric = function() {
         var dt = $('#datatable');
         var csvData = table2CSV(dt);

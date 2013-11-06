@@ -20,7 +20,7 @@ public class DiagnosisGroupsConverterTest {
     public void tableConverterTestEmptyInput() {
         DiagnosisGroupResponse resp = new DiagnosisGroupResponse(new ArrayList<DiagnosisGroup>(), new ArrayList<DualSexDataRow>());
         TableData tableData = DiagnosisGroupsConverter.convertTable(resp);
-        assertEquals("[[;1], [Period;1, Summering;1]]", tableData.getHeaders().toString());
+        assertEquals("[[;1, ;1], [Period;1, Summering;1]]", tableData.getHeaders().toString());
         assertEquals("[]", tableData.getRows().toString());
     }
 
@@ -41,7 +41,7 @@ public class DiagnosisGroupsConverterTest {
         TableData tableData = DiagnosisGroupsConverter.convertTable(resp);
 
         //Then
-        assertEquals("[[;1, A01-B99 name1;2], [Period;1, Kvinnor;1, Män;1, Summering;1]]", tableData.getHeaders().toString());
+        assertEquals("[[;1, A01-B99 name1;2, ;1], [Period;1, Kvinnor;1, Män;1, Summering;1]]", tableData.getHeaders().toString());
         assertEquals("[period1: [3, 2, 5]]", tableData.getRows().toString());
     }
 
@@ -77,7 +77,7 @@ public class DiagnosisGroupsConverterTest {
         assertEquals("[period1]", data.getMaleChart().getCategories().toString());
         assertTrue(data.getMaleChart().getSeries().toString(), data.getMaleChart().getSeries().toString().contains("Somatiska sjukdomar (A00-E90, G00-L99, N00-N99): [2]"));
 
-        assertEquals("[[;1, A00-B99 name1;2], [Period;1, Kvinnor;1, Män;1, Summering;1]]", data.getTableData().getHeaders().toString());
+        assertEquals("[[;1, A00-B99 name1;2, ;1], [Period;1, Kvinnor;1, Män;1, Summering;1]]", data.getTableData().getHeaders().toString());
         assertEquals("[period1: [3, 2, 5]]", data.getTableData().getRows().toString());
     }
 

@@ -1,6 +1,6 @@
  'use strict';
 
- app.pageHeaderCtrl = function ($scope, $rootScope, statisticsData) {
+ app.pageCtrl = function ($scope, $rootScope, $window, statisticsData) {
 
     var getSelectedVerksamhet = function(selectedVerksamhetId, verksamhets) {
         for (var i = 0; i < verksamhets.length; i++) {
@@ -13,6 +13,7 @@
 
     $rootScope.$on('$routeChangeSuccess', function(angularEvent, next, current) {
         var verksamhetId = next.params.verksamhetId;
+        $scope.selectedVerksamhetId = verksamhetId;
         
         $scope.currentUrl = window.location.href;
 
@@ -33,5 +34,9 @@
                 }, function() { $scope.dataLoadingError = true; });
         }
     });
+    
+    $scope.selectVerksamhet = function(verksamhetId) {
+        $window.location.replace($scope.currentUrl.replace(new RegExp($scope.selectedVerksamhetId, 'g'), verksamhetId));
+    }
 
  };

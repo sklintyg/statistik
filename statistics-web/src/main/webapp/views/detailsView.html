@@ -8,17 +8,29 @@
 		</div>
     </div>
 	<div class="row-fluid">
-		<span class="span12 graph-ingress">
+		<span class="span12 graph-ingress" style="min-height: 5px;">
 			{{subTitle}}
 			<a id="pageHelpToolTip" popover-title="{{popoverTextTitle}}" popover="{{popoverText}}" popover-trigger="mouseenter" popover-placement="right" ng-show="popoverText"><img src="/img/questionmark2.png" alt=""></a>
+			<a data-toggle="collapse" data-target="#chart-footnote-text" ng-show="chartFootnotes"><img src="/img/notification_icon.png" alt=""></a>
 		</span>
+		<div class="row-fluid" ng-show="chartFootnotes">
+        	<div class="span12" id="readMore" ng-show="chartFootnotes">
+        		<div class="collapse" id="chart-footnote-text">
+        			<div class="alert alert-info">
+        				<div ng-repeat="chartFootnote in chartFootnotes">
+         				<p>{{chartFootnote}}</p>
+         			</div>
+        			</div>
+        		</div>
+        	</div>
+        </div>
 	</div>
 
 	<!-- Start detailsOptions if any -->
     <div class="row-fluid" id="detailsOptionsDropdown" style="width: auto !important;">
     	<div class="span12">
     		<div class="span6 pull-left" ng-show="showDetailsOptions" style="width: auto; float: left;">
-	       		<label for="selectDiagnosticChapter">Välj annat diagnoskapitel:</label>
+	       		<label class="dropdown-label" for="selectDiagnosticChapter">Välj annat diagnoskapitel:</label>
 	       		<div class="btn-group margin-bottom">
 	           		<a class="btn dropdown-toggle" id="selectDiagnosticChapter" data-toggle="dropdown" href="#" style="width: 280px; overflow: hidden; text-overflow: ellipsis;"><span class="caret pull-right"></span><span>{{selectedDetailsOption.id}} {{selectedDetailsOption.name}}</span></a>
 		        	<ul class="dropdown-menu left overflow-menu-options">
@@ -47,7 +59,7 @@
 				  <ul class="dropdown-menu left">
 				    <li><a tabindex="-1" ng-click="exportTableData()"><img src="/img/dropdown-icons/excel.png"/> Excel</a></li>
 				    <li><a class="disabled"><img src="/img/dropdown-icons/pdf-inactive.png"/>PDF</a></li>
-				    <li><a class="disabled"><img src="/img/dropdown-icons/png-inactive.png"/>PNG</a></li>
+				    <li><a class="disabled"><img src="/img/dropdown-icons/png-inactive.png"/>BILD</a></li>
 				  </ul>
 				</div>
 			</div>
@@ -71,11 +83,11 @@
 	                </div>
 	            </div>
 	            <!-- Start chart footnote -->
-	            <div class="row-fluid" ng-repeat="chartFootnote in chartFootnotes">
+	            <!-- div class="row-fluid" ng-repeat="chartFootnote in chartFootnotes">
 	            	<div class="span12 alert alert-info">
 	            			{{chartFootnote}}
 	            	</div>
-	            </div>
+	            </div-->
 	            
 	            <div class="row-fluid">
 	                <div class="span12">
@@ -92,7 +104,7 @@
             <div class="print-pagebreak-after"></div>
             
             <!-- Starting data-table -->
-            <div class="rotate-print">
+            <div class="rotate-print browserTable" ng-class="{printTable: !useSpecialPrintTable}">
 	            <div class="row-fluid">
 					<span class="span12 graph-ingress" id="data-table-print-header">
 						{{subTitle}}
@@ -128,6 +140,28 @@
 	                </div>
 	            </div>
             </div>
+            
+            <div ng-class="{printTable: useSpecialPrintTable}" style="display:none;">
+                <div class="row-fluid">
+                    <span class="span12 graph-ingress" id="data-table-print-header">
+                        {{subTitle}}
+                    </span>
+                </div>
+                <table id="datatable" class="table table-striped" ng-repeat="printTable in printDataTables">
+                    <thead>
+                        <tr ng-repeat="headerrow in printTable.headers">
+                            <td colspan="{{header.colspan}}" ng-repeat="header in headerrow" title="{{header.text}}">{{header.text}}</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="row in printTable.rows">
+                            <td>{{row.name}}</td>
+                            <td ng-repeat="fieldData in row.data" >{{fieldData | thousandseparated}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
         </div>
     </div>
 </div>
