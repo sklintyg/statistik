@@ -186,7 +186,7 @@
         <!-- Handler deciding where to redirect user after successful login -->
         <bean id="successRedirectHandler"
               class="org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler">
-            <property name="defaultTargetUrl" value="/web/start"/>
+            <property name="defaultTargetUrl" value="/#/verksamhet"/>
         </bean>
 
         <!-- Central storage of cryptographic keys -->

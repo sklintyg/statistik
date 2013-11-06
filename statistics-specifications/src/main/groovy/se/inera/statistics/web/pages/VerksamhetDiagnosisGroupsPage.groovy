@@ -9,8 +9,8 @@ class VerksamhetDiagnosisGroupsPage extends DetailsPage {
 
     static content = {
 
-        chartFemale { $("#container1 > div > svg") }
-        chartMale { $("#container2 > div > svg") }
+        chartFemale { $("#chart1 > div > svg") }
+        chartMale { $("#chart2 > div > svg") }
 
     }
 

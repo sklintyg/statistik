@@ -9,7 +9,7 @@ class VerksamhetAgeGroupsCurrentPage extends DetailsPage {
 
     static content = {
 
-        chart { $("#container > div > svg") }
+        chart { $("#chart1 > div > svg") }
 
     }
 

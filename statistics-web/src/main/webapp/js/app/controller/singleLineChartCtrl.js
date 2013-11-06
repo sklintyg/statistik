@@ -17,7 +17,7 @@
  
  app.singleLineChartCtrl = function ($scope, $routeParams, $timeout, statisticsData, config) {
     var chart;
-    $scope.chartContainers = ["container"];
+    $scope.chartContainers = ["chart1"];
     
 	var paintChart = function(chartCategories, chartSeries) {
         var chartOptions = ControllerCommons.getHighChartConfigBase(chartCategories, chartSeries);
@@ -54,6 +54,10 @@
         } else {
             series.show();
         }
+    };
+    
+    $scope.exportChart = function() {
+        chart.exportChart();
     };
 
     if ($routeParams.verksamhetId){
