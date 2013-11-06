@@ -14,16 +14,18 @@
     <context:component-scan base-package="org.springframework.security.saml"/>
 
     <!-- Unsecured pages -->
-    <security:http security="none" pattern="/css/**"/>
-    <security:http security="none" pattern="/js/**"/>
-    <security:http security="none" pattern="/img/**"/>
-    <security:http security="none" pattern="/pages/**"/>
-    <security:http security="none" pattern="/views/**"/>
-    <security:http security="none" pattern="/index.jsp"/>
-    <security:http security="none" pattern="/error.jsp"/>
-    <security:http security="none" pattern="/saml/web/**"/>
-    <security:http security="none" pattern="/api/login/**"/>
-    <security:http security="none" pattern="/favicon.ico"/>
+    <beans profile="!dev">
+      <security:http security="none" pattern="/css/**"/>
+      <security:http security="none" pattern="/js/**"/>
+      <security:http security="none" pattern="/img/**"/>
+      <security:http security="none" pattern="/pages/**"/>
+      <security:http security="none" pattern="/views/**"/>
+      <security:http security="none" pattern="/index.jsp"/>
+      <security:http security="none" pattern="/error.jsp"/>
+      <security:http security="none" pattern="/saml/web/**"/>
+      <security:http security="none" pattern="/api/login/**"/>
+      <security:http security="none" pattern="/favicon.ico"/>
+    </beans>
 
     <beans profile="test">
         <context:property-placeholder location="file:${user.home}/.test.webcert.se/config.properties" order="1"

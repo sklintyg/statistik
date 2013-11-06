@@ -104,7 +104,7 @@
             <div class="print-pagebreak-after"></div>
             
             <!-- Starting data-table -->
-            <div class="rotate-print">
+            <div class="rotate-print browserTable" ng-class="{printTable: !useSpecialPrintTable}">
 	            <div class="row-fluid">
 					<span class="span12 graph-ingress" id="data-table-print-header">
 						{{subTitle}}
@@ -140,6 +140,28 @@
 	                </div>
 	            </div>
             </div>
+            
+            <div ng-class="{printTable: useSpecialPrintTable}" style="display:none;">
+                <div class="row-fluid">
+                    <span class="span12 graph-ingress" id="data-table-print-header">
+                        {{subTitle}}
+                    </span>
+                </div>
+                <table id="datatable" class="table table-striped" ng-repeat="printTable in printDataTables">
+                    <thead>
+                        <tr ng-repeat="headerrow in printTable.headers">
+                            <td colspan="{{header.colspan}}" ng-repeat="header in headerrow" title="{{header.text}}">{{header.text}}</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="row in printTable.rows">
+                            <td>{{row.name}}</td>
+                            <td ng-repeat="fieldData in row.data" >{{fieldData | thousandseparated}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
         </div>
     </div>
 </div>
