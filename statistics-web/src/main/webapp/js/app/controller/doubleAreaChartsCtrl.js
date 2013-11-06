@@ -140,8 +140,10 @@
         $timeout(function() {
             updateDataTable($scope, result);
             updateChart(result);
-            updatePrintDataTable($scope, result);
         }, 1);
+        $timeout(function() {
+            updatePrintDataTable($scope, result);
+        }, 100);
     };
     
     var populateDetailsOptions = function(result){
