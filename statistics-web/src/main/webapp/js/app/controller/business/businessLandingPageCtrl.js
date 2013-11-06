@@ -1,11 +1,17 @@
 'use strict';
 
-app.businessLandingPageCtrl = function ($window, statisticsData) {
+app.businessLandingPageCtrl = function ($window, $cookies, statisticsData) {
 
-    var selectDefaultBusiness = function(loginInfo) { 
-        $window.location="#/verksamhet/" + loginInfo.businesses[0].id + "/oversikt";
+    var getFirstAvailableVerksamhetId = function() {
+        statisticsData.getLoginInfo(function(loginInfo) {
+                return loginInfo.businesses[0].id;
+            }, function() {
+                $scope.dataLoadingError = true;
+            });
     }
+
+    var defaultVerksamhetId = $cookies.verksamhetId || getFirstAvailableVerksamhetId();
+    $window.location="#/verksamhet/" + defaultVerksamhetId + "/oversikt";
     
-    statisticsData.getLoginInfo(selectDefaultBusiness, function() { $scope.dataLoadingError = true; });
 
 }

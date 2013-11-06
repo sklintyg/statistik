@@ -144,7 +144,7 @@
                     <extraarg>-validate</extraarg>
                     <extraarg>-verbose</extraarg>
                   </extraargs>
-                  <wsdl>${schema.path}/wsdl/HsaWsInteraction_3.16.wsdl</wsdl>
+                  <wsdl>${schema.path}/wsdl/HsaWsInteraction_3.18.wsdl</wsdl>
                 </wsdlOption>
 
               </wsdlOptions>

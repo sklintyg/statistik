@@ -87,7 +87,7 @@
 											Välj verksamhet<span class="caret"></span>
 										</a>
 										<ul class="dropdown-menu left">
-											<li ng-repeat="business in businesses" ><a tabindex="-1" ng-href="#/verksamhet/{{business.id}}/oversikt">{{business.name}}</a></li>
+											<li ng-repeat="business in businesses" ><a tabindex="-1" ng-click="selectVerksamhet(business.id)">{{business.name}}</a></li>
 										</ul>
 									</div>
 								</div>
