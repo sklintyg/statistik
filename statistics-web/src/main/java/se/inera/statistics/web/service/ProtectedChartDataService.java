@@ -208,8 +208,25 @@ public class ProtectedChartDataService {
         }
 
         public static boolean userAccess(HttpServletRequest request, String verksamhetId) {
-            LOG.info("User " + request.getUserPrincipal().getName() + " accessed verksamhet " + verksamhetId + "(" + request.getRequestURI() + ")");
+            LOG.info("User " + getUsernameSafe(request) + " accessed verksamhet " + verksamhetId + "(" + getUriSafe(request) + ")");
             return true;
+        }
+
+        private static String getUriSafe(HttpServletRequest request) {
+            if (request == null) {
+                return "!NoRequest!";
+            }
+            return request.getRequestURI();
+        }
+
+        private static String getUsernameSafe(HttpServletRequest request) {
+            if (request == null) {
+                return "!NoRequest!";
+            }
+            if (request.getUserPrincipal() == null) {
+                return "!NoUserPrincipal!";
+            }
+            return request.getUserPrincipal().getName();
         }
 
         @SuppressWarnings("unchecked")
