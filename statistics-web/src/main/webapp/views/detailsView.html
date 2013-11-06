@@ -79,7 +79,10 @@
                 <!-- Start graph -->
 	            <div class="row-fluid">
 	                <div class="span12">
-	                    <div class="chart-page-chart" ng-class="{span12: chartContainers.length == 1, span6: chartContainers.length == 2}" ng-repeat="chartContainer in chartContainers" id="{{chartContainer}}" style="height: 400px; margin: 0 auto"></div>
+	                   <span ng-repeat="chartContainer in chartContainers">
+                           <div><button class="btn" type="button" ng-click="exportChart(chartContainer)" >Spara som bild</button></div>
+	                       <div class="chart-page-chart" ng-class="{span12: chartContainers.length == 1, span6: chartContainers.length == 2}" id="{{chartContainer}}" style="height: 400px; margin: 0 auto"></div>
+	                   </span>
 	                </div>
 	            </div>
 	            <!-- Start chart footnote -->

@@ -34,8 +34,9 @@
  }
  
  app.doubleAreaChartsCtrl = function ($scope, $routeParams, $window, $timeout, statisticsData, config) {
-     var chart1, chart2;
      var that = this;
+     var chart1 = {};
+     var chart2 = {};
      var isVerksamhet = $routeParams.verksamhetId ? true : false;
 
      this.paintChart = function(containerId, yAxisTitle, chartCategories, chartSeries) {
@@ -122,15 +123,15 @@
 
         var chartSeriesFemale = ajaxResult.femaleChart.series;
         ControllerCommons.addColor(chartSeriesFemale);
-        chart1 = that.paintChart('container1', 'Antal kvinnor', chartCategories, chartSeriesFemale);
+        that.chart1 = that.paintChart('chart1', 'Antal kvinnor', chartCategories, chartSeriesFemale);
         
         var chartSeriesMale = ajaxResult.maleChart.series;
         ControllerCommons.addColor(chartSeriesMale);
-        chart2 = that.paintChart('container2', 'Antal män', chartCategories, chartSeriesMale);
+        that.chart2 = that.paintChart('chart2', 'Antal män', chartCategories, chartSeriesMale);
         
-        var yMax = Math.max(chart1.yAxis[0].dataMax, chart2.yAxis[0].dataMax);
-        chart1.yAxis[0].setExtremes(0,yMax);
-        chart2.yAxis[0].setExtremes(0,yMax);
+        var yMax = Math.max(that.chart1.yAxis[0].dataMax, that.chart2.yAxis[0].dataMax);
+        that.chart1.yAxis[0].setExtremes(0,yMax);
+        that.chart2.yAxis[0].setExtremes(0,yMax);
         
         $scope.series = chartSeriesMale;
     };
@@ -165,11 +166,11 @@
 
     $scope.chartFootnotes = config.chartFootnotes;
     
-    $scope.chartContainers = [ "container1", "container2" ];
+    $scope.chartContainers = [ "chart1", "chart2" ];
 
     $scope.toggleSeriesVisibility = function(index) {
-        var s1 = chart1.series[index];
-        var s2 = chart2.series[index];
+        var s1 = that.chart1.series[index];
+        var s2 = that.chart2.series[index];
         if (s1.visible) {
             s1.hide();
             s2.hide();
@@ -207,6 +208,10 @@
     
     $scope.useSpecialPrintTable = true;
 
+    $scope.exportChart = function(chartName) {
+        that[chartName].exportChart({}, {legend: {enabled: true, layout: 'vertical'} });
+    };
+    
     return this;
 
 };
