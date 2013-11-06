@@ -14,16 +14,11 @@
     <context:component-scan base-package="org.springframework.security.saml"/>
 
     <!-- Unsecured pages -->
-    <beans profile="!dev">
+    <beans>
       <security:http security="none" pattern="/css/**"/>
+      <security:http security="none" pattern="/bootstrap/**"/>
       <security:http security="none" pattern="/js/**"/>
       <security:http security="none" pattern="/img/**"/>
-      <security:http security="none" pattern="/pages/**"/>
-      <security:http security="none" pattern="/views/**"/>
-      <security:http security="none" pattern="/index.jsp"/>
-      <security:http security="none" pattern="/error.jsp"/>
-      <security:http security="none" pattern="/saml/web/**"/>
-      <security:http security="none" pattern="/api/login/**"/>
       <security:http security="none" pattern="/favicon.ico"/>
     </beans>
 
