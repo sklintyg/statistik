@@ -6,7 +6,7 @@
      conf.dataFetcherVerksamhet = "getDiagnosisGroupDataVerksamhet";
      conf.showDetailsOptions = false;
      conf.title = "Antal sjukfall per diagnosgrupp";
-     conf.chartFootnotes = ["Notera att samma sjukfall kan visas fler än en gång i grafen då ett sjukfall kan tilldelas flera diagnoser under samma månad", "Endast de sex vanligast förekommande diagnosgrupperna redovisas med namn. Övriga diagnosgrupper redovisas som övrigt."]; 
+     conf.chartFootnotes = ["Notera att för en given månad så kan samma sjukfall visas fler än en gång i graf och tabell. Om ett sjukfall innehåller flera intyg i samma månad så hämtas diagnos från varje intyg. Om det är olika diagnosgrupper kommer sjukfallet finnas med en gång för varje diagnosgrupp för respektive månad. Exempel: om ett sjukfall innehåller två intyg för maj månad där det första sätter diagnosen M54 och det andra intyget sätter diagnosen F32 kommer sjukfallet räknas med i gruppen för Muskuloskeleta sjukdomar (M00-M99) samt för Psykiska sjukdomar (F00-F99) i graf och tabell för maj månad."]; 
      return conf;
  }
  
@@ -17,7 +17,7 @@
      conf.showDetailsOptions = true;
      conf.detailsOptionsTitlePrefix = "Antal sjukfall för";
      conf.title = "";
-     conf.chartFootnotes = ["Notera att samma sjukfall kan visas fler än en gång i grafen då ett sjukfall kan tilldelas flera diagnoser under samma månad", "Endast de sex vanligast förekommande undergrupper redovisas med namn. Övriga diagnoskapitel redovisas som 'Övriga diagnoskapitel'."]; 
+     conf.chartFootnotes = ["Notera att för en given månad så kan samma sjukfall visas fler än en gång i graf och tabell. Om ett sjukfall innehåller flera intyg i samma månad så hämtas diagnos från varje intyg. Om det är olika diagnoser som faller inom samma diagnoskapitel men olika diagnosavsnitt kommer sjukfallet finnas med en gång för varje diagnosavsnitt för respektive månad. Exempel: om ett sjukfall innehåller två intyg för maj månad där det första sätter diagnosen XXX och det andra intyget sätter diagnosen YYY(diagnosavsnitt YY ba) kommer sjukfallet räknas med i avsnittet för XXX samt för XXXi graf och tabell för maj månad.", "Endast de sex vanligast förekommande diagnosgrupperna redovisas med namn. Övriga diagnosgrupper redovisas som övrigt."]; 
      return conf;
  }
  
@@ -27,9 +27,8 @@
      conf.dataFetcherVerksamhet = "getDegreeOfSickLeaveVerksamhet";
      conf.showDetailsOptions = false;
      conf.title = "Antal sjukfall per sjukskrivningsgrad";
-     conf.tooltipHelpTextTitle ="Vad innebär sjukskrivningsgrad?";
      conf.tooltipHelpText ="Begreppet sjukskrivningsgrad beskriver hur många procent av en heltidsarbetstid (25 %, 50 %, 75 % eller 100 %) patienten rekommenderas sjukskrivning.";	 
-     conf.chartFootnotes = ["Notera att samma sjukfall kan visas fler än en gång i grafen då ett sjukfall kan ha olika sjukskrivningsgrad under samma månad."]; 
+     conf.chartFootnotes = ["Notera att för en given månad så kan samma sjukfall visas fler än en gång i graf och tabell. Alla sjukskrivningsgrader hämtas från varje intyg. Om det finns flera sjukskrivningsgrader kommer sjukfallet finnas med en gång för varje sjukskrivningsgrad för respektive månad. Exempel: om ett intyg innehåller sjukskrivning för maj månad som först är 50% sjukskrivningsgrad och sedan övergår till 100% kommer sjukfallet visas både för 50% och 100% i graf och tabell för maj månad."]; 
      return conf;
  }
  
@@ -183,8 +182,8 @@
     $scope.exportTableData = ControllerCommons.exportTableDataGeneric;
 
     $scope.subTitle = config.title;
-    $scope.popoverTextTitle = config.tooltipHelpTextTitle;
     $scope.popoverText = config.tooltipHelpText;
+    $scope.popoverFootnotesText = config.chartFootnotes;
 
     if (isVerksamhet){
         statisticsData[config.dataFetcherVerksamhet]($routeParams.verksamhetId, populatePageWithData, function() { $scope.dataLoadingError = true; }, $routeParams.groupId);

@@ -201,7 +201,10 @@ section#certificate div.cert div.cert-footer {
     border-color: #e9eae8;
     background-color: #e9eae8;
 }
-
+.print-only-no-display {
+	display: none;
+}
+#chart-footnote-trigger { cursor: pointer; }
 div.inera-box {
     margin-bottom: 10px;
     border: 1px solid #808080;

@@ -127,7 +127,6 @@
     $scope.spinnerText = "Laddar information...";
     $scope.doneLoading = false;
     $scope.dataLoadingError = false;
-    $scope.popoverTextTitle = "Förklaring";
     $scope.popoverTextAmount = "Totala antalet sjukfall under perioden ";
     $scope.popoverTextChangeProcentage = "Procentsatsen visar förändringen av antalet sjukfall under perioden ";  
     $scope.popoverTextChangeProcentage2 = " jämfört med dess föregående tre månader.";
