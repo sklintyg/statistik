@@ -242,6 +242,7 @@
 <script type="text/javascript" src="<c:url value='js/lib/highcharts/3.0.5/highcharts.js'/>"></script>
 <script type="text/javascript" src="<c:url value='js/lib/highcharts/3.0.5/modules/highcharts-more.js'/>"></script>
 <script type="text/javascript" src="<c:url value='js/lib/highcharts/3.0.5/modules/exporting.js'/>"></script>
+<script type="text/javascript" src="<c:url value='js/lib/highcharts/pattern-fill/pattern-fill.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/exportTableData.js'/>" ></script>
 
 <script type="text/javascript">
