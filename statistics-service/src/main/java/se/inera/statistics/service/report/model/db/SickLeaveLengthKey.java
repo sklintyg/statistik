@@ -53,4 +53,28 @@ public class SickLeaveLengthKey implements Serializable {
     public void setPeriods(int periods) {
         this.periods = periods;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        SickLeaveLengthKey that = (SickLeaveLengthKey) o;
+
+        if (periods != that.periods) return false;
+        if (!grupp.equals(that.grupp)) return false;
+        if (!hsaId.equals(that.hsaId)) return false;
+        if (!period.equals(that.period)) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = period.hashCode();
+        result = 31 * result + hsaId.hashCode();
+        result = 31 * result + grupp.hashCode();
+        result = 31 * result + periods;
+        return result;
+    }
 }
