@@ -32,13 +32,13 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="ROBOTS" content="nofollow, noindex"/>
 
-    <title><spring:message code="application.name"/></title>
+    <title>Inera Statistics Servic</title>
 
     <link rel="icon" href="<c:url value="/favicon.ico" />" type="image/vnd.microsoft.icon"/>
 
     <link rel="stylesheet" href="<c:url value="/css/bootstrap/2.3.2/bootstrap.css"/>">
     <link rel="stylesheet" href="<c:url value="/css/bootstrap-responsive-modified.css"/>">
-    <link rel="stylesheet" href="<c:url value="/css/inera-webcert.css"/>">
+    <link rel="stylesheet" href="<c:url value="/css/inera-statistics.css"/>">
 </head>
 
 <body class="start">
@@ -47,29 +47,29 @@
 
     <div class="row-fluid">
         <div class="span6">
-            <img class="pull-right" src="/img/webcert_big.png"/>
+            <img class="pull-right" src="/img/404.png"/>
         </div>
         <div class="span6">
 
             <c:choose>
                 <c:when test="${param.reason eq \"logout\"}">
                     <h1>
-                        <spring:message code="info.loggedout.title"/>
+                        Logged out
                     </h1>
 
                     <div id="loggedOut" class="alert alert-info">
-                        <spring:message code="info.loggedout.text"/>
+                        Logged out text
                     </div>
                     <!-- reason: loggedout -->
                 </c:when>
 
                 <c:when test="${param.reason eq \"denied\"}">
                     <h1>
-                        <spring:message code="error.noauth.title"/>
+                        Not authorized
                     </h1>
 
                     <div id="noAuth" class="alert alert-warning">
-                        <spring:message code="error.noauth.text"/>
+                        Not authorized text
                     </div>
                     
                     <!-- reason: denied -->
@@ -77,39 +77,39 @@
 
                 <c:when test="${param.reason eq \"medarbetaruppdrag\"}">
                     <h1>
-                        <spring:message code="error.medarbetaruppdrag.title"/>
+                        Inget medarbetaruppdrag
                     </h1>
 
                     <div id="noAuth" class="alert alert-error">
-                        <spring:message code="error.medarbetaruppdrag.text"/>
+                        inget medarbetaruppdrag text
                     </div>
                     
                 </c:when>
 
                 <c:when test="${param.reason eq \"notfound\"}">
                     <h1>
-                        <spring:message code="error.notfound.title"/>
+                        not found
                     </h1>
 
                     <div id="notFound" class="alert alert-error">
-                        <spring:message code="error.notfound.text"/>
+                        not found text
                     </div>
                 </c:when>
 
                 <c:otherwise>
                     <h1>
-                        <spring:message code="error.generictechproblem.title"/>
+                        annat
                     </h1>
 
                     <div id="genericTechProblem" class="alert alert-error">
-                        <spring:message code="error.generictechproblem.text"/>
+                        annat text
                     </div>
                     
                     <!-- reason: generic -->
                 </c:otherwise>
             </c:choose>
 
-            <a href="/web/start" class="btn btn-success" id="loginBtn">Logga in</a>
+            <a href="/" class="btn btn-success" id="loginBtn">Till förstasidan</a>
 
 
             <!--
