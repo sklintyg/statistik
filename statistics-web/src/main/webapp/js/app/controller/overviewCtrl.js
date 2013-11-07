@@ -37,6 +37,7 @@
             chartOptions.chart.type = 'pie';
             chartOptions.chart.renderTo = containerId;
             chartOptions.chart.height = 180;
+            chartOptions.chart.plotBorderWidth = 0;
             new Highcharts.Chart(chartOptions);
         }
 

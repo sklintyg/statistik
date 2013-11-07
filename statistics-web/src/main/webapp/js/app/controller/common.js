@@ -21,6 +21,58 @@ var ControllerCommons = new function(){
         return rawData;
     };
  
+    var addBwColor = function(series, chartType) {
+        var patterns = [ 'http://highcharts.com/demo/gfx/pattern1.png', 'http://highcharts.com/demo/gfx/pattern2.png', 'http://highcharts.com/demo/gfx/pattern3.png' ];
+        var dashStyles = [ 'shortdashdotdot', 'dashdot', 'dot', 'longdash', 'shortdot', 'solid', 'shortdash', 'shortdashdot', 'dash', 'longdashdot', 'longdashdotdot' ];
+
+        for (var i = 0; i < series.length; i++) {
+            series[i].animation = false;
+            if (chartType === "bar") {
+                series[i].color = {
+                        pattern: patterns[i % patterns.length],
+                        width: 6,
+                        height: 6,
+                    };
+            } else if (chartType === "area") {
+                series[i].fillColor = {
+                        pattern: patterns[i % patterns.length],
+                        width: 6,
+                        height: 6,
+                };
+            } else if (chartType === "line") {
+                series[i].color = 'black';
+                series[i].dashStyle = dashStyles[i % dashStyles.length];
+            }
+        }
+        return series;
+    };
+    
+    this.setupSeriesForDisplayType = function(setupForBwPrint, series, chartType) {
+        return setupForBwPrint ? addBwColor(series, chartType) : ControllerCommons.addColor(series);
+    }
+    
+    this.printAndCloseWindow = function($timeout, $window) {
+        $( document ).ready( function(){
+            $timeout(function() {
+                $window.print();
+                if ('afterprint' in window) {
+                    $(window).on('afterprint', function(){$window.close();});
+                } else if ('matchMedia' in window) {
+                    $timeout(function() {
+                        window.matchMedia('print').addListener(function(media) {
+                            if (!media.matches) {
+                                $(document).one('mouseover', function(){$window.close();});
+                            }
+                        });
+                    }, 100);
+                }
+                $window.onfocus = function() { 
+                    $window.close();
+                }
+            }, 1000);
+          } );
+    }
+    
     this.showHideDataTableDefault = "Dölj datatabell";
     this.toggleTableVisibilityGeneric = function(event, $scope) {
         var elem = $(event.target);
@@ -56,7 +108,8 @@ var ControllerCommons = new function(){
         return {
             chart : {
                 renderTo : 'chart1',
-                backgroundColor : 'transparent'
+                backgroundColor : 'transparent',
+                plotBorderWidth: 1
             },
             title : {
                 text : ''

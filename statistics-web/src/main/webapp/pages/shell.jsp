@@ -47,7 +47,7 @@
 
 <!-- Navbar
 ================================================== -->
-<div class="navbar navbar-inverse navbar-fixed-top">
+<div class="navbar navbar-inverse navbar-fixed-top dontprint">
 	<div class="navbar-inner">
 		<div class="container-fluid">
 			<div class="row-fluid" id="navigation-container">
@@ -107,7 +107,7 @@
 		<!-- Docs nav
 		================================================== -->
 		<div class="row-fluid">
-			<div class="span3 bs-docs-sidebar" ng-controller="NavigationMenuCtrl">
+			<div class="span3 bs-docs-sidebar dontprint" ng-controller="NavigationMenuCtrl">
 				<h1 class="hidden-header">Sidans huvudnavigering</h1>
 				<div class="statistics accordion" id="statistics-menu-accordion">
 					<div class="accordion-group" id="national-statistics-menu-group">
@@ -211,7 +211,7 @@
 </div>
 <!-- Footer
 ================================================== -->
-<footer class="footer">
+<footer class="footer dontprint">
 	<div class="container-fluid">
 	</div>
 </footer>
@@ -242,6 +242,7 @@
 <script type="text/javascript" src="<c:url value='js/lib/highcharts/3.0.5/highcharts.js'/>"></script>
 <script type="text/javascript" src="<c:url value='js/lib/highcharts/3.0.5/modules/highcharts-more.js'/>"></script>
 <script type="text/javascript" src="<c:url value='js/lib/highcharts/3.0.5/modules/exporting.js'/>"></script>
+<script type="text/javascript" src="<c:url value='js/lib/highcharts/pattern-fill/pattern-fill.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/exportTableData.js'/>" ></script>
 
 <script type="text/javascript">

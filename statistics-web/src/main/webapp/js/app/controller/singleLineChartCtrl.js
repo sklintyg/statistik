@@ -17,7 +17,7 @@
      return conf;
  }
  
- app.singleLineChartCtrl = function ($scope, $routeParams, $timeout, statisticsData, config) {
+ app.singleLineChartCtrl = function ($scope, $routeParams, $timeout, $window, statisticsData, config) {
     var chart;
     $scope.chartContainers = ["chart1"];
     
@@ -34,7 +34,7 @@
 	};
 
     var updateChart = function(ajaxResult) {
-	    $scope.series = ControllerCommons.addColor(ajaxResult.series);
+	    $scope.series = ControllerCommons.setupSeriesForDisplayType($routeParams.printBw, ajaxResult.series, "line");
 	    chart = paintChart(ajaxResult.categories, $scope.series);
     };
 
@@ -46,6 +46,10 @@
         $timeout(function() {
             updateDataTable($scope, result.tableData);
             updateChart(result.chartData);
+            
+            if ($routeParams.printBw) {
+                ControllerCommons.printAndCloseWindow($timeout, $window);
+            }
         }, 1);
     };
     
@@ -76,6 +80,10 @@
     $scope.spinnerText = "Laddar information...";
     $scope.doneLoading = false;
     $scope.dataLoadingError = false;
-    $scope.popoverTextTitle = "Vad innebär sjukfall?";
     $scope.popoverText = config.showPageHelpTooltip ? "Ett sjukfall omfattar alla de läkarintyg (FK&nbsp;7263) som rör en viss patient och vars giltighet följer på varandra med max 5 dagars uppehåll. Exempel: Om intyg 1 gäller till och med 14 augusti och intyg 2 gäller från och med 17 augusti ses de båda intygen som samma sjukfall. Men om intyg 2 istället varit giltigt från och med 21 augusti räknas intygen som två skilda sjukfall." : "";
+
+    $scope.bwPrint = function() {
+        window.open($window.location + "?printBw=true");
+    }
+    
 };
