@@ -57,16 +57,6 @@
 				    <li><a class="disabled"><img src="/img/dropdown-icons/pdf-inactive.png"/> PDF-fil</a></li>
 				  </ul>
 				</div>
-				<!-- SAVE AS BUTTON GROUP -->
-				<div class="btn-group statistics-btn-group">
-				  <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-				    Spara som
-				    <span class="caret"></span>
-				  </a>
-				  <ul class="dropdown-menu left">
-				    <li><a ng-click="exportTableData()"><img src="/img/dropdown-icons/excel.png"/> Excel</a></li>
-				  </ul>
-				</div>
 			</div>
     	</div>
     </div>
@@ -102,6 +92,16 @@
             <div class="print-pagebreak-after"></div>
             
             <!-- Starting data-table -->
+            <!-- SAVE AS BUTTON GROUP -->
+			<div class="btn-group statistics-btn-group">
+			  <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+			    Exportera tabell till
+			    <span class="caret"></span>
+			  </a>
+			  <ul class="dropdown-menu">
+			    <li><a ng-click="exportTableData()"><img src="/img/dropdown-icons/excel.png"/> Excel</a></li>
+			  </ul>
+			</div>
             <div class="rotate-print browserTable" ng-class="{printTable: !useSpecialPrintTable}">
 	            <div class="row-fluid">
 					<span class="span12 graph-ingress" id="data-table-print-header">
