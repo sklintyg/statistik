@@ -56,7 +56,8 @@ var ControllerCommons = new function(){
         return {
             chart : {
                 renderTo : 'chart1',
-                backgroundColor : 'transparent'
+                backgroundColor : 'transparent',
+                plotBorderWidth: 1
             },
             title : {
                 text : ''
