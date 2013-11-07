@@ -45,9 +45,10 @@
  }
 
  app.columnChartDetailsViewCtrl = function ($scope, $routeParams, $timeout, statisticsData, config) {
-     var isVerksamhet = $routeParams.verksamhetId ? true : false;
+    var isVerksamhet = $routeParams.verksamhetId ? true : false;
+    var chart = {};
 
-    $scope.chartContainers = ["container"];
+    $scope.chartContainers = ["chart1"];
     
 	var paintChart = function(chartCategories, chartSeries) {
         var chartOptions = ControllerCommons.getHighChartConfigBase(chartCategories, chartSeries);
@@ -55,8 +56,8 @@
         chartOptions.xAxis.title.text = config.chartXAxisTitle;
         chartOptions.yAxis.title.text = config.percentChart ? "Andel" : 'Antal';
         chartOptions.yAxis.labels.formatter = function() { return ControllerCommons.makeThousandSeparated(this.value) + (config.percentChart ? "%" : "") };
-        chartOptions.plotOptions.column.stacking = config.percentChart ? 'percent' : 'normal',
-		new Highcharts.Chart(chartOptions);
+        chartOptions.plotOptions.column.stacking = config.percentChart ? 'percent' : 'normal';
+		return new Highcharts.Chart(chartOptions);
 	};
 
 	var updateDataTable = function($scope, ajaxResult) {
@@ -65,7 +66,7 @@
 	};
 
 	var updateChart = function(ajaxResult) {
-		paintChart(ajaxResult.categories, ControllerCommons.addColor(ajaxResult.series));
+		chart = paintChart(ajaxResult.categories, ControllerCommons.addColor(ajaxResult.series));
 	};
 
     $scope.exportTableData = ControllerCommons.exportTableDataGeneric;
@@ -93,4 +94,9 @@
     $scope.spinnerText = "Laddar information...";
     $scope.doneLoading = false;
     $scope.dataLoadingError = false;
+
+    $scope.exportChart = function() {
+        chart.exportChart();
+    };
+    
 };

@@ -55,7 +55,7 @@ var ControllerCommons = new function(){
     this.getHighChartConfigBase = function(chartCategories, chartSeries) {
         return {
             chart : {
-                renderTo : 'container',
+                renderTo : 'chart1',
                 backgroundColor : 'transparent'
             },
             title : {

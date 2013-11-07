@@ -1,14 +1,14 @@
  'use strict';
  
  app.casesPerCountyCtrl = function ($scope, $timeout, statisticsData) {
-
-    $scope.chartContainers = ["container"];
+    var chart = {};
+    $scope.chartContainers = ["chart1"];
     
 	var paintChart = function(chartCategories, chartSeries) {
 	    var chartOptions = ControllerCommons.getHighChartConfigBase(chartCategories, chartSeries);
 	    chartOptions.chart.type = 'column';
         chartOptions.xAxis.title.text = "Län";
-		new Highcharts.Chart(chartOptions);
+		return new Highcharts.Chart(chartOptions);
 	};
 
 	var updateDataTable = function($scope, ajaxResult) {
@@ -17,7 +17,7 @@
 	};
 
 	var updateChart = function(ajaxResult) {
-		paintChart(ajaxResult.categories, ControllerCommons.addColor(ajaxResult.series));
+		chart = paintChart(ajaxResult.categories, ControllerCommons.addColor(ajaxResult.series));
 	};
 
     $scope.exportTableData = ControllerCommons.exportTableDataGeneric;
@@ -41,4 +41,9 @@
     $scope.spinnerText = "Laddar information...";
     $scope.doneLoading = false;
     $scope.dataLoadingError = false;
+    
+    $scope.exportChart = function() {
+        chart.exportChart();
+    }
+
 };
