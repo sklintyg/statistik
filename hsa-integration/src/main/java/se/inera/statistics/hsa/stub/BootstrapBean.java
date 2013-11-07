@@ -12,7 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 
-import se.inera.statistics.hsa.model.Vardgivare;
+import se.inera.statistics.hsa.model.Vardenhet;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -56,7 +56,7 @@ public class BootstrapBean {
     }
 
     private void addVardgivare(Resource res) throws IOException {
-        Vardgivare vardgivare = objectMapper.readValue(res.getFile(), Vardgivare.class);
-        hsaServiceStub.getVardgivare().add(vardgivare);
+        Vardenhet vardenhet = objectMapper.readValue(res.getFile(), Vardenhet.class);
+        hsaServiceStub.getVardenhets().add(vardenhet);
     }
 }

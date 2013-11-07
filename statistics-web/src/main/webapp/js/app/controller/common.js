@@ -49,7 +49,7 @@ var ControllerCommons = new function(){
       }
     
     this.makeThousandSeparated = function(input) {
-        return ControllerCommons.isNumber(input) ? input.toString().split('').reverse().join('').match(/.{1,3}/g).join(' ').split('').reverse().join('') : input;
+        return ControllerCommons.isNumber(input) ? input.toString().split('').reverse().join('').match(/.{1,3}/g).join('\u00A0').split('').reverse().join('') : input;
     };
 
     this.getHighChartConfigBase = function(chartCategories, chartSeries) {

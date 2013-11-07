@@ -1,45 +1,97 @@
 package se.inera.statistics.service.hsa;
 
-import java.util.ArrayList;
 import java.util.List;
 
+import org.joda.time.LocalDateTime;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import se.inera.statistics.service.report.model.Lan;
+import se.inera.ifv.hsawsresponder.v3.GeoCoord;
+import se.inera.ifv.hsawsresponder.v3.GeoCoordEnum;
+import se.inera.ifv.hsawsresponder.v3.GetStatisticsCareGiverResponseType;
+import se.inera.ifv.hsawsresponder.v3.GetStatisticsHsaUnitResponseType;
+import se.inera.ifv.hsawsresponder.v3.StatisticsHsaUnit;
+import se.inera.ifv.hsawsresponder.v3.StatisticsHsaUnit.BusinessClassificationCodes;
+import se.inera.ifv.hsawsresponder.v3.StatisticsHsaUnit.BusinessTypes;
+import se.inera.ifv.hsawsresponder.v3.StatisticsHsaUnit.CareTypes;
+import se.inera.ifv.hsawsresponder.v3.StatisticsHsaUnit.Managements;
+import se.inera.ifv.statistics.spi.authorization.impl.HSAWebServiceCalls;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
-@Component
+//@Component
 public class HSAServiceImpl implements HSAService {
     private JsonNodeFactory factory = JsonNodeFactory.instance;
 
-    private static final Lan LAN = new Lan();
-    private static final List<String> LAN_CODES;
-
-    static {
-        LAN_CODES = new ArrayList<>();
-        for (String kod: LAN) {
-            LAN_CODES.add(kod);
-        }
-    }
+    @Autowired
+    private HSAWebServiceCalls service;
 
     @Override
     public JsonNode getHSAInfo(HSAKey key) {
-        ObjectNode root = factory.objectNode();
-        root.put("enhetsnamn", "Enhetens namn");
-        root.put("organisationsnummer", "Enhetens organisationsnummer");
-        root.put("organisationsnamn", "Organisationsnamn");
-        root.put("enhetstyp", asList("02"));
-        root.put("vardgivartillhorighet", "vardgivar hsaid");
-        root.put("agarform", "Landsting/Region");
-        root.put("startdatum", "");
-        root.put("slutdatum", "");
-        root.put("geografi", createGeografiskIndelning(key));
-        root.put("hos-personal", createHosPersonal());
+        GetStatisticsHsaUnitResponseType unit = service.getStatisticsHsaUnit(key.getEnhetId());
+        GetStatisticsCareGiverResponseType caregiver = service.getStatisticsCareGiver(key.getVardgivareId());
+
+        Builder u1 = createUnit(unit.getStatisticsUnit());
+        Builder u2 = createUnit(unit.getStatisticsCareUnit());
+
+        if (u2 != null) {
+            u1.put("delAvEnhet", u2);
+        }
+        Builder c = createCareGiver(caregiver);
+        u1.put("vardgivare", c);
+        return u1.root;
+    }
+
+    private Builder createCareGiver(GetStatisticsCareGiverResponseType caregiver) {
+        if (caregiver == null) {
+            return null;
+        }
+        Builder root = new Builder();
+        root.put("id", caregiver.getHsaIdentity());
+        root.put("orgnr", caregiver.getCareGiverOrgNo());
+        root.put("namn", "Not yet");
+        root.put("startdatum", caregiver.getStartDate());
+        root.put("slutdatum", caregiver.getEndDate());
+        root.put("arkiverad", caregiver.isIsArchived());
         return root;
+    }
+
+    private Builder createUnit(StatisticsHsaUnit unit) {
+        if (unit == null) {
+            return null;
+        }
+        Builder root = new Builder();
+
+        root.put("id", unit.getHsaIdentity());
+        root.put("namn", "Not yet");
+        root.put("enhetsTyp", createEnhetsTyp(unit.getBusinessTypes()));
+        root.put("agarform", createAgarTyp(unit.getManagements()));
+        root.put("startdatum", unit.getStartDate());
+        root.put("slutdatum", unit.getEndDate());
+        root.put("arkiverad", unit.isIsArchived());
+        root.put("verksamhet", createVerksamhet(unit.getBusinessClassificationCodes()));
+        root.put("vardform", createVardform(unit.getCareTypes()));
+        root.put("geografi", createGeografiskIndelning(unit));
+        return root;
+    }
+
+    private List<String> createVardform(CareTypes careTypes) {
+        return careTypes != null ? careTypes.getCareType() : null;
+    }
+
+    private List<String> createVerksamhet(BusinessClassificationCodes codes) {
+        return codes != null ? codes.getBusinessClassificationCode() : null;
+    }
+
+    private List<String> createAgarTyp(Managements managements) {
+        return managements != null ? managements.getManagement() : null;
+    }
+
+    private List<String> createEnhetsTyp(BusinessTypes businessTypes) {
+        return businessTypes != null ? businessTypes.getBusinessType() : null;
     }
 
     private JsonNode createHosPersonal() {
@@ -48,38 +100,74 @@ public class HSAServiceImpl implements HSAService {
         return root;
     }
 
-    private JsonNode createGeografiskIndelning(HSAKey key) {
+    private JsonNode createGeografiskIndelning(StatisticsHsaUnit unit) {
         ObjectNode root = factory.objectNode();
-        root.put("koordinater", "nagonsortskoordinat");
-        root.put("plats", "Plats");
-        root.put("kommundelskod", "0");
-        root.put("kommundelsnamn", "Centrum");
-        root.put("kommun", createKommun());
-        root.put("lan", createLan(key));
+        root.put("koordinat", createCoordinate(unit));
+        root.put("plats", unit.getLocation());
+        root.put("kommundelskod", unit.getMunicipalitySectionCode());
+        root.put("kommundelsnamn", unit.getMunicipalitySectionName());
+        root.put("kommun", unit.getMunicipalityCode());
+        root.put("lan", unit.getCountyCode());
         return root;
     }
 
-    private JsonNode createLan(HSAKey key) {
-        ObjectNode root = factory.objectNode();
-        int keyIndex = key != null && key.getVardgivareId() != null ? Math.abs(key.getVardgivareId().hashCode()) : 0;
-        String kod = LAN_CODES.get(keyIndex % LAN_CODES.size());
-        root.put("kod", kod);
-        root.put("namn", LAN.getNamn(kod));
-        return root;
+
+    private JsonNode createCoordinate(StatisticsHsaUnit unit) {
+        return createCoordinates(unit.getGeographicalCoordinatesRt90());
     }
 
-    private JsonNode createKommun() {
-        ObjectNode root = factory.objectNode();
-        root.put("kod", "80");
-        root.put("namn", "Göteborg");
-        return root;
-    }
-
-    private JsonNode asList(String...items) {
-        ArrayNode container = factory.arrayNode();
-        for (String item: items) {
-            container.add(item);
+    private JsonNode createCoordinates(GeoCoord coordinate) {
+        if (coordinate == null || coordinate.getType() != GeoCoordEnum.RT_90) {
+            return null;
         }
-        return container;
+        ObjectNode root = factory.objectNode();
+        root.put("typ", coordinate.getType().toString());
+        root.put("x", coordinate.getX());
+        root.put("y", coordinate.getY());
+        return root;
+    }
+
+    private class Builder {
+        ObjectNode root = factory.objectNode();
+        public Builder put(String name, String value) {
+            if (value != null) {
+                root.put(name, value);
+            }
+            return this;
+        }
+        public Builder put(String name, List<String> items) {
+            if (items != null && !items.isEmpty()) {
+                ArrayNode container = factory.arrayNode();
+                for (String item: items) {
+                    container.add(item);
+                }
+                root.put(name, container);
+            }
+            return this;
+        }
+        public Builder put(String name, Builder b) {
+            if (b != null && b.root.size() > 0) {
+                root.put(name,  b.root);
+            }
+            return this;
+        }
+        public Builder put(String name, JsonNode node) {
+            if (node != null) {
+                root.put(name,  node);
+            }
+            return this;
+        }
+        public Builder put(String name, Boolean bool) {
+            if (bool != null) {
+                root.put(name, bool);
+            }
+            return this;
+        }
+        public Builder put(String name, LocalDateTime date) {
+            if (date != null) {
+                put(name, date.toString("yyyy-MM-dd"));
+            }
+            return this;
+        }
     }
 }

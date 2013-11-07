@@ -19,22 +19,24 @@
  */
 package se.inera.ifv.statistics.spi.authorization.impl;
 
-import com.google.common.base.Throwables;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.w3.wsaddressing10.AttributedURIType;
+
 import se.inera.ifv.hsaws.v3.HsaWsResponderInterface;
-import se.inera.ifv.hsawsresponder.v3.GetCareUnitListResponseType;
-import se.inera.ifv.hsawsresponder.v3.GetCareUnitResponseType;
-import se.inera.ifv.hsawsresponder.v3.GetHsaUnitResponseType;
 import se.inera.ifv.hsawsresponder.v3.GetMiuForPersonResponseType;
 import se.inera.ifv.hsawsresponder.v3.GetMiuForPersonType;
-import se.inera.ifv.hsawsresponder.v3.HsawsSimpleLookupResponseType;
-import se.inera.ifv.hsawsresponder.v3.HsawsSimpleLookupType;
-import se.inera.ifv.hsawsresponder.v3.LookupHsaObjectType;
+import se.inera.ifv.hsawsresponder.v3.GetStatisticsCareGiverResponseType;
+import se.inera.ifv.hsawsresponder.v3.GetStatisticsCareGiverType;
+import se.inera.ifv.hsawsresponder.v3.GetStatisticsHsaUnitResponseType;
+import se.inera.ifv.hsawsresponder.v3.GetStatisticsHsaUnitType;
+import se.inera.ifv.hsawsresponder.v3.GetStatisticsPersonResponseType;
+import se.inera.ifv.hsawsresponder.v3.GetStatisticsPersonType;
 import se.inera.ifv.hsawsresponder.v3.PingResponseType;
 import se.inera.ifv.hsawsresponder.v3.PingType;
+
+import com.google.common.base.Throwables;
 
 public class HSAWebServiceCalls {
 
@@ -76,6 +78,40 @@ public class HSAWebServiceCalls {
         }
     }
 
+    public GetStatisticsCareGiverResponseType getStatisticsCareGiver(String careGiverId) {
+        try {
+            GetStatisticsCareGiverType parameters = new GetStatisticsCareGiverType();
+            parameters.setHsaIdentity(careGiverId);
+            parameters.setSearchBase("c=SE");
+            return serverInterface.getStatisticsCareGiver(logicalAddressHeader, messageId, parameters);
+        } catch (Throwable ex) {
+            throw new RuntimeException("Could not call getStatisticsCareGiver for " + careGiverId, ex);
+        }
+    }
+
+    public GetStatisticsHsaUnitResponseType getStatisticsHsaUnit(String unitId) {
+        try {
+            GetStatisticsHsaUnitType parameters = new GetStatisticsHsaUnitType();
+            parameters.setHsaIdentity(unitId);
+            parameters.setSearchBase("c=SE");
+            parameters.setIncludeOrgNo(Boolean.TRUE);
+            return serverInterface.getStatisticsHsaUnit(logicalAddressHeader, messageId, parameters);
+        } catch (Throwable ex) {
+            throw new RuntimeException("Could not call getStatisticsHsaUnit for " + unitId, ex);
+        }
+    }
+
+    public GetStatisticsPersonResponseType getStatisticsPerons(String personId) {
+        try {
+            GetStatisticsPersonType parameters = new GetStatisticsPersonType();
+            parameters.setHsaIdentity(personId);
+            parameters.setSearchBase("c=SE");
+            return serverInterface.getStatisticsPerson(logicalAddressHeader, messageId, parameters);
+        } catch (Throwable ex) {
+            throw new RuntimeException("Could not call getStatisticsPerson for " + personId, ex);
+        }
+    }
+
     /**
      * Method used to get miuRights for a HoS Person
      * 
@@ -90,75 +126,6 @@ public class HSAWebServiceCalls {
             return response;
         } catch (Throwable ex) {
             log.error("Failed to call getMiuForPerson", ex);
-            Throwables.propagate(ex);
-            return null;
-        }
-    }
-
-    /**
-     * Method to retrieve data for a hsa unit
-     * 
-     * @param hsaId
-     * @throws Exception
-     */
-    public GetCareUnitResponseType callGetCareunit(String hsaId) {
-        LookupHsaObjectType parameters = new LookupHsaObjectType();
-        parameters.setHsaIdentity(hsaId);
-
-        try {
-            GetCareUnitResponseType response = serverInterface.getCareUnit(logicalAddressHeader, messageId, parameters);
-            return response;
-        } catch (Throwable ex) {
-            log.error("Failed to call getCareUnit", ex);
-            Throwables.propagate(ex);
-            return null;
-        }
-    }
-
-    /**
-     * Method to retrieve the caregiver for a hsa unit
-     * 
-     * @param hsaId
-     */
-    public GetHsaUnitResponseType callGetHsaunit(String hsaId) {
-        LookupHsaObjectType parameters = new LookupHsaObjectType();
-        parameters.setHsaIdentity(hsaId);
-
-        try {
-            return serverInterface.getHsaUnit(logicalAddressHeader, messageId, parameters);
-        } catch (Throwable ex) {
-            log.error("Failed to call getHsaUnit", ex);
-            Throwables.propagate(ex);
-            return null;
-        }
-    }
-
-    /**
-     * Method to retrieve attributes for a HoS Person
-     * 
-     * @param parameters
-     * @return
-     * @throws Exception
-     */
-    public HsawsSimpleLookupResponseType callHsawsSimpleLookup(HsawsSimpleLookupType parameters) {
-        try {
-            HsawsSimpleLookupResponseType response = serverInterface.hsawsSimpleLookup(logicalAddressHeader, messageId,
-                    parameters);
-            return response;
-        } catch (Throwable ex) {
-            log.error("Failed to call hsawsSimpleLookup", ex);
-            Throwables.propagate(ex);
-            return null;
-        }
-    }
-
-    public GetCareUnitListResponseType callGetCareUnitList(LookupHsaObjectType parameters) {
-        try {
-            GetCareUnitListResponseType response = serverInterface.getCareUnitList(logicalAddressHeader, messageId,
-                    parameters);
-            return response;
-        } catch (Throwable ex) {
-            log.error("Failed to call getCareUnitList", ex);
             Throwables.propagate(ex);
             return null;
         }

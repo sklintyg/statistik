@@ -23,7 +23,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
-import se.inera.ifv.hsawsresponder.v3.GetHsaUnitResponseType;
+
+import se.inera.ifv.hsawsresponder.v3.GetStatisticsHsaUnitResponseType;
 import se.inera.ifv.statistics.spi.authorization.impl.HSAWebServiceCalls;
 
 
@@ -47,7 +48,7 @@ public class HSAWebServiceCallsTestClientJUnit {
     public void testHSAPing() throws Exception{
         client.callPing();
 
-        GetHsaUnitResponseType response = client.callGetHsaunit("IFV1239877878-103F");
+        GetStatisticsHsaUnitResponseType response = client.getStatisticsHsaUnit("IFV1239877878-103F");
         System.out.println(response);
     }
 
