@@ -101,7 +101,7 @@ public class HSAWebServiceCalls {
         }
     }
 
-    public GetStatisticsPersonResponseType getStatisticsPerons(String personId) {
+    public GetStatisticsPersonResponseType getStatisticsPerson(String personId) {
         try {
             GetStatisticsPersonType parameters = new GetStatisticsPersonType();
             parameters.setHsaIdentity(personId);
