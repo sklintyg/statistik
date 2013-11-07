@@ -31,6 +31,7 @@
             chartOptions.chart.type = 'pie';
             chartOptions.chart.renderTo = containerId;
             chartOptions.chart.height = 220;
+            chartOptions.chart.plotBorderWidth = 0;
             chartOptions.title = {
                 text: period,
                 verticalAlign: 'bottom',
@@ -60,6 +61,7 @@
             chartOptions.chart.type = 'pie';
             chartOptions.chart.renderTo = containerId;
             chartOptions.chart.height = 180;
+            chartOptions.chart.plotBorderWidth = 0;
             chartOptions.series = [{
                 name: 'Antal',
                 data: chartData,
