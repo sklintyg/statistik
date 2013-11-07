@@ -54,7 +54,7 @@
 				  <ul class="dropdown-menu right">
 				    <li><a onclick="window.print();"><img src="/img/dropdown-icons/print-colour.png"/> Färg</a></li>
 				    <li><a ng-click="bwPrint()"><img src="/img/dropdown-icons/print-bw.png"/> Svart-vitt</a></li>
-				    <li><a class="disabled"><img src="/img/dropdown-icons/pdf-inactive.png"/>PDF-fil</a></li>
+				    <li><a class="disabled"><img src="/img/dropdown-icons/pdf-inactive.png"/> PDF-fil</a></li>
 				  </ul>
 				</div>
 				<!-- SAVE AS BUTTON GROUP -->
@@ -64,9 +64,7 @@
 				    <span class="caret"></span>
 				  </a>
 				  <ul class="dropdown-menu left">
-				    <li><a tabindex="-1" ng-click="exportTableData()"><img src="/img/dropdown-icons/excel.png"/> Excel</a></li>
-				    
-				    <li><a class="disabled"><img src="/img/dropdown-icons/png-inactive.png"/>BILD</a></li>
+				    <li><a ng-click="exportTableData()"><img src="/img/dropdown-icons/excel.png"/> Excel</a></li>
 				  </ul>
 				</div>
 			</div>
@@ -82,10 +80,10 @@
 	            <div class="row-fluid">
 	                <div class="span12">
 	                   <div ng-repeat="chartContainer in chartContainers">
-                           
-	                       <div class="chart-page-chart" ng-class="{span12: chartContainers.length == 1, span6: chartContainers.length == 2}" id="{{chartContainer}}" style="height: 400px; margin: 0 auto">
-	                       		<div><img src="/img/dropdown-icons/png.png" ng-click="exportChart(chartContainer)" alt="ladda ner graf som png-bild" title="Ladda ner denna graf som png-bild" style="cursor: pointer;"/></div>
-	                       </div>
+                           <div ng-class="{span12: chartContainers.length == 1, span6: chartContainers.length == 2}"><img src="/img/dropdown-icons/png.png" ng-click="exportChart(chartContainer)" alt="ladda ner graf som png-bild" title="Ladda ner denna graf som png-bild" style="cursor: pointer;"/></div>
+	                   </div>
+	                   <div ng-repeat="chartContainer in chartContainers">
+	                       <div class="chart-page-chart" ng-class="{span12: chartContainers.length == 1, span6: chartContainers.length == 2}" id="{{chartContainer}}" style="height: 400px; margin: 0 auto"></div>
 	                   </div>
 	                </div>
 	            </div>
