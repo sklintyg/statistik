@@ -122,11 +122,11 @@
         var chartCategories = ajaxResult.femaleChart.categories;
 
         var chartSeriesFemale = ajaxResult.femaleChart.series;
-        ControllerCommons.addColor(chartSeriesFemale);
+        ControllerCommons.setupSeriesForDisplayType($routeParams.printBw, chartSeriesFemale, "area");
         that.chart1 = that.paintChart('chart1', 'Antal kvinnor', chartCategories, chartSeriesFemale);
         
         var chartSeriesMale = ajaxResult.maleChart.series;
-        ControllerCommons.addColor(chartSeriesMale);
+        ControllerCommons.setupSeriesForDisplayType($routeParams.printBw, chartSeriesMale, "area");
         that.chart2 = that.paintChart('chart2', 'Antal män', chartCategories, chartSeriesMale);
         
         var yMax = Math.max(that.chart1.yAxis[0].dataMax, that.chart2.yAxis[0].dataMax);
@@ -141,6 +141,10 @@
         $timeout(function() {
             updateDataTable($scope, result);
             updateChart(result);
+            
+            if ($routeParams.printBw) {
+                ControllerCommons.printAndCloseWindow($timeout, $window);
+            }
         }, 1);
         $timeout(function() {
             updatePrintDataTable($scope, result);
@@ -211,6 +215,10 @@
     $scope.exportChart = function(chartName) {
         that[chartName].exportChart({}, {legend: {enabled: true, layout: 'vertical'} });
     };
+
+    $scope.bwPrint = function() {
+        window.open($window.location + "?printBw=true");
+    }
     
     return this;
 
