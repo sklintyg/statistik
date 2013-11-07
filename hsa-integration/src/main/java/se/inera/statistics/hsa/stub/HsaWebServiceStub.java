@@ -3,6 +3,8 @@ package se.inera.statistics.hsa.stub;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.jws.WebParam;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.w3.wsaddressing10.AttributedURIType;
 
@@ -47,15 +49,7 @@ import se.inera.ifv.hsawsresponder.v3.PingResponseType;
 import se.inera.ifv.hsawsresponder.v3.PingType;
 import se.inera.ifv.hsawsresponder.v3.VpwGetPublicUnitsResponseType;
 import se.inera.ifv.hsawsresponder.v3.VpwGetPublicUnitsType;
-import se.inera.statistics.hsa.model.Mottagning;
 import se.inera.statistics.hsa.model.Vardenhet;
-import se.inera.statistics.hsa.model.Vardgivare;
-
-import com.google.common.base.Function;
-import com.google.common.collect.Iterables;
-import com.google.common.collect.Lists;
-
-import javax.jws.WebParam;
 
 /**
  * @author johannesc
@@ -66,29 +60,16 @@ public class HsaWebServiceStub implements HsaWsResponderInterface {
     private HsaServiceStub hsaService;
 
     @Override
-    public GetHsaUnitResponseType getHsaUnit(AttributedURIType logicalAddress, AttributedURIType id,
-            LookupHsaObjectType parameters) throws HsaWsFault {
+    public GetHsaUnitResponseType getHsaUnit(AttributedURIType logicalAddress, AttributedURIType id, LookupHsaObjectType parameters) throws HsaWsFault {
         GetHsaUnitResponseType response = new GetHsaUnitResponseType();
 
         Vardenhet enhet = hsaService.getVardenhet(parameters.getHsaIdentity());
         if (enhet != null) {
             response.setHsaIdentity(enhet.getId());
             response.setName(enhet.getNamn());
-            response.setEmail(enhet.getMail());
-            response.setStartDate(enhet.getStart());
-            response.setEndDate(enhet.getEnd());
             return response;
         }
 
-        Mottagning mottagning = hsaService.getMottagning(parameters.getHsaIdentity());
-        if (mottagning != null) {
-            response.setHsaIdentity(mottagning.getId());
-            response.setName(mottagning.getNamn());
-            response.setEmail(mottagning.getMail());
-            response.setStartDate(mottagning.getStart());
-            response.setEndDate(mottagning.getEnd());
-            return response;
-        }
         return response;
 
     }
@@ -97,8 +78,7 @@ public class HsaWebServiceStub implements HsaWsResponderInterface {
      * Method used to get miuRights for a HoS Person
      */
     @Override
-    public GetMiuForPersonResponseType getMiuForPerson(AttributedURIType logicalAddress, AttributedURIType id,
-            GetMiuForPersonType parameters) throws HsaWsFault {
+    public GetMiuForPersonResponseType getMiuForPerson(AttributedURIType logicalAddress, AttributedURIType id, GetMiuForPersonType parameters) throws HsaWsFault {
         GetMiuForPersonResponseType response = new GetMiuForPersonResponseType();
 
         for (Medarbetaruppdrag medarbetaruppdrag : hsaService.getMedarbetaruppdrag()) {
@@ -118,18 +98,14 @@ public class HsaWebServiceStub implements HsaWsResponderInterface {
     private List<MiuInformationType> miuInformationTypesForEnhetsIds(Medarbetaruppdrag medarbetaruppdrag) {
         List<MiuInformationType> informationTypes = new ArrayList<>();
 
-        for (Vardgivare vardgivare : hsaService.getVardgivare()) {
-            for (Vardenhet enhet : vardgivare.getVardenheter()) {
-                if (medarbetaruppdrag.getEnhetIds().contains(enhet.getId())) {
-                    MiuInformationType miuInfo = new MiuInformationType();
-                    miuInfo.setHsaIdentity(medarbetaruppdrag.getHsaId());
-                    miuInfo.setMiuPurpose(medarbetaruppdrag.getAndamal());
-                    miuInfo.setCareUnitHsaIdentity(enhet.getId());
-                    miuInfo.setCareUnitName(enhet.getNamn());
-                    miuInfo.setCareGiver(vardgivare.getId());
-                    miuInfo.setCareGiverName(vardgivare.getNamn());
-                    informationTypes.add(miuInfo);
-                }
+        for (Vardenhet enhet : hsaService.getVardenhets()) {
+            if (medarbetaruppdrag.getEnhetIds().contains(enhet.getId())) {
+                MiuInformationType miuInfo = new MiuInformationType();
+                miuInfo.setHsaIdentity(medarbetaruppdrag.getHsaId());
+                miuInfo.setMiuPurpose(medarbetaruppdrag.getAndamal());
+                miuInfo.setCareUnitHsaIdentity(enhet.getId());
+                miuInfo.setCareUnitName(enhet.getNamn());
+                informationTypes.add(miuInfo);
             }
         }
 
@@ -158,7 +134,6 @@ public class HsaWebServiceStub implements HsaWsResponderInterface {
     }
 
     private AttributeValueListType createAttributeValueListForEnhet(String enhetsId) {
-        Vardenhet vardenhet = hsaService.getVardenhet(enhetsId);
 
         AttributeValueListType attributeList = new AttributeValueListType();
         attributeList.setDN(enhetsId);
@@ -168,17 +143,6 @@ public class HsaWebServiceStub implements HsaWsResponderInterface {
         identityValue.getValue().add(enhetsId);
         attributeList.getResponse().add(identityValue);
 
-        Iterable<String> mottagningsId = Iterables.transform(vardenhet.getMottagningar(),
-                new Function<Mottagning, String>() {
-                    public String apply(Mottagning mottagning) {
-                        return mottagning.getId();
-                    }
-                });
-
-        AttributeValuePairType membersAttribute = new AttributeValuePairType();
-        membersAttribute.setAttribute("hsaHealthCareUnitMember");
-        membersAttribute.getValue().addAll(Lists.newArrayList(mottagningsId));
-        attributeList.getResponse().add(membersAttribute);
 
         return attributeList;
     }
@@ -187,21 +151,7 @@ public class HsaWebServiceStub implements HsaWsResponderInterface {
      * Method to retrieve data for a hsa unit
      */
     @Override
-    public GetCareUnitResponseType getCareUnit(AttributedURIType logicalAddress, AttributedURIType id,
-            LookupHsaObjectType parameters) throws HsaWsFault {
-
-        for (Vardgivare vardgivare : hsaService.getVardgivare()) {
-            for (Vardenhet vardenhet : vardgivare.getVardenheter()) {
-                for (Mottagning mottagning : vardenhet.getMottagningar()) {
-                    if (mottagning.getId().equals(parameters.getHsaIdentity())) {
-                        GetCareUnitResponseType response = new GetCareUnitResponseType();
-                        response.setCareUnitHsaIdentity(vardenhet.getId());
-                        return response;
-                    }
-                }
-            }
-        }
-
+    public GetCareUnitResponseType getCareUnit(AttributedURIType logicalAddress, AttributedURIType id, LookupHsaObjectType parameters) throws HsaWsFault {
         return null;
     }
 
@@ -228,22 +178,16 @@ public class HsaWebServiceStub implements HsaWsResponderInterface {
 
         GetCareUnitListResponseType response = new GetCareUnitListResponseType();
 
-        for (Vardgivare vardgivare : hsaService.getVardgivare()) {
-            for (Vardenhet enhet : vardgivare.getVardenheter()) {
-                if (enhet.getId().equals(parameters.getSearchBase())) {
-                    response.setCareUnitGiverHsaIdentity(vardgivare.getId());
-                    response.setCareUnitGiverName(vardgivare.getNamn());
+        for (Vardenhet enhet : hsaService.getVardenhets()) {
+            if (enhet.getId().equals(parameters.getSearchBase())) {
 
-                    CareUnitType careUnit = new CareUnitType();
-                    careUnit.setHsaIdentity(enhet.getId());
-                    careUnit.setCareUnitName(enhet.getNamn());
-                    careUnit.setCareUnitStartDate(enhet.getStart());
-                    careUnit.setCareUnitEndDate(enhet.getEnd());
-                    response.setCareUnits(new GetCareUnitListResponseType.CareUnits());
-                    response.getCareUnits().getCareUnit().add(careUnit);
+                CareUnitType careUnit = new CareUnitType();
+                careUnit.setHsaIdentity(enhet.getId());
+                careUnit.setCareUnitName(enhet.getNamn());
+                response.setCareUnits(new GetCareUnitListResponseType.CareUnits());
+                response.getCareUnits().getCareUnit().add(careUnit);
 
-                    return response;
-                }
+                return response;
             }
         }
         return response;
