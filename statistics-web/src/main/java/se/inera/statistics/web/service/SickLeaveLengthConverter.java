@@ -23,7 +23,7 @@ public class SickLeaveLengthConverter {
             accumulatedSum += rowSum;
             data.add(new NamedData(row.getGroup(), Arrays.asList(rowSum, row.getFemale(), row.getMale(), accumulatedSum)));
         }
-        return TableData.createWithSingleHeadersRow(data, Arrays.asList("Sjukskrivningslängd", "Antal sjukfall", "Antal sjukfall Kvinnor", "Antal sjukfall Män", "Summering"));
+        return TableData.createWithSingleHeadersRow(data, Arrays.asList("Sjukskrivningslängd", "Antal sjukfall", "Antal sjukfall kvinnor", "Antal sjukfall män", "Summering"));
     }
 
 
@@ -32,8 +32,8 @@ public class SickLeaveLengthConverter {
         List<Integer> femaleData = resp.getDataForSex(Sex.Female);
         List<Integer> maleData = resp.getDataForSex(Sex.Male);
         ArrayList<ChartSeries> series = new ArrayList<>();
-        series.add(new ChartSeries("Antal sjukfall Män", maleData, false, Sex.Male));
-        series.add(new ChartSeries("Antal sjukfall Kvinnor", femaleData, false, Sex.Female));
+        series.add(new ChartSeries("Antal sjukfall män", maleData, false, Sex.Male));
+        series.add(new ChartSeries("Antal sjukfall kvinnor", femaleData, false, Sex.Female));
         return new ChartData(series, groups);
     }
 
