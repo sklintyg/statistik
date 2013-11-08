@@ -40,7 +40,7 @@ public class HSAServiceImplTest {
         HSAKey key = new HSAKey("vardgivareId", "enhetId", "lakareId");
         JsonNode info = serviceImpl.getHSAInfo(key);
         assertNotNull(info);
-        assertEquals("IFV1239877878-103H", info.path("id").textValue());
+        assertEquals("IFV1239877878-103H", info.path("enhet").path("id").textValue());
         
     }
 

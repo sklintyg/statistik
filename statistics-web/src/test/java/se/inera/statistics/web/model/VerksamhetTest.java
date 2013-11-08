@@ -18,7 +18,17 @@ public class VerksamhetTest {
 
     @Test
     public void encodeId() {
-        assertEquals("Verksamhet1\\u002FStora\\u0020huset", Verksamhet.encodeId("Verksamhet1/Stora huset"));
+        assertEquals("Verksamhet1_u002FStora_u0020huset", Verksamhet.encodeId("Verksamhet1/Stora huset"));
+    }
+
+    @Test
+    public void encodeBackslash() {
+        assertEquals("_u005C", Verksamhet.encodeId("\\"));
+    }
+
+    @Test
+    public void encodeUnderscore() {
+        assertEquals("_u005F", Verksamhet.encodeId("_"));
     }
 
     @Test
@@ -28,7 +38,7 @@ public class VerksamhetTest {
 
     @Test
     public void encodeIdBorderCases() {
-        assertEquals("\\u0021\\u002F\\u003A\\u0040\\u005B\\u0060\\u007B", Verksamhet.encodeId("!/:@[`{"));
+        assertEquals("_u0021_u002F_u003A_u0040_u005B_u0060_u007B", Verksamhet.encodeId("!/:@[`{"));
     }
 
     @Test
@@ -43,7 +53,7 @@ public class VerksamhetTest {
 
     @Test
     public void decodeId() {
-        assertEquals("Verksamhet1/Stora huset", Verksamhet.decodeId("Verksamhet1\\u002FStora\\u0020huset"));
+        assertEquals("Verksamhet1/Stora huset", Verksamhet.decodeId("Verksamhet1_u002FStora_u0020huset"));
     }
 
     @Test
@@ -53,7 +63,16 @@ public class VerksamhetTest {
 
     @Test
     public void decodeIdBorderCases() {
-        assertEquals("!/:@[`{", Verksamhet.decodeId("\\u0021\\u002F\\u003A\\u0040\\u005B\\u0060\\u007B"));
+        assertEquals("!/:@[`{", Verksamhet.decodeId("_u0021_u002F_u003A_u0040_u005B_u0060_u007B"));
     }
 
+    @Test
+    public void decodeBackslash() {
+        assertEquals("\\", Verksamhet.decodeId("_u005C"));
+    }
+
+    @Test
+    public void decodeUnderscore() {
+        assertEquals("_", Verksamhet.decodeId("_u005F"));
+    }
 }

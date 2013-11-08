@@ -10,6 +10,7 @@ import se.inera.ifv.hsawsresponder.v3.GeoCoord;
 import se.inera.ifv.hsawsresponder.v3.GeoCoordEnum;
 import se.inera.ifv.hsawsresponder.v3.GetStatisticsCareGiverResponseType;
 import se.inera.ifv.hsawsresponder.v3.GetStatisticsHsaUnitResponseType;
+import se.inera.ifv.hsawsresponder.v3.GetStatisticsPersonResponseType;
 import se.inera.ifv.hsawsresponder.v3.StatisticsHsaUnit;
 import se.inera.ifv.hsawsresponder.v3.StatisticsHsaUnit.BusinessClassificationCodes;
 import se.inera.ifv.hsawsresponder.v3.StatisticsHsaUnit.BusinessTypes;
@@ -33,16 +34,32 @@ public class HSAServiceImpl implements HSAService {
     public JsonNode getHSAInfo(HSAKey key) {
         GetStatisticsHsaUnitResponseType unit = service.getStatisticsHsaUnit(key.getEnhetId());
         GetStatisticsCareGiverResponseType caregiver = service.getStatisticsCareGiver(key.getVardgivareId());
+        GetStatisticsPersonResponseType personal = service.getStatisticsPerson(key.getLakareId());
 
-        Builder u1 = createUnit(unit.getStatisticsUnit());
-        Builder u2 = createUnit(unit.getStatisticsCareUnit());
+        Builder root = new Builder();
+        root.put("enhet", createUnit(unit.getStatisticsUnit()));
+        root.put("huvudenhet", createUnit(unit.getStatisticsCareUnit()));
+        root.put("vardgivare", createCareGiver(caregiver));
+        root.put("personal", createPersonal(personal));
+        return root.root;
+    }
 
-        if (u2 != null) {
-            u1.put("delAvEnhet", u2);
+    private Builder createPersonal(GetStatisticsPersonResponseType personal) {
+        if (personal == null) {
+            return null;
         }
-        Builder c = createCareGiver(caregiver);
-        u1.put("vardgivare", c);
-        return u1.root;
+        Builder root = new Builder();
+        root.put("id", personal.getHsaIdentity());
+        root.put("efternamn", "Not yet");
+        root.put("tilltalsnamn", "Not yet");
+        root.put("initial", "Not yet");
+        root.put("kon", personal.getGender());
+        root.put("alder", personal.getAge());
+        root.put("befattning", personal.getPaTitleCodes() != null ? personal.getPaTitleCodes().getPaTitleCode() : null);
+        root.put("specialitet", personal.getSpecialityCodes() != null ? personal.getSpecialityCodes().getSpecialityCode() : null);
+        root.put("yrkesgrupp", personal.getHsaTitles() != null ? personal.getHsaTitles().getHsaTitle() : null);
+        root.put("skyddad", personal.isIsProtectedPerson());
+        return root;
     }
 
     private Builder createCareGiver(GetStatisticsCareGiverResponseType caregiver) {
