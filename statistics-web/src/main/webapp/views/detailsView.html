@@ -102,7 +102,7 @@
 			    <li><a ng-click="exportTableData()"><img src="/img/dropdown-icons/excel.png"/> Excel</a></li>
 			  </ul>
 			</div>
-            <div class="rotate-print browserTable" ng-class="{printTable: !useSpecialPrintTable}">
+            <div class="rotate-print browserTable" ng-class="{printTable: !useSpecialPrintTable, dontprint: useSpecialPrintTable}">
 	            <div class="row-fluid">
 					<span class="span12 graph-ingress" id="data-table-print-header">
 						{{subTitle}}
@@ -139,7 +139,7 @@
 	            </div>
             </div>
             
-            <div ng-class="{printTable: useSpecialPrintTable}" style="display:none;">
+            <div ng-class="{printTable: useSpecialPrintTable, dontprint: !useSpecialPrintTable}" style="display:none;">
                 <div class="row-fluid">
                     <span class="span12 graph-ingress" id="data-table-print-header">
                         {{subTitle}}
