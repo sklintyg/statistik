@@ -22,7 +22,7 @@
      conf.dataFetcher = "getAgeGroups",
      conf.dataFetcherVerksamhet = "getAgeGroupsVerksamhet",
      conf.title = function(monthsIncluded){return "Antal pågående samt avslutade sjukfall baserat på patientens ålder senaste " + monthsIncluded + " månaderna";}
-     conf.chartXAxisTitle = "Åldersgrupper";
+     conf.chartXAxisTitle = "Åldersgrupp";
      return conf;
  }
  
@@ -30,7 +30,7 @@
      var conf = {};
      conf.dataFetcherVerksamhet = "getAgeGroupsCurrentVerksamhet",
      conf.title = function(){return "Antal pågående sjukfall baserat på patientens ålder";}
-     conf.chartXAxisTitle = "Åldersgrupper";
+     conf.chartXAxisTitle = "Åldersgrupp";
      return conf;
  }
  

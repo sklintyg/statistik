@@ -34,7 +34,7 @@ public class SjukfallPerSexConverter {
 
     private ChartData convertToChartData(SimpleDualSexResponse<SimpleDualSexDataRow> casesPerMonth) {
         final ArrayList<String> categories = new ArrayList<String>();
-        categories.add("Samtliga");
+        categories.add("Samtliga län");
         for (SimpleDualSexDataRow casesPerMonthRow : casesPerMonth.getRows()) {
             categories.add(casesPerMonthRow.getName());
         }

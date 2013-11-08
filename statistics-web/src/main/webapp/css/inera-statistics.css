@@ -1410,7 +1410,7 @@ a.listheader.collapsed {
 		float: left;
 		width: 100%; 
 	}
-	.diagnostics-group-quantity, .diagnostics-group-alternation { width: 50px; text-align: center !important; }
+	.diagnostics-group-quantity, .diagnostics-group-alternation { width: 70px; text-align: center !important; }
 	#overview-content .overview-box-information-container span.overview-small-box-information { position: relative; top: -30px; }
 	#overview-content .overview-box-information-container span.overview-standard-box-information { position: relative; top: -10px; padding-bottom: 40px; }
 	

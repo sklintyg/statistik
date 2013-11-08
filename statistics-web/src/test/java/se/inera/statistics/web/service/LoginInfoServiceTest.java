@@ -4,6 +4,7 @@ import junit.framework.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import se.inera.statistics.web.model.LoginInfo;
 
 import javax.servlet.http.HttpServletRequest;
@@ -38,7 +39,7 @@ public class LoginInfoServiceTest {
 
     public void getLoginInfoTest() {
         LoginInfoService loginInfoService = new LoginInfoService();
-        Principal principal = Mockito.mock(Principal.class);
+        Principal principal = Mockito.mock(UsernamePasswordAuthenticationToken.class);
         Mockito.when(request.getUserPrincipal()).thenReturn(principal);
         Mockito.when(principal.getName()).thenReturn("Kalle");
 
