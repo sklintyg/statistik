@@ -40,7 +40,7 @@ public class AldersgruppPersistenceHandler implements AgeGroups {
 
     @Override
     public AgeGroupsResponse getCurrentAgeGroups(String hsaId) {
-        return getHistoricalAgeGroups(hsaId, new LocalDate().withDayOfMonth(1), RollingLength.SINGLE_MONTH);
+        return getHistoricalAgeGroups(hsaId, new LocalDate(), RollingLength.SINGLE_MONTH);
     }
 
     private AgeGroupsResponse translateForOutput(List<AgeGroupsRow> list, int periods) {
