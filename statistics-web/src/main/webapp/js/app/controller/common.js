@@ -57,17 +57,10 @@ var ControllerCommons = new function(){
                 $window.print();
                 if ('afterprint' in window) {
                     $(window).on('afterprint', function(){$window.close();});
-                } else if ('matchMedia' in window) {
+                } else {
                     $timeout(function() {
-                        window.matchMedia('print').addListener(function(media) {
-                            if (!media.matches) {
-                                $(document).one('mouseover', function(){$window.close();});
-                            }
-                        });
+                        $window.close();
                     }, 100);
-                }
-                $window.onfocus = function() { 
-                    $window.close();
                 }
             }, 1000);
           } );
