@@ -836,7 +836,7 @@ div.accordion-body.in.collapse > div.accordion-heading a.accordion-toggle{
 	padding: 8px;
 	font-size: 12px;
 	line-height: 8px;
-	text-align: left;
+	text-align: right;
 	vertical-align: top;
 	border-top: 1px solid #dddddd;
 	border-left: 1px solid #dddddd;
@@ -1410,7 +1410,7 @@ a.listheader.collapsed {
 		float: left;
 		width: 100%; 
 	}
-	.diagnostics-group-quantity, .diagnostics-group-alternation { width: 50px; text-align: center !important; }
+	.diagnostics-group-quantity, .diagnostics-group-alternation { width: 70px; text-align: center !important; }
 	#overview-content .overview-box-information-container span.overview-small-box-information { position: relative; top: -30px; }
 	#overview-content .overview-box-information-container span.overview-standard-box-information { position: relative; top: -10px; padding-bottom: 40px; }
 	
@@ -1611,6 +1611,7 @@ td.datatablescrollable {
     width: 14em;
     top:auto;
     left:0;
+    text-align: left !important;
 }
 
 div.datatablescrollable {

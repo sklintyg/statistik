@@ -62,10 +62,10 @@ public class CasesPerCountyConverterTest {
         assertEquals("[<20, 20-50, >50]", chartDataResult.getCategories().toString());
         List<ChartSeries> series = chartDataResult.getSeries();
         assertEquals(4, series.size());
-        assertEquals("Sjukfall feb-apr 2013 Kvinnor", series.get(0).getName());
-        assertEquals("Sjukfall feb-apr 2013 Män", series.get(1).getName());
-        assertEquals("Sjukfall maj-jul 2013 Kvinnor", series.get(2).getName());
-        assertEquals("Sjukfall maj-jul 2013 Män", series.get(3).getName());
+        assertEquals("Sjukfall feb-apr 2013 kvinnor", series.get(0).getName());
+        assertEquals("Sjukfall feb-apr 2013 män", series.get(1).getName());
+        assertEquals("Sjukfall maj-jul 2013 kvinnor", series.get(2).getName());
+        assertEquals("Sjukfall maj-jul 2013 män", series.get(3).getName());
         assertEquals("[3, 4, 2]", series.get(0).getData().toString());
         assertEquals("[4, 5, 8]", series.get(1).getData().toString());
         assertEquals("[13, 24, 3]", series.get(2).getData().toString());

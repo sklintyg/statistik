@@ -83,7 +83,7 @@
             //Add all row names (first column)
             for (var r = 0; r < rows.length; r++) {
                 var row = {};
-                row.name = rows[r].name
+                row.name = rows[r].name;
                 row.data = [];
                 printTable.rows.push(row);
             }

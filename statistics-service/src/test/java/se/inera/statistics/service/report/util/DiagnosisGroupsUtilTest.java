@@ -45,4 +45,10 @@ public class DiagnosisGroupsUtilTest {
         assertEquals(expectedResult, allDiagnosisGroups.toString());
     }
 
+    @Test
+    public void normalizeIcd10Code() {
+        assertEquals("", DiagnosisGroupsUtil.normalize(". -_+?="));
+        assertEquals("A10", DiagnosisGroupsUtil.normalize("a 1.0"));
+        assertEquals("B123", DiagnosisGroupsUtil.normalize(" B12.3 # "));
+    }
 }
