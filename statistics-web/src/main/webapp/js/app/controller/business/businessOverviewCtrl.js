@@ -5,7 +5,7 @@
     $scope.baseUrl = "#/verksamhet/" + $routeParams.verksamhetId;  
      
     var dataReceived = function(result) {
-    	$scope.subTitle = "Utveckling för verksamheten " + result.periodText;
+    	$scope.subTitle = "Utveckling för verksamheten de senaste tre månaderna, " + result.periodText;
         $scope.popoverTextPeriod = result.periodText;
         $scope.doneLoading = true;
         $timeout(function() {
@@ -102,10 +102,10 @@
         chartOptions.chart.type = 'column';
         chartOptions.chart.renderTo = containerId;
         chartOptions.chart.height = 185;
-        chartOptions.xAxis.title = { text: 'DAGAR' };
+        chartOptions.xAxis.title = { text: 'Dagar' };
         chartOptions.xAxis.labels.format = '{value} dagar';
         chartOptions.tooltip.pointFormat = '{point.y} dagar';
-        chartOptions.yAxis.title = { text: 'ANTAL' };
+        chartOptions.yAxis.title = { text: 'Antal' };
         chartOptions.legend.enabled = false;
         new Highcharts.Chart(chartOptions);
     }

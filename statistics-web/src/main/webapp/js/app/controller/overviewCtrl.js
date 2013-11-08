@@ -9,7 +9,7 @@
      }
 
      var dataReceived = function(result) {
-         $scope.subTitle = "Utvecklingen i landet " + result.periodText;
+         $scope.subTitle = "Utvecklingen i landet de senaste tre månaderna, " + result.periodText;
          setTooltipText(result);
          $scope.doneLoading = true;
          $timeout(function() {
@@ -68,8 +68,8 @@
         chartOptions.chart.type = 'column';
         chartOptions.chart.renderTo = containerId;
         chartOptions.chart.height = 185;
-        chartOptions.xAxis.title = { text: 'DAGAR' };
-        chartOptions.yAxis.title = { text: 'ANTAL' };
+        chartOptions.xAxis.title = { text: 'Dagar' };
+        chartOptions.yAxis.title = { text: 'Antal' };
         chartOptions.legend.enabled = false;
         new Highcharts.Chart(chartOptions);
     }
