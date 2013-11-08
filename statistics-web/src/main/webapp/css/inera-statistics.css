@@ -201,7 +201,10 @@ section#certificate div.cert div.cert-footer {
     border-color: #e9eae8;
     background-color: #e9eae8;
 }
-
+.print-only-no-display {
+	display: none;
+}
+#chart-footnote-trigger { cursor: pointer; }
 div.inera-box {
     margin-bottom: 10px;
     border: 1px solid #808080;
@@ -676,6 +679,7 @@ i.statistict-left-menu-expand-icon {
 	border-top-right-radius: 10px;
 	border-bottom-left-radius: 0px;
 	border-bottom-right-radius: 0px;
+	color: #fff;
 }
 
 #chart-data-table a.accordion-toggle.collapsed {
@@ -1634,6 +1638,17 @@ div.datatablescrollable {
 }
 #data-table-print-header {
 	display: none;
+}
+.tooltip-inner {
+	max-width: 290px !important;
+	padding: 8px;
+	color: #ffffff;
+	text-align: center;
+	text-decoration: none;
+	background-color: #000000;
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	border-radius: 4px;
 }
 .details-table-data {
     max-width: 100%;

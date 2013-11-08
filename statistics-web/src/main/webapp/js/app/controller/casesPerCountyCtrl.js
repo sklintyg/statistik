@@ -1,6 +1,6 @@
  'use strict';
  
- app.casesPerCountyCtrl = function ($scope, $timeout, statisticsData) {
+ app.casesPerCountyCtrl = function ($scope, $timeout, $routeParams, $window, statisticsData) {
     var chart = {};
     $scope.chartContainers = ["chart1"];
     
@@ -17,7 +17,7 @@
 	};
 
 	var updateChart = function(ajaxResult) {
-		chart = paintChart(ajaxResult.categories, ControllerCommons.addColor(ajaxResult.series));
+		chart = paintChart(ajaxResult.categories, ControllerCommons.setupSeriesForDisplayType($routeParams.printBw, ajaxResult.series, "bar"));
 	};
 
     $scope.exportTableData = ControllerCommons.exportTableDataGeneric;
@@ -28,6 +28,10 @@
         $timeout(function() {
             updateDataTable($scope, result.tableData);
             updateChart(result.chartData);
+            
+            if ($routeParams.printBw) {
+                ControllerCommons.printAndCloseWindow($timeout, $window);
+            }
         }, 1);
     };
     
@@ -44,6 +48,10 @@
     
     $scope.exportChart = function() {
         chart.exportChart();
+    }
+
+    $scope.bwPrint = function() {
+        window.open($window.location + "?printBw=true");
     }
 
 };

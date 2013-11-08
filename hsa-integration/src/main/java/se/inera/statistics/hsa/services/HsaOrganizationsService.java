@@ -2,7 +2,7 @@ package se.inera.statistics.hsa.services;
 
 import java.util.List;
 
-import se.inera.statistics.hsa.model.Vardgivare;
+import se.inera.statistics.hsa.model.Vardenhet;
 
 /**
  * @author andreaskaltenbach
@@ -10,7 +10,7 @@ import se.inera.statistics.hsa.model.Vardgivare;
 public interface HsaOrganizationsService {
 
     /**
-     * Returns a list of Vardgivare and authorized enheter where the HoS person is authorized to work at.
+     * Returns a list of Vardenheter where the HoS person is authorized to get statistics information.
      */
-    List<Vardgivare> getAuthorizedEnheterForHosPerson(String hosPersonHsaId);
+    List<Vardenhet> getAuthorizedEnheterForHosPerson(String hosPersonHsaId);
 }

@@ -27,11 +27,11 @@ public class Verksamhet implements Serializable {
 
     public static String encodeId(String id) {
         CharSequenceTranslator escaper = UnicodeEscaper.below('0').with(UnicodeEscaper.between(':', '@'), UnicodeEscaper.between('[', '`'), UnicodeEscaper.above('z'));
-        return escaper.translate(id);
+        return escaper.translate(id).replace('\\', '_');
     }
 
     public static String decodeId(String encodedId) {
-        return new UnicodeUnescaper().translate(encodedId);
+        return new UnicodeUnescaper().translate(encodedId.replace('_', '\\'));
     }
 
 }

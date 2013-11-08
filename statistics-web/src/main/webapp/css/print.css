@@ -1,7 +1,5 @@
 @media print {
-	.navbar,.footer,#statistics-menu-accordion,.national-statistic-h1,#pageHelpToolTip,
-	.btn-group.statistics-btn-group,#chart-data-table .accordion-heading,.dontprint,
-	.hidden-header, #detailsOptionsDropdown,.browserTable, #chart-footnote-trigger {
+	.dontprint {
 		display: none;
 	}
 	.print-pagebreak-before {
@@ -61,7 +59,10 @@
 	div.chart-page-chart.span6 div.highcharts-container{
 		width: 100% !important;
 	}
- 
+ 	/********Detail page styles**********/
+ 	#business-name-header-container {
+ 		width: 100% !important;
+ 	}
 	/********Print table styles**********/
 	table {
 	  max-width: 100%;
@@ -128,4 +129,5 @@
 		background-color: #d9edf7;
 		border-color: #bce8f1;
 	}
+	.alert-info p { padding: 10px; }
 }

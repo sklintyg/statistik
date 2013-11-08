@@ -8,7 +8,7 @@ import org.springframework.security.saml.userdetails.SAMLUserDetailsService;
 
 import se.inera.auth.exceptions.MissingMedarbetaruppdragException;
 import se.inera.auth.model.User;
-import se.inera.statistics.hsa.model.Vardgivare;
+import se.inera.statistics.hsa.model.Vardenhet;
 import se.inera.statistics.hsa.services.HsaOrganizationsService;
 
 import java.util.List;
@@ -26,10 +26,10 @@ public class UserDetailsService implements SAMLUserDetailsService {
 
         SakerhetstjanstAssertion assertion = new SakerhetstjanstAssertion(credential.getAuthenticationAssertion());
 
-        List<Vardgivare> authorizedVardgivare = hsaOrganizationsService.getAuthorizedEnheterForHosPerson(assertion.getHsaId());
+        List<Vardenhet> authorizedVardgivare = hsaOrganizationsService.getAuthorizedEnheterForHosPerson(assertion.getHsaId());
         User user = new User(assertion.getHsaId(), assertion.getFornamn() + ' ' + assertion.getMellanOchEfternamn(), authorizedVardgivare);
 
-        // if user does not have access to any vardgivare, we have to reject authentication
+        // if user does not have access to any vardenhet, we have to reject authentication
         if (authorizedVardgivare.isEmpty()) {
             throw new MissingMedarbetaruppdragException(user.getHsaId());
         }

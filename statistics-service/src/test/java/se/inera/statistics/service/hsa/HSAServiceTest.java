@@ -11,7 +11,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 
 public class HSAServiceTest {
 
-    private HSAService hsaService = new HSAServiceImpl();
+    private HSAService hsaService = new HSAServiceMock();
 
     @Test
     public void documentExists() throws IOException {
