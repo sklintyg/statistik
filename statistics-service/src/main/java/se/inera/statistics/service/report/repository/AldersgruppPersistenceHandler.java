@@ -1,7 +1,9 @@
 package se.inera.statistics.service.report.repository;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -11,6 +13,7 @@ import org.joda.time.LocalDate;
 import org.springframework.transaction.annotation.Transactional;
 
 import se.inera.statistics.service.report.api.AgeGroups;
+import se.inera.statistics.service.report.listener.AldersGruppListener;
 import se.inera.statistics.service.report.model.AgeGroupsResponse;
 import se.inera.statistics.service.report.model.db.AgeGroupsRow;
 import se.inera.statistics.service.report.model.db.AldersgruppKey;
@@ -70,6 +73,30 @@ public class AldersgruppPersistenceHandler implements AgeGroups {
             existingRow.setMale(existingRow.getMale() + male);
             manager.merge(existingRow);
         }
+    }
+
+    @Transactional
+    @Override
+    public void count(AldersgruppKey key, AldersGruppListener.AldersgruppValue value) {
+        AgeGroupsRow existingRow = manager.find(AgeGroupsRow.class, key);
+
+        if (existingRow == null) {
+            AgeGroupsRow row = new AgeGroupsRow(key.getPeriod(), key.getHsaId(), key.getGrupp(), key.getPeriods(), value.getVerksamhet(), value.getFemale(), value.getMale());
+            manager.persist(row);
+        } else {
+            existingRow.setFemale(existingRow.getFemale() + value.getFemale());
+            existingRow.setMale(existingRow.getMale() + value.getMale());
+            manager.merge(existingRow);
+        }
+    }
+
+    @Transactional
+    @Override
+    public void countAll(HashMap<AldersgruppKey, AldersGruppListener.AldersgruppValue> cache) {
+        for (Map.Entry<AldersgruppKey, AldersGruppListener.AldersgruppValue> entry : cache.entrySet()) {
+            count(entry.getKey(), entry.getValue());
+        }
+        cache.clear();
     }
 
 }

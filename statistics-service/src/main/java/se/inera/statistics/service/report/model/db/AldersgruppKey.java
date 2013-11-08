@@ -6,6 +6,7 @@ import java.io.Serializable;
 @Embeddable
 public class AldersgruppKey implements Serializable {
     private static final long serialVersionUID = 1L;
+    public static final int HASHER = 31;
 
     private String period;
     private String hsaId;
@@ -52,5 +53,28 @@ public class AldersgruppKey implements Serializable {
 
     public void setPeriods(int periods) {
         this.periods = periods;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        AldersgruppKey that = (AldersgruppKey) o;
+
+        return periods == that.periods && grupp.equals(that.grupp) && hsaId.equals(that.hsaId) && period.equals(that.period);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = period.hashCode();
+        result = HASHER * result + hsaId.hashCode();
+        result = HASHER * result + grupp.hashCode();
+        result = HASHER * result + periods;
+        return result;
     }
 }
