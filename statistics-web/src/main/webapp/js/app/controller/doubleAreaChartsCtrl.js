@@ -42,7 +42,7 @@
          var chartOptions = ControllerCommons.getHighChartConfigBase(chartCategories, chartSeries);
          chartOptions.chart.type = 'area';
          chartOptions.chart.renderTo = containerId;
-         chartOptions.legend.enabled = false;
+         chartOptions.legend.enabled = $routeParams.printBw || $routeParams.print;
          chartOptions.xAxis.title.text = "Period";
          chartOptions.yAxis.title.text = yAxisTitle;
          chartOptions.tooltip.useHTML = true;
@@ -141,7 +141,7 @@
             updateDataTable($scope, result);
             updateChart(result);
             
-            if ($routeParams.printBw) {
+            if ($routeParams.printBw || $routeParams.print) {
                 ControllerCommons.printAndCloseWindow($timeout, $window);
             }
         }, 1);
@@ -215,8 +215,8 @@
         that[chartName].exportChart({}, {legend: {enabled: true, layout: 'vertical'} });
     };
 
-    $scope.bwPrint = function() {
-        window.open($window.location + "?printBw=true");
+    $scope.print = function(bwPrint) {
+        window.open($window.location + (bwPrint ? "?printBw=true" : "?print=true"));
     }
     
     return this;
