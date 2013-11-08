@@ -16,14 +16,25 @@ public final class DiagnosisGroupsUtil {
     }
 
     public static String getGroupIdForCode(String icd10Code) {
+        String normalizedIcd10 = normalize(icd10Code);
         for (Entry<String, List<DiagnosisGroup>> entry : SUB_GROUPS.entrySet()) {
             for (DiagnosisGroup diagnosisGroup : entry.getValue()) {
-                if (diagnosisGroup.isCodeInGroup(icd10Code)) {
+                if (diagnosisGroup.isCodeInGroup(normalizedIcd10)) {
                     return entry.getKey();
                 }
             }
         }
         throw new IllegalArgumentException("ICD-10-SE code not found: " + icd10Code);
+    }
+
+    public static String normalize(String icd10Code) {
+        StringBuilder normalized = new StringBuilder(icd10Code.length());
+        for (char c: icd10Code.toUpperCase().toCharArray()) {
+            if ('A' <= c && c <= 'Z' || '0' <= c && c <= '9') {
+                normalized.append(c);
+            }
+        }
+        return normalized.toString();
     }
 
     public static String getSubGroupIdForCode(String icd10Code) {
