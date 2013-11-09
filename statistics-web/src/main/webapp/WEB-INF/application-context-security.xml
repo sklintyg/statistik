@@ -85,7 +85,7 @@
     <!-- =============================================================== -->
     <!-- Dev profile only supports Fake login                            -->
     <!-- =============================================================== -->
-    <beans profile="dev">
+    <beans profile="dev,demo">
         <bean id="epauth" class="org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint">
             <constructor-arg value="/login.html"/>
         </bean>

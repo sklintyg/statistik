@@ -27,13 +27,12 @@ var ControllerCommons = new function(){
 
         for (var i = 0; i < series.length; i++) {
             series[i].animation = false;
-            if (chartType === "bar") {
+            if (chartType === "bar" || chartType === "area") {
                 series[i].color = {
                         pattern: patterns[i % patterns.length],
                         width: 6,
                         height: 6,
                     };
-            } else if (chartType === "area") {
                 series[i].fillColor = {
                         pattern: patterns[i % patterns.length],
                         width: 6,
@@ -62,7 +61,7 @@ var ControllerCommons = new function(){
                         $window.close();
                     }, 100);
                 }
-            }, 1000);
+            }, 3000);
           } );
     }
     

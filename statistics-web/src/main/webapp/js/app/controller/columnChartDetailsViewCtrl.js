@@ -78,7 +78,7 @@
             updateDataTable($scope, result.tableData);
             updateChart(result.chartData);
             
-            if ($routeParams.printBw) {
+            if ($routeParams.printBw || $routeParams.print) {
                 ControllerCommons.printAndCloseWindow($timeout, $window);
             }
         }, 1);
@@ -103,8 +103,8 @@
         chart.exportChart();
     };
     
-    $scope.bwPrint = function() {
-        window.open($window.location + "?printBw=true");
+    $scope.print = function(bwPrint) {
+        window.open($window.location + (bwPrint ? "?printBw=true" : "?print=true"));
     }
     
 };

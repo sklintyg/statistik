@@ -75,7 +75,7 @@ public class HsaWebServiceStub implements HsaWsResponderInterface {
     }
 
     /**
-     * Method used to get miuRights for a HoS Person
+     * Method used to get miuRights for a HoS Person.
      */
     @Override
     public GetMiuForPersonResponseType getMiuForPerson(AttributedURIType logicalAddress, AttributedURIType id, GetMiuForPersonType parameters) throws HsaWsFault {
@@ -113,7 +113,7 @@ public class HsaWebServiceStub implements HsaWsResponderInterface {
     }
 
     /**
-     * Returns work place code
+     * Returns work place code.
      */
     @Override
     public HsawsSimpleLookupResponseType hsawsSimpleLookup(AttributedURIType logicalAddress, AttributedURIType id,
@@ -148,7 +148,7 @@ public class HsaWebServiceStub implements HsaWsResponderInterface {
     }
 
     /**
-     * Method to retrieve data for a hsa unit
+     * Method to retrieve data for a hsa unit.
      */
     @Override
     public GetCareUnitResponseType getCareUnit(AttributedURIType logicalAddress, AttributedURIType id, LookupHsaObjectType parameters) throws HsaWsFault {

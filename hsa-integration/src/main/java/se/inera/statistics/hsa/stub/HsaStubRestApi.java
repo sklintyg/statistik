@@ -22,7 +22,7 @@ import se.inera.statistics.hsa.model.Vardenhet;
 public class HsaStubRestApi {
 
     @Autowired
-    HsaServiceStub hsaServiceStub;
+    private HsaServiceStub hsaServiceStub;
 
     @POST
     @Path("/vardenhet")
