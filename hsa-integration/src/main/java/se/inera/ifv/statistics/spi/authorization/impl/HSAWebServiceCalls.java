@@ -121,9 +121,7 @@ public class HSAWebServiceCalls {
      */
     public GetMiuForPersonResponseType callMiuRights(GetMiuForPersonType parameters) {
         try {
-            GetMiuForPersonResponseType response = serverInterface.getMiuForPerson(logicalAddressHeader, messageId,
-                    parameters);
-            return response;
+            return serverInterface.getMiuForPerson(logicalAddressHeader, messageId, parameters);
         } catch (Throwable ex) {
             log.error("Failed to call getMiuForPerson", ex);
             Throwables.propagate(ex);

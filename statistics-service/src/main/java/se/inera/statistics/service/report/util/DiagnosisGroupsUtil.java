@@ -11,6 +11,7 @@ import se.inera.statistics.service.report.model.DiagnosisGroup;
 public final class DiagnosisGroupsUtil {
 
     private static final Map<String, List<DiagnosisGroup>> SUB_GROUPS = initSubGroups();
+    private static final List<DiagnosisGroup> GROUPS = initGroups();
 
     private DiagnosisGroupsUtil() {
     }
@@ -53,6 +54,10 @@ public final class DiagnosisGroupsUtil {
     }
 
     public static List<DiagnosisGroup> getAllDiagnosisGroups() {
+        return GROUPS;
+    }
+
+    private static List<DiagnosisGroup> initGroups() {
         ArrayList<DiagnosisGroup> groups = new ArrayList<>();
         groups.add(group("A00-B99", "Vissa infektionssjukdomar och parasitsjukdomar"));
         groups.add(group("C00-D48", "Tumörer"));

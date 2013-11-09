@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Value;
  */
 public class HttpClientFactory {
 
+    private static final int HTTPS_PORT = 443;
+
     @Value("${saml.truststore.file}")
     private org.springframework.core.io.Resource trustStoreFile;
 
@@ -18,8 +20,7 @@ public class HttpClientFactory {
     public HttpClient createInstance() {
         HttpClient httpClient = new HttpClient();
 
-        Protocol protocol = new Protocol("https", new KeystoreBasedSocketFactory(trustStoreFile, trustStorePassword),
-                443);
+        Protocol protocol = new Protocol("https", new KeystoreBasedSocketFactory(trustStoreFile, trustStorePassword), HTTPS_PORT);
         Protocol.registerProtocol("https", protocol);
 
         return httpClient;

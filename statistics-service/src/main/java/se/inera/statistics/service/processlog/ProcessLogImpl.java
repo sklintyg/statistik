@@ -37,8 +37,7 @@ public class ProcessLogImpl implements ProcessLog {
         TypedQuery<IntygEvent> allQuery = manager.createQuery("SELECT e from IntygEvent e WHERE e.id > :lastId ORDER BY e.id ASC", IntygEvent.class);
         allQuery.setParameter("lastId", lastEventId);
         allQuery.setMaxResults(max);
-        List<IntygEvent> found = allQuery.getResultList();
-        return found;
+        return allQuery.getResultList();
     }
 
     private long getLastId() {
