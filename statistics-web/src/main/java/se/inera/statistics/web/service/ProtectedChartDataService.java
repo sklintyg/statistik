@@ -9,6 +9,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 import org.joda.time.LocalDate;
 import org.slf4j.Logger;
@@ -37,6 +38,7 @@ import se.inera.statistics.web.model.AgeGroupsData;
 import se.inera.statistics.web.model.DualSexStatisticsData;
 import se.inera.statistics.web.model.SickLeaveLengthData;
 import se.inera.statistics.web.model.SimpleDetailsData;
+import se.inera.statistics.web.model.TableData;
 import se.inera.statistics.web.model.Verksamhet;
 import se.inera.statistics.web.model.overview.VerksamhetOverviewData;
 
@@ -53,7 +55,7 @@ public class ProtectedChartDataService {
     private AgeGroups datasourceAgeGroups;
     private DegreeOfSickLeave datasourceDegreeOfSickLeave;
     private SjukfallslangdGrupp datasourceSickLeaveLength;
-    private final Helper helper = new Helper();
+    public final Helper helper = new Helper();
 
     public ProtectedChartDataService() {
 
@@ -88,6 +90,17 @@ public class ProtectedChartDataService {
     }
 
     @GET
+    @Path("{verksamhetId}/getNumberOfCasesPerMonth/csv")
+    @Produces({ "text/plain; charset=UTF-8" })
+    @PreAuthorize(value = "@protectedChartDataService.helper.hasAccessTo(#request, #verksamhetId)")
+    @PostAuthorize(value = "@protectedChartDataService.helper.userAccess(#request, #verksamhetId)")
+    public Response getNumberOfCasesPerMonthAsCsv(@Context HttpServletRequest request, @PathParam("verksamhetId") String verksamhetId) {
+        LOG.info("Calling getNumberOfCasesPerMonthAsCsv with verksamhetId: " + verksamhetId);
+        final TableData tableData = getNumberOfCasesPerMonth(request, verksamhetId).getTableData();
+        return CsvConverter.getCsvResponse(tableData, "export.csv");
+    }
+
+    @GET
     @Path("{verksamhetId}/getDiagnosisGroupStatistics")
     @Produces({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedChartDataService.helper.hasAccessTo(#request, #verksamhetId)")
@@ -100,6 +113,17 @@ public class ProtectedChartDataService {
     }
 
     @GET
+    @Path("{verksamhetId}/getDiagnosisGroupStatistics/csv")
+    @Produces({ "text/plain; charset=UTF-8" })
+    @PreAuthorize(value = "@protectedChartDataService.helper.hasAccessTo(#request, #verksamhetId)")
+    @PostAuthorize(value = "@protectedChartDataService.helper.userAccess(#request, #verksamhetId)")
+    public Response getDiagnosisGroupStatisticsAsCsv(@Context HttpServletRequest request, @PathParam("verksamhetId") String verksamhetId) {
+        LOG.info("Calling getDiagnosisGroupStatisticsAsCsv with verksamhetId: " + verksamhetId);
+        final TableData tableData = getDiagnosisGroupStatistics(request, verksamhetId).getTableData();
+        return CsvConverter.getCsvResponse(tableData, "export.csv");
+    }
+
+    @GET
     @Path("{verksamhetId}/getDiagnosisSubGroupStatistics/{groupId}")
     @Produces({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedChartDataService.helper.hasAccessTo(#request, #verksamhetId)")
@@ -109,6 +133,17 @@ public class ProtectedChartDataService {
         Range range = new Range();
         DiagnosisGroupResponse diagnosisGroups = datasourceDiagnosisSubGroups.getDiagnosisGroups(Verksamhet.decodeId(verksamhetId), range, groupId);
         return new DiagnosisSubGroupsConverter().convert(diagnosisGroups);
+    }
+
+    @GET
+    @Path("{verksamhetId}/getDiagnosisSubGroupStatistics/{groupId}/csv")
+    @Produces({ "text/plain; charset=UTF-8" })
+    @PreAuthorize(value = "@protectedChartDataService.helper.hasAccessTo(#request, #verksamhetId)")
+    @PostAuthorize(value = "@protectedChartDataService.helper.userAccess(#request, #verksamhetId)")
+    public Response getDiagnosisSubGroupStatisticsAsCsv(@Context HttpServletRequest request, @PathParam("verksamhetId") String verksamhetId, @PathParam("groupId") String groupId) {
+        LOG.info("Calling getDiagnosisSubGroupStatisticsAsCsv with verksamhetId: " + verksamhetId);
+        final TableData tableData = getDiagnosisSubGroupStatistics(request, verksamhetId, groupId).getTableData();
+        return CsvConverter.getCsvResponse(tableData, "export.csv");
     }
 
     @GET
@@ -134,6 +169,17 @@ public class ProtectedChartDataService {
     }
 
     @GET
+    @Path("{verksamhetId}/getAgeGroupsStatistics/csv")
+    @Produces({ "text/plain; charset=UTF-8" })
+    @PreAuthorize(value = "@protectedChartDataService.helper.hasAccessTo(#request, #verksamhetId)")
+    @PostAuthorize(value = "@protectedChartDataService.helper.userAccess(#request, #verksamhetId)")
+    public Response getAgeGroupsStatisticsAsCsv(@Context HttpServletRequest request, @PathParam("verksamhetId") String verksamhetId) {
+        LOG.info("Calling getAgeGroupsStatisticsAsCsv with verksamhetId: " + verksamhetId);
+        final TableData tableData = getAgeGroupsStatistics(request, verksamhetId).getTableData();
+        return CsvConverter.getCsvResponse(tableData, "export.csv");
+    }
+
+    @GET
     @Path("{verksamhetId}/getAgeGroupsCurrentStatistics")
     @Produces({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedChartDataService.helper.hasAccessTo(#request, #verksamhetId)")
@@ -145,6 +191,17 @@ public class ProtectedChartDataService {
     }
 
     @GET
+    @Path("{verksamhetId}/getAgeGroupsCurrentStatistics/csv")
+    @Produces({ "text/plain; charset=UTF-8" })
+    @PreAuthorize(value = "@protectedChartDataService.helper.hasAccessTo(#request, #verksamhetId)")
+    @PostAuthorize(value = "@protectedChartDataService.helper.userAccess(#request, #verksamhetId)")
+    public Response getAgeGroupsCurrentStatisticsAsCsv(@Context HttpServletRequest request, @PathParam("verksamhetId") String verksamhetId) {
+        LOG.info("Calling getAgeGroupsCurrentStatisticsAsCsv with verksamhetId: " + verksamhetId);
+        final TableData tableData = getAgeGroupsCurrentStatistics(request, verksamhetId).getTableData();
+        return CsvConverter.getCsvResponse(tableData, "export.csv");
+    }
+
+    @GET
     @Path("{verksamhetId}/getDegreeOfSickLeaveStatistics")
     @Produces({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedChartDataService.helper.hasAccessTo(#request, #verksamhetId)")
@@ -153,6 +210,17 @@ public class ProtectedChartDataService {
         LOG.info("Calling getDegreeOfSickLeaveStatistics with verksamhetId: " + verksamhetId);
         DegreeOfSickLeaveResponse degreeOfSickLeaveStatistics = datasourceDegreeOfSickLeave.getStatistics(Verksamhet.decodeId(verksamhetId), new Range());
         return new DegreeOfSickLeaveConverter().convert(degreeOfSickLeaveStatistics);
+    }
+
+    @GET
+    @Path("{verksamhetId}/getDegreeOfSickLeaveStatistics/csv")
+    @Produces({ "text/plain; charset=UTF-8" })
+    @PreAuthorize(value = "@protectedChartDataService.helper.hasAccessTo(#request, #verksamhetId)")
+    @PostAuthorize(value = "@protectedChartDataService.helper.userAccess(#request, #verksamhetId)")
+    public Response getDegreeOfSickLeaveStatisticsAsCsv(@Context HttpServletRequest request, @PathParam("verksamhetId") String verksamhetId) {
+        LOG.info("Calling getDegreeOfSickLeaveStatisticsAsCsv with verksamhetId: " + verksamhetId);
+        final TableData tableData = getDegreeOfSickLeaveStatistics(request, verksamhetId).getTableData();
+        return CsvConverter.getCsvResponse(tableData, "export.csv");
     }
 
     @GET
@@ -168,6 +236,17 @@ public class ProtectedChartDataService {
     }
 
     @GET
+    @Path("{verksamhetId}/getSickLeaveLengthData/csv")
+    @Produces({ "text/plain; charset=UTF-8" })
+    @PreAuthorize(value = "@protectedChartDataService.helper.hasAccessTo(#request, #verksamhetId)")
+    @PostAuthorize(value = "@protectedChartDataService.helper.userAccess(#request, #verksamhetId)")
+    public Response getSickLeaveLengthDataAsCsv(@Context HttpServletRequest request, @PathParam("verksamhetId") String verksamhetId) {
+        LOG.info("Calling getSickLeaveLengthDataAsCsv with verksamhetId: " + verksamhetId);
+        final TableData tableData = getSickLeaveLengthData(request, verksamhetId).getTableData();
+        return CsvConverter.getCsvResponse(tableData, "export.csv");
+    }
+
+    @GET
     @Path("{verksamhetId}/getSickLeaveLengthCurrentData")
     @Produces({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedChartDataService.helper.hasAccessTo(#request, #verksamhetId)")
@@ -176,6 +255,17 @@ public class ProtectedChartDataService {
         LOG.info("Calling getSickLeaveLengthCurrentData with verksamhetId: " + verksamhetId);
         SickLeaveLengthResponse sickLeaveLength = datasourceSickLeaveLength.getCurrentStatistics(Verksamhet.decodeId(verksamhetId));
         return new SickLeaveLengthConverter().convert(sickLeaveLength);
+    }
+
+    @GET
+    @Path("{verksamhetId}/getSickLeaveLengthCurrentData/csv")
+    @Produces({ "text/plain; charset=UTF-8" })
+    @PreAuthorize(value = "@protectedChartDataService.helper.hasAccessTo(#request, #verksamhetId)")
+    @PostAuthorize(value = "@protectedChartDataService.helper.userAccess(#request, #verksamhetId)")
+    public Response getSickLeaveLengthCurrentDataAsCsv(@Context HttpServletRequest request, @PathParam("verksamhetId") String verksamhetId) {
+        LOG.info("Calling getSickLeaveLengthCurrentDataAsCsv with verksamhetId: " + verksamhetId);
+        final TableData tableData = getSickLeaveLengthCurrentData(request, verksamhetId).getTableData();
+        return CsvConverter.getCsvResponse(tableData, "export.csv");
     }
 
     @GET
@@ -188,6 +278,17 @@ public class ProtectedChartDataService {
         Range range = new Range();
         SimpleDualSexResponse<SimpleDualSexDataRow> longSickLeaves = datasourceSickLeaveLength.getLongSickLeaves(Verksamhet.decodeId(verksamhetId), range);
         return new SimpleDualSexConverter().convert(longSickLeaves);
+    }
+
+    @GET
+    @Path("{verksamhetId}/getLongSickLeavesData/csv")
+    @Produces({ "text/plain; charset=UTF-8" })
+    @PreAuthorize(value = "@protectedChartDataService.helper.hasAccessTo(#request, #verksamhetId)")
+    @PostAuthorize(value = "@protectedChartDataService.helper.userAccess(#request, #verksamhetId)")
+    public Response getLongSickLeavesDataAsCsv(@Context HttpServletRequest request, @PathParam("verksamhetId") String verksamhetId) {
+        LOG.info("Calling getLongSickLeavesDataAsCsv with verksamhetId: " + verksamhetId);
+        final TableData tableData = getLongSickLeavesData(request, verksamhetId).getTableData();
+        return CsvConverter.getCsvResponse(tableData, "export.csv");
     }
 
     protected static class Helper {

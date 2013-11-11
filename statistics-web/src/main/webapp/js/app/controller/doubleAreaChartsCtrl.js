@@ -4,6 +4,8 @@
      var conf = {};
      conf.dataFetcher = "getDiagnosisGroupData";
      conf.dataFetcherVerksamhet = "getDiagnosisGroupDataVerksamhet";
+     conf.exportTableUrl = function() { return "api/getDiagnosisGroupStatistics/csv"; };
+     conf.exportTableUrlVerksamhet = function(verksamhetId) { return "api/verksamhet/" + verksamhetId + "/getDiagnosisGroupStatistics/csv"; };
      conf.showDetailsOptions = false;
      conf.title = "Antal sjukfall per diagnosgrupp";
      conf.chartFootnotes = ["Notera att för en given månad så kan samma sjukfall visas fler än en gång i graf och tabell. Om ett sjukfall innehåller flera intyg i samma månad så hämtas diagnos från varje intyg. Om det är olika diagnosgrupper kommer sjukfallet finnas med en gång för varje diagnosgrupp för respektive månad. Exempel: om ett sjukfall innehåller två intyg för maj månad där det första sätter diagnosen M54 och det andra intyget sätter diagnosen F32 kommer sjukfallet räknas med i gruppen för Muskuloskeleta sjukdomar (M00-M99) samt för Psykiska sjukdomar (F00-F99) i graf och tabell för maj månad."]; 
@@ -14,6 +16,8 @@
      var conf = {};
      conf.dataFetcher = "getSubDiagnosisGroupData";
      conf.dataFetcherVerksamhet = "getSubDiagnosisGroupDataVerksamhet";
+     conf.exportTableUrl = function(subgroupId) { return "api/getDiagnosisSubGroupStatistics/" + subgroupId + "/csv"; };
+     conf.exportTableUrlVerksamhet = function(verksamhetId, subgroupId) { return "api/verksamhet/" + verksamhetId + "/getDiagnosisSubGroupStatistics/" + subgroupId + "/csv"; };
      conf.showDetailsOptions = true;
      conf.detailsOptionsTitlePrefix = "Antal sjukfall för";
      conf.title = "";
@@ -25,6 +29,8 @@
      var conf = {};
      conf.dataFetcher = "getDegreeOfSickLeave";
      conf.dataFetcherVerksamhet = "getDegreeOfSickLeaveVerksamhet";
+     conf.exportTableUrl = function() { return "api/getDegreeOfSickLeaveStatistics/csv"; };
+     conf.exportTableUrlVerksamhet = function(verksamhetId) { return "api/verksamhet/" + verksamhetId + "/getDegreeOfSickLeaveStatistics/csv"; };
      conf.showDetailsOptions = false;
      conf.title = "Antal sjukfall per sjukskrivningsgrad";
      conf.tooltipHelpText ="Begreppet sjukskrivningsgrad beskriver hur många procent av en heltidsarbetstid (25 %, 50 %, 75 % eller 100 %) patienten rekommenderas sjukskrivning.";	 
@@ -183,18 +189,18 @@
         }
     };
 
-    $scope.exportTableData = ControllerCommons.exportTableDataGeneric;
-
     $scope.subTitle = config.title;
     $scope.popoverText = config.tooltipHelpText;
     $scope.popoverFootnotesText = config.chartFootnotes;
 
     if (isVerksamhet){
+        $scope.exportTableUrl = config.exportTableUrlVerksamhet($routeParams.verksamhetId, $routeParams.groupId);
         statisticsData[config.dataFetcherVerksamhet]($routeParams.verksamhetId, populatePageWithData, function() { $scope.dataLoadingError = true; }, $routeParams.groupId);
     } else {
+        $scope.exportTableUrl = config.exportTableUrl($routeParams.groupId);
         statisticsData[config.dataFetcher](populatePageWithData, function() { $scope.dataLoadingError = true; }, $routeParams.groupId);
     }
-
+    
     $scope.showHideDataTable = ControllerCommons.showHideDataTableDefault;
     $scope.toggleTableVisibility = function(event) {
         ControllerCommons.toggleTableVisibilityGeneric(event, $scope);

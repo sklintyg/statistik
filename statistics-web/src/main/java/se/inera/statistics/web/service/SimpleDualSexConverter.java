@@ -24,7 +24,7 @@ public class SimpleDualSexConverter {
             data.add(new NamedData(row.getName(), Arrays.asList(new Integer[] {rowSum, row.getFemale(), row.getMale(), accumulatedSum})));
         }
 
-        return TableData.createWithSingleHeadersRow(data, Arrays.asList("Antal sjukfall", "Antal kvinnor", "Antal män", "Summering"));
+        return TableData.createWithSingleHeadersRow(data, Arrays.asList("Period", "Antal sjukfall", "Antal kvinnor", "Antal män", "Summering"));
     }
 
     private ChartData convertToChartData(SimpleDualSexResponse<SimpleDualSexDataRow> casesPerMonth) {

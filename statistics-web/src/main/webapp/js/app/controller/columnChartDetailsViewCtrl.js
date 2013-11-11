@@ -4,6 +4,8 @@
      var conf = {};
      conf.dataFetcher = "getNationalSickLeaveLengthData",
      conf.dataFetcherVerksamhet = "getSickLeaveLengthDataVerksamhet",
+     conf.exportTableUrl = "api/getSickLeaveLengthData/csv";
+     conf.exportTableUrlVerksamhet = function(verksamhetId) { return "api/verksamhet/" + verksamhetId + "/getSickLeaveLengthData/csv" };
      conf.title = function(monthsIncluded){return "Antal pågående samt avslutade sjukfall baserat på sjukskrivningslängd senaste " + monthsIncluded + " månaderna";}
      conf.chartXAxisTitle = "Sjukskrivningslängd";
      return conf;
@@ -12,8 +14,10 @@
  app.nationalSickLeaveLengthCurrentConfig = function() {
      var conf = {};
      conf.dataFetcherVerksamhet = "getSickLeaveLengthCurrentDataVerksamhet",
+     conf.exportTableUrlVerksamhet = function(verksamhetId) { return "api/verksamhet/" + verksamhetId + "/getSickLeaveLengthCurrentData/csv"; };
      conf.title = function(){return "Antal sjukfall baserat på sjukskrivningslängd";}
      conf.chartXAxisTitle = "Sjukskrivningslängd";
+     conf.pageHelpText = "Vad innebär pågående sjukfall?<br/>Denna rapport syftar till att visa så aktuell information om sjukfallen möjligt. Alla sjukfall som pågår någon gång under aktuell månad hämtas. Rapporten kan inte ta hänsyn till vilken dag det är i månaden. I slutet på månaden kommer fortfarande sjukfall som avslutats under månadens gång visas som pågående."
      return conf;
  }
  
@@ -21,6 +25,8 @@
      var conf = {};
      conf.dataFetcher = "getAgeGroups",
      conf.dataFetcherVerksamhet = "getAgeGroupsVerksamhet",
+     conf.exportTableUrl = "api/getAgeGroupsStatistics/csv";
+     conf.exportTableUrlVerksamhet = function(verksamhetId) { return "api/verksamhet/" + verksamhetId + "/getAgeGroupsStatistics/csv"; };
      conf.title = function(monthsIncluded){return "Antal pågående samt avslutade sjukfall baserat på patientens ålder senaste " + monthsIncluded + " månaderna";}
      conf.chartXAxisTitle = "Åldersgrupp";
      return conf;
@@ -29,14 +35,17 @@
  app.nationalAgeGroupCurrentConfig = function() {
      var conf = {};
      conf.dataFetcherVerksamhet = "getAgeGroupsCurrentVerksamhet",
+     conf.exportTableUrlVerksamhet = function(verksamhetId) { return "api/verksamhet/" + verksamhetId + "/getAgeGroupsCurrentStatistics/csv"; };
      conf.title = function(){return "Antal pågående sjukfall baserat på patientens ålder";}
      conf.chartXAxisTitle = "Åldersgrupp";
+     conf.pageHelpText = "Vad innebär pågående sjukfall?<br/>Denna rapport syftar till att visa så aktuell information om sjukfallen möjligt. Alla sjukfall som pågår någon gång under aktuell månad hämtas. Rapporten kan inte ta hänsyn till vilken dag det är i månaden. I slutet på månaden kommer fortfarande sjukfall som avslutats under månadens gång visas som pågående."
      return conf;
  }
  
  app.casesPerSexConfig = function() {
      var conf = {};
      conf.dataFetcher = "getNationalSjukfallPerSexData",
+     conf.exportTableUrl = "api/getSjukfallPerSexStatistics/csv";
      conf.title = function(){return "Andel sjukfall per kön per län det senaste året";};
      conf.yAxisTitle = "Andel";
      conf.percentChart = true;
@@ -69,8 +78,6 @@
 		chart = paintChart(ajaxResult.categories, ControllerCommons.setupSeriesForDisplayType($routeParams.printBw, ajaxResult.series, "bar"));
 	};
 
-    $scope.exportTableData = ControllerCommons.exportTableDataGeneric;
-    
     var populatePageWithData = function(result){
         $scope.subTitle = config.title(result.monthsIncluded);
         $scope.doneLoading = true;
@@ -85,8 +92,10 @@
     };
     
     if (isVerksamhet){
+        $scope.exportTableUrl = config.exportTableUrlVerksamhet($routeParams.verksamhetId);
         statisticsData[config.dataFetcherVerksamhet]($routeParams.verksamhetId, populatePageWithData, function() { $scope.dataLoadingError = true; });
     } else {
+        $scope.exportTableUrl = config.exportTableUrl;
         statisticsData[config.dataFetcher](populatePageWithData, function() { $scope.dataLoadingError = true; });
     }
     
@@ -98,6 +107,8 @@
     $scope.spinnerText = "Laddar information...";
     $scope.doneLoading = false;
     $scope.dataLoadingError = false;
+    
+    $scope.popoverText = config.pageHelpText;
 
     $scope.exportChart = function() {
         chart.exportChart();

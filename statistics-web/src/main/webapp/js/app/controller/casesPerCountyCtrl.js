@@ -20,8 +20,6 @@
 		chart = paintChart(ajaxResult.categories, ControllerCommons.setupSeriesForDisplayType($routeParams.printBw, ajaxResult.series, "bar"));
 	};
 
-    $scope.exportTableData = ControllerCommons.exportTableDataGeneric;
-    
     var populatePageWithData = function(result){
         $scope.subTitle = "Antal sjukfall per län de senaste " + result.monthsIncluded + " månaderna";
         $scope.doneLoading = true;
@@ -36,6 +34,7 @@
     };
     
     statisticsData.getNationalCountyData(populatePageWithData, function() { $scope.dataLoadingError = true; });
+    $scope.exportTableUrl = "api/getCountyStatistics/csv";
     
     $scope.showHideDataTable = ControllerCommons.showHideDataTableDefault;
     $scope.toggleTableVisibility = function(event){
