@@ -23,14 +23,14 @@
 						  <ul class="dropdown-menu left">
 						    <li><a onclick="window.print();"><img src="/img/dropdown-icons/print-colour.png"/> Färg</a></li>
 						    <li><a ng-click="bwPrint()"><img src="/img/dropdown-icons/print-bw.png"/> Svart-vitt</a></li>
-						    <li><a class="disabled"><img src="/img/dropdown-icons/pdf-inactive.png"/> PDF-fil</a></li>
+						    <!-- li><a class="disabled"><img src="/img/dropdown-icons/pdf-inactive.png"/> PDF-fil</a></li -->
 						  </ul>
 						</div>
 					</div>
 				</div>
                 <div dataerrorview show-error="dataLoadingError">
                     <div spinner label="{{spinnerText}}" show-spinner="!doneLoading" show-content="doneLoading">
-                        <div class="row-fluid">
+                        <div class="row-fluid" style="clear: both;">
                             <div class="span3">
                                 <div class="overview-box-header-container">
                                     <ul class="overview-box-header">

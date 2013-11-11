@@ -22,7 +22,7 @@ var ControllerCommons = new function(){
     };
  
     var addBwColor = function(series, chartType) {
-        var patterns = [ 'http://highcharts.com/demo/gfx/pattern1.png', 'http://highcharts.com/demo/gfx/pattern2.png', 'http://highcharts.com/demo/gfx/pattern3.png' ];
+    	var patterns = [ '/img/print-patterns/1.png', '/img/print-patterns/2.png', '/img/print-patterns/3.png', '/img/print-patterns/4.png', '/img/print-patterns/9.png', '/img/print-patterns/6.png', '/img/print-patterns/7.png' ];
         var dashStyles = [ 'shortdashdotdot', 'dashdot', 'dot', 'longdash', 'shortdot', 'solid', 'shortdash', 'shortdashdot', 'dash', 'longdashdot', 'longdashdotdot' ];
 
         for (var i = 0; i < series.length; i++) {

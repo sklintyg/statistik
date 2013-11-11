@@ -1188,7 +1188,7 @@ form.bs-docs-example {
 	}
 	#overview-content #overview-change-container .overview-change-responsive-circle > div {
 		padding: 26%;
-		margin: 14% 22% 6% 22%;
+		margin: 14% 22% 0% 22%;
 	}
 	.overview-chart-info{
 		float: left;
@@ -1347,6 +1347,15 @@ form.bs-docs-example {
 	#business-overview  .small-info-box .popover.left.in.fade {
 		top: -38px !important;
 		left: 236px !important;
+	}
+	#business-login-container {
+		float: none;
+		text-align: center;
+		margin: 0 auto;
+		width: 100% !important;
+	}
+	#navigation-container div.row-fluid div.span4 {
+		width: 100%;
 	}
 }
 @media (max-width: 800px) {
