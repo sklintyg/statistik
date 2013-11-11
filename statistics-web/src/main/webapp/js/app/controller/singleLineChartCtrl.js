@@ -15,7 +15,7 @@
      var conf = {};
      conf.dataFetcherVerksamhet = "getLongSickLeavesDataVerksamhet";
      conf.exportTableUrlVerksamhet = function(verksamhetId) { return "api/verksamhet/" + verksamhetId + "/getLongSickLeavesData/csv"; };
-     conf.title = function(){return "Antal långa sjukfall - mer än 90 dagar";};
+     conf.title = function(months){return "Antal långa sjukfall - mer än 90 dagar " + months;};
      conf.showPageHelpTooltip = false;
      return conf;
  }
@@ -43,7 +43,7 @@
     };
 
     var populatePageWithData = function(result){
-        $scope.subTitle = config.title(result.tableData.rows[0].name + " - " + result.tableData.rows[result.tableData.rows.length-1].name);
+        $scope.subTitle = config.title(result.period);
         $scope.doneLoading = true;
         $timeout(function() {
             updateDataTable($scope, result.tableData);

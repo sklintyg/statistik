@@ -5,11 +5,13 @@ public class DualSexStatisticsData {
     private final TableData tableData;
     private final ChartData maleChart;
     private final ChartData femaleChart;
+    private final String period;
 
-    public DualSexStatisticsData(TableData tableData, ChartData maleChart, ChartData femaleChart) {
+    public DualSexStatisticsData(TableData tableData, ChartData maleChart, ChartData femaleChart, String period) {
         this.tableData = tableData;
         this.maleChart = maleChart;
         this.femaleChart = femaleChart;
+        this.period = period;
     }
 
     public TableData getTableData() {
@@ -22,6 +24,10 @@ public class DualSexStatisticsData {
 
     public ChartData getFemaleChart() {
         return femaleChart;
+    }
+
+    public String getPeriod() {
+        return period;
     }
 
 }

@@ -7,7 +7,7 @@
      conf.exportTableUrl = function() { return "api/getDiagnosisGroupStatistics/csv"; };
      conf.exportTableUrlVerksamhet = function(verksamhetId) { return "api/verksamhet/" + verksamhetId + "/getDiagnosisGroupStatistics/csv"; };
      conf.showDetailsOptions = false;
-     conf.title = "Antal sjukfall per diagnosgrupp";
+     conf.title = function(period) { return "Antal sjukfall per diagnosgrupp " + period; };
      conf.chartFootnotes = ["Notera att för en given månad så kan samma sjukfall visas fler än en gång i graf och tabell. Om ett sjukfall innehåller flera intyg i samma månad så hämtas diagnos från varje intyg. Om det är olika diagnosgrupper kommer sjukfallet finnas med en gång för varje diagnosgrupp för respektive månad. Exempel: om ett sjukfall innehåller två intyg för maj månad där det första sätter diagnosen M54 och det andra intyget sätter diagnosen F32 kommer sjukfallet räknas med i gruppen för Muskuloskeleta sjukdomar (M00-M99) samt för Psykiska sjukdomar (F00-F99) i graf och tabell för maj månad."]; 
      return conf;
  }
@@ -19,8 +19,7 @@
      conf.exportTableUrl = function(subgroupId) { return "api/getDiagnosisSubGroupStatistics/" + subgroupId + "/csv"; };
      conf.exportTableUrlVerksamhet = function(verksamhetId, subgroupId) { return "api/verksamhet/" + verksamhetId + "/getDiagnosisSubGroupStatistics/" + subgroupId + "/csv"; };
      conf.showDetailsOptions = true;
-     conf.detailsOptionsTitlePrefix = "Antal sjukfall för";
-     conf.title = "";
+     conf.title = function(period, name) { return "Antal sjukfall för " + name + " " + period; };
      conf.chartFootnotes = ["Notera att för en given månad så kan samma sjukfall visas fler än en gång i graf och tabell. Om ett sjukfall innehåller flera intyg i samma månad så hämtas diagnos från varje intyg. Om det är olika diagnoser som faller inom samma diagnoskapitel men olika diagnosavsnitt kommer sjukfallet finnas med en gång för varje diagnosavsnitt för respektive månad. Exempel: om ett sjukfall innehåller två intyg för maj månad där det första sätter diagnosen XXX och det andra intyget sätter diagnosen YYY(diagnosavsnitt YY ba) kommer sjukfallet räknas med i avsnittet för XXX samt för XXXi graf och tabell för maj månad.", "Endast de sex vanligast förekommande diagnosgrupperna redovisas med namn. Övriga diagnosgrupper redovisas som övrigt."]; 
      return conf;
  }
@@ -32,7 +31,7 @@
      conf.exportTableUrl = function() { return "api/getDegreeOfSickLeaveStatistics/csv"; };
      conf.exportTableUrlVerksamhet = function(verksamhetId) { return "api/verksamhet/" + verksamhetId + "/getDegreeOfSickLeaveStatistics/csv"; };
      conf.showDetailsOptions = false;
-     conf.title = "Antal sjukfall per sjukskrivningsgrad";
+     conf.title = function(period) { return "Antal sjukfall per sjukskrivningsgrad " + period; };
      conf.tooltipHelpText ="Begreppet sjukskrivningsgrad beskriver hur många procent av en heltidsarbetstid (25 %, 50 %, 75 % eller 100 %) patienten rekommenderas sjukskrivning.";	 
      conf.chartFootnotes = ["Notera att för en given månad så kan samma sjukfall visas fler än en gång i graf och tabell. Alla sjukskrivningsgrader hämtas från varje intyg. Om det finns flera sjukskrivningsgrader kommer sjukfallet finnas med en gång för varje sjukskrivningsgrad för respektive månad. Exempel: om ett intyg innehåller sjukskrivning för maj månad som först är 50% sjukskrivningsgrad och sedan övergår till 100% kommer sjukfallet visas både för 50% och 100% i graf och tabell för maj månad."]; 
      return conf;
@@ -143,6 +142,12 @@
 
     var populatePageWithData = function(result){
         $scope.doneLoading = true;
+        $scope.subTitle = config.title(result.period, $routeParams.groupId);
+        if (config.showDetailsOptions) {
+            $scope.currentPeriod = result.period;
+            statisticsData.getDiagnosisGroups(populateDetailsOptions, function() { alert("Kunde inte ladda data"); });
+        }
+
         $timeout(function() {
             updateDataTable($scope, result);
             updateChart(result);
@@ -165,7 +170,7 @@
                 break;
             }
         }
-        $scope.subTitle = config.detailsOptionsTitlePrefix + (($scope.selectedDetailsOption && $scope.selectedDetailsOption.name && $scope.selectedDetailsOption.id) ?  " " + $scope.selectedDetailsOption.id + " " + $scope.selectedDetailsOption.name : "");
+        $scope.subTitle = ($scope.selectedDetailsOption && $scope.selectedDetailsOption.name && $scope.selectedDetailsOption.id) ?  config.title($scope.currentPeriod, $scope.selectedDetailsOption.id + " " + $scope.selectedDetailsOption.name) : "";
         
         $scope.detailsOptions = result.map(function(e){
             e.url = basePath + "/" + e.id;
@@ -189,7 +194,6 @@
         }
     };
 
-    $scope.subTitle = config.title;
     $scope.popoverText = config.tooltipHelpText;
     $scope.popoverFootnotesText = config.chartFootnotes;
 
@@ -207,9 +211,6 @@
     };
 
     $scope.showDetailsOptions = config.showDetailsOptions;
-    if (config.showDetailsOptions) {
-        statisticsData.getDiagnosisGroups(populateDetailsOptions, function() { alert("Kunde inte ladda data"); });
-    }
 
     $scope.spinnerText = "Laddar information...";
     $scope.doneLoading = false;

@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.junit.Test;
 
+import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.SickLeaveLengthResponse;
 import se.inera.statistics.service.report.model.db.SickLeaveLengthRow;
 import se.inera.statistics.web.model.ChartData;
@@ -30,7 +31,7 @@ public class SickLeaveLengthConverterTest {
         SickLeaveLengthResponse sickLeaveLengthResponse = new SickLeaveLengthResponse(sickLeaveLengthRows, 7);
 
         //When
-        SickLeaveLengthData result = converter.convert(sickLeaveLengthResponse);
+        SickLeaveLengthData result = converter.convert(sickLeaveLengthResponse, new Range(7));
 
         //Then
         TableData tableDataResult = result.getTableData();

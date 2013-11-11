@@ -84,9 +84,9 @@ public class ProtectedChartDataService {
     @PostAuthorize(value = "@protectedChartDataService.helper.userAccess(#request, #verksamhetId)")
     public SimpleDetailsData getNumberOfCasesPerMonth(@Context HttpServletRequest request, @PathParam("verksamhetId") String verksamhetId) {
         LOG.info("Calling getNumberOfCasesPerMonth with verksamhetId: " + verksamhetId);
-        Range range = new Range();
+        final Range range = new Range(18);
         SimpleDualSexResponse<SimpleDualSexDataRow> casesPerMonth = datasourceCasesPerMonth.getCasesPerMonth(Verksamhet.decodeId(verksamhetId), range);
-        return new SimpleDualSexConverter().convert(casesPerMonth);
+        return new SimpleDualSexConverter().convert(casesPerMonth, range);
     }
 
     @GET
@@ -107,9 +107,9 @@ public class ProtectedChartDataService {
     @PostAuthorize(value = "@protectedChartDataService.helper.userAccess(#request, #verksamhetId)")
     public DualSexStatisticsData getDiagnosisGroupStatistics(@Context HttpServletRequest request, @PathParam("verksamhetId") String verksamhetId) {
         LOG.info("Calling getDiagnosisGroupStatistics with verksamhetId: " + verksamhetId);
-        Range range = new Range();
+        final Range range = new Range(18);
         DiagnosisGroupResponse diagnosisGroups = datasourceDiagnosisGroups.getDiagnosisGroups(verksamhetId, range);
-        return new DiagnosisGroupsConverter().convert(diagnosisGroups);
+        return new DiagnosisGroupsConverter().convert(diagnosisGroups, range);
     }
 
     @GET
@@ -130,9 +130,9 @@ public class ProtectedChartDataService {
     @PostAuthorize(value = "@protectedChartDataService.helper.userAccess(#request, #verksamhetId)")
     public DualSexStatisticsData getDiagnosisSubGroupStatistics(@Context HttpServletRequest request, @PathParam("verksamhetId") String verksamhetId, @PathParam("groupId") String groupId) {
         LOG.info("Calling getDiagnosisSubGroupStatistics with verksamhetId: '" + verksamhetId + "' and groupId: " + groupId);
-        Range range = new Range();
+        final Range range = new Range(18);
         DiagnosisGroupResponse diagnosisGroups = datasourceDiagnosisSubGroups.getDiagnosisGroups(Verksamhet.decodeId(verksamhetId), range, groupId);
-        return new DiagnosisSubGroupsConverter().convert(diagnosisGroups);
+        return new DiagnosisSubGroupsConverter().convert(diagnosisGroups, range);
     }
 
     @GET
@@ -164,8 +164,9 @@ public class ProtectedChartDataService {
     @PostAuthorize(value = "@protectedChartDataService.helper.userAccess(#request, #verksamhetId)")
     public AgeGroupsData getAgeGroupsStatistics(@Context HttpServletRequest request, @PathParam("verksamhetId") String verksamhetId) {
         LOG.info("Calling getAgeGroupsStatistics with verksamhetId: " + verksamhetId);
-        AgeGroupsResponse ageGroups = datasourceAgeGroups.getHistoricalAgeGroups(Verksamhet.decodeId(verksamhetId), Helper.previousMonth(), RollingLength.QUARTER);
-        return new AgeGroupsConverter().convert(ageGroups);
+        final RollingLength period = RollingLength.QUARTER;
+        AgeGroupsResponse ageGroups = datasourceAgeGroups.getHistoricalAgeGroups(Verksamhet.decodeId(verksamhetId), Helper.previousMonth(), period);
+        return new AgeGroupsConverter().convert(ageGroups, new Range(period.getPeriods()));
     }
 
     @GET
@@ -187,7 +188,10 @@ public class ProtectedChartDataService {
     public AgeGroupsData getAgeGroupsCurrentStatistics(@Context HttpServletRequest request, @PathParam("verksamhetId") String verksamhetId) {
         LOG.info("Calling getAgeGroupsCurrentStatistics with verksamhetId: " + verksamhetId);
         AgeGroupsResponse ageGroups = datasourceAgeGroups.getCurrentAgeGroups(Verksamhet.decodeId(verksamhetId));
-        return new AgeGroupsConverter().convert(ageGroups);
+        LocalDate start = new LocalDate().withDayOfMonth(1);
+        LocalDate end = new LocalDate().withDayOfMonth(1).plusMonths(1).minusDays(1);
+        final Range range = new Range(start, end);
+        return new AgeGroupsConverter().convert(ageGroups, range);
     }
 
     @GET
@@ -208,8 +212,9 @@ public class ProtectedChartDataService {
     @PostAuthorize(value = "@protectedChartDataService.helper.userAccess(#request, #verksamhetId)")
     public DualSexStatisticsData getDegreeOfSickLeaveStatistics(@Context HttpServletRequest request, @PathParam("verksamhetId") String verksamhetId) {
         LOG.info("Calling getDegreeOfSickLeaveStatistics with verksamhetId: " + verksamhetId);
-        DegreeOfSickLeaveResponse degreeOfSickLeaveStatistics = datasourceDegreeOfSickLeave.getStatistics(Verksamhet.decodeId(verksamhetId), new Range());
-        return new DegreeOfSickLeaveConverter().convert(degreeOfSickLeaveStatistics);
+        final Range range = new Range(18);
+        DegreeOfSickLeaveResponse degreeOfSickLeaveStatistics = datasourceDegreeOfSickLeave.getStatistics(Verksamhet.decodeId(verksamhetId), range);
+        return new DegreeOfSickLeaveConverter().convert(degreeOfSickLeaveStatistics, range);
     }
 
     @GET
@@ -230,9 +235,10 @@ public class ProtectedChartDataService {
     @PostAuthorize(value = "@protectedChartDataService.helper.userAccess(#request, #verksamhetId)")
     public SickLeaveLengthData getSickLeaveLengthData(@Context HttpServletRequest request, @PathParam("verksamhetId") String verksamhetId) {
         LOG.info("Calling getSickLeaveLengthData with verksamhetId: " + verksamhetId);
+        final RollingLength year = RollingLength.YEAR;
         SickLeaveLengthResponse sickLeaveLength = datasourceSickLeaveLength.getHistoricalStatistics(Verksamhet.decodeId(verksamhetId), Helper.previousMonth(),
-                RollingLength.YEAR);
-        return new SickLeaveLengthConverter().convert(sickLeaveLength);
+                year);
+        return new SickLeaveLengthConverter().convert(sickLeaveLength, new Range(year.getPeriods()));
     }
 
     @GET
@@ -254,7 +260,10 @@ public class ProtectedChartDataService {
     public SickLeaveLengthData getSickLeaveLengthCurrentData(@Context HttpServletRequest request, @PathParam("verksamhetId") String verksamhetId) {
         LOG.info("Calling getSickLeaveLengthCurrentData with verksamhetId: " + verksamhetId);
         SickLeaveLengthResponse sickLeaveLength = datasourceSickLeaveLength.getCurrentStatistics(Verksamhet.decodeId(verksamhetId));
-        return new SickLeaveLengthConverter().convert(sickLeaveLength);
+        LocalDate start = new LocalDate().withDayOfMonth(1);
+        LocalDate end = new LocalDate().withDayOfMonth(1).plusMonths(1).minusDays(1);
+        final Range range = new Range(start, end);
+        return new SickLeaveLengthConverter().convert(sickLeaveLength, range);
     }
 
     @GET
@@ -275,9 +284,9 @@ public class ProtectedChartDataService {
     @PostAuthorize(value = "@protectedChartDataService.helper.userAccess(#request, #verksamhetId)")
     public SimpleDetailsData getLongSickLeavesData(@Context HttpServletRequest request, @PathParam("verksamhetId") String verksamhetId) {
         LOG.info("Calling getLongSickLeavesData with verksamhetId: " + verksamhetId);
-        Range range = new Range();
+        final Range range = new Range(18);
         SimpleDualSexResponse<SimpleDualSexDataRow> longSickLeaves = datasourceSickLeaveLength.getLongSickLeaves(Verksamhet.decodeId(verksamhetId), range);
-        return new SimpleDualSexConverter().convert(longSickLeaves);
+        return new SimpleDualSexConverter().convert(longSickLeaves, range);
     }
 
     @GET

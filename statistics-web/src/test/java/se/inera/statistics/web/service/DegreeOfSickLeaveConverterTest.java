@@ -12,6 +12,7 @@ import org.junit.Test;
 import se.inera.statistics.service.report.model.DegreeOfSickLeaveResponse;
 import se.inera.statistics.service.report.model.DualSexDataRow;
 import se.inera.statistics.service.report.model.DualSexField;
+import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.web.model.DualSexStatisticsData;
 import se.inera.statistics.web.model.TableData;
 
@@ -49,7 +50,7 @@ public class DegreeOfSickLeaveConverterTest {
     @Test
     public void converterTestEmpty() {
         DegreeOfSickLeaveResponse resp = new DegreeOfSickLeaveResponse(new ArrayList<String>(), new ArrayList<DualSexDataRow>());
-        DualSexStatisticsData data = new DegreeOfSickLeaveConverter().convert(resp);
+        DualSexStatisticsData data = new DegreeOfSickLeaveConverter().convert(resp, new Range());
         assertEquals("[]", data.getFemaleChart().getCategories().toString());
         assertEquals("[]", data.getFemaleChart().getSeries().toString());
     }
@@ -68,7 +69,7 @@ public class DegreeOfSickLeaveConverterTest {
 
         //When
         DegreeOfSickLeaveConverter converter = new DegreeOfSickLeaveConverter();
-        DualSexStatisticsData data = converter.convert(resp);
+        DualSexStatisticsData data = converter.convert(resp, new Range());
 
         //Then
         assertEquals("[period1]", data.getFemaleChart().getCategories().toString());

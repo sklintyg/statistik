@@ -35,14 +35,26 @@ public final class Range {
     }
 
     public String toString() {
-        Locale sv = new Locale("sv", "SE");
-        if (from.getYear() == to.getYear()) {
-            return from.toString("MMM", sv) + "-" + to.toString("MMM yyyy", sv);
-        } else {
-            return from.toString("MMM yyyy", sv) + "-" + to.toString("MMM yyyy", sv);
-        }
+        return toStringWithMonthFormat("MMMM");
     }
 
+    public String toStringAbbreviated() {
+        return toStringWithMonthFormat("MMM");
+    }
+    
+    private String toStringWithMonthFormat(String monthFormat) {
+        Locale sv = new Locale("sv", "SE");
+        if (from.getYear() == to.getYear()) {
+            if (from.getMonthOfYear() == to.getMonthOfYear()) {
+                return to.toString(monthFormat + " yyyy", sv);
+            } else {
+                return from.toString(monthFormat, sv) + "-" + to.toString(monthFormat + " yyyy", sv);
+            }
+        } else {
+            return from.toString(monthFormat + " yyyy", sv) + "-" + to.toString(monthFormat + " yyyy", sv);
+        }
+    }
+    
     public int getMonths() {
         return Months.monthsBetween(from, to).getMonths() + 1;
     }

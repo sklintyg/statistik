@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.junit.Test;
 
+import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.SimpleDualSexDataRow;
 import se.inera.statistics.service.report.model.SimpleDualSexResponse;
 import se.inera.statistics.web.model.NamedData;
@@ -25,7 +26,7 @@ public class SjukfallPerSexConverterTest {
         dualSexRows.add(new SimpleDualSexDataRow("län 2", 20, 30));
         dualSexRows.add(new SimpleDualSexDataRow("län 3", 5, 25));
         SimpleDualSexResponse<SimpleDualSexDataRow> casesPerMonth = new SimpleDualSexResponse<SimpleDualSexDataRow>(dualSexRows, 2);
-        SimpleDetailsData result = converter.convert(casesPerMonth);
+        SimpleDetailsData result = converter.convert(casesPerMonth, new Range(1));
         TableData tableData = result.getTableData();
         assertEquals("[[Län;1, Antal sjukfall;1, Andel kvinnor;1, Andel män;1, Summering;1]]", tableData.getHeaders().toString());
         List<NamedData> rows = tableData.getRows();

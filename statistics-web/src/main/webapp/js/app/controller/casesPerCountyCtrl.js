@@ -21,7 +21,7 @@
 	};
 
     var populatePageWithData = function(result){
-        $scope.subTitle = "Antal sjukfall per län de senaste " + result.monthsIncluded + " månaderna";
+        $scope.subTitle = "Antal sjukfall per län " + result.period;
         $scope.doneLoading = true;
         $timeout(function() {
             updateDataTable($scope, result.tableData);

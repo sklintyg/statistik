@@ -11,6 +11,7 @@ import se.inera.statistics.service.report.model.DiagnosisGroup;
 import se.inera.statistics.service.report.model.DiagnosisGroupResponse;
 import se.inera.statistics.service.report.model.DualSexDataRow;
 import se.inera.statistics.service.report.model.DualSexField;
+import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.web.model.DualSexStatisticsData;
 import se.inera.statistics.web.model.TableData;
 
@@ -48,7 +49,7 @@ public class DiagnosisGroupsConverterTest {
     @Test
     public void converterTestEmpty() {
         DiagnosisGroupResponse resp = new DiagnosisGroupResponse(new ArrayList<DiagnosisGroup>(), new ArrayList<DualSexDataRow>());
-        DualSexStatisticsData data = new DiagnosisGroupsConverter().convert(resp);
+        DualSexStatisticsData data = new DiagnosisGroupsConverter().convert(resp, new Range());
         assertEquals("[]", data.getFemaleChart().getCategories().toString());
         assertEquals("[Somatiska sjukdomar (A00-E90, G00-L99, N00-N99): [], Psykiska sjukdomar (F00-F99): [], Muskuloskeletala sjukdomar (M00-M99): [], Graviditet och förlossning (O00-O99): [], Övrigt (P00-P96, Q00-Q99, S00-Y98): [], Symtomdiagnoser (R00-R99): [], Faktorer av betydelse för hälsotillståndet och för kontakter med hälso- och sjukvården (Z00-Z99): []]", data.getFemaleChart().getSeries().toString());
     }
@@ -68,7 +69,7 @@ public class DiagnosisGroupsConverterTest {
 
         //When
         DiagnosisGroupsConverter converter = new DiagnosisGroupsConverter();
-        DualSexStatisticsData data = converter.convert(resp);
+        DualSexStatisticsData data = converter.convert(resp, new Range());
 
         //Then
         assertEquals("[period1]", data.getFemaleChart().getCategories().toString());
