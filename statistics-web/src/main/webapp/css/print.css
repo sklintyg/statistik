@@ -2,6 +2,7 @@
 	.dontprint {
 		display: none;
 	}
+	.highcharts-tooltip, .highcharts-markers.highcharts-tracker { display: none; }
 	.print-pagebreak-before {
 		page-break-before: always;
 	}
@@ -122,6 +123,10 @@
 	.table tbody > tr:nth-child(odd) > td, .table tbody > tr:nth-child(odd) > th {
 		background-color: #f9f9f9;
 	}
+	.table-print-header td {
+		font-weight: bold;
+		font-size: 13px;
+	}
 	/********Overview styles***************/
 	#national-overview .business-name-header { display: none; }
 	ul.overview-box-header {
@@ -157,8 +162,9 @@
 		color: #fff !important;
 		margin: 0;
 		margin-top: 0px;
-		padding: 5px 0px 5px 10px;
+		padding: 10px 0px 10px 25px;
 		font-size: 1em;
+		font-family: Helvetica;
 	}
 	#overview-content #overview-distribution-per-sex-container, #overview-content #overview-change-container, #overview-content #overview-distribution-diagnostic-groups-container, #overview-content #overview-distribution-of-age-groups-container, #overview-content #overview-distribution-of-sick-degree-container, #overview-content #overview-distribution-sick-length-container, #overview-content #overview-distribution-by-county-container {
 		background-color: #ededed;

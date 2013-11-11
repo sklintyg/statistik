@@ -59,7 +59,7 @@
 						<div class="span2">
 							<span>Statistiktjänst för ordinerad sjukskrivning</span>
 						</div>
-						<div class="span4 pull-right" style="width: auto !important;">
+						<div class="span4 pull-right">
 							<div id="business-login-container">
 								<span id="business-login-span">För verksamhetsstatistik: </span>
 								<button class="btn" type="button" id="business-login-btn" value="Logga in">Logga in</button>

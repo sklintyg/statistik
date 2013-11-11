@@ -26,6 +26,7 @@
         chartOptions.chart.type = 'line';
         chartOptions.legend.enabled = $routeParams.printBw || $routeParams.print;
         chartOptions.xAxis.title.text = "Period";
+        chartOptions.yAxis.title.text = "Antal";
         return new Highcharts.Chart(chartOptions);
 	};
 

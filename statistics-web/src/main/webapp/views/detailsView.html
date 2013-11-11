@@ -54,7 +54,7 @@
 				  <ul class="dropdown-menu right">
 				    <li><a ng-click="print(false)"><img src="/img/dropdown-icons/print-colour.png"/> Färg</a></li>
 				    <li><a ng-click="print(true)"><img src="/img/dropdown-icons/print-bw.png"/> Svart-vitt</a></li>
-				    <li><a class="disabled"><img src="/img/dropdown-icons/pdf-inactive.png"/> PDF-fil</a></li>
+				    <!-- li><a class="disabled"><img src="/img/dropdown-icons/pdf-inactive.png"/> PDF-fil</a></li -->
 				  </ul>
 				</div>
 			</div>
@@ -149,7 +149,7 @@
                 </div>
                 <table id="datatable" class="table table-striped print-pagebreak-after" ng-repeat="printTable in printDataTables">
                     <thead>
-                        <tr ng-repeat="headerrow in printTable.headers">
+                        <tr class="table-print-header" ng-repeat="headerrow in printTable.headers">
                             <td colspan="{{header.colspan}}" ng-repeat="header in headerrow" title="{{header.text}}">{{header.text}}</td>
                         </tr>
                     </thead>
