@@ -4,6 +4,8 @@
      var conf = {};
      conf.dataFetcher = "getNumberOfCasesPerMonth";
      conf.dataFetcherVerksamhet = "getNumberOfCasesPerMonthVerksamhet";
+     conf.exportTableUrl = "api/getNumberOfCasesPerMonth/csv";
+     conf.exportTableUrlVerksamhet = function(verksamhetId) { return "api/verksamhet/" + verksamhetId + "/getNumberOfCasesPerMonth/csv"; };
      conf.title = function(months){return "Antal sjukfall per månad " + months;};
      conf.showPageHelpTooltip = true;
      return conf;
@@ -12,6 +14,7 @@
  app.longSickLeavesConfig = function() {
      var conf = {};
      conf.dataFetcherVerksamhet = "getLongSickLeavesDataVerksamhet";
+     conf.exportTableUrlVerksamhet = function(verksamhetId) { return "api/verksamhet/" + verksamhetId + "/getLongSickLeavesData/csv"; };
      conf.title = function(){return "Antal långa sjukfall - mer än 90 dagar";};
      conf.showPageHelpTooltip = false;
      return conf;
@@ -30,7 +33,7 @@
 	};
 
 	var updateDataTable = function($scope, ajaxResult) {
-		$scope.headerrows = [[{ "text" : "Period", "colspan" : "1" }].concat(ajaxResult.headers[0])];
+		$scope.headerrows = ajaxResult.headers;
 		$scope.rows = ajaxResult.rows;
 	};
 
@@ -39,8 +42,6 @@
 	    chart = paintChart(ajaxResult.categories, $scope.series);
     };
 
-    $scope.exportTableData = ControllerCommons.exportTableDataGeneric;
-    
     var populatePageWithData = function(result){
         $scope.subTitle = config.title(result.tableData.rows[0].name + " - " + result.tableData.rows[result.tableData.rows.length-1].name);
         $scope.doneLoading = true;
@@ -68,8 +69,10 @@
     };
 
     if ($routeParams.verksamhetId){
+        $scope.exportTableUrl = config.exportTableUrlVerksamhet($routeParams.verksamhetId);
         statisticsData[config.dataFetcherVerksamhet]($routeParams.verksamhetId, populatePageWithData, function() { $scope.dataLoadingError = true; });
     } else {
+        $scope.exportTableUrl = config.exportTableUrl;
         statisticsData[config.dataFetcher](populatePageWithData, function() { $scope.dataLoadingError = true; });
     }
     

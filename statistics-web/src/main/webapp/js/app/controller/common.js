@@ -74,16 +74,6 @@ var ControllerCommons = new function(){
         $scope.showHideDataTable = wasTableVisible ? "Visa datatabell" : "Dölj datatabell";
     };
     
-    this.exportTableDataGeneric = function() {
-        var dt = $('#datatable');
-        var csvData = table2CSV(dt);
-        $.generateFile({
-            filename : 'export.csv',
-            content : csvData,
-            script : 'fileDownload.jsp'
-        });
-    };
-
     this.htmlsafe = function(string) {
         return string.replace(/&/g, '&amp;').replace(/</g, '&lt;');
     }
