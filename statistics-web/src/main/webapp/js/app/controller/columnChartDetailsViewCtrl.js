@@ -17,6 +17,7 @@
      conf.exportTableUrlVerksamhet = function(verksamhetId) { return "api/verksamhet/" + verksamhetId + "/getSickLeaveLengthCurrentData/csv"; };
      conf.title = function(){return "Antal sjukfall baserat på sjukskrivningslängd";}
      conf.chartXAxisTitle = "Sjukskrivningslängd";
+     conf.pageHelpText = "Vad innebär pågående sjukfall?<br/>Denna rapport syftar till att visa så aktuell information om sjukfallen möjligt. Alla sjukfall som pågår någon gång under aktuell månad hämtas. Rapporten kan inte ta hänsyn till vilken dag det är i månaden. I slutet på månaden kommer fortfarande sjukfall som avslutats under månadens gång visas som pågående."
      return conf;
  }
  
@@ -37,6 +38,7 @@
      conf.exportTableUrlVerksamhet = function(verksamhetId) { return "api/verksamhet/" + verksamhetId + "/getAgeGroupsCurrentStatistics/csv"; };
      conf.title = function(){return "Antal pågående sjukfall baserat på patientens ålder";}
      conf.chartXAxisTitle = "Åldersgrupp";
+     conf.pageHelpText = "Vad innebär pågående sjukfall?<br/>Denna rapport syftar till att visa så aktuell information om sjukfallen möjligt. Alla sjukfall som pågår någon gång under aktuell månad hämtas. Rapporten kan inte ta hänsyn till vilken dag det är i månaden. I slutet på månaden kommer fortfarande sjukfall som avslutats under månadens gång visas som pågående."
      return conf;
  }
  
@@ -105,6 +107,8 @@
     $scope.spinnerText = "Laddar information...";
     $scope.doneLoading = false;
     $scope.dataLoadingError = false;
+    
+    $scope.popoverText = config.pageHelpText;
 
     $scope.exportChart = function() {
         chart.exportChart();
