@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 
 import se.inera.statistics.service.report.model.DiagnosisGroupResponse;
 import se.inera.statistics.service.report.model.DualSexDataRow;
+import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.Sex;
 import se.inera.statistics.web.model.ChartData;
 import se.inera.statistics.web.model.ChartSeries;
@@ -21,12 +22,12 @@ public class DiagnosisSubGroupsConverter {
 
     private static final int NUMBER_OF_CHART_SERIES = 6;
 
-    DualSexStatisticsData convert(DiagnosisGroupResponse diagnosisGroups) {
+    DualSexStatisticsData convert(DiagnosisGroupResponse diagnosisGroups, Range range) {
         TableData tableData = DiagnosisGroupsConverter.convertTable(diagnosisGroups);
         List<Integer> topIndexes = getTopColumnIndexes(diagnosisGroups);
         ChartData maleChart = extractChartData(diagnosisGroups, topIndexes, Sex.Male);
         ChartData femaleChart = extractChartData(diagnosisGroups, topIndexes, Sex.Female);
-        return new DualSexStatisticsData(tableData, maleChart, femaleChart);
+        return new DualSexStatisticsData(tableData, maleChart, femaleChart, range.toString());
     }
 
     private ChartData extractChartData(DiagnosisGroupResponse data, List<Integer> topIndexes, Sex sex) {
@@ -42,7 +43,7 @@ public class DiagnosisSubGroupsConverter {
         }
         if (data.getDiagnosisGroupsAsStrings().size() > NUMBER_OF_CHART_SERIES) {
             List<Integer> remainingData = sumRemaining(topIndexes, data, sex);
-            topColumns.add(new ChartSeries("Övriga diagnoskapitel", remainingData, true));
+            topColumns.add(new ChartSeries("Övriga diagnosavsnitt", remainingData, true));
         }
         return topColumns;
     }

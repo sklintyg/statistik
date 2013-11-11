@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.Sex;
 import se.inera.statistics.service.report.model.SickLeaveLengthResponse;
 import se.inera.statistics.service.report.model.db.SickLeaveLengthRow;
@@ -37,10 +38,9 @@ public class SickLeaveLengthConverter {
         return new ChartData(series, groups);
     }
 
-    SickLeaveLengthData convert(SickLeaveLengthResponse resp) {
+    SickLeaveLengthData convert(SickLeaveLengthResponse resp, Range range) {
         TableData tableData = convertToTable(resp.getRows());
         ChartData chartData = convertToChart(resp);
-        int monthsIncluded = resp.getMonths();
-        return new SickLeaveLengthData(tableData, chartData, monthsIncluded);
+        return new SickLeaveLengthData(tableData, chartData, range.getMonths(), range.toString());
     }
 }

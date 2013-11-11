@@ -83,9 +83,9 @@ public class ChartDataService {
     @Produces({ MediaType.APPLICATION_JSON })
     public SimpleDetailsData getNumberOfCasesPerMonth() {
         LOG.info("Calling getNumberOfCasesPerMonth for national");
-        Range range = new Range();
+        final Range range = new Range(18);
         SimpleDualSexResponse<SimpleDualSexDataRow> casesPerMonth = datasourceCasesPerMonth.getCasesPerMonth(NATIONELL, range);
-        return new SimpleDualSexConverter().convert(casesPerMonth);
+        return new SimpleDualSexConverter().convert(casesPerMonth, range);
     }
 
     @GET
@@ -110,9 +110,9 @@ public class ChartDataService {
     @Produces({ MediaType.APPLICATION_JSON })
     public DualSexStatisticsData getDiagnosisGroupStatistics() {
         LOG.info("Calling getDiagnosisGroupStatistics for national");
-        Range range = new Range();
+        final Range range = new Range(18);
         DiagnosisGroupResponse diagnosisGroups = datasourceDiagnosisGroups.getDiagnosisGroups(NATIONELL, range);
-        return new DiagnosisGroupsConverter().convert(diagnosisGroups);
+        return new DiagnosisGroupsConverter().convert(diagnosisGroups, range);
     }
 
     @GET
@@ -129,9 +129,9 @@ public class ChartDataService {
     @Produces({ MediaType.APPLICATION_JSON })
     public DualSexStatisticsData getDiagnosisSubGroupStatistics(@PathParam("groupId") String groupId) {
         LOG.info("Calling getDiagnosisSubGroupStatistics for national with groupId: " + groupId);
-        Range range = new Range();
+        final Range range = new Range(18);
         DiagnosisGroupResponse diagnosisGroups = datasourceDiagnosisSubGroups.getDiagnosisGroups(NATIONELL, range, groupId);
-        return new DiagnosisSubGroupsConverter().convert(diagnosisGroups);
+        return new DiagnosisSubGroupsConverter().convert(diagnosisGroups, range);
     }
 
     @GET
@@ -157,8 +157,9 @@ public class ChartDataService {
     @Produces({ MediaType.APPLICATION_JSON })
     public AgeGroupsData getAgeGroupsStatistics() {
         LOG.info("Calling getAgeGroupsStatistics for national");
-        AgeGroupsResponse ageGroups = datasourceAgeGroups.getHistoricalAgeGroups(NATIONELL, previousMonth(), RollingLength.QUARTER);
-        return new AgeGroupsConverter().convert(ageGroups);
+        final RollingLength quarter = RollingLength.QUARTER;
+        AgeGroupsResponse ageGroups = datasourceAgeGroups.getHistoricalAgeGroups(NATIONELL, previousMonth(), quarter);
+        return new AgeGroupsConverter().convert(ageGroups, new Range(quarter.getPeriods()));
     }
 
     @GET
@@ -175,8 +176,9 @@ public class ChartDataService {
     @Produces({ MediaType.APPLICATION_JSON })
     public DualSexStatisticsData getDegreeOfSickLeaveStatistics() {
         LOG.info("Calling getDegreeOfSickLeaveStatistics for national");
-        DegreeOfSickLeaveResponse degreeOfSickLeaveStatistics = datasourceDegreeOfSickLeave.getStatistics(NATIONELL, new Range());
-        return new DegreeOfSickLeaveConverter().convert(degreeOfSickLeaveStatistics);
+        final Range range = new Range(18);
+        DegreeOfSickLeaveResponse degreeOfSickLeaveStatistics = datasourceDegreeOfSickLeave.getStatistics(NATIONELL, range);
+        return new DegreeOfSickLeaveConverter().convert(degreeOfSickLeaveStatistics, range);
     }
 
     @GET
@@ -193,8 +195,9 @@ public class ChartDataService {
     @Produces({ MediaType.APPLICATION_JSON })
     public SickLeaveLengthData getSickLeaveLengthData() {
         LOG.info("Calling getSickLeaveLengthData for national");
-        SickLeaveLengthResponse sickLeaveLength = datasourceSickLeaveLength.getHistoricalStatistics(NATIONELL, previousMonth(), RollingLength.YEAR);
-        return new SickLeaveLengthConverter().convert(sickLeaveLength);
+        final RollingLength period = RollingLength.YEAR;
+        SickLeaveLengthResponse sickLeaveLength = datasourceSickLeaveLength.getHistoricalStatistics(NATIONELL, previousMonth(), period);
+        return new SickLeaveLengthConverter().convert(sickLeaveLength, new Range(period.getPeriods()));
     }
 
     @GET
@@ -232,10 +235,9 @@ public class ChartDataService {
     @Produces({ MediaType.APPLICATION_JSON })
     public SimpleDetailsData getSjukfallPerSexStatistics() {
         LOG.info("Calling getSjukfallPerSexStatistics for national");
-        final int rangeLength = 12;
-        Range range = new Range(rangeLength);
+        final Range range = new Range(12);
         SimpleDualSexResponse<SimpleDualSexDataRow> casesPerMonth = datasourceCasesPerCounty.getStatistics(range);
-        return new SjukfallPerSexConverter().convert(casesPerMonth);
+        return new SjukfallPerSexConverter().convert(casesPerMonth, range);
     }
 
     @GET

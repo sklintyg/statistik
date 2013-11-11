@@ -71,7 +71,7 @@ public class CasesPerCountyConverterTest {
         assertEquals("[13, 24, 3]", series.get(2).getData().toString());
         assertEquals("[14, 15, 9]", series.get(3).getData().toString());
 
-        assertEquals(3, result.getMonthsIncluded());
+        assertEquals(6, result.getMonthsIncluded());
     }
 
     // CHECKSTYLE:ON MagicNumber

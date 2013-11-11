@@ -20,16 +20,15 @@ public class CasesPerCountyConverter {
 
     private final SimpleDualSexResponse<SimpleDualSexDataRow> respNewest;
     private final SimpleDualSexResponse<SimpleDualSexDataRow> respOldest;
-    private final String rangeTextOld;
-    private final String rangeTextNew;
+    private final Range rangeOld;
+    private final Range rangeNew;
 
     public CasesPerCountyConverter(SimpleDualSexResponse<SimpleDualSexDataRow> respNewest, SimpleDualSexResponse<SimpleDualSexDataRow> respOldest, Range rangeNewest, Range rangeOldest) {
         assert respNewest.getRows().size() == respOldest.getRows().size();
         this.respNewest = respNewest;
         this.respOldest = respOldest;
-        Locale sv = new Locale("sv", "SE");
-        rangeTextOld = rangeOldest.getFrom().toString("MMM", sv) + "-" + rangeOldest.getTo().toString("MMM yyyy", sv);
-        rangeTextNew = rangeNewest.getFrom().toString("MMM", sv) + "-" + rangeNewest.getTo().toString("MMM yyyy", sv);
+        this.rangeNew = rangeNewest;
+        this.rangeOld = rangeOldest;
     }
 
     private TableData convertToTable() {
@@ -51,7 +50,7 @@ public class CasesPerCountyConverter {
             data.add(new NamedData(oldestRow.getName(), rowData));
         }
         final int topHeaderSpan = 4;
-        List<TableHeader> topHeaders = Arrays.asList(new TableHeader("", 1), new TableHeader(rangeTextOld, topHeaderSpan), new TableHeader(rangeTextNew, topHeaderSpan), new TableHeader("", 1));
+        List<TableHeader> topHeaders = Arrays.asList(new TableHeader("", 1), new TableHeader(rangeOld.toStringAbbreviated(), topHeaderSpan), new TableHeader(rangeNew.toStringAbbreviated(), topHeaderSpan), new TableHeader("", 1));
         final List<String> subHeaderTexts = Arrays.asList("Län", "Antal sjukfall", "Antal kvinnor", "Antal män", "Summering", "Antal sjukfall", "Antal kvinnor", "Antal män", "Summering");
         List<TableHeader> subHeaders = TableData.toTableHeaderList(subHeaderTexts, 1);
         List<List<TableHeader>> headerRows = new ArrayList<>();
@@ -65,20 +64,20 @@ public class CasesPerCountyConverter {
         List<String> groups = respNewest.getGroups();
         List<ChartSeries> series = new ArrayList<>();
         List<Integer> femaleDataOld = respOldest.getDataForSex(Sex.Female);
-        series.add(new ChartSeries("Sjukfall " + rangeTextOld + " kvinnor", femaleDataOld, "old", Sex.Female));
+        series.add(new ChartSeries("Sjukfall " + rangeOld.toStringAbbreviated() + " kvinnor", femaleDataOld, "old", Sex.Female));
         List<Integer> maleDataOld = respOldest.getDataForSex(Sex.Male);
-        series.add(new ChartSeries("Sjukfall " + rangeTextOld + " män", maleDataOld, "old", Sex.Male));
+        series.add(new ChartSeries("Sjukfall " + rangeOld.toStringAbbreviated() + " män", maleDataOld, "old", Sex.Male));
         List<Integer> femaleDataNew = respNewest.getDataForSex(Sex.Female);
-        series.add(new ChartSeries("Sjukfall " + rangeTextNew + " kvinnor", femaleDataNew, "new", Sex.Female));
+        series.add(new ChartSeries("Sjukfall " + rangeNew.toStringAbbreviated() + " kvinnor", femaleDataNew, "new", Sex.Female));
         List<Integer> maleDataNew = respNewest.getDataForSex(Sex.Male);
-        series.add(new ChartSeries("Sjukfall " + rangeTextNew + " män", maleDataNew, "new", Sex.Male));
+        series.add(new ChartSeries("Sjukfall " + rangeNew.toStringAbbreviated() + " män", maleDataNew, "new", Sex.Male));
         return new ChartData(series, groups);
     }
 
     CasesPerCountyData convert() {
         TableData tableData = convertToTable();
         ChartData chartData = convertToChart();
-        int monthsIncluded = respOldest.getNumberOfMonthsCalculated() + respNewest.getNumberOfMonthsCalculated();
-        return new CasesPerCountyData(tableData, chartData, monthsIncluded);
+        Range fullRange = new Range(rangeOld.getFrom(), rangeNew.getTo());
+        return new CasesPerCountyData(tableData, chartData, fullRange.getMonths(), fullRange.toString());
     }
 }

@@ -13,6 +13,7 @@ import java.util.TreeMap;
 import se.inera.statistics.service.report.model.DiagnosisGroup;
 import se.inera.statistics.service.report.model.DiagnosisGroupResponse;
 import se.inera.statistics.service.report.model.DualSexDataRow;
+import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.Sex;
 import se.inera.statistics.web.model.ChartData;
 import se.inera.statistics.web.model.ChartSeries;
@@ -43,11 +44,11 @@ public class DiagnosisGroupsConverter {
         return new ArrayList<>(DIAGNOSIS_CHART_GROUPS.keySet());
     }
 
-    DualSexStatisticsData convert(DiagnosisGroupResponse diagnosisGroups) {
+    DualSexStatisticsData convert(DiagnosisGroupResponse diagnosisGroups, Range range) {
         TableData tableData = convertTable(diagnosisGroups);
         ChartData maleChart = convertChart(diagnosisGroups, Sex.Male);
         ChartData femaleChart = convertChart(diagnosisGroups, Sex.Female);
-        return new DualSexStatisticsData(tableData, maleChart, femaleChart);
+        return new DualSexStatisticsData(tableData, maleChart, femaleChart, range.toString());
     }
 
     private ChartData convertChart(DiagnosisGroupResponse resp, Sex sex) {

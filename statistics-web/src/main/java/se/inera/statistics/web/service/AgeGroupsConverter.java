@@ -5,8 +5,9 @@ import java.util.Arrays;
 import java.util.List;
 
 import se.inera.statistics.service.report.model.AgeGroupsResponse;
-import se.inera.statistics.service.report.model.db.AgeGroupsRow;
+import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.Sex;
+import se.inera.statistics.service.report.model.db.AgeGroupsRow;
 import se.inera.statistics.web.model.AgeGroupsData;
 import se.inera.statistics.web.model.ChartData;
 import se.inera.statistics.web.model.ChartSeries;
@@ -37,10 +38,9 @@ public class AgeGroupsConverter {
         return new ChartData(series, groups);
     }
 
-    AgeGroupsData convert(AgeGroupsResponse resp) {
+    AgeGroupsData convert(AgeGroupsResponse resp, Range range) {
         TableData tableData = convertToTable(resp.getAgeGroupsRows());
         ChartData chartData = convertToChart(resp);
-        int monthsIncluded = resp.getMonths();
-        return new AgeGroupsData(tableData, chartData, monthsIncluded);
+        return new AgeGroupsData(tableData, chartData, range.getMonths(), range.toString());
     }
 }

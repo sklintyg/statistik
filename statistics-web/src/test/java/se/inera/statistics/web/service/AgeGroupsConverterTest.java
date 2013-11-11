@@ -8,6 +8,7 @@ import java.util.List;
 import org.junit.Test;
 
 import se.inera.statistics.service.report.model.AgeGroupsResponse;
+import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.db.AgeGroupsRow;
 import se.inera.statistics.web.model.AgeGroupsData;
 import se.inera.statistics.web.model.ChartData;
@@ -30,7 +31,7 @@ public class AgeGroupsConverterTest {
         AgeGroupsResponse ageGroupsResponse = new AgeGroupsResponse(ageGroupsRows, 7);
 
         //When
-        AgeGroupsData result = converter.convert(ageGroupsResponse);
+        AgeGroupsData result = converter.convert(ageGroupsResponse, new Range(7));
 
         //Then
         TableData tableDataResult = result.getTableData();

@@ -5,6 +5,7 @@ import java.util.List;
 
 import se.inera.statistics.service.report.model.DegreeOfSickLeaveResponse;
 import se.inera.statistics.service.report.model.DualSexDataRow;
+import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.Sex;
 import se.inera.statistics.web.model.ChartData;
 import se.inera.statistics.web.model.ChartSeries;
@@ -15,11 +16,11 @@ import se.inera.statistics.web.model.TableHeader;
 
 public class DegreeOfSickLeaveConverter {
 
-    DualSexStatisticsData convert(DegreeOfSickLeaveResponse degreeOfSickLeave) {
+    DualSexStatisticsData convert(DegreeOfSickLeaveResponse degreeOfSickLeave, Range range) {
         TableData tableData = convertTable(degreeOfSickLeave);
         ChartData maleChart = extractChartData(degreeOfSickLeave, Sex.Male);
         ChartData femaleChart = extractChartData(degreeOfSickLeave, Sex.Female);
-        return new DualSexStatisticsData(tableData, maleChart, femaleChart);
+        return new DualSexStatisticsData(tableData, maleChart, femaleChart, range.toString());
     }
 
     private ChartData extractChartData(DegreeOfSickLeaveResponse data, Sex sex) {

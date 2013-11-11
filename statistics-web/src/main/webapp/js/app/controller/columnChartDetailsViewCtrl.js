@@ -6,7 +6,7 @@
      conf.dataFetcherVerksamhet = "getSickLeaveLengthDataVerksamhet",
      conf.exportTableUrl = "api/getSickLeaveLengthData/csv";
      conf.exportTableUrlVerksamhet = function(verksamhetId) { return "api/verksamhet/" + verksamhetId + "/getSickLeaveLengthData/csv" };
-     conf.title = function(monthsIncluded){return "Antal pågående samt avslutade sjukfall baserat på sjukskrivningslängd senaste " + monthsIncluded + " månaderna";}
+     conf.title = function(period){return "Antal sjukfall baserat på sjukskrivningslängd " + period;}
      conf.chartXAxisTitle = "Sjukskrivningslängd";
      return conf;
  }
@@ -15,7 +15,7 @@
      var conf = {};
      conf.dataFetcherVerksamhet = "getSickLeaveLengthCurrentDataVerksamhet",
      conf.exportTableUrlVerksamhet = function(verksamhetId) { return "api/verksamhet/" + verksamhetId + "/getSickLeaveLengthCurrentData/csv"; };
-     conf.title = function(){return "Antal sjukfall baserat på sjukskrivningslängd";}
+     conf.title = function(month){return "Antal pågående sjukfall för " + month + " baserat på sjukskrivningslängd";}
      conf.chartXAxisTitle = "Sjukskrivningslängd";
      conf.pageHelpText = "Vad innebär pågående sjukfall?<br/>Denna rapport syftar till att visa så aktuell information om sjukfallen möjligt. Alla sjukfall som pågår någon gång under aktuell månad hämtas. Rapporten kan inte ta hänsyn till vilken dag det är i månaden. I slutet på månaden kommer fortfarande sjukfall som avslutats under månadens gång visas som pågående."
      return conf;
@@ -27,7 +27,7 @@
      conf.dataFetcherVerksamhet = "getAgeGroupsVerksamhet",
      conf.exportTableUrl = "api/getAgeGroupsStatistics/csv";
      conf.exportTableUrlVerksamhet = function(verksamhetId) { return "api/verksamhet/" + verksamhetId + "/getAgeGroupsStatistics/csv"; };
-     conf.title = function(monthsIncluded){return "Antal pågående samt avslutade sjukfall baserat på patientens ålder senaste " + monthsIncluded + " månaderna";}
+     conf.title = function(period){return "Antal sjukfall baserat på patientens ålder " + period;}
      conf.chartXAxisTitle = "Åldersgrupp";
      return conf;
  }
@@ -36,7 +36,7 @@
      var conf = {};
      conf.dataFetcherVerksamhet = "getAgeGroupsCurrentVerksamhet",
      conf.exportTableUrlVerksamhet = function(verksamhetId) { return "api/verksamhet/" + verksamhetId + "/getAgeGroupsCurrentStatistics/csv"; };
-     conf.title = function(){return "Antal pågående sjukfall baserat på patientens ålder";}
+     conf.title = function(month){return "Antal pågående sjukfall för " + month + " baserat på patientens ålder";}
      conf.chartXAxisTitle = "Åldersgrupp";
      conf.pageHelpText = "Vad innebär pågående sjukfall?<br/>Denna rapport syftar till att visa så aktuell information om sjukfallen möjligt. Alla sjukfall som pågår någon gång under aktuell månad hämtas. Rapporten kan inte ta hänsyn till vilken dag det är i månaden. I slutet på månaden kommer fortfarande sjukfall som avslutats under månadens gång visas som pågående."
      return conf;
@@ -46,7 +46,7 @@
      var conf = {};
      conf.dataFetcher = "getNationalSjukfallPerSexData",
      conf.exportTableUrl = "api/getSjukfallPerSexStatistics/csv";
-     conf.title = function(){return "Andel sjukfall per kön per län det senaste året";};
+     conf.title = function(period){return "Andel sjukfall per kön per län " + period;};
      conf.yAxisTitle = "Andel";
      conf.percentChart = true;
      conf.chartXAxisTitle = "Län";
@@ -79,7 +79,7 @@
 	};
 
     var populatePageWithData = function(result){
-        $scope.subTitle = config.title(result.monthsIncluded);
+        $scope.subTitle = config.title(result.period);
         $scope.doneLoading = true;
         $timeout(function() {
             updateDataTable($scope, result.tableData);

@@ -114,6 +114,7 @@ var ControllerCommons = new function(){
                 title: { align: 'high' }
             },
             yAxis : {
+                allowDecimals : false,
                 min : 0,
                 title : {
                     text : 'Antal',
