@@ -287,6 +287,43 @@
 		color: #fff;
 		font-family: Helvetica, Arial, sans-serif;
 	}
+	
+	/********Business overview*************/
+	#sexProportionChartOld, #sexProportionChartNew {
+		width: 48%;
+		display: inline-block;
+	}
+	.overview-chart-info {
+		float: left;
+		width: 30%;
+		margin: 20px 15px 10px 15px;
+	}
+	.overview-chart-info {
+		text-align: center;
+	}
+	.overview-chart-info-section {
+		display: inline-block;
+	}
+	#sickLeaveLengthChart{
+		width: 65% !important;
+		display: inline-block;
+		float: left;
+		height: 200px !important;
+		margin-top: 50px;
+	}
+	span.longSickLeavesValue {
+		color: #919191;
+		font-weight: bold;
+		font-size: 2em;
+		position: relative;
+		display: inline-block;
+	}
+	span.longSickLeavesText {
+		float: left;
+		position: relative;
+		padding: 0px 0px 15px 0px;
+		font-size: 12px;
+	}
 	/********Alert infobox styles**********/
 	.alert-info {
 		color: #306e8d;
