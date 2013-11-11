@@ -53,7 +53,7 @@ public class ProtectedChartDataService {
     private AgeGroups datasourceAgeGroups;
     private DegreeOfSickLeave datasourceDegreeOfSickLeave;
     private SjukfallslangdGrupp datasourceSickLeaveLength;
-    public final Helper helper = new Helper();
+    private final Helper helper = new Helper();
 
     public ProtectedChartDataService() {
 

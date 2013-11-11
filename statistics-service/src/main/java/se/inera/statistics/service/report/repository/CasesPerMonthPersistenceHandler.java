@@ -24,7 +24,7 @@ import se.inera.statistics.service.report.util.Verksamhet;
 
 public class CasesPerMonthPersistenceHandler implements CasesPerMonth {
     @PersistenceContext(unitName = "IneraStatisticsLog")
-    protected EntityManager manager;
+    private EntityManager manager;
 
     @Transactional
     public void count(String hsaId, String period, Verksamhet typ, Sex sex) {

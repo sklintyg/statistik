@@ -12,7 +12,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
@@ -43,7 +43,7 @@ public class HSAWebServiceCalls {
     @Autowired
     private HsaWsResponderInterface serverInterface;
 
-    private static final Logger log = LoggerFactory.getLogger(HSAWebServiceCalls.class);
+    private static final Logger LOG = LoggerFactory.getLogger(HSAWebServiceCalls.class);
 
     private AttributedURIType logicalAddressHeader = new AttributedURIType();
 
@@ -61,8 +61,8 @@ public class HSAWebServiceCalls {
     }
 
     /**
-     * Help method to test access to HSA
-     * 
+     * Help method to test access to HSA.
+     *
      * @throws Exception
      */
     public void callPing() throws Exception {
@@ -70,10 +70,10 @@ public class HSAWebServiceCalls {
         try {
             PingType pingtype = new PingType();
             PingResponseType response = serverInterface.ping(logicalAddressHeader, messageId, pingtype);
-            log.debug("Response:" + response.getMessage());
+            LOG.debug("Response:" + response.getMessage());
 
         } catch (Throwable ex) {
-            log.warn("Exception={}", ex.getMessage(), ex);
+            LOG.warn("Exception={}", ex.getMessage(), ex);
             throw new Exception(ex);
         }
     }
@@ -113,19 +113,17 @@ public class HSAWebServiceCalls {
     }
 
     /**
-     * Method used to get miuRights for a HoS Person
-     * 
+     * Method used to get miuRights for a HoS Person.
+     *
      * @param parameters
      * @return
      * @throws Exception
      */
     public GetMiuForPersonResponseType callMiuRights(GetMiuForPersonType parameters) {
         try {
-            GetMiuForPersonResponseType response = serverInterface.getMiuForPerson(logicalAddressHeader, messageId,
-                    parameters);
-            return response;
+            return serverInterface.getMiuForPerson(logicalAddressHeader, messageId, parameters);
         } catch (Throwable ex) {
-            log.error("Failed to call getMiuForPerson", ex);
+            LOG.error("Failed to call getMiuForPerson", ex);
             Throwables.propagate(ex);
             return null;
         }

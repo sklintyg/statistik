@@ -5,6 +5,8 @@ import java.io.Serializable;
 
 @Embeddable
 public class SickLeaveLengthKey implements Serializable {
+    private static final int HASH_MULTIPLIER = 31;
+
     private static final long serialVersionUID = 1L;
 
     private String period;
@@ -56,23 +58,22 @@ public class SickLeaveLengthKey implements Serializable {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
 
         SickLeaveLengthKey that = (SickLeaveLengthKey) o;
 
-        if (periods != that.periods) return false;
-        if (!grupp.equals(that.grupp)) return false;
-        if (!hsaId.equals(that.hsaId)) return false;
-        if (!period.equals(that.period)) return false;
-
-        return true;
+        return (periods == that.periods) && grupp.equals(that.grupp) && hsaId.equals(that.hsaId) && period.equals(that.period);
     }
 
     @Override
     public int hashCode() {
         int result = period.hashCode();
-        result = 31 * result + hsaId.hashCode();
+        result = HASH_MULTIPLIER * result + hsaId.hashCode();
         result = 31 * result + grupp.hashCode();
         result = 31 * result + periods;
         return result;

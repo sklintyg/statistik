@@ -48,7 +48,7 @@ public class SakerhetstjanstAssertion {
     public SakerhetstjanstAssertion(Assertion assertion) {
         if (assertion.getAttributeStatements() != null) {
             for (AttributeStatement attributeStatement : assertion.getAttributeStatements()) {
-                extractAttributes(assertion.getAttributeStatements().get(0).getAttributes());
+                extractAttributes(attributeStatement.getAttributes());
             }
         }
     }
@@ -86,6 +86,7 @@ public class SakerhetstjanstAssertion {
             case VARDGIVARE_NAMN_ATTRIBUTE:
                 vardgivareNamn = getValue(attribute);
                 break;
+            default:
             }
         }
     }

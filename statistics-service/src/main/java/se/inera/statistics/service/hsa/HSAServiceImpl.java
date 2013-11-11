@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.joda.time.LocalDateTime;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 import se.inera.ifv.hsawsresponder.v3.GeoCoord;
 import se.inera.ifv.hsawsresponder.v3.GeoCoordEnum;
@@ -145,7 +144,7 @@ public class HSAServiceImpl implements HSAService {
     }
 
     private class Builder {
-        ObjectNode root = factory.objectNode();
+        private ObjectNode root = factory.objectNode();
         public Builder put(String name, String value) {
             if (value != null) {
                 root.put(name, value);

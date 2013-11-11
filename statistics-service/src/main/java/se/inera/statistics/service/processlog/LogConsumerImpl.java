@@ -45,6 +45,7 @@ public class LogConsumerImpl implements LogConsumer {
                 if (hsaInfo != null) {
                     processor.accept(intyg, hsaInfo);
                     processLog.confirm(event.getId());
+                    LOG.info("Processed log id {}", event.getId());
                 } else {
                     return 0;
                 }

@@ -17,6 +17,11 @@ public class DiagnosisGroupsUtilTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
+    public void testGetGroupIdForShortCode() {
+        DiagnosisGroupsUtil.getGroupIdForCode("A1");
+    }
+
+    @Test(expected = IllegalArgumentException.class)
     public void testGetGroupIdForIllegalCode() {
         DiagnosisGroupsUtil.getGroupIdForCode("D99");
     }

@@ -43,10 +43,4 @@ public class Lan implements Iterable<String> {
     public Iterator<String> iterator() {
         return kodToName.keySet().iterator();
     }
-
-    public static void main(String[] args) {
-        for (String n: new Lan()) {
-            System.err.println(n);
-        }
-    }
 }

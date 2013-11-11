@@ -1,24 +1,21 @@
 package se.inera.auth;
 
+import java.io.IOException;
+import java.net.InetAddress;
+import java.net.Socket;
+import java.security.KeyManagementException;
+import java.security.KeyStore;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.UnrecoverableKeyException;
+import java.util.ServiceConfigurationError;
+
 import javax.net.ssl.KeyManager;
 import javax.net.ssl.KeyManagerFactory;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.TrustManagerFactory;
 
-import java.io.IOException;
-import java.net.InetAddress;
-import java.net.Socket;
-import java.net.UnknownHostException;
-import java.security.KeyManagementException;
-import java.security.KeyStore;
-import java.security.KeyStoreException;
-import java.security.NoSuchAlgorithmException;
-import java.security.UnrecoverableKeyException;
-import java.util.HashMap;
-import java.util.ServiceConfigurationError;
-
-import org.apache.commons.httpclient.ConnectTimeoutException;
 import org.apache.commons.httpclient.params.HttpConnectionParams;
 import org.apache.commons.httpclient.protocol.SSLProtocolSocketFactory;
 import org.apache.commons.httpclient.protocol.SecureProtocolSocketFactory;
@@ -52,23 +49,17 @@ public class KeystoreBasedSocketFactory implements SecureProtocolSocketFactory {
     }
 
     @Override
-    public Socket createSocket(Socket socket, String host, int port, boolean autoClose) throws IOException,
-            UnknownHostException {
+    public Socket createSocket(Socket socket, String host, int port, boolean autoClose) throws IOException {
         return sslContext.getSocketFactory().createSocket(socket, host, port, autoClose);
     }
 
     @Override
-    public Socket createSocket(String host, int port, InetAddress localAddress, int localPort) throws IOException,
-            UnknownHostException {
+    public Socket createSocket(String host, int port, InetAddress localAddress, int localPort) throws IOException {
         return sslContext.getSocketFactory().createSocket(host, port, localAddress, localPort);
     }
 
     @Override
-    public Socket createSocket(String host, int port, InetAddress localAddress, int localPort,
-            HttpConnectionParams params) throws IOException, UnknownHostException, ConnectTimeoutException {
-
-
-
+    public Socket createSocket(String host, int port, InetAddress localAddress, int localPort, HttpConnectionParams params) throws IOException {
         int timeout = params.getConnectionTimeout();
         if (timeout == 0) {
             return createSocket(host, port, localAddress, localPort);
@@ -86,12 +77,11 @@ public class KeystoreBasedSocketFactory implements SecureProtocolSocketFactory {
     }
 
     @Override
-    public Socket createSocket(String host, int port) throws IOException, UnknownHostException {
+    public Socket createSocket(String host, int port) throws IOException {
         return sslContext.getSocketFactory().createSocket(host, port);
     }
 
-    private static SSLContext createSSLContext(final KeyStore truststore) throws NoSuchAlgorithmException,
-            KeyStoreException, UnrecoverableKeyException, KeyManagementException {
+    private static SSLContext createSSLContext(final KeyStore truststore) throws NoSuchAlgorithmException, KeyStoreException, UnrecoverableKeyException, KeyManagementException {
         KeyManagerFactory kmfactory = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
         kmfactory.init(null, null);
         KeyManager[] keymanagers = kmfactory.getKeyManagers();
