@@ -6,7 +6,7 @@
          $scope.popoverTextAmount = "Totala antalet sjukfall under perioden " + result.periodText;
          $scope.popoverTextChangeProcentage = "Förändring visar den procentuella förändringen mellan perioden " + result.periodText + " och föregående period " + result.casesPerMonth.previousPeriodText;
          $scope.popoverTextSexDistribution = "Könsfördelningen av totala antalet sjukfall under perioden " + result.periodText;
-     }
+     };
 
      var dataReceived = function(result) {
          $scope.subTitle = "Utvecklingen i landet de senaste tre månaderna, " + result.periodText;

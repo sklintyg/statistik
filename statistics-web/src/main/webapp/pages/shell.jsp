@@ -22,8 +22,25 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="security" uri="http://www.springframework.org/security/tags" %>
 <!DOCTYPE html>
-<html ng-app="StatisticsApp">
+<html xmlns:ng="http://angularjs.org" id="ng-app" ng-app="StatisticsApp">
 <head>
+<!--[if lte IE 8]>
+  <script src="/js/app/json2.js"></script>
+<![endif]-->
+
+<!--[if lte IE 8]>
+  <script>
+    document.createElement('ng-include');
+    document.createElement('ng-pluralize');
+    document.createElement('ng-view');
+
+    // Optionally these for CSS
+    document.createElement('ng:include');
+    document.createElement('ng:pluralize');
+    document.createElement('ng:view');
+  </script>
+<![endif]-->
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title ng-bind="$root.page_title">Inera Statistics Service</title>
@@ -43,7 +60,7 @@
     <script>var isLoggedIn = false;</script>
 </security:authorize>
 </head>
-<body data-spy="scroll" data-target=".bs-docs-sidebar" ng-controller="PageCtrl">
+<body ng-controller="PageCtrl">
 
 <!-- Navbar
 ================================================== -->

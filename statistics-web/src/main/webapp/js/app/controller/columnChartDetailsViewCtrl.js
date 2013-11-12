@@ -9,7 +9,7 @@
      conf.title = function(period){return "Antal sjukfall baserat på sjukskrivningslängd " + period;}
      conf.chartXAxisTitle = "Sjukskrivningslängd";
      return conf;
- }
+ };
 
  app.nationalSickLeaveLengthCurrentConfig = function() {
      var conf = {};
@@ -19,7 +19,7 @@
      conf.chartXAxisTitle = "Sjukskrivningslängd";
      conf.pageHelpText = "Vad innebär pågående sjukfall?<br/>Denna rapport syftar till att visa så aktuell information om sjukfallen möjligt. Alla sjukfall som pågår någon gång under aktuell månad hämtas. Rapporten kan inte ta hänsyn till vilken dag det är i månaden. I slutet på månaden kommer fortfarande sjukfall som avslutats under månadens gång visas som pågående."
      return conf;
- }
+ };
  
  app.nationalAgeGroupConfig = function() {
      var conf = {};
@@ -30,7 +30,7 @@
      conf.title = function(period){return "Antal sjukfall baserat på patientens ålder " + period;}
      conf.chartXAxisTitle = "Åldersgrupp";
      return conf;
- }
+ };
  
  app.nationalAgeGroupCurrentConfig = function() {
      var conf = {};
@@ -40,7 +40,7 @@
      conf.chartXAxisTitle = "Åldersgrupp";
      conf.pageHelpText = "Vad innebär pågående sjukfall?<br/>Denna rapport syftar till att visa så aktuell information om sjukfallen möjligt. Alla sjukfall som pågår någon gång under aktuell månad hämtas. Rapporten kan inte ta hänsyn till vilken dag det är i månaden. I slutet på månaden kommer fortfarande sjukfall som avslutats under månadens gång visas som pågående."
      return conf;
- }
+ };
  
  app.casesPerSexConfig = function() {
      var conf = {};
@@ -51,7 +51,7 @@
      conf.percentChart = true;
      conf.chartXAxisTitle = "Län";
      return conf;
- }
+ };
 
  app.columnChartDetailsViewCtrl = function ($scope, $routeParams, $timeout, $window, statisticsData, config) {
     var isVerksamhet = $routeParams.verksamhetId ? true : false;
@@ -64,7 +64,9 @@
         chartOptions.chart.type = 'column';
         chartOptions.xAxis.title.text = config.chartXAxisTitle;
         chartOptions.yAxis.title.text = config.percentChart ? "Andel" : 'Antal';
-        chartOptions.yAxis.labels.formatter = function() { return ControllerCommons.makeThousandSeparated(this.value) + (config.percentChart ? "%" : "") };
+        chartOptions.yAxis.labels.formatter = function() { 
+        	return ControllerCommons.makeThousandSeparated(this.value) + (config.percentChart ? "%" : ""); 
+        };
         chartOptions.plotOptions.column.stacking = config.percentChart ? 'percent' : 'normal';
 		return new Highcharts.Chart(chartOptions);
 	};
@@ -116,6 +118,6 @@
     
     $scope.print = function(bwPrint) {
         window.open($window.location + (bwPrint ? "?printBw=true" : "?print=true"));
-    }
+    };
     
 };

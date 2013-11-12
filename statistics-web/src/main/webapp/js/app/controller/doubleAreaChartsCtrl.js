@@ -162,7 +162,7 @@
     };
     
     var populateDetailsOptions = function(result){
-        var basePath = isVerksamhet ? "#/verksamhet/" + $routeParams.verksamhetId + "/diagnoskapitel" : "#/nationell/diagnoskapitel"
+        var basePath = isVerksamhet ? "#/verksamhet/" + $routeParams.verksamhetId + "/diagnoskapitel" : "#/nationell/diagnoskapitel";
 
         for ( var i = 0; i < result.length; i++) {
             if (result[i].id == $routeParams.groupId){
@@ -224,7 +224,7 @@
 
     $scope.print = function(bwPrint) {
         window.open($window.location + (bwPrint ? "?printBw=true" : "?print=true"));
-    }
+    };
     
     return this;
 

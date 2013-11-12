@@ -4,8 +4,8 @@ var ControllerCommons = new function(){
 
     this.addColor = function(rawData) {
         var color = [ "#fbb10c", "#2ca2c6", "#B0B0B0", "#12BC3A", "#9c734d", "#D35ABB", "#4A4A4A" ];
-        var maleColor = [ "#008391", "#00CDE3" ]
-        var femaleColor = [ "#EA8025", "#FFC18C" ]
+        var maleColor = [ "#008391", "#00CDE3" ];
+        var femaleColor = [ "#EA8025", "#FFC18C" ];
         var colorSelector = 0;
         var maleColorSelector = 0;
         var femaleColorSelector = 0;
@@ -48,7 +48,7 @@ var ControllerCommons = new function(){
     
     this.setupSeriesForDisplayType = function(setupForBwPrint, series, chartType) {
         return setupForBwPrint ? addBwColor(series, chartType) : ControllerCommons.addColor(series);
-    }
+    };
     
     this.printAndCloseWindow = function($timeout, $window) {
         $( document ).ready( function(){
@@ -63,7 +63,7 @@ var ControllerCommons = new function(){
                 }
             }, 3000);
           } );
-    }
+    };
     
     this.showHideDataTableDefault = "Dölj datatabell";
     this.toggleTableVisibilityGeneric = function(event, $scope) {
@@ -76,11 +76,11 @@ var ControllerCommons = new function(){
     
     this.htmlsafe = function(string) {
         return string.replace(/&/g, '&amp;').replace(/</g, '&lt;');
-    }
+    };
     
     this.isNumber = function(n) {
         return !isNaN(parseFloat(n)) && isFinite(n);
-      }
+    };
     
     this.makeThousandSeparated = function(input) {
         return ControllerCommons.isNumber(input) ? input.toString().split('').reverse().join('').match(/.{1,3}/g).join('\u00A0').split('').reverse().join('') : input;
@@ -186,6 +186,6 @@ var ControllerCommons = new function(){
             },
             series : chartSeries
         };
-    }
+    };
 
 };
