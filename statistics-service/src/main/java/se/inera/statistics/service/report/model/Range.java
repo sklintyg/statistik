@@ -41,7 +41,7 @@ public final class Range {
     public String toStringAbbreviated() {
         return toStringWithMonthFormat("MMM");
     }
-    
+
     private String toStringWithMonthFormat(String monthFormat) {
         Locale sv = new Locale("sv", "SE");
         if (from.getYear() == to.getYear()) {
@@ -54,7 +54,7 @@ public final class Range {
             return from.toString(monthFormat + " yyyy", sv) + "-" + to.toString(monthFormat + " yyyy", sv);
         }
     }
-    
+
     public int getMonths() {
         return Months.monthsBetween(from, to).getMonths() + 1;
     }
