@@ -42,6 +42,8 @@
 <security:authorize access="not isAuthenticated()">
     <script>var isLoggedIn = false;</script>
 </security:authorize>
+<jsp:useBean id="props" class="se.inera.auth.LoginProperties" scope="application" />
+<script>var loginUrl = "${props.url}";</script>
 </head>
 <body data-spy="scroll" data-target=".bs-docs-sidebar" ng-controller="PageCtrl">
 
