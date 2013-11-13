@@ -40,6 +40,14 @@ public class AldersGruppListener extends RollingAbstractListener {
                 cache.put(key, value);
             }
             if (cache.size() >= MAX_CACHE_SIZE) {
+                persistCache();
+            }
+        }
+    }
+
+    public void persistCache() {
+        synchronized (cache) {
+            if (cache.size() > 0) {
                 ageGroups.countAll(cache);
             }
         }
