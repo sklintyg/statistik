@@ -8,6 +8,7 @@ public class SickLeaveLengthKey implements Serializable {
     private static final int HASH_MULTIPLIER = 31;
 
     private static final long serialVersionUID = 1L;
+    public static final int MAGIC = 31;
 
     private String period;
     private String hsaId;
@@ -74,8 +75,8 @@ public class SickLeaveLengthKey implements Serializable {
     public int hashCode() {
         int result = period.hashCode();
         result = HASH_MULTIPLIER * result + hsaId.hashCode();
-        result = 31 * result + grupp.hashCode();
-        result = 31 * result + periods;
+        result = MAGIC * result + grupp.hashCode();
+        result = MAGIC * result + periods;
         return result;
     }
 }

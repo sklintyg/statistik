@@ -55,7 +55,7 @@ public class ProtectedChartDataService {
     private AgeGroups datasourceAgeGroups;
     private DegreeOfSickLeave datasourceDegreeOfSickLeave;
     private SjukfallslangdGrupp datasourceSickLeaveLength;
-    public final Helper helper = new Helper();
+    private final Helper helper = new Helper();
 
     public ProtectedChartDataService() {
 
@@ -298,6 +298,10 @@ public class ProtectedChartDataService {
         LOG.info("Calling getLongSickLeavesDataAsCsv with verksamhetId: " + verksamhetId);
         final TableData tableData = getLongSickLeavesData(request, verksamhetId).getTableData();
         return CsvConverter.getCsvResponse(tableData, "export.csv");
+    }
+
+    public Helper getHelper() {
+        return helper;
     }
 
     protected static class Helper {

@@ -1,6 +1,6 @@
 package se.inera.statistics.service.report.model;
 
-public class DiagnosisGroup {
+public class DiagnosisGroup implements Comparable<DiagnosisGroup>{
 
     public static final int ICD10_CODE_MAX_LEN = 3;
     private final String id;
@@ -40,6 +40,11 @@ public class DiagnosisGroup {
             normalizedCode = normalizedCode.substring(0, ICD10_CODE_MAX_LEN);
         }
         return normalizedCode;
+    }
+
+    @Override
+    public int compareTo(DiagnosisGroup o) {
+        return id.compareTo(o.id);
     }
 
 }
