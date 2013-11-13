@@ -16,6 +16,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 @Component
 public class LogConsumerImpl implements LogConsumer {
     private static final Logger LOG = LoggerFactory.getLogger(LogConsumerImpl.class);
+    public static final int BATCH_SIZE = 100;
 
     @Autowired
     private ProcessLog processLog;
@@ -35,7 +36,7 @@ public class LogConsumerImpl implements LogConsumer {
     public int processBatch() {
         try {
             setRunning(true);
-            List<IntygEvent> result = processLog.getPending(100);
+            List<IntygEvent> result = processLog.getPending(BATCH_SIZE);
             if (result.isEmpty()) {
                 return 0;
             }
