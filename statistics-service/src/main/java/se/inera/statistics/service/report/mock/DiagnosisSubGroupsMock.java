@@ -5,6 +5,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import se.inera.statistics.service.report.api.DiagnosisSubGroups;
 import se.inera.statistics.service.report.model.DiagnosisGroup;
 import se.inera.statistics.service.report.model.DiagnosisGroupResponse;
@@ -18,9 +20,12 @@ import se.inera.statistics.service.report.util.Verksamhet;
 
 public class DiagnosisSubGroupsMock implements DiagnosisSubGroups {
 
+    @Autowired
+    DiagnosisGroupsUtil diagnosisGroupsUtil;
+    
     @Override
     public DiagnosisGroupResponse getDiagnosisGroups(String hsaId, Range range, String diagnosisGroupId) {
-        List<DiagnosisGroup> headers = DiagnosisGroupsUtil.getSubGroups(diagnosisGroupId);
+        List<DiagnosisGroup> headers = diagnosisGroupsUtil.getSubGroups(diagnosisGroupId);
         List<DualSexDataRow> rows = new ArrayList<>();
         for (String periodName : ReportUtil.PERIODS) {
             rows.add(new DualSexDataRow(periodName, randomData(headers.size())));

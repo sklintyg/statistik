@@ -17,24 +17,25 @@ import java.util.regex.Pattern;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
 
 import se.inera.statistics.service.report.model.DiagnosisGroup;
 
-public final class DiagnosisGroupsUtil {
+public class DiagnosisGroupsUtil {
 
     private static final Logger LOG = LoggerFactory.getLogger(DiagnosisGroupsUtil.class);
 
+    @Autowired
+    private Resource icd10ChaptersAnsiFile;
+
     private final static Pattern ICD10_ANSI_FILE_LINE_PATTERN = Pattern.compile("(^[A-Z][0-9][0-9]-[A-Z][0-9][0-9])(.*)$");
-    static final Map<String, Collection<DiagnosisGroup>> SUB_GROUPS = getSubGroups();
+    static Map<String, Collection<DiagnosisGroup>> SUB_GROUPS;
     private static final List<DiagnosisGroup> GROUPS = initGroups();
     
-
-    private DiagnosisGroupsUtil() {
-    }
-
-    public static String getGroupIdForCode(String icd10Code) {
+    public String getGroupIdForCode(String icd10Code) {
         String normalizedIcd10 = normalize(icd10Code);
-        for (Entry<String, Collection<DiagnosisGroup>> entry : SUB_GROUPS.entrySet()) {
+        for (Entry<String, Collection<DiagnosisGroup>> entry : getSubGroups().entrySet()) {
             for (DiagnosisGroup diagnosisGroup : entry.getValue()) {
                 if (diagnosisGroup.isCodeInGroup(normalizedIcd10)) {
                     return entry.getKey();
@@ -54,12 +55,12 @@ public final class DiagnosisGroupsUtil {
         return normalized.toString();
     }
 
-    public static String getSubGroupIdForCode(String icd10Code) {
+    public String getSubGroupIdForCode(String icd10Code) {
         return getSubGroupForCode(icd10Code).getId();
     }
 
-    public static DiagnosisGroup getSubGroupForCode(String icd10Code) {
-        for (Entry<String, Collection<DiagnosisGroup>> entry : SUB_GROUPS.entrySet()) {
+    public DiagnosisGroup getSubGroupForCode(String icd10Code) {
+        for (Entry<String, Collection<DiagnosisGroup>> entry : getSubGroups().entrySet()) {
             for (DiagnosisGroup diagnosisGroup : entry.getValue()) {
                 if (diagnosisGroup.isCodeInGroup(icd10Code)) {
                     return diagnosisGroup;
@@ -100,8 +101,8 @@ public final class DiagnosisGroupsUtil {
         return groups;
     }
 
-    public static List<DiagnosisGroup> getSubGroups(String groupId) {
-        return new ArrayList<>(SUB_GROUPS.get(groupId));
+    public List<DiagnosisGroup> getSubGroups(String groupId) {
+        return new ArrayList<>(getSubGroups().get(groupId));
     }
 
     private static DiagnosisGroup group(String code, String description) {
@@ -133,13 +134,20 @@ public final class DiagnosisGroupsUtil {
         throw new Icd10ChapterNotFoundException("Could not find chapter for code: " + icd10Code);
     }
     
-    private static Map<String, Collection<DiagnosisGroup>> getSubGroups() {
+    private Map<String, Collection<DiagnosisGroup>> getSubGroups() {
+        if (SUB_GROUPS == null) {
+            SUB_GROUPS = setupSubGroups();
+        }
+        return SUB_GROUPS;
+    }
+
+    private Map<String, Collection<DiagnosisGroup>> setupSubGroups() {
         Map<String, Collection<DiagnosisGroup>> subGroups = initSubGroups();
         final Set<String> groupNames = subGroups.keySet();
 
         BufferedReader br;
         try {
-            br = new BufferedReader(new InputStreamReader(DiagnosisGroupsUtil.class.getClassLoader().getResourceAsStream("KSH97_AVS.ANS"), "UTF-8"));
+            br = new BufferedReader(new InputStreamReader(icd10ChaptersAnsiFile.getInputStream(), "UTF-8"));
             for (String line = br.readLine(); line != null; line = br.readLine()){
                 DiagnosisGroup group = getDiagnosisGroupFromIcd10AnsiFileLine(line);
                 if (group != null) {

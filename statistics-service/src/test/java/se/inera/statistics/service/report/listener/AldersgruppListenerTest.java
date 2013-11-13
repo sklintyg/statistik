@@ -7,6 +7,9 @@ import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 import org.joda.time.LocalDate;
@@ -16,12 +19,17 @@ import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.core.io.Resource;
 
 import se.inera.statistics.service.demo.UtlatandeBuilder;
 import se.inera.statistics.service.report.api.AgeGroups;
+import se.inera.statistics.service.report.model.DiagnosisGroup;
 import se.inera.statistics.service.report.model.Sex;
 import se.inera.statistics.service.report.repository.RollingLength;
+import se.inera.statistics.service.report.util.DiagnosisGroupsUtil;
 import se.inera.statistics.service.report.util.ReportUtil;
 import se.inera.statistics.service.report.util.Verksamhet;
 import se.inera.statistics.service.sjukfall.SjukfallInfo;
@@ -35,6 +43,9 @@ public class AldersgruppListenerTest {
     private JsonNode utlatande;
 
     @Mock
+    private DiagnosisGroupsUtil util = mock(DiagnosisGroupsUtil.class);
+
+    @Mock
     private AgeGroups agegroups = mock(AgeGroups.class);
 
     @InjectMocks
@@ -43,12 +54,15 @@ public class AldersgruppListenerTest {
     ArgumentCaptor<String> captor = ArgumentCaptor.forClass(String.class);
     
     @Before 
-    public void setup() {
+    public void setup() throws UnsupportedEncodingException, IOException {
+        Mockito.when(util.getGroupIdForCode(Mockito.anyString())).thenReturn("A10");
+        Mockito.when(util.getSubGroupForCode(Mockito.anyString())).thenReturn(new DiagnosisGroup("A10-A11", "Test group"));
+        
         doNothing().when(agegroups).count(captor.capture(), eq("enhetId"), anyString(), eq(RollingLength.YEAR), any(Verksamhet.class), any(Sex.class));
 
         utlatande = utlatandeBuilder.build("patientId", new LocalDate("2011-01-05"), new LocalDate("2011-03-27"), "enhetId", "A00", 0);
     }
-
+    
     @Test
     public void threeMonthsNoExistingSjukfall() {
         SjukfallInfo sjukfallInfo = new SjukfallInfo("sjukfallid", null, null, null);

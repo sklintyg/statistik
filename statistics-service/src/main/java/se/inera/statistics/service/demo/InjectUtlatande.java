@@ -50,13 +50,19 @@ public class InjectUtlatande {
 
     @Autowired
     private NationellUpdater nationellUpdater;
+    
+    @Autowired
+    private DiagnosisGroupsUtil diagnosisGroupsUtil;
 
-    static {
-        for (DiagnosisGroup mainGroup: DiagnosisGroupsUtil.getAllDiagnosisGroups()) {
-            for (DiagnosisGroup group: DiagnosisGroupsUtil.getSubGroups(mainGroup.getId())) {
-                DIAGNOSER.add(group.getId().split("-")[0]);
+    private List<String> getDiagnoser(){
+        if (DIAGNOSER.isEmpty()) {
+            for (DiagnosisGroup mainGroup: DiagnosisGroupsUtil.getAllDiagnosisGroups()) {
+                for (DiagnosisGroup group: diagnosisGroupsUtil.getSubGroups(mainGroup.getId())) {
+                    DIAGNOSER.add(group.getId().split("-")[0]);
+                }
             }
         }
+        return DIAGNOSER;
     }
 
     @PostConstruct
@@ -96,7 +102,7 @@ public class InjectUtlatande {
         LOG.info("Inserting " + personNummers.size() + " certificates completed");
     }
 
-    public static JsonNode permutate(UtlatandeBuilder builder, String patientId) {
+    public JsonNode permutate(UtlatandeBuilder builder, String patientId) {
         // CHECKSTYLE:OFF MagicNumber
         LocalDate start = BASE.plusMonths(random.nextInt(MONTHS)).plusDays(random.nextInt(SHORT_PERIOD_DAYS));
         LocalDate end = random.nextFloat() < LONG_PERIOD_FRACTION ? start.plusDays(random.nextInt(LONG_PERIOD_DAYS) + 7) : start.plusDays(random.nextInt(SHORT_PERIOD_DAYS) + 7);
@@ -104,7 +110,7 @@ public class InjectUtlatande {
 
         String vardenhet = random(VARDENHETER);
 
-        String diagnos = random(DIAGNOSER);
+        String diagnos = random(getDiagnoser());
 
         int arbetsformaga = random(ARBETSFORMAGOR);
         return builder.build(patientId, start, end, vardenhet, "vg-" + vardenhet, diagnos, arbetsformaga);
