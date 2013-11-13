@@ -8,7 +8,7 @@
      conf.exportTableUrlVerksamhet = function(verksamhetId) { return "api/verksamhet/" + verksamhetId + "/getDiagnosisGroupStatistics/csv"; };
      conf.showDetailsOptions = false;
      conf.title = function(period) { return "Antal sjukfall per diagnosgrupp " + period; };
-     conf.chartFootnotes = ["Notera att för en given månad så kan samma sjukfall visas fler än en gång i graf och tabell. Om ett sjukfall innehåller flera intyg i samma månad så hämtas diagnos från varje intyg. Om det är olika diagnosgrupper kommer sjukfallet finnas med en gång för varje diagnosgrupp för respektive månad. Exempel: om ett sjukfall innehåller två intyg för maj månad där det första sätter diagnosen M54 och det andra intyget sätter diagnosen F32 kommer sjukfallet räknas med i gruppen för Muskuloskeleta sjukdomar (M00-M99) samt för Psykiska sjukdomar (F00-F99) i graf och tabell för maj månad."]; 
+     conf.chartFootnotes = ["För en given månad kan samma sjukfall visas fler än en gång i graf och tabell. Om ett sjukfall innehåller flera intyg under samma månad så hämtas diagnos från varje intyg. Om intygen har olika diagnosgrupper kommer sjukfallet finnas med en gång för varje diagnosgrupp för respektive månad. Exempel: Om ett sjukfall innehåller två intyg för maj månad, där intyg ett sätter diagnosen M54 och intyg två efter vidare utredning sätter diagnosen F32, så kommer sjukfallet både räknas med i gruppen för Muskuloskeleta sjukdomar (M00-M99) och i gruppen för Psykiska sjukdomar (F00-F99) i graf och tabell för maj månad."]; 
      return conf;
  };
  
@@ -33,7 +33,7 @@
      conf.showDetailsOptions = false;
      conf.title = function(period) { return "Antal sjukfall per sjukskrivningsgrad " + period; };
      conf.tooltipHelpText ="Begreppet sjukskrivningsgrad beskriver hur många procent av en heltidsarbetstid (25 %, 50 %, 75 % eller 100 %) patienten rekommenderas sjukskrivning.";	 
-     conf.chartFootnotes = ["Notera att för en given månad så kan samma sjukfall visas fler än en gång i graf och tabell. Alla sjukskrivningsgrader hämtas från varje intyg. Om det finns flera sjukskrivningsgrader kommer sjukfallet finnas med en gång för varje sjukskrivningsgrad för respektive månad. Exempel: om ett intyg innehåller sjukskrivning för maj månad som först är 50% sjukskrivningsgrad och sedan övergår till 100% kommer sjukfallet visas både för 50% och 100% i graf och tabell för maj månad."]; 
+     conf.chartFootnotes = ["För en given månad kan samma sjukfall visas fler än en gång i graf och tabell. Alla sjukskrivningsgrader hämtas från varje intyg. Om intyget innehåller flera sjukskrivningsgrader kommer sjukfallet att finnas med en gång för varje sjukskrivningsgrad för respektive månad. Exempel: Om ett intyg för maj månad först innehåller sjukskrivning med 50 % sjukskrivningsgrad och sedan övergår till 100% kommer sjukfallet visas både för 50% och 100% i graf och tabell för maj månad."]; 
      return conf;
  };
  
