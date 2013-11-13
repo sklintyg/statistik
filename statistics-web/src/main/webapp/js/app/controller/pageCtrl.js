@@ -9,7 +9,7 @@
             }
         }
         return {}; //Selected verksamhet not found
-    }
+    };
 
     $rootScope.$on('$routeChangeSuccess', function(angularEvent, next, current) {
         var verksamhetId = next.params.verksamhetId;
@@ -46,6 +46,6 @@
         $scope.verksamhetName = getSelectedVerksamhet(verksamhetId, $scope.businesses).name;
         $window.location.replace($scope.currentUrl.replace(new RegExp($scope.businessId, 'g'), verksamhetId));
         $scope.businessId = verksamhetId;
-    }
+    };
     
  };
