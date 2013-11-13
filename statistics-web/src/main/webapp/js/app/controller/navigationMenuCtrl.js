@@ -13,7 +13,7 @@
          $scope.showNational = !$scope.showNational;
          $scope.showOperation = false;
          $scope.showAbout = false;
-     }
+     };
      
      $scope.toggleOperationAccordion = function() {
          if (isLoggedIn) {
@@ -21,13 +21,13 @@
              $scope.showNational = false;
              $scope.showAbout = false;
          }
-     }
+     };
      
      $scope.toggleAboutAccordion = function() {
          $scope.showAbout = !$scope.showAbout;
          $scope.showNational = false;
          $scope.showOperation = false;
-     }
+     };
      
      $scope.$on('navigationUpdate', function(event, navigationGroupId) {
          if (navigationGroupId === "about-statistics-collapse"){

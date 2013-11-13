@@ -9,7 +9,7 @@
      conf.title = function(months){return "Antal sjukfall per månad " + months;};
      conf.showPageHelpTooltip = true;
      return conf;
- }
+ };
  
  app.longSickLeavesConfig = function() {
      var conf = {};
@@ -18,7 +18,7 @@
      conf.title = function(months){return "Antal långa sjukfall - mer än 90 dagar " + months;};
      conf.showPageHelpTooltip = false;
      return conf;
- }
+ };
  
  app.singleLineChartCtrl = function ($scope, $routeParams, $timeout, $window, statisticsData, config) {
     var chart;
@@ -89,6 +89,6 @@
 
     $scope.print = function(bwPrint) {
         window.open($window.location + (bwPrint ? "?printBw=true" : "?print=true"));
-    }
+    };
     
 };

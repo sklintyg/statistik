@@ -47,10 +47,10 @@
     
     $scope.exportChart = function() {
         chart.exportChart();
-    }
+    };
 
     $scope.print = function(bwPrint) {
         window.open($window.location + (bwPrint ? "?printBw=true" : "?print=true"));
-    }
+    };
 
 };
