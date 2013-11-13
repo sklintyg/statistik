@@ -69,49 +69,43 @@
 	<div class="navbar-inner">
 		<div class="container-fluid">
 			<div class="row-fluid" id="navigation-container">
-				<div class="span12">
-					<div class="row-fluid">
-						<div class="span2">
-							<div class="headerbox-logo"><a href="<c:url value='/'/>"><img alt="Till startsidan" src="<c:url value='/img/statistics_logo.png'/>"/></a></div>
-						</div>
-						<div class="span2">
-							<span>Statistiktjänst för ordinerad sjukskrivning</span>
-						</div>
-						<div class="span4 pull-right">
-							<div id="business-login-container">
-								<span id="business-login-span">För verksamhetsstatistik: </span>
-								<button class="btn" type="button" id="business-login-btn" value="Logga in">Logga in</button>
+				<div class="span3 pull-left" style="width: auto !important;">
+					<div class="headerbox-logo">
+						<a href="<c:url value='/'/>">
+							<img alt="Till startsidan" src="<c:url value='/img/statistics_logo.png'/>"/>
+						</a>
+					</div>
+				</div>
+				<div class="span2">
+					<span>Statistiktjänst för ordinerad sjukskrivning</span>
+				</div>
+				<div class="span4 pull-right" style="width: auto !important;">
+					<div id="business-login-container">
+						<span id="business-login-span">För verksamhetsstatistik: </span>
+						<button class="btn" type="button" id="business-login-btn" value="Logga in">Logga in</button>
+					</div>
+					<div id="business-logged-in-user-container" style="display: none; position: absolute; right: 0; margin-right: 25px;">
+						<!-- div class="pull-right">
+							<img id="business-me-icon" alt="Bild på inloggad användare" src="<c:url value='/img/avatar.png'/>"/>
+						</div -->
+						<div class="header-box-user-profile pull-right">
+							<span class="user-logout pull-right">
+								<a href="/j_spring_security_logout">Logga ut</a>
+							</span>
+							<span class="user-name pull-right" style="margin-right: 10px;">Användare Andersson</span>
+							<br>
+							<span>Vald verksamhet:</span>
+							<div class="btn-group">
+								<a class="btn dropdown-toggle" id="business-select-business" data-toggle="dropdown" href="#" ng-bind="verksamhetName">
+									Välj verksamhet
+									<span class="caret"></span>
+								</a>
+								
+								<ul class="dropdown-menu left" style="float: right; right: 280px; position: absolute;">
+									<li ng-repeat="business in businesses"><a ng-click="selectVerksamhet(business.id)" tooltip-html-unsafe="<div class=popover-content>{{business.name}}</div>" tooltip-trigger="mouseenter" tooltip-placement="left">{{business.name}}</a></li>
+								</ul>
 							</div>
-							<div id="business-logged-in-user-container" style="display: none; position: absolute; right: 0; margin-right: 25px;">
-								<!-- 
-								<div class="pull-right">
-									<span class="user-logout pull-right">
-										<a tabindex="-1" href="/j_spring_security_logout">Logga ut</a>
-									</span>
-		                        </div>
-								 -->
-								<!-- div class="pull-right">
-									<img id="business-me-icon" alt="Bild på inloggad användare" src="<c:url value='/img/avatar.png'/>"/>
-								</div -->
-								<div class="header-box-user-profile pull-right">
-									<span class="user-logout pull-right">
-										<a tabindex="-1" href="/j_spring_security_logout">Logga ut</a>
-									</span>
-									<span class="user-name pull-right" style="margin-right: 10px;">Användare Andersson</span>
-									<br>
-									<span>Vald verksamhet:</span>
-									<div class="btn-group">
-										<a class="btn dropdown-toggle" id="business-select-business" data-toggle="dropdown" href="#" ng-bind="verksamhetName">
-											<span class="caret"></span>
-											Välj verksamhet
-										</a>
-										<ul class="dropdown-menu left">
-											<li ng-repeat="business in businesses" ><a tabindex="-1" ng-click="selectVerksamhet(business.id)">{{business.name}}</a></li>
-										</ul>
-									</div>
-								</div>
-							</div>
-						</div>	
+						</div>
 					</div>
 				</div>
 			</div>
