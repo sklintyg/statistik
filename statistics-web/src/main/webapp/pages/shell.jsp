@@ -22,7 +22,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="security" uri="http://www.springframework.org/security/tags" %>
 <!DOCTYPE html>
-<html xmlns:ng="http://angularjs.org" id="ng-app" ng-app="StatisticsApp">
+<html xmlns:ng="http://angularjs.org" lang="sv" id="ng-app" ng-app="StatisticsApp">
 <head>
 <!--[if lte IE 8]>
   <script src="/js/app/json2.js"></script>
@@ -40,6 +40,7 @@
     document.createElement('ng:view');
   </script>
 <![endif]-->
+
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -101,7 +102,8 @@
 									<span>Vald verksamhet:</span>
 									<div class="btn-group">
 										<a class="btn dropdown-toggle" id="business-select-business" data-toggle="dropdown" href="#" ng-bind="verksamhetName">
-											Välj verksamhet<span class="caret"></span>
+											<span class="caret"></span>
+											Välj verksamhet
 										</a>
 										<ul class="dropdown-menu left">
 											<li ng-repeat="business in businesses" ><a tabindex="-1" ng-click="selectVerksamhet(business.id)">{{business.name}}</a></li>

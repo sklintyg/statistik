@@ -10,7 +10,7 @@
      conf.title = function(period) { return "Antal sjukfall per diagnosgrupp " + period; };
      conf.chartFootnotes = ["Notera att för en given månad så kan samma sjukfall visas fler än en gång i graf och tabell. Om ett sjukfall innehåller flera intyg i samma månad så hämtas diagnos från varje intyg. Om det är olika diagnosgrupper kommer sjukfallet finnas med en gång för varje diagnosgrupp för respektive månad. Exempel: om ett sjukfall innehåller två intyg för maj månad där det första sätter diagnosen M54 och det andra intyget sätter diagnosen F32 kommer sjukfallet räknas med i gruppen för Muskuloskeleta sjukdomar (M00-M99) samt för Psykiska sjukdomar (F00-F99) i graf och tabell för maj månad."]; 
      return conf;
- }
+ };
  
  app.diagnosisSubGroupConfig = function() {
      var conf = {};
@@ -20,9 +20,9 @@
      conf.exportTableUrlVerksamhet = function(verksamhetId, subgroupId) { return "api/verksamhet/" + verksamhetId + "/getDiagnosisSubGroupStatistics/" + subgroupId + "/csv"; };
      conf.showDetailsOptions = true;
      conf.title = function(period, name) { return "Antal sjukfall för " + name + " " + period; };
-     conf.chartFootnotes = ["Notera att för en given månad så kan samma sjukfall visas fler än en gång i graf och tabell. Om ett sjukfall innehåller flera intyg i samma månad så hämtas diagnos från varje intyg. Om det är olika diagnoser som faller inom samma diagnoskapitel men olika diagnosavsnitt kommer sjukfallet finnas med en gång för varje diagnosavsnitt för respektive månad. Exempel: om ett sjukfall innehåller två intyg för maj månad där det första sätter diagnosen XXX och det andra intyget sätter diagnosen YYY(diagnosavsnitt YY ba) kommer sjukfallet räknas med i avsnittet för XXX samt för XXXi graf och tabell för maj månad.", "Endast de sex vanligast förekommande diagnosavsnitten redovisas med namn. Övriga diagnosavsnitt redovisas som 'Övriga diagnosavsnitt'."]; 
+     conf.chartFootnotes = ["För en given månad kan samma sjukfall visas fler än en gång i graf och tabell. Om ett sjukfall innehåller flera intyg under samma månad så hämtas diagnos från varje intyg. Om intygen har olika diagnoser som faller inom samma diagnoskapitel, men olika diagnosavsnitt, kommer sjukfallet att finnas med en gång för varje diagnosavsnitt för respektive månad. Exempel: Om ett sjukfall innehåller två intyg för maj månad, där intyg ett sätter diagnosen F43 och intyg två efter vidare utredning sätter diagnosen F32, kommer sjukfallet både räknas med i avsnittet för Neurotiska syndrom (F40-F48) och i avsnittet för Förstämningssyndrom (F30-F39) i graf och tabell för maj månad."]; 
      return conf;
- }
+ };
  
  app.degreeOfSickLeaveConfig = function() {
      var conf = {};
@@ -35,7 +35,7 @@
      conf.tooltipHelpText ="Begreppet sjukskrivningsgrad beskriver hur många procent av en heltidsarbetstid (25 %, 50 %, 75 % eller 100 %) patienten rekommenderas sjukskrivning.";	 
      conf.chartFootnotes = ["Notera att för en given månad så kan samma sjukfall visas fler än en gång i graf och tabell. Alla sjukskrivningsgrader hämtas från varje intyg. Om det finns flera sjukskrivningsgrader kommer sjukfallet finnas med en gång för varje sjukskrivningsgrad för respektive månad. Exempel: om ett intyg innehåller sjukskrivning för maj månad som först är 50% sjukskrivningsgrad och sedan övergår till 100% kommer sjukfallet visas både för 50% och 100% i graf och tabell för maj månad."]; 
      return conf;
- }
+ };
  
  app.doubleAreaChartsCtrl = function ($scope, $routeParams, $window, $timeout, statisticsData, config) {
      var that = this;
@@ -229,4 +229,3 @@
     return this;
 
 };
-
