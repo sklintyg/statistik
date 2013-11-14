@@ -72,9 +72,13 @@
     <context:annotation-config/>
     <context:component-scan base-package="se.inera.statistics.service"/>
 
+      <bean class="se.inera.statistics.service.report.util.DiagnosisGroupsUtil" />
+      <bean class="org.springframework.core.io.ClassPathResource" id="icd10ChaptersAnsiFile" >
+          <constructor-arg value="KSH97_AVS.ANS"/>
+      </bean>
     </beans>
 
-    <beans profile="!demo,!test">
+    <beans profile="!demo,!test,!qa">
       <bean class="se.inera.statistics.service.report.mock.CasesPerMonthMock" id="casesPerMonth" />
       <bean class="se.inera.statistics.service.report.mock.DiagnosisGroupsMock" id="diagnosisGroups"/>
       <bean class="se.inera.statistics.service.report.mock.DiagnosisSubGroupsMock" id="diagnosisSubGroups"/>
@@ -84,13 +88,10 @@
       <bean class="se.inera.statistics.service.report.mock.DegreeOfSickLeaveMock" id="degreeOfSickLeave"/>
       <bean class="se.inera.statistics.service.report.mock.SjukfallslangdGruppMock" id="sickLeaveLength"/>
       <bean class="se.inera.statistics.service.report.mock.CasesPerCountyMock" id="casesPerCounty"/>
-      <bean class="org.springframework.core.io.ClassPathResource" id="icd10ChaptersAnsiFile" >
-          <constructor-arg value="KSH97_AVS.ANS"/>
-      </bean>
-      <bean class="se.inera.statistics.service.report.util.DiagnosisGroupsUtil" />
     </beans>
-    
-    <beans profile="demo,test">
+
+
+    <beans profile="demo,test,qa">
       <import resource="application-context-qm.xml"/>
 
       <bean class="se.inera.statistics.service.common.CommonPersistenceHandler" id="commonPersistenceHandler" />
@@ -103,10 +104,6 @@
       <bean class="se.inera.statistics.service.report.repository.SjukskrivningsgradPersistenceHandler" id="degreeOfSickLeave" />
       <bean class="se.inera.statistics.service.report.repository.SjukfallslangdGruppPersistenceHandler" id="sickLeaveLength"/>
       <bean class="se.inera.statistics.service.report.repository.SjukfallPerLanPersistenceHandler" id="casesPerCounty"/>
-      <bean class="org.springframework.core.io.ClassPathResource" id="icd10ChaptersAnsiFile" >
-          <constructor-arg value="KSH97_AVS.ANS"/>
-      </bean>
-      <bean class="se.inera.statistics.service.report.util.DiagnosisGroupsUtil" />
     </beans>
 
     <beans profile="demo">
