@@ -7,18 +7,18 @@ import java.util.List;
  */
 public class Medarbetaruppdrag {
 
-    public static final String VARD_OCH_BEHANDLING = "Vård och behandling";
+    public static final String STATISTIK = "Statistik";
 
     private String hsaId;
     private List<String> enhetIds;
 
-    private String andamal = VARD_OCH_BEHANDLING;
+    private String andamal = STATISTIK;
 
     public Medarbetaruppdrag() {
     }
 
     public Medarbetaruppdrag(String hsaId, List<String> enhetIds) {
-        this(hsaId, enhetIds, VARD_OCH_BEHANDLING);
+        this(hsaId, enhetIds, STATISTIK);
     }
 
     public Medarbetaruppdrag(String hsaId, List<String> enhetIds, String andamal) {

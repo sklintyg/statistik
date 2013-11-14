@@ -84,6 +84,10 @@
       <bean class="se.inera.statistics.service.report.mock.DegreeOfSickLeaveMock" id="degreeOfSickLeave"/>
       <bean class="se.inera.statistics.service.report.mock.SjukfallslangdGruppMock" id="sickLeaveLength"/>
       <bean class="se.inera.statistics.service.report.mock.CasesPerCountyMock" id="casesPerCounty"/>
+      <bean class="org.springframework.core.io.ClassPathResource" id="icd10ChaptersAnsiFile" >
+          <constructor-arg value="KSH97_AVS.ANS"/>
+      </bean>
+      <bean class="se.inera.statistics.service.report.util.DiagnosisGroupsUtil" />
     </beans>
     
     <beans profile="demo,test">
@@ -99,6 +103,10 @@
       <bean class="se.inera.statistics.service.report.repository.SjukskrivningsgradPersistenceHandler" id="degreeOfSickLeave" />
       <bean class="se.inera.statistics.service.report.repository.SjukfallslangdGruppPersistenceHandler" id="sickLeaveLength"/>
       <bean class="se.inera.statistics.service.report.repository.SjukfallPerLanPersistenceHandler" id="casesPerCounty"/>
+      <bean class="org.springframework.core.io.ClassPathResource" id="icd10ChaptersAnsiFile" >
+          <constructor-arg value="KSH97_AVS.ANS"/>
+      </bean>
+      <bean class="se.inera.statistics.service.report.util.DiagnosisGroupsUtil" />
     </beans>
 
     <beans profile="demo">

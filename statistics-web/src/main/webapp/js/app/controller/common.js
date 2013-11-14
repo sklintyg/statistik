@@ -31,12 +31,12 @@ var ControllerCommons = new function(){
                 series[i].color = {
                         pattern: patterns[i % patterns.length],
                         width: 6,
-                        height: 6,
+                        height: 6
                     };
                 series[i].fillColor = {
                         pattern: patterns[i % patterns.length],
                         width: 6,
-                        height: 6,
+                        height: 6
                 };
             } else if (chartType === "line") {
                 series[i].color = 'black';
@@ -85,6 +85,14 @@ var ControllerCommons = new function(){
     this.makeThousandSeparated = function(input) {
         return ControllerCommons.isNumber(input) ? input.toString().split('').reverse().join('').match(/.{1,3}/g).join('\u00A0').split('').reverse().join('') : input;
     };
+    
+    this.map = function(arr, func) {
+        var r=[];
+        for(var i=0; i<arr.length; i++) {
+            r.push(func(arr[i]));
+        }
+        return r;
+    }
 
     this.getHighChartConfigBase = function(chartCategories, chartSeries) {
         return {
@@ -108,7 +116,7 @@ var ControllerCommons = new function(){
                     rotation : 310,
                     align : 'right'
                 },
-                categories : chartCategories.map(function(name) {
+                categories : ControllerCommons.map(chartCategories, function(name) {
                     return ControllerCommons.htmlsafe(name);
                 }),
                 title: { align: 'high' }
@@ -172,7 +180,7 @@ var ControllerCommons = new function(){
                 pie : {
                     cursor : 'pointer',
                     dataLabels : {
-                        enabled : false,
+                        enabled : false
                     },
                     showInLegend : false
                 }

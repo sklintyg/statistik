@@ -37,7 +37,7 @@ public class HsaOrganizationsServiceImpl implements HsaOrganizationsService {
         LOG.debug("User with HSA-Id " + hosPersonHsaId + " has " + response.getMiuInformation().size() + " medarbetaruppdrag");
 
         for (MiuInformationType info: response.getMiuInformation()) {
-            if (Medarbetaruppdrag.VARD_OCH_BEHANDLING.equalsIgnoreCase(info.getMiuPurpose())) {
+            if (Medarbetaruppdrag.STATISTIK.equalsIgnoreCase(info.getMiuPurpose())) {
                 vardenhetList.add(new Vardenhet(info.getCareUnitHsaIdentity(), info.getCareUnitName()));
             }
         }

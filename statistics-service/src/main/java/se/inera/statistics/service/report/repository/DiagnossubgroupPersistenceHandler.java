@@ -9,6 +9,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
 import org.joda.time.LocalDate;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 import se.inera.statistics.service.report.api.DiagnosisSubGroups;
@@ -25,6 +26,9 @@ import se.inera.statistics.service.report.util.Verksamhet;
 public class DiagnossubgroupPersistenceHandler implements DiagnosisSubGroups {
     @PersistenceContext(unitName = "IneraStatisticsLog")
     private EntityManager manager;
+    
+    @Autowired
+    DiagnosisGroupsUtil diagnosisGroupsUtil;
 
     @Transactional
     public void count(String hsaId, String period, String diagnosgrupp, String undergrupp, Verksamhet typ, Sex sex) {
@@ -51,7 +55,7 @@ public class DiagnossubgroupPersistenceHandler implements DiagnosisSubGroups {
         query.setParameter("from", ReportUtil.toPeriod(range.getFrom()));
         query.setParameter("to", ReportUtil.toPeriod(range.getTo()));
 
-        List<DiagnosisGroup> header = DiagnosisGroupsUtil.getSubGroups(group);
+        List<DiagnosisGroup> header = diagnosisGroupsUtil.getSubGroups(group);
         return new DiagnosisGroupResponse(header, translateForOutput(range, header, query.getResultList()));
     }
 

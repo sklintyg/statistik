@@ -60,10 +60,10 @@
     function paintBarChart(containerId, chartData) {
         var series = [{
             name: "Antal",
-            data: chartData.map(function(e) { return e.quantity; }),
+            data: ControllerCommons.map(chartData, function(e) { return e.quantity; }),
             color: '#12BC3A'
         }];
-        var categories = chartData.map(function(e) { return e.name; });
+        var categories = ControllerCommons.map(chartData, function(e) { return e.name; });
         var chartOptions = ControllerCommons.getHighChartConfigBase(categories, series);
         chartOptions.chart.type = 'column';
         chartOptions.chart.renderTo = containerId;
@@ -75,7 +75,7 @@
     }
     
     function paintSickLeavePerCountyChart(containerId, chartData) {
-        var series = chartData.map(function(e) {
+        var series = ControllerCommons.map(chartData, function(e) {
             var coords = getCoordinates(e);
             return {"data": [[coords.x, coords.y, e.quantity]], color: e.color, name: ControllerCommons.htmlsafe(e.name) };
         });
