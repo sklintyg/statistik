@@ -6,9 +6,7 @@ import static org.mockito.Mockito.mock;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -81,14 +79,7 @@ public class DiagnosisGroupsUtilTest {
         String expectedResult = "[C15-C26 Maligna tumörer i matsmältningsorganen, C30-C39 Maligna tumörer i andningsorganen och brösthålans organ]";
         assertEquals(expectedResult, allDiagnosisGroups.toString());
     }
-    
-    @Test
-    public void testGetAllSubDiagnosisGroups() {
-        Map<String, Collection<DiagnosisGroup>> allDiagnosisGroups = DiagnosisGroupsUtil.SUB_GROUPS;
-        String expectedResult = "{C00-D48=[C15-C26 Maligna tumörer i matsmältningsorganen, C30-C39 Maligna tumörer i andningsorganen och brösthålans organ], F00-F99=[], Q00-Q99=[], L00-L99=[], U00-U99=[], P00-P96=[], A00-B99=[], N00-N99=[], Z00-Z99=[], M00-M99=[], D50-D89=[], R00-R99=[R10-R19 Symtom och sjukdomstecken från matsmältningsorganen och buken], H00-H59=[], V01-Y98=[], E00-E90=[], I00-I99=[], H60-H95=[], G00-G99=[], S00-T98=[T51-T65 Toxisk effekt av substanser med i huvudsak icke-medicinsk användning], K00-K93=[], O00-O99=[], J00-J99=[]}";
-        assertEquals(expectedResult, allDiagnosisGroups.toString());
-    }
-    
+
     @Test
     public void normalizeIcd10Code() {
         assertEquals("", DiagnosisGroupsUtil.normalize(". -_+?="));
