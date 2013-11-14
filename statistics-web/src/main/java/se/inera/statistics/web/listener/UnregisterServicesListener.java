@@ -27,7 +27,7 @@ public class UnregisterServicesListener implements ServletContextListener {
             Driver driver = drivers.nextElement();
             try {
                 DriverManager.deregisterDriver(driver);
-                LOG.error(String.format("deregistering jdbc driver: %s", driver));
+                LOG.info(String.format("deregistering jdbc driver: %s", driver));
             } catch (SQLException e) {
                 LOG.error(String.format("Error deregistering driver %s", driver), e);
             }
