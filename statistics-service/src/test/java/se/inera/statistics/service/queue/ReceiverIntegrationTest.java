@@ -59,8 +59,8 @@ public class ReceiverIntegrationTest {
         AldersGruppListener.setMaxCacheSize(1);
         SjukfallPerDiagnosgruppListener.setMaxCacheSize(1);
         UtlatandeBuilder builder = new UtlatandeBuilder();
-        simpleSend(builder.build("19121212-0010", new LocalDate("2011-01-20"), new LocalDate("2011-03-11"), "enhetId", "A00", 0).toString(), "C001");
-        simpleSend(builder.build("19121212-0011", new LocalDate("2011-01-20"), new LocalDate("2011-03-11"), "enhetId", "A00", 0).toString(), "C002");
+        simpleSend(builder.build("19121212-0010", new LocalDate("2011-01-20"), new LocalDate("2011-03-11"), "enhetId", "A00", 0).toString(), "001");
+        simpleSend(builder.build("19121212-0011", new LocalDate("2011-01-20"), new LocalDate("2011-03-11"), "enhetId", "A00", 0).toString(), "002");
 
         sleep();
 
@@ -94,7 +94,8 @@ public class ReceiverIntegrationTest {
         this.jmsTemplate.send(destination, new MessageCreator() {
             public Message createMessage(Session session) throws JMSException {
                 TextMessage message = session.createTextMessage(intyg);
-                message.setJMSCorrelationID(correlationId);
+                message.setStringProperty(Receiver.ACTION, Receiver.CREATED);
+                message.setStringProperty(Receiver.CERTIFICATE_ID, correlationId);
                 return message;
             }
         });
