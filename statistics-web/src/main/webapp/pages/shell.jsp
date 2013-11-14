@@ -63,7 +63,7 @@
 <jsp:useBean id="props" class="se.inera.auth.LoginProperties" scope="application" />
 <script>var loginUrl = "${props.url}";</script>
 </head>
-<body id="ng-app" ng-controller="PageCtrl">
+<body ng-controller="PageCtrl">
 
 <!-- Navbar
 ================================================== -->
