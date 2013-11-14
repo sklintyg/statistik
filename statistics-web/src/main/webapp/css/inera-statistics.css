@@ -833,13 +833,13 @@ div.accordion-body.in.collapse > div.accordion-heading a.accordion-toggle{
 }
 
 .accordion .table th, .accordion .table td {
-	padding: 8px;
+	padding: 7px;
 	font-size: 12px;
-	line-height: 8px;
+	/*line-height: 8px;*/
 	text-align: right;
 	vertical-align: top;
-	border-top: 1px solid #dddddd;
-	border-left: 1px solid #dddddd;
+	/*border-top: 1px solid #dddddd;
+	border-left: 1px solid #dddddd;*/
 }
 
 #faq-accordion {}
