@@ -28,7 +28,7 @@ public class DiagnossubgroupPersistenceHandler implements DiagnosisSubGroups {
 
     @Transactional
     public void count(String hsaId, String period, String diagnosgrupp, String undergrupp, Verksamhet typ, Sex sex) {
-        DiagnosisSubGroupData existingRow = manager.find(DiagnosisSubGroupData.class, new DiagnosisSubGroupData.Key(period, hsaId, diagnosgrupp, undergrupp));
+        DiagnosisSubGroupData existingRow = manager.find(DiagnosisSubGroupData.class, new DiagnosundergruppKey(period, hsaId, diagnosgrupp, undergrupp));
         int female = Sex.Female.equals(sex) ? 1 : 0;
         int male = Sex.Male.equals(sex) ? 1 : 0;
 

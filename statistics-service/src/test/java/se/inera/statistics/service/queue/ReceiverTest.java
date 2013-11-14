@@ -14,7 +14,6 @@ import org.mockito.runners.MockitoJUnitRunner;
 import se.inera.statistics.service.JSONSource;
 import se.inera.statistics.service.hsa.HSADecorator;
 import se.inera.statistics.service.processlog.EventType;
-import se.inera.statistics.service.processlog.OrderedProcess;
 import se.inera.statistics.service.processlog.ProcessLog;
 import se.inera.statistics.service.processlog.Processor;
 
@@ -29,8 +28,6 @@ public class ReceiverTest {
     private Processor processor = Mockito.mock(Processor.class);
     @Mock
     private HSADecorator hsaDecorator = Mockito.mock(HSADecorator.class);
-    @Mock
-    private OrderedProcess orderedProcess = Mockito.mock(OrderedProcess.class);
 
     @InjectMocks
     private Receiver receiver = new Receiver();

@@ -74,7 +74,7 @@
 
     </beans>
 
-    <beans profile="!demo,!test">
+    <beans profile="!demo,!test,!db">
       <bean class="se.inera.statistics.service.report.mock.CasesPerMonthMock" id="casesPerMonth" />
       <bean class="se.inera.statistics.service.report.mock.DiagnosisGroupsMock" id="diagnosisGroups"/>
       <bean class="se.inera.statistics.service.report.mock.DiagnosisSubGroupsMock" id="diagnosisSubGroups"/>
@@ -86,7 +86,7 @@
       <bean class="se.inera.statistics.service.report.mock.CasesPerCountyMock" id="casesPerCounty"/>
     </beans>
     
-    <beans profile="demo,test">
+    <beans profile="demo,test,db">
       <import resource="application-context-qm.xml"/>
 
       <bean class="se.inera.statistics.service.common.CommonPersistenceHandler" id="commonPersistenceHandler" />

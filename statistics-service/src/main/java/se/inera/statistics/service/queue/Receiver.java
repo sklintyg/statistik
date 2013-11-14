@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import se.inera.statistics.service.helper.JSONParser;
 import se.inera.statistics.service.hsa.HSADecorator;
 import se.inera.statistics.service.processlog.EventType;
-import se.inera.statistics.service.processlog.OrderedProcess;
 import se.inera.statistics.service.processlog.ProcessLog;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -25,9 +24,6 @@ public class Receiver implements MessageListener {
 
     @Autowired
     private HSADecorator hsaDecorator;
-
-    @Autowired
-    private OrderedProcess orderedProcess;
 
     public void accept(EventType type, String data, String documentId, long timestamp) {
         processLog.store(type, data, documentId, timestamp);

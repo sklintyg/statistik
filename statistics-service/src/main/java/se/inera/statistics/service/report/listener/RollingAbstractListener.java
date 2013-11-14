@@ -7,27 +7,31 @@ import se.inera.statistics.service.report.util.ReportUtil;
 public abstract class RollingAbstractListener extends GenericAbstractListener {
 
     @Override
-    void accept(GenericHolder token, String period) {
+    boolean accept(GenericHolder token, String period) {
         throw new NoSuchMethodError("Not implemented");
     }
 
     @Override
-    void accept(GenericHolder token, LocalDate firstMonth, LocalDate endMonth) {
+    boolean accept(GenericHolder token, LocalDate firstMonth, LocalDate endMonth) {
+        boolean isCacheFull = false;
         LocalDate prevEnd = token.getSjukfallInfo().getPrevEnd();
         for (RollingLength length: RollingLength.values()) {
-            accept(token, firstMonth, endMonth, prevEnd, length);
+            isCacheFull = isCacheFull || accept(token, firstMonth, endMonth, prevEnd, length);
         }
+        return isCacheFull;
     }
 
-    private void accept(GenericHolder token, LocalDate firstMonth, LocalDate endMonth, LocalDate prevEnd, RollingLength length) {
+    private boolean accept(GenericHolder token, LocalDate firstMonth, LocalDate endMonth, LocalDate prevEnd, RollingLength length) {
+        boolean isCacheFull = false;
         LocalDate startMonth = prevEnd == null ? firstMonth : prevEnd.plusMonths(length.getPeriods());
         LocalDate lastMonth = endMonth.plusMonths(length.getPeriods() - 1);
         for (LocalDate currentMonth = startMonth; !currentMonth.isAfter(lastMonth); currentMonth = currentMonth.plusMonths(1)) {
             String period = ReportUtil.toPeriod(currentMonth);
-            accept(token, period, length);
+            isCacheFull = isCacheFull || accept(token, period, length);
         }
+        return isCacheFull;
     }
 
-    protected abstract void accept(GenericHolder token, String period, RollingLength length);
+    protected abstract boolean accept(GenericHolder token, String period, RollingLength length);
 
 }

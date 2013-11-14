@@ -31,14 +31,14 @@ public class Processor {
 
     private LocalDate cleanedup;
 
-    public void accept(JsonNode utlatande, JsonNode hsa) {
+    public void accept(JsonNode utlatande, JsonNode hsa, long logId) {
         SjukfallKey sjukfallKey = extractSjukfallKey(utlatande);
 
         SjukfallInfo sjukfallInfo = sjukfallService.register(sjukfallKey);
 
         ObjectNode anonymous = DocumentHelper.anonymize(utlatande);
 
-        listener.accept(sjukfallInfo, anonymous, hsa);
+        listener.accept(sjukfallInfo, anonymous, hsa, logId);
     }
 
     protected SjukfallKey extractSjukfallKey(JsonNode utlatande) {

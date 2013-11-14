@@ -14,6 +14,8 @@ public class ProcessLogImpl implements ProcessLog {
 
     private static final String PROCESSED_HSA = "PROCESSED_HSA";
 
+    private static long internalLastId = Long.MIN_VALUE;
+
     @PersistenceContext(unitName = "IneraStatisticsLog")
     private EntityManager manager;
 
@@ -33,11 +35,17 @@ public class ProcessLogImpl implements ProcessLog {
     @Override
     @Transactional
     public List<IntygEvent> getPending(int max) {
-        long lastEventId = getLastId();
+        long lastEventId = Math.max(getLastId(), internalLastId);
         TypedQuery<IntygEvent> allQuery = manager.createQuery("SELECT e from IntygEvent e WHERE e.id > :lastId ORDER BY e.id ASC", IntygEvent.class);
         allQuery.setParameter("lastId", lastEventId);
         allQuery.setMaxResults(max);
-        return allQuery.getResultList();
+        List<IntygEvent> result = allQuery.getResultList();
+        if (result.isEmpty()) {
+            internalLastId = lastEventId;
+        } else {
+            internalLastId = result.get(result.size() - 1).getId();
+        }
+        return result;
     }
 
     private long getLastId() {

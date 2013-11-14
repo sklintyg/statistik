@@ -17,13 +17,14 @@ public class SjukskrivningsgradListener extends GenericAbstractListener {
 
 
     @Override
-    void accept(GenericHolder token, String period) {
+    boolean accept(GenericHolder token, String period) {
         List<String> arbetsformagor = DocumentHelper.getArbetsformaga(token.getUtlatande());
         for (String formaga: arbetsformagor) {
             String grad = arbetsformagaTillSjukskrivning(formaga);
             api.count(token.getEnhetId(), period, grad, Verksamhet.ENHET, token.getKon());
             api.count(token.getVardgivareId(), period, grad, Verksamhet.VARDGIVARE, token.getKon());
         }
+        return false; // TODO: Caching
     }
 
     private String arbetsformagaTillSjukskrivning(String formaga) {

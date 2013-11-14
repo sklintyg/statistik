@@ -16,7 +16,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import se.inera.statistics.service.helper.JSONParser;
 import se.inera.statistics.service.processlog.HSAStore;
-import se.inera.statistics.service.processlog.OrderedProcess;
 
 import com.fasterxml.jackson.databind.JsonNode;
 
@@ -29,9 +28,6 @@ public class HSADecorator {
 
     @Autowired
     private HSAService service;
-
-    @Autowired
-    private OrderedProcess orderedProcess;
 
     @Async
     @Transactional

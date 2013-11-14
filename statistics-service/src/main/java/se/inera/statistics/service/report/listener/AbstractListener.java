@@ -17,7 +17,7 @@ public abstract class AbstractListener<T> {
 
     abstract T setup(SjukfallInfo sjukfallInfo, JsonNode utlatande, JsonNode hsa, LocalDate start, LocalDate end);
 
-    public void accept(SjukfallInfo sjukfallInfo, JsonNode utlatande, JsonNode hsa) {
+    public boolean accept(SjukfallInfo sjukfallInfo, JsonNode utlatande, JsonNode hsa) {
         LocalDate start = PERIOD_DATE_TIME_FORMATTERFORMATTER.parseLocalDate(DocumentHelper.getForstaNedsattningsdag(utlatande));
         LocalDate endMonth = PERIOD_DATE_TIME_FORMATTERFORMATTER.parseLocalDate(DocumentHelper.getSistaNedsattningsdag(utlatande));
 
@@ -25,21 +25,23 @@ public abstract class AbstractListener<T> {
 
         T token = setup(sjukfallInfo, utlatande, hsa, firstMonth, endMonth);
 
-        accept(token, firstMonth, endMonth);
+        return accept(token, firstMonth, endMonth);
     }
 
-    void accept(T token, LocalDate firstMonth, LocalDate endMonth) {
+    boolean accept(T token, LocalDate firstMonth, LocalDate endMonth) {
+        boolean cacheFull = false;
         for (LocalDate currentMonth = firstMonth; !currentMonth.isAfter(endMonth); currentMonth = currentMonth.plusMonths(1)) {
-            accept(token, currentMonth);
+            cacheFull = cacheFull || accept(token, currentMonth);
         }
+        return cacheFull;
     }
 
-    void accept(T token, LocalDate currentMonth) {
+    boolean accept(T token, LocalDate currentMonth) {
         String period = PERIOD_FORMATTER.print(currentMonth);
-        accept(token, period);
+        return accept(token, period);
     }
 
-    abstract void accept(T token, String period);
+    abstract boolean accept(T token, String period);
 
     static LocalDate getFirstDateMonth(LocalDate previousEnd, LocalDate start) {
         if (previousEnd == null) {

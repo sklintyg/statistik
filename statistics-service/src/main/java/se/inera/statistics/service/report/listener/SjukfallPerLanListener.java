@@ -11,8 +11,9 @@ public class SjukfallPerLanListener extends RollingAbstractListener {
     @Autowired
     private CasesPerCounty casesPerCounty;
 
-    protected void accept(GenericHolder token, String period, RollingLength length) {
+    protected boolean accept(GenericHolder token, String period, RollingLength length) {
         casesPerCounty.count(period, token.getEnhetId(), token.getLanId(), length, token.getKon());
+        return false; // TODO: Caching
     }
 
 }
