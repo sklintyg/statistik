@@ -14,5 +14,4 @@ $(document).ready(function(){
 //        window.location.replace("/saml/login");
         window.location.replace(loginUrl);
 	});
-	
 });

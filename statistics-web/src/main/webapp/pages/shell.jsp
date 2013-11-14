@@ -41,7 +41,7 @@
   </script>
 <![endif]-->
 
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title ng-bind="$root.page_title">Inera Statistics Service</title>
@@ -63,7 +63,7 @@
 <jsp:useBean id="props" class="se.inera.auth.LoginProperties" scope="application" />
 <script>var loginUrl = "${props.url}";</script>
 </head>
-<body ng-controller="PageCtrl">
+<body id="ng-app" ng-controller="PageCtrl">
 
 <!-- Navbar
 ================================================== -->
@@ -84,7 +84,7 @@
 				<div class="span4 pull-right" style="width: auto !important;">
 					<div id="business-login-container">
 						<span id="business-login-span">För verksamhetsstatistik: </span>
-						<button class="btn" type="button" id="business-login-btn" value="Logga in">Logga in</button>
+						<button class="btn" ng-click="open()" type="button" id="business-login-btn" value="Logga in">Logga in</button>
 					</div>
 					<div id="business-logged-in-user-container" style="display: none; position: absolute; right: 0; margin-right: 25px;">
 						<!-- div class="pull-right">
@@ -118,7 +118,6 @@
 
 <div id="wrap">
 	<div class="container-fluid">
-	
 		<!-- Docs nav
 		================================================== -->
 		<div class="row-fluid">

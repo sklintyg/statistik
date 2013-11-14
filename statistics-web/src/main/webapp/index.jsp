@@ -21,12 +21,29 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
-<html ng-app>
+<html xmlns:ng="http://angularjs.org" lang="sv" id="ng-app" ng-app>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
+<!--[if lte IE 8]>
+  <script src="/js/app/json2.js"></script>
+<![endif]-->
+
+<!--[if lte IE 8]>
+  <script>
+    document.createElement('ng-include');
+    document.createElement('ng-pluralize');
+    document.createElement('ng-view');
+
+    // Optionally these for CSS
+    document.createElement('ng:include');
+    document.createElement('ng:pluralize');
+    document.createElement('ng:view');
+  </script>
+<![endif]-->
 <title>Inera Statistics Service</title>
 </head>
-<body>
+<body id="ng-app">
 	<jsp:forward page="pages/shell.jsp" />
 </body>
 </html>
