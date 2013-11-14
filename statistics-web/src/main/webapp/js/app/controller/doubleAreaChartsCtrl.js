@@ -172,7 +172,7 @@
         }
         $scope.subTitle = ($scope.selectedDetailsOption && $scope.selectedDetailsOption.name && $scope.selectedDetailsOption.id) ?  config.title($scope.currentPeriod, $scope.selectedDetailsOption.id + " " + $scope.selectedDetailsOption.name) : "";
         
-        $scope.detailsOptions = result.map(function(e){
+        $scope.detailsOptions = ControllerCommons.map(result, function(e){
             e.url = basePath + "/" + e.id;
             return e;
         });

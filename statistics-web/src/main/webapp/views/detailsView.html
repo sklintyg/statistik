@@ -7,23 +7,23 @@
  	</div>
 	<div class="row-fluid">
 		<div class="span6 pull-left dontprint" style="width: auto !important; float: left;">
-			<h1 class="national-statistic-h1" ng-bind="viewHeader"></h1>
+			<h1 class="national-statistic-h1" data-ng-bind="viewHeader"></h1>
 		</div>
-    	<div class="span6 pull-left dontprint" id="business-name-header-container" ng-show="verksamhetIdParam" style="width: auto !important; float: left; margin-left: 0px;">
+    	<div class="span6 pull-left dontprint" id="business-name-header-container" data-ng-show="verksamhetIdParam" style="width: auto !important; float: left; margin-left: 0px;">
 			<h2 class="business-name-header"><span class="dontprint">- </span>{{ verksamhetName }}</h2> 
 		</div>
     </div>
 	<div class="row-fluid">
 		<span class="span12 graph-ingress pull-left" style="min-height: 5px;">
 			{{subTitle}}
-			<a class="dontprint" id="pageHelpToolTip" tooltip-html-unsafe="<div class=popover-content>{{popoverText}}</div>" tooltip-trigger="mouseenter" tooltip-placement="right" ng-show="popoverText"><img src="/img/questionmark2.png"></a>
-			<a class="dontprint" id="chart-footnote-trigger" data-toggle="collapse" data-target="#chart-footnote-text" ng-show="chartFootnotes" text="Information om diagrammet"><img src="/img/information.png"></a>
+			<a class="dontprint" id="pageHelpToolTip" tooltip-html-unsafe="<div class=popover-content>{{popoverText}}</div>" tooltip-trigger="mouseenter" tooltip-placement="right" data-ng-show="popoverText"><img src="/img/questionmark2.png"></a>
+			<a class="dontprint" id="chart-footnote-trigger" data-toggle="collapse" data-target="#chart-footnote-text" data-ng-show="chartFootnotes" text="Information om diagrammet"><img src="/img/information.png"></a>
 		</span>
-		<div class="row-fluid" ng-show="chartFootnotes">
-        	<div class="span12" id="readMore" ng-show="chartFootnotes" style="margin-top: 10px;">
+		<div class="row-fluid" data-ng-show="chartFootnotes">
+        	<div class="span12" id="readMore" data-ng-show="chartFootnotes" style="margin-top: 10px;">
         		<div class="collapse" id="chart-footnote-text">
         			<div class="alert alert-info">
-        				<div ng-repeat="chartFootnote in chartFootnotes">
+        				<div data-ng-repeat="chartFootnote in chartFootnotes">
          					<p>{{chartFootnote}}</p>
          				</div>
         			</div>
@@ -35,16 +35,16 @@
 	<!-- Start detailsOptions if any -->
     <div class="row-fluid dontprint" style="width: auto !important;">
     	<div class="span12">
-    		<div class="span6 pull-left" ng-show="showDetailsOptions" style="width: auto; float: left;">
+    		<div class="span6 pull-left" data-ng-show="showDetailsOptions" style="width: auto; float: left;">
 	       		<label class="dropdown-label" for="selectDiagnosticChapter">Välj annat diagnoskapitel:</label>
 	       		<div class="btn-group margin-bottom"  id="detailsOptionsDropdown">
 	           		<a class="btn dropdown-toggle" id="selectDiagnosticChapter" data-toggle="dropdown" href="#" style="width: 280px; overflow: hidden; text-overflow: ellipsis;"><span class="caret pull-right"></span><span>{{selectedDetailsOption.id}} {{selectedDetailsOption.name}}</span></a>
 		        	<ul class="dropdown-menu left overflow-menu-options">
-		               <li ng-repeat="detailsOption in detailsOptions"><a href="{{detailsOption.url}}">{{detailsOption.id}} {{detailsOption.name}}</a></li>
+		               <li data-ng-repeat="detailsOption in detailsOptions"><a href="{{detailsOption.url}}">{{detailsOption.id}} {{detailsOption.name}}</a></li>
 		        	</ul>
 	         	</div>
 	       	</div>
-	       	<div class="span6 pull-right" ng-class="{margin_top_button_group: showDetailsOptions}" style="width: auto; margin-bottom: 10px;">
+	       	<div class="span6 pull-right" data-ng-class="{margin_top_button_group: showDetailsOptions}" style="width: auto; margin-bottom: 10px;">
 				<!-- PRINT BUTTON GROUP -->
 				<div class="btn-group statistics-btn-group">
 				  <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
@@ -52,8 +52,8 @@
 				    <span class="caret"></span>
 				  </a>
 				  <ul class="dropdown-menu right">
-				    <li><a ng-click="print(false)"><img src="/img/dropdown-icons/print-colour.png"/> Färg</a></li>
-				    <li><a ng-click="print(true)"><img src="/img/dropdown-icons/print-bw.png"/> Svart-vitt</a></li>
+				    <li><a data-ng-click="print(false)"><img src="/img/dropdown-icons/print-colour.png"/> Färg</a></li>
+				    <li><a data-ng-click="print(true)"><img src="/img/dropdown-icons/print-bw.png"/> Svart-vitt</a></li>
 				    <!-- li><a class="disabled"><img src="/img/dropdown-icons/pdf-inactive.png"/> PDF-fil</a></li -->
 				  </ul>
 				</div>
@@ -62,7 +62,7 @@
     </div>
 	
 	<!-- Start ingress -->
-    <div ng-include="errorPageUrl"></div>
+    <div data-ng-include="errorPageUrl"></div>
     <div dataerrorview show-error="dataLoadingError">
         <div spinner label="{{spinnerText}}" show-spinner="!doneLoading" show-content="doneLoading">
         	 <div class="">
@@ -70,22 +70,22 @@
 	            <div class="row-fluid">
 	                <div class="span12">
 	                   <!-- Save to png -->	
-	                   <!-- div class="dontprint" ng-repeat="chartContainer in chartContainers">
-                           <div ng-class="{span12: chartContainers.length == 1, span6: chartContainers.length == 2}">
-                           		<button class="btn btn-small" ng-click="exportChart(chartContainer)" style="cursor: pointer;" id="pageHelpToolTip" tooltip-html-unsafe="<div class=popover-content>Ladda ner denna graf som bild</div>" tooltip-trigger="mouseenter" tooltip-placement="right">
+	                   <!-- div class="dontprint" data-ng-repeat="chartContainer in chartContainers">
+                           <div data-ng-class="{span12: chartContainers.length == 1, span6: chartContainers.length == 2}">
+                           		<button class="btn btn-small" data-ng-click="exportChart(chartContainer)" style="cursor: pointer;" id="pageHelpToolTip" tooltip-html-unsafe="<div class=popover-content>Ladda ner denna graf som bild</div>" tooltip-trigger="mouseenter" tooltip-placement="right">
                            			<i class="icon-download icon-white"></i>
                            		</button>
                            </div>
 	                   </div -->
-	                   <div ng-repeat="chartContainer in chartContainers">
-	                       <div class="chart-page-chart" ng-class="{span12: chartContainers.length == 1, span6: chartContainers.length == 2}" id="{{chartContainer}}" style="height: 400px; margin: 0 auto"></div>
+	                   <div data-ng-repeat="chartContainer in chartContainers">
+	                       <div class="chart-page-chart" data-ng-class="{span12: chartContainers.length == 1, span6: chartContainers.length == 2}" id="{{chartContainer}}" style="height: 400px; margin: 0 auto"></div>
 	                   </div>
 	                </div>
 	            </div>
 	            <div class="row-fluid dontprint">
 	                <div class="span12">
-	                    <label ng-repeat="seriesData in series" class="span6" style="margin-left: 0px; margin-right: 5px;">
-	                        <input type="checkbox" checked="" ng-click="toggleSeriesVisibility($index)" />
+	                    <label data-ng-repeat="seriesData in series" class="span6" style="margin-left: 0px; margin-right: 5px;">
+	                        <input type="checkbox" checked="" data-ng-click="toggleSeriesVisibility($index)" />
 	                        <span style="display: inline-block; height: 10px; width: 10px; background-color: {{seriesData.color}};"></span>
 	                        {{seriesData.name}}
 	                    </label>
@@ -93,7 +93,7 @@
 	            </div>
 	            <div class="row-fluid">
 	                <div class="span12">
-	                    <a class="dontprint" ng-href="{{exportTableUrl}}" target="_self" style="cursor: pointer;" id="pageHelpToolTip" tooltip-html-unsafe="<div class=popover-content>Ladda ner tabell till Excel</div>" tooltip-trigger="mouseenter" tooltip-placement="right">
+	                    <a class="dontprint" data-ng-href="{{exportTableUrl}}" target="_self" style="cursor: pointer;" id="pageHelpToolTip" tooltip-html-unsafe="<div class=popover-content>Ladda ner tabell till Excel</div>" tooltip-trigger="mouseenter" tooltip-placement="right">
 	                    	<img src="/img/dropdown-icons/excel.png"/>
 			            </a>
 	                </div>
@@ -104,7 +104,7 @@
             <div class="print-pagebreak-after"></div>
             
             <!-- Starting data-table -->
-            <div class="rotate-print browserTable" ng-class="{printTable: !useSpecialPrintTable, dontprint: useSpecialPrintTable}">
+            <div class="rotate-print browserTable" data-ng-class="{printTable: !useSpecialPrintTable, dontprint: useSpecialPrintTable}">
 	            <div class="row-fluid">
 					<span class="span12 graph-ingress" id="data-table-print-header">
 						{{subTitle}}
@@ -114,23 +114,23 @@
 	                <div class="accordion" id="accordion2">
 	                    <div class="accordion-group">
 	                      <div class="accordion-heading dontprint">
-	                        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne" id="toggleDataTableVisibility" ng-click="toggleTableVisibility($event)">
+	                        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne" id="toggleDataTableVisibility" data-ng-click="toggleTableVisibility($event)">
 	                          <i class="chart-table-expand-icon"></i>
 	                          {{showHideDataTable}}
 	                        </a>
 	                      </div>
 	                      <div id="collapseOne" class="accordion-body in collapse chart-table-body">
 	                        <div class="accordion-inner datatablescrollable">
-	                            <table id="datatable" class="table table-striped">
+	                            <table id="datatable" class="table table-striped table-bordered">
 	                                <thead>
-	                                    <tr ng-repeat="headerrow in headerrows">
-	                                        <td class="datatablescrollable details-table-data ellipsis details-th" ng-class="{headcol: $first}" colspan="{{header.colspan}}" ng-repeat="header in headerrow" title="{{header.text}}">{{header.text}}</td>
+	                                    <tr data-ng-repeat="headerrow in headerrows">
+	                                        <td class="datatablescrollable details-table-data ellipsis details-th" data-ng-class="{headcol: $first}" colspan="{{header.colspan}}" data-ng-repeat="header in headerrow" title="{{header.text}}">{{header.text}}</td>
 	                                    </tr>
 	                                </thead>
 	                                <tbody>
-	                                    <tr ng-repeat="row in rows">
+	                                    <tr data-ng-repeat="row in rows">
 	                                        <td class="datatablescrollable headcol">{{row.name}}</td>
-	                                        <td class="datatablescrollable" ng-repeat="fieldData in row.data" >{{fieldData | thousandseparated}}</td>
+	                                        <td class="datatablescrollable" data-ng-repeat="fieldData in row.data" >{{fieldData | thousandseparated}}</td>
 	                                    </tr>
 	                                </tbody>
 	                            </table>
@@ -141,22 +141,22 @@
 	            </div>
             </div>
             
-            <div ng-class="{printTable: useSpecialPrintTable, dontprint: !useSpecialPrintTable}" style="display:none;">
+            <div data-ng-class="{printTable: useSpecialPrintTable, dontprint: !useSpecialPrintTable}" style="display:none;">
                 <div class="row-fluid">
                     <span class="span12 graph-ingress" id="data-table-print-header">
                         {{subTitle}}
                     </span>
                 </div>
-                <table id="datatable" class="table table-striped print-pagebreak-after" ng-repeat="printTable in printDataTables">
+                <table id="datatable" class="table table-striped print-pagebreak-after" data-ng-repeat="printTable in printDataTables">
                     <thead>
-                        <tr class="table-print-header" ng-repeat="headerrow in printTable.headers">
-                            <td colspan="{{header.colspan}}" ng-repeat="header in headerrow" title="{{header.text}}">{{header.text}}</td>
+                        <tr class="table-print-header" data-ng-repeat="headerrow in printTable.headers">
+                            <td colspan="{{header.colspan}}" data-ng-repeat="header in headerrow" title="{{header.text}}">{{header.text}}</td>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr ng-repeat="row in printTable.rows">
+                        <tr data-ng-repeat="row in printTable.rows">
                             <td>{{row.name}}</td>
-                            <td ng-repeat="fieldData in row.data" >{{fieldData | thousandseparated}}</td>
+                            <td data-ng-repeat="fieldData in row.data" >{{fieldData | thousandseparated}}</td>
                         </tr>
                     </tbody>
                 </table>

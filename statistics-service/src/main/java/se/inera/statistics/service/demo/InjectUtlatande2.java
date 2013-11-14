@@ -54,17 +54,18 @@ public class InjectUtlatande2 {
 
     @Autowired
     private NationellUpdater nationellUpdater;
-
-    static {
-        for (DiagnosisGroup mainGroup: DiagnosisGroupsUtil.getAllDiagnosisGroups()) {
-            for (DiagnosisGroup group: DiagnosisGroupsUtil.getSubGroups(mainGroup.getId())) {
-                DIAGNOSER.add(group.getId().split("-")[0]);
-            }
-        }
-    }
+    
+    @Autowired
+    private DiagnosisGroupsUtil diagnosisGroupsUtil;
 
     @PostConstruct
     public void init() {
+        for (DiagnosisGroup mainGroup: DiagnosisGroupsUtil.getAllDiagnosisGroups()) {
+            for (DiagnosisGroup group: diagnosisGroupsUtil.getSubGroups(mainGroup.getId())) {
+                DIAGNOSER.add(group.getId().split("-")[0]);
+            }
+        }
+
         cleanupDB();
         new Thread(new Runnable() {
             public void run() {
@@ -111,7 +112,7 @@ public class InjectUtlatande2 {
         return birthDate.toString("yyyyMMdd") + String.format("%1$04d", random.nextInt(10000));
     }
 
-    public static JsonNode permutate(UtlatandeBuilder builder, String patientId, LocalDate base) {
+    public JsonNode permutate(UtlatandeBuilder builder, String patientId, LocalDate base) {
         // CHECKSTYLE:OFF MagicNumber
         LocalDate start = base.plusDays(random.nextInt(SHORT_PERIOD_DAYS));
         LocalDate end = random.nextFloat() < LONG_PERIOD_FRACTION ? start.plusDays(random.nextInt(LONG_PERIOD_DAYS) + 7) : start.plusDays(random.nextInt(SHORT_PERIOD_DAYS) + 7);

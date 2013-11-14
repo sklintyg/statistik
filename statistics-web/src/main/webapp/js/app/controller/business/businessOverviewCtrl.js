@@ -50,7 +50,7 @@
                 verticalAlign: 'top',
                 borderWidth: 0,
                 useHTML: true,
-                layout: 'vertical',
+                layout: 'vertical'
             };
             chartOptions.tooltip.pointFormat = '{point.percentage:.0f}% (antal: {point.y})';
             new Highcharts.Chart(chartOptions);
