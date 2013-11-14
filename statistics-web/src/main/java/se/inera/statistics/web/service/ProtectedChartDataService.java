@@ -55,7 +55,7 @@ public class ProtectedChartDataService {
     private AgeGroups datasourceAgeGroups;
     private DegreeOfSickLeave datasourceDegreeOfSickLeave;
     private SjukfallslangdGrupp datasourceSickLeaveLength;
-    private final Helper helper = new Helper();
+    public final Helper helper = new Helper();
 
     public ProtectedChartDataService() {
 
@@ -322,7 +322,7 @@ public class ProtectedChartDataService {
         }
 
         public static boolean userAccess(HttpServletRequest request, String verksamhetId) {
-            LOG.info("User " + getUsernameSafe(request) + " accessed verksamhet " + verksamhetId + "(" + getUriSafe(request) + ")");
+            LOG.info("User " + getUsernameSafe(request) + " accessed verksamhet " + verksamhetId + " (" + getUriSafe(request) + ") session " + request.getSession().getId());
             return true;
         }
 
