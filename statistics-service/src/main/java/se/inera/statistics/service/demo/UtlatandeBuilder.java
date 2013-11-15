@@ -18,6 +18,7 @@ public class UtlatandeBuilder {
     private static final DateTimeFormatter FORMATTER = DateTimeFormat.forPattern("yyyy-MM-dd");
 
     private final JsonNode template;
+    private String testName;
 
     public UtlatandeBuilder() {
         this(readTemplate("/json/fk7263_M_template.json"));
@@ -26,6 +27,12 @@ public class UtlatandeBuilder {
     public UtlatandeBuilder(String templateText) {
         template = JSONParser.parse(templateText);
     }
+
+    public UtlatandeBuilder(String templateName, String testName) {
+        this.testName = testName;
+        template = JSONParser.parse(readTemplate(templateName));
+    }
+
     public JsonNode build(String patientId, LocalDate start, LocalDate end, String vardenhet, String diagnos, int arbetsformaga) {
         return build(patientId, start, end, vardenhet, "vardgivarId", diagnos, arbetsformaga);
     }
