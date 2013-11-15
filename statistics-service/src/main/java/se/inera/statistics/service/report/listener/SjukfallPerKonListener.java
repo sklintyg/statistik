@@ -13,9 +13,10 @@ public class SjukfallPerKonListener extends GenericAbstractListener {
     private CasesPerMonth casesPerMonthPersistenceHandler;
 
     @Override
-    void accept(GenericHolder token, String period) {
+    boolean accept(GenericHolder token, String period) {
         casesPerMonthPersistenceHandler.count(token.getEnhetId(), period, Verksamhet.ENHET, token.getKon());
         casesPerMonthPersistenceHandler.count(token.getVardgivareId(), period, Verksamhet.VARDGIVARE, token.getKon());
+        return false; // TODO: Caching
     }
 
 }

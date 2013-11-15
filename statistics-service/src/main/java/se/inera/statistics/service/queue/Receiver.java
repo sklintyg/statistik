@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import se.inera.statistics.service.helper.JSONParser;
 import se.inera.statistics.service.hsa.HSADecorator;
 import se.inera.statistics.service.processlog.EventType;
-import se.inera.statistics.service.processlog.OrderedProcess;
 import se.inera.statistics.service.processlog.ProcessLog;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -20,14 +19,15 @@ import com.fasterxml.jackson.databind.JsonNode;
 public class Receiver implements MessageListener {
     private static final Logger LOG = LoggerFactory.getLogger(Receiver.class);
 
+    public static final String CREATED = "created";
+    public static final String REVOKED = "revoked";
+    public static final String ACTION = "action";
+    public static final String CERTIFICATE_ID = "certificate-id";
     @Autowired
     private ProcessLog processLog;
 
     @Autowired
     private HSADecorator hsaDecorator;
-
-    @Autowired
-    private OrderedProcess orderedProcess;
 
     public void accept(EventType type, String data, String documentId, long timestamp) {
         processLog.store(type, data, documentId, timestamp);
@@ -35,47 +35,35 @@ public class Receiver implements MessageListener {
         hsaDecorator.decorate(utlatande, documentId);
     }
 
-    public void onMessage(Message rawData) {
-        if (rawData instanceof TextMessage) {
+    public void onMessage(Message rawMessage) {
+        if (rawMessage instanceof TextMessage) {
             try {
-                String doc = ((TextMessage) rawData).getText();
-                CorrelationId correlationId = new CorrelationId(rawData.getJMSCorrelationID());
-                long timestamp = rawData.getJMSTimestamp();
-                accept(correlationId.eventType, doc, correlationId.correlationId, timestamp);
+                String doc = ((TextMessage) rawMessage).getText();
+                long timestamp = rawMessage.getJMSTimestamp();
+                String typeName = rawMessage.getStringProperty(ACTION); 
+                String certificateId = rawMessage.getStringProperty(CERTIFICATE_ID); 
+                accept(typeEvent(typeName), doc, certificateId, timestamp);
             } catch (JMSException e) {
                 throw new StatisticsJMSException("JMS error", e);
             }
         } else {
-            LOG.error("Unrecognized message type " + rawData.getClass().getCanonicalName());
+            LOG.error("Unrecognized message type " + rawMessage.getClass().getCanonicalName());
         }
-        LOG.debug("Received intyg " + rawData + " .");
+        LOG.debug("Received intyg " + rawMessage + " .");
     }
 
     public void setProcessLog(ProcessLog processLog) {
         this.processLog = processLog;
     }
 
-    private static class CorrelationId {
-        private String correlationId;
-        private EventType eventType;
-
-        public CorrelationId(String jmsCorrelationID) {
-            if (jmsCorrelationID == null || jmsCorrelationID.length() < 2) {
-                throw new StatisticsCorrelationIdException("Correlation id wrong format: " + jmsCorrelationID);
-            }
-            char typeHeader = jmsCorrelationID.charAt(0);
-
-            switch (typeHeader) {
-            case 'C':
-                eventType = EventType.CREATED;
-                break;
-            case 'D':
-                eventType = EventType.DELETED;
-                break;
-            default:
-                eventType = EventType.TEST;
-            }
-            correlationId = jmsCorrelationID;
+    private static final EventType typeEvent(String typeName) {
+        switch (typeName) {
+        case CREATED:
+            return EventType.CREATED;
+        case REVOKED: 
+            return EventType.DELETED;
+        default:
+            return EventType.TEST;
         }
     }
 }

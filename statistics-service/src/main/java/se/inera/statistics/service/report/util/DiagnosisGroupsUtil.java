@@ -30,7 +30,7 @@ public class DiagnosisGroupsUtil {
     private Resource icd10ChaptersAnsiFile;
 
     private final static Pattern ICD10_ANSI_FILE_LINE_PATTERN = Pattern.compile("(^[A-Z][0-9][0-9]-[A-Z][0-9][0-9])(.*)$");
-    static Map<String, Collection<DiagnosisGroup>> SUB_GROUPS;
+    private Map<String, Collection<DiagnosisGroup>> SUB_GROUPS;
     private static final List<DiagnosisGroup> GROUPS = initGroups();
     
     public String getGroupIdForCode(String icd10Code) {
@@ -105,6 +105,9 @@ public class DiagnosisGroupsUtil {
         return new ArrayList<>(getSubGroups().get(groupId));
     }
 
+    public Collection<DiagnosisGroup> getGroupsInChapter(String chapter) {
+        return SUB_GROUPS.get(chapter);
+    }
     private static DiagnosisGroup group(String code, String description) {
         return new DiagnosisGroup(code, description);
     }

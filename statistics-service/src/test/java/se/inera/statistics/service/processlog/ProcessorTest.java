@@ -3,6 +3,7 @@ package se.inera.statistics.service.processlog;
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNull;
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyLong;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -47,7 +48,7 @@ public class ProcessorTest {
         JsonNode event1 = null;
         JsonNode event2 = null;
 
-        processor.accept(event1, event2);
+        processor.accept(event1, event2, 1);
 
     }
 
@@ -57,7 +58,7 @@ public class ProcessorTest {
 
         when(sjukfallService.register(any(SjukfallKey.class))).thenReturn(new SjukfallInfo(null, null, null, null));
 
-        processor.accept(utlatande, hsa);
+        processor.accept(utlatande, hsa, 1L);
 
         verify(sjukfallService).register(any(SjukfallKey.class));
     }
@@ -68,9 +69,9 @@ public class ProcessorTest {
 
         ArgumentCaptor<JsonNode> utlatandeCaptor = ArgumentCaptor.forClass(JsonNode.class);
         ArgumentCaptor<JsonNode> hsaCaptor = ArgumentCaptor.forClass(JsonNode.class);
-        Mockito.doNothing().when(listener).accept(any(SjukfallInfo.class), utlatandeCaptor.capture(), hsaCaptor.capture());
+        Mockito.doNothing().when(listener).accept(any(SjukfallInfo.class), utlatandeCaptor.capture(), hsaCaptor.capture(), anyLong());
 
-        processor.accept(utlatande, hsa);
+        processor.accept(utlatande, hsa, 1L);
 
         assertEquals("33", utlatandeCaptor.getValue().path("patient").path("alder").asText());
         assertEquals("man", utlatandeCaptor.getValue().path("patient").path("kon").asText());

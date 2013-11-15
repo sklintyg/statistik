@@ -15,7 +15,6 @@ import static org.mockito.Mockito.verify;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import se.inera.statistics.service.JSONSource;
-import se.inera.statistics.service.processlog.OrderedProcess;
 
 import java.io.IOException;
 
@@ -25,10 +24,6 @@ public class HSADecoratorTest {
 
     @Mock
     private HSAService hsaService;
-
-    @Mock
-    private OrderedProcess orderedProcess;
-
 
     @InjectMocks
     private HSADecorator hsaDecorator = new HSADecorator();

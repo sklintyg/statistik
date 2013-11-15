@@ -15,21 +15,25 @@ import java.util.HashMap;
 @Component
 public class AldersGruppListener extends RollingAbstractListener {
 
-    private static final int MAX_CACHE_SIZE = 1000;
+    private static int MAX_CACHE_SIZE = 1000;
     private final HashMap<AldersgruppKey, AldersgruppValue> cache = new HashMap<>();
 
     @Autowired
     private AgeGroups ageGroups;
 
-    protected void accept(GenericHolder token, String period, RollingLength length) {
+    protected boolean accept(GenericHolder token, String period, RollingLength length) {
         String group = AldersgroupUtil.RANGES.rangeFor(token.getAge()).getName();
-        ageGroups.count(period, token.getEnhetId(), group, length, Verksamhet.ENHET, token.getKon());
-        ageGroups.count(period, token.getVardgivareId(), group, length, Verksamhet.VARDGIVARE, token.getKon());
-//        count(period, token.getEnhetId(), group, length, Verksamhet.ENHET, token.getKon());
-//        count(period, token.getVardgivareId(), group, length, Verksamhet.VARDGIVARE, token.getKon());
+        ageGroups.count(period, token.getEnhetId(), group, length,
+        Verksamhet.ENHET, token.getKon());
+        ageGroups.count(period, token.getVardgivareId(), group, length,
+        Verksamhet.VARDGIVARE, token.getKon());
+        return false;
+//        return count(period, token.getEnhetId(), group, length, Verksamhet.ENHET, token.getKon())
+//                || count(period, token.getVardgivareId(), group, length, Verksamhet.VARDGIVARE, token.getKon());
     }
 
-    private void count(String period, String enhetId, String group, RollingLength length, Verksamhet verksamhet, Sex kon) {
+    private boolean count(String period, String enhetId, String group, RollingLength length, Verksamhet verksamhet, Sex kon) {
+        boolean isCacheFull;
         AldersgruppKey key = new AldersgruppKey(period, enhetId, group, length.getPeriods());
         synchronized (cache) {
             if (cache.containsKey(key)) {
@@ -39,10 +43,9 @@ public class AldersGruppListener extends RollingAbstractListener {
                 AldersgruppValue value = new AldersgruppValue(verksamhet, kon);
                 cache.put(key, value);
             }
-            if (cache.size() >= MAX_CACHE_SIZE) {
-                persistCache();
-            }
+            isCacheFull = cache.size() >= MAX_CACHE_SIZE;
         }
+        return isCacheFull;
     }
 
     public void persistCache() {
@@ -51,6 +54,10 @@ public class AldersGruppListener extends RollingAbstractListener {
                 ageGroups.countAll(cache);
             }
         }
+    }
+
+    public static void setMaxCacheSize(int newSize) {
+        MAX_CACHE_SIZE = newSize;
     }
 
     public class AldersgruppValue {

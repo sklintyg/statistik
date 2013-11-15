@@ -16,6 +16,7 @@ public class LogJob {
     private LogConsumer consumer;
 
     @Scheduled(cron = "0/10 * * * * ?")
+//    @Scheduled(fixedDelayString = "500")
     public void checkLog() {
         LOG.debug("Log Job");
         int count;

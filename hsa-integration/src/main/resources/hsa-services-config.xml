@@ -31,12 +31,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses />.
         http://cxf.apache.org/schemas/configuration/http-conf.xsd
         http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd">
 
-  <jaxws:client id="hsaClient" serviceClass="se.inera.ifv.hsaws.v3.HsaWsResponderInterface"
-                address="${hsa.ws.services.url}">
-  </jaxws:client>
-
+  <jaxws:client id="hsaClient" serviceClass="se.inera.ifv.hsaws.v3.HsaWsResponderInterface" address="${hsa.ws.services.url}" />
+  
   <bean id="wsCalls" class="se.inera.ifv.statistics.spi.authorization.impl.HSAWebServiceCalls">
-    <!--<property name="hsaLogicalAddress" value="${hsa.ws.service.logicaladdress}"/>-->
+    <property name="hsaLogicalAddress" value="${hsa.ws.service.logicaladdress}"/>
   </bean>
 
   <beans profile="qa,test">

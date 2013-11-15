@@ -2,9 +2,9 @@ package se.inera.statistics.service.report.listener;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.when;
 
 import java.util.Arrays;
 
@@ -13,7 +13,6 @@ import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 
 import se.inera.statistics.service.demo.UtlatandeBuilder;
-import se.inera.statistics.service.helper.JSONParser;
 import se.inera.statistics.service.sjukfall.SjukfallInfo;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -25,7 +24,8 @@ public class AbstractListenerTest {
             return "Context";
         }
 
-        void accept(String token, String period) {
+        boolean accept(String token, String period) {
+            return false;
         }
     });
 
@@ -61,7 +61,7 @@ public class AbstractListenerTest {
 
         ArgumentCaptor<String> captor = ArgumentCaptor.forClass(String.class);
 
-        doNothing().when(listener).accept(eq("Context"), captor.capture());
+        when(listener.accept(eq("Context"), captor.capture())).thenReturn(false);
 
         listener.accept(sjukfall, utlatande, null);
 

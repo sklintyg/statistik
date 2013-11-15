@@ -46,11 +46,11 @@ public class ProcessLogImplTest extends ProcessLogImpl {
     }
 
     @Test
-    public void withTwoPendingEventEacheEventCanBeGottenInOrderAfterConfirm() {
+    public void withTwoPendingEventEachEventCanBeGottenInOrderAfterConfirm() {
         store(EventType.CREATED, "1", "corr", 123L);
         store(EventType.CREATED, "2", "corr", 123L);
 
-        List<IntygEvent> pending = getPending(2);
+        List<IntygEvent> pending = getPending(1);
         assertEquals("1", pending.get(0).getData());
         confirm(pending.get(0).getId());
 
