@@ -40,7 +40,9 @@ public class OverviewPersistenceHandler extends OverviewBasePersistenceHandler i
         int longSickLeaves = getLongSickLeaves(NATIONELL, range, LONG_SICKLEAVE_CUTOFF);
         int longSickLeavesPrevious = getLongSickLeaves(NATIONELL, ReportUtil.getPreviousPeriod(range), LONG_SICKLEAVE_CUTOFF);
         int longSickLeavesChange = changeInPercent(longSickLeaves, longSickLeavesPrevious);
-        int casesPerMonthChange = getCasesPerMonth(NATIONELL, range);
+        int casesPerMonth = getCasesPerMonth(NATIONELL, range);
+        int casesPerMonthPrevious = getCasesPerMonth(NATIONELL, ReportUtil.getPreviousPeriod(range));
+        int casesPerMonthChange = changeInPercent(casesPerMonth, casesPerMonthPrevious);
         List<OverviewChartRowExtended> perCounty = getCasesPerCounty(range);
 
         return new OverviewResponse(sexProportion, casesPerMonthChange, diagnosisGroups, ageGroups, degreeOfSickLeaveGroups, sickLeaveLengthGroups, longSickLeaves, longSickLeavesChange, perCounty);
