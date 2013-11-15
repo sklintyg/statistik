@@ -63,7 +63,7 @@
 <jsp:useBean id="props" class="se.inera.auth.LoginProperties" scope="application" />
 <script>var loginUrl = "${props.url}";</script>
 </head>
-<body id="ng-app" data-ng-controller="PageCtrl">
+<body data-ng-controller="PageCtrl">
 
 <!-- Navbar
 ================================================== -->
@@ -74,7 +74,7 @@
 				<div class="span3 pull-left" style="width: auto !important;">
 					<div class="headerbox-logo">
 						<a href="<c:url value='/'/>">
-							<img alt="Till startsidan" src="<c:url value='/img/statistics_logo.png'/>"/>
+							<img alt="Till startsidan" src="<c:url value='/img/statistics-logotype.png'/>"/>
 						</a>
 					</div>
 				</div>
@@ -96,7 +96,7 @@
 							</span>
 							<span class="user-name pull-right" style="margin-right: 10px;">Användare Andersson</span>
 							<br>
-							<span>Vald verksamhet:</span>
+							<span>Välj verksamhet:</span>
 							<div class="btn-group">
 								<a class="btn dropdown-toggle" id="business-select-business" data-toggle="dropdown" href="#" data-ng-bind="verksamhetName">
 									Välj verksamhet
@@ -235,6 +235,9 @@
 <!--[if lte IE 8]>
 	<script type="text/javascript" src="<c:url value='/js/lib/respond/1.3.0/respond.min.js'/>"></script>
 <![endif]-->
+<!--[if lt IE 9]>
+	<script type="text/javascript" src="<c:url value='/js/app/html5shiv.js'/>"></script>
+<![endif]-->
 <script type="text/javascript" src="<c:url value='/js/lib/jquery/1.10.2/jquery.min.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/bootstrap/2.3.2/js/bootstrap.min.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/lib/angularjs/1.0.8/angular.min.js'/>"></script>
@@ -243,6 +246,9 @@
 <script type="text/javascript" src="<c:url value='/js/app/app.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/factories.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/controller/common.js'/>"></script>
+<script type="text/javascript" src="<c:url value='/js/app/html5shiv.js'/>"></script>
+<script type="text/javascript" src="<c:url value='/js/app/css3-mediaqueries.js'/>"></script>
+<script type="text/javascript" src="<c:url value='/js/lib/respond/1.3.0/respond.min.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/controller/singleLineChartCtrl.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/controller/doubleAreaChartsCtrl.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/controller/overviewCtrl.js'/>"></script>
