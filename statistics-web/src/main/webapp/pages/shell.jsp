@@ -47,6 +47,12 @@
 <title data-ng-bind="$root.page_title">Inera Statistics Service</title>
 
 <!-- Styles -->
+<!--[if lte IE 8]>
+	<link href="<c:url value='/css/inera-statistics.css'/>" rel="stylesheet">
+	<link href="<c:url value='/bootstrap/2.3.2/css/bootstrap.min.css'/>" rel="stylesheet">
+	<link href="<c:url value='/css/inera-statistics-responsive.css'/>" rel="stylesheet">
+	<link href="<c:url value='/bootstrap/2.3.2/css/bootstrap-responsive.css'/>" rel="stylesheet">
+<![endif]-->
 <link href="<c:url value='/css/inera-statistics.css'/>" rel="stylesheet" media="not print">
 <link href="<c:url value='/bootstrap/2.3.2/css/bootstrap.min.css'/>" rel="stylesheet" media="not print">
 <link href="<c:url value='/css/inera-statistics-responsive.css'/>" rel="stylesheet" media="not print">

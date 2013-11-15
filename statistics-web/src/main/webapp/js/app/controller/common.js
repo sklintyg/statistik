@@ -98,7 +98,7 @@ var ControllerCommons = new function(){
         return {
             chart : {
                 renderTo : 'chart1',
-                backgroundColor : 'transparent',
+                backgroundColor : null, //transparent
                 plotBorderWidth: 1
             },
             title : {

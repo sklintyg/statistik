@@ -1683,3 +1683,8 @@ a.has-collapse {
 	overflow: hidden;
 	text-overflow: ellipsis;
 }
+.legend-color-square {
+    display: inline-block;
+    height: 10px;
+    width: 10px;
+} 

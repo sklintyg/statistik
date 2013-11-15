@@ -86,7 +86,7 @@
             height : 230,
             width: 188,
             type : 'bubble',
-            backgroundColor: 'transparent'
+            backgroundColor: null //Transparent
         };
         chartOptions.legend.enabled = false;
 
