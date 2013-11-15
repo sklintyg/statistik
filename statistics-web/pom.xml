@@ -124,6 +124,7 @@
         <groupId>org.eclipse.jetty</groupId>
         <artifactId>jetty-maven-plugin</artifactId>
         <configuration>
+          <contextXml>${basedir}/src/main/webapp/WEB-INF/jetty-context.xml</contextXml>
           <scanIntervalSeconds>1</scanIntervalSeconds>
             <systemProperties>
               <systemProperty>
@@ -132,6 +133,18 @@
               </systemProperty>
             </systemProperties>
         </configuration>
+        <dependencies>
+          <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>5.1.24</version>
+          </dependency>
+          <dependency>
+            <groupId>org.apache.activemq</groupId>
+            <artifactId>activemq-client</artifactId>
+            <version>5.8.0</version>
+          </dependency>
+        </dependencies>
       </plugin>
       <plugin>
         <groupId>org.codehaus.cargo</groupId>
