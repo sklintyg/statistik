@@ -14,7 +14,7 @@ public class ProcessLogImpl implements ProcessLog {
 
     private static final String PROCESSED_HSA = "PROCESSED_HSA";
 
-    private static long internalLastId = Long.MIN_VALUE;
+    private long internalLastId = Long.MIN_VALUE;
 
     @PersistenceContext(unitName = "IneraStatisticsLog")
     private EntityManager manager;
