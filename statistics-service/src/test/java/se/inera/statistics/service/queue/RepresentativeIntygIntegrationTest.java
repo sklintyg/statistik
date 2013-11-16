@@ -5,6 +5,8 @@ import org.joda.time.LocalDate;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.jms.core.MessageCreator;
@@ -38,8 +40,10 @@ import static org.junit.Assert.assertEquals;
 @Transactional
 @DirtiesContext
 public class RepresentativeIntygIntegrationTest {
+    private static final Logger LOG = LoggerFactory.getLogger(RepresentativeIntygIntegrationTest.class);
 
     private JmsTemplate jmsTemplate;
+    private List<String> persons = new ArrayList<>();
 
     @Autowired
     private CasesPerMonth casesPerMonth;
@@ -55,36 +59,51 @@ public class RepresentativeIntygIntegrationTest {
 
     @Before
     public void setup() {
+        List<String> personNummers;
         this.jmsTemplate = new JmsTemplate(connectionFactory);
+        personNummers = readList("/personnr/testpersoner.log");
+        persons.add(personNummers.get(0)); // k 1950
+        persons.add(personNummers.get(300)); // k 1960
+        persons.add(personNummers.get(500)); // m 1979
+        persons.add(personNummers.get(1000)); // k 1990
+        persons.add(personNummers.get(2000)); // m 1991
+        persons.add(personNummers.get(4000)); // m 1998
     }
 
     @Test
     public void deliver_document_from_in_queue_to_statistics_repository() throws IOException {
         AldersGruppListener.setMaxCacheSize(1);
         SjukfallPerDiagnosgruppListener.setMaxCacheSize(1);
-        UtlatandeBuilder builder = new UtlatandeBuilder("/json/intyg1.json", "Intyg med 50%");
-        List<String> personNummers = readList("/personnr/testpersoner.log");
-        String person1 = personNummers.get(0);
-        String person2 = personNummers.get(1000);
+        UtlatandeBuilder builder = new UtlatandeBuilder("/json/integration/intyg1.json", "Intyg med 1 sjuktal");
 
-        simpleSend(builder.build(person1, new LocalDate("2011-01-20"), new LocalDate("2011-03-11"), "enhetId", "A00", 0).toString(), "001");
-        simpleSend(builder.build(person2, new LocalDate("2011-01-20"), new LocalDate("2011-03-11"), "enhetId", "A00", 0).toString(), "002");
+
+        for (TestIntyg intyg : getIntygWithHelsjukAndSingelmanadAndSingelDiagnos(getPerson(0), getPerson(1), getPerson(2))) {
+            System.out.println("Intyg: " + intyg);
+            simpleSend(builder.build(intyg.personNr, intyg.startDate, intyg.endDate, intyg.vardenhet, intyg.vardgivare, intyg.diagnos, intyg.grads).toString(), "001");
+        }
+//        simpleSend(builder.build(getPerson(0), new LocalDate("2011-01-20"), new LocalDate("2011-03-11"), "enhetId", "A00", 0).toString(), "001");
+//        simpleSend(builder.build(getPerson(1), new LocalDate("2011-01-20"), new LocalDate("2011-03-11"), "enhetId", "A00", 0).toString(), "002");
 
         sleep();
 
-        assertEquals(2, consumer.processBatch());
+        assertEquals("Verify that all messages have been processed.", 3 , consumer.processBatch());
 
         nationellUpdaterJob.checkLog();
 
-        SimpleDualSexResponse<SimpleDualSexDataRow> webData = casesPerMonth.getCasesPerMonth("enhetId", new Range(new LocalDate("2011-01"), new LocalDate("2011-12")));
+        SimpleDualSexResponse<SimpleDualSexDataRow> webData = casesPerMonth.getCasesPerMonth(getVardenhet(0), new Range(getStart(0), getStop(3)));
+        LOG.info("Web data: " + webData);
+        SimpleDualSexResponse<SimpleDualSexDataRow> nationellWebData = casesPerMonth.getCasesPerMonth("nationell", new Range(getStart(0), getStop(3)));
+        LOG.info("Nationell web data: " + nationellWebData);
 
+        System.out.println("Web data: " + webData);
         assertEquals(12, webData.getRows().size());
+        assertEquals(12, nationellWebData.getRows().size());
 
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 1; i++) {
             assertEquals(2, webData.getRows().get(i).getFemale().intValue());
-            assertEquals(0, webData.getRows().get(i).getMale().intValue());
+            assertEquals(1, webData.getRows().get(i).getMale().intValue());
         }
-        for (int i = 3; i < 12; i++) {
+        for (int i = 1; i < 12; i++) {
             assertEquals(0, webData.getRows().get(i).getFemale().intValue());
             assertEquals(0, webData.getRows().get(i).getMale().intValue());
         }
@@ -120,6 +139,84 @@ public class RepresentativeIntygIntegrationTest {
             return list;
         } catch (Exception e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    private String getPerson(int id) {
+        return persons.get(id);
+    }
+
+    private List<TestIntyg> getIntygWithHelsjukAndSingelmanadAndSingelDiagnos(String... personNummers) {
+        List<TestIntyg> testIntygs = new ArrayList<>();
+        for (String person : personNummers) {
+            testIntygs.add(new TestIntyg(person, getGrads(0), getStart(0), getStop(0), getVardenhet(0), getVardgivare(0), getDiagnosis(0)));
+        }
+        return testIntygs;
+    }
+
+    private String getDiagnosis(int i) {
+        String[] diagnoser = { "A00" };
+        return diagnoser[i];
+    }
+
+    private LocalDate getStart(int i) {
+        LocalDate[] dates = { new LocalDate("2011-01-10") };
+        return dates[i];
+    }
+
+    private LocalDate getStop(int i) {
+        LocalDate[] dates = { new LocalDate("2011-01-22"), new LocalDate("2011-02-01"), new LocalDate("2011-03-11"), new LocalDate("2011-12-12") };
+        return dates[i];
+    }
+
+    private String getVardenhet(int i) {
+        String[] enheter = { "Vardenhet1" };
+        return enheter[i];
+    }
+
+    private String getVardgivare(int i) {
+        String[] givare = { "Vardgivare" };
+        return givare[i];
+    }
+
+    private List<String> getGrads(int... grads) {
+        List<String> resultList = new ArrayList<>();
+        for (int i : grads) {
+            resultList.add(Integer.toString(i));
+        }
+        return resultList;
+    }
+
+    public static class TestIntyg {
+        private final String personNr;
+        private final List<String> grads;
+        private final LocalDate startDate;
+        private final LocalDate endDate;
+        private final String vardenhet;
+        private final String vardgivare;
+        private final String diagnos;
+
+        public TestIntyg(String personNr, List<String> grads, LocalDate startDate, LocalDate endDate, String vardenhet, String vardgivare, String diagnos) {
+            this.personNr = personNr;
+            this.grads = grads;
+            this.startDate = startDate;
+            this.endDate = endDate;
+            this.vardenhet = vardenhet;
+            this.vardgivare = vardgivare;
+            this.diagnos = diagnos;
+        }
+
+        @Override
+        public String toString() {
+            return "TestIntyg{" +
+                    "personNr='" + personNr + '\'' +
+                    ", grads=" + grads +
+                    ", startDate=" + startDate +
+                    ", endDate=" + endDate +
+                    ", vardenhet='" + vardenhet + '\'' +
+                    ", vardgivare='" + vardgivare + '\'' +
+                    ", diagnos='" + diagnos + '\'' +
+                    '}';
         }
     }
 

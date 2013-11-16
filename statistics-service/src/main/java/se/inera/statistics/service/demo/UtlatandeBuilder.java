@@ -2,6 +2,8 @@ package se.inera.statistics.service.demo;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.util.Arrays;
+import java.util.List;
 import java.util.UUID;
 
 import org.joda.time.LocalDate;
@@ -38,6 +40,10 @@ public class UtlatandeBuilder {
     }
 
     public JsonNode build(String patientId, LocalDate start, LocalDate end, String vardenhet, String vardgivare, String diagnos, int arbetsformaga) {
+        return build(patientId, start, end, vardenhet, vardgivare, diagnos, Arrays.asList("" + arbetsformaga));
+    }
+
+    public JsonNode build(String patientId, LocalDate start, LocalDate end, String vardenhet, String vardgivare, String diagnos, List <String> arbetsformaga) {
         ObjectNode intyg = template.deepCopy();
         ObjectNode patientIdNode = (ObjectNode) intyg.path("patient").path("id");
         patientIdNode.put("extension", patientId);
@@ -64,9 +70,15 @@ public class UtlatandeBuilder {
             }
         }
 
+        int i = 0;
         for (JsonNode observation: intyg.path("observations")) {
             if (DocumentHelper.ARBETSFORMAGA_MATCHER.match(observation)) {
-                ((ObjectNode) observation.path("varde").path(0)).put("quantity", arbetsformaga);
+                String a = "0";
+                if (i < arbetsformaga.size()) {
+                    a = arbetsformaga.get(i);
+                    i++;
+                }
+                ((ObjectNode) observation.path("varde").path(0)).put("quantity", a);
             }
         }
 
@@ -74,7 +86,7 @@ public class UtlatandeBuilder {
     }
 
     private static String readTemplate(String path) {
-        try (BufferedReader in = new BufferedReader(new InputStreamReader(UtlatandeBuilder.class.getResourceAsStream(path), "utf8"));) {
+        try (BufferedReader in = new BufferedReader(new InputStreamReader(UtlatandeBuilder.class.getResourceAsStream(path), "utf8"))) {
             StringBuilder sb = new StringBuilder();
             for (String line = in.readLine(); line != null; line = in.readLine()) {
                 sb.append(line).append('\n');
@@ -83,5 +95,9 @@ public class UtlatandeBuilder {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public String getTestName() {
+        return testName;
     }
 }

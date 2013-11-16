@@ -5,7 +5,7 @@ import java.io.Serializable;
 import javax.persistence.Embeddable;
 
 @Embeddable
-public final class SjukskrivningsgradKey implements Serializable {
+public class SjukskrivningsgradKey implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private String period;
@@ -31,6 +31,18 @@ public final class SjukskrivningsgradKey implements Serializable {
 
     public String getGrad() {
         return grad;
+    }
+
+    public void setPeriod(String period) {
+        this.period = period;
+    }
+
+    public void setHsaId(String hsaId) {
+        this.hsaId = hsaId;
+    }
+
+    public void setGrad(String grad) {
+        this.grad = grad;
     }
 
     @Override

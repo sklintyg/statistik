@@ -44,4 +44,9 @@ public class SimpleDualSexResponse<T extends SimpleDualSexDataRow> {
         }
         return data;
     }
+
+    @Override
+    public String toString() {
+        return "SimpleDualSexResponse{" + "rows=" + rows + ", numberOfMonthsCalculated=" + getNumberOfMonthsCalculated() + '}';
+    }
 }

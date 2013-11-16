@@ -38,4 +38,8 @@ public class SimpleDualSexDataRow {
         return data.getValue(Sex.Male);
     }
 
+    @Override
+    public String toString() {
+        return "SimpleDualSexDataRow{" + "name='" + name + '\'' + ", data=" + data + '}';
+    }
 }
