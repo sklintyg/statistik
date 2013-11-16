@@ -43,7 +43,7 @@
 <![endif]-->
 <title>Inera Statistics Service</title>
 </head>
-<body id="ng-app">
+<body>
 	<jsp:forward page="pages/shell.jsp" />
 </body>
 </html>

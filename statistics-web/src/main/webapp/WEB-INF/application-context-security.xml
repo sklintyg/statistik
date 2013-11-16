@@ -338,8 +338,7 @@
         <bean id="contextProvider" class="org.springframework.security.saml.context.SAMLContextProviderImpl"/>
 
         <!-- Logout handler terminating local session -->
-        <bean id="logoutHandler"
-              class="org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler">
+        <bean id="logoutHandler" class="org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler">
             <property name="invalidateHttpSession" value="false"/>
         </bean>
 
@@ -358,9 +357,8 @@
         </bean>
 
         <!-- Handler for successful logout -->
-        <bean id="successLogoutHandler"
-              class="org.springframework.security.web.authentication.logout.SimpleUrlLogoutSuccessHandler">
-            <property name="defaultTargetUrl" value="/logout.jsp"/>
+        <bean id="successLogoutHandler" class="org.springframework.security.web.authentication.logout.SimpleUrlLogoutSuccessHandler">
+            <property name="defaultTargetUrl" value="/#/overview"/>
         </bean>
     </beans>
 </beans>
