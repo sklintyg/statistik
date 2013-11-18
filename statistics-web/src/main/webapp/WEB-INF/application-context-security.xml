@@ -74,11 +74,7 @@
         <bean id="epauth" class="org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint">
             <constructor-arg value="/login.html"/>
         </bean>
-        <security:global-method-security pre-post-annotations="enabled">
-            <security:protect-pointcut
-                    expression="execution(* se.inera.statistics.web.service.ProtectedChartDataService.*(..))"
-                    access="ROLE_ADMIN"/>
-        </security:global-method-security>
+        <security:global-method-security pre-post-annotations="enabled" />
     </beans>
     <!-- =============================================================== -->
     <!-- Dev profile only supports Fake login                            -->
@@ -161,7 +157,7 @@
         </bean>
         <bean id="fakeSuccessHandler"
               class="org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler">
-            <property name="defaultTargetUrl" value="/web/start"/>
+            <property name="defaultTargetUrl" value="/#/verksamhet/oversikt"/>
         </bean>
         <bean id="fakeAuthenticationProvider"
               class="se.inera.auth.FakeAuthenticationProvider">
@@ -358,7 +354,7 @@
 
         <!-- Handler for successful logout -->
         <bean id="successLogoutHandler" class="org.springframework.security.web.authentication.logout.SimpleUrlLogoutSuccessHandler">
-            <property name="defaultTargetUrl" value="/#/overview"/>
+            <property name="defaultTargetUrl" value="/#/nationell/oversikt"/>
         </bean>
     </beans>
 </beans>
