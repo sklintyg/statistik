@@ -100,4 +100,61 @@ public class UtlatandeBuilder {
     public String getTestName() {
         return testName;
     }
+
+    public JsonNode build(String person, List<LocalDate> starts, List<LocalDate> stops, String enhet, String vardgivare, String diagnos, List<String> grads) {
+        ObjectNode intyg = template.deepCopy();
+        ObjectNode patientIdNode = (ObjectNode) intyg.path("patient").path("id");
+        patientIdNode.put("extension", person);
+
+        ObjectNode idNode = (ObjectNode) intyg.path("id");
+        idNode.put("extension", UUID.randomUUID().toString());
+
+        LocalDate start = new LocalDate("9999-12-31");
+        for (LocalDate s : starts) {
+            if (s.isBefore(start)) {
+                start = s;
+            }
+        }
+        LocalDate end = new LocalDate("1970-01-01");
+        for (LocalDate e : stops) {
+            if (e.isAfter(end)) {
+                end = e;
+            }
+        }
+
+        intyg.put("validFromDate", FORMATTER.print(start));
+        intyg.put("validToDate", FORMATTER.print(end));
+
+        for (JsonNode node: intyg.path("observations")) {
+            if (DocumentHelper.ARBETSFORMAGA_MATCHER.match(node)) {
+                ObjectNode varde = (ObjectNode) node.path("observationsPeriod");
+                varde.put("from", FORMATTER.print(starts.get(0)));
+                starts.remove(0);
+                varde.put("tom", FORMATTER.print(stops.get(0)));
+                stops.remove(0);
+            }
+        }
+
+        ((ObjectNode) intyg.path("skapadAv").path("vardenhet").path("id")).put("extension", enhet);
+        ((ObjectNode) intyg.path("skapadAv").path("vardenhet").path("vardgivare").path("id")).put("extension", vardgivare);
+        for (JsonNode observation: intyg.path("observations")) {
+            if (DocumentHelper.DIAGNOS_MATCHER.match(observation)) {
+                ((ObjectNode) observation.path("observationsKod")).put("code", diagnos);
+            }
+        }
+
+        int i = 0;
+        for (JsonNode observation: intyg.path("observations")) {
+            if (DocumentHelper.ARBETSFORMAGA_MATCHER.match(observation)) {
+                String a = "0";
+                if (i < grads.size()) {
+                    a = grads.get(i);
+                    i++;
+                }
+                ((ObjectNode) observation.path("varde").path(0)).put("quantity", a);
+            }
+        }
+
+        return intyg;
+    }
 }
