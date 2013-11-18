@@ -89,7 +89,7 @@
 				<div class="span4 pull-right" style="width: auto !important;">
 					<div id="business-login-container">
 						<span id="business-login-span">För verksamhetsstatistik: </span>
-						<button class="btn" ng-click="open()" type="button" id="business-login-btn" value="Logga in">Logga in</button>
+						<button class="btn" data-url="${applicationScope.loginUrl}" type="button" id="business-login-btn" value="Logga in">Logga in</button>
 					</div>
 					<div id="business-logged-in-user-container" style="display: none; position: absolute; right: 0; margin-right: 25px;">
 						<!-- div class="pull-right">

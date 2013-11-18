@@ -30,9 +30,7 @@
         <context:property-placeholder location="classpath*:default.qa.properties" order="2" ignore-resource-not-found="false" ignore-unresolvable="false"/>
     </beans>
     <beans profile="dev">
-        <context:property-placeholder
-                location="classpath*:default.dev.properties"
-                ignore-resource-not-found="true"/>
+        <context:property-placeholder location="classpath*:default.dev.properties" ignore-resource-not-found="true"/>
     </beans>
 
     <beans>
@@ -71,41 +69,23 @@
 
         <bean id="http403ForbiddenEntryPoint"
               class="org.springframework.security.web.authentication.Http403ForbiddenEntryPoint"/>
-        <bean id="epauth" class="org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint">
-            <constructor-arg value="/login.html"/>
-        </bean>
         <security:global-method-security pre-post-annotations="enabled" />
     </beans>
     <!-- =============================================================== -->
-    <!-- Dev profile only supports Fake login                            -->
+    <!-- Dev,demo profile only supports Fake login                            -->
     <!-- =============================================================== -->
     <beans profile="dev,demo">
-        <bean id="epauth" class="org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint">
-            <constructor-arg value="/login.html"/>
-        </bean>
-        <security:http pattern="/**" entry-point-ref="epauth" use-expressions="true">
-            <security:intercept-url pattern="/login/**" access="isAuthenticated()"/>
-            <security:intercept-url pattern="/login.jsp*" access="isAnonymous()"/>
-            <security:intercept-url pattern="/api/login/**" access="permitAll()"/>
-            <security:form-login login-page="/login.jsp" always-use-default-target="true"
-                                 default-target-url="/#/verksamhet"/>
-            <security:http-basic/>
-            <security:logout/>
+        <security:http entry-point-ref="http403ForbiddenEntryPoint" pattern="/api/verksamhet/**">
+            <security:intercept-url pattern="/**" access="IS_AUTHENTICATED_FULLY"/>
+            <security:custom-filter position="PRE_AUTH_FILTER" ref="fakeAuthFilter"/>
         </security:http>
-
+        <security:http entry-point-ref="http403ForbiddenEntryPoint" use-expressions="true">
+            <security:intercept-url pattern="/**" access="permitAll"/>
+            <security:custom-filter position="PRE_AUTH_FILTER" ref="fakeAuthFilter"/>
+        </security:http>
         <security:authentication-manager alias="authenticationManager">
-            <security:authentication-provider>
-                <security:user-service id="userService">
-                    <security:user name="pierre" password="letmein"
-                                   authorities="ROLE_ADMIN"/>
-                    <security:user name="roger" password="longhorns"
-                                   authorities="ROLE_ADMIN"/>
-                    <security:user name="admin" password="admin"
-                                   authorities="ROLE_ADMIN"/>
-                </security:user-service>
-            </security:authentication-provider>
+            <security:authentication-provider ref="fakeAuthenticationProvider"/>
         </security:authentication-manager>
-
     </beans>
 
     <!-- =============================================================== -->
@@ -149,7 +129,7 @@
         </security:authentication-manager>
     </beans>
 
-    <beans profile="dev,test,qa">
+    <beans profile="dev,demo,test,qa">
         <bean id="fakeAuthFilter" class="se.inera.auth.FakeAuthenticationFilter">
             <property name="authenticationManager" ref="authenticationManager"/>
             <property name="authenticationSuccessHandler" ref="fakeSuccessHandler"/>
@@ -157,7 +137,7 @@
         </bean>
         <bean id="fakeSuccessHandler"
               class="org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler">
-            <property name="defaultTargetUrl" value="/#/verksamhet/oversikt"/>
+            <property name="defaultTargetUrl" value="/#/verksamhet"/>
         </bean>
         <bean id="fakeAuthenticationProvider"
               class="se.inera.auth.FakeAuthenticationProvider">

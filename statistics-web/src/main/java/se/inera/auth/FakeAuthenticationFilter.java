@@ -31,7 +31,9 @@ public class FakeAuthenticationFilter extends AbstractAuthenticationProcessingFi
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
-        if (!"dev".equals(profiles) && !"test".equals(profiles) && !"qa".equals(profiles)) {
+        // Hantera mer än en profil
+//        if ( !"dev".equals(profiles) && !"test".equals(profiles) && !"qa".equals(profiles)) {
+          if (!profiles.contains("dev") && !profiles.contains("test") && !profiles.contains("qa")) {
             return null;
         }
 
