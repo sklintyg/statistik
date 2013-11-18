@@ -3,6 +3,7 @@ package se.inera.statistics.service.queue;
 import org.apache.activemq.command.ActiveMQQueue;
 import org.joda.time.LocalDate;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
@@ -40,7 +41,19 @@ import static org.junit.Assert.assertEquals;
 @Transactional
 @DirtiesContext
 public class RepresentativeIntygIntegrationTest {
+    private static final int PERSON_K1950 = 0;
+    private static final int PERSON_K1960 = 1;
+    private static final int PERSON_M1979 = 2;
+    private static final int PERSON_K1990 = 3;
+    private static final int PERSON_M1991 = 4;
+    private static final int PERSON_M1998 = 5;
+
     private static final Logger LOG = LoggerFactory.getLogger(RepresentativeIntygIntegrationTest.class);
+    public static final String G01 = "G01";
+    public static final String L99 = "L99";
+    public static final String A00 = "A00";
+    public static final int ENVE = 0;
+    public static final int TVAVE = 1;
 
     private JmsTemplate jmsTemplate;
     private List<String> persons = new ArrayList<>();
@@ -83,29 +96,36 @@ public class RepresentativeIntygIntegrationTest {
         persons.add(personNummers.get(500)); // m 1979
         persons.add(personNummers.get(1000)); // k 1990
         persons.add(personNummers.get(2000)); // m 1991
-        persons.add(personNummers.get(4000)); // m 1998
+        persons.add(personNummers.get(5500)); // m 1998
     }
 
     @Test
+    @Ignore
     @SuppressWarnings("unchecked")
     public void deliver_document_from_in_queue_to_statistics_repository() throws IOException {
         AldersGruppListener.setMaxCacheSize(1);
         SjukfallPerDiagnosgruppListener.setMaxCacheSize(1);
         UtlatandeBuilder builder = new UtlatandeBuilder("/json/integration/intyg1.json", "Intyg med 1 sjuktal");
 
+        LOG.info("===========START==========");
+        LOG.info("3 persons, 1 intyg each, basic test.");
 
-        for (TestIntyg intyg : getIntygWithHelsjukAndSingelmanadAndSingelDiagnos(getPerson(0), getPerson(1), getPerson(2))) {
+        LOG.info("===========INPUT==========");
+        for (TestIntyg intyg : getIntygWithHelsjukAndSingelmanadAndSingelDiagnos(getPerson(PERSON_K1950), getPerson(PERSON_K1960), getPerson(PERSON_M1979))) {
             LOG.info("Intyg: " + intyg);
             simpleSend(builder.build(intyg.personNr, intyg.startDate, intyg.endDate, intyg.vardenhet, intyg.vardgivare, intyg.diagnos, intyg.grads).toString(), "001");
         }
 
         sleep();
 
-        assertEquals("Verify that all messages have been processed.", 3 , consumer.processBatch());
+        assertEquals("Verify that all messages have been processed.", 3, consumer.processBatch());
 
         nationellUpdaterJob.checkLog();
 
+        LOG.info("===========RESULT=========");
         List<Object> result = printAndGetPersistedData();
+
+        LOG.info("============END===========\n");
 
         SimpleDualSexResponse<SimpleDualSexDataRow> casesPerMonth1 = (SimpleDualSexResponse<SimpleDualSexDataRow>)result.get(0);
         SimpleDualSexResponse<SimpleDualSexDataRow> casesPerMonthNationell = (SimpleDualSexResponse<SimpleDualSexDataRow>)result.get(1);
@@ -123,15 +143,58 @@ public class RepresentativeIntygIntegrationTest {
         }
     }
 
+    @Test
+    @SuppressWarnings("unchecked")
+    public void deliver_document_from_in_queue_to_statistics_repository_with_usecase_data() throws IOException {
+        AldersGruppListener.setMaxCacheSize(1);
+        SjukfallPerDiagnosgruppListener.setMaxCacheSize(1);
+        UtlatandeBuilder builder = new UtlatandeBuilder("/json/integration/intyg1.json", "Intyg med 1 sjuktal");
+
+        LOG.info("===========START==========");
+        LOG.info("Grundtest");
+
+        LOG.info("===========INPUT==========");
+        List<String> persons = Arrays.asList(getPerson(PERSON_K1950), getPerson(PERSON_K1960), getPerson(PERSON_M1979));
+        List<String> diagnosKods = Arrays.asList(G01, L99, A00, "F99", "R00", "Z00", "M00", "P00", "G02");
+        List<LocalDate> start = Arrays.asList(new LocalDate("2012-02-05"), new LocalDate("2012-03-01"), new LocalDate("2012-02-05"),
+                new LocalDate("2012-03-01"), new LocalDate("2013-02-05"), new LocalDate("2013-01-01"), new LocalDate("2013-02-05"),
+                new LocalDate("2013-01-01"), new LocalDate("2013-02-05"));
+        List<LocalDate> stop = Arrays.asList(new LocalDate("2012-02-06"), new LocalDate("2013-03-31"), new LocalDate("2012-02-07"),
+                new LocalDate("2013-01-29"), new LocalDate("2013-02-08"), new LocalDate("2013-01-30"), new LocalDate("2013-02-09"),
+                new LocalDate("2013-01-31"), new LocalDate("2013-02-10"));
+        List<String> vardgivares = Arrays.asList("EnVG", "TvaVG","EnVG", "TvaVG","EnVG", "TvaVG","EnVG", "TvaVG","EnVG");
+        List<String> vardenhet= Arrays.asList(getVardenhet(ENVE), getVardenhet(TVAVE),getVardenhet(ENVE), getVardenhet(TVAVE),getVardenhet(ENVE), getVardenhet(TVAVE),getVardenhet(ENVE), getVardenhet(TVAVE),getVardenhet(ENVE));
+        List<TestIntyg> intygs = getIntygWithHelsjukAndSingelmanadAndDiagnosList(persons, diagnosKods, start, stop, vardgivares, vardenhet);
+        for (TestIntyg intyg : intygs) {
+            LOG.info("Intyg: " + intyg);
+            simpleSend(builder.build(intyg.personNr, intyg.startDate, intyg.endDate, intyg.vardenhet, intyg.vardgivare, intyg.diagnos, intyg.grads).toString(),
+                    "001");
+        }
+
+        sleep();
+
+        assertEquals("Verify that all messages have been processed.", 27 , consumer.processBatch());
+
+        nationellUpdaterJob.checkLog();
+
+        LOG.info("===========RESULT=========");
+        List<Object> result = printAndGetPersistedData();
+
+        LOG.info("============END===========\n");
+
+        SimpleDualSexResponse<SimpleDualSexDataRow> casesPerMonth1 = (SimpleDualSexResponse<SimpleDualSexDataRow>)result.get(0);
+        SimpleDualSexResponse<SimpleDualSexDataRow> casesPerMonthNationell = (SimpleDualSexResponse<SimpleDualSexDataRow>)result.get(1);
+    }
+
     private List<Object> printAndGetPersistedData() {
         SimpleDualSexResponse<SimpleDualSexDataRow> casesPerMonth1 = casesPerMonth.getCasesPerMonth(getVardenhet(0), new Range(getStart(0), getStop(3)));
         LOG.info("CPM data: " + casesPerMonth1);
-        SimpleDualSexResponse<SimpleDualSexDataRow> casesPerMonthNationell = casesPerMonth.getCasesPerMonth("nationell", new Range(getStart(0), getStop(3)));
+        SimpleDualSexResponse<SimpleDualSexDataRow> casesPerMonthNationell = casesPerMonth.getCasesPerMonth("NATIONELL", new Range(getStart(0), getStop(3)));
         LOG.info("Nationell CPM data: " + casesPerMonthNationell);
 
         DiagnosisGroupResponse diagnosisGroups1 = diagnosisGroups.getDiagnosisGroups(getVardenhet(0), new Range(getStart(0), getStop(3)));
         LOG.info("DG data: " + diagnosisGroups1);
-        DiagnosisGroupResponse diagnosisGroupsNationell = diagnosisGroups.getDiagnosisGroups("nationell", new Range(getStart(0), getStop(3)));
+        DiagnosisGroupResponse diagnosisGroupsNationell = diagnosisGroups.getDiagnosisGroups("NATIONELL", new Range(getStart(0), getStop(3)));
         LOG.info("Nationell DG data:" + diagnosisGroupsNationell);
 
         DiagnosisGroupResponse diagnosisSubGroups1 = diagnosisSubGroups.getDiagnosisGroups(getVardenhet(0), new Range(getStart(0), getStop(3)), "A00-B99");
@@ -141,22 +204,24 @@ public class RepresentativeIntygIntegrationTest {
 
         AgeGroupsResponse ageGroups1 = ageGroups.getHistoricalAgeGroups(getVardenhet(0), getStart(0), RollingLength.YEAR);
         LOG.info("AG data: " + ageGroups1);
-        AgeGroupsResponse ageGroupsNationell = ageGroups.getHistoricalAgeGroups("nationell", getStart(0), RollingLength.YEAR);
+        AgeGroupsResponse ageGroupsNationell = ageGroups.getHistoricalAgeGroups("NATIONELL", getStart(0), RollingLength.YEAR);
         LOG.info("Nationell AG data: " + ageGroupsNationell);
 
         DegreeOfSickLeaveResponse degreeOfSickLeave1 = degreeOfSickLeave.getStatistics(getVardenhet(0), new Range(getStart(0), getStop(3)));
         LOG.info("DOSL data: " + degreeOfSickLeave1);
-        DegreeOfSickLeaveResponse degreeOfSickLeaveNationell = degreeOfSickLeave.getStatistics("nationell", new Range(getStart(0), getStop(3)));
+        DegreeOfSickLeaveResponse degreeOfSickLeave2 = degreeOfSickLeave.getStatistics(getVardenhet(1), new Range(getStart(0), getStop(3)));
+        LOG.info("DOSL data: " + degreeOfSickLeave2);
+        DegreeOfSickLeaveResponse degreeOfSickLeaveNationell = degreeOfSickLeave.getStatistics("NATIONELL", new Range(getStart(0), getStop(3)));
         LOG.info("Nationell DOSL data: " + degreeOfSickLeaveNationell);
 
         SickLeaveLengthResponse sjukfallslangdGrupp1 = sjukfallslangdGrupp.getHistoricalStatistics(getVardenhet(0), getStart(0), RollingLength.YEAR);
         LOG.info("SLG data: " + sjukfallslangdGrupp1);
-        SickLeaveLengthResponse sjukfallslangdGruppNationell = sjukfallslangdGrupp.getHistoricalStatistics("nationell", getStart(0), RollingLength.YEAR);
-        LOG.info("SLG data: " + sjukfallslangdGruppNationell);
+        SickLeaveLengthResponse sjukfallslangdGruppNationell = sjukfallslangdGrupp.getHistoricalStatistics("NATIONELL", getStart(0), RollingLength.YEAR);
+        LOG.info("Nationell SLG data: " + sjukfallslangdGruppNationell);
         SimpleDualSexResponse<SimpleDualSexDataRow> sjukfallslangdGruppLong1 = sjukfallslangdGrupp.getLongSickLeaves(getVardenhet(0), new Range(getStart(0), getStop(3)));
-        LOG.info("SLG data: " + sjukfallslangdGruppLong1);
-        SimpleDualSexResponse<SimpleDualSexDataRow> sjukfallslangdGruppLongNationell = sjukfallslangdGrupp.getLongSickLeaves("nationell", new Range(getStart(0), getStop(3)));
-        LOG.info("SLG data: " + sjukfallslangdGruppLongNationell);
+        LOG.info("SLGL data: " + sjukfallslangdGruppLong1);
+        SimpleDualSexResponse<SimpleDualSexDataRow> sjukfallslangdGruppLongNationell = sjukfallslangdGrupp.getLongSickLeaves("NATIONELL", new Range(getStart(0), getStop(3)));
+        LOG.info("Nationell SLGL data: " + sjukfallslangdGruppLongNationell);
 
         VerksamhetOverviewResponse verksamhetOverview1 = verksamhetOverview.getOverview(getVardenhet(0), new Range(getStart(0), getStop(3)));
         LOG.info("VO data: " + verksamhetOverview1);
@@ -214,23 +279,40 @@ public class RepresentativeIntygIntegrationTest {
         return testIntygs;
     }
 
+    private List<TestIntyg> getIntygWithHelsjukAndSingelmanadAndDiagnosList(List<String> personNummers, List<String> diagnosKods, List<LocalDate> starts,
+            List<LocalDate> stops, List<String> vardgivares, List<String> vardenhets) {
+        List<TestIntyg> testIntygs = new ArrayList<>();
+        for (String person : personNummers) {
+            for (int i = 0; i < diagnosKods.size(); i++) {
+                String diagnosKod = diagnosKods.get(i);
+                LocalDate start = starts.get(i);
+                LocalDate stop = stops.get(i);
+                String vardgivare = vardgivares.get(i);
+                String vardenhet = vardenhets.get(i);
+                testIntygs.add(new TestIntyg(person, getGrads(0), start, stop, vardenhet, vardgivare, diagnosKod));
+
+            }
+        }
+        return testIntygs;
+    }
+
     private String getDiagnosis(int i) {
         String[] diagnoser = { "A00" };
         return diagnoser[i];
     }
 
     private LocalDate getStart(int i) {
-        LocalDate[] dates = { new LocalDate("2011-01-10") };
+        LocalDate[] dates = { new LocalDate("2012-02-01") };
         return dates[i];
     }
 
     private LocalDate getStop(int i) {
-        LocalDate[] dates = { new LocalDate("2011-01-22"), new LocalDate("2011-02-01"), new LocalDate("2011-03-11"), new LocalDate("2011-12-12") };
+        LocalDate[] dates = { new LocalDate("2012-01-22"), new LocalDate("2011-02-01"), new LocalDate("2011-03-11"), new LocalDate("2013-11-17") };
         return dates[i];
     }
 
     private String getVardenhet(int i) {
-        String[] enheter = { "Vardenhet1" };
+        String[] enheter = { "EnVE", "TvaVE" };
         return enheter[i];
     }
 
