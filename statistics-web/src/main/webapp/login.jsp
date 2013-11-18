@@ -14,12 +14,11 @@
 <div class="container">
     <div class="row-fluid center">
         <div class="span12">
+			<a class="btn btn-success" href="/saml/login">SITHS login</a>
         	<legend>Logga in för verksamhetsstatistik - demo</legend>
             <form name='f' method='POST' action='/j_spring_security_check'>
-			    <label>Användarnamn:</label>
-			    <input type='text' name='j_username' id='j_username' value='' placeholder="Ange användanamn.." style="height: 30px;">
-			    <label>Lösenord:</label>
-                <input type='password' name='j_password' id='j_password' placeholder="Ange lösenord.." style="height: 30px;"/>
+			    <input type='text' name='j_username' id='j_username' value='admin' placeholder="Ange användanamn.." style="height: 30px;">
+                <input type='password' name='j_password' id='j_password' placeholder="Ange lösenord.." style="height: 30px;" value="admin"/>
                 <br>
 				<button class="btn btn-success" name="Login" id="login_btn" type="submit">Logga in</button>
 			    <button class="btn" name="Återställ" type="reset">Återställ</button>

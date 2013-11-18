@@ -11,7 +11,6 @@ $(document).ready(function(){
     }
 
 	$('#business-login-btn').click(function(){
-//        window.location.replace("/saml/login");
-        window.location.replace(loginUrl);
+        window.location.replace("/login.jsp");
 	});
 });
