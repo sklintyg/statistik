@@ -42,4 +42,9 @@ public class AgeGroupsResponse {
     public int getMonths() {
         return months;
     }
+
+    @Override
+    public String toString() {
+        return "AgeGroupsResponse{" + "ageGroupsRows=" + ageGroupsRows + ", months=" + months + '}';
+    }
 }

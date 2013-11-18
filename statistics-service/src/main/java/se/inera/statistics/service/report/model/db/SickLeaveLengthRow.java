@@ -83,4 +83,9 @@ public class SickLeaveLengthRow {
     public void setKey(SickLeaveLengthKey key) {
         this.key = key;
     }
+
+    @Override
+    public String toString() {
+        return "SickLeaveLengthRow{" + "key=" + key + ", typ=" + typ + ", male=" + male + ", female=" + female + '}';
+    }
 }

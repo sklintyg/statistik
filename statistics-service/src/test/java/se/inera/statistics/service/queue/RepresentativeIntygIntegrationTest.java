@@ -19,10 +19,8 @@ import se.inera.statistics.service.processlog.LogConsumer;
 import se.inera.statistics.service.report.api.*;
 import se.inera.statistics.service.report.listener.AldersGruppListener;
 import se.inera.statistics.service.report.listener.SjukfallPerDiagnosgruppListener;
-import se.inera.statistics.service.report.model.DiagnosisGroupResponse;
-import se.inera.statistics.service.report.model.Range;
-import se.inera.statistics.service.report.model.SimpleDualSexDataRow;
-import se.inera.statistics.service.report.model.SimpleDualSexResponse;
+import se.inera.statistics.service.report.model.*;
+import se.inera.statistics.service.report.repository.RollingLength;
 import se.inera.statistics.service.scheduler.NationellUpdaterJob;
 
 import javax.jms.*;
@@ -31,6 +29,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -60,6 +59,10 @@ public class RepresentativeIntygIntegrationTest {
     private SjukfallslangdGrupp sjukfallslangdGrupp;
     @Autowired
     private VerksamhetOverview verksamhetOverview;
+    @Autowired
+    private Overview overview;
+    @Autowired
+    private CasesPerCounty casesPerCounty;
 
     @Autowired
     private ConnectionFactory connectionFactory;
@@ -84,6 +87,7 @@ public class RepresentativeIntygIntegrationTest {
     }
 
     @Test
+    @SuppressWarnings("unchecked")
     public void deliver_document_from_in_queue_to_statistics_repository() throws IOException {
         AldersGruppListener.setMaxCacheSize(1);
         SjukfallPerDiagnosgruppListener.setMaxCacheSize(1);
@@ -91,7 +95,7 @@ public class RepresentativeIntygIntegrationTest {
 
 
         for (TestIntyg intyg : getIntygWithHelsjukAndSingelmanadAndSingelDiagnos(getPerson(0), getPerson(1), getPerson(2))) {
-            System.out.println("Intyg: " + intyg);
+            LOG.info("Intyg: " + intyg);
             simpleSend(builder.build(intyg.personNr, intyg.startDate, intyg.endDate, intyg.vardenhet, intyg.vardgivare, intyg.diagnos, intyg.grads).toString(), "001");
         }
 
@@ -101,15 +105,10 @@ public class RepresentativeIntygIntegrationTest {
 
         nationellUpdaterJob.checkLog();
 
-        SimpleDualSexResponse<SimpleDualSexDataRow> casesPerMonth1 = casesPerMonth.getCasesPerMonth(getVardenhet(0), new Range(getStart(0), getStop(3)));
-        LOG.info("CPM data: " + casesPerMonth1);
-        SimpleDualSexResponse<SimpleDualSexDataRow> casesPerMonthNationell = casesPerMonth.getCasesPerMonth("nationell", new Range(getStart(0), getStop(3)));
-        LOG.info("Nationell CPM data: " + casesPerMonthNationell);
+        List<Object> result = printAndGetPersistedData();
 
-        DiagnosisGroupResponse diagnosisGroups1 = diagnosisGroups.getDiagnosisGroups(getVardenhet(0), new Range(getStart(0), getStop(3)));
-        LOG.info("DG data: " + diagnosisGroups1);
-        DiagnosisGroupResponse diagnosisGroupsNationell = diagnosisGroups.getDiagnosisGroups("nationell", new Range(getStart(0), getStop(3)));
-        LOG.info("Nationell DG data:" + diagnosisGroupsNationell);
+        SimpleDualSexResponse<SimpleDualSexDataRow> casesPerMonth1 = (SimpleDualSexResponse<SimpleDualSexDataRow>)result.get(0);
+        SimpleDualSexResponse<SimpleDualSexDataRow> casesPerMonthNationell = (SimpleDualSexResponse<SimpleDualSexDataRow>)result.get(1);
 
         assertEquals(12, casesPerMonth1.getRows().size());
         assertEquals(12, casesPerMonthNationell.getRows().size());
@@ -122,6 +121,52 @@ public class RepresentativeIntygIntegrationTest {
             assertEquals(0, casesPerMonth1.getRows().get(i).getFemale().intValue());
             assertEquals(0, casesPerMonth1.getRows().get(i).getMale().intValue());
         }
+    }
+
+    private List<Object> printAndGetPersistedData() {
+        SimpleDualSexResponse<SimpleDualSexDataRow> casesPerMonth1 = casesPerMonth.getCasesPerMonth(getVardenhet(0), new Range(getStart(0), getStop(3)));
+        LOG.info("CPM data: " + casesPerMonth1);
+        SimpleDualSexResponse<SimpleDualSexDataRow> casesPerMonthNationell = casesPerMonth.getCasesPerMonth("nationell", new Range(getStart(0), getStop(3)));
+        LOG.info("Nationell CPM data: " + casesPerMonthNationell);
+
+        DiagnosisGroupResponse diagnosisGroups1 = diagnosisGroups.getDiagnosisGroups(getVardenhet(0), new Range(getStart(0), getStop(3)));
+        LOG.info("DG data: " + diagnosisGroups1);
+        DiagnosisGroupResponse diagnosisGroupsNationell = diagnosisGroups.getDiagnosisGroups("nationell", new Range(getStart(0), getStop(3)));
+        LOG.info("Nationell DG data:" + diagnosisGroupsNationell);
+
+        DiagnosisGroupResponse diagnosisSubGroups1 = diagnosisSubGroups.getDiagnosisGroups(getVardenhet(0), new Range(getStart(0), getStop(3)), "A00-B99");
+        LOG.info("DSG data: " + diagnosisSubGroups1);
+        DiagnosisGroupResponse diagnosisSubGroupsNationell = diagnosisSubGroups.getDiagnosisGroups(getVardenhet(0), new Range(getStart(0), getStop(3)), "A00-B99");
+        LOG.info("Nationell DSG data: " + diagnosisSubGroupsNationell);
+
+        AgeGroupsResponse ageGroups1 = ageGroups.getHistoricalAgeGroups(getVardenhet(0), getStart(0), RollingLength.YEAR);
+        LOG.info("AG data: " + ageGroups1);
+        AgeGroupsResponse ageGroupsNationell = ageGroups.getHistoricalAgeGroups("nationell", getStart(0), RollingLength.YEAR);
+        LOG.info("Nationell AG data: " + ageGroupsNationell);
+
+        DegreeOfSickLeaveResponse degreeOfSickLeave1 = degreeOfSickLeave.getStatistics(getVardenhet(0), new Range(getStart(0), getStop(3)));
+        LOG.info("DOSL data: " + degreeOfSickLeave1);
+        DegreeOfSickLeaveResponse degreeOfSickLeaveNationell = degreeOfSickLeave.getStatistics("nationell", new Range(getStart(0), getStop(3)));
+        LOG.info("Nationell DOSL data: " + degreeOfSickLeaveNationell);
+
+        SickLeaveLengthResponse sjukfallslangdGrupp1 = sjukfallslangdGrupp.getHistoricalStatistics(getVardenhet(0), getStart(0), RollingLength.YEAR);
+        LOG.info("SLG data: " + sjukfallslangdGrupp1);
+        SickLeaveLengthResponse sjukfallslangdGruppNationell = sjukfallslangdGrupp.getHistoricalStatistics("nationell", getStart(0), RollingLength.YEAR);
+        LOG.info("SLG data: " + sjukfallslangdGruppNationell);
+        SimpleDualSexResponse<SimpleDualSexDataRow> sjukfallslangdGruppLong1 = sjukfallslangdGrupp.getLongSickLeaves(getVardenhet(0), new Range(getStart(0), getStop(3)));
+        LOG.info("SLG data: " + sjukfallslangdGruppLong1);
+        SimpleDualSexResponse<SimpleDualSexDataRow> sjukfallslangdGruppLongNationell = sjukfallslangdGrupp.getLongSickLeaves("nationell", new Range(getStart(0), getStop(3)));
+        LOG.info("SLG data: " + sjukfallslangdGruppLongNationell);
+
+        VerksamhetOverviewResponse verksamhetOverview1 = verksamhetOverview.getOverview(getVardenhet(0), new Range(getStart(0), getStop(3)));
+        LOG.info("VO data: " + verksamhetOverview1);
+        OverviewResponse overviewNationell = overview.getOverview(new Range(getStart(0), getStop(3)));
+        LOG.info("NO data: " + overviewNationell);
+
+        SimpleDualSexResponse<SimpleDualSexDataRow> casesPerCountyNationell = casesPerCounty.getStatistics(new Range(getStart(0), getStop(3)));
+        LOG.info("CPC: " + casesPerCountyNationell);
+
+        return Arrays.asList(casesPerMonth1, casesPerMonthNationell, diagnosisGroups1, diagnosisGroupsNationell, diagnosisSubGroups1, diagnosisSubGroupsNationell, ageGroups1, ageGroupsNationell, degreeOfSickLeave1, degreeOfSickLeaveNationell, sjukfallslangdGrupp1, sjukfallslangdGruppNationell, sjukfallslangdGruppLong1, sjukfallslangdGruppLongNationell, verksamhetOverview1, overviewNationell);
     }
 
     private void sleep() {

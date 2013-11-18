@@ -42,4 +42,9 @@ public class SickLeaveLengthResponse {
     public int getMonths() {
         return months;
     }
+
+    @Override
+    public String toString() {
+        return "SickLeaveLengthResponse{" + "sickLeaveGroupsRows=" + sickLeaveGroupsRows + ", months=" + months + '}';
+    }
 }

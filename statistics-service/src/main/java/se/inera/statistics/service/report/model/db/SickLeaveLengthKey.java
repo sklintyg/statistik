@@ -79,4 +79,9 @@ public class SickLeaveLengthKey implements Serializable {
         result = MAGIC * result + periods;
         return result;
     }
+
+    @Override
+    public String toString() {
+        return "SickLeaveLengthKey{" + "period='" + period + '\'' + ", hsaId='" + hsaId + '\'' + ", grupp='" + grupp + '\'' + ", periods=" + periods + '}';
+    }
 }
