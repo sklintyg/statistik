@@ -312,8 +312,10 @@ div.box-bottom {
 	background: #11b73c;
 }
 #overview-content #overview-change-container .overview-change-responsive-circle > div {
-	padding: 13%;
-	margin: 3% 0% 0% 36%;
+	/*padding: 13%;
+	margin: 3% 0% 0% 36%;*/
+	padding: 6%;
+	margin: 2% 0% 0% 43%;
 }
 #overview-content #overview-change-container .overview-change-responsive-circle > div > div, 
 #overview-content #overview-distribution-per-sex-container .overview-sex-distribution-responsive > div > div {
