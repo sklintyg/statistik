@@ -77,4 +77,9 @@ public class AldersgruppKey implements Serializable {
         result = HASHER * result + periods;
         return result;
     }
+
+    @Override
+    public String toString() {
+        return "AldersgruppKey{" + "period='" + period + '\'' + ", hsaId='" + hsaId + '\'' + ", grupp='" + grupp + '\'' + ", periods=" + periods + '}';
+    }
 }

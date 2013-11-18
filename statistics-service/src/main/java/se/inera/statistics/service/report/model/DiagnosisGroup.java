@@ -1,6 +1,6 @@
 package se.inera.statistics.service.report.model;
 
-public class DiagnosisGroup implements Comparable<DiagnosisGroup>{
+public class DiagnosisGroup implements Comparable<DiagnosisGroup> {
 
     public static final int ICD10_CODE_MAX_LEN = 3;
     private final String id;
@@ -24,9 +24,13 @@ public class DiagnosisGroup implements Comparable<DiagnosisGroup>{
         return name;
     }
 
+    public String asString() {
+        return id + " " + name;
+    }
+
     @Override
     public String toString() {
-        return id + " " + name;
+        return "DiagnosisGroup{" + "id='" + id + '\'' + ", name='" + name + '\'' + ", firstId='" + firstId + '\'' + ", lastId='" + lastId + '\'' + '}';
     }
 
     public boolean isCodeInGroup(String icd10Code) {

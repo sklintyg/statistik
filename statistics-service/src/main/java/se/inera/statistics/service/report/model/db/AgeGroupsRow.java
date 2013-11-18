@@ -83,4 +83,9 @@ public class AgeGroupsRow {
     public void setAldersgruppKey(AldersgruppKey aldersgruppKey) {
         this.key = aldersgruppKey;
     }
+
+    @Override
+    public String toString() {
+        return "AgeGroupsRow{" + "key=" + key + ", male=" + male + ", female=" + female + ", typ=" + typ + '}';
+    }
 }

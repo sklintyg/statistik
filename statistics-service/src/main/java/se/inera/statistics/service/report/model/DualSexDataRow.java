@@ -29,4 +29,8 @@ public class DualSexDataRow {
         return dataForSex;
     }
 
+    @Override
+    public String toString() {
+        return "DualSexDataRow{" + "name='" + name + '\'' + ", data=" + data + '}';
+    }
 }

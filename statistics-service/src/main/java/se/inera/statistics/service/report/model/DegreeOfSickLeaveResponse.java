@@ -38,4 +38,8 @@ public class DegreeOfSickLeaveResponse {
         return indexData;
     }
 
+    @Override
+    public String toString() {
+        return "DegreeOfSickLeaveResponse{" + "degreesOfSickLeave=" + degreesOfSickLeave + ", rows=" + rows + '}';
+    }
 }

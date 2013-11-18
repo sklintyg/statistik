@@ -23,7 +23,7 @@ public class DiagnosisGroupResponse {
         }
         List<String> subGroupStrings = new ArrayList<>();
         for (DiagnosisGroup diagnosisGroup : diagnosisGroups) {
-            subGroupStrings.add(diagnosisGroup.toString());
+            subGroupStrings.add(diagnosisGroup.asString());
         }
         return subGroupStrings;
     }
@@ -49,4 +49,8 @@ public class DiagnosisGroupResponse {
         return indexData;
     }
 
+    @Override
+    public String toString() {
+        return "DiagnosisGroupResponse{" + "diagnosisGroups=" + diagnosisGroups + ", rows=" + rows + '}';
+    }
 }
