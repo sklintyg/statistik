@@ -16,9 +16,10 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 import se.inera.statistics.service.demo.UtlatandeBuilder;
 import se.inera.statistics.service.processlog.LogConsumer;
-import se.inera.statistics.service.report.api.CasesPerMonth;
+import se.inera.statistics.service.report.api.*;
 import se.inera.statistics.service.report.listener.AldersGruppListener;
 import se.inera.statistics.service.report.listener.SjukfallPerDiagnosgruppListener;
+import se.inera.statistics.service.report.model.DiagnosisGroupResponse;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.SimpleDualSexDataRow;
 import se.inera.statistics.service.report.model.SimpleDualSexResponse;
@@ -47,6 +48,18 @@ public class RepresentativeIntygIntegrationTest {
 
     @Autowired
     private CasesPerMonth casesPerMonth;
+    @Autowired
+    private DiagnosisGroups diagnosisGroups;
+    @Autowired
+    private DiagnosisSubGroups diagnosisSubGroups;
+    @Autowired
+    private AgeGroups ageGroups;
+    @Autowired
+    private DegreeOfSickLeave degreeOfSickLeave;
+    @Autowired
+    private SjukfallslangdGrupp sjukfallslangdGrupp;
+    @Autowired
+    private VerksamhetOverview verksamhetOverview;
 
     @Autowired
     private ConnectionFactory connectionFactory;
@@ -81,8 +94,6 @@ public class RepresentativeIntygIntegrationTest {
             System.out.println("Intyg: " + intyg);
             simpleSend(builder.build(intyg.personNr, intyg.startDate, intyg.endDate, intyg.vardenhet, intyg.vardgivare, intyg.diagnos, intyg.grads).toString(), "001");
         }
-//        simpleSend(builder.build(getPerson(0), new LocalDate("2011-01-20"), new LocalDate("2011-03-11"), "enhetId", "A00", 0).toString(), "001");
-//        simpleSend(builder.build(getPerson(1), new LocalDate("2011-01-20"), new LocalDate("2011-03-11"), "enhetId", "A00", 0).toString(), "002");
 
         sleep();
 
@@ -90,22 +101,26 @@ public class RepresentativeIntygIntegrationTest {
 
         nationellUpdaterJob.checkLog();
 
-        SimpleDualSexResponse<SimpleDualSexDataRow> webData = casesPerMonth.getCasesPerMonth(getVardenhet(0), new Range(getStart(0), getStop(3)));
-        LOG.info("Web data: " + webData);
-        SimpleDualSexResponse<SimpleDualSexDataRow> nationellWebData = casesPerMonth.getCasesPerMonth("nationell", new Range(getStart(0), getStop(3)));
-        LOG.info("Nationell web data: " + nationellWebData);
+        SimpleDualSexResponse<SimpleDualSexDataRow> casesPerMonth1 = casesPerMonth.getCasesPerMonth(getVardenhet(0), new Range(getStart(0), getStop(3)));
+        LOG.info("CPM data: " + casesPerMonth1);
+        SimpleDualSexResponse<SimpleDualSexDataRow> casesPerMonthNationell = casesPerMonth.getCasesPerMonth("nationell", new Range(getStart(0), getStop(3)));
+        LOG.info("Nationell CPM data: " + casesPerMonthNationell);
 
-        System.out.println("Web data: " + webData);
-        assertEquals(12, webData.getRows().size());
-        assertEquals(12, nationellWebData.getRows().size());
+        DiagnosisGroupResponse diagnosisGroups1 = diagnosisGroups.getDiagnosisGroups(getVardenhet(0), new Range(getStart(0), getStop(3)));
+        LOG.info("DG data: " + diagnosisGroups1);
+        DiagnosisGroupResponse diagnosisGroupsNationell = diagnosisGroups.getDiagnosisGroups("nationell", new Range(getStart(0), getStop(3)));
+        LOG.info("Nationell DG data:" + diagnosisGroupsNationell);
+
+        assertEquals(12, casesPerMonth1.getRows().size());
+        assertEquals(12, casesPerMonthNationell.getRows().size());
 
         for (int i = 0; i < 1; i++) {
-            assertEquals(2, webData.getRows().get(i).getFemale().intValue());
-            assertEquals(1, webData.getRows().get(i).getMale().intValue());
+            assertEquals(2, casesPerMonth1.getRows().get(i).getFemale().intValue());
+            assertEquals(1, casesPerMonth1.getRows().get(i).getMale().intValue());
         }
         for (int i = 1; i < 12; i++) {
-            assertEquals(0, webData.getRows().get(i).getFemale().intValue());
-            assertEquals(0, webData.getRows().get(i).getMale().intValue());
+            assertEquals(0, casesPerMonth1.getRows().get(i).getFemale().intValue());
+            assertEquals(0, casesPerMonth1.getRows().get(i).getMale().intValue());
         }
     }
 

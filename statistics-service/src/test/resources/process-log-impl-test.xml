@@ -58,6 +58,7 @@
     <bean class="se.inera.statistics.service.report.repository.SjukskrivningsgradPersistenceHandler" id="caseDegree" />
     <bean class="se.inera.statistics.service.report.repository.NationellPersistenceHandler" id="nationellPersistenceHandler" />
     <bean class="se.inera.statistics.service.report.repository.SjukfallPerLanPersistenceHandler" id="casesPerCounty" />
+    <bean class="se.inera.statistics.service.report.repository.VerksamhetOverviewPersistenceHandler" id="verksamhetOverview" />
     <bean class="se.inera.ifv.statistics.spi.authorization.impl.HSAWebServiceCalls" id="hsaWebServiceCalls" />
     <bean class="se.inera.statistics.hsa.stub.HsaWebServiceStub" id="hsaWebServiceStub" />
     <bean class="se.inera.statistics.hsa.stub.HsaServiceStub" id="hsaServiceStub" />
