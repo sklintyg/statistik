@@ -60,7 +60,7 @@
 <link href="<c:url value='/bootstrap/2.3.2/css/bootstrap-responsive.css'/>" rel="stylesheet" media="not print">
 <link href="<c:url value='/css/print.css'/>" rel="stylesheet" media="print">
 
-<link rel="icon" type="image/png" href="../img/favicon.ico">
+<link rel="icon" type="image/png" href="<c:url value='/img/favicon.ico'/>">
 <security:authorize access="isAuthenticated()">
     <script>var isLoggedIn = true;</script>
 </security:authorize>
