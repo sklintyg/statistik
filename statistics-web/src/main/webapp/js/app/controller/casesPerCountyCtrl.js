@@ -7,6 +7,7 @@
 	var paintChart = function(chartCategories, chartSeries) {
 	    var chartOptions = ControllerCommons.getHighChartConfigBase(chartCategories, chartSeries);
 	    chartOptions.chart.type = 'column';
+	    chartOptions.legend.enabled = $routeParams.printBw || $routeParams.print;
         chartOptions.xAxis.title.text = "Län";
 		return new Highcharts.Chart(chartOptions);
 	};
@@ -17,8 +18,18 @@
 	};
 
 	var updateChart = function(ajaxResult) {
-		chart = paintChart(ajaxResult.categories, ControllerCommons.setupSeriesForDisplayType($routeParams.printBw, ajaxResult.series, "bar"));
+	    $scope.series = ControllerCommons.setupSeriesForDisplayType($routeParams.printBw, ajaxResult.series, "bar");
+		chart = paintChart(ajaxResult.categories, $scope.series);
 	};
+
+    $scope.toggleSeriesVisibility = function(index) {
+        var series = chart.series[index];
+        if (series.visible) {
+            series.hide();
+        } else {
+            series.show();
+        }
+    };
 
     var populatePageWithData = function(result){
         $scope.subTitle = "Antal sjukfall per län " + result.period;
