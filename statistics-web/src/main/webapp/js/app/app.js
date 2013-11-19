@@ -5,11 +5,17 @@ var app = {};
 
 app.statisticsApp = angular.module('StatisticsApp', [ 'ngCookies', 'ui.bootstrap' ]).config(
         [ '$routeProvider', '$httpProvider', function($routeProvider, $httpProvider) {
-            $routeProvider.when('/nationell/oversikt', {
+            $routeProvider.when('/login', {
+                templateUrl : 'views/login.html',
+	            title: 'Login Page'
+            }).when('/fakelogin', {
+                templateUrl : 'views/fakelogin.html',
+                title: 'Fake Login Page'
+            }).when('/nationell/oversikt', {
                 templateUrl : 'views/overview.html',
                 controller : 'OverviewCtrl',
                 controllerAs : 'NationalOverviewCtrl',
-	            title: 'Översikt'
+                title: 'Översikt'
             }).when('/nationell/sjukfallPerManad', {
                 templateUrl : 'views/detailsView.html',
                 controller : 'CasesPerMonthCtrl',
