@@ -8,15 +8,11 @@ class LoginPage extends Page {
 
     static content = {
 
-        usernameInput { $("#j_username") }
-        passwordInput { $("#j_password") }
         loginBtn { $("#login_btn") }
         
     }
     
-    def login(username, password) {
-        usernameInput.value(username)
-        passwordInput.value(password)
+    def login() {
         clickLogin()
     }
     

@@ -5,7 +5,7 @@ import org.openqa.selenium.By
 
 class CasesPerSexPage extends DetailsPage {
 
-    static at = { title == "Andel sjukfall per kön | Nationella statistiktjänsten" }
+    static at = { title == "Andel sjukfall per kön | Statistiktjänst" }
 
     static content = {
 

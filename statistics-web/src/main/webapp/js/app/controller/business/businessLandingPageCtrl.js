@@ -12,7 +12,7 @@ app.businessLandingPageCtrl = function ($window, $cookies, statisticsData) {
                     }
                 }
             }
-            $window.location.replace("#/verksamhet/" + defaultVerksamhetId + "/oversikt");
+            $window.location.href = "#/verksamhet/" + defaultVerksamhetId + "/oversikt";
         }, function() {
             $scope.dataLoadingError = true;
         });

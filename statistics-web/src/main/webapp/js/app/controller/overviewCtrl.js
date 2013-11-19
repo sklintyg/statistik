@@ -67,7 +67,7 @@
         var chartOptions = ControllerCommons.getHighChartConfigBase(categories, series);
         chartOptions.chart.type = 'column';
         chartOptions.chart.renderTo = containerId;
-        chartOptions.chart.height = 185;
+        chartOptions.chart.height = 210;
         chartOptions.xAxis.title = { text: 'Dagar' };
         chartOptions.yAxis.title = { text: 'Antal' };
         chartOptions.legend.enabled = false;

@@ -219,7 +219,7 @@ public class BasicWebappWalkthrough {
         }
         Browser.drive {
             waitFor { at LoginPage }
-            page.login("admin", "admin")
+            page.login()
         }
     }
     
