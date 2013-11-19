@@ -111,7 +111,7 @@
                                         </thead>
                                         <tbody>
                                             <tr data-ng-repeat="group in diagnosisGroups">
-                                                <td class="diagnostics-group-name"><span style="height:10px; width:10px; background-color: {{group.color}};"></span>{{group.name}}</td>
+                                                <td class="diagnostics-group-name"><div class="overview-legend-color-square" ng-style="{backgroundColor: group.color}"></div>{{group.name}}</td>
                                                 <td class="diagnostics-group-quantity">{{group.quantity | thousandseparated}}</td>
                                                 <td class="diagnostics-group-alternation">{{group.alternation}}%</td>
                                             </tr>
@@ -153,7 +153,7 @@
                                                 </thead>
                                                 <tbody>
                                                     <tr data-ng-repeat="group in ageGroups">
-                                                        <td class="diagnostics-group-name"><span style="height:10px; width:10px; background-color: {{group.color}};"></span>{{group.name}}</td>
+                                                        <td class="diagnostics-group-name"><div class="overview-legend-color-square" ng-style="{backgroundColor: group.color}"></div>{{group.name}}</td>
                                                         <td class="diagnostics-group-quantity">{{group.quantity | thousandseparated}}</td>
                                                         <td class="diagnostics-group-alternation">{{group.alternation}}%</td>
                                                     </tr>
@@ -197,7 +197,7 @@
                                                 </thead>
                                                 <tbody>
                                                     <tr data-ng-repeat="group in degreeOfSickLeaveGroups">
-                                                        <td><span style="height:10px; width:10px; background-color: {{group.color}};"></span>{{group.name}}</td>
+                                                        <td><div class="overview-legend-color-square" ng-style="{backgroundColor: group.color}"></div>{{group.name}}</td>
                                                         <td class="diagnostics-group-quantity">{{group.quantity | thousandseparated}}</td>
                                                         <td class="diagnostics-group-alternation">{{group.alternation}}%</td>
                                                     </tr>
@@ -277,7 +277,7 @@
                                                 </thead>
                                                 <tbody>
                                                     <tr data-ng-repeat="group in sickLeavePerCountyGroups">
-                                                        <td class="diagnostics-group-name"><span style="height:10px; width:10px; background-color: {{group.color}};"></span>{{group.name}}</td>
+                                                        <td class="diagnostics-group-name"><div class="overview-legend-color-square" ng-style="{backgroundColor: group.color}"></div>{{group.name}}</td>
                                                         <td class="diagnostics-group-quantity">{{group.quantity | thousandseparated}}</td>
                                                         <td class="diagnostics-group-alternation">{{group.alternation}}%</td>
                                                     </tr>
