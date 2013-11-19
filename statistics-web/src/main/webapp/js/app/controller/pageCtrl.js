@@ -44,7 +44,7 @@
     $scope.selectVerksamhet = function(verksamhetId) {
         $cookies.verksamhetId = verksamhetId;
         $scope.verksamhetName = getSelectedVerksamhet(verksamhetId, $scope.businesses).name;
-        $window.location.replace($scope.currentUrl.replace(new RegExp($scope.businessId, 'g'), verksamhetId));
+        $window.location.href = $scope.currentUrl.replace(new RegExp($scope.businessId, 'g'), verksamhetId);
         $scope.businessId = verksamhetId;
     };
     
