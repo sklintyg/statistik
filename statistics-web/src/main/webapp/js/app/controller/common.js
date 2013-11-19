@@ -119,7 +119,12 @@ var ControllerCommons = new function(){
                 categories : ControllerCommons.map(chartCategories, function(name) {
                     return ControllerCommons.htmlsafe(name);
                 }),
-                title: { align: 'high' }
+                title: { 
+                	align: 'high',
+                	style: {
+                    	color: '#008391'
+                    }
+                }
             },
             yAxis : {
                 allowDecimals : false,
@@ -130,8 +135,11 @@ var ControllerCommons = new function(){
                     verticalAlign : 'top',
                     rotation : 0,
                     floating : true,
-                    x : 30,
-                    y : -10
+                    x : -10,
+                    y : 5,
+                    style: {
+                    	color: '#008391'
+                    }
                 },
                 labels : {
                     formatter : function() {

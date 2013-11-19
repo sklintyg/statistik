@@ -30,6 +30,7 @@
         chartOptions.legend.enabled = $routeParams.printBw || $routeParams.print;
         chartOptions.xAxis.title.text = "Period";
         chartOptions.yAxis.title.text = "Antal";
+        chartOptions.text = "#008391";
         return new Highcharts.Chart(chartOptions);
 	};
 
