@@ -10,6 +10,10 @@
         Inera Statistics Root Project - The parent of all other
         Inera Statistics modules.
     </description>
+    <scm>
+        <connection>scm:git:https://code.google.com/p/inera-statistics/</connection>
+        <tag>HEAD</tag>
+    </scm>
 
     <modules>
         <module>build-tools</module>
