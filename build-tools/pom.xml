@@ -3,7 +3,7 @@
   <parent>
     <artifactId>statistics</artifactId>
     <groupId>se.inera.statistics</groupId>
-    <version>1.0-RC3</version>
+    <version>1.0-RC4-SNAPSHOT</version>
   </parent>
   <artifactId>build-tools</artifactId>
   <name>Build Tools</name>
