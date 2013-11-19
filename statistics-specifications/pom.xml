@@ -1,22 +1,14 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-<!--   <parent>
-    <groupId>se.inera.certificate-web</groupId>
-    <artifactId>certificate-web</artifactId>
-    <version>1.1-SNAPSHOT</version>
-  </parent>
- -->
-
    <parent>
     <groupId>se.inera.statistics</groupId>
     <artifactId>statistics</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.1-SNAPSHOT</version>
   </parent>
  
 
   <artifactId>statistics-specifications</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
   <name>Inera Statistics Fitnesse specifications</name>
   
     <properties>
