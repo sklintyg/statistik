@@ -12,6 +12,8 @@
 
     <jdbc:embedded-database id="dataSource" type="H2"/>
 
+    <context:property-placeholder/>
+
     <bean id="org.h2.tools.Server"
           class="org.h2.tools.Server"
           factory-method="createTcpServer"

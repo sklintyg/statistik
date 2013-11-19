@@ -15,7 +15,7 @@ public class NationellUpdaterJob {
     @Autowired
     private NationellUpdater updater;
 
-    @Scheduled(cron = "0 0/10 * * * ?")
+    @Scheduled(cron = "${scheduler.nationellJob.cron}")
     public void checkLog() {
         LOG.info("Nationell Job");
         updater.updateAldersgrupp();
