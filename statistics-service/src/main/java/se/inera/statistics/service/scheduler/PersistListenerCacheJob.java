@@ -15,7 +15,7 @@ public class PersistListenerCacheJob {
     private AldersGruppListener aldersGruppListener;
 
     //@Scheduled(fixedDelayString = "${statistics.persist.listener.cache}")
-    @Scheduled(cron = "0/10 * * * * ?")
+    @Scheduled(cron = "${scheduler.persistJob.cron}")
     public void persistCache() {
         LOG.info("Persisting listener caches ...");
         aldersGruppListener.persistCache();

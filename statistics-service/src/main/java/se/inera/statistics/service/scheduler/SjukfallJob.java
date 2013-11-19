@@ -4,6 +4,7 @@ import org.joda.time.LocalDate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 
 import se.inera.statistics.service.sjukfall.SjukfallService;
@@ -14,7 +15,7 @@ public class SjukfallJob {
     @Autowired
     private SjukfallService sjukfallService;
 
-    @Scheduled(cron = "0 0 2 * * *")
+    @Scheduled(cron = "${scheduler.sjukfallJob.cron}")
     public void cleanupSjukfall() {
         LOG.info("Running nightly clean up of sjukfall ...");
         int result = sjukfallService.expire(new LocalDate());
