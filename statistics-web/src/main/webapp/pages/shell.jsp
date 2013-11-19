@@ -87,11 +87,11 @@
 					<span>Statistiktjänst för ordinerad sjukskrivning</span>
 				</div>
 				<div class="span4 pull-right" style="width: auto !important;">
-					<div id="business-login-container" ng-hide="isLoggedIn">
+					<div id="business-login-container" style="display: none;" ng-hide="isLoggedIn" >
 						<span id="business-login-span">För verksamhetsstatistik: </span>
 						<button class="btn" data-ng-click="loginClicked('${applicationScope.loginUrl}')" type="button" id="business-login-btn" value="Logga in">Logga in</button>
 					</div>
-					<div id="business-logged-in-user-container" style="display: block; position: absolute; right: 0; margin-right: 25px;" ng-show="isLoggedIn">
+					<div id="business-logged-in-user-container" style="display: none; position: absolute; right: 0; margin-right: 25px;" ng-show="isLoggedIn" >
 						<!-- div class="pull-right">
 							<img id="business-me-icon" alt="Bild på inloggad användare" src="<c:url value='/img/avatar.png'/>"/>
 						</div -->
