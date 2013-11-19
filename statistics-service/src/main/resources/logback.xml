@@ -22,7 +22,7 @@
     <appender name="FILE" class="ch.qos.logback.core.FileAppender" append="false">
         <file>integrationTest.txt</file>
         <layout class="ch.qos.logback.classic.PatternLayout">
-            <Pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n
+            <Pattern>%msg%n
             </Pattern>
         </layout>
     </appender>

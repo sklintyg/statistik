@@ -7,8 +7,11 @@ import java.io.Serializable;
  */
 public class Vardenhet implements Serializable {
 
-    private final String id;
-    private final String namn;
+    private String id;
+    private String namn;
+
+    public Vardenhet() {
+    }
 
     public Vardenhet(String id, String namn) {
         this.id = id;

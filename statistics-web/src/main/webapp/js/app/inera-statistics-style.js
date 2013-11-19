@@ -11,6 +11,6 @@ $(document).ready(function(){
     }
 
 	$('#business-login-btn').click(function(){
-        window.location.replace("/login.jsp");
+        window.location.replace($(this).data('url'));
 	});
 });

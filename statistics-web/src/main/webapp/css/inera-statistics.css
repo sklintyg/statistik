@@ -1674,6 +1674,14 @@ a.has-collapse {
 	position: relative;
 	border-radius: 4px;
 } 
+.overview-legend-color-square {
+    display: inline-block;	
+	width: 10px;
+	height: 10px;
+	top: 1px;
+	position: relative;
+	border-radius: 2px;
+} 
 .overview-group-name-colour-square {
 	display: inline-block;	
 	width: 15px;

@@ -6,7 +6,7 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
                             http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd
                             http://cxf.apache.org/jaxrs http://cxf.apache.org/schemas/jaxrs.xsd"
-       profile="dev,test,qa">
+       profile="dev,demo,test">
 
   <bean id="hsaServiceStub" class="se.inera.statistics.hsa.stub.HsaServiceStub"/>
   <jaxws:endpoint address="/hsa" implementor="se.inera.statistics.hsa.stub.HsaWebServiceStub"/>
@@ -22,7 +22,13 @@
       <entry key="json" value="application/json"/>
     </jaxrs:extensionMappings>
   </jaxrs:server>
+  <bean id="objectMapper" class="com.fasterxml.jackson.databind.ObjectMapper"/>
 
+  <bean id="jacksonJsonProvider" class="com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider">
+    <property name="mapper">
+      <bean class="com.fasterxml.jackson.databind.ObjectMapper"/>
+    </property>
+  </bean>
   <bean id="hsaStubRestApi" class="se.inera.statistics.hsa.stub.HsaStubRestApi"/>
 
   <bean class="se.inera.statistics.hsa.stub.BootstrapBean"/>

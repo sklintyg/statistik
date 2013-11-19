@@ -14,8 +14,18 @@
 <div class="container">
     <div class="row-fluid center">
         <div class="span12">
-        	<legend>Logga in för verksamhetsstatistik</legend>
-			<a class="btn btn-success" href="/saml/login">SITHS login</a>
+        	<legend>Logga in för verksamhetsstatistik - demo</legend>
+            <form name='f' method='POST' action='/fake'>
+			    <textarea name='userJsonDisplay' id='userJsonDisplay' placeholder="Ange JSON struktur" style="height: 150px;">{ 
+  "fornamn":"Bengt", 
+  "efternamn":"Siffersson", 
+  "hsaId":"HSA-BS", 
+  "lakare":true
+}</textarea>
+                <br>
+				<button class="btn btn-success" name="Login" id="login_btn" type="submit">Logga in</button>
+			    <button class="btn" name="Återställ" type="reset">Återställ</button>
+			</form>
         </div>
     </div>
 </div>

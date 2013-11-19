@@ -5,7 +5,7 @@ import org.openqa.selenium.By
 
 class AgeGroupsPage extends DetailsPage {
 
-    static at = { title == "Åldersgrupper | Nationella statistiktjänsten" }
+    static at = { title == "Åldersgrupper | Statistiktjänst" }
 
     static content = {
 

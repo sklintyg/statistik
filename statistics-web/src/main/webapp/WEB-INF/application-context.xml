@@ -27,11 +27,18 @@
     http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd
     http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.2.xsd">
 
-    <context:property-placeholder location="classpath:/application-context.properties"/>
+    <beans profile="test">
+        <context:property-placeholder location="file:${user.home}/.test.statistik.se/config.properties" order="1" ignore-resource-not-found="true" ignore-unresolvable="true"/>
+        <context:property-placeholder location="classpath*:default.test.properties" order="2" ignore-resource-not-found="false" ignore-unresolvable="false"/>
+    </beans>
+    <beans profile="qa">
+        <context:property-placeholder location="file:${statistics.config.file}" order="1" ignore-resource-not-found="false" ignore-unresolvable="true"/>
+        <context:property-placeholder location="classpath*:default.qa.properties" order="2" ignore-resource-not-found="false" ignore-unresolvable="false"/>
+    </beans>
+    <beans profile="dev">
+        <context:property-placeholder location="classpath*:default.dev.properties" ignore-resource-not-found="true"/>
+    </beans>
 
-    <bean id="applicationContextProvider" class="se.inera.auth.ApplicationContextProvider"/>
-
-    <bean class="se.inera.statistics.hsa.services.HsaOrganizationsServiceImpl"/>
 
     <beans profile="!embedded">
         <import resource="classpath*:process-log-impl.xml"/>
@@ -41,6 +48,11 @@
     </beans>
 
     <beans>
+        <context:property-placeholder location="classpath:/application-context.properties"/>
+
+        <bean id="applicationContextProvider" class="se.inera.auth.ApplicationContextProvider"/>
+
+        <bean class="se.inera.statistics.hsa.services.HsaOrganizationsServiceImpl"/>
         <bean id="chartDataService" class="se.inera.statistics.web.service.ChartDataService">
             <constructor-arg ref="overview"/>
             <constructor-arg ref="casesPerMonth"/>
@@ -66,6 +78,7 @@
         <bean id="loginInfoService" class="se.inera.statistics.web.service.LoginInfoService"/>
 
         <import resource="classpath*:hsa-services-config.xml"/>
+        <import resource="classpath*:hsa-stub-context.xml"/>
         <import resource="application-context-cxf.xml"/>
         <import resource="application-context-security.xml"/>
 
@@ -76,7 +89,14 @@
         <bean class="org.springframework.core.io.ClassPathResource" id="icd10ChaptersAnsiFile">
             <constructor-arg value="KSH97_AVS.ANS"/>
         </bean>
-    </beans>
+        <bean class="org.springframework.web.context.support.ServletContextAttributeExporter">
+             <property name="attributes">
+                 <map>
+                     <entry key="loginUrl" value="${login.url}"/>
+                 </map>
+             </property>
+         </bean>
+      </beans>
 
     <beans profile="!demo,!test,!db,!qa">
         <bean class="se.inera.statistics.service.report.mock.CasesPerMonthMock" id="casesPerMonth"/>
