@@ -20,15 +20,13 @@
 			<a class="dontprint" id="chart-footnote-trigger" data-toggle="collapse" data-target="#chart-footnote-text" data-ng-show="chartFootnotes" text="Information om diagrammet"><img src="/img/information.png"></a>
 		</span>
 		<div class="row-fluid" data-ng-show="chartFootnotes">
-        	<div class="span12" id="readMore" data-ng-show="chartFootnotes" style="margin-top: 10px;">
-        		<div class="collapse" id="chart-footnote-text">
-        			<div class="alert alert-info">
-        				<div data-ng-repeat="chartFootnote in chartFootnotes">
-         					<p>{{chartFootnote}}</p>
-         				</div>
-        			</div>
-        		</div>
-        	</div>
+			<div class="collapse" id="chart-footnote-text">
+       			<div class="alert alert-info">
+       				<div data-ng-repeat="chartFootnote in chartFootnotes">
+       					<p>{{chartFootnote}}</p>
+       				</div>
+       			</div>
+       		</div>
         </div>
 	</div>
 
