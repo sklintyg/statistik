@@ -21,4 +21,6 @@ public interface NationellUpdater {
 
     @Transactional
     void updateSjukskrivningsgrad();
+
+    void setCutoff(int cutoff);
 }
