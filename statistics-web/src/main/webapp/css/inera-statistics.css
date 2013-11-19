@@ -878,6 +878,7 @@ div.accordion-body.in.collapse > div.accordion-heading a.accordion-toggle{
 	font-weight: bold;
 	margin-bottom: 0px;
 	margin-top: 0px;
+	color: #008391; 
 }
 .popover {
 	z-index: 9999 !important;
@@ -1675,12 +1676,12 @@ a.has-collapse {
 	border-radius: 4px;
 } 
 .overview-legend-color-square {
-    display: inline-block;	
-	width: 10px;
-	height: 10px;
-	top: 1px;
+    display: inline-block;
+	width: 15px;
+	height: 15px;
+	margin-right: 5px;
 	position: relative;
-	border-radius: 2px;
+	border-radius: 5px;
 } 
 .overview-group-name-colour-square {
 	display: inline-block;	
