@@ -39,7 +39,6 @@
     <dependency>
       <groupId>se.inera.statistics</groupId>
       <artifactId>statistics-service</artifactId>
-      <version>1.0-RC1</version>
     </dependency>
     <dependency>
       <groupId>javax.servlet</groupId>
