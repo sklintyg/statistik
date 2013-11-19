@@ -191,9 +191,9 @@ public class RepresentativeIntygIntegrationTest {
         AldersGruppListener.setMaxCacheSize(1);
         SjukfallPerDiagnosgruppListener.setMaxCacheSize(1);
         UtlatandeBuilder builder1 = new UtlatandeBuilder("/json/integration/intyg1.json", "Intyg med 1 sjuktal");
-        UtlatandeBuilder builder2 = new UtlatandeBuilder("/json/integration/intyg1.json", "Intyg med 1 sjuktal");
-        UtlatandeBuilder builder3 = new UtlatandeBuilder("/json/integration/intyg1.json", "Intyg med 1 sjuktal");
-        UtlatandeBuilder builder4 = new UtlatandeBuilder("/json/integration/intyg1.json", "Intyg med 1 sjuktal");
+        UtlatandeBuilder builder2 = new UtlatandeBuilder("/json/integration/intyg2.json", "Intyg med 2 sjuktal");
+        UtlatandeBuilder builder3 = new UtlatandeBuilder("/json/integration/intyg3.json", "Intyg med 3 sjuktal");
+        UtlatandeBuilder builder4 = new UtlatandeBuilder("/json/integration/intyg4.json", "Intyg med 4 sjuktal");
         UtlatandeBuilder[] builders = {builder1, builder2, builder3, builder4};
 
         LOG.info("===========START==========");
@@ -306,11 +306,11 @@ public class RepresentativeIntygIntegrationTest {
         LOG.info("Nationell SLGL data: " + sjukfallslangdGruppLongNationell);
 
         VerksamhetOverviewResponse verksamhetOverview1 = verksamhetOverview.getOverview(getVardenhet(ENVE), new Range(getStart(0), getStop(3)));
-        LOG.info("VO data: " + verksamhetOverview1);
+//        LOG.info("VO data: " + verksamhetOverview1);
         VerksamhetOverviewResponse verksamhetOverview2 = verksamhetOverview.getOverview(getVardenhet(TVAVE), new Range(getStart(0), getStop(3)));
-        LOG.info("VO data: " + verksamhetOverview2);
+//        LOG.info("VO data: " + verksamhetOverview2);
         OverviewResponse overviewNationell = overview.getOverview(new Range(getStart(0), getStop(3)));
-        LOG.info("NO data: " + overviewNationell);
+//        LOG.info("NO data: " + overviewNationell);
 
         SimpleDualSexResponse<SimpleDualSexDataRow> casesPerCountyNationell = casesPerCounty.getStatistics(new Range(getStart(0), getStop(3)));
         LOG.info("CPC: " + casesPerCountyNationell);
