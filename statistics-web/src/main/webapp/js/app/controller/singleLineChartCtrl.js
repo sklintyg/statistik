@@ -38,9 +38,19 @@
 		$scope.headerrows = ajaxResult.headers;
 		$scope.rows = ajaxResult.rows;
 	};
+	
+	var setColorToTotalCasesSeries = function(series) {
+	    for(var i = 0; i < series.length; i++) {
+	        if (series[i].name === "Antal sjukfall") {
+	            series[i].color = "#B0B0B0";
+	            break;
+	        }
+	    }
+	};
 
     var updateChart = function(ajaxResult) {
 	    $scope.series = ControllerCommons.setupSeriesForDisplayType($routeParams.printBw, ajaxResult.series, "line");
+	    setColorToTotalCasesSeries($scope.series);
 	    chart = paintChart(ajaxResult.categories, $scope.series);
     };
 
