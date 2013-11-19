@@ -5,7 +5,7 @@ import org.openqa.selenium.By
 
 class CasesPerCountyPage extends DetailsPage {
 
-    static at = { title == "Län | Nationella statistiktjänsten" }
+    static at = { title == "Län | Statistiktjänst" }
 
     static content = {
 
