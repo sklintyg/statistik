@@ -15,7 +15,7 @@ public class LogJob {
     @Autowired
     private LogConsumer consumer;
 
-    @Scheduled(cron = "0/10 * * * * ?")
+    @Scheduled(cron = "${scheduler.logJob.cron}")
 //    @Scheduled(fixedDelayString = "500")
     public void checkLog() {
         LOG.debug("Log Job");

@@ -87,17 +87,17 @@
 					<span>Statistiktjänst för ordinerad sjukskrivning</span>
 				</div>
 				<div class="span4 pull-right" style="width: auto !important;">
-					<div id="business-login-container">
+					<div id="business-login-container" ng-hide="isLoggedIn">
 						<span id="business-login-span">För verksamhetsstatistik: </span>
-						<button class="btn" data-url="${applicationScope.loginUrl}" type="button" id="business-login-btn" value="Logga in">Logga in</button>
+						<button class="btn" data-ng-click="loginClicked('${applicationScope.loginUrl}')" type="button" id="business-login-btn" value="Logga in">Logga in</button>
 					</div>
-					<div id="business-logged-in-user-container" style="display: none; position: absolute; right: 0; margin-right: 25px;">
+					<div id="business-logged-in-user-container" style="display: block; position: absolute; right: 0; margin-right: 25px;" ng-show="isLoggedIn">
 						<!-- div class="pull-right">
 							<img id="business-me-icon" alt="Bild på inloggad användare" src="<c:url value='/img/avatar.png'/>"/>
 						</div -->
 						<div class="header-box-user-profile pull-right">
 							<span class="user-logout pull-right">
-								<a href="/j_spring_security_logout">Logga ut</a>
+								<a href="/saml/logout">Logga ut</a>
 							</span>
 							<span class="user-name pull-right" style="margin-right: 10px;">Användare Andersson</span>
 							<br>
@@ -164,7 +164,7 @@
 					<h2 class="hidden-header">Navigering för verksamhetsstatistik</h2>
 					<!-- BUSINESS STATISTIC MENU -->
 					  <div class="accordion-heading statistics-menu">
-					    <div class="accordion-toggle first-level-menu disabled" id="business-statistics-toggle" data-parent="#statistics-menu-accordion" data-ng-class="{active: showOperation, collapsed: !showOperation, disabled: !is_loggedin}" data-ng-click="toggleOperationAccordion()">
+					    <div class="accordion-toggle first-level-menu" id="business-statistics-toggle" data-parent="#statistics-menu-accordion" data-ng-class="{active: showOperation, collapsed: !showOperation, disabled: !isLoggedIn}" data-ng-click="toggleOperationAccordion()">
 					      <span data-ng-bind="organisationMenuLabel"></span><i class="statistict-left-menu-expand-icon"></i> <!-- Inloggad: Enbart "Verksamhetsstatistik" -->
 					    </div>
 					  </div>

@@ -7,7 +7,7 @@
      $scope.showNational = false;
      $scope.showOperation = false;
      $scope.showAbout = false;
-     $scope.is_loggedin = isLoggedIn;
+     $scope.isLoggedIn = isLoggedIn;
 
      $scope.toggleNationalAccordion = function() {
          $scope.showNational = !$scope.showNational;

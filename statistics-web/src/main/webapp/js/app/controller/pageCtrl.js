@@ -48,4 +48,10 @@
         $scope.businessId = verksamhetId;
     };
     
+    $scope.isLoggedIn = isLoggedIn;
+    
+    $scope.loginClicked = function(url) {
+        $window.location.href = "#/" + url;
+    }
+    
  };

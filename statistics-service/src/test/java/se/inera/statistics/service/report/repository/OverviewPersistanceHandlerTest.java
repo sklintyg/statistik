@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.transaction.annotation.Transactional;
 
 import se.inera.statistics.service.report.api.*;
@@ -86,6 +87,10 @@ public class OverviewPersistanceHandlerTest extends OverviewPersistenceHandler {
         casesPerCounty.count("2013-09", "id2", "01", RollingLength.QUARTER, Sex.Female);
         casesPerCounty.count("2013-06", "id1", "14", RollingLength.QUARTER, Sex.Female);
 
+    }
+
+    private void updateNational(int cutoff) {
+        ReflectionTestUtils.invokeSetterMethod(nationellUpdater, "cutoff", cutoff);
         nationellUpdater.updateCasesPerMonth();
         nationellUpdater.updateAldersgrupp();
         nationellUpdater.updateDiagnosgrupp();
@@ -96,6 +101,7 @@ public class OverviewPersistanceHandlerTest extends OverviewPersistenceHandler {
 
     @Test
     public void getOverviewTest() {
+        updateNational(0);
         LocalDate from = new LocalDate(2013, 7, 1);
         LocalDate to = new LocalDate(2013, 9, 1);
         Range range = new Range(from, to);
@@ -119,6 +125,40 @@ public class OverviewPersistanceHandlerTest extends OverviewPersistenceHandler {
         Assert.assertEquals(1, result.getSickLeaveLengthGroups().get(1).getQuantity());
 
         Assert.assertEquals(1, result.getLongSickLeavesTotal());
+        Assert.assertEquals(0, result.getLongSickLeavesAlternation());
+
+        Assert.assertEquals(1, result.getPerCounty().get(0).getQuantity());
+        Assert.assertEquals(0, result.getPerCounty().get(0).getAlternation());
+        Assert.assertEquals(2, result.getPerCounty().get(1).getQuantity());
+        Assert.assertEquals(100, result.getPerCounty().get(1).getAlternation());
+    }
+
+    @Test
+    public void getOverviewLowCutoffTest() {
+        updateNational(2);
+        LocalDate from = new LocalDate(2013, 7, 1);
+        LocalDate to = new LocalDate(2013, 9, 1);
+        Range range = new Range(from, to);
+
+        OverviewResponse result = this.getOverview(range);
+
+        Assert.assertEquals(100, result.getCasesPerMonthSexProportion().getFemaleProportion());
+        Assert.assertEquals(0, result.getCasesPerMonthSexProportion().getMaleProportion());
+        Assert.assertEquals(2, result.getDiagnosisGroups().get(0).getQuantity());
+        Assert.assertEquals(0, result.getDiagnosisGroups().get(0).getAlternation());
+        Assert.assertEquals(3, result.getAgeGroups().size());
+        Assert.assertEquals(2, result.getAgeGroups().get(0).getQuantity());
+        Assert.assertEquals(0, result.getAgeGroups().get(0).getAlternation());
+
+        Assert.assertEquals(0, result.getDegreeOfSickLeaveGroups().get(0).getQuantity());
+        Assert.assertEquals(2, result.getDegreeOfSickLeaveGroups().get(3).getQuantity());
+        Assert.assertEquals(0, result.getDegreeOfSickLeaveGroups().get(0).getAlternation());
+        Assert.assertEquals(0, result.getDegreeOfSickLeaveGroups().get(3).getAlternation());
+
+        Assert.assertEquals(2, result.getSickLeaveLengthGroups().get(0).getQuantity());
+        Assert.assertEquals(0, result.getSickLeaveLengthGroups().get(1).getQuantity());
+
+        Assert.assertEquals(0, result.getLongSickLeavesTotal());
         Assert.assertEquals(0, result.getLongSickLeavesAlternation());
 
         Assert.assertEquals(1, result.getPerCounty().get(0).getQuantity());
