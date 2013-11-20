@@ -48,7 +48,7 @@ public class ChartDataServiceTest {
         ChartDataService chartDataService = new ChartDataService(null, null, null, null, null, null, null, null);
         List<DiagnosisGroup> diagnosisGroups = chartDataService.getDiagnosisGroups();
         assertEquals(22, diagnosisGroups.size());
-        assertTrue(diagnosisGroups.toString().contains("DiagnosisGroup{id='E00-E90', name='Endokrina sjukdomar, nutritionsrubbningar och ämnesomsättningssjukdomar', firstId='E00', lastId='E90'}"));
+        assertTrue(diagnosisGroups.toString().contains("{\"DiagnosisGroup\":{\"id\":\"E00-E90\", \"name\":\"Endokrina sjukdomar, nutritionsrubbningar och ämnesomsättningssjukdomar\", \"firstId\":\"E00\", \"lastId\":\"E90\"}}"));
     }
 
     @Test
