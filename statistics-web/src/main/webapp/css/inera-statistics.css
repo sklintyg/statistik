@@ -430,7 +430,6 @@ legend {
 	border-right: 1px solid #dddddd;
 }
 #overview-content table#datatable {
-	/*width: 55%;*/
 	width: 61%;
 	border: 1px solid transparent;
 	border-bottom: 1px solid #dddddd;

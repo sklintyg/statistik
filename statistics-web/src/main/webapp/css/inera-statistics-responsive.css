@@ -908,6 +908,12 @@ form.bs-docs-example {
   .bs-docs-sidenav > li > a {
     width: 230px \9; /* Override the previous IE8-9 hack */
   }
+  #overview-distribution-of-sick-degree-container {
+	min-height: 281px !important;
+  }
+  #overview-distribution-sick-length-container {
+  	min-height: 248px !important;
+  }
 }
 
 @media (max-width: 1200px) {
@@ -981,6 +987,9 @@ form.bs-docs-example {
   }
   #navigation-container div.row-fluid div.offset4 {
   	margin-left: 10.58011%;
+  }
+  #overview-content table#datatable {
+	width: 100%;
   }
 }
 
