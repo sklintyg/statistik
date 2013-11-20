@@ -13,7 +13,11 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 
 import se.inera.auth.model.User;
@@ -21,13 +25,17 @@ import se.inera.statistics.hsa.model.Vardenhet;
 import se.inera.statistics.service.report.api.VerksamhetOverview;
 import se.inera.statistics.service.report.model.Range;
 
+@RunWith(MockitoJUnitRunner.class)
 public class ProtectedChartDataServiceTest {
-    private VerksamhetOverview mock;
+    @Mock
+    private VerksamhetOverview mock = Mockito.mock(VerksamhetOverview.class);
     private HttpServletRequest request;
+
+    @InjectMocks
+    private ProtectedChartDataService chartDataService = new ProtectedChartDataService();
 
     @Before
     public void init() {
-        mock = Mockito.mock(VerksamhetOverview.class);
         request = Mockito.mock(HttpServletRequest.class);
         List<Vardenhet> vardenhets = Arrays.asList(new Vardenhet("verksamhet1", "Närhälsan i Småmåla"), new Vardenhet("verksamhet2", "Småmålas akutmottagning"));
 
@@ -41,7 +49,6 @@ public class ProtectedChartDataServiceTest {
     public void getOverviewDataForSpecificVerksamhetTest() {
         init();
 
-        ProtectedChartDataService chartDataService = new ProtectedChartDataService(mock, null, null, null, null, null, null);
         try {
             chartDataService.getOverviewData(request, "verksamhet2");
             fail("Current implementation can not use null data");

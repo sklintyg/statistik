@@ -53,26 +53,9 @@
         <bean id="applicationContextProvider" class="se.inera.auth.ApplicationContextProvider"/>
 
         <bean class="se.inera.statistics.hsa.services.HsaOrganizationsServiceImpl"/>
-        <bean id="chartDataService" class="se.inera.statistics.web.service.ChartDataService">
-            <constructor-arg ref="overview"/>
-            <constructor-arg ref="casesPerMonth"/>
-            <constructor-arg ref="diagnosisGroups"/>
-            <constructor-arg ref="diagnosisSubGroups"/>
-            <constructor-arg ref="ageGroups"/>
-            <constructor-arg ref="degreeOfSickLeave"/>
-            <constructor-arg ref="sickLeaveLength"/>
-            <constructor-arg ref="casesPerCounty"/>
-        </bean>
+        <bean id="chartDataService" class="se.inera.statistics.web.service.ChartDataService"/>
 
-        <bean id="protectedChartDataService" class="se.inera.statistics.web.service.ProtectedChartDataService">
-            <constructor-arg ref="verksamhetOverview"/>
-            <constructor-arg ref="casesPerMonth"/>
-            <constructor-arg ref="diagnosisGroups"/>
-            <constructor-arg ref="diagnosisSubGroups"/>
-            <constructor-arg ref="ageGroups"/>
-            <constructor-arg ref="degreeOfSickLeave"/>
-            <constructor-arg ref="sickLeaveLength"/>
-        </bean>
+        <bean id="protectedChartDataService" class="se.inera.statistics.web.service.ProtectedChartDataService"/>
 
         <bean class="se.inera.statistics.service.report.model.Lan" id="lan"/>
         <bean id="loginInfoService" class="se.inera.statistics.web.service.LoginInfoService"/>
