@@ -80,6 +80,6 @@ public class AldersgruppKey implements Serializable {
 
     @Override
     public String toString() {
-        return "AldersgruppKey{" + "period='" + period + '\'' + ", hsaId='" + hsaId + '\'' + ", grupp='" + grupp + '\'' + ", periods=" + periods + '}';
+        return "{\"AldersgruppKey\":{" + "\"period\":\"" + period + '"' + ", \"hsaId\":\"" + hsaId + '"' + ", \"grupp\":\"" + grupp + '"' + ", \"periods\":" + periods + "}}";
     }
 }

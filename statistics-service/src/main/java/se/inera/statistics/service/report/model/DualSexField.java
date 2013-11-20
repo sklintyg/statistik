@@ -28,6 +28,6 @@ public class DualSexField {
 
     @Override
     public String toString() {
-        return "DualSexField{" + "female=" + female + ", male=" + male + '}';
+        return "{\"DualSexField\":{\"female\":" + female + ", \"male\":" + male + "}}";
     }
 }

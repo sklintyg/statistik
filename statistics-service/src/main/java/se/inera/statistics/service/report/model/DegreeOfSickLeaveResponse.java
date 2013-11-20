@@ -40,6 +40,20 @@ public class DegreeOfSickLeaveResponse {
 
     @Override
     public String toString() {
-        return "DegreeOfSickLeaveResponse{" + "degreesOfSickLeave=" + degreesOfSickLeave + ", rows=" + rows + '}';
+        return "{\"DegreeOfSickLeaveResponse\":{\"degreesOfSickLeave\":" + formattedDegreesOfSickLeave() + ", \"rows\":" + rows + "}}";
+    }
+
+    private String formattedDegreesOfSickLeave() {
+        StringBuilder sb = new StringBuilder("[");
+        for (String s : degreesOfSickLeave) {
+            sb.append('"');
+            sb.append(s);
+            sb.append("\", ");
+        }
+        if (sb.length() > 1) {
+            sb.deleteCharAt(sb.length() - 2);
+        }
+        sb.append(']');
+        return sb.toString();
     }
 }

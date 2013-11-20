@@ -71,4 +71,11 @@ public class OverviewResponse {
         return perCounty;
     }
 
+    @Override
+    public String toString() {
+        return "{\"OverviewResponse\":{\"casesPerMonthSexProportion\":" + casesPerMonthSexProportion + ", \"casesPerMonthAlteration\":" + casesPerMonthAlteration
+                + ", \"diagnosisGroups\":" + diagnosisGroups + ", \"ageGroups\":" + ageGroups + ", \"degreeOfSickLeaveGroups\":" + degreeOfSickLeaveGroups
+                + ", \"sickLeaveLengthGroups\":" + sickLeaveLengthGroups + ", \"longSickLeavesTotal\":" + longSickLeavesTotal + ", \"longSickLeavesAlternation\":"
+                + longSickLeavesAlternation + ", \"perCounty\":" + perCounty + "}}";
+    }
 }

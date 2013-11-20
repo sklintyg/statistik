@@ -1,9 +1,9 @@
 package se.inera.statistics.service.report.model;
 
 /**
- * 
+ *
  * Represents relative proportions of men and women.
- * 
+ *
  */
 public class OverviewSexProportion {
 
@@ -45,4 +45,8 @@ public class OverviewSexProportion {
         return period;
     }
 
+    @Override
+    public String toString() {
+        return "{\"OverviewSexProportion\":{" + "\"male\":" + male + ", \"female\":" + female + ", \"period\":\"" + period + "\"}}";
+    }
 }
