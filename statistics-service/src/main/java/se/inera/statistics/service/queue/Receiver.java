@@ -40,8 +40,8 @@ public class Receiver implements MessageListener {
             try {
                 String doc = ((TextMessage) rawMessage).getText();
                 long timestamp = rawMessage.getJMSTimestamp();
-                String typeName = rawMessage.getStringProperty(ACTION); 
-                String certificateId = rawMessage.getStringProperty(CERTIFICATE_ID); 
+                String typeName = rawMessage.getStringProperty(ACTION);
+                String certificateId = rawMessage.getStringProperty(CERTIFICATE_ID);
                 accept(typeEvent(typeName), doc, certificateId, timestamp);
             } catch (JMSException e) {
                 throw new StatisticsJMSException("JMS error", e);
@@ -56,11 +56,11 @@ public class Receiver implements MessageListener {
         this.processLog = processLog;
     }
 
-    private static final EventType typeEvent(String typeName) {
+    private static EventType typeEvent(String typeName) {
         switch (typeName) {
         case CREATED:
             return EventType.CREATED;
-        case REVOKED: 
+        case REVOKED:
             return EventType.DELETED;
         default:
             return EventType.TEST;

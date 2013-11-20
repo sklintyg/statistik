@@ -13,8 +13,8 @@ import com.fasterxml.jackson.databind.JsonNode;
 public abstract class GenericAbstractListener extends AbstractListener<GenericHolder> {
 
     @Autowired
-    DiagnosisGroupsUtil diagnosisGroupsUtil;
-    
+    private DiagnosisGroupsUtil diagnosisGroupsUtil;
+
     @Override
     GenericHolder setup(SjukfallInfo sjukfallInfo, JsonNode utlatande, JsonNode hsa, LocalDate start, LocalDate end) {
         return new GenericHolder(sjukfallInfo, utlatande, hsa, diagnosisGroupsUtil);

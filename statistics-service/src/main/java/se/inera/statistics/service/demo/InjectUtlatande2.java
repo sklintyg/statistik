@@ -54,7 +54,7 @@ public class InjectUtlatande2 {
 
     @Autowired
     private NationellUpdater nationellUpdater;
-    
+
     @Autowired
     private DiagnosisGroupsUtil diagnosisGroupsUtil;
 
