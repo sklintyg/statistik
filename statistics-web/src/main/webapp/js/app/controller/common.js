@@ -137,6 +137,10 @@ var ControllerCommons = new function(){
                     floating : true,
                     x : -10,
                     y : 5,
+                    spacingBottom: 0,
+                    spacingLeft: 0,
+                    spacingRight: 0,
+                    spacingTop: 0,
                     style: {
                     	color: '#008391'
                     }
