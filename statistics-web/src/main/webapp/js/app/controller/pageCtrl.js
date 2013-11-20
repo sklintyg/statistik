@@ -37,6 +37,7 @@
             statisticsData.getLoginInfo(function(loginInfo){
                     $scope.businesses = loginInfo.businesses;
                     $scope.verksamhetName = getSelectedVerksamhet($scope.businessId, loginInfo.businesses).name;
+                    $scope.userName = loginInfo.name;
                 }, function() { $scope.dataLoadingError = true; });
         }
     });

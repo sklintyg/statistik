@@ -44,10 +44,6 @@ public class LoginInfoService {
                 for (Vardenhet enhet: realUser.getVardenhetList()) {
                     verksamhets.add(new Verksamhet(enhet.getId(), enhet.getNamn()));
                 }
-            } else {
-                verksamhets = Arrays.asList(new Verksamhet("verksamhet1", "Närhälsan i Småmåla"), new Verksamhet("verksamhet2", "Småmålas akutmottagning"));
-                loggedIn = true;
-                name = user.getName();
             }
         }
         request.getSession(true).setAttribute("verksamhets", verksamhets);
