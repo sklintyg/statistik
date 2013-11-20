@@ -96,6 +96,7 @@
                  </map>
              </property>
          </bean>
+        <bean class="se.inera.statistics.service.report.repository.NationellPersistenceHandler"/>
       </beans>
 
     <beans profile="!demo,!test,!db,!qa">

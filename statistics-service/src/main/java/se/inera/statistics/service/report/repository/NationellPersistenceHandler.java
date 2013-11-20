@@ -13,7 +13,6 @@ import se.inera.statistics.service.report.model.db.CasesPerMonthRow;
 import se.inera.statistics.service.report.model.db.SickLeaveLengthRow;
 import se.inera.statistics.service.report.util.Verksamhet;
 
-@Component
 public class NationellPersistenceHandler implements NationellUpdater {
     private static final String INSERT_PREFIX = "INSERT INTO %1$s SELECT PERIOD, 'NATIONELL', 'NATIONELL',";
 
