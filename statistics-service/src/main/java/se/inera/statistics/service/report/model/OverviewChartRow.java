@@ -22,4 +22,8 @@ public class OverviewChartRow {
         return quantity;
     }
 
+    @Override
+    public String toString() {
+        return "{\"OverviewChartRow\":{\"name\":\"" + name + '"' + ", \"quantity\":" + quantity + "}}";
+    }
 }

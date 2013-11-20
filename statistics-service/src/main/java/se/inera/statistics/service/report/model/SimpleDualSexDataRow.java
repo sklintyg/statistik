@@ -40,6 +40,6 @@ public class SimpleDualSexDataRow {
 
     @Override
     public String toString() {
-        return "SimpleDualSexDataRow{" + "name='" + name + '\'' + ", data=" + data + '}';
+        return "{\"SimpleDualSexDataRow\":{" + "\"name\":\"" + name + '"' + ", \"data\":" + data + "}}";
     }
 }

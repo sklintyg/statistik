@@ -46,14 +46,16 @@
      this.paintChart = function(containerId, yAxisTitle, chartCategories, chartSeries) {
          var chartOptions = ControllerCommons.getHighChartConfigBase(chartCategories, chartSeries);
          chartOptions.chart.type = 'area';
+         chartOptions.chart.marginTop = 27;
          chartOptions.chart.renderTo = containerId;
          chartOptions.legend.enabled = $routeParams.printBw || $routeParams.print;
          chartOptions.xAxis.title.text = "Period";
-         chartOptions.yAxis.title.text = yAxisTitle;
          chartOptions.tooltip.useHTML = true;
-         chartOptions.yAxis.title.rotation = 270;
-         chartOptions.yAxis.title.x= 0;
-         chartOptions.yAxis.title.y= 0;
+         /*chartOptions.yAxis.title.rotation = 270;*/
+         chartOptions.yAxis.title.x= -10;
+         chartOptions.yAxis.title.y= -13;
+         chartOptions.yAxis.title.align = 'high';
+         chartOptions.yAxis.title.offset = 0;
          return new Highcharts.Chart(chartOptions);
      };
 

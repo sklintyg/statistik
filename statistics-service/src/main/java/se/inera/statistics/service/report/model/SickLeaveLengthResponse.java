@@ -45,6 +45,6 @@ public class SickLeaveLengthResponse {
 
     @Override
     public String toString() {
-        return "SickLeaveLengthResponse{" + "sickLeaveGroupsRows=" + sickLeaveGroupsRows + ", months=" + months + '}';
+        return "{\"SickLeaveLengthResponse\":{\"sickLeaveGroupsRows\":" + sickLeaveGroupsRows + ", \"months\":" + months + "}}";
     }
 }

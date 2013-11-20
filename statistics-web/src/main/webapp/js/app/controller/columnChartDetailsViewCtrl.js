@@ -62,9 +62,15 @@
 	var paintChart = function(chartCategories, chartSeries) {
         var chartOptions = ControllerCommons.getHighChartConfigBase(chartCategories, chartSeries);
         chartOptions.chart.type = 'column';
+        chartOptions.chart.marginLeft = 50;
+        chartOptions.chart.marginTop = 27;
         chartOptions.legend.enabled = $routeParams.printBw || $routeParams.print;
         chartOptions.xAxis.title.text = config.chartXAxisTitle;
         chartOptions.yAxis.title.text = config.percentChart ? "Andel" : 'Antal';
+        chartOptions.yAxis.title.x= -13;
+        chartOptions.yAxis.title.y= -13;
+        chartOptions.yAxis.title.align = 'high';
+        chartOptions.yAxis.title.offset = 0;
         chartOptions.yAxis.labels.formatter = function() { 
         	return ControllerCommons.makeThousandSeparated(this.value) + (config.percentChart ? "%" : ""); 
         };
