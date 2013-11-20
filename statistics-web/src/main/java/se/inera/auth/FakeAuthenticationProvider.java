@@ -57,7 +57,7 @@ public class FakeAuthenticationProvider implements AuthenticationProvider {
         Object details = userDetails.loadUserBySAML(credential);
 
         ExpiringUsernameAuthenticationToken result = new ExpiringUsernameAuthenticationToken(null, details, credential, new ArrayList<GrantedAuthority>());
-        result.setDetails(userDetails);
+        result.setDetails(details);
 
         return result;
     }

@@ -24,7 +24,7 @@ app.statisticsApp.factory('statisticsData', function($http){
            }
        }).error(function(data, status, headers, config) {
            if(status == 403) {
-               window.location.replace("/saml/login");
+               window.location.replace("#/login");
            }
            failureCallback();
        });

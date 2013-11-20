@@ -87,11 +87,11 @@
 					<span>Statistiktjänst för ordinerad sjukskrivning</span>
 				</div>
 				<div class="span4 pull-right" style="width: auto !important;">
-					<div id="business-login-container" ng-hide="isLoggedIn">
+					<div id="business-login-container" style="display: none;" ng-hide="isLoggedIn" >
 						<span id="business-login-span">För verksamhetsstatistik: </span>
 						<button class="btn" data-ng-click="loginClicked('${applicationScope.loginUrl}')" type="button" id="business-login-btn" value="Logga in">Logga in</button>
 					</div>
-					<div id="business-logged-in-user-container" style="display: block; position: absolute; right: 0; margin-right: 25px;" ng-show="isLoggedIn">
+					<div id="business-logged-in-user-container" style="display: none; position: absolute; right: 0; margin-right: 25px;" ng-show="isLoggedIn" >
 						<!-- div class="pull-right">
 							<img id="business-me-icon" alt="Bild på inloggad användare" src="<c:url value='/img/avatar.png'/>"/>
 						</div -->
@@ -99,15 +99,15 @@
 							<span class="user-logout pull-right">
 								<a href="/saml/logout">Logga ut</a>
 							</span>
-							<span class="user-name pull-right" style="margin-right: 10px;">Användare Andersson</span>
+							<span class="user-name pull-right" style="margin-right: 10px;" data-ng-bind="userName"></span>
 							<br>
 							<span>Välj verksamhet:</span>
+							<!-- SELECT BUSINESS BUTTON GROUP -->
 							<div class="btn-group">
-								<a class="btn dropdown-toggle" id="business-select-business" data-toggle="dropdown" href="#" data-ng-bind="verksamhetName">
+								<a class="btn dropdown-toggle" id="business-select-business" data-toggle="dropdown" href="#" data-ng-bind="verksamhetName" html-unsafe="<span class=caret></span>">
 									Välj verksamhet
-									<span class="caret"></span>
+									
 								</a>
-								
 								<ul class="dropdown-menu left" style="float: right; right: 280px; position: absolute;">
 									<li data-ng-repeat="business in businesses"><a data-ng-click="selectVerksamhet(business.id)" tooltip-html-unsafe="<div class=popover-content>{{business.name}}</div>" tooltip-trigger="mouseenter" tooltip-placement="left">{{business.name}}</a></li>
 								</ul>
@@ -119,7 +119,6 @@
 		</div>
 	</div>
 </div>
-
 
 <div id="wrap">
 	<div class="container-fluid">
@@ -266,7 +265,7 @@
 <script type="text/javascript" src="<c:url value='/js/app/controllers.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/directives.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/filters.js'/>"></script>
-<script type="text/javascript" src="<c:url value='/js/app/inera-statistics-style.js'/>" ></script>
+<!--script type="text/javascript" src="<c:url value='/js/app/inera-statistics-style.js'/>" ></script -->
 <script type="text/javascript" src="<c:url value='js/lib/highcharts/3.0.5/highcharts.js'/>"></script>
 <script type="text/javascript" src="<c:url value='js/lib/highcharts/3.0.5/modules/highcharts-more.js'/>"></script>
 <script type="text/javascript" src="<c:url value='js/lib/highcharts/3.0.5/modules/exporting.js'/>"></script>
