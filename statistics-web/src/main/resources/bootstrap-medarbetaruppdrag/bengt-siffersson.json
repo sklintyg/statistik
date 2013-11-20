@@ -1,4 +1,4 @@
 {
     "hsaId": "HSA-BS",
-    "enhetIds":["vardenhet1"]
+    "enhetIds":["verksamhet1", "verksamhet2"]
 }

@@ -322,7 +322,7 @@ public class ProtectedChartDataService {
         }
 
         public static boolean userAccess(HttpServletRequest request, String verksamhetId) {
-            LOG.info("User " + getUsernameSafe(request) + " accessed verksamhet " + verksamhetId + " (" + getUriSafe(request) + ") session " + request.getSession().getId());
+            LOG.info("User " + ServiceUtil.getLoginInfo(request).getHsaId() + " accessed verksamhet " + verksamhetId + " (" + getUriSafe(request) + ") session " + request.getSession().getId());
             return true;
         }
 
@@ -333,19 +333,8 @@ public class ProtectedChartDataService {
             return request.getRequestURI();
         }
 
-        private static String getUsernameSafe(HttpServletRequest request) {
-            if (request == null) {
-                return "!NoRequest!";
-            }
-            if (request.getUserPrincipal() == null) {
-                return "!NoUserPrincipal!";
-            }
-            return request.getUserPrincipal().getName();
-        }
-
-        @SuppressWarnings("unchecked")
         private static List<Verksamhet> getVerksamhets(HttpServletRequest request) {
-            return (List<Verksamhet>) request.getSession().getAttribute("verksamhets");
+            return ServiceUtil.getLoginInfo(request).getBusinesses();
         }
 
         private static LocalDate previousMonth() {

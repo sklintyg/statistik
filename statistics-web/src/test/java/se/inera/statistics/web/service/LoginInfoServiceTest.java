@@ -1,18 +1,23 @@
 package se.inera.statistics.web.service;
 
+import static org.mockito.Matchers.anyObject;
+import static org.mockito.Matchers.anyString;
+
+import java.util.Collections;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import junit.framework.Assert;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+
+import se.inera.auth.model.User;
+import se.inera.statistics.hsa.model.Vardenhet;
 import se.inera.statistics.web.model.LoginInfo;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-import java.security.Principal;
-
-import static org.mockito.Matchers.anyObject;
-import static org.mockito.Matchers.anyString;
 
 public class LoginInfoServiceTest {
     private HttpServletRequest request;
@@ -39,13 +44,18 @@ public class LoginInfoServiceTest {
 
     public void getLoginInfoTest() {
         LoginInfoService loginInfoService = new LoginInfoService();
-        Principal principal = Mockito.mock(UsernamePasswordAuthenticationToken.class);
+        User user = new User("hsaId", "name",  Collections.<Vardenhet>singletonList(new Vardenhet("verksamhetid", "verksamhetnamn")));
+        UsernamePasswordAuthenticationToken principal = Mockito.mock(UsernamePasswordAuthenticationToken.class);
         Mockito.when(request.getUserPrincipal()).thenReturn(principal);
-        Mockito.when(principal.getName()).thenReturn("Kalle");
+        Mockito.when(principal.getDetails()).thenReturn(user);
 
         LoginInfo info = loginInfoService.getLoginInfo(request);
 
         Assert.assertEquals(true, info.isLoggedIn());
-        Assert.assertEquals("Kalle", info.getName());
+        Assert.assertEquals("hsaId", info.getHsaId());
+        Assert.assertEquals("name", info.getName());
+        Assert.assertEquals(1, info.getBusinesses().size());
+        Assert.assertEquals("verksamhetid", info.getBusinesses().get(0).getId());
+        Assert.assertEquals("verksamhetnamn", info.getBusinesses().get(0).getName());
     }
 }
