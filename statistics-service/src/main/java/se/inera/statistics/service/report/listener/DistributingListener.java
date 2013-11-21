@@ -56,7 +56,7 @@ public class DistributingListener implements ProcessorListener {
         synchronized (lock) {
             latestLogId = logId;
             if (cacheFull) {
-                //persistCaches();
+                persistCaches();
             }
         }
     }
