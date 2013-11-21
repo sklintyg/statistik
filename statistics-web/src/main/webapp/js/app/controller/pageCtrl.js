@@ -8,7 +8,7 @@
                 return verksamhets[i];
             }
         }
-        return {}; //Selected verksamhet not found
+        return {name: "Välj verksamhet"}; //Selected verksamhet not found
     };
 
     $rootScope.$on('$routeChangeSuccess', function(angularEvent, next, current) {
@@ -37,6 +37,7 @@
             statisticsData.getLoginInfo(function(loginInfo){
                     $scope.businesses = loginInfo.businesses;
                     $scope.verksamhetName = getSelectedVerksamhet($scope.businessId, loginInfo.businesses).name;
+                    $scope.userName = loginInfo.name;
                 }, function() { $scope.dataLoadingError = true; });
         }
     });

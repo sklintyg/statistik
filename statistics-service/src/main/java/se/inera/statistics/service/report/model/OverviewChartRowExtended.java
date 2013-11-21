@@ -13,4 +13,8 @@ public class OverviewChartRowExtended extends OverviewChartRow {
         return alternation;
     }
 
+    @Override
+    public String toString() {
+        return super.toString() + ", {\"OverviewChartRowExtended\":{\"alternation\":" + alternation + "}}";
+    }
 }

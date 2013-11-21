@@ -58,7 +58,7 @@
     <bean class="se.inera.statistics.service.report.repository.AldersgruppPersistenceHandler" id="ageGroups" />
     <bean class="se.inera.statistics.service.report.repository.SjukfallslangdGruppPersistenceHandler" id="caseLengthGroups" />
     <bean class="se.inera.statistics.service.report.repository.SjukskrivningsgradPersistenceHandler" id="caseDegree" />
-    <bean class="se.inera.statistics.service.report.repository.NationellPersistenceHandler" id="nationellPersistenceHandler" />
+    <bean class="se.inera.statistics.service.report.repository.NationellPersistenceHandler"><property name="cutoff" value="0"/></bean>
     <bean class="se.inera.statistics.service.report.repository.SjukfallPerLanPersistenceHandler" id="casesPerCounty" />
     <bean class="se.inera.statistics.service.report.repository.VerksamhetOverviewPersistenceHandler" id="verksamhetOverview" />
     <bean class="se.inera.statistics.service.report.repository.OverviewPersistenceHandler" id="nartionellOverview" />

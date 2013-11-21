@@ -3,7 +3,6 @@ package se.inera.statistics.web.service;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Locale;
 
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.Sex;

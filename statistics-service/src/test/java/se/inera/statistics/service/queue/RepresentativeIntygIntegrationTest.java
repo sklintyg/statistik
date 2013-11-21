@@ -1,9 +1,9 @@
 package se.inera.statistics.service.queue;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import org.apache.activemq.command.ActiveMQQueue;
 import org.joda.time.LocalDate;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
@@ -16,21 +16,48 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 import se.inera.statistics.service.demo.UtlatandeBuilder;
+import se.inera.statistics.service.helper.JSONParser;
 import se.inera.statistics.service.processlog.LogConsumer;
-import se.inera.statistics.service.report.api.*;
+import se.inera.statistics.service.report.api.AgeGroups;
+import se.inera.statistics.service.report.api.CasesPerCounty;
+import se.inera.statistics.service.report.api.CasesPerMonth;
+import se.inera.statistics.service.report.api.DegreeOfSickLeave;
+import se.inera.statistics.service.report.api.DiagnosisGroups;
+import se.inera.statistics.service.report.api.DiagnosisSubGroups;
+import se.inera.statistics.service.report.api.Overview;
+import se.inera.statistics.service.report.api.SjukfallslangdGrupp;
+import se.inera.statistics.service.report.api.VerksamhetOverview;
 import se.inera.statistics.service.report.listener.AldersGruppListener;
 import se.inera.statistics.service.report.listener.SjukfallPerDiagnosgruppListener;
-import se.inera.statistics.service.report.model.*;
+import se.inera.statistics.service.report.model.AgeGroupsResponse;
+import se.inera.statistics.service.report.model.DegreeOfSickLeaveResponse;
+import se.inera.statistics.service.report.model.DiagnosisGroupResponse;
+import se.inera.statistics.service.report.model.OverviewResponse;
+import se.inera.statistics.service.report.model.Range;
+import se.inera.statistics.service.report.model.SickLeaveLengthResponse;
+import se.inera.statistics.service.report.model.SimpleDualSexDataRow;
+import se.inera.statistics.service.report.model.SimpleDualSexResponse;
+import se.inera.statistics.service.report.model.VerksamhetOverviewResponse;
 import se.inera.statistics.service.report.repository.RollingLength;
 import se.inera.statistics.service.report.util.Verksamhet;
 import se.inera.statistics.service.scheduler.NationellUpdaterJob;
 
-import javax.jms.*;
+import javax.jms.ConnectionFactory;
+import javax.jms.Destination;
+import javax.jms.JMSException;
+import javax.jms.Message;
+import javax.jms.Session;
+import javax.jms.TextMessage;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
 
@@ -124,12 +151,12 @@ public class RepresentativeIntygIntegrationTest {
         nationellUpdaterJob.checkLog();
 
         LOG.info("===========RESULT=========");
-        List<Object> result = printAndGetPersistedData();
+        Map<String, TestData> result = printAndGetPersistedData();
 
         LOG.info("============END===========\n");
 
-        SimpleDualSexResponse<SimpleDualSexDataRow> casesPerMonth1 = (SimpleDualSexResponse<SimpleDualSexDataRow>) result.get(0);
-        SimpleDualSexResponse<SimpleDualSexDataRow> casesPerMonthNationell = (SimpleDualSexResponse<SimpleDualSexDataRow>) result.get(1);
+        SimpleDualSexResponse<SimpleDualSexDataRow> casesPerMonth1 = (SimpleDualSexResponse<SimpleDualSexDataRow>) result.get("casesPerMonth1").replyObject;
+        SimpleDualSexResponse<SimpleDualSexDataRow> casesPerMonthNationell = (SimpleDualSexResponse<SimpleDualSexDataRow>) result.get("casesPerMonthNationell").replyObject;
 
 //        assertEquals(12, casesPerMonth1.getRows().size());
 //        assertEquals(12, casesPerMonthNationell.getRows().size());
@@ -180,7 +207,7 @@ public class RepresentativeIntygIntegrationTest {
         nationellUpdaterJob.checkLog();
 
         LOG.info("===========RESULT=========");
-        List<Object> result = printAndGetPersistedData();
+        Map<String, TestData> result = printAndGetPersistedData();
 
         LOG.info("============END===========\n");
     }
@@ -197,10 +224,35 @@ public class RepresentativeIntygIntegrationTest {
         UtlatandeBuilder[] builders = {builder1, builder2, builder3, builder4};
 
         LOG.info("===========START==========");
-        LOG.info("testfall.csv");
+        String testCaseName = "testfall.csv";
+        LOG.info(testCaseName);
 
         LOG.info("===========INPUT==========");
-        BufferedReader reader = new BufferedReader(new InputStreamReader(this.getClass().getResourceAsStream("/testfall.csv")));
+        String csvFile = "/testfall.csv";
+        enqueueFromFile(builders, csvFile);
+
+        sleep();
+
+        assertEquals("Verify that all messages have been processed.", 33, consumer.processBatch());
+
+        nationellUpdaterJob.checkLog();
+
+        LOG.info("===========RESULT=========");
+        Map<String, TestData> result = printAndGetPersistedData();
+
+        LOG.info("===========TABLES=========");
+
+        printSimpleDualSexResponseTable(result.get("casesPerMonth1").jsonNode, testCaseName + ": CasesPerMonth1");
+        printSimpleDualSexResponseTable(result.get("casesPerMonth2").jsonNode, testCaseName + ": CasesPerMonth2");
+        printSimpleDualSexResponseTable(result.get("casesPerMonthNationell").jsonNode, testCaseName + ": CasesPerMonthNationell");
+        printSimpleDualSexResponseTable(result.get("sjukfallslangdGruppLong1").jsonNode, testCaseName + ": SjukfallslangdGruppLong1");
+        printSimpleDualSexResponseTable(result.get("sjukfallslangdGruppLong2").jsonNode, testCaseName + ": SjukfallslangdGruppLong2");
+
+        LOG.info("============END===========\n");
+    }
+
+    private void enqueueFromFile(UtlatandeBuilder[] builders, String csvFile) throws IOException {
+        BufferedReader reader = new BufferedReader(new InputStreamReader(this.getClass().getResourceAsStream(csvFile)));
         List<String[]> lines = new ArrayList<>();
         while (true) {
             String line = reader.readLine();
@@ -240,84 +292,155 @@ public class RepresentativeIntygIntegrationTest {
             LOG.info(person + ", " + start + ", " + stop + ", " + enhet + ", " + vardgivare + ", " + diagnos + ", " + grad);
             simpleSend(builders[start.size()-1].build(person, start, stop, enhet, vardgivare, diagnos, grad).toString(), "001");
         }
-
-        sleep();
-
-        assertEquals("Verify that all messages have been processed.", 33, consumer.processBatch());
-
-        nationellUpdaterJob.checkLog();
-
-        LOG.info("===========RESULT=========");
-        List<Object> result = printAndGetPersistedData();
-
-        LOG.info("============END===========\n");
     }
 
-    private List<Object> printAndGetPersistedData() {
-        SimpleDualSexResponse<SimpleDualSexDataRow> casesPerMonth1 = casesPerMonth.getCasesPerMonth(getVardenhet(ENVE), new Range(getStart(0), getStop(3)));
-        LOG.info("CPM data: " + casesPerMonth1);
-        SimpleDualSexResponse<SimpleDualSexDataRow> casesPerMonth2 = casesPerMonth.getCasesPerMonth(getVardenhet(TVAVE), new Range(getStart(0), getStop(3)));
-        LOG.info("CPM data: " + casesPerMonth2);
-        SimpleDualSexResponse<SimpleDualSexDataRow> casesPerMonthNationell = casesPerMonth.getCasesPerMonth(nationell, new Range(getStart(0), getStop(3)));
-        LOG.info("Nationell CPM data: " + casesPerMonthNationell);
+    private void printSimpleDualSexResponseTable(JsonNode testResult, String tableName) {
+        Iterator<JsonNode> rows = testResult.findPath("rows").iterator();
+        StringBuilder sb = new StringBuilder(tableName + "\nmonth, female, male\n");
+        while(rows.hasNext()) {
+            JsonNode row = rows.next().path("SimpleDualSexDataRow");
+            sb.append(row.path("name").textValue());
+            sb.append(',');
+            sb.append(row.path("data").path("DualSexField").path("female"));
+            sb.append(',');
+            sb.append(row.path("data").path("DualSexField").path("male"));
+            sb.append('\n');
+        }
+        sb.append('\n');
+        LOG.info(sb.toString());
+    }
 
-        DiagnosisGroupResponse diagnosisGroups1 = diagnosisGroups.getDiagnosisGroups(getVardenhet(ENVE), new Range(getStart(0), getStop(3)));
-        LOG.info("DG data: " + diagnosisGroups1);
-        DiagnosisGroupResponse diagnosisGroups2 = diagnosisGroups.getDiagnosisGroups(getVardenhet(TVAVE), new Range(getStart(0), getStop(3)));
-        LOG.info("DG data: " + diagnosisGroups2);
-        DiagnosisGroupResponse diagnosisGroupsNationell = diagnosisGroups.getDiagnosisGroups(nationell, new Range(getStart(0), getStop(3)));
-        LOG.info("Nationell DG data:" + diagnosisGroupsNationell);
+    private Map<String, TestData> printAndGetPersistedData() {
+        Map<String, TestData> result = new HashMap<>();
+        printAndGetCasesPerMonth(result);
+        printAndGetDiagnosisGroups(result);
+        printAndGetDiagnosisSubGroups(result);
+        printAndGetAgeGroups(result);
+        printAndGetDegreeOfSickLeave(result);
+        printAndGetSjukfallslangdGrupp(result);
+        printAndGetCasesPerCountyNationell(result);
 
-        DiagnosisGroupResponse diagnosisSubGroups1 = diagnosisSubGroups.getDiagnosisGroups(getVardenhet(ENVE), new Range(getStart(0), getStop(3)), "A00-B99");
-        LOG.info("DSG data: " + diagnosisSubGroups1);
-        DiagnosisGroupResponse diagnosisSubGroups2 = diagnosisSubGroups.getDiagnosisGroups(getVardenhet(TVAVE), new Range(getStart(0), getStop(3)), "A00-B99");
-        LOG.info("DSG data: " + diagnosisSubGroups2);
-        DiagnosisGroupResponse diagnosisSubGroupsNationell = diagnosisSubGroups.getDiagnosisGroups(nationell, new Range(getStart(0), getStop(3)), "A00-B99");
-        LOG.info("Nationell DSG data: " + diagnosisSubGroupsNationell);
+        VerksamhetOverviewResponse verksamhetOverview1 = verksamhetOverview.getOverview(getVardenhet(ENVE), new Range(getStart(0), getStop(3)));
+        LOG.info("VO data: " + verksamhetOverview1);
+        VerksamhetOverviewResponse verksamhetOverview2 = verksamhetOverview.getOverview(getVardenhet(TVAVE), new Range(getStart(0), getStop(3)));
+        LOG.info("VO data: " + verksamhetOverview2);
+        OverviewResponse overviewNationell = overview.getOverview(new Range(getStart(0), getStop(3)));
+        LOG.info("NO data: " + overviewNationell);
 
-        AgeGroupsResponse ageGroups1 = ageGroups.getHistoricalAgeGroups(getVardenhet(ENVE), getStart(0), RollingLength.YEAR);
-        LOG.info("AG data: " + ageGroups1);
-        AgeGroupsResponse ageGroups2 = ageGroups.getHistoricalAgeGroups(getVardenhet(TVAVE), getStart(0), RollingLength.YEAR);
-        LOG.info("AG data: " + ageGroups2);
-        AgeGroupsResponse ageGroupsNationell = ageGroups.getHistoricalAgeGroups(nationell, getStart(0), RollingLength.YEAR);
-        LOG.info("Nationell AG data: " + ageGroupsNationell);
+        return result;
+    }
 
-        DegreeOfSickLeaveResponse degreeOfSickLeave1 = degreeOfSickLeave.getStatistics(getVardenhet(ENVE), new Range(getStart(0), getStop(3)));
-        LOG.info("DOSL data: " + degreeOfSickLeave1);
-        DegreeOfSickLeaveResponse degreeOfSickLeave2 = degreeOfSickLeave.getStatistics(getVardenhet(TVAVE), new Range(getStart(0), getStop(3)));
-        LOG.info("DOSL data: " + degreeOfSickLeave2);
-        DegreeOfSickLeaveResponse degreeOfSickLeaveNationell = degreeOfSickLeave.getStatistics(nationell, new Range(getStart(0), getStop(3)));
-        LOG.info("Nationell DOSL data: " + degreeOfSickLeaveNationell);
+    private void printAndGetCasesPerCountyNationell(Map<String, TestData> result) {
+        SimpleDualSexResponse<SimpleDualSexDataRow> casesPerCountyNationell = casesPerCounty.getStatistics(new Range(getStart(0), getStop(3)));
+        LOG.info("CPC: " + casesPerCountyNationell);
+        JsonNode casesPerCountyNationellNode = JSONParser.parse(casesPerCountyNationell.toString());
+        result.put("casesPerCountyNationell", new TestData(casesPerCountyNationell, casesPerCountyNationellNode));
+    }
 
+    private void printAndGetSjukfallslangdGrupp(Map<String, TestData> result) {
         SickLeaveLengthResponse sjukfallslangdGrupp1 = sjukfallslangdGrupp.getHistoricalStatistics(getVardenhet(ENVE), getStart(0), RollingLength.YEAR);
         LOG.info("SLG data: " + sjukfallslangdGrupp1);
+        JsonNode sjukfallslangdGrupp1Node = JSONParser.parse(sjukfallslangdGrupp1.toString());
+        result.put("sjukfallslangdGrupp1", new TestData(sjukfallslangdGrupp1, sjukfallslangdGrupp1Node));
         SickLeaveLengthResponse sjukfallslangdGrupp2 = sjukfallslangdGrupp.getHistoricalStatistics(getVardenhet(TVAVE), getStart(0), RollingLength.YEAR);
         LOG.info("SLG data: " + sjukfallslangdGrupp2);
+        JsonNode sjukfallslangdGrupp2Node = JSONParser.parse(sjukfallslangdGrupp2.toString());
+        result.put("sjukfallslangdGrupp2", new TestData(sjukfallslangdGrupp2, sjukfallslangdGrupp2Node));
         SickLeaveLengthResponse sjukfallslangdGruppNationell = sjukfallslangdGrupp.getHistoricalStatistics(nationell, getStart(0), RollingLength.YEAR);
         LOG.info("Nationell SLG data: " + sjukfallslangdGruppNationell);
+        JsonNode sjukfallslangdGruppNationellNode = JSONParser.parse(sjukfallslangdGruppNationell.toString());
+        result.put("sjukfallslangdGruppNationell", new TestData(sjukfallslangdGruppNationell, sjukfallslangdGruppNationellNode));
         SimpleDualSexResponse<SimpleDualSexDataRow> sjukfallslangdGruppLong1 = sjukfallslangdGrupp.getLongSickLeaves(getVardenhet(ENVE), new Range(getStart(0),
                 getStop(3)));
         LOG.info("SLGL data: " + sjukfallslangdGruppLong1);
+        JsonNode sjukfallslangdGruppLong1Node = JSONParser.parse(sjukfallslangdGruppLong1.toString());
+        result.put("sjukfallslangdGruppLong1", new TestData(sjukfallslangdGruppLong1, sjukfallslangdGruppLong1Node));
         SimpleDualSexResponse<SimpleDualSexDataRow> sjukfallslangdGruppLong2 = sjukfallslangdGrupp.getLongSickLeaves(getVardenhet(TVAVE), new Range(
                 getStart(0), getStop(3)));
         LOG.info("SLGL data: " + sjukfallslangdGruppLong2);
+        JsonNode sjukfallslangdGruppLong2Node = JSONParser.parse(sjukfallslangdGruppLong2.toString());
+        result.put("sjukfallslangdGruppLong2", new TestData(sjukfallslangdGruppLong2, sjukfallslangdGruppLong2Node));
         SimpleDualSexResponse<SimpleDualSexDataRow> sjukfallslangdGruppLongNationell = sjukfallslangdGrupp.getLongSickLeaves(nationell, new Range(getStart(0),
                 getStop(3)));
         LOG.info("Nationell SLGL data: " + sjukfallslangdGruppLongNationell);
+        JsonNode sjukfallslangdGruppLongNationellNode = JSONParser.parse(sjukfallslangdGruppLongNationell.toString());
+        result.put("sjukfallslangdGruppLongNationell", new TestData(sjukfallslangdGruppLongNationell, sjukfallslangdGruppLongNationellNode));
+    }
 
-        VerksamhetOverviewResponse verksamhetOverview1 = verksamhetOverview.getOverview(getVardenhet(ENVE), new Range(getStart(0), getStop(3)));
-//        LOG.info("VO data: " + verksamhetOverview1);
-        VerksamhetOverviewResponse verksamhetOverview2 = verksamhetOverview.getOverview(getVardenhet(TVAVE), new Range(getStart(0), getStop(3)));
-//        LOG.info("VO data: " + verksamhetOverview2);
-        OverviewResponse overviewNationell = overview.getOverview(new Range(getStart(0), getStop(3)));
-//        LOG.info("NO data: " + overviewNationell);
+    private void printAndGetDegreeOfSickLeave(Map<String, TestData> result) {
+        DegreeOfSickLeaveResponse degreeOfSickLeave1 = degreeOfSickLeave.getStatistics(getVardenhet(ENVE), new Range(getStart(0), getStop(3)));
+        LOG.info("DOSL data: " + degreeOfSickLeave1);
+        JsonNode degreeOfSickLeave1Node = JSONParser.parse(degreeOfSickLeave1.toString());
+        result.put("degreeOfSickLeave1", new TestData(degreeOfSickLeave1, degreeOfSickLeave1Node));
+        DegreeOfSickLeaveResponse degreeOfSickLeave2 = degreeOfSickLeave.getStatistics(getVardenhet(TVAVE), new Range(getStart(0), getStop(3)));
+        LOG.info("DOSL data: " + degreeOfSickLeave2);
+        JsonNode degreeOfSickLeave2Node = JSONParser.parse(degreeOfSickLeave2.toString());
+        result.put("degreeOfSickLeave2", new TestData(degreeOfSickLeave2, degreeOfSickLeave2Node));
+        DegreeOfSickLeaveResponse degreeOfSickLeaveNationell = degreeOfSickLeave.getStatistics(nationell, new Range(getStart(0), getStop(3)));
+        LOG.info("Nationell DOSL data: " + degreeOfSickLeaveNationell);
+        JsonNode degreeOfSickLeaveNationellNode = JSONParser.parse(degreeOfSickLeaveNationell.toString());
+        result.put("degreeOfSickLeaveNationell", new TestData(degreeOfSickLeaveNationell, degreeOfSickLeaveNationellNode));
+    }
 
-        SimpleDualSexResponse<SimpleDualSexDataRow> casesPerCountyNationell = casesPerCounty.getStatistics(new Range(getStart(0), getStop(3)));
-        LOG.info("CPC: " + casesPerCountyNationell);
+    private void printAndGetAgeGroups(Map<String, TestData> result) {
+        AgeGroupsResponse ageGroups1 = ageGroups.getHistoricalAgeGroups(getVardenhet(ENVE), getStart(0), RollingLength.YEAR);
+        LOG.info("AG data: " + ageGroups1);
+        JsonNode ageGroups1Node = JSONParser.parse(ageGroups1.toString());
+        result.put("ageGroups1", new TestData(ageGroups1, ageGroups1Node));
+        AgeGroupsResponse ageGroups2 = ageGroups.getHistoricalAgeGroups(getVardenhet(TVAVE), getStart(0), RollingLength.YEAR);
+        LOG.info("AG data: " + ageGroups2);
+        JsonNode ageGroups2Node = JSONParser.parse(ageGroups2.toString());
+        result.put("ageGroups2", new TestData(ageGroups2, ageGroups2Node));
+        AgeGroupsResponse ageGroupsNationell = ageGroups.getHistoricalAgeGroups(nationell, getStart(0), RollingLength.YEAR);
+        LOG.info("Nationell AG data: " + ageGroupsNationell);
+        JsonNode ageGroupsNationellNode = JSONParser.parse(ageGroupsNationell.toString());
+        result.put("ageGroupsNationell", new TestData(ageGroupsNationell, ageGroupsNationellNode));
+    }
 
-        return Arrays.asList(casesPerMonth1, casesPerMonthNationell, diagnosisGroups1, diagnosisGroupsNationell, diagnosisSubGroups1,
-                diagnosisSubGroupsNationell, ageGroups1, ageGroupsNationell, degreeOfSickLeave1, degreeOfSickLeaveNationell, sjukfallslangdGrupp1,
-                sjukfallslangdGruppNationell, sjukfallslangdGruppLong1, sjukfallslangdGruppLongNationell, verksamhetOverview1, overviewNationell);
+    private void printAndGetDiagnosisSubGroups(Map<String, TestData> result) {
+        DiagnosisGroupResponse diagnosisSubGroups1 = diagnosisSubGroups.getDiagnosisGroups(getVardenhet(ENVE), new Range(getStart(0), getStop(3)), "A00-B99");
+        LOG.info("DSG data: " + diagnosisSubGroups1);
+        JsonNode diagnosisSubGroups1Node = JSONParser.parse(diagnosisSubGroups1.toString());
+        result.put("diagnosisSubGroups1", new TestData(diagnosisSubGroups1, diagnosisSubGroups1Node));
+        DiagnosisGroupResponse diagnosisSubGroups2 = diagnosisSubGroups.getDiagnosisGroups(getVardenhet(TVAVE), new Range(getStart(0), getStop(3)), "A00-B99");
+        LOG.info("DSG data: " + diagnosisSubGroups2);
+        JsonNode diagnosisSubGroups2Node = JSONParser.parse(diagnosisSubGroups2.toString());
+        result.put("diagnosisSubGroups2", new TestData(diagnosisSubGroups2, diagnosisSubGroups2Node));
+        DiagnosisGroupResponse diagnosisSubGroupsNationell = diagnosisSubGroups.getDiagnosisGroups(nationell, new Range(getStart(0), getStop(3)), "A00-B99");
+        LOG.info("Nationell DSG data: " + diagnosisSubGroupsNationell);
+        JsonNode diagnosisSubGroupsNationellNode = JSONParser.parse(diagnosisSubGroupsNationell.toString());
+        result.put("diagnosisSubGroupsNationell", new TestData(diagnosisSubGroupsNationell, diagnosisSubGroupsNationellNode));
+    }
+
+    private void printAndGetDiagnosisGroups(Map<String, TestData> result) {
+        DiagnosisGroupResponse diagnosisGroups1 = diagnosisGroups.getDiagnosisGroups(getVardenhet(ENVE), new Range(getStart(0), getStop(3)));
+        LOG.info("DG data: " + diagnosisGroups1);
+        JsonNode diagnosisGroups1Node = JSONParser.parse(diagnosisGroups1.toString());
+        result.put("diagnosisGroups1", new TestData(diagnosisGroups1, diagnosisGroups1Node));
+        LOG.info("DG data: " + diagnosisGroups1Node.toString());
+        DiagnosisGroupResponse diagnosisGroups2 = diagnosisGroups.getDiagnosisGroups(getVardenhet(TVAVE), new Range(getStart(0), getStop(3)));
+        LOG.info("DG jdata: " + diagnosisGroups2);
+        JsonNode diagnosisGroups2Node = JSONParser.parse(diagnosisGroups2.toString());
+        result.put("diagnosisGroups1", new TestData(diagnosisGroups2, diagnosisGroups2Node));
+        DiagnosisGroupResponse diagnosisGroupsNationell = diagnosisGroups.getDiagnosisGroups(nationell, new Range(getStart(0), getStop(3)));
+        LOG.info("Nationell DG data:" + diagnosisGroupsNationell);
+        JsonNode diagnosisGroupsNationellNode = JSONParser.parse(diagnosisGroupsNationell.toString());
+        result.put("diagnosisGroupsNationell", new TestData(diagnosisGroupsNationell, diagnosisGroupsNationellNode));
+    }
+
+    private void printAndGetCasesPerMonth(Map<String, TestData> result) {
+        SimpleDualSexResponse<SimpleDualSexDataRow> casesPerMonth1 = casesPerMonth.getCasesPerMonth(getVardenhet(ENVE), new Range(getStart(0), getStop(3)));
+        LOG.info("CPM data: " + casesPerMonth1);
+        JsonNode casesPerMonth1Node = JSONParser.parse(casesPerMonth1.toString());
+        result.put("casesPerMonth1", new TestData(casesPerMonth1, casesPerMonth1Node));
+        SimpleDualSexResponse<SimpleDualSexDataRow> casesPerMonth2 = casesPerMonth.getCasesPerMonth(getVardenhet(TVAVE), new Range(getStart(0), getStop(3)));
+        LOG.info("CPM data: " + casesPerMonth2);
+        JsonNode casesPerMonth2Node = JSONParser.parse(casesPerMonth2.toString());
+        result.put("casesPerMonth2", new TestData(casesPerMonth2, casesPerMonth2Node));
+        SimpleDualSexResponse<SimpleDualSexDataRow> casesPerMonthNationell = casesPerMonth.getCasesPerMonth(nationell, new Range(getStart(0), getStop(3)));
+        LOG.info("Nationell CPM data: " + casesPerMonthNationell);
+        JsonNode casesPerMonthNationellNode = JSONParser.parse(casesPerMonthNationell.toString());
+        result.put("casesPerMonthNationell", new TestData(casesPerMonthNationell, casesPerMonthNationellNode));
     }
 
     private void sleep() {
@@ -342,7 +465,7 @@ public class RepresentativeIntygIntegrationTest {
     }
 
     private List<String> readList(String path) {
-        try (BufferedReader in = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream(path), "utf8"));) {
+        try (BufferedReader in = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream(path), "utf8"))) {
             List<String> list = new ArrayList<>();
             for (String line = in.readLine(); line != null; line = in.readLine()) {
                 list.add(line);
@@ -398,7 +521,7 @@ public class RepresentativeIntygIntegrationTest {
     }
 
     private String getVardenhet(int i) {
-        String[] enheter = { "EnVE", "TvaVE" };
+        String[] enheter = { "ENVE", "TVAVE" };
         return enheter[i];
     }
 
@@ -441,5 +564,14 @@ public class RepresentativeIntygIntegrationTest {
         }
     }
 
+    private class TestData {
+        private Object replyObject;
+        private JsonNode jsonNode;
+
+        private TestData(Object replyObject, JsonNode jsonNode) {
+            this.replyObject = replyObject;
+            this.jsonNode = jsonNode;
+        }
+    }
 }
 // CHECKSTYLE:ON MagicNumber

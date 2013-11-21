@@ -86,6 +86,6 @@ public class SickLeaveLengthRow {
 
     @Override
     public String toString() {
-        return "SickLeaveLengthRow{" + "key=" + key + ", typ=" + typ + ", male=" + male + ", female=" + female + '}';
+        return "{\"SickLeaveLengthRow\":{\"key\":" + key + ", \"typ\":\"" + typ + "\", \"male\":" + male + ", \"female\":" + female + "}}";
     }
 }

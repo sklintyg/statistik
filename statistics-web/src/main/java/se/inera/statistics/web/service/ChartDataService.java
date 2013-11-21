@@ -8,11 +8,11 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import javax.ws.rs.core.Response.ResponseBuilder;
 
 import org.joda.time.LocalDate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import se.inera.statistics.service.report.api.AgeGroups;
@@ -51,32 +51,22 @@ public class ChartDataService {
 
     private static final Logger LOG = LoggerFactory.getLogger(ChartDataService.class);
 
+    @Autowired
     private Overview datasourceOverview;
+    @Autowired
     private CasesPerMonth datasourceCasesPerMonth;
+    @Autowired
     private DiagnosisGroups datasourceDiagnosisGroups;
+    @Autowired
     private DiagnosisSubGroups datasourceDiagnosisSubGroups;
+    @Autowired
     private AgeGroups datasourceAgeGroups;
+    @Autowired
     private DegreeOfSickLeave datasourceDegreeOfSickLeave;
+    @Autowired
     private SjukfallslangdGrupp datasourceSickLeaveLength;
+    @Autowired
     private CasesPerCounty datasourceCasesPerCounty;
-
-    public ChartDataService(Overview overviewPersistenceHandler,
-                            CasesPerMonth casesPerMonthPersistenceHandler,
-                            DiagnosisGroups diagnosisGroupsPersistenceHandler,
-                            DiagnosisSubGroups diagnosisSubGroupsPersistenceHandler,
-                            AgeGroups ageGroupsPersistenceHandler,
-                            DegreeOfSickLeave degreeOfSickLeavePersistenceHandler,
-                            SjukfallslangdGrupp sickLeaveLengthPersistenceHandler,
-                            CasesPerCounty casesPerCountyHandler) {
-        datasourceOverview = overviewPersistenceHandler;
-        datasourceCasesPerMonth = casesPerMonthPersistenceHandler;
-        datasourceDiagnosisGroups = diagnosisGroupsPersistenceHandler;
-        datasourceDiagnosisSubGroups = diagnosisSubGroupsPersistenceHandler;
-        datasourceAgeGroups = ageGroupsPersistenceHandler;
-        datasourceDegreeOfSickLeave = degreeOfSickLeavePersistenceHandler;
-        datasourceSickLeaveLength = sickLeaveLengthPersistenceHandler;
-        datasourceCasesPerCounty = casesPerCountyHandler;
-    }
 
     @GET
     @Path("getNumberOfCasesPerMonth")

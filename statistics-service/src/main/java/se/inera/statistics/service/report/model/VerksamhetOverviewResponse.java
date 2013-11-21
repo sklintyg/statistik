@@ -69,4 +69,12 @@ public class VerksamhetOverviewResponse {
         return longSickLeavesAlternation;
     }
 
+    @Override
+    public String toString() {
+        return "{\"VerksamhetOverviewResponse\":{\"totalCases\":" + totalCases + ", \"casesPerMonthSexProportionPreviousPeriod\":"
+                + casesPerMonthSexProportionPreviousPeriod + ", \"casesPerMonthSexProportionBeforePreviousPeriod\":"
+                + casesPerMonthSexProportionBeforePreviousPeriod + ", \"diagnosisGroups\":" + diagnosisGroups + ", \"ageGroups\":" + ageGroups
+                + ", \"degreeOfSickLeaveGroups\":" + degreeOfSickLeaveGroups + ", \"sickLeaveLengthGroups\":" + sickLeaveLengthGroups + ", \"longSickLeavesTotal\":"
+                + longSickLeavesTotal + ", \"longSickLeavesAlternation\":" + longSickLeavesAlternation + "}}";
+    }
 }

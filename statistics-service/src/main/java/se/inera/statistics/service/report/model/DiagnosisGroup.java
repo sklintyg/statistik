@@ -30,7 +30,7 @@ public class DiagnosisGroup implements Comparable<DiagnosisGroup> {
 
     @Override
     public String toString() {
-        return "DiagnosisGroup{" + "id='" + id + '\'' + ", name='" + name + '\'' + ", firstId='" + firstId + '\'' + ", lastId='" + lastId + '\'' + '}';
+        return "{\"DiagnosisGroup\":{" + "\"id\":\"" + id + '"' + ", \"name\":\"" + name + '"' + ", \"firstId\":\"" + firstId + '"' + ", \"lastId\":\"" + lastId + '"' + "}}";
     }
 
     public boolean isCodeInGroup(String icd10Code) {

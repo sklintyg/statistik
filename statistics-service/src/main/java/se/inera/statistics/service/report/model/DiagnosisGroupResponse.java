@@ -51,6 +51,6 @@ public class DiagnosisGroupResponse {
 
     @Override
     public String toString() {
-        return "DiagnosisGroupResponse{" + "diagnosisGroups=" + diagnosisGroups + ", rows=" + rows + '}';
+        return "{\"DiagnosisGroupResponse\":{" + "\"diagnosisGroups\":" + diagnosisGroups + ", \"rows\":" + rows + "}}";
     }
 }

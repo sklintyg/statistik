@@ -50,11 +50,11 @@ public class InjectUtlatande {
 
     @Autowired
     private NationellUpdater nationellUpdater;
-    
+
     @Autowired
     private DiagnosisGroupsUtil diagnosisGroupsUtil;
 
-    private List<String> getDiagnoser(){
+    private List<String> getDiagnoser() {
         if (DIAGNOSER.isEmpty()) {
             for (DiagnosisGroup mainGroup: DiagnosisGroupsUtil.getAllDiagnosisGroups()) {
                 for (DiagnosisGroup group: diagnosisGroupsUtil.getSubGroups(mainGroup.getId())) {

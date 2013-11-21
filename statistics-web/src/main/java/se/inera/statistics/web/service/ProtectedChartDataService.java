@@ -14,6 +14,7 @@ import javax.ws.rs.core.Response;
 import org.joda.time.LocalDate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
@@ -48,34 +49,22 @@ public class ProtectedChartDataService {
 
     private static final Logger LOG = LoggerFactory.getLogger(ProtectedChartDataService.class);
 
+    @Autowired
     private VerksamhetOverview datasourceOverview;
+    @Autowired
     private CasesPerMonth datasourceCasesPerMonth;
+    @Autowired
     private DiagnosisGroups datasourceDiagnosisGroups;
+    @Autowired
     private DiagnosisSubGroups datasourceDiagnosisSubGroups;
+    @Autowired
     private AgeGroups datasourceAgeGroups;
+    @Autowired
     private DegreeOfSickLeave datasourceDegreeOfSickLeave;
+    @Autowired
     private SjukfallslangdGrupp datasourceSickLeaveLength;
+
     public final Helper helper = new Helper();
-
-    public ProtectedChartDataService() {
-
-    }
-
-    public ProtectedChartDataService(VerksamhetOverview overviewPersistenceHandler,
-                                     CasesPerMonth casesPerMonthPersistenceHandler,
-                                     DiagnosisGroups diagnosisGroupsPersistenceHandler,
-                                     DiagnosisSubGroups diagnosisSubGroupsPersistenceHandler,
-                                     AgeGroups ageGroupsPersistenceHandler,
-                                     DegreeOfSickLeave degreeOfSickLeavePersistenceHandler,
-                                     SjukfallslangdGrupp sickLeaveLengthPersistenceHandler) {
-        datasourceOverview = overviewPersistenceHandler;
-        datasourceCasesPerMonth = casesPerMonthPersistenceHandler;
-        datasourceDiagnosisGroups = diagnosisGroupsPersistenceHandler;
-        datasourceDiagnosisSubGroups = diagnosisSubGroupsPersistenceHandler;
-        datasourceAgeGroups = ageGroupsPersistenceHandler;
-        datasourceDegreeOfSickLeave = degreeOfSickLeavePersistenceHandler;
-        datasourceSickLeaveLength = sickLeaveLengthPersistenceHandler;
-    }
 
     @GET
     @Path("{verksamhetId}/getNumberOfCasesPerMonth")
@@ -322,7 +311,7 @@ public class ProtectedChartDataService {
         }
 
         public static boolean userAccess(HttpServletRequest request, String verksamhetId) {
-            LOG.info("User " + getUsernameSafe(request) + " accessed verksamhet " + verksamhetId + " (" + getUriSafe(request) + ") session " + request.getSession().getId());
+            LOG.info("User " + ServiceUtil.getLoginInfo(request).getHsaId() + " accessed verksamhet " + verksamhetId + " (" + getUriSafe(request) + ") session " + request.getSession().getId());
             return true;
         }
 
@@ -333,19 +322,8 @@ public class ProtectedChartDataService {
             return request.getRequestURI();
         }
 
-        private static String getUsernameSafe(HttpServletRequest request) {
-            if (request == null) {
-                return "!NoRequest!";
-            }
-            if (request.getUserPrincipal() == null) {
-                return "!NoUserPrincipal!";
-            }
-            return request.getUserPrincipal().getName();
-        }
-
-        @SuppressWarnings("unchecked")
         private static List<Verksamhet> getVerksamhets(HttpServletRequest request) {
-            return (List<Verksamhet>) request.getSession().getAttribute("verksamhets");
+            return ServiceUtil.getLoginInfo(request).getBusinesses();
         }
 
         private static LocalDate previousMonth() {

@@ -82,6 +82,6 @@ public class SickLeaveLengthKey implements Serializable {
 
     @Override
     public String toString() {
-        return "SickLeaveLengthKey{" + "period='" + period + '\'' + ", hsaId='" + hsaId + '\'' + ", grupp='" + grupp + '\'' + ", periods=" + periods + '}';
+        return "{\"SickLeaveLengthKey\":{" + "\"period\":\"" + period + "\", \"hsaId\":\"" + hsaId + "\", \"grupp\":\"" + grupp + "\", \"periods\":" + periods + "}}";
     }
 }

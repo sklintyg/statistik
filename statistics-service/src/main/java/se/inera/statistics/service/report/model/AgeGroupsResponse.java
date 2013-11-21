@@ -45,6 +45,6 @@ public class AgeGroupsResponse {
 
     @Override
     public String toString() {
-        return "AgeGroupsResponse{" + "ageGroupsRows=" + ageGroupsRows + ", months=" + months + '}';
+        return "{\"AgeGroupsResponse\":{" + "\"ageGroupsRows\":" + ageGroupsRows + ", \"months\":" + months + "}}";
     }
 }

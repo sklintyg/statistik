@@ -80,6 +80,7 @@
             <security:custom-filter position="PRE_AUTH_FILTER" ref="fakeAuthFilter"/>
         </security:http>
         <security:http entry-point-ref="http403ForbiddenEntryPoint" use-expressions="true">
+            <security:logout logout-url="/saml/logout" logout-success-url="/" invalidate-session="true"/>
             <security:intercept-url pattern="/**" access="permitAll"/>
             <security:custom-filter position="PRE_AUTH_FILTER" ref="fakeAuthFilter"/>
         </security:http>
@@ -315,7 +316,7 @@
 
         <!-- Logout handler terminating local session -->
         <bean id="logoutHandler" class="org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler">
-            <property name="invalidateHttpSession" value="false"/>
+            <property name="invalidateHttpSession" value="true"/>
         </bean>
 
         <!-- Override default logout processing filter with the one processing SAML messages -->
@@ -334,7 +335,7 @@
 
         <!-- Handler for successful logout -->
         <bean id="successLogoutHandler" class="org.springframework.security.web.authentication.logout.SimpleUrlLogoutSuccessHandler">
-            <property name="defaultTargetUrl" value="/#/nationell/oversikt"/>
+            <property name="defaultTargetUrl" value="/"/>
         </bean>
     </beans>
 </beans>

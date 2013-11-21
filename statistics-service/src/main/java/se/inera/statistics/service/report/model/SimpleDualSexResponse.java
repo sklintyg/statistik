@@ -47,6 +47,6 @@ public class SimpleDualSexResponse<T extends SimpleDualSexDataRow> {
 
     @Override
     public String toString() {
-        return "SimpleDualSexResponse{" + "rows=" + rows + ", numberOfMonthsCalculated=" + getNumberOfMonthsCalculated() + '}';
+        return "{\"SimpleDualSexResponse\":{" + "\"rows\":" + rows + ", \"numberOfMonthsCalculated\":" + getNumberOfMonthsCalculated() + "}}";
     }
 }

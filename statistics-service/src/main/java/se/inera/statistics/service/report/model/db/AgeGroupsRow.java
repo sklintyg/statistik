@@ -86,6 +86,6 @@ public class AgeGroupsRow {
 
     @Override
     public String toString() {
-        return "AgeGroupsRow{" + "key=" + key + ", male=" + male + ", female=" + female + ", typ=" + typ + '}';
+        return "{\"AgeGroupsRow\":{\"key\":" + key + ", \"male\":" + male + ", \"female\":" + female + ", \"typ\":\"" + typ + "\"}}";
     }
 }
