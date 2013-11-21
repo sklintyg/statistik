@@ -26,9 +26,9 @@ import se.inera.statistics.service.report.util.Verksamhet;
 public class DiagnossubgroupPersistenceHandler implements DiagnosisSubGroups {
     @PersistenceContext(unitName = "IneraStatisticsLog")
     private EntityManager manager;
-    
+
     @Autowired
-    DiagnosisGroupsUtil diagnosisGroupsUtil;
+    private DiagnosisGroupsUtil diagnosisGroupsUtil;
 
     @Transactional
     public void count(String hsaId, String period, String diagnosgrupp, String undergrupp, Verksamhet typ, Sex sex) {

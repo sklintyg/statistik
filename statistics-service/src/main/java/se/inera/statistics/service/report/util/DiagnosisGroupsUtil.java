@@ -29,10 +29,10 @@ public class DiagnosisGroupsUtil {
     @Autowired
     private Resource icd10ChaptersAnsiFile;
 
-    private final static Pattern ICD10_ANSI_FILE_LINE_PATTERN = Pattern.compile("(^[A-Z][0-9][0-9]-[A-Z][0-9][0-9])(.*)$");
+    private static final Pattern ICD10_ANSI_FILE_LINE_PATTERN = Pattern.compile("(^[A-Z][0-9][0-9]-[A-Z][0-9][0-9])(.*)$");
     private Map<String, Collection<DiagnosisGroup>> SUB_GROUPS;
     private static final List<DiagnosisGroup> GROUPS = initGroups();
-    
+
     public String getGroupIdForCode(String icd10Code) {
         String normalizedIcd10 = normalize(icd10Code);
         for (Entry<String, Collection<DiagnosisGroup>> entry : getSubGroups().entrySet()) {
@@ -114,20 +114,20 @@ public class DiagnosisGroupsUtil {
 
     private static Map<String, Collection<DiagnosisGroup>> initSubGroups() {
         Map<String, Collection<DiagnosisGroup>> subGroups = new HashMap<>();
-        String[] groups = new String[] { "A00-B99", "C00-D48", "D50-D89", "E00-E90", "F00-F99", "G00-G99", "H00-H59", "H60-H95", "I00-I99", "J00-J99",
+        String[] groups = new String[] {"A00-B99", "C00-D48", "D50-D89", "E00-E90", "F00-F99", "G00-G99", "H00-H59", "H60-H95", "I00-I99", "J00-J99",
                 "K00-K93", "L00-L99", "M00-M99", "N00-N99", "O00-O99", "P00-P96", "Q00-Q99", "R00-R99", "S00-T98", "V01-Y98", "Z00-Z99", "U00-U99" };
         for (String group : groups) {
             subGroups.put(group, new TreeSet<DiagnosisGroup>());
         }
         return subGroups;
     }
-    
+
     private static String getChapterNameForIcd10Code(String icd10Code, Collection<String> groupNames) throws Icd10ChapterNotFoundException{
         List<DiagnosisGroup> diagnosisGroups = new ArrayList<>();
         for (String groupName : groupNames) {
             diagnosisGroups.add(new DiagnosisGroup(groupName, ""));
         }
-        
+
         for (DiagnosisGroup diagnosisGroup : diagnosisGroups) {
             if (diagnosisGroup.isCodeInGroup(icd10Code)) {
                 return diagnosisGroup.getId();
@@ -136,7 +136,7 @@ public class DiagnosisGroupsUtil {
         LOG.error("Failed to parse diagnosis groups definition file. Could not find chapter for code: " + icd10Code);
         throw new Icd10ChapterNotFoundException("Could not find chapter for code: " + icd10Code);
     }
-    
+
     private Map<String, Collection<DiagnosisGroup>> getSubGroups() {
         if (SUB_GROUPS == null) {
             SUB_GROUPS = setupSubGroups();

@@ -44,7 +44,7 @@ public class CsvConverter {
     }
 
     private void addField(Object value) {
-        csv.append(value.toString() + ";");
+        csv.append(value.toString()).append(';');
     }
 
     static Response getCsvResponse(final TableData tableData, final String fileName) {

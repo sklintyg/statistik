@@ -13,7 +13,7 @@ import java.util.Map;
 
 @Component
 public class SjukfallPerDiagnosgruppListener extends GenericAbstractListener {
-    private static int MAX_CACHE_SIZE = 1000;
+    private static int maxCacheSize = 1000;
     private final Map<DiagnosisGroupKey, DiagnosgruppValue> cache = new HashMap<>();
 
     @Autowired
@@ -41,7 +41,7 @@ public class SjukfallPerDiagnosgruppListener extends GenericAbstractListener {
                 DiagnosgruppValue value = new DiagnosgruppValue(verksamhet, kon);
                 cache.put(key, value);
             }
-            isCacheFull = cache.size() >= MAX_CACHE_SIZE;
+            isCacheFull = cache.size() >= maxCacheSize;
         }
         return isCacheFull;
     }
@@ -55,7 +55,7 @@ public class SjukfallPerDiagnosgruppListener extends GenericAbstractListener {
     }
 
     public static void setMaxCacheSize(int newSize) {
-        MAX_CACHE_SIZE = newSize;
+        maxCacheSize = newSize;
     }
 
     public class DiagnosgruppValue {

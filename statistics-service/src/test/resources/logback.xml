@@ -27,13 +27,15 @@
         </layout>
     </appender>
 
+    <appender name="NULL" class="se.inera.statistics.service.helper.NullAppender"/>
+
     <logger name="org.springframework" level="WARN"/>
     <logger name="org.springframework.security" level="WARN"/>
     <logger name="org.springframework.core.env.PropertySourcesPropertyResolver" level="WARN"/>
     <logger name="org.springframework.web" level="WARN"/>
     <logger name="org.springframework.http" level="WARN"/>
 
-    <logger name="se.inera.statistics.service.queue.RepresentativeIntygIntegrationTest" level="INFO"><appender-ref ref="FILE"/></logger>
+    <logger name="se.inera.statistics.service.queue.RepresentativeIntygIntegrationTest" level="INFO"><appender-ref ref="${test.run.appender}"/></logger>
 
     <root level="ERROR">
         <appender-ref ref="STDOUT"/>

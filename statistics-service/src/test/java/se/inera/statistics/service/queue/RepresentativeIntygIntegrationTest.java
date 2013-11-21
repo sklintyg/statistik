@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import org.apache.activemq.command.ActiveMQQueue;
 import org.joda.time.LocalDate;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
@@ -19,10 +18,26 @@ import org.springframework.transaction.annotation.Transactional;
 import se.inera.statistics.service.demo.UtlatandeBuilder;
 import se.inera.statistics.service.helper.JSONParser;
 import se.inera.statistics.service.processlog.LogConsumer;
-import se.inera.statistics.service.report.api.*;
+import se.inera.statistics.service.report.api.AgeGroups;
+import se.inera.statistics.service.report.api.CasesPerCounty;
+import se.inera.statistics.service.report.api.CasesPerMonth;
+import se.inera.statistics.service.report.api.DegreeOfSickLeave;
+import se.inera.statistics.service.report.api.DiagnosisGroups;
+import se.inera.statistics.service.report.api.DiagnosisSubGroups;
+import se.inera.statistics.service.report.api.Overview;
+import se.inera.statistics.service.report.api.SjukfallslangdGrupp;
+import se.inera.statistics.service.report.api.VerksamhetOverview;
 import se.inera.statistics.service.report.listener.AldersGruppListener;
 import se.inera.statistics.service.report.listener.SjukfallPerDiagnosgruppListener;
-import se.inera.statistics.service.report.model.*;
+import se.inera.statistics.service.report.model.AgeGroupsResponse;
+import se.inera.statistics.service.report.model.DegreeOfSickLeaveResponse;
+import se.inera.statistics.service.report.model.DiagnosisGroupResponse;
+import se.inera.statistics.service.report.model.OverviewResponse;
+import se.inera.statistics.service.report.model.Range;
+import se.inera.statistics.service.report.model.SickLeaveLengthResponse;
+import se.inera.statistics.service.report.model.SimpleDualSexDataRow;
+import se.inera.statistics.service.report.model.SimpleDualSexResponse;
+import se.inera.statistics.service.report.model.VerksamhetOverviewResponse;
 import se.inera.statistics.service.report.repository.RollingLength;
 import se.inera.statistics.service.report.util.Verksamhet;
 import se.inera.statistics.service.scheduler.NationellUpdaterJob;
@@ -40,6 +55,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -208,10 +224,35 @@ public class RepresentativeIntygIntegrationTest {
         UtlatandeBuilder[] builders = {builder1, builder2, builder3, builder4};
 
         LOG.info("===========START==========");
-        LOG.info("testfall.csv");
+        String testCaseName = "testfall.csv";
+        LOG.info(testCaseName);
 
         LOG.info("===========INPUT==========");
-        BufferedReader reader = new BufferedReader(new InputStreamReader(this.getClass().getResourceAsStream("/testfall.csv")));
+        String csvFile = "/testfall.csv";
+        enqueueFromFile(builders, csvFile);
+
+        sleep();
+
+        assertEquals("Verify that all messages have been processed.", 33, consumer.processBatch());
+
+        nationellUpdaterJob.checkLog();
+
+        LOG.info("===========RESULT=========");
+        Map<String, TestData> result = printAndGetPersistedData();
+
+        LOG.info("===========TABLES=========");
+
+        printSimpleDualSexResponseTable(result.get("casesPerMonth1").jsonNode, testCaseName + ": CasesPerMonth1");
+        printSimpleDualSexResponseTable(result.get("casesPerMonth2").jsonNode, testCaseName + ": CasesPerMonth2");
+        printSimpleDualSexResponseTable(result.get("casesPerMonthNationell").jsonNode, testCaseName + ": CasesPerMonthNationell");
+        printSimpleDualSexResponseTable(result.get("sjukfallslangdGruppLong1").jsonNode, testCaseName + ": SjukfallslangdGruppLong1");
+        printSimpleDualSexResponseTable(result.get("sjukfallslangdGruppLong2").jsonNode, testCaseName + ": SjukfallslangdGruppLong2");
+
+        LOG.info("============END===========\n");
+    }
+
+    private void enqueueFromFile(UtlatandeBuilder[] builders, String csvFile) throws IOException {
+        BufferedReader reader = new BufferedReader(new InputStreamReader(this.getClass().getResourceAsStream(csvFile)));
         List<String[]> lines = new ArrayList<>();
         while (true) {
             String line = reader.readLine();
@@ -251,19 +292,22 @@ public class RepresentativeIntygIntegrationTest {
             LOG.info(person + ", " + start + ", " + stop + ", " + enhet + ", " + vardgivare + ", " + diagnos + ", " + grad);
             simpleSend(builders[start.size()-1].build(person, start, stop, enhet, vardgivare, diagnos, grad).toString(), "001");
         }
+    }
 
-        sleep();
-
-        assertEquals("Verify that all messages have been processed.", 33, consumer.processBatch());
-
-        nationellUpdaterJob.checkLog();
-
-        LOG.info("===========RESULT=========");
-        Map<String, TestData> result = printAndGetPersistedData();
-        JsonNode casesPerMonth1 = result.get("casesPerMonth1").jsonNode;
-
-
-        LOG.info("============END===========\n");
+    private void printSimpleDualSexResponseTable(JsonNode testResult, String tableName) {
+        Iterator<JsonNode> rows = testResult.findPath("rows").iterator();
+        StringBuilder sb = new StringBuilder(tableName + "\nmonth, female, male\n");
+        while(rows.hasNext()) {
+            JsonNode row = rows.next().path("SimpleDualSexDataRow");
+            sb.append(row.path("name").textValue());
+            sb.append(',');
+            sb.append(row.path("data").path("DualSexField").path("female"));
+            sb.append(',');
+            sb.append(row.path("data").path("DualSexField").path("male"));
+            sb.append('\n');
+        }
+        sb.append('\n');
+        LOG.info(sb.toString());
     }
 
     private Map<String, TestData> printAndGetPersistedData() {
@@ -477,7 +521,7 @@ public class RepresentativeIntygIntegrationTest {
     }
 
     private String getVardenhet(int i) {
-        String[] enheter = { "EnVE", "TvaVE" };
+        String[] enheter = { "ENVE", "TVAVE" };
         return enheter[i];
     }
 

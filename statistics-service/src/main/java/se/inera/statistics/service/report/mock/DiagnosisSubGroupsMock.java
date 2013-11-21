@@ -21,8 +21,8 @@ import se.inera.statistics.service.report.util.Verksamhet;
 public class DiagnosisSubGroupsMock implements DiagnosisSubGroups {
 
     @Autowired
-    DiagnosisGroupsUtil diagnosisGroupsUtil;
-    
+    private DiagnosisGroupsUtil diagnosisGroupsUtil;
+
     @Override
     public DiagnosisGroupResponse getDiagnosisGroups(String hsaId, Range range, String diagnosisGroupId) {
         List<DiagnosisGroup> headers = diagnosisGroupsUtil.getSubGroups(diagnosisGroupId);
