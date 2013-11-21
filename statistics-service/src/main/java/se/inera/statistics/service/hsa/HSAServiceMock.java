@@ -3,6 +3,8 @@ package se.inera.statistics.service.hsa;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.context.annotation.Primary;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 import se.inera.statistics.service.report.model.Lan;
@@ -13,6 +15,8 @@ import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 @Component
+@Profile("dev")
+@Primary
 public class HSAServiceMock implements HSAService {
     private JsonNodeFactory factory = JsonNodeFactory.instance;
 
