@@ -27,7 +27,7 @@ public class AldersGruppListener extends RollingAbstractListener {
         Verksamhet.ENHET, token.getKon());
         ageGroups.count(period, token.getVardgivareId(), group, length,
         Verksamhet.VARDGIVARE, token.getKon());
-        return false;
+        return true;
 //        return count(period, token.getEnhetId(), group, length, Verksamhet.ENHET, token.getKon())
 //                || count(period, token.getVardgivareId(), group, length, Verksamhet.VARDGIVARE, token.getKon());
     }

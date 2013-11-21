@@ -31,7 +31,7 @@ public abstract class AbstractListener<T> {
     boolean accept(T token, LocalDate firstMonth, LocalDate endMonth) {
         boolean cacheFull = false;
         for (LocalDate currentMonth = firstMonth; !currentMonth.isAfter(endMonth); currentMonth = currentMonth.plusMonths(1)) {
-            cacheFull = cacheFull || accept(token, currentMonth);
+            cacheFull = cacheFull | accept(token, currentMonth);
         }
         return cacheFull;
     }
