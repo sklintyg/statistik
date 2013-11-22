@@ -1,5 +1,7 @@
 package se.inera.statistics.web.service;
 
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -38,8 +40,11 @@ public class SjukfallPerSexConverter {
     }
 
     private String toTableString(final Integer value, int rowSum) {
+        final DecimalFormatSymbols symbols = DecimalFormatSymbols.getInstance();
+        symbols.setGroupingSeparator(' ');
+        final DecimalFormat formatter = new DecimalFormat("###,###", symbols);
         final float toPercentFactor = 100.0F;
-        return Math.round(toPercentFactor * value / rowSum) + "% (" + value + ")";
+        return Math.round(toPercentFactor * value / rowSum) + "% (" + formatter.format(value) + ")";
     }
 
     private ChartData convertToChartData(SimpleDualSexResponse<SimpleDualSexDataRow> casesPerMonth) {
