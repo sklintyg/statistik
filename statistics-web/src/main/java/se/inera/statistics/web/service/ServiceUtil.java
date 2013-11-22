@@ -22,16 +22,6 @@ public final class ServiceUtil {
     private ServiceUtil() {
     }
 
-    static List<Integer> getAppendedSum(List<Integer> data) {
-        int sum = 0;
-        for (Integer dataField : data) {
-            sum += dataField;
-        }
-        List<Integer> dataWithSum = new ArrayList<Integer>(data);
-        dataWithSum.add(sum);
-        return dataWithSum;
-    }
-
     static List<Integer> getMergedSexData(DualSexDataRow row) {
         List<Integer> data = new ArrayList<>();
         for (DualSexField dualSexField : row.getData()) {
@@ -67,16 +57,16 @@ public final class ServiceUtil {
             for (int i = 0; i < rows.get(0).getData().size(); i++) {
                 sumData.add(0);
             }
-        }
-        for (NamedData namedData : rows) {
-            List<Object> datas = namedData.getData();
-            for (int i = 0; i < datas.size(); i++) {
-                Object data = datas.get(i);
-                sumData.set(i, sumData.get(i) + Integer.parseInt(data.toString()));
+            for (NamedData namedData : rows) {
+                List<Object> datas = namedData.getData();
+                for (int i = 0; i < datas.size(); i++) {
+                    Object data = datas.get(i);
+                    sumData.set(i, sumData.get(i) + Integer.parseInt(data.toString()));
+                }
             }
-        }
-        if (!includeSumForLastColumn) {
-            sumData.remove(sumData.size() - 1);
+            if (!includeSumForLastColumn) {
+                sumData.remove(sumData.size() - 1);
+            }
         }
         NamedData sumRow = new NamedData("Totalt", sumData);
         return sumRow;

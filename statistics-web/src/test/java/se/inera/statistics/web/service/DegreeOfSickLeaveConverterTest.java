@@ -23,7 +23,7 @@ public class DegreeOfSickLeaveConverterTest {
 //        DiagnosisGroupResponse resp = new DiagnosisGroupResponse(new ArrayList<DiagnosisGroup>(), new ArrayList<DiagnosisGroupRow>());
         final DegreeOfSickLeaveResponse resp = new DegreeOfSickLeaveResponse(new ArrayList<String>(), new ArrayList<DualSexDataRow>());
         TableData tableData = DegreeOfSickLeaveConverter.convertTable(resp);
-        assertEquals("[[;1], [Period;1, Summering;1]]", tableData.getHeaders().toString());
+        assertEquals("[[;1, ;1], [Period;1, Antal sjukfall;1, Summering;1]]", tableData.getHeaders().toString());
         assertEquals("[Totalt: []]", tableData.getRows().toString());
     }
 
@@ -43,8 +43,8 @@ public class DegreeOfSickLeaveConverterTest {
         TableData tableData = DegreeOfSickLeaveConverter.convertTable(resp);
 
         //Then
-        assertEquals("[[;1, 50%;2], [Period;1, Kvinnor;1, Män;1, Summering;1]]", tableData.getHeaders().toString());
-        assertEquals("[period1: [3, 2, 5], Totalt: [3, 2, 5]]", tableData.getRows().toString());
+        assertEquals("[[;1, ;1, 50%;2], [Period;1, Antal sjukfall;1, Kvinnor;1, Män;1, Summering;1]]", tableData.getHeaders().toString());
+        assertEquals("[period1: [5, 3, 2, 5], Totalt: [5, 3, 2]]", tableData.getRows().toString());
     }
 
     @Test
@@ -78,8 +78,8 @@ public class DegreeOfSickLeaveConverterTest {
         assertEquals("[period1]", data.getMaleChart().getCategories().toString());
         assertTrue(data.getMaleChart().getSeries().toString(), data.getMaleChart().getSeries().toString().contains("50%: [2]"));
 
-        assertEquals("[[;1, 50%;2], [Period;1, Kvinnor;1, Män;1, Summering;1]]", data.getTableData().getHeaders().toString());
-        assertEquals("[period1: [3, 2, 5], Totalt: [3, 2, 5]]", data.getTableData().getRows().toString());
+        assertEquals("[[;1, ;1, 50%;2], [Period;1, Antal sjukfall;1, Kvinnor;1, Män;1, Summering;1]]", data.getTableData().getHeaders().toString());
+        assertEquals("[period1: [5, 3, 2, 5], Totalt: [5, 3, 2]]", data.getTableData().getRows().toString());
     }
 
 }
