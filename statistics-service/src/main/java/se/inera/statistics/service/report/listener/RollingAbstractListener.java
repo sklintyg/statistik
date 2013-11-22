@@ -16,7 +16,7 @@ public abstract class RollingAbstractListener extends GenericAbstractListener {
         boolean isCacheFull = false;
         LocalDate prevEnd = token.getSjukfallInfo().getPrevEnd();
         for (RollingLength length: RollingLength.values()) {
-            isCacheFull = isCacheFull || accept(token, firstMonth, endMonth, prevEnd, length);
+            isCacheFull = isCacheFull | accept(token, firstMonth, endMonth, prevEnd, length);
         }
         return isCacheFull;
     }
@@ -27,7 +27,7 @@ public abstract class RollingAbstractListener extends GenericAbstractListener {
         LocalDate lastMonth = endMonth.plusMonths(length.getPeriods() - 1);
         for (LocalDate currentMonth = startMonth; !currentMonth.isAfter(lastMonth); currentMonth = currentMonth.plusMonths(1)) {
             String period = ReportUtil.toPeriod(currentMonth);
-            isCacheFull = isCacheFull || accept(token, period, length);
+            isCacheFull = isCacheFull | accept(token, period, length);
         }
         return isCacheFull;
     }

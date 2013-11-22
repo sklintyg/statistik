@@ -2,6 +2,8 @@ package se.inera.statistics.service.hsa;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.fail;
 import static org.mockito.Mockito.when;
 
 import java.io.InputStream;
@@ -44,10 +46,32 @@ public class HSAServiceImplTest {
         
     }
 
+    @Test
+    public void wsFindsNothing() throws Exception {
+        HSAKey key = new HSAKey("vardgivareId", "enhetId", "lakareId");
+        JsonNode info = serviceImpl.getHSAInfo(key);
+        assertNotNull(info);
+        assertNull(info.get("enhet"));
+        assertNull(info.get("huvudenhet"));
+        assertNull(info.get("vardgivare"));
+        assertNull(info.get("personal"));
+        
+    }
+
+    @Test ( expected = RuntimeException.class)
+    public void wsThrowsException() throws Exception {
+        HSAKey key = new HSAKey("vardgivareId", "enhetId", "lakareId");
+        when(wsCalls.getStatisticsHsaUnit("enhetId")).thenThrow(new IllegalStateException("This WS is broken"));
+        serviceImpl.getHSAInfo(key);
+        fail("Exception should have been thrown");
+        
+    }
+
     private GetStatisticsHsaUnitResponseType getResponse(String name) throws JAXBException {
         JAXBContext context = JAXBContext.newInstance(GetStatisticsHsaUnitResponseType.class);
         Unmarshaller unmarshaller = context.createUnmarshaller();
         InputStream input = getClass().getResourceAsStream("/soap-response/" + name);
+        @SuppressWarnings("unchecked")
         JAXBElement<GetStatisticsHsaUnitResponseType> o = (JAXBElement<GetStatisticsHsaUnitResponseType>) unmarshaller.unmarshal(input);
         return o.getValue();
     }

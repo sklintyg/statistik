@@ -3,7 +3,10 @@ package se.inera.statistics.service.hsa;
 import java.util.List;
 
 import org.joda.time.LocalDateTime;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import se.inera.ifv.hsawsresponder.v3.GeoCoord;
 import se.inera.ifv.hsawsresponder.v3.GeoCoordEnum;
@@ -22,8 +25,9 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
-//@Component
+@Component
 public class HSAServiceImpl implements HSAService {
+    private static final Logger LOG = LoggerFactory.getLogger(HSAServiceImpl.class);
     private JsonNodeFactory factory = JsonNodeFactory.instance;
 
     @Autowired
@@ -31,16 +35,42 @@ public class HSAServiceImpl implements HSAService {
 
     @Override
     public JsonNode getHSAInfo(HSAKey key) {
-        GetStatisticsHsaUnitResponseType unit = service.getStatisticsHsaUnit(key.getEnhetId());
-        GetStatisticsCareGiverResponseType caregiver = service.getStatisticsCareGiver(key.getVardgivareId());
-        GetStatisticsPersonResponseType personal = service.getStatisticsPerson(key.getLakareId());
+        GetStatisticsHsaUnitResponseType unit = getStatisticsHsaUnit(key.getEnhetId());
+        GetStatisticsCareGiverResponseType caregiver = getStatisticsCareGiver(key.getVardgivareId());
+        GetStatisticsPersonResponseType personal = getStatisticsPerson(key.getVardgivareId());
 
         Builder root = new Builder();
-        root.put("enhet", createUnit(unit.getStatisticsUnit()));
-        root.put("huvudenhet", createUnit(unit.getStatisticsCareUnit()));
+        if (unit != null) {
+            root.put("enhet", createUnit(unit.getStatisticsUnit()));
+            root.put("huvudenhet", createUnit(unit.getStatisticsCareUnit()));
+        }
         root.put("vardgivare", createCareGiver(caregiver));
         root.put("personal", createPersonal(personal));
         return root.root;
+    }
+
+    private GetStatisticsPersonResponseType getStatisticsPerson(String key) {
+        GetStatisticsPersonResponseType person = service.getStatisticsPerson(key);
+        if (person == null) {
+            LOG.warn("No person '{}' found", key);
+        }
+        return person;
+    }
+
+    private GetStatisticsCareGiverResponseType getStatisticsCareGiver(String key) {
+        GetStatisticsCareGiverResponseType caregiver = service.getStatisticsCareGiver(key);
+        if (caregiver == null) {
+            LOG.warn("No care giver '{}' found", key);
+        }
+        return caregiver;
+    }
+
+    private GetStatisticsHsaUnitResponseType getStatisticsHsaUnit(String key) {
+        GetStatisticsHsaUnitResponseType unit = service.getStatisticsHsaUnit(key);
+        if (unit == null) { 
+            LOG.warn("No unit '{}' found", key);
+        }
+        return unit;
     }
 
     private Builder createPersonal(GetStatisticsPersonResponseType personal) {
@@ -49,9 +79,9 @@ public class HSAServiceImpl implements HSAService {
         }
         Builder root = new Builder();
         root.put("id", personal.getHsaIdentity());
-        root.put("efternamn", "Not yet");
-        root.put("tilltalsnamn", "Not yet");
-        root.put("initial", "Not yet");
+        // root.put("efternamn", "Not yet");
+        // root.put("tilltalsnamn", "Not yet");
+        // root.put("initial", "Not yet");
         root.put("kon", personal.getGender());
         root.put("alder", personal.getAge());
         root.put("befattning", personal.getPaTitleCodes() != null ? personal.getPaTitleCodes().getPaTitleCode() : null);
@@ -68,7 +98,7 @@ public class HSAServiceImpl implements HSAService {
         Builder root = new Builder();
         root.put("id", caregiver.getHsaIdentity());
         root.put("orgnr", caregiver.getCareGiverOrgNo());
-        root.put("namn", "Not yet");
+        // root.put("namn", "Not yet");
         root.put("startdatum", caregiver.getStartDate());
         root.put("slutdatum", caregiver.getEndDate());
         root.put("arkiverad", caregiver.isIsArchived());
@@ -82,7 +112,7 @@ public class HSAServiceImpl implements HSAService {
         Builder root = new Builder();
 
         root.put("id", unit.getHsaIdentity());
-        root.put("namn", "Not yet");
+        // root.put("namn", "Not yet");
         root.put("enhetsTyp", createEnhetsTyp(unit.getBusinessTypes()));
         root.put("agarform", createAgarTyp(unit.getManagements()));
         root.put("startdatum", unit.getStartDate());
@@ -108,12 +138,6 @@ public class HSAServiceImpl implements HSAService {
 
     private List<String> createEnhetsTyp(BusinessTypes businessTypes) {
         return businessTypes != null ? businessTypes.getBusinessType() : null;
-    }
-
-    private JsonNode createHosPersonal() {
-        ObjectNode root = factory.objectNode();
-        root.put("placeholder", "value");
-        return root;
     }
 
     private JsonNode createGeografiskIndelning(StatisticsHsaUnit unit) {

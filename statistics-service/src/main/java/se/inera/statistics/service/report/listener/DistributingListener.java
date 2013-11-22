@@ -46,12 +46,12 @@ public class DistributingListener implements ProcessorListener {
     @Transactional
     public void accept(SjukfallInfo sjukfallInfo, JsonNode utlatande, JsonNode hsa, long logId) {
         boolean cacheFull = aldersgruppListener.accept(sjukfallInfo, utlatande, hsa);
-        cacheFull = cacheFull || sjukfallPerKonListener.accept(sjukfallInfo, utlatande, hsa);
-        cacheFull = cacheFull || sjukfallPerDiagnosgruppListenerListener.accept(sjukfallInfo, utlatande, hsa);
-        cacheFull = cacheFull || sjukfallPerDiagnosundergruppListenerListener.accept(sjukfallInfo, utlatande, hsa);
-        cacheFull = cacheFull || sjukfallsLangdListener.accept(sjukfallInfo, utlatande, hsa);
-        cacheFull = cacheFull || sjukskrivningsgradListener.accept(sjukfallInfo, utlatande, hsa);
-        cacheFull = cacheFull || sjukfallPerLanListener.accept(sjukfallInfo, utlatande, hsa);
+        cacheFull = cacheFull | sjukfallPerKonListener.accept(sjukfallInfo, utlatande, hsa);
+        cacheFull = cacheFull | sjukfallPerDiagnosgruppListenerListener.accept(sjukfallInfo, utlatande, hsa);
+        cacheFull = cacheFull | sjukfallPerDiagnosundergruppListenerListener.accept(sjukfallInfo, utlatande, hsa);
+        cacheFull = cacheFull | sjukfallsLangdListener.accept(sjukfallInfo, utlatande, hsa);
+        cacheFull = cacheFull | sjukskrivningsgradListener.accept(sjukfallInfo, utlatande, hsa);
+        cacheFull = cacheFull | sjukfallPerLanListener.accept(sjukfallInfo, utlatande, hsa);
 
         synchronized (lock) {
             latestLogId = logId;
