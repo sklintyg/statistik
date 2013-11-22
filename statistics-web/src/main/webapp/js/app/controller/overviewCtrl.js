@@ -70,6 +70,7 @@
         chartOptions.chart.height = 210;
         chartOptions.xAxis.title = { text: 'Dagar' };
         chartOptions.yAxis.title = { text: 'Antal' };
+        chartOptions.yAxis.tickPixelInterval = 30,
         chartOptions.legend.enabled = false;
         new Highcharts.Chart(chartOptions);
     }
