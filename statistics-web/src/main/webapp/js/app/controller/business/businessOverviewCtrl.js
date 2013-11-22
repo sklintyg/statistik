@@ -106,6 +106,7 @@
         chartOptions.xAxis.labels.format = '{value} dagar';
         chartOptions.tooltip.pointFormat = '{point.y} dagar';
         chartOptions.yAxis.title = { text: 'Antal' };
+        chartOptions.yAxis.tickPixelInterval = 30,
         chartOptions.legend.enabled = false;
         new Highcharts.Chart(chartOptions);
     }
