@@ -134,6 +134,7 @@ public class DiagnosisGroupsConverter {
 
     static TableData convertTable(DiagnosisGroupResponse resp) {
         List<NamedData> rows = getTableRows(resp);
+        ServiceUtil.addSumRow(rows, true);
         List<List<TableHeader>> headers = getTableHeaders(resp);
         return new TableData(rows, headers);
     }

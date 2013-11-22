@@ -50,6 +50,7 @@ public class DegreeOfSickLeaveConverter {
             List<Integer> mergedAndSummed = ServiceUtil.getAppendedSum(mergedSexData);
             rows.add(new NamedData(row.getName(), mergedAndSummed));
         }
+        ServiceUtil.addSumRow(rows, true);
         return rows;
     }
 

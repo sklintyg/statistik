@@ -14,6 +14,7 @@ import se.inera.statistics.hsa.model.Vardenhet;
 import se.inera.statistics.service.report.model.DualSexDataRow;
 import se.inera.statistics.service.report.model.DualSexField;
 import se.inera.statistics.web.model.LoginInfo;
+import se.inera.statistics.web.model.NamedData;
 import se.inera.statistics.web.model.Verksamhet;
 
 public final class ServiceUtil {
@@ -54,6 +55,31 @@ public final class ServiceUtil {
             }
         }
         return new LoginInfo("", "", false, Collections.<Verksamhet>emptyList());
+    }
+
+    static void addSumRow(List<NamedData> rows, boolean includeSumForLastColumn) {
+        rows.add(getSumRow(rows, includeSumForLastColumn));
+    }
+
+    static NamedData getSumRow(List<NamedData> rows, boolean includeSumForLastColumn) {
+        final ArrayList<Integer> sumData = new ArrayList<Integer>();
+        if (!rows.isEmpty()) {
+            for (int i = 0; i < rows.get(0).getData().size(); i++) {
+                sumData.add(0);
+            }
+        }
+        for (NamedData namedData : rows) {
+            List<Object> datas = namedData.getData();
+            for (int i = 0; i < datas.size(); i++) {
+                Object data = datas.get(i);
+                sumData.set(i, sumData.get(i) + Integer.parseInt(data.toString()));
+            }
+        }
+        if (!includeSumForLastColumn) {
+            sumData.remove(sumData.size() - 1);
+        }
+        NamedData sumRow = new NamedData("Totalt", sumData);
+        return sumRow;
     }
 
 }

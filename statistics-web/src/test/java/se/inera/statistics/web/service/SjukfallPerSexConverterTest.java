@@ -30,13 +30,15 @@ public class SjukfallPerSexConverterTest {
         TableData tableData = result.getTableData();
         assertEquals("[[Län;1, Antal sjukfall;1, Andel kvinnor;1, Andel män;1, Summering;1]]", tableData.getHeaders().toString());
         List<NamedData> rows = tableData.getRows();
-        assertEquals(3, rows.size());
+        assertEquals(4, rows.size());
         assertEquals("län 1", rows.get(0).getName());
         assertEquals("län 2", rows.get(1).getName());
         assertEquals("län 3", rows.get(2).getName());
+        assertEquals("Totalt", rows.get(3).getName());
         assertEquals("[25, 48% (12), 52% (13), 25]", rows.get(0).getData().toString());
         assertEquals("[50, 40% (20), 60% (30), 75]", rows.get(1).getData().toString());
         assertEquals("[30, 17% (5), 83% (25), 105]", rows.get(2).getData().toString());
+        assertEquals("[105, 37, 68, ]", rows.get(3).getData().toString());
     }
 
     // CHECKSTYLE:ON MagicNumber
