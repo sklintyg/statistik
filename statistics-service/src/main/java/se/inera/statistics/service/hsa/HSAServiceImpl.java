@@ -37,7 +37,7 @@ public class HSAServiceImpl implements HSAService {
     public JsonNode getHSAInfo(HSAKey key) {
         GetStatisticsHsaUnitResponseType unit = getStatisticsHsaUnit(key.getEnhetId());
         GetStatisticsCareGiverResponseType caregiver = getStatisticsCareGiver(key.getVardgivareId());
-        GetStatisticsPersonResponseType personal = getStatisticsPerson(key.getVardgivareId());
+        GetStatisticsPersonResponseType personal = getStatisticsPerson(key.getLakareId());
 
         Builder root = new Builder();
         if (unit != null) {
