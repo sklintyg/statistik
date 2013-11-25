@@ -12,7 +12,7 @@ import se.inera.statistics.service.report.util.Verksamhet;
 @Table(name = CasesPerMonthRow.TABLE)
 public class CasesPerMonthRow {
 
-    public static final String TABLE = "casespermonthrow";
+    public static final String TABLE = "sjukfallpermanad";
     @EmbeddedId
     private CasesPerMonthKey key;
     @Enumerated(EnumType.STRING)

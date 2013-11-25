@@ -3,6 +3,7 @@
  app.overviewCtrl = function ($scope, $timeout, statisticsData) {
 
      var setTooltipText = function(result) {
+         $scope.popoverText = "Nationella statistiktjänsten är en webbtjänst som visar samlad statistik för ordinerad sjukskrivning i alla elektroniska läkarintyg. Tjänsten visar nationell statistik som är tillgänglig för alla och verksamhetsstatistik som kräver särskild behörighet för att se.";
          $scope.popoverTextAmount = "Totala antalet sjukfall under perioden " + result.periodText;
          $scope.popoverTextChangeProcentage = "Förändring visar den procentuella förändringen mellan perioden " + result.periodText + " och föregående period " + result.casesPerMonth.previousPeriodText;
          $scope.popoverTextSexDistribution = "Könsfördelningen av totala antalet sjukfall under perioden " + result.periodText;
