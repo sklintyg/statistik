@@ -14,7 +14,7 @@ import se.inera.statistics.service.report.util.Verksamhet;
 @Table(name = DiagnosisGroupData.TABLE)
 public class DiagnosisGroupData {
 
-    public static final String TABLE = "diagnosisgroupdata";
+    public static final String TABLE = "diagnosgrupp";
     @EmbeddedId
     private DiagnosisGroupKey key;
 
