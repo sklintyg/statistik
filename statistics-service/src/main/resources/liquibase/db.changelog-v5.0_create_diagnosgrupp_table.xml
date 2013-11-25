@@ -3,7 +3,7 @@
                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
     <changeSet id="5a_create_diagnosis_group_data_table" author="roger.lindsjo">
-        <createTable tableName="diagnosisgroupdata">
+        <createTable tableName="diagnosgrupp">
             <column name="period" type="varchar(20)">
                 <constraints primaryKey="true" nullable="false"/>
             </column>

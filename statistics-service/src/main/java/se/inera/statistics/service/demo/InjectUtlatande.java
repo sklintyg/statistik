@@ -37,7 +37,7 @@ public class InjectUtlatande {
     private static final LocalDate BASE = new LocalDate("2012-03-01");
 
     private static final List<String> DIAGNOSER = new ArrayList<>();
-    private static final List<String> VARDENHETER = Arrays.asList("verksamhet1", "verksamhet2");
+    private static final List<String> VARDENHETER = Arrays.asList("verksamhet1", "verksamhet2", "IFV1239877878-103D");
     private static final List<Integer> ARBETSFORMAGOR = Arrays.asList(0, 25, 50, 75);
 
     private static Random random = new Random(SEED);

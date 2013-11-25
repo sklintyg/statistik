@@ -37,6 +37,7 @@ public class LogConsumerImpl implements LogConsumer {
         try {
             setRunning(true);
             List<IntygEvent> result = processLog.getPending(BATCH_SIZE);
+            int processed = 0;
             if (result.isEmpty()) {
                 return 0;
             }
@@ -45,12 +46,13 @@ public class LogConsumerImpl implements LogConsumer {
                 JsonNode hsaInfo = hsa.syncDecorate(intyg, event.getCorrelationId());
                 if (hsaInfo != null) {
                     processor.accept(intyg, hsaInfo, event.getId());
+                    processed ++;
                     LOG.info("Processed log id {}", event.getId());
                 } else {
-                    return 0;
+                    return processed;
                 }
             }
-            return result.size();
+            return processed;
         } finally {
             setRunning(false);
         }
