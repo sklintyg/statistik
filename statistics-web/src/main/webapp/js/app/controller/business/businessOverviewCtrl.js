@@ -101,7 +101,7 @@
         var chartOptions = ControllerCommons.getHighChartConfigBase(categories, series);
         chartOptions.chart.type = 'column';
         chartOptions.chart.renderTo = containerId;
-        chartOptions.chart.height = 185;
+        chartOptions.chart.height = 210;
         chartOptions.xAxis.title = { text: 'Dagar' };
         chartOptions.xAxis.labels.format = '{value} dagar';
         chartOptions.tooltip.pointFormat = '{point.y} dagar';
