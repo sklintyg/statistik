@@ -104,10 +104,7 @@
 							<span>Välj verksamhet:</span>
 							<!-- SELECT BUSINESS BUTTON GROUP -->
 							<div class="btn-group">
-								<a class="btn dropdown-toggle" id="business-select-business" data-toggle="dropdown" href="#" data-ng-bind="verksamhetName" html-unsafe="<span class=caret></span>">
-									Välj verksamhet
-									
-								</a>
+								<a class="btn dropdown-toggle" id="business-select-business" data-toggle="dropdown" href="#" >{{verksamhetName}}<span class="caret"></span></a>
 								<ul class="dropdown-menu left" style="float: right; right: 280px; position: absolute;">
 									<li data-ng-repeat="business in businesses"><a data-ng-click="selectVerksamhet(business.id)" tooltip-html-unsafe="<div class=popover-content>{{business.name}}</div>" tooltip-trigger="mouseenter" tooltip-placement="left">{{business.name}}</a></li>
 								</ul>
