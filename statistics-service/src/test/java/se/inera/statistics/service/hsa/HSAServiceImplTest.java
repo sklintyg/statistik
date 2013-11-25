@@ -58,12 +58,12 @@ public class HSAServiceImplTest {
         
     }
 
-    @Test ( expected = RuntimeException.class)
-    public void wsThrowsException() throws Exception {
+    @Test
+    public void serviceReturnsNullOnException() throws Exception {
         HSAKey key = new HSAKey("vardgivareId", "enhetId", "lakareId");
         when(wsCalls.getStatisticsHsaUnit("enhetId")).thenThrow(new IllegalStateException("This WS is broken"));
-        serviceImpl.getHSAInfo(key);
-        fail("Exception should have been thrown");
+        JsonNode hsaInfo = serviceImpl.getHSAInfo(key);
+        assertNull(hsaInfo);
         
     }
 

@@ -4,15 +4,15 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
 
-    <include file="liquibase/db.changelog-v1.0_create_event_table.xml"/>
-    <include file="liquibase/db.changelog-v2.0_create_event_pointer_table.xml"/>
+    <include file="liquibase/db.changelog-v1.0_create_intyghandelse_table.xml"/>
+    <include file="liquibase/db.changelog-v2.0_create_handelsepekare_table.xml"/>
     <include file="liquibase/db.changelog-v3.0_create_sjukfall_table.xml"/>
-    <include file="liquibase/db.changelog-v4.0_create_cases_per_month_row_table.xml"/>
-    <include file="liquibase/db.changelog-v5.0_create_diagnosis_groups_row_table.xml"/>
-    <include file="liquibase/db.changelog-v6.0_create_diagnosis_sub_groups_row_table.xml"/>
-    <include file="liquibase/db.changelog-v7.0_create_aldersgrupp_row_table.xml"/>
-    <include file="liquibase/db.changelog-v8.0_create_sjukfallslangdgrupp_row_table.xml"/>
-    <include file="liquibase/db.changelog-v9.0_create_sjukskrivningsgrad_row_table.xml"/>
+    <include file="liquibase/db.changelog-v4.0_create_sjukfallpermanad_table.xml"/>
+    <include file="liquibase/db.changelog-v5.0_create_diagnosgrupp_table.xml"/>
+    <include file="liquibase/db.changelog-v6.0_create_diagnosundergrupp_table.xml"/>
+    <include file="liquibase/db.changelog-v7.0_create_aldersgrupp_table.xml"/>
+    <include file="liquibase/db.changelog-v8.0_create_sjukfallslangdgrupp_table.xml"/>
+    <include file="liquibase/db.changelog-v9.0_create_sjukskrivningsgrad_table.xml"/>
     <include file="liquibase/db.changelog-v10.0_create_hsa_table.xml"/>
-    <include file="liquibase/db.changelog-v11.0_create_sjukfall_per_lan_row_table.xml"/>
+    <include file="liquibase/db.changelog-v11.0_create_sjukfallperlan_table.xml"/>
 </databaseChangeLog>
