@@ -1698,3 +1698,5 @@ input[type="radio"], input[type="checkbox"] {
 	height: 21px !important;
 }
 #readMore { height: auto; }
+
+#chart-footnote-text.in.collapse { overflow: visible; position: relative; display: inline-block; }
