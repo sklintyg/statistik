@@ -37,13 +37,15 @@ public class AgeGroupsConverterTest {
         TableData tableDataResult = result.getTableData();
         assertEquals("[[Åldersgrupper;1, Antal sjukfall;1, Antal kvinnor;1, Antal män;1, Summering;1]]", tableDataResult.getHeaders().toString());
         List<NamedData> rows = tableDataResult.getRows();
-        assertEquals(3, rows.size());
+        assertEquals(4, rows.size());
         assertEquals("<20", rows.get(0).getName());
         assertEquals("20-50", rows.get(1).getName());
         assertEquals(">50", rows.get(2).getName());
+        assertEquals("Totalt", rows.get(3).getName());
         assertEquals("[27, 13, 14, 27]", rows.get(0).getData().toString());
         assertEquals("[39, 24, 15, 66]", rows.get(1).getData().toString());
         assertEquals("[12, 3, 9, 78]", rows.get(2).getData().toString());
+        assertEquals("[78, 40, 38]", rows.get(3).getData().toString());
 
         ChartData chartDataResult = result.getChartData();
         assertEquals("[<20, 20-50, >50]", chartDataResult.getCategories().toString());

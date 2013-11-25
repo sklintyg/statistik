@@ -211,16 +211,19 @@
         <bean id="metadata" class="org.springframework.security.saml.metadata.CachingMetadataManager">
             <constructor-arg>
                 <list>
-                    <bean class="org.opensaml.saml2.metadata.provider.HTTPMetadataProvider">
-                        <!-- URL containing the metadata -->
+                    <bean class="org.springframework.security.saml.metadata.ExtendedMetadataDelegate">
                         <constructor-arg>
-                            <bean class="java.util.Timer">
-                                <constructor-arg value="true"/>
+                            <bean class="org.opensaml.saml2.metadata.provider.FilesystemMetadataProvider">
+                                <constructor-arg>
+                                    <value type="java.io.File">${saml.idp.metadata.file}</value>
+                                </constructor-arg>
+                                <property name="parserPool" ref="parserPool"/>
                             </bean>
                         </constructor-arg>
-                        <constructor-arg ref="httpClient"/>
-                        <constructor-arg value="${saml.idp.metadata.url}"/>
-                        <property name="parserPool" ref="parserPool"/>
+                        <constructor-arg>
+                            <bean class="org.springframework.security.saml.metadata.ExtendedMetadata"/>
+                        </constructor-arg>
+                        <property name="metadataTrustCheck" value="false"/>
                     </bean>
                 </list>
             </constructor-arg>

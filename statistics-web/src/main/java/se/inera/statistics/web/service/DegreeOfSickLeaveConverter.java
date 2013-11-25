@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import se.inera.statistics.service.report.model.DegreeOfSickLeaveResponse;
+import se.inera.statistics.service.report.model.DiagnosisGroupResponse;
 import se.inera.statistics.service.report.model.DualSexDataRow;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.Sex;
@@ -39,22 +40,31 @@ public class DegreeOfSickLeaveConverter {
 
     static TableData convertTable(DegreeOfSickLeaveResponse resp) {
         List<NamedData> rows = getTableRows(resp);
+        ServiceUtil.addSumRow(rows, false);
         List<List<TableHeader>> headers = getTableHeaders(resp);
         return new TableData(rows, headers);
     }
 
     private static List<NamedData> getTableRows(DegreeOfSickLeaveResponse resp) {
         List<NamedData> rows = new ArrayList<>();
+        int accumulatedSum = 0;
         for (DualSexDataRow row : resp.getRows()) {
             List<Integer> mergedSexData = ServiceUtil.getMergedSexData(row);
-            List<Integer> mergedAndSummed = ServiceUtil.getAppendedSum(mergedSexData);
-            rows.add(new NamedData(row.getName(), mergedAndSummed));
+            int sum = 0;
+            for (Integer dataField : mergedSexData) {
+                sum += dataField;
+            }
+            accumulatedSum += sum;
+            mergedSexData.add(0, sum);
+            mergedSexData.add(accumulatedSum);
+            rows.add(new NamedData(row.getName(), mergedSexData));
         }
         return rows;
     }
 
     private static List<List<TableHeader>> getTableHeaders(DegreeOfSickLeaveResponse resp) {
         List<TableHeader> topHeaderRow = new ArrayList<>();
+        topHeaderRow.add(new TableHeader(""));
         topHeaderRow.add(new TableHeader(""));
         List<String> degreesOfSickLeave = resp.getDegreesOfSickLeave();
         for (String groupName : degreesOfSickLeave) {
@@ -63,6 +73,7 @@ public class DegreeOfSickLeaveConverter {
 
         List<TableHeader> subHeaderRow = new ArrayList<>();
         subHeaderRow.add(new TableHeader("Period"));
+        subHeaderRow.add(new TableHeader("Antal sjukfall"));
         for (int i = 0; i < degreesOfSickLeave.size(); i++) {
             subHeaderRow.add(new TableHeader("Kvinnor"));
             subHeaderRow.add(new TableHeader("Män"));

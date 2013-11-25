@@ -20,10 +20,13 @@ public class SimpleDualSexConverter {
         List<NamedData> data = new ArrayList<>();
         int accumulatedSum = 0;
         for (SimpleDualSexDataRow row : list) {
-            int rowSum = row.getFemale() + row.getMale();
+            final Integer female = row.getFemale();
+            final Integer male = row.getMale();
+            int rowSum = female + male;
             accumulatedSum += rowSum;
-            data.add(new NamedData(row.getName(), Arrays.asList(new Integer[] {rowSum, row.getFemale(), row.getMale(), accumulatedSum})));
+            data.add(new NamedData(row.getName(), Arrays.asList(new Integer[] {rowSum, female, male, accumulatedSum})));
         }
+        ServiceUtil.addSumRow(data, false);
 
         return TableData.createWithSingleHeadersRow(data, Arrays.asList("Period", "Antal sjukfall", "Antal kvinnor", "Antal män", "Summering"));
     }

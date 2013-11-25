@@ -48,6 +48,12 @@ public class CasesPerCountyConverter {
                                                         rowSumNewest, newestRow.getFemale(), newestRow.getMale(), accumulatedSumNewest);
             data.add(new NamedData(oldestRow.getName(), rowData));
         }
+        NamedData sumRow = ServiceUtil.getSumRow(data, false);
+        ArrayList<Object> sumRowData = new ArrayList<>(sumRow.getData());
+        final int accumulatedSumOldestIndex = 3;
+        sumRowData.set(accumulatedSumOldestIndex, "");
+        data.add(new NamedData("Totalt", sumRowData));
+
         final int topHeaderSpan = 4;
         List<TableHeader> topHeaders = Arrays.asList(new TableHeader("", 1), new TableHeader(rangeOld.toStringAbbreviated(), topHeaderSpan), new TableHeader(rangeNew.toStringAbbreviated(), topHeaderSpan), new TableHeader("", 1));
         final List<String> subHeaderTexts = Arrays.asList("Län", "Antal sjukfall", "Antal kvinnor", "Antal män", "Summering", "Antal sjukfall", "Antal kvinnor", "Antal män", "Summering");

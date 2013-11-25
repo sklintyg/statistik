@@ -134,22 +134,31 @@ public class DiagnosisGroupsConverter {
 
     static TableData convertTable(DiagnosisGroupResponse resp) {
         List<NamedData> rows = getTableRows(resp);
+        ServiceUtil.addSumRow(rows, false);
         List<List<TableHeader>> headers = getTableHeaders(resp);
         return new TableData(rows, headers);
     }
 
     private static List<NamedData> getTableRows(DiagnosisGroupResponse resp) {
         List<NamedData> rows = new ArrayList<>();
+        int accumulatedSum = 0;
         for (DualSexDataRow row : resp.getRows()) {
             List<Integer> mergedSexData = ServiceUtil.getMergedSexData(row);
-            List<Integer> mergedAndSummed = ServiceUtil.getAppendedSum(mergedSexData);
-            rows.add(new NamedData(row.getName(), mergedAndSummed));
+            int sum = 0;
+            for (Integer dataField : mergedSexData) {
+                sum += dataField;
+            }
+            accumulatedSum += sum;
+            mergedSexData.add(0, sum);
+            mergedSexData.add(accumulatedSum);
+            rows.add(new NamedData(row.getName(), mergedSexData));
         }
         return rows;
     }
 
     private static List<List<TableHeader>> getTableHeaders(DiagnosisGroupResponse resp) {
         List<TableHeader> topHeaderRow = new ArrayList<>();
+        topHeaderRow.add(new TableHeader(""));
         topHeaderRow.add(new TableHeader(""));
         List<String> diagnosisGroups = resp.getDiagnosisGroupsAsStrings();
         for (String groupName : diagnosisGroups) {
@@ -159,6 +168,7 @@ public class DiagnosisGroupsConverter {
 
         List<TableHeader> subHeaderRow = new ArrayList<>();
         subHeaderRow.add(new TableHeader("Period"));
+        subHeaderRow.add(new TableHeader("Antal sjukfall"));
         for (int i = 0; i < diagnosisGroups.size(); i++) {
             subHeaderRow.add(new TableHeader("Kvinnor"));
             subHeaderRow.add(new TableHeader("Män"));

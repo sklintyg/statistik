@@ -21,6 +21,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="security" uri="http://www.springframework.org/security/tags" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <!DOCTYPE html>
 <html xmlns:ng="http://angularjs.org" lang="sv" id="ng-app" data-ng-app="StatisticsApp">
 <head>
@@ -69,6 +70,7 @@
 </security:authorize>
 </head>
 <body data-ng-controller="PageCtrl">
+<spring:eval expression='@loginVisibility.isLoginVisible()' var="loginVisible"/>
 
 <!-- Navbar
 ================================================== -->
@@ -86,35 +88,34 @@
 				<div class="span2">
 					<span>Statistiktjänst för ordinerad sjukskrivning</span>
 				</div>
-				<div class="span4 pull-right" style="width: auto !important;">
-					<div id="business-login-container" style="display: none;" ng-hide="isLoggedIn" >
-						<span id="business-login-span">För verksamhetsstatistik: </span>
-						<button class="btn" data-ng-click="loginClicked('${applicationScope.loginUrl}')" type="button" id="business-login-btn" value="Logga in">Logga in</button>
-					</div>
-					<div id="business-logged-in-user-container" style="display: none; position: absolute; right: 0; margin-right: 25px;" ng-show="isLoggedIn" >
-						<!-- div class="pull-right">
-							<img id="business-me-icon" alt="Bild på inloggad användare" src="<c:url value='/img/avatar.png'/>"/>
-						</div -->
-						<div class="header-box-user-profile pull-right">
-							<span class="user-logout pull-right">
-								<a href="/saml/logout">Logga ut</a>
-							</span>
-							<span class="user-name pull-right" style="margin-right: 10px;" data-ng-bind="userName"></span>
-							<br>
-							<span>Välj verksamhet:</span>
-							<!-- SELECT BUSINESS BUTTON GROUP -->
-							<div class="btn-group">
-								<a class="btn dropdown-toggle" id="business-select-business" data-toggle="dropdown" href="#" data-ng-bind="verksamhetName" html-unsafe="<span class=caret></span>">
-									Välj verksamhet
-									
-								</a>
-								<ul class="dropdown-menu left" style="float: right; right: 280px; position: absolute;">
-									<li data-ng-repeat="business in businesses"><a data-ng-click="selectVerksamhet(business.id)" tooltip-html-unsafe="<div class=popover-content>{{business.name}}</div>" tooltip-trigger="mouseenter" tooltip-placement="left">{{business.name}}</a></li>
-								</ul>
+				<c:if test="${loginVisible}">
+					<div class="span4 pull-right" style="width: auto !important;">
+						<div id="business-login-container" style="display: none;" ng-hide="isLoggedIn" >
+							<span id="business-login-span">För verksamhetsstatistik: </span>
+							<button class="btn" data-ng-click="loginClicked('${applicationScope.loginUrl}')" type="button" id="business-login-btn" value="Logga in">Logga in</button>
+						</div>
+						<div id="business-logged-in-user-container" style="display: none; position: absolute; right: 0; margin-right: 25px;" ng-show="isLoggedIn" >
+							<!-- div class="pull-right">
+								<img id="business-me-icon" alt="Bild på inloggad användare" src="<c:url value='/img/avatar.png'/>"/>
+							</div -->
+							<div class="header-box-user-profile pull-right">
+								<span class="user-logout pull-right">
+									<a href="/saml/logout">Logga ut</a>
+								</span>
+								<span class="user-name pull-right" style="margin-right: 10px;" data-ng-bind="userName"></span>
+								<br>
+								<span>Välj verksamhet:</span>
+								<!-- SELECT BUSINESS BUTTON GROUP -->
+								<div class="btn-group">
+									<a class="btn dropdown-toggle" id="business-select-business" data-toggle="dropdown" href="#" >{{verksamhetName}}<span class="caret"></span></a>
+									<ul class="dropdown-menu left" style="float: right; right: 280px; position: absolute;">
+										<li data-ng-repeat="business in businesses"><a data-ng-click="selectVerksamhet(business.id)" tooltip-html-unsafe="<div class=popover-content>{{business.name}}</div>" tooltip-trigger="mouseenter" tooltip-placement="left">{{business.name}}</a></li>
+									</ul>
+								</div>
 							</div>
 						</div>
 					</div>
-				</div>
+				</c:if>
 			</div>
 		</div>
 	</div>
@@ -159,46 +160,48 @@
 					    </div>
 					  </div>
 					</div>
-					<div class="accordion-group" id="business-statistics-menu-group">
-					<h2 class="hidden-header">Navigering för verksamhetsstatistik</h2>
-					<!-- BUSINESS STATISTIC MENU -->
-					  <div class="accordion-heading statistics-menu">
-					    <div class="accordion-toggle first-level-menu" id="business-statistics-toggle" data-parent="#statistics-menu-accordion" data-ng-class="{active: showOperation, collapsed: !showOperation, disabled: !isLoggedIn}" data-ng-click="toggleOperationAccordion()">
-					      <span data-ng-bind="organisationMenuLabel"></span><i class="statistict-left-menu-expand-icon"></i> <!-- Inloggad: Enbart "Verksamhetsstatistik" -->
-					    </div>
-					  </div>
-					  <div id="business-statistics-collapse" class="accordion-body collapse navigation-group" data-ng-class="{in: showOperation}">
-					    <div class="accordion-inner">
-					      <ul id="business-statistic-menu-content" class="nav nav-list">
-								<li><a data-ng-href="#/verksamhet/{{businessId}}/oversikt" ctrlname="BusinessOverviewCtrl" navigationaware>Översikt</a></li>
-							 	<li><a data-ng-href="#/verksamhet/{{businessId}}/sjukfallPerManad" id="navBusinessCasesPerMonthLink" ctrlname="VerksamhetCasesPerMonthCtrl" navigationaware>Sjukfall, totalt</a></li>
-								<li>
-									<a class="menu-item-has-childs" data-ng-href="#/verksamhet/{{businessId}}/diagnosgrupper" id="navBusinessDiagnosisGroupsLink" ctrlname="VerksamhetDiagnosisGroupsCtrl" navigationaware>Diagnosgrupp</a>
-									<i class="statistict-left-menu-expand-icon" class="accordion-toggle" data-toggle="collapse" href="#sub-menu-business-diagnostics"></i>
-								</li>
-								<ul id="sub-menu-business-diagnostics" class="nav nav-list sub-nav-list accordion-body in collapse">
-									<li><a data-ng-href="#/verksamhet/{{businessId}}/diagnoskapitel" id="navBusinessDiagnosisSubGroupsLink" ctrlname="VerksamhetDiagnosisSubGroupsCtrl" navigationaware>Enskilt diagnoskapitel</a></li>
+					<c:if test="${loginVisible}">
+						<div class="accordion-group" id="business-statistics-menu-group">
+						<h2 class="hidden-header">Navigering för verksamhetsstatistik</h2>
+						<!-- BUSINESS STATISTIC MENU -->
+						  <div class="accordion-heading statistics-menu">
+						    <div class="accordion-toggle first-level-menu" id="business-statistics-toggle" data-parent="#statistics-menu-accordion" data-ng-class="{active: showOperation, collapsed: !showOperation, disabled: !isLoggedIn}" data-ng-click="toggleOperationAccordion()">
+						      <span data-ng-bind="organisationMenuLabel"></span><i class="statistict-left-menu-expand-icon"></i> <!-- Inloggad: Enbart "Verksamhetsstatistik" -->
+						    </div>
+						  </div>
+						  <div id="business-statistics-collapse" class="accordion-body collapse navigation-group" data-ng-class="{in: showOperation}">
+						    <div class="accordion-inner">
+						      <ul id="business-statistic-menu-content" class="nav nav-list">
+									<li><a data-ng-href="#/verksamhet/{{businessId}}/oversikt" ctrlname="BusinessOverviewCtrl" navigationaware>Översikt</a></li>
+								 	<li><a data-ng-href="#/verksamhet/{{businessId}}/sjukfallPerManad" id="navBusinessCasesPerMonthLink" ctrlname="VerksamhetCasesPerMonthCtrl" navigationaware>Sjukfall, totalt</a></li>
+									<li>
+										<a class="menu-item-has-childs" data-ng-href="#/verksamhet/{{businessId}}/diagnosgrupper" id="navBusinessDiagnosisGroupsLink" ctrlname="VerksamhetDiagnosisGroupsCtrl" navigationaware>Diagnosgrupp</a>
+										<i class="statistict-left-menu-expand-icon" class="accordion-toggle" data-toggle="collapse" href="#sub-menu-business-diagnostics"></i>
+									</li>
+									<ul id="sub-menu-business-diagnostics" class="nav nav-list sub-nav-list accordion-body in collapse">
+										<li><a data-ng-href="#/verksamhet/{{businessId}}/diagnoskapitel" id="navBusinessDiagnosisSubGroupsLink" ctrlname="VerksamhetDiagnosisSubGroupsCtrl" navigationaware>Enskilt diagnoskapitel</a></li>
+									</ul>
+									<li>
+										<a data-ng-href="#/verksamhet/{{businessId}}/aldersgrupper" id="navBusinessAgeGroupsLink" ctrlname="VerksamhetAgeGroupCtrl" navigationaware>Åldersgrupp</a>
+										<i class="statistict-left-menu-expand-icon" class="accordion-toggle" data-toggle="collapse" href="#sub-menu-business-age-group"></i>
+									</li>
+									<ul id="sub-menu-business-age-group" class="nav nav-list sub-nav-list accordion-body in collapse">
+										<li><a data-ng-href="#/verksamhet/{{businessId}}/aldersgrupperpagaende" id="navBusinessOngoingAndCompletedLink" ctrlname="VerksamhetAgeGroupCurrentCtrl" navigationaware>Pågående</a></li>
+									</ul>
+									<li><a data-ng-href="#/verksamhet/{{businessId}}/sjukskrivningsgrad" id="navBusinessSickLeaveDegreeLink" ctrlname="VerksamhetDegreeOfSickLeaveCtrl" navigationaware>Sjukskrivningsgrad</a></li>
+									<li>
+										<a class="menu-item-has-childs has-collapse" data-ng-href="#/verksamhet/{{businessId}}/sjukskrivningslangd" id="navBusinessSickLeaveLengthLink" ctrlname="VerksamhetSickLeaveLengthCtrl" navigationaware>Sjukskrivningslängd</a>
+										<i class="statistict-left-menu-expand-icon" class="accordion-toggle" data-toggle="collapse" href="#sub-menu-business-sick-leave-length"></i>
+									</li>
+									<ul id="sub-menu-business-sick-leave-length" class="nav nav-list sub-nav-list accordion-body in collapse">
+										<li><a class="border-top no-border-bottom" data-ng-href="#/verksamhet/{{businessId}}/sjukskrivningslangdpagaende" id="navBusinessOngoingAndCompletedSickLeaveLink" ctrlname="VerksamhetSickLeaveLengthCurrentCtrl" navigationaware>Pågående</a></li>
+										<li><a class="last-item-in-menu rounded-bottom" data-ng-href="#/verksamhet/{{businessId}}/langasjukskrivningar" id="navBusinessMoreNinetyDaysSickLeaveLink" ctrlname="VerksamhetLongSickLeavesCtrl" navigationaware>Mer än 90 dagar</a></li>
+									</ul>
 								</ul>
-								<li>
-									<a data-ng-href="#/verksamhet/{{businessId}}/aldersgrupper" id="navBusinessAgeGroupsLink" ctrlname="VerksamhetAgeGroupCtrl" navigationaware>Åldersgrupp</a>
-									<i class="statistict-left-menu-expand-icon" class="accordion-toggle" data-toggle="collapse" href="#sub-menu-business-age-group"></i>
-								</li>
-								<ul id="sub-menu-business-age-group" class="nav nav-list sub-nav-list accordion-body in collapse">
-									<li><a data-ng-href="#/verksamhet/{{businessId}}/aldersgrupperpagaende" id="navBusinessOngoingAndCompletedLink" ctrlname="VerksamhetAgeGroupCurrentCtrl" navigationaware>Pågående</a></li>
-								</ul>
-								<li><a data-ng-href="#/verksamhet/{{businessId}}/sjukskrivningsgrad" id="navBusinessSickLeaveDegreeLink" ctrlname="VerksamhetDegreeOfSickLeaveCtrl" navigationaware>Sjukskrivningsgrad</a></li>
-								<li>
-									<a class="menu-item-has-childs has-collapse" data-ng-href="#/verksamhet/{{businessId}}/sjukskrivningslangd" id="navBusinessSickLeaveLengthLink" ctrlname="VerksamhetSickLeaveLengthCtrl" navigationaware>Sjukskrivningslängd</a>
-									<i class="statistict-left-menu-expand-icon" class="accordion-toggle" data-toggle="collapse" href="#sub-menu-business-sick-leave-length"></i>
-								</li>
-								<ul id="sub-menu-business-sick-leave-length" class="nav nav-list sub-nav-list accordion-body in collapse">
-									<li><a class="border-top no-border-bottom" data-ng-href="#/verksamhet/{{businessId}}/sjukskrivningslangdpagaende" id="navBusinessOngoingAndCompletedSickLeaveLink" ctrlname="VerksamhetSickLeaveLengthCurrentCtrl" navigationaware>Pågående</a></li>
-									<li><a class="last-item-in-menu rounded-bottom" data-ng-href="#/verksamhet/{{businessId}}/langasjukskrivningar" id="navBusinessMoreNinetyDaysSickLeaveLink" ctrlname="VerksamhetLongSickLeavesCtrl" navigationaware>Mer än 90 dagar</a></li>
-								</ul>
-							</ul>
-					    </div>
-					  </div>
-					</div>
+						    </div>
+						  </div>
+						</div>
+					</c:if>
     				<div class="accordion-group" id="about-statistics-menu-group">
 						<h2 class="hidden-header">Navigering för information om tjänsten</h2>
 						<!-- ABOUT STATISTIC MENU -->
