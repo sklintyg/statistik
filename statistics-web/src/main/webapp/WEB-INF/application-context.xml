@@ -59,6 +59,8 @@
     <beans>
         <context:property-placeholder location="classpath:/application-context.properties"/>
 
+        <bean id="loginVisibility" class="se.inera.auth.LoginVisibility"/>
+
         <bean id="applicationContextProvider" class="se.inera.auth.ApplicationContextProvider"/>
 
         <bean class="se.inera.statistics.hsa.services.HsaOrganizationsServiceImpl"/>
