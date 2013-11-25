@@ -40,10 +40,18 @@ public class UtlatandeBuilder {
     }
 
     public JsonNode build(String patientId, LocalDate start, LocalDate end, String vardenhet, String vardgivare, String diagnos, int arbetsformaga) {
-        return build(patientId, start, end, vardenhet, vardgivare, diagnos, Arrays.asList("" + arbetsformaga));
+        return build(patientId, start, end, "Personal HSA-ID", vardenhet, vardgivare, diagnos, Arrays.asList(String.valueOf(arbetsformaga)));
     }
 
     public JsonNode build(String patientId, LocalDate start, LocalDate end, String vardenhet, String vardgivare, String diagnos, List <String> arbetsformaga) {
+        return build(patientId, start, end, "Personal HSA-ID", vardenhet, vardgivare, diagnos, arbetsformaga);
+    }
+
+    public JsonNode build(String patientId, LocalDate start, LocalDate end, String personal, String vardenhet, String vardgivare, String diagnos, int arbetsformaga) {
+        return build(patientId, start, end, personal, vardenhet, vardgivare, diagnos, Arrays.asList(String.valueOf(arbetsformaga)));
+    }
+
+    public JsonNode build(String patientId, LocalDate start, LocalDate end, String personal, String vardenhet, String vardgivare, String diagnos, List <String> arbetsformaga) {
         ObjectNode intyg = template.deepCopy();
         ObjectNode patientIdNode = (ObjectNode) intyg.path("patient").path("id");
         patientIdNode.put("extension", patientId);
@@ -62,6 +70,7 @@ public class UtlatandeBuilder {
             }
         }
 
+        ((ObjectNode) intyg.path("skapadAv").path("id")).put("extension", personal);
         ((ObjectNode) intyg.path("skapadAv").path("vardenhet").path("id")).put("extension", vardenhet);
         ((ObjectNode) intyg.path("skapadAv").path("vardenhet").path("vardgivare").path("id")).put("extension", vardgivare);
         for (JsonNode observation: intyg.path("observations")) {

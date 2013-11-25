@@ -1,5 +1,7 @@
 package se.inera.statistics.web.service;
 
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -19,18 +21,30 @@ public class SjukfallPerSexConverter {
     private TableData convertToTableData(List<SimpleDualSexDataRow> list) {
         List<NamedData> data = new ArrayList<>();
         int accumulatedSum = 0;
+        int totalSum = 0;
+        int femaleSum = 0;
+        int maleSum = 0;
         for (SimpleDualSexDataRow row : list) {
-            int rowSum = row.getFemale() + row.getMale();
+            final Integer female = row.getFemale();
+            final Integer male = row.getMale();
+            int rowSum = female + male;
             accumulatedSum += rowSum;
-            data.add(new NamedData(row.getName(), Arrays.asList(new Object[] {rowSum, toTableString(row.getFemale(), rowSum), toTableString(row.getMale(), rowSum), accumulatedSum})));
+            data.add(new NamedData(row.getName(), Arrays.asList(new Object[] {rowSum, toTableString(female, rowSum), toTableString(male, rowSum), accumulatedSum})));
+            totalSum += rowSum;
+            femaleSum += female;
+            maleSum += male;
         }
+        data.add(new NamedData("Totalt", Arrays.asList(totalSum, femaleSum, maleSum, "")));
 
         return TableData.createWithSingleHeadersRow(data, Arrays.asList("Län", "Antal sjukfall", "Andel kvinnor", "Andel män", "Summering"));
     }
 
     private String toTableString(final Integer value, int rowSum) {
+        final DecimalFormatSymbols symbols = DecimalFormatSymbols.getInstance();
+        symbols.setGroupingSeparator(' ');
+        final DecimalFormat formatter = new DecimalFormat("###,###", symbols);
         final float toPercentFactor = 100.0F;
-        return Math.round(toPercentFactor * value / rowSum) + "% (" + value + ")";
+        return Math.round(toPercentFactor * value / rowSum) + "% (" + formatter.format(value) + ")";
     }
 
     private ChartData convertToChartData(SimpleDualSexResponse<SimpleDualSexDataRow> casesPerMonth) {

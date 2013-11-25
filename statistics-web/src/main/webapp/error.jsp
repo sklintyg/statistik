@@ -36,8 +36,8 @@
 
     <link rel="icon" href="<c:url value="/favicon.ico" />" type="image/vnd.microsoft.icon"/>
 
-    <link rel="stylesheet" href="<c:url value="/css/bootstrap/2.3.2/bootstrap.css"/>">
-    <link rel="stylesheet" href="<c:url value="/css/bootstrap-responsive-modified.css"/>">
+    <link rel="stylesheet" href="<c:url value="/bootstrap/2.3.2/css/bootstrap.min.css"/>">
+    <link rel="stylesheet" href="<c:url value="/bootstrap/2.3.2/css/bootstrap-responsive.min.css"/>">
     <link rel="stylesheet" href="<c:url value="/css/inera-statistics.css"/>">
 </head>
 
@@ -52,28 +52,6 @@
         <div class="span6">
 
             <c:choose>
-                <c:when test="${param.reason eq \"logout\"}">
-                    <h1>
-                        Logged out
-                    </h1>
-
-                    <div id="loggedOut" class="alert alert-info">
-                        Logged out text
-                    </div>
-                    <!-- reason: loggedout -->
-                </c:when>
-
-                <c:when test="${param.reason eq \"denied\"}">
-                    <h1>
-                        Not authorized
-                    </h1>
-
-                    <div id="noAuth" class="alert alert-warning">
-                        Not authorized text
-                    </div>
-                    
-                    <!-- reason: denied -->
-                </c:when>
 
                 <c:when test="${param.reason eq \"medarbetaruppdrag\"}">
                     <h1>
@@ -81,7 +59,18 @@
                     </h1>
 
                     <div id="noAuth" class="alert alert-error">
-                        inget medarbetaruppdrag text
+                        Medarbetaruppdrag saknas
+                    </div>
+                    
+                </c:when>
+
+                <c:when test="${param.reason eq \"badcredentials\"}">
+                    <h1>
+                        Inloggningen misslyckades
+                    </h1>
+
+                    <div id="noAuth" class="alert alert-error">
+                        Inloggningen misslyckades
                     </div>
                     
                 </c:when>
@@ -98,11 +87,11 @@
 
                 <c:otherwise>
                     <h1>
-                        annat
+                        Tekniskt fel
                     </h1>
 
                     <div id="genericTechProblem" class="alert alert-error">
-                        annat text
+                        Ett tekniskt fel har inträffat. Prova igen eller kontakta support om problemet kvarstår.
                     </div>
                     
                     <!-- reason: generic -->

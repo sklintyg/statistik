@@ -70,6 +70,7 @@
         chartOptions.chart.height = 210;
         chartOptions.xAxis.title = { text: 'Dagar' };
         chartOptions.yAxis.title = { text: 'Antal' };
+        chartOptions.yAxis.tickPixelInterval = 30,
         chartOptions.legend.enabled = false;
         new Highcharts.Chart(chartOptions);
     }
@@ -123,56 +124,56 @@
             title : ''
         };
         new Highcharts.Chart(chartOptions, function(chart) { // on complete
-            chart.renderer.image('img/sweden_graph.png', 43, 10, 88, 206).add();
+            chart.renderer.image('img/sweden_graph.png', 43, 6, 88, 206).add();
         });
     }
     
     function getCoordinates(perCountyObject){
         var county = perCountyObject.name.toLowerCase();
         if (contains(county, "blekinge")){
-            return {"x": 39, "y": 7};
+            return {"x": 39, "y": 11};
         } else if (contains(county, "dalarna")){
-            return {"x": 36, "y": 39};
+            return {"x": 36, "y": 43};
         } else if (contains(county, "halland")){
-            return {"x": 27, "y": 12};
+            return {"x": 27, "y": 16};
         } else if (contains(county, "kalmar")){
-            return {"x": 44, "y": 12};
+            return {"x": 44, "y": 16};
         } else if (contains(county, "kronoberg")){
-            return {"x": 34, "y": 9};
+            return {"x": 34, "y": 13};
         } else if (contains(county, "gotland")){
-            return {"x": 55, "y": 15};
+            return {"x": 55, "y": 19};
         } else if (contains(county, "gävleborg")){
-            return {"x": 45, "y": 43};
+            return {"x": 45, "y": 47};
         } else if (contains(county, "jämtland")){
-            return {"x": 36, "y": 56};
+            return {"x": 36, "y": 60};
         } else if (contains(county, "jönköping")){
-            return {"x": 33, "y": 15};
+            return {"x": 33, "y": 19};
         } else if (contains(county, "norrbotten")){
-            return {"x": 55, "y": 85};
+            return {"x": 55, "y": 89};
         } else if (contains(county, "skåne")){
-            return {"x": 30, "y": 3};
+            return {"x": 30, "y": 7};
         } else if (contains(county, "stockholm")){
-            return {"x": 53, "y": 29};
+            return {"x": 53, "y": 33};
         } else if (contains(county, "södermanland")){
-            return {"x": 46, "y": 24};
+            return {"x": 46, "y": 28};
         } else if (contains(county, "uppsala")){
-            return {"x": 50, "y": 34};
+            return {"x": 50, "y": 38};
         } else if (contains(county, "värmland")){
-            return {"x": 29, "y": 31};
+            return {"x": 29, "y": 35};
         } else if (contains(county, "västerbotten")){
-            return {"x": 51, "y": 68};
+            return {"x": 51, "y": 72};
         } else if (contains(county, "västernorrland")){
-            return {"x": 49, "y": 58};
+            return {"x": 49, "y": 62};
         } else if (contains(county, "västmanland")){
-            return {"x": 45, "y": 30};
+            return {"x": 45, "y": 34};
         } else if (contains(county, "västra götaland")){
-            return {"x": 27, "y": 18};
+            return {"x": 27, "y": 22};
         } else if (contains(county, "örebro")){
-            return {"x": 38, "y": 27};
+            return {"x": 38, "y": 31};
         } else if (contains(county, "östergötland")){
-            return {"x": 43, "y": 19};
+            return {"x": 43, "y": 23};
         } else {
-            return {"x": 10, "y": 80}; //Default point should not match any part of sweden
+            return {"x": 10, "y": 84}; //Default point should not match any part of sweden
         }
     }
     
