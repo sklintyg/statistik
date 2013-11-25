@@ -264,6 +264,7 @@
 <script type="text/javascript" src="<c:url value='/js/app/controller/columnChartDetailsViewCtrl.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/controller/casesPerCountyCtrl.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/controller/pageCtrl.js'/>"></script>
+<script type="text/javascript" src="<c:url value='/js/app/controller/loginCtrl.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/controller/navigationMenuCtrl.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/controllers.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/directives.js'/>"></script>
