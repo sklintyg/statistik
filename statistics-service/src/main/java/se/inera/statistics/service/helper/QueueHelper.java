@@ -236,15 +236,15 @@ public class QueueHelper {
     }
 
     private void printAndGetAgeGroups(String vardenhet1, String vardenhet2, Range range, Map<String, TestData> result) {
-        AgeGroupsResponse ageGroups1 = ageGroups.getHistoricalAgeGroups(vardenhet1, range.getFrom(), RollingLength.YEAR);
+        AgeGroupsResponse ageGroups1 = ageGroups.getHistoricalAgeGroups(vardenhet1, range.getTo(), RollingLength.YEAR);
         LOG.info("AG data: " + ageGroups1);
         JsonNode ageGroups1Node = JSONParser.parse(ageGroups1.toString());
         result.put("ageGroups1", new TestData(ageGroups1, ageGroups1Node));
-        AgeGroupsResponse ageGroups2 = ageGroups.getHistoricalAgeGroups(vardenhet2, range.getFrom(), RollingLength.YEAR);
+        AgeGroupsResponse ageGroups2 = ageGroups.getHistoricalAgeGroups(vardenhet2, range.getTo(), RollingLength.YEAR);
         LOG.info("AG data: " + ageGroups2);
         JsonNode ageGroups2Node = JSONParser.parse(ageGroups2.toString());
         result.put("ageGroups2", new TestData(ageGroups2, ageGroups2Node));
-        AgeGroupsResponse ageGroupsNationell = ageGroups.getHistoricalAgeGroups(nationell, range.getFrom(), RollingLength.YEAR);
+        AgeGroupsResponse ageGroupsNationell = ageGroups.getHistoricalAgeGroups(nationell, range.getTo(), RollingLength.YEAR);
         LOG.info("Nationell AG data: " + ageGroupsNationell);
         JsonNode ageGroupsNationellNode = JSONParser.parse(ageGroupsNationell.toString());
         result.put("ageGroupsNationell", new TestData(ageGroupsNationell, ageGroupsNationellNode));

@@ -1,5 +1,6 @@
 !contents -R2 -g -p -f -h
 
+
 #String person, String diagnos, String start1, String stop1, String grad1, String start2, String stop2, String grad2, String start3, String stop3, String grad3, String start4, String stop4, String grad4, String enhet, String vardgivare, String trackingId
 
 |script|se.inera.statistics.queue.IntygSender|
@@ -39,6 +40,12 @@
 |se.inera.statistics.queue.ResultKeys|
 |list of keys?|
 ||
+
+|query:se.inera.statistics.counterdata.Alder|ageGroups1|
+|period|hsaId|grupp|periods|typ|kvinnor|män|
+|2013-10|||||||
+|2013-10|||||||
+|2013-10|||||||
 
 |query:se.inera.statistics.counterdata.Sjukskrivningsgrad|degreeOfSickLeave1|
 |period|grad|kvinnor|män|
