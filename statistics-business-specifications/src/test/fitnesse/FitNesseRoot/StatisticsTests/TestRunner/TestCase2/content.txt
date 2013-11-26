@@ -36,6 +36,10 @@
 |sleep|5000|
 |get result;|ENVE|TVAVE|2012-05-01|2013-10-10|
 
+|se.inera.statistics.queue.ResultKeys|
+|list of keys?|
+||
+
 |query:se.inera.statistics.counterdata.Sjukskrivningsgrad|degreeOfSickLeave1|
 |period|grad|kvinnor|män|
 |maj 2012||||
