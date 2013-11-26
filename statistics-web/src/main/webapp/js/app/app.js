@@ -7,6 +7,7 @@ app.statisticsApp = angular.module('StatisticsApp', [ 'ngCookies', 'ui.bootstrap
         [ '$routeProvider', '$httpProvider', function($routeProvider, $httpProvider) {
             $routeProvider.when('/login', {
                 templateUrl : 'views/login.html',
+                controller : 'LoginCtrl',
 	            title: 'Login Page'
             }).when('/fakelogin', {
                 templateUrl : 'views/fakelogin.html',

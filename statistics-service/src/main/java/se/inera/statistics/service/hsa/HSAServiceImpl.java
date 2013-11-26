@@ -35,18 +35,23 @@ public class HSAServiceImpl implements HSAService {
 
     @Override
     public JsonNode getHSAInfo(HSAKey key) {
-        GetStatisticsHsaUnitResponseType unit = getStatisticsHsaUnit(key.getEnhetId());
-        GetStatisticsCareGiverResponseType caregiver = getStatisticsCareGiver(key.getVardgivareId());
-        GetStatisticsPersonResponseType personal = getStatisticsPerson(key.getLakareId());
-
-        Builder root = new Builder();
-        if (unit != null) {
-            root.put("enhet", createUnit(unit.getStatisticsUnit()));
-            root.put("huvudenhet", createUnit(unit.getStatisticsCareUnit()));
+        try {
+            GetStatisticsHsaUnitResponseType unit = getStatisticsHsaUnit(key.getEnhetId());
+            GetStatisticsCareGiverResponseType caregiver = getStatisticsCareGiver(key.getVardgivareId());
+            GetStatisticsPersonResponseType personal = getStatisticsPerson(key.getLakareId());
+    
+            Builder root = new Builder();
+            if (unit != null) {
+                root.put("enhet", createUnit(unit.getStatisticsUnit()));
+                root.put("huvudenhet", createUnit(unit.getStatisticsCareUnit()));
+            }
+            root.put("vardgivare", createCareGiver(caregiver));
+            root.put("personal", createPersonal(personal));
+            return root.root;
+        } catch (RuntimeException e) {
+            LOG.error("Unexpected error fetching HSA data", e);
+            return null;
         }
-        root.put("vardgivare", createCareGiver(caregiver));
-        root.put("personal", createPersonal(personal));
-        return root.root;
     }
 
     private GetStatisticsPersonResponseType getStatisticsPerson(String key) {
