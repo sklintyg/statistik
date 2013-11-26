@@ -4,13 +4,6 @@ import com.fasterxml.jackson.databind.JsonNode
 import se.inera.statistics.queue.IntygSender
 import se.inera.statistics.service.helper.TestData
 
-/**
- * Created with IntelliJ IDEA.
- * User: inera
- * Date: 11/22/13
- * Time: 2:04 AM
- * To change this template use File | Settings | File Templates.
- */
 class Sjukfallslangd {
 
     String tabell
