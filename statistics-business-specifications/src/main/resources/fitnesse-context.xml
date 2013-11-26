@@ -83,7 +83,7 @@
 
     <amq:queue id="queue" physicalName="intyg.queue"/>
 
-    <amq:broker persistent="false">
+    <amq:broker persistent="false" useShutdownHook="true">
         <amq:transportConnectors>
             <amq:transportConnector uri="tcp://localhost:61616"/>
         </amq:transportConnectors>
@@ -101,7 +101,7 @@
 
     <bean id="receiver" class="se.inera.statistics.service.queue.Receiver"/>
 
-    <bean id="jmsContainer" class="org.springframework.jms.listener.DefaultMessageListenerContainer" destroy-method="doShutdown">
+    <bean id="jmsContainer" class="org.springframework.jms.listener.DefaultMessageListenerContainer" destroy-method="stop">
         <property name="connectionFactory" ref="jmsFactory"/>
         <property name="destination" ref="queue"/>
         <property name="messageListener" ref="receiver"/>

@@ -12,9 +12,8 @@ class StartUp {
     }
 
     boolean stopContext() {
-        context.stop()
+        context.close()
         context = null
-        Thread.sleep(10000)
         true
     }
 
