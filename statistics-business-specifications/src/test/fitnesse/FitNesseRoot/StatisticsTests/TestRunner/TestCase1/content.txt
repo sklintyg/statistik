@@ -1,0 +1,70 @@
+!contents -R2 -g -p -f -h
+
+|script|se.inera.statistics.queue.IntygSender|
+|send data|/testfall.csv|
+|sleep|5000|
+|get result;|ENVE|TVAVE|2012-05-01|2013-10-10|
+
+|query:se.inera.statistics.counterdata.Sjukfall|casesPerMonthNationell|
+|period|kvinnor|män|
+|maj 2012|||
+|jun 2012|||
+|jul 2012|||
+|aug 2012|||
+|sep 2012|||
+|okt 2012|||
+|nov 2012|||
+|dec 2012|||
+|jan 2013|||
+|feb 2013|||
+|mar 2013|||
+|apr 2013|||
+|maj 2013|||
+|jun 2013|||
+|jul 2013|||
+|aug 2013|||
+|sep 2013|||
+|okt 2013|||
+
+|query:se.inera.statistics.counterdata.Sjukfall|casesPerMonth1|
+|period|kvinnor|män|
+|maj 2012|||
+|jun 2012|||
+|jul 2012|||
+|aug 2012|||
+|sep 2012|||
+|okt 2012|||
+|nov 2012|||
+|dec 2012|||
+|jan 2013|||
+|feb 2013|||
+|mar 2013|||
+|apr 2013|||
+|maj 2013|||
+|jun 2013|||
+|jul 2013|||
+|aug 2013|||
+|sep 2013|||
+|okt 2013|||
+
+|query:se.inera.statistics.counterdata.Sjukfall|casesPerMonth2|
+|period|kvinnor|män|
+|maj 2012|||
+|jun 2012|||
+|jul 2012|||
+|aug 2012|||
+|sep 2012|||
+|okt 2012|||
+|nov 2012|||
+|dec 2012|||
+|jan 2013|||
+|feb 2013|||
+|mar 2013|||
+|apr 2013|||
+|maj 2013|||
+|jun 2013|||
+|jul 2013|||
+|aug 2013|||
+|sep 2013|||
+|okt 2013|||
+
