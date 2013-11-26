@@ -292,12 +292,12 @@ div.footer {
     width: auto;
 }
 .rounded-bottom {
-	-webkit-border-bottom-right-radius: 5px;
-	-webkit-border-bottom-left-radius: 5px;
-	-moz-border-radius-bottomright: 5px;
-	-moz-border-radius-bottomleft: 5px;
-	border-bottom-right-radius: 5px;
-	border-bottom-left-radius: 5px;
+	-webkit-border-bottom-right-radius: 4px;
+	-webkit-border-bottom-left-radius: 4px;
+	-moz-border-radius-bottomright: 4px;
+	-moz-border-radius-bottomleft: 4px;
+	border-bottom-right-radius: 4px;
+	border-bottom-left-radius: 4px;
 }
 #timespan {
     padding: 0px 0px 10px 10px;
@@ -627,7 +627,7 @@ i.statistict-left-menu-expand-icon {
 	border-left: 1px solid #BABABA;
 	border-right: 1px solid #BABABA;
 	border-bottom: 1px solid #BABABA;
-	border-radius: 0px 0px 8px 8px;
+	border-radius: 0px 0px 4px 4px;
 	background-color: #f9f9f9;
 }
 .chart-table-body.collapse {
@@ -648,16 +648,16 @@ i.statistict-left-menu-expand-icon {
 	background: -ms-linear-gradient(top, #008391 0%,#00687d 100%);
 	background: linear-gradient(to bottom, #008391 0%,#00687d 100%);
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#008391', endColorstr='#00687d',GradientType=0 );
-	-webkit-border-top-left-radius: 10px;
-	-webkit-border-top-right-radius: 10px;
+	-webkit-border-top-left-radius: 4px;
+	-webkit-border-top-right-radius: 4px;
 	-webkit-border-bottom-left-radius: 0px;
 	-webkit-border-bottom-right-radius: 0px;
-	-moz-border-radius-topleft: 10px;
-	-moz-border-radius-topright: 10px;
+	-moz-border-radius-topleft: 4px;
+	-moz-border-radius-topright: 4px;
 	-moz-border-radius-bottomleft: 0px;
 	-moz-border-radius-bottomright: 0px;
-	border-top-left-radius: 10px;
-	border-top-right-radius: 10px;
+	border-top-left-radius: 4px;
+	border-top-right-radius: 4px;
 	border-bottom-left-radius: 0px;
 	border-bottom-right-radius: 0px;
 	color: #fff;
@@ -688,18 +688,18 @@ i.statistict-left-menu-expand-icon {
 	background: linear-gradient(to bottom, #666666 0%,#212633 57%);
 	/*filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#666666', endColorstr='#212633',GradientType=0 );*/
 	cursor: pointer;
-	-webkit-border-top-left-radius: 10px;
-	-webkit-border-top-right-radius: 10px;
-	-webkit-border-bottom-left-radius: 10px;
-	-webkit-border-bottom-right-radius: 10px;
-	-moz-border-radius-topleft: 10px;
-	-moz-border-radius-topright: 10px;
-	-moz-border-radius-bottomleft: 10px;
-	-moz-border-radius-bottomright: 10px;
-	border-top-left-radius: 10px;
-	border-top-right-radius: 10px;
-	border-bottom-left-radius: 10px;
-	border-bottom-right-radius: 10px;
+	-webkit-border-top-left-radius: 4px;
+	-webkit-border-top-right-radius: 4px;
+	-webkit-border-bottom-left-radius: 4px;
+	-webkit-border-bottom-right-radius: 4px;
+	-moz-border-radius-topleft: 4px;
+	-moz-border-radius-topright: 4px;
+	-moz-border-radius-bottomleft: 4px;
+	-moz-border-radius-bottomright: 4px;
+	border-top-left-radius: 4px;
+	border-top-right-radius: 4px;
+	border-bottom-left-radius: 4px;
+	border-bottom-right-radius: 4px;
 	color: #fff;
 }
 .accordion-toggle.disabled, .accordion-toggle.disabled:hover {
@@ -726,19 +726,19 @@ i.statistict-left-menu-expand-icon {
 	background: -o-linear-gradient(top, #666666 0%,#212633 57%);
 	background: -ms-linear-gradient(top, #666666 0%,#212633 57%);
 	background: linear-gradient(to bottom, #666666 0%,#212633 57%);
-	-webkit-border-top-left-radius: 10px;
-	-webkit-border-top-right-radius: 10px;
+	-webkit-border-top-left-radius: 4px;
+	-webkit-border-top-right-radius: 4px;
 	-webkit-border-bottom-left-radius: 0px;
 	-webkit-border-bottom-right-radius: 0px;
-	-moz-border-radius-topleft: 10px;
-	-moz-border-radius-topright: 10px;
+	-moz-border-radius-topleft: 4px;
+	-moz-border-radius-topright: 4px;
 	-moz-border-radius-bottomleft: 0px;
 	-moz-border-radius-bottomright: 0px;
-	border-top-left-radius: 10px;
-	border-top-right-radius: 10px;
+	border-top-left-radius: 4px;
+	border-top-right-radius: 4px;
 	border-bottom-left-radius: 0px;
 	border-bottom-right-radius: 0px;
-	border-radius: 10px 10px 0px 0px;
+	border-radius: 4px 4px 0px 0px;
 }
 .accordion-heading .accordion-toggle {
 	display: block;
@@ -766,9 +766,9 @@ div.accordion-body.in.collapse > div.accordion-heading a.accordion-toggle{
 	background: linear-gradient(to bottom, #666666 0%,#212633 57%);
 	/*filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#666666', endColorstr='#212633',GradientType=0 );*/
 	cursor: pointer;
-	-webkit-border-radius: 10px;
-	-moz-border-radius: 10px;
-	border-radius: 10px;
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	border-radius: 4px;
 	color: #fff;
 }
 
@@ -806,12 +806,12 @@ div.accordion-body.in.collapse > div.accordion-heading a.accordion-toggle{
 	background-color: #f5f5f5 !important;
 	padding: 5px 0px !important;
 	border: 1px solid #e5e5e5 !important;
-	-webkit-border-bottom-right-radius: 10px;
-	-webkit-border-bottom-left-radius: 10px;
-	-moz-border-radius-bottomright: 10px;
-	-moz-border-radius-bottomleft: 10px;
-	border-bottom-right-radius: 10px;
-	border-bottom-left-radius: 10px;
+	-webkit-border-bottom-right-radius: 4px;
+	-webkit-border-bottom-left-radius: 4px;
+	-moz-border-radius-bottomright: 4px;
+	-moz-border-radius-bottomleft: 4px;
+	border-bottom-right-radius: 4px;
+	border-bottom-left-radius: 4px;
 }
 
 .accordion .table th, .accordion .table td {
@@ -828,9 +828,9 @@ div.accordion-body.in.collapse > div.accordion-heading a.accordion-toggle{
 .faq-accordion-group {
 	margin-bottom: 10px !important;
 	border: 1px solid #e5e5e5 !important;
-	-webkit-border-radius: 8px !important;
-	-moz-border-radius: 8px !important;
-	border-radius: 8px !important;
+	-webkit-border-radius: 4px !important;
+	-moz-border-radius: 4px !important;
+	border-radius: 4px !important;
 }
 .faq-accordion-heading {
 	border-bottom: 0;
@@ -854,12 +854,12 @@ div.accordion-body.in.collapse > div.accordion-heading a.accordion-toggle{
 	padding: 9px 15px !important;
 	border-top: 1px solid #e5e5e5;
 	border: 1px solid transparent !important;
-	-webkit-border-bottom-right-radius: 8px !important;
-	-webkit-border-bottom-left-radius: 8px !important;
-	-moz-border-radius-bottomright: 8px !important;
-	-moz-border-radius-bottomleft: 8px !important;
-	border-bottom-right-radius: 8px !important;
-	border-bottom-left-radius: 8px !important;
+	-webkit-border-bottom-right-radius: 4px !important;
+	-webkit-border-bottom-left-radius: 4px !important;
+	-moz-border-radius-bottomright: 4px !important;
+	-moz-border-radius-bottomleft: 4px !important;
+	border-bottom-right-radius: 4px !important;
+	border-bottom-left-radius: 4px !important;
 }
 .faq-accordion-inner p {
 	line-height: 20px;
@@ -1338,12 +1338,12 @@ a.listheader.collapsed {
 	#overview-content .overview-box-information-container { 
 		background-color: #ededed; 
 		padding: 0px 0px 35px 0px;
-		-webkit-border-bottom-right-radius: 10px;
-		-webkit-border-bottom-left-radius: 10px;
-		-moz-border-radius-bottomright: 10px;
-		-moz-border-radius-bottomleft: 10px;
-		border-bottom-right-radius: 10px;
-		border-bottom-left-radius: 10px;
+		-webkit-border-bottom-right-radius: 4px;
+		-webkit-border-bottom-left-radius: 4px;
+		-moz-border-radius-bottomright: 4px;
+		-moz-border-radius-bottomleft: 4px;
+		border-bottom-right-radius: 4px;
+		border-bottom-left-radius: 4px;
 		border-left: 1px solid #C4C4C4;
 		border-right: 1px solid #C4C4C4;
 		border-bottom: 1px solid #C4C4C4;
@@ -1514,12 +1514,12 @@ li.overview-box-header-listItem {
 		background: -ms-linear-gradient(top, #008391 0%,#00687d 100%);
 		background: linear-gradient(to bottom, #008391 0%,#00687d 100%);
 		/*filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#008391', endColorstr='#00687d',GradientType=0 );*/
-		-webkit-border-top-left-radius: 10px;
-		-webkit-border-top-right-radius: 10px;
-		-moz-border-radius-topleft: 10px;
-		-moz-border-radius-topright: 10px;
-		border-top-left-radius: 10px;
-		border-top-right-radius: 10px;
+		-webkit-border-top-left-radius: 4px;
+		-webkit-border-top-right-radius: 4px;
+		-moz-border-radius-topleft: 4px;
+		-moz-border-radius-topright: 4px;
+		border-top-left-radius: 4px;
+		border-top-right-radius: 4px;
 		position: relative;
 	}
 	li.overview-box-header-listItem a:hover{
