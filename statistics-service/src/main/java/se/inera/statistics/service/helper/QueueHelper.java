@@ -158,6 +158,11 @@ public class QueueHelper {
             simpleSend(builders[start.size() - 1].build(person, start, stop, enhet, vardgivare, diagnos, grad).toString(), "001");
         }
     }
+
+    public void enqueue(UtlatandeBuilder builder, String person, String diagnos, List<LocalDate> start, List<LocalDate> stop, List<String> grad, String enhet, String vardgivare, String transId) {
+        simpleSend(builder.build(person, start, stop, enhet, vardgivare, diagnos, grad).toString(), transId);
+    }
+
     public Map<String, TestData> printAndGetPersistedData(String vardenhet1, String vardenhet2, Range range) {
         consumer.processBatch();
         nationellUpdaterJob.checkLog();
@@ -189,15 +194,15 @@ public class QueueHelper {
     }
 
     private void printAndGetSjukfallslangdGrupp(String vardenhet1, String vardenhet2, Range range, Map<String, TestData> result) {
-        SickLeaveLengthResponse sjukfallslangdGrupp1 = sjukfallslangdGrupp.getHistoricalStatistics(vardenhet1, range.getFrom(), RollingLength.YEAR);
+        SickLeaveLengthResponse sjukfallslangdGrupp1 = sjukfallslangdGrupp.getHistoricalStatistics(vardenhet1, range.getTo(), RollingLength.YEAR);
         LOG.info("SLG data: " + sjukfallslangdGrupp1);
         JsonNode sjukfallslangdGrupp1Node = JSONParser.parse(sjukfallslangdGrupp1.toString());
         result.put("sjukfallslangdGrupp1", new TestData(sjukfallslangdGrupp1, sjukfallslangdGrupp1Node));
-        SickLeaveLengthResponse sjukfallslangdGrupp2 = sjukfallslangdGrupp.getHistoricalStatistics(vardenhet2, range.getFrom(), RollingLength.YEAR);
+        SickLeaveLengthResponse sjukfallslangdGrupp2 = sjukfallslangdGrupp.getHistoricalStatistics(vardenhet2, range.getTo(), RollingLength.YEAR);
         LOG.info("SLG data: " + sjukfallslangdGrupp2);
         JsonNode sjukfallslangdGrupp2Node = JSONParser.parse(sjukfallslangdGrupp2.toString());
         result.put("sjukfallslangdGrupp2", new TestData(sjukfallslangdGrupp2, sjukfallslangdGrupp2Node));
-        SickLeaveLengthResponse sjukfallslangdGruppNationell = sjukfallslangdGrupp.getHistoricalStatistics(nationell, range.getFrom(), RollingLength.YEAR);
+        SickLeaveLengthResponse sjukfallslangdGruppNationell = sjukfallslangdGrupp.getHistoricalStatistics(nationell, range.getTo(), RollingLength.YEAR);
         LOG.info("Nationell SLG data: " + sjukfallslangdGruppNationell);
         JsonNode sjukfallslangdGruppNationellNode = JSONParser.parse(sjukfallslangdGruppNationell.toString());
         result.put("sjukfallslangdGruppNationell", new TestData(sjukfallslangdGruppNationell, sjukfallslangdGruppNationellNode));
