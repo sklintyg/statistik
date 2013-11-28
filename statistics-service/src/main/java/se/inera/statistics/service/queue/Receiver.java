@@ -57,11 +57,11 @@ public class Receiver implements MessageListener {
     }
 
     private static EventType typeEvent(String typeName) {
-        switch (typeName) {
+        switch (typeName.toLowerCase()) {
         case CREATED:
             return EventType.CREATED;
         case REVOKED:
-            return EventType.DELETED;
+            return EventType.REVOKED;
         default:
             return EventType.TEST;
         }

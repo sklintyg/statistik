@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.core.JmsTemplate;
 import se.inera.statistics.service.demo.UtlatandeBuilder;
+import se.inera.statistics.service.processlog.EventType;
 import se.inera.statistics.service.processlog.LogConsumer;
 import se.inera.statistics.service.report.api.AgeGroups;
 import se.inera.statistics.service.report.api.CasesPerCounty;
@@ -97,19 +98,6 @@ public class QueueHelper {
         nationell = Verksamhet.NATIONELL.name();
     }
 
-//    public void simpleSend(final String intyg, final String correlationId) {
-//        Destination destination = new ActiveMQQueue("intyg.queue");
-//
-//        this.jmsTemplate.send(destination, new MessageCreator() {
-//            public Message createMessage(Session session) throws JMSException {
-//                TextMessage message = session.createTextMessage(intyg);
-//                message.setStringProperty(Receiver.ACTION, Receiver.CREATED);
-//                message.setStringProperty(Receiver.CERTIFICATE_ID, correlationId);
-//                return message;
-//            }
-//        });
-//    }
-
     public void enqueueFromFile(UtlatandeBuilder[] builders, String csvFile) throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(this.getClass().getResourceAsStream(csvFile)));
         List<String[]> lines = new ArrayList<>();
@@ -153,8 +141,9 @@ public class QueueHelper {
         }
     }
 
-    public void enqueue(UtlatandeBuilder builder, String person, String diagnos, List<LocalDate> start, List<LocalDate> stop, List<String> grad, String enhet, String vardgivare, String transId) {
-        sender.simpleSend(builder.build(person, start, stop, enhet, vardgivare, diagnos, grad).toString(), transId);
+    public void enqueue(UtlatandeBuilder builder, String typString, String person, String diagnos, List<LocalDate> start, List<LocalDate> stop, List<String> grad, String enhet, String vardgivare, String transId) {
+        EventType typ = EventType.valueOf(typString);
+        sender.simpleSend(builder.build(person, start, stop, enhet, vardgivare, diagnos, grad).toString(), transId, typ);
     }
 
     public Map<String, TestData> printAndGetPersistedData(String vardenhet1, String vardenhet2, Range range) {

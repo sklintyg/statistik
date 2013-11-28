@@ -5,6 +5,7 @@ import se.inera.statistics.context.StartUp
 import se.inera.statistics.service.demo.UtlatandeBuilder
 import se.inera.statistics.service.helper.QueueHelper
 import se.inera.statistics.service.helper.TestData
+import se.inera.statistics.service.processlog.EventType
 import se.inera.statistics.service.report.model.Range
 
 class IntygSender {
@@ -22,6 +23,10 @@ class IntygSender {
     }
 
     boolean sendIntyg(String person, String diagnos, String start1, String stop1, String grad1, String start2, String stop2, String grad2, String start3, String stop3, String grad3, String start4, String stop4, String grad4, String enhet, String vardgivare, String trackingId) {
+        sendIntyg(EventType.CREATED.name(), person, diagnos, start1, stop1, grad1, start2, stop2, grad2, start3, stop3, grad3, start4, stop4, grad4, enhet, vardgivare, trackingId)
+    }
+
+    boolean sendIntyg(String typ, String person, String diagnos, String start1, String stop1, String grad1, String start2, String stop2, String grad2, String start3, String stop3, String grad3, String start4, String stop4, String grad4, String enhet, String vardgivare, String trackingId) {
         QueueHelper bean = (QueueHelper) StartUp.context.getBean("se.inera.statistics.service.helper.QueueHelper")
         List<LocalDate> starts = new ArrayList<>()
         List<LocalDate> stops = new ArrayList<>()
@@ -49,7 +54,7 @@ class IntygSender {
         if (starts.size() < 1) {
             false
         } else {
-            bean.enqueue(builders[starts.size() - 1], person, diagnos, starts, stops, grads, enhet, vardgivare, trackingId)
+            bean.enqueue(builders[starts.size() - 1], typ, person, diagnos, starts, stops, grads, enhet, vardgivare, trackingId)
             true
         }
     }
