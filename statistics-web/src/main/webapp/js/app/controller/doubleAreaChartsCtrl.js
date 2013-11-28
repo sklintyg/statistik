@@ -43,18 +43,20 @@
      var chart2 = {};
      var isVerksamhet = $routeParams.verksamhetId ? true : false;
 
-     this.paintChart = function(containerId, yAxisTitle, chartCategories, chartSeries) {
+     this.paintChart = function(containerId, yAxisTitle, yAxisTitleXPos, chartCategories, chartSeries) {
          var chartOptions = ControllerCommons.getHighChartConfigBase(chartCategories, chartSeries);
          chartOptions.chart.type = 'area';
          chartOptions.chart.marginTop = 27;
+         chartOptions.chart.spacingLeft = -20;
          chartOptions.plotOptions.area.lineWidth = 1;
          chartOptions.plotOptions.area.lineColor = 'grey';
          chartOptions.chart.renderTo = containerId;
          chartOptions.legend.enabled = $routeParams.printBw || $routeParams.print;
          chartOptions.xAxis.title.text = "Period";
          chartOptions.tooltip.useHTML = true;
+         chartOptions.yAxis.title.text = yAxisTitle;
          /*chartOptions.yAxis.title.rotation = 270;*/
-         chartOptions.yAxis.title.x= -10;
+         chartOptions.yAxis.title.x= yAxisTitleXPos;
          chartOptions.yAxis.title.y= -13;
          chartOptions.yAxis.title.align = 'high';
          chartOptions.yAxis.title.offset = 0;
@@ -131,11 +133,11 @@
 
         var chartSeriesFemale = ajaxResult.femaleChart.series;
         ControllerCommons.setupSeriesForDisplayType($routeParams.printBw, chartSeriesFemale, "area");
-        that.chart1 = that.paintChart('chart1', 'Antal kvinnor', chartCategories, chartSeriesFemale);
+        that.chart1 = that.paintChart('chart1', 'Antal kvinnor', 40, chartCategories, chartSeriesFemale);
         
         var chartSeriesMale = ajaxResult.maleChart.series;
         ControllerCommons.setupSeriesForDisplayType($routeParams.printBw, chartSeriesMale, "area");
-        that.chart2 = that.paintChart('chart2', 'Antal män', chartCategories, chartSeriesMale);
+        that.chart2 = that.paintChart('chart2', 'Antal män', 21, chartCategories, chartSeriesMale);
         
         var yMax = Math.max(that.chart1.yAxis[0].dataMax, that.chart2.yAxis[0].dataMax);
         that.chart1.yAxis[0].setExtremes(0,yMax);
