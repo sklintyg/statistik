@@ -16,6 +16,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import se.inera.statistics.service.helper.JSONParser;
 import se.inera.statistics.service.hsa.HSADecorator;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -50,6 +51,17 @@ public class LogConsumerImplTest {
     }
 
     @Test
+    public void processingSucceedsForOneEvent() {
+        IntygEvent event = new IntygEvent(EventType.CREATED, "{}", "correlationId", 1);
+        when(processLog.getPending(100)).thenReturn(Collections.singletonList(event));
+        when(hsa.syncDecorate(any(JsonNode.class), anyString())).thenReturn(JSONParser.parse("{}"));
+        int count = consumer.processBatch();
+        assertEquals(1, count);
+        verify(processLog).getPending(100);
+        verify(processor).accept(any(JsonNode.class), any(JsonNode.class), Mockito.anyLong());
+    }
+
+    @Test
     public void failingHsaSkipsProcessing() {
         IntygEvent event = new IntygEvent(EventType.CREATED, "{}", "correlationId", 1);
         when(processLog.getPending(100)).thenReturn(Collections.singletonList(event));
@@ -58,5 +70,16 @@ public class LogConsumerImplTest {
         assertEquals(0, count);
         verify(processLog).getPending(100);
         verify(processor, Mockito.never()).accept(any(JsonNode.class), any(JsonNode.class), Mockito.anyLong());
+    }
+
+    @Test
+    public void deleteEventsAreSkipped() {
+        IntygEvent event = new IntygEvent(EventType.DELETED, "{}", "correlationId", 1);
+        when(processLog.getPending(100)).thenReturn(Collections.singletonList(event));
+        int count = consumer.processBatch();
+        assertEquals(1, count);
+        verify(processLog).getPending(100);
+        verify(processor, Mockito.never()).accept(any(JsonNode.class), any(JsonNode.class), Mockito.anyLong());
+        verify(hsa, Mockito.never()).decorate(any(JsonNode.class), anyString());
     }
 }
