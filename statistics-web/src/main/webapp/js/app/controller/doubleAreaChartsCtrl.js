@@ -47,6 +47,7 @@
          var chartOptions = ControllerCommons.getHighChartConfigBase(chartCategories, chartSeries);
          chartOptions.chart.type = 'area';
          chartOptions.chart.marginTop = 27;
+         chartOptions.chart.spacingLeft = -20;
          chartOptions.plotOptions.area.lineWidth = 1;
          chartOptions.plotOptions.area.lineColor = 'grey';
          chartOptions.chart.renderTo = containerId;
