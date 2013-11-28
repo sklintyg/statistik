@@ -6,6 +6,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.jms.core.MessageCreator;
+import se.inera.statistics.service.processlog.EventType;
 import se.inera.statistics.service.queue.Receiver;
 
 import javax.annotation.PostConstruct;
@@ -34,6 +35,19 @@ public class QueueSender {
             public Message createMessage(Session session) throws JMSException {
                 TextMessage message = session.createTextMessage(intyg);
                 message.setStringProperty(Receiver.ACTION, Receiver.CREATED);
+                message.setStringProperty(Receiver.CERTIFICATE_ID, correlationId);
+                return message;
+            }
+        });
+    }
+
+    public void simpleSend(final String intyg, final String correlationId, final EventType type) {
+        Destination destination = new ActiveMQQueue("intyg.queue");
+
+        this.jmsTemplate.send(destination, new MessageCreator() {
+            public Message createMessage(Session session) throws JMSException {
+                TextMessage message = session.createTextMessage(intyg);
+                message.setStringProperty(Receiver.ACTION, type.name());
                 message.setStringProperty(Receiver.CERTIFICATE_ID, correlationId);
                 return message;
             }
