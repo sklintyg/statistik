@@ -1352,37 +1352,7 @@ a.listheader.collapsed {
 		padding-right: 2px;
 	}
 	
-	div.box-bottom {
-		/*background-image: url("../img/list_shadow_left.png"), url("../img/list_shadow_right.png");*/
-		background-image: url("../img/list_shadow_left.png"), url("../img/list_shadow_right.png");
-		background-repeat: no-repeat, no-repeat;
-		background-position: top left, top right;
-		margin-top: 0px;
-		padding: 0px;
-		margin-bottom: 10px;
-		min-height: 10px;
-	}
-	
-	div.shadow {
-		position:relative;
-	}
-	div.shadow:after {
-		z-index: -1;
-		content: '';
-		width: 30%;
-		position: absolute;
-		top: 50%;
-		bottom: 15px;
-		right: 10px;
-		left: auto;
-		background: #777;
-		-webkit-box-shadow: 0 15px 10px #777;
-		-moz-box-shadow: 0 15px 10px #777;
-		box-shadow: 0 15px 10px #777;
-		-webkit-transform: rotate(3deg);
-		-moz-transform: rotate(3deg);
-		transform: rotate(3deg);
-	}
+	div.box-bottom { min-height: 10px; }
 	
 	#overview-content .overview-box-information-container span { 
 		font-family: Helvetica; 
