@@ -43,11 +43,11 @@
      var chart2 = {};
      var isVerksamhet = $routeParams.verksamhetId ? true : false;
 
-     this.paintChart = function(containerId, yAxisTitle, yAxisTitleXPos, chartCategories, chartSeries) {
+     this.paintChart = function(containerId, yAxisTitle, yAxisTitleXPos, chartCategories, chartSeries, chartSpacingLeft) {
          var chartOptions = ControllerCommons.getHighChartConfigBase(chartCategories, chartSeries);
          chartOptions.chart.type = 'area';
          chartOptions.chart.marginTop = 27;
-         chartOptions.chart.spacingLeft = -20;
+         chartOptions.chart.spacingLeft = chartSpacingLeft;
          chartOptions.plotOptions.area.lineWidth = 1;
          chartOptions.plotOptions.area.lineColor = 'grey';
          chartOptions.chart.renderTo = containerId;
@@ -133,11 +133,11 @@
 
         var chartSeriesFemale = ajaxResult.femaleChart.series;
         ControllerCommons.setupSeriesForDisplayType($routeParams.printBw, chartSeriesFemale, "area");
-        that.chart1 = that.paintChart('chart1', 'Antal kvinnor', 40, chartCategories, chartSeriesFemale);
+        that.chart1 = that.paintChart('chart1', 'Antal kvinnor', 40, chartCategories, chartSeriesFemale, -40);
         
         var chartSeriesMale = ajaxResult.maleChart.series;
         ControllerCommons.setupSeriesForDisplayType($routeParams.printBw, chartSeriesMale, "area");
-        that.chart2 = that.paintChart('chart2', 'Antal män', 21, chartCategories, chartSeriesMale);
+        that.chart2 = that.paintChart('chart2', 'Antal män', 21, chartCategories, chartSeriesMale, 0);
         
         var yMax = Math.max(that.chart1.yAxis[0].dataMax, that.chart2.yAxis[0].dataMax);
         that.chart1.yAxis[0].setExtremes(0,yMax);
