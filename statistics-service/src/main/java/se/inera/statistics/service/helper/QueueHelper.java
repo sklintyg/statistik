@@ -1,16 +1,13 @@
 package se.inera.statistics.service.helper;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import org.apache.activemq.command.ActiveMQQueue;
 import org.joda.time.LocalDate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jms.core.MessageCreator;
 import org.springframework.jms.core.JmsTemplate;
 import se.inera.statistics.service.demo.UtlatandeBuilder;
 import se.inera.statistics.service.processlog.LogConsumer;
-import se.inera.statistics.service.queue.Receiver;
 import se.inera.statistics.service.report.api.AgeGroups;
 import se.inera.statistics.service.report.api.CasesPerCounty;
 import se.inera.statistics.service.report.api.CasesPerMonth;
@@ -34,11 +31,6 @@ import se.inera.statistics.service.report.util.Verksamhet;
 import se.inera.statistics.service.scheduler.NationellUpdaterJob;
 
 import javax.annotation.PostConstruct;
-import javax.jms.Destination;
-import javax.jms.JMSException;
-import javax.jms.Message;
-import javax.jms.Session;
-import javax.jms.TextMessage;
 import javax.jms.ConnectionFactory;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -90,6 +82,8 @@ public class QueueHelper {
     @Autowired
     private LogConsumer consumer;
 
+    @Autowired
+    private QueueSender sender;
 
     private JmsTemplate jmsTemplate;
     private String nationell;
@@ -103,18 +97,18 @@ public class QueueHelper {
         nationell = Verksamhet.NATIONELL.name();
     }
 
-    public void simpleSend(final String intyg, final String correlationId) {
-        Destination destination = new ActiveMQQueue("intyg.queue");
-
-        this.jmsTemplate.send(destination, new MessageCreator() {
-            public Message createMessage(Session session) throws JMSException {
-                TextMessage message = session.createTextMessage(intyg);
-                message.setStringProperty(Receiver.ACTION, Receiver.CREATED);
-                message.setStringProperty(Receiver.CERTIFICATE_ID, correlationId);
-                return message;
-            }
-        });
-    }
+//    public void simpleSend(final String intyg, final String correlationId) {
+//        Destination destination = new ActiveMQQueue("intyg.queue");
+//
+//        this.jmsTemplate.send(destination, new MessageCreator() {
+//            public Message createMessage(Session session) throws JMSException {
+//                TextMessage message = session.createTextMessage(intyg);
+//                message.setStringProperty(Receiver.ACTION, Receiver.CREATED);
+//                message.setStringProperty(Receiver.CERTIFICATE_ID, correlationId);
+//                return message;
+//            }
+//        });
+//    }
 
     public void enqueueFromFile(UtlatandeBuilder[] builders, String csvFile) throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(this.getClass().getResourceAsStream(csvFile)));
@@ -155,12 +149,12 @@ public class QueueHelper {
             String enhet = cols[ENHET_COL];
             String vardgivare = cols[VARDGIVARE_COL];
             LOG.info(person + ", " + start + ", " + stop + ", " + enhet + ", " + vardgivare + ", " + diagnos + ", " + grad);
-            simpleSend(builders[start.size() - 1].build(person, start, stop, enhet, vardgivare, diagnos, grad).toString(), "001");
+            sender.simpleSend(builders[start.size() - 1].build(person, start, stop, enhet, vardgivare, diagnos, grad).toString(), "001");
         }
     }
 
     public void enqueue(UtlatandeBuilder builder, String person, String diagnos, List<LocalDate> start, List<LocalDate> stop, List<String> grad, String enhet, String vardgivare, String transId) {
-        simpleSend(builder.build(person, start, stop, enhet, vardgivare, diagnos, grad).toString(), transId);
+        sender.simpleSend(builder.build(person, start, stop, enhet, vardgivare, diagnos, grad).toString(), transId);
     }
 
     public Map<String, TestData> printAndGetPersistedData(String vardenhet1, String vardenhet2, Range range) {

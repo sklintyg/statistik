@@ -14,6 +14,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 import se.inera.statistics.service.demo.UtlatandeBuilder;
 import se.inera.statistics.service.helper.QueueHelper;
+import se.inera.statistics.service.helper.QueueSender;
 import se.inera.statistics.service.processlog.LogConsumer;
 import se.inera.statistics.service.report.api.AgeGroups;
 import se.inera.statistics.service.report.api.CasesPerCounty;
@@ -87,6 +88,8 @@ public class RepresentativeIntygIntegrationTest {
 
     @Autowired
     private QueueHelper queueHelper;
+    @Autowired
+    private QueueSender queueSender;
 
     @Autowired
     private LogConsumer consumer;
@@ -119,7 +122,7 @@ public class RepresentativeIntygIntegrationTest {
         LOG.info("===========INPUT==========");
         for (TestIntyg intyg : getIntygWithHelsjukAndSingelmanadAndSingelDiagnos(getPerson(PERSON_K1950), getPerson(PERSON_K1960), getPerson(PERSON_M1979))) {
             LOG.info("Intyg: " + intyg);
-            queueHelper.simpleSend(builder.build(intyg.personNr, intyg.startDate, intyg.endDate, intyg.vardenhet, intyg.vardgivare, intyg.diagnos, intyg.grads).toString(),
+            queueSender.simpleSend(builder.build(intyg.personNr, intyg.startDate, intyg.endDate, intyg.vardenhet, intyg.vardgivare, intyg.diagnos, intyg.grads).toString(),
                     "001");
         }
 
@@ -175,7 +178,7 @@ public class RepresentativeIntygIntegrationTest {
         List<TestIntyg> intygs = getIntygWithHelsjukAndSingelmanadAndDiagnosList(persons, diagnosKods, start, stop, vardgivares, vardenhet);
         for (TestIntyg intyg : intygs) {
             LOG.info("Intyg: " + intyg);
-            queueHelper.simpleSend(builder.build(intyg.personNr, intyg.startDate, intyg.endDate, intyg.vardenhet, intyg.vardgivare, intyg.diagnos, intyg.grads).toString(),
+            queueSender.simpleSend(builder.build(intyg.personNr, intyg.startDate, intyg.endDate, intyg.vardenhet, intyg.vardgivare, intyg.diagnos, intyg.grads).toString(),
                     "001");
         }
 
