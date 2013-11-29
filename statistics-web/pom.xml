@@ -185,6 +185,7 @@
           <jsSrcDir>src/main/webapp/js</jsSrcDir>
           <jsTestSrcDir>src/test/javascript</jsTestSrcDir>
           <sourceIncludes>
+            <include>app/controller/business/businessOverviewCtrl.js</include>
             <include>app/controller/common.js</include>
           </sourceIncludes>
         </configuration>
