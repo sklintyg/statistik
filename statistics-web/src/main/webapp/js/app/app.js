@@ -75,6 +75,9 @@ app.statisticsApp = angular.module('StatisticsApp', [ 'ngCookies', 'ui.bootstrap
                 controller : 'BusinessOverviewCtrl',
                 controllerAs : 'BusinessOverviewCtrl',
                 title: 'Verksamhetsöversikt'
+            }).when('/verksamhet/:verksamhetId/nodata', {
+                templateUrl : 'views/business/noDataAvailable.html',
+                title: 'Data saknas'
             }).when('/verksamhet/:verksamhetId/sjukfallPerManad', {
                 templateUrl : 'views/detailsView.html',
                 controller : 'CasesPerMonthCtrl',

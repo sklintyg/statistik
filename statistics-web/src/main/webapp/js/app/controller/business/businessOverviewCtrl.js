@@ -1,10 +1,17 @@
  'use strict';
 
- app.businessOverviewCtrl = function ($scope, $timeout, statisticsData, $routeParams) {
+ if (!app){
+     var app = {};
+ }
+ app.businessOverviewCtrl = function ($scope, $timeout, statisticsData, $routeParams, $window) {
 
     $scope.baseUrl = "#/verksamhet/" + $routeParams.verksamhetId;  
      
     var dataReceived = function(result) {
+        if (result.casesPerMonth.totalCases === 0) {
+            $window.location.href = $window.location.href.replace(/[^\/]*\/?$/, "nodata");
+            return;
+        }
     	$scope.subTitle = "Utveckling för verksamheten de senaste tre månaderna, " + result.periodText;
         $scope.popoverTextPeriod = result.periodText;
         $scope.doneLoading = true;
