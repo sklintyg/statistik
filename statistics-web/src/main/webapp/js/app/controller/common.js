@@ -106,7 +106,6 @@ var ControllerCommons = new function(){
             },
             legend : {
                 align : 'top left',
-                verticalAlign : 'top',
                 x : 80,
                 y : 0,
                 borderWidth : 0
