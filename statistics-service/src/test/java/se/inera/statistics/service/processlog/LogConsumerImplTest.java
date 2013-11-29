@@ -74,7 +74,7 @@ public class LogConsumerImplTest {
 
     @Test
     public void deleteEventsAreSkipped() {
-        IntygEvent event = new IntygEvent(EventType.DELETED, "{}", "correlationId", 1);
+        IntygEvent event = new IntygEvent(EventType.REVOKED, "{}", "correlationId", 1);
         when(processLog.getPending(100)).thenReturn(Collections.singletonList(event));
         int count = consumer.processBatch();
         assertEquals(1, count);

@@ -43,7 +43,7 @@ public class LogConsumerImpl implements LogConsumer {
                 return 0;
             }
             for (IntygEvent event: result) {
-                if (event.getType() == EventType.DELETED) {
+                if (event.getType() == EventType.REVOKED) {
                     LOG.info("Event was delete event, skipping: " + event.getId());
                     processed++;
                     continue;

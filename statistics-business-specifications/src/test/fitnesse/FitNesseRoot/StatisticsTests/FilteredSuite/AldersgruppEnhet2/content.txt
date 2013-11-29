@@ -1,0 +1,6 @@
+!contents -R2 -g -p -f -h
+
+|query:se.inera.statistics.counterdata.Alder|ageGroups2|
+|period|hsaId|grupp|period|typ|kvinnor|män|
+|2013-10|TVAVE|46-50|2013-10|ENHET|1|0|
+|2013-10|TVAVE|>60|2013-10|ENHET|2|0|

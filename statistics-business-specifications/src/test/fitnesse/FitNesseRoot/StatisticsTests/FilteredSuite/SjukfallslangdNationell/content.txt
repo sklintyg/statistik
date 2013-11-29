@@ -1,0 +1,8 @@
+!contents -R2 -g -p -f -h
+
+|query:se.inera.statistics.counterdata.Sjukfallslangd|sjukfallslangdGruppNationell|
+|period|hsaId|grupp|typ|kvinnor|män|
+|2013-10|NATIONELL|<15 dagar|NATIONELL|5|0|
+|2013-10|NATIONELL|15-30 dagar|NATIONELL|2|0|
+|2013-10|NATIONELL|31-90 dagar|NATIONELL|2|0|
+|2013-10|NATIONELL|>365 dagar|NATIONELL|0|1|
