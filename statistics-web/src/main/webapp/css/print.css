@@ -48,6 +48,10 @@ table {
 
 /* End of  http://meyerweb.com/eric/tools/css/reset/ */
 
+@page {
+    size: A4;
+    margin: 30px;
+}
 
 .dontprint {
 	display: none;
