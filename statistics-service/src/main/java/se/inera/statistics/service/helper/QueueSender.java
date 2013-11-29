@@ -1,6 +1,5 @@
 package se.inera.statistics.service.helper;
 
-import org.apache.activemq.command.ActiveMQQueue;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -11,7 +10,7 @@ import se.inera.statistics.service.queue.Receiver;
 
 import javax.annotation.PostConstruct;
 import javax.jms.ConnectionFactory;
-import javax.jms.Destination;
+import javax.jms.Queue;
 import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.Session;
@@ -23,13 +22,15 @@ public class QueueSender {
     @Autowired
     private ConnectionFactory connectionFactory;
 
+    @Autowired
+    private Queue destination;
+    
     @PostConstruct
     public void init() {
         this.jmsTemplate = new JmsTemplate(connectionFactory);
     }
 
     public void simpleSend(final String intyg, final String correlationId) {
-        Destination destination = new ActiveMQQueue("intyg.queue");
 
         this.jmsTemplate.send(destination, new MessageCreator() {
             public Message createMessage(Session session) throws JMSException {
@@ -42,7 +43,6 @@ public class QueueSender {
     }
 
     public void simpleSend(final String intyg, final String correlationId, final EventType type) {
-        Destination destination = new ActiveMQQueue("intyg.queue");
 
         this.jmsTemplate.send(destination, new MessageCreator() {
             public Message createMessage(Session session) throws JMSException {
@@ -57,7 +57,6 @@ public class QueueSender {
     public static void main(String[] args) {
         ApplicationContext context = new ClassPathXmlApplicationContext("queue-sender-context.xml");
         QueueSender queueSender = (QueueSender) context.getBean("queueSender");
-
     }
 
 }

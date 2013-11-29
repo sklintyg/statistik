@@ -32,6 +32,13 @@
         </dependency>
 
         <dependency>
+            <groupId>org.apache.activemq</groupId>
+            <artifactId>activemq-spring</artifactId>
+            <version>5.8.0</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
             <groupId>org.fitnesse</groupId>
             <artifactId>fitnesse</artifactId>
             <version>20130924</version>
