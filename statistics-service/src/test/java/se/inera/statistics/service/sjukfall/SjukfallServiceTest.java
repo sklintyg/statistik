@@ -62,9 +62,7 @@ public class SjukfallServiceTest extends SjukfallService {
         register("personnummer", "vardgivare", date("2012-01-01"), date("2012-01-28"));
         register("personnummer", "vardgivare", date("2012-11-01"), date("2013-01-28"));
         SjukfallInfo id1 = register("personnummer", "vardgivare", date("2013-01-01"), date("2013-01-28"));
-        int expired = expire(date("2013-02-05"));
         SjukfallInfo id2 = register("personnummer", "vardgivare", date("2013-02-10"), date("2013-02-25"));
-        assertEquals(1, expired);
         assertFalse(id1.equals(id2));
     }
 
@@ -73,12 +71,9 @@ public class SjukfallServiceTest extends SjukfallService {
         SjukfallInfo shouldExpire = register("personnummer", "vardgivare", date("2012-01-01"), date("2012-01-28"));
         SjukfallInfo active = register("personnummer", "vardgivare2", date("2013-01-01"), date("2013-02-06"));
 
-        int expired = expire(date("2013-02-05"));
-
         SjukfallInfo newSjukfall = register("personnummer", "vardgivare", date("2013-02-10"), date("2013-02-25"));
         SjukfallInfo stillActive = register("personnummer", "vardgivare2", date("2013-02-10"), date("2013-02-25"));
 
-        assertEquals(1, expired);
         assertFalse(shouldExpire.equals(newSjukfall));
         assertEquals(active, stillActive);
     }

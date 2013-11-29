@@ -1,0 +1,23 @@
+!contents -R2 -g -p -f -h
+
+|query:se.inera.statistics.counterdata.Sjukfall|casesPerMonth1|
+|period|kvinnor|män|
+|maj 2012|1|1|
+|jun 2012|0|1|
+|jul 2012|0|1|
+|aug 2012|1|1|
+|sep 2012|0|1|
+|okt 2012|0|1|
+|nov 2012|0|1|
+|dec 2012|1|1|
+|jan 2013|1|1|
+|feb 2013|2|1|
+|mar 2013|0|1|
+|apr 2013|0|1|
+|maj 2013|1|1|
+|jun 2013|0|1|
+|jul 2013|1|1|
+|aug 2013|0|1|
+|sep 2013|1|1|
+|okt 2013|0|1|
+

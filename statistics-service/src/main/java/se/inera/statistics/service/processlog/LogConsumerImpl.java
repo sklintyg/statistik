@@ -12,6 +12,7 @@ import se.inera.statistics.service.helper.JSONParser;
 import se.inera.statistics.service.hsa.HSADecorator;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import se.inera.statistics.service.queue.Receiver;
 
 @Component
 public class LogConsumerImpl implements LogConsumer {
@@ -42,11 +43,16 @@ public class LogConsumerImpl implements LogConsumer {
                 return 0;
             }
             for (IntygEvent event: result) {
+                if (event.getType() == EventType.REVOKED) {
+                    LOG.info("Event was delete event, skipping: " + event.getId());
+                    processed++;
+                    continue;
+                }
                 JsonNode intyg = JSONParser.parse(event.getData());
                 JsonNode hsaInfo = hsa.syncDecorate(intyg, event.getCorrelationId());
                 if (hsaInfo != null) {
                     processor.accept(intyg, hsaInfo, event.getId());
-                    processed ++;
+                    processed++;
                     LOG.info("Processed log id {}", event.getId());
                 } else {
                     return processed;

@@ -19,6 +19,7 @@ public class BasicWebappWalkthrough {
         def result = false
         Browser.drive {
             waitFor { at CasesPerMonthPage }
+            waitDefault()
             result = page.chart.isDisplayed() && page.isDatatableVisible() && !page.isDetailsOptionsVisible()
         }
         return result
@@ -28,6 +29,7 @@ public class BasicWebappWalkthrough {
         def result = false
         Browser.drive {
             waitFor { at NationalOverviewPage }
+            waitDefault()
             String value = page.casesPerMonthFemaleProportion
             result = value.matches("[0-9]+%")
         }
@@ -38,6 +40,7 @@ public class BasicWebappWalkthrough {
         def result = false
         Browser.drive {
             waitFor { at NationalOverviewPage }
+            waitDefault()
             String value = page.casesPerMonthMaleProportion
             result = value.matches("[0-9]+%")
         }
@@ -48,6 +51,7 @@ public class BasicWebappWalkthrough {
         def result = false
         Browser.drive {
             waitFor { at NationalOverviewPage }
+            waitDefault()
             String femaleText = page.casesPerMonthFemaleProportion
             String maleText = page.casesPerMonthMaleProportion
             int femaleNumber = (Integer.parseInt(femaleText.replace("%", "")))
@@ -61,6 +65,7 @@ public class BasicWebappWalkthrough {
         def result = false
         Browser.drive {
             waitFor { at NationalOverviewPage }
+            waitDefault()
             String alterationText = page.casesPerMonthAlteration
             int alterationNumber = (Integer.parseInt(alterationText.replace("%", "")))
             result = alterationNumber >= 0 && alterationNumber <= 100
@@ -72,6 +77,7 @@ public class BasicWebappWalkthrough {
         def result = false
         Browser.drive {
             waitFor { at NavigationMenuPage }
+            waitDefault()
             page.goToCasesPerMonth()
         }
     }
@@ -79,6 +85,7 @@ public class BasicWebappWalkthrough {
     public void klickaPåDöljTabell() {
         Browser.drive {
             waitFor { at CasesPerMonthPage }
+            waitDefault()
             page.toggleDataTableVisibility()
         }
     }
@@ -87,6 +94,7 @@ public class BasicWebappWalkthrough {
         def result = false
         Browser.drive {
             waitFor { at CasesPerMonthPage }
+            waitDefault()
             result = !page.isDatatableVisible()
         }
         result
@@ -96,6 +104,7 @@ public class BasicWebappWalkthrough {
         def result = false
         Browser.drive {
             waitFor { at NavigationMenuPage }
+            waitDefault()
             page.goToOverview()
         }
     }
@@ -103,6 +112,7 @@ public class BasicWebappWalkthrough {
     public void klickaPåRubrikenFörDiagnosgrupper() {
         Browser.drive {
             waitFor { at NationalOverviewPage }
+            waitDefault()
             page.clickDiagnosisGroupsHeader()
         }
     }
@@ -111,6 +121,7 @@ public class BasicWebappWalkthrough {
         def result = false
         Browser.drive {
             waitFor { at DiagnosisGroupsPage }
+            waitDefault()
             result = page.chartFemale.isDisplayed() && page.chartMale.isDisplayed() && page.isDatatableVisible() && !page.isDetailsOptionsVisible()
         }
         result
@@ -119,6 +130,7 @@ public class BasicWebappWalkthrough {
     public void öppnaDetaljsidanFörUnderdiagnosgrupper() {
         Browser.drive {
             waitFor { at NavigationMenuPage }
+            waitDefault()
             page.goToDiagnosisSubGroup()
         }
     }
@@ -127,6 +139,7 @@ public class BasicWebappWalkthrough {
         def result = false
         Browser.drive {
             waitFor { at DiagnosisSubGroupsPage }
+            waitDefault()
             result = page.chartFemale.isDisplayed() && page.chartMale.isDisplayed() && page.isDatatableVisible() && page.isDetailsOptionsVisible()
         }
         result
@@ -135,6 +148,7 @@ public class BasicWebappWalkthrough {
     public void öppnaDetaljsidanFörÅldersgrupp() {
         Browser.drive {
             waitFor { at NavigationMenuPage }
+            waitDefault()
             page.goToAgeGroup()
         }
     }
@@ -143,6 +157,7 @@ public class BasicWebappWalkthrough {
         def result = false
         Browser.drive {
             waitFor { at AgeGroupsPage }
+            waitDefault()
             result = page.chart.isDisplayed() && page.isDatatableVisible() && !page.isDetailsOptionsVisible()
         }
         result
@@ -151,6 +166,7 @@ public class BasicWebappWalkthrough {
     public void öppnaDetaljsidanFörSjukskrivningsgrad() {
         Browser.drive {
             waitFor { at NavigationMenuPage }
+            waitDefault()
             page.goToSickLeaveDegree()
         }
     }
@@ -159,6 +175,7 @@ public class BasicWebappWalkthrough {
         def result = false
         Browser.drive {
             waitFor { at DegreeOfSickLeavePage }
+            waitDefault()
             result = page.chartFemale.isDisplayed() && page.chartMale.isDisplayed() && page.isDatatableVisible() && !page.isDetailsOptionsVisible()
         }
         result
@@ -167,6 +184,7 @@ public class BasicWebappWalkthrough {
     public void öppnaDetaljsidanFörSjukskrivningslängd() {
         Browser.drive {
             waitFor { at NavigationMenuPage }
+            waitDefault()
             page.goToSickLeaveLength()
         }
     }
@@ -175,6 +193,7 @@ public class BasicWebappWalkthrough {
         def result = false
                 Browser.drive {
             waitFor { at SickLeaveLengthPage }
+            waitDefault()
             result = page.chart.isDisplayed() && page.isDatatableVisible() && !page.isDetailsOptionsVisible()
         }
         result
@@ -183,6 +202,7 @@ public class BasicWebappWalkthrough {
     public void öppnaDetaljsidanFörLän() {
         Browser.drive {
             waitFor { at NavigationMenuPage }
+            waitDefault()
             page.goToCasesPerCounty()
         }
     }
@@ -191,6 +211,7 @@ public class BasicWebappWalkthrough {
         def result = false
         Browser.drive {
             waitFor { at CasesPerCountyPage }
+            waitDefault()
             result = page.chart.isDisplayed() && page.isDatatableVisible() && !page.isDetailsOptionsVisible()
         }
         result
@@ -199,6 +220,7 @@ public class BasicWebappWalkthrough {
     public boolean öppnaDetaljsidanFörAndelSjukfallPerKön() {
         Browser.drive {
             waitFor { at NavigationMenuPage }
+            waitDefault()
             page.goToCasesPerSex()
         }
     }
@@ -207,6 +229,7 @@ public class BasicWebappWalkthrough {
         def result = false
         Browser.drive {
             waitFor { at CasesPerSexPage }
+            waitDefault()
             result = page.chart.isDisplayed() && page.isDatatableVisible() && !page.isDetailsOptionsVisible()
         }
         result
@@ -215,10 +238,12 @@ public class BasicWebappWalkthrough {
     public boolean loggaIn() {
         Browser.drive {
             waitFor { at PageHeader }
+            waitDefault()
             page.clickLogin()
         }
         Browser.drive {
             waitFor { at LoginPage }
+            waitDefault()
             page.login()
         }
     }
@@ -232,6 +257,7 @@ public class BasicWebappWalkthrough {
     public boolean öppnaDetaljsidanFörSjukfallTotaltFörVerksamhet() {
         Browser.drive {
             waitFor { at NavigationMenuPage }
+            waitDefault()
             page.goToVerksamhetTotalCasesPage()
         }
     }
@@ -240,6 +266,7 @@ public class BasicWebappWalkthrough {
         def result = false
         Browser.drive {
             waitFor { at VerksamhetTotalCasesPage }
+            waitDefault()
             result = page.chart.isDisplayed() && page.isDatatableVisible() && !page.isDetailsOptionsVisible()
         }
         result
@@ -248,6 +275,7 @@ public class BasicWebappWalkthrough {
     public boolean öppnaDetaljsidanFörDiagnosgruppFörVerksamhet() {
         Browser.drive {
             waitFor { at NavigationMenuPage }
+            waitDefault()
             page.goToVerksamhetDiagnosisGroupsPage()
         }
     }
@@ -256,6 +284,7 @@ public class BasicWebappWalkthrough {
         def result = false
         Browser.drive {
             waitFor { at VerksamhetDiagnosisGroupsPage }
+            waitDefault()
             result = page.chartFemale.isDisplayed() && page.chartMale.isDisplayed() && page.isDatatableVisible() && !page.isDetailsOptionsVisible()
         }
         result
@@ -264,6 +293,7 @@ public class BasicWebappWalkthrough {
     public boolean öppnaDetaljsidanFörUnderdiagnosgruppFörVerksamhet() {
         Browser.drive {
             waitFor { at NavigationMenuPage }
+            waitDefault()
             page.goToVerksamhetSubDiagnosisGroupsPage()
         }
     }
@@ -272,6 +302,7 @@ public class BasicWebappWalkthrough {
         def result = false
         Browser.drive {
             waitFor { at VerksamhetSubDiagnosisGroupsPage }
+            waitDefault()
             result = page.chartFemale.isDisplayed() && page.chartMale.isDisplayed() && page.isDatatableVisible() && page.isDetailsOptionsVisible()
         }
         result
@@ -280,6 +311,7 @@ public class BasicWebappWalkthrough {
     public boolean öppnaDetaljsidanFörÅldersgruppFörVerksamhet() {
         Browser.drive {
             waitFor { at NavigationMenuPage }
+            waitDefault()
             page.goToVerksamhetAgeGroupsPage()
         }
     }
@@ -288,6 +320,7 @@ public class BasicWebappWalkthrough {
         def result = false
         Browser.drive {
             waitFor { at VerksamhetAgeGroupsPage }
+            waitDefault()
             result = page.chart.isDisplayed() && page.isDatatableVisible() && !page.isDetailsOptionsVisible()
         }
         result
@@ -296,6 +329,7 @@ public class BasicWebappWalkthrough {
     public boolean öppnaDetaljsidanFörPågåendeÅldersgruppFörVerksamhet() {
         Browser.drive {
             waitFor { at NavigationMenuPage }
+            waitDefault()
             page.goToVerksamhetAgeGroupsCurrentPage()
         }
     }
@@ -304,6 +338,7 @@ public class BasicWebappWalkthrough {
         def result = false
         Browser.drive {
             waitFor { at VerksamhetAgeGroupsCurrentPage }
+            waitDefault()
             result = page.chart.isDisplayed() && page.isDatatableVisible() && !page.isDetailsOptionsVisible()
         }
         result
@@ -312,6 +347,7 @@ public class BasicWebappWalkthrough {
     public boolean öppnaDetaljsidanFörSjukskrivningsgradFörVerksamhet() {
         Browser.drive {
             waitFor { at NavigationMenuPage }
+            waitDefault()
             page.goToVerksamhetDegreeOfSickLeavePage()
         }
     }
@@ -320,6 +356,7 @@ public class BasicWebappWalkthrough {
         def result = false
         Browser.drive {
             waitFor { at VerksamhetDegreeOfSickLeavePage }
+            waitDefault()
             result = page.chartFemale.isDisplayed() && page.chartMale.isDisplayed() && page.isDatatableVisible() && !page.isDetailsOptionsVisible()
         }
         result
@@ -328,6 +365,7 @@ public class BasicWebappWalkthrough {
     public boolean öppnaDetaljsidanFörSjukskrivningslängdFörVerksmahet() {
         Browser.drive {
             waitFor { at NavigationMenuPage }
+            waitDefault()
             page.goToSickLeaveLengthPage()
         }
     }
@@ -336,6 +374,7 @@ public class BasicWebappWalkthrough {
         def result = false
         Browser.drive {
             waitFor { at VerksamhetSickLeaveLengthPage }
+            waitDefault()
             result = page.chart.isDisplayed() && page.isDatatableVisible() && !page.isDetailsOptionsVisible()
         }
         result
@@ -344,6 +383,7 @@ public class BasicWebappWalkthrough {
     public boolean öppnaDetaljsidanFörPågåendeSjukskrivningslängdFörVerksamhet() {
         Browser.drive {
             waitFor { at NavigationMenuPage }
+            waitDefault()
             page.goToSickLeaveLengthCurrentPage()
         }
     }
@@ -352,6 +392,7 @@ public class BasicWebappWalkthrough {
         def result = false
         Browser.drive {
             waitFor { at VerksamhetSickLeaveLengthCurrentPage }
+            waitDefault()
             result = page.chart.isDisplayed() && page.isDatatableVisible() && !page.isDetailsOptionsVisible()
         }
         result
@@ -360,6 +401,7 @@ public class BasicWebappWalkthrough {
     public boolean öppnaDetaljsidanFörLångaSjukskrivningarFörVerksamhet() {
         Browser.drive {
             waitFor { at NavigationMenuPage }
+            waitDefault()
             page.goToLongSickLeavesPage()
         }
     }
@@ -368,9 +410,22 @@ public class BasicWebappWalkthrough {
         def result = false
         Browser.drive {
             waitFor { at VerksamhetLongSickLeavesPage }
+            waitDefault()
             result = page.chart.isDisplayed() && page.isDatatableVisible() && !page.isDetailsOptionsVisible()
         }
         result
+    }
+
+    private void waitDefault() {
+        wait(1000);
+    }
+        
+    private void wait(int millis) {
+        try {
+            Thread.sleep(millis);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
             
 }

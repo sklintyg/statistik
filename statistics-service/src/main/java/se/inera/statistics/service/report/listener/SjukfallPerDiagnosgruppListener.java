@@ -13,7 +13,8 @@ import java.util.Map;
 
 @Component
 public class SjukfallPerDiagnosgruppListener extends GenericAbstractListener {
-    private static int maxCacheSize = 1000;
+    private static final int DEFAULT_MAX_CACHE_SIZE = 1000;
+    private static int maxCacheSize = DEFAULT_MAX_CACHE_SIZE;
     private final Map<DiagnosisGroupKey, DiagnosgruppValue> cache = new HashMap<>();
 
     @Autowired

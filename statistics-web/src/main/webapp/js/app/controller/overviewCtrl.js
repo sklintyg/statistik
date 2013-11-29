@@ -125,7 +125,7 @@
             title : ''
         };
         new Highcharts.Chart(chartOptions, function(chart) { // on complete
-            chart.renderer.image('img/sweden_graph.png', 43, 6, 88, 206).add();
+            chart.renderer.image('img/sweden_graph.png', 43, 3, 88, 206).add();
         });
     }
     

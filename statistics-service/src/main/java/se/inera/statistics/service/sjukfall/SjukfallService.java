@@ -18,6 +18,8 @@ public class SjukfallService {
 
     private static final int MAX_DAYS_BETWEEN_CERTIFICATES = 5;
 
+    private LocalDate cutOff = new LocalDate("1970-01-01");
+
     public SjukfallInfo register(SjukfallKey key) {
         return register(key.getPersonId(), key.getVardgivareId(), key.getStart(), key.getEnd());
     }
@@ -34,8 +36,16 @@ public class SjukfallService {
             currentSjukfall = new Sjukfall(personId, vardgivareId, start, end);
             manager.persist(currentSjukfall);
         }
-
+        checkExpiry(start);
         return new SjukfallInfo(currentSjukfall.getId(), currentSjukfall.getStart(), currentSjukfall.getEnd(), prevEnd);
+    }
+
+    private void checkExpiry(LocalDate start) {
+        System.err.println("Cutoff " + cutOff + " " + start);
+        if (cutOff.isBefore(start)) {
+            expire(start);
+            cutOff = start;
+        }
     }
 
     public int expire(LocalDate now) {
@@ -50,11 +60,14 @@ public class SjukfallService {
         if (maxDate.isAfter(now)) {
             maxDate = now;
         }
+        System.err.println("Max date " + maxDate);
 
         Query query = manager.createQuery("DELETE FROM Sjukfall s WHERE s.end < :end");
         LocalDate lastValid = maxDate.minusDays(MAX_DAYS_BETWEEN_CERTIFICATES);
         query.setParameter("end", lastValid.toString());
-        return query.executeUpdate();
+        int count = query.executeUpdate();
+        System.err.println("Delete " + count);
+        return count;
     }
 
     private Sjukfall getCurrentSjukfall(String personId, String vardgivareId) {

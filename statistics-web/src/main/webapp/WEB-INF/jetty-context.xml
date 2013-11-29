@@ -44,8 +44,8 @@
     </Arg>
     <Arg>jms/Queue</Arg>
     <Arg>
-      <New class="org.apache.activemq.ActiveMQConnectionFactory">
-        <Arg>vm://localhost?broker.persistent=false</Arg>
+      <New class="org.apache.activemq.command.ActiveMQQueue">
+        <Arg>statistik.utlatande.queue</Arg>
       </New>
     </Arg>
   </New>

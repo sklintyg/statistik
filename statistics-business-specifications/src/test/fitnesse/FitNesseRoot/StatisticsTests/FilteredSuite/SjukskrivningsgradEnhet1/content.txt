@@ -1,0 +1,35 @@
+!contents -R2 -g -p -f -h
+
+Verifiera sjukskrivningsgrad per period för enhet 1.
+
+|query:se.inera.statistics.counterdata.FilteredSjukskrivningsgrad|degreeOfSickLeave1|
+|period|grad|kvinnor|män|
+|maj 2012|Antal sjukfall per 25%|0|1|
+|maj 2012|Antal sjukfall per 100%|1|0|
+|jun 2012|Antal sjukfall per 25%|0|1|
+|jul 2012|Antal sjukfall per 25%|0|1|
+|aug 2012|Antal sjukfall per 25%|0|1|
+|aug 2012|Antal sjukfall per 50%|1|0|
+|sep 2012|Antal sjukfall per 25%|0|1|
+|okt 2012|Antal sjukfall per 25%|0|1|
+|nov 2012|Antal sjukfall per 25%|0|1|
+|dec 2012|Antal sjukfall per 25%|1|1|
+|jan 2013|Antal sjukfall per 25%|1|1|
+|feb 2013|Antal sjukfall per 25%|1|1|
+|feb 2013|Antal sjukfall per 50%|1|0|
+|mar 2013|Antal sjukfall per 25%|0|1|
+|apr 2013|Antal sjukfall per 25%|0|1|
+|apr 2013|Antal sjukfall per 100%|0|1|
+|maj 2013|Antal sjukfall per 25%|1|1|
+|maj 2013|Antal sjukfall per 100%|1|1|
+|jun 2013|Antal sjukfall per 25%|0|1|
+|jun 2013|Antal sjukfall per 100%|0|1|
+|jul 2013|Antal sjukfall per 25%|0|1|
+|jul 2013|Antal sjukfall per 75%|1|0|
+|jul 2013|Antal sjukfall per 100%|0|1|
+|aug 2013|Antal sjukfall per 25%|0|1|
+|aug 2013|Antal sjukfall per 100%|0|1|
+|sep 2013|Antal sjukfall per 25%|1|1|
+|sep 2013|Antal sjukfall per 100%|1|1|
+|okt 2013|Antal sjukfall per 25%|0|1|
+|okt 2013|Antal sjukfall per 100%|0|1|

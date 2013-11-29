@@ -33,10 +33,6 @@
         <artifactId>slf4j-api</artifactId>
     </dependency>
     <dependency>
-        <groupId>org.slf4j</groupId>
-        <artifactId>slf4j-simple</artifactId>
-    </dependency>
-    <dependency>
       <groupId>se.inera.statistics</groupId>
       <artifactId>statistics-service</artifactId>
     </dependency>
@@ -138,8 +134,13 @@
           </dependency>
           <dependency>
             <groupId>org.apache.activemq</groupId>
-            <artifactId>activemq-client</artifactId>
+            <artifactId>activemq-broker</artifactId>
             <version>5.8.0</version>
+          </dependency>
+          <dependency>
+            <groupId>org.apache.tomcat</groupId>
+            <artifactId>tomcat-catalina</artifactId>
+            <version>7.0.20</version>
           </dependency>
         </dependencies>
       </plugin>
@@ -184,6 +185,7 @@
           <jsSrcDir>src/main/webapp/js</jsSrcDir>
           <jsTestSrcDir>src/test/javascript</jsTestSrcDir>
           <sourceIncludes>
+            <include>app/controller/business/businessOverviewCtrl.js</include>
             <include>app/controller/common.js</include>
           </sourceIncludes>
         </configuration>

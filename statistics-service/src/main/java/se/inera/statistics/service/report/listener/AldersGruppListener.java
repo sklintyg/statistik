@@ -15,7 +15,8 @@ import java.util.HashMap;
 @Component
 public class AldersGruppListener extends RollingAbstractListener {
 
-    private static int maxCacheSize = 1000;
+    private static final int DEFAULT_MAX_CACHE_SIZE = 1000;
+    private static int maxCacheSize = DEFAULT_MAX_CACHE_SIZE;
     private final HashMap<AldersgruppKey, AldersgruppValue> cache = new HashMap<>();
 
     @Autowired
