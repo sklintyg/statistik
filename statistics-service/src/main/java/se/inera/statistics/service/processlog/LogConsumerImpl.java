@@ -12,7 +12,6 @@ import se.inera.statistics.service.helper.JSONParser;
 import se.inera.statistics.service.hsa.HSADecorator;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import se.inera.statistics.service.queue.Receiver;
 
 @Component
 public class LogConsumerImpl implements LogConsumer {
