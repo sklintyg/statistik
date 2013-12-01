@@ -1,20 +1,19 @@
 package se.inera.statistics.service.helper;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
-import org.springframework.jms.core.JmsTemplate;
-import org.springframework.jms.core.MessageCreator;
-import se.inera.statistics.service.processlog.EventType;
-import se.inera.statistics.service.queue.Receiver;
-
 import javax.annotation.PostConstruct;
 import javax.jms.ConnectionFactory;
-import javax.jms.Queue;
 import javax.jms.JMSException;
 import javax.jms.Message;
+import javax.jms.Queue;
 import javax.jms.Session;
 import javax.jms.TextMessage;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jms.core.JmsTemplate;
+import org.springframework.jms.core.MessageCreator;
+
+import se.inera.statistics.service.processlog.EventType;
+import se.inera.statistics.service.queue.Receiver;
 
 public class QueueSender {
     private JmsTemplate jmsTemplate;
@@ -52,11 +51,6 @@ public class QueueSender {
                 return message;
             }
         });
-    }
-
-    public static void main(String[] args) {
-        ApplicationContext context = new ClassPathXmlApplicationContext("queue-sender-context.xml");
-        QueueSender queueSender = (QueueSender) context.getBean("queueSender");
     }
 
 }
