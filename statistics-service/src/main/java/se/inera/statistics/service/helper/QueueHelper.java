@@ -1,11 +1,21 @@
 package se.inera.statistics.service.helper;
 
-import com.fasterxml.jackson.databind.JsonNode;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.annotation.PostConstruct;
+import javax.jms.ConnectionFactory;
+
 import org.joda.time.LocalDate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jms.core.JmsTemplate;
+
 import se.inera.statistics.service.demo.UtlatandeBuilder;
 import se.inera.statistics.service.processlog.EventType;
 import se.inera.statistics.service.processlog.LogConsumer;
@@ -31,15 +41,7 @@ import se.inera.statistics.service.report.repository.RollingLength;
 import se.inera.statistics.service.report.util.Verksamhet;
 import se.inera.statistics.service.scheduler.NationellUpdaterJob;
 
-import javax.annotation.PostConstruct;
-import javax.jms.ConnectionFactory;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import com.fasterxml.jackson.databind.JsonNode;
 
 public class QueueHelper {
     private static final Logger LOG = LoggerFactory.getLogger(QueueHelper.class);
@@ -86,7 +88,6 @@ public class QueueHelper {
     @Autowired
     private QueueSender sender;
 
-    private JmsTemplate jmsTemplate;
     private String nationell;
 
     @Autowired
@@ -94,7 +95,6 @@ public class QueueHelper {
 
     @PostConstruct
     public void init() {
-        this.jmsTemplate = new JmsTemplate(connectionFactory);
         nationell = Verksamhet.NATIONELL.name();
     }
 
