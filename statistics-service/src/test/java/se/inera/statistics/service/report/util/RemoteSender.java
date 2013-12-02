@@ -4,9 +4,9 @@ import java.util.UUID;
 
 import javax.annotation.PostConstruct;
 import javax.jms.ConnectionFactory;
-import javax.jms.Destination;
 import javax.jms.JMSException;
 import javax.jms.Message;
+import javax.jms.Queue;
 import javax.jms.Session;
 import javax.jms.TextMessage;
 
@@ -28,7 +28,7 @@ public class RemoteSender {
     private ConnectionFactory connectionFactory;
 
     @Autowired
-    private Destination destination;
+    private Queue destination;
     
     @PostConstruct
     public void setup() {
@@ -54,9 +54,9 @@ public class RemoteSender {
     public static void main(String[] args) throws InterruptedException {
         try(ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("classpath:send-to-mq-context.xml")) {
             RemoteSender bean = context.getBean("sender", RemoteSender.class);
-//            bean.connectionFactory = (ConnectionFactory) context.getBean("jmsFactory");
-//            bean.destination = (Destination) context.getBean("queue");
-//            bean.setup();
+            bean.connectionFactory = (ConnectionFactory) context.getBean("jmsFactory");
+            bean.destination = (Queue) context.getBean("queue");
+            bean.setup();
             bean.send();
             Thread.sleep(5000);
         }
