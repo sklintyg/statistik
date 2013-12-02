@@ -81,7 +81,7 @@
 				<div class="span3 pull-left" style="width: auto !important;">
 					<div class="headerbox-logo">
 						<a href="<c:url value='/'/>">
-							<img alt="Till startsidan" src="<c:url value='/img/statistics-logotype.png'/>"/>
+							<img alt="Till startsidan" src="<c:url value='/img/statistiktjansten-logotype.png'/>"/>
 						</a>
 					</div>
 				</div>
