@@ -12,7 +12,7 @@
   If not, see <http://www.gnu.org/licenses/>. -->
 <configuration>
 
-    <property name="LOG_BASE" value="${statistics.log.base:-${catalina.home}/logs}"/>
+    <property name="LOG_BASE" value="${statistics.log.base:-${catalina.base}/logs}"/>
 
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
       <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
