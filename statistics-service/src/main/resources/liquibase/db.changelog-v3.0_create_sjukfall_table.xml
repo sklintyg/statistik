@@ -7,8 +7,8 @@
             <column name="id" type="varchar(60)" >
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="personId" type="varchar(20)"/>
-            <column name="vardgivareId" type="varchar(20)"/>
+            <column name="personId" type="varchar(255)"/>
+            <column name="vardgivareId" type="varchar(255)"/>
             <column name="start" type="date"/>
             <column name="end" type="date"/>
         </createTable>

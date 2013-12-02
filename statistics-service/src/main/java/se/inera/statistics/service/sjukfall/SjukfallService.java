@@ -8,10 +8,14 @@ import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
 import org.joda.time.LocalDate;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public class SjukfallService {
+
+    private static final Logger LOG = LoggerFactory.getLogger(SjukfallService.class);
 
     @PersistenceContext(unitName = "IneraStatisticsLog")
     private EntityManager manager;
@@ -41,32 +45,18 @@ public class SjukfallService {
     }
 
     private void checkExpiry(LocalDate start) {
-        System.err.println("Cutoff " + cutOff + " " + start);
         if (cutOff.isBefore(start)) {
-            expire(start);
+            int expired = expire(start);
+            LOG.info("Expire sjukfall with cutoff {}, expired {}", start, expired);
             cutOff = start;
         }
     }
 
     public int expire(LocalDate now) {
-        TypedQuery<String> timeLimitQuery = manager.createQuery("SELECT MAX (s.start) FROM Sjukfall s", String.class);
-        List<String> max = timeLimitQuery.getResultList();
-        if (max.size() != 1) {
-            return 0;
-        }
-
-        LocalDate maxDate = new LocalDate(max.get(0));
-
-        if (maxDate.isAfter(now)) {
-            maxDate = now;
-        }
-        System.err.println("Max date " + maxDate);
-
         Query query = manager.createQuery("DELETE FROM Sjukfall s WHERE s.end < :end");
-        LocalDate lastValid = maxDate.minusDays(MAX_DAYS_BETWEEN_CERTIFICATES);
+        LocalDate lastValid = now.minusDays(MAX_DAYS_BETWEEN_CERTIFICATES);
         query.setParameter("end", lastValid.toString());
         int count = query.executeUpdate();
-        System.err.println("Delete " + count);
         return count;
     }
 
