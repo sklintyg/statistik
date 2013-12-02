@@ -2,7 +2,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>se.inera.statistics</groupId>
     <artifactId>statistics</artifactId>
-    <version>1.0-RC8-SNAPSHOT</version>
+    <version>1.0-RC8</version>
     <packaging>pom</packaging>
     <name>Inera Statistics Service</name>
     <description>
@@ -11,7 +11,7 @@
     </description>
     <scm>
         <connection>scm:git:https://code.google.com/p/inera-statistics/</connection>
-        <tag>HEAD</tag>
+        <tag>statistics-1.0-RC8</tag>
     </scm>
     <distributionManagement>
         <repository>
