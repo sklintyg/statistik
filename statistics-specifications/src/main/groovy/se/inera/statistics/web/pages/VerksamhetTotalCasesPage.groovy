@@ -5,7 +5,7 @@ import org.openqa.selenium.By
 
 class VerksamhetTotalCasesPage extends DetailsPage {
 
-    static at = { title == "Sjukfall per månad | Statistiktjänst" }
+    static at = { title == "Sjukfall per månad | Statistiktjänsten" }
 
     static content = {
 

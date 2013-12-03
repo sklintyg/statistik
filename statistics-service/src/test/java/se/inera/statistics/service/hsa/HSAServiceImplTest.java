@@ -1,9 +1,9 @@
 package se.inera.statistics.service.hsa;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
-import static org.junit.Assert.fail;
 import static org.mockito.Mockito.when;
 
 import java.io.InputStream;
@@ -34,15 +34,16 @@ public class HSAServiceImplTest {
     private HSAServiceImpl serviceImpl = new HSAServiceImpl();
 
     @Test
-    public void test() throws Exception {
-        GetStatisticsHsaUnitResponseType response = getResponse("GetStatisticsHsaUnit-small.xml");
+    public void hsUnitWithMissingGeography() throws Exception {
+        GetStatisticsHsaUnitResponseType response = getHsaUnitResponse("GetStatisticsHsaUnit-small.xml");
         when(wsCalls.getStatisticsHsaUnit("enhetId")).thenReturn(response);
         
         
         HSAKey key = new HSAKey("vardgivareId", "enhetId", "lakareId");
         JsonNode info = serviceImpl.getHSAInfo(key);
         assertNotNull(info);
-        assertEquals("IFV1239877878-103H", info.path("enhet").path("id").textValue());
+        assertEquals("IFV1239877878-103H", info.get("enhet").get("id").textValue());
+        assertFalse(info.get("enhet").has("geografi"));
         
     }
 
@@ -51,23 +52,23 @@ public class HSAServiceImplTest {
         HSAKey key = new HSAKey("vardgivareId", "enhetId", "lakareId");
         JsonNode info = serviceImpl.getHSAInfo(key);
         assertNotNull(info);
-        assertNull(info.get("enhet"));
-        assertNull(info.get("huvudenhet"));
-        assertNull(info.get("vardgivare"));
-        assertNull(info.get("personal"));
+        assertFalse(info.has("enhet"));
+        assertFalse(info.has("huvudenhet"));
+        assertFalse(info.has("vardgivare"));
+        assertFalse(info.has("personal"));
         
     }
 
     @Test
     public void serviceReturnsNullOnException() throws Exception {
         HSAKey key = new HSAKey("vardgivareId", "enhetId", "lakareId");
-        when(wsCalls.getStatisticsHsaUnit("enhetId")).thenThrow(new IllegalStateException("This WS is broken"));
+        when(wsCalls.getStatisticsHsaUnit("enhetId")).thenThrow(new IllegalStateException("This WS generated and exception"));
         JsonNode hsaInfo = serviceImpl.getHSAInfo(key);
         assertNull(hsaInfo);
         
     }
 
-    private GetStatisticsHsaUnitResponseType getResponse(String name) throws JAXBException {
+    private GetStatisticsHsaUnitResponseType getHsaUnitResponse(String name) throws JAXBException {
         JAXBContext context = JAXBContext.newInstance(GetStatisticsHsaUnitResponseType.class);
         Unmarshaller unmarshaller = context.createUnmarshaller();
         InputStream input = getClass().getResourceAsStream("/soap-response/" + name);
@@ -75,5 +76,4 @@ public class HSAServiceImplTest {
         JAXBElement<GetStatisticsHsaUnitResponseType> o = (JAXBElement<GetStatisticsHsaUnitResponseType>) unmarshaller.unmarshal(input);
         return o.getValue();
     }
-
 }
