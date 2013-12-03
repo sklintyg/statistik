@@ -145,8 +145,8 @@ public class HSAServiceImpl implements HSAService {
         return businessTypes != null ? businessTypes.getBusinessType() : null;
     }
 
-    private JsonNode createGeografiskIndelning(StatisticsHsaUnit unit) {
-        ObjectNode root = factory.objectNode();
+    private Builder createGeografiskIndelning(StatisticsHsaUnit unit) {
+        Builder root = new Builder();
         root.put("koordinat", createCoordinate(unit));
         root.put("plats", unit.getLocation());
         root.put("kommundelskod", unit.getMunicipalitySectionCode());
@@ -157,15 +157,15 @@ public class HSAServiceImpl implements HSAService {
     }
 
 
-    private JsonNode createCoordinate(StatisticsHsaUnit unit) {
+    private Builder createCoordinate(StatisticsHsaUnit unit) {
         return createCoordinates(unit.getGeographicalCoordinatesRt90());
     }
 
-    private JsonNode createCoordinates(GeoCoord coordinate) {
+    private Builder createCoordinates(GeoCoord coordinate) {
         if (coordinate == null || coordinate.getType() != GeoCoordEnum.RT_90) {
             return null;
         }
-        ObjectNode root = factory.objectNode();
+        Builder root = new Builder();
         root.put("typ", coordinate.getType().toString());
         root.put("x", coordinate.getX());
         root.put("y", coordinate.getY());
@@ -193,12 +193,6 @@ public class HSAServiceImpl implements HSAService {
         public Builder put(String name, Builder b) {
             if (b != null && b.root.size() > 0) {
                 root.put(name,  b.root);
-            }
-            return this;
-        }
-        public Builder put(String name, JsonNode node) {
-            if (node != null) {
-                root.put(name,  node);
             }
             return this;
         }
