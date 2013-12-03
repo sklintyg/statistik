@@ -152,7 +152,8 @@ var ControllerCommons = new function(){
                 } ]
             },
             exporting : {
-                enabled : false /* This removes the built in highchart export */
+                enabled : false,
+                url: highchartsExportUrl
             },
             plotOptions : {
                 line : {

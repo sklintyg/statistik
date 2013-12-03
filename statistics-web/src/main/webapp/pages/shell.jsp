@@ -68,6 +68,10 @@
 <security:authorize access="not isAuthenticated()">
     <script>var isLoggedIn = false;</script>
 </security:authorize>
+
+    <script>
+        var highchartsExportUrl = '${applicationScope.highchartsExportUrl}';
+    </script>
 </head>
 <body data-ng-controller="PageCtrl">
 <spring:eval expression='@loginVisibility.isLoginVisible()' var="loginVisible"/>
