@@ -98,4 +98,41 @@ public class SjukfallServiceTest extends SjukfallService {
     private LocalDate date(String stringDate) {
         return FORMATTER.parseLocalDate(stringDate);
     }
+
+    @Test
+    public void consecutiveIntygAndThenIntygWithFiveDayGap() {
+        SjukfallInfo id1 = register("personnummer", "vardgivare", date("2013-01-01"), date("2013-01-15"));
+        SjukfallInfo id2 = register("personnummer", "vardgivare", date("2013-01-15"), date("2013-01-16"));
+        SjukfallInfo id3 = register("personnummer", "vardgivare", date("2013-01-21"), date("2013-01-22"));
+        assertEquals(date("2013-01-01"), id1.getStart());
+        assertEquals(date("2013-01-15"), id1.getEnd());
+        assertEquals(date("2013-01-01"), id2.getStart());
+        assertEquals(date("2013-01-16"), id2.getEnd());
+        assertEquals(date("2013-01-01"), id3.getStart());
+        assertEquals(date("2013-01-22"), id3.getEnd());
+    }
+
+
+    @Test
+    public void consecutiveIntygWithFiveDayGap() {
+        SjukfallInfo id2 = register("personnummer", "vardgivare", date("2013-01-01"), date("2013-01-16"));
+        SjukfallInfo id3 = register("personnummer", "vardgivare", date("2013-01-21"), date("2013-01-22"));
+        assertEquals(date("2013-01-01"), id2.getStart());
+        assertEquals(date("2013-01-16"), id2.getEnd());
+        assertEquals(date("2013-01-01"), id3.getStart());
+        assertEquals(date("2013-01-22"), id3.getEnd());
+    }
+
+    @Test
+    public void consecutiveIntygWithSixDayGap() {
+        SjukfallInfo id2 = register("personnummer", "vardgivare", date("2013-01-01"), date("2013-01-16"));
+        SjukfallInfo id3 = register("personnummer", "vardgivare", date("2013-01-22"), date("2013-01-23"));
+        assertEquals(date("2013-01-01"), id2.getStart());
+        assertEquals(date("2013-01-16"), id2.getEnd());
+        assertEquals(date("2013-01-22"), id3.getStart());
+        assertEquals(date("2013-01-23"), id3.getEnd());
+    }
+
+
+
 }
