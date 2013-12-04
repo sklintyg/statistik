@@ -43,6 +43,7 @@ public class Receiver implements MessageListener {
                 String typeName = rawMessage.getStringProperty(ACTION);
                 String certificateId = rawMessage.getStringProperty(CERTIFICATE_ID);
                 accept(typeEvent(typeName), doc, certificateId, timestamp);
+                LOG.info("Received intyg {}", certificateId);
             } catch (JMSException e) {
                 throw new StatisticsJMSException("JMS error", e);
             }
