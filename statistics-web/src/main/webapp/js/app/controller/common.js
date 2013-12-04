@@ -110,11 +110,11 @@ var ControllerCommons = new function(){
         return String(chartName).replace(/\s+/g, "_") + "_" + date + "_" + time;
     }
     
-    this.exportChart = function(chart, chartName, layoutLayout) {
+    this.exportChart = function(chart, chartName, legendLayout) {
         var options = {filename: ControllerCommons.getFileName(chartName)};
         var chartOptions = { legend: { enabled: true } };
-        if (layoutLayout) {
-            chartOptions.legend.layout = layoutLayout;
+        if (legendLayout) {
+            chartOptions.legend.layout = legendLayout;
         }
         chart.exportChart(options, chartOptions);
     }
