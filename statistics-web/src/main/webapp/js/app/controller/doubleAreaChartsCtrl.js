@@ -8,6 +8,7 @@
      conf.exportTableUrlVerksamhet = function(verksamhetId) { return "api/verksamhet/" + verksamhetId + "/getDiagnosisGroupStatistics/csv"; };
      conf.showDetailsOptions = false;
      conf.title = function(period) { return "Antal sjukfall per diagnosgrupp " + period; };
+     conf.tooltipHelpText ="Vad innebär ICD-10? <br/> Den internationella sjukdomsklassifikationen ICD-10 är en klassifikation med diagnoskoder för att gruppera sjukdomar för att kunna göra översiktliga statistiska sammanställningar och analyser.<br/>Den svenska versionen heter ICD-10-SE.";	
      conf.chartFootnotes = ["För en given månad kan samma sjukfall visas fler än en gång i graf och tabell. Om ett sjukfall innehåller flera intyg under samma månad så hämtas diagnos från varje intyg. Om intygen har olika diagnosgrupper kommer sjukfallet finnas med en gång för varje diagnosgrupp för respektive månad. Exempel: Om ett sjukfall innehåller två intyg för maj månad, där intyg ett sätter diagnosen M54 och intyg två efter vidare utredning sätter diagnosen F32, så kommer sjukfallet både räknas med i gruppen för Muskuloskeleta sjukdomar (M00-M99) och i gruppen för Psykiska sjukdomar (F00-F99) i graf och tabell för maj månad."]; 
      return conf;
  };
@@ -20,6 +21,7 @@
      conf.exportTableUrlVerksamhet = function(verksamhetId, subgroupId) { return "api/verksamhet/" + verksamhetId + "/getDiagnosisSubGroupStatistics/" + subgroupId + "/csv"; };
      conf.showDetailsOptions = true;
      conf.title = function(period, name) { return "Antal sjukfall för " + name + " " + period; };
+     conf.tooltipHelpText ="Vad innebär enskilt diagnoskapitel? <br/>Sjukdomsklassifikationen ICD-10 är hierarkiskt uppbyggd av sjukdomsgrupper. Överst i hierarkin består ICD-10 av 21 kapitel. Varje enskilda diagnoskapitel motsvarar en grupp av relaterade diagnoskoder.<br/>Ett exempel på ett enskilt diagnoskapitel är: A00-B99 Vissa infektionssjukdomar och parasitsjukdomar.";
      conf.chartFootnotes = ["För en given månad kan samma sjukfall visas fler än en gång i graf och tabell. Om ett sjukfall innehåller flera intyg under samma månad så hämtas diagnos från varje intyg. Om intygen har olika diagnoser som faller inom samma diagnoskapitel, men olika diagnosavsnitt, kommer sjukfallet att finnas med en gång för varje diagnosavsnitt för respektive månad. Exempel: Om ett sjukfall innehåller två intyg för maj månad, där intyg ett sätter diagnosen F43 och intyg två efter vidare utredning sätter diagnosen F32, kommer sjukfallet både räknas med i avsnittet för Neurotiska syndrom (F40-F48) och i avsnittet för Förstämningssyndrom (F30-F39) i graf och tabell för maj månad."]; 
      return conf;
  };
