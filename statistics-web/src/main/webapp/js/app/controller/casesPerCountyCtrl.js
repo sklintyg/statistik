@@ -63,7 +63,7 @@
     $scope.dataLoadingError = false;
     
     $scope.exportChart = function() {
-        chart.exportChart();
+        ControllerCommons.exportChart(chart);
     };
 
     $scope.print = function(bwPrint) {

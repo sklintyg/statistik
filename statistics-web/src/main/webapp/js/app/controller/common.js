@@ -93,6 +93,14 @@ var ControllerCommons = new function(){
         }
         return r;
     }
+    
+    this.exportChart = function(chart) {
+        chart.exportChart(null, {
+            legend: {
+                enabled: true
+            }
+        });
+    }
 
     this.getHighChartConfigBase = function(chartCategories, chartSeries) {
         return {
