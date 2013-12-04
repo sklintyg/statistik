@@ -48,7 +48,7 @@ class IntygSender {
         }
         if (!"".equals(start4)) {
             starts.add(new LocalDate(start4));
-            stops.add(new LocalDate(start4));
+            stops.add(new LocalDate(stop4));
             grads.add(toGrad(grad4))
         }
         if (starts.size() < 1) {
