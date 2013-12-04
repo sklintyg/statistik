@@ -70,4 +70,19 @@ describe("Test of common functions for controllers", function() {
         expect(ControllerCommons.isNumber({1: 3})).toBe(false);
     });
     
+    it("htmlsafe", function() {
+        expect(ControllerCommons.htmlsafe("f")).toBe("f");
+        expect(ControllerCommons.htmlsafe("f&<")).toBe("f&amp;&lt;");
+    });
+    
+    it("setupSeriesForDisplayType BW", function() {
+        var result = ControllerCommons.setupSeriesForDisplayType(true, [{}], "line");
+        expect(result[0].color).toBe("black");
+    });
+    
+    it("setupSeriesForDisplayType color", function() {
+        var result = ControllerCommons.setupSeriesForDisplayType(false, [{}], "line");
+        expect(result[0].color).toBe("#fbb10c");
+    });
+    
 });
