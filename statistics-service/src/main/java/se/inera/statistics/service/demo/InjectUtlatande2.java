@@ -98,7 +98,7 @@ public class InjectUtlatande2 {
                 String id = randomPerson();
                 JsonNode newPermutation = permutate(builder, id, base);
                 try {
-                    accept(newPermutation.toString(), newPermutation.path("id").path("extension").textValue());
+                    accept(newPermutation.toString(), newPermutation.path("id").path("root").textValue());
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
