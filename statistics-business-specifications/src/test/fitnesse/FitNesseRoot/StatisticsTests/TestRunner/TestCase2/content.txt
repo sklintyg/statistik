@@ -525,7 +525,7 @@
 |query:se.inera.statistics.counterdata.Sjukfallslangd|sjukfallslangdGrupp1|
 |period|hsaId|grupp|typ|kvinnor|män|
 |2013-10|ENVE|<15 dagar|ENHET|3|0|
-|2013-10|ENVE|15-30 dagar|ENHET|2|0|
+|2013-10|ENVE|15-30 dagar|ENHET|1|0|
 |2013-10|ENVE|31-90 dagar|ENHET|1|0|
 |2013-10|ENVE|>365 dagar|ENHET|0|1|
 
@@ -537,7 +537,7 @@
 |query:se.inera.statistics.counterdata.Sjukfallslangd|sjukfallslangdGruppNationell|
 |period|hsaId|grupp|typ|kvinnor|män|
 |2013-10|NATIONELL|<15 dagar|NATIONELL|5|0|
-|2013-10|NATIONELL|15-30 dagar|NATIONELL|2|0|
+|2013-10|NATIONELL|15-30 dagar|NATIONELL|1|0|
 |2013-10|NATIONELL|31-90 dagar|NATIONELL|2|0|
 |2013-10|NATIONELL|>365 dagar|NATIONELL|0|1|
 
