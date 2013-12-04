@@ -30,7 +30,7 @@ public class SjukfallService {
     public SjukfallInfo register(String personId, String vardgivareId, LocalDate start, LocalDate end) {
         Sjukfall currentSjukfall = getCurrentSjukfall(personId, vardgivareId);
         LocalDate prevEnd = null;
-        if (currentSjukfall != null && !currentSjukfall.getEnd().plusDays(MAX_DAYS_BETWEEN_CERTIFICATES).isBefore(start)) {
+        if (currentSjukfall != null && !currentSjukfall.getEnd().plusDays(MAX_DAYS_BETWEEN_CERTIFICATES + 1).isBefore(start)) {
             prevEnd = currentSjukfall.getEnd();
             if (end.isAfter(prevEnd)) {
                 currentSjukfall.setEnd(end);

@@ -113,24 +113,47 @@ public class SjukfallServiceTest extends SjukfallService {
     }
 
 
+    /**
+     * Consecutive intyg with up to 5 days between them should be part of the same sjukfall.
+     * How should gaps between intyg be calculated? We only use the date, not time of day.
+     * Three interpretations:
+     *
+     *     10  11  12  13  14  15  16  17
+     *    |---|---|---|---|---|---|---|---|
+     * end|-------------------|start (add 5 days to end date) (1)
+     *   end|-------------------|start (5 days between, from midday on both ends) (2)
+     *     end|-------------------|start (5 complete calendar days between) (3)
+     *
+     * We use alternative 3.
+     */
     @Test
-    public void consecutiveIntygWithFiveDayGap() {
-        SjukfallInfo id2 = register("personnummer", "vardgivare", date("2013-01-01"), date("2013-01-16"));
-        SjukfallInfo id3 = register("personnummer", "vardgivare", date("2013-01-21"), date("2013-01-22"));
+    public void consecutiveIntygWithFourCalendarDayGap() {
+        SjukfallInfo id1 = register("personnummer", "vardgivare", date("2013-01-01"), date("2013-01-10"));
+        SjukfallInfo id2 = register("personnummer", "vardgivare", date("2013-01-15"), date("2013-01-23"));
+        assertEquals(date("2013-01-01"), id1.getStart());
+        assertEquals(date("2013-01-10"), id1.getEnd());
         assertEquals(date("2013-01-01"), id2.getStart());
-        assertEquals(date("2013-01-16"), id2.getEnd());
-        assertEquals(date("2013-01-01"), id3.getStart());
-        assertEquals(date("2013-01-22"), id3.getEnd());
+        assertEquals(date("2013-01-23"), id2.getEnd());
     }
 
     @Test
-    public void consecutiveIntygWithSixDayGap() {
-        SjukfallInfo id2 = register("personnummer", "vardgivare", date("2013-01-01"), date("2013-01-16"));
-        SjukfallInfo id3 = register("personnummer", "vardgivare", date("2013-01-22"), date("2013-01-23"));
+    public void consecutiveIntygWithFiveCalendarDayGap() {
+        SjukfallInfo id1 = register("personnummer", "vardgivare", date("2013-01-01"), date("2013-01-10"));
+        SjukfallInfo id2 = register("personnummer", "vardgivare", date("2013-01-16"), date("2013-01-24"));
+        assertEquals(date("2013-01-01"), id1.getStart());
+        assertEquals(date("2013-01-10"), id1.getEnd());
         assertEquals(date("2013-01-01"), id2.getStart());
-        assertEquals(date("2013-01-16"), id2.getEnd());
-        assertEquals(date("2013-01-22"), id3.getStart());
-        assertEquals(date("2013-01-23"), id3.getEnd());
+        assertEquals(date("2013-01-24"), id2.getEnd());
+    }
+
+    @Test
+    public void consecutiveIntygWithSixCalendarDayGap() {
+        SjukfallInfo id1 = register("personnummer", "vardgivare", date("2013-01-01"), date("2013-01-10"));
+        SjukfallInfo id2 = register("personnummer", "vardgivare", date("2013-01-17"), date("2013-01-24"));
+        assertEquals(date("2013-01-01"), id1.getStart());
+        assertEquals(date("2013-01-10"), id1.getEnd());
+        assertEquals(date("2013-01-17"), id2.getStart());
+        assertEquals(date("2013-01-24"), id2.getEnd());
     }
 
 
