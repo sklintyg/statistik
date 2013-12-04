@@ -227,7 +227,7 @@
     $scope.useSpecialPrintTable = true;
 
     $scope.exportChart = function(chartName) {
-        that[chartName].exportChart({}, {legend: {enabled: true, layout: 'vertical'} });
+        ControllerCommons.exportChart(that[chartName], $scope.pageName, 'vertical');
     };
 
     $scope.print = function(bwPrint) {
