@@ -86,6 +86,7 @@
              <property name="attributes">
                  <map>
                      <entry key="loginUrl" value="${login.url}"/>
+                     <entry key="highchartsExportUrl" value="${highcharts.export.url}"/>
                  </map>
              </property>
          </bean>

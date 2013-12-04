@@ -93,6 +93,14 @@ var ControllerCommons = new function(){
         }
         return r;
     }
+    
+    this.exportChart = function(chart) {
+        chart.exportChart(null, {
+            legend: {
+                enabled: true
+            }
+        });
+    }
 
     this.getHighChartConfigBase = function(chartCategories, chartSeries) {
         return {
@@ -152,7 +160,8 @@ var ControllerCommons = new function(){
                 } ]
             },
             exporting : {
-                enabled : false /* This removes the built in highchart export */
+                enabled : false,
+                url: highchartsExportUrl
             },
             plotOptions : {
                 line : {

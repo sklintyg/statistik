@@ -68,13 +68,13 @@
 	            <div class="row-fluid">
 	                <div class="span12">
 	                   <!-- Save to png -->	
-	                   <!-- div class="dontprint" data-ng-repeat="chartContainer in chartContainers">
+	                   <div class="dontprint" data-ng-repeat="chartContainer in chartContainers">
                            <div data-ng-class="{span12: chartContainers.length == 1, span6: chartContainers.length == 2}">
                            		<button class="btn btn-small" data-ng-click="exportChart(chartContainer)" style="cursor: pointer;" id="pageHelpToolTip" tooltip-html-unsafe="<div class=popover-content>Ladda ner denna graf som bild</div>" tooltip-trigger="mouseenter" tooltip-placement="right">
                            			<i class="icon-download icon-white"></i>
                            		</button>
                            </div>
-	                   </div -->
+	                   </div>
 	                   <div data-ng-repeat="chartContainer in chartContainers">
 	                       <div class="chart-page-chart" data-ng-class="{span12: chartContainers.length == 1, span6: chartContainers.length == 2}" id="{{chartContainer}}" style="height: 400px; margin: 0 auto"></div>
 	                   </div>

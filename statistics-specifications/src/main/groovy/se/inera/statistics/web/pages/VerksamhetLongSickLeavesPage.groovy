@@ -5,7 +5,7 @@ import org.openqa.selenium.By
 
 class VerksamhetLongSickLeavesPage extends DetailsPage {
 
-    static at = { title == "Sjukskrivningslängd mer än 90 dagar | Statistiktjänst" }
+    static at = { title == "Sjukskrivningslängd mer än 90 dagar | Statistiktjänsten" }
 
     static content = {
 
