@@ -1,0 +1,5 @@
+!contents -R2 -g -p -f -h
+
+|script|se.inera.statistics.context.StartUp|
+|start context|/fitnesse-context.xml|
+

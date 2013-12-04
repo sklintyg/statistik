@@ -1,0 +1,116 @@
+!contents -R2 -g -p -f -h
+
+
+#String person, String diagnos, String start1, String stop1, String grad1, String start2, String stop2, String grad2, String start3, String stop3, String grad3, String start4, String stop4, String grad4, String enhet, String vardgivare, String trackingId
+
+1 intyg, 100%
+
+|script|se.inera.statistics.queue.IntygSender|
+|send intyg;|19790407-9295|G01||||||||||2013-02-05|2013-02-06|100%|ENVE|EnVG|1|
+
+|script|se.inera.statistics.queue.IntygSender|
+|sleep|5000|
+|get result;|ENVE|TVAVE|2012-05-01|2013-10-10|
+
+|se.inera.statistics.queue.ResultKeys|
+|list of keys?|
+||
+
+|query:se.inera.statistics.counterdata.FilteredSjukfall|casesPerMonthNationell|
+|period|kvinnor|män|
+|feb 2013|0|1|
+
+-----
+
+1 more intyg, continuing previous sjukfall (i.e. should not add to n:o of sjukfall)
+
+|script|se.inera.statistics.queue.IntygSender|
+|send intyg;|19790407-9295|G01||||||||||2013-02-07|2013-02-10|100%|ENVE|EnVG|2|
+
+|script|se.inera.statistics.queue.IntygSender|
+|sleep|5000|
+|get result;|ENVE|TVAVE|2012-05-01|2013-10-10|
+
+|query:se.inera.statistics.counterdata.FilteredSjukfall|casesPerMonthNationell|
+|period|kvinnor|män|
+|feb 2013|0|1|
+
+-----
+
+1 more intyg, continuing previous sjukfall with 5 day gap (i.e. should not add to n:o of sjukfall)
+
+|script|se.inera.statistics.queue.IntygSender|
+|send intyg;|19790407-9295|G01||||||||||2013-02-16|2013-02-17|100%|ENVE|EnVG|3|
+
+|script|se.inera.statistics.queue.IntygSender|
+|sleep|5000|
+|get result;|ENVE|TVAVE|2012-05-01|2013-10-10|
+
+|query:se.inera.statistics.counterdata.FilteredSjukfall|casesPerMonthNationell|
+|period|kvinnor|män|
+|feb 2013|0|1|
+
+-----
+
+1 more intyg, continuing previous sjukfall with 6 day gap (i.e. should add to n:o of sjukfall)
+
+|script|se.inera.statistics.queue.IntygSender|
+|send intyg;|19790407-9295|G01||||||||||2013-02-24|2013-02-25|100%|ENVE|EnVG|3|
+
+|script|se.inera.statistics.queue.IntygSender|
+|sleep|5000|
+|get result;|ENVE|TVAVE|2012-05-01|2013-10-10|
+
+|query:se.inera.statistics.counterdata.FilteredSjukfall|casesPerMonthNationell|
+|period|kvinnor|män|
+|feb 2013|0|2|
+
+-----
+
+1 more intyg, continuing previous sjukfall with no gap, crossing month boundary (i.e. should add to n:o of sjukfall only for the new month)
+
+|script|se.inera.statistics.queue.IntygSender|
+|send intyg;|19790407-9295|G01||||||||||2013-02-26|2013-03-08|100%|ENVE|EnVG|4|
+
+|script|se.inera.statistics.queue.IntygSender|
+|sleep|5000|
+|get result;|ENVE|TVAVE|2012-05-01|2013-10-10|
+
+|query:se.inera.statistics.counterdata.FilteredSjukfall|casesPerMonthNationell|
+|period|kvinnor|män|
+|feb 2013|0|2|
+|mar 2013|0|1|
+
+-----
+
+1 more intyg, continuing previous sjukfall with 4 day gap (i.e. should not add to n:o of sjukfall for the new month)
+
+|script|se.inera.statistics.queue.IntygSender|
+|send intyg;|19790407-9295|G01||||||||||2013-03-09|2013-03-18|100%|ENVE|EnVG|5|
+
+|script|se.inera.statistics.queue.IntygSender|
+|sleep|5000|
+|get result;|ENVE|TVAVE|2012-05-01|2013-10-10|
+
+|query:se.inera.statistics.counterdata.FilteredSjukfall|casesPerMonthNationell|
+|period|kvinnor|män|
+|feb 2013|0|2|
+|mar 2013|0|1|
+
+-----
+
+1 more intyg, continuing previous sjukfall with no gap (i.e. should not add to n:o of sjukfall for the new month)
+
+|script|se.inera.statistics.queue.IntygSender|
+|send intyg;|19790407-9295|G01||||||||||2013-03-19|2013-03-20|100%|ENVE|EnVG|5|
+
+|script|se.inera.statistics.queue.IntygSender|
+|sleep|5000|
+|get result;|ENVE|TVAVE|2012-05-01|2013-10-10|
+
+|query:se.inera.statistics.counterdata.FilteredSjukfall|casesPerMonthNationell|
+|period|kvinnor|män|
+|feb 2013|0|2|
+|mar 2013|0|1|
+
+-----
