@@ -12,6 +12,7 @@ Verifiera diagnoser på nationell nivå (rader med ingen data (0 män, 0 kvinnor
 |aug 2012|L00-L99|0|1|
 |sep 2012|F00-F99|1|0|
 |sep 2012|L00-L99|0|1|
+|okt 2012|F00-F99|1|0|
 |okt 2012|L00-L99|0|1|
 |nov 2012|L00-L99|0|1|
 |dec 2012|L00-L99|0|1|
@@ -23,16 +24,9 @@ Verifiera diagnoser på nationell nivå (rader med ingen data (0 män, 0 kvinnor
 |feb 2013|M00-M99|1|0|
 |feb 2013|Z00-Z99|1|0|
 |mar 2013|L00-L99|0|1|
-|apr 2013|F00-F99|0|1|
-|apr 2013|G00-G99|1|0|
-|maj 2013|F00-F99|0|1|
+|apr 2013|G00-G99|1|1|
 |maj 2013|G00-G99|2|0|
-|jun 2013|F00-F99|0|1|
 |jun 2013|G00-G99|1|0|
-|jul 2013|F00-F99|0|1|
 |jul 2013|G00-G99|1|0|
 |jul 2013|L00-L99|1|0|
-|aug 2013|F00-F99|0|1|
 |sep 2013|A00-B99|1|0|
-|sep 2013|F00-F99|0|1|
-|okt 2013|F00-F99|0|1|

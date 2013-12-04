@@ -23,5 +23,5 @@
 |Västra Götalands län|0|0|
 |Örebro län|0|0|
 |Östergötlands län|0|0|
-|Okänt län|10|2|
+|Okänt län|10|1|
 
