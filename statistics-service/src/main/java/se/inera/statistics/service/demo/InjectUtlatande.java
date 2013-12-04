@@ -97,7 +97,7 @@ public class InjectUtlatande {
         LOG.info("Inserting " + personNummers.size() + " certificates");
         for (String id : personNummers) {
             JsonNode newPermutation = permutate(builder, id);
-            accept(newPermutation.toString(), newPermutation.path("id").path("extension").textValue());
+            accept(newPermutation.toString(), newPermutation.path("id").path("root").textValue());
         }
         LOG.info("Inserting " + personNummers.size() + " certificates completed");
     }

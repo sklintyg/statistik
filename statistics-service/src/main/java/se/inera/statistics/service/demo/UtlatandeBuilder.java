@@ -57,7 +57,7 @@ public class UtlatandeBuilder {
         patientIdNode.put("extension", patientId);
 
         ObjectNode idNode = (ObjectNode) intyg.path("id");
-        idNode.put("extension", UUID.randomUUID().toString());
+        idNode.put("root", UUID.randomUUID().toString());
 
         intyg.put("validFromDate", FORMATTER.print(start));
         intyg.put("validToDate", FORMATTER.print(end));
@@ -116,7 +116,7 @@ public class UtlatandeBuilder {
         patientIdNode.put("extension", person);
 
         ObjectNode idNode = (ObjectNode) intyg.path("id");
-        idNode.put("extension", UUID.randomUUID().toString());
+        idNode.put("root", UUID.randomUUID().toString());
 
         LocalDate start = new LocalDate("9999-12-31");
         for (LocalDate s : starts) {
