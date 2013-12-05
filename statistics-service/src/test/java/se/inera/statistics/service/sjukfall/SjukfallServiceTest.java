@@ -1,9 +1,5 @@
 package se.inera.statistics.service.sjukfall;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-
 import org.joda.time.LocalDate;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
@@ -13,6 +9,8 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
+
+import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath:process-log-impl-test.xml" })
@@ -113,6 +111,7 @@ public class SjukfallServiceTest extends SjukfallService {
     }
 
 
+
     /**
      * Consecutive intyg with up to 5 days between them should be part of the same sjukfall.
      * How should gaps between intyg be calculated? We only use the date, not time of day.
@@ -132,8 +131,10 @@ public class SjukfallServiceTest extends SjukfallService {
         SjukfallInfo id2 = register("personnummer", "vardgivare", date("2013-01-15"), date("2013-01-23"));
         assertEquals(date("2013-01-01"), id1.getStart());
         assertEquals(date("2013-01-10"), id1.getEnd());
+        assertNull(id1.getPrevEnd());
         assertEquals(date("2013-01-01"), id2.getStart());
         assertEquals(date("2013-01-23"), id2.getEnd());
+        assertEquals(date("2013-01-10"), id2.getPrevEnd());
     }
 
     @Test
@@ -142,8 +143,10 @@ public class SjukfallServiceTest extends SjukfallService {
         SjukfallInfo id2 = register("personnummer", "vardgivare", date("2013-01-16"), date("2013-01-24"));
         assertEquals(date("2013-01-01"), id1.getStart());
         assertEquals(date("2013-01-10"), id1.getEnd());
+        assertNull(id1.getPrevEnd());
         assertEquals(date("2013-01-01"), id2.getStart());
         assertEquals(date("2013-01-24"), id2.getEnd());
+        assertEquals(date("2013-01-10"), id2.getPrevEnd());
     }
 
     @Test
@@ -152,8 +155,10 @@ public class SjukfallServiceTest extends SjukfallService {
         SjukfallInfo id2 = register("personnummer", "vardgivare", date("2013-01-17"), date("2013-01-24"));
         assertEquals(date("2013-01-01"), id1.getStart());
         assertEquals(date("2013-01-10"), id1.getEnd());
+        assertNull(id1.getPrevEnd());
         assertEquals(date("2013-01-17"), id2.getStart());
         assertEquals(date("2013-01-24"), id2.getEnd());
+        assertEquals(date("2013-01-10"), id2.getPrevEnd());
     }
 
 

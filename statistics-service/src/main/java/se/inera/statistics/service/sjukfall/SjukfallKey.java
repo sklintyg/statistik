@@ -31,4 +31,9 @@ public class SjukfallKey {
     public LocalDate getEnd() {
         return end;
     }
+
+    @Override
+    public String toString() {
+        return "SjukfallKey{" + "personId='" + personId + '\'' + ", vardgivareId='" + vardgivareId + '\'' + ", start=" + start + ", end=" + end + '}';
+    }
 }

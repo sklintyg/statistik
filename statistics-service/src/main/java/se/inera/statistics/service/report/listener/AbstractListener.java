@@ -44,7 +44,7 @@ public abstract class AbstractListener<T> {
     abstract boolean accept(T token, String period);
 
     static LocalDate getFirstDateMonth(LocalDate previousEnd, LocalDate start) {
-        if (previousEnd == null) {
+        if (previousEnd == null || previousEnd.isBefore(start.minusDays(6))) {
             return start.withDayOfMonth(1);
         } else {
             return previousEnd.withDayOfMonth(1).plusMonths(1);

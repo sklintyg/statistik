@@ -37,6 +37,9 @@ public class SjukfallService {
                 currentSjukfall = manager.merge(currentSjukfall);
             }
         } else {
+            if (currentSjukfall != null) {
+                prevEnd = currentSjukfall.getEnd();
+            }
             currentSjukfall = new Sjukfall(personId, vardgivareId, start, end);
             manager.persist(currentSjukfall);
         }
