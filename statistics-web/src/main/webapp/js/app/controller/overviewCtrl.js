@@ -18,10 +18,37 @@
          }, 1);
      };
      
+     function paintPerMonthAlternationChart(alteration) {
+        var chartOptions = ControllerCommons.getHighChartConfigBase([], [ { data : [ [ 1 ] ] } ]);
+        chartOptions.chart.renderTo = "alterationChart";
+        chartOptions.chart.type = "pie";
+        chartOptions.chart.height = 230;
+        chartOptions.chart.plotBorderWidth = 0;
+        chartOptions.title = {
+                verticalAlign : 'middle',
+                floating : true,
+                text : alteration + '%',
+                style : {
+                    color: '#FFFFFF',
+                    fontSize: '4em',
+                    fontWeight: 'bold',
+                    textAlign: 'center'
+                }
+            };
+        chartOptions.tooltip = { enabled: false };
+        chartOptions.plotOptions.pie = {
+                colors : [ "#12BC3A" ],
+                animation : false,
+                borderWidth : 0,
+                dataLabels : { enabled : false }
+            };
+        new Highcharts.Chart(chartOptions);
+     }
+     
      var populatePageWithData = function(result) {
         $scope.casesPerMonthMaleProportion = result.casesPerMonth.proportionMale;
         $scope.casesPerMonthFemaleProportion = result.casesPerMonth.proportionFemale;
-        $scope.casesPerMonthAlteration = result.casesPerMonth.alteration;
+        paintPerMonthAlternationChart(result.casesPerMonth.alteration);
         
         function paintDonutChart(containerId, chartData) {
             var series = [{
