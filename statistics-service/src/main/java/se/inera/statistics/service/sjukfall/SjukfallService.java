@@ -30,21 +30,21 @@ public class SjukfallService {
     public SjukfallInfo register(String personId, String vardgivareId, LocalDate start, LocalDate end) {
         Sjukfall currentSjukfall = getCurrentSjukfall(personId, vardgivareId);
         LocalDate prevEnd = null;
-        if (currentSjukfall != null && !currentSjukfall.getEnd().plusDays(MAX_DAYS_BETWEEN_CERTIFICATES + 1).isBefore(start)) {
+        if (existsActiveSjukfall(start, currentSjukfall)) {
             prevEnd = currentSjukfall.getEnd();
             if (end.isAfter(prevEnd)) {
                 currentSjukfall.setEnd(end);
                 currentSjukfall = manager.merge(currentSjukfall);
             }
         } else {
-            if (currentSjukfall != null) {
-                prevEnd = currentSjukfall.getEnd();
-            }
             currentSjukfall = new Sjukfall(personId, vardgivareId, start, end);
             manager.persist(currentSjukfall);
         }
         checkExpiry(start);
         return new SjukfallInfo(currentSjukfall.getId(), currentSjukfall.getStart(), currentSjukfall.getEnd(), prevEnd);
+    }
+    private boolean existsActiveSjukfall(LocalDate start, Sjukfall existingSjukfall) {
+        return existingSjukfall != null && !existingSjukfall.getEnd().plusDays(MAX_DAYS_BETWEEN_CERTIFICATES + 1).isBefore(start);
     }
 
     private void checkExpiry(LocalDate start) {
