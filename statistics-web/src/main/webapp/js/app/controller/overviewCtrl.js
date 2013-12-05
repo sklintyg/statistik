@@ -22,7 +22,8 @@
         var chartOptions = ControllerCommons.getHighChartConfigBase([], [ { data : [ [ 1 ] ] } ]);
         chartOptions.chart.renderTo = "alterationChart";
         chartOptions.chart.type = "pie";
-        chartOptions.chart.height = 230;
+        chartOptions.chart.height = 210;
+        chartOptions.chart.marginTop = 20;
         chartOptions.chart.plotBorderWidth = 0;
         chartOptions.title = {
                 verticalAlign : 'middle',
@@ -30,7 +31,7 @@
                 text : alteration + '%',
                 style : {
                     color: '#FFFFFF',
-                    fontSize: '4em',
+                    fontSize: '2em',
                     fontWeight: 'bold',
                     textAlign: 'center'
                 }
