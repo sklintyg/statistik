@@ -50,4 +50,9 @@ public class SjukfallInfo {
     public int getLangd() {
         return Days.daysBetween(start, end).getDays() + 1;
     }
+
+    @Override
+    public String toString() {
+        return "SjukfallInfo{" + "id='" + id + '\'' + ", start=" + start + ", end=" + end + ", prevEnd=" + prevEnd + '}';
+    }
 }
