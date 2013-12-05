@@ -13,7 +13,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 public class DocumentHelperTest {
 
     private JsonNode document = JSONParser.parse(JSONSource.readTemplateAsString());
-
+    // CHECKSTYLE:OFF MagicNumber
     @Test
     public void get_enhet() {
         assertEquals("enhetId", DocumentHelper.getEnhetId(document));
@@ -70,4 +70,5 @@ public class DocumentHelperTest {
 
         assertEquals("2011-02-20", date);
     }
+    // CHECKSTYLE:ON MagicNumber
 }

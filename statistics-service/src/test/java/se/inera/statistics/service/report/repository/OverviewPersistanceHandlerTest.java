@@ -1,5 +1,8 @@
 package se.inera.statistics.service.report.repository;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.joda.time.LocalDate;
 import org.junit.Assert;
 import org.junit.Before;
@@ -12,15 +15,17 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.transaction.annotation.Transactional;
 
-import se.inera.statistics.service.report.api.*;
+import se.inera.statistics.service.report.api.AgeGroups;
+import se.inera.statistics.service.report.api.CasesPerCounty;
+import se.inera.statistics.service.report.api.CasesPerMonth;
+import se.inera.statistics.service.report.api.DegreeOfSickLeave;
+import se.inera.statistics.service.report.api.DiagnosisGroups;
+import se.inera.statistics.service.report.api.SjukfallslangdGrupp;
 import se.inera.statistics.service.report.model.OverviewChartRowExtended;
 import se.inera.statistics.service.report.model.OverviewResponse;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.Sex;
 import se.inera.statistics.service.report.util.Verksamhet;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath:process-log-impl-test.xml" })
@@ -77,10 +82,10 @@ public class OverviewPersistanceHandlerTest extends OverviewPersistenceHandler {
         sjukskrivningsgrad.count("id1", "2013-06", "25", Verksamhet.VARDGIVARE, Sex.Female);
         sjukskrivningsgrad.count("id1", "2013-06", "100", Verksamhet.VARDGIVARE, Sex.Female);
 
-        sjukfallslangdGrupp.count("2013-09", "id1","<15 dagar", RollingLength.QUARTER, Verksamhet.VARDGIVARE, Sex.Female);
-        sjukfallslangdGrupp.count("2013-09", "id1","<15 dagar", RollingLength.QUARTER, Verksamhet.VARDGIVARE, Sex.Male);
-        sjukfallslangdGrupp.count("2013-09", "id3","<15 dagar", RollingLength.QUARTER, Verksamhet.VARDGIVARE, Sex.Female);
-        sjukfallslangdGrupp.count("2013-09", "id1",">365 dagar", RollingLength.QUARTER, Verksamhet.VARDGIVARE, Sex.Male);
+        sjukfallslangdGrupp.count("2013-09", "id1", "<15 dagar", RollingLength.QUARTER, Verksamhet.VARDGIVARE, Sex.Female);
+        sjukfallslangdGrupp.count("2013-09", "id1", "<15 dagar", RollingLength.QUARTER, Verksamhet.VARDGIVARE, Sex.Male);
+        sjukfallslangdGrupp.count("2013-09", "id3", "<15 dagar", RollingLength.QUARTER, Verksamhet.VARDGIVARE, Sex.Female);
+        sjukfallslangdGrupp.count("2013-09", "id1", ">365 dagar", RollingLength.QUARTER, Verksamhet.VARDGIVARE, Sex.Male);
 
         casesPerCounty.count("2013-09", "id1", "14", RollingLength.QUARTER, Sex.Female);
         casesPerCounty.count("2013-09", "id1", "14", RollingLength.QUARTER, Sex.Male);
@@ -99,11 +104,13 @@ public class OverviewPersistanceHandlerTest extends OverviewPersistenceHandler {
         nationellUpdater.updateSjukskrivningsgrad();
     }
 
+    // CHECKSTYLE:OFF MagicNumber
+
     @Test
     public void getOverviewTest() {
         updateNational(0);
-        LocalDate from = new LocalDate(2013, 7, 1);
-        LocalDate to = new LocalDate(2013, 9, 1);
+        final LocalDate from = new LocalDate(2013, 7, 1);
+        final LocalDate to = new LocalDate(2013, 9, 1);
         Range range = new Range(from, to);
 
         OverviewResponse result = this.getOverview(range);
@@ -136,8 +143,8 @@ public class OverviewPersistanceHandlerTest extends OverviewPersistenceHandler {
     @Test
     public void getOverviewLowCutoffTest() {
         updateNational(2);
-        LocalDate from = new LocalDate(2013, 7, 1);
-        LocalDate to = new LocalDate(2013, 9, 1);
+        final LocalDate from = new LocalDate(2013, 7, 1);
+        final LocalDate to = new LocalDate(2013, 9, 1);
         Range range = new Range(from, to);
 
         OverviewResponse result = this.getOverview(range);
@@ -182,4 +189,7 @@ public class OverviewPersistanceHandlerTest extends OverviewPersistenceHandler {
         Assert.assertEquals("oöo", rows.get(2).getName());
         Assert.assertEquals("Åao", rows.get(3).getName());
     }
+
+    // CHECKSTYLE:On MagicNumber
+
 }

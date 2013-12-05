@@ -7,9 +7,7 @@ import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 import org.joda.time.LocalDate;
@@ -21,8 +19,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
-import org.springframework.core.io.InputStreamResource;
-import org.springframework.core.io.Resource;
 
 import se.inera.statistics.service.demo.UtlatandeBuilder;
 import se.inera.statistics.service.report.api.AgeGroups;
@@ -51,18 +47,19 @@ public class AldersgruppListenerTest {
     @InjectMocks
     private AldersGruppListener listener = new AldersGruppListener();
 
-    ArgumentCaptor<String> captor = ArgumentCaptor.forClass(String.class);
-    
-    @Before 
-    public void setup() throws UnsupportedEncodingException, IOException {
+    private ArgumentCaptor<String> captor = ArgumentCaptor.forClass(String.class);
+
+    @Before
+    public void setup() throws IOException {
         Mockito.when(util.getGroupIdForCode(Mockito.anyString())).thenReturn("A10");
         Mockito.when(util.getSubGroupForCode(Mockito.anyString())).thenReturn(new DiagnosisGroup("A10-A11", "Test group"));
-        
+
         doNothing().when(agegroups).count(captor.capture(), eq("enhetId"), anyString(), eq(RollingLength.YEAR), any(Verksamhet.class), any(Sex.class));
 
         utlatande = utlatandeBuilder.build("patientId", new LocalDate("2011-01-05"), new LocalDate("2011-03-27"), "enhetId", "A00", 0);
     }
-    
+
+    // CHECKSTYLE:OFF MagicNumber
     @Test
     public void threeMonthsNoExistingSjukfall() {
         SjukfallInfo sjukfallInfo = new SjukfallInfo("sjukfallid", null, null, null);
@@ -98,6 +95,7 @@ public class AldersgruppListenerTest {
             assertEquals(periodId, allValues.get(i));
         }
     }
+    // CHECKSTYLE:ON MagicNumber
 
     @Test
     public void threeMonthsWithExistingSjukfall() {
@@ -114,7 +112,6 @@ public class AldersgruppListenerTest {
 
     @Test
     public void threeMonthsWithExistingFullyOverlappingSjukfall() {
-        
         SjukfallInfo sjukfallInfo = new SjukfallInfo("sjukfallid", new LocalDate("2010-11-01"), new LocalDate("2010-11-01"), new LocalDate("2011-03-20"));
         listener.accept(sjukfallInfo, utlatande, null);
         List<String> allValues = captor.getAllValues();

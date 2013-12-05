@@ -36,6 +36,7 @@ public class LogConsumerImplTest {
     @InjectMocks
     private LogConsumerImpl consumer = new LogConsumerImpl();
 
+    // CHECKSTYLE:OFF MagicNumber
     @Test
     public void batchSizeIsUsed() {
         consumer.processBatch();
@@ -82,4 +83,5 @@ public class LogConsumerImplTest {
         verify(processor, Mockito.never()).accept(any(JsonNode.class), any(JsonNode.class), Mockito.anyLong());
         verify(hsa, Mockito.never()).decorate(any(JsonNode.class), anyString());
     }
+    // CHECKSTYLE:ON MagicNumber
 }
