@@ -12,10 +12,11 @@ import se.inera.statistics.service.report.model.Range;
 @ContextConfiguration(locations = { "classpath:process-log-impl-test.xml" })
 @Transactional
 @DirtiesContext
-public class SjukfallPerLanPersistenceTest extends SjukfallPerLanPersistenceHandler{
+public class SjukfallPerLanPersistenceTest extends SjukfallPerLanPersistenceHandler {
 
     @Test
     public void getIt() {
-        this.getStatistics(new Range(12));
+        final Range range = new Range(12);
+        this.getStatistics(range);
     }
 }

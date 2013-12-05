@@ -12,27 +12,31 @@ public class ReportUtilTest {
 
     @Test
     public void testRangeWithinYear() {
-        Range testRange = new Range(new LocalDate(2013, 5, 1), new LocalDate(2013, 6, 1));
+        final Range testRange = new Range(new LocalDate(2013, 5, 1), new LocalDate(2013, 6, 1));
 
         Range result = ReportUtil.getPreviousPeriod(testRange);
 
+        // CHECKSTYLE:OFF MagicNumber
         LOG.info(result.getFrom() + " -- " + result.getTo());
         Assert.assertEquals(2013, result.getFrom().getYear());
         Assert.assertEquals(3, result.getFrom().getMonthOfYear());
         Assert.assertEquals(2013, result.getTo().getYear());
         Assert.assertEquals(4, result.getTo().getMonthOfYear());
+        // CHECKSTYLE:ON MagicNumber
     }
 
     @Test
     public void testRangeBiggerThanOneYear() {
-        Range testRange = new Range(new LocalDate(2012, 1, 1), new LocalDate(2013, 6, 1));
+        final Range testRange = new Range(new LocalDate(2012, 1, 1), new LocalDate(2013, 6, 1));
 
         Range result = ReportUtil.getPreviousPeriod(testRange);
 
+        // CHECKSTYLE:OFF MagicNumber
         LOG.info(result.getFrom() + " -- " + result.getTo());
         Assert.assertEquals(2010, result.getFrom().getYear());
         Assert.assertEquals(7, result.getFrom().getMonthOfYear());
         Assert.assertEquals(2011, result.getTo().getYear());
         Assert.assertEquals(12, result.getTo().getMonthOfYear());
+        // CHECKSTYLE:ON MagicNumber
     }
 }

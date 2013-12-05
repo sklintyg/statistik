@@ -29,7 +29,7 @@ public class RemoteSender {
 
     @Autowired
     private Queue destination;
-    
+
     @PostConstruct
     public void setup() {
         this.jmsTemplate = new JmsTemplate(connectionFactory);
@@ -50,9 +50,9 @@ public class RemoteSender {
             }
         });
     }
-    
+
     public static void main(String[] args) throws InterruptedException {
-        try(ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("classpath:send-to-mq-context.xml")) {
+        try (ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("classpath:send-to-mq-context.xml")) {
             RemoteSender bean = context.getBean("sender", RemoteSender.class);
             bean.connectionFactory = (ConnectionFactory) context.getBean("jmsFactory");
             bean.destination = (Queue) context.getBean("queue");

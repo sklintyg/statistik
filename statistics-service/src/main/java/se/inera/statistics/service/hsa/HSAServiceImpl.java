@@ -39,7 +39,7 @@ public class HSAServiceImpl implements HSAService {
             GetStatisticsHsaUnitResponseType unit = getStatisticsHsaUnit(key.getEnhetId());
             GetStatisticsCareGiverResponseType caregiver = getStatisticsCareGiver(key.getVardgivareId());
             GetStatisticsPersonResponseType personal = getStatisticsPerson(key.getLakareId());
-    
+
             Builder root = new Builder();
             if (unit != null) {
                 root.put("enhet", createUnit(unit.getStatisticsUnit()));
@@ -72,7 +72,7 @@ public class HSAServiceImpl implements HSAService {
 
     private GetStatisticsHsaUnitResponseType getStatisticsHsaUnit(String key) {
         GetStatisticsHsaUnitResponseType unit = service.getStatisticsHsaUnit(key);
-        if (unit == null) { 
+        if (unit == null) {
             LOG.warn("No unit '{}' found", key);
         }
         return unit;

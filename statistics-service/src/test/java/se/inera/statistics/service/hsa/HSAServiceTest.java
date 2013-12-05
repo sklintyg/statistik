@@ -16,7 +16,7 @@ public class HSAServiceTest {
     @Test
     public void documentExists() throws IOException {
         JsonNode hsaInfo = hsaService.getHSAInfo(null);
-        
+
         assertNotNull(hsaInfo);
         assertEquals("Enhetens namn", hsaInfo.path("enhetsnamn").textValue());
     }

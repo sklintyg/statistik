@@ -69,21 +69,22 @@ public class VerksamhetOverviewPersistanceHandlerTest extends VerksamhetOverview
         sjukskrivningsgrad.count("id1", "2013-06", "25", Verksamhet.ENHET, Sex.Female);
         sjukskrivningsgrad.count("id1", "2013-06", "100", Verksamhet.ENHET, Sex.Female);
 
-        sjukfallslangdGrupp.count("2013-09", "id1","<15 dagar", RollingLength.QUARTER, Verksamhet.ENHET, Sex.Female);
-        sjukfallslangdGrupp.count("2013-09", "id1","<15 dagar", RollingLength.QUARTER, Verksamhet.ENHET, Sex.Male);
-        sjukfallslangdGrupp.count("2013-09", "id3","<15 dagar", RollingLength.QUARTER, Verksamhet.ENHET, Sex.Female);
-        sjukfallslangdGrupp.count("2013-09", "id1",">365 dagar", RollingLength.QUARTER, Verksamhet.ENHET, Sex.Male);
+        sjukfallslangdGrupp.count("2013-09", "id1", "<15 dagar", RollingLength.QUARTER, Verksamhet.ENHET, Sex.Female);
+        sjukfallslangdGrupp.count("2013-09", "id1", "<15 dagar", RollingLength.QUARTER, Verksamhet.ENHET, Sex.Male);
+        sjukfallslangdGrupp.count("2013-09", "id3", "<15 dagar", RollingLength.QUARTER, Verksamhet.ENHET, Sex.Female);
+        sjukfallslangdGrupp.count("2013-09", "id1", ">365 dagar", RollingLength.QUARTER, Verksamhet.ENHET, Sex.Male);
 
     }
 
     @Test
     public void getOverviewTest() {
-        LocalDate from = new LocalDate(2013, 7, 1);
-        LocalDate to = new LocalDate(2013, 9, 1);
+        final LocalDate from = new LocalDate(2013, 7, 1);
+        final LocalDate to = new LocalDate(2013, 9, 1);
         Range range = new Range(from, to);
 
         VerksamhetOverviewResponse result = this.getOverview("id1", range);
 
+        // CHECKSTYLE:OFF MagicNumber
         Assert.assertEquals(2, result.getDiagnosisGroups().get(0).getQuantity());
         Assert.assertEquals(100, result.getCasesPerMonthSexProportionPreviousPeriod().getFemaleProportion());
         Assert.assertEquals(0, result.getCasesPerMonthSexProportionPreviousPeriod().getMaleProportion());
@@ -93,7 +94,7 @@ public class VerksamhetOverviewPersistanceHandlerTest extends VerksamhetOverview
         Assert.assertEquals(3, result.getAgeGroups().size());
         Assert.assertEquals(2, result.getAgeGroups().get(0).getQuantity());
         Assert.assertEquals(100, result.getAgeGroups().get(0).getAlternation());
-        
+
         Assert.assertEquals(1, result.getDegreeOfSickLeaveGroups().get(0).getQuantity());
         Assert.assertEquals(2, result.getDegreeOfSickLeaveGroups().get(3).getQuantity());
         Assert.assertEquals(0, result.getDegreeOfSickLeaveGroups().get(0).getAlternation());
@@ -104,5 +105,6 @@ public class VerksamhetOverviewPersistanceHandlerTest extends VerksamhetOverview
 
         Assert.assertEquals(1, result.getLongSickLeavesTotal());
         Assert.assertEquals(0, result.getLongSickLeavesAlternation());
+        // CHECKSTYLE:ON MagicNumber
     }
 }

@@ -43,7 +43,7 @@ public class DistributingListenerIntegrationTest {
 
     @Test
     public void testCount1Intyg() {
-        LocalDate from = new LocalDate("2013-03-01"),to = new LocalDate("2013-03-10");
+        LocalDate from = new LocalDate("2013-03-01"), to = new LocalDate("2013-03-10");
         SjukfallInfo sjukfallInfo = new SjukfallInfo(personId, from, to, null);
         JsonNode hsa = null;
         JsonNode utlatande = createUtlatande(from, to);
@@ -56,7 +56,7 @@ public class DistributingListenerIntegrationTest {
 
     @Test
     public void testCountMonthSpanningIntyg() {
-        LocalDate from = new LocalDate("2013-03-01"),to = new LocalDate("2013-04-10");
+        LocalDate from = new LocalDate("2013-03-01"), to = new LocalDate("2013-04-10");
         SjukfallInfo sjukfallInfo = new SjukfallInfo(personId, from, to, null);
         JsonNode hsa = null;
         JsonNode utlatande = createUtlatande(from, to);
@@ -71,7 +71,7 @@ public class DistributingListenerIntegrationTest {
 
     @Test
     public void testCountMonthSpanningIntygWithPreviousEndDateInFirstMonth() {
-        LocalDate from = new LocalDate("2013-03-01"),to = new LocalDate("2013-04-10");
+        LocalDate from = new LocalDate("2013-03-01"), to = new LocalDate("2013-04-10");
         SjukfallInfo sjukfallInfo = new SjukfallInfo(personId, from, to, new LocalDate("2013-03-03"));
         JsonNode hsa = null;
         JsonNode utlatande = createUtlatande(from, to);
@@ -86,7 +86,7 @@ public class DistributingListenerIntegrationTest {
 
     @Test
     public void testCountMonthSpanningIntygWithPreviousEndDateInSecondMonth() {
-        LocalDate from = new LocalDate("2013-03-01"),to = new LocalDate("2013-04-10");
+        LocalDate from = new LocalDate("2013-03-01"), to = new LocalDate("2013-04-10");
         SjukfallInfo sjukfallInfo = new SjukfallInfo(personId, from, to, new LocalDate("2013-04-03"));
         JsonNode hsa = null;
         JsonNode utlatande = createUtlatande(from, to);
@@ -125,7 +125,7 @@ public class DistributingListenerIntegrationTest {
 
     private JsonNode createUtlatande(LocalDate from, LocalDate to) {
         UtlatandeBuilder builder = new UtlatandeBuilder();
-        JsonNode utlatande = builder.build(personId, from, to, "v1", "A00", 50);
+        final JsonNode utlatande = builder.build(personId, from, to, "v1", "A00", 50);
         return DocumentHelper.anonymize(utlatande);
     }
 }

@@ -122,7 +122,7 @@ public class DiagnosisGroupsUtil {
         return subGroups;
     }
 
-    private static String getChapterNameForIcd10Code(String icd10Code, Collection<String> groupNames) throws Icd10ChapterNotFoundException{
+    private static String getChapterNameForIcd10Code(String icd10Code, Collection<String> groupNames) throws Icd10ChapterNotFoundException {
         List<DiagnosisGroup> diagnosisGroups = new ArrayList<>();
         for (String groupName : groupNames) {
             diagnosisGroups.add(new DiagnosisGroup(groupName, ""));
@@ -151,7 +151,7 @@ public class DiagnosisGroupsUtil {
         BufferedReader br;
         try {
             br = new BufferedReader(new InputStreamReader(icd10ChaptersAnsiFile.getInputStream(), "UTF-8"));
-            for (String line = br.readLine(); line != null; line = br.readLine()){
+            for (String line = br.readLine(); line != null; line = br.readLine()) {
                 DiagnosisGroup group = getDiagnosisGroupFromIcd10AnsiFileLine(line);
                 if (group != null) {
                     String chapterNameForIcd10Code = getChapterNameForIcd10Code(group.getId(), groupNames);

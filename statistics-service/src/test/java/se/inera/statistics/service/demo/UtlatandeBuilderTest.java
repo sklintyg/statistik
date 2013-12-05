@@ -17,7 +17,7 @@ public class UtlatandeBuilderTest {
     public void permutateIntyg() {
         UtlatandeBuilder builder = new UtlatandeBuilder();
 
-        JsonNode result = builder.build("19121212-1212", new LocalDate("2013-01-01"), new LocalDate("2013-01-21"), "vardenhet", "diagnos", 50);
+        final JsonNode result = builder.build("19121212-1212", new LocalDate("2013-01-01"), new LocalDate("2013-01-21"), "vardenhet", "diagnos", 50);
 
         assertEquals("19121212-1212", result.path("patient").path("id").path("extension").asText());
         assertEquals("diagnos", DocumentHelper.getDiagnos(result));

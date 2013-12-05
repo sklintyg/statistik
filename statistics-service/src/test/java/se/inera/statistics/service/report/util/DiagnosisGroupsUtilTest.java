@@ -5,7 +5,6 @@ import static org.mockito.Mockito.mock;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 import org.junit.Before;
@@ -29,7 +28,7 @@ public class DiagnosisGroupsUtilTest {
     private DiagnosisGroupsUtil util = new DiagnosisGroupsUtil();
 
     @Before
-    public void setUp() throws UnsupportedEncodingException, IOException{
+    public void setUp() throws IOException {
         Mockito.when(icd10ChaptersAnsiFile.getInputStream()).thenReturn(new ByteArrayInputStream("R10-R19Symtom och sjukdomstecken från matsmältningsorganen och buken\nT51-T65Toxisk effekt av substanser med i huvudsak icke-medicinsk användning\nC15-C26Maligna tumörer i matsmältningsorganen\nC30-C39Maligna tumörer i andningsorganen och brösthålans organ".getBytes("UTF-8")));
     }
 

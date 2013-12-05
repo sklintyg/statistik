@@ -1,5 +1,10 @@
 package se.inera.statistics.service.sjukfall;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+
 import org.joda.time.LocalDate;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
@@ -9,8 +14,6 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
-
-import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath:process-log-impl-test.xml" })
@@ -24,7 +27,9 @@ public class SjukfallServiceTest extends SjukfallService {
     public void registeringPeriodReturnsSjukfallsInfo() {
         SjukfallInfo info = register("personnummer", "vardgivare", date("2013-01-01"), date("2013-01-25"));
         assertNotNull(info);
+        // CHECKSTYLE:OFF MagicNumber
         assertEquals(25, info.getLangd());
+        // CHECKSTYLE:ON MagicNumber
     }
 
     @Test

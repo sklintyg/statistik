@@ -23,7 +23,7 @@ public class QueueSender {
 
     @Autowired
     private Queue destination;
-    
+
     @PostConstruct
     public void init() {
         this.jmsTemplate = new JmsTemplate(connectionFactory);

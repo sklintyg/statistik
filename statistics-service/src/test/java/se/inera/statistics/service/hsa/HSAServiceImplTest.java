@@ -37,14 +37,12 @@ public class HSAServiceImplTest {
     public void hsUnitWithMissingGeography() throws Exception {
         GetStatisticsHsaUnitResponseType response = getHsaUnitResponse("GetStatisticsHsaUnit-small.xml");
         when(wsCalls.getStatisticsHsaUnit("enhetId")).thenReturn(response);
-        
-        
+
         HSAKey key = new HSAKey("vardgivareId", "enhetId", "lakareId");
         JsonNode info = serviceImpl.getHSAInfo(key);
         assertNotNull(info);
         assertEquals("IFV1239877878-103H", info.get("enhet").get("id").textValue());
         assertFalse(info.get("enhet").has("geografi"));
-        
     }
 
     @Test
@@ -56,7 +54,6 @@ public class HSAServiceImplTest {
         assertFalse(info.has("huvudenhet"));
         assertFalse(info.has("vardgivare"));
         assertFalse(info.has("personal"));
-        
     }
 
     @Test
@@ -65,7 +62,6 @@ public class HSAServiceImplTest {
         when(wsCalls.getStatisticsHsaUnit("enhetId")).thenThrow(new IllegalStateException("This WS generated and exception"));
         JsonNode hsaInfo = serviceImpl.getHSAInfo(key);
         assertNull(hsaInfo);
-        
     }
 
     private GetStatisticsHsaUnitResponseType getHsaUnitResponse(String name) throws JAXBException {

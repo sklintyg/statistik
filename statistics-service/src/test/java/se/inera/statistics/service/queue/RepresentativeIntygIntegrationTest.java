@@ -1,6 +1,16 @@
 package se.inera.statistics.service.queue;
 
-import com.fasterxml.jackson.databind.JsonNode;
+import static org.junit.Assert.assertEquals;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
 import org.joda.time.LocalDate;
 import org.junit.Before;
 import org.junit.Test;
@@ -12,9 +22,11 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
+
 import se.inera.statistics.service.demo.UtlatandeBuilder;
 import se.inera.statistics.service.helper.QueueHelper;
 import se.inera.statistics.service.helper.QueueSender;
+import se.inera.statistics.service.helper.TestData;
 import se.inera.statistics.service.processlog.LogConsumer;
 import se.inera.statistics.service.report.api.AgeGroups;
 import se.inera.statistics.service.report.api.CasesPerCounty;
@@ -30,20 +42,9 @@ import se.inera.statistics.service.report.listener.SjukfallPerDiagnosgruppListen
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.SimpleDualSexDataRow;
 import se.inera.statistics.service.report.model.SimpleDualSexResponse;
-import se.inera.statistics.service.report.util.Verksamhet;
 import se.inera.statistics.service.scheduler.NationellUpdaterJob;
-import se.inera.statistics.service.helper.TestData;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
-import static org.junit.Assert.assertEquals;
+import com.fasterxml.jackson.databind.JsonNode;
 
 // CHECKSTYLE:OFF MagicNumber
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -236,7 +237,7 @@ public class RepresentativeIntygIntegrationTest {
     private void printSimpleDualSexResponseTable(JsonNode testResult, String tableName) {
         Iterator<JsonNode> rows = testResult.findPath("rows").iterator();
         StringBuilder sb = new StringBuilder(tableName + "\nmonth, female, male\n");
-        while(rows.hasNext()) {
+        while (rows.hasNext()) {
             JsonNode row = rows.next().path("SimpleDualSexDataRow");
             sb.append(row.path("name").textValue());
             sb.append(',');
@@ -299,27 +300,27 @@ public class RepresentativeIntygIntegrationTest {
     }
 
     private String getDiagnosis(int i) {
-        String[] diagnoser = { "A00" };
+        String[] diagnoser = {"A00"};
         return diagnoser[i];
     }
 
     private LocalDate getStart(int i) {
-        LocalDate[] dates = { new LocalDate("2012-02-01"), new LocalDate("2011-01-11") };
+        LocalDate[] dates = {new LocalDate("2012-02-01"), new LocalDate("2011-01-11")};
         return dates[i];
     }
 
     private LocalDate getStop(int i) {
-        LocalDate[] dates = { new LocalDate("2012-01-22"), new LocalDate("2011-02-21"), new LocalDate("2011-03-11"), new LocalDate("2013-11-17") };
+        LocalDate[] dates = {new LocalDate("2012-01-22"), new LocalDate("2011-02-21"), new LocalDate("2011-03-11"), new LocalDate("2013-11-17")};
         return dates[i];
     }
 
     private String getVardenhet(int i) {
-        String[] enheter = { "ENVE", "TVAVE" };
+        String[] enheter = {"ENVE", "TVAVE"};
         return enheter[i];
     }
 
     private String getVardgivare(int i) {
-        String[] givare = { "Vardgivare" };
+        String[] givare = {"Vardgivare"};
         return givare[i];
     }
 
