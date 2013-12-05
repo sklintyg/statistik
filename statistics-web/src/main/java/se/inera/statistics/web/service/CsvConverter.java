@@ -10,7 +10,7 @@ import se.inera.statistics.web.model.TableData;
 import se.inera.statistics.web.model.TableHeader;
 
 public class CsvConverter {
-    
+
     private final StringBuilder csv = new StringBuilder();
 
     CsvConverter(TableData tableData) {
