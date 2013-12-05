@@ -130,6 +130,12 @@
         $scope.printDataTables = printTables;
     };
     
+    function updateChartsYAxisMaxValue() {
+        var yMax = Math.max(that.chart1.yAxis[0].dataMax, that.chart2.yAxis[0].dataMax);
+        that.chart1.yAxis[0].setExtremes(0,yMax);
+        that.chart2.yAxis[0].setExtremes(0,yMax);
+    }
+    
     var updateChart = function(ajaxResult) {
         var chartCategories = ajaxResult.femaleChart.categories;
 
@@ -140,10 +146,8 @@
         var chartSeriesMale = ajaxResult.maleChart.series;
         ControllerCommons.setupSeriesForDisplayType($routeParams.printBw, chartSeriesMale, "area");
         that.chart2 = that.paintChart('chart2', 'Antal män', 21, chartCategories, chartSeriesMale, 0);
-        
-        var yMax = Math.max(that.chart1.yAxis[0].dataMax, that.chart2.yAxis[0].dataMax);
-        that.chart1.yAxis[0].setExtremes(0,yMax);
-        that.chart2.yAxis[0].setExtremes(0,yMax);
+
+        updateChartsYAxisMaxValue();
         
         $scope.series = chartSeriesMale;
     };
@@ -200,6 +204,7 @@
             s1.show();
             s2.show();
         }
+        updateChartsYAxisMaxValue();
     };
 
     $scope.popoverText = config.tooltipHelpText;
