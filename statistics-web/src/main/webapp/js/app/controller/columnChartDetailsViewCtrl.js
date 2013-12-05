@@ -130,7 +130,7 @@
     $scope.popoverText = config.pageHelpText;
 
     $scope.exportChart = function() {
-        ControllerCommons.exportChart(chart);
+        ControllerCommons.exportChart(chart, $scope.pageName);
     };
     
     $scope.print = function(bwPrint) {

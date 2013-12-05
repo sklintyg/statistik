@@ -83,7 +83,7 @@
     };
     
     $scope.exportChart = function() {
-        ControllerCommons.exportChart(chart);
+        ControllerCommons.exportChart(chart, $scope.pageName);
     };
 
     if ($routeParams.verksamhetId){

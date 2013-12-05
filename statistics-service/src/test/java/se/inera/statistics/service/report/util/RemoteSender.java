@@ -37,7 +37,7 @@ public class RemoteSender {
 
     public void send() {
         UtlatandeBuilder builder = new UtlatandeBuilder();
-        simpleSend(builder.build("19121212-1212", new LocalDate("2013-09-20"), new LocalDate("2013-10-11"), "TST5565594230-106J", "IFV1239877878-103H", "IFV1239877878-0001", "A01", 0).toString(), UUID.randomUUID().toString());
+        simpleSend(builder.build("20121212-1212", new LocalDate("2013-10-20"), new LocalDate("2013-11-11"), "TST5565594230-106J", "IFV1239877878-103H", "IFV1239877878-0001", "D01", 0).toString(), UUID.randomUUID().toString());
     }
 
     private void simpleSend(final String intyg, final String correlationId) {
