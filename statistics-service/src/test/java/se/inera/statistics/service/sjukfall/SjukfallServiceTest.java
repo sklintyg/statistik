@@ -158,7 +158,7 @@ public class SjukfallServiceTest extends SjukfallService {
         assertNull(id1.getPrevEnd());
         assertEquals(date("2013-01-17"), id2.getStart());
         assertEquals(date("2013-01-24"), id2.getEnd());
-        assertEquals(date("2013-01-10"), id2.getPrevEnd());
+        assertNull(id2.getPrevEnd());
     }
 
 
