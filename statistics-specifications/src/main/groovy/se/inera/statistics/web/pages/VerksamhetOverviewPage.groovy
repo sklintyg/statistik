@@ -13,7 +13,7 @@ class VerksamhetOverviewPage extends Page {
         casesPerMonthMaleProportionLabel { $("#overview-distribution-male-lbl") }
 
         casesPerMonthAlterationLink { $("#casesPerMonthAlterationLink") }
-        casesPerMonthAlterationLabel { $("#casesPerMonthAlterationLabel") }
+        casesPerMonthAlterationLabel { $("#alterationChart text.highcharts-title") }
 
         diagnosisGroupsHeaderLink { $("#diagnosisGroupsHeaderLink") }
         ageGroupsHeaderLink { $("#ageGroupsHeaderLink") }

@@ -21,7 +21,34 @@
     };
      
     var populatePageWithData = function(result) {
-        $scope.totalCasesPerMonth = result.casesPerMonth.totalCases;
+        
+        function paintPerMonthAlternationChart(alteration) {
+            var chartOptions = ControllerCommons.getHighChartConfigBase([], [ { data : [ [ 1 ] ] } ]);
+            chartOptions.chart.renderTo = "alterationChart";
+            chartOptions.chart.type = "pie";
+            chartOptions.chart.height = 210;
+            chartOptions.chart.marginTop = 20;
+            chartOptions.chart.plotBorderWidth = 0;
+            chartOptions.title = {
+                    verticalAlign : 'middle',
+                    floating : true,
+                    text : alteration,
+                    style : {
+                        color: '#FFFFFF',
+                        fontSize: '2em',
+                        fontWeight: 'bold',
+                        textAlign: 'center'
+                    }
+                };
+            chartOptions.tooltip = { enabled: false };
+            chartOptions.plotOptions.pie = {
+                    colors : [ "#12BC3A" ],
+                    animation : false,
+                    borderWidth : 0,
+                    dataLabels : { enabled : false }
+                };
+            new Highcharts.Chart(chartOptions);
+         }
 
         function paintSexProportionChart(containerId, male, female, period) {
             var series = [{
@@ -83,6 +110,8 @@
             new Highcharts.Chart(chartOptions);
         }
 
+        paintPerMonthAlternationChart(result.casesPerMonth.totalCases);
+        
         paintSexProportionChart("sexProportionChartOld", result.casesPerMonth.amountMaleOld, result.casesPerMonth.amountFemaleOld, result.casesPerMonth.oldPeriod);
         paintSexProportionChart("sexProportionChartNew", result.casesPerMonth.amountMaleNew, result.casesPerMonth.amountFemaleNew, result.casesPerMonth.newPeriod);
         
