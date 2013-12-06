@@ -15,4 +15,6 @@ public interface SjukfallslangdGrupp {
     SickLeaveLengthResponse getHistoricalStatistics(String hsaId, LocalDate when, RollingLength rollingLength);
     void count(String period, String hsaId, String group, RollingLength rollingLength, Verksamhet typ, Sex sex);
     SimpleDualSexResponse<SimpleDualSexDataRow> getLongSickLeaves(String decodeId, Range range);
+
+    void recount(String period, String vardgivareId, String group, String newGroup, RollingLength length, Verksamhet vardgivare, Sex kon);
 }
