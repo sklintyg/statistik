@@ -25,6 +25,10 @@
         <context:property-placeholder location="file:${user.home}/.test.statistik.se/config.properties" order="1" ignore-resource-not-found="true" ignore-unresolvable="true"/>
         <context:property-placeholder location="classpath*:default.test.properties" order="2" ignore-resource-not-found="false" ignore-unresolvable="false"/>
     </beans>
+    <beans profile="prod">
+        <context:property-placeholder location="file:${statistics.config.file}" order="1" ignore-resource-not-found="false" ignore-unresolvable="true"/>
+        <context:property-placeholder location="classpath*:default.prod.properties" order="2" ignore-resource-not-found="false" ignore-unresolvable="false"/>
+    </beans>
     <beans profile="qa">
         <context:property-placeholder location="file:${statistics.config.file}" order="1" ignore-resource-not-found="false" ignore-unresolvable="true"/>
         <context:property-placeholder location="classpath*:default.qa.properties" order="2" ignore-resource-not-found="false" ignore-unresolvable="false"/>

@@ -30,6 +30,10 @@
         <context:property-placeholder location="file:${user.home}/.test.statistik.se/config.properties" order="1" ignore-resource-not-found="true" ignore-unresolvable="true"/>
         <context:property-placeholder location="classpath*:default.test.properties" order="2" ignore-resource-not-found="false" ignore-unresolvable="true"/>
     </beans>
+    <beans profile="prod">
+        <context:property-placeholder location="file:${statistics.config.file}" order="1" ignore-resource-not-found="false" ignore-unresolvable="true"/>
+        <context:property-placeholder location="classpath*:default.prod.properties" order="2" ignore-resource-not-found="false" ignore-unresolvable="true"/>
+    </beans>
     <beans profile="qa">
         <context:property-placeholder location="file:${statistics.config.file}" order="1" ignore-resource-not-found="false" ignore-unresolvable="true"/>
         <context:property-placeholder location="classpath*:default.qa.properties" order="2" ignore-resource-not-found="false" ignore-unresolvable="true"/>
@@ -92,7 +96,7 @@
         <bean class="se.inera.statistics.service.report.repository.NationellPersistenceHandler"/>
       </beans>
 
-    <beans profile="!demo,!test,!db,!qa">
+    <beans profile="!demo,!test,!db,!qa,!prod">
         <bean class="se.inera.statistics.service.report.mock.CasesPerMonthMock" id="casesPerMonth"/>
         <bean class="se.inera.statistics.service.report.mock.DiagnosisGroupsMock" id="diagnosisGroups"/>
         <bean class="se.inera.statistics.service.report.mock.DiagnosisSubGroupsMock" id="diagnosisSubGroups"/>
@@ -104,7 +108,7 @@
         <bean class="se.inera.statistics.service.report.mock.CasesPerCountyMock" id="casesPerCounty"/>
     </beans>
 
-    <beans profile="demo,test,db,qa">
+    <beans profile="demo,test,db,qa,prod">
         <import resource="application-context-qm.xml"/>
 
         <bean class="se.inera.statistics.service.common.CommonPersistenceHandler" id="commonPersistenceHandler"/>
