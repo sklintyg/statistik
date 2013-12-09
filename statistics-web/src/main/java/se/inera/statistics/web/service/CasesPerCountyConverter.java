@@ -32,31 +32,25 @@ public class CasesPerCountyConverter {
 
     private TableData convertToTable() {
         List<NamedData> data = new ArrayList<>();
-        int accumulatedSumNewest = 0;
-        int accumulatedSumOldest = 0;
         for (int i = 0; i < respNewest.getRows().size(); i++) {
             SimpleDualSexDataRow newestRow = respNewest.getRows().get(i);
             SimpleDualSexDataRow oldestRow = respOldest.getRows().get(i);
             assert newestRow.getName().equals(oldestRow.getName());
 
             int rowSumNewest = newestRow.getFemale() + newestRow.getMale();
-            accumulatedSumNewest += rowSumNewest;
             int rowSumOldest = oldestRow.getFemale() + oldestRow.getMale();
-            accumulatedSumOldest += rowSumOldest;
 
-            final List<Integer> rowData = Arrays.asList(rowSumOldest, oldestRow.getFemale(), oldestRow.getMale(), accumulatedSumOldest,
-                                                        rowSumNewest, newestRow.getFemale(), newestRow.getMale(), accumulatedSumNewest);
+            final List<Integer> rowData = Arrays.asList(rowSumOldest, oldestRow.getFemale(), oldestRow.getMale(),
+                                                        rowSumNewest, newestRow.getFemale(), newestRow.getMale());
             data.add(new NamedData(oldestRow.getName(), rowData));
         }
-        NamedData sumRow = ServiceUtil.getSumRow(data, false);
+        NamedData sumRow = ServiceUtil.getSumRow(data, true);
         ArrayList<Object> sumRowData = new ArrayList<>(sumRow.getData());
-        final int accumulatedSumOldestIndex = 3;
-        sumRowData.set(accumulatedSumOldestIndex, "");
         data.add(new NamedData("Totalt", sumRowData));
 
-        final int topHeaderSpan = 4;
-        List<TableHeader> topHeaders = Arrays.asList(new TableHeader("", 1), new TableHeader(rangeOld.toStringAbbreviated(), topHeaderSpan), new TableHeader(rangeNew.toStringAbbreviated(), topHeaderSpan), new TableHeader("", 1));
-        final List<String> subHeaderTexts = Arrays.asList("Län", "Antal sjukfall", "Antal sjukfall för kvinnor", "Antal sjukfall för män", "Summering", "Antal sjukfall", "Antal sjukfall för kvinnor", "Antal sjukfall för män", "Summering");
+        final int topHeaderSpan = 3;
+        List<TableHeader> topHeaders = Arrays.asList(new TableHeader("", 1), new TableHeader(rangeOld.toStringAbbreviated(), topHeaderSpan), new TableHeader(rangeNew.toStringAbbreviated(), topHeaderSpan));
+        final List<String> subHeaderTexts = Arrays.asList("Län", "Antal sjukfall", "Antal sjukfall för kvinnor", "Antal sjukfall för män", "Antal sjukfall", "Antal sjukfall för kvinnor", "Antal sjukfall för män");
         List<TableHeader> subHeaders = TableData.toTableHeaderList(subHeaderTexts, 1);
         List<List<TableHeader>> headerRows = new ArrayList<>();
         headerRows.add(topHeaders);
