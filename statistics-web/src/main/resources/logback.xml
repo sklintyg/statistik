@@ -64,13 +64,16 @@
     <logger name="se.inera.statistics.service.scheduler.LogJob" level="INFO"  additivity="false">
       <appender-ref ref="PROCESS_FILE"/>
     </logger>
+    <logger name="se.inera.statistics.service.report.listener.DistributingListener" level="INFO"  additivity="false">
+      <appender-ref ref="PROCESS_FILE"/>
+    </logger>
 
     <!-- Enable logging of access status -->
     <logger name="se.inera.statistics.web.service.ProtectedChartDataService" level="INFO" additivity="false">
       <appender-ref ref="ACCESS_FILE" />
     </logger>
 
-    <root level="WARN">
+    <root level="INFO">
         <appender-ref ref="STDOUT"/>
     </root>
 
