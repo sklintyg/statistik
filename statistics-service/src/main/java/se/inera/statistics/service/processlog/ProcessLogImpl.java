@@ -61,10 +61,11 @@ public class ProcessLogImpl implements ProcessLog {
         EventPointer pointer = getPointerQuery();
         if (pointer == null) {
             pointer = new EventPointer(PROCESSED_HSA, id);
+            manager.persist(pointer);
         } else {
             pointer.setEventId(id);
+            manager.merge(pointer);
         }
-        manager.persist(pointer);
     }
 
     private EventPointer getPointerQuery() {
