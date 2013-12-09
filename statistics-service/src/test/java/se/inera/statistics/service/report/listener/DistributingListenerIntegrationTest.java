@@ -143,16 +143,8 @@ public class DistributingListenerIntegrationTest {
         JsonNode utlatande2 = createUtlatande(from2, to2);
         distributingListener.accept(sjukfallInfo2, utlatande2, hsa, 1L);
 
-        SickLeaveLengthResponse result = sjukfallslangdGrupp.getHistoricalStatistics("v1", new LocalDate("2013-03-01"), RollingLength.YEAR);
-        Assert.assertEquals(1, result.getRows().size());
-        Assert.assertEquals("15-30 dagar", result.getRows().get(0).getGroup());
-        Assert.assertEquals(1, result.getRows().get(0).getMale());
-
-        result = sjukfallslangdGrupp.getHistoricalStatistics("v1", new LocalDate("2013-04-01"), RollingLength.YEAR);
-        Assert.assertEquals(1, result.getRows().size());
-        Assert.assertEquals("31-90 dagar", result.getRows().get(0).getGroup());
-        Assert.assertEquals(1, result.getRows().get(0).getMale());
-
+        check1FallLangd(new LocalDate("2013-03-01"), "15-30 dagar");
+        check1FallLangd(new LocalDate("2013-04-01"), "31-90 dagar");
     }
 
     @Test
@@ -169,21 +161,9 @@ public class DistributingListenerIntegrationTest {
         JsonNode utlatande2 = createUtlatande(from2, to2);
         distributingListener.accept(sjukfallInfo2, utlatande2, hsa, 1L);
 
-        SickLeaveLengthResponse result = sjukfallslangdGrupp.getHistoricalStatistics("v1", new LocalDate("2013-03-01"), RollingLength.YEAR);
-        Assert.assertEquals(1, result.getRows().size());
-        Assert.assertEquals("31-90 dagar", result.getRows().get(0).getGroup());
-        Assert.assertEquals(1, result.getRows().get(0).getMale());
-
-        result = sjukfallslangdGrupp.getHistoricalStatistics("v1", new LocalDate("2013-04-01"), RollingLength.YEAR);
-        Assert.assertEquals(1, result.getRows().size());
-        Assert.assertEquals("31-90 dagar", result.getRows().get(0).getGroup());
-        Assert.assertEquals(1, result.getRows().get(0).getMale());
-
-        result = sjukfallslangdGrupp.getHistoricalStatistics("v1", new LocalDate("2013-05-01"), RollingLength.YEAR);
-        Assert.assertEquals(1, result.getRows().size());
-        Assert.assertEquals("91-180 dagar", result.getRows().get(0).getGroup());
-        Assert.assertEquals(1, result.getRows().get(0).getMale());
-
+        check1FallLangd(new LocalDate("2013-03-01"), "31-90 dagar");
+        check1FallLangd(new LocalDate("2013-04-01"), "31-90 dagar");
+        check1FallLangd(new LocalDate("2013-05-01"), "91-180 dagar");
     }
 
     @Test
@@ -200,16 +180,8 @@ public class DistributingListenerIntegrationTest {
         JsonNode utlatande2 = createUtlatande(from2, to2);
         distributingListener.accept(sjukfallInfo2, utlatande2, hsa, 1L);
 
-        SickLeaveLengthResponse result = sjukfallslangdGrupp.getHistoricalStatistics("v1", new LocalDate("2013-03-01"), RollingLength.YEAR);
-        Assert.assertEquals(1, result.getRows().size());
-        Assert.assertEquals("15-30 dagar", result.getRows().get(0).getGroup());
-        Assert.assertEquals(1, result.getRows().get(0).getMale());
-
-        result = sjukfallslangdGrupp.getHistoricalStatistics("v1", new LocalDate("2013-04-01"), RollingLength.YEAR);
-        Assert.assertEquals(1, result.getRows().size());
-        Assert.assertEquals("31-90 dagar", result.getRows().get(0).getGroup());
-        Assert.assertEquals(1, result.getRows().get(0).getMale());
-
+        check1FallLangd(new LocalDate("2013-03-01"), "15-30 dagar");
+        check1FallLangd(new LocalDate("2013-04-01"), "31-90 dagar");
     }
 
     @Test
@@ -226,12 +198,9 @@ public class DistributingListenerIntegrationTest {
         JsonNode utlatande2 = createUtlatande(from2, to2);
         distributingListener.accept(sjukfallInfo2, utlatande2, hsa, 1L);
 
-        SickLeaveLengthResponse result = sjukfallslangdGrupp.getHistoricalStatistics("v1", new LocalDate("2013-03-01"), RollingLength.YEAR);
-        Assert.assertEquals(1, result.getRows().size());
-        Assert.assertEquals("15-30 dagar", result.getRows().get(0).getGroup());
-        Assert.assertEquals(1, result.getRows().get(0).getMale());
+        check1FallLangd(new LocalDate("2013-03-01"), "15-30 dagar");
 
-        result = sjukfallslangdGrupp.getHistoricalStatistics("v1", new LocalDate("2013-04-01"), RollingLength.YEAR);
+        SickLeaveLengthResponse result = sjukfallslangdGrupp.getHistoricalStatistics("v1", new LocalDate("2013-04-01"), RollingLength.YEAR);
         Assert.assertEquals(2, result.getRows().size());
         Assert.assertEquals("15-30 dagar", result.getRows().get(0).getGroup());
         Assert.assertEquals("31-90 dagar", result.getRows().get(1).getGroup());
@@ -263,31 +232,24 @@ public class DistributingListenerIntegrationTest {
 
         SickLeaveLengthResponse result;
 
-        result = sjukfallslangdGrupp.getHistoricalStatistics("v1", new LocalDate("2013-03-01"), RollingLength.YEAR);
-        Assert.assertEquals(1, result.getRows().size());
-        Assert.assertEquals("15-30 dagar", result.getRows().get(0).getGroup());
-        Assert.assertEquals(1, result.getRows().get(0).getMale());
-
-        result = sjukfallslangdGrupp.getHistoricalStatistics("v1", new LocalDate("2013-04-01"), RollingLength.YEAR);
-        Assert.assertEquals(1, result.getRows().size());
-        Assert.assertEquals("31-90 dagar", result.getRows().get(0).getGroup());
-        Assert.assertEquals(1, result.getRows().get(0).getMale());
-
-        result = sjukfallslangdGrupp.getHistoricalStatistics("v1", new LocalDate("2013-05-01"), RollingLength.YEAR);
-        Assert.assertEquals(1, result.getRows().size());
-        Assert.assertEquals("31-90 dagar", result.getRows().get(0).getGroup());
-        Assert.assertEquals(1, result.getRows().get(0).getMale());
-
-        result = sjukfallslangdGrupp.getHistoricalStatistics("v1", new LocalDate("2014-03-01"), RollingLength.YEAR);
-        Assert.assertEquals(1, result.getRows().size());
-        Assert.assertEquals("31-90 dagar", result.getRows().get(0).getGroup());
-        Assert.assertEquals(1, result.getRows().get(0).getMale());
+        check1FallLangd(new LocalDate("2013-03-01"), "15-30 dagar");
+        check1FallLangd(new LocalDate("2013-04-01"), "31-90 dagar");
+        check1FallLangd(new LocalDate("2013-05-01"), "31-90 dagar");
+        check1FallLangd(new LocalDate("2014-03-01"), "31-90 dagar");
 
         result = sjukfallslangdGrupp.getHistoricalStatistics("v1", new LocalDate("2013-02-01"), RollingLength.YEAR);
         Assert.assertEquals(0, result.getRows().size());
 
         result = sjukfallslangdGrupp.getHistoricalStatistics("v1", new LocalDate("2014-04-01"), RollingLength.YEAR);
         Assert.assertEquals(0, result.getRows().size());
+    }
+
+    private void check1FallLangd(LocalDate checkDate, String expectedGroup) {
+        SickLeaveLengthResponse result;
+        result = sjukfallslangdGrupp.getHistoricalStatistics("v1", checkDate, RollingLength.YEAR);
+        Assert.assertEquals(1, result.getRows().size());
+        Assert.assertEquals(expectedGroup, result.getRows().get(0).getGroup());
+        Assert.assertEquals(1, result.getRows().get(0).getMale());
     }
 
     private JsonNode createUtlatande(LocalDate from, LocalDate to) {
