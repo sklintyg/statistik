@@ -119,13 +119,13 @@
     <!-- Prod profile only supports Säkerhetstjänst login                -->
     <!-- =============================================================== -->
     <beans profile="prod">
-        <security:http entry-point-ref="http403ForbiddenEntryPoint" pattern="/api/**">
+        <security:http entry-point-ref="http403ForbiddenEntryPoint" pattern="/api/verksamhet/**">
             <security:intercept-url pattern="/**" access="IS_AUTHENTICATED_FULLY"/>
             <security:custom-filter before="FIRST" ref="metadataGeneratorFilter"/>
             <security:custom-filter after="BASIC_AUTH_FILTER" ref="samlFilter"/>
         </security:http>
-        <security:http entry-point-ref="samlEntryPoint">
-            <security:intercept-url pattern="/**" access="IS_AUTHENTICATED_FULLY"/>
+        <security:http entry-point-ref="samlEntryPoint" use-expressions="true">
+            <security:intercept-url pattern="/login.jsp*" access="isAnonymous()"/>
             <security:custom-filter before="FIRST" ref="metadataGeneratorFilter"/>
             <security:custom-filter after="BASIC_AUTH_FILTER" ref="samlFilter"/>
         </security:http>
