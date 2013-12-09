@@ -8,7 +8,7 @@
 	    var chartOptions = ControllerCommons.getHighChartConfigBase(chartCategories, chartSeries);
 	    chartOptions.chart.type = 'column';
 	    chartOptions.chart.marginTop = 27;
-	    chartOptions.chart.marginLeft = 50;
+	    chartOptions.chart.marginLeft = 60;
 	    chartOptions.yAxis.title.x= 30;
         chartOptions.yAxis.title.y= -13;
         chartOptions.yAxis.title.align = 'high';

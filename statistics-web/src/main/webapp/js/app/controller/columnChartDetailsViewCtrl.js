@@ -61,7 +61,7 @@
 	var paintChart = function(chartCategories, chartSeries) {
         var chartOptions = ControllerCommons.getHighChartConfigBase(chartCategories, chartSeries);
         chartOptions.chart.type = 'column';
-        chartOptions.chart.marginLeft = 50;
+        chartOptions.chart.marginLeft = 60;
         chartOptions.chart.marginTop = 27;
         chartOptions.legend.enabled = $routeParams.printBw || $routeParams.print;
         chartOptions.xAxis.title.text = config.chartXAxisTitle;
