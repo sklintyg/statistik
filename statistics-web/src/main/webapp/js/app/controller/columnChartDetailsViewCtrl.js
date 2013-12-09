@@ -47,7 +47,6 @@
      conf.dataFetcher = "getNationalSjukfallPerSexData",
      conf.exportTableUrl = "api/getSjukfallPerSexStatistics/csv";
      conf.title = function(period){return "Andel sjukfall per kön per län " + period;};
-     conf.yAxisTitle = "Andel";
      conf.percentChart = true;
      conf.chartXAxisTitle = "Län";
      return conf;

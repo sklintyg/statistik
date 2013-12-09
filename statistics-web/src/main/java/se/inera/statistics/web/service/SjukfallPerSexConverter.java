@@ -36,7 +36,7 @@ public class SjukfallPerSexConverter {
         }
         data.add(new NamedData("Totalt", Arrays.asList(totalSum, femaleSum, maleSum, "")));
 
-        return TableData.createWithSingleHeadersRow(data, Arrays.asList("Län", "Antal sjukfall", "Andel kvinnor", "Andel män", "Summering"));
+        return TableData.createWithSingleHeadersRow(data, Arrays.asList("Län", "Antal sjukfall", "Andel sjukfall för kvinnor", "Andel sjukfall för män", "Summering"));
     }
 
     private String toTableString(final Integer value, int rowSum) {
@@ -56,8 +56,8 @@ public class SjukfallPerSexConverter {
 
         final ArrayList<ChartSeries> series = new ArrayList<ChartSeries>();
         final String stacked = "Stacked";
-        series.add(new ChartSeries("Andel kvinnor", getSeriesForSexWithTotal(casesPerMonth, Sex.Female), stacked, Sex.Female));
-        series.add(new ChartSeries("Andel män", getSeriesForSexWithTotal(casesPerMonth, Sex.Male), stacked, Sex.Male));
+        series.add(new ChartSeries("Andel sjukfall för kvinnor", getSeriesForSexWithTotal(casesPerMonth, Sex.Female), stacked, Sex.Female));
+        series.add(new ChartSeries("Andel sjukfall för män", getSeriesForSexWithTotal(casesPerMonth, Sex.Male), stacked, Sex.Male));
 
         return new ChartData(series, categories);
     }

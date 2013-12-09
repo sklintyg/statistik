@@ -23,7 +23,6 @@ import se.inera.statistics.service.report.util.Verksamhet;
 
 public class SjukskrivningsgradPersistenceHandler implements DegreeOfSickLeave {
 
-    private static final List<String> HEADERS = Arrays.asList("Antal sjukfall per 25%", "Antal sjukfall per 50%", "Antal sjukfall per 75%", "Antal sjukfall per 100%");
     public static final List<String> GRAD = Arrays.asList("25", "50", "75", "100");
 
     @PersistenceContext(unitName = "IneraStatisticsLog")
@@ -53,7 +52,7 @@ public class SjukskrivningsgradPersistenceHandler implements DegreeOfSickLeave {
         query.setParameter("from", ReportUtil.toPeriod(range.getFrom()));
         query.setParameter("to", ReportUtil.toPeriod(range.getTo()));
 
-        return new DegreeOfSickLeaveResponse(HEADERS, translateForOutput(range, query.getResultList()));
+        return new DegreeOfSickLeaveResponse(GRAD, translateForOutput(range, query.getResultList()));
     }
 
     private List<DualSexDataRow> translateForOutput(Range range, List<SjukskrivningsgradData> list) {
@@ -65,7 +64,7 @@ public class SjukskrivningsgradPersistenceHandler implements DegreeOfSickLeave {
         for (LocalDate currentPeriod = range.getFrom(); !currentPeriod.isAfter(range.getTo()); currentPeriod = currentPeriod.plusMonths(1)) {
             String displayDate = ReportUtil.toDiagramPeriod(currentPeriod);
             String period = ReportUtil.toPeriod(currentPeriod);
-            List<DualSexField> values = new ArrayList<>(HEADERS.size());
+            List<DualSexField> values = new ArrayList<>(GRAD.size());
             for (String group: GRAD) {
                 values.add(map.get(period + group));
             }

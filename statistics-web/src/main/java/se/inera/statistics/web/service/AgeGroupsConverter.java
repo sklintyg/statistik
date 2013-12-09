@@ -25,7 +25,7 @@ public class AgeGroupsConverter {
             data.add(new NamedData(row.getGroup(), Arrays.asList(rowSum, row.getFemale(), row.getMale(), accumulatedSum)));
         }
         ServiceUtil.addSumRow(data, false);
-        return TableData.createWithSingleHeadersRow(data, Arrays.asList("Åldersgrupper", "Antal sjukfall", "Antal kvinnor", "Antal män", "Summering"));
+        return TableData.createWithSingleHeadersRow(data, Arrays.asList("Åldersgrupper", "Antal sjukfall", "Antal sjukfall för kvinnor", "Antal sjukfall för män", "Summering"));
     }
 
 
@@ -34,8 +34,8 @@ public class AgeGroupsConverter {
         List<Integer> femaleData = resp.getDataForSex(Sex.Female);
         List<Integer> maleData = resp.getDataForSex(Sex.Male);
         ArrayList<ChartSeries> series = new ArrayList<>();
-        series.add(new ChartSeries("Antal sjukfall män", maleData, false, Sex.Male));
-        series.add(new ChartSeries("Antal sjukfall kvinnor", femaleData, false, Sex.Female));
+        series.add(new ChartSeries("Antal sjukfall för män", maleData, false, Sex.Male));
+        series.add(new ChartSeries("Antal sjukfall för kvinnor", femaleData, false, Sex.Female));
         return new ChartData(series, groups);
     }
 
