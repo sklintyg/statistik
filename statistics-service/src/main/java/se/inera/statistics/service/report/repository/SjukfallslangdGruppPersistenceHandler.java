@@ -115,4 +115,23 @@ public class SjukfallslangdGruppPersistenceHandler implements SjukfallslangdGrup
         }
     }
 
+    @Override
+    @Transactional
+    public void recount(String period, String hsaId, String group, String newGroup, RollingLength length, Verksamhet typ, Sex sex) {
+        count(period, hsaId, newGroup, length, typ, sex);
+        SickLeaveLengthRow existingRow = manager.find(SickLeaveLengthRow.class, new SickLeaveLengthKey(period, hsaId, group, length.getPeriods()));
+        int female = Sex.Female.equals(sex) ? 1 : 0;
+        int male = Sex.Male.equals(sex) ? 1 : 0;
+
+        if (existingRow != null) {
+            existingRow.setFemale(existingRow.getFemale() - female);
+            existingRow.setMale(existingRow.getMale() - male);
+            if (existingRow.getFemale() == 0 && existingRow.getMale() == 0) {
+                manager.remove(existingRow);
+            } else {
+                manager.merge(existingRow);
+            }
+        }
+    }
+
 }

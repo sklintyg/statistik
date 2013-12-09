@@ -51,6 +51,10 @@ public class SjukfallslangdGruppMock implements SjukfallslangdGrupp {
     }
 
     @Override
+    public void recount(String period, String vardgivareId, String group, String newGroup, RollingLength length, Verksamhet vardgivare, Sex kon) {
+    }
+
+    @Override
     public void count(String period, String hsaId, String group, RollingLength length, Verksamhet typ, Sex sex) {
     }
     // CHECKSTYLE:ON
