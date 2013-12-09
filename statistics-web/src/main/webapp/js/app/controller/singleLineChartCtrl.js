@@ -31,8 +31,8 @@
         chartOptions.chart.marginTop = 27;
         chartOptions.legend.enabled = $routeParams.printBw || $routeParams.print;
         chartOptions.xAxis.title.text = "Period";
-        chartOptions.yAxis.title.text = "Antal";
-        chartOptions.yAxis.title.x= -13;
+        chartOptions.yAxis.title.text = "Antal sjukfall";
+        chartOptions.yAxis.title.x= 30;
         chartOptions.yAxis.title.y= -13;
         chartOptions.yAxis.title.align = 'high';
         chartOptions.yAxis.title.offset = 0;

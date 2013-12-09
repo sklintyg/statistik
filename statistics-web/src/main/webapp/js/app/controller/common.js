@@ -154,7 +154,7 @@ var ControllerCommons = new function(){
                 allowDecimals : false,
                 min : 0,
                 title : {
-                    text : 'Antal',
+                    text : 'Antal sjukfall',
                     align : 'high',
                     verticalAlign : 'top',
                     rotation : 0,
