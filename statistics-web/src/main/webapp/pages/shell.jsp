@@ -89,7 +89,7 @@
 						</a>
 					</div>
 				</div>
-				<div class="span2 pull-left" style="margin-left: 22px; margin-top: 3px;">
+				<div class="span2 pull-left" style="margin-left: 20px; margin-top: 3px; max-width: 190px;">
 					<span>Statistiktjänst för ordinerad sjukskrivning</span>
 				</div>
 				<c:if test="${loginVisible}">
