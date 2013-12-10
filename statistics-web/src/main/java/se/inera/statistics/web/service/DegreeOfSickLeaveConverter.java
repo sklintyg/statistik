@@ -32,7 +32,7 @@ public class DegreeOfSickLeaveConverter {
         List<ChartSeries> series = new ArrayList<>();
         for (int i = 0; i < data.getDegreesOfSickLeave().size(); i++) {
             List<Integer> indexData = data.getDataFromIndex(i, sex);
-            series.add(new ChartSeries(data.getDegreesOfSickLeave().get(i), indexData, true));
+            series.add(new ChartSeries("Antal sjukfall med " + data.getDegreesOfSickLeave().get(i) + "% sjukskrivningsgrad", indexData, true));
         }
         return series;
     }
@@ -67,7 +67,7 @@ public class DegreeOfSickLeaveConverter {
         topHeaderRow.add(new TableHeader(""));
         List<String> degreesOfSickLeave = resp.getDegreesOfSickLeave();
         for (String groupName : degreesOfSickLeave) {
-                topHeaderRow.add(new TableHeader(groupName, 2));
+                topHeaderRow.add(new TableHeader("Antal sjukfall med " + groupName + "% sjukskrivningsgrad", 2));
         }
 
         List<TableHeader> subHeaderRow = new ArrayList<>();

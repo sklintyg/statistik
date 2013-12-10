@@ -18,7 +18,7 @@ public class DegreeOfSickLeaveMock implements DegreeOfSickLeave {
 
     @Override
     public DegreeOfSickLeaveResponse getStatistics(String hsaId, Range range) {
-        List<String> headers = Arrays.asList("Antal sjukfall per 25%", "Antal sjukfall per 50%", "Antal sjukfall per 75%", "Antal sjukfall per 100%");
+        List<String> headers = Arrays.asList("25", "50", "75", "100");
         List<DualSexDataRow> rows = new ArrayList<>();
         for (String periodName : ReportUtil.PERIODS) {
             rows.add(new DualSexDataRow(periodName, randomData(headers.size())));

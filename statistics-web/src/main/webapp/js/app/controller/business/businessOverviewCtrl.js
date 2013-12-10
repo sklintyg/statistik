@@ -45,7 +45,8 @@
                     colors : [ "#12BC3A" ],
                     animation : false,
                     borderWidth : 0,
-                    dataLabels : { enabled : false }
+                    dataLabels : { enabled : false },
+                    states : { hover: {enabled: false} }
                 };
             new Highcharts.Chart(chartOptions);
          }

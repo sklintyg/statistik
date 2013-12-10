@@ -27,12 +27,12 @@
 	var paintChart = function(chartCategories, chartSeries) {
         var chartOptions = ControllerCommons.getHighChartConfigBase(chartCategories, chartSeries);
         chartOptions.chart.type = 'line';
-        chartOptions.chart.marginLeft = 50;
+        chartOptions.chart.marginLeft = 60;
         chartOptions.chart.marginTop = 27;
         chartOptions.legend.enabled = $routeParams.printBw || $routeParams.print;
         chartOptions.xAxis.title.text = "Period";
-        chartOptions.yAxis.title.text = "Antal";
-        chartOptions.yAxis.title.x= -13;
+        chartOptions.yAxis.title.text = "Antal sjukfall";
+        chartOptions.yAxis.title.x= 30;
         chartOptions.yAxis.title.y= -13;
         chartOptions.yAxis.title.align = 'high';
         chartOptions.yAxis.title.offset = 0;

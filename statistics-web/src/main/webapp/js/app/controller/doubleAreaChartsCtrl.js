@@ -141,11 +141,11 @@
 
         var chartSeriesFemale = ajaxResult.femaleChart.series;
         ControllerCommons.setupSeriesForDisplayType($routeParams.printBw, chartSeriesFemale, "area");
-        that.chart1 = that.paintChart('chart1', 'Antal kvinnor', 40, chartCategories, chartSeriesFemale, -40);
+        that.chart1 = that.paintChart('chart1', 'Antal sjukfall för kvinnor', 100, chartCategories, chartSeriesFemale, -100);
         
         var chartSeriesMale = ajaxResult.maleChart.series;
         ControllerCommons.setupSeriesForDisplayType($routeParams.printBw, chartSeriesMale, "area");
-        that.chart2 = that.paintChart('chart2', 'Antal män', 21, chartCategories, chartSeriesMale, 0);
+        that.chart2 = that.paintChart('chart2', 'Antal sjukfall för män', 80, chartCategories, chartSeriesMale, -80);
 
         updateChartsYAxisMaxValue();
         

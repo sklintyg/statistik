@@ -28,7 +28,7 @@ public class SjukfallPerSexConverterTest {
         SimpleDualSexResponse<SimpleDualSexDataRow> casesPerMonth = new SimpleDualSexResponse<SimpleDualSexDataRow>(dualSexRows, 2);
         SimpleDetailsData result = converter.convert(casesPerMonth, new Range(1));
         TableData tableData = result.getTableData();
-        assertEquals("[[Län;1, Antal sjukfall;1, Andel kvinnor;1, Andel män;1, Summering;1]]", tableData.getHeaders().toString());
+        assertEquals("[[Län;1, Antal sjukfall;1, Andel sjukfall för kvinnor;1, Andel sjukfall för män;1, Summering;1]]", tableData.getHeaders().toString());
         List<NamedData> rows = tableData.getRows();
         assertEquals(4, rows.size());
         assertEquals("län 1", rows.get(0).getName());
