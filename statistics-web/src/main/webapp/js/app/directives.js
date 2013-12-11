@@ -66,3 +66,15 @@ app.statisticsApp.directive("dataerrorview", function() {
             +'</div>'
     }
 });
+
+app.statisticsApp.directive('legendHeight', function() {
+    return function(scope, element, attrs) {
+       if (scope.$last) {
+          scope.$watch('seriesData', function(){
+            var heights = ControllerCommons.map(element.parent().children(), function(e){return $(e).height();})
+            var maxHeight = Math.max.apply(null, heights);
+            element.parent().children().css('height', maxHeight);
+          });
+       }   
+    };
+});
