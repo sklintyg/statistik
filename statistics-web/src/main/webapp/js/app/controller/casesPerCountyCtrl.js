@@ -2,7 +2,7 @@
  
  app.casesPerCountyCtrl = function ($scope, $timeout, $routeParams, $window, statisticsData) {
     var chart = {};
-    $scope.chartContainers = ["chart1"];
+    $scope.chartContainers = [{id: "chart1", name: "Diagram"}];
     
 	var paintChart = function(chartCategories, chartSeries) {
 	    var chartOptions = ControllerCommons.getHighChartConfigBase(chartCategories, chartSeries);
