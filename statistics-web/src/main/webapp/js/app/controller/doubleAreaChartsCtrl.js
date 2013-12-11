@@ -192,7 +192,6 @@
 
     $scope.chartFootnotes = config.chartFootnotes;
     
-    $scope.chartContainers = [ "chart1", "chart2" ];
     $scope.chartContainers = [{id: "chart1", name: "Diagram för kvinnor"}, {id: "chart2", name: "Diagram för män"}];
 
     $scope.toggleSeriesVisibility = function(index) {
