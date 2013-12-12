@@ -90,10 +90,12 @@
              <property name="attributes">
                  <map>
                      <entry key="loginUrl" value="${login.url}"/>
+                     <entry key="healthcheckUtil" value-ref="healthcheckUtil"/>
                  </map>
              </property>
          </bean>
-        <bean class="se.inera.statistics.service.report.repository.NationellPersistenceHandler"/>
+        <bean id="nationalPercistenceHandler" class="se.inera.statistics.service.report.repository.NationellPersistenceHandler"/>
+        <bean id="healthcheckUtil" class="se.inera.statistics.web.util.HealthCheckUtil" />
       </beans>
 
     <beans profile="!demo,!test,!db,!qa,!prod">
