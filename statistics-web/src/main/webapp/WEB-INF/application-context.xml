@@ -88,10 +88,12 @@
                  <map>
                      <entry key="loginUrl" value="${login.url}"/>
                      <entry key="highchartsExportUrl" value="${highcharts.export.url}"/>
+                     <entry key="healthcheckUtil" value-ref="healthcheckUtil"/>
                  </map>
              </property>
          </bean>
         <bean id="nationalPercistenceHandler" class="se.inera.statistics.service.report.repository.NationellPersistenceHandler"/>
+        <bean id="healthcheckUtil" class="se.inera.statistics.web.util.HealthCheckUtil" />
       </beans>
 
     <beans profile="!demo,!test,!db,!qa">
