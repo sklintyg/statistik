@@ -10,7 +10,9 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import se.inera.ifv.statistics.spi.authorization.impl.HSAWebServiceCalls;
 import se.inera.statistics.web.service.ChartDataService;
+import se.inera.statistics.web.util.HealthCheckUtil.Status;
 
 @RunWith(MockitoJUnitRunner.class)
 public class HealthCheckUtilTest {
@@ -18,13 +20,17 @@ public class HealthCheckUtilTest {
     @Mock
     private ChartDataService dataService = Mockito.mock(ChartDataService.class);
 
+    @Mock
+    private HSAWebServiceCalls hsaCalls = Mockito.mock(HSAWebServiceCalls.class);
+
     @InjectMocks
     private HealthCheckUtil healthCheck = new HealthCheckUtil();
 
     @Test
     public void timeIsReturnedForOkResult() {
-        long time = healthCheck.getOverviewTime();
-        assertTrue(time >= 0);
+        Status status = healthCheck.getOverviewStatus();
+        assertTrue(status.getTime() >= 0);
+        assertTrue(status.isOk());
     }
 
     @Test
@@ -33,10 +39,12 @@ public class HealthCheckUtilTest {
         assertTrue(result);
     }
 
-    @Test(expected = IllegalStateException.class)
+    @Test
     public void exceptionIsThrownForFailingTime() {
         Mockito.when(dataService.getOverviewData()).thenThrow(new IllegalStateException());
-        healthCheck.getOverviewTime();
+        Status status = healthCheck.getOverviewStatus();
+        assertTrue(status.getTime() >= 0);
+        assertFalse(status.isOk());
     }
 
     @Test
@@ -44,5 +52,20 @@ public class HealthCheckUtilTest {
         Mockito.when(dataService.getOverviewData()).thenThrow(new IllegalStateException());
         boolean result = healthCheck.isOverviewOk();
         assertFalse(result);
+    }
+
+    @Test
+    public void getTimeForAccessingHsa() {
+        Status status = healthCheck.getHsaStatus();
+        assertTrue(status.getTime() >= 0);
+        assertTrue(status.isOk());
+    }
+
+    @Test
+    public void getTimeForAccessingFailingHsa() throws Exception {
+        Mockito.doThrow(new IllegalStateException()).when(hsaCalls).callPing();
+        Status status = healthCheck.getHsaStatus();
+        assertTrue(status.getTime() >= 0);
+        assertFalse(status.isOk());
     }
 }
