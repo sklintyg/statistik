@@ -17,4 +17,13 @@ public class HealthCheckUtil {
         long doneTime = System.nanoTime();
         return (doneTime - startTime) / NANOS_PER_MS;
     }
+
+    public boolean isOverviewOk() {
+        try {
+            getOverviewTime();
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
 }
