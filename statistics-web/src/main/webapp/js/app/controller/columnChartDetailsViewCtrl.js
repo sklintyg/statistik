@@ -56,7 +56,7 @@
     var isVerksamhet = $routeParams.verksamhetId ? true : false;
     var chart = {};
 
-    $scope.chartContainers = ["chart1"];
+    $scope.chartContainers = [{id: "chart1", name: "Diagram"}];
     
 	var paintChart = function(chartCategories, chartSeries) {
         var chartOptions = ControllerCommons.getHighChartConfigBase(chartCategories, chartSeries);
