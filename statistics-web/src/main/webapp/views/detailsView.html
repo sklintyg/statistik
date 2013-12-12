@@ -69,17 +69,17 @@
                     <div ng-show="chartContainers.length > 1">
 		                <div class="btn-group statistics-btn-group">
 		                  <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-		                    Exportera bild
+		                    Spara diagram som bild
 		                    <span class="caret"></span>
 		                  </a>
-		                  <ul class="dropdown-menu right">
-		                    <li data-ng-repeat="chartContainer in chartContainers"><a data-ng-click="exportChart(chartContainer.id)"><img src="img/dropdown-icons/print-colour.png"/> {{chartContainer.name}}</a></li>
+		                  <ul class="dropdown-menu right" style="min-width: 180px; padding: 5px 0; margin: 2px 20px 0;">
+		                    <li data-ng-repeat="chartContainer in chartContainers"><a data-ng-click="exportChart(chartContainer.id)"><img src="img/dropdown-icons/png.png"/> {{chartContainer.name}}</a></li>
 		                  </ul>
 		                </div>
                     </div>
                     <div ng-show="chartContainers.length == 1" >
-                        <button class="btn btn-small" data-ng-repeat="chartContainer in chartContainers" data-ng-click="exportChart(chartContainer.id)" style="cursor: pointer;" id="pageHelpToolTip" tooltip-html-unsafe="<div class=popover-content>Ladda ner denna graf som bild</div>" tooltip-trigger="mouseenter" tooltip-placement="right">
-                            <i class="icon-download icon-white"></i>
+                        <button class="btn pull-right" data-ng-repeat="chartContainer in chartContainers" data-ng-click="exportChart(chartContainer.id)" style="cursor: pointer;" id="pageHelpToolTip">
+                            Spara diagram som bild
                         </button>
                     </div>
                 </div>
