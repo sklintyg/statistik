@@ -30,6 +30,7 @@ public class Processor {
     private SjukfallService sjukfallService;
 
     private LocalDate cleanedup;
+    private int processedCounter;
 
     public void accept(JsonNode utlatande, JsonNode hsa, long logId) {
         SjukfallKey sjukfallKey = extractSjukfallKey(utlatande);
@@ -39,6 +40,12 @@ public class Processor {
         ObjectNode anonymous = DocumentHelper.anonymize(utlatande);
 
         listener.accept(sjukfallInfo, anonymous, hsa, logId);
+
+        processedCounter++;
+    }
+
+    public int getProcessedCounter() {
+        return processedCounter;
     }
 
     protected SjukfallKey extractSjukfallKey(JsonNode utlatande) {

@@ -39,11 +39,12 @@
 |send intyg;|19500118-2046|F99||||2013-11-01|2013-11-18|50%|||||||ENVE|EnVG|31|
 
 |script|se.inera.statistics.queue.IntygSender|
-|send intyg;|REVOKED|19600708-3121|G01|2013-05-01|2013-05-14|25%|||||||2013-05-15|2013-05-30|100%|ENVE|ENVG|11|
+|send intyg;|REVOKED|19600708-3121|G01|2013-05-01|2013-05-14|25%|||||||2013-05-15|2013-05-30|100%|ENVE|ENVG|1|
 
 
 |script|se.inera.statistics.queue.IntygSender|
-|sleep|5000|
+|awaitResult|
+|sleep|500|
 |get result;|ENVE|TVAVE|2012-05-01|2013-10-10|
 
 |se.inera.statistics.queue.ResultKeys|

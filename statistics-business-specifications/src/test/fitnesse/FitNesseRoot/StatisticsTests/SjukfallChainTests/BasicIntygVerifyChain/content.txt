@@ -9,7 +9,10 @@
 |send intyg;|19790407-9295|G01||||||||||2013-02-05|2013-02-06|100%|ENVE|EnVG|1|
 
 |script|se.inera.statistics.queue.IntygSender|
-|sleep|5000|
+|awaitResult|1|
+
+|script|se.inera.statistics.queue.IntygSender|
+|sleep|500|
 |get result;|ENVE|TVAVE|2012-05-01|2013-10-10|
 
 |se.inera.statistics.queue.ResultKeys|
@@ -28,7 +31,7 @@
 |send intyg;|19790407-9295|G01||||||||||2013-02-07|2013-02-10|100%|ENVE|EnVG|2|
 
 |script|se.inera.statistics.queue.IntygSender|
-|sleep|5000|
+|awaitResult|2|
 |get result;|ENVE|TVAVE|2012-05-01|2013-10-10|
 
 |query:se.inera.statistics.counterdata.FilteredSjukfall|casesPerMonthNationell|
@@ -43,7 +46,7 @@
 |send intyg;|19790407-9295|G01||||||||||2013-02-16|2013-02-17|100%|ENVE|EnVG|3|
 
 |script|se.inera.statistics.queue.IntygSender|
-|sleep|5000|
+|awaitResult|3|
 |get result;|ENVE|TVAVE|2012-05-01|2013-10-10|
 
 |query:se.inera.statistics.counterdata.FilteredSjukfall|casesPerMonthNationell|
@@ -58,7 +61,7 @@
 |send intyg;|19790407-9295|G01||||||||||2013-02-24|2013-02-25|100%|ENVE|EnVG|3|
 
 |script|se.inera.statistics.queue.IntygSender|
-|sleep|5000|
+|awaitResult|4|
 |get result;|ENVE|TVAVE|2012-05-01|2013-10-10|
 
 |query:se.inera.statistics.counterdata.FilteredSjukfall|casesPerMonthNationell|
@@ -73,7 +76,7 @@
 |send intyg;|19790407-9295|G01||||||||||2013-02-26|2013-03-08|100%|ENVE|EnVG|4|
 
 |script|se.inera.statistics.queue.IntygSender|
-|sleep|5000|
+|awaitResult|5|
 |get result;|ENVE|TVAVE|2012-05-01|2013-10-10|
 
 |query:se.inera.statistics.counterdata.FilteredSjukfall|casesPerMonthNationell|
@@ -89,7 +92,7 @@
 |send intyg;|19790407-9295|G01||||||||||2013-03-09|2013-03-18|100%|ENVE|EnVG|5|
 
 |script|se.inera.statistics.queue.IntygSender|
-|sleep|5000|
+|awaitResult|6|
 |get result;|ENVE|TVAVE|2012-05-01|2013-10-10|
 
 |query:se.inera.statistics.counterdata.FilteredSjukfall|casesPerMonthNationell|
@@ -105,7 +108,7 @@
 |send intyg;|19790407-9295|G01||||||||||2013-03-19|2013-03-20|100%|ENVE|EnVG|5|
 
 |script|se.inera.statistics.queue.IntygSender|
-|sleep|5000|
+|awaitResult|7|
 |get result;|ENVE|TVAVE|2012-05-01|2013-10-10|
 
 |query:se.inera.statistics.counterdata.FilteredSjukfall|casesPerMonthNationell|

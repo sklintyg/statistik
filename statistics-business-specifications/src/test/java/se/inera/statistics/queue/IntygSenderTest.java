@@ -40,4 +40,16 @@ public class IntygSenderTest {
             startUp.stopContext();
         }
     }
+
+    @Test
+    public void verifyAwaitResult() {
+        try {
+            startUp.startContext("fitnesse-context.xml");
+            intygSender = new IntygSender();
+            intygSender.sendIntyg("19790407-9295", "G01", "2013-02-05", "2013-09-06", "50", "","","", "","" ,"","","","","ENVE", "EnVG", "1");
+            intygSender.awaitResult();
+        } finally {
+            startUp.stopContext();
+        }
+    }
 }

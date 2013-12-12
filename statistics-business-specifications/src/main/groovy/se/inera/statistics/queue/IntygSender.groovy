@@ -1,5 +1,6 @@
 package se.inera.statistics.queue
 
+import org.apache.activemq.pool.PooledConnectionFactory
 import org.joda.time.LocalDate
 import se.inera.statistics.context.StartUp
 import se.inera.statistics.service.demo.UtlatandeBuilder
@@ -8,6 +9,10 @@ import se.inera.statistics.service.helper.TestData
 import se.inera.statistics.service.processlog.EventType
 import se.inera.statistics.service.report.model.Range
 
+import javax.jms.QueueBrowser
+import javax.jms.Session
+import javax.jms.TextMessage
+
 class IntygSender {
     static Map<String, TestData> testResult
     UtlatandeBuilder builder1 = new UtlatandeBuilder("/json/integration/intyg1.json", "Intyg med 1 sjuktal")
@@ -15,6 +20,7 @@ class IntygSender {
     UtlatandeBuilder builder3 = new UtlatandeBuilder("/json/integration/intyg3.json", "Intyg med 3 sjuktal")
     UtlatandeBuilder builder4 = new UtlatandeBuilder("/json/integration/intyg4.json", "Intyg med 4 sjuktal")
     UtlatandeBuilder[] builders = [builder1, builder2, builder3, builder4]
+    static final int MAX_WAIT = 100
 
     boolean sendData(String file) {
         QueueHelper bean = (QueueHelper) StartUp.context.getBean("se.inera.statistics.service.helper.QueueHelper")
@@ -64,6 +70,29 @@ class IntygSender {
             Thread.sleep(amount)
         } catch (InterruptedException e) {
             e.printStackTrace()
+        }
+        true
+    }
+
+    boolean awaitResult() {
+        PooledConnectionFactory bean = (PooledConnectionFactory) StartUp.context.getBean(PooledConnectionFactory.class)
+        Session session = bean.createConnection().createSession(false, Session.AUTO_ACKNOWLEDGE)
+        javax.jms.Queue queue = (javax.jms.Queue) StartUp.context.getBean("queue")
+
+        QueueBrowser browser = session.createBrowser(queue);
+
+        for (int i = 0; i < MAX_WAIT; i++) {
+            Enumeration enu = browser.getEnumeration();
+            List list = new ArrayList();
+            while (enu.hasMoreElements()) {
+                TextMessage message = (TextMessage) enu.nextElement();
+                list.add(message.getText());
+            }
+            System.out.println("Size " + list.size());
+            if (list.size() == 0) {
+                break
+            }
+            sleep(100L)
         }
         true
     }

@@ -73,6 +73,7 @@
     <bean class="org.springframework.core.io.ClassPathResource" id="icd10ChaptersAnsiFile">
         <constructor-arg value="KSH97_AVS.ANS"/>
     </bean>
+    <bean class="se.inera.statistics.service.processlog.Processor"/>
     <bean class="se.inera.statistics.service.report.util.DiagnosisGroupsUtil"/>
     <bean class="se.inera.statistics.queue.IntygSender"/>
 
