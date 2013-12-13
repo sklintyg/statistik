@@ -908,9 +908,11 @@ form.bs-docs-example {
   .bs-docs-sidenav > li > a {
     width: 230px \9; /* Override the previous IE8-9 hack */
   }
-  #overview-distribution-of-sick-degree-container {
-	min-height: 281px !important;
-  }
+  #national-overview #overview-distribution-of-sick-degree-container { min-height: 230px !important; }
+  #national-overview #overview-distribution-diagnostic-groups-container { min-height: 230px !important; }
+  #overview-distribution-of-sick-degree-container { min-height: 248px !important; }
+  #national-overview #overview-distribution-of-sick-degree-container { min-height: 282px !important; }
+  #overview-distribution-diagnostic-groups-container { min-height: 282px !important;  }
   #overview-distribution-sick-length-container {
   	min-height: 248px !important;
   }
@@ -956,7 +958,6 @@ form.bs-docs-example {
     width: auto !important;
     margin-top: 30px !important;
   }
-  
 
 }
 
