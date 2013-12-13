@@ -19,6 +19,8 @@
           <property name="connectionFactory" ref="jmsFactory"/>
           <property name="destination" ref="queue"/>
           <property name="messageListener" ref="receiver"/>
+          <property name="sessionAcknowledgeMode" value="CLIENT_ACKNOWLEDGE"/>
+          
       </bean>
     </beans>
 </beans>
