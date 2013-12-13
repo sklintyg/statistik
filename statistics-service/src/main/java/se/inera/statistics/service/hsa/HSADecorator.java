@@ -10,7 +10,6 @@ import javax.persistence.PersistenceContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,19 +28,18 @@ public class HSADecorator {
     @Autowired
     private HSAService service;
 
-    @Async
     @Transactional
-    public void decorate(JsonNode doc, String documentId) {
-        syncDecorate(doc, documentId);
-    }
-
-    public JsonNode syncDecorate(JsonNode doc, String documentId) {
+    public JsonNode decorate(JsonNode doc, String documentId) {
         JsonNode info = getHSAInfo(documentId);
         if (info == null) {
             HSAKey key = extractHSAKey(doc);
             LOG.debug(key.toString());
             info = service.getHSAInfo(key);
-            storeHSAInfo(documentId, info);
+            try {
+                storeHSAInfo(documentId, info);
+            } catch (javax.persistence.PersistenceException e) {
+                
+            }
         }
         return info;
     }

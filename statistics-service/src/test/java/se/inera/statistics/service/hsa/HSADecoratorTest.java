@@ -1,29 +1,31 @@
 package se.inera.statistics.service.hsa;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.verify;
 
-import org.junit.Ignore;
+import java.io.IOException;
+
+import javax.persistence.EntityManager;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-
-import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.verify;
-
 import org.mockito.runners.MockitoJUnitRunner;
 
 import se.inera.statistics.service.JSONSource;
 
-import java.io.IOException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @RunWith(MockitoJUnitRunner.class)
-@Ignore
 public class HSADecoratorTest {
 
     @Mock
-    private HSAService hsaService;
+    private HSAService hsaService;// = Mockito.mock(HSAService.class);
+
+    @Mock
+    private EntityManager manager;
 
     @InjectMocks
     private HSADecorator hsaDecorator = new HSADecorator();
