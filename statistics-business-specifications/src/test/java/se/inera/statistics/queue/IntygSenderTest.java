@@ -12,21 +12,6 @@ public class IntygSenderTest {
     IntygSender intygSender;
 
     @Test
-    public void verifySendData() {
-        try {
-            startUp.startContext("fitnesse-context.xml");
-            intygSender = new IntygSender();
-            intygSender.sendData("/testfall.csv");
-            intygSender.sleep(5000);
-            intygSender.getResult("ENVE", "TVAVE", "2012-01-01", "2013-11-01");
-            Map<String, TestData> resultList = IntygSender.getTestResult();
-
-        } finally {
-            startUp.stopContext();
-        }
-    }
-
-    @Test
     public void verifySendIntyg() {
         try {
             startUp.startContext("fitnesse-context.xml");

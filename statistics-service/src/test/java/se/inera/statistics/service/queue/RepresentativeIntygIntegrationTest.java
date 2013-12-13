@@ -7,7 +7,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -40,11 +39,7 @@ import se.inera.statistics.service.report.api.VerksamhetOverview;
 import se.inera.statistics.service.report.listener.AldersGruppListener;
 import se.inera.statistics.service.report.listener.SjukfallPerDiagnosgruppListener;
 import se.inera.statistics.service.report.model.Range;
-import se.inera.statistics.service.report.model.SimpleDualSexDataRow;
-import se.inera.statistics.service.report.model.SimpleDualSexResponse;
 import se.inera.statistics.service.scheduler.NationellUpdaterJob;
-
-import com.fasterxml.jackson.databind.JsonNode;
 
 // CHECKSTYLE:OFF MagicNumber
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -55,9 +50,6 @@ public class RepresentativeIntygIntegrationTest {
     private static final int PERSON_K1950 = 0;
     private static final int PERSON_K1960 = 1;
     private static final int PERSON_M1979 = 2;
-    private static final int PERSON_K1990 = 3;
-    private static final int PERSON_M1991 = 4;
-    private static final int PERSON_M1998 = 5;
 
     private static final Logger LOG = LoggerFactory.getLogger(RepresentativeIntygIntegrationTest.class);
     public static final String G01 = "G01";
@@ -111,7 +103,6 @@ public class RepresentativeIntygIntegrationTest {
     }
 
     @Test
-    @SuppressWarnings("unchecked")
     public void deliver_document_from_in_queue_to_statistics_repository() throws IOException {
         AldersGruppListener.setMaxCacheSize(1);
         SjukfallPerDiagnosgruppListener.setMaxCacheSize(1);
@@ -138,24 +129,11 @@ public class RepresentativeIntygIntegrationTest {
 
         LOG.info("============END===========\n");
 
-        SimpleDualSexResponse<SimpleDualSexDataRow> casesPerMonth1 = (SimpleDualSexResponse<SimpleDualSexDataRow>) result.get("casesPerMonth1").getReplyObject();
-        SimpleDualSexResponse<SimpleDualSexDataRow> casesPerMonthNationell = (SimpleDualSexResponse<SimpleDualSexDataRow>) result.get("casesPerMonthNationell").getReplyObject();
-
-//        assertEquals(12, casesPerMonth1.getRows().size());
-//        assertEquals(12, casesPerMonthNationell.getRows().size());
-//
-//        for (int i = 0; i < 1; i++) {
-//            assertEquals(2, casesPerMonth1.getRows().get(i).getFemale().intValue());
-//            assertEquals(1, casesPerMonth1.getRows().get(i).getMale().intValue());
-//        }
-//        for (int i = 1; i < 12; i++) {
-//            assertEquals(0, casesPerMonth1.getRows().get(i).getFemale().intValue());
-//            assertEquals(0, casesPerMonth1.getRows().get(i).getMale().intValue());
-//        }
+        result.get("casesPerMonth1").getReplyObject();
+        result.get("casesPerMonthNationell").getReplyObject();
     }
 
     @Test
-    @SuppressWarnings("unchecked")
     public void deliver_document_from_in_queue_to_statistics_repository_with_usecase_data() throws IOException {
         AldersGruppListener.setMaxCacheSize(1);
         SjukfallPerDiagnosgruppListener.setMaxCacheSize(1);
@@ -190,64 +168,9 @@ public class RepresentativeIntygIntegrationTest {
         nationellUpdaterJob.checkLog();
 
         LOG.info("===========RESULT=========");
-        Map<String, TestData> result = queueHelper.printAndGetPersistedData(getVardenhet(ENVE), getVardenhet(TVAVE), new Range(getStart(0), getStop(3)));
+        queueHelper.printAndGetPersistedData(getVardenhet(ENVE), getVardenhet(TVAVE), new Range(getStart(0), getStop(3)));
 
         LOG.info("============END===========\n");
-    }
-
-    @Test
-    @SuppressWarnings("unchecked")
-    public void deliver_document_from_in_queue_to_statistics_repository_from_csv_file() throws IOException {
-        AldersGruppListener.setMaxCacheSize(1);
-        SjukfallPerDiagnosgruppListener.setMaxCacheSize(1);
-        UtlatandeBuilder builder1 = new UtlatandeBuilder("/json/integration/intyg1.json", "Intyg med 1 sjuktal");
-        UtlatandeBuilder builder2 = new UtlatandeBuilder("/json/integration/intyg2.json", "Intyg med 2 sjuktal");
-        UtlatandeBuilder builder3 = new UtlatandeBuilder("/json/integration/intyg3.json", "Intyg med 3 sjuktal");
-        UtlatandeBuilder builder4 = new UtlatandeBuilder("/json/integration/intyg4.json", "Intyg med 4 sjuktal");
-        UtlatandeBuilder[] builders = {builder1, builder2, builder3, builder4};
-
-        LOG.info("===========START==========");
-        String testCaseName = "testfall.csv";
-        LOG.info(testCaseName);
-
-        LOG.info("===========INPUT==========");
-        String csvFile = "/testfall.csv";
-        queueHelper.enqueueFromFile(builders, csvFile);
-
-        sleep();
-
-        assertEquals("Verify that all messages have been processed.", 33, consumer.processBatch());
-
-        nationellUpdaterJob.checkLog();
-
-        LOG.info("===========RESULT=========");
-        Map<String, TestData> result = queueHelper.printAndGetPersistedData(getVardenhet(ENVE), getVardenhet(TVAVE), new Range(getStart(0), getStop(3)));
-
-        LOG.info("===========TABLES=========");
-
-        printSimpleDualSexResponseTable(result.get("casesPerMonth1").getJsonNode(), testCaseName + ": CasesPerMonth1");
-        printSimpleDualSexResponseTable(result.get("casesPerMonth2").getJsonNode(), testCaseName + ": CasesPerMonth2");
-        printSimpleDualSexResponseTable(result.get("casesPerMonthNationell").getJsonNode(), testCaseName + ": CasesPerMonthNationell");
-        printSimpleDualSexResponseTable(result.get("sjukfallslangdGruppLong1").getJsonNode(), testCaseName + ": SjukfallslangdGruppLong1");
-        printSimpleDualSexResponseTable(result.get("sjukfallslangdGruppLong2").getJsonNode(), testCaseName + ": SjukfallslangdGruppLong2");
-
-        LOG.info("============END===========\n");
-    }
-
-    private void printSimpleDualSexResponseTable(JsonNode testResult, String tableName) {
-        Iterator<JsonNode> rows = testResult.findPath("rows").iterator();
-        StringBuilder sb = new StringBuilder(tableName + "\nmonth, female, male\n");
-        while (rows.hasNext()) {
-            JsonNode row = rows.next().path("SimpleDualSexDataRow");
-            sb.append(row.path("name").textValue());
-            sb.append(',');
-            sb.append(row.path("data").path("DualSexField").path("female"));
-            sb.append(',');
-            sb.append(row.path("data").path("DualSexField").path("male"));
-            sb.append('\n');
-        }
-        sb.append('\n');
-        LOG.info(sb.toString());
     }
 
     private void sleep() {

@@ -8,7 +8,6 @@ import javax.jms.TextMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 
 import se.inera.statistics.service.helper.JSONParser;
 import se.inera.statistics.service.hsa.HSADecorator;
@@ -30,10 +29,17 @@ public class Receiver implements MessageListener {
     @Autowired
     private HSADecorator hsaDecorator;
 
+    private long accepted;
+
     public void accept(EventType type, String data, String documentId, long timestamp) {
         processLog.store(type, data, documentId, timestamp);
         JsonNode utlatande = JSONParser.parse(data);
         hsa(documentId, utlatande);
+        accepted++;
+    }
+
+    public long getAccepted() {
+        return accepted;
     }
 
     private void hsa(String documentId, JsonNode utlatande) {

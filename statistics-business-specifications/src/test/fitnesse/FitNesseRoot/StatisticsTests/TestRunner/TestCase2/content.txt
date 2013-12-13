@@ -34,7 +34,7 @@
 |send intyg;|19500118-2046|L99||||2013-07-20|2013-07-20|50%|||||||TVAVE|traVG|29|
 |send intyg;|19500118-2046|A00|2013-09-01|2013-09-01|25%|||||||2013-09-02|2013-09-02|100%|ENVE|EnVG|30|
 |send intyg;|19500118-2046|F99||||2013-11-01|2013-11-18|50%|||||||ENVE|EnVG|31|
-|sleep|5000|
+|awaitResult|
 |get result;|ENVE|TVAVE|2012-05-01|2013-10-10|
 
 |se.inera.statistics.queue.ResultKeys|

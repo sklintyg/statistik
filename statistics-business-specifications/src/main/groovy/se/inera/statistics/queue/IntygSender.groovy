@@ -2,11 +2,13 @@ package se.inera.statistics.queue
 
 import org.apache.activemq.pool.PooledConnectionFactory
 import org.joda.time.LocalDate
+
 import se.inera.statistics.context.StartUp
 import se.inera.statistics.service.demo.UtlatandeBuilder
 import se.inera.statistics.service.helper.QueueHelper
 import se.inera.statistics.service.helper.TestData
 import se.inera.statistics.service.processlog.EventType
+import se.inera.statistics.service.queue.Receiver;
 import se.inera.statistics.service.report.model.Range
 
 import javax.jms.QueueBrowser
@@ -21,12 +23,7 @@ class IntygSender {
     UtlatandeBuilder builder4 = new UtlatandeBuilder("/json/integration/intyg4.json", "Intyg med 4 sjuktal")
     UtlatandeBuilder[] builders = [builder1, builder2, builder3, builder4]
     static final int MAX_WAIT = 100
-
-    boolean sendData(String file) {
-        QueueHelper bean = (QueueHelper) StartUp.context.getBean("se.inera.statistics.service.helper.QueueHelper")
-        bean.enqueueFromFile(builders, file)
-        true
-    }
+    static long sent;
 
     boolean sendIntyg(String person, String diagnos, String start1, String stop1, String grad1, String start2, String stop2, String grad2, String start3, String stop3, String grad3, String start4, String stop4, String grad4, String enhet, String vardgivare, String trackingId) {
         sendIntyg(EventType.CREATED.name(), person, diagnos, start1, stop1, grad1, start2, stop2, grad2, start3, stop3, grad3, start4, stop4, grad4, enhet, vardgivare, trackingId)
@@ -61,6 +58,7 @@ class IntygSender {
             false
         } else {
             bean.enqueue(builders[starts.size() - 1], typ, person, diagnos, starts, stops, grads, enhet, vardgivare, trackingId)
+            sent++
             true
         }
     }
@@ -75,21 +73,10 @@ class IntygSender {
     }
 
     boolean awaitResult() {
-        PooledConnectionFactory bean = (PooledConnectionFactory) StartUp.context.getBean(PooledConnectionFactory.class)
-        Session session = bean.createConnection().createSession(false, Session.AUTO_ACKNOWLEDGE)
-        javax.jms.Queue queue = (javax.jms.Queue) StartUp.context.getBean("queue")
-
-        QueueBrowser browser = session.createBrowser(queue);
+        Receiver receiver = StartUp.context.getBean(Receiver.class)
 
         for (int i = 0; i < MAX_WAIT; i++) {
-            Enumeration enu = browser.getEnumeration();
-            List list = new ArrayList();
-            while (enu.hasMoreElements()) {
-                TextMessage message = (TextMessage) enu.nextElement();
-                list.add(message.getText());
-            }
-            System.out.println("Size " + list.size());
-            if (list.size() == 0) {
+            if (receiver.accepted >= sent) {
                 break
             }
             sleep(100L)

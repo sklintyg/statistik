@@ -98,49 +98,6 @@ public class QueueHelper {
         nationell = Verksamhet.NATIONELL.name();
     }
 
-    public void enqueueFromFile(UtlatandeBuilder[] builders, String csvFile) throws IOException {
-        BufferedReader reader = new BufferedReader(new InputStreamReader(this.getClass().getResourceAsStream(csvFile)));
-        List<String[]> lines = new ArrayList<>();
-        while (true) {
-            String line = reader.readLine();
-            if (line == null) {
-                break;
-            }
-            lines.add(line.split(";"));
-        }
-        for (String[] cols : lines) {
-            String person = cols[PERSON_ID_COL];
-            String diagnos = cols[DIAGNOS_COL];
-            List<LocalDate> start = new ArrayList<>();
-            List<LocalDate> stop = new ArrayList<>();
-            List<String> grad = new ArrayList<>();
-            if (!cols[START1_COL].equals("")) {
-                start.add(new LocalDate(cols[START1_COL]));
-                stop.add(new LocalDate(cols[STOP1_COL]));
-                grad.add(cols[GRAD1_COL]);
-            }
-            if (!cols[START2_COL].equals("")) {
-                start.add(new LocalDate(cols[START2_COL]));
-                stop.add(new LocalDate(cols[STOP2_COL]));
-                grad.add(cols[GRAD2_COL]);
-            }
-            if (!cols[START3_COL].equals("")) {
-                start.add(new LocalDate(cols[START3_COL]));
-                stop.add(new LocalDate(cols[STOP3_COL]));
-                grad.add(cols[GRAD3_COL]);
-            }
-            if (!cols[START4_COL].equals("")) {
-                start.add(new LocalDate(cols[START4_COL]));
-                stop.add(new LocalDate(cols[STOP4_COL]));
-                grad.add(cols[GRAD4_COL]);
-            }
-            String enhet = cols[ENHET_COL];
-            String vardgivare = cols[VARDGIVARE_COL];
-            LOG.info(person + ", " + start + ", " + stop + ", " + enhet + ", " + vardgivare + ", " + diagnos + ", " + grad);
-            sender.simpleSend(builders[start.size() - 1].build(person, start, stop, enhet, vardgivare, diagnos, grad).toString(), "001");
-        }
-    }
-
     public void enqueue(UtlatandeBuilder builder, String typString, String person, String diagnos, List<LocalDate> start, List<LocalDate> stop, List<String> grad, String enhet, String vardgivare, String transId) {
         EventType typ = EventType.valueOf(typString);
         sender.simpleSend(builder.build(person, start, stop, enhet, vardgivare, diagnos, grad).toString(), transId, typ);
