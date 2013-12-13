@@ -55,7 +55,7 @@ public class LogConsumerImplTest {
     public void processingSucceedsForOneEvent() {
         IntygEvent event = new IntygEvent(EventType.CREATED, "{}", "correlationId", 1);
         when(processLog.getPending(100)).thenReturn(Collections.singletonList(event));
-        when(hsa.syncDecorate(any(JsonNode.class), anyString())).thenReturn(JSONParser.parse("{}"));
+        when(hsa.decorate(any(JsonNode.class), anyString())).thenReturn(JSONParser.parse("{}"));
         int count = consumer.processBatch();
         assertEquals(1, count);
         verify(processLog).getPending(100);
@@ -66,7 +66,7 @@ public class LogConsumerImplTest {
     public void failingHsaSkipsProcessing() {
         IntygEvent event = new IntygEvent(EventType.CREATED, "{}", "correlationId", 1);
         when(processLog.getPending(100)).thenReturn(Collections.singletonList(event));
-        when(hsa.syncDecorate(any(JsonNode.class), anyString())).thenReturn(null);
+        when(hsa.decorate(any(JsonNode.class), anyString())).thenReturn(null);
         int count = consumer.processBatch();
         assertEquals(0, count);
         verify(processLog).getPending(100);

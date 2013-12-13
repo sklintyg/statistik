@@ -48,7 +48,7 @@ public class LogConsumerImpl implements LogConsumer {
                     continue;
                 }
                 JsonNode intyg = JSONParser.parse(event.getData());
-                JsonNode hsaInfo = hsa.syncDecorate(intyg, event.getCorrelationId());
+                JsonNode hsaInfo = hsa.decorate(intyg, event.getCorrelationId());
                 if (hsaInfo != null) {
                     processor.accept(intyg, hsaInfo, event.getId());
                     processed++;

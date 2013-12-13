@@ -8,6 +8,7 @@ import javax.jms.TextMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 
 import se.inera.statistics.service.helper.JSONParser;
 import se.inera.statistics.service.hsa.HSADecorator;
@@ -32,7 +33,15 @@ public class Receiver implements MessageListener {
     public void accept(EventType type, String data, String documentId, long timestamp) {
         processLog.store(type, data, documentId, timestamp);
         JsonNode utlatande = JSONParser.parse(data);
-        hsaDecorator.decorate(utlatande, documentId);
+        hsa(documentId, utlatande);
+    }
+
+    private void hsa(String documentId, JsonNode utlatande) {
+        try {
+            hsaDecorator.decorate(utlatande, documentId);
+        } catch (Exception e) {
+            LOG.error("Failed decorating intyg {}", documentId, e.getMessage());
+        }
     }
 
     public void onMessage(Message rawMessage) {
