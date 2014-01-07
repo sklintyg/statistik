@@ -44,9 +44,9 @@ public class SjukfallslangdGruppPersistenceHandlerTest extends SjukfallslangdGru
         LocalDate now = LocalDate.now();
         LocalDate nextMonth = now.plusMonths(1);
         LocalDate prevYear = now.minusYears(1);
-        String period1 = "" + now.getYear() + "-" + now.getMonthOfYear();
-        String period2 = "" + nextMonth.getYear() + "-" + nextMonth.getMonthOfYear();
-        String period3 = "" + prevYear.getYear() + "-" + prevYear.getMonthOfYear();
+        String period1 = now.toString("yyyy-MM");
+        String period2 = nextMonth.toString("yyyy-MM");
+        String period3 = prevYear.toString("yyyy-MM");
         count(period1, "verksamhet1", SjukfallslangdUtil.RANGES.rangeFor(1).getName(), RollingLength.SINGLE_MONTH, Verksamhet.ENHET, Sex.Female);
         count(period1, "verksamhet1", SjukfallslangdUtil.RANGES.rangeFor(1).getName(), RollingLength.SINGLE_MONTH, Verksamhet.ENHET, Sex.Male);
         count(period2, "verksamhet1", SjukfallslangdUtil.RANGES.rangeFor(1).getName(), RollingLength.SINGLE_MONTH, Verksamhet.ENHET, Sex.Female);
