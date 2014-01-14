@@ -33,7 +33,7 @@ public class OverviewPersistanceHandlerTest extends OverviewPersistenceHandler {
     private Diagnosgrupp diagnosgroupPersistenceHandler;
 
     @Autowired
-    private CasesPerMonth casesPerMonth;
+    private SjukfallPerManad sjukfallPerManad;
 
     @Autowired
     private Aldersgrupp aldersgruppPersistenceHandler;
@@ -60,10 +60,10 @@ public class OverviewPersistanceHandlerTest extends OverviewPersistenceHandler {
         diagnosgroupPersistenceHandler.count("id3", "2013-09", "g1", Verksamhet.VARDGIVARE, Sex.Male);
         diagnosgroupPersistenceHandler.count("id1", "2013-06", "g1", Verksamhet.VARDGIVARE, Sex.Male);
 
-        casesPerMonth.count("id1", "2013-09", Verksamhet.VARDGIVARE, Sex.Female);
-        casesPerMonth.count("id1", "2013-09", Verksamhet.VARDGIVARE, Sex.Female);
-        casesPerMonth.count("id3", "2013-09", Verksamhet.VARDGIVARE, Sex.Male);
-        casesPerMonth.count("id1", "2013-06", Verksamhet.VARDGIVARE, Sex.Male);
+        sjukfallPerManad.count("id1", "2013-09", Verksamhet.VARDGIVARE, Sex.Female);
+        sjukfallPerManad.count("id1", "2013-09", Verksamhet.VARDGIVARE, Sex.Female);
+        sjukfallPerManad.count("id3", "2013-09", Verksamhet.VARDGIVARE, Sex.Male);
+        sjukfallPerManad.count("id1", "2013-06", Verksamhet.VARDGIVARE, Sex.Male);
 
         aldersgruppPersistenceHandler.count("2013-09", "id1", "<21", RollingLength.QUARTER, Verksamhet.VARDGIVARE, Sex.Female);
         aldersgruppPersistenceHandler.count("2013-09", "id1", "<21", RollingLength.QUARTER, Verksamhet.VARDGIVARE, Sex.Female);

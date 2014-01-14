@@ -15,15 +15,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import se.inera.statistics.service.demo.UtlatandeBuilder;
 import se.inera.statistics.service.processlog.EventType;
 import se.inera.statistics.service.processlog.LogConsumer;
-import se.inera.statistics.service.report.api.Aldersgrupp;
-import se.inera.statistics.service.report.api.FallPerLan;
-import se.inera.statistics.service.report.api.CasesPerMonth;
-import se.inera.statistics.service.report.api.Sjukskrivningsgrad;
-import se.inera.statistics.service.report.api.Diagnosgrupp;
-import se.inera.statistics.service.report.api.Diagnoskapitel;
-import se.inera.statistics.service.report.api.Overview;
-import se.inera.statistics.service.report.api.SjukfallslangdGrupp;
-import se.inera.statistics.service.report.api.VerksamhetOverview;
+import se.inera.statistics.service.report.api.*;
+import se.inera.statistics.service.report.api.SjukfallPerManad;
 import se.inera.statistics.service.report.model.AgeGroupsResponse;
 import se.inera.statistics.service.report.model.DegreeOfSickLeaveResponse;
 import se.inera.statistics.service.report.model.DiagnosisGroupResponse;
@@ -59,7 +52,7 @@ public class QueueHelper {
     public static final int VARDGIVARE_COL = 16;
 
     @Autowired
-    private CasesPerMonth casesPerMonth;
+    private SjukfallPerManad sjukfallPerManad;
     @Autowired
     private Diagnosgrupp diagnosgrupp;
     @Autowired
@@ -218,15 +211,15 @@ public class QueueHelper {
     }
 
     private void printAndGetCasesPerMonth(String vardenhet1, String vardenhet2, Range range, Map<String, TestData> result) {
-        SimpleDualSexResponse<SimpleDualSexDataRow> casesPerMonth1 = casesPerMonth.getCasesPerMonth(vardenhet1, range);
+        SimpleDualSexResponse<SimpleDualSexDataRow> casesPerMonth1 = sjukfallPerManad.getCasesPerMonth(vardenhet1, range);
         LOG.info("CPM data: " + casesPerMonth1);
         JsonNode casesPerMonth1Node = JSONParser.parse(casesPerMonth1.toString());
         result.put("casesPerMonth1", new TestData(casesPerMonth1, casesPerMonth1Node));
-        SimpleDualSexResponse<SimpleDualSexDataRow> casesPerMonth2 = casesPerMonth.getCasesPerMonth(vardenhet2, range);
+        SimpleDualSexResponse<SimpleDualSexDataRow> casesPerMonth2 = sjukfallPerManad.getCasesPerMonth(vardenhet2, range);
         LOG.info("CPM data: " + casesPerMonth2);
         JsonNode casesPerMonth2Node = JSONParser.parse(casesPerMonth2.toString());
         result.put("casesPerMonth2", new TestData(casesPerMonth2, casesPerMonth2Node));
-        SimpleDualSexResponse<SimpleDualSexDataRow> casesPerMonthNationell = casesPerMonth.getCasesPerMonth(nationell, range);
+        SimpleDualSexResponse<SimpleDualSexDataRow> casesPerMonthNationell = sjukfallPerManad.getCasesPerMonth(nationell, range);
         LOG.info("Nationell CPM data: " + casesPerMonthNationell);
         JsonNode casesPerMonthNationellNode = JSONParser.parse(casesPerMonthNationell.toString());
         result.put("casesPerMonthNationell", new TestData(casesPerMonthNationell, casesPerMonthNationellNode));

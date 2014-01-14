@@ -6,7 +6,7 @@ import se.inera.statistics.service.report.model.SimpleDualSexDataRow;
 import se.inera.statistics.service.report.model.SimpleDualSexResponse;
 import se.inera.statistics.service.report.util.Verksamhet;
 
-public interface CasesPerMonth {
+public interface SjukfallPerManad {
     SimpleDualSexResponse<SimpleDualSexDataRow> getCasesPerMonth(String hsaId, Range range);
 
     void count(String hsaId, String period, Verksamhet typ, Sex sex);

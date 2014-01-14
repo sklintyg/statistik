@@ -48,7 +48,7 @@ public class ChartDataService {
     @Autowired
     private Overview datasourceOverview;
     @Autowired
-    private CasesPerMonth datasourceCasesPerMonth;
+    private SjukfallPerManad datasourceSjukfallPerManad;
     @Autowired
     private Diagnosgrupp datasourceDiagnosgrupp;
     @Autowired
@@ -68,7 +68,7 @@ public class ChartDataService {
     public SimpleDetailsData getNumberOfCasesPerMonth() {
         LOG.info("Calling getNumberOfCasesPerMonth for national");
         final Range range = new Range(18);
-        SimpleDualSexResponse<SimpleDualSexDataRow> casesPerMonth = datasourceCasesPerMonth.getCasesPerMonth(NATIONELL, range);
+        SimpleDualSexResponse<SimpleDualSexDataRow> casesPerMonth = datasourceSjukfallPerManad.getCasesPerMonth(NATIONELL, range);
         return new SimpleDualSexConverter().convert(casesPerMonth, range);
     }
 

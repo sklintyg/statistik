@@ -54,7 +54,7 @@ public class RepresentativeIntygIntegrationTest {
     private List<String> persons = new ArrayList<>();
 
     @Autowired
-    private CasesPerMonth casesPerMonth;
+    private SjukfallPerManad sjukfallPerManad;
     @Autowired
     private Diagnosgrupp diagnosgrupp;
     @Autowired

@@ -22,7 +22,7 @@ import se.inera.statistics.service.report.util.Verksamhet;
 @ContextConfiguration(locations = { "classpath:process-log-impl-test.xml" })
 @Transactional
 @DirtiesContext
-public class CasesPerMonthPersistenceTest extends CasesPerMonthPersistenceHandler {
+public class SjukfallPerManadPersistenceTest extends SjukfallPerManadPersistenceHandler {
 
     // CHECKSTYLE:OFF MagicNumber
     @Test

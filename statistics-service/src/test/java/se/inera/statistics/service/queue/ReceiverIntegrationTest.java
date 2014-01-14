@@ -24,7 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import se.inera.statistics.service.demo.UtlatandeBuilder;
 import se.inera.statistics.service.processlog.LogConsumer;
-import se.inera.statistics.service.report.api.CasesPerMonth;
+import se.inera.statistics.service.report.api.SjukfallPerManad;
 import se.inera.statistics.service.report.listener.AldersGruppListener;
 import se.inera.statistics.service.report.listener.SjukfallPerDiagnosgruppListener;
 import se.inera.statistics.service.report.model.Range;
@@ -41,7 +41,7 @@ public class ReceiverIntegrationTest {
     private JmsTemplate jmsTemplate;
 
     @Autowired
-    private CasesPerMonth casesPerMonth;
+    private SjukfallPerManad sjukfallPerManad;
 
     @Autowired
     private ConnectionFactory connectionFactory;
@@ -66,7 +66,7 @@ public class ReceiverIntegrationTest {
 
         assertEquals(2, consumer.processBatch());
 
-        SimpleDualSexResponse<SimpleDualSexDataRow> webData = casesPerMonth.getCasesPerMonth("enhetId", new Range(new LocalDate("2011-01"), new LocalDate("2011-12")));
+        SimpleDualSexResponse<SimpleDualSexDataRow> webData = sjukfallPerManad.getCasesPerMonth("enhetId", new Range(new LocalDate("2011-01"), new LocalDate("2011-12")));
 
         assertEquals(12, webData.getRows().size());
 

@@ -16,7 +16,7 @@ import org.mockito.Mockito;
 import static org.mockito.MockitoAnnotations.Mock;
 
 import org.mockito.runners.MockitoJUnitRunner;
-import se.inera.statistics.service.report.api.CasesPerMonth;
+import se.inera.statistics.service.report.api.SjukfallPerManad;
 import se.inera.statistics.service.report.api.Diagnosgrupp;
 import se.inera.statistics.service.report.api.Diagnoskapitel;
 import se.inera.statistics.service.report.api.Overview;
@@ -30,7 +30,7 @@ public class ChartDataServiceTest {
     private Overview overviewMock = Mockito.mock(Overview.class);
 
     @Mock
-    private CasesPerMonth casesPerMonthMock = Mockito.mock(CasesPerMonth.class);
+    private SjukfallPerManad sjukfallPerManadMock = Mockito.mock(SjukfallPerManad.class);
 
     @Mock
     private Diagnosgrupp diagnosgruppMock = Mockito.mock(Diagnosgrupp.class);
@@ -57,7 +57,7 @@ public class ChartDataServiceTest {
         try {
         chartDataService.getNumberOfCasesPerMonth();
         } catch (NullPointerException e) { }
-        Mockito.verify(casesPerMonthMock).getCasesPerMonth(anyString(), any(Range.class));
+        Mockito.verify(sjukfallPerManadMock).getCasesPerMonth(anyString(), any(Range.class));
     }
 
     @Test

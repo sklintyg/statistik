@@ -11,7 +11,7 @@ import javax.persistence.TypedQuery;
 import org.joda.time.LocalDate;
 import org.springframework.transaction.annotation.Transactional;
 
-import se.inera.statistics.service.report.api.CasesPerMonth;
+import se.inera.statistics.service.report.api.SjukfallPerManad;
 import se.inera.statistics.service.report.model.db.CasesPerMonthKey;
 import se.inera.statistics.service.report.model.db.CasesPerMonthRow;
 import se.inera.statistics.service.report.model.DualSexField;
@@ -22,7 +22,7 @@ import se.inera.statistics.service.report.model.SimpleDualSexResponse;
 import se.inera.statistics.service.report.util.ReportUtil;
 import se.inera.statistics.service.report.util.Verksamhet;
 
-public class CasesPerMonthPersistenceHandler implements CasesPerMonth {
+public class SjukfallPerManadPersistenceHandler implements SjukfallPerManad {
     @PersistenceContext(unitName = "IneraStatisticsLog")
     private EntityManager manager;
 

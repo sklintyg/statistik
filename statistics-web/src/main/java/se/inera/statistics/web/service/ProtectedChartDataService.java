@@ -47,7 +47,7 @@ public class ProtectedChartDataService {
     @Autowired
     private VerksamhetOverview datasourceOverview;
     @Autowired
-    private CasesPerMonth datasourceCasesPerMonth;
+    private SjukfallPerManad datasourceSjukfallPerManad;
     @Autowired
     private Diagnosgrupp datasourceDiagnosgrupp;
     @Autowired
@@ -69,7 +69,7 @@ public class ProtectedChartDataService {
     public SimpleDetailsData getNumberOfCasesPerMonth(@Context HttpServletRequest request, @PathParam("verksamhetId") String verksamhetId) {
         LOG.info("Calling getNumberOfCasesPerMonth with verksamhetId: " + verksamhetId);
         final Range range = new Range(18);
-        SimpleDualSexResponse<SimpleDualSexDataRow> casesPerMonth = datasourceCasesPerMonth.getCasesPerMonth(Verksamhet.decodeId(verksamhetId), range);
+        SimpleDualSexResponse<SimpleDualSexDataRow> casesPerMonth = datasourceSjukfallPerManad.getCasesPerMonth(Verksamhet.decodeId(verksamhetId), range);
         return new SimpleDualSexConverter().convert(casesPerMonth, range);
     }
 
