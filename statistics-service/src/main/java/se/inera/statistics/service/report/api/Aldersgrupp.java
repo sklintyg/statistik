@@ -12,7 +12,7 @@ import se.inera.statistics.service.report.util.Verksamhet;
 
 import java.util.HashMap;
 
-public interface AgeGroups {
+public interface Aldersgrupp {
 
     void count(String period, String hsaId, String group, RollingLength rollingLength, Verksamhet typ, Sex sex);
 

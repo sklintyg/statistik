@@ -12,7 +12,7 @@ import javax.persistence.TypedQuery;
 import org.joda.time.LocalDate;
 import org.springframework.transaction.annotation.Transactional;
 
-import se.inera.statistics.service.report.api.AgeGroups;
+import se.inera.statistics.service.report.api.Aldersgrupp;
 import se.inera.statistics.service.report.listener.AldersGruppListener;
 import se.inera.statistics.service.report.model.AgeGroupsResponse;
 import se.inera.statistics.service.report.model.db.AgeGroupsRow;
@@ -23,7 +23,7 @@ import se.inera.statistics.service.report.util.Ranges.Range;
 import se.inera.statistics.service.report.util.ReportUtil;
 import se.inera.statistics.service.report.util.Verksamhet;
 
-public class AldersgruppPersistenceHandler implements AgeGroups {
+public class AldersgruppPersistenceHandler implements Aldersgrupp {
     @PersistenceContext(unitName = "IneraStatisticsLog")
     private EntityManager manager;
 

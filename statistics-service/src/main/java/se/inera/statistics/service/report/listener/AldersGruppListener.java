@@ -3,7 +3,7 @@ package se.inera.statistics.service.report.listener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import se.inera.statistics.service.report.api.AgeGroups;
+import se.inera.statistics.service.report.api.Aldersgrupp;
 import se.inera.statistics.service.report.model.Sex;
 import se.inera.statistics.service.report.model.db.AldersgruppKey;
 import se.inera.statistics.service.report.repository.RollingLength;
@@ -20,13 +20,13 @@ public class AldersGruppListener extends RollingAbstractListener {
     private final HashMap<AldersgruppKey, AldersgruppValue> cache = new HashMap<>();
 
     @Autowired
-    private AgeGroups ageGroups;
+    private Aldersgrupp aldersgrupp;
 
     protected boolean accept(GenericHolder token, String period, RollingLength length) {
         String group = AldersgroupUtil.RANGES.rangeFor(token.getAge()).getName();
-        ageGroups.count(period, token.getEnhetId(), group, length,
+        aldersgrupp.count(period, token.getEnhetId(), group, length,
         Verksamhet.ENHET, token.getKon());
-        ageGroups.count(period, token.getVardgivareId(), group, length,
+        aldersgrupp.count(period, token.getVardgivareId(), group, length,
         Verksamhet.VARDGIVARE, token.getKon());
         return true;
 //        return count(period, token.getEnhetId(), group, length, Verksamhet.ENHET, token.getKon())
@@ -52,7 +52,7 @@ public class AldersGruppListener extends RollingAbstractListener {
     public void persistCache() {
         synchronized (cache) {
             if (cache.size() > 0) {
-                ageGroups.countAll(cache);
+                aldersgrupp.countAll(cache);
             }
         }
     }

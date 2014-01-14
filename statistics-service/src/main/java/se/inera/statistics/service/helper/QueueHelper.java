@@ -1,9 +1,5 @@
 package se.inera.statistics.service.helper;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,7 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import se.inera.statistics.service.demo.UtlatandeBuilder;
 import se.inera.statistics.service.processlog.EventType;
 import se.inera.statistics.service.processlog.LogConsumer;
-import se.inera.statistics.service.report.api.AgeGroups;
+import se.inera.statistics.service.report.api.Aldersgrupp;
 import se.inera.statistics.service.report.api.CasesPerCounty;
 import se.inera.statistics.service.report.api.CasesPerMonth;
 import se.inera.statistics.service.report.api.DegreeOfSickLeave;
@@ -69,7 +65,7 @@ public class QueueHelper {
     @Autowired
     private DiagnosisSubGroups diagnosisSubGroups;
     @Autowired
-    private AgeGroups ageGroups;
+    private Aldersgrupp aldersgrupp;
     @Autowired
     private DegreeOfSickLeave degreeOfSickLeave;
     @Autowired
@@ -176,15 +172,15 @@ public class QueueHelper {
     }
 
     private void printAndGetAgeGroups(String vardenhet1, String vardenhet2, Range range, Map<String, TestData> result) {
-        AgeGroupsResponse ageGroups1 = ageGroups.getHistoricalAgeGroups(vardenhet1, range.getTo(), RollingLength.YEAR);
+        AgeGroupsResponse ageGroups1 = aldersgrupp.getHistoricalAgeGroups(vardenhet1, range.getTo(), RollingLength.YEAR);
         LOG.info("AG data: " + ageGroups1);
         JsonNode ageGroups1Node = JSONParser.parse(ageGroups1.toString());
         result.put("ageGroups1", new TestData(ageGroups1, ageGroups1Node));
-        AgeGroupsResponse ageGroups2 = ageGroups.getHistoricalAgeGroups(vardenhet2, range.getTo(), RollingLength.YEAR);
+        AgeGroupsResponse ageGroups2 = aldersgrupp.getHistoricalAgeGroups(vardenhet2, range.getTo(), RollingLength.YEAR);
         LOG.info("AG data: " + ageGroups2);
         JsonNode ageGroups2Node = JSONParser.parse(ageGroups2.toString());
         result.put("ageGroups2", new TestData(ageGroups2, ageGroups2Node));
-        AgeGroupsResponse ageGroupsNationell = ageGroups.getHistoricalAgeGroups(nationell, range.getTo(), RollingLength.YEAR);
+        AgeGroupsResponse ageGroupsNationell = aldersgrupp.getHistoricalAgeGroups(nationell, range.getTo(), RollingLength.YEAR);
         LOG.info("Nationell AG data: " + ageGroupsNationell);
         JsonNode ageGroupsNationellNode = JSONParser.parse(ageGroupsNationell.toString());
         result.put("ageGroupsNationell", new TestData(ageGroupsNationell, ageGroupsNationellNode));

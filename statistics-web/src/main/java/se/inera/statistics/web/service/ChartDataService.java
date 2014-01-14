@@ -15,7 +15,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import se.inera.statistics.service.report.api.AgeGroups;
+import se.inera.statistics.service.report.api.Aldersgrupp;
 import se.inera.statistics.service.report.api.CasesPerCounty;
 import se.inera.statistics.service.report.api.CasesPerMonth;
 import se.inera.statistics.service.report.api.DegreeOfSickLeave;
@@ -60,7 +60,7 @@ public class ChartDataService {
     @Autowired
     private DiagnosisSubGroups datasourceDiagnosisSubGroups;
     @Autowired
-    private AgeGroups datasourceAgeGroups;
+    private Aldersgrupp datasourceAldersgrupp;
     @Autowired
     private DegreeOfSickLeave datasourceDegreeOfSickLeave;
     @Autowired
@@ -148,7 +148,7 @@ public class ChartDataService {
     public AgeGroupsData getAgeGroupsStatistics() {
         LOG.info("Calling getAgeGroupsStatistics for national");
         final RollingLength quarter = RollingLength.QUARTER;
-        AgeGroupsResponse ageGroups = datasourceAgeGroups.getHistoricalAgeGroups(NATIONELL, previousMonth(), quarter);
+        AgeGroupsResponse ageGroups = datasourceAldersgrupp.getHistoricalAgeGroups(NATIONELL, previousMonth(), quarter);
         return new AgeGroupsConverter().convert(ageGroups, new Range(quarter.getPeriods()));
     }
 

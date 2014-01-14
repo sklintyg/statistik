@@ -15,7 +15,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.transaction.annotation.Transactional;
 
-import se.inera.statistics.service.report.api.AgeGroups;
+import se.inera.statistics.service.report.api.Aldersgrupp;
 import se.inera.statistics.service.report.api.CasesPerCounty;
 import se.inera.statistics.service.report.api.CasesPerMonth;
 import se.inera.statistics.service.report.api.DegreeOfSickLeave;
@@ -40,7 +40,7 @@ public class OverviewPersistanceHandlerTest extends OverviewPersistenceHandler {
     private CasesPerMonth casesPerMonth;
 
     @Autowired
-    private AgeGroups aldersgruppPersistenceHandler;
+    private Aldersgrupp aldersgruppPersistenceHandler;
 
     @Autowired
     private DegreeOfSickLeave sjukskrivningsgrad;

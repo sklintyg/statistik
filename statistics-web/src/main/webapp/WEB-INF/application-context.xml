@@ -102,7 +102,7 @@
         <bean class="se.inera.statistics.service.report.mock.DiagnosisSubGroupsMock" id="diagnosisSubGroups"/>
         <bean class="se.inera.statistics.service.report.mock.OverviewMock" id="overview"/>
         <bean class="se.inera.statistics.service.report.mock.VerksamhetOverviewMock" id="verksamhetOverview"/>
-        <bean class="se.inera.statistics.service.report.mock.AgeGroupsMock" id="ageGroups"/>
+        <bean class="se.inera.statistics.service.report.mock.AldersgruppMock" id="ageGroups"/>
         <bean class="se.inera.statistics.service.report.mock.DegreeOfSickLeaveMock" id="degreeOfSickLeave"/>
         <bean class="se.inera.statistics.service.report.mock.SjukfallslangdGruppMock" id="sickLeaveLength"/>
         <bean class="se.inera.statistics.service.report.mock.CasesPerCountyMock" id="casesPerCounty"/>

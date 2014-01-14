@@ -27,7 +27,7 @@ import se.inera.statistics.service.helper.QueueHelper;
 import se.inera.statistics.service.helper.QueueSender;
 import se.inera.statistics.service.helper.TestData;
 import se.inera.statistics.service.processlog.LogConsumer;
-import se.inera.statistics.service.report.api.AgeGroups;
+import se.inera.statistics.service.report.api.Aldersgrupp;
 import se.inera.statistics.service.report.api.CasesPerCounty;
 import se.inera.statistics.service.report.api.CasesPerMonth;
 import se.inera.statistics.service.report.api.DegreeOfSickLeave;
@@ -67,7 +67,7 @@ public class RepresentativeIntygIntegrationTest {
     @Autowired
     private DiagnosisSubGroups diagnosisSubGroups;
     @Autowired
-    private AgeGroups ageGroups;
+    private Aldersgrupp aldersgrupp;
     @Autowired
     private DegreeOfSickLeave degreeOfSickLeave;
     @Autowired

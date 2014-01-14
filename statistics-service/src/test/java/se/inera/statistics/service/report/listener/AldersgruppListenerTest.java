@@ -21,7 +21,7 @@ import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import se.inera.statistics.service.demo.UtlatandeBuilder;
-import se.inera.statistics.service.report.api.AgeGroups;
+import se.inera.statistics.service.report.api.Aldersgrupp;
 import se.inera.statistics.service.report.model.DiagnosisGroup;
 import se.inera.statistics.service.report.model.Sex;
 import se.inera.statistics.service.report.repository.RollingLength;
@@ -42,7 +42,7 @@ public class AldersgruppListenerTest {
     private DiagnosisGroupsUtil util = mock(DiagnosisGroupsUtil.class);
 
     @Mock
-    private AgeGroups agegroups = mock(AgeGroups.class);
+    private Aldersgrupp agegroups = mock(Aldersgrupp.class);
 
     @InjectMocks
     private AldersGruppListener listener = new AldersGruppListener();

@@ -16,7 +16,7 @@ import se.inera.statistics.web.model.ChartSeries;
 import se.inera.statistics.web.model.NamedData;
 import se.inera.statistics.web.model.TableData;
 
-public class AgeGroupsConverterTest {
+public class AldersgruppConverterTest {
 
     // CHECKSTYLE:OFF MagicNumber
 
