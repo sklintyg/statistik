@@ -28,7 +28,7 @@ import se.inera.statistics.service.helper.QueueSender;
 import se.inera.statistics.service.helper.TestData;
 import se.inera.statistics.service.processlog.LogConsumer;
 import se.inera.statistics.service.report.api.*;
-import se.inera.statistics.service.report.api.FallPerLan;
+import se.inera.statistics.service.report.api.SjukfallPerLan;
 import se.inera.statistics.service.report.listener.AldersGruppListener;
 import se.inera.statistics.service.report.listener.SjukfallPerDiagnosgruppListener;
 import se.inera.statistics.service.report.model.Range;
@@ -70,7 +70,7 @@ public class RepresentativeIntygIntegrationTest {
     @Autowired
     private Overview overview;
     @Autowired
-    private FallPerLan fallPerLan;
+    private SjukfallPerLan sjukfallPerLan;
 
     @Autowired
     private QueueHelper queueHelper;

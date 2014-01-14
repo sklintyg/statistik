@@ -48,7 +48,7 @@ public class OverviewPersistanceHandlerTest extends OverviewPersistenceHandler {
     private NationellUpdater nationellUpdater;
 
     @Autowired
-    private FallPerLan fallPerLan;
+    private SjukfallPerLan sjukfallPerLan;
 
     @Before
     public void init() {
@@ -83,10 +83,10 @@ public class OverviewPersistanceHandlerTest extends OverviewPersistenceHandler {
         sjukfallslangdGrupp.count("2013-09", "id3", "<15 dagar", RollingLength.QUARTER, Verksamhet.VARDGIVARE, Sex.Female);
         sjukfallslangdGrupp.count("2013-09", "id1", ">365 dagar", RollingLength.QUARTER, Verksamhet.VARDGIVARE, Sex.Male);
 
-        fallPerLan.count("2013-09", "id1", "14", RollingLength.QUARTER, Sex.Female);
-        fallPerLan.count("2013-09", "id1", "14", RollingLength.QUARTER, Sex.Male);
-        fallPerLan.count("2013-09", "id2", "01", RollingLength.QUARTER, Sex.Female);
-        fallPerLan.count("2013-06", "id1", "14", RollingLength.QUARTER, Sex.Female);
+        sjukfallPerLan.count("2013-09", "id1", "14", RollingLength.QUARTER, Sex.Female);
+        sjukfallPerLan.count("2013-09", "id1", "14", RollingLength.QUARTER, Sex.Male);
+        sjukfallPerLan.count("2013-09", "id2", "01", RollingLength.QUARTER, Sex.Female);
+        sjukfallPerLan.count("2013-06", "id1", "14", RollingLength.QUARTER, Sex.Female);
 
     }
 

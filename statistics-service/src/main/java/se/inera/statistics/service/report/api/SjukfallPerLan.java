@@ -6,7 +6,7 @@ import se.inera.statistics.service.report.model.SimpleDualSexDataRow;
 import se.inera.statistics.service.report.model.SimpleDualSexResponse;
 import se.inera.statistics.service.report.repository.RollingLength;
 
-public interface FallPerLan {
+public interface SjukfallPerLan {
 
     SimpleDualSexResponse<SimpleDualSexDataRow> getStatistics(Range range);
 

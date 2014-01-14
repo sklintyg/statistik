@@ -68,7 +68,7 @@ public class QueueHelper {
     @Autowired
     private Overview overview;
     @Autowired
-    private FallPerLan fallPerLan;
+    private SjukfallPerLan sjukfallPerLan;
     @Autowired
     private NationellUpdaterJob nationellUpdaterJob;
     @Autowired
@@ -116,7 +116,7 @@ public class QueueHelper {
     }
 
     private void printAndGetCasesPerCountyNationell(Range range, Map<String, TestData> result) {
-        SimpleDualSexResponse<SimpleDualSexDataRow> casesPerCountyNationell = fallPerLan.getStatistics(range);
+        SimpleDualSexResponse<SimpleDualSexDataRow> casesPerCountyNationell = sjukfallPerLan.getStatistics(range);
         LOG.info("CPC: " + casesPerCountyNationell);
         JsonNode casesPerCountyNationellNode = JSONParser.parse(casesPerCountyNationell.toString());
         result.put("casesPerCountyNationell", new TestData(casesPerCountyNationell, casesPerCountyNationellNode));

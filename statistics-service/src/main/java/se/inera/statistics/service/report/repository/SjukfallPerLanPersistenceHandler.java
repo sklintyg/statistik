@@ -11,7 +11,7 @@ import javax.persistence.TypedQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
-import se.inera.statistics.service.report.api.FallPerLan;
+import se.inera.statistics.service.report.api.SjukfallPerLan;
 import se.inera.statistics.service.report.model.DualSexField;
 import se.inera.statistics.service.report.model.Lan;
 import se.inera.statistics.service.report.model.Range;
@@ -22,7 +22,7 @@ import se.inera.statistics.service.report.model.db.SjukfallPerLanKey;
 import se.inera.statistics.service.report.model.db.SjukfallPerLanRow;
 import se.inera.statistics.service.report.util.ReportUtil;
 
-public class SjukfallPerLanPersistenceHandler implements FallPerLan {
+public class SjukfallPerLanPersistenceHandler implements SjukfallPerLan {
     @PersistenceContext(unitName = "IneraStatisticsLog")
     private EntityManager manager;
 

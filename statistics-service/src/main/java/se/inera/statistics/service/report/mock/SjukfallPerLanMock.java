@@ -5,14 +5,14 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
-import se.inera.statistics.service.report.api.FallPerLan;
+import se.inera.statistics.service.report.api.SjukfallPerLan;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.Sex;
 import se.inera.statistics.service.report.model.SimpleDualSexDataRow;
 import se.inera.statistics.service.report.model.SimpleDualSexResponse;
 import se.inera.statistics.service.report.repository.RollingLength;
 
-public class FallPerLanMock implements FallPerLan {
+public class SjukfallPerLanMock implements SjukfallPerLan {
 
     private Random random = new Random();
     public static final List<String> GROUPS = Arrays.asList("Blekinge län", "Dalarnas län", "Gotlands län", "Gävleborgs län", "Hallands län", "Jämtlands län",

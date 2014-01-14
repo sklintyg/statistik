@@ -105,7 +105,7 @@
         <bean class="se.inera.statistics.service.report.mock.AldersgruppMock" id="ageGroups"/>
         <bean class="se.inera.statistics.service.report.mock.SjukskrivningsgradMock" id="degreeOfSickLeave"/>
         <bean class="se.inera.statistics.service.report.mock.SjukfallslangdGruppMock" id="sickLeaveLength"/>
-        <bean class="se.inera.statistics.service.report.mock.FallPerLanMock" id="casesPerCounty"/>
+        <bean class="se.inera.statistics.service.report.mock.SjukfallPerLanMock" id="casesPerCounty"/>
     </beans>
 
     <beans profile="demo,test,db,qa">

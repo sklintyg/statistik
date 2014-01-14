@@ -16,7 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import se.inera.statistics.service.report.api.*;
-import se.inera.statistics.service.report.api.FallPerLan;
+import se.inera.statistics.service.report.api.SjukfallPerLan;
 import se.inera.statistics.service.report.model.AgeGroupsResponse;
 import se.inera.statistics.service.report.model.DegreeOfSickLeaveResponse;
 import se.inera.statistics.service.report.model.DiagnosisGroup;
@@ -60,7 +60,7 @@ public class ChartDataService {
     @Autowired
     private SjukfallslangdGrupp datasourceSickLeaveLength;
     @Autowired
-    private FallPerLan datasourceFallPerLan;
+    private SjukfallPerLan datasourceSjukfallPerLan;
 
     @GET
     @Path("getNumberOfCasesPerMonth")
@@ -200,8 +200,8 @@ public class ChartDataService {
         Range range1 = Range.quarter();
         Range range2 = ReportUtil.getPreviousPeriod(range1);
 
-        SimpleDualSexResponse<SimpleDualSexDataRow> countyStatRange1 = datasourceFallPerLan.getStatistics(range1);
-        SimpleDualSexResponse<SimpleDualSexDataRow> countyStatRange2 = datasourceFallPerLan.getStatistics(range2);
+        SimpleDualSexResponse<SimpleDualSexDataRow> countyStatRange1 = datasourceSjukfallPerLan.getStatistics(range1);
+        SimpleDualSexResponse<SimpleDualSexDataRow> countyStatRange2 = datasourceSjukfallPerLan.getStatistics(range2);
         return new CasesPerCountyConverter(countyStatRange1, countyStatRange2, range1, range2).convert();
     }
 
@@ -220,7 +220,7 @@ public class ChartDataService {
     public SimpleDetailsData getSjukfallPerSexStatistics() {
         LOG.info("Calling getSjukfallPerSexStatistics for national");
         final Range range = new Range(12);
-        SimpleDualSexResponse<SimpleDualSexDataRow> casesPerMonth = datasourceFallPerLan.getStatistics(range);
+        SimpleDualSexResponse<SimpleDualSexDataRow> casesPerMonth = datasourceSjukfallPerLan.getStatistics(range);
         return new SjukfallPerSexConverter().convert(casesPerMonth, range);
     }
 
