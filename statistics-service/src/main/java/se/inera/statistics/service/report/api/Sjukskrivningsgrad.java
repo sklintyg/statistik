@@ -5,7 +5,7 @@ import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.Sex;
 import se.inera.statistics.service.report.util.Verksamhet;
 
-public interface DegreeOfSickLeave {
+public interface Sjukskrivningsgrad {
     DegreeOfSickLeaveResponse getStatistics(String hsaId, Range range);
     void count(String hsaId, String period, String grad, Verksamhet typ, Sex sex);
 }

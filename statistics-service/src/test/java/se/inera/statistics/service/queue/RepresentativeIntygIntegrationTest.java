@@ -62,7 +62,7 @@ public class RepresentativeIntygIntegrationTest {
     @Autowired
     private Aldersgrupp aldersgrupp;
     @Autowired
-    private DegreeOfSickLeave degreeOfSickLeave;
+    private Sjukskrivningsgrad sjukskrivningsgrad;
     @Autowired
     private SjukfallslangdGrupp sjukfallslangdGrupp;
     @Autowired

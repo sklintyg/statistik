@@ -16,7 +16,7 @@ import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.web.model.DualSexStatisticsData;
 import se.inera.statistics.web.model.TableData;
 
-public class DegreeOfSickLeaveConverterTest {
+public class SjukskrivningsgradConverterTest {
 
     @Test
     public void tableConverterTestEmptyInput() {

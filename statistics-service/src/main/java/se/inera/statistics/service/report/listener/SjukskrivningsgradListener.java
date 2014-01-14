@@ -6,14 +6,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import se.inera.statistics.service.helper.DocumentHelper;
-import se.inera.statistics.service.report.api.DegreeOfSickLeave;
+import se.inera.statistics.service.report.api.Sjukskrivningsgrad;
 import se.inera.statistics.service.report.util.Verksamhet;
 
 @Component
 public class SjukskrivningsgradListener extends GenericAbstractListener {
 
     @Autowired
-    private DegreeOfSickLeave api;
+    private Sjukskrivningsgrad api;
 
 
     @Override

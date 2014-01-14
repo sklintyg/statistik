@@ -18,7 +18,7 @@ import se.inera.statistics.service.processlog.LogConsumer;
 import se.inera.statistics.service.report.api.Aldersgrupp;
 import se.inera.statistics.service.report.api.FallPerLan;
 import se.inera.statistics.service.report.api.CasesPerMonth;
-import se.inera.statistics.service.report.api.DegreeOfSickLeave;
+import se.inera.statistics.service.report.api.Sjukskrivningsgrad;
 import se.inera.statistics.service.report.api.DiagnosisGroups;
 import se.inera.statistics.service.report.api.DiagnosisSubGroups;
 import se.inera.statistics.service.report.api.Overview;
@@ -67,7 +67,7 @@ public class QueueHelper {
     @Autowired
     private Aldersgrupp aldersgrupp;
     @Autowired
-    private DegreeOfSickLeave degreeOfSickLeave;
+    private Sjukskrivningsgrad sjukskrivningsgrad;
     @Autowired
     private SjukfallslangdGrupp sjukfallslangdGrupp;
     @Autowired
@@ -157,15 +157,15 @@ public class QueueHelper {
     }
 
     private void printAndGetDegreeOfSickLeave(String vardenhet1, String vardenhet2, Range range, Map<String, TestData> result) {
-        DegreeOfSickLeaveResponse degreeOfSickLeave1 = degreeOfSickLeave.getStatistics(vardenhet1, range);
+        DegreeOfSickLeaveResponse degreeOfSickLeave1 = sjukskrivningsgrad.getStatistics(vardenhet1, range);
         LOG.info("DOSL data: " + degreeOfSickLeave1);
         JsonNode degreeOfSickLeave1Node = JSONParser.parse(degreeOfSickLeave1.toString());
         result.put("degreeOfSickLeave1", new TestData(degreeOfSickLeave1, degreeOfSickLeave1Node));
-        DegreeOfSickLeaveResponse degreeOfSickLeave2 = degreeOfSickLeave.getStatistics(vardenhet2, range);
+        DegreeOfSickLeaveResponse degreeOfSickLeave2 = sjukskrivningsgrad.getStatistics(vardenhet2, range);
         LOG.info("DOSL data: " + degreeOfSickLeave2);
         JsonNode degreeOfSickLeave2Node = JSONParser.parse(degreeOfSickLeave2.toString());
         result.put("degreeOfSickLeave2", new TestData(degreeOfSickLeave2, degreeOfSickLeave2Node));
-        DegreeOfSickLeaveResponse degreeOfSickLeaveNationell = degreeOfSickLeave.getStatistics(nationell, range);
+        DegreeOfSickLeaveResponse degreeOfSickLeaveNationell = sjukskrivningsgrad.getStatistics(nationell, range);
         LOG.info("Nationell DOSL data: " + degreeOfSickLeaveNationell);
         JsonNode degreeOfSickLeaveNationellNode = JSONParser.parse(degreeOfSickLeaveNationell.toString());
         result.put("degreeOfSickLeaveNationell", new TestData(degreeOfSickLeaveNationell, degreeOfSickLeaveNationellNode));

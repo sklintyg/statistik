@@ -12,7 +12,7 @@ import javax.persistence.TypedQuery;
 import org.joda.time.LocalDate;
 import org.springframework.transaction.annotation.Transactional;
 
-import se.inera.statistics.service.report.api.DegreeOfSickLeave;
+import se.inera.statistics.service.report.api.Sjukskrivningsgrad;
 import se.inera.statistics.service.report.model.DegreeOfSickLeaveResponse;
 import se.inera.statistics.service.report.model.DualSexDataRow;
 import se.inera.statistics.service.report.model.DualSexField;
@@ -21,7 +21,7 @@ import se.inera.statistics.service.report.model.Sex;
 import se.inera.statistics.service.report.util.ReportUtil;
 import se.inera.statistics.service.report.util.Verksamhet;
 
-public class SjukskrivningsgradPersistenceHandler implements DegreeOfSickLeave {
+public class SjukskrivningsgradPersistenceHandler implements Sjukskrivningsgrad {
 
     public static final List<String> GRAD = Arrays.asList("25", "50", "75", "100");
 

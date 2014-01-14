@@ -56,7 +56,7 @@ public class ChartDataService {
     @Autowired
     private Aldersgrupp datasourceAldersgrupp;
     @Autowired
-    private DegreeOfSickLeave datasourceDegreeOfSickLeave;
+    private Sjukskrivningsgrad datasourceSjukskrivningsgrad;
     @Autowired
     private SjukfallslangdGrupp datasourceSickLeaveLength;
     @Autowired
@@ -161,7 +161,7 @@ public class ChartDataService {
     public DualSexStatisticsData getDegreeOfSickLeaveStatistics() {
         LOG.info("Calling getDegreeOfSickLeaveStatistics for national");
         final Range range = new Range(18);
-        DegreeOfSickLeaveResponse degreeOfSickLeaveStatistics = datasourceDegreeOfSickLeave.getStatistics(NATIONELL, range);
+        DegreeOfSickLeaveResponse degreeOfSickLeaveStatistics = datasourceSjukskrivningsgrad.getStatistics(NATIONELL, range);
         return new DegreeOfSickLeaveConverter().convert(degreeOfSickLeaveStatistics, range);
     }
 

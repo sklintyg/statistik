@@ -18,7 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import se.inera.statistics.service.report.api.Aldersgrupp;
 import se.inera.statistics.service.report.api.FallPerLan;
 import se.inera.statistics.service.report.api.CasesPerMonth;
-import se.inera.statistics.service.report.api.DegreeOfSickLeave;
+import se.inera.statistics.service.report.api.Sjukskrivningsgrad;
 import se.inera.statistics.service.report.api.DiagnosisGroups;
 import se.inera.statistics.service.report.api.SjukfallslangdGrupp;
 import se.inera.statistics.service.report.model.OverviewChartRowExtended;
@@ -43,7 +43,7 @@ public class OverviewPersistanceHandlerTest extends OverviewPersistenceHandler {
     private Aldersgrupp aldersgruppPersistenceHandler;
 
     @Autowired
-    private DegreeOfSickLeave sjukskrivningsgrad;
+    private Sjukskrivningsgrad sjukskrivningsgrad;
 
     @Autowired
     private SjukfallslangdGrupp sjukfallslangdGrupp;
