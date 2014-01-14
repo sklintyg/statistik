@@ -16,7 +16,7 @@ import se.inera.statistics.service.demo.UtlatandeBuilder;
 import se.inera.statistics.service.processlog.EventType;
 import se.inera.statistics.service.processlog.LogConsumer;
 import se.inera.statistics.service.report.api.Aldersgrupp;
-import se.inera.statistics.service.report.api.CasesPerCounty;
+import se.inera.statistics.service.report.api.FallPerLan;
 import se.inera.statistics.service.report.api.CasesPerMonth;
 import se.inera.statistics.service.report.api.DegreeOfSickLeave;
 import se.inera.statistics.service.report.api.DiagnosisGroups;
@@ -75,7 +75,7 @@ public class QueueHelper {
     @Autowired
     private Overview overview;
     @Autowired
-    private CasesPerCounty casesPerCounty;
+    private FallPerLan fallPerLan;
     @Autowired
     private NationellUpdaterJob nationellUpdaterJob;
     @Autowired
@@ -123,7 +123,7 @@ public class QueueHelper {
     }
 
     private void printAndGetCasesPerCountyNationell(Range range, Map<String, TestData> result) {
-        SimpleDualSexResponse<SimpleDualSexDataRow> casesPerCountyNationell = casesPerCounty.getStatistics(range);
+        SimpleDualSexResponse<SimpleDualSexDataRow> casesPerCountyNationell = fallPerLan.getStatistics(range);
         LOG.info("CPC: " + casesPerCountyNationell);
         JsonNode casesPerCountyNationellNode = JSONParser.parse(casesPerCountyNationell.toString());
         result.put("casesPerCountyNationell", new TestData(casesPerCountyNationell, casesPerCountyNationellNode));

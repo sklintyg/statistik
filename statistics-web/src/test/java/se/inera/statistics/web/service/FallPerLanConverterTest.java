@@ -17,7 +17,7 @@ import se.inera.statistics.web.model.ChartSeries;
 import se.inera.statistics.web.model.NamedData;
 import se.inera.statistics.web.model.TableData;
 
-public class CasesPerCountyConverterTest {
+public class FallPerLanConverterTest {
 
     // CHECKSTYLE:OFF MagicNumber
 

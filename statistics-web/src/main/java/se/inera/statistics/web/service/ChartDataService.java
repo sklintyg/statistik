@@ -15,14 +15,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import se.inera.statistics.service.report.api.Aldersgrupp;
-import se.inera.statistics.service.report.api.CasesPerCounty;
-import se.inera.statistics.service.report.api.CasesPerMonth;
-import se.inera.statistics.service.report.api.DegreeOfSickLeave;
-import se.inera.statistics.service.report.api.DiagnosisGroups;
-import se.inera.statistics.service.report.api.DiagnosisSubGroups;
-import se.inera.statistics.service.report.api.Overview;
-import se.inera.statistics.service.report.api.SjukfallslangdGrupp;
+import se.inera.statistics.service.report.api.*;
+import se.inera.statistics.service.report.api.FallPerLan;
 import se.inera.statistics.service.report.model.AgeGroupsResponse;
 import se.inera.statistics.service.report.model.DegreeOfSickLeaveResponse;
 import se.inera.statistics.service.report.model.DiagnosisGroup;
@@ -66,7 +60,7 @@ public class ChartDataService {
     @Autowired
     private SjukfallslangdGrupp datasourceSickLeaveLength;
     @Autowired
-    private CasesPerCounty datasourceCasesPerCounty;
+    private FallPerLan datasourceFallPerLan;
 
     @GET
     @Path("getNumberOfCasesPerMonth")
@@ -206,8 +200,8 @@ public class ChartDataService {
         Range range1 = Range.quarter();
         Range range2 = ReportUtil.getPreviousPeriod(range1);
 
-        SimpleDualSexResponse<SimpleDualSexDataRow> countyStatRange1 = datasourceCasesPerCounty.getStatistics(range1);
-        SimpleDualSexResponse<SimpleDualSexDataRow> countyStatRange2 = datasourceCasesPerCounty.getStatistics(range2);
+        SimpleDualSexResponse<SimpleDualSexDataRow> countyStatRange1 = datasourceFallPerLan.getStatistics(range1);
+        SimpleDualSexResponse<SimpleDualSexDataRow> countyStatRange2 = datasourceFallPerLan.getStatistics(range2);
         return new CasesPerCountyConverter(countyStatRange1, countyStatRange2, range1, range2).convert();
     }
 
@@ -226,7 +220,7 @@ public class ChartDataService {
     public SimpleDetailsData getSjukfallPerSexStatistics() {
         LOG.info("Calling getSjukfallPerSexStatistics for national");
         final Range range = new Range(12);
-        SimpleDualSexResponse<SimpleDualSexDataRow> casesPerMonth = datasourceCasesPerCounty.getStatistics(range);
+        SimpleDualSexResponse<SimpleDualSexDataRow> casesPerMonth = datasourceFallPerLan.getStatistics(range);
         return new SjukfallPerSexConverter().convert(casesPerMonth, range);
     }
 

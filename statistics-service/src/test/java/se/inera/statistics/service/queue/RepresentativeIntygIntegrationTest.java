@@ -27,15 +27,8 @@ import se.inera.statistics.service.helper.QueueHelper;
 import se.inera.statistics.service.helper.QueueSender;
 import se.inera.statistics.service.helper.TestData;
 import se.inera.statistics.service.processlog.LogConsumer;
-import se.inera.statistics.service.report.api.Aldersgrupp;
-import se.inera.statistics.service.report.api.CasesPerCounty;
-import se.inera.statistics.service.report.api.CasesPerMonth;
-import se.inera.statistics.service.report.api.DegreeOfSickLeave;
-import se.inera.statistics.service.report.api.DiagnosisGroups;
-import se.inera.statistics.service.report.api.DiagnosisSubGroups;
-import se.inera.statistics.service.report.api.Overview;
-import se.inera.statistics.service.report.api.SjukfallslangdGrupp;
-import se.inera.statistics.service.report.api.VerksamhetOverview;
+import se.inera.statistics.service.report.api.*;
+import se.inera.statistics.service.report.api.FallPerLan;
 import se.inera.statistics.service.report.listener.AldersGruppListener;
 import se.inera.statistics.service.report.listener.SjukfallPerDiagnosgruppListener;
 import se.inera.statistics.service.report.model.Range;
@@ -77,7 +70,7 @@ public class RepresentativeIntygIntegrationTest {
     @Autowired
     private Overview overview;
     @Autowired
-    private CasesPerCounty casesPerCounty;
+    private FallPerLan fallPerLan;
 
     @Autowired
     private QueueHelper queueHelper;

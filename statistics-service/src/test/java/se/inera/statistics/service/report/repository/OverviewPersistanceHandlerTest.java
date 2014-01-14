@@ -16,7 +16,7 @@ import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.transaction.annotation.Transactional;
 
 import se.inera.statistics.service.report.api.Aldersgrupp;
-import se.inera.statistics.service.report.api.CasesPerCounty;
+import se.inera.statistics.service.report.api.FallPerLan;
 import se.inera.statistics.service.report.api.CasesPerMonth;
 import se.inera.statistics.service.report.api.DegreeOfSickLeave;
 import se.inera.statistics.service.report.api.DiagnosisGroups;
@@ -52,7 +52,7 @@ public class OverviewPersistanceHandlerTest extends OverviewPersistenceHandler {
     private NationellUpdater nationellUpdater;
 
     @Autowired
-    private CasesPerCounty casesPerCounty;
+    private FallPerLan fallPerLan;
 
     @Before
     public void init() {
@@ -87,10 +87,10 @@ public class OverviewPersistanceHandlerTest extends OverviewPersistenceHandler {
         sjukfallslangdGrupp.count("2013-09", "id3", "<15 dagar", RollingLength.QUARTER, Verksamhet.VARDGIVARE, Sex.Female);
         sjukfallslangdGrupp.count("2013-09", "id1", ">365 dagar", RollingLength.QUARTER, Verksamhet.VARDGIVARE, Sex.Male);
 
-        casesPerCounty.count("2013-09", "id1", "14", RollingLength.QUARTER, Sex.Female);
-        casesPerCounty.count("2013-09", "id1", "14", RollingLength.QUARTER, Sex.Male);
-        casesPerCounty.count("2013-09", "id2", "01", RollingLength.QUARTER, Sex.Female);
-        casesPerCounty.count("2013-06", "id1", "14", RollingLength.QUARTER, Sex.Female);
+        fallPerLan.count("2013-09", "id1", "14", RollingLength.QUARTER, Sex.Female);
+        fallPerLan.count("2013-09", "id1", "14", RollingLength.QUARTER, Sex.Male);
+        fallPerLan.count("2013-09", "id2", "01", RollingLength.QUARTER, Sex.Female);
+        fallPerLan.count("2013-06", "id1", "14", RollingLength.QUARTER, Sex.Female);
 
     }
 
