@@ -17,8 +17,8 @@ import static org.mockito.MockitoAnnotations.Mock;
 
 import org.mockito.runners.MockitoJUnitRunner;
 import se.inera.statistics.service.report.api.CasesPerMonth;
-import se.inera.statistics.service.report.api.DiagnosisGroups;
-import se.inera.statistics.service.report.api.DiagnosisSubGroups;
+import se.inera.statistics.service.report.api.Diagnosgrupp;
+import se.inera.statistics.service.report.api.Diagnoskapitel;
 import se.inera.statistics.service.report.api.Overview;
 import se.inera.statistics.service.report.model.DiagnosisGroup;
 import se.inera.statistics.service.report.model.Range;
@@ -33,10 +33,10 @@ public class ChartDataServiceTest {
     private CasesPerMonth casesPerMonthMock = Mockito.mock(CasesPerMonth.class);
 
     @Mock
-    private DiagnosisGroups diagnosisGroupsMock = Mockito.mock(DiagnosisGroups.class);
+    private Diagnosgrupp diagnosgruppMock = Mockito.mock(Diagnosgrupp.class);
 
     @Mock
-    private DiagnosisSubGroups diagnosisSubGroupsMock = Mockito.mock(DiagnosisSubGroups.class);
+    private Diagnoskapitel diagnoskapitelMock = Mockito.mock(Diagnoskapitel.class);
 
     @InjectMocks
     private ChartDataService chartDataService = new ChartDataService();
@@ -72,7 +72,7 @@ public class ChartDataServiceTest {
         try {
             chartDataService.getDiagnosisGroupStatistics();
         } catch (NullPointerException e) { }
-        Mockito.verify(diagnosisGroupsMock).getDiagnosisGroups(anyString(), any(Range.class));
+        Mockito.verify(diagnosgruppMock).getDiagnosisGroups(anyString(), any(Range.class));
     }
 
     @Test
@@ -80,7 +80,7 @@ public class ChartDataServiceTest {
         try {
             chartDataService.getDiagnosisSubGroupStatistics("testId");
         } catch (NullPointerException e) { }
-        Mockito.verify(diagnosisSubGroupsMock).getDiagnosisGroups(anyString(), any(Range.class), eq("testId"));
+        Mockito.verify(diagnoskapitelMock).getDiagnosisGroups(anyString(), any(Range.class), eq("testId"));
     }
 
     // CHECKSTYLE:ON MagicNumber

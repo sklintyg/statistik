@@ -98,8 +98,8 @@
 
     <beans profile="!demo,!test,!db,!qa">
         <bean class="se.inera.statistics.service.report.mock.CasesPerMonthMock" id="casesPerMonth"/>
-        <bean class="se.inera.statistics.service.report.mock.DiagnosisGroupsMock" id="diagnosisGroups"/>
-        <bean class="se.inera.statistics.service.report.mock.DiagnosisSubGroupsMock" id="diagnosisSubGroups"/>
+        <bean class="se.inera.statistics.service.report.mock.DiagnosgruppMock" id="diagnosisGroups"/>
+        <bean class="se.inera.statistics.service.report.mock.DiagnoskapitelMock" id="diagnosisSubGroups"/>
         <bean class="se.inera.statistics.service.report.mock.OverviewMock" id="overview"/>
         <bean class="se.inera.statistics.service.report.mock.VerksamhetOverviewMock" id="verksamhetOverview"/>
         <bean class="se.inera.statistics.service.report.mock.AldersgruppMock" id="ageGroups"/>

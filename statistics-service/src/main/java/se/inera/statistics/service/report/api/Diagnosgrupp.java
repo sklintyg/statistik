@@ -9,7 +9,7 @@ import se.inera.statistics.service.report.util.Verksamhet;
 
 import java.util.Map;
 
-public interface DiagnosisGroups {
+public interface Diagnosgrupp {
     DiagnosisGroupResponse getDiagnosisGroups(String hsaId, Range range);
 
     void count(String hsaId, String period, String diagnosgrupp, Verksamhet typ, Sex sex);

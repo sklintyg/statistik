@@ -11,7 +11,7 @@ import javax.persistence.TypedQuery;
 import org.joda.time.LocalDate;
 import org.springframework.transaction.annotation.Transactional;
 
-import se.inera.statistics.service.report.api.DiagnosisGroups;
+import se.inera.statistics.service.report.api.Diagnosgrupp;
 import se.inera.statistics.service.report.listener.SjukfallPerDiagnosgruppListener;
 import se.inera.statistics.service.report.model.DiagnosisGroup;
 import se.inera.statistics.service.report.model.DiagnosisGroupResponse;
@@ -23,7 +23,7 @@ import se.inera.statistics.service.report.util.DiagnosisGroupsUtil;
 import se.inera.statistics.service.report.util.ReportUtil;
 import se.inera.statistics.service.report.util.Verksamhet;
 
-public class DiagnosgroupPersistenceHandler implements DiagnosisGroups {
+public class DiagnosgroupPersistenceHandler implements Diagnosgrupp {
     private static final List<DiagnosisGroup> HEADERS = DiagnosisGroupsUtil.getAllDiagnosisGroups();
 
     @PersistenceContext(unitName = "IneraStatisticsLog")

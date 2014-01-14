@@ -3,14 +3,14 @@ package se.inera.statistics.service.report.listener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import se.inera.statistics.service.report.api.DiagnosisSubGroups;
+import se.inera.statistics.service.report.api.Diagnoskapitel;
 import se.inera.statistics.service.report.util.Verksamhet;
 
 @Component
 public class SjukfallPerDiagnosundergruppListener extends GenericAbstractListener {
 
     @Autowired
-    private DiagnosisSubGroups diagnosisgroupPersistenceHandler;
+    private Diagnoskapitel diagnosisgroupPersistenceHandler;
 
     @Override
     boolean accept(GenericHolder token, String period) {

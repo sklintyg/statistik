@@ -49,9 +49,9 @@ public class ProtectedChartDataService {
     @Autowired
     private CasesPerMonth datasourceCasesPerMonth;
     @Autowired
-    private DiagnosisGroups datasourceDiagnosisGroups;
+    private Diagnosgrupp datasourceDiagnosgrupp;
     @Autowired
-    private DiagnosisSubGroups datasourceDiagnosisSubGroups;
+    private Diagnoskapitel datasourceDiagnoskapitel;
     @Autowired
     private Aldersgrupp datasourceAldersgrupp;
     @Autowired
@@ -92,7 +92,7 @@ public class ProtectedChartDataService {
     public DualSexStatisticsData getDiagnosisGroupStatistics(@Context HttpServletRequest request, @PathParam("verksamhetId") String verksamhetId) {
         LOG.info("Calling getDiagnosisGroupStatistics with verksamhetId: " + verksamhetId);
         final Range range = new Range(18);
-        DiagnosisGroupResponse diagnosisGroups = datasourceDiagnosisGroups.getDiagnosisGroups(verksamhetId, range);
+        DiagnosisGroupResponse diagnosisGroups = datasourceDiagnosgrupp.getDiagnosisGroups(verksamhetId, range);
         return new DiagnosisGroupsConverter().convert(diagnosisGroups, range);
     }
 
@@ -115,7 +115,7 @@ public class ProtectedChartDataService {
     public DualSexStatisticsData getDiagnosisSubGroupStatistics(@Context HttpServletRequest request, @PathParam("verksamhetId") String verksamhetId, @PathParam("groupId") String groupId) {
         LOG.info("Calling getDiagnosisSubGroupStatistics with verksamhetId: '" + verksamhetId + "' and groupId: " + groupId);
         final Range range = new Range(18);
-        DiagnosisGroupResponse diagnosisGroups = datasourceDiagnosisSubGroups.getDiagnosisGroups(Verksamhet.decodeId(verksamhetId), range, groupId);
+        DiagnosisGroupResponse diagnosisGroups = datasourceDiagnoskapitel.getDiagnosisGroups(Verksamhet.decodeId(verksamhetId), range, groupId);
         return new DiagnosisSubGroupsConverter().convert(diagnosisGroups, range);
     }
 

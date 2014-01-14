@@ -15,7 +15,7 @@ import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.web.model.DualSexStatisticsData;
 import se.inera.statistics.web.model.TableData;
 
-public class DiagnosisGroupsConverterTest {
+public class DiagnosgruppConverterTest {
 
     @Test
     public void tableConverterTestEmptyInput() {

@@ -12,7 +12,7 @@ import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
-import se.inera.statistics.service.report.api.DiagnosisSubGroups;
+import se.inera.statistics.service.report.api.Diagnoskapitel;
 import se.inera.statistics.service.report.model.DiagnosisGroup;
 import se.inera.statistics.service.report.model.DiagnosisGroupResponse;
 import se.inera.statistics.service.report.model.DualSexDataRow;
@@ -23,7 +23,7 @@ import se.inera.statistics.service.report.util.DiagnosisGroupsUtil;
 import se.inera.statistics.service.report.util.ReportUtil;
 import se.inera.statistics.service.report.util.Verksamhet;
 
-public class DiagnossubgroupPersistenceHandler implements DiagnosisSubGroups {
+public class DiagnossubgroupPersistenceHandler implements Diagnoskapitel {
     @PersistenceContext(unitName = "IneraStatisticsLog")
     private EntityManager manager;
 

@@ -19,8 +19,8 @@ import se.inera.statistics.service.report.api.Aldersgrupp;
 import se.inera.statistics.service.report.api.FallPerLan;
 import se.inera.statistics.service.report.api.CasesPerMonth;
 import se.inera.statistics.service.report.api.Sjukskrivningsgrad;
-import se.inera.statistics.service.report.api.DiagnosisGroups;
-import se.inera.statistics.service.report.api.DiagnosisSubGroups;
+import se.inera.statistics.service.report.api.Diagnosgrupp;
+import se.inera.statistics.service.report.api.Diagnoskapitel;
 import se.inera.statistics.service.report.api.Overview;
 import se.inera.statistics.service.report.api.SjukfallslangdGrupp;
 import se.inera.statistics.service.report.api.VerksamhetOverview;
@@ -61,9 +61,9 @@ public class QueueHelper {
     @Autowired
     private CasesPerMonth casesPerMonth;
     @Autowired
-    private DiagnosisGroups diagnosisGroups;
+    private Diagnosgrupp diagnosgrupp;
     @Autowired
-    private DiagnosisSubGroups diagnosisSubGroups;
+    private Diagnoskapitel diagnoskapitel;
     @Autowired
     private Aldersgrupp aldersgrupp;
     @Autowired
@@ -187,31 +187,31 @@ public class QueueHelper {
     }
 
     private void printAndGetDiagnosisSubGroups(String vardenhet1, String vardenhet2, Range range, Map<String, TestData> result) {
-        DiagnosisGroupResponse diagnosisSubGroups1 = diagnosisSubGroups.getDiagnosisGroups(vardenhet1, range, "A00-B99");
+        DiagnosisGroupResponse diagnosisSubGroups1 = diagnoskapitel.getDiagnosisGroups(vardenhet1, range, "A00-B99");
         LOG.info("DSG data: " + diagnosisSubGroups1);
         JsonNode diagnosisSubGroups1Node = JSONParser.parse(diagnosisSubGroups1.toString());
         result.put("diagnosisSubGroups1", new TestData(diagnosisSubGroups1, diagnosisSubGroups1Node));
-        DiagnosisGroupResponse diagnosisSubGroups2 = diagnosisSubGroups.getDiagnosisGroups(vardenhet2, range, "A00-B99");
+        DiagnosisGroupResponse diagnosisSubGroups2 = diagnoskapitel.getDiagnosisGroups(vardenhet2, range, "A00-B99");
         LOG.info("DSG data: " + diagnosisSubGroups2);
         JsonNode diagnosisSubGroups2Node = JSONParser.parse(diagnosisSubGroups2.toString());
         result.put("diagnosisSubGroups2", new TestData(diagnosisSubGroups2, diagnosisSubGroups2Node));
-        DiagnosisGroupResponse diagnosisSubGroupsNationell = diagnosisSubGroups.getDiagnosisGroups(nationell, range, "A00-B99");
+        DiagnosisGroupResponse diagnosisSubGroupsNationell = diagnoskapitel.getDiagnosisGroups(nationell, range, "A00-B99");
         LOG.info("Nationell DSG data: " + diagnosisSubGroupsNationell);
         JsonNode diagnosisSubGroupsNationellNode = JSONParser.parse(diagnosisSubGroupsNationell.toString());
         result.put("diagnosisSubGroupsNationell", new TestData(diagnosisSubGroupsNationell, diagnosisSubGroupsNationellNode));
     }
 
     private void printAndGetDiagnosisGroups(String vardenhet1, String vardenhet2, Range range, Map<String, TestData> result) {
-        DiagnosisGroupResponse diagnosisGroups1 = diagnosisGroups.getDiagnosisGroups(vardenhet1, range);
+        DiagnosisGroupResponse diagnosisGroups1 = diagnosgrupp.getDiagnosisGroups(vardenhet1, range);
         LOG.info("DG data: " + diagnosisGroups1);
         JsonNode diagnosisGroups1Node = JSONParser.parse(diagnosisGroups1.toString());
         result.put("diagnosisGroups1", new TestData(diagnosisGroups1, diagnosisGroups1Node));
         LOG.info("DG data: " + diagnosisGroups1Node.toString());
-        DiagnosisGroupResponse diagnosisGroups2 = diagnosisGroups.getDiagnosisGroups(vardenhet2, range);
+        DiagnosisGroupResponse diagnosisGroups2 = diagnosgrupp.getDiagnosisGroups(vardenhet2, range);
         LOG.info("DG jdata: " + diagnosisGroups2);
         JsonNode diagnosisGroups2Node = JSONParser.parse(diagnosisGroups2.toString());
         result.put("diagnosisGroups1", new TestData(diagnosisGroups2, diagnosisGroups2Node));
-        DiagnosisGroupResponse diagnosisGroupsNationell = diagnosisGroups.getDiagnosisGroups(nationell, range);
+        DiagnosisGroupResponse diagnosisGroupsNationell = diagnosgrupp.getDiagnosisGroups(nationell, range);
         LOG.info("Nationell DG data:" + diagnosisGroupsNationell);
         JsonNode diagnosisGroupsNationellNode = JSONParser.parse(diagnosisGroupsNationell.toString());
         result.put("diagnosisGroupsNationell", new TestData(diagnosisGroupsNationell, diagnosisGroupsNationellNode));

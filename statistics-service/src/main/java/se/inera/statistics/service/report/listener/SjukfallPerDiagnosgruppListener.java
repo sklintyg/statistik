@@ -3,7 +3,7 @@ package se.inera.statistics.service.report.listener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import se.inera.statistics.service.report.api.DiagnosisGroups;
+import se.inera.statistics.service.report.api.Diagnosgrupp;
 import se.inera.statistics.service.report.model.Sex;
 import se.inera.statistics.service.report.repository.DiagnosisGroupKey;
 import se.inera.statistics.service.report.util.Verksamhet;
@@ -18,7 +18,7 @@ public class SjukfallPerDiagnosgruppListener extends GenericAbstractListener {
     private final Map<DiagnosisGroupKey, DiagnosgruppValue> cache = new HashMap<>();
 
     @Autowired
-    private DiagnosisGroups diagnosisgroupPersistenceHandler;
+    private Diagnosgrupp diagnosisgroupPersistenceHandler;
 
     @Override
     boolean accept(GenericHolder token, String period) {

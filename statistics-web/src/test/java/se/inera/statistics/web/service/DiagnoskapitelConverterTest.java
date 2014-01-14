@@ -13,7 +13,7 @@ import se.inera.statistics.service.report.model.DualSexField;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.web.model.DualSexStatisticsData;
 
-public class DiagnosisSubGroupsConverterTest {
+public class DiagnoskapitelConverterTest {
 
     @Test
     public void converterTestEmpty() {

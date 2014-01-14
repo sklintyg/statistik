@@ -19,7 +19,7 @@ import org.springframework.core.io.Resource;
 import se.inera.statistics.service.report.model.DiagnosisGroup;
 
 @RunWith(MockitoJUnitRunner.class)
-public class DiagnosisGroupsUtilTest {
+public class DiagnosgruppUtilTest {
 
     @Mock
     private Resource icd10ChaptersAnsiFile = mock(Resource.class);

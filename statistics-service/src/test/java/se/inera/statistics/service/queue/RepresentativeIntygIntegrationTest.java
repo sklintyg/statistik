@@ -56,9 +56,9 @@ public class RepresentativeIntygIntegrationTest {
     @Autowired
     private CasesPerMonth casesPerMonth;
     @Autowired
-    private DiagnosisGroups diagnosisGroups;
+    private Diagnosgrupp diagnosgrupp;
     @Autowired
-    private DiagnosisSubGroups diagnosisSubGroups;
+    private Diagnoskapitel diagnoskapitel;
     @Autowired
     private Aldersgrupp aldersgrupp;
     @Autowired

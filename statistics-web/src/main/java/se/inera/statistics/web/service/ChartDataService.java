@@ -50,9 +50,9 @@ public class ChartDataService {
     @Autowired
     private CasesPerMonth datasourceCasesPerMonth;
     @Autowired
-    private DiagnosisGroups datasourceDiagnosisGroups;
+    private Diagnosgrupp datasourceDiagnosgrupp;
     @Autowired
-    private DiagnosisSubGroups datasourceDiagnosisSubGroups;
+    private Diagnoskapitel datasourceDiagnoskapitel;
     @Autowired
     private Aldersgrupp datasourceAldersgrupp;
     @Autowired
@@ -95,7 +95,7 @@ public class ChartDataService {
     public DualSexStatisticsData getDiagnosisGroupStatistics() {
         LOG.info("Calling getDiagnosisGroupStatistics for national");
         final Range range = new Range(18);
-        DiagnosisGroupResponse diagnosisGroups = datasourceDiagnosisGroups.getDiagnosisGroups(NATIONELL, range);
+        DiagnosisGroupResponse diagnosisGroups = datasourceDiagnosgrupp.getDiagnosisGroups(NATIONELL, range);
         return new DiagnosisGroupsConverter().convert(diagnosisGroups, range);
     }
 
@@ -114,7 +114,7 @@ public class ChartDataService {
     public DualSexStatisticsData getDiagnosisSubGroupStatistics(@PathParam("groupId") String groupId) {
         LOG.info("Calling getDiagnosisSubGroupStatistics for national with groupId: " + groupId);
         final Range range = new Range(18);
-        DiagnosisGroupResponse diagnosisGroups = datasourceDiagnosisSubGroups.getDiagnosisGroups(NATIONELL, range, groupId);
+        DiagnosisGroupResponse diagnosisGroups = datasourceDiagnoskapitel.getDiagnosisGroups(NATIONELL, range, groupId);
         return new DiagnosisSubGroupsConverter().convert(diagnosisGroups, range);
     }
 

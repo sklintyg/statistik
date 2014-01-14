@@ -12,11 +12,11 @@ class FilteredDiagnos {
         this.tabell = tabell
     }
 
-    // {"DiagnosisGroupResponse":{"diagnosisGroups":[{"DiagnosisGroup":{"id":"A00-B99", "name":"Vissa infektionssjukdomar och parasitsjukdomar",...}}], "rows":[{"DualSexDataRow":{"name":"jan 2012", "data":[{"DualSexField":{"female":0, "male":0}},...]}}, ...]}}
+    // {"DiagnosisGroupResponse":{"diagnosgrupp":[{"DiagnosisGroup":{"id":"A00-B99", "name":"Vissa infektionssjukdomar och parasitsjukdomar",...}}], "rows":[{"DualSexDataRow":{"name":"jan 2012", "data":[{"DualSexField":{"female":0, "male":0}},...]}}, ...]}}
     public List<Object> query() {
         TestData data = IntygSender.testResult.get(tabell)
         JsonNode testResult = data.jsonNode
-        Iterator<JsonNode> grupps = testResult.findPath("diagnosisGroups").iterator()
+        Iterator<JsonNode> grupps = testResult.findPath("diagnosgrupp").iterator()
         List<String> gruppList = new ArrayList<>();
         while(grupps.hasNext()) {
             gruppList.add(grupps.next().path("DiagnosisGroup").path("id").textValue())

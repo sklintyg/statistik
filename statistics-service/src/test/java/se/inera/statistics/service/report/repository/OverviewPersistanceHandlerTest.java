@@ -15,12 +15,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.transaction.annotation.Transactional;
 
-import se.inera.statistics.service.report.api.Aldersgrupp;
-import se.inera.statistics.service.report.api.FallPerLan;
-import se.inera.statistics.service.report.api.CasesPerMonth;
-import se.inera.statistics.service.report.api.Sjukskrivningsgrad;
-import se.inera.statistics.service.report.api.DiagnosisGroups;
-import se.inera.statistics.service.report.api.SjukfallslangdGrupp;
+import se.inera.statistics.service.report.api.*;
+import se.inera.statistics.service.report.api.Diagnosgrupp;
 import se.inera.statistics.service.report.model.OverviewChartRowExtended;
 import se.inera.statistics.service.report.model.OverviewResponse;
 import se.inera.statistics.service.report.model.Range;
@@ -34,7 +30,7 @@ import se.inera.statistics.service.report.util.Verksamhet;
 public class OverviewPersistanceHandlerTest extends OverviewPersistenceHandler {
 
     @Autowired
-    private DiagnosisGroups diagnosgroupPersistenceHandler;
+    private Diagnosgrupp diagnosgroupPersistenceHandler;
 
     @Autowired
     private CasesPerMonth casesPerMonth;
