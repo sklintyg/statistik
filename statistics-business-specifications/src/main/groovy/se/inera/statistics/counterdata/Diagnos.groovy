@@ -16,7 +16,7 @@ class Diagnos {
     public List<Object> query() {
         TestData data = IntygSender.testResult.get(tabell)
         JsonNode testResult = data.jsonNode
-        Iterator<JsonNode> grupps = testResult.findPath("diagnosgrupp").iterator()
+        Iterator<JsonNode> grupps = testResult.findPath("diagnosisGroups").iterator()
         List<String> gruppList = new ArrayList<>();
         while(grupps.hasNext()) {
             gruppList.add(grupps.next().path("DiagnosisGroup").path("id").textValue())
