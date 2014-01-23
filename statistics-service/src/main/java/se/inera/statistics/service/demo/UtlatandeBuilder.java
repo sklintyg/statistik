@@ -62,9 +62,9 @@ public class UtlatandeBuilder {
         intyg.put("validFromDate", FORMATTER.print(start));
         intyg.put("validToDate", FORMATTER.print(end));
 
-        for (JsonNode node: intyg.path("observations")) {
+        for (JsonNode node: intyg.path("observationer")) {
             if (DocumentHelper.ARBETSFORMAGA_MATCHER.match(node)) {
-                ObjectNode varde = (ObjectNode) node.path("observationsPeriod");
+                ObjectNode varde = (ObjectNode) node.path("observationsperiod");
                 varde.put("from", FORMATTER.print(start));
                 varde.put("tom", FORMATTER.print(end));
             }
@@ -73,14 +73,14 @@ public class UtlatandeBuilder {
         ((ObjectNode) intyg.path("skapadAv").path("id")).put("extension", personal);
         ((ObjectNode) intyg.path("skapadAv").path("vardenhet").path("id")).put("extension", vardenhet);
         ((ObjectNode) intyg.path("skapadAv").path("vardenhet").path("vardgivare").path("id")).put("extension", vardgivare);
-        for (JsonNode observation: intyg.path("observations")) {
+        for (JsonNode observation: intyg.path("observationer")) {
             if (DocumentHelper.DIAGNOS_MATCHER.match(observation)) {
-                ((ObjectNode) observation.path("observationsKod")).put("code", diagnos);
+                ((ObjectNode) observation.path("observationskod")).put("code", diagnos);
             }
         }
 
         int i = 0;
-        for (JsonNode observation: intyg.path("observations")) {
+        for (JsonNode observation: intyg.path("observationer")) {
             if (DocumentHelper.ARBETSFORMAGA_MATCHER.match(observation)) {
                 String a = "0";
                 if (i < arbetsformaga.size()) {
@@ -134,9 +134,9 @@ public class UtlatandeBuilder {
         intyg.put("validFromDate", FORMATTER.print(start));
         intyg.put("validToDate", FORMATTER.print(end));
 
-        for (JsonNode node: intyg.path("observations")) {
+        for (JsonNode node: intyg.path("observationer")) {
             if (DocumentHelper.ARBETSFORMAGA_MATCHER.match(node)) {
-                ObjectNode varde = (ObjectNode) node.path("observationsPeriod");
+                ObjectNode varde = (ObjectNode) node.path("observationsperiod");
                 varde.put("from", FORMATTER.print(starts.get(0)));
                 starts.remove(0);
                 varde.put("tom", FORMATTER.print(stops.get(0)));
@@ -146,14 +146,14 @@ public class UtlatandeBuilder {
 
         ((ObjectNode) intyg.path("skapadAv").path("vardenhet").path("id")).put("extension", enhet);
         ((ObjectNode) intyg.path("skapadAv").path("vardenhet").path("vardgivare").path("id")).put("extension", vardgivare);
-        for (JsonNode observation: intyg.path("observations")) {
+        for (JsonNode observation: intyg.path("observationer")) {
             if (DocumentHelper.DIAGNOS_MATCHER.match(observation)) {
-                ((ObjectNode) observation.path("observationsKod")).put("code", diagnos);
+                ((ObjectNode) observation.path("observationskod")).put("code", diagnos);
             }
         }
 
         int i = 0;
-        for (JsonNode observation: intyg.path("observations")) {
+        for (JsonNode observation: intyg.path("observationer")) {
             if (DocumentHelper.ARBETSFORMAGA_MATCHER.match(observation)) {
                 String a = "0";
                 if (i < grads.size()) {

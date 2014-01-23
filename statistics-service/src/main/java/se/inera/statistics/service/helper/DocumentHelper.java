@@ -15,15 +15,15 @@ public final class DocumentHelper {
     public static final int SEX_DIGIT = 11;
     public static final int DATE_PART_OF_PERSON_ID = 8;
 
-    public static final Matcher DIAGNOS_MATCHER = Matcher.Builder.matcher("observationsKategori").add(Matcher.Builder.matcher("code", "439401001")).add((Matcher.Builder.matcher("codeSystem", "1.2.752.116.2.1.1.1")));
-    public static final Matcher ARBETSFORMAGA_MATCHER = Matcher.Builder.matcher("observationsKod").add(Matcher.Builder.matcher("code", "302119000")).add((Matcher.Builder.matcher("codeSystem", "1.2.752.116.2.1.1.1")));
+    public static final Matcher DIAGNOS_MATCHER = Matcher.Builder.matcher("observationskategori").add(Matcher.Builder.matcher("code", "439401001")).add((Matcher.Builder.matcher("codeSystem", "1.2.752.116.2.1.1.1")));
+    public static final Matcher ARBETSFORMAGA_MATCHER = Matcher.Builder.matcher("observationskod").add(Matcher.Builder.matcher("code", "302119000")).add((Matcher.Builder.matcher("codeSystem", "1.2.752.116.2.1.1.1")));
 
     private DocumentHelper() {
     }
 
     public static ObjectNode anonymize(JsonNode utlatande) {
         String personId = utlatande.path("patient").path("id").path("extension").textValue();
-        int alder = extractAlder(personId, ISODateTimeFormat.dateTimeParser().parseLocalDate(utlatande.path("signeringsDatum").textValue()));
+        int alder = extractAlder(personId, ISODateTimeFormat.dateTimeParser().parseLocalDate(utlatande.path("signeringsdatum").textValue()));
         String kon = extractKon(personId);
 
         ObjectNode anonymous = utlatande.deepCopy();
@@ -65,9 +65,9 @@ public final class DocumentHelper {
 
     public static String getForstaNedsattningsdag(JsonNode document) {
         String from = null;
-        for (JsonNode node: document.path("observations")) {
+        for (JsonNode node: document.path("observationer")) {
             if (ARBETSFORMAGA_MATCHER.match(node)) {
-                JsonNode varde = node.path("observationsPeriod");
+                JsonNode varde = node.path("observationsperiod");
                 String candidate = varde.path("from").asText();
                 if (from == null || from.compareTo(candidate) > 0) {
                     from = candidate;
@@ -79,9 +79,9 @@ public final class DocumentHelper {
 
     public static String getSistaNedsattningsdag(JsonNode document) {
         String to = null;
-        for (JsonNode node: document.path("observations")) {
+        for (JsonNode node: document.path("observationer")) {
             if (ARBETSFORMAGA_MATCHER.match(node)) {
-                JsonNode varde = node.path("observationsPeriod");
+                JsonNode varde = node.path("observationsperiod");
                 String candidate = varde.path("tom").asText();
                 if (to == null || to.compareTo(candidate) < 0) {
                     to = candidate;
@@ -96,9 +96,9 @@ public final class DocumentHelper {
     }
 
     public static String getDiagnos(JsonNode document) {
-        for (JsonNode node: document.path("observations")) {
+        for (JsonNode node: document.path("observationer")) {
             if (DIAGNOS_MATCHER.match(node)) {
-                return node.path("observationsKod").path("code").textValue();
+                return node.path("observationskod").path("code").textValue();
             }
         }
         return null;
@@ -106,7 +106,7 @@ public final class DocumentHelper {
 
     public static List<String> getArbetsformaga(JsonNode document) {
         List<String> result = new ArrayList<>();
-        for (JsonNode node: document.path("observations")) {
+        for (JsonNode node: document.path("observationer")) {
             if (ARBETSFORMAGA_MATCHER.match(node)) {
                 for (JsonNode varde: node.path("varde")) {
                     result.add(varde.path("quantity").asText());
