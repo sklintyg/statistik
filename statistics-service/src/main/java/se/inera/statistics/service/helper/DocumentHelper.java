@@ -20,6 +20,7 @@
 package se.inera.statistics.service.helper;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.joda.time.LocalDate;
@@ -140,5 +141,23 @@ public final class DocumentHelper {
 
     public static int getAge(JsonNode document) {
         return document.path(PATIENT).path("alder").intValue();
+    }
+
+    private static List<String> enhets = new ArrayList<>();
+    public static int getEnhetAndRemember(JsonNode document) {
+        String e = getEnhetId(document);
+        enhets.add(e);
+        return enhets.size() - 1;
+    }
+
+    public static int getLakarIntyg(JsonNode document) {
+        return 0;
+    }
+
+    private static List<String> patients = new ArrayList<>();
+    public static int getPatientAndRemember(JsonNode document) {
+        String id = getPersonId(document);
+        patients.add(id);
+        return patients.size() - 1;
     }
 }

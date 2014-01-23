@@ -35,4 +35,13 @@ public final class HSAServiceHelper {
             return Lan.OVRIGT;
         }
     }
+
+    public static int getKommun(JsonNode hsaData) {
+        try {
+            String result = hsaData.path("geografi").path("kommun").path("kod").textValue();
+            return result != null ? Integer.parseInt(result) : 80;
+        } catch (NullPointerException e) {
+            return 80;
+        }
+    }
 }

@@ -1,0 +1,43 @@
+id:Verksamhetstyp
+  Geografiskt område
+id:    Län
+id:    Kommun
+id:    Församling
+id:Enhet
+id:Vardgivare
+  Rapportbas (t ex Sjukfall)
+id:    Sjukfall
+id:    Läkarintyg
+id:    Patient
+id:    Sjukdagar
+id:    Sjukdagar/sjukfall
+ym:Period
+  Tvärsnitt
+01:Kön
+id:Ålder
+  Diagnos (ICD10)
+id:    Diagnoskapitel
+id:    Avsnitt
+id:    Kategori
+03:Sjukskrivningsgrad // 0%, 25%, 50%, 75%, 100%
+id:Sjukskrivningslängd // gruppera?
+id:Läkere, kön // m, k, ö
+id:Läkare, ålder // gruppera?
+id:Läkare, befattning // 9 befattningar + övriga + saknas
+
+Måste finnas sjukfallskedja också
+
+Vid 10 miljoner rader
+=====================
+(varje intyg genererar 1 rad per sjukskrivningsperiod i intyget per kalendermånad?)
+
+Minnesåtgång för huvuddatatabellen:
+(8+20*4)*10 000 000=880 000 000 => c:a 1 GiB
+
+Minnesåtgång för varje enkel nyckel:
+(x+4+4)*10 000 000 => c:a (8 + x) * 10 MiB + overhead
+
+
+Utsökning
+=========
+Använd den mest specifika hashmap:en. Filtrera resultatet över övriga sökta villkor.
