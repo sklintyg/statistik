@@ -1,5 +1,11 @@
 package se.inera.statistics.service.report.util;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 import java.util.UUID;
 
 import javax.annotation.PostConstruct;
@@ -13,6 +19,7 @@ import javax.jms.TextMessage;
 import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.core.io.Resource;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.jms.core.MessageCreator;
 
@@ -30,14 +37,45 @@ public class RemoteSender {
     @Autowired
     private Queue destination;
 
+    private RandomValues personer;
+    private RandomValues lakare;
+    private RandomValues enheter;
+    private RandomValues vardgivare;
+
     @PostConstruct
     public void setup() {
         this.jmsTemplate = new JmsTemplate(connectionFactory);
     }
 
+    public void setPersoner(RandomValues personer) {
+        this.personer = personer;
+    }
+    
+    public void setVardgivare(RandomValues vardgivare) {
+        this.vardgivare = vardgivare;
+    }
+    
+    public void setEnheter(RandomValues enheter) {
+        this.enheter = enheter;
+    }
+    
+    public void setLakare(RandomValues lakare) {
+        this.lakare = lakare;
+    }
+    
+
     public void send() {
         UtlatandeBuilder builder = new UtlatandeBuilder();
-        simpleSend(builder.build("20121212-1212", new LocalDate("2013-10-20"), new LocalDate("2013-11-11"), "TST5565594230-106J", "IFV1239877878-103H", "IFV1239877878-0001", "D01", 0).toString(), UUID.randomUUID().toString());
+//        simpleSend(builder.build("20121212-1212", new LocalDate("2013-10-20"), new LocalDate("2013-11-11"), "TST5565594230-106J", "IFV1239877878-103H", "IFV1239877878-0001", "D01", 0).toString(), UUID.randomUUID().toString());
+        for (int i = 0; i < 10; i++) {
+            String personid = personer.getRandom();
+            String lakarid = lakare.getRandom();
+            String enhetid = enheter.getRandom();
+            String vargivarid = vardgivare.getRandom();
+            String uuid = UUID.randomUUID().toString();
+            simpleSend(builder.build(personid, new LocalDate("2013-10-20"), new LocalDate("2013-11-11"), lakarid, enhetid, vargivarid, "D01", 0).toString(), uuid);
+            if (i % 100 == 0) { System.err.println(i);};
+        }
     }
 
     private void simpleSend(final String intyg, final String correlationId) {
@@ -54,12 +92,38 @@ public class RemoteSender {
     public static void main(String[] args) throws InterruptedException {
         try (ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("classpath:send-to-mq-context.xml")) {
             RemoteSender bean = context.getBean("sender", RemoteSender.class);
-            bean.connectionFactory = (ConnectionFactory) context.getBean("jmsFactory");
-            bean.destination = (Queue) context.getBean("queue");
-            bean.setup();
             bean.send();
             Thread.sleep(5000);
         }
     }
+    
+    public static class RandomValues {
+
+        private static Random random = new Random();
+
+        private Resource source;
+
+        private List<String> values;
+
+        public void setSource(Resource source) {
+            this.source = source;
+        }
+
+        @PostConstruct
+        public void setup() throws IOException {
+            values = new ArrayList<String>();
+            try (BufferedReader br = new BufferedReader(new InputStreamReader(source.getInputStream()))) {
+                String line;
+                while ( (line = br.readLine()) != null) {
+                    values.add(line);
+                }
+            }
+        }
+
+        public String getRandom() {
+            return values.get(random.nextInt(values.size()));
+        }
+    }
+
 }
 //CHECKSTYLE:ON MagicNumber

@@ -39,9 +39,9 @@ public final class HSAServiceHelper {
     public static int getKommun(JsonNode hsaData) {
         try {
             String result = hsaData.path("geografi").path("kommun").path("kod").textValue();
-            return result != null ? Integer.parseInt(result) : 80;
+            return result != null ? Integer.parseInt(result) : 0;
         } catch (NullPointerException e) {
-            return 80;
+            return 0;
         }
     }
 }

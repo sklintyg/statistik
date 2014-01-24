@@ -21,7 +21,9 @@ package se.inera.statistics.service.helper;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.joda.time.LocalDate;
 import org.joda.time.Period;
@@ -143,21 +145,31 @@ public final class DocumentHelper {
         return document.path(PATIENT).path("alder").intValue();
     }
 
-    private static List<String> enhets = new ArrayList<>();
+    private static IdMap<String> enhetsMap = new IdMap<>();
+    
     public static int getEnhetAndRemember(JsonNode document) {
-        String e = getEnhetId(document);
-        enhets.add(e);
-        return enhets.size() - 1;
+        return enhetsMap.getId(getEnhetId(document));
     }
 
     public static int getLakarIntyg(JsonNode document) {
         return 0;
     }
 
-    private static List<String> patients = new ArrayList<>();
-    public static int getPatientAndRemember(JsonNode document) {
+    public static int getPatient(JsonNode document) {
         String id = getPersonId(document);
-        patients.add(id);
-        return patients.size() - 1;
+        return Integer.parseInt(id.substring(2, 8)) * 1000 + Integer.parseInt(id.substring(9, 12)) + (1_000_000_000 * (Integer.parseInt(id.substring(0,2)) - 19));
+    }
+    
+    private static class IdMap<T> {
+        private final Map<T, Integer> map = new HashMap<T,Integer>();
+        
+        public synchronized Integer getId(T key) {
+            Integer id = map.get(key);
+            if (id == null) {
+                id = map.size() + 1;
+                map.put(key, id);
+            }
+            return id;
+        }
     }
 }
