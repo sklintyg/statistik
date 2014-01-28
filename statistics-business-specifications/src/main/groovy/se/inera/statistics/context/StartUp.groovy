@@ -5,14 +5,23 @@
 
 package se.inera.statistics.context
 
+import org.springframework.context.ApplicationContext
 import org.springframework.context.support.ClassPathXmlApplicationContext
+import org.springframework.context.support.GenericXmlApplicationContext
 
 class StartUp {
-    static ClassPathXmlApplicationContext context
+    static GenericXmlApplicationContext context
 
     boolean startContext(String contextFile) {
         println("About to read context")
-        context = new ClassPathXmlApplicationContext(contextFile)
+        GenericXmlApplicationContext ctx = new GenericXmlApplicationContext();
+        ctx.getEnvironment().setActiveProfiles("dev");
+        ctx.load(contextFile);
+        ctx.refresh();
+        context = ctx;
+//        context = new ClassPathXmlApplicationContext(contextFile)
+//        context.getEnvironment().setActiveProfiles("dev")
+//        context.refresh()
         true
     }
 
@@ -22,7 +31,7 @@ class StartUp {
         true
     }
 
-    static ClassPathXmlApplicationContext getContext() {
+    static ApplicationContext getContext() {
         return context
     }
 }

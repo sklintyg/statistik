@@ -79,6 +79,7 @@
     <bean class="se.inera.statistics.service.processlog.Processor"/>
     <bean class="se.inera.statistics.service.report.util.DiagnosUtil"/>
     <bean class="se.inera.statistics.queue.IntygSender"/>
+    <bean id="warehouse" class="se.inera.statistics.service.warehouse.Warehouse" />
 
     <context:component-scan base-package="se.inera.statistics.service.report.repository"/>
     <context:component-scan
