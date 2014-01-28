@@ -46,6 +46,10 @@ public class WideLine {
     }
 
 
+    public int getPatient() {
+        return patient;
+    }
+
     @Override
     public String toString() {
         return "WideLine{" +

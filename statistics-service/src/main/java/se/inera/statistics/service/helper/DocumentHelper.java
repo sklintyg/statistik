@@ -156,7 +156,10 @@ public final class DocumentHelper {
     }
 
     public static int getPatient(JsonNode document) {
-        String id = getPersonId(document);
+        return patientIdToInt(getPersonId(document));
+    }
+
+    public static int patientIdToInt(String id) {
         return Integer.parseInt(id.substring(2, 8)) * 1000 + Integer.parseInt(id.substring(9, 12)) + (1_000_000_000 * (Integer.parseInt(id.substring(0,2)) - 19));
     }
     

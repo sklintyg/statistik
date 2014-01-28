@@ -26,6 +26,7 @@ import java.util.Map;
 public class Lan implements Iterable<String> {
 
     public static final String OVRIGT = "Okänt län";
+    public static final String OVRIGT_ID = "0";
     private final Map<String, String> kodToName = new LinkedHashMap<>();
 
     public Lan() {
@@ -50,7 +51,7 @@ public class Lan implements Iterable<String> {
         kodToName.put("14", "Västra Götalands län");
         kodToName.put("18", "Örebro län");
         kodToName.put("05", "Östergötlands län");
-        kodToName.put(OVRIGT, OVRIGT);
+        kodToName.put(OVRIGT_ID, OVRIGT);
     }
 
     public String getNamn(String kod) {
