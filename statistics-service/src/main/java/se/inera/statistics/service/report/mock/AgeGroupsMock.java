@@ -1,18 +1,15 @@
 package se.inera.statistics.service.report.mock;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
 import org.joda.time.LocalDate;
 
 import se.inera.statistics.service.report.api.AgeGroups;
-import se.inera.statistics.service.report.listener.AldersGruppListener;
 import se.inera.statistics.service.report.model.AgeGroupsResponse;
-import se.inera.statistics.service.report.model.db.AgeGroupsRow;
 import se.inera.statistics.service.report.model.Sex;
-import se.inera.statistics.service.report.model.db.AldersgruppKey;
+import se.inera.statistics.service.report.model.db.AgeGroupsRow;
 import se.inera.statistics.service.report.repository.RollingLength;
 import se.inera.statistics.service.report.util.AldersgroupUtil;
 import se.inera.statistics.service.report.util.Ranges.Range;
@@ -46,15 +43,6 @@ public class AgeGroupsMock implements AgeGroups {
     public AgeGroupsResponse getHistoricalAgeGroups(String hsaId, LocalDate when, RollingLength rollignLength) {
         return getAgeGroups(12);
     }
-
-    @Override
-    public void count(AldersgruppKey key, AldersGruppListener.AldersgruppValue value) {
-    }
-
-    @Override
-    public void countAll(HashMap<AldersgruppKey, AldersGruppListener.AldersgruppValue> cache) {
-    }
-
     // CHECKSTYLE:ON
 
 }

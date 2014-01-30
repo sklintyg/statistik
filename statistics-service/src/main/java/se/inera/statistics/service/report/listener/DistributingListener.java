@@ -1,7 +1,5 @@
 package se.inera.statistics.service.report.listener;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,8 +12,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 
 @Component
 public class DistributingListener implements ProcessorListener {
-    private static final Logger LOG = LoggerFactory.getLogger(DistributingListener.class);
-
     @Autowired
     private SjukfallPerKonListener sjukfallPerKonListener;
 
@@ -39,8 +35,6 @@ public class DistributingListener implements ProcessorListener {
 
     @Autowired
     private ProcessLog processLog;
-    private long latestLogId;
-    private final Object lock = new Object();
 
     @Override
     @Transactional
@@ -52,22 +46,5 @@ public class DistributingListener implements ProcessorListener {
         cacheFull = cacheFull | sjukfallsLangdListener.accept(sjukfallInfo, utlatande, hsa);
         cacheFull = cacheFull | sjukskrivningsgradListener.accept(sjukfallInfo, utlatande, hsa);
         cacheFull = cacheFull | sjukfallPerLanListener.accept(sjukfallInfo, utlatande, hsa);
-
-        synchronized (lock) {
-            latestLogId = logId;
-            if (cacheFull) {
-                persistCaches();
-            }
-        }
     }
-
-    public void persistCaches() {
-        synchronized (lock) {
-            aldersgruppListener.persistCache();
-            sjukfallPerDiagnosgruppListenerListener.persistCache();
-            processLog.confirm(latestLogId);
-        }
-        LOG.info("Data counters persisted until about logId: " + latestLogId);
-    }
-
 }
