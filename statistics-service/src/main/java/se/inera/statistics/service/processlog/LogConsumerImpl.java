@@ -51,6 +51,7 @@ public class LogConsumerImpl implements LogConsumer {
                 JsonNode hsaInfo = hsa.decorate(intyg, event.getCorrelationId());
                 if (hsaInfo != null) {
                     processor.accept(intyg, hsaInfo, event.getId());
+                    processLog.confirm(event.getId());
                     processed++;
                     LOG.info("Processed log id {}", event.getId());
                 } else {

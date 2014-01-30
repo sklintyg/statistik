@@ -11,6 +11,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+
 import org.joda.time.LocalDate;
 import org.junit.Before;
 import org.junit.Test;
@@ -19,8 +22,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.transaction.BeforeTransaction;
+import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
 import se.inera.statistics.service.demo.UtlatandeBuilder;
@@ -50,6 +56,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath:process-log-impl-test.xml", "classpath:process-log-qm-test.xml" })
 @Transactional
+@TransactionConfiguration(defaultRollback=false)
 @DirtiesContext
 public class RepresentativeIntygIntegrationTest {
     private static final int PERSON_K1950 = 0;
@@ -98,6 +105,9 @@ public class RepresentativeIntygIntegrationTest {
     @Autowired
     private NationellUpdaterJob nationellUpdaterJob;
 
+    @PersistenceContext(unitName = "IneraStatisticsLog")
+    private EntityManager manager;
+
     @Before
     public void setup() {
         List<String> personNummers;
@@ -113,7 +123,6 @@ public class RepresentativeIntygIntegrationTest {
     @Test
     @SuppressWarnings("unchecked")
     public void deliver_document_from_in_queue_to_statistics_repository() throws IOException {
-        AldersGruppListener.setMaxCacheSize(1);
         SjukfallPerDiagnosgruppListener.setMaxCacheSize(1);
         UtlatandeBuilder builder = new UtlatandeBuilder("/json/integration/intyg1.json", "Intyg med 1 sjuktal");
 
@@ -157,7 +166,6 @@ public class RepresentativeIntygIntegrationTest {
     @Test
     @SuppressWarnings("unchecked")
     public void deliver_document_from_in_queue_to_statistics_repository_with_usecase_data() throws IOException {
-        AldersGruppListener.setMaxCacheSize(1);
         SjukfallPerDiagnosgruppListener.setMaxCacheSize(1);
         UtlatandeBuilder builder = new UtlatandeBuilder("/json/integration/intyg1.json", "Intyg med 1 sjuktal");
 
@@ -198,7 +206,6 @@ public class RepresentativeIntygIntegrationTest {
     @Test
     @SuppressWarnings("unchecked")
     public void deliver_document_from_in_queue_to_statistics_repository_from_csv_file() throws IOException {
-        AldersGruppListener.setMaxCacheSize(1);
         SjukfallPerDiagnosgruppListener.setMaxCacheSize(1);
         UtlatandeBuilder builder1 = new UtlatandeBuilder("/json/integration/intyg1.json", "Intyg med 1 sjuktal");
         UtlatandeBuilder builder2 = new UtlatandeBuilder("/json/integration/intyg2.json", "Intyg med 2 sjuktal");
