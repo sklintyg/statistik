@@ -14,14 +14,10 @@ class StartUp {
 
     boolean startContext(String contextFile) {
         println("About to read context")
-        GenericXmlApplicationContext ctx = new GenericXmlApplicationContext();
-        ctx.getEnvironment().setActiveProfiles("dev");
-        ctx.load(contextFile);
-        ctx.refresh();
-        context = ctx;
-//        context = new ClassPathXmlApplicationContext(contextFile)
-//        context.getEnvironment().setActiveProfiles("dev")
-//        context.refresh()
+        context = new GenericXmlApplicationContext();
+        context.getEnvironment().setActiveProfiles("dev");
+        context.load(contextFile);
+        context.refresh();
         true
     }
 

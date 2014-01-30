@@ -3,6 +3,7 @@ package se.inera.statistics.warehouse
 import se.inera.statistics.context.StartUp
 import se.inera.statistics.service.helper.DocumentHelper
 import se.inera.statistics.service.warehouse.Aisle
+import se.inera.statistics.service.warehouse.Sjukfall
 import se.inera.statistics.service.warehouse.Warehouse
 import se.inera.statistics.service.warehouse.WideLine
 
@@ -13,9 +14,7 @@ class Info {
 
     String getPersonLines() {
         int person = DocumentHelper.patientIdToInt(personId)
-        Warehouse bean = (Warehouse) StartUp.context.getBean(se.inera.statistics.service.warehouse.Warehouse.class)
-        Aisle aisle = bean.get(vardgivareId)
-        Iterator lines = aisle.iterator()
+        Iterator<WideLine> lines = extractPersonLines(person).iterator()
         StringBuilder sb = new StringBuilder()
         while (lines.hasNext()) {
             WideLine line = lines.next()
@@ -24,6 +23,49 @@ class Info {
             }
         }
         sb.toString()
+    }
+
+    String getSjukfall() {
+        int person = DocumentHelper.patientIdToInt(personId)
+        List<WideLine> lineList = extractPersonLines(person)
+        Iterator<WideLine> lines = lineList.sort(new Comparator<WideLine>() {
+            int compare(WideLine o1, WideLine o2) {
+                return o1.kalenderperiod - o2.kalenderperiod
+            }
+        }).iterator()
+
+        Sjukfall sjukfall = null
+        StringBuilder sb = new StringBuilder()
+        while (lines.hasNext()) {
+            WideLine line = lines.next()
+            if (sjukfall == null) {
+                sjukfall = new Sjukfall(line)
+            } else {
+                Sjukfall newSjukfall = sjukfall.join(line)
+                if (newSjukfall != sjukfall) {
+                    sb.append(sjukfall).append('\n')
+                    sjukfall = newSjukfall
+                }
+            }
+        }
+        if (sjukfall != null) {
+            sb.append(sjukfall).append('\n')
+        }
+        sb.toString()
+    }
+
+    private List extractPersonLines(int person) {
+        Warehouse bean = (Warehouse) StartUp.context.getBean(Warehouse.class)
+        Aisle aisle = bean.get(vardgivareId)
+        Iterator lines = aisle.iterator()
+        List<WideLine> patientLines = new ArrayList<>()
+        while (lines.hasNext()) {
+            WideLine line = lines.next()
+            if (line.patient == person) {
+                patientLines.add(line)
+            }
+        }
+        patientLines
     }
 
 }

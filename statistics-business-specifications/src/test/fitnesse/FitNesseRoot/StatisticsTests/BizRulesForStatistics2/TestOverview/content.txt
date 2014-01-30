@@ -1,13 +1,29 @@
 !contents -R2 -g -p -f -h
 Bold is used to denote Swedish domain specific terms. Swedish is used to not lose specificity in translation.
+---------
 
 '''Intyg''' with several '''sjukskrivningsperioder'''. Should gaps be honored within an '''intyg''' (with multiple '''nedsättningsperioder''') and potentially yield more than one '''sjukfall'''?
 |se.inera.statistics.warehouse.Info|
 |personId|vardgivareId|getPersonLines?|
 |19790407-9295|EnVG||
 
+|se.inera.statistics.warehouse.Info|
+|personId|vardgivareId|getSjukfall?|
+|19790407-9295|EnVG||
+-----
 '''Sjukfall''', should total number of days from start to end be used, or should gaps be deducted. If gaps are deducted, how should weekends and red days be handled?
+|se.inera.statistics.warehouse.Info|
+|personId|vardgivareId|getPersonLines?|
+|19600708-3121|EnVG||
+
+|se.inera.statistics.warehouse.Info|
+|personId|vardgivareId|getSjukfall?|
+|19600708-3121|EnVG||
+
+-----
 How should '''sjukfall''' be treated when looking at one or more specific '''sjukskrivningsgrader''' vs looking at the '''sjukfall''' in its entirety?
+-----
 '''Diagnoser''', what '''diagnos''' should be used when a '''sjukfall''' consists of more than one '''diagnos'''?
+-----
 When one person visits several '''enheter''' with the same or different '''vårdgivare''', when will the resulting '''intyg''' be considered to be part of the same '''sjukfall'''?
 

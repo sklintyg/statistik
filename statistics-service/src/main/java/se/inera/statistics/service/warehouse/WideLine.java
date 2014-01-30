@@ -50,6 +50,10 @@ public class WideLine {
         return patient;
     }
 
+    public int getKalenderperiod() {
+        return kalenderperiod;
+    }
+
     @Override
     public String toString() {
         return "WideLine{" +
