@@ -54,6 +54,10 @@ public class WideLine {
         return kalenderperiod;
     }
 
+    public int getSjukskrivningsgrad() {
+        return sjukskrivningsgrad;
+    }
+
     @Override
     public String toString() {
         return "WideLine{" +

@@ -22,9 +22,37 @@ Bold is used to denote Swedish domain specific terms. Swedish is used to not los
 
 -----
 How should '''sjukfall''' be treated when looking at one or more specific '''sjukskrivningsgrader''' vs looking at the '''sjukfall''' in its entirety?
+|se.inera.statistics.warehouse.Info|
+|personId|vardgivareId|getPersonLines?|
+|19600708-3121|EnVG||
+
+|se.inera.statistics.warehouse.Info|
+|personId|vardgivareId|sjukskrivningsgrad|getSjukfallWithSjukskrivningsgrad?|
+|19600708-3121|EnVG|50||
+|19600708-3121|EnVG|100||
+
+|se.inera.statistics.warehouse.Info|
+|personId|vardgivareId|getSjukfall?|
+|19600708-3121|EnVG||
+
 -----
 '''Diagnoser''', what '''diagnos''' should be used when a '''sjukfall''' consists of more than one '''diagnos'''?
+|se.inera.statistics.warehouse.Info|
+|personId|vardgivareId|getPersonLines?|
+|19600708-3121|EnVG||
+
+|se.inera.statistics.warehouse.Info|
+|personId|vardgivareId|getSjukfallWithDiagnos?|
+|19600708-3121|EnVG||
+
 -----
 When one person visits several '''enheter''' with the same or different '''vårdgivare''', when will the resulting '''intyg''' be considered to be part of the same '''sjukfall'''?
+|se.inera.statistics.warehouse.Info|
+|personId|vardgivareId|getPersonLines?|
+|19600708-3121|EnVG||
+
+|se.inera.statistics.warehouse.Info|
+|personId|vardgivareId|getSjukfall?|
+|19600708-3121|EnVG||
 
 ---------
