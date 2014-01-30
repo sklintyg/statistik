@@ -26,7 +26,7 @@ public class Sjukfall {
      */
     public Sjukfall join(WideLine line) {
         int lineEnd = line.kalenderperiod + line.sjukskrivningslangd;
-        if (end + MAX_GAP + 1 < lineEnd) {
+        if (end + MAX_GAP + 1 < line.kalenderperiod) {
             return new Sjukfall(line);
         } else {
             end = lineEnd;
