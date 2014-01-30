@@ -27,3 +27,4 @@ How should '''sjukfall''' be treated when looking at one or more specific '''sju
 -----
 When one person visits several '''enheter''' with the same or different '''vårdgivare''', when will the resulting '''intyg''' be considered to be part of the same '''sjukfall'''?
 
+---------
