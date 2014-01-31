@@ -52,6 +52,7 @@ public class HSADecorator {
         if (info == null) {
             HSAKey key = extractHSAKey(doc);
             LOG.debug(key.toString());
+            LOG.info("Fetching HSA data for " + documentId);
             info = service.getHSAInfo(key);
             try {
                 storeHSAInfo(documentId, info);

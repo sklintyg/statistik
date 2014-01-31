@@ -34,7 +34,7 @@ import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 @Component
-@Profile("dev")
+@Profile({"dev", "test"})
 @Primary
 public class HSAServiceMock implements HSAService {
     private static final int POSITIVE_MASK = 0x7fffffff;

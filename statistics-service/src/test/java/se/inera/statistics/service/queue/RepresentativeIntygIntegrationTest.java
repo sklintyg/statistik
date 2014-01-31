@@ -1,15 +1,5 @@
 package se.inera.statistics.service.queue;
 
-import static org.junit.Assert.assertEquals;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-
 import org.joda.time.LocalDate;
 import org.junit.Before;
 import org.junit.Test;
@@ -20,12 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
-
 import se.inera.statistics.service.helper.UtlatandeBuilder;
-import se.inera.statistics.service.testsupport.QueueHelper;
-import se.inera.statistics.service.testsupport.QueueSender;
-import se.inera.statistics.service.testsupport.TestData;
 import se.inera.statistics.service.processlog.LogConsumer;
 import se.inera.statistics.service.report.api.Aldersgrupp;
 import se.inera.statistics.service.report.api.Diagnosgrupp;
@@ -38,11 +25,25 @@ import se.inera.statistics.service.report.api.Sjukskrivningsgrad;
 import se.inera.statistics.service.report.api.VerksamhetOverview;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.scheduler.NationellUpdaterJob;
+import se.inera.statistics.service.testsupport.QueueHelper;
+import se.inera.statistics.service.testsupport.QueueSender;
+import se.inera.statistics.service.testsupport.TestData;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+
+import static org.junit.Assert.assertEquals;
 
 // CHECKSTYLE:OFF MagicNumber
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath:process-log-impl-test.xml", "classpath:process-log-qm-test.xml" })
 @Transactional
+@TransactionConfiguration(defaultRollback=false)
 @DirtiesContext
 public class RepresentativeIntygIntegrationTest {
     private static final int PERSON_K1950 = 0;

@@ -25,6 +25,8 @@ import org.springframework.transaction.annotation.Transactional;
 import se.inera.statistics.service.helper.UtlatandeBuilder;
 import se.inera.statistics.service.processlog.LogConsumer;
 import se.inera.statistics.service.report.api.SjukfallPerManad;
+import se.inera.statistics.service.report.listener.AldersGruppListener;
+import se.inera.statistics.service.report.listener.SjukfallPerDiagnosgruppListener;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.SimpleKonDataRow;
 import se.inera.statistics.service.report.model.SimpleKonResponse;

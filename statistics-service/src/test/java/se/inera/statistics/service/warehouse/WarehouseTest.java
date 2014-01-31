@@ -1,110 +1,108 @@
 package se.inera.statistics.service.warehouse;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import org.joda.time.Days;
-import org.joda.time.LocalDate;
-import org.junit.Ignore;
+import static org.junit.Assert.assertEquals;
+
+import java.lang.management.GarbageCollectorMXBean;
+import java.lang.management.ManagementFactory;
+import java.util.Collection;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
+
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
 import se.inera.statistics.service.JSONSource;
+import se.inera.statistics.service.demo.LargeTestDataGenerator;
 import se.inera.statistics.service.helper.DocumentHelper;
-import se.inera.statistics.service.helper.HSAServiceHelper;
 import se.inera.statistics.service.helper.JSONParser;
 import se.inera.statistics.service.hsa.HSAService;
 import se.inera.statistics.service.hsa.HSAServiceMock;
 
-import static org.junit.Assert.assertEquals;
+import com.fasterxml.jackson.databind.JsonNode;
 
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations = { "classpath:warehouse-test.xml" })
 public class WarehouseTest {
-//    private static final LocalDate BASE_DATE = new LocalDate("2000-01-01");
-    private static final int WAREHOUSE_SIZE = 200000;
+
     private HSAService hsaService = new HSAServiceMock();
 
     private JsonNode rawDocument = JSONParser.parse(JSONSource.readTemplateAsString());
     private JsonNode hsaInfo = hsaService.getHSAInfo(null);
+    
+    @Autowired
+    private Warehouse warehouse;
+
+    @Autowired 
+    private LargeTestDataGenerator dataGenerator;
 
     @Test
-    public void createLineFromIntygWith1Period() {
-        JsonNode document = DocumentHelper.anonymize(rawDocument);
-        WideLine result = buildLine(rawDocument, document);
-
-        System.out.println(result);
+    public void addingIntygAddsToCorrectAisle() {
+        JsonNode document = DocumentHelper.prepare(rawDocument, hsaInfo);
+        warehouse.accept(document);
+        Aisle aisle = warehouse.get("VardgivarId");
+        assertEquals(1, aisle.getSize());
     }
 
     @Test
-    public void generateALotOfSimpleLines() {
-        Warehouse lines = generateLines(WAREHOUSE_SIZE);
-        assertEquals(WAREHOUSE_SIZE, lines.getSize());
-    }
-
-    @Test
-    public void wideLineHasExpectedValues() {
-        WideLine line = buildLine(rawDocument);
-        assertEquals(33, line.alder);
-        assertEquals(770430291, line.patient);
-        assertEquals(1, line.enhet);
-        assertEquals(10, line.lan);
-        assertEquals(80, line.kommun);
-    }
-
-    @Test
-    @Ignore
-    public void iterateOverLines() {
-        Warehouse warehouse = generateLines(WAREHOUSE_SIZE);
-        for (int i = 0; i < 10; i++) {
-            long start = System.currentTimeMillis();
-            long sum = 0;
-            for (WideLine line: warehouse) {
-                sum += line.alder;
-            }
-            long end = System.currentTimeMillis();
-            System.err.println((end - start) + " " + sum);
+    public void addingManyIntyg() throws InterruptedException {
+        System.err.println(warehouse);
+        showMem(); 
+        dataGenerator.publishUtlatanden();
+        showMem();
+        System.gc();
+        showMem();
+        System.err.println(warehouse);
+        final Aisle aisle = warehouse.get("vardgivare1");
+        //assertEquals(790, aisle.getSize());
+        ExecutorService pool = Executors.newFixedThreadPool(10);
+        long start = System.currentTimeMillis();
+        for (int i = 0; i < 100; i++) {
+            pool.submit(new Runnable() {
+                @Override
+                public void run() {
+                    long start = System.currentTimeMillis();
+                    measureSjukfall(aisle);
+                    long end = System.currentTimeMillis();
+                    System.err.println((end - start));
+                }
+            });
         }
-        try {
-            System.out.println("sleeping");
-            Thread.sleep(1000L);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+        
+        pool.shutdown();
+        pool.awaitTermination(30, TimeUnit.SECONDS);
+        long end = System.currentTimeMillis();
+        System.err.println("Total time " + (end - start));
+        showMem();
+    }
+
+    private void measureSjukfall(Aisle aisle) {
+        long start = System.currentTimeMillis();
+        Collection<Sjukfall> sjukfalls = SjukfallUtil.calculateSjukfall(aisle);
+        long end = System.currentTimeMillis();
+        int totalDays = 0;
+        int realDays = 0;
+        int totalIntyg = 0;
+        for (Sjukfall sjukfall: sjukfalls) {
+            totalDays += (sjukfall.end - sjukfall.start);
+            realDays += sjukfall.realDays;
+            totalIntyg += sjukfall.intygCount;
         }
-
+        System.err.format("Sjukfall %1$s Real days %2$s Total days %3$s intyg %4$s%n", sjukfalls.size(), realDays, totalDays, totalIntyg);
     }
 
-    private Warehouse generateLines(int warehouseSize) {
-        Warehouse warehouse = new Warehouse(warehouseSize);
-        for (int i = 0; i < WAREHOUSE_SIZE; i++) {
-            WideLine line = buildLine(rawDocument);
-            warehouse.setLine(i, line);
+    private void showMem() {
+        StringBuilder gc = new StringBuilder();
+        for (GarbageCollectorMXBean bean: ManagementFactory.getGarbageCollectorMXBeans()) {
+            gc.append(bean.getCollectionCount())
+            .append(" ").append(bean.getCollectionTime()).append(" ");
         }
-        return warehouse;
-    }
-
-    private WideLine buildLine(JsonNode rawDocument) {
-        return buildLine(rawDocument, DocumentHelper.anonymize(rawDocument));
-    }
-
-    private WideLine buildLine(JsonNode rawDocument, JsonNode document) {
-        int lan = Integer.parseInt(HSAServiceHelper.getLan(hsaInfo));
-        int kommun = HSAServiceHelper.getKommun(hsaInfo);
-        int forsamling = 0;
-        int enhet = DocumentHelper.getEnhetAndRemember(document);
-        int lakarintyg = DocumentHelper.getLakarIntyg(document);
-        int patient = DocumentHelper.getPatient(rawDocument);
-//        int forstaNedsattningsdag = Days.daysBetween(BASE_DATE, new LocalDate(DocumentHelper.getForstaNedsattningsdag(document))).getDays();
-//        int sistaNedsattningsdag = Days.daysBetween(BASE_DATE, new LocalDate(DocumentHelper.getForstaNedsattningsdag(document))).getDays();
-        LocalDate kalenderStart = new LocalDate(DocumentHelper.getForstaNedsattningsdag(document));
-        LocalDate kalenderEnd = new LocalDate(DocumentHelper.getSistaNedsattningsdag(document));
-        int kalenderperiod = Days.daysBetween(kalenderStart, kalenderEnd).getDays();
-        int kon = DocumentHelper.getKon(document).indexOf('k');
-        int alder = DocumentHelper.getAge(document);
-        int diagnoskapitel = Convert.toInt(DocumentHelper.getDiagnos(document));
-        int diagnosavsnitt = Convert.toInt(DocumentHelper.getDiagnos(document));;
-        int diagnoskategori = Convert.toInt(DocumentHelper.getDiagnos(document));;
-        int sjukskrivningsgrad = 100 - Integer.parseInt(DocumentHelper.getArbetsformaga(document).get(0));
-        int sjukskrivningslangd = kalenderperiod;
-        int lakarkon = -1;
-        int lakaralder = 0;
-        int lakarbefattning = 0;
-
-        WideLine line = new WideLine(lan, kommun, forsamling, enhet, lakarintyg, patient, kalenderperiod, kon, alder, diagnoskapitel, diagnosavsnitt, diagnoskategori, sjukskrivningsgrad, sjukskrivningslangd, lakarkon, lakaralder, lakarbefattning);
-        return line;
+        
+        Runtime r = Runtime.getRuntime();
+        long used = r.totalMemory() - r.freeMemory();
+        System.err.format("Memory total %1$s free %2$s used %3$s %4$s%n", r.totalMemory(), r.freeMemory(), used, gc.toString());
     }
 }
