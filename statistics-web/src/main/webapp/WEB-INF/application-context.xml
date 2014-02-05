@@ -134,6 +134,10 @@
               id="sickLeaveLength"/>
         <bean class="se.inera.statistics.service.report.repository.SjukfallPerLanPersistenceHandler"
               id="casesPerCounty"/>
+
+        <bean id="warehouse" class="se.inera.statistics.service.warehouse.Warehouse" />
+        <bean id="dataGenerator" class="se.inera.statistics.service.demo.LargeTestDataGenerator" />
+        <bean id="warehouseTest" class="se.inera.statistics.service.warehouse.WarehouseOnlineTest" lazy-init="false"/>
     </beans>
 
     <beans profile="generatesmalltestdata">
@@ -143,4 +147,6 @@
         <bean class="se.inera.statistics.service.common.CommonPersistenceHandler"/>
         <bean class="se.inera.statistics.service.demo.InjectUtlatande2" lazy-init="false"/>
     </beans>
+    
+    
 </beans>
