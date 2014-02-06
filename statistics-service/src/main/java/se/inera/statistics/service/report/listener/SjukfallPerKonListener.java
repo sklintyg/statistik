@@ -16,7 +16,7 @@ public class SjukfallPerKonListener extends GenericAbstractListener {
     boolean accept(GenericHolder token, String period) {
         sjukfallPerManadPersistenceHandler.count(token.getEnhetId(), period, Verksamhet.ENHET, token.getKon());
         sjukfallPerManadPersistenceHandler.count(token.getVardgivareId(), period, Verksamhet.VARDGIVARE, token.getKon());
-        return false; // TODO: Caching
+        return false;
     }
 
 }

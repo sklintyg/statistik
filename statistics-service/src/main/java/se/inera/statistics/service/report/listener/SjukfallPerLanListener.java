@@ -13,7 +13,7 @@ public class SjukfallPerLanListener extends RollingAbstractListener {
 
     protected boolean accept(GenericHolder token, String period, RollingLength length) {
         sjukfallPerLan.count(period, token.getEnhetId(), token.getLanId(), length, token.getKon());
-        return false; // TODO: Caching
+        return false;
     }
 
 }

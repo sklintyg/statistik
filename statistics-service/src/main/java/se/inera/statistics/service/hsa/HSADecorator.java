@@ -38,7 +38,8 @@ public class HSADecorator {
             try {
                 storeHSAInfo(documentId, info);
             } catch (javax.persistence.PersistenceException e) {
-                
+                // Expected error if multiple HSA is fetched for same key. Ignore.
+                LOG.debug("Ignoring expected error", e);
             }
         }
         return info;

@@ -27,10 +27,15 @@ import se.inera.statistics.service.helper.QueueHelper;
 import se.inera.statistics.service.helper.QueueSender;
 import se.inera.statistics.service.helper.TestData;
 import se.inera.statistics.service.processlog.LogConsumer;
-import se.inera.statistics.service.report.api.*;
+import se.inera.statistics.service.report.api.Aldersgrupp;
+import se.inera.statistics.service.report.api.Diagnosgrupp;
+import se.inera.statistics.service.report.api.Diagnoskapitel;
+import se.inera.statistics.service.report.api.Overview;
 import se.inera.statistics.service.report.api.SjukfallPerLan;
-import se.inera.statistics.service.report.listener.AldersGruppListener;
-import se.inera.statistics.service.report.listener.SjukfallPerDiagnosgruppListener;
+import se.inera.statistics.service.report.api.SjukfallPerManad;
+import se.inera.statistics.service.report.api.SjukfallslangdGrupp;
+import se.inera.statistics.service.report.api.Sjukskrivningsgrad;
+import se.inera.statistics.service.report.api.VerksamhetOverview;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.scheduler.NationellUpdaterJob;
 
@@ -97,8 +102,6 @@ public class RepresentativeIntygIntegrationTest {
 
     @Test
     public void deliver_document_from_in_queue_to_statistics_repository() throws IOException {
-        AldersGruppListener.setMaxCacheSize(1);
-        SjukfallPerDiagnosgruppListener.setMaxCacheSize(1);
         UtlatandeBuilder builder = new UtlatandeBuilder("/json/integration/intyg1.json", "Intyg med 1 sjuktal");
 
         LOG.info("===========START==========");
@@ -128,8 +131,6 @@ public class RepresentativeIntygIntegrationTest {
 
     @Test
     public void deliver_document_from_in_queue_to_statistics_repository_with_usecase_data() throws IOException {
-        AldersGruppListener.setMaxCacheSize(1);
-        SjukfallPerDiagnosgruppListener.setMaxCacheSize(1);
         UtlatandeBuilder builder = new UtlatandeBuilder("/json/integration/intyg1.json", "Intyg med 1 sjuktal");
 
         LOG.info("===========START==========");

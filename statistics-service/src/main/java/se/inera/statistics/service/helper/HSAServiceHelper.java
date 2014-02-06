@@ -9,10 +9,10 @@ public final class HSAServiceHelper {
     }
 
     public static String getLan(JsonNode hsaData) {
-        try {
+        if (hsaData != null) {
             String result = hsaData.path("geografi").path("lan").path("kod").textValue();
             return result != null ? result : Lan.OVRIGT;
-        } catch (NullPointerException e) {
+        } else {
             return Lan.OVRIGT;
         }
     }

@@ -51,4 +51,21 @@ public class DiagnosisGroup implements Comparable<DiagnosisGroup> {
         return id.compareTo(o.id);
     }
 
+    @Override
+    public int hashCode() {
+        return id.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof DiagnosisGroup) {
+            return equals((DiagnosisGroup) obj);
+        }
+        return false;
+    }
+
+    public boolean equals(DiagnosisGroup other) {
+        return id.equals(other.id);
+    }
+
 }

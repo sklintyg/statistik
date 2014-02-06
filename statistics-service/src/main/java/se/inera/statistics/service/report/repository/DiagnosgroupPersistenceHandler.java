@@ -12,7 +12,6 @@ import org.joda.time.LocalDate;
 import org.springframework.transaction.annotation.Transactional;
 
 import se.inera.statistics.service.report.api.Diagnosgrupp;
-import se.inera.statistics.service.report.listener.SjukfallPerDiagnosgruppListener;
 import se.inera.statistics.service.report.model.DiagnosisGroup;
 import se.inera.statistics.service.report.model.DiagnosisGroupResponse;
 import se.inera.statistics.service.report.model.DualSexDataRow;
@@ -41,28 +40,6 @@ public class DiagnosgroupPersistenceHandler implements Diagnosgrupp {
         } else {
             existingRow.setFemale(existingRow.getFemale() + female);
             existingRow.setMale(existingRow.getMale() + male);
-            manager.merge(existingRow);
-        }
-    }
-
-    @Override
-    @Transactional
-    public void countAll(Map<DiagnosisGroupKey, SjukfallPerDiagnosgruppListener.DiagnosgruppValue> cache) {
-        for (Map.Entry<DiagnosisGroupKey, SjukfallPerDiagnosgruppListener.DiagnosgruppValue> entry : cache.entrySet()) {
-            count(entry.getKey(), entry.getValue());
-        }
-        cache.clear();
-    }
-
-    private void count(DiagnosisGroupKey key, SjukfallPerDiagnosgruppListener.DiagnosgruppValue value) {
-        DiagnosisGroupData existingRow = manager.find(DiagnosisGroupData.class, key);
-
-        if (existingRow == null) {
-            DiagnosisGroupData row = new DiagnosisGroupData(key.getPeriod(), key.getHsaId(), key.getDiagnosgrupp(), value.getVerksamhet(), value.getFemale(), value.getMale());
-            manager.persist(row);
-        } else {
-            existingRow.setFemale(existingRow.getFemale() + value.getFemale());
-            existingRow.setMale(existingRow.getMale() + value.getMale());
             manager.merge(existingRow);
         }
     }

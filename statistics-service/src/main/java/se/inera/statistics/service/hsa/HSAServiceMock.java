@@ -18,6 +18,8 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 @Profile("dev")
 @Primary
 public class HSAServiceMock implements HSAService {
+    private static final int POSITIVE_MASK = 0x7fffffff;
+
     private JsonNodeFactory factory = JsonNodeFactory.instance;
 
     private static final Lan LAN = new Lan();
@@ -65,7 +67,7 @@ public class HSAServiceMock implements HSAService {
 
     private JsonNode createLan(HSAKey key) {
         ObjectNode root = factory.objectNode();
-        int keyIndex = key != null && key.getVardgivareId() != null ? Math.abs(key.getVardgivareId().hashCode()) : 0;
+        int keyIndex = key != null && key.getVardgivareId() != null ? key.getVardgivareId().hashCode() & POSITIVE_MASK : 0;
         String kod = LAN_CODES.get(keyIndex % LAN_CODES.size());
         root.put("kod", kod);
         root.put("namn", LAN.getNamn(kod));

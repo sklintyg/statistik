@@ -16,6 +16,6 @@ public class SjukfallPerDiagnosundergruppListener extends GenericAbstractListene
     boolean accept(GenericHolder token, String period) {
         diagnosisgroupPersistenceHandler.count(token.getEnhetId(), period, token.getDiagnosgrupp(), token.getDiagnosundergrupp(), Verksamhet.ENHET, token.getKon());
         diagnosisgroupPersistenceHandler.count(token.getVardgivareId(), period, token.getDiagnosgrupp(), token.getDiagnosundergrupp(), Verksamhet.VARDGIVARE, token.getKon());
-        return false; // TODO: Caching
+        return false;
     }
 }

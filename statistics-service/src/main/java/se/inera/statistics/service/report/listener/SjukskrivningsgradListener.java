@@ -24,7 +24,7 @@ public class SjukskrivningsgradListener extends GenericAbstractListener {
             api.count(token.getEnhetId(), period, grad, Verksamhet.ENHET, token.getKon());
             api.count(token.getVardgivareId(), period, grad, Verksamhet.VARDGIVARE, token.getKon());
         }
-        return false; // TODO: Caching
+        return false;
     }
 
     private String arbetsformagaTillSjukskrivning(String formaga) {

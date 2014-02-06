@@ -18,6 +18,7 @@ import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import se.inera.statistics.service.helper.JSONParser;
+import se.inera.statistics.service.helper.StatisticsMalformedDocument;
 import se.inera.statistics.service.sjukfall.SjukfallInfo;
 import se.inera.statistics.service.sjukfall.SjukfallKey;
 import se.inera.statistics.service.sjukfall.SjukfallService;

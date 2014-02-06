@@ -32,7 +32,6 @@ public class FakeAuthenticationFilter extends AbstractAuthenticationProcessingFi
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
         // Hantera mer än en profil
-//        if ( !"dev".equals(profiles) && !"test".equals(profiles) && !"qa".equals(profiles)) {
           if (!profiles.contains("dev") && !profiles.contains("test") && !profiles.contains("qa")) {
             return null;
         }
@@ -40,9 +39,6 @@ public class FakeAuthenticationFilter extends AbstractAuthenticationProcessingFi
         String parameter = request.getParameter("userJsonDisplay");
         // we manually encode the json parameter
         String json = URLDecoder.decode(parameter, "ISO-8859-1");
-        if (json == null) {
-            return null;
-        }
 
         try {
             FakeCredentials fakeCredentials = new ObjectMapper().readValue(json, FakeCredentials.class);

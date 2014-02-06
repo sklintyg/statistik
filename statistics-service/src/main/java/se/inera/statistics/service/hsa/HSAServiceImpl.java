@@ -84,9 +84,6 @@ public class HSAServiceImpl implements HSAService {
         }
         Builder root = new Builder();
         root.put("id", personal.getHsaIdentity());
-        // root.put("efternamn", "Not yet");
-        // root.put("tilltalsnamn", "Not yet");
-        // root.put("initial", "Not yet");
         root.put("kon", personal.getGender());
         root.put("alder", personal.getAge());
         root.put("befattning", personal.getPaTitleCodes() != null ? personal.getPaTitleCodes().getPaTitleCode() : null);
@@ -103,7 +100,6 @@ public class HSAServiceImpl implements HSAService {
         Builder root = new Builder();
         root.put("id", caregiver.getHsaIdentity());
         root.put("orgnr", caregiver.getCareGiverOrgNo());
-        // root.put("namn", "Not yet");
         root.put("startdatum", caregiver.getStartDate());
         root.put("slutdatum", caregiver.getEndDate());
         root.put("arkiverad", caregiver.isIsArchived());
@@ -117,7 +113,6 @@ public class HSAServiceImpl implements HSAService {
         Builder root = new Builder();
 
         root.put("id", unit.getHsaIdentity());
-        // root.put("namn", "Not yet");
         root.put("enhetsTyp", createEnhetsTyp(unit.getBusinessTypes()));
         root.put("agarform", createAgarTyp(unit.getManagements()));
         root.put("startdatum", unit.getStartDate());

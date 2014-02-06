@@ -2,7 +2,6 @@ package se.inera.statistics.service.helper;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import se.inera.statistics.service.processlog.StatisticsMalformedDocument;
 
 import java.io.IOException;
 import java.io.InputStream;

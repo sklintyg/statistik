@@ -19,6 +19,7 @@ public class OverviewResponse {
 
     private final List<OverviewChartRowExtended> perCounty;
 
+    // CHECKSTYLE:OFF ParameterNumberCheck
     public OverviewResponse(OverviewSexProportion casesPerMonthSexProportion,
             int casesPerMonthAlteration, List<OverviewChartRowExtended> diagnosisGroups,
             List<OverviewChartRowExtended> ageGroups, List<OverviewChartRowExtended> degreeOfSickLeaveGroups,
@@ -34,6 +35,7 @@ public class OverviewResponse {
         this.longSickLeavesAlternation = longSickLeavesAlternation;
         this.perCounty = perCounty;
     }
+    // CHECKSTYLE:ON ParameterNumberCheck
 
     public OverviewSexProportion getCasesPerMonthSexProportion() {
         return casesPerMonthSexProportion;

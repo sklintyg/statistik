@@ -15,8 +15,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import se.inera.statistics.service.demo.UtlatandeBuilder;
 import se.inera.statistics.service.processlog.EventType;
 import se.inera.statistics.service.processlog.LogConsumer;
-import se.inera.statistics.service.report.api.*;
+import se.inera.statistics.service.report.api.Aldersgrupp;
+import se.inera.statistics.service.report.api.Diagnosgrupp;
+import se.inera.statistics.service.report.api.Diagnoskapitel;
+import se.inera.statistics.service.report.api.Overview;
+import se.inera.statistics.service.report.api.SjukfallPerLan;
 import se.inera.statistics.service.report.api.SjukfallPerManad;
+import se.inera.statistics.service.report.api.SjukfallslangdGrupp;
+import se.inera.statistics.service.report.api.Sjukskrivningsgrad;
+import se.inera.statistics.service.report.api.VerksamhetOverview;
 import se.inera.statistics.service.report.model.AgeGroupsResponse;
 import se.inera.statistics.service.report.model.DegreeOfSickLeaveResponse;
 import se.inera.statistics.service.report.model.DiagnosisGroupResponse;
@@ -87,10 +94,12 @@ public class QueueHelper {
         nationell = Verksamhet.NATIONELL.name();
     }
 
+    // CHECKSTYLE:OFF ParameterNumberCheck
     public void enqueue(UtlatandeBuilder builder, String typString, String person, String diagnos, List<LocalDate> start, List<LocalDate> stop, List<String> grad, String enhet, String vardgivare, String transId) {
         EventType typ = EventType.valueOf(typString);
         sender.simpleSend(builder.build(person, start, stop, enhet, vardgivare, diagnos, grad).toString(), transId, typ);
     }
+    // CHECKSTYLE:ON ParameterNumberCheck
 
     public Map<String, TestData> printAndGetPersistedData(String vardenhet1, String vardenhet2, Range range) {
         consumer.processBatch();

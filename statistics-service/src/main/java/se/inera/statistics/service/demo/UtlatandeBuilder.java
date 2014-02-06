@@ -47,6 +47,7 @@ public class UtlatandeBuilder {
         return build(patientId, start, end, "Personal HSA-ID", vardenhet, vardgivare, diagnos, arbetsformaga);
     }
 
+    //CHECKSTYLE:OFF ParameterNumberCheck
     public JsonNode build(String patientId, LocalDate start, LocalDate end, String personal, String vardenhet, String vardgivare, String diagnos, int arbetsformaga) {
         return build(patientId, start, end, personal, vardenhet, vardgivare, diagnos, Arrays.asList(String.valueOf(arbetsformaga)));
     }
@@ -93,6 +94,7 @@ public class UtlatandeBuilder {
 
         return intyg;
     }
+    //CHECKSTYLE:ON ParameterNumberCheck
 
     private static String readTemplate(String path) {
         try (BufferedReader in = new BufferedReader(new InputStreamReader(UtlatandeBuilder.class.getResourceAsStream(path), "utf8"))) {

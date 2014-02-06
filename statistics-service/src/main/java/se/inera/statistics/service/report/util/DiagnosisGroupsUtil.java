@@ -30,7 +30,7 @@ public class DiagnosisGroupsUtil {
     private Resource icd10ChaptersAnsiFile;
 
     private static final Pattern ICD10_ANSI_FILE_LINE_PATTERN = Pattern.compile("(^[A-Z][0-9][0-9]-[A-Z][0-9][0-9])(.*)$");
-    private Map<String, Collection<DiagnosisGroup>> SUB_GROUPS;
+    private Map<String, Collection<DiagnosisGroup>> subgroups;
     private static final List<DiagnosisGroup> GROUPS = initGroups();
 
     public String getGroupIdForCode(String icd10Code) {
@@ -106,7 +106,7 @@ public class DiagnosisGroupsUtil {
     }
 
     public Collection<DiagnosisGroup> getGroupsInChapter(String chapter) {
-        return SUB_GROUPS.get(chapter);
+        return subgroups.get(chapter);
     }
     private static DiagnosisGroup group(String code, String description) {
         return new DiagnosisGroup(code, description);
@@ -138,19 +138,17 @@ public class DiagnosisGroupsUtil {
     }
 
     private Map<String, Collection<DiagnosisGroup>> getSubGroups() {
-        if (SUB_GROUPS == null) {
-            SUB_GROUPS = setupSubGroups();
+        if (subgroups == null) {
+            subgroups = setupSubGroups();
         }
-        return SUB_GROUPS;
+        return subgroups;
     }
 
     private Map<String, Collection<DiagnosisGroup>> setupSubGroups() {
         Map<String, Collection<DiagnosisGroup>> subGroups = initSubGroups();
         final Set<String> groupNames = subGroups.keySet();
 
-        BufferedReader br;
-        try {
-            br = new BufferedReader(new InputStreamReader(icd10ChaptersAnsiFile.getInputStream(), "UTF-8"));
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(icd10ChaptersAnsiFile.getInputStream(), "UTF-8"))) {
             for (String line = br.readLine(); line != null; line = br.readLine()) {
                 DiagnosisGroup group = getDiagnosisGroupFromIcd10AnsiFileLine(line);
                 if (group != null) {

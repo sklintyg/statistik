@@ -13,11 +13,9 @@ public class HSAServiceHelperTest {
     @Test
     public void getLanTest() {
         HSAService hsaService = new HSAServiceMock();
-        JsonNode info = hsaService.getHSAInfo(new HSAKey("vardgivarId", "enhetId", "lakareId"));
+        JsonNode info = hsaService.getHSAInfo(new HSAKey("vardgivarid", "enhetId", "lakareId"));
 
         String lan = HSAServiceHelper.getLan(info);
-
-        Assert.assertEquals("08", lan);
-
+        Assert.assertEquals("20", lan);
     }
 }

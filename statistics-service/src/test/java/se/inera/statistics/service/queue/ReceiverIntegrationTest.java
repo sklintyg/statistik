@@ -25,8 +25,6 @@ import org.springframework.transaction.annotation.Transactional;
 import se.inera.statistics.service.demo.UtlatandeBuilder;
 import se.inera.statistics.service.processlog.LogConsumer;
 import se.inera.statistics.service.report.api.SjukfallPerManad;
-import se.inera.statistics.service.report.listener.AldersGruppListener;
-import se.inera.statistics.service.report.listener.SjukfallPerDiagnosgruppListener;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.SimpleDualSexDataRow;
 import se.inera.statistics.service.report.model.SimpleDualSexResponse;
@@ -56,8 +54,6 @@ public class ReceiverIntegrationTest {
 
     @Test
     public void deliver_document_from_in_queue_to_statistics_repository() {
-        AldersGruppListener.setMaxCacheSize(1);
-        SjukfallPerDiagnosgruppListener.setMaxCacheSize(1);
         UtlatandeBuilder builder = new UtlatandeBuilder();
         simpleSend(builder.build("19121212-0010", new LocalDate("2011-01-20"), new LocalDate("2011-03-11"), "enhetId", "A00", 0).toString(), "001");
         simpleSend(builder.build("19121212-0011", new LocalDate("2011-01-20"), new LocalDate("2011-03-11"), "enhetId", "A00", 0).toString(), "002");

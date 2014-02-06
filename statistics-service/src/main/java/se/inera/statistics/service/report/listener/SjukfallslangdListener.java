@@ -20,7 +20,7 @@ public class SjukfallslangdListener extends RollingAbstractListener {
         String group = SjukfallslangdUtil.RANGES.rangeFor(token.getSjukfallInfo().getLangd()).getName();
         langdGrupp.count(period, token.getEnhetId(), group, length, Verksamhet.ENHET, token.getKon());
         langdGrupp.count(period, token.getVardgivareId(), group, length, Verksamhet.VARDGIVARE, token.getKon());
-        return false; // TODO: Caching
+        return false;
     }
 
     @Override

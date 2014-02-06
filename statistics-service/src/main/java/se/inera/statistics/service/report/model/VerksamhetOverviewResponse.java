@@ -18,6 +18,7 @@ public class VerksamhetOverviewResponse {
     private final int longSickLeavesTotal;
     private final int longSickLeavesAlternation;
 
+    // CHECKSTYLE:OFF ParameterNumberCheck
     public VerksamhetOverviewResponse(int totalCases, OverviewSexProportion casesPerMonthSexProportionPreviousPeriod,
             OverviewSexProportion casesPerMonthSexProportionBeforePreviousPeriod, List<OverviewChartRowExtended> diagnosisGroups,
             List<OverviewChartRowExtended> ageGroups, List<OverviewChartRowExtended> degreeOfSickLeaveGroups, List<OverviewChartRow> sickLeaveLengthGroups,
@@ -32,6 +33,7 @@ public class VerksamhetOverviewResponse {
         this.longSickLeavesTotal = longSickLeavesTotal;
         this.longSickLeavesAlternation = longSickLeavesAlternation;
     }
+    // CHECKSTYLE:ON ParameterNumberCheck
 
     public int getTotalCases() {
         return totalCases;

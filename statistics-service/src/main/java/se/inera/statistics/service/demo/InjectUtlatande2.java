@@ -100,7 +100,7 @@ public class InjectUtlatande2 {
                 try {
                     accept(newPermutation.toString(), newPermutation.path("id").path("root").textValue());
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    LOG.error("Inserting intyg", e);
                 }
             }
         }
@@ -109,18 +109,21 @@ public class InjectUtlatande2 {
 
     private String randomPerson() {
         LocalDate birthDate = BASE_AGE.plusDays(random.nextInt(AGE_DAYS));
-        return birthDate.toString("yyyyMMdd") + String.format("%1$04d", random.nextInt(10000));
+        // CHECKSTYLE:OFF MagicNumber
+        int lastDigits = random.nextInt(10000);
+        // CHECKSTYLE:ON MagicNumber
+        return birthDate.toString("yyyyMMdd") + String.format("%1$04d", lastDigits);
     }
 
     public JsonNode permutate(UtlatandeBuilder builder, String patientId, LocalDate base) {
         // CHECKSTYLE:OFF MagicNumber
         LocalDate start = base.plusDays(random.nextInt(SHORT_PERIOD_DAYS));
         LocalDate end = random.nextFloat() < LONG_PERIOD_FRACTION ? start.plusDays(random.nextInt(LONG_PERIOD_DAYS) + 7) : start.plusDays(random.nextInt(SHORT_PERIOD_DAYS) + 7);
-        // CHECKSTYLE:ON MagicNumber
 
         int vardId = random.nextInt(NUMBER_OF_UNITS);
         String vardenhet = "verksamhet" + vardId;
         String vardgivare = "vardgivare" + (vardId / 3);
+        // CHECKSTYLE:ON MagicNumber
 
         String diagnos = random(DIAGNOSER);
 
