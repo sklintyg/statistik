@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.PostConstruct;
-import javax.jms.ConnectionFactory;
 
 import org.joda.time.LocalDate;
 import org.slf4j.Logger;
@@ -85,9 +84,6 @@ public class QueueHelper {
     private QueueSender sender;
 
     private String nationell;
-
-    @Autowired
-    private ConnectionFactory connectionFactory;
 
     @PostConstruct
     public void init() {

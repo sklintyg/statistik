@@ -59,8 +59,7 @@ public class SjukfallService {
         Query query = manager.createQuery("DELETE FROM Sjukfall s WHERE s.end < :end");
         LocalDate lastValid = now.minusDays(MAX_DAYS_BETWEEN_CERTIFICATES);
         query.setParameter("end", lastValid.toString());
-        int count = query.executeUpdate();
-        return count;
+        return query.executeUpdate();
     }
 
     private Sjukfall getCurrentSjukfall(String personId, String vardgivareId) {

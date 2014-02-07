@@ -33,9 +33,6 @@ public class DistributingListener implements ProcessorListener {
     @Autowired
     private SjukfallPerLanListener sjukfallPerLanListener;
 
-    @Autowired
-    private ProcessLog processLog;
-
     @Override
     @Transactional
     public void accept(SjukfallInfo sjukfallInfo, JsonNode utlatande, JsonNode hsa, long logId) {

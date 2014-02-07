@@ -59,12 +59,12 @@ public class DiagnosisGroup implements Comparable<DiagnosisGroup> {
     @Override
     public boolean equals(Object obj) {
         if (obj instanceof DiagnosisGroup) {
-            return equals((DiagnosisGroup) obj);
+            return isEqual((DiagnosisGroup) obj);
         }
         return false;
     }
 
-    public boolean equals(DiagnosisGroup other) {
+    private boolean isEqual(DiagnosisGroup other) {
         return id.equals(other.id);
     }
 
