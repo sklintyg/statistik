@@ -2,6 +2,8 @@ package se.inera.statistics.service.warehouse;
 
 import static org.junit.Assert.assertEquals;
 
+import java.io.FileNotFoundException;
+import java.io.PrintStream;
 import java.lang.management.GarbageCollectorMXBean;
 import java.lang.management.ManagementFactory;
 import java.util.Collection;
@@ -77,6 +79,16 @@ public class WarehouseTest {
         long end = System.currentTimeMillis();
         System.err.println("Total time " + (end - start));
         showMem();
+    }
+
+    @Test
+    public void exportManyIntyg() throws FileNotFoundException {
+        dataGenerator.publishUtlatanden();
+
+        String result = dataGenerator.exportUtlatanden();
+
+        //System.setOut(new PrintStream("intyg.txt"));
+        System.out.println(result);
     }
 
     private void measureSjukfall(Aisle aisle) {

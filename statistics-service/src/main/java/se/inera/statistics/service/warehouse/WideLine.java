@@ -1,9 +1,18 @@
 package se.inera.statistics.service.warehouse;
 
+import org.joda.time.Days;
+import org.joda.time.LocalDate;
+
 import com.fasterxml.jackson.databind.JsonNode;
+
 import se.inera.statistics.service.helper.DocumentHelper;
+import se.inera.statistics.service.helper.HSAServiceHelper;
 
 public class WideLine {
+    public static final String HEADING = "lan;kommun;forsamling;enhet;lakarintyg;patient;kalenderperiod;kon;alder;diagnoskapitel;"
+            + "diagnosavsnitt;diagnoskategori;sjukskrivningsgrad;sjukskrivningslangd;lakarkon;lakaralder;lakarbefattning";
+
+    private static final LocalDate ERA = new LocalDate("2000-01-01");
     int lan;
     int kommun;
     int forsamling;
@@ -80,4 +89,58 @@ public class WideLine {
                 ", lakarbefattning=" + lakarbefattning +
                 '}';
     }
+
+    public static WideLine buildLine(JsonNode document) {
+        JsonNode hsaInfo = document.get("hsa");
+        int lan = Integer.parseInt(HSAServiceHelper.getLan(hsaInfo));
+        int kommun = HSAServiceHelper.getKommun(hsaInfo);
+        int forsamling = 0;
+        int enhet = DocumentHelper.getEnhetAndRemember(document);
+        int lakarintyg = DocumentHelper.getLakarIntyg(document);
+        int patient = DocumentHelper.getPatient(document);
+//        int forstaNedsattningsdag = Days.daysBetween(BASE_DATE, new LocalDate(DocumentHelper.getForstaNedsattningsdag(document))).getDays();
+//        int sistaNedsattningsdag = Days.daysBetween(BASE_DATE, new LocalDate(DocumentHelper.getForstaNedsattningsdag(document))).getDays();
+        LocalDate kalenderStart = new LocalDate(DocumentHelper.getForstaNedsattningsdag(document));
+        LocalDate kalenderEnd = new LocalDate(DocumentHelper.getSistaNedsattningsdag(document));
+        int kalenderperiod = Days.daysBetween(ERA, kalenderStart).getDays();
+        int kon = DocumentHelper.getKon(document).indexOf('k');
+        int alder = DocumentHelper.getAge(document);
+        int diagnoskapitel = Convert.toInt(DocumentHelper.getDiagnos(document));
+        int diagnosavsnitt = Convert.toInt(DocumentHelper.getDiagnos(document));
+        int diagnoskategori = Convert.toInt(DocumentHelper.getDiagnos(document));
+        int sjukskrivningsgrad = 100 - Integer.parseInt(DocumentHelper.getArbetsformaga(document).get(0));
+        int sjukskrivningslangd = Days.daysBetween(kalenderStart, kalenderEnd).getDays();
+        int lakarkon = -1;
+        int lakaralder = 0;
+        int lakarbefattning = 0;
+
+        WideLine line = new WideLine(lan, kommun, forsamling, enhet, lakarintyg, patient, kalenderperiod, kon, alder, diagnoskapitel, diagnosavsnitt, diagnoskategori, sjukskrivningsgrad, sjukskrivningslangd, lakarkon, lakaralder, lakarbefattning);
+        return line;
+    }
+
+    /**
+     * @param c delimiter
+     * @return CSV line including a terminating newline character
+     */
+    public String toCSVString(char c) {
+        StringBuilder sb = new StringBuilder();
+        sb.append(lan).append(c)
+                .append(kommun).append(c)
+                .append(forsamling).append(c)
+                .append(enhet).append(c)
+                .append(lakarintyg).append(c)
+                .append(patient).append(c)
+                .append(kalenderperiod).append(c)
+                .append(alder).append(c)
+                .append(diagnoskapitel).append(c)
+                .append(diagnosavsnitt).append(c)
+                .append(diagnoskategori).append(c)
+                .append(sjukskrivningsgrad).append(c)
+                .append(sjukskrivningslangd).append(c)
+                .append(lakarkon).append(c)
+                .append(lakaralder).append(c)
+                .append(lakarbefattning).append('\n');
+        return sb.toString();
+    }
+
 }
