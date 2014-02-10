@@ -23,7 +23,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import se.inera.statistics.service.processlog.ProcessLog;
 import se.inera.statistics.service.processlog.ProcessorListener;
 import se.inera.statistics.service.sjukfall.SjukfallInfo;
 
