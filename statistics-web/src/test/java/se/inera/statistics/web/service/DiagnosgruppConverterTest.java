@@ -51,7 +51,7 @@ public class DiagnosgruppConverterTest {
         DiagnosisGroupResponse resp = new DiagnosisGroupResponse(new ArrayList<DiagnosisGroup>(), new ArrayList<DualSexDataRow>());
         DualSexStatisticsData data = new DiagnosisGroupsConverter().convert(resp, new Range());
         assertEquals("[]", data.getFemaleChart().getCategories().toString());
-        assertEquals("[Somatiska sjukdomar (A00-E90, G00-L99, N00-N99): [], Psykiska sjukdomar (F00-F99): [], Muskuloskeletala sjukdomar (M00-M99): [], Graviditet och förlossning (O00-O99): [], Övrigt (P00-P96, Q00-Q99, S00-Y98): [], Symtomdiagnoser (R00-R99): [], Faktorer av betydelse för hälsotillståndet och för kontakter med hälso- och sjukvården (Z00-Z99): []]", data.getFemaleChart().getSeries().toString());
+        assertEquals("[A00-E90, G00-L99, N00-N99 Somatiska sjukdomar: [], F00-F99 Psykiska sjukdomar: [], M00-M99 Muskuloskeletala sjukdomar: [], O00-O99 Graviditet och förlossning: [], P00-P96, Q00-Q99, S00-Y98 Övrigt: [], R00-R99 Symtomdiagnoser: [], Z00-Z99 Faktorer av betydelse för hälsotillståndet och för kontakter med hälso- och sjukvården: []]", data.getFemaleChart().getSeries().toString());
     }
 
     @Test
@@ -73,10 +73,10 @@ public class DiagnosgruppConverterTest {
 
         //Then
         assertEquals("[period1]", data.getFemaleChart().getCategories().toString());
-        assertTrue(data.getFemaleChart().getSeries().toString(), data.getFemaleChart().getSeries().toString().contains("Somatiska sjukdomar (A00-E90, G00-L99, N00-N99): [3]"));
+        assertTrue(data.getFemaleChart().getSeries().toString(), data.getFemaleChart().getSeries().toString().contains("A00-E90, G00-L99, N00-N99 Somatiska sjukdomar: [3]"));
 
         assertEquals("[period1]", data.getMaleChart().getCategories().toString());
-        assertTrue(data.getMaleChart().getSeries().toString(), data.getMaleChart().getSeries().toString().contains("Somatiska sjukdomar (A00-E90, G00-L99, N00-N99): [2]"));
+        assertTrue(data.getMaleChart().getSeries().toString(), data.getMaleChart().getSeries().toString().contains("A00-E90, G00-L99, N00-N99 Somatiska sjukdomar: [2]"));
 
         assertEquals("[[;1, ;1, A00-B99 name1;2, ;1], [Period;1, Antal sjukfall;1, Kvinnor;1, Män;1, Summering;1]]", data.getTableData().getHeaders().toString());
         assertEquals("[period1: [5, 3, 2, 5], Totalt: [5, 3, 2]]", data.getTableData().getRows().toString());
