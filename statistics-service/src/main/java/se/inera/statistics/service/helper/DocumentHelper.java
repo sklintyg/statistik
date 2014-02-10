@@ -31,6 +31,9 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 
 public final class DocumentHelper {
 
+    private static final String OBSERVATIONER = "observationer";
+    private static final String EXTENSION = "extension";
+    private static final String PATIENT = "patient";
     public static final int SEX_DIGIT = 11;
     public static final int DATE_PART_OF_PERSON_ID = 8;
 
@@ -41,12 +44,12 @@ public final class DocumentHelper {
     }
 
     public static ObjectNode anonymize(JsonNode utlatande) {
-        String personId = utlatande.path("patient").path("id").path("extension").textValue();
+        String personId = utlatande.path(PATIENT).path("id").path(EXTENSION).textValue();
         int alder = extractAlder(personId, ISODateTimeFormat.dateTimeParser().parseLocalDate(utlatande.path("signeringsdatum").textValue()));
         String kon = extractKon(personId);
 
         ObjectNode anonymous = utlatande.deepCopy();
-        ObjectNode patientNode = (ObjectNode) anonymous.path("patient");
+        ObjectNode patientNode = (ObjectNode) anonymous.path(PATIENT);
         patientNode.remove("id");
         patientNode.remove("fornamn");
         patientNode.remove("efternamn");
@@ -67,24 +70,24 @@ public final class DocumentHelper {
     }
 
     public static String getPersonId(JsonNode document) {
-        return document.path("patient").path("id").path("extension").textValue();
+        return document.path(PATIENT).path("id").path(EXTENSION).textValue();
     }
 
     public static String getVardgivareId(JsonNode document) {
-        return document.path("skapadAv").path("vardenhet").path("vardgivare").path("id").path("extension").textValue();
+        return document.path("skapadAv").path("vardenhet").path("vardgivare").path("id").path(EXTENSION).textValue();
     }
 
     public static String getEnhetId(JsonNode document) {
-        return document.path("skapadAv").path("vardenhet").path("id").path("extension").textValue();
+        return document.path("skapadAv").path("vardenhet").path("id").path(EXTENSION).textValue();
     }
 
     public static String getLakarId(JsonNode document) {
-        return document.path("skapadAv").path("id").path("extension").textValue();
+        return document.path("skapadAv").path("id").path(EXTENSION).textValue();
     }
 
     public static String getForstaNedsattningsdag(JsonNode document) {
         String from = null;
-        for (JsonNode node: document.path("observationer")) {
+        for (JsonNode node: document.path(OBSERVATIONER)) {
             if (ARBETSFORMAGA_MATCHER.match(node)) {
                 JsonNode varde = node.path("observationsperiod");
                 String candidate = varde.path("from").asText();
@@ -98,7 +101,7 @@ public final class DocumentHelper {
 
     public static String getSistaNedsattningsdag(JsonNode document) {
         String to = null;
-        for (JsonNode node: document.path("observationer")) {
+        for (JsonNode node: document.path(OBSERVATIONER)) {
             if (ARBETSFORMAGA_MATCHER.match(node)) {
                 JsonNode varde = node.path("observationsperiod");
                 String candidate = varde.path("tom").asText();
@@ -111,11 +114,11 @@ public final class DocumentHelper {
     }
 
     public static String getKon(JsonNode document) {
-        return document.path("patient").path("kon").textValue();
+        return document.path(PATIENT).path("kon").textValue();
     }
 
     public static String getDiagnos(JsonNode document) {
-        for (JsonNode node: document.path("observationer")) {
+        for (JsonNode node: document.path(OBSERVATIONER)) {
             if (DIAGNOS_MATCHER.match(node)) {
                 return node.path("observationskod").path("code").textValue();
             }
@@ -125,7 +128,7 @@ public final class DocumentHelper {
 
     public static List<String> getArbetsformaga(JsonNode document) {
         List<String> result = new ArrayList<>();
-        for (JsonNode node: document.path("observationer")) {
+        for (JsonNode node: document.path(OBSERVATIONER)) {
             if (ARBETSFORMAGA_MATCHER.match(node)) {
                 for (JsonNode varde: node.path("varde")) {
                     result.add(varde.path("quantity").asText());
@@ -136,6 +139,6 @@ public final class DocumentHelper {
     }
 
     public static int getAge(JsonNode document) {
-        return document.path("patient").path("alder").intValue();
+        return document.path(PATIENT).path("alder").intValue();
     }
 }
