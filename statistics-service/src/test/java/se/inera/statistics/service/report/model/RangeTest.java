@@ -10,25 +10,25 @@ public class RangeTest {
     @Test
     public void testToStringWithToAndFromOnSameYear() {
         final Range range = new Range(new LocalDate(2013, 10, 01), new LocalDate(2013, 12, 01));
-        assertEquals("oktober-december 2013", range.toString());
+        assertEquals("oktober\u2013december 2013", range.toString());
     }
 
     @Test
     public void testToStringWithToAndFromOnDifferentYears() {
         final Range range = new Range(new LocalDate(2013, 10, 01), new LocalDate(2014, 12, 01));
-        assertEquals("oktober 2013-december 2014", range.toString());
+        assertEquals("oktober 2013\u2013december 2014", range.toString());
     }
 
     @Test
     public void testToStringAbbreviatedWithToAndFromOnSameYear() {
         final Range range = new Range(new LocalDate(2013, 10, 01), new LocalDate(2013, 12, 01));
-        assertEquals("okt-dec 2013", range.toStringAbbreviated());
+        assertEquals("okt\u2013dec 2013", range.toStringAbbreviated());
     }
 
     @Test
     public void testToStringAbbreviatedWithToAndFromOnDifferentYears() {
         final Range range = new Range(new LocalDate(2013, 10, 01), new LocalDate(2014, 12, 01));
-        assertEquals("okt 2013-dec 2014", range.toStringAbbreviated());
+        assertEquals("okt 2013\u2013dec 2014", range.toStringAbbreviated());
     }
 
     // CHECKSTYLE:OFF MagicNumber

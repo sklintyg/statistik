@@ -25,9 +25,16 @@ import org.joda.time.LocalDate;
 import org.joda.time.Months;
 
 public final class Range {
+    private static final String RANGE_SEPARATOR = "\u2013";
     private static final int DEFAULT_PERIOD = 18;
     private static final int YEAR_PERIOD = 12;
     private static final int QUARTER_PERIOD = 3;
+
+    private static final Locale SV = new Locale("sv", "SE");
+
+    private static final RangeFormatter FULL_MONTH_FORMAT = new RangeFormatter("MMMM");
+    private static final RangeFormatter ABBREVIATED_MONTH_FORMAT = new RangeFormatter("MMM");
+
     private final LocalDate from;
     private final LocalDate to;
 
@@ -54,24 +61,11 @@ public final class Range {
     }
 
     public String toString() {
-        return toStringWithMonthFormat("MMMM");
+        return FULL_MONTH_FORMAT.format(from, to);
     }
 
     public String toStringAbbreviated() {
-        return toStringWithMonthFormat("MMM");
-    }
-
-    private String toStringWithMonthFormat(String monthFormat) {
-        Locale sv = new Locale("sv", "SE");
-        if (from.getYear() == to.getYear()) {
-            if (from.getMonthOfYear() == to.getMonthOfYear()) {
-                return to.toString(monthFormat + " yyyy", sv);
-            } else {
-                return from.toString(monthFormat, sv) + "-" + to.toString(monthFormat + " yyyy", sv);
-            }
-        } else {
-            return from.toString(monthFormat + " yyyy", sv) + "-" + to.toString(monthFormat + " yyyy", sv);
-        }
+        return ABBREVIATED_MONTH_FORMAT.format(from, to);
     }
 
     public int getMonths() {
@@ -84,5 +78,32 @@ public final class Range {
 
     public static Range quarter() {
         return new Range(QUARTER_PERIOD);
+    }
+
+    private static final class RangeFormatter {
+        private final String monthFormat;
+
+        private RangeFormatter(String monthFormat) {
+            this.monthFormat = monthFormat;
+        }
+
+        private String format(LocalDate from, LocalDate to) {
+            if (from.getYear() == to.getYear()) {
+                if (from.getMonthOfYear() == to.getMonthOfYear()) {
+                    return formatMonthWithYear(to);
+                } else {
+                    return formatMonth(from) + RANGE_SEPARATOR + formatMonthWithYear(to);
+                }
+            } else {
+                return formatMonthWithYear(from) + RANGE_SEPARATOR + formatMonthWithYear(to);
+            }
+        }
+        private String formatMonthWithYear(LocalDate when) {
+            return when.toString(monthFormat + " yyyy", SV);
+        }
+
+        private String formatMonth(LocalDate when) {
+            return when.toString(monthFormat, SV);
+        }
     }
 }

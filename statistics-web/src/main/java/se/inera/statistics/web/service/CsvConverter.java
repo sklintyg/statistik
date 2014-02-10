@@ -28,11 +28,11 @@ import se.inera.statistics.web.model.NamedData;
 import se.inera.statistics.web.model.TableData;
 import se.inera.statistics.web.model.TableHeader;
 
-public class CsvConverter {
+public final class CsvConverter {
 
     private final StringBuilder csv = new StringBuilder();
 
-    CsvConverter(TableData tableData) {
+    private CsvConverter(TableData tableData) {
         convert(tableData);
     }
 

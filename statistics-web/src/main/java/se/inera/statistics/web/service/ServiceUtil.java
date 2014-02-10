@@ -87,8 +87,7 @@ public final class ServiceUtil {
                 sumData.remove(sumData.size() - 1);
             }
         }
-        NamedData sumRow = new NamedData("Totalt", sumData);
-        return sumRow;
+        return new NamedData("Totalt", sumData);
     }
 
 }
