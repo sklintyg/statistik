@@ -21,6 +21,7 @@ package se.inera.auth;
 
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.protocol.Protocol;
+import org.apache.commons.httpclient.protocol.ProtocolSocketFactory;
 import org.springframework.beans.factory.annotation.Value;
 
 /**
@@ -39,7 +40,8 @@ public class HttpClientFactory {
     public HttpClient createInstance() {
         HttpClient httpClient = new HttpClient();
 
-        Protocol protocol = new Protocol("https", new KeystoreBasedSocketFactory(trustStoreFile, trustStorePassword), HTTPS_PORT);
+        ProtocolSocketFactory factory = new KeystoreBasedSocketFactory(trustStoreFile, trustStorePassword);
+        Protocol protocol = new Protocol("https", factory, HTTPS_PORT);
         Protocol.registerProtocol("https", protocol);
 
         return httpClient;
