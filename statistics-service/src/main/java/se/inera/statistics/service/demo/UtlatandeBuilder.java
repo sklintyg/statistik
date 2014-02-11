@@ -139,22 +139,6 @@ public class UtlatandeBuilder {
         ObjectNode idNode = (ObjectNode) intyg.path("id");
         idNode.put("root", UUID.randomUUID().toString());
 
-        LocalDate start = new LocalDate("9999-12-31");
-        for (LocalDate s : starts) {
-            if (s.isBefore(start)) {
-                start = s;
-            }
-        }
-        LocalDate end = new LocalDate("1970-01-01");
-        for (LocalDate e : stops) {
-            if (e.isAfter(end)) {
-                end = e;
-            }
-        }
-
-        intyg.put("validFromDate", FORMATTER.print(start));
-        intyg.put("validToDate", FORMATTER.print(end));
-
         for (JsonNode node: intyg.path("observationer")) {
             if (DocumentHelper.ARBETSFORMAGA_MATCHER.match(node)) {
                 ObjectNode varde = (ObjectNode) node.path("observationsperiod");
