@@ -1,19 +1,14 @@
 package se.inera.statistics.queue
 
-import org.apache.activemq.pool.PooledConnectionFactory
 import org.joda.time.LocalDate
 
 import se.inera.statistics.context.StartUp
-import se.inera.statistics.service.demo.UtlatandeBuilder
-import se.inera.statistics.service.helper.QueueHelper
-import se.inera.statistics.service.helper.TestData
+import se.inera.statistics.service.helper.UtlatandeBuilder
+import se.inera.statistics.service.testsupport.QueueHelper
+import se.inera.statistics.service.testsupport.TestData
 import se.inera.statistics.service.processlog.EventType
 import se.inera.statistics.service.queue.Receiver;
 import se.inera.statistics.service.report.model.Range
-
-import javax.jms.QueueBrowser
-import javax.jms.Session
-import javax.jms.TextMessage
 
 class IntygSender {
     static Map<String, TestData> testResult
@@ -30,7 +25,7 @@ class IntygSender {
     }
 
     boolean sendIntyg(String typ, String person, String diagnos, String start1, String stop1, String grad1, String start2, String stop2, String grad2, String start3, String stop3, String grad3, String start4, String stop4, String grad4, String enhet, String vardgivare, String trackingId) {
-        QueueHelper bean = (QueueHelper) StartUp.context.getBean("se.inera.statistics.service.helper.QueueHelper")
+        QueueHelper bean = (QueueHelper) StartUp.context.getBean(QueueHelper.class)
         List<LocalDate> starts = new ArrayList<>()
         List<LocalDate> stops = new ArrayList<>()
         List<String> grads = new ArrayList<>()
@@ -85,12 +80,12 @@ class IntygSender {
     }
 
     boolean getResult(enhet1, enhet2, String start, String stop) {
-        QueueHelper bean = (QueueHelper) StartUp.context.getBean("se.inera.statistics.service.helper.QueueHelper")
+        QueueHelper bean = (QueueHelper) StartUp.context.getBean(QueueHelper.class)
         testResult = bean.printAndGetPersistedData(enhet1, enhet2, new Range(new LocalDate(start), new LocalDate(stop)))
         true
     }
 
-    String toGrad(String s) {
+    static String toGrad(String s) {
         if (s.endsWith("%")) {
             s = s.substring(0, s.size() - 1);
         }

@@ -2,7 +2,7 @@ package se.inera.statistics.queue;
 
 import org.junit.Test;
 import se.inera.statistics.context.StartUp;
-import se.inera.statistics.service.helper.TestData;
+import se.inera.statistics.service.testsupport.TestData;
 
 import java.util.Map;
 

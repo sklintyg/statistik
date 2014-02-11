@@ -17,7 +17,7 @@
  *     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package se.inera.statistics.service.demo;
+package se.inera.statistics.service.helper;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -28,9 +28,6 @@ import java.util.UUID;
 import org.joda.time.LocalDate;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
-
-import se.inera.statistics.service.helper.DocumentHelper;
-import se.inera.statistics.service.helper.JSONParser;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;

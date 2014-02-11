@@ -18,8 +18,8 @@
       </amq:transportConnectors>
     </amq:broker>
 
-    <bean class="se.inera.statistics.service.helper.QueueHelper" />
-    <bean class="se.inera.statistics.service.helper.QueueSender" />
+    <bean class="se.inera.statistics.service.testsupport.QueueHelper" />
+    <bean class="se.inera.statistics.service.testsupport.QueueSender" />
 
     <bean id="jmsFactory" class="org.apache.activemq.pool.PooledConnectionFactory" destroy-method="stop">
         <property name="connectionFactory">

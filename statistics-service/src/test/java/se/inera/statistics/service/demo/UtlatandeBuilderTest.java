@@ -10,6 +10,7 @@ import org.junit.Test;
 import se.inera.statistics.service.helper.DocumentHelper;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import se.inera.statistics.service.helper.UtlatandeBuilder;
 
 public class UtlatandeBuilderTest {
 

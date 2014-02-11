@@ -2,7 +2,7 @@ package se.inera.statistics.counterdata
 
 import com.fasterxml.jackson.databind.JsonNode
 import se.inera.statistics.queue.IntygSender
-import se.inera.statistics.service.helper.TestData
+import se.inera.statistics.service.testsupport.TestData
 
 class Sjukfallslangd {
 

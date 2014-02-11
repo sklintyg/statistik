@@ -20,7 +20,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import se.inera.statistics.service.demo.UtlatandeBuilder;
+import se.inera.statistics.service.helper.UtlatandeBuilder;
 import se.inera.statistics.service.report.api.Aldersgrupp;
 import se.inera.statistics.service.report.model.DiagnosisGroup;
 import se.inera.statistics.service.report.model.Sex;

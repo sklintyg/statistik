@@ -22,7 +22,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import se.inera.statistics.service.demo.UtlatandeBuilder;
+import se.inera.statistics.service.helper.UtlatandeBuilder;
 import se.inera.statistics.service.processlog.LogConsumer;
 import se.inera.statistics.service.report.api.SjukfallPerManad;
 import se.inera.statistics.service.report.model.Range;

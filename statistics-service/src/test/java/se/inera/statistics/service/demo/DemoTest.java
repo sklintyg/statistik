@@ -14,6 +14,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import se.inera.statistics.service.common.CommonPersistence;
 import se.inera.statistics.service.helper.DocumentHelper;
+import se.inera.statistics.service.helper.UtlatandeBuilder;
 import se.inera.statistics.service.queue.Receiver;
 import se.inera.statistics.service.report.model.DiagnosisGroup;
 import se.inera.statistics.service.report.repository.NationellUpdater;

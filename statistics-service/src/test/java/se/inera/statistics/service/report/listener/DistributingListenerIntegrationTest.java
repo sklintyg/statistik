@@ -11,7 +11,7 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
-import se.inera.statistics.service.demo.UtlatandeBuilder;
+import se.inera.statistics.service.helper.UtlatandeBuilder;
 import se.inera.statistics.service.helper.DocumentHelper;
 import se.inera.statistics.service.processlog.ProcessorListener;
 import se.inera.statistics.service.report.api.SjukfallPerManad;

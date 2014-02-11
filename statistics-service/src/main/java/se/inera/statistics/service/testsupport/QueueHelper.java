@@ -17,7 +17,7 @@
  *     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package se.inera.statistics.service.helper;
+package se.inera.statistics.service.testsupport;
 
 import java.util.HashMap;
 import java.util.List;
@@ -30,7 +30,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import se.inera.statistics.service.demo.UtlatandeBuilder;
+import se.inera.statistics.service.helper.JSONParser;
+import se.inera.statistics.service.helper.UtlatandeBuilder;
 import se.inera.statistics.service.processlog.EventType;
 import se.inera.statistics.service.processlog.LogConsumer;
 import se.inera.statistics.service.report.api.Aldersgrupp;

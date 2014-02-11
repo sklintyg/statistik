@@ -17,7 +17,7 @@
  *     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package se.inera.statistics.service.helper;
+package se.inera.statistics.service.testsupport;
 
 import javax.annotation.PostConstruct;
 import javax.jms.ConnectionFactory;

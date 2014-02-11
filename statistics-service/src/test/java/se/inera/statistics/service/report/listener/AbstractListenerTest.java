@@ -12,7 +12,7 @@ import org.joda.time.LocalDate;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 
-import se.inera.statistics.service.demo.UtlatandeBuilder;
+import se.inera.statistics.service.helper.UtlatandeBuilder;
 import se.inera.statistics.service.sjukfall.SjukfallInfo;
 
 import com.fasterxml.jackson.databind.JsonNode;

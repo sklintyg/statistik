@@ -16,7 +16,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.jms.core.MessageCreator;
 
-import se.inera.statistics.service.demo.UtlatandeBuilder;
+import se.inera.statistics.service.helper.UtlatandeBuilder;
 import se.inera.statistics.service.queue.Receiver;
 
 // CHECKSTYLE:OFF MagicNumber
