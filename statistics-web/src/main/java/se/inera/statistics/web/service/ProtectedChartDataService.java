@@ -45,7 +45,6 @@ import se.inera.statistics.service.report.api.SjukfallPerManad;
 import se.inera.statistics.service.report.api.SjukfallslangdGrupp;
 import se.inera.statistics.service.report.api.Sjukskrivningsgrad;
 import se.inera.statistics.service.report.api.VerksamhetOverview;
-import se.inera.statistics.service.report.model.AgeGroupsResponse;
 import se.inera.statistics.service.report.model.DegreeOfSickLeaveResponse;
 import se.inera.statistics.service.report.model.DiagnosisGroupResponse;
 import se.inera.statistics.service.report.model.Range;
@@ -175,7 +174,7 @@ public class ProtectedChartDataService {
     public AgeGroupsData getAgeGroupsStatistics(@Context HttpServletRequest request, @PathParam(VERKSAMHET_PATH_ID) String verksamhetId) {
         LOG.info("Calling getAgeGroupsStatistics with verksamhetId: " + verksamhetId);
         final RollingLength period = RollingLength.QUARTER;
-        AgeGroupsResponse ageGroups = datasourceAldersgrupp.getHistoricalAgeGroups(Verksamhet.decodeId(verksamhetId), Helper.previousMonth(), period);
+        SimpleDualSexResponse<SimpleDualSexDataRow> ageGroups = datasourceAldersgrupp.getHistoricalAgeGroups(Verksamhet.decodeId(verksamhetId), Helper.previousMonth(), period);
         return new AgeGroupsConverter().convert(ageGroups, new Range(period.getPeriods()));
     }
 
@@ -197,7 +196,7 @@ public class ProtectedChartDataService {
     @PostAuthorize(value = "@protectedChartDataService.helper.userAccess(#request, #verksamhetId)")
     public AgeGroupsData getAgeGroupsCurrentStatistics(@Context HttpServletRequest request, @PathParam(VERKSAMHET_PATH_ID) String verksamhetId) {
         LOG.info("Calling getAgeGroupsCurrentStatistics with verksamhetId: " + verksamhetId);
-        AgeGroupsResponse ageGroups = datasourceAldersgrupp.getCurrentAgeGroups(Verksamhet.decodeId(verksamhetId));
+        SimpleDualSexResponse<SimpleDualSexDataRow> ageGroups = datasourceAldersgrupp.getCurrentAgeGroups(Verksamhet.decodeId(verksamhetId));
         LocalDate start = new LocalDate().withDayOfMonth(1);
         LocalDate end = new LocalDate().withDayOfMonth(1).plusMonths(1).minusDays(1);
         final Range range = new Range(start, end);

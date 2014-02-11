@@ -30,8 +30,9 @@ import org.joda.time.LocalDate;
 import org.springframework.transaction.annotation.Transactional;
 
 import se.inera.statistics.service.report.api.Aldersgrupp;
-import se.inera.statistics.service.report.model.AgeGroupsResponse;
 import se.inera.statistics.service.report.model.Sex;
+import se.inera.statistics.service.report.model.SimpleDualSexDataRow;
+import se.inera.statistics.service.report.model.SimpleDualSexResponse;
 import se.inera.statistics.service.report.model.db.AgeGroupsRow;
 import se.inera.statistics.service.report.model.db.AldersgruppKey;
 import se.inera.statistics.service.report.util.AldersgroupUtil;
@@ -45,7 +46,7 @@ public class AldersgruppPersistenceHandler implements Aldersgrupp {
 
     @Override
     @Transactional
-    public AgeGroupsResponse getHistoricalAgeGroups(String hsaId, LocalDate when, RollingLength rolling) {
+    public SimpleDualSexResponse<SimpleDualSexDataRow> getHistoricalAgeGroups(String hsaId, LocalDate when, RollingLength rolling) {
         TypedQuery<AgeGroupsRow> query = manager.createQuery("SELECT a FROM AgeGroupsRow a WHERE a.key.hsaId = :hsaId AND a.key.period = :when AND a.key.periods = :periods ", AgeGroupsRow.class);
         query.setParameter("hsaId", hsaId);
         query.setParameter("when", ReportUtil.toPeriod(when));
@@ -55,23 +56,23 @@ public class AldersgruppPersistenceHandler implements Aldersgrupp {
     }
 
     @Override
-    public AgeGroupsResponse getCurrentAgeGroups(String hsaId) {
+    public SimpleDualSexResponse<SimpleDualSexDataRow> getCurrentAgeGroups(String hsaId) {
         return getHistoricalAgeGroups(hsaId, new LocalDate(), RollingLength.SINGLE_MONTH);
     }
 
-    private AgeGroupsResponse translateForOutput(List<AgeGroupsRow> list, int periods) {
-        List<AgeGroupsRow> translatedCasesPerMonthRows = new ArrayList<>();
+    private SimpleDualSexResponse<SimpleDualSexDataRow> translateForOutput(List<AgeGroupsRow> list, int periods) {
+        List<SimpleDualSexDataRow> translatedCasesPerMonthRows = new ArrayList<>();
 
         for (Range s: AldersgroupUtil.RANGES) {
             String group = s.getName();
             for (AgeGroupsRow r: list) {
                 if (group.equals(r.getGroup())) {
-                    translatedCasesPerMonthRows.add(r);
+                    translatedCasesPerMonthRows.add(new SimpleDualSexDataRow(r.getGroup(), r.getFemale(), r.getMale()));
                 }
             }
         }
 
-        return new AgeGroupsResponse(translatedCasesPerMonthRows, periods);
+        return new SimpleDualSexResponse<SimpleDualSexDataRow>(translatedCasesPerMonthRows, periods);
     }
 
     @Transactional

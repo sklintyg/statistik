@@ -34,9 +34,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import se.inera.statistics.service.report.api.*;
+import se.inera.statistics.service.report.api.Aldersgrupp;
+import se.inera.statistics.service.report.api.Diagnosgrupp;
+import se.inera.statistics.service.report.api.Diagnoskapitel;
+import se.inera.statistics.service.report.api.Overview;
 import se.inera.statistics.service.report.api.SjukfallPerLan;
-import se.inera.statistics.service.report.model.AgeGroupsResponse;
+import se.inera.statistics.service.report.api.SjukfallPerManad;
+import se.inera.statistics.service.report.api.SjukfallslangdGrupp;
+import se.inera.statistics.service.report.api.Sjukskrivningsgrad;
 import se.inera.statistics.service.report.model.DegreeOfSickLeaveResponse;
 import se.inera.statistics.service.report.model.DiagnosisGroup;
 import se.inera.statistics.service.report.model.DiagnosisGroupResponse;
@@ -161,7 +166,7 @@ public class ChartDataService {
     public AgeGroupsData getAgeGroupsStatistics() {
         LOG.info("Calling getAgeGroupsStatistics for national");
         final RollingLength quarter = RollingLength.QUARTER;
-        AgeGroupsResponse ageGroups = datasourceAldersgrupp.getHistoricalAgeGroups(NATIONELL, previousMonth(), quarter);
+        SimpleDualSexResponse<SimpleDualSexDataRow> ageGroups = datasourceAldersgrupp.getHistoricalAgeGroups(NATIONELL, previousMonth(), quarter);
         return new AgeGroupsConverter().convert(ageGroups, new Range(quarter.getPeriods()));
     }
 

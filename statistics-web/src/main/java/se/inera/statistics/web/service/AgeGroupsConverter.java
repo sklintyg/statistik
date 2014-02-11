@@ -23,10 +23,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import se.inera.statistics.service.report.model.AgeGroupsResponse;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.Sex;
-import se.inera.statistics.service.report.model.db.AgeGroupsRow;
+import se.inera.statistics.service.report.model.SimpleDualSexDataRow;
+import se.inera.statistics.service.report.model.SimpleDualSexResponse;
 import se.inera.statistics.web.model.AgeGroupsData;
 import se.inera.statistics.web.model.ChartData;
 import se.inera.statistics.web.model.ChartSeries;
@@ -35,20 +35,20 @@ import se.inera.statistics.web.model.TableData;
 
 public class AgeGroupsConverter {
 
-    private TableData convertToTable(List<AgeGroupsRow> ageGroups) {
+    private TableData convertToTable(List<SimpleDualSexDataRow> list) {
         List<NamedData> data = new ArrayList<>();
         int accumulatedSum = 0;
-        for (AgeGroupsRow row : ageGroups) {
+        for (SimpleDualSexDataRow row : list) {
             int rowSum = row.getFemale() + row.getMale();
             accumulatedSum += rowSum;
-            data.add(new NamedData(row.getGroup(), Arrays.asList(rowSum, row.getFemale(), row.getMale(), accumulatedSum)));
+            data.add(new NamedData(row.getName(), Arrays.asList(rowSum, row.getFemale(), row.getMale(), accumulatedSum)));
         }
         ServiceUtil.addSumRow(data, false);
         return TableData.createWithSingleHeadersRow(data, Arrays.asList("Åldersgrupper", "Antal sjukfall", "Antal sjukfall för kvinnor", "Antal sjukfall för män", "Summering"));
     }
 
 
-    private ChartData convertToChart(AgeGroupsResponse resp) {
+    private ChartData convertToChart(SimpleDualSexResponse<SimpleDualSexDataRow> resp) {
         List<String> groups = resp.getGroups();
         List<Integer> femaleData = resp.getDataForSex(Sex.Female);
         List<Integer> maleData = resp.getDataForSex(Sex.Male);
@@ -58,8 +58,8 @@ public class AgeGroupsConverter {
         return new ChartData(series, groups);
     }
 
-    AgeGroupsData convert(AgeGroupsResponse resp, Range range) {
-        TableData tableData = convertToTable(resp.getAgeGroupsRows());
+    AgeGroupsData convert(SimpleDualSexResponse<SimpleDualSexDataRow> resp, Range range) {
+        TableData tableData = convertToTable(resp.getRows());
         ChartData chartData = convertToChart(resp);
         return new AgeGroupsData(tableData, chartData, range.getMonths(), range.toString());
     }

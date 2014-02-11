@@ -26,9 +26,9 @@ import java.util.List;
 
 import org.junit.Test;
 
-import se.inera.statistics.service.report.model.AgeGroupsResponse;
 import se.inera.statistics.service.report.model.Range;
-import se.inera.statistics.service.report.model.db.AgeGroupsRow;
+import se.inera.statistics.service.report.model.SimpleDualSexDataRow;
+import se.inera.statistics.service.report.model.SimpleDualSexResponse;
 import se.inera.statistics.web.model.AgeGroupsData;
 import se.inera.statistics.web.model.ChartData;
 import se.inera.statistics.web.model.ChartSeries;
@@ -43,11 +43,11 @@ public class AldersgruppConverterTest {
     public void convertCasesPerMonthDataTest() {
         //Given
         AgeGroupsConverter converter = new AgeGroupsConverter();
-        ArrayList<AgeGroupsRow> ageGroupsRows = new ArrayList<>();
-        ageGroupsRows.add(new AgeGroupsRow(null, "<20", 3, 13, 14));
-        ageGroupsRows.add(new AgeGroupsRow(null, "20-50", 3, 24, 15));
-        ageGroupsRows.add(new AgeGroupsRow(null, ">50", 3, 3, 9));
-        AgeGroupsResponse ageGroupsResponse = new AgeGroupsResponse(ageGroupsRows, 7);
+        ArrayList<SimpleDualSexDataRow> ageGroupsRows = new ArrayList<>();
+        ageGroupsRows.add(new SimpleDualSexDataRow("<20", 13, 14));
+        ageGroupsRows.add(new SimpleDualSexDataRow("20-50", 24, 15));
+        ageGroupsRows.add(new SimpleDualSexDataRow(">50", 3, 9));
+        SimpleDualSexResponse<SimpleDualSexDataRow> ageGroupsResponse = new SimpleDualSexResponse<>(ageGroupsRows, 7);
 
         //When
         AgeGroupsData result = converter.convert(ageGroupsResponse, new Range(7));

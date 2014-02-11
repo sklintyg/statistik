@@ -43,7 +43,6 @@ import se.inera.statistics.service.report.api.SjukfallPerManad;
 import se.inera.statistics.service.report.api.SjukfallslangdGrupp;
 import se.inera.statistics.service.report.api.Sjukskrivningsgrad;
 import se.inera.statistics.service.report.api.VerksamhetOverview;
-import se.inera.statistics.service.report.model.AgeGroupsResponse;
 import se.inera.statistics.service.report.model.DegreeOfSickLeaveResponse;
 import se.inera.statistics.service.report.model.DiagnosisGroupResponse;
 import se.inera.statistics.service.report.model.OverviewResponse;
@@ -190,15 +189,15 @@ public class QueueHelper {
     }
 
     private void printAndGetAgeGroups(String vardenhet1, String vardenhet2, Range range, Map<String, TestData> result) {
-        AgeGroupsResponse ageGroups1 = aldersgrupp.getHistoricalAgeGroups(vardenhet1, range.getTo(), RollingLength.YEAR);
+        SimpleDualSexResponse<SimpleDualSexDataRow> ageGroups1 = aldersgrupp.getHistoricalAgeGroups(vardenhet1, range.getTo(), RollingLength.YEAR);
         LOG.info("AG data: " + ageGroups1);
         JsonNode ageGroups1Node = JSONParser.parse(ageGroups1.toString());
         result.put("ageGroups1", new TestData(ageGroups1, ageGroups1Node));
-        AgeGroupsResponse ageGroups2 = aldersgrupp.getHistoricalAgeGroups(vardenhet2, range.getTo(), RollingLength.YEAR);
+        SimpleDualSexResponse<SimpleDualSexDataRow> ageGroups2 = aldersgrupp.getHistoricalAgeGroups(vardenhet2, range.getTo(), RollingLength.YEAR);
         LOG.info("AG data: " + ageGroups2);
         JsonNode ageGroups2Node = JSONParser.parse(ageGroups2.toString());
         result.put("ageGroups2", new TestData(ageGroups2, ageGroups2Node));
-        AgeGroupsResponse ageGroupsNationell = aldersgrupp.getHistoricalAgeGroups(nationell, range.getTo(), RollingLength.YEAR);
+        SimpleDualSexResponse<SimpleDualSexDataRow> ageGroupsNationell = aldersgrupp.getHistoricalAgeGroups(nationell, range.getTo(), RollingLength.YEAR);
         LOG.info("Nationell AG data: " + ageGroupsNationell);
         JsonNode ageGroupsNationellNode = JSONParser.parse(ageGroupsNationell.toString());
         result.put("ageGroupsNationell", new TestData(ageGroupsNationell, ageGroupsNationellNode));
