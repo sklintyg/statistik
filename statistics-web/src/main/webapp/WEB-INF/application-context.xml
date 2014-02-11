@@ -94,7 +94,7 @@
         <bean id="healthcheckUtil" class="se.inera.statistics.web.util.HealthCheckUtil" />
       </beans>
 
-    <beans profile="!demo,!test,!db,!qa">
+    <beans profile="!test,!db,!qa">
         <bean class="se.inera.statistics.service.report.mock.SjukfallPerManadMock" id="casesPerMonth"/>
         <bean class="se.inera.statistics.service.report.mock.DiagnosgruppMock" id="diagnosisGroups"/>
         <bean class="se.inera.statistics.service.report.mock.DiagnoskapitelMock" id="diagnosisSubGroups"/>
@@ -106,7 +106,7 @@
         <bean class="se.inera.statistics.service.report.mock.SjukfallPerLanMock" id="casesPerCounty"/>
     </beans>
 
-    <beans profile="demo,test,db,qa">
+    <beans profile="test,db,qa">
         <import resource="application-context-qm.xml"/>
 
         <bean class="se.inera.statistics.service.common.CommonPersistenceHandler" id="commonPersistenceHandler"/>
@@ -128,7 +128,7 @@
               id="casesPerCounty"/>
     </beans>
 
-    <beans profile="demo,generatesmalltestdata">
+    <beans profile="generatesmalltestdata">
         <bean class="se.inera.statistics.service.demo.InjectUtlatande" lazy-init="false"/>
     </beans>
     <beans profile="generatetestdata">
