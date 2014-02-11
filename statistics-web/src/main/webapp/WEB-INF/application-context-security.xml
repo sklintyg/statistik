@@ -72,9 +72,9 @@
         <security:global-method-security pre-post-annotations="enabled" />
     </beans>
     <!-- =============================================================== -->
-    <!-- Dev,demo profile only supports Fake login                            -->
+    <!-- Dev profile only supports Fake login                            -->
     <!-- =============================================================== -->
-    <beans profile="dev,demo">
+    <beans profile="dev">
         <security:http entry-point-ref="http403ForbiddenEntryPoint" pattern="/api/verksamhet/**">
             <security:intercept-url pattern="/**" access="IS_AUTHENTICATED_FULLY"/>
             <security:custom-filter position="PRE_AUTH_FILTER" ref="fakeAuthFilter"/>
@@ -130,7 +130,7 @@
         </security:authentication-manager>
     </beans>
 
-    <beans profile="dev,demo,test,qa">
+    <beans profile="dev,test,qa">
         <bean id="fakeAuthFilter" class="se.inera.auth.FakeAuthenticationFilter">
             <property name="authenticationManager" ref="authenticationManager"/>
             <property name="authenticationSuccessHandler" ref="fakeSuccessHandler"/>
