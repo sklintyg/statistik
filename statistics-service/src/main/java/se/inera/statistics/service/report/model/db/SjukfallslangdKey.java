@@ -23,7 +23,7 @@ import javax.persistence.Embeddable;
 import java.io.Serializable;
 
 @Embeddable
-public class SickLeaveLengthKey implements Serializable {
+public class SjukfallslangdKey implements Serializable {
     private static final int HASH_MULTIPLIER = 31;
 
     private static final long serialVersionUID = 1L;
@@ -34,10 +34,10 @@ public class SickLeaveLengthKey implements Serializable {
     private String grupp;
     private int periods;
 
-    public SickLeaveLengthKey() {
+    public SjukfallslangdKey() {
     }
 
-    public SickLeaveLengthKey(String period, String hsaId, String group, int periods) {
+    public SjukfallslangdKey(String period, String hsaId, String group, int periods) {
         this.period = period;
         this.hsaId = hsaId;
         this.grupp = group;
@@ -85,7 +85,7 @@ public class SickLeaveLengthKey implements Serializable {
             return false;
         }
 
-        SickLeaveLengthKey that = (SickLeaveLengthKey) o;
+        SjukfallslangdKey that = (SjukfallslangdKey) o;
 
         return (periods == that.periods) && grupp.equals(that.grupp) && hsaId.equals(that.hsaId) && period.equals(that.period);
     }
@@ -101,6 +101,6 @@ public class SickLeaveLengthKey implements Serializable {
 
     @Override
     public String toString() {
-        return "{\"SickLeaveLengthKey\":{" + "\"period\":\"" + period + "\", \"hsaId\":\"" + hsaId + "\", \"grupp\":\"" + grupp + "\", \"periods\":" + periods + "}}";
+        return "{\"SjukfallslangdKey\":{" + "\"period\":\"" + period + "\", \"hsaId\":\"" + hsaId + "\", \"grupp\":\"" + grupp + "\", \"periods\":" + periods + "}}";
     }
 }

@@ -29,7 +29,7 @@ import se.inera.statistics.service.report.api.SjukfallslangdGrupp;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.Sex;
 import se.inera.statistics.service.report.model.SickLeaveLengthResponse;
-import se.inera.statistics.service.report.model.db.SickLeaveLengthRow;
+import se.inera.statistics.service.report.model.db.SjukfallslangdRow;
 import se.inera.statistics.service.report.model.SimpleDualSexDataRow;
 import se.inera.statistics.service.report.model.SimpleDualSexResponse;
 import se.inera.statistics.service.report.repository.RollingLength;
@@ -44,11 +44,11 @@ public class SjukfallslangdGruppMock implements SjukfallslangdGrupp {
     // CHECKSTYLE:OFF MagicNumber
     @Override
     public SickLeaveLengthResponse getHistoricalStatistics(String hsaId, LocalDate when, RollingLength length) {
-        final List<SickLeaveLengthRow> rows = new ArrayList<>();
+        final List<SjukfallslangdRow> rows = new ArrayList<>();
         for (se.inera.statistics.service.report.util.Ranges.Range group : SjukfallslangdUtil.RANGES) {
             int women = (int) (random.nextGaussian() * 2000 + 10000);
             int men = (int) (random.nextGaussian() * 2000 + 10000);
-            rows.add(new SickLeaveLengthRow(null, group.getName(), length.getPeriods(), women, men));
+            rows.add(new SjukfallslangdRow(null, group.getName(), length.getPeriods(), women, men));
         }
         return new SickLeaveLengthResponse(rows, length.getPeriods());
     }

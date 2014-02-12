@@ -29,29 +29,29 @@ import javax.persistence.Transient;
 import se.inera.statistics.service.report.util.Verksamhet;
 
 @Entity
-@Table(name = SickLeaveLengthRow.TABLE)
-public class SickLeaveLengthRow {
+@Table(name = SjukfallslangdRow.TABLE)
+public class SjukfallslangdRow {
     public static final String TABLE = "sjukfallslangdgrupp";
     @EmbeddedId
-    private SickLeaveLengthKey key;
+    private SjukfallslangdKey key;
     @Enumerated(EnumType.STRING)
     private Verksamhet typ;
 
     private int male;
     private int female;
 
-    public SickLeaveLengthRow() {
+    public SjukfallslangdRow() {
     }
 
-    public SickLeaveLengthRow(String period, String hsaId, String group, int periods, Verksamhet typ, int female, int male) {
-        key = new SickLeaveLengthKey(period, hsaId, group, periods);
+    public SjukfallslangdRow(String period, String hsaId, String group, int periods, Verksamhet typ, int female, int male) {
+        key = new SjukfallslangdKey(period, hsaId, group, periods);
         this.male = male;
         this.female = female;
         this.typ = typ;
     }
 
-    public SickLeaveLengthRow(String period, String group, int periods, int female, int male) {
-        key = new SickLeaveLengthKey(period, Verksamhet.NATIONELL.toString(), group, periods);
+    public SjukfallslangdRow(String period, String group, int periods, int female, int male) {
+        key = new SjukfallslangdKey(period, Verksamhet.NATIONELL.toString(), group, periods);
         this.male = male;
         this.female = female;
     }
@@ -95,16 +95,16 @@ public class SickLeaveLengthRow {
         return key.getHsaId();
     }
 
-    public SickLeaveLengthKey getKey() {
+    public SjukfallslangdKey getKey() {
         return key;
     }
 
-    public void setKey(SickLeaveLengthKey key) {
+    public void setKey(SjukfallslangdKey key) {
         this.key = key;
     }
 
     @Override
     public String toString() {
-        return "{\"SickLeaveLengthRow\":{\"key\":" + key + ", \"typ\":\"" + typ + "\", \"male\":" + male + ", \"female\":" + female + "}}";
+        return "{\"SjukfallslangdRow\":{\"key\":" + key + ", \"typ\":\"" + typ + "\", \"male\":" + male + ", \"female\":" + female + "}}";
     }
 }

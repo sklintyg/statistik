@@ -52,7 +52,7 @@ public class OverviewBasePersistenceHandler {
     }
 
     protected int getLongSickLeaves(String verksamhetId, Range range, int cutoff) {
-        TypedQuery<Long> query = getManager().createQuery("SELECT sum(r.female) + sum(r.male) FROM SickLeaveLengthRow r WHERE r.key.periods = :periods AND r.key.hsaId = :hsaId AND r.key.period = :period AND r.key.grupp IN :grupper", Long.class);
+        TypedQuery<Long> query = getManager().createQuery("SELECT sum(r.female) + sum(r.male) FROM SjukfallslangdRow r WHERE r.key.periods = :periods AND r.key.hsaId = :hsaId AND r.key.period = :period AND r.key.grupp IN :grupper", Long.class);
         query.setParameter("periods", range.getMonths());
         query.setParameter("hsaId", verksamhetId);
         query.setParameter("period", ReportUtil.toPeriod(range.getTo()));
@@ -206,7 +206,7 @@ public class OverviewBasePersistenceHandler {
     }
 
     private List<OverviewChartRow> getSickLeaveLengthGroupsFromDb(String verksamhetId, Range range) {
-        TypedQuery<OverviewChartRow> query = getManager().createQuery("SELECT NEW se.inera.statistics.service.report.model.OverviewChartRow(r.key.grupp, sum(r.female) + sum(r.male)) FROM SickLeaveLengthRow r WHERE r.key.periods = :periods AND r.key.hsaId = :hsaId AND r.key.period = :period  GROUP BY r.key.grupp", OverviewChartRow.class);
+        TypedQuery<OverviewChartRow> query = getManager().createQuery("SELECT NEW se.inera.statistics.service.report.model.OverviewChartRow(r.key.grupp, sum(r.female) + sum(r.male)) FROM SjukfallslangdRow r WHERE r.key.periods = :periods AND r.key.hsaId = :hsaId AND r.key.period = :period  GROUP BY r.key.grupp", OverviewChartRow.class);
         query.setParameter("periods", range.getMonths());
         query.setParameter("hsaId", verksamhetId);
         query.setParameter("period", ReportUtil.toPeriod(range.getTo()));

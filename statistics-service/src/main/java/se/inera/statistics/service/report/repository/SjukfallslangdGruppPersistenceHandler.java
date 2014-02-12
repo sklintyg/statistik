@@ -32,9 +32,9 @@ import org.springframework.transaction.annotation.Transactional;
 import se.inera.statistics.service.report.api.SjukfallslangdGrupp;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.Sex;
-import se.inera.statistics.service.report.model.db.SickLeaveLengthKey;
+import se.inera.statistics.service.report.model.db.SjukfallslangdKey;
 import se.inera.statistics.service.report.model.SickLeaveLengthResponse;
-import se.inera.statistics.service.report.model.db.SickLeaveLengthRow;
+import se.inera.statistics.service.report.model.db.SjukfallslangdRow;
 import se.inera.statistics.service.report.model.SimpleDualSexDataRow;
 import se.inera.statistics.service.report.model.SimpleDualSexResponse;
 import se.inera.statistics.service.report.util.Ranges;
@@ -52,7 +52,7 @@ public class SjukfallslangdGruppPersistenceHandler implements SjukfallslangdGrup
     @Override
     @Transactional
     public SickLeaveLengthResponse getHistoricalStatistics(String hsaId, LocalDate when, RollingLength length) {
-        TypedQuery<SickLeaveLengthRow> query = manager.createQuery("SELECT a FROM SickLeaveLengthRow a WHERE a.key.hsaId = :hsaId AND a.key.period = :when AND a.key.periods = :periods ", SickLeaveLengthRow.class);
+        TypedQuery<SjukfallslangdRow> query = manager.createQuery("SELECT a FROM SjukfallslangdRow a WHERE a.key.hsaId = :hsaId AND a.key.period = :when AND a.key.periods = :periods ", SjukfallslangdRow.class);
         query.setParameter("hsaId", hsaId);
         query.setParameter("when", ReportUtil.toPeriod(when));
         query.setParameter("periods", length.getPeriods());
@@ -67,7 +67,7 @@ public class SjukfallslangdGruppPersistenceHandler implements SjukfallslangdGrup
 
     @Override
     public SimpleDualSexResponse<SimpleDualSexDataRow> getLongSickLeaves(String hsaId, Range range) {
-        TypedQuery<SimpleDualSexDataRow> query = manager.createQuery("SELECT new se.inera.statistics.service.report.model.SimpleDualSexDataRow(r.key.period, SUM(r.female), SUM(r.male)) FROM SickLeaveLengthRow r WHERE r.key.periods = :periods AND r.key.hsaId = :hsaId AND r.key.period BETWEEN :from AND :to AND r.key.grupp IN :grupper group by r.key.period", SimpleDualSexDataRow.class);
+        TypedQuery<SimpleDualSexDataRow> query = manager.createQuery("SELECT new se.inera.statistics.service.report.model.SimpleDualSexDataRow(r.key.period, SUM(r.female), SUM(r.male)) FROM SjukfallslangdRow r WHERE r.key.periods = :periods AND r.key.hsaId = :hsaId AND r.key.period BETWEEN :from AND :to AND r.key.grupp IN :grupper group by r.key.period", SimpleDualSexDataRow.class);
 
         List<Ranges.Range> ranges = SjukfallslangdUtil.RANGES.lookupRangesLongerThan(LONG_SICKLEAVE_CUTOFF);
         List<String> names = new ArrayList<>(ranges.size());
@@ -102,12 +102,12 @@ public class SjukfallslangdGruppPersistenceHandler implements SjukfallslangdGrup
         return new SimpleDualSexDataRow(key, 0, 0);
     }
 
-    private SickLeaveLengthResponse translateForOutput(List<SickLeaveLengthRow> list, int periods) {
-        List<SickLeaveLengthRow> translatedCasesPerMonthRows = new ArrayList<>();
+    private SickLeaveLengthResponse translateForOutput(List<SjukfallslangdRow> list, int periods) {
+        List<SjukfallslangdRow> translatedCasesPerMonthRows = new ArrayList<>();
 
         for (se.inera.statistics.service.report.util.Ranges.Range s: SjukfallslangdUtil.RANGES) {
             String group = s.getName();
-            for (SickLeaveLengthRow r: list) {
+            for (SjukfallslangdRow r: list) {
                 if (group.equals(r.getGroup())) {
                     translatedCasesPerMonthRows.add(r);
                 }
@@ -120,12 +120,12 @@ public class SjukfallslangdGruppPersistenceHandler implements SjukfallslangdGrup
     @Transactional
     @Override
     public void count(String period, String hsaId, String group, RollingLength length, Verksamhet typ, Sex sex) {
-        SickLeaveLengthRow existingRow = manager.find(SickLeaveLengthRow.class, new SickLeaveLengthKey(period, hsaId, group, length.getPeriods()));
+        SjukfallslangdRow existingRow = manager.find(SjukfallslangdRow.class, new SjukfallslangdKey(period, hsaId, group, length.getPeriods()));
         int female = Sex.Female.equals(sex) ? 1 : 0;
         int male = Sex.Male.equals(sex) ? 1 : 0;
 
         if (existingRow == null) {
-            SickLeaveLengthRow row = new SickLeaveLengthRow(period, hsaId, group, length.getPeriods(), typ, female, male);
+            SjukfallslangdRow row = new SjukfallslangdRow(period, hsaId, group, length.getPeriods(), typ, female, male);
             manager.persist(row);
         } else {
             existingRow.setFemale(existingRow.getFemale() + female);
@@ -138,7 +138,7 @@ public class SjukfallslangdGruppPersistenceHandler implements SjukfallslangdGrup
     @Transactional
     public void recount(String period, String hsaId, String group, String newGroup, RollingLength length, Verksamhet typ, Sex sex) {
         count(period, hsaId, newGroup, length, typ, sex);
-        SickLeaveLengthRow existingRow = manager.find(SickLeaveLengthRow.class, new SickLeaveLengthKey(period, hsaId, group, length.getPeriods()));
+        SjukfallslangdRow existingRow = manager.find(SjukfallslangdRow.class, new SjukfallslangdKey(period, hsaId, group, length.getPeriods()));
         int female = Sex.Female.equals(sex) ? 1 : 0;
         int male = Sex.Male.equals(sex) ? 1 : 0;
 

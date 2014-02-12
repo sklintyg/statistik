@@ -17,7 +17,7 @@ class Sjukfallslangd {
         this.tabell = tabell
     }
 
-    // {"SickLeaveLengthResponse":{"sickLeaveGroupsRows":[{"SickLeaveLengthRow":{"key":{"SickLeaveLengthKey":{"period":"2013-11", "hsaId":"ENVE", "grupp":"<15 dagar", "periods":12}}, "typ":"ENHET", "male":1, "female":1}}, {"SickLeaveLengthRow":{"key":{"SickLeaveLengthKey":{"period":"2013-11", "hsaId":"ENVE", "grupp":"15-30 dagar", "periods":12}}, "typ":"ENHET", "male":2, "female":0}}, {"SickLeaveLengthRow":{"key":{"SickLeaveLengthKey":{"period":"2013-11", "hsaId":"ENVE", "grupp":"31-90 dagar", "periods":12}}, "typ":"ENHET", "male":0, "female":1}}, {"SickLeaveLengthRow":{"key":{"SickLeaveLengthKey":{"period":"2013-11", "hsaId":"ENVE", "grupp":">365 dagar", "periods":12}}, "typ":"ENHET", "male":0, "female":1}}], "months":12}}
+    // {"SickLeaveLengthResponse":{"sickLeaveGroupsRows":[{"SjukfallslangdRow":{"key":{"SjukfallslangdKey":{"period":"2013-11", "hsaId":"ENVE", "grupp":"<15 dagar", "periods":12}}, "typ":"ENHET", "male":1, "female":1}}, {"SjukfallslangdRow":{"key":{"SjukfallslangdKey":{"period":"2013-11", "hsaId":"ENVE", "grupp":"15-30 dagar", "periods":12}}, "typ":"ENHET", "male":2, "female":0}}, {"SjukfallslangdRow":{"key":{"SjukfallslangdKey":{"period":"2013-11", "hsaId":"ENVE", "grupp":"31-90 dagar", "periods":12}}, "typ":"ENHET", "male":0, "female":1}}, {"SjukfallslangdRow":{"key":{"SjukfallslangdKey":{"period":"2013-11", "hsaId":"ENVE", "grupp":">365 dagar", "periods":12}}, "typ":"ENHET", "male":0, "female":1}}], "months":12}}
     public List<Object> query() {
         TestData data = IntygSender.testResult.get(tabell)
         JsonNode testResult = data.jsonNode
@@ -25,18 +25,18 @@ class Sjukfallslangd {
         List<List<List<String>>> rowList = new ArrayList<>()
         while(rows.hasNext()) {
             List<List<String>> cols = new ArrayList<>()
-            JsonNode row = rows.next().get("SickLeaveLengthRow")
+            JsonNode row = rows.next().get("SjukfallslangdRow")
             List<String> period = new ArrayList<>()
             period.add("period")
-            period.add(row.path("key").path("SickLeaveLengthKey").path("period").textValue())
+            period.add(row.path("key").path("SjukfallslangdKey").path("period").textValue())
             cols.add(period)
             List<String> hsaId = new ArrayList<>()
             hsaId.add("hsaId")
-            hsaId.add(row.path("key").path("SickLeaveLengthKey").path("hsaId").textValue())
+            hsaId.add(row.path("key").path("SjukfallslangdKey").path("hsaId").textValue())
             cols.add(hsaId)
             List<String> grupp = new ArrayList<>()
             grupp.add("grupp")
-            grupp.add(row.path("key").path("SickLeaveLengthKey").path("grupp").textValue())
+            grupp.add(row.path("key").path("SjukfallslangdKey").path("grupp").textValue())
             cols.add(grupp)
             List<String> typ = new ArrayList<String>()
             typ.add("typ")

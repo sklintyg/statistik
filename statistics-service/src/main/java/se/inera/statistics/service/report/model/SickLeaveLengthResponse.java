@@ -19,24 +19,24 @@
 
 package se.inera.statistics.service.report.model;
 
-import se.inera.statistics.service.report.model.db.SickLeaveLengthRow;
+import se.inera.statistics.service.report.model.db.SjukfallslangdRow;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class SickLeaveLengthResponse {
 
-    private final List<SickLeaveLengthRow> sickLeaveGroupsRows;
+    private final List<SjukfallslangdRow> sickLeaveGroupsRows;
     private final int months;
 
-    public SickLeaveLengthResponse(List<SickLeaveLengthRow> rows, int numberOfMonthsCalculated) {
+    public SickLeaveLengthResponse(List<SjukfallslangdRow> rows, int numberOfMonthsCalculated) {
         this.sickLeaveGroupsRows = rows;
         this.months = numberOfMonthsCalculated;
     }
 
     public List<String> getGroups() {
         List<String> groups = new ArrayList<>();
-        for (SickLeaveLengthRow row : sickLeaveGroupsRows) {
+        for (SjukfallslangdRow row : sickLeaveGroupsRows) {
             groups.add(row.getGroup());
         }
         return groups;
@@ -44,7 +44,7 @@ public class SickLeaveLengthResponse {
 
     public List<Integer> getDataForSex(Sex sex) {
         List<Integer> data = new ArrayList<>();
-        for (SickLeaveLengthRow row : sickLeaveGroupsRows) {
+        for (SjukfallslangdRow row : sickLeaveGroupsRows) {
             if (sex == Sex.Female) {
                 data.add(row.getFemale());
             } else {
@@ -54,7 +54,7 @@ public class SickLeaveLengthResponse {
         return data;
     }
 
-    public List<SickLeaveLengthRow> getRows() {
+    public List<SjukfallslangdRow> getRows() {
         return sickLeaveGroupsRows;
     }
 

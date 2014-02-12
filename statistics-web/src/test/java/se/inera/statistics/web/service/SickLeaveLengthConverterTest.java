@@ -28,7 +28,7 @@ import org.junit.Test;
 
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.SickLeaveLengthResponse;
-import se.inera.statistics.service.report.model.db.SickLeaveLengthRow;
+import se.inera.statistics.service.report.model.db.SjukfallslangdRow;
 import se.inera.statistics.web.model.ChartData;
 import se.inera.statistics.web.model.ChartSeries;
 import se.inera.statistics.web.model.NamedData;
@@ -43,11 +43,11 @@ public class SickLeaveLengthConverterTest {
     public void convertCasesPerMonthDataTest() {
         //Given
         SickLeaveLengthConverter converter = new SickLeaveLengthConverter();
-        ArrayList<SickLeaveLengthRow> sickLeaveLengthRows = new ArrayList<>();
-        sickLeaveLengthRows.add(new SickLeaveLengthRow(null, "< 20 dagar", 3, 13, 14));
-        sickLeaveLengthRows.add(new SickLeaveLengthRow(null, "20-50 dagar", 3, 24, 15));
-        sickLeaveLengthRows.add(new SickLeaveLengthRow(null, "> 50 dagar", 3, 3, 9));
-        SickLeaveLengthResponse sickLeaveLengthResponse = new SickLeaveLengthResponse(sickLeaveLengthRows, 7);
+        ArrayList<SjukfallslangdRow> sjukfallslangdRows = new ArrayList<>();
+        sjukfallslangdRows.add(new SjukfallslangdRow(null, "< 20 dagar", 3, 13, 14));
+        sjukfallslangdRows.add(new SjukfallslangdRow(null, "20-50 dagar", 3, 24, 15));
+        sjukfallslangdRows.add(new SjukfallslangdRow(null, "> 50 dagar", 3, 3, 9));
+        SickLeaveLengthResponse sickLeaveLengthResponse = new SickLeaveLengthResponse(sjukfallslangdRows, 7);
 
         //When
         SickLeaveLengthData result = converter.convert(sickLeaveLengthResponse, new Range(7));

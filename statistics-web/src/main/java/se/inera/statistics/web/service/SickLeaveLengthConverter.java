@@ -26,7 +26,7 @@ import java.util.List;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.Sex;
 import se.inera.statistics.service.report.model.SickLeaveLengthResponse;
-import se.inera.statistics.service.report.model.db.SickLeaveLengthRow;
+import se.inera.statistics.service.report.model.db.SjukfallslangdRow;
 import se.inera.statistics.web.model.ChartData;
 import se.inera.statistics.web.model.ChartSeries;
 import se.inera.statistics.web.model.NamedData;
@@ -35,10 +35,10 @@ import se.inera.statistics.web.model.TableData;
 
 public class SickLeaveLengthConverter {
 
-    private TableData convertToTable(List<SickLeaveLengthRow> sickLeaveLengths) {
+    private TableData convertToTable(List<SjukfallslangdRow> sickLeaveLengths) {
         List<NamedData> data = new ArrayList<>();
         int accumulatedSum = 0;
-        for (SickLeaveLengthRow row : sickLeaveLengths) {
+        for (SjukfallslangdRow row : sickLeaveLengths) {
             int rowSum = row.getFemale() + row.getMale();
             accumulatedSum += rowSum;
             data.add(new NamedData(row.getGroup(), Arrays.asList(rowSum, row.getFemale(), row.getMale(), accumulatedSum)));
