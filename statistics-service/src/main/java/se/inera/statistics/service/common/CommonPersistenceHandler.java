@@ -39,7 +39,7 @@ public class CommonPersistenceHandler implements CommonPersistence {
         delete("CasesPerMonthRow");
         delete("DiagnosisGroupData");
         delete("DiagnosisSubGroupData");
-        delete("AgeGroupsRow");
+        delete("AldersgruppRow");
         delete("SickLeaveLengthRow");
         delete("SjukfallPerLanRow");
         delete("SjukskrivningsgradData");

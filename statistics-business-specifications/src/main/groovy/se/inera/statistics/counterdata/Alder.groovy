@@ -17,7 +17,7 @@ class Alder {
         this.tabell = tabell
     }
 
-    // {"AgeGroupsResponse":{"ageGroupsRows":[{"AgeGroupsRow":{"key":{"AldersgruppKey":{"period":"2013-11", "hsaId":"ENVE", "grupp":"31-35", "periods":12}}, "male":1, "female":0, "typ":"ENHET"}}], "months":12}}
+    // {"AgeGroupsResponse":{"ageGroupsRows":[{"AldersgruppRow":{"key":{"AldersgruppKey":{"period":"2013-11", "hsaId":"ENVE", "grupp":"31-35", "periods":12}}, "male":1, "female":0, "typ":"ENHET"}}], "months":12}}
     public List<Object> query() {
         TestData data = IntygSender.testResult.get(tabell)
         JsonNode testResult = data.jsonNode

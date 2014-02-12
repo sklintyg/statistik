@@ -29,8 +29,8 @@ import javax.persistence.Transient;
 import se.inera.statistics.service.report.util.Verksamhet;
 
 @Entity
-@Table(name = AgeGroupsRow.TABLE)
-public class AgeGroupsRow {
+@Table(name = AldersgruppRow.TABLE)
+public class AldersgruppRow {
     public static final String TABLE = "aldersgrupp";
     @EmbeddedId
     private AldersgruppKey key;
@@ -40,20 +40,14 @@ public class AgeGroupsRow {
     @Enumerated(EnumType.STRING)
     private Verksamhet typ;
 
-    public AgeGroupsRow() {
+    public AldersgruppRow() {
     }
 
-    public AgeGroupsRow(String period, String hsaId, String group, int periods, Verksamhet typ, int female, int male) {
+    public AldersgruppRow(String period, String hsaId, String group, int periods, Verksamhet typ, int female, int male) {
         key = new AldersgruppKey(period, hsaId, group, periods);
         this.male = male;
         this.female = female;
         this.typ = typ;
-    }
-
-    public AgeGroupsRow(String period, String group, int periods, int female, int male) {
-        key = new AldersgruppKey(period, Verksamhet.NATIONELL.toString(), group, periods);
-        this.male = male;
-        this.female = female;
     }
 
     @Transient
@@ -105,6 +99,6 @@ public class AgeGroupsRow {
 
     @Override
     public String toString() {
-        return "{\"AgeGroupsRow\":{\"key\":" + key + ", \"male\":" + male + ", \"female\":" + female + ", \"typ\":\"" + typ + "\"}}";
+        return "{\"AldersgruppRow\":{\"key\":" + key + ", \"male\":" + male + ", \"female\":" + female + ", \"typ\":\"" + typ + "\"}}";
     }
 }

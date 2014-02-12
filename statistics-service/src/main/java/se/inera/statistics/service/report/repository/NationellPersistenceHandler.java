@@ -26,7 +26,7 @@ import javax.persistence.Query;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.transaction.annotation.Transactional;
 
-import se.inera.statistics.service.report.model.db.AgeGroupsRow;
+import se.inera.statistics.service.report.model.db.AldersgruppRow;
 import se.inera.statistics.service.report.model.db.CasesPerMonthRow;
 import se.inera.statistics.service.report.model.db.SickLeaveLengthRow;
 import se.inera.statistics.service.report.util.Verksamhet;
@@ -62,9 +62,9 @@ public class NationellPersistenceHandler implements NationellUpdater {
     @Override
     @Transactional
     public void updateAldersgrupp() {
-        delete("AgeGroupsRow");
+        delete("AldersgruppRow");
 
-        Query update = manager.createNativeQuery(String.format(INSERT_PREFIX + " grupp, periods, CASE WHEN SUM(FEMALE) >= :cutoff THEN SUM(FEMALE) ELSE 0 END, CASE WHEN SUM(MALE) >= :cutoff THEN SUM(MALE) ELSE 0 END FROM %1$s WHERE typ = 'VARDGIVARE' GROUP BY PERIOD, grupp, periods", AgeGroupsRow.TABLE));
+        Query update = manager.createNativeQuery(String.format(INSERT_PREFIX + " grupp, periods, CASE WHEN SUM(FEMALE) >= :cutoff THEN SUM(FEMALE) ELSE 0 END, CASE WHEN SUM(MALE) >= :cutoff THEN SUM(MALE) ELSE 0 END FROM %1$s WHERE typ = 'VARDGIVARE' GROUP BY PERIOD, grupp, periods", AldersgruppRow.TABLE));
         update.setParameter("cutoff", cutoff);
         update.executeUpdate();
     }

@@ -33,7 +33,7 @@ import se.inera.statistics.service.report.api.Aldersgrupp;
 import se.inera.statistics.service.report.model.Sex;
 import se.inera.statistics.service.report.model.SimpleDualSexDataRow;
 import se.inera.statistics.service.report.model.SimpleDualSexResponse;
-import se.inera.statistics.service.report.model.db.AgeGroupsRow;
+import se.inera.statistics.service.report.model.db.AldersgruppRow;
 import se.inera.statistics.service.report.model.db.AldersgruppKey;
 import se.inera.statistics.service.report.util.AldersgroupUtil;
 import se.inera.statistics.service.report.util.Ranges.Range;
@@ -47,7 +47,7 @@ public class AldersgruppPersistenceHandler implements Aldersgrupp {
     @Override
     @Transactional
     public SimpleDualSexResponse<SimpleDualSexDataRow> getHistoricalAgeGroups(String hsaId, LocalDate when, RollingLength rolling) {
-        TypedQuery<AgeGroupsRow> query = manager.createQuery("SELECT a FROM AgeGroupsRow a WHERE a.key.hsaId = :hsaId AND a.key.period = :when AND a.key.periods = :periods ", AgeGroupsRow.class);
+        TypedQuery<AldersgruppRow> query = manager.createQuery("SELECT a FROM AldersgruppRow a WHERE a.key.hsaId = :hsaId AND a.key.period = :when AND a.key.periods = :periods ", AldersgruppRow.class);
         query.setParameter("hsaId", hsaId);
         query.setParameter("when", ReportUtil.toPeriod(when));
         query.setParameter("periods", rolling.getPeriods());
@@ -60,12 +60,12 @@ public class AldersgruppPersistenceHandler implements Aldersgrupp {
         return getHistoricalAgeGroups(hsaId, new LocalDate(), RollingLength.SINGLE_MONTH);
     }
 
-    private SimpleDualSexResponse<SimpleDualSexDataRow> translateForOutput(List<AgeGroupsRow> list, int periods) {
+    private SimpleDualSexResponse<SimpleDualSexDataRow> translateForOutput(List<AldersgruppRow> list, int periods) {
         List<SimpleDualSexDataRow> translatedCasesPerMonthRows = new ArrayList<>();
 
         for (Range s: AldersgroupUtil.RANGES) {
             String group = s.getName();
-            for (AgeGroupsRow r: list) {
+            for (AldersgruppRow r: list) {
                 if (group.equals(r.getGroup())) {
                     translatedCasesPerMonthRows.add(new SimpleDualSexDataRow(r.getGroup(), r.getFemale(), r.getMale()));
                 }
@@ -78,12 +78,12 @@ public class AldersgruppPersistenceHandler implements Aldersgrupp {
     @Transactional
     @Override
     public void count(String period, String hsaId, String group, RollingLength length, Verksamhet typ, Sex sex) {
-        AgeGroupsRow existingRow = manager.find(AgeGroupsRow.class, new AldersgruppKey(period, hsaId, group, length.getPeriods()));
+        AldersgruppRow existingRow = manager.find(AldersgruppRow.class, new AldersgruppKey(period, hsaId, group, length.getPeriods()));
         int female = Sex.Female.equals(sex) ? 1 : 0;
         int male = Sex.Male.equals(sex) ? 1 : 0;
 
         if (existingRow == null) {
-            AgeGroupsRow row = new AgeGroupsRow(period, hsaId, group, length.getPeriods(), typ, female, male);
+            AldersgruppRow row = new AldersgruppRow(period, hsaId, group, length.getPeriods(), typ, female, male);
             manager.persist(row);
         } else {
             existingRow.setFemale(existingRow.getFemale() + female);
