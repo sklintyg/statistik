@@ -13,6 +13,13 @@ import org.springframework.core.io.Resource;
 
 public class Icd10 {
 
+    private static final int STARTINDEX_LAST_KATEGORI = 4;
+
+    private static final int ENDINDEX_FIRST_KATEGORI = 3;
+
+    private static final int ENDINDEX_ID = 7;
+    private static final int STARTINDEX_DESCRIPTION = 7;
+
     @Autowired
     private Resource icd10KategoriAnsiFile;
 
@@ -36,18 +43,18 @@ public class Icd10 {
                 public Kapitel parse(String line) {
                     return Kapitel.valueOf(line);
                 }
-            }.process();
+            } .process();
 
             avsnitt = new LineReader<Avsnitt>(icd10AvsnittAnsiFile) {
                 public Avsnitt parse(String line) {
                     return Avsnitt.valueOf(line);
                 }
-            }.process();
+            } .process();
 
             for (Avsnitt a: avsnitt) {
-                String aid = a.getId().substring(0, 3);
+                String aid = firstKategori(a.getId());
                 for (Kapitel k: kapitel) {
-                    String kid = k.getId().substring(4);
+                    String kid = lastKategori(k.getId());
                     if (kid.compareTo(aid) >= 0) {
                         k.avsnitt.add(a);
                         break;
@@ -58,12 +65,12 @@ public class Icd10 {
                 public Kategori parse(String line) {
                     return Kategori.valueOf(line);
                 }
-            }.process();
+            } .process();
 
             for (Kategori k: kategori) {
-                String kid = k.getId().substring(0, 3);
+                String kid = firstKategori(k.getId());
                 for (Avsnitt a: avsnitt) {
-                    String aid = a.getId().substring(4);
+                    String aid = lastKategori(a.getId());
                     if (kid.compareTo(aid) <= 0) {
                         a.kategori.add(k);
                         break;
@@ -74,6 +81,14 @@ public class Icd10 {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private String lastKategori(String s) {
+        return s.substring(STARTINDEX_LAST_KATEGORI);
+    }
+
+    private String firstKategori(String s) {
+        return s.substring(0, ENDINDEX_FIRST_KATEGORI);
     }
 
     public List<Kapitel> getKapitel() {
@@ -96,7 +111,7 @@ public class Icd10 {
         }
 
         public static Kapitel valueOf(String line) {
-            return new Kapitel(line.substring(0, 7), line.substring(7));
+            return new Kapitel(line.substring(0, ENDINDEX_ID), line.substring(STARTINDEX_DESCRIPTION));
         }
 
         public String getName() {
@@ -117,7 +132,7 @@ public class Icd10 {
         private final String id;
         private final String name;
         private final List<Kategori> kategori;
-        
+
         public Avsnitt(String range, String name) {
             this.id = range;
             this.name = name;
@@ -125,7 +140,7 @@ public class Icd10 {
         }
 
         public static Avsnitt valueOf(String line) {
-            return new Avsnitt(line.substring(0, 7), line.substring(7));
+            return new Avsnitt(line.substring(0, ENDINDEX_ID), line.substring(STARTINDEX_DESCRIPTION));
         }
 
         public String getName() {
@@ -152,7 +167,7 @@ public class Icd10 {
         }
 
         public static Kategori valueOf(String line) {
-            return new Kategori(line.substring(0, 3), line.substring(7));
+            return new Kategori(line.substring(0, ENDINDEX_FIRST_KATEGORI), line.substring(STARTINDEX_DESCRIPTION));
         }
 
         public String getName() {
@@ -163,9 +178,8 @@ public class Icd10 {
             return id;
         }
     }
-    
-    private static abstract class LineReader<T> {
-        
+
+    private abstract static class LineReader<T> {
         private final Resource resource;
         private final List<T> parsed;
 
