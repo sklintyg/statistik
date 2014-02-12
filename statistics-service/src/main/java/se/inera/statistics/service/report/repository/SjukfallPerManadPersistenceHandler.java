@@ -31,8 +31,8 @@ import org.joda.time.LocalDate;
 import org.springframework.transaction.annotation.Transactional;
 
 import se.inera.statistics.service.report.api.SjukfallPerManad;
-import se.inera.statistics.service.report.model.db.CasesPerMonthKey;
-import se.inera.statistics.service.report.model.db.CasesPerMonthRow;
+import se.inera.statistics.service.report.model.db.SjukfallPerManadKey;
+import se.inera.statistics.service.report.model.db.SjukfallPerManadRow;
 import se.inera.statistics.service.report.model.DualSexField;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.Sex;
@@ -47,12 +47,12 @@ public class SjukfallPerManadPersistenceHandler implements SjukfallPerManad {
 
     @Transactional
     public void count(String hsaId, String period, Verksamhet typ, Sex sex) {
-        CasesPerMonthRow existingRow = manager.find(CasesPerMonthRow.class, new CasesPerMonthKey(period, hsaId));
+        SjukfallPerManadRow existingRow = manager.find(SjukfallPerManadRow.class, new SjukfallPerManadKey(period, hsaId));
         int female = Sex.Female.equals(sex) ? 1 : 0;
         int male = Sex.Male.equals(sex) ? 1 : 0;
 
         if (existingRow == null) {
-            CasesPerMonthRow row = new CasesPerMonthRow(period, hsaId, typ, female, male);
+            SjukfallPerManadRow row = new SjukfallPerManadRow(period, hsaId, typ, female, male);
             manager.persist(row);
         } else {
             existingRow.setFemale(existingRow.getFemale() + female);
@@ -64,7 +64,7 @@ public class SjukfallPerManadPersistenceHandler implements SjukfallPerManad {
     @Override
     @Transactional
     public SimpleDualSexResponse<SimpleDualSexDataRow> getCasesPerMonth(String hsaId, Range range) {
-        TypedQuery<CasesPerMonthRow> query = manager.createQuery("SELECT c FROM CasesPerMonthRow c WHERE c.key.hsaId = :hsaId AND c.key.period BETWEEN :from AND :to", CasesPerMonthRow.class);
+        TypedQuery<SjukfallPerManadRow> query = manager.createQuery("SELECT c FROM SjukfallPerManadRow c WHERE c.key.hsaId = :hsaId AND c.key.period BETWEEN :from AND :to", SjukfallPerManadRow.class);
         query.setParameter("hsaId", hsaId);
         query.setParameter("from", ReportUtil.toPeriod(range.getFrom()));
         query.setParameter("to", ReportUtil.toPeriod(range.getTo()));
@@ -72,11 +72,11 @@ public class SjukfallPerManadPersistenceHandler implements SjukfallPerManad {
         return translateForOutput(range, query.getResultList());
     }
 
-    private SimpleDualSexResponse<SimpleDualSexDataRow> translateForOutput(Range range, List<CasesPerMonthRow> list) {
+    private SimpleDualSexResponse<SimpleDualSexDataRow> translateForOutput(Range range, List<SjukfallPerManadRow> list) {
         List<SimpleDualSexDataRow> translatedCasesPerMonthRows = new ArrayList<>();
 
         Map<String, DualSexField> map = new DefaultHashMap<>(new DualSexField(0, 0));
-        for (CasesPerMonthRow row: list) {
+        for (SjukfallPerManadRow row: list) {
             map.put(row.getPeriod(), new DualSexField(row.getFemale(), row.getMale()));
         }
 

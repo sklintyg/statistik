@@ -24,19 +24,19 @@ import java.io.Serializable;
 import javax.persistence.Embeddable;
 
 @Embeddable
-public class CasesPerMonthKey implements Serializable {
+public class SjukfallPerManadKey implements Serializable {
     private static final long serialVersionUID = 1L;
     public static final String NATIONELL = "nationell";
 
     private String period;
     private String hsaId;
 
-    public CasesPerMonthKey(String period, String enhet) {
+    public SjukfallPerManadKey(String period, String enhet) {
         this.period = period;
         hsaId = enhet;
     }
 
-    public CasesPerMonthKey() {
+    public SjukfallPerManadKey() {
     }
 
     public String getPeriod() {
@@ -64,7 +64,7 @@ public class CasesPerMonthKey implements Serializable {
             return false;
         }
 
-        CasesPerMonthKey that = (CasesPerMonthKey) o;
+        SjukfallPerManadKey that = (SjukfallPerManadKey) o;
 
         if (hsaId != null ? !hsaId.equals(that.hsaId) : that.hsaId != null) {
             return false;

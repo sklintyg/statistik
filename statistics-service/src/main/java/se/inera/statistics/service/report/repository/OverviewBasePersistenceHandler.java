@@ -122,7 +122,7 @@ public class OverviewBasePersistenceHandler {
 
     protected OverviewSexProportion getSexProportion(String verksamhetId, Range range) {
         Query query = getManager()
-                .createQuery("SELECT SUM(c.male), SUM(c.female) FROM CasesPerMonthRow c WHERE c.key.hsaId = :hsaId AND c.key.period BETWEEN :from AND :to");
+                .createQuery("SELECT SUM(c.male), SUM(c.female) FROM SjukfallPerManadRow c WHERE c.key.hsaId = :hsaId AND c.key.period BETWEEN :from AND :to");
         query.setParameter("hsaId", verksamhetId);
         query.setParameter("from", ReportUtil.toPeriod(range.getFrom()));
         query.setParameter("to", ReportUtil.toPeriod(range.getTo()));
@@ -225,7 +225,7 @@ public class OverviewBasePersistenceHandler {
     }
 
     protected int getCasesPerMonth(String verksamhetId, Range range) {
-        TypedQuery<Long> query = getManager().createQuery("SELECT SUM(c.male) + SUM(c.female) FROM CasesPerMonthRow c WHERE c.key.hsaId = :hsaId AND c.key.period BETWEEN :from AND:to", Long.class);
+        TypedQuery<Long> query = getManager().createQuery("SELECT SUM(c.male) + SUM(c.female) FROM SjukfallPerManadRow c WHERE c.key.hsaId = :hsaId AND c.key.period BETWEEN :from AND:to", Long.class);
         query.setParameter("hsaId", verksamhetId);
         query.setParameter("from", ReportUtil.toPeriod(range.getFrom()));
         query.setParameter("to", ReportUtil.toPeriod(range.getTo()));

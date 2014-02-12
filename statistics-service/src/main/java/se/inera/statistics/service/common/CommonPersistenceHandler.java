@@ -36,7 +36,7 @@ public class CommonPersistenceHandler implements CommonPersistence {
         delete("IntygEvent");
         delete("HSAStore");
         delete("EventPointer");
-        delete("CasesPerMonthRow");
+        delete("SjukfallPerManadRow");
         delete("DiagnosisGroupData");
         delete("DiagnosisSubGroupData");
         delete("AldersgruppRow");

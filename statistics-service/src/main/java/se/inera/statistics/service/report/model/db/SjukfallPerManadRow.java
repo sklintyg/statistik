@@ -28,29 +28,29 @@ import javax.persistence.Table;
 import se.inera.statistics.service.report.util.Verksamhet;
 
 @Entity
-@Table(name = CasesPerMonthRow.TABLE)
-public class CasesPerMonthRow {
+@Table(name = SjukfallPerManadRow.TABLE)
+public class SjukfallPerManadRow {
 
     public static final String TABLE = "sjukfallpermanad";
     @EmbeddedId
-    private CasesPerMonthKey key;
+    private SjukfallPerManadKey key;
     @Enumerated(EnumType.STRING)
     private Verksamhet typ;
     private int female;
     private int male;
 
-    public CasesPerMonthRow() {
+    public SjukfallPerManadRow() {
     }
 
-    public CasesPerMonthRow(String period, int female, int male) {
-        this.key = new CasesPerMonthKey(period, CasesPerMonthKey.NATIONELL);
+    public SjukfallPerManadRow(String period, int female, int male) {
+        this.key = new SjukfallPerManadKey(period, SjukfallPerManadKey.NATIONELL);
         this.female = female;
         this.male = male;
         this.typ = Verksamhet.NATIONELL;
     }
 
-    public CasesPerMonthRow(String period, String hsaId, Verksamhet typ, int female, int male) {
-        this.key = new CasesPerMonthKey(period, hsaId);
+    public SjukfallPerManadRow(String period, String hsaId, Verksamhet typ, int female, int male) {
+        this.key = new SjukfallPerManadKey(period, hsaId);
         this.typ = typ;
         this.female = female;
         this.male = male;
