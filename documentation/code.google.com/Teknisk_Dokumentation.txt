@@ -135,3 +135,9 @@ Vi försöker därför använda samma konsekventa terminologi inom ett område, 
 att vi behöver använda svenska för verksamhetsspecifika termer, men också att engelska bör användas för tekniska termer.
 Vi har också bestämt oss för att pidginisera koden, dvs inte försöka blanda korrekt svensk och engelsk grammatik utan använda
 väldefinierade pluralformer (sjukfalls för flera sjukfall t ex) osv. Vi använder endast ASCII i koden, ä och å blir a, och ö blir o.
+
+= Externa referenser =
+[http://www.liquibase.org LiquiBase]
+[http://maven.apache.org Maven]
+[http://activemq.apache.org ActiveMQ]
+
