@@ -63,8 +63,8 @@ Det är de inställningar jag använder, som gör att jag kan ansluta min IDE-de
 ||mvn clean install -P integration || bygg om hela projektet || `[projektrot]` ||
 ||mvn verify -P wiki || starta fitnesse || `[projektrot]`/statistics-specification ||
 ||mvn verify -P auto || kör fitnesse-tester || `[projektrot]`/statistics-specification ||
-||mvn jetty:run -Dmaven.test.skip=true -DskipTests -Dspring.profiles.active=dev,embedded || kör webbservern || `[projektrot]`/statistics-web ||
-||mvn jetty:run -Dmaven.test.skip=true -DskipTests -Dspring.profiles.active=dev || kör webbservern mot mysql || `[projektrot]`/statistics-web ||
+||`mvn jetty:run -Dmaven.test.skip=true -DskipTests -Dspring.profiles.active=dev,embedded` || kör webbservern || `[projektrot]`/statistics-web ||
+||`mvn jetty:run -Dmaven.test.skip=true -DskipTests -Dspring.profiles.active=dev,db` || kör webbservern mot mysql || `[projektrot]`/statistics-web ||
 
 = Liquibase =
 Liquibase används för att skapa och underhålla underliggande databas. Alla ändringar av databasen måste reflekteras i liquibase-script.
@@ -73,6 +73,30 @@ Liquibase kör, och modifierar vid behov databasen, varje gång applikationen st
 = Köhanterare =
 ActiveMQ används för att ta emot sjukintyg. I koden är köhanteringen inte bunden till ActiveMQ, utan det bör gå att byta till
 någon annan köhanterare genom konfigurationsändringar.
+
+= Test =
+Vi använder tre typer av tester, Fitnesse/Slim, JUnit, Jasmine.
+
+== JUnit ==
+JUnit används för enhetstester, funktionestester samt integrationstester. Normalt anses en testklass innehålla vanliga enhetstester, Maven kör dessa tester per default. Avslutas klassnamnet med IntegrationTest så är
+det ett integrationstest, och Maven kör bara dessa tester om integrationsprofilen aktiveras (-P integration). Funktionella tester, dvs klasser som avslutas med FunctionalTest körs
+aldrig från Maven, utan måste körast manuellt från en IDE eller dylikt.
+
+== Fitnesse/Slim ==
+Det finns två separata moduler som använder Fitnesse, statistics-specification samt statistics-business-specification. Fitnesse kan antingen köras som automattest eller som en wiki.
+I wikiläge (-P wiki) startas en webserver på localhost:9125 , och surfar man dit kan man skapa, redigera och köra individuella tester. I automatläge (-P auto) körs alla tester igenom och en
+rapport skapas (ungefär som motsvarande för JUnit-tester).
+
+=== statistics-specification ===
+Den här modulen testar frontenden m h a Geb och Selenium. Innan man kör måste man en webserver som snurrar. Fitnesse kommer att starta en webbläsare och navigera till olika delar av applikationen.
+I dagsläget är det inga avancerade tester som görs, det enda som görs är att klicka runt i gränssnittet, först utan inloggning, sedan som inloggad.
+
+=== statistics-business-specification ===
+En serie tester där olika intygssekvenser stoppas in, varefter man verifierar att man får ut förväntad statistik för de givna sekvenserna. Här kan man göra end-to-end-tester som
+dokumenterar och verifierar de affärsregler som ska gälla.
+
+== Jasmine ==
+Används för Javascripttester
 
 = Spring =
 Spring-konfigurationen är lite utspridd, men det går att nysta upp om man utgår från web.xml, leta efter:
