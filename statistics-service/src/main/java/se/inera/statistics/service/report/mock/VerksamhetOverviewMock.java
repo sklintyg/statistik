@@ -22,11 +22,8 @@ package se.inera.statistics.service.report.mock;
 import java.util.ArrayList;
 
 import se.inera.statistics.service.report.api.VerksamhetOverview;
-import se.inera.statistics.service.report.model.OverviewChartRow;
-import se.inera.statistics.service.report.model.OverviewChartRowExtended;
-import se.inera.statistics.service.report.model.OverviewSexProportion;
-import se.inera.statistics.service.report.model.Range;
-import se.inera.statistics.service.report.model.VerksamhetOverviewResponse;
+import se.inera.statistics.service.report.model.*;
+import se.inera.statistics.service.report.model.OverviewKonsfordelning;
 
 public class VerksamhetOverviewMock implements VerksamhetOverview {
 
@@ -34,9 +31,9 @@ public class VerksamhetOverviewMock implements VerksamhetOverview {
     @Override
     public VerksamhetOverviewResponse getOverview(String verksamhetId, Range range) {
         final Range newPeriod = new Range(3);
-        OverviewSexProportion sexProportionNew = new OverviewSexProportion(120, 180, newPeriod);
+        OverviewKonsfordelning sexProportionNew = new OverviewKonsfordelning(120, 180, newPeriod);
         Range oldPeriod = new Range(newPeriod.getFrom().minusMonths(3), newPeriod.getTo().minusMonths(3));
-        OverviewSexProportion sexProportionOld = new OverviewSexProportion(126, 174, oldPeriod);
+        OverviewKonsfordelning sexProportionOld = new OverviewKonsfordelning(126, 174, oldPeriod);
 
         ArrayList<OverviewChartRowExtended> diagnosisGroups = new ArrayList<OverviewChartRowExtended>();
         diagnosisGroups.add(new OverviewChartRowExtended("A-E G-L N Somatiska", 19583, 2));

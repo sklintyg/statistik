@@ -34,7 +34,7 @@ import javax.persistence.TypedQuery;
 
 import se.inera.statistics.service.report.model.OverviewChartRow;
 import se.inera.statistics.service.report.model.OverviewChartRowExtended;
-import se.inera.statistics.service.report.model.OverviewSexProportion;
+import se.inera.statistics.service.report.model.OverviewKonsfordelning;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.util.AldersgroupUtil;
 import se.inera.statistics.service.report.util.ReportUtil;
@@ -120,7 +120,7 @@ public class OverviewBasePersistenceHandler {
         return result;
     }
 
-    protected OverviewSexProportion getSexProportion(String verksamhetId, Range range) {
+    protected OverviewKonsfordelning getSexProportion(String verksamhetId, Range range) {
         Query query = getManager()
                 .createQuery("SELECT SUM(c.male), SUM(c.female) FROM SjukfallPerManadRow c WHERE c.key.hsaId = :hsaId AND c.key.period BETWEEN :from AND :to");
         query.setParameter("hsaId", verksamhetId);
@@ -128,9 +128,9 @@ public class OverviewBasePersistenceHandler {
         query.setParameter("to", ReportUtil.toPeriod(range.getTo()));
         Object[] row = (Object[]) query.getSingleResult();
         if (row == null || row[0] == null || row[1] == null) {
-            return new OverviewSexProportion(0, 0, range);
+            return new OverviewKonsfordelning(0, 0, range);
         }
-        return new OverviewSexProportion(asInt(row[0]), asInt(row[1]), range);
+        return new OverviewKonsfordelning(asInt(row[0]), asInt(row[1]), range);
     }
 
     protected List<OverviewChartRowExtended> getDiagnosisGroups(String verksamhetId, Range range, int numberOfGroups) {

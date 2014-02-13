@@ -21,11 +21,8 @@ package se.inera.statistics.web.service;
 
 import java.util.ArrayList;
 
-import se.inera.statistics.service.report.model.OverviewChartRow;
-import se.inera.statistics.service.report.model.OverviewChartRowExtended;
-import se.inera.statistics.service.report.model.OverviewSexProportion;
-import se.inera.statistics.service.report.model.VerksamhetOverviewResponse;
-import se.inera.statistics.service.report.model.Range;
+import se.inera.statistics.service.report.model.*;
+import se.inera.statistics.service.report.model.OverviewKonsfordelning;
 import se.inera.statistics.web.model.overview.BarChartData;
 import se.inera.statistics.web.model.overview.DonutChartData;
 import se.inera.statistics.web.model.overview.SickLeaveLengthOverview;
@@ -35,8 +32,8 @@ import se.inera.statistics.web.model.overview.VerksamhetOverviewData;
 public class VerksamhetOverviewConverter {
 
     VerksamhetOverviewData convert(VerksamhetOverviewResponse resp, Range range) {
-        final OverviewSexProportion casesPerMonthNew = resp.getCasesPerMonthSexProportionPreviousPeriod();
-        final OverviewSexProportion casesPerMonthOld = resp.getCasesPerMonthSexProportionBeforePreviousPeriod();
+        final OverviewKonsfordelning casesPerMonthNew = resp.getCasesPerMonthSexProportionPreviousPeriod();
+        final OverviewKonsfordelning casesPerMonthOld = resp.getCasesPerMonthSexProportionBeforePreviousPeriod();
 
         VerksamhetNumberOfCasesPerMonthOverview casesPerMonth = new VerksamhetNumberOfCasesPerMonthOverview(casesPerMonthNew.getMaleAmount(),
                 casesPerMonthNew.getFemaleAmount(), casesPerMonthNew.getPeriod().toString(), casesPerMonthOld.getMaleAmount(),

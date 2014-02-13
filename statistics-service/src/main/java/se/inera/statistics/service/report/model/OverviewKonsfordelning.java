@@ -24,7 +24,7 @@ package se.inera.statistics.service.report.model;
  * Represents relative proportions of men and women.
  *
  */
-public class OverviewSexProportion {
+public class OverviewKonsfordelning {
 
     public static final int FIFTY = 50;
     public static final int PERCENT = 100;
@@ -32,7 +32,7 @@ public class OverviewSexProportion {
     private final int female;
     private final Range period;
 
-    public OverviewSexProportion(int maleAmount, int femaleAmount, Range period) {
+    public OverviewKonsfordelning(int maleAmount, int femaleAmount, Range period) {
         this.male = maleAmount;
         this.female = femaleAmount;
         this.period = period;
@@ -66,6 +66,6 @@ public class OverviewSexProportion {
 
     @Override
     public String toString() {
-        return "{\"OverviewSexProportion\":{" + "\"male\":" + male + ", \"female\":" + female + ", \"period\":\"" + period + "\"}}";
+        return "{\"OverviewKonsfordelning\":{" + "\"male\":" + male + ", \"female\":" + female + ", \"period\":\"" + period + "\"}}";
     }
 }

@@ -27,7 +27,7 @@ import se.inera.statistics.service.report.model.Lan;
 import se.inera.statistics.service.report.model.OverviewChartRow;
 import se.inera.statistics.service.report.model.OverviewChartRowExtended;
 import se.inera.statistics.service.report.model.OverviewResponse;
-import se.inera.statistics.service.report.model.OverviewSexProportion;
+import se.inera.statistics.service.report.model.OverviewKonsfordelning;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.util.ReportUtil;
 import se.inera.statistics.service.report.util.Verksamhet;
@@ -51,7 +51,7 @@ public class OverviewPersistenceHandler extends OverviewBasePersistenceHandler i
     @Transactional
     @Override
     public OverviewResponse getOverview(Range range) {
-        OverviewSexProportion sexProportion = getSexProportion(NATIONELL, range);
+        OverviewKonsfordelning sexProportion = getSexProportion(NATIONELL, range);
         List<OverviewChartRowExtended> diagnosisGroups = getDiagnosisGroups(NATIONELL, range, DISPLAYED_DIAGNOSIS_GROUPS);
         List<OverviewChartRowExtended> ageGroups = getAgeGroups(NATIONELL, range, DISPLAYED_AGE_GROUPS);
         List<OverviewChartRowExtended> degreeOfSickLeaveGroups = getDegreeOfSickLeaveGroups(NATIONELL, range);

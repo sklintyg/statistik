@@ -24,11 +24,8 @@ import java.util.List;
 import org.springframework.transaction.annotation.Transactional;
 
 import se.inera.statistics.service.report.api.VerksamhetOverview;
-import se.inera.statistics.service.report.model.OverviewChartRow;
-import se.inera.statistics.service.report.model.OverviewChartRowExtended;
-import se.inera.statistics.service.report.model.OverviewSexProportion;
-import se.inera.statistics.service.report.model.Range;
-import se.inera.statistics.service.report.model.VerksamhetOverviewResponse;
+import se.inera.statistics.service.report.model.*;
+import se.inera.statistics.service.report.model.OverviewKonsfordelning;
 import se.inera.statistics.service.report.util.ReportUtil;
 
 public class VerksamhetOverviewPersistenceHandler extends OverviewBasePersistenceHandler implements VerksamhetOverview {
@@ -41,8 +38,8 @@ public class VerksamhetOverviewPersistenceHandler extends OverviewBasePersistenc
     @Transactional
     @Override
     public VerksamhetOverviewResponse getOverview(String verksamhetId, Range range) {
-        OverviewSexProportion sexProportion = getSexProportion(verksamhetId, range);
-        OverviewSexProportion prevSexProportion = getSexProportion(verksamhetId, ReportUtil.getPreviousPeriod(range));
+        OverviewKonsfordelning sexProportion = getSexProportion(verksamhetId, range);
+        OverviewKonsfordelning prevSexProportion = getSexProportion(verksamhetId, ReportUtil.getPreviousPeriod(range));
         List<OverviewChartRowExtended> diagnosisGroups = getDiagnosisGroups(verksamhetId, range, DISPLAYED_DIAGNOSIS_GROUPS);
         List<OverviewChartRowExtended> ageGroups = getAgeGroups(verksamhetId, range, DISPLAYED_AGE_GROUPS);
         List<OverviewChartRowExtended> degreeOfSickLeaveGroups = getDegreeOfSickLeaveGroups(verksamhetId, range);

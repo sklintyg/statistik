@@ -23,7 +23,7 @@ import java.util.List;
 
 public class OverviewResponse {
 
-    private final OverviewSexProportion casesPerMonthSexProportion;
+    private final OverviewKonsfordelning casesPerMonthSexProportion;
     private final int casesPerMonthAlteration;
 
     private final List<OverviewChartRowExtended> diagnosisGroups;
@@ -39,7 +39,7 @@ public class OverviewResponse {
     private final List<OverviewChartRowExtended> perCounty;
 
     // CHECKSTYLE:OFF ParameterNumberCheck
-    public OverviewResponse(OverviewSexProportion casesPerMonthSexProportion,
+    public OverviewResponse(OverviewKonsfordelning casesPerMonthSexProportion,
             int casesPerMonthAlteration, List<OverviewChartRowExtended> diagnosisGroups,
             List<OverviewChartRowExtended> ageGroups, List<OverviewChartRowExtended> degreeOfSickLeaveGroups,
             List<OverviewChartRow> sickLeaveLengthGroups, int longSickLeavesTotal, int longSickLeavesAlternation,
@@ -56,7 +56,7 @@ public class OverviewResponse {
     }
     // CHECKSTYLE:ON ParameterNumberCheck
 
-    public OverviewSexProportion getCasesPerMonthSexProportion() {
+    public OverviewKonsfordelning getCasesPerMonthSexProportion() {
         return casesPerMonthSexProportion;
     }
 

@@ -29,7 +29,7 @@ import org.junit.Test;
 import se.inera.statistics.service.report.model.OverviewChartRow;
 import se.inera.statistics.service.report.model.OverviewChartRowExtended;
 import se.inera.statistics.service.report.model.OverviewResponse;
-import se.inera.statistics.service.report.model.OverviewSexProportion;
+import se.inera.statistics.service.report.model.OverviewKonsfordelning;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.web.model.overview.DonutChartData;
 import se.inera.statistics.web.model.overview.NumberOfCasesPerMonthOverview;
@@ -45,7 +45,7 @@ public class OverviewConverterTest {
         //Given
         int casesPerMonthProportionMale = 0;
         int casesPerMonthProportionFemale = 1;
-        OverviewSexProportion overviewSexProportion = new OverviewSexProportion(casesPerMonthProportionMale, casesPerMonthProportionFemale, new Range());
+        OverviewKonsfordelning overviewKonsfordelning = new OverviewKonsfordelning(casesPerMonthProportionMale, casesPerMonthProportionFemale, new Range());
         int casesPerMonthAlteration = 2;
         ArrayList<OverviewChartRowExtended> diagnosisGroups = new ArrayList<OverviewChartRowExtended>();
         ArrayList<OverviewChartRowExtended> ageGroups = new ArrayList<OverviewChartRowExtended>();
@@ -56,7 +56,7 @@ public class OverviewConverterTest {
         ArrayList<OverviewChartRowExtended> perCounty = new ArrayList<OverviewChartRowExtended>();
 
         //When
-        OverviewResponse resp = new OverviewResponse(overviewSexProportion, casesPerMonthAlteration, diagnosisGroups, ageGroups, degreeOfSickLeaveGroups,
+        OverviewResponse resp = new OverviewResponse(overviewKonsfordelning, casesPerMonthAlteration, diagnosisGroups, ageGroups, degreeOfSickLeaveGroups,
                 sickLeaveLengthGroups, longSickLeavesTotal, longSickLeavesAlternation, perCounty);
         OverviewData data = new OverviewConverter().convert(resp, new Range(3));
 
@@ -69,7 +69,7 @@ public class OverviewConverterTest {
         //Given
         int casesPerMonthProportionMale = 0;
         int casesPerMonthProportionFemale = 1;
-        OverviewSexProportion overviewSexProportion = new OverviewSexProportion(casesPerMonthProportionMale, casesPerMonthProportionFemale, new Range());
+        OverviewKonsfordelning overviewKonsfordelning = new OverviewKonsfordelning(casesPerMonthProportionMale, casesPerMonthProportionFemale, new Range());
         int casesPerMonthAlteration = 2;
         ArrayList<OverviewChartRowExtended> diagnosisGroups = new ArrayList<OverviewChartRowExtended>();
         diagnosisGroups.add(new OverviewChartRowExtended("diagName", 1, 2));
@@ -85,7 +85,7 @@ public class OverviewConverterTest {
         perCounty.add(new OverviewChartRowExtended("countyName", 8, 9));
 
         //When
-        OverviewResponse resp = new OverviewResponse(overviewSexProportion, casesPerMonthAlteration, diagnosisGroups, ageGroups, degreeOfSickLeaveGroups,
+        OverviewResponse resp = new OverviewResponse(overviewKonsfordelning, casesPerMonthAlteration, diagnosisGroups, ageGroups, degreeOfSickLeaveGroups,
                 sickLeaveLengthGroups, longSickLeavesTotal, longSickLeavesAlternation, perCounty);
         OverviewData data = new OverviewConverter().convert(resp, new Range(3));
 

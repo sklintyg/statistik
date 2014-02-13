@@ -25,7 +25,7 @@ import se.inera.statistics.service.report.api.Overview;
 import se.inera.statistics.service.report.model.OverviewChartRow;
 import se.inera.statistics.service.report.model.OverviewChartRowExtended;
 import se.inera.statistics.service.report.model.OverviewResponse;
-import se.inera.statistics.service.report.model.OverviewSexProportion;
+import se.inera.statistics.service.report.model.OverviewKonsfordelning;
 import se.inera.statistics.service.report.model.Range;
 
 public class OverviewMock implements Overview {
@@ -33,7 +33,7 @@ public class OverviewMock implements Overview {
     // CHECKSTYLE:OFF MagicNumber
     @Override
     public OverviewResponse getOverview(Range range) {
-        OverviewSexProportion sexProportion = new OverviewSexProportion(56, 44, new Range(3));
+        OverviewKonsfordelning sexProportion = new OverviewKonsfordelning(56, 44, new Range(3));
 
         ArrayList<OverviewChartRowExtended> diagnosisGroups = new ArrayList<OverviewChartRowExtended>();
         diagnosisGroups.add(new OverviewChartRowExtended("A-E G-L N Somatiska", 19583, 2));

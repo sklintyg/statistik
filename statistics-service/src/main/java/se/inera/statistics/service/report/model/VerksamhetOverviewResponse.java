@@ -24,8 +24,8 @@ import java.util.List;
 public class VerksamhetOverviewResponse {
 
     private final int totalCases;
-    private final OverviewSexProportion casesPerMonthSexProportionPreviousPeriod;
-    private final OverviewSexProportion casesPerMonthSexProportionBeforePreviousPeriod;
+    private final OverviewKonsfordelning casesPerMonthSexProportionPreviousPeriod;
+    private final OverviewKonsfordelning casesPerMonthSexProportionBeforePreviousPeriod;
 
     private final List<OverviewChartRowExtended> diagnosisGroups;
 
@@ -38,8 +38,8 @@ public class VerksamhetOverviewResponse {
     private final int longSickLeavesAlternation;
 
     // CHECKSTYLE:OFF ParameterNumberCheck
-    public VerksamhetOverviewResponse(int totalCases, OverviewSexProportion casesPerMonthSexProportionPreviousPeriod,
-            OverviewSexProportion casesPerMonthSexProportionBeforePreviousPeriod, List<OverviewChartRowExtended> diagnosisGroups,
+    public VerksamhetOverviewResponse(int totalCases, OverviewKonsfordelning casesPerMonthSexProportionPreviousPeriod,
+            OverviewKonsfordelning casesPerMonthSexProportionBeforePreviousPeriod, List<OverviewChartRowExtended> diagnosisGroups,
             List<OverviewChartRowExtended> ageGroups, List<OverviewChartRowExtended> degreeOfSickLeaveGroups, List<OverviewChartRow> sickLeaveLengthGroups,
             int longSickLeavesTotal, int longSickLeavesAlternation) {
         this.totalCases = totalCases;
@@ -58,11 +58,11 @@ public class VerksamhetOverviewResponse {
         return totalCases;
     }
 
-    public OverviewSexProportion getCasesPerMonthSexProportionPreviousPeriod() {
+    public OverviewKonsfordelning getCasesPerMonthSexProportionPreviousPeriod() {
         return casesPerMonthSexProportionPreviousPeriod;
     }
 
-    public OverviewSexProportion getCasesPerMonthSexProportionBeforePreviousPeriod() {
+    public OverviewKonsfordelning getCasesPerMonthSexProportionBeforePreviousPeriod() {
         return casesPerMonthSexProportionBeforePreviousPeriod;
     }
 

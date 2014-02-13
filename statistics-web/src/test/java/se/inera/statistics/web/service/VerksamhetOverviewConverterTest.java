@@ -26,11 +26,8 @@ import java.util.List;
 
 import org.junit.Test;
 
-import se.inera.statistics.service.report.model.OverviewChartRow;
-import se.inera.statistics.service.report.model.OverviewChartRowExtended;
-import se.inera.statistics.service.report.model.OverviewSexProportion;
-import se.inera.statistics.service.report.model.Range;
-import se.inera.statistics.service.report.model.VerksamhetOverviewResponse;
+import se.inera.statistics.service.report.model.*;
+import se.inera.statistics.service.report.model.OverviewKonsfordelning;
 import se.inera.statistics.web.model.overview.DonutChartData;
 import se.inera.statistics.web.model.overview.SickLeaveLengthOverview;
 import se.inera.statistics.web.model.overview.VerksamhetNumberOfCasesPerMonthOverview;
@@ -45,8 +42,8 @@ public class VerksamhetOverviewConverterTest {
         //Given
         int casesPerMonthProportionMale = 0;
         int casesPerMonthProportionFemale = 1;
-        OverviewSexProportion overviewSexProportionNew = new OverviewSexProportion(casesPerMonthProportionMale, casesPerMonthProportionFemale, new Range());
-        OverviewSexProportion overviewSexProportionOld = new OverviewSexProportion(casesPerMonthProportionMale, casesPerMonthProportionFemale, new Range());
+        OverviewKonsfordelning overviewKonsfordelningNew = new OverviewKonsfordelning(casesPerMonthProportionMale, casesPerMonthProportionFemale, new Range());
+        OverviewKonsfordelning overviewKonsfordelningOld = new OverviewKonsfordelning(casesPerMonthProportionMale, casesPerMonthProportionFemale, new Range());
         ArrayList<OverviewChartRowExtended> diagnosisGroups = new ArrayList<OverviewChartRowExtended>();
         ArrayList<OverviewChartRowExtended> ageGroups = new ArrayList<OverviewChartRowExtended>();
         ArrayList<OverviewChartRowExtended> degreeOfSickLeaveGroups = new ArrayList<OverviewChartRowExtended>();
@@ -56,7 +53,7 @@ public class VerksamhetOverviewConverterTest {
         final int totalCases = 5;
 
         //When
-        VerksamhetOverviewResponse resp = new VerksamhetOverviewResponse(totalCases, overviewSexProportionNew, overviewSexProportionOld, diagnosisGroups, ageGroups, degreeOfSickLeaveGroups,
+        VerksamhetOverviewResponse resp = new VerksamhetOverviewResponse(totalCases, overviewKonsfordelningNew, overviewKonsfordelningOld, diagnosisGroups, ageGroups, degreeOfSickLeaveGroups,
                 sickLeaveLengthGroups, longSickLeavesTotal, longSickLeavesAlternation);
         VerksamhetOverviewData data = new VerksamhetOverviewConverter().convert(resp, new Range());
 
@@ -69,10 +66,10 @@ public class VerksamhetOverviewConverterTest {
         //Given
         int casesPerMonthProportionMaleNew = 0;
         int casesPerMonthProportionFemaleNew = 1;
-        OverviewSexProportion overviewSexProportionNew = new OverviewSexProportion(casesPerMonthProportionMaleNew, casesPerMonthProportionFemaleNew, new Range());
+        OverviewKonsfordelning overviewKonsfordelningNew = new OverviewKonsfordelning(casesPerMonthProportionMaleNew, casesPerMonthProportionFemaleNew, new Range());
         int casesPerMonthProportionMaleOld = 2;
         int casesPerMonthProportionFemaleOld = 3;
-        OverviewSexProportion overviewSexProportionOld = new OverviewSexProportion(casesPerMonthProportionMaleOld, casesPerMonthProportionFemaleOld, new Range());
+        OverviewKonsfordelning overviewKonsfordelningOld = new OverviewKonsfordelning(casesPerMonthProportionMaleOld, casesPerMonthProportionFemaleOld, new Range());
         ArrayList<OverviewChartRowExtended> diagnosisGroups = new ArrayList<OverviewChartRowExtended>();
         diagnosisGroups.add(new OverviewChartRowExtended("diagName", 1, 2));
         ArrayList<OverviewChartRowExtended> ageGroups = new ArrayList<OverviewChartRowExtended>();
@@ -88,7 +85,7 @@ public class VerksamhetOverviewConverterTest {
 
         int totalCases = 7;
         //When
-        VerksamhetOverviewResponse resp = new VerksamhetOverviewResponse(totalCases, overviewSexProportionNew, overviewSexProportionOld, diagnosisGroups, ageGroups, degreeOfSickLeaveGroups,
+        VerksamhetOverviewResponse resp = new VerksamhetOverviewResponse(totalCases, overviewKonsfordelningNew, overviewKonsfordelningOld, diagnosisGroups, ageGroups, degreeOfSickLeaveGroups,
                 sickLeaveLengthGroups, longSickLeavesTotal, longSickLeavesAlternation);
         VerksamhetOverviewData data = new VerksamhetOverviewConverter().convert(resp, new Range());
 
