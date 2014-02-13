@@ -679,7 +679,7 @@ i.statistict-left-menu-expand-icon {
 }
 .accordion-toggle {
 	background: #666666;
-	background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJod…IgaGVpZ2h0PSIxIiBmaWxsPSJ1cmwoI2dyYWQtdWNnZy1nZW5lcmF0ZWQpIiAvPgo8L3N2Zz4=);
+	background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJod���IgaGVpZ2h0PSIxIiBmaWxsPSJ1cmwoI2dyYWQtdWNnZy1nZW5lcmF0ZWQpIiAvPgo8L3N2Zz4=);
 	background: -moz-linear-gradient(top, #666666 0%, #212633 57%);
 	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#666666), color-stop(57%,#212633));
 	background: -webkit-linear-gradient(top, #666666 0%,#212633 57%);
@@ -719,7 +719,7 @@ i.statistict-left-menu-expand-icon {
 } 
 .accordion-toggle.active {
 	background: #212633;
-	/*background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJod…IgaGVpZ2h0PSIxIiBmaWxsPSJ1cmwoI2dyYWQtdWNnZy1nZW5lcmF0ZWQpIiAvPgo8L3N2Zz4=);*/
+	/*background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJod���IgaGVpZ2h0PSIxIiBmaWxsPSJ1cmwoI2dyYWQtdWNnZy1nZW5lcmF0ZWQpIiAvPgo8L3N2Zz4=);*/
 	background: -moz-linear-gradient(top, #666666 0%, #212633 57%);
 	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#666666), color-stop(57%,#212633));
 	background: -webkit-linear-gradient(top, #666666 0%,#212633 57%);
@@ -756,7 +756,7 @@ div.accordion-body.in.collapse > div.accordion-heading a.accordion-toggle{
 
 .accordion-toggle.collapsed { 
 	background: #212633;
-	/*background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJod…IgaGVpZ2h0PSIxIiBmaWxsPSJ1cmwoI2dyYWQtdWNnZy1nZW5lcmF0ZWQpIiAvPgo8L3N2Zz4=);*/
+	/*background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJod���IgaGVpZ2h0PSIxIiBmaWxsPSJ1cmwoI2dyYWQtdWNnZy1nZW5lcmF0ZWQpIiAvPgo8L3N2Zz4=);*/
 	behavior: url(../border-radius.htc);
 	background: -moz-linear-gradient(top, #666666 0%, #212633 57%);
 	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#666666), color-stop(57%,#212633));
@@ -1423,8 +1423,8 @@ a.listheader.collapsed {
 }
 
 #navigation-container {
-	margin-top: 20px;
-	margin-bottom: 20px;
+	margin-top: 10px;
+	margin-bottom: 10px;
 }
 #navigation-container a, #navigation-container a:hover {
 	color: #28b4c4;
@@ -1434,13 +1434,10 @@ a.listheader.collapsed {
 }
 /****** End: Overview content styles  ******/
 
-/****** Start: Overrides styles of highcharts ******/
 #overview-content .overview-box-container #overview-distribution-per-sex-container rect, #overview-content .overview-box-container #overview-change-container rect,
 #overview-content .overview-box-container #overview-distribution-of-sick-degree-container rect, #overview-content .overview-box-container #overview-distribution-diagnostic-groups-container rect,
 #overview-content .overview-box-container #overview-distribution-of-age-groups-container rect, #overview-content .overview-box-container #overview-distribution-sick-length-container rect, 
 #overview-content .overview-box-container #overview-distribution-by-county-container rect { }
-
-/****** End: Overrides styles of highcharts ******/
 
 .page-anchor {
 	padding-top: 100px;
