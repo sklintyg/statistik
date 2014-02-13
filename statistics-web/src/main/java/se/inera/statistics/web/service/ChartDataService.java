@@ -99,7 +99,7 @@ public class ChartDataService {
     }
 
     @GET
-    @Path("getDiagnosgrupps")
+    @Path("getDiagnosisGroups")
     @Produces({ MediaType.APPLICATION_JSON })
     public List<Diagnosgrupp> getDiagnosisGroups() {
         LOG.info("Calling getDiagnosgrupps");
