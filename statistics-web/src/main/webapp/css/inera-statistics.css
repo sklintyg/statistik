@@ -1434,13 +1434,10 @@ a.listheader.collapsed {
 }
 /****** End: Overview content styles  ******/
 
-/****** Start: Overrides styles of highcharts ******/
 #overview-content .overview-box-container #overview-distribution-per-sex-container rect, #overview-content .overview-box-container #overview-change-container rect,
 #overview-content .overview-box-container #overview-distribution-of-sick-degree-container rect, #overview-content .overview-box-container #overview-distribution-diagnostic-groups-container rect,
 #overview-content .overview-box-container #overview-distribution-of-age-groups-container rect, #overview-content .overview-box-container #overview-distribution-sick-length-container rect, 
 #overview-content .overview-box-container #overview-distribution-by-county-container rect { }
-
-/****** End: Overrides styles of highcharts ******/
 
 .page-anchor {
 	padding-top: 100px;

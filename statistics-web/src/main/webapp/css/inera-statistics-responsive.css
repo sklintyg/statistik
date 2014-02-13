@@ -930,11 +930,9 @@ form.bs-docs-example {
   #national-overview #overview-distribution-of-sick-degree-container { min-height: 230px !important; }
   #national-overview #overview-distribution-diagnostic-groups-container { min-height: 230px !important; }
   #overview-distribution-of-sick-degree-container { min-height: 248px !important; }
-  #national-overview #overview-distribution-of-sick-degree-container { min-height: 282px !important; }
+  #national-overview #overview-distribution-of-sick-degree-container { min-height: 293px !important; }
   #overview-distribution-diagnostic-groups-container { min-height: 282px !important;  }
-  #overview-distribution-sick-length-container {
-  	min-height: 248px !important;
-  }
+  #overview-distribution-sick-length-container { min-height: 248px !important; }
 }
 
 @media (max-width: 1200px) {
