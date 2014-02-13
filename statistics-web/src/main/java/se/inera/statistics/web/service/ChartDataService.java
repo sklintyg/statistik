@@ -197,7 +197,7 @@ public class ChartDataService {
     public SickLeaveLengthData getSickLeaveLengthData() {
         LOG.info("Calling getSickLeaveLengthData for national");
         final RollingLength period = RollingLength.YEAR;
-        SickLeaveLengthResponse sickLeaveLength = datasourceSickLeaveLength.getHistoricalStatistics(NATIONELL, previousMonth(), period);
+        SjukfallslangdResponse sickLeaveLength = datasourceSickLeaveLength.getHistoricalStatistics(NATIONELL, previousMonth(), period);
         return new SickLeaveLengthConverter().convert(sickLeaveLength, new Range(period.getPeriods()));
     }
 

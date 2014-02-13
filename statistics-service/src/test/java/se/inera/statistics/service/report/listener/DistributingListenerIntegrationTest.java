@@ -17,7 +17,7 @@ import se.inera.statistics.service.processlog.ProcessorListener;
 import se.inera.statistics.service.report.api.SjukfallPerManad;
 import se.inera.statistics.service.report.api.SjukfallslangdGrupp;
 import se.inera.statistics.service.report.model.Range;
-import se.inera.statistics.service.report.model.SickLeaveLengthResponse;
+import se.inera.statistics.service.report.model.SjukfallslangdResponse;
 import se.inera.statistics.service.report.model.SimpleDualSexDataRow;
 import se.inera.statistics.service.report.model.SimpleDualSexResponse;
 import se.inera.statistics.service.report.repository.RollingLength;
@@ -200,7 +200,7 @@ public class DistributingListenerIntegrationTest {
 
         check1FallLangd(new LocalDate("2013-03-01"), "15-30 dagar");
 
-        SickLeaveLengthResponse result = sjukfallslangdGrupp.getHistoricalStatistics("v1", new LocalDate("2013-04-01"), RollingLength.YEAR);
+        SjukfallslangdResponse result = sjukfallslangdGrupp.getHistoricalStatistics("v1", new LocalDate("2013-04-01"), RollingLength.YEAR);
         Assert.assertEquals(2, result.getRows().size());
         Assert.assertEquals("15-30 dagar", result.getRows().get(0).getGroup());
         Assert.assertEquals("31-90 dagar", result.getRows().get(1).getGroup());
@@ -230,7 +230,7 @@ public class DistributingListenerIntegrationTest {
         JsonNode utlatande2 = createUtlatande(from2, to2);
         distributingListener.accept(sjukfallInfo2, utlatande2, hsa, 1L);
 
-        SickLeaveLengthResponse result;
+        SjukfallslangdResponse result;
 
         check1FallLangd(new LocalDate("2013-03-01"), "15-30 dagar");
         check1FallLangd(new LocalDate("2013-04-01"), "31-90 dagar");
@@ -245,7 +245,7 @@ public class DistributingListenerIntegrationTest {
     }
 
     private void check1FallLangd(LocalDate checkDate, String expectedGroup) {
-        SickLeaveLengthResponse result;
+        SjukfallslangdResponse result;
         result = sjukfallslangdGrupp.getHistoricalStatistics("v1", checkDate, RollingLength.YEAR);
         Assert.assertEquals(1, result.getRows().size());
         Assert.assertEquals(expectedGroup, result.getRows().get(0).getGroup());

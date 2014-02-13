@@ -24,12 +24,12 @@ import se.inera.statistics.service.report.model.db.SjukfallslangdRow;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SickLeaveLengthResponse {
+public class SjukfallslangdResponse {
 
     private final List<SjukfallslangdRow> sickLeaveGroupsRows;
     private final int months;
 
-    public SickLeaveLengthResponse(List<SjukfallslangdRow> rows, int numberOfMonthsCalculated) {
+    public SjukfallslangdResponse(List<SjukfallslangdRow> rows, int numberOfMonthsCalculated) {
         this.sickLeaveGroupsRows = rows;
         this.months = numberOfMonthsCalculated;
     }
@@ -64,6 +64,6 @@ public class SickLeaveLengthResponse {
 
     @Override
     public String toString() {
-        return "{\"SickLeaveLengthResponse\":{\"sickLeaveGroupsRows\":" + sickLeaveGroupsRows + ", \"months\":" + months + "}}";
+        return "{\"SjukfallslangdResponse\":{\"sickLeaveGroupsRows\":" + sickLeaveGroupsRows + ", \"months\":" + months + "}}";
     }
 }

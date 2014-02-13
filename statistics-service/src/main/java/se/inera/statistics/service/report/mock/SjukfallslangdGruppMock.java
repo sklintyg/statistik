@@ -40,18 +40,18 @@ public class SjukfallslangdGruppMock implements SjukfallslangdGrupp {
 
     // CHECKSTYLE:OFF MagicNumber
     @Override
-    public SickLeaveLengthResponse getHistoricalStatistics(String hsaId, LocalDate when, RollingLength length) {
+    public SjukfallslangdResponse getHistoricalStatistics(String hsaId, LocalDate when, RollingLength length) {
         final List<SjukfallslangdRow> rows = new ArrayList<>();
         for (se.inera.statistics.service.report.util.Ranges.Range group : SjukfallslangdUtil.RANGES) {
             int women = (int) (random.nextGaussian() * 2000 + 10000);
             int men = (int) (random.nextGaussian() * 2000 + 10000);
             rows.add(new SjukfallslangdRow(null, group.getName(), length.getPeriods(), women, men));
         }
-        return new SickLeaveLengthResponse(rows, length.getPeriods());
+        return new SjukfallslangdResponse(rows, length.getPeriods());
     }
 
     @Override
-    public SickLeaveLengthResponse getCurrentStatistics(String hsaId) {
+    public SjukfallslangdResponse getCurrentStatistics(String hsaId) {
         return getHistoricalStatistics(hsaId, null, RollingLength.SINGLE_MONTH);
     }
 

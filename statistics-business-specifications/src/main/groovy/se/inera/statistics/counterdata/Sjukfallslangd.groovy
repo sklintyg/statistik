@@ -17,7 +17,7 @@ class Sjukfallslangd {
         this.tabell = tabell
     }
 
-    // {"SickLeaveLengthResponse":{"sickLeaveGroupsRows":[{"SjukfallslangdRow":{"key":{"SjukfallslangdKey":{"period":"2013-11", "hsaId":"ENVE", "grupp":"<15 dagar", "periods":12}}, "typ":"ENHET", "male":1, "female":1}}, {"SjukfallslangdRow":{"key":{"SjukfallslangdKey":{"period":"2013-11", "hsaId":"ENVE", "grupp":"15-30 dagar", "periods":12}}, "typ":"ENHET", "male":2, "female":0}}, {"SjukfallslangdRow":{"key":{"SjukfallslangdKey":{"period":"2013-11", "hsaId":"ENVE", "grupp":"31-90 dagar", "periods":12}}, "typ":"ENHET", "male":0, "female":1}}, {"SjukfallslangdRow":{"key":{"SjukfallslangdKey":{"period":"2013-11", "hsaId":"ENVE", "grupp":">365 dagar", "periods":12}}, "typ":"ENHET", "male":0, "female":1}}], "months":12}}
+    // {"SjukfallslangdResponse":{"sickLeaveGroupsRows":[{"SjukfallslangdRow":{"key":{"SjukfallslangdKey":{"period":"2013-11", "hsaId":"ENVE", "grupp":"<15 dagar", "periods":12}}, "typ":"ENHET", "male":1, "female":1}}, {"SjukfallslangdRow":{"key":{"SjukfallslangdKey":{"period":"2013-11", "hsaId":"ENVE", "grupp":"15-30 dagar", "periods":12}}, "typ":"ENHET", "male":2, "female":0}}, {"SjukfallslangdRow":{"key":{"SjukfallslangdKey":{"period":"2013-11", "hsaId":"ENVE", "grupp":"31-90 dagar", "periods":12}}, "typ":"ENHET", "male":0, "female":1}}, {"SjukfallslangdRow":{"key":{"SjukfallslangdKey":{"period":"2013-11", "hsaId":"ENVE", "grupp":">365 dagar", "periods":12}}, "typ":"ENHET", "male":0, "female":1}}], "months":12}}
     public List<Object> query() {
         TestData data = IntygSender.testResult.get(tabell)
         JsonNode testResult = data.jsonNode

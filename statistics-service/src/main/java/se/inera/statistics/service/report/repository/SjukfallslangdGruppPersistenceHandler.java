@@ -48,7 +48,7 @@ public class SjukfallslangdGruppPersistenceHandler implements SjukfallslangdGrup
 
     @Override
     @Transactional
-    public SickLeaveLengthResponse getHistoricalStatistics(String hsaId, LocalDate when, RollingLength length) {
+    public SjukfallslangdResponse getHistoricalStatistics(String hsaId, LocalDate when, RollingLength length) {
         TypedQuery<SjukfallslangdRow> query = manager.createQuery("SELECT a FROM SjukfallslangdRow a WHERE a.key.hsaId = :hsaId AND a.key.period = :when AND a.key.periods = :periods ", SjukfallslangdRow.class);
         query.setParameter("hsaId", hsaId);
         query.setParameter("when", ReportUtil.toPeriod(when));
@@ -58,7 +58,7 @@ public class SjukfallslangdGruppPersistenceHandler implements SjukfallslangdGrup
     }
 
     @Override
-    public SickLeaveLengthResponse getCurrentStatistics(String hsaId) {
+    public SjukfallslangdResponse getCurrentStatistics(String hsaId) {
         return getHistoricalStatistics(hsaId, new LocalDate(), RollingLength.SINGLE_MONTH);
     }
 
@@ -99,7 +99,7 @@ public class SjukfallslangdGruppPersistenceHandler implements SjukfallslangdGrup
         return new SimpleDualSexDataRow(key, 0, 0);
     }
 
-    private SickLeaveLengthResponse translateForOutput(List<SjukfallslangdRow> list, int periods) {
+    private SjukfallslangdResponse translateForOutput(List<SjukfallslangdRow> list, int periods) {
         List<SjukfallslangdRow> translatedCasesPerMonthRows = new ArrayList<>();
 
         for (se.inera.statistics.service.report.util.Ranges.Range s: SjukfallslangdUtil.RANGES) {
@@ -111,7 +111,7 @@ public class SjukfallslangdGruppPersistenceHandler implements SjukfallslangdGrup
             }
         }
 
-        return new SickLeaveLengthResponse(translatedCasesPerMonthRows, periods);
+        return new SjukfallslangdResponse(translatedCasesPerMonthRows, periods);
     }
 
     @Transactional

@@ -30,7 +30,7 @@ public class SjukfallslangdGruppPersistenceHandlerTest extends SjukfallslangdGru
         count("2012-01", "verksamhet2", SjukfallslangdUtil.RANGES.rangeFor(1).getName(), RollingLength.QUARTER, Verksamhet.ENHET, Kon.Female);
         count("2012-01", "verksamhet1", SjukfallslangdUtil.RANGES.rangeFor(1).getName(), RollingLength.SINGLE_MONTH, Verksamhet.ENHET, Kon.Female);
 
-        SickLeaveLengthResponse result = this.getHistoricalStatistics("verksamhet1", new LocalDate("2012-01-01"), RollingLength.QUARTER);
+        SjukfallslangdResponse result = this.getHistoricalStatistics("verksamhet1", new LocalDate("2012-01-01"), RollingLength.QUARTER);
 
         Assert.assertEquals(1, result.getRows().size());
         Assert.assertEquals(2, result.getRows().get(0).getFemale());
@@ -51,7 +51,7 @@ public class SjukfallslangdGruppPersistenceHandlerTest extends SjukfallslangdGru
         count(period1, "verksamhet2", SjukfallslangdUtil.RANGES.rangeFor(1).getName(), RollingLength.SINGLE_MONTH, Verksamhet.ENHET, Kon.Female);
         count(period1, "verksamhet1", SjukfallslangdUtil.RANGES.rangeFor(1).getName(), RollingLength.SINGLE_MONTH, Verksamhet.ENHET, Kon.Female);
 
-        SickLeaveLengthResponse result = this.getCurrentStatistics("verksamhet1");
+        SjukfallslangdResponse result = this.getCurrentStatistics("verksamhet1");
 
         Assert.assertEquals(1, result.getRows().size());
         Assert.assertEquals(2, result.getRows().get(0).getFemale());
