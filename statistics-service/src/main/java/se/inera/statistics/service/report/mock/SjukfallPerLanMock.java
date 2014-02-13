@@ -27,8 +27,8 @@ import java.util.Random;
 import se.inera.statistics.service.report.api.SjukfallPerLan;
 import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.report.model.Range;
-import se.inera.statistics.service.report.model.SimpleDualSexDataRow;
-import se.inera.statistics.service.report.model.SimpleDualSexResponse;
+import se.inera.statistics.service.report.model.SimpleKonDataRow;
+import se.inera.statistics.service.report.model.SimpleKonResponse;
 import se.inera.statistics.service.report.repository.RollingLength;
 
 public class SjukfallPerLanMock implements SjukfallPerLan {
@@ -40,15 +40,15 @@ public class SjukfallPerLanMock implements SjukfallPerLan {
 
     // CHECKSTYLE:OFF MagicNumber
     @Override
-    public SimpleDualSexResponse<SimpleDualSexDataRow> getStatistics(Range range) {
-        final List<SimpleDualSexDataRow> rows = new ArrayList<>();
+    public SimpleKonResponse<SimpleKonDataRow> getStatistics(Range range) {
+        final List<SimpleKonDataRow> rows = new ArrayList<>();
         for (String group : GROUPS) {
             int women = (int) (random.nextGaussian() * 2000 + 10000);
             int men = (int) (random.nextGaussian() * 2000 + 10000);
-            rows.add(new SimpleDualSexDataRow(group, women, men));
+            rows.add(new SimpleKonDataRow(group, women, men));
         }
         final int monthsInPeriod = range.getMonths();
-        return new SimpleDualSexResponse<SimpleDualSexDataRow>(rows, monthsInPeriod);
+        return new SimpleKonResponse<SimpleKonDataRow>(rows, monthsInPeriod);
     }
 
     // CHECKSTYLE:ON

@@ -22,8 +22,8 @@ package se.inera.statistics.service.report.api;
 import org.joda.time.LocalDate;
 
 import se.inera.statistics.service.report.model.Kon;
-import se.inera.statistics.service.report.model.SimpleDualSexDataRow;
-import se.inera.statistics.service.report.model.SimpleDualSexResponse;
+import se.inera.statistics.service.report.model.SimpleKonDataRow;
+import se.inera.statistics.service.report.model.SimpleKonResponse;
 import se.inera.statistics.service.report.repository.RollingLength;
 import se.inera.statistics.service.report.util.Verksamhet;
 
@@ -31,7 +31,7 @@ public interface Aldersgrupp {
 
     void count(String period, String hsaId, String group, RollingLength rollingLength, Verksamhet typ, Kon kon);
 
-    SimpleDualSexResponse<SimpleDualSexDataRow> getCurrentAgeGroups(String hsaId);
+    SimpleKonResponse<SimpleKonDataRow> getCurrentAgeGroups(String hsaId);
 
-    SimpleDualSexResponse<SimpleDualSexDataRow> getHistoricalAgeGroups(String hsaId, LocalDate when, RollingLength rollingLength);
+    SimpleKonResponse<SimpleKonDataRow> getHistoricalAgeGroups(String hsaId, LocalDate when, RollingLength rollingLength);
 }

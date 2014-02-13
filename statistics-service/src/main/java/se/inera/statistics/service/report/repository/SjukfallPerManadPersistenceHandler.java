@@ -60,7 +60,7 @@ public class SjukfallPerManadPersistenceHandler implements SjukfallPerManad {
 
     @Override
     @Transactional
-    public SimpleDualSexResponse<SimpleDualSexDataRow> getCasesPerMonth(String hsaId, Range range) {
+    public SimpleKonResponse<SimpleKonDataRow> getCasesPerMonth(String hsaId, Range range) {
         TypedQuery<SjukfallPerManadRow> query = manager.createQuery("SELECT c FROM SjukfallPerManadRow c WHERE c.key.hsaId = :hsaId AND c.key.period BETWEEN :from AND :to", SjukfallPerManadRow.class);
         query.setParameter("hsaId", hsaId);
         query.setParameter("from", ReportUtil.toPeriod(range.getFrom()));
@@ -69,8 +69,8 @@ public class SjukfallPerManadPersistenceHandler implements SjukfallPerManad {
         return translateForOutput(range, query.getResultList());
     }
 
-    private SimpleDualSexResponse<SimpleDualSexDataRow> translateForOutput(Range range, List<SjukfallPerManadRow> list) {
-        List<SimpleDualSexDataRow> translatedCasesPerMonthRows = new ArrayList<>();
+    private SimpleKonResponse<SimpleKonDataRow> translateForOutput(Range range, List<SjukfallPerManadRow> list) {
+        List<SimpleKonDataRow> translatedCasesPerMonthRows = new ArrayList<>();
 
         Map<String, KonField> map = new DefaultHashMap<>(new KonField(0, 0));
         for (SjukfallPerManadRow row: list) {
@@ -81,9 +81,9 @@ public class SjukfallPerManadPersistenceHandler implements SjukfallPerManad {
             String displayDate = ReportUtil.toDiagramPeriod(currentPeriod);
             String period = ReportUtil.toPeriod(currentPeriod);
             KonField konField = map.get(period);
-            translatedCasesPerMonthRows.add(new SimpleDualSexDataRow(displayDate, konField.getFemale(), konField.getMale()));
+            translatedCasesPerMonthRows.add(new SimpleKonDataRow(displayDate, konField.getFemale(), konField.getMale()));
         }
 
-        return new SimpleDualSexResponse<SimpleDualSexDataRow>(translatedCasesPerMonthRows, range.getMonths());
+        return new SimpleKonResponse<SimpleKonDataRow>(translatedCasesPerMonthRows, range.getMonths());
     }
 }

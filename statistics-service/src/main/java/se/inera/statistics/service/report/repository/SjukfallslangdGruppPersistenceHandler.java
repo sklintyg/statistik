@@ -63,8 +63,8 @@ public class SjukfallslangdGruppPersistenceHandler implements SjukfallslangdGrup
     }
 
     @Override
-    public SimpleDualSexResponse<SimpleDualSexDataRow> getLongSickLeaves(String hsaId, Range range) {
-        TypedQuery<SimpleDualSexDataRow> query = manager.createQuery("SELECT new se.inera.statistics.service.report.model.SimpleDualSexDataRow(r.key.period, SUM(r.female), SUM(r.male)) FROM SjukfallslangdRow r WHERE r.key.periods = :periods AND r.key.hsaId = :hsaId AND r.key.period BETWEEN :from AND :to AND r.key.grupp IN :grupper group by r.key.period", SimpleDualSexDataRow.class);
+    public SimpleKonResponse<SimpleKonDataRow> getLongSickLeaves(String hsaId, Range range) {
+        TypedQuery<SimpleKonDataRow> query = manager.createQuery("SELECT new se.inera.statistics.service.report.model.SimpleKonDataRow(r.key.period, SUM(r.female), SUM(r.male)) FROM SjukfallslangdRow r WHERE r.key.periods = :periods AND r.key.hsaId = :hsaId AND r.key.period BETWEEN :from AND :to AND r.key.grupp IN :grupper group by r.key.period", SimpleKonDataRow.class);
 
         List<Ranges.Range> ranges = SjukfallslangdUtil.RANGES.lookupRangesLongerThan(LONG_SICKLEAVE_CUTOFF);
         List<String> names = new ArrayList<>(ranges.size());
@@ -77,26 +77,26 @@ public class SjukfallslangdGruppPersistenceHandler implements SjukfallslangdGrup
         query.setParameter("to", ReportUtil.toPeriod(range.getTo()));
         query.setParameter("grupper", names);
 
-        List<SimpleDualSexDataRow> rows = query.getResultList();
-        List<SimpleDualSexDataRow> sexRows = new ArrayList<>();
+        List<SimpleKonDataRow> rows = query.getResultList();
+        List<SimpleKonDataRow> sexRows = new ArrayList<>();
         LocalDate date = range.getFrom();
         while (!date.isAfter(range.getTo())) {
             String key = ReportUtil.toPeriod(date);
-            SimpleDualSexDataRow row = lookupSimpleDualSexDataRow(key, rows);
+            SimpleKonDataRow row = lookupSimpleDualSexDataRow(key, rows);
             sexRows.add(row);
             date = date.plusMonths(1);
         }
 
-        return new SimpleDualSexResponse<>(sexRows, LONG_SICKLEAVE_DISPLAY_LENGTH);
+        return new SimpleKonResponse<>(sexRows, LONG_SICKLEAVE_DISPLAY_LENGTH);
     }
 
-    private SimpleDualSexDataRow lookupSimpleDualSexDataRow(String key, List<SimpleDualSexDataRow> rows) {
-        for (SimpleDualSexDataRow row : rows) {
+    private SimpleKonDataRow lookupSimpleDualSexDataRow(String key, List<SimpleKonDataRow> rows) {
+        for (SimpleKonDataRow row : rows) {
             if (key.equals(row.getName())) {
                 return row;
             }
         }
-        return new SimpleDualSexDataRow(key, 0, 0);
+        return new SimpleKonDataRow(key, 0, 0);
     }
 
     private SjukfallslangdResponse translateForOutput(List<SjukfallslangdRow> list, int periods) {

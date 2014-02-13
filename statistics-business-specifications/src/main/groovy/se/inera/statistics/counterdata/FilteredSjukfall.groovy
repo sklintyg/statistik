@@ -24,7 +24,7 @@ class FilteredSjukfall {
         List<List<List<String>>> rowList = new ArrayList<>()
         while(rows.hasNext()) {
             List<List<String>> cols = new ArrayList<>()
-            JsonNode row = rows.next().get("SimpleDualSexDataRow")
+            JsonNode row = rows.next().get("SimpleKonDataRow")
             List<String> name = new ArrayList<>()
             name.add("period")
             name.add(row.path("name").textValue())

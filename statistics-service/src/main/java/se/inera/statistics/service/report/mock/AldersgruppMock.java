@@ -27,8 +27,8 @@ import org.joda.time.LocalDate;
 
 import se.inera.statistics.service.report.api.Aldersgrupp;
 import se.inera.statistics.service.report.model.Kon;
-import se.inera.statistics.service.report.model.SimpleDualSexDataRow;
-import se.inera.statistics.service.report.model.SimpleDualSexResponse;
+import se.inera.statistics.service.report.model.SimpleKonDataRow;
+import se.inera.statistics.service.report.model.SimpleKonResponse;
 import se.inera.statistics.service.report.repository.RollingLength;
 import se.inera.statistics.service.report.util.AldersgroupUtil;
 import se.inera.statistics.service.report.util.Ranges.Range;
@@ -39,14 +39,14 @@ public class AldersgruppMock implements Aldersgrupp {
     private Random random = new Random();
 
     // CHECKSTYLE:OFF MagicNumber
-    public SimpleDualSexResponse<SimpleDualSexDataRow> getAgeGroups(int periods) {
-        final List<SimpleDualSexDataRow> rows = new ArrayList<>();
+    public SimpleKonResponse<SimpleKonDataRow> getAgeGroups(int periods) {
+        final List<SimpleKonDataRow> rows = new ArrayList<>();
         for (Range group : AldersgroupUtil.RANGES) {
             int women = (int) (random.nextGaussian() * 2000 + 10000);
             int men = (int) (random.nextGaussian() * 2000 + 10000);
-            rows.add(new SimpleDualSexDataRow(group.getName(), women, men));
+            rows.add(new SimpleKonDataRow(group.getName(), women, men));
         }
-        return new SimpleDualSexResponse<>(rows, periods);
+        return new SimpleKonResponse<>(rows, periods);
     }
 
     @Override
@@ -54,12 +54,12 @@ public class AldersgruppMock implements Aldersgrupp {
     }
 
     @Override
-    public SimpleDualSexResponse<SimpleDualSexDataRow> getCurrentAgeGroups(String hsaId) {
+    public SimpleKonResponse<SimpleKonDataRow> getCurrentAgeGroups(String hsaId) {
         return getAgeGroups(1);
     }
 
     @Override
-    public SimpleDualSexResponse<SimpleDualSexDataRow> getHistoricalAgeGroups(String hsaId, LocalDate when, RollingLength rollignLength) {
+    public SimpleKonResponse<SimpleKonDataRow> getHistoricalAgeGroups(String hsaId, LocalDate when, RollingLength rollignLength) {
         return getAgeGroups(12);
     }
     // CHECKSTYLE:ON

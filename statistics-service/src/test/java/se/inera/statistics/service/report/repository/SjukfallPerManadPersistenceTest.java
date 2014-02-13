@@ -14,8 +14,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.report.model.Range;
-import se.inera.statistics.service.report.model.SimpleDualSexDataRow;
-import se.inera.statistics.service.report.model.SimpleDualSexResponse;
+import se.inera.statistics.service.report.model.SimpleKonDataRow;
+import se.inera.statistics.service.report.model.SimpleKonResponse;
 import se.inera.statistics.service.report.util.Verksamhet;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -30,7 +30,7 @@ public class SjukfallPerManadPersistenceTest extends SjukfallPerManadPersistence
         this.count("hsaid", "2013-02", Verksamhet.ENHET, Kon.Female);
 
         Range range = new Range(new LocalDate("2013-02"), new LocalDate("2013-02"));
-        SimpleDualSexResponse<SimpleDualSexDataRow> check = this.getCasesPerMonth("hsaid", range);
+        SimpleKonResponse<SimpleKonDataRow> check = this.getCasesPerMonth("hsaid", range);
         assertEquals(1, check.getRows().get(0).getFemale().intValue());
     }
 
@@ -40,7 +40,7 @@ public class SjukfallPerManadPersistenceTest extends SjukfallPerManadPersistence
         this.count("hsaid", "2013-02", Verksamhet.ENHET, Kon.Female);
 
         Range range = new Range(new LocalDate("2013-02"), new LocalDate("2013-02"));
-        SimpleDualSexResponse<SimpleDualSexDataRow> check = this.getCasesPerMonth("hsaid", range);
+        SimpleKonResponse<SimpleKonDataRow> check = this.getCasesPerMonth("hsaid", range);
         assertEquals(2, check.getRows().get(0).getFemale().intValue());
     }
 
@@ -49,7 +49,7 @@ public class SjukfallPerManadPersistenceTest extends SjukfallPerManadPersistence
         this.count("hsaid", "2013-02", Verksamhet.ENHET, Kon.Male);
 
         Range range = new Range(new LocalDate("2013-02"), new LocalDate("2013-02"));
-        SimpleDualSexResponse<SimpleDualSexDataRow> check = this.getCasesPerMonth("hsaid", range);
+        SimpleKonResponse<SimpleKonDataRow> check = this.getCasesPerMonth("hsaid", range);
         assertEquals(1, check.getRows().get(0).getMale().intValue());
     }
 
@@ -59,7 +59,7 @@ public class SjukfallPerManadPersistenceTest extends SjukfallPerManadPersistence
         this.count("hsaid", "2013-02", Verksamhet.ENHET, Kon.Male);
 
         Range range = new Range(new LocalDate("2013-02"), new LocalDate("2013-02"));
-        SimpleDualSexResponse<SimpleDualSexDataRow> check = this.getCasesPerMonth("hsaid", range);
+        SimpleKonResponse<SimpleKonDataRow> check = this.getCasesPerMonth("hsaid", range);
         assertEquals(1, check.getRows().get(0).getMale().intValue());
     }
 
@@ -71,7 +71,7 @@ public class SjukfallPerManadPersistenceTest extends SjukfallPerManadPersistence
 
         Range range = new Range(new LocalDate("2013-01"), new LocalDate("2013-04"));
 
-        Iterator<SimpleDualSexDataRow> check = this.getCasesPerMonth("hsaid", range).getRows().iterator();
+        Iterator<SimpleKonDataRow> check = this.getCasesPerMonth("hsaid", range).getRows().iterator();
         assertEquals("jan 2013", check.next().getName());
         assertEquals("feb 2013", check.next().getName());
         assertEquals("mar 2013", check.next().getName());

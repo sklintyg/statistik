@@ -26,8 +26,8 @@ import se.inera.statistics.service.helper.UtlatandeBuilder;
 import se.inera.statistics.service.processlog.LogConsumer;
 import se.inera.statistics.service.report.api.SjukfallPerManad;
 import se.inera.statistics.service.report.model.Range;
-import se.inera.statistics.service.report.model.SimpleDualSexDataRow;
-import se.inera.statistics.service.report.model.SimpleDualSexResponse;
+import se.inera.statistics.service.report.model.SimpleKonDataRow;
+import se.inera.statistics.service.report.model.SimpleKonResponse;
 
 // CHECKSTYLE:OFF MagicNumber
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -62,7 +62,7 @@ public class ReceiverIntegrationTest {
 
         assertEquals(2, consumer.processBatch());
 
-        SimpleDualSexResponse<SimpleDualSexDataRow> webData = sjukfallPerManad.getCasesPerMonth("enhetId", new Range(new LocalDate("2011-01"), new LocalDate("2011-12")));
+        SimpleKonResponse<SimpleKonDataRow> webData = sjukfallPerManad.getCasesPerMonth("enhetId", new Range(new LocalDate("2011-01"), new LocalDate("2011-12")));
 
         assertEquals(12, webData.getRows().size());
 

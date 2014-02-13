@@ -85,7 +85,7 @@ public class ChartDataService {
     public SimpleDetailsData getNumberOfCasesPerMonth() {
         LOG.info("Calling getNumberOfCasesPerMonth for national");
         final Range range = new Range(18);
-        SimpleDualSexResponse<SimpleDualSexDataRow> casesPerMonth = datasourceSjukfallPerManad.getCasesPerMonth(NATIONELL, range);
+        SimpleKonResponse<SimpleKonDataRow> casesPerMonth = datasourceSjukfallPerManad.getCasesPerMonth(NATIONELL, range);
         return new SimpleDualSexConverter().convert(casesPerMonth, range);
     }
 
@@ -159,7 +159,7 @@ public class ChartDataService {
     public AgeGroupsData getAgeGroupsStatistics() {
         LOG.info("Calling getAgeGroupsStatistics for national");
         final RollingLength quarter = RollingLength.QUARTER;
-        SimpleDualSexResponse<SimpleDualSexDataRow> ageGroups = datasourceAldersgrupp.getHistoricalAgeGroups(NATIONELL, previousMonth(), quarter);
+        SimpleKonResponse<SimpleKonDataRow> ageGroups = datasourceAldersgrupp.getHistoricalAgeGroups(NATIONELL, previousMonth(), quarter);
         return new AgeGroupsConverter().convert(ageGroups, new Range(quarter.getPeriods()));
     }
 
@@ -217,8 +217,8 @@ public class ChartDataService {
         Range range1 = Range.quarter();
         Range range2 = ReportUtil.getPreviousPeriod(range1);
 
-        SimpleDualSexResponse<SimpleDualSexDataRow> countyStatRange1 = datasourceSjukfallPerLan.getStatistics(range1);
-        SimpleDualSexResponse<SimpleDualSexDataRow> countyStatRange2 = datasourceSjukfallPerLan.getStatistics(range2);
+        SimpleKonResponse<SimpleKonDataRow> countyStatRange1 = datasourceSjukfallPerLan.getStatistics(range1);
+        SimpleKonResponse<SimpleKonDataRow> countyStatRange2 = datasourceSjukfallPerLan.getStatistics(range2);
         return new CasesPerCountyConverter(countyStatRange1, countyStatRange2, range1, range2).convert();
     }
 
@@ -237,7 +237,7 @@ public class ChartDataService {
     public SimpleDetailsData getSjukfallPerSexStatistics() {
         LOG.info("Calling getSjukfallPerSexStatistics for national");
         final Range range = new Range(12);
-        SimpleDualSexResponse<SimpleDualSexDataRow> casesPerMonth = datasourceSjukfallPerLan.getStatistics(range);
+        SimpleKonResponse<SimpleKonDataRow> casesPerMonth = datasourceSjukfallPerLan.getStatistics(range);
         return new SjukfallPerSexConverter().convert(casesPerMonth, range);
     }
 

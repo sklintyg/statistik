@@ -25,8 +25,8 @@ import java.util.List;
 
 import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.report.model.Range;
-import se.inera.statistics.service.report.model.SimpleDualSexDataRow;
-import se.inera.statistics.service.report.model.SimpleDualSexResponse;
+import se.inera.statistics.service.report.model.SimpleKonDataRow;
+import se.inera.statistics.service.report.model.SimpleKonResponse;
 import se.inera.statistics.web.model.AgeGroupsData;
 import se.inera.statistics.web.model.ChartData;
 import se.inera.statistics.web.model.ChartSeries;
@@ -35,10 +35,10 @@ import se.inera.statistics.web.model.TableData;
 
 public class AgeGroupsConverter {
 
-    private TableData convertToTable(List<SimpleDualSexDataRow> list) {
+    private TableData convertToTable(List<SimpleKonDataRow> list) {
         List<NamedData> data = new ArrayList<>();
         int accumulatedSum = 0;
-        for (SimpleDualSexDataRow row : list) {
+        for (SimpleKonDataRow row : list) {
             int rowSum = row.getFemale() + row.getMale();
             accumulatedSum += rowSum;
             data.add(new NamedData(row.getName(), Arrays.asList(rowSum, row.getFemale(), row.getMale(), accumulatedSum)));
@@ -48,7 +48,7 @@ public class AgeGroupsConverter {
     }
 
 
-    private ChartData convertToChart(SimpleDualSexResponse<SimpleDualSexDataRow> resp) {
+    private ChartData convertToChart(SimpleKonResponse<SimpleKonDataRow> resp) {
         List<String> groups = resp.getGroups();
         List<Integer> femaleData = resp.getDataForSex(Kon.Female);
         List<Integer> maleData = resp.getDataForSex(Kon.Male);
@@ -58,7 +58,7 @@ public class AgeGroupsConverter {
         return new ChartData(series, groups);
     }
 
-    AgeGroupsData convert(SimpleDualSexResponse<SimpleDualSexDataRow> resp, Range range) {
+    AgeGroupsData convert(SimpleKonResponse<SimpleKonDataRow> resp, Range range) {
         TableData tableData = convertToTable(resp.getRows());
         ChartData chartData = convertToChart(resp);
         return new AgeGroupsData(tableData, chartData, range.getMonths(), range.toString());

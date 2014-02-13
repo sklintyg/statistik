@@ -21,12 +21,12 @@ package se.inera.statistics.service.report.api;
 
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.Kon;
-import se.inera.statistics.service.report.model.SimpleDualSexDataRow;
-import se.inera.statistics.service.report.model.SimpleDualSexResponse;
+import se.inera.statistics.service.report.model.SimpleKonDataRow;
+import se.inera.statistics.service.report.model.SimpleKonResponse;
 import se.inera.statistics.service.report.util.Verksamhet;
 
 public interface SjukfallPerManad {
-    SimpleDualSexResponse<SimpleDualSexDataRow> getCasesPerMonth(String hsaId, Range range);
+    SimpleKonResponse<SimpleKonDataRow> getCasesPerMonth(String hsaId, Range range);
 
     void count(String hsaId, String period, Verksamhet typ, Kon kon);
 }

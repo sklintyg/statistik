@@ -25,8 +25,8 @@ import java.util.List;
 
 import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.report.model.Range;
-import se.inera.statistics.service.report.model.SimpleDualSexDataRow;
-import se.inera.statistics.service.report.model.SimpleDualSexResponse;
+import se.inera.statistics.service.report.model.SimpleKonDataRow;
+import se.inera.statistics.service.report.model.SimpleKonResponse;
 import se.inera.statistics.web.model.ChartData;
 import se.inera.statistics.web.model.ChartSeries;
 import se.inera.statistics.web.model.NamedData;
@@ -35,10 +35,10 @@ import se.inera.statistics.web.model.TableData;
 
 public class SimpleDualSexConverter {
 
-    private TableData convertToTableData(List<SimpleDualSexDataRow> list) {
+    private TableData convertToTableData(List<SimpleKonDataRow> list) {
         List<NamedData> data = new ArrayList<>();
         int accumulatedSum = 0;
-        for (SimpleDualSexDataRow row : list) {
+        for (SimpleKonDataRow row : list) {
             final Integer female = row.getFemale();
             final Integer male = row.getMale();
             int rowSum = female + male;
@@ -50,9 +50,9 @@ public class SimpleDualSexConverter {
         return TableData.createWithSingleHeadersRow(data, Arrays.asList("Period", "Antal sjukfall", "Antal sjukfall för kvinnor", "Antal sjukfall för män", "Summering"));
     }
 
-    private ChartData convertToChartData(SimpleDualSexResponse<SimpleDualSexDataRow> casesPerMonth) {
+    private ChartData convertToChartData(SimpleKonResponse<SimpleKonDataRow> casesPerMonth) {
         final ArrayList<String> categories = new ArrayList<String>();
-        for (SimpleDualSexDataRow casesPerMonthRow : casesPerMonth.getRows()) {
+        for (SimpleKonDataRow casesPerMonthRow : casesPerMonth.getRows()) {
             categories.add(casesPerMonthRow.getName());
         }
 
@@ -64,7 +64,7 @@ public class SimpleDualSexConverter {
         return new ChartData(series, categories);
     }
 
-    public SimpleDetailsData convert(SimpleDualSexResponse<SimpleDualSexDataRow> casesPerMonth, Range range) {
+    public SimpleDetailsData convert(SimpleKonResponse<SimpleKonDataRow> casesPerMonth, Range range) {
         TableData tableData = convertToTableData(casesPerMonth.getRows());
         ChartData chartData = convertToChartData(casesPerMonth);
         return new SimpleDetailsData(tableData, chartData, range.getMonths(), range.toString());

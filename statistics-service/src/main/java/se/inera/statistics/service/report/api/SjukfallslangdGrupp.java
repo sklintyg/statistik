@@ -21,11 +21,8 @@ package se.inera.statistics.service.report.api;
 
 import org.joda.time.LocalDate;
 
-import se.inera.statistics.service.report.model.Range;
-import se.inera.statistics.service.report.model.Kon;
-import se.inera.statistics.service.report.model.SjukfallslangdResponse;
-import se.inera.statistics.service.report.model.SimpleDualSexDataRow;
-import se.inera.statistics.service.report.model.SimpleDualSexResponse;
+import se.inera.statistics.service.report.model.*;
+import se.inera.statistics.service.report.model.SimpleKonDataRow;
 import se.inera.statistics.service.report.repository.RollingLength;
 import se.inera.statistics.service.report.util.Verksamhet;
 
@@ -33,7 +30,7 @@ public interface SjukfallslangdGrupp {
     SjukfallslangdResponse getCurrentStatistics(String hsaId);
     SjukfallslangdResponse getHistoricalStatistics(String hsaId, LocalDate when, RollingLength rollingLength);
     void count(String period, String hsaId, String group, RollingLength rollingLength, Verksamhet typ, Kon kon);
-    SimpleDualSexResponse<SimpleDualSexDataRow> getLongSickLeaves(String decodeId, Range range);
+    SimpleKonResponse<SimpleKonDataRow> getLongSickLeaves(String decodeId, Range range);
 
     void recount(String period, String vardgivareId, String group, String newGroup, RollingLength length, Verksamhet vardgivare, Kon kon);
 }

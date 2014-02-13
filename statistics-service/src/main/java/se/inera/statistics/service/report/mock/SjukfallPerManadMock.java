@@ -26,8 +26,8 @@ import java.util.Random;
 import se.inera.statistics.service.report.api.SjukfallPerManad;
 import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.report.model.Range;
-import se.inera.statistics.service.report.model.SimpleDualSexDataRow;
-import se.inera.statistics.service.report.model.SimpleDualSexResponse;
+import se.inera.statistics.service.report.model.SimpleKonDataRow;
+import se.inera.statistics.service.report.model.SimpleKonResponse;
 import se.inera.statistics.service.report.util.ReportUtil;
 import se.inera.statistics.service.report.util.Verksamhet;
 
@@ -37,14 +37,14 @@ public class SjukfallPerManadMock implements SjukfallPerManad {
 
     // CHECKSTYLE:OFF MagicNumber
     @Override
-    public SimpleDualSexResponse<SimpleDualSexDataRow> getCasesPerMonth(String hsaId, Range range) {
-        List<SimpleDualSexDataRow> rows = new ArrayList<>();
+    public SimpleKonResponse<SimpleKonDataRow> getCasesPerMonth(String hsaId, Range range) {
+        List<SimpleKonDataRow> rows = new ArrayList<>();
         for (String periodName : ReportUtil.PERIODS) {
             int men = (int) (random.nextGaussian() * 2000 + 10000);
             int women = (int) (random.nextGaussian() * 2000 + 10000);
-            rows.add(new SimpleDualSexDataRow(periodName, women, men));
+            rows.add(new SimpleKonDataRow(periodName, women, men));
         }
-        return new SimpleDualSexResponse<SimpleDualSexDataRow>(rows, 18);
+        return new SimpleKonResponse<SimpleKonDataRow>(rows, 18);
     }
 
     @Override

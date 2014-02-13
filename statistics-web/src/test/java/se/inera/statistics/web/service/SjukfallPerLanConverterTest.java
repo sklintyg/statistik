@@ -28,8 +28,8 @@ import org.joda.time.LocalDate;
 import org.junit.Test;
 
 import se.inera.statistics.service.report.model.Range;
-import se.inera.statistics.service.report.model.SimpleDualSexDataRow;
-import se.inera.statistics.service.report.model.SimpleDualSexResponse;
+import se.inera.statistics.service.report.model.SimpleKonDataRow;
+import se.inera.statistics.service.report.model.SimpleKonResponse;
 import se.inera.statistics.web.model.CasesPerCountyData;
 import se.inera.statistics.web.model.ChartData;
 import se.inera.statistics.web.model.ChartSeries;
@@ -43,17 +43,17 @@ public class SjukfallPerLanConverterTest {
     @Test
     public void convertCasesPerCountyDataTest() {
         //Given
-        ArrayList<SimpleDualSexDataRow> perCountyRows1 = new ArrayList<>();
-        perCountyRows1.add(new SimpleDualSexDataRow("<20", 13, 14));
-        perCountyRows1.add(new SimpleDualSexDataRow("20-50", 24, 15));
-        perCountyRows1.add(new SimpleDualSexDataRow(">50", 3, 9));
-        SimpleDualSexResponse<SimpleDualSexDataRow> ageGroupsResponseNew = new SimpleDualSexResponse<>(perCountyRows1, 1);
+        ArrayList<SimpleKonDataRow> perCountyRows1 = new ArrayList<>();
+        perCountyRows1.add(new SimpleKonDataRow("<20", 13, 14));
+        perCountyRows1.add(new SimpleKonDataRow("20-50", 24, 15));
+        perCountyRows1.add(new SimpleKonDataRow(">50", 3, 9));
+        SimpleKonResponse<SimpleKonDataRow> ageGroupsResponseNew = new SimpleKonResponse<>(perCountyRows1, 1);
 
-        ArrayList<SimpleDualSexDataRow> perCountyRowsOld = new ArrayList<>();
-        perCountyRowsOld.add(new SimpleDualSexDataRow("<20", 3, 4));
-        perCountyRowsOld.add(new SimpleDualSexDataRow("20-50", 4, 5));
-        perCountyRowsOld.add(new SimpleDualSexDataRow(">50", 2, 8));
-        SimpleDualSexResponse<SimpleDualSexDataRow> ageGroupsResponseOld = new SimpleDualSexResponse<>(perCountyRowsOld, 2);
+        ArrayList<SimpleKonDataRow> perCountyRowsOld = new ArrayList<>();
+        perCountyRowsOld.add(new SimpleKonDataRow("<20", 3, 4));
+        perCountyRowsOld.add(new SimpleKonDataRow("20-50", 4, 5));
+        perCountyRowsOld.add(new SimpleKonDataRow(">50", 2, 8));
+        SimpleKonResponse<SimpleKonDataRow> ageGroupsResponseOld = new SimpleKonResponse<>(perCountyRowsOld, 2);
 
         LocalDate fromOld = new LocalDate(2013, 2, 1);
         LocalDate toOld = new LocalDate(2013, 4, 1);

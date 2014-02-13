@@ -25,8 +25,8 @@ import java.util.List;
 
 import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.report.model.Range;
-import se.inera.statistics.service.report.model.SimpleDualSexDataRow;
-import se.inera.statistics.service.report.model.SimpleDualSexResponse;
+import se.inera.statistics.service.report.model.SimpleKonDataRow;
+import se.inera.statistics.service.report.model.SimpleKonResponse;
 import se.inera.statistics.web.model.CasesPerCountyData;
 import se.inera.statistics.web.model.ChartData;
 import se.inera.statistics.web.model.ChartSeries;
@@ -36,12 +36,12 @@ import se.inera.statistics.web.model.TableHeader;
 
 public class CasesPerCountyConverter {
 
-    private final SimpleDualSexResponse<SimpleDualSexDataRow> respNewest;
-    private final SimpleDualSexResponse<SimpleDualSexDataRow> respOldest;
+    private final SimpleKonResponse<SimpleKonDataRow> respNewest;
+    private final SimpleKonResponse<SimpleKonDataRow> respOldest;
     private final Range rangeOld;
     private final Range rangeNew;
 
-    public CasesPerCountyConverter(SimpleDualSexResponse<SimpleDualSexDataRow> respNewest, SimpleDualSexResponse<SimpleDualSexDataRow> respOldest, Range rangeNewest, Range rangeOldest) {
+    public CasesPerCountyConverter(SimpleKonResponse<SimpleKonDataRow> respNewest, SimpleKonResponse<SimpleKonDataRow> respOldest, Range rangeNewest, Range rangeOldest) {
         assert respNewest.getRows().size() == respOldest.getRows().size();
         this.respNewest = respNewest;
         this.respOldest = respOldest;
@@ -52,8 +52,8 @@ public class CasesPerCountyConverter {
     private TableData convertToTable() {
         List<NamedData> data = new ArrayList<>();
         for (int i = 0; i < respNewest.getRows().size(); i++) {
-            SimpleDualSexDataRow newestRow = respNewest.getRows().get(i);
-            SimpleDualSexDataRow oldestRow = respOldest.getRows().get(i);
+            SimpleKonDataRow newestRow = respNewest.getRows().get(i);
+            SimpleKonDataRow oldestRow = respOldest.getRows().get(i);
             assert newestRow.getName().equals(oldestRow.getName());
 
             int rowSumNewest = newestRow.getFemale() + newestRow.getMale();

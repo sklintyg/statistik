@@ -18,8 +18,8 @@ import se.inera.statistics.service.report.api.SjukfallPerManad;
 import se.inera.statistics.service.report.api.SjukfallslangdGrupp;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.SjukfallslangdResponse;
-import se.inera.statistics.service.report.model.SimpleDualSexDataRow;
-import se.inera.statistics.service.report.model.SimpleDualSexResponse;
+import se.inera.statistics.service.report.model.SimpleKonDataRow;
+import se.inera.statistics.service.report.model.SimpleKonResponse;
 import se.inera.statistics.service.report.repository.RollingLength;
 import se.inera.statistics.service.sjukfall.SjukfallInfo;
 
@@ -56,7 +56,7 @@ public class DistributingListenerIntegrationTest {
 
         distributingListener.accept(sjukfallInfo, utlatande, hsa, 1L);
 
-        SimpleDualSexResponse<SimpleDualSexDataRow> result = sjukfallPerManad.getCasesPerMonth("v1", rangeOneMonth);
+        SimpleKonResponse<SimpleKonDataRow> result = sjukfallPerManad.getCasesPerMonth("v1", rangeOneMonth);
         Assert.assertEquals(1, result.getRows().get(0).getMale().intValue());
     }
 
@@ -69,7 +69,7 @@ public class DistributingListenerIntegrationTest {
 
         distributingListener.accept(sjukfallInfo, utlatande, hsa, 1L);
 
-        SimpleDualSexResponse<SimpleDualSexDataRow> result = sjukfallPerManad.getCasesPerMonth("v1", rangeTwoMonth);
+        SimpleKonResponse<SimpleKonDataRow> result = sjukfallPerManad.getCasesPerMonth("v1", rangeTwoMonth);
         Assert.assertEquals(2, result.getRows().size());
         Assert.assertEquals(1, result.getRows().get(0).getMale().intValue());
         Assert.assertEquals(1, result.getRows().get(1).getMale().intValue());
@@ -84,7 +84,7 @@ public class DistributingListenerIntegrationTest {
 
         distributingListener.accept(sjukfallInfo, utlatande, hsa, 1L);
 
-        SimpleDualSexResponse<SimpleDualSexDataRow> result = sjukfallPerManad.getCasesPerMonth("v1", rangeTwoMonth);
+        SimpleKonResponse<SimpleKonDataRow> result = sjukfallPerManad.getCasesPerMonth("v1", rangeTwoMonth);
         Assert.assertEquals(2, result.getRows().size());
         Assert.assertEquals(0, result.getRows().get(0).getMale().intValue());
         Assert.assertEquals(1, result.getRows().get(1).getMale().intValue());
@@ -99,7 +99,7 @@ public class DistributingListenerIntegrationTest {
 
         distributingListener.accept(sjukfallInfo, utlatande, hsa, 1L);
 
-        SimpleDualSexResponse<SimpleDualSexDataRow> result = sjukfallPerManad.getCasesPerMonth("v1", rangeTwoMonth);
+        SimpleKonResponse<SimpleKonDataRow> result = sjukfallPerManad.getCasesPerMonth("v1", rangeTwoMonth);
         Assert.assertEquals(2, result.getRows().size());
         Assert.assertEquals(0, result.getRows().get(0).getMale().intValue());
         Assert.assertEquals(0, result.getRows().get(1).getMale().intValue());
@@ -124,7 +124,7 @@ public class DistributingListenerIntegrationTest {
         JsonNode utlatande3 = createUtlatande(from3, to3);
         distributingListener.accept(sjukfallInfo3, utlatande3, hsa, 1L);
 
-        SimpleDualSexResponse<SimpleDualSexDataRow> result = sjukfallPerManad.getCasesPerMonth("v1", rangeOneMonth);
+        SimpleKonResponse<SimpleKonDataRow> result = sjukfallPerManad.getCasesPerMonth("v1", rangeOneMonth);
         Assert.assertEquals(1, result.getRows().size());
         Assert.assertEquals(1, result.getRows().get(0).getMale().intValue());
     }

@@ -69,7 +69,7 @@ public class SjukfallslangdGruppPersistenceHandlerTest extends SjukfallslangdGru
         count("2013-01", "verksamhet2", SjukfallslangdUtil.RANGES.rangeFor(91).getName(), RollingLength.SINGLE_MONTH, Verksamhet.ENHET, Kon.Female);
         count("2013-01", "verksamhet1", SjukfallslangdUtil.RANGES.rangeFor(91).getName(), RollingLength.SINGLE_MONTH, Verksamhet.ENHET, Kon.Female);
 
-        SimpleDualSexResponse<SimpleDualSexDataRow> result = getLongSickLeaves("verksamhet1", new Range(new LocalDate("2012-04-01"), new LocalDate("2013-09-01")));
+        SimpleKonResponse<SimpleKonDataRow> result = getLongSickLeaves("verksamhet1", new Range(new LocalDate("2012-04-01"), new LocalDate("2013-09-01")));
 
         Assert.assertEquals(18, result.getRows().size());
         Assert.assertEquals(2, (int) result.getRows().get(9).getFemale());

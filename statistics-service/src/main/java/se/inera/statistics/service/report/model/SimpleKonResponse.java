@@ -22,12 +22,12 @@ package se.inera.statistics.service.report.model;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SimpleDualSexResponse<T extends SimpleDualSexDataRow> {
+public class SimpleKonResponse<T extends SimpleKonDataRow> {
 
     private final List<T> rows;
     private final int numberOfMonthsCalculated;
 
-    public SimpleDualSexResponse(List<T> rows, int numberOfMonthsCalculated) {
+    public SimpleKonResponse(List<T> rows, int numberOfMonthsCalculated) {
         this.rows = rows;
         this.numberOfMonthsCalculated = numberOfMonthsCalculated;
     }
@@ -42,7 +42,7 @@ public class SimpleDualSexResponse<T extends SimpleDualSexDataRow> {
 
     public List<String> getGroups() {
         List<String> groups = new ArrayList<>();
-        for (SimpleDualSexDataRow row : rows) {
+        for (SimpleKonDataRow row : rows) {
             groups.add(row.getName());
         }
         return groups;
@@ -50,7 +50,7 @@ public class SimpleDualSexResponse<T extends SimpleDualSexDataRow> {
 
     public List<Integer> getDataForSex(Kon sex) {
         List<Integer> data = new ArrayList<>();
-        for (SimpleDualSexDataRow row : rows) {
+        for (SimpleKonDataRow row : rows) {
             data.add(row.getDataForSex(sex));
         }
         return data;
@@ -58,7 +58,7 @@ public class SimpleDualSexResponse<T extends SimpleDualSexDataRow> {
 
     public List<Integer> getSummedData() {
         List<Integer> data = new ArrayList<>();
-        for (SimpleDualSexDataRow row : rows) {
+        for (SimpleKonDataRow row : rows) {
             data.add(row.getFemale() + row.getMale());
         }
         return data;
@@ -66,6 +66,6 @@ public class SimpleDualSexResponse<T extends SimpleDualSexDataRow> {
 
     @Override
     public String toString() {
-        return "{\"SimpleDualSexResponse\":{" + "\"rows\":" + rows + ", \"numberOfMonthsCalculated\":" + getNumberOfMonthsCalculated() + "}}";
+        return "{\"SimpleKonResponse\":{" + "\"rows\":" + rows + ", \"numberOfMonthsCalculated\":" + getNumberOfMonthsCalculated() + "}}";
     }
 }

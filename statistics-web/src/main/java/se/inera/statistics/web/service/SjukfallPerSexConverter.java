@@ -27,8 +27,8 @@ import java.util.List;
 
 import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.report.model.Range;
-import se.inera.statistics.service.report.model.SimpleDualSexDataRow;
-import se.inera.statistics.service.report.model.SimpleDualSexResponse;
+import se.inera.statistics.service.report.model.SimpleKonDataRow;
+import se.inera.statistics.service.report.model.SimpleKonResponse;
 import se.inera.statistics.web.model.ChartData;
 import se.inera.statistics.web.model.ChartSeries;
 import se.inera.statistics.web.model.NamedData;
@@ -37,13 +37,13 @@ import se.inera.statistics.web.model.TableData;
 
 public class SjukfallPerSexConverter {
 
-    private TableData convertToTableData(List<SimpleDualSexDataRow> list) {
+    private TableData convertToTableData(List<SimpleKonDataRow> list) {
         List<NamedData> data = new ArrayList<>();
         int accumulatedSum = 0;
         int totalSum = 0;
         int femaleSum = 0;
         int maleSum = 0;
-        for (SimpleDualSexDataRow row : list) {
+        for (SimpleKonDataRow row : list) {
             final Integer female = row.getFemale();
             final Integer male = row.getMale();
             int rowSum = female + male;
@@ -66,10 +66,10 @@ public class SjukfallPerSexConverter {
         return Math.round(toPercentFactor * value / rowSum) + "% (" + formatter.format(value) + ")";
     }
 
-    private ChartData convertToChartData(SimpleDualSexResponse<SimpleDualSexDataRow> casesPerMonth) {
+    private ChartData convertToChartData(SimpleKonResponse<SimpleKonDataRow> casesPerMonth) {
         final ArrayList<String> categories = new ArrayList<String>();
         categories.add("Samtliga län");
-        for (SimpleDualSexDataRow casesPerMonthRow : casesPerMonth.getRows()) {
+        for (SimpleKonDataRow casesPerMonthRow : casesPerMonth.getRows()) {
             categories.add(casesPerMonthRow.getName());
         }
 
@@ -81,14 +81,14 @@ public class SjukfallPerSexConverter {
         return new ChartData(series, categories);
     }
 
-    private List<Integer> getSeriesForSexWithTotal(SimpleDualSexResponse<SimpleDualSexDataRow> casesPerMonth, final Kon kon) {
+    private List<Integer> getSeriesForSexWithTotal(SimpleKonResponse<SimpleKonDataRow> casesPerMonth, final Kon kon) {
         ArrayList<Integer> series = new ArrayList<Integer>();
         series.add(getSumForSex(casesPerMonth, kon));
         series.addAll(casesPerMonth.getDataForSex(kon));
         return series;
     }
 
-    private Integer getSumForSex(SimpleDualSexResponse<SimpleDualSexDataRow> casesPerMonth, Kon kon) {
+    private Integer getSumForSex(SimpleKonResponse<SimpleKonDataRow> casesPerMonth, Kon kon) {
         int sum = 0;
         List<Integer> data = casesPerMonth.getDataForSex(kon);
         for (Integer value : data) {
@@ -97,7 +97,7 @@ public class SjukfallPerSexConverter {
         return sum;
     }
 
-    public SimpleDetailsData convert(SimpleDualSexResponse<SimpleDualSexDataRow> casesPerMonth, Range range) {
+    public SimpleDetailsData convert(SimpleKonResponse<SimpleKonDataRow> casesPerMonth, Range range) {
         TableData tableData = convertToTableData(casesPerMonth.getRows());
         ChartData chartData = convertToChartData(casesPerMonth);
         return new SimpleDetailsData(tableData, chartData, range.getMonths(), range.toString());

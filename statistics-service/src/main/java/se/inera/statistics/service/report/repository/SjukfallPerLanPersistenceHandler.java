@@ -46,7 +46,7 @@ public class SjukfallPerLanPersistenceHandler implements SjukfallPerLan {
 
     @Override
     @Transactional
-    public SimpleDualSexResponse<SimpleDualSexDataRow> getStatistics(Range range) {
+    public SimpleKonResponse<SimpleKonDataRow> getStatistics(Range range) {
         TypedQuery<SjukfallPerLanRow> query = manager.createQuery("SELECT new SjukfallPerLanRow(c.key.period, 'dummy', c.key.lanId, SUM (c.female), sum (c.male)) FROM SjukfallPerLanRow c WHERE c.key.period = :to GROUP BY c.key.period, c.key.lanId", SjukfallPerLanRow.class);
         query.setParameter("to", ReportUtil.toPeriod(range.getTo()));
 
@@ -70,8 +70,8 @@ public class SjukfallPerLanPersistenceHandler implements SjukfallPerLan {
         }
     }
 
-    private SimpleDualSexResponse<SimpleDualSexDataRow> translateForOutput(Range range, List<SjukfallPerLanRow> list) {
-        List<SimpleDualSexDataRow> translatedCasesPerMonthRows = new ArrayList<>();
+    private SimpleKonResponse<SimpleKonDataRow> translateForOutput(Range range, List<SjukfallPerLanRow> list) {
+        List<SimpleKonDataRow> translatedCasesPerMonthRows = new ArrayList<>();
 
         Map<String, KonField> map = new DefaultHashMap<>(new KonField(0, 0));
         for (SjukfallPerLanRow row: list) {
@@ -81,10 +81,10 @@ public class SjukfallPerLanPersistenceHandler implements SjukfallPerLan {
         for (String lanId : lans) {
             String displayLan = lans.getNamn(lanId);
             KonField konField = map.get(lanId);
-            translatedCasesPerMonthRows.add(new SimpleDualSexDataRow(displayLan, konField.getFemale(), konField.getMale()));
+            translatedCasesPerMonthRows.add(new SimpleKonDataRow(displayLan, konField.getFemale(), konField.getMale()));
         }
 
-        return new SimpleDualSexResponse<>(translatedCasesPerMonthRows, range.getMonths());
+        return new SimpleKonResponse<>(translatedCasesPerMonthRows, range.getMonths());
     }
 
 }

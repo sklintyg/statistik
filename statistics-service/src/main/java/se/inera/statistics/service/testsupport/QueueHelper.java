@@ -134,7 +134,7 @@ public class QueueHelper {
     }
 
     private void printAndGetCasesPerCountyNationell(Range range, Map<String, TestData> result) {
-        SimpleDualSexResponse<SimpleDualSexDataRow> casesPerCountyNationell = sjukfallPerLan.getStatistics(range);
+        SimpleKonResponse<SimpleKonDataRow> casesPerCountyNationell = sjukfallPerLan.getStatistics(range);
         LOG.info("CPC: " + casesPerCountyNationell);
         JsonNode casesPerCountyNationellNode = JSONParser.parse(casesPerCountyNationell.toString());
         result.put("casesPerCountyNationell", new TestData(casesPerCountyNationell, casesPerCountyNationellNode));
@@ -153,15 +153,15 @@ public class QueueHelper {
         LOG.info("Nationell SLG data: " + sjukfallslangdGruppNationell);
         JsonNode sjukfallslangdGruppNationellNode = JSONParser.parse(sjukfallslangdGruppNationell.toString());
         result.put("sjukfallslangdGruppNationell", new TestData(sjukfallslangdGruppNationell, sjukfallslangdGruppNationellNode));
-        SimpleDualSexResponse<SimpleDualSexDataRow> sjukfallslangdGruppLong1 = sjukfallslangdGrupp.getLongSickLeaves(vardenhet1, range);
+        SimpleKonResponse<SimpleKonDataRow> sjukfallslangdGruppLong1 = sjukfallslangdGrupp.getLongSickLeaves(vardenhet1, range);
         LOG.info("SLGL data: " + sjukfallslangdGruppLong1);
         JsonNode sjukfallslangdGruppLong1Node = JSONParser.parse(sjukfallslangdGruppLong1.toString());
         result.put("sjukfallslangdGruppLong1", new TestData(sjukfallslangdGruppLong1, sjukfallslangdGruppLong1Node));
-        SimpleDualSexResponse<SimpleDualSexDataRow> sjukfallslangdGruppLong2 = sjukfallslangdGrupp.getLongSickLeaves(vardenhet2, range);
+        SimpleKonResponse<SimpleKonDataRow> sjukfallslangdGruppLong2 = sjukfallslangdGrupp.getLongSickLeaves(vardenhet2, range);
         LOG.info("SLGL data: " + sjukfallslangdGruppLong2);
         JsonNode sjukfallslangdGruppLong2Node = JSONParser.parse(sjukfallslangdGruppLong2.toString());
         result.put("sjukfallslangdGruppLong2", new TestData(sjukfallslangdGruppLong2, sjukfallslangdGruppLong2Node));
-        SimpleDualSexResponse<SimpleDualSexDataRow> sjukfallslangdGruppLongNationell = sjukfallslangdGrupp.getLongSickLeaves(nationell, range);
+        SimpleKonResponse<SimpleKonDataRow> sjukfallslangdGruppLongNationell = sjukfallslangdGrupp.getLongSickLeaves(nationell, range);
         LOG.info("Nationell SLGL data: " + sjukfallslangdGruppLongNationell);
         JsonNode sjukfallslangdGruppLongNationellNode = JSONParser.parse(sjukfallslangdGruppLongNationell.toString());
         result.put("sjukfallslangdGruppLongNationell", new TestData(sjukfallslangdGruppLongNationell, sjukfallslangdGruppLongNationellNode));
@@ -183,15 +183,15 @@ public class QueueHelper {
     }
 
     private void printAndGetAgeGroups(String vardenhet1, String vardenhet2, Range range, Map<String, TestData> result) {
-        SimpleDualSexResponse<SimpleDualSexDataRow> ageGroups1 = aldersgrupp.getHistoricalAgeGroups(vardenhet1, range.getTo(), RollingLength.YEAR);
+        SimpleKonResponse<SimpleKonDataRow> ageGroups1 = aldersgrupp.getHistoricalAgeGroups(vardenhet1, range.getTo(), RollingLength.YEAR);
         LOG.info("AG data: " + ageGroups1);
         JsonNode ageGroups1Node = JSONParser.parse(ageGroups1.toString());
         result.put("ageGroups1", new TestData(ageGroups1, ageGroups1Node));
-        SimpleDualSexResponse<SimpleDualSexDataRow> ageGroups2 = aldersgrupp.getHistoricalAgeGroups(vardenhet2, range.getTo(), RollingLength.YEAR);
+        SimpleKonResponse<SimpleKonDataRow> ageGroups2 = aldersgrupp.getHistoricalAgeGroups(vardenhet2, range.getTo(), RollingLength.YEAR);
         LOG.info("AG data: " + ageGroups2);
         JsonNode ageGroups2Node = JSONParser.parse(ageGroups2.toString());
         result.put("ageGroups2", new TestData(ageGroups2, ageGroups2Node));
-        SimpleDualSexResponse<SimpleDualSexDataRow> ageGroupsNationell = aldersgrupp.getHistoricalAgeGroups(nationell, range.getTo(), RollingLength.YEAR);
+        SimpleKonResponse<SimpleKonDataRow> ageGroupsNationell = aldersgrupp.getHistoricalAgeGroups(nationell, range.getTo(), RollingLength.YEAR);
         LOG.info("Nationell AG data: " + ageGroupsNationell);
         JsonNode ageGroupsNationellNode = JSONParser.parse(ageGroupsNationell.toString());
         result.put("ageGroupsNationell", new TestData(ageGroupsNationell, ageGroupsNationellNode));
@@ -229,15 +229,15 @@ public class QueueHelper {
     }
 
     private void printAndGetCasesPerMonth(String vardenhet1, String vardenhet2, Range range, Map<String, TestData> result) {
-        SimpleDualSexResponse<SimpleDualSexDataRow> casesPerMonth1 = sjukfallPerManad.getCasesPerMonth(vardenhet1, range);
+        SimpleKonResponse<SimpleKonDataRow> casesPerMonth1 = sjukfallPerManad.getCasesPerMonth(vardenhet1, range);
         LOG.info("CPM data: " + casesPerMonth1);
         JsonNode casesPerMonth1Node = JSONParser.parse(casesPerMonth1.toString());
         result.put("casesPerMonth1", new TestData(casesPerMonth1, casesPerMonth1Node));
-        SimpleDualSexResponse<SimpleDualSexDataRow> casesPerMonth2 = sjukfallPerManad.getCasesPerMonth(vardenhet2, range);
+        SimpleKonResponse<SimpleKonDataRow> casesPerMonth2 = sjukfallPerManad.getCasesPerMonth(vardenhet2, range);
         LOG.info("CPM data: " + casesPerMonth2);
         JsonNode casesPerMonth2Node = JSONParser.parse(casesPerMonth2.toString());
         result.put("casesPerMonth2", new TestData(casesPerMonth2, casesPerMonth2Node));
-        SimpleDualSexResponse<SimpleDualSexDataRow> casesPerMonthNationell = sjukfallPerManad.getCasesPerMonth(nationell, range);
+        SimpleKonResponse<SimpleKonDataRow> casesPerMonthNationell = sjukfallPerManad.getCasesPerMonth(nationell, range);
         LOG.info("Nationell CPM data: " + casesPerMonthNationell);
         JsonNode casesPerMonthNationellNode = JSONParser.parse(casesPerMonthNationell.toString());
         result.put("casesPerMonthNationell", new TestData(casesPerMonthNationell, casesPerMonthNationellNode));

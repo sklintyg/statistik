@@ -56,14 +56,14 @@ public class SjukfallslangdGruppMock implements SjukfallslangdGrupp {
     }
 
     @Override
-    public SimpleDualSexResponse<SimpleDualSexDataRow> getLongSickLeaves(String decodeId, Range range) {
-        List<SimpleDualSexDataRow> rows = new ArrayList<>();
+    public SimpleKonResponse<SimpleKonDataRow> getLongSickLeaves(String decodeId, Range range) {
+        List<SimpleKonDataRow> rows = new ArrayList<>();
         for (String periodName : ReportUtil.PERIODS) {
             int men = (int) (random.nextGaussian() * 2000 + 10000);
             int women = (int) (random.nextGaussian() * 2000 + 10000);
-            rows.add(new SimpleDualSexDataRow(periodName, women, men));
+            rows.add(new SimpleKonDataRow(periodName, women, men));
         }
-        return new SimpleDualSexResponse<SimpleDualSexDataRow>(rows, 18);
+        return new SimpleKonResponse<SimpleKonDataRow>(rows, 18);
     }
 
     @Override

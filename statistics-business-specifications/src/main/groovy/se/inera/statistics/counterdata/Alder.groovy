@@ -25,7 +25,7 @@ class Alder {
         List<List<List<String>>> rowList = new ArrayList<>()
         while(rows.hasNext()) {
             List<List<String>> cols = new ArrayList<>()
-            JsonNode row = rows.next().path("SimpleDualSexDataRow")
+            JsonNode row = rows.next().path("SimpleKonDataRow")
             List<String> grupp = new ArrayList<>()
             grupp.add("grupp")
             grupp.add(row.path("name").textValue())
