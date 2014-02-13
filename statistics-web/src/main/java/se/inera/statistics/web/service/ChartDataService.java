@@ -42,14 +42,8 @@ import se.inera.statistics.service.report.api.SjukfallPerLan;
 import se.inera.statistics.service.report.api.SjukfallPerManad;
 import se.inera.statistics.service.report.api.SjukfallslangdGrupp;
 import se.inera.statistics.service.report.api.Sjukskrivningsgrad;
-import se.inera.statistics.service.report.model.DegreeOfSickLeaveResponse;
-import se.inera.statistics.service.report.model.DiagnosisGroup;
-import se.inera.statistics.service.report.model.DiagnosisGroupResponse;
-import se.inera.statistics.service.report.model.OverviewResponse;
-import se.inera.statistics.service.report.model.Range;
-import se.inera.statistics.service.report.model.SickLeaveLengthResponse;
-import se.inera.statistics.service.report.model.SimpleDualSexDataRow;
-import se.inera.statistics.service.report.model.SimpleDualSexResponse;
+import se.inera.statistics.service.report.model.*;
+import se.inera.statistics.service.report.model.SjukskrivningsgradResponse;
 import se.inera.statistics.service.report.repository.RollingLength;
 import se.inera.statistics.service.report.util.DiagnosisGroupsUtil;
 import se.inera.statistics.service.report.util.ReportUtil;
@@ -185,7 +179,7 @@ public class ChartDataService {
     public DualSexStatisticsData getDegreeOfSickLeaveStatistics() {
         LOG.info("Calling getDegreeOfSickLeaveStatistics for national");
         final Range range = new Range(18);
-        DegreeOfSickLeaveResponse degreeOfSickLeaveStatistics = datasourceSjukskrivningsgrad.getStatistics(NATIONELL, range);
+        SjukskrivningsgradResponse degreeOfSickLeaveStatistics = datasourceSjukskrivningsgrad.getStatistics(NATIONELL, range);
         return new DegreeOfSickLeaveConverter().convert(degreeOfSickLeaveStatistics, range);
     }
 

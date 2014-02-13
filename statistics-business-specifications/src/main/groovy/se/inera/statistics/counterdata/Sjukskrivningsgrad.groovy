@@ -16,7 +16,7 @@ class Sjukskrivningsgrad {
         this.tabell = tabell
     }
 
-    // {"DegreeOfSickLeaveResponse":{"degreesOfSickLeave":["Antal sjukfall per 25%", "Antal sjukfall per 50%", "Antal sjukfall per 75%", "Antal sjukfall per 100%" ], "rows":[{"DualSexDataRow":{"name":"jan 2012", "data":[{"DualSexField":{"female":0, "male":0}}, ...]}}, ...]}}
+    // {"SjukskrivningsgradResponse":{"degreesOfSickLeave":["Antal sjukfall per 25%", "Antal sjukfall per 50%", "Antal sjukfall per 75%", "Antal sjukfall per 100%" ], "rows":[{"DualSexDataRow":{"name":"jan 2012", "data":[{"DualSexField":{"female":0, "male":0}}, ...]}}, ...]}}
     public List<Object> query() {
         TestData data = IntygSender.testResult.get(tabell)
         JsonNode testResult = data.jsonNode

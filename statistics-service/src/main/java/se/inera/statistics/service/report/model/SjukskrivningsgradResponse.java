@@ -22,12 +22,12 @@ package se.inera.statistics.service.report.model;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DegreeOfSickLeaveResponse {
+public class SjukskrivningsgradResponse {
 
     private final List<String> degreesOfSickLeave;
     private final List<DualSexDataRow> rows;
 
-    public DegreeOfSickLeaveResponse(List<String> degreesOfSickLeave, List<DualSexDataRow> rows) {
+    public SjukskrivningsgradResponse(List<String> degreesOfSickLeave, List<DualSexDataRow> rows) {
         this.degreesOfSickLeave = degreesOfSickLeave;
         this.rows = rows;
     }
@@ -59,7 +59,7 @@ public class DegreeOfSickLeaveResponse {
 
     @Override
     public String toString() {
-        return "{\"DegreeOfSickLeaveResponse\":{\"degreesOfSickLeave\":" + formattedDegreesOfSickLeave() + ", \"rows\":" + rows + "}}";
+        return "{\"SjukskrivningsgradResponse\":{\"degreesOfSickLeave\":" + formattedDegreesOfSickLeave() + ", \"rows\":" + rows + "}}";
     }
 
     private String formattedDegreesOfSickLeave() {

@@ -32,11 +32,8 @@ import org.joda.time.LocalDate;
 import org.springframework.transaction.annotation.Transactional;
 
 import se.inera.statistics.service.report.api.Sjukskrivningsgrad;
-import se.inera.statistics.service.report.model.DegreeOfSickLeaveResponse;
-import se.inera.statistics.service.report.model.DualSexDataRow;
-import se.inera.statistics.service.report.model.DualSexField;
-import se.inera.statistics.service.report.model.Range;
-import se.inera.statistics.service.report.model.Sex;
+import se.inera.statistics.service.report.model.*;
+import se.inera.statistics.service.report.model.SjukskrivningsgradResponse;
 import se.inera.statistics.service.report.util.ReportUtil;
 import se.inera.statistics.service.report.util.Verksamhet;
 
@@ -65,13 +62,13 @@ public class SjukskrivningsgradPersistenceHandler implements Sjukskrivningsgrad 
 
     @Transactional
     @Override
-    public DegreeOfSickLeaveResponse getStatistics(String hsaId, Range range) {
+    public SjukskrivningsgradResponse getStatistics(String hsaId, Range range) {
         TypedQuery<SjukskrivningsgradData> query = manager.createQuery("SELECT c FROM SjukskrivningsgradData c WHERE c.key.hsaId = :hsaId AND c.key.period BETWEEN :from AND :to", SjukskrivningsgradData.class);
         query.setParameter("hsaId", hsaId);
         query.setParameter("from", ReportUtil.toPeriod(range.getFrom()));
         query.setParameter("to", ReportUtil.toPeriod(range.getTo()));
 
-        return new DegreeOfSickLeaveResponse(GRAD, translateForOutput(range, query.getResultList()));
+        return new SjukskrivningsgradResponse(GRAD, translateForOutput(range, query.getResultList()));
     }
 
     private List<DualSexDataRow> translateForOutput(Range range, List<SjukskrivningsgradData> list) {

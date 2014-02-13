@@ -28,7 +28,7 @@ import java.util.List;
 
 import org.junit.Test;
 
-import se.inera.statistics.service.report.model.DegreeOfSickLeaveResponse;
+import se.inera.statistics.service.report.model.SjukskrivningsgradResponse;
 import se.inera.statistics.service.report.model.DualSexDataRow;
 import se.inera.statistics.service.report.model.DualSexField;
 import se.inera.statistics.service.report.model.Range;
@@ -40,7 +40,7 @@ public class SjukskrivningsgradConverterTest {
     @Test
     public void tableConverterTestEmptyInput() {
 //        DiagnosisGroupResponse resp = new DiagnosisGroupResponse(new ArrayList<DiagnosisGroup>(), new ArrayList<DiagnosisGroupRow>());
-        final DegreeOfSickLeaveResponse resp = new DegreeOfSickLeaveResponse(new ArrayList<String>(), new ArrayList<DualSexDataRow>());
+        final SjukskrivningsgradResponse resp = new SjukskrivningsgradResponse(new ArrayList<String>(), new ArrayList<DualSexDataRow>());
         TableData tableData = DegreeOfSickLeaveConverter.convertTable(resp);
         assertEquals("[[;1, ;1], [Period;1, Antal sjukfall;1, Summering;1]]", tableData.getHeaders().toString());
         assertEquals("[Totalt: []]", tableData.getRows().toString());
@@ -56,7 +56,7 @@ public class SjukskrivningsgradConverterTest {
         // CHECKSTYLE:ON MagicNumber
         rows.add(new DualSexDataRow("period1", diagnosisGroupData));
         final List<String> degreesOfSickLeave = Arrays.asList("50");
-        final DegreeOfSickLeaveResponse resp = new DegreeOfSickLeaveResponse(degreesOfSickLeave, rows);
+        final SjukskrivningsgradResponse resp = new SjukskrivningsgradResponse(degreesOfSickLeave, rows);
 
         //When
         TableData tableData = DegreeOfSickLeaveConverter.convertTable(resp);
@@ -68,7 +68,7 @@ public class SjukskrivningsgradConverterTest {
 
     @Test
     public void converterTestEmpty() {
-        DegreeOfSickLeaveResponse resp = new DegreeOfSickLeaveResponse(new ArrayList<String>(), new ArrayList<DualSexDataRow>());
+        SjukskrivningsgradResponse resp = new SjukskrivningsgradResponse(new ArrayList<String>(), new ArrayList<DualSexDataRow>());
         DualSexStatisticsData data = new DegreeOfSickLeaveConverter().convert(resp, new Range());
         assertEquals("[]", data.getFemaleChart().getCategories().toString());
         assertEquals("[]", data.getFemaleChart().getSeries().toString());
@@ -84,7 +84,7 @@ public class SjukskrivningsgradConverterTest {
         // CHECKSTYLE:ON MagicNumber
         rows.add(new DualSexDataRow("period1", diagnosisGroupData));
         final List<String> degreesOfSickLeave = Arrays.asList("50");
-        final DegreeOfSickLeaveResponse resp = new DegreeOfSickLeaveResponse(degreesOfSickLeave, rows);
+        final SjukskrivningsgradResponse resp = new SjukskrivningsgradResponse(degreesOfSickLeave, rows);
 
         //When
         DegreeOfSickLeaveConverter converter = new DegreeOfSickLeaveConverter();

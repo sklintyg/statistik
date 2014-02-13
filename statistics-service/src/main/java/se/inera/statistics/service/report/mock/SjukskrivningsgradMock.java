@@ -25,24 +25,21 @@ import java.util.List;
 import java.util.Random;
 
 import se.inera.statistics.service.report.api.Sjukskrivningsgrad;
-import se.inera.statistics.service.report.model.DegreeOfSickLeaveResponse;
-import se.inera.statistics.service.report.model.DualSexDataRow;
-import se.inera.statistics.service.report.model.DualSexField;
-import se.inera.statistics.service.report.model.Range;
-import se.inera.statistics.service.report.model.Sex;
+import se.inera.statistics.service.report.model.*;
+import se.inera.statistics.service.report.model.SjukskrivningsgradResponse;
 import se.inera.statistics.service.report.util.ReportUtil;
 import se.inera.statistics.service.report.util.Verksamhet;
 
 public class SjukskrivningsgradMock implements Sjukskrivningsgrad {
 
     @Override
-    public DegreeOfSickLeaveResponse getStatistics(String hsaId, Range range) {
+    public SjukskrivningsgradResponse getStatistics(String hsaId, Range range) {
         List<String> headers = Arrays.asList("25", "50", "75", "100");
         List<DualSexDataRow> rows = new ArrayList<>();
         for (String periodName : ReportUtil.PERIODS) {
             rows.add(new DualSexDataRow(periodName, randomData(headers.size())));
         }
-        return new DegreeOfSickLeaveResponse(headers, rows);
+        return new SjukskrivningsgradResponse(headers, rows);
     }
 
     private List<DualSexField> randomData(int size) {

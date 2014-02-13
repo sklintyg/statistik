@@ -22,7 +22,7 @@ package se.inera.statistics.web.service;
 import java.util.ArrayList;
 import java.util.List;
 
-import se.inera.statistics.service.report.model.DegreeOfSickLeaveResponse;
+import se.inera.statistics.service.report.model.SjukskrivningsgradResponse;
 import se.inera.statistics.service.report.model.DualSexDataRow;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.Sex;
@@ -35,19 +35,19 @@ import se.inera.statistics.web.model.TableHeader;
 
 public class DegreeOfSickLeaveConverter {
 
-    DualSexStatisticsData convert(DegreeOfSickLeaveResponse degreeOfSickLeave, Range range) {
+    DualSexStatisticsData convert(SjukskrivningsgradResponse degreeOfSickLeave, Range range) {
         TableData tableData = convertTable(degreeOfSickLeave);
         ChartData maleChart = extractChartData(degreeOfSickLeave, Sex.Male);
         ChartData femaleChart = extractChartData(degreeOfSickLeave, Sex.Female);
         return new DualSexStatisticsData(tableData, maleChart, femaleChart, range.toString());
     }
 
-    private ChartData extractChartData(DegreeOfSickLeaveResponse data, Sex sex) {
+    private ChartData extractChartData(SjukskrivningsgradResponse data, Sex sex) {
         List<ChartSeries> series = getChartSeries(data, sex);
         return new ChartData(series, data.getPeriods());
     }
 
-    private List<ChartSeries> getChartSeries(DegreeOfSickLeaveResponse data, Sex sex) {
+    private List<ChartSeries> getChartSeries(SjukskrivningsgradResponse data, Sex sex) {
         List<ChartSeries> series = new ArrayList<>();
         for (int i = 0; i < data.getDegreesOfSickLeave().size(); i++) {
             List<Integer> indexData = data.getDataFromIndex(i, sex);
@@ -56,14 +56,14 @@ public class DegreeOfSickLeaveConverter {
         return series;
     }
 
-    static TableData convertTable(DegreeOfSickLeaveResponse resp) {
+    static TableData convertTable(SjukskrivningsgradResponse resp) {
         List<NamedData> rows = getTableRows(resp);
         ServiceUtil.addSumRow(rows, false);
         List<List<TableHeader>> headers = getTableHeaders(resp);
         return new TableData(rows, headers);
     }
 
-    private static List<NamedData> getTableRows(DegreeOfSickLeaveResponse resp) {
+    private static List<NamedData> getTableRows(SjukskrivningsgradResponse resp) {
         List<NamedData> rows = new ArrayList<>();
         int accumulatedSum = 0;
         for (DualSexDataRow row : resp.getRows()) {
@@ -80,7 +80,7 @@ public class DegreeOfSickLeaveConverter {
         return rows;
     }
 
-    private static List<List<TableHeader>> getTableHeaders(DegreeOfSickLeaveResponse resp) {
+    private static List<List<TableHeader>> getTableHeaders(SjukskrivningsgradResponse resp) {
         List<TableHeader> topHeaderRow = new ArrayList<>();
         topHeaderRow.add(new TableHeader(""));
         topHeaderRow.add(new TableHeader(""));

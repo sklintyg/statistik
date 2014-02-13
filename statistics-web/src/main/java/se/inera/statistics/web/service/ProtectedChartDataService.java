@@ -45,13 +45,8 @@ import se.inera.statistics.service.report.api.SjukfallPerManad;
 import se.inera.statistics.service.report.api.SjukfallslangdGrupp;
 import se.inera.statistics.service.report.api.Sjukskrivningsgrad;
 import se.inera.statistics.service.report.api.VerksamhetOverview;
-import se.inera.statistics.service.report.model.DegreeOfSickLeaveResponse;
-import se.inera.statistics.service.report.model.DiagnosisGroupResponse;
-import se.inera.statistics.service.report.model.Range;
-import se.inera.statistics.service.report.model.SickLeaveLengthResponse;
-import se.inera.statistics.service.report.model.SimpleDualSexDataRow;
-import se.inera.statistics.service.report.model.SimpleDualSexResponse;
-import se.inera.statistics.service.report.model.VerksamhetOverviewResponse;
+import se.inera.statistics.service.report.model.*;
+import se.inera.statistics.service.report.model.SjukskrivningsgradResponse;
 import se.inera.statistics.service.report.repository.RollingLength;
 import se.inera.statistics.web.model.AgeGroupsData;
 import se.inera.statistics.web.model.DualSexStatisticsData;
@@ -222,7 +217,7 @@ public class ProtectedChartDataService {
     public DualSexStatisticsData getDegreeOfSickLeaveStatistics(@Context HttpServletRequest request, @PathParam(VERKSAMHET_PATH_ID) String verksamhetId) {
         LOG.info("Calling getDegreeOfSickLeaveStatistics with verksamhetId: " + verksamhetId);
         final Range range = new Range(18);
-        DegreeOfSickLeaveResponse degreeOfSickLeaveStatistics = datasourceSjukskrivningsgrad.getStatistics(Verksamhet.decodeId(verksamhetId), range);
+        SjukskrivningsgradResponse degreeOfSickLeaveStatistics = datasourceSjukskrivningsgrad.getStatistics(Verksamhet.decodeId(verksamhetId), range);
         return new DegreeOfSickLeaveConverter().convert(degreeOfSickLeaveStatistics, range);
     }
 
