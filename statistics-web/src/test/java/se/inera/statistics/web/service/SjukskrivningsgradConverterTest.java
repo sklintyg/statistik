@@ -28,9 +28,9 @@ import java.util.List;
 
 import org.junit.Test;
 
+import se.inera.statistics.service.report.model.KonDataRow;
+import se.inera.statistics.service.report.model.KonField;
 import se.inera.statistics.service.report.model.SjukskrivningsgradResponse;
-import se.inera.statistics.service.report.model.DualSexDataRow;
-import se.inera.statistics.service.report.model.DualSexField;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.web.model.DualSexStatisticsData;
 import se.inera.statistics.web.model.TableData;
@@ -40,7 +40,7 @@ public class SjukskrivningsgradConverterTest {
     @Test
     public void tableConverterTestEmptyInput() {
 //        DiagnosisGroupResponse resp = new DiagnosisGroupResponse(new ArrayList<DiagnosisGroup>(), new ArrayList<DiagnosisGroupRow>());
-        final SjukskrivningsgradResponse resp = new SjukskrivningsgradResponse(new ArrayList<String>(), new ArrayList<DualSexDataRow>());
+        final SjukskrivningsgradResponse resp = new SjukskrivningsgradResponse(new ArrayList<String>(), new ArrayList<KonDataRow>());
         TableData tableData = DegreeOfSickLeaveConverter.convertTable(resp);
         assertEquals("[[;1, ;1], [Period;1, Antal sjukfall;1, Summering;1]]", tableData.getHeaders().toString());
         assertEquals("[Totalt: []]", tableData.getRows().toString());
@@ -49,12 +49,12 @@ public class SjukskrivningsgradConverterTest {
     @Test
     public void tableConverterTest() {
         //Given
-        ArrayList<DualSexDataRow> rows = new ArrayList<>();
-        ArrayList<DualSexField> diagnosisGroupData = new ArrayList<DualSexField>();
+        ArrayList<KonDataRow> rows = new ArrayList<>();
+        ArrayList<KonField> diagnosisGroupData = new ArrayList<KonField>();
         // CHECKSTYLE:OFF MagicNumber
-        diagnosisGroupData.add(new DualSexField(3, 2));
+        diagnosisGroupData.add(new KonField(3, 2));
         // CHECKSTYLE:ON MagicNumber
-        rows.add(new DualSexDataRow("period1", diagnosisGroupData));
+        rows.add(new KonDataRow("period1", diagnosisGroupData));
         final List<String> degreesOfSickLeave = Arrays.asList("50");
         final SjukskrivningsgradResponse resp = new SjukskrivningsgradResponse(degreesOfSickLeave, rows);
 
@@ -68,7 +68,7 @@ public class SjukskrivningsgradConverterTest {
 
     @Test
     public void converterTestEmpty() {
-        SjukskrivningsgradResponse resp = new SjukskrivningsgradResponse(new ArrayList<String>(), new ArrayList<DualSexDataRow>());
+        SjukskrivningsgradResponse resp = new SjukskrivningsgradResponse(new ArrayList<String>(), new ArrayList<KonDataRow>());
         DualSexStatisticsData data = new DegreeOfSickLeaveConverter().convert(resp, new Range());
         assertEquals("[]", data.getFemaleChart().getCategories().toString());
         assertEquals("[]", data.getFemaleChart().getSeries().toString());
@@ -77,12 +77,12 @@ public class SjukskrivningsgradConverterTest {
     @Test
     public void converterTest() {
         //Given
-        ArrayList<DualSexDataRow> rows = new ArrayList<>();
-        ArrayList<DualSexField> diagnosisGroupData = new ArrayList<DualSexField>();
+        ArrayList<KonDataRow> rows = new ArrayList<>();
+        ArrayList<KonField> diagnosisGroupData = new ArrayList<KonField>();
         // CHECKSTYLE:OFF MagicNumber
-        diagnosisGroupData.add(new DualSexField(3, 2));
+        diagnosisGroupData.add(new KonField(3, 2));
         // CHECKSTYLE:ON MagicNumber
-        rows.add(new DualSexDataRow("period1", diagnosisGroupData));
+        rows.add(new KonDataRow("period1", diagnosisGroupData));
         final List<String> degreesOfSickLeave = Arrays.asList("50");
         final SjukskrivningsgradResponse resp = new SjukskrivningsgradResponse(degreesOfSickLeave, rows);
 

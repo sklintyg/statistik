@@ -35,7 +35,7 @@ public class DiagnosgruppConverterTest {
 
     @Test
     public void tableConverterTestEmptyInput() {
-        DiagnosgruppResponse resp = new DiagnosgruppResponse(new ArrayList<Diagnosgrupp>(), new ArrayList<DualSexDataRow>());
+        DiagnosgruppResponse resp = new DiagnosgruppResponse(new ArrayList<Diagnosgrupp>(), new ArrayList<KonDataRow>());
         TableData tableData = DiagnosisGroupsConverter.convertTable(resp);
         assertEquals("[[;1, ;1, ;1], [Period;1, Antal sjukfall;1, Summering;1]]", tableData.getHeaders().toString());
         assertEquals("[Totalt: []]", tableData.getRows().toString());
@@ -46,12 +46,12 @@ public class DiagnosgruppConverterTest {
         //Given
         ArrayList<Diagnosgrupp> diagnosgrupps = new ArrayList<Diagnosgrupp>();
         diagnosgrupps.add(new Diagnosgrupp("A01-B99", "name1"));
-        ArrayList<DualSexDataRow> rows = new ArrayList<DualSexDataRow>();
-        ArrayList<DualSexField> diagnosisGroupData = new ArrayList<DualSexField>();
+        ArrayList<KonDataRow> rows = new ArrayList<KonDataRow>();
+        ArrayList<KonField> diagnosisGroupData = new ArrayList<KonField>();
         // CHECKSTYLE:OFF MagicNumber
-        diagnosisGroupData.add(new DualSexField(3, 2));
+        diagnosisGroupData.add(new KonField(3, 2));
         // CHECKSTYLE:ON MagicNumber
-        rows.add(new DualSexDataRow("period1", diagnosisGroupData));
+        rows.add(new KonDataRow("period1", diagnosisGroupData));
         DiagnosgruppResponse resp = new DiagnosgruppResponse(diagnosgrupps, rows);
 
         //When
@@ -64,7 +64,7 @@ public class DiagnosgruppConverterTest {
 
     @Test
     public void converterTestEmpty() {
-        DiagnosgruppResponse resp = new DiagnosgruppResponse(new ArrayList<Diagnosgrupp>(), new ArrayList<DualSexDataRow>());
+        DiagnosgruppResponse resp = new DiagnosgruppResponse(new ArrayList<Diagnosgrupp>(), new ArrayList<KonDataRow>());
         DualSexStatisticsData data = new DiagnosisGroupsConverter().convert(resp, new Range());
         assertEquals("[]", data.getFemaleChart().getCategories().toString());
         assertEquals("[A00-E90, G00-L99, N00-N99 Somatiska sjukdomar: [], F00-F99 Psykiska sjukdomar: [], M00-M99 Muskuloskeletala sjukdomar: [], O00-O99 Graviditet och förlossning: [], P00-P96, Q00-Q99, S00-Y98 Övrigt: [], R00-R99 Symtomdiagnoser: [], Z00-Z99 Faktorer av betydelse för hälsotillståndet och för kontakter med hälso- och sjukvården: []]", data.getFemaleChart().getSeries().toString());
@@ -75,12 +75,12 @@ public class DiagnosgruppConverterTest {
         //Given
         ArrayList<Diagnosgrupp> diagnosgrupps = new ArrayList<Diagnosgrupp>();
         diagnosgrupps.add(new Diagnosgrupp("A00-B99", "name1"));
-        ArrayList<DualSexDataRow> rows = new ArrayList<DualSexDataRow>();
-        ArrayList<DualSexField> diagnosisGroupData = new ArrayList<DualSexField>();
+        ArrayList<KonDataRow> rows = new ArrayList<KonDataRow>();
+        ArrayList<KonField> diagnosisGroupData = new ArrayList<KonField>();
         // CHECKSTYLE:OFF MagicNumber
-        diagnosisGroupData.add(new DualSexField(3, 2));
+        diagnosisGroupData.add(new KonField(3, 2));
         // CHECKSTYLE:ON MagicNumber
-        rows.add(new DualSexDataRow("period1", diagnosisGroupData));
+        rows.add(new KonDataRow("period1", diagnosisGroupData));
         DiagnosgruppResponse resp = new DiagnosgruppResponse(diagnosgrupps, rows);
 
         //When

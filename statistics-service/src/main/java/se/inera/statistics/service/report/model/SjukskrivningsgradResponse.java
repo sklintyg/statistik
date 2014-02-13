@@ -25,9 +25,9 @@ import java.util.List;
 public class SjukskrivningsgradResponse {
 
     private final List<String> degreesOfSickLeave;
-    private final List<DualSexDataRow> rows;
+    private final List<KonDataRow> rows;
 
-    public SjukskrivningsgradResponse(List<String> degreesOfSickLeave, List<DualSexDataRow> rows) {
+    public SjukskrivningsgradResponse(List<String> degreesOfSickLeave, List<KonDataRow> rows) {
         this.degreesOfSickLeave = degreesOfSickLeave;
         this.rows = rows;
     }
@@ -36,22 +36,22 @@ public class SjukskrivningsgradResponse {
         return degreesOfSickLeave;
     }
 
-    public List<DualSexDataRow> getRows() {
+    public List<KonDataRow> getRows() {
         return rows;
     }
 
     public List<String> getPeriods() {
         List<String> periods = new ArrayList<>();
-        for (DualSexDataRow row : rows) {
+        for (KonDataRow row : rows) {
             periods.add(row.getName());
         }
         return periods;
     }
 
-    public List<Integer> getDataFromIndex(int index, Sex sex) {
+    public List<Integer> getDataFromIndex(int index, Kon sex) {
         List<Integer> indexData = new ArrayList<>();
-        for (DualSexDataRow row : rows) {
-            List<DualSexField> data = row.getData();
+        for (KonDataRow row : rows) {
+            List<KonField> data = row.getData();
             indexData.add(data.get(index).getValue(sex));
         }
         return indexData;

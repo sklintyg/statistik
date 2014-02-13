@@ -33,7 +33,7 @@ public class DiagnoskapitelConverterTest {
 
     @Test
     public void converterTestEmpty() {
-        DiagnosgruppResponse resp = new DiagnosgruppResponse(new ArrayList<Diagnosgrupp>(), new ArrayList<DualSexDataRow>());
+        DiagnosgruppResponse resp = new DiagnosgruppResponse(new ArrayList<Diagnosgrupp>(), new ArrayList<KonDataRow>());
         DualSexStatisticsData data = new DiagnosisSubGroupsConverter().convert(resp, new Range());
         assertEquals("[]", data.getFemaleChart().getCategories().toString());
         assertEquals("[]", data.getFemaleChart().getSeries().toString());
@@ -44,12 +44,12 @@ public class DiagnoskapitelConverterTest {
         //Given
         ArrayList<Diagnosgrupp> diagnosgrupps = new ArrayList<Diagnosgrupp>();
         diagnosgrupps.add(new Diagnosgrupp("A00-B99", "name1"));
-        ArrayList<DualSexDataRow> rows = new ArrayList<DualSexDataRow>();
-        ArrayList<DualSexField> diagnosisGroupData = new ArrayList<DualSexField>();
+        ArrayList<KonDataRow> rows = new ArrayList<KonDataRow>();
+        ArrayList<KonField> diagnosisGroupData = new ArrayList<KonField>();
         // CHECKSTYLE:OFF MagicNumber
-        diagnosisGroupData.add(new DualSexField(3, 2));
+        diagnosisGroupData.add(new KonField(3, 2));
         // CHECKSTYLE:ON MagicNumber
-        rows.add(new DualSexDataRow("period1", diagnosisGroupData));
+        rows.add(new KonDataRow("period1", diagnosisGroupData));
         DiagnosgruppResponse resp = new DiagnosgruppResponse(diagnosgrupps, rows);
 
         //When
@@ -79,18 +79,18 @@ public class DiagnoskapitelConverterTest {
         diagnosgrupps.add(new Diagnosgrupp("A00-B95", "name1"));
         diagnosgrupps.add(new Diagnosgrupp("A00-B96", "name1"));
         diagnosgrupps.add(new Diagnosgrupp("A00-B97", "name1"));
-        ArrayList<DualSexDataRow> rows = new ArrayList<DualSexDataRow>();
-        ArrayList<DualSexField> diagnosisGroupData = new ArrayList<DualSexField>();
+        ArrayList<KonDataRow> rows = new ArrayList<KonDataRow>();
+        ArrayList<KonField> diagnosisGroupData = new ArrayList<KonField>();
         // CHECKSTYLE:OFF MagicNumber
-        diagnosisGroupData.add(new DualSexField(3, 30));
-        diagnosisGroupData.add(new DualSexField(4, 40));
-        diagnosisGroupData.add(new DualSexField(1, 10));
-        diagnosisGroupData.add(new DualSexField(7, 70));
-        diagnosisGroupData.add(new DualSexField(55, 50));
-        diagnosisGroupData.add(new DualSexField(8, 80));
-        diagnosisGroupData.add(new DualSexField(2, 20));
-        diagnosisGroupData.add(new DualSexField(6, 60));
-        rows.add(new DualSexDataRow("period1", diagnosisGroupData));
+        diagnosisGroupData.add(new KonField(3, 30));
+        diagnosisGroupData.add(new KonField(4, 40));
+        diagnosisGroupData.add(new KonField(1, 10));
+        diagnosisGroupData.add(new KonField(7, 70));
+        diagnosisGroupData.add(new KonField(55, 50));
+        diagnosisGroupData.add(new KonField(8, 80));
+        diagnosisGroupData.add(new KonField(2, 20));
+        diagnosisGroupData.add(new KonField(6, 60));
+        rows.add(new KonDataRow("period1", diagnosisGroupData));
         DiagnosgruppResponse resp = new DiagnosgruppResponse(diagnosgrupps, rows);
 
         //When

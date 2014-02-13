@@ -22,10 +22,10 @@ package se.inera.statistics.web.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import se.inera.statistics.service.report.model.Kon;
+import se.inera.statistics.service.report.model.KonDataRow;
 import se.inera.statistics.service.report.model.SjukskrivningsgradResponse;
-import se.inera.statistics.service.report.model.DualSexDataRow;
 import se.inera.statistics.service.report.model.Range;
-import se.inera.statistics.service.report.model.Sex;
 import se.inera.statistics.web.model.ChartData;
 import se.inera.statistics.web.model.ChartSeries;
 import se.inera.statistics.web.model.DualSexStatisticsData;
@@ -37,17 +37,17 @@ public class DegreeOfSickLeaveConverter {
 
     DualSexStatisticsData convert(SjukskrivningsgradResponse degreeOfSickLeave, Range range) {
         TableData tableData = convertTable(degreeOfSickLeave);
-        ChartData maleChart = extractChartData(degreeOfSickLeave, Sex.Male);
-        ChartData femaleChart = extractChartData(degreeOfSickLeave, Sex.Female);
+        ChartData maleChart = extractChartData(degreeOfSickLeave, Kon.Male);
+        ChartData femaleChart = extractChartData(degreeOfSickLeave, Kon.Female);
         return new DualSexStatisticsData(tableData, maleChart, femaleChart, range.toString());
     }
 
-    private ChartData extractChartData(SjukskrivningsgradResponse data, Sex sex) {
+    private ChartData extractChartData(SjukskrivningsgradResponse data, Kon sex) {
         List<ChartSeries> series = getChartSeries(data, sex);
         return new ChartData(series, data.getPeriods());
     }
 
-    private List<ChartSeries> getChartSeries(SjukskrivningsgradResponse data, Sex sex) {
+    private List<ChartSeries> getChartSeries(SjukskrivningsgradResponse data, Kon sex) {
         List<ChartSeries> series = new ArrayList<>();
         for (int i = 0; i < data.getDegreesOfSickLeave().size(); i++) {
             List<Integer> indexData = data.getDataFromIndex(i, sex);
@@ -66,7 +66,7 @@ public class DegreeOfSickLeaveConverter {
     private static List<NamedData> getTableRows(SjukskrivningsgradResponse resp) {
         List<NamedData> rows = new ArrayList<>();
         int accumulatedSum = 0;
-        for (DualSexDataRow row : resp.getRows()) {
+        for (KonDataRow row : resp.getRows()) {
             List<Integer> mergedSexData = ServiceUtil.getMergedSexData(row);
             int sum = 0;
             for (Integer dataField : mergedSexData) {

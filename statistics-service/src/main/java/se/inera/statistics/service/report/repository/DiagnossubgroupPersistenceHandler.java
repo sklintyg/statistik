@@ -46,10 +46,10 @@ public class DiagnossubgroupPersistenceHandler implements Diagnoskapitel {
     private DiagnosisGroupsUtil diagnosisGroupsUtil;
 
     @Transactional
-    public void count(String hsaId, String period, String diagnosgrupp, String undergrupp, Verksamhet typ, Sex sex) {
+    public void count(String hsaId, String period, String diagnosgrupp, String undergrupp, Verksamhet typ, Kon sex) {
         DiagnosisSubGroupData existingRow = manager.find(DiagnosisSubGroupData.class, new DiagnosundergruppKey(period, hsaId, diagnosgrupp, undergrupp));
-        int female = Sex.Female.equals(sex) ? 1 : 0;
-        int male = Sex.Male.equals(sex) ? 1 : 0;
+        int female = Kon.Female.equals(sex) ? 1 : 0;
+        int male = Kon.Male.equals(sex) ? 1 : 0;
 
         if (existingRow == null) {
             DiagnosisSubGroupData row = new DiagnosisSubGroupData(period, hsaId, diagnosgrupp, undergrupp, typ, female, male);
@@ -74,29 +74,29 @@ public class DiagnossubgroupPersistenceHandler implements Diagnoskapitel {
         return new DiagnosgruppResponse(header, translateForOutput(range, header, query.getResultList()));
     }
 
-    private List<DualSexDataRow> translateForOutput(Range range, List<Diagnosgrupp> header, List<DiagnosisSubGroupData> list) {
-        List<DualSexDataRow> translatedCasesPerMonthRows = new ArrayList<>();
+    private List<KonDataRow> translateForOutput(Range range, List<Diagnosgrupp> header, List<DiagnosisSubGroupData> list) {
+        List<KonDataRow> translatedCasesPerMonthRows = new ArrayList<>();
 
         // Span all
-        Map<String, DualSexField> map = map(list);
+        Map<String, KonField> map = map(list);
 
         for (LocalDate currentPeriod = range.getFrom(); !currentPeriod.isAfter(range.getTo()); currentPeriod = currentPeriod.plusMonths(1)) {
             String displayDate = ReportUtil.toDiagramPeriod(currentPeriod);
             String period = ReportUtil.toPeriod(currentPeriod);
-            List<DualSexField> values = new ArrayList<>(header.size());
+            List<KonField> values = new ArrayList<>(header.size());
             for (Diagnosgrupp group: header) {
                 values.add(map.get(period + group.getId()));
             }
-            translatedCasesPerMonthRows.add(new DualSexDataRow(displayDate, values));
+            translatedCasesPerMonthRows.add(new KonDataRow(displayDate, values));
         }
         return translatedCasesPerMonthRows;
     }
 
-    private static Map<String, DualSexField> map(List<DiagnosisSubGroupData> list) {
-        Map<String, DualSexField> resultMap = new DefaultHashMap<>(new DualSexField(0, 0));
+    private static Map<String, KonField> map(List<DiagnosisSubGroupData> list) {
+        Map<String, KonField> resultMap = new DefaultHashMap<>(new KonField(0, 0));
 
         for (DiagnosisSubGroupData item: list) {
-            resultMap.put(item.getPeriod() + item.getSubGroup(), new DualSexField(item.getFemale(), item.getMale()));
+            resultMap.put(item.getPeriod() + item.getSubGroup(), new KonField(item.getFemale(), item.getMale()));
         }
         return resultMap;
     }

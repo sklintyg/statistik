@@ -22,39 +22,39 @@ package se.inera.statistics.service.report.model;
 public class SimpleDualSexDataRow {
 
     private final String name;
-    private final DualSexField data;
+    private final KonField data;
 
-    public SimpleDualSexDataRow(String name, DualSexField data) {
+    public SimpleDualSexDataRow(String name, KonField data) {
         this.name = name;
         this.data = data;
     }
 
     public SimpleDualSexDataRow(String name, int female, int male) {
-        this(name, new DualSexField(female, male));
+        this(name, new KonField(female, male));
     }
 
     public SimpleDualSexDataRow(String name, long female, long male) {
-        this(name, new DualSexField((int) female, (int) male));
+        this(name, new KonField((int) female, (int) male));
     }
 
     public String getName() {
         return name;
     }
 
-    public DualSexField getData() {
+    public KonField getData() {
         return data;
     }
 
-    public Integer getDataForSex(Sex sex) {
-        return data.getValue(sex);
+    public Integer getDataForSex(Kon kon) {
+        return data.getValue(kon);
     }
 
     public Integer getFemale() {
-        return data.getValue(Sex.Female);
+        return data.getValue(Kon.Female);
     }
 
     public Integer getMale() {
-        return data.getValue(Sex.Male);
+        return data.getValue(Kon.Male);
     }
 
     @Override

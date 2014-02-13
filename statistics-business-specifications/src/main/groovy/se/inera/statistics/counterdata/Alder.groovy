@@ -32,11 +32,11 @@ class Alder {
             cols.add(grupp)
             List<String> female = new ArrayList<String>()
             female.add("kvinnor")
-            female.add(row.path("data").path("DualSexField").path("female").asText())
+            female.add(row.path("data").path("KonField").path("female").asText())
             cols.add(female)
             List<String> male = new ArrayList<String>()
             male.add("män")
-            male.add(row.path("data").path("DualSexField").path("male").toString())
+            male.add(row.path("data").path("KonField").path("male").toString())
             cols.add(male)
             rowList.add(cols)
         }

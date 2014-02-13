@@ -30,7 +30,7 @@ import org.joda.time.LocalDate;
 import org.springframework.transaction.annotation.Transactional;
 
 import se.inera.statistics.service.report.api.Aldersgrupp;
-import se.inera.statistics.service.report.model.Sex;
+import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.report.model.SimpleDualSexDataRow;
 import se.inera.statistics.service.report.model.SimpleDualSexResponse;
 import se.inera.statistics.service.report.model.db.AldersgruppRow;
@@ -77,10 +77,10 @@ public class AldersgruppPersistenceHandler implements Aldersgrupp {
 
     @Transactional
     @Override
-    public void count(String period, String hsaId, String group, RollingLength length, Verksamhet typ, Sex sex) {
+    public void count(String period, String hsaId, String group, RollingLength length, Verksamhet typ, Kon sex) {
         AldersgruppRow existingRow = manager.find(AldersgruppRow.class, new AldersgruppKey(period, hsaId, group, length.getPeriods()));
-        int female = Sex.Female.equals(sex) ? 1 : 0;
-        int male = Sex.Male.equals(sex) ? 1 : 0;
+        int female = Kon.Female.equals(sex) ? 1 : 0;
+        int male = Kon.Male.equals(sex) ? 1 : 0;
 
         if (existingRow == null) {
             AldersgruppRow row = new AldersgruppRow(period, hsaId, group, length.getPeriods(), typ, female, male);

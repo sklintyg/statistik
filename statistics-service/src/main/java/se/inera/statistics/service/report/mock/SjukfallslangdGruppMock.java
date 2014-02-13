@@ -26,12 +26,9 @@ import java.util.Random;
 import org.joda.time.LocalDate;
 
 import se.inera.statistics.service.report.api.SjukfallslangdGrupp;
-import se.inera.statistics.service.report.model.Range;
-import se.inera.statistics.service.report.model.Sex;
-import se.inera.statistics.service.report.model.SickLeaveLengthResponse;
+import se.inera.statistics.service.report.model.*;
+import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.report.model.db.SjukfallslangdRow;
-import se.inera.statistics.service.report.model.SimpleDualSexDataRow;
-import se.inera.statistics.service.report.model.SimpleDualSexResponse;
 import se.inera.statistics.service.report.repository.RollingLength;
 import se.inera.statistics.service.report.util.ReportUtil;
 import se.inera.statistics.service.report.util.SjukfallslangdUtil;
@@ -70,11 +67,11 @@ public class SjukfallslangdGruppMock implements SjukfallslangdGrupp {
     }
 
     @Override
-    public void recount(String period, String vardgivareId, String group, String newGroup, RollingLength length, Verksamhet vardgivare, Sex kon) {
+    public void recount(String period, String vardgivareId, String group, String newGroup, RollingLength length, Verksamhet vardgivare, Kon kon) {
     }
 
     @Override
-    public void count(String period, String hsaId, String group, RollingLength length, Verksamhet typ, Sex sex) {
+    public void count(String period, String hsaId, String group, RollingLength length, Verksamhet typ, Kon sex) {
     }
     // CHECKSTYLE:ON
 

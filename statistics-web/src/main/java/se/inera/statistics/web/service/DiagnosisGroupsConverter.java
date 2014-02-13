@@ -62,12 +62,12 @@ public class DiagnosisGroupsConverter {
 
     DualSexStatisticsData convert(DiagnosgruppResponse diagnosisGroups, Range range) {
         TableData tableData = convertTable(diagnosisGroups);
-        ChartData maleChart = convertChart(diagnosisGroups, Sex.Male);
-        ChartData femaleChart = convertChart(diagnosisGroups, Sex.Female);
+        ChartData maleChart = convertChart(diagnosisGroups, Kon.Male);
+        ChartData femaleChart = convertChart(diagnosisGroups, Kon.Female);
         return new DualSexStatisticsData(tableData, maleChart, femaleChart, range.toString());
     }
 
-    private ChartData convertChart(DiagnosgruppResponse resp, Sex sex) {
+    private ChartData convertChart(DiagnosgruppResponse resp, Kon sex) {
         Map<String, List<Integer>> allGroups = extractAllGroups(resp, sex);
         Map<String, List<Integer>> mergedGroups = mergeChartGroups(allGroups);
         ArrayList<ChartSeries> rows = new ArrayList<>();
@@ -107,7 +107,7 @@ public class DiagnosisGroupsConverter {
         return listOfZeros;
     }
 
-    private Map<String, List<Integer>> extractAllGroups(DiagnosgruppResponse resp, Sex sex) {
+    private Map<String, List<Integer>> extractAllGroups(DiagnosgruppResponse resp, Kon sex) {
         Map<String, List<Integer>> allGroups = new HashMap<>();
         for (int i = 0; i < resp.getDiagnosgrupps().size(); i++) {
             Diagnosgrupp groupName = resp.getDiagnosgrupps().get(i);
@@ -158,7 +158,7 @@ public class DiagnosisGroupsConverter {
     private static List<NamedData> getTableRows(DiagnosgruppResponse resp) {
         List<NamedData> rows = new ArrayList<>();
         int accumulatedSum = 0;
-        for (DualSexDataRow row : resp.getRows()) {
+        for (KonDataRow row : resp.getRows()) {
             List<Integer> mergedSexData = ServiceUtil.getMergedSexData(row);
             int sum = 0;
             for (Integer dataField : mergedSexData) {

@@ -31,12 +31,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 import se.inera.statistics.service.report.api.SjukfallPerLan;
-import se.inera.statistics.service.report.model.DualSexField;
-import se.inera.statistics.service.report.model.Lan;
-import se.inera.statistics.service.report.model.Range;
-import se.inera.statistics.service.report.model.Sex;
-import se.inera.statistics.service.report.model.SimpleDualSexDataRow;
-import se.inera.statistics.service.report.model.SimpleDualSexResponse;
+import se.inera.statistics.service.report.model.*;
+import se.inera.statistics.service.report.model.KonField;
 import se.inera.statistics.service.report.model.db.SjukfallPerLanKey;
 import se.inera.statistics.service.report.model.db.SjukfallPerLanRow;
 import se.inera.statistics.service.report.util.ReportUtil;
@@ -59,10 +55,10 @@ public class SjukfallPerLanPersistenceHandler implements SjukfallPerLan {
 
     @Override
     @Transactional
-    public void count(String period, String enhetId, String lanId, RollingLength length, Sex kon) {
+    public void count(String period, String enhetId, String lanId, RollingLength length, Kon kon) {
         SjukfallPerLanRow existingRow = manager.find(SjukfallPerLanRow.class, new SjukfallPerLanKey(period, enhetId, lanId));
-        int female = Sex.Female.equals(kon) ? 1 : 0;
-        int male = Sex.Male.equals(kon) ? 1 : 0;
+        int female = Kon.Female.equals(kon) ? 1 : 0;
+        int male = Kon.Male.equals(kon) ? 1 : 0;
 
         if (existingRow == null) {
             SjukfallPerLanRow row = new SjukfallPerLanRow(period, enhetId, lanId, female, male);
@@ -77,15 +73,15 @@ public class SjukfallPerLanPersistenceHandler implements SjukfallPerLan {
     private SimpleDualSexResponse<SimpleDualSexDataRow> translateForOutput(Range range, List<SjukfallPerLanRow> list) {
         List<SimpleDualSexDataRow> translatedCasesPerMonthRows = new ArrayList<>();
 
-        Map<String, DualSexField> map = new DefaultHashMap<>(new DualSexField(0, 0));
+        Map<String, KonField> map = new DefaultHashMap<>(new KonField(0, 0));
         for (SjukfallPerLanRow row: list) {
-            map.put(row.getLanId(), new DualSexField((int) row.getFemale(), (int) row.getMale()));
+            map.put(row.getLanId(), new KonField((int) row.getFemale(), (int) row.getMale()));
         }
 
         for (String lanId : lans) {
             String displayLan = lans.getNamn(lanId);
-            DualSexField dualSexField = map.get(lanId);
-            translatedCasesPerMonthRows.add(new SimpleDualSexDataRow(displayLan, dualSexField.getFemale(), dualSexField.getMale()));
+            KonField konField = map.get(lanId);
+            translatedCasesPerMonthRows.add(new SimpleDualSexDataRow(displayLan, konField.getFemale(), konField.getMale()));
         }
 
         return new SimpleDualSexResponse<>(translatedCasesPerMonthRows, range.getMonths());

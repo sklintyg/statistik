@@ -21,7 +21,7 @@ package se.inera.statistics.web.model;
 
 import java.util.List;
 
-import se.inera.statistics.service.report.model.Sex;
+import se.inera.statistics.service.report.model.Kon;
 
 public class ChartSeries {
 
@@ -31,9 +31,9 @@ public class ChartSeries {
     private final String name;
     private final List<Integer> data;
     private final String stack;
-    private final Sex sex;
+    private final Kon sex;
 
-    public ChartSeries(String name, List<Integer> data, String stack, Sex sex) {
+    public ChartSeries(String name, List<Integer> data, String stack, Kon sex) {
         this.name = name;
         this.data = data;
         this.stack = stack;
@@ -48,7 +48,7 @@ public class ChartSeries {
         this(name, data, stack, null);
     }
 
-    public ChartSeries(String name, List<Integer> data, boolean stacked, Sex sex) {
+    public ChartSeries(String name, List<Integer> data, boolean stacked, Kon sex) {
         this(name, data, getStackValue(stacked), sex);
     }
 
@@ -68,7 +68,7 @@ public class ChartSeries {
         return stack;
     }
 
-    public Sex getSex() {
+    public Kon getSex() {
         return sex;
     }
 

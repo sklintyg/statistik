@@ -26,7 +26,7 @@ import java.util.Random;
 import org.joda.time.LocalDate;
 
 import se.inera.statistics.service.report.api.Aldersgrupp;
-import se.inera.statistics.service.report.model.Sex;
+import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.report.model.SimpleDualSexDataRow;
 import se.inera.statistics.service.report.model.SimpleDualSexResponse;
 import se.inera.statistics.service.report.repository.RollingLength;
@@ -50,7 +50,7 @@ public class AldersgruppMock implements Aldersgrupp {
     }
 
     @Override
-    public void count(String period, String hsaId, String group, RollingLength length, Verksamhet typ, Sex sex) {
+    public void count(String period, String hsaId, String group, RollingLength length, Verksamhet typ, Kon sex) {
     }
 
     @Override

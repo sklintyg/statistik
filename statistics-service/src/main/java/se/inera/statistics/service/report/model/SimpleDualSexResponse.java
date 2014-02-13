@@ -48,7 +48,7 @@ public class SimpleDualSexResponse<T extends SimpleDualSexDataRow> {
         return groups;
     }
 
-    public List<Integer> getDataForSex(Sex sex) {
+    public List<Integer> getDataForSex(Kon sex) {
         List<Integer> data = new ArrayList<>();
         for (SimpleDualSexDataRow row : rows) {
             data.add(row.getDataForSex(sex));

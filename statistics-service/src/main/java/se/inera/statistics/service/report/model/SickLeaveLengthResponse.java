@@ -42,10 +42,10 @@ public class SickLeaveLengthResponse {
         return groups;
     }
 
-    public List<Integer> getDataForSex(Sex sex) {
+    public List<Integer> getDataForSex(Kon sex) {
         List<Integer> data = new ArrayList<>();
         for (SjukfallslangdRow row : sickLeaveGroupsRows) {
-            if (sex == Sex.Female) {
+            if (sex == Kon.Female) {
                 data.add(row.getFemale());
             } else {
                 data.add(row.getMale());

@@ -35,17 +35,17 @@ public class SjukskrivningsgradMock implements Sjukskrivningsgrad {
     @Override
     public SjukskrivningsgradResponse getStatistics(String hsaId, Range range) {
         List<String> headers = Arrays.asList("25", "50", "75", "100");
-        List<DualSexDataRow> rows = new ArrayList<>();
+        List<KonDataRow> rows = new ArrayList<>();
         for (String periodName : ReportUtil.PERIODS) {
-            rows.add(new DualSexDataRow(periodName, randomData(headers.size())));
+            rows.add(new KonDataRow(periodName, randomData(headers.size())));
         }
         return new SjukskrivningsgradResponse(headers, rows);
     }
 
-    private List<DualSexField> randomData(int size) {
-        DualSexField[] data = new DualSexField[size];
+    private List<KonField> randomData(int size) {
+        KonField[] data = new KonField[size];
         for (int i = 0; i < size; i++) {
-            data[i] = new DualSexField(g(), g());
+            data[i] = new KonField(g(), g());
         }
         return Arrays.asList(data);
     }
@@ -58,7 +58,7 @@ public class SjukskrivningsgradMock implements Sjukskrivningsgrad {
     // CHECKSTYLE:ON MagicNumber
 
     @Override
-    public void count(String hsaId, String period, String grad, Verksamhet typ, Sex sex) {
+    public void count(String hsaId, String period, String grad, Verksamhet typ, Kon sex) {
     }
 
 }

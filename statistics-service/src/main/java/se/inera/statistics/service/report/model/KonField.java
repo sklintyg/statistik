@@ -19,37 +19,34 @@
 
 package se.inera.statistics.service.report.model;
 
-import java.util.ArrayList;
-import java.util.List;
+public class KonField {
 
-public class DualSexDataRow {
+    private final int female;
+    private final int male;
 
-    private final String name;
-    private final List<DualSexField> data;
-
-    public DualSexDataRow(String name, List<DualSexField> data) {
-        this.name = name;
-        this.data = data;
+    public KonField(int female, int male) {
+        this.female = female;
+        this.male = male;
     }
 
-    public String getName() {
-        return name;
+    public int getFemale() {
+        return female;
     }
 
-    public List<DualSexField> getData() {
-        return data;
+    public int getMale() {
+        return male;
     }
 
-    public List<Integer> getDataForSex(Sex sex) {
-        ArrayList<Integer> dataForSex = new ArrayList<>();
-        for (DualSexField field : data) {
-            dataForSex.add(field.getValue(sex));
+    int getValue(Kon kon) {
+        if (Kon.Female.equals(kon)) {
+            return female;
+        } else {
+            return male;
         }
-        return dataForSex;
     }
 
     @Override
     public String toString() {
-        return "{\"DualSexDataRow\":{" + "\"name\":\"" + name + '"' + ", \"data\":" + data + "}}";
+        return "{\"KonField\":{\"female\":" + female + ", \"male\":" + male + "}}";
     }
 }

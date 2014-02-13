@@ -12,8 +12,8 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.report.model.Range;
-import se.inera.statistics.service.report.model.Sex;
 import se.inera.statistics.service.report.model.SimpleDualSexDataRow;
 import se.inera.statistics.service.report.model.SimpleDualSexResponse;
 import se.inera.statistics.service.report.util.Verksamhet;
@@ -27,7 +27,7 @@ public class SjukfallPerManadPersistenceTest extends SjukfallPerManadPersistence
     // CHECKSTYLE:OFF MagicNumber
     @Test
     public void store_nonexisting_row_female() {
-        this.count("hsaid", "2013-02", Verksamhet.ENHET, Sex.Female);
+        this.count("hsaid", "2013-02", Verksamhet.ENHET, Kon.Female);
 
         Range range = new Range(new LocalDate("2013-02"), new LocalDate("2013-02"));
         SimpleDualSexResponse<SimpleDualSexDataRow> check = this.getCasesPerMonth("hsaid", range);
@@ -36,8 +36,8 @@ public class SjukfallPerManadPersistenceTest extends SjukfallPerManadPersistence
 
     @Test
     public void store_existing_row_female() {
-        this.count("hsaid", "2013-02", Verksamhet.ENHET, Sex.Female);
-        this.count("hsaid", "2013-02", Verksamhet.ENHET, Sex.Female);
+        this.count("hsaid", "2013-02", Verksamhet.ENHET, Kon.Female);
+        this.count("hsaid", "2013-02", Verksamhet.ENHET, Kon.Female);
 
         Range range = new Range(new LocalDate("2013-02"), new LocalDate("2013-02"));
         SimpleDualSexResponse<SimpleDualSexDataRow> check = this.getCasesPerMonth("hsaid", range);
@@ -46,7 +46,7 @@ public class SjukfallPerManadPersistenceTest extends SjukfallPerManadPersistence
 
     @Test
     public void store_nonexisting_row_male() {
-        this.count("hsaid", "2013-02", Verksamhet.ENHET, Sex.Male);
+        this.count("hsaid", "2013-02", Verksamhet.ENHET, Kon.Male);
 
         Range range = new Range(new LocalDate("2013-02"), new LocalDate("2013-02"));
         SimpleDualSexResponse<SimpleDualSexDataRow> check = this.getCasesPerMonth("hsaid", range);
@@ -55,8 +55,8 @@ public class SjukfallPerManadPersistenceTest extends SjukfallPerManadPersistence
 
     @Test
     public void store_existing_row_male() {
-        this.count("hsaid", "2013-02", Verksamhet.ENHET, Sex.Female);
-        this.count("hsaid", "2013-02", Verksamhet.ENHET, Sex.Male);
+        this.count("hsaid", "2013-02", Verksamhet.ENHET, Kon.Female);
+        this.count("hsaid", "2013-02", Verksamhet.ENHET, Kon.Male);
 
         Range range = new Range(new LocalDate("2013-02"), new LocalDate("2013-02"));
         SimpleDualSexResponse<SimpleDualSexDataRow> check = this.getCasesPerMonth("hsaid", range);
@@ -65,9 +65,9 @@ public class SjukfallPerManadPersistenceTest extends SjukfallPerManadPersistence
 
     @Test
     public void getCasesPerMonthReturnsOldestFirst() {
-        this.count("hsaid", "2013-02", Verksamhet.ENHET, Sex.Female);
-        this.count("hsaid", "2013-04", Verksamhet.ENHET, Sex.Female);
-        this.count("hsaid", "2013-01", Verksamhet.ENHET, Sex.Female);
+        this.count("hsaid", "2013-02", Verksamhet.ENHET, Kon.Female);
+        this.count("hsaid", "2013-04", Verksamhet.ENHET, Kon.Female);
+        this.count("hsaid", "2013-01", Verksamhet.ENHET, Kon.Female);
 
         Range range = new Range(new LocalDate("2013-01"), new LocalDate("2013-04"));
 

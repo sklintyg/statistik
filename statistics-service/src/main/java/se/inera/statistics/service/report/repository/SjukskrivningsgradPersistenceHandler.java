@@ -45,10 +45,10 @@ public class SjukskrivningsgradPersistenceHandler implements Sjukskrivningsgrad 
     private EntityManager manager;
 
     @Transactional
-    public void count(String hsaId, String period, String grad, Verksamhet typ, Sex sex) {
+    public void count(String hsaId, String period, String grad, Verksamhet typ, Kon sex) {
         SjukskrivningsgradData existingRow = manager.find(SjukskrivningsgradData.class, new SjukskrivningsgradKey(period, hsaId, grad));
-        int female = Sex.Female.equals(sex) ? 1 : 0;
-        int male = Sex.Male.equals(sex) ? 1 : 0;
+        int female = Kon.Female.equals(sex) ? 1 : 0;
+        int male = Kon.Male.equals(sex) ? 1 : 0;
 
         if (existingRow == null) {
             SjukskrivningsgradData row = new SjukskrivningsgradData(period, hsaId, grad, typ, female, male);
@@ -71,29 +71,29 @@ public class SjukskrivningsgradPersistenceHandler implements Sjukskrivningsgrad 
         return new SjukskrivningsgradResponse(GRAD, translateForOutput(range, query.getResultList()));
     }
 
-    private List<DualSexDataRow> translateForOutput(Range range, List<SjukskrivningsgradData> list) {
-        List<DualSexDataRow> translatedCasesPerMonthRows = new ArrayList<>();
+    private List<KonDataRow> translateForOutput(Range range, List<SjukskrivningsgradData> list) {
+        List<KonDataRow> translatedCasesPerMonthRows = new ArrayList<>();
 
         // Span all
-        Map<String, DualSexField> map = map(list);
+        Map<String, KonField> map = map(list);
 
         for (LocalDate currentPeriod = range.getFrom(); !currentPeriod.isAfter(range.getTo()); currentPeriod = currentPeriod.plusMonths(1)) {
             String displayDate = ReportUtil.toDiagramPeriod(currentPeriod);
             String period = ReportUtil.toPeriod(currentPeriod);
-            List<DualSexField> values = new ArrayList<>(GRAD.size());
+            List<KonField> values = new ArrayList<>(GRAD.size());
             for (String group: GRAD) {
                 values.add(map.get(period + group));
             }
-            translatedCasesPerMonthRows.add(new DualSexDataRow(displayDate, values));
+            translatedCasesPerMonthRows.add(new KonDataRow(displayDate, values));
         }
         return translatedCasesPerMonthRows;
     }
 
-    private static Map<String, DualSexField> map(List<SjukskrivningsgradData> list) {
-        Map<String, DualSexField> resultMap = new DefaultHashMap<>(new DualSexField(0, 0));
+    private static Map<String, KonField> map(List<SjukskrivningsgradData> list) {
+        Map<String, KonField> resultMap = new DefaultHashMap<>(new KonField(0, 0));
 
         for (SjukskrivningsgradData item: list) {
-            resultMap.put(item.getPeriod() + item.getGrad(), new DualSexField(item.getFemale(), item.getMale()));
+            resultMap.put(item.getPeriod() + item.getGrad(), new KonField(item.getFemale(), item.getMale()));
         }
         return resultMap;
     }

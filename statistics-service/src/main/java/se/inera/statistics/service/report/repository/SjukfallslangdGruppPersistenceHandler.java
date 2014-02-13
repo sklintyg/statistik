@@ -30,13 +30,10 @@ import org.joda.time.LocalDate;
 import org.springframework.transaction.annotation.Transactional;
 
 import se.inera.statistics.service.report.api.SjukfallslangdGrupp;
-import se.inera.statistics.service.report.model.Range;
-import se.inera.statistics.service.report.model.Sex;
+import se.inera.statistics.service.report.model.*;
+import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.report.model.db.SjukfallslangdKey;
-import se.inera.statistics.service.report.model.SickLeaveLengthResponse;
 import se.inera.statistics.service.report.model.db.SjukfallslangdRow;
-import se.inera.statistics.service.report.model.SimpleDualSexDataRow;
-import se.inera.statistics.service.report.model.SimpleDualSexResponse;
 import se.inera.statistics.service.report.util.Ranges;
 import se.inera.statistics.service.report.util.ReportUtil;
 import se.inera.statistics.service.report.util.SjukfallslangdUtil;
@@ -119,10 +116,10 @@ public class SjukfallslangdGruppPersistenceHandler implements SjukfallslangdGrup
 
     @Transactional
     @Override
-    public void count(String period, String hsaId, String group, RollingLength length, Verksamhet typ, Sex sex) {
+    public void count(String period, String hsaId, String group, RollingLength length, Verksamhet typ, Kon sex) {
         SjukfallslangdRow existingRow = manager.find(SjukfallslangdRow.class, new SjukfallslangdKey(period, hsaId, group, length.getPeriods()));
-        int female = Sex.Female.equals(sex) ? 1 : 0;
-        int male = Sex.Male.equals(sex) ? 1 : 0;
+        int female = Kon.Female.equals(sex) ? 1 : 0;
+        int male = Kon.Male.equals(sex) ? 1 : 0;
 
         if (existingRow == null) {
             SjukfallslangdRow row = new SjukfallslangdRow(period, hsaId, group, length.getPeriods(), typ, female, male);
@@ -136,11 +133,11 @@ public class SjukfallslangdGruppPersistenceHandler implements SjukfallslangdGrup
 
     @Override
     @Transactional
-    public void recount(String period, String hsaId, String group, String newGroup, RollingLength length, Verksamhet typ, Sex sex) {
+    public void recount(String period, String hsaId, String group, String newGroup, RollingLength length, Verksamhet typ, Kon sex) {
         count(period, hsaId, newGroup, length, typ, sex);
         SjukfallslangdRow existingRow = manager.find(SjukfallslangdRow.class, new SjukfallslangdKey(period, hsaId, group, length.getPeriods()));
-        int female = Sex.Female.equals(sex) ? 1 : 0;
-        int male = Sex.Male.equals(sex) ? 1 : 0;
+        int female = Kon.Female.equals(sex) ? 1 : 0;
+        int male = Kon.Male.equals(sex) ? 1 : 0;
 
         if (existingRow != null) {
             existingRow.setFemale(existingRow.getFemale() - female);

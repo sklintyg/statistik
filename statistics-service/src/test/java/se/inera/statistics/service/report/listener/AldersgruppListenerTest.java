@@ -23,7 +23,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 import se.inera.statistics.service.helper.UtlatandeBuilder;
 import se.inera.statistics.service.report.api.Aldersgrupp;
 import se.inera.statistics.service.report.model.Diagnosgrupp;
-import se.inera.statistics.service.report.model.Sex;
+import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.report.repository.RollingLength;
 import se.inera.statistics.service.report.util.DiagnosisGroupsUtil;
 import se.inera.statistics.service.report.util.ReportUtil;
@@ -54,7 +54,7 @@ public class AldersgruppListenerTest {
         Mockito.when(util.getGroupIdForCode(Mockito.anyString())).thenReturn("A10");
         Mockito.when(util.getSubGroupForCode(Mockito.anyString())).thenReturn(new Diagnosgrupp("A10-A11", "Test group"));
 
-        doNothing().when(agegroups).count(captor.capture(), eq("enhetId"), anyString(), eq(RollingLength.YEAR), any(Verksamhet.class), any(Sex.class));
+        doNothing().when(agegroups).count(captor.capture(), eq("enhetId"), anyString(), eq(RollingLength.YEAR), any(Verksamhet.class), any(Kon.class));
 
         utlatande = utlatandeBuilder.build("patientId", new LocalDate("2011-01-05"), new LocalDate("2011-03-27"), "enhetId", "A00", 0);
     }

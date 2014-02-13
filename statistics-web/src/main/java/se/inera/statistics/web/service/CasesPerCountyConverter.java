@@ -23,8 +23,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.report.model.Range;
-import se.inera.statistics.service.report.model.Sex;
 import se.inera.statistics.service.report.model.SimpleDualSexDataRow;
 import se.inera.statistics.service.report.model.SimpleDualSexResponse;
 import se.inera.statistics.web.model.CasesPerCountyData;
@@ -81,14 +81,14 @@ public class CasesPerCountyConverter {
         assert respNewest.getGroups().equals(respOldest.getGroups());
         List<String> groups = respNewest.getGroups();
         List<ChartSeries> series = new ArrayList<>();
-        List<Integer> femaleDataOld = respOldest.getDataForSex(Sex.Female);
-        series.add(new ChartSeries("Sjukfall " + rangeOld.toStringAbbreviated() + " kvinnor", femaleDataOld, "old", Sex.Female));
-        List<Integer> maleDataOld = respOldest.getDataForSex(Sex.Male);
-        series.add(new ChartSeries("Sjukfall " + rangeOld.toStringAbbreviated() + " män", maleDataOld, "old", Sex.Male));
-        List<Integer> femaleDataNew = respNewest.getDataForSex(Sex.Female);
-        series.add(new ChartSeries("Sjukfall " + rangeNew.toStringAbbreviated() + " kvinnor", femaleDataNew, "new", Sex.Female));
-        List<Integer> maleDataNew = respNewest.getDataForSex(Sex.Male);
-        series.add(new ChartSeries("Sjukfall " + rangeNew.toStringAbbreviated() + " män", maleDataNew, "new", Sex.Male));
+        List<Integer> femaleDataOld = respOldest.getDataForSex(Kon.Female);
+        series.add(new ChartSeries("Sjukfall " + rangeOld.toStringAbbreviated() + " kvinnor", femaleDataOld, "old", Kon.Female));
+        List<Integer> maleDataOld = respOldest.getDataForSex(Kon.Male);
+        series.add(new ChartSeries("Sjukfall " + rangeOld.toStringAbbreviated() + " män", maleDataOld, "old", Kon.Male));
+        List<Integer> femaleDataNew = respNewest.getDataForSex(Kon.Female);
+        series.add(new ChartSeries("Sjukfall " + rangeNew.toStringAbbreviated() + " kvinnor", femaleDataNew, "new", Kon.Female));
+        List<Integer> maleDataNew = respNewest.getDataForSex(Kon.Male);
+        series.add(new ChartSeries("Sjukfall " + rangeNew.toStringAbbreviated() + " män", maleDataNew, "new", Kon.Male));
         return new ChartData(series, groups);
     }
 

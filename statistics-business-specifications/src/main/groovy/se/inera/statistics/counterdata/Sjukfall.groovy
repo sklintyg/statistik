@@ -31,11 +31,11 @@ class Sjukfall {
             cols.add(name)
             List<String> female = new ArrayList<String>()
             female.add("kvinnor")
-            female.add(row.get("data").get("DualSexField").get("female").asText())
+            female.add(row.get("data").get("KonField").get("female").asText())
             cols.add(female);
             List<String> male = new ArrayList<String>()
             male.add("män")
-            male.add(row.get("data").get("DualSexField").get("male").toString())
+            male.add(row.get("data").get("KonField").get("male").toString())
             cols.add(male);
             rowList.add(cols)
         }

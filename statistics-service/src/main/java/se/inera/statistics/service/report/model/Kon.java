@@ -19,6 +19,6 @@
 
 package se.inera.statistics.service.report.model;
 
-public enum Sex {
+public enum Kon {
     Male, Female
 }

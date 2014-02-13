@@ -27,12 +27,8 @@ import java.util.Random;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import se.inera.statistics.service.report.api.Diagnoskapitel;
-import se.inera.statistics.service.report.model.Diagnosgrupp;
-import se.inera.statistics.service.report.model.DiagnosgruppResponse;
-import se.inera.statistics.service.report.model.DualSexDataRow;
-import se.inera.statistics.service.report.model.DualSexField;
-import se.inera.statistics.service.report.model.Range;
-import se.inera.statistics.service.report.model.Sex;
+import se.inera.statistics.service.report.model.*;
+import se.inera.statistics.service.report.model.KonDataRow;
 import se.inera.statistics.service.report.util.DiagnosisGroupsUtil;
 import se.inera.statistics.service.report.util.ReportUtil;
 import se.inera.statistics.service.report.util.Verksamhet;
@@ -45,17 +41,17 @@ public class DiagnoskapitelMock implements Diagnoskapitel {
     @Override
     public DiagnosgruppResponse getDiagnosisGroups(String hsaId, Range range, String diagnosisGroupId) {
         List<Diagnosgrupp> headers = diagnosisGroupsUtil.getSubGroups(diagnosisGroupId);
-        List<DualSexDataRow> rows = new ArrayList<>();
+        List<KonDataRow> rows = new ArrayList<>();
         for (String periodName : ReportUtil.PERIODS) {
-            rows.add(new DualSexDataRow(periodName, randomData(headers.size())));
+            rows.add(new KonDataRow(periodName, randomData(headers.size())));
         }
         return new DiagnosgruppResponse(headers, rows);
     }
 
-    private List<DualSexField> randomData(int size) {
-        DualSexField[] data = new DualSexField[size];
+    private List<KonField> randomData(int size) {
+        KonField[] data = new KonField[size];
         for (int i = 0; i < size; i++) {
-            data[i] = new DualSexField(g(), g());
+            data[i] = new KonField(g(), g());
         }
         return Arrays.asList(data);
     }
@@ -66,7 +62,7 @@ public class DiagnoskapitelMock implements Diagnoskapitel {
     }
 
     @Override
-    public void count(String hsaId, String period, String diagnosgrupp, String undergrupp, Verksamhet typ, Sex sex) {
+    public void count(String hsaId, String period, String diagnosgrupp, String undergrupp, Verksamhet typ, Kon sex) {
     }
 
 }

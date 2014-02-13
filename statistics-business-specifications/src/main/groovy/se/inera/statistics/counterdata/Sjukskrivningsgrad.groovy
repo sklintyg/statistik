@@ -16,7 +16,7 @@ class Sjukskrivningsgrad {
         this.tabell = tabell
     }
 
-    // {"SjukskrivningsgradResponse":{"degreesOfSickLeave":["Antal sjukfall per 25%", "Antal sjukfall per 50%", "Antal sjukfall per 75%", "Antal sjukfall per 100%" ], "rows":[{"DualSexDataRow":{"name":"jan 2012", "data":[{"DualSexField":{"female":0, "male":0}}, ...]}}, ...]}}
+    // {"SjukskrivningsgradResponse":{"degreesOfSickLeave":["Antal sjukfall per 25%", "Antal sjukfall per 50%", "Antal sjukfall per 75%", "Antal sjukfall per 100%" ], "rows":[{"KonDataRow":{"name":"jan 2012", "data":[{"KonField":{"female":0, "male":0}}, ...]}}, ...]}}
     public List<Object> query() {
         TestData data = IntygSender.testResult.get(tabell)
         JsonNode testResult = data.jsonNode
@@ -28,7 +28,7 @@ class Sjukskrivningsgrad {
         Iterator<JsonNode> rows = testResult.findPath("rows").iterator()
         List<List<List<String>>> rowList = new ArrayList<>()
         while(rows.hasNext()) {
-            JsonNode row = rows.next().get("DualSexDataRow")
+            JsonNode row = rows.next().get("KonDataRow")
             String periodString = row.path("name").textValue()
             int i = 0;
             Iterator<JsonNode> gradData = row.path("data").iterator()
@@ -45,11 +45,11 @@ class Sjukskrivningsgrad {
                 cols.add(grad)
                 List<String> female = new ArrayList<String>()
                 female.add("kvinnor")
-                female.add(gradNode.get("DualSexField").get("female").asText())
+                female.add(gradNode.get("KonField").get("female").asText())
                 cols.add(female);
                 List<String> male = new ArrayList<String>()
                 male.add("män")
-                male.add(gradNode.get("DualSexField").get("male").toString())
+                male.add(gradNode.get("KonField").get("male").toString())
                 cols.add(male);
                 rowList.add(cols)
                 i++

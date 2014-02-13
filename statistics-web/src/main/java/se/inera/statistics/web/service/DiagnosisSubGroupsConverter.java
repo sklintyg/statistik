@@ -27,9 +27,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import se.inera.statistics.service.report.model.DiagnosgruppResponse;
-import se.inera.statistics.service.report.model.DualSexDataRow;
+import se.inera.statistics.service.report.model.Kon;
+import se.inera.statistics.service.report.model.KonDataRow;
 import se.inera.statistics.service.report.model.Range;
-import se.inera.statistics.service.report.model.Sex;
 import se.inera.statistics.web.model.ChartData;
 import se.inera.statistics.web.model.ChartSeries;
 import se.inera.statistics.web.model.DualSexStatisticsData;
@@ -44,17 +44,17 @@ public class DiagnosisSubGroupsConverter {
     DualSexStatisticsData convert(DiagnosgruppResponse diagnosisGroups, Range range) {
         TableData tableData = DiagnosisGroupsConverter.convertTable(diagnosisGroups);
         List<Integer> topIndexes = getTopColumnIndexes(diagnosisGroups);
-        ChartData maleChart = extractChartData(diagnosisGroups, topIndexes, Sex.Male);
-        ChartData femaleChart = extractChartData(diagnosisGroups, topIndexes, Sex.Female);
+        ChartData maleChart = extractChartData(diagnosisGroups, topIndexes, Kon.Male);
+        ChartData femaleChart = extractChartData(diagnosisGroups, topIndexes, Kon.Female);
         return new DualSexStatisticsData(tableData, maleChart, femaleChart, range.toString());
     }
 
-    private ChartData extractChartData(DiagnosgruppResponse data, List<Integer> topIndexes, Sex sex) {
+    private ChartData extractChartData(DiagnosgruppResponse data, List<Integer> topIndexes, Kon sex) {
         List<ChartSeries> topColumns = getTopColumns(data, topIndexes, sex);
         return new ChartData(topColumns, data.getPeriods());
     }
 
-    private List<ChartSeries> getTopColumns(DiagnosgruppResponse data, List<Integer> topIndexes, Sex sex) {
+    private List<ChartSeries> getTopColumns(DiagnosgruppResponse data, List<Integer> topIndexes, Kon sex) {
         List<ChartSeries> topColumns = new ArrayList<>();
         for (Integer index : topIndexes) {
             List<Integer> indexData = data.getDataFromIndex(index, sex);
@@ -67,12 +67,12 @@ public class DiagnosisSubGroupsConverter {
         return topColumns;
     }
 
-    private List<Integer> sumRemaining(List<Integer> topIndexes, DiagnosgruppResponse data, Sex sex) {
+    private List<Integer> sumRemaining(List<Integer> topIndexes, DiagnosgruppResponse data, Kon sex) {
         List<Integer> remaining = new ArrayList<>();
         for (int i = 0; i < data.getRows().size(); i++) {
             remaining.add(0);
         }
-        List<DualSexDataRow> rows = data.getRows();
+        List<KonDataRow> rows = data.getRows();
         for (int r = 0; r < rows.size(); r++) {
             List<Integer> dataForCurrentSex = rows.get(r).getDataForSex(sex);
             for (int i = 0; i < dataForCurrentSex.size(); i++) {
@@ -91,7 +91,7 @@ public class DiagnosisSubGroupsConverter {
         TreeMap<Integer, Integer> columnSums = new TreeMap<>();
         int dataSize = diagnosisGroups.getRows().get(0).getData().size();
         for (int i = 0; i < dataSize; i++) {
-            columnSums.put(sum(diagnosisGroups.getDataFromIndex(i, Sex.Male)) + sum(diagnosisGroups.getDataFromIndex(i, Sex.Female)), i);
+            columnSums.put(sum(diagnosisGroups.getDataFromIndex(i, Kon.Male)) + sum(diagnosisGroups.getDataFromIndex(i, Kon.Female)), i);
         }
         LOG.debug("Columns: " + diagnosisGroups.getDiagnosisGroupsAsStrings());
         LOG.debug("TopColumnIndexes: " + columnSums);

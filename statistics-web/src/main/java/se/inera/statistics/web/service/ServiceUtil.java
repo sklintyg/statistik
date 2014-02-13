@@ -30,8 +30,8 @@ import org.springframework.security.authentication.AbstractAuthenticationToken;
 
 import se.inera.auth.model.User;
 import se.inera.statistics.hsa.model.Vardenhet;
-import se.inera.statistics.service.report.model.DualSexDataRow;
-import se.inera.statistics.service.report.model.DualSexField;
+import se.inera.statistics.service.report.model.KonDataRow;
+import se.inera.statistics.service.report.model.KonField;
 import se.inera.statistics.web.model.LoginInfo;
 import se.inera.statistics.web.model.NamedData;
 import se.inera.statistics.web.model.Verksamhet;
@@ -41,11 +41,11 @@ public final class ServiceUtil {
     private ServiceUtil() {
     }
 
-    static List<Integer> getMergedSexData(DualSexDataRow row) {
+    static List<Integer> getMergedSexData(KonDataRow row) {
         List<Integer> data = new ArrayList<>();
-        for (DualSexField dualSexField : row.getData()) {
-            data.add(dualSexField.getFemale());
-            data.add(dualSexField.getMale());
+        for (KonField konField : row.getData()) {
+            data.add(konField.getFemale());
+            data.add(konField.getMale());
         }
         return data;
     }

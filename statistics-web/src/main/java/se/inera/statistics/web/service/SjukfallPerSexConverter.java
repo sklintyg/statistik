@@ -25,8 +25,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.report.model.Range;
-import se.inera.statistics.service.report.model.Sex;
 import se.inera.statistics.service.report.model.SimpleDualSexDataRow;
 import se.inera.statistics.service.report.model.SimpleDualSexResponse;
 import se.inera.statistics.web.model.ChartData;
@@ -75,22 +75,22 @@ public class SjukfallPerSexConverter {
 
         final ArrayList<ChartSeries> series = new ArrayList<ChartSeries>();
         final String stacked = "Stacked";
-        series.add(new ChartSeries("Andel sjukfall för kvinnor", getSeriesForSexWithTotal(casesPerMonth, Sex.Female), stacked, Sex.Female));
-        series.add(new ChartSeries("Andel sjukfall för män", getSeriesForSexWithTotal(casesPerMonth, Sex.Male), stacked, Sex.Male));
+        series.add(new ChartSeries("Andel sjukfall för kvinnor", getSeriesForSexWithTotal(casesPerMonth, Kon.Female), stacked, Kon.Female));
+        series.add(new ChartSeries("Andel sjukfall för män", getSeriesForSexWithTotal(casesPerMonth, Kon.Male), stacked, Kon.Male));
 
         return new ChartData(series, categories);
     }
 
-    private List<Integer> getSeriesForSexWithTotal(SimpleDualSexResponse<SimpleDualSexDataRow> casesPerMonth, final Sex sex) {
+    private List<Integer> getSeriesForSexWithTotal(SimpleDualSexResponse<SimpleDualSexDataRow> casesPerMonth, final Kon kon) {
         ArrayList<Integer> series = new ArrayList<Integer>();
-        series.add(getSumForSex(casesPerMonth, sex));
-        series.addAll(casesPerMonth.getDataForSex(sex));
+        series.add(getSumForSex(casesPerMonth, kon));
+        series.addAll(casesPerMonth.getDataForSex(kon));
         return series;
     }
 
-    private Integer getSumForSex(SimpleDualSexResponse<SimpleDualSexDataRow> casesPerMonth, Sex sex) {
+    private Integer getSumForSex(SimpleDualSexResponse<SimpleDualSexDataRow> casesPerMonth, Kon kon) {
         int sum = 0;
-        List<Integer> data = casesPerMonth.getDataForSex(sex);
+        List<Integer> data = casesPerMonth.getDataForSex(kon);
         for (Integer value : data) {
             sum += value;
         }

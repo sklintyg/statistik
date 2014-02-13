@@ -24,7 +24,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import se.inera.statistics.service.report.model.Range;
-import se.inera.statistics.service.report.model.Sex;
+import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.report.model.SickLeaveLengthResponse;
 import se.inera.statistics.service.report.model.db.SjukfallslangdRow;
 import se.inera.statistics.web.model.ChartData;
@@ -50,11 +50,11 @@ public class SickLeaveLengthConverter {
 
     private ChartData convertToChart(SickLeaveLengthResponse resp) {
         List<String> groups = resp.getGroups();
-        List<Integer> femaleData = resp.getDataForSex(Sex.Female);
-        List<Integer> maleData = resp.getDataForSex(Sex.Male);
+        List<Integer> femaleData = resp.getDataForSex(Kon.Female);
+        List<Integer> maleData = resp.getDataForSex(Kon.Male);
         ArrayList<ChartSeries> series = new ArrayList<>();
-        series.add(new ChartSeries("Antal sjukfall för män", maleData, false, Sex.Male));
-        series.add(new ChartSeries("Antal sjukfall för kvinnor", femaleData, false, Sex.Female));
+        series.add(new ChartSeries("Antal sjukfall för män", maleData, false, Kon.Male));
+        series.add(new ChartSeries("Antal sjukfall för kvinnor", femaleData, false, Kon.Female));
         return new ChartData(series, groups);
     }
 

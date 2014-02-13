@@ -31,13 +31,10 @@ import org.joda.time.LocalDate;
 import org.springframework.transaction.annotation.Transactional;
 
 import se.inera.statistics.service.report.api.SjukfallPerManad;
+import se.inera.statistics.service.report.model.*;
 import se.inera.statistics.service.report.model.db.SjukfallPerManadKey;
 import se.inera.statistics.service.report.model.db.SjukfallPerManadRow;
-import se.inera.statistics.service.report.model.DualSexField;
-import se.inera.statistics.service.report.model.Range;
-import se.inera.statistics.service.report.model.Sex;
-import se.inera.statistics.service.report.model.SimpleDualSexDataRow;
-import se.inera.statistics.service.report.model.SimpleDualSexResponse;
+import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.report.util.ReportUtil;
 import se.inera.statistics.service.report.util.Verksamhet;
 
@@ -46,10 +43,10 @@ public class SjukfallPerManadPersistenceHandler implements SjukfallPerManad {
     private EntityManager manager;
 
     @Transactional
-    public void count(String hsaId, String period, Verksamhet typ, Sex sex) {
+    public void count(String hsaId, String period, Verksamhet typ, Kon sex) {
         SjukfallPerManadRow existingRow = manager.find(SjukfallPerManadRow.class, new SjukfallPerManadKey(period, hsaId));
-        int female = Sex.Female.equals(sex) ? 1 : 0;
-        int male = Sex.Male.equals(sex) ? 1 : 0;
+        int female = Kon.Female.equals(sex) ? 1 : 0;
+        int male = Kon.Male.equals(sex) ? 1 : 0;
 
         if (existingRow == null) {
             SjukfallPerManadRow row = new SjukfallPerManadRow(period, hsaId, typ, female, male);
@@ -75,16 +72,16 @@ public class SjukfallPerManadPersistenceHandler implements SjukfallPerManad {
     private SimpleDualSexResponse<SimpleDualSexDataRow> translateForOutput(Range range, List<SjukfallPerManadRow> list) {
         List<SimpleDualSexDataRow> translatedCasesPerMonthRows = new ArrayList<>();
 
-        Map<String, DualSexField> map = new DefaultHashMap<>(new DualSexField(0, 0));
+        Map<String, KonField> map = new DefaultHashMap<>(new KonField(0, 0));
         for (SjukfallPerManadRow row: list) {
-            map.put(row.getPeriod(), new DualSexField(row.getFemale(), row.getMale()));
+            map.put(row.getPeriod(), new KonField(row.getFemale(), row.getMale()));
         }
 
         for (LocalDate currentPeriod = range.getFrom(); !currentPeriod.isAfter(range.getTo()); currentPeriod = currentPeriod.plusMonths(1)) {
             String displayDate = ReportUtil.toDiagramPeriod(currentPeriod);
             String period = ReportUtil.toPeriod(currentPeriod);
-            DualSexField dualSexField = map.get(period);
-            translatedCasesPerMonthRows.add(new SimpleDualSexDataRow(displayDate, dualSexField.getFemale(), dualSexField.getMale()));
+            KonField konField = map.get(period);
+            translatedCasesPerMonthRows.add(new SimpleDualSexDataRow(displayDate, konField.getFemale(), konField.getMale()));
         }
 
         return new SimpleDualSexResponse<SimpleDualSexDataRow>(translatedCasesPerMonthRows, range.getMonths());

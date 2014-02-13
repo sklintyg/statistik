@@ -17,7 +17,7 @@ class Diagnos {
         this.tabell = tabell
     }
 
-    // {"DiagnosgruppResponse":{"diagnosgrupp":[{"Diagnosgrupp":{"id":"A00-B99", "name":"Vissa infektionssjukdomar och parasitsjukdomar",...}}], "rows":[{"DualSexDataRow":{"name":"jan 2012", "data":[{"DualSexField":{"female":0, "male":0}},...]}}, ...]}}
+    // {"DiagnosgruppResponse":{"diagnosgrupp":[{"Diagnosgrupp":{"id":"A00-B99", "name":"Vissa infektionssjukdomar och parasitsjukdomar",...}}], "rows":[{"KonDataRow":{"name":"jan 2012", "data":[{"KonField":{"female":0, "male":0}},...]}}, ...]}}
     public List<Object> query() {
         TestData data = IntygSender.testResult.get(tabell)
         JsonNode testResult = data.jsonNode
@@ -29,7 +29,7 @@ class Diagnos {
         Iterator<JsonNode> rows = testResult.findPath("rows").iterator();
         List<List<List<String>>> rowList = new ArrayList<>()
         while(rows.hasNext()) {
-            JsonNode row = rows.next().get("DualSexDataRow")
+            JsonNode row = rows.next().get("KonDataRow")
             String periodString = row.path("name").textValue()
             int i = 0;
             Iterator<JsonNode> gruppData = row.path("data").iterator()
@@ -46,11 +46,11 @@ class Diagnos {
                 cols.add(grupp)
                 List<String> female = new ArrayList<String>()
                 female.add("kvinnor")
-                female.add(gruppNode.get("DualSexField").get("female").asText())
+                female.add(gruppNode.get("KonField").get("female").asText())
                 cols.add(female);
                 List<String> male = new ArrayList<String>()
                 male.add("män")
-                male.add(gruppNode.get("DualSexField").get("male").toString())
+                male.add(gruppNode.get("KonField").get("male").toString())
                 cols.add(male);
                 rowList.add(cols)
                 i++

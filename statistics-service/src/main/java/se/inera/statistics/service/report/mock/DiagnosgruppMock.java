@@ -37,17 +37,17 @@ public class DiagnosgruppMock implements se.inera.statistics.service.report.api.
     @Override
     public DiagnosgruppResponse getDiagnosisGroups(String hsaId, Range range) {
         List<Diagnosgrupp> headers = DiagnosisGroupsUtil.getAllDiagnosisGroups();
-        List<DualSexDataRow> rows = new ArrayList<>();
+        List<KonDataRow> rows = new ArrayList<>();
         for (String periodName : ReportUtil.PERIODS) {
-            rows.add(new DualSexDataRow(periodName, randomData(headers.size())));
+            rows.add(new KonDataRow(periodName, randomData(headers.size())));
         }
         return new DiagnosgruppResponse(headers, rows);
     }
 
-    private List<DualSexField> randomData(int size) {
-        DualSexField[] data = new DualSexField[size];
+    private List<KonField> randomData(int size) {
+        KonField[] data = new KonField[size];
         for (int i = 0; i < size; i++) {
-            data[i] = new DualSexField(randomValue(), randomValue());
+            data[i] = new KonField(randomValue(), randomValue());
         }
         return Arrays.asList(data);
     }
@@ -57,7 +57,7 @@ public class DiagnosgruppMock implements se.inera.statistics.service.report.api.
     }
 
     @Override
-    public void count(String hsaId, String period, String diagnosgrupp, Verksamhet typ, Sex sex) {
+    public void count(String hsaId, String period, String diagnosgrupp, Verksamhet typ, Kon sex) {
     }
 
 }

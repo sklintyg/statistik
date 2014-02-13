@@ -23,8 +23,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.report.model.Range;
-import se.inera.statistics.service.report.model.Sex;
 import se.inera.statistics.service.report.model.SimpleDualSexDataRow;
 import se.inera.statistics.service.report.model.SimpleDualSexResponse;
 import se.inera.statistics.web.model.ChartData;
@@ -58,8 +58,8 @@ public class SimpleDualSexConverter {
 
         final ArrayList<ChartSeries> series = new ArrayList<ChartSeries>();
         series.add(new ChartSeries("Antal sjukfall", casesPerMonth.getSummedData(), false));
-        series.add(new ChartSeries("Antal sjukfall för kvinnor", casesPerMonth.getDataForSex(Sex.Female), false, Sex.Female));
-        series.add(new ChartSeries("Antal sjukfall för män", casesPerMonth.getDataForSex(Sex.Male), false, Sex.Male));
+        series.add(new ChartSeries("Antal sjukfall för kvinnor", casesPerMonth.getDataForSex(Kon.Female), false, Kon.Female));
+        series.add(new ChartSeries("Antal sjukfall för män", casesPerMonth.getDataForSex(Kon.Male), false, Kon.Male));
 
         return new ChartData(series, categories);
     }

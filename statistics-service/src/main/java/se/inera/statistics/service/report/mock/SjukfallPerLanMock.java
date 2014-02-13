@@ -25,8 +25,8 @@ import java.util.List;
 import java.util.Random;
 
 import se.inera.statistics.service.report.api.SjukfallPerLan;
+import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.report.model.Range;
-import se.inera.statistics.service.report.model.Sex;
 import se.inera.statistics.service.report.model.SimpleDualSexDataRow;
 import se.inera.statistics.service.report.model.SimpleDualSexResponse;
 import se.inera.statistics.service.report.repository.RollingLength;
@@ -54,7 +54,7 @@ public class SjukfallPerLanMock implements SjukfallPerLan {
     // CHECKSTYLE:ON
 
     @Override
-    public void count(String period, String enhetId, String lanId, RollingLength length, Sex kon) {
+    public void count(String period, String enhetId, String lanId, RollingLength length, Kon kon) {
     }
 
 }
