@@ -18,7 +18,6 @@ import se.inera.statistics.service.report.util.Icd10.Kapitel;
 @ContextConfiguration(locations = { "classpath:icd10-test.xml" })
 public class Icd10Test {
 
-
     @Autowired
     private Icd10 icd10;
 

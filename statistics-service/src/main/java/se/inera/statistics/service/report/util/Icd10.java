@@ -8,10 +8,14 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 
 public class Icd10 {
+
+    private static final Logger LOG = LoggerFactory.getLogger(Icd10.class);
 
     private static final int STARTINDEX_LAST_KATEGORI = 4;
 
@@ -79,7 +83,7 @@ public class Icd10 {
             }
 
         } catch (IOException e) {
-            e.printStackTrace();
+            LOG.error("Could not parse ICD10: " + e);
         }
     }
 

@@ -17,7 +17,7 @@
  *     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package se.inera.statistics.service.testsupport;
+package se.inera.statistics.service.helper;
 
 import java.util.ArrayList;
 import java.util.List;
