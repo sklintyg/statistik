@@ -36,10 +36,9 @@ import static org.mockito.MockitoAnnotations.Mock;
 
 import org.mockito.runners.MockitoJUnitRunner;
 import se.inera.statistics.service.report.api.SjukfallPerManad;
-import se.inera.statistics.service.report.api.Diagnosgrupp;
 import se.inera.statistics.service.report.api.Diagnoskapitel;
 import se.inera.statistics.service.report.api.Overview;
-import se.inera.statistics.service.report.model.DiagnosisGroup;
+import se.inera.statistics.service.report.model.Diagnosgrupp;
 import se.inera.statistics.service.report.model.Range;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -52,7 +51,7 @@ public class ChartDataServiceTest {
     private SjukfallPerManad sjukfallPerManadMock = Mockito.mock(SjukfallPerManad.class);
 
     @Mock
-    private Diagnosgrupp diagnosgruppMock = Mockito.mock(Diagnosgrupp.class);
+    private se.inera.statistics.service.report.api.Diagnosgrupp diagnosgruppMock = Mockito.mock(se.inera.statistics.service.report.api.Diagnosgrupp.class);
 
     @Mock
     private Diagnoskapitel diagnoskapitelMock = Mockito.mock(Diagnoskapitel.class);
@@ -81,9 +80,9 @@ public class ChartDataServiceTest {
 
     @Test
     public void getDiagnosisGroupsTest() {
-        List<DiagnosisGroup> diagnosisGroups = chartDataService.getDiagnosisGroups();
-        assertEquals(22, diagnosisGroups.size());
-        assertTrue(diagnosisGroups.toString().contains("{\"DiagnosisGroup\":{\"id\":\"E00-E90\", \"name\":\"Endokrina sjukdomar, nutritionsrubbningar och ämnesomsättningssjukdomar\", \"firstId\":\"E00\", \"lastId\":\"E90\"}}"));
+        List<Diagnosgrupp> diagnosgrupps = chartDataService.getDiagnosisGroups();
+        assertEquals(22, diagnosgrupps.size());
+        assertTrue(diagnosgrupps.toString().contains("{\"Diagnosgrupp\":{\"id\":\"E00-E90\", \"name\":\"Endokrina sjukdomar, nutritionsrubbningar och ämnesomsättningssjukdomar\", \"firstId\":\"E00\", \"lastId\":\"E90\"}}"));
     }
 
     @Test

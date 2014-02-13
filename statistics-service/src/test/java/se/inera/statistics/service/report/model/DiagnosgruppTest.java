@@ -4,7 +4,7 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-public class DiagnosisGroupTest {
+public class DiagnosgruppTest {
 
     @Test
     public void test() {
@@ -19,8 +19,8 @@ public class DiagnosisGroupTest {
     }
 
     private void assertCodeInGroup(String groupId, String code, boolean isInGroup) {
-        DiagnosisGroup diagnosisGroup = new DiagnosisGroup(groupId, "");
-        assertEquals(isInGroup, diagnosisGroup.isCodeInGroup(code));
+        Diagnosgrupp diagnosgrupp = new Diagnosgrupp(groupId, "");
+        assertEquals(isInGroup, diagnosgrupp.isCodeInGroup(code));
     }
 
 }

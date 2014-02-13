@@ -25,18 +25,15 @@ import java.util.ArrayList;
 
 import org.junit.Test;
 
-import se.inera.statistics.service.report.model.DiagnosisGroup;
-import se.inera.statistics.service.report.model.DiagnosisGroupResponse;
-import se.inera.statistics.service.report.model.DualSexDataRow;
-import se.inera.statistics.service.report.model.DualSexField;
-import se.inera.statistics.service.report.model.Range;
+import se.inera.statistics.service.report.model.*;
+import se.inera.statistics.service.report.model.Diagnosgrupp;
 import se.inera.statistics.web.model.DualSexStatisticsData;
 
 public class DiagnoskapitelConverterTest {
 
     @Test
     public void converterTestEmpty() {
-        DiagnosisGroupResponse resp = new DiagnosisGroupResponse(new ArrayList<DiagnosisGroup>(), new ArrayList<DualSexDataRow>());
+        DiagnosgruppResponse resp = new DiagnosgruppResponse(new ArrayList<Diagnosgrupp>(), new ArrayList<DualSexDataRow>());
         DualSexStatisticsData data = new DiagnosisSubGroupsConverter().convert(resp, new Range());
         assertEquals("[]", data.getFemaleChart().getCategories().toString());
         assertEquals("[]", data.getFemaleChart().getSeries().toString());
@@ -45,15 +42,15 @@ public class DiagnoskapitelConverterTest {
     @Test
     public void converterTest() {
         //Given
-        ArrayList<DiagnosisGroup> diagnosisGroups = new ArrayList<DiagnosisGroup>();
-        diagnosisGroups.add(new DiagnosisGroup("A00-B99", "name1"));
+        ArrayList<Diagnosgrupp> diagnosgrupps = new ArrayList<Diagnosgrupp>();
+        diagnosgrupps.add(new Diagnosgrupp("A00-B99", "name1"));
         ArrayList<DualSexDataRow> rows = new ArrayList<DualSexDataRow>();
         ArrayList<DualSexField> diagnosisGroupData = new ArrayList<DualSexField>();
         // CHECKSTYLE:OFF MagicNumber
         diagnosisGroupData.add(new DualSexField(3, 2));
         // CHECKSTYLE:ON MagicNumber
         rows.add(new DualSexDataRow("period1", diagnosisGroupData));
-        DiagnosisGroupResponse resp = new DiagnosisGroupResponse(diagnosisGroups, rows);
+        DiagnosgruppResponse resp = new DiagnosgruppResponse(diagnosgrupps, rows);
 
         //When
         DiagnosisSubGroupsConverter converter = new DiagnosisSubGroupsConverter();
@@ -73,15 +70,15 @@ public class DiagnoskapitelConverterTest {
     @Test
     public void converterTopColumnsTest() {
         //Given
-        ArrayList<DiagnosisGroup> diagnosisGroups = new ArrayList<DiagnosisGroup>();
-        diagnosisGroups.add(new DiagnosisGroup("A00-B90", "name1"));
-        diagnosisGroups.add(new DiagnosisGroup("A00-B91", "name1"));
-        diagnosisGroups.add(new DiagnosisGroup("A00-B92", "name1"));
-        diagnosisGroups.add(new DiagnosisGroup("A00-B93", "name1"));
-        diagnosisGroups.add(new DiagnosisGroup("A00-B94", "name1"));
-        diagnosisGroups.add(new DiagnosisGroup("A00-B95", "name1"));
-        diagnosisGroups.add(new DiagnosisGroup("A00-B96", "name1"));
-        diagnosisGroups.add(new DiagnosisGroup("A00-B97", "name1"));
+        ArrayList<Diagnosgrupp> diagnosgrupps = new ArrayList<Diagnosgrupp>();
+        diagnosgrupps.add(new Diagnosgrupp("A00-B90", "name1"));
+        diagnosgrupps.add(new Diagnosgrupp("A00-B91", "name1"));
+        diagnosgrupps.add(new Diagnosgrupp("A00-B92", "name1"));
+        diagnosgrupps.add(new Diagnosgrupp("A00-B93", "name1"));
+        diagnosgrupps.add(new Diagnosgrupp("A00-B94", "name1"));
+        diagnosgrupps.add(new Diagnosgrupp("A00-B95", "name1"));
+        diagnosgrupps.add(new Diagnosgrupp("A00-B96", "name1"));
+        diagnosgrupps.add(new Diagnosgrupp("A00-B97", "name1"));
         ArrayList<DualSexDataRow> rows = new ArrayList<DualSexDataRow>();
         ArrayList<DualSexField> diagnosisGroupData = new ArrayList<DualSexField>();
         // CHECKSTYLE:OFF MagicNumber
@@ -94,7 +91,7 @@ public class DiagnoskapitelConverterTest {
         diagnosisGroupData.add(new DualSexField(2, 20));
         diagnosisGroupData.add(new DualSexField(6, 60));
         rows.add(new DualSexDataRow("period1", diagnosisGroupData));
-        DiagnosisGroupResponse resp = new DiagnosisGroupResponse(diagnosisGroups, rows);
+        DiagnosgruppResponse resp = new DiagnosgruppResponse(diagnosgrupps, rows);
 
         //When
         DiagnosisSubGroupsConverter converter = new DiagnosisSubGroupsConverter();

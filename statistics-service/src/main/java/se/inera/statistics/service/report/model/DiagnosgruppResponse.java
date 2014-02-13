@@ -22,27 +22,27 @@ package se.inera.statistics.service.report.model;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DiagnosisGroupResponse {
+public class DiagnosgruppResponse {
 
-    private final List<DiagnosisGroup> diagnosisGroups;
+    private final List<Diagnosgrupp> diagnosgrupps;
     private final List<DualSexDataRow> rows;
 
-    public DiagnosisGroupResponse(List<DiagnosisGroup> diagnosisGroups, List<DualSexDataRow> rows) {
-        this.diagnosisGroups = diagnosisGroups;
+    public DiagnosgruppResponse(List<Diagnosgrupp> diagnosgrupps, List<DualSexDataRow> rows) {
+        this.diagnosgrupps = diagnosgrupps;
         this.rows = rows;
     }
 
-    public List<DiagnosisGroup> getDiagnosisGroups() {
-        return diagnosisGroups;
+    public List<Diagnosgrupp> getDiagnosgrupps() {
+        return diagnosgrupps;
     }
 
     public List<String> getDiagnosisGroupsAsStrings() {
-        if (diagnosisGroups == null) {
+        if (diagnosgrupps == null) {
             return new ArrayList<>();
         }
         List<String> subGroupStrings = new ArrayList<>();
-        for (DiagnosisGroup diagnosisGroup : diagnosisGroups) {
-            subGroupStrings.add(diagnosisGroup.asString());
+        for (Diagnosgrupp diagnosgrupp : diagnosgrupps) {
+            subGroupStrings.add(diagnosgrupp.asString());
         }
         return subGroupStrings;
     }
@@ -70,6 +70,6 @@ public class DiagnosisGroupResponse {
 
     @Override
     public String toString() {
-        return "{\"DiagnosisGroupResponse\":{" + "\"diagnosisGroups\":" + diagnosisGroups + ", \"rows\":" + rows + "}}";
+        return "{\"DiagnosgruppResponse\":{" + "\"diagnosgrupps\":" + diagnosgrupps + ", \"rows\":" + rows + "}}";
     }
 }

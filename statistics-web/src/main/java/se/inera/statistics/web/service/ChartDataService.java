@@ -35,7 +35,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import se.inera.statistics.service.report.api.Aldersgrupp;
-import se.inera.statistics.service.report.api.Diagnosgrupp;
 import se.inera.statistics.service.report.api.Diagnoskapitel;
 import se.inera.statistics.service.report.api.Overview;
 import se.inera.statistics.service.report.api.SjukfallPerLan;
@@ -68,7 +67,7 @@ public class ChartDataService {
     @Autowired
     private SjukfallPerManad datasourceSjukfallPerManad;
     @Autowired
-    private Diagnosgrupp datasourceDiagnosgrupp;
+    private se.inera.statistics.service.report.api.Diagnosgrupp datasourceDiagnosgrupp;
     @Autowired
     private Diagnoskapitel datasourceDiagnoskapitel;
     @Autowired
@@ -100,10 +99,10 @@ public class ChartDataService {
     }
 
     @GET
-    @Path("getDiagnosisGroups")
+    @Path("getDiagnosgrupps")
     @Produces({ MediaType.APPLICATION_JSON })
-    public List<DiagnosisGroup> getDiagnosisGroups() {
-        LOG.info("Calling getDiagnosisGroups");
+    public List<Diagnosgrupp> getDiagnosisGroups() {
+        LOG.info("Calling getDiagnosgrupps");
         return DiagnosisGroupsUtil.getAllDiagnosisGroups();
     }
 
@@ -113,7 +112,7 @@ public class ChartDataService {
     public DualSexStatisticsData getDiagnosisGroupStatistics() {
         LOG.info("Calling getDiagnosisGroupStatistics for national");
         final Range range = new Range(18);
-        DiagnosisGroupResponse diagnosisGroups = datasourceDiagnosgrupp.getDiagnosisGroups(NATIONELL, range);
+        DiagnosgruppResponse diagnosisGroups = datasourceDiagnosgrupp.getDiagnosisGroups(NATIONELL, range);
         return new DiagnosisGroupsConverter().convert(diagnosisGroups, range);
     }
 
@@ -132,7 +131,7 @@ public class ChartDataService {
     public DualSexStatisticsData getDiagnosisSubGroupStatistics(@PathParam("groupId") String groupId) {
         LOG.info("Calling getDiagnosisSubGroupStatistics for national with groupId: " + groupId);
         final Range range = new Range(18);
-        DiagnosisGroupResponse diagnosisGroups = datasourceDiagnoskapitel.getDiagnosisGroups(NATIONELL, range, groupId);
+        DiagnosgruppResponse diagnosisGroups = datasourceDiagnoskapitel.getDiagnosisGroups(NATIONELL, range, groupId);
         return new DiagnosisSubGroupsConverter().convert(diagnosisGroups, range);
     }
 

@@ -27,8 +27,8 @@ import java.util.Random;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import se.inera.statistics.service.report.api.Diagnoskapitel;
-import se.inera.statistics.service.report.model.DiagnosisGroup;
-import se.inera.statistics.service.report.model.DiagnosisGroupResponse;
+import se.inera.statistics.service.report.model.Diagnosgrupp;
+import se.inera.statistics.service.report.model.DiagnosgruppResponse;
 import se.inera.statistics.service.report.model.DualSexDataRow;
 import se.inera.statistics.service.report.model.DualSexField;
 import se.inera.statistics.service.report.model.Range;
@@ -43,13 +43,13 @@ public class DiagnoskapitelMock implements Diagnoskapitel {
     private DiagnosisGroupsUtil diagnosisGroupsUtil;
 
     @Override
-    public DiagnosisGroupResponse getDiagnosisGroups(String hsaId, Range range, String diagnosisGroupId) {
-        List<DiagnosisGroup> headers = diagnosisGroupsUtil.getSubGroups(diagnosisGroupId);
+    public DiagnosgruppResponse getDiagnosisGroups(String hsaId, Range range, String diagnosisGroupId) {
+        List<Diagnosgrupp> headers = diagnosisGroupsUtil.getSubGroups(diagnosisGroupId);
         List<DualSexDataRow> rows = new ArrayList<>();
         for (String periodName : ReportUtil.PERIODS) {
             rows.add(new DualSexDataRow(periodName, randomData(headers.size())));
         }
-        return new DiagnosisGroupResponse(headers, rows);
+        return new DiagnosgruppResponse(headers, rows);
     }
 
     private List<DualSexField> randomData(int size) {

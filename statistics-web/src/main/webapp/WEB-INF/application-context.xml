@@ -96,7 +96,7 @@
 
     <beans profile="!test,!db,!qa">
         <bean class="se.inera.statistics.service.report.mock.SjukfallPerManadMock" id="casesPerMonth"/>
-        <bean class="se.inera.statistics.service.report.mock.DiagnosgruppMock" id="diagnosisGroups"/>
+        <bean class="se.inera.statistics.service.report.mock.DiagnosgruppMock" id="diagnosgrupps"/>
         <bean class="se.inera.statistics.service.report.mock.DiagnoskapitelMock" id="diagnosisSubGroups"/>
         <bean class="se.inera.statistics.service.report.mock.OverviewMock" id="overview"/>
         <bean class="se.inera.statistics.service.report.mock.VerksamhetOverviewMock" id="verksamhetOverview"/>
@@ -113,7 +113,7 @@
         <bean class="se.inera.statistics.service.report.repository.SjukfallPerManadPersistenceHandler"
               id="casesPerMonth"/>
         <bean class="se.inera.statistics.service.report.repository.DiagnosgroupPersistenceHandler"
-              id="diagnosisGroups"/>
+              id="diagnosgrupps"/>
         <bean class="se.inera.statistics.service.report.repository.DiagnossubgroupPersistenceHandler"
               id="diagnosisSubGroups"/>
         <bean class="se.inera.statistics.service.report.repository.OverviewPersistenceHandler" id="overview"/>

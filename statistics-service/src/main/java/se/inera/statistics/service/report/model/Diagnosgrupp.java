@@ -19,7 +19,7 @@
 
 package se.inera.statistics.service.report.model;
 
-public class DiagnosisGroup implements Comparable<DiagnosisGroup> {
+public class Diagnosgrupp implements Comparable<Diagnosgrupp> {
 
     public static final int ICD10_CODE_MAX_LEN = 3;
     private final String id;
@@ -27,7 +27,7 @@ public class DiagnosisGroup implements Comparable<DiagnosisGroup> {
     private final String firstId;
     private final String lastId;
 
-    public DiagnosisGroup(String id, String name) {
+    public Diagnosgrupp(String id, String name) {
         this.id = id;
         this.name = name;
         String[] split = id.split("-");
@@ -49,7 +49,7 @@ public class DiagnosisGroup implements Comparable<DiagnosisGroup> {
 
     @Override
     public String toString() {
-        return "{\"DiagnosisGroup\":{" + "\"id\":\"" + id + '"' + ", \"name\":\"" + name + '"' + ", \"firstId\":\"" + firstId + '"' + ", \"lastId\":\"" + lastId + '"' + "}}";
+        return "{\"Diagnosgrupp\":{" + "\"id\":\"" + id + '"' + ", \"name\":\"" + name + '"' + ", \"firstId\":\"" + firstId + '"' + ", \"lastId\":\"" + lastId + '"' + "}}";
     }
 
     public boolean isCodeInGroup(String icd10Code) {
@@ -66,7 +66,7 @@ public class DiagnosisGroup implements Comparable<DiagnosisGroup> {
     }
 
     @Override
-    public int compareTo(DiagnosisGroup o) {
+    public int compareTo(Diagnosgrupp o) {
         return id.compareTo(o.id);
     }
 
@@ -77,13 +77,13 @@ public class DiagnosisGroup implements Comparable<DiagnosisGroup> {
 
     @Override
     public boolean equals(Object obj) {
-        if (obj instanceof DiagnosisGroup) {
-            return isEqual((DiagnosisGroup) obj);
+        if (obj instanceof Diagnosgrupp) {
+            return isEqual((Diagnosgrupp) obj);
         }
         return false;
     }
 
-    private boolean isEqual(DiagnosisGroup other) {
+    private boolean isEqual(Diagnosgrupp other) {
         return id.equals(other.id);
     }
 

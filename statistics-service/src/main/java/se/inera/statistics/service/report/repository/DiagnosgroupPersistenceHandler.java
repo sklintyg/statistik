@@ -30,19 +30,14 @@ import javax.persistence.TypedQuery;
 import org.joda.time.LocalDate;
 import org.springframework.transaction.annotation.Transactional;
 
-import se.inera.statistics.service.report.api.Diagnosgrupp;
-import se.inera.statistics.service.report.model.DiagnosisGroup;
-import se.inera.statistics.service.report.model.DiagnosisGroupResponse;
-import se.inera.statistics.service.report.model.DualSexDataRow;
-import se.inera.statistics.service.report.model.DualSexField;
-import se.inera.statistics.service.report.model.Range;
-import se.inera.statistics.service.report.model.Sex;
+import se.inera.statistics.service.report.model.*;
+import se.inera.statistics.service.report.model.Diagnosgrupp;
 import se.inera.statistics.service.report.util.DiagnosisGroupsUtil;
 import se.inera.statistics.service.report.util.ReportUtil;
 import se.inera.statistics.service.report.util.Verksamhet;
 
-public class DiagnosgroupPersistenceHandler implements Diagnosgrupp {
-    private static final List<DiagnosisGroup> HEADERS = DiagnosisGroupsUtil.getAllDiagnosisGroups();
+public class DiagnosgroupPersistenceHandler implements se.inera.statistics.service.report.api.Diagnosgrupp {
+    private static final List<Diagnosgrupp> HEADERS = DiagnosisGroupsUtil.getAllDiagnosisGroups();
 
     @PersistenceContext(unitName = "IneraStatisticsLog")
     private EntityManager manager;
@@ -65,13 +60,13 @@ public class DiagnosgroupPersistenceHandler implements Diagnosgrupp {
 
     @Override
     @Transactional
-    public DiagnosisGroupResponse getDiagnosisGroups(String hsaId, Range range) {
+    public DiagnosgruppResponse getDiagnosisGroups(String hsaId, Range range) {
         TypedQuery<DiagnosisGroupData> query = manager.createQuery("SELECT c FROM DiagnosisGroupData c WHERE c.key.hsaId = :hsaId AND c.key.period BETWEEN :from AND :to", DiagnosisGroupData.class);
         query.setParameter("hsaId", hsaId);
         query.setParameter("from", ReportUtil.toPeriod(range.getFrom()));
         query.setParameter("to", ReportUtil.toPeriod(range.getTo()));
 
-        return new DiagnosisGroupResponse(HEADERS, translateForOutput(range, query.getResultList()));
+        return new DiagnosgruppResponse(HEADERS, translateForOutput(range, query.getResultList()));
     }
 
     private List<DualSexDataRow> translateForOutput(Range range, List<DiagnosisGroupData> list) {
@@ -84,7 +79,7 @@ public class DiagnosgroupPersistenceHandler implements Diagnosgrupp {
             String displayDate = ReportUtil.toDiagramPeriod(currentPeriod);
             String period = ReportUtil.toPeriod(currentPeriod);
             List<DualSexField> values = new ArrayList<>(HEADERS.size());
-            for (DiagnosisGroup group: HEADERS) {
+            for (Diagnosgrupp group: HEADERS) {
                 values.add(map.get(period + group.getId()));
             }
             translatedCasesPerMonthRows.add(new DualSexDataRow(displayDate, values));

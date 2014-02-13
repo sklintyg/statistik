@@ -24,29 +24,24 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
-import se.inera.statistics.service.report.api.Diagnosgrupp;
-import se.inera.statistics.service.report.model.DiagnosisGroup;
-import se.inera.statistics.service.report.model.DiagnosisGroupResponse;
-import se.inera.statistics.service.report.model.DualSexDataRow;
-import se.inera.statistics.service.report.model.DualSexField;
-import se.inera.statistics.service.report.model.Range;
-import se.inera.statistics.service.report.model.Sex;
+import se.inera.statistics.service.report.model.*;
+import se.inera.statistics.service.report.model.DiagnosgruppResponse;
 import se.inera.statistics.service.report.util.DiagnosisGroupsUtil;
 import se.inera.statistics.service.report.util.ReportUtil;
 import se.inera.statistics.service.report.util.Verksamhet;
 
-public class DiagnosgruppMock implements Diagnosgrupp {
+public class DiagnosgruppMock implements se.inera.statistics.service.report.api.Diagnosgrupp {
 
     private static final int MAX_VALUE = 100;
 
     @Override
-    public DiagnosisGroupResponse getDiagnosisGroups(String hsaId, Range range) {
-        List<DiagnosisGroup> headers = DiagnosisGroupsUtil.getAllDiagnosisGroups();
+    public DiagnosgruppResponse getDiagnosisGroups(String hsaId, Range range) {
+        List<Diagnosgrupp> headers = DiagnosisGroupsUtil.getAllDiagnosisGroups();
         List<DualSexDataRow> rows = new ArrayList<>();
         for (String periodName : ReportUtil.PERIODS) {
             rows.add(new DualSexDataRow(periodName, randomData(headers.size())));
         }
-        return new DiagnosisGroupResponse(headers, rows);
+        return new DiagnosgruppResponse(headers, rows);
     }
 
     private List<DualSexField> randomData(int size) {

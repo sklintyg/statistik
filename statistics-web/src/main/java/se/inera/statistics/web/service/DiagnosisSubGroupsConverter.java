@@ -26,7 +26,7 @@ import java.util.TreeMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import se.inera.statistics.service.report.model.DiagnosisGroupResponse;
+import se.inera.statistics.service.report.model.DiagnosgruppResponse;
 import se.inera.statistics.service.report.model.DualSexDataRow;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.Sex;
@@ -41,7 +41,7 @@ public class DiagnosisSubGroupsConverter {
 
     private static final int NUMBER_OF_CHART_SERIES = 6;
 
-    DualSexStatisticsData convert(DiagnosisGroupResponse diagnosisGroups, Range range) {
+    DualSexStatisticsData convert(DiagnosgruppResponse diagnosisGroups, Range range) {
         TableData tableData = DiagnosisGroupsConverter.convertTable(diagnosisGroups);
         List<Integer> topIndexes = getTopColumnIndexes(diagnosisGroups);
         ChartData maleChart = extractChartData(diagnosisGroups, topIndexes, Sex.Male);
@@ -49,12 +49,12 @@ public class DiagnosisSubGroupsConverter {
         return new DualSexStatisticsData(tableData, maleChart, femaleChart, range.toString());
     }
 
-    private ChartData extractChartData(DiagnosisGroupResponse data, List<Integer> topIndexes, Sex sex) {
+    private ChartData extractChartData(DiagnosgruppResponse data, List<Integer> topIndexes, Sex sex) {
         List<ChartSeries> topColumns = getTopColumns(data, topIndexes, sex);
         return new ChartData(topColumns, data.getPeriods());
     }
 
-    private List<ChartSeries> getTopColumns(DiagnosisGroupResponse data, List<Integer> topIndexes, Sex sex) {
+    private List<ChartSeries> getTopColumns(DiagnosgruppResponse data, List<Integer> topIndexes, Sex sex) {
         List<ChartSeries> topColumns = new ArrayList<>();
         for (Integer index : topIndexes) {
             List<Integer> indexData = data.getDataFromIndex(index, sex);
@@ -67,7 +67,7 @@ public class DiagnosisSubGroupsConverter {
         return topColumns;
     }
 
-    private List<Integer> sumRemaining(List<Integer> topIndexes, DiagnosisGroupResponse data, Sex sex) {
+    private List<Integer> sumRemaining(List<Integer> topIndexes, DiagnosgruppResponse data, Sex sex) {
         List<Integer> remaining = new ArrayList<>();
         for (int i = 0; i < data.getRows().size(); i++) {
             remaining.add(0);
@@ -84,7 +84,7 @@ public class DiagnosisSubGroupsConverter {
         return remaining;
     }
 
-    private List<Integer> getTopColumnIndexes(DiagnosisGroupResponse diagnosisGroups) {
+    private List<Integer> getTopColumnIndexes(DiagnosgruppResponse diagnosisGroups) {
         if (diagnosisGroups.getRows().isEmpty()) {
             return new ArrayList<Integer>();
         }

@@ -32,12 +32,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 import se.inera.statistics.service.report.api.Diagnoskapitel;
-import se.inera.statistics.service.report.model.DiagnosisGroup;
-import se.inera.statistics.service.report.model.DiagnosisGroupResponse;
-import se.inera.statistics.service.report.model.DualSexDataRow;
-import se.inera.statistics.service.report.model.DualSexField;
-import se.inera.statistics.service.report.model.Range;
-import se.inera.statistics.service.report.model.Sex;
+import se.inera.statistics.service.report.model.*;
+import se.inera.statistics.service.report.model.Diagnosgrupp;
 import se.inera.statistics.service.report.util.DiagnosisGroupsUtil;
 import se.inera.statistics.service.report.util.ReportUtil;
 import se.inera.statistics.service.report.util.Verksamhet;
@@ -67,18 +63,18 @@ public class DiagnossubgroupPersistenceHandler implements Diagnoskapitel {
 
     @Override
     @Transactional
-    public DiagnosisGroupResponse getDiagnosisGroups(String hsaId, Range range, String group) {
+    public DiagnosgruppResponse getDiagnosisGroups(String hsaId, Range range, String group) {
         TypedQuery<DiagnosisSubGroupData> query = manager.createQuery("SELECT c FROM DiagnosisSubGroupData c WHERE c.key.hsaId = :hsaId AND c.key.diagnosgrupp = :group and c.key.period BETWEEN :from AND :to", DiagnosisSubGroupData.class);
         query.setParameter("hsaId", hsaId);
         query.setParameter("group", group);
         query.setParameter("from", ReportUtil.toPeriod(range.getFrom()));
         query.setParameter("to", ReportUtil.toPeriod(range.getTo()));
 
-        List<DiagnosisGroup> header = diagnosisGroupsUtil.getSubGroups(group);
-        return new DiagnosisGroupResponse(header, translateForOutput(range, header, query.getResultList()));
+        List<Diagnosgrupp> header = diagnosisGroupsUtil.getSubGroups(group);
+        return new DiagnosgruppResponse(header, translateForOutput(range, header, query.getResultList()));
     }
 
-    private List<DualSexDataRow> translateForOutput(Range range, List<DiagnosisGroup> header, List<DiagnosisSubGroupData> list) {
+    private List<DualSexDataRow> translateForOutput(Range range, List<Diagnosgrupp> header, List<DiagnosisSubGroupData> list) {
         List<DualSexDataRow> translatedCasesPerMonthRows = new ArrayList<>();
 
         // Span all
@@ -88,7 +84,7 @@ public class DiagnossubgroupPersistenceHandler implements Diagnoskapitel {
             String displayDate = ReportUtil.toDiagramPeriod(currentPeriod);
             String period = ReportUtil.toPeriod(currentPeriod);
             List<DualSexField> values = new ArrayList<>(header.size());
-            for (DiagnosisGroup group: header) {
+            for (Diagnosgrupp group: header) {
                 values.add(map.get(period + group.getId()));
             }
             translatedCasesPerMonthRows.add(new DualSexDataRow(displayDate, values));

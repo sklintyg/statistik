@@ -29,11 +29,8 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.TreeMap;
 
-import se.inera.statistics.service.report.model.DiagnosisGroup;
-import se.inera.statistics.service.report.model.DiagnosisGroupResponse;
-import se.inera.statistics.service.report.model.DualSexDataRow;
-import se.inera.statistics.service.report.model.Range;
-import se.inera.statistics.service.report.model.Sex;
+import se.inera.statistics.service.report.model.*;
+import se.inera.statistics.service.report.model.Diagnosgrupp;
 import se.inera.statistics.web.model.ChartData;
 import se.inera.statistics.web.model.ChartSeries;
 import se.inera.statistics.web.model.DualSexStatisticsData;
@@ -63,14 +60,14 @@ public class DiagnosisGroupsConverter {
         return new ArrayList<>(DIAGNOSIS_CHART_GROUPS.keySet());
     }
 
-    DualSexStatisticsData convert(DiagnosisGroupResponse diagnosisGroups, Range range) {
+    DualSexStatisticsData convert(DiagnosgruppResponse diagnosisGroups, Range range) {
         TableData tableData = convertTable(diagnosisGroups);
         ChartData maleChart = convertChart(diagnosisGroups, Sex.Male);
         ChartData femaleChart = convertChart(diagnosisGroups, Sex.Female);
         return new DualSexStatisticsData(tableData, maleChart, femaleChart, range.toString());
     }
 
-    private ChartData convertChart(DiagnosisGroupResponse resp, Sex sex) {
+    private ChartData convertChart(DiagnosgruppResponse resp, Sex sex) {
         Map<String, List<Integer>> allGroups = extractAllGroups(resp, sex);
         Map<String, List<Integer>> mergedGroups = mergeChartGroups(allGroups);
         ArrayList<ChartSeries> rows = new ArrayList<>();
@@ -110,10 +107,10 @@ public class DiagnosisGroupsConverter {
         return listOfZeros;
     }
 
-    private Map<String, List<Integer>> extractAllGroups(DiagnosisGroupResponse resp, Sex sex) {
+    private Map<String, List<Integer>> extractAllGroups(DiagnosgruppResponse resp, Sex sex) {
         Map<String, List<Integer>> allGroups = new HashMap<>();
-        for (int i = 0; i < resp.getDiagnosisGroups().size(); i++) {
-            DiagnosisGroup groupName = resp.getDiagnosisGroups().get(i);
+        for (int i = 0; i < resp.getDiagnosgrupps().size(); i++) {
+            Diagnosgrupp groupName = resp.getDiagnosgrupps().get(i);
             allGroups.put(groupName.getId(), resp.getDataFromIndex(i, sex));
         }
         return allGroups;
@@ -151,14 +148,14 @@ public class DiagnosisGroupsConverter {
         return OVRIGT_CHART_GROUP;
     }
 
-    static TableData convertTable(DiagnosisGroupResponse resp) {
+    static TableData convertTable(DiagnosgruppResponse resp) {
         List<NamedData> rows = getTableRows(resp);
         ServiceUtil.addSumRow(rows, false);
         List<List<TableHeader>> headers = getTableHeaders(resp);
         return new TableData(rows, headers);
     }
 
-    private static List<NamedData> getTableRows(DiagnosisGroupResponse resp) {
+    private static List<NamedData> getTableRows(DiagnosgruppResponse resp) {
         List<NamedData> rows = new ArrayList<>();
         int accumulatedSum = 0;
         for (DualSexDataRow row : resp.getRows()) {
@@ -175,7 +172,7 @@ public class DiagnosisGroupsConverter {
         return rows;
     }
 
-    private static List<List<TableHeader>> getTableHeaders(DiagnosisGroupResponse resp) {
+    private static List<List<TableHeader>> getTableHeaders(DiagnosgruppResponse resp) {
         List<TableHeader> topHeaderRow = new ArrayList<>();
         topHeaderRow.add(new TableHeader(""));
         topHeaderRow.add(new TableHeader(""));
