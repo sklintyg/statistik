@@ -24,14 +24,14 @@ import java.util.List;
 public class OverviewData {
 
     private final String periodText;
-    private final NumberOfCasesPerMonthOverview casesPerMonth;
+    private final SjukfallPerManadOverview casesPerMonth;
     private final List<DonutChartData> diagnosisGroups;
     private final List<DonutChartData> ageGroups;
     private final List<DonutChartData> degreeOfSickLeaveGroups;
     private final SickLeaveLengthOverview sickLeaveLength;
     private final List<DonutChartData> perCounty;
 
-    public OverviewData(String periodText, NumberOfCasesPerMonthOverview casesPerMonth, List<DonutChartData> diagnosisGroups,
+    public OverviewData(String periodText, SjukfallPerManadOverview casesPerMonth, List<DonutChartData> diagnosisGroups,
             List<DonutChartData> ageGroups, List<DonutChartData> degreeOfSickLeaveGroups,
             SickLeaveLengthOverview sickLeaveLength, List<DonutChartData> perCounty) {
         this.periodText = periodText;
@@ -47,7 +47,7 @@ public class OverviewData {
         return periodText;
     }
 
-    public NumberOfCasesPerMonthOverview getCasesPerMonth() {
+    public SjukfallPerManadOverview getCasesPerMonth() {
         return casesPerMonth;
     }
 

@@ -32,7 +32,7 @@ import se.inera.statistics.service.report.model.OverviewResponse;
 import se.inera.statistics.service.report.model.OverviewKonsfordelning;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.web.model.overview.DonutChartData;
-import se.inera.statistics.web.model.overview.NumberOfCasesPerMonthOverview;
+import se.inera.statistics.web.model.overview.SjukfallPerManadOverview;
 import se.inera.statistics.web.model.overview.OverviewData;
 import se.inera.statistics.web.model.overview.SickLeaveLengthOverview;
 
@@ -90,7 +90,7 @@ public class OverviewConverterTest {
         OverviewData data = new OverviewConverter().convert(resp, new Range(3));
 
         //Then
-        NumberOfCasesPerMonthOverview casesPerMonth = data.getCasesPerMonth();
+        SjukfallPerManadOverview casesPerMonth = data.getCasesPerMonth();
         assertEquals(2, casesPerMonth.getAlteration());
         assertEquals(100, casesPerMonth.getProportionFemale());
         assertEquals(0, casesPerMonth.getProportionMale());

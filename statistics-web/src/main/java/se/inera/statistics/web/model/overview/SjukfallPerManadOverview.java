@@ -19,14 +19,14 @@
 
 package se.inera.statistics.web.model.overview;
 
-public class NumberOfCasesPerMonthOverview {
+public class SjukfallPerManadOverview {
 
     private final int proportionMale;
     private final int proportionFemale;
     private final int alteration;
     private final String previousPeriodText;
 
-    public NumberOfCasesPerMonthOverview(int proportionMale, int proportionFemale, int alteration, String previousPeriodText) {
+    public SjukfallPerManadOverview(int proportionMale, int proportionFemale, int alteration, String previousPeriodText) {
         this.proportionMale = proportionMale;
         this.proportionFemale = proportionFemale;
         this.alteration = alteration;
