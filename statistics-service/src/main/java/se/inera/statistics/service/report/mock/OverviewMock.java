@@ -24,8 +24,8 @@ import java.util.ArrayList;
 import se.inera.statistics.service.report.api.Overview;
 import se.inera.statistics.service.report.model.OverviewChartRow;
 import se.inera.statistics.service.report.model.OverviewChartRowExtended;
-import se.inera.statistics.service.report.model.OverviewResponse;
 import se.inera.statistics.service.report.model.OverviewKonsfordelning;
+import se.inera.statistics.service.report.model.OverviewResponse;
 import se.inera.statistics.service.report.model.Range;
 
 public class OverviewMock implements Overview {

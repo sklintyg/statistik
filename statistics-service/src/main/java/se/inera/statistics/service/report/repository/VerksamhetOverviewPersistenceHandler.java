@@ -24,8 +24,11 @@ import java.util.List;
 import org.springframework.transaction.annotation.Transactional;
 
 import se.inera.statistics.service.report.api.VerksamhetOverview;
-import se.inera.statistics.service.report.model.*;
+import se.inera.statistics.service.report.model.OverviewChartRow;
+import se.inera.statistics.service.report.model.OverviewChartRowExtended;
 import se.inera.statistics.service.report.model.OverviewKonsfordelning;
+import se.inera.statistics.service.report.model.Range;
+import se.inera.statistics.service.report.model.VerksamhetOverviewResponse;
 import se.inera.statistics.service.report.util.ReportUtil;
 
 public class VerksamhetOverviewPersistenceHandler extends OverviewBasePersistenceHandler implements VerksamhetOverview {

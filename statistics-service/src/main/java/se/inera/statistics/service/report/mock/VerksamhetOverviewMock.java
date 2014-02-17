@@ -22,8 +22,11 @@ package se.inera.statistics.service.report.mock;
 import java.util.ArrayList;
 
 import se.inera.statistics.service.report.api.VerksamhetOverview;
-import se.inera.statistics.service.report.model.*;
+import se.inera.statistics.service.report.model.OverviewChartRow;
+import se.inera.statistics.service.report.model.OverviewChartRowExtended;
 import se.inera.statistics.service.report.model.OverviewKonsfordelning;
+import se.inera.statistics.service.report.model.Range;
+import se.inera.statistics.service.report.model.VerksamhetOverviewResponse;
 
 public class VerksamhetOverviewMock implements VerksamhetOverview {
 

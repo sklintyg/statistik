@@ -31,8 +31,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 import se.inera.statistics.service.report.api.SjukfallPerLan;
-import se.inera.statistics.service.report.model.*;
+import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.report.model.KonField;
+import se.inera.statistics.service.report.model.Lan;
+import se.inera.statistics.service.report.model.Range;
+import se.inera.statistics.service.report.model.SimpleKonDataRow;
+import se.inera.statistics.service.report.model.SimpleKonResponse;
 import se.inera.statistics.service.report.model.db.SjukfallPerLanKey;
 import se.inera.statistics.service.report.model.db.SjukfallPerLanRow;
 import se.inera.statistics.service.report.util.ReportUtil;
