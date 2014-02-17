@@ -21,8 +21,11 @@ package se.inera.statistics.web.service;
 
 import java.util.ArrayList;
 
-import se.inera.statistics.service.report.model.*;
+import se.inera.statistics.service.report.model.OverviewChartRow;
+import se.inera.statistics.service.report.model.OverviewChartRowExtended;
 import se.inera.statistics.service.report.model.OverviewKonsfordelning;
+import se.inera.statistics.service.report.model.Range;
+import se.inera.statistics.service.report.model.VerksamhetOverviewResponse;
 import se.inera.statistics.web.model.overview.BarChartData;
 import se.inera.statistics.web.model.overview.DonutChartData;
 import se.inera.statistics.web.model.overview.SickLeaveLengthOverview;
