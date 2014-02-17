@@ -15,7 +15,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 import se.inera.statistics.service.common.CommonPersistence;
 import se.inera.statistics.service.helper.DocumentHelper;
 import se.inera.statistics.service.helper.UtlatandeBuilder;
-import se.inera.statistics.service.queue.Receiver;
+import se.inera.statistics.service.queue.JmsReceiver;
 import se.inera.statistics.service.report.model.Diagnosgrupp;
 import se.inera.statistics.service.report.repository.NationellUpdater;
 import se.inera.statistics.service.report.util.DiagnosisGroupsUtil;
@@ -29,7 +29,7 @@ public class DemoTest {
     private CommonPersistence persistence = Mockito.mock(CommonPersistence.class);
 
     @Mock
-    private Receiver receiver = Mockito.mock(Receiver.class);
+    private JmsReceiver receiver = Mockito.mock(JmsReceiver.class);
 
     @Mock
     private NationellUpdater nationellUpdater = Mockito.mock(NationellUpdater.class);

@@ -17,12 +17,7 @@
  *     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package se.inera.statistics.service.queue;
-
-import javax.jms.JMSException;
-import javax.jms.Message;
-import javax.jms.MessageListener;
-import javax.jms.TextMessage;
+package se.inera.statistics.service.processlog;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,12 +25,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import se.inera.statistics.service.helper.JSONParser;
 import se.inera.statistics.service.hsa.HSADecorator;
-import se.inera.statistics.service.processlog.EventType;
-import se.inera.statistics.service.processlog.ProcessLog;
 
 import com.fasterxml.jackson.databind.JsonNode;
 
-public class Receiver implements MessageListener {
+public class Receiver  {
     private static final Logger LOG = LoggerFactory.getLogger(Receiver.class);
 
     public static final String CREATED = "created";
@@ -69,36 +62,7 @@ public class Receiver implements MessageListener {
         }
     }
 
-    public void onMessage(Message rawMessage) {
-        if (rawMessage instanceof TextMessage) {
-            try {
-                String doc = ((TextMessage) rawMessage).getText();
-                long timestamp = rawMessage.getJMSTimestamp();
-                String typeName = rawMessage.getStringProperty(ACTION);
-                String certificateId = rawMessage.getStringProperty(CERTIFICATE_ID);
-                accept(typeEvent(typeName), doc, certificateId, timestamp);
-                LOG.info("Received intyg {}", certificateId);
-            } catch (JMSException e) {
-                throw new StatisticsJMSException("JMS error", e);
-            }
-        } else {
-            LOG.error("Unrecognized message type " + rawMessage.getClass().getCanonicalName());
-        }
-        LOG.debug("Received intyg " + rawMessage + " .");
-    }
-
     public void setProcessLog(ProcessLog processLog) {
         this.processLog = processLog;
-    }
-
-    private static EventType typeEvent(String typeName) {
-        switch (typeName.toLowerCase()) {
-        case CREATED:
-            return EventType.CREATED;
-        case REVOKED:
-            return EventType.REVOKED;
-        default:
-            return EventType.TEST;
-        }
     }
 }
