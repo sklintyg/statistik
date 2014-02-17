@@ -22,17 +22,21 @@ package se.inera.statistics.web.util;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import se.inera.ifv.statistics.spi.authorization.impl.HSAWebServiceCalls;
+import se.inera.statistics.service.scheduler.ReceiveHistoryJob;
 import se.inera.statistics.web.service.ChartDataService;
 
 public class HealthCheckUtil {
 
-    private static final int NANOS_PER_MS = 1000000;
+    private static final int NANOS_PER_MS = 1_000_000;
 
     @Autowired
     private ChartDataService chartDataService;
 
     @Autowired
     private HSAWebServiceCalls hsaService;
+
+    @Autowired
+    private ReceiveHistoryJob receiveHistory;
 
     public Status getOverviewStatus() {
         boolean ok;
@@ -44,11 +48,7 @@ public class HealthCheckUtil {
             ok = false;
         }
         long doneTime = System.nanoTime();
-        return new Status((doneTime - startTime) / NANOS_PER_MS, ok);
-    }
-
-    public boolean isOverviewOk() {
-        return getOverviewStatus().isOk();
+        return createStatus(ok, startTime, doneTime);
     }
 
     public Status getHsaStatus() {
@@ -61,15 +61,23 @@ public class HealthCheckUtil {
             ok = false;
         }
         long doneTime = System.nanoTime();
+        return createStatus(ok, startTime, doneTime);
+    }
+
+    public Status getReceiveStatus() {
+        return new Status(receiveHistory.getCurrentRate(), true);
+    }
+
+    private Status createStatus(boolean ok, long startTime, long doneTime) {
         return new Status((doneTime - startTime) / NANOS_PER_MS, ok);
     }
 
     public static final class Status {
-        private final long time;
+        private final long measurement;
         private final boolean ok;
 
-        private Status(long time, boolean ok) {
-            this.time = time;
+        private Status(long measurement, boolean ok) {
+            this.measurement = measurement;
             this.ok = ok;
         }
 
@@ -77,8 +85,8 @@ public class HealthCheckUtil {
             return ok;
         }
 
-        public long getTime() {
-            return time;
+        public long getMeasurement() {
+            return measurement;
         }
     }
 }

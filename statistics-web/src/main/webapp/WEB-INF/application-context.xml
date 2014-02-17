@@ -77,6 +77,7 @@
         <context:annotation-config/>
         <context:component-scan base-package="se.inera.statistics.service"/>
 
+        <bean id="receiver" class="se.inera.statistics.service.processlog.Receiver"/>
         <bean class="se.inera.statistics.service.report.util.DiagnosisGroupsUtil"/>
         <bean class="org.springframework.core.io.ClassPathResource" id="icd10ChaptersAnsiFile">
             <constructor-arg value="KSH97_AVS.ANS"/>
@@ -133,7 +134,6 @@
     </beans>
     <beans profile="generatetestdata">
         <bean class="se.inera.statistics.service.common.CommonPersistenceHandler"/>
-        <bean class="se.inera.statistics.service.queue.Receiver"/>
         <bean class="se.inera.statistics.service.demo.InjectUtlatande2" lazy-init="false"/>
     </beans>
 </beans>
