@@ -32,7 +32,7 @@ import org.springframework.jms.core.JmsTemplate;
 import org.springframework.jms.core.MessageCreator;
 
 import se.inera.statistics.service.processlog.EventType;
-import se.inera.statistics.service.queue.Receiver;
+import se.inera.statistics.service.queue.JmsReceiver;
 
 public class QueueSender {
     private JmsTemplate jmsTemplate;
@@ -53,8 +53,8 @@ public class QueueSender {
         this.jmsTemplate.send(destination, new MessageCreator() {
             public Message createMessage(Session session) throws JMSException {
                 TextMessage message = session.createTextMessage(intyg);
-                message.setStringProperty(Receiver.ACTION, Receiver.CREATED);
-                message.setStringProperty(Receiver.CERTIFICATE_ID, correlationId);
+                message.setStringProperty(JmsReceiver.ACTION, JmsReceiver.CREATED);
+                message.setStringProperty(JmsReceiver.CERTIFICATE_ID, correlationId);
                 return message;
             }
         });
@@ -65,8 +65,8 @@ public class QueueSender {
         this.jmsTemplate.send(destination, new MessageCreator() {
             public Message createMessage(Session session) throws JMSException {
                 TextMessage message = session.createTextMessage(intyg);
-                message.setStringProperty(Receiver.ACTION, type.name());
-                message.setStringProperty(Receiver.CERTIFICATE_ID, correlationId);
+                message.setStringProperty(JmsReceiver.ACTION, type.name());
+                message.setStringProperty(JmsReceiver.CERTIFICATE_ID, correlationId);
                 return message;
             }
         });

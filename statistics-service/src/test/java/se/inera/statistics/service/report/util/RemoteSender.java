@@ -17,7 +17,7 @@ import org.springframework.jms.core.JmsTemplate;
 import org.springframework.jms.core.MessageCreator;
 
 import se.inera.statistics.service.helper.UtlatandeBuilder;
-import se.inera.statistics.service.queue.Receiver;
+import se.inera.statistics.service.queue.JmsReceiver;
 
 // CHECKSTYLE:OFF MagicNumber
 public class RemoteSender {
@@ -44,8 +44,8 @@ public class RemoteSender {
         this.jmsTemplate.send(destination, new MessageCreator() {
             public Message createMessage(Session session) throws JMSException {
                 TextMessage message = session.createTextMessage(intyg);
-                message.setStringProperty(Receiver.ACTION, Receiver.CREATED);
-                message.setStringProperty(Receiver.CERTIFICATE_ID, correlationId);
+                message.setStringProperty(JmsReceiver.ACTION, JmsReceiver.CREATED);
+                message.setStringProperty(JmsReceiver.CERTIFICATE_ID, correlationId);
                 return message;
             }
         });

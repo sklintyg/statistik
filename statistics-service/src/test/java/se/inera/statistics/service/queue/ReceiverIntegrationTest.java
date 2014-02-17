@@ -90,8 +90,8 @@ public class ReceiverIntegrationTest {
         this.jmsTemplate.send(destination, new MessageCreator() {
             public Message createMessage(Session session) throws JMSException {
                 TextMessage message = session.createTextMessage(intyg);
-                message.setStringProperty(Receiver.ACTION, Receiver.CREATED);
-                message.setStringProperty(Receiver.CERTIFICATE_ID, correlationId);
+                message.setStringProperty(JmsReceiver.ACTION, JmsReceiver.CREATED);
+                message.setStringProperty(JmsReceiver.CERTIFICATE_ID, correlationId);
                 return message;
             }
         });

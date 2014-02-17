@@ -1407,6 +1407,9 @@ a.listheader.collapsed {
 	
 	.highcharts-tooltip span {
 	   white-space: pre-wrap !important;
+	   width: 200px;
+	   text-overflow: ellipsis;
+	   color: #000 !important;
 	}
 
 .navbar-inverse .navbar-inner {

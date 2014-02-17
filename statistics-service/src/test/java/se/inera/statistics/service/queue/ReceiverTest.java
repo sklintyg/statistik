@@ -16,6 +16,7 @@ import se.inera.statistics.service.hsa.HSADecorator;
 import se.inera.statistics.service.processlog.EventType;
 import se.inera.statistics.service.processlog.ProcessLog;
 import se.inera.statistics.service.processlog.Processor;
+import se.inera.statistics.service.processlog.Receiver;
 
 import com.fasterxml.jackson.databind.JsonNode;
 
