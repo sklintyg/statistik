@@ -101,11 +101,12 @@
         </property>
     </bean>
 
-    <bean id="receiver" class="se.inera.statistics.service.queue.Receiver"/>
+    <bean id="jmsReceiver" class="se.inera.statistics.service.queue.JmsReceiver"/>
+    <bean id="receiver" class="se.inera.statistics.service.processlog.Receiver"/>
 
     <bean id="jmsContainer" class="org.springframework.jms.listener.DefaultMessageListenerContainer" destroy-method="stop">
         <property name="connectionFactory" ref="jmsFactory"/>
         <property name="destination" ref="queue"/>
-        <property name="messageListener" ref="receiver"/>
+        <property name="messageListener" ref="jmsReceiver"/>
     </bean>
 </beans>
