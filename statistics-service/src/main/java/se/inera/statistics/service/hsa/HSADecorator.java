@@ -33,7 +33,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import se.inera.statistics.service.helper.JSONParser;
-import se.inera.statistics.service.processlog.HSAStore;
 
 import com.fasterxml.jackson.databind.JsonNode;
 

@@ -17,7 +17,7 @@
  *     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package se.inera.statistics.service.processlog;
+package se.inera.statistics.service.hsa;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
