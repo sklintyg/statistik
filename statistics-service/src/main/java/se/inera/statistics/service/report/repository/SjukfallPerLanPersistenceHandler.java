@@ -30,6 +30,7 @@ import javax.persistence.TypedQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
+import se.inera.statistics.service.report.api.RollingLength;
 import se.inera.statistics.service.report.api.SjukfallPerLan;
 import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.report.model.KonField;

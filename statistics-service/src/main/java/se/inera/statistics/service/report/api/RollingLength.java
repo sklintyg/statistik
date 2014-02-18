@@ -17,7 +17,7 @@
  *     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package se.inera.statistics.service.report.repository;
+package se.inera.statistics.service.report.api;
 
 public enum RollingLength {
     SINGLE_MONTH(1), QUARTER(3), YEAR(12);

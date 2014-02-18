@@ -24,8 +24,8 @@ import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import se.inera.statistics.service.report.api.RollingLength;
 import se.inera.statistics.service.report.api.SjukfallslangdGrupp;
-import se.inera.statistics.service.report.repository.RollingLength;
 import se.inera.statistics.service.report.util.SjukfallslangdUtil;
 import se.inera.statistics.service.report.util.Verksamhet;
 

@@ -24,12 +24,12 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
+import se.inera.statistics.service.report.api.RollingLength;
 import se.inera.statistics.service.report.api.SjukfallPerLan;
 import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.SimpleKonDataRow;
 import se.inera.statistics.service.report.model.SimpleKonResponse;
-import se.inera.statistics.service.report.repository.RollingLength;
 
 public class SjukfallPerLanMock implements SjukfallPerLan {
 

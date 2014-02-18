@@ -10,8 +10,8 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import se.inera.statistics.service.report.api.RollingLength;
 import se.inera.statistics.service.report.model.*;
-import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.report.util.SjukfallslangdUtil;
 import se.inera.statistics.service.report.util.Verksamhet;
 

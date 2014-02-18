@@ -25,6 +25,7 @@ import java.util.Random;
 
 import org.joda.time.LocalDate;
 
+import se.inera.statistics.service.report.api.RollingLength;
 import se.inera.statistics.service.report.api.SjukfallslangdGrupp;
 import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.report.model.Range;
@@ -32,7 +33,6 @@ import se.inera.statistics.service.report.model.SimpleKonDataRow;
 import se.inera.statistics.service.report.model.SimpleKonResponse;
 import se.inera.statistics.service.report.model.SjukfallslangdResponse;
 import se.inera.statistics.service.report.model.db.SjukfallslangdRow;
-import se.inera.statistics.service.report.repository.RollingLength;
 import se.inera.statistics.service.report.util.ReportUtil;
 import se.inera.statistics.service.report.util.SjukfallslangdUtil;
 import se.inera.statistics.service.report.util.Verksamhet;

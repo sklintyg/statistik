@@ -21,8 +21,9 @@ package se.inera.statistics.service.report.listener;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import se.inera.statistics.service.report.api.RollingLength;
 import se.inera.statistics.service.report.api.SjukfallPerLan;
-import se.inera.statistics.service.report.repository.RollingLength;
 
 @Component
 public class SjukfallPerLanListener extends RollingAbstractListener {

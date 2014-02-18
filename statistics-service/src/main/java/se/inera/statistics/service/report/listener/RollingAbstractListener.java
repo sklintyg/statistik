@@ -22,7 +22,7 @@ package se.inera.statistics.service.report.listener;
 import org.joda.time.LocalDate;
 
 import se.inera.statistics.service.helper.DocumentHelper;
-import se.inera.statistics.service.report.repository.RollingLength;
+import se.inera.statistics.service.report.api.RollingLength;
 import se.inera.statistics.service.report.util.ReportUtil;
 
 public abstract class RollingAbstractListener extends GenericAbstractListener {

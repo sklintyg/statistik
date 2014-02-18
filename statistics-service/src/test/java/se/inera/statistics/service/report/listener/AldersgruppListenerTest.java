@@ -22,9 +22,9 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import se.inera.statistics.service.helper.UtlatandeBuilder;
 import se.inera.statistics.service.report.api.Aldersgrupp;
+import se.inera.statistics.service.report.api.RollingLength;
 import se.inera.statistics.service.report.model.Diagnosgrupp;
 import se.inera.statistics.service.report.model.Kon;
-import se.inera.statistics.service.report.repository.RollingLength;
 import se.inera.statistics.service.report.util.DiagnosisGroupsUtil;
 import se.inera.statistics.service.report.util.ReportUtil;
 import se.inera.statistics.service.report.util.Verksamhet;

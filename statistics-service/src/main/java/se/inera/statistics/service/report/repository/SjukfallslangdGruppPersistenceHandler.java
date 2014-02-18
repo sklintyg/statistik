@@ -29,6 +29,7 @@ import javax.persistence.TypedQuery;
 import org.joda.time.LocalDate;
 import org.springframework.transaction.annotation.Transactional;
 
+import se.inera.statistics.service.report.api.RollingLength;
 import se.inera.statistics.service.report.api.SjukfallslangdGrupp;
 import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.report.model.Range;

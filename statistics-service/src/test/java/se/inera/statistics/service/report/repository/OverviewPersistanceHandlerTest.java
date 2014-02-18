@@ -16,7 +16,6 @@ import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.transaction.annotation.Transactional;
 
 import se.inera.statistics.service.report.api.*;
-import se.inera.statistics.service.report.api.Diagnosgrupp;
 import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.report.model.OverviewChartRowExtended;
 import se.inera.statistics.service.report.model.OverviewResponse;

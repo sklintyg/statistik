@@ -23,7 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import se.inera.statistics.service.report.api.Aldersgrupp;
-import se.inera.statistics.service.report.repository.RollingLength;
+import se.inera.statistics.service.report.api.RollingLength;
 import se.inera.statistics.service.report.util.AldersgroupUtil;
 import se.inera.statistics.service.report.util.Verksamhet;
 

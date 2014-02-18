@@ -1,6 +1,7 @@
 package se.inera.statistics.service.report.listener;
 
 import com.fasterxml.jackson.databind.JsonNode;
+
 import org.joda.time.LocalDate;
 import org.junit.Assert;
 import org.junit.Before;
@@ -11,16 +12,17 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
+
 import se.inera.statistics.service.helper.UtlatandeBuilder;
 import se.inera.statistics.service.helper.DocumentHelper;
 import se.inera.statistics.service.processlog.ProcessorListener;
+import se.inera.statistics.service.report.api.RollingLength;
 import se.inera.statistics.service.report.api.SjukfallPerManad;
 import se.inera.statistics.service.report.api.SjukfallslangdGrupp;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.SjukfallslangdResponse;
 import se.inera.statistics.service.report.model.SimpleKonDataRow;
 import se.inera.statistics.service.report.model.SimpleKonResponse;
-import se.inera.statistics.service.report.repository.RollingLength;
 import se.inera.statistics.service.sjukfall.SjukfallInfo;
 
 @RunWith(SpringJUnit4ClassRunner.class)

@@ -38,6 +38,7 @@ import se.inera.statistics.service.report.api.Aldersgrupp;
 import se.inera.statistics.service.report.api.Diagnosgrupp;
 import se.inera.statistics.service.report.api.Diagnoskapitel;
 import se.inera.statistics.service.report.api.Overview;
+import se.inera.statistics.service.report.api.RollingLength;
 import se.inera.statistics.service.report.api.SjukfallPerLan;
 import se.inera.statistics.service.report.api.SjukfallPerManad;
 import se.inera.statistics.service.report.api.SjukfallslangdGrupp;
@@ -51,7 +52,6 @@ import se.inera.statistics.service.report.model.SimpleKonResponse;
 import se.inera.statistics.service.report.model.SjukfallslangdResponse;
 import se.inera.statistics.service.report.model.SjukskrivningsgradResponse;
 import se.inera.statistics.service.report.model.VerksamhetOverviewResponse;
-import se.inera.statistics.service.report.repository.RollingLength;
 import se.inera.statistics.service.report.util.Verksamhet;
 import se.inera.statistics.service.scheduler.NationellUpdaterJob;
 
