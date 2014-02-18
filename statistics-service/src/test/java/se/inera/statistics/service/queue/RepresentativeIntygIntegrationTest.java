@@ -102,7 +102,7 @@ public class RepresentativeIntygIntegrationTest {
 
     @Test
     public void deliver_document_from_in_queue_to_statistics_repository() throws IOException {
-        UtlatandeBuilder builder = new UtlatandeBuilder("/json/integration/intyg1.json", "Intyg med 1 sjuktal");
+        UtlatandeBuilder builder = new UtlatandeBuilder("/json/integration/intyg1.json");
 
         LOG.info("===========START==========");
         LOG.info("3 persons, 1 intyg each, basic test.");
@@ -131,7 +131,7 @@ public class RepresentativeIntygIntegrationTest {
 
     @Test
     public void deliver_document_from_in_queue_to_statistics_repository_with_usecase_data() throws IOException {
-        UtlatandeBuilder builder = new UtlatandeBuilder("/json/integration/intyg1.json", "Intyg med 1 sjuktal");
+        UtlatandeBuilder builder = new UtlatandeBuilder("/json/integration/intyg1.json");
 
         LOG.info("===========START==========");
         LOG.info("Grundtest");

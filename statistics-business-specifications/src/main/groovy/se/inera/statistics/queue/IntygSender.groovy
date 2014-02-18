@@ -17,10 +17,10 @@ import se.inera.statistics.service.report.model.Range
 
 class IntygSender {
     static Map<String, TestData> testResult
-    UtlatandeBuilder builder1 = new UtlatandeBuilder("/json/integration/intyg1.json", "Intyg med 1 sjuktal")
-    UtlatandeBuilder builder2 = new UtlatandeBuilder("/json/integration/intyg2.json", "Intyg med 2 sjuktal")
-    UtlatandeBuilder builder3 = new UtlatandeBuilder("/json/integration/intyg3.json", "Intyg med 3 sjuktal")
-    UtlatandeBuilder builder4 = new UtlatandeBuilder("/json/integration/intyg4.json", "Intyg med 4 sjuktal")
+    UtlatandeBuilder builder1 = new UtlatandeBuilder("/json/integration/intyg1.json")
+    UtlatandeBuilder builder2 = new UtlatandeBuilder("/json/integration/intyg2.json")
+    UtlatandeBuilder builder3 = new UtlatandeBuilder("/json/integration/intyg3.json")
+    UtlatandeBuilder builder4 = new UtlatandeBuilder("/json/integration/intyg4.json")
     UtlatandeBuilder[] builders = [builder1, builder2, builder3, builder4]
     static final int MAX_WAIT = 100
     static long sent;
