@@ -55,7 +55,7 @@ public class NationellPersistenceHandler implements NationellUpdater {
         delete.executeUpdate();
 
         Query update = manager.createNativeQuery(String.format(INSERT_PREFIX + " CASE WHEN SUM(FEMALE) >= :cutoff THEN SUM(FEMALE) ELSE 0 END, CASE WHEN SUM(MALE) >= :cutoff THEN SUM(MALE) ELSE 0 END FROM %1$s WHERE typ = 'VARDGIVARE' GROUP BY PERIOD", SjukfallPerManadRow.TABLE));
-        update.setParameter("cutoff", cutoff);
+        setCutOff(update);
         update.executeUpdate();
     }
 
@@ -65,7 +65,7 @@ public class NationellPersistenceHandler implements NationellUpdater {
         delete("AldersgruppRow");
 
         Query update = manager.createNativeQuery(String.format(INSERT_PREFIX + " grupp, periods, CASE WHEN SUM(FEMALE) >= :cutoff THEN SUM(FEMALE) ELSE 0 END, CASE WHEN SUM(MALE) >= :cutoff THEN SUM(MALE) ELSE 0 END FROM %1$s WHERE typ = 'VARDGIVARE' GROUP BY PERIOD, grupp, periods", AldersgruppRow.TABLE));
-        update.setParameter("cutoff", cutoff);
+        setCutOff(update);
         update.executeUpdate();
     }
 
@@ -75,7 +75,7 @@ public class NationellPersistenceHandler implements NationellUpdater {
         delete("DiagnosisGroupData");
 
         Query update = manager.createNativeQuery(String.format(INSERT_PREFIX + " diagnosgrupp, CASE WHEN SUM(FEMALE) >= :cutoff THEN SUM(FEMALE) ELSE 0 END, CASE WHEN SUM(MALE) >= :cutoff THEN SUM(MALE) ELSE 0 END FROM %1$s WHERE typ = 'VARDGIVARE' GROUP BY PERIOD, diagnosgrupp", DiagnosisGroupData.TABLE));
-        update.setParameter("cutoff", cutoff);
+        setCutOff(update);
         update.executeUpdate();
     }
 
@@ -85,7 +85,7 @@ public class NationellPersistenceHandler implements NationellUpdater {
         delete("DiagnosisSubGroupData");
 
         Query update = manager.createNativeQuery(String.format(INSERT_PREFIX + " diagnosgrupp, undergrupp, CASE WHEN SUM(FEMALE) >= :cutoff THEN SUM(FEMALE) ELSE 0 END, CASE WHEN SUM(MALE) >= :cutoff THEN SUM(MALE) ELSE 0 END FROM %1$s WHERE typ = 'VARDGIVARE' GROUP BY PERIOD, diagnosgrupp, undergrupp", DiagnosisSubGroupData.TABLE));
-        update.setParameter("cutoff", cutoff);
+        setCutOff(update);
         update.executeUpdate();
     }
 
@@ -95,7 +95,7 @@ public class NationellPersistenceHandler implements NationellUpdater {
         delete("SjukfallslangdRow");
 
         Query update = manager.createNativeQuery(String.format(INSERT_PREFIX + " grupp, periods, CASE WHEN SUM(female) >= :cutoff THEN SUM(FEMALE) ELSE 0 END, CASE WHEN SUM(MALE) >= :cutoff THEN SUM(MALE) ELSE 0 END FROM %1$s WHERE typ = 'VARDGIVARE' GROUP BY PERIOD, grupp, periods", SjukfallslangdRow.TABLE));
-        update.setParameter("cutoff", cutoff);
+        setCutOff(update);
         update.executeUpdate();
     }
 
@@ -105,8 +105,12 @@ public class NationellPersistenceHandler implements NationellUpdater {
         delete("SjukskrivningsgradData");
 
         Query update = manager.createNativeQuery(String.format("INSERT INTO %1$s SELECT PERIOD, 'NATIONELL', 'NATIONELL', grad, CASE WHEN SUM(FEMALE) >= :cutoff THEN SUM(FEMALE) ELSE 0 END, CASE WHEN SUM(MALE) >= :cutoff THEN SUM(MALE) ELSE 0 END FROM %1$s WHERE typ = 'VARDGIVARE' GROUP BY PERIOD, grad", SjukskrivningsgradData.TABLE));
-        update.setParameter("cutoff", cutoff);
+        setCutOff(update);
         update.executeUpdate();
+    }
+
+    private void setCutOff(Query update) {
+        update.setParameter("cutoff", cutoff);
     }
 
     private void delete(String type) {
