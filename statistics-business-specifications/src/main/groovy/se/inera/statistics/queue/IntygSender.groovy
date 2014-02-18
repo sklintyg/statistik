@@ -9,10 +9,10 @@ import org.joda.time.LocalDate
 
 import se.inera.statistics.context.StartUp
 import se.inera.statistics.service.helper.UtlatandeBuilder
+import se.inera.statistics.service.processlog.Receiver
 import se.inera.statistics.service.testsupport.QueueHelper
 import se.inera.statistics.service.testsupport.TestData
 import se.inera.statistics.service.processlog.EventType
-import se.inera.statistics.service.queue.JmsReceiver;
 import se.inera.statistics.service.report.model.Range
 
 class IntygSender {
@@ -73,7 +73,7 @@ class IntygSender {
     }
 
     boolean awaitResult() {
-        JmsReceiver receiver = StartUp.context.getBean(JmsReceiver.class)
+        Receiver receiver = StartUp.context.getBean(Receiver.class)
 
         for (int i = 0; i < MAX_WAIT; i++) {
             if (receiver.accepted >= sent) {
