@@ -26,14 +26,18 @@ import java.util.List;
 import java.util.UUID;
 
 import org.joda.time.LocalDate;
+import org.joda.time.LocalDateTime;
+import org.joda.time.LocalTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import org.joda.time.format.ISODateTimeFormat;
 
 public class UtlatandeBuilder {
     private static final DateTimeFormatter FORMATTER = DateTimeFormat.forPattern("yyyy-MM-dd");
+    private static final DateTimeFormatter ISO_FORMATTER = DateTimeFormat.forPattern("yyyy-MM-dd'T'hh:mm:ss.SSS");
 
     private final JsonNode template;
     private String testName;
@@ -72,6 +76,8 @@ public class UtlatandeBuilder {
         ObjectNode intyg = template.deepCopy();
         ObjectNode patientIdNode = (ObjectNode) intyg.path("patient").path("id");
         patientIdNode.put("extension", patientId);
+        LocalDateTime startWithTime = start.toLocalDateTime(new LocalTime(7,7));
+        intyg.put("signeringsdatum", ISO_FORMATTER.print(startWithTime));
 
         ObjectNode idNode = (ObjectNode) intyg.path("id");
         idNode.put("root", UUID.randomUUID().toString());
@@ -132,6 +138,8 @@ public class UtlatandeBuilder {
         ObjectNode intyg = template.deepCopy();
         ObjectNode patientIdNode = (ObjectNode) intyg.path("patient").path("id");
         patientIdNode.put("extension", person);
+        LocalDateTime startWithTime = starts.get(0).toLocalDateTime(new LocalTime(7,7));
+        intyg.put("signeringsdatum", ISO_FORMATTER.print(startWithTime));
 
         ObjectNode idNode = (ObjectNode) intyg.path("id");
         idNode.put("root", UUID.randomUUID().toString());
