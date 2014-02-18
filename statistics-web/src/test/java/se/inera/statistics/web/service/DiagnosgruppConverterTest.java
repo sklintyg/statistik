@@ -26,8 +26,11 @@ import java.util.ArrayList;
 
 import org.junit.Test;
 
-import se.inera.statistics.service.report.model.*;
 import se.inera.statistics.service.report.model.Diagnosgrupp;
+import se.inera.statistics.service.report.model.DiagnosgruppResponse;
+import se.inera.statistics.service.report.model.KonDataRow;
+import se.inera.statistics.service.report.model.KonField;
+import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.web.model.DualSexStatisticsData;
 import se.inera.statistics.web.model.TableData;
 
