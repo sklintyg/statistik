@@ -27,6 +27,8 @@ import se.inera.statistics.service.processlog.Receiver;
 
 @Component
 public class ReceiveHistoryJob {
+    private static final int DELAY_MS = 300_000;
+
     public static final int HISTORY_ITEMS = 5;
 
     @Autowired
@@ -34,7 +36,7 @@ public class ReceiveHistoryJob {
 
     private History history = new History(HISTORY_ITEMS);
 
-    @Scheduled(fixedDelay = 300_000)
+    @Scheduled(fixedDelay = DELAY_MS)
     public void checkReceived() {
         insert(receiver.getAccepted());
     }
@@ -61,7 +63,7 @@ public class ReceiveHistoryJob {
         }
 
         public void add(long value) {
-            index ++;
+            index++;
             index %= history.length;
             history[index] = value;
         }
