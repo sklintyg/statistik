@@ -48,43 +48,38 @@ public class HealthCheckUtilTest {
     @Test
     public void timeIsReturnedForOkResult() {
         Status status = healthCheck.getOverviewStatus();
-        assertTrue(status.getTime() >= 0);
+        assertTrue(status.getMeasurement() >= 0);
         assertTrue(status.isOk());
-    }
-
-    @Test
-    public void okIsReturnedForOkResult() {
-        boolean result = healthCheck.isOverviewOk();
-        assertTrue(result);
     }
 
     @Test
     public void exceptionIsThrownForFailingTime() {
         Mockito.when(dataService.getOverviewData()).thenThrow(new IllegalStateException());
         Status status = healthCheck.getOverviewStatus();
-        assertTrue(status.getTime() >= 0);
+        assertTrue(status.getMeasurement() >= 0);
         assertFalse(status.isOk());
     }
 
     @Test
     public void falseIsReturnedForFailingCheck() {
         Mockito.when(dataService.getOverviewData()).thenThrow(new IllegalStateException());
-        boolean result = healthCheck.isOverviewOk();
-        assertFalse(result);
+        Status status = healthCheck.getOverviewStatus();
+        assertTrue(status.getMeasurement() >= 0);
+        assertFalse(status.isOk());
     }
 
     @Test
-    public void getTimeForAccessingHsa() {
+    public void getMeasurementForAccessingHsa() {
         Status status = healthCheck.getHsaStatus();
-        assertTrue(status.getTime() >= 0);
+        assertTrue(status.getMeasurement() >= 0);
         assertTrue(status.isOk());
     }
 
     @Test
-    public void getTimeForAccessingFailingHsa() throws Exception {
+    public void getMeasurementForAccessingFailingHsa() throws Exception {
         Mockito.doThrow(new IllegalStateException()).when(hsaCalls).callPing();
         Status status = healthCheck.getHsaStatus();
-        assertTrue(status.getTime() >= 0);
+        assertTrue(status.getMeasurement() >= 0);
         assertFalse(status.isOk());
     }
 }

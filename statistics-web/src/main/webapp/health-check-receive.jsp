@@ -1,6 +1,6 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" session="false"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%--
+<%@ page contentType="text/html;charset=UTF-8" language="java" session="false" trimDirectiveWhitespaces="true"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" 
+%><%--
   ~ Copyright (C) 2013 - 2014 Inera AB (http://www.inera.se)
   ~
   ~     This file is part of Inera Statistics (http://code.google.com/p/inera-statistics/).
@@ -19,15 +19,8 @@
   ~     along with this program.  If not, see <http://www.gnu.org/licenses/>.
   --%>
 
-<c:set var="status" value="${healthcheckUtil.overviewStatus}"
-/><c:if test="${!status.ok}">
-	<%response.sendError(500, "Internal Error"); %>
-</c:if>
-<html>
-<head>
-	<title>Statistics Health Check</title>
-</head>
-<body>
-	System OK (${status.measurement} ms)
-</body>
-</html>
+<c:set var="status" value="${healthcheckUtil.receiveStatus}"
+/><pingdom_http_custom_check>
+	<status>${status.ok ? "OK" : "FAIL"}</status>
+	<response_time>${status.measurement}</response_time>
+</pingdom_http_custom_check>

@@ -22,5 +22,5 @@
 <c:set var="status" value="${healthcheckUtil.overviewStatus}"
 /><pingdom_http_custom_check>
 	<status>${status.ok ? "OK" : "FAIL"}</status>
-	<response_time>${status.time}</response_time>
+	<response_time>${status.measurement}</response_time>
 </pingdom_http_custom_check>

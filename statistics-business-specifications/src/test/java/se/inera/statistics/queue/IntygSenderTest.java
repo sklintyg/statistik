@@ -20,10 +20,8 @@
 package se.inera.statistics.queue;
 
 import org.junit.Test;
-import se.inera.statistics.context.StartUp;
-import se.inera.statistics.service.testsupport.TestData;
 
-import java.util.Map;
+import se.inera.statistics.context.StartUp;
 
 public class IntygSenderTest {
 
@@ -38,7 +36,7 @@ public class IntygSenderTest {
             intygSender.sendIntyg("19790407-9295", "G01", "2013-02-05", "2013-09-06", "50", "","","", "","" ,"","","","","ENVE", "EnVG", "1");
             intygSender.sleep(5000);
             intygSender.getResult("ENVE", "TVAVE", "2012-01-01", "2013-11-01");
-            Map<String, TestData> resultList = IntygSender.getTestResult();
+            IntygSender.getTestResult();
 
         } finally {
             startUp.stopContext();
