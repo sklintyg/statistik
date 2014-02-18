@@ -35,8 +35,6 @@ import se.inera.ifv.hsawsresponder.v3.GetStatisticsPersonType;
 import se.inera.ifv.hsawsresponder.v3.PingResponseType;
 import se.inera.ifv.hsawsresponder.v3.PingType;
 
-import com.google.common.base.Throwables;
-
 public class HSAWebServiceCalls {
 
     @Autowired
@@ -61,7 +59,7 @@ public class HSAWebServiceCalls {
      *
      * @throws Exception
      */
-    public void callPing() throws Exception {
+    public void callPing() {
 
         try {
             PingType pingtype = new PingType();
@@ -70,7 +68,7 @@ public class HSAWebServiceCalls {
 
         } catch (Throwable ex) {
             LOG.warn("Exception={}", ex.getMessage(), ex);
-            throw new Exception(ex);
+            throw new HsaCommunicationException("Could not call ping", ex);
         }
     }
 
@@ -81,7 +79,7 @@ public class HSAWebServiceCalls {
             parameters.setSearchBase("c=SE");
             return serverInterface.getStatisticsCareGiver(logicalAddressHeader, messageId, parameters);
         } catch (Throwable ex) {
-            throw new RuntimeException("Could not call getStatisticsCareGiver for " + careGiverId, ex);
+            throw new HsaCommunicationException("Could not call getStatisticsCareGiver for " + careGiverId, ex);
         }
     }
 
@@ -93,7 +91,7 @@ public class HSAWebServiceCalls {
             parameters.setIncludeOrgNo(Boolean.TRUE);
             return serverInterface.getStatisticsHsaUnit(logicalAddressHeader, messageId, parameters);
         } catch (Throwable ex) {
-            throw new RuntimeException("Could not call getStatisticsHsaUnit for " + unitId, ex);
+            throw new HsaCommunicationException("Could not call getStatisticsHsaUnit for " + unitId, ex);
         }
     }
 
@@ -104,7 +102,7 @@ public class HSAWebServiceCalls {
             parameters.setSearchBase("c=SE");
             return serverInterface.getStatisticsPerson(logicalAddressHeader, messageId, parameters);
         } catch (Throwable ex) {
-            throw new RuntimeException("Could not call getStatisticsPerson for " + personId, ex);
+            throw new HsaCommunicationException("Could not call getStatisticsPerson for " + personId, ex);
         }
     }
 
@@ -120,8 +118,7 @@ public class HSAWebServiceCalls {
             return serverInterface.getMiuForPerson(logicalAddressHeader, messageId, parameters);
         } catch (Throwable ex) {
             LOG.error("Failed to call getMiuForPerson", ex);
-            Throwables.propagate(ex);
-            return null;
+            throw new HsaCommunicationException("Failed to call getMiuForPerson", ex);
         }
     }
 
