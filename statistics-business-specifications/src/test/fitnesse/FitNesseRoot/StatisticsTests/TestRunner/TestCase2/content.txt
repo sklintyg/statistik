@@ -443,7 +443,7 @@
 |query:se.inera.statistics.counterdata.Alder|ageGroups1|
 |grupp|kvinnor|män|
 |31-35|||
-|46-50|||
+|51-55|||
 |>60|||
 
 |query:se.inera.statistics.counterdata.Sjukskrivningsgrad|degreeOfSickLeave1|

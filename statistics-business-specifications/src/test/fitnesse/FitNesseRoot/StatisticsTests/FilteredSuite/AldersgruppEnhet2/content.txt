@@ -2,5 +2,5 @@
 
 |query:se.inera.statistics.counterdata.Alder|ageGroups2|
 |grupp|kvinnor|män|
-|46-50|1|0|
+|51-55|1|0|
 |>60|2|0|
