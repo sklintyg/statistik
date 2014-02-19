@@ -25,15 +25,16 @@ public class JsonReader {
     public static LocalDate BASE = new LocalDate("1900-01-01");
     public static DateTimeFormatter PERSONNUMMER = DateTimeFormat.forPattern("yyyyMMdd'");
     private static StringBuilder builder;
+
     public static void main(String[] args) throws IOException {
-        try (OutputStream out = new GZIPOutputStream(new FileOutputStream("../extras/intyg.csv.gz"))) {
-            try (InputStream in = new GZIPInputStream(new FileInputStream("../extras/intyg.json.gz"))) {
-    
+        try (OutputStream out = new GZIPOutputStream(new FileOutputStream("intyg.csv.gz"))) {
+            try (InputStream in = new GZIPInputStream(new FileInputStream("intyg.json.gz"))) {
+
                 ObjectMapper mapper = new ObjectMapper();
                 JsonParser parser = mapper.getFactory().createJsonParser(in);
-    
+
                 ObjectReader reader = mapper.reader();
-    
+
                 JsonNode node;
                 int id = 0;
                 while ((node = reader.readTree(parser)) != null) {
@@ -41,17 +42,17 @@ public class JsonReader {
                     int lakare = Integer.parseInt(node.get("skapadAv").get("id").get("extension").textValue().substring(7));
                     int enhet = Integer.parseInt(node.get("skapadAv").get("vardenhet").get("id").get("extension").textValue().substring(6));
                     int vardgivare = Integer.parseInt(node.get("skapadAv").get("vardenhet").get("vardgivare").get("id").get("extension").textValue().substring(11));
-    
+
                     String personid = node.get("patient").get("id").get("extension").textValue();
-    
+
                     String icd10 = filter(node.get("observationer"), "ICD-10", "observationskod", "codeSystemName").get("observationskod").get("code").textValue();
                     JsonNode nedsattning = filter(node.get("observationer"), "302119000", "observationskod", "code");
                     LocalDate from = new LocalDate(nedsattning.get("observationsperiod").get("from").textValue());
                     LocalDate tom = new LocalDate(nedsattning.get("observationsperiod").get("tom").textValue());
-                    int sjukskrivningsgrad = 100 - nedsattning.get("varde").get(0).get("quantity").asInt(); 
+                    int sjukskrivningsgrad = 100 - nedsattning.get("varde").get(0).get("quantity").asInt();
                     int kon = 1 + ((personid.charAt(12)) & 1);
-    
-                    int alder = Years.yearsBetween(LocalDate.parse(personid.substring(0,8), PERSONNUMMER), from).getYears();
+
+                    int alder = Years.yearsBetween(LocalDate.parse(personid.substring(0, 8), PERSONNUMMER), from).getYears();
                     start();
                     add(id);
                     add(personToInt(personid));
@@ -64,6 +65,7 @@ public class JsonReader {
                     add(lakare);
                     add(enhet);
                     add(vardgivare);
+                    add(enhet%290);
                     end();
                     out.write(builder.toString().getBytes());
                 }
@@ -77,7 +79,7 @@ public class JsonReader {
     }
 
     private static int personToInt(String personid) {
-        //19750719-4038
+        // 19750719-4038
         int factor = 1;
         int v = personid.charAt(11) - '0';
         factor *= 10;
@@ -113,12 +115,12 @@ public class JsonReader {
         builder = new StringBuilder(300);
     }
 
-    private static JsonNode filter(JsonNode array, String pattern, String...path) {
+    private static JsonNode filter(JsonNode array, String pattern, String... path) {
         Iterator<JsonNode> nodes = array.elements();
         while (nodes.hasNext()) {
             JsonNode node = nodes.next();
             JsonNode matcher = node;
-            for (String element: path) {
+            for (String element : path) {
                 matcher = matcher.path(element);
             }
             if (pattern.equals(matcher.textValue())) {

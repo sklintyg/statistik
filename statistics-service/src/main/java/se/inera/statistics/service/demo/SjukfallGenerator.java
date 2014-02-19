@@ -1,24 +1,26 @@
 package se.inera.statistics.service.demo;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.zip.GZIPOutputStream;
 
 import javax.annotation.PostConstruct;
 
 import org.joda.time.LocalDate;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.transaction.annotation.Transactional;
 
-import se.inera.statistics.service.report.model.DiagnosisGroup;
-import se.inera.statistics.service.report.util.DiagnosisGroupsUtil;
+import se.inera.statistics.service.report.util.Icd10;
+import se.inera.statistics.service.report.util.Icd10.Avsnitt;
+import se.inera.statistics.service.report.util.Icd10.Kapitel;
+import se.inera.statistics.service.report.util.Icd10.Kategori;
 
 import com.fasterxml.jackson.databind.JsonNode;
 
@@ -33,13 +35,11 @@ public class SjukfallGenerator {
 
     private static final int SEED = 1234;
 
-    private static final Logger LOG = LoggerFactory.getLogger(SjukfallGenerator.class);
-
     private static final int PERIOD_MIN_DAYS = 7;
     private static final int PERIOD_MAX_DAYS = 45;
     private static final int PERIOD_LONG_MAX_DAYS = 365;
-    private static final float LONG_PERIOD_FRACTION = 0.01f;
-    private static final float PERIOD_CONTINUED_FRACTION = 0.1f;
+    private static final float LONG_PERIOD_FRACTION = 0.05f;
+    private static final float PERIOD_CONTINUED_FRACTION = 0.2f;
     private static final float PERIOD_RECONTINUED_FRACTION = 0.8f;
 
     private static final int MIN_AGE_DAYS = 365 * 10;
@@ -51,7 +51,7 @@ public class SjukfallGenerator {
     private static Random random = new Random(SEED);
 
     @Autowired
-    private DiagnosisGroupsUtil diagnosisGroupsUtil;
+    private Icd10 icd10;
 
     private Map<LocalDate,List<Fall>> continued = new HashMap<>();
 
@@ -60,9 +60,11 @@ public class SjukfallGenerator {
     
     @PostConstruct
     public void init() {
-        for (DiagnosisGroup mainGroup: DiagnosisGroupsUtil.getAllDiagnosisGroups()) {
-            for (DiagnosisGroup group: diagnosisGroupsUtil.getSubGroups(mainGroup.getId())) {
-                DIAGNOSER.add(group.getId().split("-")[0]);
+        for (Kapitel kapitel: icd10.getKapitel()) {
+            for (Avsnitt avsnitt: kapitel.getAvsnitt()) {
+               for (Kategori kategori: avsnitt.getKategori()) {
+                   DIAGNOSER.add(kategori.getId());
+               }
             }
         }
     }
@@ -75,19 +77,20 @@ public class SjukfallGenerator {
     }
 
     private void publishUtlatanden() {
+        consumer.start();
         LocalDate now = new LocalDate();
         LocalDate start = now.minusMonths(19);
         for (LocalDate today = start; today.isBefore(now); today = today.plusDays(1)) {
             handleDay(today);
         }
-//        LOG.info("Inserting certificates completed");
+        consumer.end();
     }
 
     @Transactional
     private void handleDay(LocalDate today) {
         UtlatandeBuilder builder = new UtlatandeBuilder();
-//        System.err.println("Continue " + new Date() + " " + today + " " + getContinued(today).size());
-        for (Fall fall: getContinued(today)) {
+        List<Fall> toBeContinued = getContinued(today);
+        for (Fall fall: toBeContinued) {
             String diagnos = random(DIAGNOSER);
             Integer arbetsformaga = random(ARBETSFORMAGOR);
             LocalDate intygFirstDay = today;
@@ -105,8 +108,7 @@ public class SjukfallGenerator {
         }
         continued.remove(today);
 
-        int intygCount = random(INTYG_PER_DAY, INTYG_PER_DAY_VARIATION);
-//        System.err.println("Handle " + new Date() + " " + today + " " + intygCount);
+        int intygCount = random(INTYG_PER_DAY - toBeContinued.size(), INTYG_PER_DAY_VARIATION);
         for (int i = 0; i < intygCount; i ++) {
             int age = randomBetween(MIN_AGE_DAYS, MAX_AGE_DAYS);
             LocalDate birthday = today.minusDays(age);
@@ -148,14 +150,8 @@ public class SjukfallGenerator {
         return new Lakare(lakarId);
     }
 
-    private long counter = 0;
-
     private String makePersonnummer(LocalDate birthday) {
-        long suffix = counter % (100);
-        long prefix = counter / 100;
-        counter ++;
-        counter %= 26*26*100;
-        return birthday.toString("yyyyMMdd-") + (char)('A' + prefix / 26 ) + (char)('A' + prefix % 26 ) + (char)('0' + suffix / 10) +(char) ('0' + suffix % 10);
+        return birthday.toString("yyyyMMdd-") + String.format("%1$s04d", random.nextInt(10000));
     }
 
     private int randomBetween(int min, int max) {
@@ -206,15 +202,40 @@ public class SjukfallGenerator {
         }
     }
     public static interface Consumer {
-
+        void start();
         void accept(JsonNode intyg);
+        void end();
     }
     
     public static class PrintConsumer implements Consumer {
+        private GZIPOutputStream out;
+
         @Override
         public void accept(JsonNode intyg) {
-            //String intygId = intyg.path("id").path("root").textValue();
-            System.out.println(intyg.toString());
+            try {
+                out.write(intyg.toString().getBytes());
+                out.write('\n');
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        @Override
+        public void start() {
+            try {
+                out = new GZIPOutputStream(new FileOutputStream("intyg.json.gz"));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        @Override
+        public void end() {
+            try {
+                out.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 }

@@ -8,10 +8,17 @@
     <context:property-placeholder/>
     <context:annotation-config/>
 
-    <bean class="org.springframework.core.io.ClassPathResource" id="icd10ChaptersAnsiFile" >
-        <constructor-arg value="KSH97_AVS.ANS"/>
+    <bean class="org.springframework.core.io.ClassPathResource" id="icd10KapitelAnsiFile" >
+        <constructor-arg value="icd10/KSH97_KAP.ANS"/>
     </bean>
-    <bean class="se.inera.statistics.service.report.util.DiagnosisGroupsUtil" />
+    <bean class="org.springframework.core.io.ClassPathResource" id="icd10AvsnittAnsiFile" >
+        <constructor-arg value="icd10/KSH97_AVS.ANS"/>
+    </bean>
+    <bean class="org.springframework.core.io.ClassPathResource" id="icd10KategoriAnsiFile" >
+        <constructor-arg value="icd10/KSH97_KAT.ANS"/>
+    </bean>
+    
+    <bean class="se.inera.statistics.service.report.util.Icd10" />
 
     <bean class="se.inera.statistics.service.demo.SjukfallGenerator"/>
     <bean class="se.inera.statistics.service.demo.SjukfallGenerator$PrintConsumer"/>
