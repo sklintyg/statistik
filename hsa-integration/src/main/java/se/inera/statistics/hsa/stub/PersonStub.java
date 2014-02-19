@@ -28,7 +28,7 @@ import java.util.List;
 public class PersonStub {
     private String hsaId;
     private String name;
-    private List<String> medarbetaruppdrag = new ArrayList();
+    private List<String> medarbetaruppdrag = new ArrayList<>();
 
     public String getHsaId() {
         return hsaId;

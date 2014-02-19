@@ -3,7 +3,6 @@ package se.inera.statistics.service.warehouse;
 import static org.junit.Assert.assertEquals;
 
 import java.io.FileNotFoundException;
-import java.io.PrintStream;
 import java.lang.management.GarbageCollectorMXBean;
 import java.lang.management.ManagementFactory;
 import java.util.Collection;
@@ -92,9 +91,7 @@ public class WarehouseTest {
     }
 
     private void measureSjukfall(Aisle aisle) {
-        long start = System.currentTimeMillis();
         Collection<Sjukfall> sjukfalls = SjukfallUtil.calculateSjukfall(aisle);
-        long end = System.currentTimeMillis();
         int totalDays = 0;
         int realDays = 0;
         int totalIntyg = 0;

@@ -26,6 +26,7 @@ import org.joda.time.LocalDateTime;
 /**
  * @author andreaskaltenbach
  */
+@SuppressWarnings("serial")
 public class Mottagning implements Serializable {
 
     private String id;
@@ -34,10 +35,6 @@ public class Mottagning implements Serializable {
 
     private LocalDateTime start;
     private LocalDateTime end;
-
-    public Mottagning() {
-
-    }
 
     public Mottagning(String id, String namn) {
         this.id = id;
