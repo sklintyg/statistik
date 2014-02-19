@@ -48,6 +48,7 @@
         <module>statistics-service</module>
         <module>statistics-specifications</module>
         <module>statistics-business-specifications</module>
+        <module>statistics-tools</module>
     </modules>
 
     <properties>
