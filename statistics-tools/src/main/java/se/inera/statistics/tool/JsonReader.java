@@ -1,4 +1,4 @@
-package se.inera.statistics.service.warehouse;
+package se.inera.statistics.tool;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;

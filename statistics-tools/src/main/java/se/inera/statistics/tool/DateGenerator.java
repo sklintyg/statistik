@@ -1,24 +1,12 @@
-package se.inera.statistics.service.warehouse;
+package se.inera.statistics.tool;
 
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.Iterator;
-import java.util.zip.GZIPInputStream;
-import java.util.zip.GZIPOutputStream;
 
-import org.joda.time.Days;
 import org.joda.time.LocalDate;
-import org.joda.time.Years;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
-
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectReader;
 
 public class DateGenerator {
 
