@@ -1,5 +1,17 @@
-package se.inera.statistics.service.demo;
+package se.inera.statistics.tool;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import org.joda.time.LocalDate;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.transaction.annotation.Transactional;
+import se.inera.statistics.service.helper.UtlatandeBuilder;
+import se.inera.statistics.service.report.util.Icd10;
+import se.inera.statistics.service.report.util.Icd10.Avsnitt;
+import se.inera.statistics.service.report.util.Icd10.Kapitel;
+import se.inera.statistics.service.report.util.Icd10.Kategori;
+
+import javax.annotation.PostConstruct;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -9,20 +21,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.zip.GZIPOutputStream;
-
-import javax.annotation.PostConstruct;
-
-import org.joda.time.LocalDate;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
-import org.springframework.transaction.annotation.Transactional;
-
-import se.inera.statistics.service.report.util.Icd10;
-import se.inera.statistics.service.report.util.Icd10.Avsnitt;
-import se.inera.statistics.service.report.util.Icd10.Kapitel;
-import se.inera.statistics.service.report.util.Icd10.Kategori;
-
-import com.fasterxml.jackson.databind.JsonNode;
 
 public class SjukfallGenerator {
 

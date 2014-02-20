@@ -19,18 +19,16 @@
 
 package se.inera.statistics.service.helper;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.joda.time.LocalDate;
 import org.joda.time.Period;
 import org.joda.time.format.ISODateTimeFormat;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public final class DocumentHelper {
 
@@ -174,5 +172,18 @@ public final class DocumentHelper {
             }
             return id;
         }
+    }
+
+    public static JsonNode prepare(JsonNode utlatande, JsonNode hsaInfo) {
+        String personId = utlatande.path("patient").path("id").path("extension").textValue();
+        int alder = extractAlder(personId, ISODateTimeFormat.dateTimeParser().parseLocalDate(utlatande.path("signeringsdatum").textValue()));
+        String kon = extractKon(personId);
+
+        ObjectNode prepared = utlatande.deepCopy();
+        ObjectNode patientNode = (ObjectNode) prepared.path("patient");
+        patientNode.put("alder", alder);
+        patientNode.put("kon", kon);
+        prepared.put("hsa", hsaInfo);
+        return prepared;
     }
 }

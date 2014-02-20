@@ -1,26 +1,22 @@
 package se.inera.statistics.warehouse
-
 import com.fasterxml.jackson.databind.JsonNode
 import org.joda.time.LocalDate
 import se.inera.statistics.context.StartUp
-import se.inera.statistics.hsa.stub.HsaServiceStub
-import se.inera.statistics.service.demo.UtlatandeBuilder
 import se.inera.statistics.service.helper.DocumentHelper
+import se.inera.statistics.service.helper.UtlatandeBuilder
 import se.inera.statistics.service.hsa.HSAKey
 import se.inera.statistics.service.hsa.HSAService
 import se.inera.statistics.service.processlog.EventType
 import se.inera.statistics.service.warehouse.Warehouse
 
-import static se.inera.statistics.service.helper.DocumentHelper.getEnhetId
-import static se.inera.statistics.service.helper.DocumentHelper.getLakarId
-import static se.inera.statistics.service.helper.DocumentHelper.getVardgivareId
+import static se.inera.statistics.service.helper.DocumentHelper.*
 
 class WarehouseFeeder {
 
-    UtlatandeBuilder builder1 = new UtlatandeBuilder("/json/integration/intyg1.json", "Intyg med 1 sjuktal")
-    UtlatandeBuilder builder2 = new UtlatandeBuilder("/json/integration/intyg2.json", "Intyg med 2 sjuktal")
-    UtlatandeBuilder builder3 = new UtlatandeBuilder("/json/integration/intyg3.json", "Intyg med 3 sjuktal")
-    UtlatandeBuilder builder4 = new UtlatandeBuilder("/json/integration/intyg4.json", "Intyg med 4 sjuktal")
+    UtlatandeBuilder builder1 = new UtlatandeBuilder("/json/integration/intyg1.json")
+    UtlatandeBuilder builder2 = new UtlatandeBuilder("/json/integration/intyg2.json")
+    UtlatandeBuilder builder3 = new UtlatandeBuilder("/json/integration/intyg3.json")
+    UtlatandeBuilder builder4 = new UtlatandeBuilder("/json/integration/intyg4.json")
     UtlatandeBuilder[] builders = [builder1, builder2, builder3, builder4]
 
     public boolean insertIntyg(String person, String diagnos, String start1, String stop1, String grad1, String start2, String stop2, String grad2, String start3, String stop3, String grad3, String start4, String stop4, String grad4, String enhet, String vardgivare, String trackingId) {
