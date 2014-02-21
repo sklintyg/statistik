@@ -90,6 +90,8 @@ public class SjukfallGenerator {
     private void handleDay(LocalDate today) {
         UtlatandeBuilder builder = new UtlatandeBuilder();
         List<Fall> toBeContinued = getContinued(today);
+        int intygCount = random(INTYG_PER_DAY, INTYG_PER_DAY_VARIATION);
+        int reextended = 0;
         for (Fall fall: toBeContinued) {
             String diagnos = random(DIAGNOSER);
             Integer arbetsformaga = random(ARBETSFORMAGOR);
@@ -101,14 +103,16 @@ public class SjukfallGenerator {
             
             // Extend?
             if (random.nextDouble() < PERIOD_RECONTINUED_FRACTION) {
-                LocalDate next = intygLastDay.plusDays(randomBetween(0,4));
+                LocalDate next = intygLastDay.plusDays(randomBetween(-2,4));
                 List<Fall> list = getContinued(next);
                 list.add(fall);
+                reextended++;
             }
         }
+        System.err.println("Building " + today + " new: " + intygCount + " continued: " + toBeContinued.size() + " reextended:" + reextended);
+
         continued.remove(today);
 
-        int intygCount = random(INTYG_PER_DAY - toBeContinued.size(), INTYG_PER_DAY_VARIATION);
         for (int i = 0; i < intygCount; i ++) {
             int age = randomBetween(MIN_AGE_DAYS, MAX_AGE_DAYS);
             LocalDate birthday = today.minusDays(age);
@@ -118,13 +122,14 @@ public class SjukfallGenerator {
             Integer arbetsformaga = random(ARBETSFORMAGOR);
             LocalDate intygFirstDay = today;
             LocalDate intygLastDay = today.plusDays(random.nextFloat() < LONG_PERIOD_FRACTION ? randomBetween(PERIOD_MAX_DAYS, PERIOD_LONG_MAX_DAYS) : randomBetween(PERIOD_MIN_DAYS, PERIOD_MAX_DAYS));
-            
+
             JsonNode intyg = builder.build(personnummer, intygFirstDay, intygLastDay, lakare.getLakareId(), lakare.getEnhetId(), lakare.getVardgivareId(), diagnos, arbetsformaga);
             consumer.accept(intyg);
-            
+
             // Extend?
             if (random.nextFloat() < PERIOD_CONTINUED_FRACTION) {
-                List<Fall> list = getContinued(intygLastDay.plusDays(randomBetween(-2,4)));
+                LocalDate dayToContinue = intygLastDay.plusDays(randomBetween(-2,4));
+                List<Fall> list = getContinued(dayToContinue);
                 list.add(new Fall(personnummer, lakare));
             }
         }
@@ -134,7 +139,7 @@ public class SjukfallGenerator {
         List<Fall> list = continued.get(day);
         if (list == null) {
             list = new ArrayList<>();
-            continued.put(day,  list);
+            continued.put(day, list);
         }
         return list;
     }
