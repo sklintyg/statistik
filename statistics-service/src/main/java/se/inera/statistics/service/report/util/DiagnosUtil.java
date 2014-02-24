@@ -19,6 +19,12 @@
 
 package se.inera.statistics.service.report.util;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import se.inera.statistics.service.report.model.Avsnitt;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -33,13 +39,6 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.Resource;
-
-import se.inera.statistics.service.report.model.Avsnitt;
 
 public class DiagnosUtil {
 
@@ -66,7 +65,7 @@ public class DiagnosUtil {
 
     protected String normalize(String icd10Code) {
         StringBuilder normalized = new StringBuilder(icd10Code.length());
-        for (char c: icd10Code.toUpperCase().toCharArray()) {
+        for (char c : icd10Code.toUpperCase().toCharArray()) {
             if ('A' <= c && c <= 'Z' || '0' <= c && c <= '9') {
                 normalized.append(c);
             }
@@ -127,14 +126,15 @@ public class DiagnosUtil {
     public Collection<Avsnitt> getGroupsInChapter(String chapter) {
         return subgroups.get(chapter);
     }
+
     private static Avsnitt avsnitt(String code, String description) {
         return new Avsnitt(code, description);
     }
 
     private static Map<String, Collection<Avsnitt>> initSubGroups() {
         Map<String, Collection<Avsnitt>> subGroups = new HashMap<>();
-        String[] groups = new String[] {"A00-B99", "C00-D48", "D50-D89", "E00-E90", "F00-F99", "G00-G99", "H00-H59", "H60-H95", "I00-I99", "J00-J99",
-                "K00-K93", "L00-L99", "M00-M99", "N00-N99", "O00-O99", "P00-P96", "Q00-Q99", "R00-R99", "S00-T98", "V01-Y98", "Z00-Z99", "U00-U99" };
+        String[] groups = new String[]{"A00-B99", "C00-D48", "D50-D89", "E00-E90", "F00-F99", "G00-G99", "H00-H59", "H60-H95", "I00-I99", "J00-J99",
+                "K00-K93", "L00-L99", "M00-M99", "N00-N99", "O00-O99", "P00-P96", "Q00-Q99", "R00-R99", "S00-T98", "V01-Y98", "Z00-Z99", "U00-U99"};
         for (String group : groups) {
             subGroups.put(group, new TreeSet<Avsnitt>());
         }

@@ -19,16 +19,20 @@
 
 package se.inera.statistics.service.report.mock;
 
+import se.inera.statistics.service.report.model.Avsnitt;
+import se.inera.statistics.service.report.model.DiagnosgruppResponse;
+import se.inera.statistics.service.report.model.Kon;
+import se.inera.statistics.service.report.model.KonDataRow;
+import se.inera.statistics.service.report.model.KonField;
+import se.inera.statistics.service.report.model.Range;
+import se.inera.statistics.service.report.util.DiagnosUtil;
+import se.inera.statistics.service.report.util.ReportUtil;
+import se.inera.statistics.service.report.util.Verksamhet;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
-
-import se.inera.statistics.service.report.model.*;
-import se.inera.statistics.service.report.model.Avsnitt;
-import se.inera.statistics.service.report.util.DiagnosUtil;
-import se.inera.statistics.service.report.util.ReportUtil;
-import se.inera.statistics.service.report.util.Verksamhet;
 
 public class DiagnosgruppMock implements se.inera.statistics.service.report.api.Diagnosgrupp {
 

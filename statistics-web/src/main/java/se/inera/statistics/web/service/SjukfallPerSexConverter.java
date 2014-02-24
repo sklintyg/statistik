@@ -19,13 +19,6 @@
 
 package se.inera.statistics.web.service;
 
-import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
-import com.sun.xml.bind.v2.bytecode.ClassTailor;
 import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.SimpleKonDataRow;
@@ -35,6 +28,12 @@ import se.inera.statistics.web.model.ChartSeries;
 import se.inera.statistics.web.model.NamedData;
 import se.inera.statistics.web.model.SimpleDetailsData;
 import se.inera.statistics.web.model.TableData;
+
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class SjukfallPerSexConverter {
 
@@ -46,7 +45,7 @@ public class SjukfallPerSexConverter {
             int female = row.getFemale();
             int male = row.getMale();
             int rowSum = female + male;
-            data.add(new NamedData(row.getName(), Arrays.asList(new Object[] {rowSum, toTableString(female, rowSum), toTableString(male, rowSum)})));
+            data.add(new NamedData(row.getName(), Arrays.asList(new Object[]{rowSum, toTableString(female, rowSum), toTableString(male, rowSum)})));
             femaleSum += female;
             maleSum += male;
         }

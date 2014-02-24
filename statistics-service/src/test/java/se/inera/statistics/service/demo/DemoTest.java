@@ -1,9 +1,6 @@
 package se.inera.statistics.service.demo;
 
-import static org.junit.Assert.assertEquals;
-
-import java.util.Arrays;
-
+import com.fasterxml.jackson.databind.JsonNode;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -11,7 +8,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
-
 import se.inera.statistics.service.common.CommonPersistence;
 import se.inera.statistics.service.helper.DocumentHelper;
 import se.inera.statistics.service.helper.UtlatandeBuilder;
@@ -20,7 +16,9 @@ import se.inera.statistics.service.report.model.Avsnitt;
 import se.inera.statistics.service.report.repository.NationellUpdater;
 import se.inera.statistics.service.report.util.DiagnosUtil;
 
-import com.fasterxml.jackson.databind.JsonNode;
+import java.util.Arrays;
+
+import static org.junit.Assert.assertEquals;
 
 @RunWith(MockitoJUnitRunner.class)
 public class DemoTest {

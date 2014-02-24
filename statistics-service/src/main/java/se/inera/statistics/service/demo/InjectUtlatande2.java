@@ -19,18 +19,11 @@
 
 package se.inera.statistics.service.demo;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Random;
-
-import javax.annotation.PostConstruct;
-
+import com.fasterxml.jackson.databind.JsonNode;
 import org.joda.time.LocalDate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-
 import se.inera.statistics.service.common.CommonPersistence;
 import se.inera.statistics.service.helper.UtlatandeBuilder;
 import se.inera.statistics.service.processlog.EventType;
@@ -39,7 +32,11 @@ import se.inera.statistics.service.report.model.Avsnitt;
 import se.inera.statistics.service.report.repository.NationellUpdater;
 import se.inera.statistics.service.report.util.DiagnosUtil;
 
-import com.fasterxml.jackson.databind.JsonNode;
+import javax.annotation.PostConstruct;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Random;
 
 public class InjectUtlatande2 {
     private static final int NUMBER_OF_UNITS = 3000;
@@ -80,8 +77,8 @@ public class InjectUtlatande2 {
 
     @PostConstruct
     public void init() {
-        for (Avsnitt mainGroup: DiagnosUtil.getKapitel()) {
-            for (Avsnitt group: diagnosUtil.getAvsnittForKapitel(mainGroup.getId())) {
+        for (Avsnitt mainGroup : DiagnosUtil.getKapitel()) {
+            for (Avsnitt group : diagnosUtil.getAvsnittForKapitel(mainGroup.getId())) {
                 DIAGNOSER.add(group.getId().split("-")[0]);
             }
         }

@@ -19,17 +19,6 @@
 
 package se.inera.statistics.web.service;
 
-import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-
 import org.joda.time.LocalDate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,7 +26,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
-
 import se.inera.statistics.service.report.api.Aldersgrupp;
 import se.inera.statistics.service.report.api.Diagnosgrupp;
 import se.inera.statistics.service.report.api.Diagnoskapitel;
@@ -151,7 +139,7 @@ public class ProtectedChartDataService {
      */
     @GET
     @Path("{verksamhetId}/getDiagnoskapitelstatistik")
-    @Produces({ MediaType.APPLICATION_JSON })
+    @Produces({MediaType.APPLICATION_JSON})
     @PreAuthorize(value = "@protectedChartDataService.helper.hasAccessTo(#request, #verksamhetId)")
     @PostAuthorize(value = "@protectedChartDataService.helper.userAccess(#request, #verksamhetId)")
     public DualSexStatisticsData getDiagnosisGroupStatistics(@Context HttpServletRequest request, @PathParam(VERKSAMHET_PATH_ID) String verksamhetId) {
@@ -169,8 +157,8 @@ public class ProtectedChartDataService {
      * @return data
      */
     @GET
-    @Path("{verksamhetId}/getDiagnosisGroupStatistics/csv")
-    @Produces({ "text/plain; charset=UTF-8" })
+    @Path("{verksamhetId}/getDiagnoskapitelstatistik/csv")
+    @Produces({"text/plain; charset=UTF-8"})
     @PreAuthorize(value = "@protectedChartDataService.helper.hasAccessTo(#request, #verksamhetId)")
     @PostAuthorize(value = "@protectedChartDataService.helper.userAccess(#request, #verksamhetId)")
     public Response getDiagnosisGroupStatisticsAsCsv(@Context HttpServletRequest request, @PathParam(VERKSAMHET_PATH_ID) String verksamhetId) {
@@ -188,7 +176,7 @@ public class ProtectedChartDataService {
      */
     @GET
     @Path("{verksamhetId}/getDiagnosavsnittstatistik/{groupId}")
-    @Produces({ MediaType.APPLICATION_JSON })
+    @Produces({MediaType.APPLICATION_JSON})
     @PreAuthorize(value = "@protectedChartDataService.helper.hasAccessTo(#request, #verksamhetId)")
     @PostAuthorize(value = "@protectedChartDataService.helper.userAccess(#request, #verksamhetId)")
     public DualSexStatisticsData getDiagnosisSubGroupStatistics(@Context HttpServletRequest request, @PathParam(VERKSAMHET_PATH_ID) String verksamhetId, @PathParam("groupId") String groupId) {
@@ -207,7 +195,7 @@ public class ProtectedChartDataService {
      */
     @GET
     @Path("{verksamhetId}/getDiagnosavsnittstatistik/{groupId}/csv")
-    @Produces({ "text/plain; charset=UTF-8" })
+    @Produces({"text/plain; charset=UTF-8"})
     @PreAuthorize(value = "@protectedChartDataService.helper.hasAccessTo(#request, #verksamhetId)")
     @PostAuthorize(value = "@protectedChartDataService.helper.userAccess(#request, #verksamhetId)")
     public Response getDiagnosisSubGroupStatisticsAsCsv(@Context HttpServletRequest request, @PathParam(VERKSAMHET_PATH_ID) String verksamhetId, @PathParam("groupId") String groupId) {

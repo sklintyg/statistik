@@ -19,21 +19,11 @@
 
 package se.inera.statistics.web.service;
 
-import java.util.List;
-
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-
 import org.joda.time.LocalDate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import se.inera.statistics.service.report.api.Aldersgrupp;
 import se.inera.statistics.service.report.api.Diagnoskapitel;
 import se.inera.statistics.service.report.api.Overview;
@@ -61,6 +51,14 @@ import se.inera.statistics.web.model.SimpleDetailsData;
 import se.inera.statistics.web.model.TableData;
 import se.inera.statistics.web.model.overview.OverviewData;
 
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import java.util.List;
+
 @Service("chartService")
 public class ChartDataService {
 
@@ -87,7 +85,7 @@ public class ChartDataService {
 
     @GET
     @Path("getNumberOfCasesPerMonth")
-    @Produces({ MediaType.APPLICATION_JSON })
+    @Produces({MediaType.APPLICATION_JSON})
     public SimpleDetailsData getNumberOfCasesPerMonth() {
         LOG.info("Calling getNumberOfCasesPerMonth for national");
         final Range range = new Range(18);
@@ -97,7 +95,7 @@ public class ChartDataService {
 
     @GET
     @Path("getNumberOfCasesPerMonth/csv")
-    @Produces({ "text/plain; charset=UTF-8" })
+    @Produces({"text/plain; charset=UTF-8"})
     public Response getNumberOfCasesPerMonthAsCsv() {
         LOG.info("Calling getNumberOfCasesPerMonthAsCsv for national");
         final TableData tableData = getNumberOfCasesPerMonth().getTableData();
@@ -106,7 +104,7 @@ public class ChartDataService {
 
     @GET
     @Path("getDiagnoskapitel")
-    @Produces({ MediaType.APPLICATION_JSON })
+    @Produces({MediaType.APPLICATION_JSON})
     public List<Avsnitt> getDiagnoskapitel() {
         LOG.info("Calling getKapitel");
         return DiagnosUtil.getKapitel();
@@ -114,7 +112,7 @@ public class ChartDataService {
 
     @GET
     @Path("getDiagnoskapitelstatistik")
-    @Produces({ MediaType.APPLICATION_JSON })
+    @Produces({MediaType.APPLICATION_JSON})
     public DualSexStatisticsData getDiagnoskapitelstatistik() {
         LOG.info("Calling getDiagnoskapitelstatistik for national");
         final Range range = new Range(18);
@@ -124,7 +122,7 @@ public class ChartDataService {
 
     @GET
     @Path("getDiagnoskapitelstatistik/csv")
-    @Produces({ "text/plain; charset=UTF-8" })
+    @Produces({"text/plain; charset=UTF-8"})
     public Response getDiagnoskapitelstatistikAsCsv() {
         LOG.info("Calling getDiagnoskapitelstatistikAsCsv for national");
         final TableData tableData = getDiagnoskapitelstatistik().getTableData();
@@ -133,7 +131,7 @@ public class ChartDataService {
 
     @GET
     @Path("getDiagnosavsnittstatistik/{groupId}")
-    @Produces({ MediaType.APPLICATION_JSON })
+    @Produces({MediaType.APPLICATION_JSON})
     public DualSexStatisticsData getDiagnosavsnittstatistik(@PathParam("groupId") String groupId) {
         LOG.info("Calling getDiagnosavsnittstatistik for national with groupId: " + groupId);
         final Range range = new Range(18);
@@ -143,7 +141,7 @@ public class ChartDataService {
 
     @GET
     @Path("getDiagnosavsnittstatistik/{groupId}/csv")
-    @Produces({ "text/plain; charset=UTF-8" })
+    @Produces({"text/plain; charset=UTF-8"})
     public Response getDiagnosavsnittstatistikAsCsv(@PathParam("groupId") String groupId) {
         LOG.info("Calling getDiagnosavsnittstatistikAsCsv for national");
         final TableData tableData = getDiagnosavsnittstatistik(groupId).getTableData();
@@ -152,7 +150,7 @@ public class ChartDataService {
 
     @GET
     @Path("getOverview")
-    @Produces({ MediaType.APPLICATION_JSON })
+    @Produces({MediaType.APPLICATION_JSON})
     public OverviewData getOverviewData() {
         Range range = Range.quarter();
         OverviewResponse response = datasourceOverview.getOverview(range);
@@ -161,7 +159,7 @@ public class ChartDataService {
 
     @GET
     @Path("getAgeGroupsStatistics")
-    @Produces({ MediaType.APPLICATION_JSON })
+    @Produces({MediaType.APPLICATION_JSON})
     public AgeGroupsData getAgeGroupsStatistics() {
         LOG.info("Calling getAgeGroupsStatistics for national");
         final RollingLength quarter = RollingLength.QUARTER;
@@ -171,7 +169,7 @@ public class ChartDataService {
 
     @GET
     @Path("getAgeGroupsStatistics/csv")
-    @Produces({ "text/plain; charset=UTF-8" })
+    @Produces({"text/plain; charset=UTF-8"})
     public Response getAgeGroupsStatisticsAsCsv() {
         LOG.info("Calling getAgeGroupsStatisticsAsCsv for national");
         final TableData tableData = getAgeGroupsStatistics().getTableData();
@@ -180,7 +178,7 @@ public class ChartDataService {
 
     @GET
     @Path("getDegreeOfSickLeaveStatistics")
-    @Produces({ MediaType.APPLICATION_JSON })
+    @Produces({MediaType.APPLICATION_JSON})
     public DualSexStatisticsData getDegreeOfSickLeaveStatistics() {
         LOG.info("Calling getDegreeOfSickLeaveStatistics for national");
         final Range range = new Range(18);
@@ -190,7 +188,7 @@ public class ChartDataService {
 
     @GET
     @Path("getDegreeOfSickLeaveStatistics/csv")
-    @Produces({ "text/plain; charset=UTF-8" })
+    @Produces({"text/plain; charset=UTF-8"})
     public Response getDegreeOfSickLeaveStatisticsAsCsv() {
         LOG.info("Calling getDegreeOfSickLeaveStatisticsAsCsv for national");
         final TableData tableData = getDegreeOfSickLeaveStatistics().getTableData();
@@ -199,7 +197,7 @@ public class ChartDataService {
 
     @GET
     @Path("getSickLeaveLengthData")
-    @Produces({ MediaType.APPLICATION_JSON })
+    @Produces({MediaType.APPLICATION_JSON})
     public SickLeaveLengthData getSickLeaveLengthData() {
         LOG.info("Calling getSickLeaveLengthData for national");
         final RollingLength period = RollingLength.YEAR;
@@ -209,7 +207,7 @@ public class ChartDataService {
 
     @GET
     @Path("getSickLeaveLengthData/csv")
-    @Produces({ "text/plain; charset=UTF-8" })
+    @Produces({"text/plain; charset=UTF-8"})
     public Response getSickLeaveLengthDataAsCsv() {
         LOG.info("Calling getSickLeaveLengthDataAsCsv for national");
         final TableData tableData = getSickLeaveLengthData().getTableData();
@@ -218,7 +216,7 @@ public class ChartDataService {
 
     @GET
     @Path("getCountyStatistics")
-    @Produces({ MediaType.APPLICATION_JSON })
+    @Produces({MediaType.APPLICATION_JSON})
     public CasesPerCountyData getCountyStatistics() {
         Range range1 = Range.quarter();
         Range range2 = ReportUtil.getPreviousPeriod(range1);
@@ -230,7 +228,7 @@ public class ChartDataService {
 
     @GET
     @Path("getCountyStatistics/csv")
-    @Produces({ "text/plain; charset=UTF-8" })
+    @Produces({"text/plain; charset=UTF-8"})
     public Response getCountyStatisticsAsCsv() {
         LOG.info("Calling getCountyStatisticsAsCsv for national");
         final TableData tableData = getCountyStatistics().getTableData();
@@ -239,7 +237,7 @@ public class ChartDataService {
 
     @GET
     @Path("getSjukfallPerSexStatistics")
-    @Produces({ MediaType.APPLICATION_JSON })
+    @Produces({MediaType.APPLICATION_JSON})
     public SimpleDetailsData getSjukfallPerSexStatistics() {
         LOG.info("Calling getSjukfallPerSexStatistics for national");
         final Range range = new Range(12);
@@ -249,7 +247,7 @@ public class ChartDataService {
 
     @GET
     @Path("getSjukfallPerSexStatistics/csv")
-    @Produces({ "text/plain; charset=UTF-8" })
+    @Produces({"text/plain; charset=UTF-8"})
     public Response getSjukfallPerSexStatisticsAsCsv() {
         LOG.info("Calling getSjukfallPerSexStatisticsAsCsv for national");
         final TableData tableData = getSjukfallPerSexStatistics().getTableData();

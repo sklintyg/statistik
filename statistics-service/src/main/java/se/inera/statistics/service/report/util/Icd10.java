@@ -1,17 +1,16 @@
 package se.inera.statistics.service.report.util;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+
+import javax.annotation.PostConstruct;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.annotation.PostConstruct;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.Resource;
 
 public class Icd10 {
 
@@ -47,17 +46,17 @@ public class Icd10 {
                 public Kapitel parse(String line) {
                     return Kapitel.valueOf(line);
                 }
-            } .process();
+            }.process();
 
             avsnitt = new LineReader<Avsnitt>(icd10AvsnittAnsiFile) {
                 public Avsnitt parse(String line) {
                     return Avsnitt.valueOf(line);
                 }
-            } .process();
+            }.process();
 
-            for (Avsnitt a: avsnitt) {
+            for (Avsnitt a : avsnitt) {
                 String aid = firstKategori(a.getId());
-                for (Kapitel k: kapitel) {
+                for (Kapitel k : kapitel) {
                     String kid = lastKategori(k.getId());
                     if (kid.compareTo(aid) >= 0) {
                         k.avsnitt.add(a);
@@ -69,11 +68,11 @@ public class Icd10 {
                 public Kategori parse(String line) {
                     return Kategori.valueOf(line);
                 }
-            } .process();
+            }.process();
 
-            for (Kategori k: kategori) {
+            for (Kategori k : kategori) {
                 String kid = firstKategori(k.getId());
-                for (Avsnitt a: avsnitt) {
+                for (Avsnitt a : avsnitt) {
                     String aid = lastKategori(a.getId());
                     if (kid.compareTo(aid) <= 0) {
                         a.kategori.add(k);
@@ -105,7 +104,7 @@ public class Icd10 {
 
     public String normalize(String icd10Code) {
         StringBuilder normalized = new StringBuilder(icd10Code.length());
-        for (char c: icd10Code.toUpperCase().toCharArray()) {
+        for (char c : icd10Code.toUpperCase().toCharArray()) {
             if ('A' <= c && c <= 'Z' || '0' <= c && c <= '9') {
                 normalized.append(c);
             }
