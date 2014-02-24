@@ -1,0 +1,62 @@
+!contents -R2 -g -p -f -h
+
+Det här tester visar hur ålder på patienter hanteras under ett sjukfall. Vi verifierar att ett sjukfall inte ändrar ålder under sjukfallets tidsrymd.
+
+#String person, String diagnos, String start1, String stop1, String grad1, String start2, String stop2, String grad2, String start3, String stop3, String grad3, String start4, String stop4, String grad4, String enhet, String vardgivare, String trackingId
+
+Person 1, 1 intyg, 35 år gammal dag 1 till 35 år sista dagen för intyget följt av 1 intyg i nytt sjukfall, 36 år gammal dag 1 till 36 år sista dagen för intyget
+
+|script|se.inera.statistics.queue.IntygSender|
+|send intyg;|19780101-929x|G01||||||||||2013-03-05|2013-03-06|100%|ENVE|EnVG|1|
+
+|script|se.inera.statistics.queue.IntygSender|
+|sleep|500|
+|awaitResult|
+|get result;|ENVE|TVAVE|2014-01-02|2014-02-02|
+
+|query:se.inera.statistics.counterdata.Alder|ageGroups1|
+|grupp|kvinnor|män|
+|31-35|0|1|
+
+|script|se.inera.statistics.queue.IntygSender|
+|send intyg;|19780101-929x|G01||||||||||2014-02-05|2014-02-06|100%|ENVE|EnVG|1|
+
+|script|se.inera.statistics.queue.IntygSender|
+|sleep|500|
+|awaitResult|
+|get result;|ENVE|TVAVE|2014-01-02|2014-02-02|
+
+|query:se.inera.statistics.counterdata.Alder|ageGroups1|
+|grupp|kvinnor|män|
+|31-35|0|1|
+|36-40|0|1|
+
+-----
+
+Person 2, 1 intyg, 35 år gammal dag 1 till 35 år sista dagen för intyget följt av 1 intyg i samma sjukfall, 35 år gammal dag 1 till 36 år sista dagen för intyget
+
+|script|se.inera.statistics.queue.IntygSender|
+|send intyg;|19780101-929y|G01||||||||||2013-02-05|2013-02-06|100%|TVAVE|EnVG|1|
+
+|script|se.inera.statistics.queue.IntygSender|
+|sleep|500|
+|awaitResult|
+|get result;|ENVE|TVAVE|2012-05-01|2013-10-10|
+
+|query:se.inera.statistics.counterdata.Alder|ageGroups2|
+|grupp|kvinnor|män|
+|31-35|0|1|
+
+|script|se.inera.statistics.queue.IntygSender|
+|send intyg;|19780101-929y|G01||||||||||2013-02-07|2014-02-06|100%|TVAVE|EnVG|1|
+
+|script|se.inera.statistics.queue.IntygSender|
+|sleep|500|
+|awaitResult|
+|get result;|ENVE|TVAVE|2012-05-01|2013-10-10|
+
+|query:se.inera.statistics.counterdata.Alder|ageGroups2|
+|grupp|kvinnor|män|
+|31-35|0|1|
+
+-----

@@ -19,27 +19,25 @@
 
 package se.inera.statistics.web.service;
 
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mockito;
+import org.mockito.runners.MockitoJUnitRunner;
+import se.inera.statistics.service.report.api.Diagnoskapitel;
+import se.inera.statistics.service.report.api.Overview;
+import se.inera.statistics.service.report.api.SjukfallPerManad;
+import se.inera.statistics.service.report.model.Avsnitt;
+import se.inera.statistics.service.report.model.Range;
+
+import java.util.List;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.eq;
-
-import java.util.List;
-
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mockito;
-
 import static org.mockito.MockitoAnnotations.Mock;
-
-import org.mockito.runners.MockitoJUnitRunner;
-import se.inera.statistics.service.report.api.SjukfallPerManad;
-import se.inera.statistics.service.report.api.Diagnoskapitel;
-import se.inera.statistics.service.report.api.Overview;
-import se.inera.statistics.service.report.model.Avsnitt;
-import se.inera.statistics.service.report.model.Range;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ChartDataServiceTest {
@@ -66,15 +64,17 @@ public class ChartDataServiceTest {
     public void getOverviewDataTest() {
         try {
             chartDataService.getOverviewData();
-        } catch (NullPointerException e) { }
+        } catch (NullPointerException e) {
+        }
         Mockito.verify(overviewMock).getOverview(any(Range.class));
     }
 
     @Test
     public void getNumberOfCasesPerMonthTest() {
         try {
-        chartDataService.getNumberOfCasesPerMonth();
-        } catch (NullPointerException e) { }
+            chartDataService.getNumberOfCasesPerMonth();
+        } catch (NullPointerException e) {
+        }
         Mockito.verify(sjukfallPerManadMock).getCasesPerMonth(anyString(), any(Range.class));
     }
 
@@ -89,7 +89,8 @@ public class ChartDataServiceTest {
     public void getDiagnosisGroupStatisticsTest() {
         try {
             chartDataService.getDiagnoskapitelstatistik();
-        } catch (NullPointerException e) { }
+        } catch (NullPointerException e) {
+        }
         Mockito.verify(diagnosgruppMock).getDiagnosisGroups(anyString(), any(Range.class));
     }
 
@@ -97,7 +98,8 @@ public class ChartDataServiceTest {
     public void getDiagnosisSubGroupStatisticsTest() {
         try {
             chartDataService.getDiagnosavsnittstatistik("testId");
-        } catch (NullPointerException e) { }
+        } catch (NullPointerException e) {
+        }
         Mockito.verify(diagnoskapitelMock).getDiagnosisGroups(anyString(), any(Range.class), eq("testId"));
     }
 

@@ -23,12 +23,12 @@ class FilteredDiagnos {
         JsonNode testResult = data.jsonNode
         Iterator<JsonNode> grupps = testResult.findPath("avsnitts").iterator()
         List<String> gruppList = new ArrayList<>();
-        while(grupps.hasNext()) {
+        while (grupps.hasNext()) {
             gruppList.add(grupps.next().path("Avsnitt").path("id").textValue())
         }
         Iterator<JsonNode> rows = testResult.findPath("rows").iterator();
         List<List<List<String>>> rowList = new ArrayList<>()
-        while(rows.hasNext()) {
+        while (rows.hasNext()) {
             JsonNode row = rows.next().get("KonDataRow")
             String periodString = row.path("name").textValue()
             int i = 0

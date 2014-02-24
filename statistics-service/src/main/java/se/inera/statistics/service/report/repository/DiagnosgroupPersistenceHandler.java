@@ -19,17 +19,8 @@
 
 package se.inera.statistics.service.report.repository;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.TypedQuery;
-
 import org.joda.time.LocalDate;
 import org.springframework.transaction.annotation.Transactional;
-
 import se.inera.statistics.service.report.model.Avsnitt;
 import se.inera.statistics.service.report.model.DiagnosgruppResponse;
 import se.inera.statistics.service.report.model.Kon;
@@ -39,6 +30,13 @@ import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.util.DiagnosUtil;
 import se.inera.statistics.service.report.util.ReportUtil;
 import se.inera.statistics.service.report.util.Verksamhet;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 public class DiagnosgroupPersistenceHandler implements se.inera.statistics.service.report.api.Diagnosgrupp {
     private static final List<Avsnitt> HEADERS = DiagnosUtil.getKapitel();
@@ -83,7 +81,7 @@ public class DiagnosgroupPersistenceHandler implements se.inera.statistics.servi
             String displayDate = ReportUtil.toDiagramPeriod(currentPeriod);
             String period = ReportUtil.toPeriod(currentPeriod);
             List<KonField> values = new ArrayList<>(HEADERS.size());
-            for (Avsnitt group: HEADERS) {
+            for (Avsnitt group : HEADERS) {
                 values.add(map.get(period + group.getId()));
             }
             translatedCasesPerMonthRows.add(new KonDataRow(displayDate, values));
@@ -94,7 +92,7 @@ public class DiagnosgroupPersistenceHandler implements se.inera.statistics.servi
     private static Map<String, KonField> map(List<DiagnosisGroupData> data) {
         Map<String, KonField> resultMap = new DefaultHashMap<>(new KonField(0, 0));
 
-        for (DiagnosisGroupData item: data) {
+        for (DiagnosisGroupData item : data) {
             resultMap.put(item.getPeriod() + item.getGroup(), new KonField(item.getFemale(), item.getMale()));
         }
         return resultMap;

@@ -19,14 +19,12 @@
 
 package se.inera.statistics.service.report.listener;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
 import se.inera.statistics.service.report.util.DiagnosUtil;
 import se.inera.statistics.service.sjukfall.SjukfallInfo;
-
-import com.fasterxml.jackson.databind.JsonNode;
 
 @Component
 public abstract class GenericAbstractListener extends AbstractListener<GenericHolder> {

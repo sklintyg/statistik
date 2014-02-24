@@ -19,13 +19,12 @@
 
 package se.inera.statistics.service.report.listener;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import se.inera.statistics.service.helper.DocumentHelper;
 import se.inera.statistics.service.helper.HSAServiceHelper;
 import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.report.util.DiagnosUtil;
 import se.inera.statistics.service.sjukfall.SjukfallInfo;
-
-import com.fasterxml.jackson.databind.JsonNode;
 
 public class GenericHolder {
 

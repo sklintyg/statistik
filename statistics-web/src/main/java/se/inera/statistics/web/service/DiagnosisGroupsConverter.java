@@ -19,6 +19,18 @@
 
 package se.inera.statistics.web.service;
 
+import se.inera.statistics.service.report.model.Avsnitt;
+import se.inera.statistics.service.report.model.DiagnosgruppResponse;
+import se.inera.statistics.service.report.model.Kon;
+import se.inera.statistics.service.report.model.KonDataRow;
+import se.inera.statistics.service.report.model.Range;
+import se.inera.statistics.web.model.ChartData;
+import se.inera.statistics.web.model.ChartSeries;
+import se.inera.statistics.web.model.DualSexStatisticsData;
+import se.inera.statistics.web.model.NamedData;
+import se.inera.statistics.web.model.TableData;
+import se.inera.statistics.web.model.TableHeader;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -28,15 +40,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.TreeMap;
-
-import se.inera.statistics.service.report.model.*;
-import se.inera.statistics.service.report.model.Avsnitt;
-import se.inera.statistics.web.model.ChartData;
-import se.inera.statistics.web.model.ChartSeries;
-import se.inera.statistics.web.model.DualSexStatisticsData;
-import se.inera.statistics.web.model.NamedData;
-import se.inera.statistics.web.model.TableData;
-import se.inera.statistics.web.model.TableHeader;
 
 public class DiagnosisGroupsConverter {
 
@@ -178,7 +181,7 @@ public class DiagnosisGroupsConverter {
         topHeaderRow.add(new TableHeader(""));
         List<String> diagnosisGroups = resp.getDiagnosisGroupsAsStrings();
         for (String groupName : diagnosisGroups) {
-                topHeaderRow.add(new TableHeader(groupName, 2));
+            topHeaderRow.add(new TableHeader(groupName, 2));
         }
         topHeaderRow.add(new TableHeader(""));
 
