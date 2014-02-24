@@ -32,7 +32,7 @@
         <context:property-placeholder location="file:${statistics.config.file}" order="1" ignore-resource-not-found="false" ignore-unresolvable="true"/>
         <context:property-placeholder location="classpath*:default.qa.properties" order="2" ignore-resource-not-found="false" ignore-unresolvable="true"/>
     </beans>
-    <beans profile="dev">
+    <beans profile="dev,db">
         <context:property-placeholder location="classpath*:default.dev.properties" order="1" ignore-resource-not-found="true" ignore-unresolvable="true"/>
     </beans>
 
