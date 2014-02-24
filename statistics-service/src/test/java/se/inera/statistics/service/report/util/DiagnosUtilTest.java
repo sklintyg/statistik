@@ -81,8 +81,8 @@ public class DiagnosUtilTest {
 
     @Test
     public void normalizeIcd10Code() {
-        assertEquals("", DiagnosUtil.normalize(". -_+?="));
-        assertEquals("A10", DiagnosUtil.normalize("a 1.0"));
-        assertEquals("B123", DiagnosUtil.normalize(" B12.3 # "));
+        assertEquals("", util.normalize(". -_+?="));
+        assertEquals("A10", util.normalize("a 1.0"));
+        assertEquals("B123", util.normalize(" B12.3 # "));
     }
 }

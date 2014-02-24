@@ -64,7 +64,7 @@ public class DiagnosUtil {
         throw new IllegalArgumentException("ICD-10-SE code not found: " + icd10Code);
     }
 
-    public static String normalize(String icd10Code) {
+    protected String normalize(String icd10Code) {
         StringBuilder normalized = new StringBuilder(icd10Code.length());
         for (char c: icd10Code.toUpperCase().toCharArray()) {
             if ('A' <= c && c <= 'Z' || '0' <= c && c <= '9') {
