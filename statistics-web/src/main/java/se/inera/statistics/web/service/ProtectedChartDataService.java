@@ -19,6 +19,17 @@
 
 package se.inera.statistics.web.service;
 
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+
 import org.joda.time.LocalDate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,10 +37,28 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
-import se.inera.statistics.service.report.api.*;
+
+import se.inera.statistics.service.report.api.Aldersgrupp;
 import se.inera.statistics.service.report.api.Diagnosgrupp;
-import se.inera.statistics.service.report.model.*;
-import se.inera.statistics.web.model.*;
+import se.inera.statistics.service.report.api.Diagnoskapitel;
+import se.inera.statistics.service.report.api.RollingLength;
+import se.inera.statistics.service.report.api.SjukfallPerManad;
+import se.inera.statistics.service.report.api.SjukfallslangdGrupp;
+import se.inera.statistics.service.report.api.Sjukskrivningsgrad;
+import se.inera.statistics.service.report.api.VerksamhetOverview;
+import se.inera.statistics.service.report.model.DiagnosgruppResponse;
+import se.inera.statistics.service.report.model.Range;
+import se.inera.statistics.service.report.model.SimpleKonDataRow;
+import se.inera.statistics.service.report.model.SimpleKonResponse;
+import se.inera.statistics.service.report.model.SjukfallslangdResponse;
+import se.inera.statistics.service.report.model.SjukskrivningsgradResponse;
+import se.inera.statistics.service.report.model.VerksamhetOverviewResponse;
+import se.inera.statistics.web.model.AgeGroupsData;
+import se.inera.statistics.web.model.DualSexStatisticsData;
+import se.inera.statistics.web.model.SickLeaveLengthData;
+import se.inera.statistics.web.model.SimpleDetailsData;
+import se.inera.statistics.web.model.TableData;
+import se.inera.statistics.web.model.Verksamhet;
 import se.inera.statistics.web.model.overview.VerksamhetOverviewData;
 
 import javax.servlet.http.HttpServletRequest;
@@ -121,12 +150,12 @@ public class ProtectedChartDataService {
      * @return data
      */
     @GET
-    @Path("{verksamhetId}/getDiagnosisGroupStatistics")
-    @Produces({MediaType.APPLICATION_JSON})
+    @Path("{verksamhetId}/getDiagnoskapitelstatistik")
+    @Produces({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedChartDataService.helper.hasAccessTo(#request, #verksamhetId)")
     @PostAuthorize(value = "@protectedChartDataService.helper.userAccess(#request, #verksamhetId)")
     public DualSexStatisticsData getDiagnosisGroupStatistics(@Context HttpServletRequest request, @PathParam(VERKSAMHET_PATH_ID) String verksamhetId) {
-        LOG.info("Calling getDiagnosisGroupStatistics with verksamhetId: " + verksamhetId);
+        LOG.info("Calling getDiagnoskapitelstatistik with verksamhetId: " + verksamhetId);
         final Range range = new Range(18);
         DiagnosgruppResponse diagnosisGroups = datasourceDiagnosgrupp.getDiagnosisGroups(verksamhetId, range);
         return new DiagnosisGroupsConverter().convert(diagnosisGroups, range);
@@ -141,11 +170,11 @@ public class ProtectedChartDataService {
      */
     @GET
     @Path("{verksamhetId}/getDiagnosisGroupStatistics/csv")
-    @Produces({"text/plain; charset=UTF-8"})
+    @Produces({ "text/plain; charset=UTF-8" })
     @PreAuthorize(value = "@protectedChartDataService.helper.hasAccessTo(#request, #verksamhetId)")
     @PostAuthorize(value = "@protectedChartDataService.helper.userAccess(#request, #verksamhetId)")
     public Response getDiagnosisGroupStatisticsAsCsv(@Context HttpServletRequest request, @PathParam(VERKSAMHET_PATH_ID) String verksamhetId) {
-        LOG.info("Calling getDiagnosisGroupStatisticsAsCsv with verksamhetId: " + verksamhetId);
+        LOG.info("Calling getDiagnoskapitelstatistikAsCsv with verksamhetId: " + verksamhetId);
         final TableData tableData = getDiagnosisGroupStatistics(request, verksamhetId).getTableData();
         return CsvConverter.getCsvResponse(tableData, "export.csv");
     }
@@ -158,12 +187,12 @@ public class ProtectedChartDataService {
      * @return data
      */
     @GET
-    @Path("{verksamhetId}/getDiagnosisSubGroupStatistics/{groupId}")
-    @Produces({MediaType.APPLICATION_JSON})
+    @Path("{verksamhetId}/getDiagnosavsnittstatistik/{groupId}")
+    @Produces({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedChartDataService.helper.hasAccessTo(#request, #verksamhetId)")
     @PostAuthorize(value = "@protectedChartDataService.helper.userAccess(#request, #verksamhetId)")
     public DualSexStatisticsData getDiagnosisSubGroupStatistics(@Context HttpServletRequest request, @PathParam(VERKSAMHET_PATH_ID) String verksamhetId, @PathParam("groupId") String groupId) {
-        LOG.info("Calling getDiagnosisSubGroupStatistics with verksamhetId: '" + verksamhetId + "' and groupId: " + groupId);
+        LOG.info("Calling getDiagnosavsnittstatistik with verksamhetId: '" + verksamhetId + "' and groupId: " + groupId);
         final Range range = new Range(18);
         DiagnosgruppResponse diagnosisGroups = datasourceDiagnoskapitel.getDiagnosisGroups(Verksamhet.decodeId(verksamhetId), range, groupId);
         return new DiagnosisSubGroupsConverter().convert(diagnosisGroups, range);
@@ -177,12 +206,12 @@ public class ProtectedChartDataService {
      * @return data
      */
     @GET
-    @Path("{verksamhetId}/getDiagnosisSubGroupStatistics/{groupId}/csv")
-    @Produces({"text/plain; charset=UTF-8"})
+    @Path("{verksamhetId}/getDiagnosavsnittstatistik/{groupId}/csv")
+    @Produces({ "text/plain; charset=UTF-8" })
     @PreAuthorize(value = "@protectedChartDataService.helper.hasAccessTo(#request, #verksamhetId)")
     @PostAuthorize(value = "@protectedChartDataService.helper.userAccess(#request, #verksamhetId)")
     public Response getDiagnosisSubGroupStatisticsAsCsv(@Context HttpServletRequest request, @PathParam(VERKSAMHET_PATH_ID) String verksamhetId, @PathParam("groupId") String groupId) {
-        LOG.info("Calling getDiagnosisSubGroupStatisticsAsCsv with verksamhetId: " + verksamhetId);
+        LOG.info("Calling getDiagnosavsnittstatistikAsCsv with verksamhetId: " + verksamhetId);
         final TableData tableData = getDiagnosisSubGroupStatistics(request, verksamhetId, groupId).getTableData();
         return CsvConverter.getCsvResponse(tableData, "export.csv");
     }

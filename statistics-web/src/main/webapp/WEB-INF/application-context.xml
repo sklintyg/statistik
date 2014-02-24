@@ -78,7 +78,7 @@
         <context:component-scan base-package="se.inera.statistics.service"/>
 
         <bean id="receiver" class="se.inera.statistics.service.processlog.Receiver"/>
-        <bean class="se.inera.statistics.service.report.util.DiagnosisGroupsUtil"/>
+        <bean class="se.inera.statistics.service.report.util.DiagnosUtil"/>
         <bean class="org.springframework.core.io.ClassPathResource" id="icd10ChaptersAnsiFile">
             <constructor-arg value="KSH97_AVS.ANS"/>
         </bean>
@@ -97,7 +97,7 @@
 
     <beans profile="!test,!db,!qa">
         <bean class="se.inera.statistics.service.report.mock.SjukfallPerManadMock" id="casesPerMonth"/>
-        <bean class="se.inera.statistics.service.report.mock.DiagnosgruppMock" id="diagnosgrupps"/>
+        <bean class="se.inera.statistics.service.report.mock.DiagnosgruppMock" id="avsnitts"/>
         <bean class="se.inera.statistics.service.report.mock.DiagnoskapitelMock" id="diagnosisSubGroups"/>
         <bean class="se.inera.statistics.service.report.mock.OverviewMock" id="overview"/>
         <bean class="se.inera.statistics.service.report.mock.VerksamhetOverviewMock" id="verksamhetOverview"/>
@@ -114,7 +114,7 @@
         <bean class="se.inera.statistics.service.report.repository.SjukfallPerManadPersistenceHandler"
               id="casesPerMonth"/>
         <bean class="se.inera.statistics.service.report.repository.DiagnosgroupPersistenceHandler"
-              id="diagnosgrupps"/>
+              id="avsnitts"/>
         <bean class="se.inera.statistics.service.report.repository.DiagnossubgroupPersistenceHandler"
               id="diagnosisSubGroups"/>
         <bean class="se.inera.statistics.service.report.repository.OverviewPersistenceHandler" id="overview"/>

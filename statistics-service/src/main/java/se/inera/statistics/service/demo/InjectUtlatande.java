@@ -37,9 +37,9 @@ import se.inera.statistics.service.common.CommonPersistence;
 import se.inera.statistics.service.helper.UtlatandeBuilder;
 import se.inera.statistics.service.processlog.EventType;
 import se.inera.statistics.service.processlog.Receiver;
-import se.inera.statistics.service.report.model.Diagnosgrupp;
+import se.inera.statistics.service.report.model.Avsnitt;
 import se.inera.statistics.service.report.repository.NationellUpdater;
-import se.inera.statistics.service.report.util.DiagnosisGroupsUtil;
+import se.inera.statistics.service.report.util.DiagnosUtil;
 
 import com.fasterxml.jackson.databind.JsonNode;
 
@@ -72,12 +72,12 @@ public class InjectUtlatande {
     private NationellUpdater nationellUpdater;
 
     @Autowired
-    private DiagnosisGroupsUtil diagnosisGroupsUtil;
+    private DiagnosUtil diagnosUtil;
 
     private List<String> getDiagnoser() {
         if (DIAGNOSER.isEmpty()) {
-            for (Diagnosgrupp mainGroup: DiagnosisGroupsUtil.getAllDiagnosisGroups()) {
-                for (Diagnosgrupp group: diagnosisGroupsUtil.getSubGroups(mainGroup.getId())) {
+            for (Avsnitt mainGroup: DiagnosUtil.getKapitel()) {
+                for (Avsnitt group: diagnosUtil.getAvsnittForKapitel(mainGroup.getId())) {
                     DIAGNOSER.add(group.getId().split("-")[0]);
                 }
             }

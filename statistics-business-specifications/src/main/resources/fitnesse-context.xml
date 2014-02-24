@@ -55,7 +55,7 @@
     </bean>
 
     <bean class="se.inera.statistics.service.report.repository.SjukfallPerManadPersistenceHandler" id="casesPerMonth"/>
-    <bean class="se.inera.statistics.service.report.repository.DiagnosgroupPersistenceHandler" id="diagnosgrupps"/>
+    <bean class="se.inera.statistics.service.report.repository.DiagnosgroupPersistenceHandler" id="avsnitts"/>
     <bean class="se.inera.statistics.service.report.repository.DiagnossubgroupPersistenceHandler" id="diagnosisSubGroups"/>
     <bean class="se.inera.statistics.service.report.repository.AldersgruppPersistenceHandler" id="ageGroups"/>
     <bean class="se.inera.statistics.service.report.repository.SjukfallslangdGruppPersistenceHandler" id="caseLengthGroups"/>
@@ -74,7 +74,7 @@
         <constructor-arg value="KSH97_AVS.ANS"/>
     </bean>
     <bean class="se.inera.statistics.service.processlog.Processor"/>
-    <bean class="se.inera.statistics.service.report.util.DiagnosisGroupsUtil"/>
+    <bean class="se.inera.statistics.service.report.util.DiagnosUtil"/>
     <bean class="se.inera.statistics.queue.IntygSender"/>
 
     <context:component-scan base-package="se.inera.statistics.service.report.repository"/>

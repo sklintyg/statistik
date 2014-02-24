@@ -39,24 +39,24 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 
-import se.inera.statistics.service.report.model.Diagnosgrupp;
+import se.inera.statistics.service.report.model.Avsnitt;
 
-public class DiagnosisGroupsUtil {
+public class DiagnosUtil {
 
-    private static final Logger LOG = LoggerFactory.getLogger(DiagnosisGroupsUtil.class);
+    private static final Logger LOG = LoggerFactory.getLogger(DiagnosUtil.class);
 
     @Autowired
     private Resource icd10ChaptersAnsiFile;
 
     private static final Pattern ICD10_ANSI_FILE_LINE_PATTERN = Pattern.compile("(^[A-Z][0-9][0-9]-[A-Z][0-9][0-9])(.*)$");
-    private Map<String, Collection<Diagnosgrupp>> subgroups;
-    private static final List<Diagnosgrupp> GROUPS = initGroups();
+    private Map<String, Collection<Avsnitt>> subgroups;
+    private static final List<Avsnitt> GROUPS = initGroups();
 
-    public String getGroupIdForCode(String icd10Code) {
+    public String getKapitelIdForCode(String icd10Code) {
         String normalizedIcd10 = normalize(icd10Code);
-        for (Entry<String, Collection<Diagnosgrupp>> entry : getSubGroups().entrySet()) {
-            for (Diagnosgrupp diagnosgrupp : entry.getValue()) {
-                if (diagnosgrupp.isCodeInGroup(normalizedIcd10)) {
+        for (Entry<String, Collection<Avsnitt>> entry : getSubGroups().entrySet()) {
+            for (Avsnitt avsnitt : entry.getValue()) {
+                if (avsnitt.isCodeInGroup(normalizedIcd10)) {
                     return entry.getKey();
                 }
             }
@@ -64,7 +64,7 @@ public class DiagnosisGroupsUtil {
         throw new IllegalArgumentException("ICD-10-SE code not found: " + icd10Code);
     }
 
-    public static String normalize(String icd10Code) {
+    protected String normalize(String icd10Code) {
         StringBuilder normalized = new StringBuilder(icd10Code.length());
         for (char c: icd10Code.toUpperCase().toCharArray()) {
             if ('A' <= c && c <= 'Z' || '0' <= c && c <= '9') {
@@ -75,101 +75,101 @@ public class DiagnosisGroupsUtil {
     }
 
     public String getSubGroupIdForCode(String icd10Code) {
-        return getSubGroupForCode(icd10Code).getId();
+        return getAvsnittForCode(icd10Code).getId();
     }
 
-    public Diagnosgrupp getSubGroupForCode(String icd10Code) {
-        for (Entry<String, Collection<Diagnosgrupp>> entry : getSubGroups().entrySet()) {
-            for (Diagnosgrupp diagnosgrupp : entry.getValue()) {
-                if (diagnosgrupp.isCodeInGroup(icd10Code)) {
-                    return diagnosgrupp;
+    public Avsnitt getAvsnittForCode(String icd10Code) {
+        for (Entry<String, Collection<Avsnitt>> entry : getSubGroups().entrySet()) {
+            for (Avsnitt avsnitt : entry.getValue()) {
+                if (avsnitt.isCodeInGroup(icd10Code)) {
+                    return avsnitt;
                 }
             }
         }
         throw new IllegalArgumentException("ICD-10-SE code not found: " + icd10Code);
     }
 
-    public static List<Diagnosgrupp> getAllDiagnosisGroups() {
+    public static List<Avsnitt> getKapitel() {
         return GROUPS;
     }
 
-    private static List<Diagnosgrupp> initGroups() {
-        ArrayList<Diagnosgrupp> groups = new ArrayList<>();
-        groups.add(group("A00-B99", "Vissa infektionssjukdomar och parasitsjukdomar"));
-        groups.add(group("C00-D48", "Tumörer"));
-        groups.add(group("D50-D89", "Sjukdomar i blod och blodbildande organ samt vissa rubbningar i immunsystemet"));
-        groups.add(group("E00-E90", "Endokrina sjukdomar, nutritionsrubbningar och ämnesomsättningssjukdomar"));
-        groups.add(group("F00-F99", "Psykiska sjukdomar och syndrom samt beteendestörningar"));
-        groups.add(group("G00-G99", "Sjukdomar i nervsystemet"));
-        groups.add(group("H00-H59", "Sjukdomar i ögat och närliggande organ"));
-        groups.add(group("H60-H95", "Sjukdomar i örat och mastoidutskottet"));
-        groups.add(group("I00-I99", "Cirkulationsorganens sjukdomar"));
-        groups.add(group("J00-J99", "Andningsorganens sjukdomar"));
-        groups.add(group("K00-K93", "Matsmältningsorganens sjukdomar"));
-        groups.add(group("L00-L99", "Hudens och underhudens sjukdomar"));
-        groups.add(group("M00-M99", "Sjukdomar i muskuloskeletala systemet och bindväven"));
-        groups.add(group("N00-N99", "Sjukdomar i urin- och könsorganen"));
-        groups.add(group("O00-O99", "Graviditet, förlossning och barnsängstid"));
-        groups.add(group("P00-P96", "Vissa perinatala tillstånd"));
-        groups.add(group("Q00-Q99", "Medfödda missbildningar, deformiteter och kromosomavvikelser"));
-        groups.add(group("R00-R99", "Symtom, sjukdomstecken och onormala kliniska fynd och laboratoriefynd som ej klassificeras annorstädes"));
-        groups.add(group("S00-T98", "Skador, förgiftningar och vissa andra följder av yttre orsaker"));
-        groups.add(group("V01-Y98", "Yttre orsaker till sjukdom och död"));
-        groups.add(group("Z00-Z99", "Faktorer av betydelse för hälsotillståndet och för kontakter med hälso- och sjukvården"));
-        groups.add(group("U00-U99", "Koder för särskilda ändamål"));
+    private static List<Avsnitt> initGroups() {
+        ArrayList<Avsnitt> groups = new ArrayList<>();
+        groups.add(avsnitt("A00-B99", "Vissa infektionssjukdomar och parasitsjukdomar"));
+        groups.add(avsnitt("C00-D48", "Tumörer"));
+        groups.add(avsnitt("D50-D89", "Sjukdomar i blod och blodbildande organ samt vissa rubbningar i immunsystemet"));
+        groups.add(avsnitt("E00-E90", "Endokrina sjukdomar, nutritionsrubbningar och ämnesomsättningssjukdomar"));
+        groups.add(avsnitt("F00-F99", "Psykiska sjukdomar och syndrom samt beteendestörningar"));
+        groups.add(avsnitt("G00-G99", "Sjukdomar i nervsystemet"));
+        groups.add(avsnitt("H00-H59", "Sjukdomar i ögat och närliggande organ"));
+        groups.add(avsnitt("H60-H95", "Sjukdomar i örat och mastoidutskottet"));
+        groups.add(avsnitt("I00-I99", "Cirkulationsorganens sjukdomar"));
+        groups.add(avsnitt("J00-J99", "Andningsorganens sjukdomar"));
+        groups.add(avsnitt("K00-K93", "Matsmältningsorganens sjukdomar"));
+        groups.add(avsnitt("L00-L99", "Hudens och underhudens sjukdomar"));
+        groups.add(avsnitt("M00-M99", "Sjukdomar i muskuloskeletala systemet och bindväven"));
+        groups.add(avsnitt("N00-N99", "Sjukdomar i urin- och könsorganen"));
+        groups.add(avsnitt("O00-O99", "Graviditet, förlossning och barnsängstid"));
+        groups.add(avsnitt("P00-P96", "Vissa perinatala tillstånd"));
+        groups.add(avsnitt("Q00-Q99", "Medfödda missbildningar, deformiteter och kromosomavvikelser"));
+        groups.add(avsnitt("R00-R99", "Symtom, sjukdomstecken och onormala kliniska fynd och laboratoriefynd som ej klassificeras annorstädes"));
+        groups.add(avsnitt("S00-T98", "Skador, förgiftningar och vissa andra följder av yttre orsaker"));
+        groups.add(avsnitt("V01-Y98", "Yttre orsaker till sjukdom och död"));
+        groups.add(avsnitt("Z00-Z99", "Faktorer av betydelse för hälsotillståndet och för kontakter med hälso- och sjukvården"));
+        groups.add(avsnitt("U00-U99", "Koder för särskilda ändamål"));
         return groups;
     }
 
-    public List<Diagnosgrupp> getSubGroups(String groupId) {
+    public List<Avsnitt> getAvsnittForKapitel(String groupId) {
         return new ArrayList<>(getSubGroups().get(groupId));
     }
 
-    public Collection<Diagnosgrupp> getGroupsInChapter(String chapter) {
+    public Collection<Avsnitt> getGroupsInChapter(String chapter) {
         return subgroups.get(chapter);
     }
-    private static Diagnosgrupp group(String code, String description) {
-        return new Diagnosgrupp(code, description);
+    private static Avsnitt avsnitt(String code, String description) {
+        return new Avsnitt(code, description);
     }
 
-    private static Map<String, Collection<Diagnosgrupp>> initSubGroups() {
-        Map<String, Collection<Diagnosgrupp>> subGroups = new HashMap<>();
+    private static Map<String, Collection<Avsnitt>> initSubGroups() {
+        Map<String, Collection<Avsnitt>> subGroups = new HashMap<>();
         String[] groups = new String[] {"A00-B99", "C00-D48", "D50-D89", "E00-E90", "F00-F99", "G00-G99", "H00-H59", "H60-H95", "I00-I99", "J00-J99",
                 "K00-K93", "L00-L99", "M00-M99", "N00-N99", "O00-O99", "P00-P96", "Q00-Q99", "R00-R99", "S00-T98", "V01-Y98", "Z00-Z99", "U00-U99" };
         for (String group : groups) {
-            subGroups.put(group, new TreeSet<Diagnosgrupp>());
+            subGroups.put(group, new TreeSet<Avsnitt>());
         }
         return subGroups;
     }
 
     private static String getChapterNameForIcd10Code(String icd10Code, Collection<String> groupNames) throws Icd10ChapterNotFoundException {
-        List<Diagnosgrupp> diagnosgrupps = new ArrayList<>();
+        List<Avsnitt> avsnitts = new ArrayList<>();
         for (String groupName : groupNames) {
-            diagnosgrupps.add(new Diagnosgrupp(groupName, ""));
+            avsnitts.add(new Avsnitt(groupName, ""));
         }
 
-        for (Diagnosgrupp diagnosgrupp : diagnosgrupps) {
-            if (diagnosgrupp.isCodeInGroup(icd10Code)) {
-                return diagnosgrupp.getId();
+        for (Avsnitt avsnitt : avsnitts) {
+            if (avsnitt.isCodeInGroup(icd10Code)) {
+                return avsnitt.getId();
             }
         }
         LOG.error("Failed to parse diagnosis groups definition file. Could not find chapter for code: " + icd10Code);
         throw new Icd10ChapterNotFoundException("Could not find chapter for code: " + icd10Code);
     }
 
-    private Map<String, Collection<Diagnosgrupp>> getSubGroups() {
+    private Map<String, Collection<Avsnitt>> getSubGroups() {
         if (subgroups == null) {
             subgroups = setupSubGroups();
         }
         return subgroups;
     }
 
-    private Map<String, Collection<Diagnosgrupp>> setupSubGroups() {
-        Map<String, Collection<Diagnosgrupp>> subGroups = initSubGroups();
+    private Map<String, Collection<Avsnitt>> setupSubGroups() {
+        Map<String, Collection<Avsnitt>> subGroups = initSubGroups();
         final Set<String> groupNames = subGroups.keySet();
 
         try (BufferedReader br = new BufferedReader(new InputStreamReader(icd10ChaptersAnsiFile.getInputStream(), "UTF-8"))) {
             for (String line = br.readLine(); line != null; line = br.readLine()) {
-                Diagnosgrupp group = getDiagnosisGroupFromIcd10AnsiFileLine(line);
+                Avsnitt group = getDiagnosisGroupFromIcd10AnsiFileLine(line);
                 if (group != null) {
                     String chapterNameForIcd10Code = getChapterNameForIcd10Code(group.getId(), groupNames);
                     subGroups.get(chapterNameForIcd10Code).add(group);
@@ -186,12 +186,12 @@ public class DiagnosisGroupsUtil {
         return subGroups;
     }
 
-    private static Diagnosgrupp getDiagnosisGroupFromIcd10AnsiFileLine(String line) {
+    private static Avsnitt getDiagnosisGroupFromIcd10AnsiFileLine(String line) {
         Matcher m = ICD10_ANSI_FILE_LINE_PATTERN.matcher(line);
         if (!m.matches()) {
             return null;
         }
-        return group(m.group(1), m.group(2));
+        return avsnitt(m.group(1), m.group(2));
     }
 
 }

@@ -42,7 +42,7 @@ import se.inera.statistics.service.report.api.SjukfallPerLan;
 import se.inera.statistics.service.report.api.SjukfallPerManad;
 import se.inera.statistics.service.report.api.SjukfallslangdGrupp;
 import se.inera.statistics.service.report.api.Sjukskrivningsgrad;
-import se.inera.statistics.service.report.model.Diagnosgrupp;
+import se.inera.statistics.service.report.model.Avsnitt;
 import se.inera.statistics.service.report.model.DiagnosgruppResponse;
 import se.inera.statistics.service.report.model.OverviewResponse;
 import se.inera.statistics.service.report.model.Range;
@@ -50,7 +50,7 @@ import se.inera.statistics.service.report.model.SimpleKonDataRow;
 import se.inera.statistics.service.report.model.SimpleKonResponse;
 import se.inera.statistics.service.report.model.SjukfallslangdResponse;
 import se.inera.statistics.service.report.model.SjukskrivningsgradResponse;
-import se.inera.statistics.service.report.util.DiagnosisGroupsUtil;
+import se.inera.statistics.service.report.util.DiagnosUtil;
 import se.inera.statistics.service.report.util.ReportUtil;
 import se.inera.statistics.service.report.util.Verksamhet;
 import se.inera.statistics.web.model.AgeGroupsData;
@@ -105,48 +105,48 @@ public class ChartDataService {
     }
 
     @GET
-    @Path("getDiagnosisGroups")
+    @Path("getDiagnoskapitel")
     @Produces({ MediaType.APPLICATION_JSON })
-    public List<Diagnosgrupp> getDiagnosisGroups() {
-        LOG.info("Calling getDiagnosgrupps");
-        return DiagnosisGroupsUtil.getAllDiagnosisGroups();
+    public List<Avsnitt> getDiagnoskapitel() {
+        LOG.info("Calling getKapitel");
+        return DiagnosUtil.getKapitel();
     }
 
     @GET
-    @Path("getDiagnosisGroupStatistics")
+    @Path("getDiagnoskapitelstatistik")
     @Produces({ MediaType.APPLICATION_JSON })
-    public DualSexStatisticsData getDiagnosisGroupStatistics() {
-        LOG.info("Calling getDiagnosisGroupStatistics for national");
+    public DualSexStatisticsData getDiagnoskapitelstatistik() {
+        LOG.info("Calling getDiagnoskapitelstatistik for national");
         final Range range = new Range(18);
         DiagnosgruppResponse diagnosisGroups = datasourceDiagnosgrupp.getDiagnosisGroups(NATIONELL, range);
         return new DiagnosisGroupsConverter().convert(diagnosisGroups, range);
     }
 
     @GET
-    @Path("getDiagnosisGroupStatistics/csv")
+    @Path("getDiagnoskapitelstatistik/csv")
     @Produces({ "text/plain; charset=UTF-8" })
-    public Response getDiagnosisGroupStatisticsAsCsv() {
-        LOG.info("Calling getDiagnosisGroupStatisticsAsCsv for national");
-        final TableData tableData = getDiagnosisGroupStatistics().getTableData();
+    public Response getDiagnoskapitelstatistikAsCsv() {
+        LOG.info("Calling getDiagnoskapitelstatistikAsCsv for national");
+        final TableData tableData = getDiagnoskapitelstatistik().getTableData();
         return CsvConverter.getCsvResponse(tableData, "export.csv");
     }
 
     @GET
-    @Path("getDiagnosisSubGroupStatistics/{groupId}")
+    @Path("getDiagnosavsnittstatistik/{groupId}")
     @Produces({ MediaType.APPLICATION_JSON })
-    public DualSexStatisticsData getDiagnosisSubGroupStatistics(@PathParam("groupId") String groupId) {
-        LOG.info("Calling getDiagnosisSubGroupStatistics for national with groupId: " + groupId);
+    public DualSexStatisticsData getDiagnosavsnittstatistik(@PathParam("groupId") String groupId) {
+        LOG.info("Calling getDiagnosavsnittstatistik for national with groupId: " + groupId);
         final Range range = new Range(18);
         DiagnosgruppResponse diagnosisGroups = datasourceDiagnoskapitel.getDiagnosisGroups(NATIONELL, range, groupId);
         return new DiagnosisSubGroupsConverter().convert(diagnosisGroups, range);
     }
 
     @GET
-    @Path("getDiagnosisSubGroupStatistics/{groupId}/csv")
+    @Path("getDiagnosavsnittstatistik/{groupId}/csv")
     @Produces({ "text/plain; charset=UTF-8" })
-    public Response getDiagnosisSubGroupStatisticsAsCsv(@PathParam("groupId") String groupId) {
-        LOG.info("Calling getDiagnosisSubGroupStatisticsAsCsv for national");
-        final TableData tableData = getDiagnosisSubGroupStatistics(groupId).getTableData();
+    public Response getDiagnosavsnittstatistikAsCsv(@PathParam("groupId") String groupId) {
+        LOG.info("Calling getDiagnosavsnittstatistikAsCsv for national");
+        final TableData tableData = getDiagnosavsnittstatistik(groupId).getTableData();
         return CsvConverter.getCsvResponse(tableData, "export.csv");
     }
 

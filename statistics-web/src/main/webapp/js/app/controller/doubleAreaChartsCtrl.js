@@ -23,8 +23,8 @@
      var conf = {};
      conf.dataFetcher = "getDiagnosisGroupData";
      conf.dataFetcherVerksamhet = "getDiagnosisGroupDataVerksamhet";
-     conf.exportTableUrl = function() { return "api/getDiagnosisGroupStatistics/csv"; };
-     conf.exportTableUrlVerksamhet = function(verksamhetId) { return "api/verksamhet/" + verksamhetId + "/getDiagnosisGroupStatistics/csv"; };
+     conf.exportTableUrl = function() { return "api/getDiagnoskapitelstatistik/csv"; };
+     conf.exportTableUrlVerksamhet = function(verksamhetId) { return "api/verksamhet/" + verksamhetId + "/getDiagnoskapitelstatistik/csv"; };
      conf.showDetailsOptions = false;
      conf.title = function(period) { return "Antal sjukfall per diagnosgrupp " + period; };
      conf.tooltipHelpText ="Vad innebär ICD-10? <br/> Den internationella sjukdomsklassifikationen ICD-10 är en klassifikation med diagnoskoder för att gruppera sjukdomar för att kunna göra översiktliga statistiska sammanställningar och analyser.<br/>Den svenska versionen heter ICD-10-SE.";	
@@ -36,8 +36,8 @@
      var conf = {};
      conf.dataFetcher = "getSubDiagnosisGroupData";
      conf.dataFetcherVerksamhet = "getSubDiagnosisGroupDataVerksamhet";
-     conf.exportTableUrl = function(subgroupId) { return "api/getDiagnosisSubGroupStatistics/" + subgroupId + "/csv"; };
-     conf.exportTableUrlVerksamhet = function(verksamhetId, subgroupId) { return "api/verksamhet/" + verksamhetId + "/getDiagnosisSubGroupStatistics/" + subgroupId + "/csv"; };
+     conf.exportTableUrl = function(subgroupId) { return "api/getDiagnosavsnittstatistik/" + subgroupId + "/csv"; };
+     conf.exportTableUrlVerksamhet = function(verksamhetId, subgroupId) { return "api/verksamhet/" + verksamhetId + "/getDiagnosavsnittstatistik/" + subgroupId + "/csv"; };
      conf.showDetailsOptions = true;
      conf.title = function(period, name) { return "Antal sjukfall för " + name + " " + period; };
      conf.tooltipHelpText ="Vad innebär enskilt diagnoskapitel? <br/>Sjukdomsklassifikationen ICD-10 är hierarkiskt uppbyggd av sjukdomsgrupper. Överst i hierarkin består ICD-10 av 21 kapitel. Varje enskilda diagnoskapitel motsvarar en grupp av relaterade diagnoskoder.<br/>Ett exempel på ett enskilt diagnoskapitel är: A00-B99 Vissa infektionssjukdomar och parasitsjukdomar.";
@@ -193,7 +193,7 @@
     };
     
     var populateDetailsOptions = function(result){
-        var basePath = isVerksamhet ? "#/verksamhet/" + $routeParams.verksamhetId + "/diagnoskapitel" : "#/nationell/diagnoskapitel";
+        var basePath = isVerksamhet ? "#/verksamhet/" + $routeParams.verksamhetId + "/diagnosavsnitt" : "#/nationell/diagnosavsnitt";
 
         for ( var i = 0; i < result.length; i++) {
             if (result[i].id == $routeParams.groupId){

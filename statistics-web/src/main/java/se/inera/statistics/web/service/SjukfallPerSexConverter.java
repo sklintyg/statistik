@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import com.sun.xml.bind.v2.bytecode.ClassTailor;
 import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.SimpleKonDataRow;
@@ -39,26 +40,23 @@ public class SjukfallPerSexConverter {
 
     private TableData convertToTableData(List<SimpleKonDataRow> list) {
         List<NamedData> data = new ArrayList<>();
-        int accumulatedSum = 0;
-        int totalSum = 0;
         int femaleSum = 0;
         int maleSum = 0;
         for (SimpleKonDataRow row : list) {
-            final Integer female = row.getFemale();
-            final Integer male = row.getMale();
+            int female = row.getFemale();
+            int male = row.getMale();
             int rowSum = female + male;
-            accumulatedSum += rowSum;
-            data.add(new NamedData(row.getName(), Arrays.asList(new Object[] {rowSum, toTableString(female, rowSum), toTableString(male, rowSum), accumulatedSum})));
-            totalSum += rowSum;
+            data.add(new NamedData(row.getName(), Arrays.asList(new Object[] {rowSum, toTableString(female, rowSum), toTableString(male, rowSum)})));
             femaleSum += female;
             maleSum += male;
         }
-        data.add(new NamedData("Totalt", Arrays.asList(totalSum, femaleSum, maleSum, "")));
+        int totalSum = femaleSum + maleSum;
+        data.add(new NamedData("Totalt", Arrays.asList(totalSum, toTableString(femaleSum, totalSum), toTableString(maleSum, totalSum))));
 
-        return TableData.createWithSingleHeadersRow(data, Arrays.asList("Län", "Antal sjukfall", "Andel sjukfall för kvinnor", "Andel sjukfall för män", "Summering"));
+        return TableData.createWithSingleHeadersRow(data, Arrays.asList("Län", "Antal sjukfall", "Andel sjukfall för kvinnor", "Andel sjukfall för män"));
     }
 
-    private String toTableString(final Integer value, int rowSum) {
+    private String toTableString(int value, int rowSum) {
         final DecimalFormatSymbols symbols = DecimalFormatSymbols.getInstance();
         symbols.setGroupingSeparator(' ');
         final DecimalFormat formatter = new DecimalFormat("###,###", symbols);
@@ -67,13 +65,13 @@ public class SjukfallPerSexConverter {
     }
 
     private ChartData convertToChartData(SimpleKonResponse<SimpleKonDataRow> casesPerMonth) {
-        final ArrayList<String> categories = new ArrayList<String>();
+        final ArrayList<String> categories = new ArrayList<>();
         categories.add("Samtliga län");
         for (SimpleKonDataRow casesPerMonthRow : casesPerMonth.getRows()) {
             categories.add(casesPerMonthRow.getName());
         }
 
-        final ArrayList<ChartSeries> series = new ArrayList<ChartSeries>();
+        final ArrayList<ChartSeries> series = new ArrayList<>();
         final String stacked = "Stacked";
         series.add(new ChartSeries("Andel sjukfall för kvinnor", getSeriesForSexWithTotal(casesPerMonth, Kon.Female), stacked, Kon.Female));
         series.add(new ChartSeries("Andel sjukfall för män", getSeriesForSexWithTotal(casesPerMonth, Kon.Male), stacked, Kon.Male));
@@ -82,7 +80,7 @@ public class SjukfallPerSexConverter {
     }
 
     private List<Integer> getSeriesForSexWithTotal(SimpleKonResponse<SimpleKonDataRow> casesPerMonth, final Kon kon) {
-        ArrayList<Integer> series = new ArrayList<Integer>();
+        ArrayList<Integer> series = new ArrayList<>();
         series.add(getSumForSex(casesPerMonth, kon));
         series.addAll(casesPerMonth.getDataForSex(kon));
         return series;

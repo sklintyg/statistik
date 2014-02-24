@@ -47,23 +47,23 @@ app.statisticsApp.factory('statisticsData', function($http){
    };
    
    factory.getDiagnosisGroupData = function (successCallback, failureCallback){
-       makeRequestNational("getDiagnosisGroupStatistics", successCallback, failureCallback);
+       makeRequestNational("getDiagnoskapitelstatistik", successCallback, failureCallback);
    };
    
    factory.getDiagnosisGroupDataVerksamhet = function (verksamhetId, successCallback, failureCallback){
-       makeRequestVerksamhet("getDiagnosisGroupStatistics", verksamhetId, successCallback, failureCallback);
+       makeRequestVerksamhet("getDiagnoskapitelstatistik", verksamhetId, successCallback, failureCallback);
    };
    
    factory.getSubDiagnosisGroupData = function (successCallback, failureCallback, groupId){
-       makeRequestNational("getDiagnosisSubGroupStatistics/" + groupId, successCallback, failureCallback);
+       makeRequestNational("getDiagnosavsnittstatistik/" + groupId, successCallback, failureCallback);
    };
    
    factory.getSubDiagnosisGroupDataVerksamhet = function (verksamhetId, successCallback, failureCallback, groupId){
-       makeRequestVerksamhet("getDiagnosisSubGroupStatistics/" + groupId, verksamhetId, successCallback, failureCallback);
+       makeRequestVerksamhet("getDiagnosavsnittstatistik/" + groupId, verksamhetId, successCallback, failureCallback);
    };
    
    factory.getDiagnosisGroups = function (successCallback, failureCallback){
-       makeRequestNational("getDiagnosisGroups", successCallback, failureCallback);
+       makeRequestNational("getDiagnoskapitel", successCallback, failureCallback);
    };
 
    factory.getAgeGroups = function (successCallback, failureCallback){

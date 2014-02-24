@@ -103,6 +103,16 @@ public class Icd10 {
         return avsnitt;
     }
 
+    public String normalize(String icd10Code) {
+        StringBuilder normalized = new StringBuilder(icd10Code.length());
+        for (char c: icd10Code.toUpperCase().toCharArray()) {
+            if ('A' <= c && c <= 'Z' || '0' <= c && c <= '9') {
+                normalized.append(c);
+            }
+        }
+        return normalized.toString();
+    }
+
     public static class Kapitel {
 
         private final String id;

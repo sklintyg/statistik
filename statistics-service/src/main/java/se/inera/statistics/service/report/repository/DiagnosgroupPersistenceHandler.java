@@ -30,18 +30,18 @@ import javax.persistence.TypedQuery;
 import org.joda.time.LocalDate;
 import org.springframework.transaction.annotation.Transactional;
 
-import se.inera.statistics.service.report.model.Diagnosgrupp;
+import se.inera.statistics.service.report.model.Avsnitt;
 import se.inera.statistics.service.report.model.DiagnosgruppResponse;
 import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.report.model.KonDataRow;
 import se.inera.statistics.service.report.model.KonField;
 import se.inera.statistics.service.report.model.Range;
-import se.inera.statistics.service.report.util.DiagnosisGroupsUtil;
+import se.inera.statistics.service.report.util.DiagnosUtil;
 import se.inera.statistics.service.report.util.ReportUtil;
 import se.inera.statistics.service.report.util.Verksamhet;
 
 public class DiagnosgroupPersistenceHandler implements se.inera.statistics.service.report.api.Diagnosgrupp {
-    private static final List<Diagnosgrupp> HEADERS = DiagnosisGroupsUtil.getAllDiagnosisGroups();
+    private static final List<Avsnitt> HEADERS = DiagnosUtil.getKapitel();
 
     @PersistenceContext(unitName = "IneraStatisticsLog")
     private EntityManager manager;
@@ -83,7 +83,7 @@ public class DiagnosgroupPersistenceHandler implements se.inera.statistics.servi
             String displayDate = ReportUtil.toDiagramPeriod(currentPeriod);
             String period = ReportUtil.toPeriod(currentPeriod);
             List<KonField> values = new ArrayList<>(HEADERS.size());
-            for (Diagnosgrupp group: HEADERS) {
+            for (Avsnitt group: HEADERS) {
                 values.add(map.get(period + group.getId()));
             }
             translatedCasesPerMonthRows.add(new KonDataRow(displayDate, values));

@@ -29,11 +29,8 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.TreeMap;
 
-import se.inera.statistics.service.report.model.Diagnosgrupp;
-import se.inera.statistics.service.report.model.DiagnosgruppResponse;
-import se.inera.statistics.service.report.model.Kon;
-import se.inera.statistics.service.report.model.KonDataRow;
-import se.inera.statistics.service.report.model.Range;
+import se.inera.statistics.service.report.model.*;
+import se.inera.statistics.service.report.model.Avsnitt;
 import se.inera.statistics.web.model.ChartData;
 import se.inera.statistics.web.model.ChartSeries;
 import se.inera.statistics.web.model.DualSexStatisticsData;
@@ -112,8 +109,8 @@ public class DiagnosisGroupsConverter {
 
     private Map<String, List<Integer>> extractAllGroups(DiagnosgruppResponse resp, Kon sex) {
         Map<String, List<Integer>> allGroups = new HashMap<>();
-        for (int i = 0; i < resp.getDiagnosgrupps().size(); i++) {
-            Diagnosgrupp groupName = resp.getDiagnosgrupps().get(i);
+        for (int i = 0; i < resp.getAvsnitts().size(); i++) {
+            Avsnitt groupName = resp.getAvsnitts().get(i);
             allGroups.put(groupName.getId(), resp.getDataFromIndex(i, sex));
         }
         return allGroups;

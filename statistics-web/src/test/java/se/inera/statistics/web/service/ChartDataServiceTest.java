@@ -38,7 +38,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 import se.inera.statistics.service.report.api.SjukfallPerManad;
 import se.inera.statistics.service.report.api.Diagnoskapitel;
 import se.inera.statistics.service.report.api.Overview;
-import se.inera.statistics.service.report.model.Diagnosgrupp;
+import se.inera.statistics.service.report.model.Avsnitt;
 import se.inera.statistics.service.report.model.Range;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -80,15 +80,15 @@ public class ChartDataServiceTest {
 
     @Test
     public void getDiagnosisGroupsTest() {
-        List<Diagnosgrupp> diagnosgrupps = chartDataService.getDiagnosisGroups();
-        assertEquals(22, diagnosgrupps.size());
-        assertTrue(diagnosgrupps.toString().contains("{\"Diagnosgrupp\":{\"id\":\"E00-E90\", \"name\":\"Endokrina sjukdomar, nutritionsrubbningar och ämnesomsättningssjukdomar\", \"firstId\":\"E00\", \"lastId\":\"E90\"}}"));
+        List<Avsnitt> avsnitts = chartDataService.getDiagnoskapitel();
+        assertEquals(22, avsnitts.size());
+        assertTrue(avsnitts.toString().contains("{\"Avsnitt\":{\"id\":\"E00-E90\", \"name\":\"Endokrina sjukdomar, nutritionsrubbningar och ämnesomsättningssjukdomar\", \"firstId\":\"E00\", \"lastId\":\"E90\"}}"));
     }
 
     @Test
     public void getDiagnosisGroupStatisticsTest() {
         try {
-            chartDataService.getDiagnosisGroupStatistics();
+            chartDataService.getDiagnoskapitelstatistik();
         } catch (NullPointerException e) { }
         Mockito.verify(diagnosgruppMock).getDiagnosisGroups(anyString(), any(Range.class));
     }
@@ -96,7 +96,7 @@ public class ChartDataServiceTest {
     @Test
     public void getDiagnosisSubGroupStatisticsTest() {
         try {
-            chartDataService.getDiagnosisSubGroupStatistics("testId");
+            chartDataService.getDiagnosavsnittstatistik("testId");
         } catch (NullPointerException e) { }
         Mockito.verify(diagnoskapitelMock).getDiagnosisGroups(anyString(), any(Range.class), eq("testId"));
     }
