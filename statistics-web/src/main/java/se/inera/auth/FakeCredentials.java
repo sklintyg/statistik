@@ -19,10 +19,13 @@
 
 package se.inera.auth;
 
+import java.io.Serializable;
+
 /**
  * @author andreaskaltenbach
  */
-public class FakeCredentials {
+@SuppressWarnings("serial")
+public class FakeCredentials implements Serializable {
 
     private String hsaId;
     private String fornamn;

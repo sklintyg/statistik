@@ -27,7 +27,7 @@ import org.springframework.security.authentication.AbstractAuthenticationToken;
 @SuppressWarnings("serial")
 public class FakeAuthenticationToken extends AbstractAuthenticationToken {
 
-    private FakeCredentials fakeCredentials;
+    private final FakeCredentials fakeCredentials;
 
     public FakeAuthenticationToken(FakeCredentials fakeCredentials) {
         super(null);
