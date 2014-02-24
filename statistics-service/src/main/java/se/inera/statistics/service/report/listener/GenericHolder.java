@@ -48,8 +48,8 @@ public class GenericHolder {
         lanId = HSAServiceHelper.getLan(hsa);
         kon = "man".equalsIgnoreCase(DocumentHelper.getKon(utlatande)) ? Kon.Male : Kon.Female;
         diagnos = DocumentHelper.getDiagnos(utlatande);
-        diagnosgrupp = diagnosUtil.getGroupIdForCode(diagnos);
-        diagnosundergrupp = diagnosUtil.getSubGroupForCode(diagnos).getId();
+        diagnosgrupp = diagnosUtil.getKapitelIdForCode(diagnos);
+        diagnosundergrupp = diagnosUtil.getAvsnittForCode(diagnos).getId();
         age = DocumentHelper.getAge(utlatande);
     }
 

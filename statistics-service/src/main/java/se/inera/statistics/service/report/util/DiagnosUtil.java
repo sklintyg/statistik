@@ -52,7 +52,7 @@ public class DiagnosUtil {
     private Map<String, Collection<Diagnosgrupp>> subgroups;
     private static final List<Diagnosgrupp> GROUPS = initGroups();
 
-    public String getGroupIdForCode(String icd10Code) {
+    public String getKapitelIdForCode(String icd10Code) {
         String normalizedIcd10 = normalize(icd10Code);
         for (Entry<String, Collection<Diagnosgrupp>> entry : getSubGroups().entrySet()) {
             for (Diagnosgrupp diagnosgrupp : entry.getValue()) {
@@ -75,10 +75,10 @@ public class DiagnosUtil {
     }
 
     public String getSubGroupIdForCode(String icd10Code) {
-        return getSubGroupForCode(icd10Code).getId();
+        return getAvsnittForCode(icd10Code).getId();
     }
 
-    public Diagnosgrupp getSubGroupForCode(String icd10Code) {
+    public Diagnosgrupp getAvsnittForCode(String icd10Code) {
         for (Entry<String, Collection<Diagnosgrupp>> entry : getSubGroups().entrySet()) {
             for (Diagnosgrupp diagnosgrupp : entry.getValue()) {
                 if (diagnosgrupp.isCodeInGroup(icd10Code)) {

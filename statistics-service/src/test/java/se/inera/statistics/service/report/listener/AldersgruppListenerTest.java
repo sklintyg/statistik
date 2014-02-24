@@ -51,8 +51,8 @@ public class AldersgruppListenerTest {
 
     @Before
     public void setup() throws IOException {
-        Mockito.when(util.getGroupIdForCode(Mockito.anyString())).thenReturn("A10");
-        Mockito.when(util.getSubGroupForCode(Mockito.anyString())).thenReturn(new Diagnosgrupp("A10-A11", "Test group"));
+        Mockito.when(util.getKapitelIdForCode(Mockito.anyString())).thenReturn("A10");
+        Mockito.when(util.getAvsnittForCode(Mockito.anyString())).thenReturn(new Diagnosgrupp("A10-A11", "Test group"));
 
         doNothing().when(agegroups).count(captor.capture(), eq("enhetId"), anyString(), eq(RollingLength.YEAR), any(Verksamhet.class), any(Kon.class));
 

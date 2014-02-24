@@ -19,7 +19,7 @@ import org.springframework.core.io.Resource;
 import se.inera.statistics.service.report.model.Diagnosgrupp;
 
 @RunWith(MockitoJUnitRunner.class)
-public class DiagnosgruppUtilTest {
+public class DiagnosUtilTest {
 
     @Mock
     private Resource icd10ChaptersAnsiFile = mock(Resource.class);
@@ -34,35 +34,35 @@ public class DiagnosgruppUtilTest {
 
     @Test
     public void testGetGroupIdForCode() {
-        String groupIdForCode = util.getGroupIdForCode("R15");
+        String groupIdForCode = util.getKapitelIdForCode("R15");
         assertEquals("R00-R99", groupIdForCode);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testGetGroupIdForShortCode() {
-        util.getGroupIdForCode("A1");
+        util.getKapitelIdForCode("A1");
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testGetGroupIdForIllegalCode() {
-        util.getGroupIdForCode("D99");
+        util.getKapitelIdForCode("D99");
     }
 
     @Test
     public void testGetSubGroupForCode() {
-        Diagnosgrupp subGroupForCode = util.getSubGroupForCode("T57");
+        Diagnosgrupp subGroupForCode = util.getAvsnittForCode("T57");
         assertEquals("T51-T65", subGroupForCode.getId());
     }
 
     @Test
     public void testGetSubGroupForLongCode() {
-        Diagnosgrupp subGroupForCode = util.getSubGroupForCode("T5712");
+        Diagnosgrupp subGroupForCode = util.getAvsnittForCode("T5712");
         assertEquals("T51-T65", subGroupForCode.getId());
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testGetSubGroupForIllegalCode() {
-        util.getSubGroupForCode("T99");
+        util.getAvsnittForCode("T99");
     }
 
     @Test
