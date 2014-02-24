@@ -27,12 +27,8 @@ import java.util.Random;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import se.inera.statistics.service.report.api.Diagnoskapitel;
-import se.inera.statistics.service.report.model.Diagnosgrupp;
-import se.inera.statistics.service.report.model.DiagnosgruppResponse;
-import se.inera.statistics.service.report.model.Kon;
-import se.inera.statistics.service.report.model.KonDataRow;
-import se.inera.statistics.service.report.model.KonField;
-import se.inera.statistics.service.report.model.Range;
+import se.inera.statistics.service.report.model.*;
+import se.inera.statistics.service.report.model.Avsnitt;
 import se.inera.statistics.service.report.util.DiagnosUtil;
 import se.inera.statistics.service.report.util.ReportUtil;
 import se.inera.statistics.service.report.util.Verksamhet;
@@ -44,7 +40,7 @@ public class DiagnoskapitelMock implements Diagnoskapitel {
 
     @Override
     public DiagnosgruppResponse getDiagnosisGroups(String hsaId, Range range, String diagnosisGroupId) {
-        List<Diagnosgrupp> headers = diagnosUtil.getSubGroups(diagnosisGroupId);
+        List<Avsnitt> headers = diagnosUtil.getSubGroups(diagnosisGroupId);
         List<KonDataRow> rows = new ArrayList<>();
         for (String periodName : ReportUtil.PERIODS) {
             rows.add(new KonDataRow(periodName, randomData(headers.size())));

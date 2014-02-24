@@ -55,7 +55,7 @@
     </bean>
 
     <bean class="se.inera.statistics.service.report.repository.SjukfallPerManadPersistenceHandler" id="casesPerMonth"/>
-    <bean class="se.inera.statistics.service.report.repository.DiagnosgroupPersistenceHandler" id="diagnosgrupps"/>
+    <bean class="se.inera.statistics.service.report.repository.DiagnosgroupPersistenceHandler" id="avsnitts"/>
     <bean class="se.inera.statistics.service.report.repository.DiagnossubgroupPersistenceHandler" id="diagnosisSubGroups"/>
     <bean class="se.inera.statistics.service.report.repository.AldersgruppPersistenceHandler" id="ageGroups"/>
     <bean class="se.inera.statistics.service.report.repository.SjukfallslangdGruppPersistenceHandler" id="caseLengthGroups"/>

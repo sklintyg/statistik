@@ -37,7 +37,7 @@ import se.inera.statistics.service.common.CommonPersistence;
 import se.inera.statistics.service.helper.UtlatandeBuilder;
 import se.inera.statistics.service.processlog.EventType;
 import se.inera.statistics.service.processlog.Receiver;
-import se.inera.statistics.service.report.model.Diagnosgrupp;
+import se.inera.statistics.service.report.model.Avsnitt;
 import se.inera.statistics.service.report.repository.NationellUpdater;
 import se.inera.statistics.service.report.util.DiagnosUtil;
 
@@ -76,8 +76,8 @@ public class InjectUtlatande {
 
     private List<String> getDiagnoser() {
         if (DIAGNOSER.isEmpty()) {
-            for (Diagnosgrupp mainGroup: DiagnosUtil.getAllDiagnosisGroups()) {
-                for (Diagnosgrupp group: diagnosUtil.getSubGroups(mainGroup.getId())) {
+            for (Avsnitt mainGroup: DiagnosUtil.getAllDiagnosisGroups()) {
+                for (Avsnitt group: diagnosUtil.getSubGroups(mainGroup.getId())) {
                     DIAGNOSER.add(group.getId().split("-")[0]);
                 }
             }

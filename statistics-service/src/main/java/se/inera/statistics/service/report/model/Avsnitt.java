@@ -19,7 +19,7 @@
 
 package se.inera.statistics.service.report.model;
 
-public class Diagnosgrupp implements Comparable<Diagnosgrupp> {
+public class Avsnitt implements Comparable<Avsnitt> {
 
     public static final int ICD10_CODE_MAX_LEN = 3;
     private final String id;
@@ -27,7 +27,7 @@ public class Diagnosgrupp implements Comparable<Diagnosgrupp> {
     private final String firstId;
     private final String lastId;
 
-    public Diagnosgrupp(String id, String name) {
+    public Avsnitt(String id, String name) {
         this.id = id;
         this.name = name;
         String[] split = id.split("-");
@@ -49,7 +49,7 @@ public class Diagnosgrupp implements Comparable<Diagnosgrupp> {
 
     @Override
     public String toString() {
-        return "{\"Diagnosgrupp\":{" + "\"id\":\"" + id + '"' + ", \"name\":\"" + name + '"' + ", \"firstId\":\"" + firstId + '"' + ", \"lastId\":\"" + lastId + '"' + "}}";
+        return "{\"Avsnitt\":{" + "\"id\":\"" + id + '"' + ", \"name\":\"" + name + '"' + ", \"firstId\":\"" + firstId + '"' + ", \"lastId\":\"" + lastId + '"' + "}}";
     }
 
     public boolean isCodeInGroup(String icd10Code) {
@@ -66,7 +66,7 @@ public class Diagnosgrupp implements Comparable<Diagnosgrupp> {
     }
 
     @Override
-    public int compareTo(Diagnosgrupp o) {
+    public int compareTo(Avsnitt o) {
         return id.compareTo(o.id);
     }
 
@@ -77,13 +77,13 @@ public class Diagnosgrupp implements Comparable<Diagnosgrupp> {
 
     @Override
     public boolean equals(Object obj) {
-        if (obj instanceof Diagnosgrupp) {
-            return isEqual((Diagnosgrupp) obj);
+        if (obj instanceof Avsnitt) {
+            return isEqual((Avsnitt) obj);
         }
         return false;
     }
 
-    private boolean isEqual(Diagnosgrupp other) {
+    private boolean isEqual(Avsnitt other) {
         return id.equals(other.id);
     }
 

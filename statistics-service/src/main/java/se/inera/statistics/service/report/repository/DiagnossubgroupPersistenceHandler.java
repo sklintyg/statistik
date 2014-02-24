@@ -32,7 +32,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 import se.inera.statistics.service.report.api.Diagnoskapitel;
-import se.inera.statistics.service.report.model.Diagnosgrupp;
+import se.inera.statistics.service.report.model.Avsnitt;
 import se.inera.statistics.service.report.model.DiagnosgruppResponse;
 import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.report.model.KonDataRow;
@@ -74,11 +74,11 @@ public class DiagnossubgroupPersistenceHandler implements Diagnoskapitel {
         query.setParameter("from", ReportUtil.toPeriod(range.getFrom()));
         query.setParameter("to", ReportUtil.toPeriod(range.getTo()));
 
-        List<Diagnosgrupp> header = diagnosUtil.getSubGroups(group);
+        List<Avsnitt> header = diagnosUtil.getSubGroups(group);
         return new DiagnosgruppResponse(header, translateForOutput(range, header, query.getResultList()));
     }
 
-    private List<KonDataRow> translateForOutput(Range range, List<Diagnosgrupp> header, List<DiagnosisSubGroupData> list) {
+    private List<KonDataRow> translateForOutput(Range range, List<Avsnitt> header, List<DiagnosisSubGroupData> list) {
         List<KonDataRow> translatedCasesPerMonthRows = new ArrayList<>();
 
         // Span all
@@ -88,7 +88,7 @@ public class DiagnossubgroupPersistenceHandler implements Diagnoskapitel {
             String displayDate = ReportUtil.toDiagramPeriod(currentPeriod);
             String period = ReportUtil.toPeriod(currentPeriod);
             List<KonField> values = new ArrayList<>(header.size());
-            for (Diagnosgrupp group: header) {
+            for (Avsnitt group: header) {
                 values.add(map.get(period + group.getId()));
             }
             translatedCasesPerMonthRows.add(new KonDataRow(displayDate, values));

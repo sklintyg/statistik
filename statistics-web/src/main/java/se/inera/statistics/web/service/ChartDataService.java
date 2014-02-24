@@ -42,7 +42,7 @@ import se.inera.statistics.service.report.api.SjukfallPerLan;
 import se.inera.statistics.service.report.api.SjukfallPerManad;
 import se.inera.statistics.service.report.api.SjukfallslangdGrupp;
 import se.inera.statistics.service.report.api.Sjukskrivningsgrad;
-import se.inera.statistics.service.report.model.Diagnosgrupp;
+import se.inera.statistics.service.report.model.Avsnitt;
 import se.inera.statistics.service.report.model.DiagnosgruppResponse;
 import se.inera.statistics.service.report.model.OverviewResponse;
 import se.inera.statistics.service.report.model.Range;
@@ -107,8 +107,8 @@ public class ChartDataService {
     @GET
     @Path("getDiagnosisGroups")
     @Produces({ MediaType.APPLICATION_JSON })
-    public List<Diagnosgrupp> getDiagnosisGroups() {
-        LOG.info("Calling getDiagnosgrupps");
+    public List<Avsnitt> getDiagnosisGroups() {
+        LOG.info("Calling getAvsnitts");
         return DiagnosUtil.getAllDiagnosisGroups();
     }
 

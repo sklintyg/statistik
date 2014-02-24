@@ -16,7 +16,7 @@ import se.inera.statistics.service.common.CommonPersistence;
 import se.inera.statistics.service.helper.DocumentHelper;
 import se.inera.statistics.service.helper.UtlatandeBuilder;
 import se.inera.statistics.service.queue.JmsReceiver;
-import se.inera.statistics.service.report.model.Diagnosgrupp;
+import se.inera.statistics.service.report.model.Avsnitt;
 import se.inera.statistics.service.report.repository.NationellUpdater;
 import se.inera.statistics.service.report.util.DiagnosUtil;
 
@@ -42,7 +42,7 @@ public class DemoTest {
 
     @Before
     public void setup() {
-        Mockito.when(util.getSubGroups(Mockito.anyString())).thenReturn(Arrays.asList(new Diagnosgrupp("A10-A20", "test1"), new Diagnosgrupp("A21-A30", "test2")));
+        Mockito.when(util.getSubGroups(Mockito.anyString())).thenReturn(Arrays.asList(new Avsnitt("A10-A20", "test1"), new Avsnitt("A21-A30", "test2")));
     }
 
     @Test

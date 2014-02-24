@@ -25,18 +25,15 @@ import java.util.ArrayList;
 
 import org.junit.Test;
 
-import se.inera.statistics.service.report.model.Diagnosgrupp;
-import se.inera.statistics.service.report.model.DiagnosgruppResponse;
-import se.inera.statistics.service.report.model.KonDataRow;
-import se.inera.statistics.service.report.model.KonField;
-import se.inera.statistics.service.report.model.Range;
+import se.inera.statistics.service.report.model.*;
+import se.inera.statistics.service.report.model.Avsnitt;
 import se.inera.statistics.web.model.DualSexStatisticsData;
 
 public class DiagnoskapitelConverterTest {
 
     @Test
     public void converterTestEmpty() {
-        DiagnosgruppResponse resp = new DiagnosgruppResponse(new ArrayList<Diagnosgrupp>(), new ArrayList<KonDataRow>());
+        DiagnosgruppResponse resp = new DiagnosgruppResponse(new ArrayList<Avsnitt>(), new ArrayList<KonDataRow>());
         DualSexStatisticsData data = new DiagnosisSubGroupsConverter().convert(resp, new Range());
         assertEquals("[]", data.getFemaleChart().getCategories().toString());
         assertEquals("[]", data.getFemaleChart().getSeries().toString());
@@ -45,15 +42,15 @@ public class DiagnoskapitelConverterTest {
     @Test
     public void converterTest() {
         //Given
-        ArrayList<Diagnosgrupp> diagnosgrupps = new ArrayList<Diagnosgrupp>();
-        diagnosgrupps.add(new Diagnosgrupp("A00-B99", "name1"));
+        ArrayList<Avsnitt> avsnitts = new ArrayList<Avsnitt>();
+        avsnitts.add(new Avsnitt("A00-B99", "name1"));
         ArrayList<KonDataRow> rows = new ArrayList<KonDataRow>();
         ArrayList<KonField> diagnosisGroupData = new ArrayList<KonField>();
         // CHECKSTYLE:OFF MagicNumber
         diagnosisGroupData.add(new KonField(3, 2));
         // CHECKSTYLE:ON MagicNumber
         rows.add(new KonDataRow("period1", diagnosisGroupData));
-        DiagnosgruppResponse resp = new DiagnosgruppResponse(diagnosgrupps, rows);
+        DiagnosgruppResponse resp = new DiagnosgruppResponse(avsnitts, rows);
 
         //When
         DiagnosisSubGroupsConverter converter = new DiagnosisSubGroupsConverter();
@@ -73,15 +70,15 @@ public class DiagnoskapitelConverterTest {
     @Test
     public void converterTopColumnsTest() {
         //Given
-        ArrayList<Diagnosgrupp> diagnosgrupps = new ArrayList<Diagnosgrupp>();
-        diagnosgrupps.add(new Diagnosgrupp("A00-B90", "name1"));
-        diagnosgrupps.add(new Diagnosgrupp("A00-B91", "name1"));
-        diagnosgrupps.add(new Diagnosgrupp("A00-B92", "name1"));
-        diagnosgrupps.add(new Diagnosgrupp("A00-B93", "name1"));
-        diagnosgrupps.add(new Diagnosgrupp("A00-B94", "name1"));
-        diagnosgrupps.add(new Diagnosgrupp("A00-B95", "name1"));
-        diagnosgrupps.add(new Diagnosgrupp("A00-B96", "name1"));
-        diagnosgrupps.add(new Diagnosgrupp("A00-B97", "name1"));
+        ArrayList<Avsnitt> avsnitts = new ArrayList<Avsnitt>();
+        avsnitts.add(new Avsnitt("A00-B90", "name1"));
+        avsnitts.add(new Avsnitt("A00-B91", "name1"));
+        avsnitts.add(new Avsnitt("A00-B92", "name1"));
+        avsnitts.add(new Avsnitt("A00-B93", "name1"));
+        avsnitts.add(new Avsnitt("A00-B94", "name1"));
+        avsnitts.add(new Avsnitt("A00-B95", "name1"));
+        avsnitts.add(new Avsnitt("A00-B96", "name1"));
+        avsnitts.add(new Avsnitt("A00-B97", "name1"));
         ArrayList<KonDataRow> rows = new ArrayList<KonDataRow>();
         ArrayList<KonField> diagnosisGroupData = new ArrayList<KonField>();
         // CHECKSTYLE:OFF MagicNumber
@@ -94,7 +91,7 @@ public class DiagnoskapitelConverterTest {
         diagnosisGroupData.add(new KonField(2, 20));
         diagnosisGroupData.add(new KonField(6, 60));
         rows.add(new KonDataRow("period1", diagnosisGroupData));
-        DiagnosgruppResponse resp = new DiagnosgruppResponse(diagnosgrupps, rows);
+        DiagnosgruppResponse resp = new DiagnosgruppResponse(avsnitts, rows);
 
         //When
         DiagnosisSubGroupsConverter converter = new DiagnosisSubGroupsConverter();

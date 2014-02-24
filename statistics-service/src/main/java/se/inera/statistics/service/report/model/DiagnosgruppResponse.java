@@ -24,25 +24,25 @@ import java.util.List;
 
 public class DiagnosgruppResponse {
 
-    private final List<Diagnosgrupp> diagnosgrupps;
+    private final List<Avsnitt> avsnitts;
     private final List<KonDataRow> rows;
 
-    public DiagnosgruppResponse(List<Diagnosgrupp> diagnosgrupps, List<KonDataRow> rows) {
-        this.diagnosgrupps = diagnosgrupps;
+    public DiagnosgruppResponse(List<Avsnitt> avsnitts, List<KonDataRow> rows) {
+        this.avsnitts = avsnitts;
         this.rows = rows;
     }
 
-    public List<Diagnosgrupp> getDiagnosgrupps() {
-        return diagnosgrupps;
+    public List<Avsnitt> getAvsnitts() {
+        return avsnitts;
     }
 
     public List<String> getDiagnosisGroupsAsStrings() {
-        if (diagnosgrupps == null) {
+        if (avsnitts == null) {
             return new ArrayList<>();
         }
         List<String> subGroupStrings = new ArrayList<>();
-        for (Diagnosgrupp diagnosgrupp : diagnosgrupps) {
-            subGroupStrings.add(diagnosgrupp.asString());
+        for (Avsnitt avsnitt : avsnitts) {
+            subGroupStrings.add(avsnitt.asString());
         }
         return subGroupStrings;
     }
@@ -70,6 +70,6 @@ public class DiagnosgruppResponse {
 
     @Override
     public String toString() {
-        return "{\"DiagnosgruppResponse\":{" + "\"diagnosgrupps\":" + diagnosgrupps + ", \"rows\":" + rows + "}}";
+        return "{\"DiagnosgruppResponse\":{" + "\"avsnitts\":" + avsnitts + ", \"rows\":" + rows + "}}";
     }
 }

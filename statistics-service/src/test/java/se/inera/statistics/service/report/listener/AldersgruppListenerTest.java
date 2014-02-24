@@ -23,7 +23,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 import se.inera.statistics.service.helper.UtlatandeBuilder;
 import se.inera.statistics.service.report.api.Aldersgrupp;
 import se.inera.statistics.service.report.api.RollingLength;
-import se.inera.statistics.service.report.model.Diagnosgrupp;
+import se.inera.statistics.service.report.model.Avsnitt;
 import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.report.util.DiagnosUtil;
 import se.inera.statistics.service.report.util.ReportUtil;
@@ -52,7 +52,7 @@ public class AldersgruppListenerTest {
     @Before
     public void setup() throws IOException {
         Mockito.when(util.getKapitelIdForCode(Mockito.anyString())).thenReturn("A10");
-        Mockito.when(util.getAvsnittForCode(Mockito.anyString())).thenReturn(new Diagnosgrupp("A10-A11", "Test group"));
+        Mockito.when(util.getAvsnittForCode(Mockito.anyString())).thenReturn(new Avsnitt("A10-A11", "Test group"));
 
         doNothing().when(agegroups).count(captor.capture(), eq("enhetId"), anyString(), eq(RollingLength.YEAR), any(Verksamhet.class), any(Kon.class));
 
