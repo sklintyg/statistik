@@ -37,7 +37,7 @@ import se.inera.statistics.service.processlog.EventType;
 import se.inera.statistics.service.processlog.Receiver;
 import se.inera.statistics.service.report.model.Diagnosgrupp;
 import se.inera.statistics.service.report.repository.NationellUpdater;
-import se.inera.statistics.service.report.util.DiagnosisGroupsUtil;
+import se.inera.statistics.service.report.util.DiagnosUtil;
 
 import com.fasterxml.jackson.databind.JsonNode;
 
@@ -76,12 +76,12 @@ public class InjectUtlatande2 {
     private NationellUpdater nationellUpdater;
 
     @Autowired
-    private DiagnosisGroupsUtil diagnosisGroupsUtil;
+    private DiagnosUtil diagnosUtil;
 
     @PostConstruct
     public void init() {
-        for (Diagnosgrupp mainGroup: DiagnosisGroupsUtil.getAllDiagnosisGroups()) {
-            for (Diagnosgrupp group: diagnosisGroupsUtil.getSubGroups(mainGroup.getId())) {
+        for (Diagnosgrupp mainGroup: DiagnosUtil.getAllDiagnosisGroups()) {
+            for (Diagnosgrupp group: diagnosUtil.getSubGroups(mainGroup.getId())) {
                 DIAGNOSER.add(group.getId().split("-")[0]);
             }
         }

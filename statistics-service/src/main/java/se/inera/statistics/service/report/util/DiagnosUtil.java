@@ -41,9 +41,9 @@ import org.springframework.core.io.Resource;
 
 import se.inera.statistics.service.report.model.Diagnosgrupp;
 
-public class DiagnosisGroupsUtil {
+public class DiagnosUtil {
 
-    private static final Logger LOG = LoggerFactory.getLogger(DiagnosisGroupsUtil.class);
+    private static final Logger LOG = LoggerFactory.getLogger(DiagnosUtil.class);
 
     @Autowired
     private Resource icd10ChaptersAnsiFile;

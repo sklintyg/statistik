@@ -25,7 +25,7 @@ import se.inera.statistics.service.report.api.Aldersgrupp;
 import se.inera.statistics.service.report.api.RollingLength;
 import se.inera.statistics.service.report.model.Diagnosgrupp;
 import se.inera.statistics.service.report.model.Kon;
-import se.inera.statistics.service.report.util.DiagnosisGroupsUtil;
+import se.inera.statistics.service.report.util.DiagnosUtil;
 import se.inera.statistics.service.report.util.ReportUtil;
 import se.inera.statistics.service.report.util.Verksamhet;
 import se.inera.statistics.service.sjukfall.SjukfallInfo;
@@ -39,7 +39,7 @@ public class AldersgruppListenerTest {
     private JsonNode utlatande;
 
     @Mock
-    private DiagnosisGroupsUtil util = mock(DiagnosisGroupsUtil.class);
+    private DiagnosUtil util = mock(DiagnosUtil.class);
 
     @Mock
     private Aldersgrupp agegroups = mock(Aldersgrupp.class);

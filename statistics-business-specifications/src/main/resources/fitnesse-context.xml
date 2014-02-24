@@ -74,7 +74,7 @@
         <constructor-arg value="KSH97_AVS.ANS"/>
     </bean>
     <bean class="se.inera.statistics.service.processlog.Processor"/>
-    <bean class="se.inera.statistics.service.report.util.DiagnosisGroupsUtil"/>
+    <bean class="se.inera.statistics.service.report.util.DiagnosUtil"/>
     <bean class="se.inera.statistics.queue.IntygSender"/>
 
     <context:component-scan base-package="se.inera.statistics.service.report.repository"/>

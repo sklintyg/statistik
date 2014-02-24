@@ -69,7 +69,7 @@
     <bean class="org.springframework.core.io.ClassPathResource" id="icd10ChaptersAnsiFile" >
         <constructor-arg value="KSH97_AVS.ANS"/>
     </bean>
-    <bean class="se.inera.statistics.service.report.util.DiagnosisGroupsUtil" />
+    <bean class="se.inera.statistics.service.report.util.DiagnosUtil" />
 
     <context:component-scan base-package="se.inera.statistics.service.report.repository"/>
 </beans>

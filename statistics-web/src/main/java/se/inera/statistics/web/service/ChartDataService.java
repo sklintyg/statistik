@@ -50,7 +50,7 @@ import se.inera.statistics.service.report.model.SimpleKonDataRow;
 import se.inera.statistics.service.report.model.SimpleKonResponse;
 import se.inera.statistics.service.report.model.SjukfallslangdResponse;
 import se.inera.statistics.service.report.model.SjukskrivningsgradResponse;
-import se.inera.statistics.service.report.util.DiagnosisGroupsUtil;
+import se.inera.statistics.service.report.util.DiagnosUtil;
 import se.inera.statistics.service.report.util.ReportUtil;
 import se.inera.statistics.service.report.util.Verksamhet;
 import se.inera.statistics.web.model.AgeGroupsData;
@@ -109,7 +109,7 @@ public class ChartDataService {
     @Produces({ MediaType.APPLICATION_JSON })
     public List<Diagnosgrupp> getDiagnosisGroups() {
         LOG.info("Calling getDiagnosgrupps");
-        return DiagnosisGroupsUtil.getAllDiagnosisGroups();
+        return DiagnosUtil.getAllDiagnosisGroups();
     }
 
     @GET

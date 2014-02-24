@@ -22,7 +22,7 @@ package se.inera.statistics.service.report.listener;
 import se.inera.statistics.service.helper.DocumentHelper;
 import se.inera.statistics.service.helper.HSAServiceHelper;
 import se.inera.statistics.service.report.model.Kon;
-import se.inera.statistics.service.report.util.DiagnosisGroupsUtil;
+import se.inera.statistics.service.report.util.DiagnosUtil;
 import se.inera.statistics.service.sjukfall.SjukfallInfo;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -40,7 +40,7 @@ public class GenericHolder {
     private String diagnosundergrupp;
     private int age;
 
-    public GenericHolder(SjukfallInfo sjukfallInfo, JsonNode utlatande, JsonNode hsa, DiagnosisGroupsUtil diagnosisGroupsUtil) {
+    public GenericHolder(SjukfallInfo sjukfallInfo, JsonNode utlatande, JsonNode hsa, DiagnosUtil diagnosUtil) {
         this.sjukfallInfo = sjukfallInfo;
         this.utlatande = utlatande;
         enhetId = DocumentHelper.getEnhetId(utlatande);
@@ -48,8 +48,8 @@ public class GenericHolder {
         lanId = HSAServiceHelper.getLan(hsa);
         kon = "man".equalsIgnoreCase(DocumentHelper.getKon(utlatande)) ? Kon.Male : Kon.Female;
         diagnos = DocumentHelper.getDiagnos(utlatande);
-        diagnosgrupp = diagnosisGroupsUtil.getGroupIdForCode(diagnos);
-        diagnosundergrupp = diagnosisGroupsUtil.getSubGroupForCode(diagnos).getId();
+        diagnosgrupp = diagnosUtil.getGroupIdForCode(diagnos);
+        diagnosundergrupp = diagnosUtil.getSubGroupForCode(diagnos).getId();
         age = DocumentHelper.getAge(utlatande);
     }
 

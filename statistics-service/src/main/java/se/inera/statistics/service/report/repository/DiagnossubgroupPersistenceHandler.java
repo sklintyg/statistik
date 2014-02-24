@@ -38,7 +38,7 @@ import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.report.model.KonDataRow;
 import se.inera.statistics.service.report.model.KonField;
 import se.inera.statistics.service.report.model.Range;
-import se.inera.statistics.service.report.util.DiagnosisGroupsUtil;
+import se.inera.statistics.service.report.util.DiagnosUtil;
 import se.inera.statistics.service.report.util.ReportUtil;
 import se.inera.statistics.service.report.util.Verksamhet;
 
@@ -47,7 +47,7 @@ public class DiagnossubgroupPersistenceHandler implements Diagnoskapitel {
     private EntityManager manager;
 
     @Autowired
-    private DiagnosisGroupsUtil diagnosisGroupsUtil;
+    private DiagnosUtil diagnosUtil;
 
     @Transactional
     public void count(String hsaId, String period, String diagnosgrupp, String undergrupp, Verksamhet typ, Kon sex) {
@@ -74,7 +74,7 @@ public class DiagnossubgroupPersistenceHandler implements Diagnoskapitel {
         query.setParameter("from", ReportUtil.toPeriod(range.getFrom()));
         query.setParameter("to", ReportUtil.toPeriod(range.getTo()));
 
-        List<Diagnosgrupp> header = diagnosisGroupsUtil.getSubGroups(group);
+        List<Diagnosgrupp> header = diagnosUtil.getSubGroups(group);
         return new DiagnosgruppResponse(header, translateForOutput(range, header, query.getResultList()));
     }
 
