@@ -23,14 +23,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
-import java.util.Set;
-import java.util.TreeSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -121,7 +115,12 @@ public class DiagnosUtil {
     }
 
     public List<Avsnitt> getAvsnittForKapitel(String groupId) {
-        return new ArrayList<>(getSubGroups().get(groupId));
+        Collection<Avsnitt> avsnitt = getSubGroups().get(groupId);
+        if (avsnitt != null) {
+            return new ArrayList<>(avsnitt);
+        } else {
+            return Collections.emptyList();
+        }
     }
 
     public Collection<Avsnitt> getGroupsInChapter(String chapter) {
