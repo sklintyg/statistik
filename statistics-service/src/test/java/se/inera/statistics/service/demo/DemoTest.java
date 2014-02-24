@@ -42,7 +42,7 @@ public class DemoTest {
 
     @Before
     public void setup() {
-        Mockito.when(util.getSubGroups(Mockito.anyString())).thenReturn(Arrays.asList(new Avsnitt("A10-A20", "test1"), new Avsnitt("A21-A30", "test2")));
+        Mockito.when(util.getAvsnittForKapitel(Mockito.anyString())).thenReturn(Arrays.asList(new Avsnitt("A10-A20", "test1"), new Avsnitt("A21-A30", "test2")));
     }
 
     @Test

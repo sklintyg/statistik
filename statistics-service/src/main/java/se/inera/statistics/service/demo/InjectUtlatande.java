@@ -76,8 +76,8 @@ public class InjectUtlatande {
 
     private List<String> getDiagnoser() {
         if (DIAGNOSER.isEmpty()) {
-            for (Avsnitt mainGroup: DiagnosUtil.getAllDiagnosisGroups()) {
-                for (Avsnitt group: diagnosUtil.getSubGroups(mainGroup.getId())) {
+            for (Avsnitt mainGroup: DiagnosUtil.getKapitel()) {
+                for (Avsnitt group: diagnosUtil.getAvsnittForKapitel(mainGroup.getId())) {
                     DIAGNOSER.add(group.getId().split("-")[0]);
                 }
             }

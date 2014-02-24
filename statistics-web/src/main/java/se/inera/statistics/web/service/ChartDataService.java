@@ -105,48 +105,48 @@ public class ChartDataService {
     }
 
     @GET
-    @Path("getDiagnosisGroups")
+    @Path("getDiagnoskapitel")
     @Produces({ MediaType.APPLICATION_JSON })
-    public List<Avsnitt> getDiagnosisGroups() {
-        LOG.info("Calling getAvsnitts");
-        return DiagnosUtil.getAllDiagnosisGroups();
+    public List<Avsnitt> getDiagnoskapitel() {
+        LOG.info("Calling getKapitel");
+        return DiagnosUtil.getKapitel();
     }
 
     @GET
-    @Path("getDiagnosisGroupStatistics")
+    @Path("getDiagnoskapitelstatistik")
     @Produces({ MediaType.APPLICATION_JSON })
-    public DualSexStatisticsData getDiagnosisGroupStatistics() {
-        LOG.info("Calling getDiagnosisGroupStatistics for national");
+    public DualSexStatisticsData getDiagnoskapitelstatistik() {
+        LOG.info("Calling getDiagnoskapitelstatistik for national");
         final Range range = new Range(18);
         DiagnosgruppResponse diagnosisGroups = datasourceDiagnosgrupp.getDiagnosisGroups(NATIONELL, range);
         return new DiagnosisGroupsConverter().convert(diagnosisGroups, range);
     }
 
     @GET
-    @Path("getDiagnosisGroupStatistics/csv")
+    @Path("getDiagnoskapitelstatistik/csv")
     @Produces({ "text/plain; charset=UTF-8" })
-    public Response getDiagnosisGroupStatisticsAsCsv() {
-        LOG.info("Calling getDiagnosisGroupStatisticsAsCsv for national");
-        final TableData tableData = getDiagnosisGroupStatistics().getTableData();
+    public Response getDiagnoskapitelstatistikAsCsv() {
+        LOG.info("Calling getDiagnoskapitelstatistikAsCsv for national");
+        final TableData tableData = getDiagnoskapitelstatistik().getTableData();
         return CsvConverter.getCsvResponse(tableData, "export.csv");
     }
 
     @GET
-    @Path("getDiagnosisSubGroupStatistics/{groupId}")
+    @Path("getDiagnosavsnittstatistik/{groupId}")
     @Produces({ MediaType.APPLICATION_JSON })
-    public DualSexStatisticsData getDiagnosisSubGroupStatistics(@PathParam("groupId") String groupId) {
-        LOG.info("Calling getDiagnosisSubGroupStatistics for national with groupId: " + groupId);
+    public DualSexStatisticsData getDiagnosavsnittstatistik(@PathParam("groupId") String groupId) {
+        LOG.info("Calling getDiagnosavsnittstatistik for national with groupId: " + groupId);
         final Range range = new Range(18);
         DiagnosgruppResponse diagnosisGroups = datasourceDiagnoskapitel.getDiagnosisGroups(NATIONELL, range, groupId);
         return new DiagnosisSubGroupsConverter().convert(diagnosisGroups, range);
     }
 
     @GET
-    @Path("getDiagnosisSubGroupStatistics/{groupId}/csv")
+    @Path("getDiagnosavsnittstatistik/{groupId}/csv")
     @Produces({ "text/plain; charset=UTF-8" })
-    public Response getDiagnosisSubGroupStatisticsAsCsv(@PathParam("groupId") String groupId) {
-        LOG.info("Calling getDiagnosisSubGroupStatisticsAsCsv for national");
-        final TableData tableData = getDiagnosisSubGroupStatistics(groupId).getTableData();
+    public Response getDiagnosavsnittstatistikAsCsv(@PathParam("groupId") String groupId) {
+        LOG.info("Calling getDiagnosavsnittstatistikAsCsv for national");
+        final TableData tableData = getDiagnosavsnittstatistik(groupId).getTableData();
         return CsvConverter.getCsvResponse(tableData, "export.csv");
     }
 

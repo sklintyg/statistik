@@ -40,20 +40,20 @@ app.statisticsApp = angular.module('StatisticsApp', [ 'ngCookies', 'ui.bootstrap
                 controller : 'CasesPerCountyCtrl',
                 controllerAs : 'NationalCasesPerCountyCtrl',
                 title: 'Län'
-            }).when('/nationell/diagnosgrupper', {
+            }).when('/nationell/diagnosgrupp', {
                 templateUrl : 'views/detailsView.html',
-                controller : 'DiagnosisGroupsCtrl',
-                controllerAs : 'NationalDiagnosisGroupsCtrl',
+                controller : 'DiagnosCtrl',
+                controllerAs : 'NationalDiagnosgruppCtrl',
                 resolve : { config: app.diagnosisGroupConfig }, 
                 title: 'Diagnosgrupper'
-            }).when('/nationell/diagnoskapitel/:groupId', {
+            }).when('/nationell/diagnosavsnitt/:groupId', {
                 templateUrl : 'views/detailsView.html',
-                controller : 'DiagnosisGroupsCtrl',
-                controllerAs : 'NationalDiagnosisSubGroupsCtrl',
+                controller : 'DiagnosCtrl',
+                controllerAs : 'NationalDiagnosavsnittCtrl',
                 resolve : { config: app.diagnosisSubGroupConfig },
                 title: 'Enskilt diagnoskapitel'
-            }).when('/nationell/diagnoskapitel', {
-                redirectTo : '/nationell/diagnoskapitel/A00-B99'
+            }).when('/nationell/diagnosavsnitt', {
+                redirectTo : '/nationell/diagnosavsnitt/A00-B99'
             }).when('/nationell/sjukskrivningsgrad', {
                 templateUrl : 'views/detailsView.html',
                 controller : 'DegreeOfSickLeaveCtrl',
@@ -84,20 +84,20 @@ app.statisticsApp = angular.module('StatisticsApp', [ 'ngCookies', 'ui.bootstrap
                 controllerAs : 'VerksamhetCasesPerMonthCtrl',
                 resolve : { config: app.casesPerMonthConfig }, 
                 title: 'Sjukfall per månad'
-            }).when('/verksamhet/:verksamhetId/diagnosgrupper', {
+            }).when('/verksamhet/:verksamhetId/diagnosgrupp', {
                 templateUrl : 'views/detailsView.html',
-                controller : 'DiagnosisGroupsCtrl',
-                controllerAs : 'VerksamhetDiagnosisGroupsCtrl',
-                resolve : { config: app.diagnosisGroupConfig }, 
+                controller : 'DiagnosCtrl',
+                controllerAs : 'VerksamhetDiagnoskapitelCtrl',
+                resolve : { config: app.diagnosisGroupConfig },
                 title: 'Diagnosgrupper'
-            }).when('/verksamhet/:verksamhetId/diagnoskapitel/:groupId', {
+            }).when('/verksamhet/:verksamhetId/diagnosavsnitt/:groupId', {
                 templateUrl : 'views/detailsView.html',
-                controller : 'DiagnosisGroupsCtrl',
-                controllerAs : 'VerksamhetDiagnosisSubGroupsCtrl',
+                controller : 'DiagnosCtrl',
+                controllerAs : 'VerksamhetDiagnosavsnittCtrl',
                 resolve : { config: app.diagnosisSubGroupConfig },
                 title: 'Enskilt diagnoskapitel'
-            }).when('/verksamhet/:verksamhetId/diagnoskapitel', {
-                redirectTo : '/verksamhet/:verksamhetId/diagnoskapitel/A00-B99'
+            }).when('/verksamhet/:verksamhetId/diagnosavsnitt', {
+                redirectTo : '/verksamhet/:verksamhetId/diagnosavsnitt/A00-B99'
             }).when('/verksamhet/:verksamhetId/aldersgrupper', {
                 templateUrl : 'views/detailsView.html',
                 controller : 'AgeGroupsCtrl',

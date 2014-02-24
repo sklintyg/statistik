@@ -56,4 +56,12 @@ public class Icd10Test {
         List<Avsnitt> avsnitt = kapitel.getAvsnitt();
         assertEquals(21, avsnitt.size());
     }
+
+    @Test
+    public void normalizeIcd10Code() {
+        assertEquals("", icd10.normalize(". -_+?="));
+        assertEquals("A10", icd10.normalize("a 1.0"));
+        assertEquals("B123", icd10.normalize(" B12.3 # "));
+    }
+
 }

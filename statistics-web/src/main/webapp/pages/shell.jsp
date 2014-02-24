@@ -145,11 +145,11 @@
 								<li><a data-ng-href="#/nationell/oversikt" id="navOverviewLink" ctrlname="NationalOverviewCtrl" navigationaware>Översikt</a></li>
 							 	<li><a data-ng-href="#/nationell/sjukfallPerManad" id="navCasesPerMonthLink" ctrlname="NationalCasesPerMonthCtrl" navigationaware>Sjukfall, totalt</a></li>
 								<li>
-									<a class="menu-item-has-childs" class="has-collapse" data-ng-href="#/nationell/diagnosgrupper" id="navDiagnosisGroupsLink" ctrlname="NationalDiagnosisGroupsCtrl" navigationaware>Diagnosgrupp</a>
+									<a class="menu-item-has-childs" class="has-collapse" data-ng-href="#/nationell/diagnosgrupp" id="navDiagnosisGroupsLink" ctrlname="NationalDiagnosgruppCtrl" navigationaware>Diagnosgrupp</a>
 									<i class="statistict-left-menu-expand-icon" class="accordion-toggle" data-toggle="collapse" href="#sub-menu-diagnostics"></i>
 								</li>
 								<ul id="sub-menu-diagnostics" class="nav nav-list sub-nav-list accordion-body in collapse">
-									<li><a data-ng-href="#/nationell/diagnoskapitel" id="navDiagnosisSubGroupsLink" ctrlname="NationalDiagnosisSubGroupsCtrl" navigationaware>Enskilt diagnoskapitel</a></li>
+									<li><a data-ng-href="#/nationell/diagnosavsnitt" id="navDiagnosisSubGroupsLink" ctrlname="NationalDiagnosavsnittCtrl" navigationaware>Enskilt diagnoskapitel</a></li>
 								</ul>
 								<li><a data-ng-href="#/nationell/aldersgrupper" id="navAgeGroupsLink" ctrlname="NationalAgeGroupCtrl" navigationaware>Åldersgrupp</a></li>
 								<li><a data-ng-href="#/nationell/sjukskrivningsgrad" id="navSickLeaveDegreeLink" ctrlname="NationalDegreeOfSickLeaveCtrl" navigationaware>Sjukskrivningsgrad</a></li>
@@ -177,11 +177,11 @@
 									<li><a data-ng-href="#/verksamhet/{{businessId}}/oversikt" ctrlname="BusinessOverviewCtrl" navigationaware>Översikt</a></li>
 								 	<li><a data-ng-href="#/verksamhet/{{businessId}}/sjukfallPerManad" id="navBusinessCasesPerMonthLink" ctrlname="VerksamhetCasesPerMonthCtrl" navigationaware>Sjukfall, totalt</a></li>
 									<li>
-										<a class="menu-item-has-childs" data-ng-href="#/verksamhet/{{businessId}}/diagnosgrupper" id="navBusinessDiagnosisGroupsLink" ctrlname="VerksamhetDiagnosisGroupsCtrl" navigationaware>Diagnosgrupp</a>
+										<a class="menu-item-has-childs" data-ng-href="#/verksamhet/{{businessId}}/diagnosgrupp" id="navBusinessDiagnosisGroupsLink" ctrlname="VerksamhetDiagnosgruppCtrl" navigationaware>Diagnosgrupp</a>
 										<i class="statistict-left-menu-expand-icon" class="accordion-toggle" data-toggle="collapse" href="#sub-menu-business-diagnostics"></i>
 									</li>
 									<ul id="sub-menu-business-diagnostics" class="nav nav-list sub-nav-list accordion-body in collapse">
-										<li><a data-ng-href="#/verksamhet/{{businessId}}/diagnoskapitel" id="navBusinessDiagnosisSubGroupsLink" ctrlname="VerksamhetDiagnosisSubGroupsCtrl" navigationaware>Enskilt diagnoskapitel</a></li>
+										<li><a data-ng-href="#/verksamhet/{{businessId}}/diagnosavsnitt" id="navBusinessDiagnosisSubGroupsLink" ctrlname="VerksamhetDiagnosavsnittCtrl" navigationaware>Enskilt diagnoskapitel</a></li>
 									</ul>
 									<li>
 										<a data-ng-href="#/verksamhet/{{businessId}}/aldersgrupper" id="navBusinessAgeGroupsLink" ctrlname="VerksamhetAgeGroupCtrl" navigationaware>Åldersgrupp</a>

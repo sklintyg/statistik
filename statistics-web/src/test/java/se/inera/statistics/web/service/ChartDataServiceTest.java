@@ -80,7 +80,7 @@ public class ChartDataServiceTest {
 
     @Test
     public void getDiagnosisGroupsTest() {
-        List<Avsnitt> avsnitts = chartDataService.getDiagnosisGroups();
+        List<Avsnitt> avsnitts = chartDataService.getDiagnoskapitel();
         assertEquals(22, avsnitts.size());
         assertTrue(avsnitts.toString().contains("{\"Avsnitt\":{\"id\":\"E00-E90\", \"name\":\"Endokrina sjukdomar, nutritionsrubbningar och ämnesomsättningssjukdomar\", \"firstId\":\"E00\", \"lastId\":\"E90\"}}"));
     }
@@ -88,7 +88,7 @@ public class ChartDataServiceTest {
     @Test
     public void getDiagnosisGroupStatisticsTest() {
         try {
-            chartDataService.getDiagnosisGroupStatistics();
+            chartDataService.getDiagnoskapitelstatistik();
         } catch (NullPointerException e) { }
         Mockito.verify(diagnosgruppMock).getDiagnosisGroups(anyString(), any(Range.class));
     }
@@ -96,7 +96,7 @@ public class ChartDataServiceTest {
     @Test
     public void getDiagnosisSubGroupStatisticsTest() {
         try {
-            chartDataService.getDiagnosisSubGroupStatistics("testId");
+            chartDataService.getDiagnosavsnittstatistik("testId");
         } catch (NullPointerException e) { }
         Mockito.verify(diagnoskapitelMock).getDiagnosisGroups(anyString(), any(Range.class), eq("testId"));
     }

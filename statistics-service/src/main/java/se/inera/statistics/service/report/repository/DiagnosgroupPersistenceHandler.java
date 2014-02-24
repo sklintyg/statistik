@@ -41,7 +41,7 @@ import se.inera.statistics.service.report.util.ReportUtil;
 import se.inera.statistics.service.report.util.Verksamhet;
 
 public class DiagnosgroupPersistenceHandler implements se.inera.statistics.service.report.api.Diagnosgrupp {
-    private static final List<Avsnitt> HEADERS = DiagnosUtil.getAllDiagnosisGroups();
+    private static final List<Avsnitt> HEADERS = DiagnosUtil.getKapitel();
 
     @PersistenceContext(unitName = "IneraStatisticsLog")
     private EntityManager manager;

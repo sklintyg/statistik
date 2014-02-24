@@ -36,7 +36,7 @@ public class DiagnosgruppMock implements se.inera.statistics.service.report.api.
 
     @Override
     public DiagnosgruppResponse getDiagnosisGroups(String hsaId, Range range) {
-        List<Avsnitt> headers = DiagnosUtil.getAllDiagnosisGroups();
+        List<Avsnitt> headers = DiagnosUtil.getKapitel();
         List<KonDataRow> rows = new ArrayList<>();
         for (String periodName : ReportUtil.PERIODS) {
             rows.add(new KonDataRow(periodName, randomData(headers.size())));

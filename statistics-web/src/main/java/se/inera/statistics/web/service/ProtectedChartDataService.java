@@ -110,47 +110,47 @@ public class ProtectedChartDataService {
     }
 
     @GET
-    @Path("{verksamhetId}/getDiagnosisGroupStatistics")
+    @Path("{verksamhetId}/getDiagnoskapitelstatistik")
     @Produces({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedChartDataService.helper.hasAccessTo(#request, #verksamhetId)")
     @PostAuthorize(value = "@protectedChartDataService.helper.userAccess(#request, #verksamhetId)")
     public DualSexStatisticsData getDiagnosisGroupStatistics(@Context HttpServletRequest request, @PathParam(VERKSAMHET_PATH_ID) String verksamhetId) {
-        LOG.info("Calling getDiagnosisGroupStatistics with verksamhetId: " + verksamhetId);
+        LOG.info("Calling getDiagnoskapitelstatistik with verksamhetId: " + verksamhetId);
         final Range range = new Range(18);
         DiagnosgruppResponse diagnosisGroups = datasourceDiagnosgrupp.getDiagnosisGroups(verksamhetId, range);
         return new DiagnosisGroupsConverter().convert(diagnosisGroups, range);
     }
 
     @GET
-    @Path("{verksamhetId}/getDiagnosisGroupStatistics/csv")
+    @Path("{verksamhetId}/getDiagnoskapitelstatistik/csv")
     @Produces({ "text/plain; charset=UTF-8" })
     @PreAuthorize(value = "@protectedChartDataService.helper.hasAccessTo(#request, #verksamhetId)")
     @PostAuthorize(value = "@protectedChartDataService.helper.userAccess(#request, #verksamhetId)")
     public Response getDiagnosisGroupStatisticsAsCsv(@Context HttpServletRequest request, @PathParam(VERKSAMHET_PATH_ID) String verksamhetId) {
-        LOG.info("Calling getDiagnosisGroupStatisticsAsCsv with verksamhetId: " + verksamhetId);
+        LOG.info("Calling getDiagnoskapitelstatistikAsCsv with verksamhetId: " + verksamhetId);
         final TableData tableData = getDiagnosisGroupStatistics(request, verksamhetId).getTableData();
         return CsvConverter.getCsvResponse(tableData, "export.csv");
     }
 
     @GET
-    @Path("{verksamhetId}/getDiagnosisSubGroupStatistics/{groupId}")
+    @Path("{verksamhetId}/getDiagnosavsnittstatistik/{groupId}")
     @Produces({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedChartDataService.helper.hasAccessTo(#request, #verksamhetId)")
     @PostAuthorize(value = "@protectedChartDataService.helper.userAccess(#request, #verksamhetId)")
     public DualSexStatisticsData getDiagnosisSubGroupStatistics(@Context HttpServletRequest request, @PathParam(VERKSAMHET_PATH_ID) String verksamhetId, @PathParam("groupId") String groupId) {
-        LOG.info("Calling getDiagnosisSubGroupStatistics with verksamhetId: '" + verksamhetId + "' and groupId: " + groupId);
+        LOG.info("Calling getDiagnosavsnittstatistik with verksamhetId: '" + verksamhetId + "' and groupId: " + groupId);
         final Range range = new Range(18);
         DiagnosgruppResponse diagnosisGroups = datasourceDiagnoskapitel.getDiagnosisGroups(Verksamhet.decodeId(verksamhetId), range, groupId);
         return new DiagnosisSubGroupsConverter().convert(diagnosisGroups, range);
     }
 
     @GET
-    @Path("{verksamhetId}/getDiagnosisSubGroupStatistics/{groupId}/csv")
+    @Path("{verksamhetId}/getDiagnosavsnittstatistik/{groupId}/csv")
     @Produces({ "text/plain; charset=UTF-8" })
     @PreAuthorize(value = "@protectedChartDataService.helper.hasAccessTo(#request, #verksamhetId)")
     @PostAuthorize(value = "@protectedChartDataService.helper.userAccess(#request, #verksamhetId)")
     public Response getDiagnosisSubGroupStatisticsAsCsv(@Context HttpServletRequest request, @PathParam(VERKSAMHET_PATH_ID) String verksamhetId, @PathParam("groupId") String groupId) {
-        LOG.info("Calling getDiagnosisSubGroupStatisticsAsCsv with verksamhetId: " + verksamhetId);
+        LOG.info("Calling getDiagnosavsnittstatistikAsCsv with verksamhetId: " + verksamhetId);
         final TableData tableData = getDiagnosisSubGroupStatistics(request, verksamhetId, groupId).getTableData();
         return CsvConverter.getCsvResponse(tableData, "export.csv");
     }

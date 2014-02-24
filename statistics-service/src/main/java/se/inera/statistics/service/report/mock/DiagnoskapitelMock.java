@@ -40,7 +40,7 @@ public class DiagnoskapitelMock implements Diagnoskapitel {
 
     @Override
     public DiagnosgruppResponse getDiagnosisGroups(String hsaId, Range range, String diagnosisGroupId) {
-        List<Avsnitt> headers = diagnosUtil.getSubGroups(diagnosisGroupId);
+        List<Avsnitt> headers = diagnosUtil.getAvsnittForKapitel(diagnosisGroupId);
         List<KonDataRow> rows = new ArrayList<>();
         for (String periodName : ReportUtil.PERIODS) {
             rows.add(new KonDataRow(periodName, randomData(headers.size())));

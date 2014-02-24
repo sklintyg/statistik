@@ -89,45 +89,45 @@ public class DiagnosUtil {
         throw new IllegalArgumentException("ICD-10-SE code not found: " + icd10Code);
     }
 
-    public static List<Avsnitt> getAllDiagnosisGroups() {
+    public static List<Avsnitt> getKapitel() {
         return GROUPS;
     }
 
     private static List<Avsnitt> initGroups() {
         ArrayList<Avsnitt> groups = new ArrayList<>();
-        groups.add(group("A00-B99", "Vissa infektionssjukdomar och parasitsjukdomar"));
-        groups.add(group("C00-D48", "Tumörer"));
-        groups.add(group("D50-D89", "Sjukdomar i blod och blodbildande organ samt vissa rubbningar i immunsystemet"));
-        groups.add(group("E00-E90", "Endokrina sjukdomar, nutritionsrubbningar och ämnesomsättningssjukdomar"));
-        groups.add(group("F00-F99", "Psykiska sjukdomar och syndrom samt beteendestörningar"));
-        groups.add(group("G00-G99", "Sjukdomar i nervsystemet"));
-        groups.add(group("H00-H59", "Sjukdomar i ögat och närliggande organ"));
-        groups.add(group("H60-H95", "Sjukdomar i örat och mastoidutskottet"));
-        groups.add(group("I00-I99", "Cirkulationsorganens sjukdomar"));
-        groups.add(group("J00-J99", "Andningsorganens sjukdomar"));
-        groups.add(group("K00-K93", "Matsmältningsorganens sjukdomar"));
-        groups.add(group("L00-L99", "Hudens och underhudens sjukdomar"));
-        groups.add(group("M00-M99", "Sjukdomar i muskuloskeletala systemet och bindväven"));
-        groups.add(group("N00-N99", "Sjukdomar i urin- och könsorganen"));
-        groups.add(group("O00-O99", "Graviditet, förlossning och barnsängstid"));
-        groups.add(group("P00-P96", "Vissa perinatala tillstånd"));
-        groups.add(group("Q00-Q99", "Medfödda missbildningar, deformiteter och kromosomavvikelser"));
-        groups.add(group("R00-R99", "Symtom, sjukdomstecken och onormala kliniska fynd och laboratoriefynd som ej klassificeras annorstädes"));
-        groups.add(group("S00-T98", "Skador, förgiftningar och vissa andra följder av yttre orsaker"));
-        groups.add(group("V01-Y98", "Yttre orsaker till sjukdom och död"));
-        groups.add(group("Z00-Z99", "Faktorer av betydelse för hälsotillståndet och för kontakter med hälso- och sjukvården"));
-        groups.add(group("U00-U99", "Koder för särskilda ändamål"));
+        groups.add(avsnitt("A00-B99", "Vissa infektionssjukdomar och parasitsjukdomar"));
+        groups.add(avsnitt("C00-D48", "Tumörer"));
+        groups.add(avsnitt("D50-D89", "Sjukdomar i blod och blodbildande organ samt vissa rubbningar i immunsystemet"));
+        groups.add(avsnitt("E00-E90", "Endokrina sjukdomar, nutritionsrubbningar och ämnesomsättningssjukdomar"));
+        groups.add(avsnitt("F00-F99", "Psykiska sjukdomar och syndrom samt beteendestörningar"));
+        groups.add(avsnitt("G00-G99", "Sjukdomar i nervsystemet"));
+        groups.add(avsnitt("H00-H59", "Sjukdomar i ögat och närliggande organ"));
+        groups.add(avsnitt("H60-H95", "Sjukdomar i örat och mastoidutskottet"));
+        groups.add(avsnitt("I00-I99", "Cirkulationsorganens sjukdomar"));
+        groups.add(avsnitt("J00-J99", "Andningsorganens sjukdomar"));
+        groups.add(avsnitt("K00-K93", "Matsmältningsorganens sjukdomar"));
+        groups.add(avsnitt("L00-L99", "Hudens och underhudens sjukdomar"));
+        groups.add(avsnitt("M00-M99", "Sjukdomar i muskuloskeletala systemet och bindväven"));
+        groups.add(avsnitt("N00-N99", "Sjukdomar i urin- och könsorganen"));
+        groups.add(avsnitt("O00-O99", "Graviditet, förlossning och barnsängstid"));
+        groups.add(avsnitt("P00-P96", "Vissa perinatala tillstånd"));
+        groups.add(avsnitt("Q00-Q99", "Medfödda missbildningar, deformiteter och kromosomavvikelser"));
+        groups.add(avsnitt("R00-R99", "Symtom, sjukdomstecken och onormala kliniska fynd och laboratoriefynd som ej klassificeras annorstädes"));
+        groups.add(avsnitt("S00-T98", "Skador, förgiftningar och vissa andra följder av yttre orsaker"));
+        groups.add(avsnitt("V01-Y98", "Yttre orsaker till sjukdom och död"));
+        groups.add(avsnitt("Z00-Z99", "Faktorer av betydelse för hälsotillståndet och för kontakter med hälso- och sjukvården"));
+        groups.add(avsnitt("U00-U99", "Koder för särskilda ändamål"));
         return groups;
     }
 
-    public List<Avsnitt> getSubGroups(String groupId) {
+    public List<Avsnitt> getAvsnittForKapitel(String groupId) {
         return new ArrayList<>(getSubGroups().get(groupId));
     }
 
     public Collection<Avsnitt> getGroupsInChapter(String chapter) {
         return subgroups.get(chapter);
     }
-    private static Avsnitt group(String code, String description) {
+    private static Avsnitt avsnitt(String code, String description) {
         return new Avsnitt(code, description);
     }
 
@@ -191,7 +191,7 @@ public class DiagnosUtil {
         if (!m.matches()) {
             return null;
         }
-        return group(m.group(1), m.group(2));
+        return avsnitt(m.group(1), m.group(2));
     }
 
 }

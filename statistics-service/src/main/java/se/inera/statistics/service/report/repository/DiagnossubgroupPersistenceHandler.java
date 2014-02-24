@@ -74,7 +74,7 @@ public class DiagnossubgroupPersistenceHandler implements Diagnoskapitel {
         query.setParameter("from", ReportUtil.toPeriod(range.getFrom()));
         query.setParameter("to", ReportUtil.toPeriod(range.getTo()));
 
-        List<Avsnitt> header = diagnosUtil.getSubGroups(group);
+        List<Avsnitt> header = diagnosUtil.getAvsnittForKapitel(group);
         return new DiagnosgruppResponse(header, translateForOutput(range, header, query.getResultList()));
     }
 
