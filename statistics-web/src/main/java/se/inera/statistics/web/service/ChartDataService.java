@@ -59,6 +59,13 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.List;
 
+/**
+ * Statistics services that does not require authentication. Unless otherwise noted, the data returned
+ * contains two data sets, one suitable for chart display, and one suited for tables. Csv variants
+ * only contains one data set.
+ *
+ * Csv files are semicolon separated, otherwise json is used.
+ */
 @Service("chartService")
 public class ChartDataService {
 
@@ -83,6 +90,11 @@ public class ChartDataService {
     @Autowired
     private SjukfallPerLan datasourceSjukfallPerLan;
 
+    /**
+     * Get sjukfall per manad.
+     *
+     * @return data
+     */
     @GET
     @Path("getNumberOfCasesPerMonth")
     @Produces({MediaType.APPLICATION_JSON})
@@ -93,6 +105,11 @@ public class ChartDataService {
         return new SimpleDualSexConverter().convert(casesPerMonth, range);
     }
 
+    /**
+     * Get sjukfall per manad.
+     *
+     * @return data
+     */
     @GET
     @Path("getNumberOfCasesPerMonth/csv")
     @Produces({"text/plain; charset=UTF-8"})
@@ -102,6 +119,11 @@ public class ChartDataService {
         return CsvConverter.getCsvResponse(tableData, "export.csv");
     }
 
+    /**
+     * Get the list of diagnoskapitel
+     *
+     * @return data
+     */
     @GET
     @Path("getDiagnoskapitel")
     @Produces({MediaType.APPLICATION_JSON})
@@ -110,6 +132,13 @@ public class ChartDataService {
         return DiagnosUtil.getKapitel();
     }
 
+    /**
+     * Get sjukfall per diagnoskapitel and per diagnosgrupp. The chart data is grouped by diagnosgrupp,
+     * the table data by diagnoskapitel. Diagnosgrupp is a diagnoskapitel or a list of diagnoskapitel.
+     * Csv formatted.
+     *
+     * @return data
+     */
     @GET
     @Path("getDiagnoskapitelstatistik")
     @Produces({MediaType.APPLICATION_JSON})
@@ -120,6 +149,12 @@ public class ChartDataService {
         return new DiagnosisGroupsConverter().convert(diagnosisGroups, range);
     }
 
+    /**
+     * Get sjukfall per diagnoskapitel.
+     * Csv formatted.
+     *
+     * @return data
+     */
     @GET
     @Path("getDiagnoskapitelstatistik/csv")
     @Produces({"text/plain; charset=UTF-8"})
@@ -129,6 +164,12 @@ public class ChartDataService {
         return CsvConverter.getCsvResponse(tableData, "export.csv");
     }
 
+    /**
+     * Get sjukfall per diagnosavsnitt for given diagnoskapitel.
+     *
+     * @param groupId diagnosgruppid
+     * @return data
+     */
     @GET
     @Path("getDiagnosavsnittstatistik/{groupId}")
     @Produces({MediaType.APPLICATION_JSON})
@@ -139,6 +180,12 @@ public class ChartDataService {
         return new DiagnosisSubGroupsConverter().convert(diagnosisGroups, range);
     }
 
+    /**
+     * Get sjukfall per diagnosavsnitt for given diagnoskapitel. Csv formatted.
+     *
+     * @param groupId diagnosgruppid
+     * @return data
+     */
     @GET
     @Path("getDiagnosavsnittstatistik/{groupId}/csv")
     @Produces({"text/plain; charset=UTF-8"})
@@ -148,6 +195,13 @@ public class ChartDataService {
         return CsvConverter.getCsvResponse(tableData, "export.csv");
     }
 
+    /**
+     * Get overview. Sex distribution, change comparing last three months to previous three months,
+     * top lists for diagnosgrupp, aldersgrupp, sjukskrivningslangd,
+     * sjukskrivningsgrad, lan. Only chart formatted data.
+     *
+     * @return data
+     */
     @GET
     @Path("getOverview")
     @Produces({MediaType.APPLICATION_JSON})
@@ -157,6 +211,11 @@ public class ChartDataService {
         return new OverviewConverter().convert(response, range);
     }
 
+    /**
+     * Get sjukfall grouped by age and sex.
+     *
+     * @return data
+     */
     @GET
     @Path("getAgeGroupsStatistics")
     @Produces({MediaType.APPLICATION_JSON})
@@ -167,6 +226,11 @@ public class ChartDataService {
         return new AgeGroupsConverter().convert(ageGroups, new Range(quarter.getPeriods()));
     }
 
+    /**
+     * Get sjukfall grouped by age and sex. Csv formatted.
+     *
+     * @return
+     */
     @GET
     @Path("getAgeGroupsStatistics/csv")
     @Produces({"text/plain; charset=UTF-8"})
@@ -176,6 +240,11 @@ public class ChartDataService {
         return CsvConverter.getCsvResponse(tableData, "export.csv");
     }
 
+    /**
+     * Get sjukskrivningsgrad per calendar month.
+     *
+     * @return data
+     */
     @GET
     @Path("getDegreeOfSickLeaveStatistics")
     @Produces({MediaType.APPLICATION_JSON})
@@ -186,6 +255,11 @@ public class ChartDataService {
         return new DegreeOfSickLeaveConverter().convert(degreeOfSickLeaveStatistics, range);
     }
 
+    /**
+     * Get sjukskrivningsgrad per calendar month. Csv formatted.
+     *
+     * @return data
+     */
     @GET
     @Path("getDegreeOfSickLeaveStatistics/csv")
     @Produces({"text/plain; charset=UTF-8"})
@@ -195,6 +269,11 @@ public class ChartDataService {
         return CsvConverter.getCsvResponse(tableData, "export.csv");
     }
 
+    /**
+     * Get sjukfallslangd (grouped).
+     *
+     * @return data
+     */
     @GET
     @Path("getSickLeaveLengthData")
     @Produces({MediaType.APPLICATION_JSON})
@@ -205,6 +284,11 @@ public class ChartDataService {
         return new SickLeaveLengthConverter().convert(sickLeaveLength, new Range(period.getPeriods()));
     }
 
+    /**
+     * Get sjukfallslangd (grouped). Csv formatted.
+     *
+     * @return data
+     */
     @GET
     @Path("getSickLeaveLengthData/csv")
     @Produces({"text/plain; charset=UTF-8"})
@@ -214,6 +298,11 @@ public class ChartDataService {
         return CsvConverter.getCsvResponse(tableData, "export.csv");
     }
 
+    /**
+     * Get sjukfall per lan.
+     *
+     * @return data
+     */
     @GET
     @Path("getCountyStatistics")
     @Produces({MediaType.APPLICATION_JSON})
@@ -226,6 +315,11 @@ public class ChartDataService {
         return new CasesPerCountyConverter(countyStatRange1, countyStatRange2, range1, range2).convert();
     }
 
+    /**
+     * Get sjukfall per lan.
+     *
+     * @return data
+     */
     @GET
     @Path("getCountyStatistics/csv")
     @Produces({"text/plain; charset=UTF-8"})
@@ -235,6 +329,11 @@ public class ChartDataService {
         return CsvConverter.getCsvResponse(tableData, "export.csv");
     }
 
+    /**
+     * Get sjukfall per sex.
+     *
+     * @return data
+     */
     @GET
     @Path("getSjukfallPerSexStatistics")
     @Produces({MediaType.APPLICATION_JSON})
@@ -245,6 +344,11 @@ public class ChartDataService {
         return new SjukfallPerSexConverter().convert(casesPerMonth, range);
     }
 
+    /**
+     * Get sjukfall per sex. Csv formatted.
+     *
+     * @return data
+     */
     @GET
     @Path("getSjukfallPerSexStatistics/csv")
     @Produces({"text/plain; charset=UTF-8"})

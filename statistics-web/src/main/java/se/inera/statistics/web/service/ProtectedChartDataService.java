@@ -61,7 +61,7 @@ import java.util.List;
 
 /**
  * Statistics services that requires authorization to use. Unless otherwise noted, the data returned
- * contains the data sets, one suitable for chart display, and one suited for tables. Csv variants
+ * contains two data sets, one suitable for chart display, and one suited for tables. Csv variants
  * only contains one data set.
  * <p/>
  * They all return 403 if called outside of a session or if authorization fails.
@@ -131,7 +131,6 @@ public class ProtectedChartDataService {
     /**
      * Get sjukfall per diagnoskapitel and per diagnosgrupp. The chart data is grouped by diagnosgrupp,
      * the table data by diagnoskapitel. Diagnosgrupp is a diagnoskapitel or a list of diagnoskapitel.
-     * Csv formatted.
      *
      * @param request      request
      * @param verksamhetId verksamhetId
@@ -206,7 +205,7 @@ public class ProtectedChartDataService {
 
     /**
      * Get overview. Includes total n:o of sjukfall, sex distribution, top lists for diagnosgrupp, aldersgrupp, sjukskrivningslangd,
-     * sjukskrivningsgrad.
+     * sjukskrivningsgrad. Only chart formatted data.
      *
      * @param request      request
      * @param verksamhetId verksamhetId
