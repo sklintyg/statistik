@@ -49,8 +49,9 @@
                 floating : true,
                 text : alteration + '%',
                 style : {
+                	fontFamily: 'Helvetica, Arial, sans-serif',
                     color: '#FFFFFF',
-                    fontSize: '2em',
+                    fontSize: '2.8em',
                     fontWeight: 'bold',
                     textAlign: 'center'
                 }
