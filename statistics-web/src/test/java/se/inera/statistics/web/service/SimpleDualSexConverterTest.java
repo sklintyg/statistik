@@ -47,7 +47,7 @@ public class SimpleDualSexConverterTest {
         SimpleKonResponse<SimpleKonDataRow> casesPerMonth = new SimpleKonResponse<SimpleKonDataRow>(dualSexRows, 2);
         SimpleDetailsData result = converter.convert(casesPerMonth, new Range(1));
         TableData tableData = result.getTableData();
-        assertEquals("[[Period;1, Antal sjukfall;1, Antal sjukfall för kvinnor;1, Antal sjukfall för män;1, Summering;1]]", tableData.getHeaders().toString());
+        assertEquals("[[Period;1, Antal sjukfall totalt;1, Antal sjukfall för kvinnor;1, Antal sjukfall för män;1, Summering;1]]", tableData.getHeaders().toString());
         List<NamedData> rows = tableData.getRows();
         assertEquals(4, rows.size());
         assertEquals("jan 12", rows.get(0).getName());

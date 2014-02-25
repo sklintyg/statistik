@@ -54,7 +54,7 @@ public class AldersgruppConverterTest {
 
         //Then
         TableData tableDataResult = result.getTableData();
-        assertEquals("[[Åldersgrupper;1, Antal sjukfall;1, Antal sjukfall för kvinnor;1, Antal sjukfall för män;1, Summering;1]]", tableDataResult.getHeaders().toString());
+        assertEquals("[[Åldersgrupper;1, Antal sjukfall totalt;1, Antal sjukfall för kvinnor;1, Antal sjukfall för män;1, Summering;1]]", tableDataResult.getHeaders().toString());
         List<NamedData> rows = tableDataResult.getRows();
         assertEquals(4, rows.size());
         assertEquals("<20", rows.get(0).getName());

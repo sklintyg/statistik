@@ -54,7 +54,7 @@ public class SickLeaveLengthConverterTest {
 
         //Then
         TableData tableDataResult = result.getTableData();
-        assertEquals("[[Sjukskrivningslängd;1, Antal sjukfall;1, Antal sjukfall för kvinnor;1, Antal sjukfall för män;1, Summering;1]]", tableDataResult.getHeaders().toString());
+        assertEquals("[[Sjukskrivningslängd;1, Antal sjukfall totalt;1, Antal sjukfall för kvinnor;1, Antal sjukfall för män;1, Summering;1]]", tableDataResult.getHeaders().toString());
         List<NamedData> rows = tableDataResult.getRows();
         assertEquals(4, rows.size());
         assertEquals("< 20 dagar", rows.get(0).getName());

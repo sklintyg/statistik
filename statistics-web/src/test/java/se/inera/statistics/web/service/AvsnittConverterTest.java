@@ -39,7 +39,7 @@ public class AvsnittConverterTest {
     public void tableConverterTestEmptyInput() {
         DiagnosgruppResponse resp = new DiagnosgruppResponse(new ArrayList<Avsnitt>(), new ArrayList<KonDataRow>());
         TableData tableData = DiagnosisGroupsConverter.convertTable(resp);
-        assertEquals("[[;1, ;1, ;1], [Period;1, Antal sjukfall;1, Summering;1]]", tableData.getHeaders().toString());
+        assertEquals("[[;1, ;1, ;1], [Period;1, Antal sjukfall totalt;1, Summering;1]]", tableData.getHeaders().toString());
         assertEquals("[Totalt: []]", tableData.getRows().toString());
     }
 
@@ -60,7 +60,7 @@ public class AvsnittConverterTest {
         TableData tableData = DiagnosisGroupsConverter.convertTable(resp);
 
         //Then
-        assertEquals("[[;1, ;1, A01-B99 name1;2, ;1], [Period;1, Antal sjukfall;1, Kvinnor;1, Män;1, Summering;1]]", tableData.getHeaders().toString());
+        assertEquals("[[;1, ;1, A01-B99 name1;2, ;1], [Period;1, Antal sjukfall totalt;1, Kvinnor;1, Män;1, Summering;1]]", tableData.getHeaders().toString());
         assertEquals("[period1: [5, 3, 2, 5], Totalt: [5, 3, 2]]", tableData.getRows().toString());
     }
 
@@ -96,7 +96,7 @@ public class AvsnittConverterTest {
         assertEquals("[period1]", data.getMaleChart().getCategories().toString());
         assertTrue(data.getMaleChart().getSeries().toString(), data.getMaleChart().getSeries().toString().contains("A00-E90, G00-L99, N00-N99 Somatiska sjukdomar: [2]"));
 
-        assertEquals("[[;1, ;1, A00-B99 name1;2, ;1], [Period;1, Antal sjukfall;1, Kvinnor;1, Män;1, Summering;1]]", data.getTableData().getHeaders().toString());
+        assertEquals("[[;1, ;1, A00-B99 name1;2, ;1], [Period;1, Antal sjukfall totalt;1, Kvinnor;1, Män;1, Summering;1]]", data.getTableData().getHeaders().toString());
         assertEquals("[period1: [5, 3, 2, 5], Totalt: [5, 3, 2]]", data.getTableData().getRows().toString());
     }
 

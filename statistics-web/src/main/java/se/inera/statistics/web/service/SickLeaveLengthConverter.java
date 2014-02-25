@@ -44,7 +44,7 @@ public class SickLeaveLengthConverter {
             data.add(new NamedData(row.getGroup(), Arrays.asList(rowSum, row.getFemale(), row.getMale(), accumulatedSum)));
         }
         ServiceUtil.addSumRow(data, false);
-        return TableData.createWithSingleHeadersRow(data, Arrays.asList("Sjukskrivningslängd", "Antal sjukfall", "Antal sjukfall för kvinnor", "Antal sjukfall för män", "Summering"));
+        return TableData.createWithSingleHeadersRow(data, Arrays.asList("Sjukskrivningslängd", "Antal sjukfall totalt", "Antal sjukfall för kvinnor", "Antal sjukfall för män", "Summering"));
     }
 
 

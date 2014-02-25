@@ -102,7 +102,7 @@ public class ChartDataService {
         LOG.info("Calling getNumberOfCasesPerMonth for national");
         final Range range = new Range(18);
         SimpleKonResponse<SimpleKonDataRow> casesPerMonth = datasourceSjukfallPerManad.getCasesPerMonth(NATIONELL, range);
-        return new SimpleDualSexConverter().convert(casesPerMonth, range);
+        return new SimpleDualSexConverter().convert(casesPerMonth, range);  
     }
 
     /**

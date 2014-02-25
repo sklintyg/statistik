@@ -44,7 +44,7 @@ public class AgeGroupsConverter {
             data.add(new NamedData(row.getName(), Arrays.asList(rowSum, row.getFemale(), row.getMale(), accumulatedSum)));
         }
         ServiceUtil.addSumRow(data, false);
-        return TableData.createWithSingleHeadersRow(data, Arrays.asList("Åldersgrupper", "Antal sjukfall", "Antal sjukfall för kvinnor", "Antal sjukfall för män", "Summering"));
+        return TableData.createWithSingleHeadersRow(data, Arrays.asList("Åldersgrupper", "Antal sjukfall totalt", "Antal sjukfall för kvinnor", "Antal sjukfall för män", "Summering"));
     }
 
 

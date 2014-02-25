@@ -67,7 +67,7 @@ public class SjukfallPerLanConverterTest {
 
         //Then
         TableData tableDataResult = result.getTableData();
-        assertEquals("[[;1, feb\u2013apr 2013;3, maj\u2013jul 2013;3], [Län;1, Antal sjukfall;1, Antal sjukfall för kvinnor;1, Antal sjukfall för män;1, Antal sjukfall;1, Antal sjukfall för kvinnor;1, Antal sjukfall för män;1]]", tableDataResult.getHeaders().toString());
+        assertEquals("[[;1, feb\u2013apr 2013;3, maj\u2013jul 2013;3], [Län;1, Antal sjukfall totalt;1, Antal sjukfall för kvinnor;1, Antal sjukfall för män;1, Antal sjukfall;1, Antal sjukfall för kvinnor;1, Antal sjukfall för män;1]]", tableDataResult.getHeaders().toString());
         List<NamedData> rows = tableDataResult.getRows();
         assertEquals(4, rows.size());
         assertEquals("<20", rows.get(0).getName());

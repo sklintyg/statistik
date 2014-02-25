@@ -47,7 +47,7 @@ public class SimpleDualSexConverter {
         }
         ServiceUtil.addSumRow(data, false);
 
-        return TableData.createWithSingleHeadersRow(data, Arrays.asList("Period", "Antal sjukfall", "Antal sjukfall för kvinnor", "Antal sjukfall för män", "Summering"));
+        return TableData.createWithSingleHeadersRow(data, Arrays.asList("Period", "Antal sjukfall totalt", "Antal sjukfall för kvinnor", "Antal sjukfall för män", "Summering"));
     }
 
     private ChartData convertToChartData(SimpleKonResponse<SimpleKonDataRow> casesPerMonth) {
@@ -57,7 +57,7 @@ public class SimpleDualSexConverter {
         }
 
         final ArrayList<ChartSeries> series = new ArrayList<ChartSeries>();
-        series.add(new ChartSeries("Antal sjukfall", casesPerMonth.getSummedData(), false));
+        series.add(new ChartSeries("Antal sjukfall totalt", casesPerMonth.getSummedData(), false));
         series.add(new ChartSeries("Antal sjukfall för kvinnor", casesPerMonth.getDataForSex(Kon.Female), false, Kon.Female));
         series.add(new ChartSeries("Antal sjukfall för män", casesPerMonth.getDataForSex(Kon.Male), false, Kon.Male));
 

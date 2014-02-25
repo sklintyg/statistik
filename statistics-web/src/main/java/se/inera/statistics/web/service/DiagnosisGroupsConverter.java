@@ -187,7 +187,7 @@ public class DiagnosisGroupsConverter {
 
         List<TableHeader> subHeaderRow = new ArrayList<>();
         subHeaderRow.add(new TableHeader("Period"));
-        subHeaderRow.add(new TableHeader("Antal sjukfall"));
+        subHeaderRow.add(new TableHeader("Antal sjukfall totalt"));
         for (int i = 0; i < diagnosisGroups.size(); i++) {
             subHeaderRow.add(new TableHeader("Kvinnor"));
             subHeaderRow.add(new TableHeader("Män"));
