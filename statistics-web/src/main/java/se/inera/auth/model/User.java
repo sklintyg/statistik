@@ -28,16 +28,22 @@ public class User {
 
     private final String hsaId;
     private final String name;
-    private List<Vardenhet> vardenhetList;
+    private final Vardenhet vardenhet;
+    private final List<Vardenhet> vardenhetList;
 
-    public User(String hsaId, String name, List<Vardenhet> vardenhetsList) {
+    public User(String hsaId, String name, Vardenhet vardenhet, List<Vardenhet> vardenhetsList) {
         this.hsaId = hsaId;
         this.name = name;
+        this.vardenhet = vardenhet;
         this.vardenhetList = Collections.unmodifiableList(vardenhetsList);
     }
 
     public String getHsaId() {
         return hsaId;
+    }
+
+    public String getValdVardenhet() {
+        return name;
     }
 
     public String getName() {

@@ -43,12 +43,21 @@ public class UserDetailsService implements SAMLUserDetailsService {
         LOG.info("User authentication was successful. SAML credential is " + credential);
 
         SakerhetstjanstAssertion assertion = new SakerhetstjanstAssertion(credential.getAuthenticationAssertion());
-
         List<Vardenhet> authorizedVerksamhets = hsaOrganizationsService.getAuthorizedEnheterForHosPerson(assertion.getHsaId());
-        User user = new User(assertion.getHsaId(), assertion.getFornamn() + ' ' + assertion.getMellanOchEfternamn(), authorizedVerksamhets);
+        Vardenhet selectedVerksamhet = getLoginVerksamhet(authorizedVerksamhets, assertion.getEnhetHsaId());
+        User user = new User(assertion.getHsaId(), assertion.getFornamn() + ' ' + assertion.getMellanOchEfternamn(), selectedVerksamhet, authorizedVerksamhets);
 
         return user;
 
+    }
+
+    private Vardenhet getLoginVerksamhet(List<Vardenhet> vardenhets, String enhetHsaId) {
+        for (Vardenhet vardenhet : vardenhets) {
+            if (vardenhet.getId().equals(enhetHsaId)) {
+                return vardenhet;
+            }
+        }
+        return null;
     }
 
 }
