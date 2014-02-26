@@ -22,6 +22,7 @@ package se.inera.statistics.web.service;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 import se.inera.statistics.service.report.api.Diagnoskapitel;
@@ -37,7 +38,6 @@ import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.eq;
-import static org.mockito.MockitoAnnotations.Mock;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ChartDataServiceTest {
