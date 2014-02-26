@@ -65,13 +65,15 @@
 				<!-- PRINT BUTTON GROUP -->
 				<div class="btn-group statistics-btn-group">
 				  <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-				    Skriv ut
+				    Val för rapport
 				    <span class="caret"></span>
 				  </a>
-				  <ul class="dropdown-menu right">
-				    <li><a data-ng-click="print(false)"><img src="img/dropdown-icons/print-colour.png"/> Färg</a></li>
-				    <li><a data-ng-click="print(true)"><img src="img/dropdown-icons/print-bw.png"/> Svart-vitt</a></li>
+				  <ul class="dropdown-menu pull-right detail-view-choice-dropdown">
+				    <li><a data-ng-click="print(false)"><img src="img/dropdown-icons/print-colour.png"/>Skriv ut rapport i färg</a></li>
+				    <li><a data-ng-click="print(true)"><img src="img/dropdown-icons/print-bw.png"/>Skriv ut rapport i svart-vitt</a></li>
 				    <!-- li><a class="disabled"><img src="img/dropdown-icons/pdf-inactive.png"/> PDF-fil</a></li -->
+				    <li data-ng-repeat="chartContainer in chartContainers"><a data-ng-click="exportChart(chartContainer.id)"><img src="img/dropdown-icons/png.png"/>Spara {{chartContainer.name}} som bild</a></li>
+				  	<li><a data-ng-href="{{exportTableUrl}}" target="_self"><img src="img/dropdown-icons/excel.png"/>Spara tabell till Excel</a></li>
 				  </ul>
 				</div>
 			</div>
@@ -84,24 +86,6 @@
         <div spinner label="{{spinnerText}}" show-spinner="!doneLoading" show-content="doneLoading">
         	 <div class="">
                 <!-- Start graph -->
-                <div class="row-fluid dontprint">
-                    <div ng-show="chartContainers.length > 1">
-		                <div class="btn-group statistics-btn-group">
-		                  <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-		                    Spara diagram som bild
-		                    <span class="caret"></span>
-		                  </a>
-		                  <ul class="dropdown-menu right" style="min-width: 180px; padding: 5px 0; margin: 2px 20px 0;">
-		                    <li data-ng-repeat="chartContainer in chartContainers"><a data-ng-click="exportChart(chartContainer.id)"><img src="img/dropdown-icons/png.png"/> {{chartContainer.name}}</a></li>
-		                  </ul>
-		                </div>
-                    </div>
-                    <div ng-show="chartContainers.length == 1" >
-                        <button class="btn pull-right" data-ng-repeat="chartContainer in chartContainers" data-ng-click="exportChart(chartContainer.id)" style="cursor: pointer;" id="pageHelpToolTip">
-                            Spara diagram som bild
-                        </button>
-                    </div>
-                </div>
 	            <div class="row-fluid">
 	                <div data-ng-repeat="chartContainer in chartContainers"  data-ng-class="{span12: chartContainers.length == 1, span6: chartContainers.length == 2}">
 	                    <div class="chart-page-chart" id="{{chartContainer.id}}" style="height: 400px; margin: 0 auto"></div>
@@ -113,20 +97,6 @@
                         <div class="legend-color-square" ng-style="{backgroundColor: seriesData.color}"></div>
                         {{seriesData.name}}
                     </label>
-	            </div>
-	            <div class="row-fluid" style="margin-top: 15px;">
-					<div class="span12 pull-right" data-ng-class="{margin_top_button_group: showDetailsOptions}" style="width: auto; margin-bottom: 10px;">
-						<!-- PRINT BUTTON GROUP -->
-						<div class="btn-group statistics-btn-group dontprint">
-						  <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-						    Spara tabell som
-						    <span class="caret"></span>
-						  </a>
-						  <ul class="dropdown-menu pull-right">
-						    <li><a data-ng-href="{{exportTableUrl}}" target="_self"><img src="img/dropdown-icons/excel.png"/> Excel</a></li>
-						  </ul>
-						</div>
-					</div>
 	            </div>
 			</div>
 			

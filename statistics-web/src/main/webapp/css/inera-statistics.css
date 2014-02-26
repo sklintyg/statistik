@@ -989,7 +989,12 @@ div.headerbox-user { font-size: 13px; line-height: 16px;}
   background-image: url(../img/settings_sprite.png);
   background-position: 0px -25px; 
 }
-
+.detail-view-choice-dropdown {
+	min-width: 200px !important;
+}
+.detail-view-choice-dropdown a {
+	font-size: 0.9em;
+}
 #settings-dropdown { 
 	top: 35px;
 }
