@@ -41,7 +41,7 @@
  
  app.singleLineChartCtrl = function ($scope, $routeParams, $timeout, $window, statisticsData, config) {
     var chart;
-    $scope.chartContainers = [{id: "chart1", name: "Diagram"}];
+    $scope.chartContainers = [{id: "chart1", name: "diagram"}];
     
 	var paintChart = function(chartCategories, chartSeries) {
         var chartOptions = ControllerCommons.getHighChartConfigBase(chartCategories, chartSeries);

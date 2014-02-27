@@ -116,8 +116,7 @@
                                 <div class="btn-group">
                                     <a class="btn dropdown-toggle" id="business-select-business" data-toggle="dropdown"
                                        href="#">{{verksamhetName}}<span class="caret"></span></a>
-                                    <ul class="dropdown-menu left"
-                                        style="float: right; right: 280px; position: absolute;">
+                                    <ul class="dropdown-menu pull-right">
                                         <li data-ng-repeat="business in businesses"><a
                                                 data-ng-click="selectVerksamhet(business.id)"
                                                 tooltip-html-unsafe="<div class=popover-content>{{business.name}}</div>"

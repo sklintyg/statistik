@@ -232,8 +232,8 @@ app.doubleAreaChartsCtrl = function ($scope, $routeParams, $window, $timeout, st
     $scope.chartFootnotes = config.chartFootnotes;
 
     $scope.chartContainers = [
-        {id: "chart1", name: "Diagram för kvinnor"},
-        {id: "chart2", name: "Diagram för män"}
+        {id: "chart1", name: "diagram för kvinnor"},
+        {id: "chart2", name: "diagram för män"}
     ];
 
     $scope.toggleSeriesVisibility = function (index) {
