@@ -52,8 +52,8 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <spring.version>3.2.4.RELEASE</spring.version>
-        <spring.security.version>3.1.4.RELEASE</spring.security.version>
+        <spring.version>4.0.2.RELEASE</spring.version>
+        <spring.security.version>3.2.0.RELEASE</spring.security.version>
         <hibernate.version>3.6.8.Final</hibernate.version>
         <hsqldb.version>1.8.0.10</hsqldb.version>
         <joda.version>2.2</joda.version>
