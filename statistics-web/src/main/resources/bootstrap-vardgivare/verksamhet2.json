@@ -1,4 +1,6 @@
 {
     "id" : "verksamhet2",
-    "namn" : "Småmålas akutmottagning"
+    "namn" : "Småmålas akutmottagning",
+    "vardgivarId" : "vardgivare1"
+
 }

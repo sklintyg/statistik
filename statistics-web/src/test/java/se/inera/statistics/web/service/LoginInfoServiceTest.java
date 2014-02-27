@@ -64,8 +64,8 @@ public class LoginInfoServiceTest {
 
     public void getLoginInfoTest() {
         LoginInfoService loginInfoService = new LoginInfoService();
-        List<Vardenhet> vardenhets = Collections.<Vardenhet>singletonList(new Vardenhet("verksamhetid", "verksamhetnamn"));
-        User user = new User("hsaId", "name", vardenhets.get(0), vardenhets);
+        List<Vardenhet> vardenhets = Collections.<Vardenhet>singletonList(new Vardenhet("verksamhetid", "verksamhetnamn", "VG1"));
+        User user = new User("hsaId", "name", false, vardenhets.get(0), vardenhets);
         UsernamePasswordAuthenticationToken principal = Mockito.mock(UsernamePasswordAuthenticationToken.class);
         Mockito.when(request.getUserPrincipal()).thenReturn(principal);
         Mockito.when(principal.getDetails()).thenReturn(user);

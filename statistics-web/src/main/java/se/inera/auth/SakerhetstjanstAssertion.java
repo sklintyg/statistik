@@ -19,8 +19,7 @@
 
 package se.inera.auth;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 import org.opensaml.saml2.core.Assertion;
 import org.opensaml.saml2.core.Attribute;
@@ -42,11 +41,13 @@ public class SakerhetstjanstAssertion {
     public static final String FORNAMN_ATTRIBUTE = "urn:sambi:names:attribute:givenName";
     public static final String MELLAN_OCH_EFTERNAMN_ATTRIBUTE = "urn:sambi:names:attribute:middleAndSurname";
 
-    private static final String ENHET_HSA_ID_ATTRIBUTE = "urn:sambi:names:attribute:careUnitHsaId";
+    public static final String ENHET_HSA_ID_ATTRIBUTE = "urn:sambi:names:attribute:careUnitHsaId";
     private static final String ENHET_NAMN_ATTRIBUTE = "urn:sambi:names:attribute:careUnitName";
 
-    private static final String VARDGIVARE_HSA_ID_ATTRIBUTE = "urn:sambi:names:attribute:careProviderHsaId";
+    public static final String VARDGIVARE_HSA_ID_ATTRIBUTE = "urn:sambi:names:attribute:careProviderHsaId";
     private static final String VARDGIVARE_NAMN_ATTRIBUTE = "urn:sambi:names:attribute:careProviderName";
+
+    private static final String SYSTEM_ROLE_ATTRIBUTE = "urn:sambi:names:attribute:systemRole";
 
     private String titelKod;
     private String titel;
@@ -63,6 +64,8 @@ public class SakerhetstjanstAssertion {
 
     private String vardgivareHsaId;
     private String vardgivareNamn;
+
+    private Collection<String> systemRole = Collections.emptyList();
 
     public SakerhetstjanstAssertion(Assertion assertion) {
         if (assertion.getAttributeStatements() != null) {
@@ -105,6 +108,9 @@ public class SakerhetstjanstAssertion {
             case VARDGIVARE_NAMN_ATTRIBUTE:
                 vardgivareNamn = getValue(attribute);
                 break;
+            case SYSTEM_ROLE_ATTRIBUTE:
+                    systemRole = getValues(attribute);
+                    break;
             default:
             }
         }
@@ -164,5 +170,9 @@ public class SakerhetstjanstAssertion {
 
     public String getVardgivareNamn() {
         return vardgivareNamn;
+    }
+
+    public Collection<String> getSystemRolls() {
+        return systemRole;
     }
 }

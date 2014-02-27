@@ -28,13 +28,15 @@ public class Vardenhet implements Serializable {
 
     private String id;
     private String namn;
+    private String vardgivarId;
 
     public Vardenhet() {
     }
 
-    public Vardenhet(String id, String namn) {
+    public Vardenhet(String id, String namn, String vardgivarId) {
         this.id = id;
         this.namn = namn;
+        this.vardgivarId = vardgivarId;
     }
 
     public String getNamn() {
@@ -45,4 +47,12 @@ public class Vardenhet implements Serializable {
         return id;
     }
 
+    public String getVardgivarId() {
+        return vardgivarId;
+    }
+
+    @Override
+    public String toString() {
+        return "Vardenhet " + id + " " + namn + " " + vardgivarId;
+    }
 }

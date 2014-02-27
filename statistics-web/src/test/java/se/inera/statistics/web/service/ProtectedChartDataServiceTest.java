@@ -56,9 +56,9 @@ public class ProtectedChartDataServiceTest {
     @Before
     public void init() {
         request = Mockito.mock(HttpServletRequest.class);
-        List<Vardenhet> vardenhets = Arrays.asList(new Vardenhet("verksamhet1", "Närhälsan i Småmåla"), new Vardenhet("verksamhet2", "Småmålas akutmottagning"));
+        List<Vardenhet> vardenhets = Arrays.asList(new Vardenhet("verksamhet1", "Närhälsan i Småmåla", "VG1"), new Vardenhet("verksamhet2", "Småmålas akutmottagning", "VG2"));
 
-        User user = new User("hsaId", "name",  vardenhets.get(0), vardenhets);
+        User user = new User("hsaId", "name", false, vardenhets.get(0), vardenhets);
         UsernamePasswordAuthenticationToken principal = Mockito.mock(UsernamePasswordAuthenticationToken.class);
         Mockito.when(request.getUserPrincipal()).thenReturn(principal);
         Mockito.when(principal.getDetails()).thenReturn(user);

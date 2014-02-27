@@ -19,6 +19,7 @@
 
 package se.inera.auth;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -34,6 +35,7 @@ import se.inera.statistics.hsa.services.HsaOrganizationsService;
 public class UserDetailsService implements SAMLUserDetailsService {
 
     private static final Logger LOG = LoggerFactory.getLogger(UserDetailsService.class);
+    public static final String GLOBAL_VG_ACCESS_FLAG = "INTYG;Statistik";
 
     @Autowired
     private HsaOrganizationsService hsaOrganizationsService;
@@ -43,12 +45,24 @@ public class UserDetailsService implements SAMLUserDetailsService {
         LOG.info("User authentication was successful. SAML credential is " + credential);
 
         SakerhetstjanstAssertion assertion = new SakerhetstjanstAssertion(credential.getAuthenticationAssertion());
+
         List<Vardenhet> authorizedVerksamhets = hsaOrganizationsService.getAuthorizedEnheterForHosPerson(assertion.getHsaId());
+
         Vardenhet selectedVerksamhet = getLoginVerksamhet(authorizedVerksamhets, assertion.getEnhetHsaId());
-        User user = new User(assertion.getHsaId(), assertion.getFornamn() + ' ' + assertion.getMellanOchEfternamn(), selectedVerksamhet, authorizedVerksamhets);
+        List<Vardenhet> filtered = filterByVardgivare(authorizedVerksamhets, selectedVerksamhet.getVardgivarId());
 
-        return user;
+        return new User(assertion.getHsaId(), assertion.getFornamn() + ' ' + assertion.getMellanOchEfternamn(), assertion.getSystemRolls().contains(GLOBAL_VG_ACCESS_FLAG), selectedVerksamhet, filtered);
+    }
 
+    private List<Vardenhet> filterByVardgivare(List<Vardenhet> vardenhets, String vardgivarId) {
+        ArrayList<Vardenhet> filtered = new ArrayList<>();
+        for (Vardenhet vardenhet: vardenhets) {
+            System.err.println(vardenhet);
+            if (vardenhet.getVardgivarId() != null && vardenhet.getVardgivarId().equals(vardgivarId)) {
+                filtered.add(vardenhet);
+            }
+        }
+        return filtered;
     }
 
     private Vardenhet getLoginVerksamhet(List<Vardenhet> vardenhets, String enhetHsaId) {

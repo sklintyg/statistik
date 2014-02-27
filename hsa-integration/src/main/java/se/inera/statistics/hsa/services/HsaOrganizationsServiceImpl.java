@@ -57,7 +57,7 @@ public class HsaOrganizationsServiceImpl implements HsaOrganizationsService {
 
         for (MiuInformationType info: response.getMiuInformation()) {
             if (Medarbetaruppdrag.STATISTIK.equalsIgnoreCase(info.getMiuPurpose())) {
-                vardenhetList.add(new Vardenhet(info.getCareUnitHsaIdentity(), info.getCareUnitName()));
+                vardenhetList.add(new Vardenhet(info.getCareUnitHsaIdentity(), info.getCareUnitName(), info.getCareGiver()));
             }
         }
         LOG.debug("User with HSA-Id has active 'Vård och behandling' for " + vardenhetList.size() + " enheter");

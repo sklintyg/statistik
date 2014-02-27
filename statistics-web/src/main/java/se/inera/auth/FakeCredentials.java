@@ -31,6 +31,8 @@ public class FakeCredentials implements Serializable {
     private String fornamn;
     private String efternamn;
     private boolean lakare;
+    private String enhetId;
+    private String vardgivarId;
 
     public FakeCredentials() {
     }
@@ -54,6 +56,14 @@ public class FakeCredentials implements Serializable {
         return efternamn;
     }
 
+    public String getEnhetId() {
+        return enhetId;
+    }
+
+    public String getVardgivarId() {
+        return vardgivarId;
+    }
+
     public boolean isLakare() {
         return lakare;
     }
@@ -72,6 +82,14 @@ public class FakeCredentials implements Serializable {
 
     public void setLakare(boolean lakare) {
         this.lakare = lakare;
+    }
+
+    public void setEnhetId(String enhetId) {
+        this.enhetId = enhetId;
+    }
+
+    public void setVardgivarId(String vardgivarId) {
+        this.vardgivarId = vardgivarId;
     }
 
     @Override

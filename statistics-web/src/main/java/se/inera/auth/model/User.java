@@ -28,12 +28,14 @@ public class User {
 
     private final String hsaId;
     private final String name;
+    private final boolean vgAccess;
     private final Vardenhet vardenhet;
     private final List<Vardenhet> vardenhetList;
 
-    public User(String hsaId, String name, Vardenhet vardenhet, List<Vardenhet> vardenhetsList) {
+    public User(String hsaId, String name, boolean vgAccess, Vardenhet vardenhet, List<Vardenhet> vardenhetsList) {
         this.hsaId = hsaId;
         this.name = name;
+        this.vgAccess = vgAccess;
         this.vardenhet = vardenhet;
         this.vardenhetList = Collections.unmodifiableList(vardenhetsList);
     }
@@ -42,8 +44,8 @@ public class User {
         return hsaId;
     }
 
-    public String getValdVardenhet() {
-        return name;
+    public Vardenhet getValdVardenhet() {
+        return vardenhet;
     }
 
     public String getName() {
@@ -52,5 +54,13 @@ public class User {
 
     public List<Vardenhet> getVardenhetList() {
         return vardenhetList;
+    }
+
+    public boolean hasVgAccess() {
+        return vgAccess || vardenhetList.size() > 1;
+    }
+
+    public boolean hasGlobalAccess() {
+        return vgAccess;
     }
 }
