@@ -54,12 +54,12 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <spring.version>4.0.2.RELEASE</spring.version>
         <spring.security.version>3.2.0.RELEASE</spring.security.version>
-        <hibernate.version>3.6.8.Final</hibernate.version>
+        <hibernate.version>4.3.1.Final</hibernate.version>
         <hsqldb.version>1.8.0.10</hsqldb.version>
-        <joda.version>2.2</joda.version>
-        <cxf.version>2.7.4</cxf.version>
-        <logback.version>1.0.13</logback.version>
-        <jackson.version>2.1.1</jackson.version>
+        <joda.version>2.3</joda.version>
+        <cxf.version>2.7.10</cxf.version>
+        <logback.version>1.1.1</logback.version>
+        <jackson.version>2.2.3</jackson.version>
     </properties>
 
     <dependencyManagement>
@@ -79,6 +79,8 @@
               <artifactId>spring-security-saml2-core</artifactId>
               <version>1.0.0.RC2</version>
             </dependency>
+            <!-- N.b.! There are "higher" versions available but i think this is the current one.
+            Versioning seems to be broken for xml-apis -->
             <dependency>
               <groupId>xml-apis</groupId>
               <artifactId>xml-apis</artifactId>
@@ -89,13 +91,13 @@
             <dependency>
                 <groupId>org.slf4j</groupId>
                 <artifactId>slf4j-api</artifactId>
-                <version>1.7.5</version>
+                <version>1.7.6</version>
             </dependency>
             
             <dependency>
                 <groupId>org.slf4j</groupId>
                 <artifactId>slf4j-simple</artifactId>
-                <version>1.7.5</version>
+                <version>1.7.6</version>
             </dependency>
         
             <dependency>
@@ -362,12 +364,6 @@
             </dependency>
 
             <dependency>
-                <groupId>hsqldb</groupId>
-                <artifactId>hsqldb</artifactId>
-                <version>${hsqldb.version}</version>
-            </dependency>
-
-            <dependency>
                 <groupId>com.fasterxml.jackson.jaxrs</groupId>
                 <artifactId>jackson-jaxrs-json-provider</artifactId>
                 <version>${jackson.version}</version>
@@ -409,7 +405,7 @@
             <dependency>
                 <groupId>org.apache.commons</groupId>
                 <artifactId>commons-lang3</artifactId>
-                <version>3.1</version>
+                <version>3.2.1</version>
             </dependency>
 
             <dependency>
@@ -422,20 +418,20 @@
             <dependency>
                 <groupId>mysql</groupId>
                 <artifactId>mysql-connector-java</artifactId>
-                <version>5.1.26</version>
+                <version>5.1.29</version>
             </dependency>
 
             <dependency>
                 <groupId>junit</groupId>
                 <artifactId>junit</artifactId>
-                <version>4.10</version>
+                <version>4.11</version>
                 <scope>test</scope>
             </dependency>
 
             <dependency>
                 <groupId>org.mockito</groupId>
                 <artifactId>mockito-core</artifactId>
-                <version>1.9.0</version>
+                <version>1.9.5</version>
                 <scope>test</scope>
             </dependency>
 
