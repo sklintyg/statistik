@@ -14,3 +14,5 @@ build
 statistics-web/.externalToolBuilders/org.eclipse.wst.jsdt.core.javascriptValidator.launch
 statistics-service/src/main/resources/rebel.xml
 statistics-web/src/main/resources/rebel.xml
+
+catalina.base_IS_UNDEFINED
