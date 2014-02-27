@@ -23,6 +23,7 @@ import static org.mockito.Matchers.anyObject;
 import static org.mockito.Matchers.anyString;
 
 import java.util.Collections;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -63,7 +64,8 @@ public class LoginInfoServiceTest {
 
     public void getLoginInfoTest() {
         LoginInfoService loginInfoService = new LoginInfoService();
-        User user = new User("hsaId", "name",  Collections.<Vardenhet>singletonList(new Vardenhet("verksamhetid", "verksamhetnamn")));
+        List<Vardenhet> vardenhets = Collections.<Vardenhet>singletonList(new Vardenhet("verksamhetid", "verksamhetnamn"));
+        User user = new User("hsaId", "name", vardenhets.get(0), vardenhets);
         UsernamePasswordAuthenticationToken principal = Mockito.mock(UsernamePasswordAuthenticationToken.class);
         Mockito.when(request.getUserPrincipal()).thenReturn(principal);
         Mockito.when(principal.getDetails()).thenReturn(user);

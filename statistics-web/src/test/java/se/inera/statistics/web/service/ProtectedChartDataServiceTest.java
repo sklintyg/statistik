@@ -35,7 +35,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations.Mock;
+import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 
@@ -58,7 +58,7 @@ public class ProtectedChartDataServiceTest {
         request = Mockito.mock(HttpServletRequest.class);
         List<Vardenhet> vardenhets = Arrays.asList(new Vardenhet("verksamhet1", "Närhälsan i Småmåla"), new Vardenhet("verksamhet2", "Småmålas akutmottagning"));
 
-        User user = new User("hsaId", "name",  vardenhets);
+        User user = new User("hsaId", "name",  vardenhets.get(0), vardenhets);
         UsernamePasswordAuthenticationToken principal = Mockito.mock(UsernamePasswordAuthenticationToken.class);
         Mockito.when(request.getUserPrincipal()).thenReturn(principal);
         Mockito.when(principal.getDetails()).thenReturn(user);
