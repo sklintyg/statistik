@@ -19,24 +19,11 @@
         </layout>
     </appender>
 
-    <appender name="FILE" class="ch.qos.logback.core.FileAppender" append="false">
-        <file>integrationTest.txt</file>
-        <layout class="ch.qos.logback.classic.PatternLayout">
-            <Pattern>%msg%n
-            </Pattern>
-        </layout>
-    </appender>
-
-    <appender name="NULL" class="se.inera.statistics.service.helper.NullAppender"/>
-
     <logger name="org.springframework" level="WARN"/>
     <logger name="org.springframework.security" level="WARN"/>
     <logger name="org.springframework.core.env.PropertySourcesPropertyResolver" level="WARN"/>
     <logger name="org.springframework.web" level="WARN"/>
     <logger name="org.springframework.http" level="WARN"/>
-
-    <logger name="se.inera.statistics.service.queue.RepresentativeIntygIntegrationTest" level="INFO"><appender-ref ref="${test.run.appender}"/></logger>
-    <logger name="se.inera.statistics.service.testsupport.QueueHelper" level="INFO"><appender-ref ref="${test.run.appender}"/></logger>
 
     <root level="ERROR">
         <appender-ref ref="STDOUT"/>
