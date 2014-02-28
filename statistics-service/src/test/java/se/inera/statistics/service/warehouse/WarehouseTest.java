@@ -1,21 +1,18 @@
 package se.inera.statistics.service.warehouse;
 
-import static org.junit.Assert.assertEquals;
-
+import com.fasterxml.jackson.databind.JsonNode;
 import org.joda.time.Days;
 import org.joda.time.LocalDate;
 import org.junit.Ignore;
 import org.junit.Test;
-
 import se.inera.statistics.service.JSONSource;
 import se.inera.statistics.service.helper.DocumentHelper;
 import se.inera.statistics.service.helper.HSAServiceHelper;
 import se.inera.statistics.service.helper.JSONParser;
 import se.inera.statistics.service.hsa.HSAService;
 import se.inera.statistics.service.hsa.HSAServiceMock;
-import se.inera.statistics.service.report.model.DiagnosisGroup;
 
-import com.fasterxml.jackson.databind.JsonNode;
+import static org.junit.Assert.assertEquals;
 
 public class WarehouseTest {
 //    private static final LocalDate BASE_DATE = new LocalDate("2000-01-01");
@@ -98,9 +95,9 @@ public class WarehouseTest {
         int kalenderperiod = Days.daysBetween(kalenderStart, kalenderEnd).getDays();
         int kon = DocumentHelper.getKon(document).indexOf('k');
         int alder = DocumentHelper.getAge(document);
-        int diagnoskapitel = DiagnosisGroup.toInt(DocumentHelper.getDiagnos(document));
-        int diagnosavsnitt = DiagnosisGroup.toInt(DocumentHelper.getDiagnos(document));;
-        int diagnoskategori = DiagnosisGroup.toInt(DocumentHelper.getDiagnos(document));;
+        int diagnoskapitel = Convert.toInt(DocumentHelper.getDiagnos(document));
+        int diagnosavsnitt = Convert.toInt(DocumentHelper.getDiagnos(document));;
+        int diagnoskategori = Convert.toInt(DocumentHelper.getDiagnos(document));;
         int sjukskrivningsgrad = 100 - Integer.parseInt(DocumentHelper.getArbetsformaga(document).get(0));
         int sjukskrivningslangd = kalenderperiod;
         int lakarkon = -1;
