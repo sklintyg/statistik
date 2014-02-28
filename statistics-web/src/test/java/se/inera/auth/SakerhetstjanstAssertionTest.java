@@ -44,19 +44,23 @@ public class SakerhetstjanstAssertionTest {
         sakerhetstjanstAssertion = new SakerhetstjanstAssertion(getSamlAssertion());
     }
 
-    static Assertion getSamlAssertion() throws ConfigurationException, SAXException, IOException, ParserConfigurationException, UnmarshallingException {
+    static Assertion getSamlAssertion() {
         return getSamlAssertion("/test-saml-biljett.xml");
     }
 
-    static Assertion getSamlAssertion(String ticketFile) throws ConfigurationException, SAXException, IOException, ParserConfigurationException, UnmarshallingException {
-        DefaultBootstrap.bootstrap();
+    static Assertion getSamlAssertion(String ticketFile) {
+        try {
+            DefaultBootstrap.bootstrap();
 
-        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-        documentBuilderFactory.setNamespaceAware(true);
+            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            documentBuilderFactory.setNamespaceAware(true);
 
-        Document document = documentBuilderFactory.newDocumentBuilder().parse(SakerhetstjanstAssertionTest.class.getResourceAsStream(ticketFile));
+            Document document = documentBuilderFactory.newDocumentBuilder().parse(SakerhetstjanstAssertionTest.class.getResourceAsStream(ticketFile));
 
-        return (Assertion) Configuration.getUnmarshallerFactory().getUnmarshaller(document.getDocumentElement()).unmarshall(document.getDocumentElement());
+            return (Assertion) Configuration.getUnmarshallerFactory().getUnmarshaller(document.getDocumentElement()).unmarshall(document.getDocumentElement());
+        } catch (ConfigurationException | SAXException | UnmarshallingException | ParserConfigurationException | IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Test

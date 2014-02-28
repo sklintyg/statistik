@@ -66,6 +66,7 @@ public class UserDetailsServiceTest {
 
     @Test
     public void hasVgAccessByMultipleEnhets() throws Exception {
+        newCredentials("/test-saml-biljett-no-systemroles.xml");
         when(hsaOrganizationsService.getAuthorizedEnheterForHosPerson(anyString())).thenReturn(Arrays.asList(VE1_VG1, VE2_VG1));
         User user = (User) service.loadUserBySAML(credential);
         assertTrue(user.hasVgAccess());
@@ -77,4 +78,12 @@ public class UserDetailsServiceTest {
         User user = (User) service.loadUserBySAML(credential);
         assertTrue(user.hasVgAccess());
     }
+
+    private void newCredentials(String samlTicketName) {
+        Assertion assertion = SakerhetstjanstAssertionTest.getSamlAssertion(samlTicketName);
+
+        NameID nameID = new NameIDBuilder().buildObject();
+        credential = new SAMLCredential(nameID, assertion, "", "");
+    }
+
 }
