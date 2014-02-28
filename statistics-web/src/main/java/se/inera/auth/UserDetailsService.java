@@ -19,18 +19,17 @@
 
 package se.inera.auth;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.saml.SAMLCredential;
 import org.springframework.security.saml.userdetails.SAMLUserDetailsService;
-
 import se.inera.auth.model.User;
 import se.inera.statistics.hsa.model.Vardenhet;
 import se.inera.statistics.hsa.services.HsaOrganizationsService;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class UserDetailsService implements SAMLUserDetailsService {
 
@@ -51,7 +50,7 @@ public class UserDetailsService implements SAMLUserDetailsService {
         Vardenhet selectedVerksamhet = getLoginVerksamhet(authorizedVerksamhets, assertion.getEnhetHsaId());
         List<Vardenhet> filtered = filterByVardgivare(authorizedVerksamhets, selectedVerksamhet.getVardgivarId());
 
-        return new User(assertion.getHsaId(), assertion.getFornamn() + ' ' + assertion.getMellanOchEfternamn(), assertion.getSystemRolls().contains(GLOBAL_VG_ACCESS_FLAG), selectedVerksamhet, filtered);
+        return new User(assertion.getHsaId(), assertion.getFornamn() + ' ' + assertion.getMellanOchEfternamn(), assertion.getSystemRoles().contains(GLOBAL_VG_ACCESS_FLAG), selectedVerksamhet, filtered);
     }
 
     private List<Vardenhet> filterByVardgivare(List<Vardenhet> vardenhets, String vardgivarId) {

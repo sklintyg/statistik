@@ -175,7 +175,7 @@ public class SakerhetstjanstAssertion {
         return vardgivareNamn;
     }
 
-    public Collection<String> getSystemRolls() {
+    public Collection<String> getSystemRoles() {
         return systemRole;
     }
 }
