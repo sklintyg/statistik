@@ -56,7 +56,6 @@ public class UserDetailsService implements SAMLUserDetailsService {
     private List<Vardenhet> filterByVardgivare(List<Vardenhet> vardenhets, String vardgivarId) {
         ArrayList<Vardenhet> filtered = new ArrayList<>();
         for (Vardenhet vardenhet: vardenhets) {
-            System.err.println(vardenhet);
             if (vardenhet.getVardgivarId() != null && vardenhet.getVardgivarId().equals(vardgivarId)) {
                 filtered.add(vardenhet);
             }

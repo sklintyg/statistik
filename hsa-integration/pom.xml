@@ -41,14 +41,9 @@
       <artifactId>slf4j-api</artifactId>
     </dependency>
     <dependency>
-      <groupId>javax.mail</groupId>
-      <artifactId>mail</artifactId>
-      <version>1.4</version>
+        <groupId>joda-time</groupId>
+        <artifactId>joda-time</artifactId>
     </dependency>
-      <dependency>
-          <groupId>joda-time</groupId>
-          <artifactId>joda-time</artifactId>
-      </dependency>
     <!-- cxf -->
     <dependency>
       <groupId>org.apache.cxf</groupId>
@@ -78,11 +73,6 @@
     <dependency>
       <groupId>org.springframework.security</groupId>
       <artifactId>spring-security-web</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>com.google.guava</groupId>
-      <artifactId>guava</artifactId>
-      <version>14.0.1</version>
     </dependency>
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
