@@ -42,17 +42,17 @@ public class Icd10 {
     private void init() {
         try {
 
-            kapitel = new LineReader<Kapitel>(icd10KapitelAnsiFile) {
+            kapitel = (new LineReader<Kapitel>(icd10KapitelAnsiFile) {
                 public Kapitel parse(String line) {
                     return Kapitel.valueOf(line);
                 }
-            }.process();
+            }).process();
 
-            avsnitt = new LineReader<Avsnitt>(icd10AvsnittAnsiFile) {
+            avsnitt = (new LineReader<Avsnitt>(icd10AvsnittAnsiFile) {
                 public Avsnitt parse(String line) {
                     return Avsnitt.valueOf(line);
                 }
-            }.process();
+            }).process();
 
             for (Avsnitt a : avsnitt) {
                 String aid = firstKategori(a.getId());
@@ -64,11 +64,11 @@ public class Icd10 {
                     }
                 }
             }
-            kategori = new LineReader<Kategori>(icd10KategoriAnsiFile) {
+            kategori = (new LineReader<Kategori>(icd10KategoriAnsiFile) {
                 public Kategori parse(String line) {
                     return Kategori.valueOf(line);
                 }
-            }.process();
+            }).process();
 
             for (Kategori k : kategori) {
                 String kid = firstKategori(k.getId());
