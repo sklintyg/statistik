@@ -23,6 +23,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
@@ -32,6 +33,7 @@ public class UserDetailsServiceTest {
     private static final Vardenhet VE1_VG1 = new Vardenhet("IFV1239877878-103F", "Enhetsnamn", "IFV1239877878-0001");
     private static final Vardenhet VE2_VG1 = new Vardenhet("Vardenhet2", "Enhetsnamn2", "IFV1239877878-0001");
     private static final Vardenhet VE3_VG2 = new Vardenhet("Vardenhet3", "Enhetsnamn3", "VG2");
+    private static final Vardenhet VE4_VG2 = new Vardenhet("Vardenhet4", "Enhetsnamn4", "VG2");
 
     @Mock
     private HsaOrganizationsService hsaOrganizationsService;
@@ -54,11 +56,12 @@ public class UserDetailsServiceTest {
         when(hsaOrganizationsService.getAuthorizedEnheterForHosPerson(anyString())).thenReturn(Arrays.asList(VE1_VG1, VE2_VG1));
         User user = (User) service.loadUserBySAML(credential);
         assertEquals("IFV1239877878-103F", user.getValdVardenhet().getId());
+        assertEquals(2, user.getVardenhetList().size());
     }
 
     @Test
-    public void vardenheterOnOtherVardgivareAreFiltered() throws Exception {
-        when(hsaOrganizationsService.getAuthorizedEnheterForHosPerson(anyString())).thenReturn(Arrays.asList(VE1_VG1, VE3_VG2));
+    public void vardenhetOnOtherVardgivareAreFiltered() throws Exception {
+        when(hsaOrganizationsService.getAuthorizedEnheterForHosPerson(anyString())).thenReturn(Arrays.asList(VE1_VG1, VE3_VG2, VE4_VG2));
         User user = (User) service.loadUserBySAML(credential);
         assertEquals(1, user.getVardenhetList().size());
         assertEquals(VE1_VG1, user.getVardenhetList().get(0));
@@ -70,6 +73,7 @@ public class UserDetailsServiceTest {
         when(hsaOrganizationsService.getAuthorizedEnheterForHosPerson(anyString())).thenReturn(Arrays.asList(VE1_VG1, VE2_VG1));
         User user = (User) service.loadUserBySAML(credential);
         assertTrue(user.hasVgAccess());
+        assertFalse(user.hasFullVgAccess());
     }
 
     @Test
@@ -77,6 +81,7 @@ public class UserDetailsServiceTest {
         when(hsaOrganizationsService.getAuthorizedEnheterForHosPerson(anyString())).thenReturn(Arrays.asList(VE1_VG1));
         User user = (User) service.loadUserBySAML(credential);
         assertTrue(user.hasVgAccess());
+        assertTrue(user.hasFullVgAccess());
     }
 
     private void newCredentials(String samlTicketName) {
