@@ -57,6 +57,9 @@
                     $scope.businesses = loginInfo.businesses;
                     $scope.verksamhetName = getSelectedVerksamhet($scope.businessId, loginInfo.businesses).name;
                     $scope.userName = loginInfo.name;
+                    $scope.isVgView = loginInfo.isVgView;
+                    $scope.isFullVgAccess = loginInfo.isFullVgAccess;
+                    $scope.userNameWithAccess = loginInfo.name + (!loginInfo.vgView ? "(Enhetsnivå)" : loginInfo.fullVgAccess ? "(Vårdgivarnivå alla)" : "(Vårdgivarnivå vissa)")
                 }, function() { $scope.dataLoadingError = true; });
         }
     });

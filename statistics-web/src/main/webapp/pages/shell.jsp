@@ -109,7 +109,7 @@
 									<a href="/saml/logout">Logga ut</a>
 								</span>
                                 <span class="user-name pull-right" style="margin-right: 10px;"
-                                      data-ng-bind="userName"></span>
+                                      data-ng-bind="userNameWithAccess"></span>
                                 <br>
                                 <span>Välj verksamhet:</span>
                                 <!-- SELECT BUSINESS BUTTON GROUP -->
