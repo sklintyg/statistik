@@ -23,8 +23,8 @@ import static se.inera.auth.SakerhetstjanstAssertion.ENHET_HSA_ID_ATTRIBUTE;
 import static se.inera.auth.SakerhetstjanstAssertion.FORNAMN_ATTRIBUTE;
 import static se.inera.auth.SakerhetstjanstAssertion.HSA_ID_ATTRIBUTE;
 import static se.inera.auth.SakerhetstjanstAssertion.MELLAN_OCH_EFTERNAMN_ATTRIBUTE;
-import static se.inera.auth.SakerhetstjanstAssertion.TITEL_ATTRIBUTE;
 import static se.inera.auth.SakerhetstjanstAssertion.VARDGIVARE_HSA_ID_ATTRIBUTE;
+import static se.inera.auth.SakerhetstjanstAssertion.SYSTEM_ROLE_ATTRIBUTE;
 
 import java.util.ArrayList;
 
@@ -101,10 +101,9 @@ public class FakeAuthenticationProvider implements AuthenticationProvider {
         attributeStatement.getAttributes().add(createAttribute(ENHET_HSA_ID_ATTRIBUTE, fakeCredentials.getEnhetId()));
         attributeStatement.getAttributes().add(createAttribute(VARDGIVARE_HSA_ID_ATTRIBUTE, fakeCredentials.getVardgivarId()));
 
-        if (fakeCredentials.isLakare()) {
-            attributeStatement.getAttributes().add(createAttribute(TITEL_ATTRIBUTE, "Läkare"));
+        if (fakeCredentials.isVardgivarniva()) {
+            attributeStatement.getAttributes().add(createAttribute(SYSTEM_ROLE_ATTRIBUTE, "INTYG;Statistik"));
         }
-
         NameID nameId = new NameIDBuilder().buildObject();
         nameId.setValue(token.getCredentials().toString());
         return new SAMLCredential(nameId, assertion, "fake-idp", "statistics");

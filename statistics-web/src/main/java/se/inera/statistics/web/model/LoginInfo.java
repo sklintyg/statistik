@@ -19,19 +19,33 @@
 
 package se.inera.statistics.web.model;
 
+import java.util.Collections;
 import java.util.List;
 
 public class LoginInfo {
 
-    private String hsaId;
+    private final String hsaId;
     private final String name;
+    private final boolean isVgView;
+    private final boolean isFullVgAccess;
     private final boolean loggedIn;
     private final List<Verksamhet> businesses;
 
-    public LoginInfo(String hsaId, String name, boolean loggedIn, List<Verksamhet> businesses) {
+    public LoginInfo() {
+        this.hsaId = "";
+        this.name = "";
+        this.loggedIn = false;
+        this.businesses = Collections.EMPTY_LIST;
+        isVgView = false;
+        isFullVgAccess = false;
+    }
+
+    public LoginInfo(String hsaId, String name, boolean isVgView, boolean isFullVgAccess, List<Verksamhet> businesses) {
         this.hsaId = hsaId;
         this.name = name;
-        this.loggedIn = loggedIn;
+        this.isVgView = isVgView;
+        this.isFullVgAccess = isFullVgAccess;
+        this.loggedIn = true;
         this.businesses = businesses;
     }
 
@@ -45,6 +59,14 @@ public class LoginInfo {
 
     public boolean isLoggedIn() {
         return loggedIn;
+    }
+
+    public boolean isVgView() {
+        return isVgView;
+    }
+
+    public boolean isFullVgAccess() {
+        return isFullVgAccess;
     }
 
     public List<Verksamhet> getBusinesses() {

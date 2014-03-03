@@ -20,7 +20,6 @@ import se.inera.statistics.hsa.services.HsaOrganizationsService;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -45,15 +44,12 @@ public class UserDetailsServiceTest {
 
     @Before
     public void setup() throws SAXException, UnmarshallingException, ParserConfigurationException, ConfigurationException, IOException {
-        Assertion assertion = SakerhetstjanstAssertionTest.getSamlAssertion();
-
-        NameID nameID = new NameIDBuilder().buildObject();
-        credential = new SAMLCredential(nameID, assertion, "", "");
+        newCredentials("/test-saml-biljett.xml");
     }
 
     @Test
     public void correctVardenhetIsChosen() throws Exception {
-        when(hsaOrganizationsService.getAuthorizedEnheterForHosPerson(anyString())).thenReturn(Arrays.asList(VE1_VG1, VE2_VG1));
+        auktoriseradeEnheter(VE1_VG1, VE2_VG1);
         User user = (User) service.loadUserBySAML(credential);
         assertEquals("IFV1239877878-103F", user.getValdVardenhet().getId());
         assertEquals(2, user.getVardenhetList().size());
@@ -61,7 +57,7 @@ public class UserDetailsServiceTest {
 
     @Test
     public void vardenhetOnOtherVardgivareAreFiltered() throws Exception {
-        when(hsaOrganizationsService.getAuthorizedEnheterForHosPerson(anyString())).thenReturn(Arrays.asList(VE1_VG1, VE3_VG2, VE4_VG2));
+        auktoriseradeEnheter(VE1_VG1, VE3_VG2, VE4_VG2);
         User user = (User) service.loadUserBySAML(credential);
         assertEquals(1, user.getVardenhetList().size());
         assertEquals(VE1_VG1, user.getVardenhetList().get(0));
@@ -70,7 +66,7 @@ public class UserDetailsServiceTest {
     @Test
     public void hasVgAccessByMultipleEnhets() throws Exception {
         newCredentials("/test-saml-biljett-no-systemroles.xml");
-        when(hsaOrganizationsService.getAuthorizedEnheterForHosPerson(anyString())).thenReturn(Arrays.asList(VE1_VG1, VE2_VG1));
+        auktoriseradeEnheter(VE1_VG1, VE2_VG1);
         User user = (User) service.loadUserBySAML(credential);
         assertTrue(user.hasVgAccess());
         assertFalse(user.hasFullVgAccess());
@@ -78,7 +74,7 @@ public class UserDetailsServiceTest {
 
     @Test
     public void hasVgAccessBySystemRole() throws Exception {
-        when(hsaOrganizationsService.getAuthorizedEnheterForHosPerson(anyString())).thenReturn(Arrays.asList(VE1_VG1));
+        auktoriseradeEnheter(VE1_VG1);
         User user = (User) service.loadUserBySAML(credential);
         assertTrue(user.hasVgAccess());
         assertTrue(user.hasFullVgAccess());
@@ -89,6 +85,10 @@ public class UserDetailsServiceTest {
 
         NameID nameID = new NameIDBuilder().buildObject();
         credential = new SAMLCredential(nameID, assertion, "", "");
+    }
+
+    private void auktoriseradeEnheter(Vardenhet...enheter) {
+        when(hsaOrganizationsService.getAuthorizedEnheterForHosPerson(anyString())).thenReturn(Arrays.asList(enheter));
     }
 
 }

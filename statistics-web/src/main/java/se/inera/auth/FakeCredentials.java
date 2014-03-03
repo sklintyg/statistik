@@ -30,18 +30,17 @@ public class FakeCredentials implements Serializable {
     private String hsaId;
     private String fornamn;
     private String efternamn;
-    private boolean lakare;
+    private boolean vardgivarniva;
     private String enhetId;
     private String vardgivarId;
 
     public FakeCredentials() {
     }
 
-    public FakeCredentials(String hsaId, String fornamn, String efternamn, boolean lakare) {
+    public FakeCredentials(String hsaId, String fornamn, String efternamn) {
         this.hsaId = hsaId;
         this.fornamn = fornamn;
         this.efternamn = efternamn;
-        this.lakare = lakare;
     }
 
     public String getHsaId() {
@@ -64,10 +63,6 @@ public class FakeCredentials implements Serializable {
         return vardgivarId;
     }
 
-    public boolean isLakare() {
-        return lakare;
-    }
-
     public void setHsaId(String hsaId) {
         this.hsaId = hsaId;
     }
@@ -80,10 +75,6 @@ public class FakeCredentials implements Serializable {
         this.efternamn = efternamn;
     }
 
-    public void setLakare(boolean lakare) {
-        this.lakare = lakare;
-    }
-
     public void setEnhetId(String enhetId) {
         this.enhetId = enhetId;
     }
@@ -92,8 +83,16 @@ public class FakeCredentials implements Serializable {
         this.vardgivarId = vardgivarId;
     }
 
+    public void setVardgivarniva(boolean vardgivarniva) {
+        this.vardgivarniva = vardgivarniva;
+    }
+
+    public boolean isVardgivarniva() {
+        return vardgivarniva;
+    }
+
     @Override
     public String toString() {
-        return "FakeCredentials{hsaId='" + hsaId + "', fornamn='" + fornamn + "', efternamn='" + efternamn + "', lakare=" + lakare + '}';
+        return "FakeCredentials{hsaId='" + hsaId + "', fornamn='" + fornamn + "', efternamn='" + efternamn + "', vardgivarniva=" + vardgivarniva + '}';
     }
 }

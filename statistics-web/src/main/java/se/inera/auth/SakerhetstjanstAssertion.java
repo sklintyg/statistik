@@ -50,7 +50,7 @@ public class SakerhetstjanstAssertion {
     public static final String VARDGIVARE_HSA_ID_ATTRIBUTE = "urn:sambi:names:attribute:careProviderHsaId";
     private static final String VARDGIVARE_NAMN_ATTRIBUTE = "urn:sambi:names:attribute:careProviderName";
 
-    private static final String SYSTEM_ROLE_ATTRIBUTE = "urn:sambi:names:attribute:systemRole";
+    public static final String SYSTEM_ROLE_ATTRIBUTE = "urn:sambi:names:attribute:systemRole";
 
     private String titelKod;
     private String titel;

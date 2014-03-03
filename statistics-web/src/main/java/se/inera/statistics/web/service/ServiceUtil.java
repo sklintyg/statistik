@@ -60,10 +60,10 @@ public final class ServiceUtil {
                 for (Vardenhet enhet: realUser.getVardenhetList()) {
                     verksamhets.add(new Verksamhet(enhet.getId(), enhet.getNamn()));
                 }
-                return new LoginInfo(realUser.getHsaId(), realUser.getName(), true, verksamhets);
+                return new LoginInfo(realUser.getHsaId(), realUser.getName(), realUser.hasVgAccess(), realUser.hasFullVgAccess(), verksamhets);
             }
         }
-        return new LoginInfo("", "", false, Collections.<Verksamhet>emptyList());
+        return new LoginInfo();
     }
 
     static void addSumRow(List<NamedData> rows, boolean includeSumForLastColumn) {
