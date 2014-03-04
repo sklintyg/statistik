@@ -123,14 +123,14 @@
 	                        <div class="accordion-inner datatablescrollable">
 	                            <table id="datatable" class="table table-striped table-bordered">
 	                                <thead>
-	                                    <tr data-ng-repeat="headerrow in headerrows">
+	                                    <tr data-ng-repeat="headerrow in headerrows track by $index">
 	                                        <td class="datatablescrollable details-table-data ellipsis details-th" data-ng-class="{headcol: $first}" colspan="{{header.colspan}}" data-ng-repeat="header in headerrow" title="{{header.text}}">{{header.text}}</td>
 	                                    </tr>
 	                                </thead>
 	                                <tbody>
 	                                    <tr data-ng-repeat="row in rows">
 	                                        <td class="datatablescrollable headcol">{{row.name}}</td>
-	                                        <td class="datatablescrollable" data-ng-repeat="fieldData in row.data" >{{fieldData | thousandseparated}}</td>
+	                                        <td class="datatablescrollable" data-ng-repeat="fieldData in row.data track by $index" >{{fieldData | thousandseparated}}</td>
 	                                    </tr>
 	                                </tbody>
 	                            </table>
@@ -150,13 +150,13 @@
                 <table id="datatable" class="table table-striped print-pagebreak-after" data-ng-repeat="printTable in printDataTables">
                     <thead>
                         <tr class="table-print-header" data-ng-repeat="headerrow in printTable.headers">
-                            <td colspan="{{header.colspan}}" data-ng-repeat="header in headerrow" title="{{header.text}}">{{header.text}}</td>
+                            <td colspan="{{header.colspan}}" data-ng-repeat="header in headerrow track by $index" title="{{header.text}}">{{header.text}}</td>
                         </tr>
                     </thead>
                     <tbody>
                         <tr data-ng-repeat="row in printTable.rows">
                             <td>{{row.name}}</td>
-                            <td data-ng-repeat="fieldData in row.data" >{{fieldData | thousandseparated}}</td>
+                            <td data-ng-repeat="fieldData in row.data track by $index" >{{fieldData | thousandseparated}}</td>
                         </tr>
                     </tbody>
                 </table>

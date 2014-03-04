@@ -92,14 +92,14 @@
                 </div>
                 <c:if test="${loginVisible}">
                     <div class="span4 pull-right" style="width: auto !important;">
-                        <div id="business-login-container" style="display: none;" ng-hide="isLoggedIn">
+                        <div id="business-login-container" ng-hide="isLoggedIn">
                             <span id="business-login-span">För verksamhetsstatistik: </span>
                             <button class="btn" data-ng-click="loginClicked('${applicationScope.loginUrl}')"
                                     type="button" id="business-login-btn" value="Logga in">Logga in
                             </button>
                         </div>
                         <div id="business-logged-in-user-container"
-                             style="display: none; position: absolute; right: 0; margin-right: 25px;"
+                             style="position: absolute; right: 0; margin-right: 25px;"
                              ng-show="isLoggedIn">
                             <!-- div class="pull-right">
 								<img id="business-me-icon" alt="Bild på inloggad användare" src="<c:url value='/img/avatar.png'/>"/>
@@ -333,8 +333,9 @@
 <![endif]-->
 <script type="text/javascript" src="<c:url value='/js/lib/jquery/1.10.2/jquery.min.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/bootstrap/2.3.2/js/bootstrap.min.js'/>"></script>
-<script type="text/javascript" src="<c:url value='/js/lib/angularjs/1.0.8/angular.min.js'/>"></script>
-<script type="text/javascript" src="<c:url value='/js/lib/angularjs/1.0.8/angular-cookies.min.js'/>"></script>
+<script type="text/javascript" src="<c:url value='/js/lib/angularjs/1.2.14/angular.min.js'/>"></script>
+<script type="text/javascript" src="<c:url value='/js/lib/angularjs/1.2.14/angular-cookies.min.js'/>"></script>
+<script type="text/javascript" src="<c:url value='/js/lib/angularjs/1.2.14/angular-route.min.js'/>"></script>
 <script type="text/javascript"
         src="<c:url value='/js/lib/ui-bootstrap/0.6.0/ui-bootstrap-tpls-0.6.0.min.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/app.js'/>"></script>
