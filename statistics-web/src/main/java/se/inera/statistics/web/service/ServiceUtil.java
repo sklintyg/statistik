@@ -21,7 +21,6 @@ package se.inera.statistics.web.service;
 
 import java.security.Principal;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -71,7 +70,7 @@ public final class ServiceUtil {
     }
 
     static NamedData getSumRow(List<NamedData> rows, boolean includeSumForLastColumn) {
-        final ArrayList<Integer> sumData = new ArrayList<Integer>();
+        final ArrayList<Integer> sumData = new ArrayList<>();
         if (!rows.isEmpty()) {
             for (int i = 0; i < rows.get(0).getData().size(); i++) {
                 sumData.add(0);
