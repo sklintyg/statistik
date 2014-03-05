@@ -87,19 +87,19 @@
 <div class="navbar navbar-inverse navbar-fixed-top dontprint">
     <div class="navbar-inner">
         <div class="container-fluid">
-            <div class="row-fluid" id="navigation-container">
-                <div class="span3 pull-left" style="width: auto !important;">
+            <div class="row" id="navigation-container">
+                <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 pull-left" style="width: auto !important;">
                     <div class="headerbox-logo">
                         <a href="<c:url value='/'/>">
                             <img alt="Till startsidan" src="<c:url value='/img/statistiktjansten-logotype.png'/>"/>
                         </a>
                     </div>
                 </div>
-                <div class="span2 pull-left" style="margin-left: 20px; margin-top: 3px; max-width: 190px;">
+                <div class="col-xs-6 col-sm-2 col-md-2 col-lg-2 pull-left" style="margin-top: 3px; max-width: 190px;">
                     <span>Statistiktjänst för ordinerad sjukskrivning</span>
                 </div>
                 <c:if test="${loginVisible}">
-                    <div class="span4 pull-right" style="width: auto !important;">
+                    <div class="col-xs-6 col-md-7 col-lg-2 pull-right">
                         <div id="business-login-container" ng-hide="isLoggedIn">
                             <span id="business-login-span">För verksamhetsstatistik: </span>
                             <button class="btn" data-ng-click="loginClicked('${applicationScope.loginUrl}')"
@@ -145,15 +145,15 @@
     <div class="container-fluid">
         <!-- Docs nav
         ================================================== -->
-        <div class="row-fluid">
-            <div class="span3 bs-docs-sidebar dontprint" data-ng-controller="NavigationMenuCtrl">
+        <div class="row">
+            <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 bs-docs-sidebar dontprint" data-ng-controller="NavigationMenuCtrl">
                 <h1 class="hidden-header">Sidans huvudnavigering</h1>
 
                 <div class="statistics accordion" id="statistics-menu-accordion">
                     <div class="accordion-group" id="national-statistics-menu-group">
                         <h2 class="hidden-header">Navigering för nationell statistik</h2>
                         <!-- NATIONAL STATISTIC MENU -->
-                        <div class="accordion-heading statistics-menu">
+                        <div class="accordion-heading statistics-menu"> 
                             <div class="accordion-toggle first-level-menu" id="national-statistics-toggle"
                                  data-parent="#statistics-menu-accordion"
                                  data-ng-class="{active: showNational, collapsed: !showNational}"
@@ -317,7 +317,7 @@
                     </div>
                 </div>
             </div>
-            <div class="span9">
+            <div class="col-xs-12 col-sm-9 col-md-9 col-lg-9">
                 <%-- data-ng-view that holds dynamic content managed by angular app --%>
                 <div id="view" data-ng-view></div>
             </div>
