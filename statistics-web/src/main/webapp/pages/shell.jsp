@@ -54,10 +54,18 @@
     <link href="<c:url value='/js/lib/pie/PIE.htc'/>" rel="stylesheet">
     <![endif]-->
     <link href="<c:url value='/css/inera-statistics.css'/>" rel="stylesheet" media="not print">
-    <link href="<c:url value='/bootstrap/2.3.2/css/bootstrap.min.css'/>" rel="stylesheet" media="not print">
     <link href="<c:url value='/css/inera-statistics-responsive.css'/>" rel="stylesheet" media="not print">
-    <link href="<c:url value='/bootstrap/2.3.2/css/bootstrap-responsive.css'/>" rel="stylesheet" media="not print">
     <link href="<c:url value='/css/print.css'/>" rel="stylesheet" media="print">
+    <!-- Bootstrap 2.3.2 -->
+    <!--
+    <link href="<c:url value='/bootstrap/2.3.2/css/bootstrap.min.css'/>" rel="stylesheet" media="not print">
+    <link href="<c:url value='/bootstrap/2.3.2/css/bootstrap-responsive.css'/>" rel="stylesheet" media="not print">
+    -->
+    <!-- Bootstrap 3.1.1 -->
+    <link href="<c:url value='/bootstrap/3.1.1/css/bootstrap.min.css'/>" rel="stylesheet" media="not print">
+    <link href="<c:url value='/bootstrap/3.1.1/css/bootstrap.css.map'/>" rel="stylesheet" media="not print">
+    <link href="<c:url value='/bootstrap/3.1.1/css/bootstrap-theme.min.css'/>" rel="stylesheet" media="not print">
+    <link href="<c:url value='/bootstrap/3.1.1/css/bootstrap-theme.css.map'/>" rel="stylesheet" media="not print">
 
     <link rel="icon" type="image/png" href="<c:url value='/img/favicon.ico'/>">
     <security:authorize access="isAuthenticated()">
@@ -98,9 +106,7 @@
                                     type="button" id="business-login-btn" value="Logga in">Logga in
                             </button>
                         </div>
-                        <div id="business-logged-in-user-container"
-                             style="position: absolute; right: 0; margin-right: 25px;"
-                             ng-show="isLoggedIn">
+                        <div id="business-logged-in-user-container" style="position: absolute; right: 0; margin-right: 25px;" ng-show="isLoggedIn">
                             <!-- div class="pull-right">
 								<img id="business-me-icon" alt="Bild på inloggad användare" src="<c:url value='/img/avatar.png'/>"/>
 							</div -->
@@ -117,11 +123,13 @@
                                     <a class="btn dropdown-toggle" id="business-select-business" data-toggle="dropdown"
                                        href="#">{{verksamhetName}}<span class="caret"></span></a>
                                     <ul class="dropdown-menu pull-right">
-                                        <li data-ng-repeat="business in businesses"><a
-                                                data-ng-click="selectVerksamhet(business.id)"
+                                        <li data-ng-repeat="business in businesses">
+                                        	<a  data-ng-click="selectVerksamhet(business.id)"
                                                 tooltip-html-unsafe="<div class=popover-content>{{business.name}}</div>"
                                                 tooltip-trigger="mouseenter"
-                                                tooltip-placement="left">{{business.name}}</a></li>
+                                                tooltip-placement="left">{{business.name}}
+                                            </a>
+                                        </li>
                                     </ul>
                                 </div>
                             </div>
@@ -332,7 +340,8 @@
 <script type="text/javascript" src="<c:url value='/js/app/html5shiv.js'/>"></script>
 <![endif]-->
 <script type="text/javascript" src="<c:url value='/js/lib/jquery/1.10.2/jquery.min.js'/>"></script>
-<script type="text/javascript" src="<c:url value='/bootstrap/2.3.2/js/bootstrap.min.js'/>"></script>
+<!-- <script type="text/javascript" src="<c:url value='/bootstrap/2.3.2/js/bootstrap.min.js'/>"></script>  -->
+<script type="text/javascript" src="<c:url value='/bootstrap/3.1.1/js/bootstrap.min.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/lib/angularjs/1.2.14/angular.min.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/lib/angularjs/1.2.14/angular-cookies.min.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/lib/angularjs/1.2.14/angular-route.min.js'/>"></script>
