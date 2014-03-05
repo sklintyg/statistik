@@ -2,8 +2,6 @@ package se.inera.statistics.service.warehouse;
 
 import java.util.Iterator;
 
-import org.apache.commons.collections.iterators.ArrayIterator;
-
 public class Warehouse implements Iterable<WideLine> {
     private final WideLine[] lines;
 
@@ -21,7 +19,21 @@ public class Warehouse implements Iterable<WideLine> {
 
     @Override
     public Iterator<WideLine> iterator() {
-        return new ArrayIterator(lines);
+        return new Iterator<WideLine>() {
+            private int index = 0;
+            @Override
+            public boolean hasNext() {
+                return index < lines.length;
+            }
+            @Override
+            public WideLine next() {
+                return lines[index++];
+            }
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException();
+            }
+        };
     }
 
     public int getSize() {
