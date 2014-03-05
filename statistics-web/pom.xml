@@ -112,6 +112,10 @@
                 <name>java.awt.headless</name>
                 <value>true</value>
               </systemProperty>
+              <systemProperty>
+                <name>certificate.logback.file</name>
+                <value>${project.basedir}/statistics-logback.xml</value>
+              </systemProperty>
             </systemProperties>
         </configuration>
         <dependencies>
