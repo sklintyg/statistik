@@ -1593,7 +1593,7 @@ div.datatablescrollable {
 	margin-top: 10px;
 	text-align: center;
 }
-#pageHelpToolTip:hover {
+.pageHelpToolTip:hover {
 	cursor: pointer;
 }
 #data-table-print-header {
