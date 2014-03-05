@@ -19,15 +19,7 @@
 
 package se.inera.statistics.web.service;
 
-import java.security.Principal;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.security.authentication.AbstractAuthenticationToken;
-
 import se.inera.auth.model.User;
 import se.inera.statistics.hsa.model.Vardenhet;
 import se.inera.statistics.service.report.model.KonDataRow;
@@ -35,6 +27,11 @@ import se.inera.statistics.service.report.model.KonField;
 import se.inera.statistics.web.model.LoginInfo;
 import se.inera.statistics.web.model.NamedData;
 import se.inera.statistics.web.model.Verksamhet;
+
+import javax.servlet.http.HttpServletRequest;
+import java.security.Principal;
+import java.util.ArrayList;
+import java.util.List;
 
 public final class ServiceUtil {
 
@@ -71,7 +68,7 @@ public final class ServiceUtil {
     }
 
     static NamedData getSumRow(List<NamedData> rows, boolean includeSumForLastColumn) {
-        final ArrayList<Integer> sumData = new ArrayList<Integer>();
+        final ArrayList<Integer> sumData = new ArrayList<>();
         if (!rows.isEmpty()) {
             for (int i = 0; i < rows.get(0).getData().size(); i++) {
                 sumData.add(0);
