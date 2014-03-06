@@ -87,8 +87,8 @@ var ControllerCommons = new function(){
     this.showHideDataTableDefault = "Dölj datatabell";
     this.toggleTableVisibilityGeneric = function(event, $scope) {
         var elem = $(event.target);
-        var accordionGroup = $(elem.parents('.accordion-group')[0]);
-        var accordionBody = $(accordionGroup.children('.accordion-body'));
+        var accordionGroup = $(elem.parents('.panel-group')[0]);
+        var accordionBody = $(accordionGroup.children('.panel-body'));
         var wasTableVisible = accordionBody.hasClass("in");
         $scope.showHideDataTable = wasTableVisible ? "Visa datatabell" : "Dölj datatabell";
     };
