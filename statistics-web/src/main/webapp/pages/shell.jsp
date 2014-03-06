@@ -99,7 +99,7 @@
                     <span>Statistiktjänst för ordinerad sjukskrivning</span>
                 </div>
                 <c:if test="${loginVisible}">
-                    <div class="col-xs-6 col-md-7 col-lg-2 pull-right">
+                    <div class="col-xs-6 col-sm-2 col-md-4 col-lg-4 pull-right">
                         <div id="business-login-container" ng-hide="isLoggedIn">
                             <span id="business-login-span">För verksamhetsstatistik: </span>
                             <button class="btn" data-ng-click="loginClicked('${applicationScope.loginUrl}')"
@@ -158,7 +158,7 @@
                                  data-parent="#statistics-menu-accordion"
                                  data-ng-class="{active: showNational, collapsed: !showNational}"
                                  data-ng-click="toggleNationalAccordion()">
-                                Nationell statistik<i class="statistict-left-menu-expand-icon"></i>
+                                 <span class="statistics-menu-heading">Nationell statistik</span><i class="statistict-left-menu-expand-icon"></i>
                             </div>
                         </div>
                         <div id="national-statistics-collapse" class="accordion-body collapse navigation-group"
@@ -215,9 +215,9 @@
                                      data-parent="#statistics-menu-accordion"
                                      data-ng-class="{active: showOperation, collapsed: !showOperation, disabled: !isLoggedIn}"
                                      data-ng-click="toggleOperationAccordion()">
-                                    <span data-ng-bind="organisationMenuLabel"></span><i
+                                     <span class="statistics-menu-heading" data-ng-bind="organisationMenuLabel"></span><i 
                                         class="statistict-left-menu-expand-icon"></i>
-                                    <!-- Inloggad: Enbart "Verksamhetsstatistik" -->
+                                     <!-- Inloggad: Enbart "Verksamhetsstatistik" -->
                                 </div>
                             </div>
                             <div id="business-statistics-collapse" class="accordion-body collapse navigation-group"
@@ -295,7 +295,7 @@
                             <div class="accordion-toggle first-level-menu"
                                  data-ng-class="{active: showAbout, collapsed: !showAbout}"
                                  data-ng-click="toggleAboutAccordion()">
-                                Om tjänsten<i class="statistict-left-menu-expand-icon"></i>
+                                 <span class="statistics-menu-heading">Om tjänsten</span><i class="statistict-left-menu-expand-icon"></i>
                             </div>
                         </div>
                         <div id="about-statistics-collapse" class="accordion-body collapse navigation-group"
