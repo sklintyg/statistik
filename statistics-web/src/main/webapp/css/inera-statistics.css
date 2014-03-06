@@ -126,6 +126,7 @@ table.table tfoot th {
 
 table.table thead th, table.table tbody td {
     border-bottom: 1px solid #8c8c8c;
+    border: 0;
     padding: 12px;
 }
 
@@ -573,7 +574,7 @@ i.statistict-left-menu-expand-icon {
 	height: 14px;
 }
 #legend-label { font-size: 12px; }
-#chart-data-table .accordion-heading a i.chart-table-expand-icon {
+#chart-data-table i.chart-table-expand-icon {
 	background-image: url("../img/glyphicons-halflings-white.png");
 	background-position: -24px -97px;
 	float: left;
@@ -583,7 +584,7 @@ i.statistict-left-menu-expand-icon {
 	height: 14px;
 	margin-left: 0px;
 }
-#chart-data-table .accordion-heading a.collapsed i.chart-table-expand-icon {
+#chart-data-table.collapsed i.chart-table-expand-icon {
 	background-image: url("../img/glyphicons-halflings-white.png");
 	background-position: 0px -97px;
 	float: left;
@@ -593,7 +594,11 @@ i.statistict-left-menu-expand-icon {
 	height: 14px;
 	margin-left: 0px;
 }
-.chart-table-body.in.collapse {
+
+#chart-data-table .panel-body {
+    padding: 0;
+}
+#chart-data-table.collapsed .chart-table-body {
 	border-left: 1px solid #BABABA;
 	border-right: 1px solid #BABABA;
 	border-bottom: 1px solid #BABABA;
@@ -609,7 +614,7 @@ i.statistict-left-menu-expand-icon {
 	text-align: right;
 }
 
-#chart-data-table .accordion-toggle {
+#chart-data-table .panel-heading {
 	background: #008391;
 	background: -moz-linear-gradient(top, #008391 0%, #00687d 100%);
 	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#008391), color-stop(100%,#00687d));
@@ -633,7 +638,7 @@ i.statistict-left-menu-expand-icon {
 	color: #fff;
 }
 
-#chart-data-table a.accordion-toggle.collapsed {
+#chart-data-table.collapsed .panel-heading {
 	-webkit-border-top-left-radius: 4px;
 	-webkit-border-top-right-radius: 4px;
 	-webkit-border-bottom-left-radius: 4px !important;
@@ -647,16 +652,7 @@ i.statistict-left-menu-expand-icon {
 	border-bottom-left-radius: 4px !important;
 	border-bottom-right-radius: 4px !important;
 }
-.accordion-toggle {
-	background: #666666;
-	background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJod���IgaGVpZ2h0PSIxIiBmaWxsPSJ1cmwoI2dyYWQtdWNnZy1nZW5lcmF0ZWQpIiAvPgo8L3N2Zz4=);
-	background: -moz-linear-gradient(top, #666666 0%, #212633 57%);
-	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#666666), color-stop(57%,#212633));
-	background: -webkit-linear-gradient(top, #666666 0%,#212633 57%);
-	background: -o-linear-gradient(top, #666666 0%,#212633 57%);
-	background: -ms-linear-gradient(top, #666666 0%,#212633 57%);
-	background: linear-gradient(to bottom, #666666 0%,#212633 57%);
-	/*filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#666666', endColorstr='#212633',GradientType=0 );*/
+#chart-data-table a.accordion-toggle {
 	cursor: pointer;
 	-webkit-border-top-left-radius: 4px;
 	-webkit-border-top-right-radius: 4px;
@@ -671,8 +667,12 @@ i.statistict-left-menu-expand-icon {
 	border-bottom-left-radius: 4px;
 	border-bottom-right-radius: 4px;
 	color: #fff;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-size: 14px;
+    line-height: 20px;
 }
-.accordion-toggle.disabled, .accordion-toggle.disabled:hover {
+#chart-data-table.collapsed .accordion-toggle.disabled,
+#chart-data-table.collapsed .accordion-toggle.disabled:hover {
 	background: #ffffff !important;
 	cursor: default;
 	color: #C7C7C7 !important;
@@ -1530,20 +1530,24 @@ table#datatable {
 	width: 100%;
 }
 
-td.datatablescrollable {
+td.scrollable {
     white-space:nowrap;
     margin:0;
 }
 
-.headcol.datatablescrollable {
+.headcol.scrollable {
     position:absolute;
-    width: 14em;
+    width: 13em;
     top:auto;
     left:0;
     text-align: left !important;
 }
 
-div.datatablescrollable {
+div.scrollable {
+    position: relative;
+}
+
+div.scrolling {
     overflow-x:auto;  
     margin-left: 13em;
     overflow-y:visible;
