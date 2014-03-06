@@ -84,7 +84,7 @@
         <div spinner label="{{spinnerText}}" show-spinner="!doneLoading" show-content="doneLoading">
                 <!-- Start graph -->
 	            <div class="row">
-	                <div data-ng-repeat="chartContainer in chartContainers"  data-ng-class="{col-lg-12: chartContainers.length == 1, col-lg-6: chartContainers.length == 2}">
+	                <div data-ng-repeat="chartContainer in chartContainers" data-ng-class="{'col-lg-12': chartContainers.length == 1, 'col-lg-6': chartContainers.length == 2}">
 	                    <div class="chart-page-chart" id="{{chartContainer.id}}" style="height: 400px; margin: 0 auto"></div>
 	                </div>
 	            </div>
@@ -97,7 +97,7 @@
                     	</label>
 	            	</div>
                 </div>
-			
+
 			<!-- Page break for print -->
             <div class="print-pagebreak-after"></div>
             
