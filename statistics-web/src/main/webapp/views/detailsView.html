@@ -35,7 +35,7 @@
 	<div class="row-fluid">
 		<span class="span12 graph-ingress pull-left" style="min-height: 5px;">
 			{{subTitle}}
-			<a class="dontprint" id="pageHelpToolTip" tooltip-html-unsafe="<div class=popover-content>{{popoverText}}</div>" tooltip-trigger="mouseenter" tooltip-placement="right" data-ng-show="popoverText" style="position: relative; top: -2px;"><img src="img/questionmark2.png"></a>
+			<a class="dontprint pageHelpToolTip" tooltip-html-unsafe="<div class=popover-content>{{popoverText}}</div>" tooltip-trigger="mouseenter" tooltip-placement="right" data-ng-show="popoverText" style="position: relative; top: -2px;"><img src="img/questionmark2.png"></a>
 			<a class="dontprint" id="chart-footnote-trigger" data-toggle="collapse" data-target="#chart-footnote-text" data-ng-show="chartFootnotes" text="Information om diagrammet" style="position: relative; top: -2px;"><img src="img/information.png"></a>
 		</span>
 		<div class="row-fluid" data-ng-show="chartFootnotes">
@@ -123,14 +123,14 @@
 	                        <div class="accordion-inner datatablescrollable">
 	                            <table id="datatable" class="table table-striped table-bordered">
 	                                <thead>
-	                                    <tr data-ng-repeat="headerrow in headerrows">
+	                                    <tr data-ng-repeat="headerrow in headerrows track by $index">
 	                                        <td class="datatablescrollable details-table-data ellipsis details-th" data-ng-class="{headcol: $first}" colspan="{{header.colspan}}" data-ng-repeat="header in headerrow" title="{{header.text}}">{{header.text}}</td>
 	                                    </tr>
 	                                </thead>
 	                                <tbody>
 	                                    <tr data-ng-repeat="row in rows">
 	                                        <td class="datatablescrollable headcol">{{row.name}}</td>
-	                                        <td class="datatablescrollable" data-ng-repeat="fieldData in row.data" >{{fieldData | thousandseparated}}</td>
+	                                        <td class="datatablescrollable" data-ng-repeat="fieldData in row.data track by $index" >{{fieldData | thousandseparated}}</td>
 	                                    </tr>
 	                                </tbody>
 	                            </table>
@@ -150,13 +150,13 @@
                 <table id="datatable" class="table table-striped print-pagebreak-after" data-ng-repeat="printTable in printDataTables">
                     <thead>
                         <tr class="table-print-header" data-ng-repeat="headerrow in printTable.headers">
-                            <td colspan="{{header.colspan}}" data-ng-repeat="header in headerrow" title="{{header.text}}">{{header.text}}</td>
+                            <td colspan="{{header.colspan}}" data-ng-repeat="header in headerrow track by $index" title="{{header.text}}">{{header.text}}</td>
                         </tr>
                     </thead>
                     <tbody>
                         <tr data-ng-repeat="row in printTable.rows">
                             <td>{{row.name}}</td>
-                            <td data-ng-repeat="fieldData in row.data" >{{fieldData | thousandseparated}}</td>
+                            <td data-ng-repeat="fieldData in row.data track by $index" >{{fieldData | thousandseparated}}</td>
                         </tr>
                     </tbody>
                 </table>

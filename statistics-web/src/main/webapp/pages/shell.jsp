@@ -54,10 +54,18 @@
     <link href="<c:url value='/js/lib/pie/PIE.htc'/>" rel="stylesheet">
     <![endif]-->
     <link href="<c:url value='/css/inera-statistics.css'/>" rel="stylesheet" media="not print">
-    <link href="<c:url value='/bootstrap/2.3.2/css/bootstrap.min.css'/>" rel="stylesheet" media="not print">
     <link href="<c:url value='/css/inera-statistics-responsive.css'/>" rel="stylesheet" media="not print">
-    <link href="<c:url value='/bootstrap/2.3.2/css/bootstrap-responsive.css'/>" rel="stylesheet" media="not print">
     <link href="<c:url value='/css/print.css'/>" rel="stylesheet" media="print">
+    <!-- Bootstrap 2.3.2 -->
+    <!--
+    <link href="<c:url value='/bootstrap/2.3.2/css/bootstrap.min.css'/>" rel="stylesheet" media="not print">
+    <link href="<c:url value='/bootstrap/2.3.2/css/bootstrap-responsive.css'/>" rel="stylesheet" media="not print">
+    -->
+    <!-- Bootstrap 3.1.1 -->
+    <link href="<c:url value='/bootstrap/3.1.1/css/bootstrap.min.css'/>" rel="stylesheet" media="not print">
+    <link href="<c:url value='/bootstrap/3.1.1/css/bootstrap.css.map'/>" rel="stylesheet" media="not print">
+    <link href="<c:url value='/bootstrap/3.1.1/css/bootstrap-theme.min.css'/>" rel="stylesheet" media="not print">
+    <link href="<c:url value='/bootstrap/3.1.1/css/bootstrap-theme.css.map'/>" rel="stylesheet" media="not print">
 
     <link rel="icon" type="image/png" href="<c:url value='/img/favicon.ico'/>">
     <security:authorize access="isAuthenticated()">
@@ -79,28 +87,26 @@
 <div class="navbar navbar-inverse navbar-fixed-top dontprint">
     <div class="navbar-inner">
         <div class="container-fluid">
-            <div class="row-fluid" id="navigation-container">
-                <div class="span3 pull-left" style="width: auto !important;">
+            <div class="row" id="navigation-container">
+                <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 pull-left" style="width: auto !important;">
                     <div class="headerbox-logo">
                         <a href="<c:url value='/'/>">
                             <img alt="Till startsidan" src="<c:url value='/img/statistiktjansten-logotype.png'/>"/>
                         </a>
                     </div>
                 </div>
-                <div class="span2 pull-left" style="margin-left: 20px; margin-top: 3px; max-width: 190px;">
+                <div class="col-xs-6 col-sm-2 col-md-2 col-lg-2 pull-left" style="margin-top: 3px; max-width: 190px;">
                     <span>Statistiktjänst för ordinerad sjukskrivning</span>
                 </div>
                 <c:if test="${loginVisible}">
-                    <div class="span4 pull-right" style="width: auto !important;">
-                        <div id="business-login-container" style="display: none;" ng-hide="isLoggedIn">
+                    <div class="col-xs-6 col-md-7 col-lg-2 pull-right">
+                        <div id="business-login-container" ng-hide="isLoggedIn">
                             <span id="business-login-span">För verksamhetsstatistik: </span>
                             <button class="btn" data-ng-click="loginClicked('${applicationScope.loginUrl}')"
                                     type="button" id="business-login-btn" value="Logga in">Logga in
                             </button>
                         </div>
-                        <div id="business-logged-in-user-container"
-                             style="display: none; position: absolute; right: 0; margin-right: 25px;"
-                             ng-show="isLoggedIn">
+                        <div id="business-logged-in-user-container" style="position: absolute; right: 0; margin-right: 25px;" ng-show="isLoggedIn">
                             <!-- div class="pull-right">
 								<img id="business-me-icon" alt="Bild på inloggad användare" src="<c:url value='/img/avatar.png'/>"/>
 							</div -->
@@ -117,11 +123,13 @@
                                     <a class="btn dropdown-toggle" id="business-select-business" data-toggle="dropdown"
                                        href="#">{{verksamhetName}}<span class="caret"></span></a>
                                     <ul class="dropdown-menu pull-right">
-                                        <li data-ng-repeat="business in businesses"><a
-                                                data-ng-click="selectVerksamhet(business.id)"
+                                        <li data-ng-repeat="business in businesses">
+                                        	<a  data-ng-click="selectVerksamhet(business.id)"
                                                 tooltip-html-unsafe="<div class=popover-content>{{business.name}}</div>"
                                                 tooltip-trigger="mouseenter"
-                                                tooltip-placement="left">{{business.name}}</a></li>
+                                                tooltip-placement="left">{{business.name}}
+                                            </a>
+                                        </li>
                                     </ul>
                                 </div>
                             </div>
@@ -137,15 +145,15 @@
     <div class="container-fluid">
         <!-- Docs nav
         ================================================== -->
-        <div class="row-fluid">
-            <div class="span3 bs-docs-sidebar dontprint" data-ng-controller="NavigationMenuCtrl">
+        <div class="row">
+            <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 bs-docs-sidebar dontprint" data-ng-controller="NavigationMenuCtrl">
                 <h1 class="hidden-header">Sidans huvudnavigering</h1>
 
                 <div class="statistics accordion" id="statistics-menu-accordion">
                     <div class="accordion-group" id="national-statistics-menu-group">
                         <h2 class="hidden-header">Navigering för nationell statistik</h2>
                         <!-- NATIONAL STATISTIC MENU -->
-                        <div class="accordion-heading statistics-menu">
+                        <div class="accordion-heading statistics-menu"> 
                             <div class="accordion-toggle first-level-menu" id="national-statistics-toggle"
                                  data-parent="#statistics-menu-accordion"
                                  data-ng-class="{active: showNational, collapsed: !showNational}"
@@ -309,7 +317,7 @@
                     </div>
                 </div>
             </div>
-            <div class="span9">
+            <div class="col-xs-12 col-sm-9 col-md-9 col-lg-9">
                 <%-- data-ng-view that holds dynamic content managed by angular app --%>
                 <div id="view" data-ng-view></div>
             </div>
@@ -332,11 +340,13 @@
 <script type="text/javascript" src="<c:url value='/js/app/html5shiv.js'/>"></script>
 <![endif]-->
 <script type="text/javascript" src="<c:url value='/js/lib/jquery/1.10.2/jquery.min.js'/>"></script>
-<script type="text/javascript" src="<c:url value='/bootstrap/2.3.2/js/bootstrap.min.js'/>"></script>
-<script type="text/javascript" src="<c:url value='/js/lib/angularjs/1.0.8/angular.min.js'/>"></script>
-<script type="text/javascript" src="<c:url value='/js/lib/angularjs/1.0.8/angular-cookies.min.js'/>"></script>
+<!-- <script type="text/javascript" src="<c:url value='/bootstrap/2.3.2/js/bootstrap.min.js'/>"></script>  -->
+<script type="text/javascript" src="<c:url value='/bootstrap/3.1.1/js/bootstrap.min.js'/>"></script>
+<script type="text/javascript" src="<c:url value='/js/lib/angularjs/1.2.14/angular.min.js'/>"></script>
+<script type="text/javascript" src="<c:url value='/js/lib/angularjs/1.2.14/angular-cookies.min.js'/>"></script>
+<script type="text/javascript" src="<c:url value='/js/lib/angularjs/1.2.14/angular-route.min.js'/>"></script>
 <script type="text/javascript"
-        src="<c:url value='/js/lib/ui-bootstrap/0.6.0/ui-bootstrap-tpls-0.6.0.min.js'/>"></script>
+        src="<c:url value='/js/lib/ui-bootstrap/0.10.0/ui-bootstrap-tpls-0.10.0.min.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/app.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/factories.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/controller/common.js'/>"></script>
@@ -364,7 +374,6 @@
 
 <script type="text/javascript">
     $('.dropdown-toggle').dropdown();
-    $('#pageHelpToolTip').popover();
 </script>
 
 </body>
