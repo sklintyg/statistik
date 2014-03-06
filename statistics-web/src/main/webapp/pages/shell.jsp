@@ -95,11 +95,11 @@
                         </a>
                     </div>
                 </div>
-                <div class="col-xs-6 col-sm-2 col-md-2 col-lg-2 pull-left" style="margin-top: 3px; max-width: 190px;">
+                <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2 pull-left" style="margin-top: 3px; max-width: 190px;">
                     <span>Statistiktjänst för ordinerad sjukskrivning</span>
                 </div>
                 <c:if test="${loginVisible}">
-                    <div class="col-xs-6 col-sm-2 col-md-4 col-lg-4 pull-right">
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4 pull-right">
                         <div id="business-login-container" ng-hide="isLoggedIn">
                             <span id="business-login-span">För verksamhetsstatistik: </span>
                             <button class="btn" data-ng-click="loginClicked('${applicationScope.loginUrl}')"

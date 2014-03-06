@@ -18,281 +18,281 @@
 -->
 
 <div id="business-overview">
-<div class="row">
-<div id="overview-content"> <!-- Start: Overview content -->
-<div class="row" id="print-logo-display">
-    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-        <img src="img/statistiktjansten-logotype-print.png">
-        <h2 class="business-name-header print-only-no-display"><span class="dontprint">- </span>{{ verksamhetName }}</h2>
-    </div>
-</div>
-<div class="row dontprint">
-    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 pull-left" style="width: auto !important; float: left;">
-        <h1 class="national-statistic-h1" id="verksamhetOverviewHeading" data-ng-bind="viewHeader"
-            style="height: 14px; margin-bottom: 15px;"></h1>
-    </div>
-    <div class="span6 pull-left" data-ng-show="verksamhetName"
-         style="width: auto !important; float: left; margin-left: 0px;">
-        <h2 class="business-name-header" style="line-height: 20px; margin-top: 20px;">- {{ verksamhetName }}</h2>
-    </div>
-</div>
-<div class="row">
-    <span class="col-xs-12 col-sm-6 col-md-6 col-lg-6 overview-ingress pull-left" data-ng-bind="subTitle"></span>
-
-    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 pull-right dontprint" data-ng-class="{margin_top_button_group: showDetailsOptions}"
-         style="width: auto;">
-        <!-- PRINT BUTTON GROUP -->
-        <div class="btn-group statistics-btn-group">
-            <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-                Skriv ut
-                <span class="caret"></span>
-            </a>
-            <ul class="dropdown-menu pull-right">
-                <li><a onclick="window.print();"><img src="img/dropdown-icons/farg1b.png"/> Färg</a></li>
-                <li><a data-ng-click="bwPrint()"><img src="img/dropdown-icons/sv_vit1b.png"/> Svart-vitt</a></li>
-            </ul>
-        </div>
-    </div>
-</div>
-
-<div dataerrorview show-error="dataLoadingError">
-<div spinner label="{{spinnerText}}" show-spinner="!doneLoading" show-content="doneLoading">
-<div class="row row-margin-bottom"></div>
-
-<!-- Start business overview boxes -->
-<div class="row">
-    <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
-        <div class="overview-box-header-container">
-            <ul class="overview-box-header">
-                <li class="overview-box-header-listItem">
-                    <a data-ng-href="{{baseUrl}}/sjukfallPerManad" id="casesPerMonthAlterationLink">
-                        <h2>Totalt antal
-                            <i class="icon-chevron-right icon-white"></i>
-                        </h2>
-                    </a>
-                </li>
-            </ul>
-        </div>
-        <div id="overview-change-container">
-            <div id="alterationChart"></div>
-        </div>
-        <div class="overview-box-information-container small-info-box">
-            <a class="dontprint" id="pageHelpToolTip"
-               tooltip-html-unsafe="<div class=popover-content>{{popoverTextAmount}}{{popoverTextPeriod}}</div>"
-               tooltip-trigger="mouseenter" tooltip-placement="left" style="float: right; margin-right: 10px;">
-               <img src="img/questionmark2.png" alt=""></a>
-        </div>
-        <div class="box-bottom"></div>
-    </div>
-    <div class="col-xs-12 col-sm-9 col-md-9 col-lg-9">
-        <div class="overview-box-header-container">
-            <ul class="overview-box-header">
-                <li class="overview-box-header-listItem">
-                    <a data-ng-href="{{baseUrl}}/sjukfallPerManad" id="casesPerMonthAlterationLink">
-                        <h2>Könsfördelning av sjukfall
-                            <i class="icon-chevron-right icon-white"></i>
-                        </h2>
-                    </a>
-                </li>
-            </ul>
-        </div>
-        <div id="overview-change-container">
-            <div class="chart-container" id="sexProportionChartOld"></div>
-            <div class="chart-container" id="sexProportionChartNew"></div>
-        </div>
-        <div class="overview-box-information-container" style="position: relative">
-            <a class="dontprint" id="pageHelpToolTip"
-               tooltip-html-unsafe="<div class=popover-content>{{popoverTextSexDistribution}}{{popoverTextPeriod}}{{popoverTextSexDistribution2}}</div>"
-               tooltip-trigger="mouseenter" tooltip-placement="left" style="float: right; margin-right: 10px;"><img
-                    src="img/questionmark2.png" alt=""></a>
-        </div>
-        <div class="box-bottom"></div>
-    </div>
-</div>
-
-<!-- Page break for print -->
-<div class="print-pagebreak-after"></div>
-
-<div class="row">
-    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-        <div class="overview-box-header-container">
-            <ul class="overview-box-header">
-                <li class="overview-box-header-listItem">
-                    <a data-ng-href="{{baseUrl}}/diagnosgrupp" id="diagnosisGroupsHeaderLink">
-                        <h2>Fördelning diagnosgrupper
-                            <i class="icon-chevron-right icon-white"></i>
-                        </h2>
-                    </a>
-                </li>
-            </ul>
-        </div>
-        <div id="overview-distribution-diagnostic-groups-container">
-            <div class="chart-container" id="diagnosisChart"></div>
-            <table id="datatable" class="table table-striped overview-graph-table">
-                <thead>
-                <tr>
-                    <td>Grupp</td>
-                    <td>Antal</td>
-                    <td>Förändring</td>
-                </tr>
-                </thead>
-                <tbody>
-                <tr data-ng-repeat="group in diagnosisGroups">
-                    <td class="diagnostics-group-name">
-                        <div class="overview-legend-color-square" ng-style="{backgroundColor: group.color}"></div>
-                        {{group.name}}
-                    </td>
-                    <td class="diagnostics-group-quantity">{{group.quantity | thousandseparated}}</td>
-                    <td class="diagnostics-group-alternation">{{group.alternation}}%</td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
-        <div class="overview-box-information-container" style="position: relative">
-            <a class="dontprint" id="pageHelpToolTip"
-               tooltip-html-unsafe="<div class=popover-content>{{popoverTextAmount}}{{popoverTextPeriod}}</div><div class=popover-content>{{popoverTextChangeProcentage}}{{popoverTextPeriod}}{{popoverTextChangeProcentage2}}</div>"
-               tooltip-trigger="mouseenter" tooltip-placement="left" style="float: right; margin-right: 10px;"><img
-                    src="img/questionmark2.png" alt=""></a>
-        </div>
-        <div class="box-bottom"></div>
-    </div>
-
-    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-        <div class="overview-box-container">
-            <ul class="overview-box-header">
-                <li class="overview-box-header-listItem">
-                    <a data-ng-href="{{baseUrl}}/aldersgrupper" id="ageGroupsHeaderLink">
-                        <h2>Fördelning åldersgrupper
-                            <i class="icon-chevron-right icon-white"></i>
-                        </h2>
-                    </a>
-                </li>
-            </ul>
-            <div id="overview-distribution-of-age-groups-container">
-	            <div class="chart-container" id="ageChart"></div>
-	            <table id="datatable" class="table table-striped overview-graph-table">
-	                <thead>
-	                <tr>
-	                    <td>Grupp</td>
-	                    <td>Antal</td>
-	                    <td>Förändring</td>
-	                </tr>
-	                </thead>
-	                <tbody>
-	                <tr data-ng-repeat="group in ageGroups">
-	                    <td class="diagnostics-group-name">
-	                        <div class="overview-legend-color-square"
-	                             ng-style="{backgroundColor: group.color}"></div>
-	                        {{group.name}}
-	                    </td>
-	                    <td class="diagnostics-group-quantity">{{group.quantity | thousandseparated}}</td>
-	                    <td class="diagnostics-group-alternation">{{group.alternation}}%</td>
-	                </tr>
-	                </tbody>
-	            </table>
-            </div>
-            <div class="overview-box-information-container" style="position: relative">
-                <a class="dontprint" id="pageHelpToolTip"
-                   tooltip-html-unsafe="<div class=popover-content>{{popoverTextAmount}}{{popoverTextPeriod}}</div><div class=popover-content>{{popoverTextChangeProcentage}}{{popoverTextPeriod}}{{popoverTextChangeProcentage2}}</div>"
-                   tooltip-trigger="mouseenter" tooltip-placement="left" style="float: right; margin-right: 10px;"><img
-                        src="img/questionmark2.png" alt=""></a>
-            </div>
-            <div class="box-bottom"></div>
-        </div>
-    </div>
-</div>
-
-<!-- Page break for print -->
-<div class="print-pagebreak-after"></div>
-
-<div class="row">
-    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-        <div class="overview-box-container">
-            <div class="overview-box-header-container">
-                <ul class="overview-box-header">
-                    <li class="overview-box-header-listItem">
-                        <a data-ng-href="{{baseUrl}}/sjukskrivningslangd" id="sickLeaveLengthHeaderLink">
-                            <h2>Fördelning sjukskrivningslängd
-                                <i class="icon-chevron-right icon-white"></i>
-                            </h2>
-                        </a>
-                    </li>
-                </ul>
-            </div>
-            <div id="overview-distribution-sick-length-container">
-	            <div class="chart-container" id="sickLeaveLengthChart"></div>
-	            <div class="overview-chart-info">
-	                <div class="overview-chart-info-section">
-	                    <span class="longSickLeavesValue">{{longSickLeavesTotal | thousandseparated}}</span>
-	                    <span class="longSickLeavesText">Antalet sjukfall som övergår 90 dagar</span>
-	                </div>
-	                <div class="overview-chart-info-section">
-	                    <span class="longSickLeavesValue">{{longSickLeavesAlteration}}%</span>
-	                    <span class="longSickLeavesText">Förändring av antalet sjukfall som övergår 90 dagar jämfört med föregående kvartal</span>
-	                </div>
-	            </div>
-            </div>
-            <div class="overview-box-information-container" style="position: relative">
-                <a class="dontprint" id="pageHelpToolTip"
-                   tooltip-html-unsafe="<div class=popover-content>{{popoverTextAmount}}{{popoverTextPeriod}}</div><div class=popover-content>{{popoverTextChangeProcentage}}{{popoverTextPeriod}}{{popoverTextChangeProcentage2}}</div>"
-                   tooltip-trigger="mouseenter" tooltip-placement="left" style="float: right; margin-right: 10px;"><img
-                        src="img/questionmark2.png" alt=""></a>
-            </div>
-            <div class="box-bottom"></div>
-        </div>
-    </div>
-
-    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-        <div class="overview-box-container">
-            <div class="overview-box-header-container">
-                <ul class="overview-box-header">
-                    <li class="overview-box-header-listItem">
-                        <a data-ng-href="{{baseUrl}}/sjukskrivningsgrad" id="degreeOfSickLeaveHeaderLink">
-                            <h2>Fördelning sjukskrivningsgrad
-                                <i class="icon-chevron-right icon-white"></i>
-                            </h2>
-                        </a>
-                    </li>
-                </ul>
-            </div>
-            <div id="overview-distribution-of-sick-degree-container">
-	            <div class="chart-container" id="degreeOfSickLeaveChart"></div>
-	            <table id="datatable" class="table table-striped overview-graph-table">
-	                <thead>
-	                <tr>
-	                    <td>Sjukskrivningsgrad</td>
-	                    <td>Antal</td>
-	                    <td>Förändring</td>
-	                </tr>
-	                </thead>
-	                <tbody>
-	                <tr data-ng-repeat="group in degreeOfSickLeaveGroups">
-	                    <td class="diagnostics-group-name">
-	                        <div class="overview-legend-color-square"
-	                             ng-style="{backgroundColor: group.color}"></div>
-	                        {{group.name}}
-	                    </td>
-	                    <td class="diagnostics-group-quantity">{{group.quantity | thousandseparated}}</td>
-	                    <td class="diagnostics-group-alternation">{{group.alternation}}%</td>
-	                </tr>
-	                </tbody>
-	            </table>
-            </div>
-            <div class="overview-box-information-container" style="position: relative">
-                <a class="dontprint" id="pageHelpToolTip"
-                   tooltip-html-unsafe="<div class=popover-content>{{popoverTextAmount}}{{popoverTextPeriod}}</div><div class=popover-content>{{popoverTextChangeProcentage}}{{popoverTextPeriod}}{{popoverTextChangeProcentage2}}</div>"
-                   tooltip-trigger="mouseenter" tooltip-placement="left" style="float: right; margin-right: 10px;"><img
-                        src="img/questionmark2.png" alt=""></a>
-            </div>
-            <div class="box-bottom"></div>
-        </div>
-    </div>
-</div>
-<!-- End business overview boxes -->
-</div>
-</div>
-</div>
-</div>
+	<div class="row">
+		<div id="overview-content"> <!-- Start: Overview content -->
+			<div class="row" id="print-logo-display">
+			    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+			        <img src="img/statistiktjansten-logotype-print.png">
+			        <h2 class="business-name-header print-only-no-display"><span class="dontprint">- </span>{{ verksamhetName }}</h2>
+			    </div>
+			</div>
+			<div class="row dontprint">
+			    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 pull-left" style="width: auto !important; float: left;">
+			        <h1 class="national-statistic-h1" id="verksamhetOverviewHeading" data-ng-bind="viewHeader"
+			            style="height: 14px; margin-bottom: 15px;"></h1>
+			    </div>
+			    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 pull-left" data-ng-show="verksamhetName"
+			         style="width: auto !important; float: left; margin-left: 0px;">
+			        <h2 class="business-name-header" style="line-height: 20px; margin-top: 20px;">- {{ verksamhetName }}</h2>
+			    </div>
+			</div>
+			<div class="row">
+			    <span class="col-xs-12 col-sm-9 col-md-9 col-lg-9 overview-ingress pull-left" data-ng-bind="subTitle"></span>
+			
+			    <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 pull-right dontprint" data-ng-class="{margin_top_button_group: showDetailsOptions}"
+			         style="width: auto;">
+			        <!-- PRINT BUTTON GROUP -->
+			        <div class="btn-group statistics-btn-group">
+			            <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+			                Skriv ut
+			                <span class="caret"></span>
+			            </a>
+			            <ul class="dropdown-menu pull-right">
+			                <li><a onclick="window.print();"><img src="img/dropdown-icons/farg1b.png"/> Färg</a></li>
+			                <li><a data-ng-click="bwPrint()"><img src="img/dropdown-icons/sv_vit1b.png"/> Svart-vitt</a></li>
+			            </ul>
+			        </div>
+			    </div>
+			</div>
+		
+			<div dataerrorview show-error="dataLoadingError">
+				<div spinner label="{{spinnerText}}" show-spinner="!doneLoading" show-content="doneLoading">
+					<div class="row row-margin-bottom"></div>
+				
+					<!-- Start business overview boxes -->
+					<div class="row">
+					    <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
+					        <div class="overview-box-header-container">
+					            <ul class="overview-box-header">
+					                <li class="overview-box-header-listItem">
+					                    <a data-ng-href="{{baseUrl}}/sjukfallPerManad" id="casesPerMonthAlterationLink">
+					                        <h2>Totalt antal
+					                            <i class="icon-chevron-right icon-white"></i>
+					                        </h2>
+					                    </a>
+					                </li>
+					            </ul>
+					        </div>
+					        <div id="overview-change-container">
+					            <div id="alterationChart"></div>
+					        </div>
+					        <div class="overview-box-information-container small-info-box">
+					            <a class="dontprint" id="pageHelpToolTip"
+					               tooltip-html-unsafe="<div class=popover-content>{{popoverTextAmount}}{{popoverTextPeriod}}</div>"
+					               tooltip-trigger="mouseenter" tooltip-placement="left" style="float: right; margin-right: 10px;">
+					               <img src="img/questionmark2.png" alt=""></a>
+					        </div>
+					        <div class="box-bottom"></div>
+					    </div>
+					    <div class="col-xs-12 col-sm-9 col-md-9 col-lg-9">
+					        <div class="overview-box-header-container">
+					            <ul class="overview-box-header">
+					                <li class="overview-box-header-listItem">
+					                    <a data-ng-href="{{baseUrl}}/sjukfallPerManad" id="casesPerMonthAlterationLink">
+					                        <h2>Könsfördelning av sjukfall
+					                            <i class="icon-chevron-right icon-white"></i>
+					                        </h2>
+					                    </a>
+					                </li>
+					            </ul>
+					        </div>
+					        <div id="overview-change-container">
+					            <div class="chart-container" id="sexProportionChartOld"></div>
+					            <div class="chart-container" id="sexProportionChartNew"></div>
+					        </div>
+					        <div class="overview-box-information-container" style="position: relative">
+					            <a class="dontprint" id="pageHelpToolTip"
+					               tooltip-html-unsafe="<div class=popover-content>{{popoverTextSexDistribution}}{{popoverTextPeriod}}{{popoverTextSexDistribution2}}</div>"
+					               tooltip-trigger="mouseenter" tooltip-placement="left" style="float: right; margin-right: 10px;"><img
+					                    src="img/questionmark2.png" alt=""></a>
+					        </div>
+					        <div class="box-bottom"></div>
+					    </div>
+					</div>
+				
+					<!-- Page break for print -->
+					<div class="print-pagebreak-after"></div>
+				
+					<div class="row">
+					    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+					        <div class="overview-box-header-container">
+					            <ul class="overview-box-header">
+					                <li class="overview-box-header-listItem">
+					                    <a data-ng-href="{{baseUrl}}/diagnosgrupp" id="diagnosisGroupsHeaderLink">
+					                        <h2>Fördelning diagnosgrupper
+					                            <i class="icon-chevron-right icon-white"></i>
+					                        </h2>
+					                    </a>
+					                </li>
+					            </ul>
+					        </div>
+					        <div id="overview-distribution-diagnostic-groups-container">
+					            <div class="chart-container" id="diagnosisChart"></div>
+					            <table id="datatable" class="table table-striped overview-graph-table">
+					                <thead>
+					                <tr>
+					                    <td>Grupp</td>
+					                    <td>Antal</td>
+					                    <td>Förändring</td>
+					                </tr>
+					                </thead>
+					                <tbody>
+					                <tr data-ng-repeat="group in diagnosisGroups">
+					                    <td class="diagnostics-group-name">
+					                        <div class="overview-legend-color-square" ng-style="{backgroundColor: group.color}"></div>
+					                        {{group.name}}
+					                    </td>
+					                    <td class="diagnostics-group-quantity">{{group.quantity | thousandseparated}}</td>
+					                    <td class="diagnostics-group-alternation">{{group.alternation}}%</td>
+					                </tr>
+					                </tbody>
+					            </table>
+					        </div>
+					        <div class="overview-box-information-container" style="position: relative">
+					            <a class="dontprint" id="pageHelpToolTip"
+					               tooltip-html-unsafe="<div class=popover-content>{{popoverTextAmount}}{{popoverTextPeriod}}</div><div class=popover-content>{{popoverTextChangeProcentage}}{{popoverTextPeriod}}{{popoverTextChangeProcentage2}}</div>"
+					               tooltip-trigger="mouseenter" tooltip-placement="left" style="float: right; margin-right: 10px;"><img
+					                    src="img/questionmark2.png" alt=""></a>
+					        </div>
+					        <div class="box-bottom"></div>
+					    </div>
+					
+					    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+					        <div class="overview-box-container">
+					            <ul class="overview-box-header">
+					                <li class="overview-box-header-listItem">
+					                    <a data-ng-href="{{baseUrl}}/aldersgrupper" id="ageGroupsHeaderLink">
+					                        <h2>Fördelning åldersgrupper
+					                            <i class="icon-chevron-right icon-white"></i>
+					                        </h2>
+					                    </a>
+					                </li>
+					            </ul>
+					            <div id="overview-distribution-of-age-groups-container">
+						            <div class="chart-container" id="ageChart"></div>
+						            <table id="datatable" class="table table-striped overview-graph-table">
+						                <thead>
+						                <tr>
+						                    <td>Grupp</td>
+						                    <td>Antal</td>
+						                    <td>Förändring</td>
+						                </tr>
+						                </thead>
+						                <tbody>
+						                <tr data-ng-repeat="group in ageGroups">
+						                    <td class="diagnostics-group-name">
+						                        <div class="overview-legend-color-square"
+						                             ng-style="{backgroundColor: group.color}"></div>
+						                        {{group.name}}
+						                    </td>
+						                    <td class="diagnostics-group-quantity">{{group.quantity | thousandseparated}}</td>
+						                    <td class="diagnostics-group-alternation">{{group.alternation}}%</td>
+						                </tr>
+						                </tbody>
+						            </table>
+					            </div>
+					            <div class="overview-box-information-container" style="position: relative">
+					                <a class="dontprint" id="pageHelpToolTip"
+					                   tooltip-html-unsafe="<div class=popover-content>{{popoverTextAmount}}{{popoverTextPeriod}}</div><div class=popover-content>{{popoverTextChangeProcentage}}{{popoverTextPeriod}}{{popoverTextChangeProcentage2}}</div>"
+					                   tooltip-trigger="mouseenter" tooltip-placement="left" style="float: right; margin-right: 10px;"><img
+					                        src="img/questionmark2.png" alt=""></a>
+					            </div>
+					            <div class="box-bottom"></div>
+					        </div>
+					    </div>
+					</div>
+				
+					<!-- Page break for print -->
+					<div class="print-pagebreak-after"></div>
+				
+					<div class="row">
+					    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+					        <div class="overview-box-container">
+					            <div class="overview-box-header-container">
+					                <ul class="overview-box-header">
+					                    <li class="overview-box-header-listItem">
+					                        <a data-ng-href="{{baseUrl}}/sjukskrivningslangd" id="sickLeaveLengthHeaderLink">
+					                            <h2>Fördelning sjukskrivningslängd
+					                                <i class="icon-chevron-right icon-white"></i>
+					                            </h2>
+					                        </a>
+					                    </li>
+					                </ul>
+					            </div>
+					            <div id="overview-distribution-sick-length-container">
+						            <div class="chart-container" id="sickLeaveLengthChart"></div>
+						            <div class="overview-chart-info">
+						                <div class="overview-chart-info-section">
+						                    <span class="longSickLeavesValue">{{longSickLeavesTotal | thousandseparated}}</span>
+						                    <span class="longSickLeavesText">Antalet sjukfall som övergår 90 dagar</span>
+						                </div>
+						                <div class="overview-chart-info-section">
+						                    <span class="longSickLeavesValue">{{longSickLeavesAlteration}}%</span>
+						                    <span class="longSickLeavesText">Förändring av antalet sjukfall som övergår 90 dagar jämfört med föregående kvartal</span>
+						                </div>
+						            </div>
+					            </div>
+					            <div class="overview-box-information-container" style="position: relative">
+					                <a class="dontprint" id="pageHelpToolTip"
+					                   tooltip-html-unsafe="<div class=popover-content>{{popoverTextAmount}}{{popoverTextPeriod}}</div><div class=popover-content>{{popoverTextChangeProcentage}}{{popoverTextPeriod}}{{popoverTextChangeProcentage2}}</div>"
+					                   tooltip-trigger="mouseenter" tooltip-placement="left" style="float: right; margin-right: 10px;"><img
+					                        src="img/questionmark2.png" alt=""></a>
+					            </div>
+					            <div class="box-bottom"></div>
+					        </div>
+					    </div>
+					
+					    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+					        <div class="overview-box-container">
+					            <div class="overview-box-header-container">
+					                <ul class="overview-box-header">
+					                    <li class="overview-box-header-listItem">
+					                        <a data-ng-href="{{baseUrl}}/sjukskrivningsgrad" id="degreeOfSickLeaveHeaderLink">
+					                            <h2>Fördelning sjukskrivningsgrad
+					                                <i class="icon-chevron-right icon-white"></i>
+					                            </h2>
+					                        </a>
+					                    </li>
+					                </ul>
+					            </div>
+					            <div id="overview-distribution-of-sick-degree-container">
+						            <div class="chart-container" id="degreeOfSickLeaveChart"></div>
+						            <table id="datatable" class="table table-striped overview-graph-table">
+						                <thead>
+						                <tr>
+						                    <td>Sjukskrivningsgrad</td>
+						                    <td>Antal</td>
+						                    <td>Förändring</td>
+						                </tr>
+						                </thead>
+						                <tbody>
+						                <tr data-ng-repeat="group in degreeOfSickLeaveGroups">
+						                    <td class="diagnostics-group-name">
+						                        <div class="overview-legend-color-square"
+						                             ng-style="{backgroundColor: group.color}"></div>
+						                        {{group.name}}
+						                    </td>
+						                    <td class="diagnostics-group-quantity">{{group.quantity | thousandseparated}}</td>
+						                    <td class="diagnostics-group-alternation">{{group.alternation}}%</td>
+						                </tr>
+						                </tbody>
+						            </table>
+					            </div>
+					            <div class="overview-box-information-container" style="position: relative">
+					                <a class="dontprint" id="pageHelpToolTip"
+					                   tooltip-html-unsafe="<div class=popover-content>{{popoverTextAmount}}{{popoverTextPeriod}}</div><div class=popover-content>{{popoverTextChangeProcentage}}{{popoverTextPeriod}}{{popoverTextChangeProcentage2}}</div>"
+					                   tooltip-trigger="mouseenter" tooltip-placement="left" style="float: right; margin-right: 10px;"><img
+					                        src="img/questionmark2.png" alt=""></a>
+					            </div>
+					            <div class="box-bottom"></div>
+					        </div>
+					    </div>
+					</div>
+					<!-- End business overview boxes -->
+				</div>
+			</div>
+		</div>
+	</div>
 <!-- End: Overview content -->
 </div> <!-- /container -->
     
