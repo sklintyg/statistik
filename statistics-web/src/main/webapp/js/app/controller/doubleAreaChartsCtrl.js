@@ -94,7 +94,6 @@ app.doubleAreaChartsCtrl = function ($scope, $routeParams, $window, $timeout, st
         chartOptions.xAxis.title.text = "Period";
         chartOptions.tooltip.useHTML = true;
         chartOptions.yAxis.title.text = yAxisTitle;
-        /*chartOptions.yAxis.title.rotation = 270;*/
         chartOptions.yAxis.title.x = yAxisTitleXPos;
         chartOptions.yAxis.title.y = -13;
         chartOptions.yAxis.title.align = 'high';
@@ -178,11 +177,11 @@ app.doubleAreaChartsCtrl = function ($scope, $routeParams, $window, $timeout, st
 
         var chartSeriesFemale = ajaxResult.femaleChart.series;
         ControllerCommons.setupSeriesForDisplayType($routeParams.printBw, chartSeriesFemale, "area");
-        that.chart1 = that.paintChart('chart1', 'Antal sjukfall för kvinnor', 100, chartCategories, chartSeriesFemale, -100);
+        that.chart1 = that.paintChart('chart1', 'Antal sjukfall för kvinnor', 118, chartCategories, chartSeriesFemale, -100);
 
         var chartSeriesMale = ajaxResult.maleChart.series;
         ControllerCommons.setupSeriesForDisplayType($routeParams.printBw, chartSeriesMale, "area");
-        that.chart2 = that.paintChart('chart2', 'Antal sjukfall för män', 80, chartCategories, chartSeriesMale, -80);
+        that.chart2 = that.paintChart('chart2', 'Antal sjukfall för män', 97, chartCategories, chartSeriesMale, -80);
 
         updateChartsYAxisMaxValue();
 
