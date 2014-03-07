@@ -48,24 +48,16 @@
     <!-- Styles -->
     <!--[if lte IE 8]>
     <link href="<c:url value='/css/inera-statistics.css'/>" rel="stylesheet">
-    <link href="<c:url value='/bootstrap/2.3.2/css/bootstrap.min.css'/>" rel="stylesheet">
+    <link href="<c:url value='/bootstrap/3.1.1/css/bootstrap.min.css'/>" rel="stylesheet">
     <link href="<c:url value='/css/inera-statistics-responsive.css'/>" rel="stylesheet">
-    <link href="<c:url value='/bootstrap/2.3.2/css/bootstrap-responsive.css'/>" rel="stylesheet">
-    <link href="<c:url value='/js/lib/pie/PIE.htc'/>" rel="stylesheet">
+<!--    <link href="<c:url value='/js/lib/pie/PIE.htc'/>" rel="stylesheet">-->
     <![endif]-->
     <link href="<c:url value='/css/inera-statistics.css'/>" rel="stylesheet" media="not print">
     <link href="<c:url value='/css/inera-statistics-responsive.css'/>" rel="stylesheet" media="not print">
     <link href="<c:url value='/css/print.css'/>" rel="stylesheet" media="print">
-    <!-- Bootstrap 2.3.2 -->
-    <!--
-    <link href="<c:url value='/bootstrap/2.3.2/css/bootstrap.min.css'/>" rel="stylesheet" media="not print">
-    <link href="<c:url value='/bootstrap/2.3.2/css/bootstrap-responsive.css'/>" rel="stylesheet" media="not print">
-    -->
-    <!-- Bootstrap 3.1.1 -->
+
     <link href="<c:url value='/bootstrap/3.1.1/css/bootstrap.min.css'/>" rel="stylesheet" media="not print">
-    <link href="<c:url value='/bootstrap/3.1.1/css/bootstrap.css.map'/>" rel="stylesheet" media="not print">
     <link href="<c:url value='/bootstrap/3.1.1/css/bootstrap-theme.min.css'/>" rel="stylesheet" media="not print">
-    <link href="<c:url value='/bootstrap/3.1.1/css/bootstrap-theme.css.map'/>" rel="stylesheet" media="not print">
 
     <link rel="icon" type="image/png" href="<c:url value='/img/favicon.ico'/>">
     <security:authorize access="isAuthenticated()">
@@ -333,25 +325,20 @@
 
 <!-- Scripts -->
 <!-- Placed at the end of the document so the pages load faster -->
-<!--[if lte IE 8]>
-<script type="text/javascript" src="<c:url value='/js/lib/respond/1.3.0/respond.min.js'/>"></script>
-<![endif]-->
 <!--[if lt IE 9]>
+<script type="text/javascript" src="<c:url value='/js/lib/respond/1.3.0/respond.min.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/html5shiv.js'/>"></script>
+<script type="text/javascript" src="<c:url value='/js/app/css3-mediaqueries.js'/>"></script>
 <![endif]-->
 <script type="text/javascript" src="<c:url value='/js/lib/jquery/1.10.2/jquery.min.js'/>"></script>
-<!-- <script type="text/javascript" src="<c:url value='/bootstrap/2.3.2/js/bootstrap.min.js'/>"></script>  -->
 <script type="text/javascript" src="<c:url value='/bootstrap/3.1.1/js/bootstrap.min.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/lib/angularjs/1.2.14/angular.min.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/lib/angularjs/1.2.14/angular-cookies.min.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/lib/angularjs/1.2.14/angular-route.min.js'/>"></script>
-<script type="text/javascript"
-        src="<c:url value='/js/lib/ui-bootstrap/0.10.0/ui-bootstrap-tpls-0.10.0.min.js'/>"></script>
+<script type="text/javascript" src="<c:url value='/js/lib/ui-bootstrap/0.10.0/ui-bootstrap-tpls-0.10.0.min.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/app.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/factories.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/controller/common.js'/>"></script>
-<script type="text/javascript" src="<c:url value='/js/app/html5shiv.js'/>"></script>
-<script type="text/javascript" src="<c:url value='/js/app/css3-mediaqueries.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/lib/respond/1.3.0/respond.min.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/controller/singleLineChartCtrl.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/controller/doubleAreaChartsCtrl.js'/>"></script>
@@ -366,11 +353,10 @@
 <script type="text/javascript" src="<c:url value='/js/app/controllers.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/directives.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/filters.js'/>"></script>
-<!--script type="text/javascript" src="<c:url value='/js/app/inera-statistics-style.js'/>" ></script -->
-<script type="text/javascript" src="<c:url value='js/lib/highcharts/3.0.5/highcharts.js'/>"></script>
-<script type="text/javascript" src="<c:url value='js/lib/highcharts/3.0.5/modules/highcharts-more.js'/>"></script>
-<script type="text/javascript" src="<c:url value='js/lib/highcharts/3.0.5/modules/exporting.js'/>"></script>
-<script type="text/javascript" src="<c:url value='js/lib/highcharts/pattern-fill/pattern-fill.js'/>"></script>
+<script type="text/javascript" src="<c:url value='/js/lib/highcharts/3.0.5/highcharts.js'/>"></script>
+<script type="text/javascript" src="<c:url value='/js/lib/highcharts/3.0.5/modules/highcharts-more.js'/>"></script>
+<script type="text/javascript" src="<c:url value='/js/lib/highcharts/3.0.5/modules/exporting.js'/>"></script>
+<script type="text/javascript" src="<c:url value='/js/lib/highcharts/pattern-fill/pattern-fill.js'/>"></script>
 
 <script type="text/javascript">
     $('.dropdown-toggle').dropdown();
