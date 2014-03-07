@@ -30,6 +30,7 @@ import se.inera.statistics.service.report.listener.SjukfallPerDiagnosgruppListen
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.SimpleKonDataRow;
 import se.inera.statistics.service.report.model.SimpleKonResponse;
+import se.inera.statistics.service.warehouse.WidelineConverter;
 
 // CHECKSTYLE:OFF MagicNumber
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -48,6 +49,9 @@ public class ReceiverIntegrationTest {
 
     @Autowired
     private LogConsumer consumer;
+
+    @Autowired
+    private WidelineConverter wideLine;
 
     @Before
     public void setup() {
@@ -76,6 +80,8 @@ public class ReceiverIntegrationTest {
             assertEquals(0, webData.getRows().get(i).getFemale().intValue());
             assertEquals(0, webData.getRows().get(i).getMale().intValue());
         }
+
+        assertEquals(2, wideLine.count());
     }
 
     private void sleep() {

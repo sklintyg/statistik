@@ -7,7 +7,7 @@ import se.inera.statistics.service.warehouse.Sjukfall
 import se.inera.statistics.service.warehouse.SjukfallWithDiagnos
 import se.inera.statistics.service.warehouse.SjukfallWithSjukskrivningsgrad
 import se.inera.statistics.service.warehouse.Warehouse
-import se.inera.statistics.service.warehouse.WideLine
+import se.inera.statistics.service.warehouse.Fact
 
 class Info {
 
@@ -17,10 +17,10 @@ class Info {
 
     String getPersonLines() {
         int person = DocumentHelper.patientIdToInt(personId)
-        Iterator<WideLine> lines = extractPersonLines(person).iterator()
+        Iterator<Fact> lines = extractPersonLines(person).iterator()
         StringBuilder sb = new StringBuilder()
         while (lines.hasNext()) {
-            WideLine line = lines.next()
+            Fact line = lines.next()
             if (line.patient == person) {
                 sb.append(line.toString()).append('\n')
             }
@@ -30,13 +30,13 @@ class Info {
 
     String getSjukfall() {
         int person = DocumentHelper.patientIdToInt(personId)
-        List<WideLine> lineList = extractPersonLines(person)
-        Iterator<WideLine> lines = sortByDate(lineList)
+        List<Fact> lineList = extractPersonLines(person)
+        Iterator<Fact> lines = sortByDate(lineList)
 
         Sjukfall sjukfall = null
         StringBuilder sb = new StringBuilder()
         while (lines.hasNext()) {
-            WideLine line = lines.next()
+            Fact line = lines.next()
             if (sjukfall == null) {
                 sjukfall = new Sjukfall(line)
             } else {
@@ -55,13 +55,13 @@ class Info {
 
     String getSjukfallWithDiagnos() {
         int person = DocumentHelper.patientIdToInt(personId)
-        List<WideLine> lineList = extractPersonLines(person)
-        Iterator<WideLine> lines = sortByDate(lineList)
+        List<Fact> lineList = extractPersonLines(person)
+        Iterator<Fact> lines = sortByDate(lineList)
 
         SjukfallWithDiagnos sjukfall = null
         StringBuilder sb = new StringBuilder()
         while (lines.hasNext()) {
-            WideLine line = lines.next()
+            Fact line = lines.next()
             if (sjukfall == null) {
                 sjukfall = new SjukfallWithDiagnos(line)
             } else {
@@ -80,13 +80,13 @@ class Info {
 
     String getSjukfallWithSjukskrivningsgrad() {
         int person = DocumentHelper.patientIdToInt(personId)
-        List<WideLine> lineList = extractPersonLinesForSjukskrivningsgrad(person, sjukskrivningsgrad)
-        Iterator<WideLine> lines = sortByDate(lineList)
+        List<Fact> lineList = extractPersonLinesForSjukskrivningsgrad(person, sjukskrivningsgrad)
+        Iterator<Fact> lines = sortByDate(lineList)
 
         SjukfallWithSjukskrivningsgrad sjukfall = null
         StringBuilder sb = new StringBuilder()
         while (lines.hasNext()) {
-            WideLine line = lines.next()
+            Fact line = lines.next()
             if (sjukfall == null) {
                 sjukfall = new SjukfallWithSjukskrivningsgrad(line)
             } else {
@@ -103,9 +103,9 @@ class Info {
         sb.toString()
     }
 
-    private Iterator<WideLine> sortByDate(List<WideLine> lineList) {
-        lineList.sort(new Comparator<WideLine>() {
-            int compare(WideLine o1, WideLine o2) {
+    private Iterator<Fact> sortByDate(List<Fact> lineList) {
+        lineList.sort(new Comparator<Fact>() {
+            int compare(Fact o1, Fact o2) {
                 return o1.kalenderperiod - o2.kalenderperiod
             }
         }).iterator()
@@ -115,9 +115,9 @@ class Info {
         Warehouse bean = (Warehouse) StartUp.context.getBean(Warehouse.class)
         Aisle aisle = bean.get(vardgivareId)
         Iterator lines = aisle.iterator()
-        List<WideLine> patientLines = new ArrayList<>()
+        List<Fact> patientLines = new ArrayList<>()
         while (lines.hasNext()) {
-            WideLine line = lines.next()
+            Fact line = lines.next()
             if (line.patient == person) {
                 patientLines.add(line)
             }
@@ -129,9 +129,9 @@ class Info {
         Warehouse bean = (Warehouse) StartUp.context.getBean(Warehouse.class)
         Aisle aisle = bean.get(vardgivareId)
         Iterator lines = aisle.iterator()
-        List<WideLine> patientLines = new ArrayList<>()
+        List<Fact> patientLines = new ArrayList<>()
         while (lines.hasNext()) {
-            WideLine line = lines.next()
+            Fact line = lines.next()
             if (line.patient == person && line.sjukskrivningsgrad == sjukskrivningsgrad) {
                 patientLines.add(line)
             }

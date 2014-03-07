@@ -31,7 +31,7 @@ public final class SjukfallUtil {
     public static Collection<Sjukfall> calculateSjukfall(Aisle aisle) {
         Collection<Sjukfall> sjukfalls = new ArrayList<>();
         Map<Integer, Sjukfall> active = new HashMap<>();
-        for (WideLine line : aisle) {
+        for (Fact line : aisle) {
             // prune active
             int key = line.patient;
             Sjukfall sjukfall = active.get(key);

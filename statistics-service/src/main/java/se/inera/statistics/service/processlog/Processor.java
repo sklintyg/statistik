@@ -38,6 +38,7 @@ import se.inera.statistics.service.sjukfall.SjukfallService;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import se.inera.statistics.service.warehouse.WidelineConverter;
 
 @Component
 public class Processor {
@@ -48,6 +49,9 @@ public class Processor {
 
     @Autowired
     private SjukfallService sjukfallService;
+
+    @Autowired
+    private WidelineConverter widelineConverter;
 
     private LocalDate cleanedup;
     private int processedCounter;
@@ -60,6 +64,8 @@ public class Processor {
         ObjectNode anonymous = DocumentHelper.anonymize(utlatande);
 
         listener.accept(sjukfallInfo, anonymous, hsa, logId);
+
+        widelineConverter.accept(sjukfallInfo, anonymous, hsa, logId);
 
         processedCounter++;
     }

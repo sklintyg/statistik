@@ -20,6 +20,8 @@
 package se.inera.statistics.service.warehouse.model.db;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -29,55 +31,39 @@ public class WideLine {
     public static final String TABLE = "wideline";
 
     @Id
-    private int id;
-    private int lan;
-    private int kommun;
-    private String forsamling;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private long id;
+
+    private String lkf;
     private String enhet;
-    private int lakarintyg;
-    private String patient;
-    private int kalenderperiod;
+    private long lakarintyg;
+    private String patientid;
+    private int startdatum;
+    private int slutdatum;
     private int kon;
     private int alder;
     private String diagnoskapitel;
     private String diagnosavsnitt;
     private String diagnoskategori;
     private int sjukskrivningsgrad;
-    private int sjukskrivningslangd;
     private int lakarkon;
     private int lakaralder;
-    private int lakarbefattning;
+    private String lakarbefattning;
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
-    public int getLan() {
-        return lan;
+    public String getLkf() {
+        return lkf;
     }
 
-    public void setLan(int lan) {
-        this.lan = lan;
-    }
-
-    public int getKommun() {
-        return kommun;
-    }
-
-    public void setKommun(int kommun) {
-        this.kommun = kommun;
-    }
-
-    public String getForsamling() {
-        return forsamling;
-    }
-
-    public void setForsamling(String forsamling) {
-        this.forsamling = forsamling;
+    public void setLkf(String lkf) {
+        this.lkf = lkf;
     }
 
     public String getEnhet() {
@@ -88,28 +74,36 @@ public class WideLine {
         this.enhet = enhet;
     }
 
-    public int getLakarintyg() {
+    public long getLakarintyg() {
         return lakarintyg;
     }
 
-    public void setLakarintyg(int lakarintyg) {
+    public void setLakarintyg(long lakarintyg) {
         this.lakarintyg = lakarintyg;
     }
 
-    public String getPatient() {
-        return patient;
+    public String getPatientid() {
+        return patientid;
     }
 
-    public void setPatient(String patient) {
-        this.patient = patient;
+    public void setPatientid(String patientid) {
+        this.patientid = patientid;
     }
 
-    public int getKalenderperiod() {
-        return kalenderperiod;
+    public int getStartdatum() {
+        return startdatum;
     }
 
-    public void setKalenderperiod(int kalenderperiod) {
-        this.kalenderperiod = kalenderperiod;
+    public void setStartdatum(int startdatum) {
+        this.startdatum = startdatum;
+    }
+
+    public int getSlutdatum() {
+        return slutdatum;
+    }
+
+    public void setSlutdatum(int slutdatum) {
+        this.slutdatum = slutdatum;
     }
 
     public int getKon() {
@@ -160,14 +154,6 @@ public class WideLine {
         this.sjukskrivningsgrad = sjukskrivningsgrad;
     }
 
-    public int getSjukskrivningslangd() {
-        return sjukskrivningslangd;
-    }
-
-    public void setSjukskrivningslangd(int sjukskrivningslangd) {
-        this.sjukskrivningslangd = sjukskrivningslangd;
-    }
-
     public int getLakarkon() {
         return lakarkon;
     }
@@ -184,11 +170,11 @@ public class WideLine {
         this.lakaralder = lakaralder;
     }
 
-    public int getLakarbefattning() {
+    public String getLakarbefattning() {
         return lakarbefattning;
     }
 
-    public void setLakarbefattning(int lakarbefattning) {
+    public void setLakarbefattning(String lakarbefattning) {
         this.lakarbefattning = lakarbefattning;
     }
 }

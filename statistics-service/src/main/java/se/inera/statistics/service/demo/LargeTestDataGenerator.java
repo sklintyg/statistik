@@ -45,7 +45,7 @@ import se.inera.statistics.service.warehouse.Warehouse;
 import se.inera.statistics.service.helper.UtlatandeBuilder;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import se.inera.statistics.service.warehouse.WideLine;
+import se.inera.statistics.service.warehouse.Fact;
 
 public class LargeTestDataGenerator {
     private static final int NUMBER_OF_UNITS = 3000;
@@ -112,10 +112,10 @@ public class LargeTestDataGenerator {
 
     public String exportUtlatanden() {
         Map<String,Aisle> allVardgivare = warehouse.getAllVardgivare();
-        StringBuilder result = new StringBuilder("vg;").append(WideLine.HEADING).append('\n');
+        StringBuilder result = new StringBuilder("vg;").append(Fact.HEADING).append('\n');
         for (Map.Entry<String, Aisle> entry: allVardgivare.entrySet()) {
             String vg = entry.getKey();
-            for (WideLine line : entry.getValue()) {
+            for (Fact line : entry.getValue()) {
                 result.append(vg).append(line.toCSVString(';'));
             }
         }

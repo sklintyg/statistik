@@ -9,7 +9,7 @@ public class Sjukfall {
     int realDays;
     int intygCount;
 
-    public Sjukfall(WideLine line) {
+    public Sjukfall(Fact line) {
         start = line.kalenderperiod;
         end = line.kalenderperiod + line.sjukskrivningslangd;
         realDays = line.sjukskrivningslangd;
@@ -17,14 +17,14 @@ public class Sjukfall {
     }
 
     /**
-     * Checks if the given WideLine is part of this Sjukfall.
+     * Checks if the given Fact is part of this Sjukfall.
      * If so, this sjukfall is updated and return,
      * otherwise a new sjukfall is created.
      *
      * @param line line
      * @return join will either return the same, possibly modified (i.e. this), Sjukfall-object, or a new object
      */
-    public Sjukfall join(WideLine line) {
+    public Sjukfall join(Fact line) {
         int lineEnd = line.kalenderperiod + line.sjukskrivningslangd;
         if (end + MAX_GAP + 1 < line.kalenderperiod) {
             return new Sjukfall(line);

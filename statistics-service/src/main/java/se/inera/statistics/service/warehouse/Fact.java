@@ -8,7 +8,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import se.inera.statistics.service.helper.DocumentHelper;
 import se.inera.statistics.service.helper.HSAServiceHelper;
 
-public class WideLine {
+public class Fact {
     public static final String HEADING = "lan;kommun;forsamling;enhet;lakarintyg;patient;kalenderperiod;kon;alder;diagnoskapitel;"
             + "diagnosavsnitt;diagnoskategori;sjukskrivningsgrad;sjukskrivningslangd;lakarkon;lakaralder;lakarbefattning";
 
@@ -31,7 +31,7 @@ public class WideLine {
     int lakaralder;
     int lakarbefattning;
 
-    public WideLine(int lan, int kommun, int forsamling, int enhet, int lakarintyg, int patient, int kalenderperiod, int kon, int alder, int diagnoskapitel, int diagnosavsnitt, int diagnoskategori, int sjukskrivningsgrad, int sjukskrivningslangd, int lakarkon, int lakaralder, int lakarbefattning) {
+    public Fact(int lan, int kommun, int forsamling, int enhet, int lakarintyg, int patient, int kalenderperiod, int kon, int alder, int diagnoskapitel, int diagnosavsnitt, int diagnoskategori, int sjukskrivningsgrad, int sjukskrivningslangd, int lakarkon, int lakaralder, int lakarbefattning) {
         this.lan = lan;
         this.kommun = kommun;
         this.forsamling = forsamling;
@@ -51,7 +51,7 @@ public class WideLine {
         this.lakarbefattning = lakarbefattning;
     }
 
-    public WideLine(JsonNode node) {
+    public Fact(JsonNode node) {
     }
 
 
@@ -69,7 +69,7 @@ public class WideLine {
 
     @Override
     public String toString() {
-        return "WideLine{" +
+        return "Fact{" +
                 "lan=" + lan +
                 ", kommun=" + kommun +
                 ", forsamling=" + forsamling +
@@ -90,10 +90,10 @@ public class WideLine {
                 '}';
     }
 
-    public static WideLine buildLine(JsonNode document) {
+    public static Fact buildLine(JsonNode document) {
         JsonNode hsaInfo = document.get("hsa");
         int lan = Integer.parseInt(HSAServiceHelper.getLan(hsaInfo));
-        int kommun = HSAServiceHelper.getKommun(hsaInfo);
+        int kommun = Integer.parseInt(HSAServiceHelper.getKommun(hsaInfo));
         int forsamling = 0;
         int enhet = DocumentHelper.getEnhetAndRemember(document);
         int lakarintyg = DocumentHelper.getLakarIntyg(document);
@@ -114,7 +114,7 @@ public class WideLine {
         int lakaralder = 0;
         int lakarbefattning = 0;
 
-        WideLine line = new WideLine(lan, kommun, forsamling, enhet, lakarintyg, patient, kalenderperiod, kon, alder, diagnoskapitel, diagnosavsnitt, diagnoskategori, sjukskrivningsgrad, sjukskrivningslangd, lakarkon, lakaralder, lakarbefattning);
+        Fact line = new Fact(lan, kommun, forsamling, enhet, lakarintyg, patient, kalenderperiod, kon, alder, diagnoskapitel, diagnosavsnitt, diagnoskategori, sjukskrivningsgrad, sjukskrivningslangd, lakarkon, lakaralder, lakarbefattning);
         return line;
     }
 

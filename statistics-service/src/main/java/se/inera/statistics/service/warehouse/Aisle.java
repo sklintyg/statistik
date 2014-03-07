@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-public class Aisle implements Iterable<WideLine> {
-    private final List<WideLine> lines = new ArrayList<>();
+public class Aisle implements Iterable<Fact> {
+    private final List<Fact> lines = new ArrayList<>();
 
     public Aisle(int size) {
     }
@@ -14,12 +14,12 @@ public class Aisle implements Iterable<WideLine> {
         // TODO Auto-generated constructor stub
     }
 
-    public void addLine(WideLine line) {
+    public void addLine(Fact line) {
         lines.add(line);
     }
 
     @Override
-    public Iterator<WideLine> iterator() {
+    public Iterator<Fact> iterator() {
         return lines.iterator();
     }
 

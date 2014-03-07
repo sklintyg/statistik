@@ -14,7 +14,7 @@ public class Warehouse {
     public void accept(JsonNode document) {
         String vardgivareId = DocumentHelper.getVardgivareId(document);
         Aisle aisle = getAisle(vardgivareId);
-        aisle.addLine(WideLine.buildLine(document));
+        aisle.addLine(Fact.buildLine(document));
     }
 
     private Aisle getAisle(String vardgivareId) {
