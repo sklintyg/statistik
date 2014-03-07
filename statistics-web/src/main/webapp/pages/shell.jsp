@@ -23,11 +23,13 @@
 <!DOCTYPE html>
 <html lang="sv" id="ng-app" data-ng-app="StatisticsApp">
 <head>
-    <!--[if lte IE 8]>
-    <script src="/js/app/json2.js"></script>
-    <![endif]-->
+    <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-ng-bind="$root.page_title">Inera Statistics Service</title>
 
     <!--[if lte IE 8]>
+    <script src="/js/app/json2.js"></script>
     <script>
         document.createElement('ng-include');
         document.createElement('ng-pluralize');
@@ -38,15 +40,6 @@
         document.createElement('ng:pluralize');
         document.createElement('ng:view');
     </script>
-    <![endif]-->
-
-    <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title data-ng-bind="$root.page_title">Inera Statistics Service</title>
-
-    <!-- Styles -->
-    <!--[if lte IE 8]>
     <link href="<c:url value='/css/inera-statistics.css'/>" rel="stylesheet">
     <link href="<c:url value='/bootstrap/3.1.1/css/bootstrap.min.css'/>" rel="stylesheet">
     <link href="<c:url value='/css/inera-statistics-responsive.css'/>" rel="stylesheet">
