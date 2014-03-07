@@ -43,7 +43,6 @@
     <link href="<c:url value='/css/inera-statistics.css'/>" rel="stylesheet">
     <link href="<c:url value='/bootstrap/3.1.1/css/bootstrap.min.css'/>" rel="stylesheet">
     <link href="<c:url value='/css/inera-statistics-responsive.css'/>" rel="stylesheet">
-<!--    <link href="<c:url value='/js/lib/pie/PIE.htc'/>" rel="stylesheet">-->
     <![endif]-->
     <link href="<c:url value='/css/inera-statistics.css'/>" rel="stylesheet" media="not print">
     <link href="<c:url value='/css/inera-statistics-responsive.css'/>" rel="stylesheet" media="not print">
