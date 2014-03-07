@@ -32,8 +32,8 @@ public class WideLine {
     private int id;
     private int lan;
     private int kommun;
-    private int forsamling;
-    private int enhet;
+    private String forsamling;
+    private String enhet;
     private int lakarintyg;
     private String patient;
     private int kalenderperiod;
@@ -72,19 +72,19 @@ public class WideLine {
         this.kommun = kommun;
     }
 
-    public int getForsamling() {
+    public String getForsamling() {
         return forsamling;
     }
 
-    public void setForsamling(int forsamling) {
+    public void setForsamling(String forsamling) {
         this.forsamling = forsamling;
     }
 
-    public int getEnhet() {
+    public String getEnhet() {
         return enhet;
     }
 
-    public void setEnhet(int enhet) {
+    public void setEnhet(String enhet) {
         this.enhet = enhet;
     }
 
