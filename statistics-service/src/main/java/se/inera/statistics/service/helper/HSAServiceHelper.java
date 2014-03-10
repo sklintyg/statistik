@@ -30,9 +30,9 @@ public final class HSAServiceHelper {
     public static String getLan(JsonNode hsaData) {
         if (hsaData != null) {
             String result = hsaData.path("geografi").path("lan").path("kod").textValue();
-            return result != null ? result : Lan.OVRIGT;
+            return result != null ? result : Lan.OVRIGT_ID;
         } else {
-            return Lan.OVRIGT;
+            return Lan.OVRIGT_ID;
         }
     }
 

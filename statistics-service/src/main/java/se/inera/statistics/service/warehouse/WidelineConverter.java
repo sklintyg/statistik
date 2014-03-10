@@ -1,13 +1,11 @@
 package se.inera.statistics.service.warehouse;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.joda.time.Days;
 import org.joda.time.LocalDate;
 import org.springframework.stereotype.Component;
 import se.inera.statistics.service.helper.DocumentHelper;
 import se.inera.statistics.service.helper.HSAServiceHelper;
-import se.inera.statistics.service.hsa.HSAService;
 import se.inera.statistics.service.sjukfall.SjukfallInfo;
 import se.inera.statistics.service.warehouse.model.db.WideLine;
 
@@ -82,6 +80,6 @@ public class WidelineConverter {
     }
 
     public int count() {
-        return manager.createQuery("SELECT COUNT(wl) FROM WideLine wl").getFirstResult();
+        return manager.createQuery("SELECT wl FROM WideLine wl").getResultList().size();
     }
 }
