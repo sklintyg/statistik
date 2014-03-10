@@ -157,15 +157,14 @@
                                     <li>
                                         <a class="menu-item-has-childs"
                                            data-ng-href="#/nationell/diagnosgrupp" id="navDiagnosisGroupsLink"
-                                           ctrlname="NationalDiagnosgruppCtrl" navigationaware>Diagnosgrupp</a>
-                                        <i class="statistict-left-menu-expand-icon"
-                                           data-toggle="collapse" href="#sub-menu-diagnostics"></i>
+                                           ctrlname="NationalDiagnosgruppCtrl" navigationaware>Diagnosgrupp
+                                        	<i class="statistict-left-menu-expand-icon" data-toggle="collapse" href="#sub-menu-diagnostics"></i>
+                                        </a>
+                                        
                                     </li>
-                                    <ul id="sub-menu-diagnostics"
-                                        class="nav nav-list sub-nav-list accordion-body in collapse">
+                                    <ul id="sub-menu-diagnostics" class="nav nav-list sub-nav-list accordion-body in collapse">
                                         <li><a data-ng-href="#/nationell/diagnosavsnitt" id="navDiagnosisSubGroupsLink"
-                                               ctrlname="NationalDiagnosavsnittCtrl" navigationaware>Enskilt
-                                            diagnoskapitel</a></li>
+                                               ctrlname="NationalDiagnosavsnittCtrl" navigationaware>Enskilt diagnoskapitel</a></li>
                                     </ul>
                                     <li><a data-ng-href="#/nationell/aldersgrupper" id="navAgeGroupsLink"
                                            ctrlname="NationalAgeGroupCtrl" navigationaware>Åldersgrupp</a></li>
@@ -175,16 +174,20 @@
                                     <li><a data-ng-href="#/nationell/sjukskrivningslangd" id="navSickLeaveLengthLink"
                                            ctrlname="NationalSickLeaveLengthCtrl"
                                            navigationaware>Sjukskrivningslängd</a></li>
-                                    <li><a data-ng-href="#/nationell/lan" id="navCountyLink" class="has-collapse"
-                                           ctrlname="NationalCasesPerCountyCtrl" navigationaware>Län</a><i
-                                            class="statistict-left-menu-expand-icon accordion-toggle"
-                                            data-toggle="collapse" href="#sub-menu-cases-per-county"></i></li>
+                                    <li>
+                                    	<a data-ng-href="#/nationell/lan" id="navCountyLink" class="has-collapse"
+                                           ctrlname="NationalCasesPerCountyCtrl" navigationaware>Län
+                                        	<i class="statistict-left-menu-expand-icon accordion-toggle" data-toggle="collapse" href="#sub-menu-cases-per-county"></i> 
+                                        </a>
+                                    </li>
                                     <ul id="sub-menu-cases-per-county"
                                         class="nav nav-list sub-nav-list accordion-body in collapse">
-                                        <li><a class="last-item-in-menu rounded-bottom"
+                                        <li>
+                                        	<a class="last-item-in-menu rounded-bottom"
                                                data-ng-href="#/nationell/andelSjukfallPerKon" id="navCasesPerSexLink"
-                                               ctrlname="NationalCasesPerSexCtrl" navigationaware>Andel sjukfall per
-                                            kön</a></li>
+                                               ctrlname="NationalCasesPerSexCtrl" navigationaware>Andel sjukfall per kön
+                                        	</a>
+                                    	</li>
                                     </ul>
                                 </ul>
                             </div>
@@ -217,23 +220,24 @@
                                             <a class="menu-item-has-childs"
                                                data-ng-href="#/verksamhet/{{businessId}}/diagnosgrupp"
                                                id="navBusinessDiagnosisGroupsLink" ctrlname="VerksamhetDiagnosgruppCtrl"
-                                               navigationaware>Diagnosgrupp</a>
-                                            <i class="statistict-left-menu-expand-icon accordion-toggle"
-                                               data-toggle="collapse" href="#sub-menu-business-diagnostics"></i>
+                                               navigationaware>Diagnosgrupp
+                                               <i class="statistict-left-menu-expand-icon accordion-toggle" data-toggle="collapse" href="#sub-menu-business-diagnostics"></i>
+                                            </a>
                                         </li>
                                         <ul id="sub-menu-business-diagnostics"
                                             class="nav nav-list sub-nav-list accordion-body in collapse">
                                             <li><a data-ng-href="#/verksamhet/{{businessId}}/diagnosavsnitt"
                                                    id="navBusinessDiagnosisSubGroupsLink"
-                                                   ctrlname="VerksamhetDiagnosavsnittCtrl" navigationaware>Enskilt
-                                                diagnoskapitel</a></li>
+                                                   ctrlname="VerksamhetDiagnosavsnittCtrl" navigationaware>Enskilt diagnoskapitel
+                                                </a>
+                                            </li>
                                         </ul>
                                         <li>
                                             <a data-ng-href="#/verksamhet/{{businessId}}/aldersgrupper"
                                                id="navBusinessAgeGroupsLink" ctrlname="VerksamhetAgeGroupCtrl"
-                                               navigationaware>Åldersgrupp</a>
-                                            <i class="statistict-left-menu-expand-icon accordion-toggle"
-                                               data-toggle="collapse" href="#sub-menu-business-age-group"></i>
+                                               navigationaware>Åldersgrupp
+                                               <i class="statistict-left-menu-expand-icon accordion-toggle" data-toggle="collapse" href="#sub-menu-business-age-group"></i>
+                                            </a>
                                         </li>
                                         <ul id="sub-menu-business-age-group"
                                             class="nav nav-list sub-nav-list accordion-body in collapse">
@@ -250,9 +254,9 @@
                                             <a class="menu-item-has-childs has-collapse"
                                                data-ng-href="#/verksamhet/{{businessId}}/sjukskrivningslangd"
                                                id="navBusinessSickLeaveLengthLink"
-                                               ctrlname="VerksamhetSickLeaveLengthCtrl" navigationaware>Sjukskrivningslängd</a>
-                                            <i class="statistict-left-menu-expand-icon accordion-toggle"
-                                               data-toggle="collapse" href="#sub-menu-business-sick-leave-length"></i>
+                                               ctrlname="VerksamhetSickLeaveLengthCtrl" navigationaware>Sjukskrivningslängd
+                                            	<i class="statistict-left-menu-expand-icon accordion-toggle" data-toggle="collapse" href="#sub-menu-business-sick-leave-length"></i>
+                                            </a>
                                         </li>
                                         <ul id="sub-menu-business-sick-leave-length"
                                             class="nav nav-list sub-nav-list accordion-body in collapse">
