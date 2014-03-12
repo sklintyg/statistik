@@ -11,7 +11,6 @@ public class Aisle implements Iterable<Fact> {
     }
 
     public Aisle() {
-        // TODO Auto-generated constructor stub
     }
 
     public void addLine(Fact line) {
