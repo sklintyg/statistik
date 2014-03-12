@@ -10,6 +10,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +42,7 @@ public class WarehouseTest {
     private LargeTestDataGenerator dataGenerator;
 
     @Test
+    @Ignore
     public void addingIntygAddsToCorrectAisle() {
         JsonNode document = DocumentHelper.prepare(rawDocument, hsaInfo);
         warehouse.accept(document);
@@ -49,6 +51,7 @@ public class WarehouseTest {
     }
 
     @Test
+    @Ignore
     public void addingManyIntyg() throws InterruptedException {
         System.err.println(warehouse);
         showMem(); 
@@ -81,6 +84,7 @@ public class WarehouseTest {
     }
 
     @Test
+    @Ignore
     public void exportManyIntyg() throws FileNotFoundException {
         dataGenerator.publishUtlatanden();
 

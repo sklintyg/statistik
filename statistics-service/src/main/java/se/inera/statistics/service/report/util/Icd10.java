@@ -4,16 +4,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
-import se.inera.statistics.service.hsa.HSAStore;
 
 import javax.annotation.PostConstruct;
 import java.io.BufferedReader;
+import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class Icd10 {
 
@@ -37,80 +37,37 @@ public class Icd10 {
 
     private List<Kapitel> kapitels;
 
-    private List<Avsnitt> avsnitts;
-
-    private Map<String, Kategori> idToKategoriMap = new HashMap<>();
-    private Map<String, Avsnitt> idToAvsnittMap = new HashMap<>();
-    private Map<String, Kapitel> idToKapitelMap = new HashMap<>();
+    private IdMap<Kategori> idToKategoriMap = new IdMap<>();
+    private IdMap<Avsnitt> idToAvsnittMap = new IdMap<>();
+    private IdMap<Kapitel> idToKapitelMap = new IdMap<>();
 
     @PostConstruct
     private void init() {
         try {
-            kapitels = (new LineReader<Kapitel>(icd10KapitelAnsiFile) {
-                public Kapitel parse(String line) {
-                    return Kapitel.valueOf(line);
-                }
-
-                @Override
-                public void reset() {
-                    Kapitel.indexcounter = 0;
-                }
-            }).process();
-
-            avsnitts = (new LineReader<Avsnitt>(icd10AvsnittAnsiFile) {
-                public Avsnitt parse(String line) {
-                    return Avsnitt.valueOf(line);
-                }
-                @Override
-                public void reset() {
-                    Avsnitt.indexcounter = 0;
-                }
-            }).process();
-
-            List<Kategori> kategoris = (new LineReader<Kategori>(icd10KategoriAnsiFile) {
-                public Kategori parse(String line) {
-                    return Kategori.valueOf(line);
-                }
-                @Override
-                public void reset() {
-                    Kategori.indexcounter = 0;
-                }
-            }).process();
-
-            for (Avsnitt avsnitt : avsnitts) {
-                String aid = firstKategori(avsnitt.getId());
-                for (Kapitel k : kapitels) {
-                    String kid = lastKategori(k.getId());
-                    if (kid.compareTo(aid) >= 0) {
-                        k.avsnitt.add(avsnitt);
-                        avsnitt.setKapitel(k);
-                        break;
-                    }
+            kapitels = new ArrayList<>();
+            try (LineReader lr = new LineReader(icd10KapitelAnsiFile)) {
+                String line;
+                while ((line = lr.next()) != null) {
+                    Kapitel kapitel = Kapitel.valueOf(line);
+                    kapitels.add(kapitel);
+                    idToKapitelMap.put(kapitel);
                 }
             }
 
-            for (Kategori kategori : kategoris) {
-                String kid = firstKategori(kategori.getId());
-                for (Avsnitt a : avsnitts) {
-                    String aid = lastKategori(a.getId());
-                    if (kid.compareTo(aid) <= 0) {
-                        a.kategori.add(kategori);
-                        kategori.setAvsnitt(a);
-                        break;
-                    }
+            try (LineReader lr = new LineReader(icd10AvsnittAnsiFile)) {
+                String line;
+                while ((line = lr.next()) != null) {
+                    Avsnitt avsnitt = Avsnitt.valueOf(line, idToKapitelMap.values());
+                    idToAvsnittMap.put(avsnitt);
                 }
             }
 
-            for (Kategori kategori : kategoris) {
-                idToKategoriMap.put(kategori.getId(), kategori);
-            }
-
-            for (Kapitel kapitel : kapitels) {
-                idToKapitelMap.put(kapitel.getId(), kapitel);
-            }
-
-            for (Avsnitt avsnitt : avsnitts) {
-                idToAvsnittMap.put(avsnitt.getId(), avsnitt);
+            try (LineReader lr = new LineReader(icd10KategoriAnsiFile)) {
+                String line;
+                while ((line = lr.next()) != null) {
+                    Kategori kategori = Kategori.valueOf(line, idToAvsnittMap.values());
+                    idToKategoriMap.put(kategori);
+                }
             }
 
         } catch (IOException e) {
@@ -118,20 +75,8 @@ public class Icd10 {
         }
     }
 
-    private String lastKategori(String s) {
-        return s.substring(STARTINDEX_LAST_KATEGORI);
-    }
-
-    private String firstKategori(String s) {
-        return s.substring(0, ENDINDEX_FIRST_KATEGORI);
-    }
-
     public List<Kapitel> getKapitel() {
         return kapitels;
-    }
-
-    public List<Avsnitt> getAvsnitt() {
-        return avsnitts;
     }
 
     public String normalize(String icd10Code) {
@@ -156,79 +101,103 @@ public class Icd10 {
         return idToKapitelMap.get(diagnoskapitel);
     }
 
-    public static class Kapitel {
+    public static class IdMap<T extends Id> extends HashMap<String, T> {
+        public void put(T id) {
+            if (id != null) {
+                put(id.getId(), id);
+            }
+        }
+    }
 
-        private final int index;
+    public static class Id {
         private final String id;
         private final String name;
+
+        public Id(String id, String name) {
+            this.id = id;
+            this.name = name;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public String getId() {
+            return id;
+        }
+
+        public int toInt() {
+            return (id.charAt(0) - 'A') * 100 + (id.charAt(1) - '0') * 10 + id.charAt(2) - '0';
+        }
+    }
+
+    public static class Range extends Id {
+        private final String firstId;
+        private final String lastId;
+
+        public Range(String range, String name) {
+            super(range, name);
+            firstId = range.substring(0, ENDINDEX_FIRST_KATEGORI);
+            lastId = range.substring(STARTINDEX_LAST_KATEGORI);
+        }
+
+        public boolean contains(String kategoriId) {
+            return firstId.compareTo(kategoriId) <= 0 && lastId.compareTo(kategoriId) >= 0;
+        }
+    }
+
+    public static class Kapitel extends Range {
+
         private final List<Avsnitt> avsnitt = new ArrayList<>();
-        private static int indexcounter;
 
         public Kapitel(String range, String name) {
-            this.index = indexcounter++;
-            this.id = range;
-            this.name = name;
+            super(range, name);
         }
 
         public static Kapitel valueOf(String line) {
             return new Kapitel(line.substring(0, ENDINDEX_ID), line.substring(STARTINDEX_DESCRIPTION));
         }
 
-        public String getName() {
-            return name;
-        }
-
-        public String getId() {
-            return id;
-        }
-
         public List<Avsnitt> getAvsnitt() {
             return avsnitt;
         }
 
-        public int getIndex() {
-            return index;
-        }
     }
 
-    public static class Avsnitt {
+    public static class Avsnitt extends Range {
 
-        private final String id;
-        private final String name;
+        private final Kapitel kapitel;
         private final List<Kategori> kategori;
-        private static int indexcounter;
-        private final int index;
-        private Kapitel kapitel;
 
-        public Avsnitt(String range, String name) {
-            this.id = range;
-            this.name = name;
+        public Avsnitt(String range, String name, Kapitel kapitel) {
+            super(range, name);
+            this.kapitel = kapitel;
             kategori = new ArrayList<>();
-            this.index = indexcounter++;
         }
 
-        public static Avsnitt valueOf(String line) {
-            return new Avsnitt(line.substring(0, ENDINDEX_ID), line.substring(STARTINDEX_DESCRIPTION));
+        public static Avsnitt valueOf(String line, Collection<Kapitel> kapitels) {
+            String id = line.substring(0, ENDINDEX_ID);
+            Kapitel kapitel = find(id.substring(0, ENDINDEX_FIRST_KATEGORI), kapitels);
+            if (kapitel == null) {
+                return null;
+            }
+
+            Avsnitt avsnitt = new Avsnitt(id, line.substring(STARTINDEX_DESCRIPTION), kapitel);
+            kapitel.avsnitt.add(avsnitt);
+            return avsnitt;
         }
 
-        public String getName() {
-            return name;
-        }
-
-        public String getId() {
-            return id;
+        private static Kapitel find(String id, Collection<Kapitel> kapitels) {
+            for (Kapitel kapitel: kapitels) {
+                if (kapitel.contains(id)) {
+                    return kapitel;
+                }
+            }
+            return null;
         }
 
         public List<Kategori> getKategori() {
             return kategori;
-        }
-
-        public int getIndex() {
-            return index;
-        }
-
-        public void setKapitel(Kapitel kapitel) {
-            this.kapitel = kapitel;
         }
 
         public Kapitel getKapitel() {
@@ -236,38 +205,33 @@ public class Icd10 {
         }
     }
 
-    public static class Kategori {
+    public static class Kategori extends Id {
 
-        private final String id;
-        private final String name;
-        private static int indexcounter;
-        private final int index;
-        private Avsnitt avsnitt;
+        private final Avsnitt avsnitt;
 
-        public Kategori(String id, String name) {
-            this.id = id;
-            this.name = name;
-            this.index = indexcounter++;
-        }
-
-        public static Kategori valueOf(String line) {
-            return new Kategori(line.substring(0, ENDINDEX_FIRST_KATEGORI), line.substring(STARTINDEX_DESCRIPTION));
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public String getId() {
-            return id;
-        }
-
-        public int getIndex() {
-            return index;
-        }
-
-        public void setAvsnitt(Avsnitt avsnitt) {
+        public Kategori(String id, String name, Avsnitt avsnitt) {
+            super(id, name);
             this.avsnitt = avsnitt;
+        }
+
+        public static Kategori valueOf(String line, Collection<Avsnitt> avsnitts) {
+            String id = line.substring(0, ENDINDEX_FIRST_KATEGORI);
+            Avsnitt avsnitt = find(id, avsnitts);
+            if (avsnitt == null) {
+                return null;
+            }
+            Kategori kategori = new Kategori(id, line.substring(STARTINDEX_DESCRIPTION), avsnitt);
+            avsnitt.kategori.add(kategori);
+            return kategori;
+        }
+
+        private static Avsnitt find(String id, Collection<Avsnitt> avsnitts) {
+            for (Avsnitt avsnitt: avsnitts) {
+                if (avsnitt.contains(id)) {
+                    return avsnitt;
+                }
+            }
+            return null;
         }
 
         public Avsnitt getAvsnitt() {
@@ -275,30 +239,19 @@ public class Icd10 {
         }
     }
 
-    private abstract static class LineReader<T> {
-        private final Resource resource;
-        private final List<T> parsed;
-
-        public LineReader(Resource resource) {
-            this.resource = resource;
-            this.parsed = new ArrayList<>();
+    private static class LineReader implements Closeable {
+        private final BufferedReader reader;
+        public LineReader(Resource resource) throws IOException {
+            reader = new BufferedReader(new InputStreamReader(resource.getInputStream(), "ISO-8859-1"));
         }
 
-        public List<T> process() throws IOException {
-            reset();
-            try (BufferedReader reader = new BufferedReader(new InputStreamReader(resource.getInputStream(), "ISO-8859-1"))) {
-                String line;
-                while ((line = reader.readLine()) != null) {
-                    T t = parse(line);
-                    if (t != null) {
-                        parsed.add(t);
-                    }
-                }
-            }
-            return parsed;
+        public String next() throws IOException {
+            return reader.readLine();
         }
 
-        public abstract T parse(String line);
-        public abstract void reset();
+        @Override
+        public void close() throws IOException {
+            reader.close();
+        }
     }
 }
