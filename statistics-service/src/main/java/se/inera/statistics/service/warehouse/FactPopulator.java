@@ -34,7 +34,6 @@ import java.sql.SQLException;
 public class FactPopulator {
 
     private static final int FETCH_SIZE = 10000;
-    public static final int UNKNOWN = 0;
     @Autowired
     private DataSource dataSource;
 
@@ -52,7 +51,7 @@ public class FactPopulator {
                 ResultSet resultSet = stmt.executeQuery();
 
         ) {
-            int lineNo = UNKNOWN;
+            int lineNo = 0;
             Fact line = null;
             while (resultSet.next()) {
                 System.out.println("Reading line: " + ++lineNo);
@@ -74,7 +73,7 @@ public class FactPopulator {
                 int lakaralder = resultSet.getInt("lakaralder");
                 int lakarbefattning = Integer.parseInt(resultSet.getString("lakarbefattning"));
                 String vardgivare = resultSet.getString("vardgivareid");
-                Fact fact = new Fact(extractLan(lkf), extractKommun(lkf), extractForsamling(lkf), enhet, intyg, patientid, startdatum, kon, alder, extractKapitel(diagnoskapitel), extractAvsnitt(diagnosavsnitt), extractKategori(diagnoskategori), sjukskrivningsgrad, sjukskrivningslangd, lakarkon, lakaralder, lakarbefattning);
+                Fact fact = new Fact(ConversionHelper.extractLan(lkf), ConversionHelper.extractKommun(lkf), ConversionHelper.extractForsamling(lkf), enhet, intyg, patientid, startdatum, kon, alder, extractKapitel(diagnoskapitel), extractAvsnitt(diagnosavsnitt), extractKategori(diagnoskategori), sjukskrivningsgrad, sjukskrivningslangd, lakarkon, lakaralder, lakarbefattning);
                 warehouse.accept(fact, vardgivare);
             }
         } catch (SQLException e) {
@@ -93,26 +92,6 @@ public class FactPopulator {
 
     private int extractKapitel(String diagnoskapitel) {
         return icd10.getKapitel(diagnoskapitel).getIndex();
-    }
-
-    private int extractLan(String lkf) {
-            return extractLKF(lkf, 2);
-    }
-
-    private int extractKommun(String lkf) {
-        return extractLKF(lkf, 4);
-    }
-
-    private int extractForsamling(String lkf) {
-        return extractLKF(lkf, 6);
-    }
-
-    private int extractLKF(String lkf, int length) {
-        if (lkf.length() < length) {
-            return UNKNOWN;
-        } else {
-            return Integer.parseInt(lkf.substring(0, length));
-        }
     }
 
     private PreparedStatement prepareStatement(Connection connection) throws SQLException {

@@ -28,6 +28,7 @@ import java.util.Map;
 
 public final class ConversionHelper {
 
+    public static final int UNKNOWN = 0;
     private static IdMap<String> enhetsMap = new IdMap<>();
 
     private ConversionHelper() {
@@ -63,6 +64,26 @@ public final class ConversionHelper {
         LocalDate referenceDate = new LocalDate(start);
         Period period = new Period(birthDate, referenceDate);
         return period.getYears();
+    }
+
+    public static int extractLan(String lkf) {
+            return extractLKF(lkf, 2);
+    }
+
+    public static int extractKommun(String lkf) {
+        return extractLKF(lkf, 4);
+    }
+
+    public static int extractForsamling(String lkf) {
+        return extractLKF(lkf, 6);
+    }
+
+    private static int extractLKF(String lkf, int length) {
+        if (lkf.length() < length) {
+            return UNKNOWN;
+        } else {
+            return Integer.parseInt(lkf.substring(0, length));
+        }
     }
 
     private static class IdMap<T> {
