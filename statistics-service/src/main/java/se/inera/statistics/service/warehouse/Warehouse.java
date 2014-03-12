@@ -17,6 +17,11 @@ public class Warehouse {
         aisle.addLine(Fact.buildLine(document));
     }
 
+    public void accept(Fact fact, String vardgivareId) {
+        Aisle aisle = getAisle(vardgivareId);
+        aisle.addLine(fact);
+    }
+
     private Aisle getAisle(String vardgivareId) {
         Aisle aisle = aisles.get(vardgivareId);
         if (aisle == null) {

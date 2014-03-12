@@ -22,7 +22,7 @@
             <column name="lakarkon" type="int"/>
             <column name="lakaralder" type="int"/>
             <column name="lakarbefattning" type="varchar(128)"/>
-
+            <column name="vardgivareid" type="varchar(128)"/>
         </createTable>
     </changeSet>
 

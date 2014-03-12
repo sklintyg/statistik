@@ -68,6 +68,11 @@ public class WidelineConverter {
         manager.persist(line);
     }
 
+    @Transactional
+    public void saveWideline(WideLine line) {
+        manager.persist(line);
+    }
+
     private String getLkf(JsonNode hsa) {
         String lkf = HSAServiceHelper.getKommun(hsa);
         if (lkf.isEmpty()) {

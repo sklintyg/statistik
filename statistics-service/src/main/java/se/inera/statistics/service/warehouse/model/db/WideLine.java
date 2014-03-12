@@ -49,6 +49,7 @@ public class WideLine {
     private int lakarkon;
     private int lakaralder;
     private String lakarbefattning;
+    private String vardgivareId;
 
     public long getId() {
         return id;
@@ -72,6 +73,14 @@ public class WideLine {
 
     public void setEnhet(String enhet) {
         this.enhet = enhet;
+    }
+
+    public String getVardgivareId() {
+        return vardgivareId;
+    }
+
+    public void setVardgivareId(String vardgivareId) {
+        this.vardgivareId = vardgivareId;
     }
 
     public long getLakarintyg() {

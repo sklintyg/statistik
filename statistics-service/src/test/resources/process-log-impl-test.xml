@@ -75,6 +75,9 @@
         <constructor-arg value="KSH97_AVS.ANS"/>
     </bean>
     <bean class="se.inera.statistics.service.report.util.DiagnosUtil"/>
+    <bean class="se.inera.statistics.service.warehouse.FactPopulator"/>
+    <bean class="se.inera.statistics.service.warehouse.Warehouse"/>
 
     <context:component-scan base-package="se.inera.statistics.service.report.repository"/>
+    <context:component-scan base-package="se.inera.statistics.service.warehouse"/>
 </beans>
