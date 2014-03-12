@@ -144,9 +144,13 @@ public final class DocumentHelper {
     }
 
     private static IdMap<String> enhetsMap = new IdMap<>();
-    
+
     public static int getEnhetAndRemember(JsonNode document) {
         return enhetsMap.getId(getEnhetId(document));
+    }
+
+    public static int getEnhetAndRemember(String id) {
+        return enhetsMap.getId(id);
     }
 
     public static int getLakarIntyg(JsonNode document) {
@@ -160,7 +164,21 @@ public final class DocumentHelper {
     public static int patientIdToInt(String id) {
         return Integer.parseInt(id.substring(2, 8)) * 1000 + Integer.parseInt(id.substring(9, 12)) + (1_000_000_000 * (Integer.parseInt(id.substring(0,2)) - 19));
     }
-    
+
+    /**
+     *
+     * @param id id
+     * @return personnummer med 0 som kontrollsiffra
+     */
+    public static String patientIdToString(int id) {
+        int centuryFactor = (19 + (id < 1_000_000_000 ? 0 : 1));
+        int idWoCentury = id - (id < 1_000_000_000 ? 0 : id - 1_000_000_000);
+        String century = "" + centuryFactor;
+        String date = "" + (idWoCentury / 1000);
+        String seq = "" + (idWoCentury % 1000);
+        return century + date + '-' + seq + '0';
+    }
+
     private static class IdMap<T> {
         private final Map<T, Integer> map = new HashMap<T,Integer>();
         

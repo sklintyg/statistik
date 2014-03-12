@@ -143,4 +143,51 @@ public class Fact {
         return sb.toString();
     }
 
+    public int getEnhet() {
+        return enhet;
+    }
+
+    public int getForsamling() {
+        return forsamling;
+    }
+
+    public int getKommun() {
+        return kommun;
+    }
+
+    public int getLan() {
+        return lan;
+    }
+
+    public int getDiagnoskategori() {
+        return diagnoskategori;
+    }
+
+    public int getDiagnosavsnitt() {
+        return diagnosavsnitt;
+    }
+
+    public int getDiagnoskapitel() {
+        return diagnoskapitel;
+    }
+
+    public int getLakarbefattning() {
+        return lakarbefattning;
+    }
+
+    public int getAlder() {
+        return alder;
+    }
+
+    public int getLakaralder() {
+        return lakaralder;
+    }
+
+    public int getLakarkon() {
+        return lakarkon;
+    }
+
+    public int getKon() {
+        return kon;
+    }
 }

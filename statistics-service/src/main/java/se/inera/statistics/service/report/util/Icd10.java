@@ -10,7 +10,9 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Icd10 {
 
@@ -32,53 +34,68 @@ public class Icd10 {
     @Autowired
     private Resource icd10KapitelAnsiFile;
 
-    private List<Kapitel> kapitel;
+    private List<Kapitel> kapitels;
 
-    private List<Avsnitt> avsnitt;
+    private List<Avsnitt> avsnitts;
 
-    private List<Kategori> kategori;
+    private Map<String, Kategori> idToKategoriMap = new HashMap<>();
+    private Map<String, Avsnitt> idToAvsnittMap = new HashMap<>();
+    private Map<String, Kapitel> idToKapitelMap = new HashMap<>();
 
     @PostConstruct
     private void init() {
         try {
 
-            kapitel = (new LineReader<Kapitel>(icd10KapitelAnsiFile) {
+            kapitels = (new LineReader<Kapitel>(icd10KapitelAnsiFile) {
                 public Kapitel parse(String line) {
                     return Kapitel.valueOf(line);
                 }
             }).process();
 
-            avsnitt = (new LineReader<Avsnitt>(icd10AvsnittAnsiFile) {
+            avsnitts = (new LineReader<Avsnitt>(icd10AvsnittAnsiFile) {
                 public Avsnitt parse(String line) {
                     return Avsnitt.valueOf(line);
                 }
             }).process();
 
-            for (Avsnitt a : avsnitt) {
-                String aid = firstKategori(a.getId());
-                for (Kapitel k : kapitel) {
-                    String kid = lastKategori(k.getId());
-                    if (kid.compareTo(aid) >= 0) {
-                        k.avsnitt.add(a);
-                        break;
-                    }
-                }
-            }
-            kategori = (new LineReader<Kategori>(icd10KategoriAnsiFile) {
+            List<Kategori> kategoris = (new LineReader<Kategori>(icd10KategoriAnsiFile) {
                 public Kategori parse(String line) {
                     return Kategori.valueOf(line);
                 }
             }).process();
 
-            for (Kategori k : kategori) {
-                String kid = firstKategori(k.getId());
-                for (Avsnitt a : avsnitt) {
-                    String aid = lastKategori(a.getId());
-                    if (kid.compareTo(aid) <= 0) {
-                        a.kategori.add(k);
+            for (Avsnitt avsnitt : avsnitts) {
+                String aid = firstKategori(avsnitt.getId());
+                for (Kapitel k : kapitels) {
+                    String kid = lastKategori(k.getId());
+                    if (kid.compareTo(aid) >= 0) {
+                        k.avsnitt.add(avsnitt);
                         break;
                     }
                 }
+            }
+
+            for (Kategori kategori : kategoris) {
+                String kid = firstKategori(kategori.getId());
+                for (Avsnitt a : avsnitts) {
+                    String aid = lastKategori(a.getId());
+                    if (kid.compareTo(aid) <= 0) {
+                        a.kategori.add(kategori);
+                        break;
+                    }
+                }
+            }
+
+            for (Kategori kategori : kategoris) {
+                idToKategoriMap.put(kategori.getId(), kategori);
+            }
+
+            for (Kapitel kapitel : kapitels) {
+                idToKapitelMap.put(kapitel.getId(), kapitel);
+            }
+
+            for (Avsnitt avsnitt : avsnitts) {
+                idToAvsnittMap.put(avsnitt.getId(), avsnitt);
             }
 
         } catch (IOException e) {
@@ -95,11 +112,11 @@ public class Icd10 {
     }
 
     public List<Kapitel> getKapitel() {
-        return kapitel;
+        return kapitels;
     }
 
     public List<Avsnitt> getAvsnitt() {
-        return avsnitt;
+        return avsnitts;
     }
 
     public String normalize(String icd10Code) {
@@ -112,13 +129,28 @@ public class Icd10 {
         return normalized.toString();
     }
 
+    public Kategori getKategori(String diagnoskategori) {
+        return idToKategoriMap.get(diagnoskategori);
+    }
+
+    public Avsnitt getAvsnitt(String diagnosavsnitt) {
+        return idToAvsnittMap.get(diagnosavsnitt);
+    }
+
+    public Kapitel getKapitel(String diagnoskapitel) {
+        return idToKapitelMap.get(diagnoskapitel);
+    }
+
     public static class Kapitel {
 
+        private final int index;
         private final String id;
         private final String name;
         private final List<Avsnitt> avsnitt = new ArrayList<>();
+        private static int indexcounter;
 
         public Kapitel(String range, String name) {
+            this.index = indexcounter++;
             this.id = range;
             this.name = name;
         }
@@ -138,6 +170,10 @@ public class Icd10 {
         public List<Avsnitt> getAvsnitt() {
             return avsnitt;
         }
+
+        public int getIndex() {
+            return index;
+        }
     }
 
     public static class Avsnitt {
@@ -145,11 +181,14 @@ public class Icd10 {
         private final String id;
         private final String name;
         private final List<Kategori> kategori;
+        private static int indexcounter;
+        private final int index;
 
         public Avsnitt(String range, String name) {
             this.id = range;
             this.name = name;
             kategori = new ArrayList<>();
+            this.index = indexcounter++;
         }
 
         public static Avsnitt valueOf(String line) {
@@ -167,16 +206,23 @@ public class Icd10 {
         public List<Kategori> getKategori() {
             return kategori;
         }
+
+        public int getIndex() {
+            return index;
+        }
     }
 
     public static class Kategori {
 
         private final String id;
         private final String name;
+        private static int indexcounter;
+        private final int index;
 
         public Kategori(String id, String name) {
             this.id = id;
             this.name = name;
+            this.index = indexcounter++;
         }
 
         public static Kategori valueOf(String line) {
@@ -189,6 +235,10 @@ public class Icd10 {
 
         public String getId() {
             return id;
+        }
+
+        public int getIndex() {
+            return index;
         }
     }
 

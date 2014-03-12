@@ -21,6 +21,8 @@ package se.inera.statistics.service.warehouse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import se.inera.statistics.service.helper.DocumentHelper;
+import se.inera.statistics.service.report.util.Icd10;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
@@ -32,35 +34,36 @@ import java.sql.SQLException;
 public class FactPopulator {
 
     private static final int FETCH_SIZE = 10000;
+    public static final int UNKNOWN = 0;
     @Autowired
     private DataSource dataSource;
 
     @Autowired
     private Warehouse warehouse;
 
+    @Autowired
+    private Icd10 icd10;
+
     public void populateWarehouse() {
-        Connection connection = null;
-        ResultSet resultSet = null;
-        PreparedStatement stmt = null;
-        try {
-            connection = dataSource.getConnection();
-            boolean previousAutoCommit = connection.getAutoCommit();
-            connection.setAutoCommit(false);
-            connection.setReadOnly(true);
-            stmt = connection.prepareStatement("select id, lkf, enhet, lakarintyg, patientid, startdatum, slutdatum, kon, alder, diagnoskapitel, diagnosavsnitt, diagnoskategori, sjukskrivningsgrad, lakarkon, lakaralder, lakarbefattning, vardgivareid from wideline", ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
-            stmt.setFetchSize(FETCH_SIZE);
-            resultSet = stmt.executeQuery();
-            int lineNo = 0;
+
+        try (
+                Connection connection = dataSource.getConnection();
+                PreparedStatement stmt = prepareStatement(connection);
+                ResultSet resultSet = stmt.executeQuery();
+
+        ) {
+            int lineNo = UNKNOWN;
             Fact line = null;
             while (resultSet.next()) {
                 System.out.println("Reading line: " + ++lineNo);
                 int id = resultSet.getInt("id");
                 String lkf = resultSet.getString("lkf");
-                String enhet = resultSet.getString("enhet");
+                int enhet = DocumentHelper.getEnhetAndRemember(resultSet.getString("enhet"));
                 int intyg = resultSet.getInt("lakarintyg");
-                String patientid = resultSet.getString("patientid");
+                int patientid = DocumentHelper.patientIdToInt(resultSet.getString("patientid"));
                 int startdatum = resultSet.getInt("startdatum");
                 int slutdatum = resultSet.getInt("slutdatum");
+                int sjukskrivningslangd = slutdatum - startdatum + 1;
                 int kon = resultSet.getInt("kon");
                 int alder = resultSet.getInt("alder");
                 String diagnoskapitel = resultSet.getString("diagnoskapitel");
@@ -69,39 +72,54 @@ public class FactPopulator {
                 int sjukskrivningsgrad = resultSet.getInt("sjukskrivningsgrad");
                 int lakarkon = resultSet.getInt("lakarkon");
                 int lakaralder = resultSet.getInt("lakaralder");
-                String lakarbefattning = resultSet.getString("lakarbefattning");
+                int lakarbefattning = Integer.parseInt(resultSet.getString("lakarbefattning"));
                 String vardgivare = resultSet.getString("vardgivareid");
-//                Fact fact = new Fact(id, kommun, forsamling, enhetId, intyg, patient, startdatum, kon, alder, diagnoskapitelid, diagnosavsnittid, diagnoskategoriid, sjukskrivningsgrad, sjukskrivningsgslangd, lakarkon, lakaralder, lakarbefattningid);
-                Fact fact = new Fact(id, 0, 0, 0, intyg, 0, startdatum, kon, alder, 0, 0, 0, sjukskrivningsgrad, 0, lakarkon, lakaralder, 0);
+                Fact fact = new Fact(extractLan(lkf), extractKommun(lkf), extractForsamling(lkf), enhet, intyg, patientid, startdatum, kon, alder, extractKapitel(diagnoskapitel), extractAvsnitt(diagnosavsnitt), extractKategori(diagnoskategori), sjukskrivningsgrad, sjukskrivningslangd, lakarkon, lakaralder, lakarbefattning);
                 warehouse.accept(fact, vardgivare);
             }
-            connection.commit();
-            connection.setAutoCommit(previousAutoCommit);
         } catch (SQLException e) {
             e.printStackTrace();
-        } finally {
-            if (resultSet != null) {
-                try {
-                    resultSet.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-            if (stmt != null) {
-                try {
-                    stmt.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-            if (connection != null) {
-                try {
-                    connection.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
         }
 
+    }
+
+    private int extractKategori(String diagnoskategori) {
+        return icd10.getKategori(diagnoskategori).getIndex();
+    }
+
+    private int extractAvsnitt(String diagnosavsnitt) {
+        return icd10.getAvsnitt(diagnosavsnitt).getIndex();
+    }
+
+    private int extractKapitel(String diagnoskapitel) {
+        return icd10.getKapitel(diagnoskapitel).getIndex();
+    }
+
+    private int extractLan(String lkf) {
+            return extractLKF(lkf, 2);
+    }
+
+    private int extractKommun(String lkf) {
+        return extractLKF(lkf, 4);
+    }
+
+    private int extractForsamling(String lkf) {
+        return extractLKF(lkf, 6);
+    }
+
+    private int extractLKF(String lkf, int length) {
+        if (lkf.length() < length) {
+            return UNKNOWN;
+        } else {
+            return Integer.parseInt(lkf.substring(0, length));
+        }
+    }
+
+    private PreparedStatement prepareStatement(Connection connection) throws SQLException {
+        connection.setAutoCommit(false);
+        connection.setReadOnly(true);
+        PreparedStatement stmt = connection.prepareStatement("select id, lkf, enhet, lakarintyg, patientid, startdatum, slutdatum, kon, alder, diagnoskapitel, diagnosavsnitt, diagnoskategori, sjukskrivningsgrad, lakarkon, lakaralder, lakarbefattning, vardgivareid from wideline", ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
+        stmt.setFetchSize(FETCH_SIZE);
+        return stmt;
     }
 }
