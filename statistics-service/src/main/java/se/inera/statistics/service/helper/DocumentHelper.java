@@ -41,18 +41,24 @@ public final class DocumentHelper {
     }
 
     public static ObjectNode anonymize(JsonNode utlatande) {
-        String personId = utlatande.path(PATIENT).path("id").path(EXTENSION).textValue();
-        int alder = ConversionHelper.extractAlder(personId, ISODateTimeFormat.dateTimeParser().parseLocalDate(utlatande.path("signeringsdatum").textValue()));
-        String kon = ConversionHelper.extractKon(personId);
-
-        ObjectNode anonymous = utlatande.deepCopy();
+        ObjectNode anonymous = prepare(utlatande).deepCopy();
         ObjectNode patientNode = (ObjectNode) anonymous.path(PATIENT);
         patientNode.remove("id");
         patientNode.remove("fornamn");
         patientNode.remove("efternamn");
+        return anonymous;
+    }
+
+    public static ObjectNode prepare(JsonNode utlatande) {
+        String personId = utlatande.path(PATIENT).path("id").path(EXTENSION).textValue();
+        int alder = ConversionHelper.extractAlder(personId, ISODateTimeFormat.dateTimeParser().parseLocalDate(utlatande.path("signeringsdatum").textValue()));
+        String kon = ConversionHelper.extractKon(personId);
+
+        ObjectNode preparedDoc = utlatande.deepCopy();
+        ObjectNode patientNode = (ObjectNode) preparedDoc.path(PATIENT);
         patientNode.put("alder", alder);
         patientNode.put("kon", kon);
-        return anonymous;
+        return preparedDoc;
     }
 
     public static String getPersonId(JsonNode document) {

@@ -19,26 +19,24 @@
 
 package se.inera.statistics.service.processlog;
 
-import static se.inera.statistics.service.helper.DocumentHelper.getForstaNedsattningsdag;
-import static se.inera.statistics.service.helper.DocumentHelper.getPersonId;
-import static se.inera.statistics.service.helper.DocumentHelper.getSistaNedsattningsdag;
-import static se.inera.statistics.service.helper.DocumentHelper.getVardgivareId;
-
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.joda.time.LocalDate;
 import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.ISODateTimeFormat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
 import se.inera.statistics.service.helper.DocumentHelper;
 import se.inera.statistics.service.helper.StatisticsMalformedDocument;
 import se.inera.statistics.service.sjukfall.SjukfallInfo;
 import se.inera.statistics.service.sjukfall.SjukfallKey;
 import se.inera.statistics.service.sjukfall.SjukfallService;
-
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import se.inera.statistics.service.warehouse.WidelineConverter;
+
+import static se.inera.statistics.service.helper.DocumentHelper.getForstaNedsattningsdag;
+import static se.inera.statistics.service.helper.DocumentHelper.getPersonId;
+import static se.inera.statistics.service.helper.DocumentHelper.getSistaNedsattningsdag;
+import static se.inera.statistics.service.helper.DocumentHelper.getVardgivareId;
 
 @Component
 public class Processor {
@@ -65,7 +63,8 @@ public class Processor {
 
         listener.accept(sjukfallInfo, anonymous, hsa, logId);
 
-        widelineConverter.accept(sjukfallInfo, anonymous, hsa, logId);
+        ObjectNode preparedDoc = DocumentHelper.prepare(utlatande);
+        widelineConverter.accept(preparedDoc, hsa, logId);
 
         processedCounter++;
     }
