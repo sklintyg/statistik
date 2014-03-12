@@ -1,8 +1,5 @@
 package se.inera.statistics.service.report.repository;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.joda.time.LocalDate;
 import org.junit.Assert;
 import org.junit.Before;
@@ -14,16 +11,24 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.transaction.annotation.Transactional;
-
-import se.inera.statistics.service.report.api.*;
+import se.inera.statistics.service.report.api.Aldersgrupp;
+import se.inera.statistics.service.report.api.Diagnosgrupp;
+import se.inera.statistics.service.report.api.RollingLength;
+import se.inera.statistics.service.report.api.SjukfallPerLan;
+import se.inera.statistics.service.report.api.SjukfallPerManad;
+import se.inera.statistics.service.report.api.SjukfallslangdGrupp;
+import se.inera.statistics.service.report.api.Sjukskrivningsgrad;
 import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.report.model.OverviewChartRowExtended;
 import se.inera.statistics.service.report.model.OverviewResponse;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.util.Verksamhet;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "classpath:process-log-impl-test.xml" })
+@ContextConfiguration(locations = { "classpath:process-log-impl-test.xml", "classpath:icd10-test.xml" })
 @Transactional
 @DirtiesContext
 public class OverviewPersistanceHandlerTest extends OverviewPersistenceHandler {

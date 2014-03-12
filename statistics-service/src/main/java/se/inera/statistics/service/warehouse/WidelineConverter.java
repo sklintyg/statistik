@@ -3,9 +3,14 @@ package se.inera.statistics.service.warehouse;
 import com.fasterxml.jackson.databind.JsonNode;
 import org.joda.time.Days;
 import org.joda.time.LocalDate;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import se.inera.statistics.service.helper.DocumentHelper;
 import se.inera.statistics.service.helper.HSAServiceHelper;
+import se.inera.statistics.service.report.util.Icd10;
+import se.inera.statistics.service.report.util.Icd10.Kategori;
 import se.inera.statistics.service.sjukfall.SjukfallInfo;
 import se.inera.statistics.service.warehouse.model.db.WideLine;
 
@@ -16,10 +21,14 @@ import javax.transaction.Transactional;
 @Component
 public class WidelineConverter {
 
+    private static final Logger LOG = LoggerFactory.getLogger(WidelineConverter.class);
     private static final LocalDate ERA = new LocalDate("2000-01-01");
 
     @PersistenceContext(unitName = "IneraStatisticsLog")
     private EntityManager manager;
+
+    @Autowired
+    private Icd10 icd10;
 
     @Transactional
     public void accept(SjukfallInfo sjukfallInfo, JsonNode intyg, JsonNode hsa, long logId) {
@@ -28,8 +37,6 @@ public class WidelineConverter {
         String lkf = getLkf(hsa);
         String enhet = DocumentHelper.getEnhetId(intyg);
 
-        int lakarintyg = DocumentHelper.getLakarIntyg(intyg);
-
         String patient = DocumentHelper.getPersonId(intyg);
         int kon = DocumentHelper.getKon(intyg).indexOf('k');
         int alder = DocumentHelper.getAge(intyg);
@@ -37,9 +44,10 @@ public class WidelineConverter {
         LocalDate kalenderStart = new LocalDate(DocumentHelper.getForstaNedsattningsdag(intyg));
         LocalDate kalenderEnd = new LocalDate(DocumentHelper.getSistaNedsattningsdag(intyg));
 
-        String diagnoskapitel = DocumentHelper.getDiagnos(intyg);
-        String diagnosavsnitt = DocumentHelper.getDiagnos(intyg);
-        String diagnoskategori = DocumentHelper.getDiagnos(intyg);
+        Kategori kategori = icd10.getKategori(icd10.normalize(DocumentHelper.getDiagnos(intyg)));
+        String diagnoskapitel = kategori.getAvsnitt().getKapitel().getId();
+        String diagnosavsnitt = kategori.getAvsnitt().getId();
+        String diagnoskategori = kategori.getId();
 
         int sjukskrivningsgrad = 100 - Integer.parseInt(DocumentHelper.getArbetsformaga(intyg).get(0));
 
@@ -56,6 +64,7 @@ public class WidelineConverter {
         line.setDiagnoskapitel(diagnoskapitel);
         line.setDiagnosavsnitt(diagnosavsnitt);
         line.setDiagnoskategori(diagnoskategori);
+        line.setSjukskrivningsgrad(sjukskrivningsgrad);
 
         line.setPatientid(patient);
         line.setAlder(alder);

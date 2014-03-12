@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
+import se.inera.statistics.service.hsa.HSAStore;
 
 import javax.annotation.PostConstruct;
 import java.io.BufferedReader;
@@ -70,6 +71,7 @@ public class Icd10 {
                     String kid = lastKategori(k.getId());
                     if (kid.compareTo(aid) >= 0) {
                         k.avsnitt.add(avsnitt);
+                        avsnitt.setKapitel(k);
                         break;
                     }
                 }
@@ -81,6 +83,7 @@ public class Icd10 {
                     String aid = lastKategori(a.getId());
                     if (kid.compareTo(aid) <= 0) {
                         a.kategori.add(kategori);
+                        kategori.setAvsnitt(a);
                         break;
                     }
                 }
@@ -183,6 +186,7 @@ public class Icd10 {
         private final List<Kategori> kategori;
         private static int indexcounter;
         private final int index;
+        private Kapitel kapitel;
 
         public Avsnitt(String range, String name) {
             this.id = range;
@@ -210,6 +214,14 @@ public class Icd10 {
         public int getIndex() {
             return index;
         }
+
+        public void setKapitel(Kapitel kapitel) {
+            this.kapitel = kapitel;
+        }
+
+        public Kapitel getKapitel() {
+            return kapitel;
+        }
     }
 
     public static class Kategori {
@@ -218,6 +230,7 @@ public class Icd10 {
         private final String name;
         private static int indexcounter;
         private final int index;
+        private Avsnitt avsnitt;
 
         public Kategori(String id, String name) {
             this.id = id;
@@ -239,6 +252,14 @@ public class Icd10 {
 
         public int getIndex() {
             return index;
+        }
+
+        public void setAvsnitt(Avsnitt avsnitt) {
+            this.avsnitt = avsnitt;
+        }
+
+        public Avsnitt getAvsnitt() {
+            return avsnitt;
         }
     }
 

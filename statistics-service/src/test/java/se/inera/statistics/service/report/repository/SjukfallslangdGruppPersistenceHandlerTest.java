@@ -16,7 +16,7 @@ import se.inera.statistics.service.report.util.SjukfallslangdUtil;
 import se.inera.statistics.service.report.util.Verksamhet;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "classpath:process-log-impl-test.xml" })
+@ContextConfiguration(locations = { "classpath:process-log-impl-test.xml", "classpath:icd10-test.xml" })
 @Transactional
 @DirtiesContext
 public class SjukfallslangdGruppPersistenceHandlerTest extends SjukfallslangdGruppPersistenceHandler {

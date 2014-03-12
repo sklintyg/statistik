@@ -18,7 +18,7 @@ import se.inera.statistics.service.report.model.VerksamhetOverviewResponse;
 import se.inera.statistics.service.report.util.Verksamhet;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "classpath:process-log-impl-test.xml" })
+@ContextConfiguration(locations = { "classpath:process-log-impl-test.xml", "classpath:icd10-test.xml" })
 @Transactional
 @DirtiesContext
 public class VerksamhetOverviewPersistanceHandlerTest extends VerksamhetOverviewPersistenceHandler {
