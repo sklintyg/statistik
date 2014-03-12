@@ -12,9 +12,7 @@ public class Warehouse {
     private final Map<String, Aisle> aisles = new HashMap<>();
 
     public void accept(JsonNode document) {
-        String vardgivareId = DocumentHelper.getVardgivareId(document);
-        Aisle aisle = getAisle(vardgivareId);
-        aisle.addLine(Fact.buildLine(document));
+        throw new UnsupportedOperationException("Can no longer accept json");
     }
 
     public void accept(Fact fact, String vardgivareId) {

@@ -84,15 +84,15 @@ public class FactPopulator {
     }
 
     private int extractKategori(String diagnoskategori) {
-        return icd10.getKategori(diagnoskategori).getIndex();
+        return icd10.getKategori(diagnoskategori).toInt();
     }
 
     private int extractAvsnitt(String diagnosavsnitt) {
-        return icd10.getAvsnitt(diagnosavsnitt).getIndex();
+        return icd10.getAvsnitt(diagnosavsnitt).toInt();
     }
 
     private int extractKapitel(String diagnoskapitel) {
-        return icd10.getKapitel(diagnoskapitel).getIndex();
+        return icd10.getKapitel(diagnoskapitel).toInt();
     }
 
     private int extractLan(String lkf) {

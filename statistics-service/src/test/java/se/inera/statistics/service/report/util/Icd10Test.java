@@ -46,7 +46,7 @@ public class Icd10Test {
 
     @Test
     public void avsnitt() {
-        assertEquals(267, icd10.getAvsnitt().size());
+        assertEquals(21, icd10.getKapitel().get(0).getAvsnitt().size());
     }
 
     @Test

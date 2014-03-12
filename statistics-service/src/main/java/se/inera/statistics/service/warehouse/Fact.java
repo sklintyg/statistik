@@ -90,34 +90,6 @@ public class Fact {
                 '}';
     }
 
-    public static Fact buildLine(JsonNode document) {
-        JsonNode hsaInfo = document.get("hsa");
-        int lan = Integer.parseInt(HSAServiceHelper.getLan(hsaInfo));
-        int kommun = Integer.parseInt(HSAServiceHelper.getKommun(hsaInfo));
-        int forsamling = 0;
-        int enhet = DocumentHelper.getEnhetAndRemember(document);
-        int lakarintyg = DocumentHelper.getLakarIntyg(document);
-        int patient = DocumentHelper.getPatient(document);
-//        int forstaNedsattningsdag = Days.daysBetween(BASE_DATE, new LocalDate(DocumentHelper.getForstaNedsattningsdag(document))).getDays();
-//        int sistaNedsattningsdag = Days.daysBetween(BASE_DATE, new LocalDate(DocumentHelper.getForstaNedsattningsdag(document))).getDays();
-        LocalDate kalenderStart = new LocalDate(DocumentHelper.getForstaNedsattningsdag(document));
-        LocalDate kalenderEnd = new LocalDate(DocumentHelper.getSistaNedsattningsdag(document));
-        int kalenderperiod = Days.daysBetween(ERA, kalenderStart).getDays();
-        int kon = DocumentHelper.getKon(document).indexOf('k');
-        int alder = DocumentHelper.getAge(document);
-        int diagnoskapitel = Convert.toInt(DocumentHelper.getDiagnos(document));
-        int diagnosavsnitt = Convert.toInt(DocumentHelper.getDiagnos(document));
-        int diagnoskategori = Convert.toInt(DocumentHelper.getDiagnos(document));
-        int sjukskrivningsgrad = 100 - Integer.parseInt(DocumentHelper.getArbetsformaga(document).get(0));
-        int sjukskrivningslangd = Days.daysBetween(kalenderStart, kalenderEnd).getDays();
-        int lakarkon = -1;
-        int lakaralder = 0;
-        int lakarbefattning = 0;
-
-        Fact line = new Fact(lan, kommun, forsamling, enhet, lakarintyg, patient, kalenderperiod, kon, alder, diagnoskapitel, diagnosavsnitt, diagnoskategori, sjukskrivningsgrad, sjukskrivningslangd, lakarkon, lakaralder, lakarbefattning);
-        return line;
-    }
-
     /**
      * @param c delimiter
      * @return CSV line including a terminating newline character
