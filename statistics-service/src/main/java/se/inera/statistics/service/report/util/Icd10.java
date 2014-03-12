@@ -46,10 +46,14 @@ public class Icd10 {
     @PostConstruct
     private void init() {
         try {
-
             kapitels = (new LineReader<Kapitel>(icd10KapitelAnsiFile) {
                 public Kapitel parse(String line) {
                     return Kapitel.valueOf(line);
+                }
+
+                @Override
+                public void reset() {
+                    Kapitel.indexcounter = 0;
                 }
             }).process();
 
@@ -57,11 +61,19 @@ public class Icd10 {
                 public Avsnitt parse(String line) {
                     return Avsnitt.valueOf(line);
                 }
+                @Override
+                public void reset() {
+                    Avsnitt.indexcounter = 0;
+                }
             }).process();
 
             List<Kategori> kategoris = (new LineReader<Kategori>(icd10KategoriAnsiFile) {
                 public Kategori parse(String line) {
                     return Kategori.valueOf(line);
+                }
+                @Override
+                public void reset() {
+                    Kategori.indexcounter = 0;
                 }
             }).process();
 
@@ -273,6 +285,7 @@ public class Icd10 {
         }
 
         public List<T> process() throws IOException {
+            reset();
             try (BufferedReader reader = new BufferedReader(new InputStreamReader(resource.getInputStream(), "ISO-8859-1"))) {
                 String line;
                 while ((line = reader.readLine()) != null) {
@@ -286,5 +299,6 @@ public class Icd10 {
         }
 
         public abstract T parse(String line);
+        public abstract void reset();
     }
 }
