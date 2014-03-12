@@ -1,7 +1,7 @@
 package se.inera.statistics.warehouse
 
 import se.inera.statistics.context.StartUp
-import se.inera.statistics.service.helper.DocumentHelper
+import se.inera.statistics.service.helper.ConversionHelper
 import se.inera.statistics.service.warehouse.Aisle
 import se.inera.statistics.service.warehouse.Sjukfall
 import se.inera.statistics.service.warehouse.SjukfallWithDiagnos
@@ -16,7 +16,7 @@ class Info {
     int sjukskrivningsgrad
 
     String getPersonLines() {
-        int person = DocumentHelper.patientIdToInt(personId)
+        int person = ConversionHelper.patientIdToInt(personId)
         Iterator<Fact> lines = extractPersonLines(person).iterator()
         StringBuilder sb = new StringBuilder()
         while (lines.hasNext()) {
@@ -29,7 +29,7 @@ class Info {
     }
 
     String getSjukfall() {
-        int person = DocumentHelper.patientIdToInt(personId)
+        int person = ConversionHelper.patientIdToInt(personId)
         List<Fact> lineList = extractPersonLines(person)
         Iterator<Fact> lines = sortByDate(lineList)
 
@@ -54,7 +54,7 @@ class Info {
     }
 
     String getSjukfallWithDiagnos() {
-        int person = DocumentHelper.patientIdToInt(personId)
+        int person = ConversionHelper.patientIdToInt(personId)
         List<Fact> lineList = extractPersonLines(person)
         Iterator<Fact> lines = sortByDate(lineList)
 
@@ -79,7 +79,7 @@ class Info {
     }
 
     String getSjukfallWithSjukskrivningsgrad() {
-        int person = DocumentHelper.patientIdToInt(personId)
+        int person = ConversionHelper.patientIdToInt(personId)
         List<Fact> lineList = extractPersonLinesForSjukskrivningsgrad(person, sjukskrivningsgrad)
         Iterator<Fact> lines = sortByDate(lineList)
 

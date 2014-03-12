@@ -21,14 +21,10 @@ package se.inera.statistics.service.helper;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import org.joda.time.LocalDate;
-import org.joda.time.Period;
 import org.joda.time.format.ISODateTimeFormat;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public final class DocumentHelper {
 
@@ -46,8 +42,8 @@ public final class DocumentHelper {
 
     public static ObjectNode anonymize(JsonNode utlatande) {
         String personId = utlatande.path(PATIENT).path("id").path(EXTENSION).textValue();
-        int alder = extractAlder(personId, ISODateTimeFormat.dateTimeParser().parseLocalDate(utlatande.path("signeringsdatum").textValue()));
-        String kon = extractKon(personId);
+        int alder = ConversionHelper.extractAlder(personId, ISODateTimeFormat.dateTimeParser().parseLocalDate(utlatande.path("signeringsdatum").textValue()));
+        String kon = ConversionHelper.extractKon(personId);
 
         ObjectNode anonymous = utlatande.deepCopy();
         ObjectNode patientNode = (ObjectNode) anonymous.path(PATIENT);
@@ -57,17 +53,6 @@ public final class DocumentHelper {
         patientNode.put("alder", alder);
         patientNode.put("kon", kon);
         return anonymous;
-    }
-
-    protected static String extractKon(String personId) {
-        return personId.charAt(SEX_DIGIT) % 2 == 0 ? "kvinna" : "man";
-    }
-
-    protected static int extractAlder(String personId, LocalDate start) {
-        LocalDate birthDate = ISODateTimeFormat.basicDate().parseLocalDate(personId.substring(0, DATE_PART_OF_PERSON_ID));
-        LocalDate referenceDate = new LocalDate(start);
-        Period period = new Period(birthDate, referenceDate);
-        return period.getYears();
     }
 
     public static String getPersonId(JsonNode document) {
@@ -143,14 +128,8 @@ public final class DocumentHelper {
         return document.path(PATIENT).path("alder").intValue();
     }
 
-    private static IdMap<String> enhetsMap = new IdMap<>();
-
     public static int getEnhetAndRemember(JsonNode document) {
-        return enhetsMap.getId(getEnhetId(document));
-    }
-
-    public static int getEnhetAndRemember(String id) {
-        return enhetsMap.getId(id);
+        return ConversionHelper.getEnhetAndRemember(getEnhetId(document));
     }
 
     public static int getLakarIntyg(JsonNode document) {
@@ -158,44 +137,13 @@ public final class DocumentHelper {
     }
 
     public static int getPatient(JsonNode document) {
-        return patientIdToInt(getPersonId(document));
-    }
-
-    public static int patientIdToInt(String id) {
-        return Integer.parseInt(id.substring(2, 8)) * 1000 + Integer.parseInt(id.substring(9, 12)) + (1_000_000_000 * (Integer.parseInt(id.substring(0,2)) - 19));
-    }
-
-    /**
-     *
-     * @param id id
-     * @return personnummer med 0 som kontrollsiffra
-     */
-    public static String patientIdToString(int id) {
-        int centuryFactor = (19 + (id < 1_000_000_000 ? 0 : 1));
-        int idWoCentury = id - (id < 1_000_000_000 ? 0 : id - 1_000_000_000);
-        String century = "" + centuryFactor;
-        String date = "" + (idWoCentury / 1000);
-        String seq = "" + (idWoCentury % 1000);
-        return century + date + '-' + seq + '0';
-    }
-
-    private static class IdMap<T> {
-        private final Map<T, Integer> map = new HashMap<T,Integer>();
-        
-        public synchronized Integer getId(T key) {
-            Integer id = map.get(key);
-            if (id == null) {
-                id = map.size() + 1;
-                map.put(key, id);
-            }
-            return id;
-        }
+        return ConversionHelper.patientIdToInt(getPersonId(document));
     }
 
     public static JsonNode prepare(JsonNode utlatande, JsonNode hsaInfo) {
         String personId = utlatande.path("patient").path("id").path("extension").textValue();
-        int alder = extractAlder(personId, ISODateTimeFormat.dateTimeParser().parseLocalDate(utlatande.path("signeringsdatum").textValue()));
-        String kon = extractKon(personId);
+        int alder = ConversionHelper.extractAlder(personId, ISODateTimeFormat.dateTimeParser().parseLocalDate(utlatande.path("signeringsdatum").textValue()));
+        String kon = ConversionHelper.extractKon(personId);
 
         ObjectNode prepared = utlatande.deepCopy();
         ObjectNode patientNode = (ObjectNode) prepared.path("patient");
