@@ -26,7 +26,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import se.inera.statistics.service.helper.DocumentHelper;
+import se.inera.statistics.service.helper.ConversionHelper;
 import se.inera.statistics.service.warehouse.model.db.WideLine;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -72,8 +72,8 @@ public class FactPopulatorTest {
         Assert.assertEquals(1, a.getSize());
         Fact fact = a.iterator().next();
         Assert.assertEquals(23, fact.getAlder());
-        Assert.assertEquals(patientId, DocumentHelper.patientIdToString(fact.getPatient()));
-        Assert.assertEquals(DocumentHelper.getEnhetAndRemember(enhet), fact.getEnhet());
+        Assert.assertEquals(patientId, ConversionHelper.patientIdToString(fact.getPatient()));
+        Assert.assertEquals(ConversionHelper.getEnhetAndRemember(enhet), fact.getEnhet());
         Assert.assertEquals(78002, fact.getForsamling());
         Assert.assertEquals(780, fact.getKommun());
         Assert.assertEquals(7, fact.getLan());

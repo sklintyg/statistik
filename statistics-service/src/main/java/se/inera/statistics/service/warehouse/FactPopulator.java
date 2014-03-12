@@ -21,7 +21,7 @@ package se.inera.statistics.service.warehouse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import se.inera.statistics.service.helper.DocumentHelper;
+import se.inera.statistics.service.helper.ConversionHelper;
 import se.inera.statistics.service.report.util.Icd10;
 
 import javax.sql.DataSource;
@@ -58,9 +58,9 @@ public class FactPopulator {
                 System.out.println("Reading line: " + ++lineNo);
                 int id = resultSet.getInt("id");
                 String lkf = resultSet.getString("lkf");
-                int enhet = DocumentHelper.getEnhetAndRemember(resultSet.getString("enhet"));
+                int enhet = ConversionHelper.getEnhetAndRemember(resultSet.getString("enhet"));
                 int intyg = resultSet.getInt("lakarintyg");
-                int patientid = DocumentHelper.patientIdToInt(resultSet.getString("patientid"));
+                int patientid = ConversionHelper.patientIdToInt(resultSet.getString("patientid"));
                 int startdatum = resultSet.getInt("startdatum");
                 int slutdatum = resultSet.getInt("slutdatum");
                 int sjukskrivningslangd = slutdatum - startdatum + 1;

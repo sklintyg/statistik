@@ -1,14 +1,11 @@
 package se.inera.statistics.service.helper;
 
-import static junit.framework.Assert.assertEquals;
-import static org.junit.Assert.assertEquals;
-
+import com.fasterxml.jackson.databind.JsonNode;
 import org.joda.time.LocalDate;
 import org.junit.Test;
-
 import se.inera.statistics.service.JSONSource;
 
-import com.fasterxml.jackson.databind.JsonNode;
+import static junit.framework.Assert.assertEquals;
 
 public class DocumentHelperTest {
 
@@ -34,7 +31,7 @@ public class DocumentHelperTest {
         String personId = "19121212-1212";
         LocalDate date = new LocalDate(0L); // 1970
 
-        int alder = DocumentHelper.extractAlder(personId, date);
+        int alder = ConversionHelper.extractAlder(personId, date);
 
         assertEquals(57, alder);
     }
@@ -43,7 +40,7 @@ public class DocumentHelperTest {
     public void processor_extract_kon_man_from_intyg() {
         String personId = "19121212-1212";
 
-        String kon = DocumentHelper.extractKon(personId);
+        String kon = ConversionHelper.extractKon(personId);
 
         assertEquals("man", kon);
     }
@@ -52,7 +49,7 @@ public class DocumentHelperTest {
     public void processor_extract_kon_kvinna_from_intyg() {
         String personId = "19121212-0000";
 
-        String kon = DocumentHelper.extractKon(personId);
+        String kon = ConversionHelper.extractKon(personId);
 
         assertEquals("kvinna", kon);
     }
