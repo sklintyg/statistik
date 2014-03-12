@@ -1,6 +1,6 @@
 package se.inera.statistics.service.report.repository;
 
-import junit.framework.Assert;
+import org.junit.Assert;
 
 import org.joda.time.LocalDate;
 import org.junit.Test;
