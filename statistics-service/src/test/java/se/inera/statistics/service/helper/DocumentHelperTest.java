@@ -6,7 +6,6 @@ import org.junit.Test;
 import se.inera.statistics.service.JSONSource;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertEquals;
 
 public class DocumentHelperTest {
 
@@ -68,5 +67,11 @@ public class DocumentHelperTest {
 
         assertEquals("2011-02-20", date);
     }
+
+    @Test
+    public void getIntygId() {
+        assertEquals("80832895-5a9c-450a-bd74-08af43750788", DocumentHelper.getIntygId(document));
+    }
+
     // CHECKSTYLE:ON MagicNumber
 }

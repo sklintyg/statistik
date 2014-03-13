@@ -38,14 +38,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import se.inera.statistics.service.helper.DocumentHelper;
 import se.inera.statistics.service.hsa.HSAKey;
 import se.inera.statistics.service.hsa.HSAService;
-import se.inera.statistics.service.report.model.Avsnitt;
 import se.inera.statistics.service.report.util.DiagnosUtil;
+import se.inera.statistics.service.report.util.Icd10;
+import se.inera.statistics.service.report.util.Icd10.Kapitel;
+import se.inera.statistics.service.report.util.Icd10.Avsnitt;
+import se.inera.statistics.service.report.util.Icd10.Kategori;
 import se.inera.statistics.service.warehouse.Aisle;
+import se.inera.statistics.service.warehouse.FactPopulator;
 import se.inera.statistics.service.warehouse.Warehouse;
 import se.inera.statistics.service.helper.UtlatandeBuilder;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import se.inera.statistics.service.warehouse.Fact;
+import se.inera.statistics.service.warehouse.WidelineConverter;
+import se.inera.statistics.service.warehouse.model.db.WideLine;
 
 public class LargeTestDataGenerator {
     private static final int NUMBER_OF_UNITS = 3000;
@@ -81,17 +87,29 @@ public class LargeTestDataGenerator {
     @Autowired
     private HSAService hsaService;
 
+    @Autowired
+    private WidelineConverter widelineConverter;
+
+    @Autowired
+    private FactPopulator factPopulator;
+
+    @Autowired
+    private Icd10 icd10;
+
     @PostConstruct
     public void init() {
-        for (Avsnitt mainGroup: DiagnosUtil.getKapitel()) {
-            for (Avsnitt group: diagnosisGroupsUtil.getAvsnittForKapitel(mainGroup.getId())) {
-                DIAGNOSER.add(group.getId().split("-")[0]);
+        for (Kapitel kapitel: icd10.getKapitel()) {
+            for (Avsnitt avsnitt : kapitel.getAvsnitt()) {
+                for (Kategori kategori: avsnitt.getKategori()) {
+                    DIAGNOSER.add(kategori.getId());
+                }
             }
         }
     }
 
     public void publishUtlatanden() {
         UtlatandeBuilder builder = new UtlatandeBuilder();
+        int count = 0;
         LocalDate lastDay = BASE.plusMonths(MONTHS);
         for (LocalDate now = BASE; !now.isAfter(lastDay); now = now.plusDays(1)) {
             for (int i = 0; i < INTYG_PER_DAY; i++) {
@@ -101,7 +119,8 @@ public class LargeTestDataGenerator {
                 JsonNode hsaInfo = hsaService.getHSAInfo(hsaKey);
                 JsonNode document = DocumentHelper.prepare(utlatande, hsaInfo);
                 try {
-                    warehouse.accept(document);
+                    WideLine wideLine = widelineConverter.toWideline(document, hsaInfo, count++);
+                    factPopulator.accept(wideLine);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

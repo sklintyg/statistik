@@ -32,13 +32,13 @@ import se.inera.statistics.service.warehouse.model.db.WideLine;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath:process-log-impl-test.xml", "classpath:icd10-test.xml" })
 @DirtiesContext
-public class FactPopulatorTest {
+public class WidelineToWarehouseIntegrationTest {
 
     @Autowired
-    private FactPopulator factPopulator;
+    private WidelineLoader widelineLoader;
 
     @Autowired
-    private WidelineConverter widelineConverter;
+    private WidelineManager widelineManager;
 
     @Autowired
     private Warehouse warehouse;
@@ -64,9 +64,9 @@ public class FactPopulatorTest {
         line1.setSlutdatum(4999);
         line1.setStartdatum(4997);
         line1.setVardgivareId("vg1");
-        widelineConverter.saveWideline(line1);
+        widelineManager.saveWideline(line1);
 
-        factPopulator.populateWarehouse();
+        widelineLoader.populateWarehouse();
 
         Aisle a = warehouse.get("vg1");
         Assert.assertEquals(1, a.getSize());

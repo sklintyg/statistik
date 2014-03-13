@@ -17,7 +17,7 @@ public class Fact {
     int kommun;
     int forsamling;
     int enhet;
-    int lakarintyg;
+    long lakarintyg;
     int patient;
     int kalenderperiod;
     int kon;
@@ -31,7 +31,7 @@ public class Fact {
     int lakaralder;
     int lakarbefattning;
 
-    public Fact(int lan, int kommun, int forsamling, int enhet, int lakarintyg, int patient, int kalenderperiod, int kon, int alder, int diagnoskapitel, int diagnosavsnitt, int diagnoskategori, int sjukskrivningsgrad, int sjukskrivningslangd, int lakarkon, int lakaralder, int lakarbefattning) {
+    public Fact(int lan, int kommun, int forsamling, int enhet, long lakarintyg, int patient, int kalenderperiod, int kon, int alder, int diagnoskapitel, int diagnosavsnitt, int diagnoskategori, int sjukskrivningsgrad, int sjukskrivningslangd, int lakarkon, int lakaralder, int lakarbefattning) {
         this.lan = lan;
         this.kommun = kommun;
         this.forsamling = forsamling;

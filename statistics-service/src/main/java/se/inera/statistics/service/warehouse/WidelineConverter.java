@@ -3,53 +3,38 @@ package se.inera.statistics.service.warehouse;
 import com.fasterxml.jackson.databind.JsonNode;
 import org.joda.time.Days;
 import org.joda.time.LocalDate;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import se.inera.statistics.service.helper.DocumentHelper;
 import se.inera.statistics.service.helper.HSAServiceHelper;
 import se.inera.statistics.service.report.util.Icd10;
 import se.inera.statistics.service.report.util.Icd10.Kategori;
-import se.inera.statistics.service.sjukfall.SjukfallInfo;
 import se.inera.statistics.service.warehouse.model.db.WideLine;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
 @Component
 public class WidelineConverter {
 
-    private static final Logger LOG = LoggerFactory.getLogger(WidelineConverter.class);
     private static final LocalDate ERA = new LocalDate("2000-01-01");
     public static final int QUARTER = 25;
     public static final int HALF = 50;
     public static final int THREE_QUARTER = 75;
     public static final int FULL = 100;
 
-    @PersistenceContext(unitName = "IneraStatisticsLog")
-    private EntityManager manager;
-
     @Autowired
     private Icd10 icd10;
 
-    @Transactional
-    public void accept(JsonNode intyg, JsonNode hsa, long logId) {
+    public WideLine toWideline(JsonNode intyg, JsonNode hsa, long logId) {
         WideLine line = new WideLine();
 
-        List<String> errors = new ArrayList<>();
-
         String lkf = getLkf(hsa);
-        checkField(errors, lkf, "LKF");
 
         String enhet = DocumentHelper.getEnhetId(intyg);
-        checkField(errors, enhet, "Enhet");
+        String vardgivare = DocumentHelper.getVardgivareId(intyg);
 
         String patient = DocumentHelper.getPersonId(intyg);
-        checkField(errors, patient, "Patient");
 
         int kon = DocumentHelper.getKon(intyg).indexOf('k');
         int alder = DocumentHelper.getAge(intyg);
@@ -57,15 +42,22 @@ public class WidelineConverter {
         LocalDate kalenderStart = new LocalDate(DocumentHelper.getForstaNedsattningsdag(intyg));
         LocalDate kalenderEnd = new LocalDate(DocumentHelper.getSistaNedsattningsdag(intyg));
 
-        Kategori kategori = icd10.getKategori(icd10.normalize(DocumentHelper.getDiagnos(intyg)));
-        checkField(errors, kategori.getId(), "Diagnoskategori");
+        Kategori kategori = icd10.findKategori(DocumentHelper.getDiagnos(intyg));
 
-        String diagnoskapitel = kategori.getAvsnitt().getKapitel().getId();
-        String diagnosavsnitt = kategori.getAvsnitt().getId();
-        String diagnoskategori = kategori.getId();
+        String diagnoskapitel;
+        String diagnosavsnitt;
+        String diagnoskategori;
+        if (kategori != null) {
+            diagnoskapitel = kategori.getAvsnitt().getKapitel().getId();
+            diagnosavsnitt = kategori.getAvsnitt().getId();
+            diagnoskategori = kategori.getId();
+        } else {
+            diagnoskapitel = null;
+            diagnosavsnitt = null;
+            diagnoskategori = null;
+        }
 
         int sjukskrivningsgrad = 100 - Integer.parseInt(DocumentHelper.getArbetsformaga(intyg).get(0));
-        checkSjukskrivningsgrad(errors, sjukskrivningsgrad);
 
         int lakarkon = HSAServiceHelper.getLakarkon(hsa);
         int lakaralder = HSAServiceHelper.getLakaralder(hsa);
@@ -74,6 +66,7 @@ public class WidelineConverter {
         line.setLakarintyg(logId);
         line.setLkf(lkf);
         line.setEnhet(enhet);
+        line.setVardgivareId(vardgivare);
 
         line.setStartdatum(toDay(kalenderStart));
         line.setSlutdatum(toDay(kalenderEnd));
@@ -89,17 +82,7 @@ public class WidelineConverter {
         line.setLakaralder(lakaralder);
         line.setLakarkon(lakarkon);
         line.setLakarbefattning(lakarbefattning);
-
-        if (errors.isEmpty()) {
-            manager.persist(line);
-        } else {
-            StringBuilder errorBuilder = new StringBuilder("Faulty line detected: ");
-            for (String error : errors) {
-                errorBuilder.append('\n').append(error);
-            }
-            errorBuilder.append('\n').append('\n').append("for intyg: ").append('\n');
-            LOG.error(errorBuilder.toString());
-        }
+        return line;
     }
 
     private void checkSjukskrivningsgrad(List<String> errors, int grad) {
@@ -114,11 +97,6 @@ public class WidelineConverter {
         }
     }
 
-    @Transactional
-    public void saveWideline(WideLine line) {
-        manager.persist(line);
-    }
-
     private String getLkf(JsonNode hsa) {
         String lkf = HSAServiceHelper.getKommun(hsa);
         if (lkf.isEmpty()) {
@@ -131,7 +109,13 @@ public class WidelineConverter {
         return Days.daysBetween(ERA, dayDate).getDays();
     }
 
-    public int count() {
-        return manager.createQuery("SELECT wl FROM WideLine wl").getResultList().size();
+    public List<String> validate(WideLine line) {
+        List<String> errors = new ArrayList<>();
+        checkField(errors, line.getLkf(), "LKF");
+        checkField(errors, line.getEnhet(), "Enhet");
+        checkField(errors, line.getPatientid(), "Patient");
+        checkField(errors, line.getDiagnoskategori(), "Diagnoskategori");
+        checkSjukskrivningsgrad(errors, line.getSjukskrivningsgrad());
+        return errors;
     }
 }

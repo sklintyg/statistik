@@ -25,9 +25,10 @@ import se.inera.statistics.service.hsa.HSAService;
 import se.inera.statistics.service.hsa.HSAServiceMock;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import se.inera.statistics.service.warehouse.model.db.WideLine;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "classpath:warehouse-test.xml" })
+@ContextConfiguration(locations = { "classpath:warehouse-test.xml", "classpath:icd10-test.xml"  })
 public class WarehouseTest {
 
     private HSAService hsaService = new HSAServiceMock();
@@ -41,17 +42,22 @@ public class WarehouseTest {
     @Autowired 
     private LargeTestDataGenerator dataGenerator;
 
+    @Autowired
+    private WidelineConverter widelineConverter;
+
+    @Autowired
+    private FactPopulator factPopulator;
+
     @Test
-    @Ignore
     public void addingIntygAddsToCorrectAisle() {
         JsonNode document = DocumentHelper.prepare(rawDocument, hsaInfo);
-        warehouse.accept(document);
+        WideLine wideLine = widelineConverter.toWideline(document, hsaInfo, 0);
+        factPopulator.accept(wideLine);
         Aisle aisle = warehouse.get("VardgivarId");
         assertEquals(1, aisle.getSize());
     }
 
     @Test
-    @Ignore
     public void addingManyIntyg() throws InterruptedException {
         System.err.println(warehouse);
         showMem(); 
@@ -84,7 +90,6 @@ public class WarehouseTest {
     }
 
     @Test
-    @Ignore
     public void exportManyIntyg() throws FileNotFoundException {
         dataGenerator.publishUtlatanden();
 

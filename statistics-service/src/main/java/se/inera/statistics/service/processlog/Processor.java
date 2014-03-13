@@ -32,6 +32,7 @@ import se.inera.statistics.service.sjukfall.SjukfallInfo;
 import se.inera.statistics.service.sjukfall.SjukfallKey;
 import se.inera.statistics.service.sjukfall.SjukfallService;
 import se.inera.statistics.service.warehouse.WidelineConverter;
+import se.inera.statistics.service.warehouse.WidelineManager;
 
 import static se.inera.statistics.service.helper.DocumentHelper.getForstaNedsattningsdag;
 import static se.inera.statistics.service.helper.DocumentHelper.getPersonId;
@@ -49,7 +50,7 @@ public class Processor {
     private SjukfallService sjukfallService;
 
     @Autowired
-    private WidelineConverter widelineConverter;
+    private WidelineManager widelineManager;
 
     private LocalDate cleanedup;
     private int processedCounter;
@@ -64,7 +65,7 @@ public class Processor {
         listener.accept(sjukfallInfo, anonymous, hsa, logId);
 
         ObjectNode preparedDoc = DocumentHelper.prepare(utlatande);
-        widelineConverter.accept(preparedDoc, hsa, logId);
+        widelineManager.accept(preparedDoc, hsa, logId);
 
         processedCounter++;
     }

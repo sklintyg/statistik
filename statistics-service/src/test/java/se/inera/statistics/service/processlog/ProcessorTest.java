@@ -15,6 +15,7 @@ import se.inera.statistics.service.sjukfall.SjukfallInfo;
 import se.inera.statistics.service.sjukfall.SjukfallKey;
 import se.inera.statistics.service.sjukfall.SjukfallService;
 import se.inera.statistics.service.warehouse.WidelineConverter;
+import se.inera.statistics.service.warehouse.WidelineManager;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNull;
@@ -36,7 +37,7 @@ public class ProcessorTest {
     private SjukfallService sjukfallService = mock(SjukfallService.class);
 
     @Mock
-    private WidelineConverter widelineConverter = mock(WidelineConverter.class);
+    private WidelineManager widelineManager = mock(WidelineManager.class);
 
     @InjectMocks
     private Processor processor = new Processor();

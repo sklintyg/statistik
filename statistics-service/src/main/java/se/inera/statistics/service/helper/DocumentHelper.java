@@ -134,16 +134,8 @@ public final class DocumentHelper {
         return document.path(PATIENT).path("alder").intValue();
     }
 
-    public static int getEnhetAndRemember(JsonNode document) {
-        return ConversionHelper.getEnhetAndRemember(getEnhetId(document));
-    }
-
-    public static int getLakarIntyg(JsonNode document) {
-        return 0;
-    }
-
-    public static int getPatient(JsonNode document) {
-        return ConversionHelper.patientIdToInt(getPersonId(document));
+    public static String getIntygId(JsonNode document) {
+        return document.path("id").path("root").textValue();
     }
 
     public static JsonNode prepare(JsonNode utlatande, JsonNode hsaInfo) {

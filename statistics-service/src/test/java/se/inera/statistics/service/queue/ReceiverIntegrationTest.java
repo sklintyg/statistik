@@ -18,7 +18,7 @@ import se.inera.statistics.service.report.api.SjukfallPerManad;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.SimpleKonDataRow;
 import se.inera.statistics.service.report.model.SimpleKonResponse;
-import se.inera.statistics.service.warehouse.WidelineConverter;
+import se.inera.statistics.service.warehouse.WidelineManager;
 
 import javax.jms.ConnectionFactory;
 import javax.jms.Destination;
@@ -48,7 +48,7 @@ public class ReceiverIntegrationTest {
     private LogConsumer consumer;
 
     @Autowired
-    private WidelineConverter wideLine;
+    private WidelineManager wideLine;
 
     @Before
     public void setup() {

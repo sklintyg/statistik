@@ -79,7 +79,7 @@ public class Icd10 {
         return kapitels;
     }
 
-    public String normalize(String icd10Code) {
+    static String normalize(String icd10Code) {
         StringBuilder normalized = new StringBuilder(icd10Code.length());
         for (char c : icd10Code.toUpperCase().toCharArray()) {
             if ('A' <= c && c <= 'Z' || '0' <= c && c <= '9') {
@@ -99,6 +99,11 @@ public class Icd10 {
 
     public Kapitel getKapitel(String diagnoskapitel) {
         return idToKapitelMap.get(diagnoskapitel);
+    }
+
+    public Kategori findKategori(String rawCode) {
+        String normalized = normalize(rawCode);
+        return getKategori(normalized);
     }
 
     public static class IdMap<T extends Id> extends HashMap<String, T> {
@@ -151,7 +156,7 @@ public class Icd10 {
         private final List<Avsnitt> avsnitt = new ArrayList<>();
 
         public Kapitel(String range, String name) {
-            super(range, name);
+            super(range.toUpperCase(), name);
         }
 
         public static Kapitel valueOf(String line) {
@@ -170,7 +175,7 @@ public class Icd10 {
         private final List<Kategori> kategori;
 
         public Avsnitt(String range, String name, Kapitel kapitel) {
-            super(range, name);
+            super(range.toUpperCase(), name);
             this.kapitel = kapitel;
             kategori = new ArrayList<>();
         }
@@ -210,7 +215,7 @@ public class Icd10 {
         private final Avsnitt avsnitt;
 
         public Kategori(String id, String name, Avsnitt avsnitt) {
-            super(id, name);
+            super(id.toUpperCase(), name);
             this.avsnitt = avsnitt;
         }
 
