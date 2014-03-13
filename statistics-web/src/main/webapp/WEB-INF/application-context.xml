@@ -98,6 +98,23 @@
         <bean id="nationalPercistenceHandler"
               class="se.inera.statistics.service.report.repository.NationellPersistenceHandler"/>
         <bean id="healthcheckUtil" class="se.inera.statistics.web.util.HealthCheckUtil"/>
+
+        <bean id="warehouse" class="se.inera.statistics.service.warehouse.Warehouse" />
+
+        <bean id="factPopulator" class="se.inera.statistics.service.warehouse.FactPopulator" />
+        <bean id="widelineConverter" class="se.inera.statistics.service.warehouse.WidelineConverter" />
+
+        <bean class="org.springframework.core.io.ClassPathResource" id="icd10KapitelAnsiFile" >
+            <constructor-arg value="icd10/KSH97_KAP.ANS"/>
+        </bean>
+        <bean class="org.springframework.core.io.ClassPathResource" id="icd10AvsnittAnsiFile" >
+            <constructor-arg value="icd10/KSH97_AVS.ANS"/>
+        </bean>
+        <bean class="org.springframework.core.io.ClassPathResource" id="icd10KategoriAnsiFile" >
+            <constructor-arg value="icd10/KSH97_KAT.ANS"/>
+        </bean>
+
+        <bean class="se.inera.statistics.service.report.util.Icd10" />
     </beans>
 
     <beans profile="!test,!db,!qa">
@@ -133,7 +150,6 @@
         <bean class="se.inera.statistics.service.report.repository.SjukfallPerLanPersistenceHandler"
               id="casesPerCounty"/>
 
-        <bean id="warehouse" class="se.inera.statistics.service.warehouse.Warehouse" />
         <bean id="dataGenerator" class="se.inera.statistics.service.demo.LargeTestDataGenerator" />
         <bean id="warehouseTest" class="se.inera.statistics.service.warehouse.WarehouseOnlineTest" lazy-init="false"/>
     </beans>
