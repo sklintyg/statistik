@@ -5,7 +5,8 @@ import org.joda.time.LocalDate;
 import org.junit.Test;
 import se.inera.statistics.service.JSONSource;
 
-import static junit.framework.Assert.assertEquals;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertEquals;
 
 public class DocumentHelperTest {
 
