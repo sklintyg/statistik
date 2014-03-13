@@ -18,8 +18,8 @@ public class SjukfallWithDiagnos extends Sjukfall {
      */
     @Override
     public SjukfallWithDiagnos join(Fact line) {
-        int lineEnd = line.kalenderperiod + line.sjukskrivningslangd;
-        if (end + MAX_GAP + 1 < line.kalenderperiod) {
+        int lineEnd = line.startdatum + line.sjukskrivningslangd;
+        if (end + MAX_GAP + 1 < line.startdatum) {
             return new SjukfallWithDiagnos(line);
         } else {
             end = lineEnd;

@@ -100,6 +100,7 @@
         <bean id="healthcheckUtil" class="se.inera.statistics.web.util.HealthCheckUtil"/>
 
         <bean id="warehouse" class="se.inera.statistics.service.warehouse.Warehouse" />
+        <bean id="warehouseManager" class="se.inera.statistics.service.warehouse.WarehouseManager" />
 
         <bean id="factPopulator" class="se.inera.statistics.service.warehouse.FactPopulator" />
         <bean id="widelineConverter" class="se.inera.statistics.service.warehouse.WidelineConverter" />
@@ -154,6 +155,7 @@
     </beans>
 
     <beans profile="generatesmalltestdata">
+        <bean class="se.inera.statistics.service.common.CommonPersistenceHandler"/>
         <bean class="se.inera.statistics.service.demo.InjectUtlatande" lazy-init="false"/>
     </beans>
     <beans profile="generatetestdata">

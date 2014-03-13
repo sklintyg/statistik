@@ -41,6 +41,8 @@ public class WidelineLoader {
 
     public void populateWarehouse() {
 
+        System.err.println("Populating");
+        System.err.println(dataSource);
         try (
                 Connection connection = dataSource.getConnection();
                 PreparedStatement stmt = prepareStatement(connection);

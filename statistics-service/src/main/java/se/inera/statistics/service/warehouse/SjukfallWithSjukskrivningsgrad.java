@@ -17,8 +17,8 @@ public class SjukfallWithSjukskrivningsgrad extends Sjukfall {
      * @return join will either return the same, possibly modified (i.e. this), Sjukfall-object, or a new object
      */
     public SjukfallWithSjukskrivningsgrad join(Fact line) {
-        int lineEnd = line.kalenderperiod + line.sjukskrivningslangd;
-        if (end + MAX_GAP + 1 < line.kalenderperiod) {
+        int lineEnd = line.startdatum + line.sjukskrivningslangd;
+        if (end + MAX_GAP + 1 < line.startdatum) {
             return new SjukfallWithSjukskrivningsgrad(line);
         } else {
             end = lineEnd;

@@ -32,7 +32,8 @@
      <property name="server" ref="mbeanServer"/>
      <property name="beans">
        <map>
-         <entry key="inera-statistics:name=NationellUpdater" value-ref="nationalPercistenceHandler"/>
+           <entry key="inera-statistics:name=NationellUpdater" value-ref="nationalPercistenceHandler"/>
+           <entry key="inera-statistics:name=WarehouseManager" value-ref="warehouseManager"/>
        </map>
      </property>
      <property name="registrationBehaviorName" value="REGISTRATION_REPLACE_EXISTING"/>

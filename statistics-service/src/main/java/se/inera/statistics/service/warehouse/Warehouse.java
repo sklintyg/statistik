@@ -5,9 +5,10 @@ import se.inera.statistics.service.helper.DocumentHelper;
 
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
-public class Warehouse {
+public class Warehouse implements Iterable<Aisle> {
 
     private final Map<String, Aisle> aisles = new HashMap<>();
 
@@ -39,5 +40,14 @@ public class Warehouse {
 
     public Map<String, Aisle> getAllVardgivare() {
         return Collections.unmodifiableMap(aisles);
+    }
+
+    public void clear() {
+        aisles.clear();
+    }
+
+    @Override
+    public Iterator<Aisle> iterator() {
+        return aisles.values().iterator();
     }
 }
