@@ -255,7 +255,7 @@ public class BasicWebappWalkthrough {
     
     public boolean översiktssidanFörVerksamhetVisas() {
         Browser.drive {
-            waitFor { at VerksamhetOverviewPage }
+            waitFor(20) { at VerksamhetOverviewPage }
         }
     }
     
