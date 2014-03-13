@@ -86,7 +86,7 @@ public class WidelineConverter {
     }
 
     private void checkSjukskrivningsgrad(List<String> errors, int grad) {
-        if (!(grad == 0 || grad == QUARTER || grad == HALF || grad == THREE_QUARTER || grad == FULL)) {
+        if (!(grad == QUARTER || grad == HALF || grad == THREE_QUARTER || grad == FULL)) {
             errors.add("Illegal sjukskrivningsgrad: " + grad);
         }
     }

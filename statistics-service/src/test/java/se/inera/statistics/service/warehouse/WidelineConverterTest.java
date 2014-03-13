@@ -20,10 +20,87 @@
 package se.inera.statistics.service.warehouse;
 
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import se.inera.statistics.service.warehouse.model.db.WideLine;
 
+import java.util.List;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations = {"classpath:warehouse-test.xml", "classpath:icd10-test.xml" })
 public class WidelineConverterTest {
-    @Test
-    public void testAccept() throws Exception {
 
+    private static final Logger LOG = LoggerFactory.getLogger(WidelineConverterTest.class);
+
+    WideLine wideLine = new WideLine(1,"256002", "enhet", 1, "19121212-1212", 4000, 4021, 0, 45, "A00", "A00-A09", "A00-B99", 100, 0, 32, "201010", "vardgivare");
+    @Autowired
+    private WidelineConverter converter;
+
+    @Test
+    public void noErrorsOnValidLine() throws Exception {
+        List<String> errors = converter.validate(wideLine);
+        assertEquals(0, errors.size());
+    }
+
+    @Test
+    public void errorOnIncorrectSjukskrivningsgrad() throws Exception {
+        wideLine.setSjukskrivningsgrad(0);
+        List<String> errors = converter.validate(wideLine);
+
+        LOG.error("Error message: {}", errors);
+        assertEquals(1, errors.size());
+    }
+
+    @Test
+    public void errorOnMissingIcd10() throws Exception {
+        wideLine.setDiagnoskategori(null);
+        List<String> errors = converter.validate(wideLine);
+
+        LOG.error("Error message: {}", errors);
+        assertEquals(1, errors.size());
+    }
+
+    @Test
+    public void errorOnMissingEnhet() throws Exception {
+        wideLine.setEnhet(null);
+        List<String> errors = converter.validate(wideLine);
+
+        LOG.error("Error message: {}", errors);
+        assertEquals(1, errors.size());
+    }
+
+    @Test
+    public void errorOnMissingLkf() throws Exception {
+        wideLine.setLkf("");
+        List<String> errors = converter.validate(wideLine);
+
+        LOG.error("Error message: {}", errors);
+        assertEquals(1, errors.size());
+    }
+
+    @Test
+    public void errorOnPatientId() throws Exception {
+        wideLine.setPatientid("");
+        List<String> errors = converter.validate(wideLine);
+
+        LOG.error("Error message: {}", errors);
+        assertEquals(1, errors.size());
+    }
+
+    @Test
+    public void allErrorsAreReported() throws Exception {
+        List<String> errors = converter.validate(new WideLine());
+
+        LOG.error("Error message: {}", errors);
+        assertEquals(5, errors.size());
     }
 }
