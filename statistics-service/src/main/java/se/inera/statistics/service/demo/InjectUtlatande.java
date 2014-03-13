@@ -31,6 +31,7 @@ import se.inera.statistics.service.processlog.Receiver;
 import se.inera.statistics.service.report.model.Avsnitt;
 import se.inera.statistics.service.report.repository.NationellUpdater;
 import se.inera.statistics.service.report.util.DiagnosUtil;
+import se.inera.statistics.service.report.util.Icd10;
 
 import javax.annotation.PostConstruct;
 import java.io.BufferedReader;
@@ -69,13 +70,15 @@ public class InjectUtlatande {
     private NationellUpdater nationellUpdater;
 
     @Autowired
-    private DiagnosUtil diagnosUtil;
+    private Icd10 icd10;
 
     private List<String> getDiagnoser() {
         if (DIAGNOSER.isEmpty()) {
-            for (Avsnitt mainGroup : DiagnosUtil.getKapitel()) {
-                for (Avsnitt group : diagnosUtil.getAvsnittForKapitel(mainGroup.getId())) {
-                    DIAGNOSER.add(group.getId().split("-")[0]);
+            for (Icd10.Kapitel kapitel: icd10.getKapitel()) {
+                for (Icd10.Avsnitt avsnitt : kapitel.getAvsnitt()) {
+                    for (Icd10.Kategori kategori: avsnitt.getKategori()) {
+                        DIAGNOSER.add(kategori.getId());
+                    }
                 }
             }
         }
