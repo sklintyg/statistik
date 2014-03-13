@@ -26,23 +26,26 @@ public class LoginInfo {
 
     private final String hsaId;
     private final String name;
+    private final Verksamhet defaultVerksamhet;
     private final boolean isVgView;
     private final boolean isFullVgAccess;
     private final boolean loggedIn;
     private final List<Verksamhet> businesses;
 
     public LoginInfo() {
-        this.hsaId = "";
-        this.name = "";
-        this.loggedIn = false;
-        this.businesses = Collections.EMPTY_LIST;
+        loggedIn = false;
+        hsaId = "";
+        name = "";
+        defaultVerksamhet = null;
+        businesses = Collections.emptyList();
         isVgView = false;
         isFullVgAccess = false;
     }
 
-    public LoginInfo(String hsaId, String name, boolean isVgView, boolean isFullVgAccess, List<Verksamhet> businesses) {
+    public LoginInfo(String hsaId, String name, Verksamhet defaultVerksamhet, boolean isVgView, boolean isFullVgAccess, List<Verksamhet> businesses) {
         this.hsaId = hsaId;
         this.name = name;
+        this.defaultVerksamhet = defaultVerksamhet;
         this.isVgView = isVgView;
         this.isFullVgAccess = isFullVgAccess;
         this.loggedIn = true;
@@ -55,6 +58,10 @@ public class LoginInfo {
 
     public String getName() {
         return name;
+    }
+
+    public Verksamhet getDefaultVerksamhet() {
+        return defaultVerksamhet;
     }
 
     public boolean isLoggedIn() {
