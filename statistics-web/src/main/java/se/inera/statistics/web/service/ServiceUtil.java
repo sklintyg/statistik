@@ -57,12 +57,17 @@ public final class ServiceUtil {
                 List<Verksamhet> verksamhets = new ArrayList<>();
                 User realUser = (User) token.getDetails();
                 for (Vardenhet enhet: realUser.getVardenhetList()) {
-                    verksamhets.add(new Verksamhet(enhet.getId(), enhet.getNamn()));
+                    verksamhets.add(toVerksamhet(enhet));
                 }
-                return new LoginInfo(realUser.getHsaId(), realUser.getName(), realUser.hasVgAccess(), realUser.hasFullVgAccess(), verksamhets);
+                Verksamhet defaultVerksamhet = toVerksamhet(realUser.getValdVardenhet());
+                return new LoginInfo(realUser.getHsaId(), realUser.getName(), defaultVerksamhet, realUser.hasVgAccess(), realUser.hasFullVgAccess(), verksamhets);
             }
         }
         return new LoginInfo();
+    }
+
+    private static Verksamhet toVerksamhet(Vardenhet enhet) {
+        return new Verksamhet(enhet.getId(), enhet.getNamn());
     }
 
     static void addSumRow(List<NamedData> rows, boolean includeSumForLastColumn) {

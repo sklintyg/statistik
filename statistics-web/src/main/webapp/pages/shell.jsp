@@ -23,11 +23,13 @@
 <!DOCTYPE html>
 <html lang="sv" id="ng-app" data-ng-app="StatisticsApp">
 <head>
-    <!--[if lte IE 8]>
-    <script src="/js/app/json2.js"></script>
-    <![endif]-->
+    <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-ng-bind="$root.page_title">Inera Statistics Service</title>
 
     <!--[if lte IE 8]>
+    <script src="/js/app/json2.js"></script>
     <script>
         document.createElement('ng-include');
         document.createElement('ng-pluralize');
@@ -38,34 +40,16 @@
         document.createElement('ng:pluralize');
         document.createElement('ng:view');
     </script>
-    <![endif]-->
-
-    <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title data-ng-bind="$root.page_title">Inera Statistics Service</title>
-
-    <!-- Styles -->
-    <!--[if lte IE 8]>
     <link href="<c:url value='/css/inera-statistics.css'/>" rel="stylesheet">
-    <link href="<c:url value='/bootstrap/2.3.2/css/bootstrap.min.css'/>" rel="stylesheet">
+    <link href="<c:url value='/bootstrap/3.1.1/css/bootstrap.min.css'/>" rel="stylesheet">
     <link href="<c:url value='/css/inera-statistics-responsive.css'/>" rel="stylesheet">
-    <link href="<c:url value='/bootstrap/2.3.2/css/bootstrap-responsive.css'/>" rel="stylesheet">
-    <link href="<c:url value='/js/lib/pie/PIE.htc'/>" rel="stylesheet">
     <![endif]-->
     <link href="<c:url value='/css/inera-statistics.css'/>" rel="stylesheet" media="not print">
     <link href="<c:url value='/css/inera-statistics-responsive.css'/>" rel="stylesheet" media="not print">
     <link href="<c:url value='/css/print.css'/>" rel="stylesheet" media="print">
-    <!-- Bootstrap 2.3.2 -->
-    <!--
-    <link href="<c:url value='/bootstrap/2.3.2/css/bootstrap.min.css'/>" rel="stylesheet" media="not print">
-    <link href="<c:url value='/bootstrap/2.3.2/css/bootstrap-responsive.css'/>" rel="stylesheet" media="not print">
-    -->
-    <!-- Bootstrap 3.1.1 -->
+
     <link href="<c:url value='/bootstrap/3.1.1/css/bootstrap.min.css'/>" rel="stylesheet" media="not print">
-    <link href="<c:url value='/bootstrap/3.1.1/css/bootstrap.css.map'/>" rel="stylesheet" media="not print">
     <link href="<c:url value='/bootstrap/3.1.1/css/bootstrap-theme.min.css'/>" rel="stylesheet" media="not print">
-    <link href="<c:url value='/bootstrap/3.1.1/css/bootstrap-theme.css.map'/>" rel="stylesheet" media="not print">
 
     <link rel="icon" type="image/png" href="<c:url value='/img/favicon.ico'/>">
     <security:authorize access="isAuthenticated()">
@@ -95,11 +79,11 @@
                         </a>
                     </div>
                 </div>
-                <div class="col-xs-6 col-sm-2 col-md-2 col-lg-2 pull-left" style="margin-top: 3px; max-width: 190px;">
+                <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2 pull-left" style="margin-top: 3px; max-width: 190px;">
                     <span>Statistiktjänst för ordinerad sjukskrivning</span>
                 </div>
                 <c:if test="${loginVisible}">
-                    <div class="col-xs-6 col-md-7 col-lg-2 pull-right">
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4 pull-right">
                         <div id="business-login-container" ng-hide="isLoggedIn">
                             <span id="business-login-span">För verksamhetsstatistik: </span>
                             <button class="btn" data-ng-click="loginClicked('${applicationScope.loginUrl}')"
@@ -158,7 +142,7 @@
                                  data-parent="#statistics-menu-accordion"
                                  data-ng-class="{active: showNational, collapsed: !showNational}"
                                  data-ng-click="toggleNationalAccordion()">
-                                Nationell statistik<i class="statistict-left-menu-expand-icon"></i>
+                                 <span class="statistics-menu-heading">Nationell statistik</span><i class="statistict-left-menu-expand-icon"></i>
                             </div>
                         </div>
                         <div id="national-statistics-collapse" class="accordion-body collapse navigation-group"
@@ -171,17 +155,16 @@
                                            ctrlname="NationalCasesPerMonthCtrl" navigationaware>Sjukfall, totalt</a>
                                     </li>
                                     <li>
-                                        <a class="menu-item-has-childs" class="has-collapse"
+                                        <a class="menu-item-has-childs"
                                            data-ng-href="#/nationell/diagnosgrupp" id="navDiagnosisGroupsLink"
-                                           ctrlname="NationalDiagnosgruppCtrl" navigationaware>Diagnosgrupp</a>
-                                        <i class="statistict-left-menu-expand-icon" class="accordion-toggle"
-                                           data-toggle="collapse" href="#sub-menu-diagnostics"></i>
+                                           ctrlname="NationalDiagnosgruppCtrl" navigationaware>Diagnosgrupp
+                                        	<i class="statistict-left-menu-expand-icon" data-toggle="collapse" href="#sub-menu-diagnostics"></i>
+                                        </a>
+                                        
                                     </li>
-                                    <ul id="sub-menu-diagnostics"
-                                        class="nav nav-list sub-nav-list accordion-body in collapse">
+                                    <ul id="sub-menu-diagnostics" class="nav nav-list sub-nav-list accordion-body in collapse">
                                         <li><a data-ng-href="#/nationell/diagnosavsnitt" id="navDiagnosisSubGroupsLink"
-                                               ctrlname="NationalDiagnosavsnittCtrl" navigationaware>Enskilt
-                                            diagnoskapitel</a></li>
+                                               ctrlname="NationalDiagnosavsnittCtrl" navigationaware>Enskilt diagnoskapitel</a></li>
                                     </ul>
                                     <li><a data-ng-href="#/nationell/aldersgrupper" id="navAgeGroupsLink"
                                            ctrlname="NationalAgeGroupCtrl" navigationaware>Åldersgrupp</a></li>
@@ -191,16 +174,20 @@
                                     <li><a data-ng-href="#/nationell/sjukskrivningslangd" id="navSickLeaveLengthLink"
                                            ctrlname="NationalSickLeaveLengthCtrl"
                                            navigationaware>Sjukskrivningslängd</a></li>
-                                    <li><a data-ng-href="#/nationell/lan" id="navCountyLink" class="has-collapse"
-                                           ctrlname="NationalCasesPerCountyCtrl" navigationaware>Län</a><i
-                                            class="statistict-left-menu-expand-icon" class="accordion-toggle"
-                                            data-toggle="collapse" href="#sub-menu-cases-per-county"></i></li>
+                                    <li>
+                                    	<a data-ng-href="#/nationell/lan" id="navCountyLink" class="has-collapse"
+                                           ctrlname="NationalCasesPerCountyCtrl" navigationaware>Län
+                                        	<i class="statistict-left-menu-expand-icon accordion-toggle" data-toggle="collapse" href="#sub-menu-cases-per-county"></i> 
+                                        </a>
+                                    </li>
                                     <ul id="sub-menu-cases-per-county"
                                         class="nav nav-list sub-nav-list accordion-body in collapse">
-                                        <li><a class="last-item-in-menu rounded-bottom"
+                                        <li>
+                                        	<a class="last-item-in-menu rounded-bottom"
                                                data-ng-href="#/nationell/andelSjukfallPerKon" id="navCasesPerSexLink"
-                                               ctrlname="NationalCasesPerSexCtrl" navigationaware>Andel sjukfall per
-                                            kön</a></li>
+                                               ctrlname="NationalCasesPerSexCtrl" navigationaware>Andel sjukfall per kön
+                                        	</a>
+                                    	</li>
                                     </ul>
                                 </ul>
                             </div>
@@ -215,9 +202,9 @@
                                      data-parent="#statistics-menu-accordion"
                                      data-ng-class="{active: showOperation, collapsed: !showOperation, disabled: !isLoggedIn}"
                                      data-ng-click="toggleOperationAccordion()">
-                                    <span data-ng-bind="organisationMenuLabel"></span><i
+                                     <span class="statistics-menu-heading" data-ng-bind="organisationMenuLabel"></span><i 
                                         class="statistict-left-menu-expand-icon"></i>
-                                    <!-- Inloggad: Enbart "Verksamhetsstatistik" -->
+                                     <!-- Inloggad: Enbart "Verksamhetsstatistik" -->
                                 </div>
                             </div>
                             <div id="business-statistics-collapse" class="accordion-body collapse navigation-group"
@@ -233,23 +220,24 @@
                                             <a class="menu-item-has-childs"
                                                data-ng-href="#/verksamhet/{{businessId}}/diagnosgrupp"
                                                id="navBusinessDiagnosisGroupsLink" ctrlname="VerksamhetDiagnosgruppCtrl"
-                                               navigationaware>Diagnosgrupp</a>
-                                            <i class="statistict-left-menu-expand-icon" class="accordion-toggle"
-                                               data-toggle="collapse" href="#sub-menu-business-diagnostics"></i>
+                                               navigationaware>Diagnosgrupp
+                                               <i class="statistict-left-menu-expand-icon accordion-toggle" data-toggle="collapse" href="#sub-menu-business-diagnostics"></i>
+                                            </a>
                                         </li>
                                         <ul id="sub-menu-business-diagnostics"
                                             class="nav nav-list sub-nav-list accordion-body in collapse">
                                             <li><a data-ng-href="#/verksamhet/{{businessId}}/diagnosavsnitt"
                                                    id="navBusinessDiagnosisSubGroupsLink"
-                                                   ctrlname="VerksamhetDiagnosavsnittCtrl" navigationaware>Enskilt
-                                                diagnoskapitel</a></li>
+                                                   ctrlname="VerksamhetDiagnosavsnittCtrl" navigationaware>Enskilt diagnoskapitel
+                                                </a>
+                                            </li>
                                         </ul>
                                         <li>
                                             <a data-ng-href="#/verksamhet/{{businessId}}/aldersgrupper"
                                                id="navBusinessAgeGroupsLink" ctrlname="VerksamhetAgeGroupCtrl"
-                                               navigationaware>Åldersgrupp</a>
-                                            <i class="statistict-left-menu-expand-icon" class="accordion-toggle"
-                                               data-toggle="collapse" href="#sub-menu-business-age-group"></i>
+                                               navigationaware>Åldersgrupp
+                                               <i class="statistict-left-menu-expand-icon accordion-toggle" data-toggle="collapse" href="#sub-menu-business-age-group"></i>
+                                            </a>
                                         </li>
                                         <ul id="sub-menu-business-age-group"
                                             class="nav nav-list sub-nav-list accordion-body in collapse">
@@ -266,9 +254,9 @@
                                             <a class="menu-item-has-childs has-collapse"
                                                data-ng-href="#/verksamhet/{{businessId}}/sjukskrivningslangd"
                                                id="navBusinessSickLeaveLengthLink"
-                                               ctrlname="VerksamhetSickLeaveLengthCtrl" navigationaware>Sjukskrivningslängd</a>
-                                            <i class="statistict-left-menu-expand-icon" class="accordion-toggle"
-                                               data-toggle="collapse" href="#sub-menu-business-sick-leave-length"></i>
+                                               ctrlname="VerksamhetSickLeaveLengthCtrl" navigationaware>Sjukskrivningslängd
+                                            	<i class="statistict-left-menu-expand-icon accordion-toggle" data-toggle="collapse" href="#sub-menu-business-sick-leave-length"></i>
+                                            </a>
                                         </li>
                                         <ul id="sub-menu-business-sick-leave-length"
                                             class="nav nav-list sub-nav-list accordion-body in collapse">
@@ -295,7 +283,7 @@
                             <div class="accordion-toggle first-level-menu"
                                  data-ng-class="{active: showAbout, collapsed: !showAbout}"
                                  data-ng-click="toggleAboutAccordion()">
-                                Om tjänsten<i class="statistict-left-menu-expand-icon"></i>
+                                 <span class="statistics-menu-heading">Om tjänsten</span><i class="statistict-left-menu-expand-icon"></i>
                             </div>
                         </div>
                         <div id="about-statistics-collapse" class="accordion-body collapse navigation-group"
@@ -333,25 +321,20 @@
 
 <!-- Scripts -->
 <!-- Placed at the end of the document so the pages load faster -->
-<!--[if lte IE 8]>
-<script type="text/javascript" src="<c:url value='/js/lib/respond/1.3.0/respond.min.js'/>"></script>
-<![endif]-->
 <!--[if lt IE 9]>
+<script type="text/javascript" src="<c:url value='/js/lib/respond/1.3.0/respond.min.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/html5shiv.js'/>"></script>
+<script type="text/javascript" src="<c:url value='/js/app/css3-mediaqueries.js'/>"></script>
 <![endif]-->
 <script type="text/javascript" src="<c:url value='/js/lib/jquery/1.10.2/jquery.min.js'/>"></script>
-<!-- <script type="text/javascript" src="<c:url value='/bootstrap/2.3.2/js/bootstrap.min.js'/>"></script>  -->
 <script type="text/javascript" src="<c:url value='/bootstrap/3.1.1/js/bootstrap.min.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/lib/angularjs/1.2.14/angular.min.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/lib/angularjs/1.2.14/angular-cookies.min.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/lib/angularjs/1.2.14/angular-route.min.js'/>"></script>
-<script type="text/javascript"
-        src="<c:url value='/js/lib/ui-bootstrap/0.10.0/ui-bootstrap-tpls-0.10.0.min.js'/>"></script>
+<script type="text/javascript" src="<c:url value='/js/lib/ui-bootstrap/0.10.0/ui-bootstrap-tpls-0.10.0.min.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/app.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/factories.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/controller/common.js'/>"></script>
-<script type="text/javascript" src="<c:url value='/js/app/html5shiv.js'/>"></script>
-<script type="text/javascript" src="<c:url value='/js/app/css3-mediaqueries.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/lib/respond/1.3.0/respond.min.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/controller/singleLineChartCtrl.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/controller/doubleAreaChartsCtrl.js'/>"></script>
@@ -366,11 +349,10 @@
 <script type="text/javascript" src="<c:url value='/js/app/controllers.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/directives.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/filters.js'/>"></script>
-<!--script type="text/javascript" src="<c:url value='/js/app/inera-statistics-style.js'/>" ></script -->
-<script type="text/javascript" src="<c:url value='js/lib/highcharts/3.0.5/highcharts.js'/>"></script>
-<script type="text/javascript" src="<c:url value='js/lib/highcharts/3.0.5/modules/highcharts-more.js'/>"></script>
-<script type="text/javascript" src="<c:url value='js/lib/highcharts/3.0.5/modules/exporting.js'/>"></script>
-<script type="text/javascript" src="<c:url value='js/lib/highcharts/pattern-fill/pattern-fill.js'/>"></script>
+<script type="text/javascript" src="<c:url value='/js/lib/highcharts/3.0.5/highcharts.js'/>"></script>
+<script type="text/javascript" src="<c:url value='/js/lib/highcharts/3.0.5/modules/highcharts-more.js'/>"></script>
+<script type="text/javascript" src="<c:url value='/js/lib/highcharts/3.0.5/modules/exporting.js'/>"></script>
+<script type="text/javascript" src="<c:url value='/js/lib/highcharts/pattern-fill/pattern-fill.js'/>"></script>
 
 <script type="text/javascript">
     $('.dropdown-toggle').dropdown();
