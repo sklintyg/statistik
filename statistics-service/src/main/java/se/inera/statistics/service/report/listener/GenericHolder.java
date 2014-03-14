@@ -20,6 +20,8 @@
 package se.inera.statistics.service.report.listener;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import se.inera.statistics.service.helper.DocumentHelper;
 import se.inera.statistics.service.helper.HSAServiceHelper;
 import se.inera.statistics.service.report.model.Kon;
@@ -27,6 +29,7 @@ import se.inera.statistics.service.report.util.DiagnosUtil;
 import se.inera.statistics.service.sjukfall.SjukfallInfo;
 
 public class GenericHolder {
+    private static final Logger LOG = LoggerFactory.getLogger(GenericHolder.class);
 
     private final SjukfallInfo sjukfallInfo;
     private final JsonNode utlatande;
@@ -37,7 +40,7 @@ public class GenericHolder {
     private String diagnos;
     private String diagnosgrupp;
     private String diagnosundergrupp;
-    private int age;
+    private final int age;
 
     public GenericHolder(SjukfallInfo sjukfallInfo, JsonNode utlatande, JsonNode hsa, DiagnosUtil diagnosUtil) {
         this.sjukfallInfo = sjukfallInfo;
@@ -47,8 +50,14 @@ public class GenericHolder {
         lanId = HSAServiceHelper.getLan(hsa);
         kon = "man".equalsIgnoreCase(DocumentHelper.getKon(utlatande)) ? Kon.Male : Kon.Female;
         diagnos = DocumentHelper.getDiagnos(utlatande);
-        diagnosgrupp = diagnosUtil.getKapitelIdForCode(diagnos);
-        diagnosundergrupp = diagnosUtil.getAvsnittForCode(diagnos).getId();
+        try {
+            diagnosgrupp = diagnosUtil.getKapitelIdForCode(diagnos);
+            diagnosundergrupp = diagnosUtil.getAvsnittForCode(diagnos).getId();
+        } catch (IllegalArgumentException e) {
+            LOG.warn("Parse error: {}. (Ignoring ICD10)", e.getMessage());
+            diagnosgrupp = "UNKNOWN";
+            diagnosundergrupp = "UNKNOWN";
+        }
         age = DocumentHelper.getAge(utlatande);
     }
 
