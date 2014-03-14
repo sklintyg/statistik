@@ -11,7 +11,7 @@ public class Sjukfall {
 
     public Sjukfall(Fact line) {
         start = line.startdatum;
-        end = line.startdatum + line.sjukskrivningslangd;
+        end = line.startdatum + line.sjukskrivningslangd - 1;
         realDays = line.sjukskrivningslangd;
         intygCount++;
     }
@@ -25,7 +25,7 @@ public class Sjukfall {
      * @return join will either return the same, possibly modified (i.e. this), Sjukfall-object, or a new object
      */
     public Sjukfall join(Fact line) {
-        int lineEnd = line.startdatum + line.sjukskrivningslangd;
+        int lineEnd = line.startdatum + line.sjukskrivningslangd - 1;
         if (end + MAX_GAP + 1 < line.startdatum) {
             return new Sjukfall(line);
         } else {

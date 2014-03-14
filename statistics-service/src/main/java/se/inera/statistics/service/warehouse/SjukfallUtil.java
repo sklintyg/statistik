@@ -32,7 +32,7 @@ public final class SjukfallUtil {
         Collection<Sjukfall> sjukfalls = new ArrayList<>();
         Map<Integer, Sjukfall> active = new HashMap<>();
         for (Fact line : aisle) {
-            // prune active
+            // TODO: prune active
             int key = line.patient;
             Sjukfall sjukfall = active.get(key);
 
