@@ -10,15 +10,23 @@ public class WarehouseManager {
     @Autowired
     private Warehouse warehouse;
 
-    public void load() {
-        System.err.println("Call load");
+    public int loadWideLines() {
         warehouse.clear();
-        loader.populateWarehouse();
+        int lines = loader.populateWarehouse();
         sortAisles();
+        return lines;
     }
 
     public int countAisles() {
         return warehouse.getAllVardgivare().size();
+    }
+
+    public int getAisleSize(String vardgivareId) {
+        Aisle aisle = warehouse.get(vardgivareId);
+        if (aisle == null) {
+            return 0;
+        }
+        return aisle.getSize();
     }
 
     private void sortAisles() {

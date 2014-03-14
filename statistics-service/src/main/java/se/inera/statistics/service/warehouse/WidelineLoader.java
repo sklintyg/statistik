@@ -24,6 +24,7 @@ import org.springframework.stereotype.Component;
 import se.inera.statistics.service.warehouse.model.db.WideLine;
 
 import javax.sql.DataSource;
+import javax.transaction.Transactional;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -39,26 +40,24 @@ public class WidelineLoader {
     @Autowired
     private FactPopulator factPopulator;
 
-    public void populateWarehouse() {
-
-        System.err.println("Populating");
-        System.err.println(dataSource);
+    public int populateWarehouse() {
         try (
                 Connection connection = dataSource.getConnection();
                 PreparedStatement stmt = prepareStatement(connection);
                 ResultSet resultSet = stmt.executeQuery();
         ) {
             int lineNo = 0;
-            Fact line = null;
             while (resultSet.next()) {
                 System.out.println("Reading line: " + ++lineNo);
                 WideLine wideline = toWideline(resultSet);
                 factPopulator.accept(wideline);
             }
+            return lineNo;
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
+        return -1;
     }
 
     private WideLine toWideline(ResultSet resultSet) throws SQLException {

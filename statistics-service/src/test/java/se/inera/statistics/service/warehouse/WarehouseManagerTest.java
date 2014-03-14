@@ -29,13 +29,11 @@ public class WarehouseManagerTest {
     public void verifyOrderOfActionWhenLoadingData() {
         Mockito.when(warehouse.iterator()).thenReturn(Collections.singletonList(aisle).iterator());
 
-        manager.load();
+        manager.loadWideLines();
 
         InOrder inOrder = Mockito.inOrder(loader, warehouse, aisle);
         inOrder.verify(warehouse).clear();
         inOrder.verify(loader).populateWarehouse();
         inOrder.verify(aisle).sort();
-
-
     }
 }
