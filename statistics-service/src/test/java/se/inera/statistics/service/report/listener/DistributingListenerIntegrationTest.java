@@ -15,8 +15,13 @@ import se.inera.statistics.service.demo.UtlatandeBuilder;
 import se.inera.statistics.service.helper.DocumentHelper;
 import se.inera.statistics.service.processlog.ProcessorListener;
 import se.inera.statistics.service.report.api.CasesPerMonth;
+import se.inera.statistics.service.report.api.DiagnosisGroups;
 import se.inera.statistics.service.report.api.SjukfallslangdGrupp;
+import se.inera.statistics.service.report.model.DiagnosisGroupResponse;
+import se.inera.statistics.service.report.model.DualSexDataRow;
+import se.inera.statistics.service.report.model.DualSexField;
 import se.inera.statistics.service.report.model.Range;
+import se.inera.statistics.service.report.model.Sex;
 import se.inera.statistics.service.report.model.SickLeaveLengthResponse;
 import se.inera.statistics.service.report.model.SimpleDualSexDataRow;
 import se.inera.statistics.service.report.model.SimpleDualSexResponse;
@@ -24,6 +29,8 @@ import se.inera.statistics.service.report.repository.RollingLength;
 import se.inera.statistics.service.sjukfall.SjukfallInfo;
 
 import com.fasterxml.jackson.databind.JsonNode;
+
+import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath:listener-impl-test.xml" })
@@ -35,6 +42,9 @@ public class DistributingListenerIntegrationTest {
 
     @Autowired
     private SjukfallslangdGrupp sjukfallslangdGrupp;
+
+    @Autowired
+    private DiagnosisGroups diagnosGrupp;
 
     @Autowired
     private ProcessorListener distributingListener;
@@ -59,7 +69,7 @@ public class DistributingListenerIntegrationTest {
         distributingListener.accept(sjukfallInfo, utlatande, hsa, 1L);
 
         SimpleDualSexResponse<SimpleDualSexDataRow> result = casesPerMonth.getCasesPerMonth("v1", rangeOneMonth);
-        Assert.assertEquals(1, result.getRows().get(0).getMale().intValue());
+        assertEquals(1, result.getRows().get(0).getMale().intValue());
     }
 
     @Test
@@ -72,9 +82,9 @@ public class DistributingListenerIntegrationTest {
         distributingListener.accept(sjukfallInfo, utlatande, hsa, 1L);
 
         SimpleDualSexResponse<SimpleDualSexDataRow> result = casesPerMonth.getCasesPerMonth("v1", rangeTwoMonth);
-        Assert.assertEquals(2, result.getRows().size());
-        Assert.assertEquals(1, result.getRows().get(0).getMale().intValue());
-        Assert.assertEquals(1, result.getRows().get(1).getMale().intValue());
+        assertEquals(2, result.getRows().size());
+        assertEquals(1, result.getRows().get(0).getMale().intValue());
+        assertEquals(1, result.getRows().get(1).getMale().intValue());
     }
 
     @Test
@@ -87,9 +97,9 @@ public class DistributingListenerIntegrationTest {
         distributingListener.accept(sjukfallInfo, utlatande, hsa, 1L);
 
         SimpleDualSexResponse<SimpleDualSexDataRow> result = casesPerMonth.getCasesPerMonth("v1", rangeTwoMonth);
-        Assert.assertEquals(2, result.getRows().size());
-        Assert.assertEquals(0, result.getRows().get(0).getMale().intValue());
-        Assert.assertEquals(1, result.getRows().get(1).getMale().intValue());
+        assertEquals(2, result.getRows().size());
+        assertEquals(0, result.getRows().get(0).getMale().intValue());
+        assertEquals(1, result.getRows().get(1).getMale().intValue());
     }
 
     @Test
@@ -102,9 +112,9 @@ public class DistributingListenerIntegrationTest {
         distributingListener.accept(sjukfallInfo, utlatande, hsa, 1L);
 
         SimpleDualSexResponse<SimpleDualSexDataRow> result = casesPerMonth.getCasesPerMonth("v1", rangeTwoMonth);
-        Assert.assertEquals(2, result.getRows().size());
-        Assert.assertEquals(0, result.getRows().get(0).getMale().intValue());
-        Assert.assertEquals(0, result.getRows().get(1).getMale().intValue());
+        assertEquals(2, result.getRows().size());
+        assertEquals(0, result.getRows().get(0).getMale().intValue());
+        assertEquals(0, result.getRows().get(1).getMale().intValue());
     }
 
     @Test
@@ -127,8 +137,8 @@ public class DistributingListenerIntegrationTest {
         distributingListener.accept(sjukfallInfo3, utlatande3, hsa, 1L);
 
         SimpleDualSexResponse<SimpleDualSexDataRow> result = casesPerMonth.getCasesPerMonth("v1", rangeOneMonth);
-        Assert.assertEquals(1, result.getRows().size());
-        Assert.assertEquals(1, result.getRows().get(0).getMale().intValue());
+        assertEquals(1, result.getRows().size());
+        assertEquals(1, result.getRows().get(0).getMale().intValue());
     }
 
     @Test
@@ -146,14 +156,14 @@ public class DistributingListenerIntegrationTest {
         distributingListener.accept(sjukfallInfo2, utlatande2, hsa, 1L);
 
         SickLeaveLengthResponse result = sjukfallslangdGrupp.getHistoricalStatistics("v1", new LocalDate("2013-03-01"), RollingLength.YEAR);
-        Assert.assertEquals(1, result.getRows().size());
-        Assert.assertEquals("15-30 dagar", result.getRows().get(0).getGroup());
-        Assert.assertEquals(1, result.getRows().get(0).getMale());
+        assertEquals(1, result.getRows().size());
+        assertEquals("15-30 dagar", result.getRows().get(0).getGroup());
+        assertEquals(1, result.getRows().get(0).getMale());
 
         result = sjukfallslangdGrupp.getHistoricalStatistics("v1", new LocalDate("2013-04-01"), RollingLength.YEAR);
-        Assert.assertEquals(1, result.getRows().size());
-        Assert.assertEquals("31-90 dagar", result.getRows().get(0).getGroup());
-        Assert.assertEquals(1, result.getRows().get(0).getMale());
+        assertEquals(1, result.getRows().size());
+        assertEquals("31-90 dagar", result.getRows().get(0).getGroup());
+        assertEquals(1, result.getRows().get(0).getMale());
 
     }
 
@@ -172,19 +182,19 @@ public class DistributingListenerIntegrationTest {
         distributingListener.accept(sjukfallInfo2, utlatande2, hsa, 1L);
 
         SickLeaveLengthResponse result = sjukfallslangdGrupp.getHistoricalStatistics("v1", new LocalDate("2013-03-01"), RollingLength.YEAR);
-        Assert.assertEquals(1, result.getRows().size());
-        Assert.assertEquals("15-30 dagar", result.getRows().get(0).getGroup());
-        Assert.assertEquals(1, result.getRows().get(0).getMale());
+        assertEquals(1, result.getRows().size());
+        assertEquals("15-30 dagar", result.getRows().get(0).getGroup());
+        assertEquals(1, result.getRows().get(0).getMale());
 
         result = sjukfallslangdGrupp.getHistoricalStatistics("v1", new LocalDate("2013-04-01"), RollingLength.YEAR);
-        Assert.assertEquals(1, result.getRows().size());
-        Assert.assertEquals("31-90 dagar", result.getRows().get(0).getGroup());
-        Assert.assertEquals(1, result.getRows().get(0).getMale());
+        assertEquals(1, result.getRows().size());
+        assertEquals("31-90 dagar", result.getRows().get(0).getGroup());
+        assertEquals(1, result.getRows().get(0).getMale());
 
         result = sjukfallslangdGrupp.getHistoricalStatistics("v1", new LocalDate("2013-05-01"), RollingLength.YEAR);
-        Assert.assertEquals(1, result.getRows().size());
-        Assert.assertEquals("31-90 dagar", result.getRows().get(0).getGroup());
-        Assert.assertEquals(1, result.getRows().get(0).getMale());
+        assertEquals(1, result.getRows().size());
+        assertEquals("31-90 dagar", result.getRows().get(0).getGroup());
+        assertEquals(1, result.getRows().get(0).getMale());
 
     }
 
@@ -203,25 +213,49 @@ public class DistributingListenerIntegrationTest {
         distributingListener.accept(sjukfallInfo2, utlatande2, hsa, 1L);
 
         SickLeaveLengthResponse result = sjukfallslangdGrupp.getHistoricalStatistics("v1", new LocalDate("2013-03-01"), RollingLength.YEAR);
-        Assert.assertEquals(1, result.getRows().size());
-        Assert.assertEquals("31-90 dagar", result.getRows().get(0).getGroup());
-        Assert.assertEquals(1, result.getRows().get(0).getMale());
+        assertEquals(1, result.getRows().size());
+        assertEquals("31-90 dagar", result.getRows().get(0).getGroup());
+        assertEquals(1, result.getRows().get(0).getMale());
 
         result = sjukfallslangdGrupp.getHistoricalStatistics("v1", new LocalDate("2013-04-01"), RollingLength.YEAR);
-        Assert.assertEquals(1, result.getRows().size());
-        Assert.assertEquals("31-90 dagar", result.getRows().get(0).getGroup());
-        Assert.assertEquals(1, result.getRows().get(0).getMale());
+        assertEquals(1, result.getRows().size());
+        assertEquals("31-90 dagar", result.getRows().get(0).getGroup());
+        assertEquals(1, result.getRows().get(0).getMale());
 
         result = sjukfallslangdGrupp.getHistoricalStatistics("v1", new LocalDate("2013-05-01"), RollingLength.YEAR);
-        Assert.assertEquals(1, result.getRows().size());
-        Assert.assertEquals("91-180 dagar", result.getRows().get(0).getGroup());
-        Assert.assertEquals(1, result.getRows().get(0).getMale());
+        assertEquals(1, result.getRows().size());
+        assertEquals("91-180 dagar", result.getRows().get(0).getGroup());
+        assertEquals(1, result.getRows().get(0).getMale());
 
     }
 
-    private JsonNode createUtlatande(LocalDate from, LocalDate to) {
+    @Test
+    public void intygWithInvalidIcd10() {
+        LocalDate from1 = new LocalDate("2013-03-01"), to1 = new LocalDate("2013-04-30");
+        SjukfallInfo sjukfallInfo = new SjukfallInfo(personId, from1, to1, null);
+        JsonNode utlatande = createUtlatande(from1, to1, "UNS33.7");
+        distributingListener.accept(sjukfallInfo, utlatande, null, 1L);
+
+        SickLeaveLengthResponse result = sjukfallslangdGrupp.getHistoricalStatistics("v1", new LocalDate("2013-03-01"), RollingLength.YEAR);
+        assertEquals(1, result.getRows().size());
+        assertEquals("31-90 dagar", result.getRows().get(0).getGroup());
+        assertEquals(1, result.getRows().get(0).getMale());
+
+        DiagnosisGroupResponse diagnoser = diagnosGrupp.getDiagnosisGroups("v1", new Range(new LocalDate("2013-03-01"), new LocalDate("2013-03-01")));
+        for (DualSexDataRow row : diagnoser.getRows()) {
+            for (DualSexField field : row.getData()) {
+                assertEquals(0, field.getFemale());
+                assertEquals(0, field.getMale());
+            }
+        }
+    }
+
+    private JsonNode createUtlatande(LocalDate from, LocalDate to, String icd10) {
         UtlatandeBuilder builder = new UtlatandeBuilder();
-        final JsonNode utlatande = builder.build(personId, from, to, "v1", "A00", 50);
+        final JsonNode utlatande = builder.build(personId, from, to, "v1", icd10, 50);
         return DocumentHelper.anonymize(utlatande);
+    }
+    private JsonNode createUtlatande(LocalDate from, LocalDate to) {
+        return createUtlatande(from, to, "A00");
     }
 }

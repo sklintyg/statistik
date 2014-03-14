@@ -1,5 +1,7 @@
 package se.inera.statistics.service.report.listener;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import se.inera.statistics.service.helper.DocumentHelper;
 import se.inera.statistics.service.helper.HSAServiceHelper;
 import se.inera.statistics.service.report.model.Sex;
@@ -9,6 +11,7 @@ import se.inera.statistics.service.sjukfall.SjukfallInfo;
 import com.fasterxml.jackson.databind.JsonNode;
 
 public class GenericHolder {
+    private static final Logger LOG = LoggerFactory.getLogger(GenericHolder.class);
 
     private final SjukfallInfo sjukfallInfo;
     private final JsonNode utlatande;
@@ -16,10 +19,10 @@ public class GenericHolder {
     private final String vardgivareId;
     private final String lanId;
     private final Sex kon;
-    private String diagnos;
+    private final String diagnos;
     private String diagnosgrupp;
     private String diagnosundergrupp;
-    private int age;
+    private final int age;
 
     public GenericHolder(SjukfallInfo sjukfallInfo, JsonNode utlatande, JsonNode hsa, DiagnosisGroupsUtil diagnosisGroupsUtil) {
         this.sjukfallInfo = sjukfallInfo;
@@ -29,8 +32,14 @@ public class GenericHolder {
         lanId = HSAServiceHelper.getLan(hsa);
         kon = "man".equalsIgnoreCase(DocumentHelper.getKon(utlatande)) ? Sex.Male : Sex.Female;
         diagnos = DocumentHelper.getDiagnos(utlatande);
-        diagnosgrupp = diagnosisGroupsUtil.getGroupIdForCode(diagnos);
-        diagnosundergrupp = diagnosisGroupsUtil.getSubGroupForCode(diagnos).getId();
+        try {
+            diagnosgrupp = diagnosisGroupsUtil.getGroupIdForCode(diagnos);
+            diagnosundergrupp = diagnosisGroupsUtil.getSubGroupForCode(diagnos).getId();
+        } catch (IllegalArgumentException e) {
+            LOG.warn("Parse error: {}. (Ignoring ICD10)", e.getMessage());
+            diagnosgrupp = "UNKNOWN";
+            diagnosundergrupp = "UNKNOWN";
+        }
         age = DocumentHelper.getAge(utlatande);
     }
 
