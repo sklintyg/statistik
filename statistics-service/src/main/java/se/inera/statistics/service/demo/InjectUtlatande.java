@@ -52,7 +52,7 @@ public class InjectUtlatande {
 
     private static final int MONTHS = 19;
 
-    private static final LocalDate BASE = new LocalDate("2012-03-01");
+    private static final LocalDate BASE = new LocalDate().minusMonths(MONTHS);
 
     private static final List<String> DIAGNOSER = new ArrayList<>();
     private static final List<String> VARDENHETER = Arrays.asList("verksamhet1", "verksamhet2", "IFV1239877878-103D");

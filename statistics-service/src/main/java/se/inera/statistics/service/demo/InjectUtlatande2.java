@@ -54,7 +54,7 @@ public class InjectUtlatande2 {
 
     private static final int MONTHS = 19;
 
-    private static final LocalDate BASE = new LocalDate("2012-03-01");
+    private static final LocalDate BASE = new LocalDate().minusMonths(MONTHS);
     private static final LocalDate BASE_AGE = new LocalDate("1930-01-01");
 
     private static final int AGE_DAYS = 365 * 80;
