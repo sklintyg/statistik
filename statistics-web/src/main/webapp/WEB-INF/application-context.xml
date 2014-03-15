@@ -101,6 +101,7 @@
 
         <bean id="warehouse" class="se.inera.statistics.service.warehouse.Warehouse" />
         <bean id="warehouseManager" class="se.inera.statistics.service.warehouse.WarehouseManager" />
+        <bean id="warehouseService" class="se.inera.statistics.web.service.WarehouseService" />
 
         <bean id="factPopulator" class="se.inera.statistics.service.warehouse.FactPopulator" />
         <bean id="widelineConverter" class="se.inera.statistics.service.warehouse.WidelineConverter" />

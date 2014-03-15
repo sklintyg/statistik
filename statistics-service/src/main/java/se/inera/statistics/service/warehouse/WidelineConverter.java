@@ -105,7 +105,7 @@ public class WidelineConverter {
         return lkf;
     }
 
-    private int toDay(LocalDate dayDate) {
+    public static int toDay(LocalDate dayDate) {
         return Days.daysBetween(ERA, dayDate).getDays();
     }
 

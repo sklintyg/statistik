@@ -50,4 +50,27 @@ public class SjukfallUtilTest {
         Collection<Sjukfall> sjukfalls = SjukfallUtil.calculateSjukfall(aisle);
         assertEquals(2, sjukfalls.size());
     }
+
+    @Test
+    public void sjukfallStartOnlyOnSelectedEnhetsButContinuesOnAnyEnhet() throws Exception {
+        Fact fact = new Fact(3, 380, 38002, 2, 1, 1, 4010, 0, 45, 0, 14, 16, 100, 10, 0, 32, 201010);
+        aisle.addLine(fact);
+        fact = new Fact(3, 380, 38002, 1, 1, 1, 4020, 0, 45, 0, 14, 16, 100, 10, 0, 32, 201010);
+        aisle.addLine(fact);
+        fact = new Fact(3, 380, 38002, 2, 1, 1, 4030, 0, 45, 0, 14, 16, 100, 10, 0, 32, 201010);
+        aisle.addLine(fact);
+
+        fact = new Fact(3, 380, 38002, 2, 1, 2, 4010, 0, 45, 0, 14, 16, 100, 10, 0, 32, 201010);
+        aisle.addLine(fact);
+        fact = new Fact(3, 380, 38002, 3, 1, 2, 4020, 0, 45, 0, 14, 16, 100, 10, 0, 32, 201010);
+        aisle.addLine(fact);
+        fact = new Fact(3, 380, 38002, 2, 1, 2, 4030, 0, 45, 0, 14, 16, 100, 10, 0, 32, 201010);
+        aisle.addLine(fact);
+
+        Collection<Sjukfall> sjukfalls = SjukfallUtil.calculateSjukfall(aisle, 1, 3);
+        assertEquals(2, sjukfalls.size());
+        assertEquals(2, sjukfalls.iterator().next().intygCount);
+        assertEquals(4020, sjukfalls.iterator().next().start);
+        assertEquals(20, sjukfalls.iterator().next().realDays);
+    }
 }

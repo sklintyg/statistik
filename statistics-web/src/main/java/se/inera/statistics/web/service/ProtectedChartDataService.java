@@ -75,8 +75,6 @@ public class ProtectedChartDataService {
     private static final Logger LOG = LoggerFactory.getLogger(ProtectedChartDataService.class);
 
     @Autowired
-    private VerksamhetOverview datasourceOverview;
-    @Autowired
     private SjukfallPerManad datasourceSjukfallPerManad;
     @Autowired
     private Diagnosgrupp datasourceDiagnosgrupp;
@@ -88,6 +86,9 @@ public class ProtectedChartDataService {
     private Sjukskrivningsgrad datasourceSjukskrivningsgrad;
     @Autowired
     private SjukfallslangdGrupp datasourceSickLeaveLength;
+
+    @Autowired
+    private WarehouseService warehouse;
 
     public final Helper helper = new Helper();
 
@@ -218,7 +219,9 @@ public class ProtectedChartDataService {
     @PostAuthorize(value = "@protectedChartDataService.helper.userAccess(#request, #verksamhetId)")
     public VerksamhetOverviewData getOverviewData(@Context HttpServletRequest request, @PathParam(VERKSAMHET_PATH_ID) String verksamhetId) {
         Range range = Range.quarter();
-        VerksamhetOverviewResponse response = datasourceOverview.getOverview(Verksamhet.decodeId(verksamhetId), range);
+        Verksamhet verksamhet = getVerksamhet(request, verksamhetId);
+        System.err.println("Verksamhet " + verksamhet);
+        VerksamhetOverviewResponse response = warehouse.getOverview(Verksamhet.decodeId(verksamhetId), range, verksamhet.getVardgivarId());
         return new VerksamhetOverviewConverter().convert(response, range);
     }
 
@@ -452,6 +455,17 @@ public class ProtectedChartDataService {
     public Helper getHelper() {
         return helper;
     }
+
+    private Verksamhet getVerksamhet(HttpServletRequest request, String verksamhetId) {
+        List<Verksamhet> verksamhets = ServiceUtil.getLoginInfo(request).getBusinesses();
+        for (Verksamhet verksamhet: verksamhets) {
+            if (verksamhet.getId().equals(verksamhetId)) {
+                return verksamhet;
+            }
+        }
+        return null;
+    }
+
 
     protected static class Helper {
 

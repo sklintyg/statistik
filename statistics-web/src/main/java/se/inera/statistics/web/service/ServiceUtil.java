@@ -67,7 +67,7 @@ public final class ServiceUtil {
     }
 
     private static Verksamhet toVerksamhet(Vardenhet enhet) {
-        return new Verksamhet(enhet.getId(), enhet.getNamn());
+        return new Verksamhet(enhet.getId(), enhet.getNamn(), enhet.getVardgivarId());
     }
 
     static void addSumRow(List<NamedData> rows, boolean includeSumForLastColumn) {

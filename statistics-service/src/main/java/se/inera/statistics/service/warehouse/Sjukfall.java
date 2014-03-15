@@ -4,16 +4,22 @@ public class Sjukfall {
 
     public static final int MAX_GAP = 5;
 
-    int start;
+    final int start;
     int end;
     int realDays;
     int intygCount;
+    final int kon;
 
     public Sjukfall(Fact line) {
         start = line.startdatum;
         end = line.startdatum + line.sjukskrivningslangd - 1;
         realDays = line.sjukskrivningslangd;
         intygCount++;
+        kon = line.getKon();
+    }
+
+    public int getKon() {
+        return kon;
     }
 
     /**

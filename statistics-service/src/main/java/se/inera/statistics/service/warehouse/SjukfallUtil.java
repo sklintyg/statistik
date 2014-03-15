@@ -18,27 +18,48 @@
  */
 package se.inera.statistics.service.warehouse;
 
+import org.joda.time.LocalDate;
+import se.inera.statistics.service.report.model.Range;
+import se.inera.statistics.service.report.util.Ranges;
+
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
 public final class SjukfallUtil {
 
+    private static final StartFilter ALL_ENHETER = new StartFilter() {
+        @Override
+        public boolean accept(Fact fact) {
+            return true;
+        }
+    };
+
     private SjukfallUtil() {
     }
 
     public static Collection<Sjukfall> calculateSjukfall(Aisle aisle) {
+        return calculateSjukfall(aisle, ALL_ENHETER, Integer.MAX_VALUE);
+    }
+
+    private static Collection<Sjukfall> calculateSjukfall(Aisle aisle, StartFilter filter, int cutoff) {
         Collection<Sjukfall> sjukfalls = new ArrayList<>();
         Map<Integer, Sjukfall> active = new HashMap<>();
         for (Fact line : aisle) {
             // TODO: prune active
+            if (line.startdatum >= cutoff) {
+                break;
+            }
             int key = line.patient;
             Sjukfall sjukfall = active.get(key);
 
             if (sjukfall == null) {
-                sjukfall = new Sjukfall(line);
-                active.put(key, sjukfall);
+                if (filter.accept(line)) {
+                    sjukfall = new Sjukfall(line);
+                    active.put(key, sjukfall);
+                }
             } else {
                 Sjukfall nextSjukfall = sjukfall.join(line);
                 if (nextSjukfall != sjukfall) {
@@ -53,4 +74,53 @@ public final class SjukfallUtil {
         return sjukfalls;
     }
 
+    public static Collection<Sjukfall> calculateSjukfall(Aisle aisle, int...enhetIds) {
+        return calculateSjukfall(aisle, new UnitFilter(enhetIds), Integer.MAX_VALUE);
+    }
+    public static Collection<Sjukfall> active(Range range, Aisle aisle, int...enhetIds) {
+        return active(calculateSjukfall(aisle, new UnitFilter(enhetIds), WidelineConverter.toDay(firstDayAfter(range))), range);
+
+    }
+    public static Collection<Sjukfall> active(Collection<Sjukfall> all, Range range) {
+        int start = WidelineConverter.toDay(range.getFrom());
+        int end = WidelineConverter.toDay(firstDayAfter(range));
+        Collection<Sjukfall> active = new ArrayList<>();
+        for (Sjukfall sjukfall : all) {
+            if (!(sjukfall.end < start || sjukfall.start > end)) {
+                active.add(sjukfall);
+            }
+        }
+        return active;
+    }
+
+    static LocalDate firstDayAfter(Range range) {
+        return range.getTo().plusMonths(1);
+    }
+
+    public static int getLong(Collection<Sjukfall> sjukfalls) {
+        int count = 0;
+        for (Sjukfall sjukfall : sjukfalls) {
+            if (sjukfall.realDays > 90) {
+                count++;
+            }
+        }
+    return count;
+    }
+
+    private interface StartFilter {
+        boolean accept(Fact fact);
+    }
+
+    private static class UnitFilter implements StartFilter {
+        private final int[] enhetIds;
+
+        public UnitFilter(int...enhetIds) {
+            this.enhetIds = enhetIds;
+        }
+
+        @Override
+        public boolean accept(Fact fact) {
+            return Arrays.binarySearch(enhetIds, fact.getEnhet()) >= 0;
+        }
+    }
 }

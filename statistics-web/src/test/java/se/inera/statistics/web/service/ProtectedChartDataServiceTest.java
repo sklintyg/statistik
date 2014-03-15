@@ -47,7 +47,9 @@ import se.inera.statistics.service.report.model.Range;
 @RunWith(MockitoJUnitRunner.class)
 public class ProtectedChartDataServiceTest {
     @Mock
-    private VerksamhetOverview mock = Mockito.mock(VerksamhetOverview.class);
+    private WarehouseService warehouse;
+
+    @Mock
     private HttpServletRequest request;
 
     @InjectMocks
@@ -55,7 +57,6 @@ public class ProtectedChartDataServiceTest {
 
     @Before
     public void init() {
-        request = Mockito.mock(HttpServletRequest.class);
         List<Vardenhet> vardenhets = Arrays.asList(new Vardenhet("verksamhet1", "Närhälsan i Småmåla", "VG1"), new Vardenhet("verksamhet2", "Småmålas akutmottagning", "VG2"));
 
         User user = new User("hsaId", "name", false, vardenhets.get(0), vardenhets);
@@ -74,7 +75,7 @@ public class ProtectedChartDataServiceTest {
         } catch (NullPointerException e) {
             assertTrue(true);
         }
-        Mockito.verify(mock).getOverview(anyString(), any(Range.class));
+        Mockito.verify(warehouse).getOverview(anyString(), any(Range.class), anyString());
     }
 
     @Test
