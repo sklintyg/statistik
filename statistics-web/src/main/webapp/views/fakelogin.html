@@ -18,11 +18,11 @@
   -->
 
 <div class="container" style="margin-top: 20px;">
-    <div class="row-fluid center">
-        <div class="span12">
-        	<legend>Logga in för verksamhetsstatistik - demo</legend>
-            <form name='f' method='POST' action='fake'>
-			    <textarea name='userJsonDisplay' id='userJsonDisplay' placeholder="Ange JSON struktur" style="height: 150px;" class="span6">{
+    <form name='f' method='POST' action='fake'>
+        <div class="row">
+            <div class="col-sm-12">
+        	    <legend>Logga in för verksamhetsstatistik - demo</legend>
+			        <textarea name='userJsonDisplay' id='userJsonDisplay' placeholder="Ange JSON struktur" style="height: 200px;" class="col-sm-6">{
     "fornamn":"Bengt",
     "efternamn":"Siffersson",
     "hsaId":"HSA-BS",
@@ -30,10 +30,13 @@
     "vardgivarId":"vg-verksamhet1",
     "vardgivarniva":"false"
 }</textarea>
-                <br>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
 				<button class="btn btn-success" name="Login" id="login_btn" type="submit">Logga in</button>
 			    <button class="btn" name="Återställ" type="reset">Återställ</button>
-			</form>
         </div>
     </div>
+    </form>
 </div>
