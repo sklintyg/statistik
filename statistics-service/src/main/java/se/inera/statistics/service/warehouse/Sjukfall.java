@@ -9,6 +9,8 @@ public class Sjukfall {
     int realDays;
     int intygCount;
     final int kon;
+    int alder;
+    int diagnoskapitel;
 
     public Sjukfall(Fact line) {
         start = line.startdatum;
@@ -16,6 +18,8 @@ public class Sjukfall {
         realDays = line.sjukskrivningslangd;
         intygCount++;
         kon = line.getKon();
+        alder = line.getAlder();
+        diagnoskapitel = line.getDiagnoskapitel();
     }
 
     public int getKon() {
@@ -32,14 +36,24 @@ public class Sjukfall {
      */
     public Sjukfall join(Fact line) {
         int lineEnd = line.startdatum + line.sjukskrivningslangd - 1;
-        if (end + MAX_GAP + 1 < line.startdatum) {
+        if (isExpired(line.startdatum)) {
             return new Sjukfall(line);
         } else {
             end = lineEnd;
             realDays += line.sjukskrivningslangd;
             intygCount++;
+            if (alder != line.getAlder()) {
+                alder = line.getAlder();
+            }
+            if (diagnoskapitel != line.getDiagnoskapitel()) {
+                diagnoskapitel = line.getDiagnoskapitel();
+            }
             return this;
         }
+    }
+
+    private boolean isExpired(int datum) {
+        return end + MAX_GAP + 1 < datum;
     }
 
     @Override
@@ -50,5 +64,9 @@ public class Sjukfall {
                 ", realDays=" + realDays +
                 ", intygCount=" + intygCount +
                 '}';
+    }
+
+    public boolean in(int start, int end) {
+        return !(this.end < start || this.start > end);
     }
 }

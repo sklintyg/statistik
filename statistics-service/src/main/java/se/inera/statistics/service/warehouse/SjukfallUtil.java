@@ -26,7 +26,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
+import java.util.Set;
 
 public final class SjukfallUtil {
 
@@ -47,8 +49,8 @@ public final class SjukfallUtil {
     private static Collection<Sjukfall> calculateSjukfall(Aisle aisle, StartFilter filter, int cutoff) {
         Collection<Sjukfall> sjukfalls = new ArrayList<>();
         Map<Integer, Sjukfall> active = new HashMap<>();
+        int currentDatum = 0;
         for (Fact line : aisle) {
-            // TODO: prune active
             if (line.startdatum >= cutoff) {
                 break;
             }
@@ -86,7 +88,7 @@ public final class SjukfallUtil {
         int end = WidelineConverter.toDay(firstDayAfter(range));
         Collection<Sjukfall> active = new ArrayList<>();
         for (Sjukfall sjukfall : all) {
-            if (!(sjukfall.end < start || sjukfall.start > end)) {
+            if (sjukfall.in(start, end)) {
                 active.add(sjukfall);
             }
         }
