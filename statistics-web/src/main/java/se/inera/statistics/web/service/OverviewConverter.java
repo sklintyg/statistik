@@ -23,7 +23,7 @@ public class OverviewConverter {
                 resp.getCasesPerMonthAlteration(), previousPeriod.toString());
 
         ArrayList<DonutChartData> diagnosisGroups = new ArrayList<>();
-        for (OverviewChartRowExtended row : resp.getDiagnosisGroups()) {
+        for (OverviewChartRowExtended row : new DiagnosisGroupsConverter().convert(resp.getDiagnosisGroups())) {
             diagnosisGroups.add(new DonutChartData(row.getName(), row.getQuantity(), row.getAlternation()));
         }
 
