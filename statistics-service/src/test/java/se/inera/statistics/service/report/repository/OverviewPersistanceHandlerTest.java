@@ -1,8 +1,5 @@
 package se.inera.statistics.service.report.repository;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.joda.time.LocalDate;
 import org.junit.Assert;
 import org.junit.Before;
@@ -14,7 +11,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.transaction.annotation.Transactional;
-
 import se.inera.statistics.service.report.api.AgeGroups;
 import se.inera.statistics.service.report.api.CasesPerCounty;
 import se.inera.statistics.service.report.api.CasesPerMonth;
@@ -26,6 +22,9 @@ import se.inera.statistics.service.report.model.OverviewResponse;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.Sex;
 import se.inera.statistics.service.report.util.Verksamhet;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath:process-log-impl-test.xml" })
@@ -118,7 +117,7 @@ public class OverviewPersistanceHandlerTest extends OverviewPersistenceHandler {
         Assert.assertEquals(67, result.getCasesPerMonthSexProportion().getFemaleProportion());
         Assert.assertEquals(33, result.getCasesPerMonthSexProportion().getMaleProportion());
         Assert.assertEquals(3, result.getDiagnosisGroups().get(0).getQuantity());
-        Assert.assertEquals(200, result.getDiagnosisGroups().get(0).getAlternation());
+        Assert.assertEquals(2, result.getDiagnosisGroups().get(0).getAlternation());
         Assert.assertEquals(3, result.getAgeGroups().size());
         Assert.assertEquals(3, result.getAgeGroups().get(0).getQuantity());
         Assert.assertEquals(200, result.getAgeGroups().get(0).getAlternation());
@@ -152,7 +151,7 @@ public class OverviewPersistanceHandlerTest extends OverviewPersistenceHandler {
         Assert.assertEquals(100, result.getCasesPerMonthSexProportion().getFemaleProportion());
         Assert.assertEquals(0, result.getCasesPerMonthSexProportion().getMaleProportion());
         Assert.assertEquals(2, result.getDiagnosisGroups().get(0).getQuantity());
-        Assert.assertEquals(0, result.getDiagnosisGroups().get(0).getAlternation());
+        Assert.assertEquals(2, result.getDiagnosisGroups().get(0).getAlternation());
         Assert.assertEquals(3, result.getAgeGroups().size());
         Assert.assertEquals(2, result.getAgeGroups().get(0).getQuantity());
         Assert.assertEquals(0, result.getAgeGroups().get(0).getAlternation());

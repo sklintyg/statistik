@@ -1,12 +1,6 @@
 package se.inera.statistics.web.service;
 
-import static org.junit.Assert.assertEquals;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import org.junit.Test;
-
 import se.inera.statistics.service.report.model.OverviewChartRow;
 import se.inera.statistics.service.report.model.OverviewChartRowExtended;
 import se.inera.statistics.service.report.model.OverviewResponse;
@@ -16,6 +10,11 @@ import se.inera.statistics.web.model.overview.DonutChartData;
 import se.inera.statistics.web.model.overview.NumberOfCasesPerMonthOverview;
 import se.inera.statistics.web.model.overview.OverviewData;
 import se.inera.statistics.web.model.overview.SickLeaveLengthOverview;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.junit.Assert.assertEquals;
 
 public class OverviewConverterTest {
 
@@ -53,7 +52,7 @@ public class OverviewConverterTest {
         OverviewSexProportion overviewSexProportion = new OverviewSexProportion(casesPerMonthProportionMale, casesPerMonthProportionFemale, new Range());
         int casesPerMonthAlteration = 2;
         ArrayList<OverviewChartRowExtended> diagnosisGroups = new ArrayList<OverviewChartRowExtended>();
-        diagnosisGroups.add(new OverviewChartRowExtended("diagName", 1, 2));
+        diagnosisGroups.add(new OverviewChartRowExtended("A00-B99", 1, 2));
         ArrayList<OverviewChartRowExtended> ageGroups = new ArrayList<OverviewChartRowExtended>();
         ageGroups.add(new OverviewChartRowExtended("ageName", 3, 4));
         ArrayList<OverviewChartRowExtended> degreeOfSickLeaveGroups = new ArrayList<OverviewChartRowExtended>();
@@ -77,10 +76,10 @@ public class OverviewConverterTest {
         assertEquals(0, casesPerMonth.getProportionMale());
 
         List<DonutChartData> diagnosisGroupsResult = data.getDiagnosisGroups();
-        assertEquals(1, diagnosisGroupsResult.size());
-        assertEquals("diagName", diagnosisGroupsResult.get(0).getName());
+        assertEquals(5, diagnosisGroupsResult.size());
+        assertEquals("Somatiska sjukdomar (A00-E90, G00-L99, N00-N99)", diagnosisGroupsResult.get(0).getName());
         assertEquals(1, diagnosisGroupsResult.get(0).getQuantity());
-        assertEquals(2, diagnosisGroupsResult.get(0).getAlternation());
+        assertEquals(200, diagnosisGroupsResult.get(0).getAlternation());
 
         List<DonutChartData> ageGroupsResult = data.getAgeGroups();
         assertEquals(1, ageGroupsResult.size());
