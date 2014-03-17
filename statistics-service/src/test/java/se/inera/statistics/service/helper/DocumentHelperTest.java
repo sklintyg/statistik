@@ -1,14 +1,12 @@
 package se.inera.statistics.service.helper;
 
-import static junit.framework.Assert.assertEquals;
-import static org.junit.Assert.assertEquals;
-
+import com.fasterxml.jackson.databind.JsonNode;
 import org.joda.time.LocalDate;
 import org.junit.Test;
-
 import se.inera.statistics.service.JSONSource;
 
-import com.fasterxml.jackson.databind.JsonNode;
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.fail;
 
 public class DocumentHelperTest {
 
@@ -30,13 +28,52 @@ public class DocumentHelperTest {
     }
 
     @Test
-    public void processor_extract_alder_from_intyg() {
-        String personId = "19121212-1212";
+    public void processor_extract_alder_from_intyg_with_samordningsnummer() {
+        String personId = "19121272-1212";
         LocalDate date = new LocalDate(0L); // 1970
 
         int alder = DocumentHelper.extractAlder(personId, date);
 
         assertEquals(57, alder);
+    }
+
+    @Test
+    public void processor_extract_alder_from_intyg_with_out_of_range_id_returns_no_age() {
+        String personId = "19121312-1212";
+        LocalDate date = new LocalDate(0L); // 1970
+
+        try {
+            DocumentHelper.extractAlder(personId, date);
+            fail();
+        } catch (Exception e) {
+
+        }
+    }
+
+    @Test
+    public void processor_extract_alder_from_intyg_with_empty_id_returns_no_age() {
+        String personId = "";
+        LocalDate date = new LocalDate(0L); // 1970
+
+        try {
+            DocumentHelper.extractAlder(personId, date);
+            fail();
+        } catch (Exception e) {
+
+        }
+    }
+
+    @Test
+    public void processor_extract_alder_from_intyg_with_errenous_id_returns_no_age() {
+        String personId = "xxxxxxxx";
+        LocalDate date = new LocalDate(0L); // 1970
+
+        try {
+            DocumentHelper.extractAlder(personId, date);
+            fail();
+        } catch (Exception e) {
+
+        }
     }
 
     @Test

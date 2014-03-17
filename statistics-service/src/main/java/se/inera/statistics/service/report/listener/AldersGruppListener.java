@@ -3,6 +3,7 @@ package se.inera.statistics.service.report.listener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import se.inera.statistics.service.helper.DocumentHelper;
 import se.inera.statistics.service.report.api.AgeGroups;
 import se.inera.statistics.service.report.model.Sex;
 import se.inera.statistics.service.report.model.db.AldersgruppKey;
@@ -19,6 +20,9 @@ public class AldersGruppListener extends RollingAbstractListener {
     private AgeGroups ageGroups;
 
     protected boolean accept(GenericHolder token, String period, RollingLength length) {
+        if (token.getAge() == DocumentHelper.NO_AGE) {
+            return false;
+        }
         String group = AldersgroupUtil.RANGES.rangeFor(token.getAge()).getName();
         ageGroups.count(period, token.getEnhetId(), group, length,
         Verksamhet.ENHET, token.getKon());
