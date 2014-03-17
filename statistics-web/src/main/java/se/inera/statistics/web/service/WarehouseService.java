@@ -18,6 +18,9 @@ import java.util.Collection;
 import java.util.List;
 
 public class WarehouseService {
+
+    private static final int DISPLAYED_AGE_GROUPS = 7;
+
     @Autowired
     private Warehouse warehouse;
 
@@ -38,10 +41,9 @@ public class WarehouseService {
 
         int currentLongSjukfall = SjukfallUtil.getLong(currentSjukfall);
         int previousLongSjukfall = SjukfallUtil.getLong(previousSjukfall);
-        List<OverviewChartRowExtended> aldersgrupper = AldersgruppQuery.doIt(currentSjukfall, previousSjukfall);
+        List<OverviewChartRowExtended> aldersgrupper = AldersgruppQuery.getOverviewAldersgrupper(currentSjukfall, previousSjukfall, DISPLAYED_AGE_GROUPS);
         return new VerksamhetOverviewResponse(currentSjukfall.size(), currentKonsfordelning, previousKonsfordelning,
                 backupOverview.getDiagnosisGroups(), aldersgrupper, backupOverview.getDegreeOfSickLeaveGroups(), backupOverview.getSickLeaveLengthGroups(),
-                // Should only be > 90 days
                 currentLongSjukfall, currentLongSjukfall - previousLongSjukfall);
     }
 
