@@ -22,11 +22,14 @@ package se.inera.statistics.service.helper;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.joda.time.format.ISODateTimeFormat;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public final class DocumentHelper {
+    private static final Logger LOG = LoggerFactory.getLogger(DocumentHelper.class);
 
     private static final String OBSERVATIONER = "observationer";
     private static final String EXTENSION = "extension";
@@ -50,7 +53,13 @@ public final class DocumentHelper {
 
     public static ObjectNode prepare(JsonNode utlatande) {
         String personId = utlatande.path(PATIENT).path("id").path(EXTENSION).textValue();
-        int alder = ConversionHelper.extractAlder(personId, ISODateTimeFormat.dateTimeParser().parseLocalDate(utlatande.path("signeringsdatum").textValue()));
+        int alder;
+        try {
+            alder = ConversionHelper.extractAlder(personId, ISODateTimeFormat.dateTimeParser().parseLocalDate(utlatande.path("signeringsdatum").textValue()));
+        } catch (IllegalArgumentException e) {
+            LOG.error("Personnummer cannot be parsed as a date, adjusting for samordningsnummer did not help: {}" , personId);
+            alder = ConversionHelper.NO_AGE;
+        }
         String kon = ConversionHelper.extractKon(personId);
 
         ObjectNode preparedDoc = utlatande.deepCopy();

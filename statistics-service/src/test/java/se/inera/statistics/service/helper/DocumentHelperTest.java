@@ -6,6 +6,7 @@ import org.junit.Test;
 import se.inera.statistics.service.JSONSource;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 public class DocumentHelperTest {
 
@@ -51,9 +52,11 @@ public class DocumentHelperTest {
         String personId = "19121312-1212";
         LocalDate date = new LocalDate(0L); // 1970
 
-        int alder = ConversionHelper.extractAlder(personId, date);
-
-        assertEquals(ConversionHelper.NO_AGE, alder);
+        try {
+            ConversionHelper.extractAlder(personId, date);
+            fail();
+        } catch (IllegalArgumentException e) {
+        }
     }
 
     @Test
@@ -61,9 +64,11 @@ public class DocumentHelperTest {
         String personId = "";
         LocalDate date = new LocalDate(0L); // 1970
 
-        int alder = ConversionHelper.extractAlder(personId, date);
-
-        assertEquals(ConversionHelper.NO_AGE, alder);
+        try {
+            ConversionHelper.extractAlder(personId, date);
+            fail();
+        } catch (IllegalArgumentException e) {
+        }
     }
 
     @Test
@@ -71,9 +76,11 @@ public class DocumentHelperTest {
         String personId = "xxxxxxxx";
         LocalDate date = new LocalDate(0L); // 1970
 
-        int alder = ConversionHelper.extractAlder(personId, date);
-
-        assertEquals(ConversionHelper.NO_AGE, alder);
+        try {
+            ConversionHelper.extractAlder(personId, date);
+            fail();
+        } catch (IllegalArgumentException e) {
+        }
     }
 
     @Test

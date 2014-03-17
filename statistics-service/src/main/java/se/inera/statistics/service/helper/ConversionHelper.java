@@ -75,10 +75,9 @@ public final class ConversionHelper {
 
     protected static int extractAlder(String personId, LocalDate start) {
         LocalDate birthDate = null;
-        int age = -1;
+        int age;
         if (personId == null || personId.length() < DATE_PART_OF_PERSON_ID) {
-            LOG.error("Personnummer is to short: " + personId);
-            return age;
+            throw new IllegalArgumentException("Personnummer cannot be parsed as a date: " + personId);
         }
         try {
             String dateString = personId.substring(0, DATE_PART_OF_PERSON_ID);
@@ -92,10 +91,8 @@ public final class ConversionHelper {
             LocalDate referenceDate = new LocalDate(start);
             Period period = new Period(birthDate, referenceDate);
             age = period.getYears();
-        } catch (NumberFormatException e) {
-            LOG.error("Personnummer contains non-numerical characters: " + personId);
-        } catch (IllegalFieldValueException e) {
-            LOG.error("Personnummer cannot be parsed as a date, adjusting for samordningsnummer did not help: " + personId);
+        } catch (NumberFormatException | IllegalFieldValueException e) {
+            throw new IllegalArgumentException("Personnummer cannot be parsed as a date, adjusting for samordningsnummer did not help: " + personId);
         }
         return age;
     }
