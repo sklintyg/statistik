@@ -143,7 +143,7 @@ public class OverviewBasePersistenceHandler {
         for (int x = 0; x < numberOfGroups && x < queryResult.size(); x++) {
             OverviewChartRow row = queryResult.get(x);
 
-            int change = lookupChange(row, queryResultForPrevPeriod);
+            int change = lookupAbsoluteChange(row, queryResultForPrevPeriod);
             result.add(new OverviewChartRowExtended(row.getName(), row.getQuantity(), change));
         }
 
@@ -172,6 +172,19 @@ public class OverviewBasePersistenceHandler {
         Collections.sort(result, ageComparator);
 
         return result;
+    }
+
+    protected int lookupAbsoluteChange(OverviewChartRow row, List<OverviewChartRow> queryResultForPrevPeriod) {
+        String key = row.getName();
+        int current = row.getQuantity();
+        int prev = 0;
+        for (OverviewChartRow prevRow : queryResultForPrevPeriod) {
+            if (key.equals(prevRow.getName())) {
+                prev = prevRow.getQuantity();
+                break;
+            }
+        }
+        return current - prev;
     }
 
     protected int lookupChange(OverviewChartRow row, List<OverviewChartRow> queryResultForPrevPeriod) {

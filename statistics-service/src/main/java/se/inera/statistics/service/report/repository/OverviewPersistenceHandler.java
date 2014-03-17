@@ -52,7 +52,7 @@ public class OverviewPersistenceHandler extends OverviewBasePersistenceHandler i
     @Override
     public OverviewResponse getOverview(Range range) {
         OverviewKonsfordelning sexProportion = getSexProportion(NATIONELL, range);
-        List<OverviewChartRowExtended> diagnosisGroups = getDiagnosisGroups(NATIONELL, range, DISPLAYED_DIAGNOSIS_GROUPS);
+        List<OverviewChartRowExtended> diagnosisGroups = getDiagnosisGroups(NATIONELL, range, Integer.MAX_VALUE);
         List<OverviewChartRowExtended> ageGroups = getAgeGroups(NATIONELL, range, DISPLAYED_AGE_GROUPS);
         List<OverviewChartRowExtended> degreeOfSickLeaveGroups = getDegreeOfSickLeaveGroups(NATIONELL, range);
         List<OverviewChartRow> sickLeaveLengthGroups = getSickLeaveLengthGroups(NATIONELL, range, DISPLAYED_SJUKFALLSLANGD_GROUPS);
