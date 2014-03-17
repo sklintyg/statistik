@@ -78,6 +78,7 @@
         <import resource="classpath*:hsa-stub-context.xml"/>
         <import resource="application-context-cxf.xml"/>
         <import resource="application-context-security.xml"/>
+        <import resource="application-context-jmx.xml"/>
 
         <context:annotation-config/>
 
