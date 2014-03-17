@@ -37,6 +37,46 @@ public class DocumentHelperTest {
     }
 
     @Test
+    public void processor_extract_alder_from_intyg_with_samordningsnummer() {
+        String personId = "19121272-1212";
+        LocalDate date = new LocalDate(0L); // 1970
+
+        int alder = ConversionHelper.extractAlder(personId, date);
+
+        assertEquals(57, alder);
+    }
+
+    @Test
+    public void processor_extract_alder_from_intyg_with_out_of_range_id_returns_no_age() {
+        String personId = "19121312-1212";
+        LocalDate date = new LocalDate(0L); // 1970
+
+        int alder = ConversionHelper.extractAlder(personId, date);
+
+        assertEquals(ConversionHelper.NO_AGE, alder);
+    }
+
+    @Test
+    public void processor_extract_alder_from_intyg_with_empty_id_returns_no_age() {
+        String personId = "";
+        LocalDate date = new LocalDate(0L); // 1970
+
+        int alder = ConversionHelper.extractAlder(personId, date);
+
+        assertEquals(ConversionHelper.NO_AGE, alder);
+    }
+
+    @Test
+    public void processor_extract_alder_from_intyg_with_errenous_id_returns_no_age() {
+        String personId = "xxxxxxxx";
+        LocalDate date = new LocalDate(0L); // 1970
+
+        int alder = ConversionHelper.extractAlder(personId, date);
+
+        assertEquals(ConversionHelper.NO_AGE, alder);
+    }
+
+    @Test
     public void processor_extract_kon_man_from_intyg() {
         String personId = "19121212-1212";
 
