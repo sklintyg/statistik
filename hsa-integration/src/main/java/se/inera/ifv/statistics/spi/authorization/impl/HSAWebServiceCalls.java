@@ -24,6 +24,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.w3.wsaddressing10.AttributedURIType;
 
+import se.inera.ifv.hsaws.v3.HsaWsFault;
 import se.inera.ifv.hsaws.v3.HsaWsResponderInterface;
 import se.inera.ifv.hsawsresponder.v3.GetMiuForPersonResponseType;
 import se.inera.ifv.hsawsresponder.v3.GetMiuForPersonType;
@@ -33,6 +34,7 @@ import se.inera.ifv.hsawsresponder.v3.GetStatisticsHsaUnitResponseType;
 import se.inera.ifv.hsawsresponder.v3.GetStatisticsHsaUnitType;
 import se.inera.ifv.hsawsresponder.v3.GetStatisticsPersonResponseType;
 import se.inera.ifv.hsawsresponder.v3.GetStatisticsPersonType;
+import se.inera.ifv.hsawsresponder.v3.HsaWsFaultType;
 import se.inera.ifv.hsawsresponder.v3.PingResponseType;
 import se.inera.ifv.hsawsresponder.v3.PingType;
 
@@ -81,6 +83,10 @@ public class HSAWebServiceCalls {
             parameters.setHsaIdentity(careGiverId);
             parameters.setSearchBase("c=SE");
             return serverInterface.getStatisticsCareGiver(logicalAddressHeader, messageId, parameters);
+        } catch (HsaWsFault hsaWsFault) {
+            HsaWsFaultType faultInfo = hsaWsFault.getFaultInfo();
+            LOG.error("Could not call getStatisticsCareGiver for {} hsaWsFault ({}, {}). {}", careGiverId, faultInfo.getCode(), faultInfo.getMessage(), hsaWsFault.getMessage());
+            return null;
         } catch (Throwable ex) {
             throw new RuntimeException("Could not call getStatisticsCareGiver for " + careGiverId, ex);
         }
@@ -93,6 +99,10 @@ public class HSAWebServiceCalls {
             parameters.setSearchBase("c=SE");
             parameters.setIncludeOrgNo(Boolean.TRUE);
             return serverInterface.getStatisticsHsaUnit(logicalAddressHeader, messageId, parameters);
+        } catch (HsaWsFault hsaWsFault) {
+            HsaWsFaultType faultInfo = hsaWsFault.getFaultInfo();
+            LOG.error("Could not call getStatisticsHsaUnit for {} hsaWsFault ({}, {}). {}", unitId, faultInfo.getCode(), faultInfo.getMessage(), hsaWsFault.getMessage());
+            return null;
         } catch (Throwable ex) {
             throw new RuntimeException("Could not call getStatisticsHsaUnit for " + unitId, ex);
         }
@@ -104,6 +114,10 @@ public class HSAWebServiceCalls {
             parameters.setHsaIdentity(personId);
             parameters.setSearchBase("c=SE");
             return serverInterface.getStatisticsPerson(logicalAddressHeader, messageId, parameters);
+        } catch (HsaWsFault hsaWsFault) {
+            HsaWsFaultType faultInfo = hsaWsFault.getFaultInfo();
+            LOG.error("Could not call getStatisticsPerson for {} hsaWsFault ({}, {}). {}", personId, faultInfo.getCode(), faultInfo.getMessage(), hsaWsFault.getMessage());
+            return null;
         } catch (Throwable ex) {
             throw new RuntimeException("Could not call getStatisticsPerson for " + personId, ex);
         }
