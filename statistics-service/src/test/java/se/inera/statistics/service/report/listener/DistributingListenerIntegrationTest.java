@@ -29,6 +29,8 @@ import se.inera.statistics.service.report.model.SimpleKonDataRow;
 import se.inera.statistics.service.report.model.SimpleKonResponse;
 import se.inera.statistics.service.sjukfall.SjukfallInfo;
 
+import com.fasterxml.jackson.databind.JsonNode;
+
 import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -44,6 +46,9 @@ public class DistributingListenerIntegrationTest {
 
     @Autowired
     private Diagnosgrupp diagnosgrupp;
+
+    @PersistenceContext
+    private EntityManager entityManager;
 
     @Autowired
     private ProcessorListener distributingListener;
@@ -274,6 +279,31 @@ public class DistributingListenerIntegrationTest {
                 assertEquals(0, field.getMale());
             }
         }
+    }
+
+    @Test
+    public void intygWithTooLongVardgivarid() {
+        LocalDate from1 = new LocalDate("2013-03-01"), to1 = new LocalDate("2013-04-30");
+        SjukfallInfo sjukfallInfo = new SjukfallInfo(personId, from1, to1, null);
+        JsonNode utlatande = createUtlatande(from1, to1, "vg" + longString(100), "enhet" + longString(100), "A00");
+
+        distributingListener.accept(sjukfallInfo, utlatande, null, 1L);
+
+        entityManager.flush();
+    }
+
+    private String longString(int i) {
+        StringBuilder builder = new StringBuilder();
+        while (i-- > 0) {
+            builder.append('-');
+        }
+        return builder.toString();
+    }
+
+    private JsonNode createUtlatande(LocalDate from, LocalDate to, String vardgivare, String enhet, String icd10) {
+        UtlatandeBuilder builder = new UtlatandeBuilder();
+        final JsonNode utlatande = builder.build(personId, from, to, enhet, vardgivare, icd10, 50);
+        return DocumentHelper.anonymize(utlatande);
     }
 
     private JsonNode createUtlatande(LocalDate from, LocalDate to, String icd10) {
