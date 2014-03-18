@@ -4,7 +4,7 @@
     <parent>
         <groupId>se.inera.statistics</groupId>
         <artifactId>statistics</artifactId>
-        <version>1.0.3-RC2</version>
+        <version>1.0.3-RC3-SNAPSHOT</version>
     </parent>
 
 
