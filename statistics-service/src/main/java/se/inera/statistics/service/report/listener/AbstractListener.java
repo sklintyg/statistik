@@ -25,7 +25,11 @@ public abstract class AbstractListener<T> {
 
         T token = setup(sjukfallInfo, utlatande, hsa, firstMonth, endMonth);
 
-        return accept(token, firstMonth, endMonth);
+        if (token != null) {
+            return accept(token, firstMonth, endMonth);
+        } else {
+            return false;
+        }
     }
 
     boolean accept(T token, LocalDate firstMonth, LocalDate endMonth) {

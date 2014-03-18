@@ -43,6 +43,19 @@ public class GenericHolder {
         age = DocumentHelper.getAge(utlatande);
     }
 
+    public boolean validate() {
+        boolean result = true;
+        if (vardgivareId == null || vardgivareId.length() > 60) {
+            LOG.error("Invalid vardgivarid '{}'.", vardgivareId);
+            result = false;
+        }
+        if (enhetId == null || enhetId.length() > 60) {
+            LOG.error("Invalid enhetid '{}'.", enhetId);
+            result = false;
+        }
+        return result;
+    }
+
     public SjukfallInfo getSjukfallInfo() {
         return sjukfallInfo;
     }

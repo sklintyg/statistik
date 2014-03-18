@@ -17,6 +17,7 @@ public abstract class GenericAbstractListener extends AbstractListener<GenericHo
 
     @Override
     GenericHolder setup(SjukfallInfo sjukfallInfo, JsonNode utlatande, JsonNode hsa, LocalDate start, LocalDate end) {
-        return new GenericHolder(sjukfallInfo, utlatande, hsa, diagnosisGroupsUtil);
+        GenericHolder genericHolder = new GenericHolder(sjukfallInfo, utlatande, hsa, diagnosisGroupsUtil);
+        return genericHolder.validate() ? genericHolder : null;
     }
 }
