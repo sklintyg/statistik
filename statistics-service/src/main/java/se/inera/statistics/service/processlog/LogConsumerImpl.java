@@ -32,7 +32,7 @@ public class LogConsumerImpl implements LogConsumer {
     public LogConsumerImpl() {
     }
 
-    @Transactional
+    @Transactional(noRollbackFor = Exception.class)
     public int processBatch() {
         try {
             setRunning(true);

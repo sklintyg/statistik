@@ -37,7 +37,7 @@ public class DistributingListener implements ProcessorListener {
     private ProcessLog processLog;
 
     @Override
-    @Transactional
+    @Transactional(noRollbackFor = Exception.class)
     public void accept(SjukfallInfo sjukfallInfo, JsonNode utlatande, JsonNode hsa, long logId) {
         boolean cacheFull = aldersgruppListener.accept(sjukfallInfo, utlatande, hsa);
         cacheFull = cacheFull | sjukfallPerKonListener.accept(sjukfallInfo, utlatande, hsa);
