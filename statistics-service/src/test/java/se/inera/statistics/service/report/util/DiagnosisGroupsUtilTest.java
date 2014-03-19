@@ -14,23 +14,20 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import se.inera.statistics.service.report.model.DiagnosisGroup;
 
-@RunWith(MockitoJUnitRunner.class)
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations = { "classpath:process-log-impl-test.xml" })
 public class DiagnosisGroupsUtilTest {
 
-    @Mock
-    private Resource icd10ChaptersAnsiFile = mock(Resource.class);
-
-    @InjectMocks
-    private DiagnosisGroupsUtil util = new DiagnosisGroupsUtil();
-
-    @Before
-    public void setUp() throws IOException {
-        Mockito.when(icd10ChaptersAnsiFile.getInputStream()).thenReturn(new ByteArrayInputStream("R10-R19Symtom och sjukdomstecken från matsmältningsorganen och buken\nT51-T65Toxisk effekt av substanser med i huvudsak icke-medicinsk användning\nC15-C26Maligna tumörer i matsmältningsorganen\nC30-C39Maligna tumörer i andningsorganen och brösthålans organ".getBytes("UTF-8")));
-    }
+    @Autowired
+    private DiagnosisGroupsUtil util;
 
     @Test
     public void testGetGroupIdForCode() {
@@ -75,14 +72,20 @@ public class DiagnosisGroupsUtilTest {
     @Test
     public void testGetSubDiagnosisGroups() {
         List<DiagnosisGroup> allDiagnosisGroups = util.getSubGroups("C00-D48");
-        String expectedResult = "[{\"DiagnosisGroup\":{\"id\":\"C15-C26\", \"name\":\"Maligna tumörer i matsmältningsorganen\", \"firstId\":\"C15\", \"lastId\":\"C26\"}}, {\"DiagnosisGroup\":{\"id\":\"C30-C39\", \"name\":\"Maligna tumörer i andningsorganen och brösthålans organ\", \"firstId\":\"C30\", \"lastId\":\"C39\"}}]";
-        assertEquals(expectedResult, allDiagnosisGroups.toString());
+        assertEquals(18, allDiagnosisGroups.size());
+        assertEquals("{\"DiagnosisGroup\":{\"id\":\"C00-C14\", \"name\":\"Maligna tumörer i läpp, munhåla och svalg\", \"firstId\":\"C00\", \"lastId\":\"C14\"}}", allDiagnosisGroups.get(0).toString());
+    }
+
+    @Test
+    public void why() {
+        String groupIdForCode = util.getGroupIdForCode("M 16,9");
+        assertEquals("M00-M99", groupIdForCode);
     }
 
     @Test
     public void normalizeIcd10Code() {
         assertEquals("", DiagnosisGroupsUtil.normalize(". -_+?="));
         assertEquals("A10", DiagnosisGroupsUtil.normalize("a 1.0"));
-        assertEquals("B123", DiagnosisGroupsUtil.normalize(" B12.3 # "));
+        assertEquals("B12", DiagnosisGroupsUtil.normalize(" B12.3 # "));
     }
 }
