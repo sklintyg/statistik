@@ -3,6 +3,7 @@ package se.inera.statistics.service.helper;
 import org.junit.Assert;
 import org.junit.Test;
 
+import se.inera.statistics.service.JSONSource;
 import se.inera.statistics.service.hsa.HSAKey;
 import se.inera.statistics.service.hsa.HSAService;
 import se.inera.statistics.service.hsa.HSAServiceMock;
@@ -18,6 +19,16 @@ public class HSAServiceHelperTest {
         String lan = HSAServiceHelper.getLan(info);
 
         Assert.assertEquals("08", lan);
+
+    }
+
+    @Test
+    public void getLanTestForFixedData() {
+        JsonNode info = JSONParser.parse(JSONSource.readHSASample());
+
+        String lan = HSAServiceHelper.getLan(info);
+
+        Assert.assertEquals("03", lan);
 
     }
 }
