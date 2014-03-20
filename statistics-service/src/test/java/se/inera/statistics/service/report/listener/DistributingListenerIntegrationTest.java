@@ -1,9 +1,7 @@
 package se.inera.statistics.service.report.listener;
 
 import com.fasterxml.jackson.databind.JsonNode;
-
 import org.joda.time.LocalDate;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -12,9 +10,8 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
-
-import se.inera.statistics.service.helper.UtlatandeBuilder;
 import se.inera.statistics.service.helper.DocumentHelper;
+import se.inera.statistics.service.helper.UtlatandeBuilder;
 import se.inera.statistics.service.processlog.ProcessorListener;
 import se.inera.statistics.service.report.api.Diagnosgrupp;
 import se.inera.statistics.service.report.api.RollingLength;
@@ -24,12 +21,13 @@ import se.inera.statistics.service.report.model.DiagnosgruppResponse;
 import se.inera.statistics.service.report.model.KonDataRow;
 import se.inera.statistics.service.report.model.KonField;
 import se.inera.statistics.service.report.model.Range;
-import se.inera.statistics.service.report.model.SjukfallslangdResponse;
 import se.inera.statistics.service.report.model.SimpleKonDataRow;
 import se.inera.statistics.service.report.model.SimpleKonResponse;
+import se.inera.statistics.service.report.model.SjukfallslangdResponse;
 import se.inera.statistics.service.sjukfall.SjukfallInfo;
 
-import com.fasterxml.jackson.databind.JsonNode;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
 import static org.junit.Assert.assertEquals;
 
