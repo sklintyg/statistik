@@ -123,7 +123,6 @@ public class DiagnosisGroupsConverter {
         return result;
     }
 
-    private ChartData convertChart(DiagnosisGroupResponse resp, Sex sex) {
     private ChartData convertChart(DiagnosgruppResponse resp, Kon sex) {
         Map<String, List<Integer>> allGroups = extractAllGroups(resp, sex);
         Map<String, List<Integer>> mergedGroups = mergeChartGroups(allGroups);

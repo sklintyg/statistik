@@ -96,7 +96,7 @@ public class OverviewConverterTest {
 
         List<DonutChartData> diagnosisGroupsResult = data.getDiagnosisGroups();
         assertEquals(5, diagnosisGroupsResult.size());
-        assertEquals("Somatiska sjukdomar (A00-E90, G00-L99, N00-N99)", diagnosisGroupsResult.get(0).getName());
+        assertEquals("A00-E90, G00-L99, N00-N99 Somatiska sjukdomar", diagnosisGroupsResult.get(0).getName());
         assertEquals(1, diagnosisGroupsResult.get(0).getQuantity());
         assertEquals(200, diagnosisGroupsResult.get(0).getAlternation());
 
