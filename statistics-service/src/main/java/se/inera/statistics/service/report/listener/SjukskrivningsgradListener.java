@@ -18,8 +18,8 @@ public class SjukskrivningsgradListener extends GenericAbstractListener {
 
     @Override
     boolean accept(GenericHolder token, String period) {
-        List<String> arbetsformagor = DocumentHelper.getArbetsformaga(token.getUtlatande());
-        for (String formaga: arbetsformagor) {
+        List<Integer> arbetsformagor = DocumentHelper.getArbetsformaga(token.getUtlatande());
+        for (Integer formaga: arbetsformagor) {
             String grad = arbetsformagaTillSjukskrivning(formaga);
             api.count(token.getEnhetId(), period, grad, Verksamhet.ENHET, token.getKon());
             api.count(token.getVardgivareId(), period, grad, Verksamhet.VARDGIVARE, token.getKon());
@@ -27,12 +27,12 @@ public class SjukskrivningsgradListener extends GenericAbstractListener {
         return false; // TODO: Caching
     }
 
-    private String arbetsformagaTillSjukskrivning(String formaga) {
+    private String arbetsformagaTillSjukskrivning(Integer formaga) {
         switch(formaga) {
-        case "0": return "100";
-        case "25": return "75";
-        case "50": return "50";
-        case "75": return "25";
+        case 0: return "100";
+        case 25: return "75";
+        case 50: return "50";
+        case 75: return "25";
         default:
             return "100";
         }

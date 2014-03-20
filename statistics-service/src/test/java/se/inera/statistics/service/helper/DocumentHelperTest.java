@@ -107,5 +107,11 @@ public class DocumentHelperTest {
 
         assertEquals("2011-02-20", date);
     }
+
+    @Test
+    public void getArbetsformaga() {
+        assertEquals(50, DocumentHelper.getArbetsformaga(document).get(0).intValue());
+    }
+
     // CHECKSTYLE:ON MagicNumber
 }

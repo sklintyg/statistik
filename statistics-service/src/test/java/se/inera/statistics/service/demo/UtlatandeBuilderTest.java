@@ -21,7 +21,7 @@ public class UtlatandeBuilderTest {
 
         assertEquals("19121212-1212", result.path("patient").path("id").path("extension").asText());
         assertEquals("diagnos", DocumentHelper.getDiagnos(result));
-        assertEquals(Arrays.asList("50"), DocumentHelper.getArbetsformaga(result));
+        assertEquals(Arrays.asList(50), DocumentHelper.getArbetsformaga(result));
     }
 
 }
