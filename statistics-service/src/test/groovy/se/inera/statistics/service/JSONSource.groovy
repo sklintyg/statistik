@@ -23,4 +23,8 @@ class JSONSource {
         doc.text
     }
 
+    static String readHSASample() {
+        def doc = new InputStreamReader(this.getClass().getResourceAsStream("/json/hsa_example.json"))
+        doc.text
+    }
 }
