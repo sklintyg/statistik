@@ -15,7 +15,7 @@ import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 @Component
-@Profile("dev")
+@Profile({"dev", "mockhsa"})
 @Primary
 public class HSAServiceMock implements HSAService {
     private JsonNodeFactory factory = JsonNodeFactory.instance;
