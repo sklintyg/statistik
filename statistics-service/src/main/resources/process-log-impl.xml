@@ -50,7 +50,7 @@
     <task:annotation-driven executor="taskExecutor"/>
     <task:executor id="taskExecutor" pool-size="5-10" queue-capacity="25" rejection-policy="CALLER_RUNS" />
 
-    <beans profile="active,dev">
+    <beans profile="active">
         <context:component-scan base-package="se.inera.statistics.service.scheduler" />
     </beans>
 </beans>
