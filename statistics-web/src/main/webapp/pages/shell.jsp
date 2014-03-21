@@ -46,6 +46,7 @@
     <![endif]-->
     <link href="<c:url value='/css/inera-statistics.css'/>" rel="stylesheet" media="not print">
     <link href="<c:url value='/css/inera-statistics-responsive.css'/>" rel="stylesheet" media="not print">
+    <link href="<c:url value='/css/helperclasses.css'/>" rel="stylesheet" media="not print">
     <link href="<c:url value='/css/print.css'/>" rel="stylesheet" media="print">
 
     <link href="<c:url value='/bootstrap/3.1.1/css/bootstrap.min.css'/>" rel="stylesheet" media="not print">
@@ -312,12 +313,6 @@
         </div>
     </div>
 </div>
-<!-- Footer
-================================================== -->
-<footer class="footer dontprint">
-    <div class="container-fluid">
-    </div>
-</footer>
 
 <!-- Scripts -->
 <!-- Placed at the end of the document so the pages load faster -->

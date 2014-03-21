@@ -396,6 +396,7 @@ legend {
 }
 #overview-content .table.table-striped.overview-graph-table tbody tr td {
 	border-right: 1px solid #dddddd;
+	border-left: 1px solid #dddddd;
 }
 #overview-content table#datatable {
 	width: 61%;
@@ -407,7 +408,6 @@ legend {
 	text-align: left;
 	font-size: 11px;
 	margin-left: 0px;
-	padding: 10px 0px 10px 4px;
 }
 
 .table.table-striped.overview-graph-table td span{
@@ -525,6 +525,7 @@ legend {
 #national-statistic-menu-content .sub-nav-list li a,
 #business-statistic-menu-content .sub-nav-list li a {
 	font-size: 0.9em;
+	padding-left: 20px;
 }
 
 .accordion-toggle.active i.statistict-left-menu-expand-icon,
@@ -602,7 +603,6 @@ i.statistict-left-menu-expand-icon {
 #statistics-menu-accordion .nav.nav-list.sub-nav-list {
 	padding-left: 0px;
 	padding-right: 0px;
-	text-align: right;
 }
 
 #chart-data-table .panel-heading {
@@ -1040,6 +1040,59 @@ a.listheader.collapsed {
 #about-content {
 	width: 75%;
 }
+
+/*Start: Nya översikt-styles*/
+.overview-widget {
+	width: 100%;
+	border: 1px solid #ddd;
+	margin-bottom: 20px;
+	color: #333;
+	font-size: 12px;
+	padding: 0px 0px 5px 0px;
+	border-bottom-color: #ddd;
+	display: inline-block;
+	background: #ebebeb;
+}
+.overview-widget-header {
+	position: relative;
+	display: inline-block;
+	vertical-align: middle;
+	width: 100%;
+	padding: 5px 5px;
+	background: #008391;
+	background: -moz-linear-gradient(top, #008391 0%, #00687d 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#008391), color-stop(100%,#00687d));
+	background: -webkit-linear-gradient(top, #008391 0%,#00687d 100%);
+	background: -o-linear-gradient(top, #008391 0%,#00687d 100%);
+	background: -ms-linear-gradient(top, #008391 0%,#00687d 100%);
+	background: linear-gradient(to bottom, #008391 0%,#00687d 100%);
+	/* filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#008391', endColorstr='#00687d',GradientType=0 ); */
+}
+.overview-widget-content {
+	min-height: 250px; /*TEMPORÄRT*/
+	display: block;
+}
+.overview-widget-link:hover .overview-widget-header { background: #28b4c4; cursor: pointer; }
+.overview-widget-link:hover .overview-widget { background: #F0F0F0; }
+.overview-widget-title { margin: 10px; }
+.overview-widget-header-text, .overview-widget-header-info {
+	display: inline-block;
+	margin-bottom: 0;
+	font-weight: 400;
+	vertical-align: middle;
+	cursor: pointer;
+	background-image: none;
+	border: 1px solid transparent;
+	padding: 6px 12px;
+	font-size: 14px;
+	line-height: 1.8;
+}
+.overview-widget-header-text { text-align: center; padding-left: 0 !important; padding-right: 0 !important;}
+.overview-widget-header-info { border-left: 1px solid #fff; padding-left: 0 !important; padding-right: 0 !important; height: 39px; width: 39px;}
+.tooltip.bottom { margin-left: 2px; }
+.overview-widget-table-legend { width: 20px; }
+/*Slut: Nya översikt-styles */
+
 	#overview-content h1, #overview-content h2, #overview-content h3, #overview-content h4,
 	#chart-content h1, #chart-content h2, #chart-content h3, #chart-content h4,
 	#about-content h1, #about-content h2, #about-content h3, #about-content h4 { font-family: Helvetica; color: #008391; }
@@ -1598,14 +1651,6 @@ a.has-collapse {
 	top: 4px;
 	position: relative;
 	border-radius: 4px;
-} 
-.overview-legend-color-square {
-    display: inline-block;
-	width: 15px;
-	height: 15px;
-	margin-right: 5px;
-	position: relative;
-	border-radius: 5px;
 } 
 .overview-group-name-colour-square {
 	display: inline-block;	

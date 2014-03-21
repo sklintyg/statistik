@@ -1,0 +1,13 @@
+/** Padding-helpers below **/
+.left-2px-padding { padding-left: 2px !important; }
+.left-5px-padding { padding-left: 5px !important; }
+
+.right-2px-padding { padding-right: 2px !important; }
+.right-5px-padding { padding-right: 5px !important; }
+
+.bottom-2px-padding { padding-bottom: 2px !important; }
+.bottom-5px-padding { padding-bottom: 5px !important; }
+
+/** Margin-helpers below **/
+.left-2px-margin { margin-left: 2px !important; }
+.left-5px-margin { margin-left: 5px !important; }
