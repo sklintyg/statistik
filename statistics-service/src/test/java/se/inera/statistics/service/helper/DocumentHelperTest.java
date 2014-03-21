@@ -70,7 +70,7 @@ public class DocumentHelperTest {
 
     @Test
     public void getArbetsformaga() {
-        assertEquals(50, DocumentHelper.getArbetsformaga(document).get(0).intValue());
+        assertEquals(0, DocumentHelper.getArbetsformaga(document).get(0).intValue());
     }
 
     // CHECKSTYLE:ON MagicNumber
