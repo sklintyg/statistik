@@ -396,6 +396,7 @@ legend {
 }
 #overview-content .table.table-striped.overview-graph-table tbody tr td {
 	border-right: 1px solid #dddddd;
+	border-left: 1px solid #dddddd;
 }
 #overview-content table#datatable {
 	width: 61%;
@@ -407,7 +408,6 @@ legend {
 	text-align: left;
 	font-size: 11px;
 	margin-left: 0px;
-	padding: 10px 0px 10px 4px;
 }
 
 .table.table-striped.overview-graph-table td span{
@@ -1051,6 +1051,7 @@ a.listheader.collapsed {
 	padding: 0px 0px 5px 0px;
 	border-bottom-color: #ddd;
 	display: inline-block;
+	background: #ebebeb;
 }
 .overview-widget-header {
 	position: relative;
@@ -1067,9 +1068,13 @@ a.listheader.collapsed {
 	background: linear-gradient(to bottom, #008391 0%,#00687d 100%);
 	/* filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#008391', endColorstr='#00687d',GradientType=0 ); */
 }
-.overview-widget-header:hover { background: #28b4c4; cursor: pointer; }
+.overview-widget-content {
+	min-height: 250px; /*TEMPORÄRT*/
+	display: block;
+}
+.overview-widget-link:hover .overview-widget-header { background: #28b4c4; cursor: pointer; }
+.overview-widget-link:hover .overview-widget { background: #F0F0F0; }
 .overview-widget-title { margin: 10px; }
-
 .overview-widget-header-text, .overview-widget-header-info {
 	display: inline-block;
 	margin-bottom: 0;
@@ -1084,9 +1089,8 @@ a.listheader.collapsed {
 }
 .overview-widget-header-text { text-align: center; padding-left: 0 !important; padding-right: 0 !important;}
 .overview-widget-header-info { border-left: 1px solid #fff; padding-left: 0 !important; padding-right: 0 !important; height: 39px; width: 39px;}
-.overview-widget-header-info:hover { background: #28b4c4; }
 .tooltip.bottom { margin-left: 2px; }
-
+.overview-widget-table-legend { width: 20px; }
 /*Slut: Nya översikt-styles */
 
 	#overview-content h1, #overview-content h2, #overview-content h3, #overview-content h4,
@@ -1647,14 +1651,6 @@ a.has-collapse {
 	top: 4px;
 	position: relative;
 	border-radius: 4px;
-} 
-.overview-legend-color-square {
-    display: inline-block;
-	width: 15px;
-	height: 15px;
-	margin-right: 5px;
-	position: relative;
-	border-radius: 5px;
 } 
 .overview-group-name-colour-square {
 	display: inline-block;	

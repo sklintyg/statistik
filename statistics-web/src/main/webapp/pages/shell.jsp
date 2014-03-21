@@ -313,12 +313,6 @@
         </div>
     </div>
 </div>
-<!-- Footer
-================================================== -->
-<footer class="footer dontprint">
-    <div class="container-fluid">
-    </div>
-</footer>
 
 <!-- Scripts -->
 <!-- Placed at the end of the document so the pages load faster -->
