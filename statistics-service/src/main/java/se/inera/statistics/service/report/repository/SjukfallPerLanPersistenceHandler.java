@@ -52,8 +52,9 @@ public class SjukfallPerLanPersistenceHandler implements SjukfallPerLan {
     @Override
     @Transactional
     public SimpleKonResponse<SimpleKonDataRow> getStatistics(Range range) {
-        TypedQuery<SjukfallPerLanRow> query = manager.createQuery("SELECT new SjukfallPerLanRow(c.key.period, 'dummy', c.key.lanId, SUM (c.female), sum (c.male)) FROM SjukfallPerLanRow c WHERE c.key.period = :to GROUP BY c.key.period, c.key.lanId", SjukfallPerLanRow.class);
+        TypedQuery<SjukfallPerLanRow> query = manager.createQuery("SELECT new SjukfallPerLanRow(c.key.period, 'dummy', c.key.lanId, c.key.periods, SUM (c.female), sum (c.male)) FROM SjukfallPerLanRow c WHERE c.key.period = :to and c.key.periods = :periods GROUP BY c.key.period, c.key.lanId", SjukfallPerLanRow.class);
         query.setParameter("to", ReportUtil.toPeriod(range.getTo()));
+        query.setParameter("periods", range.getMonths());
 
         return translateForOutput(range, query.getResultList());
     }
@@ -61,12 +62,12 @@ public class SjukfallPerLanPersistenceHandler implements SjukfallPerLan {
     @Override
     @Transactional
     public void count(String period, String enhetId, String lanId, RollingLength length, Kon kon) {
-        SjukfallPerLanRow existingRow = manager.find(SjukfallPerLanRow.class, new SjukfallPerLanKey(period, enhetId, lanId));
+        SjukfallPerLanRow existingRow = manager.find(SjukfallPerLanRow.class, new SjukfallPerLanKey(period, enhetId, lanId, length.getPeriods()));
         int female = Kon.Female.equals(kon) ? 1 : 0;
         int male = Kon.Male.equals(kon) ? 1 : 0;
 
         if (existingRow == null) {
-            SjukfallPerLanRow row = new SjukfallPerLanRow(period, enhetId, lanId, female, male);
+            SjukfallPerLanRow row = new SjukfallPerLanRow(period, enhetId, lanId, length.getPeriods(), female, male);
             manager.persist(row);
         } else {
             existingRow.setFemale((int) (existingRow.getFemale() + female));

@@ -30,11 +30,13 @@ public class SjukfallPerLanKey implements Serializable {
     private String period;
     private String hsaId;
     private String lanId;
+    private int periods;
 
-    public SjukfallPerLanKey(String period, String enhet, String lan) {
+    public SjukfallPerLanKey(String period, String enhet, String lan, int periods) {
         this.period = period;
         hsaId = enhet;
         lanId = lan;
+        this.periods = periods;
     }
 
     public SjukfallPerLanKey() {
@@ -64,6 +66,14 @@ public class SjukfallPerLanKey implements Serializable {
         this.lanId = lanId;
     }
 
+    public int getPeriods() {
+        return periods;
+    }
+
+    public void setPeriods(int periods) {
+        this.periods = periods;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -78,6 +88,8 @@ public class SjukfallPerLanKey implements Serializable {
         if (hsaId != null ? !hsaId.equals(that.hsaId) : that.hsaId != null) {
             return false;
         } else if (period != null ? !period.equals(that.period) : that.period != null) {
+            return false;
+        } else if (periods != that.periods) {
             return false;
         }
 

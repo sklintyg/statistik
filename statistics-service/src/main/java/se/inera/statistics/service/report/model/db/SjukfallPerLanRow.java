@@ -37,8 +37,8 @@ public class SjukfallPerLanRow {
     public SjukfallPerLanRow() {
     }
 
-    public SjukfallPerLanRow(String period, String hsaId, String lanId, long female, long male) {
-        this.key = new SjukfallPerLanKey(period, hsaId, lanId);
+    public SjukfallPerLanRow(String period, String hsaId, String lanId, int periods, long female, long male) {
+        this.key = new SjukfallPerLanKey(period, hsaId, lanId, periods);
         this.female = female;
         this.male = male;
     }
