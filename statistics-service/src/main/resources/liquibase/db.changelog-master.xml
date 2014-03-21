@@ -15,4 +15,5 @@
     <include file="liquibase/db.changelog-v9.0_create_sjukskrivningsgrad_table.xml"/>
     <include file="liquibase/db.changelog-v10.0_create_hsa_table.xml"/>
     <include file="liquibase/db.changelog-v11.0_create_sjukfallperlan_table.xml"/>
+    <include file="liquibase/db.changelog-v12.0_replace_sjukfallperlan_table.xml"/>
 </databaseChangeLog>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
+    <changeSet id="12a_replace_sjukfall_per_lan_row_table" author="roger.lindsjo">
+
+        <dropTable tableName="sjukfallperlan"/>
+
+        <createTable tableName="sjukfallperlan">
+            <column name="period" type="varchar(20)">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="hsaid" type="varchar(60)">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="lanid" type="varchar(60)">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="periods" type="int">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="female" type="int"/>
+            <column name="male" type="int"/>
+        </createTable>
+    </changeSet>
+
+</databaseChangeLog>
