@@ -1,14 +1,11 @@
 package se.inera.statistics.service.helper;
 
-import static junit.framework.Assert.assertEquals;
-import static org.junit.Assert.assertEquals;
-
+import com.fasterxml.jackson.databind.JsonNode;
 import org.joda.time.LocalDate;
 import org.junit.Test;
-
 import se.inera.statistics.service.JSONSource;
 
-import com.fasterxml.jackson.databind.JsonNode;
+import static org.junit.Assert.assertEquals;
 
 public class DocumentHelperTest {
 
