@@ -53,27 +53,51 @@ public class HSAServiceMock implements HSAService {
     public JsonNode getHSAInfo(HSAKey key) {
         ObjectNode root = factory.objectNode();
         root.put("enhet", createEnhet(key));
+        root.put("huvudenhet", createEnhet(key));
+        root.put("vardgivare", createVardgivare(key));
+        root.put("personal", createPersonal());
+        return root;
+    }
+
+    private JsonNode createVardgivare(HSAKey key) {
+        ObjectNode root = factory.objectNode();
+        root.put("id", "Not yet");
+        root.put("orgnr", "Not yet");
+        root.put("namn", "Not yet");
+        root.put("startdatum", "Not yet");
+        root.put("slutdatum", "Not yet");
+        root.put("arkiverad", "Not yet");
         return root;
     }
 
     public JsonNode createEnhet(HSAKey key) {
         ObjectNode root = factory.objectNode();
-        root.put("enhetsnamn", "Enhetens namn");
         root.put("id", "Enhetens organisationsnummer");
-        root.put("organisationsnamn", "Organisationsnamn");
+        root.put("namn", "Enhetens namn");
         root.put("enhetstyp", asList("02"));
-        root.put("vardgivartillhorighet", "vardgivar hsaid");
         root.put("agarform", asList("Landsting/Region"));
         root.put("startdatum", "");
         root.put("slutdatum", "");
+        root.put("arkiverad", "Not yet");
+        root.put("organisationsnamn", "Organisationsnamn");
+        root.put("verksamhet", "Not yet");
+        root.put("vardform", "Not yet");
         root.put("geografi", createGeografiskIndelning(key));
-        root.put("hos-personal", createHosPersonal());
         return root;
     }
 
-    private JsonNode createHosPersonal() {
+    private JsonNode createPersonal() {
         ObjectNode root = factory.objectNode();
-        root.put("placeholder", "value");
+        root.put("id", "Not yet");
+        root.put("efternamn", "Not yet");
+        root.put("tilltalsnamn", "Not yet");
+        root.put("initial", "Not yet");
+        root.put("kon", "Not yet");
+        root.put("alder", "Not yet");
+        root.put("befattning", "Not yet");
+        root.put("specialitet", "Not yet");
+        root.put("yrkesgrupp", "Not yet");
+        root.put("skyddad", "Not yet");
         return root;
     }
 
