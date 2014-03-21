@@ -52,7 +52,7 @@ public class DistributingListener implements ProcessorListener {
     private SjukfallPerLanListener sjukfallPerLanListener;
 
     @Override
-    @Transactional
+    @Transactional(noRollbackFor = Exception.class)
     public void accept(SjukfallInfo sjukfallInfo, JsonNode utlatande, JsonNode hsa, long logId) {
         aldersgruppListener.accept(sjukfallInfo, utlatande, hsa);
         sjukfallPerKonListener.accept(sjukfallInfo, utlatande, hsa);
@@ -62,5 +62,4 @@ public class DistributingListener implements ProcessorListener {
         sjukskrivningsgradListener.accept(sjukfallInfo, utlatande, hsa);
         sjukfallPerLanListener.accept(sjukfallInfo, utlatande, hsa);
     }
-
 }

@@ -118,7 +118,7 @@ public class OverviewPersistanceHandlerTest extends OverviewPersistenceHandler {
         Assert.assertEquals(67, result.getCasesPerMonthSexProportion().getFemaleProportion());
         Assert.assertEquals(33, result.getCasesPerMonthSexProportion().getMaleProportion());
         Assert.assertEquals(3, result.getDiagnosisGroups().get(0).getQuantity());
-        Assert.assertEquals(200, result.getDiagnosisGroups().get(0).getAlternation());
+        Assert.assertEquals(2, result.getDiagnosisGroups().get(0).getAlternation());
         Assert.assertEquals(3, result.getAgeGroups().size());
         Assert.assertEquals(3, result.getAgeGroups().get(0).getQuantity());
         Assert.assertEquals(200, result.getAgeGroups().get(0).getAlternation());
@@ -152,7 +152,7 @@ public class OverviewPersistanceHandlerTest extends OverviewPersistenceHandler {
         Assert.assertEquals(100, result.getCasesPerMonthSexProportion().getFemaleProportion());
         Assert.assertEquals(0, result.getCasesPerMonthSexProportion().getMaleProportion());
         Assert.assertEquals(2, result.getDiagnosisGroups().get(0).getQuantity());
-        Assert.assertEquals(0, result.getDiagnosisGroups().get(0).getAlternation());
+        Assert.assertEquals(2, result.getDiagnosisGroups().get(0).getAlternation());
         Assert.assertEquals(3, result.getAgeGroups().size());
         Assert.assertEquals(2, result.getAgeGroups().get(0).getQuantity());
         Assert.assertEquals(0, result.getAgeGroups().get(0).getAlternation());

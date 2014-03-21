@@ -3,6 +3,7 @@ package se.inera.statistics.service.processlog;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -71,6 +72,17 @@ public class LogConsumerImplTest {
         assertEquals(0, count);
         verify(processLog).getPending(100);
         verify(processor, Mockito.never()).accept(any(JsonNode.class), any(JsonNode.class), Mockito.anyLong());
+    }
+
+    @Test
+    public void failingAcceptContinuesProcessing() {
+        IntygEvent event = new IntygEvent(EventType.CREATED, "{}", "correlationId", 1);
+        when(processLog.getPending(100)).thenReturn(Collections.singletonList(event));
+        when(hsa.decorate(any(JsonNode.class), anyString())).thenReturn(JSONParser.parse("{}"));
+        doThrow(new IllegalArgumentException("Invalid intyg")).when(processor).accept(any(JsonNode.class), any(JsonNode.class), Mockito.anyLong());
+        int count = consumer.processBatch();
+        assertEquals(1, count);
+        verify(processLog).getPending(100);
     }
 
     @Test

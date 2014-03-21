@@ -66,7 +66,14 @@ public class RemoteSender {
 
     public void send() {
         UtlatandeBuilder builder = new UtlatandeBuilder();
-//        simpleSend(builder.build("20121212-1212", new LocalDate("2013-10-20"), new LocalDate("2013-11-11"), "TST5565594230-106J", "IFV1239877878-103H", "IFV1239877878-0001", "D01", 0).toString(), UUID.randomUUID().toString());
+        simpleSend(builder.build("20121212-1212", new LocalDate("2013-10-20"), new LocalDate("2013-11-11"), "TST5565594230-106J", "IFV1239877878-103H", "IFV1239877878-0001", "D01", 0).toString(), UUID.randomUUID().toString());
+        simpleSend(builder.build("20121212-1212", new LocalDate("2013-10-20"), new LocalDate("2013-11-11"), "TST5565594230-106J", "IFV1239877878-103H", "IFV1239877878-0001", "INVALID", 0).toString(), UUID.randomUUID().toString());
+        simpleSend(builder.build("20121262-1212", new LocalDate("2013-10-20"), new LocalDate("2013-11-11"), "TST5565594230-106J", "IFV1239877878-103H", "IFV1239877878-0001", "D01", 0).toString(), UUID.randomUUID().toString());
+        simpleSend(builder.build("20126212-1212", new LocalDate("2013-10-20"), new LocalDate("2013-11-11"), "TST5565594230-106J", "IFV1239877878-103H", "IFV1239877878-0001", "D01", 0).toString(), UUID.randomUUID().toString());
+    }
+
+    public void sendRandom() {
+        UtlatandeBuilder builder = new UtlatandeBuilder();
         for (int i = 0; i < 10; i++) {
             String personid = personer.getRandom();
             String lakarid = lakare.getRandom();
@@ -92,6 +99,9 @@ public class RemoteSender {
     public static void main(String[] args) throws InterruptedException {
         try (ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("classpath:send-to-mq-context.xml")) {
             RemoteSender bean = context.getBean("sender", RemoteSender.class);
+            bean.connectionFactory = (ConnectionFactory) context.getBean("jmsFactory");
+            bean.destination = (Queue) context.getBean("queue");
+            bean.setup();
             bean.send();
             Thread.sleep(5000);
         }

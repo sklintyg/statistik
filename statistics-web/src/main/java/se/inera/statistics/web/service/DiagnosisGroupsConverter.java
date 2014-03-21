@@ -23,6 +23,7 @@ import se.inera.statistics.service.report.model.Avsnitt;
 import se.inera.statistics.service.report.model.DiagnosgruppResponse;
 import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.report.model.KonDataRow;
+import se.inera.statistics.service.report.model.OverviewChartRowExtended;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.web.model.ChartData;
 import se.inera.statistics.web.model.ChartSeries;
@@ -44,6 +45,20 @@ import java.util.TreeMap;
 public class DiagnosisGroupsConverter {
 
     private static final Map<String, List<String>> DIAGNOSIS_CHART_GROUPS = createDiagnosisGroupsMap();
+    private static final Map<String, String> DIAGNOSKAPITEL_TO_DIAGNOSGRUPP = map(DIAGNOSIS_CHART_GROUPS);
+    private static final int DISPLAYED_DIAGNOSIS_GROUPS = 5;
+    public static final int PERCENT = 100;
+
+    private static Map<String, String> map(Map<String, List<String>> diagnosisChartGroups) {
+        Map<String, String> result = new HashMap<>();
+        for (Entry<String, List<String>> entry : diagnosisChartGroups.entrySet()) {
+            for (String kapitel : entry.getValue()) {
+                result.put(kapitel, entry.getKey());
+            }
+        }
+        return result;
+    }
+
     private static final String OVRIGT_CHART_GROUP = "P00-P96, Q00-Q99, S00-Y98 Övrigt";
 
     private static Map<String, List<String>> createDiagnosisGroupsMap() {
@@ -68,6 +83,44 @@ public class DiagnosisGroupsConverter {
         ChartData maleChart = convertChart(diagnosisGroups, Kon.Male);
         ChartData femaleChart = convertChart(diagnosisGroups, Kon.Female);
         return new DualSexStatisticsData(tableData, maleChart, femaleChart, range.toString());
+    }
+
+    public List<OverviewChartRowExtended> convert(List<OverviewChartRowExtended> diagnosisGroups) {
+        List<OverviewChartRowExtended> merged = mergeOverviewChartGroups(diagnosisGroups);
+
+        List<OverviewChartRowExtended> result = new ArrayList<>();
+        for (OverviewChartRowExtended row : merged.subList(0, DISPLAYED_DIAGNOSIS_GROUPS)) {
+            int percentChange = row.getQuantity() != 0 ? row.getAlternation() * PERCENT / row.getQuantity() : 0;
+            result.add(new OverviewChartRowExtended(row.getName(), row.getQuantity(), percentChange));
+        }
+        return result;
+    }
+
+    private List<OverviewChartRowExtended> mergeOverviewChartGroups(List<OverviewChartRowExtended> allGroups) {
+        Map<String, OverviewChartRowExtended> mergedGroups = new TreeMap<>(new Comparator<String>() {
+
+            @Override
+            public int compare(String o1, String o2) {
+                return getDiagnosisChartGroupsAsList().indexOf(o1) - getDiagnosisChartGroupsAsList().indexOf(o2);
+            }
+
+        });
+
+        for (String groupName : getDiagnosisChartGroupsAsList()) {
+            mergedGroups.put(groupName, new OverviewChartRowExtended(groupName, 0, 0));
+        }
+        for (OverviewChartRowExtended row : allGroups) {
+            String grupp = DIAGNOSKAPITEL_TO_DIAGNOSGRUPP.get(row.getName());
+            if (grupp != null) {
+                OverviewChartRowExtended mergedRow = mergedGroups.get(grupp);
+                OverviewChartRowExtended newRow = new OverviewChartRowExtended(mergedRow.getName(), mergedRow.getQuantity() + row.getQuantity(), mergedRow.getAlternation() + row.getAlternation());
+                mergedGroups.put(newRow.getName(), newRow);
+            }
+        }
+
+        List<OverviewChartRowExtended> result = new ArrayList<>();
+        result. addAll(mergedGroups.values());
+        return result;
     }
 
     private ChartData convertChart(DiagnosgruppResponse resp, Kon sex) {
@@ -199,5 +252,4 @@ public class DiagnosisGroupsConverter {
         headers.add(subHeaderRow);
         return headers;
     }
-
 }
