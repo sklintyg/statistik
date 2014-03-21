@@ -1,13 +1,12 @@
 package se.inera.statistics.service.hsa;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import com.fasterxml.jackson.databind.JsonNode;
+import org.junit.Test;
 
 import java.io.IOException;
 
-import org.junit.Test;
-
-import com.fasterxml.jackson.databind.JsonNode;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 public class HSAServiceTest {
 
@@ -18,6 +17,6 @@ public class HSAServiceTest {
         JsonNode hsaInfo = hsaService.getHSAInfo(null);
 
         assertNotNull(hsaInfo);
-        assertEquals("Enhetens namn", hsaInfo.path("enhetsnamn").textValue());
+        assertEquals("Enhetens namn", hsaInfo.path("enhet").path("namn").textValue());
     }
 }

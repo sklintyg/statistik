@@ -65,7 +65,16 @@
       <appender-ref ref="PROCESS_FILE"/>
     </logger>
     <logger name="se.inera.statistics.service.report.listener.DistributingListener" level="INFO"  additivity="false">
-      <appender-ref ref="PROCESS_FILE"/>
+        <appender-ref ref="PROCESS_FILE"/>
+    </logger>
+    <logger name="se.inera.statistics.service.report.listener.GenericHolder" level="INFO"  additivity="false">
+        <appender-ref ref="PROCESS_FILE"/>
+    </logger>
+    <logger name="se.inera.statistics.service.helper.DocumentHelper" level="INFO"  additivity="false">
+        <appender-ref ref="PROCESS_FILE"/>
+    </logger>
+    <logger name="se.inera.ifv.statistics.spi.authorization.impl.HSAWebServiceCalls" level="INFO"  additivity="false">
+        <appender-ref ref="PROCESS_FILE"/>
     </logger>
 
     <!-- Enable logging of access status -->
