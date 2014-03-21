@@ -63,9 +63,10 @@ public class DiagnosisGroupsUtil {
     }
 
     public DiagnosisGroup getSubGroupForCode(String icd10Code) {
+        String normalizedIcd10 = normalize(icd10Code);
         for (Entry<String, Collection<DiagnosisGroup>> entry : getSubGroups().entrySet()) {
             for (DiagnosisGroup diagnosisGroup : entry.getValue()) {
-                if (diagnosisGroup.isCodeInGroup(icd10Code)) {
+                if (diagnosisGroup.isCodeInGroup(normalizedIcd10)) {
                     return diagnosisGroup;
                 }
             }

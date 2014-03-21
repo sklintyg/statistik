@@ -77,9 +77,15 @@ public class DiagnosisGroupsUtilTest {
     }
 
     @Test
-    public void why() {
+    public void getGroupIdForBadlyFormattedICD10() {
         String groupIdForCode = util.getGroupIdForCode("M 16,9");
         assertEquals("M00-M99", groupIdForCode);
+    }
+
+    @Test
+    public void getSubGroupIdForBadlyFormattedICD10() {
+        String groupIdForCode = util.getSubGroupForCode("M 16,9").getId();
+        assertEquals("M15-M19", groupIdForCode);
     }
 
     @Test
