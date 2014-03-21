@@ -61,12 +61,12 @@ public class HSAServiceMock implements HSAService {
 
     private JsonNode createVardgivare(HSAKey key) {
         ObjectNode root = factory.objectNode();
-        root.put("id", "Not yet");
-        root.put("orgnr", "Not yet");
-        root.put("namn", "Not yet");
-        root.put("startdatum", "Not yet");
-        root.put("slutdatum", "Not yet");
-        root.put("arkiverad", "Not yet");
+        root.put("id", (JsonNode)null);
+        root.put("orgnr", (JsonNode)null);
+        root.put("namn", (JsonNode)null);
+        root.put("startdatum", (JsonNode)null);
+        root.put("slutdatum", (JsonNode)null);
+        root.put("arkiverad", (JsonNode)null);
         return root;
     }
 
@@ -78,26 +78,26 @@ public class HSAServiceMock implements HSAService {
         root.put("agarform", asList("Landsting/Region"));
         root.put("startdatum", "");
         root.put("slutdatum", "");
-        root.put("arkiverad", "Not yet");
+        root.put("arkiverad", (JsonNode)null);
         root.put("organisationsnamn", "Organisationsnamn");
-        root.put("verksamhet", "Not yet");
-        root.put("vardform", "Not yet");
+        root.put("verksamhet", (JsonNode)null);
+        root.put("vardform", (JsonNode)null);
         root.put("geografi", createGeografiskIndelning(key));
         return root;
     }
 
     private JsonNode createPersonal() {
         ObjectNode root = factory.objectNode();
-        root.put("id", "Not yet");
-        root.put("efternamn", "Not yet");
-        root.put("tilltalsnamn", "Not yet");
-        root.put("initial", "Not yet");
-        root.put("kon", "Not yet");
-        root.put("alder", "Not yet");
-        root.put("befattning", "Not yet");
-        root.put("specialitet", "Not yet");
-        root.put("yrkesgrupp", "Not yet");
-        root.put("skyddad", "Not yet");
+        root.put("id", (JsonNode)null);
+        root.put("efternamn", (JsonNode)null);
+        root.put("tilltalsnamn", (JsonNode)null);
+        root.put("initial", (JsonNode)null);
+        root.put("kon", (JsonNode)null);
+        root.put("alder", (JsonNode)null);
+        root.put("befattning", (JsonNode)null);
+        root.put("specialitet", (JsonNode)null);
+        root.put("yrkesgrupp", (JsonNode)null);
+        root.put("skyddad", (JsonNode)null);
         return root;
     }
 
