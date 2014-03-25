@@ -18,16 +18,14 @@ public class SjukfallWithDiagnos extends Sjukfall {
      */
     @Override
     public SjukfallWithDiagnos join(Fact line) {
-        int lineEnd = line.startdatum + line.sjukskrivningslangd;
-        if (end + MAX_GAP + 1 < line.startdatum) {
-            return new SjukfallWithDiagnos(line);
-        } else {
-            end = lineEnd;
-            realDays += line.sjukskrivningslangd;
-            diagnoskapitel = line.diagnoskapitel;
-            intygCount++;
-            return this;
-        }
+        SjukfallWithDiagnos sjukfall = (SjukfallWithDiagnos) super.join(line);
+        sjukfall.diagnoskapitel = line.getDiagnoskapitel();
+        return sjukfall;
+    }
+
+    @Override
+    public Sjukfall newSjukfall(Fact line) {
+        return new SjukfallWithDiagnos(line);
     }
 
     @Override

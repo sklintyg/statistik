@@ -27,8 +27,8 @@ public class SjukfallUtilTest {
         assertEquals(1, sjukfalls.size());
 
         Sjukfall sjukfall = sjukfalls.iterator().next();
-        assertEquals(2, sjukfall.intygCount);
-        assertEquals(20, sjukfall.realDays);
+        assertEquals(2, sjukfall.getIntygCount());
+        assertEquals(20, sjukfall.getRealDays());
     }
 
     @Test
@@ -69,8 +69,8 @@ public class SjukfallUtilTest {
 
         Collection<Sjukfall> sjukfalls = SjukfallUtil.calculateSjukfall(aisle, 1, 3);
         assertEquals(2, sjukfalls.size());
-        assertEquals(2, sjukfalls.iterator().next().intygCount);
-        assertEquals(4020, sjukfalls.iterator().next().start);
-        assertEquals(20, sjukfalls.iterator().next().realDays);
+        assertEquals(2, sjukfalls.iterator().next().getIntygCount());
+        assertEquals(4020, sjukfalls.iterator().next().getStart());
+        assertEquals(20, sjukfalls.iterator().next().getRealDays());
     }
 }

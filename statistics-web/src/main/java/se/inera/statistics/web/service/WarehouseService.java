@@ -9,7 +9,7 @@ import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.VerksamhetOverviewResponse;
 import se.inera.statistics.service.report.util.ReportUtil;
 import se.inera.statistics.service.warehouse.Aisle;
-import se.inera.statistics.service.warehouse.AldersgruppQuery;
+import se.inera.statistics.service.warehouse.query.AldersgruppQuery;
 import se.inera.statistics.service.warehouse.Sjukfall;
 import se.inera.statistics.service.warehouse.SjukfallUtil;
 import se.inera.statistics.service.warehouse.Warehouse;
@@ -28,22 +28,24 @@ public class WarehouseService {
     private VerksamhetOverview datasourceOverview;
 
     public VerksamhetOverviewResponse getOverview(String enhetId, Range range, String vardgivarId) {
-        System.err.println("new overview " + enhetId + " " + vardgivarId);
         Aisle aisle = warehouse.get(vardgivarId);
         int numericalEnhetId = ConversionHelper.getEnhetAndRemember(enhetId);
+
         Collection<Sjukfall> currentSjukfall = SjukfallUtil.active(range, aisle, numericalEnhetId);
         OverviewKonsfordelning currentKonsfordelning = getOverviewKonsfordelning(range, currentSjukfall);
+
         Range previousRange = ReportUtil.getPreviousPeriod(range);
         Collection<Sjukfall> previousSjukfall = SjukfallUtil.active(previousRange, aisle, numericalEnhetId);
         OverviewKonsfordelning previousKonsfordelning = getOverviewKonsfordelning(previousRange, previousSjukfall);
 
-        VerksamhetOverviewResponse backupOverview = datasourceOverview.getOverview(enhetId, range);
+        VerksamhetOverviewResponse removeOldSource = datasourceOverview.getOverview(enhetId, range);
 
         int currentLongSjukfall = SjukfallUtil.getLong(currentSjukfall);
         int previousLongSjukfall = SjukfallUtil.getLong(previousSjukfall);
         List<OverviewChartRowExtended> aldersgrupper = AldersgruppQuery.getOverviewAldersgrupper(currentSjukfall, previousSjukfall, DISPLAYED_AGE_GROUPS);
+        System.err.println("aldersgrupper "+ aldersgrupper);
         return new VerksamhetOverviewResponse(currentSjukfall.size(), currentKonsfordelning, previousKonsfordelning,
-                backupOverview.getDiagnosisGroups(), aldersgrupper, backupOverview.getDegreeOfSickLeaveGroups(), backupOverview.getSickLeaveLengthGroups(),
+                removeOldSource.getDiagnosisGroups(), aldersgrupper, removeOldSource.getDegreeOfSickLeaveGroups(), removeOldSource.getSickLeaveLengthGroups(),
                 currentLongSjukfall, currentLongSjukfall - previousLongSjukfall);
     }
 

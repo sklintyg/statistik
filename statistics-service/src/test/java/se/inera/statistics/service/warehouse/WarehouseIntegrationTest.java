@@ -74,9 +74,9 @@ public class WarehouseIntegrationTest {
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
         for (Sjukfall sjukfall: sjukfalls) {
-            totalDays += (sjukfall.end - sjukfall.start);
-            realDays += sjukfall.realDays;
-            totalIntyg += sjukfall.intygCount;
+            totalDays += (sjukfall.getEnd() - sjukfall.getStart());
+            realDays += sjukfall.getRealDays();
+            totalIntyg += sjukfall.getIntygCount();
         }
         stopWatch.stop();
         System.err.format("Sjukfall %1$s Real days %2$s Total days %3$s intyg %4$s %5$sms%n", sjukfalls.size(), realDays, totalDays, totalIntyg, stopWatch.getTotalTimeMillis());

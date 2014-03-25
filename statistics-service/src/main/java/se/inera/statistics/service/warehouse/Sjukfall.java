@@ -4,13 +4,13 @@ public class Sjukfall {
 
     public static final int MAX_GAP = 5;
 
-    final int start;
-    int end;
-    int realDays;
-    int intygCount;
-    final int kon;
-    int alder;
-    int diagnoskapitel;
+    private final int start;
+    private int end;
+    private int realDays;
+    private int intygCount;
+    private final int kon;
+    private int alder;
+    private int diagnoskapitel;
 
     public Sjukfall(Fact line) {
         start = line.startdatum;
@@ -37,7 +37,7 @@ public class Sjukfall {
     public Sjukfall join(Fact line) {
         int lineEnd = line.startdatum + line.sjukskrivningslangd - 1;
         if (isExpired(line.startdatum)) {
-            return new Sjukfall(line);
+            return newSjukfall(line);
         } else {
             end = lineEnd;
             realDays += line.sjukskrivningslangd;
@@ -50,6 +50,10 @@ public class Sjukfall {
             }
             return this;
         }
+    }
+
+    public Sjukfall newSjukfall(Fact line) {
+        return new Sjukfall(line);
     }
 
     private boolean isExpired(int datum) {
@@ -68,5 +72,25 @@ public class Sjukfall {
 
     public boolean in(int start, int end) {
         return !(this.end < start || this.start > end);
+    }
+
+    public int getAlder() {
+        return alder;
+    }
+
+    public int getRealDays() {
+        return realDays;
+    }
+
+    public int getIntygCount() {
+        return intygCount;
+    }
+
+    public int getStart() {
+        return start;
+    }
+
+    public int getEnd() {
+        return end;
     }
 }

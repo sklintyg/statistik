@@ -102,7 +102,7 @@ public final class SjukfallUtil {
     public static int getLong(Collection<Sjukfall> sjukfalls) {
         int count = 0;
         for (Sjukfall sjukfall : sjukfalls) {
-            if (sjukfall.realDays > 90) {
+            if (sjukfall.getRealDays() > 90) {
                 count++;
             }
         }

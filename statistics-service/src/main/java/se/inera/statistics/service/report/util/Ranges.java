@@ -96,6 +96,11 @@ public final class Ranges implements Iterable<Ranges.Range> {
         public int getCutoff() {
             return cutoff;
         }
+
+        @Override
+        public String toString() {
+            return name + "(" + cutoff + ")";
+        }
     }
 
 }

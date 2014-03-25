@@ -17,15 +17,13 @@ public class SjukfallWithSjukskrivningsgrad extends Sjukfall {
      * @return join will either return the same, possibly modified (i.e. this), Sjukfall-object, or a new object
      */
     public SjukfallWithSjukskrivningsgrad join(Fact line) {
-        int lineEnd = line.startdatum + line.sjukskrivningslangd;
-        if (end + MAX_GAP + 1 < line.startdatum) {
-            return new SjukfallWithSjukskrivningsgrad(line);
-        } else {
-            end = lineEnd;
-            realDays += line.sjukskrivningslangd;
-            intygCount++;
-            return this;
-        }
+        SjukfallWithSjukskrivningsgrad sjukfall = (SjukfallWithSjukskrivningsgrad) super.join(line);
+        return sjukfall;
+    }
+
+    @Override
+    public Sjukfall newSjukfall(Fact line) {
+        return new SjukfallWithSjukskrivningsgrad(line);
     }
 
     @Override
