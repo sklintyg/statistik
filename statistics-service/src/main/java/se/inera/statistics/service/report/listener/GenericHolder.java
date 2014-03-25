@@ -1,5 +1,8 @@
 package se.inera.statistics.service.report.listener;
 
+import org.joda.time.LocalDate;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import se.inera.statistics.service.helper.DocumentHelper;
@@ -12,6 +15,12 @@ import com.fasterxml.jackson.databind.JsonNode;
 
 public class GenericHolder {
     private static final Logger LOG = LoggerFactory.getLogger(GenericHolder.class);
+
+    private static final DateTimeFormatter PERIOD_DATE_TIME_FORMATTERFORMATTER = DateTimeFormat.forPattern("yyyy-MM-dd");
+
+    private static final LocalDate HARD_LIMIT_FROM = new LocalDate("2010-01");
+    public static final int MAX_ID_LENGTH = 60;
+    private final LocalDate limitTo = new LocalDate().plusYears(5);
 
     private final SjukfallInfo sjukfallInfo;
     private final JsonNode utlatande;
@@ -44,16 +53,34 @@ public class GenericHolder {
     }
 
     public boolean validate() {
-        boolean result = true;
-        if (vardgivareId == null || vardgivareId.length() > 60) {
-            LOG.error("Invalid vardgivarid '{}'.", vardgivareId);
-            result = false;
+        boolean valid = true;
+
+        valid &= validateId("vardgivareId", vardgivareId);
+        valid &= validateId("enhetId", enhetId);
+
+        valid &= isValidDate("forsta nedsattning", DocumentHelper.getForstaNedsattningsdag(utlatande));
+        valid &= isValidDate("sista nedsattning", DocumentHelper.getSistaNedsattningsdag(utlatande));
+
+        return valid;
+    }
+
+    private boolean validateId(String key, String id) {
+        if (id == null || id.length() > MAX_ID_LENGTH) {
+            LOG.error("Invalid {} '{}'.", key, id);
+            return false;
+        } else {
+            return true;
         }
-        if (enhetId == null || enhetId.length() > 60) {
-            LOG.error("Invalid enhetid '{}'.", enhetId);
-            result = false;
+    }
+
+    private boolean isValidDate(String key, String dateText) {
+        LocalDate date = PERIOD_DATE_TIME_FORMATTERFORMATTER.parseLocalDate(dateText);
+        if (date.isBefore(HARD_LIMIT_FROM) || date.isAfter(limitTo)) {
+            LOG.error("Date {} not in range '{}'", key, date);
+            return false;
+        } else {
+            return true;
         }
-        return result;
     }
 
     public SjukfallInfo getSjukfallInfo() {
