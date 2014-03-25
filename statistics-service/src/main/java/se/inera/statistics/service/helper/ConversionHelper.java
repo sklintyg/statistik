@@ -43,8 +43,6 @@ public final class ConversionHelper {
     private static final DateTimeFormatter MONTHDAY_FORMATTER = DateTimeFormat.forPattern("MMdd");
     public static final int NO_AGE = -1;
 
-    private static IdMap<String> enhetsMap = new IdMap<>();
-
     private ConversionHelper() {
     }
 
@@ -63,10 +61,6 @@ public final class ConversionHelper {
         String date = "" + (idWoCentury / 1000);
         String seq = "" + (idWoCentury % 1000);
         return century + date + '-' + seq + '0';
-    }
-
-    public static int getEnhetAndRemember(String id) {
-        return enhetsMap.getId(id);
     }
 
     protected static String extractKon(String personId) {
@@ -114,19 +108,6 @@ public final class ConversionHelper {
             return UNKNOWN;
         } else {
             return Integer.parseInt(lkf.substring(0, length));
-        }
-    }
-
-    private static class IdMap<T> {
-        private final Map<T, Integer> map = new HashMap<>();
-
-        public synchronized Integer getId(T key) {
-            Integer id = map.get(key);
-            if (id == null) {
-                id = map.size() + 1;
-                map.put(key, id);
-            }
-            return id;
         }
     }
 }

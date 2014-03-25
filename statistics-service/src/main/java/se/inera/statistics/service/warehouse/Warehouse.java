@@ -11,6 +11,7 @@ import java.util.Map;
 public class Warehouse implements Iterable<Aisle> {
 
     private final Map<String, Aisle> aisles = new HashMap<>();
+    private static IdMap<String> enhetsMap = new IdMap<>();
 
     public void accept(Fact fact, String vardgivareId) {
         Aisle aisle = getAisle(vardgivareId);
@@ -50,4 +51,22 @@ public class Warehouse implements Iterable<Aisle> {
     public Iterator<Aisle> iterator() {
         return aisles.values().iterator();
     }
+
+    public static int getEnhetAndRemember(String id) {
+        return enhetsMap.getId(id);
+    }
+
+    private static class IdMap<T> {
+        private final Map<T, Integer> map = new HashMap<>();
+
+        public synchronized Integer getId(T key) {
+            Integer id = map.get(key);
+            if (id == null) {
+                id = map.size() + 1;
+                map.put(key, id);
+            }
+            return id;
+        }
+    }
+
 }

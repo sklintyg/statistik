@@ -93,4 +93,8 @@ public class Sjukfall {
     public int getEnd() {
         return end;
     }
+
+    public int getDiagnoskapitel() {
+        return diagnoskapitel;
+    }
 }

@@ -13,6 +13,7 @@ import se.inera.statistics.service.warehouse.query.AldersgruppQuery;
 import se.inera.statistics.service.warehouse.Sjukfall;
 import se.inera.statistics.service.warehouse.SjukfallUtil;
 import se.inera.statistics.service.warehouse.Warehouse;
+import se.inera.statistics.service.warehouse.query.DiagnosgruppQuery;
 
 import java.util.Collection;
 import java.util.List;
@@ -29,7 +30,7 @@ public class WarehouseService {
 
     public VerksamhetOverviewResponse getOverview(String enhetId, Range range, String vardgivarId) {
         Aisle aisle = warehouse.get(vardgivarId);
-        int numericalEnhetId = ConversionHelper.getEnhetAndRemember(enhetId);
+        int numericalEnhetId = warehouse.getEnhetAndRemember(enhetId);
 
         Collection<Sjukfall> currentSjukfall = SjukfallUtil.active(range, aisle, numericalEnhetId);
         OverviewKonsfordelning currentKonsfordelning = getOverviewKonsfordelning(range, currentSjukfall);
@@ -42,10 +43,13 @@ public class WarehouseService {
 
         int currentLongSjukfall = SjukfallUtil.getLong(currentSjukfall);
         int previousLongSjukfall = SjukfallUtil.getLong(previousSjukfall);
+
         List<OverviewChartRowExtended> aldersgrupper = AldersgruppQuery.getOverviewAldersgrupper(currentSjukfall, previousSjukfall, DISPLAYED_AGE_GROUPS);
-        System.err.println("aldersgrupper "+ aldersgrupper);
+        List<OverviewChartRowExtended> diagnosgrupper = DiagnosgruppQuery.getOverviewDiagnosgrupper(currentSjukfall, previousSjukfall, Integer.MAX_VALUE);
+
         return new VerksamhetOverviewResponse(currentSjukfall.size(), currentKonsfordelning, previousKonsfordelning,
-                removeOldSource.getDiagnosisGroups(), aldersgrupper, removeOldSource.getDegreeOfSickLeaveGroups(), removeOldSource.getSickLeaveLengthGroups(),
+                diagnosgrupper, aldersgrupper, removeOldSource.getDegreeOfSickLeaveGroups(), removeOldSource.getSickLeaveLengthGroups(),
+//                removeOldSource.getDiagnosisGroups(), aldersgrupper, removeOldSource.getDegreeOfSickLeaveGroups(), removeOldSource.getSickLeaveLengthGroups(),
                 currentLongSjukfall, currentLongSjukfall - previousLongSjukfall);
     }
 
