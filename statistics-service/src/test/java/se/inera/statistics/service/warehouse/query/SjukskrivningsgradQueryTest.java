@@ -42,7 +42,7 @@ public class SjukskrivningsgradQueryTest {
         fact(4010, 100);
         Collection<Sjukfall> sjukfall = SjukfallUtil.calculateSjukfall(warehouse.get(VARDGIVARE));
         List<Counter<Integer>> count = SjukskrivningsgradQuery.count(sjukfall);
-        System.err.println(count);
+
         assertEquals(4, count.size());
         assertEquals(3, count.get(0).getCount());
         assertEquals(2, count.get(1).getCount());

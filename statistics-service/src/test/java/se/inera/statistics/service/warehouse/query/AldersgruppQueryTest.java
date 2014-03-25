@@ -46,7 +46,7 @@ public class AldersgruppQueryTest {
         fact(4010, 10, 100);
         Collection<Sjukfall> sjukfall = SjukfallUtil.calculateSjukfall(warehouse.get(VARDGIVARE));
         List<Counter<Ranges.Range>> count = AldersgruppQuery.count(sjukfall, 4);
-        System.err.println(count);
+
         assertEquals(4, count.size());
         assertEquals(4, count.get(0).getCount());
         assertEquals(2, count.get(1).getCount());
