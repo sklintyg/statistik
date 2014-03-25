@@ -1,16 +1,15 @@
-package se.inera.statistics.service.warehouse;
+package se.inera.statistics.service.warehouse.query;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import se.inera.statistics.service.report.util.AldersgroupUtil;
 import se.inera.statistics.service.report.util.Icd10;
-import se.inera.statistics.service.report.util.Ranges;
-import se.inera.statistics.service.warehouse.query.AldersgruppQuery;
-import se.inera.statistics.service.warehouse.query.Counter;
-import se.inera.statistics.service.warehouse.query.DiagnosgruppQuery;
+import se.inera.statistics.service.warehouse.Fact;
+import se.inera.statistics.service.warehouse.Sjukfall;
+import se.inera.statistics.service.warehouse.SjukfallUtil;
+import se.inera.statistics.service.warehouse.Warehouse;
 
 import java.util.Collection;
 import java.util.List;

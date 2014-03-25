@@ -1,8 +1,10 @@
-package se.inera.statistics.service.warehouse;
+package se.inera.statistics.service.warehouse.query;
 
 import org.junit.Test;
-import se.inera.statistics.service.warehouse.query.Counter;
-import se.inera.statistics.service.warehouse.query.SjukskrivningsgradQuery;
+import se.inera.statistics.service.warehouse.Fact;
+import se.inera.statistics.service.warehouse.Sjukfall;
+import se.inera.statistics.service.warehouse.SjukfallUtil;
+import se.inera.statistics.service.warehouse.Warehouse;
 
 import java.util.Collection;
 import java.util.List;
