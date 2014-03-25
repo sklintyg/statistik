@@ -24,7 +24,11 @@ class JSONSource {
     }
 
     static String readHSASample() {
-        def doc = new InputStreamReader(this.getClass().getResourceAsStream("/json/hsa_example.json"))
+        readHSASample("hsa_example")
+    }
+
+    static String readHSASample(name) {
+        def doc = new InputStreamReader(this.getClass().getResourceAsStream("/json/${name}.json"))
         doc.text
     }
 }

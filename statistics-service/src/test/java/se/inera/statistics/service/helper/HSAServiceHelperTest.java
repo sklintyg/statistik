@@ -27,6 +27,14 @@ public class HSAServiceHelperTest {
         String lan = HSAServiceHelper.getLan(info);
 
         Assert.assertEquals("03", lan);
+    }
 
+    @Test
+    public void getLanOnHuvudenhet() {
+        JsonNode info = JSONParser.parse(JSONSource.readHSASample("hsa_example_huvudenhet"));
+
+        String lan = HSAServiceHelper.getLan(info);
+
+        Assert.assertEquals("05", lan);
     }
 }

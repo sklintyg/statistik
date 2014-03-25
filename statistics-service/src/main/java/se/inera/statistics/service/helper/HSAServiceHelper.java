@@ -29,10 +29,17 @@ public final class HSAServiceHelper {
 
     public static String getLan(JsonNode hsaData) {
         if (hsaData != null) {
-            String result = hsaData.path("enhet").path("geografi").path("lan").textValue();
+            String result = getLan(hsaData, "enhet");
+            if (result == null) {
+                result = getLan(hsaData, "huvudenhet");
+            }
             return result != null ? result : Lan.OVRIGT;
         } else {
             return Lan.OVRIGT;
         }
+    }
+
+    private static String getLan(JsonNode hsaData, String enhet) {
+        return hsaData.path(enhet).path("geografi").path("lan").textValue();
     }
 }
