@@ -32,7 +32,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
-@Profile({"dev", "test"})
+@Profile({"dev", "mockhsa", "test" })
 @Primary
 public class HSAServiceMock implements HSAService {
     private static final int POSITIVE_MASK = 0x7fffffff;
@@ -114,8 +114,7 @@ public class HSAServiceMock implements HSAService {
 
     private String createLan(HSAKey key) {
         int keyIndex = key != null && key.getVardgivareId() != null ? Math.abs(key.getVardgivareId().hashCode()) & POSITIVE_MASK : 0;
-        String kod = LAN_CODES.get(keyIndex % LAN_CODES.size());
-        return kod;
+        return LAN_CODES.get(keyIndex % LAN_CODES.size());
     }
 
     private String createKommun() {

@@ -9,9 +9,11 @@
     http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
     http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc.xsd
     http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task.xsd
-    http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd">
+    http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd">
 
-    <context:component-scan base-package="se.inera.statistics.service" />
+    <context:component-scan base-package="se.inera.statistics.service">
+        <context:exclude-filter type="regex" expression="se\.inera\.statistics\.service\.scheduler\..*"/>
+    </context:component-scan>
 
     <tx:annotation-driven/>
 
@@ -57,5 +59,9 @@
 
     <task:annotation-driven executor="taskExecutor"/>
     <task:executor id="taskExecutor" pool-size="5-10" queue-capacity="25" rejection-policy="CALLER_RUNS" />
+
+    <beans profile="active">
+        <context:component-scan base-package="se.inera.statistics.service.scheduler" />
+    </beans>
 
 </beans>

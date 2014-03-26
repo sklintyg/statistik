@@ -21,7 +21,7 @@
 -->
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd">
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd" profile="active">
 
    <bean id="mbeanServer" class="org.springframework.jmx.support.MBeanServerFactoryBean">
      <!-- indicate to first look for a server -->
@@ -37,6 +37,6 @@
            <entry key="inera-statistics:name=LogConsumer" value-ref="logJob"/>
        </map>
      </property>
-     <property name="registrationBehaviorName" value="REGISTRATION_REPLACE_EXISTING"/>
+     <property name="registrationPolicy" value="REPLACE_EXISTING"/>
    </bean>
 </beans>

@@ -1,35 +1,22 @@
 package se.inera.statistics.service.report.util;
 
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.runners.MockitoJUnitRunner;
-import org.springframework.core.io.Resource;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import se.inera.statistics.service.report.model.Avsnitt;
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.mock;
 
-@RunWith(MockitoJUnitRunner.class)
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations = { "classpath:process-log-impl-test.xml" })
 public class DiagnosUtilTest {
 
-    @Mock
-    private Resource icd10ChaptersAnsiFile = mock(Resource.class);
-
-    @InjectMocks
+    @Autowired
     private DiagnosUtil util = new DiagnosUtil();
-
-    @Before
-    public void setUp() throws IOException {
-        Mockito.when(icd10ChaptersAnsiFile.getInputStream()).thenReturn(new ByteArrayInputStream("R10-R19Symtom och sjukdomstecken från matsmältningsorganen och buken\nT51-T65Toxisk effekt av substanser med i huvudsak icke-medicinsk användning\nC15-C26Maligna tumörer i matsmältningsorganen\nC30-C39Maligna tumörer i andningsorganen och brösthålans organ".getBytes("UTF-8")));
-    }
 
     @Test
     public void testGetGroupIdForCode() {
@@ -74,14 +61,26 @@ public class DiagnosUtilTest {
     @Test
     public void testGetAvsnitt() {
         List<Avsnitt> allAvsnitts = util.getAvsnittForKapitel("C00-D48");
-        String expectedResult = "[{\"Avsnitt\":{\"id\":\"C15-C26\", \"name\":\"Maligna tumörer i matsmältningsorganen\", \"firstId\":\"C15\", \"lastId\":\"C26\"}}, {\"Avsnitt\":{\"id\":\"C30-C39\", \"name\":\"Maligna tumörer i andningsorganen och brösthålans organ\", \"firstId\":\"C30\", \"lastId\":\"C39\"}}]";
-        assertEquals(expectedResult, allAvsnitts.toString());
+        assertEquals(18, allAvsnitts.size());
+        assertEquals("{\"Avsnitt\":{\"id\":\"C00-C14\", \"name\":\"Maligna tumörer i läpp, munhåla och svalg\", \"firstId\":\"C00\", \"lastId\":\"C14\"}}", allAvsnitts.get(0).toString());
+    }
+
+    @Test
+    public void getKapitelForBadlyFormattedICD10() {
+        String groupIdForCode = util.getKapitelIdForCode("M 16,9");
+        assertEquals("M00-M99", groupIdForCode);
+    }
+
+    @Test
+    public void getAvsnittForBadlyFormattedICD10() {
+        String groupIdForCode = util.getAvsnittForCode("M 16,9").getId();
+        assertEquals("M15-M19", groupIdForCode);
     }
 
     @Test
     public void normalizeIcd10Code() {
         assertEquals("", util.normalize(". -_+?="));
         assertEquals("A10", util.normalize("a 1.0"));
-        assertEquals("B123", util.normalize(" B12.3 # "));
+        assertEquals("B12", util.normalize(" B12.3 # "));
     }
 }

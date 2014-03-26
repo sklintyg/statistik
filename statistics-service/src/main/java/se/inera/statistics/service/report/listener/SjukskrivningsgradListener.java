@@ -31,14 +31,18 @@ import se.inera.statistics.service.report.util.Verksamhet;
 @Component
 public class SjukskrivningsgradListener extends GenericAbstractListener {
 
+    public static final int FORMOGA_INGEN = 0;
+    public static final int FORMOGA_25 = 25;
+    public static final int FORMOGA_HALV = 50;
+    public static final int FORMOGA_75 = 75;
     @Autowired
     private Sjukskrivningsgrad api;
 
 
     @Override
     boolean accept(GenericHolder token, String period) {
-        List<String> arbetsformagor = DocumentHelper.getArbetsformaga(token.getUtlatande());
-        for (String formaga: arbetsformagor) {
+        List<Integer> arbetsformagor = DocumentHelper.getArbetsformaga(token.getUtlatande());
+        for (Integer formaga: arbetsformagor) {
             String grad = arbetsformagaTillSjukskrivning(formaga);
             api.count(token.getEnhetId(), period, grad, Verksamhet.ENHET, token.getKon());
             api.count(token.getVardgivareId(), period, grad, Verksamhet.VARDGIVARE, token.getKon());
@@ -46,12 +50,12 @@ public class SjukskrivningsgradListener extends GenericAbstractListener {
         return false;
     }
 
-    private String arbetsformagaTillSjukskrivning(String formaga) {
+    private String arbetsformagaTillSjukskrivning(Integer formaga) {
         switch(formaga) {
-        case "0": return "100";
-        case "25": return "75";
-        case "50": return "50";
-        case "75": return "25";
+        case FORMOGA_INGEN: return "100";
+        case FORMOGA_25: return "75";
+        case FORMOGA_HALV: return "50";
+        case FORMOGA_75: return "25";
         default:
             return "100";
         }

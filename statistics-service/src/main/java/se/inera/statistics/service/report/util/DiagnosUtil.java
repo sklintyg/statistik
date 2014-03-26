@@ -28,7 +28,6 @@ import se.inera.statistics.service.report.model.Avsnitt;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -44,6 +43,7 @@ import java.util.regex.Pattern;
 public class DiagnosUtil {
 
     private static final Logger LOG = LoggerFactory.getLogger(DiagnosUtil.class);
+    public static final int ICD10_MAX_LENGTH = 3;
 
     @Autowired
     private Resource icd10ChaptersAnsiFile;
@@ -71,17 +71,17 @@ public class DiagnosUtil {
                 normalized.append(c);
             }
         }
+        if (normalized.length() > ICD10_MAX_LENGTH) {
+            normalized.setLength(ICD10_MAX_LENGTH);
+        }
         return normalized.toString();
     }
 
-    public String getSubGroupIdForCode(String icd10Code) {
-        return getAvsnittForCode(icd10Code).getId();
-    }
-
     public Avsnitt getAvsnittForCode(String icd10Code) {
+        String normalizedIcd10 = normalize(icd10Code);
         for (Entry<String, Collection<Avsnitt>> entry : getSubGroups().entrySet()) {
             for (Avsnitt avsnitt : entry.getValue()) {
-                if (avsnitt.isCodeInGroup(icd10Code)) {
+                if (avsnitt.isCodeInGroup(normalizedIcd10)) {
                     return avsnitt;
                 }
             }
@@ -127,10 +127,6 @@ public class DiagnosUtil {
         } else {
             return Collections.emptyList();
         }
-    }
-
-    public Collection<Avsnitt> getGroupsInChapter(String chapter) {
-        return subgroups.get(chapter);
     }
 
     private static Avsnitt avsnitt(String code, String description) {
@@ -181,12 +177,8 @@ public class DiagnosUtil {
                     subGroups.get(chapterNameForIcd10Code).add(group);
                 }
             }
-        } catch (UnsupportedEncodingException e) {
+        } catch (IOException | Icd10ChapterNotFoundException e) {
             LOG.error("Failed to read diagnosis groups definition file", e);
-        } catch (IOException e) {
-            LOG.error("Failed to read diagnosis groups definition file", e);
-        } catch (Icd10ChapterNotFoundException e) {
-            LOG.error("Failed to parse diagnosis groups definition file", e);
         }
 
         return subGroups;
