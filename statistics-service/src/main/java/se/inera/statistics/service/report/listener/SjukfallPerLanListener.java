@@ -32,7 +32,7 @@ public class SjukfallPerLanListener extends RollingAbstractListener {
     private SjukfallPerLan sjukfallPerLan;
 
     protected boolean accept(GenericHolder token, String period, RollingLength length) {
-        sjukfallPerLan.count(period, token.getEnhetId(), token.getLanId(), length, token.getKon());
+        sjukfallPerLan.count(period, token.getVardgivareId(), token.getLanId(), length, token.getKon());
         return false;
     }
 
