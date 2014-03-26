@@ -5,7 +5,7 @@ public class SjukfallWithSjukskrivningsgrad extends Sjukfall {
 
     public SjukfallWithSjukskrivningsgrad(Fact line) {
         super(line);
-        sjukskrivningsgrad = line.sjukskrivningsgrad;
+        sjukskrivningsgrad = line.getSjukskrivningsgrad();
     }
 
     /**
@@ -17,8 +17,7 @@ public class SjukfallWithSjukskrivningsgrad extends Sjukfall {
      * @return join will either return the same, possibly modified (i.e. this), Sjukfall-object, or a new object
      */
     public SjukfallWithSjukskrivningsgrad join(Fact line) {
-        SjukfallWithSjukskrivningsgrad sjukfall = (SjukfallWithSjukskrivningsgrad) super.join(line);
-        return sjukfall;
+        return (SjukfallWithSjukskrivningsgrad) super.join(line);
     }
 
     @Override
@@ -28,8 +27,8 @@ public class SjukfallWithSjukskrivningsgrad extends Sjukfall {
 
     @Override
     public String toString() {
-        return "SjukfallWithSjukskrivningsgrad{" +
-                "sjukskrivningsgrad=" + sjukskrivningsgrad +
-                '}' + super.toString();
+        return "SjukfallWithSjukskrivningsgrad{"
+                + "sjukskrivningsgrad=" + sjukskrivningsgrad
+                + '}' + super.toString();
     }
 }

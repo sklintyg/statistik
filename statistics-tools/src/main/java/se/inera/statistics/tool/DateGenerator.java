@@ -8,24 +8,29 @@ import org.joda.time.LocalDate;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
-public class DateGenerator {
+public final class DateGenerator {
 
-    public static LocalDate BASE = new LocalDate("1900-01-01");
-    public static LocalDate LAST = new LocalDate("2016-01-01");
-    public static DateTimeFormatter PERSONNUMMER = DateTimeFormat.forPattern("yyyyMMdd'");
+    public static final LocalDate BASE = new LocalDate("1900-01-01");
+    public static final LocalDate LAST = new LocalDate("2016-01-01");
+    public static final DateTimeFormatter PERSONNUMMER = DateTimeFormat.forPattern("yyyyMMdd'");
+    public static final int CAPACITY = 300;
     private static StringBuilder builder;
+
+    private DateGenerator() {
+    }
 
     public static void main(String[] args) throws IOException {
         try (OutputStream out = new FileOutputStream("../extras/datum.csv")) {
             int id = 0;
-            LocalDate now;
-            while ((now = BASE.plusDays(id)).isBefore(LAST)) {
+            LocalDate now = BASE;
+            while (now.isBefore(LAST)) {
                 start();
                 add(id);
                 add(String.format("%1$d-%2$02d", now.getYear(), now.getMonthOfYear()));
                 end();
                 out.write(builder.toString().getBytes());
                 id++;
+                now = BASE.plusDays(id);
             }
             out.close();
         }
@@ -52,7 +57,7 @@ public class DateGenerator {
     }
 
     private static void start() {
-        builder = new StringBuilder(300);
+        builder = new StringBuilder(CAPACITY);
     }
 
 }

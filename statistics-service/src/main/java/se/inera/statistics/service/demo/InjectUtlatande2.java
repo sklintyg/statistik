@@ -28,9 +28,7 @@ import se.inera.statistics.service.common.CommonPersistence;
 import se.inera.statistics.service.helper.UtlatandeBuilder;
 import se.inera.statistics.service.processlog.EventType;
 import se.inera.statistics.service.processlog.Receiver;
-import se.inera.statistics.service.report.model.Avsnitt;
 import se.inera.statistics.service.report.repository.NationellUpdater;
-import se.inera.statistics.service.report.util.DiagnosUtil;
 import se.inera.statistics.service.report.util.Icd10;
 
 import javax.annotation.PostConstruct;

@@ -22,6 +22,7 @@ public class WidelineConverter {
     public static final int HALF = 50;
     public static final int THREE_QUARTER = 75;
     public static final int FULL = 100;
+    public static final int MAX_SJUKSKRIVNING = 100;
 
     @Autowired
     private Icd10 icd10;
@@ -57,7 +58,7 @@ public class WidelineConverter {
             diagnoskategori = null;
         }
 
-        int sjukskrivningsgrad = 100 - DocumentHelper.getArbetsformaga(intyg).get(0);
+        int sjukskrivningsgrad = MAX_SJUKSKRIVNING - DocumentHelper.getArbetsformaga(intyg).get(0);
 
         int lakarkon = HSAServiceHelper.getLakarkon(hsa);
         int lakaralder = HSAServiceHelper.getLakaralder(hsa);

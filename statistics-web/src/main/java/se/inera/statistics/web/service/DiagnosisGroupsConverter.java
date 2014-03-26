@@ -119,7 +119,7 @@ public class DiagnosisGroupsConverter {
         }
 
         List<OverviewChartRowExtended> result = new ArrayList<>();
-        result. addAll(mergedGroups.values());
+        result.addAll(mergedGroups.values());
         return result;
     }
 

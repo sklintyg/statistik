@@ -24,7 +24,6 @@ import org.springframework.stereotype.Component;
 import se.inera.statistics.service.warehouse.model.db.WideLine;
 
 import javax.sql.DataSource;
-import javax.transaction.Transactional;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

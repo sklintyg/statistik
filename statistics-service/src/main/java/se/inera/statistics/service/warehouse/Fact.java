@@ -9,24 +9,25 @@ public class Fact {
             + "diagnosavsnitt;diagnoskategori;sjukskrivningsgrad;sjukskrivningslangd;lakarkon;lakaralder;lakarbefattning";
 
     private static final LocalDate ERA = new LocalDate("2000-01-01");
-    int lan;
-    int kommun;
-    int forsamling;
-    int enhet;
-    long lakarintyg;
-    int patient;
-    int startdatum;
-    int kon;
-    int alder;
-    int diagnoskapitel;
-    int diagnosavsnitt;
-    int diagnoskategori;
-    int sjukskrivningsgrad;
-    int sjukskrivningslangd;
-    int lakarkon;
-    int lakaralder;
-    int lakarbefattning;
+    private int lan;
+    private int kommun;
+    private int forsamling;
+    private int enhet;
+    private long lakarintyg;
+    private int patient;
+    private int startdatum;
+    private int kon;
+    private int alder;
+    private int diagnoskapitel;
+    private int diagnosavsnitt;
+    private int diagnoskategori;
+    private int sjukskrivningsgrad;
+    private int sjukskrivningslangd;
+    private int lakarkon;
+    private int lakaralder;
+    private int lakarbefattning;
 
+    // CHECKSTYLE:OFF ParameterNumber
     public Fact(int lan, int kommun, int forsamling, int enhet, long lakarintyg, int patient, int startdatum, int kon, int alder, int diagnoskapitel, int diagnosavsnitt, int diagnoskategori, int sjukskrivningsgrad, int sjukskrivningslangd, int lakarkon, int lakaralder, int lakarbefattning) {
         this.lan = lan;
         this.kommun = kommun;
@@ -46,6 +47,7 @@ public class Fact {
         this.lakaralder = lakaralder;
         this.lakarbefattning = lakarbefattning;
     }
+    // CHECKSTYLE:ON ParameterNumber
 
     public Fact(JsonNode node) {
     }
@@ -116,25 +118,25 @@ public class Fact {
 
     @Override
     public String toString() {
-        return "Fact{" +
-                "lan=" + lan +
-                ", kommun=" + kommun +
-                ", forsamling=" + forsamling +
-                ", enhet=" + enhet +
-                ", lakarintyg=" + lakarintyg +
-                ", patient=" + patient +
-                ", startdatum=" + startdatum +
-                ", kon=" + kon +
-                ", alder=" + alder +
-                ", diagnoskapitel=" + diagnoskapitel +
-                ", diagnosavsnitt=" + diagnosavsnitt +
-                ", diagnoskategori=" + diagnoskategori +
-                ", sjukskrivningsgrad=" + sjukskrivningsgrad +
-                ", sjukskrivningslangd=" + sjukskrivningslangd +
-                ", lakarkon=" + lakarkon +
-                ", lakaralder=" + lakaralder +
-                ", lakarbefattning=" + lakarbefattning +
-                '}';
+        return "Fact{"
+                + "lan=" + lan
+                + ", kommun=" + kommun
+                + ", forsamling=" + forsamling
+                + ", enhet=" + enhet
+                + ", lakarintyg=" + lakarintyg
+                + ", patient=" + patient
+                + ", startdatum=" + startdatum
+                + ", kon=" + kon
+                + ", alder=" + alder
+                + ", diagnoskapitel=" + diagnoskapitel
+                + ", diagnosavsnitt=" + diagnosavsnitt
+                + ", diagnoskategori=" + diagnoskategori
+                + ", sjukskrivningsgrad=" + sjukskrivningsgrad
+                + ", sjukskrivningslangd=" + sjukskrivningslangd
+                + ", lakarkon=" + lakarkon
+                + ", lakaralder=" + lakaralder
+                + ", lakarbefattning=" + lakarbefattning
+                + '}';
     }
 
     /**
@@ -160,5 +162,9 @@ public class Fact {
                 .append(lakaralder).append(c)
                 .append(lakarbefattning).append('\n');
         return sb.toString();
+    }
+
+    public int getSjukskrivningslangd() {
+        return sjukskrivningslangd;
     }
 }

@@ -10,8 +10,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class SjukskrivningsgradQuery {
-    private static final List<Integer> grader = Arrays.asList(25, 50, 75, 100);
+public final class SjukskrivningsgradQuery {
+    private static final List<Integer> GRADER = Arrays.asList(25, 50, 75, 100);
+
+    private SjukskrivningsgradQuery() {
+    }
 
     public static List<OverviewChartRowExtended> getOverviewSjukskrivningsgrad(Collection<Sjukfall> currentSjukfall, Collection<Sjukfall> previousSjukfall) {
         List<Counter<Integer>> currentCount = count(currentSjukfall);
@@ -22,7 +25,7 @@ public class SjukskrivningsgradQuery {
         for (Counter<Integer> count : currentCount) {
             int current = count.getCount();
             int previous = previousCount.get(count.getKey()).getCount();
-            result.add(new OverviewChartRowExtended(count.getKey().toString(), current, current - previous ));
+            result.add(new OverviewChartRowExtended(count.getKey().toString(), current, current - previous));
         }
 
         return result;
@@ -32,7 +35,7 @@ public class SjukskrivningsgradQuery {
         Map<Integer, Counter<Integer>> map = count2(sjukfalls);
         List<Counter<Integer>> result = new ArrayList<>();
 
-        for (Integer range : grader) {
+        for (Integer range : GRADER) {
             result.add(map.get(range));
         }
 
@@ -50,7 +53,7 @@ public class SjukskrivningsgradQuery {
 
     private static Map<Integer, Counter<Integer>> createCounters() {
         Map<Integer, Counter<Integer>> counters = new HashMap<>();
-        for (Integer range : grader) {
+        for (Integer range : GRADER) {
             counters.put(range, new Counter<>(range));
         }
         return counters;

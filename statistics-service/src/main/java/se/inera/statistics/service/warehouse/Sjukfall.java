@@ -14,9 +14,9 @@ public class Sjukfall {
     private int sjukskrivningsgrad;
 
     public Sjukfall(Fact line) {
-        start = line.startdatum;
-        end = line.startdatum + line.sjukskrivningslangd - 1;
-        realDays = line.sjukskrivningslangd;
+        start = line.getStartdatum();
+        end = line.getStartdatum() + line.getSjukskrivningslangd() - 1;
+        realDays = line.getSjukskrivningslangd();
         intygCount++;
         kon = line.getKon();
         alder = line.getAlder();
@@ -37,12 +37,12 @@ public class Sjukfall {
      * @return join will either return the same, possibly modified (i.e. this), Sjukfall-object, or a new object
      */
     public Sjukfall join(Fact line) {
-        int lineEnd = line.startdatum + line.sjukskrivningslangd - 1;
-        if (isExpired(line.startdatum)) {
+        int lineEnd = line.getStartdatum() + line.getSjukskrivningslangd() - 1;
+        if (isExpired(line.getStartdatum())) {
             return newSjukfall(line);
         } else {
             end = lineEnd;
-            realDays += line.sjukskrivningslangd;
+            realDays += line.getSjukskrivningslangd();
             intygCount++;
             if (alder != line.getAlder()) {
                 alder = line.getAlder();
@@ -65,12 +65,12 @@ public class Sjukfall {
 
     @Override
     public String toString() {
-        return "Sjukfall{" +
-                "start=" + start +
-                ", end=" + end +
-                ", realDays=" + realDays +
-                ", intygCount=" + intygCount +
-                '}';
+        return "Sjukfall{"
+                + "start=" + start
+                + ", end=" + end
+                + ", realDays=" + realDays
+                + ", intygCount=" + intygCount
+                + '}';
     }
 
     public boolean in(int start, int end) {

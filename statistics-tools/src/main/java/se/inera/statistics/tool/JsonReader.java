@@ -22,13 +22,16 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectReader;
 
-public class JsonReader {
+public final class JsonReader {
 
-    public static LocalDate BASE = new LocalDate("1900-01-01");
-    public static DateTimeFormatter PERSONNUMMER = DateTimeFormat.forPattern("yyyyMMdd'");
+    public static final LocalDate BASE = new LocalDate("1900-01-01");
+    public static final DateTimeFormatter PERSONNUMMER = DateTimeFormat.forPattern("yyyyMMdd'");
     private static StringBuilder builder;
     private static int pruned;
 
+    private JsonReader() {
+    }
+    // CHECKSTYLE:OFF MagicNumber
     public static void main(String[] args) throws IOException {
         try (OutputStream out = new GZIPOutputStream(new FileOutputStream("intyg.csv.gz"))) {
             try (InputStream in = new GZIPInputStream(new FileInputStream("intyg.json.gz"))) {
@@ -71,7 +74,7 @@ public class JsonReader {
                     add(lakare);
                     add(enhet);
                     add(vardgivare);
-                    add(enhet%290);
+                    add(enhet % 290);
                     add(sjukfall.getUpsertedId(personid, vardgivare, from, tom));
                     end();
                     out.write(builder.toString().getBytes());
@@ -145,10 +148,10 @@ public class JsonReader {
         }
         return null;
     }
-    
+
     private static class Sjukfall {
         private static final int FALL_GLAPP = 5;
-        private HashMap<Key,Fall> known = new HashMap<>();
+        private HashMap<Key, Fall> known = new HashMap<>();
         public int getUpsertedId(int personid, int vardgivare, int from, int tom) {
             Key key = new Key(personid, vardgivare);
             Fall fall = known.get(key);
@@ -199,11 +202,12 @@ public class JsonReader {
             this.personid = personid;
             this.vardgivare = vardgivare;
         }
-        
+
         @Override
         public int hashCode() {
             return personid + vardgivare;
         }
+
         @Override
         public boolean equals(Object obj) {
             if (obj instanceof Key) {
@@ -214,4 +218,5 @@ public class JsonReader {
             }
         }
     }
+    // CHECKSTYLE:ON MagicNumber
 }

@@ -1,8 +1,5 @@
 package se.inera.statistics.service.warehouse;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import se.inera.statistics.service.helper.DocumentHelper;
-
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;

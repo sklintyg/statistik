@@ -40,7 +40,7 @@ public class DiagnosgruppQuery {
         for (Counter<String> counter : toKeep) {
             int current = counter.getCount();
             int previous = previousCount.get(counter.getKey()).getCount();
-            result.add(new OverviewChartRowExtended(counter.getKey(), current, current - previous ));
+            result.add(new OverviewChartRowExtended(counter.getKey(), current, current - previous));
         }
 
         return result;

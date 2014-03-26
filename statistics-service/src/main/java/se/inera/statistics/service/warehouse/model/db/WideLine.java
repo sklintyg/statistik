@@ -54,6 +54,7 @@ public class WideLine {
     public WideLine() {
     }
 
+    // CHECKSTYLE:OFF ParameterNumber
     public WideLine(long id, String lkf, String enhet, long lakarintyg, String patientid, int startdatum, int slutdatum, int kon, int alder, String diagnoskapitel, String diagnosavsnitt, String diagnoskategori, int sjukskrivningsgrad, int lakarkon, int lakaralder, String lakarbefattning, String vardgivareId) {
         this.id = id;
         this.lkf = lkf;
@@ -73,6 +74,7 @@ public class WideLine {
         this.lakarbefattning = lakarbefattning;
         this.vardgivareId = vardgivareId;
     }
+    // CHECKSTYLE:ON ParameterNumber
 
     public long getId() {
         return id;

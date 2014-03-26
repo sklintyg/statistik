@@ -13,8 +13,12 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
-public class AldersgruppQuery {
-        private static Ranges ranges = AldersgroupUtil.RANGES;
+public final class AldersgruppQuery {
+    private static Ranges ranges = AldersgroupUtil.RANGES;
+
+    private AldersgruppQuery() {
+
+    }
 
     public static List<OverviewChartRowExtended> getOverviewAldersgrupper(Collection<Sjukfall> currentSjukfall, Collection<Sjukfall> previousSjukfall, int noOfRows) {
         Map<Ranges.Range, Counter<Ranges.Range>> previousCount = count(previousSjukfall);
@@ -26,7 +30,7 @@ public class AldersgruppQuery {
         for (Counter<Ranges.Range> counter : toKeep) {
             int current = counter.getCount();
             int previous = previousCount.get(counter.getKey()).getCount();
-            result.add(new OverviewChartRowExtended(counter.getKey().getName(), current, current - previous ));
+            result.add(new OverviewChartRowExtended(counter.getKey().getName(), current, current - previous));
         }
 
         return result;

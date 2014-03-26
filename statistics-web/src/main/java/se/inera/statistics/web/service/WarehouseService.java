@@ -1,7 +1,6 @@
 package se.inera.statistics.web.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import se.inera.statistics.service.helper.ConversionHelper;
 import se.inera.statistics.service.report.api.VerksamhetOverview;
 import se.inera.statistics.service.report.model.OverviewChartRow;
 import se.inera.statistics.service.report.model.OverviewChartRowExtended;

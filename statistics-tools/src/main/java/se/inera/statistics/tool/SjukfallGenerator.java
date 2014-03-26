@@ -45,17 +45,18 @@ public class SjukfallGenerator {
 
     private static final List<String> DIAGNOSER = new ArrayList<>();
     private static final List<Integer> ARBETSFORMAGOR = Arrays.asList(0, 0, 0, 25, 50, 75);
+    public static final int MONTH_OFFSET = 19;
 
     private static Random random = new Random(SEED);
 
     @Autowired
     private Icd10 icd10;
 
-    private Map<LocalDate,List<Fall>> continued = new HashMap<>();
+    private Map<LocalDate, List<Fall>> continued = new HashMap<>();
 
     @Autowired
     private Consumer consumer;
-    
+
     @PostConstruct
     public void init() {
         for (Kapitel kapitel: icd10.getKapitel()) {
@@ -77,13 +78,14 @@ public class SjukfallGenerator {
     private void publishUtlatanden() {
         consumer.start();
         LocalDate now = new LocalDate();
-        LocalDate start = now.minusMonths(19);
+        LocalDate start = now.minusMonths(MONTH_OFFSET);
         for (LocalDate today = start; today.isBefore(now); today = today.plusDays(1)) {
             handleDay(today);
         }
         consumer.end();
     }
 
+    // CHECKSTYLE:OFF MagicNumber
     @Transactional
     private void handleDay(LocalDate today) {
         UtlatandeBuilder builder = new UtlatandeBuilder();
@@ -98,10 +100,10 @@ public class SjukfallGenerator {
 
             JsonNode intyg = builder.build(fall.getPersonnummer(), intygFirstDay, intygLastDay, fall.getLakare().getLakareId(), fall.getLakare().getEnhetId(), fall.getLakare().getVardgivareId(), diagnos, arbetsformaga);
             consumer.accept(intyg);
-            
+
             // Extend?
             if (random.nextDouble() < PERIOD_RECONTINUED_FRACTION) {
-                LocalDate next = intygLastDay.plusDays(randomBetween(-2,4));
+                LocalDate next = intygLastDay.plusDays(randomBetween(-2, 4));
                 List<Fall> list = getContinued(next);
                 list.add(fall);
                 reextended++;
@@ -111,7 +113,7 @@ public class SjukfallGenerator {
 
         continued.remove(today);
 
-        for (int i = 0; i < intygCount; i ++) {
+        for (int i = 0; i < intygCount; i++) {
             int age = randomBetween(MIN_AGE_DAYS, MAX_AGE_DAYS);
             LocalDate birthday = today.minusDays(age);
             String personnummer = makePersonnummer(birthday);
@@ -126,7 +128,7 @@ public class SjukfallGenerator {
 
             // Extend?
             if (random.nextFloat() < PERIOD_CONTINUED_FRACTION) {
-                LocalDate dayToContinue = intygLastDay.plusDays(randomBetween(-2,4));
+                LocalDate dayToContinue = intygLastDay.plusDays(randomBetween(-2, 4));
                 List<Fall> list = getContinued(dayToContinue);
                 list.add(new Fall(personnummer, lakare));
             }
@@ -146,7 +148,7 @@ public class SjukfallGenerator {
         int lakarId;
         if (random.nextInt(10) == 0) {
             // Make about 10% of intyg belong to a lakare for first vardgivare
-            lakarId = random.nextInt(NUMBER_OF_LAKARE / NUMBER_OF_VARDGIVARE); 
+            lakarId = random.nextInt(NUMBER_OF_LAKARE / NUMBER_OF_VARDGIVARE);
         } else {
             lakarId = random.nextInt(NUMBER_OF_LAKARE);
         }
@@ -175,20 +177,20 @@ public class SjukfallGenerator {
         public Lakare(int id) {
             this.id = id;
         }
-        
+
         String getLakareId() {
             return String.format("LAKARE-%1$06d", id);
         }
 
         String getEnhetId() {
-            return String.format("ENHET-%1$06d", id * NUMBER_OF_UNITS / NUMBER_OF_LAKARE );
+            return String.format("ENHET-%1$06d", id * NUMBER_OF_UNITS / NUMBER_OF_LAKARE);
         }
 
         String getVardgivareId() {
             return String.format("VARDGIVARE-%1$06d", id * NUMBER_OF_VARDGIVARE / NUMBER_OF_LAKARE);
         }
     }
-    
+
     public class Fall {
         private String personnummer;
         private Lakare lakare;
@@ -204,12 +206,13 @@ public class SjukfallGenerator {
             return lakare;
         }
     }
-    public static interface Consumer {
+
+    public interface Consumer {
         void start();
         void accept(JsonNode intyg);
         void end();
     }
-    
+
     public static class PrintConsumer implements Consumer {
         private GZIPOutputStream out;
 
@@ -241,4 +244,5 @@ public class SjukfallGenerator {
             }
         }
     }
+    // CHECKSTYLE:ON MagicNumber
 }

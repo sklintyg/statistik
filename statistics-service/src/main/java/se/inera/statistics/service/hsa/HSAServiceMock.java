@@ -32,7 +32,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
-@Profile({"dev", "mockhsa"})
+@Profile({"dev", "mockhsa" })
 @Primary
 public class HSAServiceMock implements HSAService {
     private static final int POSITIVE_MASK = 0x7fffffff;

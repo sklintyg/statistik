@@ -29,9 +29,6 @@ import org.joda.time.format.ISODateTimeFormat;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.HashMap;
-import java.util.Map;
-
 public final class ConversionHelper {
     private static final Logger LOG = LoggerFactory.getLogger(ConversionHelper.class);
 
@@ -45,9 +42,9 @@ public final class ConversionHelper {
 
     private ConversionHelper() {
     }
-
+    //CHECKSTYLE:OFF MagicNumber
     public static int patientIdToInt(String id) {
-        return Integer.parseInt(id.substring(2, 8)) * 1000 + Integer.parseInt(id.substring(9, 12)) + (1_000_000_000 * (Integer.parseInt(id.substring(0, 2)) - 19));
+        return Integer.parseInt(id.substring(2, DATE_PART_OF_PERSON_ID)) * 1000 + Integer.parseInt(id.substring(9, 12)) + (1_000_000_000 * (Integer.parseInt(id.substring(0, 2)) - 19));
     }
 
     /**
@@ -110,4 +107,6 @@ public final class ConversionHelper {
             return Integer.parseInt(lkf.substring(0, length));
         }
     }
+    //CHECKSTYLE:ON MagicNumber
+
 }

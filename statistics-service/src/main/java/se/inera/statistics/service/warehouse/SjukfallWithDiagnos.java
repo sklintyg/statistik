@@ -5,7 +5,7 @@ public class SjukfallWithDiagnos extends Sjukfall {
 
     public SjukfallWithDiagnos(Fact line) {
         super(line);
-        this.diagnoskapitel = line.diagnoskapitel;
+        this.diagnoskapitel = line.getDiagnoskapitel();
     }
 
     /**
@@ -30,8 +30,8 @@ public class SjukfallWithDiagnos extends Sjukfall {
 
     @Override
     public String toString() {
-        return "SjukfallWithDiagnos{" +
-                "diagnoskapitel=" + diagnoskapitel +
-                '}' + super.toString();
+        return "SjukfallWithDiagnos{"
+                + "diagnoskapitel=" + diagnoskapitel
+                + '}' + super.toString();
     }
 }

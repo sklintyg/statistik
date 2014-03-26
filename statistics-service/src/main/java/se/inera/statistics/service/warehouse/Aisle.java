@@ -8,7 +8,7 @@ import java.util.List;
 
 public class Aisle implements Iterable<Fact> {
     private final List<Fact> lines = new ArrayList<>();
-    private final Comparator<Fact> TIME_ORDER = new Comparator<Fact>() {
+    private static final Comparator<Fact> TIME_ORDER = new Comparator<Fact>() {
         @Override
         public int compare(Fact f1, Fact f2) {
             return f1.getStartdatum() < f2.getStartdatum() ? -1 : f1.getStartdatum() > f2.getStartdatum() ? 1 : 0;

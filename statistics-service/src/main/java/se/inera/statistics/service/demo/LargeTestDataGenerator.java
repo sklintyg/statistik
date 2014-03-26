@@ -75,6 +75,7 @@ public class LargeTestDataGenerator {
 
     private static final List<String> DIAGNOSER = new ArrayList<>();
     private static final List<Integer> ARBETSFORMAGOR = Arrays.asList(0, 0, 0, 25, 50, 75);
+    public static final int EXTENSION_LIMIT = 10000;
 
     private static Random random = new Random(SEED);
 
@@ -130,7 +131,7 @@ public class LargeTestDataGenerator {
     }
 
     public String exportUtlatanden() {
-        Map<String,Aisle> allVardgivare = warehouse.getAllVardgivare();
+        Map<String, Aisle> allVardgivare = warehouse.getAllVardgivare();
         StringBuilder result = new StringBuilder("vg;").append(Fact.HEADING).append('\n');
         for (Map.Entry<String, Aisle> entry: allVardgivare.entrySet()) {
             String vg = entry.getKey();
@@ -150,7 +151,7 @@ public class LargeTestDataGenerator {
 
     private String randomPerson() {
         LocalDate birthDate = BASE_AGE.plusDays(random.nextInt(AGE_DAYS));
-        return birthDate.toString("yyyyMMdd") + String.format("%1$04d", random.nextInt(10000));
+        return birthDate.toString("yyyyMMdd") + String.format("%1$04d", random.nextInt(EXTENSION_LIMIT));
     }
 
     public JsonNode permutate(UtlatandeBuilder builder, String patientId, LocalDate start) {

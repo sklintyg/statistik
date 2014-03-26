@@ -31,7 +31,6 @@ import se.inera.statistics.service.helper.StatisticsMalformedDocument;
 import se.inera.statistics.service.sjukfall.SjukfallInfo;
 import se.inera.statistics.service.sjukfall.SjukfallKey;
 import se.inera.statistics.service.sjukfall.SjukfallService;
-import se.inera.statistics.service.warehouse.WidelineConverter;
 import se.inera.statistics.service.warehouse.WidelineManager;
 
 import static se.inera.statistics.service.helper.DocumentHelper.getForstaNedsattningsdag;

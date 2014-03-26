@@ -20,15 +20,12 @@ package se.inera.statistics.service.warehouse;
 
 import org.joda.time.LocalDate;
 import se.inera.statistics.service.report.model.Range;
-import se.inera.statistics.service.report.util.Ranges;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
-import java.util.Set;
 
 public final class SjukfallUtil {
 
@@ -38,6 +35,7 @@ public final class SjukfallUtil {
             return true;
         }
     };
+    public static final int LONG_LIMIT = 90;
 
     private SjukfallUtil() {
     }
@@ -51,10 +49,10 @@ public final class SjukfallUtil {
         Map<Integer, Sjukfall> active = new HashMap<>();
         int currentDatum = 0;
         for (Fact line : aisle) {
-            if (line.startdatum >= cutoff) {
+            if (line.getStartdatum() >= cutoff) {
                 break;
             }
-            int key = line.patient;
+            int key = line.getPatient();
             Sjukfall sjukfall = active.get(key);
 
             if (sjukfall == null) {
@@ -102,7 +100,7 @@ public final class SjukfallUtil {
     public static int getLong(Collection<Sjukfall> sjukfalls) {
         int count = 0;
         for (Sjukfall sjukfall : sjukfalls) {
-            if (sjukfall.getRealDays() > 90) {
+            if (sjukfall.getRealDays() > LONG_LIMIT) {
                 count++;
             }
         }

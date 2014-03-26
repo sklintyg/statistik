@@ -19,13 +19,16 @@ import java.util.Set;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
-public class AnonymizeDbDump {
+public final class AnonymizeDbDump {
 
     private static final String INTYGMARKER = "INSERT INTO `intyghandelse`";
-    private static final Random random = new Random();
+    public static final int END_OF_BIRTHDATE = 8;
+    public static final int DAY_INDEX = 6;
+    private static final int SAMORDNING_OFFSET = 6;
+    private  final Random random = new Random();
 
-    private static final Map<String, String> actualToAnonymized = new HashMap<>();
-    private static final Set<String> anonymizedSet = new HashSet<>();
+    private  final Map<String, String> actualToAnonymized = new HashMap<>();
+    private  final Set<String> anonymizedSet = new HashSet<>();
     public static final String PATIENT = fieldify("patient");
     public static final String EXTENSION = fieldify("extension");
     public static final List<String> XIFY_FIELDS = Arrays.asList("efternamn", "fullstandigtNamn", "beskrivning", "typAvArbetsuppgift", "kommentarer");
@@ -37,11 +40,15 @@ public class AnonymizeDbDump {
         BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new GZIPOutputStream(new FileOutputStream(args[1])), "utf-8"));
         String line;
 
+        AnonymizeDbDump anonymizer = new AnonymizeDbDump();
         while ((line = reader.readLine()) != null) {
-            writer.append(anonymize(line));
+            writer.append(anonymizer.anonymize(line));
             writer.append('\n');
         }
         writer.close();
+    }
+
+    private AnonymizeDbDump() {
     }
 
     /**
@@ -49,7 +56,7 @@ public class AnonymizeDbDump {
      * @return Anonymized line
 
      */
-    private static CharSequence anonymize(String line) {
+    private CharSequence anonymize(String line) {
         if (needAnonymization(line)) {
             StringBuilder buffer = new StringBuilder(line);
             anonymizePatientid(buffer);
@@ -63,7 +70,7 @@ public class AnonymizeDbDump {
     private static void xify(StringBuilder buffer) {
         for (String field : XIFY_FIELDS) {
             xify(field, buffer);
-            xify_array(field, buffer);
+            xifyArray(field, buffer);
         }
     }
 
@@ -77,7 +84,7 @@ public class AnonymizeDbDump {
         }
     }
 
-    private static void xify_array(String field, StringBuilder buffer) {
+    private static void xifyArray(String field, StringBuilder buffer) {
         int index = -1;
         String actual = arrayify(field);
         while ((index = buffer.indexOf(actual, index + 1)) > -1) {
@@ -92,11 +99,7 @@ public class AnonymizeDbDump {
         for (int i = start; i < end; i++) {
             if (buffer.charAt(i) == '\\') {
                 i++;
-                if (buffer.charAt(i) == '\\') {
-                    skipNext = true;
-                } else {
-                    skipNext = false;
-                }
+                skipNext = buffer.charAt(i) == '\\';
             } else {
                 if (!skipNext) {
                     buffer.setCharAt(i, 'x');
@@ -106,7 +109,7 @@ public class AnonymizeDbDump {
         }
     }
 
-    private static void anonymizePatientid(StringBuilder buffer) {
+    private void anonymizePatientid(StringBuilder buffer) {
         int start = -1;
         while ((start = buffer.indexOf(PATIENT, start + 1)) > -1) {
             int startIndex = buffer.indexOf(EXTENSION, start) + EXTENSION.length();
@@ -120,7 +123,7 @@ public class AnonymizeDbDump {
         }
     }
 
-    private static String getUniqueRandomPersonid(String nummer) {
+    private String getUniqueRandomPersonid(String nummer) {
         String anonymized;
         do {
             anonymized = newRandomPersonid(nummer);
@@ -130,14 +133,15 @@ public class AnonymizeDbDump {
         return anonymized;
     }
 
-    private static String newRandomPersonid(String nummer) {
+    //CHECKSTYLE:OFF MagicNumber
+    private String newRandomPersonid(String nummer) {
         LocalDate date;
         boolean samordning = false;
         try {
-            date = ISODateTimeFormat.basicDate().parseLocalDate(nummer.substring(0, 8));
+            date = ISODateTimeFormat.basicDate().parseLocalDate(nummer.substring(0, END_OF_BIRTHDATE));
         } catch (Exception e) {
-            StringBuilder b = new StringBuilder(nummer.substring(0, 8));
-            b.setCharAt(6, (char) (b.charAt(6) - 6));
+            StringBuilder b = new StringBuilder(nummer.substring(0, END_OF_BIRTHDATE));
+            b.setCharAt(DAY_INDEX, (char) (b.charAt(DAY_INDEX) - SAMORDNING_OFFSET));
             try {
                 date = ISODateTimeFormat.basicDate().parseLocalDate(b.toString());
                 samordning = true;
@@ -156,12 +160,13 @@ public class AnonymizeDbDump {
         // Make samordning if needed
         if (samordning) {
             StringBuilder b = new StringBuilder(prefix);
-            b.setCharAt(6, (char) (prefix.charAt(6) + 6));
+            b.setCharAt(DAY_INDEX, (char) (prefix.charAt(DAY_INDEX) + DAY_INDEX));
             prefix = b.toString();
         }
 
         return prefix + String.format("-%1$04d", extension);
     }
+    //CHECKSTYLE:ON MagicNumber
 
     /**
      * @param field name of filed
@@ -178,7 +183,7 @@ public class AnonymizeDbDump {
     private static int findEnd(StringBuilder buffer, int start) {
         int end = start;
         boolean escape = false;
-        while (escape || !( buffer.charAt(end) == '\\' && buffer.charAt(end + 1) == '"')) {
+        while (escape || !(buffer.charAt(end) == '\\' && buffer.charAt(end + 1) == '"')) {
             escape = false;
             if (buffer.charAt(end) == '\\') {
                 end++;

@@ -13,8 +13,11 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
-public class SjukskrivningslangdQuery {
+public final class SjukskrivningslangdQuery {
     private static Ranges ranges = SjukfallslangdUtil.RANGES;
+
+    private SjukskrivningslangdQuery() {
+    }
 
     public static List<OverviewChartRow> getOverviewSjukskrivningslangd(Collection<Sjukfall> currentSjukfall, int noOfRows) {
         List<Counter<Ranges.Range>> toKeep = count(currentSjukfall, noOfRows);

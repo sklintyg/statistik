@@ -131,9 +131,11 @@ public class Icd10 {
             return id;
         }
 
+        // CHECKSTYLE:OFF MagicNumber
         public int toInt() {
             return (id.charAt(0) - 'A') * 100 + (id.charAt(1) - '0') * 10 + id.charAt(2) - '0';
         }
+        // CHECKSTYLE:ON MagicNumber
     }
 
     public static class Range extends Id {
