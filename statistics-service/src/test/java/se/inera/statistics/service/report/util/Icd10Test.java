@@ -63,4 +63,8 @@ public class Icd10Test {
         assertEquals("B123", icd10.normalize(" B12.3 # "));
     }
 
+    @Test
+    public void hasKategoriG01() {
+        assertEquals("G01", icd10.getKategori("G01").getId());
+    }
 }

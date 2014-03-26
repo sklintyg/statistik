@@ -6,11 +6,15 @@ import se.inera.statistics.service.helper.UtlatandeBuilder
 import se.inera.statistics.service.hsa.HSAKey
 import se.inera.statistics.service.hsa.HSAService
 import se.inera.statistics.service.processlog.EventType
+import se.inera.statistics.service.warehouse.FactPopulator
 import se.inera.statistics.service.warehouse.Warehouse
+import se.inera.statistics.service.warehouse.WidelineConverter
+import se.inera.statistics.service.warehouse.model.db.WideLine
 
 import static se.inera.statistics.service.helper.DocumentHelper.*
 
 class WarehouseFeeder {
+    static int logId
 
     UtlatandeBuilder builder1 = new UtlatandeBuilder("/json/integration/intyg1.json")
     UtlatandeBuilder builder2 = new UtlatandeBuilder("/json/integration/intyg2.json")
@@ -24,6 +28,8 @@ class WarehouseFeeder {
 
     public boolean insertIntyg(String typ, String person, String diagnos, String start1, String stop1, String grad1, String start2, String stop2, String grad2, String start3, String stop3, String grad3, String start4, String stop4, String grad4, String enhet, String vardgivare, String trackingId) {
         Warehouse bean = (Warehouse) StartUp.context.getBean("warehouse")
+        WidelineConverter widelineConverter = (WidelineConverter) StartUp.context.getBean(WidelineConverter.class)
+        FactPopulator factPopulator = (FactPopulator) StartUp.context.getBean(FactPopulator.class)
         HSAService hsaService = (HSAService) StartUp.context.getBean(HSAService.class)
         List<LocalDate> starts = new ArrayList<>()
         List<LocalDate> stops = new ArrayList<>()
@@ -56,7 +62,9 @@ class WarehouseFeeder {
                 HSAKey hsaKey = extractHSAKey(document)
                 JsonNode hsaInfo = hsaService.getHSAInfo(hsaKey)
                 document = prepare(document, hsaInfo)
-                bean.accept(document)
+                println(document)
+                WideLine line = widelineConverter.toWideline(document, hsaInfo, logId++)
+                bean.accept(factPopulator.toFact(line), hsaKey.vardgivareId)
             }
             true
         }

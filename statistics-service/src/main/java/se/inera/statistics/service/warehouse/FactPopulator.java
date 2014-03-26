@@ -25,12 +25,6 @@ import se.inera.statistics.service.helper.ConversionHelper;
 import se.inera.statistics.service.report.util.Icd10;
 import se.inera.statistics.service.warehouse.model.db.WideLine;
 
-import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-
 @Component
 public class FactPopulator {
 
@@ -46,7 +40,7 @@ public class FactPopulator {
         warehouse.accept(fact, vardgivare);
     }
 
-    private Fact toFact(WideLine wideline) {
+    public Fact toFact(WideLine wideline) {
         long id = wideline.getId();
         String lkf = wideline.getLkf();
         int enhet = warehouse.getEnhetAndRemember(wideline.getEnhet());

@@ -76,6 +76,15 @@
     <bean class="org.springframework.core.io.ClassPathResource" id="icd10ChaptersAnsiFile">
         <constructor-arg value="KSH97_AVS.ANS"/>
     </bean>
+    <bean class="org.springframework.core.io.ClassPathResource" id="icd10KapitelAnsiFile" >
+        <constructor-arg value="icd10/KSH97_KAP.ANS"/>
+    </bean>
+    <bean class="org.springframework.core.io.ClassPathResource" id="icd10AvsnittAnsiFile" >
+        <constructor-arg value="icd10/KSH97_AVS.ANS"/>
+    </bean>
+    <bean class="org.springframework.core.io.ClassPathResource" id="icd10KategoriAnsiFile" >
+        <constructor-arg value="icd10/KSH97_KAT.ANS"/>
+    </bean>
     <bean class="se.inera.statistics.service.processlog.Processor"/>
     <bean class="se.inera.statistics.service.report.util.DiagnosUtil"/>
     <bean class="se.inera.statistics.queue.IntygSender"/>
