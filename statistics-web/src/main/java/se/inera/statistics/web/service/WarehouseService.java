@@ -47,7 +47,7 @@ public class WarehouseService {
         int previousLongSjukfall = SjukfallUtil.getLong(previousSjukfall);
 
         List<OverviewChartRowExtended> aldersgrupper = AldersgruppQuery.getOverviewAldersgrupper(currentSjukfall, previousSjukfall, DISPLAYED_AGE_GROUPS);
-        List<OverviewChartRowExtended> diagnosgrupper = DiagnosgruppQuery.getOverviewDiagnosgrupper(currentSjukfall, previousSjukfall, Integer.MAX_VALUE);
+        List<OverviewChartRowExtended> diagnosgrupper = new DiagnosisGroupsConverter().convert(DiagnosgruppQuery.getOverviewDiagnosgrupper(currentSjukfall, previousSjukfall, Integer.MAX_VALUE));
         List<OverviewChartRowExtended> sjukskrivningsgrad = SjukskrivningsgradQuery.getOverviewSjukskrivningsgrad(currentSjukfall, previousSjukfall);
         List<OverviewChartRow> sjukskrivningslangd = SjukskrivningslangdQuery.getOverviewSjukskrivningslangd(currentSjukfall, Integer.MAX_VALUE);
 
