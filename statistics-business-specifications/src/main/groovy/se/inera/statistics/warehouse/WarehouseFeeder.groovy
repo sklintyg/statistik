@@ -2,7 +2,6 @@ package se.inera.statistics.warehouse
 import com.fasterxml.jackson.databind.JsonNode
 import org.joda.time.LocalDate
 import se.inera.statistics.context.StartUp
-import se.inera.statistics.service.helper.DocumentHelper
 import se.inera.statistics.service.helper.UtlatandeBuilder
 import se.inera.statistics.service.hsa.HSAKey
 import se.inera.statistics.service.hsa.HSAService
@@ -56,7 +55,7 @@ class WarehouseFeeder {
                 JsonNode document = builders[starts.size() - 1].build(person, starts, stops, enhet, vardgivare, diagnos, grads)
                 HSAKey hsaKey = extractHSAKey(document)
                 JsonNode hsaInfo = hsaService.getHSAInfo(hsaKey)
-                document = DocumentHelper.prepare(document, hsaInfo)
+                document = prepare(document, hsaInfo)
                 bean.accept(document)
             }
             true

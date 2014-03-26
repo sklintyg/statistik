@@ -1,16 +1,14 @@
 package se.inera.statistics.service.demo;
 
-import static org.junit.Assert.assertEquals;
+import com.fasterxml.jackson.databind.JsonNode;
+import org.joda.time.LocalDate;
+import org.junit.Test;
+import se.inera.statistics.service.helper.DocumentHelper;
+import se.inera.statistics.service.helper.UtlatandeBuilder;
 
 import java.util.Arrays;
 
-import org.joda.time.LocalDate;
-import org.junit.Test;
-
-import se.inera.statistics.service.helper.DocumentHelper;
-
-import com.fasterxml.jackson.databind.JsonNode;
-import se.inera.statistics.service.helper.UtlatandeBuilder;
+import static org.junit.Assert.assertEquals;
 
 public class UtlatandeBuilderTest {
 

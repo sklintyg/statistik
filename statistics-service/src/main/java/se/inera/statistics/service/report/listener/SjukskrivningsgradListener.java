@@ -19,14 +19,13 @@
 
 package se.inera.statistics.service.report.listener;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
 import se.inera.statistics.service.helper.DocumentHelper;
 import se.inera.statistics.service.report.api.Sjukskrivningsgrad;
 import se.inera.statistics.service.report.util.Verksamhet;
+
+import java.util.List;
 
 @Component
 public class SjukskrivningsgradListener extends GenericAbstractListener {

@@ -2,7 +2,7 @@
 
 |query:se.inera.statistics.counterdata.Sjukfall|casesPerCountyNationell|
 |period|kvinnor|män|
-|Blekinge län|1|0|
+|Blekinge län|0|0|
 |Dalarnas län|0|0|
 |Hallands län|0|0|
 |Kalmar län|0|0|
@@ -12,15 +12,15 @@
 |Jämtlands län|0|0|
 |Jönköpings län|0|0|
 |Norrbottens län|0|0|
-|Skåne län|1|0|
+|Skåne län|0|0|
 |Stockholms län|0|0|
 |Södermanlands län|0|0|
 |Uppsala län|0|0|
 |Värmlands län|0|0|
 |Västerbottens län|0|0|
-|Västernorrlands län|2|0|
+|Västernorrlands län|0|0|
 |Västmanlands län|0|0|
-|Västra Götalands län|6|1|
+|Västra Götalands län|0|0|
 |Örebro län|0|0|
 |Östergötlands län|0|0|
 |Okänt län|0|0|

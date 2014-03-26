@@ -57,7 +57,7 @@ public class WidelineConverter {
             diagnoskategori = null;
         }
 
-        int sjukskrivningsgrad = 100 - Integer.parseInt(DocumentHelper.getArbetsformaga(intyg).get(0));
+        int sjukskrivningsgrad = 100 - DocumentHelper.getArbetsformaga(intyg).get(0);
 
         int lakarkon = HSAServiceHelper.getLakarkon(hsa);
         int lakaralder = HSAServiceHelper.getLakaralder(hsa);

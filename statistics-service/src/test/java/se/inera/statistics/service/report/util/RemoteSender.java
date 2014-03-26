@@ -1,12 +1,13 @@
 package se.inera.statistics.service.report.util;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-import java.util.UUID;
+import org.joda.time.LocalDate;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.core.io.Resource;
+import org.springframework.jms.core.JmsTemplate;
+import org.springframework.jms.core.MessageCreator;
+import se.inera.statistics.service.helper.UtlatandeBuilder;
+import se.inera.statistics.service.queue.JmsReceiver;
 
 import javax.annotation.PostConstruct;
 import javax.jms.ConnectionFactory;
@@ -15,16 +16,13 @@ import javax.jms.Message;
 import javax.jms.Queue;
 import javax.jms.Session;
 import javax.jms.TextMessage;
-
-import org.joda.time.LocalDate;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
-import org.springframework.core.io.Resource;
-import org.springframework.jms.core.JmsTemplate;
-import org.springframework.jms.core.MessageCreator;
-
-import se.inera.statistics.service.helper.UtlatandeBuilder;
-import se.inera.statistics.service.queue.JmsReceiver;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+import java.util.UUID;
 
 // CHECKSTYLE:OFF MagicNumber
 public class RemoteSender {

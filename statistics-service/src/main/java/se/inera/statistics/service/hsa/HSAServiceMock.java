@@ -32,7 +32,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
-@Profile({"dev", "mockhsa", "test" })
+@Profile({"dev", "mockhsa"})
 @Primary
 public class HSAServiceMock implements HSAService {
     private static final int POSITIVE_MASK = 0x7fffffff;
@@ -44,7 +44,7 @@ public class HSAServiceMock implements HSAService {
 
     static {
         LAN_CODES = new ArrayList<>();
-        for (String kod: LAN) {
+        for (String kod : LAN) {
             LAN_CODES.add(kod);
         }
     }
@@ -61,12 +61,12 @@ public class HSAServiceMock implements HSAService {
 
     private JsonNode createVardgivare(HSAKey key) {
         ObjectNode root = factory.objectNode();
-        root.put("id", (JsonNode)null);
-        root.put("orgnr", (JsonNode)null);
-        root.put("namn", (JsonNode)null);
-        root.put("startdatum", (JsonNode)null);
-        root.put("slutdatum", (JsonNode)null);
-        root.put("arkiverad", (JsonNode)null);
+        root.put("id", (JsonNode) null);
+        root.put("orgnr", (JsonNode) null);
+        root.put("namn", (JsonNode) null);
+        root.put("startdatum", (JsonNode) null);
+        root.put("slutdatum", (JsonNode) null);
+        root.put("arkiverad", (JsonNode) null);
         return root;
     }
 
@@ -78,26 +78,26 @@ public class HSAServiceMock implements HSAService {
         root.put("agarform", asList("Landsting/Region"));
         root.put("startdatum", "");
         root.put("slutdatum", "");
-        root.put("arkiverad", (JsonNode)null);
+        root.put("arkiverad", (JsonNode) null);
         root.put("organisationsnamn", "Organisationsnamn");
-        root.put("verksamhet", (JsonNode)null);
-        root.put("vardform", (JsonNode)null);
+        root.put("verksamhet", (JsonNode) null);
+        root.put("vardform", (JsonNode) null);
         root.put("geografi", createGeografiskIndelning(key));
         return root;
     }
 
     private JsonNode createPersonal() {
         ObjectNode root = factory.objectNode();
-        root.put("id", (JsonNode)null);
-        root.put("efternamn", (JsonNode)null);
-        root.put("tilltalsnamn", (JsonNode)null);
-        root.put("initial", (JsonNode)null);
-        root.put("kon", (JsonNode)null);
-        root.put("alder", (JsonNode)null);
-        root.put("befattning", (JsonNode)null);
-        root.put("specialitet", (JsonNode)null);
-        root.put("yrkesgrupp", (JsonNode)null);
-        root.put("skyddad", (JsonNode)null);
+        root.put("id", (JsonNode) null);
+        root.put("efternamn", (JsonNode) null);
+        root.put("tilltalsnamn", (JsonNode) null);
+        root.put("initial", (JsonNode) null);
+        root.put("kon", (JsonNode) null);
+        root.put("alder", (JsonNode) null);
+        root.put("befattning", (JsonNode) null);
+        root.put("specialitet", (JsonNode) null);
+        root.put("yrkesgrupp", (JsonNode) null);
+        root.put("skyddad", (JsonNode) null);
         return root;
     }
 
@@ -121,9 +121,9 @@ public class HSAServiceMock implements HSAService {
         return "80";
     }
 
-    private JsonNode asList(String...items) {
+    private JsonNode asList(String... items) {
         ArrayNode container = factory.arrayNode();
-        for (String item: items) {
+        for (String item : items) {
             container.add(item);
         }
         return container;

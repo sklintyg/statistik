@@ -19,17 +19,8 @@
 
 package se.inera.statistics.service.report.repository;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.TypedQuery;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
-
 import se.inera.statistics.service.report.api.RollingLength;
 import se.inera.statistics.service.report.api.SjukfallPerLan;
 import se.inera.statistics.service.report.model.Kon;
@@ -41,6 +32,13 @@ import se.inera.statistics.service.report.model.SimpleKonResponse;
 import se.inera.statistics.service.report.model.db.SjukfallPerLanKey;
 import se.inera.statistics.service.report.model.db.SjukfallPerLanRow;
 import se.inera.statistics.service.report.util.ReportUtil;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 public class SjukfallPerLanPersistenceHandler implements SjukfallPerLan {
     @PersistenceContext(unitName = "IneraStatisticsLog")
