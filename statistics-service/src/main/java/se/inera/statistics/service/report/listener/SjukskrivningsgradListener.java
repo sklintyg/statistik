@@ -31,6 +31,10 @@ import se.inera.statistics.service.report.util.Verksamhet;
 @Component
 public class SjukskrivningsgradListener extends GenericAbstractListener {
 
+    public static final int FORMOGA_INGEN = 0;
+    public static final int FORMOGA_25 = 25;
+    public static final int FORMOGA_HALV = 50;
+    public static final int FORMOGA_75 = 75;
     @Autowired
     private Sjukskrivningsgrad api;
 
@@ -48,10 +52,10 @@ public class SjukskrivningsgradListener extends GenericAbstractListener {
 
     private String arbetsformagaTillSjukskrivning(Integer formaga) {
         switch(formaga) {
-        case 0: return "100";
-        case 25: return "75";
-        case 50: return "50";
-        case 75: return "25";
+        case FORMOGA_INGEN: return "100";
+        case FORMOGA_25: return "75";
+        case FORMOGA_HALV: return "50";
+        case FORMOGA_75: return "25";
         default:
             return "100";
         }
