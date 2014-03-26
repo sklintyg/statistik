@@ -82,9 +82,10 @@ public class DiagnosUtil {
     }
 
     public Avsnitt getAvsnittForCode(String icd10Code) {
+        String normalizedIcd10 = normalize(icd10Code);
         for (Entry<String, Collection<Avsnitt>> entry : getSubGroups().entrySet()) {
             for (Avsnitt avsnitt : entry.getValue()) {
-                if (avsnitt.isCodeInGroup(icd10Code)) {
+                if (avsnitt.isCodeInGroup(normalizedIcd10)) {
                     return avsnitt;
                 }
             }

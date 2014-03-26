@@ -66,9 +66,15 @@ public class DiagnosUtilTest {
     }
 
     @Test
-    public void why() {
-        String kapitelIdForCode = util.getKapitelIdForCode("M 16,9");
-        assertEquals("M00-M99", kapitelIdForCode);
+    public void getKapitelForBadlyFormattedICD10() {
+        String groupIdForCode = util.getKapitelIdForCode("M 16,9");
+        assertEquals("M00-M99", groupIdForCode);
+    }
+
+    @Test
+    public void getAvsnittForBadlyFormattedICD10() {
+        String groupIdForCode = util.getAvsnittForCode("M 16,9").getId();
+        assertEquals("M15-M19", groupIdForCode);
     }
 
     @Test
