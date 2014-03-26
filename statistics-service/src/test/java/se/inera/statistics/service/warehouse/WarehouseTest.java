@@ -30,7 +30,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import se.inera.statistics.service.warehouse.model.db.WideLine;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "classpath:warehouse-test.xml", "classpath:icd10-test.xml"  })
+@ContextConfiguration(locations = { "classpath:warehouse-test.xml", "classpath:icd10.xml"  })
 public class WarehouseTest {
 
     private HSAService hsaService = new HSAServiceMock();

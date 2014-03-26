@@ -90,7 +90,7 @@
     <bean class="se.inera.statistics.queue.IntygSender"/>
     <bean id="warehouse" class="se.inera.statistics.service.warehouse.Warehouse" />
     <bean class="se.inera.statistics.service.warehouse.WarehouseManager" />
-    <bean class="se.inera.statistics.service.report.util.Icd10" />
+    <import resource="classpath*:icd10.xml"/>
 
     <context:component-scan base-package="se.inera.statistics.service.report.repository"/>
     <context:component-scan

@@ -9,7 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import se.inera.statistics.service.report.model.Range;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "classpath:process-log-impl-test.xml", "classpath:icd10-test.xml" })
+@ContextConfiguration(locations = { "classpath:process-log-impl-test.xml", "classpath:icd10.xml" })
 @Transactional
 @DirtiesContext
 public class SjukfallPerLanPersistenceTest extends SjukfallPerLanPersistenceHandler {

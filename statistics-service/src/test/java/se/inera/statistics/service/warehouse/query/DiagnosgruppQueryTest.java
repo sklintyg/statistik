@@ -18,7 +18,7 @@ import java.util.Map;
 import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:icd10-test.xml", "classpath:query-test.xml"})
+@ContextConfiguration(locations = {"classpath:icd10.xml", "classpath:query-test.xml"})
 public class DiagnosgruppQueryTest {
 
     public static final String VARDGIVARE = "vardgivare";

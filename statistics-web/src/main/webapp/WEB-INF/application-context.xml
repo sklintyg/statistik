@@ -74,6 +74,7 @@
 
         <import resource="classpath*:hsa-services-config.xml"/>
         <import resource="classpath*:hsa-stub-context.xml"/>
+        <import resource="classpath*:icd10.xml"/>
         <import resource="application-context-cxf.xml"/>
         <import resource="application-context-security.xml"/>
         <import resource="application-context-jmx.xml"/>
@@ -106,17 +107,6 @@
         <bean id="factPopulator" class="se.inera.statistics.service.warehouse.FactPopulator" />
         <bean id="widelineConverter" class="se.inera.statistics.service.warehouse.WidelineConverter" />
 
-        <bean class="org.springframework.core.io.ClassPathResource" id="icd10KapitelAnsiFile" >
-            <constructor-arg value="icd10/KSH97_KAP.ANS"/>
-        </bean>
-        <bean class="org.springframework.core.io.ClassPathResource" id="icd10AvsnittAnsiFile" >
-            <constructor-arg value="icd10/KSH97_AVS.ANS"/>
-        </bean>
-        <bean class="org.springframework.core.io.ClassPathResource" id="icd10KategoriAnsiFile" >
-            <constructor-arg value="icd10/KSH97_KAT.ANS"/>
-        </bean>
-
-        <bean class="se.inera.statistics.service.report.util.Icd10" />
     </beans>
 
     <beans profile="!test,!db,!qa">

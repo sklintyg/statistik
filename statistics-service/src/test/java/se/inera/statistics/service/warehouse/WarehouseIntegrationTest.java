@@ -27,7 +27,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "classpath:warehouse-test.xml", "classpath:icd10-test.xml"  })
+@ContextConfiguration(locations = { "classpath:warehouse-test.xml", "classpath:icd10.xml"  })
 public class WarehouseIntegrationTest {
 
     @Autowired
