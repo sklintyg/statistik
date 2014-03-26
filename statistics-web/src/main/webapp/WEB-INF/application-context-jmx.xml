@@ -35,6 +35,6 @@
          <entry key="inera-statistics:name=NationellUpdater" value-ref="nationalPercistenceHandler"/>
        </map>
      </property>
-     <property name="registrationBehaviorName" value="REGISTRATION_REPLACE_EXISTING"/>
+     <property name="registrationPolicy" value="REPLACE_EXISTING"/>
    </bean>
 </beans>
