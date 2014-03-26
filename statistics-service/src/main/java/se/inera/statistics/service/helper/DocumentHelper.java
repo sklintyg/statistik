@@ -19,15 +19,14 @@
 
 package se.inera.statistics.service.helper;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.joda.time.LocalDate;
 import org.joda.time.Period;
 import org.joda.time.format.ISODateTimeFormat;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
+import java.util.ArrayList;
+import java.util.List;
 
 public final class DocumentHelper {
 
@@ -126,7 +125,7 @@ public final class DocumentHelper {
         return null;
     }
 
-    public static List<String> getArbetsformaga(JsonNode document) {
+    public static List<Integer> getArbetsformaga(JsonNode document) {
         List<Integer> result = new ArrayList<>();
         for (JsonNode node: document.path(OBSERVATIONER)) {
             if (ARBETSFORMAGA_MATCHER.match(node)) {
