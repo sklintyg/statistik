@@ -1,8 +1,12 @@
 package se.inera.statistics.service.warehouse;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class WarehouseManager {
+
+    private static final Logger LOG = LoggerFactory.getLogger(WarehouseManager.class);
 
     @Autowired
     private WidelineLoader loader;
@@ -11,9 +15,12 @@ public class WarehouseManager {
     private Warehouse warehouse;
 
     public int loadWideLines() {
+        LOG.info("Reloading warehouse");
         warehouse.clear();
         int lines = loader.populateWarehouse();
+        LOG.info("Reloaded warehouse {} lines", lines);
         sortAisles();
+        LOG.info("Prepared warehouse with ailes {}", warehouse.getAllVardgivare().keySet());
         return lines;
     }
 

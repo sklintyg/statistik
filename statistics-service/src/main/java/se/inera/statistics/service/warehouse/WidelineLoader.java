@@ -47,7 +47,7 @@ public class WidelineLoader {
         ) {
             int lineNo = 0;
             while (resultSet.next()) {
-                System.out.println("Reading line: " + ++lineNo);
+                lineNo++;
                 WideLine wideline = toWideline(resultSet);
                 factPopulator.accept(wideline);
             }
