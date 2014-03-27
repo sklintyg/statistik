@@ -114,7 +114,7 @@
               </systemProperty>
               <systemProperty>
                 <name>certificate.logback.file</name>
-                <value>${project.basedir}/statistics-logback.xml</value>
+                <value>${project.basedir}/src/main/resources/statistics-logback.xml</value>
               </systemProperty>
             </systemProperties>
         </configuration>
