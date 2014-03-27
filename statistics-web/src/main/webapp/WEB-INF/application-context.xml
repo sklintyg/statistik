@@ -145,7 +145,7 @@
         <bean id="dataGenerator" class="se.inera.statistics.service.demo.LargeTestDataGenerator" />
     </beans>
 
-    <beans profile="generatesmalltestdata">
+    <beans profile="dev">
         <bean class="se.inera.statistics.service.common.CommonPersistenceHandler"/>
         <bean class="se.inera.statistics.service.demo.InjectUtlatande" lazy-init="false"/>
     </beans>
