@@ -86,6 +86,10 @@ public class Icd10 {
                 normalized.append(c);
             }
         }
+
+        if (normalized.length() > 3) {
+            normalized.setLength(3);
+        }
         return normalized.toString();
     }
 

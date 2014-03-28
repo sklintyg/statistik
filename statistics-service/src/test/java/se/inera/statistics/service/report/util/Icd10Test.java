@@ -67,4 +67,14 @@ public class Icd10Test {
     public void hasKategoriG01() {
         assertEquals("G01", icd10.getKategori("G01").getId());
     }
+
+    @Test
+    public void kategoriIsTruncatedIfTooLong() {
+        assertEquals("G01", icd10.findKategori("G01.1").getId());
+    }
+
+    @Test
+    public void kategoriIsFoundEvenIfBadlyFormatted() {
+        assertEquals("G01", icd10.findKategori("-G 0, 1.1AndMore").getId());
+    }
 }
