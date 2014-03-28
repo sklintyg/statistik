@@ -9,6 +9,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.transaction.annotation.Transactional;
 
 import se.inera.statistics.service.report.api.CasesPerCounty;
@@ -28,6 +29,9 @@ public class SjukfallPerLanPersistenceHandler implements CasesPerCounty {
 
     @Autowired
     private Lan lans;
+
+    @Value("${national.cutoff.limit:5}")
+    private int cutoff;
 
     @Override
     @Transactional
@@ -67,10 +71,14 @@ public class SjukfallPerLanPersistenceHandler implements CasesPerCounty {
         for (String lanId : lans) {
             String displayLan = lans.getNamn(lanId);
             DualSexField dualSexField = map.get(lanId);
-            translatedCasesPerMonthRows.add(new SimpleDualSexDataRow(displayLan, dualSexField.getFemale(), dualSexField.getMale()));
+            translatedCasesPerMonthRows.add(new SimpleDualSexDataRow(displayLan, enforceCutoff(dualSexField.getFemale()), enforceCutoff(dualSexField.getMale())));
         }
 
         return new SimpleDualSexResponse<>(translatedCasesPerMonthRows, range.getMonths());
+    }
+
+    private int enforceCutoff(int count) {
+        return count >= cutoff ? count : 0;
     }
 
 }

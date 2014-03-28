@@ -95,6 +95,8 @@ public class OverviewPersistanceHandlerTest extends OverviewPersistenceHandler {
 
     private void updateNational(int cutoff) {
         ReflectionTestUtils.invokeSetterMethod(nationellUpdater, "cutoff", cutoff);
+        ReflectionTestUtils.setField(this, "cutoff", cutoff);
+
         nationellUpdater.updateCasesPerMonth();
         nationellUpdater.updateAldersgrupp();
         nationellUpdater.updateDiagnosgrupp();
@@ -167,10 +169,10 @@ public class OverviewPersistanceHandlerTest extends OverviewPersistenceHandler {
         Assert.assertEquals(0, result.getLongSickLeavesTotal());
         Assert.assertEquals(0, result.getLongSickLeavesAlternation());
 
-        Assert.assertEquals(1, result.getPerCounty().get(0).getQuantity());
+        Assert.assertEquals(0, result.getPerCounty().get(0).getQuantity());
         Assert.assertEquals(0, result.getPerCounty().get(0).getAlternation());
         Assert.assertEquals(2, result.getPerCounty().get(1).getQuantity());
-        Assert.assertEquals(100, result.getPerCounty().get(1).getAlternation());
+        Assert.assertEquals(0, result.getPerCounty().get(0).getAlternation());
     }
 
     @Test

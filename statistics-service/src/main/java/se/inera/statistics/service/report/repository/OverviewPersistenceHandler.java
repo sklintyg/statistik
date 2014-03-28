@@ -1,6 +1,7 @@
 package se.inera.statistics.service.report.repository;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.transaction.annotation.Transactional;
 
 import se.inera.statistics.service.report.api.Overview;
@@ -28,6 +29,9 @@ public class OverviewPersistenceHandler extends OverviewBasePersistenceHandler i
 
     @Autowired
     private Lan lan;
+
+    @Value("${national.cutoff.limit:5}")
+    private int cutoff;
 
     @Transactional
     @Override
@@ -72,6 +76,19 @@ public class OverviewPersistenceHandler extends OverviewBasePersistenceHandler i
         TypedQuery<OverviewChartRow> query = getManager().createQuery("SELECT new se.inera.statistics.service.report.model.OverviewChartRow(c.key.lanId, SUM (c.female) + SUM (c.male)) FROM SjukfallPerLanRow c WHERE c.key.period = :to GROUP BY c.key.lanId", OverviewChartRow.class);
         query.setParameter("to", ReportUtil.toPeriod(range.getTo()));
 
-        return query.getResultList();
+
+        return enforceCutoff(query.getResultList());
+    }
+
+    private List<OverviewChartRow> enforceCutoff(List<OverviewChartRow> rows) {
+        List<OverviewChartRow> result = new ArrayList<>(rows.size());
+        for (OverviewChartRow row : rows) {
+            if (row.getQuantity() >= cutoff) {
+                result.add(row);
+            } else {
+                result.add(new OverviewChartRow(row.getName(), 0));
+            }
+        }
+        return result;
     }
 }
