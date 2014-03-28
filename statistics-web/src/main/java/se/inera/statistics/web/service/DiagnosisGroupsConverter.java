@@ -71,7 +71,8 @@ public class DiagnosisGroupsConverter {
 
         List<OverviewChartRowExtended> result = new ArrayList<>();
         for (OverviewChartRowExtended row : merged.subList(0, DISPLAYED_DIAGNOSIS_GROUPS)) {
-            int percentChange = row.getQuantity() != 0 ? row.getAlternation() * PERCENT / row.getQuantity() : 0;
+            int prev = row.getQuantity() - row.getAlternation();
+            int percentChange = prev != 0 ? row.getAlternation() * PERCENT / prev : 0;
             result.add(new OverviewChartRowExtended(row.getName(), row.getQuantity(), percentChange));
         }
         return result;

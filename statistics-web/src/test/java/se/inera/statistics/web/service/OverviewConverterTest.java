@@ -52,7 +52,7 @@ public class OverviewConverterTest {
         OverviewSexProportion overviewSexProportion = new OverviewSexProportion(casesPerMonthProportionMale, casesPerMonthProportionFemale, new Range());
         int casesPerMonthAlteration = 2;
         ArrayList<OverviewChartRowExtended> diagnosisGroups = new ArrayList<OverviewChartRowExtended>();
-        diagnosisGroups.add(new OverviewChartRowExtended("A00-B99", 1, 2));
+        diagnosisGroups.add(new OverviewChartRowExtended("A00-B99", 3, 2));
         ArrayList<OverviewChartRowExtended> ageGroups = new ArrayList<OverviewChartRowExtended>();
         ageGroups.add(new OverviewChartRowExtended("ageName", 3, 4));
         ArrayList<OverviewChartRowExtended> degreeOfSickLeaveGroups = new ArrayList<OverviewChartRowExtended>();
@@ -78,7 +78,7 @@ public class OverviewConverterTest {
         List<DonutChartData> diagnosisGroupsResult = data.getDiagnosisGroups();
         assertEquals(5, diagnosisGroupsResult.size());
         assertEquals("Somatiska sjukdomar (A00-E90, G00-L99, N00-N99)", diagnosisGroupsResult.get(0).getName());
-        assertEquals(1, diagnosisGroupsResult.get(0).getQuantity());
+        assertEquals(3, diagnosisGroupsResult.get(0).getQuantity());
         assertEquals(200, diagnosisGroupsResult.get(0).getAlternation());
 
         List<DonutChartData> ageGroupsResult = data.getAgeGroups();
