@@ -25,7 +25,7 @@ import org.joda.time.LocalDate;
 import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.ISODateTimeFormat;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.beans.factory.annotation.Value;
 import se.inera.statistics.service.helper.DocumentHelper;
 import se.inera.statistics.service.helper.StatisticsMalformedDocument;
 import se.inera.statistics.service.sjukfall.SjukfallInfo;
@@ -38,7 +38,6 @@ import static se.inera.statistics.service.helper.DocumentHelper.getPersonId;
 import static se.inera.statistics.service.helper.DocumentHelper.getSistaNedsattningsdag;
 import static se.inera.statistics.service.helper.DocumentHelper.getVardgivareId;
 
-@Component
 public class Processor {
     private static final DateTimeFormatter FORMATTER = ISODateTimeFormat.date();
 
@@ -51,6 +50,9 @@ public class Processor {
     @Autowired
     private WidelineManager widelineManager;
 
+    @Value("${skip.discrete.counter:false}")
+    private boolean skipDiscreteCounter;
+
     private LocalDate cleanedup;
     private int processedCounter;
 
@@ -61,12 +63,18 @@ public class Processor {
 
         ObjectNode anonymous = DocumentHelper.anonymize(utlatande);
 
-        listener.accept(sjukfallInfo, anonymous, hsa, logId);
+        if (!skipDiscreteCounter) {
+            listener.accept(sjukfallInfo, anonymous, hsa, logId);
+        }
 
         ObjectNode preparedDoc = DocumentHelper.prepare(utlatande);
         widelineManager.accept(preparedDoc, hsa, logId);
 
         processedCounter++;
+    }
+
+    public void setSkipDiscreteCounter(boolean skipDiscreteCounter) {
+        this.skipDiscreteCounter = skipDiscreteCounter;
     }
 
     public int getProcessedCounter() {

@@ -71,6 +71,7 @@
     <bean class="se.inera.statistics.hsa.stub.HsaWebServiceStub" id="hsaWebServiceStub"/>
     <bean class="se.inera.statistics.hsa.stub.HsaServiceStub" id="hsaServiceStub"/>
     <bean class="se.inera.statistics.service.report.model.Lan" id="lan"/>
+    <bean class="se.inera.statistics.service.processlog.Processor"/>
     <bean class="org.springframework.core.io.ClassPathResource" id="icd10ChaptersAnsiFile">
         <constructor-arg value="KSH97_AVS.ANS"/>
     </bean>
@@ -80,5 +81,7 @@
     <bean class="se.inera.statistics.service.warehouse.WarehouseManager"/>
 
     <context:component-scan base-package="se.inera.statistics.service.report.repository"/>
+    <context:component-scan base-package="se.inera.statistics.service.report.listener"/>
+    <context:component-scan base-package="se.inera.statistics.service.sjukfall"/>
     <context:component-scan base-package="se.inera.statistics.service.warehouse"/>
 </beans>

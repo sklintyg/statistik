@@ -6,12 +6,21 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
               http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.2.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd">
 
-    <bean id="logProcessor" class="se.inera.statistics.service.processlog.Processor"/>
 
     <!-- Enable auto-wiring -->
     <context:annotation-config/>
     <context:component-scan base-package="org.springframework.security.saml"/>
 
+    <beans profile="!nocount">
+        <bean class="se.inera.statistics.service.processlog.Processor">
+            <property name="skipDiscreteCounter" value="false"/>
+        </bean>
+    </beans>
+    <beans profile="nocount">
+        <bean class="se.inera.statistics.service.processlog.Processor">
+            <property name="skipDiscreteCounter" value="true"/>
+        </bean>
+    </beans>
     <!-- Unsecured pages -->
     <beans>
       <security:http security="none" pattern="/css/**"/>
