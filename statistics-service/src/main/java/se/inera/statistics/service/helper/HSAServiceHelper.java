@@ -48,7 +48,7 @@ public final class HSAServiceHelper {
         try {
             String result = hsaData.path("personal").path("alder").textValue();
             return result != null ? Integer.parseInt(result) : 0;
-        } catch (NullPointerException e) {
+        } catch (NullPointerException|NumberFormatException e) {
             return 0;
         }
     }
@@ -57,7 +57,7 @@ public final class HSAServiceHelper {
         try {
             String result = hsaData.path("personal").path("kon").textValue();
             return result != null ? Integer.parseInt(result) : 0;
-        } catch (NullPointerException e) {
+        } catch (NullPointerException|NumberFormatException e) {
             return 0;
         }
     }
