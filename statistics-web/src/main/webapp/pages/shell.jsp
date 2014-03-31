@@ -223,7 +223,13 @@
 				    </div>
                 </div>
 		    </div>
-			<div class="span9">
+            <div class="span9">
+                <div id="incompletedata" class="alert alert-block">
+                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                    <h2>Datainsamling pågår</h2>
+                    Då den procentuella förändringen baseras på en sex månaders period och data inte samlats under så lång tid blir vissa värden missvisande.
+                    Efterhand som mer data samlats in under en längre period kommer detta problem att försvinna.
+                </div>
 				<%-- data-ng-view that holds dynamic content managed by angular app --%>
 				<div id="view" data-ng-view></div>
 			</div>
@@ -269,7 +275,6 @@
 <script type="text/javascript" src="<c:url value='/js/app/controllers.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/directives.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/filters.js'/>"></script>
-<!--script type="text/javascript" src="<c:url value='/js/app/inera-statistics-style.js'/>" ></script -->
 <script type="text/javascript" src="<c:url value='js/lib/highcharts/3.0.5/highcharts.js'/>"></script>
 <script type="text/javascript" src="<c:url value='js/lib/highcharts/3.0.5/modules/highcharts-more.js'/>"></script>
 <script type="text/javascript" src="<c:url value='js/lib/highcharts/3.0.5/modules/exporting.js'/>"></script>

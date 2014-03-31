@@ -1670,3 +1670,7 @@ input[type="radio"], input[type="checkbox"] {
 #readMore { height: auto; }
 
 #chart-footnote-text.in.collapse { overflow: visible; position: relative; display: inline-block; }
+
+#incompletedata {
+    color: #333333;
+}
