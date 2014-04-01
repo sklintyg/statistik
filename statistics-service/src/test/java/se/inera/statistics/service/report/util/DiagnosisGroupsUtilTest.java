@@ -1,6 +1,8 @@
 package se.inera.statistics.service.report.util;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.fail;
 import static org.mockito.Mockito.mock;
 
 import java.io.ByteArrayInputStream;
@@ -86,6 +88,18 @@ public class DiagnosisGroupsUtilTest {
     public void getSubGroupIdForBadlyFormattedICD10() {
         String groupIdForCode = util.getSubGroupForCode("M 16,9").getId();
         assertEquals("M15-M19", groupIdForCode);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void getGroupIdForNullICD10() {
+        String groupIdForCode = util.getGroupIdForCode(null);
+        fail();
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void getSubGroupIdForNullICD10() {
+        DiagnosisGroup groupIdForCode = util.getSubGroupForCode(null);
+        fail();
     }
 
     @Test
