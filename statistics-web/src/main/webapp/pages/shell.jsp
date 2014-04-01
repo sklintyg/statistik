@@ -227,8 +227,13 @@
                 <div id="incompletedata" class="alert alert-block">
                     <button type="button" class="close" data-dismiss="alert">&times;</button>
                     <h2>Datainsamling pågår</h2>
+                    <p>
                     Den procentuella förändringen av antal sjukfall är baserad på data som inhämtats under en sexmånaders-period.
                     Vissa värden blir dock missvisande eftersom Statistiktjänsten ännu inte samlat data under så lång tid.
+                    </p>
+                    <p>
+                    Vissa intyg kommer inte med i Statistiktjänsten. Upp till tio procent av insamlade intyg innehåller felaktigheter. Se <a ng-href="/#/om/vanligafragor">Vanliga frågor och svar</a>.
+                    </p>
                 </div>
 				<%-- data-ng-view that holds dynamic content managed by angular app --%>
 				<div id="view" data-ng-view></div>
