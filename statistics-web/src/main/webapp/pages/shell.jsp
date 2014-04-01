@@ -224,7 +224,7 @@
                 </div>
 		    </div>
             <div class="span9">
-                <div id="incompletedata" class="alert alert-block">
+                <div id="incompletedata" class="alert alert-block dontprint">
                     <button type="button" class="close" data-dismiss="alert">&times;</button>
                     <h2>Datainsamling pågår</h2>
                     <p>
