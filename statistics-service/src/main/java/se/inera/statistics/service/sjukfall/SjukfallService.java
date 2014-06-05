@@ -22,7 +22,7 @@ public class SjukfallService {
 
     private static final int MAX_DAYS_BETWEEN_CERTIFICATES = 5;
 
-    private LocalDate cutOff = new LocalDate("1970-01-01");
+    private LocalDate cutOff = new LocalDate("2014-01-01");
 
     public SjukfallInfo register(SjukfallKey key) {
         return register(key.getPersonId(), key.getVardgivareId(), key.getStart(), key.getEnd());
@@ -49,9 +49,9 @@ public class SjukfallService {
 
     private void checkExpiry(LocalDate start) {
         if (cutOff.isBefore(start)) {
-            int expired = expire(start);
-            LOG.info("Expire sjukfall with cutoff {}, expired {}", start, expired);
-            cutOff = start;
+            cutOff = cutOff.plusDays(1);
+            int expired = expire(cutOff);
+            LOG.info("Expire sjukfall with cutoff {}, expired {}", cutOff, expired);
         }
     }
 
