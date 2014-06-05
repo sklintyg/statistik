@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.annotation.PostConstruct;
 import javax.jms.ConnectionFactory;
@@ -137,7 +138,7 @@ public class QueueHelper {
             String enhet = cols[ENHET_COL];
             String vardgivare = cols[VARDGIVARE_COL];
             LOG.info(person + ", " + start + ", " + stop + ", " + enhet + ", " + vardgivare + ", " + diagnos + ", " + grad);
-            sender.simpleSend(builders[start.size() - 1].build(person, start, stop, enhet, vardgivare, diagnos, grad).toString(), "001");
+            sender.simpleSend(builders[start.size() - 1].build(person, start, stop, enhet, vardgivare, diagnos, grad).toString(), UUID.randomUUID().toString());
         }
     }
 
