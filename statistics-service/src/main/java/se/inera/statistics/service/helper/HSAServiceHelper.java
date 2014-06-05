@@ -20,7 +20,31 @@ public final class HSAServiceHelper {
         }
     }
 
+    public static String getEnhetId(JsonNode hsaData) {
+        if (hsaData == null) {
+            return null;
+        }
+        String result = getEnhetId(hsaData, "huvudenhet");
+        if (result == null) {
+            result = getEnhetId(hsaData, "enhet");
+        }
+        return result;
+    }
+
+    public static String getVardgivarId(JsonNode hsaData) {
+        if (hsaData == null) {
+            return null;
+        } else {
+            return hsaData.path("vardgivare").path("id").textValue();
+        }
+    }
+
     private static String getLan(JsonNode hsaData, String enhet) {
         return hsaData.path(enhet).path("geografi").path("lan").textValue();
     }
+
+    private static String getEnhetId(JsonNode hsaData, String enhet) {
+        return hsaData.path(enhet).path("id").textValue();
+    }
+
 }

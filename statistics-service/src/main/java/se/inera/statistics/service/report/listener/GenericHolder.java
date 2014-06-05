@@ -36,8 +36,8 @@ public class GenericHolder {
     public GenericHolder(SjukfallInfo sjukfallInfo, JsonNode utlatande, JsonNode hsa, DiagnosisGroupsUtil diagnosisGroupsUtil) {
         this.sjukfallInfo = sjukfallInfo;
         this.utlatande = utlatande;
-        enhetId = DocumentHelper.getEnhetId(utlatande);
-        vardgivareId = DocumentHelper.getVardgivareId(utlatande);
+        enhetId = HSAServiceHelper.getEnhetId(hsa);
+        vardgivareId = HSAServiceHelper.getVardgivarId(hsa);
         lanId = HSAServiceHelper.getLan(hsa);
         kon = "man".equalsIgnoreCase(DocumentHelper.getKon(utlatande)) ? Sex.Male : Sex.Female;
         diagnos = DocumentHelper.getDiagnos(utlatande);
@@ -65,7 +65,10 @@ public class GenericHolder {
     }
 
     private boolean validateId(String key, String id) {
-        if (id == null || id.length() > MAX_ID_LENGTH) {
+        if (id == null) {
+            LOG.error("Not found {} '{}'.", key, id);
+            return false;
+        } else if (id.length() > MAX_ID_LENGTH) {
             LOG.error("Invalid {} '{}'.", key, id);
             return false;
         } else {

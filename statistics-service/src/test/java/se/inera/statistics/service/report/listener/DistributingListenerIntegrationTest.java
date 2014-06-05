@@ -1,5 +1,7 @@
 package se.inera.statistics.service.report.listener;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.joda.time.LocalDate;
 import org.junit.Assert;
 import org.junit.Before;
@@ -69,12 +71,12 @@ public class DistributingListenerIntegrationTest {
     public void testCount1Intyg() {
         LocalDate from = new LocalDate("2013-03-01"), to = new LocalDate("2013-03-10");
         SjukfallInfo sjukfallInfo = new SjukfallInfo(personId, from, to, null);
-        JsonNode hsa = null;
+        JsonNode hsa = createHsaJson();
         JsonNode utlatande = createUtlatande(from, to);
 
         distributingListener.accept(sjukfallInfo, utlatande, hsa, 1L);
 
-        SimpleDualSexResponse<SimpleDualSexDataRow> result = casesPerMonth.getCasesPerMonth("v1", rangeOneMonth);
+        SimpleDualSexResponse<SimpleDualSexDataRow> result = casesPerMonth.getCasesPerMonth("vardgivarId", rangeOneMonth);
         assertEquals(1, result.getRows().get(0).getMale().intValue());
     }
 
@@ -82,12 +84,12 @@ public class DistributingListenerIntegrationTest {
     public void testCountMonthSpanningIntyg() {
         LocalDate from = new LocalDate("2013-03-01"), to = new LocalDate("2013-04-10");
         SjukfallInfo sjukfallInfo = new SjukfallInfo(personId, from, to, null);
-        JsonNode hsa = null;
+        JsonNode hsa = createHsaJson();
         JsonNode utlatande = createUtlatande(from, to);
 
         distributingListener.accept(sjukfallInfo, utlatande, hsa, 1L);
 
-        SimpleDualSexResponse<SimpleDualSexDataRow> result = casesPerMonth.getCasesPerMonth("v1", rangeTwoMonth);
+        SimpleDualSexResponse<SimpleDualSexDataRow> result = casesPerMonth.getCasesPerMonth("vardgivarId", rangeTwoMonth);
         assertEquals(2, result.getRows().size());
         assertEquals(1, result.getRows().get(0).getMale().intValue());
         assertEquals(1, result.getRows().get(1).getMale().intValue());
@@ -97,12 +99,12 @@ public class DistributingListenerIntegrationTest {
     public void testCountMonthSpanningIntygWithPreviousEndDateInFirstMonth() {
         LocalDate from = new LocalDate("2013-03-01"), to = new LocalDate("2013-04-10");
         SjukfallInfo sjukfallInfo = new SjukfallInfo(personId, from, to, new LocalDate("2013-03-03"));
-        JsonNode hsa = null;
+        JsonNode hsa = createHsaJson();
         JsonNode utlatande = createUtlatande(from, to);
 
         distributingListener.accept(sjukfallInfo, utlatande, hsa, 1L);
 
-        SimpleDualSexResponse<SimpleDualSexDataRow> result = casesPerMonth.getCasesPerMonth("v1", rangeTwoMonth);
+        SimpleDualSexResponse<SimpleDualSexDataRow> result = casesPerMonth.getCasesPerMonth("vardgivarId", rangeTwoMonth);
         assertEquals(2, result.getRows().size());
         assertEquals(0, result.getRows().get(0).getMale().intValue());
         assertEquals(1, result.getRows().get(1).getMale().intValue());
@@ -112,12 +114,12 @@ public class DistributingListenerIntegrationTest {
     public void testCountMonthSpanningIntygWithPreviousEndDateInSecondMonth() {
         LocalDate from = new LocalDate("2013-03-01"), to = new LocalDate("2013-04-10");
         SjukfallInfo sjukfallInfo = new SjukfallInfo(personId, from, to, new LocalDate("2013-04-03"));
-        JsonNode hsa = null;
+        JsonNode hsa = createHsaJson();
         JsonNode utlatande = createUtlatande(from, to);
 
         distributingListener.accept(sjukfallInfo, utlatande, hsa, 1L);
 
-        SimpleDualSexResponse<SimpleDualSexDataRow> result = casesPerMonth.getCasesPerMonth("v1", rangeTwoMonth);
+        SimpleDualSexResponse<SimpleDualSexDataRow> result = casesPerMonth.getCasesPerMonth("vardgivarId", rangeTwoMonth);
         assertEquals(2, result.getRows().size());
         assertEquals(0, result.getRows().get(0).getMale().intValue());
         assertEquals(0, result.getRows().get(1).getMale().intValue());
@@ -125,7 +127,7 @@ public class DistributingListenerIntegrationTest {
 
     @Test
     public void testCountThreeIntygWith5DayGapBetweenLastOnes() {
-        JsonNode hsa = null;
+        JsonNode hsa = createHsaJson();
 
         LocalDate from1 = new LocalDate("2013-03-01"), to1 = new LocalDate("2013-03-02");
         SjukfallInfo sjukfallInfo = new SjukfallInfo(personId, from1, to1, null);
@@ -142,14 +144,14 @@ public class DistributingListenerIntegrationTest {
         JsonNode utlatande3 = createUtlatande(from3, to3);
         distributingListener.accept(sjukfallInfo3, utlatande3, hsa, 1L);
 
-        SimpleDualSexResponse<SimpleDualSexDataRow> result = casesPerMonth.getCasesPerMonth("v1", rangeOneMonth);
+        SimpleDualSexResponse<SimpleDualSexDataRow> result = casesPerMonth.getCasesPerMonth("vardgivarId", rangeOneMonth);
         assertEquals(1, result.getRows().size());
         assertEquals(1, result.getRows().get(0).getMale().intValue());
     }
 
     @Test
     public void testSjukfalllangdFor21DayIntygFollowedBy30DayIntygWithNoGap() {
-        JsonNode hsa = null;
+        JsonNode hsa = createHsaJson();
 
         LocalDate from1 = new LocalDate("2013-03-11"), to1 = new LocalDate("2013-03-31");
         SjukfallInfo sjukfallInfo = new SjukfallInfo(personId, from1, to1, null);
@@ -161,12 +163,12 @@ public class DistributingListenerIntegrationTest {
         JsonNode utlatande2 = createUtlatande(from2, to2);
         distributingListener.accept(sjukfallInfo2, utlatande2, hsa, 1L);
 
-        SickLeaveLengthResponse result = sjukfallslangdGrupp.getHistoricalStatistics("v1", new LocalDate("2013-03-01"), RollingLength.YEAR);
+        SickLeaveLengthResponse result = sjukfallslangdGrupp.getHistoricalStatistics("vardgivarId", new LocalDate("2013-03-01"), RollingLength.YEAR);
         assertEquals(1, result.getRows().size());
         assertEquals("15-30 dagar", result.getRows().get(0).getGroup());
         assertEquals(1, result.getRows().get(0).getMale());
 
-        result = sjukfallslangdGrupp.getHistoricalStatistics("v1", new LocalDate("2013-04-01"), RollingLength.YEAR);
+        result = sjukfallslangdGrupp.getHistoricalStatistics("vardgivarId", new LocalDate("2013-04-01"), RollingLength.YEAR);
         assertEquals(1, result.getRows().size());
         assertEquals("31-90 dagar", result.getRows().get(0).getGroup());
         assertEquals(1, result.getRows().get(0).getMale());
@@ -175,7 +177,7 @@ public class DistributingListenerIntegrationTest {
 
     @Test
     public void testSjukfalllangdFor21DayIntygFollowedBy29DayIntygWithNoGapWithinMonth() {
-        JsonNode hsa = null;
+        JsonNode hsa = createHsaJson();
 
         LocalDate from1 = new LocalDate("2013-03-12"), to1 = new LocalDate("2013-04-01");
         SjukfallInfo sjukfallInfo = new SjukfallInfo(personId, from1, to1, null);
@@ -187,17 +189,17 @@ public class DistributingListenerIntegrationTest {
         JsonNode utlatande2 = createUtlatande(from2, to2);
         distributingListener.accept(sjukfallInfo2, utlatande2, hsa, 1L);
 
-        SickLeaveLengthResponse result = sjukfallslangdGrupp.getHistoricalStatistics("v1", new LocalDate("2013-03-01"), RollingLength.YEAR);
+        SickLeaveLengthResponse result = sjukfallslangdGrupp.getHistoricalStatistics("vardgivarId", new LocalDate("2013-03-01"), RollingLength.YEAR);
         assertEquals(1, result.getRows().size());
         assertEquals("15-30 dagar", result.getRows().get(0).getGroup());
         assertEquals(1, result.getRows().get(0).getMale());
 
-        result = sjukfallslangdGrupp.getHistoricalStatistics("v1", new LocalDate("2013-04-01"), RollingLength.YEAR);
+        result = sjukfallslangdGrupp.getHistoricalStatistics("vardgivarId", new LocalDate("2013-04-01"), RollingLength.YEAR);
         assertEquals(1, result.getRows().size());
         assertEquals("31-90 dagar", result.getRows().get(0).getGroup());
         assertEquals(1, result.getRows().get(0).getMale());
 
-        result = sjukfallslangdGrupp.getHistoricalStatistics("v1", new LocalDate("2013-05-01"), RollingLength.YEAR);
+        result = sjukfallslangdGrupp.getHistoricalStatistics("vardgivarId", new LocalDate("2013-05-01"), RollingLength.YEAR);
         assertEquals(1, result.getRows().size());
         assertEquals("31-90 dagar", result.getRows().get(0).getGroup());
         assertEquals(1, result.getRows().get(0).getMale());
@@ -206,7 +208,7 @@ public class DistributingListenerIntegrationTest {
 
     @Test
     public void testSjukfalllangdFor2MonthIntygFollowedBy30DayIntygWith1DayOverlap() {
-        JsonNode hsa = null;
+        JsonNode hsa = createHsaJson();
 
         LocalDate from1 = new LocalDate("2013-03-01"), to1 = new LocalDate("2013-04-30");
         SjukfallInfo sjukfallInfo = new SjukfallInfo(personId, from1, to1, null);
@@ -218,17 +220,17 @@ public class DistributingListenerIntegrationTest {
         JsonNode utlatande2 = createUtlatande(from2, to2);
         distributingListener.accept(sjukfallInfo2, utlatande2, hsa, 1L);
 
-        SickLeaveLengthResponse result = sjukfallslangdGrupp.getHistoricalStatistics("v1", new LocalDate("2013-03-01"), RollingLength.YEAR);
+        SickLeaveLengthResponse result = sjukfallslangdGrupp.getHistoricalStatistics("vardgivarId", new LocalDate("2013-03-01"), RollingLength.YEAR);
         assertEquals(1, result.getRows().size());
         assertEquals("31-90 dagar", result.getRows().get(0).getGroup());
         assertEquals(1, result.getRows().get(0).getMale());
 
-        result = sjukfallslangdGrupp.getHistoricalStatistics("v1", new LocalDate("2013-04-01"), RollingLength.YEAR);
+        result = sjukfallslangdGrupp.getHistoricalStatistics("vardgivarId", new LocalDate("2013-04-01"), RollingLength.YEAR);
         assertEquals(1, result.getRows().size());
         assertEquals("31-90 dagar", result.getRows().get(0).getGroup());
         assertEquals(1, result.getRows().get(0).getMale());
 
-        result = sjukfallslangdGrupp.getHistoricalStatistics("v1", new LocalDate("2013-05-01"), RollingLength.YEAR);
+        result = sjukfallslangdGrupp.getHistoricalStatistics("vardgivarId", new LocalDate("2013-05-01"), RollingLength.YEAR);
         assertEquals(1, result.getRows().size());
         assertEquals("91-180 dagar", result.getRows().get(0).getGroup());
         assertEquals(1, result.getRows().get(0).getMale());
@@ -240,14 +242,14 @@ public class DistributingListenerIntegrationTest {
         LocalDate from1 = new LocalDate("2013-03-01"), to1 = new LocalDate("2013-04-30");
         SjukfallInfo sjukfallInfo = new SjukfallInfo(personId, from1, to1, null);
         JsonNode utlatande = createUtlatande(from1, to1, "UNS33.7");
-        distributingListener.accept(sjukfallInfo, utlatande, null, 1L);
+        distributingListener.accept(sjukfallInfo, utlatande, createHsaJson(), 1L);
 
-        SickLeaveLengthResponse result = sjukfallslangdGrupp.getHistoricalStatistics("v1", new LocalDate("2013-03-01"), RollingLength.YEAR);
+        SickLeaveLengthResponse result = sjukfallslangdGrupp.getHistoricalStatistics("vardgivarId", new LocalDate("2013-03-01"), RollingLength.YEAR);
         assertEquals(1, result.getRows().size());
         assertEquals("31-90 dagar", result.getRows().get(0).getGroup());
         assertEquals(1, result.getRows().get(0).getMale());
 
-        DiagnosisGroupResponse diagnoser = diagnosGrupp.getDiagnosisGroups("v1", new Range(new LocalDate("2013-03-01"), new LocalDate("2013-03-01")));
+        DiagnosisGroupResponse diagnoser = diagnosGrupp.getDiagnosisGroups("vardgivarId", new Range(new LocalDate("2013-03-01"), new LocalDate("2013-03-01")));
         for (DualSexDataRow row : diagnoser.getRows()) {
             for (DualSexField field : row.getData()) {
                 assertEquals(0, field.getFemale());
@@ -283,8 +285,20 @@ public class DistributingListenerIntegrationTest {
 
     private JsonNode createUtlatande(LocalDate from, LocalDate to, String icd10) {
         UtlatandeBuilder builder = new UtlatandeBuilder();
-        final JsonNode utlatande = builder.build(personId, from, to, "v1", icd10, 50);
+        final JsonNode utlatande = builder.build(personId, from, to, "vardgivarId", icd10, 50);
         return DocumentHelper.anonymize(utlatande);
+    }
+
+    private JsonNode createHsaJson() {
+        ObjectMapper mapper = new ObjectMapper();
+        ObjectNode root = mapper.createObjectNode();
+        ObjectNode enhet = mapper.createObjectNode();
+        enhet.put("id", "enhetId");
+        root.put("enhet", enhet);
+        ObjectNode vardgivare = mapper.createObjectNode();
+        vardgivare.put("id", "vardgivarId");
+        root.put("vardgivare", vardgivare);
+        return root;
     }
 
     private JsonNode createUtlatande(LocalDate from, LocalDate to) {

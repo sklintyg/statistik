@@ -10,6 +10,8 @@ import static org.mockito.Mockito.mock;
 import java.io.IOException;
 import java.util.List;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.joda.time.LocalDate;
 import org.junit.Before;
 import org.junit.Test;
@@ -37,6 +39,7 @@ public class AldersgruppListenerTest {
 
     private UtlatandeBuilder utlatandeBuilder = new UtlatandeBuilder();
     private JsonNode utlatande;
+    private JsonNode hsa;
 
     @Mock
     private DiagnosisGroupsUtil util = mock(DiagnosisGroupsUtil.class);
@@ -57,13 +60,27 @@ public class AldersgruppListenerTest {
         doNothing().when(agegroups).count(captor.capture(), eq("enhetId"), anyString(), eq(RollingLength.YEAR), any(Verksamhet.class), any(Sex.class));
 
         utlatande = utlatandeBuilder.build("patientId", new LocalDate("2011-01-05"), new LocalDate("2011-03-27"), "enhetId", "A00", 0);
+
+        hsa = buildHsaJson();
+    }
+
+    private JsonNode buildHsaJson() {
+        ObjectMapper mapper = new ObjectMapper();
+        ObjectNode root = mapper.createObjectNode();
+        ObjectNode enhet = mapper.createObjectNode();
+        enhet.put("id", "enhetId");
+        root.put("enhet", enhet);
+        ObjectNode vardgivare = mapper.createObjectNode();
+        vardgivare.put("id", "vardgivarId");
+        root.put("vardgivare", vardgivare);
+        return root;
     }
 
     // CHECKSTYLE:OFF MagicNumber
     @Test
     public void threeMonthsNoExistingSjukfall() {
         SjukfallInfo sjukfallInfo = new SjukfallInfo("sjukfallid", null, null, null);
-        listener.accept(sjukfallInfo, utlatande, null);
+        listener.accept(sjukfallInfo, utlatande, hsa);
         LocalDate period = new LocalDate("2011-01");
         List<String> allValues = captor.getAllValues();
         assertEquals(14,  allValues.size());
@@ -77,9 +94,9 @@ public class AldersgruppListenerTest {
     public void twoThreeMonthsIntygNoExistingSjukfall() {
         SjukfallInfo sjukfallInfo = new SjukfallInfo("sjukfallid", null, null, null);
 
-        listener.accept(sjukfallInfo, utlatande, null);
+        listener.accept(sjukfallInfo, utlatande, hsa);
         utlatande = utlatandeBuilder.build("patientId2", new LocalDate("2011-02-05"), new LocalDate("2011-03-27"), "enhetId", "A00", 0);
-        listener.accept(sjukfallInfo, utlatande, null);
+        listener.accept(sjukfallInfo, utlatande, hsa);
 
         LocalDate period = new LocalDate("2011-01");
         List<String> allValues = captor.getAllValues();
@@ -100,7 +117,7 @@ public class AldersgruppListenerTest {
     @Test
     public void threeMonthsWithExistingSjukfall() {
         SjukfallInfo sjukfallInfo = new SjukfallInfo("sjukfallid", new LocalDate("2010-11-01"), new LocalDate("2010-11-01"), new LocalDate("2011-02-01"));
-        listener.accept(sjukfallInfo, utlatande, null);
+        listener.accept(sjukfallInfo, utlatande, hsa);
         LocalDate period = new LocalDate("2012-02");
         List<String> allValues = captor.getAllValues();
         assertEquals(1,  allValues.size());
@@ -113,7 +130,7 @@ public class AldersgruppListenerTest {
     @Test
     public void threeMonthsWithExistingFullyOverlappingSjukfall() {
         SjukfallInfo sjukfallInfo = new SjukfallInfo("sjukfallid", new LocalDate("2010-11-01"), new LocalDate("2010-11-01"), new LocalDate("2011-03-20"));
-        listener.accept(sjukfallInfo, utlatande, null);
+        listener.accept(sjukfallInfo, utlatande, hsa);
         List<String> allValues = captor.getAllValues();
         assertEquals(0,  allValues.size());
     }
