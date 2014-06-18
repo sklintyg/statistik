@@ -73,9 +73,9 @@ public class OverviewPersistenceHandler extends OverviewBasePersistenceHandler i
     }
 
     private List<OverviewChartRow> getCasesPerCountyFromDb(Range range) {
-        TypedQuery<OverviewChartRow> query = getManager().createQuery("SELECT new se.inera.statistics.service.report.model.OverviewChartRow(c.key.lanId, SUM (c.female) + SUM (c.male)) FROM SjukfallPerLanRow c WHERE c.key.period = :to GROUP BY c.key.lanId", OverviewChartRow.class);
+        TypedQuery<OverviewChartRow> query = getManager().createQuery("SELECT new se.inera.statistics.service.report.model.OverviewChartRow(c.key.lanId, SUM (c.female) + SUM (c.male)) FROM SjukfallPerLanRow c WHERE c.key.period = :to and c.key.periods = :periods GROUP BY c.key.lanId", OverviewChartRow.class);
         query.setParameter("to", ReportUtil.toPeriod(range.getTo()));
-
+        query.setParameter("periods", range.getMonths());
 
         return enforceCutoff(query.getResultList());
     }

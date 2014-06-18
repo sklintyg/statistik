@@ -68,29 +68,31 @@ public class OverviewPersistanceHandlerTest extends OverviewPersistenceHandler {
         casesPerMonth.count("id3", "2013-09", Verksamhet.VARDGIVARE, Sex.Male);
         casesPerMonth.count("id1", "2013-06", Verksamhet.VARDGIVARE, Sex.Male);
 
-        aldersgruppPersistenceHandler.count("2013-09", "id1", "<21", RollingLength.QUARTER, Verksamhet.VARDGIVARE, Sex.Female);
-        aldersgruppPersistenceHandler.count("2013-09", "id1", "<21", RollingLength.QUARTER, Verksamhet.VARDGIVARE, Sex.Female);
-        aldersgruppPersistenceHandler.count("2013-09", "id1", "21-25", RollingLength.QUARTER, Verksamhet.VARDGIVARE, Sex.Female);
-        aldersgruppPersistenceHandler.count("2013-09", "id1", "26-30", RollingLength.QUARTER, Verksamhet.VARDGIVARE, Sex.Female);
-        aldersgruppPersistenceHandler.count("2013-09", "id3", "<21", RollingLength.QUARTER, Verksamhet.VARDGIVARE, Sex.Male);
-        aldersgruppPersistenceHandler.count("2013-06", "id1", "<21", RollingLength.QUARTER, Verksamhet.VARDGIVARE, Sex.Male);
-
         sjukskrivningsgrad.count("id1", "2013-09", "25", Verksamhet.VARDGIVARE, Sex.Female);
         sjukskrivningsgrad.count("id1", "2013-09", "100", Verksamhet.VARDGIVARE, Sex.Female);
         sjukskrivningsgrad.count("id1", "2013-09", "100", Verksamhet.VARDGIVARE, Sex.Female);
         sjukskrivningsgrad.count("id1", "2013-06", "25", Verksamhet.VARDGIVARE, Sex.Female);
         sjukskrivningsgrad.count("id1", "2013-06", "100", Verksamhet.VARDGIVARE, Sex.Female);
 
-        sjukfallslangdGrupp.count("2013-09", "id1", "<15 dagar", RollingLength.QUARTER, Verksamhet.VARDGIVARE, Sex.Female);
-        sjukfallslangdGrupp.count("2013-09", "id1", "<15 dagar", RollingLength.QUARTER, Verksamhet.VARDGIVARE, Sex.Male);
-        sjukfallslangdGrupp.count("2013-09", "id3", "<15 dagar", RollingLength.QUARTER, Verksamhet.VARDGIVARE, Sex.Female);
-        sjukfallslangdGrupp.count("2013-09", "id1", ">365 dagar", RollingLength.QUARTER, Verksamhet.VARDGIVARE, Sex.Male);
+        for (RollingLength length : RollingLength.values()) {
+            aldersgruppPersistenceHandler.count("2013-09", "id1", "<21", length, Verksamhet.VARDGIVARE, Sex.Female);
+            aldersgruppPersistenceHandler.count("2013-09", "id1", "<21", length, Verksamhet.VARDGIVARE, Sex.Female);
+            aldersgruppPersistenceHandler.count("2013-09", "id1", "21-25", length, Verksamhet.VARDGIVARE, Sex.Female);
+            aldersgruppPersistenceHandler.count("2013-09", "id1", "26-30", length, Verksamhet.VARDGIVARE, Sex.Female);
+            aldersgruppPersistenceHandler.count("2013-09", "id3", "<21", length, Verksamhet.VARDGIVARE, Sex.Male);
+            aldersgruppPersistenceHandler.count("2013-06", "id1", "<21", length, Verksamhet.VARDGIVARE, Sex.Male);
 
-        casesPerCounty.count("2013-09", "id1", "14", RollingLength.QUARTER, Sex.Female);
-        casesPerCounty.count("2013-09", "id1", "14", RollingLength.QUARTER, Sex.Male);
-        casesPerCounty.count("2013-09", "id2", "01", RollingLength.QUARTER, Sex.Female);
-        casesPerCounty.count("2013-06", "id1", "14", RollingLength.QUARTER, Sex.Female);
 
+            sjukfallslangdGrupp.count("2013-09", "id1", "<15 dagar", length, Verksamhet.VARDGIVARE, Sex.Female);
+            sjukfallslangdGrupp.count("2013-09", "id1", "<15 dagar", length, Verksamhet.VARDGIVARE, Sex.Male);
+            sjukfallslangdGrupp.count("2013-09", "id3", "<15 dagar", length, Verksamhet.VARDGIVARE, Sex.Female);
+            sjukfallslangdGrupp.count("2013-09", "id1", ">365 dagar", length, Verksamhet.VARDGIVARE, Sex.Male);
+
+            casesPerCounty.count("2013-09", "id1", "14", length, Sex.Female);
+            casesPerCounty.count("2013-09", "id1", "14", length, Sex.Male);
+            casesPerCounty.count("2013-09", "id2", "01", length, Sex.Female);
+            casesPerCounty.count("2013-06", "id1", "14", length, Sex.Female);
+        }
     }
 
     private void updateNational(int cutoff) {
