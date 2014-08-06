@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <groupId>se.inera.statistics</groupId>
+        <artifactId>statistics</artifactId>
+        <version>1.1-SNAPSHOT</version>
+    </parent>
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>liquibase-runner-for-statistics</artifactId>
+    <name>Liquibase runner for statistics (standalone)</name>
+    <packaging>jar</packaging>
+
+    <properties>
+        <certificate.runner.version>1.0-SNAPSHOT</certificate.runner.version>
+        <checkstyle.basedir>${project.basedir}/../..</checkstyle.basedir>
+    </properties>
+
+    <dependencies>
+
+        <dependency>
+            <groupId>se.inera.certificate</groupId>
+            <artifactId>liquibase-runner</artifactId>
+            <version>${certificate.runner.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>se.inera.statistics</groupId>
+            <artifactId>statistics-service</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <mainClass>se.inera.certificate.liquibase.Runner</mainClass>
+                        </manifest>
+                    </archive>
+                    <descriptorRefs>
+                        <descriptorRef>jar-with-dependencies</descriptorRef>
+                    </descriptorRefs>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>make-assembly</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>

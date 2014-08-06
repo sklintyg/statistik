@@ -50,7 +50,7 @@
 
     <bean id="liquibase" class="liquibase.integration.spring.SpringLiquibase">
         <property name="dataSource" ref="dataSource"/>
-        <property name="changeLog" value="classpath:liquibase/db.changelog-master.xml"/>
+        <property name="changeLog" value="classpath:changelog/changelog.xml"/>
     </bean>
 
     <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">

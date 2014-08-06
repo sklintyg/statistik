@@ -24,7 +24,7 @@
         <property name="persistenceUnitName" value="IneraStatisticsLog"/>
         <property name="jpaVendorAdapter">
             <bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
-                <property name="database" value="H2"/>
+                <property name="database" value="MYSQL"/>
             </bean>
         </property>
         <property name="jpaProperties">
@@ -36,9 +36,9 @@
         </property>
     </bean>
 
-    <bean id="liquibase" class="liquibase.integration.spring.SpringLiquibase">
-        <property name="dataSource" ref="dataSource"/>
-        <property name="changeLog" value="classpath:liquibase/db.changelog-master.xml"/>
+    <bean id="liquibasecheck" class="se.inera.statistics.service.liquibase.DbChecker">
+      <constructor-arg ref="dataSource"/>
+      <constructor-arg value="changelog/changelog.xml"/>
     </bean>
 
     <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">

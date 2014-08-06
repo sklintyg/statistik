@@ -1,19 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
-    <changeSet id="9a_create_arbetsformaga_table" author="pierre.sandboge">
-        <createTable tableName="sjukskrivningsgrad">
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd"
+        logicalFilePath="liquibase/db.changelog-v12.0_replace_sjukfallperlan_table.xml">
+    <changeSet id="12a_replace_sjukfall_per_lan_row_table" author="roger.lindsjo">
+
+        <dropTable tableName="sjukfallperlan"/>
+
+        <createTable tableName="sjukfallperlan">
             <column name="period" type="varchar(20)">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="hsaid" type="varchar(60)">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="typ" type="varchar(60)">
+            <column name="lanid" type="varchar(60)">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="grad" type="varchar(20)">
+            <column name="periods" type="int">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="female" type="int"/>
