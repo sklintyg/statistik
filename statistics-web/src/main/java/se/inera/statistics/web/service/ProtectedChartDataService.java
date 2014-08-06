@@ -219,7 +219,6 @@ public class ProtectedChartDataService {
     public VerksamhetOverviewData getOverviewData(@Context HttpServletRequest request, @PathParam(VERKSAMHET_PATH_ID) String verksamhetId) {
         Range range = Range.quarter();
         Verksamhet verksamhet = getVerksamhet(request, verksamhetId);
-        System.err.println("Verksamhet " + verksamhet);
         VerksamhetOverviewResponse response = warehouse.getOverview(Verksamhet.decodeId(verksamhetId), range, verksamhet.getVardgivarId());
         return new VerksamhetOverviewConverter().convert(response, range);
     }
