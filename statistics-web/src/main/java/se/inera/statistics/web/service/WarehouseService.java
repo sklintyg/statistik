@@ -27,9 +27,6 @@ public class WarehouseService {
     @Autowired
     private Warehouse warehouse;
 
-    @Autowired
-    private VerksamhetOverview datasourceOverview;
-
     public VerksamhetOverviewResponse getOverview(String enhetId, Range range, String vardgivarId) {
         Aisle aisle = warehouse.get(vardgivarId);
         int numericalEnhetId = warehouse.getEnhetAndRemember(enhetId);
@@ -40,8 +37,6 @@ public class WarehouseService {
         Range previousRange = ReportUtil.getPreviousPeriod(range);
         Collection<Sjukfall> previousSjukfall = SjukfallUtil.active(previousRange, aisle, numericalEnhetId);
         OverviewKonsfordelning previousKonsfordelning = getOverviewKonsfordelning(previousRange, previousSjukfall);
-
-        VerksamhetOverviewResponse removeOldSource = datasourceOverview.getOverview(enhetId, range);
 
         int currentLongSjukfall = SjukfallUtil.getLong(currentSjukfall);
         int previousLongSjukfall = SjukfallUtil.getLong(previousSjukfall);
