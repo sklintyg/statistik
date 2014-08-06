@@ -1,10 +1,14 @@
 package se.inera.statistics.service.warehouse;
 
+import org.joda.time.LocalDate;
 import org.junit.Test;
+import se.inera.statistics.service.report.model.Range;
 
 import java.util.Collection;
+import java.util.Iterator;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class SjukfallUtilTest {
     private Aisle aisle = new Aisle();
@@ -72,5 +76,38 @@ public class SjukfallUtilTest {
         assertEquals(2, sjukfalls.iterator().next().getIntygCount());
         assertEquals(4020, sjukfalls.iterator().next().getStart());
         assertEquals(20, sjukfalls.iterator().next().getRealDays());
+    }
+
+    @Test
+    public void iterator() throws Exception {
+        Fact fact = new Fact(3, 380, 38002, 2, 1, 1, 4010, 0, 45, 0, 14, 16, 100, 10, 0, 32, 201010);
+        aisle.addLine(fact);
+        fact = new Fact(3, 380, 38002, 1, 1, 1, 4020, 0, 45, 0, 14, 16, 100, 10, 0, 32, 201010);
+        aisle.addLine(fact);
+        fact = new Fact(3, 380, 38002, 2, 1, 1, 4030, 0, 45, 0, 14, 16, 100, 10, 0, 32, 201010);
+        aisle.addLine(fact);
+
+        fact = new Fact(3, 380, 38002, 2, 1, 2, 4010, 0, 45, 0, 14, 16, 100, 10, 0, 32, 201010);
+        aisle.addLine(fact);
+        fact = new Fact(3, 380, 38002, 3, 1, 2, 4020, 0, 45, 0, 14, 16, 100, 10, 0, 32, 201010);
+        aisle.addLine(fact);
+        fact = new Fact(3, 380, 38002, 2, 1, 2, 4030, 0, 45, 0, 14, 16, 100, 10, 0, 32, 201010);
+        aisle.addLine(fact);
+
+        aisle.sort();
+
+        Range range = new Range(new LocalDate("2010-11-01"), new LocalDate("2010-11-01"));
+        Iterator<SjukfallUtil.SjukfallGroup> actives = SjukfallUtil.actives(range, aisle, 2);
+        assertTrue(actives.next().getSjukfall().isEmpty());
+
+        assertEquals(2, actives.next().getSjukfall().size());
+        assertEquals(2, actives.next().getSjukfall().size());
+        assertEquals(0, actives.next().getSjukfall().size());
+
+        range = new Range(new LocalDate("2010-11-01"), new LocalDate("2011-01-01"));
+        actives = SjukfallUtil.actives(range, aisle, 2);
+
+        assertEquals(2, actives.next().getSjukfall().size());
+        assertEquals(0, actives.next().getSjukfall().size());
     }
 }

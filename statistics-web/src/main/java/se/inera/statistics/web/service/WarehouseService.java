@@ -1,7 +1,6 @@
 package se.inera.statistics.web.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import se.inera.statistics.service.report.api.VerksamhetOverview;
 import se.inera.statistics.service.report.model.OverviewChartRow;
 import se.inera.statistics.service.report.model.OverviewChartRowExtended;
 import se.inera.statistics.service.report.model.OverviewKonsfordelning;
@@ -18,6 +17,7 @@ import se.inera.statistics.service.warehouse.query.SjukskrivningsgradQuery;
 import se.inera.statistics.service.warehouse.query.SjukskrivningslangdQuery;
 
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 
 public class WarehouseService {
@@ -31,22 +31,25 @@ public class WarehouseService {
         Aisle aisle = warehouse.get(vardgivarId);
         int numericalEnhetId = warehouse.getEnhetAndRemember(enhetId);
 
-        Collection<Sjukfall> currentSjukfall = SjukfallUtil.active(range, aisle, numericalEnhetId);
-        OverviewKonsfordelning currentKonsfordelning = getOverviewKonsfordelning(range, currentSjukfall);
-
         Range previousRange = ReportUtil.getPreviousPeriod(range);
-        Collection<Sjukfall> previousSjukfall = SjukfallUtil.active(previousRange, aisle, numericalEnhetId);
-        OverviewKonsfordelning previousKonsfordelning = getOverviewKonsfordelning(previousRange, previousSjukfall);
+        Iterator<SjukfallUtil.SjukfallGroup> groupIterator = SjukfallUtil.actives(previousRange, aisle, numericalEnhetId);
 
-        int currentLongSjukfall = SjukfallUtil.getLong(currentSjukfall);
-        int previousLongSjukfall = SjukfallUtil.getLong(previousSjukfall);
+        SjukfallUtil.SjukfallGroup previousSjukfall = groupIterator.next();
+        SjukfallUtil.SjukfallGroup currentSjukfall = groupIterator.next();
 
-        List<OverviewChartRowExtended> aldersgrupper = AldersgruppQuery.getOverviewAldersgrupper(currentSjukfall, previousSjukfall, DISPLAYED_AGE_GROUPS);
-        List<OverviewChartRowExtended> diagnosgrupper = new DiagnosisGroupsConverter().convert(DiagnosgruppQuery.getOverviewDiagnosgrupper(currentSjukfall, previousSjukfall, Integer.MAX_VALUE));
-        List<OverviewChartRowExtended> sjukskrivningsgrad = SjukskrivningsgradQuery.getOverviewSjukskrivningsgrad(currentSjukfall, previousSjukfall);
-        List<OverviewChartRow> sjukskrivningslangd = SjukskrivningslangdQuery.getOverviewSjukskrivningslangd(currentSjukfall, Integer.MAX_VALUE);
+        OverviewKonsfordelning previousKonsfordelning = getOverviewKonsfordelning(previousSjukfall.getRange(), previousSjukfall.getSjukfall());
+        OverviewKonsfordelning currentKonsfordelning = getOverviewKonsfordelning(currentSjukfall.getRange(), currentSjukfall.getSjukfall());
 
-        return new VerksamhetOverviewResponse(currentSjukfall.size(), currentKonsfordelning, previousKonsfordelning,
+
+        int currentLongSjukfall = SjukfallUtil.getLong(currentSjukfall.getSjukfall());
+        int previousLongSjukfall = SjukfallUtil.getLong(previousSjukfall.getSjukfall());
+
+        List<OverviewChartRowExtended> aldersgrupper = AldersgruppQuery.getOverviewAldersgrupper(currentSjukfall.getSjukfall(), previousSjukfall.getSjukfall(), DISPLAYED_AGE_GROUPS);
+        List<OverviewChartRowExtended> diagnosgrupper = new DiagnosisGroupsConverter().convert(DiagnosgruppQuery.getOverviewDiagnosgrupper(currentSjukfall.getSjukfall(), previousSjukfall.getSjukfall(), Integer.MAX_VALUE));
+        List<OverviewChartRowExtended> sjukskrivningsgrad = SjukskrivningsgradQuery.getOverviewSjukskrivningsgrad(currentSjukfall.getSjukfall(), previousSjukfall.getSjukfall());
+        List<OverviewChartRow> sjukskrivningslangd = SjukskrivningslangdQuery.getOverviewSjukskrivningslangd(currentSjukfall.getSjukfall(), Integer.MAX_VALUE);
+
+        return new VerksamhetOverviewResponse(currentSjukfall.getSjukfall().size(), currentKonsfordelning, previousKonsfordelning,
                 diagnosgrupper, aldersgrupper, sjukskrivningsgrad, sjukskrivningslangd,
                 currentLongSjukfall, currentLongSjukfall - previousLongSjukfall);
     }

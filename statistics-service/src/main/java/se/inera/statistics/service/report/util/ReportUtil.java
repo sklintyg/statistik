@@ -71,4 +71,8 @@ public final class ReportUtil {
     public static String toDiagramPeriod(LocalDate currentPeriod) {
         return OUTPUT_FORMATTER.print(currentPeriod);
     }
+
+    public static Range getNextPeriod(Range range) {
+        return new Range(range.getFrom().plusMonths(range.getMonths()), range.getTo().plusMonths(range.getMonths()));
+    }
 }

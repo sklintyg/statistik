@@ -20,11 +20,13 @@ package se.inera.statistics.service.warehouse;
 
 import org.joda.time.LocalDate;
 import se.inera.statistics.service.report.model.Range;
+import se.inera.statistics.service.report.util.ReportUtil;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 public final class SjukfallUtil {
@@ -47,7 +49,6 @@ public final class SjukfallUtil {
     private static Collection<Sjukfall> calculateSjukfall(Aisle aisle, StartFilter filter, int cutoff) {
         Collection<Sjukfall> sjukfalls = new ArrayList<>();
         Map<Integer, Sjukfall> active = new HashMap<>();
-        int currentDatum = 0;
         for (Fact line : aisle) {
             if (line.getStartdatum() >= cutoff) {
                 break;
@@ -77,10 +78,15 @@ public final class SjukfallUtil {
     public static Collection<Sjukfall> calculateSjukfall(Aisle aisle, int...enhetIds) {
         return calculateSjukfall(aisle, new UnitFilter(enhetIds), Integer.MAX_VALUE);
     }
+
     public static Collection<Sjukfall> active(Range range, Aisle aisle, int...enhetIds) {
         return active(calculateSjukfall(aisle, new UnitFilter(enhetIds), WidelineConverter.toDay(firstDayAfter(range))), range);
-
     }
+
+    public static Iterator<SjukfallGroup> actives(Range range, Aisle aisle, int...enhetIds) {
+        return new SjukfallGroupIterator(range, aisle, new UnitFilter(enhetIds));
+    }
+
     public static Collection<Sjukfall> active(Collection<Sjukfall> all, Range range) {
         int start = WidelineConverter.toDay(range.getFrom());
         int end = WidelineConverter.toDay(firstDayAfter(range));
@@ -121,6 +127,103 @@ public final class SjukfallUtil {
         @Override
         public boolean accept(Fact fact) {
             return Arrays.binarySearch(enhetIds, fact.getEnhet()) >= 0;
+        }
+    }
+
+    public static class SjukfallGroupIterator implements Iterator<SjukfallGroup> {
+
+        private Range range;
+        private final StartFilter filter;
+        private final Map<Integer, Sjukfall> active = new HashMap<>();
+        private final Collection<Sjukfall> sjukfalls = new ArrayList<>();
+        private final Iterator<Fact> iterator;
+        private Fact pendingLine;
+
+        public SjukfallGroupIterator(Range range, Aisle aisle, StartFilter filter) {
+            this.range = range;
+            this.filter = filter;
+            iterator = aisle.iterator();
+        }
+
+        @Override
+        public boolean hasNext() {
+            return true;
+        }
+
+        @Override
+        public SjukfallGroup next() {
+            int cutoff = WidelineConverter.toDay(firstDayAfter(range));
+            if (pendingLine != null && pendingLine.getStartdatum() < cutoff) {
+                process(pendingLine);
+                pendingLine = null;
+            }
+            if (pendingLine == null) {
+                while (iterator.hasNext()) {
+                    Fact line = iterator.next();
+                    if (line.getStartdatum() >= cutoff) {
+                        pendingLine = line;
+                        break;
+                    }
+                    process(line);
+                }
+            }
+            Collection result = new ArrayList<Sjukfall>();
+            int firstday = WidelineConverter.toDay(range.getFrom().minusDays(1));
+            for (Sjukfall sjukfall : sjukfalls) {
+                if (sjukfall.getEnd() > firstday) {
+                    result.add(sjukfall);
+                }
+            }
+
+            for (Sjukfall sjukfall : active.values()) {
+                if (sjukfall.getEnd() > firstday) {
+                    result.add(sjukfall);
+                }
+            }
+            SjukfallGroup sjukfallGroup = new SjukfallGroup(range, result);
+            range = ReportUtil.getNextPeriod(range);
+            return sjukfallGroup;
+        }
+
+        private void process(Fact line) {
+            int key = line.getPatient();
+            Sjukfall sjukfall = active.get(key);
+
+            if (sjukfall == null) {
+                if (filter.accept(line)) {
+                    sjukfall = new Sjukfall(line);
+                    active.put(key, sjukfall);
+                }
+            } else {
+                Sjukfall nextSjukfall = sjukfall.join(line);
+                if (nextSjukfall != sjukfall) {
+                    sjukfalls.add(sjukfall);
+                    active.put(key, nextSjukfall);
+                }
+            }
+        }
+
+        @Override
+        public void remove() {
+
+        }
+    }
+
+    public static class SjukfallGroup {
+        private final Range range;
+        private final Collection sjukfall;
+
+        public SjukfallGroup(Range range, Collection sjukfall) {
+            this.range = range;
+            this.sjukfall = sjukfall;
+        }
+
+        public Range getRange() {
+            return range;
+        }
+
+        public Collection getSjukfall() {
+            return sjukfall;
         }
     }
 }
