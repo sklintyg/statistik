@@ -5,6 +5,8 @@ import se.inera.statistics.service.report.model.OverviewChartRow;
 import se.inera.statistics.service.report.model.OverviewChartRowExtended;
 import se.inera.statistics.service.report.model.OverviewKonsfordelning;
 import se.inera.statistics.service.report.model.Range;
+import se.inera.statistics.service.report.model.SimpleKonDataRow;
+import se.inera.statistics.service.report.model.SimpleKonResponse;
 import se.inera.statistics.service.report.model.VerksamhetOverviewResponse;
 import se.inera.statistics.service.report.util.ReportUtil;
 import se.inera.statistics.service.warehouse.Aisle;
@@ -16,6 +18,7 @@ import se.inera.statistics.service.warehouse.query.DiagnosgruppQuery;
 import se.inera.statistics.service.warehouse.query.SjukskrivningsgradQuery;
 import se.inera.statistics.service.warehouse.query.SjukskrivningslangdQuery;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
@@ -69,5 +72,27 @@ public class WarehouseService {
             }
         }
         return count;
+    }
+
+    public SimpleKonResponse<SimpleKonDataRow> getCasesPerMonth(String enhetId, Range range, String vardgivarId) {
+        Range start = new Range(range.getFrom(), range.getFrom());
+        Aisle aisle = warehouse.get(vardgivarId);
+        int numericalEnhetId = warehouse.getEnhetAndRemember(enhetId);
+
+        ArrayList<SimpleKonDataRow> result = new ArrayList<SimpleKonDataRow>();
+        Iterator<SjukfallUtil.SjukfallGroup> actives = SjukfallUtil.actives(start, aisle, numericalEnhetId);
+        while (actives.hasNext()) {
+            SjukfallUtil.SjukfallGroup sjukfallGroup = actives.next();
+            if (sjukfallGroup.getRange().getFrom().isAfter(range.getTo())) {
+                break;
+            }
+            int male = countMale(sjukfallGroup.getSjukfall());
+            int female = sjukfallGroup.getSjukfall().size() - male;
+            String displayDate = ReportUtil.toDiagramPeriod(sjukfallGroup.getRange().getFrom());
+
+            result.add(new SimpleKonDataRow(displayDate, female, male));
+        }
+
+        return new SimpleKonResponse<SimpleKonDataRow>(result, range.getMonths());
     }
 }

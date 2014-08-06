@@ -106,7 +106,8 @@ public class ProtectedChartDataService {
     public SimpleDetailsData getNumberOfCasesPerMonth(@Context HttpServletRequest request, @PathParam(VERKSAMHET_PATH_ID) String verksamhetId) {
         LOG.info("Calling getNumberOfCasesPerMonth with verksamhetId: " + verksamhetId);
         final Range range = new Range(18);
-        SimpleKonResponse<SimpleKonDataRow> casesPerMonth = datasourceSjukfallPerManad.getCasesPerMonth(Verksamhet.decodeId(verksamhetId), range);
+        Verksamhet verksamhet = getVerksamhet(request, verksamhetId);
+        SimpleKonResponse<SimpleKonDataRow> casesPerMonth = warehouse.getCasesPerMonth(Verksamhet.decodeId(verksamhetId), range, verksamhet.getVardgivarId());
         return new SimpleDualSexConverter().convert(casesPerMonth, range);
     }
 
