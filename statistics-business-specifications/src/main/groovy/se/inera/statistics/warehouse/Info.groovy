@@ -104,7 +104,7 @@ class Info {
     }
 
     private Iterator<Fact> sortByDate(List<Fact> lineList) {
-        lineList.sort(new Comparator<Fact>() {
+        lineList.sort(true, new Comparator<Fact>() {
             int compare(Fact o1, Fact o2) {
                 return o1.startdatum - o2.startdatum
             }
