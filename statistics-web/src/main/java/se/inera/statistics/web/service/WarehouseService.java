@@ -39,7 +39,7 @@ public class WarehouseService {
         int numericalEnhetId = warehouse.getEnhetAndRemember(enhetId);
 
         Range previousRange = ReportUtil.getPreviousPeriod(range);
-        Iterator<SjukfallUtil.SjukfallGroup> groupIterator = SjukfallUtil.sjukfallGrupper(previousRange.getFrom(), 2, previousRange.getMonths(), aisle, numericalEnhetId);
+        Iterator<SjukfallUtil.SjukfallGroup> groupIterator = SjukfallUtil.sjukfallGrupper(previousRange.getFrom(), 2, previousRange.getMonths(), aisle, numericalEnhetId).iterator();
 
         SjukfallUtil.SjukfallGroup previousSjukfall = groupIterator.next();
         SjukfallUtil.SjukfallGroup currentSjukfall = groupIterator.next();
