@@ -2,12 +2,12 @@ package se.inera.statistics.service.warehouse;
 
 import org.joda.time.LocalDate;
 import org.junit.Test;
-import se.inera.statistics.service.report.model.Range;
 
 import java.util.Collection;
 import java.util.Iterator;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 public class SjukfallUtilTest {
@@ -96,18 +96,17 @@ public class SjukfallUtilTest {
 
         aisle.sort();
 
-        Range range = new Range(new LocalDate("2010-11-01"), new LocalDate("2010-11-01"));
-        Iterator<SjukfallUtil.SjukfallGroup> actives = SjukfallUtil.actives(range, aisle, 2);
+        Iterator<SjukfallUtil.SjukfallGroup> actives = SjukfallUtil.sjukfallGrupper(new LocalDate("2010-11-01"), 3, 1, aisle, 2);
         assertTrue(actives.next().getSjukfall().isEmpty());
 
         assertEquals(2, actives.next().getSjukfall().size());
         assertEquals(2, actives.next().getSjukfall().size());
-        assertEquals(0, actives.next().getSjukfall().size());
+        assertFalse(actives.hasNext());
 
-        range = new Range(new LocalDate("2010-11-01"), new LocalDate("2011-01-01"));
-        actives = SjukfallUtil.actives(range, aisle, 2);
+        actives = SjukfallUtil.sjukfallGrupper(new LocalDate("2010-11-01"), 2, 12, aisle, 2);
 
         assertEquals(2, actives.next().getSjukfall().size());
         assertEquals(0, actives.next().getSjukfall().size());
+        assertFalse(actives.hasNext());
     }
 }

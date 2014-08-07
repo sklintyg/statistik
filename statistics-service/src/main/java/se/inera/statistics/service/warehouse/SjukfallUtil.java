@@ -20,7 +20,6 @@ package se.inera.statistics.service.warehouse;
 
 import org.joda.time.LocalDate;
 import se.inera.statistics.service.report.model.Range;
-import se.inera.statistics.service.report.util.ReportUtil;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -76,15 +75,20 @@ public final class SjukfallUtil {
     }
 
     public static Collection<Sjukfall> calculateSjukfall(Aisle aisle, int...enhetIds) {
-        return calculateSjukfall(aisle, new UnitFilter(enhetIds), Integer.MAX_VALUE);
+        return calculateSjukfall(aisle, new EnhetFilter(enhetIds), Integer.MAX_VALUE);
     }
 
     public static Collection<Sjukfall> active(Range range, Aisle aisle, int...enhetIds) {
-        return active(calculateSjukfall(aisle, new UnitFilter(enhetIds), WidelineConverter.toDay(firstDayAfter(range))), range);
+        return active(calculateSjukfall(aisle, new EnhetFilter(enhetIds), WidelineConverter.toDay(firstDayAfter(range))), range);
     }
 
-    public static Iterator<SjukfallGroup> actives(Range range, Aisle aisle, int...enhetIds) {
-        return new SjukfallGroupIterator(range, aisle, new UnitFilter(enhetIds));
+    public static Iterable<SjukfallGroup> sjukfallGrupper(final LocalDate from, final int periods, final int periodSize, final Aisle aisle, final int... enhetIds) {
+        return new Iterable<SjukfallGroup>() {
+            @Override
+            public Iterator<SjukfallGroup> iterator() {
+                return new SjukfallGroupIterator(from, periods, periodSize, aisle, new EnhetFilter(enhetIds));
+            }
+        };
     }
 
     public static Collection<Sjukfall> active(Collection<Sjukfall> all, Range range) {
@@ -117,10 +121,10 @@ public final class SjukfallUtil {
         boolean accept(Fact fact);
     }
 
-    private static class UnitFilter implements StartFilter {
+    private static class EnhetFilter implements StartFilter {
         private final int[] enhetIds;
 
-        public UnitFilter(int...enhetIds) {
+        public EnhetFilter(int... enhetIds) {
             this.enhetIds = enhetIds;
         }
 
@@ -132,27 +136,34 @@ public final class SjukfallUtil {
 
     public static class SjukfallGroupIterator implements Iterator<SjukfallGroup> {
 
-        private Range range;
+        private final LocalDate current;
+        private final LocalDate from;
+        private int period = 0;
+        private final int periods;
+        private final int periodSize;
         private final StartFilter filter;
         private final Map<Integer, Sjukfall> active = new HashMap<>();
         private final Collection<Sjukfall> sjukfalls = new ArrayList<>();
         private final Iterator<Fact> iterator;
         private Fact pendingLine;
 
-        public SjukfallGroupIterator(Range range, Aisle aisle, StartFilter filter) {
-            this.range = range;
+        public SjukfallGroupIterator(LocalDate from, int periods, int periodSize, Aisle aisle, StartFilter filter) {
+            this.from = from;
+            this.current = from;
+            this.periods = periods;
+            this.periodSize = periodSize;
             this.filter = filter;
             iterator = aisle.iterator();
         }
 
         @Override
         public boolean hasNext() {
-            return true;
+            return period < periods;
         }
 
         @Override
         public SjukfallGroup next() {
-            int cutoff = WidelineConverter.toDay(firstDayAfter(range));
+            int cutoff = WidelineConverter.toDay(from.plusMonths((period + 1) * periodSize));
             if (pendingLine != null && pendingLine.getStartdatum() < cutoff) {
                 process(pendingLine);
                 pendingLine = null;
@@ -168,20 +179,21 @@ public final class SjukfallUtil {
                 }
             }
             Collection result = new ArrayList<Sjukfall>();
-            int firstday = WidelineConverter.toDay(range.getFrom().minusDays(1));
+            int firstday = WidelineConverter.toDay(from.plusMonths(period * periodSize));
             for (Sjukfall sjukfall : sjukfalls) {
-                if (sjukfall.getEnd() > firstday) {
+                if (sjukfall.getEnd() >= firstday) {
                     result.add(sjukfall);
                 }
             }
 
             for (Sjukfall sjukfall : active.values()) {
-                if (sjukfall.getEnd() > firstday) {
+                if (sjukfall.getEnd() >= firstday) {
                     result.add(sjukfall);
                 }
             }
+            Range range = new Range(from.plusMonths(period * periodSize), from.plusMonths(period * periodSize + periodSize - 1));
             SjukfallGroup sjukfallGroup = new SjukfallGroup(range, result);
-            range = ReportUtil.getNextPeriod(range);
+            period++;
             return sjukfallGroup;
         }
 

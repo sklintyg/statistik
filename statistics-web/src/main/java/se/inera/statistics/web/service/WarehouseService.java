@@ -8,6 +8,7 @@ import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.SimpleKonDataRow;
 import se.inera.statistics.service.report.model.SimpleKonResponse;
 import se.inera.statistics.service.report.model.VerksamhetOverviewResponse;
+import se.inera.statistics.service.report.util.Icd10;
 import se.inera.statistics.service.report.util.ReportUtil;
 import se.inera.statistics.service.warehouse.Aisle;
 import se.inera.statistics.service.warehouse.query.AldersgruppQuery;
@@ -30,12 +31,15 @@ public class WarehouseService {
     @Autowired
     private Warehouse warehouse;
 
+    @Autowired
+    private Icd10 icd10;
+
     public VerksamhetOverviewResponse getOverview(String enhetId, Range range, String vardgivarId) {
         Aisle aisle = warehouse.get(vardgivarId);
         int numericalEnhetId = warehouse.getEnhetAndRemember(enhetId);
 
         Range previousRange = ReportUtil.getPreviousPeriod(range);
-        Iterator<SjukfallUtil.SjukfallGroup> groupIterator = SjukfallUtil.actives(previousRange, aisle, numericalEnhetId);
+        Iterator<SjukfallUtil.SjukfallGroup> groupIterator = SjukfallUtil.sjukfallGrupper(previousRange.getFrom(), 2, previousRange.getMonths(), aisle, numericalEnhetId);
 
         SjukfallUtil.SjukfallGroup previousSjukfall = groupIterator.next();
         SjukfallUtil.SjukfallGroup currentSjukfall = groupIterator.next();
@@ -75,24 +79,18 @@ public class WarehouseService {
     }
 
     public SimpleKonResponse<SimpleKonDataRow> getCasesPerMonth(String enhetId, Range range, String vardgivarId) {
-        Range start = new Range(range.getFrom(), range.getFrom());
         Aisle aisle = warehouse.get(vardgivarId);
         int numericalEnhetId = warehouse.getEnhetAndRemember(enhetId);
 
         ArrayList<SimpleKonDataRow> result = new ArrayList<SimpleKonDataRow>();
-        Iterator<SjukfallUtil.SjukfallGroup> actives = SjukfallUtil.actives(start, aisle, numericalEnhetId);
-        while (actives.hasNext()) {
-            SjukfallUtil.SjukfallGroup sjukfallGroup = actives.next();
-            if (sjukfallGroup.getRange().getFrom().isAfter(range.getTo())) {
-                break;
-            }
+        for (SjukfallUtil.SjukfallGroup sjukfallGroup: SjukfallUtil.sjukfallGrupper(range.getFrom(), range.getMonths(), 1, aisle, numericalEnhetId)) {
             int male = countMale(sjukfallGroup.getSjukfall());
             int female = sjukfallGroup.getSjukfall().size() - male;
             String displayDate = ReportUtil.toDiagramPeriod(sjukfallGroup.getRange().getFrom());
-
             result.add(new SimpleKonDataRow(displayDate, female, male));
         }
 
-        return new SimpleKonResponse<SimpleKonDataRow>(result, range.getMonths());
+        return new SimpleKonResponse<>(result, range.getMonths());
     }
+
 }
