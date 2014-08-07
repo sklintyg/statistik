@@ -82,7 +82,7 @@ public class WarehouseService {
         Aisle aisle = warehouse.get(vardgivarId);
         int numericalEnhetId = warehouse.getEnhetAndRemember(enhetId);
 
-        ArrayList<SimpleKonDataRow> result = new ArrayList<SimpleKonDataRow>();
+        ArrayList<SimpleKonDataRow> result = new ArrayList<>();
         for (SjukfallUtil.SjukfallGroup sjukfallGroup: SjukfallUtil.sjukfallGrupper(range.getFrom(), range.getMonths(), 1, aisle, numericalEnhetId)) {
             int male = countMale(sjukfallGroup.getSjukfall());
             int female = sjukfallGroup.getSjukfall().size() - male;
