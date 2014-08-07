@@ -104,11 +104,7 @@ class Info {
     }
 
     private Iterator<Fact> sortByDate(List<Fact> lineList) {
-        lineList.sort(true, new Comparator<Fact>() {
-            int compare(Fact o1, Fact o2) {
-                return o1.startdatum - o2.startdatum
-            }
-        }).iterator()
+        lineList.sort({ o1, o2 -> o1.startdatum - o2.startdatum}).iterator()
     }
 
     private List extractPersonLines(int person) {
