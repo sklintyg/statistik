@@ -145,7 +145,8 @@ public class ProtectedChartDataService {
     public DualSexStatisticsData getDiagnosisGroupStatistics(@Context HttpServletRequest request, @PathParam(VERKSAMHET_PATH_ID) String verksamhetId) {
         LOG.info("Calling getDiagnoskapitelstatistik with verksamhetId: " + verksamhetId);
         final Range range = new Range(18);
-        DiagnosgruppResponse diagnosisGroups = datasourceDiagnosgrupp.getDiagnosisGroups(verksamhetId, range);
+        Verksamhet verksamhet = getVerksamhet(request, verksamhetId);
+        DiagnosgruppResponse diagnosisGroups = warehouse.getDiagnosgrupperPerMonth(Verksamhet.decodeId(verksamhetId), range, verksamhet.getVardgivarId());
         return new DiagnosisGroupsConverter().convert(diagnosisGroups, range);
     }
 

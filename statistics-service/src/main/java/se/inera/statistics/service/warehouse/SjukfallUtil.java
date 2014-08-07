@@ -234,7 +234,7 @@ public final class SjukfallUtil {
             return range;
         }
 
-        public Collection getSjukfall() {
+        public Collection<Sjukfall> getSjukfall() {
             return sjukfall;
         }
     }

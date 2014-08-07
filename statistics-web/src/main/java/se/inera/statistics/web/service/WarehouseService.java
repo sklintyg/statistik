@@ -1,6 +1,10 @@
 package se.inera.statistics.web.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import se.inera.statistics.service.report.model.Avsnitt;
+import se.inera.statistics.service.report.model.DiagnosgruppResponse;
+import se.inera.statistics.service.report.model.KonDataRow;
+import se.inera.statistics.service.report.model.KonField;
 import se.inera.statistics.service.report.model.OverviewChartRow;
 import se.inera.statistics.service.report.model.OverviewChartRowExtended;
 import se.inera.statistics.service.report.model.OverviewKonsfordelning;
@@ -93,4 +97,32 @@ public class WarehouseService {
         return new SimpleKonResponse<>(result, range.getMonths());
     }
 
+    public DiagnosgruppResponse getDiagnosgrupperPerMonth(String enhetId, Range range, String vardgivarId) {
+        Aisle aisle = warehouse.get(vardgivarId);
+        int numericalEnhetId = warehouse.getEnhetAndRemember(enhetId);
+        List<Icd10.Kapitel> kapitel = icd10.getKapitel();
+
+        List<KonDataRow> rows = new ArrayList<>();
+        for (SjukfallUtil.SjukfallGroup sjukfallGroup: SjukfallUtil.sjukfallGrupper(range.getFrom(), range.getMonths(), 1, aisle, numericalEnhetId)) {
+            int[] female = new int[2700];
+            int[] male = new int[2700];
+            for (Sjukfall sjukfall: sjukfallGroup.getSjukfall()) {
+                if (sjukfall.getKon() == 0) {
+                    female[sjukfall.getDiagnoskapitel()]++;
+                } else {
+                    male[sjukfall.getDiagnoskapitel()]++;
+                }
+            }
+            List<KonField> list = new ArrayList<>(kapitel.size());
+            for (Icd10.Kapitel k: kapitel) {
+                list.add(new KonField(female[k.toInt()], male[k.toInt()]));
+            }
+            rows.add(new KonDataRow(ReportUtil.toPeriod(sjukfallGroup.getRange().getFrom()), list));
+        }
+        List<Avsnitt> avsnitt = new ArrayList<>(kapitel.size());
+        for (Icd10.Kapitel k: kapitel) {
+            avsnitt.add(new Avsnitt(k.getId(), k.getName()));
+        }
+        return new DiagnosgruppResponse(avsnitt, rows);
+    }
 }
