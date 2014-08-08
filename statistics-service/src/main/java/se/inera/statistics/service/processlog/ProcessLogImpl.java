@@ -25,11 +25,14 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 @Component
 public class ProcessLogImpl implements ProcessLog {
+    private static final Logger LOG = LoggerFactory.getLogger(ProcessLogImpl.class);
 
     private static final String PROCESSED_HSA = "PROCESSED_HSA";
 
@@ -47,6 +50,7 @@ public class ProcessLogImpl implements ProcessLog {
             manager.persist(event);
             return event.getId();
         } else {
+            LOG.info("Intyg already exists, ignoring: " + correlationId);
             return result.get(0).getId();
         }
     }
@@ -62,8 +66,7 @@ public class ProcessLogImpl implements ProcessLog {
         TypedQuery<IntygEvent> allQuery = manager.createQuery("SELECT e from IntygEvent e WHERE e.id > :lastId ORDER BY e.id ASC", IntygEvent.class);
         allQuery.setParameter("lastId", getLastId());
         allQuery.setMaxResults(max);
-        List<IntygEvent> result = allQuery.getResultList();
-        return result;
+        return allQuery.getResultList();
     }
 
     private long getLastId() {
