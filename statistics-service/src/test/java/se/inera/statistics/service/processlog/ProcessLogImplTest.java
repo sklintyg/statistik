@@ -36,8 +36,8 @@ public class ProcessLogImplTest extends ProcessLogImpl {
 
     @Test
     public void withTwoPendingEventPollReturnsFirstEvent() {
-        store(EventType.CREATED, "1", "corr", 123L);
-        store(EventType.CREATED, "2", "corr", 123L);
+        store(EventType.CREATED, "1", "corr1", 123L);
+        store(EventType.CREATED, "2", "corr2", 123L);
 
         List<IntygEvent> pending = getPending(2);
         assertEquals(2, pending.size());
@@ -45,9 +45,22 @@ public class ProcessLogImplTest extends ProcessLogImpl {
     }
 
     @Test
-    public void withTwoPendingEventEachEventCanBeGottenInOrderAfterConfirm() {
+    public void withTwoPendingEventsForSameIntygOnlyStoreFirst() {
         store(EventType.CREATED, "1", "corr", 123L);
         store(EventType.CREATED, "2", "corr", 123L);
+
+        List<IntygEvent> pending = getPending(1);
+        assertEquals("1", pending.get(0).getData());
+        confirm(pending.get(0).getId());
+
+        pending = getPending(2);
+        assertTrue(pending.isEmpty());
+    }
+
+    @Test
+    public void withTwoPendingEventEachEventCanBeGottenInOrderAfterConfirm() {
+        store(EventType.CREATED, "1", "corr1", 123L);
+        store(EventType.CREATED, "2", "corr2", 123L);
 
         List<IntygEvent> pending = getPending(1);
         assertEquals("1", pending.get(0).getData());

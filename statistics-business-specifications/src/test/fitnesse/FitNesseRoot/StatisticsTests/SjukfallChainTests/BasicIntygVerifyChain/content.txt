@@ -56,7 +56,7 @@
 1 more intyg, continuing previous sjukfall with 6 day gap (i.e. should add to n:o of sjukfall)
 
 |script|se.inera.statistics.queue.IntygSender|
-|send intyg;|19790407-9295|G01||||||||||2013-02-24|2013-02-25|100%|ENVE|EnVG|3|
+|send intyg;|19790407-9295|G01||||||||||2013-02-24|2013-02-25|100%|ENVE|EnVG|4|
 
 |script|se.inera.statistics.queue.IntygSender|
 |awaitResult|
@@ -71,7 +71,7 @@
 1 more intyg, continuing previous sjukfall with no gap, crossing month boundary (i.e. should add to n:o of sjukfall only for the new month)
 
 |script|se.inera.statistics.queue.IntygSender|
-|send intyg;|19790407-9295|G01||||||||||2013-02-26|2013-03-08|100%|ENVE|EnVG|4|
+|send intyg;|19790407-9295|G01||||||||||2013-02-26|2013-03-08|100%|ENVE|EnVG|5|
 
 |script|se.inera.statistics.queue.IntygSender|
 |awaitResult|
@@ -87,7 +87,7 @@
 1 more intyg, continuing previous sjukfall with 4 day gap (i.e. should not add to n:o of sjukfall for the new month)
 
 |script|se.inera.statistics.queue.IntygSender|
-|send intyg;|19790407-9295|G01||||||||||2013-03-09|2013-03-18|100%|ENVE|EnVG|5|
+|send intyg;|19790407-9295|G01||||||||||2013-03-09|2013-03-18|100%|ENVE|EnVG|6|
 
 |script|se.inera.statistics.queue.IntygSender|
 |awaitResult|
@@ -103,7 +103,7 @@
 1 more intyg, continuing previous sjukfall with no gap (i.e. should not add to n:o of sjukfall for the new month)
 
 |script|se.inera.statistics.queue.IntygSender|
-|send intyg;|19790407-9295|G01||||||||||2013-03-19|2013-03-20|100%|ENVE|EnVG|5|
+|send intyg;|19790407-9295|G01||||||||||2013-03-19|2013-03-20|100%|ENVE|EnVG|7|
 
 |script|se.inera.statistics.queue.IntygSender|
 |awaitResult|

@@ -19,7 +19,7 @@ Person 1, 1 intyg, 35 år gammal dag 1 till 35 år sista dagen för intyget föl
 |31-35|0|1|
 
 |script|se.inera.statistics.queue.IntygSender|
-|send intyg;|19780101-929x|G01||||||||||2014-02-05|2014-02-06|100%|ENVE|EnVG|1|
+|send intyg;|19780101-929x|G01||||||||||2014-02-05|2014-02-06|100%|ENVE|EnVG|2|
 
 |script|se.inera.statistics.queue.IntygSender|
 |sleep|500|
@@ -36,7 +36,7 @@ Person 1, 1 intyg, 35 år gammal dag 1 till 35 år sista dagen för intyget föl
 Person 2, 1 intyg, 35 år gammal dag 1 till 35 år sista dagen för intyget följt av 1 intyg i samma sjukfall, 35 år gammal dag 1 till 36 år sista dagen för intyget
 
 |script|se.inera.statistics.queue.IntygSender|
-|send intyg;|19780101-929y|G01||||||||||2013-02-05|2013-02-06|100%|TVAVE|EnVG|1|
+|send intyg;|19780101-929y|G01||||||||||2013-02-05|2013-02-06|100%|TVAVE|EnVG|3|
 
 |script|se.inera.statistics.queue.IntygSender|
 |sleep|500|
@@ -48,7 +48,7 @@ Person 2, 1 intyg, 35 år gammal dag 1 till 35 år sista dagen för intyget föl
 |31-35|0|1|
 
 |script|se.inera.statistics.queue.IntygSender|
-|send intyg;|19780101-929y|G01||||||||||2013-02-07|2014-02-06|100%|TVAVE|EnVG|1|
+|send intyg;|19780101-929y|G01||||||||||2013-02-07|2014-02-06|100%|TVAVE|EnVG|4|
 
 |script|se.inera.statistics.queue.IntygSender|
 |sleep|500|
