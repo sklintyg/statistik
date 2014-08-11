@@ -393,10 +393,11 @@ public class ProtectedChartDataService {
     @PostAuthorize(value = "@protectedChartDataService.helper.userAccess(#request, #verksamhetId)")
     public SickLeaveLengthData getSickLeaveLengthCurrentData(@Context HttpServletRequest request, @PathParam(VERKSAMHET_PATH_ID) String verksamhetId) {
         LOG.info("Calling getSickLeaveLengthCurrentData with verksamhetId: " + verksamhetId);
-        SjukfallslangdResponse sickLeaveLength = datasourceSickLeaveLength.getCurrentStatistics(Verksamhet.decodeId(verksamhetId));
+        Verksamhet verksamhet = getVerksamhet(request, verksamhetId);
         LocalDate start = new LocalDate().withDayOfMonth(1);
-        LocalDate end = new LocalDate().withDayOfMonth(1).plusMonths(1).minusDays(1);
+        LocalDate end = start.plusMonths(1).minusDays(1);
         final Range range = new Range(start, end);
+        SjukfallslangdResponse sickLeaveLength = warehouse.getSjukskrivningslangd(Verksamhet.decodeId(verksamhetId), range, verksamhet.getVardgivarId());
         return new SickLeaveLengthConverter().convert(sickLeaveLength, range);
     }
 
