@@ -30,9 +30,6 @@ public class WarehouseManager {
 
     public int getAisleSize(String vardgivareId) {
         Aisle aisle = warehouse.get(vardgivareId);
-        if (aisle == null) {
-            return 0;
-        }
         return aisle.getSize();
     }
 
