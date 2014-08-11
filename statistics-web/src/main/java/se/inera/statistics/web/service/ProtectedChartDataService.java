@@ -354,9 +354,11 @@ public class ProtectedChartDataService {
     public SickLeaveLengthData getSickLeaveLengthData(@Context HttpServletRequest request, @PathParam(VERKSAMHET_PATH_ID) String verksamhetId) {
         LOG.info("Calling getSickLeaveLengthData with verksamhetId: " + verksamhetId);
         final RollingLength year = RollingLength.YEAR;
-        SjukfallslangdResponse sickLeaveLength = datasourceSickLeaveLength.getHistoricalStatistics(Verksamhet.decodeId(verksamhetId), Helper.previousMonth(),
-                year);
-        return new SickLeaveLengthConverter().convert(sickLeaveLength, new Range(year.getPeriods()));
+        Range range = new Range(year.getPeriods());
+        Verksamhet verksamhet = getVerksamhet(request, verksamhetId);
+
+        SjukfallslangdResponse sickLeaveLength = warehouse.getSjukskrivningslangd(Verksamhet.decodeId(verksamhetId), range, verksamhet.getVardgivarId());
+        return new SickLeaveLengthConverter().convert(sickLeaveLength, range);
     }
 
     /**

@@ -65,20 +65,11 @@ public final class SjukskrivningslangdQuery {
     }
 
     public static Map<Ranges.Range, Counter<Ranges.Range>> count(Collection<Sjukfall> sjukfalls) {
-        Map<Ranges.Range, Counter<Ranges.Range>> counters = createCounters();
+        Map<Ranges.Range, Counter<Ranges.Range>> counters = Counter.mapFor(SjukfallslangdUtil.RANGES);
         for (Sjukfall sjukfall : sjukfalls) {
             Counter counter = counters.get(ranges.rangeFor(sjukfall.getRealDays()));
-            counter.increase();
+            counter.increase(sjukfall);
         }
         return counters;
     }
-
-    private static Map<Ranges.Range, Counter<Ranges.Range>> createCounters() {
-        Map<Ranges.Range, Counter<Ranges.Range>> counters = new HashMap();
-        for (Ranges.Range range : ranges) {
-            counters.put(range, new Counter(range));
-        }
-        return counters;
-    }
-
 }

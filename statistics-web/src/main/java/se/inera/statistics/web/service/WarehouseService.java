@@ -11,15 +11,20 @@ import se.inera.statistics.service.report.model.OverviewKonsfordelning;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.SimpleKonDataRow;
 import se.inera.statistics.service.report.model.SimpleKonResponse;
+import se.inera.statistics.service.report.model.SjukfallslangdResponse;
 import se.inera.statistics.service.report.model.SjukskrivningsgradResponse;
 import se.inera.statistics.service.report.model.VerksamhetOverviewResponse;
+import se.inera.statistics.service.report.model.db.SjukfallslangdRow;
 import se.inera.statistics.service.report.util.Icd10;
+import se.inera.statistics.service.report.util.Ranges;
 import se.inera.statistics.service.report.util.ReportUtil;
+import se.inera.statistics.service.report.util.SjukfallslangdUtil;
 import se.inera.statistics.service.warehouse.Aisle;
 import se.inera.statistics.service.warehouse.query.AldersgruppQuery;
 import se.inera.statistics.service.warehouse.Sjukfall;
 import se.inera.statistics.service.warehouse.SjukfallUtil;
 import se.inera.statistics.service.warehouse.Warehouse;
+import se.inera.statistics.service.warehouse.query.Counter;
 import se.inera.statistics.service.warehouse.query.DiagnosgruppQuery;
 import se.inera.statistics.service.warehouse.query.SjukskrivningsgradQuery;
 import se.inera.statistics.service.warehouse.query.SjukskrivningslangdQuery;
@@ -30,6 +35,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 public class WarehouseService {
 
@@ -155,5 +161,20 @@ public class WarehouseService {
         }
 
         return new SjukskrivningsgradResponse(GRAD_LABEL, rows);
+    }
+
+    public SjukfallslangdResponse getSjukskrivningslangd(String enhetId, Range range, String vardgivarId) {
+        Aisle aisle = warehouse.get(vardgivarId);
+        int numericalEnhetId = warehouse.getEnhetAndRemember(enhetId);
+
+        List<SjukfallslangdRow> rows = new ArrayList<>();
+        for (SjukfallUtil.SjukfallGroup sjukfallGroup: SjukfallUtil.sjukfallGrupper(range.getFrom(), 1, range.getMonths(), aisle, numericalEnhetId)) {
+            Map<Ranges.Range, Counter<Ranges.Range>> counterMap = SjukskrivningslangdQuery.count(sjukfallGroup.getSjukfall());
+            for (Ranges.Range i : SjukfallslangdUtil.RANGES) {
+                Counter<Ranges.Range> counter = counterMap.get(i);
+                rows.add(new SjukfallslangdRow("", i.getName(), range.getMonths(), counter.getCountFemale(), counter.getCountMale()));
+            }
+        }
+        return new SjukfallslangdResponse(rows, range.getMonths());
     }
 }

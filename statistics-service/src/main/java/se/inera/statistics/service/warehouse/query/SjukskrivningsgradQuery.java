@@ -32,11 +32,7 @@ public final class SjukskrivningsgradQuery {
     }
 
     public static List<Counter<Integer>> count(Collection<Sjukfall> sjukfalls) {
-        Map<Integer, Counter<Integer>> counters = createCounters();
-        for (Sjukfall sjukfall : sjukfalls) {
-            Counter counter = counters.get(sjukfall.getSjukskrivningsgrad());
-            counter.increase();
-        }
+        Map<Integer, Counter<Integer>> counters = count2(sjukfalls);
 
         List<Counter<Integer>> result = new ArrayList<>();
         for (Integer range : GRADER) {
@@ -47,20 +43,11 @@ public final class SjukskrivningsgradQuery {
     }
 
     private static Map<Integer, Counter<Integer>> count2(Collection<Sjukfall> sjukfalls) {
-        Map<Integer, Counter<Integer>> counters = createCounters();
+        Map<Integer, Counter<Integer>> counters = Counter.mapFor(GRADER);
         for (Sjukfall sjukfall : sjukfalls) {
             Counter counter = counters.get(sjukfall.getSjukskrivningsgrad());
-            counter.increase();
+            counter.increase(sjukfall);
         }
         return counters;
     }
-
-    private static Map<Integer, Counter<Integer>> createCounters() {
-        Map<Integer, Counter<Integer>> counters = new HashMap<>();
-        for (Integer range : GRADER) {
-            counters.put(range, new Counter<>(range));
-        }
-        return counters;
-    }
-
 }
