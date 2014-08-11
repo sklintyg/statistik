@@ -17,26 +17,30 @@ public final class SjukskrivningsgradQuery {
     }
 
     public static List<OverviewChartRowExtended> getOverviewSjukskrivningsgrad(Collection<Sjukfall> currentSjukfall, Collection<Sjukfall> previousSjukfall) {
-        List<Counter<Integer>> currentCount = count(currentSjukfall);
+        Map<Integer, Counter<Integer>> currentCount = count2(currentSjukfall);
         Map<Integer, Counter<Integer>> previousCount = count2(previousSjukfall);
 
         List<OverviewChartRowExtended> result = new ArrayList<>();
 
-        for (Counter<Integer> count : currentCount) {
-            int current = count.getCount();
-            int previous = previousCount.get(count.getKey()).getCount();
-            result.add(new OverviewChartRowExtended(count.getKey().toString(), current, current - previous));
+        for (Integer range : GRADER) {
+            int current = currentCount.get(range).getCount();
+            int previous = previousCount.get(range).getCount();
+            result.add(new OverviewChartRowExtended(range.toString(), current, current - previous));
         }
 
         return result;
     }
 
     public static List<Counter<Integer>> count(Collection<Sjukfall> sjukfalls) {
-        Map<Integer, Counter<Integer>> map = count2(sjukfalls);
-        List<Counter<Integer>> result = new ArrayList<>();
+        Map<Integer, Counter<Integer>> counters = createCounters();
+        for (Sjukfall sjukfall : sjukfalls) {
+            Counter counter = counters.get(sjukfall.getSjukskrivningsgrad());
+            counter.increase();
+        }
 
+        List<Counter<Integer>> result = new ArrayList<>();
         for (Integer range : GRADER) {
-            result.add(map.get(range));
+            result.add(counters.get(range));
         }
 
         return result;
