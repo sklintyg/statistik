@@ -19,6 +19,8 @@
 
 package se.inera.statistics.service.warehouse.model.db;
 
+import se.inera.statistics.service.processlog.EventType;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -34,9 +36,11 @@ public class WideLine {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
+    private String correlationId;
     private String lkf;
     private String enhet;
     private long lakarintyg;
+    private EventType intygTyp;
     private String patientid;
     private int startdatum;
     private int slutdatum;
@@ -55,11 +59,13 @@ public class WideLine {
     }
 
     // CHECKSTYLE:OFF ParameterNumber
-    public WideLine(long id, String lkf, String enhet, long lakarintyg, String patientid, int startdatum, int slutdatum, int kon, int alder, String diagnoskapitel, String diagnosavsnitt, String diagnoskategori, int sjukskrivningsgrad, int lakarkon, int lakaralder, String lakarbefattning, String vardgivareId) {
+    public WideLine(long id, String correlationId, String lkf, String enhet, long lakarintyg, EventType intygTyp, String patientid, int startdatum, int slutdatum, int kon, int alder, String diagnoskapitel, String diagnosavsnitt, String diagnoskategori, int sjukskrivningsgrad, int lakarkon, int lakaralder, String lakarbefattning, String vardgivareId) {
         this.id = id;
+        this.correlationId = correlationId;
         this.lkf = lkf;
         this.enhet = enhet;
         this.lakarintyg = lakarintyg;
+        this.intygTyp = intygTyp;
         this.patientid = patientid;
         this.startdatum = startdatum;
         this.slutdatum = slutdatum;
@@ -82,6 +88,14 @@ public class WideLine {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public String getCorrelationId() {
+        return correlationId;
+    }
+
+    public void setCorrelationId(String correlationId) {
+        this.correlationId = correlationId;
     }
 
     public String getLkf() {
@@ -114,6 +128,14 @@ public class WideLine {
 
     public void setLakarintyg(long lakarintyg) {
         this.lakarintyg = lakarintyg;
+    }
+
+    public EventType getIntygTyp() {
+        return intygTyp;
+    }
+
+    public void setIntygTyp(EventType intygTyp) {
+        this.intygTyp = intygTyp;
     }
 
     public String getPatientid() {

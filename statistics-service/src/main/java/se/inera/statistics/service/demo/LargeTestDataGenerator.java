@@ -38,6 +38,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import se.inera.statistics.service.helper.DocumentHelper;
 import se.inera.statistics.service.hsa.HSAKey;
 import se.inera.statistics.service.hsa.HSAService;
+import se.inera.statistics.service.processlog.EventType;
 import se.inera.statistics.service.report.util.DiagnosUtil;
 import se.inera.statistics.service.report.util.Icd10;
 import se.inera.statistics.service.report.util.Icd10.Kapitel;
@@ -120,7 +121,7 @@ public class LargeTestDataGenerator {
                 JsonNode hsaInfo = hsaService.getHSAInfo(hsaKey);
                 JsonNode document = DocumentHelper.prepare(utlatande, hsaInfo);
                 try {
-                    WideLine wideLine = widelineConverter.toWideline(document, hsaInfo, count++);
+                    WideLine wideLine = widelineConverter.toWideline(document, hsaInfo, count++, "" + count, EventType.CREATED);
                     factPopulator.accept(wideLine);
                 } catch (Exception e) {
                     e.printStackTrace();

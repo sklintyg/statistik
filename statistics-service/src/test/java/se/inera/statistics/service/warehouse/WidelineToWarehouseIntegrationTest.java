@@ -27,6 +27,7 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import se.inera.statistics.service.helper.ConversionHelper;
+import se.inera.statistics.service.processlog.EventType;
 import se.inera.statistics.service.warehouse.model.db.WideLine;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -58,12 +59,14 @@ public class WidelineToWarehouseIntegrationTest {
         line1.setLakaralder(33);
         line1.setLakarbefattning("201010");
         line1.setLakarintyg(1L);
+        line1.setIntygTyp(EventType.CREATED);
         line1.setLakarkon(2);
         line1.setPatientid(patientId);
         line1.setSjukskrivningsgrad(100);
         line1.setSlutdatum(4999);
         line1.setStartdatum(4997);
         line1.setVardgivareId("vg1");
+        line1.setCorrelationId("{1}");
         widelineManager.saveWideline(line1);
 
         widelineLoader.populateWarehouse();
@@ -73,7 +76,7 @@ public class WidelineToWarehouseIntegrationTest {
         Fact fact = a.iterator().next();
         Assert.assertEquals(23, fact.getAlder());
         Assert.assertEquals(patientId, ConversionHelper.patientIdToString(fact.getPatient()));
-        Assert.assertEquals(warehouse.getEnhetAndRemember(enhet), fact.getEnhet());
+        Assert.assertEquals(Warehouse.getEnhetAndRemember(enhet), fact.getEnhet());
         Assert.assertEquals(78002, fact.getForsamling());
         Assert.assertEquals(780, fact.getKommun());
         Assert.assertEquals(7, fact.getLan());
