@@ -185,18 +185,13 @@ public class WarehouseService {
 
         List<SimpleKonDataRow> rows = new ArrayList<>();
         for (SjukfallUtil.SjukfallGroup sjukfallGroup: SjukfallUtil.sjukfallGrupper(range.getFrom(), range.getMonths(), 1, aisle, numericalEnhetId)) {
-            int female = 0;
-            int male = 0;
+            Counter counter = new Counter("");
             for (Sjukfall sjukfall: sjukfallGroup.getSjukfall()) {
                 if (sjukfall.getRealDays() > LONG_SJUKFALL) {
-                    if (sjukfall.getKon() == 0) {
-                        female ++;
-                    } else {
-                        male ++;
-                    }
+                    counter.increase(sjukfall);
                 }
             }
-            rows.add(new SimpleKonDataRow(ReportUtil.toPeriod(sjukfallGroup.getRange().getFrom()), female, male));
+            rows.add(new SimpleKonDataRow(ReportUtil.toPeriod(sjukfallGroup.getRange().getFrom()), counter.getCountFemale(), counter.getCountMale()));
         }
 
         return new SimpleKonResponse<>(rows, range.getMonths());
