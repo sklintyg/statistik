@@ -40,6 +40,7 @@ import java.util.Map;
 public class WarehouseService {
 
     private static final int DISPLAYED_AGE_GROUPS = 7;
+    private static final int LONG_SJUKFALL = 90;
 
     @Autowired
     private Warehouse warehouse;
@@ -176,5 +177,28 @@ public class WarehouseService {
             }
         }
         return new SjukfallslangdResponse(rows, range.getMonths());
+    }
+
+    public SimpleKonResponse<SimpleKonDataRow> getLangaSjukskrivningarPerManad(String enhetId, Range range, String vardgivarId) {
+        Aisle aisle = warehouse.get(vardgivarId);
+        int numericalEnhetId = warehouse.getEnhetAndRemember(enhetId);
+
+        List<SimpleKonDataRow> rows = new ArrayList<>();
+        for (SjukfallUtil.SjukfallGroup sjukfallGroup: SjukfallUtil.sjukfallGrupper(range.getFrom(), range.getMonths(), 1, aisle, numericalEnhetId)) {
+            int female = 0;
+            int male = 0;
+            for (Sjukfall sjukfall: sjukfallGroup.getSjukfall()) {
+                if (sjukfall.getRealDays() > LONG_SJUKFALL) {
+                    if (sjukfall.getKon() == 0) {
+                        female ++;
+                    } else {
+                        male ++;
+                    }
+                }
+            }
+            rows.add(new SimpleKonDataRow(ReportUtil.toPeriod(sjukfallGroup.getRange().getFrom()), female, male));
+        }
+
+        return new SimpleKonResponse<>(rows, range.getMonths());
     }
 }
