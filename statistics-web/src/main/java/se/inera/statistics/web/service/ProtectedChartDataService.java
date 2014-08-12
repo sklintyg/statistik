@@ -27,12 +27,8 @@ import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import se.inera.statistics.service.report.api.Aldersgrupp;
-import se.inera.statistics.service.report.api.Diagnosgrupp;
 import se.inera.statistics.service.report.api.Diagnoskapitel;
 import se.inera.statistics.service.report.api.RollingLength;
-import se.inera.statistics.service.report.api.SjukfallPerManad;
-import se.inera.statistics.service.report.api.SjukfallslangdGrupp;
-import se.inera.statistics.service.report.api.Sjukskrivningsgrad;
 import se.inera.statistics.service.report.model.DiagnosgruppResponse;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.SimpleKonDataRow;
@@ -72,19 +68,12 @@ public class ProtectedChartDataService {
     private static final String VERKSAMHET_PATH_ID = "verksamhetId";
 
     private static final Logger LOG = LoggerFactory.getLogger(ProtectedChartDataService.class);
+    public static final String TEXT_UTF_8 = "text/plain; charset=UTF-8";
 
-    @Autowired
-    private SjukfallPerManad datasourceSjukfallPerManad;
-    @Autowired
-    private Diagnosgrupp datasourceDiagnosgrupp;
     @Autowired
     private Diagnoskapitel datasourceDiagnoskapitel;
     @Autowired
     private Aldersgrupp datasourceAldersgrupp;
-    @Autowired
-    private Sjukskrivningsgrad datasourceSjukskrivningsgrad;
-    @Autowired
-    private SjukfallslangdGrupp datasourceSickLeaveLength;
 
     @Autowired
     private WarehouseService warehouse;
@@ -120,7 +109,7 @@ public class ProtectedChartDataService {
      */
     @GET
     @Path("{verksamhetId}/getNumberOfCasesPerMonth/csv")
-    @Produces({"text/plain; charset=UTF-8" })
+    @Produces({TEXT_UTF_8})
     @PreAuthorize(value = "@protectedChartDataService.helper.hasAccessTo(#request, #verksamhetId)")
     @PostAuthorize(value = "@protectedChartDataService.helper.userAccess(#request, #verksamhetId)")
     public Response getNumberOfCasesPerMonthAsCsv(@Context HttpServletRequest request, @PathParam(VERKSAMHET_PATH_ID) String verksamhetId) {
@@ -159,7 +148,7 @@ public class ProtectedChartDataService {
      */
     @GET
     @Path("{verksamhetId}/getDiagnoskapitelstatistik/csv")
-    @Produces({"text/plain; charset=UTF-8" })
+    @Produces({TEXT_UTF_8})
     @PreAuthorize(value = "@protectedChartDataService.helper.hasAccessTo(#request, #verksamhetId)")
     @PostAuthorize(value = "@protectedChartDataService.helper.userAccess(#request, #verksamhetId)")
     public Response getDiagnosisGroupStatisticsAsCsv(@Context HttpServletRequest request, @PathParam(VERKSAMHET_PATH_ID) String verksamhetId) {
@@ -196,7 +185,7 @@ public class ProtectedChartDataService {
      */
     @GET
     @Path("{verksamhetId}/getDiagnosavsnittstatistik/{groupId}/csv")
-    @Produces({"text/plain; charset=UTF-8" })
+    @Produces({TEXT_UTF_8})
     @PreAuthorize(value = "@protectedChartDataService.helper.hasAccessTo(#request, #verksamhetId)")
     @PostAuthorize(value = "@protectedChartDataService.helper.userAccess(#request, #verksamhetId)")
     public Response getDiagnosisSubGroupStatisticsAsCsv(@Context HttpServletRequest request, @PathParam(VERKSAMHET_PATH_ID) String verksamhetId, @PathParam("groupId") String groupId) {
@@ -253,7 +242,7 @@ public class ProtectedChartDataService {
      */
     @GET
     @Path("{verksamhetId}/getAgeGroupsStatistics/csv")
-    @Produces({"text/plain; charset=UTF-8" })
+    @Produces({TEXT_UTF_8})
     @PreAuthorize(value = "@protectedChartDataService.helper.hasAccessTo(#request, #verksamhetId)")
     @PostAuthorize(value = "@protectedChartDataService.helper.userAccess(#request, #verksamhetId)")
     public Response getAgeGroupsStatisticsAsCsv(@Context HttpServletRequest request, @PathParam(VERKSAMHET_PATH_ID) String verksamhetId) {
@@ -292,7 +281,7 @@ public class ProtectedChartDataService {
      */
     @GET
     @Path("{verksamhetId}/getAgeGroupsCurrentStatistics/csv")
-    @Produces({"text/plain; charset=UTF-8" })
+    @Produces({TEXT_UTF_8})
     @PreAuthorize(value = "@protectedChartDataService.helper.hasAccessTo(#request, #verksamhetId)")
     @PostAuthorize(value = "@protectedChartDataService.helper.userAccess(#request, #verksamhetId)")
     public Response getAgeGroupsCurrentStatisticsAsCsv(@Context HttpServletRequest request, @PathParam(VERKSAMHET_PATH_ID) String verksamhetId) {
@@ -316,7 +305,8 @@ public class ProtectedChartDataService {
     public DualSexStatisticsData getDegreeOfSickLeaveStatistics(@Context HttpServletRequest request, @PathParam(VERKSAMHET_PATH_ID) String verksamhetId) {
         LOG.info("Calling getDegreeOfSickLeaveStatistics with verksamhetId: " + verksamhetId);
         final Range range = new Range(18);
-        SjukskrivningsgradResponse degreeOfSickLeaveStatistics = datasourceSjukskrivningsgrad.getStatistics(Verksamhet.decodeId(verksamhetId), range);
+        Verksamhet verksamhet = getVerksamhet(request, verksamhetId);
+        SjukskrivningsgradResponse degreeOfSickLeaveStatistics = warehouse.getSjukskrivningsgradPerMonth(Verksamhet.decodeId(verksamhetId), range, verksamhet.getVardgivarId());
         return new DegreeOfSickLeaveConverter().convert(degreeOfSickLeaveStatistics, range);
     }
 
@@ -329,7 +319,7 @@ public class ProtectedChartDataService {
      */
     @GET
     @Path("{verksamhetId}/getDegreeOfSickLeaveStatistics/csv")
-    @Produces({"text/plain; charset=UTF-8" })
+    @Produces({TEXT_UTF_8})
     @PreAuthorize(value = "@protectedChartDataService.helper.hasAccessTo(#request, #verksamhetId)")
     @PostAuthorize(value = "@protectedChartDataService.helper.userAccess(#request, #verksamhetId)")
     public Response getDegreeOfSickLeaveStatisticsAsCsv(@Context HttpServletRequest request, @PathParam(VERKSAMHET_PATH_ID) String verksamhetId) {
@@ -353,9 +343,11 @@ public class ProtectedChartDataService {
     public SickLeaveLengthData getSickLeaveLengthData(@Context HttpServletRequest request, @PathParam(VERKSAMHET_PATH_ID) String verksamhetId) {
         LOG.info("Calling getSickLeaveLengthData with verksamhetId: " + verksamhetId);
         final RollingLength year = RollingLength.YEAR;
-        SjukfallslangdResponse sickLeaveLength = datasourceSickLeaveLength.getHistoricalStatistics(Verksamhet.decodeId(verksamhetId), Helper.previousMonth(),
-                year);
-        return new SickLeaveLengthConverter().convert(sickLeaveLength, new Range(year.getPeriods()));
+        Range range = new Range(year.getPeriods());
+        Verksamhet verksamhet = getVerksamhet(request, verksamhetId);
+
+        SjukfallslangdResponse sickLeaveLength = warehouse.getSjukskrivningslangd(Verksamhet.decodeId(verksamhetId), range, verksamhet.getVardgivarId());
+        return new SickLeaveLengthConverter().convert(sickLeaveLength, range);
     }
 
     /**
@@ -367,7 +359,7 @@ public class ProtectedChartDataService {
      */
     @GET
     @Path("{verksamhetId}/getSickLeaveLengthData/csv")
-    @Produces({"text/plain; charset=UTF-8" })
+    @Produces({TEXT_UTF_8})
     @PreAuthorize(value = "@protectedChartDataService.helper.hasAccessTo(#request, #verksamhetId)")
     @PostAuthorize(value = "@protectedChartDataService.helper.userAccess(#request, #verksamhetId)")
     public Response getSickLeaveLengthDataAsCsv(@Context HttpServletRequest request, @PathParam(VERKSAMHET_PATH_ID) String verksamhetId) {
@@ -390,10 +382,11 @@ public class ProtectedChartDataService {
     @PostAuthorize(value = "@protectedChartDataService.helper.userAccess(#request, #verksamhetId)")
     public SickLeaveLengthData getSickLeaveLengthCurrentData(@Context HttpServletRequest request, @PathParam(VERKSAMHET_PATH_ID) String verksamhetId) {
         LOG.info("Calling getSickLeaveLengthCurrentData with verksamhetId: " + verksamhetId);
-        SjukfallslangdResponse sickLeaveLength = datasourceSickLeaveLength.getCurrentStatistics(Verksamhet.decodeId(verksamhetId));
+        Verksamhet verksamhet = getVerksamhet(request, verksamhetId);
         LocalDate start = new LocalDate().withDayOfMonth(1);
-        LocalDate end = new LocalDate().withDayOfMonth(1).plusMonths(1).minusDays(1);
+        LocalDate end = start.plusMonths(1).minusDays(1);
         final Range range = new Range(start, end);
+        SjukfallslangdResponse sickLeaveLength = warehouse.getSjukskrivningslangd(Verksamhet.decodeId(verksamhetId), range, verksamhet.getVardgivarId());
         return new SickLeaveLengthConverter().convert(sickLeaveLength, range);
     }
 
@@ -406,7 +399,7 @@ public class ProtectedChartDataService {
      */
     @GET
     @Path("{verksamhetId}/getSickLeaveLengthCurrentData/csv")
-    @Produces({"text/plain; charset=UTF-8" })
+    @Produces({TEXT_UTF_8})
     @PreAuthorize(value = "@protectedChartDataService.helper.hasAccessTo(#request, #verksamhetId)")
     @PostAuthorize(value = "@protectedChartDataService.helper.userAccess(#request, #verksamhetId)")
     public Response getSickLeaveLengthCurrentDataAsCsv(@Context HttpServletRequest request, @PathParam(VERKSAMHET_PATH_ID) String verksamhetId) {
@@ -429,8 +422,9 @@ public class ProtectedChartDataService {
     @PostAuthorize(value = "@protectedChartDataService.helper.userAccess(#request, #verksamhetId)")
     public SimpleDetailsData getLongSickLeavesData(@Context HttpServletRequest request, @PathParam(VERKSAMHET_PATH_ID) String verksamhetId) {
         LOG.info("Calling getLongSickLeavesData with verksamhetId: " + verksamhetId);
+        Verksamhet verksamhet = getVerksamhet(request, verksamhetId);
         final Range range = new Range(18);
-        SimpleKonResponse<SimpleKonDataRow> longSickLeaves = datasourceSickLeaveLength.getLongSickLeaves(Verksamhet.decodeId(verksamhetId), range);
+        SimpleKonResponse<SimpleKonDataRow> longSickLeaves = warehouse.getLangaSjukskrivningarPerManad(Verksamhet.decodeId(verksamhetId), range, verksamhet.getVardgivarId());
         return new SimpleDualSexConverter().convert(longSickLeaves, range);
     }
 
@@ -443,7 +437,7 @@ public class ProtectedChartDataService {
      */
     @GET
     @Path("{verksamhetId}/getLongSickLeavesData/csv")
-    @Produces({"text/plain; charset=UTF-8" })
+    @Produces({TEXT_UTF_8})
     @PreAuthorize(value = "@protectedChartDataService.helper.hasAccessTo(#request, #verksamhetId)")
     @PostAuthorize(value = "@protectedChartDataService.helper.userAccess(#request, #verksamhetId)")
     public Response getLongSickLeavesDataAsCsv(@Context HttpServletRequest request, @PathParam(VERKSAMHET_PATH_ID) String verksamhetId) {

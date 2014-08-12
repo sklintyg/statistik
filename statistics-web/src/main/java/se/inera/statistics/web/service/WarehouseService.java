@@ -11,26 +11,36 @@ import se.inera.statistics.service.report.model.OverviewKonsfordelning;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.SimpleKonDataRow;
 import se.inera.statistics.service.report.model.SimpleKonResponse;
+import se.inera.statistics.service.report.model.SjukfallslangdResponse;
+import se.inera.statistics.service.report.model.SjukskrivningsgradResponse;
 import se.inera.statistics.service.report.model.VerksamhetOverviewResponse;
+import se.inera.statistics.service.report.model.db.SjukfallslangdRow;
 import se.inera.statistics.service.report.util.Icd10;
+import se.inera.statistics.service.report.util.Ranges;
 import se.inera.statistics.service.report.util.ReportUtil;
+import se.inera.statistics.service.report.util.SjukfallslangdUtil;
 import se.inera.statistics.service.warehouse.Aisle;
 import se.inera.statistics.service.warehouse.query.AldersgruppQuery;
 import se.inera.statistics.service.warehouse.Sjukfall;
 import se.inera.statistics.service.warehouse.SjukfallUtil;
 import se.inera.statistics.service.warehouse.Warehouse;
+import se.inera.statistics.service.warehouse.query.Counter;
 import se.inera.statistics.service.warehouse.query.DiagnosgruppQuery;
 import se.inera.statistics.service.warehouse.query.SjukskrivningsgradQuery;
 import se.inera.statistics.service.warehouse.query.SjukskrivningslangdQuery;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 public class WarehouseService {
 
     private static final int DISPLAYED_AGE_GROUPS = 7;
+    private static final int LONG_SJUKFALL = 90;
 
     @Autowired
     private Warehouse warehouse;
@@ -124,5 +134,66 @@ public class WarehouseService {
             avsnitt.add(new Avsnitt(k.getId(), k.getName()));
         }
         return new DiagnosgruppResponse(avsnitt, rows);
+    }
+
+    public static final List<String> GRAD_LABEL = Collections.unmodifiableList(Arrays.asList("25", "50", "75", "100"));
+    public static final List<Integer> GRAD = Collections.unmodifiableList(Arrays.asList(25, 50, 75, 100));
+
+    public SjukskrivningsgradResponse getSjukskrivningsgradPerMonth(String enhetId, Range range, String vardgivarId) {
+        Aisle aisle = warehouse.get(vardgivarId);
+        int numericalEnhetId = warehouse.getEnhetAndRemember(enhetId);
+
+        List<KonDataRow> rows = new ArrayList<>();
+        for (SjukfallUtil.SjukfallGroup sjukfallGroup: SjukfallUtil.sjukfallGrupper(range.getFrom(), range.getMonths(), 1, aisle, numericalEnhetId)) {
+            int[] female = new int[101];
+            int[] male = new int[101];
+            for (Sjukfall sjukfall : sjukfallGroup.getSjukfall()) {
+                if (sjukfall.getKon() == 0) {
+                    female[sjukfall.getSjukskrivningsgrad()]++;
+                } else {
+                    male[sjukfall.getSjukskrivningsgrad()]++;
+                }
+            }
+            List<KonField> list = new ArrayList<>(GRAD.size());
+            for (int i: GRAD) {
+                list.add(new KonField(female[i], male[i]));
+            }
+            rows.add(new KonDataRow(ReportUtil.toPeriod(sjukfallGroup.getRange().getFrom()), list));
+        }
+
+        return new SjukskrivningsgradResponse(GRAD_LABEL, rows);
+    }
+
+    public SjukfallslangdResponse getSjukskrivningslangd(String enhetId, Range range, String vardgivarId) {
+        Aisle aisle = warehouse.get(vardgivarId);
+        int numericalEnhetId = warehouse.getEnhetAndRemember(enhetId);
+
+        List<SjukfallslangdRow> rows = new ArrayList<>();
+        for (SjukfallUtil.SjukfallGroup sjukfallGroup: SjukfallUtil.sjukfallGrupper(range.getFrom(), 1, range.getMonths(), aisle, numericalEnhetId)) {
+            Map<Ranges.Range, Counter<Ranges.Range>> counterMap = SjukskrivningslangdQuery.count(sjukfallGroup.getSjukfall());
+            for (Ranges.Range i : SjukfallslangdUtil.RANGES) {
+                Counter<Ranges.Range> counter = counterMap.get(i);
+                rows.add(new SjukfallslangdRow("", i.getName(), range.getMonths(), counter.getCountFemale(), counter.getCountMale()));
+            }
+        }
+        return new SjukfallslangdResponse(rows, range.getMonths());
+    }
+
+    public SimpleKonResponse<SimpleKonDataRow> getLangaSjukskrivningarPerManad(String enhetId, Range range, String vardgivarId) {
+        Aisle aisle = warehouse.get(vardgivarId);
+        int numericalEnhetId = warehouse.getEnhetAndRemember(enhetId);
+
+        List<SimpleKonDataRow> rows = new ArrayList<>();
+        for (SjukfallUtil.SjukfallGroup sjukfallGroup: SjukfallUtil.sjukfallGrupper(range.getFrom(), range.getMonths(), 1, aisle, numericalEnhetId)) {
+            Counter counter = new Counter("");
+            for (Sjukfall sjukfall: sjukfallGroup.getSjukfall()) {
+                if (sjukfall.getRealDays() > LONG_SJUKFALL) {
+                    counter.increase(sjukfall);
+                }
+            }
+            rows.add(new SimpleKonDataRow(ReportUtil.toPeriod(sjukfallGroup.getRange().getFrom()), counter.getCountFemale(), counter.getCountMale()));
+        }
+
+        return new SimpleKonResponse<>(rows, range.getMonths());
     }
 }

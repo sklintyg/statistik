@@ -82,7 +82,7 @@ public class DiagnosgruppQuery {
         Map<String, Counter<String>> counters = createCounters();
         for (Sjukfall sjukfall : sjukfalls) {
             Counter counter = counters.get(kapitelMap.get(sjukfall.getDiagnoskapitel()).getId());
-            counter.increase();
+            counter.increase(sjukfall);
         }
         return counters;
     }

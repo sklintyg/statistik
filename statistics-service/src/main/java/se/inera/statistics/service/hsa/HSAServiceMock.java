@@ -113,7 +113,7 @@ public class HSAServiceMock implements HSAService {
     }
 
     private String createLan(HSAKey key) {
-        int keyIndex = key != null && key.getVardgivareId() != null ? Math.abs(key.getVardgivareId().hashCode()) & POSITIVE_MASK : 0;
+        int keyIndex = key != null && key.getVardgivareId() != null ? key.getVardgivareId().hashCode() & POSITIVE_MASK : 0;
         return LAN_CODES.get(keyIndex % LAN_CODES.size());
     }
 

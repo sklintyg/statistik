@@ -8,13 +8,12 @@ import se.inera.statistics.service.warehouse.Sjukfall;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
 public final class AldersgruppQuery {
-    private static Ranges ranges = AldersgroupUtil.RANGES;
+    private static final Ranges RANGES = AldersgroupUtil.RANGES;
 
     private AldersgruppQuery() {
 
@@ -59,7 +58,7 @@ public final class AldersgruppQuery {
         List<Counter<Ranges.Range>> result = new ArrayList<>();
 
         Collection<Ranges.Range> rowsToKeep = rowsToKeep(map, noOfRows);
-        for (Ranges.Range range : ranges) {
+        for (Ranges.Range range : RANGES) {
             if (rowsToKeep.contains(range)) {
                 result.add(map.get(range));
             }
@@ -69,20 +68,11 @@ public final class AldersgruppQuery {
     }
 
     public static Map<Ranges.Range, Counter<Ranges.Range>> count(Collection<Sjukfall> sjukfalls) {
-        Map<Ranges.Range, Counter<Ranges.Range>> counters = createCounters();
+        Map<Ranges.Range, Counter<Ranges.Range>> counters = Counter.mapFor(RANGES);
         for (Sjukfall sjukfall : sjukfalls) {
-            Counter counter = counters.get(ranges.rangeFor(sjukfall.getAlder()));
-            counter.increase();
+            Counter counter = counters.get(RANGES.rangeFor(sjukfall.getAlder()));
+            counter.increase(sjukfall);
         }
         return counters;
     }
-
-    private static Map<Ranges.Range, Counter<Ranges.Range>> createCounters() {
-        Map<Ranges.Range, Counter<Ranges.Range>> counters = new HashMap();
-        for (Ranges.Range range : ranges) {
-            counters.put(range, new Counter(range));
-        }
-        return counters;
-    }
-
 }
