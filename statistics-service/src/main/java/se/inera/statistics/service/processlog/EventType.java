@@ -19,6 +19,8 @@
 
 package se.inera.statistics.service.processlog;
 
-public enum EventType {
+import java.io.Serializable;
+
+public enum EventType implements Serializable {
     CREATED, REVOKED, TEST
 }

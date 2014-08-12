@@ -2,7 +2,7 @@
 <databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd"
-                   logicalFilePath="liquibase/db.changelog-v1.0_create_intyghandelse_table.xml">
+                   logicalFilePath="liquibase/db.changelog-v14.0_create_intyghandelse_table.xml">
     <changeSet id="14a_create_event_table_index" author="pierre.sandboge">
         <modifyDataType tableName="intyghandelse" columnName="correlationId" newDataType="varchar(128)"/>
         <createIndex unique="true" tableName="intyghandelse" indexName="idx_intyghandelse_type_correlation_id">

@@ -56,7 +56,7 @@ public class Processor {
     private LocalDate cleanedup;
     private int processedCounter;
 
-    public void accept(JsonNode utlatande, JsonNode hsa, long logId) {
+    public void accept(JsonNode utlatande, JsonNode hsa, long logId, String correlationId, EventType type) {
         SjukfallKey sjukfallKey = extractSjukfallKey(utlatande);
 
         SjukfallInfo sjukfallInfo = sjukfallService.register(sjukfallKey);
@@ -68,7 +68,7 @@ public class Processor {
         }
 
         ObjectNode preparedDoc = DocumentHelper.prepare(utlatande);
-        widelineManager.accept(preparedDoc, hsa, logId);
+        widelineManager.accept(preparedDoc, hsa, logId, correlationId, type);
 
         processedCounter++;
     }

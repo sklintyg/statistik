@@ -21,6 +21,7 @@ package se.inera.statistics.service.warehouse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import se.inera.statistics.service.processlog.EventType;
 import se.inera.statistics.service.warehouse.model.db.WideLine;
 
 import javax.sql.DataSource;
@@ -61,6 +62,7 @@ public class WidelineLoader {
 
     private WideLine toWideline(ResultSet resultSet) throws SQLException {
         long id = resultSet.getLong("id");
+        String correlationId = resultSet.getString("correlationId");
         String lkf = resultSet.getString("lkf");
         String enhet = resultSet.getString("enhet");
         long intyg = resultSet.getLong("lakarintyg");
@@ -78,13 +80,15 @@ public class WidelineLoader {
         String lakarbefattning = resultSet.getString("lakarbefattning");
         String vardgivare = resultSet.getString("vardgivareid");
 
-        return new WideLine(id, lkf, enhet, intyg, patientid, startdatum, slutdatum, kon, alder, diagnoskapitel, diagnosavsnitt, diagnoskategori, sjukskrivningsgrad, lakarkon, lakaralder, lakarbefattning, vardgivare);
+        return new WideLine(id, correlationId, lkf, enhet, intyg, EventType.CREATED, patientid, startdatum, slutdatum, kon, alder, diagnoskapitel, diagnosavsnitt, diagnoskategori, sjukskrivningsgrad, lakarkon, lakaralder, lakarbefattning, vardgivare);
     }
 
     private PreparedStatement prepareStatement(Connection connection) throws SQLException {
         connection.setAutoCommit(false);
         connection.setReadOnly(true);
-        PreparedStatement stmt = connection.prepareStatement("select id, lkf, enhet, lakarintyg, patientid, startdatum, slutdatum, kon, alder, diagnoskapitel, diagnosavsnitt, diagnoskategori, sjukskrivningsgrad, lakarkon, lakaralder, lakarbefattning, vardgivareid from wideline", ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
+        PreparedStatement stmt = connection.prepareStatement("select id, correlationid, lkf, enhet, lakarintyg, patientid, startdatum,"
+                + " slutdatum, kon, alder, diagnoskapitel, diagnosavsnitt, diagnoskategori, sjukskrivningsgrad, lakarkon, lakaralder,"
+                + " lakarbefattning, vardgivareid from wideline w1 where w1.correlationid not in (select correlationid from wideline where intygtyp = " + EventType.REVOKED.ordinal() + " )", ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
         stmt.setFetchSize(FETCH_SIZE);
         return stmt;
     }

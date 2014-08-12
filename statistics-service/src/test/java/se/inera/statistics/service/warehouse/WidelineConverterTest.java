@@ -28,6 +28,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import se.inera.statistics.service.processlog.EventType;
 import se.inera.statistics.service.warehouse.model.db.WideLine;
 
 import java.util.List;
@@ -41,7 +42,7 @@ public class WidelineConverterTest {
 
     private static final Logger LOG = LoggerFactory.getLogger(WidelineConverterTest.class);
 
-    WideLine wideLine = new WideLine(1,"256002", "enhet", 1, "19121212-1212", 4000, 4021, 0, 45, "A00", "A00-A09", "A00-B99", 100, 0, 32, "201010", "vardgivare");
+    WideLine wideLine = new WideLine(1, "{id}", "256002", "enhet", 1, EventType.CREATED, "19121212-1212", 4000, 4021, 0, 45, "A00", "A00-A09", "A00-B99", 100, 0, 32, "201010", "vardgivare");
     @Autowired
     private WidelineConverter converter;
 

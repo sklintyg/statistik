@@ -63,7 +63,7 @@ class WarehouseFeeder {
                 JsonNode hsaInfo = hsaService.getHSAInfo(hsaKey)
                 document = prepare(document, hsaInfo)
                 println(document)
-                WideLine line = widelineConverter.toWideline(document, hsaInfo, logId++)
+                WideLine line = widelineConverter.toWideline(document, hsaInfo, logId++, trackingId, EventType.CREATED)
                 bean.accept(factPopulator.toFact(line), hsaKey.vardgivareId)
             }
             true

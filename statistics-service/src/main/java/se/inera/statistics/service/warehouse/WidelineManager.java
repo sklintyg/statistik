@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import se.inera.statistics.service.helper.DocumentHelper;
+import se.inera.statistics.service.processlog.EventType;
 import se.inera.statistics.service.warehouse.model.db.WideLine;
 
 import javax.persistence.EntityManager;
@@ -25,8 +26,8 @@ public class WidelineManager {
     private WidelineConverter widelineConverter;
 
     @Transactional
-    public void accept(JsonNode intyg, JsonNode hsa, long logId) {
-        WideLine line = widelineConverter.toWideline(intyg, hsa, logId);
+    public void accept(JsonNode intyg, JsonNode hsa, long logId, String correlationId, EventType type) {
+        WideLine line = widelineConverter.toWideline(intyg, hsa, logId, correlationId, type);
         List<String> errors  = widelineConverter.validate(line);
 
         if (errors.isEmpty()) {
@@ -46,7 +47,8 @@ public class WidelineManager {
         manager.persist(line);
     }
 
+    @Transactional
     public int count() {
-        return manager.createQuery("SELECT wl FROM WideLine wl").getResultList().size();
+        return ((Long) manager.createQuery("SELECT COUNT (wl) FROM WideLine wl").getSingleResult()).intValue();
     }
 }

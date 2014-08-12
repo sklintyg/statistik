@@ -60,7 +60,7 @@ public class LogConsumerImplTest {
         int count = consumer.processBatch();
         assertEquals(1, count);
         verify(processLog).getPending(100);
-        verify(processor).accept(any(JsonNode.class), any(JsonNode.class), Mockito.anyLong());
+        verify(processor).accept(any(JsonNode.class), any(JsonNode.class), Mockito.anyLong(), anyString(), any(EventType.class));
     }
 
     @Test
@@ -71,7 +71,7 @@ public class LogConsumerImplTest {
         int count = consumer.processBatch();
         assertEquals(0, count);
         verify(processLog).getPending(100);
-        verify(processor, Mockito.never()).accept(any(JsonNode.class), any(JsonNode.class), Mockito.anyLong());
+        verify(processor, Mockito.never()).accept(any(JsonNode.class), any(JsonNode.class), Mockito.anyLong(), anyString(), any(EventType.class));
     }
 
     @Test
@@ -79,7 +79,7 @@ public class LogConsumerImplTest {
         IntygEvent event = new IntygEvent(EventType.CREATED, "{}", "correlationId", 1);
         when(processLog.getPending(100)).thenReturn(Collections.singletonList(event));
         when(hsa.decorate(any(JsonNode.class), anyString())).thenReturn(JSONParser.parse("{}"));
-        doThrow(new IllegalArgumentException("Invalid intyg")).when(processor).accept(any(JsonNode.class), any(JsonNode.class), Mockito.anyLong());
+        doThrow(new IllegalArgumentException("Invalid intyg")).when(processor).accept(any(JsonNode.class), any(JsonNode.class), Mockito.anyLong(), anyString(), any(EventType.class));
         int count = consumer.processBatch();
         assertEquals(1, count);
         verify(processLog).getPending(100);
@@ -92,7 +92,7 @@ public class LogConsumerImplTest {
         int count = consumer.processBatch();
         assertEquals(1, count);
         verify(processLog).getPending(100);
-        verify(processor, Mockito.never()).accept(any(JsonNode.class), any(JsonNode.class), Mockito.anyLong());
+        verify(processor, Mockito.never()).accept(any(JsonNode.class), any(JsonNode.class), Mockito.anyLong(), anyString(), any(EventType.class));
         verify(hsa, Mockito.never()).decorate(any(JsonNode.class), anyString());
     }
     // CHECKSTYLE:ON MagicNumber

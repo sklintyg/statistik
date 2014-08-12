@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import se.inera.statistics.service.helper.DocumentHelper;
 import se.inera.statistics.service.helper.HSAServiceHelper;
+import se.inera.statistics.service.processlog.EventType;
 import se.inera.statistics.service.report.util.Icd10;
 import se.inera.statistics.service.report.util.Icd10.Kategori;
 import se.inera.statistics.service.warehouse.model.db.WideLine;
@@ -27,7 +28,7 @@ public class WidelineConverter {
     @Autowired
     private Icd10 icd10;
 
-    public WideLine toWideline(JsonNode intyg, JsonNode hsa, long logId) {
+    public WideLine toWideline(JsonNode intyg, JsonNode hsa, long logId, String correlationId, EventType type) {
         WideLine line = new WideLine();
 
         String lkf = getLkf(hsa);
@@ -64,7 +65,9 @@ public class WidelineConverter {
         int lakaralder = HSAServiceHelper.getLakaralder(hsa);
         String lakarbefattning = HSAServiceHelper.getLakarbefattning(hsa);
 
+        line.setCorrelationId(correlationId);
         line.setLakarintyg(logId);
+        line.setIntygTyp(type);
         line.setLkf(lkf);
         line.setEnhet(enhet);
         line.setVardgivareId(vardgivare);
