@@ -15,6 +15,7 @@ import se.inera.statistics.service.report.model.SjukfallslangdResponse;
 import se.inera.statistics.service.report.model.SjukskrivningsgradResponse;
 import se.inera.statistics.service.report.model.VerksamhetOverviewResponse;
 import se.inera.statistics.service.report.model.db.SjukfallslangdRow;
+import se.inera.statistics.service.report.util.AldersgroupUtil;
 import se.inera.statistics.service.report.util.Icd10;
 import se.inera.statistics.service.report.util.Ranges;
 import se.inera.statistics.service.report.util.ReportUtil;
@@ -192,6 +193,22 @@ public class WarehouseService {
                 }
             }
             rows.add(new SimpleKonDataRow(ReportUtil.toPeriod(sjukfallGroup.getRange().getFrom()), counter.getCountFemale(), counter.getCountMale()));
+        }
+
+        return new SimpleKonResponse<>(rows, range.getMonths());
+    }
+
+    public SimpleKonResponse<SimpleKonDataRow> getAldersgrupper(String enhetId, Range range, String vardgivarId) {
+        Aisle aisle = warehouse.get(vardgivarId);
+        int numericalEnhetId = warehouse.getEnhetAndRemember(enhetId);
+
+        List<SimpleKonDataRow> rows = new ArrayList<>();
+        for (SjukfallUtil.SjukfallGroup sjukfallGroup: SjukfallUtil.sjukfallGrupper(range.getFrom(), 1, range.getMonths(), aisle, numericalEnhetId)) {
+            Map<Ranges.Range, Counter<Ranges.Range>> counterMap = AldersgruppQuery.count(sjukfallGroup.getSjukfall());
+            for (Ranges.Range i : AldersgroupUtil.RANGES) {
+                Counter<Ranges.Range> counter = counterMap.get(i);
+                rows.add(new SimpleKonDataRow(i.getName(), counter.getCountFemale(), counter.getCountMale()));
+            }
         }
 
         return new SimpleKonResponse<>(rows, range.getMonths());

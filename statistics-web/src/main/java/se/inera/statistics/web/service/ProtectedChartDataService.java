@@ -72,8 +72,6 @@ public class ProtectedChartDataService {
 
     @Autowired
     private Diagnoskapitel datasourceDiagnoskapitel;
-    @Autowired
-    private Aldersgrupp datasourceAldersgrupp;
 
     @Autowired
     private WarehouseService warehouse;
@@ -228,9 +226,11 @@ public class ProtectedChartDataService {
     @PostAuthorize(value = "@protectedChartDataService.helper.userAccess(#request, #verksamhetId)")
     public AgeGroupsData getAgeGroupsStatistics(@Context HttpServletRequest request, @PathParam(VERKSAMHET_PATH_ID) String verksamhetId) {
         LOG.info("Calling getAgeGroupsStatistics with verksamhetId: " + verksamhetId);
-        final RollingLength period = RollingLength.QUARTER;
-        SimpleKonResponse<SimpleKonDataRow> ageGroups = datasourceAldersgrupp.getHistoricalAgeGroups(Verksamhet.decodeId(verksamhetId), Helper.previousMonth(), period);
-        return new AgeGroupsConverter().convert(ageGroups, new Range(period.getPeriods()));
+        final Range range = new Range(12);
+
+        Verksamhet verksamhet = getVerksamhet(request, verksamhetId);
+        SimpleKonResponse<SimpleKonDataRow> ageGroups = warehouse.getAldersgrupper(Verksamhet.decodeId(verksamhetId), range, verksamhet.getVardgivarId());
+        return new AgeGroupsConverter().convert(ageGroups, range);
     }
 
     /**
@@ -265,11 +265,14 @@ public class ProtectedChartDataService {
     @PostAuthorize(value = "@protectedChartDataService.helper.userAccess(#request, #verksamhetId)")
     public AgeGroupsData getAgeGroupsCurrentStatistics(@Context HttpServletRequest request, @PathParam(VERKSAMHET_PATH_ID) String verksamhetId) {
         LOG.info("Calling getAgeGroupsCurrentStatistics with verksamhetId: " + verksamhetId);
-        SimpleKonResponse<SimpleKonDataRow> ageGroups = datasourceAldersgrupp.getCurrentAgeGroups(Verksamhet.decodeId(verksamhetId));
         LocalDate start = new LocalDate().withDayOfMonth(1);
         LocalDate end = new LocalDate().withDayOfMonth(1).plusMonths(1).minusDays(1);
         final Range range = new Range(start, end);
+
+        Verksamhet verksamhet = getVerksamhet(request, verksamhetId);
+        SimpleKonResponse<SimpleKonDataRow> ageGroups = warehouse.getAldersgrupper(Verksamhet.decodeId(verksamhetId), range, verksamhet.getVardgivarId());
         return new AgeGroupsConverter().convert(ageGroups, range);
+
     }
 
     /**
