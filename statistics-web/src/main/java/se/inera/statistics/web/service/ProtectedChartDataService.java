@@ -71,9 +71,6 @@ public class ProtectedChartDataService {
     public static final String TEXT_UTF_8 = "text/plain; charset=UTF-8";
 
     @Autowired
-    private Diagnoskapitel datasourceDiagnoskapitel;
-
-    @Autowired
     private WarehouseService warehouse;
 
     public final Helper helper = new Helper();
@@ -170,8 +167,9 @@ public class ProtectedChartDataService {
     public DualSexStatisticsData getDiagnosisSubGroupStatistics(@Context HttpServletRequest request, @PathParam(VERKSAMHET_PATH_ID) String verksamhetId, @PathParam("groupId") String groupId) {
         LOG.info("Calling getDiagnosavsnittstatistik with verksamhetId: '" + verksamhetId + "' and groupId: " + groupId);
         final Range range = new Range(18);
-        DiagnosgruppResponse diagnosisGroups = datasourceDiagnoskapitel.getDiagnosisGroups(Verksamhet.decodeId(verksamhetId), range, groupId);
-        return new DiagnosisSubGroupsConverter().convert(diagnosisGroups, range);
+        Verksamhet verksamhet = getVerksamhet(request, verksamhetId);
+        DiagnosgruppResponse diagnosavsnitt = warehouse.getDiagnosavsnitt(Verksamhet.decodeId(verksamhetId), range, groupId, verksamhet.getVardgivarId());
+        return new DiagnosisSubGroupsConverter().convert(diagnosavsnitt, range);
     }
 
     /**

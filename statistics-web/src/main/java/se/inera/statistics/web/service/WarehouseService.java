@@ -213,4 +213,38 @@ public class WarehouseService {
 
         return new SimpleKonResponse<>(rows, range.getMonths());
     }
+
+    public DiagnosgruppResponse getDiagnosavsnitt(String enhetId, Range range, String kapitelId, String vardgivarId) {
+        Aisle aisle = warehouse.get(vardgivarId);
+        int numericalEnhetId = warehouse.getEnhetAndRemember(enhetId);
+
+        Icd10.Kapitel kapitel = icd10.getKapitel(kapitelId);
+        List<Avsnitt> avsnitts = new ArrayList<>();
+        for (Icd10.Avsnitt avsnitt : kapitel.getAvsnitt()) {
+            avsnitts.add(new Avsnitt(avsnitt.getId(), avsnitt.getName()));
+        }
+
+        List<KonDataRow> rows = new ArrayList<>();
+        for (SjukfallUtil.SjukfallGroup sjukfallGroup: SjukfallUtil.sjukfallGrupper(range.getFrom(), range.getMonths(), 1, aisle, numericalEnhetId)) {
+            int[] female = new int[2700];
+            int[] male = new int[2700];
+            for (Sjukfall sjukfall: sjukfallGroup.getSjukfall()) {
+
+                if (sjukfall.getKon() == 0) {
+                    female[sjukfall.getDiagnosavsnitt()]++;
+                } else {
+                    male[sjukfall.getDiagnosavsnitt()]++;
+                }
+            }
+
+            List<KonField> list = new ArrayList<>(avsnitts.size());
+            for (Icd10.Avsnitt avsnitt: kapitel.getAvsnitt()) {
+                list.add(new KonField(female[avsnitt.toInt()], male[avsnitt.toInt()]));
+            }
+            rows.add(new KonDataRow(ReportUtil.toPeriod(sjukfallGroup.getRange().getFrom()), list));
+        }
+
+
+        return new DiagnosgruppResponse(avsnitts, rows);
+    }
 }

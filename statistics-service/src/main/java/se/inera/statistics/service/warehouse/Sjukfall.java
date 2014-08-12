@@ -11,6 +11,7 @@ public class Sjukfall {
     private final int kon;
     private int alder;
     private int diagnoskapitel;
+    private int diagnosavsnitt;
     private int sjukskrivningsgrad;
 
     public Sjukfall(Fact line) {
@@ -21,6 +22,7 @@ public class Sjukfall {
         kon = line.getKon();
         alder = line.getAlder();
         diagnoskapitel = line.getDiagnoskapitel();
+        diagnosavsnitt = line.getDiagnosavsnitt();
         sjukskrivningsgrad = line.getSjukskrivningsgrad();
     }
 
@@ -49,6 +51,9 @@ public class Sjukfall {
             }
             if (diagnoskapitel != line.getDiagnoskapitel()) {
                 diagnoskapitel = line.getDiagnoskapitel();
+            }
+            if (diagnosavsnitt != line.getDiagnosavsnitt()) {
+                diagnosavsnitt = line.getDiagnosavsnitt();
             }
             sjukskrivningsgrad = line.getSjukskrivningsgrad();
             return this;
@@ -103,5 +108,9 @@ public class Sjukfall {
 
     public int getSjukskrivningsgrad() {
         return sjukskrivningsgrad;
+    }
+
+    public int getDiagnosavsnitt() {
+        return diagnosavsnitt;
     }
 }
