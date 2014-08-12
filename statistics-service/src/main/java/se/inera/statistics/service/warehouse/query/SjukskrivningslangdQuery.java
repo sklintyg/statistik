@@ -1,20 +1,29 @@
 package se.inera.statistics.service.warehouse.query;
 
+import org.joda.time.LocalDate;
 import se.inera.statistics.service.report.model.OverviewChartRow;
+import se.inera.statistics.service.report.model.SimpleKonDataRow;
+import se.inera.statistics.service.report.model.SimpleKonResponse;
+import se.inera.statistics.service.report.model.SjukfallslangdResponse;
+import se.inera.statistics.service.report.model.db.SjukfallslangdRow;
 import se.inera.statistics.service.report.util.Ranges;
+import se.inera.statistics.service.report.util.ReportUtil;
 import se.inera.statistics.service.report.util.SjukfallslangdUtil;
+import se.inera.statistics.service.warehouse.Aisle;
 import se.inera.statistics.service.warehouse.Sjukfall;
+import se.inera.statistics.service.warehouse.SjukfallUtil;
+import se.inera.statistics.service.warehouse.Warehouse;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
 public final class SjukskrivningslangdQuery {
     private static Ranges ranges = SjukfallslangdUtil.RANGES;
+    private static final int LONG_SJUKFALL = 90;
 
     private SjukskrivningslangdQuery() {
     }
@@ -71,5 +80,37 @@ public final class SjukskrivningslangdQuery {
             counter.increase(sjukfall);
         }
         return counters;
+    }
+
+    public static SimpleKonResponse<SimpleKonDataRow> getLangaSjukfall(Warehouse warehouse, SjukfallUtil.StartFilter filter, LocalDate from, int periods, int periodLength, String vardgivarId) {
+        Aisle aisle = warehouse.get(vardgivarId);
+
+        List<SimpleKonDataRow> rows = new ArrayList<>();
+        for (SjukfallUtil.SjukfallGroup sjukfallGroup: SjukfallUtil.sjukfallGrupper(from, periods, periodLength, aisle, filter)) {
+            Counter counter = new Counter("");
+            for (Sjukfall sjukfall: sjukfallGroup.getSjukfall()) {
+                if (sjukfall.getRealDays() > LONG_SJUKFALL) {
+                    counter.increase(sjukfall);
+                }
+            }
+            rows.add(new SimpleKonDataRow(ReportUtil.toPeriod(sjukfallGroup.getRange().getFrom()), counter.getCountFemale(), counter.getCountMale()));
+        }
+
+        return new SimpleKonResponse<>(rows, periods);
+    }
+
+    public static SjukfallslangdResponse getSjuksrivningslangd(Warehouse warehouse, SjukfallUtil.StartFilter filter, LocalDate from, int periods, int periodLength, String vardgivarId) {
+        Aisle aisle = warehouse.get(vardgivarId);
+
+        List<SjukfallslangdRow> rows = new ArrayList<>();
+        for (SjukfallUtil.SjukfallGroup sjukfallGroup: SjukfallUtil.sjukfallGrupper(from, periods, periodLength, aisle, filter)) {
+            Map<Ranges.Range, Counter<Ranges.Range>> counterMap = SjukskrivningslangdQuery.count(sjukfallGroup.getSjukfall());
+            for (Ranges.Range i : SjukfallslangdUtil.RANGES) {
+                Counter<Ranges.Range> counter = counterMap.get(i);
+                rows.add(new SjukfallslangdRow("", i.getName(), periodLength, counter.getCountFemale(), counter.getCountMale()));
+            }
+        }
+        return new SjukfallslangdResponse(rows, periodLength);
+
     }
 }

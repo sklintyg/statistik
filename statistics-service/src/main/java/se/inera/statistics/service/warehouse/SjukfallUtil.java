@@ -78,8 +78,8 @@ public final class SjukfallUtil {
         return calculateSjukfall(aisle, new EnhetFilter(enhetIds), Integer.MAX_VALUE);
     }
 
-    public static Collection<Sjukfall> active(Range range, Aisle aisle, int...enhetIds) {
-        return active(calculateSjukfall(aisle, new EnhetFilter(enhetIds), WidelineConverter.toDay(firstDayAfter(range))), range);
+    public static Collection<Sjukfall> active(Range range, Aisle aisle, String...enhetIds) {
+        return active(calculateSjukfall(aisle, createEnhetFilter(enhetIds), WidelineConverter.toDay(firstDayAfter(range))), range);
     }
 
     public static Iterable<SjukfallGroup> sjukfallGrupper(final LocalDate from, final int periods, final int periodSize, final Aisle aisle, final int... enhetIds) {
@@ -87,6 +87,24 @@ public final class SjukfallUtil {
             @Override
             public Iterator<SjukfallGroup> iterator() {
                 return new SjukfallGroupIterator(from, periods, periodSize, aisle, new EnhetFilter(enhetIds));
+            }
+        };
+    }
+
+    public static EnhetFilter createEnhetFilter(String...enhetIds) {
+        int[] numericalId = new int[enhetIds.length];
+        for (int i = 0; i < enhetIds.length; i++) {
+            numericalId[i] = Warehouse.getEnhet(enhetIds[i]);
+        }
+        Arrays.sort(numericalId);
+        return new EnhetFilter(numericalId);
+    }
+
+    public static Iterable<SjukfallGroup> sjukfallGrupper(final LocalDate from, final int periods, final int periodSize, final Aisle aisle, final StartFilter filter) {
+        return new Iterable<SjukfallGroup>() {
+            @Override
+            public Iterator<SjukfallGroup> iterator() {
+                return new SjukfallGroupIterator(from, periods, periodSize, aisle, filter);
             }
         };
     }
@@ -117,7 +135,7 @@ public final class SjukfallUtil {
     return count;
     }
 
-    private interface StartFilter {
+    public interface StartFilter {
         boolean accept(Fact fact);
     }
 

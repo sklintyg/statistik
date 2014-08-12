@@ -53,6 +53,10 @@ public class Warehouse implements Iterable<Aisle> {
         return enhetsMap.getId(id);
     }
 
+    public static int getEnhet(String id) {
+        return enhetsMap.getId(id);
+    }
+
     private static class IdMap<T> {
         private final Map<T, Integer> map = new HashMap<>();
 
@@ -63,6 +67,15 @@ public class Warehouse implements Iterable<Aisle> {
                 map.put(key, id);
             }
             return id;
+        }
+
+        public synchronized Integer maybeGetId(T key) {
+            Integer id = map.get(key);
+            if (id == null) {
+                return -1;
+            } else {
+                return id;
+            }
         }
     }
 

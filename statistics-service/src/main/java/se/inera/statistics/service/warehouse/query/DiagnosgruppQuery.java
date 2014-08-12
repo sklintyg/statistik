@@ -1,10 +1,19 @@
 package se.inera.statistics.service.warehouse.query;
 
+import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import se.inera.statistics.service.report.model.Avsnitt;
+import se.inera.statistics.service.report.model.DiagnosgruppResponse;
+import se.inera.statistics.service.report.model.KonDataRow;
+import se.inera.statistics.service.report.model.KonField;
 import se.inera.statistics.service.report.model.OverviewChartRowExtended;
 import se.inera.statistics.service.report.util.Icd10;
+import se.inera.statistics.service.report.util.ReportUtil;
+import se.inera.statistics.service.warehouse.Aisle;
 import se.inera.statistics.service.warehouse.Sjukfall;
+import se.inera.statistics.service.warehouse.SjukfallUtil;
+import se.inera.statistics.service.warehouse.Warehouse;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -17,6 +26,7 @@ import java.util.Map;
 @Component
 public class DiagnosgruppQuery {
 
+    public static final int MAX_DIAGNOS_ID = 2700;
     private static Icd10 icd10;
     private static Map<Integer, Icd10.Kapitel> kapitelMap;
 
@@ -44,6 +54,67 @@ public class DiagnosgruppQuery {
         }
 
         return result;
+    }
+
+    public static DiagnosgruppResponse getDiagnosgrupper(Warehouse warehouse, SjukfallUtil.StartFilter filter, LocalDate start, int periods, int periodLength, String vardgivarId) {
+        Aisle aisle = warehouse.get(vardgivarId);
+        List<Icd10.Kapitel> kapitel = icd10.getKapitel();
+
+        List<KonDataRow> rows = new ArrayList<>();
+        for (SjukfallUtil.SjukfallGroup sjukfallGroup: SjukfallUtil.sjukfallGrupper(start, periods, periodLength, aisle, filter)) {
+            int[] female = new int[MAX_DIAGNOS_ID];
+            int[] male = new int[MAX_DIAGNOS_ID];
+            for (Sjukfall sjukfall: sjukfallGroup.getSjukfall()) {
+                if (sjukfall.getKon() == 0) {
+                    female[sjukfall.getDiagnoskapitel()]++;
+                } else {
+                    male[sjukfall.getDiagnoskapitel()]++;
+                }
+            }
+            List<KonField> list = new ArrayList<>(kapitel.size());
+            for (Icd10.Kapitel k: kapitel) {
+                list.add(new KonField(female[k.toInt()], male[k.toInt()]));
+            }
+            rows.add(new KonDataRow(ReportUtil.toPeriod(sjukfallGroup.getRange().getFrom()), list));
+        }
+        List<Avsnitt> avsnitt = new ArrayList<>(kapitel.size());
+        for (Icd10.Kapitel k: kapitel) {
+            avsnitt.add(new Avsnitt(k.getId(), k.getName()));
+        }
+        return new DiagnosgruppResponse(avsnitt, rows);
+    }
+
+    public static DiagnosgruppResponse getDiagnosavsnitt(Warehouse warehouse, SjukfallUtil.StartFilter filter, LocalDate start, int periods, int periodLength, String kapitelId, String vardgivarId) {
+        Aisle aisle = warehouse.get(vardgivarId);
+
+        Icd10.Kapitel kapitel = icd10.getKapitel(kapitelId);
+        List<Avsnitt> avsnitts = new ArrayList<>();
+        for (Icd10.Avsnitt avsnitt : kapitel.getAvsnitt()) {
+            avsnitts.add(new Avsnitt(avsnitt.getId(), avsnitt.getName()));
+        }
+
+        List<KonDataRow> rows = new ArrayList<>();
+        for (SjukfallUtil.SjukfallGroup sjukfallGroup: SjukfallUtil.sjukfallGrupper(start, periods, periodLength, aisle, filter)) {
+            int[] female = new int[MAX_DIAGNOS_ID];
+            int[] male = new int[MAX_DIAGNOS_ID];
+            for (Sjukfall sjukfall: sjukfallGroup.getSjukfall()) {
+
+                if (sjukfall.getKon() == 0) {
+                    female[sjukfall.getDiagnosavsnitt()]++;
+                } else {
+                    male[sjukfall.getDiagnosavsnitt()]++;
+                }
+            }
+
+            List<KonField> list = new ArrayList<>(avsnitts.size());
+            for (Icd10.Avsnitt avsnitt: kapitel.getAvsnitt()) {
+                list.add(new KonField(female[avsnitt.toInt()], male[avsnitt.toInt()]));
+            }
+            rows.add(new KonDataRow(ReportUtil.toPeriod(sjukfallGroup.getRange().getFrom()), list));
+        }
+
+
+        return new DiagnosgruppResponse(avsnitts, rows);
     }
 
     private static Collection<String> rowsToKeep(Map<String, Counter<String>> count, int noOfRows) {
