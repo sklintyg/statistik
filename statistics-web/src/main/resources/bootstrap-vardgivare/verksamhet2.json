@@ -1,6 +1,7 @@
 {
     "id" : "verksamhet2",
     "namn" : "Småmålas akutmottagning",
-    "vardgivarId" : "vg-verksamhet1"
+    "vardgivarId" : "vg-verksamhet1",
+    "vardgivarNamn" : "Småregionen"
 
 }

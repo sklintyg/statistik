@@ -1,5 +1,6 @@
 {
     "id" : "verksamhet1",
     "namn" : "Närhälsan i Småmåla",
-    "vardgivarId" : "vg-verksamhet1"
+    "vardgivarId" : "vg-verksamhet1",
+    "vardgivarNamn" : "Småregionen"
 }
