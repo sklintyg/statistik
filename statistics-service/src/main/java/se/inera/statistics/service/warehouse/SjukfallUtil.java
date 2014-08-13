@@ -30,7 +30,7 @@ import java.util.Map;
 
 public final class SjukfallUtil {
 
-    private static final StartFilter ALL_ENHETER = new StartFilter() {
+    public static final StartFilter ALL_ENHETER = new StartFilter() {
         @Override
         public boolean accept(Fact fact) {
             return true;

@@ -26,8 +26,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
-import se.inera.statistics.service.report.api.Aldersgrupp;
-import se.inera.statistics.service.report.api.Diagnoskapitel;
 import se.inera.statistics.service.report.api.RollingLength;
 import se.inera.statistics.service.report.model.DiagnosgruppResponse;
 import se.inera.statistics.service.report.model.Range;
@@ -68,7 +66,7 @@ public class ProtectedChartDataService {
     private static final String VERKSAMHET_PATH_ID = "verksamhetId";
 
     private static final Logger LOG = LoggerFactory.getLogger(ProtectedChartDataService.class);
-    public static final String TEXT_UTF_8 = "text/plain; charset=UTF-8";
+    private static final String TEXT_UTF_8 = "text/plain; charset=UTF-8";
 
     @Autowired
     private WarehouseService warehouse;
@@ -90,8 +88,8 @@ public class ProtectedChartDataService {
     public SimpleDetailsData getNumberOfCasesPerMonth(@Context HttpServletRequest request, @PathParam(VERKSAMHET_PATH_ID) String verksamhetId) {
         LOG.info("Calling getNumberOfCasesPerMonth with verksamhetId: " + verksamhetId);
         final Range range = new Range(18);
-        Verksamhet verksamhet = getVerksamhet(request, verksamhetId);
-        SimpleKonResponse<SimpleKonDataRow> casesPerMonth = warehouse.getCasesPerMonth(Verksamhet.decodeId(verksamhetId), range, verksamhet.getVardgivarId());
+        Verksamhet verksamhet = getVerksamhet(request, Verksamhet.decodeId(verksamhetId));
+        SimpleKonResponse<SimpleKonDataRow> casesPerMonth = warehouse.getCasesPerMonth(verksamhet.getId(), range, verksamhet.getVardgivarId());
         return new SimpleDualSexConverter().convert(casesPerMonth, range);
     }
 
@@ -129,8 +127,8 @@ public class ProtectedChartDataService {
     public DualSexStatisticsData getDiagnosisGroupStatistics(@Context HttpServletRequest request, @PathParam(VERKSAMHET_PATH_ID) String verksamhetId) {
         LOG.info("Calling getDiagnoskapitelstatistik with verksamhetId: " + verksamhetId);
         final Range range = new Range(18);
-        Verksamhet verksamhet = getVerksamhet(request, verksamhetId);
-        DiagnosgruppResponse diagnosisGroups = warehouse.getDiagnosgrupperPerMonth(Verksamhet.decodeId(verksamhetId), range, verksamhet.getVardgivarId());
+        Verksamhet verksamhet = getVerksamhet(request, Verksamhet.decodeId(verksamhetId));
+        DiagnosgruppResponse diagnosisGroups = warehouse.getDiagnosgrupperPerMonth(verksamhet.getId(), range, verksamhet.getVardgivarId());
         return new DiagnosisGroupsConverter().convert(diagnosisGroups, range);
     }
 
@@ -167,8 +165,8 @@ public class ProtectedChartDataService {
     public DualSexStatisticsData getDiagnosisSubGroupStatistics(@Context HttpServletRequest request, @PathParam(VERKSAMHET_PATH_ID) String verksamhetId, @PathParam("groupId") String groupId) {
         LOG.info("Calling getDiagnosavsnittstatistik with verksamhetId: '" + verksamhetId + "' and groupId: " + groupId);
         final Range range = new Range(18);
-        Verksamhet verksamhet = getVerksamhet(request, verksamhetId);
-        DiagnosgruppResponse diagnosavsnitt = warehouse.getDiagnosavsnitt(Verksamhet.decodeId(verksamhetId), range, groupId, verksamhet.getVardgivarId());
+        Verksamhet verksamhet = getVerksamhet(request, Verksamhet.decodeId(verksamhetId));
+        DiagnosgruppResponse diagnosavsnitt = warehouse.getDiagnosavsnitt(verksamhet.getId(), range, groupId, verksamhet.getVardgivarId());
         return new DiagnosisSubGroupsConverter().convert(diagnosavsnitt, range);
     }
 
@@ -205,8 +203,8 @@ public class ProtectedChartDataService {
     @PostAuthorize(value = "@protectedChartDataService.helper.userAccess(#request, #verksamhetId)")
     public VerksamhetOverviewData getOverviewData(@Context HttpServletRequest request, @PathParam(VERKSAMHET_PATH_ID) String verksamhetId) {
         Range range = Range.quarter();
-        Verksamhet verksamhet = getVerksamhet(request, verksamhetId);
-        VerksamhetOverviewResponse response = warehouse.getOverview(Verksamhet.decodeId(verksamhetId), range, verksamhet.getVardgivarId());
+        Verksamhet verksamhet = getVerksamhet(request, Verksamhet.decodeId(verksamhetId));
+        VerksamhetOverviewResponse response = warehouse.getOverview(verksamhet.getId(), range, verksamhet.getVardgivarId());
         return new VerksamhetOverviewConverter().convert(response, range);
     }
 
@@ -226,8 +224,8 @@ public class ProtectedChartDataService {
         LOG.info("Calling getAgeGroupsStatistics with verksamhetId: " + verksamhetId);
         final Range range = new Range(12);
 
-        Verksamhet verksamhet = getVerksamhet(request, verksamhetId);
-        SimpleKonResponse<SimpleKonDataRow> ageGroups = warehouse.getAldersgrupper(Verksamhet.decodeId(verksamhetId), range, verksamhet.getVardgivarId());
+        Verksamhet verksamhet = getVerksamhet(request, Verksamhet.decodeId(verksamhetId));
+        SimpleKonResponse<SimpleKonDataRow> ageGroups = warehouse.getAldersgrupper(verksamhet.getId(), range, verksamhet.getVardgivarId());
         return new AgeGroupsConverter().convert(ageGroups, range);
     }
 
@@ -267,8 +265,8 @@ public class ProtectedChartDataService {
         LocalDate end = new LocalDate().withDayOfMonth(1).plusMonths(1).minusDays(1);
         final Range range = new Range(start, end);
 
-        Verksamhet verksamhet = getVerksamhet(request, verksamhetId);
-        SimpleKonResponse<SimpleKonDataRow> ageGroups = warehouse.getAldersgrupper(Verksamhet.decodeId(verksamhetId), range, verksamhet.getVardgivarId());
+        Verksamhet verksamhet = getVerksamhet(request, Verksamhet.decodeId(verksamhetId));
+        SimpleKonResponse<SimpleKonDataRow> ageGroups = warehouse.getAldersgrupper(verksamhet.getId(), range, verksamhet.getVardgivarId());
         return new AgeGroupsConverter().convert(ageGroups, range);
 
     }
@@ -306,8 +304,8 @@ public class ProtectedChartDataService {
     public DualSexStatisticsData getDegreeOfSickLeaveStatistics(@Context HttpServletRequest request, @PathParam(VERKSAMHET_PATH_ID) String verksamhetId) {
         LOG.info("Calling getDegreeOfSickLeaveStatistics with verksamhetId: " + verksamhetId);
         final Range range = new Range(18);
-        Verksamhet verksamhet = getVerksamhet(request, verksamhetId);
-        SjukskrivningsgradResponse degreeOfSickLeaveStatistics = warehouse.getSjukskrivningsgradPerMonth(Verksamhet.decodeId(verksamhetId), range, verksamhet.getVardgivarId());
+        Verksamhet verksamhet = getVerksamhet(request, Verksamhet.decodeId(verksamhetId));
+        SjukskrivningsgradResponse degreeOfSickLeaveStatistics = warehouse.getSjukskrivningsgradPerMonth(verksamhet.getId(), range, verksamhet.getVardgivarId());
         return new DegreeOfSickLeaveConverter().convert(degreeOfSickLeaveStatistics, range);
     }
 
@@ -345,9 +343,9 @@ public class ProtectedChartDataService {
         LOG.info("Calling getSickLeaveLengthData with verksamhetId: " + verksamhetId);
         final RollingLength year = RollingLength.YEAR;
         Range range = new Range(year.getPeriods());
-        Verksamhet verksamhet = getVerksamhet(request, verksamhetId);
+        Verksamhet verksamhet = getVerksamhet(request, Verksamhet.decodeId(verksamhetId));
 
-        SjukfallslangdResponse sickLeaveLength = warehouse.getSjukskrivningslangd(Verksamhet.decodeId(verksamhetId), range, verksamhet.getVardgivarId());
+        SjukfallslangdResponse sickLeaveLength = warehouse.getSjukskrivningslangd(verksamhet.getId(), range, verksamhet.getVardgivarId());
         return new SickLeaveLengthConverter().convert(sickLeaveLength, range);
     }
 
@@ -383,11 +381,11 @@ public class ProtectedChartDataService {
     @PostAuthorize(value = "@protectedChartDataService.helper.userAccess(#request, #verksamhetId)")
     public SickLeaveLengthData getSickLeaveLengthCurrentData(@Context HttpServletRequest request, @PathParam(VERKSAMHET_PATH_ID) String verksamhetId) {
         LOG.info("Calling getSickLeaveLengthCurrentData with verksamhetId: " + verksamhetId);
-        Verksamhet verksamhet = getVerksamhet(request, verksamhetId);
+        Verksamhet verksamhet = getVerksamhet(request, Verksamhet.decodeId(verksamhetId));
         LocalDate start = new LocalDate().withDayOfMonth(1);
         LocalDate end = start.plusMonths(1).minusDays(1);
         final Range range = new Range(start, end);
-        SjukfallslangdResponse sickLeaveLength = warehouse.getSjukskrivningslangd(Verksamhet.decodeId(verksamhetId), range, verksamhet.getVardgivarId());
+        SjukfallslangdResponse sickLeaveLength = warehouse.getSjukskrivningslangd(verksamhet.getId(), range, verksamhet.getVardgivarId());
         return new SickLeaveLengthConverter().convert(sickLeaveLength, range);
     }
 
@@ -423,9 +421,9 @@ public class ProtectedChartDataService {
     @PostAuthorize(value = "@protectedChartDataService.helper.userAccess(#request, #verksamhetId)")
     public SimpleDetailsData getLongSickLeavesData(@Context HttpServletRequest request, @PathParam(VERKSAMHET_PATH_ID) String verksamhetId) {
         LOG.info("Calling getLongSickLeavesData with verksamhetId: " + verksamhetId);
-        Verksamhet verksamhet = getVerksamhet(request, verksamhetId);
+        Verksamhet verksamhet = getVerksamhet(request, Verksamhet.decodeId(verksamhetId));
         final Range range = new Range(18);
-        SimpleKonResponse<SimpleKonDataRow> longSickLeaves = warehouse.getLangaSjukskrivningarPerManad(Verksamhet.decodeId(verksamhetId), range, verksamhet.getVardgivarId());
+        SimpleKonResponse<SimpleKonDataRow> longSickLeaves = warehouse.getLangaSjukskrivningarPerManad(verksamhet.getId(), range, verksamhet.getVardgivarId());
         return new SimpleDualSexConverter().convert(longSickLeaves, range);
     }
 
@@ -461,7 +459,6 @@ public class ProtectedChartDataService {
         return null;
     }
 
-
     protected static class Helper {
 
         public static boolean hasAccessTo(HttpServletRequest request, String verksamhetId) {
@@ -494,10 +491,5 @@ public class ProtectedChartDataService {
         private static List<Verksamhet> getVerksamhets(HttpServletRequest request) {
             return ServiceUtil.getLoginInfo(request).getBusinesses();
         }
-
-        private static LocalDate previousMonth() {
-            return new LocalDate().withDayOfMonth(1).minusMonths(1);
-        }
     }
-
 }
