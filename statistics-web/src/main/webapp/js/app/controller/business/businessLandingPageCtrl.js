@@ -25,7 +25,7 @@ app.businessLandingPageCtrl = function ($scope, $window, $cookies, statisticsDat
             if (loginInfo.businesses.length < 1) {
                 $window.location.href = "#/login";
             }
-            $window.location.href = "#/verksamhet/" + loginInfo.defaultVerksamhet.id + "/oversikt";
+            $window.location.href = "#/verksamhet/" + loginInfo.defaultVerksamhet.vardgivarId + "/oversikt";
         }, function() {
             $scope.dataLoadingError = true;
         });
