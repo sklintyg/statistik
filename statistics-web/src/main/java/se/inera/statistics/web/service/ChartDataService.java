@@ -147,9 +147,9 @@ public class ChartDataService {
     @Produces({ MediaType.APPLICATION_JSON })
     public AgeGroupsData getAgeGroupsStatistics() {
         LOG.info("Calling getAgeGroupsStatistics for national");
-        final RollingLength quarter = RollingLength.QUARTER;
-        AgeGroupsResponse ageGroups = datasourceAgeGroups.getHistoricalAgeGroups(NATIONELL, previousMonth(), quarter);
-        return new AgeGroupsConverter().convert(ageGroups, new Range(quarter.getPeriods()));
+        final RollingLength period = RollingLength.YEAR;
+        AgeGroupsResponse ageGroups = datasourceAgeGroups.getHistoricalAgeGroups(NATIONELL, previousMonth(), period);
+        return new AgeGroupsConverter().convert(ageGroups, new Range(period.getPeriods()));
     }
 
     @GET

@@ -153,7 +153,7 @@ public class ProtectedChartDataService {
     @PostAuthorize(value = "@protectedChartDataService.helper.userAccess(#request, #verksamhetId)")
     public AgeGroupsData getAgeGroupsStatistics(@Context HttpServletRequest request, @PathParam("verksamhetId") String verksamhetId) {
         LOG.info("Calling getAgeGroupsStatistics with verksamhetId: " + verksamhetId);
-        final RollingLength period = RollingLength.QUARTER;
+        final RollingLength period = RollingLength.YEAR;
         AgeGroupsResponse ageGroups = datasourceAgeGroups.getHistoricalAgeGroups(Verksamhet.decodeId(verksamhetId), Helper.previousMonth(), period);
         return new AgeGroupsConverter().convert(ageGroups, new Range(period.getPeriods()));
     }
