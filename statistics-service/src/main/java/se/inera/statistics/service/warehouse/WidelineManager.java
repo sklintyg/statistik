@@ -25,7 +25,7 @@ public class WidelineManager {
     @Autowired
     private WidelineConverter widelineConverter;
 
-    @Transactional
+    @Transactional(dontRollbackOn = Exception.class)
     public void accept(JsonNode intyg, JsonNode hsa, long logId, String correlationId, EventType type) {
         WideLine line = widelineConverter.toWideline(intyg, hsa, logId, correlationId, type);
         List<String> errors  = widelineConverter.validate(line);
@@ -34,7 +34,7 @@ public class WidelineManager {
             manager.persist(line);
         } else {
             String intygid = DocumentHelper.getIntygId(intyg);
-            StringBuilder errorBuilder = new StringBuilder("Faulty intyg logid").append(logId).append(" id ").append(intygid);
+            StringBuilder errorBuilder = new StringBuilder("Faulty intyg logid ").append(logId).append(" id ").append(intygid);
             for (String error : errors) {
                 errorBuilder.append('\n').append(error);
             }
