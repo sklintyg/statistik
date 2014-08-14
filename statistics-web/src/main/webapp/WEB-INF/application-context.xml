@@ -141,20 +141,17 @@
         <bean class="se.inera.statistics.service.report.repository.SjukfallPerLanPersistenceHandler"
               id="casesPerCounty"/>
 
-        <bean id="dataGenerator" class="se.inera.statistics.service.demo.LargeTestDataGenerator" />
     </beans>
 
     <beans profile="test,db,qa,dev">
         <bean class="se.inera.statistics.service.common.CommonPersistenceHandler" id="commonPersistenceHandler"/>
     </beans>
 
-    <beans profile="dev">
+    <beans profile="dev,!noload">
         <bean class="se.inera.statistics.service.demo.InjectUtlatande" lazy-init="false"/>
     </beans>
+
     <beans profile="generatetestdata">
-        <bean class="se.inera.statistics.service.common.CommonPersistenceHandler"/>
         <bean class="se.inera.statistics.service.demo.InjectUtlatande2" lazy-init="false"/>
     </beans>
-    
-    
 </beans>
