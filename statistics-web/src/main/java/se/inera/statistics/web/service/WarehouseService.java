@@ -33,11 +33,11 @@ public class WarehouseService {
     @Autowired
     private Warehouse warehouse;
 
-    public VerksamhetOverviewResponse getOverview(String enhetId, Range range, String vardgivarId) {
+    public VerksamhetOverviewResponse getOverview(SjukfallUtil.StartFilter filter, Range range, String vardgivarId) {
         Aisle aisle = warehouse.get(vardgivarId);
 
         Range previousRange = ReportUtil.getPreviousPeriod(range);
-        Iterator<SjukfallUtil.SjukfallGroup> groupIterator = SjukfallUtil.sjukfallGrupper(previousRange.getFrom(), 2, previousRange.getMonths(), aisle, SjukfallUtil.createEnhetFilter(enhetId)).iterator();
+        Iterator<SjukfallUtil.SjukfallGroup> groupIterator = SjukfallUtil.sjukfallGrupper(previousRange.getFrom(), 2, previousRange.getMonths(), aisle, filter).iterator();
 
         SjukfallUtil.SjukfallGroup previousSjukfall = groupIterator.next();
         SjukfallUtil.SjukfallGroup currentSjukfall = groupIterator.next();
@@ -76,11 +76,11 @@ public class WarehouseService {
         return count;
     }
 
-    public SimpleKonResponse<SimpleKonDataRow> getCasesPerMonth(String enhetId, Range range, String vardgivarId) {
+    public SimpleKonResponse<SimpleKonDataRow> getCasesPerMonth(SjukfallUtil.StartFilter filter, Range range, String vardgivarId) {
         Aisle aisle = warehouse.get(vardgivarId);
 
         ArrayList<SimpleKonDataRow> result = new ArrayList<>();
-        for (SjukfallUtil.SjukfallGroup sjukfallGroup: SjukfallUtil.sjukfallGrupper(range.getFrom(), range.getMonths(), 1, aisle, SjukfallUtil.createEnhetFilter(enhetId))) {
+        for (SjukfallUtil.SjukfallGroup sjukfallGroup: SjukfallUtil.sjukfallGrupper(range.getFrom(), range.getMonths(), 1, aisle, filter)) {
             int male = countMale(sjukfallGroup.getSjukfall());
             int female = sjukfallGroup.getSjukfall().size() - male;
             String displayDate = ReportUtil.toDiagramPeriod(sjukfallGroup.getRange().getFrom());
@@ -90,27 +90,27 @@ public class WarehouseService {
         return new SimpleKonResponse<>(result, range.getMonths());
     }
 
-    public DiagnosgruppResponse getDiagnosgrupperPerMonth(String enhetId, Range range, String vardgivarId) {
-        return DiagnosgruppQuery.getDiagnosgrupper(warehouse, SjukfallUtil.createEnhetFilter(enhetId), range.getFrom(), range.getMonths(), 1, vardgivarId);
+    public DiagnosgruppResponse getDiagnosgrupperPerMonth(SjukfallUtil.StartFilter filter, Range range, String vardgivarId) {
+        return DiagnosgruppQuery.getDiagnosgrupper(warehouse, filter, range.getFrom(), range.getMonths(), 1, vardgivarId);
     }
 
-    public SjukskrivningsgradResponse getSjukskrivningsgradPerMonth(String enhetId, Range range, String vardgivarId) {
-        return SjukskrivningsgradQuery.getSjukskrivningsgrad(warehouse, SjukfallUtil.createEnhetFilter(enhetId), range.getFrom(), range.getMonths(), 1, vardgivarId);
+    public SjukskrivningsgradResponse getSjukskrivningsgradPerMonth(SjukfallUtil.StartFilter filter, Range range, String vardgivarId) {
+        return SjukskrivningsgradQuery.getSjukskrivningsgrad(warehouse, filter, range.getFrom(), range.getMonths(), 1, vardgivarId);
     }
 
-    public SjukfallslangdResponse getSjukskrivningslangd(String enhetId, Range range, String vardgivarId) {
-        return SjukskrivningslangdQuery.getSjuksrivningslangd(warehouse, SjukfallUtil.createEnhetFilter(enhetId), range.getFrom(), 1, range.getMonths(), vardgivarId);
+    public SjukfallslangdResponse getSjukskrivningslangd(SjukfallUtil.StartFilter filter, Range range, String vardgivarId) {
+        return SjukskrivningslangdQuery.getSjuksrivningslangd(warehouse, filter, range.getFrom(), 1, range.getMonths(), vardgivarId);
     }
 
-    public SimpleKonResponse<SimpleKonDataRow> getLangaSjukskrivningarPerManad(String enhetId, Range range, String vardgivarId) {
-        return SjukskrivningslangdQuery.getLangaSjukfall(warehouse, SjukfallUtil.createEnhetFilter(enhetId), range.getFrom(), range.getMonths(), 1, vardgivarId);
+    public SimpleKonResponse<SimpleKonDataRow> getLangaSjukskrivningarPerManad(SjukfallUtil.StartFilter filter, Range range, String vardgivarId) {
+        return SjukskrivningslangdQuery.getLangaSjukfall(warehouse, filter, range.getFrom(), range.getMonths(), 1, vardgivarId);
     }
 
-    public SimpleKonResponse<SimpleKonDataRow> getAldersgrupper(String enhetId, Range range, String vardgivarId) {
-        return AldersgruppQuery.getAldersgrupper(warehouse, SjukfallUtil.createEnhetFilter(enhetId), range.getFrom(), 1, range.getMonths(), vardgivarId);
+    public SimpleKonResponse<SimpleKonDataRow> getAldersgrupper(SjukfallUtil.StartFilter filter, Range range, String vardgivarId) {
+        return AldersgruppQuery.getAldersgrupper(warehouse, filter, range.getFrom(), 1, range.getMonths(), vardgivarId);
     }
 
-    public DiagnosgruppResponse getDiagnosavsnitt(String enhetId, Range range, String kapitelId, String vardgivarId) {
-        return DiagnosgruppQuery.getDiagnosavsnitt(warehouse, SjukfallUtil.createEnhetFilter(enhetId), range.getFrom(), range.getMonths(), 1, kapitelId, vardgivarId);
+    public DiagnosgruppResponse getDiagnosavsnitt(SjukfallUtil.StartFilter filter, Range range, String kapitelId, String vardgivarId) {
+        return DiagnosgruppQuery.getDiagnosavsnitt(warehouse, filter, range.getFrom(), range.getMonths(), 1, kapitelId, vardgivarId);
     }
 }

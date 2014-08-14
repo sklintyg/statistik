@@ -125,6 +125,7 @@ public class HsaWebServiceStub implements HsaWsResponderInterface {
                 miuInfo.setCareUnitHsaIdentity(enhet.getId());
                 miuInfo.setCareUnitName(enhet.getNamn());
                 miuInfo.setCareGiver(enhet.getVardgivarId());
+                miuInfo.setCareGiverName(enhet.getVardgivarNamn());
                 informationTypes.add(miuInfo);
             }
         }

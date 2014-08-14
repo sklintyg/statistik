@@ -43,6 +43,7 @@ import se.inera.auth.model.User;
 import se.inera.statistics.hsa.model.Vardenhet;
 import se.inera.statistics.service.report.api.VerksamhetOverview;
 import se.inera.statistics.service.report.model.Range;
+import se.inera.statistics.service.warehouse.SjukfallUtil;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ProtectedChartDataServiceTest {
@@ -70,24 +71,24 @@ public class ProtectedChartDataServiceTest {
         init();
 
         try {
-            chartDataService.getOverviewData(request, "verksamhet2");
+            chartDataService.getOverviewData(request, "VG2");
             fail("Current implementation can not use null data");
         } catch (NullPointerException e) {
             assertTrue(true);
         }
-        Mockito.verify(warehouse).getOverview(anyString(), any(Range.class), anyString());
+        Mockito.verify(warehouse).getOverview(any(SjukfallUtil.StartFilter.class), any(Range.class), anyString());
     }
 
     @Test
     public void checkDeniedAccessToVerksamhetTest() {
-        boolean result = ProtectedChartDataService.Helper.hasAccessTo(request, "verksamhet3");
+        boolean result = ProtectedChartDataService.Helper.hasAccessTo(request, "VG3");
 
         assertEquals(false, result);
     }
 
     @Test
     public void checkAllowedAccessToVerksamhetTest() {
-        boolean result = ProtectedChartDataService.Helper.hasAccessTo(request, "verksamhet2");
+        boolean result = ProtectedChartDataService.Helper.hasAccessTo(request, "VG2");
 
         assertEquals(true, result);
     }

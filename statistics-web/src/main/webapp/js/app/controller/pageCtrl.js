@@ -23,11 +23,11 @@
 
     var getSelectedVerksamhet = function(selectedVerksamhetId, verksamhets) {
         for (var i = 0; i < verksamhets.length; i++) {
-            if (verksamhets[i].id === selectedVerksamhetId) {
+            if (verksamhets[i].vardgivarId === selectedVerksamhetId) {
                 return verksamhets[i];
             }
         }
-        return {name: "Välj verksamhet"}; //Selected verksamhet not found
+        return {name: "Okänd verksamhet"}; //Selected verksamhet not found
     };
 
     $rootScope.$on('$routeChangeSuccess', function(angularEvent, next, current) {
@@ -55,11 +55,12 @@
             
             statisticsData.getLoginInfo(function(loginInfo){
                     $scope.businesses = loginInfo.businesses;
-                    $scope.verksamhetName = getSelectedVerksamhet($scope.businessId, loginInfo.businesses).name;
+                    var v = getSelectedVerksamhet($scope.businessId, loginInfo.businesses);
+                    $scope.verksamhetName = loginInfo.vgView ? (v.vardgivarName + (loginInfo.fullVgAccess ? "(alla enheter)": "(vissa enheter)")): v.name;
                     $scope.userName = loginInfo.name;
-                    $scope.isVgView = loginInfo.isVgView;
-                    $scope.isFullVgAccess = loginInfo.isFullVgAccess;
-                    $scope.userNameWithAccess = loginInfo.name + (!loginInfo.vgView ? "(Enhetsnivå)" : loginInfo.fullVgAccess ? "(Vårdgivarnivå alla)" : "(Vårdgivarnivå vissa)")
+                    $scope.isVgView = loginInfo.vgView;
+                    $scope.isFullVgAccess = loginInfo.fullVgAccess;
+                    $scope.userNameWithAccess = loginInfo.name;
                 }, function() { $scope.dataLoadingError = true; });
         }
     });

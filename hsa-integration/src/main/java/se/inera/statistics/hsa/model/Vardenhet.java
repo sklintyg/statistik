@@ -29,14 +29,20 @@ public class Vardenhet implements Serializable {
     private String id;
     private String namn;
     private String vardgivarId;
+    private String vardgivarNamn;
 
     public Vardenhet() {
     }
 
     public Vardenhet(String id, String namn, String vardgivarId) {
+        this(id, namn, vardgivarId, vardgivarId);
+    }
+
+    public Vardenhet(String id, String namn, String vardgivarId, String vardgivarNamn) {
         this.id = id;
         this.namn = namn;
         this.vardgivarId = vardgivarId;
+        this.vardgivarNamn = vardgivarNamn;
     }
 
     public String getNamn() {
@@ -49,6 +55,10 @@ public class Vardenhet implements Serializable {
 
     public String getVardgivarId() {
         return vardgivarId;
+    }
+
+    public String getVardgivarNamn() {
+        return vardgivarNamn;
     }
 
     @Override

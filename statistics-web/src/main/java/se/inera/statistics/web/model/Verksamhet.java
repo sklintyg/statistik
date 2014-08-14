@@ -34,6 +34,8 @@ public class Verksamhet implements Serializable {
     private final String id;
     private final String name;
     private final String vardgivarId;
+    private final String vardgivarName;
+
     private static final CharSequenceTranslator ESCAPER = UnicodeEscaper.below('-').with(excludeBetween('-', '0'), excludeBetween('9', 'A'), excludeBetween('Z', 'a'), above('z'));
 
     private static  UnicodeEscaper excludeBetween(int codepointLow, int codepointHigh) {
@@ -41,9 +43,14 @@ public class Verksamhet implements Serializable {
     }
 
     public Verksamhet(String id, String name, String vardgivarId) {
+        this(id, name, vardgivarId, vardgivarId);
+    }
+
+    public Verksamhet(String id, String name, String vardgivarId, String vardgivarName) {
         this.id = id;
         this.name = name;
         this.vardgivarId = vardgivarId;
+        this.vardgivarName = vardgivarName;
     }
 
     public String getId() {
@@ -56,6 +63,10 @@ public class Verksamhet implements Serializable {
 
     public String getVardgivarId() {
         return vardgivarId;
+    }
+
+    public String getVardgivarName() {
+        return vardgivarName;
     }
 
     public static String encodeId(String id) {
