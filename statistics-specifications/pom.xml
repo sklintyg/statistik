@@ -20,7 +20,7 @@
     <fitnesse.root>FitNesseRoot</fitnesse.root>
     <!-- This example has no unit tests, just integration tests -->
     <skipTests>true</skipTests>
-    <checkstyle.basedir>${project.basedir}/..</checkstyle.basedir>
+    <checkstyle.basedir>${project.basedir}/../build-tools</checkstyle.basedir>
     <statistics.web.baseUrl>http://localhost:8080</statistics.web.baseUrl>
     <statistics.baseUrl>{statistics.web.baseUrl}/api</statistics.baseUrl>
   </properties>

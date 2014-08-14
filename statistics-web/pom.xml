@@ -13,7 +13,7 @@
   <properties>
     <jasmine-plugin-version>1.3.1.2</jasmine-plugin-version>
     <casesPerMonthclass>se.inera.statistics.service.report.mock.SjukfallPerManadMock</casesPerMonthclass>
-    <checkstyle.basedir>${project.basedir}/..</checkstyle.basedir>
+    <checkstyle.basedir>${project.basedir}/../build-tools</checkstyle.basedir>
   </properties>
 
   <dependencies>

@@ -31,7 +31,7 @@
     <artifactId>statistics-tools</artifactId>
 
     <properties>
-        <checkstyle.basedir>${project.basedir}/..</checkstyle.basedir>
+        <checkstyle.basedir>${project.basedir}/../build-tools</checkstyle.basedir>
     </properties>
 
     <dependencies>

@@ -12,7 +12,7 @@
 
     <properties>
         <groovy.version>2.3.4</groovy.version>
-        <checkstyle.basedir>${project.basedir}/..</checkstyle.basedir>
+        <checkstyle.basedir>${project.basedir}/../build-tools</checkstyle.basedir>
     </properties>
     <dependencies>
         <dependency>
