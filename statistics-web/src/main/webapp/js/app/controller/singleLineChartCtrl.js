@@ -46,7 +46,7 @@
 	var paintChart = function(chartCategories, chartSeries) {
         var chartOptions = ControllerCommons.getHighChartConfigBase(chartCategories, chartSeries);
         chartOptions.chart.type = 'line';
-        chartOptions.chart.marginLeft = 60;
+        chartOptions.chart.marginLeft = 70;
         chartOptions.chart.marginTop = 27;
         chartOptions.legend.enabled = $routeParams.printBw || $routeParams.print;
         chartOptions.xAxis.title.text = "Period";
