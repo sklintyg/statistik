@@ -62,6 +62,7 @@
         <cxf.version>2.7.10</cxf.version>
         <logback.version>1.1.1</logback.version>
         <jackson.version>2.2.3</jackson.version>
+        <checkstyle.path>${project.basedir}/../build-tools/src/main/resources</checkstyle.path>
     </properties>
 
     <dependencyManagement>
@@ -516,7 +517,8 @@
                     <artifactId>maven-checkstyle-plugin</artifactId>
                     <version>2.10</version>
                     <configuration>
-                        <configLocation>checkstyle.xml</configLocation>
+                        <!--<configLocation>checkstyle.xml</configLocation>-->
+                        <configLocation>${checkstyle.path}/checkstyle.xml</configLocation>
                     </configuration>
                     <dependencies>
                         <dependency>

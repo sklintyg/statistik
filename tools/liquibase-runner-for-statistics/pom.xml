@@ -17,7 +17,7 @@
 
     <properties>
         <certificate.runner.version>1.0-SNAPSHOT</certificate.runner.version>
-        <checkstyle.basedir>${project.basedir}/../../build-tools</checkstyle.basedir>
+        <checkstyle.path>${project.basedir}/../../build-tools/src/main/resources</checkstyle.path>
     </properties>
 
     <dependencies>
