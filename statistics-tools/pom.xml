@@ -30,6 +30,10 @@
 
     <artifactId>statistics-tools</artifactId>
 
+    <properties>
+        <checkstyle.basedir>${project.basedir}/..</checkstyle.basedir>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>se.inera.statistics</groupId>

@@ -32,6 +32,7 @@
 
   <properties>
     <schema.path>src/main/resources/schemas</schema.path>
+    <checkstyle.basedir>${project.basedir}/..</checkstyle.basedir>
   </properties>
 
   <dependencies>
