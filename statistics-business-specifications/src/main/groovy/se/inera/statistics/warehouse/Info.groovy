@@ -4,8 +4,7 @@ import se.inera.statistics.context.StartUp
 import se.inera.statistics.service.helper.ConversionHelper
 import se.inera.statistics.service.warehouse.Aisle
 import se.inera.statistics.service.warehouse.Sjukfall
-import se.inera.statistics.service.warehouse.SjukfallWithDiagnos
-import se.inera.statistics.service.warehouse.SjukfallWithSjukskrivningsgrad
+
 import se.inera.statistics.service.warehouse.Warehouse
 import se.inera.statistics.service.warehouse.Fact
 
@@ -53,54 +52,37 @@ class Info {
         sb.toString()
     }
 
-    String getSjukfallWithDiagnos() {
+    String getSjukfall(Closure describe) {
         int person = ConversionHelper.patientIdToInt(personId)
         List<Fact> lineList = extractPersonLines(person)
         Iterator<Fact> lines = sortByDate(lineList)
 
-        SjukfallWithDiagnos sjukfall = null
+        Sjukfall sjukfall = null
         StringBuilder sb = new StringBuilder()
         while (lines.hasNext()) {
             Fact line = lines.next()
             if (sjukfall == null) {
-                sjukfall = new SjukfallWithDiagnos(line)
+                sjukfall = new Sjukfall(line)
             } else {
-                SjukfallWithDiagnos newSjukfall = sjukfall.join(line)
-                if (newSjukfall != sjukfall) {
-                    sb.append(sjukfall).append('\n')
+                Sjukfall newSjukfall = sjukfall.join(line)
+                if (!newSjukfall.isExtended()) {
+                    sb.append(describe(sjukfall)).append('\n')
                     sjukfall = newSjukfall
                 }
             }
         }
         if (sjukfall != null) {
-            sb.append(sjukfall).append('\n')
+            sb.append(describe(sjukfall)).append('\n')
         }
         sb.toString()
     }
 
-    String getSjukfallWithSjukskrivningsgrad() {
-        int person = ConversionHelper.patientIdToInt(personId)
-        List<Fact> lineList = extractPersonLinesForSjukskrivningsgrad(person, sjukskrivningsgrad)
-        Iterator<Fact> lines = sortByDate(lineList)
+    String getSjukfallWithDiagnos() {
+        getSjukfall { "SjukfallWithDiagnos{${it.diagnoskapitel}}" + it }
+    }
 
-        SjukfallWithSjukskrivningsgrad sjukfall = null
-        StringBuilder sb = new StringBuilder()
-        while (lines.hasNext()) {
-            Fact line = lines.next()
-            if (sjukfall == null) {
-                sjukfall = new SjukfallWithSjukskrivningsgrad(line)
-            } else {
-                SjukfallWithSjukskrivningsgrad newSjukfall = sjukfall.join(line)
-                if (newSjukfall != sjukfall) {
-                    sb.append(sjukfall).append('\n')
-                    sjukfall = newSjukfall
-                }
-            }
-        }
-        if (sjukfall != null) {
-            sb.append(sjukfall).append('\n')
-        }
-        sb.toString()
+    String getSjukfallWithSjukskrivningsgrad() {
+        getSjukfall {"SjukfallWithDiagnos{${it.diagnoskapitel}}" + it}
     }
 
     private Iterator<Fact> sortByDate(List<Fact> lineList) {

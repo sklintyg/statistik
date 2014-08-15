@@ -27,7 +27,7 @@ public class Sjukfall {
         sjukskrivningsgrad = line.getSjukskrivningsgrad();
     }
 
-    private Sjukfall(Sjukfall previous, Fact line) {
+    public Sjukfall(Sjukfall previous, Fact line) {
         start = previous.getStart();
         end = line.getStartdatum() + line.getSjukskrivningslangd() - 1;
         realDays = previous.getRealDays() + line.getSjukskrivningslangd();
@@ -56,12 +56,15 @@ public class Sjukfall {
         if (isExpired(line.getStartdatum())) {
             return newSjukfall(line);
         } else {
-            return new Sjukfall(this, line);
+            return extendSjukfall(line);
         }
     }
 
     public Sjukfall newSjukfall(Fact line) {
         return new Sjukfall(line);
+    }
+    public Sjukfall extendSjukfall(Fact line) {
+        return new Sjukfall(this, line);
     }
 
     private boolean isExpired(int datum) {
