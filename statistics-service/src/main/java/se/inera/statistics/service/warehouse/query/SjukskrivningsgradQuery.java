@@ -9,7 +9,6 @@ import se.inera.statistics.service.report.util.ReportUtil;
 import se.inera.statistics.service.warehouse.Aisle;
 import se.inera.statistics.service.warehouse.Sjukfall;
 import se.inera.statistics.service.warehouse.SjukfallUtil;
-import se.inera.statistics.service.warehouse.Warehouse;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -19,7 +18,7 @@ import java.util.List;
 import java.util.Map;
 
 public final class SjukskrivningsgradQuery {
-    private static final List<String> GRAD_LABEL = Collections.unmodifiableList(Arrays.asList("25", "50", "75", "100"));
+    public static final List<String> GRAD_LABEL = Collections.unmodifiableList(Arrays.asList("25", "50", "75", "100"));
     private static final List<Integer> GRAD = Collections.unmodifiableList(Arrays.asList(25, 50, 75, 100));
     public static final int PERCENT = 100;
 
@@ -62,9 +61,7 @@ public final class SjukskrivningsgradQuery {
         return counters;
     }
 
-    public static SjukskrivningsgradResponse getSjukskrivningsgrad(Warehouse warehouse, SjukfallUtil.StartFilter filter, LocalDate start, int periods, int periodSize, String vardgivarId) {
-        Aisle aisle = warehouse.get(vardgivarId);
-
+    public static SjukskrivningsgradResponse getSjukskrivningsgrad(Aisle aisle, SjukfallUtil.StartFilter filter, LocalDate start, int periods, int periodSize) {
         List<KonDataRow> rows = new ArrayList<>();
         for (SjukfallUtil.SjukfallGroup sjukfallGroup: SjukfallUtil.sjukfallGrupper(start, periods, periodSize, aisle, filter)) {
             Map<Integer, Counter<Integer>> counters = Counter.mapFor(GRAD);

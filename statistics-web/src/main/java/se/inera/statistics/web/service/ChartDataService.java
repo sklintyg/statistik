@@ -24,14 +24,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import se.inera.statistics.service.report.api.Aldersgrupp;
-import se.inera.statistics.service.report.api.Diagnoskapitel;
 import se.inera.statistics.service.report.api.Overview;
-import se.inera.statistics.service.report.api.RollingLength;
 import se.inera.statistics.service.report.api.SjukfallPerLan;
-import se.inera.statistics.service.report.api.SjukfallPerManad;
-import se.inera.statistics.service.report.api.SjukfallslangdGrupp;
-import se.inera.statistics.service.report.api.Sjukskrivningsgrad;
 import se.inera.statistics.service.report.model.Avsnitt;
 import se.inera.statistics.service.report.model.DiagnosgruppResponse;
 import se.inera.statistics.service.report.model.OverviewResponse;
@@ -72,24 +66,15 @@ public class ChartDataService {
     private static final String NATIONELL = Verksamhet.NATIONELL.toString();
 
     private static final Logger LOG = LoggerFactory.getLogger(ChartDataService.class);
+    public static final int YEAR = 12;
 
     @Autowired
     private Overview datasourceOverview;
     @Autowired
-    private SjukfallPerManad datasourceSjukfallPerManad;
-    @Autowired
-    private se.inera.statistics.service.report.api.Diagnosgrupp datasourceDiagnosgrupp;
-    @Autowired
-    private Diagnoskapitel datasourceDiagnoskapitel;
-    @Autowired
-    private Aldersgrupp datasourceAldersgrupp;
-    @Autowired
-    private Sjukskrivningsgrad datasourceSjukskrivningsgrad;
-    @Autowired
-    private SjukfallslangdGrupp datasourceSickLeaveLength;
-    @Autowired
     private SjukfallPerLan datasourceSjukfallPerLan;
 
+    @Autowired
+    private NationellData data;
     /**
      * Get sjukfall per manad.
      *
@@ -101,7 +86,7 @@ public class ChartDataService {
     public SimpleDetailsData getNumberOfCasesPerMonth() {
         LOG.info("Calling getNumberOfCasesPerMonth for national");
         final Range range = new Range(18);
-        SimpleKonResponse<SimpleKonDataRow> casesPerMonth = datasourceSjukfallPerManad.getCasesPerMonth(NATIONELL, range);
+        SimpleKonResponse<SimpleKonDataRow> casesPerMonth = data.getCasesPerMonth(range);
         return new SimpleDualSexConverter().convert(casesPerMonth, range);
     }
 
@@ -145,7 +130,7 @@ public class ChartDataService {
     public DualSexStatisticsData getDiagnoskapitelstatistik() {
         LOG.info("Calling getDiagnoskapitelstatistik for national");
         final Range range = new Range(18);
-        DiagnosgruppResponse diagnosisGroups = datasourceDiagnosgrupp.getDiagnosisGroups(NATIONELL, range);
+        DiagnosgruppResponse diagnosisGroups = data.getDiagnosgrupper(range);
         return new DiagnosisGroupsConverter().convert(diagnosisGroups, range);
     }
 
@@ -176,7 +161,7 @@ public class ChartDataService {
     public DualSexStatisticsData getDiagnosavsnittstatistik(@PathParam("groupId") String groupId) {
         LOG.info("Calling getDiagnosavsnittstatistik for national with groupId: " + groupId);
         final Range range = new Range(18);
-        DiagnosgruppResponse diagnosisGroups = datasourceDiagnoskapitel.getDiagnosisGroups(NATIONELL, range, groupId);
+        DiagnosgruppResponse diagnosisGroups = data.getDiagnosavsnitt(range, groupId);
         return new DiagnosisSubGroupsConverter().convert(diagnosisGroups, range);
     }
 
@@ -221,9 +206,9 @@ public class ChartDataService {
     @Produces({MediaType.APPLICATION_JSON })
     public AgeGroupsData getAgeGroupsStatistics() {
         LOG.info("Calling getAgeGroupsStatistics for national");
-        final RollingLength period = RollingLength.YEAR;
-        SimpleKonResponse<SimpleKonDataRow> ageGroups = datasourceAldersgrupp.getHistoricalAgeGroups(NATIONELL, previousMonth(), period);
-        return new AgeGroupsConverter().convert(ageGroups, new Range(period.getPeriods()));
+        Range range = new Range(YEAR);
+        SimpleKonResponse<SimpleKonDataRow> ageGroups = data.getHistoricalAgeGroups(previousMonth(), range);
+        return new AgeGroupsConverter().convert(ageGroups, new Range(range.getMonths()));
     }
 
     /**
@@ -251,7 +236,7 @@ public class ChartDataService {
     public DualSexStatisticsData getDegreeOfSickLeaveStatistics() {
         LOG.info("Calling getDegreeOfSickLeaveStatistics for national");
         final Range range = new Range(18);
-        SjukskrivningsgradResponse degreeOfSickLeaveStatistics = datasourceSjukskrivningsgrad.getStatistics(NATIONELL, range);
+        SjukskrivningsgradResponse degreeOfSickLeaveStatistics = data.getSjukskrivningsgrad(range);
         return new DegreeOfSickLeaveConverter().convert(degreeOfSickLeaveStatistics, range);
     }
 
@@ -279,9 +264,9 @@ public class ChartDataService {
     @Produces({MediaType.APPLICATION_JSON })
     public SickLeaveLengthData getSickLeaveLengthData() {
         LOG.info("Calling getSickLeaveLengthData for national");
-        final RollingLength period = RollingLength.YEAR;
-        SjukfallslangdResponse sickLeaveLength = datasourceSickLeaveLength.getHistoricalStatistics(NATIONELL, previousMonth(), period);
-        return new SickLeaveLengthConverter().convert(sickLeaveLength, new Range(period.getPeriods()));
+        Range range = new Range(YEAR);
+        SjukfallslangdResponse sickLeaveLength = data.getSjukfallslangd(range);
+        return new SickLeaveLengthConverter().convert(sickLeaveLength, range);
     }
 
     /**
@@ -339,7 +324,7 @@ public class ChartDataService {
     @Produces({MediaType.APPLICATION_JSON })
     public SimpleDetailsData getSjukfallPerSexStatistics() {
         LOG.info("Calling getSjukfallPerSexStatistics for national");
-        final Range range = new Range(12);
+        final Range range = new Range(YEAR);
         SimpleKonResponse<SimpleKonDataRow> casesPerMonth = datasourceSjukfallPerLan.getStatistics(range);
         return new SjukfallPerSexConverter().convert(casesPerMonth, range);
     }

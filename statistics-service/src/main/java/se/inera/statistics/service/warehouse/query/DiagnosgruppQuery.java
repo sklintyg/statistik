@@ -13,7 +13,6 @@ import se.inera.statistics.service.report.util.ReportUtil;
 import se.inera.statistics.service.warehouse.Aisle;
 import se.inera.statistics.service.warehouse.Sjukfall;
 import se.inera.statistics.service.warehouse.SjukfallUtil;
-import se.inera.statistics.service.warehouse.Warehouse;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -56,8 +55,7 @@ public class DiagnosgruppQuery {
         return result;
     }
 
-    public static DiagnosgruppResponse getDiagnosgrupper(Warehouse warehouse, SjukfallUtil.StartFilter filter, LocalDate start, int periods, int periodLength, String vardgivarId) {
-        Aisle aisle = warehouse.get(vardgivarId);
+    public static DiagnosgruppResponse getDiagnosgrupper(Aisle aisle, SjukfallUtil.StartFilter filter, LocalDate start, int periods, int periodLength) {
         List<Icd10.Kapitel> kapitel = icd10.getKapitel();
 
         List<KonDataRow> rows = new ArrayList<>();
@@ -84,9 +82,7 @@ public class DiagnosgruppQuery {
         return new DiagnosgruppResponse(avsnitt, rows);
     }
 
-    public static DiagnosgruppResponse getDiagnosavsnitt(Warehouse warehouse, SjukfallUtil.StartFilter filter, LocalDate start, int periods, int periodLength, String kapitelId, String vardgivarId) {
-        Aisle aisle = warehouse.get(vardgivarId);
-
+    public static DiagnosgruppResponse getDiagnosavsnitt(Aisle aisle, SjukfallUtil.StartFilter filter, LocalDate start, int periods, int periodLength, String kapitelId) {
         Icd10.Kapitel kapitel = icd10.getKapitel(kapitelId);
         List<Avsnitt> avsnitts = new ArrayList<>();
         for (Icd10.Avsnitt avsnitt : kapitel.getAvsnitt()) {

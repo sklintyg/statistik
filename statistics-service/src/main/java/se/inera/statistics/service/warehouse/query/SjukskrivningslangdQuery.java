@@ -99,9 +99,7 @@ public final class SjukskrivningslangdQuery {
         return new SimpleKonResponse<>(rows, periods);
     }
 
-    public static SjukfallslangdResponse getSjuksrivningslangd(Warehouse warehouse, SjukfallUtil.StartFilter filter, LocalDate from, int periods, int periodLength, String vardgivarId) {
-        Aisle aisle = warehouse.get(vardgivarId);
-
+    public static SjukfallslangdResponse getSjuksrivningslangd(Aisle aisle, SjukfallUtil.StartFilter filter, LocalDate from, int periods, int periodLength) {
         List<SjukfallslangdRow> rows = new ArrayList<>();
         for (SjukfallUtil.SjukfallGroup sjukfallGroup: SjukfallUtil.sjukfallGrupper(from, periods, periodLength, aisle, filter)) {
             Map<Ranges.Range, Counter<Ranges.Range>> counterMap = SjukskrivningslangdQuery.count(sjukfallGroup.getSjukfall());

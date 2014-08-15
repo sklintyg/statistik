@@ -46,13 +46,7 @@ public class ChartDataServiceTest {
     private Overview overviewMock = Mockito.mock(Overview.class);
 
     @Mock
-    private SjukfallPerManad sjukfallPerManadMock = Mockito.mock(SjukfallPerManad.class);
-
-    @Mock
-    private se.inera.statistics.service.report.api.Diagnosgrupp diagnosgruppMock = Mockito.mock(se.inera.statistics.service.report.api.Diagnosgrupp.class);
-
-    @Mock
-    private Diagnoskapitel diagnoskapitelMock = Mockito.mock(Diagnoskapitel.class);
+    private NationellData nationellData = Mockito.mock(NationellData.class);
 
     @InjectMocks
     private ChartDataService chartDataService = new ChartDataService();
@@ -75,7 +69,7 @@ public class ChartDataServiceTest {
             chartDataService.getNumberOfCasesPerMonth();
         } catch (NullPointerException e) {
         }
-        Mockito.verify(sjukfallPerManadMock).getCasesPerMonth(anyString(), any(Range.class));
+        Mockito.verify(nationellData).getCasesPerMonth(any(Range.class));
     }
 
     @Test
@@ -91,7 +85,7 @@ public class ChartDataServiceTest {
             chartDataService.getDiagnoskapitelstatistik();
         } catch (NullPointerException e) {
         }
-        Mockito.verify(diagnosgruppMock).getDiagnosisGroups(anyString(), any(Range.class));
+        Mockito.verify(nationellData).getDiagnosgrupper(any(Range.class));
     }
 
     @Test
@@ -100,7 +94,7 @@ public class ChartDataServiceTest {
             chartDataService.getDiagnosavsnittstatistik("testId");
         } catch (NullPointerException e) {
         }
-        Mockito.verify(diagnoskapitelMock).getDiagnosisGroups(anyString(), any(Range.class), eq("testId"));
+        Mockito.verify(nationellData).getDiagnosavsnitt(any(Range.class), eq("testId"));
     }
 
     // CHECKSTYLE:ON MagicNumber

@@ -75,7 +75,7 @@ public class WarehouseService {
         return new OverviewKonsfordelning(male, female, range);
     }
 
-    private int countMale(Collection<Sjukfall> sjukfalls) {
+    public static int countMale(Collection<Sjukfall> sjukfalls) {
         int count = 0;
         for (Sjukfall sjukfall : sjukfalls) {
             if (sjukfall.getKon() == 0) {
@@ -100,15 +100,15 @@ public class WarehouseService {
     }
 
     public DiagnosgruppResponse getDiagnosgrupperPerMonth(SjukfallUtil.StartFilter filter, Range range, String vardgivarId) {
-        return DiagnosgruppQuery.getDiagnosgrupper(warehouse, filter, range.getFrom(), range.getMonths(), 1, vardgivarId);
+        return DiagnosgruppQuery.getDiagnosgrupper(warehouse.get(vardgivarId), filter, range.getFrom(), range.getMonths(), 1);
     }
 
     public SjukskrivningsgradResponse getSjukskrivningsgradPerMonth(SjukfallUtil.StartFilter filter, Range range, String vardgivarId) {
-        return SjukskrivningsgradQuery.getSjukskrivningsgrad(warehouse, filter, range.getFrom(), range.getMonths(), 1, vardgivarId);
+        return SjukskrivningsgradQuery.getSjukskrivningsgrad(warehouse.get(vardgivarId), filter, range.getFrom(), range.getMonths(), 1);
     }
 
     public SjukfallslangdResponse getSjukskrivningslangd(SjukfallUtil.StartFilter filter, Range range, String vardgivarId) {
-        return SjukskrivningslangdQuery.getSjuksrivningslangd(warehouse, filter, range.getFrom(), 1, range.getMonths(), vardgivarId);
+        return SjukskrivningslangdQuery.getSjuksrivningslangd(warehouse.get(vardgivarId), filter, range.getFrom(), 1, range.getMonths());
     }
 
     public SimpleKonResponse<SimpleKonDataRow> getLangaSjukskrivningarPerManad(SjukfallUtil.StartFilter filter, Range range, String vardgivarId) {
@@ -116,10 +116,10 @@ public class WarehouseService {
     }
 
     public SimpleKonResponse<SimpleKonDataRow> getAldersgrupper(SjukfallUtil.StartFilter filter, Range range, String vardgivarId) {
-        return AldersgruppQuery.getAldersgrupper(warehouse, filter, range.getFrom(), 1, range.getMonths(), vardgivarId);
+        return AldersgruppQuery.getAldersgrupper(warehouse.get(vardgivarId), filter, range.getFrom(), 1, range.getMonths());
     }
 
     public DiagnosgruppResponse getDiagnosavsnitt(SjukfallUtil.StartFilter filter, Range range, String kapitelId, String vardgivarId) {
-        return DiagnosgruppQuery.getDiagnosavsnitt(warehouse, filter, range.getFrom(), range.getMonths(), 1, kapitelId, vardgivarId);
+        return DiagnosgruppQuery.getDiagnosavsnitt(warehouse.get(vardgivarId), filter, range.getFrom(), range.getMonths(), 1, kapitelId);
     }
 }

@@ -9,7 +9,6 @@ import se.inera.statistics.service.report.util.Ranges;
 import se.inera.statistics.service.warehouse.Aisle;
 import se.inera.statistics.service.warehouse.Sjukfall;
 import se.inera.statistics.service.warehouse.SjukfallUtil;
-import se.inera.statistics.service.warehouse.Warehouse;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -90,9 +89,7 @@ public final class AldersgruppQuery {
         return counters;
     }
 
-    public static SimpleKonResponse<SimpleKonDataRow> getAldersgrupper(Warehouse warehouse, SjukfallUtil.StartFilter filter, LocalDate from, int periods, int periodLength, String vardgivarId) {
-        Aisle aisle = warehouse.get(vardgivarId);
-
+    public static SimpleKonResponse<SimpleKonDataRow> getAldersgrupper(Aisle aisle, SjukfallUtil.StartFilter filter, LocalDate from, int periods, int periodLength) {
         List<SimpleKonDataRow> rows = new ArrayList<>();
         for (SjukfallUtil.SjukfallGroup sjukfallGroup: SjukfallUtil.sjukfallGrupper(from, periods, periodLength, aisle, filter)) {
             Map<Ranges.Range, Counter<Ranges.Range>> counterMap = AldersgruppQuery.count(sjukfallGroup.getSjukfall());

@@ -106,6 +106,7 @@
 
         <bean id="factPopulator" class="se.inera.statistics.service.warehouse.FactPopulator" />
         <bean id="widelineConverter" class="se.inera.statistics.service.warehouse.WidelineConverter" />
+        <bean id="nationellData" class="se.inera.statistics.web.service.NationellData" />
 
     </beans>
 
@@ -147,7 +148,7 @@
         <bean class="se.inera.statistics.service.common.CommonPersistenceHandler" id="commonPersistenceHandler"/>
     </beans>
 
-    <beans profile="dev,!noload">
+    <beans profile="never">
         <bean class="se.inera.statistics.service.demo.InjectUtlatande" lazy-init="false"/>
     </beans>
 
