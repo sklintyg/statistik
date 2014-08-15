@@ -25,6 +25,7 @@ public class Icd10 {
 
     private static final int ENDINDEX_ID = 7;
     private static final int STARTINDEX_DESCRIPTION = 7;
+    public static final int MAX_CODE_LENGTH = 3;
 
     @Autowired
     private Resource icd10KategoriAnsiFile;
@@ -87,8 +88,8 @@ public class Icd10 {
             }
         }
 
-        if (normalized.length() > 3) {
-            normalized.setLength(3);
+        if (normalized.length() > MAX_CODE_LENGTH) {
+            normalized.setLength(MAX_CODE_LENGTH);
         }
         return normalized.toString();
     }
