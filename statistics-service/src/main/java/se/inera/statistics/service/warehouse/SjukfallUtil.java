@@ -62,9 +62,9 @@ public final class SjukfallUtil {
                 }
             } else {
                 Sjukfall nextSjukfall = sjukfall.join(line);
-                if (nextSjukfall != sjukfall) {
+                active.put(key, nextSjukfall);
+                if (!nextSjukfall.isExtended()) {
                     sjukfalls.add(sjukfall);
-                    active.put(key, nextSjukfall);
                 }
             }
         }
@@ -161,7 +161,7 @@ public final class SjukfallUtil {
         private final int periodSize;
         private final StartFilter filter;
         private final Map<Integer, Sjukfall> active = new HashMap<>();
-        private final Collection<Sjukfall> sjukfalls = new ArrayList<>();
+        private Collection<Sjukfall> sjukfalls;
         private final Iterator<Fact> iterator;
         private Fact pendingLine;
 
@@ -181,6 +181,7 @@ public final class SjukfallUtil {
 
         @Override
         public SjukfallGroup next() {
+            sjukfalls = new ArrayList<>();
             int cutoff = WidelineConverter.toDay(from.plusMonths((period + 1) * periodSize));
             if (pendingLine != null && pendingLine.getStartdatum() < cutoff) {
                 process(pendingLine);
@@ -226,9 +227,9 @@ public final class SjukfallUtil {
                 }
             } else {
                 Sjukfall nextSjukfall = sjukfall.join(line);
-                if (nextSjukfall != sjukfall) {
+                active.put(key, nextSjukfall);
+                if (!nextSjukfall.isExtended()) {
                     sjukfalls.add(sjukfall);
-                    active.put(key, nextSjukfall);
                 }
             }
         }

@@ -29,6 +29,7 @@ import java.util.List;
 public class WarehouseService {
 
     private static final int DISPLAYED_AGE_GROUPS = 7;
+    public static final int PERCENT = 100;
 
     @Autowired
     private Warehouse warehouse;
@@ -56,7 +57,15 @@ public class WarehouseService {
 
         return new VerksamhetOverviewResponse(currentSjukfall.getSjukfall().size(), currentKonsfordelning, previousKonsfordelning,
                 diagnosgrupper, aldersgrupper, sjukskrivningsgrad, sjukskrivningslangd,
-                currentLongSjukfall, currentLongSjukfall - previousLongSjukfall);
+                currentLongSjukfall, percentChange(currentLongSjukfall, previousLongSjukfall));
+    }
+
+    private static int percentChange(int current, int previous) {
+        if (previous == 0) {
+            return 0;
+        } else {
+            return (current - previous) * PERCENT / previous;
+        }
     }
 
     OverviewKonsfordelning getOverviewKonsfordelning(Range range, Collection<Sjukfall> sjukfalls) {

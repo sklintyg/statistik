@@ -21,6 +21,7 @@ import java.util.Map;
 public final class SjukskrivningsgradQuery {
     private static final List<String> GRAD_LABEL = Collections.unmodifiableList(Arrays.asList("25", "50", "75", "100"));
     private static final List<Integer> GRAD = Collections.unmodifiableList(Arrays.asList(25, 50, 75, 100));
+    public static final int PERCENT = 100;
 
 
     private SjukskrivningsgradQuery() {
@@ -35,7 +36,7 @@ public final class SjukskrivningsgradQuery {
         for (Integer range : GRAD) {
             int current = currentCount.get(range).getCount();
             int previous = previousCount.get(range).getCount();
-            result.add(new OverviewChartRowExtended(range.toString(), current, current - previous));
+            result.add(new OverviewChartRowExtended(range.toString() + "%", current, percentChange(current, previous)));
         }
 
         return result;
@@ -78,6 +79,13 @@ public final class SjukskrivningsgradQuery {
         }
 
         return new SjukskrivningsgradResponse(GRAD_LABEL, rows);
+    }
 
+    private static int percentChange(int current, int previous) {
+        if (previous == 0) {
+            return 0;
+        } else {
+            return (current - previous) * PERCENT / previous;
+        }
     }
 }

@@ -20,9 +20,9 @@ import java.util.Map;
 
 public final class AldersgruppQuery {
     private static final Ranges RANGES = AldersgroupUtil.RANGES;
+    public static final int PERCENT = 100;
 
     private AldersgruppQuery() {
-
     }
 
     public static List<OverviewChartRowExtended> getOverviewAldersgrupper(Collection<Sjukfall> currentSjukfall, Collection<Sjukfall> previousSjukfall, int noOfRows) {
@@ -35,10 +35,18 @@ public final class AldersgruppQuery {
         for (Counter<Ranges.Range> counter : toKeep) {
             int current = counter.getCount();
             int previous = previousCount.get(counter.getKey()).getCount();
-            result.add(new OverviewChartRowExtended(counter.getKey().getName(), current, current - previous));
+            result.add(new OverviewChartRowExtended(counter.getKey().getName() , current, percentChange(current, previous)));
         }
 
         return result;
+    }
+
+    private static int percentChange(int current, int previous) {
+        if (previous == 0) {
+            return 0;
+        } else {
+            return (current - previous) * PERCENT / previous;
+        }
     }
 
     private static Collection<Ranges.Range> rowsToKeep(Map<Ranges.Range, Counter<Ranges.Range>> count, int noOfRows) {

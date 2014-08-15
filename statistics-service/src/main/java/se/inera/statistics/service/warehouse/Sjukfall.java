@@ -13,6 +13,7 @@ public class Sjukfall {
     private int diagnoskapitel;
     private int diagnosavsnitt;
     private int sjukskrivningsgrad;
+    private Sjukfall extending;
 
     public Sjukfall(Fact line) {
         start = line.getStartdatum();
@@ -24,6 +25,19 @@ public class Sjukfall {
         diagnoskapitel = line.getDiagnoskapitel();
         diagnosavsnitt = line.getDiagnosavsnitt();
         sjukskrivningsgrad = line.getSjukskrivningsgrad();
+    }
+
+    private Sjukfall(Sjukfall previous, Fact line) {
+        start = previous.getStart();
+        end = line.getStartdatum() + line.getSjukskrivningslangd() - 1;
+        realDays = previous.getRealDays() + line.getSjukskrivningslangd();
+        intygCount = previous.getIntygCount() + 1;
+        kon = line.getKon();
+        alder = line.getAlder();
+        diagnoskapitel = line.getDiagnoskapitel();
+        diagnosavsnitt = line.getDiagnosavsnitt();
+        sjukskrivningsgrad = line.getSjukskrivningsgrad();
+        extending = previous;
     }
 
     public int getKon() {
@@ -39,24 +53,10 @@ public class Sjukfall {
      * @return join will either return the same, possibly modified (i.e. this), Sjukfall-object, or a new object
      */
     public Sjukfall join(Fact line) {
-        int lineEnd = line.getStartdatum() + line.getSjukskrivningslangd() - 1;
         if (isExpired(line.getStartdatum())) {
             return newSjukfall(line);
         } else {
-            end = lineEnd;
-            realDays += line.getSjukskrivningslangd();
-            intygCount++;
-            if (alder != line.getAlder()) {
-                alder = line.getAlder();
-            }
-            if (diagnoskapitel != line.getDiagnoskapitel()) {
-                diagnoskapitel = line.getDiagnoskapitel();
-            }
-            if (diagnosavsnitt != line.getDiagnosavsnitt()) {
-                diagnosavsnitt = line.getDiagnosavsnitt();
-            }
-            sjukskrivningsgrad = line.getSjukskrivningsgrad();
-            return this;
+            return new Sjukfall(this, line);
         }
     }
 
@@ -112,5 +112,9 @@ public class Sjukfall {
 
     public int getDiagnosavsnitt() {
         return diagnosavsnitt;
+    }
+
+    public boolean isExtended() {
+        return extending != null;
     }
 }
