@@ -27,6 +27,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.StopWatch;
 import se.inera.statistics.service.warehouse.WarehouseManager;
 
+import javax.annotation.PostConstruct;
+
 @Component
 public class FactReloadJob {
     private static final Logger LOG = LoggerFactory.getLogger(FactReloadJob.class);
@@ -35,6 +37,7 @@ public class FactReloadJob {
     private WarehouseManager manager;
 
     @Scheduled(cron = "${scheduler.factReloadJob.cron}")
+    @PostConstruct
     public void checkLog() {
         LOG.info("Fact Reload Job started");
         StopWatch stopWatch = new StopWatch();
@@ -43,4 +46,5 @@ public class FactReloadJob {
         stopWatch.stop();
         LOG.info("Fact Reload Job completed. Line count: " + lines + " time: " + stopWatch.getTotalTimeMillis() + "ms");
     }
+
 }
