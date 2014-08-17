@@ -1096,7 +1096,7 @@ a.listheader.collapsed {
 	#overview-content h1, #overview-content h2, #overview-content h3, #overview-content h4,
 	#chart-content h1, #chart-content h2, #chart-content h3, #chart-content h4,
 	#about-content h1, #about-content h2, #about-content h3, #about-content h4 { font-family: Helvetica; color: #008391; }
-	#overview-content h1, #chart-content h1. #about-content h1 { font-weight: bold; font-size: 20px; margin-bottom: 0px; }
+	#overview-content h1, #chart-content h1, #about-content h1 { font-weight: bold; font-size: 20px; margin-bottom: 0px; }
 	#overview-content h2, #chart-content h2 { font-weight: bold; font-size: 14px; color: #fff;}
 	#about-content h2 { font-weight: bold; font-size: 18px; } 
 	
