@@ -19,13 +19,11 @@
 
 package se.inera.statistics.web.service;
 
-import org.joda.time.LocalDate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import se.inera.statistics.service.report.api.Overview;
-import se.inera.statistics.service.report.api.SjukfallPerLan;
 import se.inera.statistics.service.report.model.Avsnitt;
 import se.inera.statistics.service.report.model.DiagnosgruppResponse;
 import se.inera.statistics.service.report.model.OverviewResponse;
@@ -68,8 +66,6 @@ public class ChartDataService {
 
     @Autowired
     private Overview datasourceOverview;
-    @Autowired
-    private SjukfallPerLan datasourceSjukfallPerLan;
 
     @Autowired
     private NationellData data;
@@ -95,7 +91,7 @@ public class ChartDataService {
      */
     @GET
     @Path("getNumberOfCasesPerMonth/csv")
-    @Produces({TEXT_UTF8})
+    @Produces({TEXT_UTF8 })
     public Response getNumberOfCasesPerMonthAsCsv() {
         LOG.info("Calling getNumberOfCasesPerMonthAsCsv for national");
         final TableData tableData = getNumberOfCasesPerMonth().getTableData();
@@ -140,7 +136,7 @@ public class ChartDataService {
      */
     @GET
     @Path("getDiagnoskapitelstatistik/csv")
-    @Produces({TEXT_UTF8})
+    @Produces({TEXT_UTF8 })
     public Response getDiagnoskapitelstatistikAsCsv() {
         LOG.info("Calling getDiagnoskapitelstatistikAsCsv for national");
         final TableData tableData = getDiagnoskapitelstatistik().getTableData();
@@ -171,7 +167,7 @@ public class ChartDataService {
      */
     @GET
     @Path("getDiagnosavsnittstatistik/{groupId}/csv")
-    @Produces({TEXT_UTF8})
+    @Produces({TEXT_UTF8 })
     public Response getDiagnosavsnittstatistikAsCsv(@PathParam("groupId") String groupId) {
         LOG.info("Calling getDiagnosavsnittstatistikAsCsv for national");
         final TableData tableData = getDiagnosavsnittstatistik(groupId).getTableData();
@@ -205,7 +201,7 @@ public class ChartDataService {
     public AgeGroupsData getAgeGroupsStatistics() {
         LOG.info("Calling getAgeGroupsStatistics for national");
         Range range = new Range(YEAR);
-        SimpleKonResponse<SimpleKonDataRow> ageGroups = data.getHistoricalAgeGroups(previousMonth(), range);
+        SimpleKonResponse<SimpleKonDataRow> ageGroups = data.getHistoricalAgeGroups(range);
         return new AgeGroupsConverter().convert(ageGroups, new Range(range.getMonths()));
     }
 
@@ -216,7 +212,7 @@ public class ChartDataService {
      */
     @GET
     @Path("getAgeGroupsStatistics/csv")
-    @Produces({TEXT_UTF8})
+    @Produces({TEXT_UTF8 })
     public Response getAgeGroupsStatisticsAsCsv() {
         LOG.info("Calling getAgeGroupsStatisticsAsCsv for national");
         final TableData tableData = getAgeGroupsStatistics().getTableData();
@@ -245,7 +241,7 @@ public class ChartDataService {
      */
     @GET
     @Path("getDegreeOfSickLeaveStatistics/csv")
-    @Produces({TEXT_UTF8})
+    @Produces({TEXT_UTF8 })
     public Response getDegreeOfSickLeaveStatisticsAsCsv() {
         LOG.info("Calling getDegreeOfSickLeaveStatisticsAsCsv for national");
         final TableData tableData = getDegreeOfSickLeaveStatistics().getTableData();
@@ -274,7 +270,7 @@ public class ChartDataService {
      */
     @GET
     @Path("getSickLeaveLengthData/csv")
-    @Produces({TEXT_UTF8})
+    @Produces({TEXT_UTF8 })
     public Response getSickLeaveLengthDataAsCsv() {
         LOG.info("Calling getSickLeaveLengthDataAsCsv for national");
         final TableData tableData = getSickLeaveLengthData().getTableData();
@@ -293,8 +289,8 @@ public class ChartDataService {
         Range range1 = Range.quarter();
         Range range2 = ReportUtil.getPreviousPeriod(range1);
 
-        SimpleKonResponse<SimpleKonDataRow> countyStatRange1 = datasourceSjukfallPerLan.getStatistics(range1);
-        SimpleKonResponse<SimpleKonDataRow> countyStatRange2 = datasourceSjukfallPerLan.getStatistics(range2);
+        SimpleKonResponse<SimpleKonDataRow> countyStatRange1 = data.getSjukfallPerLan(range1);
+        SimpleKonResponse<SimpleKonDataRow> countyStatRange2 = data.getSjukfallPerLan(range2);
         return new CasesPerCountyConverter(countyStatRange1, countyStatRange2, range1, range2).convert();
     }
 
@@ -305,7 +301,7 @@ public class ChartDataService {
      */
     @GET
     @Path("getCountyStatistics/csv")
-    @Produces({TEXT_UTF8})
+    @Produces({TEXT_UTF8 })
     public Response getCountyStatisticsAsCsv() {
         LOG.info("Calling getCountyStatisticsAsCsv for national");
         final TableData tableData = getCountyStatistics().getTableData();
@@ -323,7 +319,7 @@ public class ChartDataService {
     public SimpleDetailsData getSjukfallPerSexStatistics() {
         LOG.info("Calling getSjukfallPerSexStatistics for national");
         final Range range = new Range(YEAR);
-        SimpleKonResponse<SimpleKonDataRow> casesPerMonth = datasourceSjukfallPerLan.getStatistics(range);
+        SimpleKonResponse<SimpleKonDataRow> casesPerMonth = data.getSjukfallPerLan(range);
         return new SjukfallPerSexConverter().convert(casesPerMonth, range);
     }
 
@@ -334,15 +330,10 @@ public class ChartDataService {
      */
     @GET
     @Path("getSjukfallPerSexStatistics/csv")
-    @Produces({TEXT_UTF8})
+    @Produces({TEXT_UTF8 })
     public Response getSjukfallPerSexStatisticsAsCsv() {
         LOG.info("Calling getSjukfallPerSexStatisticsAsCsv for national");
         final TableData tableData = getSjukfallPerSexStatistics().getTableData();
         return CsvConverter.getCsvResponse(tableData, "export.csv");
     }
-
-    private LocalDate previousMonth() {
-        return new LocalDate().withDayOfMonth(1).minusMonths(1);
-    }
-
 }

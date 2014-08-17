@@ -5,6 +5,7 @@ public class Sjukfall {
     public static final int MAX_GAP = 5;
 
     private final int start;
+    private final int lan;
     private int end;
     private int realDays;
     private int intygCount;
@@ -25,6 +26,7 @@ public class Sjukfall {
         diagnoskapitel = line.getDiagnoskapitel();
         diagnosavsnitt = line.getDiagnosavsnitt();
         sjukskrivningsgrad = line.getSjukskrivningsgrad();
+        lan = line.getLan();
     }
 
     public Sjukfall(Sjukfall previous, Fact line) {
@@ -38,6 +40,7 @@ public class Sjukfall {
         diagnosavsnitt = line.getDiagnosavsnitt();
         sjukskrivningsgrad = line.getSjukskrivningsgrad();
         extending = previous;
+        lan = line.getLan();
     }
 
     public int getKon() {
@@ -119,5 +122,9 @@ public class Sjukfall {
 
     public boolean isExtended() {
         return extending != null;
+    }
+
+    public String getLanskod() {
+        return String.format("%1$02d", lan);
     }
 }

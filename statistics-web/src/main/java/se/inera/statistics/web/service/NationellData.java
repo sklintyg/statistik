@@ -1,10 +1,10 @@
 package se.inera.statistics.web.service;
 
-import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import se.inera.statistics.service.report.model.DiagnosgruppResponse;
 import se.inera.statistics.service.report.model.KonDataRow;
 import se.inera.statistics.service.report.model.KonField;
+import se.inera.statistics.service.report.model.Lan;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.SimpleKonDataRow;
 import se.inera.statistics.service.report.model.SimpleKonResponse;
@@ -13,26 +13,32 @@ import se.inera.statistics.service.report.model.SjukskrivningsgradResponse;
 import se.inera.statistics.service.report.model.db.SjukfallslangdRow;
 import se.inera.statistics.service.report.util.ReportUtil;
 import se.inera.statistics.service.warehouse.Aisle;
+import se.inera.statistics.service.warehouse.Sjukfall;
 import se.inera.statistics.service.warehouse.SjukfallUtil;
 import se.inera.statistics.service.warehouse.Warehouse;
 import se.inera.statistics.service.warehouse.query.AldersgruppQuery;
+import se.inera.statistics.service.warehouse.query.Counter;
 import se.inera.statistics.service.warehouse.query.DiagnosgruppQuery;
 import se.inera.statistics.service.warehouse.query.SjukskrivningsgradQuery;
 import se.inera.statistics.service.warehouse.query.SjukskrivningslangdQuery;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 public class NationellData {
 
     @Autowired
     private Warehouse warehouse;
 
+    @Autowired
+    private Lan lans;
+
     public SimpleKonResponse<SimpleKonDataRow> getCasesPerMonth(Range range) {
         ArrayList<SimpleKonDataRow> result = new ArrayList<>();
         for (Aisle aisle: warehouse) {
-
             int index = 0;
             for (SjukfallUtil.SjukfallGroup sjukfallGroup: SjukfallUtil.sjukfallGrupper(range.getFrom(), range.getMonths(), 1, aisle, SjukfallUtil.ALL_ENHETER)) {
                 int male = WarehouseService.countMale(sjukfallGroup.getSjukfall());
@@ -50,7 +56,7 @@ public class NationellData {
         return new SimpleKonResponse<>(result, range.getMonths());
     }
 
-    public SimpleKonResponse<SimpleKonDataRow> getHistoricalAgeGroups(LocalDate localDate, Range range) {
+    public SimpleKonResponse<SimpleKonDataRow> getHistoricalAgeGroups(Range range) {
         SimpleKonResponse<SimpleKonDataRow> result = null;
         for (Aisle aisle: warehouse) {
             SimpleKonResponse<SimpleKonDataRow> aldersgrupper = AldersgruppQuery.getAldersgrupper(aisle, SjukfallUtil.ALL_ENHETER, range.getFrom(), 1, range.getMonths());
@@ -172,5 +178,32 @@ public class NationellData {
             }
         }
         return result;
+    }
+
+    public SimpleKonResponse<SimpleKonDataRow> getSjukfallPerLan(Range range) {
+        ArrayList<SimpleKonDataRow> result = new ArrayList<>();
+        for (String lanId : lans) {
+            result.add(new SimpleKonDataRow(lans.getNamn(lanId), 0, 0));
+        }
+        for (Aisle aisle: warehouse) {
+            Map<String, Counter<String>> map = new HashMap<>();
+            for (String lanId : lans) {
+                map.put(lanId, new Counter<>(lanId));
+            }
+
+            for (SjukfallUtil.SjukfallGroup sjukfallGroup: SjukfallUtil.sjukfallGrupper(range.getFrom(), range.getMonths(), 1, aisle, SjukfallUtil.ALL_ENHETER)) {
+                for (Sjukfall sjukfall: sjukfallGroup.getSjukfall()) {
+                    map.get(sjukfall.getLanskod()).increase(sjukfall);
+                }
+            }
+            int index = 0;
+            for (String lanId : lans) {
+                Counter<String> counter = map.get(lanId);
+                SimpleKonDataRow previous = result.get(index);
+                result.set(index, new SimpleKonDataRow(previous.getName(), counter.getCountFemale() + previous.getFemale(), counter.getCountMale() + previous.getMale()));
+                index++;
+            }
+        }
+        return new SimpleKonResponse<>(result, range.getMonths());
     }
 }
