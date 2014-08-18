@@ -5,15 +5,13 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 import org.joda.time.LocalDate;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
 
 public final class DateGenerator {
 
     public static final LocalDate BASE = new LocalDate("1900-01-01");
     public static final LocalDate LAST = new LocalDate("2016-01-01");
-    public static final DateTimeFormatter PERSONNUMMER = DateTimeFormat.forPattern("yyyyMMdd'");
     public static final int CAPACITY = 300;
+    public static final String ENCODING = "UTF-8";
     private static StringBuilder builder;
 
     private DateGenerator() {
@@ -28,7 +26,7 @@ public final class DateGenerator {
                 add(id);
                 add(String.format("%1$d-%2$02d", now.getYear(), now.getMonthOfYear()));
                 end();
-                out.write(builder.toString().getBytes());
+                out.write(builder.toString().getBytes(ENCODING));
                 id++;
                 now = BASE.plusDays(id);
             }

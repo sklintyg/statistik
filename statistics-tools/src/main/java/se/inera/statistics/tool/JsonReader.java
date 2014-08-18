@@ -26,6 +26,7 @@ public final class JsonReader {
 
     public static final LocalDate BASE = new LocalDate("1900-01-01");
     public static final DateTimeFormatter PERSONNUMMER = DateTimeFormat.forPattern("yyyyMMdd'");
+    public static final String ENCODING = "UTF-8";
     private static StringBuilder builder;
     private static int pruned;
 
@@ -77,7 +78,7 @@ public final class JsonReader {
                     add(enhet % 290);
                     add(sjukfall.getUpsertedId(personid, vardgivare, from, tom));
                     end();
-                    out.write(builder.toString().getBytes());
+                    out.write(builder.toString().getBytes(ENCODING));
                     if (pruneLimit != from) {
                         pruneLimit = from;
                         pruned = sjukfall.prune(pruneLimit);

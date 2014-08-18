@@ -214,12 +214,13 @@ public class SjukfallGenerator {
     }
 
     public static class PrintConsumer implements Consumer {
+        public static final String ENCODING = "UTF-8";
         private GZIPOutputStream out;
 
         @Override
         public void accept(JsonNode intyg) {
             try {
-                out.write(intyg.toString().getBytes());
+                out.write(intyg.toString().getBytes(ENCODING));
                 out.write('\n');
             } catch (IOException e) {
                 e.printStackTrace();
