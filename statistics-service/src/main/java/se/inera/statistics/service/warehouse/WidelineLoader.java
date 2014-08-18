@@ -19,6 +19,8 @@
 
 package se.inera.statistics.service.warehouse;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import se.inera.statistics.service.processlog.EventType;
@@ -32,6 +34,8 @@ import java.sql.SQLException;
 
 @Component
 public class WidelineLoader {
+
+    private static final Logger LOG = LoggerFactory.getLogger(WidelineLoader.class);
 
     private static final int FETCH_SIZE = 10000;
     @Autowired
@@ -54,7 +58,7 @@ public class WidelineLoader {
             }
             return lineNo;
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOG.error("Could not populate warehouse", e);
         }
 
         return -1;
