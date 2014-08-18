@@ -48,7 +48,7 @@ public class WidelineLoader {
         try (
                 Connection connection = dataSource.getConnection();
                 PreparedStatement stmt = prepareStatement(connection);
-                ResultSet resultSet = stmt.executeQuery();
+                ResultSet resultSet = stmt.executeQuery()
         ) {
             int lineNo = 0;
             while (resultSet.next()) {
