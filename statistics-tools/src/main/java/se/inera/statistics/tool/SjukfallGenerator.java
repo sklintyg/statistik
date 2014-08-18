@@ -171,7 +171,7 @@ public class SjukfallGenerator {
         return list.get(random.nextInt(list.size()));
     }
 
-    private class Lakare {
+    private static class Lakare {
         private final int id;
 
         public Lakare(int id) {
@@ -191,7 +191,7 @@ public class SjukfallGenerator {
         }
     }
 
-    public class Fall {
+    public static class Fall {
         private String personnummer;
         private Lakare lakare;
 
