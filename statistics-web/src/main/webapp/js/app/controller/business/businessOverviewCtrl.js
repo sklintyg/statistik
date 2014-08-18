@@ -55,7 +55,7 @@
                     style : {
                     	fontFamily: 'Helvetica, Arial, sans-serif',
                         color: '#FFFFFF',
-                        fontSize: '2.8em',
+                        fontSize: '2em',
                         fontWeight: 'bold',
                         textAlign: 'center'
                     }

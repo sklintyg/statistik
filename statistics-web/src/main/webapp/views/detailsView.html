@@ -90,10 +90,10 @@
 	            </div>
 	            <div class="row dontprint">
 	            	<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-	            		<label data-ng-repeat="seriesData in series" class="col-xs-3 col-sm-3 col-md-3 col-lg-3" id="legend-label" style="margin-left: 0px; margin-right: 5px;" legend-height>
+	            		<label data-ng-repeat="seriesData in series" class="col-xs-3 col-sm-3 col-md-3 col-lg-3" id="legend-label" style="margin-left: 0px; margin-right: 5px; white-space: nowrap;" legend-height>
 	                        <input type="checkbox" checked="" data-ng-click="toggleSeriesVisibility($index)" class="detail-checkbox"/>
 	                        <div class="legend-color-square" ng-style="{backgroundColor: seriesData.color}"></div>
-	                        {{seriesData.name}}
+	                        <div class="legend-name"><div>{{seriesData.name}}</div></div>
                     	</label>
 	            	</div>
                 </div>
