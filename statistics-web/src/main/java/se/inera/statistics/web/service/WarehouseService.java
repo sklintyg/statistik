@@ -34,6 +34,9 @@ public class WarehouseService {
     @Autowired
     private Warehouse warehouse;
 
+    @Autowired
+    private DiagnosgruppQuery query;
+
     public VerksamhetOverviewResponse getOverview(SjukfallUtil.StartFilter filter, Range range, String vardgivarId) {
         Aisle aisle = warehouse.get(vardgivarId);
 
@@ -51,7 +54,7 @@ public class WarehouseService {
         int previousLongSjukfall = SjukfallUtil.getLong(previousSjukfall.getSjukfall());
 
         List<OverviewChartRowExtended> aldersgrupper = AldersgruppQuery.getOverviewAldersgrupper(currentSjukfall.getSjukfall(), previousSjukfall.getSjukfall(), DISPLAYED_AGE_GROUPS);
-        List<OverviewChartRowExtended> diagnosgrupper = new DiagnosisGroupsConverter().convert(DiagnosgruppQuery.getOverviewDiagnosgrupper(currentSjukfall.getSjukfall(), previousSjukfall.getSjukfall(), Integer.MAX_VALUE));
+        List<OverviewChartRowExtended> diagnosgrupper = new DiagnosisGroupsConverter().convert(query.getOverviewDiagnosgrupper(currentSjukfall.getSjukfall(), previousSjukfall.getSjukfall(), Integer.MAX_VALUE));
         List<OverviewChartRowExtended> sjukskrivningsgrad = SjukskrivningsgradQuery.getOverviewSjukskrivningsgrad(currentSjukfall.getSjukfall(), previousSjukfall.getSjukfall());
         List<OverviewChartRow> sjukskrivningslangd = SjukskrivningslangdQuery.getOverviewSjukskrivningslangd(currentSjukfall.getSjukfall(), Integer.MAX_VALUE);
 
@@ -100,7 +103,7 @@ public class WarehouseService {
     }
 
     public DiagnosgruppResponse getDiagnosgrupperPerMonth(SjukfallUtil.StartFilter filter, Range range, String vardgivarId) {
-        return DiagnosgruppQuery.getDiagnosgrupper(warehouse.get(vardgivarId), filter, range.getFrom(), range.getMonths(), 1);
+        return query.getDiagnosgrupper(warehouse.get(vardgivarId), filter, range.getFrom(), range.getMonths(), 1);
     }
 
     public SjukskrivningsgradResponse getSjukskrivningsgradPerMonth(SjukfallUtil.StartFilter filter, Range range, String vardgivarId) {
@@ -120,6 +123,6 @@ public class WarehouseService {
     }
 
     public DiagnosgruppResponse getDiagnosavsnitt(SjukfallUtil.StartFilter filter, Range range, String kapitelId, String vardgivarId) {
-        return DiagnosgruppQuery.getDiagnosavsnitt(warehouse.get(vardgivarId), filter, range.getFrom(), range.getMonths(), 1, kapitelId);
+        return query.getDiagnosavsnitt(warehouse.get(vardgivarId), filter, range.getFrom(), range.getMonths(), 1, kapitelId);
     }
 }

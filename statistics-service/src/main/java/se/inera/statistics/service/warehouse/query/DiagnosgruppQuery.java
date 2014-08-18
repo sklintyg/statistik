@@ -14,6 +14,7 @@ import se.inera.statistics.service.warehouse.Aisle;
 import se.inera.statistics.service.warehouse.Sjukfall;
 import se.inera.statistics.service.warehouse.SjukfallUtil;
 
+import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -26,20 +27,21 @@ import java.util.Map;
 public class DiagnosgruppQuery {
 
     public static final int MAX_DIAGNOS_ID = 2700;
-    private static Icd10 icd10;
-    private static Map<Integer, Icd10.Kapitel> kapitelMap;
 
     @Autowired
-    public void setIcd10(Icd10 icd10) {
-        DiagnosgruppQuery.icd10 = icd10;
-        Map<Integer, Icd10.Kapitel> kapitelMap = new HashMap<>();
+    private Icd10 icd10;
+
+    private Map<Integer, Icd10.Kapitel> kapitelMap;
+
+    @PostConstruct
+    public void parseIcd10() {
+        kapitelMap = new HashMap<>();
         for (Icd10.Kapitel kapitel : icd10.getKapitel()) {
             kapitelMap.put(kapitel.toInt(), kapitel);
         }
-        DiagnosgruppQuery.kapitelMap = kapitelMap;
     }
 
-    public static List<OverviewChartRowExtended> getOverviewDiagnosgrupper(Collection<Sjukfall> currentSjukfall, Collection<Sjukfall> previousSjukfall, int noOfRows) {
+    public List<OverviewChartRowExtended> getOverviewDiagnosgrupper(Collection<Sjukfall> currentSjukfall, Collection<Sjukfall> previousSjukfall, int noOfRows) {
         Map<String, Counter<String>> previousCount = count(previousSjukfall);
 
         List<Counter<String>> toKeep = count(currentSjukfall, noOfRows);
@@ -55,7 +57,7 @@ public class DiagnosgruppQuery {
         return result;
     }
 
-    public static DiagnosgruppResponse getDiagnosgrupper(Aisle aisle, SjukfallUtil.StartFilter filter, LocalDate start, int periods, int periodLength) {
+    public DiagnosgruppResponse getDiagnosgrupper(Aisle aisle, SjukfallUtil.StartFilter filter, LocalDate start, int periods, int periodLength) {
         List<Icd10.Kapitel> kapitel = icd10.getKapitel();
 
         List<KonDataRow> rows = new ArrayList<>();
@@ -82,7 +84,7 @@ public class DiagnosgruppQuery {
         return new DiagnosgruppResponse(avsnitt, rows);
     }
 
-    public static DiagnosgruppResponse getDiagnosavsnitt(Aisle aisle, SjukfallUtil.StartFilter filter, LocalDate start, int periods, int periodLength, String kapitelId) {
+    public DiagnosgruppResponse getDiagnosavsnitt(Aisle aisle, SjukfallUtil.StartFilter filter, LocalDate start, int periods, int periodLength, String kapitelId) {
         Icd10.Kapitel kapitel = icd10.getKapitel(kapitelId);
         List<Avsnitt> avsnitts = new ArrayList<>();
         for (Icd10.Avsnitt avsnitt : kapitel.getAvsnitt()) {
@@ -115,7 +117,7 @@ public class DiagnosgruppQuery {
 
     private static Collection<String> rowsToKeep(Map<String, Counter<String>> count, int noOfRows) {
         List<Counter<String>> sorted = new ArrayList<>();
-        for (Counter counter : count.values()) {
+        for (Counter<String> counter : count.values()) {
             sorted.add(counter);
         }
         Collections.sort(sorted);
@@ -131,7 +133,7 @@ public class DiagnosgruppQuery {
         return result;
     }
 
-    public static List<Counter<String>> count(Collection<Sjukfall> sjukfalls, int noOfRows) {
+    public List<Counter<String>> count(Collection<Sjukfall> sjukfalls, int noOfRows) {
         Map<String, Counter<String>> map = count(sjukfalls);
         List<Counter<String>> result = new ArrayList<>();
 
@@ -145,7 +147,7 @@ public class DiagnosgruppQuery {
         return result;
     }
 
-    public static Map<String, Counter<String>> count(Collection<Sjukfall> sjukfalls) {
+    public Map<String, Counter<String>> count(Collection<Sjukfall> sjukfalls) {
         Map<String, Counter<String>> counters = createCounters();
         for (Sjukfall sjukfall : sjukfalls) {
             Counter counter = counters.get(kapitelMap.get(sjukfall.getDiagnoskapitel()).getId());
@@ -154,10 +156,10 @@ public class DiagnosgruppQuery {
         return counters;
     }
 
-    private static Map<String, Counter<String>> createCounters() {
-        Map<String, Counter<String>> counters = new HashMap();
+    private Map<String, Counter<String>> createCounters() {
+        Map<String, Counter<String>> counters = new HashMap<>();
         for (Icd10.Kapitel kapitel : icd10.getKapitel()) {
-            counters.put(kapitel.getId(), new Counter(kapitel.getId()));
+            counters.put(kapitel.getId(), new Counter<>(kapitel.getId()));
         }
         return counters;
     }

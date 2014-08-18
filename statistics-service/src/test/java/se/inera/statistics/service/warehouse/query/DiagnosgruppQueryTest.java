@@ -30,11 +30,14 @@ public class DiagnosgruppQueryTest {
     @Autowired
     private Icd10 icd10;
 
+    @Autowired
+    private DiagnosgruppQuery query;
+
     @Test
     public void one() {
         fact(4010, 0);
         Collection<Sjukfall> sjukfall = SjukfallUtil.calculateSjukfall(warehouse.get(VARDGIVARE));
-        Map<String,Counter<String>> count = DiagnosgruppQuery.count(sjukfall);
+        Map<String,Counter<String>> count = query.count(sjukfall);
         assertEquals(1, count.get(icd10.getKapitel("A00-B99").getId()).getCount());
     }
 
@@ -53,7 +56,7 @@ public class DiagnosgruppQueryTest {
         fact(4010, 500);
         fact(4010, 600);
         Collection<Sjukfall> sjukfall = SjukfallUtil.calculateSjukfall(warehouse.get(VARDGIVARE));
-        List<Counter<String>> count = DiagnosgruppQuery.count(sjukfall, 4);
+        List<Counter<String>> count = query.count(sjukfall, 4);
 
         assertEquals(4, count.size());
         assertEquals(4, count.get(0).getCount());

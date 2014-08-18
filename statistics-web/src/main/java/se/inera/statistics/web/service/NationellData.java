@@ -36,6 +36,9 @@ public class NationellData {
     @Autowired
     private Lan lans;
 
+    @Autowired
+    private DiagnosgruppQuery query;
+
     public SimpleKonResponse<SimpleKonDataRow> getCasesPerMonth(Range range) {
         ArrayList<SimpleKonDataRow> result = new ArrayList<>();
         for (Aisle aisle: warehouse) {
@@ -129,7 +132,7 @@ public class NationellData {
     public DiagnosgruppResponse getDiagnosgrupper(Range range) {
         DiagnosgruppResponse result = null;
         for (Aisle aisle: warehouse) {
-            DiagnosgruppResponse diagnosgrupper = DiagnosgruppQuery.getDiagnosgrupper(aisle, SjukfallUtil.ALL_ENHETER, range.getFrom(), range.getMonths(), 1);
+            DiagnosgruppResponse diagnosgrupper = query.getDiagnosgrupper(aisle, SjukfallUtil.ALL_ENHETER, range.getFrom(), range.getMonths(), 1);
 
             if (result == null) {
                 result = diagnosgrupper;
@@ -156,7 +159,7 @@ public class NationellData {
     public DiagnosgruppResponse getDiagnosavsnitt(Range range, String kapitelId) {
         DiagnosgruppResponse result = null;
         for (Aisle aisle: warehouse) {
-            DiagnosgruppResponse diagnosgrupper = DiagnosgruppQuery.getDiagnosavsnitt(aisle, SjukfallUtil.ALL_ENHETER, range.getFrom(), range.getMonths(), 1, kapitelId);
+            DiagnosgruppResponse diagnosgrupper = query.getDiagnosavsnitt(aisle, SjukfallUtil.ALL_ENHETER, range.getFrom(), range.getMonths(), 1, kapitelId);
 
             if (result == null) {
                 result = diagnosgrupper;
