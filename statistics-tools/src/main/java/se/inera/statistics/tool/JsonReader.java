@@ -7,6 +7,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
@@ -28,7 +29,6 @@ public final class JsonReader {
     public static final DateTimeFormatter PERSONNUMMER = DateTimeFormat.forPattern("yyyyMMdd'");
     public static final String ENCODING = "UTF-8";
     private static StringBuilder builder;
-    private static int pruned;
 
     private JsonReader() {
     }
@@ -81,7 +81,7 @@ public final class JsonReader {
                     out.write(builder.toString().getBytes(ENCODING));
                     if (pruneLimit != from) {
                         pruneLimit = from;
-                        pruned = sjukfall.prune(pruneLimit);
+                        int pruned = sjukfall.prune(pruneLimit);
                         System.err.println("Pruned " + pruneLimit + " " + pruned);
                     }
                 }
@@ -152,7 +152,7 @@ public final class JsonReader {
 
     private static class Sjukfall {
         private static final int FALL_GLAPP = 5;
-        private HashMap<Key, Fall> known = new HashMap<>();
+        private Map<Key, Fall> known = new HashMap<>();
         public int getUpsertedId(int personid, int vardgivare, int from, int tom) {
             Key key = new Key(personid, vardgivare);
             Fall fall = known.get(key);

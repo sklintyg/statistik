@@ -125,7 +125,7 @@ public class DiagnosgruppQuery {
         Collection<String> result = new HashSet<>();
         for (Counter<String> counter : sorted) {
             result.add(counter.getKey());
-            if (--noOfRows == 0) {
+            if (result.size() == noOfRows) {
                 break;
             }
         }

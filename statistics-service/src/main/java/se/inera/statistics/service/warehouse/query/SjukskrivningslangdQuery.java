@@ -51,7 +51,7 @@ public final class SjukskrivningslangdQuery {
         Collection<Ranges.Range> result = new HashSet<>();
         for (Counter<Ranges.Range> counter : sorted) {
             result.add(counter.getKey());
-            if (--noOfRows == 0) {
+            if (result.size() == noOfRows) {
                 break;
             }
         }
