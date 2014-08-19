@@ -472,7 +472,8 @@ public class ProtectedChartDataService {
                 }
             }
             filter = SjukfallUtil.createEnhetFilter(enheter.toArray(new String[enheter.size()]));
-        } return filter;
+        }
+        return filter;
     }
 
     public Helper getHelper() {

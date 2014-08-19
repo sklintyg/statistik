@@ -31,10 +31,7 @@ import se.inera.statistics.service.processlog.Receiver;
 import se.inera.statistics.service.report.repository.NationellUpdater;
 import se.inera.statistics.service.report.util.Icd10;
 import se.inera.statistics.service.scheduler.LogJob;
-import se.inera.statistics.service.warehouse.Warehouse;
 import se.inera.statistics.service.warehouse.WarehouseManager;
-import se.inera.statistics.service.warehouse.WidelineLoader;
-import se.inera.statistics.service.warehouse.WidelineManager;
 
 import javax.annotation.PostConstruct;
 import java.io.BufferedReader;

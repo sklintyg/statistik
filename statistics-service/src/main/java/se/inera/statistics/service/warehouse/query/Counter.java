@@ -3,7 +3,6 @@ package se.inera.statistics.service.warehouse.query;
 import se.inera.statistics.service.warehouse.Sjukfall;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 public class Counter<T> implements Comparable<Counter> {
