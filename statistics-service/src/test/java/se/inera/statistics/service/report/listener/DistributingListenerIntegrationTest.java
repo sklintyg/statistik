@@ -72,7 +72,7 @@ public class DistributingListenerIntegrationTest {
 
         distributingListener.accept(sjukfallInfo, utlatande, hsa, 1L);
 
-        SimpleKonResponse<SimpleKonDataRow> result = sjukfallPerManad.getCasesPerMonth("v1", rangeOneMonth);
+        SimpleKonResponse<SimpleKonDataRow> result = sjukfallPerManad.getCasesPerMonth("huvudenhetId", rangeOneMonth);
         assertEquals(1, result.getRows().get(0).getMale().intValue());
     }
 
@@ -85,7 +85,7 @@ public class DistributingListenerIntegrationTest {
 
         distributingListener.accept(sjukfallInfo, utlatande, hsa, 1L);
 
-        SimpleKonResponse<SimpleKonDataRow> result = sjukfallPerManad.getCasesPerMonth("v1", rangeTwoMonth);
+        SimpleKonResponse<SimpleKonDataRow> result = sjukfallPerManad.getCasesPerMonth("huvudenhetId", rangeTwoMonth);
         assertEquals(2, result.getRows().size());
         assertEquals(1, result.getRows().get(0).getMale().intValue());
         assertEquals(1, result.getRows().get(1).getMale().intValue());
@@ -100,7 +100,7 @@ public class DistributingListenerIntegrationTest {
 
         distributingListener.accept(sjukfallInfo, utlatande, hsa, 1L);
 
-        SimpleKonResponse<SimpleKonDataRow> result = sjukfallPerManad.getCasesPerMonth("v1", rangeTwoMonth);
+        SimpleKonResponse<SimpleKonDataRow> result = sjukfallPerManad.getCasesPerMonth("huvudenhetId", rangeTwoMonth);
         assertEquals(2, result.getRows().size());
         assertEquals(0, result.getRows().get(0).getMale().intValue());
         assertEquals(1, result.getRows().get(1).getMale().intValue());
@@ -115,7 +115,7 @@ public class DistributingListenerIntegrationTest {
 
         distributingListener.accept(sjukfallInfo, utlatande, hsa, 1L);
 
-        SimpleKonResponse<SimpleKonDataRow> result = sjukfallPerManad.getCasesPerMonth("v1", rangeTwoMonth);
+        SimpleKonResponse<SimpleKonDataRow> result = sjukfallPerManad.getCasesPerMonth("huvudenhetId", rangeTwoMonth);
         assertEquals(2, result.getRows().size());
         assertEquals(0, result.getRows().get(0).getMale().intValue());
         assertEquals(0, result.getRows().get(1).getMale().intValue());
@@ -140,7 +140,7 @@ public class DistributingListenerIntegrationTest {
         JsonNode utlatande3 = createUtlatande(from3, to3);
         distributingListener.accept(sjukfallInfo3, utlatande3, hsa, 1L);
 
-        SimpleKonResponse<SimpleKonDataRow> result = sjukfallPerManad.getCasesPerMonth("v1", rangeOneMonth);
+        SimpleKonResponse<SimpleKonDataRow> result = sjukfallPerManad.getCasesPerMonth("huvudenhetId", rangeOneMonth);
         assertEquals(1, result.getRows().size());
         assertEquals(1, result.getRows().get(0).getMale().intValue());
     }
@@ -216,14 +216,14 @@ public class DistributingListenerIntegrationTest {
 
         check1FallLangd(new LocalDate("2013-03-01"), "15-30 dagar");
 
-        SjukfallslangdResponse result = sjukfallslangdGrupp.getHistoricalStatistics("v1", new LocalDate("2013-04-01"), RollingLength.YEAR);
+        SjukfallslangdResponse result = sjukfallslangdGrupp.getHistoricalStatistics("huvudenhetId", new LocalDate("2013-04-01"), RollingLength.YEAR);
         assertEquals(2, result.getRows().size());
         assertEquals("15-30 dagar", result.getRows().get(0).getGroup());
         assertEquals("31-90 dagar", result.getRows().get(1).getGroup());
         assertEquals(1, result.getRows().get(0).getMale());
         assertEquals(1, result.getRows().get(1).getMale());
 
-        result = sjukfallslangdGrupp.getHistoricalStatistics("v1", new LocalDate("2013-05-01"), RollingLength.YEAR);
+        result = sjukfallslangdGrupp.getHistoricalStatistics("huvudenhetIdRe", new LocalDate("2013-05-01"), RollingLength.YEAR);
         assertEquals(2, result.getRows().size());
         assertEquals("15-30 dagar", result.getRows().get(0).getGroup());
         assertEquals("31-90 dagar", result.getRows().get(1).getGroup());
@@ -265,14 +265,14 @@ public class DistributingListenerIntegrationTest {
         LocalDate from1 = new LocalDate("2013-03-01"), to1 = new LocalDate("2013-04-30");
         SjukfallInfo sjukfallInfo = new SjukfallInfo(personId, from1, to1, null);
         JsonNode utlatande = createUtlatande(from1, to1, "UNS33.7");
-        distributingListener.accept(sjukfallInfo, utlatande, null, 1L);
+        distributingListener.accept(sjukfallInfo, utlatande, createHsaJson(), 1L);
 
-        SjukfallslangdResponse result = sjukfallslangdGrupp.getHistoricalStatistics("v1", new LocalDate("2013-03-01"), RollingLength.YEAR);
+        SjukfallslangdResponse result = sjukfallslangdGrupp.getHistoricalStatistics("huvudenhetId", new LocalDate("2013-03-01"), RollingLength.YEAR);
         assertEquals(1, result.getRows().size());
         assertEquals("31-90 dagar", result.getRows().get(0).getGroup());
         assertEquals(1, result.getRows().get(0).getMale());
 
-        DiagnosgruppResponse diagnoser = diagnosgrupp.getDiagnosisGroups("v1", new Range(new LocalDate("2013-03-01"), new LocalDate("2013-03-01")));
+        DiagnosgruppResponse diagnoser = diagnosgrupp.getDiagnosisGroups("huvudenhetId", new Range(new LocalDate("2013-03-01"), new LocalDate("2013-03-01")));
         for (KonDataRow row : diagnoser.getRows()) {
             for (KonField field : row.getData()) {
                 assertEquals(0, field.getFemale());
@@ -287,7 +287,7 @@ public class DistributingListenerIntegrationTest {
         SjukfallInfo sjukfallInfo = new SjukfallInfo(personId, from1, to1, null);
         JsonNode utlatande = createUtlatande(from1, to1, "vg" + longString(100), "enhet" + longString(100), "A00");
 
-        distributingListener.accept(sjukfallInfo, utlatande, null, 1L);
+        distributingListener.accept(sjukfallInfo, utlatande, createHsaJson(), 1L);
 
         entityManager.flush();
     }
@@ -318,7 +318,7 @@ public class DistributingListenerIntegrationTest {
 
     private void check1FallLangd(LocalDate checkDate, String expectedGroup) {
         SjukfallslangdResponse result;
-        result = sjukfallslangdGrupp.getHistoricalStatistics("v1", checkDate, RollingLength.YEAR);
+        result = sjukfallslangdGrupp.getHistoricalStatistics("huvudenhetId", checkDate, RollingLength.YEAR);
         assertEquals(1, result.getRows().size());
         assertEquals(expectedGroup, result.getRows().get(0).getGroup());
         assertEquals(1, result.getRows().get(0).getMale());
