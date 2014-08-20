@@ -223,7 +223,7 @@ public class DistributingListenerIntegrationTest {
         assertEquals(1, result.getRows().get(0).getMale());
         assertEquals(1, result.getRows().get(1).getMale());
 
-        result = sjukfallslangdGrupp.getHistoricalStatistics("huvudenhetIdRe", new LocalDate("2013-05-01"), RollingLength.YEAR);
+        result = sjukfallslangdGrupp.getHistoricalStatistics("huvudenhetId", new LocalDate("2013-05-01"), RollingLength.YEAR);
         assertEquals(2, result.getRows().size());
         assertEquals("15-30 dagar", result.getRows().get(0).getGroup());
         assertEquals("31-90 dagar", result.getRows().get(1).getGroup());
