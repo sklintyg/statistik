@@ -109,10 +109,11 @@ public class RepresentativeIntygIntegrationTest {
         LOG.info("3 persons, 1 intyg each, basic test.");
 
         LOG.info("===========INPUT==========");
+        int i = 0;
         for (TestIntyg intyg : getIntygWithHelsjukAndSingelmanadAndSingelDiagnos(getPerson(PERSON_K1950), getPerson(PERSON_K1960), getPerson(PERSON_M1979))) {
             LOG.info("Intyg: " + intyg);
             queueSender.simpleSend(builder.build(intyg.personNr, intyg.startDate, intyg.endDate, intyg.vardenhet, intyg.vardgivare, intyg.diagnos, intyg.grads).toString(),
-                    "001");
+                    "" + i++);
         }
 
         sleep();
@@ -150,10 +151,11 @@ public class RepresentativeIntygIntegrationTest {
         List<String> vardenhet = Arrays.asList(getVardenhet(ENVE), getVardenhet(TVAVE), getVardenhet(ENVE), getVardenhet(TVAVE), getVardenhet(ENVE),
                 getVardenhet(TVAVE), getVardenhet(ENVE), getVardenhet(TVAVE), getVardenhet(ENVE));
         List<TestIntyg> intygs = getIntygWithHelsjukAndSingelmanadAndDiagnosList(persons, diagnosKods, start, stop, vardgivares, vardenhet);
+        int i = 1000;
         for (TestIntyg intyg : intygs) {
             LOG.info("Intyg: " + intyg);
             queueSender.simpleSend(builder.build(intyg.personNr, intyg.startDate, intyg.endDate, intyg.vardenhet, intyg.vardgivare, intyg.diagnos, intyg.grads).toString(),
-                    "001");
+                    "" + i++);
         }
 
         sleep();
@@ -170,7 +172,7 @@ public class RepresentativeIntygIntegrationTest {
 
     private void sleep() {
         try {
-            Thread.sleep(5000);
+            Thread.sleep(9000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
