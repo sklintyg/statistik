@@ -1,6 +1,8 @@
 package se.inera.statistics.service.report.listener;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.joda.time.LocalDate;
 import org.junit.Before;
 import org.junit.Test;
@@ -65,7 +67,7 @@ public class DistributingListenerIntegrationTest {
     public void testCount1Intyg() {
         LocalDate from = new LocalDate("2013-03-01"), to = new LocalDate("2013-03-10");
         SjukfallInfo sjukfallInfo = new SjukfallInfo(personId, from, to, null);
-        JsonNode hsa = null;
+        JsonNode hsa = createHsaJson();
         JsonNode utlatande = createUtlatande(from, to);
 
         distributingListener.accept(sjukfallInfo, utlatande, hsa, 1L);
@@ -78,7 +80,7 @@ public class DistributingListenerIntegrationTest {
     public void testCountMonthSpanningIntyg() {
         LocalDate from = new LocalDate("2013-03-01"), to = new LocalDate("2013-04-10");
         SjukfallInfo sjukfallInfo = new SjukfallInfo(personId, from, to, null);
-        JsonNode hsa = null;
+        JsonNode hsa = createHsaJson();
         JsonNode utlatande = createUtlatande(from, to);
 
         distributingListener.accept(sjukfallInfo, utlatande, hsa, 1L);
@@ -93,7 +95,7 @@ public class DistributingListenerIntegrationTest {
     public void testCountMonthSpanningIntygWithPreviousEndDateInFirstMonth() {
         LocalDate from = new LocalDate("2013-03-01"), to = new LocalDate("2013-04-10");
         SjukfallInfo sjukfallInfo = new SjukfallInfo(personId, from, to, new LocalDate("2013-03-03"));
-        JsonNode hsa = null;
+        JsonNode hsa = createHsaJson();
         JsonNode utlatande = createUtlatande(from, to);
 
         distributingListener.accept(sjukfallInfo, utlatande, hsa, 1L);
@@ -108,7 +110,7 @@ public class DistributingListenerIntegrationTest {
     public void testCountMonthSpanningIntygWithPreviousEndDateInSecondMonth() {
         LocalDate from = new LocalDate("2013-03-01"), to = new LocalDate("2013-04-10");
         SjukfallInfo sjukfallInfo = new SjukfallInfo(personId, from, to, new LocalDate("2013-04-03"));
-        JsonNode hsa = null;
+        JsonNode hsa = createHsaJson();
         JsonNode utlatande = createUtlatande(from, to);
 
         distributingListener.accept(sjukfallInfo, utlatande, hsa, 1L);
@@ -121,7 +123,7 @@ public class DistributingListenerIntegrationTest {
 
     @Test
     public void testCountThreeIntygWith5DayGapBetweenLastOnes() {
-        JsonNode hsa = null;
+        JsonNode hsa = createHsaJson();
 
         LocalDate from1 = new LocalDate("2013-03-01"), to1 = new LocalDate("2013-03-02");
         SjukfallInfo sjukfallInfo = new SjukfallInfo(personId, from1, to1, null);
@@ -145,7 +147,7 @@ public class DistributingListenerIntegrationTest {
 
     @Test
     public void testSjukfalllangdFor21DayIntygFollowedBy30DayIntygWithNoGap() {
-        JsonNode hsa = null;
+        JsonNode hsa = createHsaJson();
 
         LocalDate from1 = new LocalDate("2013-03-11"), to1 = new LocalDate("2013-03-31");
         SjukfallInfo sjukfallInfo = new SjukfallInfo(personId, from1, to1, null);
@@ -163,7 +165,7 @@ public class DistributingListenerIntegrationTest {
 
     @Test
     public void testSjukfalllangdFor2MonthIntygFollowedBy30DayIntygWith1DayOverlap() {
-        JsonNode hsa = null;
+        JsonNode hsa = createHsaJson();
 
         LocalDate from1 = new LocalDate("2013-03-01"), to1 = new LocalDate("2013-04-30");
         SjukfallInfo sjukfallInfo = new SjukfallInfo(personId, from1, to1, null);
@@ -182,7 +184,7 @@ public class DistributingListenerIntegrationTest {
 
     @Test
     public void testSjukfalllangdFor21DayIntygFollowedBy30DayIntygWith1DayOverlap() {
-        JsonNode hsa = null;
+        JsonNode hsa = createHsaJson();
 
         LocalDate from1 = new LocalDate("2013-03-11"), to1 = new LocalDate("2013-04-01");
         SjukfallInfo sjukfallInfo = new SjukfallInfo(personId, from1, to1, null);
@@ -200,7 +202,7 @@ public class DistributingListenerIntegrationTest {
 
     @Test
     public void testSjukfalllangdFor21DayIntygFollowedBy31DayIntygWithSixDayGap() {
-        JsonNode hsa = null;
+        JsonNode hsa = createHsaJson();
 
         LocalDate from1 = new LocalDate("2013-03-11"), to1 = new LocalDate("2013-03-31");
         SjukfallInfo sjukfallInfo = new SjukfallInfo(personId, from1, to1, null);
@@ -232,7 +234,7 @@ public class DistributingListenerIntegrationTest {
 
     @Test
     public void testSjukfalllangdFor21DayIntygFollowedBy29DayIntygWithNoGapWithinMonth() {
-        JsonNode hsa = null;
+        JsonNode hsa = createHsaJson();
 
         LocalDate from1 = new LocalDate("2013-03-12"), to1 = new LocalDate("2013-04-01");
         SjukfallInfo sjukfallInfo = new SjukfallInfo(personId, from1, to1, null);
@@ -320,5 +322,20 @@ public class DistributingListenerIntegrationTest {
         assertEquals(1, result.getRows().size());
         assertEquals(expectedGroup, result.getRows().get(0).getGroup());
         assertEquals(1, result.getRows().get(0).getMale());
+    }
+
+    private JsonNode createHsaJson() {
+        ObjectMapper mapper = new ObjectMapper();
+        ObjectNode root = mapper.createObjectNode();
+        ObjectNode enhet = mapper.createObjectNode();
+        ObjectNode huuvdenhet = mapper.createObjectNode();
+        enhet.put("id", "enhetId");
+        root.put("enhet", enhet);
+        huuvdenhet.put("id", "huvudenhetId");
+        root.put("huvudenhet", huuvdenhet);
+        ObjectNode vardgivare = mapper.createObjectNode();
+        vardgivare.put("id", "vardgivarId");
+        root.put("vardgivare", vardgivare);
+        return root;
     }
 }

@@ -46,7 +46,7 @@ public class GenericHolder {
     private final String vardgivareId;
     private final String lanId;
     private final Kon kon;
-    private String diagnos;
+    private final String diagnos;
     private String diagnosgrupp;
     private String diagnosundergrupp;
     private final int age;
@@ -54,8 +54,8 @@ public class GenericHolder {
     public GenericHolder(SjukfallInfo sjukfallInfo, JsonNode utlatande, JsonNode hsa, DiagnosUtil diagnosUtil) {
         this.sjukfallInfo = sjukfallInfo;
         this.utlatande = utlatande;
-        enhetId = DocumentHelper.getEnhetId(utlatande);
-        vardgivareId = DocumentHelper.getVardgivareId(utlatande);
+        enhetId = HSAServiceHelper.getEnhetId(hsa);
+        vardgivareId = HSAServiceHelper.getVardgivarId(hsa);
         lanId = HSAServiceHelper.getLan(hsa);
         kon = "man".equalsIgnoreCase(DocumentHelper.getKon(utlatande)) ? Kon.Male : Kon.Female;
         diagnos = DocumentHelper.getDiagnos(utlatande);

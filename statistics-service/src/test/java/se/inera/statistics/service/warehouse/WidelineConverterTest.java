@@ -71,6 +71,15 @@ public class WidelineConverterTest {
     }
 
     @Test
+    public void errorOnMissingVardgivare() throws Exception {
+        wideLine.setVardgivareId("");
+        List<String> errors = converter.validate(wideLine);
+
+        LOG.error("Error message: {}", errors);
+        assertEquals(1, errors.size());
+    }
+
+    @Test
     public void errorOnMissingEnhet() throws Exception {
         wideLine.setEnhet(null);
         List<String> errors = converter.validate(wideLine);
@@ -102,6 +111,6 @@ public class WidelineConverterTest {
         List<String> errors = converter.validate(new WideLine());
 
         LOG.error("Error message: {}", errors);
-        assertEquals(5, errors.size());
+        assertEquals(6, errors.size());
     }
 }

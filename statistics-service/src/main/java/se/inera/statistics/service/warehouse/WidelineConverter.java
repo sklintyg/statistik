@@ -33,8 +33,8 @@ public class WidelineConverter {
 
         String lkf = getLkf(hsa);
 
-        String enhet = DocumentHelper.getEnhetId(intyg);
-        String vardgivare = DocumentHelper.getVardgivareId(intyg);
+        String enhet = HSAServiceHelper.getEnhetId(hsa);
+        String vardgivare = HSAServiceHelper.getVardgivarId(hsa);
 
         String patient = DocumentHelper.getPersonId(intyg);
 
@@ -116,6 +116,7 @@ public class WidelineConverter {
     public List<String> validate(WideLine line) {
         List<String> errors = new ArrayList<>();
         checkField(errors, line.getLkf(), "LKF");
+        checkField(errors, line.getVardgivareId(), "Vårdgivare");
         checkField(errors, line.getEnhet(), "Enhet");
         checkField(errors, line.getPatientid(), "Patient");
         checkField(errors, line.getDiagnoskategori(), "Diagnoskategori");

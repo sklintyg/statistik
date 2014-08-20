@@ -66,6 +66,7 @@ import se.inera.ifv.hsawsresponder.v3.LookupHsaObjectType;
 import se.inera.ifv.hsawsresponder.v3.MiuInformationType;
 import se.inera.ifv.hsawsresponder.v3.PingResponseType;
 import se.inera.ifv.hsawsresponder.v3.PingType;
+import se.inera.ifv.hsawsresponder.v3.StatisticsHsaUnit;
 import se.inera.ifv.hsawsresponder.v3.VpwGetPublicUnitsResponseType;
 import se.inera.ifv.hsawsresponder.v3.VpwGetPublicUnitsType;
 import se.inera.statistics.hsa.model.Vardenhet;
@@ -111,7 +112,9 @@ public class HsaWebServiceStub implements HsaWsResponderInterface {
 
     @Override
     public GetStatisticsCareGiverResponseType getStatisticsCareGiver(@WebParam(partName = "LogicalAddress", name = "To", targetNamespace = "http://www.w3.org/2005/08/addressing", header = true) AttributedURIType logicalAddress, @WebParam(partName = "Id", name = "MessageID", targetNamespace = "http://www.w3.org/2005/08/addressing", header = true) AttributedURIType id, @WebParam(partName = "parameters", name = "GetStatisticsCareGiver", targetNamespace = "urn:riv:hsa:HsaWsResponder:3") GetStatisticsCareGiverType parameters) throws HsaWsFault {
-        return null;
+        GetStatisticsCareGiverResponseType result = new GetStatisticsCareGiverResponseType();
+        result.setHsaIdentity(parameters.getHsaIdentity());
+        return result;
     }
 
     private List<MiuInformationType> miuInformationTypesForEnhetsIds(Medarbetaruppdrag medarbetaruppdrag) {
@@ -151,7 +154,11 @@ public class HsaWebServiceStub implements HsaWsResponderInterface {
 
     @Override
     public GetStatisticsHsaUnitResponseType getStatisticsHsaUnit(@WebParam(partName = "LogicalAddress", name = "To", targetNamespace = "http://www.w3.org/2005/08/addressing", header = true) AttributedURIType logicalAddress, @WebParam(partName = "Id", name = "MessageID", targetNamespace = "http://www.w3.org/2005/08/addressing", header = true) AttributedURIType id, @WebParam(partName = "parameters", name = "GetStatisticsHsaUnit", targetNamespace = "urn:riv:hsa:HsaWsResponder:3") GetStatisticsHsaUnitType parameters) throws HsaWsFault {
-        return null;
+        GetStatisticsHsaUnitResponseType result = new GetStatisticsHsaUnitResponseType();
+        StatisticsHsaUnit unit = new StatisticsHsaUnit();
+        unit.setHsaIdentity(parameters.getHsaIdentity());
+        result.setStatisticsUnit(unit);
+        return result;
     }
 
     private AttributeValueListType createAttributeValueListForEnhet(String enhetsId) {
