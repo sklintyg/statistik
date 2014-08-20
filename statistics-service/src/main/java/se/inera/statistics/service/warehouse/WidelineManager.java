@@ -11,7 +11,7 @@ import se.inera.statistics.service.warehouse.model.db.WideLine;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Component
@@ -25,7 +25,7 @@ public class WidelineManager {
     @Autowired
     private WidelineConverter widelineConverter;
 
-    @Transactional(dontRollbackOn = Exception.class)
+    @Transactional(noRollbackFor = Exception.class)
     public void accept(JsonNode intyg, JsonNode hsa, long logId, String correlationId, EventType type) {
         WideLine line = widelineConverter.toWideline(intyg, hsa, logId, correlationId, type);
         List<String> errors  = widelineConverter.validate(line);
