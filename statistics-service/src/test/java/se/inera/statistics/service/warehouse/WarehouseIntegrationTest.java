@@ -1,6 +1,7 @@
 package se.inera.statistics.service.warehouse;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +38,7 @@ public class WarehouseIntegrationTest {
     private LargeTestDataGenerator dataGenerator;
 
     @Test
+    @Ignore
     public void addingManyIntyg() throws InterruptedException {
         dataGenerator.publishUtlatanden();
         final Aisle aisle = warehouse.get("vardgivare1");
@@ -57,6 +59,7 @@ public class WarehouseIntegrationTest {
     }
 
     @Test
+    @Ignore
     public void exportManyIntyg() throws FileNotFoundException {
         dataGenerator.publishUtlatanden();
 
