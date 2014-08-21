@@ -27,7 +27,6 @@ import org.springframework.stereotype.Component;
 
 import se.inera.statistics.service.report.repository.NationellUpdater;
 
-@Component
 public class NationellUpdaterJob {
     private static final Logger LOG = LoggerFactory.getLogger(NationellUpdaterJob.class);
 

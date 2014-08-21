@@ -39,66 +39,19 @@ import static se.inera.statistics.service.helper.DocumentHelper.getSistaNedsattn
 import static se.inera.statistics.service.helper.DocumentHelper.getVardgivareId;
 
 public class Processor {
-    private static final DateTimeFormatter FORMATTER = ISODateTimeFormat.date();
-
-    @Autowired
-    private ProcessorListener listener;
-
-    @Autowired
-    private SjukfallService sjukfallService;
-
     @Autowired
     private WidelineManager widelineManager;
 
-    @Value("${skip.discrete.counter:false}")
-    private boolean skipDiscreteCounter;
-
-    private LocalDate cleanedup;
     private int processedCounter;
 
     public void accept(JsonNode utlatande, JsonNode hsa, long logId, String correlationId, EventType type) {
-        SjukfallKey sjukfallKey = extractSjukfallKey(utlatande);
-
-        SjukfallInfo sjukfallInfo = sjukfallService.register(sjukfallKey);
-
-        ObjectNode anonymous = DocumentHelper.anonymize(utlatande);
-
-        if (!skipDiscreteCounter) {
-            listener.accept(sjukfallInfo, anonymous, hsa, logId);
-        }
-
         ObjectNode preparedDoc = DocumentHelper.prepare(utlatande);
         widelineManager.accept(preparedDoc, hsa, logId, correlationId, type);
 
         processedCounter++;
     }
 
-    public void setSkipDiscreteCounter(boolean skipDiscreteCounter) {
-        this.skipDiscreteCounter = skipDiscreteCounter;
-    }
-
     public int getProcessedCounter() {
         return processedCounter;
     }
-
-    protected SjukfallKey extractSjukfallKey(JsonNode utlatande) {
-        try {
-            String personId = getPersonId(utlatande);
-            String vardgivareId = getVardgivareId(utlatande);
-            String startString = getForstaNedsattningsdag(utlatande);
-            String endString = getSistaNedsattningsdag(utlatande);
-            LocalDate start = FORMATTER.parseLocalDate(startString);
-            LocalDate end = FORMATTER.parseLocalDate(endString);
-            if (cleanedup == null) {
-                cleanedup = start;
-            } else if (start.isAfter(cleanedup)) {
-                sjukfallService.expire(cleanedup);
-                cleanedup = start;
-            }
-            return new SjukfallKey(personId, vardgivareId, start, end);
-        } catch (RuntimeException e) {
-            throw new StatisticsMalformedDocument("Could not parse dates from intyg.", e);
-        }
-    }
-
 }

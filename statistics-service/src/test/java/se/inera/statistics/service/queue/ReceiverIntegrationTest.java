@@ -18,7 +18,11 @@ import se.inera.statistics.service.report.api.SjukfallPerManad;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.SimpleKonDataRow;
 import se.inera.statistics.service.report.model.SimpleKonResponse;
+import se.inera.statistics.service.warehouse.SjukfallUtil;
+import se.inera.statistics.service.warehouse.Warehouse;
+import se.inera.statistics.service.warehouse.WarehouseManager;
 import se.inera.statistics.service.warehouse.WidelineManager;
+import se.inera.statistics.service.warehouse.query.SjukfallQuery;
 
 import javax.jms.ConnectionFactory;
 import javax.jms.Destination;
@@ -39,9 +43,6 @@ public class ReceiverIntegrationTest {
     private JmsTemplate jmsTemplate;
 
     @Autowired
-    private SjukfallPerManad sjukfallPerManad;
-
-    @Autowired
     private ConnectionFactory connectionFactory;
 
     @Autowired
@@ -49,6 +50,11 @@ public class ReceiverIntegrationTest {
 
     @Autowired
     private WidelineManager wideLine;
+
+    @Autowired
+    private WarehouseManager warehouseManager;
+    @Autowired
+    private Warehouse warehouse;
 
     @Before
     public void setup() {
@@ -64,8 +70,8 @@ public class ReceiverIntegrationTest {
         sleep();
 
         assertEquals(2, consumer.processBatch());
-
-        SimpleKonResponse<SimpleKonDataRow> webData = sjukfallPerManad.getCasesPerMonth("enhetId", new Range(new LocalDate("2011-01"), new LocalDate("2011-12")));
+        warehouseManager.loadWideLines();
+        SimpleKonResponse<SimpleKonDataRow> webData = SjukfallQuery.getSjukfall(warehouse.get("VardgivarId"), SjukfallUtil.createEnhetFilter("enhetId"), new LocalDate("2011-01"), 12, 1);
 
         assertEquals(12, webData.getRows().size());
 

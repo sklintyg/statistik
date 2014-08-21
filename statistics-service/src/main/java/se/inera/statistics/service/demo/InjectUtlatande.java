@@ -67,9 +67,6 @@ public class InjectUtlatande {
     private Receiver receiver;
 
     @Autowired
-    private NationellUpdater nationellUpdater;
-
-    @Autowired
     private LogJob logJob;
 
     @Autowired
@@ -97,16 +94,6 @@ public class InjectUtlatande {
         publishUtlatanden();
         logJob.checkLog();
         warehouseManager.loadWideLines();
-        updateNationell();
-    }
-
-    private void updateNationell() {
-        nationellUpdater.updateSjukskrivningsgrad();
-        nationellUpdater.updateSjukfallslangd();
-        nationellUpdater.updateDiagnosundergrupp();
-        nationellUpdater.updateDiagnosgrupp();
-        nationellUpdater.updateAldersgrupp();
-        nationellUpdater.updateCasesPerMonth();
     }
 
     private void cleanupDB() {

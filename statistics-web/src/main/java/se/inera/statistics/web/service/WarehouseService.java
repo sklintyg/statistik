@@ -18,6 +18,7 @@ import se.inera.statistics.service.warehouse.Sjukfall;
 import se.inera.statistics.service.warehouse.SjukfallUtil;
 import se.inera.statistics.service.warehouse.Warehouse;
 import se.inera.statistics.service.warehouse.query.DiagnosgruppQuery;
+import se.inera.statistics.service.warehouse.query.SjukfallQuery;
 import se.inera.statistics.service.warehouse.query.SjukskrivningsgradQuery;
 import se.inera.statistics.service.warehouse.query.SjukskrivningslangdQuery;
 
@@ -89,17 +90,7 @@ public class WarehouseService {
     }
 
     public SimpleKonResponse<SimpleKonDataRow> getCasesPerMonth(SjukfallUtil.StartFilter filter, Range range, String vardgivarId) {
-        Aisle aisle = warehouse.get(vardgivarId);
-
-        ArrayList<SimpleKonDataRow> result = new ArrayList<>();
-        for (SjukfallUtil.SjukfallGroup sjukfallGroup: SjukfallUtil.sjukfallGrupper(range.getFrom(), range.getMonths(), 1, aisle, filter)) {
-            int male = countMale(sjukfallGroup.getSjukfall());
-            int female = sjukfallGroup.getSjukfall().size() - male;
-            String displayDate = ReportUtil.toDiagramPeriod(sjukfallGroup.getRange().getFrom());
-            result.add(new SimpleKonDataRow(displayDate, female, male));
-        }
-
-        return new SimpleKonResponse<>(result, range.getMonths());
+        return SjukfallQuery.getSjukfall(warehouse.get(vardgivarId), filter, range.getFrom(), range.getMonths(), 1);
     }
 
     public DiagnosgruppResponse getDiagnosgrupperPerMonth(SjukfallUtil.StartFilter filter, Range range, String vardgivarId) {

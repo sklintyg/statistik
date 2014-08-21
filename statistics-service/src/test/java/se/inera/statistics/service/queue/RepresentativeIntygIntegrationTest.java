@@ -60,34 +60,12 @@ public class RepresentativeIntygIntegrationTest {
     private List<String> persons = new ArrayList<>();
 
     @Autowired
-    private SjukfallPerManad sjukfallPerManad;
-    @Autowired
-    private Diagnosgrupp diagnosgrupp;
-    @Autowired
-    private Diagnoskapitel diagnoskapitel;
-    @Autowired
-    private Aldersgrupp aldersgrupp;
-    @Autowired
-    private Sjukskrivningsgrad sjukskrivningsgrad;
-    @Autowired
-    private SjukfallslangdGrupp sjukfallslangdGrupp;
-    @Autowired
-    private VerksamhetOverview verksamhetOverview;
-    @Autowired
-    private Overview overview;
-    @Autowired
-    private SjukfallPerLan sjukfallPerLan;
-
-    @Autowired
     private QueueHelper queueHelper;
     @Autowired
     private QueueSender queueSender;
 
     @Autowired
     private LogConsumer consumer;
-
-    @Autowired
-    private NationellUpdaterJob nationellUpdaterJob;
 
     @Before
     public void setup() {
@@ -119,8 +97,6 @@ public class RepresentativeIntygIntegrationTest {
         sleep();
 
         assertEquals("Verify that all messages have been processed.", 3, consumer.processBatch());
-
-        nationellUpdaterJob.checkLog();
 
         LOG.info("===========RESULT=========");
         Map<String, TestData> result = queueHelper.printAndGetPersistedData(getVardenhet(ENVE), getVardenhet(TVAVE), new Range(getStart(0), getStop(3)));
@@ -161,8 +137,6 @@ public class RepresentativeIntygIntegrationTest {
         sleep();
 
         assertEquals("Verify that all messages have been processed.", 27, consumer.processBatch());
-
-        nationellUpdaterJob.checkLog();
 
         LOG.info("===========RESULT=========");
         queueHelper.printAndGetPersistedData(getVardenhet(ENVE), getVardenhet(TVAVE), new Range(getStart(0), getStop(3)));
