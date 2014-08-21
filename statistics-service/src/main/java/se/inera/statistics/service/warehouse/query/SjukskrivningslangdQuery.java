@@ -12,7 +12,6 @@ import se.inera.statistics.service.report.util.SjukfallslangdUtil;
 import se.inera.statistics.service.warehouse.Aisle;
 import se.inera.statistics.service.warehouse.Sjukfall;
 import se.inera.statistics.service.warehouse.SjukfallUtil;
-import se.inera.statistics.service.warehouse.Warehouse;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -82,9 +81,7 @@ public final class SjukskrivningslangdQuery {
         return counters;
     }
 
-    public static SimpleKonResponse<SimpleKonDataRow> getLangaSjukfall(Warehouse warehouse, SjukfallUtil.StartFilter filter, LocalDate from, int periods, int periodLength, String vardgivarId) {
-        Aisle aisle = warehouse.get(vardgivarId);
-
+    public static SimpleKonResponse<SimpleKonDataRow> getLangaSjukfall(Aisle aisle, SjukfallUtil.StartFilter filter, LocalDate from, int periods, int periodLength) {
         List<SimpleKonDataRow> rows = new ArrayList<>();
         for (SjukfallUtil.SjukfallGroup sjukfallGroup: SjukfallUtil.sjukfallGrupper(from, periods, periodLength, aisle, filter)) {
             Counter counter = new Counter("");

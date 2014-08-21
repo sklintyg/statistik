@@ -43,7 +43,7 @@ import static org.mockito.Matchers.eq;
 public class ChartDataServiceTest {
 
     @Mock
-    private Overview overviewMock = Mockito.mock(Overview.class);
+    private NationellOverviewData overviewMock = Mockito.mock(NationellOverviewData.class);
 
     @Mock
     private NationellData nationellData = Mockito.mock(NationellData.class);

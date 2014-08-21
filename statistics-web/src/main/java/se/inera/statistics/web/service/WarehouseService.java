@@ -115,7 +115,7 @@ public class WarehouseService {
     }
 
     public SimpleKonResponse<SimpleKonDataRow> getLangaSjukskrivningarPerManad(SjukfallUtil.StartFilter filter, Range range, String vardgivarId) {
-        return SjukskrivningslangdQuery.getLangaSjukfall(warehouse, filter, range.getFrom(), range.getMonths(), 1, vardgivarId);
+        return SjukskrivningslangdQuery.getLangaSjukfall(warehouse.get(vardgivarId), filter, range.getFrom(), range.getMonths(), 1);
     }
 
     public SimpleKonResponse<SimpleKonDataRow> getAldersgrupper(SjukfallUtil.StartFilter filter, Range range, String vardgivarId) {

@@ -1,5 +1,6 @@
 package se.inera.statistics.web.service;
 
+import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import se.inera.statistics.service.report.model.DiagnosgruppResponse;
 import se.inera.statistics.service.report.model.KonDataRow;
@@ -40,10 +41,14 @@ public class NationellData {
     private DiagnosgruppQuery query;
 
     public SimpleKonResponse<SimpleKonDataRow> getCasesPerMonth(Range range) {
+        return getAntalIntyg(range.getFrom(), range.getMonths(), 1);
+    }
+
+    public SimpleKonResponse<SimpleKonDataRow> getAntalIntyg(LocalDate start, int perioder, int periodlangd) {
         ArrayList<SimpleKonDataRow> result = new ArrayList<>();
         for (Aisle aisle: warehouse) {
             int index = 0;
-            for (SjukfallUtil.SjukfallGroup sjukfallGroup: SjukfallUtil.sjukfallGrupper(range.getFrom(), range.getMonths(), 1, aisle, SjukfallUtil.ALL_ENHETER)) {
+            for (SjukfallUtil.SjukfallGroup sjukfallGroup: SjukfallUtil.sjukfallGrupper(start, perioder, periodlangd, aisle, SjukfallUtil.ALL_ENHETER)) {
                 int male = WarehouseService.countMale(sjukfallGroup.getSjukfall());
                 int female = sjukfallGroup.getSjukfall().size() - male;
                 String displayDate = ReportUtil.toDiagramPeriod(sjukfallGroup.getRange().getFrom());
@@ -56,41 +61,49 @@ public class NationellData {
                 index++;
             }
         }
-        return new SimpleKonResponse<>(result, range.getMonths());
+        return new SimpleKonResponse<>(result, perioder * periodlangd);
     }
 
     public SimpleKonResponse<SimpleKonDataRow> getHistoricalAgeGroups(Range range) {
+        return getAldersgrupper(range.getFrom(), 1, range.getMonths());
+    }
+
+    public SimpleKonResponse<SimpleKonDataRow> getAldersgrupper(LocalDate start, int perioder, int periodlangd) {
         SimpleKonResponse<SimpleKonDataRow> result = null;
         for (Aisle aisle: warehouse) {
-            SimpleKonResponse<SimpleKonDataRow> aldersgrupper = AldersgruppQuery.getAldersgrupper(aisle, SjukfallUtil.ALL_ENHETER, range.getFrom(), 1, range.getMonths());
+            SimpleKonResponse<SimpleKonDataRow> aldersgrupper = AldersgruppQuery.getAldersgrupper(aisle, SjukfallUtil.ALL_ENHETER, start, perioder, periodlangd);
             if (result == null) {
                 result = aldersgrupper;
             } else {
                 Iterator<SimpleKonDataRow> rowsNew = aldersgrupper.getRows().iterator();
                 Iterator<SimpleKonDataRow> rowsOld = result.getRows().iterator();
-                List<SimpleKonDataRow> list = new ArrayList<>(range.getMonths());
+                List<SimpleKonDataRow> list = new ArrayList<>(perioder);
                 while (rowsNew.hasNext() && rowsOld.hasNext()) {
                     SimpleKonDataRow a = rowsNew.next();
                     SimpleKonDataRow b = rowsOld.next();
 
                     list.add(new SimpleKonDataRow(a.getName(), a.getFemale() + b.getFemale(), a.getMale() + b.getMale()));
                 }
-                result = new SimpleKonResponse<>(list, range.getMonths());
+                result = new SimpleKonResponse<>(list, perioder * periodlangd);
             }
         }
         return result;
     }
 
     public SjukskrivningsgradResponse getSjukskrivningsgrad(Range range) {
+        return getSjukskrivningsgrad(range.getFrom(), range.getMonths(), 1);
+    }
+
+    public SjukskrivningsgradResponse getSjukskrivningsgrad(LocalDate start, int perioder, int periodlangd) {
         SjukskrivningsgradResponse result = null;
         for (Aisle aisle: warehouse) {
-            SjukskrivningsgradResponse grader = SjukskrivningsgradQuery.getSjukskrivningsgrad(aisle, SjukfallUtil.ALL_ENHETER, range.getFrom(), range.getMonths(), 1);
+            SjukskrivningsgradResponse grader = SjukskrivningsgradQuery.getSjukskrivningsgrad(aisle, SjukfallUtil.ALL_ENHETER, start, perioder, periodlangd);
             if (result == null) {
                 result = grader;
             } else {
                 Iterator<KonDataRow> rowsNew = grader.getRows().iterator();
                 Iterator<KonDataRow> rowsOld = result.getRows().iterator();
-                List<KonDataRow> list = new ArrayList<>(range.getMonths());
+                List<KonDataRow> list = new ArrayList<>(perioder);
                 while (rowsNew.hasNext() && rowsOld.hasNext()) {
                     KonDataRow a = rowsNew.next();
                     KonDataRow b = rowsOld.next();
@@ -108,38 +121,46 @@ public class NationellData {
     }
 
     public SjukfallslangdResponse getSjukfallslangd(Range range) {
+        return getSjukfallslangd(range.getFrom(), 1, range.getMonths());
+    }
+
+    public SjukfallslangdResponse getSjukfallslangd(LocalDate start, int perioder, int periodlangd) {
         SjukfallslangdResponse result = null;
         for (Aisle aisle: warehouse) {
-            SjukfallslangdResponse langder = SjukskrivningslangdQuery.getSjuksrivningslangd(aisle, SjukfallUtil.ALL_ENHETER, range.getFrom(), 1, range.getMonths());
+            SjukfallslangdResponse langder = SjukskrivningslangdQuery.getSjuksrivningslangd(aisle, SjukfallUtil.ALL_ENHETER, start, perioder, periodlangd);
             if (result == null) {
                 result = langder;
             } else {
                 Iterator<SjukfallslangdRow> rowsNew = langder.getRows().iterator();
                 Iterator<SjukfallslangdRow> rowsOld = result.getRows().iterator();
-                List<SjukfallslangdRow> list = new ArrayList<>(range.getMonths());
+                List<SjukfallslangdRow> list = new ArrayList<>(perioder);
                 while (rowsNew.hasNext() && rowsOld.hasNext()) {
                     SjukfallslangdRow a = rowsNew.next();
                     SjukfallslangdRow b = rowsOld.next();
 
                     list.add(new SjukfallslangdRow(a.getPeriod(), a.getGroup(), a.getKey().getPeriods(), a.getFemale() + b.getFemale(), a.getMale() + b.getMale()));
                 }
-                result = new SjukfallslangdResponse(list, range.getMonths());
+                result = new SjukfallslangdResponse(list, perioder * periodlangd);
             }
         }
         return result;
     }
 
     public DiagnosgruppResponse getDiagnosgrupper(Range range) {
+        return getDiagnosgrupper(range.getFrom(), range.getMonths(), 1);
+    }
+
+    public DiagnosgruppResponse getDiagnosgrupper(LocalDate start, int perioder, int periodlangd) {
         DiagnosgruppResponse result = null;
         for (Aisle aisle: warehouse) {
-            DiagnosgruppResponse diagnosgrupper = query.getDiagnosgrupper(aisle, SjukfallUtil.ALL_ENHETER, range.getFrom(), range.getMonths(), 1);
+            DiagnosgruppResponse diagnosgrupper = query.getDiagnosgrupper(aisle, SjukfallUtil.ALL_ENHETER, start, perioder, periodlangd);
 
             if (result == null) {
                 result = diagnosgrupper;
             } else {
                 Iterator<KonDataRow> rowsNew = diagnosgrupper.getRows().iterator();
                 Iterator<KonDataRow> rowsOld = result.getRows().iterator();
-                List<KonDataRow> list = new ArrayList<>(range.getMonths());
+                List<KonDataRow> list = new ArrayList<>(perioder);
                 while (rowsNew.hasNext() && rowsOld.hasNext()) {
                     KonDataRow a = rowsNew.next();
                     KonDataRow b = rowsOld.next();
@@ -184,6 +205,10 @@ public class NationellData {
     }
 
     public SimpleKonResponse<SimpleKonDataRow> getSjukfallPerLan(Range range) {
+        return getSjukfallPerLan(range.getFrom(), 1, range.getMonths());
+    }
+
+    public SimpleKonResponse<SimpleKonDataRow> getSjukfallPerLan(LocalDate start, int perioder, int periodlangd) {
         ArrayList<SimpleKonDataRow> result = new ArrayList<>();
         for (String lanId : lans) {
             result.add(new SimpleKonDataRow(lans.getNamn(lanId), 0, 0));
@@ -194,7 +219,7 @@ public class NationellData {
                 map.put(lanId, new Counter<>(lanId));
             }
 
-            for (SjukfallUtil.SjukfallGroup sjukfallGroup: SjukfallUtil.sjukfallGrupper(range.getFrom(), range.getMonths(), 1, aisle, SjukfallUtil.ALL_ENHETER)) {
+            for (SjukfallUtil.SjukfallGroup sjukfallGroup: SjukfallUtil.sjukfallGrupper(start, perioder, periodlangd, aisle, SjukfallUtil.ALL_ENHETER)) {
                 for (Sjukfall sjukfall: sjukfallGroup.getSjukfall()) {
                     map.get(sjukfall.getLanskod()).increase(sjukfall);
                 }
@@ -207,6 +232,29 @@ public class NationellData {
                 index++;
             }
         }
-        return new SimpleKonResponse<>(result, range.getMonths());
+        return new SimpleKonResponse<>(result, perioder * periodlangd);
+    }
+
+    public SimpleKonResponse<SimpleKonDataRow> getLangaSjukfall(LocalDate start, int perioder, int periodlangd) {
+        SimpleKonResponse<SimpleKonDataRow> result = null;
+        for (Aisle aisle: warehouse) {
+            SimpleKonResponse<SimpleKonDataRow> langder = SjukskrivningslangdQuery.getLangaSjukfall(aisle, SjukfallUtil.ALL_ENHETER, start, perioder, periodlangd);
+            if (result == null) {
+                result = langder;
+            } else {
+                Iterator<SimpleKonDataRow> rowsNew = langder.getRows().iterator();
+                Iterator<SimpleKonDataRow> rowsOld = result.getRows().iterator();
+                List<SimpleKonDataRow> list = new ArrayList<>(perioder);
+                while (rowsNew.hasNext() && rowsOld.hasNext()) {
+                    SimpleKonDataRow a = rowsNew.next();
+                    SimpleKonDataRow b = rowsOld.next();
+
+                    list.add(new SimpleKonDataRow(a.getName(), a.getFemale() + b.getFemale(), a.getMale() + b.getMale()));
+                }
+                result = new SimpleKonResponse<>(list, perioder * periodlangd);
+            }
+        }
+        return result;
+
     }
 }

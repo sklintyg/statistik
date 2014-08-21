@@ -23,7 +23,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import se.inera.statistics.service.report.api.Overview;
 import se.inera.statistics.service.report.model.Avsnitt;
 import se.inera.statistics.service.report.model.DiagnosgruppResponse;
 import se.inera.statistics.service.report.model.OverviewResponse;
@@ -65,10 +64,10 @@ public class ChartDataService {
     public static final String TEXT_UTF8 = "text/plain; charset=UTF-8";
 
     @Autowired
-    private Overview datasourceOverview;
+    private NationellData data;
 
     @Autowired
-    private NationellData data;
+    private NationellOverviewData overviewData;
     /**
      * Get sjukfall per manad.
      *
@@ -186,7 +185,7 @@ public class ChartDataService {
     @Produces({MediaType.APPLICATION_JSON })
     public OverviewData getOverviewData() {
         Range range = Range.quarter();
-        OverviewResponse response = datasourceOverview.getOverview(range);
+        OverviewResponse response = overviewData.getOverview(range);
         return new OverviewConverter().convert(response, range);
     }
 
@@ -289,8 +288,8 @@ public class ChartDataService {
         Range range1 = Range.quarter();
         Range range2 = ReportUtil.getPreviousPeriod(range1);
 
-        SimpleKonResponse<SimpleKonDataRow> countyStatRange1 = data.getSjukfallPerLan(range1);
-        SimpleKonResponse<SimpleKonDataRow> countyStatRange2 = data.getSjukfallPerLan(range2);
+        SimpleKonResponse<SimpleKonDataRow> countyStatRange1 = data.getSjukfallPerLan((Range) range1);
+        SimpleKonResponse<SimpleKonDataRow> countyStatRange2 = data.getSjukfallPerLan((Range) range2);
         return new CasesPerCountyConverter(countyStatRange1, countyStatRange2, range1, range2).convert();
     }
 
@@ -319,7 +318,7 @@ public class ChartDataService {
     public SimpleDetailsData getSjukfallPerSexStatistics() {
         LOG.info("Calling getSjukfallPerSexStatistics for national");
         final Range range = new Range(YEAR);
-        SimpleKonResponse<SimpleKonDataRow> casesPerMonth = data.getSjukfallPerLan(range);
+        SimpleKonResponse<SimpleKonDataRow> casesPerMonth = data.getSjukfallPerLan((Range) range);
         return new SjukfallPerSexConverter().convert(casesPerMonth, range);
     }
 
