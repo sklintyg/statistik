@@ -104,8 +104,6 @@
 
         <bean id="factPopulator" class="se.inera.statistics.service.warehouse.FactPopulator" />
         <bean id="widelineConverter" class="se.inera.statistics.service.warehouse.WidelineConverter" />
-        <bean id="nationellData" class="se.inera.statistics.web.service.NationellData" />
-        <bean id="nationellOverviewData" class="se.inera.statistics.web.service.NationellOverviewData" />
 
         <bean class="se.inera.statistics.service.processlog.Processor" />
     </beans>

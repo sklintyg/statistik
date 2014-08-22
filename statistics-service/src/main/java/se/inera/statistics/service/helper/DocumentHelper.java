@@ -126,13 +126,11 @@ public final class DocumentHelper {
         return null;
     }
 
-    public static List<Integer> getArbetsformaga(JsonNode document) {
-        List<Integer> result = new ArrayList<>();
+    public static List<JsonNode> getArbetsformaga(JsonNode document) {
+        List<JsonNode> result = new ArrayList<>();
         for (JsonNode node: document.path(OBSERVATIONER)) {
             if (ARBETSFORMAGA_MATCHER.match(node)) {
-                for (JsonNode varde: node.path("varde")) {
-                    result.add(varde.path("quantity").asInt());
-                }
+                result.add(node);
             }
         }
         return result;

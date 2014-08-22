@@ -28,9 +28,7 @@ public class WidelineConverter {
     @Autowired
     private Icd10 icd10;
 
-    public WideLine toWideline(JsonNode intyg, JsonNode hsa, long logId, String correlationId, EventType type) {
-        WideLine line = new WideLine();
-
+    public List<WideLine> toWideline(JsonNode intyg, JsonNode hsa, long logId, String correlationId, EventType type) {
         String lkf = getLkf(hsa);
 
         String enhet = HSAServiceHelper.getEnhetId(hsa);
@@ -40,9 +38,6 @@ public class WidelineConverter {
 
         int kon = DocumentHelper.getKon(intyg).indexOf('k');
         int alder = DocumentHelper.getAge(intyg);
-
-        LocalDate kalenderStart = new LocalDate(DocumentHelper.getForstaNedsattningsdag(intyg));
-        LocalDate kalenderEnd = new LocalDate(DocumentHelper.getSistaNedsattningsdag(intyg));
 
         Kategori kategori = icd10.findKategori(DocumentHelper.getDiagnos(intyg));
 
@@ -59,34 +54,52 @@ public class WidelineConverter {
             diagnoskategori = null;
         }
 
-        int sjukskrivningsgrad = MAX_SJUKSKRIVNING - DocumentHelper.getArbetsformaga(intyg).get(0);
-
         int lakarkon = HSAServiceHelper.getLakarkon(hsa);
         int lakaralder = HSAServiceHelper.getLakaralder(hsa);
         String lakarbefattning = HSAServiceHelper.getLakarbefattning(hsa);
 
-        line.setCorrelationId(correlationId);
-        line.setLakarintyg(logId);
-        line.setIntygTyp(type);
-        line.setLkf(lkf);
-        line.setEnhet(enhet);
-        line.setVardgivareId(vardgivare);
+        List<WideLine> lines = new ArrayList<>();
 
-        line.setStartdatum(toDay(kalenderStart));
-        line.setSlutdatum(toDay(kalenderEnd));
-        line.setDiagnoskapitel(diagnoskapitel);
-        line.setDiagnosavsnitt(diagnosavsnitt);
-        line.setDiagnoskategori(diagnoskategori);
-        line.setSjukskrivningsgrad(sjukskrivningsgrad);
+        for (JsonNode arbetsformaga : DocumentHelper.getArbetsformaga(intyg)) {
 
-        line.setPatientid(patient);
-        line.setAlder(alder);
-        line.setKon(kon);
+            WideLine line = new WideLine();
 
-        line.setLakaralder(lakaralder);
-        line.setLakarkon(lakarkon);
-        line.setLakarbefattning(lakarbefattning);
-        return line;
+            int sjukskrivningsgrad = varde(arbetsformaga);
+
+            LocalDate kalenderStart = new LocalDate(arbetsformaga.path("observationsperiod").path("from").asText());
+            LocalDate kalenderEnd = new LocalDate(arbetsformaga.path("observationsperiod").path("tom").asText());
+
+            line.setCorrelationId(correlationId);
+            line.setLakarintyg(logId);
+            line.setIntygTyp(type);
+            line.setLkf(lkf);
+            line.setEnhet(enhet);
+            line.setVardgivareId(vardgivare);
+
+            line.setStartdatum(toDay(kalenderStart));
+            line.setSlutdatum(toDay(kalenderEnd));
+            line.setDiagnoskapitel(diagnoskapitel);
+            line.setDiagnosavsnitt(diagnosavsnitt);
+            line.setDiagnoskategori(diagnoskategori);
+            line.setSjukskrivningsgrad(sjukskrivningsgrad);
+
+            line.setPatientid(patient);
+            line.setAlder(alder);
+            line.setKon(kon);
+
+            line.setLakaralder(lakaralder);
+            line.setLakarkon(lakarkon);
+            line.setLakarbefattning(lakarbefattning);
+            lines.add(line);
+        }
+        return lines;
+    }
+
+    public int varde(JsonNode arbetsformaga) {
+        for (JsonNode varde: arbetsformaga.path("varde")) {
+            return MAX_SJUKSKRIVNING - varde.path("quantity").asInt();
+        }
+        return MAX_SJUKSKRIVNING;
     }
 
     private void checkSjukskrivningsgrad(List<String> errors, int grad) {

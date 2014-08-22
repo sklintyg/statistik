@@ -21,22 +21,9 @@ package se.inera.statistics.service.processlog;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import org.joda.time.LocalDate;
-import org.joda.time.format.DateTimeFormatter;
-import org.joda.time.format.ISODateTimeFormat;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import se.inera.statistics.service.helper.DocumentHelper;
-import se.inera.statistics.service.helper.StatisticsMalformedDocument;
-import se.inera.statistics.service.sjukfall.SjukfallInfo;
-import se.inera.statistics.service.sjukfall.SjukfallKey;
-import se.inera.statistics.service.sjukfall.SjukfallService;
 import se.inera.statistics.service.warehouse.WidelineManager;
-
-import static se.inera.statistics.service.helper.DocumentHelper.getForstaNedsattningsdag;
-import static se.inera.statistics.service.helper.DocumentHelper.getPersonId;
-import static se.inera.statistics.service.helper.DocumentHelper.getSistaNedsattningsdag;
-import static se.inera.statistics.service.helper.DocumentHelper.getVardgivareId;
 
 public class Processor {
     @Autowired

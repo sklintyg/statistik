@@ -24,21 +24,16 @@ class Alder {
         Iterator<JsonNode> rows = testResult.findPath("rows").iterator();
         List<List<List<String>>> rowList = new ArrayList<>()
         while(rows.hasNext()) {
-            List<List<String>> cols = new ArrayList<>()
             JsonNode row = rows.next().path("SimpleKonDataRow")
-            List<String> grupp = new ArrayList<>()
-            grupp.add("grupp")
-            grupp.add(row.path("name").textValue())
-            cols.add(grupp)
-            List<String> female = new ArrayList<String>()
-            female.add("kvinnor")
-            female.add(row.path("data").path("KonField").path("female").asText())
-            cols.add(female)
-            List<String> male = new ArrayList<String>()
-            male.add("män")
-            male.add(row.path("data").path("KonField").path("male").toString())
-            cols.add(male)
-            rowList.add(cols)
+            int femaleNum = row.path("data").path("KonField").path("female").asInt()
+            int maleNum = row.path("data").path("KonField").path("male").asInt()
+            if (femaleNum > 0 || maleNum > 0) {
+                List<List<String>> cols = new ArrayList<>()
+                cols.add(["grupp", row.path("name").textValue()]);
+                cols.add(["kvinnor", femaleNum]);
+                cols.add(["män", maleNum])
+                rowList.add(cols)
+            }
         }
         rowList
     }

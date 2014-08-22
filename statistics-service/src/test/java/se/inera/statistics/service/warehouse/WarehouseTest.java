@@ -40,8 +40,9 @@ public class WarehouseTest {
     @Test
     public void addingIntygAddsToCorrectAisle() {
         JsonNode document = DocumentHelper.prepare(rawDocument, hsaInfo);
-        WideLine wideLine = widelineConverter.toWideline(document, hsaInfo, 0, "0", EventType.CREATED);
-        factPopulator.accept(wideLine);
+        for (WideLine wideLine : widelineConverter.toWideline(document, hsaInfo, 0, "0", EventType.CREATED)) {
+            factPopulator.accept(wideLine);
+        }
         Aisle aisle = warehouse.get("vardgivarid");
         assertEquals(1, aisle.getSize());
     }

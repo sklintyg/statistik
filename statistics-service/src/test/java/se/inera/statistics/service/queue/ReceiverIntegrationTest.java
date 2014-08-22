@@ -36,7 +36,6 @@ import static org.junit.Assert.assertEquals;
 // CHECKSTYLE:OFF MagicNumber
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath:process-log-impl-test.xml", "classpath:process-log-qm-test.xml", "classpath:icd10.xml" })
-@Transactional
 @DirtiesContext
 public class ReceiverIntegrationTest {
 
@@ -63,15 +62,9 @@ public class ReceiverIntegrationTest {
 
     @Test
     public void deliver_document_from_in_queue_to_statistics_repository() {
-        UtlatandeBuilder builder = new UtlatandeBuilder();
-        simpleSend(builder.build("19121212-0010", new LocalDate("2011-01-20"), new LocalDate("2011-03-11"), "enhetId", "A00", 0).toString(), "001");
-        simpleSend(builder.build("19121212-0011", new LocalDate("2011-01-20"), new LocalDate("2011-03-11"), "enhetId", "A00", 0).toString(), "002");
-
-        sleep();
-
-        assertEquals(2, consumer.processBatch());
-        warehouseManager.loadWideLines();
-        SimpleKonResponse<SimpleKonDataRow> webData = SjukfallQuery.getSjukfall(warehouse.get("VardgivarId"), SjukfallUtil.createEnhetFilter("enhetId"), new LocalDate("2011-01"), 12, 1);
+        populate();
+        load();
+        SimpleKonResponse<SimpleKonDataRow> webData = SjukfallQuery.getSjukfall(warehouse.get("vardgivarId"), SjukfallUtil.createEnhetFilter("enhetId"), new LocalDate("2011-01"), 12, 1);
 
         assertEquals(12, webData.getRows().size());
 
@@ -85,6 +78,22 @@ public class ReceiverIntegrationTest {
         }
 
         assertEquals(2, wideLine.count());
+    }
+
+    @Transactional
+    public void load() {
+        warehouseManager.loadWideLines();
+    }
+
+    @Transactional
+    public void populate() {
+        UtlatandeBuilder builder = new UtlatandeBuilder();
+        simpleSend(builder.build("19121212-0010", new LocalDate("2011-01-20"), new LocalDate("2011-03-11"), "enhetId", "A00", 0).toString(), "001");
+        simpleSend(builder.build("19121212-0110", new LocalDate("2011-01-20"), new LocalDate("2011-03-11"), "enhetId", "A00", 0).toString(), "002");
+
+        sleep();
+
+        assertEquals(2, consumer.processBatch());
     }
 
     private void sleep() {

@@ -33,6 +33,8 @@ import se.inera.statistics.service.report.model.SjukfallslangdResponse;
 import se.inera.statistics.service.report.model.SjukskrivningsgradResponse;
 import se.inera.statistics.service.report.util.DiagnosUtil;
 import se.inera.statistics.service.report.util.ReportUtil;
+import se.inera.statistics.service.warehouse.NationellData;
+import se.inera.statistics.service.warehouse.NationellOverviewData;
 import se.inera.statistics.web.model.AgeGroupsData;
 import se.inera.statistics.web.model.CasesPerCountyData;
 import se.inera.statistics.web.model.DualSexStatisticsData;

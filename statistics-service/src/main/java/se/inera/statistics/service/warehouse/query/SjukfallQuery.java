@@ -11,7 +11,11 @@ import se.inera.statistics.service.warehouse.SjukfallUtil;
 import java.util.ArrayList;
 import java.util.Collection;
 
-public class SjukfallQuery {
+public final class SjukfallQuery {
+
+    private SjukfallQuery() {
+    }
+
     public static SimpleKonResponse<SimpleKonDataRow> getSjukfall(Aisle aisle, SjukfallUtil.StartFilter filter, LocalDate start, int perioder, int periodlangd) {
         ArrayList<SimpleKonDataRow> result = new ArrayList<>();
         for (SjukfallUtil.SjukfallGroup sjukfallGroup: SjukfallUtil.sjukfallGrupper(start, perioder, periodlangd, aisle, filter)) {
@@ -25,10 +29,10 @@ public class SjukfallQuery {
 
     }
 
-    private static int countMale(Collection<Sjukfall> sjukfalls) {
+    public static int countMale(Collection<Sjukfall> sjukfalls) {
         int count = 0;
         for (Sjukfall sjukfall : sjukfalls) {
-            if (sjukfall.getKon() == 0) {
+            if (sjukfall.getKon() == -1) {
                 count++;
             }
         }

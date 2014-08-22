@@ -27,18 +27,19 @@ public class WidelineManager {
 
     @Transactional(noRollbackFor = Exception.class)
     public void accept(JsonNode intyg, JsonNode hsa, long logId, String correlationId, EventType type) {
-        WideLine line = widelineConverter.toWideline(intyg, hsa, logId, correlationId, type);
-        List<String> errors  = widelineConverter.validate(line);
+        for (WideLine line : widelineConverter.toWideline(intyg, hsa, logId, correlationId, type)) {
+            List<String> errors = widelineConverter.validate(line);
 
-        if (errors.isEmpty()) {
-            manager.persist(line);
-        } else {
-            String intygid = DocumentHelper.getIntygId(intyg);
-            StringBuilder errorBuilder = new StringBuilder("Faulty intyg logid ").append(logId).append(" id ").append(intygid);
-            for (String error : errors) {
-                errorBuilder.append('\n').append(error);
+            if (errors.isEmpty()) {
+                manager.persist(line);
+            } else {
+                String intygid = DocumentHelper.getIntygId(intyg);
+                StringBuilder errorBuilder = new StringBuilder("Faulty intyg logid ").append(logId).append(" id ").append(intygid);
+                for (String error : errors) {
+                    errorBuilder.append('\n').append(error);
+                }
+                LOG.error(errorBuilder.toString());
             }
-            LOG.error(errorBuilder.toString());
         }
     }
 

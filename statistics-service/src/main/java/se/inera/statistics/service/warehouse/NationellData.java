@@ -1,7 +1,8 @@
-package se.inera.statistics.web.service;
+package se.inera.statistics.service.warehouse;
 
 import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import se.inera.statistics.service.report.model.DiagnosgruppResponse;
 import se.inera.statistics.service.report.model.KonDataRow;
 import se.inera.statistics.service.report.model.KonField;
@@ -13,13 +14,10 @@ import se.inera.statistics.service.report.model.SjukfallslangdResponse;
 import se.inera.statistics.service.report.model.SjukskrivningsgradResponse;
 import se.inera.statistics.service.report.model.db.SjukfallslangdRow;
 import se.inera.statistics.service.report.util.ReportUtil;
-import se.inera.statistics.service.warehouse.Aisle;
-import se.inera.statistics.service.warehouse.Sjukfall;
-import se.inera.statistics.service.warehouse.SjukfallUtil;
-import se.inera.statistics.service.warehouse.Warehouse;
 import se.inera.statistics.service.warehouse.query.AldersgruppQuery;
 import se.inera.statistics.service.warehouse.query.Counter;
 import se.inera.statistics.service.warehouse.query.DiagnosgruppQuery;
+import se.inera.statistics.service.warehouse.query.SjukfallQuery;
 import se.inera.statistics.service.warehouse.query.SjukskrivningsgradQuery;
 import se.inera.statistics.service.warehouse.query.SjukskrivningslangdQuery;
 
@@ -29,6 +27,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+@Component
 public class NationellData {
 
     @Autowired
@@ -49,7 +48,7 @@ public class NationellData {
         for (Aisle aisle: warehouse) {
             int index = 0;
             for (SjukfallUtil.SjukfallGroup sjukfallGroup: SjukfallUtil.sjukfallGrupper(start, perioder, periodlangd, aisle, SjukfallUtil.ALL_ENHETER)) {
-                int male = WarehouseService.countMale(sjukfallGroup.getSjukfall());
+                int male = SjukfallQuery.countMale(sjukfallGroup.getSjukfall());
                 int female = sjukfallGroup.getSjukfall().size() - male;
                 String displayDate = ReportUtil.toDiagramPeriod(sjukfallGroup.getRange().getFrom());
                 if (index >= result.size()) {

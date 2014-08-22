@@ -1,6 +1,7 @@
-package se.inera.statistics.web.service;
+package se.inera.statistics.service.warehouse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import se.inera.statistics.service.report.model.DiagnosgruppResponse;
 import se.inera.statistics.service.report.model.KonField;
 import se.inera.statistics.service.report.model.OverviewChartRow;
@@ -22,6 +23,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
+@Component
 public class NationellOverviewData {
 
     public static final int KVARTAL = 3;
