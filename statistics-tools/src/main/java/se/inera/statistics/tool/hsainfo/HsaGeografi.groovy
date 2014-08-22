@@ -23,8 +23,7 @@ class HsaGeografi {
             def lan = hsa?.enhet?.geografi?.lan ?: hsa?.huvudenhet?.geografi?.lan
             def kommun = hsa?.enhet?.geografi?.kommun ?: hsa?.huvudenhet?.geografi?.kommun
 
-//            HsaGeografi.count(true, "vårdgivare: ${hsa?.vardgivare?.id ?: null} enhet ${enhetid} län: ${lan} kommun: ${kommun}")
-            HsaGeografi.count(true, "${hsa?.vardgivare?.id ?: null};${enhetid};${lan};${kommun}")
+            HsaGeografi.count("${hsa?.vardgivare?.id ?: null};${enhetid};${lan};${kommun}")
         }
 
         println("Totalt antal poster ${count}")
@@ -33,14 +32,12 @@ class HsaGeografi {
         existerar.sort().each { println "${it.key};${it.value}" }
     }
 
-    static def count(value, name) {
+    static def count(name) {
         def key = String.valueOf(name);
-        if (value) {
-            if (existerar[key]) {
-                existerar[key]++
-            } else {
-                existerar[key] = 1;
-            }
+        if (existerar[key]) {
+            existerar[key]++
+        } else {
+            existerar[key] = 1;
         }
     }
 }

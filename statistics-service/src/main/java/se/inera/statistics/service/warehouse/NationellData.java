@@ -137,7 +137,7 @@ public class NationellData {
                     SjukfallslangdRow a = rowsNew.next();
                     SjukfallslangdRow b = rowsOld.next();
 
-                    list.add(new SjukfallslangdRow(a.getPeriod(), a.getGroup(), a.getKey().getPeriods(), a.getFemale() + b.getFemale(), a.getMale() + b.getMale()));
+                    list.add(new SjukfallslangdRow(a.getPeriod(), a.getGroup(), a.getPeriods(), a.getFemale() + b.getFemale(), a.getMale() + b.getMale()));
                 }
                 result = new SjukfallslangdResponse(list, perioder * periodlangd);
             }

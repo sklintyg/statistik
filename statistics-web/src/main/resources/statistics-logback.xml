@@ -58,17 +58,11 @@
     <logger name="se.inera.statistics.service.hsa.HSAServiceImpl" level="INFO" additivity="false">
       <appender-ref ref="PROCESS_FILE"/>
     </logger>
-    <logger name="se.inera.statistics.service.scheduler.NationellUpdaterJob" level="INFO" additivity="false">
-        <appender-ref ref="PROCESS_FILE"/>
-    </logger>
     <logger name="se.inera.statistics.service.helper.DocumentHelper" level="INFO" additivity="false">
         <appender-ref ref="PROCESS_FILE"/>
     </logger>
     <logger name="se.inera.statistics.service.scheduler.LogJob" level="INFO"  additivity="false">
       <appender-ref ref="PROCESS_FILE"/>
-    </logger>
-    <logger name="se.inera.statistics.service.report.listener.GenericHolder" level="INFO"  additivity="false">
-        <appender-ref ref="PROCESS_FILE"/>
     </logger>
     <logger name="se.inera.statistics.service.helper.DocumentHelper" level="INFO"  additivity="false">
         <appender-ref ref="PROCESS_FILE"/>

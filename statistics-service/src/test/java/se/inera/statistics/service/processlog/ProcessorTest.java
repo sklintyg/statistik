@@ -10,20 +10,13 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 import se.inera.statistics.service.helper.JSONParser;
-import se.inera.statistics.service.helper.StatisticsMalformedDocument;
-import se.inera.statistics.service.sjukfall.SjukfallInfo;
-import se.inera.statistics.service.sjukfall.SjukfallKey;
-import se.inera.statistics.service.sjukfall.SjukfallService;
 import se.inera.statistics.service.warehouse.WidelineManager;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyLong;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ProcessorTest {

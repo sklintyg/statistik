@@ -19,51 +19,39 @@
 
 package se.inera.statistics.service.report.model.db;
 
-import javax.persistence.EmbeddedId;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.Table;
-import javax.persistence.Transient;
-
 import se.inera.statistics.service.report.util.Verksamhet;
 
-@Entity
-@Table(name = SjukfallslangdRow.TABLE)
 public class SjukfallslangdRow {
-    public static final String TABLE = "sjukfallslangdgrupp";
-    @EmbeddedId
-    private SjukfallslangdKey key;
-    @Enumerated(EnumType.STRING)
+
     private Verksamhet typ;
 
-    private int male;
-    private int female;
-
-    public SjukfallslangdRow() {
-    }
+    private final String period;
+    private final String hsaId;
+    private final String group;
+    private final int male;
+    private final int female;
+    private final int periods;
 
     public SjukfallslangdRow(String period, String hsaId, String group, int periods, Verksamhet typ, int female, int male) {
-        key = new SjukfallslangdKey(period, hsaId, group, periods);
+        this.period = period;
+        this.periods = periods;
+        this.hsaId = hsaId;
+        this.group = group;
         this.male = male;
         this.female = female;
         this.typ = typ;
     }
 
     public SjukfallslangdRow(String period, String group, int periods, int female, int male) {
-        key = new SjukfallslangdKey(period, Verksamhet.NATIONELL.toString(), group, periods);
-        this.male = male;
-        this.female = female;
+        this(period, "NATIONELL", group, periods, Verksamhet.NATIONELL, female, male);
     }
 
-    @Transient
     public String getPeriod() {
-        return key.getPeriod();
+        return period;
     }
 
-    @Transient
     public String getGroup() {
-        return key.getGrupp();
+        return group;
     }
 
     public Verksamhet getTyp() {
@@ -78,33 +66,20 @@ public class SjukfallslangdRow {
         return male;
     }
 
-    public void setMale(int male) {
-        this.male = male;
-    }
-
     public int getFemale() {
         return female;
     }
 
-    public void setFemale(int female) {
-        this.female = female;
-    }
-
-    @Transient
     public String getHsaId() {
-        return key.getHsaId();
-    }
-
-    public SjukfallslangdKey getKey() {
-        return key;
-    }
-
-    public void setKey(SjukfallslangdKey key) {
-        this.key = key;
+        return hsaId;
     }
 
     @Override
     public String toString() {
-        return "{\"SjukfallslangdRow\":{\"key\":" + key + ", \"typ\":\"" + typ + "\", \"male\":" + male + ", \"female\":" + female + "}}";
+        return "{\"SjukfallslangdRow\":{\"key\":{\"period\":\"" + period + "\"}, \"typ\":\"" + typ + "\", \"male\":" + male + ", \"female\":" + female + "}}";
+    }
+
+    public int getPeriods() {
+        return periods;
     }
 }
