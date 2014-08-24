@@ -19,8 +19,6 @@
 
 package se.inera.statistics.service.report.model;
 
-import se.inera.statistics.service.report.model.db.SjukfallslangdRow;
-
 import java.util.ArrayList;
 import java.util.List;
 
