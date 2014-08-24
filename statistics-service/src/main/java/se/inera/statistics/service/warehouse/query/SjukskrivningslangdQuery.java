@@ -102,7 +102,7 @@ public final class SjukskrivningslangdQuery {
             Map<Ranges.Range, Counter<Ranges.Range>> counterMap = SjukskrivningslangdQuery.count(sjukfallGroup.getSjukfall());
             for (Ranges.Range i : SjukfallslangdUtil.RANGES) {
                 Counter<Ranges.Range> counter = counterMap.get(i);
-                rows.add(new SjukfallslangdRow("", i.getName(), periodLength, counter.getCountFemale(), counter.getCountMale()));
+                rows.add(new SjukfallslangdRow(i.getName(), counter.getCountFemale(), counter.getCountMale()));
             }
         }
         return new SjukfallslangdResponse(rows, periodLength);

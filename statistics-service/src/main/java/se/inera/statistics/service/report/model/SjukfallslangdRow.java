@@ -25,29 +25,14 @@ public class SjukfallslangdRow {
 
     private Verksamhet typ;
 
-    private final String period;
-    private final String hsaId;
     private final String group;
     private final int male;
     private final int female;
-    private final int periods;
 
-    public SjukfallslangdRow(String period, String hsaId, String group, int periods, Verksamhet typ, int female, int male) {
-        this.period = period;
-        this.periods = periods;
-        this.hsaId = hsaId;
+    public SjukfallslangdRow(String group, int female, int male) {
         this.group = group;
         this.male = male;
         this.female = female;
-        this.typ = typ;
-    }
-
-    public SjukfallslangdRow(String period, String group, int periods, int female, int male) {
-        this(period, "NATIONELL", group, periods, Verksamhet.NATIONELL, female, male);
-    }
-
-    public String getPeriod() {
-        return period;
     }
 
     public String getGroup() {
@@ -70,16 +55,8 @@ public class SjukfallslangdRow {
         return female;
     }
 
-    public String getHsaId() {
-        return hsaId;
-    }
-
     @Override
     public String toString() {
-        return "{\"SjukfallslangdRow\":{\"key\":{\"period\":\"" + period + "\"}, \"typ\":\"" + typ + "\", \"male\":" + male + ", \"female\":" + female + "}}";
-    }
-
-    public int getPeriods() {
-        return periods;
+        return "{\"SjukfallslangdRow\":{\"typ\":\"" + typ + "\", \"male\":" + male + ", \"female\":" + female + "}}";
     }
 }
