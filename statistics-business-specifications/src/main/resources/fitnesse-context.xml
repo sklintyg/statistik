@@ -58,9 +58,7 @@
     <bean class="se.inera.statistics.hsa.stub.HsaWebServiceStub" id="hsaWebServiceStub"/>
     <bean class="se.inera.statistics.hsa.stub.HsaServiceStub" id="hsaServiceStub"/>
     <bean class="se.inera.statistics.service.report.model.Lan" id="lan"/>
-    <bean class="org.springframework.core.io.ClassPathResource" id="icd10ChaptersAnsiFile">
-        <constructor-arg value="KSH97_AVS.ANS"/>
-    </bean>
+
     <bean class="org.springframework.core.io.ClassPathResource" id="icd10KapitelAnsiFile" >
         <constructor-arg value="icd10/KSH97_KAP.ANS"/>
     </bean>
@@ -71,7 +69,6 @@
         <constructor-arg value="icd10/KSH97_KAT.ANS"/>
     </bean>
     <bean class="se.inera.statistics.service.processlog.Processor"/>
-    <bean class="se.inera.statistics.service.report.util.DiagnosUtil"/>
     <bean class="se.inera.statistics.queue.IntygSender"/>
     <bean id="warehouse" class="se.inera.statistics.service.warehouse.Warehouse" />
     <bean class="se.inera.statistics.service.warehouse.WarehouseManager" />

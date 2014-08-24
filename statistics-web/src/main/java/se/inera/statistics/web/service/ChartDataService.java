@@ -23,7 +23,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import se.inera.statistics.service.report.model.Avsnitt;
 import se.inera.statistics.service.report.model.DiagnosgruppResponse;
 import se.inera.statistics.service.report.model.OverviewResponse;
 import se.inera.statistics.service.report.model.Range;
@@ -31,7 +30,7 @@ import se.inera.statistics.service.report.model.SimpleKonDataRow;
 import se.inera.statistics.service.report.model.SimpleKonResponse;
 import se.inera.statistics.service.report.model.SjukfallslangdResponse;
 import se.inera.statistics.service.report.model.SjukskrivningsgradResponse;
-import se.inera.statistics.service.report.util.DiagnosUtil;
+import se.inera.statistics.service.report.util.Icd10;
 import se.inera.statistics.service.report.util.ReportUtil;
 import se.inera.statistics.service.warehouse.NationellData;
 import se.inera.statistics.service.warehouse.NationellOverviewData;
@@ -49,6 +48,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -67,6 +67,9 @@ public class ChartDataService {
 
     @Autowired
     private NationellData data;
+
+    @Autowired
+    private Icd10 icd10;
 
     @Autowired
     private NationellOverviewData overviewData;
@@ -107,9 +110,13 @@ public class ChartDataService {
     @GET
     @Path("getDiagnoskapitel")
     @Produces({MediaType.APPLICATION_JSON })
-    public List<Avsnitt> getDiagnoskapitel() {
+    public List<Kapitel> getDiagnoskapitel() {
         LOG.info("Calling getKapitel");
-        return DiagnosUtil.getKapitel();
+        List<Kapitel> kapitel = new ArrayList<>();
+        for (Icd10.Kapitel k: icd10.getKapitel()) {
+            kapitel.add(new Kapitel(k.getId(), k.getName()));
+        }
+        return kapitel;
     }
 
     /**
@@ -336,5 +343,23 @@ public class ChartDataService {
         LOG.info("Calling getSjukfallPerSexStatisticsAsCsv for national");
         final TableData tableData = getSjukfallPerSexStatistics().getTableData();
         return CsvConverter.getCsvResponse(tableData, "export.csv");
+    }
+
+    public static class Kapitel {
+        private final String id;
+        private final String name;
+
+        public Kapitel(String id, String name) {
+            this.id = id;
+            this.name = name;
+        }
+
+        public String getId() {
+            return id;
+        }
+
+        public String getName() {
+            return name;
+        }
     }
 }

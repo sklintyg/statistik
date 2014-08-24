@@ -39,7 +39,6 @@ import se.inera.statistics.service.helper.DocumentHelper;
 import se.inera.statistics.service.hsa.HSAKey;
 import se.inera.statistics.service.hsa.HSAService;
 import se.inera.statistics.service.processlog.EventType;
-import se.inera.statistics.service.report.util.DiagnosUtil;
 import se.inera.statistics.service.report.util.Icd10;
 import se.inera.statistics.service.report.util.Icd10.Kapitel;
 import se.inera.statistics.service.report.util.Icd10.Avsnitt;
@@ -82,9 +81,6 @@ public class LargeTestDataGenerator {
 
     @Autowired
     private Warehouse warehouse;
-
-    @Autowired
-    private DiagnosUtil diagnosisGroupsUtil;
 
     @Autowired
     private HSAService hsaService;

@@ -28,10 +28,6 @@
 
     <bean class="se.inera.statistics.service.hsa.HSAServiceMock" id="hsaService" />
     <bean class="se.inera.statistics.service.report.model.Lan" id="lan" />
-    <bean class="org.springframework.core.io.ClassPathResource" id="icd10ChaptersAnsiFile" >
-        <constructor-arg value="KSH97_AVS.ANS"/>
-    </bean>
-    <bean class="se.inera.statistics.service.report.util.DiagnosUtil" />
 
     <bean id="warehouse" class="se.inera.statistics.service.warehouse.Warehouse" />
 

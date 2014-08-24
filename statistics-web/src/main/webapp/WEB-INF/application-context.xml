@@ -83,10 +83,6 @@
         <context:component-scan base-package="se.inera.statistics.service"/>
 
         <bean id="receiver" class="se.inera.statistics.service.processlog.Receiver"/>
-        <bean class="se.inera.statistics.service.report.util.DiagnosUtil"/>
-        <bean class="org.springframework.core.io.ClassPathResource" id="icd10ChaptersAnsiFile">
-            <constructor-arg value="KSH97_AVS.ANS"/>
-        </bean>
         <bean class="org.springframework.web.context.support.ServletContextAttributeExporter">
             <property name="attributes">
                 <map>

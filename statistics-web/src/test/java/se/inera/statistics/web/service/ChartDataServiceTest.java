@@ -27,9 +27,11 @@ import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 import se.inera.statistics.service.report.model.Avsnitt;
 import se.inera.statistics.service.report.model.Range;
+import se.inera.statistics.service.report.util.Icd10;
 import se.inera.statistics.service.warehouse.NationellData;
 import se.inera.statistics.service.warehouse.NationellOverviewData;
 
+import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -45,6 +47,9 @@ public class ChartDataServiceTest {
 
     @Mock
     private NationellData nationellData = Mockito.mock(NationellData.class);
+
+    @Mock
+    private Icd10 icd10;
 
     @InjectMocks
     private ChartDataService chartDataService = new ChartDataService();
@@ -72,9 +77,9 @@ public class ChartDataServiceTest {
 
     @Test
     public void getDiagnosisGroupsTest() {
-        List<Avsnitt> avsnitts = chartDataService.getDiagnoskapitel();
-        assertEquals(22, avsnitts.size());
-        assertTrue(avsnitts.toString().contains("{\"Avsnitt\":{\"id\":\"E00-E90\", \"name\":\"Endokrina sjukdomar, nutritionsrubbningar och ämnesomsättningssjukdomar\", \"firstId\":\"E00\", \"lastId\":\"E90\"}}"));
+        Mockito.when(icd10.getKapitel()).thenReturn(Arrays.asList(new Icd10.Kapitel("A00-B99", "Vissa infektionssjukdomar och parasitsjukdomar"), new Icd10.Kapitel("C00-D48", "Tumörer")));
+        List<ChartDataService.Kapitel> kapitel = chartDataService.getDiagnoskapitel();
+        assertEquals(2, kapitel.size());
     }
 
     @Test
