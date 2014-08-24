@@ -17,7 +17,7 @@
  *     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package se.inera.statistics.service.report.model.db;
+package se.inera.statistics.service.report.model;
 
 import se.inera.statistics.service.report.util.Verksamhet;
 
