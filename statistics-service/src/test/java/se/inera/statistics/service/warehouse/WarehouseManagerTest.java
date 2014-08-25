@@ -1,5 +1,6 @@
 package se.inera.statistics.service.warehouse;
 
+import org.joda.time.LocalDateTime;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InOrder;
@@ -9,6 +10,8 @@ import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.Collections;
+
+import static org.mockito.Matchers.any;
 
 @RunWith(MockitoJUnitRunner.class)
 public class WarehouseManagerTest {
@@ -32,8 +35,7 @@ public class WarehouseManagerTest {
         manager.loadWideLines();
 
         InOrder inOrder = Mockito.inOrder(loader, warehouse, aisle);
-        inOrder.verify(warehouse).clear();
         inOrder.verify(loader).populateWarehouse();
-        inOrder.verify(aisle).sort();
+        inOrder.verify(warehouse).complete(any(LocalDateTime.class));
     }
 }

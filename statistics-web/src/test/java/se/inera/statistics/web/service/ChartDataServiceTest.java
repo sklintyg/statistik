@@ -60,7 +60,7 @@ public class ChartDataServiceTest {
     @Test
     public void getOverviewDataTest() {
         try {
-            chartDataService.getOverviewData();
+            chartDataService.buildOverview();
         } catch (NullPointerException e) {
         }
         Mockito.verify(overviewMock).getOverview(any(Range.class));
@@ -69,7 +69,7 @@ public class ChartDataServiceTest {
     @Test
     public void getNumberOfCasesPerMonthTest() {
         try {
-            chartDataService.getNumberOfCasesPerMonth();
+            chartDataService.buildNumberOfCasesPerMonth();
         } catch (NullPointerException e) {
         }
         Mockito.verify(nationellData).getCasesPerMonth(any(Range.class));
@@ -85,7 +85,7 @@ public class ChartDataServiceTest {
     @Test
     public void getDiagnosisGroupStatisticsTest() {
         try {
-            chartDataService.getDiagnoskapitelstatistik();
+            chartDataService.buildDiagnosgrupper();
         } catch (NullPointerException e) {
         }
         Mockito.verify(nationellData).getDiagnosgrupper(any(Range.class));
@@ -93,11 +93,12 @@ public class ChartDataServiceTest {
 
     @Test
     public void getDiagnosisSubGroupStatisticsTest() {
+        Mockito.when(icd10.getKapitel()).thenReturn(Arrays.asList(new Icd10.Kapitel("A00-B99", "Vissa infektionssjukdomar och parasitsjukdomar"), new Icd10.Kapitel("C00-D48", "Tumörer")));
         try {
-            chartDataService.getDiagnosavsnittstatistik("testId");
+            chartDataService.buildDiagnoskapitel();
         } catch (NullPointerException e) {
         }
-        Mockito.verify(nationellData).getDiagnosavsnitt(any(Range.class), eq("testId"));
+        Mockito.verify(nationellData).getDiagnosavsnitt(any(Range.class), eq("A00-B99"));
     }
 
     // CHECKSTYLE:ON MagicNumber

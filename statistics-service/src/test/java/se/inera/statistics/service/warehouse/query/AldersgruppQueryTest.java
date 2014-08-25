@@ -1,5 +1,6 @@
 package se.inera.statistics.service.warehouse.query;
 
+import org.joda.time.LocalDateTime;
 import org.junit.Test;
 import se.inera.statistics.service.report.util.AldersgroupUtil;
 import se.inera.statistics.service.report.util.Ranges;
@@ -25,6 +26,7 @@ public class AldersgruppQueryTest {
     @Test
     public void one() {
         fact(4010, 10, 45);
+        warehouse.complete(LocalDateTime.now());
         Collection<Sjukfall> sjukfall = SjukfallUtil.calculateSjukfall(warehouse.get(VARDGIVARE));
         Map<Ranges.Range,Counter<Ranges.Range>> count = AldersgruppQuery.count(sjukfall);
         assertEquals(1, count.get(AldersgroupUtil.RANGES.rangeFor("41-45")).getCount());
@@ -44,6 +46,7 @@ public class AldersgruppQueryTest {
         fact(4010, 10, 50);
         fact(4010, 10, 50);
         fact(4010, 10, 100);
+        warehouse.complete(LocalDateTime.now());
         Collection<Sjukfall> sjukfall = SjukfallUtil.calculateSjukfall(warehouse.get(VARDGIVARE));
         List<Counter<Ranges.Range>> count = AldersgruppQuery.count(sjukfall, 4);
 

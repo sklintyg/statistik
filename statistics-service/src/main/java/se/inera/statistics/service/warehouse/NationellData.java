@@ -261,6 +261,9 @@ public class NationellData {
     }
 
     private SjukfallslangdResponse filterLow(SjukfallslangdResponse unfiltered) {
+        if (unfiltered == null) {
+            return null;
+        }
         List<SjukfallslangdRow> rows = new ArrayList<>();
         for (SjukfallslangdRow row : unfiltered.getRows()) {
             rows.add(new SjukfallslangdRow(row.getGroup(), filterCutoff(row.getFemale()), filterCutoff(row.getMale())));
@@ -306,5 +309,9 @@ public class NationellData {
 
     private int filterCutoff(int actual) {
         return actual < cutoff ? 0 : actual;
+    }
+
+    public org.joda.time.LocalDateTime getLastUpdate() {
+        return warehouse.getLastUpdate();
     }
 }

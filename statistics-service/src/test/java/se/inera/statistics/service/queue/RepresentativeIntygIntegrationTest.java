@@ -32,8 +32,6 @@ import static org.junit.Assert.assertEquals;
 // CHECKSTYLE:OFF MagicNumber
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath:process-log-impl-test.xml", "classpath:process-log-qm-test.xml", "classpath:icd10.xml" })
-@Transactional
-@TransactionConfiguration(defaultRollback=false)
 @DirtiesContext
 public class RepresentativeIntygIntegrationTest {
     private static final int PERSON_K1950 = 0;

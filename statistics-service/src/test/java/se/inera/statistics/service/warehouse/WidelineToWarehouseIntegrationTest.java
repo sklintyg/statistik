@@ -19,6 +19,7 @@
 
 package se.inera.statistics.service.warehouse;
 
+import org.joda.time.LocalDateTime;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -70,6 +71,7 @@ public class WidelineToWarehouseIntegrationTest {
         widelineManager.saveWideline(line1);
 
         widelineLoader.populateWarehouse();
+        warehouse.complete(LocalDateTime.now());
 
         Aisle a = warehouse.get("vg1");
         Assert.assertEquals(1, a.getSize());

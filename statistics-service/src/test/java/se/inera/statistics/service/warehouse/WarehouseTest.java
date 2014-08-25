@@ -2,6 +2,7 @@ package se.inera.statistics.service.warehouse;
 
 import static org.junit.Assert.assertEquals;
 
+import org.joda.time.LocalDateTime;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,6 +44,7 @@ public class WarehouseTest {
         for (WideLine wideLine : widelineConverter.toWideline(document, hsaInfo, 0, "0", EventType.CREATED)) {
             factPopulator.accept(wideLine);
         }
+        warehouse.complete(LocalDateTime.now());
         Aisle aisle = warehouse.get("vardgivarid");
         assertEquals(1, aisle.getSize());
     }

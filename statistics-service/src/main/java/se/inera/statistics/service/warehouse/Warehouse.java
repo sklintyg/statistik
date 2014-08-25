@@ -1,5 +1,7 @@
 package se.inera.statistics.service.warehouse;
 
+import org.joda.time.LocalDateTime;
+
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -7,25 +9,29 @@ import java.util.Map;
 
 public class Warehouse implements Iterable<Aisle> {
 
-    private final Map<String, Aisle> aisles = new HashMap<>();
+    private volatile Map<String, Aisle> aisles = new HashMap<>();
+    private Map<String, Aisle> loadingAisles = new HashMap<>();
     private static IdMap<String> enhetsMap = new IdMap<>();
+    private LocalDateTime lastUpdate = null;
 
     public void accept(Fact fact, String vardgivareId) {
-        Aisle aisle = getAisle(vardgivareId);
+        Aisle aisle = getAisle(vardgivareId, loadingAisles, true);
         aisle.addLine(fact);
     }
 
-    private Aisle getAisle(String vardgivareId) {
+    public Aisle get(String vardgivarId) {
+        return getAisle(vardgivarId, aisles, false);
+    }
+
+    private Aisle getAisle(String vardgivareId, Map<String, Aisle> aisles, boolean add) {
         Aisle aisle = aisles.get(vardgivareId);
         if (aisle == null) {
             aisle = new Aisle();
-            aisles.put(vardgivareId, aisle);
+            if (add) {
+                aisles.put(vardgivareId, aisle);
+            }
         }
         return aisle;
-    }
-
-    public Aisle get(String vardgivarId) {
-        return getAisle(vardgivarId);
     }
 
     public String toString() {
@@ -37,11 +43,7 @@ public class Warehouse implements Iterable<Aisle> {
     }
 
     public Map<String, Aisle> getAllVardgivare() {
-        return Collections.unmodifiableMap(aisles);
-    }
-
-    public void clear() {
-        aisles.clear();
+        return aisles;
     }
 
     @Override
@@ -55,6 +57,19 @@ public class Warehouse implements Iterable<Aisle> {
 
     public static int getEnhet(String id) {
         return enhetsMap.getId(id);
+    }
+
+    public LocalDateTime getLastUpdate() {
+        return lastUpdate;
+    }
+
+    public void complete(LocalDateTime lastUpdate) {
+        for (Aisle aisle: loadingAisles.values()) {
+            aisle.sort();
+        }
+        aisles = Collections.unmodifiableMap(loadingAisles);
+        this.lastUpdate = lastUpdate;
+        loadingAisles = new HashMap<>();
     }
 
     private static class IdMap<T> {
