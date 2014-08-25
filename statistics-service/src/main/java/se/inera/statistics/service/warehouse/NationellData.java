@@ -2,6 +2,7 @@ package se.inera.statistics.service.warehouse;
 
 import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import se.inera.statistics.service.report.model.DiagnosgruppResponse;
 import se.inera.statistics.service.report.model.KonDataRow;
@@ -39,6 +40,9 @@ public class NationellData {
     @Autowired
     private DiagnosgruppQuery query;
 
+    @Value("${reports.nationell.cutoff:5}")
+    private int cutoff;
+
     public SimpleKonResponse<SimpleKonDataRow> getCasesPerMonth(Range range) {
         return getAntalIntyg(range.getFrom(), range.getMonths(), 1);
     }
@@ -60,11 +64,11 @@ public class NationellData {
                 index++;
             }
         }
-        return new SimpleKonResponse<>(result, perioder * periodlangd);
+        return filterLow(new SimpleKonResponse<>(result, perioder * periodlangd));
     }
 
     public SimpleKonResponse<SimpleKonDataRow> getHistoricalAgeGroups(Range range) {
-        return getAldersgrupper(range.getFrom(), 1, range.getMonths());
+        return filterLow(getAldersgrupper(range.getFrom(), 1, range.getMonths()));
     }
 
     public SimpleKonResponse<SimpleKonDataRow> getAldersgrupper(LocalDate start, int perioder, int periodlangd) {
@@ -86,7 +90,7 @@ public class NationellData {
                 result = new SimpleKonResponse<>(list, perioder * periodlangd);
             }
         }
-        return result;
+        return filterLow(result);
     }
 
     public SjukskrivningsgradResponse getSjukskrivningsgrad(Range range) {
@@ -116,7 +120,7 @@ public class NationellData {
                 result = new SjukskrivningsgradResponse(result.getDegreesOfSickLeave(), list);
             }
         }
-        return result;
+        return filterLow(result);
     }
 
     public SjukfallslangdResponse getSjukfallslangd(Range range) {
@@ -142,11 +146,11 @@ public class NationellData {
                 result = new SjukfallslangdResponse(list, perioder * periodlangd);
             }
         }
-        return result;
+        return filterLow(result);
     }
 
     public DiagnosgruppResponse getDiagnosgrupper(Range range) {
-        return getDiagnosgrupper(range.getFrom(), range.getMonths(), 1);
+        return filterLow(getDiagnosgrupper(range.getFrom(), range.getMonths(), 1));
     }
 
     public DiagnosgruppResponse getDiagnosgrupper(LocalDate start, int perioder, int periodlangd) {
@@ -173,7 +177,7 @@ public class NationellData {
                 result = new DiagnosgruppResponse(result.getAvsnitts(), list);
             }
         }
-        return result;
+        return filterLow(result);
     }
 
     public DiagnosgruppResponse getDiagnosavsnitt(Range range, String kapitelId) {
@@ -200,11 +204,11 @@ public class NationellData {
                 result = new DiagnosgruppResponse(result.getAvsnitts(), list);
             }
         }
-        return result;
+        return filterLow(result);
     }
 
     public SimpleKonResponse<SimpleKonDataRow> getSjukfallPerLan(Range range) {
-        return getSjukfallPerLan(range.getFrom(), 1, range.getMonths());
+        return filterLow(getSjukfallPerLan(range.getFrom(), 1, range.getMonths()));
     }
 
     public SimpleKonResponse<SimpleKonDataRow> getSjukfallPerLan(LocalDate start, int perioder, int periodlangd) {
@@ -231,7 +235,7 @@ public class NationellData {
                 index++;
             }
         }
-        return new SimpleKonResponse<>(result, perioder * periodlangd);
+        return filterLow(new SimpleKonResponse<>(result, perioder * periodlangd));
     }
 
     public SimpleKonResponse<SimpleKonDataRow> getLangaSjukfall(LocalDate start, int perioder, int periodlangd) {
@@ -253,7 +257,54 @@ public class NationellData {
                 result = new SimpleKonResponse<>(list, perioder * periodlangd);
             }
         }
-        return result;
+        return filterLow(result);
+    }
 
+    private SjukfallslangdResponse filterLow(SjukfallslangdResponse unfiltered) {
+        List<SjukfallslangdRow> rows = new ArrayList<>();
+        for (SjukfallslangdRow row : unfiltered.getRows()) {
+            rows.add(new SjukfallslangdRow(row.getGroup(), filterCutoff(row.getFemale()), filterCutoff(row.getMale())));
+        }
+        return new SjukfallslangdResponse(rows, unfiltered.getMonths());
+    }
+
+    private SjukskrivningsgradResponse filterLow(SjukskrivningsgradResponse unfiltered) {
+        List<KonDataRow> rows = new ArrayList<>();
+        for (KonDataRow row : unfiltered.getRows()) {
+            rows.add(new KonDataRow(row.getName(), filterLowKonFields(row.getData())));
+        }
+        return new SjukskrivningsgradResponse(unfiltered.getDegreesOfSickLeave(), rows);
+    }
+
+    private DiagnosgruppResponse filterLow(DiagnosgruppResponse unfiltered) {
+        List<KonDataRow> rows = new ArrayList<>();
+        for (KonDataRow r : unfiltered.getRows()) {
+            rows.add(new KonDataRow(r.getName(), filterLowKonFields(r.getData())));
+        }
+        return new DiagnosgruppResponse(unfiltered.getAvsnitts(), rows);
+    }
+
+    private List<KonField> filterLowKonFields(List<KonField> unfiltered) {
+        List<KonField> result = new ArrayList<>();
+        for (KonField field :  unfiltered) {
+            result.add(new KonField(filterCutoff(field.getFemale()), filterCutoff(field.getMale())));
+        }
+        return result;
+    }
+
+    private SimpleKonResponse<SimpleKonDataRow> filterLow(SimpleKonResponse<SimpleKonDataRow> unfiltered) {
+        return new SimpleKonResponse<>(filterLow(unfiltered.getRows()), unfiltered.getNumberOfMonthsCalculated());
+    }
+
+    private List<SimpleKonDataRow> filterLow(List<SimpleKonDataRow> unfiltered) {
+        List<SimpleKonDataRow> result = new ArrayList<>();
+        for (SimpleKonDataRow row : unfiltered) {
+            result.add(new SimpleKonDataRow(row.getName(), filterCutoff(row.getFemale()), filterCutoff(row.getMale())));
+        }
+        return result;
+    }
+
+    private int filterCutoff(int actual) {
+        return actual < cutoff ? 0 : actual;
     }
 }
