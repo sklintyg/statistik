@@ -38,11 +38,30 @@ public final class HSAServiceHelper {
         return result;
     }
 
+    public static String getEnhetNamn(JsonNode hsaData) {
+        if (hsaData == null) {
+            return null;
+        }
+        String result = getEnhetNamn(hsaData, "huvudenhet");
+        if (result == null) {
+            result = getEnhetNamn(hsaData, "enhet");
+        }
+        return result;
+    }
+
     public static String getVardgivarId(JsonNode hsaData) {
         if (hsaData == null) {
             return null;
         } else {
             return hsaData.path("vardgivare").path("id").textValue();
+        }
+    }
+
+    public static String getVardgivarNamn(JsonNode hsaData) {
+        if (hsaData == null) {
+            return null;
+        } else {
+            return hsaData.path("vardgivare").path("namn").textValue();
         }
     }
 
@@ -91,6 +110,10 @@ public final class HSAServiceHelper {
 
     private static String getEnhetId(JsonNode hsaData, String enhet) {
         return hsaData.path(enhet).path("id").textValue();
+    }
+
+    private static String getEnhetNamn(JsonNode hsaData, String enhet) {
+        return hsaData.path(enhet).path("namn").textValue();
     }
 
 }

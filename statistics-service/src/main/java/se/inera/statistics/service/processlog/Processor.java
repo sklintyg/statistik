@@ -50,6 +50,9 @@ public class Processor {
     @Autowired
     private WidelineManager widelineManager;
 
+    @Autowired
+    private VardgivareManager vardgivareManager;
+
     @Value("${skip.discrete.counter:false}")
     private boolean skipDiscreteCounter;
 
@@ -68,6 +71,9 @@ public class Processor {
         }
 
         ObjectNode preparedDoc = DocumentHelper.prepare(utlatande);
+
+        vardgivareManager.saveEnhet(hsa);
+
         widelineManager.accept(preparedDoc, hsa, logId, correlationId, type);
 
         processedCounter++;

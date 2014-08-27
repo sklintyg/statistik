@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd"
+                   logicalFilePath="liquibase/db.changelog-v17.0_add_vardgivare_table_and_enhet_table.xml">
+    <changeSet id="16a_add_vardgivare_table_and_enhet_table" author="pierre.sandboge">
+        <createTable tableName="enhet">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="enhetId" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="namn" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="vardgivareId" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="vardgivareNamn" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+</databaseChangeLog>

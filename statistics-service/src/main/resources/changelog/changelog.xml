@@ -18,5 +18,6 @@
     <include file="changelog/db.changelog-v12.0_replace_sjukfallperlan_table.xml"/>
     <include file="changelog/db.changelog-v13.0_create_wideline_table.xml"/>
     <include file="changelog/db.changelog-v14.0_create_intyghandelse_index_on_type_correlationId.xml"/>
+    <include file="changelog/db.changelog-v17.0_add_vardgivare_table_and_enhet_table.xml"/>
     <include file="changelog/db.changelog-v15.0_add_intygtyp_and_correlationid_to_wideline_table.xml"/>
 </databaseChangeLog>

@@ -39,5 +39,6 @@
 
     <bean id="factPopulator" class="se.inera.statistics.service.warehouse.FactPopulator" />
     <bean id="widelineConverter" class="se.inera.statistics.service.warehouse.WidelineConverter" />
+    <bean id="vardgivareManager" class="se.inera.statistics.service.processlog.VardgivareManager" />
 
 </beans>

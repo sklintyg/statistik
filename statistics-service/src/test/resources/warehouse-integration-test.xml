@@ -70,7 +70,6 @@
     <bean class="se.inera.ifv.statistics.spi.authorization.impl.HSAWebServiceCalls" id="hsaWebServiceCalls"/>
     <bean class="se.inera.statistics.hsa.stub.HsaWebServiceStub" id="hsaWebServiceStub"/>
     <bean class="se.inera.statistics.hsa.stub.HsaServiceStub" id="hsaServiceStub"/>
-    <bean class="se.inera.statistics.service.hsa.HSAServiceMock"/>
     <bean class="se.inera.statistics.service.report.model.Lan" id="lan"/>
     <bean class="se.inera.statistics.service.processlog.Processor"/>
     <bean class="org.springframework.core.io.ClassPathResource" id="icd10ChaptersAnsiFile">
@@ -81,9 +80,16 @@
     <bean class="se.inera.statistics.service.warehouse.Warehouse"/>
     <bean class="se.inera.statistics.service.warehouse.WarehouseManager"/>
     <bean class="se.inera.statistics.service.processlog.VardgivareManager"/>
+    <bean class="se.inera.statistics.service.hsa.HSAServiceMock"/>
+
+    <bean id="dataGenerator" class="se.inera.statistics.service.demo.LargeTestDataGenerator" />
+
+    <bean id="factPopulator" class="se.inera.statistics.service.warehouse.FactPopulator" />
+    <bean id="widelineConverter" class="se.inera.statistics.service.warehouse.WidelineConverter" />
+    <bean class="se.inera.statistics.service.warehouse.WidelineManager" />
+    <bean class="se.inera.statistics.service.warehouse.WidelineLoader" />
 
     <context:component-scan base-package="se.inera.statistics.service.report.repository"/>
     <context:component-scan base-package="se.inera.statistics.service.report.listener"/>
     <context:component-scan base-package="se.inera.statistics.service.sjukfall"/>
-    <context:component-scan base-package="se.inera.statistics.service.warehouse"/>
 </beans>

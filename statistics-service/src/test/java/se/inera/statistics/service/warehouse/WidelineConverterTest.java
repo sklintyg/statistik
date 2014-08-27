@@ -37,7 +37,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:warehouse-test.xml", "classpath:icd10.xml" })
+@ContextConfiguration(locations = {"classpath:warehouse-integration-test.xml", "classpath:icd10.xml" })
 public class WidelineConverterTest {
 
     private static final Logger LOG = LoggerFactory.getLogger(WidelineConverterTest.class);
