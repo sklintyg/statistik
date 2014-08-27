@@ -1,5 +1,6 @@
 package se.inera.statistics.service.warehouse.query;
 
+import org.joda.time.LocalDateTime;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +37,7 @@ public class DiagnosgruppQueryTest {
     @Test
     public void one() {
         fact(4010, 0);
+        warehouse.complete(LocalDateTime.now());
         Collection<Sjukfall> sjukfall = SjukfallUtil.calculateSjukfall(warehouse.get(VARDGIVARE));
         Map<String,Counter<String>> count = query.count(sjukfall);
         assertEquals(1, count.get(icd10.getKapitel("A00-B99").getId()).getCount());
@@ -55,6 +57,7 @@ public class DiagnosgruppQueryTest {
         fact(4010, 500);
         fact(4010, 500);
         fact(4010, 600);
+        warehouse.complete(LocalDateTime.now());
         Collection<Sjukfall> sjukfall = SjukfallUtil.calculateSjukfall(warehouse.get(VARDGIVARE));
         List<Counter<String>> count = query.count(sjukfall, 4);
 

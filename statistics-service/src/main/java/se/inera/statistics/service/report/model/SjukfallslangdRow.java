@@ -17,23 +17,46 @@
  *     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package se.inera.statistics.service.report.listener;
+package se.inera.statistics.service.report.model;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import se.inera.statistics.service.report.util.Verksamhet;
 
-import se.inera.statistics.service.report.api.RollingLength;
-import se.inera.statistics.service.report.api.SjukfallPerLan;
+public class SjukfallslangdRow {
 
-@Component
-public class SjukfallPerLanListener extends RollingAbstractListener {
+    private Verksamhet typ;
 
-    @Autowired
-    private SjukfallPerLan sjukfallPerLan;
+    private final String group;
+    private final int male;
+    private final int female;
 
-    protected boolean accept(GenericHolder token, String period, RollingLength length) {
-        sjukfallPerLan.count(period, token.getVardgivareId(), token.getLanId(), length, token.getKon());
-        return false;
+    public SjukfallslangdRow(String group, int female, int male) {
+        this.group = group;
+        this.male = male;
+        this.female = female;
     }
 
+    public String getGroup() {
+        return group;
+    }
+
+    public Verksamhet getTyp() {
+        return typ;
+    }
+
+    public void setTyp(Verksamhet typ) {
+        this.typ = typ;
+    }
+
+    public int getMale() {
+        return male;
+    }
+
+    public int getFemale() {
+        return female;
+    }
+
+    @Override
+    public String toString() {
+        return "{\"SjukfallslangdRow\":{\"typ\":\"" + typ + "\", \"male\":" + male + ", \"female\":" + female + "}}";
+    }
 }

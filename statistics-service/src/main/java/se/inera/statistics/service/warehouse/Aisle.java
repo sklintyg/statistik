@@ -15,9 +15,6 @@ public class Aisle implements Iterable<Fact> {
         }
     };
 
-    public Aisle() {
-    }
-
     public void addLine(Fact line) {
         lines.add(line);
     }

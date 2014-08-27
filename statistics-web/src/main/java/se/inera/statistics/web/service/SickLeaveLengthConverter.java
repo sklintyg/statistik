@@ -26,7 +26,7 @@ import java.util.List;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.report.model.SjukfallslangdResponse;
-import se.inera.statistics.service.report.model.db.SjukfallslangdRow;
+import se.inera.statistics.service.report.model.SjukfallslangdRow;
 import se.inera.statistics.web.model.ChartData;
 import se.inera.statistics.web.model.ChartSeries;
 import se.inera.statistics.web.model.NamedData;

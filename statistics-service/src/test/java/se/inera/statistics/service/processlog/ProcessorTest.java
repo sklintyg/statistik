@@ -10,30 +10,18 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 import se.inera.statistics.service.helper.JSONParser;
-import se.inera.statistics.service.helper.StatisticsMalformedDocument;
-import se.inera.statistics.service.sjukfall.SjukfallInfo;
-import se.inera.statistics.service.sjukfall.SjukfallKey;
-import se.inera.statistics.service.sjukfall.SjukfallService;
 import se.inera.statistics.service.warehouse.WidelineManager;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyLong;
+import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ProcessorTest {
 
     private JsonNode utlatande;
-
-    @Mock
-    private ProcessorListener listener = mock(ProcessorListener.class);
-
-    @Mock
-    private SjukfallService sjukfallService = mock(SjukfallService.class);
 
     @Mock
     private WidelineManager widelineManager = mock(WidelineManager.class);
@@ -46,41 +34,16 @@ public class ProcessorTest {
         utlatande = JSONParser.parse(this.getClass().getResourceAsStream("/json/fk7263_M_template.json"));
     }
 
-    @Test(expected = StatisticsMalformedDocument.class)
-    public void processorAccepstTwoEvents() {
-        JsonNode event1 = null;
-        JsonNode event2 = null;
-
-        processor.accept(event1, event2, 1, "1", EventType.CREATED);
-
-    }
-
-    @Test
-    public void processorExtractsSjukfallsId() {
-        JsonNode hsa = null;
-
-        when(sjukfallService.register(any(SjukfallKey.class))).thenReturn(new SjukfallInfo(null, null, null, null));
-
-        processor.accept(utlatande, hsa, 1L, "1", EventType.CREATED);
-
-        verify(sjukfallService).register(any(SjukfallKey.class));
-    }
-
     @Test
     public void processorCallsListener() {
-        JsonNode hsa = null;
-
         ArgumentCaptor<JsonNode> utlatandeCaptor = ArgumentCaptor.forClass(JsonNode.class);
         ArgumentCaptor<JsonNode> hsaCaptor = ArgumentCaptor.forClass(JsonNode.class);
-        Mockito.doNothing().when(listener).accept(any(SjukfallInfo.class), utlatandeCaptor.capture(), hsaCaptor.capture(), anyLong());
+        Mockito.doNothing().when(widelineManager).accept(utlatandeCaptor.capture(), hsaCaptor.capture(), anyLong(), anyString(), any(EventType.class));
 
-        processor.accept(utlatande, hsa, 1L, "1", EventType.CREATED);
+        processor.accept(utlatande, null, 1L, "1", EventType.CREATED);
 
         assertEquals("33", utlatandeCaptor.getValue().path("patient").path("alder").asText());
         assertEquals("man", utlatandeCaptor.getValue().path("patient").path("kon").asText());
-        assertNull(utlatandeCaptor.getValue().get("patient").get("id"));
-        assertNull(utlatandeCaptor.getValue().get("patient").get("fornamn"));
-        assertNull(utlatandeCaptor.getValue().get("patient").get("efternamn"));
     }
 
 }

@@ -25,28 +25,31 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
-import se.inera.statistics.service.report.api.Diagnoskapitel;
-import se.inera.statistics.service.report.api.Overview;
-import se.inera.statistics.service.report.api.SjukfallPerManad;
 import se.inera.statistics.service.report.model.Avsnitt;
 import se.inera.statistics.service.report.model.Range;
+import se.inera.statistics.service.report.util.Icd10;
+import se.inera.statistics.service.warehouse.NationellData;
+import se.inera.statistics.service.warehouse.NationellOverviewData;
 
+import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.eq;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ChartDataServiceTest {
 
     @Mock
-    private Overview overviewMock = Mockito.mock(Overview.class);
+    private NationellOverviewData overviewMock = Mockito.mock(NationellOverviewData.class);
 
     @Mock
     private NationellData nationellData = Mockito.mock(NationellData.class);
+
+    @Mock
+    private Icd10 icd10;
 
     @InjectMocks
     private ChartDataService chartDataService = new ChartDataService();
@@ -57,7 +60,7 @@ public class ChartDataServiceTest {
     @Test
     public void getOverviewDataTest() {
         try {
-            chartDataService.getOverviewData();
+            chartDataService.buildOverview();
         } catch (NullPointerException e) {
         }
         Mockito.verify(overviewMock).getOverview(any(Range.class));
@@ -66,7 +69,7 @@ public class ChartDataServiceTest {
     @Test
     public void getNumberOfCasesPerMonthTest() {
         try {
-            chartDataService.getNumberOfCasesPerMonth();
+            chartDataService.buildNumberOfCasesPerMonth();
         } catch (NullPointerException e) {
         }
         Mockito.verify(nationellData).getCasesPerMonth(any(Range.class));
@@ -74,15 +77,15 @@ public class ChartDataServiceTest {
 
     @Test
     public void getDiagnosisGroupsTest() {
-        List<Avsnitt> avsnitts = chartDataService.getDiagnoskapitel();
-        assertEquals(22, avsnitts.size());
-        assertTrue(avsnitts.toString().contains("{\"Avsnitt\":{\"id\":\"E00-E90\", \"name\":\"Endokrina sjukdomar, nutritionsrubbningar och ämnesomsättningssjukdomar\", \"firstId\":\"E00\", \"lastId\":\"E90\"}}"));
+        Mockito.when(icd10.getKapitel()).thenReturn(Arrays.asList(new Icd10.Kapitel("A00-B99", "Vissa infektionssjukdomar och parasitsjukdomar"), new Icd10.Kapitel("C00-D48", "Tumörer")));
+        List<ChartDataService.Kapitel> kapitel = chartDataService.getDiagnoskapitel();
+        assertEquals(2, kapitel.size());
     }
 
     @Test
     public void getDiagnosisGroupStatisticsTest() {
         try {
-            chartDataService.getDiagnoskapitelstatistik();
+            chartDataService.buildDiagnosgrupper();
         } catch (NullPointerException e) {
         }
         Mockito.verify(nationellData).getDiagnosgrupper(any(Range.class));
@@ -90,11 +93,12 @@ public class ChartDataServiceTest {
 
     @Test
     public void getDiagnosisSubGroupStatisticsTest() {
+        Mockito.when(icd10.getKapitel()).thenReturn(Arrays.asList(new Icd10.Kapitel("A00-B99", "Vissa infektionssjukdomar och parasitsjukdomar"), new Icd10.Kapitel("C00-D48", "Tumörer")));
         try {
-            chartDataService.getDiagnosavsnittstatistik("testId");
+            chartDataService.buildDiagnoskapitel();
         } catch (NullPointerException e) {
         }
-        Mockito.verify(nationellData).getDiagnosavsnitt(any(Range.class), eq("testId"));
+        Mockito.verify(nationellData).getDiagnosavsnitt(any(Range.class), eq("A00-B99"));
     }
 
     // CHECKSTYLE:ON MagicNumber

@@ -28,7 +28,6 @@ import se.inera.statistics.service.common.CommonPersistence;
 import se.inera.statistics.service.helper.UtlatandeBuilder;
 import se.inera.statistics.service.processlog.EventType;
 import se.inera.statistics.service.processlog.Receiver;
-import se.inera.statistics.service.report.repository.NationellUpdater;
 import se.inera.statistics.service.report.util.Icd10;
 import se.inera.statistics.service.scheduler.LogJob;
 import se.inera.statistics.service.warehouse.WarehouseManager;
@@ -67,9 +66,6 @@ public class InjectUtlatande {
     private Receiver receiver;
 
     @Autowired
-    private NationellUpdater nationellUpdater;
-
-    @Autowired
     private LogJob logJob;
 
     @Autowired
@@ -97,16 +93,6 @@ public class InjectUtlatande {
         publishUtlatanden();
         logJob.checkLog();
         warehouseManager.loadWideLines();
-        updateNationell();
-    }
-
-    private void updateNationell() {
-        nationellUpdater.updateSjukskrivningsgrad();
-        nationellUpdater.updateSjukfallslangd();
-        nationellUpdater.updateDiagnosundergrupp();
-        nationellUpdater.updateDiagnosgrupp();
-        nationellUpdater.updateAldersgrupp();
-        nationellUpdater.updateCasesPerMonth();
     }
 
     private void cleanupDB() {

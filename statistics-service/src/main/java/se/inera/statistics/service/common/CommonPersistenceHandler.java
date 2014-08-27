@@ -36,14 +36,6 @@ public class CommonPersistenceHandler implements CommonPersistence {
         delete("IntygEvent");
         delete("HSAStore");
         delete("EventPointer");
-        delete("SjukfallPerManadRow");
-        delete("DiagnosisGroupData");
-        delete("DiagnosisSubGroupData");
-        delete("AldersgruppRow");
-        delete("SjukfallslangdRow");
-        delete("SjukfallPerLanRow");
-        delete("SjukskrivningsgradData");
-        delete("Sjukfall");
     }
 
     private void delete(String entity) {

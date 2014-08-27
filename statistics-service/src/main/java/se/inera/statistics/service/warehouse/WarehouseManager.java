@@ -1,8 +1,11 @@
 package se.inera.statistics.service.warehouse;
 
+import org.joda.time.LocalDateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import javax.annotation.PostConstruct;
 
 public class WarehouseManager {
 
@@ -14,12 +17,12 @@ public class WarehouseManager {
     @Autowired
     private Warehouse warehouse;
 
+    @PostConstruct
     public int loadWideLines() {
         LOG.info("Reloading warehouse");
-        warehouse.clear();
         int lines = loader.populateWarehouse();
         LOG.info("Reloaded warehouse {} lines", lines);
-        sortAisles();
+        warehouse.complete(LocalDateTime.now());
         LOG.info("Prepared warehouse with ailes {}", warehouse.getAllVardgivare().keySet());
         return lines;
     }
@@ -31,11 +34,5 @@ public class WarehouseManager {
     public int getAisleSize(String vardgivareId) {
         Aisle aisle = warehouse.get(vardgivareId);
         return aisle.getSize();
-    }
-
-    private void sortAisles() {
-        for (Aisle aisle: warehouse) {
-            aisle.sort();
-        }
     }
 }

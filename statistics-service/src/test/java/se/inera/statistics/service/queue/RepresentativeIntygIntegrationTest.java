@@ -14,17 +14,7 @@ import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 import se.inera.statistics.service.helper.UtlatandeBuilder;
 import se.inera.statistics.service.processlog.LogConsumer;
-import se.inera.statistics.service.report.api.Aldersgrupp;
-import se.inera.statistics.service.report.api.Diagnosgrupp;
-import se.inera.statistics.service.report.api.Diagnoskapitel;
-import se.inera.statistics.service.report.api.Overview;
-import se.inera.statistics.service.report.api.SjukfallPerLan;
-import se.inera.statistics.service.report.api.SjukfallPerManad;
-import se.inera.statistics.service.report.api.SjukfallslangdGrupp;
-import se.inera.statistics.service.report.api.Sjukskrivningsgrad;
-import se.inera.statistics.service.report.api.VerksamhetOverview;
 import se.inera.statistics.service.report.model.Range;
-import se.inera.statistics.service.scheduler.NationellUpdaterJob;
 import se.inera.statistics.service.testsupport.QueueHelper;
 import se.inera.statistics.service.testsupport.QueueSender;
 import se.inera.statistics.service.testsupport.TestData;
@@ -42,8 +32,6 @@ import static org.junit.Assert.assertEquals;
 // CHECKSTYLE:OFF MagicNumber
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath:process-log-impl-test.xml", "classpath:process-log-qm-test.xml", "classpath:icd10.xml" })
-@Transactional
-@TransactionConfiguration(defaultRollback=false)
 @DirtiesContext
 public class RepresentativeIntygIntegrationTest {
     private static final int PERSON_K1950 = 0;
@@ -60,34 +48,12 @@ public class RepresentativeIntygIntegrationTest {
     private List<String> persons = new ArrayList<>();
 
     @Autowired
-    private SjukfallPerManad sjukfallPerManad;
-    @Autowired
-    private Diagnosgrupp diagnosgrupp;
-    @Autowired
-    private Diagnoskapitel diagnoskapitel;
-    @Autowired
-    private Aldersgrupp aldersgrupp;
-    @Autowired
-    private Sjukskrivningsgrad sjukskrivningsgrad;
-    @Autowired
-    private SjukfallslangdGrupp sjukfallslangdGrupp;
-    @Autowired
-    private VerksamhetOverview verksamhetOverview;
-    @Autowired
-    private Overview overview;
-    @Autowired
-    private SjukfallPerLan sjukfallPerLan;
-
-    @Autowired
     private QueueHelper queueHelper;
     @Autowired
     private QueueSender queueSender;
 
     @Autowired
     private LogConsumer consumer;
-
-    @Autowired
-    private NationellUpdaterJob nationellUpdaterJob;
 
     @Before
     public void setup() {
@@ -119,8 +85,6 @@ public class RepresentativeIntygIntegrationTest {
         sleep();
 
         assertEquals("Verify that all messages have been processed.", 3, consumer.processBatch());
-
-        nationellUpdaterJob.checkLog();
 
         LOG.info("===========RESULT=========");
         Map<String, TestData> result = queueHelper.printAndGetPersistedData(getVardenhet(ENVE), getVardenhet(TVAVE), new Range(getStart(0), getStop(3)));
@@ -161,8 +125,6 @@ public class RepresentativeIntygIntegrationTest {
         sleep();
 
         assertEquals("Verify that all messages have been processed.", 27, consumer.processBatch());
-
-        nationellUpdaterJob.checkLog();
 
         LOG.info("===========RESULT=========");
         queueHelper.printAndGetPersistedData(getVardenhet(ENVE), getVardenhet(TVAVE), new Range(getStart(0), getStop(3)));

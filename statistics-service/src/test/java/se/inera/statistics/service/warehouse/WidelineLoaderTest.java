@@ -1,5 +1,6 @@
 package se.inera.statistics.service.warehouse;
 
+import org.joda.time.LocalDateTime;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -24,12 +25,6 @@ public class WidelineLoaderTest {
 
     @Autowired
     Warehouse warehouse;
-
-    @Before
-    public void setUp() {
-        warehouse.clear();
-        System.out.println("table size: " + widelineManager.count());
-    }
 
     @Test
     public void loadPopulatesOnlyWithCreatedLines() {

@@ -18,7 +18,11 @@ import se.inera.statistics.service.report.api.SjukfallPerManad;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.SimpleKonDataRow;
 import se.inera.statistics.service.report.model.SimpleKonResponse;
+import se.inera.statistics.service.warehouse.SjukfallUtil;
+import se.inera.statistics.service.warehouse.Warehouse;
+import se.inera.statistics.service.warehouse.WarehouseManager;
 import se.inera.statistics.service.warehouse.WidelineManager;
+import se.inera.statistics.service.warehouse.query.SjukfallQuery;
 
 import javax.jms.ConnectionFactory;
 import javax.jms.Destination;
@@ -32,14 +36,10 @@ import static org.junit.Assert.assertEquals;
 // CHECKSTYLE:OFF MagicNumber
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath:process-log-impl-test.xml", "classpath:process-log-qm-test.xml", "classpath:icd10.xml" })
-@Transactional
 @DirtiesContext
 public class ReceiverIntegrationTest {
 
     private JmsTemplate jmsTemplate;
-
-    @Autowired
-    private SjukfallPerManad sjukfallPerManad;
 
     @Autowired
     private ConnectionFactory connectionFactory;
@@ -50,6 +50,11 @@ public class ReceiverIntegrationTest {
     @Autowired
     private WidelineManager wideLine;
 
+    @Autowired
+    private WarehouseManager warehouseManager;
+    @Autowired
+    private Warehouse warehouse;
+
     @Before
     public void setup() {
         this.jmsTemplate = new JmsTemplate(connectionFactory);
@@ -57,15 +62,9 @@ public class ReceiverIntegrationTest {
 
     @Test
     public void deliver_document_from_in_queue_to_statistics_repository() {
-        UtlatandeBuilder builder = new UtlatandeBuilder();
-        simpleSend(builder.build("19121212-0010", new LocalDate("2011-01-20"), new LocalDate("2011-03-11"), "enhetId", "A00", 0).toString(), "001");
-        simpleSend(builder.build("19121212-0011", new LocalDate("2011-01-20"), new LocalDate("2011-03-11"), "enhetId", "A00", 0).toString(), "002");
-
-        sleep();
-
-        assertEquals(2, consumer.processBatch());
-
-        SimpleKonResponse<SimpleKonDataRow> webData = sjukfallPerManad.getCasesPerMonth("enhetId", new Range(new LocalDate("2011-01"), new LocalDate("2011-12")));
+        populate();
+        load();
+        SimpleKonResponse<SimpleKonDataRow> webData = SjukfallQuery.getSjukfall(warehouse.get("vardgivarId"), SjukfallUtil.createEnhetFilter("enhetId"), new LocalDate("2011-01"), 12, 1);
 
         assertEquals(12, webData.getRows().size());
 
@@ -79,6 +78,22 @@ public class ReceiverIntegrationTest {
         }
 
         assertEquals(2, wideLine.count());
+    }
+
+    @Transactional
+    public void load() {
+        warehouseManager.loadWideLines();
+    }
+
+    @Transactional
+    public void populate() {
+        UtlatandeBuilder builder = new UtlatandeBuilder();
+        simpleSend(builder.build("19121212-0010", new LocalDate("2011-01-20"), new LocalDate("2011-03-11"), "enhetId", "A00", 0).toString(), "001");
+        simpleSend(builder.build("19121212-0110", new LocalDate("2011-01-20"), new LocalDate("2011-03-11"), "enhetId", "A00", 0).toString(), "002");
+
+        sleep();
+
+        assertEquals(2, consumer.processBatch());
     }
 
     private void sleep() {

@@ -46,9 +46,6 @@ public class LogConsumerImpl implements LogConsumer {
 
     private volatile boolean isRunning = false;
 
-    public LogConsumerImpl() {
-    }
-
     @Transactional(noRollbackFor = Exception.class)
     public int processBatch() {
         try {

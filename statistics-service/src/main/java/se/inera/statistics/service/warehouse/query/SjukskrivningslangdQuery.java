@@ -5,14 +5,13 @@ import se.inera.statistics.service.report.model.OverviewChartRow;
 import se.inera.statistics.service.report.model.SimpleKonDataRow;
 import se.inera.statistics.service.report.model.SimpleKonResponse;
 import se.inera.statistics.service.report.model.SjukfallslangdResponse;
-import se.inera.statistics.service.report.model.db.SjukfallslangdRow;
+import se.inera.statistics.service.report.model.SjukfallslangdRow;
 import se.inera.statistics.service.report.util.Ranges;
 import se.inera.statistics.service.report.util.ReportUtil;
 import se.inera.statistics.service.report.util.SjukfallslangdUtil;
 import se.inera.statistics.service.warehouse.Aisle;
 import se.inera.statistics.service.warehouse.Sjukfall;
 import se.inera.statistics.service.warehouse.SjukfallUtil;
-import se.inera.statistics.service.warehouse.Warehouse;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -82,9 +81,7 @@ public final class SjukskrivningslangdQuery {
         return counters;
     }
 
-    public static SimpleKonResponse<SimpleKonDataRow> getLangaSjukfall(Warehouse warehouse, SjukfallUtil.StartFilter filter, LocalDate from, int periods, int periodLength, String vardgivarId) {
-        Aisle aisle = warehouse.get(vardgivarId);
-
+    public static SimpleKonResponse<SimpleKonDataRow> getLangaSjukfall(Aisle aisle, SjukfallUtil.StartFilter filter, LocalDate from, int periods, int periodLength) {
         List<SimpleKonDataRow> rows = new ArrayList<>();
         for (SjukfallUtil.SjukfallGroup sjukfallGroup: SjukfallUtil.sjukfallGrupper(from, periods, periodLength, aisle, filter)) {
             Counter counter = new Counter("");
@@ -105,7 +102,7 @@ public final class SjukskrivningslangdQuery {
             Map<Ranges.Range, Counter<Ranges.Range>> counterMap = SjukskrivningslangdQuery.count(sjukfallGroup.getSjukfall());
             for (Ranges.Range i : SjukfallslangdUtil.RANGES) {
                 Counter<Ranges.Range> counter = counterMap.get(i);
-                rows.add(new SjukfallslangdRow("", i.getName(), periodLength, counter.getCountFemale(), counter.getCountMale()));
+                rows.add(new SjukfallslangdRow(i.getName(), counter.getCountFemale(), counter.getCountMale()));
             }
         }
         return new SjukfallslangdResponse(rows, periodLength);
