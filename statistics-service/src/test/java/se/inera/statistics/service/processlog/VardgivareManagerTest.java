@@ -38,8 +38,47 @@ public class VardgivareManagerTest {
         assertEquals("Enhetens namn", allEnhets.get(0).getNamn());
     }
 
+    @Test
     public void getEnhetsForNonExistingVardgivare() {
         JsonNode hsaInfo = hsaService.getHSAInfo(new HSAKey("vg", "enhet", "lakare"));
         vardgivareManager.saveEnhet(hsaInfo);
+
+        List<Enhet> enhets = vardgivareManager.getEnhets("jag finns inte");
+
+        List<Enhet> allEnhets = vardgivareManager.getAllEnhets();
+        assertEquals(1, allEnhets.size());
+        assertEquals(0, enhets.size());
+    }
+
+    @Test
+    public void getEnhetsForExistingVardgivare() {
+        JsonNode hsaInfo = hsaService.getHSAInfo(new HSAKey("vg", "enhet", "lakare"));
+        vardgivareManager.saveEnhet(hsaInfo);
+        hsaInfo = hsaService.getHSAInfo(new HSAKey("other-vg", "other-enhet", "lakare"));
+        vardgivareManager.saveEnhet(hsaInfo);
+
+        List<Enhet> enhets = vardgivareManager.getEnhets("vg");
+
+        List<Enhet> allEnhets = vardgivareManager.getAllEnhets();
+        assertEquals(2, allEnhets.size());
+        assertEquals(1, enhets.size());
+        assertEquals("enhet", enhets.get(0).getEnhetId());
+        assertEquals("Enhetens namn", enhets.get(0).getNamn());
+    }
+
+    @Test
+    public void getVardgivareWithOneVardgivareTwoEnhets() {
+        JsonNode hsaInfo = hsaService.getHSAInfo(new HSAKey("vg", "enhet1", "lakare"));
+        vardgivareManager.saveEnhet(hsaInfo);
+        hsaInfo = hsaService.getHSAInfo(new HSAKey("vg", "enhet2", "lakare"));
+        vardgivareManager.saveEnhet(hsaInfo);
+
+        List<Vardgivare> allVardgivares = vardgivareManager.getAllVardgivares();
+
+        List<Enhet> allEnhets = vardgivareManager.getAllEnhets();
+        assertEquals(2, allEnhets.size());
+        assertEquals(1, allVardgivares.size());
+        assertEquals("vg", allVardgivares.get(0).getId());
+        assertEquals("vardgivarnamn", allVardgivares.get(0).getNamn());
     }
 }
