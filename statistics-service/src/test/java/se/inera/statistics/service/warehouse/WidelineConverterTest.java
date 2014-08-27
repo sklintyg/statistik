@@ -26,6 +26,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import se.inera.statistics.service.processlog.EventType;
@@ -38,6 +39,7 @@ import static org.junit.Assert.assertNotNull;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:warehouse-integration-test.xml", "classpath:icd10.xml" })
+@DirtiesContext
 public class WidelineConverterTest {
 
     private static final Logger LOG = LoggerFactory.getLogger(WidelineConverterTest.class);

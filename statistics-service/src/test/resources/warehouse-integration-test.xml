@@ -52,30 +52,11 @@
         <property name="entityManagerFactory" ref="entityManagerFactory"/>
     </bean>
 
-    <bean class="se.inera.statistics.service.report.repository.SjukfallPerManadPersistenceHandler" id="casesPerMonth"/>
-    <bean class="se.inera.statistics.service.report.repository.DiagnosgroupPersistenceHandler" id="avsnitts"/>
-    <bean class="se.inera.statistics.service.report.repository.DiagnossubgroupPersistenceHandler"
-          id="diagnosisSubGroups"/>
-    <bean class="se.inera.statistics.service.report.repository.AldersgruppPersistenceHandler" id="ageGroups"/>
-    <bean class="se.inera.statistics.service.report.repository.SjukfallslangdGruppPersistenceHandler"
-          id="caseLengthGroups"/>
-    <bean class="se.inera.statistics.service.report.repository.SjukskrivningsgradPersistenceHandler" id="caseDegree"/>
-    <bean class="se.inera.statistics.service.report.repository.NationellPersistenceHandler">
-        <property name="cutoff" value="0"/>
-    </bean>
-    <bean class="se.inera.statistics.service.report.repository.SjukfallPerLanPersistenceHandler" id="casesPerCounty"/>
-    <bean class="se.inera.statistics.service.report.repository.VerksamhetOverviewPersistenceHandler"
-          id="verksamhetOverview"/>
-    <bean class="se.inera.statistics.service.report.repository.OverviewPersistenceHandler" id="nartionellOverview"/>
     <bean class="se.inera.ifv.statistics.spi.authorization.impl.HSAWebServiceCalls" id="hsaWebServiceCalls"/>
     <bean class="se.inera.statistics.hsa.stub.HsaWebServiceStub" id="hsaWebServiceStub"/>
     <bean class="se.inera.statistics.hsa.stub.HsaServiceStub" id="hsaServiceStub"/>
     <bean class="se.inera.statistics.service.report.model.Lan" id="lan"/>
     <bean class="se.inera.statistics.service.processlog.Processor"/>
-    <bean class="org.springframework.core.io.ClassPathResource" id="icd10ChaptersAnsiFile">
-        <constructor-arg value="KSH97_AVS.ANS"/>
-    </bean>
-    <bean class="se.inera.statistics.service.report.util.DiagnosUtil"/>
     <bean class="se.inera.statistics.service.warehouse.FactPopulator"/>
     <bean class="se.inera.statistics.service.warehouse.Warehouse"/>
     <bean class="se.inera.statistics.service.warehouse.WarehouseManager"/>
@@ -89,7 +70,4 @@
     <bean class="se.inera.statistics.service.warehouse.WidelineManager" />
     <bean class="se.inera.statistics.service.warehouse.WidelineLoader" />
 
-    <context:component-scan base-package="se.inera.statistics.service.report.repository"/>
-    <context:component-scan base-package="se.inera.statistics.service.report.listener"/>
-    <context:component-scan base-package="se.inera.statistics.service.sjukfall"/>
 </beans>

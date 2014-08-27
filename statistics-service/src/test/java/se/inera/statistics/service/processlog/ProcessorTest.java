@@ -26,6 +26,9 @@ public class ProcessorTest {
     @Mock
     private WidelineManager widelineManager = mock(WidelineManager.class);
 
+    @Mock
+    private VardgivareManager vardgivareManager = mock(VardgivareManager.class);
+
     @InjectMocks
     private Processor processor = new Processor();
 
@@ -39,6 +42,7 @@ public class ProcessorTest {
         ArgumentCaptor<JsonNode> utlatandeCaptor = ArgumentCaptor.forClass(JsonNode.class);
         ArgumentCaptor<JsonNode> hsaCaptor = ArgumentCaptor.forClass(JsonNode.class);
         Mockito.doNothing().when(widelineManager).accept(utlatandeCaptor.capture(), hsaCaptor.capture(), anyLong(), anyString(), any(EventType.class));
+        Mockito.doNothing().when(vardgivareManager).saveEnhet(any(JsonNode.class));
 
         processor.accept(utlatande, null, 1L, "1", EventType.CREATED);
 
