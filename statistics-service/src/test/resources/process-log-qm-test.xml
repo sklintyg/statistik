@@ -22,7 +22,13 @@
       <amq:transportConnectors>
         <amq:transportConnector uri="tcp://localhost:61616" />
       </amq:transportConnectors>
-    </amq:broker>
+        <amq:systemUsage>
+            <amq:systemUsage>
+                <amq:tempUsage>
+                    <amq:tempUsage limit="100 mb"/>
+                </amq:tempUsage>
+            </amq:systemUsage>
+        </amq:systemUsage>    </amq:broker>
 
     <bean class="se.inera.statistics.service.testsupport.QueueHelper" />
     <bean class="se.inera.statistics.service.testsupport.QueueSender" />
