@@ -20,7 +20,7 @@
 |Västerbottens län|0|0|
 |Västernorrlands län|0|0|
 |Västmanlands län|0|0|
-|Västra Götalands län|0|0|
+|Västra Götalands län|8|0|
 |Örebro län|0|0|
 |Östergötlands län|0|0|
 |Okänt län|0|0|

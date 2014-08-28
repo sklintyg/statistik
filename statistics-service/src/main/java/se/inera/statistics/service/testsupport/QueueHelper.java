@@ -33,6 +33,7 @@ import se.inera.statistics.service.helper.UtlatandeBuilder;
 import se.inera.statistics.service.processlog.EventType;
 import se.inera.statistics.service.processlog.LogConsumer;
 import se.inera.statistics.service.report.api.RollingLength;
+import se.inera.statistics.service.report.model.DiagnosgruppResponse;
 import se.inera.statistics.service.report.model.OverviewResponse;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.SimpleKonDataRow;
@@ -49,6 +50,7 @@ import se.inera.statistics.service.warehouse.SjukfallUtil;
 import se.inera.statistics.service.warehouse.Warehouse;
 import se.inera.statistics.service.warehouse.WarehouseManager;
 import se.inera.statistics.service.warehouse.query.AldersgruppQuery;
+import se.inera.statistics.service.warehouse.query.DiagnosgruppQuery;
 import se.inera.statistics.service.warehouse.query.OverviewQuery;
 import se.inera.statistics.service.warehouse.query.SjukfallQuery;
 import se.inera.statistics.service.warehouse.query.SjukskrivningsgradQuery;
@@ -73,6 +75,9 @@ public class QueueHelper {
 
     @Autowired
     private OverviewQuery overviewQuery;
+
+    @Autowired
+    private DiagnosgruppQuery diagnosgruppQuery;
 
     @Autowired
     private NationellOverviewData nationellOverview;
@@ -163,7 +168,7 @@ public class QueueHelper {
         LOG.info("AG data: " + ageGroups1);
         JsonNode ageGroups1Node = JSONParser.parse(ageGroups1.toString());
         result.put("ageGroups1", new TestData(ageGroups1, ageGroups1Node));
-        SimpleKonResponse<SimpleKonDataRow> ageGroups2 = AldersgruppQuery.getAldersgrupper(warehouse.get("EnVG"), SjukfallUtil.createEnhetFilter(vardenhet2), range.getFrom(), 1, YEAR);
+        SimpleKonResponse<SimpleKonDataRow> ageGroups2 = AldersgruppQuery.getAldersgrupper(warehouse.get("VG2"), SjukfallUtil.createEnhetFilter(vardenhet2), range.getFrom(), 1, YEAR);
         LOG.info("AG data: " + ageGroups2);
         JsonNode ageGroups2Node = JSONParser.parse(ageGroups2.toString());
         result.put("ageGroups2", new TestData(ageGroups2, ageGroups2Node));
@@ -174,14 +179,19 @@ public class QueueHelper {
     }
 
     private void printAndGetDiagnosisSubGroups(String vardenhet1, String vardenhet2, Range range, Map<String, TestData> result) {
-//        DiagnosgruppResponse diagnosisSubGroups1 = diagnoskapitel.getDiagnosisGroups(vardenhet1, range, "A00-B99");
-//        LOG.info("DSG data: " + diagnosisSubGroups1);
-//        JsonNode diagnosisSubGroups1Node = JSONParser.parse(diagnosisSubGroups1.toString());
-//        result.put("diagnosisSubGroups1", new TestData(diagnosisSubGroups1, diagnosisSubGroups1Node));
-//        DiagnosgruppResponse diagnosisSubGroups2 = diagnoskapitel.getDiagnosisGroups(vardenhet2, range, "A00-B99");
-//        LOG.info("DSG data: " + diagnosisSubGroups2);
-//        JsonNode diagnosisSubGroups2Node = JSONParser.parse(diagnosisSubGroups2.toString());
-//        result.put("diagnosisSubGroups2", new TestData(diagnosisSubGroups2, diagnosisSubGroups2Node));
+        DiagnosgruppResponse diagnosisSubGroups1 = diagnosgruppQuery.getDiagnosavsnitt(warehouse.get("EnVG"), SjukfallUtil.createEnhetFilter(vardenhet1), range.getFrom(), 1, YEAR, "A00-B99");
+        LOG.info("DSG data: " + diagnosisSubGroups1);
+        JsonNode diagnosisSubGroups1Node = JSONParser.parse(diagnosisSubGroups1.toString());
+        result.put("diagnosisSubGroups1", new TestData(diagnosisSubGroups1, diagnosisSubGroups1Node));
+        DiagnosgruppResponse diagnosisSubGroups2 = diagnosgruppQuery.getDiagnosavsnitt(warehouse.get("VG2"), SjukfallUtil.createEnhetFilter(vardenhet2), range.getFrom(), 1, YEAR, "A00-B99");
+        LOG.info("DSG data: " + diagnosisSubGroups2);
+        JsonNode diagnosisSubGroups2Node = JSONParser.parse(diagnosisSubGroups2.toString());
+        result.put("diagnosisSubGroups2", new TestData(diagnosisSubGroups2, diagnosisSubGroups2Node));
+
+        DiagnosgruppResponse nationellDiagnosgrupper = nationell.getDiagnosgrupper(range.getFrom(), range.getMonths(), 1);
+        LOG.info("Nationell DSG data: " + nationellDiagnosgrupper);
+        JsonNode diagnosisSubGroupsNationellNode = JSONParser.parse(nationellDiagnosgrupper.toString());
+        result.put("diagnosisSubGroupsNationell", new TestData(nationellDiagnosgrupper, diagnosisSubGroupsNationellNode));
 //        DiagnosgruppResponse diagnosisSubGroupsNationell = diagnoskapitel.getDiagnosisGroups(nationell, range, "A00-B99");
 //        LOG.info("Nationell DSG data: " + diagnosisSubGroupsNationell);
 //        JsonNode diagnosisSubGroupsNationellNode = JSONParser.parse(diagnosisSubGroupsNationell.toString());
@@ -189,6 +199,21 @@ public class QueueHelper {
     }
 
     private void printAndGetDiagnosisGroups(String vardenhet1, String vardenhet2, Range range, Map<String, TestData> result) {
+        DiagnosgruppResponse diagnosisGroups1 = diagnosgruppQuery.getDiagnosgrupper(warehouse.get("EnVG"), SjukfallUtil.createEnhetFilter(vardenhet1), range.getFrom(), 1, YEAR);
+        LOG.info("DG data: " + diagnosisGroups1);
+        JsonNode diagnosisGroups1Node = JSONParser.parse(diagnosisGroups1.toString());
+        result.put("diagnosisGroups1", new TestData(diagnosisGroups1, diagnosisGroups1Node));
+        LOG.info("DG data: " + diagnosisGroups1Node.toString());
+
+        DiagnosgruppResponse diagnosisGroups2 = diagnosgruppQuery.getDiagnosgrupper(warehouse.get("VG2"), SjukfallUtil.createEnhetFilter(vardenhet2), range.getFrom(), 1, YEAR);
+        LOG.info("DG jdata: " + diagnosisGroups2);
+        JsonNode diagnosisGroups2Node = JSONParser.parse(diagnosisGroups2.toString());
+        result.put("diagnosisGroups1", new TestData(diagnosisGroups2, diagnosisGroups2Node));
+
+        DiagnosgruppResponse nationellDiagnosgrupper = nationell.getDiagnosgrupper(range.getFrom(), 1, YEAR);
+        LOG.info("Nationell DG data:" + nationellDiagnosgrupper);
+        JsonNode diagnosisGroupsNationellNode = JSONParser.parse(nationellDiagnosgrupper.toString());
+        result.put("diagnosisGroupsNationell", new TestData(nationellDiagnosgrupper, diagnosisGroupsNationellNode));
 //        DiagnosgruppResponse diagnosisGroups1 = diagnosgrupp.getDiagnosisGroups(vardenhet1, range);
 //        LOG.info("DG data: " + diagnosisGroups1);
 //        JsonNode diagnosisGroups1Node = JSONParser.parse(diagnosisGroups1.toString());

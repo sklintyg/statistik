@@ -6,37 +6,32 @@
         http://activemq.apache.org/schema/core http://activemq.apache.org/schema/core/activemq-core-5.8.0.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd"
         >
 
-    <!--<context:component-scan-->
-            <!--base-package="se.inera.statistics">-->
-    <!--</context:component-scan>-->
-
-    <context:component-scan
-    base-package="se.inera.statistics.service.processlog">
-    </context:component-scan>
+    <context:component-scan base-package="se.inera.statistics.service.processlog"/>
 
     <bean class="se.inera.statistics.service.hsa.HSADecorator"/>
 
     <amq:queue id="queue" physicalName="intyg.queue"/>
 
     <amq:broker persistent="false">
-      <amq:transportConnectors>
-        <amq:transportConnector uri="tcp://localhost:61616" />
-      </amq:transportConnectors>
+        <amq:transportConnectors>
+            <amq:transportConnector uri="tcp://localhost:61616"/>
+        </amq:transportConnectors>
         <amq:systemUsage>
             <amq:systemUsage>
                 <amq:tempUsage>
                     <amq:tempUsage limit="100 mb"/>
                 </amq:tempUsage>
             </amq:systemUsage>
-        </amq:systemUsage>    </amq:broker>
+        </amq:systemUsage>
+    </amq:broker>
 
-    <bean class="se.inera.statistics.service.testsupport.QueueHelper" />
-    <bean class="se.inera.statistics.service.testsupport.QueueSender" />
+    <bean class="se.inera.statistics.service.testsupport.QueueHelper"/>
+    <bean class="se.inera.statistics.service.testsupport.QueueSender"/>
 
     <bean id="jmsFactory" class="org.apache.activemq.pool.PooledConnectionFactory" destroy-method="stop">
         <property name="connectionFactory">
             <bean class="org.apache.activemq.ActiveMQConnectionFactory">
-                <property name="brokerURL" value="tcp://localhost:61616" />
+                <property name="brokerURL" value="tcp://localhost:61616"/>
             </bean>
         </property>
     </bean>

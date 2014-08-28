@@ -30,8 +30,8 @@ class Alder {
             if (femaleNum > 0 || maleNum > 0) {
                 List<List<String>> cols = new ArrayList<>()
                 cols.add(["grupp", row.path("name").textValue()]);
-                cols.add(["kvinnor", femaleNum]);
-                cols.add(["män", maleNum])
+                cols.add(["kvinnor", femaleNum.toString()]);
+                cols.add(["män", maleNum.toString()])
                 rowList.add(cols)
             }
         }
