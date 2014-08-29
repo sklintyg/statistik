@@ -51,11 +51,6 @@ public class VerksamhetOverviewPersistanceHandlerTest extends VerksamhetOverview
         diagnosgroupPersistenceHandler.count("id3", "2013-09", "g1", Verksamhet.ENHET, Sex.Male);
         diagnosgroupPersistenceHandler.count("id1", "2013-06", "g1", Verksamhet.ENHET, Sex.Male);
 
-        casesPerMonth.count("id1", "2013-09", Verksamhet.ENHET, Sex.Female);
-        casesPerMonth.count("id1", "2013-09", Verksamhet.ENHET, Sex.Female);
-        casesPerMonth.count("id3", "2013-09", Verksamhet.ENHET, Sex.Male);
-        casesPerMonth.count("id1", "2013-06", Verksamhet.ENHET, Sex.Male);
-
         aldersgruppPersistenceHandler.count("2013-09", "id1", "<21", RollingLength.QUARTER, Verksamhet.ENHET, Sex.Female);
         aldersgruppPersistenceHandler.count("2013-09", "id1", "<21", RollingLength.QUARTER, Verksamhet.ENHET, Sex.Female);
         aldersgruppPersistenceHandler.count("2013-09", "id1", "21-25", RollingLength.QUARTER, Verksamhet.ENHET, Sex.Female);
@@ -86,10 +81,12 @@ public class VerksamhetOverviewPersistanceHandlerTest extends VerksamhetOverview
 
         // CHECKSTYLE:OFF MagicNumber
         Assert.assertEquals(2, result.getDiagnosisGroups().get(0).getQuantity());
+        // Using aldersgrupp for sjukfall calculations as a temporary workaround for missing counters
         Assert.assertEquals(100, result.getCasesPerMonthSexProportionPreviousPeriod().getFemaleProportion());
         Assert.assertEquals(0, result.getCasesPerMonthSexProportionPreviousPeriod().getMaleProportion());
         Assert.assertEquals(100, result.getCasesPerMonthSexProportionBeforePreviousPeriod().getMaleProportion());
-        Assert.assertEquals(2, result.getTotalCases());
+        // Using aldersgrupp for sjukfall calculations as a temporary workaround for missing counters
+        Assert.assertEquals(4, result.getTotalCases());
         Assert.assertEquals(1, result.getDiagnosisGroups().get(0).getAlternation());
         Assert.assertEquals(3, result.getAgeGroups().size());
         Assert.assertEquals(2, result.getAgeGroups().get(0).getQuantity());
