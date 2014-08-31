@@ -102,10 +102,9 @@ public class OverviewBasePersistenceHandler {
     }
 
     protected OverviewSexProportion getSexProportion(String verksamhetId, Range range) {
-        Query query = getManager()
-                .createQuery("SELECT SUM(c.male), SUM(c.female) FROM CasesPerMonthRow c WHERE c.key.hsaId = :hsaId AND c.key.period BETWEEN :from AND :to");
+        Query query = getManager().createQuery("SELECT SUM(c.male), SUM(c.female) FROM AgeGroupsRow c WHERE c.key.hsaId = :hsaId AND c.key.period = :to and c.key.periods = :periods");
         query.setParameter("hsaId", verksamhetId);
-        query.setParameter("from", ReportUtil.toPeriod(range.getFrom()));
+        query.setParameter("periods", range.getMonths());
         query.setParameter("to", ReportUtil.toPeriod(range.getTo()));
         Object[] row = (Object[]) query.getSingleResult();
         if (row == null || row[0] == null || row[1] == null) {
@@ -219,9 +218,9 @@ public class OverviewBasePersistenceHandler {
     }
 
     protected int getCasesPerMonth(String verksamhetId, Range range) {
-        TypedQuery<Long> query = getManager().createQuery("SELECT SUM(c.male) + SUM(c.female) FROM CasesPerMonthRow c WHERE c.key.hsaId = :hsaId AND c.key.period BETWEEN :from AND:to", Long.class);
+        TypedQuery<Long> query = getManager().createQuery("SELECT SUM(c.male) + SUM(c.female) FROM AgeGroupsRow c WHERE c.key.hsaId = :hsaId AND c.key.period = :to and c.key.periods = :periods", Long.class);
         query.setParameter("hsaId", verksamhetId);
-        query.setParameter("from", ReportUtil.toPeriod(range.getFrom()));
+        query.setParameter("periods", range.getMonths());
         query.setParameter("to", ReportUtil.toPeriod(range.getTo()));
         return asInt(query.getSingleResult());
     }

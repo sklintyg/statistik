@@ -63,11 +63,6 @@ public class OverviewPersistanceHandlerTest extends OverviewPersistenceHandler {
         diagnosgroupPersistenceHandler.count("id3", "2013-09", "g1", Verksamhet.VARDGIVARE, Sex.Male);
         diagnosgroupPersistenceHandler.count("id1", "2013-06", "g1", Verksamhet.VARDGIVARE, Sex.Male);
 
-        casesPerMonth.count("id1", "2013-09", Verksamhet.VARDGIVARE, Sex.Female);
-        casesPerMonth.count("id1", "2013-09", Verksamhet.VARDGIVARE, Sex.Female);
-        casesPerMonth.count("id3", "2013-09", Verksamhet.VARDGIVARE, Sex.Male);
-        casesPerMonth.count("id1", "2013-06", Verksamhet.VARDGIVARE, Sex.Male);
-
         sjukskrivningsgrad.count("id1", "2013-09", "25", Verksamhet.VARDGIVARE, Sex.Female);
         sjukskrivningsgrad.count("id1", "2013-09", "100", Verksamhet.VARDGIVARE, Sex.Female);
         sjukskrivningsgrad.count("id1", "2013-09", "100", Verksamhet.VARDGIVARE, Sex.Female);
@@ -118,8 +113,9 @@ public class OverviewPersistanceHandlerTest extends OverviewPersistenceHandler {
 
         OverviewResponse result = this.getOverview(range);
 
-        Assert.assertEquals(67, result.getCasesPerMonthSexProportion().getFemaleProportion());
-        Assert.assertEquals(33, result.getCasesPerMonthSexProportion().getMaleProportion());
+        // Using aldersgrupp for sjukfall calculations as a temporary workaround for missing counters
+        Assert.assertEquals(80, result.getCasesPerMonthSexProportion().getFemaleProportion());
+        Assert.assertEquals(20, result.getCasesPerMonthSexProportion().getMaleProportion());
         Assert.assertEquals(3, result.getDiagnosisGroups().get(0).getQuantity());
         Assert.assertEquals(2, result.getDiagnosisGroups().get(0).getAlternation());
         Assert.assertEquals(3, result.getAgeGroups().size());
