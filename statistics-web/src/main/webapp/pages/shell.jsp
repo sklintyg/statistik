@@ -48,6 +48,7 @@
     <link href="<c:url value='/css/inera-statistics-responsive.css'/>" rel="stylesheet" media="not print">
     <link href="<c:url value='/css/helperclasses.css'/>" rel="stylesheet" media="not print">
     <link href="<c:url value='/css/print.css'/>" rel="stylesheet" media="print">
+    <link href="<c:url value='/css/bootstrap-multiselect.css'/>" rel="stylesheet" media="not print">
 
     <link href="<c:url value='/bootstrap/3.1.1/css/bootstrap.min.css'/>" rel="stylesheet" media="not print">
     <link href="<c:url value='/bootstrap/3.1.1/css/bootstrap-theme.min.css'/>" rel="stylesheet" media="not print">
@@ -112,7 +113,6 @@
 		</div>
 	</div>
 </div>
-
 
 <div id="wrap">
     <div class="container-fluid">
@@ -443,6 +443,7 @@
 <script type="text/javascript" src="<c:url value='/js/lib/highcharts/3.0.5/modules/highcharts-more.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/lib/highcharts/3.0.5/modules/exporting.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/lib/highcharts/pattern-fill/pattern-fill.js'/>"></script>
+<script type="text/javascript" src="<c:url value='/js/lib/bootstrap-multiselect/bootstrap-multiselect.js'/>"></script>
 
 <script type="text/javascript">
     $('.dropdown-toggle').dropdown();

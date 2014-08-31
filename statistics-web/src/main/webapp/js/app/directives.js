@@ -78,3 +78,28 @@ app.statisticsApp.directive('legendHeight', function() {
        }   
     };
 });
+
+app.statisticsApp.directive('multiselectDropdown', function() {
+    return function(scope, element, attrs) {
+        element.multiselect({
+            numberDisplayed : 3,
+            onChange: function (optionElement, checked) {
+                optionElement.removeAttr('selected');
+                if (checked) {
+                    optionElement.prop('selected', 'selected');
+                }
+                element.change();
+            }
+        });
+
+        scope.$watch(function () {
+            return element[0].length;
+        }, function () {
+            element.multiselect('rebuild');
+        });
+
+        scope.$watch(attributes.ngModel, function () {
+            element.multiselect('refresh');
+        });
+    }
+});
