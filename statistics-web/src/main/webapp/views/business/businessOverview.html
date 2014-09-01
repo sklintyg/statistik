@@ -100,7 +100,7 @@
                                     </ul>
                                 </div>
                                 <div id="overview-distribution-diagnostic-groups-container">
-                                    <div class="chart-container" id="diagnosisChart"></div>
+                                    <div class="chart-container" id="diagnosisChart" style="display: none"></div>
                                     <table id="datatable" class="table table-bordered table-striped table-condensed overview-graph-table">
                                         <thead>
                                             <tr>
@@ -110,10 +110,10 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr data-ng-repeat="group in diagnosisGroups">
-                                                <td class="diagnostics-group-name"><div class="overview-legend-color-square" ng-style="{backgroundColor: group.color}"></div>{{group.name}}</td>
-                                                <td class="diagnostics-group-quantity">{{group.quantity | thousandseparated}}</td>
-                                                <td class="diagnostics-group-alternation">{{group.alternation}}%</td>
+                                            <tr">
+                                                <td class="diagnostics-group-name">Data saknas</td>
+                                                <td class="diagnostics-group-quantity"> </td>
+                                                <td class="diagnostics-group-alternation"> </td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -218,7 +218,7 @@
                                     </div>
                                     <div id="overview-distribution-of-sick-degree-container">
                                         <div class="row-fluid">
-                                            <div class="chart-container" id="degreeOfSickLeaveChart"></div>
+                                            <div class="chart-container" id="degreeOfSickLeaveChart" style="display: none"></div>
                                             <table id="datatable" class="table table-bordered table-striped table-condensed overview-graph-table">
                                                 <thead>
                                                     <tr>
@@ -228,10 +228,10 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <tr data-ng-repeat="group in degreeOfSickLeaveGroups">
-                                                        <td class="diagnostics-group-name"><div class="overview-legend-color-square" ng-style="{backgroundColor: group.color}"></div>{{group.name}}</td>
-                                                        <td class="diagnostics-group-quantity">{{group.quantity | thousandseparated}}</td>
-                                                        <td class="diagnostics-group-alternation">{{group.alternation}}%</td>
+                                                    <tr>
+                                                        <td class="diagnostics-group-name">Data saknas</td>
+                                                        <td class="diagnostics-group-quantity"> </td>
+                                                        <td class="diagnostics-group-alternation"> </td>
                                                     </tr>
                                                 </tbody>
                                             </table>
