@@ -62,6 +62,7 @@
                     $scope.isFullVgAccess = loginInfo.fullVgAccess;
                     $scope.userNameWithAccess = loginInfo.name;
                 }, function() { $scope.dataLoadingError = true; });
+
         }
     });
     

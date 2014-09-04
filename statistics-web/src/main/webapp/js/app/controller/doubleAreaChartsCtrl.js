@@ -253,7 +253,7 @@ app.doubleAreaChartsCtrl = function ($scope, $routeParams, $window, $timeout, st
 
     if (isVerksamhet) {
         $scope.exportTableUrl = config.exportTableUrlVerksamhet($routeParams.verksamhetId, $routeParams.groupId);
-        statisticsData[config.dataFetcherVerksamhet]($routeParams.verksamhetId, populatePageWithData, function () {
+        statisticsData[config.dataFetcherVerksamhet]($routeParams.verksamhetId, $scope.selectedBusinesses, populatePageWithData, function () {
             $scope.dataLoadingError = true;
         }, $routeParams.groupId);
     } else {
