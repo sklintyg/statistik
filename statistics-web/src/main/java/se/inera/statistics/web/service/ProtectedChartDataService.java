@@ -19,6 +19,7 @@
 
 package se.inera.statistics.web.service;
 
+import com.google.common.annotations.VisibleForTesting;
 import org.joda.time.LocalDate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,6 +47,7 @@ import se.inera.statistics.web.model.overview.VerksamhetOverviewData;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.GET;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -70,6 +72,7 @@ public class ProtectedChartDataService {
 
     private static final Logger LOG = LoggerFactory.getLogger(ProtectedChartDataService.class);
     private static final String TEXT_UTF_8 = "text/plain; charset=UTF-8";
+    private static final String ID_STRING = "ids";
 
     @Autowired
     private WarehouseService warehouse;
@@ -312,8 +315,8 @@ public class ProtectedChartDataService {
     @Produces({MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedChartDataService.helper.hasAccessTo(#request, #verksamhetId)")
     @PostAuthorize(value = "@protectedChartDataService.helper.userAccess(#request, #verksamhetId)")
-    public DualSexStatisticsData getDegreeOfSickLeaveStatistics(@Context HttpServletRequest request, @PathParam(VERKSAMHET_PATH_ID) String verksamhetId) {
-        LOG.info("Calling getDegreeOfSickLeaveStatistics with verksamhetId: " + verksamhetId);
+    public DualSexStatisticsData getDegreeOfSickLeaveStatistics(@Context HttpServletRequest request, @PathParam(VERKSAMHET_PATH_ID) String verksamhetId, @QueryParam(ID_STRING) String idString) {
+        LOG.info("Calling getDegreeOfSickLeaveStatistics with verksamhetId: {} and ids: {}", verksamhetId, idString);
         final Range range = new Range(18);
         Verksamhet verksamhet = getVerksamhet(request, Verksamhet.decodeId(verksamhetId));
         SjukfallUtil.StartFilter filter = getFilter(request, verksamhet);
@@ -335,7 +338,7 @@ public class ProtectedChartDataService {
     @PostAuthorize(value = "@protectedChartDataService.helper.userAccess(#request, #verksamhetId)")
     public Response getDegreeOfSickLeaveStatisticsAsCsv(@Context HttpServletRequest request, @PathParam(VERKSAMHET_PATH_ID) String verksamhetId) {
         LOG.info("Calling getDegreeOfSickLeaveStatisticsAsCsv with verksamhetId: " + verksamhetId);
-        final TableData tableData = getDegreeOfSickLeaveStatistics(request, verksamhetId).getTableData();
+        final TableData tableData = getDegreeOfSickLeaveStatistics(request, verksamhetId, null).getTableData();
         return CsvConverter.getCsvResponse(tableData, "export.csv");
     }
 
@@ -459,6 +462,7 @@ public class ProtectedChartDataService {
         return CsvConverter.getCsvResponse(tableData, "export.csv");
     }
 
+    @VisibleForTesting
     private SjukfallUtil.StartFilter getFilter(HttpServletRequest request, Verksamhet verksamhet) {
         LoginInfo info = ServiceUtil.getLoginInfo(request);
         SjukfallUtil.StartFilter filter;
