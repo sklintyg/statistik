@@ -25,13 +25,13 @@
     ">
 
     <beans profile="test">
-        <context:property-placeholder location="file:${statistics.config.file}" order="1"
+        <context:property-placeholder location="file:${credentials.file}, file:${statistics.config.file}" order="1"
                                       ignore-resource-not-found="true" ignore-unresolvable="true"/>
         <context:property-placeholder location="classpath*:default.test.properties" order="2"
                                       ignore-resource-not-found="false" ignore-unresolvable="true"/>
     </beans>
     <beans profile="qa,prod">
-        <context:property-placeholder location="file:${statistics.config.file}" order="1"
+        <context:property-placeholder location="file:${credentials.file}, file:${statistics.config.file}" order="1"
                                       ignore-resource-not-found="false" ignore-unresolvable="true"/>
     </beans>
 
