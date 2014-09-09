@@ -35,6 +35,10 @@ public class Verksamhet implements Serializable {
     private final String name;
     private final String vardgivarId;
     private final String vardgivarName;
+    private final String lansId;
+    private final String lansName;
+    private final String kommunId;
+    private final String kommunName;
 
     private static final CharSequenceTranslator ESCAPER = UnicodeEscaper.below('-').with(excludeBetween('-', '0'), excludeBetween('9', 'A'), excludeBetween('Z', 'a'), above('z'));
 
@@ -42,15 +46,15 @@ public class Verksamhet implements Serializable {
         return between(codepointLow + 1, codepointHigh - 1);
     }
 
-    public Verksamhet(String id, String name, String vardgivarId) {
-        this(id, name, vardgivarId, vardgivarId);
-    }
-
-    public Verksamhet(String id, String name, String vardgivarId, String vardgivarName) {
+    public Verksamhet(String id, String name, String vardgivarId, String vardgivarName, String lansId, String lansName, String kommunId, String kommunName) {
         this.id = id;
         this.name = name;
         this.vardgivarId = vardgivarId;
         this.vardgivarName = vardgivarName;
+        this.lansId = lansId;
+        this.lansName = lansName;
+        this.kommunId = kommunId;
+        this.kommunName = kommunName;
     }
 
     public String getId() {
@@ -68,6 +72,14 @@ public class Verksamhet implements Serializable {
     public String getVardgivarName() {
         return vardgivarName;
     }
+
+    public String getLansId() { return lansId; }
+
+    public String getLansName() { return lansName; }
+
+    public String getKommunId() { return kommunId; }
+
+    public String getKommunNamne() { return kommunName; }
 
     public static String encodeId(String id) {
         return ESCAPER .translate(id).replace('\\', '_');

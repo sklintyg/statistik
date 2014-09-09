@@ -19,13 +19,15 @@ public class VardgivareManager {
     @PersistenceContext(unitName = "IneraStatisticsLog")
     private EntityManager manager;
 
-
     @Transactional
     public void saveEnhet(JsonNode hsaInfo) {
         String enhet = HSAServiceHelper.getEnhetId(hsaInfo);
         String vardgivare = HSAServiceHelper.getVardgivarId(hsaInfo);
         String enhetNamn = HSAServiceHelper.getEnhetNamn(hsaInfo);
         String vardgivareNamn = HSAServiceHelper.getVardgivarNamn(hsaInfo);
+        String lansId = HSAServiceHelper.getLan(hsaInfo);
+        String kommunId = HSAServiceHelper.getKommun(hsaInfo);
+
         if (enhetNamn == null) {
             enhetNamn = enhet;
         }
@@ -35,15 +37,18 @@ public class VardgivareManager {
         if (enhet == null) {
             enhet = vardgivare;
         }
+
         TypedQuery<Enhet> vardgivareQuery = manager.createQuery("SELECT v FROM Enhet v WHERE v.enhetId = :enhetId AND v.vardgivareId = :vardgivareId", Enhet.class);
         List<Enhet> resultList = vardgivareQuery.setParameter("enhetId", enhet).setParameter("vardgivareId", vardgivare).getResultList();
 
         if (resultList.isEmpty()) {
-            manager.persist(new Enhet(vardgivare, vardgivareNamn, enhet, enhetNamn));
+            manager.persist(new Enhet(vardgivare, vardgivareNamn, enhet, enhetNamn, lansId, kommunId));
         } else {
             Enhet updatedEnhet = resultList.get(0);
             updatedEnhet.setVardgivareNamn(vardgivareNamn);
             updatedEnhet.setNamn(enhetNamn);
+            updatedEnhet.setLansId(lansId);
+            updatedEnhet.setKommunId(kommunId);
             manager.merge(updatedEnhet);
         }
     }

@@ -80,6 +80,9 @@ public class ProtectedChartDataService {
     @Autowired
     private WarehouseService warehouse;
 
+    @Autowired
+    private LoginServiceUtil loginServiceUtil;
+
     /**
      * Gets sjukfall per manad for verksamhetId.
      *
@@ -465,15 +468,17 @@ public class ProtectedChartDataService {
 
     @VisibleForTesting
     SjukfallUtil.StartFilter getFilter(HttpServletRequest request, Verksamhet verksamhet, List<String> enhetsIDs) {
-        LoginInfo info = ServiceUtil.getLoginInfo(request);
+        LoginInfo info = loginServiceUtil.getLoginInfo(request);
         SjukfallUtil.StartFilter filter;
+        // TODO: we must distinguish b/w THE RIGHT to see all units and THE WANT to see all units
         if (info.isFullVgAccess()) {
             filter = SjukfallUtil.ALL_ENHETER;
         } else {
             List<String> enheter = new ArrayList<>();
             for (Verksamhet v : info.getBusinesses()) {
-                if (v.getVardgivarId().equals(verksamhet.getVardgivarId()) && enhetsIDs.contains(v.getId())) {
-                    enheter.add(v.getId());
+                if (v.getVardgivarId().equals(verksamhet.getVardgivarId())) {
+                    if (enhetsIDs == null || enhetsIDs.contains(v.getId()))
+                        enheter.add(v.getId());
                 }
             }
             filter = SjukfallUtil.createEnhetFilter(enheter.toArray(new String[enheter.size()]));
@@ -482,11 +487,14 @@ public class ProtectedChartDataService {
     }
 
     private List<String> getIdsFromIdString(String ids) {
-        return ID_SPLITTER.splitToList(ids);
+        if (ids != null) {
+            return ID_SPLITTER.splitToList(ids);
+        }
+        return null;
     }
 
     private Verksamhet getVerksamhet(HttpServletRequest request, String verksamhetId) {
-        List<Verksamhet> verksamhets = ServiceUtil.getLoginInfo(request).getBusinesses();
+        List<Verksamhet> verksamhets = loginServiceUtil.getLoginInfo(request).getBusinesses();
         for (Verksamhet verksamhet: verksamhets) {
             if (verksamhet.getVardgivarId().equals(verksamhetId)) {
                 return verksamhet;
@@ -495,9 +503,9 @@ public class ProtectedChartDataService {
         return null;
     }
 
-    protected static class Helper {
+    protected class Helper {
 
-        public static boolean hasAccessTo(HttpServletRequest request, String verksamhetId) {
+        public boolean hasAccessTo(HttpServletRequest request, String verksamhetId) {
             if (request == null || verksamhetId == null) {
                 return false;
             }
@@ -512,20 +520,20 @@ public class ProtectedChartDataService {
             return false;
         }
 
-        public static boolean userAccess(HttpServletRequest request, String verksamhetId) {
-            LOG.info("User " + ServiceUtil.getLoginInfo(request).getHsaId() + " accessed verksamhet " + verksamhetId + " (" + getUriSafe(request) + ") session " + request.getSession().getId());
+        public boolean userAccess(HttpServletRequest request, String verksamhetId) {
+            LOG.info("User " + loginServiceUtil.getLoginInfo(request).getHsaId() + " accessed verksamhet " + verksamhetId + " (" + getUriSafe(request) + ") session " + request.getSession().getId());
             return true;
         }
 
-        private static String getUriSafe(HttpServletRequest request) {
+        private String getUriSafe(HttpServletRequest request) {
             if (request == null) {
                 return "!NoRequest!";
             }
             return request.getRequestURI();
         }
 
-        private static List<Verksamhet> getVerksamhets(HttpServletRequest request) {
-            return ServiceUtil.getLoginInfo(request).getBusinesses();
+        private List<Verksamhet> getVerksamhets(HttpServletRequest request) {
+            return loginServiceUtil.getLoginInfo(request).getBusinesses();
         }
     }
 }

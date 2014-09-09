@@ -19,6 +19,10 @@ public class Enhet {
 
     private String namn;
 
+    private String lansId;
+
+    private String kommunId;
+
     public Enhet() {
     }
 
@@ -26,11 +30,13 @@ public class Enhet {
         return id;
     }
 
-    public Enhet(String vardgivareId, String vardgivareNamn, String enhetId, String namn) {
+    public Enhet(String vardgivareId, String vardgivareNamn, String enhetId, String namn, String lansId, String kommunId) {
         this.vardgivareId = vardgivareId;
         this.vardgivareNamn = vardgivareNamn;
         this.enhetId = enhetId;
         this.namn = namn;
+        this.lansId = lansId;
+        this.kommunId = kommunId;
     }
 
     public void setId(long id) {
@@ -68,4 +74,13 @@ public class Enhet {
     public void setNamn(String namn) {
         this.namn = namn;
     }
+
+    public String getLansId() { return lansId; }
+
+    public void setLansId(String lansId) { this.lansId = lansId; }
+
+    public String getKommunId() { return kommunId; }
+
+    public void setKommunId(String kommunId) { this.kommunId = kommunId; }
+
 }

@@ -37,4 +37,14 @@ public class HSAServiceHelperTest {
 
         Assert.assertEquals("05", lan);
     }
+
+    @Test
+    public void getKommunTest() {
+        HSAService hsaService = new HSAServiceMock();
+        JsonNode info = hsaService.getHSAInfo(new HSAKey("vardgivarid", "enhetId", "lakareId"));
+
+        String kommun = HSAServiceHelper.getKommun(info);
+        Assert.assertEquals("80", kommun);
+    }
+
 }

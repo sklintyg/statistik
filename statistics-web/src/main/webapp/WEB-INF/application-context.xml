@@ -102,6 +102,7 @@
         <bean id="widelineConverter" class="se.inera.statistics.service.warehouse.WidelineConverter" />
 
         <bean class="se.inera.statistics.service.processlog.Processor" />
+        <bean class="se.inera.statistics.web.service.LoginServiceUtil" />
     </beans>
 
     <beans profile="test,db,qa">

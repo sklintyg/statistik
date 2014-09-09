@@ -19,26 +19,14 @@
 
 package se.inera.statistics.web.service;
 
-import java.security.Principal;
+import se.inera.statistics.service.report.model.KonDataRow;
+import se.inera.statistics.service.report.model.KonField;
+import se.inera.statistics.web.model.NamedData;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
-
-import org.springframework.security.authentication.AbstractAuthenticationToken;
-
-import se.inera.auth.model.User;
-import se.inera.statistics.hsa.model.Vardenhet;
-import se.inera.statistics.service.report.model.KonDataRow;
-import se.inera.statistics.service.report.model.KonField;
-import se.inera.statistics.web.model.LoginInfo;
-import se.inera.statistics.web.model.NamedData;
-import se.inera.statistics.web.model.Verksamhet;
-
-public final class ServiceUtil {
-
-    private ServiceUtil() {
-    }
+public class ServiceUtil {
 
     static List<Integer> getMergedSexData(KonDataRow row) {
         List<Integer> data = new ArrayList<>();
@@ -47,27 +35,6 @@ public final class ServiceUtil {
             data.add(konField.getMale());
         }
         return data;
-    }
-
-    static LoginInfo getLoginInfo(HttpServletRequest request) {
-        Principal user = request.getUserPrincipal();
-        if (user instanceof AbstractAuthenticationToken) {
-            AbstractAuthenticationToken token = (AbstractAuthenticationToken) user;
-            if (token.getDetails() instanceof User) {
-                List<Verksamhet> verksamhets = new ArrayList<>();
-                User realUser = (User) token.getDetails();
-                for (Vardenhet enhet: realUser.getVardenhetList()) {
-                    verksamhets.add(toVerksamhet(enhet));
-                }
-                Verksamhet defaultVerksamhet = toVerksamhet(realUser.getValdVardenhet());
-                return new LoginInfo(realUser.getHsaId(), realUser.getName(), defaultVerksamhet, realUser.hasVgAccess(), realUser.hasFullVgAccess(), verksamhets);
-            }
-        }
-        return new LoginInfo();
-    }
-
-    private static Verksamhet toVerksamhet(Vardenhet enhet) {
-        return new Verksamhet(enhet.getId(), enhet.getNamn(), enhet.getVardgivarId(), enhet.getVardgivarNamn());
     }
 
     static void addSumRow(List<NamedData> rows, boolean includeSumForLastColumn) {

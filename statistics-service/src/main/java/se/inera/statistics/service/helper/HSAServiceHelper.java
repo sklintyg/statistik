@@ -20,6 +20,7 @@
 package se.inera.statistics.service.helper;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import se.inera.statistics.service.report.model.Kommun;
 import se.inera.statistics.service.report.model.Lan;
 
 public final class HSAServiceHelper {
@@ -77,9 +78,24 @@ public final class HSAServiceHelper {
         }
     }
 
+    private static String getLan(JsonNode hsaData, String enhet) {
+        return hsaData.path(enhet).path("geografi").path("lan").textValue();
+    }
+
     public static String getKommun(JsonNode hsaData) {
-        String result = hsaData.path("geografi").path("kommun").path("kod").textValue();
-        return result != null ? result : "";
+        if (hsaData != null) {
+            String result = getKommun(hsaData, "enhet");
+            if (result == null) {
+                result = getKommun(hsaData, "huvudenhet");
+            }
+            return result != null ? result : Kommun.OVRIGT_ID;
+        } else {
+            return Kommun.OVRIGT_ID;
+        }
+    }
+
+    private static String getKommun(JsonNode hsaData, String enhet) {
+        return hsaData.path(enhet).path("geografi").path("kommun").textValue();
     }
 
     public static int getLakaralder(JsonNode hsaData) {
@@ -102,10 +118,6 @@ public final class HSAServiceHelper {
     public static String getLakarbefattning(JsonNode hsaData) {
         String result = hsaData.path("personal").path("befattning").textValue();
         return result != null ? result : "";
-    }
-
-    private static String getLan(JsonNode hsaData, String enhet) {
-        return hsaData.path(enhet).path("geografi").path("lan").textValue();
     }
 
     private static String getEnhetId(JsonNode hsaData, String enhet) {
