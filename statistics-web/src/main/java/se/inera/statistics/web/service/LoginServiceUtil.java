@@ -55,7 +55,7 @@ public class LoginServiceUtil {
             AbstractAuthenticationToken token = (AbstractAuthenticationToken) user;
             if (token.getDetails() instanceof User) {
                 User realUser = (User) token.getDetails();
-                List<Enhet> enhetsList = vardgivareManager.getEnhets(realUser.getValdVardenhet().getId());
+                List<Enhet> enhetsList = vardgivareManager.getEnhets(realUser.getValdVardenhet().getVardgivarId());
                 List<Verksamhet> verksamhets = getVerksamhetsList(realUser, enhetsList);
 
                 // TODO: perhaps put something more specific than OVRIGT here
@@ -69,7 +69,7 @@ public class LoginServiceUtil {
     private List<Verksamhet> getVerksamhetsList(User realUser, final List<Enhet> enhetsList) {
         List<Verksamhet> returnList = new ArrayList<>();
         for (final Vardenhet vardEnhet: realUser.getVardenhetList()) {
-            Optional<Enhet> enhet = Iterables.tryFind(enhetsList, new Predicate<Enhet>() {
+            Optional<Enhet> enhetOptional = Iterables.tryFind(enhetsList, new Predicate<Enhet>() {
                 @Override
                 public boolean apply(Enhet enhet) {
                     return enhet.getEnhetId().equals(vardEnhet.getId());
@@ -79,10 +79,10 @@ public class LoginServiceUtil {
             String lansNamn = Lan.OVRIGT;
             String kommunId = Kommun.OVRIGT_ID;
             String kommunNamn = Kommun.OVRIGT;
-            if (enhet.isPresent()) {
-                lansId = enhet.get().getLansId();
+            if (enhetOptional.isPresent()) {
+                lansId = enhetOptional.get().getLansId();
                 lansNamn = lan.getNamn(lansId);
-                kommunId = enhet.get().getKommunId();
+                kommunId = enhetOptional.get().getKommunId();
                 kommunNamn = kommun.getNamn(kommunId);
             }
             returnList.add(toVerksamhet(vardEnhet, lansId, lansNamn, kommunId, kommunNamn));

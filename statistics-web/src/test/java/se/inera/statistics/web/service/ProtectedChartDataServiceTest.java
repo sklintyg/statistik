@@ -88,19 +88,14 @@ public class ProtectedChartDataServiceTest {
 
     @Ignore
     public void checkDeniedAccessToVerksamhetTest() {
-        ProtectedChartDataService.Helper helper = chartDataService.new Helper();
-        boolean result = helper.hasAccessTo(request, "VG3");
-
+        boolean result = chartDataService.hasAccessTo(request, "VG3");
         assertEquals(false, result);
     }
 
     @Ignore
     public void checkAllowedAccessToVerksamhetTest() {
-        ProtectedChartDataService.Helper helper = chartDataService.new Helper();
-        boolean result = helper.hasAccessTo(request, "VG2");
-
+        boolean result = chartDataService.hasAccessTo(request, "VG2");
         assertEquals(true, result);
     }
-
 
 }

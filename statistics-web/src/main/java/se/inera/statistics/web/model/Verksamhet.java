@@ -79,7 +79,7 @@ public class Verksamhet implements Serializable {
 
     public String getKommunId() { return kommunId; }
 
-    public String getKommunNamne() { return kommunName; }
+    public String getKommunName() { return kommunName; }
 
     public static String encodeId(String id) {
         return ESCAPER .translate(id).replace('\\', '_');

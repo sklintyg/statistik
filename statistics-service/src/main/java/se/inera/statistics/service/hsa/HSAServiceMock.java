@@ -23,9 +23,13 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.google.common.base.Predicate;
+import com.google.common.collect.FluentIterable;
+import com.google.common.collect.ImmutableList;
 import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
+import se.inera.statistics.service.report.model.Kommun;
 import se.inera.statistics.service.report.model.Lan;
 
 import java.util.ArrayList;
@@ -41,11 +45,17 @@ public class HSAServiceMock implements HSAService {
 
     private static final Lan LAN = new Lan();
     private static final List<String> LAN_CODES;
+    private static final Kommun KOMMUN = new Kommun();
+    private static final List<String> KOMMUN_CODES;
 
     static {
         LAN_CODES = new ArrayList<>();
         for (String kod : LAN) {
             LAN_CODES.add(kod);
+        }
+        KOMMUN_CODES = new ArrayList<>();
+        for (String kod : KOMMUN) {
+            KOMMUN_CODES.add(kod);
         }
     }
 
@@ -107,8 +117,9 @@ public class HSAServiceMock implements HSAService {
         root.put("plats", "Plats");
         root.put("kommundelskod", "0");
         root.put("kommundelsnamn", "Centrum");
-        root.put("kommun", createKommun());
-        root.put("lan", createLan(key));
+        String lan = createLan(key);
+        root.put("lan", lan);
+        root.put("kommun", createKommun(key, lan));
         return root;
     }
 
@@ -117,8 +128,15 @@ public class HSAServiceMock implements HSAService {
         return LAN_CODES.get(keyIndex % LAN_CODES.size());
     }
 
-    private String createKommun() {
-        return "80";
+    private String createKommun(HSAKey key, final String lan) {
+        int keyIndex = key != null && key.getVardgivareId() != null ? key.getVardgivareId().hashCode() & POSITIVE_MASK : 0;
+        List<String> relevantKommuns = FluentIterable.from(KOMMUN_CODES).filter(new Predicate<String>() {
+            @Override
+            public boolean apply(String s) {
+                return s.startsWith(lan) || s.equals(Kommun.OVRIGT_ID);
+            }
+        }).toList();
+        return relevantKommuns.get(keyIndex % relevantKommuns.size());
     }
 
     private JsonNode asList(String... items) {

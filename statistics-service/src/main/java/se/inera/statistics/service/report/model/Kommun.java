@@ -30,6 +30,7 @@ public class Kommun implements Iterable<String> {
     private final Map<String, String> kodToName = new LinkedHashMap<>();
 
     public Kommun() {
+        kodToName.put(OVRIGT_ID, OVRIGT);
         kodToName.put("0114", "Upplands Väsby");
         kodToName.put("0115", "Vallentuna");
         kodToName.put("0117", "Österåker");
@@ -320,7 +321,6 @@ public class Kommun implements Iterable<String> {
         kodToName.put("2582", "Boden");
         kodToName.put("2583", "Haparanda");
         kodToName.put("2584", "Kiruna");
-        kodToName.put(OVRIGT_ID, OVRIGT);
     }
 
     public String getNamn(String kod) {

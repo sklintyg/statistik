@@ -30,6 +30,27 @@
         return {name: "Okänd verksamhet"}; //Selected verksamhet not found
     };
 
+    var populateCountyAndMunicipalityLists = function(businesses) {
+        $scope.counties = {};
+        $scope.munips = {};
+        $scope.countyToMunip = {};
+        $scope.munipToBusiness = {};
+
+        businesses.foreach(function(business) {
+            if (! business.lansId in $scope.counties) {
+                $scope.counties[business.lansId] = true;
+                $scope.countyToMunip[business.lansId] = [];
+            }
+            $scope.countyToMunip[business.lansId].push(business.kommunId);
+
+            if (! business.kommunId in $scope.munips) {
+                $scope.munips[business.kommunId] = true;
+                $scope.munipToBusiness[business.kommunId] = [];
+            }
+            $scope.munipToBusiness[business.kommunId].push(business);
+        })
+    };
+
     $rootScope.$on('$routeChangeSuccess', function(angularEvent, next, current) {
         var verksamhetId = next.params.verksamhetId;
         $scope.verksamhetIdParam = verksamhetId;
@@ -54,14 +75,15 @@
             }
             
             statisticsData.getLoginInfo(function(loginInfo){
-                    $scope.businesses = loginInfo.businesses;
-                    var v = getSelectedVerksamhet($scope.businessId, loginInfo.businesses);
-                    $scope.verksamhetName = loginInfo.vgView ? (v.vardgivarName + (loginInfo.fullVgAccess ? "(alla enheter)": "(vissa enheter)")): v.name;
-                    $scope.userName = loginInfo.name;
-                    $scope.isVgView = loginInfo.vgView;
-                    $scope.isFullVgAccess = loginInfo.fullVgAccess;
-                    $scope.userNameWithAccess = loginInfo.name;
-                }, function() { $scope.dataLoadingError = true; });
+                $scope.businesses = loginInfo.businesses;
+                populateCountyAndMunicipalityLists(loginInfo.businesses)
+                var v = getSelectedVerksamhet($scope.businessId, loginInfo.businesses);
+                $scope.verksamhetName = loginInfo.vgView ? (v.vardgivarName + (loginInfo.fullVgAccess ? "(alla enheter)": "(vissa enheter)")): v.name;
+                $scope.userName = loginInfo.name;
+                $scope.isVgView = loginInfo.vgView;
+                $scope.isFullVgAccess = loginInfo.fullVgAccess;
+                $scope.userNameWithAccess = loginInfo.name;
+            }, function() { $scope.dataLoadingError = true; });
 
         }
     });

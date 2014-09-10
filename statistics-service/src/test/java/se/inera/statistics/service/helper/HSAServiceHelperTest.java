@@ -17,7 +17,7 @@ public class HSAServiceHelperTest {
         JsonNode info = hsaService.getHSAInfo(new HSAKey("vardgivarid", "enhetId", "lakareId"));
 
         String lan = HSAServiceHelper.getLan(info);
-        Assert.assertEquals("20", lan);
+        Assert.assertEquals("10", lan);
     }
 
     @Test
@@ -44,7 +44,7 @@ public class HSAServiceHelperTest {
         JsonNode info = hsaService.getHSAInfo(new HSAKey("vardgivarid", "enhetId", "lakareId"));
 
         String kommun = HSAServiceHelper.getKommun(info);
-        Assert.assertEquals("80", kommun);
+        Assert.assertEquals("1060", kommun);
     }
 
 }
