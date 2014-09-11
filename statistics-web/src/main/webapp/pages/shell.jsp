@@ -84,7 +84,7 @@
                     <span>Statistiktjänst för ordinerad sjukskrivning</span>
                 </div>
                 <c:if test="${loginVisible}">
-                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4 pull-right">
+                    <div class="col-xs-12 col-sm-5 col-md-6 col-lg-4 pull-right">
                         <div id="business-login-container" ng-hide="isLoggedIn">
                             <span id="business-login-span">För verksamhetsstatistik: </span>
                             <button class="btn" data-ng-click="loginClicked('${applicationScope.loginUrl}')"
