@@ -72,7 +72,7 @@ public final class SjukskrivningsgradQuery {
             for (int i: GRAD) {
                 list.add(new KonField(counters.get(i).getCountFemale(), counters.get(i).getCountMale()));
             }
-            rows.add(new KonDataRow(ReportUtil.toPeriod(sjukfallGroup.getRange().getFrom()), list));
+            rows.add(new KonDataRow(ReportUtil.toDiagramPeriod(sjukfallGroup.getRange().getFrom()), list));
         }
 
         return new SjukskrivningsgradResponse(GRAD_LABEL, rows);

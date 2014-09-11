@@ -75,7 +75,7 @@ public class DiagnosgruppQuery {
             for (Icd10.Kapitel k: kapitel) {
                 list.add(new KonField(female[k.toInt()], male[k.toInt()]));
             }
-            rows.add(new KonDataRow(ReportUtil.toPeriod(sjukfallGroup.getRange().getFrom()), list));
+            rows.add(new KonDataRow(ReportUtil.toDiagramPeriod(sjukfallGroup.getRange().getFrom()), list));
         }
         List<Avsnitt> avsnitt = new ArrayList<>(kapitel.size());
         for (Icd10.Kapitel k: kapitel) {
@@ -108,7 +108,7 @@ public class DiagnosgruppQuery {
             for (Icd10.Avsnitt avsnitt: kapitel.getAvsnitt()) {
                 list.add(new KonField(female[avsnitt.toInt()], male[avsnitt.toInt()]));
             }
-            rows.add(new KonDataRow(ReportUtil.toPeriod(sjukfallGroup.getRange().getFrom()), list));
+            rows.add(new KonDataRow(ReportUtil.toDiagramPeriod(sjukfallGroup.getRange().getFrom()), list));
         }
 
 
