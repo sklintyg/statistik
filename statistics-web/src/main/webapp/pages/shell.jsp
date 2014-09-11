@@ -226,14 +226,18 @@
             <div class="span9">
                 <div id="incompletedata" class="alert alert-block dontprint">
                     <button type="button" class="close" data-dismiss="alert">&times;</button>
-                    <h2>Datainsamling pågår</h2>
-                    <p>
-                    Den procentuella förändringen av antal sjukfall är baserad på data som inhämtats under en sexmånaders-period.
-                    Vissa värden blir dock missvisande eftersom Statistiktjänsten ännu inte samlat data under så lång tid.
-                    </p>
-                    <p>
-                    Vissa intyg kommer inte med i Statistiktjänsten. Upp till tio procent av insamlade intyg innehåller felaktigheter. Se <a ng-href="/#/om/vanligafragor">Vanliga frågor och svar</a>.
-                    </p>
+                    <h2>Tjänsten är under uppbyggnad</h2>
+                    <ul>
+                    	<li>
+                    		För närvarande pågår datainsamling så vissa värden kan bli missvisande. Den procentuella förändringen av antal sjukfall baseras på data som inhämtats under en sexmånaders-period men Statistiktjänsten har ännu inte samlat data under så lång tid i alla landsting.
+                    	</li>
+                    	<li>
+                    		Vissa intyg kommer inte med i Statistiktjänsten. Upp till tio procent av insamlade intyg innehåller felaktigheter. Se <a ng-href="/#/om/vanligafragor">Vanliga frågor och svar</a>.
+                    	</li>
+                    	<li>
+                    		Alla landsting är ännu inte helt anslutna till tjänsten elektroniskt Läkarintyg. För dessa landsting saknas därför information helt eller delvis.
+                    	</li>
+                    </ul>
                 </div>
 				<%-- data-ng-view that holds dynamic content managed by angular app --%>
 				<div id="view" data-ng-view></div>
