@@ -173,8 +173,8 @@ app.statisticsApp.run([ '$rootScope', '$route', function ($rootScope, $route) {
     $rootScope.page_title = 'Titel';
     $rootScope.pageName = '';
     $rootScope.$on('$routeChangeSuccess', function () {
-        $rootScope.pageName = $route.current.$$route.title;
         if ($route.current.$$route) {
+            $rootScope.pageName = $route.current.$$route.title;
             $rootScope.page_title = $route.current.$$route.title + ' | Statistiktjänsten';
         }
     });

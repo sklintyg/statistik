@@ -15,3 +15,4 @@ app.statisticsApp.controller('CasesPerSexCtrl', app.columnChartDetailsViewCtrl);
 app.statisticsApp.controller('BusinessOverviewCtrl', app.businessOverviewCtrl);
 app.statisticsApp.controller('BusinessLandingPageCtrl', app.businessLandingPageCtrl);
 app.statisticsApp.controller('LongSickLeavesCtrl', app.singleLineChartCtrl);
+app.statisticsApp.controller('FilterCtrl', app.filterCtrl);

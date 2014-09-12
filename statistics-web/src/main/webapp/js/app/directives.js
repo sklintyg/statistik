@@ -100,8 +100,8 @@ app.statisticsApp.directive('multiselectDropdown', function() {
         });
 
         // Watch for any changes from outside the directive and refresh
-        scope.$watch(attributes.ngModel, function () {
-            element.multiselect('refresh');
-        });
+        //scope.$watch(attributes.ngModel, function () {
+        //    element.multiselect('refresh');
+        //});
     }
 });

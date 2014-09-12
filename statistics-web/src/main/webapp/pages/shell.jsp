@@ -401,6 +401,57 @@
                     </div>
                 </div>
             </div>
+
+            <div class="container-fluid" data-ng-controller="FilterCtrl">
+                <script type="text/ng-template"  id="submenu.html">
+                    <span class="glyphicon" ng-class="{glyphiconMinusSign: !item.hideSiblings, glyphiconPlusSign: item.hideSiblings}"></span>
+                    <span ng-click="item.hideSiblings = !item.hideSiblings" class="ellipsis-text">{{item.name}}</span>
+                    <input type="checkbox" ng-checked="item.allSelected" intermediate="item.someSelected" ng-click="itemClicked(item, itemRoot)"/>
+                    <ul ng-init="item.hideSiblings=true" ng-show="item.subs && !item.hideSiblings" style="list-style-type: none;">
+                        <li data-ng-init="depth=depth+1" data-ng-repeat="item in item.subs">
+                            <span ng-include="'submenu.html'" ng-hide="item.hide" ng-class="{leaf: !item.subs}" class="depth{{depth}}"></span>
+                        </li>
+                    </ul>
+                </script>
+		        <div class="row-fluid">
+			        <div class="row-fluid filter-level" id="first-level-filter">
+                        <div class="span3">
+                            <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
+                                Show categories
+                            </button>
+					        <label class="pull-left">{{selectedLeavesCount(enhets)}} valda kategorier</label>
+                            <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                            <h3 id="myModalLabel">Gör ditt urval</h3>
+                                        </div>
+                                        <div class="modal-body">
+                                            <ul class="" style="list-style-type: none;">
+                                                <li>
+                                                    <input type="text" ng-model="multiMenuFilter" class="multiMenuFilterSearch" ng-change="filterMenuItems(enhets.subs, multiMenuFilter)" placeholder="Sök i strukturen"/>
+                                                </li>
+                                                <li>
+                                                    <input type="checkbox" ng-checked="enhets.allSelected" class="multiMenuSelectAll" ng-click="itemClicked(enhets, enhets)">Markera alla</input>
+                                                </li>
+                                                <li data-ng-repeat="item in enhets.subs" class="multiMenuSelectKapitel" ng-init="itemRoot=enhets; depth=0">
+                                                    <span ng-include="'submenu.html'" ng-hide="item.hide" class="depth0"></span>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <label class="pull-left">Kategorier: {{selectedLeavesCount(enhets)}} Avsnitt: {{selectedAvsnittCount(enhets)}} Kapitel: {{selectedKapitelCount(enhets)}}</label>
+                                            <button class="btn btn-success" data-dismiss="modal" aria-hidden="true">Spara och stäng</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+			        </div>
+	            </div>  
+            </div>
+
             <div class="col-xs-12 col-sm-9 col-md-9 col-lg-9">
                 <%-- data-ng-view that holds dynamic content managed by angular app --%>
                 <div id="view" data-ng-view></div>
@@ -436,6 +487,7 @@
 <script type="text/javascript" src="<c:url value='/js/app/controller/pageCtrl.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/controller/loginCtrl.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/controller/navigationMenuCtrl.js'/>"></script>
+<script type="text/javascript" src="<c:url value='/js/app/controller/filterCtrl.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/controllers.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/directives.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/filters.js'/>"></script>
