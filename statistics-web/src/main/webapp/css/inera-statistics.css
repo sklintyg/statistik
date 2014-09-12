@@ -1628,9 +1628,9 @@ a.has-collapse {
 .margin-bottom {
 	margin-bottom: 15px !important;
 }
-.margin_top_button_group {
+/*.margin_top_button_group {
 	margin-top: 25px;
-}
+}*/
 .dropdown-menu>li>a {
 	max-width: 490px;
 	overflow: hidden;

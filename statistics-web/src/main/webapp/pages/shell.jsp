@@ -69,48 +69,53 @@
 
 <!-- Navbar
 ================================================== -->
-<div class="navbar navbar-inverse navbar-fixed-top dontprint">
-    <div class="navbar-inner">
-        <div class="container-fluid">
-            <div class="row" id="navigation-container">
-                <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 pull-left" style="width: auto !important;">
-                    <div class="headerbox-logo">
-                        <a href="<c:url value='/'/>">
-                            <img alt="Till startsidan" src="<c:url value='/img/statistiktjansten-logotype.png'/>"/>
-                        </a>
-                    </div>
-                </div>
-                <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2 pull-left" style="margin-top: 3px; max-width: 190px;">
-                    <span>Statistiktjänst för ordinerad sjukskrivning</span>
-                </div>
-                <c:if test="${loginVisible}">
-                    <div class="col-xs-12 col-sm-5 col-md-6 col-lg-4 pull-right">
-                        <div id="business-login-container" ng-hide="isLoggedIn">
-                            <span id="business-login-span">För verksamhetsstatistik: </span>
-                            <button class="btn" data-ng-click="loginClicked('${applicationScope.loginUrl}')"
-                                    type="button" id="business-login-btn" value="Logga in">Logga in
-                            </button>
-                        </div>
-                        <div id="business-logged-in-user-container" style="position: absolute; right: 0; margin-right: 25px;" ng-show="isLoggedIn">
-                            <!-- div class="pull-right">
-								<img id="business-me-icon" alt="Bild på inloggad användare" src="<c:url value='/img/avatar.png'/>"/>
-							</div -->
-                            <div class="header-box-user-profile pull-right">
-								<span class="user-logout pull-right">
-									<a href="/saml/logout">Logga ut</a>
-								</span>
-                                <span class="user-name pull-right" style="margin-right: 10px;"
-                                      data-ng-bind="userNameWithAccess"></span>
-                                <br>
-                                <span>{{verksamhetName}}</span>
-                            </div>
-                        </div>
-                    </div>
-                </c:if>
-            </div>
-        </div>
-    </div>
+<div class="container">
+	<div class="row">
+		<div class="navbar navbar-inverse navbar-fixed-top dontprint">
+		    <div class="navbar-inner">
+		        <div class="container-fluid">
+		            <div class="row" id="navigation-container">
+		                <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 pull-left" style="width: auto !important;">
+		                    <div class="headerbox-logo">
+		                        <a href="<c:url value='/'/>">
+		                            <img alt="Till startsidan" src="<c:url value='/img/statistiktjansten-logotype.png'/>"/>
+		                        </a>
+		                    </div>
+		                </div>
+		                <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2 pull-left" style="margin-top: 3px; max-width: 190px;">
+		                    <span>Statistiktjänst för ordinerad sjukskrivning</span>
+		                </div>
+		                <c:if test="${loginVisible}">
+		                    <div class="col-xs-12 col-sm-5 col-md-6 col-lg-4 pull-right">
+		                        <div id="business-login-container" ng-hide="isLoggedIn">
+		                            <span id="business-login-span">För verksamhetsstatistik: </span>
+		                            <button class="btn" data-ng-click="loginClicked('${applicationScope.loginUrl}')"
+		                                    type="button" id="business-login-btn" value="Logga in">Logga in
+		                            </button>
+		                        </div>
+		                        <div id="business-logged-in-user-container" style="position: absolute; right: 0; margin-right: 25px;" ng-show="isLoggedIn">
+		                            <!-- div class="pull-right">
+										<img id="business-me-icon" alt="Bild på inloggad användare" src="<c:url value='/img/avatar.png'/>"/>
+									</div -->
+		                            <div class="header-box-user-profile pull-right">
+										<span class="user-logout pull-right">
+											<a href="/saml/logout">Logga ut</a>
+										</span>
+		                                <span class="user-name pull-right" style="margin-right: 10px;"
+		                                      data-ng-bind="userNameWithAccess"></span>
+		                                <br>
+		                                <span>{{verksamhetName}}</span>
+		                            </div>
+		                        </div>
+		                    </div>
+		                </c:if>
+		            </div>
+		        </div>
+		    </div>
+		</div>
+	</div>
 </div>
+
 
 <div id="wrap">
     <div class="container-fluid">

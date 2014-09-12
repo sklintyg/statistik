@@ -51,16 +51,24 @@
 
 	<!-- Start detailsOptions if any -->
     <div class="row dontprint" style="width: auto !important; margin-top: 10px;">
-   		<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 pull-left" data-ng-show="showDetailsOptions" style="width: auto; float: left;">
-       		<label class="dropdown-label" for="selectDiagnosticChapter">Välj annat diagnoskapitel:</label>
+    	
+    </div>
+    <div class="row dontprint">
+    	<span class="col-xs-12 col-sm-12 col-md-12 col-lg-12" data-ng-show="showDetailsOptions">
+    		<label class="dropdown-label" for="selectDiagnosticChapter">Välj annat diagnoskapitel:</label>
+    	</span>
+   		<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 pull-left" data-ng-show="showDetailsOptions">
        		<div class="btn-group margin-bottom"  id="detailsOptionsDropdown">
-           		<a class="btn dropdown-toggle" id="selectDiagnosticChapter" data-toggle="dropdown" href="#" style="width: 280px; overflow: hidden; text-overflow: ellipsis;"><span class="caret pull-right"></span><span>{{selectedDetailsOption.id}} {{selectedDetailsOption.name}}</span></a>
-	        	<ul class="dropdown-menu left overflow-menu-options">
+           		<a class="btn dropdown-toggle" id="selectDiagnosticChapter" data-toggle="dropdown" href="#" style="overflow: hidden; text-overflow: ellipsis; max-width: 350px;">
+           			<span class="caret pull-right" style="margin-top: 9px;"></span>
+           			<span>{{selectedDetailsOption.id}} {{selectedDetailsOption.name}}</span>
+           		</a>
+           		<ul class="dropdown-menu left overflow-menu-options">
 	               <li data-ng-repeat="detailsOption in detailsOptions"><a href="{{detailsOption.url}}">{{detailsOption.id}} {{detailsOption.name}}</a></li>
 	        	</ul>
          	</div>
        	</div>
-       	<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 pull-right" data-ng-class="{margin_top_button_group: showDetailsOptions}" style="width: auto; margin-bottom: 10px;">
+       	<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 pull-right" data-ng-class="{margin_top_button_group: showDetailsOptions}" style="margin-bottom: 10px;">
 			<!-- PRINT BUTTON GROUP -->
 			<div class="btn-group statistics-btn-group">
 			  <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
