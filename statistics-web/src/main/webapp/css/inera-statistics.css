@@ -836,6 +836,8 @@ div.accordion-body.in.collapse > div.accordion-heading a.accordion-toggle{
 	font-size: 12px;
 	line-height: 20px;
 	text-align: left;
+	max-width: 480px;
+	min-width: 250px;
 }
 .overflow-menu-options {
 	max-height: 255px;
@@ -1675,3 +1677,18 @@ input[type="radio"], input[type="checkbox"] {
 #readMore { height: auto; }
 
 #chart-footnote-text.in.collapse { overflow: visible; position: relative; display: inline-block; }
+
+.highcharts-container {
+    overflow: visible !important;
+}
+.tooltip {
+    position: relative;
+    z-index: 50;
+    border: 2px solid rgb(0, 108, 169);
+    border-radius: 5px;
+    background-color: #ffffff;
+    padding: 5px;
+    font-size: 9pt;
+}
+
+.highcharts-container svg { overflow: visible !important; }
