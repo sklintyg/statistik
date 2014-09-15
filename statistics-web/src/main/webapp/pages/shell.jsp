@@ -419,7 +419,7 @@
                             <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
                                 Show categories
                             </button>
-					        <label class="pull-left">{{selectedLeavesCount(enhets)}} valda kategorier</label>
+					        <label class="pull-left">{{selectedLeavesCount(geography)}} valda kategorier</label>
                             <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                                 <div class="modal-dialog">
                                     <div class="modal-content">
@@ -430,18 +430,18 @@
                                         <div class="modal-body">
                                             <ul class="" style="list-style-type: none;">
                                                 <li>
-                                                    <input type="text" ng-model="multiMenuFilter" class="multiMenuFilterSearch" ng-change="filterMenuItems(enhets.subs, multiMenuFilter)" placeholder="Sök i strukturen"/>
+                                                    <input type="text" ng-model="multiMenuFilter" class="multiMenuFilterSearch" ng-change="filterMenuItems(geography.subs, multiMenuFilter)" placeholder="Sök i strukturen"/>
                                                 </li>
                                                 <li>
-                                                    <input type="checkbox" ng-checked="enhets.allSelected" class="multiMenuSelectAll" ng-click="itemClicked(enhets, enhets)">Markera alla</input>
+                                                    <input type="checkbox" ng-checked="geography.allSelected" class="multiMenuSelectAll" ng-click="itemClicked(geography, geography)">Markera alla</input>
                                                 </li>
-                                                <li data-ng-repeat="item in enhets.subs" class="multiMenuSelectKapitel" ng-init="itemRoot=enhets; depth=0">
+                                                <li data-ng-repeat="item in geography.subs" class="multiMenuSelectKapitel" ng-init="itemRoot=geography; depth=0">
                                                     <span ng-include="'submenu.html'" ng-hide="item.hide" class="depth0"></span>
                                                 </li>
                                             </ul>
                                         </div>
                                         <div class="modal-footer">
-                                            <label class="pull-left">Kategorier: {{selectedLeavesCount(enhets)}} Avsnitt: {{selectedAvsnittCount(enhets)}} Kapitel: {{selectedKapitelCount(enhets)}}</label>
+                                            <label class="pull-left">Kategorier: {{selectedLeavesCount(geography)}} Avsnitt: {{selectedAvsnittCount(geography)}} Kapitel: {{selectedKapitelCount(geography)}}</label>
                                             <button class="btn btn-success" data-dismiss="modal" aria-hidden="true">Spara och stäng</button>
                                         </div>
                                     </div>
