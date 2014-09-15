@@ -1,8 +1,8 @@
- 'use strict';
+'use strict';
 
- app.filterCtrl = function ($scope) {
+app.filterCtrl = function ($scope) {
 
-    $scope.itemClicked = function(item, itemRoot) {
+    $scope.itemClicked = function (item, itemRoot) {
         if (item.allSelected) {
             deselectAll(item);
         } else if (item.someSelected) {
@@ -12,42 +12,42 @@
         }
         updateState(itemRoot);
     }
-    
+
     function deselectAll(item) {
-		if (!item.hide) {
-			item.allSelected = false;
-			item.someSelected = false;
-			if (item.subs) {
-				for(var i = 0; i < item.subs.length; i++) {
-					deselectAll(item.subs[i]);
-            	}
-        	}
-		}
+        if (!item.hide) {
+            item.allSelected = false;
+            item.someSelected = false;
+            if (item.subs) {
+                for (var i = 0; i < item.subs.length; i++) {
+                    deselectAll(item.subs[i]);
+                }
+            }
+        }
     }
-    
+
     function selectAll(item) {
-		if (!item.hide) {
-	        item.allSelected = true;
-	        item.someSelected = false;
-	        if (item.subs) {
-	            for(var i = 0; i < item.subs.length; i++) {
-	                selectAll(item.subs[i]);
-	            }
-	        }
-		}
+        if (!item.hide) {
+            item.allSelected = true;
+            item.someSelected = false;
+            if (item.subs) {
+                for (var i = 0; i < item.subs.length; i++) {
+                    selectAll(item.subs[i]);
+                }
+            }
+        }
     }
-    
+
     function updateState(item) {
         if (item.subs) {
             var someSelected = false;
             var allSelected = true;
-            for(var i = 0; i < item.subs.length; i++) {
+            for (var i = 0; i < item.subs.length; i++) {
                 var currItem = item.subs[i];
-				if (!currItem.hide) {
-	                updateState(currItem);
-	                someSelected = someSelected || currItem.someSelected || currItem.allSelected;
-	                allSelected = allSelected && currItem.allSelected;
-				}
+                if (!currItem.hide) {
+                    updateState(currItem);
+                    someSelected = someSelected || currItem.someSelected || currItem.allSelected;
+                    allSelected = allSelected && currItem.allSelected;
+                }
             }
             if (allSelected) {
                 item.allSelected = true;
@@ -58,7 +58,7 @@
             }
         }
     }
-    
+
     function isItemHidden(item, searchText) {
         if (item.name.toLowerCase().indexOf(searchText) >= 0) {
             return false;
@@ -66,30 +66,30 @@
         if (!item.subs) {
             return true;
         }
-        for(var i = 0; i < item.subs.length; i++) {
+        for (var i = 0; i < item.subs.length; i++) {
             if (!isItemHidden(item.subs[i], searchText)) {
                 return false;
             }
         }
         return true;
     }
-    
-    $scope.filterMenuItems = function(items, text) {
+
+    $scope.filterMenuItems = function (items, text) {
         var searchText = text.toLowerCase();
-        var mappingFunc = function(item) {
+        var mappingFunc = function (item) {
             if (item.subs) {
                 ControllerCommons.map(item.subs, mappingFunc);
             }
-            item.hide =  isItemHidden(item, searchText);
+            item.hide = isItemHidden(item, searchText);
         };
         ControllerCommons.map(items, mappingFunc);
         ControllerCommons.map(items, updateState);
     }
-    
-    $scope.selectedLeavesCount = function(node) {
+
+    $scope.selectedLeavesCount = function (node) {
         var c = 0;
         if (node.subs) {
-            ControllerCommons.map(node.subs, function(item) {
+            ControllerCommons.map(node.subs, function (item) {
                 c += $scope.selectedLeavesCount(item);
             });
         } else {
@@ -98,25 +98,27 @@
         return c;
     };
 
-    $scope.selectedKapitelCount = function(node) {
+    $scope.selectedKapitelCount = function (node) {
         var c = 0;
-        ControllerCommons.map(node.subs, function(item) {
+        ControllerCommons.map(node.subs, function (item) {
             if ($scope.selectedLeavesCount(item) > 0) {
-            	c++;
-            };
+                c++;
+            }
+            ;
         });
         return c;
     };
 
-    $scope.selectedAvsnittCount = function(node) {
+    $scope.selectedAvsnittCount = function (node) {
         var c = 0;
-        ControllerCommons.map(node.subs, function(item) {
-	        ControllerCommons.map(item.subs, function(item) {
-				if ($scope.selectedLeavesCount(item) > 0) {
-					c++;
-				};
-			});
+        ControllerCommons.map(node.subs, function (item) {
+            ControllerCommons.map(item.subs, function (item) {
+                if ($scope.selectedLeavesCount(item) > 0) {
+                    c++;
+                }
+                ;
+            });
         });
         return c;
     };
- };
+};
