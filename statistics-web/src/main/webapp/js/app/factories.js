@@ -15,9 +15,9 @@ app.statisticsApp.factory('statisticsData', function ($http) {
         });
     };
 
-    var makeRequestVerksamhet = function (restFunctionName, verksamhetId, params, successCallback, failureCallback) {
-        var paramString = getParamString(params)
-        $http.get("api/verksamhet/" + verksamhetId + "/" + restFunctionName + paramString).success(function (result) {
+    var makeRequestVerksamhet = function (restFunctionName, verksamhetId, enhetsIds, successCallback, failureCallback) {
+        var enhetsIdString = getParamString(enhetsIds)
+        $http.get("api/verksamhet/" + verksamhetId + "/" + restFunctionName + enhetsIdString).success(function (result) {
             try {
                 successCallback(result);
             } catch (e) {

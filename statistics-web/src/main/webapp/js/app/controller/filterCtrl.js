@@ -121,4 +121,25 @@ app.filterCtrl = function ($scope) {
         });
         return c;
     };
+
+    var collectSelectedIds = function (node) {
+        var returnList = [];
+        if (node.subs) {
+            if (node.allSelected || node.someSelected ) {
+                ControllerCommons.map(node.subs, function (item) {
+                    returnList = Array.concat(returnList, $scope.collectSelectedIds(item));
+                });
+            }
+        } else {
+            if (node.allSelected) {
+                returnList = [node.id];
+            }
+        }
+        return returnList;
+    }
+
+    $scope.makeUnitSelection = function () {
+        $rootScope.selectedBusinesses = collectSelectedIds($scope.geography);
+    }
+
 };

@@ -30,7 +30,7 @@
         return {name: "Okänd verksamhet"}; //Selected verksamhet not found
     };
 
-     var populateCountyAndMunicipalityLists = function(businesses) {
+     var populateCountyAndMunicipalityLists = function (businesses) {
          $scope.geography = { subs: [] };
 
          for (var i = 0; i < businesses.length; i++) {
