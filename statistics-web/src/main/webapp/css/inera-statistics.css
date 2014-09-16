@@ -1011,7 +1011,7 @@ ul.dropdown-menu li a:hover {
 	border-bottom-color: #ffffff;
 }
 span.caret {
-	border-top-color: #ffffff !important;
+	border-top-color: #ffffff;
 	margin-left: 10px !important;
 }
 #push, #footer {
@@ -1695,8 +1695,14 @@ input[type="radio"], input[type="checkbox"] {
 	margin-right: -15px !important;
 }
 .navbar-collapse-navigation { max-height: none !important; }
+.mobile-menu-caret { margin-top: 8px; border-top-color: #000 !important; }
+.subMenuItem, .subMenuItem a { max-width: 100% !important; }
 .dropdown-menu>.active>a, .dropdown-menu>.active>a:hover, .dropdown-menu>.active>a:focus {
-	background-color: #e7e7e7;
+	background-image: -webkit-linear-gradient(top,#e7e7e7 0,#e7e7e7 100%) !important;
+	background-image: linear-gradient(to bottom,#e7e7e7 0,#e7e7e7 100%) !important;
+	background-repeat: repeat-x;
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#e7e7e7', endColorstr='#e7e7e7', GradientType=0) !important;
+	background-color: #e7e7e7 !important;
 }
 .error-image {
 	width: inherit;
