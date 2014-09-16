@@ -69,9 +69,9 @@
 
 <!-- Navbar
 ================================================== -->
-<div class="container">
+<div class="container-fluid">
 	<div class="row">
-		<div class="navbar navbar-inverse navbar-fixed-top dontprint">
+		<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 navbar dontprint">
 		    <div class="navbar-inner">
 		        <div class="container-fluid">
 		            <div class="row" id="navigation-container">
@@ -82,11 +82,11 @@
 		                        </a>
 		                    </div>
 		                </div>
-		                <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2 pull-left" style="margin-top: 3px; max-width: 190px;">
+		                <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2 pull-left" style="margin-top: 3px;">
 		                    <span>Statistiktjänst för ordinerad sjukskrivning</span>
 		                </div>
 		                <c:if test="${loginVisible}">
-		                    <div class="col-xs-12 col-sm-5 col-md-6 col-lg-4 pull-right">
+		                    <div class="hidden-xs col-sm-5 col-md-6 col-lg-4 pull-right">
 		                        <div id="business-login-container" ng-hide="isLoggedIn">
 		                            <span id="business-login-span">För verksamhetsstatistik: </span>
 		                            <button class="btn" data-ng-click="loginClicked('${applicationScope.loginUrl}')"
@@ -94,9 +94,6 @@
 		                            </button>
 		                        </div>
 		                        <div id="business-logged-in-user-container" style="position: absolute; right: 0; margin-right: 25px;" ng-show="isLoggedIn">
-		                            <!-- div class="pull-right">
-										<img id="business-me-icon" alt="Bild på inloggad användare" src="<c:url value='/img/avatar.png'/>"/>
-									</div -->
 		                            <div class="header-box-user-profile pull-right">
 										<span class="user-logout pull-right">
 											<a href="/saml/logout">Logga ut</a>
@@ -124,8 +121,111 @@
         <div class="row">
             <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 bs-docs-sidebar dontprint" data-ng-controller="NavigationMenuCtrl">
                 <h1 class="hidden-header">Sidans huvudnavigering</h1>
-
-                <div class="statistics accordion" id="statistics-menu-accordion">
+				<!-- MOBILE NAVIGATION START -->
+				<nav class="navbar navbar-default hidden-sm hidden-md hidden-lg" role="navigation">
+				  <div class="container-fluid">
+				    <!-- Brand and toggle get grouped for better mobile display -->
+				    <div class="navbar-header navbar-header-margins">
+				      <span class="navbar-brand pull-left">Meny</span>
+				      <button type="button" class="navbar-toggle collapsed pull-left" data-toggle="collapse in" data-target="#navbar-mobile-menu-national" ng-click="isCollapsed = !isCollapsed">
+				        <span class="icon-bar"></span>
+				        <span class="icon-bar"></span>
+				        <span class="icon-bar"></span>
+				      </button>
+				      <c:if test="${loginVisible}">
+		                    <div class="col-xs-6 hidden-sm hidden-md hidden-lg pull-right">
+		                        <div id="business-login-container" class="pull-right" ng-hide="isLoggedIn" style="position: absolute; right: 0; margin-right: 10px; top: 5px;">
+		                            <a class="btn" data-ng-click="loginClicked('${applicationScope.loginUrl}')"
+		                                    type="button" id="business-login-btn" value="Logga in">Logga in
+		                            </a>
+		                        </div>
+		                        <div id="business-logged-in-user-container" style="position: absolute; right: 0; margin-right: 10px; top: 5px;" ng-show="isLoggedIn">
+		                            <div class="header-box-user-profile pull-right">
+		                                <span class="user-name pull-right" data-ng-bind="userNameWithAccess"></span>
+		                                <br/>
+		                                <span class="user-logout pull-right">
+											<a href="/saml/logout">Logga ut</a>
+										</span>
+		                            </div>
+		                        </div>
+		                    </div>
+		                </c:if>
+				    </div>
+					<!-- Start mobile navigation menu -->
+				    <div class="collapse navbar-collapse-navigation" id="navbar-mobile-menu-national" collapse="!isCollapsed">
+				      <ul class="nav navbar-nav">
+				      	<!-- National mobile menu -->
+					    <li class="dropdown-national">
+			          		<a href="#" class="dropdown-toggle" data-toggle="dropdown-national">Nationell statistik<span class="caret pull-right"></span></a>
+			          		<ul class="dropdown-menu" role="menu">  	
+								<li><a data-ng-href="#/nationell/oversikt" id="navOverviewLink" ctrlname="NationalOverviewCtrl" role="menuitem" ng-click="isCollapsed = !isCollapsed" navigationaware>Översikt</a></li>
+						        <li><a data-ng-href="#/nationell/sjukfallPerManad" id="navCasesPerMonthLink" ctrlname="NationalCasesPerMonthCtrl" role="menuitem" ng-click="isCollapsed = !isCollapsed" navigationaware>Sjukfall, totalt</a></li>
+						        <li class="dropdown-national-dia-chapter">
+						          <a href="#" class="dropdown-toggle" data-toggle="dropdown-national-dia-chapter">Diagnosgrupp och enskilt diagnoskapitel <span class="caret pull-right"></span></a>
+						          <ul class="dropdown-menu" role="menu">
+						            <li><a data-ng-href="#/nationell/diagnosgrupp" id="navDiagnosisGroupsLink" ctrlname="NationalDiagnosgruppCtrl" role="menuitem" ng-click="isCollapsed = !isCollapsed" navigationaware>Diagnosgrupp</a></li>
+						            <li><a data-ng-href="#/nationell/diagnosavsnitt" id="navDiagnosisSubGroupsLink" ctrlname="NationalDiagnosavsnittCtrl" role="menuitem" ng-click="isCollapsed = !isCollapsed" navigationaware>Enskilt diagnoskapitel</a></li>
+						          </ul>
+						        </li>
+						        <li><a data-ng-href="#/nationell/aldersgrupper" id="navAgeGroupsLink" ctrlname="NationalAgeGroupCtrl" role="menuitem" ng-click="isCollapsed = !isCollapsed" navigationaware>Åldersgrupp</a></li>
+						        <li><a data-ng-href="#/nationell/sjukskrivningsgrad" id="navSickLeaveDegreeLink" ctrlname="NationalDegreeOfSickLeaveCtrl" role="menuitem" ng-click="isCollapsed = !isCollapsed" navigationaware>Sjukskrivningsgrad</a></li>
+		                        <li><a data-ng-href="#/nationell/sjukskrivningslangd" id="navSickLeaveLengthLink" ctrlname="NationalSickLeaveLengthCtrl" role="menuitem" ng-click="isCollapsed = !isCollapsed" navigationaware>Sjukskrivningslängd</a></li>
+						      	<li class="dropdown-national-lan-kon">
+						          <a href="#" class="dropdown-toggle" data-toggle="dropdown-national-lan-kon">Län och andel sjukfall per kön<span class="caret pull-right"></span></a>
+						          <ul class="dropdown-menu" role="menu">
+						            <li><a data-ng-href="#/nationell/diagnosgrupp" id="navDiagnosisGroupsLink" ctrlname="NationalDiagnosgruppCtrl" role="menuitem" ng-click="isCollapsed = !isCollapsed" navigationaware>Diagnosgrupp</a></li>
+						            <li><a data-ng-href="#/nationell/diagnosavsnitt" id="navDiagnosisSubGroupsLink" ctrlname="NationalDiagnosavsnittCtrl" role="menuitem" ng-click="isCollapsed = !isCollapsed" navigationaware>Enskilt diagnoskapitel</a></li>
+						          </ul>
+						        </li>
+						     </ul>
+						</li>
+						<!-- Business mobile menu -->
+					    <li class="dropdown-business">
+			          		<a href="#" class="dropdown-toggle" data-toggle="dropdown-business">Verksamhetsstatistik<span class="caret pull-right"></span></a>
+			          		<ul class="dropdown-menu" role="menu">   
+				        		<li><a data-ng-href="#/verksamhet/{{businessId}}/oversikt" ctrlname="BusinessOverviewCtrl" role="menuitem" ng-click="isCollapsed = !isCollapsed" navigationaware>Översikt</a></li>
+		                        <li><a data-ng-href="#/verksamhet/{{businessId}}/sjukfallPerManad" id="navBusinessCasesPerMonthLink" ctrlname="VerksamhetCasesPerMonthCtrl" role="menuitem" ng-click="isCollapsed = !isCollapsed" navigationaware>Sjukfall, totalt</a></li>
+								<li class="dropdown-business-dia-chapter">
+						          <a href="#" class="dropdown-toggle" data-toggle="dropdown-business-dia-chapter">Diagnosgrupp och enskilt diagnoskapitel <span class="caret pull-right"></span></a>
+						          <ul class="dropdown-menu" role="menu">
+						            <li><a data-ng-href="#/verksamhet/{{businessId}}/diagnosgrupp" id="navBusinessDiagnosisGroupsLink" ctrlname="VerksamhetDiagnosgruppCtrl" role="menuitem" ng-click="isCollapsed = !isCollapsed" navigationaware>Diagnosgrupp</a></li>
+						            <li><a data-ng-href="#/verksamhet/{{businessId}}/diagnosavsnitt" id="navBusinessDiagnosisSubGroupsLink" ctrlname="VerksamhetDiagnosavsnittCtrl" role="menuitem" ng-click="isCollapsed = !isCollapsed" navigationaware>Enskilt diagnoskapitel</a></li>
+						          </ul>
+						        </li>
+						        <li class="dropdown-business-agegroup-ongoing">
+						          <a href="#" class="dropdown-toggle" data-toggle="dropdown-business-agegroup-ongoing">Per åldersgrupp eller pågående sjukfall<span class="caret pull-right"></span></a>
+						          <ul class="dropdown-menu" role="menu">
+						            <li><a data-ng-href="#/verksamhet/{{businessId}}/aldersgrupper" id="navBusinessAgeGroupsLink" ctrlname="VerksamhetAgeGroupCtrl" role="menuitem" ng-click="isCollapsed = !isCollapsed" navigationaware>Åldersgrupp</a></li>
+						          	<li><a data-ng-href="#/verksamhet/{{businessId}}/aldersgrupperpagaende" id="navBusinessOngoingAndCompletedLink" ctrlname="VerksamhetAgeGroupCurrentCtrl" role="menuitem" ng-click="isCollapsed = !isCollapsed" navigationaware>Pågående</a></li>
+						          </ul>
+						        </li>
+						        <li><a data-ng-href="#/verksamhet/{{businessId}}/sjukskrivningsgrad" id="navBusinessSickLeaveDegreeLink" ctrlname="VerksamhetDegreeOfSickLeaveCtrl" role="menuitem" ng-click="isCollapsed = !isCollapsed" navigationaware>Sjukskrivningsgrad</a></li>
+						        <li class="dropdown-business-sicklength-ongoing-morethan90">
+						          <a href="#" class="dropdown-toggle" data-toggle="dropdown-business-sicklength-ongoing-morethan90">Sjukskrivningslängd, pågående eller mer än 90 dagar<span class="caret pull-right"></span></a>
+						          <ul class="dropdown-menu" role="menu">
+						          	<li><a data-ng-href="#/verksamhet/{{businessId}}/sjukskrivningslangd" id="navBusinessSickLeaveLengthLink" ctrlname="VerksamhetSickLeaveLengthCtrl" role="menuitem" ng-click="isCollapsed = !isCollapsed" navigationaware>Sjukskrivningslängd</a></li>
+						          	<li><a data-ng-href="#/verksamhet/{{businessId}}/sjukskrivningslangdpagaende" id="navBusinessOngoingAndCompletedSickLeaveLink" ctrlname="VerksamhetSickLeaveLengthCurrentCtrl" role="menuitem" ng-click="isCollapsed = !isCollapsed" navigationaware>Pågående</a></li>
+		                            <li><a data-ng-href="#/verksamhet/{{businessId}}/langasjukskrivningar" id="navBusinessMoreNinetyDaysSickLeaveLink" ctrlname="VerksamhetLongSickLeavesCtrl" role="menuitem" ng-click="isCollapsed = !isCollapsed" navigationaware>Mer än 90 dagar</a></li>
+						          </ul>
+						        </li>
+						     </ul>
+						  </li>
+						  <!-- About mobile menu -->
+					    <li class="dropdown-about-statistic">
+			          		<a href="#" class="dropdown-toggle" data-toggle="dropdown-about-statistic">Om tjänsten<span class="caret pull-right"></span></a>
+			          		<ul class="dropdown-menu" role="menu">   
+				        		<li><a class="first-item-in-menu" data-ng-href="#/om/tjansten" ctrlname="AboutServiceCtrl" role="menuitem" ng-click="isCollapsed = !isCollapsed" navigationaware>Allmänt om tjänsten</a></li>
+                                <li><a data-ng-href="#/om/inloggning" ctrlname="AboutLoginCtrl" role="menuitem" ng-click="isCollapsed = !isCollapsed" navigationaware>Inloggning och behörighet</a></li>
+                                <li><a data-ng-href="#/om/vanligafragor" ctrlname="AboutFaqCtrl" role="menuitem" ng-click="isCollapsed = !isCollapsed" navigationaware>Vanliga frågor och svar</a></li>
+                                <li><a data-ng-href="#/om/kontakt" ctrlname="AboutContactCtrl" role="menuitem" ng-click="isCollapsed = !isCollapsed" navigationaware>Kontakt till support</a></li>    
+						    </ul>
+						  </li>
+				      </ul>
+				    </div><!-- /.navbar-collapse -->
+				  </div><!-- /.container-fluid -->
+				</nav>
+				<!-- MOBILE NAVIGATION END -->
+                <div class="statistics accordion hidden-xs" id="statistics-menu-accordion">
                     <div class="accordion-group" id="national-statistics-menu-group">
                         <h2 class="hidden-header">Navigering för nationell statistik</h2>
                         <!-- NATIONAL STATISTIC MENU -->

@@ -23,7 +23,7 @@
 
 body {
   position: relative;
-  padding-top: 10px;
+  padding-top: 0px;
 }
 
 /* Code in headings */
@@ -1379,7 +1379,6 @@ form.bs-docs-example {
 		float: none;
 		text-align: center;
 		margin: 0 auto;
-		width: 100% !important;
 	}
 	#navigation-container div.row-fluid div.span4 {
 		width: 100%;
