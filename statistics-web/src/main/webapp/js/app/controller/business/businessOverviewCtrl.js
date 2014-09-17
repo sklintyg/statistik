@@ -181,6 +181,11 @@
         return donutData;
     }
 
+     $scope.$on('filterChange', function(event, data) {
+         console.debug("businessOverviewCtrl filterChange" + data);
+         statisticsData.getBusinessOverview($routeParams.verksamhetId, $scope.bFilters.selectedBusinesses, dataReceived, function() { $scope.dataLoadingError = true; });
+     });
+
     statisticsData.getBusinessOverview($routeParams.verksamhetId, $scope.bFilters.selectedBusinesses, dataReceived, function() { $scope.dataLoadingError = true; });
     $scope.spinnerText = "Laddar information...";
     $scope.doneLoading = false;

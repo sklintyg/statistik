@@ -127,8 +127,15 @@
             }
         }, 1);
     };
-    
-    if (isVerksamhet){
+
+     $scope.$on('filterChange', function(event, data) {
+         console.debug("columnChartDetailsViewCtrl filterChange" + data);
+         if (isVerksamhet) {
+             statisticsData[config.dataFetcherVerksamhet]($routeParams.verksamhetId, $scope.bFilters.selectedBusinesses, populatePageWithData, function() { $scope.dataLoadingError = true; });
+         }
+     });
+
+     if (isVerksamhet){
         $scope.exportTableUrl = config.exportTableUrlVerksamhet($routeParams.verksamhetId);
         statisticsData[config.dataFetcherVerksamhet]($routeParams.verksamhetId, $scope.bFilters.selectedBusinesses, populatePageWithData, function() { $scope.dataLoadingError = true; });
     } else {

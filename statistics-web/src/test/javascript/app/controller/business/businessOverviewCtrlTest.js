@@ -21,8 +21,10 @@ describe("Tests for business overview controller", function() {
 
     it("should forward to missing data page if totalt number of cases is 0", function() {
         var $scope = {};
+        $scope.bFilters = {};
+        $scope.$on = function (eventName, func) {};
         var $timeout = {};
-        var statisticsData = {getBusinessOverview: function(id, cb, err){cb({casesPerMonth: {totalCases: 0}});}};
+        var statisticsData = {getBusinessOverview: function(id, pr, cb, err){cb({casesPerMonth: {totalCases: 0}});}};
         var $routeParams = {};
         var $window = {location: {href: "https://www.statistik.com/verksamhet/verksamhet1/oversikt"}};
         app.businessOverviewCtrl($scope, $timeout, statisticsData, $routeParams, $window);
@@ -31,8 +33,10 @@ describe("Tests for business overview controller", function() {
 
     it("should not forward to missing data page if totalt number of cases is more than 0", function() {
         var $scope = {};
+        $scope.bFilters = {};
+        $scope.$on = function (eventName, func) {};
         var $timeout = function(){};
-        var statisticsData = {getBusinessOverview: function(id, cb, err){cb({casesPerMonth: {totalCases: 1}});}};
+        var statisticsData = {getBusinessOverview: function(id, pr, cb, err){cb({casesPerMonth: {totalCases: 1}});}};
         var $routeParams = {};
         var $window = {location: {href: "https://www.statistik.com/verksamhet/verksamhet1/oversikt"}};
         app.businessOverviewCtrl($scope, $timeout, statisticsData, $routeParams, $window);

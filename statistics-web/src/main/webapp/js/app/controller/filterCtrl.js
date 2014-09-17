@@ -140,7 +140,7 @@ app.filterCtrl = function ($scope, $rootScope, statisticsData) {
 
     $scope.makeUnitSelection = function () {
         $scope.bFilters.selectedBusinesses = $scope.collectSelectedIds($scope.geography);
-        $rootScope.broadcast()
+        $rootScope.$broadcast('filterChange', $scope.bFilters.selectedBusinesses.length);
     }
 
 };
