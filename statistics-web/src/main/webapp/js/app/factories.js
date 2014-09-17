@@ -35,7 +35,7 @@ app.statisticsApp.factory('statisticsData', function ($http) {
         var returnString = ""
         if (params) {
             returnString += "?ids="
-            returnString += params.map(function(it) { return it.id }).join()
+            returnString += params.join()
         }
         return returnString
     }

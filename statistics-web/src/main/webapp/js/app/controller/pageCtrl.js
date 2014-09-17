@@ -30,7 +30,7 @@
         return {name: "Okänd verksamhet"}; //Selected verksamhet not found
     };
 
-     var populateCountyAndMunicipalityLists = function (businesses) {
+     var populateGeography = function (businesses) {
          $scope.geography = { subs: [] };
 
          for (var i = 0; i < businesses.length; i++) {
@@ -85,7 +85,9 @@
             
             statisticsData.getLoginInfo(function(loginInfo){
                 $scope.businesses = loginInfo.businesses;
-                populateCountyAndMunicipalityLists(loginInfo.businesses)
+                if (! $scope.hasOwnProperty("geography")) {
+                    populateGeography(loginInfo.businesses)
+                }
                 var v = getSelectedVerksamhet($scope.businessId, loginInfo.businesses);
                 $scope.verksamhetName = loginInfo.vgView ? (v.vardgivarName + (loginInfo.fullVgAccess ? "(alla enheter)": "(vissa enheter)")): v.name;
                 $scope.userName = loginInfo.name;

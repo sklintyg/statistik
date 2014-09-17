@@ -130,7 +130,7 @@
     
     if (isVerksamhet){
         $scope.exportTableUrl = config.exportTableUrlVerksamhet($routeParams.verksamhetId);
-        statisticsData[config.dataFetcherVerksamhet]($routeParams.verksamhetId, $scope.selectedBusinesses, populatePageWithData, function() { $scope.dataLoadingError = true; });
+        statisticsData[config.dataFetcherVerksamhet]($routeParams.verksamhetId, $scope.bFilters.selectedBusinesses, populatePageWithData, function() { $scope.dataLoadingError = true; });
     } else {
         $scope.exportTableUrl = config.exportTableUrl;
         statisticsData[config.dataFetcher](populatePageWithData, function() { $scope.dataLoadingError = true; });

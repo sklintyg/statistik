@@ -1,6 +1,6 @@
 'use strict';
 
-app.filterCtrl = function ($scope) {
+app.filterCtrl = function ($scope, $rootScope, statisticsData) {
 
     $scope.itemClicked = function (item, itemRoot) {
         if (item.allSelected) {
@@ -122,7 +122,7 @@ app.filterCtrl = function ($scope) {
         return c;
     };
 
-    var collectSelectedIds = function (node) {
+    $scope.collectSelectedIds = function (node) {
         var returnList = [];
         if (node.subs) {
             if (node.allSelected || node.someSelected ) {
@@ -139,7 +139,8 @@ app.filterCtrl = function ($scope) {
     }
 
     $scope.makeUnitSelection = function () {
-        $rootScope.selectedBusinesses = collectSelectedIds($scope.geography);
+        $scope.bFilters.selectedBusinesses = $scope.collectSelectedIds($scope.geography);
+        $rootScope.broadcast()
     }
 
 };

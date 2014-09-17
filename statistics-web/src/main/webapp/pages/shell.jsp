@@ -447,6 +447,9 @@
                                     </div>
                                 </div>
                             </div>
+                            <button class="btn btn-primary btn-lg" data-ng-click="makeUnitSelection()">
+                                Renew search
+                            </button>
                         </div>
 			        </div>
 	            </div>  

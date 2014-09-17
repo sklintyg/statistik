@@ -167,7 +167,8 @@ app.statisticsApp.run([ '$rootScope', '$route', function ($rootScope, $route) {
         lang: { thousandsSep: ' ' }
     });
 
-    $rootScope.selectedBusinesses = '';
+    $rootScope.bFilters = {};
+    $rootScope.bFilters.selectedBusinesses = [];
 
     // Update page title
     $rootScope.page_title = 'Titel';
