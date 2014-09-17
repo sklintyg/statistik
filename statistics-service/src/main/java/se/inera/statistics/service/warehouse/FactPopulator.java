@@ -72,14 +72,26 @@ public class FactPopulator {
     }
 
     private int extractKategori(String diagnoskategori) {
-        return icd10.getKategori(diagnoskategori).toInt();
+        Icd10.Kategori kategori = icd10.getKategori(diagnoskategori);
+        if (kategori == null) {
+            return icd10.getKategori("Ö00").toInt();
+        }
+        return kategori.toInt();
     }
 
     private int extractAvsnitt(String diagnosavsnitt) {
-        return icd10.getAvsnitt(diagnosavsnitt).toInt();
+        Icd10.Avsnitt avsnitt = icd10.getAvsnitt(diagnosavsnitt);
+        if (avsnitt == null) {
+            return icd10.getAvsnitt("Ö00-Ö00").toInt();
+        }
+        return avsnitt.toInt();
     }
 
     private int extractKapitel(String diagnoskapitel) {
-        return icd10.getKapitel(diagnoskapitel).toInt();
+        Icd10.Kapitel kapitel = icd10.getKapitel(diagnoskapitel);
+        if (kapitel == null) {
+            return icd10.getKapitel("Ö00-Ö00").toInt();
+        }
+        return kapitel.toInt();
     }
 }

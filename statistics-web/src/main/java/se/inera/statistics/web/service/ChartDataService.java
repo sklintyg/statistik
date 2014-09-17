@@ -82,7 +82,7 @@ public class ChartDataService {
 
     private volatile SimpleDetailsData numberOfCasesPerMonth;
     private volatile DualSexStatisticsData diagnosgrupper;
-    private volatile Map<String, DualSexStatisticsData> diagnoskapitel = new HashMap();
+    private volatile Map<String, DualSexStatisticsData> diagnoskapitel = new HashMap<>();
     private volatile OverviewData overview;
     private volatile AgeGroupsData aldersgrupper;
     private volatile DualSexStatisticsData sjukskrivningsgrad;
@@ -209,7 +209,10 @@ public class ChartDataService {
         LOG.info("Calling getKapitel");
         List<Kapitel> kapitel = new ArrayList<>();
         for (Icd10.Kapitel k: icd10.getKapitel()) {
-            kapitel.add(new Kapitel(k.getId(), k.getName()));
+            String s =  k.getId();
+            if (s.charAt(0) <= 'Z') {
+                kapitel.add(new Kapitel(s, k.getName()));
+            }
         }
         return kapitel;
     }

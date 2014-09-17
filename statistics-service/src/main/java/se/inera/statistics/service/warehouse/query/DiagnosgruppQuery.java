@@ -26,7 +26,7 @@ import java.util.Map;
 @Component
 public class DiagnosgruppQuery {
 
-    public static final int MAX_DIAGNOS_ID = 2700;
+    public static final int MAX_DIAGNOS_ID = 15000;
 
     @Autowired
     private Icd10 icd10;

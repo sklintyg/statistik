@@ -44,7 +44,11 @@ public class Avsnitt implements Comparable<Avsnitt> {
     }
 
     public String asString() {
-        return id + " " + name;
+        if (id.charAt(0) <= 'Z') {
+            return id + " " + name;
+        } else {
+            return name;
+        }
     }
 
     @Override
