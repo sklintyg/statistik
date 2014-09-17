@@ -154,6 +154,7 @@
 					<!-- Start mobile navigation menu -->
 				    <div class="collapse navbar-collapse-navigation" id="navbar-mobile-menu-national" collapse="!isCollapsed">
 				      <ul class="nav navbar-nav">
+				      	<li class="divider"></li>
 				      	<!-- National mobile menu -->
 					    <li class="dropdown-national">
 			          		<a class="mobileMenuHeaderItem" data-toggle="collapse in" data-target="#national-menu" ng-click="isNationalCollapsed = !isNationalCollapsed">Nationell statistik<span class="caret pull-right mobile-menu-caret"></span></a>
@@ -179,6 +180,7 @@
 						        </li>
 						     </ul>
 						</li>
+						<li class="divider"></li>
 	
 						<!-- Business mobile menu -->
 					    <li class="dropdown-business">
@@ -211,6 +213,7 @@
 						        </li>
 						     </ul>
 						  </li>
+						  <li class="divider"></li>
 						  <!-- About mobile menu -->
 					    <li class="dropdown-about-statistic">
 			          		<a class="mobileMenuHeaderItem" data-toggle="collapse in" data-target="#about-menu" ng-click="isAboutCollapsed = !isAboutCollapsed">Om tjänsten<span class="caret pull-right mobile-menu-caret"></span></a>

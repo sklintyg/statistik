@@ -1728,3 +1728,9 @@ li.subMenuItem.active .active-menu-item { display: block;  }
 	max-width: 100%;
 	height: auto;
 }
+.divider {
+	height: 1px;
+	margin: 9px 0;
+	overflow: hidden;
+	background-color: #e5e5e5;
+}
