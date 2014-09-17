@@ -39,7 +39,8 @@ public class WidelineConverter {
         int kon = DocumentHelper.getKon(intyg).indexOf('k');
         int alder = DocumentHelper.getAge(intyg);
 
-        Kategori kategori = icd10.findKategori(DocumentHelper.getDiagnos(intyg));
+        String diagnos = DocumentHelper.getDiagnos(intyg);
+        Kategori kategori = "unknown".equals(diagnos) ? null : icd10.findKategori(diagnos);
 
         String diagnoskapitel;
         String diagnosavsnitt;
@@ -48,6 +49,10 @@ public class WidelineConverter {
             diagnoskapitel = kategori.getAvsnitt().getKapitel().getId();
             diagnosavsnitt = kategori.getAvsnitt().getId();
             diagnoskategori = kategori.getId();
+        } else if ("unknown".equals(diagnos)) {
+            diagnoskapitel = null;
+            diagnosavsnitt = null;
+            diagnoskategori = "unknown";
         } else {
             diagnoskapitel = null;
             diagnosavsnitt = null;

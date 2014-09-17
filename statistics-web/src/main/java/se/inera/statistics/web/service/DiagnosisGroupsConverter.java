@@ -71,6 +71,7 @@ public class DiagnosisGroupsConverter {
         diagnosisGroups.put(OVRIGT_CHART_GROUP, Arrays.asList("P00-P96", "Q00-Q99", "S00-T98", "U00-U99", "V01-Y98"));
         diagnosisGroups.put("R00-R99 Symtomdiagnoser", Arrays.asList("R00-R99"));
         diagnosisGroups.put("Z00-Z99 Faktorer av betydelse för hälsotillståndet och för kontakter med hälso- och sjukvården", Arrays.asList("Z00-Z99"));
+        diagnosisGroups.put("Utan giltig ICD-10 kod", Arrays.asList("Ö00-Ö00"));
         return diagnosisGroups;
     }
 

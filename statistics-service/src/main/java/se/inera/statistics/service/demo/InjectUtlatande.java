@@ -56,6 +56,7 @@ public class InjectUtlatande {
     private static final List<String> DIAGNOSER = new ArrayList<>();
     private static final List<String> VARDENHETER = Arrays.asList("verksamhet1", "verksamhet2", "IFV1239877878-103D");
     private static final List<Integer> ARBETSFORMAGOR = Arrays.asList(0, 25, 50, 75);
+    public static final float FEL_DIAGNOS_THRESHOLD = 0.1f;
 
     private static Random random = new Random(SEED);
 
@@ -121,6 +122,9 @@ public class InjectUtlatande {
         String vardenhet = random(VARDENHETER);
 
         String diagnos = random(getDiagnoser());
+        if (random.nextFloat() < FEL_DIAGNOS_THRESHOLD) {
+            diagnos = "unknown";
+        }
 
         int arbetsformaga = random(ARBETSFORMAGOR);
         return builder.build(patientId, start, end, vardenhet, "vg-" + vardenhet, diagnos, arbetsformaga);

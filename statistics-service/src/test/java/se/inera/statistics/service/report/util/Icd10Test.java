@@ -27,7 +27,7 @@ public class Icd10Test {
 
     @Test
     public void hasKapitel() {
-        assertEquals(22, icd10.getKapitel().size());
+        assertEquals(23, icd10.getKapitel().size());
     }
 
     @Test
@@ -42,6 +42,13 @@ public class Icd10Test {
         Kapitel kapitel = icd10.getKapitel().get(21);
         assertEquals("Z00-Z99", kapitel.getId());
         assertEquals("Faktorer av betydelse för hälsotillståndet och för kontakter med hälso- och sjukvården", kapitel.getName());
+    }
+
+    @Test
+    public void unknownKapitelHasCorrectNameAndRange() {
+        Kapitel kapitel = icd10.getKapitel().get(22);
+        assertEquals("Ö00-Ö00", kapitel.getId());
+        assertEquals("Utan giltig ICD-10 kod", kapitel.getName());
     }
 
     @Test
