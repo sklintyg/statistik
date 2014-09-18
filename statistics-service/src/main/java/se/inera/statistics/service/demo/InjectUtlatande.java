@@ -20,6 +20,10 @@
 package se.inera.statistics.service.demo;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Multimap;
 import org.joda.time.LocalDate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,10 +39,7 @@ import se.inera.statistics.service.warehouse.WarehouseManager;
 import javax.annotation.PostConstruct;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 public class InjectUtlatande {
     private static final int SEED = 1234;
@@ -53,12 +54,22 @@ public class InjectUtlatande {
 
     private static final LocalDate BASE = new LocalDate().minusMonths(MONTHS);
 
+    private static final List<String> VG = Arrays.asList("vg1", "vg2", "vg3", "vg4", "vg5");
+
     private static final List<String> DIAGNOSER = new ArrayList<>();
-    private static final List<String> VARDENHETER = Arrays.asList("verksamhet1", "verksamhet2", "IFV1239877878-103D");
+    private static final Multimap<String, String> VARDGIVARE = ArrayListMultimap.create();
     private static final List<Integer> ARBETSFORMAGOR = Arrays.asList(0, 25, 50, 75);
     public static final float FEL_DIAGNOS_THRESHOLD = 0.1f;
 
     private static Random random = new Random(SEED);
+
+    static {
+        for (String vardgivare : VG) {
+            for (int i = 1; i <= random.nextInt(20); i++) {
+                VARDGIVARE.put(vardgivare, vardgivare + "-enhet-" + i);
+            }
+        }
+    }
 
     @Autowired
     private CommonPersistence persistence;
@@ -77,9 +88,9 @@ public class InjectUtlatande {
 
     private List<String> getDiagnoser() {
         if (DIAGNOSER.isEmpty()) {
-            for (Icd10.Kapitel kapitel: icd10.getKapitel()) {
+            for (Icd10.Kapitel kapitel : icd10.getKapitel()) {
                 for (Icd10.Avsnitt avsnitt : kapitel.getAvsnitt()) {
-                    for (Icd10.Kategori kategori: avsnitt.getKategori()) {
+                    for (Icd10.Kategori kategori : avsnitt.getKategori()) {
                         DIAGNOSER.add(kategori.getId());
                     }
                 }
@@ -119,7 +130,9 @@ public class InjectUtlatande {
         LocalDate end = random.nextFloat() < LONG_PERIOD_FRACTION ? start.plusDays(random.nextInt(LONG_PERIOD_DAYS) + 7) : start.plusDays(random.nextInt(SHORT_PERIOD_DAYS) + 7);
         // CHECKSTYLE:ON MagicNumber
 
-        String vardenhet = random(VARDENHETER);
+        String vardgivare = random(VG);
+
+        String vardenhet = random(Lists.newArrayList((VARDGIVARE.get(vardgivare))));
 
         String diagnos = random(getDiagnoser());
         if (random.nextFloat() < FEL_DIAGNOS_THRESHOLD) {
@@ -127,7 +140,7 @@ public class InjectUtlatande {
         }
 
         int arbetsformaga = random(ARBETSFORMAGOR);
-        return builder.build(patientId, start, end, vardenhet, "vg-" + vardenhet, diagnos, arbetsformaga);
+        return builder.build(patientId, start, end, vardenhet, vardgivare, diagnos, arbetsformaga);
     }
 
     private static <T> T random(List<T> list) {

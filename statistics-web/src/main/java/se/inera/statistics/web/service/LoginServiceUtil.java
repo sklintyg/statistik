@@ -86,8 +86,6 @@ public class LoginServiceUtil {
                 kommunNamn = kommun.getNamn(kommunId);
             }
             returnList.add(toVerksamhet(vardEnhet, lansId, lansNamn, kommunId, kommunNamn));
-
-
         }
 
         return returnList;

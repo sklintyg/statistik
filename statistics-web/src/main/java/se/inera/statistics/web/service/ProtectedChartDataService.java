@@ -471,8 +471,7 @@ public class ProtectedChartDataService {
     SjukfallUtil.StartFilter getFilter(HttpServletRequest request, Verksamhet verksamhet, List<String> enhetsIDs) {
         LoginInfo info = loginServiceUtil.getLoginInfo(request);
         SjukfallUtil.StartFilter filter;
-        // TODO: we must distinguish b/w THE RIGHT to see all units and THE WANT to see all units
-        if (info.isFullVgAccess()) {
+        if (info.isFullVgAccess() && enhetsIDs == null) {
             filter = SjukfallUtil.ALL_ENHETER;
         } else {
             List<String> enheter = new ArrayList<>();

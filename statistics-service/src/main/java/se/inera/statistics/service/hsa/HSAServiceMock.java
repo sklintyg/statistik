@@ -25,7 +25,6 @@ import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.google.common.base.Predicate;
 import com.google.common.collect.FluentIterable;
-import com.google.common.collect.ImmutableList;
 import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
@@ -129,7 +128,7 @@ public class HSAServiceMock implements HSAService {
     }
 
     private String createKommun(HSAKey key, final String lan) {
-        int keyIndex = key != null && key.getVardgivareId() != null ? key.getVardgivareId().hashCode() & POSITIVE_MASK : 0;
+        int keyIndex = key != null && key.getEnhetId() != null ? key.getEnhetId().hashCode() & POSITIVE_MASK : 0;
         List<String> relevantKommuns = FluentIterable.from(KOMMUN_CODES).filter(new Predicate<String>() {
             @Override
             public boolean apply(String s) {
