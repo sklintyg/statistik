@@ -49,6 +49,7 @@
     <link href="<c:url value='/css/helperclasses.css'/>" rel="stylesheet" media="not print">
     <link href="<c:url value='/css/print.css'/>" rel="stylesheet" media="print">
     <link href="<c:url value='/css/bootstrap-multiselect.css'/>" rel="stylesheet" media="not print">
+    <link href="<c:url value='/css/filter.css'/>" rel="stylesheet" media="not print">
 
     <link href="<c:url value='/bootstrap/3.1.1/css/bootstrap.min.css'/>" rel="stylesheet" media="not print">
     <link href="<c:url value='/bootstrap/3.1.1/css/bootstrap-theme.min.css'/>" rel="stylesheet" media="not print">
@@ -116,6 +117,16 @@
 
 <div id="wrap">
     <div class="container-fluid">
+    <script type="text/ng-template"  id="submenu.html">
+        <span class="glyphicon" ng-class="{glyphiconMinusSign: !item.hideSiblings, glyphiconPlusSign: item.hideSiblings}"></span>
+        <span ng-click="item.hideSiblings = !item.hideSiblings" class="ellipsis-text">{{item.name}}</span>
+        <input type="checkbox" ng-checked="item.allSelected" intermediate="item.someSelected" ng-click="itemClicked(item, itemRoot)"/>
+        <ul ng-init="item.hideSiblings=true" ng-show="item.subs && !item.hideSiblings" style="list-style-type: none;">
+            <li data-ng-init="depth=depth+1" data-ng-repeat="item in item.subs">
+                <span ng-include="'submenu.html'" ng-hide="item.hide" ng-class="{leaf: !item.subs}" class="depth{{depth}}"></span>
+            </li>
+        </ul>
+    </script>
         <!-- Docs nav
         ================================================== -->
         <div class="row">
@@ -402,19 +413,30 @@
                 </div>
             </div>
 
-            <div class="container-fluid" data-ng-controller="FilterCtrl">
-                <script type="text/ng-template"  id="submenu.html">
-                    <span class="glyphicon" ng-class="{glyphiconMinusSign: !item.hideSiblings, glyphiconPlusSign: item.hideSiblings}"></span>
-                    <span ng-click="item.hideSiblings = !item.hideSiblings" class="ellipsis-text">{{item.name}}</span>
-                    <input type="checkbox" ng-checked="item.allSelected" intermediate="item.someSelected" ng-click="itemClicked(item, itemRoot)"/>
-                    <ul ng-init="item.hideSiblings=true" ng-show="item.subs && !item.hideSiblings" style="list-style-type: none;">
-                        <li data-ng-init="depth=depth+1" data-ng-repeat="item in item.subs">
-                            <span ng-include="'submenu.html'" ng-hide="item.hide" ng-class="{leaf: !item.subs}" class="depth{{depth}}"></span>
-                        </li>
-                    </ul>
-                </script>
-		        <div class="row-fluid">
+            <div class="span9" data-ng-controller="FilterCtrl">
+                <div class="row-fluid">
+                    <div class="span12">
+                        <div id="statistics-filter-container" class="collapse" ng-class="{in: showFilter, collapse: !showFilter}">
 			        <div class="row-fluid filter-level" id="first-level-filter">
+                        <div class="span3">
+                            <label>Typ av verksamhet:</label>
+                            <!-- Select for business-type: -->
+                            <select class="multiselect" id="select-business-type" multiple="multiple">
+                                <optgroup label="Verksamhetstyper">
+                                    <option value="1">Barn och ungdom (3)</option>
+                                    <option value="2">Laboratorie (10)</option>
+                                    <option value="3">Medicin (32)</option>
+                                    <option value="4">Opererande (71)</option>
+                                    <option value="5">Primärvård (13)</option>
+                                    <option value="6">Psykiatri (20)</option>
+                                    <option value="7">Radiologi (0)</option>
+                                    <option value="8">Tandvård (0)</option>
+                                    <option value="9">Vård, omsorg, omvårdnad (0)</option>
+                                    <option value="10">Övrig medicin (0)</option>
+                                    <option value="11">Okänd verksamhetstyp (14)</option>
+                                </optgroup>
+                            </select>
+                        </div>
                         <div class="span3">
                             <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
                                 Show categories
@@ -452,13 +474,18 @@
                             </button>
                         </div>
 			        </div>
-	            </div>  
+	            </div>
+                        <button id="show-hide-filter-btn" type="button" class="btn btn-small pull-right" ng-click="showFilter = !showFilter" >
+                            Filter
+                        </button>
             </div>
+                    </div>
 
             <div class="col-xs-12 col-sm-9 col-md-9 col-lg-9">
                 <%-- data-ng-view that holds dynamic content managed by angular app --%>
                 <div id="view" data-ng-view></div>
             </div>
+        </div>
         </div>
     </div>
 </div>
