@@ -439,9 +439,9 @@
                         </div>
                         <div class="span3">
                             <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
-                                Show categories
+                                Välj geografiskt område
                             </button>
-					        <label class="pull-left">{{selectedLeavesCount(geography)}} valda kategorier</label>
+					        <label>{{selectedLeavesCount(geography)}} valda enheter</label>
                             <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                                 <div class="modal-dialog">
                                     <div class="modal-content">
@@ -463,16 +463,16 @@
                                             </ul>
                                         </div>
                                         <div class="modal-footer">
-                                            <label class="pull-left">Kategorier: {{selectedLeavesCount(geography)}} Avsnitt: {{selectedAvsnittCount(geography)}} Kapitel: {{selectedKapitelCount(geography)}}</label>
+                                            <label class="pull-left">Enheter: {{selectedLeavesCount(geography)}} Kommuner: {{selectedAvsnittCount(geography)}} Län: {{selectedKapitelCount(geography)}}</label>
                                             <button class="btn btn-success" data-dismiss="modal" aria-hidden="true">Spara och stäng</button>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <button class="btn btn-primary btn-lg" data-ng-click="makeUnitSelection()">
-                                Renew search
-                            </button>
                         </div>
+                        <button class="btn btn-primary btn-lg" data-ng-click="makeUnitSelection()">
+                            Uppdatera data
+                        </button>
 			        </div>
 	            </div>
                         <button id="show-hide-filter-btn" type="button" class="btn btn-small pull-right" ng-click="showFilter = !showFilter" >
