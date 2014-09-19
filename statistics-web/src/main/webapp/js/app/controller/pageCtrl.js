@@ -19,7 +19,7 @@
 
 'use strict';
 
- app.pageCtrl = function ($scope, $rootScope, $window, $cookies, statisticsData) {
+ app.pageCtrl = function ($scope, $rootScope, $window, $cookies, statisticsData, businessFilter) {
 
     var getSelectedVerksamhet = function(selectedVerksamhetId, verksamhets) {
         for (var i = 0; i < verksamhets.length; i++) {
@@ -29,36 +29,6 @@
         }
         return {name: "Okänd verksamhet"}; //Selected verksamhet not found
     };
-
-     var populateGeography = function (businesses) {
-         $scope.geography = { subs: [] };
-
-         for (var i = 0; i < businesses.length; i++) {
-             var business = businesses[i];
-
-             var county = $.grep( $scope.geography.subs, function(element) {
-                 return element.id === business.lansId;
-             });
-             if (county.length === 0) {
-                 county = { id: business.lansId, name: business.lansName, subs: [] };
-                 $scope.geography.subs.push(county);
-             } else {
-                 county = county[0];
-             }
-
-             var munip = $.grep( county.subs, function(element) {
-                 return element.id === business.kommunId;
-             });
-             if (munip.length === 0) {
-                 munip = { id: business.kommunId, name: business.kommunName, subs: [] };
-                 county.subs.push(munip);
-             } else {
-                 munip = munip[0];
-             }
-
-             munip.subs.push(business);
-         }
-     };
 
      $rootScope.$on('$routeChangeSuccess', function(angularEvent, next, current) {
         var verksamhetId = next.params.verksamhetId;
@@ -85,9 +55,7 @@
             
             statisticsData.getLoginInfo(function(loginInfo){
                 $scope.businesses = loginInfo.businesses;
-                if (! $scope.hasOwnProperty("geography")) {
-                    populateGeography(loginInfo.businesses)
-                }
+                businessFilter.populateGeography(loginInfo.businesses);
                 var v = getSelectedVerksamhet($scope.businessId, loginInfo.businesses);
                 $scope.verksamhetName = loginInfo.vgView ? (v.vardgivarName + (loginInfo.fullVgAccess ? "(alla enheter)": "(vissa enheter)")): v.name;
                 $scope.userName = loginInfo.name;
@@ -95,7 +63,8 @@
                 $scope.isFullVgAccess = loginInfo.fullVgAccess;
                 $scope.userNameWithAccess = loginInfo.name;
             }, function() { $scope.dataLoadingError = true; });
-
+        } else {
+            businessFilter.resetGeography();
         }
     });
     

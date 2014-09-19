@@ -71,7 +71,7 @@
      return conf;
  };
 
- app.columnChartDetailsViewCtrl = function ($scope, $routeParams, $timeout, $window, statisticsData, config) {
+ app.columnChartDetailsViewCtrl = function ($scope, $routeParams, $timeout, $window, statisticsData, businessFilter, config) {
     var isVerksamhet = $routeParams.verksamhetId ? true : false;
     var chart = {};
 
@@ -131,13 +131,13 @@
      $scope.$on('filterChange', function(event, data) {
          console.debug("columnChartDetailsViewCtrl filterChange" + data);
          if (isVerksamhet) {
-             statisticsData[config.dataFetcherVerksamhet]($routeParams.verksamhetId, $scope.bFilters.selectedBusinesses, populatePageWithData, function() { $scope.dataLoadingError = true; });
+             statisticsData[config.dataFetcherVerksamhet]($routeParams.verksamhetId, businessFilter.list(), populatePageWithData, function() { $scope.dataLoadingError = true; });
          }
      });
 
      if (isVerksamhet){
         $scope.exportTableUrl = config.exportTableUrlVerksamhet($routeParams.verksamhetId);
-        statisticsData[config.dataFetcherVerksamhet]($routeParams.verksamhetId, $scope.bFilters.selectedBusinesses, populatePageWithData, function() { $scope.dataLoadingError = true; });
+        statisticsData[config.dataFetcherVerksamhet]($routeParams.verksamhetId, businessFilter.list(), populatePageWithData, function() { $scope.dataLoadingError = true; });
     } else {
         $scope.exportTableUrl = config.exportTableUrl;
         statisticsData[config.dataFetcher](populatePageWithData, function() { $scope.dataLoadingError = true; });

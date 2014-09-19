@@ -76,7 +76,7 @@ app.degreeOfSickLeaveConfig = function () {
     return conf;
 };
 
-app.doubleAreaChartsCtrl = function ($scope, $routeParams, $window, $timeout, statisticsData, config) {
+app.doubleAreaChartsCtrl = function ($scope, $routeParams, $window, $timeout, statisticsData, businessFilter, config) {
     var that = this;
     var chart1 = {};
     var chart2 = {};
@@ -254,7 +254,7 @@ app.doubleAreaChartsCtrl = function ($scope, $routeParams, $window, $timeout, st
     $scope.$on('filterChange', function(event, data) {
         console.debug("doubleAreaChartsCtrl filterChange" + data);
         if (isVerksamhet) {
-            statisticsData[config.dataFetcherVerksamhet]($routeParams.verksamhetId, $scope.bFilters.selectedBusinesses, populatePageWithData, function () {
+            statisticsData[config.dataFetcherVerksamhet]($routeParams.verksamhetId, businessFilter.list(), populatePageWithData, function () {
                 $scope.dataLoadingError = true;
             }, $routeParams.groupId);
         }
@@ -262,7 +262,7 @@ app.doubleAreaChartsCtrl = function ($scope, $routeParams, $window, $timeout, st
 
     if (isVerksamhet) {
         $scope.exportTableUrl = config.exportTableUrlVerksamhet($routeParams.verksamhetId, $routeParams.groupId);
-        statisticsData[config.dataFetcherVerksamhet]($routeParams.verksamhetId, $scope.bFilters.selectedBusinesses, populatePageWithData, function () {
+        statisticsData[config.dataFetcherVerksamhet]($routeParams.verksamhetId, businessFilter.list(), populatePageWithData, function () {
             $scope.dataLoadingError = true;
         }, $routeParams.groupId);
     } else {

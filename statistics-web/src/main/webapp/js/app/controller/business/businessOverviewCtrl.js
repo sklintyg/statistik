@@ -22,7 +22,7 @@
  if (!app){
      var app = {};
  }
- app.businessOverviewCtrl = function ($scope, $timeout, statisticsData, $routeParams, $window) {
+ app.businessOverviewCtrl = function ($scope, $timeout, statisticsData, businessFilter, $routeParams, $window) {
 
     $scope.baseUrl = "#/verksamhet/" + $routeParams.verksamhetId;  
      
@@ -183,10 +183,10 @@
 
      $scope.$on('filterChange', function(event, data) {
          console.debug("businessOverviewCtrl filterChange" + data);
-         statisticsData.getBusinessOverview($routeParams.verksamhetId, $scope.bFilters.selectedBusinesses, dataReceived, function() { $scope.dataLoadingError = true; });
+         statisticsData.getBusinessOverview($routeParams.verksamhetId, businessFilter.list(), dataReceived, function() { $scope.dataLoadingError = true; });
      });
 
-    statisticsData.getBusinessOverview($routeParams.verksamhetId, $scope.bFilters.selectedBusinesses, dataReceived, function() { $scope.dataLoadingError = true; });
+    statisticsData.getBusinessOverview($routeParams.verksamhetId, businessFilter.list(), dataReceived, function() { $scope.dataLoadingError = true; });
     $scope.spinnerText = "Laddar information...";
     $scope.doneLoading = false;
     $scope.dataLoadingError = false;

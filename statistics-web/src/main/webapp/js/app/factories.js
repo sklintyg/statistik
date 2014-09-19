@@ -126,3 +126,60 @@ app.statisticsApp.factory('statisticsData', function ($http) {
 
     return factory;
 });
+
+app.statisticsApp.factory('businessFilter', function() {
+    var selectedBusinesses = [];
+    var businessService = {};
+    var geography = { subs: [] };
+    var geographyInitialized = false;
+
+    businessService.setSelectedBusinesses = function (newItems) {
+        selectedBusinesses = newItems;
+    };
+
+    businessService.list = function () {
+        return selectedBusinesses;
+    };
+
+    businessService.populateGeography = function (businesses) {
+        if (!geographyInitialized) {
+            for (var i = 0; i < businesses.length; i++) {
+                var business = businesses[i];
+
+                var county = $.grep(geography.subs, function (element) {
+                    return element.id === business.lansId;
+                });
+                if (county.length === 0) {
+                    county = { id: business.lansId, name: business.lansName, subs: [] };
+                    geography.subs.push(county);
+                } else {
+                    county = county[0];
+                }
+
+                var munip = $.grep(county.subs, function (element) {
+                    return element.id === business.kommunId;
+                });
+                if (munip.length === 0) {
+                    munip = { id: business.kommunId, name: business.kommunName, subs: [] };
+                    county.subs.push(munip);
+                } else {
+                    munip = munip[0];
+                }
+
+                munip.subs.push(business);
+            }
+            geographyInitialized = true;
+        }
+    };
+
+    businessService.getGeography = function () {
+        return geography;
+    }
+
+    businessService.resetGeography = function () {
+        geography = { subs: [] };
+        geographyInitialized = false;
+    }
+
+    return businessService;
+});
