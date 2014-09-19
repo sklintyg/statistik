@@ -19,9 +19,11 @@
 
 package se.inera.statistics.web.service;
 
+import com.google.common.base.Function;
 import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
+import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.stereotype.Component;
@@ -38,6 +40,9 @@ import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.google.common.collect.Iterables.tryFind;
+import static com.google.common.collect.Lists.transform;
 
 @Component
 public class LoginServiceUtil {
@@ -56,10 +61,8 @@ public class LoginServiceUtil {
             if (token.getDetails() instanceof User) {
                 User realUser = (User) token.getDetails();
                 List<Enhet> enhetsList = vardgivareManager.getEnhets(realUser.getValdVardenhet().getVardgivarId());
+                Verksamhet defaultVerksamhet = toVerksamhet(realUser.getValdVardenhet(), enhetsList);
                 List<Verksamhet> verksamhets = getVerksamhetsList(realUser, enhetsList);
-
-                // TODO: perhaps put something more specific than OVRIGT here
-                Verksamhet defaultVerksamhet = toVerksamhet(realUser.getValdVardenhet(), Lan.OVRIGT_ID, Lan.OVRIGT, Kommun.OVRIGT_ID, Kommun.OVRIGT);
                 return new LoginInfo(realUser.getHsaId(), realUser.getName(), defaultVerksamhet, realUser.hasVgAccess(), realUser.hasFullVgAccess(), verksamhets);
             }
         }
@@ -67,32 +70,28 @@ public class LoginServiceUtil {
     }
 
     private List<Verksamhet> getVerksamhetsList(User realUser, final List<Enhet> enhetsList) {
-        List<Verksamhet> returnList = new ArrayList<>();
-        for (final Vardenhet vardEnhet: realUser.getVardenhetList()) {
-            Optional<Enhet> enhetOptional = Iterables.tryFind(enhetsList, new Predicate<Enhet>() {
-                @Override
-                public boolean apply(Enhet enhet) {
-                    return enhet.getEnhetId().equals(vardEnhet.getId());
-                }
-            });
-            String lansId = Lan.OVRIGT_ID;
-            String lansNamn = Lan.OVRIGT;
-            String kommunId = Kommun.OVRIGT_ID;
-            String kommunNamn = Kommun.OVRIGT;
-            if (enhetOptional.isPresent()) {
-                lansId = enhetOptional.get().getLansId();
-                lansNamn = lan.getNamn(lansId);
-                kommunId = enhetOptional.get().getKommunId();
-                kommunNamn = kommun.getNamn(kommunId);
+        return transform(realUser.getVardenhetList(), new Function<Vardenhet, Verksamhet>() {
+            @Override
+            public Verksamhet apply(Vardenhet vardEnhet) {
+                return toVerksamhet(vardEnhet, enhetsList);
             }
-            returnList.add(toVerksamhet(vardEnhet, lansId, lansNamn, kommunId, kommunNamn));
-        }
-
-        return returnList;
+        });
     }
 
-    private Verksamhet toVerksamhet(Vardenhet enhet, String lansId, String lansNamn, String kommunId, String kommunNamn) {
-        return new Verksamhet(enhet.getId(), enhet.getNamn(), enhet.getVardgivarId(), enhet.getVardgivarNamn(), lansId, lansNamn, kommunId, kommunNamn);
+    private Verksamhet toVerksamhet(final Vardenhet vardEnhet, List<Enhet> enhetsList) {
+        Optional<Enhet> enhetOpt = tryFind(enhetsList, new Predicate<Enhet>() {
+            @Override
+            public boolean apply(Enhet enhet) {
+                return enhet.getEnhetId().equals(vardEnhet.getId());
+            }
+        });
+
+        String lansId = enhetOpt.isPresent() ? enhetOpt.get().getLansId() : Lan.OVRIGT_ID;
+        String lansNamn = lan.getNamn(lansId);
+        String kommunId = enhetOpt.isPresent() ? enhetOpt.get().getKommunId() : Kommun.OVRIGT_ID;
+        String kommunNamn = kommun.getNamn(kommunId);
+
+        return new Verksamhet(vardEnhet.getId(), vardEnhet.getNamn(), vardEnhet.getVardgivarId(), vardEnhet.getVardgivarNamn(), lansId, lansNamn, kommunId, kommunNamn);
     }
 
 }
