@@ -42,7 +42,8 @@
  app.singleLineChartCtrl = function ($scope, $routeParams, $timeout, $window, statisticsData, businessFilter, config) {
     var chart;
     $scope.chartContainers = [{id: "chart1", name: "diagram"}];
-    
+     var isVerksamhet = $routeParams.verksamhetId ? true : false;
+
 	var paintChart = function(chartCategories, chartSeries) {
         var chartOptions = ControllerCommons.getHighChartConfigBase(chartCategories, chartSeries);
         chartOptions.chart.type = 'line';
@@ -116,7 +117,7 @@
          }
      });
 
-     if ($routeParams.verksamhetId){
+     if (isVerksamhet){
         $scope.exportTableUrl = config.exportTableUrlVerksamhet($routeParams.verksamhetId);
         refreshVerksamhet();
     } else {
