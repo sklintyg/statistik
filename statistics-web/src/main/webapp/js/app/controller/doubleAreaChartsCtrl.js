@@ -251,20 +251,21 @@ app.doubleAreaChartsCtrl = function ($scope, $routeParams, $window, $timeout, st
     $scope.popoverText = config.tooltipHelpText;
     $scope.popoverFootnotesText = config.chartFootnotes;
 
+    function refreshVerksamhet() {
+        statisticsData[config.dataFetcherVerksamhet]($routeParams.verksamhetId, businessFilter.list(), populatePageWithData, function () {
+            $scope.dataLoadingError = true;
+        }, $routeParams.groupId);
+    }
+
     $scope.$on('filterChange', function(event, data) {
-        console.debug("doubleAreaChartsCtrl filterChange" + data);
         if (isVerksamhet) {
-            statisticsData[config.dataFetcherVerksamhet]($routeParams.verksamhetId, businessFilter.list(), populatePageWithData, function () {
-                $scope.dataLoadingError = true;
-            }, $routeParams.groupId);
+            refreshVerksamhet();
         }
     });
 
     if (isVerksamhet) {
         $scope.exportTableUrl = config.exportTableUrlVerksamhet($routeParams.verksamhetId, $routeParams.groupId);
-        statisticsData[config.dataFetcherVerksamhet]($routeParams.verksamhetId, businessFilter.list(), populatePageWithData, function () {
-            $scope.dataLoadingError = true;
-        }, $routeParams.groupId);
+        refreshVerksamhet();
     } else {
         $scope.exportTableUrl = config.exportTableUrl($routeParams.groupId);
         statisticsData[config.dataFetcher](populatePageWithData, function () {

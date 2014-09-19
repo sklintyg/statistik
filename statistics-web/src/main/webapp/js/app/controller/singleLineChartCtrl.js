@@ -101,20 +101,24 @@
         }
     };
     
-    $scope.exportChart = function() {
-        ControllerCommons.exportChart(chart, $scope.pageName);
-    };
+     $scope.exportChart = function() {
+         ControllerCommons.exportChart(chart, $scope.pageName);
+     };
+
+     function refreshVerksamhet() {
+         statisticsData[config.dataFetcherVerksamhet]($routeParams.verksamhetId, businessFilter.list(), populatePageWithData, function() { $scope.dataLoadingError = true; });
+     }
 
      $scope.$on('filterChange', function(event, data) {
          console.debug("singleLineChartCtrl filterChange" + data);
          if (isVerksamhet) {
-             statisticsData[config.dataFetcherVerksamhet]($routeParams.verksamhetId, businessFilter.list(), populatePageWithData, function() { $scope.dataLoadingError = true; });
+             refreshVerksamhet();
          }
      });
 
      if ($routeParams.verksamhetId){
         $scope.exportTableUrl = config.exportTableUrlVerksamhet($routeParams.verksamhetId);
-        statisticsData[config.dataFetcherVerksamhet]($routeParams.verksamhetId, businessFilter.list(), populatePageWithData, function() { $scope.dataLoadingError = true; });
+        refreshVerksamhet();
     } else {
         $scope.exportTableUrl = config.exportTableUrl;
         statisticsData[config.dataFetcher](populatePageWithData, function() { $scope.dataLoadingError = true; });

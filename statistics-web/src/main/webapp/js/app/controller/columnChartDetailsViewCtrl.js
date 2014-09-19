@@ -128,16 +128,19 @@
         }, 1);
     };
 
+     function refreshVerksamhet() {
+         statisticsData[config.dataFetcherVerksamhet]($routeParams.verksamhetId, businessFilter.list(), populatePageWithData, function() { $scope.dataLoadingError = true; });
+     }
+
      $scope.$on('filterChange', function(event, data) {
-         console.debug("columnChartDetailsViewCtrl filterChange" + data);
          if (isVerksamhet) {
-             statisticsData[config.dataFetcherVerksamhet]($routeParams.verksamhetId, businessFilter.list(), populatePageWithData, function() { $scope.dataLoadingError = true; });
+             refreshVerksamhet();
          }
      });
 
      if (isVerksamhet){
         $scope.exportTableUrl = config.exportTableUrlVerksamhet($routeParams.verksamhetId);
-        statisticsData[config.dataFetcherVerksamhet]($routeParams.verksamhetId, businessFilter.list(), populatePageWithData, function() { $scope.dataLoadingError = true; });
+         refreshVerksamhet();
     } else {
         $scope.exportTableUrl = config.exportTableUrl;
         statisticsData[config.dataFetcher](populatePageWithData, function() { $scope.dataLoadingError = true; });
