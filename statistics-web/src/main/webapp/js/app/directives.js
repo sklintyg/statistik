@@ -105,3 +105,11 @@ app.statisticsApp.directive('multiselectDropdown', function() {
         //});
     }
 });
+
+app.statisticsApp.directive('intermediate', function() {
+    return function(scope, element, attrs) {
+        scope.$watch(attrs.intermediate, function (newVal) {
+            element[0].indeterminate = newVal;
+        });
+    }
+});
