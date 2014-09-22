@@ -252,7 +252,7 @@ app.doubleAreaChartsCtrl = function ($scope, $routeParams, $window, $timeout, st
     $scope.popoverFootnotesText = config.chartFootnotes;
 
     function refreshVerksamhet() {
-        statisticsData[config.dataFetcherVerksamhet]($routeParams.verksamhetId, businessFilter.list(), populatePageWithData, function () {
+        statisticsData[config.dataFetcherVerksamhet]($routeParams.verksamhetId, businessFilter.getSelectedBusinesses(), populatePageWithData, function () {
             $scope.dataLoadingError = true;
         }, $routeParams.groupId);
     }

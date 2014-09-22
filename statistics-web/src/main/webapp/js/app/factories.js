@@ -128,16 +128,25 @@ app.statisticsApp.factory('statisticsData', function ($http) {
 });
 
 app.statisticsApp.factory('businessFilter', function() {
+    var businesses = [];
     var selectedBusinesses = [];
     var businessService = {};
     var geography = { subs: [] };
     var geographyInitialized = false;
 
+    businessService.setBusinesses = function (newItems) {
+        businesses = newItems;
+    };
+
+    businessService.getBusinesses = function () {
+        return businesses;
+    };
+
     businessService.setSelectedBusinesses = function (newItems) {
         selectedBusinesses = newItems;
     };
 
-    businessService.list = function () {
+    businessService.getSelectedBusinesses = function () {
         return selectedBusinesses;
     };
 

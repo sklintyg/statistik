@@ -129,7 +129,7 @@
     };
 
      function refreshVerksamhet() {
-         statisticsData[config.dataFetcherVerksamhet]($routeParams.verksamhetId, businessFilter.list(), populatePageWithData, function() { $scope.dataLoadingError = true; });
+         statisticsData[config.dataFetcherVerksamhet]($routeParams.verksamhetId, businessFilter.getSelectedBusinesses(), populatePageWithData, function() { $scope.dataLoadingError = true; });
      }
 
      $scope.$on('filterChange', function(event, data) {

@@ -44,7 +44,6 @@
 
         $scope.viewHeader = verksamhetId ? "Verksamhetsstatistik" : "Nationell statistik";
         
-        $scope.businesses = [];
         if (isLoggedIn) {
             if (verksamhetId) {
                 $scope.businessId = verksamhetId;
@@ -54,7 +53,7 @@
             }
             
             statisticsData.getLoginInfo(function(loginInfo){
-                $scope.businesses = loginInfo.businesses;
+                businessFilter.setBusinesses(loginInfo.businesses);
                 businessFilter.populateGeography(loginInfo.businesses);
                 var v = getSelectedVerksamhet($scope.businessId, loginInfo.businesses);
                 $scope.verksamhetName = loginInfo.vgView ? (v.vardgivarName + (loginInfo.fullVgAccess ? "(alla enheter)": "(vissa enheter)")): v.name;
@@ -67,13 +66,6 @@
             businessFilter.resetGeography();
         }
     });
-    
-    $scope.selectVerksamhet = function(verksamhetId) {
-        $cookies.verksamhetId = verksamhetId;
-        $scope.verksamhetName = getSelectedVerksamhet(verksamhetId, $scope.businesses).name;
-        $window.location.href = $scope.currentUrl.replace(new RegExp($scope.businessId, 'g'), verksamhetId);
-        $scope.businessId = verksamhetId;
-    };
     
     $scope.isLoggedIn = isLoggedIn;
     

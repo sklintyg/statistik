@@ -437,7 +437,7 @@
                                         </optgroup>
                                     </select>
                                 </div>
-                                <div class="span3">
+                                <div class="span3" data-ng-if="businesses().length > 10">
                                     <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
                                         Välj geografiskt område
                                     </button>
@@ -469,6 +469,9 @@
                                             </div>
                                         </div>
                                     </div>
+                                </div>
+                                <div class="span3" data-ng-if="businesses().length <= 10">
+                                    Hello world!
                                 </div>
                                 <button class="btn btn-primary btn-lg" data-ng-click="makeUnitSelection()">
                                     Uppdatera data

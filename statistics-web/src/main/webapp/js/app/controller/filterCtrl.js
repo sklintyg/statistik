@@ -4,6 +4,8 @@ app.filterCtrl = function ($scope, $rootScope, statisticsData, businessFilter) {
 
     $scope.geography = businessFilter.getGeography();
 
+    $scope.businesses = businessFilter.getBusinesses;
+
     $scope.itemClicked = function (item, itemRoot) {
         if (item.allSelected) {
             deselectAll(item);
@@ -142,7 +144,7 @@ app.filterCtrl = function ($scope, $rootScope, statisticsData, businessFilter) {
 
     $scope.makeUnitSelection = function () {
         businessFilter.setSelectedBusinesses($scope.collectSelectedIds($scope.geography));
-        $rootScope.$broadcast('filterChange', businessFilter.list().length);
+        $rootScope.$broadcast('filterChange', businessFilter.getSelectedBusinesses().length);
     }
 
 };
