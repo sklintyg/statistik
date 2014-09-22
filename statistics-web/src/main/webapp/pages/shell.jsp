@@ -117,16 +117,6 @@
 
 <div id="wrap">
     <div class="container-fluid">
-    <script type="text/ng-template"  id="submenu.html">
-        <span class="glyphicon" ng-class="{glyphiconMinusSign: !item.hideSiblings, glyphiconPlusSign: item.hideSiblings}"></span>
-        <span ng-click="item.hideSiblings = !item.hideSiblings" class="ellipsis-text">{{item.name}}</span>
-        <input type="checkbox" ng-checked="item.allSelected" intermediate="item.someSelected" ng-click="itemClicked(item, itemRoot)"/>
-        <ul ng-init="item.hideSiblings=true" ng-show="item.subs && !item.hideSiblings" style="list-style-type: none;">
-            <li data-ng-init="depth=depth+1" data-ng-repeat="item in item.subs">
-                <span ng-include="'submenu.html'" ng-hide="item.hide" ng-class="{leaf: !item.subs}" class="depth{{depth}}"></span>
-            </li>
-        </ul>
-    </script>
         <!-- Docs nav
         ================================================== -->
         <div class="row">
@@ -458,7 +448,7 @@
                                                             <input type="checkbox" ng-checked="geography.allSelected" class="multiMenuSelectAll" ng-click="itemClicked(geography, geography)">Markera alla</input>
                                                         </li>
                                                         <li data-ng-repeat="item in geography.subs" class="multiMenuSelectKapitel" ng-init="itemRoot=geography; depth=0">
-                                                            <span ng-include="'submenu.html'" ng-hide="item.hide" class="depth0"></span>
+                                                            <submenu item="item" itemroot="itemRoot" depth="depth" recursionhelper="recursionhelper" ng-hide="item.hide" class="depth0" />
                                                         </li>
                                                     </ul>
                                                 </div>
@@ -471,7 +461,9 @@
                                     </div>
                                 </div>
                                 <div class="span3" data-ng-if="businesses().length <= 10">
-                                    Hello world!
+                                    <select ng-model="sSelectedBusinesses" multiple="multiple"
+                                            ng-options="business.id as business.name for business in businesses()" multiselect-dropdown>
+                                    </select>
                                 </div>
                                 <button class="btn btn-primary btn-lg" data-ng-click="makeUnitSelection()">
                                     Uppdatera data

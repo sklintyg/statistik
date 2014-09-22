@@ -2,9 +2,17 @@
 
 app.filterCtrl = function ($scope, $rootScope, statisticsData, businessFilter) {
 
+    $scope.sSelectedBusinesses = [];
+
     $scope.geography = businessFilter.getGeography();
 
     $scope.businesses = businessFilter.getBusinesses;
+
+    $scope.recursionhelper = {};
+
+    $scope.recursionhelper.itemclick = function (item, itemRoot) {
+        $scope.itemClicked(item, itemRoot);
+    }
 
     $scope.itemClicked = function (item, itemRoot) {
         if (item.allSelected) {
@@ -126,24 +134,28 @@ app.filterCtrl = function ($scope, $rootScope, statisticsData, businessFilter) {
         return c;
     };
 
-    $scope.collectSelectedIds = function (node) {
+    $scope.collectSelectedItems = function (node) {
         var returnList = [];
         if (node.subs) {
             if (node.allSelected || node.someSelected ) {
                 ControllerCommons.map(node.subs, function (item) {
-                    returnList = Array.concat(returnList, $scope.collectSelectedIds(item));
+                    returnList = Array.concat(returnList, $scope.collectSelectedItems(item));
                 });
             }
         } else {
             if (node.allSelected) {
-                returnList = [node.id];
+                returnList = [node];
             }
         }
         return returnList;
     }
 
     $scope.makeUnitSelection = function () {
-        businessFilter.setSelectedBusinesses($scope.collectSelectedIds($scope.geography));
+        if ($scope.businesses() >= 10) {
+            businessFilter.setSelectedBusinesses($scope.collectSelectedIds($scope.geography));
+        } else {
+            businessFilter.setSelectedBusinesses($scope.sSelectedBusinesses);
+        }
         $rootScope.$broadcast('filterChange', businessFilter.getSelectedBusinesses().length);
     }
 

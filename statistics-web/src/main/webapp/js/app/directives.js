@@ -100,9 +100,9 @@ app.statisticsApp.directive('multiselectDropdown', function() {
         });
 
         // Watch for any changes from outside the directive and refresh
-        //scope.$watch(attributes.ngModel, function () {
-        //    element.multiselect('refresh');
-        //});
+        scope.$watch(attrs.ngModel, function () {
+            element.multiselect('refresh');
+        });
     }
 });
 
@@ -112,4 +112,25 @@ app.statisticsApp.directive('intermediate', function() {
             element[0].indeterminate = newVal;
         });
     }
+});
+
+app.statisticsApp.directive("submenu", function (RecursionHelper) {
+    return {
+        restrict: "E",
+        scope: { item: "=", itemroot: "=", depth:"=", recursionhelper: "=" },
+        template:
+            '<span class="glyphicon" ng-class="{glyphiconMinusSign: !item.hideSiblings, glyphiconPlusSign: item.hideSiblings}"/>' +
+            '<span ng-click="item.hideSiblings = !item.hideSiblings" class="ellipsis-text">{{item.name}}</span>' +
+            '<input type="checkbox" ng-checked="item.allSelected" intermediate="item.someSelected" ng-click="recursionhelper.itemclick(item, itemroot)"/>' +
+            '<ul ng-init="item.hideSiblings=true" ng-show="item.subs && !item.hideSiblings" style="list-style-type: none;">' +
+              '<li data-ng-init="depth=depth+1" data-ng-repeat="item in item.subs">' +
+                '<submenu item="item" itemroot="itemroot" depth="depth" recursionhelper="recursionhelper" ng-hide="item.hide" ng-class="{leaf: !item.subs}" class="depth{{depth}}"></submenu>' +
+              '</li>' +
+            '</ul>',
+        compile: function (element) {
+            // Use the compile function from the RecursionHelper,
+            // And return the linking function(s) which it returns
+            return RecursionHelper.compile(element);
+        }
+    };
 });

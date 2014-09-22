@@ -16,7 +16,7 @@ app.statisticsApp.factory('statisticsData', function ($http) {
     };
 
     var makeRequestVerksamhet = function (restFunctionName, verksamhetId, enhetsIds, successCallback, failureCallback) {
-        var enhetsIdString = getParamString(enhetsIds)
+        var enhetsIdString = getEnhetsIdString(enhetsIds)
         $http.get("api/verksamhet/" + verksamhetId + "/" + restFunctionName + enhetsIdString).success(function (result) {
             try {
                 successCallback(result);
@@ -31,11 +31,11 @@ app.statisticsApp.factory('statisticsData', function ($http) {
         });
     };
 
-    var getParamString = function (params) {
+    var getEnhetsIdString = function (params) {
         var returnString = ""
         if (params && params.length > 0) {
             returnString += "?ids="
-            returnString += params.join()
+            returnString += params.map(function(it) { return it.id }).join()
         }
         return returnString
     }
@@ -192,3 +192,38 @@ app.statisticsApp.factory('businessFilter', function() {
 
     return businessService;
 });
+
+/* Manually compiles the element, fixing the recursion loop. */
+app.statisticsApp.factory('RecursionHelper', ['$compile', function ($compile) {
+    return {
+        compile: function (element, link) {
+            // Normalize the link parameter
+            if (angular.isFunction(link)) {
+                link = { post: link };
+            }
+
+            // Break the recursion loop by removing the contents
+            var contents = element.contents().remove();
+            var compiledContents;
+            return {
+                pre: (link && link.pre) ? link.pre : null,
+                /* Compiles and re-adds the contents */
+                post: function (scope, element) {
+                    // Compile the contents
+                    if (!compiledContents) {
+                        compiledContents = $compile(contents);
+                    }
+                    // Re-add the compiled contents to the element
+                    compiledContents(scope, function (clone) {
+                        element.append(clone);
+                    });
+
+                    // Call the post-linking function, if any
+                    if (link && link.post) {
+                        link.post.apply(null, arguments);
+                    }
+                }
+            };
+        }
+    };
+}]);
