@@ -114,7 +114,7 @@ app.statisticsApp.directive('intermediate', function() {
     }
 });
 
-app.statisticsApp.directive("submenu", function (RecursionHelper) {
+app.statisticsApp.directive("submenu", function (recursionService) {
     return {
         restrict: "E",
         scope: { item: "=", itemroot: "=", depth:"=", recursionhelper: "=" },
@@ -127,10 +127,6 @@ app.statisticsApp.directive("submenu", function (RecursionHelper) {
                 '<submenu item="item" itemroot="itemroot" depth="depth" recursionhelper="recursionhelper" ng-hide="item.hide" ng-class="{leaf: !item.subs}" class="depth{{depth}}"></submenu>' +
               '</li>' +
             '</ul>',
-        compile: function (element) {
-            // Use the compile function from the RecursionHelper,
-            // And return the linking function(s) which it returns
-            return RecursionHelper.compile(element);
-        }
+        compile: recursionService.compile
     };
 });

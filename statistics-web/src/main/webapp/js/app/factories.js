@@ -35,7 +35,7 @@ app.statisticsApp.factory('statisticsData', function ($http) {
         var returnString = ""
         if (params && params.length > 0) {
             returnString += "?ids="
-            returnString += params.map(function(it) { return it.id }).join()
+            returnString += params.join()
         }
         return returnString
     }
@@ -128,39 +128,24 @@ app.statisticsApp.factory('statisticsData', function ($http) {
 });
 
 app.statisticsApp.factory('businessFilter', function() {
-    var businesses = [];
-    var selectedBusinesses = [];
     var businessService = {};
-    var geography = { subs: [] };
-    var geographyInitialized = false;
 
-    businessService.setBusinesses = function (newItems) {
-        businesses = newItems;
-    };
-
-    businessService.getBusinesses = function () {
-        return businesses;
-    };
-
-    businessService.setSelectedBusinesses = function (newItems) {
-        selectedBusinesses = newItems;
-    };
-
-    businessService.getSelectedBusinesses = function () {
-        return selectedBusinesses;
-    };
+    businessService.businesses = [];
+    businessService.selectedBusinesses = [];
+    businessService.geography = { subs: [] };
+    businessService.geographyInitialized = false;
 
     businessService.populateGeography = function (businesses) {
-        if (!geographyInitialized) {
+        if (!businessService.geographyInitialized) {
             for (var i = 0; i < businesses.length; i++) {
                 var business = businesses[i];
 
-                var county = $.grep(geography.subs, function (element) {
+                var county = $.grep(businessService.geography.subs, function (element) {
                     return element.id === business.lansId;
                 });
                 if (county.length === 0) {
                     county = { id: business.lansId, name: business.lansName, subs: [] };
-                    geography.subs.push(county);
+                    businessService.geography.subs.push(county);
                 } else {
                     county = county[0];
                 }
@@ -177,24 +162,20 @@ app.statisticsApp.factory('businessFilter', function() {
 
                 munip.subs.push(business);
             }
-            geographyInitialized = true;
+            businessService.geographyInitialized = true;
         }
     };
 
-    businessService.getGeography = function () {
-        return geography;
-    }
-
     businessService.resetGeography = function () {
-        geography = { subs: [] };
-        geographyInitialized = false;
+        businessService.geography = { subs: [] };
+        businessService.geographyInitialized = false;
     }
 
     return businessService;
 });
 
 /* Manually compiles the element, fixing the recursion loop. */
-app.statisticsApp.factory('RecursionHelper', ['$compile', function ($compile) {
+app.statisticsApp.factory('recursionService', ['$compile', function ($compile) {
     return {
         compile: function (element, link) {
             // Normalize the link parameter

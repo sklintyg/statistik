@@ -24,7 +24,7 @@ describe("Tests for business overview controller", function() {
         $scope.$on = function (eventName, func) {};
         var $timeout = {};
         var statisticsData = {getBusinessOverview: function(id, pr, cb, err){cb({casesPerMonth: {totalCases: 0}});}};
-        var businessFilter = {getSelectedBusinesses: function () {}};
+        var businessFilter = { selectedBusinesses: [] };
         var $routeParams = {};
         var $window = {location: {href: "https://www.statistik.com/verksamhet/verksamhet1/oversikt"}};
         app.businessOverviewCtrl($scope, $timeout, statisticsData, businessFilter, $routeParams, $window);
@@ -36,12 +36,11 @@ describe("Tests for business overview controller", function() {
         $scope.$on = function (eventName, func) {};
         var $timeout = function(){};
         var statisticsData = {getBusinessOverview: function(id, pr, cb, err){cb({casesPerMonth: {totalCases: 1}});}};
-        var businessFilter = {getSelectedBusinesses: function () {}};
+        var businessFilter = { selectedBusinesses: [] };
         var $routeParams = {};
         var $window = {location: {href: "https://www.statistik.com/verksamhet/verksamhet1/oversikt"}};
         app.businessOverviewCtrl($scope, $timeout, statisticsData, businessFilter, $routeParams, $window);
         expect($window.location.href).toBe("https://www.statistik.com/verksamhet/verksamhet1/oversikt");
     });
-    
-    
+
 });

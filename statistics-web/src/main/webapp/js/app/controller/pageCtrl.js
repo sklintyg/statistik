@@ -53,7 +53,7 @@
             }
             
             statisticsData.getLoginInfo(function(loginInfo){
-                businessFilter.setBusinesses(loginInfo.businesses);
+                businessFilter.businesses = loginInfo.businesses;
                 businessFilter.populateGeography(loginInfo.businesses);
                 var v = getSelectedVerksamhet($scope.businessId, loginInfo.businesses);
                 $scope.verksamhetName = loginInfo.vgView ? (v.vardgivarName + (loginInfo.fullVgAccess ? "(alla enheter)": "(vissa enheter)")): v.name;

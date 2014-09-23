@@ -2,11 +2,17 @@
 
 app.filterCtrl = function ($scope, $rootScope, statisticsData, businessFilter) {
 
-    $scope.selectedBusinesses = businessFilter.selectedBusinesses;
+    $scope.bc = {
+        selectedBusinesses : businessFilter.selectedBusinesses
+    }
 
-    $scope.geography = businessFilter.getGeography();
+    $scope.geography = function () { return businessFilter.geography; }
 
-    $scope.businesses = businessFilter.getBusinesses;
+    $scope.businesses = function () { return businessFilter.businesses; }
+
+    $scope.useSmallGUI = function () {
+        return businessFilter.businesses.length <= 10;
+    }
 
     $scope.recursionhelper = {
         itemclick: function (item, itemRoot) {
@@ -134,29 +140,27 @@ app.filterCtrl = function ($scope, $rootScope, statisticsData, businessFilter) {
         return c;
     };
 
-    $scope.collectSelectedItems = function (node) {
+    $scope.collectSelectedIds = function (node) {
         var returnList = [];
         if (node.subs) {
             if (node.allSelected || node.someSelected ) {
                 ControllerCommons.map(node.subs, function (item) {
-                    returnList = Array.concat(returnList, $scope.collectSelectedItems(item));
+                    returnList = Array.concat(returnList, $scope.collectSelectedIds(item));
                 });
             }
         } else {
             if (node.allSelected) {
-                returnList = [node];
+                returnList = [node.id];
             }
         }
         return returnList;
     }
 
     $scope.makeUnitSelection = function () {
-        if ($scope.businesses() >= 10) {
-            businessFilter.setSelectedBusinesses($scope.collectSelectedIds($scope.geography));
-        } else {
-            businessFilter.setSelectedBusinesses($scope.selectedBusinesses);
+        if (!$scope.useSmallGUI()) {
+            businessFilter.selectedBusinesses = $scope.collectSelectedIds(businessFilter.geography);
         }
-        $rootScope.$broadcast('filterChange', businessFilter.getSelectedBusinesses().length);
+        $rootScope.$broadcast('filterChange', businessFilter.selectedBusinesses.length);
     }
 
 };

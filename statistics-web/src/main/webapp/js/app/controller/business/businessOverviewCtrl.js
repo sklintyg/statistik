@@ -182,7 +182,7 @@
     }
 
      function refresh() {
-         statisticsData.getBusinessOverview($routeParams.verksamhetId, businessFilter.getSelectedBusinesses(), dataReceived, function() { $scope.dataLoadingError = true; });
+         statisticsData.getBusinessOverview($routeParams.verksamhetId, businessFilter.selectedBusinesses, dataReceived, function() { $scope.dataLoadingError = true; });
      }
 
      $scope.$on('filterChange', function(event, data) {

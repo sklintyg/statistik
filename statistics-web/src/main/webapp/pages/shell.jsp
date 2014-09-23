@@ -427,11 +427,11 @@
                                         </optgroup>
                                     </select>
                                 </div>
-                                <div class="span3" data-ng-if="businesses().length > 10">
+                                <div class="span3" data-ng-if="!useSmallGUI()">
                                     <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
                                         Välj geografiskt område
                                     </button>
-					                <label>{{selectedLeavesCount(geography)}} valda enheter</label>
+					                <label>{{selectedLeavesCount(geography())}} valda enheter</label>
                                     <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                                         <div class="modal-dialog">
                                             <div class="modal-content">
@@ -442,26 +442,26 @@
                                                 <div class="modal-body">
                                                     <ul class="" style="list-style-type: none;">
                                                         <li>
-                                                            <input type="text" ng-model="multiMenuFilter" class="multiMenuFilterSearch" ng-change="filterMenuItems(geography.subs, multiMenuFilter)" placeholder="Sök i strukturen"/>
+                                                            <input type="text" ng-model="multiMenuFilter" class="multiMenuFilterSearch" ng-change="filterMenuItems(geography().subs, multiMenuFilter)" placeholder="Sök i strukturen"/>
                                                         </li>
                                                         <li>
-                                                            <input type="checkbox" ng-checked="geography.allSelected" class="multiMenuSelectAll" ng-click="itemClicked(geography, geography)">Markera alla</input>
+                                                            <input type="checkbox" ng-checked="geography().allSelected" class="multiMenuSelectAll" ng-click="itemClicked(geography(), geography())">Markera alla</input>
                                                         </li>
-                                                        <li data-ng-repeat="item in geography.subs" class="multiMenuSelectKapitel" ng-init="itemRoot=geography; depth=0">
+                                                        <li data-ng-repeat="item in geography().subs" class="multiMenuSelectKapitel" ng-init="itemRoot=geography(); depth=0">
                                                             <submenu item="item" itemroot="itemRoot" depth="depth" recursionhelper="recursionhelper" ng-hide="item.hide" class="depth0" />
                                                         </li>
                                                     </ul>
                                                 </div>
                                                 <div class="modal-footer">
-                                                    <label class="pull-left">Enheter: {{selectedLeavesCount(geography)}} Kommuner: {{selectedAvsnittCount(geography)}} Län: {{selectedKapitelCount(geography)}}</label>
+                                                    <label class="pull-left">Enheter: {{selectedLeavesCount(geography())}} Kommuner: {{selectedAvsnittCount(geography())}} Län: {{selectedKapitelCount(geography())}}</label>
                                                     <button class="btn btn-success" data-dismiss="modal" aria-hidden="true">Spara och stäng</button>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="span3" data-ng-if="businesses().length <= 10">
-                                    <select ng-model="sSelectedBusinesses" multiple="multiple"
+                                <div class="span3" data-ng-if="useSmallGUI()">
+                                    <select ng-model="bc.selectedBusinesses" multiple="multiple"
                                             ng-options="business.id as business.name for business in businesses()" multiselect-dropdown>
                                     </select>
                                 </div>
