@@ -2,17 +2,17 @@
 
 app.filterCtrl = function ($scope, $rootScope, statisticsData, businessFilter) {
 
-    $scope.sSelectedBusinesses = [];
+    $scope.selectedBusinesses = businessFilter.selectedBusinesses;
 
     $scope.geography = businessFilter.getGeography();
 
     $scope.businesses = businessFilter.getBusinesses;
 
-    $scope.recursionhelper = {};
-
-    $scope.recursionhelper.itemclick = function (item, itemRoot) {
-        $scope.itemClicked(item, itemRoot);
-    }
+    $scope.recursionhelper = {
+        itemclick: function (item, itemRoot) {
+            $scope.itemClicked(item, itemRoot);
+        }
+    };
 
     $scope.itemClicked = function (item, itemRoot) {
         if (item.allSelected) {
@@ -154,7 +154,7 @@ app.filterCtrl = function ($scope, $rootScope, statisticsData, businessFilter) {
         if ($scope.businesses() >= 10) {
             businessFilter.setSelectedBusinesses($scope.collectSelectedIds($scope.geography));
         } else {
-            businessFilter.setSelectedBusinesses($scope.sSelectedBusinesses);
+            businessFilter.setSelectedBusinesses($scope.selectedBusinesses);
         }
         $rootScope.$broadcast('filterChange', businessFilter.getSelectedBusinesses().length);
     }
