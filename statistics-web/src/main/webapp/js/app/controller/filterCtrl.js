@@ -162,7 +162,7 @@ app.filterCtrl = function ($scope, $rootScope, statisticsData, businessFilter) {
         } else {
             businessFilter.selectedBusinesses = $scope.collectSelectedIds(businessFilter.geography);
         }
-        $rootScope.$broadcast('filterChange', businessFilter.selectedBusinesses.length);
+        $rootScope.$broadcast('filterChange', '');
     }
 
 };
