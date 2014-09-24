@@ -3,7 +3,7 @@
 app.filterCtrl = function ($scope, $rootScope, statisticsData, businessFilter) {
 
     $scope.bc = {
-        selectedBusinesses : businessFilter.selectedBusinesses
+        selectedBusinesses : []
     }
 
     $scope.geography = function () { return businessFilter.geography; }
@@ -157,7 +157,9 @@ app.filterCtrl = function ($scope, $rootScope, statisticsData, businessFilter) {
     }
 
     $scope.makeUnitSelection = function () {
-        if (!$scope.useSmallGUI()) {
+        if ($scope.useSmallGUI()) {
+            businessFilter.selectedBusinesses = $scope.bc.selectedBusinesses;
+        } else {
             businessFilter.selectedBusinesses = $scope.collectSelectedIds(businessFilter.geography);
         }
         $rootScope.$broadcast('filterChange', businessFilter.selectedBusinesses.length);
