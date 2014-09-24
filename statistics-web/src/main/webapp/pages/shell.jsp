@@ -470,7 +470,7 @@
                                 </button>
 			                </div>
 	                    </div>
-                        <button id="show-hide-filter-btn" type="button" class="btn btn-small pull-right" ng-click="showFilter = !showFilter" >
+                        <button id="show-hide-filter-btn" type="button" class="btn btn-small pull-right" ng-click="showFilter = !showFilter" ng-show="isLoggedIn">
                             Filter
                         </button>
                     </div>
