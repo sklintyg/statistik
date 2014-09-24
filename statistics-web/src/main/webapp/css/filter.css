@@ -81,26 +81,12 @@ input[type="radio"], input[type="checkbox"] {
 	vertical-align: bottom;
 }
 
-.input-group .form-control:last-child, .input-group-addon:last-child, .input-group-btn:last-child>.btn, .input-group-btn:last-child>.dropdown-toggle, .input-group-btn:first-child>.btn:not(:first-child) {
-	border-bottom-left-radius: 0;
-	border-top-left-radius: 0;
-}
 .input-group .form-control:first-child, .input-group-addon:first-child, .input-group-btn:first-child>.btn, .input-group-btn:first-child>.dropdown-toggle, .input-group-btn:last-child>.btn:not(:last-child):not(.dropdown-toggle) {
 	border-top-right-radius: 0;
 	border-bottom-right-radius: 0;
 }
 .input-group-addon, .input-group-btn, .input-group .form-control { display: table-cell; }
 
-.glyphicon.glyphicon-search {
-	background-image: url("../img/glyphicons-halflings.png");
-	background-position: -48px 0px;
-	float: right;
-	margin-top: 3px;
-	margin-right: 0px;
-	width: 14px;
-	height: 14px;
-	cursor: pointer;
-}
 select, textarea, input[type="text"], input[type="password"], input[type="datetime"], input[type="datetime-local"], input[type="date"], input[type="month"], input[type="time"], input[type="week"], input[type="number"], input[type="email"], input[type="url"], input[type="search"], input[type="tel"], input[type="color"], .uneditable-input {
 	display: inline-block;
 	height: 14px;
@@ -121,12 +107,26 @@ select, textarea, input[type="text"], input[type="password"], input[type="dateti
 #statistics-filter-container {
 	background-color: rgb(247, 247, 249);
 	border-top: 0;
-	border-left: 1px solid buttonface;
-	border-right: 1px solid buttonface;
-	border-bottom: 1px solid buttonface;
+	border-left: 1px solid #ddd;
+	border-right: 1px solid #ddd;
+	border-bottom: 1px solid #ddd;
+	margin-top: 0px;
 }
-.filter-level { }
+.filter-level { 
+	float: left;
+	width: 100%;
+	padding: 10px;
+}
+.multiselect-container a { padding: 0px !important; }
+.multiselect-container li.active a { color: #000 !important; }
 
+.modal-header span { font-weight: bold; }
+.modal-body ul { list-style-type: none; }
+.modal-body .modal-list { padding: 0px; }
+.search-all-items, .select-all-items { margin-bottom: 10px; }
+.modal-body .modal-list li.search-all-items input[type=search] { width: 100%; height: 30px; top: 1px; }
+.modal-body .modal-list li.select-all-items input[type=checkbox] { margin-left: 0px; }
+.modal-body .modal-list input[type=checkbox] { margin-left: 10px; }
 /* STYLES FOR MULTI-MULTI*/
 .depth0, .depth1 { cursor: pointer; }
 .depth2 { cursor: default; }

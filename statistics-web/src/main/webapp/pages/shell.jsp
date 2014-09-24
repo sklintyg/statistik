@@ -403,83 +403,95 @@
                 </div>
             </div>
 
-            <div class="span9" data-ng-controller="FilterCtrl">
-                <div class="row-fluid">
-                    <div class="span12">
-                        <div id="statistics-filter-container" class="collapse" ng-class="{in: showFilter, collapse: !showFilter}">
-			                <div class="row-fluid filter-level" id="first-level-filter">
-                                <div class="span3">
-                                    <label>Typ av verksamhet:</label>
-                                    <!-- Select for business-type: -->
-                                    <select class="multiselect" id="select-business-type" multiple="multiple">
-                                        <optgroup label="Verksamhetstyper">
-                                            <option value="1">Barn och ungdom (3)</option>
-                                            <option value="2">Laboratorie (10)</option>
-                                            <option value="3">Medicin (32)</option>
-                                            <option value="4">Opererande (71)</option>
-                                            <option value="5">Primärvård (13)</option>
-                                            <option value="6">Psykiatri (20)</option>
-                                            <option value="7">Radiologi (0)</option>
-                                            <option value="8">Tandvård (0)</option>
-                                            <option value="9">Vård, omsorg, omvårdnad (0)</option>
-                                            <option value="10">Övrig medicin (0)</option>
-                                            <option value="11">Okänd verksamhetstyp (14)</option>
-                                        </optgroup>
-                                    </select>
-                                </div>
-                                <div class="span3" data-ng-if="!useSmallGUI()">
-                                    <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
-                                        Välj geografiskt område
-                                    </button>
-					                <label>{{selectedLeavesCount(geography())}} valda enheter</label>
-                                    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                                        <div class="modal-dialog">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                                                    <h3 id="myModalLabel">Gör ditt urval</h3>
-                                                </div>
-                                                <div class="modal-body">
-                                                    <ul class="" style="list-style-type: none;">
-                                                        <li>
-                                                            <input type="text" ng-model="multiMenuFilter" class="multiMenuFilterSearch" ng-change="filterMenuItems(geography().subs, multiMenuFilter)" placeholder="Sök i strukturen"/>
-                                                        </li>
-                                                        <li>
-                                                            <input type="checkbox" ng-checked="geography().allSelected" class="multiMenuSelectAll" ng-click="itemClicked(geography(), geography())">Markera alla</input>
-                                                        </li>
-                                                        <li data-ng-repeat="item in geography().subs" class="multiMenuSelectKapitel" ng-init="itemRoot=geography(); depth=0">
-                                                            <submenu item="item" itemroot="itemRoot" depth="depth" recursionhelper="recursionhelper" ng-hide="item.hide" class="depth0" />
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <label class="pull-left">Enheter: {{selectedLeavesCount(geography())}} Kommuner: {{selectedAvsnittCount(geography())}} Län: {{selectedKapitelCount(geography())}}</label>
-                                                    <button class="btn btn-success" data-dismiss="modal" aria-hidden="true">Spara och stäng</button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="span3" data-ng-if="useSmallGUI()">
-                                    <select ng-model="bc.selectedBusinesses" multiple="multiple"
-                                            ng-options="business.id as business.name for business in businesses()" multiselect-dropdown>
-                                    </select>
-                                </div>
-                                <button class="btn btn-primary btn-lg" data-ng-click="makeUnitSelection()">
-                                    Uppdatera data
-                                </button>
-			                </div>
+            <div class="col-xs-12 col-sm-9 col-md-9 col-lg-9" data-ng-controller="FilterCtrl">
+                <div class="row">
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                        <div id="statistics-filter-container" class="collapse" collapse="!isFilterCollapsed">
+                        	<div class="row">
+				                <div class="filter-level" id="first-level-filter">
+	                                <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3">
+	                                    <label for="select-business-type">Typ av verksamhet:</label><br/>
+	                                    <!-- Select for business-type: -->
+	                                    <select class="multiselect" id="select-business-type" multiselect-dropdown multiple="multiple">
+	                                        <optgroup label="Verksamhetstyper">
+	                                            <option value="1">Barn och ungdom (3)</option>
+	                                            <option value="2">Laboratorie (10)</option>
+	                                            <option value="3">Medicin (32)</option>
+	                                            <option value="4">Opererande (71)</option>
+	                                            <option value="5">Primärvård (13)</option>
+	                                            <option value="6">Psykiatri (20)</option>
+	                                            <option value="7">Radiologi (0)</option>
+	                                            <option value="8">Tandvård (0)</option>
+	                                            <option value="9">Vård, omsorg, omvårdnad (0)</option>
+	                                            <option value="10">Övrig medicin (0)</option>
+	                                            <option value="11">Okänd verksamhetstyp (14)</option>
+	                                        </optgroup>
+	                                    </select>
+	                                </div>
+	                                <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3" data-ng-if="!useSmallGUI()">
+	                                	<label for="select-geo-unit">Val av enheter:</label><br/>
+	                                    <button class="btn btn-default" data-toggle="modal" data-target="#myModal" id="select-geo-unit" >
+	                                        Välj enhet
+	                                    </button>
+						                <label>{{selectedLeavesCount(geography())}} valda enheter</label>
+	                                    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	                                        <div class="modal-dialog">
+	                                            <div class="modal-content">
+	                                                <div class="modal-header">
+	                                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+	                                                    <span id="myModalLabel">Val av enheter</span>
+	                                                </div>
+	                                                <div class="modal-body">
+	                                                    <ul class="modal-list">
+	                                                        <li class="search-all-items input-group">
+	                                                        	<span class="input-group-addon glyphicon glyphicon-search"></span>
+	                                                            <input type="search" ng-model="multiMenuFilter" class="multiMenuFilterSearch form-control" ng-change="filterMenuItems(geography().subs, multiMenuFilter)" placeholder="Sök efter enhet"/>
+	                                                        </li>
+	                                                        <li class="select-all-items">
+	                                                            <input type="checkbox" ng-checked="geography().allSelected" class="multiMenuSelectAll" ng-click="itemClicked(geography(), geography())">Markera alla</input>
+	                                                        </li>
+	                                                        <li data-ng-repeat="item in geography().subs" class="multiMenuSelectKapitel" ng-init="itemRoot=geography(); depth=0">
+	                                                            <submenu item="item" itemroot="itemRoot" depth="depth" recursionhelper="recursionhelper" ng-hide="item.hide" class="depth0" />
+	                                                        </li>
+	                                                    </ul>
+	                                                </div>
+	                                                <div class="modal-footer">
+	                                                    <label class="pull-left">Ditt urval:</label><br/>
+	                                                    <label class="pull-left">Enheter: {{selectedLeavesCount(geography())}} Kommuner: {{selectedAvsnittCount(geography())}} Län: {{selectedKapitelCount(geography())}}</label>
+	                                                    <button class="btn btn-success" data-dismiss="modal" aria-hidden="true">Spara och stäng</button>
+	                                                    <button type="button" class="btn btn-default" data-dismiss="modal" aria-hidden="true">Stäng</button>
+	                                                </div>
+	                                            </div>
+	                                        </div>
+	                                    </div>
+	                                </div>
+	                                <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3 clearfix" data-ng-if="useSmallGUI()">
+	                                	<label for="select-unit">Val av enhet:</label><br/>
+	                                    <select ng-model="bc.selectedBusinesses" multiple="multiple"
+	                                            ng-options="business.id as business.name for business in businesses()" multiselect-dropdown id="select-unit">
+	                                    </select>
+	                                </div>
+	                            </div>
+	                            <div class="filter-level">
+	                            	<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 clearfix">
+	                                	<button class="btn btn-primary pull-right" data-ng-click="makeUnitSelection()">
+		                                    Sök
+		                                </button>
+	                                </div>
+	                            </div>
+				        	</div>
 	                    </div>
-                        <button id="show-hide-filter-btn" type="button" class="btn btn-small pull-right" ng-click="showFilter = !showFilter" ng-show="isLoggedIn">
-                            Filter
+                        <button id="show-hide-filter-btn" type="button" class="btn btn-small pull-right" data-toggle="collapse" data-target="#statistics-filter-container" ng-click="isCollapsed = !isCollapsed" ng-show="isLoggedIn">
+                            Gör urval
                         </button>
                     </div>
                 </div>
-
-                <div class="col-xs-12 col-sm-9 col-md-9 col-lg-9">
-                    <%-- data-ng-view that holds dynamic content managed by angular app --%>
-                    <div id="view" data-ng-view></div>
-                </div>
+				<div class="row">
+	                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+	                    <%-- data-ng-view that holds dynamic content managed by angular app --%>
+	                    <div id="view" data-ng-view></div>
+	                </div>
+	        	</div>
             </div>
         </div>
     </div>

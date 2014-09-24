@@ -742,7 +742,7 @@ div.accordion-body.in.collapse > div.accordion-heading a.accordion-toggle{
 }
 .statistics-menu-heading { color: #fff; }
 #statistics-menu-accordion {
-	margin-top: 30px !important;
+	margin-top: 10px !important;
 }
 #statistics-menu-accordion .accordion-inner,
 #statistics-about-menu-accordion .accordion-inner {
