@@ -474,7 +474,7 @@
 	                            </div>
 	                            <div class="filter-level">
 	                            	<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 clearfix">
-	                                	<button class="btn btn-primary pull-right" data-ng-click="makeUnitSelection()">
+	                                	<button class="btn btn-success pull-right" data-ng-click="makeUnitSelection()">
 		                                    Sök
 		                                </button>
 	                                </div>

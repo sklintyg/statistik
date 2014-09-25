@@ -20,83 +20,64 @@
 <div class="row-fluid">
 	<div id="about-content">
 		<section id="faq">
-			<H1>Vanliga frågor och svar</H1>
-			<p>Nedan finner du vanliga frågor och svar för statistiktjänsten. Du får nedan frågorna presenterade och genom att klicka på frågan får du svaret.</p>
-			
-			<div class="accordion" id="faq-accordion">
-				<div class="accordion-group faq-accordion-group">
-					<div class="accordion-heading faq-accordion-heading">
-						<a class="accordion-toggle faq-accordion-toggle" data-toggle="collapse" href="#a1"><h2>1. Vad innebär Statistiktjänsten?</h2></a>
-					</div>
-					<div id="a1" class="accordion-body collapse faq-accordion-body">
-						<div class="accordion-inner faq-accordion-inner">
-							<p>
-								<p>Statistiktjänsten för ordinerad sjukskrivning är en webbtjänst som gör det möjligt att följa upp och se samlad statistik för ordinerad sjukskrivning från hela landet. </p>
-								<p>Statistiken är baserad på de läkarintyg (FK 7263) som skickas elektroniskt från hälso- och sjukvårdens journalsystem. Tjänsten består av två delar: statistik som är tillgänglig för alla och statistik som kräver särskild behörighet.</p>
-							</p>
-						</div>
-					</div>
+			<div class="row">
+				<div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
+					<H1>Vanliga frågor och svar</H1>
+					<p>Nedan finner du vanliga frågor och svar för statistiktjänsten. Du får nedan frågorna presenterade och genom att klicka på frågan får du svaret.</p>
 				</div>
-				<div class="accordion-group faq-accordion-group">
-					<div class="accordion-heading faq-accordion-heading">
-						<a class="accordion-toggle faq-accordion-toggle" data-toggle="collapse" href="#a2"><h2>2. Vem står bakom Statistiktjänsten?</h2></a>
-					</div>
-					<div id="a2" class="accordion-body collapse faq-accordion-body">
-						<div class="accordion-inner faq-accordion-inner">
-							<p>
-								Det landstingsägda bolaget Inera AB har tagit fram tjänsten och förvaltar den på uppdrag av Sveriges alla kommuner och landsting. 
-							</p>
-						</div>
-					</div>
-				</div>
-				<div class="accordion-group faq-accordion-group">
-					<div class="accordion-heading faq-accordion-heading">
-						<a class="accordion-toggle faq-accordion-toggle" data-toggle="collapse" href="#a3"><h2>3. Vad innehåller Statistiktjänsten?</h2></a>
-					</div>
-					<div id="a3" class="accordion-body collapse faq-accordion-body">
-						<div class="accordion-inner faq-accordion-inner">
-							<p>
-								<p>Statistiktjänsten innehåller endast intygsinformation från hälso- och sjukvården. Innehållet baseras på det elektroniska läkarintyg (FK 7263) som utfärdas när en läkare bedömer att en patient behöver sjukskrivas för att hälsotillståndet ska förbättras. Tjänsten innehåller samtliga elektroniska läkarintyg (FK 7263) som utfärdats inom hälso- och sjukvården.</p> 
-								<p>Den registrerar däremot inte om intyget har använts för ansökan om sjukpenning hos Försäkringskassan eller vilken bedömning Försäkringskassan gör. Statistiken baseras alltså endast på hälso- och sjukvårdens ordinerade sjukskrivning.</p>
-								<p>Alla geografiska data är baserade på var vårdenheten ligger.</p>
-
-							</p>
-						</div>
-					</div>
-				</div>
-				<div class="accordion-group faq-accordion-group">
-					<div class="accordion-heading faq-accordion-heading">
-						<a class="accordion-toggle faq-accordion-toggle" data-toggle="collapse" href="#a4"><h2>4. Vad är nationell statistik?</h2></a>
-					</div>
-					<div id="a4" class="accordion-body collapse faq-accordion-body">
-						<div class="accordion-inner faq-accordion-inner">
-							<p>
-								<p>Nationell statistik är statistik för hela landet som baseras på de läkarintyg landets olika vårdgivare har utfärdat. Statistiken avidentifieras och slås ihop innan den sammanställs på nationell nivå. </p>
-								<p>För att statistiken inte ska kunna kopplas till enskilda personer filtreras den från uppgifter som skulle kunna röja en persons identitet. Filtreringen kan leda till en liten felmarginal i statistiken – siffrorna behöver alltså inte motsvara exakt det antal sjukfall som syns.</p>
-							</p>
-						</div>
-					</div>
-				</div>
-				<div class="accordion-group faq-accordion-group">
-					<div class="accordion-heading faq-accordion-heading">
-						<a class="accordion-toggle faq-accordion-toggle" data-toggle="collapse" href="#a5"><h2>5. Hur ofta uppdateras Statistiktjänsten?</h2></a>
-					</div>
-					<div id="a5" class="accordion-body collapse faq-accordion-body">
-						<div class="accordion-inner faq-accordion-inner">
-							<p>
-								Statistiktjänsten uppdateras kontinuerligt med nya läkarintyg. Däremot är den statistik som presenteras inte nyare än den senaste avslutade kalendermånaden som syns i de grafiska rapporterna.
-							</p>
-						</div>
-					</div>
-				</div>
-				<div class="accordion-group faq-accordion-group">
-					<div class="accordion-heading faq-accordion-heading">
-						<a class="accordion-toggle faq-accordion-toggle" data-toggle="collapse" href="#a6"><h2>6. Hur presenteras statistiken i Statistiktjänsten?</h2></a>
-					</div>
-					<div id="a6" class="accordion-body collapse faq-accordion-body">
-						<div class="accordion-inner faq-accordion-inner">
-							<p>
-								Statistiken presenteras i grafiska bilder över hur sjukskrivingarna ser ut räknat i exempelvis:
+			</div>
+			<div class="row">
+				<div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
+					<accordion close-others="oneAtATime">
+						<accordion-group is-open="status.open">
+					        <accordion-heading>
+					            1. Vad innebär Statistiktjänsten?<i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i>
+					        </accordion-heading>
+					        <p>Statistiktjänsten för ordinerad sjukskrivning är en webbtjänst som gör det möjligt att följa upp och se samlad statistik för ordinerad sjukskrivning från hela landet. </p>
+							<p>Statistiken är baserad på de läkarintyg (FK 7263) som skickas elektroniskt från hälso- och sjukvårdens journalsystem. Tjänsten består av två delar: statistik som är tillgänglig för alla och statistik som kräver särskild behörighet.</p>
+					    </accordion-group> 
+					</accordion>
+					<accordion close-others="oneAtATime">
+						<accordion-group is-open="status.open">
+					        <accordion-heading>
+					            2. Vem står bakom Statistiktjänsten?<i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i>
+					        </accordion-heading>
+					        <p>Det landstingsägda bolaget Inera AB har tagit fram tjänsten och förvaltar den på uppdrag av Sveriges alla kommuner och landsting.</p>
+					    </accordion-group> 
+					</accordion>
+					<accordion close-others="oneAtATime">
+						<accordion-group is-open="status.open">
+					        <accordion-heading>
+					            3. Vad innehåller Statistiktjänsten?<i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i>
+					        </accordion-heading>
+					        <p>Statistiktjänsten innehåller endast intygsinformation från hälso- och sjukvården. Innehållet baseras på det elektroniska läkarintyg (FK 7263) som utfärdas när en läkare bedömer att en patient behöver sjukskrivas för att hälsotillståndet ska förbättras. Tjänsten innehåller samtliga elektroniska läkarintyg (FK 7263) som utfärdats inom hälso- och sjukvården.</p> 
+							<p>Den registrerar däremot inte om intyget har använts för ansökan om sjukpenning hos Försäkringskassan eller vilken bedömning Försäkringskassan gör. Statistiken baseras alltså endast på hälso- och sjukvårdens ordinerade sjukskrivning.</p>
+							<p>Alla geografiska data är baserade på var vårdenheten ligger.</p>
+					    </accordion-group> 
+					</accordion>
+					<accordion close-others="oneAtATime">
+						<accordion-group is-open="status.open">
+					        <accordion-heading>
+					            4. Vad är nationell statistik?<i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i>
+					        </accordion-heading>
+					        <p>Nationell statistik är statistik för hela landet som baseras på de läkarintyg landets olika vårdgivare har utfärdat. Statistiken avidentifieras och slås ihop innan den sammanställs på nationell nivå. </p>
+							<p>För att statistiken inte ska kunna kopplas till enskilda personer filtreras den från uppgifter som skulle kunna röja en persons identitet. Filtreringen kan leda till en liten felmarginal i statistiken – siffrorna behöver alltså inte motsvara exakt det antal sjukfall som syns.</p>
+					    </accordion-group> 
+					</accordion>
+					<accordion close-others="oneAtATime">
+						<accordion-group is-open="status.open">
+					        <accordion-heading>
+					            5. Hur ofta uppdateras Statistiktjänsten?<i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i>
+					        </accordion-heading>
+					        <p>Statistiktjänsten uppdateras kontinuerligt med nya läkarintyg. Däremot är den statistik som presenteras inte nyare än den senaste avslutade kalendermånaden som syns i de grafiska rapporterna.</p>
+					    </accordion-group> 
+					</accordion>
+					<accordion close-others="oneAtATime">
+						<accordion-group is-open="status.open">
+					        <accordion-heading>
+					            6. Hur presenteras statistiken i Statistiktjänsten?<i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i>
+					        </accordion-heading>
+					        <p>Statistiken presenteras i grafiska bilder över hur sjukskrivingarna ser ut räknat i exempelvis:
 								<ul>
 									<li>Antal sjukfall</li>
 									<li>Diagnosgrupp</li>
@@ -106,142 +87,97 @@
 									<li>Sjukskrivningsgrad</li>
 								</ul>
 								Till varje grafisk bild finns även en tabell som innehåller bildens dataunderlag.
-							</p>
-						</div>
-					</div>
-				</div>
-				<div class="accordion-group faq-accordion-group">
-					<div class="accordion-heading faq-accordion-heading">
-						<a class="accordion-toggle faq-accordion-toggle" data-toggle="collapse" href="#a7"><h2>7. Vad innebär sjukfall?</h2></a>
-					</div>
-					<div id="a7" class="accordion-body collapse faq-accordion-body">
-						<div class="accordion-inner faq-accordion-inner">
-							<p>
-								<p>Ett sjukfall omfattar alla de läkarintyg (FK 7263) som rör en viss patient och som har utfärdats med max 5 dagars uppehåll mellan respektive intyg. </p>
-								<p>Exempel: Om intyg 1 gäller till och med den 14 augusti och intyg 2 gäller från och med den 17 augusti ses de båda intygen som samma sjukfall. Men om intyg 2 i stället hade varit giltigt från och med den 21 augusti räknas intygen som två skilda sjukfall.</p>
-							</p>
-						</div>
-					</div>
-				</div>
-				<div class="accordion-group faq-accordion-group">
-					<div class="accordion-heading faq-accordion-heading">
-						<a class="accordion-toggle faq-accordion-toggle" data-toggle="collapse" href="#a8"><h2>8. Vad innebär pågående sjukfall?</h2></a>
-					</div>
-					<div id="a8" class="accordion-body collapse faq-accordion-body">
-						<div class="accordion-inner faq-accordion-inner">
-							<p>
-                                <p>En rapport som visar pågående sjukfall (syns i namnet på rapporten) syftar till att visa så aktuell information om sjukfallen möjligt. Alla sjukfall som pågår någon gång under aktuell månad hämtas. Rapporten kan inte ta hänsyn till vilken dag det är i månaden. I slutet på månaden kommer fortfarande sjukfall som avslutats under månadens gång visas som pågående.</p>
-							</p>
-						</div>
-					</div>
-				</div>
-				<div class="accordion-group faq-accordion-group">
-					<div class="accordion-heading faq-accordion-heading">
-						<a class="accordion-toggle faq-accordion-toggle" data-toggle="collapse" href="#a9"><h2>9. Vilka olika typer av behörighet finns för att se statistik i Statistiktjänsten?</h2></a>
-					</div>
-					<div id="a9" class="accordion-body collapse faq-accordion-body">
-						<div class="accordion-inner faq-accordion-inner">
-							<p>
-								<p>Den allmänna delen av Statistiktjänsten kräver inte någon registrering eller något särskilt konto. </p>
-								<p>Om du har ansvar för verksamhetsuppföljning inom hälso- och sjukvården kan du ta del av statistik som riktar sig särskilt till din vårdenhet. Det krävs då att du har ett medarbetaruppdrag för statistik som delas ut av din verksamhetschef och sätts av din HSA-administratör.<!-- Mer information om medarbetaruppdraget finns HÄR. --> </p>
-								<p>För att kunna logga in och se statistik för enskilda vårdenheter krävs:</p>
-								<ul>
-									<li>ett SITHS-kort med pinkod</li>
-									<li>en kortläsare med tillhörande programvara, NetID</li>
-									<li>ett medarbetaruppdrag som ger dig rätt att ta del av statistik</li>
-								</ul>
-							</p>
-						</div>
-					</div>
-				</div>
-				<div class="accordion-group faq-accordion-group">
-					<div class="accordion-heading faq-accordion-heading">
-						<a class="accordion-toggle faq-accordion-toggle" data-toggle="collapse" href="#a10"><h2>10. Hur läser jag ett stapeldiagram?</h2></a>
-					</div>
-					<div id="a10" class="accordion-body collapse faq-accordion-body">
-						<div class="accordion-inner faq-accordion-inner">
-							<p>
-								Stapeldiagrammet har horisontella eller vertikala staplar som visar jämförelser mellan olika variabler. En axel i diagrammet visar de specifika enheter som jämförs och den andra axeln visar antal eller mängd.
-							</p>
-						</div>
-					</div>
-				</div>
-				<div class="accordion-group faq-accordion-group">
-					<div class="accordion-heading faq-accordion-heading">
-						<a class="accordion-toggle faq-accordion-toggle" data-toggle="collapse" href="#a11"><h2>11. Hur läser jag ett cirkeldiagram?</h2></a>
-					</div>
-					<div id="a11" class="accordion-body collapse faq-accordion-body">
-						<div class="accordion-inner faq-accordion-inner">
-							<p>
-								Cirkeldiagrammet visar andelarna av en totalmängd med hjälp av en cirkelsektor.
-							</p>
-						</div>
-					</div>
-				</div>
-				<div class="accordion-group faq-accordion-group">
-					<div class="accordion-heading faq-accordion-heading">
-						<a class="accordion-toggle faq-accordion-toggle" data-toggle="collapse" href="#a12"><h2>12.	Hur läser jag ett linjediagram?</h2></a>
-					</div>
-					<div id="a12" class="accordion-body collapse faq-accordion-body">
-						<div class="accordion-inner faq-accordion-inner">
-							<p>
-								Linjediagrammet presenterar värdet för en variabel över tid. Det visar värdet för en variabel på den vertikala axeln och tid på den horisontella axeln. I ett linjediagram kan man urskilja trender och jämföra flera tidsserier med varandra samtidigt.
-							</p>
-						</div>
-					</div>
-				</div>
-				<div class="accordion-group faq-accordion-group">
-					<div class="accordion-heading faq-accordion-heading">
-						<a class="accordion-toggle faq-accordion-toggle" data-toggle="collapse" href="#a13"><h2>13.	Hur läser jag ett ytdiagram?</h2></a>
-					</div>
-					<div id="a13" class="accordion-body collapse faq-accordion-body">
-						<div class="accordion-inner faq-accordion-inner">
-							<p>
-								Ytdiagrammet påminner om ett linjediagram men har i stället staplade ytor. Diagrammet visar trender över tid ställt mot staplar som representerar samlade summor. Om flera variabler ingår i diagrammet ritas den första som en linje med färgfyllning som sedan följs av andra variabler. I den översta linjen ser man det totala antalet, och varje del motsvarar det samlade antalet för respektive variabel.
-							</p>
-						</div>
-					</div>
-				</div>
-				<div class="accordion-group faq-accordion-group">
-					<div class="accordion-heading faq-accordion-heading">
-						<a class="accordion-toggle faq-accordion-toggle" data-toggle="collapse" href="#a14"><h2>14.	Hur exporterar jag tabellen till Excel?</h2></a>
-					</div>
-					<div id="a14" class="accordion-body collapse faq-accordion-body">
-						<div class="accordion-inner faq-accordion-inner">
-							<p>
-								På respektive rapportsida finner du en excel-ikon ovanför tabellen. Om du klickar på ikonen kommer tabellen automatiskt laddas ner på din dator och bli möjlig att öppnas i Excel. 
-							</p>
-						</div>
-					</div>
-				</div>
-				<div class="accordion-group faq-accordion-group">
-					<div class="accordion-heading faq-accordion-heading">
-						<a class="accordion-toggle faq-accordion-toggle" data-toggle="collapse" href="#a15"><h2>15.	Vilka webbläsare stöds av Statistiktjänsten?</h2></a>
-					</div>
-					<div id="a15" class="accordion-body collapse faq-accordion-body">
-						<div class="accordion-inner faq-accordion-inner">
-							<p>
-								<p> För att kunna använda Statistiktjänstens funktioner behöver du någon av följande webbläsare:</p>
-								<ul>
-									<li><b>Internet Explorer 8</b> eller efterföljande versioner.</li>
-									<li><b>Google Chrome 30</b> eller efterföljande versioner.</li>
-									<li><b>Safari 5</b> eller efterföljande versioner.</li>
-									<li><b>Firefox 24</b> eller efterföljande versioner.</li>
-								</ul>
-								<p>Du måste även ha JavaScript aktiverat i din webbläsare för att kunna använda Statistiktjänsten.</p>
-							</p>
-						</div>
-					</div>
-				</div>
-				<div class="accordion-group faq-accordion-group">
-					<div class="accordion-heading faq-accordion-heading">
-						<a class="accordion-toggle faq-accordion-toggle" data-toggle="collapse" href="#a16"><h2>16.	Varför ser jag ingen data för den valda verksamheten?</h2></a>
-					</div>
-					<div id="a16" class="accordion-body collapse faq-accordion-body">
-						<div class="accordion-inner faq-accordion-inner">
-							<p>Detta beror på att det i dagsläget inte finns någon inrapporterad data för den valda verksamheten.</p>
-						</div>
-					</div>
+					        </p>
+					    </accordion-group> 
+					</accordion>
+					<accordion close-others="oneAtATime">
+						<accordion-group is-open="status.open">
+					        <accordion-heading>
+					            7. Vad innebär sjukfall?<i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i>
+					        </accordion-heading>
+					        <p>Ett sjukfall omfattar alla de läkarintyg (FK 7263) som rör en viss patient och som har utfärdats med max 5 dagars uppehåll mellan respektive intyg. </p>
+							<p>Exempel: Om intyg 1 gäller till och med den 14 augusti och intyg 2 gäller från och med den 17 augusti ses de båda intygen som samma sjukfall. Men om intyg 2 i stället hade varit giltigt från och med den 21 augusti räknas intygen som två skilda sjukfall.</p>
+					    </accordion-group> 
+					</accordion>
+					<accordion close-others="oneAtATime">
+						<accordion-group is-open="status.open">
+					        <accordion-heading>
+					            8. Vad innebär pågående sjukfall?<i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i>
+					        </accordion-heading>
+					        <p>En rapport som visar pågående sjukfall (syns i namnet på rapporten) syftar till att visa så aktuell information om sjukfallen möjligt. Alla sjukfall som pågår någon gång under aktuell månad hämtas. Rapporten kan inte ta hänsyn till vilken dag det är i månaden. I slutet på månaden kommer fortfarande sjukfall som avslutats under månadens gång visas som pågående.</p>
+					    </accordion-group> 
+					</accordion>
+					<accordion close-others="oneAtATime">
+						<accordion-group is-open="status.open">
+					        <accordion-heading>
+					            9. Vilka olika typer av behörighet finns för att se statistik i Statistiktjänsten?<i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i>
+					        </accordion-heading>
+					        <p>Den allmänna delen av Statistiktjänsten kräver inte någon registrering eller något särskilt konto. </p>
+							<p>Om du har ansvar för verksamhetsuppföljning inom hälso- och sjukvården kan du ta del av statistik som riktar sig särskilt till din vårdenhet. Det krävs då att du har ett medarbetaruppdrag för statistik som delas ut av din verksamhetschef och sätts av din HSA-administratör.<!-- Mer information om medarbetaruppdraget finns HÄR. --> </p>
+							<p>För att kunna logga in och se statistik för enskilda vårdenheter krävs:</p>
+							<ul>
+								<li>ett SITHS-kort med pinkod</li>
+								<li>en kortläsare med tillhörande programvara, NetID</li>
+								<li>ett medarbetaruppdrag som ger dig rätt att ta del av statistik</li>
+							</ul>
+					    </accordion-group> 
+					</accordion>
+					<accordion close-others="oneAtATime">
+						<accordion-group is-open="status.open">
+					        <accordion-heading>
+					            10. Hur läser jag ett stapeldiagram?<i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i>
+					        </accordion-heading>
+					        <p>Stapeldiagrammet har horisontella eller vertikala staplar som visar jämförelser mellan olika variabler. En axel i diagrammet visar de specifika enheter som jämförs och den andra axeln visar antal eller mängd.</p>
+					    </accordion-group> 
+					</accordion>
+					<accordion close-others="oneAtATime">
+						<accordion-group is-open="status.open">
+					        <accordion-heading>
+					            11. Hur läser jag ett cirkeldiagram?<i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i>
+					        </accordion-heading>
+					        <p>Cirkeldiagrammet visar andelarna av en totalmängd med hjälp av en cirkelsektor.</p>
+					    </accordion-group> 
+					</accordion>
+					<accordion close-others="oneAtATime">
+						<accordion-group is-open="status.open">
+					        <accordion-heading>
+					            12.	Hur läser jag ett linjediagram?<i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i>
+					        </accordion-heading>
+					        <p>Linjediagrammet presenterar värdet för en variabel över tid. Det visar värdet för en variabel på den vertikala axeln och tid på den horisontella axeln. I ett linjediagram kan man urskilja trender och jämföra flera tidsserier med varandra samtidigt.</p>
+					    </accordion-group> 
+					</accordion>
+					<accordion close-others="oneAtATime">
+						<accordion-group is-open="status.open">
+					        <accordion-heading>
+					            13.	Hur läser jag ett ytdiagram?<i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i>
+					        </accordion-heading>
+					        <p>Ytdiagrammet påminner om ett linjediagram men har i stället staplade ytor. Diagrammet visar trender över tid ställt mot staplar som representerar samlade summor. Om flera variabler ingår i diagrammet ritas den första som en linje med färgfyllning som sedan följs av andra variabler. I den översta linjen ser man det totala antalet, och varje del motsvarar det samlade antalet för respektive variabel.</p>
+					    </accordion-group> 
+					</accordion>
+					<accordion close-others="oneAtATime">
+						<accordion-group is-open="status.open">
+					        <accordion-heading>
+					            14.	Hur exporterar jag tabellen till Excel?<i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i>
+					        </accordion-heading>
+					        <p>På respektive rapportsida finner du en excel-ikon ovanför tabellen. Om du klickar på ikonen kommer tabellen automatiskt laddas ner på din dator och bli möjlig att öppnas i Excel.</p>
+					    </accordion-group> 
+					</accordion>
+					<accordion close-others="oneAtATime">
+						<accordion-group is-open="status.open">
+					        <accordion-heading>
+					            15.	Vilka webbläsare stöds av Statistiktjänsten?<i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i>
+					        </accordion-heading>
+					        <p>På respektive rapportsida finner du en excel-ikon ovanför tabellen. Om du klickar på ikonen kommer tabellen automatiskt laddas ner på din dator och bli möjlig att öppnas i Excel.</p>
+					    </accordion-group> 
+					</accordion>
+					<accordion close-others="oneAtATime">
+						<accordion-group is-open="status.open">
+					        <accordion-heading>
+					            16.	Varför ser jag ingen data för den valda verksamheten?<i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i>
+					        </accordion-heading>
+					        <p>Detta beror på att det i dagsläget inte finns någon inrapporterad data för den valda verksamheten.</p>
+					    </accordion-group> 
+					</accordion>
 				</div>
 			</div>
 		</section>
