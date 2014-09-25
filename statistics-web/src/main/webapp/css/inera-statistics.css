@@ -479,6 +479,10 @@ legend {
 	color: #008391 !important;
 	text-decoration: underline;
 }
+#about-content .panel-heading {
+	background: #eeeeee;
+}
+#about-content .panel-heading h4 { font-size: 14px; }
 #statistics-menu-accordion .nav-list,
 #statistics-about-menu-accordion .nav-list {
 	padding-left: 0px;
