@@ -23,6 +23,8 @@ public class Enhet {
 
     private String kommunId;
 
+    private String verksamhetsTyper;
+
     public Enhet() {
     }
 
@@ -30,13 +32,14 @@ public class Enhet {
         return id;
     }
 
-    public Enhet(String vardgivareId, String vardgivareNamn, String enhetId, String namn, String lansId, String kommunId) {
+    public Enhet(String vardgivareId, String vardgivareNamn, String enhetId, String namn, String lansId, String kommunId, String verksamhetsTyper) {
         this.vardgivareId = vardgivareId;
         this.vardgivareNamn = vardgivareNamn;
         this.enhetId = enhetId;
         this.namn = namn;
         this.lansId = lansId;
         this.kommunId = kommunId;
+        this.verksamhetsTyper = verksamhetsTyper;
     }
 
     public void setId(long id) {
@@ -82,5 +85,13 @@ public class Enhet {
     public String getKommunId() { return kommunId; }
 
     public void setKommunId(String kommunId) { this.kommunId = kommunId; }
+
+    public String getVerksamhetsTyper() {
+        return verksamhetsTyper;
+    }
+
+    public void setVerksamhetsTyper(String verksamhetsTyper) {
+        this.verksamhetsTyper = verksamhetsTyper;
+    }
 
 }
