@@ -134,6 +134,7 @@ app.statisticsApp.factory('businessFilter', function() {
     businessService.selectedBusinesses = [];
     businessService.geography = { subs: [] };
     businessService.geographyInitialized = false;
+    businessService.verksamhetsTyper = [];
 
     businessService.populateGeography = function (businesses) {
         if (!businessService.geographyInitialized) {
@@ -169,6 +170,24 @@ app.statisticsApp.factory('businessFilter', function() {
     businessService.resetGeography = function () {
         businessService.geography = { subs: [] };
         businessService.geographyInitialized = false;
+    }
+
+    businessService.populateVerksamhet = function (businesses) {
+        var verksamhetsSet = {};
+        for (var i = 0; i < businesses.length; i++) {
+            var business = businesses[i];
+            for (var j = 0; j < business.verksamhetsTyper.length; j++) {
+                var verksamhetsTyp = business.verksamhetsTyper[j];
+                verksamhetsSet[verksamhetsTyp.id] = verksamhetsTyp;
+            }
+        }
+        businessService.verksamhetsTyper = [];
+        var id;
+        for (id in verksamhetsSet) {
+            if (verksamhetsSet.hasOwnProperty(id)) {
+                businessService.verksamhetsTyper.push(verksamhetsSet[id]);
+            }
+        }
     }
 
     return businessService;

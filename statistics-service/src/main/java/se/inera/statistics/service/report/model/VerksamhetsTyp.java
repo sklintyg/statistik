@@ -32,7 +32,7 @@ public class VerksamhetsTyp {
     public VerksamhetsTyp() {
         kodToName.put("10", "Barn- och ungdomsverksamhet");
         kodToName.put("11", "Medicinsk verksamhet");
-        kodToName.put("13", "Laboratorieverksamhet");
+        kodToName.put("12", "Laboratorieverksamhet");
         kodToName.put("13", "Opererande verksamhet");
         kodToName.put("14", "Övrig medicinsk verksamhet");
         kodToName.put("15", "Primärvårdsverksamhet");

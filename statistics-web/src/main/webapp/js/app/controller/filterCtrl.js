@@ -6,9 +6,17 @@ app.filterCtrl = function ($scope, $rootScope, statisticsData, businessFilter) {
         selectedBusinesses : []
     }
 
-    $scope.geography = function () { return businessFilter.geography; }
+    $scope.geography = function () {
+        return businessFilter.geography;
+    }
 
-    $scope.businesses = function () { return businessFilter.businesses; }
+    $scope.businesses = function () {
+        return businessFilter.businesses;
+    }
+
+    $scope.verksamhetsTyper = function () {
+        return businessFilter.verksamhetsTyper;
+    }
 
     $scope.useSmallGUI = function () {
         return businessFilter.businesses.length <= 10;

@@ -92,7 +92,7 @@ public class HSAServiceMock implements HSAService {
         root.put("verksamhet", (JsonNode) null);
         root.put("vardform", (JsonNode) null);
         root.put("geografi", createGeografiskIndelning(key));
-        root.put("verksamhet", asList("1100", "1101"));
+        root.put("verksamhet", asList("1101", "1202"));
         return root;
     }
 

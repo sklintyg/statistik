@@ -409,25 +409,18 @@
                         <div id="statistics-filter-container" class="collapse" collapse="!isFilterCollapsed">
                         	<div class="row">
 				                <div class="filter-level" id="first-level-filter">
-	                                <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3">
-	                                    <label for="select-business-type">Typ av verksamhet:</label><br/>
-	                                    <!-- Select for business-type: -->
-	                                    <select class="multiselect" id="select-business-type" multiselect-dropdown multiple="multiple">
-	                                        <optgroup label="Verksamhetstyper">
-	                                            <option value="1">Barn och ungdom (3)</option>
-	                                            <option value="2">Laboratorie (10)</option>
-	                                            <option value="3">Medicin (32)</option>
-	                                            <option value="4">Opererande (71)</option>
-	                                            <option value="5">Primärvård (13)</option>
-	                                            <option value="6">Psykiatri (20)</option>
-	                                            <option value="7">Radiologi (0)</option>
-	                                            <option value="8">Tandvård (0)</option>
-	                                            <option value="9">Vård, omsorg, omvårdnad (0)</option>
-	                                            <option value="10">Övrig medicin (0)</option>
-	                                            <option value="11">Okänd verksamhetstyp (14)</option>
-	                                        </optgroup>
-	                                    </select>
-	                                </div>
+                                    <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3 clearfix">
+                                        <label for="select-unit">Typ av verksamhet:</label><br/>
+                                        <select ng-model="bc.selectedVerksamhets" multiple="multiple"
+                                                ng-options="verksamhet.id as verksamhet.name for verksamhet in verksamhetsTyper()" multiselect-dropdown id="select-verksamhet">
+                                        </select>
+                                    </div>
+                                    <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3 clearfix" data-ng-if="useSmallGUI()">
+                                        <label for="select-unit">Val av enhet:</label><br/>
+                                        <select ng-model="bc.selectedBusinesses" multiple="multiple"
+                                                ng-options="business.id as business.name for business in businesses()" multiselect-dropdown id="select-unit">
+                                        </select>
+                                    </div>
 	                                <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3" data-ng-if="!useSmallGUI()">
 	                                	<label for="select-geo-unit">Val av enheter:</label><br/>
 	                                    <button class="btn btn-default" data-toggle="modal" data-target="#myModal" id="select-geo-unit" >
@@ -464,12 +457,6 @@
 	                                            </div>
 	                                        </div>
 	                                    </div>
-	                                </div>
-	                                <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3 clearfix" data-ng-if="useSmallGUI()">
-	                                	<label for="select-unit">Val av enhet:</label><br/>
-	                                    <select ng-model="bc.selectedBusinesses" multiple="multiple"
-	                                            ng-options="business.id as business.name for business in businesses()" multiselect-dropdown id="select-unit">
-	                                    </select>
 	                                </div>
 	                            </div>
 	                            <div class="filter-level">
