@@ -411,13 +411,13 @@
 				                <div class="filter-level" id="first-level-filter">
                                     <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3 clearfix">
                                         <label for="select-unit">Typ av verksamhet:</label><br/>
-                                        <select ng-model="bc.selectedVerksamhets" multiple="multiple"
+                                        <select ng-model="selectedVerksamhet.selectedVerksamhets" multiple="multiple"
                                                 ng-options="verksamhet.id as verksamhet.name for verksamhet in verksamhetsTyper()" multiselect-dropdown id="select-verksamhet">
                                         </select>
                                     </div>
                                     <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3 clearfix" data-ng-if="useSmallGUI()">
                                         <label for="select-unit">Val av enhet:</label><br/>
-                                        <select ng-model="bc.selectedBusinesses" multiple="multiple"
+                                        <select ng-model="selectedGeography.selectedBusinesses" multiple="multiple"
                                                 ng-options="business.id as business.name for business in businesses()" multiselect-dropdown id="select-unit">
                                         </select>
                                     </div>

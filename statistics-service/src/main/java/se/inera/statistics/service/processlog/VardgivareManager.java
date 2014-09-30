@@ -43,6 +43,7 @@ public class VardgivareManager {
         List<Enhet> resultList = vardgivareQuery.setParameter("enhetId", enhet).setParameter("vardgivareId", vardgivare).getResultList();
 
         if (resultList.isEmpty()) {
+            LOG.warn("id: {}, verksamhetTyper: {}", enhet, verksamhetsTyper);
             manager.persist(new Enhet(vardgivare, vardgivareNamn, enhet, enhetNamn, lansId, kommunId, verksamhetsTyper));
         } else {
             Enhet updatedEnhet = resultList.get(0);
