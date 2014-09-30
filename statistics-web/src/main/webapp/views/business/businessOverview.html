@@ -25,12 +25,14 @@
 		        <h2 class="business-name-header print-only-no-display"><span class="dontprint">- </span>{{ verksamhetName }}</h2>
 		    </div>
 		</div>
-		<div class="row dontprint">
-		    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 pull-left">
-		        <h1 class="national-statistic-h1 pull-left" id="verksamhetOverviewHeading" data-ng-bind="viewHeader"></h1>
-		        <span class="business-name-header" data-ng-show="verksamhetName">- {{ verksamhetName }}</span>
-		    </div>
-		</div>
+		<div class="row">
+			<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 pull-left dontprint right-2px-padding" style="width: auto !important; float: left;">
+				<h1 class="national-statistic-h1" data-ng-bind="viewHeader" style="line-height: 17px; margin-bottom: 0px;"></h1>
+			</div>
+	    	<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 pull-left dontprint left-2px-padding" id="business-name-header-container" style="width: auto !important; float: left; margin-left: 0px;">
+				<h2 class="business-name-header" style="line-height: 16px;">{{ verksamhetName }}</h2> 
+			</div>
+	    </div>
 		<div class="row">
 		    <span class="col-xs-12 col-sm-9 col-md-9 col-lg-9 overview-ingress pull-left" data-ng-bind="subTitle"></span>
 		    <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 pull-right margin-bottom dontprint" data-ng-class="{margin_top_button_group: showDetailsOptions}"

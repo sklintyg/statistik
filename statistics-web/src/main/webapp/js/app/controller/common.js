@@ -22,7 +22,7 @@
 var ControllerCommons = new function(){
 
     this.addColor = function(rawData) {
-        var color = [ "#fbb10c", "#2ca2c6", "#B0B0B0", "#12BC3A", "#9c734d", "#D35ABB", "#4A4A4A" ];
+        var color = [ "#fbb10c", "#2ca2c6", "#B0B0B0", "#12BC3A", "#9c734d", "#D35ABB", "#4A4A4A", "#25ffed" ];
         var maleColor = [ "#008391", "#00CDE3" ];
         var femaleColor = [ "#EA8025", "#FFC18C" ];
         var colorSelector = 0;
