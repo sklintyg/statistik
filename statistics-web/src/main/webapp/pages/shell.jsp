@@ -468,7 +468,7 @@
 	                            </div>
 				        	</div>
 	                    </div>
-                        <button id="show-hide-filter-btn" type="button" class="btn btn-small pull-right" data-toggle="collapse" data-target="#statistics-filter-container" ng-click="isCollapsed = !isCollapsed" ng-show="isLoggedIn">
+                        <button id="show-hide-filter-btn" type="button" class="btn btn-small pull-right" data-toggle="collapse" data-target="#statistics-filter-container" ng-click="isCollapsed = !isCollapsed" ng-show="verksamhetIdParam">
                             Gör urval
                         </button>
                     </div>

@@ -157,7 +157,7 @@ app.filterCtrl = function ($scope, $rootScope, statisticsData, businessFilter) {
         if (node.subs) {
             if (node.allSelected || node.someSelected ) {
                 ControllerCommons.map(node.subs, function (item) {
-                    returnList = Array.concat(returnList, $scope.collectSelectedIds(item));
+                    returnList = Array.concat(returnList, $scope.collectGeographyIds(item));
                 });
             }
         } else {
