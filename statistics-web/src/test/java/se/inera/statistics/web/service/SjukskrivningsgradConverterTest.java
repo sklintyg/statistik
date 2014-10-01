@@ -39,11 +39,10 @@ public class SjukskrivningsgradConverterTest {
 
     @Test
     public void tableConverterTestEmptyInput() {
-//        DiagnosisGroupResponse resp = new DiagnosisGroupResponse(new ArrayList<DiagnosisGroup>(), new ArrayList<DiagnosisGroupRow>());
         final SjukskrivningsgradResponse resp = new SjukskrivningsgradResponse(new ArrayList<String>(), new ArrayList<KonDataRow>());
         TableData tableData = DegreeOfSickLeaveConverter.convertTable(resp);
-        assertEquals("[[;1, ;1], [Period;1, Antal sjukfall totalt;1, Summering;1]]", tableData.getHeaders().toString());
-        assertEquals("[Totalt: []]", tableData.getRows().toString());
+        assertEquals("[[;1, ;1], [Period;1, Antal sjukfall totalt;1]]", tableData.getHeaders().toString());
+        assertEquals("[]", tableData.getRows().toString());
     }
 
     @Test
@@ -62,8 +61,8 @@ public class SjukskrivningsgradConverterTest {
         TableData tableData = DegreeOfSickLeaveConverter.convertTable(resp);
 
         //Then
-        assertEquals("[[;1, ;1, Antal sjukfall med 50% sjukskrivningsgrad;2], [Period;1, Antal sjukfall totalt;1, Kvinnor;1, Män;1, Summering;1]]", tableData.getHeaders().toString());
-        assertEquals("[period1: [5, 3, 2, 5], Totalt: [5, 3, 2]]", tableData.getRows().toString());
+        assertEquals("[[;1, ;1, Antal sjukfall med 50% sjukskrivningsgrad;2], [Period;1, Antal sjukfall totalt;1, Kvinnor;1, Män;1]]", tableData.getHeaders().toString());
+        assertEquals("[period1: [5, 3, 2]]", tableData.getRows().toString());
     }
 
     @Test
@@ -97,8 +96,8 @@ public class SjukskrivningsgradConverterTest {
         assertEquals("[period1]", data.getMaleChart().getCategories().toString());
         assertTrue(data.getMaleChart().getSeries().toString(), data.getMaleChart().getSeries().toString().contains("Antal sjukfall med 50% sjukskrivningsgrad: [2]"));
 
-        assertEquals("[[;1, ;1, Antal sjukfall med 50% sjukskrivningsgrad;2], [Period;1, Antal sjukfall totalt;1, Kvinnor;1, Män;1, Summering;1]]", data.getTableData().getHeaders().toString());
-        assertEquals("[period1: [5, 3, 2, 5], Totalt: [5, 3, 2]]", data.getTableData().getRows().toString());
+        assertEquals("[[;1, ;1, Antal sjukfall med 50% sjukskrivningsgrad;2], [Period;1, Antal sjukfall totalt;1, Kvinnor;1, Män;1]]", data.getTableData().getHeaders().toString());
+        assertEquals("[period1: [5, 3, 2]]", data.getTableData().getRows().toString());
     }
 
 }

@@ -58,23 +58,19 @@ public class DegreeOfSickLeaveConverter {
 
     static TableData convertTable(SjukskrivningsgradResponse resp) {
         List<NamedData> rows = getTableRows(resp);
-        ServiceUtil.addSumRow(rows, false);
         List<List<TableHeader>> headers = getTableHeaders(resp);
         return new TableData(rows, headers);
     }
 
     private static List<NamedData> getTableRows(SjukskrivningsgradResponse resp) {
         List<NamedData> rows = new ArrayList<>();
-        int accumulatedSum = 0;
         for (KonDataRow row : resp.getRows()) {
             List<Integer> mergedSexData = ServiceUtil.getMergedSexData(row);
             int sum = 0;
             for (Integer dataField : mergedSexData) {
                 sum += dataField;
             }
-            accumulatedSum += sum;
             mergedSexData.add(0, sum);
-            mergedSexData.add(accumulatedSum);
             rows.add(new NamedData(row.getName(), mergedSexData));
         }
         return rows;
@@ -92,11 +88,10 @@ public class DegreeOfSickLeaveConverter {
         List<TableHeader> subHeaderRow = new ArrayList<>();
         subHeaderRow.add(new TableHeader("Period"));
         subHeaderRow.add(new TableHeader("Antal sjukfall totalt"));
-        for (int i = 0; i < degreesOfSickLeave.size(); i++) {
+        for (String s : degreesOfSickLeave) {
             subHeaderRow.add(new TableHeader("Kvinnor"));
             subHeaderRow.add(new TableHeader("Män"));
         }
-        subHeaderRow.add(new TableHeader("Summering"));
 
         List<List<TableHeader>> headers = new ArrayList<>();
         headers.add(topHeaderRow);

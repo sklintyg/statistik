@@ -37,14 +37,11 @@ public class AgeGroupsConverter {
 
     private TableData convertToTable(List<SimpleKonDataRow> list) {
         List<NamedData> data = new ArrayList<>();
-        int accumulatedSum = 0;
         for (SimpleKonDataRow row : list) {
             int rowSum = row.getFemale() + row.getMale();
-            accumulatedSum += rowSum;
-            data.add(new NamedData(row.getName(), Arrays.asList(rowSum, row.getFemale(), row.getMale(), accumulatedSum)));
+            data.add(new NamedData(row.getName(), Arrays.asList(rowSum, row.getFemale(), row.getMale())));
         }
-        ServiceUtil.addSumRow(data, false);
-        return TableData.createWithSingleHeadersRow(data, Arrays.asList("Åldersgrupper", "Antal sjukfall totalt", "Antal sjukfall för kvinnor", "Antal sjukfall för män", "Summering"));
+        return TableData.createWithSingleHeadersRow(data, Arrays.asList("Åldersgrupper", "Antal sjukfall totalt", "Antal sjukfall för kvinnor", "Antal sjukfall för män"));
     }
 
 

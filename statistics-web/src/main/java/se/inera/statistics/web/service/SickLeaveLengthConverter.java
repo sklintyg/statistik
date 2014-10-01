@@ -37,14 +37,11 @@ public class SickLeaveLengthConverter {
 
     private TableData convertToTable(List<SjukfallslangdRow> sickLeaveLengths) {
         List<NamedData> data = new ArrayList<>();
-        int accumulatedSum = 0;
         for (SjukfallslangdRow row : sickLeaveLengths) {
             int rowSum = row.getFemale() + row.getMale();
-            accumulatedSum += rowSum;
-            data.add(new NamedData(row.getGroup(), Arrays.asList(rowSum, row.getFemale(), row.getMale(), accumulatedSum)));
+            data.add(new NamedData(row.getGroup(), Arrays.asList(rowSum, row.getFemale(), row.getMale())));
         }
-        ServiceUtil.addSumRow(data, false);
-        return TableData.createWithSingleHeadersRow(data, Arrays.asList("Sjukskrivningslängd", "Antal sjukfall totalt", "Antal sjukfall för kvinnor", "Antal sjukfall för män", "Summering"));
+        return TableData.createWithSingleHeadersRow(data, Arrays.asList("Sjukskrivningslängd", "Antal sjukfall totalt", "Antal sjukfall för kvinnor", "Antal sjukfall för män"));
     }
 
 
