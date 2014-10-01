@@ -56,7 +56,7 @@
                 businessFilter.businesses = loginInfo.businesses;
                 businessFilter.populateGeography(loginInfo.businesses);
                 var v = getSelectedVerksamhet($scope.businessId, loginInfo.businesses);
-                $scope.verksamhetName = loginInfo.vgView ? (v.vardgivarName + (loginInfo.fullVgAccess ? "(alla enheter)": "(vissa enheter)")): v.name;
+                $scope.verksamhetName = loginInfo.vgView ? ("- "+ v.vardgivarName + (loginInfo.fullVgAccess ? "(alla enheter)": "(vissa enheter)")): v.name;
                 $scope.userName = loginInfo.name;
                 $scope.isVgView = loginInfo.vgView;
                 $scope.isFullVgAccess = loginInfo.fullVgAccess;

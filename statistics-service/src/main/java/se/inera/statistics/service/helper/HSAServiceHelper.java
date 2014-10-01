@@ -20,10 +20,19 @@
 package se.inera.statistics.service.helper;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.google.common.base.Function;
+import com.google.common.base.Joiner;
+import com.google.common.collect.Iterators;
 import se.inera.statistics.service.report.model.Kommun;
 import se.inera.statistics.service.report.model.Lan;
+import se.inera.statistics.service.report.model.VerksamhetsTyp;
+
+import java.util.Iterator;
+import java.util.List;
 
 public final class HSAServiceHelper {
+
+    private static Joiner joiner = Joiner.on(",").skipNulls();
 
     private HSAServiceHelper() {
     }
@@ -115,9 +124,33 @@ public final class HSAServiceHelper {
             return 0;
         }
     }
+
     public static String getLakarbefattning(JsonNode hsaData) {
         String result = hsaData.path("personal").path("befattning").textValue();
         return result != null ? result : "";
+    }
+
+    public static String getVerksamhetsTyper(JsonNode hsaData) {
+        if (hsaData != null) {
+            String result = getVerksamhetsTyper(hsaData, "enhet");
+            if (result == null) {
+                result = getVerksamhetsTyper(hsaData, "huvudenhet");
+            }
+            return result != null ? result : VerksamhetsTyp.OVRIGT_ID;
+        } else {
+            return VerksamhetsTyp.OVRIGT_ID;
+        }
+    }
+
+    private static String getVerksamhetsTyper(JsonNode hsaData, String enhet) {
+        Iterator<String> stringIterator = Iterators.transform(hsaData.path(enhet).path("verksamhet").elements(),
+                new Function<JsonNode, String>() {
+                    @Override
+                    public String apply(JsonNode node) {
+                        return node.asText();
+                    }
+                });
+        return joiner.join(stringIterator);
     }
 
     private static String getEnhetId(JsonNode hsaData, String enhet) {

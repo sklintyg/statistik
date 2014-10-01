@@ -47,7 +47,7 @@ h1 { margin-top: 10px; margin-bottom: 30px; }
 .business-name-header { 
 	margin-left: 5px;
 	color: #008391 !important;
-	top: 21px;
+	/*top: 21px;*/
 	position: relative;
 }
 p {
@@ -878,7 +878,7 @@ div.accordion-body.in.collapse > div.accordion-heading a.accordion-toggle{
 .header-box-user-profile .btn-group .dropdown-menu li a{
 	color: #000 !important;
 }
-#navigation-container .btn, #view .btn {
+/*#navigation-container .btn, #view .btn {
 	color: #ffffff;
 	text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
 	background-color: #363636;
@@ -892,7 +892,7 @@ div.accordion-body.in.collapse > div.accordion-heading a.accordion-toggle{
 	border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
 	/*filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff444444', endColorstr='#ff222222', GradientType=0);
 	filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);*/
-}
+}*/
 
 #view .btn.statistic-btn:hover, #view .btn.statistic-btn.btn-large:hover { background-color: #000; }
 
@@ -999,7 +999,7 @@ div.headerbox-user { font-size: 13px; line-height: 16px;}
 }
 .statistics-btn-group .dropdown-menu>li>a {
 	display: block;
-	padding: 3px 1px;
+	padding: 3px 15px 3px 15px;
 }
 .statistics-btn-group ul.dropdown-menu li a.disabled {
 	color: #E3E3E3;
@@ -1015,12 +1015,11 @@ ul.dropdown-menu li a:hover {
 	color: #0b0b0b !important;
 	cursor: pointer;
 }
-.statistics-btn-group a span.caret {
+/*.statistics-btn-group a span.caret {
 	border-top-color: #ffffff !important;
 	border-bottom-color: #ffffff;
-}
+}*/
 span.caret {
-	border-top-color: #ffffff;
 	margin-left: 10px !important;
 }
 #push, #footer {

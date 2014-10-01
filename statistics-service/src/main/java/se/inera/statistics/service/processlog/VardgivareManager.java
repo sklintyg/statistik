@@ -27,6 +27,7 @@ public class VardgivareManager {
         String vardgivareNamn = HSAServiceHelper.getVardgivarNamn(hsaInfo);
         String lansId = HSAServiceHelper.getLan(hsaInfo);
         String kommunId = HSAServiceHelper.getKommun(hsaInfo);
+        String verksamhetsTyper = HSAServiceHelper.getVerksamhetsTyper(hsaInfo);
 
         if (enhetNamn == null) {
             enhetNamn = enhet;
@@ -42,13 +43,14 @@ public class VardgivareManager {
         List<Enhet> resultList = vardgivareQuery.setParameter("enhetId", enhet).setParameter("vardgivareId", vardgivare).getResultList();
 
         if (resultList.isEmpty()) {
-            manager.persist(new Enhet(vardgivare, vardgivareNamn, enhet, enhetNamn, lansId, kommunId));
+            manager.persist(new Enhet(vardgivare, vardgivareNamn, enhet, enhetNamn, lansId, kommunId, verksamhetsTyper));
         } else {
             Enhet updatedEnhet = resultList.get(0);
             updatedEnhet.setVardgivareNamn(vardgivareNamn);
             updatedEnhet.setNamn(enhetNamn);
             updatedEnhet.setLansId(lansId);
             updatedEnhet.setKommunId(kommunId);
+            updatedEnhet.setVerksamhetsTyper(verksamhetsTyper);
             manager.merge(updatedEnhet);
         }
     }

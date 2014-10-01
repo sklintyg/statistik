@@ -23,6 +23,8 @@ import static org.apache.commons.lang3.text.translate.UnicodeEscaper.above;
 import static org.apache.commons.lang3.text.translate.UnicodeEscaper.between;
 
 import java.io.Serializable;
+import java.util.List;
+import java.util.Set;
 
 import org.apache.commons.lang3.text.translate.CharSequenceTranslator;
 import org.apache.commons.lang3.text.translate.UnicodeEscaper;
@@ -39,6 +41,7 @@ public class Verksamhet implements Serializable {
     private final String lansName;
     private final String kommunId;
     private final String kommunName;
+    private final Set<VerksamhetsTyp> verksamhetsTyper;
 
     private static final CharSequenceTranslator ESCAPER = UnicodeEscaper.below('-').with(excludeBetween('-', '0'), excludeBetween('9', 'A'), excludeBetween('Z', 'a'), above('z'));
 
@@ -46,7 +49,7 @@ public class Verksamhet implements Serializable {
         return between(codepointLow + 1, codepointHigh - 1);
     }
 
-    public Verksamhet(String id, String name, String vardgivarId, String vardgivarName, String lansId, String lansName, String kommunId, String kommunName) {
+    public Verksamhet(String id, String name, String vardgivarId, String vardgivarName, String lansId, String lansName, String kommunId, String kommunName, Set<VerksamhetsTyp> verksamhetsTyper) {
         this.id = id;
         this.name = name;
         this.vardgivarId = vardgivarId;
@@ -55,6 +58,7 @@ public class Verksamhet implements Serializable {
         this.lansName = lansName;
         this.kommunId = kommunId;
         this.kommunName = kommunName;
+        this.verksamhetsTyper = verksamhetsTyper;
     }
 
     public String getId() {
@@ -81,6 +85,10 @@ public class Verksamhet implements Serializable {
 
     public String getKommunName() { return kommunName; }
 
+    public Set<VerksamhetsTyp> getVerksamhetsTyper() {
+        return verksamhetsTyper;
+    }
+
     public static String encodeId(String id) {
         return ESCAPER .translate(id).replace('\\', '_');
     }
@@ -88,4 +96,15 @@ public class Verksamhet implements Serializable {
     public static String decodeId(String encodedId) {
         return new UnicodeUnescaper().translate(encodedId.replace('_', '\\'));
     }
+
+    public static class VerksamhetsTyp implements Serializable {
+        public final String id;
+        public final String name;
+
+        public VerksamhetsTyp(String id, String name) {
+            this.id = id;
+            this.name = name;
+        }
+    }
+
 }

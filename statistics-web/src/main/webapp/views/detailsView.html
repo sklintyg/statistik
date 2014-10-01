@@ -25,11 +25,11 @@
  		</div>
  	</div>
 	<div class="row">
-		<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 pull-left dontprint" style="width: auto !important; float: left;">
+		<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 pull-left dontprint right-2px-padding" style="width: auto !important;">
 			<h1 class="national-statistic-h1" data-ng-bind="viewHeader" style="line-height: 17px; margin-bottom: 0px;"></h1>
 		</div>
-    	<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 pull-left dontprint" id="business-name-header-container" style="width: auto !important; float: left; margin-left: 0px;">
-			<h2 class="business-name-header" style="line-height: 20px;">- {{ verksamhetName }}</h2> 
+    	<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 pull-left dontprint left-2px-padding" id="business-name-header-container" style="width: auto !important;">
+			<h2 class="business-name-header" style="line-height: 16px;">{{ verksamhetName }}</h2> 
 		</div>
     </div>
 	<div class="row">
@@ -58,8 +58,8 @@
     		<label class="dropdown-label" for="selectDiagnosticChapter">Välj annat diagnoskapitel:</label>
     	</span>
    		<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 pull-left" data-ng-show="showDetailsOptions">
-       		<div class="btn-group margin-bottom"  id="detailsOptionsDropdown">
-           		<a class="btn dropdown-toggle" id="selectDiagnosticChapter" data-toggle="dropdown" href="#" style="overflow: hidden; text-overflow: ellipsis; max-width: 350px;">
+       		<div class="btn-group margin-bottom" id="detailsOptionsDropdown">
+           		<a class="multiselect dropdown-toggle btn btn-default" id="selectDiagnosticChapter" data-toggle="dropdown" href="#" style="overflow: hidden; text-overflow: ellipsis; max-width: 350px;">
            			<span class="caret pull-right" style="margin-top: 9px;"></span>
            			<span>{{selectedDetailsOption.id}} {{selectedDetailsOption.name}}</span>
            		</a>
@@ -71,7 +71,7 @@
        	<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 pull-right" data-ng-class="{margin_top_button_group: showDetailsOptions}" style="margin-bottom: 10px;">
 			<!-- PRINT BUTTON GROUP -->
 			<div class="btn-group statistics-btn-group">
-			  <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+			  <a class="multiselect dropdown-toggle btn btn-default" data-toggle="dropdown" href="#">
 			    Val för rapport
 			    <span class="caret"></span>
 			  </a>
