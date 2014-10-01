@@ -33,7 +33,7 @@ app.statisticsApp.factory('statisticsData', function ($http) {
 
     var getEnhetsIdString = function (params) {
         var returnString = ""
-        if (params && params.length > 0) {
+        if (params) {
             returnString += "?ids="
             returnString += params.join()
         }
