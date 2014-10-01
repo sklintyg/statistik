@@ -131,28 +131,31 @@ app.statisticsApp.factory('businessFilter', function() {
     var businessService = {};
 
     businessService.reset = function () {
+        businessService.dataInitialized = false;
+
         businessService.businesses = [];
         businessService.selectedBusinesses = [];
+
         businessService.geography = { subs: [] };
-        businessService.geographyInitialized = false;
-        businessService.geographyBusinesses = [];
+        businessService.geographyBusinessIds = [];
+
         businessService.verksamhetsTyper = [];
-        businessService.verksamhetsBusinesses = [];
+        businessService.verksamhetsTypIds = [];
     }
     businessService.reset();
 
     businessService.loggedIn = function (businesses) {
-        if (!businessService.geographyInitialized) {
+        if (!businessService.dataInitialized) {
             businessService.businesses = businesses;
             if (businessService.useSmallGUI()) {
                 for (var i = 0; i < businesses.length; i++) {
-                    businessService.geographyBusinesses.push(businesses[i].id);
+                    businessService.geographyBusinessIds.push(businesses[i].id);
                 }
             } else {
                 businessService.populateGeography(businesses);
             }
-            businessService.populateVerksamhet(businesses);
-            businessService.geographyInitialized = true;
+            businessService.populateVerksamhetsTyper(businesses);
+            businessService.dataInitialized = true;
         }
     }
 
@@ -194,21 +197,21 @@ app.statisticsApp.factory('businessFilter', function() {
         }
     };
 
-    businessService.populateVerksamhet = function (businesses) {
-        var verksamhetsSet = {};
+    businessService.populateVerksamhetsTyper = function (businesses) {
+        var verksamhetsTypSet = {};
         for (var i = 0; i < businesses.length; i++) {
             var business = businesses[i];
             for (var j = 0; j < business.verksamhetsTyper.length; j++) {
                 var verksamhetsTyp = business.verksamhetsTyper[j];
-                verksamhetsSet[verksamhetsTyp.id] = verksamhetsTyp;
+                verksamhetsTypSet[verksamhetsTyp.id] = verksamhetsTyp;
             }
         }
         businessService.verksamhetsTyper = [];
         var id;
-        for (id in verksamhetsSet) {
-            if (verksamhetsSet.hasOwnProperty(id)) {
-                businessService.verksamhetsTyper.push(verksamhetsSet[id]);
-                businessService.verksamhetsBusinesses.push(id);
+        for (id in verksamhetsTypSet) {
+            if (verksamhetsTypSet.hasOwnProperty(id)) {
+                businessService.verksamhetsTyper.push(verksamhetsTypSet[id]);
+                businessService.verksamhetsTypIds.push(id);
             }
         }
     }

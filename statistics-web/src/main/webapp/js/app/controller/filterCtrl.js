@@ -3,11 +3,11 @@
 app.filterCtrl = function ($scope, $rootScope, statisticsData, businessFilter) {
 
     $scope.selectedGeography = {
-        selectedBusinesses : businessFilter.geographyBusinesses
+        selectedBusinessIds : businessFilter.geographyBusinessIds
     }
 
     $scope.selectedVerksamhet = {
-        selectedVerksamhets : businessFilter.verksamhetsBusinesses
+        selectedVerksamhetsTypIds : businessFilter.verksamhetsTypIds
     }
 
     $scope.geography = function () {
@@ -170,8 +170,8 @@ app.filterCtrl = function ($scope, $rootScope, statisticsData, businessFilter) {
 
     $scope.collectVerksamhetsIds = function () {
         var selectedBusinessSet = {};
-        for (var i = 0; i < $scope.selectedVerksamhet.selectedVerksamhets.length; i++) {
-            var selectedVerksamhetsId = $scope.selectedVerksamhet.selectedVerksamhets[i];
+        for (var i = 0; i < businessFilter.verksamhetsTypIds.length; i++) {
+            var selectedVerksamhetsId = businessFilter.verksamhetsTypIds[i];
             for (var j = 0; j < businessFilter.businesses.length; j++) {
                 var business = businessFilter.businesses[j];
                 for (var k = 0; k < business.verksamhetsTyper.length; k++) {
@@ -182,14 +182,14 @@ app.filterCtrl = function ($scope, $rootScope, statisticsData, businessFilter) {
                 }
             }
         }
-        var selectedBusinesses = [];
+        var selectedBusinessIds = [];
         var id;
         for (id in selectedBusinessSet) {
             if (selectedBusinessSet.hasOwnProperty(id)) {
-                selectedBusinesses.push(id);
+                selectedBusinessIds.push(id);
             }
         }
-        return selectedBusinesses;
+        return selectedBusinessIds;
     }
 
     $scope.findCut = function (businessIds1, businessIds2) {
@@ -204,18 +204,17 @@ app.filterCtrl = function ($scope, $rootScope, statisticsData, businessFilter) {
     }
 
     $scope.makeUnitSelection = function () {
-        var geographyIds;
+        var geographyBusinessIds;
         if (businessFilter.useSmallGUI()) {
-            geographyIds = $scope.selectedGeography.selectedBusinesses;
+            geographyBusinessIds = businessFilter.geographyBusinessIds;
         } else {
-            geographyIds = $scope.collectGeographyIds(businessFilter.geography);
+            geographyBusinessIds = $scope.collectGeographyIds(businessFilter.geography);
         }
-        var verksamhetsIds = $scope.collectVerksamhetsIds();
-        businessFilter.selectedBusinesses = $scope.findCut(geographyIds, verksamhetsIds);
+        var verksamhetsBusinessIds = $scope.collectVerksamhetsIds();
+        businessFilter.selectedBusinesses = $scope.findCut(geographyBusinessIds, verksamhetsBusinessIds);
         $rootScope.$broadcast('filterChange', '');
     }
 
     selectAll(businessFilter.geography);
     updateState(businessFilter.geography);
-
 };
