@@ -181,15 +181,19 @@
         return donutData;
     }
 
-     function refresh() {
-         statisticsData.getBusinessOverview($routeParams.verksamhetId, businessFilter.selectedBusinesses, dataReceived, function() { $scope.dataLoadingError = true; });
+     function refresh(withSelectedBusinesses) {
+         var enhetsIds = null;
+         if (withSelectedBusinesses) {
+             enhetsIds = businessFilter.selectedBusinesses;
+         }
+         statisticsData.getBusinessOverview($routeParams.verksamhetId, enhetsIds, dataReceived, function () { $scope.dataLoadingError = true; });
      }
 
      $scope.$on('filterChange', function(event, data) {
-         refresh();
+         refresh(true);
      });
 
-    refresh();
+    refresh(false);
     $scope.spinnerText = "Laddar information...";
     $scope.doneLoading = false;
     $scope.dataLoadingError = false;

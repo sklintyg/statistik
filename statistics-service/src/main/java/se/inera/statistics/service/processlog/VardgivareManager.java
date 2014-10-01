@@ -14,7 +14,6 @@ import java.util.List;
 
 @Component
 public class VardgivareManager {
-    private static final Logger LOG = LoggerFactory.getLogger(VardgivareManager.class);
 
     @PersistenceContext(unitName = "IneraStatisticsLog")
     private EntityManager manager;
