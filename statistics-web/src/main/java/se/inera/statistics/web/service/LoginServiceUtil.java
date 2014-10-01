@@ -95,10 +95,6 @@ public class LoginServiceUtil {
             }
         });
 
-        if (enhetOpt.isPresent()) {
-            LOG.warn("id: {}, verksamhetTyper: {}", enhetOpt.get().getEnhetId(), enhetOpt.get().getVerksamhetsTyper());
-        }
-
         String lansId = enhetOpt.isPresent() ? enhetOpt.get().getLansId() : Lan.OVRIGT_ID;
         String lansNamn = lan.getNamn(lansId);
         String kommunId = enhetOpt.isPresent() ? enhetOpt.get().getKommunId() : Kommun.OVRIGT_ID;

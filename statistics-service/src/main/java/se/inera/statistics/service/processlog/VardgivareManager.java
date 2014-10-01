@@ -14,7 +14,6 @@ import java.util.List;
 
 @Component
 public class VardgivareManager {
-    private static final Logger LOG = LoggerFactory.getLogger(VardgivareManager.class);
 
     @PersistenceContext(unitName = "IneraStatisticsLog")
     private EntityManager manager;
@@ -43,7 +42,6 @@ public class VardgivareManager {
         List<Enhet> resultList = vardgivareQuery.setParameter("enhetId", enhet).setParameter("vardgivareId", vardgivare).getResultList();
 
         if (resultList.isEmpty()) {
-            LOG.warn("id: {}, verksamhetTyper: {}", enhet, verksamhetsTyper);
             manager.persist(new Enhet(vardgivare, vardgivareNamn, enhet, enhetNamn, lansId, kommunId, verksamhetsTyper));
         } else {
             Enhet updatedEnhet = resultList.get(0);
