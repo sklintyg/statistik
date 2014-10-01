@@ -182,15 +182,11 @@
     }
 
      function refresh(withSelectedBusinesses) {
+         var enhetsIds = null;
          if (withSelectedBusinesses) {
-             statisticsData.getBusinessOverview($routeParams.verksamhetId, businessFilter.selectedBusinesses, dataReceived, function () {
-                 $scope.dataLoadingError = true;
-             });
-         } else {
-             statisticsData.getBusinessOverview($routeParams.verksamhetId, null, dataReceived, function () {
-                 $scope.dataLoadingError = true;
-             });
+             enhetsIds = businessFilter.selectedBusinesses;
          }
+         statisticsData.getBusinessOverview($routeParams.verksamhetId, enhetsIds, dataReceived, function () { $scope.dataLoadingError = true; });
      }
 
      $scope.$on('filterChange', function(event, data) {
