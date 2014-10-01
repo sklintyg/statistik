@@ -32,7 +32,15 @@
 	background-color: #428bca;
 	border-color: #357ebd;
 }
-#show-hide-filter-btn { padding: 5px 30px 5px 30px; margin-right: 5px; border-top: none; border-radius: 0px 0px 0px 0px; }
+#show-hide-filter-btn { 
+	padding: 5px 30px 5px 30px;
+	margin-right: 5px;
+	border-top: none;
+	border-radius: 0px 0px 5px 5px;
+	background-color: #008391;
+	color: #fff;
+}
+#show-hide-filter-btn:hover { background-color: #0195a5; }
 [data-toggle="buttons"]>.btn>input[type="radio"], [data-toggle="buttons"]>.btn>input[type="checkbox"] {
 	display: none;
 }
