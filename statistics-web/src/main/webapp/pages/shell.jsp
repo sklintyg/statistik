@@ -450,7 +450,7 @@
 	                                                </div>
 	                                                <div class="modal-footer">
 	                                                    <label class="pull-left">Ditt urval:</label><br/>
-	                                                    <label class="pull-left">Enheter: {{selectedLeavesCount(geography())}} Kommuner: {{selectedAvsnittCount(geography())}} Län: {{selectedKapitelCount(geography())}}</label>
+	                                                    <label class="pull-left">Enheter: {{selectedLeavesCount(geography())}} Kommuner: {{selectedSecondaryCount(geography())}} Län: {{selectedTertiaryCount(geography())}}</label>
 	                                                    <button class="btn btn-success" data-dismiss="modal" aria-hidden="true">Spara och stäng</button>
 	                                                    <button type="button" class="btn btn-default" data-dismiss="modal" aria-hidden="true">Stäng</button>
 	                                                </div>

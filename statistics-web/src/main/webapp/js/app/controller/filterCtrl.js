@@ -3,11 +3,11 @@
 app.filterCtrl = function ($scope, $rootScope, statisticsData, businessFilter) {
 
     $scope.selectedGeography = {
-        selectedBusinesses : []
+        selectedBusinesses : businessFilter.geographyBusinesses
     }
 
     $scope.selectedVerksamhet = {
-        selectedVerksamhets : []
+        selectedVerksamhets : businessFilter.verksamhetsBusinesses
     }
 
     $scope.geography = function () {
@@ -23,7 +23,7 @@ app.filterCtrl = function ($scope, $rootScope, statisticsData, businessFilter) {
     }
 
     $scope.useSmallGUI = function () {
-        return businessFilter.businesses.length <= 10;
+        return businessFilter.useSmallGUI();
     }
 
     $scope.recursionhelper = {
@@ -128,7 +128,7 @@ app.filterCtrl = function ($scope, $rootScope, statisticsData, businessFilter) {
         return c;
     };
 
-    $scope.selectedKapitelCount = function (node) {
+    $scope.selectedTertiaryCount = function (node) {
         var c = 0;
         ControllerCommons.map(node.subs, function (item) {
             if ($scope.selectedLeavesCount(item) > 0) {
@@ -139,7 +139,7 @@ app.filterCtrl = function ($scope, $rootScope, statisticsData, businessFilter) {
         return c;
     };
 
-    $scope.selectedAvsnittCount = function (node) {
+    $scope.selectedSecondaryCount = function (node) {
         var c = 0;
         ControllerCommons.map(node.subs, function (item) {
             ControllerCommons.map(item.subs, function (item) {
@@ -205,8 +205,8 @@ app.filterCtrl = function ($scope, $rootScope, statisticsData, businessFilter) {
 
     $scope.makeUnitSelection = function () {
         var geographyIds;
-        if ($scope.useSmallGUI()) {
-             geographyIds = $scope.selectedGeography.selectedBusinesses;
+        if (businessFilter.useSmallGUI()) {
+            geographyIds = $scope.selectedGeography.selectedBusinesses;
         } else {
             geographyIds = $scope.collectGeographyIds(businessFilter.geography);
         }
@@ -214,5 +214,8 @@ app.filterCtrl = function ($scope, $rootScope, statisticsData, businessFilter) {
         businessFilter.selectedBusinesses = $scope.findCut(geographyIds, verksamhetsIds);
         $rootScope.$broadcast('filterChange', '');
     }
+
+    selectAll(businessFilter.geography);
+    updateState(businessFilter.geography);
 
 };
