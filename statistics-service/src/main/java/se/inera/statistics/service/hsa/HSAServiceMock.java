@@ -30,6 +30,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 import se.inera.statistics.service.report.model.Kommun;
 import se.inera.statistics.service.report.model.Lan;
+import se.inera.statistics.service.report.model.VerksamhetsTyp;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,6 +47,8 @@ public class HSAServiceMock implements HSAService {
     private static final List<String> LAN_CODES;
     private static final Kommun KOMMUN = new Kommun();
     private static final List<String> KOMMUN_CODES;
+    private static final VerksamhetsTyp VERKSAMHET = new VerksamhetsTyp();
+    private static final List<String> VERKSAMHET_CODES;
 
     static {
         LAN_CODES = new ArrayList<>();
@@ -55,6 +58,10 @@ public class HSAServiceMock implements HSAService {
         KOMMUN_CODES = new ArrayList<>();
         for (String kod : KOMMUN) {
             KOMMUN_CODES.add(kod);
+        }
+        VERKSAMHET_CODES = new ArrayList<>();
+        for (String kod : VERKSAMHET) {
+            VERKSAMHET_CODES.add(kod);
         }
     }
 
@@ -92,7 +99,7 @@ public class HSAServiceMock implements HSAService {
         root.put("verksamhet", (JsonNode) null);
         root.put("vardform", (JsonNode) null);
         root.put("geografi", createGeografiskIndelning(key));
-        root.put("verksamhet", asList("1100", "1101"));
+        root.put("verksamhet", asList(createVerksamhet(key)));
         return root;
     }
 
@@ -137,6 +144,19 @@ public class HSAServiceMock implements HSAService {
             }
         }).toList();
         return relevantKommuns.get(keyIndex % relevantKommuns.size());
+    }
+
+    private String[] createVerksamhet(HSAKey key) {
+        if (key == null || key.getVardgivareId() == null) {
+            return new String[] { VerksamhetsTyp.OVRIGT_ID };
+        }
+        List<String> returnList = new ArrayList<>();
+        int numberOfVerksamhet = Math.abs(key.getEnhetId().hashCode()) % 7;
+        for (int i = 0; i < numberOfVerksamhet; i++) {
+            int index = Math.abs((key.getVardgivareId() + key.getEnhetId() + i).hashCode());
+            returnList.add(VERKSAMHET_CODES.get(index % VERKSAMHET_CODES.size()));
+        }
+        return returnList.toArray(new String[returnList.size()]);
     }
 
     private JsonNode asList(String... items) {

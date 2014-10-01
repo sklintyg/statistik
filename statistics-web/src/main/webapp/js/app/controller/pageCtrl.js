@@ -21,14 +21,14 @@
 
  app.pageCtrl = function ($scope, $rootScope, $window, $cookies, statisticsData, businessFilter) {
 
-    var getSelectedVerksamhet = function(selectedVerksamhetId, verksamhets) {
-        for (var i = 0; i < verksamhets.length; i++) {
-            if (verksamhets[i].vardgivarId === selectedVerksamhetId) {
-                return verksamhets[i];
-            }
-        }
-        return {name: "Okänd verksamhet"}; //Selected verksamhet not found
-    };
+     var getSelectedVerksamhet = function(selectedVerksamhetId, verksamhets) {
+         for (var i = 0; i < verksamhets.length; i++) {
+             if (verksamhets[i].vardgivarId === selectedVerksamhetId) {
+                 return verksamhets[i];
+             }
+         }
+         return {name: "Okänd verksamhet"}; //Selected verksamhet not found
+     };
 
      $rootScope.$on('$routeChangeSuccess', function(angularEvent, next, current) {
         var verksamhetId = next.params.verksamhetId;
@@ -52,18 +52,17 @@
                 $scope.businessId = $cookies.verksamhetId;
             }
             
-            statisticsData.getLoginInfo(function(loginInfo){
-                businessFilter.businesses = loginInfo.businesses;
-                businessFilter.populateGeography(loginInfo.businesses);
+            statisticsData.getLoginInfo(function (loginInfo) {
+                businessFilter.loggedIn(loginInfo.businesses);
                 var v = getSelectedVerksamhet($scope.businessId, loginInfo.businesses);
                 $scope.verksamhetName = loginInfo.vgView ? ("- "+ v.vardgivarName + (loginInfo.fullVgAccess ? "(alla enheter)": "(vissa enheter)")): v.name;
                 $scope.userName = loginInfo.name;
                 $scope.isVgView = loginInfo.vgView;
                 $scope.isFullVgAccess = loginInfo.fullVgAccess;
                 $scope.userNameWithAccess = loginInfo.name;
-            }, function() { $scope.dataLoadingError = true; });
+            }, function () { $scope.dataLoadingError = true; });
         } else {
-            businessFilter.resetGeography();
+            businessFilter.loggedOut();
         }
     });
     

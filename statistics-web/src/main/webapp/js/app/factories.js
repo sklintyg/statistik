@@ -33,7 +33,7 @@ app.statisticsApp.factory('statisticsData', function ($http) {
 
     var getEnhetsIdString = function (params) {
         var returnString = ""
-        if (params && params.length > 0) {
+        if (params) {
             returnString += "?ids="
             returnString += params.join()
         }
@@ -130,45 +130,90 @@ app.statisticsApp.factory('statisticsData', function ($http) {
 app.statisticsApp.factory('businessFilter', function() {
     var businessService = {};
 
-    businessService.businesses = [];
-    businessService.selectedBusinesses = [];
-    businessService.geography = { subs: [] };
-    businessService.geographyInitialized = false;
+    businessService.reset = function () {
+        businessService.dataInitialized = false;
+
+        businessService.businesses = [];
+        businessService.selectedBusinesses = [];
+
+        businessService.geography = { subs: [] };
+        businessService.geographyBusinessIds = [];
+
+        businessService.verksamhetsTyper = [];
+        businessService.verksamhetsTypIds = [];
+    }
+    businessService.reset();
+
+    businessService.loggedIn = function (businesses) {
+        if (!businessService.dataInitialized) {
+            businessService.businesses = businesses;
+            if (businessService.useSmallGUI()) {
+                for (var i = 0; i < businesses.length; i++) {
+                    businessService.geographyBusinessIds.push(businesses[i].id);
+                }
+            } else {
+                businessService.populateGeography(businesses);
+            }
+            businessService.populateVerksamhetsTyper(businesses);
+            businessService.dataInitialized = true;
+        }
+    }
+
+    businessService.loggedOut = function () {
+        businessService.reset();
+    }
+
+    businessService.useSmallGUI = function () {
+        return businessService.businesses.length <= 10;
+    }
 
     businessService.populateGeography = function (businesses) {
-        if (!businessService.geographyInitialized) {
-            for (var i = 0; i < businesses.length; i++) {
-                var business = businesses[i];
+        for (var i = 0; i < businesses.length; i++) {
+            var business = businesses[i];
 
-                var county = $.grep(businessService.geography.subs, function (element) {
-                    return element.id === business.lansId;
-                });
-                if (county.length === 0) {
-                    county = { id: business.lansId, name: business.lansName, subs: [] };
-                    businessService.geography.subs.push(county);
-                } else {
-                    county = county[0];
-                }
-
-                var munip = $.grep(county.subs, function (element) {
-                    return element.id === business.kommunId;
-                });
-                if (munip.length === 0) {
-                    munip = { id: business.kommunId, name: business.kommunName, subs: [] };
-                    county.subs.push(munip);
-                } else {
-                    munip = munip[0];
-                }
-
-                munip.subs.push(business);
+            var county = $.grep(businessService.geography.subs, function (element) {
+                return element.id === business.lansId;
+            });
+            if (county.length === 0) {
+                county = { id: business.lansId, name: business.lansName, subs: [], allSelected : true, someSelected: false };
+                businessService.geography.subs.push(county);
+            } else {
+                county = county[0];
             }
-            businessService.geographyInitialized = true;
+
+            var munip = $.grep(county.subs, function (element) {
+                return element.id === business.kommunId;
+            });
+            if (munip.length === 0) {
+                munip = { id: business.kommunId, name: business.kommunName, subs: [], allSelected : true, someSelected: false };
+                county.subs.push(munip);
+            } else {
+                munip = munip[0];
+            }
+
+            business.allSelected = true;
+            business.someSelected = false;
+            munip.subs.push(business);
         }
     };
 
-    businessService.resetGeography = function () {
-        businessService.geography = { subs: [] };
-        businessService.geographyInitialized = false;
+    businessService.populateVerksamhetsTyper = function (businesses) {
+        var verksamhetsTypSet = {};
+        for (var i = 0; i < businesses.length; i++) {
+            var business = businesses[i];
+            for (var j = 0; j < business.verksamhetsTyper.length; j++) {
+                var verksamhetsTyp = business.verksamhetsTyper[j];
+                verksamhetsTypSet[verksamhetsTyp.id] = verksamhetsTyp;
+            }
+        }
+        businessService.verksamhetsTyper = [];
+        var id;
+        for (id in verksamhetsTypSet) {
+            if (verksamhetsTypSet.hasOwnProperty(id)) {
+                businessService.verksamhetsTyper.push(verksamhetsTypSet[id]);
+                businessService.verksamhetsTypIds.push(id);
+            }
+        }
     }
 
     return businessService;
