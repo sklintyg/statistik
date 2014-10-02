@@ -117,7 +117,7 @@ app.statisticsApp.directive('intermediate', function() {
 app.statisticsApp.directive("submenu", function (recursionService) {
     return {
         restrict: "E",
-        scope: { item: "=", itemroot: "=", depth:"=", recursionhelper: "=" },
+        scope: { item: "=", itemroot: "=", depth: "=", recursionhelper: "=" },
         template:
             '<span class="glyphicon" ng-class="{glyphiconMinusSign: !item.hideSiblings, glyphiconPlusSign: item.hideSiblings}"/>' +
             '<span ng-click="item.hideSiblings = !item.hideSiblings" class="ellipsis-text">{{item.name}}</span>' +

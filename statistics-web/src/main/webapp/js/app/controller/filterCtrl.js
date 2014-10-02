@@ -2,29 +2,7 @@
 
 app.filterCtrl = function ($scope, $rootScope, statisticsData, businessFilter) {
 
-    $scope.selectedGeography = {
-        selectedBusinessIds : businessFilter.geographyBusinessIds
-    }
-
-    $scope.selectedVerksamhet = {
-        selectedVerksamhetsTypIds : businessFilter.verksamhetsTypIds
-    }
-
-    $scope.geography = function () {
-        return businessFilter.geography;
-    }
-
-    $scope.businesses = function () {
-        return businessFilter.businesses;
-    }
-
-    $scope.verksamhetsTyper = function () {
-        return businessFilter.verksamhetsTyper;
-    }
-
-    $scope.useSmallGUI = function () {
-        return businessFilter.useSmallGUI();
-    }
+    $scope.businessFilter = businessFilter;
 
     $scope.recursionhelper = {
         itemclick: function (item, itemRoot) {
@@ -204,12 +182,7 @@ app.filterCtrl = function ($scope, $rootScope, statisticsData, businessFilter) {
     }
 
     $scope.makeUnitSelection = function () {
-        var geographyBusinessIds;
-        if (businessFilter.useSmallGUI()) {
-            geographyBusinessIds = businessFilter.geographyBusinessIds;
-        } else {
-            geographyBusinessIds = $scope.collectGeographyIds(businessFilter.geography);
-        }
+        var geographyBusinessIds = businessFilter.useSmallGUI() ? businessFilter.geographyBusinessIds : $scope.collectGeographyIds(businessFilter.geography);
         var verksamhetsBusinessIds = $scope.collectVerksamhetsIds();
         businessFilter.selectedBusinesses = $scope.findCut(geographyBusinessIds, verksamhetsBusinessIds);
         $rootScope.$broadcast('filterChange', '');
