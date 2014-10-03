@@ -82,7 +82,25 @@ app.statisticsApp.directive('legendHeight', function() {
 app.statisticsApp.directive('multiselectDropdown', function() {
     return function(scope, element, attrs) {
         element.multiselect({
-            numberDisplayed : 3,
+            numberDisplayed : 1,
+            buttonText: function (options, select) {
+                if (options.length == 0) {
+                    return 'Inga valda';
+                }
+                else {
+                    if (options.length > this.numberDisplayed) {
+                        return options.length + ' valda';
+                    }
+                    else {
+                        var selected = '';
+                        options.each(function () {
+                            var label = ($(this).attr('label') !== undefined) ? $(this).attr('label') : $(this).html();
+                            selected += label + ', ';
+                        });
+                        return selected.substr(0, selected.length - 2) + ' <b class="caret"></b>';
+                    }
+                }
+            },
             onChange: function (optionElement, checked) {
                 optionElement.removeAttr('selected');
                 if (checked) {
@@ -117,7 +135,7 @@ app.statisticsApp.directive('intermediate', function() {
 app.statisticsApp.directive("submenu", function (recursionService) {
     return {
         restrict: "E",
-        scope: { item: "=", itemroot: "=", depth:"=", recursionhelper: "=" },
+        scope: { item: "=", itemroot: "=", depth: "=", recursionhelper: "=" },
         template:
             '<span class="glyphicon" ng-class="{glyphiconMinusSign: !item.hideSiblings, glyphiconPlusSign: item.hideSiblings}"/>' +
             '<span ng-click="item.hideSiblings = !item.hideSiblings" class="ellipsis-text">{{item.name}}</span>' +

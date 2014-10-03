@@ -411,22 +411,22 @@
 				                <div class="filter-level" id="first-level-filter">
                                     <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3 clearfix">
                                         <label for="select-unit">Typ av verksamhet:</label><br/>
-                                        <select ng-model="selectedVerksamhet.selectedVerksamhetsTypIds" multiple="multiple"
-                                                ng-options="verksamhet.id as verksamhet.name for verksamhet in verksamhetsTyper()" multiselect-dropdown id="select-verksamhet">
+                                        <select ng-model="businessFilter.verksamhetsTypIds" multiple="multiple"
+                                                ng-options="verksamhet.id as verksamhet.name for verksamhet in businessFilter.verksamhetsTyper" multiselect-dropdown id="select-verksamhet">
                                         </select>
                                     </div>
-                                    <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3 clearfix" data-ng-if="useSmallGUI()">
+                                    <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3 clearfix" data-ng-if="businessFilter.useSmallGUI()">
                                         <label for="select-unit">Val av enhet:</label><br/>
-                                        <select ng-model="selectedGeography.selectedBusinessIds" multiple="multiple"
-                                                ng-options="business.id as business.name for business in businesses()" multiselect-dropdown id="select-unit">
+                                        <select ng-model="businessFilter.geographyBusinessIds" multiple="multiple"
+                                                ng-options="business.id as business.name for business in businessFilter.businesses" multiselect-dropdown id="select-unit">
                                         </select>
                                     </div>
-	                                <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3" data-ng-if="!useSmallGUI()">
+	                                <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3" data-ng-if="!businessFilter.useSmallGUI()">
 	                                	<label for="select-geo-unit">Val av enheter:</label><br/>
 	                                    <button class="btn btn-default" data-toggle="modal" data-target="#myModal" id="select-geo-unit" >
 	                                        Välj enhet
 	                                    </button>
-						                <label>{{selectedLeavesCount(geography())}} valda enheter</label>
+						                <label>{{selectedLeavesCount(businessFilter.geography)}} valda enheter</label>
 	                                    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 	                                        <div class="modal-dialog">
 	                                            <div class="modal-content">
@@ -438,19 +438,19 @@
 	                                                    <ul class="modal-list">
 	                                                        <li class="search-all-items input-group">
 	                                                        	<span class="input-group-addon glyphicon glyphicon-search"></span>
-	                                                            <input type="search" ng-model="multiMenuFilter" class="multiMenuFilterSearch form-control" ng-change="filterMenuItems(geography().subs, multiMenuFilter)" placeholder="Sök efter enhet"/>
+	                                                            <input type="search" ng-model="multiMenuFilter" class="multiMenuFilterSearch form-control" ng-change="filterMenuItems(businessFilter.geography.subs, multiMenuFilter)" placeholder="Sök efter enhet"/>
 	                                                        </li>
 	                                                        <li class="select-all-items">
-	                                                            <input type="checkbox" ng-checked="geography().allSelected" class="multiMenuSelectAll" ng-click="itemClicked(geography(), geography())">Markera alla</input>
+	                                                            <input type="checkbox" ng-checked="businessFilter.geography.allSelected" class="multiMenuSelectAll" ng-click="itemClicked(businessFilter.geography, businessFilter.geography)">Markera alla</input>
 	                                                        </li>
-	                                                        <li data-ng-repeat="item in geography().subs" class="multiMenuSelectKapitel" ng-init="itemRoot=geography(); depth=0">
+	                                                        <li data-ng-repeat="item in businessFilter.geography.subs" class="multiMenuSelectKapitel" ng-init="itemRoot=businessFilter.geography; depth=0">
 	                                                            <submenu item="item" itemroot="itemRoot" depth="depth" recursionhelper="recursionhelper" ng-hide="item.hide" class="depth0" />
 	                                                        </li>
 	                                                    </ul>
 	                                                </div>
 	                                                <div class="modal-footer">
 	                                                    <label class="pull-left">Ditt urval:</label><br/>
-	                                                    <label class="pull-left">Enheter: {{selectedLeavesCount(geography())}} Kommuner: {{selectedSecondaryCount(geography())}} Län: {{selectedTertiaryCount(geography())}}</label>
+	                                                    <label class="pull-left">Enheter: {{selectedLeavesCount(businessFilter.geography)}} Kommuner: {{selectedSecondaryCount(businessFilter.geography)}} Län: {{selectedTertiaryCount(businessFilter.geography)}}</label>
 	                                                    <button class="btn btn-success" data-dismiss="modal" aria-hidden="true">Spara och stäng</button>
 	                                                    <button type="button" class="btn btn-default" data-dismiss="modal" aria-hidden="true">Stäng</button>
 	                                                </div>
