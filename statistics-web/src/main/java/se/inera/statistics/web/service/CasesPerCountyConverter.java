@@ -63,9 +63,6 @@ public class CasesPerCountyConverter {
                                                         rowSumNewest, newestRow.getFemale(), newestRow.getMale());
             data.add(new NamedData(oldestRow.getName(), rowData));
         }
-        NamedData sumRow = ServiceUtil.getSumRow(data, true);
-        ArrayList<Object> sumRowData = new ArrayList<>(sumRow.getData());
-        data.add(new NamedData("Totalt", sumRowData));
 
         final int topHeaderSpan = 3;
         List<TableHeader> topHeaders = Arrays.asList(new TableHeader("", 1), new TableHeader(rangeOld.toStringAbbreviated(), topHeaderSpan), new TableHeader(rangeNew.toStringAbbreviated(), topHeaderSpan));

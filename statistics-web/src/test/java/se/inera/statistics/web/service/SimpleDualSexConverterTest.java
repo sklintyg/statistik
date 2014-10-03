@@ -47,17 +47,15 @@ public class SimpleDualSexConverterTest {
         SimpleKonResponse<SimpleKonDataRow> casesPerMonth = new SimpleKonResponse<SimpleKonDataRow>(dualSexRows, 2);
         SimpleDetailsData result = converter.convert(casesPerMonth, new Range(1));
         TableData tableData = result.getTableData();
-        assertEquals("[[Period;1, Antal sjukfall totalt;1, Antal sjukfall för kvinnor;1, Antal sjukfall för män;1, Summering;1]]", tableData.getHeaders().toString());
+        assertEquals("[[Period;1, Antal sjukfall totalt;1, Antal sjukfall för kvinnor;1, Antal sjukfall för män;1]]", tableData.getHeaders().toString());
         List<NamedData> rows = tableData.getRows();
-        assertEquals(4, rows.size());
+        assertEquals(3, rows.size());
         assertEquals("jan 12", rows.get(0).getName());
         assertEquals("feb 12", rows.get(1).getName());
         assertEquals("mar 12", rows.get(2).getName());
-        assertEquals("Totalt", rows.get(3).getName());
-        assertEquals("[25, 12, 13, 25]", rows.get(0).getData().toString());
-        assertEquals("[50, 20, 30, 75]", rows.get(1).getData().toString());
-        assertEquals("[30, 5, 25, 105]", rows.get(2).getData().toString());
-        assertEquals("[105, 37, 68]", rows.get(3).getData().toString());
+        assertEquals("[25, 12, 13]", rows.get(0).getData().toString());
+        assertEquals("[50, 20, 30]", rows.get(1).getData().toString());
+        assertEquals("[30, 5, 25]", rows.get(2).getData().toString());
     }
 
     // CHECKSTYLE:ON MagicNumber

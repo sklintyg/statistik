@@ -69,15 +69,13 @@ public class SjukfallPerLanConverterTest {
         TableData tableDataResult = result.getTableData();
         assertEquals("[[;1, feb\u2013apr 2013;3, maj\u2013jul 2013;3], [Län;1, Antal sjukfall totalt;1, Antal sjukfall för kvinnor;1, Antal sjukfall för män;1, Antal sjukfall;1, Antal sjukfall för kvinnor;1, Antal sjukfall för män;1]]", tableDataResult.getHeaders().toString());
         List<NamedData> rows = tableDataResult.getRows();
-        assertEquals(4, rows.size());
+        assertEquals(3, rows.size());
         assertEquals("<20", rows.get(0).getName());
         assertEquals("20-50", rows.get(1).getName());
         assertEquals(">50", rows.get(2).getName());
-        assertEquals("Totalt", rows.get(3).getName());
         assertEquals("[7, 3, 4, 27, 13, 14]", rows.get(0).getData().toString());
         assertEquals("[9, 4, 5, 39, 24, 15]", rows.get(1).getData().toString());
         assertEquals("[10, 2, 8, 12, 3, 9]", rows.get(2).getData().toString());
-        assertEquals("[26, 9, 17, 78, 40, 38]", rows.get(3).getData().toString());
 
         ChartData chartDataResult = result.getChartData();
         assertEquals("[<20, 20-50, >50]", chartDataResult.getCategories().toString());

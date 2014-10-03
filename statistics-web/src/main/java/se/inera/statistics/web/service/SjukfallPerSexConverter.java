@@ -39,18 +39,12 @@ public class SjukfallPerSexConverter {
 
     private TableData convertToTableData(List<SimpleKonDataRow> list) {
         List<NamedData> data = new ArrayList<>();
-        int femaleSum = 0;
-        int maleSum = 0;
         for (SimpleKonDataRow row : list) {
             int female = row.getFemale();
             int male = row.getMale();
             int rowSum = female + male;
-            data.add(new NamedData(row.getName(), Arrays.asList(new Object[]{rowSum, toTableString(female, rowSum), toTableString(male, rowSum)})));
-            femaleSum += female;
-            maleSum += male;
+            data.add(new NamedData(row.getName(), Arrays.asList(rowSum, toTableString(female, rowSum), toTableString(male, rowSum))));
         }
-        int totalSum = femaleSum + maleSum;
-        data.add(new NamedData("Totalt", Arrays.asList(totalSum, toTableString(femaleSum, totalSum), toTableString(maleSum, totalSum))));
 
         return TableData.createWithSingleHeadersRow(data, Arrays.asList("Län", "Antal sjukfall totalt", "Andel sjukfall för kvinnor", "Andel sjukfall för män"));
     }

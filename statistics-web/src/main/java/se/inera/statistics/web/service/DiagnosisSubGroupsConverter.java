@@ -102,7 +102,7 @@ public class DiagnosisSubGroupsConverter {
     private int sum(List<Integer> numbers) {
         int sum = 0;
         for (Integer number : numbers) {
-            sum += number.intValue();
+            sum += number;
         }
         return sum;
     }
