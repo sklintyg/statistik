@@ -28,7 +28,7 @@ public class NationellOverviewData {
 
     public static final int KVARTAL = 3;
     public static final int MAX_LAN = 5;
-    public static final int MAX_ALDERSGRUPPER = 7;
+    public static final int MAX_ALDERSGRUPPER = 5;
     public static final int PERCENT = 100;
 
     @Autowired

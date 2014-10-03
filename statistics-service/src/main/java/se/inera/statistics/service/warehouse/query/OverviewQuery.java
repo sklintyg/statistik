@@ -19,7 +19,7 @@ import java.util.List;
 @Component
 public class OverviewQuery {
 
-    private static final int DISPLAYED_AGE_GROUPS = 7;
+    private static final int DISPLAYED_AGE_GROUPS = 5;
     public static final int PERCENT = 100;
 
     @Autowired
