@@ -251,21 +251,21 @@ app.doubleAreaChartsCtrl = function ($scope, $routeParams, $window, $timeout, st
     $scope.popoverText = config.tooltipHelpText;
     $scope.popoverFootnotesText = config.chartFootnotes;
 
-    function refreshVerksamhet() {
-        statisticsData[config.dataFetcherVerksamhet]($routeParams.verksamhetId, businessFilter.selectedBusinesses, populatePageWithData, function () {
+    function refreshVerksamhet(samePage) {
+        statisticsData[config.dataFetcherVerksamhet]($routeParams.verksamhetId, businessFilter.getSelectedBusinesses(samePage), populatePageWithData, function () {
             $scope.dataLoadingError = true;
         }, $routeParams.groupId);
     }
 
     $scope.$on('filterChange', function(event, data) {
         if (isVerksamhet) {
-            refreshVerksamhet();
+            refreshVerksamhet(true);
         }
     });
 
     if (isVerksamhet) {
         $scope.exportTableUrl = config.exportTableUrlVerksamhet($routeParams.verksamhetId, $routeParams.groupId);
-        refreshVerksamhet();
+        refreshVerksamhet(false);
     } else {
         $scope.exportTableUrl = config.exportTableUrl($routeParams.groupId);
         statisticsData[config.dataFetcher](populatePageWithData, function () {

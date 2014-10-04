@@ -51,7 +51,9 @@
             } else if ($cookies.verksamhetId) {
                 $scope.businessId = $cookies.verksamhetId;
             }
-            
+
+            businessFilter.resetSelections();
+
             statisticsData.getLoginInfo(function (loginInfo) {
                 businessFilter.loggedIn(loginInfo.businesses);
                 var v = getSelectedVerksamhet($scope.businessId, loginInfo.businesses);

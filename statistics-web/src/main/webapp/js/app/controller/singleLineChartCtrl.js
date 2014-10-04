@@ -106,20 +106,19 @@
          ControllerCommons.exportChart(chart, $scope.pageName);
      };
 
-     function refreshVerksamhet() {
-         statisticsData[config.dataFetcherVerksamhet]($routeParams.verksamhetId, businessFilter.selectedBusinesses, populatePageWithData, function() { $scope.dataLoadingError = true; });
+     function refreshVerksamhet(samePage) {
+         statisticsData[config.dataFetcherVerksamhet]($routeParams.verksamhetId, businessFilter.getSelectedBusinesses(samePage), populatePageWithData, function() { $scope.dataLoadingError = true; });
      }
 
      $scope.$on('filterChange', function(event, data) {
-         console.debug("singleLineChartCtrl filterChange" + data);
          if (isVerksamhet) {
-             refreshVerksamhet();
+             refreshVerksamhet(true);
          }
      });
 
      if (isVerksamhet){
         $scope.exportTableUrl = config.exportTableUrlVerksamhet($routeParams.verksamhetId);
-        refreshVerksamhet();
+        refreshVerksamhet(false);
     } else {
         $scope.exportTableUrl = config.exportTableUrl;
         statisticsData[config.dataFetcher](populatePageWithData, function() { $scope.dataLoadingError = true; });

@@ -181,12 +181,8 @@
         return donutData;
     }
 
-     function refresh(withSelectedBusinesses) {
-         var enhetsIds = null;
-         if (withSelectedBusinesses) {
-             enhetsIds = businessFilter.selectedBusinesses;
-         }
-         statisticsData.getBusinessOverview($routeParams.verksamhetId, enhetsIds, dataReceived, function () { $scope.dataLoadingError = true; });
+     function refresh(samePage) {
+         statisticsData.getBusinessOverview($routeParams.verksamhetId, businessFilter.getSelectedBusinesses(samePage), dataReceived, function () { $scope.dataLoadingError = true; });
      }
 
      $scope.$on('filterChange', function(event, data) {

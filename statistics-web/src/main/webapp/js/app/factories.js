@@ -132,6 +132,7 @@ app.statisticsApp.factory('businessFilter', function() {
 
     businessService.reset = function () {
         businessService.dataInitialized = false;
+        businessService.permanentFilter = false;
 
         businessService.businesses = [];
         businessService.selectedBusinesses = [];
@@ -143,6 +144,29 @@ app.statisticsApp.factory('businessFilter', function() {
         businessService.verksamhetsTypIds = [];
     }
     businessService.reset();
+
+    businessService.getSelectedBusinesses = function (samePage) {
+        if (!businessService.dataInitialized) {
+            return null;
+        }
+        if (samePage || businessService.permanentFilter) {
+            return businessService.selectedBusinesses;
+        }
+        return null;
+    }
+
+    businessService.resetSelections = function() {
+        if (!businessService.permanentFilter) {
+            businessService.selectedBusinesses.length = 0;
+            businessService.verksamhetsTypIds.length = 0;
+            for (var i = 0; i < businessService.businesses.length; i++) {
+                businessService.selectedBusinesses.push(businessService.businesses[i].id);
+            }
+            for (var i = 0; i < businessService.verksamhetsTyper.length; i++) {
+                businessService.verksamhetsTypIds.push(businessService.verksamhetsTyper[i].id);
+            }
+        }
+    }
 
     businessService.loggedIn = function (businesses) {
         if (!businessService.dataInitialized) {

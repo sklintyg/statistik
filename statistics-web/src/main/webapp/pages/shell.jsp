@@ -403,8 +403,8 @@
                 </div>
             </div>
 
-            <div class="col-xs-12 col-sm-9 col-md-9 col-lg-9" data-ng-controller="FilterCtrl">
-                <div class="row" ng-show="verksamhetIdParam">
+            <div class="col-xs-12 col-sm-9 col-md-9 col-lg-9">
+                <div class="row" ng-show="verksamhetIdParam" data-ng-controller="FilterCtrl">
                     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                         <div id="statistics-filter-container" class="collapse" collapse="!isFilterCollapsed">
                         	<div class="row">
@@ -460,7 +460,11 @@
 	                                </div>
 	                            </div>
 	                            <div class="filter-level">
-	                            	<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 clearfix">
+                                    <div class="pull-right">
+                                        <input type="checkbox" ng-model="businessFilter.permanentFilter"/>
+                                        <label>Val ska slå på alla rapporter</label>
+                                    </div>
+                                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 clearfix">
 	                                	<button class="btn btn-success pull-right" data-ng-click="makeUnitSelection()">
 		                                    Sök
 		                                </button>
