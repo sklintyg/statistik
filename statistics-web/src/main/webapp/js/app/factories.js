@@ -165,20 +165,18 @@ app.statisticsApp.factory('businessFilter', function() {
             for (var i = 0; i < businessService.verksamhetsTyper.length; i++) {
                 businessService.verksamhetsTypIds.push(businessService.verksamhetsTyper[i].id);
             }
+            businessService.selectAll(businessService.geography, true);
         }
     }
 
     businessService.loggedIn = function (businesses) {
         if (!businessService.dataInitialized) {
             businessService.businesses = businesses;
-            if (businessService.useSmallGUI()) {
-                for (var i = 0; i < businesses.length; i++) {
-                    businessService.geographyBusinessIds.push(businesses[i].id);
-                }
-            } else {
+            if (!businessService.useSmallGUI()) {
                 businessService.populateGeography(businesses);
             }
             businessService.populateVerksamhetsTyper(businesses);
+            businessService.resetSelections();
             businessService.dataInitialized = true;
         }
     }
@@ -199,7 +197,7 @@ app.statisticsApp.factory('businessFilter', function() {
                 return element.id === business.lansId;
             });
             if (county.length === 0) {
-                county = { id: business.lansId, name: business.lansName, subs: [], allSelected : true, someSelected: false };
+                county = { id: business.lansId, name: business.lansName, subs: [] };
                 businessService.geography.subs.push(county);
             } else {
                 county = county[0];
@@ -209,14 +207,12 @@ app.statisticsApp.factory('businessFilter', function() {
                 return element.id === business.kommunId;
             });
             if (munip.length === 0) {
-                munip = { id: business.kommunId, name: business.kommunName, subs: [], allSelected : true, someSelected: false };
+                munip = { id: business.kommunId, name: business.kommunName, subs: [] };
                 county.subs.push(munip);
             } else {
                 munip = munip[0];
             }
 
-            business.allSelected = true;
-            business.someSelected = false;
             munip.subs.push(business);
         }
     };
@@ -230,12 +226,34 @@ app.statisticsApp.factory('businessFilter', function() {
                 verksamhetsTypSet[verksamhetsTyp.id] = verksamhetsTyp;
             }
         }
-        businessService.verksamhetsTyper = [];
         var id;
         for (id in verksamhetsTypSet) {
             if (verksamhetsTypSet.hasOwnProperty(id)) {
                 businessService.verksamhetsTyper.push(verksamhetsTypSet[id]);
-                businessService.verksamhetsTypIds.push(id);
+            }
+        }
+    }
+
+    businessService.deselectAll = function (item) {
+        if (!item.hide) {
+            item.allSelected = false;
+            item.someSelected = false;
+            if (item.subs) {
+                for (var i = 0; i < item.subs.length; i++) {
+                    businessService.deselectAll(item.subs[i]);
+                }
+            }
+        }
+    }
+
+    businessService.selectAll = function (item, selectHidden) {
+        if (!item.hide || selectHidden) {
+            item.allSelected = true;
+            item.someSelected = false;
+            if (item.subs) {
+                for (var i = 0; i < item.subs.length; i++) {
+                    businessService.selectAll(item.subs[i], selectHidden);
+                }
             }
         }
     }

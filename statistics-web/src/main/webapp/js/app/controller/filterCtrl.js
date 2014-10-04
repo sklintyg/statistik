@@ -12,37 +12,28 @@ app.filterCtrl = function ($scope, $rootScope, statisticsData, businessFilter) {
 
     $scope.itemClicked = function (item, itemRoot) {
         if (item.allSelected) {
-            deselectAll(item);
+            businessFilter.deselectAll(item);
         } else if (item.someSelected) {
-            selectAll(item);
+            businessFilter.selectAll(item);
         } else {
-            selectAll(item);
+            businessFilter.selectAll(item);
         }
-        updateState(itemRoot);
+        businessFilter.updateState(itemRoot);
     }
 
-    function deselectAll(item) {
-        if (!item.hide) {
-            item.allSelected = false;
-            item.someSelected = false;
-            if (item.subs) {
-                for (var i = 0; i < item.subs.length; i++) {
-                    deselectAll(item.subs[i]);
-                }
+    function isItemHidden(item, searchText) {
+        if (item.name.toLowerCase().indexOf(searchText) >= 0) {
+            return false;
+        }
+        if (!item.subs) {
+            return true;
+        }
+        for (var i = 0; i < item.subs.length; i++) {
+            if (!isItemHidden(item.subs[i], searchText)) {
+                return false;
             }
         }
-    }
-
-    function selectAll(item) {
-        if (!item.hide) {
-            item.allSelected = true;
-            item.someSelected = false;
-            if (item.subs) {
-                for (var i = 0; i < item.subs.length; i++) {
-                    selectAll(item.subs[i]);
-                }
-            }
-        }
+        return true;
     }
 
     function updateState(item) {
@@ -67,21 +58,6 @@ app.filterCtrl = function ($scope, $rootScope, statisticsData, businessFilter) {
         }
     }
 
-    function isItemHidden(item, searchText) {
-        if (item.name.toLowerCase().indexOf(searchText) >= 0) {
-            return false;
-        }
-        if (!item.subs) {
-            return true;
-        }
-        for (var i = 0; i < item.subs.length; i++) {
-            if (!isItemHidden(item.subs[i], searchText)) {
-                return false;
-            }
-        }
-        return true;
-    }
-
     $scope.filterMenuItems = function (items, text) {
         var searchText = text.toLowerCase();
         var mappingFunc = function (item) {
@@ -91,7 +67,7 @@ app.filterCtrl = function ($scope, $rootScope, statisticsData, businessFilter) {
             item.hide = isItemHidden(item, searchText);
         };
         ControllerCommons.map(items, mappingFunc);
-        ControllerCommons.map(items, updateState);
+        ControllerCommons.map(items, businessFilter.updateState);
     }
 
     $scope.selectedLeavesCount = function (node) {
@@ -188,6 +164,4 @@ app.filterCtrl = function ($scope, $rootScope, statisticsData, businessFilter) {
         $rootScope.$broadcast('filterChange', '');
     }
 
-    selectAll(businessFilter.geography);
-    updateState(businessFilter.geography);
 };
