@@ -121,17 +121,12 @@ app.filterCtrl = function ($scope, $rootScope, statisticsData, businessFilter, _
     }
 
     $scope.collectVerksamhetsIds = function () {
-        var selectedBusinessSet = {};
-        _.each(businessFilter.verksamhetsTypIds, function(selectedVerksamhetsId) {
-            _.each(businessFilter.businesses, function(business) {
-                _.each(business.verksamhetsTyper, function(verksamhetsTyp) {
-                    if (verksamhetsTyp.id === selectedVerksamhetsId) {
-                        selectedBusinessSet[business.id] = business;
-                    }
-                });
+        var matchingBusinesses = _.filter(businessFilter.businesses, function (business) {
+            return _.some(business.verksamhetsTyper, function (verksamhetsTyp) {
+                return _.contains(businessFilter.verksamhetsTypIds, verksamhetsTyp.id);
             });
         });
-        return _.keys(selectedBusinessSet);
+        return _.pluck(matchingBusinesses, 'id');
     }
 
     $scope.makeUnitSelection = function () {

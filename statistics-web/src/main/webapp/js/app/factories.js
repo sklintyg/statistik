@@ -127,7 +127,7 @@ app.statisticsApp.factory('statisticsData', function ($http) {
     return factory;
 });
 
-app.statisticsApp.factory('businessFilter', function() {
+app.statisticsApp.factory('businessFilter', function(_) {
     var businessService = {};
 
     businessService.reset = function () {
@@ -219,19 +219,12 @@ app.statisticsApp.factory('businessFilter', function() {
 
     businessService.populateVerksamhetsTyper = function (businesses) {
         var verksamhetsTypSet = {};
-        for (var i = 0; i < businesses.length; i++) {
-            var business = businesses[i];
-            for (var j = 0; j < business.verksamhetsTyper.length; j++) {
-                var verksamhetsTyp = business.verksamhetsTyper[j];
+        _.each(businesses, function (business) {
+            _.each(business.verksamhetsTyper, function (verksamhetsTyp) {
                 verksamhetsTypSet[verksamhetsTyp.id] = verksamhetsTyp;
-            }
-        }
-        var id;
-        for (id in verksamhetsTypSet) {
-            if (verksamhetsTypSet.hasOwnProperty(id)) {
-                businessService.verksamhetsTyper.push(verksamhetsTypSet[id]);
-            }
-        }
+            });
+        });
+        businessService.verksamhetsTyper = _.values(verksamhetsTypSet);
     }
 
     businessService.deselectAll = function (item) {
