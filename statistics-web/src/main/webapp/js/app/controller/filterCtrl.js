@@ -1,6 +1,6 @@
 'use strict';
 
-app.filterCtrl = function ($scope, $rootScope, statisticsData, businessFilter) {
+app.filterCtrl = function ($scope, $rootScope, statisticsData, businessFilter, _) {
 
     $scope.businessFilter = businessFilter;
 
@@ -62,18 +62,18 @@ app.filterCtrl = function ($scope, $rootScope, statisticsData, businessFilter) {
         var searchText = text.toLowerCase();
         var mappingFunc = function (item) {
             if (item.subs) {
-                ControllerCommons.map(item.subs, mappingFunc);
+                _.each(item.subs, mappingFunc);
             }
             item.hide = isItemHidden(item, searchText);
         };
-        ControllerCommons.map(items, mappingFunc);
-        ControllerCommons.map(items, businessFilter.updateState);
+        _.each(items, mappingFunc);
+        _.each(items, businessFilter.updateState);
     }
 
     $scope.selectedLeavesCount = function (node) {
         var c = 0;
         if (node.subs) {
-            ControllerCommons.map(node.subs, function (item) {
+            _.each(node.subs, function (item) {
                 c += $scope.selectedLeavesCount(item);
             });
         } else {
@@ -84,23 +84,21 @@ app.filterCtrl = function ($scope, $rootScope, statisticsData, businessFilter) {
 
     $scope.selectedTertiaryCount = function (node) {
         var c = 0;
-        ControllerCommons.map(node.subs, function (item) {
+        _.each(node.subs, function (item) {
             if ($scope.selectedLeavesCount(item) > 0) {
                 c++;
             }
-            ;
         });
         return c;
     };
 
     $scope.selectedSecondaryCount = function (node) {
         var c = 0;
-        ControllerCommons.map(node.subs, function (item) {
-            ControllerCommons.map(item.subs, function (item) {
+        _.each(node.subs, function (item) {
+            _.each(item.subs, function (item) {
                 if ($scope.selectedLeavesCount(item) > 0) {
                     c++;
                 }
-                ;
             });
         });
         return c;
@@ -110,7 +108,7 @@ app.filterCtrl = function ($scope, $rootScope, statisticsData, businessFilter) {
         var returnList = [];
         if (node.subs) {
             if (node.allSelected || node.someSelected ) {
-                ControllerCommons.map(node.subs, function (item) {
+                _.each(node.subs, function (item) {
                     returnList = Array.concat(returnList, $scope.collectGeographyIds(item));
                 });
             }
@@ -124,43 +122,22 @@ app.filterCtrl = function ($scope, $rootScope, statisticsData, businessFilter) {
 
     $scope.collectVerksamhetsIds = function () {
         var selectedBusinessSet = {};
-        for (var i = 0; i < businessFilter.verksamhetsTypIds.length; i++) {
-            var selectedVerksamhetsId = businessFilter.verksamhetsTypIds[i];
-            for (var j = 0; j < businessFilter.businesses.length; j++) {
-                var business = businessFilter.businesses[j];
-                for (var k = 0; k < business.verksamhetsTyper.length; k++) {
-                    var verksamhetsTyp = business.verksamhetsTyper[k];
+        _.each(businessFilter.verksamhetsTypIds, function(selectedVerksamhetsId) {
+            _.each(businessFilter.businesses, function(business) {
+                _.each(business.verksamhetsTyper, function(verksamhetsTyp) {
                     if (verksamhetsTyp.id === selectedVerksamhetsId) {
                         selectedBusinessSet[business.id] = business;
                     }
-                }
-            }
-        }
-        var selectedBusinessIds = [];
-        var id;
-        for (id in selectedBusinessSet) {
-            if (selectedBusinessSet.hasOwnProperty(id)) {
-                selectedBusinessIds.push(id);
-            }
-        }
-        return selectedBusinessIds;
-    }
-
-    $scope.findCut = function (businessIds1, businessIds2) {
-        var returnIds = [];
-        for (var i = 0; i < businessIds1.length; i++) {
-            var id = businessIds1[i];
-            if (businessIds2.indexOf(id) >= 0) {
-                returnIds.push(id);
-            }
-        }
-        return returnIds;
+                });
+            });
+        });
+        return _.keys(selectedBusinessSet);
     }
 
     $scope.makeUnitSelection = function () {
         var geographyBusinessIds = businessFilter.useSmallGUI() ? businessFilter.geographyBusinessIds : $scope.collectGeographyIds(businessFilter.geography);
         var verksamhetsBusinessIds = $scope.collectVerksamhetsIds();
-        businessFilter.selectedBusinesses = $scope.findCut(geographyBusinessIds, verksamhetsBusinessIds);
+        businessFilter.selectedBusinesses = _.intersection(geographyBusinessIds, verksamhetsBusinessIds);
         $rootScope.$broadcast('filterChange', '');
     }
 

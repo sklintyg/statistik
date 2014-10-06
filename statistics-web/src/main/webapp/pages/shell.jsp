@@ -497,6 +497,7 @@
 <![endif]-->
 <script type="text/javascript" src="<c:url value='/js/lib/jquery/1.10.2/jquery.min.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/bootstrap/3.1.1/js/bootstrap.min.js'/>"></script>
+<script type="text/javascript" src="<c:url value='/js/lib/underscore-1.7.0/underscore-min.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/lib/angularjs/1.2.14/angular.min.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/lib/angularjs/1.2.14/angular-cookies.min.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/lib/angularjs/1.2.14/angular-route.min.js'/>"></script>
