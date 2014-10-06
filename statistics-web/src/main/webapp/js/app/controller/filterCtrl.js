@@ -18,7 +18,7 @@ app.filterCtrl = function ($scope, $rootScope, statisticsData, businessFilter, _
         } else {
             businessFilter.selectAll(item);
         }
-        businessFilter.updateState(itemRoot);
+        updateState(itemRoot);
     }
 
     function isItemHidden(item, searchText) {
