@@ -4,6 +4,7 @@ import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import se.inera.statistics.service.report.model.Avsnitt;
 import se.inera.statistics.service.report.model.DiagnosgruppResponse;
 import se.inera.statistics.service.report.model.KonDataRow;
 import se.inera.statistics.service.report.model.KonField;
@@ -90,7 +91,11 @@ public class NationellData {
                 result = new SimpleKonResponse<>(list, perioder * periodlangd);
             }
         }
-        return filterLow(result);
+        if (result == null) {
+            return new SimpleKonResponse<>(new ArrayList<SimpleKonDataRow>(), 0);
+        } else {
+            return filterLow(result);
+        }
     }
 
     public SjukskrivningsgradResponse getSjukskrivningsgrad(Range range) {
@@ -120,7 +125,11 @@ public class NationellData {
                 result = new SjukskrivningsgradResponse(result.getDegreesOfSickLeave(), list);
             }
         }
-        return filterLow(result);
+        if (result == null) {
+            return new SjukskrivningsgradResponse(new ArrayList<String>(), new ArrayList<KonDataRow>());
+        } else {
+            return filterLow(result);
+        }
     }
 
     public SjukfallslangdResponse getSjukfallslangd(Range range) {
@@ -146,7 +155,11 @@ public class NationellData {
                 result = new SjukfallslangdResponse(list, perioder * periodlangd);
             }
         }
-        return filterLow(result);
+        if (result == null) {
+            return new SjukfallslangdResponse(new ArrayList<SjukfallslangdRow>(), 0);
+        } else {
+            return filterLow(result);
+        }
     }
 
     public DiagnosgruppResponse getDiagnosgrupper(Range range) {
@@ -177,7 +190,11 @@ public class NationellData {
                 result = new DiagnosgruppResponse(result.getAvsnitts(), list);
             }
         }
-        return filterLow(result);
+        if (result == null) {
+            return new DiagnosgruppResponse(new ArrayList<Avsnitt>(), new ArrayList<KonDataRow>());
+        } else {
+            return filterLow(result);
+        }
     }
 
     public DiagnosgruppResponse getDiagnosavsnitt(Range range, String kapitelId) {
@@ -204,7 +221,11 @@ public class NationellData {
                 result = new DiagnosgruppResponse(result.getAvsnitts(), list);
             }
         }
-        return filterLow(result);
+        if (result == null) {
+            return new DiagnosgruppResponse(new ArrayList<Avsnitt>(), new ArrayList<KonDataRow>());
+        } else {
+            return filterLow(result);
+        }
     }
 
     public SimpleKonResponse<SimpleKonDataRow> getSjukfallPerLan(Range range) {
@@ -257,7 +278,11 @@ public class NationellData {
                 result = new SimpleKonResponse<>(list, perioder * periodlangd);
             }
         }
-        return filterLow(result);
+        if (result == null) {
+            return new SimpleKonResponse<>(new ArrayList<SimpleKonDataRow>(), 0);
+        } else {
+            return filterLow(result);
+        }
     }
 
     private SjukfallslangdResponse filterLow(SjukfallslangdResponse unfiltered) {

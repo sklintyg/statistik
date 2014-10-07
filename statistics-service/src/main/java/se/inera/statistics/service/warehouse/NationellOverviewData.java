@@ -50,9 +50,13 @@ public class NationellOverviewData {
     private int getForandring(Range range) {
         SimpleKonResponse<SimpleKonDataRow> intyg = data.getAntalIntyg(ReportUtil.getPreviousPeriod(range).getFrom(), 2, KVARTAL);
 
-        SimpleKonDataRow previous = intyg.getRows().get(0);
-        SimpleKonDataRow current = intyg.getRows().get(1);
-        return percentChange(total(current), total(previous));
+        if (intyg.getRows().size() >= 2) {
+            SimpleKonDataRow previous = intyg.getRows().get(0);
+            SimpleKonDataRow current = intyg.getRows().get(1);
+            return percentChange(total(current), total(previous));
+        } else {
+            return percentChange(0, 0);
+        }
     }
 
     private List<OverviewChartRowExtended> getIntygPerLan(Range range) {
@@ -75,6 +79,9 @@ public class NationellOverviewData {
 
     private int getForandringLangaSjukskrivningar(Range range) {
         SimpleKonResponse<SimpleKonDataRow> langaSjukfall = data.getLangaSjukfall(ReportUtil.getPreviousPeriod(range).getFrom(), 2, KVARTAL);
+        if (langaSjukfall.getRows().isEmpty()) {
+            return 0;
+        }
         int previous = total(langaSjukfall.getRows().get(0));
         int current = total(langaSjukfall.getRows().get(1));
         return percentChange(current, previous);
@@ -82,6 +89,9 @@ public class NationellOverviewData {
 
     private int getLangaSjukskrivningar(Range range) {
         SimpleKonResponse<SimpleKonDataRow> langaSjukfall = data.getLangaSjukfall(range.getFrom(), 1, KVARTAL);
+        if (langaSjukfall.getRows().isEmpty()) {
+            return 0;
+        }
         return langaSjukfall.getRows().get(0).getFemale() + langaSjukfall.getRows().get(0).getMale();
     }
 
@@ -103,12 +113,14 @@ public class NationellOverviewData {
         SjukskrivningsgradResponse periods = data.getSjukskrivningsgrad(ReportUtil.getPreviousPeriod(range).getFrom(), 2, KVARTAL);
 
         List<OverviewChartRowExtended> result = new ArrayList<>();
-        List<KonField> previousData = periods.getRows().get(0).getData();
-        List<KonField> currentData = periods.getRows().get(1).getData();
-        for (int i = 0; i < previousData.size(); i++) {
-            int previous = previousData.get(i).getFemale() + previousData.get(i).getMale();
-            int current = currentData.get(i).getFemale() + currentData.get(i).getMale();
-            result.add(new OverviewChartRowExtended(periods.getDegreesOfSickLeave().get(i), current, percentChange(current, previous)));
+        if (periods.getRows().size() >= 2) {
+            List<KonField> previousData = periods.getRows().get(0).getData();
+            List<KonField> currentData = periods.getRows().get(1).getData();
+            for (int i = 0; i < previousData.size(); i++) {
+                int previous = previousData.get(i).getFemale() + previousData.get(i).getMale();
+                int current = currentData.get(i).getFemale() + currentData.get(i).getMale();
+                result.add(new OverviewChartRowExtended(periods.getDegreesOfSickLeave().get(i), current, percentChange(current, previous)));
+            }
         }
         return result;
     }
@@ -157,14 +169,15 @@ public class NationellOverviewData {
     private List<OverviewChartRowExtended> getDiagnosgrupper(Range range) {
         DiagnosgruppResponse periods = data.getDiagnosgrupper(ReportUtil.getPreviousPeriod(range).getFrom(), 2, KVARTAL);
         List<OverviewChartRowExtended> result = new ArrayList<>();
-        List<KonField> previousData = periods.getRows().get(0).getData();
-        List<KonField> currentData = periods.getRows().get(1).getData();
-        for (int i = 0; i < previousData.size(); i++) {
-            int previous = previousData.get(i).getFemale() + previousData.get(i).getMale();
-            int current = currentData.get(i).getFemale() + currentData.get(i).getMale();
-            result.add(new OverviewChartRowExtended(periods.getAvsnitts().get(i).getId(), current, current - previous));
+        if (periods.getRows().size() >= 2) {
+            List<KonField> previousData = periods.getRows().get(0).getData();
+            List<KonField> currentData = periods.getRows().get(1).getData();
+            for (int i = 0; i < previousData.size(); i++) {
+                int previous = previousData.get(i).getFemale() + previousData.get(i).getMale();
+                int current = currentData.get(i).getFemale() + currentData.get(i).getMale();
+                result.add(new OverviewChartRowExtended(periods.getAvsnitts().get(i).getId(), current, current - previous));
+            }
         }
-
         return result;
     }
 
@@ -175,6 +188,9 @@ public class NationellOverviewData {
     private OverviewKonsfordelning getSexProportion(Range range) {
         SimpleKonResponse<SimpleKonDataRow> intyg = data.getAntalIntyg(range.getFrom(), 1, KVARTAL);
 
+        if (intyg.getRows().size() == 0) {
+            return new OverviewKonsfordelning(0, 0, range);
+        }
         SimpleKonDataRow dataRow = intyg.getRows().get(0);
         return new OverviewKonsfordelning(dataRow.getMale(), dataRow.getFemale(), range);
     }

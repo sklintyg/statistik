@@ -21,7 +21,6 @@ package se.inera.statistics.service.demo;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.google.common.collect.ArrayListMultimap;
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Multimap;
 import org.joda.time.LocalDate;
@@ -39,7 +38,10 @@ import se.inera.statistics.service.warehouse.WarehouseManager;
 import javax.annotation.PostConstruct;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Random;
 
 public class InjectUtlatande {
     private static final int SEED = 1234;
@@ -63,9 +65,11 @@ public class InjectUtlatande {
 
     private static Random random = new Random(SEED);
 
+    public static final int VARDGIVARE_ANTAL = 20;
+
     static {
         for (String vardgivare : VG) {
-            for (int i = 1; i <= random.nextInt(20); i++) {
+            for (int i = 1; i <= random.nextInt(VARDGIVARE_ANTAL); i++) {
                 VARDGIVARE.put(vardgivare, vardgivare + "-enhet-" + i);
             }
         }
@@ -113,8 +117,9 @@ public class InjectUtlatande {
 
     private void publishUtlatanden() {
         UtlatandeBuilder builder = new UtlatandeBuilder();
-
-        List<String> personNummers = readList("/personnr/testpersoner.log");
+        System.out.println(System.getProperty("statistics.test.max.intyg"));
+        int maxIntyg = Integer.parseInt(System.getProperty("statistics.test.max.intyg", "0"));
+        List<String> personNummers = readList("/personnr/testpersoner.log", maxIntyg);
 
         LOG.info("Inserting " + personNummers.size() + " certificates");
         for (String id : personNummers) {
@@ -151,10 +156,11 @@ public class InjectUtlatande {
         receiver.accept(EventType.CREATED, intyg, correlationId, System.currentTimeMillis());
     }
 
-    private List<String> readList(String path) {
+    private List<String> readList(final String path, final int maxIntyg) {
         try (BufferedReader in = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream(path), "utf8"));) {
             List<String> list = new ArrayList<>();
-            for (String line = in.readLine(); line != null; line = in.readLine()) {
+            int count = 0;
+            for (String line = in.readLine(); line != null && (maxIntyg == 0 || count++ < maxIntyg); line = in.readLine()) {
                 list.add(line);
             }
             return list;
