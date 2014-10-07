@@ -28,11 +28,11 @@ app.filterCtrl = function ($scope, $rootScope, statisticsData, businessFilter, _
         if (!item.subs) {
             return true;
         }
-        for (var i = 0; i < item.subs.length; i++) {
-            if (!isItemHidden(item.subs[i], searchText)) {
+        _.each(item.subs, function (sub) {
+            if (!isItemHidden(sub, searchText)) {
                 return false;
             }
-        }
+        });
         return true;
     }
 
@@ -40,14 +40,14 @@ app.filterCtrl = function ($scope, $rootScope, statisticsData, businessFilter, _
         if (item.subs) {
             var someSelected = false;
             var allSelected = true;
-            for (var i = 0; i < item.subs.length; i++) {
-                var currItem = item.subs[i];
+            _.each(item.subs, function (sub) {
+                var currItem = sub;
                 if (!currItem.hide) {
                     updateState(currItem);
                     someSelected = someSelected || currItem.someSelected || currItem.allSelected;
                     allSelected = allSelected && currItem.allSelected;
                 }
-            }
+            });
             if (allSelected) {
                 item.allSelected = true;
                 item.someSelected = false;
@@ -83,23 +83,17 @@ app.filterCtrl = function ($scope, $rootScope, statisticsData, businessFilter, _
     };
 
     $scope.selectedTertiaryCount = function (node) {
-        var c = 0;
-        _.each(node.subs, function (item) {
-            if ($scope.selectedLeavesCount(item) > 0) {
-                c++;
-            }
-        });
-        return c;
+        return _.reduce(node.subs, function (memo, sub) {
+            return memo + ($scope.selectedLeavesCount(sub) > 0 ? 1 : 0)
+        }, 0);
     };
 
     $scope.selectedSecondaryCount = function (node) {
         var c = 0;
         _.each(node.subs, function (item) {
-            _.each(item.subs, function (item) {
-                if ($scope.selectedLeavesCount(item) > 0) {
-                    c++;
-                }
-            });
+            c += _.reduce(item.subs, function (memo, sub) {
+                return memo + ($scope.selectedLeavesCount(sub) > 0 ? 1 : 0)
+            }, 0);
         });
         return c;
     };
