@@ -409,19 +409,19 @@
                         <div id="statistics-filter-container" class="collapse" collapse="!isFilterCollapsed">
                         	<div class="row">
 				                <div class="filter-level" id="first-level-filter">
-                                    <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3 clearfix">
+                                    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-3 clearfix">
                                         <label for="select-unit">Typ av verksamhet:</label><br/>
                                         <select ng-model="businessFilter.verksamhetsTypIds" multiple="multiple"
                                                 ng-options="verksamhet.id as verksamhet.name for verksamhet in businessFilter.verksamhetsTyper" multiselect-dropdown id="select-verksamhet">
                                         </select>
                                     </div>
-                                    <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3 clearfix" data-ng-if="businessFilter.useSmallGUI()">
+                                    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-3 clearfix" data-ng-if="businessFilter.useSmallGUI()">
                                         <label for="select-unit">Val av enhet:</label><br/>
                                         <select ng-model="businessFilter.geographyBusinessIds" multiple="multiple"
                                                 ng-options="business.id as business.name for business in businessFilter.businesses" multiselect-dropdown id="select-unit">
                                         </select>
                                     </div>
-	                                <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3" data-ng-if="!businessFilter.useSmallGUI()">
+	                                <div class="col-xs-6 col-sm-6 col-md-6 col-lg-3" data-ng-if="!businessFilter.useSmallGUI()">
 	                                	<label for="select-geo-unit">Val av enheter:</label><br/>
 	                                    <button class="btn btn-default" data-toggle="modal" data-target="#myModal" id="select-geo-unit" >
 	                                        Välj enhet
@@ -431,7 +431,6 @@
 	                                        <div class="modal-dialog">
 	                                            <div class="modal-content">
 	                                                <div class="modal-header">
-	                                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
 	                                                    <span id="myModalLabel">Val av enheter</span>
 	                                                </div>
 	                                                <div class="modal-body">
@@ -441,7 +440,8 @@
 	                                                            <input type="search" ng-model="multiMenuFilter" class="multiMenuFilterSearch form-control" ng-change="filterMenuItems(businessFilter.geography.subs, multiMenuFilter)" placeholder="Sök efter enhet"/>
 	                                                        </li>
 	                                                        <li class="select-all-items">
-	                                                            <input type="checkbox" ng-checked="businessFilter.geography.allSelected" class="multiMenuSelectAll" ng-click="itemClicked(businessFilter.geography, businessFilter.geography)">Markera alla</input>
+	                                                            <input type="checkbox" ng-checked="businessFilter.geography.allSelected" id="select-all-units" class="multiMenuSelectAll" ng-click="itemClicked(businessFilter.geography, businessFilter.geography)"></input>
+	                                                            <label for="select-all-units">Markera alla</label>
 	                                                        </li>
 	                                                        <li data-ng-repeat="item in businessFilter.geography.subs" class="multiMenuSelectKapitel" ng-init="itemRoot=businessFilter.geography; depth=0">
 	                                                            <submenu item="item" itemroot="itemRoot" depth="depth" recursionhelper="recursionhelper" ng-hide="item.hide" class="depth0" />
@@ -449,27 +449,34 @@
 	                                                    </ul>
 	                                                </div>
 	                                                <div class="modal-footer">
-	                                                    <label class="pull-left">Ditt urval:</label><br/>
-	                                                    <label class="pull-left">Enheter: {{selectedLeavesCount(businessFilter.geography)}} Kommuner: {{selectedSecondaryCount(businessFilter.geography)}} Län: {{selectedTertiaryCount(businessFilter.geography)}}</label>
+	                                                    <label class="pull-left">Län: {{selectedTertiaryCount(businessFilter.geography)}} Kommuner: {{selectedSecondaryCount(businessFilter.geography)}} Enheter: {{selectedLeavesCount(businessFilter.geography)}}</label>
 	                                                    <button class="btn btn-success" data-dismiss="modal" aria-hidden="true">Spara och stäng</button>
-	                                                    <button type="button" class="btn btn-default" data-dismiss="modal" aria-hidden="true">Stäng</button>
 	                                                </div>
 	                                            </div>
 	                                        </div>
 	                                    </div>
 	                                </div>
 	                            </div>
-	                            <div class="filter-level">
-                                    <div class="pull-right">
-                                        <input type="checkbox" ng-model="businessFilter.permanentFilter"/>
-                                        <label>Val ska slå på alla rapporter</label>
-                                    </div>
-                                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 clearfix">
-	                                	<button class="btn btn-success pull-right" data-ng-click="makeUnitSelection()">
-		                                    Sök
-		                                </button>
-	                                </div>
+	                            <div class="filter-level no-padding">
+	                            	<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+	                            		<div class="divider"></div>
+	                            	</div>
 	                            </div>
+	                            <div class="filter-level" id="actions-for-filter">
+	                            	<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 pull-right">
+	                            		<div class="row">
+	                            			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 pull-right">
+	                            				<button type="button" class="btn btn-default pull-right">Återställ</button>
+	                                        	<button class="btn btn-success pull-right" data-ng-click="makeUnitSelection()">Sök</button>
+	                                        	<div class="pull-right">
+		                            				<input type="checkbox" id="check-permanent-filter" ng-model="businessFilter.permanentFilter">
+		                                        		<label for="check-permanent-filter">Val ska slå på alla rapporter</label>
+		                                        	</input>
+		                                        </div>
+	                                        </div>
+			                            </div>
+                                    </div>
+                                </div>
 				        	</div>
 	                    </div>
                         <button id="show-hide-filter-btn" type="button" class="btn btn-small pull-right" data-toggle="collapse" data-target="#statistics-filter-container" ng-click="isCollapsed = !isCollapsed">
@@ -497,14 +504,16 @@
 <![endif]-->
 <script type="text/javascript" src="<c:url value='/js/lib/jquery/1.10.2/jquery.min.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/bootstrap/3.1.1/js/bootstrap.min.js'/>"></script>
+<script type="text/javascript" src="<c:url value='/js/lib/underscore-1.7.0/underscore-min.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/lib/angularjs/1.2.14/angular.min.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/lib/angularjs/1.2.14/angular-cookies.min.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/lib/angularjs/1.2.14/angular-route.min.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/lib/ui-bootstrap/0.10.0/ui-bootstrap-tpls-0.10.0.min.js'/>"></script>
+<script type="text/javascript" src="<c:url value='/js/lib/respond/1.3.0/respond.min.js'/>"></script>
+<script type="text/javascript" src="<c:url value='/js/lib/bootstrap-multiselect/bootstrap-multiselect.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/app.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/factories.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/controller/common.js'/>"></script>
-<script type="text/javascript" src="<c:url value='/js/lib/respond/1.3.0/respond.min.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/controller/singleLineChartCtrl.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/controller/doubleAreaChartsCtrl.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/controller/overviewCtrl.js'/>"></script>
@@ -523,7 +532,6 @@
 <script type="text/javascript" src="<c:url value='/js/lib/highcharts/3.0.5/modules/highcharts-more.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/lib/highcharts/3.0.5/modules/exporting.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/lib/highcharts/pattern-fill/pattern-fill.js'/>"></script>
-<script type="text/javascript" src="<c:url value='/js/lib/bootstrap-multiselect/bootstrap-multiselect.js'/>"></script>
 
 <script type="text/javascript">
     $('.dropdown-toggle').dropdown();
