@@ -1,4 +1,11 @@
 /************* FILTER STYLES ONLY *********************/
+#actions-for-filter .btn { margin-left: 5px; }
+.modal-body label {
+	top: 4px;
+	position: relative;
+}
+.filter-level label { font-size: 12px; }
+.filter-level input[type=checkbox] { position: relative; top: 4px; }
 #statistics-filter-container { margin-top: 2px; }
 #statistics-filter-container table.table tbody td,
 #statistics-filter-container table.table tbody td:hover { background-color: #e9eae8; border-bottom: none; }
@@ -134,7 +141,7 @@ select, textarea, input[type="text"], input[type="password"], input[type="dateti
 .search-all-items, .select-all-items { margin-bottom: 10px; }
 .modal-body .modal-list li.search-all-items input[type=search] { width: 100%; height: 30px; top: 1px; }
 .modal-body .modal-list li.select-all-items input[type=checkbox] { margin-left: 0px; }
-.modal-body .modal-list input[type=checkbox] { margin-left: 10px; }
+.modal-body .modal-list input[type=checkbox] { margin-left: 10px; top: 0px; position: relative; }
 /* STYLES FOR MULTI-MULTI*/
 .depth0, .depth1 { cursor: pointer; }
 .depth2 { cursor: default; }

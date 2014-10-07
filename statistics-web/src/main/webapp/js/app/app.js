@@ -1,9 +1,14 @@
 'use strict';
 
+var underscore = angular.module('underscore', []);
+underscore.factory('_', function() {
+    return window._;
+});
+
 /* App Module */
 var app = {};
 
-app.statisticsApp = angular.module('StatisticsApp', [ 'ngRoute', 'ngCookies', 'ui.bootstrap' ]).config(
+app.statisticsApp = angular.module('StatisticsApp', [ 'ngRoute', 'ngCookies', 'ui.bootstrap', 'underscore' ]).config(
     [ '$routeProvider', '$httpProvider', function ($routeProvider, $httpProvider) {
         $routeProvider.when('/login', {
             templateUrl: 'views/login.html',

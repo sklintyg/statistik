@@ -127,7 +127,7 @@ app.statisticsApp.factory('statisticsData', function ($http) {
     return factory;
 });
 
-app.statisticsApp.factory('businessFilter', function() {
+app.statisticsApp.factory('businessFilter', function(_) {
     var businessService = {};
 
     businessService.reset = function () {
@@ -159,12 +159,12 @@ app.statisticsApp.factory('businessFilter', function() {
         if (!businessService.permanentFilter) {
             businessService.selectedBusinesses.length = 0;
             businessService.verksamhetsTypIds.length = 0;
-            for (var i = 0; i < businessService.businesses.length; i++) {
-                businessService.selectedBusinesses.push(businessService.businesses[i].id);
-            }
-            for (var i = 0; i < businessService.verksamhetsTyper.length; i++) {
-                businessService.verksamhetsTypIds.push(businessService.verksamhetsTyper[i].id);
-            }
+            _.each(businessService.businesses, function (business) {
+                businessService.selectedBusinesses.push(business.id);
+            });
+            _.each(businessService.verksamhetsTyper, function (verksamhetsTyp) {
+                businessService.verksamhetsTypIds.push(verksamhetsTyp.id);
+            });
             businessService.selectAll(businessService.geography, true);
         }
     }
@@ -190,48 +190,35 @@ app.statisticsApp.factory('businessFilter', function() {
     }
 
     businessService.populateGeography = function (businesses) {
-        for (var i = 0; i < businesses.length; i++) {
-            var business = businesses[i];
-
-            var county = $.grep(businessService.geography.subs, function (element) {
+        _.each(businesses, function (business) {
+            var county = _.find(businessService.geography.subs, function (element) {
                 return element.id === business.lansId;
             });
-            if (county.length === 0) {
+            if (!county) {
                 county = { id: business.lansId, name: business.lansName, subs: [] };
                 businessService.geography.subs.push(county);
-            } else {
-                county = county[0];
             }
 
-            var munip = $.grep(county.subs, function (element) {
+            var munip = _.find(county.subs, function (element) {
                 return element.id === business.kommunId;
             });
-            if (munip.length === 0) {
+            if (!munip) {
                 munip = { id: business.kommunId, name: business.kommunName, subs: [] };
                 county.subs.push(munip);
-            } else {
-                munip = munip[0];
             }
 
             munip.subs.push(business);
-        }
+        });
     };
 
     businessService.populateVerksamhetsTyper = function (businesses) {
         var verksamhetsTypSet = {};
-        for (var i = 0; i < businesses.length; i++) {
-            var business = businesses[i];
-            for (var j = 0; j < business.verksamhetsTyper.length; j++) {
-                var verksamhetsTyp = business.verksamhetsTyper[j];
+        _.each(businesses, function (business) {
+            _.each(business.verksamhetsTyper, function (verksamhetsTyp) {
                 verksamhetsTypSet[verksamhetsTyp.id] = verksamhetsTyp;
-            }
-        }
-        var id;
-        for (id in verksamhetsTypSet) {
-            if (verksamhetsTypSet.hasOwnProperty(id)) {
-                businessService.verksamhetsTyper.push(verksamhetsTypSet[id]);
-            }
-        }
+            });
+        });
+        businessService.verksamhetsTyper = _.values(verksamhetsTypSet);
     }
 
     businessService.deselectAll = function (item) {
@@ -239,9 +226,9 @@ app.statisticsApp.factory('businessFilter', function() {
             item.allSelected = false;
             item.someSelected = false;
             if (item.subs) {
-                for (var i = 0; i < item.subs.length; i++) {
-                    businessService.deselectAll(item.subs[i]);
-                }
+                _.each(item.subs, function (sub) {
+                    businessService.deselectAll(sub);
+                });
             }
         }
     }
@@ -251,9 +238,9 @@ app.statisticsApp.factory('businessFilter', function() {
             item.allSelected = true;
             item.someSelected = false;
             if (item.subs) {
-                for (var i = 0; i < item.subs.length; i++) {
-                    businessService.selectAll(item.subs[i], selectHidden);
-                }
+                _.each(item.subs, function (sub) {
+                    businessService.selectAll(sub, selectHidden);
+                });
             }
         }
     }

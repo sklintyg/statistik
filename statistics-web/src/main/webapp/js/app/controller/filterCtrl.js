@@ -1,6 +1,6 @@
 'use strict';
 
-app.filterCtrl = function ($scope, $rootScope, statisticsData, businessFilter) {
+app.filterCtrl = function ($scope, $rootScope, statisticsData, businessFilter, _) {
 
     $scope.businessFilter = businessFilter;
 
@@ -18,7 +18,7 @@ app.filterCtrl = function ($scope, $rootScope, statisticsData, businessFilter) {
         } else {
             businessFilter.selectAll(item);
         }
-        businessFilter.updateState(itemRoot);
+        updateState(itemRoot);
     }
 
     function isItemHidden(item, searchText) {
@@ -28,11 +28,11 @@ app.filterCtrl = function ($scope, $rootScope, statisticsData, businessFilter) {
         if (!item.subs) {
             return true;
         }
-        for (var i = 0; i < item.subs.length; i++) {
-            if (!isItemHidden(item.subs[i], searchText)) {
+        _.each(item.subs, function (sub) {
+            if (!isItemHidden(sub, searchText)) {
                 return false;
             }
-        }
+        });
         return true;
     }
 
@@ -40,14 +40,14 @@ app.filterCtrl = function ($scope, $rootScope, statisticsData, businessFilter) {
         if (item.subs) {
             var someSelected = false;
             var allSelected = true;
-            for (var i = 0; i < item.subs.length; i++) {
-                var currItem = item.subs[i];
+            _.each(item.subs, function (sub) {
+                var currItem = sub;
                 if (!currItem.hide) {
                     updateState(currItem);
                     someSelected = someSelected || currItem.someSelected || currItem.allSelected;
                     allSelected = allSelected && currItem.allSelected;
                 }
-            }
+            });
             if (allSelected) {
                 item.allSelected = true;
                 item.someSelected = false;
@@ -62,18 +62,34 @@ app.filterCtrl = function ($scope, $rootScope, statisticsData, businessFilter) {
         var searchText = text.toLowerCase();
         var mappingFunc = function (item) {
             if (item.subs) {
-                ControllerCommons.map(item.subs, mappingFunc);
+                _.each(item.subs, mappingFunc);
             }
             item.hide = isItemHidden(item, searchText);
         };
-        ControllerCommons.map(items, mappingFunc);
-        ControllerCommons.map(items, businessFilter.updateState);
+        _.each(items, mappingFunc);
+        _.each(items, businessFilter.updateState);
     }
+
+    $scope.selectedTertiaryCount = function (node) {
+        return _.reduce(node.subs, function (memo, sub) {
+            return memo + ($scope.selectedLeavesCount(sub) > 0 ? 1 : 0)
+        }, 0);
+    };
+
+    $scope.selectedSecondaryCount = function (node) {
+        var c = 0;
+        _.each(node.subs, function (item) {
+            c += _.reduce(item.subs, function (memo, sub) {
+                return memo + ($scope.selectedLeavesCount(sub) > 0 ? 1 : 0)
+            }, 0);
+        });
+        return c;
+    };
 
     $scope.selectedLeavesCount = function (node) {
         var c = 0;
         if (node.subs) {
-            ControllerCommons.map(node.subs, function (item) {
+            _.each(node.subs, function (item) {
                 c += $scope.selectedLeavesCount(item);
             });
         } else {
@@ -82,35 +98,11 @@ app.filterCtrl = function ($scope, $rootScope, statisticsData, businessFilter) {
         return c;
     };
 
-    $scope.selectedTertiaryCount = function (node) {
-        var c = 0;
-        ControllerCommons.map(node.subs, function (item) {
-            if ($scope.selectedLeavesCount(item) > 0) {
-                c++;
-            }
-            ;
-        });
-        return c;
-    };
-
-    $scope.selectedSecondaryCount = function (node) {
-        var c = 0;
-        ControllerCommons.map(node.subs, function (item) {
-            ControllerCommons.map(item.subs, function (item) {
-                if ($scope.selectedLeavesCount(item) > 0) {
-                    c++;
-                }
-                ;
-            });
-        });
-        return c;
-    };
-
     $scope.collectGeographyIds = function (node) {
         var returnList = [];
         if (node.subs) {
             if (node.allSelected || node.someSelected ) {
-                ControllerCommons.map(node.subs, function (item) {
+                _.each(node.subs, function (item) {
                     returnList = Array.concat(returnList, $scope.collectGeographyIds(item));
                 });
             }
@@ -123,44 +115,18 @@ app.filterCtrl = function ($scope, $rootScope, statisticsData, businessFilter) {
     }
 
     $scope.collectVerksamhetsIds = function () {
-        var selectedBusinessSet = {};
-        for (var i = 0; i < businessFilter.verksamhetsTypIds.length; i++) {
-            var selectedVerksamhetsId = businessFilter.verksamhetsTypIds[i];
-            for (var j = 0; j < businessFilter.businesses.length; j++) {
-                var business = businessFilter.businesses[j];
-                for (var k = 0; k < business.verksamhetsTyper.length; k++) {
-                    var verksamhetsTyp = business.verksamhetsTyper[k];
-                    if (verksamhetsTyp.id === selectedVerksamhetsId) {
-                        selectedBusinessSet[business.id] = business;
-                    }
-                }
-            }
-        }
-        var selectedBusinessIds = [];
-        var id;
-        for (id in selectedBusinessSet) {
-            if (selectedBusinessSet.hasOwnProperty(id)) {
-                selectedBusinessIds.push(id);
-            }
-        }
-        return selectedBusinessIds;
-    }
-
-    $scope.findCut = function (businessIds1, businessIds2) {
-        var returnIds = [];
-        for (var i = 0; i < businessIds1.length; i++) {
-            var id = businessIds1[i];
-            if (businessIds2.indexOf(id) >= 0) {
-                returnIds.push(id);
-            }
-        }
-        return returnIds;
+        var matchingBusinesses = _.filter(businessFilter.businesses, function (business) {
+            return _.some(business.verksamhetsTyper, function (verksamhetsTyp) {
+                return _.contains(businessFilter.verksamhetsTypIds, verksamhetsTyp.id);
+            });
+        });
+        return _.pluck(matchingBusinesses, 'id');
     }
 
     $scope.makeUnitSelection = function () {
         var geographyBusinessIds = businessFilter.useSmallGUI() ? businessFilter.geographyBusinessIds : $scope.collectGeographyIds(businessFilter.geography);
         var verksamhetsBusinessIds = $scope.collectVerksamhetsIds();
-        businessFilter.selectedBusinesses = $scope.findCut(geographyBusinessIds, verksamhetsBusinessIds);
+        businessFilter.selectedBusinesses = _.intersection(geographyBusinessIds, verksamhetsBusinessIds);
         $rootScope.$broadcast('filterChange', '');
     }
 
