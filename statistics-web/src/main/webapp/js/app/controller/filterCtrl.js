@@ -70,18 +70,6 @@ app.filterCtrl = function ($scope, $rootScope, statisticsData, businessFilter, _
         _.each(items, businessFilter.updateState);
     }
 
-    $scope.selectedLeavesCount = function (node) {
-        var c = 0;
-        if (node.subs) {
-            _.each(node.subs, function (item) {
-                c += $scope.selectedLeavesCount(item);
-            });
-        } else {
-            c += node.allSelected ? 1 : 0;
-        }
-        return c;
-    };
-
     $scope.selectedTertiaryCount = function (node) {
         return _.reduce(node.subs, function (memo, sub) {
             return memo + ($scope.selectedLeavesCount(sub) > 0 ? 1 : 0)
@@ -95,6 +83,18 @@ app.filterCtrl = function ($scope, $rootScope, statisticsData, businessFilter, _
                 return memo + ($scope.selectedLeavesCount(sub) > 0 ? 1 : 0)
             }, 0);
         });
+        return c;
+    };
+
+    $scope.selectedLeavesCount = function (node) {
+        var c = 0;
+        if (node.subs) {
+            _.each(node.subs, function (item) {
+                c += $scope.selectedLeavesCount(item);
+            });
+        } else {
+            c += node.allSelected ? 1 : 0;
+        }
         return c;
     };
 
