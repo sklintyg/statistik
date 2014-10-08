@@ -467,7 +467,7 @@
 	                            		<div class="row">
 	                            			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 pull-right">
 	                            				<button type="button" class="btn btn-default pull-right">Återställ</button>
-	                                        	<button class="btn btn-success pull-right" data-ng-click="makeUnitSelection()">Sök</button>
+	                                        	<button class="btn btn-success pull-right" data-ng-click="makeUnitSelection()" data-toggle="collapse" data-target="#statistics-filter-container" ng-click="isCollapsed = !isCollapsed">Sök</button>
 	                                        	<div class="pull-right">
 		                            				<input type="checkbox" id="check-permanent-filter" ng-model="businessFilter.permanentFilter">
 		                                        		<label for="check-permanent-filter">Val ska slå på alla rapporter</label>
@@ -512,7 +512,8 @@
 <script type="text/javascript" src="<c:url value='/js/lib/respond/1.3.0/respond.min.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/lib/bootstrap-multiselect/bootstrap-multiselect.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/app.js'/>"></script>
-<script type="text/javascript" src="<c:url value='/js/app/factories.js'/>"></script>
+<script type="text/javascript" src="<c:url value='/js/app/services/factories.js'/>"></script>
+<script type="text/javascript" src="<c:url value='/js/app/services/businessFilter.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/controller/common.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/controller/singleLineChartCtrl.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/controller/doubleAreaChartsCtrl.js'/>"></script>
