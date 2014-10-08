@@ -41,11 +41,10 @@ app.filterCtrl = function ($scope, $rootScope, statisticsData, businessFilter, _
             var someSelected = false;
             var allSelected = true;
             _.each(item.subs, function (sub) {
-                var currItem = sub;
-                if (!currItem.hide) {
-                    updateState(currItem);
-                    someSelected = someSelected || currItem.someSelected || currItem.allSelected;
-                    allSelected = allSelected && currItem.allSelected;
+                if (!sub.hide) {
+                    updateState(sub);
+                    someSelected = someSelected || sub.someSelected || sub.allSelected;
+                    allSelected = allSelected && sub.allSelected;
                 }
             });
             if (allSelected) {
@@ -77,46 +76,40 @@ app.filterCtrl = function ($scope, $rootScope, statisticsData, businessFilter, _
     };
 
     $scope.selectedSecondaryCount = function (node) {
-        var c = 0;
-        _.each(node.subs, function (item) {
-            c += _.reduce(item.subs, function (memo, sub) {
+        return _.reduce(node.subs, function (acc, item) {
+            var nodeSum = _.reduce(item.subs, function (memo, sub) {
                 return memo + ($scope.selectedLeavesCount(sub) > 0 ? 1 : 0)
             }, 0);
-        });
-        return c;
+            return acc + nodeSum;
+        }, 0);
     };
 
     $scope.selectedLeavesCount = function (node) {
-        var c = 0;
         if (node.subs) {
-            _.each(node.subs, function (item) {
-                c += $scope.selectedLeavesCount(item);
-            });
+            return _.reduce(node.subs, function (acc, item) {
+                return acc + $scope.selectedLeavesCount(item);
+            }, 0);
         } else {
-            c += node.allSelected ? 1 : 0;
+            return node.allSelected ? 1 : 0;
         }
-        return c;
     };
 
     $scope.collectGeographyIds = function (node) {
-        var returnList = [];
         if (node.subs) {
             if (node.allSelected || node.someSelected ) {
-                _.each(node.subs, function (item) {
-                    returnList = Array.concat(returnList, $scope.collectGeographyIds(item));
-                });
+                return _.reduce(node.subs, function (acc, item) {
+                    return acc.concat($scope.collectGeographyIds(item));
+                }, []);
             }
+            return [];
         } else {
-            if (node.allSelected) {
-                returnList = [node.id];
-            }
+           return node.allSelected ? [node.id] : [];
         }
-        return returnList;
     }
 
     $scope.collectVerksamhetsIds = function () {
         var matchingBusinesses = _.filter(businessFilter.businesses, function (business) {
-            return _.some(business.verksamhetsTyper, function (verksamhetsTyp) {
+            return _.any(business.verksamhetsTyper, function (verksamhetsTyp) {
                 return _.contains(businessFilter.verksamhetsTypIds, verksamhetsTyp.id);
             });
         });

@@ -191,17 +191,13 @@ app.statisticsApp.factory('businessFilter', function(_) {
 
     businessService.populateGeography = function (businesses) {
         _.each(businesses, function (business) {
-            var county = _.find(businessService.geography.subs, function (element) {
-                return element.id === business.lansId;
-            });
+            var county = _.findWhere(businessService.geography.subs, { id: business.lansId });
             if (!county) {
                 county = { id: business.lansId, name: business.lansName, subs: [] };
                 businessService.geography.subs.push(county);
             }
 
-            var munip = _.find(county.subs, function (element) {
-                return element.id === business.kommunId;
-            });
+            var munip = _.findWhere(county.subs, { id: business.kommunId });
             if (!munip) {
                 munip = { id: business.kommunId, name: business.kommunName, subs: [] };
                 county.subs.push(munip);
