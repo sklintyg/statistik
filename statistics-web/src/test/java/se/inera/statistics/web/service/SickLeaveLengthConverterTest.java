@@ -68,10 +68,10 @@ public class SickLeaveLengthConverterTest {
         assertEquals("[< 20 dagar, 20-50 dagar, > 50 dagar]", chartDataResult.getCategories().toString());
         List<ChartSeries> series = chartDataResult.getSeries();
         assertEquals(2, series.size());
-        assertEquals("Antal sjukfall för män", series.get(0).getName());
-        assertEquals("Antal sjukfall för kvinnor", series.get(1).getName());
-        assertEquals("[14, 15, 9]", series.get(0).getData().toString());
-        assertEquals("[13, 24, 3]", series.get(1).getData().toString());
+        assertEquals("Antal sjukfall för män", series.get(1).getName());
+        assertEquals("Antal sjukfall för kvinnor", series.get(0).getName());
+        assertEquals("[14, 15, 9]", series.get(1).getData().toString());
+        assertEquals("[13, 24, 3]", series.get(0).getData().toString());
 
         assertEquals(7, result.getMonthsIncluded());
     }
