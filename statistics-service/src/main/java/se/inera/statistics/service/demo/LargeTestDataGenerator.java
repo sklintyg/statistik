@@ -67,6 +67,7 @@ public class LargeTestDataGenerator {
     private static final float LONG_PERIOD_FRACTION = 0.1f;
 
     private static final int MONTHS = 20;
+    private static int maxIntyg = INTYG_PER_DAY * MONTHS * (SHORT_PERIOD_DAYS + 1);
 
     private static final LocalDate BASE = new LocalDate("2012-03-01");
     private static final LocalDate BASE_AGE = new LocalDate("1930-01-01");
@@ -96,19 +97,22 @@ public class LargeTestDataGenerator {
 
     @PostConstruct
     public void init() {
-        for (Kapitel kapitel: icd10.getKapitel()) {
+        for (Kapitel kapitel : icd10.getKapitel()) {
             for (Avsnitt avsnitt : kapitel.getAvsnitt()) {
-                for (Kategori kategori: avsnitt.getKategori()) {
+                for (Kategori kategori : avsnitt.getKategori()) {
                     DIAGNOSER.add(kategori.getId());
                 }
             }
         }
+        maxIntyg = Integer.parseInt(System.getProperty("statistics.test.max.intyg", "" + maxIntyg));
+        LOG.info("Max intyg to insert: " + maxIntyg);
     }
 
     public void publishUtlatanden() {
         UtlatandeBuilder builder = new UtlatandeBuilder();
         int count = 0;
         LocalDate lastDay = BASE.plusMonths(MONTHS);
+        maxIntyg:
         for (LocalDate now = BASE; !now.isAfter(lastDay); now = now.plusDays(1)) {
             for (int i = 0; i < INTYG_PER_DAY; i++) {
                 String id = randomPerson();
@@ -119,6 +123,9 @@ public class LargeTestDataGenerator {
                 try {
                     for (WideLine wideLine : widelineConverter.toWideline(document, hsaInfo, count++, "" + count, EventType.CREATED)) {
                         factPopulator.accept(wideLine);
+                        if (count > maxIntyg) {
+                            break maxIntyg;
+                        }
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -131,7 +138,7 @@ public class LargeTestDataGenerator {
     public String exportUtlatanden() {
         Map<String, Aisle> allVardgivare = warehouse.getAllVardgivare();
         StringBuilder result = new StringBuilder("vg;").append(Fact.HEADING).append('\n');
-        for (Map.Entry<String, Aisle> entry: allVardgivare.entrySet()) {
+        for (Map.Entry<String, Aisle> entry : allVardgivare.entrySet()) {
             String vg = entry.getKey();
             for (Fact line : entry.getValue()) {
                 result.append(vg).append(line.toCSVString(';'));
