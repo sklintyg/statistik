@@ -50,8 +50,8 @@ public class SickLeaveLengthConverter {
         List<Integer> femaleData = resp.getDataForSex(Kon.Female);
         List<Integer> maleData = resp.getDataForSex(Kon.Male);
         ArrayList<ChartSeries> series = new ArrayList<>();
-        series.add(new ChartSeries("Antal sjukfall för män", maleData, false, Kon.Male));
         series.add(new ChartSeries("Antal sjukfall för kvinnor", femaleData, false, Kon.Female));
+        series.add(new ChartSeries("Antal sjukfall för män", maleData, false, Kon.Male));
         return new ChartData(series, groups);
     }
 
