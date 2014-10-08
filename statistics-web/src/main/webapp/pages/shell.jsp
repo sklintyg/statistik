@@ -426,7 +426,7 @@
 	                                    <button class="btn btn-default" data-toggle="modal" data-target="#myModal" id="select-geo-unit" >
 	                                        Välj enhet
 	                                    </button>
-						                <label>{{selectedLeavesCount(businessFilter.geography)}} valda enheter</label>
+						                <label>{{businessFilter.selectedLeavesCount(businessFilter.geography)}} valda enheter</label>
 	                                    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 	                                        <div class="modal-dialog">
 	                                            <div class="modal-content">
@@ -449,7 +449,7 @@
 	                                                    </ul>
 	                                                </div>
 	                                                <div class="modal-footer">
-	                                                    <label class="pull-left">Län: {{selectedTertiaryCount(businessFilter.geography)}} Kommuner: {{selectedSecondaryCount(businessFilter.geography)}} Enheter: {{selectedLeavesCount(businessFilter.geography)}}</label>
+	                                                    <label class="pull-left">Län: {{businessFilter.selectedTertiaryCount(businessFilter.geography)}} Kommuner: {{businessFilter.selectedSecondaryCount(businessFilter.geography)}} Enheter: {{businessFilter.selectedLeavesCount(businessFilter.geography)}}</label>
 	                                                    <button class="btn btn-success" data-dismiss="modal" aria-hidden="true">Spara och stäng</button>
 	                                                </div>
 	                                            </div>

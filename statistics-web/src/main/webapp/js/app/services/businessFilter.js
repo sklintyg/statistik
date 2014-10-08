@@ -114,5 +114,30 @@ app.statisticsApp.factory('businessFilter', function(_) {
         }
     }
 
+    businessFilter.selectedTertiaryCount = function (node) {
+        return _.reduce(node.subs, function (memo, sub) {
+            return memo + (businessFilter.selectedLeavesCount(sub) > 0 ? 1 : 0)
+        }, 0);
+    };
+
+    businessFilter.selectedSecondaryCount = function (node) {
+        return _.reduce(node.subs, function (acc, item) {
+            var nodeSum = _.reduce(item.subs, function (memo, sub) {
+                return memo + (businessFilter.selectedLeavesCount(sub) > 0 ? 1 : 0)
+            }, 0);
+            return acc + nodeSum;
+        }, 0);
+    };
+
+    businessFilter.selectedLeavesCount = function (node) {
+        if (node.subs) {
+            return _.reduce(node.subs, function (acc, item) {
+                return acc + businessFilter.selectedLeavesCount(item);
+            }, 0);
+        } else {
+            return node.allSelected ? 1 : 0;
+        }
+    };
+
     return businessFilter;
 });

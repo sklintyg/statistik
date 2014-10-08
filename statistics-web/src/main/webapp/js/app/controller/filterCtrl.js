@@ -69,31 +69,6 @@ app.filterCtrl = function ($scope, $rootScope, statisticsData, businessFilter, _
         _.each(items, businessFilter.updateState);
     }
 
-    $scope.selectedTertiaryCount = function (node) {
-        return _.reduce(node.subs, function (memo, sub) {
-            return memo + ($scope.selectedLeavesCount(sub) > 0 ? 1 : 0)
-        }, 0);
-    };
-
-    $scope.selectedSecondaryCount = function (node) {
-        return _.reduce(node.subs, function (acc, item) {
-            var nodeSum = _.reduce(item.subs, function (memo, sub) {
-                return memo + ($scope.selectedLeavesCount(sub) > 0 ? 1 : 0)
-            }, 0);
-            return acc + nodeSum;
-        }, 0);
-    };
-
-    $scope.selectedLeavesCount = function (node) {
-        if (node.subs) {
-            return _.reduce(node.subs, function (acc, item) {
-                return acc + $scope.selectedLeavesCount(item);
-            }, 0);
-        } else {
-            return node.allSelected ? 1 : 0;
-        }
-    };
-
     $scope.collectGeographyIds = function (node) {
         if (node.subs) {
             if (node.allSelected || node.someSelected ) {
