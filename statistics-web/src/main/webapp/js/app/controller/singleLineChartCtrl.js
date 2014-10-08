@@ -68,7 +68,7 @@
 	var setColorToTotalCasesSeries = function(series) {
 	    for(var i = 0; i < series.length; i++) {
 	        if (series[i].name === "Antal sjukfall totalt") {
-	            series[i].color = "#B0B0B0";
+	            series[i].color = "#5d5d5d";
 	            break;
 	        }
 	    }

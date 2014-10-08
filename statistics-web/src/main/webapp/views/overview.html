@@ -214,17 +214,17 @@
 					                </h2>
 								</span>
 								<div class="overview-widget-content">
-									<div class="chart-container" id="sickLeaveLengthChart"></div>
-				                    <div class="overview-chart-info">
-				                        <div class="overview-chart-info-section">
-				                            <span class="longSickLeavesValue">{{longSickLeavesTotal | thousandseparated}}</span>
-				                            <span class="longSickLeavesText">Antalet sjukfall som övergår 90 dagar</span>
+									<div class="overview-chart-info" id="sicklength-chart-info">
+				                        <div class="overview-chart-info-section pull-left">
+				                        	<span class="longSickLeavesValue">{{longSickLeavesTotal | thousandseparated}}</span><br/>
+				                        	<span class="longSickLeavesText">Antalet sjukfall som övergår 90 dagar</span>
 				                        </div>
-				                        <div class="overview-chart-info-section">
-				                            <span class="longSickLeavesValue">{{longSickLeavesAlteration}}%</span>
-				                            <span class="longSickLeavesText">Förändring av antalet sjukfall som övergår 90 dagar jämfört med föregående tre månader</span>
+				                        <div class="overview-chart-info-section pull-right">
+				                        	<span class="longSickLeavesValue">{{longSickLeavesAlteration}}%</span><br/>
+				                        	<span class="longSickLeavesText">Förändring av antalet sjukfall som övergår 90 dagar jämfört med föregående tre månader</span>
 				                        </div>
 				                    </div>
+				                    <div class="chart-container" id="sickLeaveLengthChart"></div>
 								</div>
 							</span>
 						</a>
@@ -242,7 +242,7 @@
 								</span>
 								<div class="overview-widget-content">
 									<div class="chart-container" id="sickLeavePerCountyChart"></div>
-				                    <table id="datatable" class="table table-striped overview-graph-table">
+				                    <table id="datatable" class="table table-striped overview-graph-table sickLeaveByCountyTable">
 				                        <thead>
 				                        <tr>
 				                        	<td>&nbsp;</td>

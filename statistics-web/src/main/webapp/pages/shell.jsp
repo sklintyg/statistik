@@ -410,19 +410,19 @@
                         	<div class="row">
 				                <div class="filter-level" id="first-level-filter">
                                     <div class="col-xs-6 col-sm-6 col-md-6 col-lg-3 clearfix">
-                                        <label for="select-unit">Typ av verksamhet:</label><br/>
+                                        <label for="select-unit">Välj verksamhetstyper:</label><br/>
                                         <select ng-model="businessFilter.verksamhetsTypIds" multiple="multiple"
                                                 ng-options="verksamhet.id as verksamhet.name for verksamhet in businessFilter.verksamhetsTyper" multiselect-dropdown id="select-verksamhet">
                                         </select>
                                     </div>
                                     <div class="col-xs-6 col-sm-6 col-md-6 col-lg-3 clearfix" data-ng-if="businessFilter.useSmallGUI()">
-                                        <label for="select-unit">Val av enhet:</label><br/>
+                                        <label for="select-unit">Välj enheter:</label><br/>
                                         <select ng-model="businessFilter.geographyBusinessIds" multiple="multiple"
                                                 ng-options="business.id as business.name for business in businessFilter.businesses" multiselect-dropdown id="select-unit">
                                         </select>
                                     </div>
 	                                <div class="col-xs-6 col-sm-6 col-md-6 col-lg-3" data-ng-if="!businessFilter.useSmallGUI()">
-	                                	<label for="select-geo-unit">Val av enheter:</label><br/>
+	                                	<label for="select-geo-unit">Välj enheter:</label><br/>
 	                                    <button class="btn btn-default" data-toggle="modal" data-target="#myModal" id="select-geo-unit" >
 	                                        Välj enhet
 	                                    </button>
@@ -467,7 +467,7 @@
 	                            		<div class="row">
 	                            			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 pull-right">
 	                            				<button type="button" class="btn btn-default pull-right">Återställ</button>
-	                                        	<button class="btn btn-success pull-right" data-ng-click="makeUnitSelection()" data-toggle="collapse" data-target="#statistics-filter-container" ng-click="isCollapsed = !isCollapsed">Sök</button>
+	                                        	<button class="btn btn-success pull-right" data-ng-click="makeUnitSelection()">Sök</button>
 	                                        	<div class="pull-right">
 		                            				<input type="checkbox" id="check-permanent-filter" ng-model="businessFilter.permanentFilter">
 		                                        		<label for="check-permanent-filter">Val ska slå på alla rapporter</label>

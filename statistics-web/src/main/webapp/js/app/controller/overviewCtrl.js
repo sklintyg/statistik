@@ -117,8 +117,8 @@
         var chartOptions = ControllerCommons.getHighChartConfigBase(categories, series);
         chartOptions.chart.type = 'column';
         chartOptions.chart.renderTo = containerId;
-        chartOptions.chart.height = 210;
-        chartOptions.xAxis.title = { text: 'Dagar' };
+        chartOptions.chart.height = 240;
+        chartOptions.xAxis.title = { text: 'Sjukskrivningslängd' };
         chartOptions.yAxis.title = { text: 'Antal' };
         chartOptions.yAxis.tickPixelInterval = 30,
         chartOptions.legend.enabled = false;
@@ -134,7 +134,7 @@
         var chartOptions = ControllerCommons.getHighChartConfigBase([], series);
         chartOptions.chart = {
             renderTo : containerId,
-            height : 230,
+            height : 320,
             width: 188,
             type : 'bubble',
             backgroundColor: null //Transparent
@@ -174,7 +174,7 @@
             title : ''
         };
         new Highcharts.Chart(chartOptions, function(chart) { // on complete
-            chart.renderer.image('img/sweden_graph.png', 43, 3, 88, 206).add();
+            chart.renderer.image('img/sweden_graph.png', 44, 80, 88, 206).add();
         });
     }
     
@@ -223,7 +223,7 @@
         } else if (contains(county, "östergötland")){
             return {"x": 43, "y": 23};
         } else {
-            return {"x": 10, "y": 84}; //Default point should not match any part of sweden
+            return {"x": 12, "y": 84}; //Default point should not match any part of sweden
         }
     }
     

@@ -1159,6 +1159,11 @@ form.bs-docs-example {
 
 /* Large desktop */
 @media (min-width: 1200px) {
+	#overview-content table#datatable {
+		width: 61%;
+		border: 1px solid transparent;
+		border-bottom: 1px solid #dddddd;
+	}
 	ul.overview-box-header {
 		width: 100%;
 	}	
@@ -1181,7 +1186,7 @@ form.bs-docs-example {
 		width: 50%;
 	}
 	.chart-container#sickLeaveLengthChart{
-		width: 62%;
+		width: 100%;
 		margin: 25px 0 0 0;
 	}
 	#chart-data-table table#datatable {
@@ -1204,6 +1209,12 @@ form.bs-docs-example {
 		float: left;
 		width: 30%;
 		margin: 20px 15px 10px 15px;
+	}
+	.overview-chart-info#sicklength-chart-info {
+		width: 95%;
+	}
+	#sicklength-chart-info .overview-chart-info-section {
+		width: 45%;
 	}
 	
 }
@@ -1297,6 +1308,9 @@ form.bs-docs-example {
 	.chart-container#sickLeaveLengthChart{
 		width: 62%;
 	}
+	.overview-chart-info#sicklength-chart-info {
+		width: 95%;
+	}
 	.overview-chart-info {
 		width: 38%;
 		float: left;
@@ -1325,7 +1339,7 @@ form.bs-docs-example {
 		width: 100%;
 	}
 	.chart-container#sickLeaveLengthChart{
-		width: 62%;
+		width: 100%;
 		margin: 40px 0 0 0;
 	}
 }
@@ -1346,7 +1360,7 @@ form.bs-docs-example {
 		font-size: 1em !important;
 	}
 	.chart-container#sickLeaveLengthChart{
-		width: 62%;
+		width: 100%;
 	}
 	.small-info-box .popover.left.in.fade {
 		left: -50px !important;
@@ -1418,7 +1432,7 @@ form.bs-docs-example {
 		width: 100%;
 	}
 	.chart-container#sickLeaveLengthChart{
-		width: 62%;
+		width: 100%;
 		margin: 45px 0 0 0;
 	}
 	.overview-chart-info {
