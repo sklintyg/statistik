@@ -174,7 +174,7 @@
             title : ''
         };
         new Highcharts.Chart(chartOptions, function(chart) { // on complete
-            chart.renderer.image('img/sweden_graph.png', 44, 80, 88, 206).add();
+            chart.renderer.image('img/sverige.png', 20, 10, 127, 300).add();
         });
     }
     
