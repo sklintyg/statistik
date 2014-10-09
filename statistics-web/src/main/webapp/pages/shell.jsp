@@ -437,7 +437,7 @@
 	                                                    <ul class="modal-list">
 	                                                        <li class="search-all-items input-group">
 	                                                        	<span class="input-group-addon glyphicon glyphicon-search"></span>
-	                                                            <input type="search" ng-model="multiMenuFilter" class="multiMenuFilterSearch form-control" ng-change="filterMenuItems(businessFilter.geography.subs, multiMenuFilter)" placeholder="Sök efter enhet"/>
+	                                                            <input type="search" ng-model="multiMenuFilter" class="multiMenuFilterSearch form-control" ng-change="businessFilter.filterMenuItems(businessFilter.geography.subs, multiMenuFilter)" placeholder="Sök efter enhet"/>
 	                                                        </li>
 	                                                        <li class="select-all-items">
 	                                                            <input type="checkbox" ng-checked="businessFilter.geography.allSelected" id="select-all-units" class="multiMenuSelectAll" ng-click="itemClicked(businessFilter.geography, businessFilter.geography)"></input>
