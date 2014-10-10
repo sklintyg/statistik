@@ -21,14 +21,15 @@
 
 angular.module('StatisticsApp').controller('pageCtrl', [ '$scope', '$rootScope', '$window', '$cookies', 'statisticsData', 'businessFilter',
     function ($scope, $rootScope, $window, $cookies, statisticsData, businessFilter) {
+        var self = this;
 
-        var getSelectedVerksamhet = function (selectedVerksamhetId, verksamhets) {
+        self.getSelectedVerksamhet = function (selectedVerksamhetId, verksamhets) {
             for (var i = 0; i < verksamhets.length; i++) {
                 if (verksamhets[i].vardgivarId === selectedVerksamhetId) {
                     return verksamhets[i];
                 }
             }
-            return {name: "Okänd verksamhet"}; //Selected verksamhet not found
+            return {name: "Okänd verksamhet"};
         };
 
         $rootScope.$on('$routeChangeSuccess', function (angularEvent, next, current) {
@@ -57,7 +58,7 @@ angular.module('StatisticsApp').controller('pageCtrl', [ '$scope', '$rootScope',
 
                 statisticsData.getLoginInfo(function (loginInfo) {
                     businessFilter.loggedIn(loginInfo.businesses);
-                    var v = getSelectedVerksamhet($scope.businessId, loginInfo.businesses);
+                    var v = self.getSelectedVerksamhet($scope.businessId, loginInfo.businesses);
                     $scope.verksamhetName = loginInfo.vgView ? ("- " + v.vardgivarName + (loginInfo.fullVgAccess ? "(alla enheter)" : "(vissa enheter)")) : v.name;
                     $scope.userName = loginInfo.name;
                     $scope.isVgView = loginInfo.vgView;
