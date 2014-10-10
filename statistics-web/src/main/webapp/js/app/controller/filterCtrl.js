@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('StatisticsApp').controller('filterCtrl', ['$scope', '$rootScope', 'statisticsData', 'businessFilter', '_',
-    function ($scope, $rootScope, statisticsData, businessFilter, _) {
+angular.module('StatisticsApp').controller('filterCtrl', ['$scope', '$rootScope', 'statisticsData', 'businessFilter',
+    function ($scope, $rootScope, statisticsData, businessFilter) {
 
         $scope.businessFilter = businessFilter;
 
