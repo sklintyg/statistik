@@ -12,14 +12,14 @@ app.statisticsApp = angular.module('StatisticsApp', [ 'ngRoute', 'ngCookies', 'u
     [ '$routeProvider', '$httpProvider', function ($routeProvider, $httpProvider) {
         $routeProvider.when('/login', {
             templateUrl: 'views/login.html',
-            controller: 'LoginCtrl',
+            controller: 'loginCtrl',
             title: 'Login Page'
         }).when('/fakelogin', {
             templateUrl: 'views/fakelogin.html',
             title: 'Fake Login Page'
         }).when('/nationell/oversikt', {
             templateUrl: 'views/overview.html',
-            controller: 'OverviewCtrl',
+            controller: 'overviewCtrl',
             controllerAs: 'NationalOverviewCtrl',
             title: 'Översikt'
         }).when('/nationell/sjukfallPerManad', {

@@ -120,7 +120,7 @@
         <!-- Docs nav
         ================================================== -->
         <div class="row">
-            <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 bs-docs-sidebar dontprint" data-ng-controller="NavigationMenuCtrl">
+            <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 bs-docs-sidebar dontprint" data-ng-controller="navigationMenuCtrl">
                 <h1 class="hidden-header">Sidans huvudnavigering</h1>
 				<!-- MOBILE NAVIGATION START -->
 				<nav class="navbar navbar-default hidden-sm hidden-md hidden-lg" role="navigation">

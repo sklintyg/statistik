@@ -1,4 +1,4 @@
- /*
+/*
  * Copyright (C) 2013 - 2014 Inera AB (http://www.inera.se)
  *
  *     This file is part of Inera Statistics (http://code.google.com/p/inera-statistics/).
@@ -19,8 +19,8 @@
 
 'use strict';
 
- app.loginCtrl = function ($scope) {
-
-    $scope.isLoggedIn = isLoggedIn;
-    
- };
+angular.module('StatisticsApp').controller('loginCtrl', [
+    function ($scope) {
+        $scope.isLoggedIn = isLoggedIn;
+    }
+]);

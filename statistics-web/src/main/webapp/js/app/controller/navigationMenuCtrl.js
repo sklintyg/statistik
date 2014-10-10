@@ -1,4 +1,4 @@
- /*
+/*
  * Copyright (C) 2013 - 2014 Inera AB (http://www.inera.se)
  *
  *     This file is part of Inera Statistics (http://code.google.com/p/inera-statistics/).
@@ -19,53 +19,55 @@
 
 'use strict';
 
- app.navigationMenuCtrl = function ($scope, $rootScope) {
+angular.module('StatisticsApp').controller('navigationMenuCtrl', [ '$scope', '$rootScope',
+    function ($scope, $rootScope) {
 
-     $scope.organisationMenuLabel = isLoggedIn ? "Verksamhetsstatistik" : "Logga in för verksamhetsstatistik";
-     
-     $scope.showNational = false;
-     $scope.showOperation = false;
-     $scope.showAbout = false;
-     $scope.isLoggedIn = isLoggedIn;
+        $scope.organisationMenuLabel = isLoggedIn ? "Verksamhetsstatistik" : "Logga in för verksamhetsstatistik";
 
-     $scope.toggleNationalAccordion = function() {
-         $scope.showNational = !$scope.showNational;
-         $scope.showOperation = false;
-         $scope.showAbout = false;
-     };
-     
-     $scope.toggleOperationAccordion = function() {
-         if (isLoggedIn) {
-             $scope.showOperation = !$scope.showOperation;
-             $scope.showNational = false;
-             $scope.showAbout = false;
-         }
-     };
-     
-     $scope.toggleAboutAccordion = function() {
-         $scope.showAbout = !$scope.showAbout;
-         $scope.showNational = false;
-         $scope.showOperation = false;
-     };
-     
-     $scope.$on('navigationUpdate', function(event, navigationGroupId) {
-         if (navigationGroupId === "about-statistics-collapse"){
-             $scope.showNational = false;
-             $scope.showOperation = false;
-             $scope.showAbout = true;
-         } else if (navigationGroupId === "national-statistics-collapse"){
-             $scope.showNational = true;
-             $scope.showOperation = false;
-             $scope.showAbout = false;
-         } else if (navigationGroupId === "business-statistics-collapse"){
-             $scope.showNational = false;
-             $scope.showOperation = true;
-             $scope.showAbout = false;
-         } else {
-             $scope.showNational = true;
-             $scope.showOperation = false;
-             $scope.showAbout = false;
-         }
-     }); 
+        $scope.showNational = false;
+        $scope.showOperation = false;
+        $scope.showAbout = false;
+        $scope.isLoggedIn = isLoggedIn;
 
- };
+        $scope.toggleNationalAccordion = function () {
+            $scope.showNational = !$scope.showNational;
+            $scope.showOperation = false;
+            $scope.showAbout = false;
+        };
+
+        $scope.toggleOperationAccordion = function () {
+            if (isLoggedIn) {
+                $scope.showOperation = !$scope.showOperation;
+                $scope.showNational = false;
+                $scope.showAbout = false;
+            }
+        };
+
+        $scope.toggleAboutAccordion = function () {
+            $scope.showAbout = !$scope.showAbout;
+            $scope.showNational = false;
+            $scope.showOperation = false;
+        };
+
+        $scope.$on('navigationUpdate', function (event, navigationGroupId) {
+            if (navigationGroupId === "about-statistics-collapse") {
+                $scope.showNational = false;
+                $scope.showOperation = false;
+                $scope.showAbout = true;
+            } else if (navigationGroupId === "national-statistics-collapse") {
+                $scope.showNational = true;
+                $scope.showOperation = false;
+                $scope.showAbout = false;
+            } else if (navigationGroupId === "business-statistics-collapse") {
+                $scope.showNational = false;
+                $scope.showOperation = true;
+                $scope.showAbout = false;
+            } else {
+                $scope.showNational = true;
+                $scope.showOperation = false;
+                $scope.showAbout = false;
+            }
+        });
+
+    }
+]);
