@@ -1,6 +1,6 @@
 'use strict';
 
-app.statisticsApp.factory('businessFilter', function(_) {
+angular.module('StatisticsApp').factory('businessFilter', function(_) {
     var businessFilter = {};
 
     businessFilter.reset = function () {

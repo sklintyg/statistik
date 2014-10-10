@@ -19,7 +19,8 @@
 
 'use strict';
 
- app.pageCtrl = function ($scope, $rootScope, $window, $cookies, statisticsData, businessFilter) {
+angular.module('StatisticsApp').controller('pageCtrl', [ '$scope', '$rootScope', '$window', '$cookies', 'statisticsData', 'businessFilter',
+     function ($scope, $rootScope, $window, $cookies, statisticsData, businessFilter) {
 
      var getSelectedVerksamhet = function(selectedVerksamhetId, verksamhets) {
          for (var i = 0; i < verksamhets.length; i++) {
@@ -73,5 +74,5 @@
     $scope.loginClicked = function(url) {
         $window.location.href = "#/" + url;
     }
-    
- };
+
+ }]);

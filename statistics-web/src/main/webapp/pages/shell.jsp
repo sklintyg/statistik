@@ -66,7 +66,7 @@
         var highchartsExportUrl = '${applicationScope.highchartsExportUrl}';
     </script>
 </head>
-<body data-ng-controller="PageCtrl">
+<body data-ng-controller="pageCtrl">
 <spring:eval expression='@loginVisibility.isLoginVisible()' var="loginVisible"/>
 
 <!-- Navbar
