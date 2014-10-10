@@ -299,8 +299,8 @@
                                      data-parent="#statistics-menu-accordion"
                                      data-ng-class="{active: showOperation, collapsed: !showOperation, disabled: !isLoggedIn}"
                                      data-ng-click="toggleOperationAccordion()">
-                                     <span class="statistics-menu-heading" data-ng-bind="organisationMenuLabel"></span><i 
-                                        class="statistict-left-menu-expand-icon"></i>
+                                     <span class="statistics-menu-heading" data-ng-bind="organisationMenuLabel"></span>
+                                    <i class="statistict-left-menu-expand-icon"></i>
                                      <!-- Inloggad: Enbart "Verksamhetsstatistik" -->
                                 </div>
                             </div>
