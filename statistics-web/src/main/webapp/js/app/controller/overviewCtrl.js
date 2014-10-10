@@ -181,7 +181,7 @@
     function getCoordinates(perCountyObject){
         var county = perCountyObject.name.toLowerCase();
         if (contains(county, "blekinge")){
-            return {"x": 39, "y": 11};
+            return {"x": 34, "y": 6};
         } else if (contains(county, "dalarna")){
             return {"x": 36, "y": 43};
         } else if (contains(county, "halland")){
@@ -217,11 +217,11 @@
         } else if (contains(county, "västmanland")){
             return {"x": 45, "y": 34};
         } else if (contains(county, "västra götaland")){
-            return {"x": 27, "y": 22};
+            return {"x": 14, "y": 18};
         } else if (contains(county, "örebro")){
-            return {"x": 38, "y": 31};
+            return {"x": 31, "y": 28};
         } else if (contains(county, "östergötland")){
-            return {"x": 43, "y": 23};
+            return {"x": 37, "y": 20};
         } else {
             return {"x": 12, "y": 84}; //Default point should not match any part of sweden
         }
