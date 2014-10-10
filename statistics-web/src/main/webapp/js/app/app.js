@@ -24,7 +24,7 @@ app.statisticsApp = angular.module('StatisticsApp', [ 'ngRoute', 'ngCookies', 'u
             title: 'Översikt'
         }).when('/nationell/sjukfallPerManad', {
             templateUrl: 'views/detailsView.html',
-            controller: 'CasesPerMonthCtrl',
+            controller: 'singleLineChartCtrl',
             controllerAs: 'NationalCasesPerMonthCtrl',
             resolve: { config: app.casesPerMonthConfig },
             title: 'Sjukfall per månad'
@@ -84,7 +84,7 @@ app.statisticsApp = angular.module('StatisticsApp', [ 'ngRoute', 'ngCookies', 'u
             title: 'Data saknas'
         }).when('/verksamhet/:verksamhetId/sjukfallPerManad', {
             templateUrl: 'views/detailsView.html',
-            controller: 'CasesPerMonthCtrl',
+            controller: 'singleLineChartCtrl',
             controllerAs: 'VerksamhetCasesPerMonthCtrl',
             resolve: { config: app.casesPerMonthConfig },
             title: 'Sjukfall per månad'
@@ -134,7 +134,7 @@ app.statisticsApp = angular.module('StatisticsApp', [ 'ngRoute', 'ngCookies', 'u
             title: 'Sjukskrivningslängd'
         }).when('/verksamhet/:verksamhetId/langasjukskrivningar', {
             templateUrl: 'views/detailsView.html',
-            controller: 'LongSickLeavesCtrl',
+            controller: 'singleLineChartCtrl',
             controllerAs: 'VerksamhetLongSickLeavesCtrl',
             resolve: { config: app.longSickLeavesConfig },
             title: 'Sjukskrivningslängd mer än 90 dagar'
