@@ -19,15 +19,17 @@
 
 'use strict';
 
-app.businessLandingPageCtrl = function ($scope, $window, $cookies, statisticsData) {
+angular.module('StatisticsApp').controller('businessLandingPageCtrl', ['$scope', '$window', '$cookies', 'statisticsData',
+    function ($scope, $window, $cookies, statisticsData) {
 
-    statisticsData.getLoginInfo(function(loginInfo) {
+        statisticsData.getLoginInfo(function (loginInfo) {
             if (loginInfo.businesses.length < 1) {
                 $window.location.href = "#/login";
             }
             $window.location.href = "#/verksamhet/" + loginInfo.defaultVerksamhet.vardgivarId + "/oversikt";
-        }, function() {
+        }, function () {
             $scope.dataLoadingError = true;
         });
 
-}
+    }
+]);

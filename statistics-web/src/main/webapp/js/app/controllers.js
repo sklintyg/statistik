@@ -5,10 +5,5 @@ app.statisticsApp.controller('DiagnosCtrl', app.doubleAreaChartsCtrl);
 app.statisticsApp.controller('DegreeOfSickLeaveCtrl', app.doubleAreaChartsCtrl);
 app.statisticsApp.controller('AgeGroupsCtrl', app.columnChartDetailsViewCtrl);
 app.statisticsApp.controller('SickLeaveLengthCtrl', app.columnChartDetailsViewCtrl);
-app.statisticsApp.controller('CasesPerCountyCtrl', app.casesPerCountyCtrl);
 app.statisticsApp.controller('CasesPerSexCtrl', app.columnChartDetailsViewCtrl);
-
-app.statisticsApp.controller('BusinessOverviewCtrl', app.businessOverviewCtrl);
-app.statisticsApp.controller('BusinessLandingPageCtrl', app.businessLandingPageCtrl);
 app.statisticsApp.controller('LongSickLeavesCtrl', app.singleLineChartCtrl);
-app.statisticsApp.controller('FilterCtrl', app.filterCtrl);

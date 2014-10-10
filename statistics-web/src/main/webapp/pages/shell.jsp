@@ -187,7 +187,7 @@
 					    <li class="dropdown-business">
 			          		<a class="mobileMenuHeaderItem" data-toggle="collapse in" data-target="#business-menu" ng-click="isBusinessCollapsed = !isBusinessCollapsed">Verksamhetsstatistik<span class="caret pull-right mobile-menu-caret"></span></a>
 			          		<ul class="collapse" id="business-menu" collapse="!isBusinessCollapsed">   
-				        		<li class="subMenuItem"><a data-ng-href="#/verksamhet/{{businessId}}/oversikt" ctrlname="BusinessOverviewCtrl" role="menuitem" ng-click="isCollapsed = !isCollapsed" navigationaware>Översikt</a></li>
+				        		<li class="subMenuItem"><a data-ng-href="#/verksamhet/{{businessId}}/oversikt" ctrlname="businessOverviewCtrl" role="menuitem" ng-click="isCollapsed = !isCollapsed" navigationaware>Översikt</a></li>
 		                        <li class="subMenuItem"><a data-ng-href="#/verksamhet/{{businessId}}/sjukfallPerManad" id="navBusinessCasesPerMonthLink" ctrlname="VerksamhetCasesPerMonthCtrl" role="menuitem" ng-click="isCollapsed = !isCollapsed" navigationaware>Sjukfall, totalt</a></li>
 								<li class="subMenuItem">
 						          <a class="dropdown-toggle subMenuItem" data-toggle="collapse in" data-target="#business-dia-chapter" ng-click="isBusinessDiaChapterCollapsed = !isBusinessDiaChapterCollapsed">Diagnosgrupp och enskilt diagnoskapitel <span class="caret pull-right mobile-menu-caret mobile-sub-caret"></span></a>
@@ -309,7 +309,7 @@
                                 <div class="accordion-inner">
                                     <ul id="business-statistic-menu-content" class="nav nav-list">
                                         <li><a data-ng-href="#/verksamhet/{{businessId}}/oversikt"
-                                               ctrlname="BusinessOverviewCtrl" navigationaware>Översikt</a></li>
+                                               ctrlname="businessOverviewCtrl" navigationaware>Översikt</a></li>
                                         <li><a data-ng-href="#/verksamhet/{{businessId}}/sjukfallPerManad"
                                                id="navBusinessCasesPerMonthLink" ctrlname="VerksamhetCasesPerMonthCtrl"
                                                navigationaware>Sjukfall, totalt</a></li>
@@ -404,7 +404,7 @@
             </div>
 
             <div class="col-xs-12 col-sm-9 col-md-9 col-lg-9">
-                <div class="row" ng-show="verksamhetIdParam" data-ng-controller="FilterCtrl">
+                <div class="row" ng-show="verksamhetIdParam" data-ng-controller="filterCtrl">
                     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                         <div id="statistics-filter-container" class="collapse" collapse="!isFilterCollapsed">
                         	<div class="row">

@@ -42,7 +42,7 @@ app.statisticsApp = angular.module('StatisticsApp', [ 'ngRoute', 'ngCookies', 'u
             title: 'Sjukskrivningslängd'
         }).when('/nationell/lan', {
             templateUrl: 'views/detailsView.html',
-            controller: 'CasesPerCountyCtrl',
+            controller: 'casesPerCountyCtrl',
             controllerAs: 'NationalCasesPerCountyCtrl',
             title: 'Län'
         }).when('/nationell/diagnosgrupp', {
@@ -73,12 +73,11 @@ app.statisticsApp = angular.module('StatisticsApp', [ 'ngRoute', 'ngCookies', 'u
             title: 'Andel sjukfall per kön'
         }).when('/verksamhet', {
             templateUrl: 'views/empty.html',
-            controller: 'BusinessLandingPageCtrl',
+            controller: 'businessLandingPageCtrl',
             title: 'Verksamhet'
         }).when('/verksamhet/:verksamhetId/oversikt', {
             templateUrl: 'views/business/businessOverview.html',
-            controller: 'BusinessOverviewCtrl',
-            controllerAs: 'BusinessOverviewCtrl',
+            controller: 'businessOverviewCtrl',
             title: 'Verksamhetsöversikt'
         }).when('/verksamhet/:verksamhetId/nodata', {
             templateUrl: 'views/business/noDataAvailable.html',
