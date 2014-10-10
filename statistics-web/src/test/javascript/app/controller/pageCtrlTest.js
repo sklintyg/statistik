@@ -2,7 +2,8 @@ describe('Controller: pageCtrl', function() {
     // Instantiate a new version of my module before each test
     beforeEach(module('StatisticsApp'));
 
-    var ctrl, scope, isLoggedIn;
+    isLoggedIn = false;
+    var ctrl, scope;
 
     beforeEach(function() {
         var jesper = "holmberg";
