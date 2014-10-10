@@ -3,7 +3,7 @@
 angular.module('StatisticsApp').directive("navigationaware", function ($rootScope, $location) {
     
     var isActivePage = function(currentRoute, navLinkAttrs) {
-        return currentRoute.controllerAs === navLinkAttrs.ctrlname;
+        return currentRoute.controllerAs === navLinkAttrs.ctrlname || currentRoute.controller === navLinkAttrs.ctrlname;
     }
     
     return {
