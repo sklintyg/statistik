@@ -1,6 +1,6 @@
 'use strict';
 
-app.statisticsApp.filter('thousandseparated', function() {
+angular.module('StatisticsApp').filter('thousandseparated', function() {
     return function(input) {
         return ControllerCommons.makeThousandSeparated(input);
     };
