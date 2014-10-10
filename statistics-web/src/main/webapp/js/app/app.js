@@ -6,9 +6,7 @@ underscore.factory('_', function() {
 });
 
 /* App Module */
-var app = {};
-
-app.statisticsApp = angular.module('StatisticsApp', [ 'ngRoute', 'ngCookies', 'ui.bootstrap', 'underscore' ]).config(
+var app = angular.module('StatisticsApp', [ 'ngRoute', 'ngCookies', 'ui.bootstrap', 'underscore' ]).config(
     [ '$routeProvider', '$httpProvider', function ($routeProvider, $httpProvider) {
         $routeProvider.when('/login', {
             templateUrl: 'views/login.html',
@@ -163,7 +161,7 @@ app.statisticsApp = angular.module('StatisticsApp', [ 'ngRoute', 'ngCookies', 'u
 
     } ]);
 
-app.statisticsApp.run([ '$rootScope', '$route', function ($rootScope, $route) {
+app.run([ '$rootScope', '$route', function ($rootScope, $route) {
     $rootScope.lang = 'sv';
     $rootScope.DEFAULT_LANG = 'sv';
 
