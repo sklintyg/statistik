@@ -47,13 +47,13 @@ app.statisticsApp = angular.module('StatisticsApp', [ 'ngRoute', 'ngCookies', 'u
             title: 'Län'
         }).when('/nationell/diagnosgrupp', {
             templateUrl: 'views/detailsView.html',
-            controller: 'DiagnosCtrl',
+            controller: 'doubleAreaChartsCtrl',
             controllerAs: 'NationalDiagnosgruppCtrl',
             resolve: { config: app.diagnosisGroupConfig },
             title: 'Diagnosgrupper'
         }).when('/nationell/diagnosavsnitt/:groupId', {
             templateUrl: 'views/detailsView.html',
-            controller: 'DiagnosCtrl',
+            controller: 'doubleAreaChartsCtrl',
             controllerAs: 'NationalDiagnosavsnittCtrl',
             resolve: { config: app.diagnosisSubGroupConfig },
             title: 'Enskilt diagnoskapitel'
@@ -61,7 +61,7 @@ app.statisticsApp = angular.module('StatisticsApp', [ 'ngRoute', 'ngCookies', 'u
             redirectTo: '/nationell/diagnosavsnitt/A00-B99'
         }).when('/nationell/sjukskrivningsgrad', {
             templateUrl: 'views/detailsView.html',
-            controller: 'DegreeOfSickLeaveCtrl',
+            controller: 'doubleAreaChartsCtrl',
             controllerAs: 'NationalDegreeOfSickLeaveCtrl',
             resolve: { config: app.degreeOfSickLeaveConfig },
             title: 'Sjukskrivningsgrad'
@@ -90,13 +90,13 @@ app.statisticsApp = angular.module('StatisticsApp', [ 'ngRoute', 'ngCookies', 'u
             title: 'Sjukfall per månad'
         }).when('/verksamhet/:verksamhetId/diagnosgrupp', {
             templateUrl: 'views/detailsView.html',
-            controller: 'DiagnosCtrl',
+            controller: 'doubleAreaChartsCtrl',
             controllerAs: 'VerksamhetDiagnoskapitelCtrl',
             resolve: { config: app.diagnosisGroupConfig },
             title: 'Diagnosgrupper'
         }).when('/verksamhet/:verksamhetId/diagnosavsnitt/:groupId', {
             templateUrl: 'views/detailsView.html',
-            controller: 'DiagnosCtrl',
+            controller: 'doubleAreaChartsCtrl',
             controllerAs: 'VerksamhetDiagnosavsnittCtrl',
             resolve: { config: app.diagnosisSubGroupConfig },
             title: 'Enskilt diagnoskapitel'
@@ -116,7 +116,7 @@ app.statisticsApp = angular.module('StatisticsApp', [ 'ngRoute', 'ngCookies', 'u
             title: 'Åldersgrupper'
         }).when('/verksamhet/:verksamhetId/sjukskrivningsgrad', {
             templateUrl: 'views/detailsView.html',
-            controller: 'DegreeOfSickLeaveCtrl',
+            controller: 'doubleAreaChartsCtrl',
             controllerAs: 'VerksamhetDegreeOfSickLeaveCtrl',
             resolve: { config: app.degreeOfSickLeaveConfig },
             title: 'Sjukskrivningsgrad'
