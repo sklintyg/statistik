@@ -30,13 +30,13 @@ app.statisticsApp = angular.module('StatisticsApp', [ 'ngRoute', 'ngCookies', 'u
             title: 'Sjukfall per månad'
         }).when('/nationell/aldersgrupper', {
             templateUrl: 'views/detailsView.html',
-            controller: 'AgeGroupsCtrl',
+            controller: 'columnChartDetailsViewCtrl',
             controllerAs: 'NationalAgeGroupCtrl',
             resolve: { config: app.nationalAgeGroupConfig },
             title: 'Åldersgrupper'
         }).when('/nationell/sjukskrivningslangd', {
             templateUrl: 'views/detailsView.html',
-            controller: 'SickLeaveLengthCtrl',
+            controller: 'columnChartDetailsViewCtrl',
             controllerAs: 'NationalSickLeaveLengthCtrl',
             resolve: { config: app.nationalSickLeaveLengthConfig },
             title: 'Sjukskrivningslängd'
@@ -67,7 +67,7 @@ app.statisticsApp = angular.module('StatisticsApp', [ 'ngRoute', 'ngCookies', 'u
             title: 'Sjukskrivningsgrad'
         }).when('/nationell/andelSjukfallPerKon', {
             templateUrl: 'views/detailsView.html',
-            controller: 'CasesPerSexCtrl',
+            controller: 'columnChartDetailsViewCtrl',
             controllerAs: 'NationalCasesPerSexCtrl',
             resolve: { config: app.casesPerSexConfig },
             title: 'Andel sjukfall per kön'
@@ -104,13 +104,13 @@ app.statisticsApp = angular.module('StatisticsApp', [ 'ngRoute', 'ngCookies', 'u
             redirectTo: '/verksamhet/:verksamhetId/diagnosavsnitt/A00-B99'
         }).when('/verksamhet/:verksamhetId/aldersgrupper', {
             templateUrl: 'views/detailsView.html',
-            controller: 'AgeGroupsCtrl',
+            controller: 'columnChartDetailsViewCtrl',
             controllerAs: 'VerksamhetAgeGroupCtrl',
             resolve: { config: app.nationalAgeGroupConfig },
             title: 'Åldersgrupper'
         }).when('/verksamhet/:verksamhetId/aldersgrupperpagaende', {
             templateUrl: 'views/detailsView.html',
-            controller: 'AgeGroupsCtrl',
+            controller: 'columnChartDetailsViewCtrl',
             controllerAs: 'VerksamhetAgeGroupCurrentCtrl',
             resolve: { config: app.nationalAgeGroupCurrentConfig },
             title: 'Åldersgrupper'
@@ -122,13 +122,13 @@ app.statisticsApp = angular.module('StatisticsApp', [ 'ngRoute', 'ngCookies', 'u
             title: 'Sjukskrivningsgrad'
         }).when('/verksamhet/:verksamhetId/sjukskrivningslangd', {
             templateUrl: 'views/detailsView.html',
-            controller: 'SickLeaveLengthCtrl',
+            controller: 'columnChartDetailsViewCtrl',
             controllerAs: 'VerksamhetSickLeaveLengthCtrl',
             resolve: { config: app.nationalSickLeaveLengthConfig },
             title: 'Sjukskrivningslängd'
         }).when('/verksamhet/:verksamhetId/sjukskrivningslangdpagaende', {
             templateUrl: 'views/detailsView.html',
-            controller: 'SickLeaveLengthCtrl',
+            controller: 'columnChartDetailsViewCtrl',
             controllerAs: 'VerksamhetSickLeaveLengthCurrentCtrl',
             resolve: { config: app.nationalSickLeaveLengthCurrentConfig },
             title: 'Sjukskrivningslängd'
