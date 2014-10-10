@@ -47,7 +47,7 @@ public class Icd10Test {
     @Test
     public void unknownKapitelHasCorrectNameAndRange() {
         Kapitel kapitel = icd10.getKapitel().get(22);
-        assertEquals("Ö00-Ö00", kapitel.getId());
+        assertEquals("This kapitel must be added manually when replacing icd file.", "Ö00-Ö00", kapitel.getId());
         assertEquals("Utan giltig ICD-10 kod", kapitel.getName());
     }
 

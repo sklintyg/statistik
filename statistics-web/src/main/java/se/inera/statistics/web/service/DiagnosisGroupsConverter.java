@@ -23,6 +23,7 @@ import se.inera.statistics.service.report.model.Avsnitt;
 import se.inera.statistics.service.report.model.DiagnosgruppResponse;
 import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.report.model.KonDataRow;
+import se.inera.statistics.service.report.model.KonField;
 import se.inera.statistics.service.report.model.OverviewChartRowExtended;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.web.model.ChartData;
@@ -80,10 +81,43 @@ public class DiagnosisGroupsConverter {
     }
 
     DualSexStatisticsData convert(DiagnosgruppResponse diagnosisGroups, Range range) {
+        boolean empty = isUtanGiltigEmpty(diagnosisGroups);
+        diagnosisGroups = removeUtanGiltigWhenEmpty(diagnosisGroups, empty);
         TableData tableData = convertTable(diagnosisGroups);
-        ChartData maleChart = convertChart(diagnosisGroups, Kon.Male);
-        ChartData femaleChart = convertChart(diagnosisGroups, Kon.Female);
+        ChartData maleChart = convertChart(diagnosisGroups, Kon.Male, empty);
+        ChartData femaleChart = convertChart(diagnosisGroups, Kon.Female, empty);
         return new DualSexStatisticsData(tableData, maleChart, femaleChart, range.toString());
+    }
+
+    private boolean isUtanGiltigEmpty(DiagnosgruppResponse diagnosisGroups) {
+        List<KonDataRow> rows = diagnosisGroups.getRows();
+        boolean empty = true;
+        for (KonDataRow row : rows) {
+            List<Integer> f = row.getDataForSex(Kon.Female);
+            List<Integer> m = row.getDataForSex(Kon.Male);
+            if (f.get(f.size() - 1) > 0 || m.get(m.size() - 1) > 0) {
+                empty = false;
+                break;
+            }
+        }
+        return empty;
+    }
+
+    private DiagnosgruppResponse removeUtanGiltigWhenEmpty(DiagnosgruppResponse diagnosisGroups, boolean remove) {
+        List<KonDataRow> rows = diagnosisGroups.getRows();
+        if (remove && rows.size() > 0) {
+            List<KonDataRow> newRows = new ArrayList<>();
+            List<Avsnitt> newAvsnitts = diagnosisGroups.getAvsnitts();
+            for (KonDataRow row : rows) {
+                List<KonField> col = row.getData();
+                col.remove(col.size() - 1);
+                newRows.add(new KonDataRow(row.getName(), col));
+            }
+            newAvsnitts.remove(newAvsnitts.size() - 1);
+            return new DiagnosgruppResponse(newAvsnitts, newRows);
+        } else {
+            return diagnosisGroups;
+        }
     }
 
     public List<OverviewChartRowExtended> convert(List<OverviewChartRowExtended> diagnosisGroups) {
@@ -125,9 +159,9 @@ public class DiagnosisGroupsConverter {
         return result;
     }
 
-    private ChartData convertChart(DiagnosgruppResponse resp, Kon sex) {
+    private ChartData convertChart(DiagnosgruppResponse resp, Kon sex, boolean empty) {
         Map<String, List<Integer>> allGroups = extractAllGroups(resp, sex);
-        Map<String, List<Integer>> mergedGroups = mergeChartGroups(allGroups);
+        Map<String, List<Integer>> mergedGroups = mergeChartGroups(allGroups, empty);
         ArrayList<ChartSeries> rows = new ArrayList<>();
         for (Entry<String, List<Integer>> entry : mergedGroups.entrySet()) {
             rows.add(new ChartSeries(entry.getKey(), entry.getValue(), true));
@@ -137,7 +171,7 @@ public class DiagnosisGroupsConverter {
         return new ChartData(rows, headers);
     }
 
-    private Map<String, List<Integer>> mergeChartGroups(Map<String, List<Integer>> allGroups) {
+    private Map<String, List<Integer>> mergeChartGroups(Map<String, List<Integer>> allGroups, boolean empty) {
         Map<String, List<Integer>> mergedGroups = new TreeMap<>(new Comparator<String>() {
 
             @Override
@@ -148,8 +182,14 @@ public class DiagnosisGroupsConverter {
         });
         List<List<Integer>> values = new ArrayList<List<Integer>>(allGroups.values());
         int listSize = values.isEmpty() ? 0 : values.get(0).toArray().length;
-        for (String groupName : getDiagnosisChartGroupsAsList()) {
-            mergedGroups.put(groupName, createZeroFilledList(listSize));
+        if (empty) {
+            for (int i = 0; i < getDiagnosisChartGroupsAsList().size() - 1; i++) {
+                mergedGroups.put(getDiagnosisChartGroupsAsList().get(i), createZeroFilledList(listSize));
+            }
+        } else {
+            for (String groupName : getDiagnosisChartGroupsAsList()) {
+                mergedGroups.put(groupName, createZeroFilledList(listSize));
+            }
         }
         for (Entry<String, List<Integer>> entry : allGroups.entrySet()) {
             addGroupToMergedChartGroups(mergedGroups, entry.getKey(), entry.getValue());
