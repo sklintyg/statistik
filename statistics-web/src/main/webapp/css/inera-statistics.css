@@ -1088,9 +1088,10 @@ a.listheader.collapsed {
 	/* filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#008391', endColorstr='#00687d',GradientType=0 ); */
 }
 .overview-widget-content {
-	min-height: 250px; /*TEMPORÄRT*/
+	min-height: 250px;
 	display: block;
 }
+#overview-widget-content-geo { min-height: 385px; }
 .overview-widget-link:hover .overview-widget-header { background: #28b4c4; cursor: pointer; }
 .overview-widget-link:hover .overview-widget { background: #F0F0F0; }
 .overview-widget-link:hover #sicklength-chart-info .overview-chart-info-section {
@@ -1759,3 +1760,4 @@ li.subMenuItem.active .active-menu-item { display: block;  }
 	background-color: #e5e5e5;
 }
 .no-padding { padding: 0px !important; }
+
