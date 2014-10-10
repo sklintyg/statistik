@@ -172,6 +172,7 @@ app.run([ '$rootScope', '$route', function ($rootScope, $route) {
     // Update page title
     $rootScope.page_title = 'Titel';
     $rootScope.pageName = '';
+    $rootScope.isLoggedIn = isLoggedIn;
     $rootScope.$on('$routeChangeSuccess', function () {
         if ($route.current.$$route) {
             $rootScope.pageName = $route.current.$$route.title;

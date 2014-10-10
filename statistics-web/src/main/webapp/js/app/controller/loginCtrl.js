@@ -19,8 +19,8 @@
 
 'use strict';
 
-angular.module('StatisticsApp').controller('loginCtrl', [
-    function ($scope) {
-        $scope.isLoggedIn = isLoggedIn;
+angular.module('StatisticsApp').controller('loginCtrl', [ '$scope', '$rootScope',
+    function ($scope, $rootScope) {
+        $scope.isLoggedIn = $rootScope.isLoggedIn;
     }
 ]);

@@ -46,7 +46,7 @@ angular.module('StatisticsApp').controller('pageCtrl', [ '$scope', '$rootScope',
 
             $scope.viewHeader = verksamhetId ? "Verksamhetsstatistik" : "Nationell statistik";
 
-            if (isLoggedIn) {
+            if ($rootScope.isLoggedIn) {
                 if (verksamhetId) {
                     $scope.businessId = verksamhetId;
                     $cookies.verksamhetId = verksamhetId;
@@ -72,7 +72,7 @@ angular.module('StatisticsApp').controller('pageCtrl', [ '$scope', '$rootScope',
             }
         });
 
-        $scope.isLoggedIn = isLoggedIn;
+        $scope.isLoggedIn = $rootScope.isLoggedIn;
 
         $scope.loginClicked = function (url) {
             $window.location.href = "#/" + url;

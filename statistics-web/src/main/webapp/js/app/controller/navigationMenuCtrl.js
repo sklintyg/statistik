@@ -22,12 +22,12 @@
 angular.module('StatisticsApp').controller('navigationMenuCtrl', [ '$scope', '$rootScope',
     function ($scope, $rootScope) {
 
-        $scope.organisationMenuLabel = isLoggedIn ? "Verksamhetsstatistik" : "Logga in för verksamhetsstatistik";
+        $scope.organisationMenuLabel = $rootScope.isLoggedIn ? "Verksamhetsstatistik" : "Logga in för verksamhetsstatistik";
 
         $scope.showNational = false;
         $scope.showOperation = false;
         $scope.showAbout = false;
-        $scope.isLoggedIn = isLoggedIn;
+        $scope.isLoggedIn = $rootScope.isLoggedIn;
 
         $scope.toggleNationalAccordion = function () {
             $scope.showNational = !$scope.showNational;
@@ -36,7 +36,7 @@ angular.module('StatisticsApp').controller('navigationMenuCtrl', [ '$scope', '$r
         };
 
         $scope.toggleOperationAccordion = function () {
-            if (isLoggedIn) {
+            if ($rootScope.isLoggedIn) {
                 $scope.showOperation = !$scope.showOperation;
                 $scope.showNational = false;
                 $scope.showAbout = false;
