@@ -21,8 +21,10 @@ module.exports = function(config) {
         'src/main/**/highcharts.js',
         'src/main/**/app.js',
         'src/main/**/pageCtrl.js',
+        'src/main/**/businessOverviewCtrl.js',
         'src/test/javascript/**/angular-mocks.js',
-        'src/test/javascript/**/pageCtrlTest.js'
+        'src/test/javascript/**/pageCtrlTest.js',
+        'src/test/javascript/**/businessOverviewCtrlTest.js'
     ],
 
     // list of files to exclude

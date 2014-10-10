@@ -17,29 +17,36 @@
  *     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-describe("Tests for business overview controller", function() {
+describe("Tests for business overview controller", function () {
+    beforeEach(module('StatisticsApp'));
 
-    it("should forward to missing data page if totalt number of cases is 0", function() {
-        var $scope = {};
-        $scope.$on = function (eventName, func) {};
-        var $timeout = {};
-        var statisticsData = {getBusinessOverview: function(id, pr, cb, err){cb({casesPerMonth: {totalCases: 0}});}};
-        var businessFilter = { getSelectedBusinesses: function () {} };
-        var $routeParams = {};
-        var $window = {location: {href: "https://www.statistik.com/verksamhet/verksamhet1/oversikt"}};
-        app.businessOverviewCtrl($scope, $timeout, statisticsData, businessFilter, $routeParams, $window);
+    var ctrl, scope;
+    var businessFilter = { getSelectedBusinesses: function () {
+    }};
+
+    it("should forward to missing data page if totalt number of cases is 0", function () {
+        var statisticsData = { getBusinessOverview: function (id, pr, callback, err) {
+            callback({ casesPerMonth: { totalCases: 0 } });
+        }};
+        var $window = { location: { href: "https://www.statistik.com/verksamhet/verksamhet1/oversikt" } };
+        inject(function ($rootScope, $controller, $timeout, $routeParams) {
+            scope = $rootScope.$new();
+            ctrl = $controller('businessOverviewCtrl', {$scope: scope, $timeout: $timeout, statisticsData: statisticsData,
+                businessFilter: businessFilter, $routeParams: $routeParams, $window: $window });
+        });
         expect($window.location.href).toBe("https://www.statistik.com/verksamhet/verksamhet1/nodata");
     });
 
-    it("should not forward to missing data page if totalt number of cases is more than 0", function() {
-        var $scope = {};
-        $scope.$on = function (eventName, func) {};
-        var $timeout = function(){};
-        var statisticsData = {getBusinessOverview: function(id, pr, cb, err){cb({casesPerMonth: {totalCases: 1}});}};
-        var businessFilter = { getSelectedBusinesses: function () {} };
-        var $routeParams = {};
-        var $window = {location: {href: "https://www.statistik.com/verksamhet/verksamhet1/oversikt"}};
-        app.businessOverviewCtrl($scope, $timeout, statisticsData, businessFilter, $routeParams, $window);
+    it("should not forward to missing data page if totalt number of cases is more than 0", function () {
+        var statisticsData = { getBusinessOverview: function (id, pr, callback, err) {
+            callback({ casesPerMonth: { totalCases: 1 } });
+        }};
+        var $window = { location: { href: "https://www.statistik.com/verksamhet/verksamhet1/oversikt" } };
+        inject(function ($rootScope, $controller, $timeout, $routeParams) {
+            scope = $rootScope.$new();
+            ctrl = $controller('businessOverviewCtrl', {$scope: scope, $timeout: $timeout, statisticsData: statisticsData,
+                businessFilter: businessFilter, $routeParams: $routeParams, $window: $window });
+        });
         expect($window.location.href).toBe("https://www.statistik.com/verksamhet/verksamhet1/oversikt");
     });
 

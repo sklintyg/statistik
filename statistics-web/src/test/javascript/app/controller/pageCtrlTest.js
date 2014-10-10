@@ -1,15 +1,9 @@
 describe('Controller: pageCtrl', function() {
-    // Instantiate a new version of my module before each test
     beforeEach(module('StatisticsApp'));
 
     isLoggedIn = false;
     var ctrl, scope;
 
-    beforeEach(function() {
-        var jesper = "holmberg";
-    });
-
-    // Before each unit test, instantiate a new instance of the controller
     beforeEach(inject(function($rootScope, $controller, $window) {
         scope = $rootScope.$new();
         ctrl = $controller('pageCtrl', {$scope: scope, $rootScope: $rootScope, $window: $window, $cookies: {}, statisticsData: {}, businessFilter: {}});
