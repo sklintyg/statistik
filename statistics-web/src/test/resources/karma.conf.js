@@ -27,8 +27,7 @@ module.exports = function(config) {
             'src/test/javascript/**/angular-mocks.js',
             'src/test/javascript/**/pageCtrlTest.js',
             'src/test/javascript/**/commonTest.js',
-            'src/test/javascript/**/businessFilterTest.js',
-            'src/test/javascript/**/businessOverviewCtrlTest.js'
+            'src/test/javascript/**/businessFilterTest.js'
         ],
 
         // list of files to exclude
