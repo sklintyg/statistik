@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('StatisticsApp').factory('businessFilter', function(_) {
+angular.module('StatisticsApp').factory('businessFilter', function (_) {
     var businessFilter = {};
 
     businessFilter.reset = function () {
@@ -17,17 +17,6 @@ angular.module('StatisticsApp').factory('businessFilter', function(_) {
         businessFilter.verksamhetsTypIds = [];
     }
     businessFilter.reset();
-
-    businessFilter.itemClicked = function (item, itemRoot) {
-        if (item.allSelected) {
-            businessFilter.deselectAll(item);
-        } else if (item.someSelected) {
-            businessFilter.selectAll(item);
-        } else {
-            businessFilter.selectAll(item);
-        }
-        businessFilter.updateState(itemRoot);
-    };
 
     businessFilter.getSelectedBusinesses = function (samePage) {
         if (!businessFilter.dataInitialized) {
@@ -99,6 +88,17 @@ angular.module('StatisticsApp').factory('businessFilter', function(_) {
             });
         });
         businessFilter.verksamhetsTyper = _.values(verksamhetsTypSet);
+    };
+
+    businessFilter.itemClicked = function (item, itemRoot) {
+        if (item.allSelected) {
+            businessFilter.deselectAll(item);
+        } else if (item.someSelected) {
+            businessFilter.selectAll(item);
+        } else {
+            businessFilter.selectAll(item);
+        }
+        businessFilter.updateState(itemRoot);
     };
 
     businessFilter.deselectAll = function (item) {
