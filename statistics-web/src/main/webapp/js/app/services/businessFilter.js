@@ -201,8 +201,9 @@ angular.module('StatisticsApp').factory('businessFilter', function (_) {
                 return _.reduce(node.subs, function (acc, item) {
                     return acc.concat(businessFilter.collectGeographyIds(item));
                 }, []);
+            } else {
+                return [];
             }
-            return [];
         } else {
             return node.allSelected ? [node.id] : [];
         }
