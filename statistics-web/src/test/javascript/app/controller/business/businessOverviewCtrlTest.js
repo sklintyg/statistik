@@ -24,6 +24,11 @@ describe("Tests for business overview controller", function () {
     var businessFilter = { getSelectedBusinesses: function () {
     }};
 
+    beforeEach(inject(function($rootScope, $controller, $window) {
+        var scope = $rootScope.$new();
+        ctrl = $controller('pageCtrl', {$scope: scope, $rootScope: $rootScope, $window: $window, $cookies: {}, statisticsData: {}, businessFilter: {}});
+    }));
+
     it("should forward to missing data page if totalt number of cases is 0", function () {
         var statisticsData = { getBusinessOverview: function (id, pr, callback, err) {
             callback({ casesPerMonth: { totalCases: 0 } });

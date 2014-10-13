@@ -18,6 +18,17 @@ angular.module('StatisticsApp').factory('businessFilter', function(_) {
     }
     businessFilter.reset();
 
+    businessFilter.itemClicked = function (item, itemRoot) {
+        if (item.allSelected) {
+            businessFilter.deselectAll(item);
+        } else if (item.someSelected) {
+            businessFilter.selectAll(item);
+        } else {
+            businessFilter.selectAll(item);
+        }
+        businessFilter.updateState(itemRoot);
+    };
+
     businessFilter.getSelectedBusinesses = function (samePage) {
         if (!businessFilter.dataInitialized) {
             return null;
@@ -139,21 +150,6 @@ angular.module('StatisticsApp').factory('businessFilter', function(_) {
         }
     };
 
-    businessFilter.isItemHidden = function (item, searchText) {
-        if (item.name.toLowerCase().indexOf(searchText) >= 0) {
-            return false;
-        }
-        if (!item.subs) {
-            return true;
-        }
-        _.each(item.subs, function (sub) {
-            if (!businessFilter.isItemHidden(sub, searchText)) {
-                return false;
-            }
-        });
-        return true;
-    };
-
     businessFilter.updateState = function (item) {
         if (item.subs) {
             var someSelected = false;
@@ -185,6 +181,18 @@ angular.module('StatisticsApp').factory('businessFilter', function(_) {
         };
         _.each(items, mappingFunc);
         _.each(items, businessFilter.updateState);
+    };
+
+    businessFilter.isItemHidden = function (item, searchText) {
+        if (item.name.toLowerCase().indexOf(searchText) >= 0) {
+            return false;
+        }
+        if (!item.subs) {
+            return true;
+        }
+        return _.all(item.subs, function (sub) {
+            return businessFilter.isItemHidden(sub, searchText);
+        });
     };
 
     businessFilter.collectGeographyIds = function (node) {

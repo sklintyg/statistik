@@ -12,14 +12,7 @@ angular.module('StatisticsApp').controller('filterCtrl', ['$scope', '$rootScope'
         };
 
         $scope.itemClicked = function (item, itemRoot) {
-            if (item.allSelected) {
-                businessFilter.deselectAll(item);
-            } else if (item.someSelected) {
-                businessFilter.selectAll(item);
-            } else {
-                businessFilter.selectAll(item);
-            }
-            businessFilter.updateState(itemRoot);
+            businessFilter.itemClicked(item, itemRoot);
         };
 
         $scope.makeUnitSelection = function () {
