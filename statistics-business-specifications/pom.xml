@@ -13,7 +13,6 @@
     <name>Inera Statistics Fitnesse business specifications</name>
 
     <properties>
-        <groovy.version>2.3.4</groovy.version>
         <fitnesse.port>9125</fitnesse.port>
         <fitnesse.working>${project.basedir}/src/test/fitnesse</fitnesse.working>
         <fitnesse.root>FitNesseRoot</fitnesse.root>
@@ -45,7 +44,6 @@
         <dependency>
             <groupId>org.codehaus.groovy</groupId>
             <artifactId>groovy-all</artifactId>
-            <version>${groovy.version}</version>
         </dependency>
 
         <dependency>
