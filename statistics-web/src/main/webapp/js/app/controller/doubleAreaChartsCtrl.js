@@ -19,63 +19,6 @@
 
 'use strict';
 
-app.diagnosisGroupConfig = function () {
-    var conf = {};
-    conf.dataFetcher = "getDiagnosisGroupData";
-    conf.dataFetcherVerksamhet = "getDiagnosisGroupDataVerksamhet";
-    conf.exportTableUrl = function () {
-        return "api/getDiagnoskapitelstatistik/csv";
-    };
-    conf.exportTableUrlVerksamhet = function (verksamhetId) {
-        return "api/verksamhet/" + verksamhetId + "/getDiagnoskapitelstatistik/csv";
-    };
-    conf.showDetailsOptions = false;
-    conf.title = function (period) {
-        return "Antal sjukfall per diagnosgrupp " + period;
-    };
-    conf.tooltipHelpText = "Vad innebär ICD-10? <br/> Den internationella sjukdomsklassifikationen ICD-10 är en klassifikation med diagnoskoder för att gruppera sjukdomar för att kunna göra översiktliga statistiska sammanställningar och analyser.<br/>Den svenska versionen heter ICD-10-SE.";
-    conf.chartFootnotes = ["För en given månad kan samma sjukfall visas fler än en gång i graf och tabell. Om ett sjukfall innehåller flera intyg under samma månad så hämtas diagnos från varje intyg. Om intygen har olika diagnosgrupper kommer sjukfallet finnas med en gång för varje diagnosgrupp för respektive månad. Exempel: Om ett sjukfall innehåller två intyg för maj månad, där intyg ett sätter diagnosen M54 och intyg två efter vidare utredning sätter diagnosen F32, så kommer sjukfallet både räknas med i gruppen för Muskuloskeleta sjukdomar (M00-M99) och i gruppen för Psykiska sjukdomar (F00-F99) i graf och tabell för maj månad."];
-    return conf;
-};
-
-app.diagnosisSubGroupConfig = function () {
-    var conf = {};
-    conf.dataFetcher = "getSubDiagnosisGroupData";
-    conf.dataFetcherVerksamhet = "getSubDiagnosisGroupDataVerksamhet";
-    conf.exportTableUrl = function (subgroupId) {
-        return "api/getDiagnosavsnittstatistik/" + subgroupId + "/csv";
-    };
-    conf.exportTableUrlVerksamhet = function (verksamhetId, subgroupId) {
-        return "api/verksamhet/" + verksamhetId + "/getDiagnosavsnittstatistik/" + subgroupId + "/csv";
-    };
-    conf.showDetailsOptions = true;
-    conf.title = function (period, name) {
-        return "Antal sjukfall för " + name + " " + period;
-    };
-    conf.tooltipHelpText = "Vad innebär enskilt diagnoskapitel? <br/>Sjukdomsklassifikationen ICD-10 är hierarkiskt uppbyggd av sjukdomsgrupper. Överst i hierarkin består ICD-10 av 21 kapitel. Varje enskilda diagnoskapitel motsvarar en grupp av relaterade diagnoskoder.<br/>Ett exempel på ett enskilt diagnoskapitel är: A00-B99 Vissa infektionssjukdomar och parasitsjukdomar.";
-    conf.chartFootnotes = ["För en given månad kan samma sjukfall visas fler än en gång i graf och tabell. Om ett sjukfall innehåller flera intyg under samma månad så hämtas diagnos från varje intyg. Om intygen har olika diagnoser som faller inom samma diagnoskapitel, men olika diagnosavsnitt, kommer sjukfallet att finnas med en gång för varje diagnosavsnitt för respektive månad. Exempel: Om ett sjukfall innehåller två intyg för maj månad, där intyg ett sätter diagnosen F43 och intyg två efter vidare utredning sätter diagnosen F32, kommer sjukfallet både räknas med i avsnittet för Neurotiska syndrom (F40-F48) och i avsnittet för Förstämningssyndrom (F30-F39) i graf och tabell för maj månad."];
-    return conf;
-};
-
-app.degreeOfSickLeaveConfig = function () {
-    var conf = {};
-    conf.dataFetcher = "getDegreeOfSickLeave";
-    conf.dataFetcherVerksamhet = "getDegreeOfSickLeaveVerksamhet";
-    conf.exportTableUrl = function () {
-        return "api/getDegreeOfSickLeaveStatistics/csv";
-    };
-    conf.exportTableUrlVerksamhet = function (verksamhetId) {
-        return "api/verksamhet/" + verksamhetId + "/getDegreeOfSickLeaveStatistics/csv";
-    };
-    conf.showDetailsOptions = false;
-    conf.title = function (period) {
-        return "Antal sjukfall per sjukskrivningsgrad " + period;
-    };
-    conf.tooltipHelpText = "Begreppet sjukskrivningsgrad beskriver hur många procent av en heltidsarbetstid (25 %, 50 %, 75 % eller 100 %) patienten rekommenderas sjukskrivning.";
-    conf.chartFootnotes = ["För en given månad kan samma sjukfall visas fler än en gång i graf och tabell. Alla sjukskrivningsgrader hämtas från varje intyg. Om intyget innehåller flera sjukskrivningsgrader kommer sjukfallet att finnas med en gång för varje sjukskrivningsgrad för respektive månad. Exempel: Om ett intyg för maj månad först innehåller sjukskrivning med 50 % sjukskrivningsgrad och sedan övergår till 100% kommer sjukfallet visas både för 50% och 100% i graf och tabell för maj månad."];
-    return conf;
-};
-
 angular.module('StatisticsApp').controller('doubleAreaChartsCtrl', [ '$scope', '$routeParams', '$window', '$timeout', 'statisticsData', 'businessFilter', 'config',
     function ($scope, $routeParams, $window, $timeout, statisticsData, businessFilter, config) {
         var that = this;
@@ -299,3 +242,60 @@ angular.module('StatisticsApp').controller('doubleAreaChartsCtrl', [ '$scope', '
 
     }
 ]);
+
+angular.module('StatisticsApp').diagnosisGroupConfig = function () {
+    var conf = {};
+    conf.dataFetcher = "getDiagnosisGroupData";
+    conf.dataFetcherVerksamhet = "getDiagnosisGroupDataVerksamhet";
+    conf.exportTableUrl = function () {
+        return "api/getDiagnoskapitelstatistik/csv";
+    };
+    conf.exportTableUrlVerksamhet = function (verksamhetId) {
+        return "api/verksamhet/" + verksamhetId + "/getDiagnoskapitelstatistik/csv";
+    };
+    conf.showDetailsOptions = false;
+    conf.title = function (period) {
+        return "Antal sjukfall per diagnosgrupp " + period;
+    };
+    conf.tooltipHelpText = "Vad innebär ICD-10? <br/> Den internationella sjukdomsklassifikationen ICD-10 är en klassifikation med diagnoskoder för att gruppera sjukdomar för att kunna göra översiktliga statistiska sammanställningar och analyser.<br/>Den svenska versionen heter ICD-10-SE.";
+    conf.chartFootnotes = ["För en given månad kan samma sjukfall visas fler än en gång i graf och tabell. Om ett sjukfall innehåller flera intyg under samma månad så hämtas diagnos från varje intyg. Om intygen har olika diagnosgrupper kommer sjukfallet finnas med en gång för varje diagnosgrupp för respektive månad. Exempel: Om ett sjukfall innehåller två intyg för maj månad, där intyg ett sätter diagnosen M54 och intyg två efter vidare utredning sätter diagnosen F32, så kommer sjukfallet både räknas med i gruppen för Muskuloskeleta sjukdomar (M00-M99) och i gruppen för Psykiska sjukdomar (F00-F99) i graf och tabell för maj månad."];
+    return conf;
+};
+
+angular.module('StatisticsApp').diagnosisSubGroupConfig = function () {
+    var conf = {};
+    conf.dataFetcher = "getSubDiagnosisGroupData";
+    conf.dataFetcherVerksamhet = "getSubDiagnosisGroupDataVerksamhet";
+    conf.exportTableUrl = function (subgroupId) {
+        return "api/getDiagnosavsnittstatistik/" + subgroupId + "/csv";
+    };
+    conf.exportTableUrlVerksamhet = function (verksamhetId, subgroupId) {
+        return "api/verksamhet/" + verksamhetId + "/getDiagnosavsnittstatistik/" + subgroupId + "/csv";
+    };
+    conf.showDetailsOptions = true;
+    conf.title = function (period, name) {
+        return "Antal sjukfall för " + name + " " + period;
+    };
+    conf.tooltipHelpText = "Vad innebär enskilt diagnoskapitel? <br/>Sjukdomsklassifikationen ICD-10 är hierarkiskt uppbyggd av sjukdomsgrupper. Överst i hierarkin består ICD-10 av 21 kapitel. Varje enskilda diagnoskapitel motsvarar en grupp av relaterade diagnoskoder.<br/>Ett exempel på ett enskilt diagnoskapitel är: A00-B99 Vissa infektionssjukdomar och parasitsjukdomar.";
+    conf.chartFootnotes = ["För en given månad kan samma sjukfall visas fler än en gång i graf och tabell. Om ett sjukfall innehåller flera intyg under samma månad så hämtas diagnos från varje intyg. Om intygen har olika diagnoser som faller inom samma diagnoskapitel, men olika diagnosavsnitt, kommer sjukfallet att finnas med en gång för varje diagnosavsnitt för respektive månad. Exempel: Om ett sjukfall innehåller två intyg för maj månad, där intyg ett sätter diagnosen F43 och intyg två efter vidare utredning sätter diagnosen F32, kommer sjukfallet både räknas med i avsnittet för Neurotiska syndrom (F40-F48) och i avsnittet för Förstämningssyndrom (F30-F39) i graf och tabell för maj månad."];
+    return conf;
+};
+
+angular.module('StatisticsApp').degreeOfSickLeaveConfig = function () {
+    var conf = {};
+    conf.dataFetcher = "getDegreeOfSickLeave";
+    conf.dataFetcherVerksamhet = "getDegreeOfSickLeaveVerksamhet";
+    conf.exportTableUrl = function () {
+        return "api/getDegreeOfSickLeaveStatistics/csv";
+    };
+    conf.exportTableUrlVerksamhet = function (verksamhetId) {
+        return "api/verksamhet/" + verksamhetId + "/getDegreeOfSickLeaveStatistics/csv";
+    };
+    conf.showDetailsOptions = false;
+    conf.title = function (period) {
+        return "Antal sjukfall per sjukskrivningsgrad " + period;
+    };
+    conf.tooltipHelpText = "Begreppet sjukskrivningsgrad beskriver hur många procent av en heltidsarbetstid (25 %, 50 %, 75 % eller 100 %) patienten rekommenderas sjukskrivning.";
+    conf.chartFootnotes = ["För en given månad kan samma sjukfall visas fler än en gång i graf och tabell. Alla sjukskrivningsgrader hämtas från varje intyg. Om intyget innehåller flera sjukskrivningsgrader kommer sjukfallet att finnas med en gång för varje sjukskrivningsgrad för respektive månad. Exempel: Om ett intyg för maj månad först innehåller sjukskrivning med 50 % sjukskrivningsgrad och sedan övergår till 100% kommer sjukfallet visas både för 50% och 100% i graf och tabell för maj månad."];
+    return conf;
+};

@@ -19,34 +19,6 @@
 
 'use strict';
 
-app.casesPerMonthConfig = function () {
-    var conf = {};
-    conf.dataFetcher = "getNumberOfCasesPerMonth";
-    conf.dataFetcherVerksamhet = "getNumberOfCasesPerMonthVerksamhet";
-    conf.exportTableUrl = "api/getNumberOfCasesPerMonth/csv";
-    conf.exportTableUrlVerksamhet = function (verksamhetId) {
-        return "api/verksamhet/" + verksamhetId + "/getNumberOfCasesPerMonth/csv";
-    };
-    conf.title = function (months) {
-        return "Antal sjukfall per månad " + months;
-    };
-    conf.showPageHelpTooltip = true;
-    return conf;
-};
-
-app.longSickLeavesConfig = function () {
-    var conf = {};
-    conf.dataFetcherVerksamhet = "getLongSickLeavesDataVerksamhet";
-    conf.exportTableUrlVerksamhet = function (verksamhetId) {
-        return "api/verksamhet/" + verksamhetId + "/getLongSickLeavesData/csv";
-    };
-    conf.title = function (months) {
-        return "Antal långa sjukfall - mer än 90 dagar " + months;
-    };
-    conf.showPageHelpTooltip = false;
-    return conf;
-};
-
 angular.module('StatisticsApp').controller('singleLineChartCtrl', [ '$scope', '$routeParams', '$timeout', '$window', 'statisticsData', 'businessFilter', 'config',
     function ($scope, $routeParams, $timeout, $window, statisticsData, businessFilter, config) {
         var chart;
@@ -156,3 +128,30 @@ angular.module('StatisticsApp').controller('singleLineChartCtrl', [ '$scope', '$
     }
 ]);
 
+angular.module('StatisticsApp').casesPerMonthConfig = function () {
+    var conf = {};
+    conf.dataFetcher = "getNumberOfCasesPerMonth";
+    conf.dataFetcherVerksamhet = "getNumberOfCasesPerMonthVerksamhet";
+    conf.exportTableUrl = "api/getNumberOfCasesPerMonth/csv";
+    conf.exportTableUrlVerksamhet = function (verksamhetId) {
+        return "api/verksamhet/" + verksamhetId + "/getNumberOfCasesPerMonth/csv";
+    };
+    conf.title = function (months) {
+        return "Antal sjukfall per månad " + months;
+    };
+    conf.showPageHelpTooltip = true;
+    return conf;
+};
+
+angular.module('StatisticsApp').longSickLeavesConfig = function () {
+    var conf = {};
+    conf.dataFetcherVerksamhet = "getLongSickLeavesDataVerksamhet";
+    conf.exportTableUrlVerksamhet = function (verksamhetId) {
+        return "api/verksamhet/" + verksamhetId + "/getLongSickLeavesData/csv";
+    };
+    conf.title = function (months) {
+        return "Antal långa sjukfall - mer än 90 dagar " + months;
+    };
+    conf.showPageHelpTooltip = false;
+    return conf;
+};
