@@ -183,7 +183,7 @@
         if (contains(county, "blekinge")){
             return {"x": 34, "y": 6};
         } else if (contains(county, "dalarna")){
-            return {"x": 36, "y": 43};
+            return {"x": 31, "y": 40};
         } else if (contains(county, "halland")){
             return {"x": 27, "y": 16};
         } else if (contains(county, "kalmar")){
