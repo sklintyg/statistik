@@ -15,7 +15,7 @@ angular.module('StatisticsApp').factory('businessFilter', function (_) {
 
         businessFilter.verksamhetsTyper = [];
         businessFilter.verksamhetsTypIds = [];
-    }
+    };
     businessFilter.reset();
 
     businessFilter.getSelectedBusinesses = function (samePage) {
@@ -127,14 +127,14 @@ angular.module('StatisticsApp').factory('businessFilter', function (_) {
 
     businessFilter.selectedTertiaryCount = function (node) {
         return _.reduce(node.subs, function (memo, sub) {
-            return memo + (businessFilter.selectedLeavesCount(sub) > 0 ? 1 : 0)
+            return memo + (businessFilter.selectedLeavesCount(sub) > 0 ? 1 : 0);
         }, 0);
     };
 
     businessFilter.selectedSecondaryCount = function (node) {
         return _.reduce(node.subs, function (acc, item) {
             var nodeSum = _.reduce(item.subs, function (memo, sub) {
-                return memo + (businessFilter.selectedLeavesCount(sub) > 0 ? 1 : 0)
+                return memo + (businessFilter.selectedLeavesCount(sub) > 0 ? 1 : 0);
             }, 0);
             return acc + nodeSum;
         }, 0);
@@ -219,7 +219,9 @@ angular.module('StatisticsApp').factory('businessFilter', function (_) {
     };
 
     businessFilter.makeUnitSelection = function () {
-        var geographyBusinessIds = businessFilter.useSmallGUI() ? businessFilter.geographyBusinessIds : businessFilter.collectGeographyIds(businessFilter.geography);
+        var geographyBusinessIds = businessFilter.useSmallGUI() ?
+            businessFilter.geographyBusinessIds :
+            businessFilter.collectGeographyIds(businessFilter.geography);
         var verksamhetsBusinessIds = businessFilter.collectVerksamhetsIds();
         businessFilter.selectedBusinesses = _.intersection(geographyBusinessIds, verksamhetsBusinessIds);
     };

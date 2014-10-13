@@ -15,5 +15,7 @@ statistics-web/.externalToolBuilders/org.eclipse.wst.jsdt.core.javascriptValidat
 statistics-service/src/main/resources/rebel.xml
 statistics-web/src/main/resources/rebel.xml
 statistics-web/node_modules
+statistics-web/node
+statistics-web/npm-debug.log
 
 catalina.base_IS_UNDEFINED
