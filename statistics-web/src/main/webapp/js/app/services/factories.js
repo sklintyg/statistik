@@ -1,6 +1,6 @@
 'use strict';
 
-app.statisticsApp.factory('statisticsData', function ($http) {
+angular.module('StatisticsApp').factory('statisticsData', function ($http) {
     var factory = {};
 
     var makeRequestNational = function (restFunctionName, successCallback, failureCallback) {
@@ -128,7 +128,7 @@ app.statisticsApp.factory('statisticsData', function ($http) {
 });
 
 /* Manually compiles the element, fixing the recursion loop. */
-app.statisticsApp.factory('recursionService', ['$compile', function ($compile) {
+angular.module('StatisticsApp').factory('recursionService', ['$compile', function ($compile) {
     return {
         compile: function (element, link) {
             // Normalize the link parameter

@@ -66,7 +66,7 @@
         var highchartsExportUrl = '${applicationScope.highchartsExportUrl}';
     </script>
 </head>
-<body data-ng-controller="PageCtrl">
+<body data-ng-controller="pageCtrl">
 <spring:eval expression='@loginVisibility.isLoginVisible()' var="loginVisible"/>
 
 <!-- Navbar
@@ -120,7 +120,7 @@
         <!-- Docs nav
         ================================================== -->
         <div class="row">
-            <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 bs-docs-sidebar dontprint" data-ng-controller="NavigationMenuCtrl">
+            <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 bs-docs-sidebar dontprint" data-ng-controller="navigationMenuCtrl">
                 <h1 class="hidden-header">Sidans huvudnavigering</h1>
 				<!-- MOBILE NAVIGATION START -->
 				<nav class="navbar navbar-default hidden-sm hidden-md hidden-lg" role="navigation">
@@ -187,7 +187,7 @@
 					    <li class="dropdown-business">
 			          		<a class="mobileMenuHeaderItem" data-toggle="collapse in" data-target="#business-menu" ng-click="isBusinessCollapsed = !isBusinessCollapsed">Verksamhetsstatistik<span class="caret pull-right mobile-menu-caret"></span></a>
 			          		<ul class="collapse" id="business-menu" collapse="!isBusinessCollapsed">   
-				        		<li class="subMenuItem"><a data-ng-href="#/verksamhet/{{businessId}}/oversikt" ctrlname="BusinessOverviewCtrl" role="menuitem" ng-click="isCollapsed = !isCollapsed" navigationaware>Översikt</a></li>
+				        		<li class="subMenuItem"><a data-ng-href="#/verksamhet/{{businessId}}/oversikt" ctrlname="businessOverviewCtrl" role="menuitem" ng-click="isCollapsed = !isCollapsed" navigationaware>Översikt</a></li>
 		                        <li class="subMenuItem"><a data-ng-href="#/verksamhet/{{businessId}}/sjukfallPerManad" id="navBusinessCasesPerMonthLink" ctrlname="VerksamhetCasesPerMonthCtrl" role="menuitem" ng-click="isCollapsed = !isCollapsed" navigationaware>Sjukfall, totalt</a></li>
 								<li class="subMenuItem">
 						          <a class="dropdown-toggle subMenuItem" data-toggle="collapse in" data-target="#business-dia-chapter" ng-click="isBusinessDiaChapterCollapsed = !isBusinessDiaChapterCollapsed">Diagnosgrupp och enskilt diagnoskapitel <span class="caret pull-right mobile-menu-caret mobile-sub-caret"></span></a>
@@ -299,8 +299,8 @@
                                      data-parent="#statistics-menu-accordion"
                                      data-ng-class="{active: showOperation, collapsed: !showOperation, disabled: !isLoggedIn}"
                                      data-ng-click="toggleOperationAccordion()">
-                                     <span class="statistics-menu-heading" data-ng-bind="organisationMenuLabel"></span><i 
-                                        class="statistict-left-menu-expand-icon"></i>
+                                     <span class="statistics-menu-heading" data-ng-bind="organisationMenuLabel"></span>
+                                    <i class="statistict-left-menu-expand-icon"></i>
                                      <!-- Inloggad: Enbart "Verksamhetsstatistik" -->
                                 </div>
                             </div>
@@ -309,7 +309,7 @@
                                 <div class="accordion-inner">
                                     <ul id="business-statistic-menu-content" class="nav nav-list">
                                         <li><a data-ng-href="#/verksamhet/{{businessId}}/oversikt"
-                                               ctrlname="BusinessOverviewCtrl" navigationaware>Översikt</a></li>
+                                               ctrlname="businessOverviewCtrl" navigationaware>Översikt</a></li>
                                         <li><a data-ng-href="#/verksamhet/{{businessId}}/sjukfallPerManad"
                                                id="navBusinessCasesPerMonthLink" ctrlname="VerksamhetCasesPerMonthCtrl"
                                                navigationaware>Sjukfall, totalt</a></li>
@@ -404,7 +404,7 @@
             </div>
 
             <div class="col-xs-12 col-sm-9 col-md-9 col-lg-9">
-                <div class="row" ng-show="verksamhetIdParam" data-ng-controller="FilterCtrl">
+                <div class="row" ng-show="verksamhetIdParam" data-ng-controller="filterCtrl">
                     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                         <div id="statistics-filter-container" class="collapse" collapse="!isFilterCollapsed">
                         	<div class="row">
@@ -426,7 +426,7 @@
 	                                    <button class="btn btn-default" data-toggle="modal" data-target="#myModal" id="select-geo-unit" >
 	                                        Välj enhet
 	                                    </button>
-						                <label>{{selectedLeavesCount(businessFilter.geography)}} valda enheter</label>
+						                <label>{{businessFilter.selectedLeavesCount(businessFilter.geography)}} valda enheter</label>
 	                                    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 	                                        <div class="modal-dialog">
 	                                            <div class="modal-content">
@@ -437,7 +437,7 @@
 	                                                    <ul class="modal-list">
 	                                                        <li class="search-all-items input-group">
 	                                                        	<span class="input-group-addon glyphicon glyphicon-search"></span>
-	                                                            <input type="search" ng-model="multiMenuFilter" class="multiMenuFilterSearch form-control" ng-change="filterMenuItems(businessFilter.geography.subs, multiMenuFilter)" placeholder="Sök efter enhet"/>
+	                                                            <input type="search" ng-model="multiMenuFilter" class="multiMenuFilterSearch form-control" ng-change="businessFilter.filterMenuItems(businessFilter.geography.subs, multiMenuFilter)" placeholder="Sök efter enhet"/>
 	                                                        </li>
 	                                                        <li class="select-all-items">
 	                                                            <input type="checkbox" ng-checked="businessFilter.geography.allSelected" id="select-all-units" class="multiMenuSelectAll" ng-click="itemClicked(businessFilter.geography, businessFilter.geography)"></input>
@@ -449,13 +449,18 @@
 	                                                    </ul>
 	                                                </div>
 	                                                <div class="modal-footer">
-	                                                    <label class="pull-left">Län: {{selectedTertiaryCount(businessFilter.geography)}} Kommuner: {{selectedSecondaryCount(businessFilter.geography)}} Enheter: {{selectedLeavesCount(businessFilter.geography)}}</label>
+	                                                    <label class="pull-left">Län: {{businessFilter.selectedTertiaryCount(businessFilter.geography)}} Kommuner: {{businessFilter.selectedSecondaryCount(businessFilter.geography)}} Enheter: {{businessFilter.selectedLeavesCount(businessFilter.geography)}}</label>
 	                                                    <button class="btn btn-success" data-dismiss="modal" aria-hidden="true">Spara och stäng</button>
 	                                                </div>
 	                                            </div>
 	                                        </div>
 	                                    </div>
 	                                </div>
+	                                <div class="col-xs-6 col-sm-6 col-md-6 col-lg-3">
+                        				<input type="checkbox" id="check-permanent-filter" ng-model="businessFilter.permanentFilter">
+                                    		<label for="check-permanent-filter">Val ska slå på alla rapporter</label>
+                                    	</input>
+                                    </div>
 	                            </div>
 	                            <div class="filter-level no-padding">
 	                            	<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
@@ -468,19 +473,15 @@
 	                            			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 pull-right">
 	                            				<button type="button" class="btn btn-default pull-right">Återställ</button>
 	                                        	<button class="btn btn-success pull-right" data-ng-click="makeUnitSelection()">Sök</button>
-	                                        	<div class="pull-right">
-		                            				<input type="checkbox" id="check-permanent-filter" ng-model="businessFilter.permanentFilter">
-		                                        		<label for="check-permanent-filter">Val ska slå på alla rapporter</label>
-		                                        	</input>
-		                                        </div>
+	                                        	
 	                                        </div>
 			                            </div>
                                     </div>
                                 </div>
 				        	</div>
 	                    </div>
-                        <button id="show-hide-filter-btn" type="button" class="btn btn-small pull-right" data-toggle="collapse" data-target="#statistics-filter-container" ng-click="isCollapsed = !isCollapsed">
-                            Gör urval
+                        <button id="show-hide-filter-btn" type="button" class="btn btn-small pull-right" data-toggle="collapse" data-target="#statistics-filter-container" ng-click='filter.open = !filter.open'>
+							<i class="glyphicon" ng-class="{'glyphicon-chevron-up': filter.open, 'glyphicon-chevron-down': !filter.open}"></i> {{filter.open ? 'Dölj filter' : 'Visa filter'}}
                         </button>
                     </div>
                 </div>
@@ -526,7 +527,6 @@
 <script type="text/javascript" src="<c:url value='/js/app/controller/loginCtrl.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/controller/navigationMenuCtrl.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/controller/filterCtrl.js'/>"></script>
-<script type="text/javascript" src="<c:url value='/js/app/controllers.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/directives.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/filters.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/lib/highcharts/3.0.5/highcharts.js'/>"></script>

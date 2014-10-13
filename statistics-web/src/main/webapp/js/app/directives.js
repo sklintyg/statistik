@@ -1,9 +1,9 @@
 'use strict';
 
-app.statisticsApp.directive("navigationaware", function ($rootScope, $location) {
+angular.module('StatisticsApp').directive("navigationaware", function ($rootScope, $location) {
     
     var isActivePage = function(currentRoute, navLinkAttrs) {
-        return currentRoute.controllerAs === navLinkAttrs.ctrlname;
+        return currentRoute.controllerAs === navLinkAttrs.ctrlname || currentRoute.controller === navLinkAttrs.ctrlname;
     }
     
     return {
@@ -21,7 +21,7 @@ app.statisticsApp.directive("navigationaware", function ($rootScope, $location) 
     };
 });
 
-app.statisticsApp.directive("spinner", function() {
+angular.module('StatisticsApp').directive("spinner", function() {
     return {
         restrict : "A",
         transclude : true,
@@ -46,7 +46,7 @@ app.statisticsApp.directive("spinner", function() {
     }
 });
 
-app.statisticsApp.directive("dataerrorview", function() {
+angular.module('StatisticsApp').directive("dataerrorview", function() {
     return {
         restrict : "A",
         transclude : true,
@@ -67,7 +67,7 @@ app.statisticsApp.directive("dataerrorview", function() {
     }
 });
 
-app.statisticsApp.directive('legendHeight', function() {
+angular.module('StatisticsApp').directive('legendHeight', function() {
     return function(scope, element, attrs) {
        if (scope.$last) {
           scope.$watch('seriesData', function(){
@@ -79,7 +79,7 @@ app.statisticsApp.directive('legendHeight', function() {
     };
 });
 
-app.statisticsApp.directive('multiselectDropdown', function () {
+angular.module('StatisticsApp').directive('multiselectDropdown', function () {
     function multiselect_selected($el) {
         var ret = true;
         $('option', $el).each(function(element) {
@@ -135,7 +135,7 @@ app.statisticsApp.directive('multiselectDropdown', function () {
     }
 });
 
-app.statisticsApp.directive('intermediate', function() {
+angular.module('StatisticsApp').directive('intermediate', function() {
     return function(scope, element, attrs) {
         scope.$watch(attrs.intermediate, function (newVal) {
             element[0].indeterminate = newVal;
@@ -143,7 +143,7 @@ app.statisticsApp.directive('intermediate', function() {
     }
 });
 
-app.statisticsApp.directive("submenu", function (recursionService) {
+angular.module('StatisticsApp').directive("submenu", function (recursionService) {
     return {
         restrict: "E",
         scope: { item: "=", itemroot: "=", depth: "=", recursionhelper: "=" },

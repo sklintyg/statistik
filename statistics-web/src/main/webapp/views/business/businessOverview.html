@@ -17,7 +17,8 @@
 ~     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -->
 
-<div id="business-overview">
+<div ng-show="showEmptyDataView" ng-include="'views/business/emptyFilterData.html'" />
+<div id="business-overview" ng-show="!showEmptyDataView">
 	<div id="overview-content"> <!-- Start: Overview content -->
 		<div class="row" id="print-logo-display">
 		    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">

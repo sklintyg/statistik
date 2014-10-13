@@ -1,4 +1,4 @@
- /*
+/*
  * Copyright (C) 2013 - 2014 Inera AB (http://www.inera.se)
  *
  *     This file is part of Inera Statistics (http://code.google.com/p/inera-statistics/).
@@ -19,59 +19,64 @@
 
 'use strict';
 
- app.pageCtrl = function ($scope, $rootScope, $window, $cookies, statisticsData, businessFilter) {
+angular.module('StatisticsApp').controller('pageCtrl', [ '$scope', '$rootScope', '$window', '$cookies', 'statisticsData', 'businessFilter',
+    function ($scope, $rootScope, $window, $cookies, statisticsData, businessFilter) {
+        var self = this;
 
-     var getSelectedVerksamhet = function(selectedVerksamhetId, verksamhets) {
-         for (var i = 0; i < verksamhets.length; i++) {
-             if (verksamhets[i].vardgivarId === selectedVerksamhetId) {
-                 return verksamhets[i];
-             }
-         }
-         return {name: "Okänd verksamhet"}; //Selected verksamhet not found
-     };
-
-     $rootScope.$on('$routeChangeSuccess', function(angularEvent, next, current) {
-        var verksamhetId = next.params.verksamhetId;
-        $scope.verksamhetIdParam = verksamhetId;
-
-        $scope.currentUrl = window.location.href;
-
-        var d = new Date();
-        var curr_date = d.getDate();
-        var curr_month = d.getMonth() + 1; //Months are zero based
-        var curr_year = d.getFullYear();
-        $scope.currentTime = curr_year + "-" + curr_month + "-" + curr_date;
-
-        $scope.viewHeader = verksamhetId ? "Verksamhetsstatistik" : "Nationell statistik";
-        
-        if (isLoggedIn) {
-            if (verksamhetId) {
-                $scope.businessId = verksamhetId;
-                $cookies.verksamhetId = verksamhetId;
-            } else if ($cookies.verksamhetId) {
-                $scope.businessId = $cookies.verksamhetId;
+        self.getSelectedVerksamhet = function (selectedVerksamhetId, verksamhets) {
+            for (var i = 0; i < verksamhets.length; i++) {
+                if (verksamhets[i].vardgivarId === selectedVerksamhetId) {
+                    return verksamhets[i];
+                }
             }
+            return {name: "Okänd verksamhet"};
+        };
 
-            businessFilter.resetSelections();
+        $rootScope.$on('$routeChangeSuccess', function (angularEvent, next, current) {
+            var verksamhetId = next.params.verksamhetId;
+            $scope.verksamhetIdParam = verksamhetId;
 
-            statisticsData.getLoginInfo(function (loginInfo) {
-                businessFilter.loggedIn(loginInfo.businesses);
-                var v = getSelectedVerksamhet($scope.businessId, loginInfo.businesses);
-                $scope.verksamhetName = loginInfo.vgView ? ("- "+ v.vardgivarName + (loginInfo.fullVgAccess ? "(alla enheter)": "(vissa enheter)")): v.name;
-                $scope.userName = loginInfo.name;
-                $scope.isVgView = loginInfo.vgView;
-                $scope.isFullVgAccess = loginInfo.fullVgAccess;
-                $scope.userNameWithAccess = loginInfo.name;
-            }, function () { $scope.dataLoadingError = true; });
-        } else {
-            businessFilter.loggedOut();
+            $scope.currentUrl = window.location.href;
+
+            var d = new Date();
+            var curr_date = d.getDate();
+            var curr_month = d.getMonth() + 1; //Months are zero based
+            var curr_year = d.getFullYear();
+            $scope.currentTime = curr_year + "-" + curr_month + "-" + curr_date;
+
+            $scope.viewHeader = verksamhetId ? "Verksamhetsstatistik" : "Nationell statistik";
+
+            if ($rootScope.isLoggedIn) {
+                if (verksamhetId) {
+                    $scope.businessId = verksamhetId;
+                    $cookies.verksamhetId = verksamhetId;
+                } else if ($cookies.verksamhetId) {
+                    $scope.businessId = $cookies.verksamhetId;
+                }
+
+                businessFilter.resetSelections();
+
+                statisticsData.getLoginInfo(function (loginInfo) {
+                    businessFilter.loggedIn(loginInfo.businesses);
+                    var v = self.getSelectedVerksamhet($scope.businessId, loginInfo.businesses);
+                    $scope.verksamhetName = loginInfo.vgView ? ("- " + v.vardgivarName + (loginInfo.fullVgAccess ? "(alla enheter)" : "(vissa enheter)")) : v.name;
+                    $scope.userName = loginInfo.name;
+                    $scope.isVgView = loginInfo.vgView;
+                    $scope.isFullVgAccess = loginInfo.fullVgAccess;
+                    $scope.userNameWithAccess = loginInfo.name;
+                }, function () {
+                    $scope.dataLoadingError = true;
+                });
+            } else {
+                businessFilter.loggedOut();
+            }
+        });
+
+        $scope.isLoggedIn = $rootScope.isLoggedIn;
+
+        $scope.loginClicked = function (url) {
+            $window.location.href = "#/" + url;
         }
-    });
-    
-    $scope.isLoggedIn = isLoggedIn;
-    
-    $scope.loginClicked = function(url) {
-        $window.location.href = "#/" + url;
+
     }
-    
- };
+]);
