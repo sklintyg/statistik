@@ -20,21 +20,22 @@
 'use strict';
 
 angular.module('StatisticsApp').controller('businessOverviewCtrl', ['$scope', '$timeout', 'statisticsData', 'businessFilter', '$routeParams', '$window',
-    function ($scope, $timeout, statisticsData, businessFilter, $routeParams, $window) {
+    function ($scope, $timeout, statisticsData, businessFilter, $routeParams) {
 
         $scope.baseUrl = "#/verksamhet/" + $routeParams.verksamhetId;
 
         var dataReceived = function (result) {
-            if (result.casesPerMonth.totalCases === 0) {
-                $window.location.href = $window.location.href.replace(/[^\/]*\/?$/, "nodata");
-                return;
-            }
             $scope.subTitle = "Utveckling för verksamheten de senaste tre månaderna, " + result.periodText;
             $scope.popoverTextPeriod = result.periodText;
             $scope.doneLoading = true;
-            $timeout(function () {
-                populatePageWithData(result);
-            }, 1);
+            if (result.casesPerMonth.totalCases === 0) {
+                $scope.showEmptyDataView = true;
+            } else {
+                $scope.showEmptyDataView = false;
+                $timeout(function () {
+                    populatePageWithData(result);
+                }, 1);
+            }
         };
 
         var populatePageWithData = function (result) {
