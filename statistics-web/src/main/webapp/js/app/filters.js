@@ -5,3 +5,4 @@ app.statisticsApp.filter('thousandseparated', function() {
         return ControllerCommons.makeThousandSeparated(input);
     };
 });
+

@@ -456,6 +456,11 @@
 	                                        </div>
 	                                    </div>
 	                                </div>
+	                                <div class="col-xs-6 col-sm-6 col-md-6 col-lg-3">
+                        				<input type="checkbox" id="check-permanent-filter" ng-model="businessFilter.permanentFilter">
+                                    		<label for="check-permanent-filter">Val ska slå på alla rapporter</label>
+                                    	</input>
+                                    </div>
 	                            </div>
 	                            <div class="filter-level no-padding">
 	                            	<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
@@ -468,19 +473,15 @@
 	                            			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 pull-right">
 	                            				<button type="button" class="btn btn-default pull-right">Återställ</button>
 	                                        	<button class="btn btn-success pull-right" data-ng-click="makeUnitSelection()">Sök</button>
-	                                        	<div class="pull-right">
-		                            				<input type="checkbox" id="check-permanent-filter" ng-model="businessFilter.permanentFilter">
-		                                        		<label for="check-permanent-filter">Val ska slå på alla rapporter</label>
-		                                        	</input>
-		                                        </div>
+	                                        	
 	                                        </div>
 			                            </div>
                                     </div>
                                 </div>
 				        	</div>
 	                    </div>
-                        <button id="show-hide-filter-btn" type="button" class="btn btn-small pull-right" data-toggle="collapse" data-target="#statistics-filter-container" ng-click="isCollapsed = !isCollapsed">
-                            Gör urval
+                        <button id="show-hide-filter-btn" type="button" class="btn btn-small pull-right" data-toggle="collapse" data-target="#statistics-filter-container" ng-click='filter.open = !filter.open'>
+							<i class="glyphicon" ng-class="{'glyphicon-chevron-up': filter.open, 'glyphicon-chevron-down': !filter.open}"></i> {{filter.open ? 'Dölj filter' : 'Visa filter'}}
                         </button>
                     </div>
                 </div>
