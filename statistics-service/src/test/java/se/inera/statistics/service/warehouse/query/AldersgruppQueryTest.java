@@ -29,7 +29,7 @@ public class AldersgruppQueryTest {
         warehouse.complete(LocalDateTime.now());
         Collection<Sjukfall> sjukfall = SjukfallUtil.calculateSjukfall(warehouse.get(VARDGIVARE));
         Map<Ranges.Range,Counter<Ranges.Range>> count = AldersgruppQuery.count(sjukfall);
-        assertEquals(1, count.get(AldersgroupUtil.RANGES.rangeFor("41-45")).getCount());
+        assertEquals(1, count.get(AldersgroupUtil.RANGES.rangeFor("41-45 år")).getCount());
     }
 
     @Test
