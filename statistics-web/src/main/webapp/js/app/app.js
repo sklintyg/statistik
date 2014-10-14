@@ -160,10 +160,20 @@ var app = angular.module('StatisticsApp', [ 'ngRoute', 'ngCookies', 'ui.bootstra
         });
 
     } ]);
+// Inject language resources
+//app.run([ '$rootScope', 'common.messageService', 'common.User',
+//    function($rootScope, messageService, User) {
+//        'use strict';
 
-app.run([ '$rootScope', '$route', function ($rootScope, $route) {
+//        $rootScope.lang = 'sv';
+//        $rootScope.DEFAULT_LANG = 'sv';
+//        User.setUserContext(MODULE_CONFIG.USERCONTEXT);
+//        messageService.addResources(wcMessages);
+//    }]);
+app.run([ '$rootScope', '$route', 'messageService', function ($rootScope, $route) {
     $rootScope.lang = 'sv';
     $rootScope.DEFAULT_LANG = 'sv';
+    messageService.addResources(stMessages);
 
     Highcharts.setOptions({
         lang: { thousandsSep: ' ' }
