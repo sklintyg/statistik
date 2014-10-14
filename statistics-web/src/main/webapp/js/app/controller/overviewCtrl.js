@@ -104,7 +104,7 @@ angular.module('StatisticsApp').controller('overviewCtrl', [ '$scope', '$timeout
             $scope.diagnosisGroups = result.diagnosisGroups;
             paintDonutChart("ageChart", extractDonutData(result.ageGroups));
             $scope.ageGroups = result.ageGroups;
-            paintDonutChart("degreeOfSickLeaveChart", extractDonutData(result.degreeOfSickLeaveGroups), "Sjukskrivningsgrad ");
+            paintDonutChart("degreeOfSickLeaveChart", extractDonutData(result.degreeOfSickLeaveGroups));
             $scope.degreeOfSickLeaveGroups = result.degreeOfSickLeaveGroups;
 
             paintBarChart("sickLeaveLengthChart", result.sickLeaveLength.chartData);
@@ -116,7 +116,7 @@ angular.module('StatisticsApp').controller('overviewCtrl', [ '$scope', '$timeout
             $scope.sickLeavePerCountyGroups = result.perCounty;
         };
 
-        function paintBarChart(containerId, chartData, tooltipHeaderPrefix) {
+        function paintBarChart(containerId, chartData) {
             var series = [
                 {
                     name: "Antal",
@@ -135,7 +135,7 @@ angular.module('StatisticsApp').controller('overviewCtrl', [ '$scope', '$timeout
             chartOptions.chart.height = 240;
             chartOptions.xAxis.title = { text: 'Sjukskrivningslängd' };
             chartOptions.yAxis.title = { text: 'Antal' };
-            chartOptions.tooltip.headerFormat = '<span style="font-size: 10px">' + (tooltipHeaderPrefix || "") + '{point.key}</span><br/>';
+            
             chartOptions.yAxis.tickPixelInterval = 30,
                 chartOptions.legend.enabled = false;
             new Highcharts.Chart(chartOptions);

@@ -147,7 +147,7 @@ angular.module('StatisticsApp').controller('businessOverviewCtrl', ['$scope', '$
             $scope.diagnosisGroups = result.diagnosisGroups;
             paintDonutChart("ageChart", extractDonutData(result.ageGroups));
             $scope.ageGroups = result.ageGroups;
-            paintDonutChart("degreeOfSickLeaveChart", extractDonutData(result.degreeOfSickLeaveGroups), "Sjukskrivningsgrad ");
+            paintDonutChart("degreeOfSickLeaveChart", extractDonutData(result.degreeOfSickLeaveGroups));
             $scope.degreeOfSickLeaveGroups = result.degreeOfSickLeaveGroups;
 
             paintBarChart("sickLeaveLengthChart", result.sickLeaveLength.chartData);
