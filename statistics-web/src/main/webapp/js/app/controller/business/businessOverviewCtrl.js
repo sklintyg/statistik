@@ -147,7 +147,7 @@ angular.module('StatisticsApp').controller('businessOverviewCtrl', ['$scope', '$
             $scope.diagnosisGroups = result.diagnosisGroups;
             paintDonutChart("ageChart", extractDonutData(result.ageGroups));
             $scope.ageGroups = result.ageGroups;
-            paintDonutChart("degreeOfSickLeaveChart", extractDonutData(result.degreeOfSickLeaveGroups), "Sjukskrivningsgrad ");
+            paintDonutChart("degreeOfSickLeaveChart", extractDonutData(result.degreeOfSickLeaveGroups));
             $scope.degreeOfSickLeaveGroups = result.degreeOfSickLeaveGroups;
 
             paintBarChart("sickLeaveLengthChart", result.sickLeaveLength.chartData);
@@ -155,7 +155,7 @@ angular.module('StatisticsApp').controller('businessOverviewCtrl', ['$scope', '$
             $scope.longSickLeavesAlteration = result.sickLeaveLength.longSickLeavesAlternation;
         };
 
-        function paintBarChart(containerId, chartData) {
+        function paintBarChart(containerId, chartData, tooltipHeaderPrefix) {
             var series = [
                 {
                     name: "Antal",
@@ -171,11 +171,11 @@ angular.module('StatisticsApp').controller('businessOverviewCtrl', ['$scope', '$
             var chartOptions = ControllerCommons.getHighChartConfigBase(categories, series);
             chartOptions.chart.type = 'column';
             chartOptions.chart.renderTo = containerId;
-            chartOptions.chart.height = 210;
-            chartOptions.xAxis.title = { text: 'Dagar' };
-            chartOptions.xAxis.labels.format = '{value} dagar';
-            chartOptions.tooltip.pointFormat = '{point.y} dagar';
+            chartOptions.chart.height = 240;
+            chartOptions.xAxis.title = { text: 'Sjukskrivningslängd' };
+            chartOptions.xAxis.labels.format = '{value}';
             chartOptions.yAxis.title = { text: 'Antal' };
+            chartOptions.tooltip.headerFormat = '<span style="font-size: 10px">' + (tooltipHeaderPrefix || "") + '{point.key}</span><br/>';
             chartOptions.yAxis.tickPixelInterval = 30,
                 chartOptions.legend.enabled = false;
             new Highcharts.Chart(chartOptions);

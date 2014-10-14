@@ -77,7 +77,7 @@ angular.module('StatisticsApp').controller('overviewCtrl', [ '$scope', '$timeout
             $scope.casesPerMonthFemaleProportion = result.casesPerMonth.proportionFemale;
             paintPerMonthAlternationChart(result.casesPerMonth.alteration);
 
-            function paintDonutChart(containerId, chartData) {
+            function paintDonutChart(containerId, chartData, tooltipHeaderPrefix) {
                 var series = [
                     {
                         name: 'Antal',
@@ -91,10 +91,12 @@ angular.module('StatisticsApp').controller('overviewCtrl', [ '$scope', '$timeout
                     }
                 ];
                 var chartOptions = ControllerCommons.getHighChartConfigBase([], series);
+                
                 chartOptions.chart.type = 'pie';
                 chartOptions.chart.renderTo = containerId;
                 chartOptions.chart.height = 180;
                 chartOptions.chart.plotBorderWidth = 0;
+                chartOptions.tooltip.headerFormat = '<span style="font-size: 10px">' + (tooltipHeaderPrefix || "") + '{point.key}</span><br/>';
                 new Highcharts.Chart(chartOptions);
             }
 
@@ -133,12 +135,13 @@ angular.module('StatisticsApp').controller('overviewCtrl', [ '$scope', '$timeout
             chartOptions.chart.height = 240;
             chartOptions.xAxis.title = { text: 'Sjukskrivningslängd' };
             chartOptions.yAxis.title = { text: 'Antal' };
+            
             chartOptions.yAxis.tickPixelInterval = 30,
                 chartOptions.legend.enabled = false;
             new Highcharts.Chart(chartOptions);
         }
 
-        function paintSickLeavePerCountyChart(containerId, chartData) {
+        function paintSickLeavePerCountyChart(containerId, chartData, tooltipHeaderPrefix) {
             var series = ControllerCommons.map(chartData, function (e) {
                 var coords = getCoordinates(e);
                 return {"data": [
@@ -160,7 +163,7 @@ angular.module('StatisticsApp').controller('overviewCtrl', [ '$scope', '$timeout
                 bubble: {
                     tooltip: {
                         headerFormat: '{series.name}<br/>',
-                        pointFormat: '<b>{point.z}</b>',
+                        pointFormat: 'Antal: <b>{point.z}</b>',
                         shared: true
                     }
                 }
@@ -188,6 +191,7 @@ angular.module('StatisticsApp').controller('overviewCtrl', [ '$scope', '$timeout
                 gridLineWidth: 0,
                 title: ''
             };
+            
             new Highcharts.Chart(chartOptions, function (chart) { // on complete
                 chart.renderer.image('img/sverige.png', 20, 10, 127, 300).add();
             });
