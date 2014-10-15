@@ -18,6 +18,7 @@
  */
 package se.inera.statistics.service.warehouse;
 
+import com.google.common.base.Predicate;
 import org.joda.time.LocalDate;
 import se.inera.statistics.service.report.model.Range;
 
@@ -30,12 +31,13 @@ import java.util.Map;
 
 public final class SjukfallUtil {
 
-    public static final StartFilter ALL_ENHETER = new StartFilter() {
+    public static final Predicate<Fact> ALL_ENHETER = new Predicate<Fact>() {
         @Override
-        public boolean accept(Fact fact) {
+        public boolean apply(Fact fact) {
             return true;
         }
     };
+
     public static final int LONG_LIMIT = 90;
 
     private SjukfallUtil() {
@@ -45,7 +47,7 @@ public final class SjukfallUtil {
         return calculateSjukfall(aisle, ALL_ENHETER, Integer.MAX_VALUE);
     }
 
-    private static Collection<Sjukfall> calculateSjukfall(Aisle aisle, StartFilter filter, int cutoff) {
+    private static Collection<Sjukfall> calculateSjukfall(Aisle aisle, Predicate<Fact> filter, int cutoff) {
         Collection<Sjukfall> sjukfalls = new ArrayList<>();
         Map<Integer, Sjukfall> active = new HashMap<>();
         for (Fact line : aisle) {
@@ -56,7 +58,7 @@ public final class SjukfallUtil {
             Sjukfall sjukfall = active.get(key);
 
             if (sjukfall == null) {
-                if (filter.accept(line)) {
+                if (filter.apply(line)) {
                     sjukfall = new Sjukfall(line);
                     active.put(key, sjukfall);
                 }
@@ -100,7 +102,7 @@ public final class SjukfallUtil {
         return new EnhetFilter(numericalId);
     }
 
-    public static Iterable<SjukfallGroup> sjukfallGrupper(final LocalDate from, final int periods, final int periodSize, final Aisle aisle, final StartFilter filter) {
+    public static Iterable<SjukfallGroup> sjukfallGrupper(final LocalDate from, final int periods, final int periodSize, final Aisle aisle, final Predicate<Fact> filter) {
         return new Iterable<SjukfallGroup>() {
             @Override
             public Iterator<SjukfallGroup> iterator() {
@@ -139,7 +141,7 @@ public final class SjukfallUtil {
         boolean accept(Fact fact);
     }
 
-    private static class EnhetFilter implements StartFilter {
+    private static class EnhetFilter implements Predicate<Fact> {
         private final int[] enhetIds;
 
         public EnhetFilter(int... enhetIds) {
@@ -147,7 +149,7 @@ public final class SjukfallUtil {
         }
 
         @Override
-        public boolean accept(Fact fact) {
+        public boolean apply(Fact fact) {
             return Arrays.binarySearch(enhetIds, fact.getEnhet()) >= 0;
         }
     }
@@ -159,13 +161,13 @@ public final class SjukfallUtil {
         private int period = 0;
         private final int periods;
         private final int periodSize;
-        private final StartFilter filter;
+        private final Predicate<Fact> filter;
         private final Map<Integer, Sjukfall> active = new HashMap<>();
         private Collection<Sjukfall> sjukfalls;
         private final Iterator<Fact> iterator;
         private Fact pendingLine;
 
-        public SjukfallGroupIterator(LocalDate from, int periods, int periodSize, Aisle aisle, StartFilter filter) {
+        public SjukfallGroupIterator(LocalDate from, int periods, int periodSize, Aisle aisle, Predicate<Fact> filter) {
             this.from = from;
             this.current = from;
             this.periods = periods;
@@ -221,7 +223,7 @@ public final class SjukfallUtil {
             Sjukfall sjukfall = active.get(key);
 
             if (sjukfall == null) {
-                if (filter.accept(line)) {
+                if (filter.apply(line)) {
                     sjukfall = new Sjukfall(line);
                     active.put(key, sjukfall);
                 }
