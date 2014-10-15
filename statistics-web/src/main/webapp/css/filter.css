@@ -178,3 +178,8 @@ select, textarea, input[type="text"], input[type="password"], input[type="dateti
 .depth2 span.glyphiconMinusSign, .depth2 span.glyphiconPlusSign { display: none; }
 
 .check-permanent-filter-container { margin-top: 25px; }
+
+.multiselect-container>li>a>label {
+	padding: 5px 20px 3px 40px;
+}
+.multiselect-container>li>a>label input { top: -2px !important; }
