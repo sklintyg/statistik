@@ -46,6 +46,9 @@
 	border-radius: 0px 0px 5px 5px;
 	background-color: #008391;
 	color: #fff;
+	-webkit-box-shadow: 0px 3px 4px 0px rgba(50, 50, 50, 0.2);
+	-moz-box-shadow:    0px 3px 4px 0px rgba(50, 50, 50, 0.2);
+	box-shadow:         0px 3px 4px 0px rgba(50, 50, 50, 0.2);
 }
 #show-hide-filter-btn:hover { background-color: #0195a5; }
 [data-toggle="buttons"]>.btn>input[type="radio"], [data-toggle="buttons"]>.btn>input[type="checkbox"] {
@@ -126,6 +129,9 @@ select, textarea, input[type="text"], input[type="password"], input[type="dateti
 	border-right: 1px solid #ddd;
 	border-bottom: 1px solid #ddd;
 	margin-top: 0px;
+	-webkit-box-shadow: 0px 3px 4px 0px rgba(50, 50, 50, 0.2);
+	-moz-box-shadow:    0px 3px 4px 0px rgba(50, 50, 50, 0.2);
+	box-shadow:         0px 3px 4px 0px rgba(50, 50, 50, 0.2);
 }
 .filter-level { 
 	float: left;
@@ -170,3 +176,5 @@ select, textarea, input[type="text"], input[type="password"], input[type="dateti
 	cursor: default;
 }
 .depth2 span.glyphiconMinusSign, .depth2 span.glyphiconPlusSign { display: none; }
+
+.check-permanent-filter-container { margin-top: 25px; }
