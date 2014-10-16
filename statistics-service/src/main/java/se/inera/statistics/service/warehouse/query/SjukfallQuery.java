@@ -31,6 +31,19 @@ public final class SjukfallQuery {
 
     }
 
+    public static SimpleKonResponse<SimpleKonDataRow> getSjukfallPerEnhet(Aisle aisle, Predicate<Fact> filter, LocalDate start, int perioder, int periodlangd) {
+        ArrayList<SimpleKonDataRow> result = new ArrayList<>();
+        for (Sjukfall sjukfall : SjukfallUtil.calculateSjukfall(aisle, filter, start)) {
+            int male = countMale(sjukfallGroup.getSjukfall());
+            int female = sjukfallGroup.getSjukfall().size() - male;
+            String displayDate = ReportUtil.toDiagramPeriod(sjukfallGroup.getRange().getFrom());
+            result.add(new SimpleKonDataRow(displayDate, female, male));
+        }
+
+        return new SimpleKonResponse<>(result, perioder * periodlangd);
+
+    }
+
     public static int countMale(Collection<Sjukfall> sjukfalls) {
         int count = 0;
         for (Sjukfall sjukfall : sjukfalls) {

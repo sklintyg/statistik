@@ -31,7 +31,7 @@ import java.util.Map;
 
 public final class SjukfallUtil {
 
-    public static final Predicate<Fact> ALL_ENHETER = new Predicate<Fact>() {
+    public static final FactFilter ALL_ENHETER = new FactFilter() {
         @Override
         public boolean apply(Fact fact) {
             return true;
@@ -47,7 +47,7 @@ public final class SjukfallUtil {
         return calculateSjukfall(aisle, ALL_ENHETER, Integer.MAX_VALUE);
     }
 
-    private static Collection<Sjukfall> calculateSjukfall(Aisle aisle, Predicate<Fact> filter, int cutoff) {
+    public static Collection<Sjukfall> calculateSjukfall(Aisle aisle, Predicate<Fact> filter, int cutoff) {
         Collection<Sjukfall> sjukfalls = new ArrayList<>();
         Map<Integer, Sjukfall> active = new HashMap<>();
         for (Fact line : aisle) {
@@ -76,11 +76,11 @@ public final class SjukfallUtil {
         return sjukfalls;
     }
 
-    public static Collection<Sjukfall> calculateSjukfall(Aisle aisle, int...enhetIds) {
+    public static Collection<Sjukfall> calculateSjukfall(Aisle aisle, int... enhetIds) {
         return calculateSjukfall(aisle, new EnhetFilter(enhetIds), Integer.MAX_VALUE);
     }
 
-    public static Collection<Sjukfall> active(Range range, Aisle aisle, String...enhetIds) {
+    public static Collection<Sjukfall> active(Range range, Aisle aisle, String... enhetIds) {
         return active(calculateSjukfall(aisle, createEnhetFilter(enhetIds), WidelineConverter.toDay(firstDayAfter(range))), range);
     }
 
@@ -93,7 +93,7 @@ public final class SjukfallUtil {
         };
     }
 
-    public static EnhetFilter createEnhetFilter(String...enhetIds) {
+    public static EnhetFilter createEnhetFilter(String... enhetIds) {
         int[] numericalId = new int[enhetIds.length];
         for (int i = 0; i < enhetIds.length; i++) {
             numericalId[i] = Warehouse.getEnhet(enhetIds[i]);
@@ -134,14 +134,15 @@ public final class SjukfallUtil {
                 count++;
             }
         }
-    return count;
+        return count;
     }
 
-    public interface StartFilter {
-        boolean accept(Fact fact);
+    public static abstract class FactFilter implements Predicate<Fact> {
     }
 
-    private static class EnhetFilter implements Predicate<Fact> {
+    ;
+
+    private static class EnhetFilter extends FactFilter {
         private final int[] enhetIds;
 
         public EnhetFilter(int... enhetIds) {
