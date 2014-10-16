@@ -456,7 +456,7 @@
 	                                        </div>
 	                                    </div>
 	                                </div>
-	                                <div class="col-xs-6 col-sm-6 col-md-6 col-lg-3">
+	                                <div class="col-xs-8 col-sm-6 col-md-6 col-lg-3 check-permanent-filter-container">
                         				<input type="checkbox" id="check-permanent-filter" ng-model="businessFilter.permanentFilter">
                                     		<label for="check-permanent-filter">Val ska slå på alla rapporter</label>
                                     	</input>
