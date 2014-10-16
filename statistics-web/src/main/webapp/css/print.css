@@ -41,6 +41,14 @@ time, mark, audio, video {
     font: inherit;
     vertical-align: baseline;
 }
+body {
+	background-color: #ffffff;
+	font: 14px/1.3 Georgia, "Times New Roman", times, serif;
+	padding-top: 60px;
+	padding-bottom: 40px;
+	-webkit-font-smoothing: antialiased;
+	font: 14px/1.3 Helvetica, Arial, sans-serif;
+}
 /* HTML5 display-role reset for older browsers */
 article, aside, details, figcaption, figure, 
 footer, header, hgroup, menu, nav, section {
@@ -167,6 +175,7 @@ table {
 }
 .table th, .table td {
 	border-left: 1px solid #dddddd;
+	font-size: 16px;
 }
 
 .table th {
@@ -334,6 +343,49 @@ div.box-bottom {
 	-khtml-border-radius: 50%;
 	background: #11b73c;
 }
+.overview-widget-link:hover .overview-widget-header {
+	background: #28b4c4;
+	cursor: pointer;
+}
+
+.overview-widget-header {
+	position: relative;
+	display: inline-block;
+	vertical-align: middle;
+	width: 100%;
+	padding: 5px 5px;
+	background: #008391;
+	background: -moz-linear-gradient(top, #008391 0%, #00687d 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#008391), color-stop(100%,#00687d));
+	background: -webkit-linear-gradient(top, #008391 0%,#00687d 100%);
+	background: -o-linear-gradient(top, #008391 0%,#00687d 100%);
+	background: -ms-linear-gradient(top, #008391 0%,#00687d 100%);
+	background: linear-gradient(to bottom, #008391 0%,#00687d 100%);
+	/* filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#008391', endColorstr='#00687d',GradientType=0 ); */
+}
+
+#overview-content h2, #chart-content h2 {
+	font-weight: bold;
+	font-size: 14px;
+	color: #fff;
+}
+
+.overview-widget {
+	width: 100%;
+	border: 1px solid #ddd;
+	margin-bottom: 20px;
+	color: #333;
+	font-size: 12px;
+	padding: 0px 0px 5px 0px;
+	border-bottom-color: #ddd;
+	display: inline-block;
+	background: #ebebeb;
+}
+.overview-widget-content {
+	min-height: 250px;
+	display: block;
+}
+
 #overview-content #overview-change-container .overview-change-responsive-circle > div {
 	/*padding: 13%;
 	margin: 3% 0% 0% 36%;*/
@@ -363,7 +415,6 @@ div.box-bottom {
 	font-family: Helvetica, Arial, sans-serif;
 }
 
-/********Business overview*************/
 #sexProportionChartOld, #sexProportionChartNew {
 	width: 48%;
 	display: inline-block;
@@ -380,10 +431,10 @@ div.box-bottom {
 	display: inline-block;
 }
 #sickLeaveLengthChart{
-	width: 65% !important;
+	width: 100% !important;
 	display: inline-block;
 	float: left;
-	height: 200px !important;
+	height: 253px !important;
 	margin-top: 50px;
 }
 span.longSickLeavesValue {
@@ -394,15 +445,52 @@ span.longSickLeavesValue {
 	display: inline-block;
 }
 span.longSickLeavesText {
-	float: left;
 	position: relative;
 	padding: 0px 0px 15px 0px;
 	font-size: 12px;
 }
-/********Alert infobox styles**********/
 .alert-info {
 	color: #306e8d;
 	background-color: #d9edf7;
 	border-color: #bce8f1;
 }
 .alert-info p { padding: 10px; }
+
+.overview-chart-info#sicklength-chart-info {
+	width: 95%;
+}
+#sicklength-chart-info .overview-chart-info-section {
+	width: 45%;
+	display: block;
+	background-color: #fff;
+	padding: 10px;
+	min-height: 105px;
+	border: 1px solid #fff;
+}
+span.longSickLeavesValue {
+	color: #919191;
+	font-weight: bold;
+	font-size: 2em;
+	position: relative;
+	display: inline-block;
+}
+span.longSickLeavesText {
+	position: relative;
+	font-size: 15px;
+	text-align: left;
+	top: 15px;
+}
+.pull-right {
+	float: right!important;
+}
+.pull-left {
+	float: left!important;
+}
+#sicklength-chart-info .overview-chart-info-section {
+	width: 45%;
+}
+#overview-content .table.table-striped.overview-graph-table tbody tr td {
+	border-right: 1px solid #dddddd;
+	border-left: 1px solid #dddddd;
+	text-align: right !important;
+}

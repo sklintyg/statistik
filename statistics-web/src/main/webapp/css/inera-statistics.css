@@ -1093,7 +1093,7 @@ a.listheader.collapsed {
 	min-height: 250px;
 	display: block;
 }
-#overview-widget-content-geo { min-height: 385px; }
+#overview-widget-content-geo { min-height: 387px; }
 .overview-widget-link:hover .overview-widget-header { background: #28b4c4; cursor: pointer; }
 .overview-widget-link:hover .overview-widget { background: #F0F0F0; }
 .overview-widget-link:hover #sicklength-chart-info .overview-chart-info-section {
