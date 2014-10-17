@@ -71,28 +71,36 @@ class AnonymiseraStatistikDatabas {
         output.each {line ->
             if (line) println line
         }
-        for (p in personIds) {
-            StringBuffer result = new StringBuffer()
-            def anonymPersonId = anonymiseraPersonId(p.personId)
-            def id = p.id
-            Sql sql = new Sql(dataSource)
-            try {
-                sql.executeUpdate('update sjukfall set personId = :personId where id = :id',
-                        [personId: anonymPersonId, id: id])
-                int current = count.addAndGet(1)
-                if (current % 10000 == 0) {
-                    println "${current} sjukfall anonymized in ${(int)((System.currentTimeMillis()-start) / 1000)} seconds"
+        println "Done! ${count} certificates anonymized with ${errorCount} errors in ${(int)((end-start) / 1000)} seconds"
+        count.set(0)
+        errorCount.set(0)
+        start = System.currentTimeMillis()
+        GParsPool.withPool(numberOfThreads) {
+            output = personIds.collectParallel {p ->
+                StringBuffer result = new StringBuffer()
+                def anonymPersonId = anonymiseraPersonId(p.personId)
+                def id = p.id
+                Sql sql = new Sql(dataSource)
+                try {
+                    sql.executeUpdate('update sjukfall set personId = :personId where id = :id',
+                            [personId: anonymPersonId, id: id])
+                    int current = count.addAndGet(1)
+                    if (current % 10000 == 0) {
+                        println "${current} sjukfall anonymized in ${(int)((System.currentTimeMillis()-start) / 1000)} seconds"
+                    }
+                } catch (Throwable t) {
+                    t.printStackTrace()
+                    result << "Anonymizing ${id} failed: ${t}"
+                    errorCount.incrementAndGet()
+                } finally {
+                    sql.close()
                 }
-            } catch (Throwable t) {
-                t.printStackTrace()
-
-                result << "Anonymizing ${id} failed: ${t}"
-                errorCount.incrementAndGet()
-            } finally {
-                sql.close()
+                result.toString()
             }
-            println p
-            result.toString()
+        }
+        end = System.currentTimeMillis()
+        output.each {line ->
+            if (line) println line
         }
         println "Done! ${count} certificates anonymized with ${errorCount} errors in ${(int)((end-start) / 1000)} seconds"
     }
