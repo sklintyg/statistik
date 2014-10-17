@@ -409,19 +409,19 @@
                         <div id="statistics-filter-container" class="collapse" collapse="!isFilterCollapsed">
                         	<div class="row">
 				                <div class="filter-level" id="first-level-filter">
-                                    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-3 clearfix">
+                                    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-3 clearfix" data-ng-if="businessFilter.numberOfBusinesses() === 'medium' || businessFilter.numberOfBusinesses() === 'large'">
                                         <label for="select-unit">Välj verksamhetstyper:</label><br/>
                                         <select ng-model="businessFilter.verksamhetsTypIds" multiple="multiple"
                                                 ng-options="verksamhet.id as verksamhet.name for verksamhet in businessFilter.verksamhetsTyper" multiselect-dropdown id="select-verksamhet">
                                         </select>
                                     </div>
-                                    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-3 clearfix" data-ng-if="businessFilter.useSmallGUI()">
+                                    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-3 clearfix" data-ng-if="businessFilter.numberOfBusinesses() === 'medium'">
                                         <label for="select-unit">Välj enheter:</label><br/>
                                         <select ng-model="businessFilter.geographyBusinessIds" multiple="multiple"
                                                 ng-options="business.id as business.name for business in businessFilter.businesses" multiselect-dropdown id="select-unit">
                                         </select>
                                     </div>
-	                                <div class="col-xs-6 col-sm-6 col-md-6 col-lg-3" data-ng-if="!businessFilter.useSmallGUI()">
+	                                <div class="col-xs-6 col-sm-6 col-md-6 col-lg-3" data-ng-if="businessFilter.numberOfBusinesses() === 'large'">
 	                                	<label for="select-geo-unit">Välj enheter:</label><br/>
 	                                    <button class="btn btn-default" data-toggle="modal" data-target="#myModal" id="select-geo-unit" >
 	                                        Välj enhet

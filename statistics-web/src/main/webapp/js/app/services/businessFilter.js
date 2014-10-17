@@ -45,7 +45,7 @@ angular.module('StatisticsApp').factory('businessFilter', function (_) {
     businessFilter.loggedIn = function (businesses) {
         if (!businessFilter.dataInitialized) {
             businessFilter.businesses = businesses;
-            if (!businessFilter.useSmallGUI()) {
+            if (businessFilter.numberOfBusinesses() === "large") {
                 businessFilter.populateGeography(businesses);
             }
             businessFilter.populateVerksamhetsTyper(businesses);
@@ -58,8 +58,14 @@ angular.module('StatisticsApp').factory('businessFilter', function (_) {
         businessFilter.reset();
     };
 
-    businessFilter.useSmallGUI = function () {
-        return businessFilter.businesses.length <= 10;
+    businessFilter.numberOfBusinesses = function () {
+        if (businessFilter.businesses.length <= 1) {
+            return "small";
+        }
+        if (businessFilter.businesses.length <= 10) {
+            return "medium";
+        }
+        return "large";
     };
 
     businessFilter.populateGeography = function (businesses) {
@@ -223,7 +229,7 @@ angular.module('StatisticsApp').factory('businessFilter', function (_) {
     };
 
     businessFilter.makeUnitSelection = function () {
-        var geographyBusinessIds = businessFilter.useSmallGUI() ?
+        var geographyBusinessIds = businessFilter.numberOfBusinesses() === "medium" ?
             businessFilter.geographyBusinessIds :
             businessFilter.collectGeographyIds(businessFilter.geography);
         var verksamhetsBusinessIds = businessFilter.collectVerksamhetsIds();
