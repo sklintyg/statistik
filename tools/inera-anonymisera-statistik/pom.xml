@@ -15,6 +15,14 @@
   <version>1.0.0</version>
   <packaging>jar</packaging>
   <name>Anonymisering av intyg för statistik</name>
+  <distributionManagement>
+    <repository>
+      <id>cloudbees-private-release-repository</id>
+      <name>Callista Software Release Respository</name>
+      <url>dav:https://repository-callistasoftware.forge.cloudbees.com/release</url>
+      <layout>default</layout>
+    </repository>
+  </distributionManagement>
 
   <dependencies>
 
