@@ -8,11 +8,19 @@ angular.module('StatisticsApp').controller('filterCtrl', ['$scope', '$rootScope'
         $scope.recursionhelper = {
             itemclick: function (item, itemRoot) {
                 $scope.itemClicked(item, itemRoot);
+            },
+
+            hideclick: function (item) {
+                $scope.hideClicked(item);
             }
         };
 
         $scope.itemClicked = function (item, itemRoot) {
             businessFilter.itemClicked(item, itemRoot);
+        };
+
+        $scope.hideClicked = function (item) {
+            businessFilter.hideClicked(item);
         };
 
         $scope.makeUnitSelection = function () {

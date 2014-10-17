@@ -101,6 +101,10 @@ angular.module('StatisticsApp').factory('businessFilter', function (_) {
         businessFilter.updateState(itemRoot);
     };
 
+    businessFilter.hideClicked = function (item) {
+        item.hideChildren = !item.hideChildren;
+    };
+
     businessFilter.deselectAll = function (item) {
         if (!item.hide) {
             item.allSelected = false;
