@@ -80,37 +80,14 @@ angular.module('StatisticsApp').directive('legendHeight', function() {
 });
 
 angular.module('StatisticsApp').directive('multiselectDropdown', function () {
-    function multiselect_selected($el) {
-        var ret = true;
-        $('option', $el).each(function(element) {
-            if (!!!$(this).prop('selected')) {
-                ret = false;
-            }
-        });
-        return ret;
+    function multiselect_size($el) {
+        return $('option', $el).length;
     }
 
     return function(scope, element, attrs) {
         element.multiselect({
-            numberDisplayed : 1,
             buttonText: function (options, select) {
-                if (options.length == 0) {
-                    return 'Inga valda' + ' <b class="caret"></b>';
-                }
-                if (multiselect_selected(select)) {
-                    return 'Alla valda' + ' <b class="caret"></b>';
-                }
-                if (options.length > this.numberDisplayed) {
-                    return options.length + ' valda' + ' <b class="caret"></b>';
-                }
-                else {
-                    var selected = '';
-                    options.each(function () {
-                        var label = ($(this).attr('label') !== undefined) ? $(this).attr('label') : $(this).html();
-                        selected += label + ', ';
-                    });
-                    return selected.substr(0, selected.length - 2) + ' <b class="caret"></b>';
-                }
+                return options.length + ' av ' + multiselect_size(select) + ' valda <b class="caret"></b>';
             },
             onChange: function (optionElement, checked) {
                 optionElement.removeAttr('selected');

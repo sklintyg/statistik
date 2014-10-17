@@ -424,9 +424,8 @@
 	                                <div class="col-xs-6 col-sm-6 col-md-6 col-lg-3" data-ng-if="businessFilter.numberOfBusinesses() === 'large'">
 	                                	<label for="select-geo-unit">Välj enheter:</label><br/>
 	                                    <button class="btn btn-default" data-toggle="modal" data-target="#myModal" id="select-geo-unit" >
-	                                        Välj enhet
+	                                        {{ businessFilter.geographyBusinessIds.length }} av {{ businessFilter.businesses.length }} valda <b class="caret"></b>
 	                                    </button>
-						                <label>{{businessFilter.selectedLeavesCount(businessFilter.geography)}} valda enheter</label>
 	                                    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 	                                        <div class="modal-dialog">
 	                                            <div class="modal-content">
@@ -450,7 +449,7 @@
 	                                                </div>
 	                                                <div class="modal-footer">
 	                                                    <label class="pull-left">Län: {{businessFilter.selectedTertiaryCount(businessFilter.geography)}} Kommuner: {{businessFilter.selectedSecondaryCount(businessFilter.geography)}} Enheter: {{businessFilter.selectedLeavesCount(businessFilter.geography)}}</label>
-	                                                    <button class="btn btn-success" data-dismiss="modal" aria-hidden="true">Spara och stäng</button>
+	                                                    <button class="btn btn-success" data-dismiss="modal" aria-hidden="true" data-ng-click="businessFilter.updateGeography()">Spara och stäng</button>
 	                                                </div>
 	                                            </div>
 	                                        </div>

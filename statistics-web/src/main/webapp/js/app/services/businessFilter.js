@@ -31,9 +31,11 @@ angular.module('StatisticsApp').factory('businessFilter', function (_) {
     businessFilter.resetSelections = function() {
         if (!businessFilter.permanentFilter) {
             businessFilter.selectedBusinesses.length = 0;
+            businessFilter.geographyBusinessIds.length = 0;
             businessFilter.verksamhetsTypIds.length = 0;
             _.each(businessFilter.businesses, function (business) {
                 businessFilter.selectedBusinesses.push(business.id);
+                businessFilter.geographyBusinessIds.push(business.id);
             });
             _.each(businessFilter.verksamhetsTyper, function (verksamhetsTyp) {
                 businessFilter.verksamhetsTypIds.push(verksamhetsTyp.id);
@@ -219,6 +221,10 @@ angular.module('StatisticsApp').factory('businessFilter', function (_) {
         }
     };
 
+    businessFilter.updateGeography = function () {
+        businessFilter.geographyBusinessIds = businessFilter.collectGeographyIds(businessFilter.geography);
+    }
+
     businessFilter.collectVerksamhetsIds = function () {
         var matchingBusinesses = _.filter(businessFilter.businesses, function (business) {
             return _.any(business.verksamhetsTyper, function (verksamhetsTyp) {
@@ -229,11 +235,8 @@ angular.module('StatisticsApp').factory('businessFilter', function (_) {
     };
 
     businessFilter.makeUnitSelection = function () {
-        var geographyBusinessIds = businessFilter.numberOfBusinesses() === "medium" ?
-            businessFilter.geographyBusinessIds :
-            businessFilter.collectGeographyIds(businessFilter.geography);
         var verksamhetsBusinessIds = businessFilter.collectVerksamhetsIds();
-        businessFilter.selectedBusinesses = _.intersection(geographyBusinessIds, verksamhetsBusinessIds);
+        businessFilter.selectedBusinesses = _.intersection(businessFilter.geographyBusinessIds, verksamhetsBusinessIds);
     };
 
     return businessFilter;
