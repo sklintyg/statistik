@@ -34,7 +34,7 @@ class AnonymiseraStatistikDatabas {
                                 initialSize: numberOfThreads, maxTotal: numberOfThreads)
         def bootstrapSql = new Sql(dataSource)
         def certificateIds = bootstrapSql.rows("select correlationId from intyghandelse")
-        def personIds = bootstrapSql.rows("select id, personId from intyghandelse")
+        def personIds = bootstrapSql.rows("select id, personId from sjukfall")
         bootstrapSql.close()
         println "${certificateIds.size()} certificates found to anonymize"
         println "${personIds.size()} sjukfall found to anonymize"
@@ -78,7 +78,7 @@ class AnonymiseraStatistikDatabas {
         GParsPool.withPool(numberOfThreads) {
             output = personIds.collectParallel {p ->
                 StringBuffer result = new StringBuffer()
-                def anonymPersonId = anonymiseraPersonId(p.personId)
+                def anonymPersonId = anonymiseraPersonId.anonymisera(p.personId)
                 def id = p.id
                 Sql sql = new Sql(dataSource)
                 try {
