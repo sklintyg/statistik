@@ -34,8 +34,10 @@ class AnonymiseraStatistikDatabas {
                                 initialSize: numberOfThreads, maxTotal: numberOfThreads)
         def bootstrapSql = new Sql(dataSource)
         def certificateIds = bootstrapSql.rows("select correlationId from intyghandelse")
+        def personIds = bootstrapSql.rows("select id, personId from intyghandelse")
         bootstrapSql.close()
         println "${certificateIds.size()} certificates found to anonymize"
+        println "${personIds.size()} sjukfall found to anonymize"
         final AtomicInteger count = new AtomicInteger(0)
         final AtomicInteger errorCount = new AtomicInteger(0)
         def output
@@ -68,6 +70,29 @@ class AnonymiseraStatistikDatabas {
         long end = System.currentTimeMillis()
         output.each {line ->
             if (line) println line
+        }
+        for (p in personIds) {
+            StringBuffer result = new StringBuffer()
+            def anonymPersonId = anonymiseraPersonId(p.personId)
+            def id = p.id
+            Sql sql = new Sql(dataSource)
+            try {
+                sql.executeUpdate('update sjukfall set personId = :personId where id = :id',
+                        [personId: anonymPersonId, id: id])
+                int current = count.addAndGet(1)
+                if (current % 10000 == 0) {
+                    println "${current} sjukfall anonymized in ${(int)((System.currentTimeMillis()-start) / 1000)} seconds"
+                }
+            } catch (Throwable t) {
+                t.printStackTrace()
+
+                result << "Anonymizing ${id} failed: ${t}"
+                errorCount.incrementAndGet()
+            } finally {
+                sql.close()
+            }
+            println p
+            result.toString()
         }
         println "Done! ${count} certificates anonymized with ${errorCount} errors in ${(int)((end-start) / 1000)} seconds"
     }
