@@ -32,8 +32,7 @@ import se.inera.statistics.service.report.model.Kommun;
 import se.inera.statistics.service.report.model.Lan;
 import se.inera.statistics.service.report.model.VerksamhetsTyp;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @Component
 @Profile({"dev", "mockhsa" })
@@ -151,13 +150,17 @@ public class HSAServiceMock implements HSAService {
         if (key == null || key.getVardgivareId() == null) {
             return new String[] {VerksamhetsTyp.OVRIGT_ID};
         }
-        List<String> returnList = new ArrayList<>();
+        Set<String> returnSet = new HashSet<>();
         int numberOfVerksamhet = Math.abs(key.getEnhetId().hashCode()) % THREE_BIT_MASK;
-        for (int i = 0; i < numberOfVerksamhet; i++) {
+        int i = 0;
+        while (returnSet.size() < numberOfVerksamhet) {
             int index = Math.abs((key.getVardgivareId() + key.getEnhetId() + i).hashCode());
-            returnList.add(VERKSAMHET_CODES.get(index % VERKSAMHET_CODES.size()));
+            returnSet.add(VERKSAMHET_CODES.get(index % VERKSAMHET_CODES.size()));
+            i++;
         }
-        return returnList.toArray(new String[returnList.size()]);
+        String[] returnArray = returnSet.toArray(new String[returnSet.size()]);
+        Arrays.sort(returnArray);
+        return returnArray;
     }
 
     private JsonNode asList(String... items) {
