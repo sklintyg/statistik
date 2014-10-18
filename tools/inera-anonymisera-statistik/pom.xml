@@ -23,6 +23,9 @@
       <layout>default</layout>
     </repository>
   </distributionManagement>
+    <properties>
+        <checkstyle.path>${project.basedir}/../../build-tools/src/main/resources</checkstyle.path>
+    </properties>
 
   <dependencies>
 

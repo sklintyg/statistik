@@ -18,6 +18,7 @@
 
   <properties>
     <groovy.version>2.3.6</groovy.version>
+    <checkstyle.path>${project.basedir}/../../build-tools/src/main/resources</checkstyle.path>
   </properties>
   <distributionManagement>
     <repository>
