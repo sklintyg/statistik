@@ -92,7 +92,14 @@ angular.module('StatisticsApp').factory('businessFilter', function (_) {
         var verksamhetsTypSet = {};
         _.each(businesses, function (business) {
             _.each(business.verksamhetsTyper, function (verksamhetsTyp) {
-                verksamhetsTypSet[verksamhetsTyp.id] = verksamhetsTyp;
+                var previousType = verksamhetsTypSet[verksamhetsTyp.id];
+                if (!previousType) {
+                    verksamhetsTypSet[verksamhetsTyp.id] = { id: verksamhetsTyp.id, name : verksamhetsTyp.name.concat(" (1 enhet)"), units: [business] };
+                } else {
+                    var newUnitList = previousType.units;
+                    newUnitList.push(business);
+                    verksamhetsTypSet[verksamhetsTyp.id] = { id: verksamhetsTyp.id, name : verksamhetsTyp.name.concat(" (", newUnitList.length.toString(), " enheter)"), units: newUnitList };
+                }
             });
         });
         businessFilter.verksamhetsTyper = _.values(verksamhetsTypSet);
@@ -223,6 +230,7 @@ angular.module('StatisticsApp').factory('businessFilter', function (_) {
 
     businessFilter.updateGeography = function () {
         businessFilter.geographyBusinessIds = businessFilter.collectGeographyIds(businessFilter.geography);
+        businessFilter.filterChanged();
     }
 
     businessFilter.collectVerksamhetsIds = function () {
@@ -234,7 +242,7 @@ angular.module('StatisticsApp').factory('businessFilter', function (_) {
         return _.pluck(matchingBusinesses, 'id');
     };
 
-    businessFilter.makeUnitSelection = function () {
+    businessFilter.filterChanged = function () {
         var verksamhetsBusinessIds = businessFilter.collectVerksamhetsIds();
         businessFilter.selectedBusinesses = _.intersection(businessFilter.geographyBusinessIds, verksamhetsBusinessIds);
     };

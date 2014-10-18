@@ -79,21 +79,22 @@ angular.module('StatisticsApp').directive('legendHeight', function() {
     };
 });
 
-angular.module('StatisticsApp').directive('multiselectDropdown', function () {
-    function multiselect_size($el) {
+angular.module('StatisticsApp').directive('multiselectDropdown', function (businessFilter) {
+    function multiselectSize($el) {
         return $('option', $el).length;
     }
 
     return function(scope, element, attrs) {
         element.multiselect({
             buttonText: function (options, select) {
-                return options.length + ' av ' + multiselect_size(select) + ' valda <b class="caret"></b>';
+                return options.length + ' av ' + multiselectSize(select) + ' valda <b class="caret"></b>';
             },
             onChange: function (optionElement, checked) {
                 optionElement.removeAttr('selected');
                 if (checked) {
                     optionElement.prop('selected', 'selected');
                 }
+                businessFilter.filterChanged();
                 element.change();
             }
         });

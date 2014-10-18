@@ -470,6 +470,12 @@
 	                            	<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 pull-right">
 	                            		<div class="row">
 	                            			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 pull-right">
+                                                Ditt filter-val kommer presentera statistik baserat på {{ businessFilter.selectedBusinesses.length }} enheter.
+                                                <div class="progress">
+                                                    <div class="progress-bar" role="progressbar" style="width: {{ 100 * (businessFilter.selectedBusinesses.length / businessFilter.businesses.length) }}%;">
+
+                                                    </div>
+                                                </div>
 	                            				<button type="button" class="btn btn-default pull-right">Återställ</button>
 	                                        	<button class="btn btn-success pull-right" data-ng-click="makeUnitSelection()" data-toggle="collapse" data-target="#statistics-filter-container">Sök</button>
 	                                        	

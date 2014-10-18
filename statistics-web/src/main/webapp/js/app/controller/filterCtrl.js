@@ -24,7 +24,6 @@ angular.module('StatisticsApp').controller('filterCtrl', ['$scope', '$rootScope'
         };
 
         $scope.makeUnitSelection = function () {
-            businessFilter.makeUnitSelection();
             $rootScope.$broadcast('filterChange', '');
         };
 
