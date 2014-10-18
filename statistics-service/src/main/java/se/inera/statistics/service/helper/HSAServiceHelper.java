@@ -28,7 +28,6 @@ import se.inera.statistics.service.report.model.Lan;
 import se.inera.statistics.service.report.model.VerksamhetsTyp;
 
 import java.util.Iterator;
-import java.util.List;
 
 public final class HSAServiceHelper {
 

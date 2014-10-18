@@ -40,6 +40,7 @@ import java.util.List;
 @Primary
 public class HSAServiceMock implements HSAService {
     private static final int POSITIVE_MASK = 0x7fffffff;
+    public static final int THREE_BIT_MASK = 7;
 
     private JsonNodeFactory factory = JsonNodeFactory.instance;
 
@@ -148,10 +149,10 @@ public class HSAServiceMock implements HSAService {
 
     private String[] createVerksamhet(HSAKey key) {
         if (key == null || key.getVardgivareId() == null) {
-            return new String[] { VerksamhetsTyp.OVRIGT_ID };
+            return new String[] {VerksamhetsTyp.OVRIGT_ID};
         }
         List<String> returnList = new ArrayList<>();
-        int numberOfVerksamhet = Math.abs(key.getEnhetId().hashCode()) % 7;
+        int numberOfVerksamhet = Math.abs(key.getEnhetId().hashCode()) % THREE_BIT_MASK;
         for (int i = 0; i < numberOfVerksamhet; i++) {
             int index = Math.abs((key.getVardgivareId() + key.getEnhetId() + i).hashCode());
             returnList.add(VERKSAMHET_CODES.get(index % VERKSAMHET_CODES.size()));

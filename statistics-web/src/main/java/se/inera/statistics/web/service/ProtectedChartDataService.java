@@ -19,7 +19,6 @@
 
 package se.inera.statistics.web.service;
 
-import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Splitter;
 import org.joda.time.LocalDate;
 import org.slf4j.Logger;
@@ -475,8 +474,9 @@ public class ProtectedChartDataService {
             List<String> enheter = new ArrayList<>();
             for (Verksamhet v : info.getBusinesses()) {
                 if (v.getVardgivarId().equals(verksamhet.getVardgivarId())) {
-                    if (enhetsIDs == null || enhetsIDs.contains(v.getId()))
+                    if (enhetsIDs == null || enhetsIDs.contains(v.getId())) {
                         enheter.add(v.getId());
+                    }
                 }
             }
             filter = SjukfallUtil.createEnhetFilter(enheter.toArray(new String[enheter.size()]));
@@ -531,5 +531,5 @@ public class ProtectedChartDataService {
     private List<Verksamhet> getVerksamhets(HttpServletRequest request) {
         return loginServiceUtil.getLoginInfo(request).getBusinesses();
     }
-    
+
 }
