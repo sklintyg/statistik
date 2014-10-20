@@ -152,9 +152,9 @@ public class HSAServiceMock implements HSAService {
             return new String[] {VerksamhetsTyp.OVRIGT_ID};
         }
         List<String> returnList = new ArrayList<>();
-        int numberOfVerksamhet = Math.abs(key.getEnhetId().hashCode()) % THREE_BIT_MASK;
+        int numberOfVerksamhet = ((key.getEnhetId().hashCode()) & POSITIVE_MASK) % THREE_BIT_MASK;
         for (int i = 0; i < numberOfVerksamhet; i++) {
-            int index = Math.abs((key.getVardgivareId() + key.getEnhetId() + i).hashCode());
+            int index = (key.getVardgivareId() + key.getEnhetId() + i).hashCode() & POSITIVE_MASK;
             returnList.add(VERKSAMHET_CODES.get(index % VERKSAMHET_CODES.size()));
         }
         return returnList.toArray(new String[returnList.size()]);
