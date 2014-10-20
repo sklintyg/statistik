@@ -77,12 +77,28 @@ public class LoginServiceUtil {
     }
 
     private List<Verksamhet> getVerksamhetsList(User realUser, final List<Enhet> enhetsList) {
-        return transform(realUser.getVardenhetList(), new Function<Vardenhet, Verksamhet>() {
-            @Override
-            public Verksamhet apply(Vardenhet vardEnhet) {
-                return toVerksamhet(vardEnhet, enhetsList);
-            }
-        });
+        if (realUser.hasGlobalAccess()) {
+            return transform(enhetsList, new Function<Enhet, Verksamhet>() {
+                @Override
+                public Verksamhet apply(Enhet enhet) {
+                    return toVerksamhet(enhet);
+                }
+            });
+        } else {
+            return transform(realUser.getVardenhetList(), new Function<Vardenhet, Verksamhet>() {
+                @Override
+                public Verksamhet apply(Vardenhet vardEnhet) {
+                    return toVerksamhet(vardEnhet, enhetsList);
+                }
+            });
+        }
+    }
+
+    private Verksamhet toVerksamhet(Enhet enhet) {
+        Kommun kommun = new Kommun();
+        Lan lan = new Lan();
+        return new Verksamhet(enhet.getEnhetId(), enhet.getNamn(), enhet.getVardgivareId(), enhet.getVardgivareNamn(), enhet.getLansId(),
+                lan.getNamn(enhet.getLansId()), enhet.getKommunId(), kommun.getNamn(enhet.getKommunId()), getVerksamhetsTyper(enhet.getVerksamhetsTyper()));
     }
 
     private Verksamhet toVerksamhet(final Vardenhet vardEnhet, List<Enhet> enhetsList) {
@@ -97,13 +113,13 @@ public class LoginServiceUtil {
         String lansNamn = lan.getNamn(lansId);
         String kommunId = enhetOpt.isPresent() ? enhetOpt.get().getKommunId() : Kommun.OVRIGT_ID;
         String kommunNamn = kommun.getNamn(kommunId);
-        Set<Verksamhet.VerksamhetsTyp> verksamhetsTyper = enhetOpt.isPresent() ? getVerksamhetsTyper(enhetOpt.get()) : Collections.<Verksamhet.VerksamhetsTyp>emptySet();
+        Set<Verksamhet.VerksamhetsTyp> verksamhetsTyper = enhetOpt.isPresent() ? getVerksamhetsTyper(enhetOpt.get().getVerksamhetsTyper()) : Collections.<Verksamhet.VerksamhetsTyp>emptySet();
 
         return new Verksamhet(vardEnhet.getId(), vardEnhet.getNamn(), vardEnhet.getVardgivarId(), vardEnhet.getVardgivarNamn(), lansId, lansNamn, kommunId, kommunNamn, verksamhetsTyper);
     }
 
-    private Set<Verksamhet.VerksamhetsTyp> getVerksamhetsTyper(Enhet enhet) {
-        return new HashSet(Lists.transform(ID_SPLITTER.splitToList(enhet.getVerksamhetsTyper()), new Function<String, Verksamhet.VerksamhetsTyp>() {
+    private Set<Verksamhet.VerksamhetsTyp> getVerksamhetsTyper(String verksamhetsTyper) {
+        return new HashSet(Lists.transform(ID_SPLITTER.splitToList(verksamhetsTyper), new Function<String, Verksamhet.VerksamhetsTyp>() {
             @Override
             public Verksamhet.VerksamhetsTyp apply(String verksamhetsId) {
                 String groupId = verksamheter.getGruppId(verksamhetsId);

@@ -22,16 +22,11 @@ import com.google.common.base.Predicate;
 import org.joda.time.LocalDate;
 import se.inera.statistics.service.report.model.Range;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
+import java.util.*;
 
 public final class SjukfallUtil {
 
-    public static final FactFilter ALL_ENHETER = new FactFilter() {
+    public static final EnhetFilter ALL_ENHETER = new EnhetFilter() {
         @Override
         public boolean apply(Fact fact) {
             return true;
@@ -84,6 +79,10 @@ public final class SjukfallUtil {
         return active(calculateSjukfall(aisle, createEnhetFilter(enhetIds), WidelineConverter.toDay(firstDayAfter(range))), range);
     }
 
+    public static Collection<Sjukfall> active(Range range, Aisle aisle, EnhetFilter filter) {
+        return active(calculateSjukfall(aisle, filter, WidelineConverter.toDay(firstDayAfter(range))), range);
+    }
+
     public static Iterable<SjukfallGroup> sjukfallGrupper(final LocalDate from, final int periods, final int periodSize, final Aisle aisle, final int... enhetIds) {
         return new Iterable<SjukfallGroup>() {
             @Override
@@ -94,12 +93,12 @@ public final class SjukfallUtil {
     }
 
     public static EnhetFilter createEnhetFilter(String... enhetIds) {
-        int[] numericalId = new int[enhetIds.length];
+        int[] numericalIds = new int[enhetIds.length];
         for (int i = 0; i < enhetIds.length; i++) {
-            numericalId[i] = Warehouse.getEnhet(enhetIds[i]);
+            numericalIds[i] = Warehouse.getEnhet(enhetIds[i]);
         }
-        Arrays.sort(numericalId);
-        return new EnhetFilter(numericalId);
+        Arrays.sort(numericalIds);
+        return new EnhetFilter(numericalIds);
     }
 
     public static Iterable<SjukfallGroup> sjukfallGrupper(final LocalDate from, final int periods, final int periodSize, final Aisle aisle, final Predicate<Fact> filter) {
@@ -140,9 +139,7 @@ public final class SjukfallUtil {
     public static abstract class FactFilter implements Predicate<Fact> {
     }
 
-    ;
-
-    private static class EnhetFilter extends FactFilter {
+    public static class EnhetFilter extends FactFilter {
         private final int[] enhetIds;
 
         public EnhetFilter(int... enhetIds) {
@@ -152,6 +149,10 @@ public final class SjukfallUtil {
         @Override
         public boolean apply(Fact fact) {
             return Arrays.binarySearch(enhetIds, fact.getEnhet()) >= 0;
+        }
+
+        public int[] getEnhetIds() {
+            return enhetIds;
         }
     }
 

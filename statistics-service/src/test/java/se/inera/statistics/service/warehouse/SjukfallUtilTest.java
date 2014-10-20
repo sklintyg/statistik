@@ -112,17 +112,4 @@ public class SjukfallUtilTest {
         assertFalse(actives.hasNext());
     }
 
-    @Test
-    public void onlyRelevantSjukfallsForEnhet() throws Exception {
-        Fact fact1 = aFact().withLan(20).withKommun(2034).withForsamling(203402).withEnhet(3).withLakarintyg(1).
-                withPatient(1).withStartdatum(4010).withKon(0).withAlder(25).withDiagnoskapitel(0).
-                withDiagnosavsnitt(14).withDiagnoskategori(16).withSjukskrivningsgrad(100).withSjukskrivningslangd(10).
-                withLakarkon(0).withLakaralder(32).withLakarbefatttning(201010).build();
-        Fact fact2 = aFact().withLan(20).withKommun(2034).withForsamling(203402).withEnhet(5).withLakarintyg(1).
-                withPatient(1).withStartdatum(4010).withKon(0).withAlder(25).withDiagnoskapitel(0).
-                withDiagnosavsnitt(14).withDiagnoskategori(16).withSjukskrivningsgrad(100).withSjukskrivningslangd(10).
-                withLakarkon(0).withLakaralder(32).withLakarbefatttning(201010).build();
-
-    }
-
 }

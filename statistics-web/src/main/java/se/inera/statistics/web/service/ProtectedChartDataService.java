@@ -19,6 +19,7 @@
 
 package se.inera.statistics.web.service;
 
+import com.google.common.base.Function;
 import com.google.common.base.Splitter;
 import org.joda.time.LocalDate;
 import org.slf4j.Logger;
@@ -56,6 +57,8 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.google.common.collect.Lists.transform;
 
 /**
  * Statistics services that requires authorization to use. Unless otherwise noted, the data returned
@@ -116,7 +119,7 @@ public class ProtectedChartDataService {
         LOG.info("Calling getNumberOfCasesPerEnhet with verksamhetId: {} and ids: {}", verksamhetId, idString);
         final Range range = new Range(12);
         Verksamhet verksamhet = getVerksamhet(request, Verksamhet.decodeId(verksamhetId));
-        SjukfallUtil.FactFilter filter = getFilter(request, verksamhet, getIdsFromIdString(idString));
+        SjukfallUtil.EnhetFilter filter = getFilter(request, verksamhet, getIdsFromIdString(idString));
         SimpleKonResponse<SimpleKonDataRow> casesPerEnhet = warehouse.getCasesPerEnhet(filter, range, verksamhet.getVardgivarId());
         return new SimpleDualSexConverter().convert(casesPerEnhet, range);
     }
@@ -483,13 +486,18 @@ public class ProtectedChartDataService {
         return CsvConverter.getCsvResponse(tableData, "export.csv");
     }
 
-    SjukfallUtil.FactFilter getFilter(HttpServletRequest request, Verksamhet verksamhet, List<String> enhetsIDs) {
+    SjukfallUtil.EnhetFilter getFilter(HttpServletRequest request, Verksamhet verksamhet, List<String> enhetsIDs) {
         LoginInfo info = loginServiceUtil.getLoginInfo(request);
-        SjukfallUtil.FactFilter filter;
+        List<String> enheter;
         if (info.isFullVgAccess() && enhetsIDs == null) {
-            filter = SjukfallUtil.ALL_ENHETER;
+            enheter = transform(info.getBusinesses(), new Function<Verksamhet, String>() {
+                @Override
+                public String apply(Verksamhet verksamhet) {
+                    return verksamhet.getId();
+                }
+            });
         } else {
-            List<String> enheter = new ArrayList<>();
+            enheter = new ArrayList<>();
             for (Verksamhet v : info.getBusinesses()) {
                 if (v.getVardgivarId().equals(verksamhet.getVardgivarId())) {
                     if (enhetsIDs == null || enhetsIDs.contains(v.getId())) {
@@ -497,9 +505,8 @@ public class ProtectedChartDataService {
                     }
                 }
             }
-            filter = SjukfallUtil.createEnhetFilter(enheter.toArray(new String[enheter.size()]));
         }
-        return filter;
+        return SjukfallUtil.createEnhetFilter(enheter.toArray(new String[enheter.size()]));
     }
 
     private List<String> getIdsFromIdString(String ids) {
