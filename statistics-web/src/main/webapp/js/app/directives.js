@@ -79,44 +79,22 @@ angular.module('StatisticsApp').directive('legendHeight', function() {
     };
 });
 
-angular.module('StatisticsApp').directive('multiselectDropdown', function () {
-    function multiselect_selected($el) {
-        var ret = true;
-        $('option', $el).each(function(element) {
-            if (!!!$(this).prop('selected')) {
-                ret = false;
-            }
-        });
-        return ret;
+angular.module('StatisticsApp').directive('multiselectDropdown', function (businessFilter) {
+    function multiselectSize($el) {
+        return $('option', $el).length;
     }
 
     return function(scope, element, attrs) {
         element.multiselect({
-            numberDisplayed : 1,
             buttonText: function (options, select) {
-                if (options.length == 0) {
-                    return 'Inga valda' + ' <b class="caret"></b>';
-                }
-                if (multiselect_selected(select)) {
-                    return 'Alla valda' + ' <b class="caret"></b>';
-                }
-                if (options.length > this.numberDisplayed) {
-                    return options.length + ' valda' + ' <b class="caret"></b>';
-                }
-                else {
-                    var selected = '';
-                    options.each(function () {
-                        var label = ($(this).attr('label') !== undefined) ? $(this).attr('label') : $(this).html();
-                        selected += label + ', ';
-                    });
-                    return selected.substr(0, selected.length - 2) + ' <b class="caret"></b>';
-                }
+                return options.length + ' av ' + multiselectSize(select) + ' valda <b class="caret"></b>';
             },
             onChange: function (optionElement, checked) {
                 optionElement.removeAttr('selected');
                 if (checked) {
                     optionElement.prop('selected', 'selected');
                 }
+                businessFilter.filterChanged();
                 element.change();
             }
         });
@@ -148,10 +126,10 @@ angular.module('StatisticsApp').directive("submenu", function (recursionService)
         restrict: "E",
         scope: { item: "=", itemroot: "=", depth: "=", recursionhelper: "=" },
         template:
-            '<span class="glyphicon" ng-class="{glyphiconMinusSign: !item.hideSiblings, glyphiconPlusSign: item.hideSiblings}"/>' +
-            '<span ng-click="item.hideSiblings = !item.hideSiblings" class="ellipsis-text">{{item.name}}</span>' +
+            '<span class="glyphicon" ng-class="{glyphiconMinusSign: !item.hideChildren, glyphiconPlusSign: item.hideChildren}"/>' +
+            '<span ng-click="recursionhelper.hideclick(item)" class="ellipsis-text">{{item.name}}</span>' +
             '<input type="checkbox" ng-checked="item.allSelected" intermediate="item.someSelected" ng-click="recursionhelper.itemclick(item, itemroot)"/>' +
-            '<ul ng-init="item.hideSiblings=true" ng-show="item.subs && !item.hideSiblings" style="list-style-type: none;">' +
+            '<ul ng-init="item.hideChildren=true" ng-show="item.subs && !item.hideChildren" style="list-style-type: none;">' +
               '<li data-ng-init="depth=depth+1" data-ng-repeat="item in item.subs">' +
                 '<submenu item="item" itemroot="itemroot" depth="depth" recursionhelper="recursionhelper" ng-hide="item.hide" ng-class="{leaf: !item.subs}" class="depth{{depth}}"></submenu>' +
               '</li>' +

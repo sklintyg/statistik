@@ -151,13 +151,22 @@ public class HSAServiceMock implements HSAService {
         if (key == null || key.getVardgivareId() == null) {
             return new String[] {VerksamhetsTyp.OVRIGT_ID};
         }
+        Set<String> returnSet = new HashSet<>();
+        int numberOfVerksamhet = Math.abs(key.getEnhetId().hashCode()) % THREE_BIT_MASK;
+        int i = 0;
+        while (returnSet.size() < numberOfVerksamhet) {
+            int index = Math.abs((key.getVardgivareId() + key.getEnhetId() + i).hashCode());
+            returnSet.add(VERKSAMHET_CODES.get(index % VERKSAMHET_CODES.size()));
+            i++;
         List<String> returnList = new ArrayList<>();
         int numberOfVerksamhet = ((key.getEnhetId().hashCode()) & POSITIVE_MASK) % THREE_BIT_MASK;
         for (int i = 0; i < numberOfVerksamhet; i++) {
             int index = (key.getVardgivareId() + key.getEnhetId() + i).hashCode() & POSITIVE_MASK;
             returnList.add(VERKSAMHET_CODES.get(index % VERKSAMHET_CODES.size()));
         }
-        return returnList.toArray(new String[returnList.size()]);
+        String[] returnArray = returnSet.toArray(new String[returnSet.size()]);
+        Arrays.sort(returnArray);
+        return returnArray;
     }
 
     private JsonNode asList(String... items) {

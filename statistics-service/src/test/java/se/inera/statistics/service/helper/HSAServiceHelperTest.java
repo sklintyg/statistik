@@ -53,7 +53,7 @@ public class HSAServiceHelperTest {
         JsonNode info = hsaService.getHSAInfo(new HSAKey("vardgivarid", "enhetId", "lakareId"));
 
         String verksamhetsTyper = HSAServiceHelper.getVerksamhetsTyper(info);
-        Assert.assertEquals("1217,1218,1219", verksamhetsTyper);
+        Assert.assertEquals("1113,1114,1115,1116,1117,1119", verksamhetsTyper);
     }
 
 }

@@ -409,24 +409,23 @@
                         <div id="statistics-filter-container" class="collapse" collapse="!isFilterCollapsed">
                         	<div class="row">
 				                <div class="filter-level" id="first-level-filter">
-                                    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-3 clearfix">
+                                    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-3 clearfix" data-ng-if="businessFilter.numberOfBusinesses() === 'medium' || businessFilter.numberOfBusinesses() === 'large'">
                                         <label for="select-unit">Välj verksamhetstyper:</label><br/>
                                         <select ng-model="businessFilter.verksamhetsTypIds" multiple="multiple"
                                                 ng-options="verksamhet.id as verksamhet.name for verksamhet in businessFilter.verksamhetsTyper" multiselect-dropdown id="select-verksamhet">
                                         </select>
                                     </div>
-                                    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-3 clearfix" data-ng-if="businessFilter.useSmallGUI()">
+                                    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-3 clearfix" data-ng-if="businessFilter.numberOfBusinesses() === 'medium'">
                                         <label for="select-unit">Välj enheter:</label><br/>
                                         <select ng-model="businessFilter.geographyBusinessIds" multiple="multiple"
                                                 ng-options="business.id as business.name for business in businessFilter.businesses" multiselect-dropdown id="select-unit">
                                         </select>
                                     </div>
-	                                <div class="col-xs-6 col-sm-6 col-md-6 col-lg-3" data-ng-if="!businessFilter.useSmallGUI()">
+	                                <div class="col-xs-6 col-sm-6 col-md-6 col-lg-3" data-ng-if="businessFilter.numberOfBusinesses() === 'large'">
 	                                	<label for="select-geo-unit">Välj enheter:</label><br/>
 	                                    <button class="btn btn-default" data-toggle="modal" data-target="#myModal" id="select-geo-unit" >
-	                                        Välj enhet
+	                                        {{ businessFilter.geographyBusinessIds.length }} av {{ businessFilter.businesses.length }} valda <b class="caret"></b>
 	                                    </button>
-						                <label>{{businessFilter.selectedLeavesCount(businessFilter.geography)}} valda enheter</label>
 	                                    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 	                                        <div class="modal-dialog">
 	                                            <div class="modal-content">
@@ -450,7 +449,7 @@
 	                                                </div>
 	                                                <div class="modal-footer">
 	                                                    <label class="pull-left">Län: {{businessFilter.selectedTertiaryCount(businessFilter.geography)}} Kommuner: {{businessFilter.selectedSecondaryCount(businessFilter.geography)}} Enheter: {{businessFilter.selectedLeavesCount(businessFilter.geography)}}</label>
-	                                                    <button class="btn btn-success" data-dismiss="modal" aria-hidden="true">Spara och stäng</button>
+	                                                    <button class="btn btn-success" data-dismiss="modal" aria-hidden="true" data-ng-click="businessFilter.updateGeography()">Spara och stäng</button>
 	                                                </div>
 	                                            </div>
 	                                        </div>
@@ -471,6 +470,11 @@
 	                            	<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 pull-right">
 	                            		<div class="row">
 	                            			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 pull-right">
+                                                Ditt filter-val kommer presentera statistik baserat på {{ businessFilter.selectedBusinesses.length }} {{ businessFilter.selectedBusinesses.length === 1 ? "enhet" : "enheter" }}.
+                                                <div class="progress">
+                                                    <div class="progress-bar" role="progressbar" style="width: {{ 100 * (businessFilter.selectedBusinesses.length / businessFilter.businesses.length) }}%;">
+                                                    </div>
+                                                </div>
 	                            				<button type="button" class="btn btn-default pull-right">Återställ</button>
 	                                        	<button class="btn btn-success pull-right" data-ng-click="makeUnitSelection()" data-toggle="collapse" data-target="#statistics-filter-container">Sök</button>
 	                                        	
