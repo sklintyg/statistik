@@ -12,7 +12,7 @@
   </parent>
     
   <artifactId>anonymisera-statistikdatabas</artifactId>
-  <version>1.0.0</version>
+  <version>1.0.1</version>
   <packaging>jar</packaging>
   <name>Anonymisering av intyg för statistik</name>
   <distributionManagement>
@@ -137,7 +137,7 @@
         <configuration>
           <archive>
             <manifest>
-              <mainClass>se.inera.certificate.tools.AnonymiseraStatistikDatabas</mainClass>
+              <mainClass>se.inera.statistics.tools.AnonymiseraStatistikDatabas</mainClass>
             </manifest>
           </archive>
           <descriptorRefs>
