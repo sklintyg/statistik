@@ -313,7 +313,7 @@
                                         <li><a data-ng-href="#/verksamhet/{{businessId}}/sjukfallPerManad"
                                                id="navBusinessCasesPerMonthLink" ctrlname="VerksamhetCasesPerMonthCtrl"
                                                navigationaware>Sjukfall, totalt</a></li>
-                                        <li><a data-ng-href="#/verksamhet/{{businessId}}/sjukfallperenhet"
+                                        <li ng-show="isFullVgAccess"><a data-ng-href="#/verksamhet/{{businessId}}/sjukfallperenhet"
                                                id="navBusinessCasesPerMonthLink" ctrlname="VerksamhetCasesPerBusinessCtrl"
                                                navigationaware>Vårdenhet</a></li>
                                         <li>

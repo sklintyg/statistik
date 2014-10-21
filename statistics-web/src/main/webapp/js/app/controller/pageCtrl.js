@@ -62,8 +62,9 @@ angular.module('StatisticsApp').controller('pageCtrl', [ '$scope', '$rootScope',
                     $scope.verksamhetName = loginInfo.vgView ? ("- " + v.vardgivarName + (loginInfo.fullVgAccess ? "(alla enheter)" : "(vissa enheter)")) : v.name;
                     $scope.userName = loginInfo.name;
                     $scope.isVgView = loginInfo.vgView;
-                    $scope.isFullVgAccess = loginInfo.fullVgAccess;
                     $scope.userNameWithAccess = loginInfo.name;
+
+                    $rootScope.isFullVgAccess = loginInfo.fullVgAccess;
                 }, function () {
                     $scope.dataLoadingError = true;
                 });
