@@ -10,8 +10,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import static se.inera.statistics.service.warehouse.Fact.aFact;
-
 public class SjukfallUtilTest {
     private Aisle aisle = new Aisle();
 

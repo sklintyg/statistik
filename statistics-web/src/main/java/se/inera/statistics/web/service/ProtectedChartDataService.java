@@ -111,7 +111,7 @@ public class ProtectedChartDataService {
      *
      */
     @GET
-    @Path("{verksamhetId}/getNumberOfCasesPerMonth")
+    @Path("{verksamhetId}/getNumberOfCasesPerEnhet")
     @Produces({MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request, #verksamhetId)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request, #verksamhetId)")
@@ -121,7 +121,7 @@ public class ProtectedChartDataService {
         Verksamhet verksamhet = getVerksamhet(request, Verksamhet.decodeId(verksamhetId));
         SjukfallUtil.EnhetFilter filter = getFilter(request, verksamhet, getIdsFromIdString(idString));
         SimpleKonResponse<SimpleKonDataRow> casesPerEnhet = warehouse.getCasesPerEnhet(filter, range, verksamhet.getVardgivarId());
-        return new SimpleDualSexConverter().convert(casesPerEnhet, range);
+        return new SjukfallPerBusinessConverter().convert(casesPerEnhet, range);
     }
 
     /**

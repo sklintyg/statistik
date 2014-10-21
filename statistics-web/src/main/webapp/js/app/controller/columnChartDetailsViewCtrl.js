@@ -126,28 +126,28 @@ angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl', [ '$sco
 
 angular.module('StatisticsApp').nationalSickLeaveLengthConfig = function () {
     var conf = {};
-    conf.dataFetcher = "getNationalSickLeaveLengthData",
-        conf.dataFetcherVerksamhet = "getSickLeaveLengthDataVerksamhet",
-        conf.exportTableUrl = "api/getSickLeaveLengthData/csv";
+    conf.dataFetcher = "getNationalSickLeaveLengthData";
+    conf.dataFetcherVerksamhet = "getSickLeaveLengthDataVerksamhet";
+    conf.exportTableUrl = "api/getSickLeaveLengthData/csv";
     conf.exportTableUrlVerksamhet = function (verksamhetId) {
         return "api/verksamhet/" + verksamhetId + "/getSickLeaveLengthData/csv"
     };
     conf.title = function (period) {
         return "Antal sjukfall baserat på sjukskrivningslängd " + period;
-    }
+    };
     conf.chartXAxisTitle = "Sjukskrivningslängd";
     return conf;
 };
 
 angular.module('StatisticsApp').nationalSickLeaveLengthCurrentConfig = function () {
     var conf = {};
-    conf.dataFetcherVerksamhet = "getSickLeaveLengthCurrentDataVerksamhet",
-        conf.exportTableUrlVerksamhet = function (verksamhetId) {
-            return "api/verksamhet/" + verksamhetId + "/getSickLeaveLengthCurrentData/csv";
-        };
+    conf.dataFetcherVerksamhet = "getSickLeaveLengthCurrentDataVerksamhet";
+    conf.exportTableUrlVerksamhet = function (verksamhetId) {
+        return "api/verksamhet/" + verksamhetId + "/getSickLeaveLengthCurrentData/csv";
+    };
     conf.title = function (month) {
         return "Antal pågående sjukfall för " + month + " baserat på sjukskrivningslängd";
-    }
+    };
     conf.chartXAxisTitle = "Sjukskrivningslängd";
     conf.pageHelpText = "Vad innebär pågående sjukfall?<br/>Denna rapport syftar till att visa så aktuell information om sjukfallen möjligt. Alla sjukfall som pågår någon gång under aktuell månad hämtas. Rapporten kan inte ta hänsyn till vilken dag det är i månaden. I slutet på månaden kommer fortfarande sjukfall som avslutats under månadens gång visas som pågående."
     return conf;
@@ -155,28 +155,28 @@ angular.module('StatisticsApp').nationalSickLeaveLengthCurrentConfig = function 
 
 angular.module('StatisticsApp').nationalAgeGroupConfig = function () {
     var conf = {};
-    conf.dataFetcher = "getAgeGroups",
-        conf.dataFetcherVerksamhet = "getAgeGroupsVerksamhet",
-        conf.exportTableUrl = "api/getAgeGroupsStatistics/csv";
+    conf.dataFetcher = "getAgeGroups";
+    conf.dataFetcherVerksamhet = "getAgeGroupsVerksamhet";
+    conf.exportTableUrl = "api/getAgeGroupsStatistics/csv";
     conf.exportTableUrlVerksamhet = function (verksamhetId) {
         return "api/verksamhet/" + verksamhetId + "/getAgeGroupsStatistics/csv";
     };
     conf.title = function (period) {
         return "Antal sjukfall baserat på patientens ålder " + period;
-    }
+    };
     conf.chartXAxisTitle = "Åldersgrupp";
     return conf;
 };
 
 angular.module('StatisticsApp').nationalAgeGroupCurrentConfig = function () {
     var conf = {};
-    conf.dataFetcherVerksamhet = "getAgeGroupsCurrentVerksamhet",
-        conf.exportTableUrlVerksamhet = function (verksamhetId) {
-            return "api/verksamhet/" + verksamhetId + "/getAgeGroupsCurrentStatistics/csv";
-        };
+    conf.dataFetcherVerksamhet = "getAgeGroupsCurrentVerksamhet";
+    conf.exportTableUrlVerksamhet = function (verksamhetId) {
+        return "api/verksamhet/" + verksamhetId + "/getAgeGroupsCurrentStatistics/csv";
+    };
     conf.title = function (month) {
         return "Antal pågående sjukfall för " + month + " baserat på patientens ålder";
-    }
+    };
     conf.chartXAxisTitle = "Åldersgrupp";
     conf.pageHelpText = "Vad innebär pågående sjukfall?<br/>Denna rapport syftar till att visa så aktuell information om sjukfallen möjligt. Alla sjukfall som pågår någon gång under aktuell månad hämtas. Rapporten kan inte ta hänsyn till vilken dag det är i månaden. I slutet på månaden kommer fortfarande sjukfall som avslutats under månadens gång visas som pågående."
     return conf;
@@ -184,12 +184,25 @@ angular.module('StatisticsApp').nationalAgeGroupCurrentConfig = function () {
 
 angular.module('StatisticsApp').casesPerSexConfig = function () {
     var conf = {};
-    conf.dataFetcher = "getNationalSjukfallPerSexData",
-        conf.exportTableUrl = "api/getSjukfallPerSexStatistics/csv";
+    conf.dataFetcher = "getNationalSjukfallPerSexData";
+    conf.exportTableUrl = "api/getSjukfallPerSexStatistics/csv";
     conf.title = function (period) {
         return "Andel sjukfall per kön per län " + period;
     };
     conf.percentChart = true;
     conf.chartXAxisTitle = "Län";
+    return conf;
+};
+
+angular.module('StatisticsApp').casesPerBusinessConfig = function () {
+    var conf = {};
+    conf.dataFetcherVerksamhet = "getSjukfallPerBusinessVerksamhet";
+    conf.exportTableUrlVerksamhet = function (verksamhetId) {
+        return "api/verksamhet/" + verksamhetId + "/getSjukfallPerBusinessVerksamhet/csv";
+    };
+    conf.title = function (period) {
+        return "Andel sjukfall per enhet " + period;
+    };
+    conf.chartXAxisTitle = "Enhet";
     return conf;
 };
