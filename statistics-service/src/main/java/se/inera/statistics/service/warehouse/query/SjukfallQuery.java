@@ -38,7 +38,7 @@ public final class SjukfallQuery {
             Collection<Sjukfall> sjukfalls = SjukfallUtil.active(range, aisle, new SjukfallUtil.EnhetFilter(enhetId));
             int male = countMale(sjukfalls);
             int female = sjukfalls.size() - male;
-            result.add(new SimpleKonDataRow(String.valueOf(enhetId), female, male));
+            result.add(new SimpleKonDataRow(filter.getEnhetsName(enhetId), female, male));
         }
         return new SimpleKonResponse<>(result, perioder * periodlangd);
     }

@@ -92,6 +92,16 @@ public final class SjukfallUtil {
         };
     }
 
+    public static EnhetFilter createEnhetFilter(Map<String, String> enheter) {
+        Map<Integer, String> numericalIds = new HashMap<>();
+        for (String id : enheter.keySet()) {
+            int numericalId = Warehouse.getEnhet(id);
+            numericalIds.put(numericalId, enheter.get(id));
+        }
+        return new EnhetFilter(numericalIds);
+    }
+
+
     public static EnhetFilter createEnhetFilter(String... enhetIds) {
         int[] numericalIds = new int[enhetIds.length];
         for (int i = 0; i < enhetIds.length; i++) {
@@ -141,9 +151,21 @@ public final class SjukfallUtil {
 
     public static class EnhetFilter extends FactFilter {
         private final int[] enhetIds;
+        private final Map<Integer, String> enhetsNamesById;
 
         public EnhetFilter(int... enhetIds) {
             this.enhetIds = enhetIds;
+            this.enhetsNamesById = null;
+        }
+
+        public EnhetFilter(Map<Integer, String> numericalIds) {
+            this.enhetIds = new int[numericalIds.size()];
+            int counter = 0;
+            for (Integer id : numericalIds.keySet()) {
+                enhetIds[counter] = id;
+                counter++;
+            }
+            this.enhetsNamesById = numericalIds;
         }
 
         @Override
@@ -153,6 +175,10 @@ public final class SjukfallUtil {
 
         public int[] getEnhetIds() {
             return enhetIds;
+        }
+
+        public String getEnhetsName(int id) {
+            return enhetsNamesById != null ? enhetsNamesById.get(id): null;
         }
     }
 

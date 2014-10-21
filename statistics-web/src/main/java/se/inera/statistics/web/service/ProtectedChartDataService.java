@@ -56,7 +56,9 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static com.google.common.collect.Lists.transform;
 
@@ -488,25 +490,15 @@ public class ProtectedChartDataService {
 
     SjukfallUtil.EnhetFilter getFilter(HttpServletRequest request, Verksamhet verksamhet, List<String> enhetsIDs) {
         LoginInfo info = loginServiceUtil.getLoginInfo(request);
-        List<String> enheter;
-        if (info.isFullVgAccess() && enhetsIDs == null) {
-            enheter = transform(info.getBusinesses(), new Function<Verksamhet, String>() {
-                @Override
-                public String apply(Verksamhet verksamhet) {
-                    return verksamhet.getId();
-                }
-            });
-        } else {
-            enheter = new ArrayList<>();
-            for (Verksamhet v : info.getBusinesses()) {
-                if (v.getVardgivarId().equals(verksamhet.getVardgivarId())) {
-                    if (enhetsIDs == null || enhetsIDs.contains(v.getId())) {
-                        enheter.add(v.getId());
-                    }
+        Map<String, String> enheter = new HashMap<>();
+        for (Verksamhet userVerksamhet : info.getBusinesses()) {
+            if (userVerksamhet.getVardgivarId().equals(verksamhet.getVardgivarId())) {
+                if (enhetsIDs == null || enhetsIDs.contains(userVerksamhet.getId())) {
+                    enheter.put(userVerksamhet.getId(), userVerksamhet.getName());
                 }
             }
         }
-        return SjukfallUtil.createEnhetFilter(enheter.toArray(new String[enheter.size()]));
+        return SjukfallUtil.createEnhetFilter(enheter);
     }
 
     private List<String> getIdsFromIdString(String ids) {
