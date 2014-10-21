@@ -25,9 +25,7 @@ import se.inera.statistics.service.report.model.SimpleKonDataRow;
 import se.inera.statistics.service.report.model.SimpleKonResponse;
 import se.inera.statistics.web.model.*;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 public class SjukfallPerBusinessConverter {
 
@@ -44,6 +42,13 @@ public class SjukfallPerBusinessConverter {
             final Integer male = row.getMale();
             data.add(new NamedData(row.getName(), Arrays.asList(female, male)));
         }
+
+        Collections.sort(data, new Comparator<NamedData>() {
+            @Override
+            public int compare(NamedData o1, NamedData o2) {
+                return o1.getName().compareTo(o2.getName());
+            }
+        });
 
         return TableData.createWithSingleHeadersRow(data, Arrays.asList("Enhet", "Antal sjukfall för kvinnor", "Antal sjukfall för män"));
     }
