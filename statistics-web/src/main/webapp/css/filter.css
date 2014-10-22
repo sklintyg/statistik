@@ -147,7 +147,7 @@ select, textarea, input[type="text"], input[type="password"], input[type="dateti
 .search-all-items, .select-all-items { margin-bottom: 10px; }
 .modal-body .modal-list li.search-all-items input[type=search] { width: 100%; height: 30px; top: 1px; }
 .modal-body .modal-list li.select-all-items input[type=checkbox] { margin-left: 0px; }
-.modal-body .modal-list input[type=checkbox] { margin-left: 10px; top: 0px; position: relative; }
+.modal-body .modal-list input[type=checkbox] { margin-left: 10px; top: 0px; position: relative; cursor: pointer; }
 /* STYLES FOR MULTI-MULTI*/
 .depth0, .depth1 { cursor: pointer; }
 .depth2 { cursor: default; }
@@ -163,17 +163,19 @@ select, textarea, input[type="text"], input[type="password"], input[type="dateti
 	width: 13px;
 	height: 12px;
 	background-image: url("../img/glyphicons-halflings.png");	
+	font-family: 'Glyphicons Halflings';
 	margin-right: 5px;
 	margin-top: 2px;
 	float: left;
 }
 .glyphiconMinusSign {
 	background-position: -24px -97px;
-	cursor: default;
+	cursor: pointer;
 }
 .glyphiconPlusSign {
 	background-position: 0px -97px;
-	cursor: default;
+	cursor: pointer;
+	color: #fff;
 }
 .depth2 span.glyphiconMinusSign, .depth2 span.glyphiconPlusSign { display: none; }
 

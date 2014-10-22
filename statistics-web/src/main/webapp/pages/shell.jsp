@@ -480,16 +480,13 @@
                                                 </div>
 	                            				<button type="button" class="btn btn-default pull-right">Återställ</button>
 	                                        	<button class="btn btn-success pull-right" data-ng-click="makeUnitSelection()" data-toggle="collapse" data-target="#statistics-filter-container">Sök</button>
-	                                        	
 	                                        </div>
 			                            </div>
                                     </div>
                                 </div>
 				        	</div>
 	                    </div>
-                        <button id="show-hide-filter-btn" type="button" class="btn btn-small pull-right" data-toggle="collapse" data-target="#statistics-filter-container" ng-click='filter.open = !filter.open'>
-							<i class="glyphicon" ng-class="{'glyphicon-chevron-up': filter.open, 'glyphicon-chevron-down': !filter.open}"></i> {{filter.open ? 'Dölj filter' : 'Visa filter'}}
-                        </button>
+	                    <filter-button/>
                     </div>
                 </div>
 				<div class="row">
