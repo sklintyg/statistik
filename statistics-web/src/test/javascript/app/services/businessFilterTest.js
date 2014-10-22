@@ -1,4 +1,4 @@
-describe("Tests for business overview controller", function () {
+ describe("Tests for business overview controller", function () {
     beforeEach(module('StatisticsApp'));
 
     it("parents should be intermediate when some child is selected", inject(function (businessFilter) {
@@ -249,6 +249,41 @@ describe("Tests for business overview controller", function () {
 
         //Then
         expect(leavesCount).toBe(2);
+    }));
+
+    it("populates verksamheter correctly", inject(function (businessFilter, _) {
+        //Given
+        var verksamhetsTyper1 = [ { id: 1, name: "v1"}, { id: 2, name: "v2"} ];
+        var verksamhetsTyper2 = [ { id: 1, name: "v1"}, { id: 3, name: "v3"} ];
+        var business1 = { id: 1, name: "b1", verksamhetsTyper: verksamhetsTyper1 };
+        var business2 = { id: 2, name: "b2", verksamhetsTyper: verksamhetsTyper2 };
+
+        //When
+        businessFilter.populateVerksamhetsTyper([business1, business2]);
+
+        //Then
+        var verksamheter = businessFilter.verksamhetsTyper;
+        expect(verksamheter.length).toBe(3);
+        _.each(verksamheter, function (verksamhet) {
+            if (verksamhet.id === 1) {
+                expect(verksamhet.name).toBe("v1 (2 enheter)");
+                expect(verksamhet.units.length).toBe(2);
+                expect(_.findWhere(verksamhet.units, { id: 1})).toBeDefined();
+                expect(_.findWhere(verksamhet.units, { id: 2})).toBeDefined();
+            }
+            if (verksamhet.id === 2) {
+                expect(verksamhet.name).toBe("v2 (1 enhet)");
+                expect(verksamhet.units.length).toBe(1);
+                expect(_.findWhere(verksamhet.units, { id: 1})).toBeDefined();
+                expect(_.findWhere(verksamhet.units, { id: 2})).toBeUndefined();
+            }
+            if (verksamhet.id === 3) {
+                expect(verksamhet.name).toBe("v3 (1 enhet)");
+                expect(verksamhet.units.length).toBe(1);
+                expect(_.findWhere(verksamhet.units, { id: 1})).toBeUndefined();
+                expect(_.findWhere(verksamhet.units, { id: 2})).toBeDefined();
+            }
+        })
     }));
 
 });

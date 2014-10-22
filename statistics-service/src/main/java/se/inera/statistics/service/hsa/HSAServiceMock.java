@@ -33,13 +33,17 @@ import se.inera.statistics.service.report.model.Lan;
 import se.inera.statistics.service.report.model.VerksamhetsTyp;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Component
 @Profile({"dev", "mockhsa" })
 @Primary
 public class HSAServiceMock implements HSAService {
     private static final int POSITIVE_MASK = 0x7fffffff;
+    public static final int VERKSAMHET_MODULO = 7;
 
     private JsonNodeFactory factory = JsonNodeFactory.instance;
 
@@ -148,15 +152,19 @@ public class HSAServiceMock implements HSAService {
 
     private String[] createVerksamhet(HSAKey key) {
         if (key == null || key.getVardgivareId() == null) {
-            return new String[] { VerksamhetsTyp.OVRIGT_ID };
+            return new String[] {VerksamhetsTyp.OVRIGT_ID};
         }
-        List<String> returnList = new ArrayList<>();
-        int numberOfVerksamhet = Math.abs(key.getEnhetId().hashCode()) % 7;
-        for (int i = 0; i < numberOfVerksamhet; i++) {
-            int index = Math.abs((key.getVardgivareId() + key.getEnhetId() + i).hashCode());
-            returnList.add(VERKSAMHET_CODES.get(index % VERKSAMHET_CODES.size()));
+        Set<String> returnSet = new HashSet<>();
+        int numberOfVerksamhet = (key.getEnhetId().hashCode() & POSITIVE_MASK) % VERKSAMHET_MODULO;
+        int i = 0;
+        while (returnSet.size() < numberOfVerksamhet) {
+            int index = ((key.getVardgivareId() + key.getEnhetId() + i).hashCode()) & POSITIVE_MASK;
+            returnSet.add(VERKSAMHET_CODES.get(index % VERKSAMHET_CODES.size()));
+            i++;
         }
-        return returnList.toArray(new String[returnList.size()]);
+        String[] returnArray = returnSet.toArray(new String[returnSet.size()]);
+        Arrays.sort(returnArray);
+        return returnArray;
     }
 
     private JsonNode asList(String... items) {

@@ -1,8 +1,6 @@
 package se.inera.statistics.service.processlog;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import se.inera.statistics.service.helper.HSAServiceHelper;

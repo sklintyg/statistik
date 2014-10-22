@@ -39,10 +39,10 @@ angular.module('StatisticsApp').controller('pageCtrl', [ '$scope', '$rootScope',
             $scope.currentUrl = window.location.href;
 
             var d = new Date();
-            var curr_date = d.getDate();
-            var curr_month = d.getMonth() + 1; //Months are zero based
-            var curr_year = d.getFullYear();
-            $scope.currentTime = curr_year + "-" + curr_month + "-" + curr_date;
+            var currDate = d.getDate();
+            var currMonth = d.getMonth() + 1; //Months are zero based
+            var currYear = d.getFullYear();
+            $scope.currentTime = currYear + "-" + currMonth + "-" + currDate;
 
             $scope.viewHeader = verksamhetId ? "Verksamhetsstatistik" : "Nationell statistik";
 

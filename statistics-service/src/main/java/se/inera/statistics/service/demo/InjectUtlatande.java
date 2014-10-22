@@ -44,7 +44,7 @@ import java.util.List;
 import java.util.Random;
 
 public class InjectUtlatande {
-    private static final int SEED = 1234;
+    private static final int SEED = 1235;
 
     private static final Logger LOG = LoggerFactory.getLogger(InjectUtlatande.class);
 
@@ -69,7 +69,7 @@ public class InjectUtlatande {
 
     static {
         for (String vardgivare : VG) {
-            for (int i = 1; i <= random.nextInt(VARDGIVARE_ANTAL); i++) {
+            for (int i = 1; i <= VARDGIVARE_ANTAL; i++) {
                 VARDGIVARE.put(vardgivare, vardgivare + "-enhet-" + i);
             }
         }
@@ -139,6 +139,7 @@ public class InjectUtlatande {
 
         String vardenhet = random(Lists.newArrayList((VARDGIVARE.get(vardgivare))));
 
+        LOG.warn("Vardenhet: {}", vardenhet);
         String diagnos = random(getDiagnoser());
         if (random.nextFloat() < FEL_DIAGNOS_THRESHOLD) {
             diagnos = "unknown";
@@ -157,7 +158,7 @@ public class InjectUtlatande {
     }
 
     private List<String> readList(final String path, final int maxIntyg) {
-        try (BufferedReader in = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream(path), "utf8"));) {
+        try (BufferedReader in = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream(path), "utf8"))) {
             List<String> list = new ArrayList<>();
             int count = 0;
             for (String line = in.readLine(); line != null && (maxIntyg == 0 || count++ < maxIntyg); line = in.readLine()) {

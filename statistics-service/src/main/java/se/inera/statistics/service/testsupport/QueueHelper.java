@@ -157,10 +157,6 @@ public class QueueHelper {
         LOG.info("DOSL data: " + degreeOfSickLeave2);
         JsonNode degreeOfSickLeave2Node = JSONParser.parse(degreeOfSickLeave2.toString());
         result.put("degreeOfSickLeave2", new TestData(degreeOfSickLeave2, degreeOfSickLeave2Node));
-//        SjukskrivningsgradResponse degreeOfSickLeaveNationell = sjukskrivningsgrad.getStatistics(nationell, range);
-//        LOG.info("Nationell DOSL data: " + degreeOfSickLeaveNationell);
-//        JsonNode degreeOfSickLeaveNationellNode = JSONParser.parse(degreeOfSickLeaveNationell.toString());
-//        result.put("degreeOfSickLeaveNationell", new TestData(degreeOfSickLeaveNationell, degreeOfSickLeaveNationellNode));
     }
 
     private void printAndGetAgeGroups(String vardenhet1, String vardenhet2, Range range, Map<String, TestData> result) {
@@ -172,10 +168,6 @@ public class QueueHelper {
         LOG.info("AG data: " + ageGroups2);
         JsonNode ageGroups2Node = JSONParser.parse(ageGroups2.toString());
         result.put("ageGroups2", new TestData(ageGroups2, ageGroups2Node));
-//        SimpleKonResponse<SimpleKonDataRow> ageGroupsNationell = aldersgrupp.getHistoricalAgeGroups(nationell, range.getTo(), RollingLength.YEAR);
-//        LOG.info("Nationell AG data: " + ageGroupsNationell);
-//        JsonNode ageGroupsNationellNode = JSONParser.parse(ageGroupsNationell.toString());
-//        result.put("ageGroupsNationell", new TestData(ageGroupsNationell, ageGroupsNationellNode));
     }
 
     private void printAndGetDiagnosisSubGroups(String vardenhet1, String vardenhet2, Range range, Map<String, TestData> result) {
@@ -192,10 +184,6 @@ public class QueueHelper {
         LOG.info("Nationell DSG data: " + nationellDiagnosgrupper);
         JsonNode diagnosisSubGroupsNationellNode = JSONParser.parse(nationellDiagnosgrupper.toString());
         result.put("diagnosisSubGroupsNationell", new TestData(nationellDiagnosgrupper, diagnosisSubGroupsNationellNode));
-//        DiagnosgruppResponse diagnosisSubGroupsNationell = diagnoskapitel.getDiagnosisGroups(nationell, range, "A00-B99");
-//        LOG.info("Nationell DSG data: " + diagnosisSubGroupsNationell);
-//        JsonNode diagnosisSubGroupsNationellNode = JSONParser.parse(diagnosisSubGroupsNationell.toString());
-//        result.put("diagnosisSubGroupsNationell", new TestData(diagnosisSubGroupsNationell, diagnosisSubGroupsNationellNode));
     }
 
     private void printAndGetDiagnosisGroups(String vardenhet1, String vardenhet2, Range range, Map<String, TestData> result) {
@@ -214,19 +202,6 @@ public class QueueHelper {
         LOG.info("Nationell DG data:" + nationellDiagnosgrupper);
         JsonNode diagnosisGroupsNationellNode = JSONParser.parse(nationellDiagnosgrupper.toString());
         result.put("diagnosisGroupsNationell", new TestData(nationellDiagnosgrupper, diagnosisGroupsNationellNode));
-//        DiagnosgruppResponse diagnosisGroups1 = diagnosgrupp.getDiagnosisGroups(vardenhet1, range);
-//        LOG.info("DG data: " + diagnosisGroups1);
-//        JsonNode diagnosisGroups1Node = JSONParser.parse(diagnosisGroups1.toString());
-//        result.put("diagnosisGroups1", new TestData(diagnosisGroups1, diagnosisGroups1Node));
-//        LOG.info("DG data: " + diagnosisGroups1Node.toString());
-//        DiagnosgruppResponse diagnosisGroups2 = diagnosgrupp.getDiagnosisGroups(vardenhet2, range);
-//        LOG.info("DG jdata: " + diagnosisGroups2);
-//        JsonNode diagnosisGroups2Node = JSONParser.parse(diagnosisGroups2.toString());
-//        result.put("diagnosisGroups1", new TestData(diagnosisGroups2, diagnosisGroups2Node));
-//        DiagnosgruppResponse diagnosisGroupsNationell = diagnosgrupp.getDiagnosisGroups(nationell, range);
-//        LOG.info("Nationell DG data:" + diagnosisGroupsNationell);
-//        JsonNode diagnosisGroupsNationellNode = JSONParser.parse(diagnosisGroupsNationell.toString());
-//        result.put("diagnosisGroupsNationell", new TestData(diagnosisGroupsNationell, diagnosisGroupsNationellNode));
     }
 
     private void printAndGetCasesPerMonth(String vardenhet1, String vardenhet2, Range range, Map<String, TestData> result) {

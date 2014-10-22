@@ -23,8 +23,6 @@ import com.google.common.base.Function;
 import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
 import com.google.common.base.Splitter;
-import com.google.common.collect.Collections2;
-import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -53,13 +51,13 @@ public class LoginServiceUtil {
     private static final Logger LOG = LoggerFactory.getLogger(LoginServiceUtil.class);
 
     @Autowired
-    VardgivareManager vardgivareManager;
+    private VardgivareManager vardgivareManager;
 
-    Kommun kommun = new Kommun();
+    private Kommun kommun = new Kommun();
 
-    Lan lan = new Lan();
+    private Lan lan = new Lan();
 
-    VerksamhetsTyp verksamheter = new VerksamhetsTyp();
+    private VerksamhetsTyp verksamheter = new VerksamhetsTyp();
 
     private static final Splitter ID_SPLITTER = Splitter.on(',').trimResults().omitEmptyStrings();
 

@@ -67,7 +67,7 @@ public class LargeTestDataGenerator {
     private static final float LONG_PERIOD_FRACTION = 0.1f;
 
     private static final int MONTHS = 20;
-    private static int maxIntyg = INTYG_PER_DAY * MONTHS * (SHORT_PERIOD_DAYS + 1);
+    private int maxIntyg = INTYG_PER_DAY * MONTHS * (SHORT_PERIOD_DAYS + 1);
 
     private static final LocalDate BASE = new LocalDate("2012-03-01");
     private static final LocalDate BASE_AGE = new LocalDate("1930-01-01");

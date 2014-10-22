@@ -41,9 +41,8 @@ public class FactPopulator {
     }
 
     public Fact toFact(WideLine wideline) {
-        long id = wideline.getId();
         String lkf = wideline.getLkf();
-        int enhet = warehouse.getEnhetAndRemember(wideline.getEnhet());
+        int enhet = Warehouse.getEnhetAndRemember(wideline.getEnhet());
         long intyg = wideline.getLakarintyg();
         int patientid = ConversionHelper.patientIdToInt(wideline.getPatientid());
         int startdatum = wideline.getStartdatum();

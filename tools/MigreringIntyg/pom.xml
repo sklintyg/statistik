@@ -12,12 +12,13 @@
 
   <groupId>se.inera.statistics.tools</groupId>
   <artifactId>statistics-MigreringIntyg</artifactId>
-  <version>1.2.1</version>
+  <version>1.0.0</version>
   <name>statistics-MigreringIntyg</name>
   <packaging>jar</packaging>
 
   <properties>
     <groovy.version>2.3.6</groovy.version>
+    <checkstyle.path>${project.basedir}/../../build-tools/src/main/resources</checkstyle.path>
   </properties>
   <distributionManagement>
     <repository>
