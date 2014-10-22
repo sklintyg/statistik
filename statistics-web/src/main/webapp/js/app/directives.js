@@ -160,7 +160,7 @@ angular.module('StatisticsApp').directive("submenu", function (recursionService)
     };
 });
 
-angular.module('common').directive('message',
+angular.module('StatisticsApp').directive('message',
     [ '$log', '$rootScope', 'messageService',
         function($log, $rootScope, messageService) {
             'use strict';

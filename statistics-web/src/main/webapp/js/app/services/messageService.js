@@ -7,7 +7,7 @@
  *
  * Usage: <message key="some.resource.key" [fallback="defaulttextifnokeyfound"]/>
  */
-angular.module('common').factory('messageService',
+angular.module('StatisticsApp').factory('messageService',
     function($rootScope) {
         'use strict';
 

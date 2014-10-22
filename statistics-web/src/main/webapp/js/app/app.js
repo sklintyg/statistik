@@ -6,7 +6,7 @@ underscore.factory('_', function() {
 });
 
 /* App Module */
-var app = angular.module('StatisticsApp', [ 'ngRoute', 'ngCookies', 'ui.bootstrap', 'underscore' ]).config(
+var app = angular.module('StatisticsApp', [ 'ngRoute', 'ngCookies', 'ngSanitize', 'ui.bootstrap', 'underscore' ]).config(
     [ '$routeProvider', '$httpProvider', function ($routeProvider, $httpProvider) {
         $routeProvider.when('/login', {
             templateUrl: 'views/login.html',
@@ -160,17 +160,7 @@ var app = angular.module('StatisticsApp', [ 'ngRoute', 'ngCookies', 'ui.bootstra
         });
 
     } ]);
-// Inject language resources
-//app.run([ '$rootScope', 'common.messageService', 'common.User',
-//    function($rootScope, messageService, User) {
-//        'use strict';
-
-//        $rootScope.lang = 'sv';
-//        $rootScope.DEFAULT_LANG = 'sv';
-//        User.setUserContext(MODULE_CONFIG.USERCONTEXT);
-//        messageService.addResources(wcMessages);
-//    }]);
-app.run([ '$rootScope', '$route', 'messageService', function ($rootScope, $route) {
+app.run([ '$rootScope', '$route', 'messageService', function ($rootScope, $route, messageService) {
     $rootScope.lang = 'sv';
     $rootScope.DEFAULT_LANG = 'sv';
     messageService.addResources(stMessages);
