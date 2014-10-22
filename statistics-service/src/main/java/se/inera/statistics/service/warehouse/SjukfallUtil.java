@@ -18,6 +18,7 @@
  */
 package se.inera.statistics.service.warehouse;
 
+import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Predicate;
 import org.joda.time.LocalDate;
 import se.inera.statistics.service.report.model.Range;
@@ -71,7 +72,8 @@ public final class SjukfallUtil {
         return sjukfalls;
     }
 
-    public static Collection<Sjukfall> calculateSjukfall(Aisle aisle, int... enhetIds) {
+    @VisibleForTesting
+    static Collection<Sjukfall> calculateSjukfall(Aisle aisle, int... enhetIds) {
         return calculateSjukfall(aisle, new EnhetFilter(enhetIds), Integer.MAX_VALUE);
     }
 
