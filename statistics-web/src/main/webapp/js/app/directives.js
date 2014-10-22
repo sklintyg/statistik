@@ -126,8 +126,7 @@ angular.module('StatisticsApp').directive("submenu", function (recursionService)
         restrict: "E",
         scope: { item: "=", itemroot: "=", depth: "=", recursionhelper: "=" },
         template:
-            '<span class="glyphicon" ng-class="{glyphiconMinusSign: !item.hideChildren, glyphiconPlusSign: item.hideChildren}"/>' +
-            '<span ng-click="recursionhelper.hideclick(item)" class="ellipsis-text">{{item.name}}</span>' +
+            '<span ng-click="recursionhelper.hideclick(item)" class="ellipsis-text"><span class="glyphicon" ng-class="{glyphiconMinusSign: !item.hideChildren, glyphiconPlusSign: item.hideChildren}"/>{{item.name}}</span>' +
             '<input type="checkbox" ng-checked="item.allSelected" intermediate="item.someSelected" ng-click="recursionhelper.itemclick(item, itemroot)"/>' +
             '<ul ng-init="item.hideChildren=true" ng-show="item.subs && !item.hideChildren" style="list-style-type: none;">' +
               '<li data-ng-init="depth=depth+1" data-ng-repeat="item in item.subs">' +
