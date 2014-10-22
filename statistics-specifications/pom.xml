@@ -6,14 +6,14 @@
     <artifactId>statistics</artifactId>
     <version>1.0.6-SNAPSHOT</version>
   </parent>
- 
+
 
   <artifactId>statistics-specifications</artifactId>
   <name>Inera Statistics Fitnesse specifications</name>
-  
+
     <properties>
     <groovy.version>2.1.8</groovy.version>
-    <selenium.version>2.42.2</selenium.version>
+    <selenium.version>2.43.1</selenium.version>
     <geb.env>firefox</geb.env>
     <fitnesse.port>9125</fitnesse.port>
     <fitnesse.working>${project.basedir}/src/test/fitnesse</fitnesse.working>
@@ -292,5 +292,5 @@
       </build>
     </profile>
   </profiles>
-  
+
 </project>
