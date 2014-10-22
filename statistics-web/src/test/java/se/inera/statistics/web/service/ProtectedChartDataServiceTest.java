@@ -83,7 +83,7 @@ public class ProtectedChartDataServiceTest {
         } catch (NullPointerException e) {
             assertTrue(true);
         }
-        Mockito.verify(warehouse).getOverview(any(SjukfallUtil.StartFilter.class), any(Range.class), anyString());
+        Mockito.verify(warehouse).getOverview(any(SjukfallUtil.FactFilter.class), any(Range.class), anyString());
     }
 
     @Ignore

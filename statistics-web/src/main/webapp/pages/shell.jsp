@@ -313,6 +313,9 @@
                                         <li><a data-ng-href="#/verksamhet/{{businessId}}/sjukfallPerManad"
                                                id="navBusinessCasesPerMonthLink" ctrlname="VerksamhetCasesPerMonthCtrl"
                                                navigationaware>Sjukfall, totalt</a></li>
+                                        <li ng-show="isFullVgAccess"><a data-ng-href="#/verksamhet/{{businessId}}/sjukfallperenhet"
+                                               id="navBusinessCasesPerMonthLink" ctrlname="VerksamhetCasesPerBusinessCtrl"
+                                               navigationaware>Vårdenhet</a></li>
                                         <li>
                                             <a class="menu-item-has-childs"
                                                data-ng-href="#/verksamhet/{{businessId}}/diagnosgrupp"
@@ -470,7 +473,7 @@
 	                            	<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 pull-right">
 	                            		<div class="row">
 	                            			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 pull-right">
-                                                Ditt filter-val kommer presentera statistik baserat på {{ businessFilter.selectedBusinesses.length }} {{ businessFilter.selectedBusinesses.length === 1 ? "enhet" : "enheter" }}.
+                                                Ditt filterval kommer presentera statistik baserat på {{ businessFilter.selectedBusinesses.length }} av totalt {{ businessFilter.businesses.length }} {{ businessFilter.selectedBusinesses.length === 1 ? "enhet" : "enheter" }}.
                                                 <div class="progress">
                                                     <div class="progress-bar" role="progressbar" style="width: {{ 100 * (businessFilter.selectedBusinesses.length / businessFilter.businesses.length) }}%;">
                                                     </div>

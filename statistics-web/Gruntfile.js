@@ -27,7 +27,7 @@ module.exports = function(grunt) {
                 configFile: 'src/test/resources/karma.conf.ci.js',
                 reporters: [ 'mocha' ]
             }
-        },
+        }
 
     });
 

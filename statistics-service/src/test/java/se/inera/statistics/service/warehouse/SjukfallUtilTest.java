@@ -109,4 +109,5 @@ public class SjukfallUtilTest {
         assertEquals(0, actives.next().getSjukfall().size());
         assertFalse(actives.hasNext());
     }
+
 }

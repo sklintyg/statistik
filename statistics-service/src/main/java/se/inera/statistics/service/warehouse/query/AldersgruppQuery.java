@@ -1,5 +1,6 @@
 package se.inera.statistics.service.warehouse.query;
 
+import com.google.common.base.Predicate;
 import org.joda.time.LocalDate;
 import se.inera.statistics.service.report.model.OverviewChartRowExtended;
 import se.inera.statistics.service.report.model.SimpleKonDataRow;
@@ -7,6 +8,7 @@ import se.inera.statistics.service.report.model.SimpleKonResponse;
 import se.inera.statistics.service.report.util.AldersgroupUtil;
 import se.inera.statistics.service.report.util.Ranges;
 import se.inera.statistics.service.warehouse.Aisle;
+import se.inera.statistics.service.warehouse.Fact;
 import se.inera.statistics.service.warehouse.Sjukfall;
 import se.inera.statistics.service.warehouse.SjukfallUtil;
 
@@ -89,7 +91,7 @@ public final class AldersgruppQuery {
         return counters;
     }
 
-    public static SimpleKonResponse<SimpleKonDataRow> getAldersgrupper(Aisle aisle, SjukfallUtil.StartFilter filter, LocalDate from, int periods, int periodLength) {
+    public static SimpleKonResponse<SimpleKonDataRow> getAldersgrupper(Aisle aisle, Predicate<Fact> filter, LocalDate from, int periods, int periodLength) {
         List<SimpleKonDataRow> rows = new ArrayList<>();
         for (SjukfallUtil.SjukfallGroup sjukfallGroup: SjukfallUtil.sjukfallGrupper(from, periods, periodLength, aisle, filter)) {
             Map<Ranges.Range, Counter<Ranges.Range>> counterMap = AldersgruppQuery.count(sjukfallGroup.getSjukfall());

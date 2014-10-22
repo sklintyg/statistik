@@ -124,6 +124,10 @@ angular.module('StatisticsApp').factory('statisticsData', function ($http) {
         makeRequestNational("login/getLoginInfo", successCallback, failureCallback);
     };
 
+    factory.getSjukfallPerBusinessVerksamhet = function (verksamhetId, params, successCallback, failureCallback) {
+        makeRequestVerksamhet("getNumberOfCasesPerEnhet", verksamhetId, params, successCallback, failureCallback);
+    };
+
     return factory;
 });
 

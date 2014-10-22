@@ -35,7 +35,7 @@ public class VardgivareManagerTest {
         List<Enhet> allEnhets = vardgivareManager.getAllEnhets();
         assertEquals(1, allEnhets.size());
         assertEquals("enhet", allEnhets.get(0).getEnhetId());
-        assertEquals("Enhetens namn", allEnhets.get(0).getNamn());
+        assertEquals("enhet", allEnhets.get(0).getNamn());
     }
 
     @Test
@@ -63,7 +63,7 @@ public class VardgivareManagerTest {
         assertEquals(2, allEnhets.size());
         assertEquals(1, enhets.size());
         assertEquals("enhet", enhets.get(0).getEnhetId());
-        assertEquals("Enhetens namn", enhets.get(0).getNamn());
+        assertEquals("enhet", enhets.get(0).getNamn());
     }
 
     @Test

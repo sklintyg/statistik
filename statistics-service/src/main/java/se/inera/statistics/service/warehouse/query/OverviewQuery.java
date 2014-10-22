@@ -1,5 +1,6 @@
 package se.inera.statistics.service.warehouse.query;
 
+import com.google.common.base.Predicate;
 import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -9,6 +10,7 @@ import se.inera.statistics.service.report.model.OverviewKonsfordelning;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.VerksamhetOverviewResponse;
 import se.inera.statistics.service.warehouse.Aisle;
+import se.inera.statistics.service.warehouse.Fact;
 import se.inera.statistics.service.warehouse.Sjukfall;
 import se.inera.statistics.service.warehouse.SjukfallUtil;
 
@@ -25,7 +27,7 @@ public class OverviewQuery {
     @Autowired
     private DiagnosgruppQuery query;
 
-    public VerksamhetOverviewResponse getOverview(Aisle aisle, SjukfallUtil.StartFilter filter, LocalDate start, int periodlangd) {
+    public VerksamhetOverviewResponse getOverview(Aisle aisle, Predicate<Fact> filter, LocalDate start, int periodlangd) {
 
         Iterator<SjukfallUtil.SjukfallGroup> groupIterator = SjukfallUtil.sjukfallGrupper(start, 2, periodlangd, aisle, filter).iterator();
 

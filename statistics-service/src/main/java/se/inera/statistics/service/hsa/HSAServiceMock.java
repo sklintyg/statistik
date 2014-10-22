@@ -93,7 +93,7 @@ public class HSAServiceMock implements HSAService {
     public JsonNode createEnhet(HSAKey key) {
         ObjectNode root = factory.objectNode();
         root.put("id", key.getEnhetId());
-        root.put("namn", "Enhetens namn");
+        root.put("namn", getEnhetsNamn(key.getEnhetId()));
         root.put("enhetstyp", asList("02"));
         root.put("agarform", asList("Landsting/Region"));
         root.put("startdatum", "");
@@ -105,6 +105,14 @@ public class HSAServiceMock implements HSAService {
         root.put("geografi", createGeografiskIndelning(key));
         root.put("verksamhet", asList(createVerksamhet(key)));
         return root;
+    }
+
+    private String getEnhetsNamn(String enhetId) {
+        if (enhetId.startsWith("vg1-")) {
+            String suffix = enhetId.substring(enhetId.lastIndexOf('-') + 1);
+            return "Verksamhet " + suffix;
+        }
+        return enhetId;
     }
 
     private JsonNode createPersonal(HSAKey key) {

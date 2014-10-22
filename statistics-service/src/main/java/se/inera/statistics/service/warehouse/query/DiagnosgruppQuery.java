@@ -1,5 +1,6 @@
 package se.inera.statistics.service.warehouse.query;
 
+import com.google.common.base.Predicate;
 import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -11,6 +12,7 @@ import se.inera.statistics.service.report.model.OverviewChartRowExtended;
 import se.inera.statistics.service.report.util.Icd10;
 import se.inera.statistics.service.report.util.ReportUtil;
 import se.inera.statistics.service.warehouse.Aisle;
+import se.inera.statistics.service.warehouse.Fact;
 import se.inera.statistics.service.warehouse.Sjukfall;
 import se.inera.statistics.service.warehouse.SjukfallUtil;
 
@@ -57,7 +59,7 @@ public class DiagnosgruppQuery {
         return result;
     }
 
-    public DiagnosgruppResponse getDiagnosgrupper(Aisle aisle, SjukfallUtil.StartFilter filter, LocalDate start, int periods, int periodLength) {
+    public DiagnosgruppResponse getDiagnosgrupper(Aisle aisle, Predicate<Fact> filter, LocalDate start, int periods, int periodLength) {
         List<Icd10.Kapitel> kapitel = icd10.getKapitel();
 
         List<KonDataRow> rows = new ArrayList<>();
@@ -84,7 +86,7 @@ public class DiagnosgruppQuery {
         return new DiagnosgruppResponse(avsnitt, rows);
     }
 
-    public DiagnosgruppResponse getDiagnosavsnitt(Aisle aisle, SjukfallUtil.StartFilter filter, LocalDate start, int periods, int periodLength, String kapitelId) {
+    public DiagnosgruppResponse getDiagnosavsnitt(Aisle aisle, Predicate<Fact> filter, LocalDate start, int periods, int periodLength, String kapitelId) {
         Icd10.Kapitel kapitel = icd10.getKapitel(kapitelId);
         List<Avsnitt> avsnitts = new ArrayList<>();
         for (Icd10.Avsnitt avsnitt : kapitel.getAvsnitt()) {

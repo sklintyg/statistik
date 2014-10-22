@@ -139,7 +139,6 @@ public class InjectUtlatande {
 
         String vardenhet = random(Lists.newArrayList((VARDGIVARE.get(vardgivare))));
 
-        LOG.warn("Vardenhet: {}", vardenhet);
         String diagnos = random(getDiagnoser());
         if (random.nextFloat() < FEL_DIAGNOS_THRESHOLD) {
             diagnos = "unknown";
