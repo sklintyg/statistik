@@ -5,7 +5,7 @@ angular.module('StatisticsApp').factory('businessFilter', function (_) {
 
     businessFilter.reset = function () {
         businessFilter.dataInitialized = false;
-        businessFilter.permanentFilter = false;
+        businessFilter.permanentFilter = true;
 
         businessFilter.businesses = [];
         businessFilter.selectedBusinesses = [];
@@ -28,8 +28,8 @@ angular.module('StatisticsApp').factory('businessFilter', function (_) {
         return null;
     };
 
-    businessFilter.resetSelections = function() {
-        if (!businessFilter.permanentFilter) {
+    businessFilter.resetSelections = function(force) {
+        if (!businessFilter.permanentFilter || force) {
             businessFilter.selectedBusinesses.length = 0;
             businessFilter.geographyBusinessIds.length = 0;
             businessFilter.verksamhetsTypIds.length = 0;
@@ -51,7 +51,7 @@ angular.module('StatisticsApp').factory('businessFilter', function (_) {
                 businessFilter.populateGeography(businesses);
             }
             businessFilter.populateVerksamhetsTyper(businesses);
-            businessFilter.resetSelections();
+            businessFilter.resetSelections(true);
             businessFilter.dataInitialized = true;
         }
     };
