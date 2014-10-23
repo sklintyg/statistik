@@ -201,8 +201,8 @@ angular.module('StatisticsApp').casesPerBusinessConfig = function () {
         return "api/verksamhet/" + verksamhetId + "/getSjukfallPerBusinessVerksamhet/csv";
     };
     conf.title = function (period) {
-        return "Andel sjukfall per enhet " + period;
+        return "Antal sjukfall per vårdenhet " + period;
     };
-    conf.chartXAxisTitle = "Enhet";
+    conf.chartXAxisTitle = "Vårdenhet";
     return conf;
 };
