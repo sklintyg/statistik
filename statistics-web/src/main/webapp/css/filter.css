@@ -168,12 +168,31 @@ select, textarea, input[type="text"], input[type="password"], input[type="dateti
 	margin-top: 2px;
 	float: left;
 }
+.glyphiconDownSign, .glyphiconUpSign {
+	width: 13px;
+	height: 12px;
+	background-image: url("../img/glyphicons-halflings-white.png");	
+	font-family: 'Glyphicons Halflings';
+	margin-right: 5px;
+	margin-top: 2px;
+	float: left;
+}
 .glyphiconMinusSign {
 	background-position: -24px -97px;
 	cursor: pointer;
 }
 .glyphiconPlusSign {
 	background-position: 0px -97px;
+	cursor: pointer;
+	color: #fff;
+}
+.glyphiconDownSign {
+	background-position: -313px 38px;
+	cursor: pointer;
+	color: #fff;
+}
+.glyphiconUpSign {
+	background-position: -289px 38px;
 	cursor: pointer;
 	color: #fff;
 }
