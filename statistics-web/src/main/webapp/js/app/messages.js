@@ -1,10 +1,36 @@
 /* jshint maxlen: false, unused: false */
 var stMessages = {
     'sv': {
+    	//generals
         'statistics.header': 'Statistiktjänsten',
-
+        'statistics.header.extra-text': 'Statistiktjänst för ordinerad sjukskrivning',
+        
+        //navigation
+        'nav.national-header': 'Nationell statistik',
+        'nav.business-header': 'Verksamhetsstatistik',
+        'nav.about-header': 'Om tjänsten',
+        
         //labels
-        'label.default-cert-type': 'Välj typ av intyg',
+        'lbl.log-in': 'Logga in',
+        'lbl.log-out': 'Logga ut',
+        
+        //statistics overview
+        'national.overview-header': 'Nationell statistik',
+        'national.widget.header.konsfordelning': 'Könsfördelning',
+        'national.widget.header.forandring': 'Förändring',
+        'national.widget.header.fordelning-diagnosgrupper': 'Fördelning diagnosgrupper',
+        'national.widget.header.fordelning-aldersgrupper': 'Fördelning åldersgrupper',
+        'national.widget.header.fordelning-sjukskrivningsgrad': 'Fördelning sjukskrivningsgrad',
+        'national.widget.header.fordelning-sjukskrivningslangd': 'Fördelning sjukskrivningslängd',
+        'national.widget.header.fordelning-lan': 'Fördelning per län',
+        
+        'business.overview-header': 'Verksamhetsstatistik',
+        'business.widget.header.total-antal': 'Total antal',
+        'business.widget.header.konsfordelning-sjukfall': 'Könsfördelning av sjukfall',
+        'business.widget.header.fordelning-diagnosgrupper': 'Fördelning diagnosgrupper',
+        'business.widget.header.fordelning-aldersgrupper': 'Fördelning åldersgrupper',
+        'business.widget.header.fordelning-sjukskrivningsgrad': 'Fördelning sjukskrivningsgrad',
+        'business.widget.header.fordelning-sjukskrivningslangd': 'Fördelning sjukskrivningslängd',
 
         //about texts
         'about.service': 'Allmänt om tjänsten',

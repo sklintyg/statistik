@@ -85,7 +85,7 @@
 		                    </div>
 		                </div>
 		                <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2 pull-left" style="margin-top: 3px;">
-		                    <span>Statistiktjänst för ordinerad sjukskrivning</span>
+		                    <span message key="statistics.header.extra-text"/>
 		                </div>
 		                <c:if test="${loginVisible}">
 		                    <div class="hidden-xs col-sm-5 col-md-6 col-lg-4 pull-right">
@@ -158,7 +158,7 @@
 				      	<li class="divider"></li>
 				      	<!-- National mobile menu -->
 					    <li class="dropdown-national">
-			          		<a class="mobileMenuHeaderItem" data-toggle="collapse in" data-target="#national-menu" ng-click="isNationalCollapsed = !isNationalCollapsed">Nationell statistik<span class="caret pull-right mobile-menu-caret"></span></a>
+			          		<a class="mobileMenuHeaderItem" data-toggle="collapse in" data-target="#national-menu" ng-click="isNationalCollapsed = !isNationalCollapsed"><span message key="nav.national-header"></span><span class="caret pull-right mobile-menu-caret"></span></a>
 			          		<ul class="collapse" id="national-menu" collapse="!isNationalCollapsed">  	
 								<li class="subMenuItem"><a data-ng-href="#/nationell/oversikt" id="navOverviewLink" ctrlname="NationalOverviewCtrl" role="menuitem" ng-click="isCollapsed = !isCollapsed" navigationaware>Översikt</a></li>
 						        <li class="subMenuItem"><a data-ng-href="#/nationell/sjukfallPerManad" id="navCasesPerMonthLink" ctrlname="NationalCasesPerMonthCtrl" role="menuitem" ng-click="isCollapsed = !isCollapsed" navigationaware>Sjukfall, totalt</a></li>
@@ -185,7 +185,7 @@
 	
 						<!-- Business mobile menu -->
 					    <li class="dropdown-business">
-			          		<a class="mobileMenuHeaderItem" data-toggle="collapse in" data-target="#business-menu" ng-click="isBusinessCollapsed = !isBusinessCollapsed">Verksamhetsstatistik<span class="caret pull-right mobile-menu-caret"></span></a>
+			          		<a class="mobileMenuHeaderItem" data-toggle="collapse in" data-target="#business-menu" ng-click="isBusinessCollapsed = !isBusinessCollapsed"><span message key="nav.business-header"></span><span class="caret pull-right mobile-menu-caret"></span></a>
 			          		<ul class="collapse" id="business-menu" collapse="!isBusinessCollapsed">   
 				        		<li class="subMenuItem"><a data-ng-href="#/verksamhet/{{businessId}}/oversikt" ctrlname="businessOverviewCtrl" role="menuitem" ng-click="isCollapsed = !isCollapsed" navigationaware>Översikt</a></li>
 		                        <li class="subMenuItem"><a data-ng-href="#/verksamhet/{{businessId}}/sjukfallPerManad" id="navBusinessCasesPerMonthLink" ctrlname="VerksamhetCasesPerMonthCtrl" role="menuitem" ng-click="isCollapsed = !isCollapsed" navigationaware>Sjukfall, totalt</a></li>
@@ -217,7 +217,7 @@
 						  <li class="divider"></li>
 						  <!-- About mobile menu -->
 					    <li class="dropdown-about-statistic">
-			          		<a class="mobileMenuHeaderItem" data-toggle="collapse in" data-target="#about-menu" ng-click="isAboutCollapsed = !isAboutCollapsed">Om tjänsten<span class="caret pull-right mobile-menu-caret"></span></a>
+			          		<a class="mobileMenuHeaderItem" data-toggle="collapse in" data-target="#about-menu" ng-click="isAboutCollapsed = !isAboutCollapsed"><span message key="nav.about-header"></span><span class="caret pull-right mobile-menu-caret"></span></a>
 			          		<ul class="collapse" id="about-menu" collapse="!isAboutCollapsed">   
 				        		<li class="subMenuItem"><a class="first-item-in-menu" data-ng-href="#/om/tjansten" ctrlname="AboutServiceCtrl" role="menuitem" ng-click="isCollapsed = !isCollapsed" navigationaware>Allmänt om tjänsten</a></li>
                                 <li class="subMenuItem"><a data-ng-href="#/om/inloggning" ctrlname="AboutLoginCtrl" role="menuitem" ng-click="isCollapsed = !isCollapsed" navigationaware>Inloggning och behörighet</a></li>
@@ -239,7 +239,7 @@
                                  data-parent="#statistics-menu-accordion"
                                  data-ng-class="{active: showNational, collapsed: !showNational}"
                                  data-ng-click="toggleNationalAccordion()">
-                                 <span class="statistics-menu-heading">Nationell statistik</span><i class="statistict-left-menu-expand-icon"></i>
+                                 <span class="statistics-menu-heading"><span message key="nav.national-header"></span></span><i class="statistict-left-menu-expand-icon"></i>
                             </div>
                         </div>
                         <div id="national-statistics-collapse" class="accordion-body collapse navigation-group"
@@ -383,7 +383,7 @@
                             <div class="accordion-toggle first-level-menu"
                                  data-ng-class="{active: showAbout, collapsed: !showAbout}"
                                  data-ng-click="toggleAboutAccordion()">
-                                 <span class="statistics-menu-heading">Om tjänsten</span><i class="statistict-left-menu-expand-icon"></i>
+                                 <span class="statistics-menu-heading"><span message key="nav.about-header"></span></span><i class="statistict-left-menu-expand-icon"></i>
                             </div>
                         </div>
                         <div id="about-statistics-collapse" class="accordion-body collapse navigation-group"
