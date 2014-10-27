@@ -68,7 +68,7 @@ public class DiagnosgruppQueryTest {
     }
 
     private void fact(int startday, int diagnoskapitel) {
-        Fact fact = new Fact(3, 380, 38002, 1, intyg++, patient++, startday, 0, 45, diagnoskapitel, 14, 16, 100, 10, 0, 32, 201010);
+        Fact fact = new Fact(3, 380, 38002, 1, intyg++, patient++, startday, 0, 45, diagnoskapitel, 14, 16, 100, 10, 0, 32, 201010, 0);
         warehouse.accept(fact, VARDGIVARE);
     }
 }

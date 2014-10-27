@@ -57,8 +57,9 @@ public class FactPopulator {
         int lakarkon = wideline.getLakarkon();
         int lakaralder = wideline.getLakaralder();
         int lakarbefattning = parseBefattning(wideline);
+        int lakare = Warehouse.getLakareAndRemember(wideline.getLakareId());
 
-        return new Fact(ConversionHelper.extractLan(lkf), ConversionHelper.extractKommun(lkf), ConversionHelper.extractForsamling(lkf), enhet, intyg, patientid, startdatum, kon, alder, extractKapitel(diagnoskapitel), extractAvsnitt(diagnosavsnitt), extractKategori(diagnoskategori), sjukskrivningsgrad, sjukskrivningslangd, lakarkon, lakaralder, lakarbefattning);
+        return new Fact(ConversionHelper.extractLan(lkf), ConversionHelper.extractKommun(lkf), ConversionHelper.extractForsamling(lkf), enhet, intyg, patientid, startdatum, kon, alder, extractKapitel(diagnoskapitel), extractAvsnitt(diagnosavsnitt), extractKategori(diagnoskategori), sjukskrivningsgrad, sjukskrivningslangd, lakarkon, lakaralder, lakarbefattning, lakare);
     }
 
     private int parseBefattning(WideLine wideline) {

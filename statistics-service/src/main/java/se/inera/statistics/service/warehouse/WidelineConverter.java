@@ -63,6 +63,7 @@ public class WidelineConverter {
         int lakarkon = HSAServiceHelper.getLakarkon(hsa);
         int lakaralder = HSAServiceHelper.getLakaralder(hsa);
         String lakarbefattning = HSAServiceHelper.getLakarbefattning(hsa);
+        String lakareid = HSAServiceHelper.getLakareId(hsa);
 
         List<WideLine> lines = new ArrayList<>();
 
@@ -96,6 +97,7 @@ public class WidelineConverter {
             line.setLakaralder(lakaralder);
             line.setLakarkon(lakarkon);
             line.setLakarbefattning(lakarbefattning);
+            line.setLakareId(lakareid);
             lines.add(line);
         }
         return lines;
@@ -147,6 +149,7 @@ public class WidelineConverter {
         checkField(errors, line.getEnhet(), "Enhet");
         checkField(errors, line.getPatientid(), "Patient");
         checkField(errors, line.getDiagnoskategori(), "Diagnoskategori");
+        checkField(errors, line.getLakareId(), "LäkarID");
         checkSjukskrivningsgrad(errors, line.getSjukskrivningsgrad());
         return errors;
     }

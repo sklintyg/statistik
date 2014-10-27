@@ -57,7 +57,7 @@ public class AldersgruppQueryTest {
     }
 
     private void fact(int startday, int length, int alder) {
-        Fact fact = new Fact(3, 380, 38002, 1, intyg++, patient++, startday, 0, alder, 0, 14, 16, 100, length, 0, 32, 201010);
+        Fact fact = new Fact(3, 380, 38002, 1, intyg++, patient++, startday, 0, alder, 0, 14, 16, 100, length, 0, 32, 201010, 0);
         warehouse.accept(fact, VARDGIVARE);
     }
 }

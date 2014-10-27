@@ -6,16 +6,14 @@ import org.junit.Test;
 import java.util.Collection;
 import java.util.Iterator;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 public class SjukfallUtilTest {
     private Aisle aisle = new Aisle();
 
     @Test
     public void oneIntygIsOneSjukfall() throws Exception {
-        Fact fact = new Fact(3, 380, 38002, 1, 1, 1, 4010, 0, 45, 0, 14, 16, 100, 47, 0, 32, 201010);
+        Fact fact = new Fact(3, 380, 38002, 1, 1, 1, 4010, 0, 45, 0, 14, 16, 100, 47, 0, 32, 201010, 0);
         aisle.addLine(fact);
         Collection<Sjukfall> sjukfalls = SjukfallUtil.calculateSjukfall(aisle);
         assertEquals(1, sjukfalls.size());
@@ -23,9 +21,9 @@ public class SjukfallUtilTest {
 
     @Test
     public void twoCloseIntygForSamePersonIsOneSjukfall() throws Exception {
-        Fact fact = new Fact(3, 380, 38002, 1, 1, 1, 4010, 0, 45, 0, 14, 16, 100, 10, 0, 32, 201010);
+        Fact fact = new Fact(3, 380, 38002, 1, 1, 1, 4010, 0, 45, 0, 14, 16, 100, 10, 0, 32, 201010, 0);
         aisle.addLine(fact);
-        fact = new Fact(3, 380, 38002, 1, 1, 1, 4025, 0, 45, 0, 14, 16, 100, 10, 0, 32, 201010);
+        fact = new Fact(3, 380, 38002, 1, 1, 1, 4025, 0, 45, 0, 14, 16, 100, 10, 0, 32, 201010, 0);
         aisle.addLine(fact);
         Collection<Sjukfall> sjukfalls = SjukfallUtil.calculateSjukfall(aisle);
         assertEquals(1, sjukfalls.size());
@@ -37,9 +35,9 @@ public class SjukfallUtilTest {
 
     @Test
     public void twoFarSeparatedIntygForSamePersonAreTwoSjukfall() throws Exception {
-        Fact fact = new Fact(3, 380, 38002, 1, 1, 1, 4010, 0, 45, 0, 14, 16, 100, 10, 0, 32, 201010);
+        Fact fact = new Fact(3, 380, 38002, 1, 1, 1, 4010, 0, 45, 0, 14, 16, 100, 10, 0, 32, 201010, 0);
         aisle.addLine(fact);
-        fact = new Fact(3, 380, 38002, 1, 1, 1, 4026, 0, 45, 0, 14, 16, 100, 10, 0, 32, 201010);
+        fact = new Fact(3, 380, 38002, 1, 1, 1, 4026, 0, 45, 0, 14, 16, 100, 10, 0, 32, 201010, 0);
         aisle.addLine(fact);
         Collection<Sjukfall> sjukfalls = SjukfallUtil.calculateSjukfall(aisle);
         assertEquals(2, sjukfalls.size());
@@ -47,9 +45,9 @@ public class SjukfallUtilTest {
 
     @Test
     public void twoIntygForTwoPersonsAreTwoSjukfall() throws Exception {
-        Fact fact = new Fact(3, 380, 38002, 1, 1, 1, 4010, 0, 45, 0, 14, 16, 100, 47, 0, 32, 201010);
+        Fact fact = new Fact(3, 380, 38002, 1, 1, 1, 4010, 0, 45, 0, 14, 16, 100, 47, 0, 32, 201010, 0);
         aisle.addLine(fact);
-        fact = new Fact(3, 380, 38002, 1, 1, 2, 4010, 0, 45, 0, 14, 16, 100, 47, 0, 32, 201010);
+        fact = new Fact(3, 380, 38002, 1, 1, 2, 4010, 0, 45, 0, 14, 16, 100, 47, 0, 32, 201010, 0);
         aisle.addLine(fact);
         Collection<Sjukfall> sjukfalls = SjukfallUtil.calculateSjukfall(aisle);
         assertEquals(2, sjukfalls.size());
@@ -57,18 +55,18 @@ public class SjukfallUtilTest {
 
     @Test
     public void sjukfallStartOnlyOnSelectedEnhetsButContinuesOnAnyEnhet() throws Exception {
-        Fact fact = new Fact(3, 380, 38002, 2, 1, 1, 4010, 0, 45, 0, 14, 16, 100, 10, 0, 32, 201010);
+        Fact fact = new Fact(3, 380, 38002, 2, 1, 1, 4010, 0, 45, 0, 14, 16, 100, 10, 0, 32, 201010, 0);
         aisle.addLine(fact);
-        fact = new Fact(3, 380, 38002, 1, 1, 1, 4020, 0, 45, 0, 14, 16, 100, 10, 0, 32, 201010);
+        fact = new Fact(3, 380, 38002, 1, 1, 1, 4020, 0, 45, 0, 14, 16, 100, 10, 0, 32, 201010, 0);
         aisle.addLine(fact);
-        fact = new Fact(3, 380, 38002, 2, 1, 1, 4030, 0, 45, 0, 14, 16, 100, 10, 0, 32, 201010);
+        fact = new Fact(3, 380, 38002, 2, 1, 1, 4030, 0, 45, 0, 14, 16, 100, 10, 0, 32, 201010, 0);
         aisle.addLine(fact);
 
-        fact = new Fact(3, 380, 38002, 2, 1, 2, 4010, 0, 45, 0, 14, 16, 100, 10, 0, 32, 201010);
+        fact = new Fact(3, 380, 38002, 2, 1, 2, 4010, 0, 45, 0, 14, 16, 100, 10, 0, 32, 201010, 0);
         aisle.addLine(fact);
-        fact = new Fact(3, 380, 38002, 3, 1, 2, 4020, 0, 45, 0, 14, 16, 100, 10, 0, 32, 201010);
+        fact = new Fact(3, 380, 38002, 3, 1, 2, 4020, 0, 45, 0, 14, 16, 100, 10, 0, 32, 201010, 0);
         aisle.addLine(fact);
-        fact = new Fact(3, 380, 38002, 2, 1, 2, 4030, 0, 45, 0, 14, 16, 100, 10, 0, 32, 201010);
+        fact = new Fact(3, 380, 38002, 2, 1, 2, 4030, 0, 45, 0, 14, 16, 100, 10, 0, 32, 201010, 0);
         aisle.addLine(fact);
 
         Collection<Sjukfall> sjukfalls = SjukfallUtil.calculateSjukfall(aisle, 1, 3);
@@ -80,18 +78,18 @@ public class SjukfallUtilTest {
 
     @Test
     public void iterator() throws Exception {
-        Fact fact = new Fact(3, 380, 38002, 2, 1, 1, 4010, 0, 45, 0, 14, 16, 100, 10, 0, 32, 201010);
+        Fact fact = new Fact(3, 380, 38002, 2, 1, 1, 4010, 0, 45, 0, 14, 16, 100, 10, 0, 32, 201010, 0);
         aisle.addLine(fact);
-        fact = new Fact(3, 380, 38002, 1, 1, 1, 4020, 0, 45, 0, 14, 16, 100, 10, 0, 32, 201010);
+        fact = new Fact(3, 380, 38002, 1, 1, 1, 4020, 0, 45, 0, 14, 16, 100, 10, 0, 32, 201010, 0);
         aisle.addLine(fact);
-        fact = new Fact(3, 380, 38002, 2, 1, 1, 4030, 0, 45, 0, 14, 16, 100, 10, 0, 32, 201010);
+        fact = new Fact(3, 380, 38002, 2, 1, 1, 4030, 0, 45, 0, 14, 16, 100, 10, 0, 32, 201010, 0);
         aisle.addLine(fact);
 
-        fact = new Fact(3, 380, 38002, 2, 1, 2, 4010, 0, 45, 0, 14, 16, 100, 10, 0, 32, 201010);
+        fact = new Fact(3, 380, 38002, 2, 1, 2, 4010, 0, 45, 0, 14, 16, 100, 10, 0, 32, 201010, 0);
         aisle.addLine(fact);
-        fact = new Fact(3, 380, 38002, 3, 1, 2, 4020, 0, 45, 0, 14, 16, 100, 10, 0, 32, 201010);
+        fact = new Fact(3, 380, 38002, 3, 1, 2, 4020, 0, 45, 0, 14, 16, 100, 10, 0, 32, 201010, 0);
         aisle.addLine(fact);
-        fact = new Fact(3, 380, 38002, 2, 1, 2, 4030, 0, 45, 0, 14, 16, 100, 10, 0, 32, 201010);
+        fact = new Fact(3, 380, 38002, 2, 1, 2, 4030, 0, 45, 0, 14, 16, 100, 10, 0, 32, 201010, 0);
         aisle.addLine(fact);
 
         aisle.sort();

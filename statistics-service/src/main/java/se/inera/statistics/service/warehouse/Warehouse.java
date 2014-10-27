@@ -12,6 +12,7 @@ public class Warehouse implements Iterable<Aisle> {
     private volatile Map<String, Aisle> aisles = new HashMap<>();
     private Map<String, Aisle> loadingAisles = new HashMap<>();
     private static IdMap<String> enhetsMap = new IdMap<>();
+    private static IdMap<String> lakareMap = new IdMap<>();
     private LocalDateTime lastUpdate = null;
 
     public void accept(Fact fact, String vardgivareId) {
@@ -56,7 +57,15 @@ public class Warehouse implements Iterable<Aisle> {
     }
 
     public static int getEnhet(String id) {
-        return enhetsMap.getId(id);
+        return enhetsMap.maybeGetId(id);
+    }
+
+    public static int getLakareAndRemember(String id) {
+        return lakareMap.getId(id);
+    }
+
+    public static int getLakare(String id) {
+        return lakareMap.maybeGetId(id);
     }
 
     public LocalDateTime getLastUpdate() {

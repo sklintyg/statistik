@@ -1,5 +1,8 @@
 package se.inera.statistics.service.warehouse;
 
+import java.util.HashSet;
+import java.util.Set;
+
 public class Sjukfall {
 
     public static final int MAX_GAP = 5;
@@ -14,6 +17,7 @@ public class Sjukfall {
     private int diagnoskapitel;
     private int diagnosavsnitt;
     private int sjukskrivningsgrad;
+    private Set<Integer> lakare = new HashSet<>();
     private Sjukfall extending;
 
     public Sjukfall(Fact line) {
@@ -27,6 +31,7 @@ public class Sjukfall {
         diagnosavsnitt = line.getDiagnosavsnitt();
         sjukskrivningsgrad = line.getSjukskrivningsgrad();
         lan = line.getLan();
+        lakare.add(line.getLakarid());
     }
 
     public Sjukfall(Sjukfall previous, Fact line) {
@@ -41,6 +46,8 @@ public class Sjukfall {
         sjukskrivningsgrad = line.getSjukskrivningsgrad();
         extending = previous;
         lan = line.getLan();
+        lakare.addAll(previous.getLakare());
+        lakare.add(line.getLakarid());
     }
 
     public int getKon() {
@@ -66,6 +73,7 @@ public class Sjukfall {
     public Sjukfall newSjukfall(Fact line) {
         return new Sjukfall(line);
     }
+
     public Sjukfall extendSjukfall(Fact line) {
         return new Sjukfall(this, line);
     }
@@ -127,4 +135,7 @@ public class Sjukfall {
     public String getLanskod() {
         return String.format("%1$02d", lan);
     }
+
+    public Set<Integer> getLakare() { return lakare; }
+
 }

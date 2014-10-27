@@ -197,6 +197,11 @@
             "datum": "2010-01-24"
         }
     ],
+    "personal": {
+        "id" : "1234567",
+        "tilltalsnamn" : "Anders",
+        "efternamn" : "Andersson"
+    },
     "validFromDate": "2011-01-24",
     "validToDate": "2011-03-31"
 }

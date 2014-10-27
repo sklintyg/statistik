@@ -29,6 +29,9 @@ public class WarehouseService {
     @Autowired
     private OverviewQuery overviewQuery;
 
+    @Autowired
+    private SjukfallQuery sjukfallQuery;
+
     public VerksamhetOverviewResponse getOverview(SjukfallUtil.FactFilter filter, Range range, String vardgivarId) {
         VerksamhetOverviewResponse overview = overviewQuery.getOverview(warehouse.get(vardgivarId), filter, ReportUtil.getPreviousPeriod(range).getFrom(), range.getMonths());
 
@@ -38,7 +41,7 @@ public class WarehouseService {
     }
 
     public SimpleKonResponse<SimpleKonDataRow> getCasesPerMonth(SjukfallUtil.FactFilter filter, Range range, String vardgivarId) {
-        return SjukfallQuery.getSjukfall(warehouse.get(vardgivarId), filter, range.getFrom(), range.getMonths(), 1);
+        return sjukfallQuery.getSjukfall(warehouse.get(vardgivarId), filter, range.getFrom(), range.getMonths(), 1);
     }
 
     public DiagnosgruppResponse getDiagnosgrupperPerMonth(SjukfallUtil.FactFilter filter, Range range, String vardgivarId) {
@@ -66,6 +69,11 @@ public class WarehouseService {
     }
 
     public SimpleKonResponse<SimpleKonDataRow> getCasesPerEnhet(SjukfallUtil.EnhetFilter filter, Range range, String vardgivarId) {
-        return SjukfallQuery.getSjukfallPerEnhet(warehouse.get(vardgivarId), filter, range, range.getMonths(), 1);
+        return sjukfallQuery.getSjukfallPerEnhet(warehouse.get(vardgivarId), filter, range, range.getMonths(), 1);
     }
+
+    public SimpleKonResponse<SimpleKonDataRow> getCasesPerLakare(SjukfallUtil.EnhetFilter filter, Range range, String vardgivarId) {
+        return sjukfallQuery.getSjukfallPerLakare(vardgivarId, warehouse.get(vardgivarId), filter, range, range.getMonths(), 1);
+    }
+
 }

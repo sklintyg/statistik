@@ -58,7 +58,7 @@ public class SjukskrivningslangdQueryTest {
     }
 
     private void fact(int startday, int length) {
-        Fact fact = new Fact(3, 380, 38002, 1, intyg++, patient++, startday, 0, 45, 0, 14, 16, 100, length, 0, 32, 201010);
+        Fact fact = new Fact(3, 380, 38002, 1, intyg++, patient++, startday, 0, 45, 0, 14, 16, 100, length, 0, 32, 201010, 0);
         warehouse.accept(fact, VARDGIVARE);
     }
 }

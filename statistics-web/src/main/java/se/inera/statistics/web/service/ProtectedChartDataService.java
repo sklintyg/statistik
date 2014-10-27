@@ -109,6 +109,24 @@ public class ProtectedChartDataService {
     }
 
     /**
+     * Gets sjukfall per manad for verksamhetId, csv formatted.
+     *
+     * @param request      request
+     * @param verksamhetId verksamhetId
+     * @return data
+     */
+    @GET
+    @Path("{verksamhetId}/getNumberOfCasesPerMonth/csv")
+    @Produces({ TEXT_UTF_8 })
+    @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request, #verksamhetId)")
+    @PostAuthorize(value = "@protectedChartDataService.userAccess(#request, #verksamhetId)")
+    public Response getNumberOfCasesPerMonthAsCsv(@Context HttpServletRequest request, @PathParam(VERKSAMHET_PATH_ID) String verksamhetId, @QueryParam(ID_STRING) String idString) {
+        LOG.info("Calling getNumberOfCasesPerMonthAsCsv with verksamhetId: {} and ids: {}", verksamhetId, idString);
+        final TableData tableData = getNumberOfCasesPerMonth(request, verksamhetId, idString).getTableData();
+        return CsvConverter.getCsvResponse(tableData, "export.csv");
+    }
+
+    /**
      * Gets sjukfall per enhet for verksamhetId.
      *
      */
@@ -127,21 +145,21 @@ public class ProtectedChartDataService {
     }
 
     /**
-     * Gets sjukfall per manad for verksamhetId, csv formatted.
+     * Gets sjukfall per doctor for verksamhetId.
      *
-     * @param request      request
-     * @param verksamhetId verksamhetId
-     * @return data
      */
     @GET
-    @Path("{verksamhetId}/getNumberOfCasesPerMonth/csv")
-    @Produces({ TEXT_UTF_8 })
+    @Path("{verksamhetId}/getNumberOfCasesPerEnhet")
+    @Produces({MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request, #verksamhetId)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request, #verksamhetId)")
-    public Response getNumberOfCasesPerMonthAsCsv(@Context HttpServletRequest request, @PathParam(VERKSAMHET_PATH_ID) String verksamhetId, @QueryParam(ID_STRING) String idString) {
-        LOG.info("Calling getNumberOfCasesPerMonthAsCsv with verksamhetId: {} and ids: {}", verksamhetId, idString);
-        final TableData tableData = getNumberOfCasesPerMonth(request, verksamhetId, idString).getTableData();
-        return CsvConverter.getCsvResponse(tableData, "export.csv");
+    public SimpleDetailsData getNumberOfCasesPerLakare(@Context HttpServletRequest request, @PathParam(VERKSAMHET_PATH_ID) String verksamhetId, @QueryParam(ID_STRING) String idString) {
+        LOG.info("Calling getNumberOfCasesPerEnhet with verksamhetId: {} and ids: {}", verksamhetId, idString);
+        final Range range = new Range(12);
+        Verksamhet verksamhet = getVerksamhet(request, Verksamhet.decodeId(verksamhetId));
+        SjukfallUtil.EnhetFilter filter = getFilter(request, verksamhet, getIdsFromIdString(idString));
+        SimpleKonResponse<SimpleKonDataRow> casesPerLakare = warehouse.getCasesPerLakare(filter, range, verksamhet.getVardgivarId());
+        return new SjukfallPerBusinessConverter().convert(casesPerLakare, range);
     }
 
     /**

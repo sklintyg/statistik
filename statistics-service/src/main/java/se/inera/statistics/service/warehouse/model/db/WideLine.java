@@ -54,12 +54,13 @@ public class WideLine {
     private int lakaralder;
     private String lakarbefattning;
     private String vardgivareId;
+    private String lakareId;
 
     public WideLine() {
     }
 
     // CHECKSTYLE:OFF ParameterNumber
-    public WideLine(long id, String correlationId, String lkf, String enhet, long lakarintyg, EventType intygTyp, String patientid, int startdatum, int slutdatum, int kon, int alder, String diagnoskapitel, String diagnosavsnitt, String diagnoskategori, int sjukskrivningsgrad, int lakarkon, int lakaralder, String lakarbefattning, String vardgivareId) {
+    public WideLine(long id, String correlationId, String lkf, String enhet, long lakarintyg, EventType intygTyp, String patientid, int startdatum, int slutdatum, int kon, int alder, String diagnoskapitel, String diagnosavsnitt, String diagnoskategori, int sjukskrivningsgrad, int lakarkon, int lakaralder, String lakarbefattning, String vardgivareId, String lakareId) {
         this.id = id;
         this.correlationId = correlationId;
         this.lkf = lkf;
@@ -79,6 +80,7 @@ public class WideLine {
         this.lakaralder = lakaralder;
         this.lakarbefattning = lakarbefattning;
         this.vardgivareId = vardgivareId;
+        this.lakareId = lakareId;
     }
     // CHECKSTYLE:ON ParameterNumber
 
@@ -233,4 +235,13 @@ public class WideLine {
     public void setLakarbefattning(String lakarbefattning) {
         this.lakarbefattning = lakarbefattning;
     }
+
+    public String getLakareId() {
+        return lakareId;
+    }
+
+    public void setLakareId(String lakareId) {
+        this.lakareId = lakareId;
+    }
+
 }

@@ -32,12 +32,17 @@ public class Processor {
     @Autowired
     private VardgivareManager vardgivareManager;
 
+    @Autowired
+    private LakareManager lakareManager;
+
     private int processedCounter;
 
     public void accept(JsonNode utlatande, JsonNode hsa, long logId, String correlationId, EventType type) {
         ObjectNode preparedDoc = DocumentHelper.prepare(utlatande);
 
         vardgivareManager.saveEnhet(hsa);
+
+        lakareManager.saveLakare(hsa);
 
         widelineManager.accept(preparedDoc, hsa, logId, correlationId, type);
 

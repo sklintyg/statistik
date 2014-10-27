@@ -12,9 +12,9 @@ public class AisleTest {
 
     @Test
     public void outOfOrderFactsGetsSorted() {
-        Fact fact = new Fact(3, 380, 38002, 1, 1, 1, 4010, 0, 45, 0, 14, 16, 100, 47, 0, 32, 201010);
+        Fact fact = new Fact(3, 380, 38002, 1, 1, 1, 4010, 0, 45, 0, 14, 16, 100, 47, 0, 32, 201010, 0);
         aisle.addLine(fact);
-        fact = new Fact(3, 380, 38002, 1, 2, 1, 4000, 0, 45, 0, 14, 16, 100, 47, 0, 32, 201010);
+        fact = new Fact(3, 380, 38002, 1, 2, 1, 4000, 0, 45, 0, 14, 16, 100, 47, 0, 32, 201010, 0);
         aisle.addLine(fact);
         aisle.sort();
         Iterator<Fact> iterator = aisle.iterator();
