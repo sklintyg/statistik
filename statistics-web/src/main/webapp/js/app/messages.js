@@ -7,8 +7,35 @@ var stMessages = {
         
         //navigation
         'nav.national-header': 'Nationell statistik',
+        'nav.national.oversikt': 'Översikt',
+        'nav.national.sjukfall-totalt':'Sjukfall, totalt',
+        'nav.national.diagnosgrupp':'Diagnosgrupp',
+        'nav.national.enskilt-diagnoskapitel':'Enskilt diagnoskapitel',
+        'nav.national.aldersgrupp':'Åldersgrupp',
+        'nav.national.sjukskrivningsgrad':'Sjukskrivningsgrad',
+        'nav.national.sjukskrivningslangd':'Sjukskrivningslängd',
+        'nav.national.lan':'Län',
+        'nav.national.lan-andel-sjukfall-per-kon':'Andel sjukfall per kön',
+        
         'nav.business-header': 'Verksamhetsstatistik',
+        'nav.business.oversikt': 'Översikt',
+        'nav.business.sjukfall-totalt':'Sjukfall, totalt',
+        'nav.business.sjukfall-vardenhet':'Sjukfall per vårdenhet',
+        'nav.business.diagnosgrupp':'Diagnosgrupp',
+        'nav.business.enskilt-diagnoskapitel':'Enskilt diagnoskapitel',
+        'nav.business.aldersgrupp':'Åldersgrupp',
+        'nav.business.aldersgrupp-pagaende':'Pågående',
+        'nav.business.sjukskrivningsgrad':'Sjukskrivningsgrad',
+        'nav.business.sjukskrivningslangd':'Sjukskrivningslängd',
+        'nav.business.sjukskrivningslangd-pagaende':'Pågående',
+        'nav.business.sjukskrivningslangd-mer-an-90-dagar':'Mer än 90 dagar',
+        
+        
         'nav.about-header': 'Om tjänsten',
+        'nav.about.allmant-om-tjansten': 'Allmänt om tjänsten',
+        'nav.about.inloggning-behorighet': 'Inloggning och behörighet',
+        'nav.about.faq': 'Vanliga frågor och svar',
+        'nav.about.kontakt-support': 'Kontakt till support',
         
         //labels
         'lbl.log-in': 'Logga in',
@@ -31,6 +58,10 @@ var stMessages = {
         'business.widget.header.fordelning-aldersgrupper': 'Fördelning åldersgrupper',
         'business.widget.header.fordelning-sjukskrivningsgrad': 'Fördelning sjukskrivningsgrad',
         'business.widget.header.fordelning-sjukskrivningslangd': 'Fördelning sjukskrivningslängd',
+        
+        //business statistics
+        
+        //business statistics
 
         //about texts
         'about.service': 'Allmänt om tjänsten',
