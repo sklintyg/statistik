@@ -98,7 +98,7 @@
 		                        <div id="business-logged-in-user-container" style="position: absolute; right: 0; margin-right: 25px;" ng-show="isLoggedIn">
 		                            <div class="header-box-user-profile pull-right">
 										<span class="user-logout pull-right">
-											<a href="/saml/logout"><span message key="lbl.log-out"></span></a>
+											<a href="/saml/logout"><span message key="lbl.log-out"/></a>
 										</span>
 		                                <span class="user-name pull-right" style="margin-right: 10px;"
 		                                      data-ng-bind="userNameWithAccess"></span>

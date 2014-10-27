@@ -96,6 +96,14 @@ var stMessages = {
         'detailview.dropdown-spara-excel': ' Spara tabell till Excel',
         'detailview.dolj-tabell': 'Dölj tabell',
         'detailview.visa-tabell': 'Dölj tabell',
+        
+        //detail views
+        'login.header': 'Logga in för verksamhetsstatistik',
+        'login.for-att-fortsatta': 'För att fortsätta till de inloggade sidorna för verksamhetsstatistik måste du logga in med ditt SITHS-kort.',
+        'login.alert-info.behorighet': 'Detta kan bero på att du inte har rätt behörighet för att se statistik för verksamheten.',
+        'login.lbl.gor-foljande': 'Gör följande:',
+        'login.instruktioner-for-login': 'Sätt <span style="text-decoration: underline;">SITHS-kortet i din kortläsare</span> och klicka sedan på knappen "SITHS login"',
+        'login.btn.siths-login': 'SITHS login',
 
         //about texts
         'about.service': 'Allmänt om tjänsten',

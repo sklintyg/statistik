@@ -1453,6 +1453,12 @@ a.listheader.collapsed {
 #navigation-container span {
 	color: #fff;
 }
+#navigation-container a span {
+	color: #008391;
+}
+#navigation-container a span:hover {
+	text-decoration: underline;
+}
 /****** End: Overview content styles  ******/
 
 .page-anchor {
