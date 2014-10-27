@@ -27,15 +27,15 @@ public class SjukfallPerBusinessConverterTest {
         SimpleKonResponse<SimpleKonDataRow> casesPerUnit = new SimpleKonResponse<>(businessRows, 2);
         SimpleDetailsData result = converter.convert(casesPerUnit, new Range(1));
         TableData tableData = result.getTableData();
-        assertEquals("[[Enhet;1, Antal sjukfall för kvinnor;1, Antal sjukfall för män;1]]", tableData.getHeaders().toString());
+        assertEquals("[[Vårdenhet;1, Antal sjukfall totalt;1, Antal sjukfall för kvinnor;1, Antal sjukfall för män;1]]", tableData.getHeaders().toString());
         List<NamedData> rows = tableData.getRows();
         assertEquals(3, rows.size());
         assertEquals("enhet1", rows.get(0).getName());
         assertEquals("enhet2", rows.get(1).getName());
         assertEquals("enhet3", rows.get(2).getName());
-        assertEquals("[12, 13]", rows.get(0).getData().toString());
-        assertEquals("[20, 30]", rows.get(1).getData().toString());
-        assertEquals("[5, 25]", rows.get(2).getData().toString());
+        assertEquals("[25, 12, 13]", rows.get(0).getData().toString());
+        assertEquals("[50, 20, 30]", rows.get(1).getData().toString());
+        assertEquals("[30, 5, 25]", rows.get(2).getData().toString());
     }
 
     // CHECKSTYLE:ON MagicNumber

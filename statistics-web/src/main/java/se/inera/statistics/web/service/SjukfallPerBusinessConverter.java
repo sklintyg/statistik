@@ -30,6 +30,13 @@ import java.util.*;
 public class SjukfallPerBusinessConverter {
 
     public SimpleDetailsData convert(SimpleKonResponse<SimpleKonDataRow> casesPerMonth, Range range) {
+        Collections.sort(casesPerMonth.getRows(), new Comparator<SimpleKonDataRow>() {
+            @Override
+            public int compare(SimpleKonDataRow o1, SimpleKonDataRow o2) {
+                return o1.getName().compareTo(o2.getName());
+            }
+        });
+
         TableData tableData = convertToTableData(casesPerMonth.getRows());
         ChartData chartData = convertToChartData(casesPerMonth);
         return new SimpleDetailsData(tableData, chartData, range.getMonths(), range.toString());
@@ -40,17 +47,10 @@ public class SjukfallPerBusinessConverter {
         for (SimpleKonDataRow row : list) {
             final Integer female = row.getFemale();
             final Integer male = row.getMale();
-            data.add(new NamedData(row.getName(), Arrays.asList(female, male)));
+            data.add(new NamedData(row.getName(), Arrays.asList(female + male, female, male)));
         }
 
-        Collections.sort(data, new Comparator<NamedData>() {
-            @Override
-            public int compare(NamedData o1, NamedData o2) {
-                return o1.getName().compareTo(o2.getName());
-            }
-        });
-
-        return TableData.createWithSingleHeadersRow(data, Arrays.asList("Enhet", "Antal sjukfall för kvinnor", "Antal sjukfall för män"));
+        return TableData.createWithSingleHeadersRow(data, Arrays.asList("Vårdenhet", "Antal sjukfall totalt", "Antal sjukfall för kvinnor", "Antal sjukfall för män"));
     }
 
     private ChartData convertToChartData(SimpleKonResponse<SimpleKonDataRow> casesPerMonth) {

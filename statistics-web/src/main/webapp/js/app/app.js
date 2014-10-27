@@ -141,7 +141,7 @@ var app = angular.module('StatisticsApp', [ 'ngRoute', 'ngCookies', 'ngSanitize'
             controller: 'columnChartDetailsViewCtrl',
             controllerAs: 'VerksamhetCasesPerBusinessCtrl',
             resolve: { config: app.casesPerBusinessConfig },
-            title: 'Sjukskrivningslängd mer än 90 dagar'
+            title: 'Antal sjukfall per vårdenhet'
         }).when('/om/tjansten', {
             templateUrl: 'views/about/about.html',
             controllerAs: 'AboutServiceCtrl',
@@ -166,6 +166,7 @@ var app = angular.module('StatisticsApp', [ 'ngRoute', 'ngCookies', 'ngSanitize'
         });
 
     } ]);
+
 app.run([ '$rootScope', '$route', 'messageService', function ($rootScope, $route, messageService) {
     $rootScope.lang = 'sv';
     $rootScope.DEFAULT_LANG = 'sv';

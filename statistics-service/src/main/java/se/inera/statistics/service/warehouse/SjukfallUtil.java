@@ -39,10 +39,6 @@ public final class SjukfallUtil {
     private SjukfallUtil() {
     }
 
-    public static Collection<Sjukfall> calculateSjukfall(Aisle aisle) {
-        return calculateSjukfall(aisle, ALL_ENHETER, Integer.MAX_VALUE);
-    }
-
     public static Collection<Sjukfall> calculateSjukfall(Aisle aisle, Predicate<Fact> filter, int cutoff) {
         Collection<Sjukfall> sjukfalls = new ArrayList<>();
         Map<Integer, Sjukfall> active = new HashMap<>();
@@ -70,6 +66,11 @@ public final class SjukfallUtil {
             sjukfalls.add(sjukfall);
         }
         return sjukfalls;
+    }
+
+    @VisibleForTesting
+    public static Collection<Sjukfall> calculateSjukfall(Aisle aisle) {
+        return calculateSjukfall(aisle, ALL_ENHETER, Integer.MAX_VALUE);
     }
 
     @VisibleForTesting
