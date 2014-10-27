@@ -86,9 +86,16 @@ var stMessages = {
         'business.widget.header.fordelning-sjukskrivningsgrad': 'Fördelning sjukskrivningsgrad',
         'business.widget.header.fordelning-sjukskrivningslangd': 'Fördelning sjukskrivningslängd',
         
-        //business statistics
-        
-        //business statistics
+        //detail views
+        'detailview.valj-annat-diagnoskapitel': 'Välj annat diagnoskapitel:',
+        'detailview.val-for-rapport': 'Val för rapport',
+        'detailview.dropdown-skrivut-farg': ' Skriv ut i färg',
+        'detailview.dropdown-skrivut-svart-vit': ' Skriv ut i svart-vit',
+        'detailview.dropdown-spara-diagram-bild-1': ' Spara ',
+        'detailview.dropdown-spara-diagram-bild-2': ' som bild',
+        'detailview.dropdown-spara-excel': ' Spara tabell till Excel',
+        'detailview.dolj-tabell': 'Dölj tabell',
+        'detailview.visa-tabell': 'Dölj tabell',
 
         //about texts
         'about.service': 'Allmänt om tjänsten',

@@ -55,7 +55,7 @@
     </div>
     <div class="row dontprint">
     	<span class="col-xs-12 col-sm-12 col-md-12 col-lg-12" data-ng-show="showDetailsOptions">
-    		<label class="dropdown-label" for="selectDiagnosticChapter">Välj annat diagnoskapitel:</label>
+    		<label class="dropdown-label" for="selectDiagnosticChapter"><span message key="detailview.valj-annat-diagnoskapitel"></span></label>
     	</span>
    		<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 pull-left" data-ng-show="showDetailsOptions">
        		<div class="btn-group margin-bottom" id="detailsOptionsDropdown">
@@ -72,15 +72,15 @@
 			<!-- PRINT BUTTON GROUP -->
 			<div class="btn-group statistics-btn-group">
 			  <a class="multiselect dropdown-toggle btn btn-default" data-toggle="dropdown" href="#">
-			    Val för rapport
+			    <span message key="detailview.val-for-rapport"></span>
 			    <span class="caret"></span>
 			  </a>
 			  <ul class="dropdown-menu pull-right detail-view-choice-dropdown">
-			    <li><a data-ng-click="print(false)"><img src="img/dropdown-icons/farg1b.png"/> Skriv ut rapport i färg</a></li>
-			    <li><a data-ng-click="print(true)"><img src="img/dropdown-icons/sv_vit1b.png"/> Skriv ut rapport i svart-vitt</a></li>
+			    <li><a data-ng-click="print(false)"><img src="img/dropdown-icons/farg1b.png"/><span message key="detailview.dropdown-skrivut-farg"></span></a></li>
+			    <li><a data-ng-click="print(true)"><img src="img/dropdown-icons/sv_vit1b.png"/><span message key="detailview.dropdown-skrivut-svart-vit"></span></a></li>
 			    <!-- li><a class="disabled"><img src="img/dropdown-icons/pdf-inactive.png"/> PDF-fil</a></li -->
-			    <li data-ng-repeat="chartContainer in chartContainers"><a data-ng-click="exportChart(chartContainer.id)"><img src="img/dropdown-icons/png1b.png"/> Spara {{chartContainer.name}} som bild</a></li>
-			  	<li><a data-ng-href="{{exportTableUrl}}" target="_self"><img src="img/dropdown-icons/xls1b.png"/> Spara tabell till Excel</a></li>
+			    <li data-ng-repeat="chartContainer in chartContainers"><a data-ng-click="exportChart(chartContainer.id)"><img src="img/dropdown-icons/png1b.png"/><span message key="detailview.dropdown-spara-diagram-bild-1"></span>{{chartContainer.name}}<span message key="detailview.dropdown-spara-diagram-bild-2"></span></a></li>
+			  	<li><a data-ng-href="{{exportTableUrl}}" target="_self"><img src="img/dropdown-icons/xls1b.png"/><span message key="detailview.dropdown-spara-excel"></span></a></li>
 			  </ul>
 			</div>
 		</div>
@@ -122,8 +122,8 @@
                         <accordion-group is-open="$parent.tableVisible">
                             <accordion-heading class="dontprint">
                                 <i class="chart-table-expand-icon"></i>
-                                <span data-ng-if="tableVisible">Dölj datatabell</span>
-                                <span data-ng-if="!tableVisible">Visa datatabell</span>
+                                <span data-ng-if="tableVisible"><span message key="detailview.dolj-tabell"></span></span>
+                                <span data-ng-if="!tableVisible"><span message key="detailview.visa-tabell"></span></span>
                             </accordion-heading>
                             <div class="scrollable">
 
