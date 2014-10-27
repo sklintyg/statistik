@@ -4,8 +4,12 @@ var stMessages = {
     	//generals
         'statistics.header': 'Statistiktjänsten',
         'statistics.header.extra-text': 'Statistiktjänst för ordinerad sjukskrivning',
+        'statistics.hidden-header.sidans-huvudnavigering': 'Sidans huvudnavigering',
+        'statistics.hidden-header.nationell-navigering': 'Navigering för nationell statistik',
+        'statistics.hidden-header.business-navigering': 'Navigering för verksamhetsstatistik',
+        'statistics.hidden-header.about-navigering': 'Navigering för information om tjänsten',
         
-        //navigation
+        //navigation national
         'nav.national-header': 'Nationell statistik',
         'nav.national.oversikt': 'Översikt',
         'nav.national.sjukfall-totalt':'Sjukfall, totalt',
@@ -16,7 +20,11 @@ var stMessages = {
         'nav.national.sjukskrivningslangd':'Sjukskrivningslängd',
         'nav.national.lan':'Län',
         'nav.national.lan-andel-sjukfall-per-kon':'Andel sjukfall per kön',
+        'nav.mobile.national.trigger.diagnosgrupp-diagnoskapitel': 'Diagnosgrupp och enskilt diagnoskapitel',
+        'nav.mobile.national.trigger.lan-andel-per-kon': 'Län och andel sjukfall per kön',
         
+       
+        //navigation business
         'nav.business-header': 'Verksamhetsstatistik',
         'nav.business.oversikt': 'Översikt',
         'nav.business.sjukfall-totalt':'Sjukfall, totalt',
@@ -29,8 +37,11 @@ var stMessages = {
         'nav.business.sjukskrivningslangd':'Sjukskrivningslängd',
         'nav.business.sjukskrivningslangd-pagaende':'Pågående',
         'nav.business.sjukskrivningslangd-mer-an-90-dagar':'Mer än 90 dagar',
+        'nav.mobile.business.trigger.diagnosgrupp-diagnoskapitel': 'Diagnosgrupp och enskilt diagnoskapitel',
+        'nav.mobile.business.trigger.per-alder-pagaende-sjukfall': 'Per åldersgrupp eller pågående sjukfall',
+        'nav.mobile.business.trigger.sjukskrivningslangd-pagaende-90-dagar': 'Sjukskrivningslängd, pågående, över 90 dagar',
         
-        
+        //navigation about
         'nav.about-header': 'Om tjänsten',
         'nav.about.allmant-om-tjansten': 'Allmänt om tjänsten',
         'nav.about.inloggning-behorighet': 'Inloggning och behörighet',
@@ -38,8 +49,24 @@ var stMessages = {
         'nav.about.kontakt-support': 'Kontakt till support',
         
         //labels
+        'lbl.mobile-menu': 'Meny',
         'lbl.log-in': 'Logga in',
         'lbl.log-out': 'Logga ut',
+        'lbl.for-verksamhetsstatistik': 'För verksamhetsstatistik: ',
+        'lbl.aterstall': 'Återställ',
+        'lbl.sok': 'Sök',
+        
+        //filter
+        'lbl.filter.valj-verksamhetstyper': 'Välj verksamhetstyper:',
+        'lbl.filter.val-av-enheter': 'Välj enheter:',
+        'lbl.filter.select-all': 'Markera alla',
+        'lbl.filter.modal.lan': 'Län: ',
+        'lbl.filter.modal.kommuner': 'Kommuner: ',
+        'lbl.filter.modal.lan': 'Län: ',
+        'lbl.filter.modal.spara-stang': 'Spara och stäng',
+        'lbl.filter.sla-pa-alla-rapporter': 'Val ska slå på alla rapporter',
+        'lbl.filter.sum-progress-1': 'Ditt filterval kommer presentera statistik baserat på ',
+        'lbl.filter.sum-progress-2': ' av totalt ',
         
         //statistics overview
         'national.overview-header': 'Nationell statistik',
