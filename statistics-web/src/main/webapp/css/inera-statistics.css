@@ -789,6 +789,7 @@ div.accordion-body.in.collapse > div.accordion-heading a.accordion-toggle{
 	line-height: 14px;
 	text-align: right;
 	vertical-align: top;
+	border-right: 1px solid #ddd;
 }
 
 #faq-accordion {}
@@ -1589,7 +1590,7 @@ td.scrollable {
     white-space:nowrap;
     margin:0;
 }
-
+thead tr td.headcol.scrollable:first-child { height: 30px; }
 .headcol.scrollable {
     position:absolute;
     width: 17em;
