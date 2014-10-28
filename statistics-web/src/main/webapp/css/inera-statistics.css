@@ -1447,7 +1447,7 @@ a.listheader.collapsed {
 
 #navigation-container {
 	margin-top: 10px;
-	margin-bottom: 10px;
+	margin-bottom: 20px;
 }
 #navigation-container a, #navigation-container a:hover {
 	color: #28b4c4;
@@ -1461,7 +1461,12 @@ a.listheader.collapsed {
 #navigation-container a span:hover {
 	text-decoration: underline;
 }
-/****** End: Overview content styles  ******/
+#business-logged-in-user-container {
+	position: absolute;
+	right: 0;
+	margin-right: 10px;
+	top: 5px;;
+}
 
 .page-anchor {
 	padding-top: 100px;

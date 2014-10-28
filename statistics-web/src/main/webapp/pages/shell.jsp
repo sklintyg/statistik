@@ -84,7 +84,7 @@
 		                        </a>
 		                    </div>
 		                </div>
-		                <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2 pull-left" style="margin-top: 3px;">
+		                <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2 pull-left">
 		                    <span message key="statistics.header.extra-text"/>
 		                </div>
 		                <c:if test="${loginVisible}">
@@ -95,15 +95,15 @@
 		                                    type="button" id="business-login-btn" value="Logga in"><span message key="lbl.log-in"></span>
 		                            </button>
 		                        </div>
-		                        <div id="business-logged-in-user-container" style="position: absolute; right: 0; margin-right: 25px;" ng-show="isLoggedIn">
+		                        <div id="business-logged-in-user-container" ng-show="isLoggedIn">
 		                            <div class="header-box-user-profile pull-right">
-										<span class="user-logout pull-right">
-											<a href="/saml/logout"><span message key="lbl.log-out"/></a>
-										</span>
-		                                <span class="user-name pull-right" style="margin-right: 10px;"
-		                                      data-ng-bind="userNameWithAccess"></span>
+		                                <span class="user-name pull-right" data-ng-bind="userNameWithAccess"></span>
 		                                <br>
 		                                <span>{{verksamhetName}}</span>
+		                                <br/>
+		                                <span class="user-logout pull-right">
+											<a href="/saml/logout"><span message key="lbl.log-out"/></a>
+										</span>
 		                            </div>
 		                        </div>
 		                    </div>
@@ -135,12 +135,12 @@
 				      </button>
 				      <c:if test="${loginVisible}">
 		                    <div class="col-xs-6 hidden-sm hidden-md hidden-lg pull-right">
-		                        <div id="business-login-container" class="pull-right" ng-hide="isLoggedIn" style="position: absolute; right: 0; margin-right: 10px; top: 5px;">
+		                        <div id="business-login-container" class="pull-right" ng-hide="isLoggedIn">
 		                            <a class="btn" data-ng-click="loginClicked('${applicationScope.loginUrl}')"
 		                                    type="button" id="business-login-btn" value="Logga in"><span message key="lbl.log-in"></span>
 		                            </a>
 		                        </div>
-		                        <div id="business-logged-in-user-container" style="position: absolute; right: 0; margin-right: 10px; top: 5px;" ng-show="isLoggedIn">
+		                        <div id="business-logged-in-user-container" ng-show="isLoggedIn">
 		                            <div class="header-box-user-profile pull-right">
 		                                <span class="user-name pull-right" data-ng-bind="userNameWithAccess"></span>
 		                                <br/>
