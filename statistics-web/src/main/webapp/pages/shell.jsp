@@ -475,7 +475,7 @@
                                                     </div>
                                                 </div>
 	                            				<button type="button" class="btn btn-default pull-right"><span message key="lbl.aterstall"></span></button>
-	                                        	<button class="btn btn-success pull-right" data-ng-click="makeUnitSelection()" data-toggle="collapse" data-target="#statistics-filter-container"><span message key="lbl.sok"></span></button>
+	                                        	<button class="btn btn-success pull-right" data-ng-click="makeUnitSelection()"><span message key="lbl.sok" data-toggle="collapse" data-target="#statistics-filter-container" ng-click="filter.open = !filter.open"></span></button>
 	                                        </div>
 			                            </div>
                                     </div>
