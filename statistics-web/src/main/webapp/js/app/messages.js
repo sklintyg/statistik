@@ -68,7 +68,7 @@ var stMessages = {
         'lbl.filter.sum-progress-1': 'Ditt filterval kommer presentera statistik baserat på ',
         'lbl.filter.sum-progress-2': ' av totalt ',
         
-        //statistics overview
+        //national statistics overview
         'national.overview-header': 'Nationell statistik',
         'national.widget.header.konsfordelning': 'Könsfördelning',
         'national.widget.header.forandring': 'Förändring',
@@ -78,6 +78,7 @@ var stMessages = {
         'national.widget.header.fordelning-sjukskrivningslangd': 'Fördelning sjukskrivningslängd',
         'national.widget.header.fordelning-lan': 'Fördelning per län',
         
+        //business statistics overview
         'business.overview-header': 'Verksamhetsstatistik',
         'business.widget.header.total-antal': 'Total antal',
         'business.widget.header.konsfordelning-sjukfall': 'Könsfördelning av sjukfall',
@@ -85,6 +86,19 @@ var stMessages = {
         'business.widget.header.fordelning-aldersgrupper': 'Fördelning åldersgrupper',
         'business.widget.header.fordelning-sjukskrivningsgrad': 'Fördelning sjukskrivningsgrad',
         'business.widget.header.fordelning-sjukskrivningslangd': 'Fördelning sjukskrivningslängd',
+        
+        //general overview
+        'overview.dropdown.val': 'Val för översikt',
+        'overview.dropdown.val.print.farg': ' Skriv ut i färg',
+        'overview.dropdown.val.print.svart-vit': ' Skriv ut i svart-vit',
+        'overview.widget.table.column.diagnosgrupp': 'Diagnosgrupp',
+        'overview.widget.table.column.aldersgrupp': 'Åldersgrupp',
+        'overview.widget.table.column.sjukskrivningsgrad': 'Sjukskrivningsgrad',
+        'overview.widget.table.column.lan': 'Län',
+        'overview.widget.table.column.antal': 'Antal',
+        'overview.widget.table.column.forandring': 'Förändring',
+        'overview.widget.fordelning-sjukskrivningslangd.overgar-90': 'Antalet sjukfall som övergår 90 dagar',
+        'overview.widget.fordelning-sjukskrivningslangd.overgar-90-3-manader': 'Förändring av antalet sjukfall som övergår 90 dagar jämfört med föregående tre månader',
         
         //detail views
         'detailview.valj-annat-diagnoskapitel': 'Välj annat diagnoskapitel:',
@@ -97,7 +111,7 @@ var stMessages = {
         'detailview.dolj-tabell': 'Dölj tabell',
         'detailview.visa-tabell': 'Dölj tabell',
         
-        //detail views
+        //login view
         'login.header': 'Logga in för verksamhetsstatistik',
         'login.for-att-fortsatta': 'För att fortsätta till de inloggade sidorna för verksamhetsstatistik måste du logga in med ditt SITHS-kort.',
         'login.alert-info.behorighet': 'Detta kan bero på att du inte har rätt behörighet för att se statistik för verksamheten.',

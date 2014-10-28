@@ -408,6 +408,7 @@ legend {
 	border-bottom: 1px solid #dddddd;
 	text-align: right;
 }
+#overview-content table#datatable thead tr td span{ float: right; }
 .sickLeaveByCountyTable {
 	top: 65px;
 	position: relative;
@@ -1006,7 +1007,7 @@ div.headerbox-user { font-size: 13px; line-height: 16px;}
 }
 .statistics-btn-group .dropdown-menu>li>a {
 	display: block;
-	padding: 3px 15px 3px 15px;
+	font-size: 12px;
 }
 .statistics-btn-group ul.dropdown-menu li a.disabled {
 	color: #E3E3E3;
@@ -1454,7 +1455,7 @@ a.listheader.collapsed {
 	color: #fff;
 }
 #navigation-container a span {
-	color: #008391;
+	color: #28b4c4;
 }
 #navigation-container a span:hover {
 	text-decoration: underline;
