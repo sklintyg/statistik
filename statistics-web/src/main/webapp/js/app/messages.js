@@ -89,13 +89,14 @@ var stMessages = {
         'overview.widget.fordelning-sjukskrivningslangd.overgar-90-3-manader': 'Förändring av antalet sjukfall som övergår 90 dagar jämfört med föregående tre månader',
         
         //detail views
-        'detailview.valj-annat-diagnoskapitel': 'Välj annat diagnoskapitel:',
+        'lbl.valj-annat-diagnoskapitel': 'Välj annat diagnoskapitel:',
         'dropdown.val.rapport': 'Val för rapport',
         'dropdown.val.skrivut-farg': ' Skriv ut i färg',
         'dropdown.val.skrivut-svart-vitt': ' Skriv ut i svart-vitt',
         'dropdown.val.spara-diagram-bild-1': ' Spara ',
         'dropdown.val.spara-diagram-bild-2': ' som bild',
         'dropdown.val.spara-excel': ' Spara tabell till Excel',
+        'alert.diagnosgrupp.information': 'För en given månad kan samma sjukfall visas fler än en gång i graf och tabell. Om ett sjukfall innehåller flera intyg under samma månad så hämtas diagnos från varje intyg. Om intygen har olika diagnosgrupper kommer sjukfallet finnas med en gång för varje diagnosgrupp för respektive månad. Exempel: Om ett sjukfall innehåller två intyg för maj månad, där intyg ett sätter diagnosen M54 och intyg två efter vidare utredning sätter diagnosen F32, så kommer sjukfallet både räknas med i gruppen för Muskuloskeleta sjukdomar (M00-M99) och i gruppen för Psykiska sjukdomar (F00-F99) i graf och tabell för maj månad.',
         
         //login view
         'login.header': 'Logga in för verksamhetsstatistik',

@@ -55,7 +55,7 @@
     </div>
     <div class="row dontprint">
     	<span class="col-xs-12 col-sm-12 col-md-12 col-lg-12" data-ng-show="showDetailsOptions">
-    		<label class="dropdown-label" for="selectDiagnosticChapter"><span message key="detailview.valj-annat-diagnoskapitel"></span></label>
+    		<label class="dropdown-label" for="selectDiagnosticChapter"><span message key="lbl.valj-annat-diagnoskapitel"></span></label>
     	</span>
    		<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 pull-left" data-ng-show="showDetailsOptions">
        		<div class="btn-group margin-bottom" id="detailsOptionsDropdown">
@@ -98,8 +98,8 @@
 	            </div>
 	            <div class="row dontprint">
 	            	<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-	            		<div class="btn-group">
-	            				<label data-ng-repeat="seriesData in series" class="col-xs-3 col-sm-3 col-md-4 col-lg-4" id="legend-label" style="margin-left: 0px; margin-right: 5px; white-space: nowrap;" legend-height>
+	            		<div class="btn-group legend-btn-group">
+	            				<label data-ng-repeat="seriesData in series" class="col-xs-3 col-sm-3 col-md-4 col-lg-4" id="legend-label" style="white-space: nowrap;" legend-height>
 			                        <input type="checkbox" checked="" data-ng-click="toggleSeriesVisibility($index)" class="detail-checkbox"/>
 			                        <div class="legend-color-square" ng-style="{backgroundColor: seriesData.color}"></div>
 			                        <div class="legend-name"><div>{{seriesData.name}}</div></div>
