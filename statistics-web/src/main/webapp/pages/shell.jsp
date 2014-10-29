@@ -405,7 +405,7 @@
             <div class="col-xs-12 col-sm-9 col-md-9 col-lg-9">
                 <div class="row" ng-show="verksamhetIdParam" data-ng-controller="filterCtrl">
                     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                        <div id="statistics-filter-container" class="collapse" collapse="!isFilterCollapsed">
+                        <div id="statistics-filter-container" class="collapse dontprint" collapse="!isFilterCollapsed">
                         	<div class="row">
 				                <div class="filter-level" id="first-level-filter">
                                     <div class="col-xs-6 col-sm-6 col-md-6 col-lg-3 clearfix" data-ng-if="businessFilter.numberOfBusinesses() === 'medium' || businessFilter.numberOfBusinesses() === 'large'">
@@ -482,7 +482,7 @@
                                 </div>
 				        	</div>
 	                    </div>
-	                    <filter-button/>
+	                    <filter-button class="dontprint"/>
                     </div>
                 </div>
 				<div class="row">
