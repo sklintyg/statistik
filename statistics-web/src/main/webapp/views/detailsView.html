@@ -72,15 +72,15 @@
 			<!-- PRINT BUTTON GROUP -->
 			<div class="btn-group statistics-btn-group">
 			  <a class="multiselect dropdown-toggle btn btn-default" data-toggle="dropdown" href="#">
-			    <span message key="detailview.val-for-rapport"></span>
+			    <span message key="dropdown.val.rapport"></span>
 			    <span class="caret"></span>
 			  </a>
 			  <ul class="dropdown-menu pull-right detail-view-choice-dropdown">
-			    <li><a data-ng-click="print(false)"><img src="img/dropdown-icons/farg1b.png"/><span message key="detailview.dropdown-skrivut-farg"></span></a></li>
-			    <li><a data-ng-click="print(true)"><img src="img/dropdown-icons/sv_vit1b.png"/><span message key="detailview.dropdown-skrivut-svart-vit"></span></a></li>
+			    <li><a data-ng-click="print(false)"><img src="img/dropdown-icons/farg1b.png"/><span message key="dropdown.val.skrivut-farg"></span></a></li>
+			    <li><a data-ng-click="print(true)"><img src="img/dropdown-icons/sv_vit1b.png"/><span message key="dropdown.val.skrivut-svart-vitt"></span></a></li>
 			    <!-- li><a class="disabled"><img src="img/dropdown-icons/pdf-inactive.png"/> PDF-fil</a></li -->
-			    <li data-ng-repeat="chartContainer in chartContainers"><a data-ng-click="exportChart(chartContainer.id)"><img src="img/dropdown-icons/png1b.png"/><span message key="detailview.dropdown-spara-diagram-bild-1"></span>{{chartContainer.name}}<span message key="detailview.dropdown-spara-diagram-bild-2"></span></a></li>
-			  	<li><a data-ng-href="{{exportTableUrl}}" target="_self"><img src="img/dropdown-icons/xls1b.png"/><span message key="detailview.dropdown-spara-excel"></span></a></li>
+			    <li data-ng-repeat="chartContainer in chartContainers"><a data-ng-click="exportChart(chartContainer.id)"><img src="img/dropdown-icons/png1b.png"/><span message key="dropdown.val.spara-diagram-bild-1"></span>{{chartContainer.name}}<span message key="dropdown.val.spara-diagram-bild-2"></span></a></li>
+			  	<li><a data-ng-href="{{exportTableUrl}}" target="_self"><img src="img/dropdown-icons/xls1b.png"/><span message key="dropdown.val.spara-excel"></span></a></li>
 			  </ul>
 			</div>
 		</div>
@@ -98,11 +98,13 @@
 	            </div>
 	            <div class="row dontprint">
 	            	<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-	            		<label data-ng-repeat="seriesData in series" class="col-xs-3 col-sm-3 col-md-3 col-lg-3" id="legend-label" style="margin-left: 0px; margin-right: 5px; white-space: nowrap;" legend-height>
-	                        <input type="checkbox" checked="" data-ng-click="toggleSeriesVisibility($index)" class="detail-checkbox"/>
-	                        <div class="legend-color-square" ng-style="{backgroundColor: seriesData.color}"></div>
-	                        <div class="legend-name"><div>{{seriesData.name}}</div></div>
-                    	</label>
+	            		<div class="btn-group">
+	            				<label data-ng-repeat="seriesData in series" class="col-xs-3 col-sm-3 col-md-4 col-lg-4" id="legend-label" style="margin-left: 0px; margin-right: 5px; white-space: nowrap;" legend-height>
+			                        <input type="checkbox" checked="" data-ng-click="toggleSeriesVisibility($index)" class="detail-checkbox"/>
+			                        <div class="legend-color-square" ng-style="{backgroundColor: seriesData.color}"></div>
+			                        <div class="legend-name"><div>{{seriesData.name}}</div></div>
+		                    	</label>
+		            	</div>
 	            	</div>
                 </div>
 
@@ -122,8 +124,8 @@
                         <accordion-group is-open="$parent.tableVisible">
                             <accordion-heading class="dontprint">
                                 <i class="chart-table-expand-icon"></i>
-                                <span data-ng-if="tableVisible"><span message key="detailview.dolj-tabell"></span></span>
-                                <span data-ng-if="!tableVisible"><span message key="detailview.visa-tabell"></span></span>
+                                <span data-ng-if="tableVisible"><span message key="lbl.dolj-tabell"></span></span>
+                                <span data-ng-if="!tableVisible"><span message key="lbl.visa-tabell"></span></span>
                             </accordion-heading>
                             <div class="scrollable">
 

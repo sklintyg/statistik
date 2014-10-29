@@ -9,44 +9,32 @@ var stMessages = {
         'statistics.hidden-header.business-navigering': 'Navigering för verksamhetsstatistik',
         'statistics.hidden-header.about-navigering': 'Navigering för information om tjänsten',
         
-        //navigation national
+        //navigation
         'nav.national-header': 'Nationell statistik',
-        'nav.national.oversikt': 'Översikt',
-        'nav.national.sjukfall-totalt':'Sjukfall, totalt',
-        'nav.national.diagnosgrupp':'Diagnosgrupp',
-        'nav.national.enskilt-diagnoskapitel':'Enskilt diagnoskapitel',
-        'nav.national.aldersgrupp':'Åldersgrupp',
-        'nav.national.sjukskrivningsgrad':'Sjukskrivningsgrad',
-        'nav.national.sjukskrivningslangd':'Sjukskrivningslängd',
-        'nav.national.lan':'Län',
-        'nav.national.lan-andel-sjukfall-per-kon':'Andel sjukfall per kön',
-        'nav.mobile.national.trigger.diagnosgrupp-diagnoskapitel': 'Diagnosgrupp och enskilt diagnoskapitel',
-        'nav.mobile.national.trigger.lan-andel-per-kon': 'Län och andel sjukfall per kön',
-        
-       
-        //navigation business
         'nav.business-header': 'Verksamhetsstatistik',
-        'nav.business.oversikt': 'Översikt',
-        'nav.business.sjukfall-totalt':'Sjukfall, totalt',
-        'nav.business.sjukfall-vardenhet':'Sjukfall per vårdenhet',
-        'nav.business.diagnosgrupp':'Diagnosgrupp',
-        'nav.business.enskilt-diagnoskapitel':'Enskilt diagnoskapitel',
-        'nav.business.aldersgrupp':'Åldersgrupp',
-        'nav.business.aldersgrupp-pagaende':'Pågående',
-        'nav.business.sjukskrivningsgrad':'Sjukskrivningsgrad',
-        'nav.business.sjukskrivningslangd':'Sjukskrivningslängd',
-        'nav.business.sjukskrivningslangd-pagaende':'Pågående',
-        'nav.business.sjukskrivningslangd-mer-an-90-dagar':'Mer än 90 dagar',
-        'nav.mobile.business.trigger.diagnosgrupp-diagnoskapitel': 'Diagnosgrupp och enskilt diagnoskapitel',
-        'nav.mobile.business.trigger.per-alder-pagaende-sjukfall': 'Per åldersgrupp eller pågående sjukfall',
-        'nav.mobile.business.trigger.sjukskrivningslangd-pagaende-90-dagar': 'Sjukskrivningslängd, pågående, över 90 dagar',
-        
-        //navigation about
         'nav.about-header': 'Om tjänsten',
-        'nav.about.allmant-om-tjansten': 'Allmänt om tjänsten',
-        'nav.about.inloggning-behorighet': 'Inloggning och behörighet',
-        'nav.about.faq': 'Vanliga frågor och svar',
-        'nav.about.kontakt-support': 'Kontakt till support',
+        'nav.oversikt': 'Översikt',
+        'nav.sjukfall-totalt':'Sjukfall, totalt',
+        'nav.diagnosgrupp':'Diagnosgrupp',
+        'nav.enskilt-diagnoskapitel':'Enskilt diagnoskapitel',
+        'nav.aldersgrupp':'Åldersgrupp',
+        'nav.sjukskrivningsgrad':'Sjukskrivningsgrad',
+        'nav.sjukskrivningslangd':'Sjukskrivningslängd',
+        'nav.lan':'Län',
+        'nav.lan-andel-sjukfall-per-kon':'Andel sjukfall per kön',
+        'nav.mobile.trigger.diagnosgrupp-diagnoskapitel': 'Diagnosgrupp och enskilt diagnoskapitel',
+        'nav.mobile.trigger.lan-andel-per-kon': 'Län och andel sjukfall per kön',
+        'nav.vardenhet':'Vårdenhet',
+        'nav.pagaende':'Pågående',
+        'nav.sjukskrivningslangd-pagaende':'Pågående',
+        'nav.sjukskrivningslangd-mer-an-90-dagar':'Mer än 90 dagar',
+        'nav.mobile.trigger.diagnosgrupp-diagnoskapitel': 'Diagnosgrupp och enskilt diagnoskapitel',
+        'nav.mobile.trigger.per-alder-pagaende-sjukfall': 'Per åldersgrupp eller pågående sjukfall',
+        'nav.mobile.trigger.sjukskrivningslangd-pagaende-90-dagar': 'Sjukskrivningslängd, pågående, över 90 dagar',
+        'nav.allmant-om-tjansten': 'Allmänt om tjänsten',
+        'nav.inloggning-behorighet': 'Inloggning och behörighet',
+        'nav.faq': 'Vanliga frågor och svar',
+        'nav.kontakt-support': 'Kontakt till support',
         
         //labels
         'lbl.mobile-menu': 'Meny',
@@ -55,6 +43,8 @@ var stMessages = {
         'lbl.for-verksamhetsstatistik': 'För verksamhetsstatistik: ',
         'lbl.aterstall': 'Återställ',
         'lbl.sok': 'Sök',
+        'lbl.dolj-tabell': 'Dölj tabell',
+        'lbl.visa-tabell': 'Visa tabell',
         
         //filter
         'lbl.filter.valj-verksamhetstyper': 'Välj verksamhetstyper:',
@@ -62,7 +52,7 @@ var stMessages = {
         'lbl.filter.select-all': 'Markera alla',
         'lbl.filter.modal.lan': 'Län: ',
         'lbl.filter.modal.kommuner': 'Kommuner: ',
-        'lbl.filter.modal.lan': 'Län: ',
+        'lbl.filter.modal.enheter': 'Enheter: ',
         'lbl.filter.modal.spara-stang': 'Spara och stäng',
         'lbl.filter.sla-pa-alla-rapporter': 'Val ska slå på alla rapporter',
         'lbl.filter.sum-progress-1': 'Ditt filterval kommer presentera statistik baserat på ',
@@ -88,9 +78,7 @@ var stMessages = {
         'business.widget.header.fordelning-sjukskrivningslangd': 'Fördelning sjukskrivningslängd',
         
         //general overview
-        'overview.dropdown.val': 'Val för översikt',
-        'overview.dropdown.val.print.farg': ' Skriv ut i färg',
-        'overview.dropdown.val.print.svart-vit': ' Skriv ut i svart-vit',
+        'dropdown.val.oversikt': 'Val för översikt',
         'overview.widget.table.column.diagnosgrupp': 'Diagnosgrupp',
         'overview.widget.table.column.aldersgrupp': 'Åldersgrupp',
         'overview.widget.table.column.sjukskrivningsgrad': 'Sjukskrivningsgrad',
@@ -102,14 +90,12 @@ var stMessages = {
         
         //detail views
         'detailview.valj-annat-diagnoskapitel': 'Välj annat diagnoskapitel:',
-        'detailview.val-for-rapport': 'Val för rapport',
-        'detailview.dropdown-skrivut-farg': ' Skriv ut i färg',
-        'detailview.dropdown-skrivut-svart-vit': ' Skriv ut i svart-vit',
-        'detailview.dropdown-spara-diagram-bild-1': ' Spara ',
-        'detailview.dropdown-spara-diagram-bild-2': ' som bild',
-        'detailview.dropdown-spara-excel': ' Spara tabell till Excel',
-        'detailview.dolj-tabell': 'Dölj tabell',
-        'detailview.visa-tabell': 'Dölj tabell',
+        'dropdown.val.rapport': 'Val för rapport',
+        'dropdown.val.skrivut-farg': ' Skriv ut i färg',
+        'dropdown.val.skrivut-svart-vitt': ' Skriv ut i svart-vitt',
+        'dropdown.val.spara-diagram-bild-1': ' Spara ',
+        'dropdown.val.spara-diagram-bild-2': ' som bild',
+        'dropdown.val.spara-excel': ' Spara tabell till Excel',
         
         //login view
         'login.header': 'Logga in för verksamhetsstatistik',
@@ -129,6 +115,7 @@ var stMessages = {
         'error.sidan-kan-inte-visas': 'Sidan du söker går ej att hitta (404)',
         'error.sidan-kan-inte-visas.information': 'Kontrollera eventuella stavfel eller gå till <a ng-href="#/">startsidan</a>. Du kan även kontakta <a ng-href="#/om/kontakt">support</a>.',
         'error.unsignedcerts.couldnotbeloaded': '<strong>Kunde inte hämta ej signerade intyg.</strong>'
+
     },
     'en': {
         'webcert.header': 'Statistics Application (en)'
