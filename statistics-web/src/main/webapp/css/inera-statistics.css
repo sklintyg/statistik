@@ -1690,7 +1690,9 @@ a.has-collapse {
 	padding-left: 2px;
 	padding-right: 6px;
 	padding-top: 2px;
-	vertical-align: top;	
+	vertical-align: top;
+	white-space: normal;
+	max-width: 402px;	
 }
 .legend-name > div {
 	white-space: normal;
