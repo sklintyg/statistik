@@ -423,7 +423,7 @@
 	                                <div class="col-xs-6 col-sm-6 col-md-6 col-lg-3" data-ng-if="businessFilter.numberOfBusinesses() === 'large'">
 	                                	<label for="select-geo-unit"><span message key="lbl.filter.val-av-enheter"></span></label><br/>
 	                                    <button class="btn btn-default" data-toggle="modal" data-target="#myModal" id="select-geo-unit" >
-	                                        {{ businessFilter.geographyBusinessIds.length }} av {{ businessFilter.businesses.length }} valda <b class="caret"></b>
+	                                        {{ businessFilter.geographyBusinessIds.length }} av {{ businessFilter.businesses.length }} valda
 	                                    </button>
 	                                    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 	                                        <div class="modal-dialog">
