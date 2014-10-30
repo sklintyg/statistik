@@ -32,12 +32,14 @@
 			<h2 class="business-name-header" style="line-height: 16px;">{{ verksamhetName }}</h2> 
 		</div>
     </div>
-	<div class="row">
+	<div class="row pull-left">
 		<span class="col-xs-12 col-sm-12 col-md-12 col-lg-12 graph-ingress pull-left" style="min-height: 5px;">
 			{{subTitle}}
 			<a class="dontprint pageHelpToolTip" tooltip-html-unsafe="<div class=popover-content>{{popoverText}}</div>" tooltip-trigger="mouseenter" tooltip-placement="right" data-ng-show="popoverText" style="position: relative; top: -2px;"><img src="img/questionmark2.png"></a>
 			<a class="dontprint" id="chart-footnote-trigger" data-toggle="collapse" data-target="#chart-footnote-text" data-ng-show="chartFootnotes" text="Information om diagrammet" style="position: relative; top: -2px;"><img src="img/information.png"></a>
 		</span>
+	</div>
+	<div class="row pull-left">
 		<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" data-ng-show="chartFootnotes">
 			<div class="collapse" id="chart-footnote-text">
        			<div class="alert alert-info" style="margin-top: 3px;">
@@ -55,7 +57,7 @@
     </div>
     <div class="row dontprint">
     	<span class="col-xs-12 col-sm-12 col-md-12 col-lg-12" data-ng-show="showDetailsOptions">
-    		<label class="dropdown-label" for="selectDiagnosticChapter">Välj annat diagnoskapitel:</label>
+    		<label class="dropdown-label" for="selectDiagnosticChapter"><span message key="lbl.valj-annat-diagnoskapitel"></span></label>
     	</span>
    		<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 pull-left" data-ng-show="showDetailsOptions">
        		<div class="btn-group margin-bottom" id="detailsOptionsDropdown">
@@ -72,15 +74,15 @@
 			<!-- PRINT BUTTON GROUP -->
 			<div class="btn-group statistics-btn-group">
 			  <a class="multiselect dropdown-toggle btn btn-default" data-toggle="dropdown" href="#">
-			    Val för rapport
+			    <span message key="dropdown.val.rapport"></span>
 			    <span class="caret"></span>
 			  </a>
 			  <ul class="dropdown-menu pull-right detail-view-choice-dropdown">
-			    <li><a data-ng-click="print(false)"><img src="img/dropdown-icons/farg1b.png"/> Skriv ut rapport i färg</a></li>
-			    <li><a data-ng-click="print(true)"><img src="img/dropdown-icons/sv_vit1b.png"/> Skriv ut rapport i svart-vitt</a></li>
+			    <li><a data-ng-click="print(false)"><img src="img/dropdown-icons/farg1b.png"/><span message key="dropdown.val.skrivut-farg"></span></a></li>
+			    <li><a data-ng-click="print(true)"><img src="img/dropdown-icons/sv_vit1b.png"/><span message key="dropdown.val.skrivut-svart-vitt"></span></a></li>
 			    <!-- li><a class="disabled"><img src="img/dropdown-icons/pdf-inactive.png"/> PDF-fil</a></li -->
-			    <li data-ng-repeat="chartContainer in chartContainers"><a data-ng-click="exportChart(chartContainer.id)"><img src="img/dropdown-icons/png1b.png"/> Spara {{chartContainer.name}} som bild</a></li>
-			  	<li><a data-ng-href="{{exportTableUrl}}" target="_self"><img src="img/dropdown-icons/xls1b.png"/> Spara tabell till Excel</a></li>
+			    <li data-ng-repeat="chartContainer in chartContainers"><a data-ng-click="exportChart(chartContainer.id)"><img src="img/dropdown-icons/png1b.png"/><span message key="dropdown.val.spara-diagram-bild-1"></span>{{chartContainer.name}}<span message key="dropdown.val.spara-diagram-bild-2"></span></a></li>
+			  	<li><a data-ng-href="{{exportTableUrl}}" target="_self"><img src="img/dropdown-icons/xls1b.png"/><span message key="dropdown.val.spara-excel"></span></a></li>
 			  </ul>
 			</div>
 		</div>
@@ -98,11 +100,13 @@
 	            </div>
 	            <div class="row dontprint">
 	            	<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-	            		<label data-ng-repeat="seriesData in series" class="col-xs-3 col-sm-3 col-md-3 col-lg-3" id="legend-label" style="margin-left: 0px; margin-right: 5px; white-space: nowrap;" legend-height>
-	                        <input type="checkbox" checked="" data-ng-click="toggleSeriesVisibility($index)" class="detail-checkbox"/>
-	                        <div class="legend-color-square" ng-style="{backgroundColor: seriesData.color}"></div>
-	                        <div class="legend-name"><div>{{seriesData.name}}</div></div>
-                    	</label>
+	            		<div class="btn-group legend-btn-group">
+            				<label data-ng-repeat="seriesData in series | orderBy:'name'" class="col-xs-12 col-sm-6 col-md-6 col-lg-6" id="legend-label" style="white-space: nowrap;" legend-height>
+		                        <input type="checkbox" checked="" data-ng-click="toggleSeriesVisibility($index)" class="detail-checkbox"/>
+		                        <span class="legend-color-square" data-ng-style="{backgroundColor: seriesData.color}"></span>
+		                        <span class="legend-name">{{seriesData.name}}</span>
+	                    	</label>
+		            	</div>
 	            	</div>
                 </div>
 
@@ -122,8 +126,8 @@
                         <accordion-group is-open="$parent.tableVisible">
                             <accordion-heading class="dontprint">
                                 <i class="chart-table-expand-icon"></i>
-                                <span data-ng-if="tableVisible">Dölj datatabell</span>
-                                <span data-ng-if="!tableVisible">Visa datatabell</span>
+                                <span data-ng-if="tableVisible"><span message key="lbl.dolj-tabell"></span></span>
+                                <span data-ng-if="!tableVisible"><span message key="lbl.visa-tabell"></span></span>
                             </accordion-heading>
                             <div class="scrollable">
 

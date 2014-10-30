@@ -28,7 +28,7 @@
 		<div class="row dontprint">
 		    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 pull-left" style="width: auto !important;">
 		        <h1 class="national-statistic-h1" id="nationalOverviewHeading">
-		            Nationell statistik
+		            <span message key="national.overview-header"></span>
 		            <a class="dontprint pageHelpToolTip"
 		               tooltip-html-unsafe="<div class=popover-content>{{popoverText}}</div>" tooltip-trigger="mouseenter"
 		               tooltip-placement="right" data-ng-show="popoverText" style="position: relative; top: -2px;"> 
@@ -42,12 +42,12 @@
 		    <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 pull-right margin-bottom dontprint" style="width: auto;">
 		        <div class="btn-group statistics-btn-group">
 		            <a class="multiselect dropdown-toggle btn btn-default" data-toggle="dropdown" href="#">
-		                Skriv ut
+		                <span message key="dropdown.val.oversikt"></span>
 		                <span class="caret"></span>
 		            </a>
 		            <ul class="dropdown-menu pull-right">
-		                <li><a onclick="window.print();"><img src="img/dropdown-icons/farg1b.png"/> Färg</a></li>
-		                <li><a data-ng-click="bwPrint()"><img src="img/dropdown-icons/sv_vit1b.png"/> Svart-vitt</a></li>
+		                <li><a onclick="window.print();"><img src="img/dropdown-icons/farg1b.png"/><span message key="dropdown.val.skrivut-farg"></span></a></li>
+		                <li><a data-ng-click="bwPrint()"><img src="img/dropdown-icons/sv_vit1b.png"/><span message key="dropdown.val.skrivut-svart-vitt"></span></a></li>
 		            </ul>
 		        </div>
 		    </div>
@@ -60,7 +60,7 @@
 							<span class="overview-widget" >
 								<span class="overview-widget-header">
 									<h2 class="overview-widget-title">
-										Könsfördelning
+										<span message key="national.widget.header.konsfordelning"></span>
 										<span class="dontprint pageHelpToolTip pull-right"><img
 					                    tooltip-html-unsafe="<div class=popover-content>{{popoverTextSexDistribution}}</div>"
 					                    tooltip-trigger="mouseenter" tooltip-placement="left" src="img/question_white.png" alt=""></span>
@@ -81,7 +81,7 @@
 							<span class="overview-widget">
 								<span class="overview-widget-header">
 									<h2 class="overview-widget-title">
-										Förändring
+										<span message key="national.widget.header.forandring"></span>
 										<span class="dontprint pageHelpToolTip pull-right"><img
 					                    tooltip-html-unsafe="<div class=popover-content>{{popoverTextChangeProcentage}}</div>"
 					                    tooltip-trigger="mouseenter" tooltip-placement="left" src="img/question_white.png" alt=""></span>
@@ -98,7 +98,7 @@
 							<span class="overview-widget">
 								<span class="overview-widget-header">
 									<h2 class="overview-widget-title">
-										Fördelning diagnosgrupper
+										<span message key="national.widget.header.fordelning-diagnosgrupper"></span>
 										<span class="dontprint pageHelpToolTip pull-right"><img
 					                    tooltip-html-unsafe="<div class=popover-content>{{popoverTextAmount}}</div><div class=popover-content>{{popoverTextChangeProcentage}}</div>"
 					                    tooltip-trigger="mouseenter" tooltip-placement="left" src="img/question_white.png" alt=""></span>
@@ -110,9 +110,9 @@
 						                <thead>
 						                <tr>
 						                	<td>&nbsp;</td>
-						                    <td>Diagnosgrupp</td>
-						                    <td>Antal</td>
-						                    <td>Förändring</td>
+						                    <td><span message key="overview.widget.table.column.diagnosgrupp"></span></td>
+						                    <td><span message key="overview.widget.table.column.antal"></span></td>
+						                    <td><span message key="overview.widget.table.column.forandring"></span></td>
 						                </tr>
 						                </thead>
 						                <tbody>
@@ -135,7 +135,7 @@
 							<span class="overview-widget">
 								<span class="overview-widget-header">
 									<h2 class="overview-widget-title">
-										Fördelning åldersgrupper
+										<span message key="national.widget.header.fordelning-aldersgrupper"></span>
 										<span class="dontprint pageHelpToolTip pull-right"><img
 					                    tooltip-html-unsafe="<div class=popover-content>{{popoverTextAmount}}</div><div class=popover-content>{{popoverTextChangeProcentage}}</div><div class=popover-content>Grafen visar de åldersgrupper som är mest frekvent förekommande.</div>"
 					                    tooltip-trigger="mouseenter" tooltip-placement="left" src="img/question_white.png" alt=""></span>
@@ -147,9 +147,9 @@
 				                        <thead>
 				                        <tr>
 				                        	<td>&nbsp;</td>
-				                            <td>Åldersgrupp</td>
-				                            <td>Antal</td>
-				                            <td>Förändring</td>
+				                            <td><span message key="overview.widget.table.column.aldersgrupp"></span></td>
+				                            <td><span message key="overview.widget.table.column.antal"></span></td>
+				                            <td><span message key="overview.widget.table.column.forandring"></span></td>
 				                        </tr>
 				                        </thead>
 				                        <tbody>
@@ -170,7 +170,7 @@
 							<span class="overview-widget">
 								<span class="overview-widget-header">
 									<h2 class="overview-widget-title">
-										Fördelning sjukskrivningsgrad
+										<span message key="national.widget.header.fordelning-sjukskrivningsgrad"></span>
 										<span class="dontprint pageHelpToolTip pull-right"><img
 					                    tooltip-html-unsafe="<div class=popover-content>{{popoverTextAmount}}</div><div class=popover-content>{{popoverTextChangeProcentage}}</div>"
 					                    tooltip-trigger="mouseenter" tooltip-placement="left" src="img/question_white.png" alt=""></span>
@@ -182,9 +182,9 @@
 				                        <thead>
 				                        <tr>
 				                        	<td>&nbsp;</td>
-				                            <td class="diagnostics-group-name">Sjukskrivningsgrad</td>
-				                            <td>Antal</td>
-				                            <td>Förändring</td>
+				                            <td class="diagnostics-group-name"><span message key="overview.widget.table.column.sjukskrivningsgrad"></span></td>
+				                            <td><span message key="overview.widget.table.column.antal"></span></td>
+				                            <td><span message key="overview.widget.table.column.forandring"></span></td>
 				                        </tr>
 				                        </thead>
 				                        <tbody>
@@ -207,7 +207,7 @@
 							<span class="overview-widget">
 								<span class="overview-widget-header">
 									<h2 class="overview-widget-title">
-										Fördelning sjukskrivningslängd
+										<span message key="national.widget.header.fordelning-sjukskrivningslangd"></span>
 										<span class="dontprint pageHelpToolTip pull-right"><img
 					                    tooltip-html-unsafe="<div class=popover-content>{{popoverTextAmount}}</div><div class=popover-content>{{popoverTextChangeProcentage}}</div>"
 					                    tooltip-trigger="mouseenter" tooltip-placement="left" src="img/question_white.png" alt=""></span>
@@ -217,11 +217,11 @@
 									<div class="overview-chart-info" id="sicklength-chart-info">
 				                        <div class="overview-chart-info-section pull-left">
 				                        	<span class="longSickLeavesValue">{{longSickLeavesTotal | thousandseparated}}</span><br/>
-				                        	<span class="longSickLeavesText">Antalet sjukfall som övergår 90 dagar</span>
+				                        	<span class="longSickLeavesText"><span message key="overview.widget.fordelning-sjukskrivningslangd.overgar-90"></span></span>
 				                        </div>
 				                        <div class="overview-chart-info-section pull-right">
 				                        	<span class="longSickLeavesValue">{{longSickLeavesAlteration}}%</span><br/>
-				                        	<span class="longSickLeavesText">Förändring av antalet sjukfall som övergår 90 dagar jämfört med föregående tre månader</span>
+				                        	<span class="longSickLeavesText"><span message key="overview.widget.fordelning-sjukskrivningslangd.overgar-90-3-manader"></span></span>
 				                        </div>
 				                    </div>
 				                    <div class="chart-container" id="sickLeaveLengthChart"></div>
@@ -234,7 +234,7 @@
 							<span class="overview-widget">
 								<span class="overview-widget-header">
 									<h2 class="overview-widget-title">
-										Fördelning per län
+										<span message key="national.widget.header.fordelning-lan"></span>
 										<span class="dontprint pageHelpToolTip pull-right"><img
 					                    tooltip-html-unsafe="<div class=popover-content>{{popoverTextAmount}}</div><div class=popover-content>{{popoverTextChangeProcentage}}</div>"
 					                    tooltip-trigger="mouseenter" tooltip-placement="left" src="img/question_white.png" alt=""></span>
@@ -246,9 +246,9 @@
 				                        <thead>
 				                        <tr>
 				                        	<td>&nbsp;</td>
-				                            <td>Län</td>
-				                            <td>Antal</td>
-				                            <td>Förändring</td>
+				                            <td><span message key="overview.widget.table.column.lan"></span></td>
+				                            <td><span message key="overview.widget.table.column.antal"></span></td>
+				                            <td><span message key="overview.widget.table.column.forandring"></span></td>
 				                        </tr>
 				                        </thead>
 				                        <tbody>

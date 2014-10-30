@@ -408,6 +408,7 @@ legend {
 	border-bottom: 1px solid #dddddd;
 	text-align: right;
 }
+#overview-content table#datatable thead tr td span{ float: right; }
 .sickLeaveByCountyTable {
 	top: 65px;
 	position: relative;
@@ -585,7 +586,8 @@ i.statistict-left-menu-expand-icon {
 	width: 14px;
 	height: 14px;
 }
-#legend-label { font-size: 12px; }
+#legend-label { font-size: 12px; margin-bottom: 10px; }
+#legend-label:hover { cursor: pointer; }
 #chart-data-table i.chart-table-expand-icon {
 	background-image: url("../img/glyphicons-halflings-white.png");
 	background-position: -24px -97px;
@@ -788,6 +790,7 @@ div.accordion-body.in.collapse > div.accordion-heading a.accordion-toggle{
 	line-height: 14px;
 	text-align: right;
 	vertical-align: top;
+	border-right: 1px solid #ddd;
 }
 
 #faq-accordion {}
@@ -838,8 +841,14 @@ div.accordion-body.in.collapse > div.accordion-heading a.accordion-toggle{
 	font-weight: bold;
 	font-size: 20px;
 	width: auto !important;
+	line-height: 17px;
+	margin-bottom: 0px;
 }
-
+.business-name { 
+	width: auto !important;
+	float: left;
+	margin-left: 0px;
+}
 .graph-ingress {
 	font-weight: bold;
 	margin-bottom: 0px;
@@ -885,21 +894,9 @@ div.accordion-body.in.collapse > div.accordion-heading a.accordion-toggle{
 .header-box-user-profile .btn-group .dropdown-menu li a{
 	color: #000 !important;
 }
-/*#navigation-container .btn, #view .btn {
-	color: #ffffff;
-	text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
-	background-color: #363636;
-	background-image: -moz-linear-gradient(top, #444444, #222222);
-	background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#444444), to(#222222));
-	background-image: -webkit-linear-gradient(top, #444444, #222222);
-	background-image: -o-linear-gradient(top, #444444, #222222);
-	background-image: linear-gradient(to bottom, #444444, #222222);
-	background-repeat: repeat-x;
-	border-color: #222222 #222222 #000000;
-	border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
-	/*filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff444444', endColorstr='#ff222222', GradientType=0);
-	filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);*/
-}*/
+.legend-btn-group {
+	width: 100%;
+}
 
 #view .btn.statistic-btn:hover, #view .btn.statistic-btn.btn-large:hover { background-color: #000; }
 
@@ -1006,7 +1003,7 @@ div.headerbox-user { font-size: 13px; line-height: 16px;}
 }
 .statistics-btn-group .dropdown-menu>li>a {
 	display: block;
-	padding: 3px 15px 3px 15px;
+	font-size: 12px;
 }
 .statistics-btn-group ul.dropdown-menu li a.disabled {
 	color: #E3E3E3;
@@ -1445,7 +1442,7 @@ a.listheader.collapsed {
 
 #navigation-container {
 	margin-top: 10px;
-	margin-bottom: 10px;
+	margin-bottom: 20px;
 }
 #navigation-container a, #navigation-container a:hover {
 	color: #28b4c4;
@@ -1453,7 +1450,18 @@ a.listheader.collapsed {
 #navigation-container span {
 	color: #fff;
 }
-/****** End: Overview content styles  ******/
+#navigation-container a span {
+	color: #28b4c4;
+}
+#navigation-container a span:hover {
+	text-decoration: underline;
+}
+#business-logged-in-user-container {
+	position: absolute;
+	right: 0;
+	margin-right: 10px;
+	top: 5px;;
+}
 
 .page-anchor {
 	padding-top: 100px;
@@ -1582,7 +1590,7 @@ td.scrollable {
     white-space:nowrap;
     margin:0;
 }
-
+thead tr td.headcol.scrollable:first-child { height: 30px; }
 .headcol.scrollable {
     position:absolute;
     width: 17em;
@@ -1682,7 +1690,9 @@ a.has-collapse {
 	padding-left: 2px;
 	padding-right: 6px;
 	padding-top: 2px;
-	vertical-align: top;	
+	vertical-align: top;
+	white-space: normal;
+	max-width: 402px;	
 }
 .legend-name > div {
 	white-space: normal;

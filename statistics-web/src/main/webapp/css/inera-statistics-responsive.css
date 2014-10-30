@@ -1387,6 +1387,9 @@ form.bs-docs-example {
  
 /* Landscape phone to portrait tablet */
 @media (max-width: 767px) { 
+	#show-hide-filter-btn {
+		margin-right: 30% !important;
+	}
 	.affix{
 		position: relative;
 	}
