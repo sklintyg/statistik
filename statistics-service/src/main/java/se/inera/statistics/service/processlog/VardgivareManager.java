@@ -1,6 +1,8 @@
 package se.inera.statistics.service.processlog;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import se.inera.statistics.service.helper.HSAServiceHelper;
@@ -12,6 +14,7 @@ import java.util.List;
 
 @Component
 public class VardgivareManager {
+    private static final Logger LOG = LoggerFactory.getLogger(VardgivareManager.class);
 
     @PersistenceContext(unitName = "IneraStatisticsLog")
     private EntityManager manager;
@@ -26,14 +29,18 @@ public class VardgivareManager {
         String kommunId = HSAServiceHelper.getKommun(hsaInfo);
         String verksamhetsTyper = HSAServiceHelper.getVerksamhetsTyper(hsaInfo);
 
+        if (enhet == null) {
+            enhet = vardgivare;
+        }
         if (enhetNamn == null) {
             enhetNamn = enhet;
         }
         if (vardgivareNamn == null) {
             vardgivareNamn = vardgivare;
         }
-        if (enhet == null) {
-            enhet = vardgivare;
+        if (vardgivare == null) {
+            LOG.error("Vardgivare saknas: " + hsaInfo.asText());
+            return;
         }
 
         TypedQuery<Enhet> vardgivareQuery = manager.createQuery("SELECT v FROM Enhet v WHERE v.enhetId = :enhetId AND v.vardgivareId = :vardgivareId", Enhet.class);
