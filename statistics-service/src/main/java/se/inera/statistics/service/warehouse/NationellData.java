@@ -1,6 +1,8 @@
 package se.inera.statistics.service.warehouse;
 
 import org.joda.time.LocalDate;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -25,18 +27,23 @@ import se.inera.statistics.service.warehouse.query.SjukskrivningslangdQuery;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 @Component
 public class NationellData {
+    private static final Logger LOG = LoggerFactory.getLogger(NationellData.class);
 
     @Autowired
     private Warehouse warehouse;
 
     @Autowired
     private Lan lans;
+
+    private Set<String> okandLans = new HashSet<>();
 
     @Autowired
     private DiagnosgruppQuery query;
@@ -245,7 +252,13 @@ public class NationellData {
 
             for (SjukfallUtil.SjukfallGroup sjukfallGroup: SjukfallUtil.sjukfallGrupper(start, perioder, periodlangd, aisle, SjukfallUtil.ALL_ENHETER)) {
                 for (Sjukfall sjukfall: sjukfallGroup.getSjukfall()) {
-                    map.get(sjukfall.getLanskod()).increase(sjukfall);
+                    Counter counter = map.get(sjukfall.getLanskod());
+                    if (counter != null) {
+                        counter.increase(sjukfall);
+                    } else {
+                        map.get(Lan.OVRIGT_ID).increase(sjukfall);
+                        okandLans.add(sjukfall.getLanskod());
+                    }
                 }
             }
             int index = 0;
@@ -254,6 +267,12 @@ public class NationellData {
                 SimpleKonDataRow previous = result.get(index);
                 result.set(index, new SimpleKonDataRow(previous.getName(), counter.getCountFemale() + previous.getFemale(), counter.getCountMale() + previous.getMale()));
                 index++;
+            }
+            if (!okandLans.isEmpty()) {
+                LOG.info("Okända län:");
+            }
+            for (String okandLan : okandLans) {
+                LOG.info("Okänt län: " + okandLan);
             }
         }
         return filterLow(new SimpleKonResponse<>(result, perioder * periodlangd));
