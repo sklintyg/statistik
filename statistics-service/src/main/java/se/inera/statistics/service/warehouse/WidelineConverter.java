@@ -123,6 +123,8 @@ public class WidelineConverter {
         String lkf = HSAServiceHelper.getKommun(hsa);
         if (lkf.isEmpty()) {
             lkf = HSAServiceHelper.getLan(hsa);
+        } else if (lkf.length() == 2) {
+            lkf = HSAServiceHelper.getLan(hsa) + lkf;
         }
         return lkf;
     }
