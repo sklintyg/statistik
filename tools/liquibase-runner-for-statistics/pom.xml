@@ -11,27 +11,20 @@
 
     <modelVersion>4.0.0</modelVersion>
 
+    <groupId>se.inera.statistics.tools</groupId>
     <artifactId>liquibase-runner-for-statistics</artifactId>
     <name>Liquibase runner for statistics (standalone)</name>
     <packaging>jar</packaging>
 
     <properties>
-        <certificate.runner.version>1.0-SNAPSHOT</certificate.runner.version>
         <checkstyle.path>${project.basedir}/../../build-tools/src/main/resources</checkstyle.path>
     </properties>
 
     <dependencies>
 
         <dependency>
-            <groupId>se.inera.certificate</groupId>
-            <artifactId>liquibase-runner</artifactId>
-            <version>${certificate.runner.version}</version>
-        </dependency>
-
-        <dependency>
             <groupId>se.inera.statistics</groupId>
             <artifactId>statistics-service</artifactId>
-            <version>${project.version}</version>
         </dependency>
 
     </dependencies>
@@ -43,7 +36,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>se.inera.certificate.liquibase.Runner</mainClass>
+                            <mainClass>liquibase.integration.commandline.Main</mainClass>
                         </manifest>
                     </archive>
                     <descriptorRefs>

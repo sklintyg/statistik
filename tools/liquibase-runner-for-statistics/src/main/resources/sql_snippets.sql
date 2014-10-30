@@ -1,0 +1,7 @@
+# Lista duplikat i intyghandelse
+select id, correlationId from intyghandelse where type = 0 group by correlationId having count(id) > 1 order by correlationId;
+select id, correlationId from intyghandelse where type = 1 group by correlationId having count(id) > 1 order by correlationId;
+
+# Ta bort duplikat från intyghandelse (har ej verifierat att den gör rätt, men det blior tillräckligt bra för att rensa testdata)
+delete from intyghandelse using intyghandelse, intyghandelse i1 where intyghandelse.id > i1.id
+      and intyghandelse.correlationId = i1.correlationId and intyghandelse.type = 0;

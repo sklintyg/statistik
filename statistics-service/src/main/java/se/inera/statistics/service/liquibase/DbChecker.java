@@ -23,7 +23,7 @@ public class DbChecker {
             Database database = DatabaseFactory.getInstance().findCorrectDatabaseImplementation(connection);
             Liquibase liquibase = new Liquibase(script, new ClassLoaderResourceAccessor(), database);
             LOG.info(database.getConnection().getURL());
-            List<ChangeSet> changeSets = liquibase.listUnrunChangeSets(null);
+            List<ChangeSet> changeSets = liquibase.listUnrunChangeSets("none");
             if (!changeSets.isEmpty()) {
                 StringBuilder errors = new StringBuilder();
                 for (ChangeSet changeSet : changeSets) {

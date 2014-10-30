@@ -23,5 +23,6 @@
     <include file="changelog/db.changelog-v17.0_add_vardgivare_table_and_enhet_table.xml"/>
     <include file="changelog/db.changelog-v18.0_add_lan_and_kommun_to_enhet_table.xml"/>
     <include file="changelog/db.changelog-v19.0_add_verksamhet_to_enhet_table.xml"/>
+    <include file="changelog/db.changelog-v20.0_reset_handelsepekare.xml"/>
 
 </databaseChangeLog>

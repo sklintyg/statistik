@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd"
+                   logicalFilePath="liquibase/db.changelog-v20.0_reset_handelsepekare.xml">
+    <changeSet id="20_reset_handelsepekare" author="pierre.sandboge" context="reset">
+        <delete tableName="handelsepekare"/>
+    </changeSet>
+</databaseChangeLog>

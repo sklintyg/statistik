@@ -1,2 +1,2 @@
 #!/bin/sh
-java -cp .:liquibase-runner-for-statistics-1.1-SNAPSHOT-jar-with-dependencies.jar se.inera.certificate.liquibase.Runner
+java -jar target/liquibase-runner-for-statistics-1.1-SNAPSHOT-jar-with-dependencies.jar --changeLogFile="changelog/changelog.xml" --contexts=none update

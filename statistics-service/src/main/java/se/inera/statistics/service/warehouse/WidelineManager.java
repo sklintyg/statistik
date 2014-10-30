@@ -19,6 +19,8 @@ public class WidelineManager {
 
     private static final Logger LOG = LoggerFactory.getLogger(WidelineManager.class);
 
+    private static int errCount;
+
     @PersistenceContext(unitName = "IneraStatisticsLog")
     private EntityManager manager;
 
@@ -34,7 +36,7 @@ public class WidelineManager {
                 manager.persist(line);
             } else {
                 String intygid = DocumentHelper.getIntygId(intyg);
-                StringBuilder errorBuilder = new StringBuilder("Faulty intyg logid ").append(logId).append(" id ").append(intygid);
+                StringBuilder errorBuilder = new StringBuilder("Faulty intyg logid ").append(logId).append(" id ").append(intygid).append(" error count ").append(errCount++);
                 for (String error : errors) {
                     errorBuilder.append('\n').append(error);
                 }

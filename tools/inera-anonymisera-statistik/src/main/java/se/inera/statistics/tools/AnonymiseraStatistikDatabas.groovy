@@ -114,7 +114,7 @@ class AnonymiseraStatistikDatabas {
             output.each {line ->
                 if (line) println line
             }
-            println "Done! ${count} certificates anonymized with ${errorCount} errors in ${(int)((end-start) / 1000)} seconds"
+            println "Done! ${count} sjukfall anonymized with ${errorCount} errors in ${(int)((end-start) / 1000)} seconds"
         } else {
             println "Sjukfall table missing, anonymization not necessary"
         }
@@ -127,7 +127,7 @@ class AnonymiseraStatistikDatabas {
                 try {
                     def intyg = sql.firstRow( 'select data from hsa where id = :id' , [id : id])
                     String jsonDoc = intyg.data
-                    String anonymiseradJson = anonymizeHsaJson(jsonDoc, anonymiseraHsaId, id)
+                    String anonymiseradJson = anonymizeHsaJson(jsonDoc, anonymiseraHsaId)
                     sql.executeUpdate('update hsa set data = :document where id = :id',
                             [document: anonymiseradJson, id: id])
                     int current = count.addAndGet(1)
@@ -152,7 +152,7 @@ class AnonymiseraStatistikDatabas {
         println "Done! ${count} hsa:s anonymized with ${errorCount} errors in ${(int)((end-start) / 1000)} seconds"
     }
 
-    static def anonymizeHsaJson(def s, def anonymiseraHsaId, def idx) {
+    static def anonymizeHsaJson(def s, def anonymiseraHsaId) {
         def hsa = new JsonSlurper().parseText(s)
         if (hsa.personal) {
             hsa.personal.id = anonymiseraHsaId.anonymisera(hsa.personal.id)
