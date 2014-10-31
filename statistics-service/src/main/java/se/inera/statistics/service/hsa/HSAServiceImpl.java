@@ -42,6 +42,8 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 @Component
 public class HSAServiceImpl implements HSAService {
     private static final Logger LOG = LoggerFactory.getLogger(HSAServiceImpl.class);
+    private static final String SKYDDAD = "Skyddad";
+    private static final String IDENTITET = "Identitet";
     private JsonNodeFactory factory = JsonNodeFactory.instance;
 
     @Autowired
@@ -113,19 +115,25 @@ public class HSAServiceImpl implements HSAService {
         root.put("specialitet", personal.getSpecialityCodes() != null ? personal.getSpecialityCodes().getSpecialityCode() : null);
         root.put("yrkesgrupp", personal.getHsaTitles() != null ? personal.getHsaTitles().getHsaTitle() : null);
         root.put("skyddad", personal.isIsProtectedPerson());
-        root.put("tilltalsnamn", getFornamn(names));
-        root.put("efternamn", getMellanOchEfternamn(names));
+        root.put("tilltalsnamn", getFornamn(names, personal.isIsProtectedPerson()));
+        root.put("efternamn", getMellanOchEfternamn(names, personal.isIsProtectedPerson()));
         return root;
     }
 
-    private String getFornamn(GetStatisticsNamesResponseType names) {
+    private String getFornamn(GetStatisticsNamesResponseType names, boolean isProtected) {
+        if (isProtected) {
+            return SKYDDAD;
+        }
         if (names == null) {
             return null;
         }
         return names.getStatisticsNameInfos().getStatisticsNameInfo().get(0).getPersonGivenName();
     }
 
-    private String getMellanOchEfternamn(GetStatisticsNamesResponseType names) {
+    private String getMellanOchEfternamn(GetStatisticsNamesResponseType names, boolean isProtected) {
+        if (isProtected) {
+            return IDENTITET;
+        }
         if (names == null) {
             return null;
         }
