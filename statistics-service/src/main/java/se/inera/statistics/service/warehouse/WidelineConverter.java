@@ -24,6 +24,7 @@ public class WidelineConverter {
     public static final int THREE_QUARTER = 75;
     public static final int FULL = 100;
     public static final int MAX_SJUKSKRIVNING = 100;
+    public static final int MAX_LENGTH_VGID = 50;
 
     @Autowired
     private Icd10 icd10;
@@ -119,6 +120,12 @@ public class WidelineConverter {
         }
     }
 
+    private void checkField(List<String> errors, String field, String fieldName, int max) {
+        checkField(errors, field, fieldName);
+        if (field != null && field.length() > max) {
+            errors.add(fieldName + " input too long");
+        }
+    }
     private String getLkf(JsonNode hsa) {
         String lkf = HSAServiceHelper.getKommun(hsa);
         if (lkf.isEmpty()) {
@@ -136,7 +143,7 @@ public class WidelineConverter {
     public List<String> validate(WideLine line) {
         List<String> errors = new ArrayList<>();
         checkField(errors, line.getLkf(), "LKF");
-        checkField(errors, line.getVardgivareId(), "Vårdgivare");
+        checkField(errors, line.getVardgivareId(), "Vårdgivare", MAX_LENGTH_VGID);
         checkField(errors, line.getEnhet(), "Enhet");
         checkField(errors, line.getPatientid(), "Patient");
         checkField(errors, line.getDiagnoskategori(), "Diagnoskategori");

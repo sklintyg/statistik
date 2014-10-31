@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import se.inera.statistics.service.helper.HSAServiceHelper;
+import se.inera.statistics.service.warehouse.WidelineConverter;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -39,6 +40,10 @@ public class VardgivareManager {
             vardgivareNamn = vardgivare;
         }
         if (vardgivare == null) {
+            LOG.error("Vardgivare saknas: " + hsaInfo.asText());
+            return;
+        }
+        if (vardgivare.length() > WidelineConverter.MAX_LENGTH_VGID) {
             LOG.error("Vardgivare saknas: " + hsaInfo.asText());
             return;
         }

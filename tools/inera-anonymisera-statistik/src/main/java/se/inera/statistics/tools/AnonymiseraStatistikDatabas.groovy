@@ -119,6 +119,9 @@ class AnonymiseraStatistikDatabas {
             println "Sjukfall table missing, anonymization not necessary"
         }
         println "Proceeding to hsa"
+        count.set(0)
+        errorCount.set(0)
+        start = System.currentTimeMillis()
         GParsPool.withPool(numberOfThreads) {
             output = hsaIds.collectParallel {
                 StringBuffer result = new StringBuffer()
