@@ -206,3 +206,16 @@ angular.module('StatisticsApp').casesPerBusinessConfig = function () {
     conf.chartXAxisTitle = "Vårdenhet";
     return conf;
 };
+
+angular.module('StatisticsApp').casesPerLakareConfig = function () {
+    var conf = {};
+    conf.dataFetcherVerksamhet = "getSjukfallPerLakareVerksamhet";
+    conf.exportTableUrlVerksamhet = function (verksamhetId) {
+        return "api/verksamhet/" + verksamhetId + "/getSjukfallPerLakareVerksamhet/csv";
+    };
+    conf.title = function (period) {
+        return "Antal sjukfall per läkare " + period;
+    };
+    conf.chartXAxisTitle = "Läkare";
+    return conf;
+};

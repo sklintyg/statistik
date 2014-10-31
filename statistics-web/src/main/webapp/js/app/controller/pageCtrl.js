@@ -19,17 +19,13 @@
 
 'use strict';
 
-angular.module('StatisticsApp').controller('pageCtrl', [ '$scope', '$rootScope', '$window', '$cookies', 'statisticsData', 'businessFilter',
-    function ($scope, $rootScope, $window, $cookies, statisticsData, businessFilter) {
+angular.module('StatisticsApp').controller('pageCtrl', [ '$scope', '$rootScope', '$window', '$cookies', 'statisticsData', 'businessFilter', '_',
+    function ($scope, $rootScope, $window, $cookies, statisticsData, businessFilter, _) {
         var self = this;
 
         self.getSelectedVerksamhet = function (selectedVerksamhetId, verksamhets) {
-            for (var i = 0; i < verksamhets.length; i++) {
-                if (verksamhets[i].vardgivarId === selectedVerksamhetId) {
-                    return verksamhets[i];
-                }
-            }
-            return {name: "Okänd verksamhet"};
+            var selectedVerksamhet = _.findWhere(verksamhets, { vardgivarId: selectedVerksamhetId });
+            return selectedVerksamhet ? selectedVerksamhet : {name: "Okänd verksamhet"};
         };
 
         $rootScope.$on('$routeChangeSuccess', function (angularEvent, next, current) {
