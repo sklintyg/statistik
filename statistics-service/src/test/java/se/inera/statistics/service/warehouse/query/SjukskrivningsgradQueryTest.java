@@ -2,6 +2,7 @@ package se.inera.statistics.service.warehouse.query;
 
 import org.joda.time.LocalDateTime;
 import org.junit.Test;
+import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.warehouse.Fact;
 import se.inera.statistics.service.warehouse.Sjukfall;
 import se.inera.statistics.service.warehouse.SjukfallUtil;
@@ -11,6 +12,7 @@ import java.util.Collection;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static se.inera.statistics.service.warehouse.Fact.aFact;
 
 public class SjukskrivningsgradQueryTest {
 
@@ -53,7 +55,13 @@ public class SjukskrivningsgradQueryTest {
     }
 
     private void fact(int startday, int grad) {
-        Fact fact = new Fact(3, 380, 38002, 1, intyg++, patient++, startday, 0, 45, 0, 14, 16, grad, 10, 0, 32, 201010, 0);
+        Fact fact = aFact().withLan(3).withKommun(380).withForsamling(38002).
+                withEnhet(1).withLakarintyg(intyg++).
+                withPatient(patient++).withKon(Kon.Female).withAlder(45).
+                withDiagnoskapitel(0).withDiagnosavsnitt(14).withDiagnoskategori(16).
+                withSjukskrivningsgrad(grad).withStartdatum(startday).withSjukskrivningslangd(10).
+                withLakarkon(Kon.Female).withLakaralder(32).withLakarbefatttning(201010).withLakarid(1).build();
         warehouse.accept(fact, VARDGIVARE);
     }
+
 }

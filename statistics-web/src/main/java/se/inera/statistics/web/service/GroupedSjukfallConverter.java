@@ -27,7 +27,12 @@ import se.inera.statistics.web.model.*;
 
 import java.util.*;
 
-public class SjukfallPerBusinessConverter {
+public class GroupedSjukfallConverter {
+    private final String xAxisLabel;
+
+    public GroupedSjukfallConverter(String xAxisLabel) {
+        this.xAxisLabel = xAxisLabel;
+    }
 
     public SimpleDetailsData convert(SimpleKonResponse<SimpleKonDataRow> casesPerMonth, Range range) {
         Collections.sort(casesPerMonth.getRows(), new Comparator<SimpleKonDataRow>() {
@@ -50,7 +55,7 @@ public class SjukfallPerBusinessConverter {
             data.add(new NamedData(row.getName(), Arrays.asList(female + male, female, male)));
         }
 
-        return TableData.createWithSingleHeadersRow(data, Arrays.asList("Vårdenhet", "Antal sjukfall totalt", "Antal sjukfall för kvinnor", "Antal sjukfall för män"));
+        return TableData.createWithSingleHeadersRow(data, Arrays.asList(xAxisLabel, "Antal sjukfall totalt", "Antal sjukfall för kvinnor", "Antal sjukfall för män"));
     }
 
     private ChartData convertToChartData(SimpleKonResponse<SimpleKonDataRow> casesPerMonth) {

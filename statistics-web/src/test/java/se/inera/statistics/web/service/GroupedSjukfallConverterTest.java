@@ -13,13 +13,13 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
-public class SjukfallPerBusinessConverterTest {
+public class GroupedSjukfallConverterTest {
 
     // CHECKSTYLE:OFF MagicNumber
 
     @Test
     public void convertTest() {
-        SjukfallPerBusinessConverter converter = new SjukfallPerBusinessConverter();
+        GroupedSjukfallConverter converter = new GroupedSjukfallConverter("Vårdenhet");
         List<SimpleKonDataRow> businessRows = new ArrayList<>();
         businessRows.add(new SimpleKonDataRow("enhet1", 12, 13));
         businessRows.add(new SimpleKonDataRow("enhet2", 20, 30));

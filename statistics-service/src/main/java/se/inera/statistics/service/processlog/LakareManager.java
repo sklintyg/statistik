@@ -40,19 +40,19 @@ public class LakareManager {
         String vardgivareId = HSAServiceHelper.getVardgivarId(hsaInfo);
         String lakareId = HSAServiceHelper.getLakareId(hsaInfo);
         String tilltalsNamn = HSAServiceHelper.getLakareTilltalsnamn(hsaInfo);
-        String eftertNamn = HSAServiceHelper.getLakareEfternamn(hsaInfo);
+        String efterNamn = HSAServiceHelper.getLakareEfternamn(hsaInfo);
 
         TypedQuery<Lakare> lakareQuery = manager.createQuery("SELECT l FROM Lakare l WHERE l.lakareId = :lakareId", Lakare.class);
         List<Lakare> resultList = lakareQuery.setParameter("lakareId", lakareId).getResultList();
 
         if (resultList.isEmpty()) {
-            manager.persist(new Lakare(vardgivareId, lakareId, tilltalsNamn, eftertNamn));
+            manager.persist(new Lakare(vardgivareId, lakareId, tilltalsNamn, efterNamn));
         } else {
             Lakare updatedLakare = resultList.get(0);
             updatedLakare.setVardgivareId(vardgivareId);
             updatedLakare.setLakareId(lakareId);
             updatedLakare.setTilltalsNamn(tilltalsNamn);
-            updatedLakare.setEfterNamn(eftertNamn);
+            updatedLakare.setEfterNamn(efterNamn);
             manager.merge(updatedLakare);
         }
     }

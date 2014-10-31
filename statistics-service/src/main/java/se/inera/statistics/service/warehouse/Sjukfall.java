@@ -1,5 +1,7 @@
 package se.inera.statistics.service.warehouse;
 
+import se.inera.statistics.service.report.model.Kon;
+
 import java.util.HashSet;
 import java.util.Set;
 
@@ -50,8 +52,8 @@ public class Sjukfall {
         lakare.add(line.getLakarid());
     }
 
-    public int getKon() {
-        return kon;
+    public Kon getKon() {
+        return kon == 0 ? Kon.Female : Kon.Male;
     }
 
     /**

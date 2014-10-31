@@ -27,21 +27,22 @@ import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.SimpleKonDataRow;
 import se.inera.statistics.service.report.model.SimpleKonResponse;
-import se.inera.statistics.web.model.ChartData;
-import se.inera.statistics.web.model.ChartSeries;
-import se.inera.statistics.web.model.NamedData;
-import se.inera.statistics.web.model.SimpleDetailsData;
-import se.inera.statistics.web.model.TableData;
+import se.inera.statistics.web.model.*;
 
 public class SimpleDualSexConverter {
+
+    public SimpleDetailsData convert(SimpleKonResponse<SimpleKonDataRow> casesPerMonth, Range range) {
+        TableData tableData = convertToTableData(casesPerMonth.getRows());
+        ChartData chartData = convertToChartData(casesPerMonth);
+        return new SimpleDetailsData(tableData, chartData, range.getMonths(), range.toString());
+    }
 
     private TableData convertToTableData(List<SimpleKonDataRow> list) {
         List<NamedData> data = new ArrayList<>();
         for (SimpleKonDataRow row : list) {
             final Integer female = row.getFemale();
             final Integer male = row.getMale();
-            int rowSum = female + male;
-            data.add(new NamedData(row.getName(), Arrays.asList(rowSum, female, male)));
+            data.add(new NamedData(row.getName(), Arrays.asList(female + male, female, male)));
         }
 
         return TableData.createWithSingleHeadersRow(data, Arrays.asList("Period", "Antal sjukfall totalt", "Antal sjukfall för kvinnor", "Antal sjukfall för män"));
@@ -61,9 +62,4 @@ public class SimpleDualSexConverter {
         return new ChartData(series, categories);
     }
 
-    public SimpleDetailsData convert(SimpleKonResponse<SimpleKonDataRow> casesPerMonth, Range range) {
-        TableData tableData = convertToTableData(casesPerMonth.getRows());
-        ChartData chartData = convertToChartData(casesPerMonth);
-        return new SimpleDetailsData(tableData, chartData, range.getMonths(), range.toString());
-    }
 }

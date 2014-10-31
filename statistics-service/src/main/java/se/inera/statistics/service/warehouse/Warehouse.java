@@ -1,5 +1,7 @@
 package se.inera.statistics.service.warehouse;
 
+import com.google.common.collect.BiMap;
+import com.google.common.collect.HashBiMap;
 import org.joda.time.LocalDateTime;
 
 import java.util.Collections;
@@ -53,18 +55,18 @@ public class Warehouse implements Iterable<Aisle> {
     }
 
     public static int getEnhetAndRemember(String id) {
-        return enhetsMap.getId(id);
+        return enhetsMap.getOrCreateId(id);
     }
 
     public static int getEnhet(String id) {
         return enhetsMap.maybeGetId(id);
     }
 
-    public static int getLakareAndRemember(String id) {
-        return lakareMap.getId(id);
+    public static int getNumLakarIdAndRemember(String id) {
+        return lakareMap.getOrCreateId(id);
     }
 
-    public static int getLakare(String id) {
+    public static int getNumLakarId(String id) {
         return lakareMap.maybeGetId(id);
     }
 
@@ -82,9 +84,9 @@ public class Warehouse implements Iterable<Aisle> {
     }
 
     private static class IdMap<T> {
-        private final Map<T, Integer> map = new HashMap<>();
+        private final BiMap<T, Integer> map = HashBiMap.create();
 
-        public synchronized Integer getId(T key) {
+        public synchronized Integer getOrCreateId(T key) {
             Integer id = map.get(key);
             if (id == null) {
                 id = map.size() + 1;

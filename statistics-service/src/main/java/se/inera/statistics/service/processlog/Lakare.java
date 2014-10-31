@@ -23,6 +23,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import java.util.Objects;
 
 @Entity
 public class Lakare {
@@ -46,7 +47,8 @@ public class Lakare {
         this.efterNamn = efterNamn;
     }
 
-    public Lakare() {}
+    public Lakare() {
+    }
 
     public void setId(long id) {
         this.id = id;
@@ -86,6 +88,24 @@ public class Lakare {
 
     public void setEfterNamn(String efterNamn) {
         this.efterNamn = efterNamn;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null) return false;
+        if (getClass() != o.getClass()) return false;
+
+        final Lakare other = (Lakare) o;
+
+        return Objects.equals(this.vardgivareId, other.vardgivareId) &&
+                Objects.equals(this.lakareId, other.lakareId) &&
+                Objects.equals(this.tilltalsNamn, other.tilltalsNamn) &&
+                Objects.equals(this.efterNamn, other.efterNamn);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(vardgivareId, lakareId, tilltalsNamn, efterNamn);
     }
 
 }

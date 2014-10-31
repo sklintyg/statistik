@@ -3,6 +3,7 @@ package se.inera.statistics.service.warehouse;
 import org.joda.time.LocalDate;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import se.inera.statistics.service.report.model.Kon;
 
 public class Fact {
     public static final String HEADING = "lan;kommun;forsamling;enhet;lakarintyg;patient;startdatum;kon;alder;diagnoskapitel;"
@@ -244,8 +245,8 @@ public class Fact {
             return this;
         }
 
-        public FactBuilder withKon(int kon) {
-            this.kon = kon;
+        public FactBuilder withKon(Kon kon) {
+            this.kon = kon == Kon.Female ? 0 : 1;
             return this;
         }
 
@@ -279,8 +280,8 @@ public class Fact {
             return this;
         }
 
-        public FactBuilder withLakarkon(int lakarkon) {
-            this.lakarkon = lakarkon;
+        public FactBuilder withLakarkon(Kon lakarkon) {
+            this.lakarkon = lakarkon == Kon.Female ? 0 : 1;
             return this;
         }
 

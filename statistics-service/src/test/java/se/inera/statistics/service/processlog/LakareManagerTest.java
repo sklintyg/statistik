@@ -36,7 +36,7 @@ public class LakareManagerTest {
         assertEquals(1, allLakares.size());
         assertEquals("lakare", allLakares.get(0).getLakareId());
         assertEquals("Sirkka", allLakares.get(0).getTilltalsNamn());
-        assertEquals("Sadat", allLakares.get(0).getEfterNamn());
+        assertEquals("Uddhammar", allLakares.get(0).getEfterNamn());
     }
 
     @Test
@@ -50,10 +50,10 @@ public class LakareManagerTest {
         assertEquals(2, allLakares.size());
         assertEquals("lakare1", allLakares.get(0).getLakareId());
         assertEquals("Ibrahim", allLakares.get(0).getTilltalsNamn());
-        assertEquals("Isaac", allLakares.get(0).getEfterNamn());
+        assertEquals("Lazar", allLakares.get(0).getEfterNamn());
         assertEquals("lakare2", allLakares.get(1).getLakareId());
         assertEquals("David", allLakares.get(1).getTilltalsNamn());
-        assertEquals("Derrida", allLakares.get(1).getEfterNamn());
+        assertEquals("Andersson", allLakares.get(1).getEfterNamn());
     }
 
 }

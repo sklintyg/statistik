@@ -19,7 +19,6 @@
 
 package se.inera.statistics.web.service;
 
-import com.google.common.base.Function;
 import com.google.common.base.Splitter;
 import org.joda.time.LocalDate;
 import org.slf4j.Logger;
@@ -55,12 +54,9 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import static com.google.common.collect.Lists.transform;
 
 /**
  * Statistics services that requires authorization to use. Unless otherwise noted, the data returned
@@ -141,7 +137,7 @@ public class ProtectedChartDataService {
         Verksamhet verksamhet = getVerksamhet(request, Verksamhet.decodeId(verksamhetId));
         SjukfallUtil.EnhetFilter filter = getFilter(request, verksamhet, getIdsFromIdString(idString));
         SimpleKonResponse<SimpleKonDataRow> casesPerEnhet = warehouse.getCasesPerEnhet(filter, range, verksamhet.getVardgivarId());
-        return new SjukfallPerBusinessConverter().convert(casesPerEnhet, range);
+        return new GroupedSjukfallConverter("Vårdenhet").convert(casesPerEnhet, range);
     }
 
     /**
@@ -149,17 +145,17 @@ public class ProtectedChartDataService {
      *
      */
     @GET
-    @Path("{verksamhetId}/getNumberOfCasesPerEnhet")
+    @Path("{verksamhetId}/getNumberOfCasesPerLakare")
     @Produces({MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request, #verksamhetId)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request, #verksamhetId)")
     public SimpleDetailsData getNumberOfCasesPerLakare(@Context HttpServletRequest request, @PathParam(VERKSAMHET_PATH_ID) String verksamhetId, @QueryParam(ID_STRING) String idString) {
-        LOG.info("Calling getNumberOfCasesPerEnhet with verksamhetId: {} and ids: {}", verksamhetId, idString);
+        LOG.info("Calling getNumberOfCasesPerLakare with verksamhetId: {} and ids: {}", verksamhetId, idString);
         final Range range = new Range(12);
         Verksamhet verksamhet = getVerksamhet(request, Verksamhet.decodeId(verksamhetId));
         SjukfallUtil.EnhetFilter filter = getFilter(request, verksamhet, getIdsFromIdString(idString));
         SimpleKonResponse<SimpleKonDataRow> casesPerLakare = warehouse.getCasesPerLakare(filter, range, verksamhet.getVardgivarId());
-        return new SjukfallPerBusinessConverter().convert(casesPerLakare, range);
+        return new GroupedSjukfallConverter("Läkare").convert(casesPerLakare, range);
     }
 
     /**
