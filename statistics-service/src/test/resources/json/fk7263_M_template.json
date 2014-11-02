@@ -1,11 +1,14 @@
 {
     "id": {
-        "root": "80832895-5a9c-450a-bd74-08af43750788"
-	},
+        "root": "1.2.752.129.2.1.2.1",
+        "extension": "80832895-5a9c-450a-bd74-08af43750788"
+    },
     "typ": {
+        "codeSystem":"f6fb361a-e31d-48b8-8657-99b63912dd9b",
+        "codeSystemName": "kv_utlåtandetyp_intyg",
         "code": "fk7263"
     },
-    "kommentars": [ "Prognosen för patienten är god. Han kommer att kunna återgå till sitt arbete efter genomförd behandling." ],
+    "kommentarer": [ "Prognosen för patienten är god. Han kommer att kunna återgå till sitt arbete efter genomförd behandling." ],
     "signeringsdatum": "2011-01-26T00:00:00.000",
     "skickatdatum": "2011-03-23T09:29:15.000",
     "patient": {
@@ -15,16 +18,15 @@
         },
         "fornamn": [ "Test" ],
         "efternamn": "Testorsson",
-        "sysselsattnings": [
+        "sysselsattningar": [
             {
-                "sysselsattningsTyp": {
+                "sysselsattningstyp": {
                     "code": "224375002",
                     "codeSystem": "1.2.752.116.2.1.1.1",
                     "codeSystemName": "SNOMED-CT"
                 }
-            }
-        ],
-        "arbetsuppgifts": [
+            } ],
+        "arbetsuppgifter" : [
             {
                 "typAvArbetsuppgift": "Cirkusartist"
             }
@@ -35,7 +37,7 @@
             "root": "1.2.752.129.2.1.4.1",
             "extension": "Personal HSA-ID"
         },
-        "namn": "",
+        "namn": "Hans Njurgren",
         "forskrivarkod": "1234567",
         "vardenhet": {
             "id": {
@@ -46,18 +48,18 @@
                 "root": "1.2.752.29.4.71",
                 "extension": "123456789011"
             },
-            "namn": "",
+            "namn": "Centrum Väst Mott",
             "postadress": "Lasarettsvägen 13",
-            "postnummer": "85150",
-            "postort": "Sundsvall",
-            "telefonnummer": "060-1818000",
-            "epost": "kirmott@vardenhet.se",
+            "postnummer": "721 61",
+            "postort": "Västerås",
+            "telefonnummer": "021-1818000",
+            "epost": "centrum-vast@vardenhet.se",
             "vardgivare": {
                 "id": {
                     "root": "1.2.752.129.2.1.4.1",
                     "extension": "VardgivarId"
                 },
-                "namn": "Landstinget Norrland"
+                "namn": "Landstinget Västmanland"
             }
         }
     },
@@ -139,47 +141,50 @@
                 "from": "2011-01-24",
                 "tom": "2011-02-20"
             },
-            "prognoser": [
-                {
-                    "prognoskod": {
-                        "codeSystem": "3de65a8b-ae2c-48ce-b6fe-35bdd1f60cf7",
-                        "codeSystemName": "kv_prognos_intyg",
-                        "code": "PRO1"
-                    },
-                    "beskrivning": "Patienten kan inte utöva sitt yrke förrän en förbättring sker med avseende på yrseln. Det är förenat med livsfara att utföra trapetskonster och samtidigt lida av yrsel. Patientens besvär kommer dock att först minska för att därefter helt upphöra efter genomförd behandling."
-                }
-            ],
             "varde": [
                 {
-                    "quantity": 0,
-                    "unit": "percent"
+                "@class": "se.inera.certificate.model.PhysicalQuantity",
+                "quantity": 50,
+                "unit": "percent"
+            } ]
+        }, {
+            "observationskod": {
+                "codeSystem": "1.2.752.116.2.1.1.1",
+                "codeSystemName": "SNOMED-CT",
+                "code": "170967006"
+                    },
+                    "beskrivning": "Patienten kan inte utöva sitt yrke förrän en förbättring sker med avseende på yrseln. Det är förenat med livsfara att utföra trapetskonster och samtidigt lida av yrsel. Patientens besvär kommer dock att först minska för att därefter helt upphöra efter genomförd behandling."
+                    ,
+            "varde": [
+                {
+                    "@class": "se.inera.certificate.model.Kod",
+                    "codeSystem": "3de65a8b-ae2c-48ce-b6fe-35bdd1f60cf7",
+                    "codeSystemName": "kv_prognos_intyg",
+                    "code": "PRO1"
                 }
             ]
-        }
-    ],
-    "vardkontakter": [
-        {
-            "vardkontakttyp": {
-                "code": "5880005",
-                "codeSystem": "1.2.752.116.2.1.1.1",
-                "codeSystemName": "SNOMED-CT"
-            },
-            "vardkontaktstid": {
-                "start": "2011-01-24",
-                "end": "2011-01-24"
-            }
+        } ],
+    "vardkontakter" : [ {
+        "vardkontakttyp" : {
+            "code" : "5880005",
+            "codeSystem" : "1.2.752.116.2.1.1.1",
+            "codeSystemName" : "SNOMED-CT"
         },
-        {
-            "vardkontakttyp": {
-                "code": "185317003",
-                "codeSystem": "1.2.752.116.2.1.1.1",
-                "codeSystemName": "SNOMED-CT"
-            },
-            "vardkontaktstid": {
-                "start": "2011-01-12",
-                "end": "2011-01-12"
-            }
+        "vardkontaktstid" : {
+            "from"  : "2012-12-23",
+            "tom"  : "2012-12-23"
         }
+    }, {
+        "vardkontakttyp": {
+            "code": "185317003",
+            "codeSystem" : "1.2.752.116.2.1.1.1",
+            "codeSystemName" : "SNOMED-CT"
+        },
+            "vardkontaktstid": {
+                "from": "2011-01-12",
+                "tom": "2011-01-12"
+        }
+    }
     ],
     "referenser": [
         {

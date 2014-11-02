@@ -38,6 +38,7 @@ public final class DocumentHelper {
 
     public static final Matcher DIAGNOS_MATCHER = Matcher.Builder.matcher("observationskategori").add(Matcher.Builder.matcher("code", "439401001")).add((Matcher.Builder.matcher("codeSystem", "1.2.752.116.2.1.1.1")));
     public static final Matcher ARBETSFORMAGA_MATCHER = Matcher.Builder.matcher("observationskod").add(Matcher.Builder.matcher("code", "302119000")).add((Matcher.Builder.matcher("codeSystem", "1.2.752.116.2.1.1.1")));
+    public static final String DOCUMENT_ID = "1.2.752.129.2.1.2.1";
 
     private DocumentHelper() {
     }
@@ -141,7 +142,11 @@ public final class DocumentHelper {
     }
 
     public static String getIntygId(JsonNode document) {
-        return document.path("id").path("root").textValue();
+        String id = document.path("id").path("root").textValue();
+        if (DOCUMENT_ID.equals(id)) {
+            id = document.path("id").path("extension").textValue();
+        }
+        return id;
     }
 
     public static JsonNode prepare(JsonNode utlatande, JsonNode hsaInfo) {
