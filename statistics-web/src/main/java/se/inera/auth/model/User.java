@@ -57,14 +57,12 @@ public class User {
     }
 
     public boolean hasVgAccess() {
-        return vgAccess || vardenhetList.size() > 1;
+        // A "processledare" is NOT a "delprocessledare"
+        return !vgAccess && vardenhetList.size() > 1;
     }
 
     public boolean hasFullVgAccess() {
         return vgAccess;
     }
 
-    public boolean hasGlobalAccess() {
-        return vgAccess;
-    }
 }

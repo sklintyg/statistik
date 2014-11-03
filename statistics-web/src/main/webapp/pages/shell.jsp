@@ -316,7 +316,7 @@
                                         <li ng-show="isFullVgAccess"><a data-ng-href="#/verksamhet/{{businessId}}/sjukfallperenhet"
                                                id="navBusinessCasesPerMonthLink" ctrlname="VerksamhetCasesPerBusinessCtrl"
                                                navigationaware><span message key="nav.vardenhet"></span></a></li>
-                                        <li ng-show="isFullVgAccess"><a data-ng-href="#/verksamhet/{{businessId}}/sjukfallperlakare"
+                                        <li ng-show="!isFullVgAccess"><a data-ng-href="#/verksamhet/{{businessId}}/sjukfallperlakare"
                                                id="navBusinessCasesPerLakareLink" ctrlname="VerksamhetCasesPerLakareCtrl"
                                                navigationaware>Läkare</a>
                                         </li>

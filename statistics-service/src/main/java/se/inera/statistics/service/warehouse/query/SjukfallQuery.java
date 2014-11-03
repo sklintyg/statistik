@@ -62,37 +62,40 @@ public final class SjukfallQuery {
     public SimpleKonResponse<SimpleKonDataRow> getSjukfallPerLakare(String vardgivarId, Aisle aisle, Predicate<Fact> filter, Range range, int perioder, int periodlangd) {
         Collection<Sjukfall> sjukfalls = SjukfallUtil.active(range, aisle, filter);
         List<Lakare> allLakaresForVardgivare = lakareManager.getLakares(vardgivarId);
+        // Two counters for sjukfall per sex
         final Multiset<Lakare> femaleSjukfallPerLakare = HashMultiset.create();
         final Multiset<Lakare> maleSjukfallPerLakare = HashMultiset.create();
 
         for (Sjukfall sjukfall : sjukfalls) {
             for (Integer lakarId : sjukfall.getLakare()) {
                 Lakare lakare = getLakare(allLakaresForVardgivare, lakarId);
-                if (sjukfall.getKon() == Kon.Female) {
-                    femaleSjukfallPerLakare.add(lakare);
-                } else {
-                    maleSjukfallPerLakare.add(lakare);
+                if (lakare != null) {
+                    if (sjukfall.getKon() == Kon.Female) {
+                        femaleSjukfallPerLakare.add(lakare);
+                    } else {
+                        maleSjukfallPerLakare.add(lakare);
+                    }
                 }
             }
         }
 
+        // All lakares who have male or female sjukfalls
         Set<Lakare> allLakaresWithSjukfall = Multisets.union(femaleSjukfallPerLakare, maleSjukfallPerLakare).elementSet();
         final Set<String> duplicateNames = findDuplicates(allLakaresWithSjukfall);
 
-        List<SimpleKonDataRow> result = from(allLakaresWithSjukfall).transform(new Function<Lakare, SimpleKonDataRow>() {
-            @Override
-            public SimpleKonDataRow apply(Lakare lakare) {
-                String lakarNamn = lakarNamn(lakare);
-                if (duplicateNames.contains(lakarNamn)) {
-                    lakarNamn = lakarNamn + " " + lakare.getLakareId();
-                }
-                return new SimpleKonDataRow(lakarNamn, femaleSjukfallPerLakare.count(lakare), maleSjukfallPerLakare.count(lakare));
+        List<SimpleKonDataRow> result = new ArrayList<>();
+        for (Lakare lakare : allLakaresWithSjukfall) {
+            String lakarNamn = lakarNamn(lakare);
+            if (duplicateNames.contains(lakarNamn)) {
+                lakarNamn = lakarNamn + " " + lakare.getLakareId();
             }
-        }).toList();
+            result.add(new SimpleKonDataRow(lakarNamn, femaleSjukfallPerLakare.count(lakare), maleSjukfallPerLakare.count(lakare)));
+        }
 
         return new SimpleKonResponse<>(result, perioder * periodlangd);
     }
 
+    // Collect a list of all "läkar-namn" that exist more than once in the set of lakare
     private Set<String> findDuplicates(Set<Lakare> lakares) {
         Set<String> duplicates = new HashSet<>();
         Set<String> seenLakarNames = new HashSet<>();
@@ -116,7 +119,7 @@ public final class SjukfallQuery {
             public boolean apply(Lakare lakare) {
                 return lakarId == Warehouse.getNumLakarId(lakare.getLakareId());
             }
-        });
+        }, null);
     }
 
     @VisibleForTesting

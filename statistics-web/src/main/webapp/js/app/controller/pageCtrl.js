@@ -57,9 +57,9 @@ angular.module('StatisticsApp').controller('pageCtrl', [ '$scope', '$rootScope',
                     var v = self.getSelectedVerksamhet($scope.businessId, loginInfo.businesses);
                     $scope.verksamhetName = loginInfo.vgView ? ("- " + v.vardgivarName + (loginInfo.fullVgAccess ? "(alla enheter)" : "(vissa enheter)")) : v.name;
                     $scope.userName = loginInfo.name;
-                    $scope.isVgView = loginInfo.vgView;
                     $scope.userNameWithAccess = loginInfo.name;
 
+                    $rootScope.isVgAccess = loginInfo.vgAccess;
                     $rootScope.isFullVgAccess = loginInfo.fullVgAccess;
                 }, function () {
                     $scope.dataLoadingError = true;
