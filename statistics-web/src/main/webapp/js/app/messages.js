@@ -25,6 +25,7 @@ var stMessages = {
         'nav.mobile.trigger.diagnosgrupp-diagnoskapitel': 'Diagnosgrupp och enskilt diagnoskapitel',
         'nav.mobile.trigger.lan-andel-per-kon': 'Län och andel sjukfall per kön',
         'nav.vardenhet':'Vårdenhet',
+        'nav.lakare':'Läkare',
         'nav.pagaende':'Pågående',
         'nav.sjukskrivningslangd-pagaende':'Pågående',
         'nav.sjukskrivningslangd-mer-an-90-dagar':'Mer än 90 dagar',
