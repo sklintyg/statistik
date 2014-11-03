@@ -57,6 +57,7 @@ public class WidelineToWarehouseIntegrationTest {
         line1.setEnhet("e1");
         line1.setKon(1);
         line1.setLkf("078002");
+        line1.setLakareId("lid");
         line1.setLakaralder(33);
         line1.setLakarbefattning("201010");
         line1.setLakarintyg(1L);
