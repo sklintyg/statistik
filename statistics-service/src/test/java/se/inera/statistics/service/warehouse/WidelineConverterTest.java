@@ -44,7 +44,7 @@ public class WidelineConverterTest {
 
     private static final Logger LOG = LoggerFactory.getLogger(WidelineConverterTest.class);
 
-    WideLine wideLine = new WideLine(1, "{id}", "256002", "enhet", 1, EventType.CREATED, "19121212-1212", 4000, 4021, 0, 45, "A00", "A00-A09", "A00-B99", 100, 0, 32, "201010", "vardgivare");
+    WideLine wideLine = new WideLine(1, "{id}", "256002", "enhet", 1, EventType.CREATED, "19121212-1212", 4000, 4021, 0, 45, "A00", "A00-A09", "A00-B99", 100, 0, 32, "201010", "vardgivare", "lakare");
     @Autowired
     private WidelineConverter converter;
 
@@ -113,6 +113,6 @@ public class WidelineConverterTest {
         List<String> errors = converter.validate(new WideLine());
 
         LOG.error("Error message: {}", errors);
-        assertEquals(6, errors.size());
+        assertEquals(7, errors.size());
     }
 }

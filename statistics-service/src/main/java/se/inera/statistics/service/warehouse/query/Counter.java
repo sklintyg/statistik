@@ -1,5 +1,6 @@
 package se.inera.statistics.service.warehouse.query;
 
+import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.warehouse.Sjukfall;
 
 import java.util.HashMap;
@@ -16,7 +17,7 @@ public class Counter<T> implements Comparable<Counter> {
     }
 
     public void increase(Sjukfall sjukfall) {
-        if (sjukfall.getKon() == 0) {
+        if (sjukfall.getKon() == Kon.Female) {
             countFemale++;
         } else {
             countMale++;

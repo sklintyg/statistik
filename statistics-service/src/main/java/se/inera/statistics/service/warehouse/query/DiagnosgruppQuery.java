@@ -4,11 +4,7 @@ import com.google.common.base.Predicate;
 import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import se.inera.statistics.service.report.model.Avsnitt;
-import se.inera.statistics.service.report.model.DiagnosgruppResponse;
-import se.inera.statistics.service.report.model.KonDataRow;
-import se.inera.statistics.service.report.model.KonField;
-import se.inera.statistics.service.report.model.OverviewChartRowExtended;
+import se.inera.statistics.service.report.model.*;
 import se.inera.statistics.service.report.util.Icd10;
 import se.inera.statistics.service.report.util.ReportUtil;
 import se.inera.statistics.service.warehouse.Aisle;
@@ -67,7 +63,7 @@ public class DiagnosgruppQuery {
             int[] female = new int[MAX_DIAGNOS_ID];
             int[] male = new int[MAX_DIAGNOS_ID];
             for (Sjukfall sjukfall: sjukfallGroup.getSjukfall()) {
-                if (sjukfall.getKon() == 0) {
+                if (sjukfall.getKon() == Kon.Female) {
                     female[sjukfall.getDiagnoskapitel()]++;
                 } else {
                     male[sjukfall.getDiagnoskapitel()]++;
@@ -99,7 +95,7 @@ public class DiagnosgruppQuery {
             int[] male = new int[MAX_DIAGNOS_ID];
             for (Sjukfall sjukfall: sjukfallGroup.getSjukfall()) {
 
-                if (sjukfall.getKon() == 0) {
+                if (sjukfall.getKon() == Kon.Female) {
                     female[sjukfall.getDiagnosavsnitt()]++;
                 } else {
                     male[sjukfall.getDiagnosavsnitt()]++;

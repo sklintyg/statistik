@@ -27,12 +27,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import se.inera.ifv.hsawsresponder.v3.GeoCoord;
-import se.inera.ifv.hsawsresponder.v3.GeoCoordEnum;
-import se.inera.ifv.hsawsresponder.v3.GetStatisticsCareGiverResponseType;
-import se.inera.ifv.hsawsresponder.v3.GetStatisticsHsaUnitResponseType;
-import se.inera.ifv.hsawsresponder.v3.GetStatisticsPersonResponseType;
-import se.inera.ifv.hsawsresponder.v3.StatisticsHsaUnit;
+import se.inera.ifv.hsawsresponder.v3.*;
 import se.inera.ifv.hsawsresponder.v3.StatisticsHsaUnit.BusinessClassificationCodes;
 import se.inera.ifv.hsawsresponder.v3.StatisticsHsaUnit.BusinessTypes;
 import se.inera.ifv.hsawsresponder.v3.StatisticsHsaUnit.CareTypes;
@@ -47,6 +42,8 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 @Component
 public class HSAServiceImpl implements HSAService {
     private static final Logger LOG = LoggerFactory.getLogger(HSAServiceImpl.class);
+    private static final String SKYDDAD = "Skyddad";
+    private static final String IDENTITET = "Identitet";
     private JsonNodeFactory factory = JsonNodeFactory.instance;
 
     @Autowired
@@ -58,6 +55,7 @@ public class HSAServiceImpl implements HSAService {
             GetStatisticsHsaUnitResponseType unit = getStatisticsHsaUnit(key.getEnhetId());
             GetStatisticsCareGiverResponseType caregiver = getStatisticsCareGiver(key.getVardgivareId());
             GetStatisticsPersonResponseType personal = getStatisticsPerson(key.getLakareId());
+            GetStatisticsNamesResponseType names = getStatisticsNames(key.getLakareId());
 
             Builder root = new Builder();
             if (unit != null) {
@@ -65,7 +63,7 @@ public class HSAServiceImpl implements HSAService {
                 root.put("huvudenhet", createUnit(unit.getStatisticsCareUnit()));
             }
             root.put("vardgivare", createCareGiver(caregiver));
-            root.put("personal", createPersonal(personal));
+            root.put("personal", createPersonal(personal, names));
             return root.root;
         } catch (RuntimeException e) {
             LOG.error("Unexpected error fetching HSA data", e);
@@ -75,6 +73,14 @@ public class HSAServiceImpl implements HSAService {
 
     private GetStatisticsPersonResponseType getStatisticsPerson(String key) {
         GetStatisticsPersonResponseType person = service.getStatisticsPerson(key);
+        if (person == null) {
+            LOG.warn("No person '{}' found", key);
+        }
+        return person;
+    }
+
+    private GetStatisticsNamesResponseType getStatisticsNames(String key) {
+        GetStatisticsNamesResponseType person = service.getStatisticsNames(key);
         if (person == null) {
             LOG.warn("No person '{}' found", key);
         }
@@ -97,7 +103,7 @@ public class HSAServiceImpl implements HSAService {
         return unit;
     }
 
-    private Builder createPersonal(GetStatisticsPersonResponseType personal) {
+    private Builder createPersonal(GetStatisticsPersonResponseType personal, GetStatisticsNamesResponseType names) {
         if (personal == null) {
             return null;
         }
@@ -109,7 +115,29 @@ public class HSAServiceImpl implements HSAService {
         root.put("specialitet", personal.getSpecialityCodes() != null ? personal.getSpecialityCodes().getSpecialityCode() : null);
         root.put("yrkesgrupp", personal.getHsaTitles() != null ? personal.getHsaTitles().getHsaTitle() : null);
         root.put("skyddad", personal.isIsProtectedPerson());
+        root.put("tilltalsnamn", getFornamn(names, personal.isIsProtectedPerson()));
+        root.put("efternamn", getMellanOchEfternamn(names, personal.isIsProtectedPerson()));
         return root;
+    }
+
+    private String getFornamn(GetStatisticsNamesResponseType names, boolean isProtected) {
+        if (isProtected) {
+            return SKYDDAD;
+        }
+        if (names == null) {
+            return null;
+        }
+        return names.getStatisticsNameInfos().getStatisticsNameInfo().get(0).getPersonGivenName();
+    }
+
+    private String getMellanOchEfternamn(GetStatisticsNamesResponseType names, boolean isProtected) {
+        if (isProtected) {
+            return IDENTITET;
+        }
+        if (names == null) {
+            return null;
+        }
+        return names.getStatisticsNameInfos().getStatisticsNameInfo().get(0).getPersonMiddleAndSurName();
     }
 
     private Builder createCareGiver(GetStatisticsCareGiverResponseType caregiver) {

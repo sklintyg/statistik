@@ -6,6 +6,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.report.util.Icd10;
 import se.inera.statistics.service.warehouse.Fact;
 import se.inera.statistics.service.warehouse.Sjukfall;
@@ -17,6 +18,7 @@ import java.util.List;
 import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
+import static se.inera.statistics.service.warehouse.Fact.aFact;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:icd10.xml", "classpath:query-test.xml"})
@@ -68,7 +70,13 @@ public class DiagnosgruppQueryTest {
     }
 
     private void fact(int startday, int diagnoskapitel) {
-        Fact fact = new Fact(3, 380, 38002, 1, intyg++, patient++, startday, 0, 45, diagnoskapitel, 14, 16, 100, 10, 0, 32, 201010);
+        Fact fact = aFact().withLan(3).withKommun(380).withForsamling(38002).
+                withEnhet(1).withLakarintyg(intyg++).
+                withPatient(patient++).withKon(Kon.Female).withAlder(45).
+                withDiagnoskapitel(diagnoskapitel).withDiagnosavsnitt(14).withDiagnoskategori(16).
+                withSjukskrivningsgrad(100).withStartdatum(startday).withSjukskrivningslangd(10).
+                withLakarkon(Kon.Female).withLakaralder(32).withLakarbefatttning(201010).withLakarid(1).build();
+
         warehouse.accept(fact, VARDGIVARE);
     }
 }

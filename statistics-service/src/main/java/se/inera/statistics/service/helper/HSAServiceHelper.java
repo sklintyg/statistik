@@ -160,4 +160,19 @@ public final class HSAServiceHelper {
         return hsaData.path(enhet).path("namn").textValue();
     }
 
+    public static String getLakareId(JsonNode hsaData) {
+        String result = hsaData.path("personal").path("id").textValue();
+        return result != null ? result : "";
+    }
+
+    public static String getLakareTilltalsnamn(JsonNode hsaData) {
+        String result = hsaData.path("personal").path("tilltalsnamn").textValue();
+        return result != null ? result : "";
+    }
+
+    public static String getLakareEfternamn(JsonNode hsaData) {
+        String result = hsaData.path("personal").path("efternamn").textValue();
+        return result != null ? result : "";
+    }
+
 }

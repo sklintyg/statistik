@@ -27,7 +27,7 @@ public class LoginInfo {
     private final String hsaId;
     private final String name;
     private final Verksamhet defaultVerksamhet;
-    private final boolean isVgView;
+    private final boolean isVgAccess;
     private final boolean isFullVgAccess;
     private final boolean loggedIn;
     private final List<Verksamhet> businesses;
@@ -38,15 +38,15 @@ public class LoginInfo {
         name = "";
         defaultVerksamhet = null;
         businesses = Collections.emptyList();
-        isVgView = false;
+        isVgAccess = false;
         isFullVgAccess = false;
     }
 
-    public LoginInfo(String hsaId, String name, Verksamhet defaultVerksamhet, boolean isVgView, boolean isFullVgAccess, List<Verksamhet> businesses) {
+    public LoginInfo(String hsaId, String name, Verksamhet defaultVerksamhet, boolean isVgAccess, boolean isFullVgAccess, List<Verksamhet> businesses) {
         this.hsaId = hsaId;
         this.name = name;
         this.defaultVerksamhet = defaultVerksamhet;
-        this.isVgView = isVgView;
+        this.isVgAccess = isVgAccess;
         this.isFullVgAccess = isFullVgAccess;
         this.loggedIn = true;
         this.businesses = businesses;
@@ -68,8 +68,8 @@ public class LoginInfo {
         return loggedIn;
     }
 
-    public boolean isVgView() {
-        return isVgView;
+    public boolean isVgAccess() {
+        return isVgAccess;
     }
 
     public boolean isFullVgAccess() {

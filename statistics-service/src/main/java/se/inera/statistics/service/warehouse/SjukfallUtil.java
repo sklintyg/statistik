@@ -82,7 +82,7 @@ public final class SjukfallUtil {
         return active(calculateSjukfall(aisle, createEnhetFilter(enhetIds), WidelineConverter.toDay(firstDayAfter(range))), range);
     }
 
-    public static Collection<Sjukfall> active(Range range, Aisle aisle, EnhetFilter filter) {
+    public static Collection<Sjukfall> active(Range range, Aisle aisle, Predicate<Fact> filter) {
         return active(calculateSjukfall(aisle, filter, WidelineConverter.toDay(firstDayAfter(range))), range);
     }
 
@@ -103,7 +103,6 @@ public final class SjukfallUtil {
         }
         return new EnhetFilter(numericalIds);
     }
-
 
     public static EnhetFilter createEnhetFilter(String... enhetIds) {
         int[] numericalIds = new int[enhetIds.length];

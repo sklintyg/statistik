@@ -83,8 +83,9 @@ public class WidelineLoader {
         int lakaralder = resultSet.getInt("lakaralder");
         String lakarbefattning = resultSet.getString("lakarbefattning");
         String vardgivare = resultSet.getString("vardgivareid");
+        String lakareId = resultSet.getString("lakareid");
 
-        return new WideLine(id, correlationId, lkf, enhet, intyg, EventType.CREATED, patientid, startdatum, slutdatum, kon, alder, diagnoskapitel, diagnosavsnitt, diagnoskategori, sjukskrivningsgrad, lakarkon, lakaralder, lakarbefattning, vardgivare);
+        return new WideLine(id, correlationId, lkf, enhet, intyg, EventType.CREATED, patientid, startdatum, slutdatum, kon, alder, diagnoskapitel, diagnosavsnitt, diagnoskategori, sjukskrivningsgrad, lakarkon, lakaralder, lakarbefattning, vardgivare, lakareId);
     }
 
     private PreparedStatement prepareStatement(Connection connection) throws SQLException {
@@ -92,7 +93,7 @@ public class WidelineLoader {
         connection.setReadOnly(true);
         PreparedStatement stmt = connection.prepareStatement("select id, correlationid, lkf, enhet, lakarintyg, patientid, startdatum,"
                 + " slutdatum, kon, alder, diagnoskapitel, diagnosavsnitt, diagnoskategori, sjukskrivningsgrad, lakarkon, lakaralder,"
-                + " lakarbefattning, vardgivareid from wideline w1 where w1.correlationid not in (select correlationid from wideline where intygtyp = " + EventType.REVOKED.ordinal() + " )", ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
+                + " lakarbefattning, vardgivareid, lakareid from wideline w1 where w1.correlationid not in (select correlationid from wideline where intygtyp = " + EventType.REVOKED.ordinal() + " )", ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
         stmt.setFetchSize(FETCH_SIZE);
         return stmt;
     }

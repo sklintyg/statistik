@@ -77,7 +77,7 @@ public class LoginServiceUtil {
     }
 
     private List<Verksamhet> getVerksamhetsList(User realUser, final List<Enhet> enhetsList) {
-        if (realUser.hasGlobalAccess()) {
+        if (realUser.hasFullVgAccess()) {
             return transform(enhetsList, new Function<Enhet, Verksamhet>() {
                 @Override
                 public Verksamhet apply(Enhet enhet) {

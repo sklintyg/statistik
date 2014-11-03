@@ -6,16 +6,21 @@ import org.junit.Test;
 import java.util.Collection;
 import java.util.Iterator;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
+import static se.inera.statistics.service.report.model.Kon.Female;
+import static se.inera.statistics.service.warehouse.Fact.aFact;
 
 public class SjukfallUtilTest {
     private Aisle aisle = new Aisle();
 
     @Test
     public void oneIntygIsOneSjukfall() throws Exception {
-        Fact fact = new Fact(3, 380, 38002, 1, 1, 1, 4010, 0, 45, 0, 14, 16, 100, 47, 0, 32, 201010);
+        Fact fact = aFact().withLan(3).withKommun(380).withForsamling(38002).withEnhet(1).
+                withLakarintyg(1).withPatient(1).withStartdatum(4010).withKon(Female).withAlder(45).
+                withDiagnoskapitel(0).withDiagnosavsnitt(14).withDiagnoskategori(16).
+                withSjukskrivningsgrad(100).withSjukskrivningslangd(47).
+                withLakarkon(Female).withLakaralder(32).withLakarbefatttning(201010).withLakarid(1).build();
+
         aisle.addLine(fact);
         Collection<Sjukfall> sjukfalls = SjukfallUtil.calculateSjukfall(aisle);
         assertEquals(1, sjukfalls.size());
@@ -23,53 +28,104 @@ public class SjukfallUtilTest {
 
     @Test
     public void twoCloseIntygForSamePersonIsOneSjukfall() throws Exception {
-        Fact fact = new Fact(3, 380, 38002, 1, 1, 1, 4010, 0, 45, 0, 14, 16, 100, 10, 0, 32, 201010);
+        Fact fact = aFact().withLan(3).withKommun(380).withForsamling(38002).withEnhet(1).
+                withLakarintyg(1).withPatient(1).withStartdatum(4010).withKon(Female).withAlder(45).
+                withDiagnoskapitel(0).withDiagnosavsnitt(14).withDiagnoskategori(16).
+                withSjukskrivningsgrad(100).withSjukskrivningslangd(10).
+                withLakarkon(Female).withLakaralder(32).withLakarbefatttning(201010).withLakarid(1).build();
         aisle.addLine(fact);
-        fact = new Fact(3, 380, 38002, 1, 1, 1, 4025, 0, 45, 0, 14, 16, 100, 10, 0, 32, 201010);
-        aisle.addLine(fact);
+        Fact fact2 = aFact().withLan(3).withKommun(380).withForsamling(38002).withEnhet(1).
+                withLakarintyg(1).withPatient(1).withStartdatum(4025).withKon(Female).withAlder(45).
+                withDiagnoskapitel(0).withDiagnosavsnitt(14).withDiagnoskategori(16).
+                withSjukskrivningsgrad(100).withSjukskrivningslangd(10).
+                withLakarkon(Female).withLakaralder(32).withLakarbefatttning(201010).withLakarid(2).build();
+        aisle.addLine(fact2);
         Collection<Sjukfall> sjukfalls = SjukfallUtil.calculateSjukfall(aisle);
         assertEquals(1, sjukfalls.size());
 
         Sjukfall sjukfall = sjukfalls.iterator().next();
         assertEquals(2, sjukfall.getIntygCount());
         assertEquals(20, sjukfall.getRealDays());
+        assertEquals(2, sjukfall.getLakare().size());
+        assertTrue(sjukfall.getLakare().contains(1));
+        assertTrue(sjukfall.getLakare().contains(2));
     }
 
     @Test
     public void twoFarSeparatedIntygForSamePersonAreTwoSjukfall() throws Exception {
-        Fact fact = new Fact(3, 380, 38002, 1, 1, 1, 4010, 0, 45, 0, 14, 16, 100, 10, 0, 32, 201010);
+        Fact fact = aFact().withLan(3).withKommun(380).withForsamling(38002).withEnhet(1).
+                withLakarintyg(1).withPatient(1).withStartdatum(4010).withKon(Female).withAlder(45).
+                withDiagnoskapitel(0).withDiagnosavsnitt(14).withDiagnoskategori(16).
+                withSjukskrivningsgrad(100).withSjukskrivningslangd(10).
+                withLakarkon(Female).withLakaralder(32).withLakarbefatttning(201010).withLakarid(1).build();
         aisle.addLine(fact);
-        fact = new Fact(3, 380, 38002, 1, 1, 1, 4026, 0, 45, 0, 14, 16, 100, 10, 0, 32, 201010);
-        aisle.addLine(fact);
+        Fact fact2 = aFact().withLan(3).withKommun(380).withForsamling(38002).withEnhet(1).
+                withLakarintyg(1).withPatient(1).withStartdatum(4026).withKon(Female).withAlder(45).
+                withDiagnoskapitel(0).withDiagnosavsnitt(14).withDiagnoskategori(16).
+                withSjukskrivningsgrad(100).withSjukskrivningslangd(10).
+                withLakarkon(Female).withLakaralder(32).withLakarbefatttning(201010).withLakarid(1).build();
+        aisle.addLine(fact2);
         Collection<Sjukfall> sjukfalls = SjukfallUtil.calculateSjukfall(aisle);
         assertEquals(2, sjukfalls.size());
     }
 
     @Test
     public void twoIntygForTwoPersonsAreTwoSjukfall() throws Exception {
-        Fact fact = new Fact(3, 380, 38002, 1, 1, 1, 4010, 0, 45, 0, 14, 16, 100, 47, 0, 32, 201010);
+        Fact fact = aFact().withLan(3).withKommun(380).withForsamling(38002).withEnhet(1).
+                withLakarintyg(1).withPatient(1).withStartdatum(4010).withKon(Female).withAlder(45).
+                withDiagnoskapitel(0).withDiagnosavsnitt(14).withDiagnoskategori(16).
+                withSjukskrivningsgrad(100).withSjukskrivningslangd(47).
+                withLakarkon(Female).withLakaralder(32).withLakarbefatttning(201010).withLakarid(1).build();
         aisle.addLine(fact);
-        fact = new Fact(3, 380, 38002, 1, 1, 2, 4010, 0, 45, 0, 14, 16, 100, 47, 0, 32, 201010);
-        aisle.addLine(fact);
+        Fact fact2 = aFact().withLan(3).withKommun(380).withForsamling(38002).withEnhet(1).
+                withLakarintyg(1).withPatient(2).withStartdatum(4010).withKon(Female).withAlder(45).
+                withDiagnoskapitel(0).withDiagnosavsnitt(14).withDiagnoskategori(16).
+                withSjukskrivningsgrad(100).withSjukskrivningslangd(47).
+                withLakarkon(Female).withLakaralder(32).withLakarbefatttning(201010).withLakarid(1).build();
+        aisle.addLine(fact2);
         Collection<Sjukfall> sjukfalls = SjukfallUtil.calculateSjukfall(aisle);
         assertEquals(2, sjukfalls.size());
     }
 
     @Test
     public void sjukfallStartOnlyOnSelectedEnhetsButContinuesOnAnyEnhet() throws Exception {
-        Fact fact = new Fact(3, 380, 38002, 2, 1, 1, 4010, 0, 45, 0, 14, 16, 100, 10, 0, 32, 201010);
+        Fact fact = aFact().withLan(3).withKommun(380).withForsamling(38002).withEnhet(2).
+                withLakarintyg(1).withPatient(1).withStartdatum(4010).withKon(Female).withAlder(45).
+                withDiagnoskapitel(0).withDiagnosavsnitt(14).withDiagnoskategori(16).
+                withSjukskrivningsgrad(100).withSjukskrivningslangd(10).
+                withLakarkon(Female).withLakaralder(32).withLakarbefatttning(201010).withLakarid(1).build();
         aisle.addLine(fact);
-        fact = new Fact(3, 380, 38002, 1, 1, 1, 4020, 0, 45, 0, 14, 16, 100, 10, 0, 32, 201010);
-        aisle.addLine(fact);
-        fact = new Fact(3, 380, 38002, 2, 1, 1, 4030, 0, 45, 0, 14, 16, 100, 10, 0, 32, 201010);
-        aisle.addLine(fact);
+        Fact fact2 = aFact().withLan(3).withKommun(380).withForsamling(38002).withEnhet(1).
+                withLakarintyg(1).withPatient(1).withStartdatum(4020).withKon(Female).withAlder(45).
+                withDiagnoskapitel(0).withDiagnosavsnitt(14).withDiagnoskategori(16).
+                withSjukskrivningsgrad(100).withSjukskrivningslangd(10).
+                withLakarkon(Female).withLakaralder(32).withLakarbefatttning(201010).withLakarid(1).build();
+        aisle.addLine(fact2);
+        Fact fact3 = aFact().withLan(3).withKommun(380).withForsamling(38002).withEnhet(2).
+                withLakarintyg(1).withPatient(1).withStartdatum(4030).withKon(Female).withAlder(45).
+                withDiagnoskapitel(0).withDiagnosavsnitt(14).withDiagnoskategori(16).
+                withSjukskrivningsgrad(100).withSjukskrivningslangd(10).
+                withLakarkon(Female).withLakaralder(32).withLakarbefatttning(201010).withLakarid(1).build();
+        aisle.addLine(fact3);
 
-        fact = new Fact(3, 380, 38002, 2, 1, 2, 4010, 0, 45, 0, 14, 16, 100, 10, 0, 32, 201010);
-        aisle.addLine(fact);
-        fact = new Fact(3, 380, 38002, 3, 1, 2, 4020, 0, 45, 0, 14, 16, 100, 10, 0, 32, 201010);
-        aisle.addLine(fact);
-        fact = new Fact(3, 380, 38002, 2, 1, 2, 4030, 0, 45, 0, 14, 16, 100, 10, 0, 32, 201010);
-        aisle.addLine(fact);
+        Fact fact4 = aFact().withLan(3).withKommun(380).withForsamling(38002).withEnhet(2).
+                withLakarintyg(1).withPatient(2).withStartdatum(4010).withKon(Female).withAlder(45).
+                withDiagnoskapitel(0).withDiagnosavsnitt(14).withDiagnoskategori(16).
+                withSjukskrivningsgrad(100).withSjukskrivningslangd(10).
+                withLakarkon(Female).withLakaralder(32).withLakarbefatttning(201010).withLakarid(1).build();
+        aisle.addLine(fact4);
+        Fact fact5 = aFact().withLan(3).withKommun(380).withForsamling(38002).withEnhet(3).
+                withLakarintyg(1).withPatient(2).withStartdatum(4020).withKon(Female).withAlder(45).
+                withDiagnoskapitel(0).withDiagnosavsnitt(14).withDiagnoskategori(16).
+                withSjukskrivningsgrad(100).withSjukskrivningslangd(10).
+                withLakarkon(Female).withLakaralder(32).withLakarbefatttning(201010).withLakarid(1).build();
+        aisle.addLine(fact5);
+        Fact fact6 = aFact().withLan(3).withKommun(380).withForsamling(38002).withEnhet(2).
+                withLakarintyg(1).withPatient(2).withStartdatum(4030).withKon(Female).withAlder(45).
+                withDiagnoskapitel(0).withDiagnosavsnitt(14).withDiagnoskategori(16).
+                withSjukskrivningsgrad(100).withSjukskrivningslangd(10).
+                withLakarkon(Female).withLakaralder(32).withLakarbefatttning(201010).withLakarid(1).build();
+        aisle.addLine(fact6);
 
         Collection<Sjukfall> sjukfalls = SjukfallUtil.calculateSjukfall(aisle, 1, 3);
         assertEquals(2, sjukfalls.size());
@@ -80,19 +136,43 @@ public class SjukfallUtilTest {
 
     @Test
     public void iterator() throws Exception {
-        Fact fact = new Fact(3, 380, 38002, 2, 1, 1, 4010, 0, 45, 0, 14, 16, 100, 10, 0, 32, 201010);
-        aisle.addLine(fact);
-        fact = new Fact(3, 380, 38002, 1, 1, 1, 4020, 0, 45, 0, 14, 16, 100, 10, 0, 32, 201010);
-        aisle.addLine(fact);
-        fact = new Fact(3, 380, 38002, 2, 1, 1, 4030, 0, 45, 0, 14, 16, 100, 10, 0, 32, 201010);
-        aisle.addLine(fact);
+        Fact fact1 = aFact().withLan(3).withKommun(380).withForsamling(38002).withEnhet(2).
+                withLakarintyg(1).withPatient(1).withStartdatum(4010).withKon(Female).withAlder(45).
+                withDiagnoskapitel(0).withDiagnosavsnitt(14).withDiagnoskategori(16).
+                withSjukskrivningsgrad(100).withSjukskrivningslangd(10).
+                withLakarkon(Female).withLakaralder(32).withLakarbefatttning(201010).withLakarid(1).build();
+        aisle.addLine(fact1);
+        Fact fact2 = aFact().withLan(3).withKommun(380).withForsamling(38002).withEnhet(1).
+                withLakarintyg(1).withPatient(1).withStartdatum(4020).withKon(Female).withAlder(45).
+                withDiagnoskapitel(0).withDiagnosavsnitt(14).withDiagnoskategori(16).
+                withSjukskrivningsgrad(100).withSjukskrivningslangd(10).
+                withLakarkon(Female).withLakaralder(32).withLakarbefatttning(201010).withLakarid(1).build();
+        aisle.addLine(fact2);
+        Fact fact3 = aFact().withLan(3).withKommun(380).withForsamling(38002).withEnhet(2).
+                withLakarintyg(1).withPatient(1).withStartdatum(4030).withKon(Female).withAlder(45).
+                withDiagnoskapitel(0).withDiagnosavsnitt(14).withDiagnoskategori(16).
+                withSjukskrivningsgrad(100).withSjukskrivningslangd(10).
+                withLakarkon(Female).withLakaralder(32).withLakarbefatttning(201010).withLakarid(1).build();
+        aisle.addLine(fact3);
 
-        fact = new Fact(3, 380, 38002, 2, 1, 2, 4010, 0, 45, 0, 14, 16, 100, 10, 0, 32, 201010);
-        aisle.addLine(fact);
-        fact = new Fact(3, 380, 38002, 3, 1, 2, 4020, 0, 45, 0, 14, 16, 100, 10, 0, 32, 201010);
-        aisle.addLine(fact);
-        fact = new Fact(3, 380, 38002, 2, 1, 2, 4030, 0, 45, 0, 14, 16, 100, 10, 0, 32, 201010);
-        aisle.addLine(fact);
+        Fact fact4 = aFact().withLan(3).withKommun(380).withForsamling(38002).withEnhet(2).
+                withLakarintyg(1).withPatient(2).withStartdatum(4010).withKon(Female).withAlder(45).
+                withDiagnoskapitel(0).withDiagnosavsnitt(14).withDiagnoskategori(16).
+                withSjukskrivningsgrad(100).withSjukskrivningslangd(10).
+                withLakarkon(Female).withLakaralder(32).withLakarbefatttning(201010).withLakarid(1).build();
+        aisle.addLine(fact4);
+        Fact fact5 = aFact().withLan(3).withKommun(380).withForsamling(38002).withEnhet(3).
+                withLakarintyg(1).withPatient(2).withStartdatum(4020).withKon(Female).withAlder(45).
+                withDiagnoskapitel(0).withDiagnosavsnitt(14).withDiagnoskategori(16).
+                withSjukskrivningsgrad(100).withSjukskrivningslangd(10).
+                withLakarkon(Female).withLakaralder(32).withLakarbefatttning(201010).withLakarid(1).build();
+        aisle.addLine(fact5);
+        Fact fact6 = aFact().withLan(3).withKommun(380).withForsamling(38002).withEnhet(2).
+                withLakarintyg(1).withPatient(2).withStartdatum(4030).withKon(Female).withAlder(45).
+                withDiagnoskapitel(0).withDiagnosavsnitt(14).withDiagnoskategori(16).
+                withSjukskrivningsgrad(100).withSjukskrivningslangd(10).
+                withLakarkon(Female).withLakaralder(32).withLakarbefatttning(201010).withLakarid(1).build();
+        aisle.addLine(fact6);
 
         aisle.sort();
 

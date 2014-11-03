@@ -76,7 +76,7 @@ public class UserDetailsServiceTest {
     public void hasVgAccessBySystemRole() throws Exception {
         auktoriseradeEnheter(VE1_VG1);
         User user = (User) service.loadUserBySAML(credential);
-        assertTrue(user.hasVgAccess());
+        assertFalse(user.hasVgAccess());
         assertTrue(user.hasFullVgAccess());
     }
 

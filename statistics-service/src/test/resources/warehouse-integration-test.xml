@@ -61,6 +61,7 @@
     <bean class="se.inera.statistics.service.warehouse.Warehouse"/>
     <bean class="se.inera.statistics.service.warehouse.WarehouseManager"/>
     <bean class="se.inera.statistics.service.processlog.VardgivareManager"/>
+    <bean class="se.inera.statistics.service.processlog.LakareManager"/>
     <bean class="se.inera.statistics.service.hsa.HSAServiceMock"/>
 
     <bean id="dataGenerator" class="se.inera.statistics.service.demo.LargeTestDataGenerator" />

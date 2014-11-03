@@ -58,6 +58,8 @@ public class InjectUtlatande {
 
     private static final List<String> VG = Arrays.asList("vg1", "vg2", "vg3", "vg4", "vg5");
 
+    private static final List<String> LAKARE = new ArrayList();
+
     private static final List<String> DIAGNOSER = new ArrayList<>();
     private static final Multimap<String, String> VARDGIVARE = ArrayListMultimap.create();
     private static final List<Integer> ARBETSFORMAGOR = Arrays.asList(0, 25, 50, 75);
@@ -72,6 +74,9 @@ public class InjectUtlatande {
             for (int i = 1; i <= VARDGIVARE_ANTAL; i++) {
                 VARDGIVARE.put(vardgivare, vardgivare + "-enhet-" + i);
             }
+        }
+        for (int i = 1; i < 100; i++) {
+            LAKARE.add("hsa-" + i);
         }
     }
 
@@ -139,13 +144,16 @@ public class InjectUtlatande {
 
         String vardenhet = random(Lists.newArrayList((VARDGIVARE.get(vardgivare))));
 
+        String lakare = random(LAKARE);
+
         String diagnos = random(getDiagnoser());
         if (random.nextFloat() < FEL_DIAGNOS_THRESHOLD) {
             diagnos = "unknown";
         }
 
         int arbetsformaga = random(ARBETSFORMAGOR);
-        return builder.build(patientId, start, end, vardenhet, vardgivare, diagnos, arbetsformaga);
+
+        return builder.build(patientId, start, end, lakare, vardenhet, vardgivare, diagnos, arbetsformaga);
     }
 
     private static <T> T random(List<T> list) {

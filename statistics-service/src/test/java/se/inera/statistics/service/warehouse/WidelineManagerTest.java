@@ -56,6 +56,7 @@ public class WidelineManagerTest {
         line1.setSlutdatum(4999);
         line1.setStartdatum(4997);
         line1.setVardgivareId("vg1");
+        line1.setLakareId("lakare");
         line1.setCorrelationId(correlationId);
         widelineManager.saveWideline(line1);
     }

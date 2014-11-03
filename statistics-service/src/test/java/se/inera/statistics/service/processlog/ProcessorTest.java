@@ -29,6 +29,9 @@ public class ProcessorTest {
     @Mock
     private VardgivareManager vardgivareManager = mock(VardgivareManager.class);
 
+    @Mock
+    private LakareManager lakareManager = mock(LakareManager.class);
+
     @InjectMocks
     private Processor processor = new Processor();
 
