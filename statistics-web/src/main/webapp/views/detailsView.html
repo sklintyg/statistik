@@ -101,7 +101,7 @@
 	            <div class="row dontprint">
 	            	<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 	            		<div class="btn-group legend-btn-group">
-            				<label data-ng-repeat="seriesData in series | orderBy:'name'" class="col-xs-12 col-sm-6 col-md-6 col-lg-6" id="legend-label" style="white-space: nowrap;" legend-height>
+            				<label data-ng-repeat="seriesData in series" class="col-xs-12 col-sm-6 col-md-6 col-lg-6" id="legend-label" style="white-space: nowrap;" legend-height>
 		                        <input type="checkbox" checked="" data-ng-click="toggleSeriesVisibility($index)" class="detail-checkbox"/>
 		                        <span class="legend-color-square" data-ng-style="{backgroundColor: seriesData.color}"></span>
 		                        <span class="legend-name">{{seriesData.name}}</span>
