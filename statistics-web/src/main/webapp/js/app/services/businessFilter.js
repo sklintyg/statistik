@@ -28,7 +28,7 @@ angular.module('StatisticsApp').factory('businessFilter', function (_) {
         return null;
     };
 
-    businessFilter.resetSelections = function(force) {
+    businessFilter.resetSelections = function (force) {
         if (!businessFilter.permanentFilter || force) {
             businessFilter.selectedBusinesses.length = 0;
             businessFilter.geographyBusinessIds.length = 0;
