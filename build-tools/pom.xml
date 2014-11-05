@@ -1,11 +1,11 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
-    <artifactId>statistics</artifactId>
-    <groupId>se.inera.statistics</groupId>
+    <artifactId>statistik</artifactId>
+    <groupId>se.inera.statistik</groupId>
     <version>1.1-SNAPSHOT</version>
   </parent>
-  <artifactId>build-tools</artifactId>
+  <artifactId>statistik-build-tools</artifactId>
   <packaging>jar</packaging>
   <name>Build Tools</name>
 </project>

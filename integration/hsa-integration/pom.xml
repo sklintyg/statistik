@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright (C) 2013 - 2014 Inera AB (http://www.inera.se)
+  ~
+  ~     This file is part of Inera Statistics (http://code.google.com/p/inera-statistics/).
+  ~
+  ~     Inera Statistics is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU LESSER GENERAL PUBLIC LICENSE as published by
+  ~     the Free Software Foundation, either version 3 of the License, or
+  ~     (at your option) any later version.
+  ~
+  ~     Inera Statistics is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU LESSER GENERAL PUBLIC LICENSE for more details.
+  ~
+  ~     You should have received a copy of the GNU LESSER GENERAL PUBLIC LICENSE
+  ~     along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  -->
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>statistik</artifactId>
+        <groupId>se.inera.statistik</groupId>
+        <version>1.1-SNAPSHOT</version>
+        <relativePath>../..</relativePath>
+    </parent>
+  <modelVersion>4.0.0</modelVersion>
+
+  <artifactId>hsa-integration</artifactId>
+  <name>Inera Statistics HSA-Integration module</name>
+  <packaging>jar</packaging>
+
+  <properties>
+    <schema.path>src/main/resources/schemas</schema.path>
+  </properties>
+
+  <dependencies>
+    <dependency>
+        <groupId>joda-time</groupId>
+        <artifactId>joda-time</artifactId>
+    </dependency>
+    <!-- cxf -->
+    <dependency>
+      <groupId>org.apache.cxf</groupId>
+      <artifactId>cxf-rt-frontend-jaxrs</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.cxf</groupId>
+      <artifactId>cxf-rt-frontend-jaxws</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.cxf</groupId>
+      <artifactId>cxf-rt-transports-http</artifactId>
+    </dependency>
+    <!--       -->
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-context</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-context-support</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.security</groupId>
+      <artifactId>spring-security-core</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.security</groupId>
+      <artifactId>spring-security-web</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-annotations</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.fasterxml.jackson.jaxrs</groupId>
+      <artifactId>jackson-jaxrs-json-provider</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.jvnet.jaxb2_commons</groupId>
+      <artifactId>jaxb2-basics</artifactId>
+      <version>0.6.4</version>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.cxf</groupId>
+        <artifactId>cxf-codegen-plugin</artifactId>
+        <version>${cxf.version}</version>
+        <executions>
+          <execution>
+            <id>generate-sources</id>
+            <phase>generate-sources</phase>
+            <configuration>
+              <sourceRoot>${basedir}/target/generated/src/main/java</sourceRoot>
+              <wsdlOptions>
+
+                <wsdlOption>
+                  <extraargs>
+                    <extraarg>-xjc-XhashCode</extraarg>
+                    <extraarg>-xjc-Xequals</extraarg>
+                    <extraarg>-xjc-XtoString</extraarg>
+                    <extraarg>-xjc-Xinheritance</extraarg>
+                    <extraarg>-xjc-b,${basedir}/src/main/resources/jaxb-bindings.xjb</extraarg>
+                    <extraarg>-p</extraarg>
+                    Note: be careful when changing this - must be in sync for all
+                    schemas generations in this namespace!
+                    <extraarg>
+                      urn:riv:hsa:HsaWs:3=se.inera.ifv.hsaws.v3
+                    </extraarg>
+                    <extraarg>-p</extraarg>
+                    <extraarg>
+                      urn:riv:hsa:HsaWsResponder:3=se.inera.ifv.hsawsresponder.v3
+                    </extraarg>
+                    <extraarg>-p</extraarg>
+                    <extraarg>
+                      http://www.w3.org/2005/08/addressing=org.w3.wsaddressing10
+                    </extraarg>
+                    <extraarg>-validate</extraarg>
+                    <extraarg>-verbose</extraarg>
+                  </extraargs>
+                  <wsdl>${schema.path}/wsdl/HsaWsInteraction_3.18.wsdl</wsdl>
+                </wsdlOption>
+
+              </wsdlOptions>
+            </configuration>
+            <goals>
+              <goal>wsdl2java</goal>
+            </goals>
+          </execution>
+        </executions>
+        <dependencies>
+          <dependency>
+            <groupId>org.jvnet.jaxb2_commons</groupId>
+            <artifactId>jaxb2-basics</artifactId>
+            <version>0.6.4</version>
+          </dependency>
+        </dependencies>
+      </plugin>
+    </plugins>
+  </build>
+</project>

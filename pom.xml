@@ -19,8 +19,8 @@
 
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>se.inera.statistics</groupId>
-    <artifactId>statistics</artifactId>
+    <groupId>se.inera.statistik</groupId>
+    <artifactId>statistik</artifactId>
     <version>1.1-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>Inera Statistics Service</name>
@@ -43,15 +43,15 @@
 
     <modules>
         <module>build-tools</module>
-        <module>hsa-integration</module>
-        <module>statistics-web</module>
-        <module>statistics-service</module>
-        <module>statistics-specifications</module>
-        <module>statistics-business-specifications</module>
+        <module>integration/hsa-integration</module>
+        <module>web</module>
+        <module>service</module>
+        <module>specifications</module>
+        <module>business-specifications</module>
         <module>statistics-tools</module>
-        <module>tools/liquibase-runner-for-statistics</module>
-        <module>tools/inera-anonymisera-statistik</module>
-        <module>tools/MigreringIntyg</module>
+        <module>tools/liquibase-runner</module>
+        <module>tools/anonymisering</module>
+        <module>tools/migrering</module>
       </modules>
 
     <properties>
@@ -73,13 +73,13 @@
     <dependencyManagement>
         <dependencies>
           <dependency>
-              <groupId>se.inera.statistics</groupId>
+              <groupId>se.inera.statistik</groupId>
               <artifactId>hsa-integration</artifactId>
               <version>${project.version}</version>
             </dependency>
             <dependency>
-              <groupId>se.inera.statistics</groupId>
-              <artifactId>statistics-service</artifactId>
+              <groupId>se.inera.statistik</groupId>
+              <artifactId>statistik-service</artifactId>
               <version>${project.version}</version>
             </dependency>
             <dependency>
@@ -545,7 +545,7 @@
                     </configuration>
                     <dependencies>
                         <dependency>
-                            <groupId>se.inera.statistics</groupId>
+                            <groupId>se.inera.statistik</groupId>
                             <artifactId>build-tools</artifactId>
                             <version>1.1-SNAPSHOT</version>
                         </dependency>
