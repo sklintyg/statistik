@@ -33,6 +33,7 @@
 
   <properties>
     <schema.path>src/main/resources/schemas</schema.path>
+    <checkstyle.path>${project.basedir}/../../build-tools/src/main/resources</checkstyle.path>
   </properties>
 
   <dependencies>
