@@ -88,7 +88,7 @@
               <version>1.0.0.RC2</version>
             </dependency>
             <!-- N.b.! There are "higher" versions available but i think this is the current one.
-            Versioning seems to be broken for xml-apis -->
+            Versioning seems to be broken for xml-apis. -->
             <dependency>
               <groupId>xml-apis</groupId>
               <artifactId>xml-apis</artifactId>
