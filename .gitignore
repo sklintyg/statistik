@@ -11,11 +11,11 @@
 bin
 target
 build
-statistics-web/.externalToolBuilders/org.eclipse.wst.jsdt.core.javascriptValidator.launch
-statistics-service/src/main/resources/rebel.xml
-statistics-web/src/main/resources/rebel.xml
-statistics-web/node_modules
-statistics-web/node
-statistics-web/npm-debug.log
+web/.externalToolBuilders/org.eclipse.wst.jsdt.core.javascriptValidator.launch
+service/src/main/resources/rebel.xml
+web/src/main/resources/rebel.xml
+web/node_modules
+web/node
+web/npm-debug.log
 
 catalina.base_IS_UNDEFINED
