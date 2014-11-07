@@ -75,6 +75,7 @@ Kör följande rad för rad och säkerställ att eventuella problem åtgärdas i
 
 + version = exakt version som ska byggas t ex 1.0.5
 + huvudversion = den releasbranch man vill bygga den nya verionen på
+
 ##Liquibase
 Liquibase används för att skapa och underhålla underliggande databas. Alla ändringar av databasen måste reflekteras i liquibase-script. Vi använder H2 under utveckling och MySql i andra sammanhang, så scripten måste fungera för båda dessa alternativ.
 ###MySql
