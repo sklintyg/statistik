@@ -50,13 +50,13 @@ Om man vill ange standardflaggor till maven så kan man använda miljövariablen
 
 Det är de inställningar jag använder, som gör att jag kan ansluta min IDE-debugger på port 5007, med gott om minne.
 
-|Några vanliga mavenkommandon|
+|Några vanliga mavenkommandon|||
 |--------------|---------|---------|
-|mvn clean install -P integration 	|bygg om hela projektet 	|[projektrot]
-|mvn verify -P wiki 	|starta fitnesse 	|[projektrot]/statistics-specification
-|mvn verify -P auto 	|kör fitnesse-tester 	|[projektrot]/statistics-specification
-|mvn jetty:run -Dmaven.test.skip=true -DskipTests -Dspring.profiles.active=dev,embedded 	|kör webbservern 	|[projektrot]/statistics-web
-|mvn jetty:run -Dmaven.test.skip=true -DskipTests -Dspring.profiles.active=dev 	|kör webbservern mot mysql 	|[projektrot]/statistics-web
+|mvn clean install -P integration|bygg om hela projektet 	|[projektrot]|
+|mvn verify -P wiki|starta fitnesse|[projektrot]/statistics-specification|
+|mvn verify -P auto|kör fitnesse-tester|[projektrot]/statistics-specification|
+|mvn jetty:run -Dmaven.test.skip=true -DskipTests -Dspring.profiles.active=dev,embedded|kör webbservern 	|[projektrot]/statistics-web|
+|mvn jetty:run -Dmaven.test.skip=true -DskipTests -Dspring.profiles.active=dev|kör webbservern mot mysql 	|[projektrot]/statistics-web|
 
 ##Releasebyggen
 OBS! Den incheckade pom.xml:en kräver tillgång till privata servrar och måste konfigureras om om man inte har tillgång till dem.
