@@ -50,7 +50,8 @@ Om man vill ange standardflaggor till maven så kan man använda miljövariablen
 
 Det är de inställningar jag använder, som gör att jag kan ansluta min IDE-debugger på port 5007, med gott om minne.
 
-Några vanliga mavenkommandon
+|Några vanliga mavenkommandon|
+|--------------|---------|---------|
 |mvn clean install -P integration 	|bygg om hela projektet 	|[projektrot]
 |mvn verify -P wiki 	|starta fitnesse 	|[projektrot]/statistics-specification
 |mvn verify -P auto 	|kör fitnesse-tester 	|[projektrot]/statistics-specification
