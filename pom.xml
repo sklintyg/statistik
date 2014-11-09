@@ -48,7 +48,6 @@
         <module>service</module>
         <module>specifications</module>
         <module>business-specifications</module>
-        <module>statistics-tools</module>
         <module>tools/liquibase-runner</module>
         <module>tools/anonymisering</module>
         <module>tools/migrering</module>
