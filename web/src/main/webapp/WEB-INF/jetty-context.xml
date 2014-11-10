@@ -9,10 +9,12 @@
 
 -->
 <Configure id="wac" class="org.eclipse.jetty.webapp.WebAppContext">
+
   <Call name="setAttribute">
     <Arg>org.eclipse.jetty.server.webapp.WebInfIncludeJarPattern</Arg>
     <Arg>.*/.*jsp-api-[^/]\.jar$|./.*jsp-[^/]\.jar$|./.*taglibs[^/]*\.jar$</Arg>
   </Call>
+
   <New id="DataSource" class="org.eclipse.jetty.plus.jndi.Resource">
     <Arg>
       <Ref refid="wac" />
@@ -38,6 +40,7 @@
       </New>
     </Arg>
   </New>
+
   <New id="jmsQueue" class="org.eclipse.jetty.plus.jndi.Resource">
     <Arg>
       <Ref refid="wac" />
