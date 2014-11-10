@@ -51,7 +51,7 @@ angular.module('StatisticsApp').controller('navigationMenuCtrl', [ '$scope', '$r
 
         $scope.$on('navigationUpdate', function (event, navigationGroupId) {
             $scope.isFullVgAccess = $rootScope.isFullVgAccess;
-            $scope.isvgAccess = $rootScope.isvgAccess;
+            $scope.isVgAccess = $rootScope.isVgAccess;
             if (navigationGroupId === "about-statistics-collapse") {
                 $scope.showNational = false;
                 $scope.showOperation = false;
