@@ -478,7 +478,7 @@
                                                     <div class="progress-bar" role="progressbar" style="width: {{ 100 * (businessFilter.selectedBusinesses.length / businessFilter.businesses.length) }}%;">
                                                     </div>
                                                 </div>
-	                            				<button type="button" class="btn btn-default pull-right"><span message key="lbl.aterstall"></span></button>
+	                            				<button type="button" class="btn btn-default pull-right" data-ng-click="businessFilter.resetSelections(true)"><span message key="lbl.aterstall"></span></button>
 	                                        	<button class="btn btn-success pull-right" data-ng-click="makeUnitSelection()"><span message key="lbl.sok" data-toggle="collapse" data-target="#statistics-filter-container" ng-click="filter.open = !filter.open"></span></button>
 	                                        </div>
 			                            </div>
