@@ -313,7 +313,7 @@
                                         <li><a data-ng-href="#/verksamhet/{{businessId}}/sjukfallPerManad"
                                                id="navBusinessCasesPerMonthLink" ctrlname="VerksamhetCasesPerMonthCtrl"
                                                navigationaware><span message key="nav.sjukfall-totalt"></span></a></li>
-                                        <li ng-show="isFullVgAccess"><a data-ng-href="#/verksamhet/{{businessId}}/sjukfallperenhet"
+                                        <li ng-show="isFullVgAccess || isVgAccess"><a data-ng-href="#/verksamhet/{{businessId}}/sjukfallperenhet"
                                                id="navBusinessCasesPerMonthLink" ctrlname="VerksamhetCasesPerBusinessCtrl"
                                                navigationaware><span message key="nav.vardenhet"></span></a></li>
                                         <li ng-show="!isFullVgAccess"><a data-ng-href="#/verksamhet/{{businessId}}/sjukfallperlakare"
@@ -478,7 +478,7 @@
                                                     <div class="progress-bar" role="progressbar" style="width: {{ 100 * (businessFilter.selectedBusinesses.length / businessFilter.businesses.length) }}%;">
                                                     </div>
                                                 </div>
-	                            				<button type="button" class="btn btn-default pull-right"><span message key="lbl.aterstall"></span></button>
+	                            				<button type="button" class="btn btn-default pull-right" data-ng-click="businessFilter.resetSelections(true)"><span message key="lbl.aterstall"></span></button>
 	                                        	<button class="btn btn-success pull-right" data-ng-click="makeUnitSelection()"><span message key="lbl.sok" data-toggle="collapse" data-target="#statistics-filter-container" ng-click="filter.open = !filter.open"></span></button>
 	                                        </div>
 			                            </div>

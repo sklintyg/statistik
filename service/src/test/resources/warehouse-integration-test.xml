@@ -19,11 +19,11 @@
           factory-method="createTcpServer"
           init-method="start"
           destroy-method="stop" lazy-init="false">
-        <constructor-arg value="-tcp,-tcpAllowOthers,-tcpPort,9093"/>
+        <constructor-arg value="-tcp,-tcpAllowOthers,-tcpPort,9095"/>
     </bean>
     <bean id="h2WebServer" class="org.h2.tools.Server" factory-method="createWebServer" init-method="start"
           destroy-method="stop">
-        <constructor-arg value="-web,-webAllowOthers,-webPort,8083"/>
+        <constructor-arg value="-web,-webAllowOthers,-webPort,8085"/>
     </bean>
 
     <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
