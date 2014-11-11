@@ -24,24 +24,24 @@ import java.util.List;
 
 public class DiagnosgruppResponse {
 
-    private final List<Avsnitt> avsnitts;
+    private final List<? extends ICDTyp> icdTyps;
     private final List<KonDataRow> rows;
 
-    public DiagnosgruppResponse(List<Avsnitt> avsnitts, List<KonDataRow> rows) {
-        this.avsnitts = avsnitts;
+    public DiagnosgruppResponse(List<? extends ICDTyp> icdTyps, List<KonDataRow> rows) {
+        this.icdTyps = icdTyps;
         this.rows = rows;
     }
 
-    public List<Avsnitt> getAvsnitts() {
-        return avsnitts;
+    public List<? extends ICDTyp> getIcdTyps() {
+        return icdTyps;
     }
 
     public List<String> getDiagnosisGroupsAsStrings() {
-        if (avsnitts == null) {
+        if (icdTyps == null) {
             return new ArrayList<>();
         }
         List<String> subGroupStrings = new ArrayList<>();
-        for (Avsnitt avsnitt : avsnitts) {
+        for (ICDTyp avsnitt : icdTyps) {
             subGroupStrings.add(avsnitt.asString());
         }
         return subGroupStrings;
@@ -70,6 +70,6 @@ public class DiagnosgruppResponse {
 
     @Override
     public String toString() {
-        return "{\"DiagnosgruppResponse\":{" + "\"avsnitts\":" + avsnitts + ", \"rows\":" + rows + "}}";
+        return "{\"DiagnosgruppResponse\":{" + "\"icdTyps\":" + icdTyps + ", \"rows\":" + rows + "}}";
     }
 }

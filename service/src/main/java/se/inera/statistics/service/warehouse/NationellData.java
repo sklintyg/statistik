@@ -194,7 +194,7 @@ public class NationellData {
                     }
                     list.add(new KonDataRow(a.getName(), c));
                 }
-                result = new DiagnosgruppResponse(result.getAvsnitts(), list);
+                result = new DiagnosgruppResponse(result.getIcdTyps(), list);
             }
         }
         if (result == null) {
@@ -207,7 +207,7 @@ public class NationellData {
     public DiagnosgruppResponse getDiagnosavsnitt(Range range, String kapitelId) {
         DiagnosgruppResponse result = null;
         for (Aisle aisle: warehouse) {
-            DiagnosgruppResponse diagnosgrupper = query.getDiagnosavsnitt(aisle, SjukfallUtil.ALL_ENHETER, range.getFrom(), range.getMonths(), 1, kapitelId);
+            DiagnosgruppResponse diagnosgrupper = query.getDiagnosavsnitts(aisle, SjukfallUtil.ALL_ENHETER, range.getFrom(), range.getMonths(), 1, kapitelId);
 
             if (result == null) {
                 result = diagnosgrupper;
@@ -225,7 +225,7 @@ public class NationellData {
                     }
                     list.add(new KonDataRow(a.getName(), c));
                 }
-                result = new DiagnosgruppResponse(result.getAvsnitts(), list);
+                result = new DiagnosgruppResponse(result.getIcdTyps(), list);
             }
         }
         if (result == null) {
@@ -328,7 +328,7 @@ public class NationellData {
         for (KonDataRow r : unfiltered.getRows()) {
             rows.add(new KonDataRow(r.getName(), filterLowKonFields(r.getData())));
         }
-        return new DiagnosgruppResponse(unfiltered.getAvsnitts(), rows);
+        return new DiagnosgruppResponse(unfiltered.getIcdTyps(), rows);
     }
 
     private List<KonField> filterLowKonFields(List<KonField> unfiltered) {

@@ -90,7 +90,7 @@ public final class SjukfallUtil {
         return new Iterable<SjukfallGroup>() {
             @Override
             public Iterator<SjukfallGroup> iterator() {
-                return new SjukfallGroupIterator(from, periods, periodSize, aisle, new EnhetFilter(enhetIds));
+                return new SjukfallIterator(from, periods, periodSize, aisle, new EnhetFilter(enhetIds));
             }
         };
     }
@@ -117,7 +117,7 @@ public final class SjukfallUtil {
         return new Iterable<SjukfallGroup>() {
             @Override
             public Iterator<SjukfallGroup> iterator() {
-                return new SjukfallGroupIterator(from, periods, periodSize, aisle, filter);
+                return new SjukfallIterator(from, periods, periodSize, aisle, filter);
             }
         };
     }
@@ -184,7 +184,7 @@ public final class SjukfallUtil {
         }
     }
 
-    public static class SjukfallGroupIterator implements Iterator<SjukfallGroup> {
+    public static class SjukfallIterator implements Iterator<SjukfallGroup> {
 
         private final LocalDate current;
         private final LocalDate from;
@@ -197,7 +197,7 @@ public final class SjukfallUtil {
         private final Iterator<Fact> iterator;
         private Fact pendingLine;
 
-        public SjukfallGroupIterator(LocalDate from, int periods, int periodSize, Aisle aisle, Predicate<Fact> filter) {
+        public SjukfallIterator(LocalDate from, int periods, int periodSize, Aisle aisle, Predicate<Fact> filter) {
             this.from = from;
             this.current = from;
             this.periods = periods;

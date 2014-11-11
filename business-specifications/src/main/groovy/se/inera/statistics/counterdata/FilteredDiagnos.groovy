@@ -21,7 +21,7 @@ class FilteredDiagnos {
     public List<Object> query() {
         TestData data = IntygSender.testResult.get(tabell)
         JsonNode testResult = data.jsonNode
-        Iterator<JsonNode> grupps = testResult.findPath("avsnitts").iterator()
+        Iterator<JsonNode> grupps = testResult.findPath("icdTyps").iterator()
         List<String> gruppList = new ArrayList<>();
         while (grupps.hasNext()) {
             gruppList.add(grupps.next().path("Avsnitt").path("id").textValue())

@@ -171,11 +171,11 @@ public class QueueHelper {
     }
 
     private void printAndGetDiagnosisSubGroups(String vardenhet1, String vardenhet2, Range range, Map<String, TestData> result) {
-        DiagnosgruppResponse diagnosisSubGroups1 = diagnosgruppQuery.getDiagnosavsnitt(warehouse.get("EnVG"), SjukfallUtil.createEnhetFilter(vardenhet1), range.getFrom(), 1, YEAR, "A00-B99");
+        DiagnosgruppResponse diagnosisSubGroups1 = diagnosgruppQuery.getDiagnosavsnitts(warehouse.get("EnVG"), SjukfallUtil.createEnhetFilter(vardenhet1), range.getFrom(), 1, YEAR, "A00-B99");
         LOG.info("DSG data: " + diagnosisSubGroups1);
         JsonNode diagnosisSubGroups1Node = JSONParser.parse(diagnosisSubGroups1.toString());
         result.put("diagnosisSubGroups1", new TestData(diagnosisSubGroups1, diagnosisSubGroups1Node));
-        DiagnosgruppResponse diagnosisSubGroups2 = diagnosgruppQuery.getDiagnosavsnitt(warehouse.get("VG2"), SjukfallUtil.createEnhetFilter(vardenhet2), range.getFrom(), 1, YEAR, "A00-B99");
+        DiagnosgruppResponse diagnosisSubGroups2 = diagnosgruppQuery.getDiagnosavsnitts(warehouse.get("VG2"), SjukfallUtil.createEnhetFilter(vardenhet2), range.getFrom(), 1, YEAR, "A00-B99");
         LOG.info("DSG data: " + diagnosisSubGroups2);
         JsonNode diagnosisSubGroups2Node = JSONParser.parse(diagnosisSubGroups2.toString());
         result.put("diagnosisSubGroups2", new TestData(diagnosisSubGroups2, diagnosisSubGroups2Node));

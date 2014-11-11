@@ -30,7 +30,7 @@ Givet att man har valt avsnitt enligt ovan så ska 1 män och 0 kvinnor i 2013-0
 
 *Test*
 
-Om man byter diagnoskapitel så ska listan över valbara avsnitt uppdateras, och "Alla" ska vara förvald
+Om man byter diagnoskapitel så ska listan över valbara avsnitt uppdateras, och "Välj diagnosavsnitt" ska vara förvald
 
 *Test*
 

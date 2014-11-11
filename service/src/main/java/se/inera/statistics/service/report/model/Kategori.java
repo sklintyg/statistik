@@ -19,7 +19,7 @@
 
 package se.inera.statistics.service.report.model;
 
-public class Avsnitt implements Comparable<Avsnitt>, ICDTyp {
+public class Kategori implements Comparable<Kategori>, ICDTyp {
 
     public static final int ICD10_CODE_MAX_LEN = 3;
     private final String id;
@@ -27,7 +27,7 @@ public class Avsnitt implements Comparable<Avsnitt>, ICDTyp {
     private final String firstId;
     private final String lastId;
 
-    public Avsnitt(String id, String name) {
+    public Kategori(String id, String name) {
         this.id = id;
         this.name = name;
         String[] split = id.split("-");
@@ -70,7 +70,7 @@ public class Avsnitt implements Comparable<Avsnitt>, ICDTyp {
     }
 
     @Override
-    public int compareTo(Avsnitt o) {
+    public int compareTo(Kategori o) {
         return id.compareTo(o.id);
     }
 
@@ -81,13 +81,13 @@ public class Avsnitt implements Comparable<Avsnitt>, ICDTyp {
 
     @Override
     public boolean equals(Object obj) {
-        if (obj instanceof Avsnitt) {
-            return isEqual((Avsnitt) obj);
+        if (obj instanceof Kategori) {
+            return isEqual((Kategori) obj);
         }
         return false;
     }
 
-    private boolean isEqual(Avsnitt other) {
+    private boolean isEqual(Kategori other) {
         return id.equals(other.id);
     }
 

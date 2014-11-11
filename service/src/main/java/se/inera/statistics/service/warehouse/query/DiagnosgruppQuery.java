@@ -82,7 +82,7 @@ public class DiagnosgruppQuery {
         return new DiagnosgruppResponse(avsnitt, rows);
     }
 
-    public DiagnosgruppResponse getDiagnosavsnitt(Aisle aisle, Predicate<Fact> filter, LocalDate start, int periods, int periodLength, String kapitelId) {
+    public DiagnosgruppResponse getDiagnosavsnitts(Aisle aisle, Predicate<Fact> filter, LocalDate start, int periods, int periodLength, String kapitelId) {
         Icd10.Kapitel kapitel = icd10.getKapitel(kapitelId);
         List<Avsnitt> avsnitts = new ArrayList<>();
         for (Icd10.Avsnitt avsnitt : kapitel.getAvsnitt()) {
@@ -111,6 +111,37 @@ public class DiagnosgruppQuery {
 
 
         return new DiagnosgruppResponse(avsnitts, rows);
+    }
+
+    public DiagnosgruppResponse getDiagnoskatogoris(Aisle aisle, Predicate<Fact> filter, LocalDate start, int periods, int periodLength, String avsnittId) {
+        Icd10.Avsnitt avsnitt = icd10.getAvsnitt(avsnittId);
+        List<Kategori> kategoris = new ArrayList<>();
+        for (Icd10.Kategori kategori : avsnitt.getKategori()) {
+            kategoris.add(new Kategori(kategori.getId(), kategori.getName()));
+        }
+
+        List<KonDataRow> rows = new ArrayList<>();
+        for (SjukfallUtil.SjukfallGroup sjukfallGroup: SjukfallUtil.sjukfallGrupper(start, periods, periodLength, aisle, filter)) {
+            int[] female = new int[MAX_DIAGNOS_ID];
+            int[] male = new int[MAX_DIAGNOS_ID];
+            for (Sjukfall sjukfall: sjukfallGroup.getSjukfall()) {
+
+                if (sjukfall.getKon() == Kon.Female) {
+                    female[sjukfall.getDiagnoskategori()]++;
+                } else {
+                    male[sjukfall.getDiagnoskategori()]++;
+                }
+            }
+
+            List<KonField> list = new ArrayList<>(kategoris.size());
+            for (Icd10.Kategori kategori: avsnitt.getKategori()) {
+                list.add(new KonField(female[kategori.toInt()], male[kategori.toInt()]));
+            }
+            rows.add(new KonDataRow(ReportUtil.toDiagramPeriod(sjukfallGroup.getRange().getFrom()), list));
+        }
+
+
+        return new DiagnosgruppResponse(kategoris, rows);
     }
 
     private static Collection<String> rowsToKeep(Map<String, Counter<String>> count, int noOfRows) {

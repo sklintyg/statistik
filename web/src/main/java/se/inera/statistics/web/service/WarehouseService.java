@@ -65,7 +65,7 @@ public class WarehouseService {
     }
 
     public DiagnosgruppResponse getDiagnosavsnitt(SjukfallUtil.FactFilter filter, Range range, String kapitelId, String vardgivarId) {
-        return query.getDiagnosavsnitt(warehouse.get(vardgivarId), filter, range.getFrom(), range.getMonths(), 1, kapitelId);
+        return query.getDiagnosavsnitts(warehouse.get(vardgivarId), filter, range.getFrom(), range.getMonths(), 1, kapitelId);
     }
 
     public SimpleKonResponse<SimpleKonDataRow> getCasesPerEnhet(SjukfallUtil.EnhetFilter filter, Range range, String vardgivarId) {

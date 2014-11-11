@@ -9,7 +9,7 @@ public class Sjukfall {
 
     public static final int MAX_GAP = 5;
 
-    private final int start;
+    private int start;
     private final int lan;
     private int end;
     private int realDays;
@@ -18,6 +18,7 @@ public class Sjukfall {
     private int alder;
     private int diagnoskapitel;
     private int diagnosavsnitt;
+    private int diagnoskategori;
     private int sjukskrivningsgrad;
     private Set<Integer> lakare = new HashSet<>();
     private Sjukfall extending;
@@ -31,25 +32,19 @@ public class Sjukfall {
         alder = line.getAlder();
         diagnoskapitel = line.getDiagnoskapitel();
         diagnosavsnitt = line.getDiagnosavsnitt();
+        diagnoskategori = line.getDiagnoskategori();
         sjukskrivningsgrad = line.getSjukskrivningsgrad();
         lan = line.getLan();
         lakare.add(line.getLakarid());
     }
 
     public Sjukfall(Sjukfall previous, Fact line) {
+        this(line);
         start = previous.getStart();
-        end = line.getStartdatum() + line.getSjukskrivningslangd() - 1;
         realDays = previous.getRealDays() + line.getSjukskrivningslangd();
         intygCount = previous.getIntygCount() + 1;
-        kon = line.getKon();
-        alder = line.getAlder();
-        diagnoskapitel = line.getDiagnoskapitel();
-        diagnosavsnitt = line.getDiagnosavsnitt();
-        sjukskrivningsgrad = line.getSjukskrivningsgrad();
         extending = previous;
-        lan = line.getLan();
         lakare.addAll(previous.getLakare());
-        lakare.add(line.getLakarid());
     }
 
     public Kon getKon() {
@@ -96,6 +91,10 @@ public class Sjukfall {
 
     public boolean in(int start, int end) {
         return !(this.end < start || this.start > end);
+    }
+
+    public int getDiagnoskategori() {
+        return diagnoskategori;
     }
 
     public int getAlder() {
