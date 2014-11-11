@@ -30,7 +30,7 @@ Det här kommandot kommer att bygga samtliga moduler i systemet. Om man inte vil
 
 Nu ska det gå att starta applikationen med:
 
-    mvn jetty:run -Dmaven.test.skip=true -DskipTests -Dspring.profiles.active=dev,embedded
+    mvn jetty:run -pl web -Dmaven.test.skip=true -DskipTests -Dspring.profiles.active=dev,embedded
 
 Nu går det att öppna en webbläsare och surfa till http://localhost:8080/ Observera jetty körs i mavenprocessen, så maven "blir inte klar" förrän du stoppar servern med ^c, och applikationen är bara igång fram till dess.
 ##Maven
