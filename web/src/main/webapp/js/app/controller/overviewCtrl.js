@@ -63,7 +63,7 @@ angular.module('StatisticsApp').controller('overviewCtrl', [ '$scope', '$timeout
             };
             chartOptions.tooltip = { enabled: false };
             chartOptions.plotOptions.pie = {
-                colors: [ "#12BC3A" ],
+                colors: [ "#57843B" ],
                 animation: false,
                 borderWidth: 0,
                 dataLabels: { enabled: false },
@@ -123,7 +123,7 @@ angular.module('StatisticsApp').controller('overviewCtrl', [ '$scope', '$timeout
                     data: ControllerCommons.map(chartData, function (e) {
                         return e.quantity;
                     }),
-                    color: '#12BC3A'
+                    color: '#57843B'
                 }
             ];
             var categories = ControllerCommons.map(chartData, function (e) {

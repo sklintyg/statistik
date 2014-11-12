@@ -23,8 +23,8 @@ var ControllerCommons = new function(){
 
     this.addColor = function(rawData) {
         var color = [ "#E40E62", "#00AEEF", "#57843B", "#002B54", "#F9B02D", "#724E86", "#34655e", "#8A6B61" ];
-        var maleColor = [ "#008391", "#00CDE3" ];
-        var femaleColor = [ "#EA8025", "#FFC18C" ];
+        var maleColor = [ "#008391", "#90cad0" ];
+        var femaleColor = [ "#EA8025", "#f6c08d" ];
         var colorSelector = 0;
         var maleColorSelector = 0;
         var femaleColorSelector = 0;
@@ -230,7 +230,12 @@ var ControllerCommons = new function(){
             },
             tooltip : {
                 backgroundColor : '#fff',
-                borderWidth : 2
+                borderWidth : 2,
+                style: {
+                	color: '#333333',
+                	fontSize: '12px',
+                	padding: '8px'
+                }
             },
             credits : {
                 enabled : false
