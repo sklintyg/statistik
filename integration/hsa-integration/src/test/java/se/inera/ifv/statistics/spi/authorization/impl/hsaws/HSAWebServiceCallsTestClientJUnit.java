@@ -19,6 +19,7 @@
 package se.inera.ifv.statistics.spi.authorization.impl.hsaws;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -43,7 +44,7 @@ public class HSAWebServiceCallsTestClientJUnit {
         client = (HSAWebServiceCalls)ctx.getBean("wsCalls");
     }
 
-    @Test
+    @Ignore
     public void testHSAPing() throws Exception{
         client.callPing();
 
