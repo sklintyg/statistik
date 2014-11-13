@@ -48,11 +48,6 @@ angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl', [ '$sco
             return new Highcharts.Chart(chartOptions);
         };
 
-        var updateDataTable = function ($scope, ajaxResult) {
-            $scope.headerrows = ajaxResult.headers;
-            $scope.rows = ajaxResult.rows;
-        };
-
         var updateChart = function (ajaxResult) {
             $scope.series = ControllerCommons.setupSeriesForDisplayType($routeParams.printBw, ajaxResult.series, "bar");
             chart = paintChart(ajaxResult.categories, $scope.series);
@@ -71,7 +66,7 @@ angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl', [ '$sco
             $scope.subTitle = config.title(result.period);
             $scope.doneLoading = true;
             $timeout(function () {
-                updateDataTable($scope, result.tableData);
+                ControllerCommons.updateDataTable($scope, result.tableData);
                 updateChart(result.chartData);
 
                 if ($routeParams.printBw || $routeParams.print) {

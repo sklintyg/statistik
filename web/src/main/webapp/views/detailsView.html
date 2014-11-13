@@ -135,7 +135,7 @@
                                 <table id="datatable" class="table table-striped">
 	                                <thead>
 	                                    <tr data-ng-repeat="headerrow in headerrows track by $index">
-	                                        <td class="scrollable details-table-data ellipsis details-th" data-ng-class="{headcol: $first}" colspan="{{header.colspan}}" data-ng-repeat="header in headerrow" title="{{header.text}}">{{header.text}}</td>
+											<td class="scrollable details-table-data ellipsis details-th" data-ng-class="{headcol: $first, centeralign: headerrow.centerAlign}" colspan="{{header.colspan}}" data-ng-repeat="header in headerrow" title="{{header.text}}">{{header.text}}</td>
 	                                    </tr>
 	                                </thead>
                                     <tbody class="table-condensed">

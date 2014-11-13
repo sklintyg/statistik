@@ -44,11 +44,6 @@ angular.module('StatisticsApp').controller('singleLineChartCtrl', [ '$scope', '$
             return new Highcharts.Chart(chartOptions);
         };
 
-        var updateDataTable = function ($scope, ajaxResult) {
-            $scope.headerrows = ajaxResult.headers;
-            $scope.rows = ajaxResult.rows;
-        };
-
         var setColorToTotalCasesSeries = function (series) {
             for (var i = 0; i < series.length; i++) {
                 if (series[i].name === "Antal sjukfall totalt") {
@@ -68,7 +63,7 @@ angular.module('StatisticsApp').controller('singleLineChartCtrl', [ '$scope', '$
             $scope.subTitle = config.title(result.period);
             $scope.doneLoading = true;
             $timeout(function () {
-                updateDataTable($scope, result.tableData);
+                ControllerCommons.updateDataTable($scope, result.tableData);
                 updateChart(result.chartData);
 
                 if ($routeParams.printBw || $routeParams.print) {

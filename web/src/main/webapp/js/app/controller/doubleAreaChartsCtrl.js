@@ -45,11 +45,6 @@ angular.module('StatisticsApp').controller('doubleAreaChartsCtrl', [ '$scope', '
             return new Highcharts.Chart(chartOptions);
         };
 
-        var updateDataTable = function ($scope, ajaxResult) {
-            $scope.headerrows = ajaxResult.tableData.headers;
-            $scope.rows = ajaxResult.tableData.rows;
-        };
-
         //Expects the table to consist of two headers where the first header has a colspan of two
         var updatePrintDataTable = function ($scope, ajaxResult) {
             var headers = ajaxResult.tableData.headers;
@@ -143,7 +138,7 @@ angular.module('StatisticsApp').controller('doubleAreaChartsCtrl', [ '$scope', '
             }
 
             $timeout(function () {
-                updateDataTable($scope, result);
+                ControllerCommons.updateDataTable($scope, result.tableData);
                 updateChart(result);
 
                 if ($routeParams.printBw || $routeParams.print) {
