@@ -30,7 +30,7 @@
   <dependencies>
 
     <dependency>
-      <groupId>se.inera.certificate.tools</groupId>
+      <groupId>se.inera.intyg.tools</groupId>
       <artifactId>anonymisering</artifactId>
       <version>1.0.1</version>
     </dependency>
