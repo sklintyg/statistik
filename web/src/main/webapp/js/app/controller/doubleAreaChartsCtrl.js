@@ -19,8 +19,8 @@
 
 'use strict';
 
-angular.module('StatisticsApp').controller('doubleAreaChartsCtrl', [ '$scope', '$routeParams', '$window', '$timeout', 'statisticsData', 'businessFilter', 'config',
-    function ($scope, $routeParams, $window, $timeout, statisticsData, businessFilter, config) {
+angular.module('StatisticsApp').controller('doubleAreaChartsCtrl', [ '$scope', '$routeParams', '$window', '$timeout', 'statisticsData', 'businessFilter', 'config', 'messageService',
+    function ($scope, $routeParams, $window, $timeout, statisticsData, businessFilter, config, messageService) {
         var that = this;
         var chart1 = {};
         var chart2 = {};
@@ -192,6 +192,13 @@ angular.module('StatisticsApp').controller('doubleAreaChartsCtrl', [ '$scope', '
                 e.url = basePath + "/" + $routeParams.groupId + "/kategori/" + e.id;
                 return e;
             });
+
+            //Add default option for detailsOptions2
+            var defaultId = messageService.getProperty("lbl.valj-annat-diagnosavsnitt", null, "", null, true);
+            $scope.detailsOptions2.unshift({"id": defaultId, "name":"", "url":basePath + "/" + $routeParams.groupId});
+            if (!$scope.selectedDetailsOption2) {
+                $scope.selectedDetailsOption2 = $scope.detailsOptions2[0];
+            }
         };
 
         $scope.chartFootnotes = config.chartFootnotes;
