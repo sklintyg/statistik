@@ -215,7 +215,7 @@ public class ProtectedChartDataService {
         final Range range = new Range(18);
         Verksamhet verksamhet = getVerksamhet(request, Verksamhet.decodeId(verksamhetId));
         SjukfallUtil.FactFilter filter = getFilter(request, verksamhet, getIdsFromIdString(idString));
-        DiagnosgruppResponse diagnosavsnitt = warehouse.getDiagnosavsnitt(filter, range, groupId, verksamhet.getVardgivarId());
+        DiagnosgruppResponse diagnosavsnitt = warehouse.getUnderdiagnosgrupper(filter, range, groupId, verksamhet.getVardgivarId());
         return new DiagnosisSubGroupsConverter().convert(diagnosavsnitt, range);
     }
 

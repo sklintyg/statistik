@@ -91,6 +91,7 @@ var stMessages = {
         
         //detail views
         'lbl.valj-annat-diagnoskapitel': 'Välj annat diagnoskapitel:',
+        'lbl.valj-annan-diagnoskategori': 'Välj diagnoskategori:',
         'dropdown.val.rapport': 'Val för rapport',
         'dropdown.val.skrivut-farg': ' Skriv ut i färg',
         'dropdown.val.skrivut-svart-vitt': ' Skriv ut i svart-vitt',

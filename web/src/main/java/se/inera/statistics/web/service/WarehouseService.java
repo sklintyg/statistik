@@ -64,8 +64,8 @@ public class WarehouseService {
         return AldersgruppQuery.getAldersgrupper(warehouse.get(vardgivarId), filter, range.getFrom(), 1, range.getMonths());
     }
 
-    public DiagnosgruppResponse getDiagnosavsnitt(SjukfallUtil.FactFilter filter, Range range, String kapitelId, String vardgivarId) {
-        return query.getDiagnosavsnitts(warehouse.get(vardgivarId), filter, range.getFrom(), range.getMonths(), 1, kapitelId);
+    public DiagnosgruppResponse getUnderdiagnosgrupper(SjukfallUtil.FactFilter filter, Range range, String kapitelId, String vardgivarId) {
+        return query.getUnderdiagnosgrupper(warehouse.get(vardgivarId), filter, range.getFrom(), range.getMonths(), 1, kapitelId);
     }
 
     public SimpleKonResponse<SimpleKonDataRow> getCasesPerEnhet(SjukfallUtil.EnhetFilter filter, Range range, String vardgivarId) {

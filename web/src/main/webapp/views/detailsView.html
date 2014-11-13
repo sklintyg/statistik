@@ -70,7 +70,23 @@
 	        	</ul>
          	</div>
        	</div>
-       	<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 pull-right" data-ng-class="{margin_top_button_group: showDetailsOptions}" style="margin-bottom: 10px;">
+
+    	<span class="col-xs-12 col-sm-12 col-md-12 col-lg-12" data-ng-show="showDetailsOptions">
+    		<label class="dropdown-label" for="selectDiagnosticCategory"><span message key="lbl.valj-annan-diagnoskategori"></span></label>
+    	</span>
+   		<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 pull-left" data-ng-show="showDetailsOptions">
+       		<div class="btn-group margin-bottom" id="detailsOptionsDropdown2">
+           		<a class="multiselect dropdown-toggle btn btn-default" id="selectDiagnosticCategory" data-toggle="dropdown" href="#" style="overflow: hidden; text-overflow: ellipsis; max-width: 350px;">
+           			<span class="caret pull-right" style="margin-top: 9px;"></span>
+           			<span>{{selectedDetailsOption2.id}} {{selectedDetailsOption2.name}}</span>
+           		</a>
+           		<ul class="dropdown-menu left overflow-menu-options">
+	               <li data-ng-repeat="detailsOption2 in detailsOptions2"><a href="{{detailsOption2.url}}">{{detailsOption2.id}} {{detailsOption2.name}}</a></li>
+	        	</ul>
+         	</div>
+       	</div>
+
+		<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 pull-right" data-ng-class="{margin_top_button_group: showDetailsOptions}" style="margin-bottom: 10px;">
 			<!-- PRINT BUTTON GROUP -->
 			<div class="btn-group statistics-btn-group">
 			  <a class="multiselect dropdown-toggle btn btn-default" data-toggle="dropdown" href="#">

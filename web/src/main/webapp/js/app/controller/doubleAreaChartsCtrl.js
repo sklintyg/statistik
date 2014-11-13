@@ -137,7 +137,7 @@ angular.module('StatisticsApp').controller('doubleAreaChartsCtrl', [ '$scope', '
             $scope.subTitle = config.title(result.period, $routeParams.groupId);
             if (config.showDetailsOptions) {
                 $scope.currentPeriod = result.period;
-                statisticsData.getDiagnosisGroups(populateDetailsOptions, function () {
+                statisticsData.getDiagnosisKapitelAndAvsnitt(populateDetailsOptions, function () {
                     alert("Kunde inte ladda data");
                 });
             }
@@ -155,19 +155,41 @@ angular.module('StatisticsApp').controller('doubleAreaChartsCtrl', [ '$scope', '
             }, 100);
         };
 
+        var getMapKeys = function(mapObject) {
+            var keys = [];
+            for (var key in mapObject) {
+                if (mapObject.hasOwnProperty(key)) {
+                    keys.push(key);
+                }
+            }
+            return keys;
+        };
+
         var populateDetailsOptions = function (result) {
             var basePath = isVerksamhet ? "#/verksamhet/" + $routeParams.verksamhetId + "/diagnosavsnitt" : "#/nationell/diagnosavsnitt";
 
-            for (var i = 0; i < result.length; i++) {
-                if (result[i].id == $routeParams.groupId) {
-                    $scope.selectedDetailsOption = result[i];
+            var kapitels = result.kapitels;
+            for (var i = 0; i < kapitels.length; i++) {
+                if (kapitels[i].id == $routeParams.groupId) {
+                    $scope.selectedDetailsOption = kapitels[i];
+                    break;
+                }
+            }
+            var avsnitts = result.avsnitts[$routeParams.groupId];
+            for (var i = 0; i < avsnitts.length; i++) {
+                if (avsnitts[i].id == $routeParams.kategoriId) {
+                    $scope.selectedDetailsOption2 = avsnitts[i];
                     break;
                 }
             }
             $scope.subTitle = ($scope.selectedDetailsOption && $scope.selectedDetailsOption.name && $scope.selectedDetailsOption.id) ? config.title($scope.currentPeriod, $scope.selectedDetailsOption.id + " " + $scope.selectedDetailsOption.name) : "";
 
-            $scope.detailsOptions = ControllerCommons.map(result, function (e) {
+            $scope.detailsOptions = ControllerCommons.map(kapitels, function (e) {
                 e.url = basePath + "/" + e.id;
+                return e;
+            });
+            $scope.detailsOptions2 = ControllerCommons.map(avsnitts, function (e) {
+                e.url = basePath + "/" + $routeParams.groupId + "/kategori/" + e.id;
                 return e;
             });
         };
@@ -198,7 +220,7 @@ angular.module('StatisticsApp').controller('doubleAreaChartsCtrl', [ '$scope', '
         function refreshVerksamhet(samePage) {
             statisticsData[config.dataFetcherVerksamhet]($routeParams.verksamhetId, businessFilter.getSelectedBusinesses(samePage), populatePageWithData, function () {
                 $scope.dataLoadingError = true;
-            }, $routeParams.groupId);
+            }, getMostSpecificGroupId());
         }
 
         $scope.$on('filterChange', function (event, data) {
@@ -207,6 +229,10 @@ angular.module('StatisticsApp').controller('doubleAreaChartsCtrl', [ '$scope', '
             }
         });
 
+        function getMostSpecificGroupId() {
+            return $routeParams.kategoriId ? $routeParams.kategoriId : $routeParams.groupId;
+        }
+
         if (isVerksamhet) {
             $scope.exportTableUrl = config.exportTableUrlVerksamhet($routeParams.verksamhetId, $routeParams.groupId);
             refreshVerksamhet(false);
@@ -214,7 +240,7 @@ angular.module('StatisticsApp').controller('doubleAreaChartsCtrl', [ '$scope', '
             $scope.exportTableUrl = config.exportTableUrl($routeParams.groupId);
             statisticsData[config.dataFetcher](populatePageWithData, function () {
                 $scope.dataLoadingError = true;
-            }, $routeParams.groupId);
+            }, getMostSpecificGroupId());
         }
 
         $scope.showHideDataTable = ControllerCommons.showHideDataTableDefault;
