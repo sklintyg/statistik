@@ -188,6 +188,9 @@
 			          		<a class="mobileMenuHeaderItem" data-toggle="collapse in" data-target="#business-menu" ng-click="isBusinessCollapsed = !isBusinessCollapsed"><span message key="nav.business-header"></span><span class="caret pull-right mobile-menu-caret"></span></a>
 			          		<ul class="collapse" id="business-menu" collapse="!isBusinessCollapsed">   
 				        		<li class="subMenuItem"><a data-ng-href="#/verksamhet/{{businessId}}/oversikt" ctrlname="businessOverviewCtrl" role="menuitem" ng-click="isCollapsed = !isCollapsed" navigationaware><span message key="nav.oversikt"></span></a></li>
+				        		<li class="subMenuItem" ng-show="isFullVgAccess || isVgAccess"><a data-ng-href="#/verksamhet/{{businessId}}/sjukfallperenhet"
+				        			 id="navBusinessCasesPerMonthLink" ctrlname="VerksamhetCasesPerBusinessCtrl"
+                                     navigationaware><span message key="nav.vardenhet"></span></a></li>
 		                        <li class="subMenuItem"><a data-ng-href="#/verksamhet/{{businessId}}/sjukfallPerManad" id="navBusinessCasesPerMonthLink" ctrlname="VerksamhetCasesPerMonthCtrl" role="menuitem" ng-click="isCollapsed = !isCollapsed" navigationaware><span message key="nav.sjukfall-totalt"></span></a></li>
 								<li class="subMenuItem">
 						          <a class="dropdown-toggle subMenuItem" data-toggle="collapse in" data-target="#business-dia-chapter" ng-click="isBusinessDiaChapterCollapsed = !isBusinessDiaChapterCollapsed"><span message key="nav.mobile.trigger.diagnosgrupp-diagnoskapitel"></span><span class="caret pull-right mobile-menu-caret mobile-sub-caret"></span></a>
@@ -310,16 +313,12 @@
                                     <ul id="business-statistic-menu-content" class="nav nav-list">
                                         <li><a data-ng-href="#/verksamhet/{{businessId}}/oversikt"
                                                ctrlname="businessOverviewCtrl" navigationaware><span message key="nav.oversikt"></span></a></li>
-                                        <li><a data-ng-href="#/verksamhet/{{businessId}}/sjukfallPerManad"
-                                               id="navBusinessCasesPerMonthLink" ctrlname="VerksamhetCasesPerMonthCtrl"
-                                               navigationaware><span message key="nav.sjukfall-totalt"></span></a></li>
                                         <li ng-show="isFullVgAccess || isVgAccess"><a data-ng-href="#/verksamhet/{{businessId}}/sjukfallperenhet"
                                                id="navBusinessCasesPerMonthLink" ctrlname="VerksamhetCasesPerBusinessCtrl"
                                                navigationaware><span message key="nav.vardenhet"></span></a></li>
-                                        <li ng-show="!isFullVgAccess"><a data-ng-href="#/verksamhet/{{businessId}}/sjukfallperlakare"
-                                               id="navBusinessCasesPerLakareLink" ctrlname="VerksamhetCasesPerLakareCtrl"
-                                               navigationaware><span message key="nav.lakare"></span></a>
-                                        </li>
+                                        <li><a data-ng-href="#/verksamhet/{{businessId}}/sjukfallPerManad"
+                                               id="navBusinessCasesPerMonthLink" ctrlname="VerksamhetCasesPerMonthCtrl"
+                                               navigationaware><span message key="nav.sjukfall-totalt"></span></a></li>
                                         <li>
                                             <a class="menu-item-has-childs"
                                                data-ng-href="#/verksamhet/{{businessId}}/diagnosgrupp"
@@ -369,11 +368,14 @@
                                                    id="navBusinessOngoingAndCompletedSickLeaveLink"
                                                    ctrlname="VerksamhetSickLeaveLengthCurrentCtrl" navigationaware><span message key="nav.sjukskrivningslangd-pagaende"></span></a>
                                             </li>
-                                            <li><a class="last-item-in-menu rounded-bottom"
-                                                   data-ng-href="#/verksamhet/{{businessId}}/langasjukskrivningar"
+                                            <li><a class="last-item-in-menu" data-ng-href="#/verksamhet/{{businessId}}/langasjukskrivningar"
                                                    id="navBusinessMoreNinetyDaysSickLeaveLink"
                                                    ctrlname="VerksamhetLongSickLeavesCtrl" navigationaware><span message key="nav.sjukskrivningslangd-mer-an-90-dagar"></span></a></li>
                                         </ul>
+                                        <li ng-show="!isFullVgAccess"><a class="last-item-in-menu rounded-bottom" data-ng-href="#/verksamhet/{{businessId}}/sjukfallperlakare"
+                                               id="navBusinessCasesPerLakareLink" ctrlname="VerksamhetCasesPerLakareCtrl"
+                                               navigationaware><span message key="nav.lakare-per-namn"></span></a>
+                                        </li>
                                     </ul>
                                 </div>
                             </div>

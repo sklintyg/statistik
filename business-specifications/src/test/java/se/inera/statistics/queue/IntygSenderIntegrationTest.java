@@ -23,7 +23,7 @@ import org.junit.Test;
 
 import se.inera.statistics.context.StartUp;
 
-public class IntygSenderTest {
+public class IntygSenderIntegrationTest {
 
     StartUp startUp = new StartUp();
     IntygSender intygSender;

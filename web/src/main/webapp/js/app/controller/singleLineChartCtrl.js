@@ -40,6 +40,7 @@ angular.module('StatisticsApp').controller('singleLineChartCtrl', [ '$scope', '$
             chartOptions.yAxis.title.align = 'high';
             chartOptions.yAxis.title.offset = 0;
             chartOptions.text = "#008391";
+            chartOptions.tooltip.text = "#000";
             return new Highcharts.Chart(chartOptions);
         };
 
