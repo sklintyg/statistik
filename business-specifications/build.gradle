@@ -1,0 +1,52 @@
+description = 'Inera Statistics Fitnesse business specifications'
+
+apply plugin: 'groovy'
+
+ext.fitnessePort = "9125"
+ext.fitnesseRoot = "FitNesseRoot"
+ext.fitnesseDir = "src/test/fitnesse"
+
+sourceSets.test {
+    java { srcDirs = [] }
+    groovy { srcDirs = [ "src/test/groovy", "src/test/java" ] } // compile everything in src/ with groovy compiler (enables cross-compiling)
+}
+
+task fitnesseWiki(type: JavaExec, dependsOn: build) {
+    main "fitnesse.FitNesse"
+    args '-p', fitnessePort, '-d', fitnesseDir, '-r', fitnesseRoot, '-o'
+    doFirst {
+        systemProperties(["maven.classpath": mavenPathAsWikiPaths()])
+    }
+}
+
+task fitnesseTest(type: JavaExec, dependsOn: build) {
+    classpath configurations.runtime
+    main "fitnesse.FitNesse"
+    args '-p', fitnessePort, '-d', fitnesseDir, '-r', fitnesseRoot, '-o', '-c', 'StatisticsTests?suite&format=text'
+    doFirst {
+        systemProperties(["maven.classpath": mavenPathAsWikiPaths()])
+    }
+}
+
+def mavenPathAsWikiPaths() {
+    def builder = new StringBuilder("\n")
+    configurations.runtime.files.each { file ->
+        builder.append("!path ${file.path}\n")
+    }
+    libsDir.list().each { fileName ->
+        builder.append("!path ${libsDir.absolutePath}/${fileName}\n")
+    }
+    return builder.toString()
+}
+
+dependencies {
+    compile project(':statistik-service')
+
+    compile 'org.apache.activemq:activemq-spring:5.8.0'
+    compile 'org.fitnesse:fitnesse:20140201'
+    compile 'org.codehaus.groovy:groovy-all:2.3.6'
+
+    runtime 'com.h2database:h2:1.3.171'
+
+    testCompile 'org.beanshell:bsh:2.0b5'
+}

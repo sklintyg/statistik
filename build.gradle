@@ -1,0 +1,69 @@
+allprojects {
+    group = 'se.inera.statistik'
+    version = '2.0-SNAPSHOT'
+
+    repositories {
+        mavenLocal()
+
+        maven { url "http://repository-callistasoftware.forge.cloudbees.com/3rdparty" }
+        maven { url "http://repo.maven.apache.org/maven2" }
+        maven { url "https://repository-callistasoftware.forge.cloudbees.com/release/" }
+        maven { url "https://repository-callistasoftware.forge.cloudbees.com/snapshot/" }
+        maven { url "https://repository-callistasoftware.forge.cloudbees.com/3rdparty" }
+    }
+}
+
+subprojects {
+    apply plugin: 'java'
+    sourceCompatibility = 1.7
+    targetCompatibility = 1.7
+
+    ext.cxfVersion = '2.7.10'
+    ext.springContextVersion = "4.0.8.RELEASE"
+    ext.springSecurityVersion = "3.2.0.RELEASE"
+
+    test {
+        exclude '**/*IntegrationTest.*'
+        exclude '**/*FunctionalTest.*'
+        reports.html.destination = file("$reports.html.destination/unit")
+        reports.junitXml.destination = file("$reports.junitXml.destination/unit")
+    }
+
+    task integrationTest(type: Test) {
+        include '**/*IntegrationTest.class'
+        reports.html.destination = file("$reports.html.destination/integration")
+        reports.junitXml.destination = file("$reports.junitXml.destination/integration")
+    }
+
+    dependencies {
+        compile 'ch.qos.logback:logback-classic:1.1.1'
+        compile 'com.google.guava:guava:18.0'
+        compile "joda-time:joda-time:2.3"
+
+        testCompile 'org.springframework:spring-test:4.0.2.RELEASE'
+        testCompile 'junit:junit:4.11'
+        testCompile 'org.mockito:mockito-core:1.9.5'
+    }
+}
+
+configure(subprojects.findAll {
+    ['hsa-integration', 'statistik-service', 'statistik-web', 'statistik-liquibase-runner'].contains(it.name)}) {
+
+    apply plugin: 'maven'
+    apply plugin: 'checkstyle'
+
+    checkstyle {
+        config = resources.text.fromFile("${rootProject.projectDir}/build-tools/src/main/resources/checkstyle.xml")
+        ignoreFailures = true
+        sourceSets = [project.sourceSets.main]
+    }
+    // Make sure we don't run checkstyle on generated source code
+    checkstyleMain.source = "src/main/java"
+}
+
+apply plugin: "sonar-runner"
+apply plugin: "jacoco"
+
+sonarRunner {
+    toolVersion = "2.4"
+}
