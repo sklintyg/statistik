@@ -6,10 +6,3 @@ include ':statistik-web'
 include ':statistik-business-specifications'
 include ':statistik-specifications'
 include ':statistik-liquibase-runner'
-
-project(':hsa-integration').projectDir = "$rootDir/integration/hsa-integration" as File
-project(':statistik-service').projectDir = "$rootDir/service" as File
-project(':statistik-web').projectDir = "$rootDir/web" as File
-project(':statistik-business-specifications').projectDir = "$rootDir/business-specifications" as File
-project(':statistik-specifications').projectDir = "$rootDir/specifications" as File
-project(':statistik-liquibase-runner').projectDir = "$rootDir/tools/liquibase-runner" as File
