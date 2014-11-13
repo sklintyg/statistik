@@ -249,6 +249,7 @@ angular.module('StatisticsApp').controller('doubleAreaChartsCtrl', [ '$scope', '
         };
 
         $scope.showDetailsOptions = config.showDetailsOptions;
+        $scope.showDetailsOptions2 = isVerksamhet;
 
         $scope.spinnerText = "Laddar information...";
         $scope.doneLoading = false;
