@@ -38,16 +38,16 @@ public class DiagnoskapitelConverterTest {
         DiagnosgruppResponse resp = new DiagnosgruppResponse(new ArrayList<Avsnitt>(), new ArrayList<KonDataRow>());
         DualSexStatisticsData data = new DiagnosisSubGroupsConverter().convert(resp, new Range());
         assertEquals("[]", data.getFemaleChart().getCategories().toString());
-        assertEquals("[]", data.getFemaleChart().getSeries().toString());
+        assertEquals("[Totalt: []]", data.getFemaleChart().getSeries().toString());
     }
 
     @Test
     public void converterTest() {
         //Given
-        ArrayList<Avsnitt> avsnitts = new ArrayList<Avsnitt>();
+        ArrayList<Avsnitt> avsnitts = new ArrayList<>();
         avsnitts.add(new Avsnitt("A00-B99", "name1"));
-        ArrayList<KonDataRow> rows = new ArrayList<KonDataRow>();
-        ArrayList<KonField> diagnosisGroupData = new ArrayList<KonField>();
+        ArrayList<KonDataRow> rows = new ArrayList<>();
+        ArrayList<KonField> diagnosisGroupData = new ArrayList<>();
         // CHECKSTYLE:OFF MagicNumber
         diagnosisGroupData.add(new KonField(3, 2));
         // CHECKSTYLE:ON MagicNumber
@@ -72,7 +72,7 @@ public class DiagnoskapitelConverterTest {
     @Test
     public void converterTopColumnsTest() {
         //Given
-        ArrayList<Avsnitt> avsnitts = new ArrayList<Avsnitt>();
+        ArrayList<Avsnitt> avsnitts = new ArrayList<>();
         avsnitts.add(new Avsnitt("A00-B90", "name1"));
         avsnitts.add(new Avsnitt("A00-B91", "name1"));
         avsnitts.add(new Avsnitt("A00-B92", "name1"));
@@ -81,8 +81,8 @@ public class DiagnoskapitelConverterTest {
         avsnitts.add(new Avsnitt("A00-B95", "name1"));
         avsnitts.add(new Avsnitt("A00-B96", "name1"));
         avsnitts.add(new Avsnitt("A00-B97", "name1"));
-        ArrayList<KonDataRow> rows = new ArrayList<KonDataRow>();
-        ArrayList<KonField> diagnosisGroupData = new ArrayList<KonField>();
+        ArrayList<KonDataRow> rows = new ArrayList<>();
+        ArrayList<KonField> diagnosisGroupData = new ArrayList<>();
         // CHECKSTYLE:OFF MagicNumber
         diagnosisGroupData.add(new KonField(3, 30));
         diagnosisGroupData.add(new KonField(4, 40));
