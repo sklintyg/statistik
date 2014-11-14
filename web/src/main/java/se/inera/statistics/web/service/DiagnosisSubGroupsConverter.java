@@ -23,7 +23,6 @@ import java.util.*;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
-import javafx.util.Pair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -35,6 +34,7 @@ import se.inera.statistics.web.model.ChartData;
 import se.inera.statistics.web.model.ChartSeries;
 import se.inera.statistics.web.model.DualSexStatisticsData;
 import se.inera.statistics.web.model.TableData;
+import se.inera.statistics.web.util.Pair;
 
 public class DiagnosisSubGroupsConverter {
 
