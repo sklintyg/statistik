@@ -165,6 +165,16 @@ angular.module('StatisticsApp').controller('doubleAreaChartsCtrl', [ '$scope', '
             return keys;
         };
 
+        function getSubtitle(period, selectedOption1, selectedOption2) {
+            if ((selectedOption2 && selectedOption2.name && selectedOption2.id)) {
+                return config.title(period, selectedOption2.id + " " + selectedOption2.name);
+            }
+            if (selectedOption1 && selectedOption1.name && selectedOption1.id) {
+                return config.title(period, selectedOption1.id + " " + selectedOption1.name);
+            }
+            return "";
+        }
+
         var populateDetailsOptions = function (result) {
             var basePath = isVerksamhet ? "#/verksamhet/" + $routeParams.verksamhetId + "/diagnosavsnitt" : "#/nationell/diagnosavsnitt";
 
@@ -182,7 +192,7 @@ angular.module('StatisticsApp').controller('doubleAreaChartsCtrl', [ '$scope', '
                     break;
                 }
             }
-            $scope.subTitle = ($scope.selectedDetailsOption && $scope.selectedDetailsOption.name && $scope.selectedDetailsOption.id) ? config.title($scope.currentPeriod, $scope.selectedDetailsOption.id + " " + $scope.selectedDetailsOption.name) : "";
+            $scope.subTitle = getSubtitle($scope.currentPeriod, $scope.selectedDetailsOption, $scope.selectedDetailsOption2);
 
             $scope.detailsOptions = ControllerCommons.map(kapitels, function (e) {
                 e.url = basePath + "/" + e.id;
