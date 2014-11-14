@@ -67,7 +67,7 @@ public class DiagnosisSubGroupsConverter {
         }
         if (data.getDiagnosisGroupsAsStrings().size() > NUMBER_OF_CHART_SERIES) {
             List<Integer> remainingData = sumRemaining(topIndexes, data, sex);
-            topColumns.add(new ChartSeries("Övriga diagnosavsnitt", remainingData, true));
+            topColumns.add(new ChartSeries("Övriga", remainingData, true));
         }
         return topColumns;
     }
