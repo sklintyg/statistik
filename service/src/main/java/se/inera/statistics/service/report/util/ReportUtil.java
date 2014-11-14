@@ -65,7 +65,7 @@ public final class ReportUtil {
     }
 
     public static String toPeriod(LocalDate date) {
-        return INPUT_FORMATTER.print(date);
+        return OUTPUT_FORMATTER.print(date);
     }
 
     public static String toDiagramPeriod(LocalDate currentPeriod) {

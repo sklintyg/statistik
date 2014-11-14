@@ -40,12 +40,8 @@ angular.module('StatisticsApp').controller('singleLineChartCtrl', [ '$scope', '$
             chartOptions.yAxis.title.align = 'high';
             chartOptions.yAxis.title.offset = 0;
             chartOptions.text = "#008391";
+            chartOptions.tooltip.text = "#000";
             return new Highcharts.Chart(chartOptions);
-        };
-
-        var updateDataTable = function ($scope, ajaxResult) {
-            $scope.headerrows = ajaxResult.headers;
-            $scope.rows = ajaxResult.rows;
         };
 
         var setColorToTotalCasesSeries = function (series) {
@@ -67,7 +63,7 @@ angular.module('StatisticsApp').controller('singleLineChartCtrl', [ '$scope', '$
             $scope.subTitle = config.title(result.period);
             $scope.doneLoading = true;
             $timeout(function () {
-                updateDataTable($scope, result.tableData);
+                ControllerCommons.updateDataTable($scope, result.tableData);
                 updateChart(result.chartData);
 
                 if ($routeParams.printBw || $routeParams.print) {

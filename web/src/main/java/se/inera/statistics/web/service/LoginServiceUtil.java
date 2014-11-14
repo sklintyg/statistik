@@ -119,7 +119,7 @@ public class LoginServiceUtil {
     }
 
     private Set<Verksamhet.VerksamhetsTyp> getVerksamhetsTyper(String verksamhetsTyper) {
-        return new HashSet(Lists.transform(ID_SPLITTER.splitToList(verksamhetsTyper), new Function<String, Verksamhet.VerksamhetsTyp>() {
+        return new HashSet<>(Lists.transform(ID_SPLITTER.splitToList(verksamhetsTyper), new Function<String, Verksamhet.VerksamhetsTyp>() {
             @Override
             public Verksamhet.VerksamhetsTyp apply(String verksamhetsId) {
                 String groupId = verksamheter.getGruppId(verksamhetsId);
