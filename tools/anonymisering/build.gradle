@@ -1,7 +1,7 @@
 description = 'Anonymisering av intyg för statistik'
 
 dependencies {
-    compile 'se.inera.certificate.tools:anonymisering:1.0.1'
+    compile 'se.inera.intyg.tools:anonymisering:1.0.1'
     compile 'org.codehaus.groovy:groovy-all:2.3.6'
     compile 'joda-time:joda-time:2.3'
     compile 'org.codehaus.gpars:gpars:1.1.0'
