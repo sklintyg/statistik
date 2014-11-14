@@ -1,18 +1,23 @@
 description = 'Inera Statistics Service - Service Module'
 
 apply plugin: 'groovy'
+apply plugin: 'idea'
 
 configurations {
     provided
 }
 
 sourceSets {
-    main {
-        compileClasspath += configurations.provided
-    }
+    main.compileClasspath += configurations.provided
     test {
         java { srcDirs = [] }
         groovy { srcDirs = [ "src/test/groovy", "src/test/java" ] } // compile everything in src/ with groovy (enables cross-compiling)
+    }
+}
+
+afterEvaluate {
+    idea {
+        module.scopes.PROVIDED.plus += [configurations.provided] // Adds the provided configuration to IntelliJs provided scope
     }
 }
 

@@ -4,12 +4,10 @@ allprojects {
 
     repositories {
         mavenLocal()
-
-        maven { url "http://repository-callistasoftware.forge.cloudbees.com/3rdparty" }
-        maven { url "http://repo.maven.apache.org/maven2" }
+        mavenCentral()
         maven { url "https://repository-callistasoftware.forge.cloudbees.com/release/" }
         maven { url "https://repository-callistasoftware.forge.cloudbees.com/snapshot/" }
-        maven { url "https://repository-callistasoftware.forge.cloudbees.com/3rdparty" }
+        maven { url "https://repository-callistasoftware.forge.cloudbees.com/3rdparty/" }
     }
 }
 
