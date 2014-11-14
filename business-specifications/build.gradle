@@ -40,7 +40,7 @@ def mavenPathAsWikiPaths() {
 }
 
 dependencies {
-    compile project(':statistik-service')
+    compile project(':service')
 
     compile 'org.apache.activemq:activemq-spring:5.8.0'
     compile 'org.fitnesse:fitnesse:20140201'

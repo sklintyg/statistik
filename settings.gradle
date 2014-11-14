@@ -1,8 +1,11 @@
 rootProject.name = 'statistik'
 
 include ':hsa-integration'
-include ':statistik-service'
-include ':statistik-web'
-include ':statistik-business-specifications'
-include ':statistik-specifications'
-include ':statistik-liquibase-runner'
+include ':service'
+include ':web'
+include ':business-specifications'
+include ':specifications'
+include ':liquibase-runner'
+
+project(':hsa-integration').projectDir = "$rootDir/integration/hsa-integration" as File
+project(':liquibase-runner').projectDir = "$rootDir/tools/liquibase-runner" as File
