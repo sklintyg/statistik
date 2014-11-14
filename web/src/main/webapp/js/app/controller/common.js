@@ -83,6 +83,14 @@ var ControllerCommons = new function(){
             }, 3000);
           } );
     };
+
+    this.updateDataTable = function (scope, tableData) {
+        scope.headerrows = tableData.headers;
+        if (scope.headerrows.length > 1) {
+            scope.headerrows[0].centerAlign = true;
+        }
+        scope.rows = tableData.rows;
+    };
     
     this.htmlsafe = function(string) {
         return string.replace(/&/g, '&amp;').replace(/</g, '&lt;');

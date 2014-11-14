@@ -50,10 +50,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Statistics services that does not require authentication. Unless otherwise noted, the data returned
@@ -215,6 +212,32 @@ public class ChartDataService {
             }
         }
         return kapitel;
+    }
+
+    /**
+     * Get the list of diagnoskapitel.
+     *
+     * @return data
+     */
+    @GET
+    @Path("getDiagnosisKapitelAndAvsnitt")
+    @Produces({MediaType.APPLICATION_JSON })
+    public DiagnosisKapitelAndAvsnittResponse getDiagnosisKapitelAndAvsnitt() {
+        LOG.info("Calling getDiagnosisKapitelAndAvsnitt");
+        Map<String, List<Avsnitt>> avsnitts = new LinkedHashMap<>();
+        List<Icd10.Kapitel> kapitels = icd10.getKapitel();
+        for (Icd10.Kapitel k: kapitels) {
+            avsnitts.put(k.getId(), convertToAvsnitts(k.getAvsnitt()));
+        }
+        return new DiagnosisKapitelAndAvsnittResponse(avsnitts, getDiagnoskapitel());
+    }
+
+    private List<Avsnitt> convertToAvsnitts(List<Icd10.Avsnitt> avsnitts) {
+        List<Avsnitt> converted = new ArrayList<>(avsnitts.size());
+        for (Icd10.Avsnitt avsnitt : avsnitts) {
+            converted.add(new Avsnitt(avsnitt.getId(), avsnitt.getName()));
+        }
+        return converted;
     }
 
     /**
@@ -441,4 +464,22 @@ public class ChartDataService {
             return name;
         }
     }
+
+    public static class Avsnitt extends Kapitel {
+        public Avsnitt(String id, String name) {
+            super(id, name);
+        }
+    }
+
+    public static class DiagnosisKapitelAndAvsnittResponse {
+        public final Map<String, List<Avsnitt>> avsnitts;
+        public final List<Kapitel> kapitels;
+
+        public DiagnosisKapitelAndAvsnittResponse(Map<String, List<Avsnitt>> avsnitts, List<Kapitel> kapitels) {
+            this.avsnitts = avsnitts;
+            this.kapitels = kapitels;
+        }
+
+    }
+
 }

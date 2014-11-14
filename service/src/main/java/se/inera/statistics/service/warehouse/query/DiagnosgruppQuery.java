@@ -82,6 +82,15 @@ public class DiagnosgruppQuery {
         return new DiagnosgruppResponse(avsnitt, rows);
     }
 
+    public DiagnosgruppResponse getUnderdiagnosgrupper(Aisle aisle, Predicate<Fact> filter, LocalDate start, int periods, int periodLength, String kapitelId) {
+        Icd10.Kapitel kapitel = icd10.getKapitel(kapitelId);
+        if (kapitel != null) {
+            return getDiagnosavsnitts(aisle, filter, start, periods, periodLength, kapitelId);
+        } else {
+            return getDiagnoskategoris(aisle, filter, start, periods, periodLength, kapitelId);
+        }
+    }
+
     public DiagnosgruppResponse getDiagnosavsnitts(Aisle aisle, Predicate<Fact> filter, LocalDate start, int periods, int periodLength, String kapitelId) {
         Icd10.Kapitel kapitel = icd10.getKapitel(kapitelId);
         List<Avsnitt> avsnitts = new ArrayList<>();
@@ -108,12 +117,10 @@ public class DiagnosgruppQuery {
             }
             rows.add(new KonDataRow(ReportUtil.toDiagramPeriod(sjukfallGroup.getRange().getFrom()), list));
         }
-
-
         return new DiagnosgruppResponse(avsnitts, rows);
     }
 
-    public DiagnosgruppResponse getDiagnoskatogoris(Aisle aisle, Predicate<Fact> filter, LocalDate start, int periods, int periodLength, String avsnittId) {
+    private DiagnosgruppResponse getDiagnoskategoris(Aisle aisle, Predicate<Fact> filter, LocalDate start, int periods, int periodLength, String avsnittId) {
         Icd10.Avsnitt avsnitt = icd10.getAvsnitt(avsnittId);
         List<Kategori> kategoris = new ArrayList<>();
         for (Icd10.Kategori kategori : avsnitt.getKategori()) {
@@ -139,8 +146,6 @@ public class DiagnosgruppQuery {
             }
             rows.add(new KonDataRow(ReportUtil.toDiagramPeriod(sjukfallGroup.getRange().getFrom()), list));
         }
-
-
         return new DiagnosgruppResponse(kategoris, rows);
     }
 

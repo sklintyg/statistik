@@ -72,8 +72,8 @@ angular.module('StatisticsApp').factory('statisticsData', function ($http) {
         makeRequestVerksamhet("getDiagnosavsnittstatistik/" + groupId, verksamhetId, params, successCallback, failureCallback);
     };
 
-    factory.getDiagnosisGroups = function (successCallback, failureCallback) {
-        makeRequestNational("getDiagnoskapitel", successCallback, failureCallback);
+    factory.getDiagnosisKapitelAndAvsnitt = function (successCallback, failureCallback) {
+        makeRequestNational("getDiagnosisKapitelAndAvsnitt", successCallback, failureCallback);
     };
 
     factory.getAgeGroups = function (successCallback, failureCallback) {

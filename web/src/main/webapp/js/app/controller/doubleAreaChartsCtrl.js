@@ -19,8 +19,8 @@
 
 'use strict';
 
-angular.module('StatisticsApp').controller('doubleAreaChartsCtrl', [ '$scope', '$routeParams', '$window', '$timeout', 'statisticsData', 'businessFilter', 'config',
-    function ($scope, $routeParams, $window, $timeout, statisticsData, businessFilter, config) {
+angular.module('StatisticsApp').controller('doubleAreaChartsCtrl', [ '$scope', '$routeParams', '$window', '$timeout', 'statisticsData', 'businessFilter', 'config', 'messageService',
+    function ($scope, $routeParams, $window, $timeout, statisticsData, businessFilter, config, messageService) {
         var that = this;
         var chart1 = {};
         var chart2 = {};
@@ -43,11 +43,6 @@ angular.module('StatisticsApp').controller('doubleAreaChartsCtrl', [ '$scope', '
             chartOptions.yAxis.title.align = 'high';
             chartOptions.yAxis.title.offset = 0;
             return new Highcharts.Chart(chartOptions);
-        };
-
-        var updateDataTable = function ($scope, ajaxResult) {
-            $scope.headerrows = ajaxResult.tableData.headers;
-            $scope.rows = ajaxResult.tableData.rows;
         };
 
         //Expects the table to consist of two headers where the first header has a colspan of two
@@ -137,13 +132,13 @@ angular.module('StatisticsApp').controller('doubleAreaChartsCtrl', [ '$scope', '
             $scope.subTitle = config.title(result.period, $routeParams.groupId);
             if (config.showDetailsOptions) {
                 $scope.currentPeriod = result.period;
-                statisticsData.getDiagnosisGroups(populateDetailsOptions, function () {
+                statisticsData.getDiagnosisKapitelAndAvsnitt(populateDetailsOptions, function () {
                     alert("Kunde inte ladda data");
                 });
             }
 
             $timeout(function () {
-                updateDataTable($scope, result);
+                ControllerCommons.updateDataTable($scope, result.tableData);
                 updateChart(result);
 
                 if ($routeParams.printBw || $routeParams.print) {
@@ -155,21 +150,60 @@ angular.module('StatisticsApp').controller('doubleAreaChartsCtrl', [ '$scope', '
             }, 100);
         };
 
+        var getMapKeys = function(mapObject) {
+            var keys = [];
+            for (var key in mapObject) {
+                if (mapObject.hasOwnProperty(key)) {
+                    keys.push(key);
+                }
+            }
+            return keys;
+        };
+
+        function getSubtitle(period, selectedOption1, selectedOption2) {
+            if ((selectedOption2 && selectedOption2.name && selectedOption2.id)) {
+                return config.title(period, selectedOption2.id + " " + selectedOption2.name);
+            }
+            if (selectedOption1 && selectedOption1.name && selectedOption1.id) {
+                return config.title(period, selectedOption1.id + " " + selectedOption1.name);
+            }
+            return "";
+        }
+
         var populateDetailsOptions = function (result) {
             var basePath = isVerksamhet ? "#/verksamhet/" + $routeParams.verksamhetId + "/diagnosavsnitt" : "#/nationell/diagnosavsnitt";
 
-            for (var i = 0; i < result.length; i++) {
-                if (result[i].id == $routeParams.groupId) {
-                    $scope.selectedDetailsOption = result[i];
+            var kapitels = result.kapitels;
+            for (var i = 0; i < kapitels.length; i++) {
+                if (kapitels[i].id == $routeParams.groupId) {
+                    $scope.selectedDetailsOption = kapitels[i];
                     break;
                 }
             }
-            $scope.subTitle = ($scope.selectedDetailsOption && $scope.selectedDetailsOption.name && $scope.selectedDetailsOption.id) ? config.title($scope.currentPeriod, $scope.selectedDetailsOption.id + " " + $scope.selectedDetailsOption.name) : "";
+            var avsnitts = result.avsnitts[$routeParams.groupId];
+            for (var i = 0; i < avsnitts.length; i++) {
+                if (avsnitts[i].id == $routeParams.kategoriId) {
+                    $scope.selectedDetailsOption2 = avsnitts[i];
+                    break;
+                }
+            }
+            $scope.subTitle = getSubtitle($scope.currentPeriod, $scope.selectedDetailsOption, $scope.selectedDetailsOption2);
 
-            $scope.detailsOptions = ControllerCommons.map(result, function (e) {
+            $scope.detailsOptions = ControllerCommons.map(kapitels, function (e) {
                 e.url = basePath + "/" + e.id;
                 return e;
             });
+            $scope.detailsOptions2 = ControllerCommons.map(avsnitts, function (e) {
+                e.url = basePath + "/" + $routeParams.groupId + "/kategori/" + e.id;
+                return e;
+            });
+
+            //Add default option for detailsOptions2
+            var defaultId = messageService.getProperty("lbl.valj-annat-diagnosavsnitt", null, "", null, true);
+            $scope.detailsOptions2.unshift({"id": defaultId, "name":"", "url":basePath + "/" + $routeParams.groupId});
+            if (!$scope.selectedDetailsOption2) {
+                $scope.selectedDetailsOption2 = $scope.detailsOptions2[0];
+            }
         };
 
         $scope.chartFootnotes = config.chartFootnotes;
@@ -198,7 +232,7 @@ angular.module('StatisticsApp').controller('doubleAreaChartsCtrl', [ '$scope', '
         function refreshVerksamhet(samePage) {
             statisticsData[config.dataFetcherVerksamhet]($routeParams.verksamhetId, businessFilter.getSelectedBusinesses(samePage), populatePageWithData, function () {
                 $scope.dataLoadingError = true;
-            }, $routeParams.groupId);
+            }, getMostSpecificGroupId());
         }
 
         $scope.$on('filterChange', function (event, data) {
@@ -207,6 +241,10 @@ angular.module('StatisticsApp').controller('doubleAreaChartsCtrl', [ '$scope', '
             }
         });
 
+        function getMostSpecificGroupId() {
+            return $routeParams.kategoriId ? $routeParams.kategoriId : $routeParams.groupId;
+        }
+
         if (isVerksamhet) {
             $scope.exportTableUrl = config.exportTableUrlVerksamhet($routeParams.verksamhetId, $routeParams.groupId);
             refreshVerksamhet(false);
@@ -214,7 +252,7 @@ angular.module('StatisticsApp').controller('doubleAreaChartsCtrl', [ '$scope', '
             $scope.exportTableUrl = config.exportTableUrl($routeParams.groupId);
             statisticsData[config.dataFetcher](populatePageWithData, function () {
                 $scope.dataLoadingError = true;
-            }, $routeParams.groupId);
+            }, getMostSpecificGroupId());
         }
 
         $scope.showHideDataTable = ControllerCommons.showHideDataTableDefault;
@@ -223,6 +261,7 @@ angular.module('StatisticsApp').controller('doubleAreaChartsCtrl', [ '$scope', '
         };
 
         $scope.showDetailsOptions = config.showDetailsOptions;
+        $scope.showDetailsOptions2 = isVerksamhet;
 
         $scope.spinnerText = "Laddar information...";
         $scope.doneLoading = false;

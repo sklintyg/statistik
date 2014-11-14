@@ -19,7 +19,6 @@
 
 package se.inera.statistics.web.service;
 
-import se.inera.statistics.service.report.model.Avsnitt;
 import se.inera.statistics.service.report.model.DiagnosgruppResponse;
 import se.inera.statistics.service.report.model.ICDTyp;
 import se.inera.statistics.service.report.model.Kon;

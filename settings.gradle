@@ -1,0 +1,8 @@
+rootProject.name = 'statistik'
+
+include ':hsa-integration'
+include ':statistik-service'
+include ':statistik-web'
+include ':statistik-business-specifications'
+include ':statistik-specifications'
+include ':statistik-liquibase-runner'

@@ -19,10 +19,11 @@
 
 package se.inera.statistics.web.service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.TreeMap;
+import java.util.*;
 
+import com.google.common.base.Function;
+import com.google.common.collect.Lists;
+import javafx.util.Pair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -56,6 +57,10 @@ public class DiagnosisSubGroupsConverter {
 
     private List<ChartSeries> getTopColumns(DiagnosgruppResponse data, List<Integer> topIndexes, Kon sex) {
         List<ChartSeries> topColumns = new ArrayList<>();
+        if (topIndexes.isEmpty()) {
+            topColumns.add(new ChartSeries("Totalt", createList(data.getRows().size(), 0), true));
+            return topColumns;
+        }
         for (Integer index : topIndexes) {
             List<Integer> indexData = data.getDataFromIndex(index, sex);
             topColumns.add(new ChartSeries(data.getDiagnosisGroupsAsStrings().get(index), indexData, true));
@@ -65,6 +70,14 @@ public class DiagnosisSubGroupsConverter {
             topColumns.add(new ChartSeries("Övriga diagnosavsnitt", remainingData, true));
         }
         return topColumns;
+    }
+
+    private List<Integer> createList(int size, int value) {
+        ArrayList<Integer> list = new ArrayList<>();
+        for (int i = 0; i < size; i++) {
+             list.add(value);
+        }
+        return list;
     }
 
     private List<Integer> sumRemaining(List<Integer> topIndexes, DiagnosgruppResponse data, Kon sex) {
@@ -84,19 +97,33 @@ public class DiagnosisSubGroupsConverter {
         return remaining;
     }
 
-    private List<Integer> getTopColumnIndexes(DiagnosgruppResponse diagnosisGroups) {
+    List<Integer> getTopColumnIndexes(DiagnosgruppResponse diagnosisGroups) {
         if (diagnosisGroups.getRows().isEmpty()) {
-            return new ArrayList<Integer>();
+            return new ArrayList<>();
         }
-        TreeMap<Integer, Integer> columnSums = new TreeMap<>();
+        List<Pair<Integer, Integer>> columnSums = new ArrayList<>();
         int dataSize = diagnosisGroups.getRows().get(0).getData().size();
         for (int i = 0; i < dataSize; i++) {
-            columnSums.put(sum(diagnosisGroups.getDataFromIndex(i, Kon.Male)) + sum(diagnosisGroups.getDataFromIndex(i, Kon.Female)), i);
+            int totalSum = sum(diagnosisGroups.getDataFromIndex(i, Kon.Male)) + sum(diagnosisGroups.getDataFromIndex(i, Kon.Female));
+            if (totalSum > 0) {
+                columnSums.add(new Pair<>(i, totalSum));
+            }
         }
         LOG.debug("Columns: " + diagnosisGroups.getDiagnosisGroupsAsStrings());
         LOG.debug("TopColumnIndexes: " + columnSums);
-        ArrayList<Integer> arrayList = new ArrayList<>(columnSums.descendingMap().values());
-        return arrayList.subList(0, Math.min(NUMBER_OF_CHART_SERIES, arrayList.size()));
+        columnSums.sort(new Comparator<Pair<Integer, Integer>>() {
+            @Override
+            public int compare(Pair<Integer, Integer> o1, Pair<Integer, Integer> o2) {
+                return o2.getValue() - o1.getValue();
+            }
+        });
+        List<Integer> sortedIndexes = Lists.transform(columnSums, new Function<Pair<Integer, Integer>, Integer>() {
+            @Override
+            public Integer apply(Pair<Integer, Integer> integerIntegerPair) {
+                return integerIntegerPair.getKey();
+            }
+        });
+        return sortedIndexes.subList(0, Math.min(NUMBER_OF_CHART_SERIES, sortedIndexes.size()));
     }
 
     private int sum(List<Integer> numbers) {
