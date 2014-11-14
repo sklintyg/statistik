@@ -619,6 +619,26 @@
                 <enabled>false</enabled>
             </snapshots>
         </repository>
+        <repository>
+            <id>callista-release</id>
+            <url>http://repository-callistasoftware.forge.cloudbees.com/release/</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+        <repository>
+            <id>callista-snapshot</id>
+            <url>http://repository-callistasoftware.forge.cloudbees.com/snapshot/</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
     </repositories>
     <pluginRepositories>
       <pluginRepository>
