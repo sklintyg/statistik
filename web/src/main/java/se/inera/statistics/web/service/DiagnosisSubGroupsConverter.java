@@ -67,7 +67,7 @@ public class DiagnosisSubGroupsConverter {
         }
         if (data.getDiagnosisGroupsAsStrings().size() > NUMBER_OF_CHART_SERIES) {
             List<Integer> remainingData = sumRemaining(topIndexes, data, sex);
-            topColumns.add(new ChartSeries("Övriga diagnosavsnitt", remainingData, true));
+            topColumns.add(new ChartSeries("Övriga", remainingData, true));
         }
         return topColumns;
     }
@@ -111,7 +111,7 @@ public class DiagnosisSubGroupsConverter {
         }
         LOG.debug("Columns: " + diagnosisGroups.getDiagnosisGroupsAsStrings());
         LOG.debug("TopColumnIndexes: " + columnSums);
-        columnSums.sort(new Comparator<Pair<Integer, Integer>>() {
+        Collections.sort(columnSums, new Comparator<Pair<Integer, Integer>>() {
             @Override
             public int compare(Pair<Integer, Integer> o1, Pair<Integer, Integer> o2) {
                 return o2.getValue() - o1.getValue();
