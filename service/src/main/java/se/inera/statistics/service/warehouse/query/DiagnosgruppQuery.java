@@ -66,14 +66,18 @@ public class DiagnosgruppQuery {
         return new DiagnosgruppResponse(avsnitt, rows);
     }
 
-    public DiagnosgruppResponse getUnderdiagnosgrupper(Aisle aisle, Predicate<Fact> filter, LocalDate start, int periods, int periodLength, String rangeId) {
-        Icd10.Kapitel kapitel = icd10.getKapitel(rangeId);
+    public DiagnosgruppResponse getUnderdiagnosgrupper(Aisle aisle, Predicate<Fact> filter, LocalDate start, int periods, int periodLength, String rangeId) throws RangeNotFoundException {
+        final Icd10.Kapitel kapitel = icd10.getKapitel(rangeId);
         if (kapitel != null) {
             return getUnderdiagnosgrupper(aisle, filter, start, periods, periodLength, kapitel, Icd10RangeType.AVSNITT);
-        } else {
-            Icd10.Avsnitt avsnitt = icd10.getAvsnitt(rangeId);
+        }
+
+        final Icd10.Avsnitt avsnitt = icd10.getAvsnitt(rangeId);
+        if (avsnitt != null) {
             return getUnderdiagnosgrupper(aisle, filter, start, periods, periodLength, avsnitt, Icd10RangeType.KATEGORI);
         }
+
+        throw new RangeNotFoundException("Could not find ICD10 range: " + rangeId);
     }
 
     private DiagnosgruppResponse getUnderdiagnosgrupper(Aisle aisle, Predicate<Fact> filter, LocalDate start, int periods, int periodLength, Icd10.Range kapitel, Icd10RangeType rangeType) {

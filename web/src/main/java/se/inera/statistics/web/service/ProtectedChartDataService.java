@@ -36,6 +36,7 @@ import se.inera.statistics.service.report.model.SjukfallslangdResponse;
 import se.inera.statistics.service.report.model.SjukskrivningsgradResponse;
 import se.inera.statistics.service.report.model.VerksamhetOverviewResponse;
 import se.inera.statistics.service.warehouse.SjukfallUtil;
+import se.inera.statistics.service.warehouse.query.RangeNotFoundException;
 import se.inera.statistics.web.model.AgeGroupsData;
 import se.inera.statistics.web.model.DualSexStatisticsData;
 import se.inera.statistics.web.model.LoginInfo;
@@ -210,12 +211,21 @@ public class ProtectedChartDataService {
     @Produces({MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request, #verksamhetId)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request, #verksamhetId)")
-    public DualSexStatisticsData getDiagnosisSubGroupStatistics(@Context HttpServletRequest request, @PathParam(VERKSAMHET_PATH_ID) String verksamhetId, @PathParam("groupId") String groupId, @QueryParam(ID_STRING) String idString) {
+    public Response getDiagnosisSubGroupStatistics(@Context HttpServletRequest request, @PathParam(VERKSAMHET_PATH_ID) String verksamhetId, @PathParam("groupId") String groupId, @QueryParam(ID_STRING) String idString) {
         LOG.info("Calling getDiagnosavsnittstatistik with verksamhetId: {} and groupId: {} and ids: {}", verksamhetId,  groupId, idString);
+        try {
+            return Response.ok(getDiagnosisSubGroupStatisticsEntity(request, verksamhetId, groupId, idString)).build();
+        } catch (RangeNotFoundException e) {
+            return Response.serverError().entity(e.getMessage()).build();
+        }
+    }
+
+    private DualSexStatisticsData getDiagnosisSubGroupStatisticsEntity(HttpServletRequest request, String verksamhetId, String groupId, String idString) throws RangeNotFoundException {
         final Range range = new Range(18);
         Verksamhet verksamhet = getVerksamhet(request, Verksamhet.decodeId(verksamhetId));
         SjukfallUtil.FactFilter filter = getFilter(request, verksamhet, getIdsFromIdString(idString));
-        DiagnosgruppResponse diagnosavsnitt = warehouse.getUnderdiagnosgrupper(filter, range, groupId, verksamhet.getVardgivarId());
+        final String vardgivarId = verksamhet.getVardgivarId();
+        DiagnosgruppResponse diagnosavsnitt = warehouse.getUnderdiagnosgrupper(filter, range, groupId, vardgivarId);
         return new DiagnosisSubGroupsConverter().convert(diagnosavsnitt, range);
     }
 
@@ -233,8 +243,13 @@ public class ProtectedChartDataService {
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request, #verksamhetId)")
     public Response getDiagnosisSubGroupStatisticsAsCsv(@Context HttpServletRequest request, @PathParam(VERKSAMHET_PATH_ID) String verksamhetId, @PathParam("groupId") String groupId, @QueryParam(ID_STRING) String idString) {
         LOG.info("Calling getDiagnosavsnittstatistikAsCsv with verksamhetId: {} and groupId: {} and ids: {}", verksamhetId, groupId, idString);
-        final TableData tableData = getDiagnosisSubGroupStatistics(request, verksamhetId, groupId, idString).getTableData();
-        return CsvConverter.getCsvResponse(tableData, "export.csv");
+        final TableData tableData;
+        try {
+            tableData = getDiagnosisSubGroupStatisticsEntity(request, verksamhetId, groupId, idString).getTableData();
+            return CsvConverter.getCsvResponse(tableData, "export.csv");
+        } catch (RangeNotFoundException e) {
+            return Response.serverError().entity(e.getMessage()).build();
+        }
     }
 
     /**
