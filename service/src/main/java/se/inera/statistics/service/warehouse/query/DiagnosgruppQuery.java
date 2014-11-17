@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import se.inera.statistics.service.report.model.*;
 import se.inera.statistics.service.report.util.Icd10;
+import se.inera.statistics.service.report.util.Icd10RangeType;
 import se.inera.statistics.service.report.util.ReportUtil;
 import se.inera.statistics.service.warehouse.Aisle;
 import se.inera.statistics.service.warehouse.Fact;
@@ -57,24 +58,7 @@ public class DiagnosgruppQuery {
 
     public DiagnosgruppResponse getDiagnosgrupper(Aisle aisle, Predicate<Fact> filter, LocalDate start, int periods, int periodLength) {
         List<Icd10.Kapitel> kapitel = icd10.getKapitel();
-
-        List<KonDataRow> rows = new ArrayList<>();
-        for (SjukfallUtil.SjukfallGroup sjukfallGroup: SjukfallUtil.sjukfallGrupper(start, periods, periodLength, aisle, filter)) {
-            int[] female = new int[MAX_DIAGNOS_ID];
-            int[] male = new int[MAX_DIAGNOS_ID];
-            for (Sjukfall sjukfall: sjukfallGroup.getSjukfall()) {
-                if (sjukfall.getKon() == Kon.Female) {
-                    female[sjukfall.getDiagnoskapitel()]++;
-                } else {
-                    male[sjukfall.getDiagnoskapitel()]++;
-                }
-            }
-            List<KonField> list = new ArrayList<>(kapitel.size());
-            for (Icd10.Kapitel k: kapitel) {
-                list.add(new KonField(female[k.toInt()], male[k.toInt()]));
-            }
-            rows.add(new KonDataRow(ReportUtil.toDiagramPeriod(sjukfallGroup.getRange().getFrom()), list));
-        }
+        List<KonDataRow> rows = getKonDataRows(aisle, filter, start, periods, periodLength, kapitel, Icd10RangeType.KAPITEL);
         List<Avsnitt> avsnitt = new ArrayList<>(kapitel.size());
         for (Icd10.Kapitel k: kapitel) {
             avsnitt.add(new Avsnitt(k.getId(), k.getName()));
@@ -82,71 +66,58 @@ public class DiagnosgruppQuery {
         return new DiagnosgruppResponse(avsnitt, rows);
     }
 
-    public DiagnosgruppResponse getUnderdiagnosgrupper(Aisle aisle, Predicate<Fact> filter, LocalDate start, int periods, int periodLength, String kapitelId) {
-        Icd10.Kapitel kapitel = icd10.getKapitel(kapitelId);
+    public DiagnosgruppResponse getUnderdiagnosgrupper(Aisle aisle, Predicate<Fact> filter, LocalDate start, int periods, int periodLength, String rangeId) {
+        Icd10.Kapitel kapitel = icd10.getKapitel(rangeId);
         if (kapitel != null) {
-            return getDiagnosavsnitts(aisle, filter, start, periods, periodLength, kapitelId);
+            return getUnderdiagnosgrupper(aisle, filter, start, periods, periodLength, kapitel, Icd10RangeType.AVSNITT);
         } else {
-            return getDiagnoskategoris(aisle, filter, start, periods, periodLength, kapitelId);
+            Icd10.Avsnitt avsnitt = icd10.getAvsnitt(rangeId);
+            return getUnderdiagnosgrupper(aisle, filter, start, periods, periodLength, avsnitt, Icd10RangeType.KATEGORI);
         }
+    }
+
+    private DiagnosgruppResponse getUnderdiagnosgrupper(Aisle aisle, Predicate<Fact> filter, LocalDate start, int periods, int periodLength, Icd10.Range kapitel, Icd10RangeType rangeType) {
+        List<ICDTyp> icdTyps = new ArrayList<>();
+        for (Icd10.Id icdItem : kapitel.getSubItems()) {
+            switch (rangeType) {
+                case AVSNITT:   icdTyps.add(new Avsnitt(icdItem.getId(), icdItem.getName()));
+                                break;
+
+                case KATEGORI:  icdTyps.add(new Kategori(icdItem.getId(), icdItem.getName()));
+                                break;
+
+                default:        throw new RuntimeException("Unexpected range type: " + rangeType);
+            }
+        }
+        List<KonDataRow> rows = getKonDataRows(aisle, filter, start, periods, periodLength, kapitel.getSubItems(), rangeType);
+        return new DiagnosgruppResponse(icdTyps, rows);
+    }
+
+    private List<KonDataRow> getKonDataRows(Aisle aisle, Predicate<Fact> filter, LocalDate start, int periods, int periodLength, List<? extends Icd10.Id> kapitel, Icd10RangeType rangeType) {
+        List<KonDataRow> rows = new ArrayList<>();
+        for (SjukfallUtil.SjukfallGroup sjukfallGroup: SjukfallUtil.sjukfallGrupper(start, periods, periodLength, aisle, filter)) {
+            int[] female = new int[MAX_DIAGNOS_ID];
+            int[] male = new int[MAX_DIAGNOS_ID];
+            for (Sjukfall sjukfall: sjukfallGroup.getSjukfall()) {
+                if (sjukfall.getKon() == Kon.Female) {
+                    female[sjukfall.getIcd10CodeForType(rangeType)]++;
+                } else {
+                    male[sjukfall.getIcd10CodeForType(rangeType)]++;
+                }
+            }
+
+            List<KonField> list = new ArrayList<>(kapitel.size());
+            for (Icd10.Id icdItem : kapitel) {
+                list.add(new KonField(female[icdItem.toInt()], male[icdItem.toInt()]));
+            }
+            rows.add(new KonDataRow(ReportUtil.toDiagramPeriod(sjukfallGroup.getRange().getFrom()), list));
+        }
+        return rows;
     }
 
     public DiagnosgruppResponse getDiagnosavsnitts(Aisle aisle, Predicate<Fact> filter, LocalDate start, int periods, int periodLength, String kapitelId) {
         Icd10.Kapitel kapitel = icd10.getKapitel(kapitelId);
-        List<Avsnitt> avsnitts = new ArrayList<>();
-        for (Icd10.Avsnitt avsnitt : kapitel.getAvsnitt()) {
-            avsnitts.add(new Avsnitt(avsnitt.getId(), avsnitt.getName()));
-        }
-
-        List<KonDataRow> rows = new ArrayList<>();
-        for (SjukfallUtil.SjukfallGroup sjukfallGroup: SjukfallUtil.sjukfallGrupper(start, periods, periodLength, aisle, filter)) {
-            int[] female = new int[MAX_DIAGNOS_ID];
-            int[] male = new int[MAX_DIAGNOS_ID];
-            for (Sjukfall sjukfall: sjukfallGroup.getSjukfall()) {
-
-                if (sjukfall.getKon() == Kon.Female) {
-                    female[sjukfall.getDiagnosavsnitt()]++;
-                } else {
-                    male[sjukfall.getDiagnosavsnitt()]++;
-                }
-            }
-
-            List<KonField> list = new ArrayList<>(avsnitts.size());
-            for (Icd10.Avsnitt avsnitt: kapitel.getAvsnitt()) {
-                list.add(new KonField(female[avsnitt.toInt()], male[avsnitt.toInt()]));
-            }
-            rows.add(new KonDataRow(ReportUtil.toDiagramPeriod(sjukfallGroup.getRange().getFrom()), list));
-        }
-        return new DiagnosgruppResponse(avsnitts, rows);
-    }
-
-    private DiagnosgruppResponse getDiagnoskategoris(Aisle aisle, Predicate<Fact> filter, LocalDate start, int periods, int periodLength, String avsnittId) {
-        Icd10.Avsnitt avsnitt = icd10.getAvsnitt(avsnittId);
-        List<Kategori> kategoris = new ArrayList<>();
-        for (Icd10.Kategori kategori : avsnitt.getKategori()) {
-            kategoris.add(new Kategori(kategori.getId(), kategori.getName()));
-        }
-
-        List<KonDataRow> rows = new ArrayList<>();
-        for (SjukfallUtil.SjukfallGroup sjukfallGroup: SjukfallUtil.sjukfallGrupper(start, periods, periodLength, aisle, filter)) {
-            int[] female = new int[MAX_DIAGNOS_ID];
-            int[] male = new int[MAX_DIAGNOS_ID];
-            for (Sjukfall sjukfall: sjukfallGroup.getSjukfall()) {
-
-                if (sjukfall.getKon() == Kon.Female) {
-                    female[sjukfall.getDiagnoskategori()]++;
-                } else {
-                    male[sjukfall.getDiagnoskategori()]++;
-                }
-            }
-
-            List<KonField> list = new ArrayList<>(kategoris.size());
-            for (Icd10.Kategori kategori: avsnitt.getKategori()) {
-                list.add(new KonField(female[kategori.toInt()], male[kategori.toInt()]));
-            }
-            rows.add(new KonDataRow(ReportUtil.toDiagramPeriod(sjukfallGroup.getRange().getFrom()), list));
-        }
-        return new DiagnosgruppResponse(kategoris, rows);
+        return getUnderdiagnosgrupper(aisle, filter, start, periods, periodLength, kapitel, Icd10RangeType.AVSNITT);
     }
 
     private static Collection<String> rowsToKeep(Map<String, Counter<String>> count, int noOfRows) {
