@@ -1,17 +1,18 @@
 package se.inera.statistics.service.warehouse.query;
 
+import com.google.common.base.Predicate;
+import org.joda.time.LocalDate;
 import org.joda.time.LocalDateTime;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import se.inera.statistics.service.report.model.DiagnosgruppResponse;
 import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.report.util.Icd10;
-import se.inera.statistics.service.warehouse.Fact;
-import se.inera.statistics.service.warehouse.Sjukfall;
-import se.inera.statistics.service.warehouse.SjukfallUtil;
-import se.inera.statistics.service.warehouse.Warehouse;
+import se.inera.statistics.service.warehouse.*;
 
 import java.util.Collection;
 import java.util.List;
@@ -79,4 +80,35 @@ public class DiagnosgruppQueryTest {
 
         warehouse.accept(fact, VARDGIVARE);
     }
+
+    @Test
+    public void testGetUnderdiagnosGrupperForKapitel() throws Exception {
+        //When
+        DiagnosgruppResponse result = query.getUnderdiagnosgrupper(new Aisle(), new Predicate<Fact>() {
+            @Override
+            public boolean apply(Fact fact) {
+                return false;
+            }
+        }, new LocalDate(1416223845652L), 1, 1, "A00-B99");
+
+        //Then
+        assertEquals(21, result.getIcdTyps().size());
+        assertEquals("A00-A09", result.getIcdTyps().get(0).getId());
+    }
+
+    @Test
+    public void testGetUnderdiagnosGrupperForAvsnitt() throws Exception {
+        //When
+        DiagnosgruppResponse result = query.getUnderdiagnosgrupper(new Aisle(), new Predicate<Fact>() {
+            @Override
+            public boolean apply(Fact fact) {
+                return false;
+            }
+        }, new LocalDate(1416223845652L), 1, 1, "A00-A09");
+
+        //Then
+        assertEquals(10, result.getIcdTyps().size());
+        assertEquals("A00", result.getIcdTyps().get(0).getId());
+    }
+
 }

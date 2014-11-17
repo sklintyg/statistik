@@ -1,6 +1,7 @@
 package se.inera.statistics.service.warehouse;
 
 import se.inera.statistics.service.report.model.Kon;
+import se.inera.statistics.service.report.util.Icd10RangeType;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -95,6 +96,15 @@ public class Sjukfall {
 
     public int getDiagnoskategori() {
         return diagnoskategori;
+    }
+
+    public int getIcd10CodeForType(Icd10RangeType rangeType) {
+        switch (rangeType) {
+            case KAPITEL: return getDiagnoskapitel();
+            case AVSNITT: return getDiagnosavsnitt();
+            case KATEGORI: return getDiagnoskategori();
+            default: throw new RuntimeException("Unknown range type: " + rangeType);
+        }
     }
 
     public int getAlder() {
