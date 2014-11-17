@@ -20,9 +20,12 @@
 package se.inera.statistics.service.processlog;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import se.inera.statistics.service.helper.HSAServiceHelper;
+import se.inera.statistics.service.warehouse.WidelineConverter;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -31,6 +34,7 @@ import java.util.List;
 
 @Component
 public class LakareManager {
+    private static final Logger LOG = LoggerFactory.getLogger(LakareManager.class);
 
     @PersistenceContext(unitName = "IneraStatisticsLog")
     private EntityManager manager;
@@ -45,15 +49,17 @@ public class LakareManager {
         TypedQuery<Lakare> lakareQuery = manager.createQuery("SELECT l FROM Lakare l WHERE l.lakareId = :lakareId", Lakare.class);
         List<Lakare> resultList = lakareQuery.setParameter("lakareId", lakareId).getResultList();
 
-        if (resultList.isEmpty()) {
-            manager.persist(new Lakare(vardgivareId, lakareId, tilltalsNamn, efterNamn));
-        } else {
-            Lakare updatedLakare = resultList.get(0);
-            updatedLakare.setVardgivareId(vardgivareId);
-            updatedLakare.setLakareId(lakareId);
-            updatedLakare.setTilltalsNamn(tilltalsNamn);
-            updatedLakare.setEfterNamn(efterNamn);
-            manager.merge(updatedLakare);
+        if (validate(vardgivareId, lakareId, tilltalsNamn, efterNamn)) {
+            if (resultList.isEmpty()) {
+                manager.persist(new Lakare(vardgivareId, lakareId, tilltalsNamn, efterNamn));
+            } else {
+                Lakare updatedLakare = resultList.get(0);
+                updatedLakare.setVardgivareId(vardgivareId);
+                updatedLakare.setLakareId(lakareId);
+                updatedLakare.setTilltalsNamn(tilltalsNamn);
+                updatedLakare.setEfterNamn(efterNamn);
+                manager.merge(updatedLakare);
+            }
         }
     }
 
@@ -69,4 +75,27 @@ public class LakareManager {
         return query.getResultList();
     }
 
+    private boolean validate(String vardgivare, String lakareId, String tilltalsNamn, String efterNamn) {
+        // Utan vardgivare har vi inget uppdrag att behandla intyg, avbryt direkt
+        if (vardgivare == null) {
+            LOG.error("Vardgivare saknas for lakare");
+            return false;
+        }
+        if (vardgivare.length() > WidelineConverter.MAX_LENGTH_VGID) {
+            LOG.error("Vardgivare saknas for lakare");
+            return false;
+        }
+        boolean result = checkLength(lakareId, "Lakareid", WidelineConverter.MAX_LENGTH_LAKARE_ID);
+        result |= checkLength(tilltalsNamn, "Tilltalsnamn", WidelineConverter.MAX_LENGTH_TILLTALSNAMN);
+        result |= checkLength(efterNamn, "Efternamn", WidelineConverter.MAX_LENGTH_EFTERNAMN);
+        return result;
+    }
+
+    private boolean checkLength(String field, String name, int max) {
+        if (field == null || field.length() > max) {
+            LOG.error(name + " saknas eller ar ogiltigt for lakare");
+            return false;
+        }
+        return true;
+    }
 }
