@@ -48,9 +48,9 @@
         <module>service</module>
         <module>specifications</module>
         <module>business-specifications</module>
-        <module>tools/liquibase-runner</module>
-        <module>tools/anonymisering</module>
-        <module>tools/migrering</module>
+        <!--<module>tools/liquibase-runner</module>-->
+        <!--<module>tools/anonymisering</module>-->
+        <!--<module>tools/migrering</module>-->
       </modules>
 
     <properties>
