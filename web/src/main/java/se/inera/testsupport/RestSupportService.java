@@ -3,7 +3,8 @@ package se.inera.testsupport;
 import org.joda.time.DateTimeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import se.inera.statistics.service.warehouse.NationellData;
+import se.inera.statistics.service.processlog.EventType;
+import se.inera.statistics.service.processlog.Receiver;
 import se.inera.statistics.service.warehouse.Warehouse;
 import se.inera.statistics.web.service.ChartDataService;
 
@@ -19,6 +20,9 @@ public class RestSupportService {
 
     @Autowired
     private Warehouse warehouse;
+
+    @Autowired
+    private Receiver receiver;
 
     @GET
     @Path("now")
@@ -41,6 +45,15 @@ public class RestSupportService {
     public Response recalculateNationalData() {
         warehouse.complete(warehouse.getLastUpdate().plusMillis(1));
         nationalChartDataService.buildCache();
+        return Response.ok().build();
+    }
+
+    @PUT
+    @Path("intyg")
+    @Consumes({MediaType.APPLICATION_JSON })
+    @Produces({MediaType.APPLICATION_JSON })
+    public Response insertIntyg(Intyg intyg) {
+        receiver.accept(intyg.getType(), intyg.getData(), intyg.getDocumentId(), intyg.getTimestamp());
         return Response.ok().build();
     }
 
