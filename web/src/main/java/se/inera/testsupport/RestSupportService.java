@@ -3,7 +3,6 @@ package se.inera.testsupport;
 import org.joda.time.DateTimeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import se.inera.statistics.service.processlog.EventType;
 import se.inera.statistics.service.processlog.Receiver;
 import se.inera.statistics.service.warehouse.Warehouse;
 import se.inera.statistics.web.service.ChartDataService;
