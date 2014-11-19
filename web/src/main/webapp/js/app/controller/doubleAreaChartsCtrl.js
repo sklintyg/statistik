@@ -261,7 +261,7 @@ angular.module('StatisticsApp').controller('doubleAreaChartsCtrl', [ '$scope', '
         };
 
         $scope.showDetailsOptions = config.showDetailsOptions;
-        $scope.showDetailsOptions2 = config.showDetailsOptions2 && isVerksamhet;
+        $scope.showDetailsOptions2 = isVerksamhet;
 
         $scope.spinnerText = "Laddar information...";
         $scope.doneLoading = false;
@@ -312,7 +312,6 @@ angular.module('StatisticsApp').diagnosisSubGroupConfig = function () {
         return "api/verksamhet/" + verksamhetId + "/getDiagnosavsnittstatistik/" + subgroupId + "/csv";
     };
     conf.showDetailsOptions = true;
-    conf.showDetailsOptions2 = true;
     conf.title = function (period, name) {
         return "Antal sjukfall för " + name + " " + period;
     };
