@@ -4,8 +4,10 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Entity
+@Table(name = "enhet")
 public class Enhet {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -78,13 +80,21 @@ public class Enhet {
         this.namn = namn;
     }
 
-    public String getLansId() { return lansId; }
+    public String getLansId() {
+        return lansId;
+    }
 
-    public void setLansId(String lansId) { this.lansId = lansId; }
+    public void setLansId(String lansId) {
+        this.lansId = lansId;
+    }
 
-    public String getKommunId() { return kommunId; }
+    public String getKommunId() {
+        return kommunId;
+    }
 
-    public void setKommunId(String kommunId) { this.kommunId = kommunId; }
+    public void setKommunId(String kommunId) {
+        this.kommunId = kommunId;
+    }
 
     public String getVerksamhetsTyper() {
         return verksamhetsTyper;

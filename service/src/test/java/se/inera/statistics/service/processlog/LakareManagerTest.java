@@ -40,6 +40,16 @@ public class LakareManagerTest {
     }
 
     @Test
+    public void saveOneLakareWithoutVGFailsWithoutError() {
+        JsonNode hsaInfo = hsaService.getHSAInfo(new HSAKey(null, "enhet", "lakare"));
+
+        lakareManager.saveLakare(hsaInfo);
+
+        List<Lakare> allLakares = lakareManager.getAllLakares();
+        assertEquals(0, allLakares.size());
+    }
+
+    @Test
     public void getAllLakares() {
         JsonNode hsaInfo = hsaService.getHSAInfo(new HSAKey("vg", "enhet", "lakare1"));
         lakareManager.saveLakare(hsaInfo);
