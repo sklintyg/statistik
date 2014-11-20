@@ -59,8 +59,8 @@ angular.module('StatisticsApp').controller('pageCtrl', [ '$scope', '$rootScope',
                     $scope.userName = loginInfo.name;
                     $scope.userNameWithAccess = loginInfo.name;
 
-                    $rootScope.isVgAccess = loginInfo.vgAccess;
-                    $rootScope.isFullVgAccess = loginInfo.fullVgAccess;
+                    $scope.isVgAccess = loginInfo.vgAccess;
+                    $scope.isFullVgAccess = loginInfo.fullVgAccess;
                 }, function () {
                     $scope.dataLoadingError = true;
                 });
