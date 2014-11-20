@@ -48,13 +48,9 @@ public class RestSupportService {
         return Response.ok().build();
     }
 
-    @POST
-    @Path("recalculateNationalData")
-    @Produces({MediaType.APPLICATION_JSON})
-    public Response recalculateNationalData() {
+    private void recalculateNationalData() {
         warehouse.complete(warehouse.getLastUpdate().plusMillis(1));
         nationalChartDataService.buildCache();
-        return Response.ok().build();
     }
 
     @POST
