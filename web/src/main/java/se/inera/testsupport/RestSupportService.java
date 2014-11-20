@@ -5,8 +5,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import se.inera.statistics.service.processlog.Receiver;
+import se.inera.statistics.service.scheduler.LogJob;
 import se.inera.statistics.service.warehouse.Warehouse;
-import se.inera.statistics.service.warehouse.WidelineLoader;
+import se.inera.statistics.service.warehouse.WarehouseManager;
 import se.inera.statistics.web.service.ChartDataService;
 
 import javax.persistence.EntityManager;
@@ -31,7 +32,10 @@ public class RestSupportService {
     private EntityManager manager;
 
     @Autowired
-    private WidelineLoader widelineLoader;
+    private WarehouseManager warehouseManager;
+
+    @Autowired
+    private LogJob logJob;
 
     @GET
     @Path("now")
@@ -59,6 +63,11 @@ public class RestSupportService {
     @Transactional
     public Response clearDatabase() {
         manager.createQuery("DELETE FROM IntygEvent").executeUpdate();
+        manager.createQuery("DELETE FROM WideLine").executeUpdate();
+        manager.createQuery("DELETE FROM EventPointer").executeUpdate();
+        manager.createQuery("DELETE FROM Enhet").executeUpdate();
+        manager.createQuery("DELETE FROM Lakare").executeUpdate();
+        manager.createQuery("DELETE FROM HSAStore").executeUpdate();
         warehouse.clear();
         recalculateNationalData();
         return Response.ok().build();
@@ -78,7 +87,8 @@ public class RestSupportService {
     @Produces({MediaType.APPLICATION_JSON})
     @Transactional
     public Response processIntyg() {
-        widelineLoader.populateWarehouse();
+        logJob.checkLog();
+        warehouseManager.loadWideLines();
         recalculateNationalData();
         return Response.ok().build();
     }

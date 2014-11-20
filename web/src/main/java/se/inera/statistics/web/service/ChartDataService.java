@@ -65,7 +65,7 @@ public class ChartDataService {
     private static final Logger LOG = LoggerFactory.getLogger(ChartDataService.class);
     public static final int YEAR = 12;
     public static final String TEXT_UTF8 = "text/plain; charset=UTF-8";
-    public static final int DELAY_BETWEEN_RELOADS = 5;
+    public static final int DELAY_BETWEEN_RELOADS = 1000;
     public static final int EIGHTEEN_MONTHS = 18;
 
     @Autowired
