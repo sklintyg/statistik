@@ -23,7 +23,12 @@ import com.google.common.base.Predicate;
 import org.joda.time.LocalDate;
 import se.inera.statistics.service.report.model.Range;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 public final class SjukfallUtil {
 
@@ -144,7 +149,7 @@ public final class SjukfallUtil {
         return count;
     }
 
-    public static abstract class FactFilter implements Predicate<Fact> {
+    public abstract static class FactFilter implements Predicate<Fact> {
     }
 
     public static class EnhetFilter extends FactFilter {
@@ -176,7 +181,7 @@ public final class SjukfallUtil {
         }
 
         public String getEnhetsName(int id) {
-            return enhetsNamesById != null ? enhetsNamesById.get(id): null;
+            return enhetsNamesById != null ? enhetsNamesById.get(id) : null;
         }
     }
 

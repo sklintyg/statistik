@@ -19,16 +19,15 @@
 
 package se.inera.statistics.web.model;
 
-import static org.apache.commons.lang3.text.translate.UnicodeEscaper.above;
-import static org.apache.commons.lang3.text.translate.UnicodeEscaper.between;
-
-import java.io.Serializable;
-import java.util.List;
-import java.util.Set;
-
 import org.apache.commons.lang3.text.translate.CharSequenceTranslator;
 import org.apache.commons.lang3.text.translate.UnicodeEscaper;
 import org.apache.commons.lang3.text.translate.UnicodeUnescaper;
+
+import java.io.Serializable;
+import java.util.Set;
+
+import static org.apache.commons.lang3.text.translate.UnicodeEscaper.above;
+import static org.apache.commons.lang3.text.translate.UnicodeEscaper.between;
 
 public class Verksamhet implements Serializable {
 
@@ -77,13 +76,21 @@ public class Verksamhet implements Serializable {
         return vardgivarName;
     }
 
-    public String getLansId() { return lansId; }
+    public String getLansId() {
+        return lansId;
+    }
 
-    public String getLansName() { return lansName; }
+    public String getLansName() {
+        return lansName;
+    }
 
-    public String getKommunId() { return kommunId; }
+    public String getKommunId() {
+        return kommunId;
+    }
 
-    public String getKommunName() { return kommunName; }
+    public String getKommunName() {
+        return kommunName;
+    }
 
     public Set<VerksamhetsTyp> getVerksamhetsTyper() {
         return verksamhetsTyper;
@@ -108,13 +115,21 @@ public class Verksamhet implements Serializable {
 
         @Override
         public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
+            if (this == o) {
+                return true;
+            }
+            if (o == null || getClass() != o.getClass()) {
+                return false;
+            }
 
             VerksamhetsTyp that = (VerksamhetsTyp) o;
 
-            if (!id.equals(that.id)) return false;
-            if (!name.equals(that.name)) return false;
+            if (!id.equals(that.id)) {
+                return false;
+            }
+            if (!name.equals(that.name)) {
+                return false;
+            }
 
             return true;
         }
@@ -122,7 +137,8 @@ public class Verksamhet implements Serializable {
         @Override
         public int hashCode() {
             int result = id.hashCode();
-            result = 31 * result + name.hashCode();
+            final int number = 31;
+            result = number * result + name.hashCode();
             return result;
         }
     }

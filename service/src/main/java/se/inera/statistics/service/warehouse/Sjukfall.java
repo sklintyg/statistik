@@ -147,6 +147,8 @@ public class Sjukfall {
         return String.format("%1$02d", lan);
     }
 
-    public Set<Integer> getLakare() { return lakare; }
+    public Set<Integer> getLakare() {
+        return lakare;
+    }
 
 }

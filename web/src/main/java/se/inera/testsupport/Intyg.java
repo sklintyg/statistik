@@ -16,7 +16,7 @@ public class Intyg {
     }
 
     /**
-     * For json mapper
+     * For json mapper.
      */
     Intyg() { }
 

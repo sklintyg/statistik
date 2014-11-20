@@ -9,9 +9,15 @@ import se.inera.statistics.service.report.model.SjukfallslangdResponse;
 import se.inera.statistics.service.report.model.SjukskrivningsgradResponse;
 import se.inera.statistics.service.report.model.VerksamhetOverviewResponse;
 import se.inera.statistics.service.report.util.ReportUtil;
-import se.inera.statistics.service.warehouse.query.*;
 import se.inera.statistics.service.warehouse.SjukfallUtil;
 import se.inera.statistics.service.warehouse.Warehouse;
+import se.inera.statistics.service.warehouse.query.AldersgruppQuery;
+import se.inera.statistics.service.warehouse.query.DiagnosgruppQuery;
+import se.inera.statistics.service.warehouse.query.OverviewQuery;
+import se.inera.statistics.service.warehouse.query.RangeNotFoundException;
+import se.inera.statistics.service.warehouse.query.SjukfallQuery;
+import se.inera.statistics.service.warehouse.query.SjukskrivningsgradQuery;
+import se.inera.statistics.service.warehouse.query.SjukskrivningslangdQuery;
 
 public class WarehouseService {
 

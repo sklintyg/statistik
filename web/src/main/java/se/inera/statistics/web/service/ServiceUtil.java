@@ -26,7 +26,9 @@ import se.inera.statistics.web.model.NamedData;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ServiceUtil {
+public final class ServiceUtil {
+
+    private ServiceUtil() { }
 
     static List<Integer> getMergedSexData(KonDataRow row) {
         List<Integer> data = new ArrayList<>();

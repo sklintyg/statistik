@@ -50,8 +50,8 @@ public class HSAServiceMock implements HSAService {
     private static final Lan LAN = new Lan();
     private static final List<String> LAN_CODES;
     private static final Kommun KOMMUN = new Kommun();
-    private static final String[] TILLTALS_NAMN = new String[] { "Abdullah", "Beata", "Cecilia", "David", "Egil", "Fredrika", "Gustave", "Henning", "Ibrahim", "José", "Kone", "Lazlo", "My", "Natasha", "Orhan", "Pawel", "Rebecca", "Sirkka", "Tuula", "Urban", "Vieux", "Åsa" };
-    private static final String[] EFTER_NAMN = new String[] { "Andersson", "Bardot", "Cohen", "Derrida", "En", "Flod", "Gran", "Holmberg", "Isaac", "Juhanen", "Karlsson", "Lazar", "Manard", "Nadal", "Olrik", "Pettersson", "Rawls", "Sadat", "Tot", "Uddhammar", "Wedén", "Åsgren", "Örn" };
+    private static final String[] TILLTALS_NAMN = new String[] {"Abdullah", "Beata", "Cecilia", "David", "Egil", "Fredrika", "Gustave", "Henning", "Ibrahim", "José", "Kone", "Lazlo", "My", "Natasha", "Orhan", "Pawel", "Rebecca", "Sirkka", "Tuula", "Urban", "Vieux", "Åsa"};
+    private static final String[] EFTER_NAMN = new String[] {"Andersson", "Bardot", "Cohen", "Derrida", "En", "Flod", "Gran", "Holmberg", "Isaac", "Juhanen", "Karlsson", "Lazar", "Manard", "Nadal", "Olrik", "Pettersson", "Rawls", "Sadat", "Tot", "Uddhammar", "Wedén", "Åsgren", "Örn"};
     private static final List<String> KOMMUN_CODES;
     private static final VerksamhetsTyp VERKSAMHET = new VerksamhetsTyp();
     private static final List<String> VERKSAMHET_CODES;

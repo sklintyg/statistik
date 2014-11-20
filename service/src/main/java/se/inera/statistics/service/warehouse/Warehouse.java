@@ -87,7 +87,7 @@ public class Warehouse implements Iterable<Aisle> {
         loadingAisles = new HashMap<>();
     }
 
-    public void clear(){
+    public void clear() {
         LOG.warn("Clearing warehouse ailes");
         loadingAisles.clear();
         complete(LocalDateTime.now());
