@@ -116,7 +116,7 @@ public class Icd10 {
         }
     }
 
-    public static class Id {
+    public static abstract class Id {
         private final String id;
         private final String name;
 
@@ -138,9 +138,12 @@ public class Icd10 {
             return (id.charAt(0) - 'A') * 100 + (id.charAt(1) - '0') * 10 + id.charAt(2) - '0';
         }
         // CHECKSTYLE:ON MagicNumber
+
+        public abstract List<? extends Id> getSubItems();
+
     }
 
-    public static class Range extends Id {
+    public abstract static class Range extends Id {
         private final String firstId;
         private final String lastId;
 
@@ -161,6 +164,11 @@ public class Icd10 {
 
         public Kapitel(String range, String name) {
             super(range.toUpperCase(), name);
+        }
+
+        @Override
+        public List<? extends Id> getSubItems() {
+            return getAvsnitt();
         }
 
         public static Kapitel valueOf(String line) {
@@ -212,6 +220,11 @@ public class Icd10 {
         public Kapitel getKapitel() {
             return kapitel;
         }
+
+        public List<? extends Id> getSubItems() {
+            return getKategori();
+        }
+
     }
 
     public static class Kategori extends Id {
@@ -246,6 +259,12 @@ public class Icd10 {
         public Avsnitt getAvsnitt() {
             return avsnitt;
         }
+
+        @Override
+        public List<? extends Id> getSubItems() {
+            return Collections.EMPTY_LIST;
+        }
+
     }
 
     private static class LineReader implements Closeable {

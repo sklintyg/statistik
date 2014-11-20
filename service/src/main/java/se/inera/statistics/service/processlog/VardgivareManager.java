@@ -39,28 +39,22 @@ public class VardgivareManager {
         if (vardgivareNamn == null) {
             vardgivareNamn = vardgivare;
         }
-        if (vardgivare == null) {
-            LOG.error("Vardgivare saknas: " + hsaInfo.asText());
-            return;
-        }
-        if (vardgivare.length() > WidelineConverter.MAX_LENGTH_VGID) {
-            LOG.error("Vardgivare saknas: " + hsaInfo.asText());
-            return;
-        }
 
-        TypedQuery<Enhet> vardgivareQuery = manager.createQuery("SELECT v FROM Enhet v WHERE v.enhetId = :enhetId AND v.vardgivareId = :vardgivareId", Enhet.class);
-        List<Enhet> resultList = vardgivareQuery.setParameter("enhetId", enhet).setParameter("vardgivareId", vardgivare).getResultList();
+        if (validate(enhet, vardgivare, enhetNamn, vardgivareNamn, lansId, kommunId, verksamhetsTyper, hsaInfo)) {
+            TypedQuery<Enhet> vardgivareQuery = manager.createQuery("SELECT v FROM Enhet v WHERE v.enhetId = :enhetId AND v.vardgivareId = :vardgivareId", Enhet.class);
+            List<Enhet> resultList = vardgivareQuery.setParameter("enhetId", enhet).setParameter("vardgivareId", vardgivare).getResultList();
 
-        if (resultList.isEmpty()) {
-            manager.persist(new Enhet(vardgivare, vardgivareNamn, enhet, enhetNamn, lansId, kommunId, verksamhetsTyper));
-        } else {
-            Enhet updatedEnhet = resultList.get(0);
-            updatedEnhet.setVardgivareNamn(vardgivareNamn);
-            updatedEnhet.setNamn(enhetNamn);
-            updatedEnhet.setLansId(lansId);
-            updatedEnhet.setKommunId(kommunId);
-            updatedEnhet.setVerksamhetsTyper(verksamhetsTyper);
-            manager.merge(updatedEnhet);
+            if (resultList.isEmpty()) {
+                manager.persist(new Enhet(vardgivare, vardgivareNamn, enhet, enhetNamn, lansId, kommunId, verksamhetsTyper));
+            } else {
+                Enhet updatedEnhet = resultList.get(0);
+                updatedEnhet.setVardgivareNamn(vardgivareNamn);
+                updatedEnhet.setNamn(enhetNamn);
+                updatedEnhet.setLansId(lansId);
+                updatedEnhet.setKommunId(kommunId);
+                updatedEnhet.setVerksamhetsTyper(verksamhetsTyper);
+                manager.merge(updatedEnhet);
+            }
         }
     }
 
@@ -80,6 +74,32 @@ public class VardgivareManager {
     public List<Vardgivare> getAllVardgivares() {
         TypedQuery<Vardgivare> query = manager.createQuery("SELECT DISTINCT new se.inera.statistics.service.processlog.Vardgivare(v.vardgivareId, v.vardgivareNamn) FROM Enhet v", Vardgivare.class);
         return query.getResultList();
+    }
+
+    private boolean validate(String enhet, String vardgivare, String enhetNamn, String vardgivareNamn, String lansId, String kommunId, String verksamhetsTyper, JsonNode hsaInfo) {
+        // Utan vardgivare har vi inget uppdrag att behandla intyg, avbryt direkt
+        if (vardgivare == null) {
+            LOG.error("Vardgivare saknas: " + hsaInfo.asText());
+            return false;
+        }
+        if (vardgivare.length() > WidelineConverter.MAX_LENGTH_VGID) {
+            LOG.error("Vardgivare saknas: " + hsaInfo.asText());
+            return false;
+        }
+        boolean result = checkLength(enhetNamn, "Enhetsnamn", WidelineConverter.MAX_LENGTH_ENHETNAME, hsaInfo);
+        result |= checkLength(vardgivareNamn, "Vardgivarnamn", WidelineConverter.MAX_LENGTH_VARDGIVARE_NAMN, hsaInfo);
+        result |= lansId != null && checkLength(lansId, "Lansid", WidelineConverter.MAX_LENGTH_LAN_ID, hsaInfo);
+        result |= kommunId != null && checkLength(kommunId, "Kommunid", WidelineConverter.MAX_LENGTH_KOMMUN_ID, hsaInfo);
+        result |= verksamhetsTyper != null && checkLength(verksamhetsTyper, "Verksamhetstyper", WidelineConverter.MAX_LENGTH_VERKSAMHET_TYP, hsaInfo);
+        return result;
+    }
+
+    private boolean checkLength(String field, String name, int max, JsonNode hsaInfo) {
+        if (field != null && field.length() > max) {
+            LOG.error(name + " saknas: " + hsaInfo.asText());
+            return false;
+        }
+        return true;
     }
 
 }

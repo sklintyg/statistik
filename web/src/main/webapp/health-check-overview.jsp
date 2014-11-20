@@ -1,6 +1,5 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" session="false" trimDirectiveWhitespaces="true"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"
-%><%--
+<%@ page contentType="application/xml" language="java" session="false" trimDirectiveWhitespaces="true"%><%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%><?xml version="1.0" encoding="UTF-8"?>
+<%--
   ~ Copyright (C) 2013 - 2014 Inera AB (http://www.inera.se)
   ~
   ~     This file is part of Inera Statistics (http://code.google.com/p/inera-statistics/).

@@ -22,4 +22,16 @@
     </jaxrs:server>
 
   </beans>
+  <beans profile="dev">
+    <bean id="restSupportService" class="se.inera.testsupport.RestSupportService" />
+    <jaxrs:server id="restSupportContainer" address="/testsupport">
+      <jaxrs:serviceBeans>
+        <ref bean="restSupportService" />
+      </jaxrs:serviceBeans>
+      <jaxrs:providers>
+        <ref bean="jacksonJsonProvider" />
+      </jaxrs:providers>
+    </jaxrs:server>
+  </beans>
+
 </beans>

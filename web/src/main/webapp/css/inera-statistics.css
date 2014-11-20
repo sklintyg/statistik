@@ -1773,4 +1773,4 @@ li.subMenuItem.active .active-menu-item { display: block;  }
 	background-color: #e5e5e5;
 }
 .no-padding { padding: 0px !important; }
-
+.centeralign { text-align: center; }

@@ -25,6 +25,14 @@ public class WidelineConverter {
     public static final int FULL = 100;
     public static final int MAX_SJUKSKRIVNING = 100;
     public static final int MAX_LENGTH_VGID = 50;
+    public static final int MAX_LENGTH_ENHETNAME = 255;
+    public static final int MAX_LENGTH_VARDGIVARE_NAMN = 255;
+    public static final int MAX_LENGTH_LAN_ID = 50;
+    public static final int MAX_LENGTH_KOMMUN_ID = 50;
+    public static final int MAX_LENGTH_VERKSAMHET_TYP = Integer.MAX_VALUE;
+    public static final int MAX_LENGTH_LAKARE_ID = 128;
+    public static final int MAX_LENGTH_TILLTALSNAMN = 128;
+    public static final int MAX_LENGTH_EFTERNAMN = 128;
 
     @Autowired
     private Icd10 icd10;
