@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import se.inera.statistics.service.processlog.Receiver;
 import se.inera.statistics.service.warehouse.Warehouse;
+import se.inera.statistics.service.warehouse.WidelineLoader;
 import se.inera.statistics.web.service.ChartDataService;
 
 import javax.persistence.EntityManager;
@@ -28,6 +29,9 @@ public class RestSupportService {
 
     @PersistenceContext(unitName = "IneraStatisticsLog")
     private EntityManager manager;
+
+    @Autowired
+    private WidelineLoader widelineLoader;
 
     @GET
     @Path("now")
@@ -70,6 +74,16 @@ public class RestSupportService {
     @Produces({MediaType.APPLICATION_JSON})
     public Response insertIntyg(Intyg intyg) {
         receiver.accept(intyg.getType(), intyg.getData(), intyg.getDocumentId(), intyg.getTimestamp());
+        return Response.ok().build();
+    }
+
+    @POST
+    @Path("processIntyg")
+    @Produces({MediaType.APPLICATION_JSON})
+    @Transactional
+    public Response processIntyg() {
+        widelineLoader.populateWarehouse();
+        recalculateNationalData();
         return Response.ok().build();
     }
 
