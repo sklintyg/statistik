@@ -38,7 +38,7 @@ public class LoginInfoService {
     public LoginInfoService() { }
 
     @Autowired
-    LoginServiceUtil loginServiceUtil;
+    private LoginServiceUtil loginServiceUtil;
 
     @GET
     @Path("getLoginInfo")

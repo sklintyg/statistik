@@ -23,7 +23,12 @@ import com.google.common.base.Predicate;
 import org.joda.time.LocalDate;
 import se.inera.statistics.service.report.model.Range;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 public final class SjukfallUtil {
 
@@ -39,7 +44,23 @@ public final class SjukfallUtil {
     private SjukfallUtil() {
     }
 
-    public static Collection<Sjukfall> calculateSjukfall(Aisle aisle, Predicate<Fact> filter, int cutoff) {
+    public static Collection<Sjukfall> active(Range range, Aisle aisle, Predicate<Fact> filter) {
+        return active(calculateSjukfall(aisle, filter, WidelineConverter.toDay(firstDayAfter(range))), range);
+    }
+
+    private static Collection<Sjukfall> active(Collection<Sjukfall> all, Range range) {
+        int start = WidelineConverter.toDay(range.getFrom());
+        int end = WidelineConverter.toDay(firstDayAfter(range));
+        Collection<Sjukfall> active = new ArrayList<>();
+        for (Sjukfall sjukfall : all) {
+            if (sjukfall.in(start, end)) {
+                active.add(sjukfall);
+            }
+        }
+        return active;
+    }
+
+    private static Collection<Sjukfall> calculateSjukfall(Aisle aisle, Predicate<Fact> filter, int cutoff) {
         Collection<Sjukfall> sjukfalls = new ArrayList<>();
         Map<Integer, Sjukfall> active = new HashMap<>();
         for (Fact line : aisle) {
@@ -78,14 +99,6 @@ public final class SjukfallUtil {
         return calculateSjukfall(aisle, new EnhetFilter(enhetIds), Integer.MAX_VALUE);
     }
 
-    public static Collection<Sjukfall> active(Range range, Aisle aisle, String... enhetIds) {
-        return active(calculateSjukfall(aisle, createEnhetFilter(enhetIds), WidelineConverter.toDay(firstDayAfter(range))), range);
-    }
-
-    public static Collection<Sjukfall> active(Range range, Aisle aisle, Predicate<Fact> filter) {
-        return active(calculateSjukfall(aisle, filter, WidelineConverter.toDay(firstDayAfter(range))), range);
-    }
-
     public static Iterable<SjukfallGroup> sjukfallGrupper(final LocalDate from, final int periods, final int periodSize, final Aisle aisle, final int... enhetIds) {
         return new Iterable<SjukfallGroup>() {
             @Override
@@ -122,18 +135,6 @@ public final class SjukfallUtil {
         };
     }
 
-    public static Collection<Sjukfall> active(Collection<Sjukfall> all, Range range) {
-        int start = WidelineConverter.toDay(range.getFrom());
-        int end = WidelineConverter.toDay(firstDayAfter(range));
-        Collection<Sjukfall> active = new ArrayList<>();
-        for (Sjukfall sjukfall : all) {
-            if (sjukfall.in(start, end)) {
-                active.add(sjukfall);
-            }
-        }
-        return active;
-    }
-
     static LocalDate firstDayAfter(Range range) {
         return range.getTo().plusMonths(1);
     }
@@ -148,7 +149,7 @@ public final class SjukfallUtil {
         return count;
     }
 
-    public static abstract class FactFilter implements Predicate<Fact> {
+    public abstract static class FactFilter implements Predicate<Fact> {
     }
 
     public static class EnhetFilter extends FactFilter {
@@ -180,7 +181,7 @@ public final class SjukfallUtil {
         }
 
         public String getEnhetsName(int id) {
-            return enhetsNamesById != null ? enhetsNamesById.get(id): null;
+            return enhetsNamesById != null ? enhetsNamesById.get(id) : null;
         }
     }
 

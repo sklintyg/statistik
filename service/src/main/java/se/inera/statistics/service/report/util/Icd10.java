@@ -10,7 +10,11 @@ import java.io.BufferedReader;
 import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
 
 public class Icd10 {
 
@@ -116,7 +120,7 @@ public class Icd10 {
         }
     }
 
-    public static abstract class Id {
+    public abstract static class Id {
         private final String id;
         private final String name;
 

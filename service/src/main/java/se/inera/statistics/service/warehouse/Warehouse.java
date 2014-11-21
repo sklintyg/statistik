@@ -3,6 +3,8 @@ package se.inera.statistics.service.warehouse;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import org.joda.time.LocalDateTime;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -10,6 +12,8 @@ import java.util.Iterator;
 import java.util.Map;
 
 public class Warehouse implements Iterable<Aisle> {
+
+    private static final Logger LOG = LoggerFactory.getLogger(Warehouse.class);
 
     private volatile Map<String, Aisle> aisles = new HashMap<>();
     private Map<String, Aisle> loadingAisles = new HashMap<>();
@@ -81,6 +85,12 @@ public class Warehouse implements Iterable<Aisle> {
         aisles = Collections.unmodifiableMap(loadingAisles);
         this.lastUpdate = lastUpdate;
         loadingAisles = new HashMap<>();
+    }
+
+    public void clear() {
+        LOG.warn("Clearing warehouse ailes");
+        loadingAisles.clear();
+        complete(LocalDateTime.now());
     }
 
     private static class IdMap<T> {

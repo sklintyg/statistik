@@ -1,0 +1,4 @@
+rootProject.name = 'highcharts-export'
+include ':highcharts-export-convert'
+include ':highcharts-export-web'
+

@@ -4,19 +4,19 @@ allprojects {
 
     repositories {
         mavenLocal()
-
-        maven { url "http://repository-callistasoftware.forge.cloudbees.com/3rdparty" }
-        maven { url "http://repo.maven.apache.org/maven2" }
+        mavenCentral()
         maven { url "https://repository-callistasoftware.forge.cloudbees.com/release/" }
         maven { url "https://repository-callistasoftware.forge.cloudbees.com/snapshot/" }
-        maven { url "https://repository-callistasoftware.forge.cloudbees.com/3rdparty" }
+        maven { url "https://repository-callistasoftware.forge.cloudbees.com/3rdparty/" }
     }
 }
 
 subprojects {
     apply plugin: 'java'
-    sourceCompatibility = 1.7
-    targetCompatibility = 1.7
+    tasks.withType(JavaCompile) { 
+        sourceCompatibility = "1.7"
+        targetCompatibility = "1.7" 
+    }
 
     ext.cxfVersion = '2.7.10'
     ext.springContextVersion = "4.0.8.RELEASE"
@@ -47,7 +47,7 @@ subprojects {
 }
 
 configure(subprojects.findAll {
-    ['hsa-integration', 'statistik-service', 'statistik-web', 'statistik-liquibase-runner'].contains(it.name)}) {
+    ['hsa-integration', 'service', 'web', 'liquibase-runner'].contains(it.name)}) {
 
     apply plugin: 'maven'
     apply plugin: 'checkstyle'

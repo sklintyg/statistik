@@ -69,13 +69,15 @@ public class InjectUtlatande {
 
     public static final int VARDGIVARE_ANTAL = 20;
 
+    public static final int NUMBER_OF_LAKARE_TO_ADD = 100;
+
     static {
         for (String vardgivare : VG) {
             for (int i = 1; i <= VARDGIVARE_ANTAL; i++) {
                 VARDGIVARE.put(vardgivare, vardgivare + "-enhet-" + i);
             }
         }
-        for (int i = 1; i < 100; i++) {
+        for (int i = 1; i < NUMBER_OF_LAKARE_TO_ADD; i++) {
             LAKARE.add("hsa-" + i);
         }
     }

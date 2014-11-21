@@ -26,7 +26,7 @@ node {
     npmVersion = '2.0.0'
 }
 
-task jsTests(type: NodeTask) {
+task jsTests(type: NodeTask, dependsOn: npmInstall) {
     script = file('node_modules/grunt-cli/bin/grunt')
     args = ['test']
 }
@@ -46,9 +46,17 @@ task createVersionPropertyFile(dependsOn: processResources) << {
 createVersionPropertyFile.mustRunAfter processResources
 jar.dependsOn createVersionPropertyFile
 
+repositories {
+    flatDir {
+        dirs 'locallibs'
+    }
+}
+    
 dependencies {
-    compile project(':statistik-service')
+    compile project(':service')
 
+    // Den här kan tas bort när vi går upp till Java8
+    compile ":jfxrt"
     compile "org.springframework.security.extensions:spring-security-saml2-core:1.0.0.RC2"
     compile "xml-apis:xml-apis:1.4.01"
     compile "org.springframework:spring-webmvc:$springContextVersion"

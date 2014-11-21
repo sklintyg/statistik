@@ -46,6 +46,10 @@ public class LakareManager {
         String tilltalsNamn = HSAServiceHelper.getLakareTilltalsnamn(hsaInfo);
         String efterNamn = HSAServiceHelper.getLakareEfternamn(hsaInfo);
 
+        if (vardgivareId == null) {
+            LOG.error("Vardgivare saknas: " + hsaInfo.asText());
+            return;
+        }
         TypedQuery<Lakare> lakareQuery = manager.createQuery("SELECT l FROM Lakare l WHERE l.lakareId = :lakareId", Lakare.class);
         List<Lakare> resultList = lakareQuery.setParameter("lakareId", lakareId).getResultList();
 

@@ -41,7 +41,10 @@ import se.inera.statistics.web.model.Verksamhet;
 
 import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
-import java.util.*;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import static com.google.common.collect.Iterables.tryFind;
 import static com.google.common.collect.Lists.transform;

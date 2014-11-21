@@ -199,10 +199,10 @@ public class Fact {
         private int lakarid = -1;
 
         public Fact build() {
-            if (lan == -1 || kommun == -1 || forsamling == -1 || enhet == -1 || lakarintyg == -1 || patient == -1 ||
-                    startdatum == -1 || kon == -1 || alder == -1 || diagnoskapitel == -1 || diagnosavsnitt == -1 ||
-                    diagnoskategori == -1 || sjukskrivningsgrad == -1 || sjukskrivningslangd == -1 || lakarkon == -1 ||
-                    lakaralder == -1 || lakarbefattning == -1 || lakarid == -1) {
+            if (lan == -1 || kommun == -1 || forsamling == -1 || enhet == -1 || lakarintyg == -1 || patient == -1
+                    || startdatum == -1 || kon == -1 || alder == -1 || diagnoskapitel == -1 || diagnosavsnitt == -1
+                    || diagnoskategori == -1 || sjukskrivningsgrad == -1 || sjukskrivningslangd == -1 || lakarkon == -1
+                    || lakaralder == -1 || lakarbefattning == -1 || lakarid == -1) {
                 throw new RuntimeException("unitialized values");
             }
             return new Fact(lan, kommun, forsamling, enhet, lakarintyg, patient, startdatum, kon, alder, diagnoskapitel,

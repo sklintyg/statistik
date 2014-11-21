@@ -1,0 +1,13 @@
+apply plugin: 'war'
+
+description = 'highcharts-export-web'
+
+dependencies {
+    compile project(':highcharts-export-convert')
+
+    compile 'org.springframework:spring-web:3.2.0.RELEASE'
+    compile 'org.springframework:spring-webmvc:3.2.0.RELEASE'
+    compile 'taglibs:standard:1.1.2'
+
+    providedCompile 'javax.servlet:javax.servlet-api:3.0.1'
+}
