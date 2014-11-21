@@ -2,10 +2,32 @@ description = 'Inera Statistics Fitnesse specifications'
 
 apply plugin: 'groovy'
 
-repositories {
-    flatDir {
-        dirs '../web/locallibs'
+ext.fitnessePort = "9125"
+ext.fitnesseRoot = "FitNesseRoot"
+ext.fitnesseDir = "src/test/fitnesse"
+
+task fitnesseWiki(type: JavaExec, dependsOn: build) {
+    classpath configurations.runtime
+    main "fitnesse.FitNesse"
+    args '-p', fitnessePort, '-d', fitnesseDir, '-r', fitnesseRoot, '-o'
+    doFirst {
+        systemProperties(["maven.classpath": mavenPathAsWikiPaths()])
     }
+}
+
+task fitnesseTest(type: JavaExec, dependsOn: build) {
+    classpath configurations.runtime
+    main "fitnesse.FitNesse"
+    args '-p', fitnessePort, '-d', fitnesseDir, '-r', fitnesseRoot, '-o', '-c', 'StatisticsTests?suite&format=text'
+    doFirst {
+        systemProperties(["maven.classpath": mavenPathAsWikiPaths()])
+    }
+}
+
+def mavenPathAsWikiPaths() {
+    (configurations.archives.artifacts.files + configurations.runtime.asFileTree).collect {
+        "!path ${it.path}"
+    }.join("\n")
 }
 
 dependencies {
