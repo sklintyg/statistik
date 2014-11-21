@@ -31,6 +31,7 @@ public class VerksamhetsTyp implements Iterable<String> {
     private final Map<String, String> kodToName = new LinkedHashMap<>();
     private final Map<String, String> longKodToName = new LinkedHashMap<>();
 
+    // CHECKSTYLE:OFF MethodLength
     public VerksamhetsTyp() {
         kodToName.put(OVRIGT_ID, OVRIGT);
         kodToName.put("10", "Barn- och ungdomsverksamhet");
@@ -301,6 +302,7 @@ public class VerksamhetsTyp implements Iterable<String> {
         longKodToName.put("2330", "Myndighetsutövning inom individ- och familjeomsorg");
         longKodToName.put("2331", "Myndighetsutövning inom området personer med funktionsneds.");
     }
+    // CHECKSTYLE:ON MethodLength
 
     public String getGruppId(String id) {
         return (id != null && id.length() >= 2) ? id.substring(0, 2) : OVRIGT_ID;
