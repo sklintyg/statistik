@@ -40,7 +40,7 @@ public class VardgivareManager {
             vardgivareNamn = vardgivare;
         }
 
-        if (validate(enhet, vardgivare, enhetNamn, vardgivareNamn, lansId, kommunId, verksamhetsTyper, hsaInfo)) {
+        if (validate(new EnhetParameter(enhet, vardgivare, enhetNamn, vardgivareNamn, lansId, kommunId, verksamhetsTyper, hsaInfo))) {
             TypedQuery<Enhet> vardgivareQuery = manager.createQuery("SELECT v FROM Enhet v WHERE v.enhetId = :enhetId AND v.vardgivareId = :vardgivareId", Enhet.class);
             List<Enhet> resultList = vardgivareQuery.setParameter("enhetId", enhet).setParameter("vardgivareId", vardgivare).getResultList();
 
@@ -76,21 +76,21 @@ public class VardgivareManager {
         return query.getResultList();
     }
 
-    private boolean validate(String enhet, String vardgivare, String enhetNamn, String vardgivareNamn, String lansId, String kommunId, String verksamhetsTyper, JsonNode hsaInfo) {
+    private boolean validate(EnhetParameter enhet) {
         // Utan vardgivare har vi inget uppdrag att behandla intyg, avbryt direkt
-        if (vardgivare == null) {
-            LOG.error("Vardgivare saknas: " + hsaInfo.asText());
+        if (enhet.getVardgivare() == null) {
+            LOG.error("Vardgivare saknas: " + enhet.getHsaInfo().asText());
             return false;
         }
-        if (vardgivare.length() > WidelineConverter.MAX_LENGTH_VGID) {
-            LOG.error("Vardgivare saknas: " + hsaInfo.asText());
+        if (enhet.getVardgivare().length() > WidelineConverter.MAX_LENGTH_VGID) {
+            LOG.error("Vardgivare saknas: " + enhet.getHsaInfo().asText());
             return false;
         }
-        boolean result = checkLength(enhetNamn, "Enhetsnamn", WidelineConverter.MAX_LENGTH_ENHETNAME, hsaInfo);
-        result |= checkLength(vardgivareNamn, "Vardgivarnamn", WidelineConverter.MAX_LENGTH_VARDGIVARE_NAMN, hsaInfo);
-        result |= lansId != null && checkLength(lansId, "Lansid", WidelineConverter.MAX_LENGTH_LAN_ID, hsaInfo);
-        result |= kommunId != null && checkLength(kommunId, "Kommunid", WidelineConverter.MAX_LENGTH_KOMMUN_ID, hsaInfo);
-        result |= verksamhetsTyper != null && checkLength(verksamhetsTyper, "Verksamhetstyper", WidelineConverter.MAX_LENGTH_VERKSAMHET_TYP, hsaInfo);
+        boolean result = checkLength(enhet.getEnhetNamn(), "Enhetsnamn", WidelineConverter.MAX_LENGTH_ENHETNAME, enhet.getHsaInfo());
+        result |= checkLength(enhet.getVardgivareNamn(), "Vardgivarnamn", WidelineConverter.MAX_LENGTH_VARDGIVARE_NAMN, enhet.getHsaInfo());
+        result |= enhet.getLansId() != null && checkLength(enhet.getLansId(), "Lansid", WidelineConverter.MAX_LENGTH_LAN_ID, enhet.getHsaInfo());
+        result |= enhet.getKommunId() != null && checkLength(enhet.getKommunId(), "Kommunid", WidelineConverter.MAX_LENGTH_KOMMUN_ID, enhet.getHsaInfo());
+        result |= enhet.getVerksamhetsTyper() != null && checkLength(enhet.getVerksamhetsTyper(), "Verksamhetstyper", WidelineConverter.MAX_LENGTH_VERKSAMHET_TYP, enhet.getHsaInfo());
         return result;
     }
 
