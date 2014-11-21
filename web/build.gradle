@@ -18,7 +18,7 @@ gretty {
     // TODO kan troligen ta bort explicit konfning om vi flyttar filen
     contextConfigFile = "${projectDir}/src/main/webapp/WEB-INF/jetty-context.xml"
     logbackConfigFile = "${projectDir}/src/main/resources/statistics-logback.xml"
-    jvmArg '-Dspring.profiles.active=dev,embedded'
+    jvmArgs = [ '-Dspring.profiles.active=dev,embedded', '-XX:MaxPermSize=128M' ]
 }
 
 node {
