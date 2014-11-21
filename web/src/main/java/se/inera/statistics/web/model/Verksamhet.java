@@ -48,6 +48,7 @@ public class Verksamhet implements Serializable {
         return between(codepointLow + 1, codepointHigh - 1);
     }
 
+    // CHECKSTYLE:OFF ParameterNumber
     public Verksamhet(String id, String name, String vardgivarId, String vardgivarName, String lansId, String lansName, String kommunId, String kommunName, Set<VerksamhetsTyp> verksamhetsTyper) {
         this.id = id;
         this.name = name;
@@ -59,6 +60,7 @@ public class Verksamhet implements Serializable {
         this.kommunName = kommunName;
         this.verksamhetsTyper = verksamhetsTyper;
     }
+    // CHECKSTYLE:ON ParameterNumber
 
     public String getId() {
         return encodeId(id);
@@ -105,8 +107,8 @@ public class Verksamhet implements Serializable {
     }
 
     public static class VerksamhetsTyp implements Serializable {
-        public final String id;
-        public final String name;
+        private final String id;
+        private final String name;
 
         public VerksamhetsTyp(String id, String name) {
             this.id = id;
@@ -141,6 +143,15 @@ public class Verksamhet implements Serializable {
             result = number * result + name.hashCode();
             return result;
         }
+
+        public String getId() {
+            return id;
+        }
+
+        public String getName() {
+            return name;
+        }
+
     }
 
 }
