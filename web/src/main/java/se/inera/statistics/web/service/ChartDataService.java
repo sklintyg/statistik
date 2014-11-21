@@ -476,12 +476,20 @@ public class ChartDataService {
     }
 
     public static class DiagnosisKapitelAndAvsnittResponse {
-        public final Map<String, List<Avsnitt>> avsnitts;
-        public final List<Kapitel> kapitels;
+        private final Map<String, List<Avsnitt>> avsnitts;
+        private final List<Kapitel> kapitels;
 
         public DiagnosisKapitelAndAvsnittResponse(Map<String, List<Avsnitt>> avsnitts, List<Kapitel> kapitels) {
             this.avsnitts = avsnitts;
             this.kapitels = kapitels;
+        }
+
+        public Map<String, List<Avsnitt>> getAvsnitts() {
+            return avsnitts;
+        }
+
+        public List<Kapitel> getKapitels() {
+            return kapitels;
         }
 
     }
