@@ -40,7 +40,7 @@ public class VardgivareManager {
             vardgivareNamn = vardgivare;
         }
 
-        if (validate(enhet, vardgivare, enhetNamn, vardgivareNamn, lansId, kommunId, verksamhetsTyper, hsaInfo)) {
+        if (validate(vardgivare, enhetNamn, vardgivareNamn, lansId, kommunId, verksamhetsTyper, hsaInfo)) {
             TypedQuery<Enhet> vardgivareQuery = manager.createQuery("SELECT v FROM Enhet v WHERE v.enhetId = :enhetId AND v.vardgivareId = :vardgivareId", Enhet.class);
             List<Enhet> resultList = vardgivareQuery.setParameter("enhetId", enhet).setParameter("vardgivareId", vardgivare).getResultList();
 
@@ -76,7 +76,7 @@ public class VardgivareManager {
         return query.getResultList();
     }
 
-    private boolean validate(String enhet, String vardgivare, String enhetNamn, String vardgivareNamn, String lansId, String kommunId, String verksamhetsTyper, JsonNode hsaInfo) {
+    private boolean validate(String vardgivare, String enhetNamn, String vardgivareNamn, String lansId, String kommunId, String verksamhetsTyper, JsonNode hsaInfo) {
         // Utan vardgivare har vi inget uppdrag att behandla intyg, avbryt direkt
         if (vardgivare == null) {
             LOG.error("Vardgivare saknas: " + hsaInfo.asText());
