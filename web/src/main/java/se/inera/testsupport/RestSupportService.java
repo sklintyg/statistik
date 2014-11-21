@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import se.inera.statistics.service.processlog.Receiver;
 import se.inera.statistics.service.scheduler.LogJob;
+import se.inera.statistics.service.warehouse.NationellData;
 import se.inera.statistics.service.warehouse.Warehouse;
 import se.inera.statistics.service.warehouse.WarehouseManager;
 import se.inera.statistics.web.service.ChartDataService;
@@ -41,6 +42,17 @@ public class RestSupportService {
 
     @Autowired
     private LogJob logJob;
+
+    @Autowired
+    private NationellData nationellData;
+
+    @POST
+    @Path("cutoff")
+    @Produces({MediaType.APPLICATION_JSON})
+    public Response setCutoff(int cutoff) {
+        nationellData.setCutoff(cutoff);
+        return Response.ok().build();
+    }
 
     @GET
     @Path("now")

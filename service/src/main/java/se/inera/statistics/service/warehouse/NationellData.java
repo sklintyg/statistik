@@ -358,4 +358,9 @@ public class NationellData {
     public org.joda.time.LocalDateTime getLastUpdate() {
         return warehouse.getLastUpdate();
     }
+
+    public void setCutoff(int cutoff) {
+        this.cutoff = cutoff;
+    }
+
 }
