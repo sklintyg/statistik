@@ -10,7 +10,7 @@ class ReportsUtilTest {
     void builderIsWorking() {
         ReportsUtil reportsUtil = new ReportsUtil()
 
-        String fileContents = new File('src/test/resources/intyg1.json').getText('UTF-8')
+        String fileContents = new File('src/main/resources/intyg1.json').getText('UTF-8')
         Intyg intyg = new Intyg(EventType.CREATED, fileContents, "1", DateTimeUtils.currentTimeMillis())
         reportsUtil.insertIntyg(intyg)
 

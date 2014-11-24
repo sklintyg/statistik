@@ -2,24 +2,24 @@
 
 |script|dagens datum|2013-11-06|
 
-|Givet att enbart följande intyg finns|
-|Personnr      |Diagnoskod|Start     |Slut      |Enhet|Vardgivare|
+|Givet att enbart foljande intyg finns|
+|personnr      |diagnoskod|start     |slut      |enhet|vardgivare|
+|19790407-9295 |       G01|2013-02-05|2013-02-06|ENVE |EnVG      |
+|19790407-9295 |       G01|2013-02-05|2013-02-06|ENVE |EnVG      |
+|19790407-9295 |       G01|2013-02-05|2013-02-06|ENVE |EnVG      |
+|19790407-9295 |       G01|2013-02-05|2013-02-06|ENVE |EnVG      |
+|19790407-9295 |       G01|2013-02-05|2013-02-06|ENVE |EnVG      |
+|19790407-9295 |       G01|2013-02-05|2013-02-06|ENVE |EnVG      |
+|19790407-9295 |       G01|2013-02-05|2013-02-06|ENVE |EnVG      |
+|19790407-9295 |       G01|2013-02-05|2013-02-06|ENVE |EnVG      |
+|19790407-9295 |       G01|2013-02-05|2013-02-06|ENVE |EnVG      |
+|19790407-9295 |       G01|2013-02-05|2013-02-06|ENVE |EnVG      |
+|19790407-9295 |       G01|2013-02-05|2013-02-06|ENVE |EnVG      |
+|19790407-9295 |       G01|2013-02-05|2013-02-06|ENVE |EnVG      |
 |19790407-9295 |       G01|2013-02-05|2013-02-06|ENVE |EnVG      |
 
-
-Nu finns ett sjukfall i februari för en man.
-
-|Sjukfall|
-|År|Månad|Män?|Kvinnor?|Kommentar|
+|Sjukfall i rapporten sjukfall totalt|
+|år|månad|män?|kvinnor?|kommentar|
 |2013|01|0|0||
 |2013|02|1|0||
 |2013|03|0|0||
-
-Sjukfallet finns också på enhet ENVE.
-
-|Sjukfall på enhet|
-|År|Månad|Enhet|Män?|Kvinnor?|Kommentar|
-|2013|01|ENVE|0|0||
-|2013|02|ENVE|1|0||
-|2013|03|ENVE|0|0||
-

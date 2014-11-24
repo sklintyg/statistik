@@ -3,7 +3,7 @@ package se.inera.statistics.web.reports
 import groovy.json.JsonBuilder
 import groovyx.net.http.ContentType
 import groovyx.net.http.RESTClient
-import se.inera.testsupport.Intyg
+import se.inera.statistics.spec.Intyg
 
 class ReportsUtil {
     def statistik = new RESTClient('http://localhost:8080/', ContentType.JSON)
@@ -32,6 +32,12 @@ class ReportsUtil {
     def processIntyg() {
         def response = statistik.post(path: '/api/testsupport/processIntyg')
         assert response.status == 200
+    }
+
+    def getReportAntalIntyg() {
+        def response = statistik.get(path: '/api/getNumberOfCasesPerMonth')
+        assert response.status == 200
+        response.data;
     }
 
 }

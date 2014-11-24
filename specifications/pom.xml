@@ -25,6 +25,21 @@
   </properties>
 
   <dependencies>
+    <dependency>
+      <groupId>se.inera.statistik</groupId>
+      <artifactId>statistik-web</artifactId>
+      <type>war</type>
+    </dependency>
+
+    <dependency>
+      <groupId>se.inera.statistik</groupId>
+      <artifactId>statistik-service</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>joda-time</groupId>
+      <artifactId>joda-time</artifactId>
+    </dependency>
 
     <dependency>
       <groupId>org.fitnesse</groupId>
@@ -36,6 +51,12 @@
       <groupId>org.codehaus.groovy</groupId>
       <artifactId>groovy-all</artifactId>
       <version>${groovy.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.codehaus.groovy.modules.http-builder</groupId>
+      <artifactId>http-builder</artifactId>
+      <version>0.7</version>
     </dependency>
 
     <dependency>

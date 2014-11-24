@@ -1,0 +1,81 @@
+package se.inera.statistics.spec
+
+import groovy.json.JsonSlurper
+import org.joda.time.DateTimeUtils
+import se.inera.statistics.service.processlog.EventType
+import se.inera.statistics.web.reports.ReportsUtil
+
+class GivetAttEnbartFoljandeIntygFinns {
+
+    private final ReportsUtil reportsUtil = new ReportsUtil()
+
+    private static int intygIdCounter = 1;
+
+    private def personnr
+    private def diagnoskod
+    private def start
+    private def slut
+    private def enhet
+    private def vardgivare
+
+    public void beginTable() {
+        reportsUtil.clearDatabase()
+    }
+
+    public void reset() {
+    }
+
+    public void execute() {
+        def slurper = new JsonSlurper()
+        String intygString = getClass().getResource('/intyg1.json').getText('UTF-8')
+        String observationString = getClass().getResource('/observation.json').getText('UTF-8')
+        def result = slurper.parseText(intygString)
+
+        result.patient.id.extension = personnr;
+
+        def observation = slurper.parseText(observationString)
+        observation.observationskod.code = diagnoskod
+        result.observationer.add(observation)
+
+        result.validFromDate = start
+        result.validToDate = slut
+
+        result.skapadAv.vardenhet.id.extension = enhet
+        result.skapadAv.vardenhet.vardgivare.id.extension = vardgivare
+
+        def builder = new groovy.json.JsonBuilder(result)
+        def finalIntygDataString = builder.toString()
+
+        Intyg intyg = new Intyg(EventType.CREATED, finalIntygDataString, String.valueOf(intygIdCounter++), DateTimeUtils.currentTimeMillis())
+
+        reportsUtil.insertIntyg(intyg)
+    }
+
+    public void endTable() {
+        reportsUtil.processIntyg()
+    }
+
+    void setPersonnr(personnr) {
+        this.personnr = personnr
+    }
+
+    void setDiagnoskod(diagnoskod) {
+        this.diagnoskod = diagnoskod
+    }
+
+    void setStart(start) {
+        this.start = start
+    }
+
+    void setSlut(slut) {
+        this.slut = slut
+    }
+
+    void setEnhet(enhet) {
+        this.enhet = enhet
+    }
+
+    void setVardgivare(vardgivare) {
+        this.vardgivare = vardgivare
+    }
+}

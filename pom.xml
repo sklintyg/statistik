@@ -44,8 +44,8 @@
     <modules>
         <module>build-tools</module>
         <module>integration/hsa-integration</module>
-        <module>web</module>
         <module>service</module>
+        <module>web</module>
         <module>specifications</module>
         <module>business-specifications</module>
         <!--<module>tools/liquibase-runner</module>-->
@@ -80,6 +80,12 @@
               <groupId>se.inera.statistik</groupId>
               <artifactId>statistik-service</artifactId>
               <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>se.inera.statistik</groupId>
+                <artifactId>statistik-web</artifactId>
+                <version>${project.version}</version>
+                <type>war</type>
             </dependency>
             <dependency>
               <groupId>org.springframework.security.extensions</groupId>
