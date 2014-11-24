@@ -33,7 +33,9 @@ class SjukfallIRapportenSjukfallTotalt {
 
     public void execute() {
         def report = reportsUtil.getReportAntalIntyg();
-        //TODO Hämta ut data för män och kvinnor för rätt år och månad och sätt respektive fält.
+        def row = report.tableData.rows.find { row.name == (månad + " " + år) }
+        kvinnor = row.data[1]
+        män = row.data[2]
     }
 
 }
