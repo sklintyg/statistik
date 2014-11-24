@@ -8,12 +8,16 @@ allprojects {
         maven { url "https://repository-callistasoftware.forge.cloudbees.com/release/" }
         maven { url "https://repository-callistasoftware.forge.cloudbees.com/snapshot/" }
         maven { url "https://repository-callistasoftware.forge.cloudbees.com/3rdparty/" }
+        flatDir {
+            dirs "${rootProject.projectDir}/web/locallibs"
+        }
     }
 }
 
 subprojects {
     apply plugin: 'java'
-    tasks.withType(JavaCompile) { 
+
+    tasks.withType(JavaCompile) {
         sourceCompatibility = "1.7"
         targetCompatibility = "1.7" 
     }

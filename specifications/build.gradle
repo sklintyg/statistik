@@ -2,25 +2,48 @@ description = 'Inera Statistics Fitnesse specifications'
 
 apply plugin: 'groovy'
 
-repositories {
-    flatDir {
-        dirs '../web/locallibs'
+ext.fitnessePort = "9125"
+ext.fitnesseRoot = "FitNesseRoot"
+ext.fitnesseDir = "src/test/fitnesse"
+
+task fitnesseWiki(type: JavaExec, dependsOn: build) {
+    classpath configurations.runtime
+    main "fitnesse.FitNesse"
+    args '-p', fitnessePort, '-d', fitnesseDir, '-r', fitnesseRoot, '-o'
+    doFirst {
+        systemProperties(["maven.classpath": mavenPathAsWikiPaths()])
     }
 }
 
+task fitnesseTest(type: JavaExec, dependsOn: build) {
+    classpath configurations.runtime
+    main "fitnesse.FitNesse"
+    args '-p', fitnessePort, '-d', fitnesseDir, '-r', fitnesseRoot, '-o', '-c', 'StatisticsTests?suite&format=text'
+    doFirst {
+        systemProperties(["maven.classpath": mavenPathAsWikiPaths()])
+    }
+}
+
+def mavenPathAsWikiPaths() {
+    (configurations.archives.artifacts.files + configurations.runtime.asFileTree).collect {
+        "!path ${it.path}"
+    }.join("\n")
+}
+
 dependencies {
-    compile project(':web')
+    compile project(":web")
 
-    compile 'org.fitnesse:fitnesse:20140901'
-    compile 'org.codehaus.groovy:groovy-all:2.3.6'
-    compile 'org.codehaus.groovy.modules.http-builder:http-builder:0.7'
+    compile "org.fitnesse:fitnesse:20140901"
+    compile "org.codehaus.groovy:groovy-all:2.3.6"
+    compile "org.codehaus.groovy.modules.http-builder:http-builder:0.7"
+    compile "com.jayway.jsonpath:json-path:1.2.0"
 
-    compile 'org.gebish:geb-core:0.9.2'
-    compile 'org.seleniumhq.selenium:selenium-server:2.43.1'
-    compile 'org.seleniumhq.selenium:selenium-firefox-driver:2.43.1'
-    compile 'org.seleniumhq.selenium:selenium-support:2.43.1'
-    compile 'org.seleniumhq.selenium:selenium-chrome-driver:2.43.1'
-    compile 'org.seleniumhq.selenium:selenium-safari-driver:2.43.1'
-    compile 'org.seleniumhq.selenium:selenium-remote-driver:2.43.1'
-    compile 'org.seleniumhq.selenium:selenium-htmlunit-driver:2.43.1'
+    compile "org.gebish:geb-core:0.9.2"
+    compile "org.seleniumhq.selenium:selenium-server:2.43.1"
+    compile "org.seleniumhq.selenium:selenium-firefox-driver:2.43.1"
+    compile "org.seleniumhq.selenium:selenium-support:2.43.1"
+    compile "org.seleniumhq.selenium:selenium-chrome-driver:2.43.1"
+    compile "org.seleniumhq.selenium:selenium-safari-driver:2.43.1"
+    compile "org.seleniumhq.selenium:selenium-remote-driver:2.43.1"
+    compile "org.seleniumhq.selenium:selenium-htmlunit-driver:2.43.1"
 }

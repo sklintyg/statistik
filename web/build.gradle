@@ -46,12 +46,6 @@ task createVersionPropertyFile(dependsOn: processResources) << {
 createVersionPropertyFile.mustRunAfter processResources
 jar.dependsOn createVersionPropertyFile
 
-repositories {
-    flatDir {
-        dirs 'locallibs'
-    }
-}
-    
 dependencies {
     compile project(':service')
 
