@@ -34,7 +34,7 @@ subprojects {
         reports.junitXml.destination = file("$reports.junitXml.destination/unit")
     }
 
-    task integrationTest(type: Test) {
+    task integrationTests(type: Test) {
         include '**/*IntegrationTest.class'
         reports.html.destination = file("$reports.html.destination/integration")
         reports.junitXml.destination = file("$reports.junitXml.destination/integration")
