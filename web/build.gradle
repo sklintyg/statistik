@@ -5,7 +5,7 @@ buildscript {
 }
 
 plugins {
-    id "com.moowork.node" version "0.7"
+    id "com.moowork.node" version "0.8"
 }
 
 apply plugin: "war"
@@ -24,9 +24,10 @@ gretty {
 node {
     version = '0.10.32'
     npmVersion = '2.0.0'
+    download = true
 }
 
-task jsTests(type: NodeTask, dependsOn: npmInstall) {
+task jsTests(type: NodeTask) {
     script = file('node_modules/grunt-cli/bin/grunt')
     args = ['test']
 }
