@@ -1,9 +1,8 @@
 rootProject.name = 'statistik'
 
 include ':hsa-integration'
-include ':service'
-include ':web'
-include ':business-specifications'
+include ':statistik-service'
+include ':statistik-web'
 include ':specifications'
 include ':liquibase-runner'
 

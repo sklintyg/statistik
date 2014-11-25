@@ -10,7 +10,6 @@ plugins {
 
 apply plugin: 'war'
 apply plugin: 'org.akhikhl.gretty'
-apply plugin: 'maven'
 
 description = 'Inera Statistics Service - Web Module'
 
@@ -48,29 +47,10 @@ task createVersionPropertyFile(dependsOn: processResources) << {
 createVersionPropertyFile.mustRunAfter processResources
 jar.dependsOn createVersionPropertyFile
 
-configurations {
-    deployerJars
-}
-
-ext.cloudbeesUsername = System.properties['cloudbeesUsername']
-ext.cloudbeesPassword = System.properties['cloudbeesPassword']
-
-uploadArchives {
-    repositories {
-        mavenDeployer {
-            configuration = configurations.deployerJars
-            repository(url: "dav:https://repository-callistasoftware.forge.cloudbees.com/snapshot/") {
-                authentication(userName: cloudbeesUsername, password: cloudbeesPassword)
-            }
-        }
-    }
-}
-
 dependencies {
-    compile project(':service')
+    compile project(':statistik-service')
 
     // Den här kan tas bort när vi går upp till Java8
-    compile ":jfxrt"
     compile "org.springframework.security.extensions:spring-security-saml2-core:1.0.0.RC2"
     compile "xml-apis:xml-apis:1.4.01"
     compile "org.springframework:spring-webmvc:$springContextVersion"
@@ -100,6 +80,4 @@ dependencies {
     gretty "org.apache.tomcat:tomcat-catalina:7.0.20"
 
     providedCompile "javax.servlet:servlet-api:2.5"
-
-    deployerJars "org.apache.maven.wagon:wagon-webdav:1.0-beta-2"
 }
