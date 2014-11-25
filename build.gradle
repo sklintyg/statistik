@@ -16,7 +16,7 @@ allprojects {
 
 subprojects {
     apply plugin: 'java'
-    apply plugin: "jacoco"
+    apply plugin: 'jacoco'
 
     tasks.withType(JavaCompile) {
         sourceCompatibility = "1.7"
@@ -66,7 +66,7 @@ configure(subprojects.findAll {
     checkstyleMain.source = "src/main/java"
 }
 
-apply plugin: "sonar-runner"
+apply plugin: 'sonar-runner'
 
 sonarRunner {
     toolVersion = "2.4"
