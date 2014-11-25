@@ -27,8 +27,8 @@ angular.module('StatisticsApp').controller('overviewCtrl', [ '$scope', '$timeout
             $scope.popoverTextAmount = "Totala antalet sjukfall under perioden " + result.periodText;
             $scope.popoverTextSexDistribution = "Könsfördelningen av totala antalet sjukfall under perioden " + result.periodText;
             $scope.popoverTextChangeProcentageThisMonth = "Diagrammet visar hur antalet sjukfall förändrats mellan perioden " + result.periodText;
-            $scope.popoverTextChangeProcentagePreviousMonth = " och " + result.casesPerMonth.previousPeriodText;
-            $scope.popoverTextChangeCurrentVSPrevious = "Spalten förändring visar skillnaden i antal sjukfall mellan perioden " + result.periodText + " och " + result.casesPerMonth.previousPeriodText;
+            $scope.popoverTextChangeProcentagePreviousMonth = " och föregående period " + result.casesPerMonth.previousPeriodText;
+            $scope.popoverTextChangeCurrentVSPrevious = "Spalten förändring visar skillnaden i antal sjukfall mellan perioden " + result.periodText + "  och föregående period " + result.casesPerMonth.previousPeriodText;
             $scope.popoverTextDiagnosisGroups1 = "Diagrammet visar antal sjukfall inom de vanligast förekommande diagnosgrupperna under " + result.periodText + ".";
             $scope.popoverTextDiagnosisGroups2 = "Flytta markören i cirkeln för att se antalet sjukfall per diagnosgrupp."
             $scope.popoverTextAgeGroups1 = "Diagrammet visar de åldersgrupper som har flest sjukfall under " + result.periodText + ".";
@@ -38,7 +38,6 @@ angular.module('StatisticsApp').controller('overviewCtrl', [ '$scope', '$timeout
             $scope.popoverTextSickLeaveLength1 = "Diagrammet visar antal sjukfall per sjukskrivningslängd under perioden " + result.periodText + ".";
             $scope.popoverTextSickLeaveLength2 = "Ställ markören i respektive stapel för att se antalet sjukfall.";
             $scope.popoverTextPerCountyDescription1 = "Ställ markören i en cirkel på kartan för att se antalet sjukfall i respektive län under " + result.periodText + ".";
-            $scope.popoverTextPerCountyDescription2 = "Flytta markören över respektive län för att se antalet sjukfall per län."
         };
 
         var dataReceived = function (result) {

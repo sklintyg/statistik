@@ -128,7 +128,7 @@ angular.module('StatisticsApp').nationalSickLeaveLengthConfig = function () {
         return "api/verksamhet/" + verksamhetId + "/getSickLeaveLengthData/csv"
     };
     conf.title = function (period) {
-        return "Antal sjukfall baserat på sjukskrivningslängd " + period;
+        return "Antal sjukfall per sjukskrivningslängd " + period;
     };
     conf.chartXAxisTitle = "Sjukskrivningslängd";
     return conf;
@@ -157,7 +157,7 @@ angular.module('StatisticsApp').nationalAgeGroupConfig = function () {
         return "api/verksamhet/" + verksamhetId + "/getAgeGroupsStatistics/csv";
     };
     conf.title = function (period) {
-        return "Antal sjukfall baserat på patientens ålder " + period;
+        return "Antal sjukfall per åldersgrupp " + period;
     };
     conf.chartXAxisTitle = "Åldersgrupp";
     return conf;

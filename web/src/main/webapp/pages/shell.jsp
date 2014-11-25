@@ -211,7 +211,7 @@
 						          <a class="dropdown-toggle subMenuItem" data-toggle="collapse in" data-target="#business-sicklength-ongoing-morethan90" ng-click="isBusinessSickOn90Collapsed = !isBusinessSickOn90Collapsed"><span message key="nav.mobile.trigger.sjukskrivningslangd-pagaende-90-dagar"></span><span class="caret pull-right mobile-menu-caret mobile-sub-caret"></span></a>
 						          <ul class="collapse" id="business-sicklength-ongoing-morethan90" collapse="isBusinessSickOn90Collapsed">
 						          	<li class="subMenuItem"><a data-ng-href="#/verksamhet/{{businessId}}/sjukskrivningslangd" id="navBusinessSickLeaveLengthLink" ctrlname="VerksamhetSickLeaveLengthCtrl" role="menuitem" ng-click="isCollapsed = !isCollapsed" navigationaware><span message key="nav.sjukskrivningslangd"></span></a></li>
-						          	<li class="subMenuItem"><a data-ng-href="#/verksamhet/{{businessId}}/sjukskrivningslangdpagaende" id="navBusinessOngoingAndCompletedSickLeaveLink" ctrlname="VerksamhetSickLeaveLengthCurrentCtrl" role="menuitem" ng-click="isCollapsed = !isCollapsed" navigationaware><span message key="nav.sjukskrivningslangd-pagaende"></span></a></li>
+						          	<li class="subMenuItem"><a data-ng-href="#/verksamhet/{{businessId}}/sjukskrivningslangdpagaende" id="navBusinessOngoingAndCompletedSickLeaveLink" ctrlname="VerksamhetSickLeaveLengthCurrentCtrl" role="menuitem" ng-click="isCollapsed = !isCollapsed" navigationaware><span message key="nav.pagaende"></span></a></li>
 		                            <li class="subMenuItem"><a data-ng-href="#/verksamhet/{{businessId}}/langasjukskrivningar" id="navBusinessMoreNinetyDaysSickLeaveLink" ctrlname="VerksamhetLongSickLeavesCtrl" role="menuitem" ng-click="isCollapsed = !isCollapsed" navigationaware><span message key="nav.sjukskrivningslangd-mer-an-90-dagar"></span></a></li>
 						          </ul>
 						        </li>
@@ -366,7 +366,7 @@
                                             <li><a class="border-top no-border-bottom"
                                                    data-ng-href="#/verksamhet/{{businessId}}/sjukskrivningslangdpagaende"
                                                    id="navBusinessOngoingAndCompletedSickLeaveLink"
-                                                   ctrlname="VerksamhetSickLeaveLengthCurrentCtrl" navigationaware><span message key="nav.sjukskrivningslangd-pagaende"></span></a>
+                                                   ctrlname="VerksamhetSickLeaveLengthCurrentCtrl" navigationaware><span message key="nav.pagaende"></span></a>
                                             </li>
                                             <li><a class="last-item-in-menu" data-ng-href="#/verksamhet/{{businessId}}/langasjukskrivningar"
                                                    id="navBusinessMoreNinetyDaysSickLeaveLink"
