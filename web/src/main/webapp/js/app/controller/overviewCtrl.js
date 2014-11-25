@@ -23,14 +23,26 @@ angular.module('StatisticsApp').controller('overviewCtrl', [ '$scope', '$timeout
     function ($scope, $timeout, statisticsData) {
 
         var setTooltipText = function (result) {
-            $scope.popoverText = "Nationella statistiktjänsten är en webbtjänst som visar samlad statistik för ordinerad sjukskrivning i alla elektroniska läkarintyg. Tjänsten visar nationell statistik som är tillgänglig för alla och verksamhetsstatistik som kräver särskild behörighet för att se.";
+            $scope.popoverText = "Statistiktjänsten är en webbtjänst som visar samlad statistik för sjukskrivning som ordinerats av läkare. Tjänsten visar statistik för alla elektroniska läkarintyg. Statistiken är uppdelad i nationell statistik som är tillgänglig för alla, och verksamhetsstatistik som bara går att se med särskild behörighet inom hälso- och sjukvården.";
             $scope.popoverTextAmount = "Totala antalet sjukfall under perioden " + result.periodText;
-            $scope.popoverTextChangeProcentage = "Förändring visar den procentuella förändringen mellan perioden " + result.periodText + " och föregående period " + result.casesPerMonth.previousPeriodText;
             $scope.popoverTextSexDistribution = "Könsfördelningen av totala antalet sjukfall under perioden " + result.periodText;
+            $scope.popoverTextChangeProcentageThisMonth = "Diagrammet visar hur antalet sjukfall förändrats mellan perioden " + result.periodText;
+            $scope.popoverTextChangeProcentagePreviousMonth = " och " + result.casesPerMonth.previousPeriodText;
+            $scope.popoverTextChangeCurrentVSPrevious = "Spalten förändring visar skillnaden i antal sjukfall mellan perioden " + result.periodText + " och " + result.casesPerMonth.previousPeriodText;
+            $scope.popoverTextDiagnosisGroups1 = "Diagrammet visar antal sjukfall inom de vanligast förekommande diagnosgrupperna under " + result.periodText + ".";
+            $scope.popoverTextDiagnosisGroups2 = "Flytta markören i cirkeln för att se antalet sjukfall per diagnosgrupp."
+            $scope.popoverTextAgeGroups1 = "Diagrammet visar de åldersgrupper som har flest sjukfall under " + result.periodText + ".";
+            $scope.popoverTextAgeGroups2 = "Flytta markören i cirkeln för att se antalet sjukfall per åldersgrupp.";
+            $scope.popoverTextDegreeOfSickLeave1 = "Diagrammet visar antal sjukfall per sjukskrivningslängd under perioden " + result.periodText + ".";
+            $scope.popoverTextDegreeOfSickLeave2 = "Flytta markören i cirkeln för att se antalet sjukfall per sjukskrivningsgrad.";
+            $scope.popoverTextSickLeaveLength1 = "Diagrammet visar antal sjukfall per sjukskrivningslängd under perioden " + result.periodText + ".";
+            $scope.popoverTextSickLeaveLength2 = "Ställ markören i respektive stapel för att se antalet sjukfall.";
+            $scope.popoverTextPerCountyDescription1 = "Ställ markören i en cirkel på kartan för att se antalet sjukfall i respektive län under " + result.periodText + ".";
+            $scope.popoverTextPerCountyDescription2 = "Flytta markören över respektive län för att se antalet sjukfall per län."
         };
 
         var dataReceived = function (result) {
-            $scope.subTitle = "Utvecklingen i landet de senaste tre månaderna, " + result.periodText;
+            $scope.subTitle = "Utvecklingen i Sverige de senaste tre månaderna, " + result.periodText;
             setTooltipText(result);
             $scope.doneLoading = true;
             $timeout(function () {

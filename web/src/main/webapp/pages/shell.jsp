@@ -462,7 +462,7 @@
 	                                </div>
 	                                <div class="col-xs-8 col-sm-6 col-md-6 col-lg-3 check-permanent-filter-container">
                         				<input type="checkbox" id="check-permanent-filter" ng-model="businessFilter.permanentFilter">
-                                    		<label for="check-permanent-filter"><span message key="lbl.filter.sla-pa-alla-rapporter"></span></label>
+                                    		<label for="check-permanent-filter"><span message key="lbl.filter.anvand-filter-pa-alla"></span></label>
                                     	</input>
                                     </div>
 	                            </div>
@@ -475,13 +475,13 @@
 	                            	<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 pull-right">
 	                            		<div class="row">
 	                            			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 pull-right">
-                                                <span message key="lbl.filter.sum-progress-1"></span>{{ businessFilter.selectedBusinesses.length }}<span message key="lbl.filter.sum-progress-2"></span>{{ businessFilter.businesses.length }} {{ businessFilter.selectedBusinesses.length === 1 ? "enhet" : "enheter" }}.
+                                                <span message key="lbl.filter.sum-progress-1"></span>{{ businessFilter.selectedBusinesses.length }}<span message key="lbl.filter.sum-progress-2"></span>{{ businessFilter.businesses.length }} <span message key="lbl.filter.sum-progress-3"></span> 
                                                 <div class="progress">
                                                     <div class="progress-bar" role="progressbar" style="width: {{ 100 * (businessFilter.selectedBusinesses.length / businessFilter.businesses.length) }}%;">
                                                     </div>
                                                 </div>
 	                            				<button type="button" class="btn btn-default pull-right" data-ng-click="businessFilter.resetSelections(true)"><span message key="lbl.aterstall"></span></button>
-	                                        	<button class="btn btn-success pull-right" data-ng-click="makeUnitSelection()"><span message key="lbl.sok" data-toggle="collapse" data-target="#statistics-filter-container" ng-click="filter.open = !filter.open"></span></button>
+	                                        	<button class="btn btn-success pull-right" data-ng-click="makeUnitSelection()"><span message key="lbl.gor-urval" data-toggle="collapse" data-target="#statistics-filter-container" ng-click="filter.open = !filter.open"></span></button>
 	                                        </div>
 			                            </div>
                                     </div>

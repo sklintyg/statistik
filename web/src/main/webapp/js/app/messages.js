@@ -33,9 +33,7 @@ var stMessages = {
         'nav.lakarbefattning':'Läkarbefattning',
         'nav.lakare-per-namn':'Läkare per namn',
         'nav.pagaende':'Pågående',
-        'nav.sjukskrivningslangd-pagaende':'Pågående',
         'nav.sjukskrivningslangd-mer-an-90-dagar':'Mer än 90 dagar',
-        'nav.mobile.trigger.diagnosgrupp-diagnoskapitel': 'Diagnosgrupp och enskilt diagnoskapitel',
         'nav.mobile.trigger.per-alder-pagaende-sjukfall': 'Per åldersgrupp eller pågående sjukfall',
         'nav.mobile.trigger.sjukskrivningslangd-pagaende-90-dagar': 'Sjukskrivningslängd, pågående, över 90 dagar',
         'nav.allmant-om-tjansten': 'Allmänt om tjänsten',
@@ -50,6 +48,7 @@ var stMessages = {
         'lbl.for-verksamhetsstatistik': 'För verksamhetsstatistik: ',
         'lbl.aterstall': 'Återställ',
         'lbl.sok': 'Sök',
+        'lbl.gor-urval': 'Gör urval',
         'lbl.dolj-tabell': 'Dölj tabell',
         'lbl.visa-tabell': 'Visa tabell',
         
@@ -61,14 +60,17 @@ var stMessages = {
         'lbl.filter.modal.kommuner': 'Kommuner: ',
         'lbl.filter.modal.enheter': 'Enheter: ',
         'lbl.filter.modal.spara-stang': 'Spara och stäng',
-        'lbl.filter.sla-pa-alla-rapporter': 'Val ska slå på alla rapporter',
-        'lbl.filter.sum-progress-1': 'Ditt filterval kommer presentera statistik baserat på ',
+        'lbl.filter.anvand-filter-pa-alla': 'Använd filtrering för alla rapporter',
+        'lbl.filter.sum-progress-1': 'Genom filtreringen visas statistik från ',
         'lbl.filter.sum-progress-2': ' av totalt ',
+        'lbl.filter.sum-progress-3': ' vårdenheter.',
         
         //national statistics overview
         'national.overview-header': 'Nationell statistik',
-        'national.widget.header.konsfordelning': 'Könsfördelning',
+        'national.overview-header2': 'Utvecklingen i Sverige de senaste tre månaderna, ',
+        'national.widget.header.konsfordelning': 'Fördelning mellan kön',
         'national.widget.header.forandring': 'Förändring',
+        'national.widget.total-antal.help': 'Totalt antal sjukfall under perioden ',
         'national.widget.header.fordelning-diagnosgrupper': 'Fördelning diagnosgrupper',
         'national.widget.header.fordelning-aldersgrupper': 'Fördelning åldersgrupper',
         'national.widget.header.fordelning-sjukskrivningsgrad': 'Fördelning sjukskrivningsgrad',
@@ -85,7 +87,7 @@ var stMessages = {
         'business.widget.header.fordelning-sjukskrivningslangd': 'Fördelning sjukskrivningslängd',
         
         //general overview
-        'dropdown.val.oversikt': 'Val för översikt',
+        'dropdown.val.oversikt': 'Skriv ut',
         'overview.widget.table.column.diagnosgrupp': 'Diagnosgrupp',
         'overview.widget.table.column.aldersgrupp': 'Åldersgrupp',
         'overview.widget.table.column.sjukskrivningsgrad': 'Sjukskrivningsgrad',
