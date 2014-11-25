@@ -27,7 +27,7 @@ node {
     download = true
 }
 
-task jsTests(type: NodeTask) {
+task jsTests(type: NodeTask, dependsOn: npmInstall) {
     script = file('node_modules/grunt-cli/bin/grunt')
     args = ['test']
 }
