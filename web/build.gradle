@@ -5,11 +5,12 @@ buildscript {
 }
 
 plugins {
-    id "com.moowork.node" version "0.7"
+    id "com.moowork.node" version "0.8"
 }
 
-apply plugin: "war"
+apply plugin: 'war'
 apply plugin: 'org.akhikhl.gretty'
+apply plugin: 'maven'
 
 description = 'Inera Statistics Service - Web Module'
 
@@ -18,12 +19,13 @@ gretty {
     // TODO kan troligen ta bort explicit konfning om vi flyttar filen
     contextConfigFile = "${projectDir}/src/main/webapp/WEB-INF/jetty-context.xml"
     logbackConfigFile = "${projectDir}/src/main/resources/statistics-logback.xml"
-    jvmArgs = [ '-Dspring.profiles.active=dev,embedded', '-XX:MaxPermSize=128M' ]
+    jvmArgs = ['-Dspring.profiles.active=dev,embedded', '-XX:MaxPermSize=128M']
 }
 
 node {
     version = '0.10.32'
     npmVersion = '2.0.0'
+    download = true
 }
 
 task jsTests(type: NodeTask, dependsOn: npmInstall) {
@@ -45,6 +47,24 @@ task createVersionPropertyFile(dependsOn: processResources) << {
 
 createVersionPropertyFile.mustRunAfter processResources
 jar.dependsOn createVersionPropertyFile
+
+configurations {
+    deployerJars
+}
+
+ext.cloudbeesUsername = System.properties['cloudbeesUsername']
+ext.cloudbeesPassword = System.properties['cloudbeesPassword']
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            configuration = configurations.deployerJars
+            repository(url: "dav:https://repository-callistasoftware.forge.cloudbees.com/snapshot/") {
+                authentication(userName: cloudbeesUsername, password: cloudbeesPassword)
+            }
+        }
+    }
+}
 
 dependencies {
     compile project(':service')
@@ -80,4 +100,6 @@ dependencies {
     gretty "org.apache.tomcat:tomcat-catalina:7.0.20"
 
     providedCompile "javax.servlet:servlet-api:2.5"
+
+    deployerJars "org.apache.maven.wagon:wagon-webdav:1.0-beta-2"
 }

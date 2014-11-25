@@ -16,10 +16,11 @@ allprojects {
 
 subprojects {
     apply plugin: 'java'
+    apply plugin: 'jacoco'
 
     tasks.withType(JavaCompile) {
         sourceCompatibility = "1.7"
-        targetCompatibility = "1.7" 
+        targetCompatibility = "1.7"
     }
 
     ext.cxfVersion = '2.7.10'
@@ -33,7 +34,7 @@ subprojects {
         reports.junitXml.destination = file("$reports.junitXml.destination/unit")
     }
 
-    task integrationTest(type: Test) {
+    task integrationTests(type: Test) {
         include '**/*IntegrationTest.class'
         reports.html.destination = file("$reports.html.destination/integration")
         reports.junitXml.destination = file("$reports.junitXml.destination/integration")
@@ -52,8 +53,6 @@ subprojects {
 
 configure(subprojects.findAll {
     ['hsa-integration', 'service', 'web', 'liquibase-runner'].contains(it.name)}) {
-
-    apply plugin: 'maven'
     apply plugin: 'checkstyle'
 
     checkstyle {
@@ -65,8 +64,7 @@ configure(subprojects.findAll {
     checkstyleMain.source = "src/main/java"
 }
 
-apply plugin: "sonar-runner"
-apply plugin: "jacoco"
+apply plugin: 'sonar-runner'
 
 sonarRunner {
     toolVersion = "2.4"
