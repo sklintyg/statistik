@@ -20,7 +20,7 @@ subprojects {
 
     tasks.withType(JavaCompile) {
         sourceCompatibility = "1.7"
-        targetCompatibility = "1.7" 
+        targetCompatibility = "1.7"
     }
 
     ext.cxfVersion = '2.7.10'
@@ -53,8 +53,6 @@ subprojects {
 
 configure(subprojects.findAll {
     ['hsa-integration', 'service', 'web', 'liquibase-runner'].contains(it.name)}) {
-
-    apply plugin: 'maven'
     apply plugin: 'checkstyle'
 
     checkstyle {

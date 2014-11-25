@@ -3,9 +3,14 @@ package se.inera.statistics.web.reports
 import groovy.json.JsonBuilder
 import groovyx.net.http.ContentType
 import groovyx.net.http.RESTClient
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import se.inera.statistics.spec.Intyg
 
 class ReportsUtil {
+
+    private static final Logger LOG = LoggerFactory.getLogger(ReportsUtil.class);
+
     def statistik = new RESTClient('http://localhost:8080/', ContentType.JSON)
 
     long getCurrentDateTime() {
@@ -15,6 +20,11 @@ class ReportsUtil {
 
     def setCurrentDateTime(long timeMillis) {
         def response = statistik.post(path: '/api/testsupport/now', body: String.valueOf(timeMillis))
+        assert response.status == 200
+    }
+
+    def setCutoff(long cutoff) {
+        def response = statistik.post(path: '/api/testsupport/cutoff', body: String.valueOf(cutoff))
         assert response.status == 200
     }
 

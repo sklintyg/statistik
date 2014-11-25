@@ -1,25 +1,19 @@
 !contents -R2 -g -p -f -h
 
-|script|dagens datum|2013-11-06|
 
-|Givet att enbart foljande intyg finns|
-|personnr      |diagnoskod|start     |slut      |enhet|vardgivare|
-|19790407-9295 |       G01|2013-02-05|2013-02-06|ENVE |EnVG      |
-|19790407-9295 |       G01|2013-02-05|2013-02-06|ENVE |EnVG      |
-|19790407-9295 |       G01|2013-02-05|2013-02-06|ENVE |EnVG      |
-|19790407-9295 |       G01|2013-02-05|2013-02-06|ENVE |EnVG      |
-|19790407-9295 |       G01|2013-02-05|2013-02-06|ENVE |EnVG      |
-|19790407-9295 |       G01|2013-02-05|2013-02-06|ENVE |EnVG      |
-|19790407-9295 |       G01|2013-02-05|2013-02-06|ENVE |EnVG      |
-|19790407-9295 |       G01|2013-02-05|2013-02-06|ENVE |EnVG      |
-|19790407-9295 |       G01|2013-02-05|2013-02-06|ENVE |EnVG      |
-|19790407-9295 |       G01|2013-02-05|2013-02-06|ENVE |EnVG      |
-|19790407-9295 |       G01|2013-02-05|2013-02-06|ENVE |EnVG      |
-|19790407-9295 |       G01|2013-02-05|2013-02-06|ENVE |EnVG      |
-|19790407-9295 |       G01|2013-02-05|2013-02-06|ENVE |EnVG      |
+!3 Givet att:
+| script | dagens datum | 2013-11-06 |
 
-|Sjukfall i rapporten sjukfall totalt|
-|år|månad|män?|kvinnor?|kommentar|
-|2013|01|0|0||
-|2013|02|1|0||
-|2013|03|0|0||
+| script | minsta antal intyg som anses vara ett sjukfall | 1 |
+
+| Enbart foljande intyg finns |
+| personnr | diagnoskod | start | slut | enhet | vardgivare |
+| 19790407-1295 | G01 | 2013-02-05 | 2013-02-06 | ENVE | EnVG |
+
+
+!3 Då gäller:
+| Sjukfall i rapporten sjukfall totalt |
+| år | månad | män? | kvinnor? | kommentar |
+| 2013 | jan | 0 | 0 | |
+| 2013 | feb | 1 | 0 | |
+| 2013 | mar | 0 | 0 | |
