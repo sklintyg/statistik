@@ -34,7 +34,7 @@ task fitnesseTest(type: FitnesseTask, dependsOn: build) {
 }
 
 dependencies {
-    compile project(":web")
+    compile project(":statistik-web")
 
     compile "org.fitnesse:fitnesse:20140901"
     compile "org.codehaus.groovy:groovy-all:2.3.6"

@@ -1,3 +1,0 @@
-!contents -R2 -g -p -f -h
-
-Från setup data (en handfull intyg) skall vi verifiera de olika resultattabellerna

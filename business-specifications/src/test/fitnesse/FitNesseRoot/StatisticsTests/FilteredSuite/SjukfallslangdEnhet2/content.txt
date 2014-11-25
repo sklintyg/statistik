@@ -1,7 +1,0 @@
-!contents -R2 -g -p -f -h
-
-|query:se.inera.statistics.counterdata.Sjukfallslangd|sjukfallslangdGrupp2|
-|period|hsaId|grupp|typ|kvinnor|män|
-|2013-10|TVAVE|<15 dagar|ENHET|1|0|
-|2013-10|TVAVE|15-30 dagar|ENHET|1|0|
-|2013-10|TVAVE|31-90 dagar|ENHET|1|0|
