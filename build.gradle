@@ -64,6 +64,28 @@ configure(subprojects.findAll {
     }
     // Make sure we don't run checkstyle on generated source code
     checkstyleMain.source = "src/main/java"
+
+    configurations {
+        deployerJars
+    }
+
+    ext.cloudbeesUsername = System.properties['cloudbeesUsername']
+    ext.cloudbeesPassword = System.properties['cloudbeesPassword']
+
+    uploadArchives {
+        repositories {
+            mavenDeployer {
+                configuration = configurations.deployerJars
+                repository(url: "dav:https://repository-callistasoftware.forge.cloudbees.com/snapshot/") {
+                    authentication(userName: cloudbeesUsername, password: cloudbeesPassword)
+                }
+            }
+        }
+    }
+
+    dependencies {
+        deployerJars "org.apache.maven.wagon:wagon-webdav:1.0-beta-2"
+    }
 }
 
 apply plugin: 'sonar-runner'
