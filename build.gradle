@@ -15,11 +15,13 @@ subprojects {
     apply plugin: 'java'
     apply plugin: 'jacoco'
 
-    tasks.withType(JavaCompile) {
-        sourceCompatibility = "1.7"
-        targetCompatibility = "1.7"
-    }
+    sourceCompatibility = "1.7"
+    targetCompatibility = "1.7"
 
+    tasks.withType(JavaCompile) {
+        options.encoding = 'UTF-8'
+    }
+    
     ext.cxfVersion = '2.7.10'
     ext.springContextVersion = "4.0.8.RELEASE"
     ext.springSecurityVersion = "3.2.0.RELEASE"
