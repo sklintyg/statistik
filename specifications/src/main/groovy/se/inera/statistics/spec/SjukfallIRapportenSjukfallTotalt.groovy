@@ -33,7 +33,7 @@ class SjukfallIRapportenSjukfallTotalt {
 
     public void execute() {
         def report = reportsUtil.getReportAntalIntyg();
-        def row = report.tableData.rows.find { row.name == (månad + " " + år) }
+        def row = report.tableData.rows.find { currentRow -> currentRow.name == (månad + " " + år) }
         kvinnor = row.data[1]
         män = row.data[2]
     }

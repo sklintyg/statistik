@@ -1,9 +1,12 @@
 package se.inera.testsupport;
 
 import org.joda.time.DateTimeUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import se.inera.statistics.service.processlog.LogConsumerImpl;
 import se.inera.statistics.service.processlog.Receiver;
 import se.inera.statistics.service.scheduler.LogJob;
 import se.inera.statistics.service.warehouse.NationellData;
@@ -24,6 +27,8 @@ import javax.ws.rs.core.Response;
 
 @Service("restSupportService")
 public class RestSupportService {
+
+    private static final Logger LOG = LoggerFactory.getLogger(RestSupportService.class);
 
     @Autowired
     private ChartDataService nationalChartDataService;
@@ -65,13 +70,8 @@ public class RestSupportService {
     @Path("now")
     @Produces({MediaType.APPLICATION_JSON})
     public Response setCurrentDateTime(long timeMillis) {
-        DateTimeUtils.setCurrentMillisFixed(timeMillis);
+        DateTimeUtils.setCurrentMillisOffset(timeMillis - System.currentTimeMillis());
         return Response.ok().build();
-    }
-
-    private void recalculateNationalData() {
-        warehouse.complete(warehouse.getLastUpdate().plusMillis(1));
-        nationalChartDataService.buildCache();
     }
 
     @POST
@@ -82,11 +82,11 @@ public class RestSupportService {
         manager.createQuery("DELETE FROM IntygEvent").executeUpdate();
         manager.createQuery("DELETE FROM WideLine").executeUpdate();
         manager.createQuery("DELETE FROM EventPointer").executeUpdate();
-        manager.createQuery("DELETE FROM Enhet").executeUpdate();
-        manager.createQuery("DELETE FROM Lakare").executeUpdate();
-        manager.createQuery("DELETE FROM HSAStore").executeUpdate();
+//        manager.createQuery("DELETE FROM Enhet").executeUpdate();
+//        manager.createQuery("DELETE FROM Lakare").executeUpdate();
+//        manager.createQuery("DELETE FROM HSAStore").executeUpdate();
         warehouse.clear();
-        recalculateNationalData();
+        nationalChartDataService.buildCache();
         return Response.ok().build();
     }
 
@@ -95,6 +95,7 @@ public class RestSupportService {
     @Consumes({MediaType.APPLICATION_JSON})
     @Produces({MediaType.APPLICATION_JSON})
     public Response insertIntyg(Intyg intyg) {
+        LOG.info("Insert intyg. id: " + intyg.getDocumentId() + ", data: " + intyg.getData());
         receiver.accept(intyg.getType(), intyg.getData(), intyg.getDocumentId(), intyg.getTimestamp());
         return Response.ok().build();
     }
@@ -102,11 +103,10 @@ public class RestSupportService {
     @POST
     @Path("processIntyg")
     @Produces({MediaType.APPLICATION_JSON})
-    @Transactional
     public Response processIntyg() {
         logJob.checkLog();
         warehouseManager.loadWideLines();
-        recalculateNationalData();
+        nationalChartDataService.buildCache();
         return Response.ok().build();
     }
 

@@ -1,11 +1,12 @@
 package se.inera.statistics.spec
 
+import groovy.json.JsonBuilder
 import groovy.json.JsonSlurper
 import org.joda.time.DateTimeUtils
 import se.inera.statistics.service.processlog.EventType
 import se.inera.statistics.web.reports.ReportsUtil
 
-class GivetAttEnbartFoljandeIntygFinns {
+class EnbartFoljandeIntygFinns {
 
     private final ReportsUtil reportsUtil = new ReportsUtil()
 
@@ -28,22 +29,26 @@ class GivetAttEnbartFoljandeIntygFinns {
     public void execute() {
         def slurper = new JsonSlurper()
         String intygString = getClass().getResource('/intyg1.json').getText('UTF-8')
-        String observationString = getClass().getResource('/observation.json').getText('UTF-8')
+        String observationKodString = getClass().getResource('/observationMedKod.json').getText('UTF-8')
         def result = slurper.parseText(intygString)
 
         result.patient.id.extension = personnr;
 
-        def observation = slurper.parseText(observationString)
+        def observation = slurper.parseText(observationKodString)
         observation.observationskod.code = diagnoskod
         result.observationer.add(observation)
 
-        result.validFromDate = start
-        result.validToDate = slut
+        String observationFormagaString = getClass().getResource('/observationMedArbetsformaga.json').getText('UTF-8')
+        def observationFormaga = slurper.parseText(observationFormagaString)
+        observationFormaga.observationsperiod.from = start
+        observationFormaga.observationsperiod.tom = slut
+
+        result.observationer.add(observationFormaga)
 
         result.skapadAv.vardenhet.id.extension = enhet
         result.skapadAv.vardenhet.vardgivare.id.extension = vardgivare
 
-        def builder = new groovy.json.JsonBuilder(result)
+        def builder = new JsonBuilder(result)
         def finalIntygDataString = builder.toString()
 
         Intyg intyg = new Intyg(EventType.CREATED, finalIntygDataString, String.valueOf(intygIdCounter++), DateTimeUtils.currentTimeMillis())
@@ -78,4 +83,5 @@ class GivetAttEnbartFoljandeIntygFinns {
     void setVardgivare(vardgivare) {
         this.vardgivare = vardgivare
     }
+
 }
