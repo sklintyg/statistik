@@ -2,11 +2,11 @@ package se.inera.statistics.spec
 
 import se.inera.statistics.web.reports.ReportsUtil
 
-class Troskelvarde {
+class TroskelVarde {
 
     private ReportsUtil reportsUtil = new ReportsUtil()
 
-    Troskelvarde(int cutoff) {
+    TroskelVarde(int cutoff) {
         reportsUtil.setCutoff(cutoff);
     }
 

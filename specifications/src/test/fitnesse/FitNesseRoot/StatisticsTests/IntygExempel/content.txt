@@ -4,11 +4,11 @@
 !3 Givet att:
 | script | dagens datum | 2013-11-06 |
 
-| script | troskelvarde | 1 |
+| script | troskel varde | 1 |
 
 | Enbart foljande intyg finns |
-| personnr | diagnoskod | start | slut | enhet | vardgivare |
-| 19790407-1295 | G01 | 2013-02-05 | 2013-02-06 | ENVE | EnVG |
+| personnr | diagnoskod | start | slut | enhet |
+| 19790407-1295 | G01 | 2013-02-05 | 2013-02-06 | verksamhet1 |
 
 
 !3 Då gäller:

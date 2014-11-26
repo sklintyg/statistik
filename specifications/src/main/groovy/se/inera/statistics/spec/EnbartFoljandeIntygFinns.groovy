@@ -24,6 +24,10 @@ class EnbartFoljandeIntygFinns {
     }
 
     public void reset() {
+        personnr = "19790407-1295"
+        diagnoskod = "A01"
+
+        vardgivare = "vg-verksamhet1"
     }
 
     public void execute() {
