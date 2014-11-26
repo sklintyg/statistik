@@ -1,0 +1,24 @@
+!contents -R2 -g -p -f -h
+
+!3 Givet att:
+Två intyg för samma patient har uppehåll med 4 dagar
+
+
+| script | dagens datum | 2013-11-06 |
+
+| script | troskelvarde | 1 |
+
+| Enbart foljande intyg finns |
+| personnr | diagnoskod | start    | slut       | enhet | vardgivare |
+| 19790407-1295 | G01 | 2013-02-05 | 2013-02-06 | ENVE | EnVG |
+| 19790407-1295 | G01 | 2013-02-11 | 2013-02-12 | ENVE | EnVG |
+
+!3 Då gäller:
+Det blir 1 sjukfall
+
+
+| Sjukfall i rapporten sjukfall totalt |
+| inloggad som | år   | månad | män? | kvinnor? |
+| ENVE         | 2013 | jan   | 0    | 0        |
+| ENVE         | 2013 | feb   | 1    | 0        |
+| ENVE         | 2013 | mar   | 0    | 0        |

@@ -1,0 +1,29 @@
+!contents -R2 -g -p -f -h
+
+Två intyg för samma patient. Intyg 1 varar 1 - 14 feb och har diagnos F32, Intyg 2 varar 17-28 feb och har diagnos F40
+
+Räknas med i kapitel för ”F00-F99 Psykiska sjukdomar och syndrom samt beteendestörningar” i februari
+Räknas ej med i gruppen ” F30-F39 Förstämningssyndrom” i februari
+Räknas med i gruppen ”F40-F48 Neurotiska, stressrelaterade och somatoforma syndrom” i februari
+
+!3 Givet att:
+| script | dagens datum | 2013-11-06 |
+
+| script | troskelvarde | 1 |
+
+| Enbart foljande intyg finns |
+| personnr | diagnoskod | start    | slut       | enhet | vardgivare |
+| 19790407-1295 | F32 | 2013-02-01 | 2013-02-14 | ENVE | EnVG |
+| 19790407-1295 | F40 | 2013-02-17 | 2013-02-28 | ENVE | EnVG |
+
+| script | inloggad som | ENVE |
+
+| script | valt diagnoskapitel | F00-F99 |
+
+
+!3 Då gäller:
+
+| Sjukfall i rapporten sjukfall totalt |
+| år | månad | grupp   | män? | kvinnor? | kommentar |
+| 2013 | feb | F30-F39 | 0    | 0        | |
+| 2013 | feb | F40-F48 | 1    | 0        | |
