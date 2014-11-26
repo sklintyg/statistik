@@ -9,11 +9,19 @@
 | Enbart foljande intyg finns |
 | personnr | diagnoskod | start | slut | enhet |
 | 19790407-1295 | G01 | 2013-02-05 | 2013-02-06 | verksamhet1 |
+| 19790407-2295 | G01 | 2013-02-05 | 2013-02-06 | verksamhet6 |
 
 
 !3 Då gäller:
 | Sjukfall i rapporten sjukfall totalt |
-| år | månad | män? | kvinnor? | kommentar |
-| 2013 | jan | 0 | 0 | |
-| 2013 | feb | 1 | 0 | |
-| 2013 | mar | 0 | 0 | |
+| år   | månad | män? | kvinnor? |
+| 2013 | jan   | 0    | 0        |
+| 2013 | feb   | 2    | 0        |
+| 2013 | mar   | 0    | 0        |
+
+
+| Sjukfall i rapporten sjukfall totalt |
+| inloggad som | år   | månad | män? | kvinnor? |
+| verksamhet1  | 2013 | jan   | 0    | 0        |
+| verksamhet1  | 2013 | feb   | 1    | 0        |
+| verksamhet1  | 2013 | mar   | 0    | 0        |

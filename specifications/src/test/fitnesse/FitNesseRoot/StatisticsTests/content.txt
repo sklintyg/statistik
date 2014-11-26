@@ -1,5 +1,10 @@
 !contents -R2 -g -p -f -h
-All tests
+
+Tillgängliga enheter är (där båda är på samma vårdgivare):
+verksamhet1
+verksamhet2
+
+
 
 !*> '''Variables Defined'''
 !define TEST_SYSTEM {slim}
