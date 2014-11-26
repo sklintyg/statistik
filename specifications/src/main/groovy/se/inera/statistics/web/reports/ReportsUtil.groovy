@@ -58,12 +58,12 @@ class ReportsUtil {
 
     def login(String enhet) {
         def loginData = "{" +
-                "    \"fornamn\":\"Anna\"," +
-                "    \"efternamn\":\"Modig\"," +
-                "    \"hsaId\":\"HSA-BS\"," +
-                "    \"enhetId\":\"" + enhet + "\"," +
-                "    \"vardgivarId\":\"vg-verksamhet1\"," +
-                "    \"vardgivarniva\":\"false\"" +
+                "\"fornamn\":\"Anna\"," +
+                "\"efternamn\":\"Modig\"," +
+                "\"hsaId\":\"HSA-BS\"," +
+                "\"enhetId\":\"" + enhet + "\"," +
+                "\"vardgivarId\":\"vg-verksamhet1\"," +
+                "\"vardgivarniva\":\"false\"" +
                 "}"
         def response = statistik.post(path: '/fake', body: [ userJsonDisplay:loginData ], requestContentType : "application/x-www-form-urlencoded" )
 //        assert response.status == 200
