@@ -17,7 +17,7 @@ gretty {
     contextPath = '/'
     contextConfigFile = "${projectDir}/src/main/webapp/WEB-INF/jetty-context.xml"
     logbackConfigFile = "${projectDir}/src/main/resources/statistics-logback.xml"
-    jvmArgs = ['-Dspring.profiles.active=dev,embedded', '-XX:MaxPermSize=128M']
+    jvmArgs = ['-Dspring.profiles.active=dev,embedded', '-XX:MaxPermSize=256M']
 }
 
 node {
@@ -46,7 +46,6 @@ jar.dependsOn createVersionPropertyFile
 dependencies {
     compile project(':statistik-service')
 
-    // Den här kan tas bort när vi går upp till Java8
     compile "org.springframework.security.extensions:spring-security-saml2-core:1.0.0.RC2"
     compile "xml-apis:xml-apis:1.4.01"
     compile "org.springframework:spring-webmvc:$springContextVersion"
