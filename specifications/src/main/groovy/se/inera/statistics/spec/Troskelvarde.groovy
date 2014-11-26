@@ -2,11 +2,11 @@ package se.inera.statistics.spec
 
 import se.inera.statistics.web.reports.ReportsUtil
 
-class MinstaAntalIntygSomAnsesVaraEttSjukfall {
+class Troskelvarde {
 
     private ReportsUtil reportsUtil = new ReportsUtil()
 
-    MinstaAntalIntygSomAnsesVaraEttSjukfall(int cutoff) {
+    Troskelvarde(int cutoff) {
         reportsUtil.setCutoff(cutoff);
     }
 
