@@ -1,0 +1,64 @@
+buildscript {
+    dependencies {
+        classpath 'org.akhikhl.gretty:gretty:1.1.7'
+    }
+}
+
+plugins {
+    id "com.moowork.node" version "0.8"
+}
+
+apply plugin: 'war'
+apply plugin: 'org.akhikhl.gretty'
+
+description = 'Inera Statistics Service - Web Module'
+
+gretty {
+    contextPath = '/'
+    contextConfigFile = "${projectDir}/src/main/webapp/WEB-INF/jetty-context.xml"
+    logbackConfigFile = "${projectDir}/src/main/resources/statistics-logback.xml"
+    jvmArgs = ['-Dspring.profiles.active=dev,embedded', '-XX:MaxPermSize=128M']
+}
+
+node {
+    version = '0.10.32'
+    npmVersion = '2.0.0'
+    download = true
+}
+
+task jsTests(type: NodeTask, dependsOn: npmInstall) {
+    script = file('node_modules/grunt-cli/bin/grunt')
+    args = ['test']
+}
+
+test.dependsOn(jsTests)
+
+task createVersionPropertyFile(dependsOn: processResources) << {
+    def propertyFile = "${buildDir}/resources/main/version.properties"
+    ant.touch(file: propertyFile, mkdirs: "true")
+    ant.propertyfile(file: propertyFile) {
+        entry(key: 'project.version', default: project.version)
+    }
+}
+
+jar.dependsOn createVersionPropertyFile
+
+dependencies {
+    compile project(':statistik-service')
+
+    // Den här kan tas bort när vi går upp till Java8
+    compile "org.springframework.security.extensions:spring-security-saml2-core:1.0.0.RC2"
+    compile "xml-apis:xml-apis:1.4.01"
+    compile "org.springframework:spring-webmvc:$springContextVersion"
+    compile "jstl:jstl:1.2"
+    compile "org.apache.commons:commons-lang3:3.2.1"
+    compile "org.springframework.security:spring-security-config:${springSecurityVersion}"
+    compile "org.springframework.security:spring-security-taglibs:${springSecurityVersion}"
+
+    gretty "com.h2database:h2:1.3.171"
+    gretty "mysql:mysql-connector-java:5.1.29"
+    gretty "org.apache.activemq:activemq-broker:5.8.0"
+    gretty "org.apache.tomcat:tomcat-catalina:7.0.20"
+
+    providedCompile "javax.servlet:servlet-api:2.5"
+}

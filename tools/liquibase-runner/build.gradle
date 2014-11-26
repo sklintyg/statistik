@@ -1,5 +1,5 @@
 description = 'Liquibase runner for statistics (standalone)'
 
 dependencies {
-  compile project(':service')
+  compile project(':statistik-service')
 }
