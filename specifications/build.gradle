@@ -6,6 +6,10 @@ ext.fitnessePort = "9125"
 ext.fitnesseRoot = "FitNesseRoot"
 ext.fitnesseDir = "src/test/fitnesse"
 
+configurations {
+    fitnesse
+}
+
 class FitnesseTask extends DefaultTask {
     def clArgs = ['-p', project.fitnessePort, '-d', project.fitnesseDir, '-r', project.fitnesseRoot, '-o']
 
@@ -13,7 +17,7 @@ class FitnesseTask extends DefaultTask {
     def runFitnesse() {
         project.javaexec {
             main = "fitnesse.FitNesse"
-            classpath = project.configurations.runtime
+            classpath = project.configurations.fitnesse
             systemProperties(["maven.classpath": mavenPathAsWikiPaths()])
             args = clArgs.toList()
         }
@@ -39,4 +43,6 @@ dependencies {
     compile "org.fitnesse:fitnesse:20140901"
     compile "org.codehaus.groovy:groovy-all:2.3.6"
     compile "org.codehaus.groovy.modules.http-builder:http-builder:0.7"
+
+    fitnesse "org.fitnesse:fitnesse:20140901"
 }
