@@ -22,3 +22,6 @@ Det blir 1 sjukfall
 | verksamhet1  | 2013 | jan   | 0    | 0        |
 | verksamhet1  | 2013 | feb   | 1    | 0        |
 | verksamhet1  | 2013 | mar   | 0    | 0        |
+|   | 2013 | jan   | 0    | 0        |
+|   | 2013 | feb   | 1    | 0        |
+|   | 2013 | mar   | 0    | 0        |
