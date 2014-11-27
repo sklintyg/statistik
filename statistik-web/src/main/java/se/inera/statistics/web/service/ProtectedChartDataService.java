@@ -529,16 +529,29 @@ public class ProtectedChartDataService {
         return Predicates.and(enhetFilter, diagnosFilter);
     }
 
-    private Predicate<Fact> getDiagnosFilter(List<String> kapitelIDs, List<String> avsnittIDs, List<String> kategoriIDs) {
-        return Predicates.alwaysTrue();
+    private Predicate<Fact> getDiagnosFilter(final List<String> kapitelIDs, final List<String> avsnittIDs, final List<String> kategoriIDs) {
+        return new Predicate<Fact>() {
+            @Override
+            public boolean apply(Fact fact) {
+                if (kapitelIDs != null && kapitelIDs.contains(String.valueOf(fact.getDiagnoskapitel()))) {
+                    return true;
+                } else if (avsnittIDs != null && avsnittIDs.contains(String.valueOf(fact.getDiagnosavsnitt()))) {
+                    return true;
+                } else {
+                    return kategoriIDs != null && kategoriIDs.contains(String.valueOf(fact.getDiagnoskategori()));
+                }
+            }
+        };
     }
 
-    SjukfallUtil.EnhetFilter getEnhetFilter(HttpServletRequest request, Verksamhet verksamhet, List<String> enhetsIDs) {
+    SjukfallUtil.EnhetFilter getEnhetFilter(HttpServletRequest request, Verksamhet
+            verksamhet, List<String> enhetsIDs) {
         Set<String> enheter = getEnhetNameMap(request, verksamhet, enhetsIDs).keySet();
         return SjukfallUtil.createEnhetFilter(enheter.toArray(new String[enheter.size()]));
     }
 
-    private Map<String, String> getEnhetNameMap(HttpServletRequest request, Verksamhet verksamhet, List<String> enhetsIDs) {
+    private Map<String, String> getEnhetNameMap(HttpServletRequest request, Verksamhet
+            verksamhet, List<String> enhetsIDs) {
 
         LoginInfo info = loginServiceUtil.getLoginInfo(request);
         Map<String, String> enheter = new HashMap<>();
