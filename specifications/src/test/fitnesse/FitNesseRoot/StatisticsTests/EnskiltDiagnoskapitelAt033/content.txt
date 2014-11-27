@@ -32,7 +32,7 @@
 
 !3 Då gäller:
 
-| Sjukfall enskilt diagnoskapitel diagram |
+| Sjukfall i rapporten enskilt diagnoskapitel diagram |
 |inloggad som | valt diagnoskapitel | år   | månad | grupp   | män? | kvinnor? |
 | verksamhet1 | C00-D48             | 2013 | feb   | C15-C26 | 0    | 0        |
 | verksamhet1 | C00-D48             | 2013 | feb   | C30-C39 | 0    | 0        |

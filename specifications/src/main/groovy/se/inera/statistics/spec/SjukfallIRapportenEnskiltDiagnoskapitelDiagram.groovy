@@ -1,12 +1,12 @@
 package se.inera.statistics.spec
 
-class SjukfallIRapportenEnskiltDiagnoskapitel extends DiagnosRapport {
+class SjukfallIRapportenEnskiltDiagnoskapitelDiagram extends DiagnosRapport {
 
     String valtDiagnoskapitel
 
     public void execute() {
         def report = getReportEnskiltDiagnoskapitel(valtDiagnoskapitel)
-        executeTabell(report)
+        executeDiagram(report)
     }
 
 }
