@@ -10,6 +10,7 @@ import se.inera.statistics.spec.Intyg
 class ReportsUtil {
 
     private static final Logger LOG = LoggerFactory.getLogger(ReportsUtil.class);
+    final VARDGIVARE = "vg-verksamhet1"
 
     def statistik = new RESTClient('http://localhost:8080/', ContentType.JSON)
 
@@ -45,13 +46,25 @@ class ReportsUtil {
     }
 
     def getReportAntalIntyg() {
-        def response = statistik.get(path: '/api/getNumberOfCasesPerMonth')
+        def response = statistik.get(path: "/api/getNumberOfCasesPerMonth")
         assert response.status == 200
         response.data;
     }
 
     def getReportAntalIntygInloggad() {
-        def response = statistik.get(path: "api/verksamhet/vg-verksamhet1/getNumberOfCasesPerMonth")
+        def response = statistik.get(path: "api/verksamhet/" + VARDGIVARE + "/getNumberOfCasesPerMonth")
+        assert response.status == 200
+        response.data;
+    }
+
+    def getReportEnskiltDiagnoskapitelInloggad(String kapitel) {
+        def response = statistik.get(path: "/api/getDiagnosavsnittstatistik/" + kapitel)
+        assert response.status == 200
+        response.data;
+    }
+
+    def getReportEnskiltDiagnoskapitel(String kapitel) {
+        def response = statistik.get(path: "api/verksamhet/" + VARDGIVARE + "/getDiagnosavsnittstatistik/" + kapitel)
         assert response.status == 200
         response.data;
     }
@@ -62,10 +75,11 @@ class ReportsUtil {
                 "\"efternamn\":\"Modig\"," +
                 "\"hsaId\":\"HSA-BS\"," +
                 "\"enhetId\":\"" + enhet + "\"," +
-                "\"vardgivarId\":\"vg-verksamhet1\"," +
+                "\"vardgivarId\":\"" + VARDGIVARE + "\"," +
                 "\"vardgivarniva\":\"false\"" +
                 "}"
         def response = statistik.post(path: '/fake', body: [ userJsonDisplay:loginData ], requestContentType : "application/x-www-form-urlencoded" )
 //        assert response.status == 200
     }
+
 }

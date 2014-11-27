@@ -9,21 +9,17 @@ Räknas med i gruppen ”F40-F48 Neurotiska, stressrelaterade och somatoforma sy
 !3 Givet att:
 | script | dagens datum | 2013-11-06 |
 
-| script | troskelvarde | 1 |
+| script | troskel varde | 1 |
 
 | Enbart foljande intyg finns |
-| personnr | diagnoskod | start    | slut       | enhet | vardgivare |
-| 19790407-1295 | F32 | 2013-02-01 | 2013-02-14 | ENVE | EnVG |
-| 19790407-1295 | F40 | 2013-02-17 | 2013-02-28 | ENVE | EnVG |
-
-| script | inloggad som | ENVE |
-
-| script | valt diagnoskapitel | F00-F99 |
+| personnr | diagnoskod | start    | slut       | enhet |
+| 19790407-1295 | F32 | 2013-02-01 | 2013-02-14 | verksamhet1 |
+| 19790407-1295 | F40 | 2013-02-17 | 2013-02-28 | verksamhet1 |
 
 
 !3 Då gäller:
 
-| Sjukfall i rapporten sjukfall totalt |
-| år | månad | grupp   | män? | kvinnor? | kommentar |
-| 2013 | feb | F30-F39 | 0    | 0        | |
-| 2013 | feb | F40-F48 | 1    | 0        | |
+| Sjukfall i rapporten enskilt diagnoskapitel |
+|inloggad som | valt diagnoskapitel | år   | månad | grupp   | män? | kvinnor? | kommentar |
+| verksamhet1 | F00-F99             | 2013 | feb   | F30-F39 | 0    | 0        | |
+| verksamhet1 | F00-F99             | 2013 | feb   | F40-F48 | 1    | 0        | |
