@@ -53,7 +53,7 @@ public class RestSupportService {
 
     @POST
     @Path("cutoff")
-    @Produces({MediaType.APPLICATION_JSON})
+    @Produces({ MediaType.APPLICATION_JSON })
     public Response setCutoff(int cutoff) {
         nationellData.setCutoff(cutoff);
         return Response.ok().build();
@@ -61,14 +61,14 @@ public class RestSupportService {
 
     @GET
     @Path("now")
-    @Produces({MediaType.APPLICATION_JSON})
+    @Produces({ MediaType.APPLICATION_JSON })
     public Response getCurrentDateTime() {
         return Response.ok(DateTimeUtils.currentTimeMillis()).build();
     }
 
     @POST
     @Path("now")
-    @Produces({MediaType.APPLICATION_JSON})
+    @Produces({ MediaType.APPLICATION_JSON })
     public Response setCurrentDateTime(long timeMillis) {
         DateTimeUtils.setCurrentMillisOffset(timeMillis - System.currentTimeMillis());
         return Response.ok().build();
@@ -76,7 +76,7 @@ public class RestSupportService {
 
     @POST
     @Path("clearDatabase")
-    @Produces({MediaType.APPLICATION_JSON})
+    @Produces({ MediaType.APPLICATION_JSON })
     @Transactional
     public Response clearDatabase() {
         manager.createQuery("DELETE FROM IntygEvent").executeUpdate();
@@ -92,8 +92,8 @@ public class RestSupportService {
 
     @PUT
     @Path("intyg")
-    @Consumes({MediaType.APPLICATION_JSON})
-    @Produces({MediaType.APPLICATION_JSON})
+    @Consumes({ MediaType.APPLICATION_JSON })
+    @Produces({ MediaType.APPLICATION_JSON })
     public Response insertIntyg(Intyg intyg) {
         LOG.info("Insert intyg. id: " + intyg.getDocumentId() + ", data: " + intyg.getData());
         receiver.accept(intyg.getType(), intyg.getData(), intyg.getDocumentId(), intyg.getTimestamp());
@@ -102,7 +102,7 @@ public class RestSupportService {
 
     @POST
     @Path("processIntyg")
-    @Produces({MediaType.APPLICATION_JSON})
+    @Produces({ MediaType.APPLICATION_JSON })
     public Response processIntyg() {
         logJob.checkLog();
         warehouseManager.loadWideLines();

@@ -26,7 +26,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+
 
 @Component
 public final class SjukfallQuery {
@@ -46,13 +48,14 @@ public final class SjukfallQuery {
         return new SimpleKonResponse<>(result, perioder * periodlangd);
     }
 
-    public SimpleKonResponse<SimpleKonDataRow> getSjukfallPerEnhet(Aisle aisle, SjukfallUtil.EnhetFilter filter, Range range, int perioder, int periodlangd) {
+    public SimpleKonResponse<SimpleKonDataRow> getSjukfallPerEnhet(Aisle aisle, Predicate<Fact> filter, Map<String, String> idsToNames, Range range, int perioder, int periodlangd) {
         ArrayList<SimpleKonDataRow> result = new ArrayList<>();
-        for (int enhetId : filter.getEnhetIds()) {
-            Collection<Sjukfall> sjukfalls = SjukfallUtil.active(range, aisle, new SjukfallUtil.EnhetFilter(enhetId));
+        for (String enhetId : idsToNames.keySet()) {
+            // TODO: refactor
+            Collection<Sjukfall> sjukfalls = SjukfallUtil.active(range, aisle, new SjukfallUtil.EnhetFilter(Warehouse.getEnhet(enhetId)));
             int male = countMale(sjukfalls);
             int female = sjukfalls.size() - male;
-            result.add(new SimpleKonDataRow(filter.getEnhetsName(enhetId), female, male));
+            result.add(new SimpleKonDataRow(idsToNames.get(enhetId), female, male));
         }
         return new SimpleKonResponse<>(result, perioder * periodlangd);
     }
