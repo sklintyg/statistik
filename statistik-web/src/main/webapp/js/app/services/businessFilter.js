@@ -235,7 +235,8 @@ angular.module('StatisticsApp').factory('businessFilter', function (_) {
 
     businessFilter.collectVerksamhetsIds = function () {
         var matchingBusinesses = _.filter(businessFilter.businesses, function (business) {
-            return _.any(business.verksamhetsTyper, function (verksamhetsTyp) {
+            var typer = business.verksamhetsTyper;
+            return typer === null || typer.length === 0 || _.any(typer, function (verksamhetsTyp) {
                 return _.contains(businessFilter.verksamhetsTypIds, verksamhetsTyp.id);
             });
         });
