@@ -57,13 +57,13 @@ class ReportsUtil {
         response.data;
     }
 
-    def getReportEnskiltDiagnoskapitelInloggad(String kapitel) {
+    def getReportEnskiltDiagnoskapitel(String kapitel) {
         def response = statistik.get(path: "/api/getDiagnosavsnittstatistik/" + kapitel)
         assert response.status == 200
         response.data;
     }
 
-    def getReportEnskiltDiagnoskapitel(String kapitel) {
+    def getReportEnskiltDiagnoskapitelInloggad(String kapitel) {
         def response = statistik.get(path: "api/verksamhet/" + VARDGIVARE + "/getDiagnosavsnittstatistik/" + kapitel)
         assert response.status == 200
         response.data;
