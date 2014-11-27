@@ -15,8 +15,7 @@ class ReportsUtil {
     def statistik = new RESTClient('http://localhost:8080/', ContentType.JSON)
 
     long getCurrentDateTime() {
-        def response = statistik.get(path: '/api/testsupport/now')
-        response.data;
+        return get('/api/testsupport/now')
     }
 
     def setCurrentDateTime(long timeMillis) {
@@ -46,27 +45,33 @@ class ReportsUtil {
     }
 
     def getReportAntalIntyg() {
-        def response = statistik.get(path: "/api/getNumberOfCasesPerMonth")
-        assert response.status == 200
-        response.data;
+        return get("/api/getNumberOfCasesPerMonth")
     }
 
     def getReportAntalIntygInloggad() {
-        def response = statistik.get(path: "api/verksamhet/" + VARDGIVARE + "/getNumberOfCasesPerMonth")
-        assert response.status == 200
-        response.data;
+        return get("/api/verksamhet/" + VARDGIVARE + "/getNumberOfCasesPerMonth")
     }
 
     def getReportEnskiltDiagnoskapitel(String kapitel) {
-        def response = statistik.get(path: "/api/getDiagnosavsnittstatistik/" + kapitel)
+        return get("/api/getDiagnosavsnittstatistik/" + kapitel)
+    }
+
+    private def get(String url) {
+        def response = statistik.get(path: url)
         assert response.status == 200
-        response.data;
+        return response.data;
     }
 
     def getReportEnskiltDiagnoskapitelInloggad(String kapitel) {
-        def response = statistik.get(path: "api/verksamhet/" + VARDGIVARE + "/getDiagnosavsnittstatistik/" + kapitel)
-        assert response.status == 200
-        response.data;
+        return get("/api/verksamhet/" + VARDGIVARE + "/getDiagnosavsnittstatistik/" + kapitel)
+    }
+
+    def getReportDiagnosgruppInloggad() {
+        return get("/api/verksamhet/" + VARDGIVARE + "/getDiagnoskapitelstatistik")
+    }
+
+    def getReportDiagnosgrupp() {
+        return get("/api/getDiagnoskapitelstatistik")
     }
 
     def login(String enhet) {
