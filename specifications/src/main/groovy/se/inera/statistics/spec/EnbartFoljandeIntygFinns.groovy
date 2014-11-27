@@ -19,6 +19,8 @@ class EnbartFoljandeIntygFinns {
     private def enhet
     private def vardgivare
 
+    public void setKommentar(String kommentar) {}
+
     public void beginTable() {
         reportsUtil.clearDatabase()
     }
