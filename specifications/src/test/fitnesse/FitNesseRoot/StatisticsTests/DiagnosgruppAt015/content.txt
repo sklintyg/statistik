@@ -8,7 +8,7 @@
 | Enbart foljande intyg finns |
 | personnr | diagnoskod | start    | slut       | enhet |
 | 19790407-0120 | F40 | 2013-02-01 | 2013-02-14 | enhet1 |
-| 19790407-0120 | A00 | 2013-02-17 | 2013-02-28 | enhet1 |
+| 19790407-0120 | A00 | 2013-02-02 | 2013-02-28 | enhet1 |
 
 !3 Då gäller:
 Inloggad:
