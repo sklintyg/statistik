@@ -13,18 +13,18 @@
 !3 Då gäller:
 Inloggad:
 | Sjukfall i rapporten diagnosgrupp diagram |
-|inloggad som | år   | månad | grupp              | män? | kvinnor? |
-| user1       | 2013 | feb   | Psykiska sjukdomar | 0    | 1        |
+|inloggad som | år   | månad | grupp   | män? | kvinnor? |
+| user1       | 2013 | feb   | F00-F99 | 0    | 1        |
 
 | Sjukfall i rapporten diagnosgrupp |
-|inloggad som | år   | månad | grupp                                                  | män? | kvinnor? |
-| user1       | 2013 | feb   | Psykiska sjukdomar och syndrom samt beteendestörningar | 0    | 1        |
+|inloggad som | år   | månad | grupp   | män? | kvinnor? |
+| user1       | 2013 | feb   | F00-F99 | 0    | 1        |
 
 Nationell:
 | Sjukfall i rapporten diagnosgrupp diagram |
-| år   | månad | grupp                | män? | kvinnor? |
-| 2013 | feb   | Psykiska sjukdomar   | 0    | 1        |
+| år   | månad | grupp   | män? | kvinnor? |
+| 2013 | feb   | F00-F99 | 0    | 1        |
 
 | Sjukfall i rapporten diagnosgrupp |
-| år   | månad | grupp                                                  | män? | kvinnor? |
-| 2013 | feb   | Psykiska sjukdomar och syndrom samt beteendestörningar | 0    | 1        |
+| år   | månad | grupp   | män? | kvinnor? |
+| 2013 | feb   | F00-F99 | 0    | 1        |
