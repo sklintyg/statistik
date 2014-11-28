@@ -1,8 +1,8 @@
 !contents -R2 -g -p -f -h
 
 
-Två intyg för samma patient har uppehåll med 6 dagar
-Det blir 2 sjukfall
+Två intyg för samma patient har uppehåll med 6 hela dagar (7 dagar)
+
 
 !3 Givet att:
 | script | dagens datum | 2013-11-06 |
@@ -18,6 +18,12 @@ Det blir 2 sjukfall
 
 | Sjukfall i rapporten sjukfall totalt |
 | inloggad som | år | månad | män? | kvinnor? | kommentar |
+<<<<<<< Updated upstream
 | user1  | 2013 | jan | 0 | 0 | |
 | user1  | 2013 | feb | 2 | 0 | |
 | user1  | 2013 | mar | 0 | 0 | |
+=======
+| user1 | 2013 | jan | 0 | 0 | |
+| user1 | 2013 | feb | 2 | 0 | |
+| user1 | 2013 | mar | 0 | 0 | |
+>>>>>>> Stashed changes
