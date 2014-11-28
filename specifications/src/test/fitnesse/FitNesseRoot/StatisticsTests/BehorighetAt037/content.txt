@@ -24,5 +24,5 @@ Inloggad nivå
 | Sjukfall i rapporten sjukfall totalt |
 | inloggad som | år   | månad | män? | kvinnor? | vårdgivarnivå |
 | user1        | 2013 | jan   | 0    | 0        | true          |
-| user1        | 2013 | feb   | 1    | 0        | true          |
+| user1        | 2013 | feb   | 2    | 0        | true          |
 | user1        | 2013 | mar   | 0    | 0        | true          |
