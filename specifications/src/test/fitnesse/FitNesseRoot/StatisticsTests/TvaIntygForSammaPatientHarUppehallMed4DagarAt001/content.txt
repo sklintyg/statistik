@@ -21,7 +21,6 @@ Inloggad:
 | inloggad som | år   | månad | män? | kvinnor? |
 | user1  | 2013 | jan   | 0    | 0        |
 | user1  | 2013 | feb   | 1    | 0        |
-<<<<<<< Updated upstream
 | user1  | 2013 | mar   | 0    | 0        |
 
 Nationell:
@@ -30,9 +29,3 @@ Nationell:
 | 2013 | jan   | 0    | 0        |
 | 2013 | feb   | 1    | 0        |
 | 2013 | mar   | 0    | 0        |
-=======
-| user2  | 2013 | mar   | 0    | 0        |
-|   | 2013 | jan   | 0    | 0        |
-|   | 2013 | feb   | 1    | 0        |
-|   | 2013 | mar   | 0    | 0        |
->>>>>>> Stashed changes

@@ -18,12 +18,9 @@ Två intyg för samma patient har uppehåll med 6 hela dagar (7 dagar)
 
 | Sjukfall i rapporten sjukfall totalt |
 | inloggad som | år | månad | män? | kvinnor? | kommentar |
-<<<<<<< Updated upstream
 | user1  | 2013 | jan | 0 | 0 | |
 | user1  | 2013 | feb | 2 | 0 | |
 | user1  | 2013 | mar | 0 | 0 | |
-=======
-| user1 | 2013 | jan | 0 | 0 | |
-| user1 | 2013 | feb | 2 | 0 | |
-| user1 | 2013 | mar | 0 | 0 | |
->>>>>>> Stashed changes
+|  | 2013 | jan | 0 | 0 | |
+|  | 2013 | feb | 2 | 0 | |
+|  | 2013 | mar | 0 | 0 | |
