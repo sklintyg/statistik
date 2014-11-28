@@ -22,7 +22,7 @@ Nationell nivå
 
 Inloggad nivå
 | Sjukfall i rapporten sjukfall totalt |
-| inloggad som | år   | månad | män? | kvinnor? | vårdgivarnivå |
-| user2        | 2013 | jan   | 0    | 0        | false         |
-| user2        | 2013 | feb   | 2    | 0        | false         |
-| user2        | 2013 | mar   | 0    | 0        | false         |
+| inloggad som | vårdgivarnivå | år   | månad | män? | kvinnor? |
+| user2        | false         | 2013 | jan   | 0    | 0        |
+| user2        | false         | 2013 | feb   | 2    | 0        |
+| user2        | false         | 2013 | mar   | 0    | 0        |
