@@ -82,9 +82,9 @@ public class RestSupportService {
         manager.createQuery("DELETE FROM IntygEvent").executeUpdate();
         manager.createQuery("DELETE FROM WideLine").executeUpdate();
         manager.createQuery("DELETE FROM EventPointer").executeUpdate();
-//        manager.createQuery("DELETE FROM Enhet").executeUpdate();
-//        manager.createQuery("DELETE FROM Lakare").executeUpdate();
-//        manager.createQuery("DELETE FROM HSAStore").executeUpdate();
+        manager.createQuery("DELETE FROM Enhet").executeUpdate();
+        manager.createQuery("DELETE FROM Lakare").executeUpdate();
+        manager.createQuery("DELETE FROM HSAStore").executeUpdate();
         warehouse.clear();
         nationalChartDataService.buildCache();
         return Response.ok().build();
