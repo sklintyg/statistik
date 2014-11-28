@@ -1,5 +1,7 @@
 !contents -R2 -g -p -f -h
 
+Fallerande test. Är rapporterat i STATISTIK-757.
+
 !3 Givet att:
 | script | dagens datum | 2013-11-06 |
 
