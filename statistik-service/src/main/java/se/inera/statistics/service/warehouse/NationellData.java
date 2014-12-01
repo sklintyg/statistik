@@ -15,8 +15,8 @@ import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.SimpleKonDataRow;
 import se.inera.statistics.service.report.model.SimpleKonResponse;
 import se.inera.statistics.service.report.model.SjukfallslangdResponse;
-import se.inera.statistics.service.report.model.SjukskrivningsgradResponse;
 import se.inera.statistics.service.report.model.SjukfallslangdRow;
+import se.inera.statistics.service.report.model.SjukskrivningsgradResponse;
 import se.inera.statistics.service.report.util.ReportUtil;
 import se.inera.statistics.service.warehouse.query.AldersgruppQuery;
 import se.inera.statistics.service.warehouse.query.Counter;
@@ -57,9 +57,9 @@ public class NationellData {
 
     public SimpleKonResponse<SimpleKonDataRow> getAntalIntyg(LocalDate start, int perioder, int periodlangd) {
         ArrayList<SimpleKonDataRow> result = new ArrayList<>();
-        for (Aisle aisle: warehouse) {
+        for (Aisle aisle : warehouse) {
             int index = 0;
-            for (SjukfallUtil.SjukfallGroup sjukfallGroup: SjukfallUtil.sjukfallGrupper(start, perioder, periodlangd, aisle, SjukfallUtil.ALL_ENHETER)) {
+            for (SjukfallUtil.SjukfallGroup sjukfallGroup : SjukfallUtil.sjukfallGrupper(start, perioder, periodlangd, aisle, SjukfallUtil.ALL_ENHETER)) {
                 int male = SjukfallQuery.countMale(sjukfallGroup.getSjukfall());
                 int female = sjukfallGroup.getSjukfall().size() - male;
                 String displayDate = ReportUtil.toDiagramPeriod(sjukfallGroup.getRange().getFrom());
@@ -81,7 +81,7 @@ public class NationellData {
 
     public SimpleKonResponse<SimpleKonDataRow> getAldersgrupper(LocalDate start, int perioder, int periodlangd) {
         SimpleKonResponse<SimpleKonDataRow> result = null;
-        for (Aisle aisle: warehouse) {
+        for (Aisle aisle : warehouse) {
             SimpleKonResponse<SimpleKonDataRow> aldersgrupper = AldersgruppQuery.getAldersgrupper(aisle, SjukfallUtil.ALL_ENHETER, start, perioder, periodlangd);
             if (result == null) {
                 result = aldersgrupper;
@@ -111,7 +111,7 @@ public class NationellData {
 
     public SjukskrivningsgradResponse getSjukskrivningsgrad(LocalDate start, int perioder, int periodlangd) {
         SjukskrivningsgradResponse result = null;
-        for (Aisle aisle: warehouse) {
+        for (Aisle aisle : warehouse) {
             SjukskrivningsgradResponse grader = SjukskrivningsgradQuery.getSjukskrivningsgrad(aisle, SjukfallUtil.ALL_ENHETER, start, perioder, periodlangd);
             if (result == null) {
                 result = grader;
@@ -145,7 +145,7 @@ public class NationellData {
 
     public SjukfallslangdResponse getSjukfallslangd(LocalDate start, int perioder, int periodlangd) {
         SjukfallslangdResponse result = null;
-        for (Aisle aisle: warehouse) {
+        for (Aisle aisle : warehouse) {
             SjukfallslangdResponse langder = SjukskrivningslangdQuery.getSjuksrivningslangd(aisle, SjukfallUtil.ALL_ENHETER, start, perioder, periodlangd);
             if (result == null) {
                 result = langder;
@@ -175,7 +175,7 @@ public class NationellData {
 
     public DiagnosgruppResponse getDiagnosgrupper(LocalDate start, int perioder, int periodlangd) {
         DiagnosgruppResponse result = null;
-        for (Aisle aisle: warehouse) {
+        for (Aisle aisle : warehouse) {
             DiagnosgruppResponse diagnosgrupper = query.getDiagnosgrupper(aisle, SjukfallUtil.ALL_ENHETER, start, perioder, periodlangd);
 
             if (result == null) {
@@ -206,7 +206,7 @@ public class NationellData {
 
     public DiagnosgruppResponse getDiagnosavsnitt(Range range, String kapitelId) {
         DiagnosgruppResponse result = null;
-        for (Aisle aisle: warehouse) {
+        for (Aisle aisle : warehouse) {
             DiagnosgruppResponse diagnosgrupper = query.getDiagnosavsnitts(aisle, SjukfallUtil.ALL_ENHETER, range.getFrom(), range.getMonths(), 1, kapitelId);
 
             if (result == null) {
@@ -244,14 +244,14 @@ public class NationellData {
         for (String lanId : lans) {
             result.add(new SimpleKonDataRow(lans.getNamn(lanId), 0, 0));
         }
-        for (Aisle aisle: warehouse) {
+        for (Aisle aisle : warehouse) {
             Map<String, Counter<String>> map = new HashMap<>();
             for (String lanId : lans) {
                 map.put(lanId, new Counter<>(lanId));
             }
 
-            for (SjukfallUtil.SjukfallGroup sjukfallGroup: SjukfallUtil.sjukfallGrupper(start, perioder, periodlangd, aisle, SjukfallUtil.ALL_ENHETER)) {
-                for (Sjukfall sjukfall: sjukfallGroup.getSjukfall()) {
+            for (SjukfallUtil.SjukfallGroup sjukfallGroup : SjukfallUtil.sjukfallGrupper(start, perioder, periodlangd, aisle, SjukfallUtil.ALL_ENHETER)) {
+                for (Sjukfall sjukfall : sjukfallGroup.getSjukfall()) {
                     Counter counter = map.get(sjukfall.getLanskod());
                     if (counter != null) {
                         counter.increase(sjukfall);
@@ -280,7 +280,7 @@ public class NationellData {
 
     public SimpleKonResponse<SimpleKonDataRow> getLangaSjukfall(LocalDate start, int perioder, int periodlangd) {
         SimpleKonResponse<SimpleKonDataRow> result = null;
-        for (Aisle aisle: warehouse) {
+        for (Aisle aisle : warehouse) {
             SimpleKonResponse<SimpleKonDataRow> langder = SjukskrivningslangdQuery.getLangaSjukfall(aisle, SjukfallUtil.ALL_ENHETER, start, perioder, periodlangd);
             if (result == null) {
                 result = langder;
@@ -333,7 +333,7 @@ public class NationellData {
 
     private List<KonField> filterLowKonFields(List<KonField> unfiltered) {
         List<KonField> result = new ArrayList<>();
-        for (KonField field :  unfiltered) {
+        for (KonField field : unfiltered) {
             result.add(new KonField(filterCutoff(field.getFemale()), filterCutoff(field.getMale())));
         }
         return result;

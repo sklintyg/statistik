@@ -5,4 +5,9 @@ public interface ICDTyp {
     String asString();
 
     String getId();
+
+    String getName();
+
+    int getNumericalId();
+
 }

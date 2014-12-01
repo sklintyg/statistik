@@ -19,34 +19,36 @@
 
 package se.inera.statistics.service.report.model;
 
+import com.google.common.base.Function;
+import com.google.common.collect.Lists;
 import se.inera.statistics.service.report.util.Icd10;
 
-public class Kategori implements Comparable<Kategori>, ICDTyp {
+import java.util.ArrayList;
+import java.util.List;
+
+public class Kapitel implements Comparable<Kapitel>, ICDTyp {
 
     private final String id;
     private final String name;
+    private final String firstId;
+    private final String lastId;
     private final int numericalId;
 
-    public Kategori(String id, String name) {
-        this.id = id;
-        this.name = name;
-        this.numericalId = -1;
-    }
+    private final List<Avsnitt> avsnittList = new ArrayList<>();
 
-    public Kategori(String id, String name, int numericalId) {
+    public Kapitel(String id, String name, int numericalId, List<Avsnitt> avsnittList) {
         this.id = id;
         this.name = name;
         this.numericalId = numericalId;
+        String[] split = id.split("-");
+        firstId = split[0];
+        lastId = split[1];
+        this.avsnittList.addAll(avsnittList);
     }
 
     @Override
     public String getId() {
         return id;
-    }
-
-    @Override
-    public String getName() {
-        return name;
     }
 
     @Override
@@ -59,17 +61,26 @@ public class Kategori implements Comparable<Kategori>, ICDTyp {
     }
 
     @Override
+    public String getName() {
+        return asString();
+    }
+
+    @Override
     public int getNumericalId() {
         return numericalId;
     }
 
-    @Override
-    public String toString() {
-        return "{\"Avsnitt\":{" + "\"id\":\"" + id + '"' + ", \"name\":\"" + name + '"' + "}}";
+    public List<Avsnitt> getAvsnitts() {
+        return avsnittList;
     }
 
     @Override
-    public int compareTo(Kategori o) {
+    public String toString() {
+        return "{\"Kapitel\":{" + "\"id\":\"" + id + '"' + ", \"name\":\"" + name + '"' + ", \"firstId\":\"" + firstId + '"' + ", \"lastId\":\"" + lastId + '"' + "}}";
+    }
+
+    @Override
+    public int compareTo(Kapitel o) {
         return id.compareTo(o.id);
     }
 
@@ -80,18 +91,24 @@ public class Kategori implements Comparable<Kategori>, ICDTyp {
 
     @Override
     public boolean equals(Object obj) {
-        if (obj instanceof Kategori) {
-            return isEqual((Kategori) obj);
+        if (obj instanceof Kapitel) {
+            return isEqual((Kapitel) obj);
         }
         return false;
     }
 
-    private boolean isEqual(Kategori other) {
+    private boolean isEqual(Kapitel other) {
         return id.equals(other.id);
     }
 
-    public static Kategori fromIcd10Kategori(Icd10.Kategori source) {
-        return new Kategori(source.getId(), source.getName(), source.toInt());
+    public static Kapitel fromIcd10Kapitel(Icd10.Kapitel source) {
+        List<Avsnitt> avsnitt = Lists.transform(source.getAvsnitt(), new Function<Icd10.Avsnitt, Avsnitt>() {
+            @Override
+            public Avsnitt apply(Icd10.Avsnitt sourceAvsnitt) {
+                return Avsnitt.fromIcd10Avsnitt(sourceAvsnitt);
+            }
+        });
+        return new Kapitel(source.getId(), source.getName(), source.toInt(), avsnitt);
     }
 
 }

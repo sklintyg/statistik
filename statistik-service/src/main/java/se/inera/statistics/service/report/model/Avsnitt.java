@@ -19,19 +19,54 @@
 
 package se.inera.statistics.service.report.model;
 
+import com.google.common.base.Function;
+import com.google.common.collect.Lists;
+import se.inera.statistics.service.report.util.Icd10;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class Avsnitt implements Comparable<Avsnitt>, ICDTyp {
 
     private final String id;
     private final String name;
     private final String firstId;
     private final String lastId;
+    private final int numericalId;
+
+    private final List<Kategori> kategoriList = new ArrayList<>();
 
     public Avsnitt(String id, String name) {
         this.id = id;
         this.name = name;
         String[] split = id.split("-");
-        firstId = split[0];
-        lastId = split[1];
+        this.firstId = split[0];
+        this.lastId = split[1];
+        this.numericalId = -1;
+    }
+
+    public Avsnitt(String id, String name, int numericalId, List<Kategori> kategoriList) {
+        this.id = id;
+        this.name = name;
+        String[] split = id.split("-");
+        this.firstId = split[0];
+        this.lastId = split[1];
+        this.numericalId = numericalId;
+        this.kategoriList.addAll(kategoriList);
+    }
+
+    @Override
+    public String getName() {
+        return asString();
+    }
+
+    @Override
+    public int getNumericalId() {
+        return numericalId;
+    }
+
+    public List<Kategori> getKategoris() {
+        return kategoriList;
     }
 
     @Override
@@ -73,6 +108,16 @@ public class Avsnitt implements Comparable<Avsnitt>, ICDTyp {
 
     private boolean isEqual(Avsnitt other) {
         return id.equals(other.id);
+    }
+
+    public static Avsnitt fromIcd10Avsnitt(Icd10.Avsnitt source) {
+        List<Kategori> kategoris = Lists.transform(source.getKategori(), new Function<Icd10.Kategori, Kategori>() {
+            @Override
+            public Kategori apply(Icd10.Kategori sourceKategori) {
+                return Kategori.fromIcd10Kategori(sourceKategori);
+            }
+        });
+        return new Avsnitt(source.getId(), source.getName(), source.toInt(), kategoris);
     }
 
 }
