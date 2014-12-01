@@ -1,8 +1,8 @@
 package se.inera.statistics.spec
 
-class SjukfallIRapportenSjukfallTotalt extends SingleLineReport {
+class SjukfallIRapportenSjukfallTotalt extends SimpleDetailsReport {
 
-    public void execute() {
+    public void doExecute() {
         def report = getReportSjukfallTotalt()
         executeTabell(report)
     }

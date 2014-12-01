@@ -57,6 +57,10 @@ class ReportsUtil {
         return get("/api/verksamhet/" + getVardgivareForUser(user) + "/getLongSickLeavesData")
     }
 
+    def getReportSjukfallPerEnhet(String user) {
+        return get("/api/verksamhet/" + getVardgivareForUser(user) + "/getNumberOfCasesPerEnhet")
+    }
+
     def getReportEnskiltDiagnoskapitel(String kapitel) {
         return get("/api/getDiagnosavsnittstatistik/" + kapitel)
     }
