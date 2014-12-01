@@ -5,15 +5,25 @@ abstract class SimpleDetailsReport extends Rapport {
     String år;
     String månad;
 
-    void executeTabell(report, String rowNameMatcher) {
+    public void executeDiagram(report) {
+        def categoryNameMatcher = getRowNameMatcher();
+        def index = report.chartData.categories.findIndexOf { item -> item == categoryNameMatcher }
+        def male = report.chartData.series.find { item -> "Male".equals(item.sex) }
+        män = male.data[index]
+        def female = report.chartData.series.find { item -> "Female".equals(item.sex) }
+        kvinnor = female.data[index]
+        def total = report.chartData.series.find { item -> item.sex == null }
+        totalt = total.data[index]
+    }
+
+    abstract def getRowNameMatcher()
+
+    void executeTabell(report) {
+        def rowNameMatcher = getRowNameMatcher();
         def row = report.tableData.rows.find { currentRow -> currentRow.name == rowNameMatcher }
         totalt = row.data[0]
         kvinnor = row.data[1]
         män = row.data[2]
-    }
-
-    void executeTabell(report) {
-        executeTabell(report, månad + " " + år)
     }
 
     def getReportSjukfallTotalt() {

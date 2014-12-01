@@ -21,6 +21,12 @@ Nationell nivå
 | 2013 | feb   | 3    | 0        |
 | 2013 | mar   | 0    | 0        |
 
+| Sjukfall i rapporten sjukfall totalt diagram |
+| år   | månad | män? | kvinnor? |
+| 2013 | jan   | 0    | 0        |
+| 2013 | feb   | 3    | 0        |
+| 2013 | mar   | 0    | 0        |
+
 Inloggad nivå
 | Sjukfall i rapporten sjukfall totalt |
 | inloggad som | år   | månad | män? | kvinnor? |

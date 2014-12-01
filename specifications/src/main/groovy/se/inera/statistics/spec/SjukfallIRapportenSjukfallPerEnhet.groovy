@@ -4,9 +4,16 @@ class SjukfallIRapportenSjukfallPerEnhet extends SimpleDetailsReport {
 
     String vårdenhet
 
+    @Override
     public void doExecute() {
         def report = getReportSjukfallPerEnhet()
-        executeTabell(report, vårdenhet)
+        executeTabell(report)
     }
+
+    @Override
+    def getRowNameMatcher() {
+        return vårdenhet
+    }
+
 
 }

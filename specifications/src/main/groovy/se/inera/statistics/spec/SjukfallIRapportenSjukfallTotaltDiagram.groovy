@@ -5,7 +5,7 @@ class SjukfallIRapportenSjukfallTotaltDiagram extends SimpleDetailsReport {
     @Override
     public void doExecute() {
         def report = getReportSjukfallTotalt()
-        executeTabell(report)
+        executeDiagram(report)
     }
 
     @Override
