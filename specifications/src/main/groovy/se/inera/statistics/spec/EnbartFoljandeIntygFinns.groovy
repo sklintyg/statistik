@@ -12,14 +12,19 @@ class EnbartFoljandeIntygFinns {
 
     private static int intygIdCounter = 1;
 
-    private def personnr
-    private def diagnoskod
-    private def start
-    private def slut
-    private def enhet
-    private def vardgivare
+    def personnr
+    def diagnoskod
+    def start
+    def slut
+    def enhet
+    def vardgivare
 
     public void setKommentar(String kommentar) {}
+
+    void setEnhet(enhet) {
+        this.enhet = enhet
+        this.vardgivare = reportsUtil.getVardgivareForEnhet(enhet, ReportsUtil.VARDGIVARE)
+    }
 
     public void beginTable() {
         reportsUtil.clearDatabase()
@@ -63,30 +68,6 @@ class EnbartFoljandeIntygFinns {
 
     public void endTable() {
         reportsUtil.processIntyg()
-    }
-
-    void setPersonnr(personnr) {
-        this.personnr = personnr
-    }
-
-    void setDiagnoskod(diagnoskod) {
-        this.diagnoskod = diagnoskod
-    }
-
-    void setStart(start) {
-        this.start = start
-    }
-
-    void setSlut(slut) {
-        this.slut = slut
-    }
-
-    void setEnhet(enhet) {
-        this.enhet = enhet
-    }
-
-    void setVardgivare(vardgivare) {
-        this.vardgivare = vardgivare
     }
 
 }

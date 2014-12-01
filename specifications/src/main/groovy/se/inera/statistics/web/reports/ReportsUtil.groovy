@@ -11,6 +11,7 @@ class ReportsUtil {
 
     private static final Logger LOG = LoggerFactory.getLogger(ReportsUtil.class);
     public static final VARDGIVARE = "vg1"
+    public static final VARDGIVARE3 = "vg3"
 
     def statistik = new RESTClient('http://localhost:8080/', ContentType.JSON)
 
@@ -48,8 +49,8 @@ class ReportsUtil {
         return get("/api/getNumberOfCasesPerMonth")
     }
 
-    def getReportAntalIntygInloggad() {
-        return get("/api/verksamhet/" + VARDGIVARE + "/getNumberOfCasesPerMonth")
+    def getReportAntalIntygInloggad(String user) {
+        return get("/api/verksamhet/" + getVardgivareForUser(user) + "/getNumberOfCasesPerMonth")
     }
 
     def getReportEnskiltDiagnoskapitel(String kapitel) {
@@ -62,17 +63,36 @@ class ReportsUtil {
         return response.data;
     }
 
-    def getReportEnskiltDiagnoskapitelInloggad(String kapitel) {
-        return get("/api/verksamhet/" + VARDGIVARE + "/getDiagnosavsnittstatistik/" + kapitel)
+    def getReportEnskiltDiagnoskapitelInloggad(String kapitel, String user) {
+        return get("/api/verksamhet/" + getVardgivareForUser(user) + "/getDiagnosavsnittstatistik/" + kapitel)
     }
 
-    def getReportDiagnosgruppInloggad() {
-        return get("/api/verksamhet/" + VARDGIVARE + "/getDiagnoskapitelstatistik")
+    def getReportDiagnosgruppInloggad(String user) {
+        return get("/api/verksamhet/" + getVardgivareForUser(user) + "/getDiagnoskapitelstatistik")
     }
 
     def getReportDiagnosgrupp() {
         return get("/api/getDiagnoskapitelstatistik")
     }
+
+    def getVardgivareForUser(String user) {
+        switch (user) {
+            case "user1": return VARDGIVARE;
+            case "user2": return VARDGIVARE;
+            case "user3": return VARDGIVARE3;
+            default: throw new RuntimeException("Unknown user: " + user)
+        }
+    }
+
+    def getVardgivareForEnhet(String enhet, String defaultVardgivare) {
+        switch (enhet) {
+            case "enhet1": return VARDGIVARE;
+            case "enhet2": return VARDGIVARE;
+            case "enhet3": return VARDGIVARE3;
+            default: return defaultVardgivare;
+        }
+    }
+
 
     def login(String user, boolean vardgivarniva) {
         def logins = [:];
@@ -81,7 +101,7 @@ class ReportsUtil {
                 "\"efternamn\":\"Modig\"," +
                 "\"hsaId\":\"user1\"," +
                 "\"enhetId\":\"enhet1\"," +
-                "\"vardgivarId\":\"" + VARDGIVARE + "\"," +
+                "\"vardgivarId\":\"" + getVardgivareForUser(user) + "\"," +
                 "\"vardgivarniva\":\"" + vardgivarniva + "\"" +
                 "}"
         logins["user2"] = "{" +
@@ -89,7 +109,15 @@ class ReportsUtil {
                 "\"efternamn\":\"Modig\"," +
                 "\"hsaId\":\"user2\"," +
                 "\"enhetId\":\"enhet1\"," +
-                "\"vardgivarId\":\"" + VARDGIVARE + "\"," +
+                "\"vardgivarId\":\"" + getVardgivareForUser(user) + "\"," +
+                "\"vardgivarniva\":\"" + vardgivarniva + "\"" +
+                "}"
+        logins["user3"] = "{" +
+                "\"fornamn\":\"Anna\"," +
+                "\"efternamn\":\"Modig\"," +
+                "\"hsaId\":\"user3\"," +
+                "\"enhetId\":\"enhet3\"," +
+                "\"vardgivarId\":\"" + getVardgivareForUser(user) + "\"," +
                 "\"vardgivarniva\":\"" + vardgivarniva + "\"" +
                 "}"
         def loginData = logins[user]

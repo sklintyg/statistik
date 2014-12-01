@@ -14,7 +14,7 @@ class SjukfallIRapportenSjukfallTotalt extends Rapport {
 
     private Object getReport() {
         if (inloggad) {
-            return reportsUtil.getReportAntalIntygInloggad();
+            return reportsUtil.getReportAntalIntygInloggad(inloggadSom);
         }
         return reportsUtil.getReportAntalIntyg();
     }
