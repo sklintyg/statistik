@@ -53,6 +53,10 @@ class ReportsUtil {
         return get("/api/verksamhet/" + getVardgivareForUser(user) + "/getNumberOfCasesPerMonth")
     }
 
+    def getReportLangaSjukfallInloggad(String user) {
+        return get("/api/verksamhet/" + getVardgivareForUser(user) + "/getLongSickLeavesData")
+    }
+
     def getReportEnskiltDiagnoskapitel(String kapitel) {
         return get("/api/getDiagnosavsnittstatistik/" + kapitel)
     }
@@ -92,7 +96,6 @@ class ReportsUtil {
             default: return defaultVardgivare;
         }
     }
-
 
     def login(String user, boolean vardgivarniva) {
         def logins = [:];
