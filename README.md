@@ -45,10 +45,10 @@ Vi använder Gradle för att bygga, test, installera och köra statistiktjänste
 
 |Några vanliga gradlekommandon|||
 |--------------|---------|---------|
-|gradle clean build integrationTests|bygg om hela projektet inklusive integrationstester|[projektrot]|
-|gradle fitnesseWiki |starta fitnesse|[projektrot]/specifications|
-|gradle fitnesseTest|kör fitnesse-tester|[projektrot]/specifications|
-|gradle appRunDebug|kör webbservern i debugläge|[projektrot]/statistik-web|
+|./gradlew clean build integrationTests|bygg om hela projektet inklusive integrationstester|[projektrot]|
+|../gradlew fitnesseWiki |starta fitnesse|[projektrot]/specifications|
+|../gradlew fitnesseTest|kör fitnesse-tester|[projektrot]/specifications|
+|../gradlew appRunDebug|kör webbservern i debugläge|[projektrot]/statistik-web|
 
 ##Releasebyggen
 
