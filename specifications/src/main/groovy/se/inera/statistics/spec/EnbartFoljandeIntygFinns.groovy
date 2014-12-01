@@ -19,6 +19,8 @@ class EnbartFoljandeIntygFinns {
     private def enhet
     private def vardgivare
 
+    public void setKommentar(String kommentar) {}
+
     public void beginTable() {
         reportsUtil.clearDatabase()
     }
@@ -26,8 +28,7 @@ class EnbartFoljandeIntygFinns {
     public void reset() {
         personnr = "19790407-1295"
         diagnoskod = "A01"
-
-        vardgivare = "vg-verksamhet1"
+        vardgivare = ReportsUtil.VARDGIVARE
     }
 
     public void execute() {

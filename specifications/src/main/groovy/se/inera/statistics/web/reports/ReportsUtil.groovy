@@ -10,13 +10,12 @@ import se.inera.statistics.spec.Intyg
 class ReportsUtil {
 
     private static final Logger LOG = LoggerFactory.getLogger(ReportsUtil.class);
-    final VARDGIVARE = "vg-verksamhet1"
+    public static final VARDGIVARE = "vg1"
 
     def statistik = new RESTClient('http://localhost:8080/', ContentType.JSON)
 
     long getCurrentDateTime() {
-        def response = statistik.get(path: '/api/testsupport/now')
-        response.data;
+        return get('/api/testsupport/now')
     }
 
     def setCurrentDateTime(long timeMillis) {
@@ -46,38 +45,54 @@ class ReportsUtil {
     }
 
     def getReportAntalIntyg() {
-        def response = statistik.get(path: "/api/getNumberOfCasesPerMonth")
-        assert response.status == 200
-        response.data;
+        return get("/api/getNumberOfCasesPerMonth")
     }
 
     def getReportAntalIntygInloggad() {
-        def response = statistik.get(path: "api/verksamhet/" + VARDGIVARE + "/getNumberOfCasesPerMonth")
-        assert response.status == 200
-        response.data;
-    }
-
-    def getReportEnskiltDiagnoskapitelInloggad(String kapitel) {
-        def response = statistik.get(path: "/api/getDiagnosavsnittstatistik/" + kapitel)
-        assert response.status == 200
-        response.data;
+        return get("/api/verksamhet/" + VARDGIVARE + "/getNumberOfCasesPerMonth")
     }
 
     def getReportEnskiltDiagnoskapitel(String kapitel) {
-        def response = statistik.get(path: "api/verksamhet/" + VARDGIVARE + "/getDiagnosavsnittstatistik/" + kapitel)
-        assert response.status == 200
-        response.data;
+        return get("/api/getDiagnosavsnittstatistik/" + kapitel)
     }
 
-    def login(String enhet) {
-        def loginData = "{" +
+    private def get(String url) {
+        def response = statistik.get(path: url)
+        assert response.status == 200
+        return response.data;
+    }
+
+    def getReportEnskiltDiagnoskapitelInloggad(String kapitel) {
+        return get("/api/verksamhet/" + VARDGIVARE + "/getDiagnosavsnittstatistik/" + kapitel)
+    }
+
+    def getReportDiagnosgruppInloggad() {
+        return get("/api/verksamhet/" + VARDGIVARE + "/getDiagnoskapitelstatistik")
+    }
+
+    def getReportDiagnosgrupp() {
+        return get("/api/getDiagnoskapitelstatistik")
+    }
+
+    def login(String user, boolean vardgivarniva) {
+        def logins = [:];
+        logins["user1"] = "{" +
                 "\"fornamn\":\"Anna\"," +
                 "\"efternamn\":\"Modig\"," +
-                "\"hsaId\":\"HSA-BS\"," +
-                "\"enhetId\":\"" + enhet + "\"," +
+                "\"hsaId\":\"user1\"," +
+                "\"enhetId\":\"enhet1\"," +
                 "\"vardgivarId\":\"" + VARDGIVARE + "\"," +
-                "\"vardgivarniva\":\"false\"" +
+                "\"vardgivarniva\":\"" + vardgivarniva + "\"" +
                 "}"
+        logins["user2"] = "{" +
+                "\"fornamn\":\"Anna\"," +
+                "\"efternamn\":\"Modig\"," +
+                "\"hsaId\":\"user2\"," +
+                "\"enhetId\":\"enhet1\"," +
+                "\"vardgivarId\":\"" + VARDGIVARE + "\"," +
+                "\"vardgivarniva\":\"" + vardgivarniva + "\"" +
+                "}"
+        def loginData = logins[user]
         def response = statistik.post(path: '/fake', body: [ userJsonDisplay:loginData ], requestContentType : "application/x-www-form-urlencoded" )
 //        assert response.status == 200
     }

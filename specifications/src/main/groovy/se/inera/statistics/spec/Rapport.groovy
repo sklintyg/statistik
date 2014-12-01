@@ -8,6 +8,7 @@ abstract class Rapport {
     boolean inloggad;
     int män
     int kvinnor
+    boolean vårdgivarnivå
 
     int män() {
         return män
@@ -15,6 +16,10 @@ abstract class Rapport {
 
     int kvinnor() {
         return kvinnor
+    }
+
+    void setVårdgivarnivå(boolean vårdgivarnivå) {
+        this.vårdgivarnivå = vårdgivarnivå
     }
 
     ReportsUtil reportsUtil = new ReportsUtil()
@@ -29,10 +34,8 @@ abstract class Rapport {
     void setInloggadSom(String inloggadSom) {
         if (inloggadSom != null && !inloggadSom.isEmpty()) {
             inloggad = true
-            if (this.inloggadSom != inloggadSom) {
-                reportsUtil.login(inloggadSom)
-                this.inloggadSom = inloggadSom
-            }
+            reportsUtil.login(inloggadSom, vårdgivarnivå)
+            this.inloggadSom = inloggadSom
         }
     }
 

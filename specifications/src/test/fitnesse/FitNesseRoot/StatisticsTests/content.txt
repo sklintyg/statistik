@@ -1,8 +1,15 @@
 !contents -R2 -g -p -f -h
 
-Tillgängliga enheter är (där båda är på samma vårdgivare):
-verksamhet1
-verksamhet2
+Existerande användare: user1, user2
+Existerande vårdgivare: vg1
+Existerande enheter: enhet1, enhet2
+
+Kopplingar:
+vg1 enheter: enhet1, enhet2
+user1 enheter: enhet1
+user1 vårdgivare: vg1
+user2 enheter: enhet1, enhet2
+user2 vårdgivare: vg1
 
 
 

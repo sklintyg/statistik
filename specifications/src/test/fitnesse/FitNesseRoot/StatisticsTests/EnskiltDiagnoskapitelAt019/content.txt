@@ -13,13 +13,13 @@ Räknas med i gruppen ”F40-F48 Neurotiska, stressrelaterade och somatoforma sy
 
 | Enbart foljande intyg finns |
 | personnr | diagnoskod | start    | slut       | enhet |
-| 19790407-1295 | F32 | 2013-02-01 | 2013-02-14 | verksamhet1 |
-| 19790407-1295 | F40 | 2013-02-17 | 2013-02-28 | verksamhet1 |
+| 19790407-1295 | F32 | 2013-02-01 | 2013-02-14 | enhet1 |
+| 19790407-1295 | F40 | 2013-02-17 | 2013-02-28 | enhet1 |
 
 
 !3 Då gäller:
 
 | Sjukfall i rapporten enskilt diagnoskapitel |
 |inloggad som | valt diagnoskapitel | år   | månad | grupp   | män? | kvinnor? | kommentar |
-| verksamhet1 | F00-F99             | 2013 | feb   | F30-F39 | 0    | 0        | |
-| verksamhet1 | F00-F99             | 2013 | feb   | F40-F48 | 1    | 0        | |
+| user1 | F00-F99             | 2013 | feb   | F30-F39 | 0    | 0        | |
+| user1 | F00-F99             | 2013 | feb   | F40-F48 | 1    | 0        | |
