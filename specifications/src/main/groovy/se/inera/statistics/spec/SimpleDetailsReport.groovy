@@ -54,6 +54,13 @@ abstract class SimpleDetailsReport extends Rapport {
         return reportsUtil.getReportAldersgrupp();
     }
 
+    def getReportAldersgruppPagaende() {
+        if (inloggad) {
+            return reportsUtil.getReportAldersgruppPagaendeInloggad(inloggadSom);
+        }
+        throw new RuntimeException("Report -Sjukfall per enhet- is not available on national level");
+    }
+
     def getReportSjukskrivningslangd() {
         if (inloggad) {
             return reportsUtil.getReportSjukskrivningslangdInloggad(inloggadSom);

@@ -148,4 +148,7 @@ class ReportsUtil {
         return get("/api/verksamhet/" + getVardgivareForUser(user) + "/getSickLeaveLengthData")
     }
 
+    def getReportAldersgruppPagaendeInloggad(String user) {
+        return get("/api/verksamhet/" + getVardgivareForUser(user) + "/getAgeGroupsCurrentStatistics")
+    }
 }
