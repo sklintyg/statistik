@@ -151,4 +151,8 @@ class ReportsUtil {
     def getReportAldersgruppPagaendeInloggad(String user) {
         return get("/api/verksamhet/" + getVardgivareForUser(user) + "/getAgeGroupsCurrentStatistics")
     }
+
+    def getReportSjukskrivningslangdPagaendeInloggad(String user) {
+        return get("/api/verksamhet/" + getVardgivareForUser(user) + "/getSickLeaveLengthCurrentData")
+    }
 }

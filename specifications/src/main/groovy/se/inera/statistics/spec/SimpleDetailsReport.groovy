@@ -58,7 +58,7 @@ abstract class SimpleDetailsReport extends Rapport {
         if (inloggad) {
             return reportsUtil.getReportAldersgruppPagaendeInloggad(inloggadSom);
         }
-        throw new RuntimeException("Report -Sjukfall per enhet- is not available on national level");
+        throw new RuntimeException("Report -Åldersgrupp pågående- is not available on national level");
     }
 
     def getReportSjukskrivningslangd() {
@@ -68,4 +68,10 @@ abstract class SimpleDetailsReport extends Rapport {
         return reportsUtil.getReportSjukskrivningslangd();
     }
 
+    def getReportSjukskrivningslangdPagaende() {
+        if (inloggad) {
+            return reportsUtil.getReportSjukskrivningslangdPagaendeInloggad(inloggadSom);
+        }
+        throw new RuntimeException("Report -Sjukskrivningslängd pågående- is not available on national level");
+    }
 }
