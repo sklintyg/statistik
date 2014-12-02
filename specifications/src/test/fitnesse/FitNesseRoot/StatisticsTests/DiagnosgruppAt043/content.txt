@@ -8,7 +8,7 @@
 | Enbart foljande intyg finns |
 | personnr | diagnoskod | start    | slut       | enhet |
 | 19790407-0120 | B23 | 2013-02-01 | 2013-03-14 | enhet1 |
-| 19790407-0120 | P31 | 2013-03-17 | 2013-04-01 | enhet1 |
+| 19790407-0120 | P10 | 2013-03-17 | 2013-04-01 | enhet1 |
 | 19790407-0120 | M12 | 2013-04-03 | 2013-05-03 | enhet1 |
 
 !3 Då gäller:
