@@ -132,4 +132,12 @@ class ReportsUtil {
 //        assert response.status == 200
     }
 
+    def getReportAldersgrupp() {
+        return get("/api/getAgeGroupsStatistics")
+    }
+
+    def getReportAldersgruppInloggad(String user) {
+        return get("/api/verksamhet/" + getVardgivareForUser(user) + "/getAgeGroupsStatistics")
+    }
+
 }
