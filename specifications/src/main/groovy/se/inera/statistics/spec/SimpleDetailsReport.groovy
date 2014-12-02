@@ -13,7 +13,7 @@ abstract class SimpleDetailsReport extends Rapport {
         def female = report.chartData.series.find { item -> "Female".equals(item.sex) }
         kvinnor = female.data[index]
         def total = report.chartData.series.find { item -> item.sex == null }
-        totalt = total.data[index]
+        totalt = total != null ? total.data[index] : -1
     }
 
     abstract def getRowNameMatcher()
@@ -52,6 +52,13 @@ abstract class SimpleDetailsReport extends Rapport {
             return reportsUtil.getReportAldersgruppInloggad(inloggadSom);
         }
         return reportsUtil.getReportAldersgrupp();
+    }
+
+    def getReportSjukskrivningslangd() {
+        if (inloggad) {
+            return reportsUtil.getReportSjukskrivningslangdInloggad(inloggadSom);
+        }
+        return reportsUtil.getReportSjukskrivningslangd();
     }
 
 }
