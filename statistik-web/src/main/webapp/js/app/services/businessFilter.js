@@ -264,4 +264,5 @@ angular.module('StatisticsApp').factory('businessFilter', ['statisticsData', '_'
         };
 
         return businessFilter;
-    });
+    }
+]);
