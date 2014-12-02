@@ -24,5 +24,3 @@ Två intyg för samma patient, utfärdade på två olika enheter. Inloggad som u
 | user2        | enhet2      | false          | 1       | 1    | 0        |
 | user2        | enhet1      | true           | 1       | 1    | 0        |
 | user2        | enhet2      | true           | 1       | 1    | 0        |
-
-
