@@ -14,10 +14,10 @@ Fallerande test. Är rapporterat i STATISTIK-757.
 !3 Då gäller:
 Inloggad:
 | Sjukfall i rapporten diagnosgrupp |
-|inloggad som | år   | månad | grupp   | män? | kvinnor? |
+|inloggad som | år   | månad | grupp             | män? | kvinnor? |
 | user1 | 2013 | feb   | Utan giltig ICD-10 kod  | 0    | 1        |
 
 Nationell:
 | Sjukfall i rapporten diagnosgrupp |
-| år   | månad | grupp   | män? | kvinnor? |
+| år   | månad | grupp                   | män? | kvinnor? |
 | 2013 | feb   | Utan giltig ICD-10 kod  | 0    | 1        |

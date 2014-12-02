@@ -1,0 +1,49 @@
+package se.inera.statistics.spec
+
+abstract class SimpleDetailsReport extends Rapport {
+
+    String år;
+    String månad;
+
+    public void executeDiagram(report) {
+        def categoryNameMatcher = getRowNameMatcher();
+        def index = report.chartData.categories.findIndexOf { item -> item == categoryNameMatcher }
+        def male = report.chartData.series.find { item -> "Male".equals(item.sex) }
+        män = male.data[index]
+        def female = report.chartData.series.find { item -> "Female".equals(item.sex) }
+        kvinnor = female.data[index]
+        def total = report.chartData.series.find { item -> item.sex == null }
+        totalt = total.data[index]
+    }
+
+    abstract def getRowNameMatcher()
+
+    void executeTabell(report) {
+        def rowNameMatcher = getRowNameMatcher();
+        def row = report.tableData.rows.find { currentRow -> currentRow.name == rowNameMatcher }
+        totalt = row.data[0]
+        kvinnor = row.data[1]
+        män = row.data[2]
+    }
+
+    def getReportSjukfallTotalt() {
+        if (inloggad) {
+            return reportsUtil.getReportAntalIntygInloggad(inloggadSom);
+        }
+        return reportsUtil.getReportAntalIntyg();
+    }
+
+    def getReportLangaSjukfall() {
+        if (inloggad) {
+            return reportsUtil.getReportLangaSjukfallInloggad(inloggadSom);
+        }
+        throw new RuntimeException("Report -Långa sjukfall- is not available on national level");
+    }
+
+    def getReportSjukfallPerEnhet() {
+        if (inloggad) {
+            return reportsUtil.getReportSjukfallPerEnhet(inloggadSom);
+        }
+        throw new RuntimeException("Report -Sjukfall per enhet- is not available on national level");
+    }
+}

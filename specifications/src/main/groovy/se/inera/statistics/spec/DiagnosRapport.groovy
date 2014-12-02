@@ -19,20 +19,21 @@ abstract class DiagnosRapport extends Rapport {
         def row = report.tableData.rows.find { currentRow -> currentRow.name == (månad + " " + år)  }
         def womenIndex = ((index - 2) * 2) + 1
         def menIndex = womenIndex + 1
+        totalt = row.data[0]
         kvinnor = row.data[womenIndex]
         män = row.data[menIndex]
     }
 
     def getReportEnskiltDiagnoskapitel(kapitel) {
         if (inloggad) {
-            return reportsUtil.getReportEnskiltDiagnoskapitelInloggad(kapitel);
+            return reportsUtil.getReportEnskiltDiagnoskapitelInloggad(kapitel, inloggadSom);
         }
         return reportsUtil.getReportEnskiltDiagnoskapitel(kapitel);
     }
 
     def getReportDiagnosgrupp() {
         if (inloggad) {
-            return reportsUtil.getReportDiagnosgruppInloggad();
+            return reportsUtil.getReportDiagnosgruppInloggad(inloggadSom);
         }
         return reportsUtil.getReportDiagnosgrupp();
     }

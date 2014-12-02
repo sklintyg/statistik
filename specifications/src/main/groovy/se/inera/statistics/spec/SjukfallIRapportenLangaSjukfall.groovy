@@ -1,10 +1,10 @@
 package se.inera.statistics.spec
 
-class SjukfallIRapportenSjukfallTotalt extends SimpleDetailsReport {
+class SjukfallIRapportenLangaSjukfall extends SimpleDetailsReport {
 
     @Override
     public void doExecute() {
-        def report = getReportSjukfallTotalt()
+        def report = getReportLangaSjukfall()
         executeTabell(report)
     }
 
