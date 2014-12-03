@@ -44,33 +44,37 @@ angular.module('StatisticsApp').factory('businessFilter', function (_) {
         }
     };
 
+    function sortSwedish(arrayToSort, propertyName, alwaysLast) {
+        var swedishAlphabet = "0123456789AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZzÅåÄäÖö";
+        return arrayToSort.sort(function (first, second) {
+            if (first[propertyName] === second[propertyName]) {
+                return 0;
+            }
+            if (first[propertyName].indexOf(alwaysLast) > -1) {
+                return 1;
+            }
+            if (second[propertyName].indexOf(alwaysLast) > -1) {
+                return -1;
+            }
+            for (var i = 0; true; i++) {
+                if (first[propertyName].length <= i) {
+                    return -1
+                }
+                if (second[propertyName].length <= i) {
+                    return 1
+                }
+                var posFirst = swedishAlphabet.indexOf(first[propertyName][i]);
+                var posSecond = swedishAlphabet.indexOf(second[propertyName][i]);
+                if (posFirst != posSecond) {
+                    return posFirst - posSecond;
+                }
+            }
+        });
+    }
+
     businessFilter.loggedIn = function (businesses) {
         if (!businessFilter.dataInitialized) {
-            var swedishAlphabet = "AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZzÅåÄäÖö";
-            businessFilter.businesses = businesses.sort(function(first, second) {
-                if (first.kommunName === second.kommunName) {
-                    return 0;
-                }
-                if (first.kommunName.indexOf("Okän") > -1) {
-                    return 1;
-                }
-                if (second.kommunName.indexOf("Okän") > -1) {
-                    return -1;
-                }
-                for (var i = 0; true; i++) {
-                    if (first.kommunName.length <= i) {
-                        return -1
-                    }
-                    if (second.kommunName.length <= i) {
-                        return 1
-                    }
-                    var posFirst = swedishAlphabet.indexOf(first.kommunName[i]);
-                    var posSecond = swedishAlphabet.indexOf(second.kommunName[i]);
-                    if (posFirst != posSecond) {
-                        return posFirst - posSecond;
-                    }
-                }
-            });
+            businessFilter.businesses = sortSwedish(businesses, "kommunName", "Okän");
             if (businessFilter.numberOfBusinesses() === "large") {
                 businessFilter.populateGeography(businessFilter.businesses);
             }
