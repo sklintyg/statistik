@@ -156,7 +156,6 @@ public class WidelineConverter {
         checkField(errors, line.getVardgivareId(), "Vårdgivare", MAX_LENGTH_VGID);
         checkField(errors, line.getEnhet(), "Enhet");
         checkField(errors, line.getPatientid(), "Patient");
-        checkField(errors, line.getDiagnoskategori(), "Diagnoskategori");
         checkField(errors, line.getLakareId(), "LäkarID");
         checkSjukskrivningsgrad(errors, line.getSjukskrivningsgrad());
         return errors;

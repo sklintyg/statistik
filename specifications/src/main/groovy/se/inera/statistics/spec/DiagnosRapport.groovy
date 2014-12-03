@@ -15,7 +15,7 @@ abstract class DiagnosRapport extends Rapport {
     }
 
     public void executeTabell(report) {
-        def index = report.tableData.headers[0].findIndexOf { item -> item.text.contains(grupp.toUpperCase()) }
+        def index = report.tableData.headers[0].findIndexOf { item -> item.text.contains(grupp) }
         def row = report.tableData.rows.find { currentRow -> currentRow.name == (månad + " " + år)  }
         def womenIndex = ((index - 2) * 2) + 1
         def menIndex = womenIndex + 1
