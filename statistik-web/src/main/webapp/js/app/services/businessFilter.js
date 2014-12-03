@@ -114,6 +114,7 @@ angular.module('StatisticsApp').factory('businessFilter', function (_) {
 
             munip.subs.push(business);
         });
+        businessFilter.geography.subs = sortSwedish(businessFilter.geography.subs, "name", "Okän");
     };
 
     businessFilter.populateVerksamhetsTyper = function (businesses) {
