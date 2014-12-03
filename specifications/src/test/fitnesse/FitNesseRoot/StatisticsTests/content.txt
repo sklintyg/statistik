@@ -17,6 +17,7 @@ user3 vårdgivare: vg3
 
 Default:
 Vårdgivarnivå för inloggad användare: false
+Arbetsförmåga för intyg: 0
 
 
 
