@@ -46,11 +46,35 @@ angular.module('StatisticsApp').factory('businessFilter', function (_) {
 
     businessFilter.loggedIn = function (businesses) {
         if (!businessFilter.dataInitialized) {
-            businessFilter.businesses = businesses;
+            var swedishAlphabet = "AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZzÅåÄäÖö";
+            businessFilter.businesses = businesses.sort(function(first, second) {
+                if (first.kommunName === second.kommunName) {
+                    return 0;
+                }
+                if (first.kommunName.indexOf("Okän") > -1) {
+                    return 1;
+                }
+                if (second.kommunName.indexOf("Okän") > -1) {
+                    return -1;
+                }
+                for (var i = 0; true; i++) {
+                    if (first.kommunName.length <= i) {
+                        return -1
+                    }
+                    if (second.kommunName.length <= i) {
+                        return 1
+                    }
+                    var posFirst = swedishAlphabet.indexOf(first.kommunName[i]);
+                    var posSecond = swedishAlphabet.indexOf(second.kommunName[i]);
+                    if (posFirst != posSecond) {
+                        return posFirst - posSecond;
+                    }
+                }
+            });
             if (businessFilter.numberOfBusinesses() === "large") {
-                businessFilter.populateGeography(businesses);
+                businessFilter.populateGeography(businessFilter.businesses);
             }
-            businessFilter.populateVerksamhetsTyper(businesses);
+            businessFilter.populateVerksamhetsTyper(businessFilter.businesses);
             businessFilter.resetSelections(true);
             businessFilter.dataInitialized = true;
         }
