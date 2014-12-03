@@ -38,4 +38,11 @@ abstract class DiagnosRapport extends Rapport {
         return reportsUtil.getReportDiagnosgrupp();
     }
 
+    def getReportSjukskrivningsgrad() {
+        if (inloggad) {
+            return reportsUtil.getReportSjukskrivningsgradInloggad(inloggadSom);
+        }
+        return reportsUtil.getReportSjukskrivningsgrad();
+    }
+
 }

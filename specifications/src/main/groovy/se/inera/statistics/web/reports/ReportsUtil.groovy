@@ -155,4 +155,13 @@ class ReportsUtil {
     def getReportSjukskrivningslangdPagaendeInloggad(String user) {
         return get("/api/verksamhet/" + getVardgivareForUser(user) + "/getSickLeaveLengthCurrentData")
     }
+
+    def getReportSjukskrivningsgradInloggad(String user) {
+        return get("/api/verksamhet/" + getVardgivareForUser(user) + "/getDegreeOfSickLeaveStatistics")
+    }
+
+    def getReportSjukskrivningsgrad() {
+        return get("/api/getDegreeOfSickLeaveStatistics")
+    }
+
 }
