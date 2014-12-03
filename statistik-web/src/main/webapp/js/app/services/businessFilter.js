@@ -123,15 +123,14 @@ angular.module('StatisticsApp').factory('businessFilter', ['statisticsData', '_'
                 if (!county) {
                     county = {id: business.lansId, name: business.lansName, subs: []};
                     businessFilter.geography.subs.push(county);
+                    var munip = _.findWhere(county.subs, {id: business.kommunId});
+                    if (!munip) {
+                        munip = {id: business.kommunId, name: business.kommunName, subs: []};
+                        county.subs.push(munip);
+                    }
+                    munip.subs.push(business);
                 }
-
-                var munip = _.findWhere(county.subs, {id: business.kommunId});
-                if (!munip) {
-                    munip = {id: business.kommunId, name: business.kommunName, subs: []};
-                    county.subs.push(munip);
-                }
-
-                munip.subs.push(business);
+                businessFilter.geography.subs = sortSwedish(businessFilter.geography.subs, "name", "Okänd");
             });
         };
 
