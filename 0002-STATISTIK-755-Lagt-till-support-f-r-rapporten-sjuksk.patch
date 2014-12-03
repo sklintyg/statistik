@@ -1,0 +1,169 @@
+From dc9f53d88e75eba3df4d1cd31889203a814e9ba8 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Fredrik=20Engstro=CC=88m?=
+ <fredrik.engstrom@callistaenterprise.se>
+Date: Tue, 2 Dec 2014 12:27:14 +0100
+Subject: [PATCH] =?UTF-8?q?STATISTIK-755=20Lagt=20till=20support=20f=C3=B6?=
+ =?UTF-8?q?r=20rapporten=20sjukskrivningsl=C3=A4ngd=20i=20fitnesse?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ .../statistics/spec/SimpleDetailsReport.groovy     |  9 +++++++-
+ .../SjukfallIRapportenSjukskrivningslangd.groovy   | 18 +++++++++++++++
+ ...fallIRapportenSjukskrivningslangdDiagram.groovy | 18 +++++++++++++++
+ .../statistics/web/reports/ReportsUtil.groovy      |  8 +++++++
+ .../SjukskrivningsLangdExempel/content.txt         | 27 ++++++++++++++++++++++
+ .../SjukskrivningsLangdExempel/properties.xml      | 14 +++++++++++
+ 6 files changed, 93 insertions(+), 1 deletion(-)
+ create mode 100644 specifications/src/main/groovy/se/inera/statistics/spec/SjukfallIRapportenSjukskrivningslangd.groovy
+ create mode 100644 specifications/src/main/groovy/se/inera/statistics/spec/SjukfallIRapportenSjukskrivningslangdDiagram.groovy
+ create mode 100644 specifications/src/test/fitnesse/FitNesseRoot/StatisticsTests/SjukskrivningsLangdExempel/content.txt
+ create mode 100644 specifications/src/test/fitnesse/FitNesseRoot/StatisticsTests/SjukskrivningsLangdExempel/properties.xml
+
+diff --git a/specifications/src/main/groovy/se/inera/statistics/spec/SimpleDetailsReport.groovy b/specifications/src/main/groovy/se/inera/statistics/spec/SimpleDetailsReport.groovy
+index bbc838e..e432ef2 100644
+--- a/specifications/src/main/groovy/se/inera/statistics/spec/SimpleDetailsReport.groovy
++++ b/specifications/src/main/groovy/se/inera/statistics/spec/SimpleDetailsReport.groovy
+@@ -13,7 +13,7 @@ abstract class SimpleDetailsReport extends Rapport {
+         def female = report.chartData.series.find { item -> "Female".equals(item.sex) }
+         kvinnor = female.data[index]
+         def total = report.chartData.series.find { item -> item.sex == null }
+-        totalt = total.data[index]
++        totalt = total != null ? total.data[index] : -1
+     }
+ 
+     abstract def getRowNameMatcher()
+@@ -54,4 +54,11 @@ abstract class SimpleDetailsReport extends Rapport {
+         return reportsUtil.getReportAldersgrupp();
+     }
+ 
++    def getReportSjukskrivningslangd() {
++        if (inloggad) {
++            return reportsUtil.getReportSjukskrivningslangdInloggad(inloggadSom);
++        }
++        return reportsUtil.getReportSjukskrivningslangd();
++    }
++
+ }
+diff --git a/specifications/src/main/groovy/se/inera/statistics/spec/SjukfallIRapportenSjukskrivningslangd.groovy b/specifications/src/main/groovy/se/inera/statistics/spec/SjukfallIRapportenSjukskrivningslangd.groovy
+new file mode 100644
+index 0000000..885cb78
+--- /dev/null
++++ b/specifications/src/main/groovy/se/inera/statistics/spec/SjukfallIRapportenSjukskrivningslangd.groovy
+@@ -0,0 +1,18 @@
++package se.inera.statistics.spec
++
++class SjukfallIRapportenSjukskrivningslangd extends SimpleDetailsReport {
++
++    def sjukskrivningslängd
++
++    @Override
++    public void doExecute() {
++        def report = getReportSjukskrivningslangd()
++        executeTabell(report)
++    }
++
++    @Override
++    def getRowNameMatcher() {
++        return sjukskrivningslängd
++    }
++
++}
+diff --git a/specifications/src/main/groovy/se/inera/statistics/spec/SjukfallIRapportenSjukskrivningslangdDiagram.groovy b/specifications/src/main/groovy/se/inera/statistics/spec/SjukfallIRapportenSjukskrivningslangdDiagram.groovy
+new file mode 100644
+index 0000000..5dab4a2
+--- /dev/null
++++ b/specifications/src/main/groovy/se/inera/statistics/spec/SjukfallIRapportenSjukskrivningslangdDiagram.groovy
+@@ -0,0 +1,18 @@
++package se.inera.statistics.spec
++
++class SjukfallIRapportenSjukskrivningslangdDiagram extends SimpleDetailsReport {
++
++    def sjukskrivningslängd
++
++    @Override
++    public void doExecute() {
++        def report = getReportSjukskrivningslangd()
++        executeDiagram(report)
++    }
++
++    @Override
++    def getRowNameMatcher() {
++        return sjukskrivningslängd
++    }
++
++}
+diff --git a/specifications/src/main/groovy/se/inera/statistics/web/reports/ReportsUtil.groovy b/specifications/src/main/groovy/se/inera/statistics/web/reports/ReportsUtil.groovy
+index b33e32b..c62c123 100644
+--- a/specifications/src/main/groovy/se/inera/statistics/web/reports/ReportsUtil.groovy
++++ b/specifications/src/main/groovy/se/inera/statistics/web/reports/ReportsUtil.groovy
+@@ -140,4 +140,12 @@ class ReportsUtil {
+         return get("/api/verksamhet/" + getVardgivareForUser(user) + "/getAgeGroupsStatistics")
+     }
+ 
++    def getReportSjukskrivningslangd() {
++        return get("/api/getSickLeaveLengthData")
++    }
++
++    def getReportSjukskrivningslangdInloggad(String user) {
++        return get("/api/verksamhet/" + getVardgivareForUser(user) + "/getSickLeaveLengthData")
++    }
++
+ }
+diff --git a/specifications/src/test/fitnesse/FitNesseRoot/StatisticsTests/SjukskrivningsLangdExempel/content.txt b/specifications/src/test/fitnesse/FitNesseRoot/StatisticsTests/SjukskrivningsLangdExempel/content.txt
+new file mode 100644
+index 0000000..1680be4
+--- /dev/null
++++ b/specifications/src/test/fitnesse/FitNesseRoot/StatisticsTests/SjukskrivningsLangdExempel/content.txt
+@@ -0,0 +1,27 @@
++!contents -R2 -g -p -f -h
++
++
++!3 Givet att:
++| script | dagens datum | 2013-11-06 |
++
++| script | troskel varde | 1 |
++
++| Enbart foljande intyg finns |
++| personnr | diagnoskod | start | slut | enhet | kommentar |
++| 19790407-1285 | G01 | 2013-02-01 | 2013-02-25 | enhet1 | |
++
++
++!3 Då gäller:
++Nationell nivå
++| Sjukfall i rapporten sjukskrivningslangd |
++| sjukskrivningslängd | män? | kvinnor? |
++| 15-30 dagar         | 0    | 1        |
++
++| Sjukfall i rapporten sjukskrivningslangd diagram |
++| sjukskrivningslängd | män? | kvinnor? |
++| 15-30 dagar         | 0    | 1        |
++
++Inloggad nivå
++| Sjukfall i rapporten sjukskrivningslangd |
++| inloggad som | sjukskrivningslängd | män? | kvinnor? |
++| user1        | 15-30 dagar         | 0    | 1        |
+diff --git a/specifications/src/test/fitnesse/FitNesseRoot/StatisticsTests/SjukskrivningsLangdExempel/properties.xml b/specifications/src/test/fitnesse/FitNesseRoot/StatisticsTests/SjukskrivningsLangdExempel/properties.xml
+new file mode 100644
+index 0000000..c53497f
+--- /dev/null
++++ b/specifications/src/test/fitnesse/FitNesseRoot/StatisticsTests/SjukskrivningsLangdExempel/properties.xml
+@@ -0,0 +1,14 @@
++<?xml version="1.0"?>
++<properties>
++	<Edit/>
++	<Files/>
++	<Help></Help>
++	<Properties/>
++	<RecentChanges/>
++	<Refactor/>
++	<Search/>
++	<Suites></Suites>
++	<Test/>
++	<Versions/>
++	<WhereUsed/>
++</properties>
+-- 
+2.2.0
+

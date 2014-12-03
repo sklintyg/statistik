@@ -1,21 +1,21 @@
 description = 'Liquibase runner for statistics (standalone)'
 
-task copyToLibs(type: Sync) {
-    from configurations.runtime
-    into "$buildDir/libs"
-}
+apply plugin: "distribution"
+//apply plugin: "java"
 
-task assembleManifestClasspath << {
-    jar {
-        manifest {
-            attributes "Class-Path": configurations.runtime.collect { it.name }.join(' ')
-            attributes "Main-Class": "se.inera.certificate.liquibase.Runner"
-        }
-    }
+configurations {
+    provided
 }
-
-jar.dependsOn copyToLibs, assembleManifestClasspath
 
 dependencies {
-    compile project(':statistik-service')
+    provided fileTree(dir: '../../statistik-service/src/main/resources/', include: 'changelog/**')
+    provided "org.liquibase:liquibase-core:2.0.5"
+}
+
+distributions {
+    main {
+        contents {
+            from configurations.provided
+        }
+    }
 }

@@ -13,7 +13,7 @@ abstract class SimpleDetailsReport extends Rapport {
         def female = report.chartData.series.find { item -> "Female".equals(item.sex) }
         kvinnor = female.data[index]
         def total = report.chartData.series.find { item -> item.sex == null }
-        totalt = total.data[index]
+        totalt = total != null ? total.data[index] : -1
     }
 
     abstract def getRowNameMatcher()
@@ -45,5 +45,33 @@ abstract class SimpleDetailsReport extends Rapport {
             return reportsUtil.getReportSjukfallPerEnhet(inloggadSom);
         }
         throw new RuntimeException("Report -Sjukfall per enhet- is not available on national level");
+    }
+
+    def getReportAldersgrupp() {
+        if (inloggad) {
+            return reportsUtil.getReportAldersgruppInloggad(inloggadSom);
+        }
+        return reportsUtil.getReportAldersgrupp();
+    }
+
+    def getReportAldersgruppPagaende() {
+        if (inloggad) {
+            return reportsUtil.getReportAldersgruppPagaendeInloggad(inloggadSom);
+        }
+        throw new RuntimeException("Report -Åldersgrupp pågående- is not available on national level");
+    }
+
+    def getReportSjukskrivningslangd() {
+        if (inloggad) {
+            return reportsUtil.getReportSjukskrivningslangdInloggad(inloggadSom);
+        }
+        return reportsUtil.getReportSjukskrivningslangd();
+    }
+
+    def getReportSjukskrivningslangdPagaende() {
+        if (inloggad) {
+            return reportsUtil.getReportSjukskrivningslangdPagaendeInloggad(inloggadSom);
+        }
+        throw new RuntimeException("Report -Sjukskrivningslängd pågående- is not available on national level");
     }
 }

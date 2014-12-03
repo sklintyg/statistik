@@ -132,4 +132,27 @@ class ReportsUtil {
 //        assert response.status == 200
     }
 
+    def getReportAldersgrupp() {
+        return get("/api/getAgeGroupsStatistics")
+    }
+
+    def getReportAldersgruppInloggad(String user) {
+        return get("/api/verksamhet/" + getVardgivareForUser(user) + "/getAgeGroupsStatistics")
+    }
+
+    def getReportSjukskrivningslangd() {
+        return get("/api/getSickLeaveLengthData")
+    }
+
+    def getReportSjukskrivningslangdInloggad(String user) {
+        return get("/api/verksamhet/" + getVardgivareForUser(user) + "/getSickLeaveLengthData")
+    }
+
+    def getReportAldersgruppPagaendeInloggad(String user) {
+        return get("/api/verksamhet/" + getVardgivareForUser(user) + "/getAgeGroupsCurrentStatistics")
+    }
+
+    def getReportSjukskrivningslangdPagaendeInloggad(String user) {
+        return get("/api/verksamhet/" + getVardgivareForUser(user) + "/getSickLeaveLengthCurrentData")
+    }
 }

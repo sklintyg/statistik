@@ -1,0 +1,174 @@
+From 7143971e869239b06d882631e0ecfaa758d70f5d Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Fredrik=20Engstro=CC=88m?=
+ <fredrik.engstrom@callistaenterprise.se>
+Date: Tue, 2 Dec 2014 12:11:31 +0100
+Subject: [PATCH] =?UTF-8?q?STATISTIK-755=20Lagt=20till=20support=20f=C3=B6?=
+ =?UTF-8?q?r=20rapporten=20=C3=A5ldersgrupp=20i=20fitnesse?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ .../inera/statistics/spec/SimpleDetailsReport.groovy   |  8 ++++++++
+ .../spec/SjukfallIRapportenAldersgrupp.groovy          | 18 ++++++++++++++++++
+ .../spec/SjukfallIRapportenAldersgruppDiagram.groovy   | 18 ++++++++++++++++++
+ .../se/inera/statistics/web/reports/ReportsUtil.groovy |  8 ++++++++
+ .../StatisticsTests/AldersgruppAt040/content.txt       |  4 ++--
+ .../StatisticsTests/AldersgruppAt040/properties.xml    |  1 +
+ .../StatisticsTests/AldersgruppAt041/content.txt       |  4 ++--
+ .../StatisticsTests/AldersgruppAt041/properties.xml    |  1 +
+ 8 files changed, 58 insertions(+), 4 deletions(-)
+ create mode 100644 specifications/src/main/groovy/se/inera/statistics/spec/SjukfallIRapportenAldersgrupp.groovy
+ create mode 100644 specifications/src/main/groovy/se/inera/statistics/spec/SjukfallIRapportenAldersgruppDiagram.groovy
+
+diff --git a/specifications/src/main/groovy/se/inera/statistics/spec/SimpleDetailsReport.groovy b/specifications/src/main/groovy/se/inera/statistics/spec/SimpleDetailsReport.groovy
+index b1434c8..bbc838e 100644
+--- a/specifications/src/main/groovy/se/inera/statistics/spec/SimpleDetailsReport.groovy
++++ b/specifications/src/main/groovy/se/inera/statistics/spec/SimpleDetailsReport.groovy
+@@ -46,4 +46,12 @@ abstract class SimpleDetailsReport extends Rapport {
+         }
+         throw new RuntimeException("Report -Sjukfall per enhet- is not available on national level");
+     }
++
++    def getReportAldersgrupp() {
++        if (inloggad) {
++            return reportsUtil.getReportAldersgruppInloggad(inloggadSom);
++        }
++        return reportsUtil.getReportAldersgrupp();
++    }
++
+ }
+diff --git a/specifications/src/main/groovy/se/inera/statistics/spec/SjukfallIRapportenAldersgrupp.groovy b/specifications/src/main/groovy/se/inera/statistics/spec/SjukfallIRapportenAldersgrupp.groovy
+new file mode 100644
+index 0000000..d590a85
+--- /dev/null
++++ b/specifications/src/main/groovy/se/inera/statistics/spec/SjukfallIRapportenAldersgrupp.groovy
+@@ -0,0 +1,18 @@
++package se.inera.statistics.spec
++
++class SjukfallIRapportenAldersgrupp extends SimpleDetailsReport {
++
++    def åldersgrupp
++
++    @Override
++    public void doExecute() {
++        def report = getReportAldersgrupp()
++        executeTabell(report)
++    }
++
++    @Override
++    def getRowNameMatcher() {
++        return åldersgrupp
++    }
++
++}
+diff --git a/specifications/src/main/groovy/se/inera/statistics/spec/SjukfallIRapportenAldersgruppDiagram.groovy b/specifications/src/main/groovy/se/inera/statistics/spec/SjukfallIRapportenAldersgruppDiagram.groovy
+new file mode 100644
+index 0000000..030d670
+--- /dev/null
++++ b/specifications/src/main/groovy/se/inera/statistics/spec/SjukfallIRapportenAldersgruppDiagram.groovy
+@@ -0,0 +1,18 @@
++package se.inera.statistics.spec
++
++class SjukfallIRapportenAldersgruppDiagram extends SimpleDetailsReport {
++
++    def åldersgrupp
++
++    @Override
++    public void doExecute() {
++        def report = getReportAldersgrupp()
++        executeDiagram(report)
++    }
++
++    @Override
++    def getRowNameMatcher() {
++        return åldersgrupp
++    }
++
++}
+diff --git a/specifications/src/main/groovy/se/inera/statistics/web/reports/ReportsUtil.groovy b/specifications/src/main/groovy/se/inera/statistics/web/reports/ReportsUtil.groovy
+index 981ab63..b33e32b 100644
+--- a/specifications/src/main/groovy/se/inera/statistics/web/reports/ReportsUtil.groovy
++++ b/specifications/src/main/groovy/se/inera/statistics/web/reports/ReportsUtil.groovy
+@@ -132,4 +132,12 @@ class ReportsUtil {
+ //        assert response.status == 200
+     }
+ 
++    def getReportAldersgrupp() {
++        return get("/api/getAgeGroupsStatistics")
++    }
++
++    def getReportAldersgruppInloggad(String user) {
++        return get("/api/verksamhet/" + getVardgivareForUser(user) + "/getAgeGroupsStatistics")
++    }
++
+ }
+diff --git a/specifications/src/test/fitnesse/FitNesseRoot/StatisticsTests/AldersgruppAt040/content.txt b/specifications/src/test/fitnesse/FitNesseRoot/StatisticsTests/AldersgruppAt040/content.txt
+index 98ddad2..ca9fd05 100644
+--- a/specifications/src/test/fitnesse/FitNesseRoot/StatisticsTests/AldersgruppAt040/content.txt
++++ b/specifications/src/test/fitnesse/FitNesseRoot/StatisticsTests/AldersgruppAt040/content.txt
+@@ -14,14 +14,14 @@
+ 
+ !3 Då gäller:
+ Nationell nivå
+-| Sjukfall i rapporten åldersgrupp |
++| Sjukfall i rapporten aldersgrupp |
+ | åldersgrupp | män? | kvinnor? |
+ | 21-25 år    | 0    | 0        |
+ | 26-30 år    | 1    | 0        |
+ | 31-35 år    | 0    | 0        |
+ 
+ Inloggad nivå
+-| Sjukfall i rapporten åldersgrupp |
++| Sjukfall i rapporten aldersgrupp |
+ | inloggad som | åldersgrupp | män? | kvinnor? | vårdgivarnivå |
+ | user2        | 21-25 år    | 0    | 0        | false         |
+ | user2        | 26-30 år    | 1    | 0        | false         |
+diff --git a/specifications/src/test/fitnesse/FitNesseRoot/StatisticsTests/AldersgruppAt040/properties.xml b/specifications/src/test/fitnesse/FitNesseRoot/StatisticsTests/AldersgruppAt040/properties.xml
+index fb3a9c7..28d2783 100644
+--- a/specifications/src/test/fitnesse/FitNesseRoot/StatisticsTests/AldersgruppAt040/properties.xml
++++ b/specifications/src/test/fitnesse/FitNesseRoot/StatisticsTests/AldersgruppAt040/properties.xml
+@@ -6,6 +6,7 @@
+ 	<RecentChanges/>
+ 	<Refactor/>
+ 	<Search/>
++	<Test/>
+ 	<Versions/>
+ 	<WhereUsed/>
+ </properties>
+diff --git a/specifications/src/test/fitnesse/FitNesseRoot/StatisticsTests/AldersgruppAt041/content.txt b/specifications/src/test/fitnesse/FitNesseRoot/StatisticsTests/AldersgruppAt041/content.txt
+index f96e6f6..a6b9af9 100644
+--- a/specifications/src/test/fitnesse/FitNesseRoot/StatisticsTests/AldersgruppAt041/content.txt
++++ b/specifications/src/test/fitnesse/FitNesseRoot/StatisticsTests/AldersgruppAt041/content.txt
+@@ -13,14 +13,14 @@
+ 
+ !3 Då gäller:
+ Nationell nivå
+-| Sjukfall i rapporten åldersgrupp |
++| Sjukfall i rapporten aldersgrupp |
+ | åldersgrupp | män? | kvinnor? |
+ | 21-25 år    | 1    | 0        |
+ | 26-30 år    | 0    | 0        |
+ | 31-35 år    | 0    | 0        |
+ 
+ Inloggad nivå
+-| Sjukfall i rapporten åldersgrupp |
++| Sjukfall i rapporten aldersgrupp |
+ | inloggad som | åldersgrupp | män? | kvinnor? | vårdgivarnivå |
+ | user2        | 21-25 år    | 1    | 0        | false         |
+ | user2        | 26-30 år    | 0    | 0        | false         |
+diff --git a/specifications/src/test/fitnesse/FitNesseRoot/StatisticsTests/AldersgruppAt041/properties.xml b/specifications/src/test/fitnesse/FitNesseRoot/StatisticsTests/AldersgruppAt041/properties.xml
+index eca7f9d..9f678a9 100644
+--- a/specifications/src/test/fitnesse/FitNesseRoot/StatisticsTests/AldersgruppAt041/properties.xml
++++ b/specifications/src/test/fitnesse/FitNesseRoot/StatisticsTests/AldersgruppAt041/properties.xml
+@@ -7,6 +7,7 @@
+ 	<RecentChanges/>
+ 	<Refactor/>
+ 	<Search/>
++	<Test/>
+ 	<Suites></Suites>
+ 	<Versions/>
+ 	<WhereUsed/>
+-- 
+2.2.0
+

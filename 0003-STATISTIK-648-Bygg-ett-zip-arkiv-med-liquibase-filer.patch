@@ -1,0 +1,53 @@
+From 20c0236c394dd29b20241312f258d1a59ab6101c Mon Sep 17 00:00:00 2001
+From: Pierre Sandboge <pierre.sandboge@standin.se>
+Date: Tue, 2 Dec 2014 11:29:30 +0100
+Subject: [PATCH] STATISTIK-648 Bygg ett zip-arkiv med liquibase-filer. Work in
+ progress.
+
+---
+ tools/liquibase-runner/build.gradle | 28 ++++++++++++++--------------
+ 1 file changed, 14 insertions(+), 14 deletions(-)
+
+diff --git a/tools/liquibase-runner/build.gradle b/tools/liquibase-runner/build.gradle
+index a97dd64..aae03f3 100644
+--- a/tools/liquibase-runner/build.gradle
++++ b/tools/liquibase-runner/build.gradle
+@@ -1,21 +1,21 @@
+ description = 'Liquibase runner for statistics (standalone)'
+ 
+-task copyToLibs(type: Sync) {
+-    from configurations.runtime
+-    into "$buildDir/libs"
+-}
++apply plugin: "distribution"
++//apply plugin: "java"
+ 
+-task assembleManifestClasspath << {
+-    jar {
+-        manifest {
+-            attributes "Class-Path": configurations.runtime.collect { it.name }.join(' ')
+-            attributes "Main-Class": "se.inera.certificate.liquibase.Runner"
+-        }
+-    }
++configurations {
++    provided
+ }
+ 
+-jar.dependsOn copyToLibs, assembleManifestClasspath
+-
+ dependencies {
+-    compile project(':statistik-service')
++    provided fileTree(dir: '../../statistik-service/src/main/resources/', include: 'changelog/**')
++    provided "org.liquibase:liquibase-core:2.0.5"
++}
++
++distributions {
++    main {
++        contents {
++            from configurations.provided
++        }
++    }
+ }
+-- 
+2.2.0
+
