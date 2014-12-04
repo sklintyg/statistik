@@ -9,7 +9,7 @@ Två intyg för samma patient har uppehåll med 2 dagar. Intygen är utfärdade 
 
 | Enbart foljande intyg finns |
 | personnr      | diagnoskod | start      | slut       | enhet  | kommentar |
-| 19790407-1295 | G01        | 2013-02-01 | 2013-02-06 | enhet1 | user3 har inte behörighet till enhet2 |
+| 19790407-1295 | G01        | 2013-02-01 | 2013-02-06 | enhet1 | user3 har inte behörighet till enhet1 |
 | 19790407-1295 | G01        | 2013-02-09 | 2013-02-14 | enhet2 | user3 har inte behörighet till enhet2 |
 
 

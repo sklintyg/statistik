@@ -17,7 +17,6 @@ Ett intyg är utfärdat för mer än 18 månader sedan.
 
 | Sjukfall i rapporten sjukfall totalt |
 | inloggad som | år   | månad | män? | kvinnor? | kommentar |
-| user1  | 2013 | apr   | 0    | 0        | |
 | user1  | 2013 | maj   | 0    | 0        | |
 | user1  | 2013 | jun   | 0    | 0        | |
 | user1  | 2013 | jul   | 0    | 0        | |
@@ -36,4 +35,3 @@ Ett intyg är utfärdat för mer än 18 månader sedan.
 | user1  | 2014 | aug   | 0    | 0        | |
 | user1  | 2014 | sep   | 0    | 0        | |
 | user1  | 2014 | okt   | 0    | 0        | |
-| user1  | 2014 | nov   | 0    | 0        | |
