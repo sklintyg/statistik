@@ -34,11 +34,10 @@
 
 | Sjukfall i rapporten enskilt diagnoskapitel diagram |
 |inloggad som | valt diagnoskapitel | år   | månad | grupp   | män? | kvinnor? |
-| user1 | C00-D48             | 2013 | feb   | C15-C26 | 0    | 0        |
-| user1 | C00-D48             | 2013 | feb   | C30-C39 | 0    | 0        |
-| user1 | C00-D48             | 2013 | feb   | C15-C26 | 0    | 0        |
-| user1 | C00-D48             | 2013 | feb   | C43-C44 | 0    | 0        |
-| user1 | C00-D48             | 2013 | feb   | C45-C49 | 0    | 0        |
-| user1 | C00-D48             | 2013 | feb   | C50-C50 | 0    | 0        |
-| user1 | C00-D48             | 2013 | feb   | C51-C58 | 0    | 0        |
-| user1 | C00-D48             | 2013 | feb   | Övriga  | 0    | 0        |
+| user1       | C00-D48             | 2013 | feb   | C15-C26 | 2    | 1        |
+| user1       | C00-D48             | 2013 | feb   | C30-C39 | 3    | 0        |
+| user1       | C00-D48             | 2013 | feb   | C43-C44 | 0    | 3        |
+| user1       | C00-D48             | 2013 | feb   | C45-C49 | 2    | 1        |
+| user1       | C00-D48             | 2013 | feb   | C50-C50 | 2    | 1        |
+| user1       | C00-D48             | 2013 | feb   | C51-C58 | 1    | 2        |
+| user1       | C00-D48             | 2013 | feb   | Övriga  | 1    | 4        |
