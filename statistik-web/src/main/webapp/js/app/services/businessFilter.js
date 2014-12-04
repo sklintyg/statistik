@@ -160,7 +160,7 @@ angular.module('StatisticsApp').factory('businessFilter', ['statisticsData', '_'
                     }
                 });
             });
-            businessFilter.verksamhetsTyper = _.values(verksamhetsTypSet);
+            businessFilter.verksamhetsTyper = sortSwedish(_.values(verksamhetsTypSet), "name");
         };
 
         businessFilter.itemClicked = function (item, itemRoot) {
