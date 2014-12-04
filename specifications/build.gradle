@@ -37,6 +37,8 @@ task fitnesseTest(type: FitnesseTask, dependsOn: build) {
     clArgs += ['-c', 'StatisticsTests?suite&format=text']
 }
 
+testAll {}.dependsOn fitnesseTest
+
 dependencies {
     def fitnesseDependency = "org.fitnesse:fitnesse:20140901"
 
