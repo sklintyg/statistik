@@ -129,7 +129,8 @@ class ReportsUtil {
                 "}"
         def loginData = logins[user]
         def response = statistik.post(path: '/fake', body: [ userJsonDisplay:loginData ], requestContentType : "application/x-www-form-urlencoded" )
-//        assert response.status == 200
+        assert response.status == 302
+        System.out.println("Using logindata: " + loginData)
     }
 
     def getReportAldersgrupp() {

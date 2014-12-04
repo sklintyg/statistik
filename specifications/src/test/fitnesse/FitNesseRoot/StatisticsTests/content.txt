@@ -5,6 +5,11 @@ Existerande användare: user1, user2, user3
 Existerande vårdgivare: vg1, vg3
 Existerande enheter: enhet1, enhet2, enhet3
 
+Namn:
+enhet1: Enhet1 för Fitnesse-tester
+enhet2: Enhet2 för Fitnesse-tester
+enhet3: Enhet3 för Fitnesse-tester
+
 Kopplingar:
 vg1 enheter: enhet1, enhet2
 vg3 enheter: enhet3
