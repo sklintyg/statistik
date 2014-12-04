@@ -46,6 +46,10 @@ angular.module('StatisticsApp').factory('businessFilter', ['statisticsData', '_'
             }
         };
 
+        var isSet = function (value) {
+            return typeof value !== "undefined" && value != null;
+        };
+
         businessFilter.loggedIn = function (businesses) {
             if (!businessFilter.dataInitialized) {
                 businessFilter.businesses = sortSwedish(businesses, "kommunName", "Okänd");
