@@ -33,6 +33,7 @@ import se.inera.statistics.web.model.AgeGroupsData;
 import se.inera.statistics.web.model.ChartData;
 import se.inera.statistics.web.model.ChartSeries;
 import se.inera.statistics.web.model.NamedData;
+import se.inera.statistics.web.model.SimpleDetailsData;
 import se.inera.statistics.web.model.TableData;
 
 public class AldersgruppConverterTest {
@@ -50,7 +51,7 @@ public class AldersgruppConverterTest {
         SimpleKonResponse<SimpleKonDataRow> ageGroupsResponse = new SimpleKonResponse<>(ageGroupsRows, 7);
 
         //When
-        AgeGroupsData result = converter.convert(ageGroupsResponse, new Range(7));
+        SimpleDetailsData result = converter.convert(ageGroupsResponse, new Range(7));
 
         //Then
         TableData tableDataResult = result.getTableData();
