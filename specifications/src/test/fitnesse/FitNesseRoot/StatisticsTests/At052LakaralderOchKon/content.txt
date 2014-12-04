@@ -1,0 +1,31 @@
+!contents -R2 -g -p -f -h
+
+Ett sjukfall består av 2 intyg utfärdade av två läkare på samma enhet.
+En med personnummer 19700101-0011
+En med personnummer 19700102-0010
+Läkarna tillhör alltså samma grupp.
+
+Sjukfallet räknas 2 ggr i gruppen "Manlig läkare 40-49 år".
+
+
+!3 Givet att:
+| script | dagens datum | 2014-11-28 |
+
+| script | troskel varde | 1 |
+
+| Enbart foljande intyg finns |
+| personnr      | start      | slut       | enhet  | läkarpersonnr | | kommentar |
+| 19880701-0015 | 2014-06-01 | 2014-06-15 | enhet1 | 19700101-0011 | |
+| 19880701-0015 | 2014-06-16 | 2014-07-30 | enhet1 | 19700102-0010 | |
+
+
+!3 Då gäller:
+Nationell nivå
+| Sjukfall i rapporten lakarkonalder |
+| läkargrupp                  | män? | kvinnor? |
+| Manlig läkare 40-49 år      | 2    | 0        |
+
+Inloggad nivå
+| Sjukfall i rapporten lakarkonalder |
+| inloggad som | vårdgivarnivå | läkargrupp                  | män? | kvinnor? |
+| user1        | false         | Manlig läkare 40-49 år      | 2    | 0        |
