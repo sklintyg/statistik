@@ -44,6 +44,10 @@ angular.module('StatisticsApp').factory('businessFilter', function (_) {
         }
     };
 
+    var isSet = function (value) {
+        return typeof value !== "undefined" && value != null;
+    };
+
     function sortSwedish(arrayToSort, propertyName, alwaysLast) {
         var swedishAlphabet = "0123456789AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZzÅåÄäÖö";
         return arrayToSort.sort(function (first, second) {
