@@ -44,13 +44,45 @@ angular.module('StatisticsApp').factory('businessFilter', function (_) {
         }
     };
 
+    var isSet = function (value) {
+        return typeof value !== "undefined" && value != null;
+    };
+
+    function sortSwedish(arrayToSort, propertyName, alwaysLast) {
+        var swedishAlphabet = "0123456789AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZzÅåÄäÖö";
+        return arrayToSort.sort(function (first, second) {
+            if (first[propertyName] === second[propertyName]) {
+                return 0;
+            }
+            if (isSet(alwaysLast) && first[propertyName].indexOf(alwaysLast) > -1) {
+                return 1;
+            }
+            if (isSet(alwaysLast) && second[propertyName].indexOf(alwaysLast) > -1) {
+                return -1;
+            }
+            for (var i = 0; true; i++) {
+                if (first[propertyName].length <= i) {
+                    return -1
+                }
+                if (second[propertyName].length <= i) {
+                    return 1
+                }
+                var posFirst = swedishAlphabet.indexOf(first[propertyName][i]);
+                var posSecond = swedishAlphabet.indexOf(second[propertyName][i]);
+                if (posFirst != posSecond) {
+                    return posFirst - posSecond;
+                }
+            }
+        });
+    }
+
     businessFilter.loggedIn = function (businesses) {
         if (!businessFilter.dataInitialized) {
-            businessFilter.businesses = businesses;
+            businessFilter.businesses = sortSwedish(businesses, "kommunName", "Okän");
             if (businessFilter.numberOfBusinesses() === "large") {
-                businessFilter.populateGeography(businesses);
+                businessFilter.populateGeography(businessFilter.businesses);
             }
-            businessFilter.populateVerksamhetsTyper(businesses);
+            businessFilter.populateVerksamhetsTyper(businessFilter.businesses);
             businessFilter.resetSelections(true);
             businessFilter.dataInitialized = true;
         }
@@ -86,6 +118,7 @@ angular.module('StatisticsApp').factory('businessFilter', function (_) {
 
             munip.subs.push(business);
         });
+        businessFilter.geography.subs = sortSwedish(businessFilter.geography.subs, "name", "Okän");
     };
 
     businessFilter.populateVerksamhetsTyper = function (businesses) {
@@ -102,7 +135,7 @@ angular.module('StatisticsApp').factory('businessFilter', function (_) {
                 }
             });
         });
-        businessFilter.verksamhetsTyper = _.values(verksamhetsTypSet);
+        businessFilter.verksamhetsTyper = sortSwedish(_.values(verksamhetsTypSet), "name");
     };
 
     businessFilter.itemClicked = function (item, itemRoot) {
