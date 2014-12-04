@@ -33,7 +33,15 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class SimpleDualSexConverter {
+public abstract class SimpleDualSexConverter {
+
+    private final String groupTitle;
+    private final boolean totalSeriesInChart;
+
+    public SimpleDualSexConverter(String groupTitle, boolean totalSeriesInChart) {
+        this.groupTitle = groupTitle;
+        this.totalSeriesInChart = totalSeriesInChart;
+    }
 
     public SimpleDetailsData convert(SimpleKonResponse<SimpleKonDataRow> casesPerMonth, Range range) {
         TableData tableData = convertToTableData(casesPerMonth.getRows());
@@ -49,7 +57,7 @@ public class SimpleDualSexConverter {
             data.add(new NamedData(row.getName(), Arrays.asList(female + male, female, male)));
         }
 
-        return TableData.createWithSingleHeadersRow(data, Arrays.asList("Period", "Antal sjukfall totalt", "Antal sjukfall för kvinnor", "Antal sjukfall för män"));
+        return TableData.createWithSingleHeadersRow(data, Arrays.asList(groupTitle, "Antal sjukfall totalt", "Antal sjukfall för kvinnor", "Antal sjukfall för män"));
     }
 
     private ChartData convertToChartData(SimpleKonResponse<SimpleKonDataRow> casesPerMonth) {
@@ -59,7 +67,9 @@ public class SimpleDualSexConverter {
         }
 
         final ArrayList<ChartSeries> series = new ArrayList<>();
-        series.add(new ChartSeries("Antal sjukfall totalt", casesPerMonth.getSummedData(), false));
+        if (totalSeriesInChart) {
+            series.add(new ChartSeries("Antal sjukfall totalt", casesPerMonth.getSummedData(), false));
+        }
         series.add(new ChartSeries("Antal sjukfall för kvinnor", casesPerMonth.getDataForSex(Kon.Female), false, Kon.Female));
         series.add(new ChartSeries("Antal sjukfall för män", casesPerMonth.getDataForSex(Kon.Male), false, Kon.Male));
 

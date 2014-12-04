@@ -372,9 +372,13 @@
                                                    id="navBusinessMoreNinetyDaysSickLeaveLink"
                                                    ctrlname="VerksamhetLongSickLeavesCtrl" navigationaware><span message key="nav.sjukskrivningslangd-mer-an-90-dagar"></span></a></li>
                                         </ul>
-                                        <li ng-show="!isFullVgAccess"><a class="last-item-in-menu rounded-bottom" data-ng-href="#/verksamhet/{{businessId}}/sjukfallperlakare"
+                                        <li ng-show="!isFullVgAccess"><a data-ng-href="#/verksamhet/{{businessId}}/sjukfallperlakare"
                                                id="navBusinessCasesPerLakareLink" ctrlname="VerksamhetCasesPerLakareCtrl"
                                                navigationaware><span message key="nav.lakare-per-namn"></span></a>
+                                        </li>
+                                        <li><a class="last-item-in-menu rounded-bottom" data-ng-href="#/verksamhet/{{businessId}}/sjukfallperlakaresalderochkon"
+                                               id="navBusinessCasesPerLakaresAlderOchKonLink" ctrlname="VerksamhetLakaresAlderOchKonCtrl"
+                                               navigationaware><span message key="nav.lakaralder-kon"></span></a>
                                         </li>
                                     </ul>
                                 </div>

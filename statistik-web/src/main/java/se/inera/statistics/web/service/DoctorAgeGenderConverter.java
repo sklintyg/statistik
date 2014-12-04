@@ -19,10 +19,10 @@
 
 package se.inera.statistics.web.service;
 
-public class AgeGroupsConverter extends SimpleDualSexConverter {
+public class DoctorAgeGenderConverter extends SimpleDualSexConverter {
 
-    public AgeGroupsConverter() {
-        super("Åldersgrupper", false);
+    public DoctorAgeGenderConverter() {
+        super("Läkare", false);
     }
 
 }

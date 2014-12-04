@@ -32,6 +32,7 @@ var stMessages = {
         'nav.lakare':'Läkare',
         'nav.lakarbefattning':'Läkarbefattning',
         'nav.lakare-per-namn':'Läkare per namn',
+        'nav.lakaralder-kon':'Läkare',
         'nav.pagaende':'Pågående',
         'nav.sjukskrivningslangd-mer-an-90-dagar':'Mer än 90 dagar',
         'nav.mobile.trigger.per-alder-pagaende-sjukfall': 'Per åldersgrupp eller pågående sjukfall',
