@@ -50,10 +50,10 @@ angular.module('StatisticsApp').factory('businessFilter', function (_) {
             if (first[propertyName] === second[propertyName]) {
                 return 0;
             }
-            if (first[propertyName].indexOf(alwaysLast) > -1) {
+            if (isSet(alwaysLast) && first[propertyName].indexOf(alwaysLast) > -1) {
                 return 1;
             }
-            if (second[propertyName].indexOf(alwaysLast) > -1) {
+            if (isSet(alwaysLast) && second[propertyName].indexOf(alwaysLast) > -1) {
                 return -1;
             }
             for (var i = 0; true; i++) {
