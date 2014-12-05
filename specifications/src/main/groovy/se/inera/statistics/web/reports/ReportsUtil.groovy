@@ -172,4 +172,8 @@ class ReportsUtil {
         return get("/api/getDegreeOfSickLeaveStatistics")
     }
 
+    def getReportLakareAlderOchKonInloggad(String user) {
+        return get("/api/verksamhet/" + getVardgivareForUser(user) + "/getCasesPerDoctorAgeAndGenderStatistics")
+    }
+
 }
