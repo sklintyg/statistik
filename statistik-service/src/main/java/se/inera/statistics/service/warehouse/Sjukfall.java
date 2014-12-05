@@ -49,7 +49,7 @@ public class Sjukfall {
     }
 
     public Kon getKon() {
-        return kon == 0 ? Kon.Female : Kon.Male;
+        return Kon.byNumberRepresentation(kon);
     }
 
     /**
