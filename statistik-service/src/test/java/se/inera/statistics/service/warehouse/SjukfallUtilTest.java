@@ -1,8 +1,11 @@
 package se.inera.statistics.service.warehouse;
 
+import com.google.common.base.Function;
+import com.google.common.collect.Lists;
 import org.joda.time.LocalDate;
 import org.junit.Test;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 
@@ -47,8 +50,12 @@ public class SjukfallUtilTest {
         assertEquals(2, sjukfall.getIntygCount());
         assertEquals(20, sjukfall.getRealDays());
         assertEquals(2, sjukfall.getLakare().size());
-        assertTrue(sjukfall.getLakare().contains(1));
-        assertTrue(sjukfall.getLakare().contains(2));
+        assertArrayEquals(new Object[]{1, 2}, Lists.transform(new ArrayList<>(sjukfall.getLakare()), new Function<Lakare, Integer>() {
+            @Override
+            public Integer apply(Lakare lakare) {
+                return lakare.getId();
+            }
+        }).toArray());
     }
 
     @Test

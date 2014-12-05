@@ -21,7 +21,7 @@ public class Sjukfall {
     private int diagnosavsnitt;
     private int diagnoskategori;
     private int sjukskrivningsgrad;
-    private Set<Integer> lakare = new HashSet<>();
+    private Set<Lakare> lakare = new HashSet<>();
     private Sjukfall extending;
 
     public Sjukfall(Fact line) {
@@ -36,7 +36,7 @@ public class Sjukfall {
         diagnoskategori = line.getDiagnoskategori();
         sjukskrivningsgrad = line.getSjukskrivningsgrad();
         lan = line.getLan();
-        lakare.add(line.getLakarid());
+        lakare.add(new Lakare (line.getLakarid(), Kon.byNumberRepresentation(line.getLakarkon()), line.getLakaralder()));
     }
 
     public Sjukfall(Sjukfall previous, Fact line) {
@@ -147,7 +147,7 @@ public class Sjukfall {
         return String.format("%1$02d", lan);
     }
 
-    public Set<Integer> getLakare() {
+    public Set<Lakare> getLakare() {
         return lakare;
     }
 
