@@ -78,7 +78,7 @@ public class WarehouseService {
     }
 
     public SimpleKonResponse<SimpleKonDataRow> getCasesPerDoctorAgeAndGender(SjukfallUtil.FactFilter filter, Range range, String vardgivarId) {
-        return getAldersgrupper(filter, range, vardgivarId); //TODO This is just a "mock" until a real implementation exists
+        return sjukfallQuery.getSjukfallPerLakaresAlderOchKon(warehouse.get(vardgivarId), filter, range, range.getMonths(), 1);
     }
 
 }

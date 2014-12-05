@@ -2,10 +2,10 @@ package se.inera.statistics.service.warehouse.query;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Predicate;
-import com.google.common.collect.HashMultiset;
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Iterables;
-import com.google.common.collect.Multiset;
-import com.google.common.collect.Multisets;
+import com.google.common.collect.Multimap;
 import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -15,6 +15,7 @@ import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.SimpleKonDataRow;
 import se.inera.statistics.service.report.model.SimpleKonResponse;
+import se.inera.statistics.service.report.util.Ranges;
 import se.inera.statistics.service.report.util.ReportUtil;
 import se.inera.statistics.service.warehouse.Aisle;
 import se.inera.statistics.service.warehouse.Fact;
@@ -24,12 +25,18 @@ import se.inera.statistics.service.warehouse.Warehouse;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import static se.inera.statistics.service.report.util.Ranges.range;
+
 @Component
 public final class SjukfallQuery {
+
+    public static final Ranges RANGES_LAKARES_ALDER_OCH_KON = new Ranges(range("under 30 år", 30), range("30-39 år", 40), range("40-49 år", 50), range("50-59 år", 60), range("över 60 år", Integer.MAX_VALUE));
 
     @Autowired
     private LakareManager lakareManager;
@@ -67,28 +74,54 @@ public final class SjukfallQuery {
         return count;
     }
 
-    public SimpleKonResponse<SimpleKonDataRow> getSjukfallPerLakare(String vardgivarId, Aisle aisle, Predicate<Fact> filter, Range range, int perioder, int periodlangd) {
-        Collection<Sjukfall> sjukfalls = SjukfallUtil.active(range, aisle, filter);
-        List<Lakare> allLakaresForVardgivare = lakareManager.getLakares(vardgivarId);
-        // Two counters for sjukfall per sex
-        final Multiset<Lakare> femaleSjukfallPerLakare = HashMultiset.create();
-        final Multiset<Lakare> maleSjukfallPerLakare = HashMultiset.create();
-
-        for (Sjukfall sjukfall : sjukfalls) {
-            for (Integer lakarId : sjukfall.getLakare()) {
-                Lakare lakare = getLakare(allLakaresForVardgivare, lakarId);
-                if (lakare != null) {
-                    if (sjukfall.getKon() == Kon.Female) {
-                        femaleSjukfallPerLakare.add(lakare);
-                    } else {
-                        maleSjukfallPerLakare.add(lakare);
-                    }
+    public SimpleKonResponse<SimpleKonDataRow> getSjukfallPerLakaresAlderOchKon(Aisle aisle, Predicate<Fact> filter, Range range, int perioder, int periodlangd) {
+        final Multimap<Kon, String> lakarenAlderOchKonForSjukfalls = getLakarensAlderOchKonForAllSjukfall(aisle, filter, range);
+        List<SimpleKonDataRow> result = new ArrayList<>();
+        final Iterator<Ranges.Range> ranges = RANGES_LAKARES_ALDER_OCH_KON.iterator();
+        while (ranges.hasNext()) {
+            Ranges.Range ageRange = ranges.next();
+            for (Kon kon : Kon.values()) {
+                final int femaleCount = Collections.frequency(lakarenAlderOchKonForSjukfalls.get(Kon.Female), String.valueOf(ageRange.getCutoff()) + kon);
+                final int maleCount = Collections.frequency(lakarenAlderOchKonForSjukfalls.get(Kon.Male), String.valueOf(ageRange.getCutoff()) + kon);
+                if (femaleCount + maleCount > 0) {
+                    result.add(new SimpleKonDataRow(getLakareAlderOchKonTitle(kon, ageRange), femaleCount, maleCount));
                 }
             }
         }
 
+        return new SimpleKonResponse<>(result, perioder * periodlangd);
+    }
+
+    private String getLakareAlderOchKonTitle(Kon kon, Ranges.Range ageRange) {
+        return getLakareAlderOchKonTitleKonPart(kon) + " " + ageRange.getName();
+    }
+
+    private String getLakareAlderOchKonTitleKonPart(Kon kon) {
+        switch (kon) {
+            case Female: return "Kvinnlig läkare";
+            case Male: return "Manlig läkare";
+            case Unknown: return "";
+            default: throw new IllegalArgumentException("Unhandled type: " + kon);
+        }
+    }
+
+    private Multimap<Kon, String> getLakarensAlderOchKonForAllSjukfall(Aisle aisle, Predicate<Fact> filter, Range range) {
+        Collection<Sjukfall> sjukfalls = SjukfallUtil.active(range, aisle, filter);
+        final Multimap<Kon, String> sjukfallPerLakare = ArrayListMultimap.create();
+        for (Sjukfall sjukfall : sjukfalls) {
+            for (se.inera.statistics.service.warehouse.Lakare lakare : sjukfall.getLakare()) {
+                final Ranges.Range ageRange = RANGES_LAKARES_ALDER_OCH_KON.rangeFor(lakare.getAge());
+                sjukfallPerLakare.put(sjukfall.getKon(), String.valueOf(ageRange.getCutoff()) + lakare.getKon());
+            }
+        }
+        return sjukfallPerLakare;
+    }
+
+    public SimpleKonResponse<SimpleKonDataRow> getSjukfallPerLakare(String vardgivarId, Aisle aisle, Predicate<Fact> filter, Range range, int perioder, int periodlangd) {
+        final Multimap<Kon, Lakare> sjukfallPerLakare = getAllSjukfallPerLakare(vardgivarId, aisle, filter, range);
+
         // All lakares who have male or female sjukfalls
-        Set<Lakare> allLakaresWithSjukfall = Multisets.union(femaleSjukfallPerLakare, maleSjukfallPerLakare).elementSet();
+        Collection<Lakare> allLakaresWithSjukfall = sjukfallPerLakare.values();
         final Set<String> duplicateNames = findDuplicates(allLakaresWithSjukfall);
 
         List<SimpleKonDataRow> result = new ArrayList<>();
@@ -97,14 +130,32 @@ public final class SjukfallQuery {
             if (duplicateNames.contains(lakarNamn)) {
                 lakarNamn = lakarNamn + " " + lakare.getLakareId();
             }
-            result.add(new SimpleKonDataRow(lakarNamn, femaleSjukfallPerLakare.count(lakare), maleSjukfallPerLakare.count(lakare)));
+            final int femaleCount = Collections.frequency(sjukfallPerLakare.get(Kon.Female), lakare);
+            final int maleCount = Collections.frequency(sjukfallPerLakare.get(Kon.Male), lakare);
+            result.add(new SimpleKonDataRow(lakarNamn, femaleCount, maleCount));
         }
 
         return new SimpleKonResponse<>(result, perioder * periodlangd);
     }
 
+    private Multimap<Kon, Lakare> getAllSjukfallPerLakare(String vardgivarId, Aisle aisle, Predicate<Fact> filter, Range range) {
+        Collection<Sjukfall> sjukfalls = SjukfallUtil.active(range, aisle, filter);
+        List<Lakare> allLakaresForVardgivare = lakareManager.getLakares(vardgivarId);
+
+        final Multimap<Kon, Lakare> sjukfallPerLakare = HashMultimap.create();
+        for (Sjukfall sjukfall : sjukfalls) {
+            for (se.inera.statistics.service.warehouse.Lakare warehouseLakare : sjukfall.getLakare()) {
+                Lakare lakare = getLakare(allLakaresForVardgivare, warehouseLakare.getId());
+                if (lakare != null) {
+                    sjukfallPerLakare.put(sjukfall.getKon(), lakare);
+                }
+            }
+        }
+        return sjukfallPerLakare;
+    }
+
     // Collect a list of all "läkar-namn" that exist more than once in the set of lakare
-    private Set<String> findDuplicates(Set<Lakare> lakares) {
+    private Set<String> findDuplicates(Collection<Lakare> lakares) {
         Set<String> duplicates = new HashSet<>();
         Set<String> seenLakarNames = new HashSet<>();
         for (Lakare lakare : lakares) {
