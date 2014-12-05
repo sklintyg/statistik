@@ -8,6 +8,7 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
 
 import static org.junit.Assert.*;
 import static se.inera.statistics.service.report.model.Kon.Female;
@@ -49,13 +50,15 @@ public class SjukfallUtilTest {
         Sjukfall sjukfall = sjukfalls.iterator().next();
         assertEquals(2, sjukfall.getIntygCount());
         assertEquals(20, sjukfall.getRealDays());
-        assertEquals(2, sjukfall.getLakare().size());
-        assertArrayEquals(new Object[]{1, 2}, Lists.transform(new ArrayList<>(sjukfall.getLakare()), new Function<Lakare, Integer>() {
+        final List<Integer> lakare = Lists.transform(new ArrayList<>(sjukfall.getLakare()), new Function<Lakare, Integer>() {
             @Override
             public Integer apply(Lakare lakare) {
                 return lakare.getId();
             }
-        }).toArray());
+        });
+        assertEquals(2, lakare.size());
+        assertTrue(lakare.contains(1));
+        assertTrue(lakare.contains(2));
     }
 
     @Test
