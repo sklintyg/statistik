@@ -3,9 +3,11 @@ package se.inera.statistics.service.warehouse.query;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Predicate;
 import com.google.common.collect.ArrayListMultimap;
-import com.google.common.collect.HashMultimap;
+import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Multimap;
+import com.google.common.collect.Multiset;
+import com.google.common.collect.Multisets;
 import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -118,10 +120,27 @@ public final class SjukfallQuery {
     }
 
     public SimpleKonResponse<SimpleKonDataRow> getSjukfallPerLakare(String vardgivarId, Aisle aisle, Predicate<Fact> filter, Range range, int perioder, int periodlangd) {
-        final Multimap<Kon, Lakare> sjukfallPerLakare = getAllSjukfallPerLakare(vardgivarId, aisle, filter, range);
+        Collection<Sjukfall> sjukfalls = SjukfallUtil.active(range, aisle, filter);
+        List<Lakare> allLakaresForVardgivare = lakareManager.getLakares(vardgivarId);
+        // Two counters for sjukfall per sex
+        final Multiset<Lakare> femaleSjukfallPerLakare = HashMultiset.create();
+        final Multiset<Lakare> maleSjukfallPerLakare = HashMultiset.create();
+
+        for (Sjukfall sjukfall : sjukfalls) {
+            for (se.inera.statistics.service.warehouse.Lakare warehousLakare : sjukfall.getLakare()) {
+                Lakare lakare = getLakare(allLakaresForVardgivare, warehousLakare.getId());
+                if (lakare != null) {
+                    if (sjukfall.getKon() == Kon.Female) {
+                        femaleSjukfallPerLakare.add(lakare);
+                    } else {
+                        maleSjukfallPerLakare.add(lakare);
+                    }
+                }
+            }
+        }
 
         // All lakares who have male or female sjukfalls
-        Collection<Lakare> allLakaresWithSjukfall = sjukfallPerLakare.values();
+        Set<Lakare> allLakaresWithSjukfall = Multisets.union(femaleSjukfallPerLakare, maleSjukfallPerLakare).elementSet();
         final Set<String> duplicateNames = findDuplicates(allLakaresWithSjukfall);
 
         List<SimpleKonDataRow> result = new ArrayList<>();
@@ -130,28 +149,10 @@ public final class SjukfallQuery {
             if (duplicateNames.contains(lakarNamn)) {
                 lakarNamn = lakarNamn + " " + lakare.getLakareId();
             }
-            final int femaleCount = Collections.frequency(sjukfallPerLakare.get(Kon.Female), lakare);
-            final int maleCount = Collections.frequency(sjukfallPerLakare.get(Kon.Male), lakare);
-            result.add(new SimpleKonDataRow(lakarNamn, femaleCount, maleCount));
+            result.add(new SimpleKonDataRow(lakarNamn, femaleSjukfallPerLakare.count(lakare), maleSjukfallPerLakare.count(lakare)));
         }
 
         return new SimpleKonResponse<>(result, perioder * periodlangd);
-    }
-
-    private Multimap<Kon, Lakare> getAllSjukfallPerLakare(String vardgivarId, Aisle aisle, Predicate<Fact> filter, Range range) {
-        Collection<Sjukfall> sjukfalls = SjukfallUtil.active(range, aisle, filter);
-        List<Lakare> allLakaresForVardgivare = lakareManager.getLakares(vardgivarId);
-
-        final Multimap<Kon, Lakare> sjukfallPerLakare = HashMultimap.create();
-        for (Sjukfall sjukfall : sjukfalls) {
-            for (se.inera.statistics.service.warehouse.Lakare warehouseLakare : sjukfall.getLakare()) {
-                Lakare lakare = getLakare(allLakaresForVardgivare, warehouseLakare.getId());
-                if (lakare != null) {
-                    sjukfallPerLakare.put(sjukfall.getKon(), lakare);
-                }
-            }
-        }
-        return sjukfallPerLakare;
     }
 
     // Collect a list of all "läkar-namn" that exist more than once in the set of lakare
