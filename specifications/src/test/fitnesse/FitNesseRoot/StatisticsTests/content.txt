@@ -24,7 +24,8 @@ Default:
 Vårdgivarnivå för inloggad användare: false
 Arbetsförmåga för intyg: 0
 
-
+Övrigt:
+Möjliga värden för kön på läkare: MALE, FEMALE, UNKNOWN
 
 !*> '''Variables Defined'''
 !define TEST_SYSTEM {slim}

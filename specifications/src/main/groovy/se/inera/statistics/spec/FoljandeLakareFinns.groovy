@@ -16,7 +16,7 @@ class FoljandeLakareFinns {
     public void setKommentar(String kommentar) {}
 
     public void execute() {
-        def hsaKon = HsaKon.valueOf(kön)
+        def hsaKon = HsaKon.valueOf(kön.toUpperCase())
         def personal = new Personal(id, hsaKon, ålder, befattning)
         reportsUtil.insertPersonal(personal)
     }

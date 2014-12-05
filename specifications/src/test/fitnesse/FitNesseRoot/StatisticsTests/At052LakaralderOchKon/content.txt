@@ -13,10 +13,15 @@ Sjukfallet räknas 2 ggr i gruppen "Manlig läkare 40-49 år".
 
 | script | troskel varde | 1 |
 
+| Foljande lakare finns |
+| id      | kön  | ålder |
+| lakare1 | MALE | 44    |
+| lakare2 | MALE | 44    |
+
 | Enbart foljande intyg finns |
-| personnr      | start      | slut       | enhet  | läkarpersonnr | | kommentar |
-| 19880701-0015 | 2014-06-01 | 2014-06-15 | enhet1 | 19700101-0011 | |
-| 19880701-0015 | 2014-06-16 | 2014-07-30 | enhet1 | 19700102-0010 | |
+| personnr      | start      | slut       | enhet  | läkare  | kommentar |
+| 19880701-0015 | 2014-06-01 | 2014-06-15 | enhet1 | lakare1 |           |
+| 19880701-0015 | 2014-06-16 | 2014-07-30 | enhet1 | lakare2 |           |
 
 
 !3 Då gäller:
