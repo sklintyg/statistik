@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import org.joda.time.LocalDate;
 import org.junit.Test;
 import se.inera.statistics.service.JSONSource;
+import se.inera.statistics.service.report.model.Kon;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
@@ -89,7 +90,7 @@ public class DocumentHelperTest {
 
         String kon = ConversionHelper.extractKon(personId);
 
-        assertEquals("man", kon);
+        assertEquals(Kon.Male.toString(), kon);
     }
 
     @Test
@@ -98,7 +99,7 @@ public class DocumentHelperTest {
 
         String kon = ConversionHelper.extractKon(personId);
 
-        assertEquals("kvinna", kon);
+        assertEquals(Kon.Female.toString(), kon);
     }
 
     @Test
