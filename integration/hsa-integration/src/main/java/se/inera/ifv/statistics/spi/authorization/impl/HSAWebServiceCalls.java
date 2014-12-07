@@ -25,7 +25,19 @@ import org.w3.wsaddressing10.AttributedURIType;
 
 import se.inera.ifv.hsaws.v3.HsaWsFault;
 import se.inera.ifv.hsaws.v3.HsaWsResponderInterface;
-import se.inera.ifv.hsawsresponder.v3.*;
+import se.inera.ifv.hsawsresponder.v3.GetMiuForPersonResponseType;
+import se.inera.ifv.hsawsresponder.v3.GetMiuForPersonType;
+import se.inera.ifv.hsawsresponder.v3.GetStatisticsCareGiverResponseType;
+import se.inera.ifv.hsawsresponder.v3.GetStatisticsCareGiverType;
+import se.inera.ifv.hsawsresponder.v3.GetStatisticsHsaUnitResponseType;
+import se.inera.ifv.hsawsresponder.v3.GetStatisticsHsaUnitType;
+import se.inera.ifv.hsawsresponder.v3.GetStatisticsNamesResponseType;
+import se.inera.ifv.hsawsresponder.v3.GetStatisticsNamesType;
+import se.inera.ifv.hsawsresponder.v3.GetStatisticsPersonResponseType;
+import se.inera.ifv.hsawsresponder.v3.GetStatisticsPersonType;
+import se.inera.ifv.hsawsresponder.v3.HsaWsFaultType;
+import se.inera.ifv.hsawsresponder.v3.PingResponseType;
+import se.inera.ifv.hsawsresponder.v3.PingType;
 
 public class HSAWebServiceCalls {
 

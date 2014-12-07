@@ -7,8 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import se.inera.statistics.service.hsa.HsaDataInjectable;
-import se.inera.statistics.service.hsa.HsaKon;
-import se.inera.statistics.service.processlog.LogConsumerImpl;
 import se.inera.statistics.service.processlog.Receiver;
 import se.inera.statistics.service.scheduler.LogJob;
 import se.inera.statistics.service.warehouse.NationellData;
