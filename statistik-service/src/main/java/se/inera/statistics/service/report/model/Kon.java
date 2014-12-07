@@ -39,7 +39,7 @@ public enum Kon {
                 return kon;
             }
         }
-        throw new IllegalArgumentException("Unknown number for Kon");
+        throw new IllegalArgumentException("Unknown number for Kon: " + number);
     }
 
 }
