@@ -41,6 +41,7 @@ class EnbartFoljandeIntygFinns {
         vardgivare = ReportsUtil.VARDGIVARE
         arbetsförmåga = 0
         arbetsförmåga2 = ""
+        läkare = "Personal HSA-ID"
     }
 
     public void execute() {
