@@ -11,6 +11,7 @@ import se.inera.statistics.service.report.model.SjukskrivningsgradResponse;
 import se.inera.statistics.service.report.model.VerksamhetOverviewResponse;
 import se.inera.statistics.service.report.util.ReportUtil;
 import se.inera.statistics.service.warehouse.Fact;
+import se.inera.statistics.service.warehouse.SjukfallUtil;
 import se.inera.statistics.service.warehouse.Warehouse;
 import se.inera.statistics.service.warehouse.query.AldersgruppQuery;
 import se.inera.statistics.service.warehouse.query.DiagnosgruppQuery;
@@ -81,7 +82,7 @@ public class WarehouseService {
         return sjukfallQuery.getSjukfallPerLakare(vardgivarId, warehouse.get(vardgivarId), filter, range, range.getMonths(), 1);
     }
 
-    public SimpleKonResponse<SimpleKonDataRow> getCasesPerDoctorAgeAndGender(SjukfallUtil.FactFilter filter, Range range, String vardgivarId) {
+    public SimpleKonResponse<SimpleKonDataRow> getCasesPerDoctorAgeAndGender(Predicate<Fact> filter, Range range, String vardgivarId) {
         return LakaresAlderOchKonQuery.getSjukfallPerLakaresAlderOchKon(warehouse.get(vardgivarId), filter, range, range.getMonths(), 1);
     }
 
