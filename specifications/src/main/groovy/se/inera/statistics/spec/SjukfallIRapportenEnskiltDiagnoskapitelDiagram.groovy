@@ -4,7 +4,7 @@ class SjukfallIRapportenEnskiltDiagnoskapitelDiagram extends DiagnosRapport {
 
     String valtDiagnoskapitel
 
-    public void execute() {
+    public void doExecute() {
         def report = getReportEnskiltDiagnoskapitel(valtDiagnoskapitel)
         executeDiagram(report)
     }

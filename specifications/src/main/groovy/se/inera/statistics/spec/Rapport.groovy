@@ -4,11 +4,21 @@ import se.inera.statistics.web.reports.ReportsUtil
 
 abstract class Rapport {
 
-    private String inloggadSom;
-    boolean inloggad;
+    String inloggadSom
+    boolean inloggad
     int män
     int kvinnor
+    int totalt
     boolean vårdgivarnivå
+
+    ReportsUtil reportsUtil = new ReportsUtil()
+
+    public final void execute() {
+        doLoginIfRequested()
+        doExecute()
+    }
+
+    abstract void doExecute()
 
     int män() {
         return män
@@ -18,24 +28,33 @@ abstract class Rapport {
         return kvinnor
     }
 
+    int totalt() {
+        return totalt
+    }
+
     void setVårdgivarnivå(boolean vårdgivarnivå) {
         this.vårdgivarnivå = vårdgivarnivå
     }
 
-    ReportsUtil reportsUtil = new ReportsUtil()
-
     public void reset() {
+        inloggadSom = null
         inloggad = false
+        totalt = -1
+        män = -1
+        kvinnor = -1
     }
 
     void setKommentar(String kommentar) {
     }
 
     void setInloggadSom(String inloggadSom) {
+        this.inloggadSom = inloggadSom
+    }
+
+    void doLoginIfRequested() {
         if (inloggadSom != null && !inloggadSom.isEmpty()) {
-            inloggad = true
             reportsUtil.login(inloggadSom, vårdgivarnivå)
-            this.inloggadSom = inloggadSom
+            inloggad = true
         }
     }
 

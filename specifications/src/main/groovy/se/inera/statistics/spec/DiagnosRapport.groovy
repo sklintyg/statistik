@@ -15,26 +15,34 @@ abstract class DiagnosRapport extends Rapport {
     }
 
     public void executeTabell(report) {
-        def index = report.tableData.headers[0].findIndexOf { item -> item.text.contains(grupp.toUpperCase()) }
+        def index = report.tableData.headers[0].findIndexOf { item -> item.text.contains(grupp) }
         def row = report.tableData.rows.find { currentRow -> currentRow.name == (månad + " " + år)  }
         def womenIndex = ((index - 2) * 2) + 1
         def menIndex = womenIndex + 1
+        totalt = row.data[0]
         kvinnor = row.data[womenIndex]
         män = row.data[menIndex]
     }
 
     def getReportEnskiltDiagnoskapitel(kapitel) {
         if (inloggad) {
-            return reportsUtil.getReportEnskiltDiagnoskapitelInloggad(kapitel);
+            return reportsUtil.getReportEnskiltDiagnoskapitelInloggad(kapitel, inloggadSom);
         }
         return reportsUtil.getReportEnskiltDiagnoskapitel(kapitel);
     }
 
     def getReportDiagnosgrupp() {
         if (inloggad) {
-            return reportsUtil.getReportDiagnosgruppInloggad();
+            return reportsUtil.getReportDiagnosgruppInloggad(inloggadSom);
         }
         return reportsUtil.getReportDiagnosgrupp();
+    }
+
+    def getReportSjukskrivningsgrad() {
+        if (inloggad) {
+            return reportsUtil.getReportSjukskrivningsgradInloggad(inloggadSom);
+        }
+        return reportsUtil.getReportSjukskrivningsgrad();
     }
 
 }

@@ -14,6 +14,7 @@ import se.inera.statistics.service.warehouse.Fact;
 import se.inera.statistics.service.warehouse.Warehouse;
 import se.inera.statistics.service.warehouse.query.AldersgruppQuery;
 import se.inera.statistics.service.warehouse.query.DiagnosgruppQuery;
+import se.inera.statistics.service.warehouse.query.LakaresAlderOchKonQuery;
 import se.inera.statistics.service.warehouse.query.OverviewQuery;
 import se.inera.statistics.service.warehouse.query.RangeNotFoundException;
 import se.inera.statistics.service.warehouse.query.SjukfallQuery;
@@ -78,6 +79,10 @@ public class WarehouseService {
 
     public SimpleKonResponse<SimpleKonDataRow> getCasesPerLakare(Predicate<Fact> filter, Range range, String vardgivarId) {
         return sjukfallQuery.getSjukfallPerLakare(vardgivarId, warehouse.get(vardgivarId), filter, range, range.getMonths(), 1);
+    }
+
+    public SimpleKonResponse<SimpleKonDataRow> getCasesPerDoctorAgeAndGender(SjukfallUtil.FactFilter filter, Range range, String vardgivarId) {
+        return LakaresAlderOchKonQuery.getSjukfallPerLakaresAlderOchKon(warehouse.get(vardgivarId), filter, range, range.getMonths(), 1);
     }
 
 }

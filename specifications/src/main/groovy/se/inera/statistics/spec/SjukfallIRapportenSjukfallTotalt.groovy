@@ -1,22 +1,16 @@
 package se.inera.statistics.spec
 
-class SjukfallIRapportenSjukfallTotalt extends Rapport {
+class SjukfallIRapportenSjukfallTotalt extends SimpleDetailsReport {
 
-    String år;
-    String månad;
-
-    public void execute() {
-        def report = getReport()
-        def row = report.tableData.rows.find { currentRow -> currentRow.name == (månad + " " + år) }
-        kvinnor = row.data[1]
-        män = row.data[2]
+    @Override
+    public void doExecute() {
+        def report = getReportSjukfallTotalt()
+        executeTabell(report)
     }
 
-    private Object getReport() {
-        if (inloggad) {
-            return reportsUtil.getReportAntalIntygInloggad();
-        }
-        return reportsUtil.getReportAntalIntyg();
+    @Override
+    def getRowNameMatcher() {
+        return månad + " " + år
     }
 
 }

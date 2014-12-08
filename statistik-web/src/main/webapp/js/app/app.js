@@ -154,6 +154,12 @@ var app = angular.module('StatisticsApp', [ 'ngRoute', 'ngCookies', 'ngSanitize'
             controllerAs: 'VerksamhetCasesPerLakareCtrl',
             resolve: { config: app.casesPerLakareConfig },
             title: 'Antal sjukfall per läkare'
+        }).when('/verksamhet/:verksamhetId/sjukfallperlakaresalderochkon', {
+            templateUrl: 'views/detailsView.html',
+            controller: 'columnChartDetailsViewCtrl',
+            controllerAs: 'VerksamhetLakaresAlderOchKonCtrl',
+            resolve: { config: app.casesPerLakaresAlderOchKonConfig },
+            title: 'Sjukfall per läkarens ålder och kön'
         }).when('/om/tjansten', {
             templateUrl: 'views/about/about.html',
             controllerAs: 'AboutServiceCtrl',

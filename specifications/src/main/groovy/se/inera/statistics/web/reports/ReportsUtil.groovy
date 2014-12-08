@@ -6,11 +6,13 @@ import groovyx.net.http.RESTClient
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import se.inera.statistics.spec.Intyg
+import se.inera.testsupport.Personal
 
 class ReportsUtil {
 
     private static final Logger LOG = LoggerFactory.getLogger(ReportsUtil.class);
     public static final VARDGIVARE = "vg1"
+    public static final VARDGIVARE3 = "vg3"
 
     def statistik = new RESTClient('http://localhost:8080/', ContentType.JSON)
 
@@ -39,6 +41,12 @@ class ReportsUtil {
         assert response.status == 200
     }
 
+    def insertPersonal(Personal personal) {
+        def builder = new JsonBuilder(personal)
+        def response = statistik.put(path: '/api/testsupport/personal', body: builder.toString())
+        assert response.status == 200
+    }
+
     def processIntyg() {
         def response = statistik.post(path: '/api/testsupport/processIntyg')
         assert response.status == 200
@@ -48,8 +56,16 @@ class ReportsUtil {
         return get("/api/getNumberOfCasesPerMonth")
     }
 
-    def getReportAntalIntygInloggad() {
-        return get("/api/verksamhet/" + VARDGIVARE + "/getNumberOfCasesPerMonth")
+    def getReportAntalIntygInloggad(String user) {
+        return get("/api/verksamhet/" + getVardgivareForUser(user) + "/getNumberOfCasesPerMonth")
+    }
+
+    def getReportLangaSjukfallInloggad(String user) {
+        return get("/api/verksamhet/" + getVardgivareForUser(user) + "/getLongSickLeavesData")
+    }
+
+    def getReportSjukfallPerEnhet(String user) {
+        return get("/api/verksamhet/" + getVardgivareForUser(user) + "/getNumberOfCasesPerEnhet")
     }
 
     def getReportEnskiltDiagnoskapitel(String kapitel) {
@@ -62,16 +78,34 @@ class ReportsUtil {
         return response.data;
     }
 
-    def getReportEnskiltDiagnoskapitelInloggad(String kapitel) {
-        return get("/api/verksamhet/" + VARDGIVARE + "/getDiagnosavsnittstatistik/" + kapitel)
+    def getReportEnskiltDiagnoskapitelInloggad(String kapitel, String user) {
+        return get("/api/verksamhet/" + getVardgivareForUser(user) + "/getDiagnosavsnittstatistik/" + kapitel)
     }
 
-    def getReportDiagnosgruppInloggad() {
-        return get("/api/verksamhet/" + VARDGIVARE + "/getDiagnoskapitelstatistik")
+    def getReportDiagnosgruppInloggad(String user) {
+        return get("/api/verksamhet/" + getVardgivareForUser(user) + "/getDiagnoskapitelstatistik")
     }
 
     def getReportDiagnosgrupp() {
         return get("/api/getDiagnoskapitelstatistik")
+    }
+
+    def getVardgivareForUser(String user) {
+        switch (user) {
+            case "user1": return VARDGIVARE;
+            case "user2": return VARDGIVARE;
+            case "user3": return VARDGIVARE3;
+            default: throw new RuntimeException("Unknown user: " + user)
+        }
+    }
+
+    def getVardgivareForEnhet(String enhet, String defaultVardgivare) {
+        switch (enhet) {
+            case "enhet1": return VARDGIVARE;
+            case "enhet2": return VARDGIVARE;
+            case "enhet3": return VARDGIVARE3;
+            default: return defaultVardgivare;
+        }
     }
 
     def login(String user, boolean vardgivarniva) {
@@ -81,7 +115,7 @@ class ReportsUtil {
                 "\"efternamn\":\"Modig\"," +
                 "\"hsaId\":\"user1\"," +
                 "\"enhetId\":\"enhet1\"," +
-                "\"vardgivarId\":\"" + VARDGIVARE + "\"," +
+                "\"vardgivarId\":\"" + getVardgivareForUser(user) + "\"," +
                 "\"vardgivarniva\":\"" + vardgivarniva + "\"" +
                 "}"
         logins["user2"] = "{" +
@@ -89,12 +123,57 @@ class ReportsUtil {
                 "\"efternamn\":\"Modig\"," +
                 "\"hsaId\":\"user2\"," +
                 "\"enhetId\":\"enhet1\"," +
-                "\"vardgivarId\":\"" + VARDGIVARE + "\"," +
+                "\"vardgivarId\":\"" + getVardgivareForUser(user) + "\"," +
+                "\"vardgivarniva\":\"" + vardgivarniva + "\"" +
+                "}"
+        logins["user3"] = "{" +
+                "\"fornamn\":\"Anna\"," +
+                "\"efternamn\":\"Modig\"," +
+                "\"hsaId\":\"user3\"," +
+                "\"enhetId\":\"enhet3\"," +
+                "\"vardgivarId\":\"" + getVardgivareForUser(user) + "\"," +
                 "\"vardgivarniva\":\"" + vardgivarniva + "\"" +
                 "}"
         def loginData = logins[user]
         def response = statistik.post(path: '/fake', body: [ userJsonDisplay:loginData ], requestContentType : "application/x-www-form-urlencoded" )
-//        assert response.status == 200
+        assert response.status == 302
+        System.out.println("Using logindata: " + loginData)
+    }
+
+    def getReportAldersgrupp() {
+        return get("/api/getAgeGroupsStatistics")
+    }
+
+    def getReportAldersgruppInloggad(String user) {
+        return get("/api/verksamhet/" + getVardgivareForUser(user) + "/getAgeGroupsStatistics")
+    }
+
+    def getReportSjukskrivningslangd() {
+        return get("/api/getSickLeaveLengthData")
+    }
+
+    def getReportSjukskrivningslangdInloggad(String user) {
+        return get("/api/verksamhet/" + getVardgivareForUser(user) + "/getSickLeaveLengthData")
+    }
+
+    def getReportAldersgruppPagaendeInloggad(String user) {
+        return get("/api/verksamhet/" + getVardgivareForUser(user) + "/getAgeGroupsCurrentStatistics")
+    }
+
+    def getReportSjukskrivningslangdPagaendeInloggad(String user) {
+        return get("/api/verksamhet/" + getVardgivareForUser(user) + "/getSickLeaveLengthCurrentData")
+    }
+
+    def getReportSjukskrivningsgradInloggad(String user) {
+        return get("/api/verksamhet/" + getVardgivareForUser(user) + "/getDegreeOfSickLeaveStatistics")
+    }
+
+    def getReportSjukskrivningsgrad() {
+        return get("/api/getDegreeOfSickLeaveStatistics")
+    }
+
+    def getReportLakareAlderOchKonInloggad(String user) {
+        return get("/api/verksamhet/" + getVardgivareForUser(user) + "/getCasesPerDoctorAgeAndGenderStatistics")
     }
 
 }

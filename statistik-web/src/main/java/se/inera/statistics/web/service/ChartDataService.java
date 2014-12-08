@@ -38,7 +38,6 @@ import se.inera.statistics.service.report.util.Icd10;
 import se.inera.statistics.service.report.util.ReportUtil;
 import se.inera.statistics.service.warehouse.NationellData;
 import se.inera.statistics.service.warehouse.NationellOverviewData;
-import se.inera.statistics.web.model.AgeGroupsData;
 import se.inera.statistics.web.model.CasesPerCountyData;
 import se.inera.statistics.web.model.DualSexStatisticsData;
 import se.inera.statistics.web.model.SickLeaveLengthData;
@@ -87,7 +86,7 @@ public class ChartDataService {
     private volatile DualSexStatisticsData diagnosgrupper;
     private volatile Map<String, DualSexStatisticsData> diagnoskapitel = new HashMap<>();
     private volatile OverviewData overview;
-    private volatile AgeGroupsData aldersgrupper;
+    private volatile SimpleDetailsData aldersgrupper;
     private volatile DualSexStatisticsData sjukskrivningsgrad;
     private volatile SickLeaveLengthData sjukfallslangd;
     private volatile CasesPerCountyData sjukfallPerLan;
@@ -116,7 +115,7 @@ public class ChartDataService {
     public void buildNumberOfCasesPerMonth() {
         final Range range = new Range(EIGHTEEN_MONTHS);
         SimpleKonResponse<SimpleKonDataRow> casesPerMonth = data.getCasesPerMonth(range);
-        numberOfCasesPerMonth = new SimpleDualSexConverter().convert(casesPerMonth, range);
+        numberOfCasesPerMonth = new PeriodConverter().convert(casesPerMonth, range);
     }
 
     public void buildDiagnosgrupper() {
@@ -327,8 +326,8 @@ public class ChartDataService {
      */
     @GET
     @Path("getAgeGroupsStatistics")
-    @Produces({ MediaType.APPLICATION_JSON })
-    public AgeGroupsData getAgeGroupsStatistics() {
+    @Produces({MediaType.APPLICATION_JSON })
+    public SimpleDetailsData getAgeGroupsStatistics() {
         LOG.info("Calling getAgeGroupsStatistics for national");
         return aldersgrupper;
     }

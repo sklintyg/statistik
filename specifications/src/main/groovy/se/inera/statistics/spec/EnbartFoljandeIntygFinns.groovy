@@ -12,14 +12,24 @@ class EnbartFoljandeIntygFinns {
 
     private static int intygIdCounter = 1;
 
-    private def personnr
-    private def diagnoskod
-    private def start
-    private def slut
-    private def enhet
-    private def vardgivare
+    def personnr
+    def diagnoskod
+    def start
+    def slut
+    def enhet
+    def vardgivare
+    def arbetsförmåga
+    String arbetsförmåga2
+    def start2
+    def slut2
+    def läkare
 
     public void setKommentar(String kommentar) {}
+
+    void setEnhet(enhet) {
+        this.enhet = enhet
+        this.vardgivare = reportsUtil.getVardgivareForEnhet(enhet, ReportsUtil.VARDGIVARE)
+    }
 
     public void beginTable() {
         reportsUtil.clearDatabase()
@@ -29,6 +39,9 @@ class EnbartFoljandeIntygFinns {
         personnr = "19790407-1295"
         diagnoskod = "A01"
         vardgivare = ReportsUtil.VARDGIVARE
+        arbetsförmåga = 0
+        arbetsförmåga2 = ""
+        läkare = "Personal HSA-ID"
     }
 
     public void execute() {
@@ -39,6 +52,8 @@ class EnbartFoljandeIntygFinns {
 
         result.patient.id.extension = personnr;
 
+        result.skapadAv.id.extension = läkare
+
         def observation = slurper.parseText(observationKodString)
         observation.observationskod.code = diagnoskod
         result.observationer.add(observation)
@@ -47,8 +62,16 @@ class EnbartFoljandeIntygFinns {
         def observationFormaga = slurper.parseText(observationFormagaString)
         observationFormaga.observationsperiod.from = start
         observationFormaga.observationsperiod.tom = slut
-
+        observationFormaga.varde[0].quantity = arbetsförmåga
         result.observationer.add(observationFormaga)
+
+        if (!arbetsförmåga2.isEmpty()) {
+            def observationFormaga2 = slurper.parseText(observationFormagaString)
+            observationFormaga2.observationsperiod.from = start2
+            observationFormaga2.observationsperiod.tom = slut2
+            observationFormaga2.varde[0].quantity = arbetsförmåga2
+            result.observationer.add(observationFormaga2)
+        }
 
         result.skapadAv.vardenhet.id.extension = enhet
         result.skapadAv.vardenhet.vardgivare.id.extension = vardgivare
@@ -63,30 +86,6 @@ class EnbartFoljandeIntygFinns {
 
     public void endTable() {
         reportsUtil.processIntyg()
-    }
-
-    void setPersonnr(personnr) {
-        this.personnr = personnr
-    }
-
-    void setDiagnoskod(diagnoskod) {
-        this.diagnoskod = diagnoskod
-    }
-
-    void setStart(start) {
-        this.start = start
-    }
-
-    void setSlut(slut) {
-        this.slut = slut
-    }
-
-    void setEnhet(enhet) {
-        this.enhet = enhet
-    }
-
-    void setVardgivare(vardgivare) {
-        this.vardgivare = vardgivare
     }
 
 }

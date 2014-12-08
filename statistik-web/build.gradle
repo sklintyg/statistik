@@ -18,6 +18,8 @@ gretty {
     contextConfigFile = "${projectDir}/src/main/webapp/WEB-INF/jetty-context.xml"
     logbackConfigFile = "${projectDir}/src/main/resources/statistics-logback.xml"
     jvmArgs = ['-Dspring.profiles.active=dev,embedded', '-XX:MaxPermSize=256M']
+    scanInterval=1
+    managedClassReload=true
 }
 
 node {

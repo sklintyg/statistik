@@ -34,14 +34,16 @@ import se.inera.statistics.service.report.model.VerksamhetsTyp;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 @Component
 @Profile({"dev", "mockhsa" })
 @Primary
-public class HSAServiceMock implements HSAService {
+public class HSAServiceMock implements HSAService, HsaDataInjectable {
     private static final int POSITIVE_MASK = 0x7fffffff;
     public static final int VERKSAMHET_MODULO = 7;
 
@@ -55,6 +57,7 @@ public class HSAServiceMock implements HSAService {
     private static final List<String> KOMMUN_CODES;
     private static final VerksamhetsTyp VERKSAMHET = new VerksamhetsTyp();
     private static final List<String> VERKSAMHET_CODES;
+    private final Map<String, JsonNode> personals = new HashMap<>();
 
     static {
         LAN_CODES = new ArrayList<>();
@@ -77,8 +80,15 @@ public class HSAServiceMock implements HSAService {
         root.put("enhet", createEnhet(key));
         root.put("huvudenhet", createEnhet(key));
         root.put("vardgivare", createVardgivare(key));
-        root.put("personal", createPersonal(key));
+        root.put("personal", getOrCreatePersonal(key));
         return root;
+    }
+
+    private JsonNode getOrCreatePersonal(HSAKey key) {
+        if (personals.containsKey(key.getLakareId())) {
+            return personals.get(key.getLakareId());
+        }
+        return createPersonal(key);
     }
 
     private JsonNode createVardgivare(HSAKey key) {
@@ -132,7 +142,22 @@ public class HSAServiceMock implements HSAService {
         return root;
     }
 
-    private String getTilltalsnamn(HSAKey key) {
+    public ObjectNode createPersonal(String id, HsaKon kon, int age, int befattning) {
+        ObjectNode root = factory.objectNode();
+        root.put("id", id);
+        root.put("initial", (JsonNode) null);
+        root.put("kon", kon.getHsaRepresantation());
+        root.put("alder", age);
+        root.put("befattning", befattning);
+        root.put("specialitet", (JsonNode) null);
+        root.put("yrkesgrupp", (JsonNode) null);
+        root.put("skyddad", (JsonNode) null);
+        root.put("tilltalsnamn", getTilltalsnamn(id));
+        root.put("efternamn", getEfternamn(id));
+        return root;
+    }
+
+    private String getTilltalsnamn(Object key) {
         if (key == null) {
             return null;
         }
@@ -140,7 +165,7 @@ public class HSAServiceMock implements HSAService {
         return TILLTALS_NAMN[index % TILLTALS_NAMN.length ];
     }
 
-    private String getEfternamn(HSAKey key) {
+    private String getEfternamn(Object key) {
         if (key == null) {
             return null;
         }
@@ -199,6 +224,12 @@ public class HSAServiceMock implements HSAService {
             container.add(item);
         }
         return container;
+    }
+
+    @Override
+    public void addPersonal(String id, HsaKon kon, int age, int befattning) {
+        final ObjectNode personal = createPersonal(id, kon, age, befattning);
+        personals.put(id, personal);
     }
 
 }

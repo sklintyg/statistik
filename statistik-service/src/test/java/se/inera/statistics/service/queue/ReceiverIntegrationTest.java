@@ -69,12 +69,12 @@ public class ReceiverIntegrationTest {
         assertEquals(12, webData.getRows().size());
 
         for (int i = 0; i < 3; i++) {
-            assertEquals(0, webData.getRows().get(i).getFemale().intValue());
-            assertEquals(2, webData.getRows().get(i).getMale().intValue());
+            assertEquals(0, webData.getRows().get(i).getFemale());
+            assertEquals(2, webData.getRows().get(i).getMale());
         }
         for (int i = 3; i < 12; i++) {
-            assertEquals(0, webData.getRows().get(i).getFemale().intValue());
-            assertEquals(0, webData.getRows().get(i).getMale().intValue());
+            assertEquals(0, webData.getRows().get(i).getFemale());
+            assertEquals(0, webData.getRows().get(i).getMale());
         }
 
         assertEquals(2, wideLine.count());

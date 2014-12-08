@@ -39,12 +39,12 @@ public class SimpleDualSexConverterTest {
 
     @Test
     public void convertTest() {
-        SimpleDualSexConverter converter = new SimpleDualSexConverter();
+        SimpleDualSexConverter converter = new PeriodConverter();
         List<SimpleKonDataRow> dualSexRows = new ArrayList<>();
         dualSexRows.add(new SimpleKonDataRow("jan 12", 12, 13));
         dualSexRows.add(new SimpleKonDataRow("feb 12", 20, 30));
         dualSexRows.add(new SimpleKonDataRow("mar 12", 5, 25));
-        SimpleKonResponse<SimpleKonDataRow> casesPerMonth = new SimpleKonResponse<SimpleKonDataRow>(dualSexRows, 2);
+        SimpleKonResponse<SimpleKonDataRow> casesPerMonth = new SimpleKonResponse<>(dualSexRows, 2);
         SimpleDetailsData result = converter.convert(casesPerMonth, new Range(1));
         TableData tableData = result.getTableData();
         assertEquals("[[Period;1, Antal sjukfall totalt;1, Antal sjukfall för kvinnor;1, Antal sjukfall för män;1]]", tableData.getHeaders().toString());

@@ -37,24 +37,23 @@ import se.inera.statistics.service.report.model.SimpleKonResponse;
 import se.inera.statistics.service.report.model.SjukfallslangdResponse;
 import se.inera.statistics.service.report.model.SjukskrivningsgradResponse;
 import se.inera.statistics.service.report.model.VerksamhetOverviewResponse;
+import se.inera.statistics.web.model.SimpleDetailsData;
+import se.inera.statistics.web.model.DualSexStatisticsData;
+import se.inera.statistics.web.model.overview.VerksamhetOverviewData;
+import se.inera.statistics.web.model.LoginInfo;
+import se.inera.statistics.web.model.SickLeaveLengthData;
+import se.inera.statistics.web.model.Verksamhet;
+import se.inera.statistics.web.model.TableData;
 import se.inera.statistics.service.warehouse.Fact;
 import se.inera.statistics.service.warehouse.SjukfallUtil;
 import se.inera.statistics.service.warehouse.query.RangeNotFoundException;
-import se.inera.statistics.web.model.AgeGroupsData;
-import se.inera.statistics.web.model.DualSexStatisticsData;
-import se.inera.statistics.web.model.LoginInfo;
-import se.inera.statistics.web.model.SickLeaveLengthData;
-import se.inera.statistics.web.model.SimpleDetailsData;
-import se.inera.statistics.web.model.TableData;
-import se.inera.statistics.web.model.Verksamhet;
-import se.inera.statistics.web.model.overview.VerksamhetOverviewData;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.GET;
-import javax.ws.rs.QueryParam;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -109,7 +108,7 @@ public class ProtectedChartDataService {
         Verksamhet verksamhet = getVerksamhet(request, Verksamhet.decodeId(verksamhetId));
         Predicate<Fact> filter = getFilter(request, verksamhet, getIdsFromIdString(idString), getIdsFromIdString(kapitelString), getIdsFromIdString(avsnittString), getIdsFromIdString(avsnittString));
         SimpleKonResponse<SimpleKonDataRow> casesPerMonth = warehouse.getCasesPerMonth(filter, range, verksamhet.getVardgivarId());
-        return new SimpleDualSexConverter().convert(casesPerMonth, range);
+        return new PeriodConverter().convert(casesPerMonth, range);
     }
 
     /**
@@ -293,7 +292,7 @@ public class ProtectedChartDataService {
     @Produces({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request, #verksamhetId)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request, #verksamhetId)")
-    public AgeGroupsData getAgeGroupsStatistics(@Context HttpServletRequest request, @PathParam(VERKSAMHET_PATH_ID) String verksamhetId, @QueryParam(ID_STRING) String idString, @QueryParam(KAPITEL_STRING) String kapitelString, @QueryParam(AVSNITT_STRING) String avsnittString, @QueryParam(KATEGORI_STRING) String kategoriString) {
+    public SimpleDetailsData getAgeGroupsStatistics(@Context HttpServletRequest request, @PathParam(VERKSAMHET_PATH_ID) String verksamhetId, @QueryParam(ID_STRING) String idString, @QueryParam(KAPITEL_STRING) String kapitelString, @QueryParam(AVSNITT_STRING) String avsnittString, @QueryParam(KATEGORI_STRING) String kategoriString) {
         LOG.info("Calling getAgeGroupsStatistics with verksamhetId: {} and idString: {}", verksamhetId, idString);
         final Range range = new Range(12);
 
@@ -322,6 +321,46 @@ public class ProtectedChartDataService {
     }
 
     /**
+     * Get sjukfall grouped by age and sex of the doctor.
+     *
+     * @param request      request
+     * @param verksamhetId verksamhetId
+     * @return data
+     */
+    @GET
+    @Path("{verksamhetId}/getCasesPerDoctorAgeAndGenderStatistics")
+    @Produces({MediaType.APPLICATION_JSON })
+    @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request, #verksamhetId)")
+    @PostAuthorize(value = "@protectedChartDataService.userAccess(#request, #verksamhetId)")
+    public SimpleDetailsData getCasesPerDoctorAgeAndGenderStatistics(@Context HttpServletRequest request, @PathParam(VERKSAMHET_PATH_ID) String verksamhetId, @QueryParam(ID_STRING) String idString, @QueryParam(KAPITEL_STRING) String kapitelString, @QueryParam(AVSNITT_STRING) String avsnittString, @QueryParam(KATEGORI_STRING) String kategoriString) {
+        LOG.info("Calling getCasesPerDoctorAgeAndGenderStatistics with verksamhetId: {} and idString: {}", verksamhetId, idString);
+        final Range range = new Range(12);
+
+        Verksamhet verksamhet = getVerksamhet(request, Verksamhet.decodeId(verksamhetId));
+        Predicate<Fact> filter = getFilter(request, verksamhet, getIdsFromIdString(idString), getIdsFromIdString(kapitelString), getIdsFromIdString(avsnittString), getIdsFromIdString(avsnittString));
+        SimpleKonResponse<SimpleKonDataRow> ageGroups = warehouse.getCasesPerDoctorAgeAndGender(filter, range, verksamhet.getVardgivarId());
+        return new DoctorAgeGenderConverter().convert(ageGroups, range);
+    }
+
+    /**
+     * Get sjukfall grouped by age and sex of the doctor. Csv formatted.
+     *
+     * @param request      request
+     * @param verksamhetId verksamhetId
+     * @return data
+     */
+    @GET
+    @Path("{verksamhetId}/getCasesPerDoctorAgeAndGenderStatistics/csv")
+    @Produces({ TEXT_UTF_8 })
+    @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request, #verksamhetId)")
+    @PostAuthorize(value = "@protectedChartDataService.userAccess(#request, #verksamhetId)")
+    public Response getCasesPerDoctorAgeAndGenderStatisticsAsCsv(@Context HttpServletRequest request, @PathParam(VERKSAMHET_PATH_ID) String verksamhetId, @QueryParam(ID_STRING) String idString, @QueryParam(KAPITEL_STRING) String kapitelString, @QueryParam(AVSNITT_STRING) String avsnittString, @QueryParam(KATEGORI_STRING) String kategoriString) {
+        LOG.info("Calling getCasesPerDoctorAgeAndGenderStatisticsAsCsv with verksamhetId: {} and idString: {}", verksamhetId, idString);
+        final TableData tableData = getCasesPerDoctorAgeAndGenderStatistics(request, verksamhetId, idString, kapitelString, avsnittString, kategoriString).getTableData();
+        return CsvConverter.getCsvResponse(tableData, "export.csv");
+    }
+
+    /**
      * Get ongoing sjukfall grouped by age and sex.
      *
      * @param request      request
@@ -333,7 +372,7 @@ public class ProtectedChartDataService {
     @Produces({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request, #verksamhetId)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request, #verksamhetId)")
-    public AgeGroupsData getAgeGroupsCurrentStatistics(@Context HttpServletRequest request, @PathParam(VERKSAMHET_PATH_ID) String verksamhetId, @QueryParam(ID_STRING) String idString, @QueryParam(KAPITEL_STRING) String kapitelString, @QueryParam(AVSNITT_STRING) String avsnittString, @QueryParam(KATEGORI_STRING) String kategoriString) {
+    public SimpleDetailsData getAgeGroupsCurrentStatistics(@Context HttpServletRequest request, @PathParam(VERKSAMHET_PATH_ID) String verksamhetId, @QueryParam(ID_STRING) String idString, @QueryParam(KAPITEL_STRING) String kapitelString, @QueryParam(AVSNITT_STRING) String avsnittString, @QueryParam(KATEGORI_STRING) String kategoriString) {
         LOG.info("Calling getAgeGroupsCurrentStatistics with verksamhetId: {} and ids: {}", verksamhetId, idString);
         LocalDate start = new LocalDate().withDayOfMonth(1);
         LocalDate end = new LocalDate().withDayOfMonth(1).plusMonths(1).minusDays(1);
@@ -502,7 +541,7 @@ public class ProtectedChartDataService {
         Verksamhet verksamhet = getVerksamhet(request, Verksamhet.decodeId(verksamhetId));
         Predicate<Fact> filter = getFilter(request, verksamhet, getIdsFromIdString(idString), getIdsFromIdString(kapitelString), getIdsFromIdString(avsnittString), getIdsFromIdString(avsnittString));
         SimpleKonResponse<SimpleKonDataRow> longSickLeaves = warehouse.getLangaSjukskrivningarPerManad(filter, range, verksamhet.getVardgivarId());
-        return new SimpleDualSexConverter().convert(longSickLeaves, range);
+        return new PeriodConverter().convert(longSickLeaves, range);
     }
 
     /**

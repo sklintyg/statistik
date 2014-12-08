@@ -10,6 +10,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 import se.inera.statistics.service.helper.JSONParser;
+import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.warehouse.WidelineManager;
 
 import static org.junit.Assert.assertEquals;
@@ -50,7 +51,7 @@ public class ProcessorTest {
         processor.accept(utlatande, null, 1L, "1", EventType.CREATED);
 
         assertEquals("33", utlatandeCaptor.getValue().path("patient").path("alder").asText());
-        assertEquals("man", utlatandeCaptor.getValue().path("patient").path("kon").asText());
+        assertEquals(Kon.Male.toString(), utlatandeCaptor.getValue().path("patient").path("kon").asText());
     }
 
 }

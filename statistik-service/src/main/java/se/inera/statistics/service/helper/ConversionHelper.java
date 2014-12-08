@@ -28,6 +28,7 @@ import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.ISODateTimeFormat;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import se.inera.statistics.service.report.model.Kon;
 
 public final class ConversionHelper {
     private static final Logger LOG = LoggerFactory.getLogger(ConversionHelper.class);
@@ -61,7 +62,7 @@ public final class ConversionHelper {
     }
 
     protected static String extractKon(String personId) {
-        return personId.charAt(DocumentHelper.SEX_DIGIT) % 2 == 0 ? "kvinna" : "man";
+        return personId.charAt(DocumentHelper.SEX_DIGIT) % 2 == 0 ? Kon.Female.toString() : Kon.Male.toString();
     }
 
     protected static int extractAlder(String personId, LocalDate start) {

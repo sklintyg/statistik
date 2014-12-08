@@ -19,45 +19,10 @@
 
 package se.inera.statistics.web.service;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+public class AgeGroupsConverter extends SimpleDualSexConverter {
 
-import se.inera.statistics.service.report.model.Kon;
-import se.inera.statistics.service.report.model.Range;
-import se.inera.statistics.service.report.model.SimpleKonDataRow;
-import se.inera.statistics.service.report.model.SimpleKonResponse;
-import se.inera.statistics.web.model.AgeGroupsData;
-import se.inera.statistics.web.model.ChartData;
-import se.inera.statistics.web.model.ChartSeries;
-import se.inera.statistics.web.model.NamedData;
-import se.inera.statistics.web.model.TableData;
-
-public class AgeGroupsConverter {
-
-    private TableData convertToTable(List<SimpleKonDataRow> list) {
-        List<NamedData> data = new ArrayList<>();
-        for (SimpleKonDataRow row : list) {
-            int rowSum = row.getFemale() + row.getMale();
-            data.add(new NamedData(row.getName(), Arrays.asList(rowSum, row.getFemale(), row.getMale())));
-        }
-        return TableData.createWithSingleHeadersRow(data, Arrays.asList("Åldersgrupper", "Antal sjukfall totalt", "Antal sjukfall för kvinnor", "Antal sjukfall för män"));
+    public AgeGroupsConverter() {
+        super("Åldersgrupper", false);
     }
 
-
-    private ChartData convertToChart(SimpleKonResponse<SimpleKonDataRow> resp) {
-        List<String> groups = resp.getGroups();
-        List<Integer> femaleData = resp.getDataForSex(Kon.Female);
-        List<Integer> maleData = resp.getDataForSex(Kon.Male);
-        ArrayList<ChartSeries> series = new ArrayList<>();
-        series.add(new ChartSeries("Antal sjukfall för kvinnor", femaleData, false, Kon.Female));
-        series.add(new ChartSeries("Antal sjukfall för män", maleData, false, Kon.Male));
-        return new ChartData(series, groups);
-    }
-
-    AgeGroupsData convert(SimpleKonResponse<SimpleKonDataRow> resp, Range range) {
-        TableData tableData = convertToTable(resp.getRows());
-        ChartData chartData = convertToChart(resp);
-        return new AgeGroupsData(tableData, chartData, range.getMonths(), range.toString());
-    }
 }
