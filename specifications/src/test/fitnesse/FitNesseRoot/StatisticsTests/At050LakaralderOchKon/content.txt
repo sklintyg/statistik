@@ -26,12 +26,12 @@ Sjukfallet räknas en gång i både "Manlig läkare 40-49 år" och "Kvinnlig lä
 !3 Då gäller:
 Nationell nivå
 | Sjukfall i rapporten lakarkonalder |
-| läkargrupp                  | män? | kvinnor? |
-| Manlig läkare 40-49 år      | 1    | 0        |
-| Kvinnlig läkare under 30 år | 1    | 0        |
+| läkargrupp               | män? | kvinnor? |
+| Manlig läkare 40-49 år   | 1    | 0        |
+| Kvinnlig läkare 30-39 år | 1    | 0        |
 
 Inloggad nivå
 | Sjukfall i rapporten lakarkonalder |
-| inloggad som | vårdgivarnivå | läkargrupp                  | män? | kvinnor? |
-| user1        | false         | Manlig läkare 40-49 år      | 1    | 0        |
-| user1        | false         | Kvinnlig läkare under 30 år | 1    | 0        |
+| inloggad som | vårdgivarnivå | läkargrupp               | män? | kvinnor? |
+| user1        | false         | Manlig läkare 40-49 år   | 1    | 0        |
+| user1        | false         | Kvinnlig läkare 30-39 år | 1    | 0        |

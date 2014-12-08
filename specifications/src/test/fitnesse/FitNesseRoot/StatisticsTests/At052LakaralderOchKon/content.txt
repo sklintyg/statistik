@@ -1,11 +1,9 @@
 !contents -R2 -g -p -f -h
 
 Ett sjukfall består av 2 intyg utfärdade av två läkare på samma enhet.
-En med personnummer 19700101-0011
-En med personnummer 19700102-0010
-Läkarna tillhör alltså samma grupp.
+Läkarna tillhör samma grupp.
 
-Sjukfallet räknas 2 ggr i gruppen "Manlig läkare 40-49 år".
+Sjukfallet räknas 2 ggr.
 
 
 !3 Givet att:
