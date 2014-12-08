@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 import se.inera.statistics.service.helper.DocumentHelper;
 import se.inera.statistics.service.helper.HSAServiceHelper;
 import se.inera.statistics.service.processlog.EventType;
+import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.report.util.Icd10;
 import se.inera.statistics.service.report.util.Icd10.Kategori;
 import se.inera.statistics.service.warehouse.model.db.WideLine;
@@ -45,7 +46,7 @@ public class WidelineConverter {
 
         String patient = DocumentHelper.getPersonId(intyg);
 
-        int kon = DocumentHelper.getKon(intyg).indexOf('k');
+        int kon = Kon.valueOf(DocumentHelper.getKon(intyg)).getNumberRepresentation();
         int alder = DocumentHelper.getAge(intyg);
 
         String diagnos = DocumentHelper.getDiagnos(intyg);

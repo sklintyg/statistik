@@ -1,7 +1,14 @@
 package se.inera.statistics.service.warehouse;
 
+import com.google.common.base.Function;
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 import org.junit.Test;
 import se.inera.statistics.service.report.model.Kon;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -23,7 +30,13 @@ public class SjukfallTest {
         assertEquals(1, result.getSjukskrivningsgrad());
         assertEquals(1, result.getStart());
         assertEquals(Kon.Male, result.getKon());
-        assertArrayEquals(new Object[]{1}, result.getLakare().toArray());
+        assertArrayEquals(new Object[]{1}, Lists.transform(new ArrayList<>(result.getLakare()), new Function<Lakare, Integer>() {
+            @Override
+            public Integer apply(Lakare lakare) {
+                return lakare.getId();
+            }
+        }).toArray());
+
         assertEquals("01", result.getLanskod());
         assertEquals(false, result.isExtended());
     }
@@ -46,8 +59,16 @@ public class SjukfallTest {
         assertEquals(3, result.getRealDays());
         assertEquals(2, result.getSjukskrivningsgrad());
         assertEquals(1, result.getStart());
-        assertEquals(Kon.Male, result.getKon());
-        assertArrayEquals(new Object[]{1,2}, result.getLakare().toArray());
+        assertEquals(Kon.byNumberRepresentation(2), result.getKon());
+        final List<Integer> lakare = Lists.transform(new ArrayList<>(result.getLakare()), new Function<Lakare, Integer>() {
+            @Override
+            public Integer apply(Lakare lakare) {
+                return lakare.getId();
+            }
+        });
+        assertEquals(2, lakare.size());
+        assertTrue(lakare.contains(1));
+        assertTrue(lakare.contains(2));
         assertEquals("02", result.getLanskod());
         assertEquals(true, result.isExtended());
     }

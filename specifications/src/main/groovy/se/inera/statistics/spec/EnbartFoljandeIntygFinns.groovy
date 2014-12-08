@@ -22,6 +22,7 @@ class EnbartFoljandeIntygFinns {
     String arbetsförmåga2
     def start2
     def slut2
+    def läkare
 
     public void setKommentar(String kommentar) {}
 
@@ -40,6 +41,7 @@ class EnbartFoljandeIntygFinns {
         vardgivare = ReportsUtil.VARDGIVARE
         arbetsförmåga = 0
         arbetsförmåga2 = ""
+        läkare = "Personal HSA-ID"
     }
 
     public void execute() {
@@ -49,6 +51,8 @@ class EnbartFoljandeIntygFinns {
         def result = slurper.parseText(intygString)
 
         result.patient.id.extension = personnr;
+
+        result.skapadAv.id.extension = läkare
 
         def observation = slurper.parseText(observationKodString)
         observation.observationskod.code = diagnoskod

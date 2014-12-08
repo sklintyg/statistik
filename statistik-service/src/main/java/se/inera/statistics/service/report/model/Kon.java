@@ -20,5 +20,26 @@
 package se.inera.statistics.service.report.model;
 
 public enum Kon {
-    Male, Female
+
+    Male(1), Female(2), Unknown(0);
+
+    private final int numberRepresentation;
+
+    Kon(int numberRepresentation) {
+        this.numberRepresentation = numberRepresentation;
+    }
+
+    public int getNumberRepresentation() {
+        return numberRepresentation;
+    }
+
+    public static Kon byNumberRepresentation(int number) {
+        for (Kon kon : values()) {
+            if (kon.numberRepresentation == number) {
+                return kon;
+            }
+        }
+        throw new IllegalArgumentException("Unknown number for Kon: " + number);
+    }
+
 }

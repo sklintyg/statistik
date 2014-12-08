@@ -75,8 +75,8 @@ public final class SjukfallQuery {
         final Multiset<Lakare> maleSjukfallPerLakare = HashMultiset.create();
 
         for (Sjukfall sjukfall : sjukfalls) {
-            for (Integer lakarId : sjukfall.getLakare()) {
-                Lakare lakare = getLakare(allLakaresForVardgivare, lakarId);
+            for (se.inera.statistics.service.warehouse.Lakare warehousLakare : sjukfall.getLakare()) {
+                Lakare lakare = getLakare(allLakaresForVardgivare, warehousLakare.getId());
                 if (lakare != null) {
                     if (sjukfall.getKon() == Kon.Female) {
                         femaleSjukfallPerLakare.add(lakare);
@@ -104,7 +104,7 @@ public final class SjukfallQuery {
     }
 
     // Collect a list of all "läkar-namn" that exist more than once in the set of lakare
-    private Set<String> findDuplicates(Set<Lakare> lakares) {
+    private Set<String> findDuplicates(Collection<Lakare> lakares) {
         Set<String> duplicates = new HashSet<>();
         Set<String> seenLakarNames = new HashSet<>();
         for (Lakare lakare : lakares) {

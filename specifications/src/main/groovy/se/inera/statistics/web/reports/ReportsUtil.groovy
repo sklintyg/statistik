@@ -6,6 +6,7 @@ import groovyx.net.http.RESTClient
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import se.inera.statistics.spec.Intyg
+import se.inera.testsupport.Personal
 
 class ReportsUtil {
 
@@ -37,6 +38,12 @@ class ReportsUtil {
     def insertIntyg(Intyg intyg) {
         def builder = new JsonBuilder(intyg)
         def response = statistik.put(path: '/api/testsupport/intyg', body: builder.toString())
+        assert response.status == 200
+    }
+
+    def insertPersonal(Personal personal) {
+        def builder = new JsonBuilder(personal)
+        def response = statistik.put(path: '/api/testsupport/personal', body: builder.toString())
         assert response.status == 200
     }
 
@@ -163,6 +170,10 @@ class ReportsUtil {
 
     def getReportSjukskrivningsgrad() {
         return get("/api/getDegreeOfSickLeaveStatistics")
+    }
+
+    def getReportLakareAlderOchKonInloggad(String user) {
+        return get("/api/verksamhet/" + getVardgivareForUser(user) + "/getCasesPerDoctorAgeAndGenderStatistics")
     }
 
 }

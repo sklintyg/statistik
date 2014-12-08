@@ -74,4 +74,12 @@ abstract class SimpleDetailsReport extends Rapport {
         }
         throw new RuntimeException("Report -Sjukskrivningslängd pågående- is not available on national level");
     }
+
+    def getReportLakareAlderOchKon() {
+        if (inloggad) {
+            return reportsUtil.getReportLakareAlderOchKonInloggad(inloggadSom);
+        }
+        throw new RuntimeException("Report -Läkare ålder och kön- is not available on national level");
+    }
+
 }

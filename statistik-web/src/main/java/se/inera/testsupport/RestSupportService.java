@@ -6,7 +6,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import se.inera.statistics.service.processlog.LogConsumerImpl;
+import se.inera.statistics.service.hsa.HsaDataInjectable;
 import se.inera.statistics.service.processlog.Receiver;
 import se.inera.statistics.service.scheduler.LogJob;
 import se.inera.statistics.service.warehouse.NationellData;
@@ -50,6 +50,9 @@ public class RestSupportService {
 
     @Autowired
     private NationellData nationellData;
+
+    @Autowired
+    private HsaDataInjectable hsaDataInjectable;
 
     @POST
     @Path("cutoff")
@@ -107,6 +110,16 @@ public class RestSupportService {
         logJob.checkLog();
         warehouseManager.loadWideLines();
         nationalChartDataService.buildCache();
+        return Response.ok().build();
+    }
+
+    @PUT
+    @Path("personal")
+    @Consumes({MediaType.APPLICATION_JSON})
+    @Produces({MediaType.APPLICATION_JSON})
+    public Response insertPersonal(Personal personal) {
+        LOG.info("Insert personal: " + personal);
+        hsaDataInjectable.addPersonal(personal.getId(), personal.getKon(), personal.getAge(), personal.getBefattning());
         return Response.ok().build();
     }
 

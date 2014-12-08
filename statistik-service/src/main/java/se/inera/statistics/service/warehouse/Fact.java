@@ -246,7 +246,7 @@ public class Fact {
         }
 
         public FactBuilder withKon(Kon kon) {
-            this.kon = kon == Kon.Female ? 0 : 1;
+            this.kon = kon == null ? Kon.Unknown.getNumberRepresentation() : kon.getNumberRepresentation();
             return this;
         }
 
@@ -281,7 +281,7 @@ public class Fact {
         }
 
         public FactBuilder withLakarkon(Kon lakarkon) {
-            this.lakarkon = lakarkon == Kon.Female ? 0 : 1;
+            this.lakarkon = lakarkon == null ? Kon.Unknown.getNumberRepresentation() : lakarkon.getNumberRepresentation();
             return this;
         }
 
