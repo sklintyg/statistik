@@ -78,13 +78,13 @@ public class SjukfallQueryTest {
         for (SimpleKonDataRow lakareRow : result.getRows()) {
             switch (lakareRow.getName()) {
                 case "Agata Adamsson":
-                    assertEquals(1, lakareRow.getDataForSex(Kon.Female).intValue());
-                    assertEquals(0, lakareRow.getDataForSex(Kon.Male).intValue());
+                    assertEquals(1, lakareRow.getDataForSex(Kon.Female));
+                    assertEquals(0, lakareRow.getDataForSex(Kon.Male));
                     checksum +=1;
                     break;
                 case "Beata Bertilsson":
-                    assertEquals(0, lakareRow.getDataForSex(Kon.Female).intValue());
-                    assertEquals(1, lakareRow.getDataForSex(Kon.Male).intValue());
+                    assertEquals(0, lakareRow.getDataForSex(Kon.Female));
+                    assertEquals(1, lakareRow.getDataForSex(Kon.Male));
                     checksum +=2;
                     break;
                 default:
@@ -111,13 +111,13 @@ public class SjukfallQueryTest {
         for (SimpleKonDataRow lakareRow : result.getRows()) {
             switch (lakareRow.getName()) {
                 case "Agata Adamsson":
-                    assertEquals(1, lakareRow.getDataForSex(Kon.Female).intValue());
-                    assertEquals(0, lakareRow.getDataForSex(Kon.Male).intValue());
+                    assertEquals(1, lakareRow.getDataForSex(Kon.Female));
+                    assertEquals(0, lakareRow.getDataForSex(Kon.Male));
                     checksum +=1;
                     break;
                 case "Beata Bertilsson":
-                    assertEquals(1, lakareRow.getDataForSex(Kon.Female).intValue());
-                    assertEquals(0, lakareRow.getDataForSex(Kon.Male).intValue());
+                    assertEquals(1, lakareRow.getDataForSex(Kon.Female));
+                    assertEquals(0, lakareRow.getDataForSex(Kon.Male));
                     checksum +=2;
                     break;
                 default:
@@ -143,13 +143,13 @@ public class SjukfallQueryTest {
         for (SimpleKonDataRow lakareRow : result.getRows()) {
             switch (lakareRow.getName()) {
                 case "Beata Bertilsson lakare2":
-                    assertEquals(1, lakareRow.getDataForSex(Kon.Female).intValue());
-                    assertEquals(0, lakareRow.getDataForSex(Kon.Male).intValue());
+                    assertEquals(1, lakareRow.getDataForSex(Kon.Female));
+                    assertEquals(0, lakareRow.getDataForSex(Kon.Male));
                     checksum +=1;
                     break;
                 case "Beata Bertilsson lakare3":
-                    assertEquals(1, lakareRow.getDataForSex(Kon.Female).intValue());
-                    assertEquals(0, lakareRow.getDataForSex(Kon.Male).intValue());
+                    assertEquals(1, lakareRow.getDataForSex(Kon.Female));
+                    assertEquals(0, lakareRow.getDataForSex(Kon.Male));
                     checksum +=2;
                     break;
                 default:
