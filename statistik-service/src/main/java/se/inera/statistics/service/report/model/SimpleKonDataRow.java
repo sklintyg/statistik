@@ -45,15 +45,15 @@ public class SimpleKonDataRow {
         return data;
     }
 
-    public Integer getDataForSex(Kon kon) {
+    public int getDataForSex(Kon kon) {
         return data.getValue(kon);
     }
 
-    public Integer getFemale() {
+    public int getFemale() {
         return data.getValue(Kon.Female);
     }
 
-    public Integer getMale() {
+    public int getMale() {
         return data.getValue(Kon.Male);
     }
 

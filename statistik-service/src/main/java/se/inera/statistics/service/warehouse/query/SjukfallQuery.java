@@ -39,6 +39,7 @@ import static se.inera.statistics.service.report.util.Ranges.range;
 public final class SjukfallQuery {
 
     public static final Ranges RANGES_LAKARES_ALDER_OCH_KON = new Ranges(range("under 30 år", 30), range("30-39 år", 40), range("40-49 år", 50), range("50-59 år", 60), range("över 60 år", Integer.MAX_VALUE));
+    private static final String UNKNOWN_AGE_RANGE = "UnknownAgeRange";
 
     @Autowired
     private LakareManager lakareManager;
@@ -82,27 +83,42 @@ public final class SjukfallQuery {
         final Iterator<Ranges.Range> ranges = RANGES_LAKARES_ALDER_OCH_KON.iterator();
         while (ranges.hasNext()) {
             Ranges.Range ageRange = ranges.next();
-            for (Kon kon : Kon.values()) {
-                final int femaleCount = Collections.frequency(lakarenAlderOchKonForSjukfalls.get(Kon.Female), String.valueOf(ageRange.getCutoff()) + kon);
-                final int maleCount = Collections.frequency(lakarenAlderOchKonForSjukfalls.get(Kon.Male), String.valueOf(ageRange.getCutoff()) + kon);
-                if (femaleCount + maleCount > 0) {
-                    result.add(new SimpleKonDataRow(getLakareAlderOchKonTitle(kon, ageRange), femaleCount, maleCount));
-                }
+            final String ageRangeKey = String.valueOf(ageRange.getCutoff());
+            final String ageRangeTitle = ageRange.getName();
+            result.addAll(getDataForAgeRange(lakarenAlderOchKonForSjukfalls, ageRangeKey, ageRangeTitle));
+        }
+
+        final List<SimpleKonDataRow> dataForUnknownAge = getDataForAgeRange(lakarenAlderOchKonForSjukfalls, UNKNOWN_AGE_RANGE, "okänd ålder");
+        for (SimpleKonDataRow simpleKonDataRow : dataForUnknownAge) {
+            if ((simpleKonDataRow.getFemale() + simpleKonDataRow.getMale()) > 0) {
+                result.add(simpleKonDataRow);
             }
         }
 
         return new SimpleKonResponse<>(result, perioder * periodlangd);
     }
 
-    private String getLakareAlderOchKonTitle(Kon kon, Ranges.Range ageRange) {
-        return getLakareAlderOchKonTitleKonPart(kon) + " " + ageRange.getName();
+    private List<SimpleKonDataRow> getDataForAgeRange(Multimap<Kon, String> lakarenAlderOchKonForSjukfalls, String ageRangeKey, String ageRangeTitle) {
+        List<SimpleKonDataRow> result = new ArrayList<>();
+        for (Kon kon : Kon.values()) {
+            final int femaleCount = Collections.frequency(lakarenAlderOchKonForSjukfalls.get(Kon.Female), ageRangeKey + kon);
+            final int maleCount = Collections.frequency(lakarenAlderOchKonForSjukfalls.get(Kon.Male), ageRangeKey + kon);
+            if (!Kon.Unknown.equals(kon) || femaleCount + maleCount > 0) {
+                result.add(new SimpleKonDataRow(getLakareAlderOchKonTitle(kon, ageRangeTitle), femaleCount, maleCount));
+            }
+        }
+        return result;
+    }
+
+    private String getLakareAlderOchKonTitle(Kon kon, String ageRangeTitle) {
+        return getLakareAlderOchKonTitleKonPart(kon) + " " + ageRangeTitle;
     }
 
     private String getLakareAlderOchKonTitleKonPart(Kon kon) {
         switch (kon) {
             case Female: return "Kvinnlig läkare";
             case Male: return "Manlig läkare";
-            case Unknown: return "";
+            case Unknown: return "Okänt kön";
             default: throw new IllegalArgumentException("Unhandled type: " + kon);
         }
     }
@@ -112,11 +128,18 @@ public final class SjukfallQuery {
         final Multimap<Kon, String> sjukfallPerLakare = ArrayListMultimap.create();
         for (Sjukfall sjukfall : sjukfalls) {
             for (se.inera.statistics.service.warehouse.Lakare lakare : sjukfall.getLakare()) {
-                final Ranges.Range ageRange = RANGES_LAKARES_ALDER_OCH_KON.rangeFor(lakare.getAge());
-                sjukfallPerLakare.put(sjukfall.getKon(), String.valueOf(ageRange.getCutoff()) + lakare.getKon());
+                sjukfallPerLakare.put(sjukfall.getKon(), getAgeRangeString(lakare.getAge()) + lakare.getKon());
             }
         }
         return sjukfallPerLakare;
+    }
+
+    private String getAgeRangeString(int age) {
+        if (age > 0) {
+            final Ranges.Range ageRange = RANGES_LAKARES_ALDER_OCH_KON.rangeFor(age);
+            return String.valueOf(ageRange.getCutoff());
+        }
+        return UNKNOWN_AGE_RANGE;
     }
 
     public SimpleKonResponse<SimpleKonDataRow> getSjukfallPerLakare(String vardgivarId, Aisle aisle, Predicate<Fact> filter, Range range, int perioder, int periodlangd) {
