@@ -227,3 +227,16 @@ angular.module('StatisticsApp').casesPerLakaresAlderOchKonConfig = function () {
     conf.chartXAxisTitle = "Läkare";
     return conf;
 };
+
+angular.module('StatisticsApp').casesPerLakarbefattningConfig = function () {
+    var conf = {};
+    conf.dataFetcherVerksamhet = "getSjukfallPerLakarbefattningVerksamhet";
+    conf.exportTableUrlVerksamhet = function (verksamhetId) {
+        return "api/verksamhet/" + verksamhetId + "/getSjukfallPerLakarbefattningVerksamhet/csv";
+    };
+    conf.title = function (period) {
+        return "Antal sjukfall fördelat på läkarbefattning " + period;
+    };
+    conf.chartXAxisTitle = "Läkarbefattning";
+    return conf;
+};

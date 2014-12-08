@@ -355,6 +355,46 @@ public class ProtectedChartDataService {
     }
 
     /**
+     * Get sjukfall grouped by doctor grade.
+     *
+     * @param request      request
+     * @param verksamhetId verksamhetId
+     * @return data
+     */
+    @GET
+    @Path("{verksamhetId}/getNumberOfCasesPerLakarbefattning")
+    @Produces({MediaType.APPLICATION_JSON })
+    @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request, #verksamhetId)")
+    @PostAuthorize(value = "@protectedChartDataService.userAccess(#request, #verksamhetId)")
+    public SimpleDetailsData getNumberOfCasesPerLakarbefattning(@Context HttpServletRequest request, @PathParam(VERKSAMHET_PATH_ID) String verksamhetId, @QueryParam(ID_STRING) String idString) {
+        LOG.info("Calling getNumberOfCasesPerLakarbefattning with verksamhetId: {} and idString: {}", verksamhetId, idString);
+        final Range range = new Range(12);
+
+        Verksamhet verksamhet = getVerksamhet(request, Verksamhet.decodeId(verksamhetId));
+        SjukfallUtil.FactFilter filter = getFilter(request, verksamhet, getIdsFromIdString(idString));
+        SimpleKonResponse<SimpleKonDataRow> ageGroups = warehouse.getNumberOfCasesPerLakarbefattning(filter, range, verksamhet.getVardgivarId());
+        return new DoctorAgeGenderConverter().convert(ageGroups, range);
+    }
+
+    /**
+     * Get sjukfall grouped by doctor grade. Csv formatted.
+     *
+     * @param request      request
+     * @param verksamhetId verksamhetId
+     * @return data
+     */
+    @GET
+    @Path("{verksamhetId}/getNumberOfCasesPerLakarbefattning/csv")
+    @Produces({ TEXT_UTF_8 })
+    @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request, #verksamhetId)")
+    @PostAuthorize(value = "@protectedChartDataService.userAccess(#request, #verksamhetId)")
+    public Response getNumberOfCasesPerLakarbefattningAsCsv(@Context HttpServletRequest request, @PathParam(VERKSAMHET_PATH_ID) String verksamhetId, @QueryParam(ID_STRING) String idString) {
+        LOG.info("Calling getNumberOfCasesPerLakarbefattningAsCsv with verksamhetId: {} and idString: {}", verksamhetId, idString);
+        final TableData tableData = getNumberOfCasesPerLakarbefattning(request, verksamhetId, idString).getTableData();
+        return CsvConverter.getCsvResponse(tableData, "export.csv");
+    }
+
+    /**
      * Get ongoing sjukfall grouped by age and sex.
      *
      * @param request      request
