@@ -222,7 +222,7 @@ angular.module('StatisticsApp').casesPerLakaresAlderOchKonConfig = function () {
         return "api/verksamhet/" + verksamhetId + "/getSjukfallPerLakaresAlderOchKonVerksamhet/csv";
     };
     conf.title = function (period) {
-        return "Antal sjukfall fördelat på åldersgrupp och kön för läkare " + period;
+        return "Antal sjukfall baserat på läkares kön och ålder " + period;
     };
     conf.chartXAxisTitle = "Läkare";
     conf.pageHelpText = "help.lakare-alder-och-kon"
@@ -236,7 +236,7 @@ angular.module('StatisticsApp').casesPerLakarbefattningConfig = function () {
         return "api/verksamhet/" + verksamhetId + "/getSjukfallPerLakarbefattningVerksamhet/csv";
     };
     conf.title = function (period) {
-        return "Antal sjukfall fördelat på läkarbefattning " + period;
+        return "Antal sjukfall baserat på läkarbefattning " + period;
     };
     conf.chartXAxisTitle = "Läkarbefattning";
     return conf;
