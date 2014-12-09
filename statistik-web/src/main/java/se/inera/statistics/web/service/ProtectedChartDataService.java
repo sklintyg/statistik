@@ -612,13 +612,7 @@ public class ProtectedChartDataService {
         return new Predicate<Fact>() {
             @Override
             public boolean apply(Fact fact) {
-                if (kapitelIDs != null && kapitelIDs.contains(String.valueOf(fact.getDiagnoskapitel()))) {
-                    return true;
-                } else if (avsnittIDs != null && avsnittIDs.contains(String.valueOf(fact.getDiagnosavsnitt()))) {
-                    return true;
-                } else {
-                    return kategoriIDs != null && kategoriIDs.contains(String.valueOf(fact.getDiagnoskategori()));
-                }
+                return true;
             }
         };
     }
