@@ -13,6 +13,7 @@ import se.inera.statistics.service.warehouse.SjukfallUtil;
 import se.inera.statistics.service.warehouse.Warehouse;
 import se.inera.statistics.service.warehouse.query.AldersgruppQuery;
 import se.inera.statistics.service.warehouse.query.DiagnosgruppQuery;
+import se.inera.statistics.service.warehouse.query.LakarbefattningQuery;
 import se.inera.statistics.service.warehouse.query.LakaresAlderOchKonQuery;
 import se.inera.statistics.service.warehouse.query.OverviewQuery;
 import se.inera.statistics.service.warehouse.query.RangeNotFoundException;
@@ -83,8 +84,7 @@ public class WarehouseService {
     }
 
     public SimpleKonResponse<SimpleKonDataRow> getNumberOfCasesPerLakarbefattning(SjukfallUtil.FactFilter filter, Range range, String vardgivarId) {
-        //TODO To be implemented...
-        return AldersgruppQuery.getAldersgrupper(warehouse.get(vardgivarId), filter, range.getFrom(), 1, range.getMonths());
+        return LakarbefattningQuery.getSjukfall(warehouse.get(vardgivarId), filter, range, range.getMonths(), 1);
     }
 
 }

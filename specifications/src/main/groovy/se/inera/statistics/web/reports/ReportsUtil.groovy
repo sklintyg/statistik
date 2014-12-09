@@ -177,7 +177,7 @@ class ReportsUtil {
     }
 
     def getReportLakarBefattningInloggad(String user) {
-        return get("/api/verksamhet/" + getVardgivareForUser(user) + "/getCasesPerDoctorGradeStatistics")
+        return get("/api/verksamhet/" + getVardgivareForUser(user) + "/getNumberOfCasesPerLakarbefattning")
     }
 
 }

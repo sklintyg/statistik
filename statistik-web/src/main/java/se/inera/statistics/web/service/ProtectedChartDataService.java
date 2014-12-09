@@ -373,7 +373,7 @@ public class ProtectedChartDataService {
         Verksamhet verksamhet = getVerksamhet(request, Verksamhet.decodeId(verksamhetId));
         SjukfallUtil.FactFilter filter = getFilter(request, verksamhet, getIdsFromIdString(idString));
         SimpleKonResponse<SimpleKonDataRow> ageGroups = warehouse.getNumberOfCasesPerLakarbefattning(filter, range, verksamhet.getVardgivarId());
-        return new DoctorAgeGenderConverter().convert(ageGroups, range);
+        return new LakarbefattningConverter().convert(ageGroups, range);
     }
 
     /**
