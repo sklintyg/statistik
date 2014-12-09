@@ -146,9 +146,9 @@ public class HSAServiceMock implements HSAService, HsaDataInjectable {
         ObjectNode root = factory.objectNode();
         root.put("id", id);
         root.put("initial", (JsonNode) null);
-        root.put("kon", kon.getHsaRepresantation());
-        root.put("alder", age);
-        root.put("befattning", befattning);
+        root.put("kon", String.valueOf(kon.getHsaRepresantation()));
+        root.put("alder", String.valueOf(age));
+        root.put("befattning", String.valueOf(befattning));
         root.put("specialitet", (JsonNode) null);
         root.put("yrkesgrupp", (JsonNode) null);
         root.put("skyddad", (JsonNode) null);
