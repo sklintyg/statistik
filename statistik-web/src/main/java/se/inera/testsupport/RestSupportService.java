@@ -115,8 +115,8 @@ public class RestSupportService {
 
     @PUT
     @Path("personal")
-    @Consumes({MediaType.APPLICATION_JSON})
-    @Produces({MediaType.APPLICATION_JSON})
+    @Consumes({ MediaType.APPLICATION_JSON })
+    @Produces({ MediaType.APPLICATION_JSON })
     public Response insertPersonal(Personal personal) {
         LOG.info("Insert personal: " + personal);
         hsaDataInjectable.addPersonal(personal.getId(), personal.getKon(), personal.getAge(), personal.getBefattning());
