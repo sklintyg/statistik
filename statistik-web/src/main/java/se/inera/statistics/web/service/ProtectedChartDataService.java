@@ -372,12 +372,12 @@ public class ProtectedChartDataService {
     @Produces({MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request, #verksamhetId)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request, #verksamhetId)")
-    public SimpleDetailsData getNumberOfCasesPerLakarbefattning(@Context HttpServletRequest request, @PathParam(VERKSAMHET_PATH_ID) String verksamhetId, @QueryParam(ID_STRING) String idString) {
+    public SimpleDetailsData getNumberOfCasesPerLakarbefattning(@Context HttpServletRequest request, @PathParam(VERKSAMHET_PATH_ID) String verksamhetId, @QueryParam(ID_STRING) String idString, @QueryParam(KAPITEL_STRING) String kapitelString, @QueryParam(AVSNITT_STRING) String avsnittString, @QueryParam(KATEGORI_STRING) String kategoriString) {
         LOG.info("Calling getNumberOfCasesPerLakarbefattning with verksamhetId: {} and idString: {}", verksamhetId, idString);
         final Range range = new Range(12);
 
         Verksamhet verksamhet = getVerksamhet(request, Verksamhet.decodeId(verksamhetId));
-        SjukfallUtil.FactFilter filter = getFilter(request, verksamhet, getIdsFromIdString(idString));
+        Predicate<Fact> filter = getFilter(request, verksamhet, getIdsFromIdString(idString), getIdsFromIdString(kapitelString), getIdsFromIdString(avsnittString), getIdsFromIdString(kategoriString));
         SimpleKonResponse<SimpleKonDataRow> ageGroups = warehouse.getNumberOfCasesPerLakarbefattning(filter, range, verksamhet.getVardgivarId());
         return new LakarbefattningConverter().convert(ageGroups, range);
     }
@@ -394,9 +394,9 @@ public class ProtectedChartDataService {
     @Produces({ TEXT_UTF_8 })
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request, #verksamhetId)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request, #verksamhetId)")
-    public Response getNumberOfCasesPerLakarbefattningAsCsv(@Context HttpServletRequest request, @PathParam(VERKSAMHET_PATH_ID) String verksamhetId, @QueryParam(ID_STRING) String idString) {
+    public Response getNumberOfCasesPerLakarbefattningAsCsv(@Context HttpServletRequest request, @PathParam(VERKSAMHET_PATH_ID) String verksamhetId, @QueryParam(ID_STRING) String idString, @QueryParam(KAPITEL_STRING) String kapitelString, @QueryParam(AVSNITT_STRING) String avsnittString, @QueryParam(KATEGORI_STRING) String kategoriString) {
         LOG.info("Calling getNumberOfCasesPerLakarbefattningAsCsv with verksamhetId: {} and idString: {}", verksamhetId, idString);
-        final TableData tableData = getNumberOfCasesPerLakarbefattning(request, verksamhetId, idString).getTableData();
+        final TableData tableData = getNumberOfCasesPerLakarbefattning(request, verksamhetId, idString, kapitelString, avsnittString, kategoriString).getTableData();
         return CsvConverter.getCsvResponse(tableData, "export.csv");
     }
 

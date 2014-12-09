@@ -200,4 +200,57 @@ public class SjukfallUtilTest {
         assertFalse(actives.hasNext());
     }
 
+    @Test
+    public void oneSjukfalFromTwoDifferentEnhetsIsNotAffectedByEnhetFilter() throws Exception {
+        int ENHET1 = 1;
+        int ENHET2 = 2;
+        LocalDate monthStart = new LocalDate("2010-11-01");
+        Fact fact1 = aFact().withLan(3).withKommun(380).withForsamling(38002).withEnhet(ENHET1).withLakarintyg(1).
+                withPatient(1).withKon(Female).withAlder(45).
+                withDiagnoskapitel(0).withDiagnosavsnitt(14).withDiagnoskategori(16).withSjukskrivningsgrad(100).
+                withStartdatum(WidelineConverter.toDay(monthStart)).withSjukskrivningslangd(10).
+                withLakarkon(Female).withLakaralder(32).withLakarbefatttning(201010).withLakarid(1).build();
+        aisle.addLine(fact1);
+        Fact fact2 = aFact().withLan(3).withKommun(380).withForsamling(38002).withEnhet(ENHET2).withLakarintyg(2).
+                withPatient(1).withKon(Female).withAlder(45).
+                withDiagnoskapitel(0).withDiagnosavsnitt(14).withDiagnoskategori(16).withSjukskrivningsgrad(100).
+                withStartdatum(WidelineConverter.toDay(monthStart.plusDays(10))).withSjukskrivningslangd(10).
+                withLakarkon(Female).withLakaralder(32).withLakarbefatttning(201010).withLakarid(1).build();
+        aisle.addLine(fact2);
+        Fact fact3 = aFact().withLan(3).withKommun(380).withForsamling(38002).withEnhet(ENHET1).withLakarintyg(3).
+                withPatient(1).withKon(Female).withAlder(45).
+                withDiagnoskapitel(0).withDiagnosavsnitt(14).withDiagnoskategori(16).withSjukskrivningsgrad(100).
+                withStartdatum(WidelineConverter.toDay(monthStart.plusDays(20))).withSjukskrivningslangd(10).
+                withLakarkon(Female).withLakaralder(32).withLakarbefatttning(201010).withLakarid(1).build();
+        aisle.addLine(fact3);
+
+        aisle.sort();
+
+        Iterator<SjukfallUtil.SjukfallGroup> actives = SjukfallUtil.sjukfallGrupper(monthStart, 1, 1, aisle, ENHET1).iterator();
+        assertEquals(1, actives.next().getSjukfall().size());
+    }
+
+    @Test
+    public void twoIntygsFarApartAreTwoSjukfalls() throws Exception {
+        int ENHET1 = 1;
+        LocalDate monthStart = new LocalDate("2010-11-01");
+        Fact fact1 = aFact().withLan(3).withKommun(380).withForsamling(38002).withEnhet(ENHET1).withLakarintyg(1).
+                withPatient(1).withKon(Female).withAlder(45).
+                withDiagnoskapitel(0).withDiagnosavsnitt(14).withDiagnoskategori(16).withSjukskrivningsgrad(100).
+                withStartdatum(WidelineConverter.toDay(monthStart)).withSjukskrivningslangd(10).
+                withLakarkon(Female).withLakaralder(32).withLakarbefatttning(201010).withLakarid(1).build();
+        aisle.addLine(fact1);
+        Fact fact2 = aFact().withLan(3).withKommun(380).withForsamling(38002).withEnhet(ENHET1).withLakarintyg(3).
+                withPatient(1).withKon(Female).withAlder(45).
+                withDiagnoskapitel(0).withDiagnosavsnitt(14).withDiagnoskategori(16).withSjukskrivningsgrad(100).
+                withStartdatum(WidelineConverter.toDay(monthStart.plusDays(20))).withSjukskrivningslangd(10).
+                withLakarkon(Female).withLakaralder(32).withLakarbefatttning(201010).withLakarid(1).build();
+        aisle.addLine(fact2);
+
+        aisle.sort();
+
+        Iterator<SjukfallUtil.SjukfallGroup> actives = SjukfallUtil.sjukfallGrupper(monthStart, 1, 1, aisle, ENHET1).iterator();
+        assertEquals(2, actives.next().getSjukfall().size());
+    }
+
 }

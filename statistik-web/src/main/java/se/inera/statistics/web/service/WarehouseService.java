@@ -87,7 +87,7 @@ public class WarehouseService {
         return LakaresAlderOchKonQuery.getSjukfallPerLakaresAlderOchKon(warehouse.get(vardgivarId), filter, range, range.getMonths(), 1);
     }
 
-    public SimpleKonResponse<SimpleKonDataRow> getNumberOfCasesPerLakarbefattning(SjukfallUtil.FactFilter filter, Range range, String vardgivarId) {
+    public SimpleKonResponse<SimpleKonDataRow> getNumberOfCasesPerLakarbefattning(Predicate<Fact> filter, Range range, String vardgivarId) {
         return LakarbefattningQuery.getSjukfall(warehouse.get(vardgivarId), filter, range, range.getMonths(), 1);
     }
 
