@@ -64,7 +64,7 @@ public class AldersgruppQueryTest {
                 withPatient(patient++).withKon(Kon.Female).withAlder(alder).
                 withDiagnoskapitel(0).withDiagnosavsnitt(14).withDiagnoskategori(16).
                 withSjukskrivningsgrad(100).withStartdatum(startday).withSjukskrivningslangd(length).
-                withLakarkon(Kon.Female).withLakaralder(32).withLakarbefatttning(201010).withLakarid(1).build();
+                withLakarkon(Kon.Female).withLakaralder(32).withLakarbefatttning(new int[]{201010}).withLakarid(1).build();
         warehouse.accept(fact, VARDGIVARE);
     }
 }

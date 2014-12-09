@@ -7,13 +7,13 @@ public class Lakare {
     private int id;
     private Kon kon;
     private int age;
-    private int befattning;
+    private int[] befattnings;
 
-    public Lakare(int lakareId, Kon kon, int age, int befattning) {
+    public Lakare(int lakareId, Kon kon, int age, int[] befattnings) {
         this.id = lakareId;
         this.kon = kon;
         this.age = age;
-        this.befattning = befattning;
+        this.befattnings = befattnings;
     }
 
     public int getId() {
@@ -28,8 +28,8 @@ public class Lakare {
         return age;
     }
 
-    public int getBefattning() {
-        return befattning;
+    public int[] getBefattnings() {
+        return befattnings;
     }
 
     @Override

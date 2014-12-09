@@ -86,7 +86,7 @@ public class WidelineToWarehouseIntegrationTest {
         Assert.assertEquals(0, fact.getDiagnoskapitel());
         Assert.assertEquals(15, fact.getDiagnosavsnitt());
         Assert.assertEquals(16, fact.getDiagnoskategori());
-        Assert.assertEquals(201010, fact.getLakarbefattning());
+        Assert.assertArrayEquals(new int[]{201010}, fact.getLakarbefattnings());
         Assert.assertEquals(33, fact.getLakaralder());
         Assert.assertEquals(2, fact.getLakarkon());
         Assert.assertEquals(1, fact.getKon());

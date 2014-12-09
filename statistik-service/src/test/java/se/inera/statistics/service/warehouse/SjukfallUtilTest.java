@@ -23,7 +23,7 @@ public class SjukfallUtilTest {
                 withLakarintyg(1).withPatient(1).withStartdatum(4010).withKon(Female).withAlder(45).
                 withDiagnoskapitel(0).withDiagnosavsnitt(14).withDiagnoskategori(16).
                 withSjukskrivningsgrad(100).withSjukskrivningslangd(47).
-                withLakarkon(Female).withLakaralder(32).withLakarbefatttning(201010).withLakarid(1).build();
+                withLakarkon(Female).withLakaralder(32).withLakarbefatttning(new int[]{201010}).withLakarid(1).build();
 
         aisle.addLine(fact);
         Collection<Sjukfall> sjukfalls = SjukfallUtil.calculateSjukfall(aisle);
@@ -36,13 +36,13 @@ public class SjukfallUtilTest {
                 withLakarintyg(1).withPatient(1).withStartdatum(4010).withKon(Female).withAlder(45).
                 withDiagnoskapitel(0).withDiagnosavsnitt(14).withDiagnoskategori(16).
                 withSjukskrivningsgrad(100).withSjukskrivningslangd(10).
-                withLakarkon(Female).withLakaralder(32).withLakarbefatttning(201010).withLakarid(1).build();
+                withLakarkon(Female).withLakaralder(32).withLakarbefatttning(new int[]{201010}).withLakarid(1).build();
         aisle.addLine(fact);
         Fact fact2 = aFact().withLan(3).withKommun(380).withForsamling(38002).withEnhet(1).
                 withLakarintyg(1).withPatient(1).withStartdatum(4025).withKon(Female).withAlder(45).
                 withDiagnoskapitel(0).withDiagnosavsnitt(14).withDiagnoskategori(16).
                 withSjukskrivningsgrad(100).withSjukskrivningslangd(10).
-                withLakarkon(Female).withLakaralder(32).withLakarbefatttning(201010).withLakarid(2).build();
+                withLakarkon(Female).withLakaralder(32).withLakarbefatttning(new int[]{201010}).withLakarid(2).build();
         aisle.addLine(fact2);
         Collection<Sjukfall> sjukfalls = SjukfallUtil.calculateSjukfall(aisle);
         assertEquals(1, sjukfalls.size());
@@ -67,13 +67,13 @@ public class SjukfallUtilTest {
                 withLakarintyg(1).withPatient(1).withStartdatum(4010).withKon(Female).withAlder(45).
                 withDiagnoskapitel(0).withDiagnosavsnitt(14).withDiagnoskategori(16).
                 withSjukskrivningsgrad(100).withSjukskrivningslangd(10).
-                withLakarkon(Female).withLakaralder(32).withLakarbefatttning(201010).withLakarid(1).build();
+                withLakarkon(Female).withLakaralder(32).withLakarbefatttning(new int[]{201010}).withLakarid(1).build();
         aisle.addLine(fact);
         Fact fact2 = aFact().withLan(3).withKommun(380).withForsamling(38002).withEnhet(1).
                 withLakarintyg(1).withPatient(1).withStartdatum(4026).withKon(Female).withAlder(45).
                 withDiagnoskapitel(0).withDiagnosavsnitt(14).withDiagnoskategori(16).
                 withSjukskrivningsgrad(100).withSjukskrivningslangd(10).
-                withLakarkon(Female).withLakaralder(32).withLakarbefatttning(201010).withLakarid(1).build();
+                withLakarkon(Female).withLakaralder(32).withLakarbefatttning(new int[]{201010}).withLakarid(1).build();
         aisle.addLine(fact2);
         Collection<Sjukfall> sjukfalls = SjukfallUtil.calculateSjukfall(aisle);
         assertEquals(2, sjukfalls.size());
@@ -85,13 +85,13 @@ public class SjukfallUtilTest {
                 withLakarintyg(1).withPatient(1).withStartdatum(4010).withKon(Female).withAlder(45).
                 withDiagnoskapitel(0).withDiagnosavsnitt(14).withDiagnoskategori(16).
                 withSjukskrivningsgrad(100).withSjukskrivningslangd(47).
-                withLakarkon(Female).withLakaralder(32).withLakarbefatttning(201010).withLakarid(1).build();
+                withLakarkon(Female).withLakaralder(32).withLakarbefatttning(new int[]{201010}).withLakarid(1).build();
         aisle.addLine(fact);
         Fact fact2 = aFact().withLan(3).withKommun(380).withForsamling(38002).withEnhet(1).
                 withLakarintyg(1).withPatient(2).withStartdatum(4010).withKon(Female).withAlder(45).
                 withDiagnoskapitel(0).withDiagnosavsnitt(14).withDiagnoskategori(16).
                 withSjukskrivningsgrad(100).withSjukskrivningslangd(47).
-                withLakarkon(Female).withLakaralder(32).withLakarbefatttning(201010).withLakarid(1).build();
+                withLakarkon(Female).withLakaralder(32).withLakarbefatttning(new int[]{201010}).withLakarid(1).build();
         aisle.addLine(fact2);
         Collection<Sjukfall> sjukfalls = SjukfallUtil.calculateSjukfall(aisle);
         assertEquals(2, sjukfalls.size());
@@ -103,38 +103,38 @@ public class SjukfallUtilTest {
                 withLakarintyg(1).withPatient(1).withStartdatum(4010).withKon(Female).withAlder(45).
                 withDiagnoskapitel(0).withDiagnosavsnitt(14).withDiagnoskategori(16).
                 withSjukskrivningsgrad(100).withSjukskrivningslangd(10).
-                withLakarkon(Female).withLakaralder(32).withLakarbefatttning(201010).withLakarid(1).build();
+                withLakarkon(Female).withLakaralder(32).withLakarbefatttning(new int[]{201010}).withLakarid(1).build();
         aisle.addLine(fact);
         Fact fact2 = aFact().withLan(3).withKommun(380).withForsamling(38002).withEnhet(1).
                 withLakarintyg(1).withPatient(1).withStartdatum(4020).withKon(Female).withAlder(45).
                 withDiagnoskapitel(0).withDiagnosavsnitt(14).withDiagnoskategori(16).
                 withSjukskrivningsgrad(100).withSjukskrivningslangd(10).
-                withLakarkon(Female).withLakaralder(32).withLakarbefatttning(201010).withLakarid(1).build();
+                withLakarkon(Female).withLakaralder(32).withLakarbefatttning(new int[]{201010}).withLakarid(1).build();
         aisle.addLine(fact2);
         Fact fact3 = aFact().withLan(3).withKommun(380).withForsamling(38002).withEnhet(2).
                 withLakarintyg(1).withPatient(1).withStartdatum(4030).withKon(Female).withAlder(45).
                 withDiagnoskapitel(0).withDiagnosavsnitt(14).withDiagnoskategori(16).
                 withSjukskrivningsgrad(100).withSjukskrivningslangd(10).
-                withLakarkon(Female).withLakaralder(32).withLakarbefatttning(201010).withLakarid(1).build();
+                withLakarkon(Female).withLakaralder(32).withLakarbefatttning(new int[]{201010}).withLakarid(1).build();
         aisle.addLine(fact3);
 
         Fact fact4 = aFact().withLan(3).withKommun(380).withForsamling(38002).withEnhet(2).
                 withLakarintyg(1).withPatient(2).withStartdatum(4010).withKon(Female).withAlder(45).
                 withDiagnoskapitel(0).withDiagnosavsnitt(14).withDiagnoskategori(16).
                 withSjukskrivningsgrad(100).withSjukskrivningslangd(10).
-                withLakarkon(Female).withLakaralder(32).withLakarbefatttning(201010).withLakarid(1).build();
+                withLakarkon(Female).withLakaralder(32).withLakarbefatttning(new int[]{201010}).withLakarid(1).build();
         aisle.addLine(fact4);
         Fact fact5 = aFact().withLan(3).withKommun(380).withForsamling(38002).withEnhet(3).
                 withLakarintyg(1).withPatient(2).withStartdatum(4020).withKon(Female).withAlder(45).
                 withDiagnoskapitel(0).withDiagnosavsnitt(14).withDiagnoskategori(16).
                 withSjukskrivningsgrad(100).withSjukskrivningslangd(10).
-                withLakarkon(Female).withLakaralder(32).withLakarbefatttning(201010).withLakarid(1).build();
+                withLakarkon(Female).withLakaralder(32).withLakarbefatttning(new int[]{201010}).withLakarid(1).build();
         aisle.addLine(fact5);
         Fact fact6 = aFact().withLan(3).withKommun(380).withForsamling(38002).withEnhet(2).
                 withLakarintyg(1).withPatient(2).withStartdatum(4030).withKon(Female).withAlder(45).
                 withDiagnoskapitel(0).withDiagnosavsnitt(14).withDiagnoskategori(16).
                 withSjukskrivningsgrad(100).withSjukskrivningslangd(10).
-                withLakarkon(Female).withLakaralder(32).withLakarbefatttning(201010).withLakarid(1).build();
+                withLakarkon(Female).withLakaralder(32).withLakarbefatttning(new int[]{201010}).withLakarid(1).build();
         aisle.addLine(fact6);
 
         Collection<Sjukfall> sjukfalls = SjukfallUtil.calculateSjukfall(aisle, 1, 3);
@@ -150,38 +150,38 @@ public class SjukfallUtilTest {
                 withLakarintyg(1).withPatient(1).withStartdatum(4010).withKon(Female).withAlder(45).
                 withDiagnoskapitel(0).withDiagnosavsnitt(14).withDiagnoskategori(16).
                 withSjukskrivningsgrad(100).withSjukskrivningslangd(10).
-                withLakarkon(Female).withLakaralder(32).withLakarbefatttning(201010).withLakarid(1).build();
+                withLakarkon(Female).withLakaralder(32).withLakarbefatttning(new int[]{201010}).withLakarid(1).build();
         aisle.addLine(fact1);
         Fact fact2 = aFact().withLan(3).withKommun(380).withForsamling(38002).withEnhet(1).
                 withLakarintyg(1).withPatient(1).withStartdatum(4020).withKon(Female).withAlder(45).
                 withDiagnoskapitel(0).withDiagnosavsnitt(14).withDiagnoskategori(16).
                 withSjukskrivningsgrad(100).withSjukskrivningslangd(10).
-                withLakarkon(Female).withLakaralder(32).withLakarbefatttning(201010).withLakarid(1).build();
+                withLakarkon(Female).withLakaralder(32).withLakarbefatttning(new int[]{201010}).withLakarid(1).build();
         aisle.addLine(fact2);
         Fact fact3 = aFact().withLan(3).withKommun(380).withForsamling(38002).withEnhet(2).
                 withLakarintyg(1).withPatient(1).withStartdatum(4030).withKon(Female).withAlder(45).
                 withDiagnoskapitel(0).withDiagnosavsnitt(14).withDiagnoskategori(16).
                 withSjukskrivningsgrad(100).withSjukskrivningslangd(10).
-                withLakarkon(Female).withLakaralder(32).withLakarbefatttning(201010).withLakarid(1).build();
+                withLakarkon(Female).withLakaralder(32).withLakarbefatttning(new int[]{201010}).withLakarid(1).build();
         aisle.addLine(fact3);
 
         Fact fact4 = aFact().withLan(3).withKommun(380).withForsamling(38002).withEnhet(2).
                 withLakarintyg(1).withPatient(2).withStartdatum(4010).withKon(Female).withAlder(45).
                 withDiagnoskapitel(0).withDiagnosavsnitt(14).withDiagnoskategori(16).
                 withSjukskrivningsgrad(100).withSjukskrivningslangd(10).
-                withLakarkon(Female).withLakaralder(32).withLakarbefatttning(201010).withLakarid(1).build();
+                withLakarkon(Female).withLakaralder(32).withLakarbefatttning(new int[]{201010}).withLakarid(1).build();
         aisle.addLine(fact4);
         Fact fact5 = aFact().withLan(3).withKommun(380).withForsamling(38002).withEnhet(3).
                 withLakarintyg(1).withPatient(2).withStartdatum(4020).withKon(Female).withAlder(45).
                 withDiagnoskapitel(0).withDiagnosavsnitt(14).withDiagnoskategori(16).
                 withSjukskrivningsgrad(100).withSjukskrivningslangd(10).
-                withLakarkon(Female).withLakaralder(32).withLakarbefatttning(201010).withLakarid(1).build();
+                withLakarkon(Female).withLakaralder(32).withLakarbefatttning(new int[]{201010}).withLakarid(1).build();
         aisle.addLine(fact5);
         Fact fact6 = aFact().withLan(3).withKommun(380).withForsamling(38002).withEnhet(2).
                 withLakarintyg(1).withPatient(2).withStartdatum(4030).withKon(Female).withAlder(45).
                 withDiagnoskapitel(0).withDiagnosavsnitt(14).withDiagnoskategori(16).
                 withSjukskrivningsgrad(100).withSjukskrivningslangd(10).
-                withLakarkon(Female).withLakaralder(32).withLakarbefatttning(201010).withLakarid(1).build();
+                withLakarkon(Female).withLakaralder(32).withLakarbefatttning(new int[]{201010}).withLakarid(1).build();
         aisle.addLine(fact6);
 
         aisle.sort();
@@ -209,19 +209,19 @@ public class SjukfallUtilTest {
                 withPatient(1).withKon(Female).withAlder(45).
                 withDiagnoskapitel(0).withDiagnosavsnitt(14).withDiagnoskategori(16).withSjukskrivningsgrad(100).
                 withStartdatum(WidelineConverter.toDay(monthStart)).withSjukskrivningslangd(10).
-                withLakarkon(Female).withLakaralder(32).withLakarbefatttning(201010).withLakarid(1).build();
+                withLakarkon(Female).withLakaralder(32).withLakarbefatttning(new int[]{201010}).withLakarid(1).build();
         aisle.addLine(fact1);
         Fact fact2 = aFact().withLan(3).withKommun(380).withForsamling(38002).withEnhet(ENHET2).withLakarintyg(2).
                 withPatient(1).withKon(Female).withAlder(45).
                 withDiagnoskapitel(0).withDiagnosavsnitt(14).withDiagnoskategori(16).withSjukskrivningsgrad(100).
                 withStartdatum(WidelineConverter.toDay(monthStart.plusDays(10))).withSjukskrivningslangd(10).
-                withLakarkon(Female).withLakaralder(32).withLakarbefatttning(201010).withLakarid(1).build();
+                withLakarkon(Female).withLakaralder(32).withLakarbefatttning(new int[]{201010}).withLakarid(1).build();
         aisle.addLine(fact2);
         Fact fact3 = aFact().withLan(3).withKommun(380).withForsamling(38002).withEnhet(ENHET1).withLakarintyg(3).
                 withPatient(1).withKon(Female).withAlder(45).
                 withDiagnoskapitel(0).withDiagnosavsnitt(14).withDiagnoskategori(16).withSjukskrivningsgrad(100).
                 withStartdatum(WidelineConverter.toDay(monthStart.plusDays(20))).withSjukskrivningslangd(10).
-                withLakarkon(Female).withLakaralder(32).withLakarbefatttning(201010).withLakarid(1).build();
+                withLakarkon(Female).withLakaralder(32).withLakarbefatttning(new int[]{201010}).withLakarid(1).build();
         aisle.addLine(fact3);
 
         aisle.sort();
@@ -238,13 +238,13 @@ public class SjukfallUtilTest {
                 withPatient(1).withKon(Female).withAlder(45).
                 withDiagnoskapitel(0).withDiagnosavsnitt(14).withDiagnoskategori(16).withSjukskrivningsgrad(100).
                 withStartdatum(WidelineConverter.toDay(monthStart)).withSjukskrivningslangd(10).
-                withLakarkon(Female).withLakaralder(32).withLakarbefatttning(201010).withLakarid(1).build();
+                withLakarkon(Female).withLakaralder(32).withLakarbefatttning(new int[]{201010}).withLakarid(1).build();
         aisle.addLine(fact1);
         Fact fact2 = aFact().withLan(3).withKommun(380).withForsamling(38002).withEnhet(ENHET1).withLakarintyg(3).
                 withPatient(1).withKon(Female).withAlder(45).
                 withDiagnoskapitel(0).withDiagnosavsnitt(14).withDiagnoskategori(16).withSjukskrivningsgrad(100).
                 withStartdatum(WidelineConverter.toDay(monthStart.plusDays(20))).withSjukskrivningslangd(10).
-                withLakarkon(Female).withLakaralder(32).withLakarbefatttning(201010).withLakarid(1).build();
+                withLakarkon(Female).withLakaralder(32).withLakarbefatttning(new int[]{201010}).withLakarid(1).build();
         aisle.addLine(fact2);
 
         aisle.sort();
