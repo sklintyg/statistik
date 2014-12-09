@@ -1597,8 +1597,13 @@ thead tr td.headcol.scrollable:first-child { height: 30px; }
     top:auto;
     left:0;
     text-align: left !important;
+    display: flex;
 }
-
+.headcol-name {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	max-width: 350px; 
+}
 div.scrollable {
     position: relative;
 }
@@ -1774,3 +1779,4 @@ li.subMenuItem.active .active-menu-item { display: block;  }
 }
 .no-padding { padding: 0px !important; }
 .centeralign { text-align: center; }
+

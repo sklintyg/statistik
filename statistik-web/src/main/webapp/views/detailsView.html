@@ -156,7 +156,7 @@
 	                                </thead>
                                     <tbody class="table-condensed">
                                     <tr data-ng-repeat="row in rows">
-                                        <td class="scrollable headcol">{{row.name}}</td>
+                                        <td class="scrollable headcol"><span class="headcol-name">{{row.name}}</span></td>
                                         <td class="scrollable" data-ng-repeat="fieldData in row.data track by $index">{{fieldData | thousandseparated}}</td>
                                     </tr>
                                     </tbody>

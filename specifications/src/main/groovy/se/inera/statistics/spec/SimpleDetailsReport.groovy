@@ -82,4 +82,11 @@ abstract class SimpleDetailsReport extends Rapport {
         throw new RuntimeException("Report -Läkare ålder och kön- is not available on national level");
     }
 
+    def getReportLakarBefattning() {
+        if (inloggad) {
+            return reportsUtil.getReportLakarBefattningInloggad(inloggadSom);
+        }
+        throw new RuntimeException("Report -Läkarbefattning- is not available on national level");
+    }
+
 }

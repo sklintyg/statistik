@@ -36,7 +36,11 @@ public class Sjukfall {
         diagnoskategori = line.getDiagnoskategori();
         sjukskrivningsgrad = line.getSjukskrivningsgrad();
         lan = line.getLan();
-        lakare.add(new Lakare(line.getLakarid(), Kon.byNumberRepresentation(line.getLakarkon()), line.getLakaralder()));
+        final int lakarid = line.getLakarid();
+        final Kon lakarKon = Kon.byNumberRepresentation(line.getLakarkon());
+        final int lakaralder = line.getLakaralder();
+        final int lakarbefattning = line.getLakarbefattning();
+        this.lakare.add(new Lakare(lakarid, lakarKon, lakaralder, lakarbefattning));
     }
 
     public Sjukfall(Sjukfall previous, Fact line) {
