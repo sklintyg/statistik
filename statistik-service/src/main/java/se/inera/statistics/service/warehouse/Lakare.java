@@ -7,11 +7,13 @@ public class Lakare {
     private int id;
     private Kon kon;
     private int age;
+    private int befattning;
 
-    public Lakare(int lakareId, Kon kon, int age) {
+    public Lakare(int lakareId, Kon kon, int age, int befattning) {
         this.id = lakareId;
         this.kon = kon;
         this.age = age;
+        this.befattning = befattning;
     }
 
     public int getId() {
@@ -24,6 +26,10 @@ public class Lakare {
 
     public int getAge() {
         return age;
+    }
+
+    public int getBefattning() {
+        return befattning;
     }
 
     @Override
