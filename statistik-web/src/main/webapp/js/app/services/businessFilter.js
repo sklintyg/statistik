@@ -3,7 +3,7 @@
 angular.module('StatisticsApp').factory('businessFilter', ['statisticsData', '_',
     function (statisticsData, _) {
         var businessFilter = {};
-        businessFilter.icd10 = {};
+        businessFilter.icd10 = {subs: []};
 
         businessFilter.reset = function () {
             businessFilter.dataInitialized = false;
@@ -43,23 +43,12 @@ angular.module('StatisticsApp').factory('businessFilter', ['statisticsData', '_'
                     businessFilter.verksamhetsTypIds.push(verksamhetsTyp.id);
                 });
                 businessFilter.selectAll(businessFilter.geography, true);
+                businessFilter.selectAll(businessFilter.icd10, true);
             }
         };
 
         var isSet = function (value) {
             return typeof value !== "undefined" && value != null;
-        };
-
-        businessFilter.loggedIn = function (businesses) {
-            if (!businessFilter.dataInitialized) {
-                businessFilter.businesses = sortSwedish(businesses, "kommunName", "Okänd");
-                if (businessFilter.numberOfBusinesses() === "large") {
-                    businessFilter.populateGeography(businessFilter.businesses);
-                }
-                businessFilter.populateVerksamhetsTyper(businessFilter.businesses);
-                businessFilter.resetSelections(true);
-                businessFilter.dataInitialized = true;
-            }
         };
 
         function sortSwedish(arrayToSort, propertyName, alwaysLast) {
@@ -90,14 +79,20 @@ angular.module('StatisticsApp').factory('businessFilter', ['statisticsData', '_'
             });
         }
 
-        var setIcd10Structure = function (result) {
-            businessFilter.icd10 = result;
+        var setIcd10Structure = function (diagnoses) {
+            businessFilter.icd10.subs = diagnoses;
+            _.each(diagnoses, function (kapitel) {
+                kapitel.subs = kapitel.avsnitts;
+                _.each(kapitel.avsnitts, function (avsnitt) {
+                    avsnitt.subs = avsnitt.kategoris;
+                });
+            });
         };
 
         businessFilter.loggedIn = function (businesses) {
             if (!businessFilter.dataInitialized) {
                 statisticsData.getIcd10Structure(setIcd10Structure, function () { });
-                businessFilter.businesses = businesses;
+                businessFilter.businesses = sortSwedish(businesses, "kommunName", "Okänd");
                 if (businessFilter.numberOfBusinesses() === "large") {
                     businessFilter.populateGeography(businesses);
                 }
