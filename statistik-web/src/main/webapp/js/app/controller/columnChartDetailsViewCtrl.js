@@ -19,9 +19,9 @@
 
 'use strict';
 
-angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl', [ '$scope', '$routeParams', '$window', '$timeout', 'statisticsData', 'businessFilter', 'config',
+angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl', [ '$scope', '$routeParams', '$window', '$timeout', 'statisticsData', 'businessFilter', 'config', 'messageService',
 
-    function ($scope, $routeParams, $window, $timeout, statisticsData, businessFilter, config) {
+    function ($scope, $routeParams, $window, $timeout, statisticsData, businessFilter, config, messageService) {
         var isVerksamhet = $routeParams.verksamhetId ? true : false;
         var chart = {};
 
@@ -106,7 +106,7 @@ angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl', [ '$sco
         $scope.doneLoading = false;
         $scope.dataLoadingError = false;
 
-        $scope.popoverText = config.pageHelpText;
+        $scope.popoverText = messageService.getProperty(config.pageHelpText, null, "", null, true);
 
         $scope.exportChart = function () {
             ControllerCommons.exportChart(chart, $scope.pageName);
@@ -144,7 +144,7 @@ angular.module('StatisticsApp').nationalSickLeaveLengthCurrentConfig = function 
         return "Antal pågående sjukfall för " + month + " baserat på sjukskrivningslängd";
     };
     conf.chartXAxisTitle = "Sjukskrivningslängd";
-    conf.pageHelpText = "Vad innebär pågående sjukfall?<br/>Denna rapport syftar till att visa så aktuell information om sjukfallen möjligt. Alla sjukfall som pågår någon gång under aktuell månad hämtas. Rapporten kan inte ta hänsyn till vilken dag det är i månaden. I slutet på månaden kommer fortfarande sjukfall som avslutats under månadens gång visas som pågående."
+    conf.pageHelpText = "help.sick-leave-length-current"
     return conf;
 };
 
@@ -173,7 +173,7 @@ angular.module('StatisticsApp').nationalAgeGroupCurrentConfig = function () {
         return "Antal pågående sjukfall för " + month + " baserat på patientens ålder";
     };
     conf.chartXAxisTitle = "Åldersgrupp";
-    conf.pageHelpText = "Vad innebär pågående sjukfall?<br/>Denna rapport syftar till att visa så aktuell information om sjukfallen möjligt. Alla sjukfall som pågår någon gång under aktuell månad hämtas. Rapporten kan inte ta hänsyn till vilken dag det är i månaden. I slutet på månaden kommer fortfarande sjukfall som avslutats under månadens gång visas som pågående."
+    conf.pageHelpText = "help.age-group-current"
     return conf;
 };
 
@@ -225,5 +225,19 @@ angular.module('StatisticsApp').casesPerLakaresAlderOchKonConfig = function () {
         return "Antal sjukfall fördelat på åldersgrupp och kön för läkare " + period;
     };
     conf.chartXAxisTitle = "Läkare";
+    conf.pageHelpText = "help.lakare-alder-och-kon"
+    return conf;
+};
+
+angular.module('StatisticsApp').casesPerLakarbefattningConfig = function () {
+    var conf = {};
+    conf.dataFetcherVerksamhet = "getSjukfallPerLakarbefattningVerksamhet";
+    conf.exportTableUrlVerksamhet = function (verksamhetId) {
+        return "api/verksamhet/" + verksamhetId + "/getSjukfallPerLakarbefattningVerksamhet/csv";
+    };
+    conf.title = function (period) {
+        return "Antal sjukfall fördelat på läkarbefattning " + period;
+    };
+    conf.chartXAxisTitle = "Läkarbefattning";
     return conf;
 };

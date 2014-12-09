@@ -82,4 +82,9 @@ public class WarehouseService {
         return LakaresAlderOchKonQuery.getSjukfallPerLakaresAlderOchKon(warehouse.get(vardgivarId), filter, range, range.getMonths(), 1);
     }
 
+    public SimpleKonResponse<SimpleKonDataRow> getNumberOfCasesPerLakarbefattning(SjukfallUtil.FactFilter filter, Range range, String vardgivarId) {
+        //TODO To be implemented...
+        return AldersgruppQuery.getAldersgrupper(warehouse.get(vardgivarId), filter, range.getFrom(), 1, range.getMonths());
+    }
+
 }

@@ -160,6 +160,12 @@ var app = angular.module('StatisticsApp', [ 'ngRoute', 'ngCookies', 'ngSanitize'
             controllerAs: 'VerksamhetLakaresAlderOchKonCtrl',
             resolve: { config: app.casesPerLakaresAlderOchKonConfig },
             title: 'Sjukfall per läkarens ålder och kön'
+        }).when('/verksamhet/:verksamhetId/sjukfallperlakarbefattning', {
+            templateUrl: 'views/detailsView.html',
+            controller: 'columnChartDetailsViewCtrl',
+            controllerAs: 'VerksamhetLakarbefattningCtrl',
+            resolve: { config: app.casesPerLakarbefattningConfig },
+            title: 'Sjukfall per läkarbefattning'
         }).when('/om/tjansten', {
             templateUrl: 'views/about/about.html',
             controllerAs: 'AboutServiceCtrl',

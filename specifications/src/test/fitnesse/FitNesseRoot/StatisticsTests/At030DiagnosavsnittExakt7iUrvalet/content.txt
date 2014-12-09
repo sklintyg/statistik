@@ -1,5 +1,7 @@
 !contents -R2 -g -p -f -h
 
+IGNORED: Waiting for STATISTIK-770
+
 Det finns två sjukfall med diagnos som faller inom avsnitt:
 - C00-C14Maligna tumörer i läpp, munhåla och svalg
 - C15-C26Maligna tumörer i matsmältningsorganen

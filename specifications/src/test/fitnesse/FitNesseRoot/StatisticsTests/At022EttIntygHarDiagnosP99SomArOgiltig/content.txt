@@ -11,7 +11,7 @@
 
 !3 Då gäller:
 
-| Sjukfall i rapporten enskilt diagnoskapitel diagram |
+| Sjukfall i rapporten enskilt diagnoskapitel |
 |inloggad som | valt diagnoskapitel | år   | månad | grupp   | män? | kvinnor? |
 | user1       | P00-P96             | 2013 | feb   | P00-P04 | 0    | 0        |
 | user1       | P00-P96             | 2013 | feb   | P05-P08 | 0    | 0        |
