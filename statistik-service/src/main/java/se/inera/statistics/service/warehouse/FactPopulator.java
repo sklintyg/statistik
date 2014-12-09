@@ -56,18 +56,23 @@ public class FactPopulator {
         int sjukskrivningsgrad = wideline.getSjukskrivningsgrad();
         int lakarkon = wideline.getLakarkon();
         int lakaralder = wideline.getLakaralder();
-        int lakarbefattning = parseBefattning(wideline);
+        int[] lakarbefattnings = parseBefattning(wideline);
         int lakare = Warehouse.getNumLakarIdAndRemember(wideline.getLakareId());
 
-        return new Fact(ConversionHelper.extractLan(lkf), ConversionHelper.extractKommun(lkf), ConversionHelper.extractForsamling(lkf), enhet, intyg, patientid, startdatum, kon, alder, extractKapitel(diagnoskapitel), extractAvsnitt(diagnosavsnitt), extractKategori(diagnoskategori), sjukskrivningsgrad, sjukskrivningslangd, lakarkon, lakaralder, lakarbefattning, lakare);
+        return new Fact(ConversionHelper.extractLan(lkf), ConversionHelper.extractKommun(lkf), ConversionHelper.extractForsamling(lkf), enhet, intyg, patientid, startdatum, kon, alder, extractKapitel(diagnoskapitel), extractAvsnitt(diagnosavsnitt), extractKategori(diagnoskategori), sjukskrivningsgrad, sjukskrivningslangd, lakarkon, lakaralder, lakarbefattnings, lakare);
     }
 
-    private int parseBefattning(WideLine wideline) {
-        String lakarbefattning = wideline.getLakarbefattning();
-        if (lakarbefattning != null && lakarbefattning.length() > 0) {
-            return Integer.parseInt(lakarbefattning);
+    private int[] parseBefattning(WideLine wideline) {
+        String lakarbefattningString = wideline.getLakarbefattning();
+        if (lakarbefattningString != null && lakarbefattningString.length() > 0) {
+            final String[] befattningStrings = lakarbefattningString.split(",");
+            final int[] befattnings = new int[befattningStrings.length];
+            for (int i = 0; i < befattningStrings.length; i++) {
+                befattnings[i] = Integer.parseInt(befattningStrings[i].trim());
+            }
+            return befattnings;
         } else {
-            return 0;
+            return new int[0];
         }
     }
 

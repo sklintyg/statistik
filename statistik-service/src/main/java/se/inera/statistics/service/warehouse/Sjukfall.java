@@ -39,8 +39,8 @@ public class Sjukfall {
         final int lakarid = line.getLakarid();
         final Kon lakarKon = Kon.byNumberRepresentation(line.getLakarkon());
         final int lakaralder = line.getLakaralder();
-        final int lakarbefattning = line.getLakarbefattning();
-        this.lakare.add(new Lakare(lakarid, lakarKon, lakaralder, lakarbefattning));
+        final int[] lakarbefattnings = line.getLakarbefattnings();
+        this.lakare.add(new Lakare(lakarid, lakarKon, lakaralder, lakarbefattnings));
     }
 
     public Sjukfall(Sjukfall previous, Fact line) {

@@ -181,7 +181,7 @@ public class SjukfallQueryTest {
                 withPatient(patientId).withKon(patientKon).withAlder(45).
                 withDiagnoskapitel(0).withDiagnosavsnitt(14).withDiagnoskategori(16).
                 withSjukskrivningsgrad(100).withStartdatum(toDay(sjukfallDate)).withSjukskrivningslangd(47).
-                withLakarkon(Kon.Female).withLakaralder(32).withLakarbefatttning(201010).withLakarid(lakarIdMap.get(lakareId)).build();
+                withLakarkon(Kon.Female).withLakaralder(32).withLakarbefatttning(new int[]{201010}).withLakarid(lakarIdMap.get(lakareId)).build();
     }
 
 }

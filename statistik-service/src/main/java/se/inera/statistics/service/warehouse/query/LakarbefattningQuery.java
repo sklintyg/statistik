@@ -61,7 +61,10 @@ public final class LakarbefattningQuery {
         for (Sjukfall sjukfall : sjukfalls) {
             final Kon kon = sjukfall.getKon();
             for (se.inera.statistics.service.warehouse.Lakare lakare : sjukfall.getLakare()) {
-                sjukfallPerLakarbefattning.put(kon, lakare.getBefattning());
+                final int[] befattnings = lakare.getBefattnings();
+                for (int befattning : befattnings) {
+                    sjukfallPerLakarbefattning.put(kon, befattning);
+                }
             }
         }
         return sjukfallPerLakarbefattning;

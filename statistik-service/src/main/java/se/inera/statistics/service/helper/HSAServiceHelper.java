@@ -125,8 +125,14 @@ public final class HSAServiceHelper {
     }
 
     public static String getLakarbefattning(JsonNode hsaData) {
-        String result = hsaData.path("personal").path("befattning").textValue();
-        return result != null ? result : "";
+        Iterator<String> stringIterator = Iterators.transform(hsaData.path("personal").path("befattning").elements(),
+                new Function<JsonNode, String>() {
+                    @Override
+                    public String apply(JsonNode node) {
+                        return node.textValue();
+                    }
+                });
+        return joiner.join(stringIterator);
     }
 
     public static String getVerksamhetsTyper(JsonNode hsaData) {
