@@ -13,8 +13,8 @@ Testar att sjukfall hamnar i rätt befattningsgrupp.
 | script | troskel varde | 1 |
 
 | Foljande lakare finns |
-| id      | kön    | ålder | befattning | kommentar  |
-| lakare1 | MALE   | 44    | 201010     | Överläkare |
+| id      | kön    | ålder | befattningar | kommentar  |
+| lakare1 | MALE   | 44    | 201010       | Överläkare |
 
 
 | Enbart foljande intyg finns |

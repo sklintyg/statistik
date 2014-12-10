@@ -13,8 +13,8 @@ Testar att ett intyg kan ha flera läkarbefattningar.
 | script | troskel varde | 1 |
 
 | Foljande lakare finns |
-| id      | kön    | ålder | befattning | befattning2 |  kommentar  |
-| lakare1 | MALE   | 44    | 201010     | 201013      | Överläkare och Företagsläkare |
+| id      | kön    | ålder | befattningar  | kommentar                     |
+| lakare1 | MALE   | 44    | 201010, 201013 | Överläkare och Företagsläkare |
 
 
 | Enbart foljande intyg finns |

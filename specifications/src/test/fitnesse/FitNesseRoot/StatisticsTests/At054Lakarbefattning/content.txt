@@ -13,9 +13,9 @@ Testar att ett sjukfall kan ha flera läkarbefattningar.
 | script | troskel varde | 1 |
 
 | Foljande lakare finns |
-| id      | kön    | ålder | befattning | kommentar  |
-| lakare1 | MALE   | 44    | 201010     | Överläkare |
-| lakare1 | FEMALE | 34    | 201013     | Företagsläkare |
+| id      | kön    | ålder | befattningar | kommentar      |
+| lakare1 | MALE   | 44    | 201010       | Överläkare     |
+| lakare2 | FEMALE | 34    | 201013       | Företagsläkare |
 
 
 | Enbart foljande intyg finns |

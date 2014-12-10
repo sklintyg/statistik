@@ -13,8 +13,8 @@ Testar att personer som inte har någon läkarbefattning hamnar i rätt grupp.
 | script | troskel varde | 1 |
 
 | Foljande lakare finns |
-| id      | kön    | ålder | befattning |  kommentar  |
-| lakare1 | MALE   | 44    | 101012     | Ledning, personal |
+| id      | kön    | ålder | befattningar | kommentar  |
+| lakare1 | MALE   | 44    | 101012       | Ledning, personal |
 
 
 | Enbart foljande intyg finns |
