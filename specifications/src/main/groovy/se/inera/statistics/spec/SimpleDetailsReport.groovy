@@ -95,4 +95,11 @@ abstract class SimpleDetailsReport extends Rapport {
         throw new RuntimeException("Report -Läkarbefattning- is not available on national level");
     }
 
+    def getReportSjukfallPerLakare() {
+        if (inloggad) {
+            return reportsUtil.getReportSjukfallPerLakareInloggad(inloggadSom);
+        }
+        throw new RuntimeException("Report -Sjukfall per läkare- is not available on national level");
+    }
+
 }

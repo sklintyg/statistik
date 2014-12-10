@@ -142,7 +142,7 @@ public class HSAServiceMock implements HSAService, HsaDataInjectable {
         return root;
     }
 
-    public ObjectNode createPersonal(String id, HsaKon kon, int age, List<Integer> befattnings) {
+    public ObjectNode createPersonal(String id, String firstName, String lastName, HsaKon kon, int age, List<Integer> befattnings) {
         ObjectNode root = factory.objectNode();
         root.put("id", id);
         root.put("initial", (JsonNode) null);
@@ -152,8 +152,8 @@ public class HSAServiceMock implements HSAService, HsaDataInjectable {
         root.put("specialitet", (JsonNode) null);
         root.put("yrkesgrupp", (JsonNode) null);
         root.put("skyddad", (JsonNode) null);
-        root.put("tilltalsnamn", getTilltalsnamn(id));
-        root.put("efternamn", getEfternamn(id));
+        root.put("tilltalsnamn", firstName);
+        root.put("efternamn", lastName);
         return root;
     }
 
@@ -235,8 +235,8 @@ public class HSAServiceMock implements HSAService, HsaDataInjectable {
     }
 
     @Override
-    public void addPersonal(String id, HsaKon kon, int age, List<Integer> befattning) {
-        final ObjectNode personal = createPersonal(id, kon, age, befattning);
+    public void addPersonal(String id, String firstName, String lastName, HsaKon kon, int age, List<Integer> befattning) {
+        final ObjectNode personal = createPersonal(id, firstName, lastName, kon, age, befattning);
         personals.put(id, personal);
     }
 

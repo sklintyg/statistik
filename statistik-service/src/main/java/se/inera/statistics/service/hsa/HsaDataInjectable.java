@@ -4,6 +4,6 @@ import java.util.List;
 
 public interface HsaDataInjectable {
 
-    void addPersonal(String id, HsaKon kon, int age, List<Integer> befattning);
+    void addPersonal(String id, String firstName, String lastName, HsaKon kon, int age, List<Integer> befattning);
 
 }

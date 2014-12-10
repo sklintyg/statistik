@@ -119,7 +119,7 @@ public class RestSupportService {
     @Produces({ MediaType.APPLICATION_JSON })
     public Response insertPersonal(Personal personal) {
         LOG.info("Insert personal: " + personal);
-        hsaDataInjectable.addPersonal(personal.getId(), personal.getKon(), personal.getAge(), personal.getBefattning());
+        hsaDataInjectable.addPersonal(personal.getId(), personal.getFirstName(), personal.getLastName(), personal.getKon(), personal.getAge(), personal.getBefattning());
         return Response.ok().build();
     }
 
