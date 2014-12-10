@@ -2,14 +2,16 @@ package se.inera.testsupport;
 
 import se.inera.statistics.service.hsa.HsaKon;
 
+import java.util.List;
+
 public class Personal {
 
     private String id;
     private HsaKon kon;
     private int age;
-    private int befattning;
+    private List<Integer> befattning;
 
-    public Personal(String id, HsaKon kon, int age, int befattning) {
+    public Personal(String id, HsaKon kon, int age, List<Integer> befattning) {
         this.id = id;
         this.kon = kon;
         this.age = age;
@@ -33,7 +35,7 @@ public class Personal {
         return age;
     }
 
-    public int getBefattning() {
+    public List<Integer> getBefattning() {
         return befattning;
     }
 

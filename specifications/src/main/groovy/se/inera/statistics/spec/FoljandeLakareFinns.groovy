@@ -11,13 +11,16 @@ class FoljandeLakareFinns {
     String id
     String kön
     int ålder
-    int befattning
+    String befattningar
 
     public void setKommentar(String kommentar) {}
 
     public void execute() {
         def hsaKon = HsaKon.valueOf(kön.toUpperCase())
-        def personal = new Personal(id, hsaKon, ålder, befattning)
+
+        def befattningarEmpty = befattningar == null || befattningar.isEmpty()
+        def befattningarList = befattningarEmpty ? Collections.emptyList() : Arrays.asList(befattningar.split(","))
+        def personal = new Personal(id, hsaKon, ålder, befattningarList)
         reportsUtil.insertPersonal(personal)
     }
 

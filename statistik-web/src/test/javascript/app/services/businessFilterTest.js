@@ -1,7 +1,14 @@
  describe("Tests for business overview controller", function () {
     beforeEach(module('StatisticsApp'));
 
-    it("parents should be intermediate when some child is selected", inject(function (businessFilter) {
+     beforeEach(module(function ($provide) {
+         mockStatistics = {
+             getIcd10Structure: function () { }
+         };
+         $provide.value('statisticsData', mockStatistics);
+     }));
+
+     it("parents should be intermediate when some child is selected", inject(function (businessFilter) {
         //Given
         var sub121 = {name: "sub121"};
         var sub12 = {name: "sub12", subs: [sub121, {name: "sub122"}]};

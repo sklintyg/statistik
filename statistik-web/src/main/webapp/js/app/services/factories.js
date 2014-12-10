@@ -136,6 +136,10 @@ angular.module('StatisticsApp').factory('statisticsData', function ($http) {
         makeRequestVerksamhet("getNumberOfCasesPerLakare", verksamhetId, params, successCallback, failureCallback);
     };
 
+    factory.getIcd10Structure = function (successCallback, failureCallback) {
+        makeRequestNational("getIcd10Structure", successCallback, failureCallback);
+    };
+
     factory.getSjukfallPerLakarbefattningVerksamhet = function (verksamhetId, params, successCallback, failureCallback) {
         makeRequestVerksamhet("getNumberOfCasesPerLakarbefattning", verksamhetId, params, successCallback, failureCallback);
     };

@@ -142,19 +142,27 @@ public class HSAServiceMock implements HSAService, HsaDataInjectable {
         return root;
     }
 
-    public ObjectNode createPersonal(String id, HsaKon kon, int age, int befattning) {
+    public ObjectNode createPersonal(String id, HsaKon kon, int age, List<Integer> befattnings) {
         ObjectNode root = factory.objectNode();
         root.put("id", id);
         root.put("initial", (JsonNode) null);
-        root.put("kon", kon.getHsaRepresantation());
-        root.put("alder", age);
-        root.put("befattning", befattning);
+        root.put("kon", String.valueOf(kon.getHsaRepresantation()));
+        root.put("alder", String.valueOf(age));
+        root.put("befattning", toArrayNode(befattnings));
         root.put("specialitet", (JsonNode) null);
         root.put("yrkesgrupp", (JsonNode) null);
         root.put("skyddad", (JsonNode) null);
         root.put("tilltalsnamn", getTilltalsnamn(id));
         root.put("efternamn", getEfternamn(id));
         return root;
+    }
+
+    private ArrayNode toArrayNode(List<Integer> numbers) {
+        final ArrayNode arrayNode = new ArrayNode(JsonNodeFactory.instance);
+        for (Integer number : numbers) {
+            arrayNode.add(String.valueOf(number));
+        }
+        return arrayNode;
     }
 
     private String getTilltalsnamn(Object key) {
@@ -227,7 +235,7 @@ public class HSAServiceMock implements HSAService, HsaDataInjectable {
     }
 
     @Override
-    public void addPersonal(String id, HsaKon kon, int age, int befattning) {
+    public void addPersonal(String id, HsaKon kon, int age, List<Integer> befattning) {
         final ObjectNode personal = createPersonal(id, kon, age, befattning);
         personals.put(id, personal);
     }

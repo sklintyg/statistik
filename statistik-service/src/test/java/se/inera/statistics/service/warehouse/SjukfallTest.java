@@ -17,7 +17,7 @@ public class SjukfallTest {
     @Test
     public void testConstructorNewSjukfall() throws Exception {
         //When
-        Sjukfall result = new Sjukfall(new Fact(1, 1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1));
+        Sjukfall result = new Sjukfall(new Fact(1, 1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,new int[]{1},1));
 
         //Then
         assertEquals(1, result.getAlder());
@@ -44,10 +44,10 @@ public class SjukfallTest {
     @Test
     public void testConstructorExtendSjukfall() throws Exception {
         //Given
-        Sjukfall sjukfall = new Sjukfall(new Fact(1, 1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1));
+        Sjukfall sjukfall = new Sjukfall(new Fact(1, 1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,new int[]{1},1));
 
         //When
-        Sjukfall result = new Sjukfall(sjukfall, new Fact(2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2));
+        Sjukfall result = new Sjukfall(sjukfall, new Fact(2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, new int[]{2}, 2));
 
         //Then
         assertEquals(2, result.getAlder());

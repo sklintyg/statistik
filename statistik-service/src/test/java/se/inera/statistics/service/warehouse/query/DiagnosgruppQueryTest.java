@@ -76,7 +76,7 @@ public class DiagnosgruppQueryTest {
                 withPatient(patient++).withKon(Kon.Female).withAlder(45).
                 withDiagnoskapitel(diagnoskapitel).withDiagnosavsnitt(14).withDiagnoskategori(16).
                 withSjukskrivningsgrad(100).withStartdatum(startday).withSjukskrivningslangd(10).
-                withLakarkon(Kon.Female).withLakaralder(32).withLakarbefatttning(201010).withLakarid(1).build();
+                withLakarkon(Kon.Female).withLakaralder(32).withLakarbefatttning(new int[]{201010}).withLakarid(1).build();
 
         warehouse.accept(fact, VARDGIVARE);
     }

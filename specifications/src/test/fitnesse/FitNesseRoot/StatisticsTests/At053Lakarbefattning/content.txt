@@ -1,0 +1,30 @@
+!contents -R2 -g -p -f -h
+
+Ett sjukfall består av 1 intyg, utfärdat av en Överläkare.
+
+Det visas 1 sjukfall för gruppen Överläkare.
+
+Testar att sjukfall hamnar i rätt befattningsgrupp.
+
+
+!3 Givet att:
+| script | dagens datum | 2014-11-28 |
+
+| script | troskel varde | 1 |
+
+| Foljande lakare finns |
+| id      | kön    | ålder | befattningar | kommentar  |
+| lakare1 | MALE   | 44    | 201010       | Överläkare |
+
+
+| Enbart foljande intyg finns |
+| personnr      | start      | slut       | enhet  | läkare  | kommentar |
+| 19880701-0015 | 2014-06-01 | 2014-06-15 | enhet1 | lakare1 |           |
+
+
+!3 Då gäller:
+
+Inloggad nivå
+| Sjukfall i rapporten lakarbefattning |
+| inloggad som | vårdgivarnivå | läkarbefattning | män? | kvinnor? |
+| user1        | false         | Överläkare      | 1    | 0        |
