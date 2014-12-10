@@ -17,7 +17,9 @@ class FoljandeLakareFinns {
 
     public void execute() {
         def hsaKon = HsaKon.valueOf(kön.toUpperCase())
-        def befattningarList = Arrays.asList(befattningar.split(","))
+
+        def befattningarEmpty = befattningar == null || befattningar.isEmpty()
+        def befattningarList = befattningarEmpty ? Collections.emptyList() : Arrays.asList(befattningar.split(","))
         def personal = new Personal(id, hsaKon, ålder, befattningarList)
         reportsUtil.insertPersonal(personal)
     }
