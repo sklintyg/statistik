@@ -21,9 +21,15 @@ abstract class SimpleDetailsReport extends Rapport {
     void executeTabell(report) {
         def rowNameMatcher = getRowNameMatcher();
         def row = report.tableData.rows.find { currentRow -> currentRow.name == rowNameMatcher }
-        totalt = row.data[0]
-        kvinnor = row.data[1]
-        män = row.data[2]
+        if (row == null) {
+            totalt = -1
+            kvinnor = -1
+            män = -1
+        } else {
+            totalt = row.data[0]
+            kvinnor = row.data[1]
+            män = row.data[2]
+        }
     }
 
     def getReportSjukfallTotalt() {

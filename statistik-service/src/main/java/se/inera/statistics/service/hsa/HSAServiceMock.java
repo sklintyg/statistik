@@ -124,7 +124,7 @@ public class HSAServiceMock implements HSAService, HsaDataInjectable {
             String suffix = enhetId.substring(enhetId.lastIndexOf('-') + 1);
             return "Verksamhet " + suffix;
         }
-        return enhetId;
+        return "Enhet " + enhetId;
     }
 
     private JsonNode createPersonal(HSAKey key) {
