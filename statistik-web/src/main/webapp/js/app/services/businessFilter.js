@@ -98,6 +98,7 @@ angular.module('StatisticsApp').factory('businessFilter', ['statisticsData', '_'
                 });
             });
             businessFilter.selectAll(businessFilter.icd10, true);
+            businessFilter.updateDiagnoses();
         };
 
         businessFilter.loggedIn = function (businesses) {

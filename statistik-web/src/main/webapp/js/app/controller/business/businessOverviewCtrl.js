@@ -195,7 +195,7 @@ angular.module('StatisticsApp').controller('businessOverviewCtrl', ['$scope', '$
         }
 
         function refresh(samePage) {
-            statisticsData.getBusinessOverview($routeParams.verksamhetId, businessFilter.getSelectedBusinesses(samePage), dataReceived, function () {
+            statisticsData.getBusinessOverview($routeParams.verksamhetId, businessFilter.getSelectedBusinesses(samePage), businessFilter.getSelectedDiagnoses(samePage), dataReceived, function () {
                 $scope.dataLoadingError = true;
             });
         }

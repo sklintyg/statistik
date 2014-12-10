@@ -76,7 +76,7 @@ angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl', [ '$sco
         };
 
         function refreshVerksamhet(samePage) {
-            statisticsData[config.dataFetcherVerksamhet]($routeParams.verksamhetId, businessFilter.getSelectedBusinesses(samePage), populatePageWithData, function () {
+            statisticsData[config.dataFetcherVerksamhet]($routeParams.verksamhetId, businessFilter.getSelectedBusinesses(samePage), businessFilter.getSelectedDiagnoses(samePage), populatePageWithData, function () {
                 $scope.dataLoadingError = true;
             });
         }

@@ -15,9 +15,10 @@ angular.module('StatisticsApp').factory('statisticsData', function ($http) {
         });
     };
 
-    var makeRequestVerksamhet = function (restFunctionName, verksamhetId, enhetsIds, successCallback, failureCallback) {
-        var enhetsIdString = getEnhetsIdString(enhetsIds)
-        $http.get("api/verksamhet/" + verksamhetId + "/" + restFunctionName + enhetsIdString).success(function (result) {
+    var makeRequestVerksamhet = function (restFunctionName, verksamhetId, enhetsIds, diagnosIds, successCallback, failureCallback) {
+        var paramString = getEnhetsIdString(enhetsIds)
+        paramString = getDiagnosIdString(paramString, diagnosIds)
+        $http.get("api/verksamhet/" + verksamhetId + "/" + restFunctionName + paramString).success(function (result) {
             try {
                 successCallback(result);
             } catch (e) {
@@ -32,44 +33,67 @@ angular.module('StatisticsApp').factory('statisticsData', function ($http) {
     };
 
     var getEnhetsIdString = function (params) {
-        var returnString = ""
+        var returnString = "";
         if (params) {
-            returnString += "?ids="
-            returnString += params.join()
+            returnString += "?ids=";
+            returnString += params.join();
         }
-        return returnString
-    }
+        return returnString;
+    };
+
+    var getDiagnosIdString = function (enhetsIdString, params) {
+        var returnString = enhetsIdString;
+        if (params) {
+            if (params.kapitel.length > 0) {
+                returnString += getParamDelimiter(returnString) + "kapitel=";
+                returnString += params.kapitel.join();
+            }
+            if (params.avsnitt.length > 0) {
+                returnString += getParamDelimiter(returnString) + "avsnitt=";
+                returnString += params.avsnitt.join();
+            }
+            if (params.kategorier.length > 0) {
+                returnString += getParamDelimiter(returnString) + "kategorier=";
+                returnString += params.kategorier.join();
+            }
+        }
+        return returnString;
+    };
+
+    var getParamDelimiter = function (currentString) {
+        return currentString.length == 0 ? "?" : "&";
+    };
 
     factory.getOverview = function (successCallback, failureCallback) {
         makeRequestNational("getOverview", successCallback, failureCallback);
     };
 
-    factory.getBusinessOverview = function (businessId, params, successCallback, failureCallback) {
-        makeRequestVerksamhet("getOverview", businessId, params, successCallback, failureCallback);
+    factory.getBusinessOverview = function (businessId, enhetsIds, diagnosIds, successCallback, failureCallback) {
+        makeRequestVerksamhet("getOverview", businessId, enhetsIds, diagnosIds, successCallback, failureCallback);
     };
 
     factory.getNumberOfCasesPerMonth = function (successCallback, failureCallback) {
         makeRequestNational("getNumberOfCasesPerMonth", successCallback, failureCallback);
     };
 
-    factory.getNumberOfCasesPerMonthVerksamhet = function (verksamhetId, params, successCallback, failureCallback) {
-        makeRequestVerksamhet("getNumberOfCasesPerMonth", verksamhetId, params, successCallback, failureCallback);
+    factory.getNumberOfCasesPerMonthVerksamhet = function (verksamhetId, enhetsIds, diagnosIds, successCallback, failureCallback) {
+        makeRequestVerksamhet("getNumberOfCasesPerMonth", verksamhetId, enhetsIds, diagnosIds, successCallback, failureCallback);
     };
 
     factory.getDiagnosisGroupData = function (successCallback, failureCallback) {
         makeRequestNational("getDiagnoskapitelstatistik", successCallback, failureCallback);
     };
 
-    factory.getDiagnosisGroupDataVerksamhet = function (verksamhetId, params, successCallback, failureCallback) {
-        makeRequestVerksamhet("getDiagnoskapitelstatistik", verksamhetId, params, successCallback, failureCallback);
+    factory.getDiagnosisGroupDataVerksamhet = function (verksamhetId, enhetsIds, diagnosIds, successCallback, failureCallback) {
+        makeRequestVerksamhet("getDiagnoskapitelstatistik", verksamhetId, enhetsIds, diagnosIds, successCallback, failureCallback);
     };
 
     factory.getSubDiagnosisGroupData = function (successCallback, failureCallback, groupId) {
         makeRequestNational("getDiagnosavsnittstatistik/" + groupId, successCallback, failureCallback);
     };
 
-    factory.getSubDiagnosisGroupDataVerksamhet = function (verksamhetId, params, successCallback, failureCallback, groupId) {
-        makeRequestVerksamhet("getDiagnosavsnittstatistik/" + groupId, verksamhetId, params, successCallback, failureCallback);
+    factory.getSubDiagnosisGroupDataVerksamhet = function (verksamhetId, enhetsIds, diagnosIds, successCallback, failureCallback, groupId) {
+        makeRequestVerksamhet("getDiagnosavsnittstatistik/" + groupId, verksamhetId, diagnosIds, enhetsIds, successCallback, failureCallback);
     };
 
     factory.getDiagnosisKapitelAndAvsnitt = function (successCallback, failureCallback) {
@@ -80,40 +104,40 @@ angular.module('StatisticsApp').factory('statisticsData', function ($http) {
         makeRequestNational("getAgeGroupsStatistics", successCallback, failureCallback);
     };
 
-    factory.getAgeGroupsVerksamhet = function (verksamhetId, params, successCallback, failureCallback) {
-        makeRequestVerksamhet("getAgeGroupsStatistics", verksamhetId, params, successCallback, failureCallback);
+    factory.getAgeGroupsVerksamhet = function (verksamhetId, enhetsIds, diagnosIds, successCallback, failureCallback) {
+        makeRequestVerksamhet("getAgeGroupsStatistics", verksamhetId, enhetsIds, diagnosIds, successCallback, failureCallback);
     };
 
-    factory.getSjukfallPerLakaresAlderOchKonVerksamhet = function (verksamhetId, params, successCallback, failureCallback) {
-        makeRequestVerksamhet("getCasesPerDoctorAgeAndGenderStatistics", verksamhetId, params, successCallback, failureCallback);
+    factory.getSjukfallPerLakaresAlderOchKonVerksamhet = function (verksamhetId, enhetsIds, diagnosIds, successCallback, failureCallback) {
+        makeRequestVerksamhet("getCasesPerDoctorAgeAndGenderStatistics", verksamhetId, enhetsIds, diagnosIds, successCallback, failureCallback);
     };
 
-    factory.getAgeGroupsCurrentVerksamhet = function (verksamhetId, params, successCallback, failureCallback) {
-        makeRequestVerksamhet("getAgeGroupsCurrentStatistics", verksamhetId, params, successCallback, failureCallback);
+    factory.getAgeGroupsCurrentVerksamhet = function (verksamhetId, enhetsIds, diagnosIds, successCallback, failureCallback) {
+        makeRequestVerksamhet("getAgeGroupsCurrentStatistics", verksamhetId, enhetsIds, diagnosIds, successCallback, failureCallback);
     };
 
     factory.getDegreeOfSickLeave = function (successCallback, failureCallback) {
         makeRequestNational("getDegreeOfSickLeaveStatistics", successCallback, failureCallback);
     };
 
-    factory.getDegreeOfSickLeaveVerksamhet = function (verksamhetId, params, successCallback, failureCallback) {
-        makeRequestVerksamhet("getDegreeOfSickLeaveStatistics", verksamhetId, params, successCallback, failureCallback);
+    factory.getDegreeOfSickLeaveVerksamhet = function (verksamhetId, enhetsIds, diagnosIds, successCallback, failureCallback) {
+        makeRequestVerksamhet("getDegreeOfSickLeaveStatistics", verksamhetId, enhetsIds, diagnosIds, successCallback, failureCallback);
     };
 
     factory.getNationalSickLeaveLengthData = function (successCallback, failureCallback) {
         makeRequestNational("getSickLeaveLengthData", successCallback, failureCallback);
     };
 
-    factory.getSickLeaveLengthDataVerksamhet = function (verksamhetId, params, successCallback, failureCallback) {
-        makeRequestVerksamhet("getSickLeaveLengthData", verksamhetId, params, successCallback, failureCallback);
+    factory.getSickLeaveLengthDataVerksamhet = function (verksamhetId, enhetsIds, diagnosIds, successCallback, failureCallback) {
+        makeRequestVerksamhet("getSickLeaveLengthData", verksamhetId, enhetsIds, diagnosIds, successCallback, failureCallback);
     };
 
-    factory.getSickLeaveLengthCurrentDataVerksamhet = function (verksamhetId, params, successCallback, failureCallback) {
-        makeRequestVerksamhet("getSickLeaveLengthCurrentData", verksamhetId, params, successCallback, failureCallback);
+    factory.getSickLeaveLengthCurrentDataVerksamhet = function (verksamhetId, enhetsIds, diagnosIds, successCallback, failureCallback) {
+        makeRequestVerksamhet("getSickLeaveLengthCurrentData", verksamhetId, enhetsIds, diagnosIds, successCallback, failureCallback);
     };
 
-    factory.getLongSickLeavesDataVerksamhet = function (verksamhetId, params, successCallback, failureCallback) {
-        makeRequestVerksamhet("getLongSickLeavesData", verksamhetId, params, successCallback, failureCallback);
+    factory.getLongSickLeavesDataVerksamhet = function (verksamhetId, enhetsIds, diagnosIds, successCallback, failureCallback) {
+        makeRequestVerksamhet("getLongSickLeavesData", verksamhetId, enhetsIds, diagnosIds, successCallback, failureCallback);
     };
 
     factory.getNationalCountyData = function (successCallback, failureCallback) {
@@ -128,20 +152,20 @@ angular.module('StatisticsApp').factory('statisticsData', function ($http) {
         makeRequestNational("login/getLoginInfo", successCallback, failureCallback);
     };
 
-    factory.getSjukfallPerBusinessVerksamhet = function (verksamhetId, params, successCallback, failureCallback) {
-        makeRequestVerksamhet("getNumberOfCasesPerEnhet", verksamhetId, params, successCallback, failureCallback);
+    factory.getSjukfallPerBusinessVerksamhet = function (verksamhetId, enhetsIds, diagnosIds, successCallback, failureCallback) {
+        makeRequestVerksamhet("getNumberOfCasesPerEnhet", verksamhetId, enhetsIds, diagnosIds, failureCallback);
     };
 
-    factory.getSjukfallPerLakareVerksamhet = function (verksamhetId, params, successCallback, failureCallback) {
-        makeRequestVerksamhet("getNumberOfCasesPerLakare", verksamhetId, params, successCallback, failureCallback);
+    factory.getSjukfallPerLakareVerksamhet = function (verksamhetId, enhetsIds, diagnosIds, successCallback, failureCallback) {
+        makeRequestVerksamhet("getNumberOfCasesPerLakare", verksamhetId, enhetsIds, diagnosIds, failureCallback);
     };
 
     factory.getIcd10Structure = function (successCallback, failureCallback) {
         makeRequestNational("getIcd10Structure", successCallback, failureCallback);
     };
 
-    factory.getSjukfallPerLakarbefattningVerksamhet = function (verksamhetId, params, successCallback, failureCallback) {
-        makeRequestVerksamhet("getNumberOfCasesPerLakarbefattning", verksamhetId, params, successCallback, failureCallback);
+    factory.getSjukfallPerLakarbefattningVerksamhet = function (verksamhetId, enhetsIds, diagnosIds, successCallback, failureCallback) {
+        makeRequestVerksamhet("getNumberOfCasesPerLakarbefattning", verksamhetId, enhetsIds, diagnosIds, failureCallback);
     };
 
     return factory;
