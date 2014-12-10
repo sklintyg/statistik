@@ -22,7 +22,7 @@ import static se.inera.statistics.service.report.util.Ranges.range;
 
 public final class LakaresAlderOchKonQuery {
 
-    private static final Ranges RANGES_LAKARES_ALDER_OCH_KON = new Ranges(range("under 30 år", 30), range("30-39 år", 40), range("40-49 år", 50), range("50-59 år", 60), range("över 60 år", Integer.MAX_VALUE));
+    private static final Ranges RANGES_LAKARES_ALDER_OCH_KON = new Ranges(range("under 30 år", 30), range("30-39 år", 40), range("40-49 år", 50), range("50-59 år", 60), range("över 59 år", Integer.MAX_VALUE));
     private static final String UNKNOWN_AGE_RANGE = "UnknownAgeRange";
 
     private LakaresAlderOchKonQuery() {
