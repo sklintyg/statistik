@@ -13,8 +13,8 @@ Testar att ytterligare befattningar, utöver läkarbefattningar, ignoreras.
 | script | troskel varde | 1 |
 
 | Foljande lakare finns |
-| id      | kön    | ålder | befattning | befattning2 |  kommentar  |
-| lakare1 | MALE   | 44    | 201010     | 101012      | Överläkare och Ledning, personal |
+| id      | kön    | ålder | befattningar  | kommentar                        |
+| lakare1 | MALE   | 44    | 201010,101012 | Överläkare och Ledning, personal |
 
 
 | Enbart foljande intyg finns |
