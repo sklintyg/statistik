@@ -157,7 +157,7 @@ var ControllerCommons = new function(){
                 labels : {
                     rotation : 310,
                     align : 'right',
-                    overflow: 'justify',
+                   
                     style: {
                     	whiteSpace: 'pre',
                     	width: '120px',
