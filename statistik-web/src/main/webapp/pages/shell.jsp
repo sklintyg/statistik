@@ -497,7 +497,7 @@
                                                     <div class="modal-footer">
                                                         <label class="pull-left"><span message key="Kapitel"></span>{{businessFilter.selectedTertiaryCount(businessFilter.icd10)}} <span message key="Avsnitt"></span>
                                                             {{businessFilter.selectedSecondaryCount(businessFilter.icd10)}} <span message key="Kategorier"></span>{{businessFilter.selectedLeavesCount(businessFilter.icd10)}}</label>
-                                                        <button class="btn btn-success" data-dismiss="modal" aria-hidden="true" data-ng-click="businessFilter.updateIcd10()"><span message key="lbl.filter.modal.spara-stang"></span></button>
+                                                        <button class="btn btn-success" data-dismiss="modal" aria-hidden="true" data-ng-click="businessFilter.updateDiagnoses()"><span message key="lbl.filter.modal.spara-stang"></span></button>
                                                     </div>
                                                 </div>
                                             </div>

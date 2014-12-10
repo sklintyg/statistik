@@ -1,14 +1,65 @@
- describe("Tests for business overview controller", function () {
+describe("Tests for business overview controller", function () {
+    var A00, A01, B07, D50, D70;
+    var A00A09, B00B09, D50D53, D70D77, A00B99, D50D89;
+    var diagnoses;
+
+    beforeEach(function () {
+        A00 = {id: "A00", name: "Kolera", numericalId: 1};
+        A01 = {id: "A01", name: "Tyfoidfeber och paratyfoidfeber", numericalId: 2};
+        B07 = {id: "B07", name: "Virusvårtor", numericalId: 3};
+        D50 = {id: "D50", name: "Järnbristanemi", numericalId: 4};
+        D70 = {id: "D70", name: "Agranulocytos", numericalId: 5};
+
+        A00A09 = {
+            id: "A00-A09",
+            name: "Infektionssjukdomar utgående från mag-tarmkanalen",
+            kategoris: [A00, A01],
+            numericalId: 1
+        };
+        B00B09 = {
+            id: "B00-B09",
+            name: "Virussjukdomar med hudutslag och slemhinneutslag",
+            kategoris: [B07],
+            numericalId: 2
+        };
+        D50D53 = {
+            id: "D50-D53",
+            name: "Nutritionsanemier",
+            kategoris: [D50],
+            numericalId: 3};
+        D70D77 = {
+            id: "D70-D77",
+            name: "Andra sjukdomar i blod och blodbildande organ",
+            kategoris: [D70],
+            numericalId: 4
+        };
+
+        A00B99 = {
+            id: "A00-B99",
+            name: "Vissa infektionssjukdomar och parasitsjukdomar",
+            avsnitts: [A00A09, B00B09],
+            numericalId: 1
+        };
+        D50D89 = {
+            id: "D50-D89",
+            name: "Sjukdomar i blod och blodbildande organ samt vissa rubbningar i immunsystemet",
+            avsnitts: [D50D53, D70D77],
+            numericalId: 2
+        };
+
+        diagnoses = [A00B99, D50D89]
+    });
+
     beforeEach(module('StatisticsApp'));
 
-     beforeEach(module(function ($provide) {
-         mockStatistics = {
-             getIcd10Structure: function () { }
-         };
-         $provide.value('statisticsData', mockStatistics);
-     }));
+    beforeEach(module(function ($provide) {
+        mockStatistics = {
+            getIcd10Structure: function () { }
+        };
+        $provide.value('statisticsData', mockStatistics);
+    }));
 
-     it("parents should be intermediate when some child is selected", inject(function (businessFilter) {
+    it("parents should be intermediate when some child is selected", inject(function (businessFilter) {
         //Given
         var sub121 = {name: "sub121"};
         var sub12 = {name: "sub12", subs: [sub121, {name: "sub122"}]};
@@ -19,11 +70,13 @@
         ];
         var menuItems = [
             {name: "Enhet1", subs: subs1},
-            {name: "Enhet2", subs: [
+            {
+                name: "Enhet2", subs: [
                 {name: "sub4"},
                 {name: "sub5"},
                 {name: "sub6"}
-            ]}
+            ]
+            }
         ];
 
         //When
@@ -50,11 +103,13 @@
         ];
         var menuItems = [
             {name: "Enhet1", subs: subs1},
-            {name: "Enhet2", subs: [
+            {
+                name: "Enhet2", subs: [
                 {name: "sub4"},
                 {name: "sub5"},
                 {name: "sub6"}
-            ]}
+            ]
+            }
         ];
 
         //When
@@ -84,11 +139,13 @@
         ];
         var menuItems = [
             {name: "Enhet1", subs: subs1},
-            {name: "Enhet2", subs: [
+            {
+                name: "Enhet2", subs: [
                 {name: "sub4"},
                 {name: "sub5"},
                 {name: "sub6"}
-            ]}
+            ]
+            }
         ];
 
         //When
@@ -117,11 +174,13 @@
         ];
         var menuItems = [
             {name: "Enhet1", subs: subs1},
-            {name: "Enhet2", subs: [
+            {
+                name: "Enhet2", subs: [
                 {name: "sub4"},
                 {name: "sub5"},
                 {name: "sub6"}
-            ]}
+            ]
+            }
         ];
 
         //When
@@ -151,11 +210,13 @@
         ];
         var menuItems = [
             {name: "Enhet1", subs: subs1},
-            {name: "Enhet2", subs: [
+            {
+                name: "Enhet2", subs: [
                 {name: "sub4"},
                 {name: "sub5"},
                 {name: "sub6"}
-            ]}
+            ]
+            }
         ];
 
         //When
@@ -195,11 +256,13 @@
         ];
         var menuItems = [
             {name: "Enhet1", subs: subs1},
-            {name: "Enhet2", subs: [
+            {
+                name: "Enhet2", subs: [
                 {name: "sub4"},
                 {name: "sub5"},
                 {name: "sub6"}
-            ]}
+            ]
+            }
         ];
 
         //When
@@ -260,10 +323,10 @@
 
     it("populates verksamheter correctly", inject(function (businessFilter, _) {
         //Given
-        var verksamhetsTyper1 = [ { id: 1, name: "v1"}, { id: 2, name: "v2"} ];
-        var verksamhetsTyper2 = [ { id: 1, name: "v1"}, { id: 3, name: "v3"} ];
-        var business1 = { id: 1, name: "b1", verksamhetsTyper: verksamhetsTyper1 };
-        var business2 = { id: 2, name: "b2", verksamhetsTyper: verksamhetsTyper2 };
+        var verksamhetsTyper1 = [{id: 1, name: "v1"}, {id: 2, name: "v2"}];
+        var verksamhetsTyper2 = [{id: 1, name: "v1"}, {id: 3, name: "v3"}];
+        var business1 = {id: 1, name: "b1", verksamhetsTyper: verksamhetsTyper1};
+        var business2 = {id: 2, name: "b2", verksamhetsTyper: verksamhetsTyper2};
 
         //When
         businessFilter.populateVerksamhetsTyper([business1, business2]);
@@ -275,22 +338,96 @@
             if (verksamhet.id === 1) {
                 expect(verksamhet.name).toBe("v1 (2 enheter)");
                 expect(verksamhet.units.length).toBe(2);
-                expect(_.findWhere(verksamhet.units, { id: 1})).toBeDefined();
-                expect(_.findWhere(verksamhet.units, { id: 2})).toBeDefined();
+                expect(_.findWhere(verksamhet.units, {id: 1})).toBeDefined();
+                expect(_.findWhere(verksamhet.units, {id: 2})).toBeDefined();
             }
             if (verksamhet.id === 2) {
                 expect(verksamhet.name).toBe("v2 (1 enhet)");
                 expect(verksamhet.units.length).toBe(1);
-                expect(_.findWhere(verksamhet.units, { id: 1})).toBeDefined();
-                expect(_.findWhere(verksamhet.units, { id: 2})).toBeUndefined();
+                expect(_.findWhere(verksamhet.units, {id: 1})).toBeDefined();
+                expect(_.findWhere(verksamhet.units, {id: 2})).toBeUndefined();
             }
             if (verksamhet.id === 3) {
                 expect(verksamhet.name).toBe("v3 (1 enhet)");
                 expect(verksamhet.units.length).toBe(1);
-                expect(_.findWhere(verksamhet.units, { id: 1})).toBeUndefined();
-                expect(_.findWhere(verksamhet.units, { id: 2})).toBeDefined();
+                expect(_.findWhere(verksamhet.units, {id: 1})).toBeUndefined();
+                expect(_.findWhere(verksamhet.units, {id: 2})).toBeDefined();
             }
         })
+    }));
+
+    it("all are selected by default", inject(function (businessFilter, _) {
+        // Given
+
+        // When
+        businessFilter.setIcd10Structure(diagnoses);
+
+        //Then
+        expect(A00.allSelected).toBeTruthy();
+        expect(B07.allSelected).toBeTruthy();
+        expect(D50.allSelected).toBeTruthy();
+        expect(D70.allSelected).toBeTruthy();
+        expect(A00A09.allSelected).toBeTruthy();
+        expect(D70D77.allSelected).toBeTruthy();
+        expect(A00B99.allSelected).toBeTruthy();
+
+    }));
+
+    it("deselect all levels when kapitel is deselected", inject(function (businessFilter, _) {
+        // Given
+
+        // When
+        businessFilter.setIcd10Structure(diagnoses);
+        businessFilter.dataInitialized = true;
+        businessFilter.itemClicked(A00B99, businessFilter.icd10);
+        businessFilter.updateDiagnoses();
+
+        //Then
+        var diagnoser = businessFilter.getSelectedDiagnoses(true);
+        expect(diagnoser.kategorier.length).toBe(0);
+        expect(diagnoser.avsnitt.length).toBe(0);
+        expect(diagnoser.kapitel.length).toBe(1);
+        expect(diagnoser.kapitel).toContain(D50D89.numericalId);
+
+    }));
+
+    it("deselect all kategorier below unselected avsnitt", inject(function (businessFilter, _) {
+        // Given
+
+        // When
+        businessFilter.setIcd10Structure(diagnoses);
+        businessFilter.dataInitialized = true;
+        businessFilter.itemClicked(A00A09, businessFilter.icd10);
+        businessFilter.updateDiagnoses();
+
+        //Then
+        var diagnoser = businessFilter.getSelectedDiagnoses(true);
+        expect(diagnoser.kategorier.length).toBe(0);
+        expect(diagnoser.avsnitt.length).toBe(1);
+        expect(diagnoser.kapitel.length).toBe(1);
+        expect(diagnoser.avsnitt).toContain(B00B09.numericalId);
+        expect(diagnoser.kapitel).toContain(D50D89.numericalId);
+
+    }));
+
+    it("report selected kategoris", inject(function (businessFilter, _) {
+        // Given
+
+        // When
+        businessFilter.setIcd10Structure(diagnoses);
+        businessFilter.dataInitialized = true;
+        businessFilter.itemClicked(A01, businessFilter.icd10);
+        businessFilter.updateDiagnoses();
+
+        //Then
+        var diagnoser = businessFilter.getSelectedDiagnoses(true);
+        expect(diagnoser.kategorier.length).toBe(1);
+        expect(diagnoser.avsnitt.length).toBe(1);
+        expect(diagnoser.kapitel.length).toBe(1);
+        expect(diagnoser.kategorier).toContain(A00.numericalId);
+        expect(diagnoser.avsnitt).toContain(B00B09.numericalId);
+        expect(diagnoser.kapitel).toContain(D50D89.numericalId);
+
     }));
 
 });

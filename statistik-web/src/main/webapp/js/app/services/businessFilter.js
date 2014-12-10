@@ -3,8 +3,6 @@
 angular.module('StatisticsApp').factory('businessFilter', ['statisticsData', '_',
     function (statisticsData, _) {
         var businessFilter = {};
-        businessFilter.icd10 = {subs: []};
-
         businessFilter.reset = function () {
             businessFilter.dataInitialized = false;
             businessFilter.permanentFilter = true;
@@ -17,6 +15,9 @@ angular.module('StatisticsApp').factory('businessFilter', ['statisticsData', '_'
 
             businessFilter.verksamhetsTyper = [];
             businessFilter.verksamhetsTypIds = [];
+
+            businessFilter.icd10 = {subs: []};
+            businessFilter.selectedDiagnoses;
         };
         businessFilter.reset();
 
@@ -26,6 +27,16 @@ angular.module('StatisticsApp').factory('businessFilter', ['statisticsData', '_'
             }
             if (samePage || businessFilter.permanentFilter) {
                 return businessFilter.selectedBusinesses;
+            }
+            return null;
+        };
+
+        businessFilter.getSelectedDiagnoses = function (samePage) {
+            if (!businessFilter.dataInitialized) {
+                return null;
+            }
+            if (samePage || businessFilter.permanentFilter) {
+                return businessFilter.selectedDiagnoses;
             }
             return null;
         };
@@ -43,7 +54,6 @@ angular.module('StatisticsApp').factory('businessFilter', ['statisticsData', '_'
                     businessFilter.verksamhetsTypIds.push(verksamhetsTyp.id);
                 });
                 businessFilter.selectAll(businessFilter.geography, true);
-                businessFilter.selectAll(businessFilter.icd10, true);
             }
         };
 
@@ -79,7 +89,7 @@ angular.module('StatisticsApp').factory('businessFilter', ['statisticsData', '_'
             });
         }
 
-        var setIcd10Structure = function (diagnoses) {
+        businessFilter.setIcd10Structure = function (diagnoses) {
             businessFilter.icd10.subs = diagnoses;
             _.each(diagnoses, function (kapitel) {
                 kapitel.subs = kapitel.avsnitts;
@@ -87,11 +97,12 @@ angular.module('StatisticsApp').factory('businessFilter', ['statisticsData', '_'
                     avsnitt.subs = avsnitt.kategoris;
                 });
             });
+            businessFilter.selectAll(businessFilter.icd10, true);
         };
 
         businessFilter.loggedIn = function (businesses) {
             if (!businessFilter.dataInitialized) {
-                statisticsData.getIcd10Structure(setIcd10Structure, function () { });
+                statisticsData.getIcd10Structure(businessFilter.setIcd10Structure, function () { });
                 businessFilter.businesses = sortSwedish(businesses, "kommunName", "Okänd");
                 if (businessFilter.numberOfBusinesses() === "large") {
                     businessFilter.populateGeography(businesses);
@@ -281,10 +292,43 @@ angular.module('StatisticsApp').factory('businessFilter', ['statisticsData', '_'
             }
         };
 
+        businessFilter.collectSummary = function (node, acc) {
+            if (node.subs) { // Diagnoses, Kapitel or Avsnitt
+                if (node.allSelected) {
+                    if (isSet(node.avsnitts)) { // this is a kapitel
+                        acc.kapitel.push(node.numericalId);
+                    } else if (isSet(node.kategoris)) { // this is an avsnitt
+                        acc.avsnitt.push(node.numericalId);
+                    } else {
+                        _.each(node.subs, function (subItem) {
+                            businessFilter.collectSummary(subItem, acc);
+                        });
+                    }
+                } else if (node.someSelected) {
+                    _.each(node.subs, function (subItem) {
+                        businessFilter.collectSummary(subItem, acc);
+                    });
+                }
+            } else { // Kategori
+                if (node.allSelected) {
+                    acc.kategorier.push(node.numericalId);
+                }
+            }
+        };
+
         businessFilter.updateGeography = function () {
             businessFilter.geographyBusinessIds = businessFilter.collectGeographyIds(businessFilter.geography);
             businessFilter.filterChanged();
-        }
+        };
+
+        businessFilter.updateDiagnoses = function () {
+            businessFilter.selectedDiagnoses = {
+                kapitel: [],
+                avsnitt: [],
+                kategorier: []
+            };
+            businessFilter.collectSummary(businessFilter.icd10, businessFilter.selectedDiagnoses);
+        };
 
         businessFilter.collectVerksamhetsIds = function () {
             var matchingBusinesses = _.filter(businessFilter.businesses, function (business) {

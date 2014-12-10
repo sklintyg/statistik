@@ -39,8 +39,7 @@ subprojects {
         reports.junitXml.destination = file("$reports.junitXml.destination/integration")
     }
 
-    task testAll(type: Test)
-    testAll {}.dependsOn(test, integrationTests)
+    task testAll(dependsOn: [test, integrationTests])
 
     dependencies {
         compile 'ch.qos.logback:logback-classic:1.1.1'
