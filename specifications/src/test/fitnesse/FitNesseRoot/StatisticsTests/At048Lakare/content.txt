@@ -11,9 +11,9 @@ Sjukfallet räknas med en gång för varje läkare.
 | script | troskel varde | 1 |
 
 | Foljande lakare finns |
-| id      | namn           |
-| lakare1 | Anna Andersson |
-| lakare2 | Bo Bengtsson   |
+| id      | förnamn | efternamn |
+| lakare1 | Anna    | Andersson |
+| lakare2 | Bo      | Bengtsson |
 
 
 | Enbart foljande intyg finns |
@@ -24,7 +24,7 @@ Sjukfallet räknas med en gång för varje läkare.
 
 !3 Då gäller:
 Inloggad nivå
-| Sjukfall i rapporten lakarkonalder |
+| Sjukfall i rapporten sjukfall per lakare |
 | inloggad som | vårdgivarnivå | läkare         | män? | kvinnor? |
 | user1        | false         | Anna Andersson | 1    | 0        |
 | user1        | false         | Bo Bengtsson   | 1    | 0        |
