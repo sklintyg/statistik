@@ -1,10 +1,9 @@
 package se.inera.statistics.service.hsa;
 
-/**
- * Created by fredrik on 04/12/14.
- */
+import java.util.List;
+
 public interface HsaDataInjectable {
 
-    void addPersonal(String id, HsaKon kon, int age, int befattning);
+    void addPersonal(String id, String firstName, String lastName, HsaKon kon, int age, List<Integer> befattning);
 
 }

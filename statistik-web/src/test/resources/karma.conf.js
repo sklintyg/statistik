@@ -13,12 +13,12 @@ module.exports = function(config) {
 
         // list of files / patterns to load in the browser
         files: [
-            'src/main/**/angular.min.js',
-            'src/main/**/angular-route.min.js',
-            'src/main/**/angular-cookies.min.js',
-            'src/main/**/angular-sanitize.min.js',
+            'src/main/**/angular.js',
+            'src/main/**/angular-route.js',
+            'src/main/**/angular-cookies.js',
+            'src/main/**/angular-sanitize.js',
             'src/main/**/ui-bootstrap-tpls-0.10.0.min.js',
-            'src/main/**/underscore-min.js',
+            'src/main/**/underscore.js',
             'src/main/**/highcharts.js',
             'src/main/**/app.js',
             'src/main/**/messages.js',
@@ -77,7 +77,7 @@ module.exports = function(config) {
             'karma-firefox-launcher',
             'karma-phantomjs-launcher',
             'karma-mocha-reporter'
-        ],
+        ]
         
     });
 };

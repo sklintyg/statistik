@@ -108,7 +108,8 @@ public final class HSAServiceHelper {
 
     public static int getLakaralder(JsonNode hsaData) {
         try {
-            return hsaData.path("personal").path("alder").intValue();
+            String result = hsaData.path("personal").path("alder").textValue();
+            return result != null ? Integer.parseInt(result) : 0;
         } catch (NullPointerException | NumberFormatException e) {
             return 0;
         }
@@ -116,15 +117,22 @@ public final class HSAServiceHelper {
 
     public static int getLakarkon(JsonNode hsaData) {
         try {
-            return hsaData.path("personal").path("kon").intValue();
+            String result = hsaData.path("personal").path("kon").textValue();
+            return result != null ? Integer.parseInt(result) : 0;
         } catch (NullPointerException | NumberFormatException e) {
             return 0;
         }
     }
 
     public static String getLakarbefattning(JsonNode hsaData) {
-        String result = hsaData.path("personal").path("befattning").asText();
-        return result != null && !"null".equalsIgnoreCase(result) ? result : "";
+        Iterator<String> stringIterator = Iterators.transform(hsaData.path("personal").path("befattning").elements(),
+                new Function<JsonNode, String>() {
+                    @Override
+                    public String apply(JsonNode node) {
+                        return node.textValue();
+                    }
+                });
+        return joiner.join(stringIterator);
     }
 
     public static String getVerksamhetsTyper(JsonNode hsaData) {

@@ -4,7 +4,9 @@ Ett  sjukfall består av 1 intyg
 • 2014-10-01 – 2014-10-15 100%
 • 2014-10-16 – 2014-11-28 50%
 
-Sjukfallet räknas med i gruppen för 100% och 50% i okt. Sjukfallet räknas med i gruppen för 50% i nov.
+Sjukfallet räknas med i gruppen för 100% i sep. 
+Sjukfallet räknas med i gruppen för 50% i okt. 
+Sjukfallet räknas med i gruppen för 50% i nov.
 
 
 
@@ -23,6 +25,6 @@ Sjukfallet räknas med i gruppen för 100% och 50% i okt. Sjukfallet räknas med
 | Sjukfall i rapporten sjukskrivningsgrad |
 | inloggad som | år   | månad | sjukskrivningsgrad   | män? | kvinnor? |
 | user1        | 2013 | sep   | 100%                 | 0    | 1        |
-| user1        | 2013 | okt   | 100%                 | 0    | 1        |
+| user1        | 2013 | okt   | 100%                 | 0    | 0        |
 | user1        | 2013 | okt   | 50%                  | 0    | 1        |
 | user1        | 2013 | nov   | 50%                  | 0    | 1        |

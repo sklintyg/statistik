@@ -180,4 +180,8 @@ class ReportsUtil {
         return get("/api/verksamhet/" + getVardgivareForUser(user) + "/getNumberOfCasesPerLakarbefattning")
     }
 
+    def getReportSjukfallPerLakareInloggad(String user) {
+        return get("/api/verksamhet/" + getVardgivareForUser(user) + "/getNumberOfCasesPerLakare")
+    }
+
 }

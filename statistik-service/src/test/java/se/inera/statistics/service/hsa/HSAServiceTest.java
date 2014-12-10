@@ -17,6 +17,6 @@ public class HSAServiceTest {
         JsonNode hsaInfo = hsaService.getHSAInfo(new HSAKey("vardgivareid", "enhetsid", "lakareid"));
 
         assertNotNull(hsaInfo);
-        assertEquals("enhetsid", hsaInfo.path("enhet").path("namn").textValue());
+        assertEquals("Enhet enhetsid", hsaInfo.path("enhet").path("namn").textValue());
     }
 }

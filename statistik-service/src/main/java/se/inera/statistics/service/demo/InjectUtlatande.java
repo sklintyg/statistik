@@ -133,7 +133,7 @@ public class InjectUtlatande {
             JsonNode newPermutation = permutate(builder, id);
             accept(newPermutation.toString(), newPermutation.path("id").path("root").textValue());
         }
-        LOG.info("Inserting " + personNummers.size() + " certificates completed");
+        LOG.info("Inserting " + personNummers.size() + " certificates completed. Use -Dstatistics.test.max.intyg=<x> to limit inserts.");
     }
 
     public JsonNode permutate(UtlatandeBuilder builder, String patientId) {

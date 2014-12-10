@@ -19,6 +19,8 @@
 
 package se.inera.statistics.web.service;
 
+import com.google.common.base.Function;
+import com.google.common.collect.Lists;
 import org.joda.time.LocalDateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -59,7 +61,7 @@ import java.util.Map;
  * Statistics services that does not require authentication. Unless otherwise noted, the data returned
  * contains two data sets, one suitable for chart display, and one suited for tables. Csv variants
  * only contains one data set.
- *
+ * <p/>
  * Csv files are semicolon separated, otherwise json is used.
  */
 @Service("chartService")
@@ -109,6 +111,7 @@ public class ChartDataService {
             LOG.info("National cache populated");
         }
     }
+
     public void buildNumberOfCasesPerMonth() {
         final Range range = new Range(EIGHTEEN_MONTHS);
         SimpleKonResponse<SimpleKonDataRow> casesPerMonth = data.getCasesPerMonth(range);
@@ -152,7 +155,7 @@ public class ChartDataService {
     public void buildSjukfallslangd() {
         Range range = new Range(YEAR);
         SjukfallslangdResponse sickLeaveLength = data.getSjukfallslangd(range);
-        sjukfallslangd =  new SickLeaveLengthConverter().convert(sickLeaveLength, range);
+        sjukfallslangd = new SickLeaveLengthConverter().convert(sickLeaveLength, range);
     }
 
     public void buildSjukfallPerLan() {
@@ -177,7 +180,7 @@ public class ChartDataService {
      */
     @GET
     @Path("getNumberOfCasesPerMonth")
-    @Produces({MediaType.APPLICATION_JSON })
+    @Produces({ MediaType.APPLICATION_JSON })
     public SimpleDetailsData getNumberOfCasesPerMonth() {
         LOG.info("Calling getNumberOfCasesPerMonth for national");
         return numberOfCasesPerMonth;
@@ -190,7 +193,7 @@ public class ChartDataService {
      */
     @GET
     @Path("getNumberOfCasesPerMonth/csv")
-    @Produces({TEXT_UTF8 })
+    @Produces({ TEXT_UTF8 })
     public Response getNumberOfCasesPerMonthAsCsv() {
         LOG.info("Calling getNumberOfCasesPerMonthAsCsv for national");
         final TableData tableData = getNumberOfCasesPerMonth().getTableData();
@@ -204,12 +207,12 @@ public class ChartDataService {
      */
     @GET
     @Path("getDiagnoskapitel")
-    @Produces({MediaType.APPLICATION_JSON })
+    @Produces({ MediaType.APPLICATION_JSON })
     public List<Kapitel> getDiagnoskapitel() {
         LOG.info("Calling getKapitel");
         List<Kapitel> kapitel = new ArrayList<>();
-        for (Icd10.Kapitel k: icd10.getKapitel()) {
-            String s =  k.getId();
+        for (Icd10.Kapitel k : icd10.getKapitel()) {
+            String s = k.getId();
             if (s.charAt(0) <= 'Z') {
                 kapitel.add(new Kapitel(s, k.getName()));
             }
@@ -224,12 +227,12 @@ public class ChartDataService {
      */
     @GET
     @Path("getDiagnosisKapitelAndAvsnitt")
-    @Produces({MediaType.APPLICATION_JSON })
+    @Produces({ MediaType.APPLICATION_JSON })
     public DiagnosisKapitelAndAvsnittResponse getDiagnosisKapitelAndAvsnitt() {
         LOG.info("Calling getDiagnosisKapitelAndAvsnitt");
         Map<String, List<Avsnitt>> avsnitts = new LinkedHashMap<>();
         List<Icd10.Kapitel> kapitels = icd10.getKapitel();
-        for (Icd10.Kapitel k: kapitels) {
+        for (Icd10.Kapitel k : kapitels) {
             avsnitts.put(k.getId(), convertToAvsnitts(k.getAvsnitt()));
         }
         return new DiagnosisKapitelAndAvsnittResponse(avsnitts, getDiagnoskapitel());
@@ -252,7 +255,7 @@ public class ChartDataService {
      */
     @GET
     @Path("getDiagnoskapitelstatistik")
-    @Produces({MediaType.APPLICATION_JSON })
+    @Produces({ MediaType.APPLICATION_JSON })
     public DualSexStatisticsData getDiagnoskapitelstatistik() {
         LOG.info("Calling getDiagnoskapitelstatistik for national");
         return diagnosgrupper;
@@ -266,7 +269,7 @@ public class ChartDataService {
      */
     @GET
     @Path("getDiagnoskapitelstatistik/csv")
-    @Produces({TEXT_UTF8 })
+    @Produces({ TEXT_UTF8 })
     public Response getDiagnoskapitelstatistikAsCsv() {
         LOG.info("Calling getDiagnoskapitelstatistikAsCsv for national");
         final TableData tableData = getDiagnoskapitelstatistik().getTableData();
@@ -281,7 +284,7 @@ public class ChartDataService {
      */
     @GET
     @Path("getDiagnosavsnittstatistik/{groupId}")
-    @Produces({MediaType.APPLICATION_JSON })
+    @Produces({ MediaType.APPLICATION_JSON })
     public DualSexStatisticsData getDiagnosavsnittstatistik(@PathParam("groupId") String groupId) {
         LOG.info("Calling getDiagnosavsnittstatistik for national with groupId: " + groupId);
         return diagnoskapitel.get(groupId);
@@ -295,7 +298,7 @@ public class ChartDataService {
      */
     @GET
     @Path("getDiagnosavsnittstatistik/{groupId}/csv")
-    @Produces({TEXT_UTF8 })
+    @Produces({ TEXT_UTF8 })
     public Response getDiagnosavsnittstatistikAsCsv(@PathParam("groupId") String groupId) {
         LOG.info("Calling getDiagnosavsnittstatistikAsCsv for national");
         final TableData tableData = getDiagnosavsnittstatistik(groupId).getTableData();
@@ -311,7 +314,7 @@ public class ChartDataService {
      */
     @GET
     @Path("getOverview")
-    @Produces({MediaType.APPLICATION_JSON })
+    @Produces({ MediaType.APPLICATION_JSON })
     public OverviewData getOverviewData() {
         return overview;
     }
@@ -336,7 +339,7 @@ public class ChartDataService {
      */
     @GET
     @Path("getAgeGroupsStatistics/csv")
-    @Produces({TEXT_UTF8 })
+    @Produces({ TEXT_UTF8 })
     public Response getAgeGroupsStatisticsAsCsv() {
         LOG.info("Calling getAgeGroupsStatisticsAsCsv for national");
         final TableData tableData = getAgeGroupsStatistics().getTableData();
@@ -350,7 +353,7 @@ public class ChartDataService {
      */
     @GET
     @Path("getDegreeOfSickLeaveStatistics")
-    @Produces({MediaType.APPLICATION_JSON })
+    @Produces({ MediaType.APPLICATION_JSON })
     public DualSexStatisticsData getDegreeOfSickLeaveStatistics() {
         LOG.info("Calling getDegreeOfSickLeaveStatistics for national");
         return sjukskrivningsgrad;
@@ -363,7 +366,7 @@ public class ChartDataService {
      */
     @GET
     @Path("getDegreeOfSickLeaveStatistics/csv")
-    @Produces({TEXT_UTF8 })
+    @Produces({ TEXT_UTF8 })
     public Response getDegreeOfSickLeaveStatisticsAsCsv() {
         LOG.info("Calling getDegreeOfSickLeaveStatisticsAsCsv for national");
         final TableData tableData = getDegreeOfSickLeaveStatistics().getTableData();
@@ -377,7 +380,7 @@ public class ChartDataService {
      */
     @GET
     @Path("getSickLeaveLengthData")
-    @Produces({MediaType.APPLICATION_JSON })
+    @Produces({ MediaType.APPLICATION_JSON })
     public SickLeaveLengthData getSickLeaveLengthData() {
         LOG.info("Calling getSickLeaveLengthData for national");
         return sjukfallslangd;
@@ -390,7 +393,7 @@ public class ChartDataService {
      */
     @GET
     @Path("getSickLeaveLengthData/csv")
-    @Produces({TEXT_UTF8 })
+    @Produces({ TEXT_UTF8 })
     public Response getSickLeaveLengthDataAsCsv() {
         LOG.info("Calling getSickLeaveLengthDataAsCsv for national");
         final TableData tableData = getSickLeaveLengthData().getTableData();
@@ -404,7 +407,7 @@ public class ChartDataService {
      */
     @GET
     @Path("getCountyStatistics")
-    @Produces({MediaType.APPLICATION_JSON })
+    @Produces({ MediaType.APPLICATION_JSON })
     public CasesPerCountyData getCountyStatistics() {
         return sjukfallPerLan;
     }
@@ -416,7 +419,7 @@ public class ChartDataService {
      */
     @GET
     @Path("getCountyStatistics/csv")
-    @Produces({TEXT_UTF8 })
+    @Produces({ TEXT_UTF8 })
     public Response getCountyStatisticsAsCsv() {
         LOG.info("Calling getCountyStatisticsAsCsv for national");
         final TableData tableData = getCountyStatistics().getTableData();
@@ -430,7 +433,7 @@ public class ChartDataService {
      */
     @GET
     @Path("getSjukfallPerSexStatistics")
-    @Produces({MediaType.APPLICATION_JSON })
+    @Produces({ MediaType.APPLICATION_JSON })
     public SimpleDetailsData getSjukfallPerSexStatistics() {
         LOG.info("Calling getSjukfallPerSexStatistics for national");
         return konsfordelningPerLan;
@@ -443,11 +446,25 @@ public class ChartDataService {
      */
     @GET
     @Path("getSjukfallPerSexStatistics/csv")
-    @Produces({TEXT_UTF8 })
+    @Produces({ TEXT_UTF8 })
     public Response getSjukfallPerSexStatisticsAsCsv() {
         LOG.info("Calling getSjukfallPerSexStatisticsAsCsv for national");
         final TableData tableData = getSjukfallPerSexStatistics().getTableData();
         return CsvConverter.getCsvResponse(tableData, "export.csv");
+    }
+
+    @GET
+    @Path("getIcd10Structure")
+    @Produces({ MediaType.APPLICATION_JSON })
+    public List<se.inera.statistics.service.report.model.Kapitel> getIcd10Structure() {
+        LOG.info("Calling getIcd10Structure");
+        List<Icd10.Kapitel> kapitel = icd10.getKapitel();
+        return Lists.transform(kapitel, new Function<Icd10.Kapitel, se.inera.statistics.service.report.model.Kapitel>() {
+            @Override
+            public se.inera.statistics.service.report.model.Kapitel apply(Icd10.Kapitel kapitel) {
+                return se.inera.statistics.service.report.model.Kapitel.fromIcd10Kapitel(kapitel);
+            }
+        });
     }
 
     public static class Kapitel {

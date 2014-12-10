@@ -19,6 +19,7 @@
 
 package se.inera.statistics.web.service;
 
+import com.google.common.base.Predicate;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -31,6 +32,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import se.inera.auth.model.User;
 import se.inera.statistics.hsa.model.Vardenhet;
 import se.inera.statistics.service.report.model.Range;
+import se.inera.statistics.service.warehouse.Fact;
 import se.inera.statistics.service.warehouse.SjukfallUtil;
 import se.inera.statistics.web.model.LoginInfo;
 
@@ -78,12 +80,12 @@ public class ProtectedChartDataServiceTest {
         init();
 
         try {
-            chartDataService.getOverviewData(request, "VG2", null);
+            chartDataService.getOverviewData(request, "VG2", null, null, null, null);
             fail("Current implementation can not use null data");
         } catch (NullPointerException e) {
             assertTrue(true);
         }
-        Mockito.verify(warehouse).getOverview(any(SjukfallUtil.FactFilter.class), any(Range.class), anyString());
+        Mockito.verify(warehouse).getOverview(any(Predicate.class), any(Range.class), anyString());
     }
 
     @Ignore

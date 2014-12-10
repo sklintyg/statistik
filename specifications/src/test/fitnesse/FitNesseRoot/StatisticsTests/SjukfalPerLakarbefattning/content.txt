@@ -6,8 +6,8 @@
 | script | troskel varde | 1 |
 
 | Foljande lakare finns |
-| id      | kön    | ålder | befattning | kommentar  |
-| lakare1 | MALE   | 44    | 201010     | Överläkare |
+| id      | kön    | ålder | befattningar  | kommentar  |
+| lakare1 | MALE   | 44    | 201010,201012 | Överläkare, skolläkare |
 
 | Enbart foljande intyg finns |
 | personnr      | start      | slut       | enhet  | läkare  | kommentar |
@@ -20,3 +20,4 @@ Inloggad nivå
 | Sjukfall i rapporten lakarbefattning |
 | inloggad som | vårdgivarnivå | läkarbefattning | män? | kvinnor? |
 | user1        | false         | Överläkare      | 1    | 0        |
+| user1        | false         | Skolläkare      | 1    | 0        |

@@ -19,14 +19,24 @@
 
 package se.inera.statistics.service.report.model;
 
+import se.inera.statistics.service.report.util.Icd10;
+
 public class Kategori implements Comparable<Kategori>, ICDTyp {
 
     private final String id;
     private final String name;
+    private final int numericalId;
 
     public Kategori(String id, String name) {
         this.id = id;
         this.name = name;
+        this.numericalId = -1;
+    }
+
+    public Kategori(String id, String name, int numericalId) {
+        this.id = id;
+        this.name = name;
+        this.numericalId = numericalId;
     }
 
     @Override
@@ -34,6 +44,7 @@ public class Kategori implements Comparable<Kategori>, ICDTyp {
         return id;
     }
 
+    @Override
     public String getName() {
         return name;
     }
@@ -45,6 +56,11 @@ public class Kategori implements Comparable<Kategori>, ICDTyp {
         } else {
             return name;
         }
+    }
+
+    @Override
+    public int getNumericalId() {
+        return numericalId;
     }
 
     @Override
@@ -72,6 +88,10 @@ public class Kategori implements Comparable<Kategori>, ICDTyp {
 
     private boolean isEqual(Kategori other) {
         return id.equals(other.id);
+    }
+
+    public static Kategori fromIcd10Kategori(Icd10.Kategori source) {
+        return new Kategori(source.getId(), source.getName(), source.toInt());
     }
 
 }

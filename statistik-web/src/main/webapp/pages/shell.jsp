@@ -468,6 +468,41 @@
 	                                        </div>
 	                                    </div>
 	                                </div>
+                                    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-3">
+                                        <label for="select-diagnoses"><span message key="Val av diagnoser"></span></label><br/>
+                                        <button class="btn btn-default" data-toggle="modal" data-target="#diagnosisModal" id="select-diagnoses" >
+                                            Diagnoser
+                                        </button>
+                                        <div class="modal fade" id="diagnosisModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <span id="myModalLabel"><span message key="Val av diagnoser"></span></span>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <ul class="modal-list">
+                                                            <li class="search-all-items input-group">
+                                                                <span class="input-group-addon glyphicon glyphicon-search"></span>
+                                                                <input type="search" ng-model="multiMenuFilter" class="multiMenuFilterSearch form-control" ng-change="businessFilter.filterMenuItems(businessFilter.icd10.subs, multiMenuFilter)" placeholder="Sök efter enhet"/>
+                                                            </li>
+                                                            <li class="select-all-items">
+                                                                <input type="checkbox" ng-checked="businessFilter.icd10.allSelected" id="select-all-diagnoses" class="multiMenuSelectAll" ng-click="itemClicked(businessFilter.icd10, businessFilter.icd10)"></input>
+                                                                <label for="select-all-diagnoses"><span message key="lbl.filter.select-all"></span></label>
+                                                            </li>
+                                                            <li data-ng-repeat="item in businessFilter.icd10.subs" class="multiMenuSelectKapitel" ng-init="itemRoot=businessFilter.icd10; depth=0">
+                                                                <submenu item="item" itemroot="itemRoot" depth="depth" recursionhelper="recursionhelper" ng-hide="item.hide" class="depth0" />
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <label class="pull-left"><span message key="Kapitel"></span>{{businessFilter.selectedTertiaryCount(businessFilter.icd10)}} <span message key="Avsnitt"></span>
+                                                            {{businessFilter.selectedSecondaryCount(businessFilter.icd10)}} <span message key="Kategorier"></span>{{businessFilter.selectedLeavesCount(businessFilter.icd10)}}</label>
+                                                        <button class="btn btn-success" data-dismiss="modal" aria-hidden="true" data-ng-click="businessFilter.updateIcd10()"><span message key="lbl.filter.modal.spara-stang"></span></button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
 	                                <div class="col-xs-8 col-sm-6 col-md-6 col-lg-3 check-permanent-filter-container">
                         				<input type="checkbox" id="check-permanent-filter" ng-model="businessFilter.permanentFilter">
                                     		<label for="check-permanent-filter"><span message key="lbl.filter.anvand-filter-pa-alla"></span></label>

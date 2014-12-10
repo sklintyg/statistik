@@ -3,7 +3,6 @@ package se.inera.statistics.service.warehouse.query;
 import com.google.common.base.Predicate;
 import org.joda.time.LocalDate;
 import org.joda.time.LocalDateTime;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -76,7 +75,7 @@ public class DiagnosgruppQueryTest {
                 withPatient(patient++).withKon(Kon.Female).withAlder(45).
                 withDiagnoskapitel(diagnoskapitel).withDiagnosavsnitt(14).withDiagnoskategori(16).
                 withSjukskrivningsgrad(100).withStartdatum(startday).withSjukskrivningslangd(10).
-                withLakarkon(Kon.Female).withLakaralder(32).withLakarbefatttning(201010).withLakarid(1).build();
+                withLakarkon(Kon.Female).withLakaralder(32).withLakarbefattning(new int[]{201010}).withLakarid(1).build();
 
         warehouse.accept(fact, VARDGIVARE);
     }
