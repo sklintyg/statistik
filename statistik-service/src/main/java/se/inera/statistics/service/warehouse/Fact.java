@@ -290,7 +290,7 @@ public class Fact {
             return this;
         }
 
-        public FactBuilder withLakarbefatttning(int[] lakarbefattnings) {
+        public FactBuilder withLakarbefattning(int[] lakarbefattnings) {
             this.lakarbefattnings = lakarbefattnings;
             return this;
         }
