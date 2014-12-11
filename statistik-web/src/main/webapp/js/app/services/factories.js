@@ -1,6 +1,8 @@
 'use strict';
 
 angular.module('StatisticsApp').factory('statisticsData', function ($http) {
+    var urlLengthLimit = 10000;
+
     var factory = {};
 
     var makeRequestNational = function (restFunctionName, successCallback, failureCallback) {
@@ -18,18 +20,22 @@ angular.module('StatisticsApp').factory('statisticsData', function ($http) {
     var makeRequestVerksamhet = function (restFunctionName, verksamhetId, enhetsIds, diagnosIds, successCallback, failureCallback) {
         var paramString = getEnhetsIdString(enhetsIds)
         paramString = getDiagnosIdString(paramString, diagnosIds)
-        $http.get("api/verksamhet/" + verksamhetId + "/" + restFunctionName + paramString).success(function (result) {
-            try {
-                successCallback(result);
-            } catch (e) {
+        if (paramString.length > urlLengthLimit) {
+            alert("Det filter du har valt innehåller för många enheter eller diagnoser. Förenkla filtret.");
+        } else {
+            $http.get("api/verksamhet/" + verksamhetId + "/" + restFunctionName + paramString).success(function (result) {
+                try {
+                    successCallback(result);
+                } catch (e) {
+                    failureCallback();
+                }
+            }).error(function (data, status, headers, config) {
+                if (status == 403) {
+                    window.location.replace("#/login");
+                }
                 failureCallback();
-            }
-        }).error(function (data, status, headers, config) {
-            if (status == 403) {
-                window.location.replace("#/login");
-            }
-            failureCallback();
-        });
+            });
+        }
     };
 
     var getEnhetsIdString = function (params) {
