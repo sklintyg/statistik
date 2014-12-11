@@ -46,7 +46,7 @@ public class Kategori implements Comparable<Kategori>, ICDTyp {
 
     @Override
     public String getName() {
-        return name;
+        return asString();
     }
 
     @Override

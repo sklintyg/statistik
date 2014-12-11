@@ -612,11 +612,22 @@ public class ProtectedChartDataService {
         return new Predicate<Fact>() {
             @Override
             public boolean apply(Fact fact) {
-                return true;
-//                if (kapitelIDs == null && avsnittIDs == null && kategoriIDs == null) {
-//                    return true;
-//                }
-//                if (fact.getDiagnoskapitel() == )
+                if (kapitelIDs == null && avsnittIDs == null && kategoriIDs == null) {
+                    return true;
+                }
+                String diagnosKapitelString = String.valueOf(fact.getDiagnoskapitel());
+                if (kapitelIDs != null && kapitelIDs.contains(diagnosKapitelString)) {
+                    return true;
+                }
+                String diagnosAvsnittString = String.valueOf(fact.getDiagnosavsnitt());
+                if (avsnittIDs != null && avsnittIDs.contains(diagnosAvsnittString)) {
+                    return true;
+                }
+                String diagnosKategoriString = String.valueOf(fact.getDiagnoskategori());
+                if (kategoriIDs != null && kategoriIDs.contains(diagnosKategoriString)) {
+                    return true;
+                }
+                return false;
             }
         };
     }

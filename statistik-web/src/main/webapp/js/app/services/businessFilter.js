@@ -92,8 +92,10 @@ angular.module('StatisticsApp').factory('businessFilter', ['statisticsData', '_'
         businessFilter.setIcd10Structure = function (diagnoses) {
             businessFilter.icd10.subs = diagnoses;
             _.each(diagnoses, function (kapitel) {
+                kapitel.typ = 'kapitel';
                 kapitel.subs = kapitel.avsnitts;
                 _.each(kapitel.avsnitts, function (avsnitt) {
+                    avsnitt.typ = 'avsnitt';
                     avsnitt.subs = avsnitt.kategoris;
                 });
             });
@@ -296,11 +298,11 @@ angular.module('StatisticsApp').factory('businessFilter', ['statisticsData', '_'
         businessFilter.collectSummary = function (node, acc) {
             if (node.subs) { // Diagnoses, Kapitel or Avsnitt
                 if (node.allSelected) {
-                    if (isSet(node.avsnitts)) { // this is a kapitel
+                    if (node.typ === 'kapitel') {
                         acc.kapitel.push(node.numericalId);
-                    } else if (isSet(node.kategoris)) { // this is an avsnitt
+                    } else if (node.typ === 'avsnitt') {
                         acc.avsnitt.push(node.numericalId);
-                    } else {
+                    } else { // root node
                         _.each(node.subs, function (subItem) {
                             businessFilter.collectSummary(subItem, acc);
                         });

@@ -469,7 +469,7 @@
 	                                    </div>
 	                                </div>
                                     <div class="col-xs-6 col-sm-6 col-md-6 col-lg-3">
-                                        <label for="select-diagnoses"><span message key="Val av diagnoser"></span></label><br/>
+                                        <label for="select-diagnoses"><span message key="lbl.filter.val-av-diagnoser"></span></label><br/>
                                         <button class="btn btn-default" data-toggle="modal" data-target="#diagnosisModal" id="select-diagnoses" >
                                             Diagnoser
                                         </button>
@@ -477,13 +477,13 @@
                                             <div class="modal-dialog">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
-                                                        <span id="myModalLabel"><span message key="Val av diagnoser"></span></span>
+                                                        <span id="myModalLabel"><span message key="lbl.filter.val-av-diagnoser"></span></span>
                                                     </div>
                                                     <div class="modal-body">
                                                         <ul class="modal-list">
                                                             <li class="search-all-items input-group">
                                                                 <span class="input-group-addon glyphicon glyphicon-search"></span>
-                                                                <input type="search" ng-model="multiMenuFilter" class="multiMenuFilterSearch form-control" ng-change="businessFilter.filterMenuItems(businessFilter.icd10.subs, multiMenuFilter)" placeholder="Sök efter enhet"/>
+                                                                <input type="search" ng-model="multiMenuFilter" class="multiMenuFilterSearch form-control" ng-change="businessFilter.filterMenuItems(businessFilter.icd10.subs, multiMenuFilter)" placeholder="Sök diagnos"/>
                                                             </li>
                                                             <li class="select-all-items">
                                                                 <input type="checkbox" ng-checked="businessFilter.icd10.allSelected" id="select-all-diagnoses" class="multiMenuSelectAll" ng-click="itemClicked(businessFilter.icd10, businessFilter.icd10)"></input>
@@ -495,8 +495,8 @@
                                                         </ul>
                                                     </div>
                                                     <div class="modal-footer">
-                                                        <label class="pull-left"><span message key="Kapitel"></span>{{businessFilter.selectedTertiaryCount(businessFilter.icd10)}} <span message key="Avsnitt"></span>
-                                                            {{businessFilter.selectedSecondaryCount(businessFilter.icd10)}} <span message key="Kategorier"></span>{{businessFilter.selectedLeavesCount(businessFilter.icd10)}}</label>
+                                                        <label class="pull-left"><span message key="lbl.filter.modal.kapitel"></span>{{businessFilter.selectedTertiaryCount(businessFilter.icd10)}} <span message key="lbl.filter.modal.avsnitt"></span>
+                                                            {{businessFilter.selectedSecondaryCount(businessFilter.icd10)}} <span message key="lbl.filter.modal.kategorier"></span>{{businessFilter.selectedLeavesCount(businessFilter.icd10)}}</label>
                                                         <button class="btn btn-success" data-dismiss="modal" aria-hidden="true" data-ng-click="businessFilter.updateDiagnoses()"><span message key="lbl.filter.modal.spara-stang"></span></button>
                                                     </div>
                                                 </div>
