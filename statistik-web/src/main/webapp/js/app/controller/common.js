@@ -156,7 +156,14 @@ var ControllerCommons = new function(){
             xAxis : {
                 labels : {
                     rotation : 310,
-                    align : 'right'
+                    align : 'right',
+                   
+                    style: {
+                    	whiteSpace: 'pre',
+                    	width: '120px',
+                        
+                    	
+                    }
                 },
                 categories : ControllerCommons.map(chartCategories, function(name) {
                     return ControllerCommons.htmlsafe(name);

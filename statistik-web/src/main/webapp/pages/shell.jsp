@@ -354,7 +354,7 @@
                                                ctrlname="VerksamhetDegreeOfSickLeaveCtrl" navigationaware><span message key="nav.sjukskrivningsgrad"></span></a>
                                         </li>
                                         <li>
-                                            <a class="menu-item-has-childs has-collapse"
+                                            <a class="menu-item-has-childs has-collapse no-border-bottom"
                                                data-ng-href="#/verksamhet/{{businessId}}/sjukskrivningslangd"
                                                id="navBusinessSickLeaveLengthLink"
                                                ctrlname="VerksamhetSickLeaveLengthCtrl" navigationaware><span message key="nav.sjukskrivningslangd"></span>
@@ -363,20 +363,20 @@
                                         </li>
                                         <ul id="sub-menu-business-sick-leave-length"
                                             class="nav nav-list sub-nav-list accordion-body in collapse">
-                                            <li><a class="border-top no-border-bottom"
+                                            <li><a class="border-top border-bottom"
                                                    data-ng-href="#/verksamhet/{{businessId}}/sjukskrivningslangdpagaende"
                                                    id="navBusinessOngoingAndCompletedSickLeaveLink"
                                                    ctrlname="VerksamhetSickLeaveLengthCurrentCtrl" navigationaware><span message key="nav.pagaende"></span></a>
                                             </li>
-                                            <li><a class="last-item-in-menu" data-ng-href="#/verksamhet/{{businessId}}/langasjukskrivningar"
+                                            <li><a class="last-item-in-menu border-bottom" data-ng-href="#/verksamhet/{{businessId}}/langasjukskrivningar"
                                                    id="navBusinessMoreNinetyDaysSickLeaveLink"
                                                    ctrlname="VerksamhetLongSickLeavesCtrl" navigationaware><span message key="nav.sjukskrivningslangd-mer-an-90-dagar"></span></a></li>
                                         </ul>
-                                        <li ng-show="!isFullVgAccess"><a data-ng-href="#/verksamhet/{{businessId}}/sjukfallperlakare"
+                                        <li ng-show="!isFullVgAccess"><a class="last-item-in-menu border-bottom" data-ng-href="#/verksamhet/{{businessId}}/sjukfallperlakare"
                                                id="navBusinessCasesPerLakareLink" ctrlname="VerksamhetCasesPerLakareCtrl"
                                                navigationaware><span message key="nav.lakare-per-namn"></span></a>
                                         </li>
-                                        <li><a class="last-item-in-menu" data-ng-href="#/verksamhet/{{businessId}}/sjukfallperlakaresalderochkon"
+                                        <li><a class="last-item-in-menu border-bottom" data-ng-href="#/verksamhet/{{businessId}}/sjukfallperlakaresalderochkon"
                                                id="navBusinessCasesPerLakaresAlderOchKonLink" ctrlname="VerksamhetLakaresAlderOchKonCtrl"
                                                navigationaware><span message key="nav.lakaralder-kon"></span></a>
                                         </li>

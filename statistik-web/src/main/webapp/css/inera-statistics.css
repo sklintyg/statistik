@@ -521,7 +521,7 @@ legend {
 #statistics-menu-accordion .last-item-in-menu,
 #statistics-about-menu-accordion .last-item-in-menu {
 	border-bottom: 1px solid transparent;
-	border-top: 1px solid #bababa;
+	/*border-top: 1px solid #bababa;*/
 }
 #statistics-menu-accordion li a.menu-item-has-childs {
 }
@@ -1656,7 +1656,7 @@ div.scrolling {
 	display: none;
 }
 a.has-collapse {
-	border-bottom: 1px solid transparent !important;
+	border-bottom: 1px solid transparent;
 }
 .no-border-top {
 	border-top: 1px solid transparent !important;
@@ -1666,6 +1666,9 @@ a.has-collapse {
 }
 .border-top {
 	border-top: 1px solid #BABABA;
+}
+.border-bottom {
+	border-bottom: 1px solid #bababa !important;
 }
 .margin-bottom {
 	margin-bottom: 15px !important;
