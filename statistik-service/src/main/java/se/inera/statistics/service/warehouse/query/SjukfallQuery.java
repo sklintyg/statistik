@@ -51,7 +51,6 @@ public final class SjukfallQuery {
     public SimpleKonResponse<SimpleKonDataRow> getSjukfallPerEnhet(Aisle aisle, Predicate<Fact> filter, Map<String, String> idsToNames, Range range, int perioder, int periodlangd) {
         ArrayList<SimpleKonDataRow> result = new ArrayList<>();
         for (String enhetId : idsToNames.keySet()) {
-            // TODO: refactor
             Collection<Sjukfall> sjukfalls = SjukfallUtil.active(range, aisle, new SjukfallUtil.EnhetFilter(Warehouse.getEnhet(enhetId)));
             int male = countMale(sjukfalls);
             int female = sjukfalls.size() - male;
