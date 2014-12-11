@@ -153,11 +153,11 @@ angular.module('StatisticsApp').factory('statisticsData', function ($http) {
     };
 
     factory.getSjukfallPerBusinessVerksamhet = function (verksamhetId, enhetsIds, diagnosIds, successCallback, failureCallback) {
-        makeRequestVerksamhet("getNumberOfCasesPerEnhet", verksamhetId, enhetsIds, diagnosIds, failureCallback);
+        makeRequestVerksamhet("getNumberOfCasesPerEnhet", verksamhetId, enhetsIds, diagnosIds, successCallback, failureCallback);
     };
 
     factory.getSjukfallPerLakareVerksamhet = function (verksamhetId, enhetsIds, diagnosIds, successCallback, failureCallback) {
-        makeRequestVerksamhet("getNumberOfCasesPerLakare", verksamhetId, enhetsIds, diagnosIds, failureCallback);
+        makeRequestVerksamhet("getNumberOfCasesPerLakare", verksamhetId, enhetsIds, diagnosIds, successCallback, failureCallback);
     };
 
     factory.getIcd10Structure = function (successCallback, failureCallback) {
@@ -165,7 +165,7 @@ angular.module('StatisticsApp').factory('statisticsData', function ($http) {
     };
 
     factory.getSjukfallPerLakarbefattningVerksamhet = function (verksamhetId, enhetsIds, diagnosIds, successCallback, failureCallback) {
-        makeRequestVerksamhet("getNumberOfCasesPerLakarbefattning", verksamhetId, enhetsIds, diagnosIds, failureCallback);
+        makeRequestVerksamhet("getNumberOfCasesPerLakarbefattning", verksamhetId, enhetsIds, diagnosIds, sucessCallback, failureCallback);
     };
 
     return factory;

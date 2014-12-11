@@ -613,6 +613,10 @@ public class ProtectedChartDataService {
             @Override
             public boolean apply(Fact fact) {
                 return true;
+//                if (kapitelIDs == null && avsnittIDs == null && kategoriIDs == null) {
+//                    return true;
+//                }
+//                if (fact.getDiagnoskapitel() == )
             }
         };
     }
