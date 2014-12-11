@@ -36,8 +36,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Queue;
 import java.util.Set;
 
 @Component
@@ -58,6 +60,7 @@ public class HSAServiceMock implements HSAService, HsaDataInjectable {
     private static final VerksamhetsTyp VERKSAMHET = new VerksamhetsTyp();
     private static final List<String> VERKSAMHET_CODES;
     private final Map<String, JsonNode> personals = new HashMap<>();
+    private String nextLanCode = null;
 
     static {
         LAN_CODES = new ArrayList<>();
@@ -194,6 +197,11 @@ public class HSAServiceMock implements HSAService, HsaDataInjectable {
     }
 
     private String createLan(HSAKey key) {
+        if (nextLanCode != null) {
+            final String lan = nextLanCode;
+            nextLanCode = null;
+            return lan;
+        }
         int keyIndex = key != null && key.getVardgivareId() != null ? key.getVardgivareId().hashCode() & POSITIVE_MASK : 0;
         return LAN_CODES.get(keyIndex % LAN_CODES.size());
     }
@@ -238,6 +246,11 @@ public class HSAServiceMock implements HSAService, HsaDataInjectable {
     public void addPersonal(String id, String firstName, String lastName, HsaKon kon, int age, List<Integer> befattning) {
         final ObjectNode personal = createPersonal(id, firstName, lastName, kon, age, befattning);
         personals.put(id, personal);
+    }
+
+    @Override
+    public void setCountyForNextIntyg(String countyCode) {
+        nextLanCode = countyCode;
     }
 
 }

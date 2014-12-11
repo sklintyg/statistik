@@ -5,6 +5,7 @@ import groovy.json.JsonSlurper
 import org.joda.time.DateTimeUtils
 import se.inera.statistics.service.processlog.EventType
 import se.inera.statistics.web.reports.ReportsUtil
+import se.inera.testsupport.Intyg
 
 class FoljandeIntygFinns {
 
@@ -23,6 +24,7 @@ class FoljandeIntygFinns {
     def start2
     def slut2
     def läkare
+    def län
 
     public void setKommentar(String kommentar) {}
 
@@ -38,6 +40,7 @@ class FoljandeIntygFinns {
         arbetsförmåga = 0
         arbetsförmåga2 = ""
         läkare = "Personal HSA-ID"
+        län = null
     }
 
     public void execute() {
@@ -75,7 +78,7 @@ class FoljandeIntygFinns {
         def builder = new JsonBuilder(result)
         def finalIntygDataString = builder.toString()
 
-        Intyg intyg = new Intyg(EventType.CREATED, finalIntygDataString, String.valueOf(intygIdCounter++), DateTimeUtils.currentTimeMillis())
+        Intyg intyg = new Intyg(EventType.CREATED, finalIntygDataString, String.valueOf(intygIdCounter++), DateTimeUtils.currentTimeMillis(), län)
 
         reportsUtil.insertIntyg(intyg)
     }

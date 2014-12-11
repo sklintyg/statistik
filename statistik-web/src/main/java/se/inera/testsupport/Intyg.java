@@ -7,12 +7,14 @@ public class Intyg {
     private String data;
     private String documentId;
     private long timestamp;
+    private String county;
 
-    public Intyg(EventType type, String data, String documentId, long timestamp) {
+    public Intyg(EventType type, String data, String documentId, long timestamp, String county) {
         this.type = type;
         this.data = data;
         this.documentId = documentId;
         this.timestamp = timestamp;
+        this.county = county;
     }
 
     /**
@@ -35,4 +37,9 @@ public class Intyg {
     public long getTimestamp() {
         return timestamp;
     }
+
+    public String getCounty() {
+        return county;
+    }
+
 }

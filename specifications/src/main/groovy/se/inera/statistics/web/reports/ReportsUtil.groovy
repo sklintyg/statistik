@@ -5,7 +5,7 @@ import groovyx.net.http.ContentType
 import groovyx.net.http.RESTClient
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
-import se.inera.statistics.spec.Intyg
+import se.inera.testsupport.Intyg
 import se.inera.testsupport.Personal
 
 class ReportsUtil {
@@ -182,6 +182,10 @@ class ReportsUtil {
 
     def getReportSjukfallPerLakareInloggad(String user) {
         return get("/api/verksamhet/" + getVardgivareForUser(user) + "/getNumberOfCasesPerLakare")
+    }
+
+    def getReportCasesPerSex() {
+        return get("/api/getSjukfallPerSexStatistics")
     }
 
 }

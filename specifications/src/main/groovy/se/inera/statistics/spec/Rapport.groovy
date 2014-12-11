@@ -6,9 +6,9 @@ abstract class Rapport {
 
     String inloggadSom
     boolean inloggad
-    int män
-    int kvinnor
-    int totalt
+    def män
+    def kvinnor
+    def totalt
     boolean vårdgivarnivå
 
     ReportsUtil reportsUtil = new ReportsUtil()
@@ -20,15 +20,15 @@ abstract class Rapport {
 
     abstract void doExecute()
 
-    int män() {
+    def män() {
         return män
     }
 
-    int kvinnor() {
+    def kvinnor() {
         return kvinnor
     }
 
-    int totalt() {
+    def totalt() {
         return totalt
     }
 
