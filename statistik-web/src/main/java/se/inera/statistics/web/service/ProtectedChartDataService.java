@@ -270,11 +270,11 @@ public class ProtectedChartDataService {
     @Produces({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request, #verksamhetId)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request, #verksamhetId)")
-    public VerksamhetOverviewData getOverviewData(@Context HttpServletRequest request, @PathParam(VERKSAMHET_PATH_ID) String verksamhetId, @QueryParam(ID_STRING) String idString, @QueryParam(KAPITEL_STRING) String kapitelString, @QueryParam(AVSNITT_STRING) String avsnittString, @QueryParam(KATEGORI_STRING) String kategoriString) {
+    public VerksamhetOverviewData getOverviewData(@Context HttpServletRequest request, @PathParam(VERKSAMHET_PATH_ID) String verksamhetId, @QueryParam(ID_STRING) String idString) {
         LOG.info("Calling getOverview with verksamhetId: {} and ids: {}", verksamhetId, idString);
         Range range = Range.quarter();
         Verksamhet verksamhet = getVerksamhet(request, Verksamhet.decodeId(verksamhetId));
-        Predicate<Fact> filter = getFilter(request, verksamhet, getIdsFromIdString(idString), getIdsFromIdString(kapitelString), getIdsFromIdString(avsnittString), getIdsFromIdString(avsnittString));
+        Predicate<Fact> filter = getFilter(request, verksamhet, getIdsFromIdString(idString), null, null, null);
         VerksamhetOverviewResponse response = warehouse.getOverview(filter, range, verksamhet.getVardgivarId());
 
         return new VerksamhetOverviewConverter().convert(response, range);

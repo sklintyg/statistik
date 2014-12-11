@@ -80,7 +80,7 @@ public class ProtectedChartDataServiceTest {
         init();
 
         try {
-            chartDataService.getOverviewData(request, "VG2", null, null, null, null);
+            chartDataService.getOverviewData(request, "VG2", null);
             fail("Current implementation can not use null data");
         } catch (NullPointerException e) {
             assertTrue(true);

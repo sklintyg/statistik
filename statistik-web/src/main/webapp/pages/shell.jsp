@@ -468,7 +468,7 @@
 	                                        </div>
 	                                    </div>
 	                                </div>
-                                    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-3">
+                                    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-3" ng-show="showDiagnosFilter">
                                         <label for="select-diagnoses"><span message key="lbl.filter.val-av-diagnoser"></span></label><br/>
                                         <button class="btn btn-default" data-toggle="modal" data-target="#diagnosisModal" id="select-diagnoses" >
                                             Diagnoser
