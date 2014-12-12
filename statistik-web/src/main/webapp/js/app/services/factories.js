@@ -171,7 +171,7 @@ angular.module('StatisticsApp').factory('statisticsData', function ($http) {
     };
 
     factory.getSjukfallPerLakarbefattningVerksamhet = function (verksamhetId, enhetsIds, diagnosIds, successCallback, failureCallback) {
-        makeRequestVerksamhet("getNumberOfCasesPerLakarbefattning", verksamhetId, enhetsIds, diagnosIds, sucessCallback, failureCallback);
+        makeRequestVerksamhet("getNumberOfCasesPerLakarbefattning", verksamhetId, enhetsIds, diagnosIds, successCallback, failureCallback);
     };
 
     return factory;
