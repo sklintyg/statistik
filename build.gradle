@@ -9,6 +9,12 @@ allprojects {
         maven { url "https://repository-callistasoftware.forge.cloudbees.com/snapshot/" }
         maven { url "https://repository-callistasoftware.forge.cloudbees.com/3rdparty/" }
     }
+
+    buildscript {
+        repositories {
+            jcenter()
+        }
+    }
 }
 
 subprojects {
@@ -34,6 +40,7 @@ subprojects {
     }
 
     task integrationTests(type: Test) {
+        outputs.upToDateWhen { false }
         include '**/*IntegrationTest.class'
         reports.html.destination = file("$reports.html.destination/integration")
         reports.junitXml.destination = file("$reports.junitXml.destination/integration")
