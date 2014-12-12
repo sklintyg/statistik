@@ -1,7 +1,7 @@
 !contents -R2 -g -p -f -h
 
 Testmiljö:
-Existerande användare: user1, user2, user3
+Existerande användare: user1, user2, user3, user4
 Existerande vårdgivare: vg1, vg3
 Existerande enheter: enhet1, enhet2, enhet3
 
@@ -19,6 +19,8 @@ user2 enheter: enhet1, enhet2
 user2 vårdgivare: vg1
 user3 enheter: enhet3
 user3 vårdgivare: vg3
+user4 enheter: enhet2
+user4 vårdgivare: vg1
 
 Default:
 Vårdgivarnivå för inloggad användare: false
