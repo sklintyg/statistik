@@ -188,4 +188,8 @@ class ReportsUtil {
         return get("/api/getSjukfallPerSexStatistics")
     }
 
+    def getReportCasesPerCounty() {
+        return get("/api/getCountyStatistics")
+    }
+
 }
