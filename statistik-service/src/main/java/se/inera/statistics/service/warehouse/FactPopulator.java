@@ -19,6 +19,8 @@
 
 package se.inera.statistics.service.warehouse;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import se.inera.statistics.service.helper.ConversionHelper;
@@ -27,6 +29,7 @@ import se.inera.statistics.service.warehouse.model.db.WideLine;
 
 @Component
 public class FactPopulator {
+    private static final Logger LOG = LoggerFactory.getLogger(FactPopulator.class);
 
     @Autowired
     private Warehouse warehouse;
@@ -68,7 +71,16 @@ public class FactPopulator {
             final String[] befattningStrings = lakarbefattningString.split(",");
             final int[] befattnings = new int[befattningStrings.length];
             for (int i = 0; i < befattningStrings.length; i++) {
-                befattnings[i] = Integer.parseInt(befattningStrings[i].trim());
+                String befattning = befattningStrings[i].trim();
+                if (befattning.equals("-")) {
+                    return new int[0];
+                }
+                try {
+                    befattnings[i] = Integer.parseInt(befattning);
+                } catch (NumberFormatException nfe) {
+                    LOG.error("Unknown befatnning: " + befattning);
+                    return new int[0];
+                }
             }
             return befattnings;
         } else {
