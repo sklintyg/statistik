@@ -27,10 +27,11 @@ public class LoginInfo {
     private final String hsaId;
     private final String name;
     private final Verksamhet defaultVerksamhet;
-    private final boolean isVgAccess;
-    private final boolean isFullVgAccess;
     private final boolean loggedIn;
     private final List<Verksamhet> businesses;
+    private boolean verksamhetschef;
+    private boolean delprocessledare;
+    private boolean processledare;
 
     public LoginInfo() {
         loggedIn = false;
@@ -38,16 +39,18 @@ public class LoginInfo {
         name = "";
         defaultVerksamhet = null;
         businesses = Collections.emptyList();
-        isVgAccess = false;
-        isFullVgAccess = false;
+        verksamhetschef = false;
+        delprocessledare = false;
+        processledare = false;
     }
 
-    public LoginInfo(String hsaId, String name, Verksamhet defaultVerksamhet, boolean isVgAccess, boolean isFullVgAccess, List<Verksamhet> businesses) {
+    public LoginInfo(String hsaId, String name, Verksamhet defaultVerksamhet, boolean verksamhetschef, boolean delprocessledare, boolean processledare, List<Verksamhet> businesses) {
         this.hsaId = hsaId;
         this.name = name;
         this.defaultVerksamhet = defaultVerksamhet;
-        this.isVgAccess = isVgAccess;
-        this.isFullVgAccess = isFullVgAccess;
+        this.verksamhetschef = verksamhetschef;
+        this.delprocessledare = delprocessledare;
+        this.processledare = processledare;
         this.loggedIn = true;
         this.businesses = businesses;
     }
@@ -68,16 +71,20 @@ public class LoginInfo {
         return loggedIn;
     }
 
-    public boolean isVgAccess() {
-        return isVgAccess;
-    }
-
-    public boolean isFullVgAccess() {
-        return isFullVgAccess;
-    }
-
     public List<Verksamhet> getBusinesses() {
         return businesses;
+    }
+
+    public boolean isVerksamhetschef() {
+        return verksamhetschef;
+    }
+
+    public boolean isDelprocessledare() {
+        return delprocessledare;
+    }
+
+    public boolean isProcessledare() {
+        return processledare;
     }
 
 }

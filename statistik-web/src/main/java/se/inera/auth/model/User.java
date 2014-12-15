@@ -56,12 +56,15 @@ public class User {
         return vardenhetList;
     }
 
-    public boolean hasVgAccess() {
-        // A "processledare" is NOT a "delprocessledare"
+    public boolean isVerksamhetschef() {
+        return !isDelprocessledare() && !isProcessledare();
+    }
+
+    public boolean isDelprocessledare() {
         return !vgAccess && vardenhetList.size() > 1;
     }
 
-    public boolean hasFullVgAccess() {
+    public boolean isProcessledare() {
         return vgAccess;
     }
 
