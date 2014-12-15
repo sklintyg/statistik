@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd"
+                   logicalFilePath="liquibase/db.changelog-v22.0_update_kon.xml">
+    <changeSet id="22_update_kon" author="pierre.sandboge" context="reset">
+        <sql>update wideline set kon=2 where kon=0</sql>
+        <sql>update wideline set kon=1 where kon=-1</sql>
+    </changeSet>
+</databaseChangeLog>

@@ -25,5 +25,6 @@
     <include file="changelog/db.changelog-v19.0_add_verksamhet_to_enhet_table.xml"/>
     <include file="changelog/db.changelog-v20.0_reset_handelsepekare.xml"/>
     <include file="changelog/db.changelog-v20.0_add_lakare_table.xml"/>
+    <include file="changelog/db.changelog-v22.0_update_kon.xml"/>
 
 </databaseChangeLog>
