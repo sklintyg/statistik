@@ -18,8 +18,8 @@ var stMessages = {
         'nav.diagnos':'Diagnos',
         'nav.diagnosgrupp':'Diagnosgrupp',
         'nav.enskilt-diagnoskapitel':'Enskilt diagnoskapitel',
-        'nav.tio-vanligaste-diagnoserna': 'Tio vanligaste diagnoserna',
-        'nav.jamfor-vanliga-diagnoser': 'Jämför vanliga diagnoser',
+        'nav.tio-vanligaste-diagnoserna': 'Tio omfattande diagnoser',
+        'nav.jamfor-vanliga-diagnoser': 'Jämför valfria diagnoser',
         'nav.aldersgrupp':'Åldersgrupp',
         'nav.sjukskrivningsgrad':'Sjukskrivningsgrad',
         'nav.sjukskrivningslangd':'Sjukskrivningslängd',
@@ -31,8 +31,8 @@ var stMessages = {
         'nav.vardenhet':'Vårdenhet',
         'nav.lakare':'Läkare',
         'nav.lakarbefattning':'Läkarbefattning',
-        'nav.lakare-per-namn':'Läkare per namn',
-        'nav.lakaralder-kon':'Läkare',
+        'nav.lakare':'Läkare',
+        'nav.lakaralder-kon':'Läkarålder och -kön',
         'nav.pagaende':'Pågående',
         'nav.sjukskrivningslangd-mer-an-90-dagar':'Mer än 90 dagar',
         'nav.mobile.trigger.per-alder-pagaende-sjukfall': 'Per åldersgrupp eller pågående sjukfall',
@@ -84,8 +84,8 @@ var stMessages = {
         
         //business statistics overview
         'business.overview-header': 'Verksamhetsstatistik',
-        'business.widget.header.total-antal': 'Total antal',
-        'business.widget.header.konsfordelning-sjukfall': 'Könsfördelning av sjukfall',
+        'business.widget.header.total-antal': 'Totalt antal',
+        'business.widget.header.konsfordelning-sjukfall': 'Fördelning mellan kön',
         'business.widget.header.fordelning-diagnosgrupper': 'Fördelning diagnosgrupper',
         'business.widget.header.fordelning-aldersgrupper': 'Fördelning åldersgrupper',
         'business.widget.header.fordelning-sjukskrivningsgrad': 'Fördelning sjukskrivningsgrad',
@@ -117,6 +117,9 @@ var stMessages = {
         'help.sick-leave-length-current': 'Vad innebär pågående sjukfall?<br/>Denna rapport syftar till att visa så aktuell information om sjukfallen möjligt. Alla sjukfall som pågår någon gång under aktuell månad hämtas. Rapporten kan inte ta hänsyn till vilken dag det är i månaden. I slutet på månaden kommer fortfarande sjukfall som avslutats under månadens gång visas som pågående.',
         'help.age-group-current'        : 'Vad innebär pågående sjukfall?<br/>Denna rapport syftar till att visa så aktuell information om sjukfallen möjligt. Alla sjukfall som pågår någon gång under aktuell månad hämtas. Rapporten kan inte ta hänsyn till vilken dag det är i månaden. I slutet på månaden kommer fortfarande sjukfall som avslutats under månadens gång visas som pågående.',
         'help.lakare-alder-och-kon'     : 'Hjälptext för sjukfall per läkares ålder och kön',
+        
+        //info texts
+        'info.lan.information' : 'Uppgift om vilket län ett sjukfall tillhör är hämtat från HSA-katalogen. Uppgifterna i HSA är inte kvalitetssäkrade och information kan saknas då det inte är obligatoriskt för vårdenheten att ange länstillhörighet.',
 
         //login view
         'login.header': 'Logga in för verksamhetsstatistik',

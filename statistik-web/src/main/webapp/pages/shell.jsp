@@ -374,7 +374,7 @@
                                         </ul>
                                         <li ng-show="!isFullVgAccess"><a class="last-item-in-menu border-bottom" data-ng-href="#/verksamhet/{{businessId}}/sjukfallperlakare"
                                                id="navBusinessCasesPerLakareLink" ctrlname="VerksamhetCasesPerLakareCtrl"
-                                               navigationaware><span message key="nav.lakare-per-namn"></span></a>
+                                               navigationaware><span message key="nav.lakare"></span></a>
                                         </li>
                                         <li><a class="last-item-in-menu border-bottom" data-ng-href="#/verksamhet/{{businessId}}/sjukfallperlakaresalderochkon"
                                                id="navBusinessCasesPerLakaresAlderOchKonLink" ctrlname="VerksamhetLakaresAlderOchKonCtrl"

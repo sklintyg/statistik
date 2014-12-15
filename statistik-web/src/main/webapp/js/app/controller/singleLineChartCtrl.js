@@ -115,7 +115,7 @@ angular.module('StatisticsApp').controller('singleLineChartCtrl', [ '$scope', '$
         $scope.spinnerText = "Laddar information...";
         $scope.doneLoading = false;
         $scope.dataLoadingError = false;
-        $scope.popoverText = config.showPageHelpTooltip ? "Ett sjukfall omfattar alla de läkarintyg (FK&nbsp;7263) som rör en viss patient och vars giltighet följer på varandra med max 5 dagars uppehåll. Exempel: Om intyg 1 gäller till och med 14 augusti och intyg 2 gäller från och med 17 augusti ses de båda intygen som samma sjukfall. Men om intyg 2 istället varit giltigt från och med 21 augusti räknas intygen som två skilda sjukfall." : "";
+        $scope.popoverText = config.showPageHelpTooltip ? "Ett sjukfall innehåller en patients alla läkarintyg om intygen följer varandra med max fem dagars uppehåll. Läkarintygen måste också vara utfärdade av samma vårdgivare. Om det är fler än fem dagar mellan intygen räknas det nya intyget som ett nytt sjukfall." : "";
 
         $scope.print = function (bwPrint) {
             window.open($window.location + (bwPrint ? "?printBw=true" : "?print=true"));

@@ -141,7 +141,7 @@ angular.module('StatisticsApp').nationalSickLeaveLengthCurrentConfig = function 
         return "api/verksamhet/" + verksamhetId + "/getSickLeaveLengthCurrentData/csv";
     };
     conf.title = function (month) {
-        return "Antal pågående sjukfall för " + month + " baserat på sjukskrivningslängd";
+        return "Antal pågående sjukfall per sjukskrivningslängd " + month;
     };
     conf.chartXAxisTitle = "Sjukskrivningslängd";
     conf.pageHelpText = "help.sick-leave-length-current"
@@ -170,7 +170,7 @@ angular.module('StatisticsApp').nationalAgeGroupCurrentConfig = function () {
         return "api/verksamhet/" + verksamhetId + "/getAgeGroupsCurrentStatistics/csv";
     };
     conf.title = function (month) {
-        return "Antal pågående sjukfall för " + month + " baserat på patientens ålder";
+        return "Antal pågående sjukfall per åldersgrupp " + month;
     };
     conf.chartXAxisTitle = "Åldersgrupp";
     conf.pageHelpText = "help.age-group-current"
@@ -186,6 +186,8 @@ angular.module('StatisticsApp').casesPerSexConfig = function () {
     };
     conf.percentChart = true;
     conf.chartXAxisTitle = "Län";
+    conf.chartFootnotes = ["Uppgift om vilket län ett sjukfall tillhör är hämtat från HSA-katalogen. Uppgifterna i HSA är inte kvalitetssäkrade och information kan saknas då det inte är obligatoriskt för vårdenheten att ange länstillhörighet."];
+    //conf.chartFootnotes = [messageService.getProperty('info.lan.information')];
     return conf;
 };
 
