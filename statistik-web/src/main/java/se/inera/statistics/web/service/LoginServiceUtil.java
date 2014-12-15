@@ -73,14 +73,14 @@ public class LoginServiceUtil {
                 List<Enhet> enhetsList = vardgivareManager.getEnhets(realUser.getValdVardenhet().getVardgivarId());
                 Verksamhet defaultVerksamhet = toVerksamhet(realUser.getValdVardenhet(), enhetsList);
                 List<Verksamhet> verksamhets = getVerksamhetsList(realUser, enhetsList);
-                return new LoginInfo(realUser.getHsaId(), realUser.getName(), defaultVerksamhet, realUser.hasVgAccess(), realUser.hasFullVgAccess(), verksamhets);
+                return new LoginInfo(realUser.getHsaId(), realUser.getName(), defaultVerksamhet, realUser.isVerksamhetschef(), realUser.isDelprocessledare(), realUser.isProcessledare(), verksamhets);
             }
         }
         return new LoginInfo();
     }
 
     private List<Verksamhet> getVerksamhetsList(User realUser, final List<Enhet> enhetsList) {
-        if (realUser.hasFullVgAccess()) {
+        if (realUser.isProcessledare()) {
             return transform(enhetsList, new Function<Enhet, Verksamhet>() {
                 @Override
                 public Verksamhet apply(Enhet enhet) {

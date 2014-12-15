@@ -1,6 +1,35 @@
+buildscript {
+    dependencies {
+        classpath 'org.akhikhl.gretty:gretty:1.1.8'
+    }
+}
+
 description = 'Inera Statistics Fitnesse specifications'
 
 apply plugin: 'groovy'
+
+if (project.hasProperty('runFitnesse')) {
+    apply plugin: 'org.akhikhl.gretty'
+    gretty {
+        contextPath = '/'
+        contextConfigFile = project(":statistik-web").projectDir.path + "/src/main/webapp/WEB-INF/jetty-context.xml"
+        logbackConfigFile = "${projectDir}/src/main/resources/statistics-logback.xml"
+        jvmArgs = ['-Dspring.profiles.active=dev,embedded', '-XX:MaxPermSize=256M']
+    }
+
+    farm {
+        webapp ":statistik-web"
+        webapp project
+        integrationTestTask = 'fitnesseTest'
+    }
+
+    dependencies {
+        gretty "com.h2database:h2:1.3.171"
+        gretty "mysql:mysql-connector-java:5.1.29"
+        gretty "org.apache.activemq:activemq-broker:5.8.0"
+        gretty "org.apache.tomcat:tomcat-catalina:7.0.20"
+    }
+}
 
 ext.fitnessePort = "9125"
 ext.fitnesseRoot = "FitNesseRoot"
@@ -34,10 +63,9 @@ class FitnesseTask extends DefaultTask {
 task fitnesseWiki(type: FitnesseTask, dependsOn: build)
 
 task fitnesseTest(type: FitnesseTask, dependsOn: build) {
+    outputs.upToDateWhen { false }
     clArgs += ['-c', 'StatisticsTests?suite&format=text']
 }
-
-testAll {}.dependsOn fitnesseTest
 
 dependencies {
     def fitnesseDependency = "org.fitnesse:fitnesse:20140901"

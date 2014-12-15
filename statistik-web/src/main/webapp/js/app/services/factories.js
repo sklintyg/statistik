@@ -99,7 +99,7 @@ angular.module('StatisticsApp').factory('statisticsData', function ($http) {
     };
 
     factory.getSubDiagnosisGroupDataVerksamhet = function (verksamhetId, enhetsIds, diagnosIds, successCallback, failureCallback, groupId) {
-        makeRequestVerksamhet("getDiagnosavsnittstatistik/" + groupId, verksamhetId, diagnosIds, enhetsIds, successCallback, failureCallback);
+        makeRequestVerksamhet("getDiagnosavsnittstatistik/" + groupId, verksamhetId, enhetsIds, diagnosIds, successCallback, failureCallback);
     };
 
     factory.getDiagnosisKapitelAndAvsnitt = function (successCallback, failureCallback) {
@@ -171,7 +171,7 @@ angular.module('StatisticsApp').factory('statisticsData', function ($http) {
     };
 
     factory.getSjukfallPerLakarbefattningVerksamhet = function (verksamhetId, enhetsIds, diagnosIds, successCallback, failureCallback) {
-        makeRequestVerksamhet("getNumberOfCasesPerLakarbefattning", verksamhetId, enhetsIds, diagnosIds, sucessCallback, failureCallback);
+        makeRequestVerksamhet("getNumberOfCasesPerLakarbefattning", verksamhetId, enhetsIds, diagnosIds, successCallback, failureCallback);
     };
 
     return factory;

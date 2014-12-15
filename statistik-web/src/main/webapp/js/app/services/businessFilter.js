@@ -106,7 +106,7 @@ angular.module('StatisticsApp').factory('businessFilter', ['statisticsData', '_'
         businessFilter.loggedIn = function (businesses) {
             if (!businessFilter.dataInitialized) {
                 statisticsData.getIcd10Structure(businessFilter.setIcd10Structure, function () { });
-                businessFilter.businesses = sortSwedish(businesses, "kommunName", "Okänd");
+                businessFilter.businesses = sortSwedish(businesses, "kommunName", "Okän");
                 if (businessFilter.numberOfBusinesses() === "large") {
                     businessFilter.populateGeography(businesses);
                 }
@@ -132,19 +132,21 @@ angular.module('StatisticsApp').factory('businessFilter', ['statisticsData', '_'
 
         businessFilter.populateGeography = function (businesses) {
             _.each(businesses, function (business) {
-                var county = _.findWhere(businessFilter.geography.subs, {id: business.lansId});
+                var county = _.findWhere(businessFilter.geography.subs, { id: business.lansId });
                 if (!county) {
-                    county = {id: business.lansId, name: business.lansName, subs: []};
+                    county = { id: business.lansId, name: business.lansName, subs: [] };
                     businessFilter.geography.subs.push(county);
-                    var munip = _.findWhere(county.subs, {id: business.kommunId});
-                    if (!munip) {
-                        munip = {id: business.kommunId, name: business.kommunName, subs: []};
-                        county.subs.push(munip);
-                    }
-                    munip.subs.push(business);
                 }
-                businessFilter.geography.subs = sortSwedish(businessFilter.geography.subs, "name", "Okänd");
+
+                var munip = _.findWhere(county.subs, { id: business.kommunId });
+                if (!munip) {
+                    munip = { id: business.kommunId, name: business.kommunName, subs: [] };
+                    county.subs.push(munip);
+                }
+
+                munip.subs.push(business);
             });
+            businessFilter.geography.subs = sortSwedish(businessFilter.geography.subs, "name", "Okän");
         };
 
         businessFilter.populateVerksamhetsTyper = function (businesses) {

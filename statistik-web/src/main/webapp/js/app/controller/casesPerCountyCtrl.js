@@ -19,8 +19,8 @@
 
 'use strict';
 
-angular.module('StatisticsApp').controller('casesPerCountyCtrl', ['$scope', '$timeout', '$routeParams', '$window', 'statisticsData',
-    function ($scope, $timeout, $routeParams, $window, statisticsData) {
+angular.module('StatisticsApp').controller('casesPerCountyCtrl', ['$scope', '$timeout', '$routeParams', '$window', 'statisticsData', 'messageService',
+    function ($scope, $timeout, $routeParams, $window, statisticsData, messageService) {
 
         var chart = {};
         $scope.chartContainers = [
@@ -81,7 +81,8 @@ angular.module('StatisticsApp').controller('casesPerCountyCtrl', ['$scope', '$ti
         $scope.spinnerText = "Laddar information...";
         $scope.doneLoading = false;
         $scope.dataLoadingError = false;
-
+        //$scope.popoverText = messageService.getProperty('info.lan.information', null, "", null, true);
+        $scope.chartFootnotes = [messageService.getProperty('info.lan.information')];
         $scope.exportChart = function () {
             ControllerCommons.exportChart(chart, $scope.pageName);
         };

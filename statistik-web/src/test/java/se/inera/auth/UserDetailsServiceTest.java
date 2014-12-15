@@ -68,16 +68,16 @@ public class UserDetailsServiceTest {
         newCredentials("/test-saml-biljett-no-systemroles.xml");
         auktoriseradeEnheter(VE1_VG1, VE2_VG1);
         User user = (User) service.loadUserBySAML(credential);
-        assertTrue(user.hasVgAccess());
-        assertFalse(user.hasFullVgAccess());
+        assertTrue(user.isDelprocessledare());
+        assertFalse(user.isProcessledare());
     }
 
     @Test
     public void hasVgAccessBySystemRole() throws Exception {
         auktoriseradeEnheter(VE1_VG1);
         User user = (User) service.loadUserBySAML(credential);
-        assertFalse(user.hasVgAccess());
-        assertTrue(user.hasFullVgAccess());
+        assertFalse(user.isDelprocessledare());
+        assertTrue(user.isProcessledare());
     }
 
     private void newCredentials(String samlTicketName) {

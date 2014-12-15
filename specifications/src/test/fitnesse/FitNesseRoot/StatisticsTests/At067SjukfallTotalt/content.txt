@@ -1,0 +1,41 @@
+!contents -R2 -g -p -f -h
+
+Ett sjukfall börjar på enhet1 i mars och övergår sen till enhet2 i april.
+
+Loggar in som user1 (enhet1), ser bara att det finns ett sjukfall i mars.
+Loggar in som user4 (enhet2), ser bara att det finns ett sjukfall i april.
+
+Testar övergång mellan vårdenheter, vilken användare ser vilken del av sjukfallet.
+
+
+IGNORED: Waiting for STATISTIK-790
+
+
+!3 Givet att:
+
+
+| script | dagens datum | 2013-11-06 |
+
+| script | troskel varde | 1 |
+
+| Enbart foljande intyg finns |
+| personnr | diagnoskod | start    | slut       | enhet |
+| 19790407-1295 | G01 | 2013-03-01 | 2013-03-30 | enhet1 |
+| 19790407-1295 | G01 | 2013-04-01 | 2013-04-30 | enhet2 |
+
+!3 Då gäller:
+Det blir 1 sjukfall
+
+Inloggad:
+| Sjukfall i rapporten sjukfall totalt |
+| inloggad som | år   | månad | män? | kvinnor? |
+| user1        | 2013 | mar   | 1    | 0        |
+| user1        | 2013 | apr   | 0    | 0        |
+| user4        | 2013 | mar   | 0    | 0        |
+| user4        | 2013 | apr   | 1    | 0        |
+
+Nationell:
+| Sjukfall i rapporten sjukfall totalt |
+| år   | månad | män? | kvinnor? |
+| 2013 | mar   | 1    | 0        |
+| 2013 | apr   | 1    | 0        |
