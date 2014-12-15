@@ -58,12 +58,12 @@ angular.module('StatisticsApp').controller('pageCtrl', [ '$scope', '$rootScope',
                 statisticsData.getLoginInfo(function (loginInfo) {
                     businessFilter.loggedIn(loginInfo.businesses);
                     var v = self.getSelectedVerksamhet($scope.businessId, loginInfo.businesses);
-                    $scope.verksamhetName = loginInfo.vgView ? ("- " + v.vardgivarName + (loginInfo.fullVgAccess ? "(alla enheter)" : "(vissa enheter)")) : v.name;
+                    $scope.verksamhetName = loginInfo.vgView ? ("- " + v.vardgivarName + (loginInfo.processledare ? "(alla enheter)" : "(vissa enheter)")) : v.name;
                     $scope.userName = loginInfo.name;
                     $scope.userNameWithAccess = loginInfo.name;
 
-                    $scope.isVgAccess = loginInfo.vgAccess;
-                    $scope.isFullVgAccess = loginInfo.fullVgAccess;
+                    $scope.isDelprocessledare = loginInfo.delprocessledare;
+                    $scope.isProcessledare = loginInfo.processledare;
                 }, function () {
                     $scope.dataLoadingError = true;
                 });
