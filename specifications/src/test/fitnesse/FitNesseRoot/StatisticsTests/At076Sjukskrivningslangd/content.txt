@@ -18,7 +18,7 @@ Testar om sjukfall med intyg äldre än 1 år får rätt längd.
 | Enbart foljande intyg finns |
 | personnr      | diagnoskod | start      | slut       | enhet  | kommentar |
 | 19790407-1285 | G01        | 2013-08-01 | 2013-12-01 | enhet1 | intyg äldre än 1 år, 5 månader |
-| 19790407-1285 | G01        | 2014-12-02 | 2013-02-01 | enhet1 | 2 månader |
+| 19790407-1285 | G01        | 2013-12-02 | 2014-02-01 | enhet1 | 2 månader |
 
 
 !3 Då gäller:
