@@ -10,6 +10,7 @@ configurations {
 dependencies {
     provided fileTree(dir: '../../statistik-service/src/main/resources/', include: 'changelog/**')
     provided "org.liquibase:liquibase-core:2.0.5"
+    provided "mysql:mysql-connector-java:5.1.32"
 }
 
 distributions {

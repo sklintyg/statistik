@@ -1,2 +1,2 @@
 #!/bin/sh
-java -jar target/statistik-liquibase-runner-1.1-SNAPSHOT-jar-with-dependencies.jar --changeLogFile="changelog/changelog.xml" --contexts=none update
+java -jar liquibase-core-2.0.5.jar --classpath=.:mysql-connector-java-5.1.32.jar --changeLogFile="changelog/changelog.xml" --url=jdbc:mysql://localhost:3306/statistik?useCompression=true --contexts=none --username=statistik --password=statistik update

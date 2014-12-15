@@ -24,3 +24,4 @@ drop table sjukskrivningsgrad;
 drop table wideline;
 drop table sjukfall;
 drop table enhet;
+drop table lakare;
