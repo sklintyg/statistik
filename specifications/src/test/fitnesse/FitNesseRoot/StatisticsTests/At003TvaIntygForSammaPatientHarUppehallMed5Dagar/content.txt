@@ -18,8 +18,8 @@ Två intyg för samma patient har uppehåll med 5 hela dagar (6 dagar)
 | Sjukfall i rapporten sjukfall totalt |
 | inloggad som | år   | månad | män? | kvinnor? |
 | user1  | 2013 | jan   | 0    | 0        |
-| user1  | 2013 | feb   | 2    | 0        |
+| user1  | 2013 | feb   | 1    | 0        |
 | user1  | 2013 | mar   | 0    | 0        |
 |   | 2013 | jan   | 0    | 0        |
-|   | 2013 | feb   | 2    | 0        |
+|   | 2013 | feb   | 1    | 0        |
 |   | 2013 | mar   | 0    | 0        |
