@@ -95,6 +95,7 @@ class ReportsUtil {
             case "user1": return VARDGIVARE;
             case "user2": return VARDGIVARE;
             case "user3": return VARDGIVARE3;
+            case "user4": return VARDGIVARE;
             default: throw new RuntimeException("Unknown user: " + user)
         }
     }
@@ -131,6 +132,14 @@ class ReportsUtil {
                 "\"efternamn\":\"Modig\"," +
                 "\"hsaId\":\"user3\"," +
                 "\"enhetId\":\"enhet3\"," +
+                "\"vardgivarId\":\"" + getVardgivareForUser(user) + "\"," +
+                "\"vardgivarniva\":\"" + vardgivarniva + "\"" +
+                "}"
+        logins["user4"] = "{" +
+                "\"fornamn\":\"Anna\"," +
+                "\"efternamn\":\"Modig\"," +
+                "\"hsaId\":\"user4\"," +
+                "\"enhetId\":\"enhet2\"," +
                 "\"vardgivarId\":\"" + getVardgivareForUser(user) + "\"," +
                 "\"vardgivarniva\":\"" + vardgivarniva + "\"" +
                 "}"
