@@ -116,11 +116,13 @@ var stMessages = {
         //help texts
         'help.sick-leave-length-current': 'Vad innebär pågående sjukfall?<br/>Denna rapport syftar till att visa så aktuell information om sjukfallen möjligt. Alla sjukfall som pågår någon gång under aktuell månad hämtas. Rapporten kan inte ta hänsyn till vilken dag det är i månaden. I slutet på månaden kommer fortfarande sjukfall som avslutats under månadens gång visas som pågående.',
         'help.age-group-current'        : 'Vad innebär pågående sjukfall?<br/>Denna rapport syftar till att visa så aktuell information om sjukfallen möjligt. Alla sjukfall som pågår någon gång under aktuell månad hämtas. Rapporten kan inte ta hänsyn till vilken dag det är i månaden. I slutet på månaden kommer fortfarande sjukfall som avslutats under månadens gång visas som pågående.',
-        'help.lakare-alder-och-kon'     : 'Hjälptext för sjukfall per läkares ålder och kön',
+        'alert.lan-andel-sjukfall-per-kon.questionmark' : 'I tabellen visas andel sjukfall i procent per kön och län. Antal sjukfall anges inom parentes.', 
+        'alert.lakarkon-alder.questionmark' : 'Diagrammet visar antalet sjukfall för olika grupper av läkare. Läkarna grupperas utifrån ålder och om de är kvinna eller man. Statistiken visar även antal sjukfall för män respektive kvinnor.',
+        'alert.lakare-befattning.information' : 'Uppgift om vilken läkarbefattning som utfärdat ett intyg hämtas från HSA-katalogen.  Uppgifterna i HSA är inte kvalitetssäkrade och information kan saknas då det inte är obligatoriskt för vårdenheten att ange befattning. En läkare kan även ha fler befattningar i HSA . Det gör att samma sjukfall kan visas flera gånger i graf och tabell. Om en läkare som sjukskrivit en patient har två eller fler läkarbefattningar visas sjukfallet en gång för varje läkarbefattning.',
         
         //info texts
         'info.lan.information' : 'Uppgift om vilket län ett sjukfall tillhör är hämtat från HSA-katalogen. Uppgifterna i HSA är inte kvalitetssäkrade och information kan saknas då det inte är obligatoriskt för vårdenheten att ange länstillhörighet.',
-
+        
         //login view
         'login.header': 'Logga in för verksamhetsstatistik',
         'login.for-att-fortsatta': 'För att fortsätta till de inloggade sidorna för verksamhetsstatistik måste du logga in med ditt SITHS-kort.',

@@ -191,6 +191,7 @@ angular.module('StatisticsApp').casesPerSexConfig = function () {
     conf.percentChart = true;
     conf.chartXAxisTitle = "Län";
     conf.chartFootnotes = ["info.lan.information"];
+    conf.pageHelpText = "alert.lan-andel-sjukfall-per-kon.questionmark";
     return conf;
 };
 
@@ -230,7 +231,7 @@ angular.module('StatisticsApp').casesPerLakaresAlderOchKonConfig = function () {
         return "Antal sjukfall baserat på läkares kön och ålder " + period;
     };
     conf.chartXAxisTitle = "Läkare";
-    conf.pageHelpText = "help.lakare-alder-och-kon"
+    conf.pageHelpText = "alert.lakarkon-alder.questionmark";
     return conf;
 };
 
@@ -244,5 +245,6 @@ angular.module('StatisticsApp').casesPerLakarbefattningConfig = function () {
         return "Antal sjukfall baserat på läkarbefattning " + period;
     };
     conf.chartXAxisTitle = "Läkarbefattning";
+    conf.chartFootnotes = ["alert.lakare-befattning.information"];
     return conf;
 };
