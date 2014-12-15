@@ -81,8 +81,7 @@ angular.module('StatisticsApp').controller('casesPerCountyCtrl', ['$scope', '$ti
         $scope.spinnerText = "Laddar information...";
         $scope.doneLoading = false;
         $scope.dataLoadingError = false;
-        //$scope.popoverText = messageService.getProperty('info.lan.information', null, "", null, true);
-        $scope.chartFootnotes = [messageService.getProperty('info.lan.information')];
+        $scope.chartFootnotes = [messageService.getProperty('info.lan.information', null, "", null, true)];
         $scope.exportChart = function () {
             ControllerCommons.exportChart(chart, $scope.pageName);
         };

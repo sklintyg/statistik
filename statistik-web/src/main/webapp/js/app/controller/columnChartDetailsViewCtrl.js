@@ -107,6 +107,10 @@ angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl', [ '$sco
         $scope.dataLoadingError = false;
 
         $scope.popoverText = messageService.getProperty(config.pageHelpText, null, "", null, true);
+        $scope.chartFootnotes = _.map(config.chartFootnotes, function(msgKey){
+            return messageService.getProperty(msgKey, null, "", null, true);
+        });
+
 
         $scope.exportChart = function () {
             ControllerCommons.exportChart(chart, $scope.pageName);
@@ -186,8 +190,7 @@ angular.module('StatisticsApp').casesPerSexConfig = function () {
     };
     conf.percentChart = true;
     conf.chartXAxisTitle = "Län";
-    conf.chartFootnotes = ["Uppgift om vilket län ett sjukfall tillhör är hämtat från HSA-katalogen. Uppgifterna i HSA är inte kvalitetssäkrade och information kan saknas då det inte är obligatoriskt för vårdenheten att ange länstillhörighet."];
-    //conf.chartFootnotes = [messageService.getProperty('info.lan.information')];
+    conf.chartFootnotes = ["info.lan.information"];
     return conf;
 };
 
