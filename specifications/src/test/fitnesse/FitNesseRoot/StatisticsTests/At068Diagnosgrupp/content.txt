@@ -5,7 +5,10 @@ Ett sjukfall börjar på enhet1 i mars-mitten på april (F32) och övergår sen 
 Loggar in som user1 (enhet1), ser  att det finns ett sjukfall i mars  och april för F00-F99
 Loggar in som user4 (enhet2), ser bara att det finns ett sjukfall i april för M00-M99
 
-Testar övergång mellan vårdenheter, vilken användare ser vilken del av sjukfallet.
+Testar övergång mellan vårdenheter, vilken användare ser vilken del av sjukfallet, när övergång sker mitt i månaden.
+
+
+IGNORED: Waiting for STATISTIK-788
 
 
 !3 Givet att:
@@ -29,10 +32,14 @@ Inloggad:
 | Sjukfall i rapporten diagnosgrupp |
 |inloggad som | år   | månad | grupp   | män? | kvinnor? |
 | user1       | 2013 | mar   | F00-F99 | 0    | 1        |
-| user1       | 2013 | mar   | M00-M90 | 0    | 0        |
+| user1       | 2013 | mar   | M00-M99 | 0    | 0        |
 | user1       | 2013 | apr   | F00-F99 | 0    | 1        |
-| user1       | 2013 | apr   | M00-M90 | 0    | 0        |
+| user1       | 2013 | apr   | M00-M99 | 0    | 0        |
 | user4       | 2013 | mar   | F00-F99 | 0    | 0        |
-| user4       | 2013 | mar   | M00-M90 | 0    | 0        |
+| user4       | 2013 | mar   | M00-M99 | 0    | 0        |
 | user4       | 2013 | apr   | F00-F99 | 0    | 0        |
-| user4       | 2013 | apr   | M00-M90 | 0    | 1        |
+| user4       | 2013 | apr   | M00-M99 | 0    | 1        |
+| user2       | 2013 | mar   | F00-F99 | 0    | 1        |
+| user2       | 2013 | mar   | M00-M99 | 0    | 0        |
+| user2       | 2013 | apr   | F00-F99 | 0    | 0        |
+| user2       | 2013 | apr   | M00-M99 | 0    | 1        |

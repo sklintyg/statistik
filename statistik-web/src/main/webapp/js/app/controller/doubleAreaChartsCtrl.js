@@ -227,7 +227,6 @@ angular.module('StatisticsApp').controller('doubleAreaChartsCtrl', [ '$scope', '
         };
 
         $scope.popoverText = config.tooltipHelpText;
-        $scope.popoverFootnotesText = config.chartFootnotes;
 
         function refreshVerksamhet(samePage) {
             statisticsData[config.dataFetcherVerksamhet]($routeParams.verksamhetId, businessFilter.getSelectedBusinesses(samePage), businessFilter.getSelectedDiagnoses(samePage), populatePageWithData, function () {

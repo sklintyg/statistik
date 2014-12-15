@@ -188,7 +188,7 @@
 			          		<a class="mobileMenuHeaderItem" data-toggle="collapse in" data-target="#business-menu" ng-click="isBusinessCollapsed = !isBusinessCollapsed"><span message key="nav.business-header"></span><span class="caret pull-right mobile-menu-caret"></span></a>
 			          		<ul class="collapse" id="business-menu" collapse="!isBusinessCollapsed">   
 				        		<li class="subMenuItem"><a data-ng-href="#/verksamhet/{{businessId}}/oversikt" ctrlname="businessOverviewCtrl" role="menuitem" ng-click="isCollapsed = !isCollapsed" navigationaware><span message key="nav.oversikt"></span></a></li>
-				        		<li class="subMenuItem" ng-show="isFullVgAccess || isVgAccess"><a data-ng-href="#/verksamhet/{{businessId}}/sjukfallperenhet"
+				        		<li class="subMenuItem" ng-show="isProcessledare || isDelprocessledare"><a data-ng-href="#/verksamhet/{{businessId}}/sjukfallperenhet"
 				        			 id="navBusinessCasesPerMonthLink" ctrlname="VerksamhetCasesPerBusinessCtrl"
                                      navigationaware><span message key="nav.vardenhet"></span></a></li>
 		                        <li class="subMenuItem"><a data-ng-href="#/verksamhet/{{businessId}}/sjukfallPerManad" id="navBusinessCasesPerMonthLink" ctrlname="VerksamhetCasesPerMonthCtrl" role="menuitem" ng-click="isCollapsed = !isCollapsed" navigationaware><span message key="nav.sjukfall-totalt"></span></a></li>
@@ -313,7 +313,7 @@
                                     <ul id="business-statistic-menu-content" class="nav nav-list">
                                         <li><a data-ng-href="#/verksamhet/{{businessId}}/oversikt"
                                                ctrlname="businessOverviewCtrl" navigationaware><span message key="nav.oversikt"></span></a></li>
-                                        <li ng-show="isFullVgAccess || isVgAccess"><a data-ng-href="#/verksamhet/{{businessId}}/sjukfallperenhet"
+                                        <li ng-show="isProcessledare || isDelprocessledare"><a data-ng-href="#/verksamhet/{{businessId}}/sjukfallperenhet"
                                                id="navBusinessCasesPerMonthLink" ctrlname="VerksamhetCasesPerBusinessCtrl"
                                                navigationaware><span message key="nav.vardenhet"></span></a></li>
                                         <li><a data-ng-href="#/verksamhet/{{businessId}}/sjukfallPerManad"
@@ -372,7 +372,7 @@
                                                    id="navBusinessMoreNinetyDaysSickLeaveLink"
                                                    ctrlname="VerksamhetLongSickLeavesCtrl" navigationaware><span message key="nav.sjukskrivningslangd-mer-an-90-dagar"></span></a></li>
                                         </ul>
-                                        <li ng-show="!isFullVgAccess"><a class="last-item-in-menu border-bottom" data-ng-href="#/verksamhet/{{businessId}}/sjukfallperlakare"
+                                        <li ng-show="!isProcessledare"><a class="last-item-in-menu border-bottom" data-ng-href="#/verksamhet/{{businessId}}/sjukfallperlakare"
                                                id="navBusinessCasesPerLakareLink" ctrlname="VerksamhetCasesPerLakareCtrl"
                                                navigationaware><span message key="nav.lakare"></span></a>
                                         </li>
