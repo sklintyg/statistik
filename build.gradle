@@ -96,8 +96,16 @@ configure(subprojects.findAll {
     }
 }
 
-apply plugin: 'sonar-runner'
+apply plugin: 'sonar'
 
-sonarRunner {
-    toolVersion = "2.4"
+sonar {
+    server {
+        url = "https://callistasoftware.sonar.cloudbees.com"
+    }
+    database {
+        url = "jdbc:mysql://ec2-107-20-159-195.compute-1.amazonaws.com:3306/cb-ci-callistasoftware?autoReconnect=true&useUnicode=true&characterEncoding=utf8"
+        driverClassName = "com.mysql.jdbc.Driver"
+        username = "A623f64bf867ac4e"
+        password = "very clever"
+    }
 }
