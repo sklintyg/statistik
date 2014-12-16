@@ -4,7 +4,5 @@ include ':hsa-integration'
 include ':statistik-service'
 include ':statistik-web'
 include ':specifications'
-include ':liquibase-runner'
 
 project(':hsa-integration').projectDir = "$rootDir/integration/hsa-integration" as File
-project(':liquibase-runner').projectDir = "$rootDir/tools/liquibase-runner" as File
