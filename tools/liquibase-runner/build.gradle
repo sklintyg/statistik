@@ -20,15 +20,7 @@ configurations.all {
 }
 
 dependencies {
-    runtime "se.inera.statistik:statistik-service:2.0-SNAPSHOT"
+    runtime project(":statistik-service")
     runtime "org.liquibase:liquibase-core:2.0.5"
     runtime "mysql:mysql-connector-java:5.1.32"
-}
-
-repositories {
-    mavenLocal()
-    mavenCentral()
-    maven { url "https://repository-callistasoftware.forge.cloudbees.com/release/" }
-    maven { url "https://repository-callistasoftware.forge.cloudbees.com/snapshot/" }
-    maven { url "https://repository-callistasoftware.forge.cloudbees.com/3rdparty/" }
 }
