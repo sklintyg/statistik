@@ -106,7 +106,7 @@ angular.module('StatisticsApp').factory('businessFilter', ['statisticsData', '_'
         businessFilter.loggedIn = function (businesses) {
             if (!businessFilter.dataInitialized) {
                 statisticsData.getIcd10Structure(businessFilter.setIcd10Structure, function () { });
-                businessFilter.businesses = sortSwedish(businesses, "kommunName", "Okän");
+                businessFilter.businesses = sortSwedish(businesses, "name", "Okän");
                 if (businessFilter.numberOfBusinesses() === "large") {
                     businessFilter.populateGeography(businesses);
                 }
@@ -147,6 +147,9 @@ angular.module('StatisticsApp').factory('businessFilter', ['statisticsData', '_'
                 munip.subs.push(business);
             });
             businessFilter.geography.subs = sortSwedish(businessFilter.geography.subs, "name", "Okän");
+            _.each(businessFilter.geography.subs, function(county) {
+                county.subs = sortSwedish(county.subs, "name", "Okän")
+            });
         };
 
         businessFilter.populateVerksamhetsTyper = function (businesses) {
