@@ -2,6 +2,7 @@ package se.inera.statistics.service.warehouse.query;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Predicate;
+import com.google.common.base.Predicates;
 import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Multiset;
@@ -51,7 +52,7 @@ public final class SjukfallQuery {
     public SimpleKonResponse<SimpleKonDataRow> getSjukfallPerEnhet(Aisle aisle, Predicate<Fact> filter, Map<String, String> idsToNames, Range range, int perioder, int periodlangd) {
         ArrayList<SimpleKonDataRow> result = new ArrayList<>();
         for (String enhetId : idsToNames.keySet()) {
-            Collection<Sjukfall> sjukfalls = SjukfallUtil.active(range, aisle, new SjukfallUtil.EnhetFilter(Warehouse.getEnhet(enhetId)));
+            Collection<Sjukfall> sjukfalls = SjukfallUtil.active(range, aisle, Predicates.and(filter, new SjukfallUtil.EnhetFilter(Warehouse.getEnhet(enhetId))));
             int male = countMale(sjukfalls);
             int female = sjukfalls.size() - male;
             result.add(new SimpleKonDataRow(idsToNames.get(enhetId), female, male));

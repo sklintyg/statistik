@@ -39,15 +39,6 @@ subprojects {
         reports.junitXml.destination = file("$reports.junitXml.destination/unit")
     }
 
-    task integrationTests(type: Test) {
-        outputs.upToDateWhen { false }
-        include '**/*IntegrationTest.class'
-        reports.html.destination = file("$reports.html.destination/integration")
-        reports.junitXml.destination = file("$reports.junitXml.destination/integration")
-    }
-
-    task testAll(dependsOn: [test, integrationTests])
-
     dependencies {
         compile 'ch.qos.logback:logback-classic:1.1.1'
         compile 'com.google.guava:guava:18.0'
@@ -67,7 +58,8 @@ configure(subprojects.findAll {
     checkstyle {
         config = resources.text.fromFile("${rootProject.projectDir}/build-tools/src/main/resources/checkstyle.xml")
         ignoreFailures = false
-        sourceSets = [project.sourceSets.main]
+        // This is empty b/c we run checkstyle explicitly in the "testAll" task below
+        sourceSets = []
     }
     // Make sure we don't run checkstyle on generated source code
     checkstyleMain.source = "src/main/java"
@@ -75,6 +67,15 @@ configure(subprojects.findAll {
     configurations {
         deployerJars
     }
+
+    task integrationTests(type: Test, dependsOn: checkstyleMain) {
+        outputs.upToDateWhen { false }
+        include '**/*IntegrationTest.class'
+        reports.html.destination = file("$reports.html.destination/integration")
+        reports.junitXml.destination = file("$reports.junitXml.destination/integration")
+    }
+
+    task testAll(dependsOn: [test, integrationTests, checkstyleMain])
 
     ext.cloudbeesUsername = System.properties['cloudbeesUsername']
     ext.cloudbeesPassword = System.properties['cloudbeesPassword']

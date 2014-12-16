@@ -54,6 +54,8 @@ angular.module('StatisticsApp').factory('businessFilter', ['statisticsData', '_'
                     businessFilter.verksamhetsTypIds.push(verksamhetsTyp.id);
                 });
                 businessFilter.selectAll(businessFilter.geography, true);
+                businessFilter.selectAll(businessFilter.icd10, true);
+                businessFilter.updateDiagnoses();
             }
         };
 
