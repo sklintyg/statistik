@@ -1,3 +1,7 @@
+plugins {
+    id "com.github.hierynomus.license" version "0.11.0"
+}
+
 allprojects {
     group = 'se.inera.statistik'
     version = '2.0-SNAPSHOT'
@@ -20,6 +24,7 @@ allprojects {
 subprojects {
     apply plugin: 'java'
     //apply plugin: 'jacoco'
+    apply plugin: 'license'
 
     sourceCompatibility = "1.7"
     targetCompatibility = "1.7"
@@ -31,12 +36,22 @@ subprojects {
     ext.cxfVersion = '2.7.10'
     ext.springContextVersion = "4.0.8.RELEASE"
     ext.springSecurityVersion = "3.2.0.RELEASE"
+    ext.liquibaseVersion = "2.0.5"
 
     test {
         exclude '**/*IntegrationTest.*'
         exclude '**/*FunctionalTest.*'
         reports.html.destination = file("$reports.html.destination/unit")
         reports.junitXml.destination = file("$reports.junitXml.destination/unit")
+    }
+
+    license {
+        ext.url = 'https://github.com/sklintyg/statistik'
+        ext.name = rootProject.name
+        ext.year = Calendar.getInstance().get(Calendar.YEAR)
+        strictCheck true
+        header rootProject.file("header.txt")
+        includes(["**/*.xml", "**/se/inera/statistics/**/*.java", "**/se/inera/auth/**/*.java", "**/se/inera/ifv/statistics/**/*.java"])
     }
 
     dependencies {
@@ -96,8 +111,16 @@ configure(subprojects.findAll {
     }
 }
 
-apply plugin: 'sonar-runner'
+apply plugin: 'sonar'
 
-sonarRunner {
-    toolVersion = "2.4"
+sonar {
+    server {
+        url = "https://callistasoftware.sonar.cloudbees.com"
+    }
+    database {
+        url = "jdbc:mysql://ec2-107-20-159-195.compute-1.amazonaws.com:3306/cb-ci-callistasoftware?autoReconnect=true&useUnicode=true&characterEncoding=utf8"
+        driverClassName = "com.mysql.jdbc.Driver"
+        username = "A623f64bf867ac4e"
+        password = "very clever"
+    }
 }
