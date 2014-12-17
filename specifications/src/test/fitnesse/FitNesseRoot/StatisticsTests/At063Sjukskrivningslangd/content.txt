@@ -7,9 +7,6 @@ Ett sjukfall består av 2 intyg, det första utfärdat på enhet1 och det andra 
 Som inloggad (user1) med behörighet till enhet1 hamnar sjukfallet i gruppen "31-90 dagar". Som inloggad (user4) med behörighet till enhet2 hamnar sjukfallet i gruppen "91-180 dagar".
 
 
-IGNORED: Waiting for STATISTIK-787
-
-
 !3 Givet att:
 | script | dagens datum | 2013-11-06 |
 

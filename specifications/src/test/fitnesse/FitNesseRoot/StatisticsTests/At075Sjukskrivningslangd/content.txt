@@ -8,8 +8,6 @@ Som inloggad (user1) med behörighet till enhet1 hamnar sjukfallet i gruppen "31
 
 Testar att oavsett grad så räknas 1 dag som 1 dag.
 
-IGNORED: Waiting for STATISTIK-787
-
 
 !3 Givet att:
 | script | dagens datum | 2014-11-06 |
