@@ -1,7 +1,7 @@
 !contents -R2 -g -p -f -h
 
 
-Två intyg för samma patient har uppehåll med 6 hela dagar (7 dagar)
+Två intyg för samma patient har uppehåll med 6 hela dagar
 
 
 !3 Givet att:
