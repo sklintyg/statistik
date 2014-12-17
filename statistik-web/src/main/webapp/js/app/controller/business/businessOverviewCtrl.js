@@ -23,9 +23,19 @@ angular.module('StatisticsApp').controller('businessOverviewCtrl', ['$scope', '$
     function ($scope, $timeout, statisticsData, businessFilter, $routeParams) {
 
         $scope.baseUrl = "#/verksamhet/" + $routeParams.verksamhetId;
-
+        
         var dataReceived = function (result) {
             $scope.subTitle = "Utveckling för verksamheten de senaste tre månaderna, " + result.periodText;
+            $scope.popoverTextAmount = "Totala antalet sjukfall under perioden " + result.periodText;
+            $scope.popoverTextChangeProcentage = "Procentsatsen visar förändringen av antalet sjukfall under perioden " + result.periodText;
+            $scope.popoverTextSexDistribution = "Könsfördelningen av totala antalet sjukfall under perioden " + result.periodText;
+            $scope.popoverTextDiagnosisGroups1 = "Diagrammet visar antal sjukfall inom de vanligast förekommande diagnosgrupperna under " + result.periodText + ".";
+            $scope.popoverTextChangeCurrentVSPrevious = "Spalten förändring visar skillnaden i antal sjukfall mellan perioden " + result.periodText;
+            $scope.popoverTextAgeGroups1 = "Diagrammet visar de åldersgrupper som har flest sjukfall under " + result.periodText + ".";
+            $scope.popoverTextSickLeaveLength1 = "Diagrammet visar antal sjukfall per sjukskrivningslängd under perioden " + result.periodText + ".";
+            $scope.popoverTextSickLeaveLength2 = "Ställ markören i respektive stapel för att se antalet sjukfall.";
+            $scope.popoverTextDegreeOfSickLeave1 = "Diagrammet visar antalet sjukfall per sjukskrivningsgrad under perioden  " + result.periodText + ".";
+            $scope.popoverPreviousMonths = " jämfört med föregående tre månader.";
             $scope.popoverTextPeriod = result.periodText;
             $scope.doneLoading = true;
             if (result.casesPerMonth.totalCases === 0) {
@@ -208,11 +218,6 @@ angular.module('StatisticsApp').controller('businessOverviewCtrl', ['$scope', '$
         $scope.spinnerText = "Laddar information...";
         $scope.doneLoading = false;
         $scope.dataLoadingError = false;
-        $scope.popoverTextAmount = "Totala antalet sjukfall under perioden ";
-        $scope.popoverTextChangeProcentage = "Procentsatsen visar förändringen av antalet sjukfall under perioden ";
-        $scope.popoverTextChangeProcentage2 = " jämfört med dess föregående tre månader.";
-        $scope.popoverTextSexDistribution = "Könsfördelningen av totala antalet sjukfall under perioden ";
-        $scope.popoverTextSexDistribution2 = " jämfört med föregående tre månader.";
-
+        
     }
 ]);
