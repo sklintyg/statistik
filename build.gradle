@@ -1,6 +1,19 @@
+plugins {
+    id "com.github.hierynomus.license" version "0.11.0"
+}
+
 allprojects {
     group = 'se.inera.statistik'
     version = '2.0-SNAPSHOT'
+    ext.url = 'https://github.com/sklintyg/statistik'
+
+    apply plugin: 'license'
+
+    license {
+        strictCheck true
+        header rootProject.file("header.txt")
+        excludes(["**/*.wsdl", "**/*.xsd", "**/*.properties", "**/*.xjb"])
+    }
 
     repositories {
         mavenLocal()
