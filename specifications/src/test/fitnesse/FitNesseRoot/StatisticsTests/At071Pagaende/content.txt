@@ -6,9 +6,6 @@ User1 - väljer pågående fall och månaden är november, ser 0 fall
 User4 - väljer pågående fall och månaden är november, ser 1 fall
 
 
-IGNORED: Waiting for STATISTIK-789
-
-
 !3 Givet att:
 | script | dagens datum | 2014-11-15 |
 
