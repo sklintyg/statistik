@@ -23,7 +23,6 @@ import se.inera.statistics.service.report.model.Range;
 
 public class SjukfallIterator implements Iterator<SjukfallGroup> {
 
-    private final LocalDate current;
     private final LocalDate from;
     private int period = 0;
     private final int periods;
@@ -36,7 +35,6 @@ public class SjukfallIterator implements Iterator<SjukfallGroup> {
 
     public SjukfallIterator(LocalDate from, int periods, int periodSize, Aisle aisle, Predicate<Fact> filter) {
         this.from = from;
-        this.current = from;
         this.periods = periods;
         this.periodSize = periodSize;
         this.filter = filter;
@@ -45,7 +43,6 @@ public class SjukfallIterator implements Iterator<SjukfallGroup> {
 
     private SjukfallIterator(LocalDate from, int periods, int periodSize, List<Fact> aisle, Predicate<Fact> filter, int period) {
         this.from = from;
-        this.current = from;
         this.periods = periods;
         this.periodSize = periodSize;
         this.filter = filter;
