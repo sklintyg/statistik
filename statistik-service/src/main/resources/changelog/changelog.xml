@@ -17,6 +17,7 @@
     <include file="changelog/db.changelog-v11.0_create_sjukfallperlan_table.xml"/>
     <include file="changelog/db.changelog-v12.0_replace_sjukfallperlan_table.xml"/>
     <include file="changelog/db.changelog-v13.0_create_wideline_table.xml"/>
+    <include file="changelog/db.changelog-v13.5_remove_intyghandelse_duplicates.xml"/>
     <include file="changelog/db.changelog-v14.0_create_intyghandelse_index_on_type_correlationId.xml"/>
     <include file="changelog/db.changelog-v15.0_add_intygtyp_and_correlationid_to_wideline_table.xml"/>
     <include file="changelog/db.changelog-v16.0_drop_counter_tables.xml"/>
