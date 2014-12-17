@@ -18,6 +18,7 @@ import se.inera.statistics.service.report.util.ReportUtil;
 import se.inera.statistics.service.warehouse.Aisle;
 import se.inera.statistics.service.warehouse.Fact;
 import se.inera.statistics.service.warehouse.Sjukfall;
+import se.inera.statistics.service.warehouse.SjukfallGroup;
 import se.inera.statistics.service.warehouse.SjukfallUtil;
 
 import javax.annotation.PostConstruct;
@@ -106,7 +107,7 @@ public class DiagnosgruppQuery {
 
     private List<KonDataRow> getKonDataRows(Aisle aisle, Predicate<Fact> filter, LocalDate start, int periods, int periodLength, List<? extends Icd10.Id> kapitel, Icd10RangeType rangeType) {
         List<KonDataRow> rows = new ArrayList<>();
-        for (SjukfallUtil.SjukfallGroup sjukfallGroup: SjukfallUtil.sjukfallGrupper(start, periods, periodLength, aisle, filter)) {
+        for (SjukfallGroup sjukfallGroup: SjukfallUtil.sjukfallGrupper(start, periods, periodLength, aisle, filter)) {
             int[] female = new int[MAX_DIAGNOS_ID];
             int[] male = new int[MAX_DIAGNOS_ID];
             for (Sjukfall sjukfall: sjukfallGroup.getSjukfall()) {

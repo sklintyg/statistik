@@ -10,6 +10,7 @@ import se.inera.statistics.service.report.util.ReportUtil;
 import se.inera.statistics.service.warehouse.Aisle;
 import se.inera.statistics.service.warehouse.Fact;
 import se.inera.statistics.service.warehouse.Sjukfall;
+import se.inera.statistics.service.warehouse.SjukfallGroup;
 import se.inera.statistics.service.warehouse.SjukfallUtil;
 
 import java.util.ArrayList;
@@ -65,7 +66,7 @@ public final class SjukskrivningsgradQuery {
 
     public static SjukskrivningsgradResponse getSjukskrivningsgrad(Aisle aisle, Predicate<Fact> filter, LocalDate start, int periods, int periodSize) {
         List<KonDataRow> rows = new ArrayList<>();
-        for (SjukfallUtil.SjukfallGroup sjukfallGroup: SjukfallUtil.sjukfallGrupper(start, periods, periodSize, aisle, filter)) {
+        for (SjukfallGroup sjukfallGroup: SjukfallUtil.sjukfallGrupper(start, periods, periodSize, aisle, filter)) {
             Map<Integer, Counter<Integer>> counters = Counter.mapFor(GRAD);
             for (Sjukfall sjukfall : sjukfallGroup.getSjukfall()) {
                 counters.get(sjukfall.getSjukskrivningsgrad()).increase(sjukfall);

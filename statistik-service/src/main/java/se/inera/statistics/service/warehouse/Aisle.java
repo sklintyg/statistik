@@ -31,4 +31,8 @@ public class Aisle implements Iterable<Fact> {
     public void sort() {
         Collections.sort(lines, TIME_ORDER);
     }
+
+    List<Fact> getLines() {
+        return Collections.unmodifiableList(lines);
+    }
 }

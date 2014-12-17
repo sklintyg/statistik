@@ -7,9 +7,6 @@ Loggar in som user4 (enhet2), ser bara att det finns ett sjukfall i april för 5
 Testar övergång mellan vårdenheter, vilken användare ser vilken del av sjukfallet
 
 
-IGNORED: Waiting for STATISTIK-791
-
-
 !3 Givet att:
 | script | dagens datum | 2014-10-01 |
 

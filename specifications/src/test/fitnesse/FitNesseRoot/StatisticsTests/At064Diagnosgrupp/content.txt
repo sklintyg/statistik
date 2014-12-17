@@ -7,9 +7,6 @@ Som inloggad med behörighet till enhet1 hamnar sjukfallet i "F00-F99" för febr
 Testar att bara det som hör till den egna VE syns.
 
 
-IGNORED: Waiting for STATISTIK-788
-
-
 !3 Givet att:
 | script | dagens datum | 2014-03-06 |
 

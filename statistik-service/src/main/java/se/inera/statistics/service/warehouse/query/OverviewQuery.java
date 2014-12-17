@@ -13,6 +13,7 @@ import se.inera.statistics.service.report.model.VerksamhetOverviewResponse;
 import se.inera.statistics.service.warehouse.Aisle;
 import se.inera.statistics.service.warehouse.Fact;
 import se.inera.statistics.service.warehouse.Sjukfall;
+import se.inera.statistics.service.warehouse.SjukfallGroup;
 import se.inera.statistics.service.warehouse.SjukfallUtil;
 
 import java.util.Collection;
@@ -30,10 +31,10 @@ public class OverviewQuery {
 
     public VerksamhetOverviewResponse getOverview(Aisle aisle, Predicate<Fact> filter, LocalDate start, int periodlangd) {
 
-        Iterator<SjukfallUtil.SjukfallGroup> groupIterator = SjukfallUtil.sjukfallGrupper(start, 2, periodlangd, aisle, filter).iterator();
+        Iterator<SjukfallGroup> groupIterator = SjukfallUtil.sjukfallGrupper(start, 2, periodlangd, aisle, filter).iterator();
 
-        SjukfallUtil.SjukfallGroup previousSjukfall = groupIterator.next();
-        SjukfallUtil.SjukfallGroup currentSjukfall = groupIterator.next();
+        SjukfallGroup previousSjukfall = groupIterator.next();
+        SjukfallGroup currentSjukfall = groupIterator.next();
 
         OverviewKonsfordelning previousKonsfordelning = getOverviewKonsfordelning(previousSjukfall.getRange(), previousSjukfall.getSjukfall());
         OverviewKonsfordelning currentKonsfordelning = getOverviewKonsfordelning(currentSjukfall.getRange(), currentSjukfall.getSjukfall());

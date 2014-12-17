@@ -13,6 +13,7 @@ import se.inera.statistics.service.report.util.SjukfallslangdUtil;
 import se.inera.statistics.service.warehouse.Aisle;
 import se.inera.statistics.service.warehouse.Fact;
 import se.inera.statistics.service.warehouse.Sjukfall;
+import se.inera.statistics.service.warehouse.SjukfallGroup;
 import se.inera.statistics.service.warehouse.SjukfallUtil;
 
 import java.util.ArrayList;
@@ -85,7 +86,7 @@ public final class SjukskrivningslangdQuery {
 
     public static SimpleKonResponse<SimpleKonDataRow> getLangaSjukfall(Aisle aisle, Predicate<Fact> filter, LocalDate from, int periods, int periodLength) {
         List<SimpleKonDataRow> rows = new ArrayList<>();
-        for (SjukfallUtil.SjukfallGroup sjukfallGroup: SjukfallUtil.sjukfallGrupper(from, periods, periodLength, aisle, filter)) {
+        for (SjukfallGroup sjukfallGroup: SjukfallUtil.sjukfallGrupper(from, periods, periodLength, aisle, filter)) {
             Counter counter = new Counter("");
             for (Sjukfall sjukfall: sjukfallGroup.getSjukfall()) {
                 if (sjukfall.getRealDays() > LONG_SJUKFALL) {
@@ -100,7 +101,7 @@ public final class SjukskrivningslangdQuery {
 
     public static SjukfallslangdResponse getSjuksrivningslangd(Aisle aisle, Predicate<Fact> filter, LocalDate from, int periods, int periodLength) {
         List<SjukfallslangdRow> rows = new ArrayList<>();
-        for (SjukfallUtil.SjukfallGroup sjukfallGroup: SjukfallUtil.sjukfallGrupper(from, periods, periodLength, aisle, filter)) {
+        for (SjukfallGroup sjukfallGroup: SjukfallUtil.sjukfallGrupper(from, periods, periodLength, aisle, filter)) {
             Map<Ranges.Range, Counter<Ranges.Range>> counterMap = SjukskrivningslangdQuery.count(sjukfallGroup.getSjukfall());
             for (Ranges.Range i : SjukfallslangdUtil.RANGES) {
                 Counter<Ranges.Range> counter = counterMap.get(i);
