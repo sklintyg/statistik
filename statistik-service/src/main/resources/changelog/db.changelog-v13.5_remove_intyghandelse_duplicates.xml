@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd"
+        logicalFilePath="liquibase/db.changelog-v13.5_remove_intyghandelse_duplicates.xml">
+    <changeSet id="13b_remove_intyghandelse_duplicates" author="pierre.sandboge" failOnError="false">
+        <sql endDelimiter=";">delete from intyghandelse using intyghandelse, intyghandelse i1 where intyghandelse.id > i1.id
+            and intyghandelse.correlationId = i1.correlationId and intyghandelse.type = 0 and i1.type = 0</sql>
+        <sql endDelimiter=";">
+            delete from intyghandelse using intyghandelse, intyghandelse i1 where intyghandelse.id > i1.id
+            and intyghandelse.correlationId = i1.correlationId and intyghandelse.type = 1 and i1.type = 1</sql>
+    </changeSet>
+
+</databaseChangeLog>
