@@ -1,7 +1,5 @@
 !contents -R2 -g -p -f -h
 
-IGNORED: Waiting for STATISTIK-772 to be fixed
-
 !3 Givet att:
 | script | dagens datum | 2013-11-06 |
 
