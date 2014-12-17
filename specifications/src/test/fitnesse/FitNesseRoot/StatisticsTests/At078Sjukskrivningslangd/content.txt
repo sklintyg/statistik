@@ -1,0 +1,41 @@
+!contents -R2 -g -p -f -h
+
+Ett sjukfall består av 3 intyg, det första utfärdat på enhet1, det andra av på enhet2, det tredje på enhet1.
+* 2014-02-01 - 2014-03-15 (enhet1) - 45 dagar
+* 2014-03-16 - 2014-04-15 (enhet2) - 30 dagar
+* 2014-04-16 - 2014-04-30 (enhet1) - 14 dagar
+
+Som inloggad (user1) med behörighet till enhet1 hamnar ETT sjukfall i gruppen "91-180 dagar". Som inloggad (user4) med behörighet till enhet2 hamnar sjukfallet i gruppen "31-90 dagar".
+
+Testar om sjukfall som återkommer till enhet bara räknas som ett fall och att längden räknas ihop.
+
+IGNORED: Waiting for STATISTIK-787
+
+
+!3 Givet att:
+| script | dagens datum | 2014-11-06 |
+
+| script | troskel varde | 1 |
+
+| Enbart foljande intyg finns |
+| personnr | diagnoskod | start | slut | enhet | kommentar |
+| 19790407-1285 | G01 | 2014-02-01 | 2014-03-15 | enhet1 | |
+| 19790407-1285 | G01 | 2014-03-16 | 2014-04-15 | enhet2 | |
+| 19790407-1285 | G01 | 2014-04-16 | 2014-04-30 | enhet1 | |
+
+
+!3 Då gäller:
+Nationell nivå
+| Sjukfall i rapporten sjukskrivningslangd |
+| sjukskrivningslängd | män? | kvinnor? |
+| 31-90 dagar         | 0    | 0        |
+| 91-180 dagar        | 0    | 1        |
+
+
+Inloggad nivå
+| Sjukfall i rapporten sjukskrivningslangd |
+| inloggad som | sjukskrivningslängd | män? | kvinnor? |
+| user1        | 31-90 dagar         | 0    | 0        |
+| user1        | 91-180 dagar        | 0    | 1        |
+| user4        | 31-90 dagar         | 0    | 1        |
+| user4        | 91-180 dagar        | 0    | 0        |
