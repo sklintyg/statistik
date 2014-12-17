@@ -186,7 +186,7 @@ public class SjukfallUtilTest {
 
         aisle.sort();
 
-        Iterator<SjukfallUtil.SjukfallGroup> actives = SjukfallUtil.sjukfallGrupper(new LocalDate("2010-11-01"), 3, 1, aisle, 2).iterator();
+        Iterator<SjukfallGroup> actives = SjukfallUtil.sjukfallGrupper(new LocalDate("2010-11-01"), 3, 1, aisle, 2).iterator();
         assertTrue(actives.next().getSjukfall().isEmpty());
 
         assertEquals(2, actives.next().getSjukfall().size());
@@ -226,7 +226,7 @@ public class SjukfallUtilTest {
 
         aisle.sort();
 
-        Iterator<SjukfallUtil.SjukfallGroup> actives = SjukfallUtil.sjukfallGrupper(monthStart, 1, 1, aisle, ENHET1).iterator();
+        Iterator<SjukfallGroup> actives = SjukfallUtil.sjukfallGrupper(monthStart, 1, 1, aisle, ENHET1).iterator();
         assertEquals(1, actives.next().getSjukfall().size());
     }
 
@@ -249,7 +249,7 @@ public class SjukfallUtilTest {
 
         aisle.sort();
 
-        Iterator<SjukfallUtil.SjukfallGroup> actives = SjukfallUtil.sjukfallGrupper(monthStart, 1, 1, aisle, ENHET1).iterator();
+        Iterator<SjukfallGroup> actives = SjukfallUtil.sjukfallGrupper(monthStart, 1, 1, aisle, ENHET1).iterator();
         assertEquals(2, actives.next().getSjukfall().size());
     }
 

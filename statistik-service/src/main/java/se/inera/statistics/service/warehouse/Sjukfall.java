@@ -52,6 +52,22 @@ public class Sjukfall {
         lakare.addAll(previous.getLakare());
     }
 
+    Sjukfall(Sjukfall previous, Sjukfall sjukfall) {
+        start = previous.getStart();
+        end = sjukfall.getEnd();
+        realDays = previous.getRealDays() + sjukfall.getRealDays();
+        intygCount = previous.getIntygCount() + sjukfall.getIntygCount();
+        kon = sjukfall.kon;
+        alder = sjukfall.getAlder();
+        diagnoskapitel = sjukfall.getDiagnoskapitel();
+        diagnosavsnitt = sjukfall.getDiagnosavsnitt();
+        diagnoskategori = sjukfall.getDiagnoskategori();
+        sjukskrivningsgrad = sjukfall.getSjukskrivningsgrad();
+        lan = sjukfall.lan;
+        lakare.addAll(previous.getLakare());
+        lakare.addAll(sjukfall.getLakare());
+    }
+
     public Kon getKon() {
         return Kon.byNumberRepresentation(kon);
     }
@@ -78,6 +94,10 @@ public class Sjukfall {
 
     public Sjukfall extendSjukfall(Fact line) {
         return new Sjukfall(this, line);
+    }
+
+    public Sjukfall extendSjukfall(Sjukfall sjukfall) {
+        return new Sjukfall(this, sjukfall);
     }
 
     private boolean isExpired(int datum) {

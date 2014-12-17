@@ -59,7 +59,7 @@ public class NationellData {
         ArrayList<SimpleKonDataRow> result = new ArrayList<>();
         for (Aisle aisle : warehouse) {
             int index = 0;
-            for (SjukfallUtil.SjukfallGroup sjukfallGroup : SjukfallUtil.sjukfallGrupper(start, perioder, periodlangd, aisle, SjukfallUtil.ALL_ENHETER)) {
+            for (SjukfallGroup sjukfallGroup : SjukfallUtil.sjukfallGrupper(start, perioder, periodlangd, aisle, SjukfallUtil.ALL_ENHETER)) {
                 int male = SjukfallQuery.countMale(sjukfallGroup.getSjukfall());
                 int female = sjukfallGroup.getSjukfall().size() - male;
                 String displayDate = ReportUtil.toDiagramPeriod(sjukfallGroup.getRange().getFrom());
@@ -250,7 +250,7 @@ public class NationellData {
                 map.put(lanId, new Counter<>(lanId));
             }
 
-            for (SjukfallUtil.SjukfallGroup sjukfallGroup : SjukfallUtil.sjukfallGrupper(start, perioder, periodlangd, aisle, SjukfallUtil.ALL_ENHETER)) {
+            for (SjukfallGroup sjukfallGroup : SjukfallUtil.sjukfallGrupper(start, perioder, periodlangd, aisle, SjukfallUtil.ALL_ENHETER)) {
                 for (Sjukfall sjukfall : sjukfallGroup.getSjukfall()) {
                     Counter counter = map.get(sjukfall.getLanskod());
                     if (counter != null) {

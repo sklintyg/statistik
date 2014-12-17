@@ -145,6 +145,7 @@ public final class SjukfallUtil {
 
         public EnhetFilter(int... enhetIds) {
             this.enhetIds = enhetIds;
+            Arrays.sort(this.enhetIds);
         }
 
         @Override
@@ -158,109 +159,4 @@ public final class SjukfallUtil {
 
     }
 
-    public static class SjukfallIterator implements Iterator<SjukfallGroup> {
-
-        private final LocalDate current;
-        private final LocalDate from;
-        private int period = 0;
-        private final int periods;
-        private final int periodSize;
-        private final Predicate<Fact> filter;
-        private final Map<Integer, Sjukfall> active = new HashMap<>();
-        private Collection<Sjukfall> sjukfalls;
-        private final Iterator<Fact> iterator;
-        private Fact pendingLine;
-
-        public SjukfallIterator(LocalDate from, int periods, int periodSize, Aisle aisle, Predicate<Fact> filter) {
-            this.from = from;
-            this.current = from;
-            this.periods = periods;
-            this.periodSize = periodSize;
-            this.filter = filter;
-            iterator = aisle.iterator();
-        }
-
-        @Override
-        public boolean hasNext() {
-            return period < periods;
-        }
-
-        @Override
-        public SjukfallGroup next() {
-            sjukfalls = new ArrayList<>();
-            int cutoff = WidelineConverter.toDay(from.plusMonths((period + 1) * periodSize));
-            if (pendingLine != null && pendingLine.getStartdatum() < cutoff) {
-                process(pendingLine);
-                pendingLine = null;
-            }
-            if (pendingLine == null) {
-                while (iterator.hasNext()) {
-                    Fact line = iterator.next();
-                    if (line.getStartdatum() >= cutoff) {
-                        pendingLine = line;
-                        break;
-                    }
-                    process(line);
-                }
-            }
-            Collection result = new ArrayList<Sjukfall>();
-            int firstday = WidelineConverter.toDay(from.plusMonths(period * periodSize));
-            for (Sjukfall sjukfall : sjukfalls) {
-                if (sjukfall.getEnd() >= firstday) {
-                    result.add(sjukfall);
-                }
-            }
-
-            for (Sjukfall sjukfall : active.values()) {
-                if (sjukfall.getEnd() >= firstday) {
-                    result.add(sjukfall);
-                }
-            }
-            Range range = new Range(from.plusMonths(period * periodSize), from.plusMonths(period * periodSize + periodSize - 1));
-            SjukfallGroup sjukfallGroup = new SjukfallGroup(range, result);
-            period++;
-            return sjukfallGroup;
-        }
-
-        private void process(Fact line) {
-            int key = line.getPatient();
-            Sjukfall sjukfall = active.get(key);
-
-            if (sjukfall == null) {
-                if (filter.apply(line)) {
-                    sjukfall = new Sjukfall(line);
-                    active.put(key, sjukfall);
-                }
-            } else {
-                Sjukfall nextSjukfall = sjukfall.join(line);
-                active.put(key, nextSjukfall);
-                if (!nextSjukfall.isExtended()) {
-                    sjukfalls.add(sjukfall);
-                }
-            }
-        }
-
-        @Override
-        public void remove() {
-
-        }
-    }
-
-    public static class SjukfallGroup {
-        private final Range range;
-        private final Collection sjukfall;
-
-        public SjukfallGroup(Range range, Collection sjukfall) {
-            this.range = range;
-            this.sjukfall = sjukfall;
-        }
-
-        public Range getRange() {
-            return range;
-        }
-
-        public Collection<Sjukfall> getSjukfall() {
-            return sjukfall;
-        }
-    }
 }
