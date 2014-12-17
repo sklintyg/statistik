@@ -1,3 +1,21 @@
+/**
+ * Copyright (C) 2014 Inera AB (http://www.inera.se)
+ *
+ * This file is part of statistik (https://github.com/sklintyg/statistik).
+ *
+ * statistik is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * statistik is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 package se.inera.statistics.service.warehouse;
 
 import com.google.common.base.Function;
@@ -23,7 +41,6 @@ import se.inera.statistics.service.report.model.Range;
 
 public class SjukfallIterator implements Iterator<SjukfallGroup> {
 
-    private final LocalDate current;
     private final LocalDate from;
     private int period = 0;
     private final int periods;
@@ -31,27 +48,22 @@ public class SjukfallIterator implements Iterator<SjukfallGroup> {
     private final Predicate<Fact> filter;
     private final Map<Integer, PersonifiedSjukfall> active = new HashMap<>();
     private Collection<PersonifiedSjukfall> sjukfalls;
-    private final Iterator<Fact> iterator;
     private Fact pendingLine;
     private List<Fact> aisle;
 
     public SjukfallIterator(LocalDate from, int periods, int periodSize, Aisle aisle, Predicate<Fact> filter) {
         this.from = from;
-        this.current = from;
         this.periods = periods;
         this.periodSize = periodSize;
         this.filter = filter;
-        iterator = aisle.iterator();
         this.aisle = aisle.getLines();
     }
 
     private SjukfallIterator(LocalDate from, int periods, int periodSize, List<Fact> aisle, Predicate<Fact> filter, int period) {
         this.from = from;
-        this.current = from;
         this.periods = periods;
         this.periodSize = periodSize;
         this.filter = filter;
-        iterator = aisle.iterator();
         this.aisle = aisle;
         this.period = period;
     }
@@ -92,8 +104,7 @@ public class SjukfallIterator implements Iterator<SjukfallGroup> {
             pendingLine = null;
         }
         if (pendingLine == null) {
-            while (iterator.hasNext()) {
-                Fact line = iterator.next();
+            for (Fact line : aisle) {
                 if (line.getStartdatum() >= cutoff) {
                     pendingLine = line;
                     break;

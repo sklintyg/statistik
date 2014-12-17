@@ -1,3 +1,7 @@
+plugins {
+    id "com.github.hierynomus.license" version "0.11.0"
+}
+
 allprojects {
     group = 'se.inera.statistik'
     version = '2.0-SNAPSHOT'
@@ -20,6 +24,7 @@ allprojects {
 subprojects {
     apply plugin: 'java'
     //apply plugin: 'jacoco'
+    apply plugin: 'license'
 
     sourceCompatibility = "1.7"
     targetCompatibility = "1.7"
@@ -31,12 +36,22 @@ subprojects {
     ext.cxfVersion = '2.7.10'
     ext.springContextVersion = "4.0.8.RELEASE"
     ext.springSecurityVersion = "3.2.0.RELEASE"
+    ext.liquibaseVersion = "2.0.5"
 
     test {
         exclude '**/*IntegrationTest.*'
         exclude '**/*FunctionalTest.*'
         reports.html.destination = file("$reports.html.destination/unit")
         reports.junitXml.destination = file("$reports.junitXml.destination/unit")
+    }
+
+    license {
+        ext.url = 'https://github.com/sklintyg/statistik'
+        ext.name = rootProject.name
+        ext.year = Calendar.getInstance().get(Calendar.YEAR)
+        strictCheck true
+        header rootProject.file("header.txt")
+        includes(["**/*.xml", "**/se/inera/statistics/**/*.java", "**/se/inera/auth/**/*.java", "**/se/inera/ifv/statistics/**/*.java"])
     }
 
     dependencies {
@@ -53,7 +68,6 @@ subprojects {
 configure(subprojects.findAll {
     ['hsa-integration', 'statistik-service', 'statistik-web'].contains(it.name)}) {
     apply plugin: 'checkstyle'
-    apply plugin: 'maven'
 
     checkstyle {
         config = resources.text.fromFile("${rootProject.projectDir}/build-tools/src/main/resources/checkstyle.xml")
@@ -64,10 +78,6 @@ configure(subprojects.findAll {
     // Make sure we don't run checkstyle on generated source code
     checkstyleMain.source = "src/main/java"
 
-    configurations {
-        deployerJars
-    }
-
     task integrationTests(type: Test, dependsOn: checkstyleMain) {
         outputs.upToDateWhen { false }
         include '**/*IntegrationTest.class'
@@ -76,28 +86,18 @@ configure(subprojects.findAll {
     }
 
     task testAll(dependsOn: [test, integrationTests, checkstyleMain])
-
-    ext.cloudbeesUsername = System.properties['cloudbeesUsername']
-    ext.cloudbeesPassword = System.properties['cloudbeesPassword']
-
-    uploadArchives {
-        repositories {
-            mavenDeployer {
-                configuration = configurations.deployerJars
-                repository(url: "dav:https://repository-callistasoftware.forge.cloudbees.com/snapshot/") {
-                    authentication(userName: cloudbeesUsername, password: cloudbeesPassword)
-                }
-            }
-        }
-    }
-
-    dependencies {
-        deployerJars "org.apache.maven.wagon:wagon-webdav:1.0-beta-2"
-    }
 }
 
-apply plugin: 'sonar-runner'
+apply plugin: 'sonar'
 
-sonarRunner {
-    toolVersion = "2.4"
+sonar {
+    server {
+        url = "https://callistasoftware.sonar.cloudbees.com"
+    }
+    database {
+        url = "jdbc:mysql://ec2-107-20-159-195.compute-1.amazonaws.com:3306/cb-ci-callistasoftware?autoReconnect=true&useUnicode=true&characterEncoding=utf8"
+        driverClassName = "com.mysql.jdbc.Driver"
+        username = "A623f64bf867ac4e"
+        password = "very clever"
+    }
 }

@@ -25,15 +25,13 @@ angular.module('StatisticsApp').controller('overviewCtrl', [ '$scope', '$timeout
         var setTooltipText = function (result) {
             $scope.popoverText = "Statistiktjänsten är en webbtjänst som visar samlad statistik för sjukskrivning som ordinerats av läkare. Tjänsten visar statistik för alla elektroniska läkarintyg. Statistiken är uppdelad i nationell statistik som är tillgänglig för alla, och verksamhetsstatistik som bara går att se med särskild behörighet inom hälso- och sjukvården.";
             $scope.popoverTextAmount = "Totala antalet sjukfall under perioden " + result.periodText;
-            $scope.popoverTextSexDistribution = "Könsfördelningen av totala antalet sjukfall under perioden " + result.periodText;
+            $scope.popoverTextSexDistribution = "Andel kvinnor och andel män av det totala antalet sjukfall under perioden " + result.periodText;
             $scope.popoverTextChangeProcentageThisMonth = "Diagrammet visar hur antalet sjukfall förändrats mellan perioden " + result.periodText;
             $scope.popoverTextChangeProcentagePreviousMonth = " och föregående period " + result.casesPerMonth.previousPeriodText;
             $scope.popoverTextChangeCurrentVSPrevious = "Spalten förändring visar skillnaden i antal sjukfall mellan perioden " + result.periodText + "  och föregående period " + result.casesPerMonth.previousPeriodText;
             $scope.popoverTextDiagnosisGroups1 = "Diagrammet visar antal sjukfall inom de vanligast förekommande diagnosgrupperna under " + result.periodText + ".";
-            $scope.popoverTextDiagnosisGroups2 = "Flytta markören i cirkeln för att se antalet sjukfall per diagnosgrupp."
             $scope.popoverTextAgeGroups1 = "Diagrammet visar de åldersgrupper som har flest sjukfall under " + result.periodText + ".";
-            $scope.popoverTextAgeGroups2 = "Flytta markören i cirkeln för att se antalet sjukfall per åldersgrupp.";
-            $scope.popoverTextDegreeOfSickLeave1 = "Diagrammet visar antal sjukfall per sjukskrivningslängd under perioden " + result.periodText + ".";
+            $scope.popoverTextDegreeOfSickLeave1 = "Diagrammet visar antalet sjukfall per sjukskrivningsgrad under perioden  " + result.periodText + ".";
             $scope.popoverTextDegreeOfSickLeave2 = "Flytta markören i cirkeln för att se antalet sjukfall per sjukskrivningsgrad.";
             $scope.popoverTextSickLeaveLength1 = "Diagrammet visar antal sjukfall per sjukskrivningslängd under perioden " + result.periodText + ".";
             $scope.popoverTextSickLeaveLength2 = "Ställ markören i respektive stapel för att se antalet sjukfall.";
