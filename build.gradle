@@ -5,15 +5,6 @@ plugins {
 allprojects {
     group = 'se.inera.statistik'
     version = '2.0-SNAPSHOT'
-    ext.url = 'https://github.com/sklintyg/statistik'
-
-    apply plugin: 'license'
-
-    license {
-        strictCheck true
-        header rootProject.file("header.txt")
-        excludes(["**/*.wsdl", "**/*.xsd", "**/*.properties", "**/*.xjb"])
-    }
 
     repositories {
         mavenLocal()
@@ -33,6 +24,7 @@ allprojects {
 subprojects {
     apply plugin: 'java'
     //apply plugin: 'jacoco'
+    apply plugin: 'license'
 
     sourceCompatibility = "1.7"
     targetCompatibility = "1.7"
@@ -50,6 +42,15 @@ subprojects {
         exclude '**/*FunctionalTest.*'
         reports.html.destination = file("$reports.html.destination/unit")
         reports.junitXml.destination = file("$reports.junitXml.destination/unit")
+    }
+
+    license {
+        ext.url = 'https://github.com/sklintyg/statistik'
+        ext.name = rootProject.name
+        ext.year = Calendar.getInstance().get(Calendar.YEAR)
+        strictCheck true
+        header rootProject.file("header.txt")
+        includes(["**/*.xml", "**/se/inera/statistics/**/*.java", "**/se/inera/auth/**/*.java", "**/se/inera/ifv/statistics/**/*.java"])
     }
 
     dependencies {
