@@ -315,7 +315,7 @@ angular.module('StatisticsApp').diagnosisSubGroupConfig = function () {
     conf.title = function (period, name) {
         return "Antal sjukfall för " + name + " " + period;
     };
-    conf.tooltipHelpText = "Ett diagnoskapitel innehåller flera avsnitt med sjukdomar som i sin tur omfattar olika diagnoskoder. Det finns totalt 21 diagnoskapitel, ett exempel är A00-B99 Vissa infektionssjukdomar och parasitsjukdomar. Diagnoskapitlen finns i klassificeringssystemet ICD-10-SE. I tabellen visas samtliga avsnitt inom valt kapitel. I grafen visas endast de sex vanligast förekommandediagnosavsnitten för att underlätta presentationen.";
+    conf.tooltipHelpText = "Ett diagnoskapitel innehåller flera avsnitt med sjukdomar som i sin tur omfattar olika diagnoskoder. Det finns totalt 21 diagnoskapitel. Grafen visar endast de sex vanligaste förekommande avsnitten eller diagnoserna uppdelade på kvinnor respektive män. I tabellen visas samtliga inom valt kapitel eller avsnitt.";
     conf.chartFootnotes = ["När ett sjukfall har flera intyg under samma månad hämtas uppgift om diagnos från det senaste intyget. För ett sjukfall som varar flera månader så hämtas diagnos för varje månad."];
     return conf;
 };
@@ -335,6 +335,6 @@ angular.module('StatisticsApp').degreeOfSickLeaveConfig = function () {
         return "Antal sjukfall per sjukskrivningsgrad " + period;
     };
     conf.tooltipHelpText = "Sjukskrivningsgrad visar hur stor del av patientens arbetsförmåga som är nedsatt. Sjukskrivningsgraden anges i procent i förhållande till patientens aktuella arbetstid.";
-    conf.chartFootnotes = ["Samma sjukfall kan visas fler än en gång en viss månad. Om ett sjukfall har ett intyg som innehåller flera sjukskrivningsgrader visas sjukfallet i respektive sjukskrivningsgrad."];
+    conf.chartFootnotes = ["När ett sjukfall har flera intyg under samma månad hämtas uppgift om sjukskrivningsgrad från det senaste intyget. Om detta intyg innehåller flera olika sjukskrivningsgrader hämtas den senaste sjukskrivningsgraden för den månaden. För ett sjukfall som varar flera månader så hämtas sjukskrivningsgrad för varje månad."];
     return conf;
 };

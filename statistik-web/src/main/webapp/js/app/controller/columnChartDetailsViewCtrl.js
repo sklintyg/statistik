@@ -205,6 +205,7 @@ angular.module('StatisticsApp').casesPerBusinessConfig = function () {
         return "Antal sjukfall per vårdenhet " + period;
     };
     conf.chartXAxisTitle = "Vårdenhet";
+    conf.chartFootnotes = ["alert.vardenhet.information"];
     return conf;
 };
 
