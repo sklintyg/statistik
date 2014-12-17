@@ -1,7 +1,7 @@
 !contents -R2 -g -p -f -h
 
 !3 Givet att:
-Två intyg för samma patient har uppehåll med 4 hela dagar (5 dagar)
+Två intyg för samma patient har uppehåll med 4 hela dagar
 
 
 | script | dagens datum | 2013-11-06 |
