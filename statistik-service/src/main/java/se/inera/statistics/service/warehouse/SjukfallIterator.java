@@ -31,7 +31,6 @@ public class SjukfallIterator implements Iterator<SjukfallGroup> {
     private final Predicate<Fact> filter;
     private final Map<Integer, PersonifiedSjukfall> active = new HashMap<>();
     private Collection<PersonifiedSjukfall> sjukfalls;
-    private final Iterator<Fact> iterator;
     private Fact pendingLine;
     private List<Fact> aisle;
 
@@ -41,7 +40,6 @@ public class SjukfallIterator implements Iterator<SjukfallGroup> {
         this.periods = periods;
         this.periodSize = periodSize;
         this.filter = filter;
-        iterator = aisle.iterator();
         this.aisle = aisle.getLines();
     }
 
@@ -51,7 +49,6 @@ public class SjukfallIterator implements Iterator<SjukfallGroup> {
         this.periods = periods;
         this.periodSize = periodSize;
         this.filter = filter;
-        iterator = aisle.iterator();
         this.aisle = aisle;
         this.period = period;
     }
@@ -92,8 +89,7 @@ public class SjukfallIterator implements Iterator<SjukfallGroup> {
             pendingLine = null;
         }
         if (pendingLine == null) {
-            while (iterator.hasNext()) {
-                Fact line = iterator.next();
+            for (Fact line : aisle) {
                 if (line.getStartdatum() >= cutoff) {
                     pendingLine = line;
                     break;
