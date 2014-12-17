@@ -119,7 +119,7 @@ public final class SjukskrivningslangdQuery {
 
     public static SjukfallslangdResponse getSjuksrivningslangd(Aisle aisle, Predicate<Fact> filter, LocalDate from, int periods, int periodLength) {
         List<SjukfallslangdRow> rows = new ArrayList<>();
-        for (SjukfallGroup sjukfallGroup: SjukfallUtil.sjukfallGrupper(from, periods, periodLength, aisle, filter)) {
+        for (SjukfallGroup sjukfallGroup: SjukfallUtil.sjukfallGrupperUsingOriginalSjukfallStart(from, periods, periodLength, aisle, filter)) {
             Map<Ranges.Range, Counter<Ranges.Range>> counterMap = SjukskrivningslangdQuery.count(sjukfallGroup.getSjukfall());
             for (Ranges.Range i : SjukfallslangdUtil.RANGES) {
                 Counter<Ranges.Range> counter = counterMap.get(i);

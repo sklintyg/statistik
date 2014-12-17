@@ -103,7 +103,7 @@ public final class SjukfallUtil {
         return new Iterable<SjukfallGroup>() {
             @Override
             public Iterator<SjukfallGroup> iterator() {
-                return new SjukfallIterator(from, periods, periodSize, aisle, new EnhetFilter(enhetIds));
+                return new SjukfallIterator(from, periods, periodSize, aisle, new EnhetFilter(enhetIds), false);
             }
         };
     }
@@ -117,11 +117,20 @@ public final class SjukfallUtil {
         return new EnhetFilter(numericalIds);
     }
 
+    public static Iterable<SjukfallGroup> sjukfallGrupperUsingOriginalSjukfallStart(final LocalDate from, final int periods, final int periodSize, final Aisle aisle, final Predicate<Fact> filter) {
+        return new Iterable<SjukfallGroup>() {
+            @Override
+            public Iterator<SjukfallGroup> iterator() {
+                return new SjukfallIterator(from, periods, periodSize, aisle, filter, true);
+            }
+        };
+    }
+
     public static Iterable<SjukfallGroup> sjukfallGrupper(final LocalDate from, final int periods, final int periodSize, final Aisle aisle, final Predicate<Fact> filter) {
         return new Iterable<SjukfallGroup>() {
             @Override
             public Iterator<SjukfallGroup> iterator() {
-                return new SjukfallIterator(from, periods, periodSize, aisle, filter);
+                return new SjukfallIterator(from, periods, periodSize, aisle, filter, false);
             }
         };
     }

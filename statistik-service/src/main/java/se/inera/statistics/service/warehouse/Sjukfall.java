@@ -64,17 +64,25 @@ public class Sjukfall {
     public Sjukfall(Sjukfall previous, Fact line) {
         this(line);
         start = previous.getStart();
-        realDays = previous.getRealDays() + line.getSjukskrivningslangd();
-        intygCount = previous.getIntygCount() + 1;
+        realDays += previous.getRealDays();
+        intygCount += previous.getIntygCount();
         extending = previous;
         lakare.addAll(previous.getLakare());
     }
 
     Sjukfall(Sjukfall previous, Sjukfall sjukfall) {
+        this(sjukfall);
         start = previous.getStart();
+        realDays += previous.getRealDays() + (sjukfall.getStart() - previous.getEnd());
+        intygCount += previous.getIntygCount();
+        lakare.addAll(previous.getLakare());
+    }
+
+    Sjukfall(Sjukfall sjukfall) {
+        start = sjukfall.getStart();
         end = sjukfall.getEnd();
-        realDays = previous.getRealDays() + sjukfall.getRealDays();
-        intygCount = previous.getIntygCount() + sjukfall.getIntygCount();
+        realDays = sjukfall.getRealDays();
+        intygCount = sjukfall.getIntygCount();
         kon = sjukfall.kon;
         alder = sjukfall.getAlder();
         diagnoskapitel = sjukfall.getDiagnoskapitel();
@@ -82,8 +90,8 @@ public class Sjukfall {
         diagnoskategori = sjukfall.getDiagnoskategori();
         sjukskrivningsgrad = sjukfall.getSjukskrivningsgrad();
         lan = sjukfall.lan;
-        lakare.addAll(previous.getLakare());
         lakare.addAll(sjukfall.getLakare());
+        extending = sjukfall.extending;
     }
 
     public Kon getKon() {
@@ -116,6 +124,13 @@ public class Sjukfall {
 
     public Sjukfall extendSjukfall(Sjukfall sjukfall) {
         return new Sjukfall(this, sjukfall);
+    }
+
+    public Sjukfall extendSjukfallWithNewStart(int start, int sjukskrivningslangd) {
+        final Sjukfall sjukfall = new Sjukfall(this);
+        sjukfall.start = start;
+        sjukfall.realDays += sjukskrivningslangd;
+        return sjukfall;
     }
 
     private boolean isExpired(int datum) {
