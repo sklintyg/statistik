@@ -25,7 +25,7 @@ public class DocumentHelperTest {
 
     @Test
     public void get_age() {
-        assertEquals(33, DocumentHelper.getAge(DocumentHelper.anonymize(document)));
+        assertEquals(35, DocumentHelper.getAge(DocumentHelper.anonymize(document)));
     }
 
     @Test
