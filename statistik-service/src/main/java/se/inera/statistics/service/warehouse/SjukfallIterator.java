@@ -130,11 +130,11 @@ public class SjukfallIterator implements Iterator<SjukfallGroup> {
         return result;
     }
 
-    private void connectIfPossible(int patient, Collection<Sjukfall> sjukfallsForPatientOnAvalableEnhets, List<PersonifiedSjukfall> sjukfallsForAvailableEnhets, boolean useOriginalSjukfallStart) {
+    private void connectIfPossible(int patient, Collection<Sjukfall> sjukfallsForPatientOnAvailableEnhets, List<PersonifiedSjukfall> sjukfallsForAvailableEnhets, boolean useOriginalSjukfallStart) {
         List<Fact> allIntygForPatient = getAllIntygForPatientInAisle(patient);
         List<Sjukfall> sjukfallFromAllIntygForPatient = calculateSjukfallForIntyg(allIntygForPatient);
         for (Sjukfall sjukfall : sjukfallFromAllIntygForPatient) {
-            List<Sjukfall> mergableSjukfalls = filterSjukfallInPeriod(sjukfall.getStart(), sjukfall.getEnd(), sjukfallsForPatientOnAvalableEnhets);
+            List<Sjukfall> mergableSjukfalls = filterSjukfallInPeriod(sjukfall.getStart(), sjukfall.getEnd(), sjukfallsForPatientOnAvailableEnhets);
             Sjukfall mergedSjukfall = mergeAllSjukfallInList(mergableSjukfalls);
             if (mergedSjukfall != null) {
                 if (useOriginalSjukfallStart) {
