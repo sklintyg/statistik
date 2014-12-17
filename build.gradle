@@ -51,7 +51,7 @@ subprojects {
 }
 
 configure(subprojects.findAll {
-    ['hsa-integration', 'statistik-service', 'statistik-web', 'liquibase-runner'].contains(it.name)}) {
+    ['hsa-integration', 'statistik-service', 'statistik-web'].contains(it.name)}) {
     apply plugin: 'checkstyle'
     apply plugin: 'maven'
 

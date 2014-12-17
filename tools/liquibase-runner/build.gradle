@@ -1,22 +1,26 @@
-description = 'Liquibase runner for statistics (standalone)'
+description = 'Liquibase runner for statistics'
 
-apply plugin: "distribution"
-//apply plugin: "java"
+apply plugin: 'application'
 
-configurations {
-    provided
+mainClassName = "liquibase.integration.commandline.Main"
+applicationDefaultJvmArgs = ["-Dfile.encoding=utf8"]
+
+startScripts << {
+    // Get hold of the file name of the statistik-service jar file
+    def statistikDependency = configurations.runtime.filter { it.name.startsWith("statistik-service") }.singleFile.name
+    // Insert our default script parameters into the script templates
+    unixScript.text = unixScript.text.replaceAll(/"\$@"$/,
+            "--driver=com.mysql.jdbc.Driver --classpath=lib/${statistikDependency} --changeLogFile=changelog/changelog.xml \"\\\$@\"")
+    windowsScript.text = windowsScript.text.replaceAll(/%CMD_LINE_ARGS%/,
+            "--driver=com.mysql.jdbc.Driver --classpath=lib/${statistikDependency} --changeLogFile=changelog/changelog.xml %CMD_LINE_ARGS%")
+}
+
+configurations.all {
+    transitive = false
 }
 
 dependencies {
-    provided fileTree(dir: '../../statistik-service/src/main/resources/', include: 'changelog/**')
-    provided "org.liquibase:liquibase-core:2.0.5"
-    provided "mysql:mysql-connector-java:5.1.32"
-}
-
-distributions {
-    main {
-        contents {
-            from configurations.provided
-        }
-    }
+    runtime project(":statistik-service")
+    runtime "org.liquibase:liquibase-core:2.0.5"
+    runtime "mysql:mysql-connector-java:5.1.32"
 }
