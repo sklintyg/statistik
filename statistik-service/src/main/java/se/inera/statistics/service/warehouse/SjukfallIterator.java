@@ -47,7 +47,6 @@ public class SjukfallIterator implements Iterator<SjukfallGroup> {
     private final int periodSize;
     private final Predicate<Fact> filter;
     private final Map<Integer, PersonifiedSjukfall> active = new HashMap<>();
-    private Collection<PersonifiedSjukfall> sjukfalls;
     private Fact pendingLine;
     private List<Fact> aisle;
     private boolean useOriginalSjukfallStart = false;
@@ -99,10 +98,10 @@ public class SjukfallIterator implements Iterator<SjukfallGroup> {
     }
 
     private List<PersonifiedSjukfall> getSjukfalls() {
-        sjukfalls = new ArrayList<>();
+        final Collection<PersonifiedSjukfall> sjukfalls = new ArrayList<>();
         int cutoff = WidelineConverter.toDay(from.plusMonths((period + 1) * periodSize));
         if (pendingLine != null && pendingLine.getStartdatum() < cutoff) {
-            process(pendingLine);
+            process(pendingLine, sjukfalls);
             pendingLine = null;
         }
         if (pendingLine == null) {
@@ -111,7 +110,7 @@ public class SjukfallIterator implements Iterator<SjukfallGroup> {
                     pendingLine = line;
                     break;
                 }
-                process(line);
+                process(line, sjukfalls);
             }
         }
         List<PersonifiedSjukfall> result = new ArrayList<>();
@@ -246,7 +245,7 @@ public class SjukfallIterator implements Iterator<SjukfallGroup> {
         return patientsWithMoreThanOneSjukfall;
     }
 
-    private void process(Fact line) {
+    private void process(Fact line, Collection<PersonifiedSjukfall> sjukfalls) {
         if (!filter.apply(line)) {
             return;
         }
