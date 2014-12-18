@@ -23,8 +23,10 @@ allprojects {
 
 subprojects {
     apply plugin: 'java'
-    //apply plugin: 'jacoco'
     apply plugin: 'license'
+    if (project.hasProperty('runSonar')) {
+        apply plugin: 'jacoco'
+    }
 
     sourceCompatibility = "1.7"
     targetCompatibility = "1.7"
@@ -96,14 +98,15 @@ configure(subprojects.findAll { ['hsa-integration', 'statistik-service', 'statis
     task testAll(dependsOn: [test, integrationTests, checkstyleMain])
 }
 
-apply plugin: 'sonar-runner'
+if (project.hasProperty('runSonar')) {
+    apply plugin: 'sonar-runner'
 
-sonarRunner {
-    sonarProperties {
-        property "sonar.host.url", "https://callistasoftware.sonar.cloudbees.com"
-        property "sonar.jdbc.url", "jdbc:mysql://ec2-107-20-159-195.compute-1.amazonaws.com:3306/cb-ci-callistasoftware?autoReconnect=true&useUnicode=true&characterEncoding=utf8"
-        property "sonar.jdbc.driverClassName", "com.mysql.jdbc.Driver"
-        property "sonar.jdbc.username", "A623f64bf867ac4e"
-        property "sonar.jdbc.password", "very clever"
+    sonarRunner {
+        sonarProperties {
+            property "sonar.jdbc.url", "jdbc:mysql://ec2-107-20-159-195.compute-1.amazonaws.com:3306/cb-ci-callistasoftware?autoReconnect=true&useUnicode=true&characterEncoding=utf8"
+            property "sonar.jdbc.driverClassName", "com.mysql.jdbc.Driver"
+            property "sonar.jdbc.username", "A623f64bf867ac4e"
+            property "sonar.jdbc.password", project.sonarPassword
+        }
     }
 }
