@@ -102,7 +102,7 @@
 		                                <span>{{verksamhetName}}</span>
 		                                <br/>
 		                                <span class="user-logout pull-right">
-											<a href="/saml/logout"><span message key="lbl.log-out"/></a>
+											<a href="saml/logout"><span message key="lbl.log-out"/></a>
 										</span>
 		                            </div>
 		                        </div>
