@@ -1,5 +1,7 @@
 !contents -R2 -g -p -f -h
 
+IGNORED: Nytt fel att utreda
+
 Ett sjukfall består av 3 intyg, det första utfärdat på enhet1, det andra av på enhet2, det tredje på enhet1.
 * 2014-02-01 - 2014-03-15 (enhet1) - 45 dagar
 * 2014-03-16 - 2014-04-15 (enhet2) - 30 dagar
