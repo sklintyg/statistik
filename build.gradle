@@ -103,9 +103,10 @@ if (project.hasProperty('runSonar')) {
 
     sonarRunner {
         sonarProperties {
-            property "sonar.jdbc.url", "jdbc:mysql://ec2-107-20-159-195.compute-1.amazonaws.com:3306/cb-ci-callistasoftware?autoReconnect=true&useUnicode=true&characterEncoding=utf8"
+            property "sonar.host.url", "https://callistasoftware.sonar.cloudbees.com"
+            property "sonar.jdbc.url", project.sonarJdbcUrl
             property "sonar.jdbc.driverClassName", "com.mysql.jdbc.Driver"
-            property "sonar.jdbc.username", "A623f64bf867ac4e"
+            property "sonar.jdbc.username", project.sonarUser
             property "sonar.jdbc.password", project.sonarPassword
         }
     }
