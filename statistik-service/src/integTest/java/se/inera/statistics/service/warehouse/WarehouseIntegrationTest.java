@@ -58,7 +58,6 @@ public class WarehouseIntegrationTest {
     private LargeTestDataGenerator dataGenerator;
 
     @Test
-    @Ignore
     public void addingManyIntyg() throws InterruptedException {
         dataGenerator.publishUtlatanden();
         final Aisle aisle = warehouse.get("vardgivare1");
@@ -79,7 +78,6 @@ public class WarehouseIntegrationTest {
     }
 
     @Test
-    @Ignore
     public void exportManyIntyg() throws FileNotFoundException {
         dataGenerator.publishUtlatanden();
 

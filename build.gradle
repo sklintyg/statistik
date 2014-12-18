@@ -23,8 +23,10 @@ allprojects {
 
 subprojects {
     apply plugin: 'java'
-    //apply plugin: 'jacoco'
     apply plugin: 'license'
+    if (project.hasProperty('runSonar')) {
+        apply plugin: 'jacoco'
+    }
 
     sourceCompatibility = "1.7"
     targetCompatibility = "1.7"
@@ -39,7 +41,6 @@ subprojects {
     ext.liquibaseVersion = "2.0.5"
 
     test {
-        exclude '**/*IntegrationTest.*'
         exclude '**/*FunctionalTest.*'
         reports.html.destination = file("$reports.html.destination/unit")
         reports.junitXml.destination = file("$reports.junitXml.destination/unit")
@@ -65,8 +66,7 @@ subprojects {
     }
 }
 
-configure(subprojects.findAll {
-    ['hsa-integration', 'statistik-service', 'statistik-web'].contains(it.name)}) {
+configure(subprojects.findAll { ['hsa-integration', 'statistik-service', 'statistik-web'].contains(it.name) }) {
     apply plugin: 'checkstyle'
 
     checkstyle {
@@ -78,9 +78,19 @@ configure(subprojects.findAll {
     // Make sure we don't run checkstyle on generated source code
     checkstyleMain.source = "src/main/java"
 
-    task integrationTests(type: Test, dependsOn: checkstyleMain) {
+    sourceSets {
+        integrationTest {
+            java.srcDir file('src/integTest/java')
+            resources.srcDir file('src/integTest/resources')
+            compileClasspath = sourceSets.main.output + sourceSets.test.output + configurations.testRuntime
+            runtimeClasspath = output + compileClasspath
+        }
+    }
+
+    task integrationTests(type: Test) {
         outputs.upToDateWhen { false }
-        include '**/*IntegrationTest.class'
+        testClassesDir = sourceSets.integrationTest.output.classesDir
+        classpath = sourceSets.integrationTest.runtimeClasspath
         reports.html.destination = file("$reports.html.destination/integration")
         reports.junitXml.destination = file("$reports.junitXml.destination/integration")
     }
@@ -88,16 +98,15 @@ configure(subprojects.findAll {
     task testAll(dependsOn: [test, integrationTests, checkstyleMain])
 }
 
-apply plugin: 'sonar'
+if (project.hasProperty('runSonar')) {
+    apply plugin: 'sonar-runner'
 
-sonar {
-    server {
-        url = "https://callistasoftware.sonar.cloudbees.com"
-    }
-    database {
-        url = "jdbc:mysql://ec2-107-20-159-195.compute-1.amazonaws.com:3306/cb-ci-callistasoftware?autoReconnect=true&useUnicode=true&characterEncoding=utf8"
-        driverClassName = "com.mysql.jdbc.Driver"
-        username = "A623f64bf867ac4e"
-        password = "very clever"
+    sonarRunner {
+        sonarProperties {
+            property "sonar.jdbc.url", project.sonarJdbcUrl
+            property "sonar.jdbc.driverClassName", "com.mysql.jdbc.Driver"
+            property "sonar.jdbc.username", project.sonarUser
+            property "sonar.jdbc.password", project.sonarPassword
+        }
     }
 }

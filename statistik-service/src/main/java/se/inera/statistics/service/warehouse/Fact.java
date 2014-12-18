@@ -23,9 +23,18 @@ import org.joda.time.LocalDate;
 import com.fasterxml.jackson.databind.JsonNode;
 import se.inera.statistics.service.report.model.Kon;
 
+import java.util.Comparator;
+
 public class Fact {
     public static final String HEADING = "lan;kommun;forsamling;enhet;lakarintyg;patient;startdatum;kon;alder;diagnoskapitel;"
             + "diagnosavsnitt;diagnoskategori;sjukskrivningsgrad;sjukskrivningslangd;lakarkon;lakaralder;lakarbefattning";
+
+    public static final Comparator<Fact> TIME_ORDER = new Comparator<Fact>() {
+        @Override
+        public int compare(Fact f1, Fact f2) {
+            return f1.getStartdatum() - f2.getStartdatum();
+        }
+    };
 
     private static final LocalDate ERA = new LocalDate("2000-01-01");
 
