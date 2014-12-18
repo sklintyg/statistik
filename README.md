@@ -46,9 +46,17 @@ Vi använder Gradle för att bygga, test, installera och köra statistiktjänste
 |Några vanliga gradlekommandon|||
 |--------------|---------|---------|
 |./gradlew clean build integrationTests|bygg om hela projektet inklusive integrationstester|[projektrot]|
+|./gradlew licenseFormatMain licenseFormatTest|Lägg till licens-header till alla filer som saknar header|[projektrot]|
+|../gradlew appRunDebug|kör webbservern i debugläge|[projektrot]/statistik-web|
 |../gradlew fitnesseWiki |starta fitnesse|[projektrot]/specifications|
 |../gradlew fitnesseTest|kör fitnesse-tester|[projektrot]/specifications|
-|../gradlew appRunDebug|kör webbservern i debugläge|[projektrot]/statistik-web|
+
+## Licenser
+
+Vi använder en gradle-plugin som kontrollerar att alla relevanta filer har en korrekt licens-header. Om den hittar en fil som inte
+uppfyller detta krav så fallerar bygget. För att lägga till licens-header kör man
+
+    gradle licenseFormatMain licenseFormatTest
 
 ##Releasebyggen
 
@@ -60,10 +68,27 @@ Liquibase kontrollerar databasen varje gång applikationen startas, och startar 
 Skapa/Uppdatera databasen görs med en separat liquibase-runner. Se DatabasUppdatering.
 ###H2 embedded
 Liquibase kör, och modifierar vid behov databasen, varje gång applikationen startas.
+
+## Liquibase för externa miljöer
+
+För miljöer som utvecklingsteamet inte rår över behövs ett script som kan köra liquibase-förändringarna för en viss miljö. För att
+skapa ett sådant script kör man
+
+    gradle distZip
+
+Då skapas en zip-fil i [projektrot]/tools/liquibase-runner/build/distributions. Denna zip-fil kan distribueras till lämplig driftsoperatör. För at sedan köra scriptet packar man upp zip-filen, går ner i den
+katalog som skapats, och kör:
+
+    ./bin/liquibase-runner --url=jdbc:mysql://localhost/statistik --username=statistik --password=statistik update
+  
+Självklart behöver parametrarna "url", "username" och "password" ändras för att passa den aktuella miljön.
+
 ##Köhanterare
 ActiveMQ används för att ta emot sjukintyg. I koden är köhanteringen inte bunden till ActiveMQ, utan det bör gå att byta till någon annan köhanterare genom konfigurationsändringar.
+
 ##Test
 Vi använder tre typer av tester, Fitnesse/Slim, JUnit, Jasmine.
+
 ###JUnit
 JUnit används för enhetstester, funktionestester samt integrationstester. Normalt anses en testklass innehålla vanliga
 enhetstester, Gradle kör dessa tester per default. Avslutas klassnamnet med IntegrationTest? så är det ett integrationstest, och
