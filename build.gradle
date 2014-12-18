@@ -39,7 +39,6 @@ subprojects {
     ext.liquibaseVersion = "2.0.5"
 
     test {
-        exclude '**/*IntegrationTest.*'
         exclude '**/*FunctionalTest.*'
         reports.html.destination = file("$reports.html.destination/unit")
         reports.junitXml.destination = file("$reports.junitXml.destination/unit")
@@ -65,7 +64,7 @@ subprojects {
     }
 }
 
-configure(subprojects.findAll { ['hsa-integration', 'statistik-service', 'statistik-web'].contains(it.name)}) {
+configure(subprojects.findAll { ['hsa-integration', 'statistik-service', 'statistik-web'].contains(it.name) }) {
     apply plugin: 'checkstyle'
 
     checkstyle {
@@ -77,9 +76,19 @@ configure(subprojects.findAll { ['hsa-integration', 'statistik-service', 'statis
     // Make sure we don't run checkstyle on generated source code
     checkstyleMain.source = "src/main/java"
 
-    task integrationTests(type: Test, dependsOn: checkstyleMain) {
+    sourceSets {
+        integrationTest {
+            java.srcDir file('src/integTest/java')
+            resources.srcDir file('src/integTest/resources')
+            compileClasspath = sourceSets.main.output + sourceSets.test.output + configurations.testRuntime
+            runtimeClasspath = output + compileClasspath
+        }
+    }
+
+    task integrationTests(type: Test) {
         outputs.upToDateWhen { false }
-        include '**/*IntegrationTest.class'
+        testClassesDir = sourceSets.integrationTest.output.classesDir
+        classpath = sourceSets.integrationTest.runtimeClasspath
         reports.html.destination = file("$reports.html.destination/integration")
         reports.junitXml.destination = file("$reports.junitXml.destination/integration")
     }
