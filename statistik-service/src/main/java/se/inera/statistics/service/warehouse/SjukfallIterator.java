@@ -48,7 +48,7 @@ public class SjukfallIterator implements Iterator<SjukfallGroup> {
     private final Predicate<Fact> filter;
     private final Map<Integer, PersonifiedSjukfall> active = new HashMap<>();
     private Fact pendingLine;
-    private List<Fact> aisle;
+    private final List<Fact> aisle = new ArrayList<>();
     private boolean useOriginalSjukfallStart = false;
 
     public SjukfallIterator(LocalDate from, int periods, int periodSize, Aisle aisle, Predicate<Fact> filter, boolean useOriginalSjukfallStart) {
@@ -56,7 +56,8 @@ public class SjukfallIterator implements Iterator<SjukfallGroup> {
         this.periods = periods;
         this.periodSize = periodSize;
         this.filter = filter;
-        this.aisle = aisle.getLines();
+        this.aisle.addAll(aisle.getLines());
+        Collections.sort(this.aisle, Fact.TIME_ORDER);
         this.useOriginalSjukfallStart = useOriginalSjukfallStart;
     }
 
@@ -65,7 +66,8 @@ public class SjukfallIterator implements Iterator<SjukfallGroup> {
         this.periods = periods;
         this.periodSize = periodSize;
         this.filter = filter;
-        this.aisle = aisle;
+        this.aisle.addAll(aisle);
+        Collections.sort(this.aisle, Fact.TIME_ORDER);
         this.period = period;
     }
 
