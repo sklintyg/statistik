@@ -41,7 +41,7 @@ public class SjukfallIterator implements Iterator<SjukfallGroup> {
         this.from = from;
         this.periods = periods;
         this.periodSize = periodSize;
-        sjukfallCalculator = new SjukfallCalculator(from, periodSize, aisle.getLines(), filter, useOriginalSjukfallStart);
+        sjukfallCalculator = new SjukfallCalculator(aisle.getLines(), filter, useOriginalSjukfallStart);
     }
 
     @Override
@@ -51,9 +51,11 @@ public class SjukfallIterator implements Iterator<SjukfallGroup> {
 
     @Override
     public SjukfallGroup next() {
-        List<PersonifiedSjukfall> result = sjukfallCalculator.getSjukfalls(period);
+        final LocalDate toDate = from.plusMonths((period + 1) * periodSize);
+        final LocalDate fromDate = from.plusMonths(period * periodSize);
+        List<PersonifiedSjukfall> result = sjukfallCalculator.getSjukfalls(toDate, fromDate);
 
-        Range range = new Range(from.plusMonths(period * periodSize), from.plusMonths(period * periodSize + periodSize - 1));
+        Range range = new Range(fromDate, from.plusMonths(period * periodSize + periodSize - 1));
         SjukfallGroup sjukfallGroup = new SjukfallGroup(range, Lists.transform(result, new Function<PersonifiedSjukfall, Sjukfall>() {
             @Override
             public Sjukfall apply(PersonifiedSjukfall sjukfallExtended) {
