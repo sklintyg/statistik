@@ -18,7 +18,7 @@ Testar om sjukfall som återkommer till enhet bara räknas som ett fall och att 
 | Enbart foljande intyg finns |
 | personnr | diagnoskod | start | slut | enhet | kommentar |
 | 19790407-1285 | G01 | 2014-02-01 | 2014-03-15 | enhet1 | |
-| 19790407-1285 | G01 | 2014-03-16 | 2014-04-15 | enhet2 | |
+| 19790407-1285 | G01 | 2014-03-16 | 2014-04-11 | enhet2 | |
 | 19790407-1285 | G01 | 2014-04-16 | 2014-05-02 | enhet1 | |
 
 
