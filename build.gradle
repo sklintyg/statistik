@@ -101,6 +101,22 @@ configure(subprojects.findAll { ['hsa-integration', 'statistik-service', 'statis
 if (project.hasProperty('runSonar')) {
     apply plugin: 'sonar-runner'
 
+    tasks.sonarRunner {
+        doFirst {
+            def statistikSonarSources = []
+            rootProject.subProjects.each { project ->
+                statistikSonarSources += project.sourceSets.main.java.srcDirs.findAll {
+                    !it.path.contains('generatedSource')
+                }
+            }
+            sonarRunner {
+                sonarProperties {
+                    property "sonar.sources", statistikSonarSources
+                }
+            }
+        }
+    }
+
     sonarRunner {
         sonarProperties {
             property "sonar.host.url", "https://callistasoftware.sonar.cloudbees.com"
