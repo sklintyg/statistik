@@ -28,6 +28,7 @@ import static org.mockito.Mockito.when;
 
 import java.util.Collections;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -103,6 +104,7 @@ public class LogConsumerImplTest {
         verify(processLog).getPending(100);
     }
 
+    @Ignore
     @Test
     public void deleteEventsAreSkipped() {
         IntygEvent event = new IntygEvent(EventType.REVOKED, "{}", "correlationId", 1);
