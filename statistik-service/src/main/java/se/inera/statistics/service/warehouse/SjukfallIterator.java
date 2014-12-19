@@ -18,13 +18,11 @@
  */
 package se.inera.statistics.service.warehouse;
 
-import com.google.common.base.Function;
 import com.google.common.base.Predicate;
-import com.google.common.collect.Lists;
 import org.joda.time.LocalDate;
 
+import java.util.Collection;
 import java.util.Iterator;
-import java.util.List;
 
 import se.inera.statistics.service.report.model.Range;
 
@@ -53,15 +51,10 @@ public class SjukfallIterator implements Iterator<SjukfallGroup> {
     public SjukfallGroup next() {
         final LocalDate fromDate = from.plusMonths(period * periodSize);
         final LocalDate toDate = from.plusMonths((period + 1) * periodSize);
-        List<PersonifiedSjukfall> result = sjukfallCalculator.getSjukfalls(fromDate, toDate);
+        Collection<Sjukfall> result = sjukfallCalculator.getSjukfalls(fromDate, toDate);
 
         Range range = new Range(fromDate, from.plusMonths(period * periodSize + periodSize - 1));
-        SjukfallGroup sjukfallGroup = new SjukfallGroup(range, Lists.transform(result, new Function<PersonifiedSjukfall, Sjukfall>() {
-            @Override
-            public Sjukfall apply(PersonifiedSjukfall sjukfallExtended) {
-                return sjukfallExtended.getSjukfall();
-            }
-        }));
+        SjukfallGroup sjukfallGroup = new SjukfallGroup(range, result);
         period++;
         return sjukfallGroup;
     }
