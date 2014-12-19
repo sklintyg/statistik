@@ -28,6 +28,7 @@ Arbetsförmåga för intyg: 0
 
 Övrigt:
 Möjliga värden för kön på läkare: MALE, FEMALE, UNKNOWN
+Möjliga värden på intygstyp: REVOKED, CREATED
 
 !*> '''Variables Defined'''
 !define TEST_SYSTEM {slim}
