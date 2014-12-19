@@ -66,8 +66,8 @@ class ReportsUtil {
         return post("/api/verksamhet/" + getVardgivareForUser(user) + "/getLongSickLeavesData")
     }
 
-    def getReportSjukfallPerEnhet(String user) {
-        return post("/api/verksamhet/" + getVardgivareForUser(user) + "/getNumberOfCasesPerEnhet")
+    def getReportSjukfallPerEnhet(String user, kapitel=null, avsnitt=null, kategorier=null, enheter=null) {
+        return post("/api/verksamhet/" + getVardgivareForUser(user) + "/getNumberOfCasesPerEnhet", kapitel, avsnitt, kategorier, enheter)
     }
 
     def getReportEnskiltDiagnoskapitel(String kapitel) {
@@ -80,8 +80,8 @@ class ReportsUtil {
         return response.data;
     }
 
-    private def post(String url) {
-        def json = new JsonBuilder(new ReportRequestFilter())
+    private def post(String url, kapitelIds=null, avsnittIds=null, kategoriIds=null, enhetsIds=null) {
+        def json = new JsonBuilder(new ReportRequestFilter(kapitelIds, avsnittIds, kategoriIds, enhetsIds))
         def response = statistik.post(path: url, body: json.toString(), requestContentType: JSON)
         assert response.status == 200
         return response.data;

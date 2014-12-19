@@ -104,6 +104,8 @@ if (project.hasProperty('runSonar')) {
     sonarRunner {
         sonarProperties {
             property "sonar.host.url", "https://callistasoftware.sonar.cloudbees.com"
+            property "sonar.login", "cloudbees"
+            property "sonar.password", project.sonarPassword
             property "sonar.jdbc.url", project.sonarJdbcUrl
             property "sonar.jdbc.driverClassName", "com.mysql.jdbc.Driver"
             property "sonar.jdbc.username", project.sonarUser

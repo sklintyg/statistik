@@ -636,19 +636,19 @@ public class ProtectedChartDataService {
         return new Predicate<Fact>() {
             @Override
             public boolean apply(Fact fact) {
-                if (kapitelIDs == null && avsnittIDs == null && kategoriIDs == null) {
+                if ((kapitelIDs == null || kapitelIDs.isEmpty()) && (avsnittIDs == null || avsnittIDs.isEmpty()) && (kategoriIDs == null || kategoriIDs.isEmpty())) {
                     return true;
                 }
                 String diagnosKapitelString = String.valueOf(fact.getDiagnoskapitel());
-                if (kapitelIDs != null && kapitelIDs.contains(diagnosKapitelString)) {
+                if (kapitelIDs != null && !kapitelIDs.isEmpty() && kapitelIDs.contains(diagnosKapitelString)) {
                     return true;
                 }
                 String diagnosAvsnittString = String.valueOf(fact.getDiagnosavsnitt());
-                if (avsnittIDs != null && avsnittIDs.contains(diagnosAvsnittString)) {
+                if (avsnittIDs != null && !avsnittIDs.isEmpty() && avsnittIDs.contains(diagnosAvsnittString)) {
                     return true;
                 }
                 String diagnosKategoriString = String.valueOf(fact.getDiagnoskategori());
-                if (kategoriIDs != null && kategoriIDs.contains(diagnosKategoriString)) {
+                if (kategoriIDs != null && !kategoriIDs.isEmpty() && kategoriIDs.contains(diagnosKategoriString)) {
                     return true;
                 }
                 return false;
@@ -669,7 +669,7 @@ public class ProtectedChartDataService {
         Map<String, String> enheter = new HashMap<>();
         for (Verksamhet userVerksamhet : info.getBusinesses()) {
             if (userVerksamhet.getVardgivarId().equals(verksamhet.getVardgivarId())) {
-                if (enhetsIDs == null || enhetsIDs.contains(userVerksamhet.getId())) {
+                if (enhetsIDs == null || enhetsIDs.isEmpty() || enhetsIDs.contains(userVerksamhet.getId())) {
                     enheter.put(userVerksamhet.getId(), userVerksamhet.getName());
                 }
             }
