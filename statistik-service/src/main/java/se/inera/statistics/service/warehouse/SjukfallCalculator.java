@@ -69,7 +69,9 @@ public class SjukfallCalculator {
             if (line.getStartdatum() >= cutoff) {
                 break;
             }
-            process(line, sjukfalls, active);
+            if (filter.apply(line)) {
+                process(line, sjukfalls, active);
+            }
         }
         List<PersonifiedSjukfall> result = new ArrayList<>();
         int firstday = WidelineConverter.toDay(from);
@@ -204,10 +206,6 @@ public class SjukfallCalculator {
     }
 
     private void process(Fact line, Collection<PersonifiedSjukfall> sjukfalls, Map<Integer, PersonifiedSjukfall> active) {
-        if (!filter.apply(line)) {
-            return;
-        }
-
         int key = line.getPatient();
         PersonifiedSjukfall sjukfall = active.get(key);
 
