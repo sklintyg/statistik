@@ -22,6 +22,7 @@ import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Collections2;
+import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Multimap;
 import org.joda.time.LocalDate;
@@ -49,43 +50,48 @@ public class SjukfallCalculator {
         this.useOriginalSjukfallStart = useOriginalSjukfallStart;
     }
 
-    private void extendSjukfallConnectedByIntygOnOtherEnhets(List<PersonifiedSjukfall> sjukfallForAvailableEnhets, LocalDate from, LocalDate to) {
+    private void extendSjukfallConnectedByIntygOnOtherEnhets(List<PersonifiedSjukfall> sjukfallForAvailableEnhets, LocalDate from) {
         Multimap<Integer, Sjukfall> sjukfallsWithSamePatient = findSjukfallWithSamePatient(sjukfallForAvailableEnhets, useOriginalSjukfallStart);
         for (int patient : sjukfallsWithSamePatient.keySet()) {
-            connectIfPossible(patient, sjukfallsWithSamePatient.get(patient), sjukfallForAvailableEnhets, from, to);
+            connectIfPossible(patient, sjukfallsWithSamePatient.get(patient), sjukfallForAvailableEnhets, from);
         }
     }
 
     List<PersonifiedSjukfall> getSjukfalls(LocalDate from, LocalDate to) {
-        List<PersonifiedSjukfall> result = getSjukfallForAvailableEnhets(from, to);
-        extendSjukfallConnectedByIntygOnOtherEnhets(result, from, to);
+        final Iterable<Fact> filteredFacts = getFilteredFactsToDate(filter, to);
+        List<PersonifiedSjukfall> result = getSjukfallForFacts(from, filteredFacts);
+        extendSjukfallConnectedByIntygOnOtherEnhets(result, from);
         return result;
     }
 
-    private List<PersonifiedSjukfall> getSjukfallForAvailableEnhets(LocalDate from, LocalDate to) {
-        final Map<Integer, Stack<Sjukfall>> active = new HashMap<>();
-        int cutoff = WidelineConverter.toDay(to);
-        for (Fact line : aisle) {
-            if (line.getStartdatum() >= cutoff) {
-                break;
+    private Iterable<Fact> getFilteredFactsToDate(final Predicate<Fact> filter, LocalDate to) {
+        final int cutoff = WidelineConverter.toDay(to);
+        return Iterables.filter(aisle, new Predicate<Fact>() {
+            @Override
+            public boolean apply(Fact fact) {
+                return fact.getStartdatum() < cutoff && filter.apply(fact);
             }
-            if (filter.apply(line)) {
-                int key = line.getPatient();
-                Stack<Sjukfall> sjukfallsForPatient = active.get(key);
+        });
+    }
 
-                if (sjukfallsForPatient == null) {
-                    final Stack<Sjukfall> sjukfalls = new Stack<>();
-                    Sjukfall sjukfall = new Sjukfall(line);
-                    sjukfalls.add(sjukfall);
-                    active.put(key, sjukfalls);
-                } else {
-                    final Sjukfall sjukfall = sjukfallsForPatient.pop();
-                    Sjukfall nextSjukfall = sjukfall.join(line);
-                    if (!nextSjukfall.isExtended()) {
-                        sjukfallsForPatient.push(sjukfall);
-                    }
-                    sjukfallsForPatient.push(nextSjukfall);
+    private List<PersonifiedSjukfall> getSjukfallForFacts(LocalDate from, Iterable<Fact> facts) {
+        final Map<Integer, Stack<Sjukfall>> active = new HashMap<>();
+        for (Fact line : facts) {
+            int key = line.getPatient();
+            Stack<Sjukfall> sjukfallsForPatient = active.get(key);
+
+            if (sjukfallsForPatient == null) {
+                final Stack<Sjukfall> sjukfalls = new Stack<>();
+                Sjukfall sjukfall = new Sjukfall(line);
+                sjukfalls.add(sjukfall);
+                active.put(key, sjukfalls);
+            } else {
+                final Sjukfall sjukfall = sjukfallsForPatient.pop();
+                Sjukfall nextSjukfall = sjukfall.join(line);
+                if (!nextSjukfall.isExtended()) {
+                    sjukfallsForPatient.push(sjukfall);
                 }
+                sjukfallsForPatient.push(nextSjukfall);
             }
         }
         final int firstday = WidelineConverter.toDay(from);
@@ -100,9 +106,9 @@ public class SjukfallCalculator {
         return result;
     }
 
-    private void connectIfPossible(int patient, Collection<Sjukfall> sjukfallsForPatientOnAvailableEnhets, List<PersonifiedSjukfall> sjukfallsForAvailableEnhets, LocalDate from, LocalDate to) {
+    private void connectIfPossible(int patient, Collection<Sjukfall> sjukfallsForPatientOnAvailableEnhets, List<PersonifiedSjukfall> sjukfallsForAvailableEnhets, LocalDate from) {
         List<Fact> allIntygForPatient = getAllIntygForPatientInAisle(patient);
-        List<Sjukfall> sjukfallFromAllIntygForPatient = calculateSjukfallForIntyg(allIntygForPatient, from, to);
+        List<Sjukfall> sjukfallFromAllIntygForPatient = calculateSjukfallForIntyg(allIntygForPatient, from);
         for (Sjukfall sjukfall : sjukfallFromAllIntygForPatient) {
             List<Sjukfall> mergableSjukfalls = filterSjukfallInPeriod(sjukfall.getStart(), sjukfall.getEnd(), sjukfallsForPatientOnAvailableEnhets);
             Sjukfall mergedSjukfall = mergeAllSjukfallInList(mergableSjukfalls);
@@ -171,14 +177,8 @@ public class SjukfallCalculator {
         return new ArrayList<>(filteredSjukfalls);
     }
 
-    private List<Sjukfall> calculateSjukfallForIntyg(List<Fact> intygs, LocalDate from, LocalDate to) {
-        final SjukfallCalculator sjukfallCalculator = new SjukfallCalculator(intygs, new Predicate<Fact>() {
-            @Override
-            public boolean apply(Fact fact) {
-                return true;
-            }
-        }, useOriginalSjukfallStart);
-        final List<PersonifiedSjukfall> sjukfalls = sjukfallCalculator.getSjukfallForAvailableEnhets(from, to);
+    private List<Sjukfall> calculateSjukfallForIntyg(List<Fact> intygs, LocalDate from) {
+        final List<PersonifiedSjukfall> sjukfalls = getSjukfallForFacts(from, intygs);
         return Lists.transform(sjukfalls, new Function<PersonifiedSjukfall, Sjukfall>() {
             @Override
             public Sjukfall apply(PersonifiedSjukfall personifiedSjukfall) {
@@ -214,22 +214,6 @@ public class SjukfallCalculator {
             }
         }
         return patientsWithMoreThanOneSjukfall;
-    }
-
-    private void process(Fact line, Collection<PersonifiedSjukfall> sjukfalls, Map<Integer, PersonifiedSjukfall> active) {
-        int key = line.getPatient();
-        PersonifiedSjukfall sjukfall = active.get(key);
-
-        if (sjukfall == null) {
-            sjukfall = new PersonifiedSjukfall(line);
-            active.put(key, sjukfall);
-        } else {
-            Sjukfall nextSjukfall = sjukfall.getSjukfall().join(line);
-            active.put(key, new PersonifiedSjukfall(nextSjukfall, key));
-            if (!nextSjukfall.isExtended()) {
-                sjukfalls.add(sjukfall);
-            }
-        }
     }
 
 }
