@@ -110,6 +110,7 @@ if (project.hasProperty('runSonar')) {
             property "sonar.jdbc.driverClassName", "com.mysql.jdbc.Driver"
             property "sonar.jdbc.username", project.sonarUser
             property "sonar.jdbc.password", project.sonarPassword
+            property "sonar.sources", sourceSets.main.java.srcDirs.findAll { !it.path.contains('generatedSource') }
         }
     }
 }
