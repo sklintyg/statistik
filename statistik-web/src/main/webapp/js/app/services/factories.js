@@ -1,8 +1,6 @@
 'use strict';
 
 angular.module('StatisticsApp').factory('statisticsData', function ($http) {
-    var urlLengthLimit = 10000;
-
     var factory = {};
 
     var makeRequestNational = function (restFunctionName, successCallback, failureCallback) {
@@ -18,56 +16,23 @@ angular.module('StatisticsApp').factory('statisticsData', function ($http) {
     };
 
     var makeRequestVerksamhet = function (restFunctionName, verksamhetId, enhetsIds, diagnosIds, successCallback, failureCallback) {
-        var paramString = getEnhetsIdString(enhetsIds)
-        paramString = getDiagnosIdString(paramString, diagnosIds)
-        if (paramString.length > urlLengthLimit) {
-            alert("Det filter du har valt innehåller för många enheter eller diagnoser. Förenkla filtret.");
-        } else {
-            $http.get("api/verksamhet/" + verksamhetId + "/" + restFunctionName + paramString).success(function (result) {
-                try {
-                    successCallback(result);
-                } catch (e) {
-                    failureCallback();
-                }
-            }).error(function (data, status, headers, config) {
-                if (status == 403) {
-                    window.location.replace("#/login");
-                }
+        var param = getParamsAsJson(enhetsIds, diagnosIds);
+        $http.post("api/verksamhet/" + verksamhetId + "/" + restFunctionName, param).success(function (result) {
+            try {
+                successCallback(result);
+            } catch (e) {
                 failureCallback();
-            });
-        }
+            }
+        }).error(function (data, status, headers, config) {
+            if (status == 403) {
+                window.location.replace("#/login");
+            }
+            failureCallback();
+        });
     };
 
-    var getEnhetsIdString = function (params) {
-        var returnString = "";
-        if (params) {
-            returnString += "?ids=";
-            returnString += params.join();
-        }
-        return returnString;
-    };
-
-    var getDiagnosIdString = function (enhetsIdString, params) {
-        var returnString = enhetsIdString;
-        if (params) {
-            if (params.kapitel.length > 0) {
-                returnString += getParamDelimiter(returnString) + "kapitel=";
-                returnString += params.kapitel.join();
-            }
-            if (params.avsnitt.length > 0) {
-                returnString += getParamDelimiter(returnString) + "avsnitt=";
-                returnString += params.avsnitt.join();
-            }
-            if (params.kategorier.length > 0) {
-                returnString += getParamDelimiter(returnString) + "kategorier=";
-                returnString += params.kategorier.join();
-            }
-        }
-        return returnString;
-    };
-
-    var getParamDelimiter = function (currentString) {
-        return currentString.length == 0 ? "?" : "&";
+    var getParamsAsJson = function (enhetsIds, diagnosIds) {
+        return {"enhets": enhetsIds, "kapitels": diagnosIds.kapitel, "avsnitts": diagnosIds.avsnitt, "kategoris": diagnosIds.kategorier};
     };
 
     factory.getOverview = function (successCallback, failureCallback) {

@@ -1,12 +1,14 @@
 package se.inera.statistics.web.reports
 
 import groovy.json.JsonBuilder
-import groovyx.net.http.ContentType
 import groovyx.net.http.RESTClient
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
+import se.inera.statistics.web.service.ReportRequestFilter
 import se.inera.testsupport.Intyg
 import se.inera.testsupport.Personal
+
+import static groovyx.net.http.ContentType.JSON
 
 class ReportsUtil {
 
@@ -14,7 +16,7 @@ class ReportsUtil {
     public static final VARDGIVARE = "vg1"
     public static final VARDGIVARE3 = "vg3"
 
-    def statistik = new RESTClient('http://localhost:8080/', ContentType.JSON)
+    def statistik = new RESTClient('http://localhost:8080/', JSON)
 
     long getCurrentDateTime() {
         return get('/api/testsupport/now')
@@ -57,15 +59,15 @@ class ReportsUtil {
     }
 
     def getReportAntalIntygInloggad(String user) {
-        return get("/api/verksamhet/" + getVardgivareForUser(user) + "/getNumberOfCasesPerMonth")
+        return post("/api/verksamhet/" + getVardgivareForUser(user) + "/getNumberOfCasesPerMonth")
     }
 
     def getReportLangaSjukfallInloggad(String user) {
-        return get("/api/verksamhet/" + getVardgivareForUser(user) + "/getLongSickLeavesData")
+        return post("/api/verksamhet/" + getVardgivareForUser(user) + "/getLongSickLeavesData")
     }
 
     def getReportSjukfallPerEnhet(String user) {
-        return get("/api/verksamhet/" + getVardgivareForUser(user) + "/getNumberOfCasesPerEnhet")
+        return post("/api/verksamhet/" + getVardgivareForUser(user) + "/getNumberOfCasesPerEnhet")
     }
 
     def getReportEnskiltDiagnoskapitel(String kapitel) {
@@ -78,12 +80,19 @@ class ReportsUtil {
         return response.data;
     }
 
+    private def post(String url) {
+        def json = new JsonBuilder(new ReportRequestFilter())
+        def response = statistik.post(path: url, body: json.toString(), requestContentType: JSON)
+        assert response.status == 200
+        return response.data;
+    }
+
     def getReportEnskiltDiagnoskapitelInloggad(String kapitel, String user) {
-        return get("/api/verksamhet/" + getVardgivareForUser(user) + "/getDiagnosavsnittstatistik/" + kapitel)
+        return post("/api/verksamhet/" + getVardgivareForUser(user) + "/getDiagnosavsnittstatistik/" + kapitel)
     }
 
     def getReportDiagnosgruppInloggad(String user) {
-        return get("/api/verksamhet/" + getVardgivareForUser(user) + "/getDiagnoskapitelstatistik")
+        return post("/api/verksamhet/" + getVardgivareForUser(user) + "/getDiagnoskapitelstatistik")
     }
 
     def getReportDiagnosgrupp() {
@@ -154,7 +163,7 @@ class ReportsUtil {
     }
 
     def getReportAldersgruppInloggad(String user) {
-        return get("/api/verksamhet/" + getVardgivareForUser(user) + "/getAgeGroupsStatistics")
+        return post("/api/verksamhet/" + getVardgivareForUser(user) + "/getAgeGroupsStatistics")
     }
 
     def getReportSjukskrivningslangd() {
@@ -162,19 +171,19 @@ class ReportsUtil {
     }
 
     def getReportSjukskrivningslangdInloggad(String user) {
-        return get("/api/verksamhet/" + getVardgivareForUser(user) + "/getSickLeaveLengthData")
+        return post("/api/verksamhet/" + getVardgivareForUser(user) + "/getSickLeaveLengthData")
     }
 
     def getReportAldersgruppPagaendeInloggad(String user) {
-        return get("/api/verksamhet/" + getVardgivareForUser(user) + "/getAgeGroupsCurrentStatistics")
+        return post("/api/verksamhet/" + getVardgivareForUser(user) + "/getAgeGroupsCurrentStatistics")
     }
 
     def getReportSjukskrivningslangdPagaendeInloggad(String user) {
-        return get("/api/verksamhet/" + getVardgivareForUser(user) + "/getSickLeaveLengthCurrentData")
+        return post("/api/verksamhet/" + getVardgivareForUser(user) + "/getSickLeaveLengthCurrentData")
     }
 
     def getReportSjukskrivningsgradInloggad(String user) {
-        return get("/api/verksamhet/" + getVardgivareForUser(user) + "/getDegreeOfSickLeaveStatistics")
+        return post("/api/verksamhet/" + getVardgivareForUser(user) + "/getDegreeOfSickLeaveStatistics")
     }
 
     def getReportSjukskrivningsgrad() {
@@ -182,15 +191,15 @@ class ReportsUtil {
     }
 
     def getReportLakareAlderOchKonInloggad(String user) {
-        return get("/api/verksamhet/" + getVardgivareForUser(user) + "/getCasesPerDoctorAgeAndGenderStatistics")
+        return post("/api/verksamhet/" + getVardgivareForUser(user) + "/getCasesPerDoctorAgeAndGenderStatistics")
     }
 
     def getReportLakarBefattningInloggad(String user) {
-        return get("/api/verksamhet/" + getVardgivareForUser(user) + "/getNumberOfCasesPerLakarbefattning")
+        return post("/api/verksamhet/" + getVardgivareForUser(user) + "/getNumberOfCasesPerLakarbefattning")
     }
 
     def getReportSjukfallPerLakareInloggad(String user) {
-        return get("/api/verksamhet/" + getVardgivareForUser(user) + "/getNumberOfCasesPerLakare")
+        return post("/api/verksamhet/" + getVardgivareForUser(user) + "/getNumberOfCasesPerLakare")
     }
 
     def getReportCasesPerSex() {

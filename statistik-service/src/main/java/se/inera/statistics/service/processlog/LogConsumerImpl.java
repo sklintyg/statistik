@@ -55,11 +55,6 @@ public class LogConsumerImpl implements LogConsumer {
                 return 0;
             }
             for (IntygEvent event: result) {
-                if (event.getType() == EventType.REVOKED) {
-                    LOG.info("Event was delete event, skipping: " + event.getId());
-                    processed++;
-                    continue;
-                }
                 JsonNode intyg = JSONParser.parse(event.getData());
                 JsonNode hsaInfo = hsa.decorate(intyg, event.getCorrelationId());
                 if (hsaInfo != null) {
