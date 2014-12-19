@@ -37,46 +37,44 @@ import java.util.Set;
 
 public class SjukfallCalculator {
 
-    private final LocalDate from;
-    private final int periodSize;
     private final Predicate<Fact> filter;
-    private final Map<Integer, PersonifiedSjukfall> active = new HashMap<>();
     private final List<Fact> aisle = new ArrayList<>();
     private boolean useOriginalSjukfallStart = false;
 
-    public SjukfallCalculator(LocalDate from, int periodSize, List<Fact> aisle, Predicate<Fact> filter, boolean useOriginalSjukfallStart) {
-        this.from = from;
-        this.periodSize = periodSize;
+    public SjukfallCalculator(List<Fact> aisle, Predicate<Fact> filter, boolean useOriginalSjukfallStart) {
         this.filter = filter;
         this.aisle.addAll(aisle);
         Collections.sort(this.aisle, Fact.TIME_ORDER);
         this.useOriginalSjukfallStart = useOriginalSjukfallStart;
     }
 
-    private void extendSjukfallConnectedByIntygOnOtherEnhets(List<PersonifiedSjukfall> sjukfallForAvailableEnhets, boolean useOriginalSjukfallStart, int period) {
+    private void extendSjukfallConnectedByIntygOnOtherEnhets(List<PersonifiedSjukfall> sjukfallForAvailableEnhets, boolean useOriginalSjukfallStart, LocalDate from, LocalDate to) {
         Multimap<Integer, Sjukfall> sjukfallsWithSamePatient = findSjukfallWithSamePatient(sjukfallForAvailableEnhets, useOriginalSjukfallStart);
         for (int patient : sjukfallsWithSamePatient.keySet()) {
-            connectIfPossible(patient, sjukfallsWithSamePatient.get(patient), sjukfallForAvailableEnhets, useOriginalSjukfallStart, period);
+            connectIfPossible(patient, sjukfallsWithSamePatient.get(patient), sjukfallForAvailableEnhets, useOriginalSjukfallStart, from, to);
         }
     }
 
-    List<PersonifiedSjukfall> getSjukfalls(int period) {
-        List<PersonifiedSjukfall> result = getSjukfallForAvailableEnhets(period);
-        extendSjukfallConnectedByIntygOnOtherEnhets(result, useOriginalSjukfallStart, period);
+    List<PersonifiedSjukfall> getSjukfalls(LocalDate from, LocalDate to) {
+        List<PersonifiedSjukfall> result = getSjukfallForAvailableEnhets(from, to);
+        extendSjukfallConnectedByIntygOnOtherEnhets(result, useOriginalSjukfallStart, from, to);
         return result;
     }
 
-    private List<PersonifiedSjukfall> getSjukfallForAvailableEnhets(int period) {
+    private List<PersonifiedSjukfall> getSjukfallForAvailableEnhets(LocalDate from, LocalDate to) {
+        final Map<Integer, PersonifiedSjukfall> active = new HashMap<>();
         final Collection<PersonifiedSjukfall> sjukfalls = new ArrayList<>();
-        int cutoff = WidelineConverter.toDay(from.plusMonths((period + 1) * periodSize));
+        int cutoff = WidelineConverter.toDay(to);
         for (Fact line : aisle) {
             if (line.getStartdatum() >= cutoff) {
                 break;
             }
-            process(line, sjukfalls);
+            if (filter.apply(line)) {
+                process(line, sjukfalls, active);
+            }
         }
         List<PersonifiedSjukfall> result = new ArrayList<>();
-        int firstday = WidelineConverter.toDay(from.plusMonths(period * periodSize));
+        int firstday = WidelineConverter.toDay(from);
         for (PersonifiedSjukfall sjukfall : sjukfalls) {
             if (sjukfall.getSjukfall().getEnd() >= firstday) {
                 result.add(sjukfall);
@@ -91,9 +89,9 @@ public class SjukfallCalculator {
         return result;
     }
 
-    private void connectIfPossible(int patient, Collection<Sjukfall> sjukfallsForPatientOnAvailableEnhets, List<PersonifiedSjukfall> sjukfallsForAvailableEnhets, boolean useOriginalSjukfallStart, int period) {
+    private void connectIfPossible(int patient, Collection<Sjukfall> sjukfallsForPatientOnAvailableEnhets, List<PersonifiedSjukfall> sjukfallsForAvailableEnhets, boolean useOriginalSjukfallStart, LocalDate from, LocalDate to) {
         List<Fact> allIntygForPatient = getAllIntygForPatientInAisle(patient);
-        List<Sjukfall> sjukfallFromAllIntygForPatient = calculateSjukfallForIntyg(allIntygForPatient, period);
+        List<Sjukfall> sjukfallFromAllIntygForPatient = calculateSjukfallForIntyg(allIntygForPatient, from, to);
         for (Sjukfall sjukfall : sjukfallFromAllIntygForPatient) {
             List<Sjukfall> mergableSjukfalls = filterSjukfallInPeriod(sjukfall.getStart(), sjukfall.getEnd(), sjukfallsForPatientOnAvailableEnhets);
             Sjukfall mergedSjukfall = mergeAllSjukfallInList(mergableSjukfalls);
@@ -162,14 +160,14 @@ public class SjukfallCalculator {
         return new ArrayList<>(filteredSjukfalls);
     }
 
-    private List<Sjukfall> calculateSjukfallForIntyg(List<Fact> intygs, int period) {
-        final SjukfallCalculator sjukfallCalculator = new SjukfallCalculator(from, periodSize, intygs, new Predicate<Fact>() {
+    private List<Sjukfall> calculateSjukfallForIntyg(List<Fact> intygs, LocalDate from, LocalDate to) {
+        final SjukfallCalculator sjukfallCalculator = new SjukfallCalculator(intygs, new Predicate<Fact>() {
             @Override
             public boolean apply(Fact fact) {
                 return true;
             }
         }, useOriginalSjukfallStart);
-        final List<PersonifiedSjukfall> sjukfalls = sjukfallCalculator.getSjukfallForAvailableEnhets(period);
+        final List<PersonifiedSjukfall> sjukfalls = sjukfallCalculator.getSjukfallForAvailableEnhets(from, to);
         return Lists.transform(sjukfalls, new Function<PersonifiedSjukfall, Sjukfall>() {
             @Override
             public Sjukfall apply(PersonifiedSjukfall personifiedSjukfall) {
@@ -179,13 +177,13 @@ public class SjukfallCalculator {
     }
 
     private List<Fact> getAllIntygForPatientInAisle(final int patient) {
-        final Collection<Fact> alIntygForPAtientInAisle = Collections2.filter(aisle, new Predicate<Fact>() {
+        final Collection<Fact> allIntygForPatientInAisle = Collections2.filter(aisle, new Predicate<Fact>() {
             @Override
             public boolean apply(Fact fact) {
                 return fact.getPatient() == patient;
             }
         });
-        return new ArrayList<>(alIntygForPAtientInAisle);
+        return new ArrayList<>(allIntygForPatientInAisle);
     }
 
     private Multimap<Integer, Sjukfall> findSjukfallWithSamePatient(List<PersonifiedSjukfall> sjukfalls, boolean includePatientWithSingleSjukfall) {
@@ -207,11 +205,7 @@ public class SjukfallCalculator {
         return patientsWithMoreThanOneSjukfall;
     }
 
-    private void process(Fact line, Collection<PersonifiedSjukfall> sjukfalls) {
-        if (!filter.apply(line)) {
-            return;
-        }
-
+    private void process(Fact line, Collection<PersonifiedSjukfall> sjukfalls, Map<Integer, PersonifiedSjukfall> active) {
         int key = line.getPatient();
         PersonifiedSjukfall sjukfall = active.get(key);
 
