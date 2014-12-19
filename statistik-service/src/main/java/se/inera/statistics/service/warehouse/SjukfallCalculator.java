@@ -75,16 +75,30 @@ public class SjukfallCalculator {
     }
 
     private List<PersonifiedSjukfall> getSjukfallForFacts(LocalDate from, Iterable<Fact> facts) {
-        final Map<Integer, Stack<Sjukfall>> active = new HashMap<>();
+        final Map<Integer, Stack<Sjukfall>> sjukfallsPerPatient = getSjukfallsPerPatient(facts);
+        final int firstday = WidelineConverter.toDay(from);
+        List<PersonifiedSjukfall> result = new ArrayList<>();
+        for (Map.Entry<Integer, Stack<Sjukfall>> integerStackEntry : sjukfallsPerPatient.entrySet()) {
+            for (Sjukfall sjukfall : integerStackEntry.getValue()) {
+                if (sjukfall.getEnd() >= firstday) {
+                    result.add(new PersonifiedSjukfall(sjukfall, integerStackEntry.getKey()));
+                }
+            }
+        }
+        return result;
+    }
+
+    private Map<Integer, Stack<Sjukfall>> getSjukfallsPerPatient(Iterable<Fact> facts) {
+        final Map<Integer, Stack<Sjukfall>> sjukfallsPerPatient = new HashMap<>();
         for (Fact line : facts) {
             int key = line.getPatient();
-            Stack<Sjukfall> sjukfallsForPatient = active.get(key);
+            Stack<Sjukfall> sjukfallsForPatient = sjukfallsPerPatient.get(key);
 
             if (sjukfallsForPatient == null) {
                 final Stack<Sjukfall> sjukfalls = new Stack<>();
                 Sjukfall sjukfall = new Sjukfall(line);
                 sjukfalls.add(sjukfall);
-                active.put(key, sjukfalls);
+                sjukfallsPerPatient.put(key, sjukfalls);
             } else {
                 final Sjukfall sjukfall = sjukfallsForPatient.pop();
                 Sjukfall nextSjukfall = sjukfall.join(line);
@@ -94,16 +108,7 @@ public class SjukfallCalculator {
                 sjukfallsForPatient.push(nextSjukfall);
             }
         }
-        final int firstday = WidelineConverter.toDay(from);
-        List<PersonifiedSjukfall> result = new ArrayList<>();
-        for (Map.Entry<Integer, Stack<Sjukfall>> integerStackEntry : active.entrySet()) {
-            for (Sjukfall sjukfall : integerStackEntry.getValue()) {
-                if (sjukfall.getEnd() >= firstday) {
-                    result.add(new PersonifiedSjukfall(sjukfall, integerStackEntry.getKey()));
-                }
-            }
-        }
-        return result;
+        return sjukfallsPerPatient;
     }
 
     private void connectIfPossible(int patient, Collection<Sjukfall> sjukfallsForPatientOnAvailableEnhets, List<PersonifiedSjukfall> sjukfallsForAvailableEnhets, LocalDate from) {
