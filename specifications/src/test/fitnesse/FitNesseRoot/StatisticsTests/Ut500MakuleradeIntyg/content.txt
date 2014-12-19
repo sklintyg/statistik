@@ -1,0 +1,20 @@
+!contents -R2 -g -p -f -h
+
+!3 Givet att:
+| script | dagens datum | 2013-11-06 |
+
+| script | troskel varde | 1 |
+
+| Enbart foljande intyg finns |
+| personnr      | intygstyp | exaktintygid| diagnoskod | start      | slut       | enhet  |
+| 19790407-1295 | CREATED   |1000         | G01        | 2013-02-01 | 2013-02-10 | enhet1 |
+| 19790407-1295 | CREATED   |1001         | G01        | 2013-02-11 | 2013-02-20 | enhet1 |
+| 19790407-1295 | REVOKED   |1001         | G01        | 2013-02-11 | 2013-02-20 | enhet1 |
+| 19790407-1295 | CREATED   |1002         | G01        | 2013-02-21 | 2013-02-28 | enhet1 |
+
+!3 Då gäller:
+
+| Sjukfall i rapporten sjukfall per enhet |
+| inloggad som | vårdenhet    | vårdgivarnivå  | totalt? | män? | kvinnor? |
+| user1        | Enhet enhet1 | false          | 2       | 2    | 0        |
+

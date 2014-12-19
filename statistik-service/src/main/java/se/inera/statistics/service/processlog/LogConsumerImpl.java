@@ -55,11 +55,12 @@ public class LogConsumerImpl implements LogConsumer {
                 return 0;
             }
             for (IntygEvent event: result) {
+                EventType type = event.getType();
                 JsonNode intyg = JSONParser.parse(event.getData());
                 JsonNode hsaInfo = hsa.decorate(intyg, event.getCorrelationId());
-                if (hsaInfo != null) {
+                if (hsaInfo != null || type.equals(EventType.REVOKED)) {
                     try {
-                        processor.accept(intyg, hsaInfo, event.getId(), event.getCorrelationId(), event.getType());
+                        processor.accept(intyg, hsaInfo, event.getId(), event.getCorrelationId(), type);
                     } catch (Exception e) {
                         LOG.error("Could not process intyg {} ({}). {}", event.getId(), event.getCorrelationId(), e.getMessage());
                     }
