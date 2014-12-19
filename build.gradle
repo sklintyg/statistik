@@ -102,13 +102,6 @@ if (project.hasProperty('runSonar')) {
     apply plugin: 'sonar-runner'
 
     sonarRunner {
-        def statistikSonarSources = []
-        doFirst {
-            rootProject.subProjects.each { project ->
-                statistikSonarSources += project.sourceSets.main.java.srcDirs.findAll { !it.path.contains('generatedSource') }
-            }
-        }
-
         sonarProperties {
             property "sonar.host.url", "https://callistasoftware.sonar.cloudbees.com"
             property "sonar.login", "cloudbees"
@@ -117,7 +110,6 @@ if (project.hasProperty('runSonar')) {
             property "sonar.jdbc.driverClassName", "com.mysql.jdbc.Driver"
             property "sonar.jdbc.username", project.sonarUser
             property "sonar.jdbc.password", project.sonarPassword
-            property "sonar.sources", statistikSonarSources
         }
     }
 }
