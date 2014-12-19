@@ -104,7 +104,7 @@ if (project.hasProperty('runSonar')) {
     tasks.sonarRunner {
         doFirst {
             def statistikSonarSources = []
-            rootProject.subProjects.each { project ->
+            rootProject.subprojects.each { project ->
                 statistikSonarSources += project.sourceSets.main.java.srcDirs.findAll {
                     !it.path.contains('generatedSource')
                 }
