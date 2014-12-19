@@ -10,6 +10,11 @@ abstract class Rapport {
     def kvinnor
     def totalt
     boolean vårdgivarnivå
+    protected kapitel = []
+    protected avsnitt = []
+    protected kategorier = []
+    protected enheter = []
+    protected verksamhetstyper = []
 
     ReportsUtil reportsUtil = new ReportsUtil()
 
@@ -36,12 +41,47 @@ abstract class Rapport {
         this.vårdgivarnivå = vårdgivarnivå
     }
 
+    void setKapitel(String kapitelString) {
+        if (kapitelString != null) {
+            this.kapitel = kapitelString.tokenize(',')*.trim()
+        }
+    }
+
+    void setAvsnitt(String avsnittString) {
+        if (avsnittString != null) {
+            this.avsnitt = avsnittString.tokenize(',')*.trim()
+        }
+    }
+
+    void setKategorier(String kategoriString) {
+        if (kategoriString != null) {
+            this.kategorier = kategoriString.tokenize(',')*.trim()
+        }
+    }
+
+    void setEnheter(String enhetsString) {
+        if (enhetsString != null) {
+            this.enheter = enhetsString.tokenize(',')*.trim()
+        }
+    }
+
+    void setVerksamhetstyper(String verksamhetString) {
+        if (verksamhetString != null) {
+            this.verksamhetstyper = verksamhetString.tokenize(',')*.trim()
+        }
+    }
+
     public void reset() {
         inloggadSom = null
         inloggad = false
         totalt = -1
         män = -1
         kvinnor = -1
+        kapitel = []
+        avsnitt = []
+        kategorier = []
+        enheter = []
+        verksamhetstyper = []
     }
 
     void setKommentar(String kommentar) {
