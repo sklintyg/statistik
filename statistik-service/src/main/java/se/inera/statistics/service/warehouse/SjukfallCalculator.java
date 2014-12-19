@@ -175,13 +175,13 @@ public class SjukfallCalculator {
     }
 
     private List<Fact> getAllIntygForPatientInAisle(final int patient) {
-        final Collection<Fact> alIntygForPAtientInAisle = Collections2.filter(aisle, new Predicate<Fact>() {
+        final Collection<Fact> allIntygForPatientInAisle = Collections2.filter(aisle, new Predicate<Fact>() {
             @Override
             public boolean apply(Fact fact) {
                 return fact.getPatient() == patient;
             }
         });
-        return new ArrayList<>(alIntygForPAtientInAisle);
+        return new ArrayList<>(allIntygForPatientInAisle);
     }
 
     private Multimap<Integer, Sjukfall> findSjukfallWithSamePatient(List<PersonifiedSjukfall> sjukfalls, boolean includePatientWithSingleSjukfall) {
