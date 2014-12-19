@@ -80,8 +80,8 @@ class ReportsUtil {
         return response.data;
     }
 
-    private def post(String url) {
-        def json = new JsonBuilder(new ReportRequestFilter())
+    private def post(String url, kapitelIds=null, avsnittIds=null, kategoriIds=null, enhetsIds=null) {
+        def json = new JsonBuilder(new ReportRequestFilter(kapitelIds, avsnittIds, kategoriIds, enhetsIds))
         def response = statistik.post(path: url, body: json.toString(), requestContentType: JSON)
         assert response.status == 200
         return response.data;
