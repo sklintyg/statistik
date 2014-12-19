@@ -1,6 +1,5 @@
 !contents -R2 -g -p -f -h
 
-
 !3 Givet att:
 | script | dagens datum | 2013-11-06 |
 
@@ -23,3 +22,16 @@
 | user2        | Enhet enhet2 | false         | 1       | 0    | 1        |
 | user2        | Enhet enhet1 | true          | 1       | 1    | 0        |
 | user2        | Enhet enhet2 | true          | 1       | 0    | 1        |
+
+
+!3 Med filter:
+| Sjukfall i rapporten sjukfall per enhet |
+| inloggad som | vårdenhet    | vårdgivarnivå |enheter  | totalt? | män? | kvinnor? |
+| user1        | Enhet enhet1 | false         | enhet1  | 1       | 1    | 0        |
+| user1        | Enhet enhet2 | false         |         | -1      | -1   | -1       |
+| user1        | Enhet enhet1 | true          |         | 1       | 1    | 0        |
+| user1        | Enhet enhet2 | true          |         | 1       | 0    | 1        |
+| user2        | Enhet enhet1 | false         |enhet1,enhet2         | 1       | 1    | 0        |
+| user2        | Enhet enhet2 | false         |         | 1       | 0    | 1        |
+| user2        | Enhet enhet1 | true          |         | 1       | 1    | 0        |
+| user2        | Enhet enhet2 | true          |         | 1       | 0    | 1        |

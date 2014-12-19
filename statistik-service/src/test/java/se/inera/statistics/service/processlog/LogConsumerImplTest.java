@@ -104,16 +104,13 @@ public class LogConsumerImplTest {
         verify(processLog).getPending(100);
     }
 
-    @Ignore
     @Test
-    public void deleteEventsAreSkipped() {
+    public void deleteEventsAreAdded() {
         IntygEvent event = new IntygEvent(EventType.REVOKED, "{}", "correlationId", 1);
         when(processLog.getPending(100)).thenReturn(Collections.singletonList(event));
         int count = consumer.processBatch();
         assertEquals(1, count);
         verify(processLog).getPending(100);
-        verify(processor, Mockito.never()).accept(any(JsonNode.class), any(JsonNode.class), Mockito.anyLong(), anyString(), any(EventType.class));
-        verify(hsa, Mockito.never()).decorate(any(JsonNode.class), anyString());
     }
     // CHECKSTYLE:ON MagicNumber
 }

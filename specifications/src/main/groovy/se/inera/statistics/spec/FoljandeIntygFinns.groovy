@@ -25,6 +25,7 @@ class FoljandeIntygFinns {
     def slut2
     def läkare
     def län
+    def exaktintygid
     String intygstyp
 
     public void setKommentar(String kommentar) {}
@@ -43,6 +44,7 @@ class FoljandeIntygFinns {
         läkare = "Personal HSA-ID"
         län = null
         intygstyp = EventType.CREATED.name();
+        exaktintygid = intygIdCounter++;
     }
 
     public void execute() {
@@ -80,7 +82,7 @@ class FoljandeIntygFinns {
         def builder = new JsonBuilder(result)
         def finalIntygDataString = builder.toString()
 
-        Intyg intyg = new Intyg(EventType.valueOf(intygstyp), finalIntygDataString, String.valueOf(intygIdCounter++), DateTimeUtils.currentTimeMillis(), län)
+        Intyg intyg = new Intyg(EventType.valueOf(intygstyp), finalIntygDataString, String.valueOf(exaktintygid), DateTimeUtils.currentTimeMillis(), län)
 
         reportsUtil.insertIntyg(intyg)
     }

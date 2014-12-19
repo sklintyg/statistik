@@ -29,6 +29,7 @@ Arbetsförmåga för intyg: 0
 Övrigt:
 Möjliga värden för kön på läkare: MALE, FEMALE, UNKNOWN
 Möjliga värden på intygstyp: REVOKED, CREATED
+Man kan sätta intygsid explicit. Bra t ex om man vill testa makulering. Använd exaktintygid som kolumn.
 
 !*> '''Variables Defined'''
 !define TEST_SYSTEM {slim}
