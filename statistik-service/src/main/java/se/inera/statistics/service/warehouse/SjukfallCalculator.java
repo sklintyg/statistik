@@ -38,7 +38,6 @@ import java.util.Set;
 public class SjukfallCalculator {
 
     private final Predicate<Fact> filter;
-    private final Map<Integer, PersonifiedSjukfall> active = new HashMap<>();
     private final List<Fact> aisle = new ArrayList<>();
     private boolean useOriginalSjukfallStart = false;
 
@@ -63,13 +62,14 @@ public class SjukfallCalculator {
     }
 
     private List<PersonifiedSjukfall> getSjukfallForAvailableEnhets(LocalDate from, LocalDate to) {
+        final Map<Integer, PersonifiedSjukfall> active = new HashMap<>();
         final Collection<PersonifiedSjukfall> sjukfalls = new ArrayList<>();
         int cutoff = WidelineConverter.toDay(to);
         for (Fact line : aisle) {
             if (line.getStartdatum() >= cutoff) {
                 break;
             }
-            process(line, sjukfalls);
+            process(line, sjukfalls, active);
         }
         List<PersonifiedSjukfall> result = new ArrayList<>();
         int firstday = WidelineConverter.toDay(from);
@@ -203,7 +203,7 @@ public class SjukfallCalculator {
         return patientsWithMoreThanOneSjukfall;
     }
 
-    private void process(Fact line, Collection<PersonifiedSjukfall> sjukfalls) {
+    private void process(Fact line, Collection<PersonifiedSjukfall> sjukfalls, Map<Integer, PersonifiedSjukfall> active) {
         if (!filter.apply(line)) {
             return;
         }
