@@ -48,16 +48,16 @@ public class SjukfallCalculator {
         this.useOriginalSjukfallStart = useOriginalSjukfallStart;
     }
 
-    private void extendSjukfallConnectedByIntygOnOtherEnhets(List<PersonifiedSjukfall> sjukfallForAvailableEnhets, boolean useOriginalSjukfallStart, LocalDate from, LocalDate to) {
+    private void extendSjukfallConnectedByIntygOnOtherEnhets(List<PersonifiedSjukfall> sjukfallForAvailableEnhets, LocalDate from, LocalDate to) {
         Multimap<Integer, Sjukfall> sjukfallsWithSamePatient = findSjukfallWithSamePatient(sjukfallForAvailableEnhets, useOriginalSjukfallStart);
         for (int patient : sjukfallsWithSamePatient.keySet()) {
-            connectIfPossible(patient, sjukfallsWithSamePatient.get(patient), sjukfallForAvailableEnhets, useOriginalSjukfallStart, from, to);
+            connectIfPossible(patient, sjukfallsWithSamePatient.get(patient), sjukfallForAvailableEnhets, from, to);
         }
     }
 
     List<PersonifiedSjukfall> getSjukfalls(LocalDate from, LocalDate to) {
         List<PersonifiedSjukfall> result = getSjukfallForAvailableEnhets(from, to);
-        extendSjukfallConnectedByIntygOnOtherEnhets(result, useOriginalSjukfallStart, from, to);
+        extendSjukfallConnectedByIntygOnOtherEnhets(result, from, to);
         return result;
     }
 
@@ -89,7 +89,7 @@ public class SjukfallCalculator {
         return result;
     }
 
-    private void connectIfPossible(int patient, Collection<Sjukfall> sjukfallsForPatientOnAvailableEnhets, List<PersonifiedSjukfall> sjukfallsForAvailableEnhets, boolean useOriginalSjukfallStart, LocalDate from, LocalDate to) {
+    private void connectIfPossible(int patient, Collection<Sjukfall> sjukfallsForPatientOnAvailableEnhets, List<PersonifiedSjukfall> sjukfallsForAvailableEnhets, LocalDate from, LocalDate to) {
         List<Fact> allIntygForPatient = getAllIntygForPatientInAisle(patient);
         List<Sjukfall> sjukfallFromAllIntygForPatient = calculateSjukfallForIntyg(allIntygForPatient, from, to);
         for (Sjukfall sjukfall : sjukfallFromAllIntygForPatient) {
