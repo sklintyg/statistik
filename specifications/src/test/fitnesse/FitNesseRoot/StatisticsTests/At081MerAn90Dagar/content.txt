@@ -6,7 +6,7 @@ Ett sjukfall består av 2 intyg, det första utfärdat på enhet1 och det andra 
 
 Som inloggad (user1) med behörighet till enhet1 syns 0 sjukfall. Som inloggad (user4) med behörighet till enhet2 syns 1 sjukfall.
 
-IGNORED
+IGNORED: Waiting for STATISTIK-802
 
 
 !3 Givet att:
