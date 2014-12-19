@@ -26,6 +26,16 @@ public class ReportRequestFilter {
     private List<String> kategoris;
     private List<String> enhets;
 
+    public ReportRequestFilter() {
+    }
+
+    public ReportRequestFilter(List<String> kapitels, List<String> avsnitts, List<String> kategoris, List<String> enhets) {
+        this.kapitels = kapitels;
+        this.avsnitts = avsnitts;
+        this.kategoris = kategoris;
+        this.enhets = enhets;
+    }
+
     public List<String> getKategoris() {
         return kategoris;
     }
