@@ -1,6 +1,8 @@
 package se.inera.statistics.spec
 
+import se.inera.statistics.service.report.util.Icd10
 import se.inera.statistics.web.reports.ReportsUtil
+import se.inera.statistics.web.service.ReportRequestFilter
 
 abstract class Rapport {
 
@@ -10,11 +12,11 @@ abstract class Rapport {
     def kvinnor
     def totalt
     boolean vårdgivarnivå
-    protected kapitel = []
-    protected avsnitt = []
-    protected kategorier = []
-    protected enheter = []
-    protected verksamhetstyper = []
+    def filterKapitel
+    def filterAvsnitt
+    def filterKategorier
+    def filterEnheter
+    def filterVerksamhetstyper
 
     ReportsUtil reportsUtil = new ReportsUtil()
 
@@ -41,34 +43,44 @@ abstract class Rapport {
         this.vårdgivarnivå = vårdgivarnivå
     }
 
-    void setKapitel(String kapitelString) {
-        if (kapitelString != null) {
-            this.kapitel = kapitelString.tokenize(',')*.trim()
+    void setFilterKapitel(String kapitelString) {
+        if (kapitelString != null && !kapitelString.trim().isEmpty()) {
+            this.filterKapitel = kapitelString.split(",")*.trim().collect{
+                Icd10.icd10ToInt(it)
+            }
         }
     }
 
-    void setAvsnitt(String avsnittString) {
-        if (avsnittString != null) {
-            this.avsnitt = avsnittString.tokenize(',')*.trim()
+    void setFilterAvsnitt(String avsnittString) {
+        if (avsnittString != null && !avsnittString.trim().isEmpty()) {
+            this.filterAvsnitt = avsnittString.split(",")*.trim().collect{
+                Icd10.icd10ToInt(it)
+            }
         }
     }
 
-    void setKategorier(String kategoriString) {
-        if (kategoriString != null) {
-            this.kategorier = kategoriString.tokenize(',')*.trim()
+    void setFilterKategorier(String kategoriString) {
+        if (kategoriString != null && !kategoriString.trim().isEmpty()) {
+            this.filterKategorier = kategoriString.split(",")*.trim().collect{
+                Icd10.icd10ToInt(it)
+            }
         }
     }
 
-    void setEnheter(String enhetsString) {
-        if (enhetsString != null) {
-            this.enheter = enhetsString.tokenize(',')*.trim()
+    void setFilterEnheter(String enhetsString) {
+        if (enhetsString != null && !enhetsString.trim().isEmpty()) {
+            this.filterEnheter = enhetsString.split(",")*.trim()
         }
     }
 
-    void setVerksamhetstyper(String verksamhetString) {
-        if (verksamhetString != null) {
-            this.verksamhetstyper = verksamhetString.tokenize(',')*.trim()
+    void setFilterVerksamhetstyper(String verksamhetString) {
+        if (verksamhetString != null && !verksamhetString.trim().isEmpty()) {
+            this.filterVerksamhetstyper = verksamhetString.split(",")*.trim()
         }
+    }
+
+    def getFilter() {
+        return new ReportRequestFilter(filterKapitel, filterAvsnitt, filterKategorier, filterEnheter, filterVerksamhetstyper)
     }
 
     public void reset() {
@@ -77,14 +89,15 @@ abstract class Rapport {
         totalt = -1
         män = -1
         kvinnor = -1
-        kapitel = []
-        avsnitt = []
-        kategorier = []
-        enheter = []
-        verksamhetstyper = []
+        filterKapitel = null
+        filterAvsnitt = null
+        filterKategorier = null
+        filterEnheter = null
+        filterVerksamhetstyper = null
     }
 
     void setKommentar(String kommentar) {
+        //Do nothing to ignore comments column
     }
 
     void setInloggadSom(String inloggadSom) {

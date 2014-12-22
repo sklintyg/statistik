@@ -25,15 +25,17 @@ public class ReportRequestFilter {
     private List<String> avsnitts;
     private List<String> kategoris;
     private List<String> enhets;
+    private List<String> verksamhetstyper;
 
     public ReportRequestFilter() {
     }
 
-    public ReportRequestFilter(List<String> kapitels, List<String> avsnitts, List<String> kategoris, List<String> enhets) {
+    public ReportRequestFilter(List<String> kapitels, List<String> avsnitts, List<String> kategoris, List<String> enhets, List<String> verksamhetstyper) {
         this.kapitels = kapitels;
         this.avsnitts = avsnitts;
         this.kategoris = kategoris;
         this.enhets = enhets;
+        this.verksamhetstyper = verksamhetstyper;
     }
 
     public List<String> getKategoris() {
@@ -51,4 +53,9 @@ public class ReportRequestFilter {
     public List<String> getEnhets() {
         return enhets;
     }
+
+    public List<String> getVerksamhetstyper() {
+        return verksamhetstyper;
+    }
+
 }

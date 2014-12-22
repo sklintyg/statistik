@@ -34,70 +34,70 @@ abstract class SimpleDetailsReport extends Rapport {
 
     def getReportSjukfallTotalt() {
         if (inloggad) {
-            return reportsUtil.getReportAntalIntygInloggad(inloggadSom);
+            return reportsUtil.getReportAntalIntygInloggad(inloggadSom, filter);
         }
         return reportsUtil.getReportAntalIntyg();
     }
 
     def getReportLangaSjukfall() {
         if (inloggad) {
-            return reportsUtil.getReportLangaSjukfallInloggad(inloggadSom);
+            return reportsUtil.getReportLangaSjukfallInloggad(inloggadSom, filter);
         }
         throw new RuntimeException("Report -Långa sjukfall- is not available on national level");
     }
 
     def getReportSjukfallPerEnhet() {
         if (inloggad) {
-            return reportsUtil.getReportSjukfallPerEnhet(inloggadSom, kapitel, avsnitt, kategorier, enheter);
+            return reportsUtil.getReportSjukfallPerEnhet(inloggadSom, filter);
         }
         throw new RuntimeException("Report -Sjukfall per enhet- is not available on national level");
     }
 
     def getReportAldersgrupp() {
         if (inloggad) {
-            return reportsUtil.getReportAldersgruppInloggad(inloggadSom);
+            return reportsUtil.getReportAldersgruppInloggad(inloggadSom, filter);
         }
         return reportsUtil.getReportAldersgrupp();
     }
 
     def getReportAldersgruppPagaende() {
         if (inloggad) {
-            return reportsUtil.getReportAldersgruppPagaendeInloggad(inloggadSom);
+            return reportsUtil.getReportAldersgruppPagaendeInloggad(inloggadSom, filter);
         }
         throw new RuntimeException("Report -Åldersgrupp pågående- is not available on national level");
     }
 
     def getReportSjukskrivningslangd() {
         if (inloggad) {
-            return reportsUtil.getReportSjukskrivningslangdInloggad(inloggadSom);
+            return reportsUtil.getReportSjukskrivningslangdInloggad(inloggadSom, filter);
         }
         return reportsUtil.getReportSjukskrivningslangd();
     }
 
     def getReportSjukskrivningslangdPagaende() {
         if (inloggad) {
-            return reportsUtil.getReportSjukskrivningslangdPagaendeInloggad(inloggadSom);
+            return reportsUtil.getReportSjukskrivningslangdPagaendeInloggad(inloggadSom, filter);
         }
         throw new RuntimeException("Report -Sjukskrivningslängd pågående- is not available on national level");
     }
 
     def getReportLakareAlderOchKon() {
         if (inloggad) {
-            return reportsUtil.getReportLakareAlderOchKonInloggad(inloggadSom);
+            return reportsUtil.getReportLakareAlderOchKonInloggad(inloggadSom, filter);
         }
         throw new RuntimeException("Report -Läkare ålder och kön- is not available on national level");
     }
 
     def getReportLakarBefattning() {
         if (inloggad) {
-            return reportsUtil.getReportLakarBefattningInloggad(inloggadSom);
+            return reportsUtil.getReportLakarBefattningInloggad(inloggadSom, filter);
         }
         throw new RuntimeException("Report -Läkarbefattning- is not available on national level");
     }
 
     def getReportSjukfallPerLakare() {
         if (inloggad) {
-            return reportsUtil.getReportSjukfallPerLakareInloggad(inloggadSom);
+            return reportsUtil.getReportSjukfallPerLakareInloggad(inloggadSom, filter);
         }
         throw new RuntimeException("Report -Sjukfall per läkare- is not available on national level");
     }

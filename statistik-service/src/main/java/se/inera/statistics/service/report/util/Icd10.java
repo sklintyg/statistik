@@ -61,6 +61,19 @@ public class Icd10 {
     private IdMap<Avsnitt> idToAvsnittMap = new IdMap<>();
     private IdMap<Kapitel> idToKapitelMap = new IdMap<>();
 
+    public static int icd10ToInt(String id) {
+        final int firstCharMultiplier = 100;
+        final int firstCharAsNumber = (id.toUpperCase().charAt(0) - 'A') * firstCharMultiplier;
+
+        final int secondCharMultiplier = 10;
+        final int secondCharAsNumber = (id.charAt(1) - '0') * secondCharMultiplier;
+
+        final int thirdCharMultiplier = 1;
+        final int thirdCharAsNumber = (id.charAt(2) - '0') * thirdCharMultiplier;
+
+        return firstCharAsNumber + secondCharAsNumber + thirdCharAsNumber;
+    }
+
     @PostConstruct
     private void init() {
         try {
@@ -155,11 +168,9 @@ public class Icd10 {
             return id;
         }
 
-        // CHECKSTYLE:OFF MagicNumber
         public int toInt() {
-            return (id.charAt(0) - 'A') * 100 + (id.charAt(1) - '0') * 10 + id.charAt(2) - '0';
+            return icd10ToInt(id);
         }
-        // CHECKSTYLE:ON MagicNumber
 
         public abstract List<? extends Id> getSubItems();
 

@@ -26,21 +26,21 @@ abstract class DiagnosRapport extends Rapport {
 
     def getReportEnskiltDiagnoskapitel(kapitel) {
         if (inloggad) {
-            return reportsUtil.getReportEnskiltDiagnoskapitelInloggad(kapitel, inloggadSom);
+            return reportsUtil.getReportEnskiltDiagnoskapitelInloggad(kapitel, inloggadSom, filter);
         }
         return reportsUtil.getReportEnskiltDiagnoskapitel(kapitel);
     }
 
     def getReportDiagnosgrupp() {
         if (inloggad) {
-            return reportsUtil.getReportDiagnosgruppInloggad(inloggadSom);
+            return reportsUtil.getReportDiagnosgruppInloggad(inloggadSom, filter);
         }
         return reportsUtil.getReportDiagnosgrupp();
     }
 
     def getReportSjukskrivningsgrad() {
         if (inloggad) {
-            return reportsUtil.getReportSjukskrivningsgradInloggad(inloggadSom);
+            return reportsUtil.getReportSjukskrivningsgradInloggad(inloggadSom, filter);
         }
         return reportsUtil.getReportSjukskrivningsgrad();
     }
