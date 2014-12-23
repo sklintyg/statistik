@@ -264,6 +264,18 @@ angular.module('StatisticsApp').factory('businessFilter', ['statisticsData', '_'
             }
         };
 
+        function expandIfOnlyOneVisible(items) {
+            var visibleItems = _.reject(items, function (item) {
+                return item.hide;
+            });
+            if (visibleItems.length === 1) {
+                var item = visibleItems[0];
+                item.hideChildren = false;
+                businessFilter.updateState(item);
+                expandIfOnlyOneVisible(item.subs);
+            }
+        }
+
         businessFilter.filterMenuItems = function (items, text) {
             var searchText = text.toLowerCase();
             var mappingFunc = function (item) {
@@ -274,6 +286,7 @@ angular.module('StatisticsApp').factory('businessFilter', ['statisticsData', '_'
             };
             _.each(items, mappingFunc);
             _.each(items, businessFilter.updateState);
+            expandIfOnlyOneVisible(items);
         };
 
         businessFilter.isItemHidden = function (item, searchText) {

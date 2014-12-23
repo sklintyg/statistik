@@ -276,6 +276,38 @@ describe("Tests for business overview controller", function () {
         expect(menuItems[1].hide).toBe(true);
     }));
 
+    it("node should be fully expanded if only one match is found", inject(function (businessFilter) {
+        //Given
+        var sub121 = {name: "sub121"};
+        var sub122 = {name: "sub122"};
+        var sub12 = {name: "sub12", subs: [sub121, sub122]};
+        var subs1 = [
+            {name: "sub11"},
+            sub12,
+            {name: "sub13"}
+        ];
+        var menuItems = [
+            {name: "Enhet1", subs: subs1},
+            {
+                name: "Enhet2", subs: [
+                {name: "sub4"},
+                {name: "sub5"},
+                {name: "sub6"}
+            ]
+            }
+        ];
+
+        //When
+        businessFilter.filterMenuItems(menuItems, "sub122");
+
+        //Then
+        expect(menuItems[0].hideChildren).toBe(false);
+        expect(sub12.hideChildren).toBe(false);
+        expect(sub122.hideChildren).toBe(false);
+        expect(sub121.hide).toBe(true);
+        expect(menuItems[1].hide).toBe(true);
+    }));
+
     it("leaves count is counting correct when 0", inject(function (businessFilter) {
         //Given
         var sub11 = {name: "sub11", allSelected: false, someSelected: false};
