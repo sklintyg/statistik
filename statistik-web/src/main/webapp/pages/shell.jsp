@@ -468,7 +468,14 @@
 	                                        </div>
 	                                    </div>
 	                                </div>
-                                    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-3" ng-show="showDiagnosFilter">
+	                                <div class="col-xs-8 col-sm-6 col-md-6 col-lg-3 check-permanent-filter-container">
+                        				<input type="checkbox" id="check-permanent-filter" ng-model="businessFilter.permanentFilter">
+                                        <label for="check-permanent-filter"><span message key="lbl.filter.anvand-filter-pa-alla"></span></label>
+                                    </div>
+                                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                        <div class="divider"></div>
+                                    </div>
+                                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" ng-show="showDiagnosFilter">
                                         <label for="select-diagnoses"><span message key="lbl.filter.val-av-diagnoser"></span></label><br/>
                                         <button class="btn btn-default" data-toggle="modal" data-target="#diagnosisModal" id="select-diagnoses" >
                                             Diagnoser
@@ -503,12 +510,7 @@
                                             </div>
                                         </div>
                                     </div>
-	                                <div class="col-xs-8 col-sm-6 col-md-6 col-lg-3 check-permanent-filter-container">
-                        				<input type="checkbox" id="check-permanent-filter" ng-model="businessFilter.permanentFilter">
-                                    		<label for="check-permanent-filter"><span message key="lbl.filter.anvand-filter-pa-alla"></span></label>
-                                    	</input>
-                                    </div>
-	                            </div>
+                                </div>
 	                            <div class="filter-level no-padding">
 	                            	<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 	                            		<div class="divider"></div>
