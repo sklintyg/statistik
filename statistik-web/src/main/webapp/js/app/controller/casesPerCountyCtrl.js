@@ -55,8 +55,9 @@ angular.module('StatisticsApp').controller('casesPerCountyCtrl', ['$scope', '$ti
             }
         };
 
-        var populatePageWithData = function (result) {
-            $scope.subTitle = "Antal sjukfall per län " + result.period;
+        var populatePageWithData = function (result, enhetsIds) {
+            var enhetsCount = enhetsIds ? enhetsIds.length : null;
+            $scope.subTitle = "Antal sjukfall per län" + ControllerCommons.getEnhetCountText(enhetsCount, false) + result.period;
             $scope.doneLoading = true;
             $timeout(function () {
                 ControllerCommons.updateDataTable($scope, result.tableData);

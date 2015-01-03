@@ -62,8 +62,8 @@ angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl', [ '$sco
             }
         };
 
-        var populatePageWithData = function (result) {
-            $scope.subTitle = config.title(result.period);
+        var populatePageWithData = function (result, enhetsIds) {
+            $scope.subTitle = config.title(result.period, enhetsIds ? enhetsIds.length : null);
             $scope.doneLoading = true;
             $timeout(function () {
                 ControllerCommons.updateDataTable($scope, result.tableData);
@@ -131,8 +131,8 @@ angular.module('StatisticsApp').nationalSickLeaveLengthConfig = function () {
     conf.exportTableUrlVerksamhet = function (verksamhetId) {
         return "api/verksamhet/" + verksamhetId + "/getSickLeaveLengthData/csv"
     };
-    conf.title = function (period) {
-        return "Antal sjukfall per sjukskrivningslängd " + period;
+    conf.title = function (period, enhetsCount) {
+        return "Antal sjukfall per sjukskrivningslängd" + ControllerCommons.getEnhetCountText(enhetsCount, false) + period;
     };
     conf.chartXAxisTitle = "Sjukskrivningslängd";
     return conf;
@@ -144,8 +144,8 @@ angular.module('StatisticsApp').nationalSickLeaveLengthCurrentConfig = function 
     conf.exportTableUrlVerksamhet = function (verksamhetId) {
         return "api/verksamhet/" + verksamhetId + "/getSickLeaveLengthCurrentData/csv";
     };
-    conf.title = function (month) {
-        return "Antal pågående sjukfall per sjukskrivningslängd " + month;
+    conf.title = function (month, enhetsCount) {
+        return "Antal pågående sjukfall per sjukskrivningslängd" + ControllerCommons.getEnhetCountText(enhetsCount, false) + month;
     };
     conf.chartXAxisTitle = "Sjukskrivningslängd";
     conf.pageHelpText = "help.sick-leave-length-current"
@@ -160,8 +160,8 @@ angular.module('StatisticsApp').nationalAgeGroupConfig = function () {
     conf.exportTableUrlVerksamhet = function (verksamhetId) {
         return "api/verksamhet/" + verksamhetId + "/getAgeGroupsStatistics/csv";
     };
-    conf.title = function (period) {
-        return "Antal sjukfall per åldersgrupp " + period;
+    conf.title = function (period, enhetsCount) {
+        return "Antal sjukfall per åldersgrupp" + ControllerCommons.getEnhetCountText(enhetsCount, false) + period;
     };
     conf.chartXAxisTitle = "Åldersgrupp";
     return conf;
@@ -173,8 +173,8 @@ angular.module('StatisticsApp').nationalAgeGroupCurrentConfig = function () {
     conf.exportTableUrlVerksamhet = function (verksamhetId) {
         return "api/verksamhet/" + verksamhetId + "/getAgeGroupsCurrentStatistics/csv";
     };
-    conf.title = function (month) {
-        return "Antal pågående sjukfall per åldersgrupp " + month;
+    conf.title = function (month, enhetsCount) {
+        return "Antal pågående sjukfall per åldersgrupp" + ControllerCommons.getEnhetCountText(enhetsCount, false) + month;
     };
     conf.chartXAxisTitle = "Åldersgrupp";
     conf.pageHelpText = "help.age-group-current"
@@ -185,8 +185,8 @@ angular.module('StatisticsApp').casesPerSexConfig = function () {
     var conf = {};
     conf.dataFetcher = "getNationalSjukfallPerSexData";
     conf.exportTableUrl = "api/getSjukfallPerSexStatistics/csv";
-    conf.title = function (period) {
-        return "Andel sjukfall per kön per län " + period;
+    conf.title = function (period, enhetsCount) {
+        return "Andel sjukfall per kön per län" + ControllerCommons.getEnhetCountText(enhetsCount, false) + period;
     };
     conf.percentChart = true;
     conf.chartXAxisTitle = "Län";
@@ -201,8 +201,8 @@ angular.module('StatisticsApp').casesPerBusinessConfig = function () {
     conf.exportTableUrlVerksamhet = function (verksamhetId) {
         return "api/verksamhet/" + verksamhetId + "/getSjukfallPerBusinessVerksamhet/csv";
     };
-    conf.title = function (period) {
-        return "Antal sjukfall per vårdenhet " + period;
+    conf.title = function (period, enhetsCount) {
+        return "Antal sjukfall per vårdenhet" + ControllerCommons.getEnhetCountText(enhetsCount, false) + period;
     };
     conf.chartXAxisTitle = "Vårdenhet";
     conf.chartFootnotes = ["alert.vardenhet.information"];
@@ -215,8 +215,8 @@ angular.module('StatisticsApp').casesPerLakareConfig = function () {
     conf.exportTableUrlVerksamhet = function (verksamhetId) {
         return "api/verksamhet/" + verksamhetId + "/getSjukfallPerLakareVerksamhet/csv";
     };
-    conf.title = function (period) {
-        return "Antal sjukfall per läkare " + period;
+    conf.title = function (period, enhetsCount) {
+        return "Antal sjukfall per läkare" + ControllerCommons.getEnhetCountText(enhetsCount, false) + period;
     };
     conf.chartXAxisTitle = "Läkare";
     return conf;
@@ -228,8 +228,8 @@ angular.module('StatisticsApp').casesPerLakaresAlderOchKonConfig = function () {
     conf.exportTableUrlVerksamhet = function (verksamhetId) {
         return "api/verksamhet/" + verksamhetId + "/getSjukfallPerLakaresAlderOchKonVerksamhet/csv";
     };
-    conf.title = function (period) {
-        return "Antal sjukfall baserat på läkares kön och ålder " + period;
+    conf.title = function (period, enhetsCount) {
+        return "Antal sjukfall baserat på läkares kön och ålder" + ControllerCommons.getEnhetCountText(enhetsCount, true) + period;
     };
     conf.chartXAxisTitle = "Läkare";
     conf.pageHelpText = "alert.lakarkon-alder.questionmark";
@@ -242,8 +242,8 @@ angular.module('StatisticsApp').casesPerLakarbefattningConfig = function () {
     conf.exportTableUrlVerksamhet = function (verksamhetId) {
         return "api/verksamhet/" + verksamhetId + "/getSjukfallPerLakarbefattningVerksamhet/csv";
     };
-    conf.title = function (period) {
-        return "Antal sjukfall baserat på läkarbefattning " + period;
+    conf.title = function (period, enhetsCount) {
+        return "Antal sjukfall baserat på läkarbefattning" + ControllerCommons.getEnhetCountText(enhetsCount, true) + period;
     };
     conf.chartXAxisTitle = "Läkarbefattning";
     conf.chartFootnotes = ["alert.lakare-befattning.information"];

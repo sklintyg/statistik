@@ -59,8 +59,8 @@ angular.module('StatisticsApp').controller('singleLineChartCtrl', [ '$scope', '$
             chart = paintChart(ajaxResult.categories, $scope.series);
         };
 
-        var populatePageWithData = function (result) {
-            $scope.subTitle = config.title(result.period);
+        var populatePageWithData = function (result, enhetsIds) {
+            $scope.subTitle = config.title(result.period, enhetsIds ? enhetsIds.length : null);
             $scope.doneLoading = true;
             $timeout(function () {
                 ControllerCommons.updateDataTable($scope, result.tableData);
@@ -132,8 +132,8 @@ angular.module('StatisticsApp').casesPerMonthConfig = function () {
     conf.exportTableUrlVerksamhet = function (verksamhetId) {
         return "api/verksamhet/" + verksamhetId + "/getNumberOfCasesPerMonth/csv";
     };
-    conf.title = function (months) {
-        return "Antal sjukfall per månad " + months;
+    conf.title = function (months, enhetsCount) {
+        return "Antal sjukfall per månad" + ControllerCommons.getEnhetCountText(enhetsCount, false) + months;
     };
     conf.showPageHelpTooltip = true;
     return conf;
@@ -145,8 +145,8 @@ angular.module('StatisticsApp').longSickLeavesConfig = function () {
     conf.exportTableUrlVerksamhet = function (verksamhetId) {
         return "api/verksamhet/" + verksamhetId + "/getLongSickLeavesData/csv";
     };
-    conf.title = function (months) {
-        return "Antal långa sjukfall - mer än 90 dagar " + months;
+    conf.title = function (months, enhetsCount) {
+        return "Antal långa sjukfall - mer än 90 dagar" + ControllerCommons.getEnhetCountText(enhetsCount, false) + months;
     };
     conf.showPageHelpTooltip = false;
     return conf;

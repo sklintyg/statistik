@@ -127,9 +127,10 @@ angular.module('StatisticsApp').controller('doubleAreaChartsCtrl', [ '$scope', '
             $scope.series = chartSeriesMale;
         };
 
-        var populatePageWithData = function (result) {
+        var populatePageWithData = function (result, enhetsIds) {
             $scope.doneLoading = true;
-            $scope.subTitle = config.title(result.period, $routeParams.groupId);
+            $scope.enhetsCount = enhetsIds ? enhetsIds.length : null;
+            $scope.subTitle = config.title(result.period, $scope.enhetsCount, $routeParams.groupId);
             if (config.showDetailsOptions) {
                 $scope.currentPeriod = result.period;
                 statisticsData.getDiagnosisKapitelAndAvsnitt(populateDetailsOptions, function () {
@@ -162,10 +163,10 @@ angular.module('StatisticsApp').controller('doubleAreaChartsCtrl', [ '$scope', '
 
         function getSubtitle(period, selectedOption1, selectedOption2) {
             if ((selectedOption2 && selectedOption2.name && selectedOption2.id)) {
-                return config.title(period, selectedOption2.id + " " + selectedOption2.name);
+                return config.title(period, $scope.enhetsCount, selectedOption2.id + " " + selectedOption2.name);
             }
             if (selectedOption1 && selectedOption1.name && selectedOption1.id) {
-                return config.title(period, selectedOption1.id + " " + selectedOption1.name);
+                return config.title(period, $scope.enhetsCount, selectedOption1.id + " " + selectedOption1.name);
             }
             return "";
         }
@@ -292,8 +293,8 @@ angular.module('StatisticsApp').diagnosisGroupConfig = function () {
         return "api/verksamhet/" + verksamhetId + "/getDiagnoskapitelstatistik/csv";
     };
     conf.showDetailsOptions = false;
-    conf.title = function (period) {
-        return "Antal sjukfall per diagnosgrupp " + period;
+    conf.title = function (period, enhetsCount) {
+        return "Antal sjukfall per diagnosgrupp" + ControllerCommons.getEnhetCountText(enhetsCount, false) + period;
     };
     conf.tooltipHelpText = "Diagnoskoder används för att gruppera sjukdomar för att kunna göra översiktliga statistiska sammanställningar och analyser. Statistiktjänsten är uppdelad i sju övergripande diagnosgrupper. I varje grupp ingår olika kapitel med diagnoskoder. Diagnoskoderna finns i klassificeringssystemet ICD-10-SE.";
     conf.chartFootnotes = ["När ett sjukfall har flera intyg under samma månad hämtas uppgift om diagnos från det senaste intyget. För ett sjukfall som varar flera månader så hämtas diagnos för varje månad. I tabellen visas statistiken på diagnoskapitelnivå, men i grafen är statistiken aggregerad för att underlätta presentationen."];
@@ -312,8 +313,8 @@ angular.module('StatisticsApp').diagnosisSubGroupConfig = function () {
     };
     conf.showDetailsOptions = true;
     conf.showDetailsOptions2 = true;
-    conf.title = function (period, name) {
-        return "Antal sjukfall för " + name + " " + period;
+    conf.title = function (period, enhetsCount, name) {
+        return "Antal sjukfall för " + name + ControllerCommons.getEnhetCountText(enhetsCount, false) + period;
     };
     conf.tooltipHelpText = "Ett diagnoskapitel innehåller flera avsnitt med sjukdomar som i sin tur omfattar olika diagnoskoder. Det finns totalt 21 diagnoskapitel. Grafen visar endast de sex vanligaste förekommande avsnitten eller diagnoserna uppdelade på kvinnor respektive män. I tabellen visas samtliga inom valt kapitel eller avsnitt.";
     conf.chartFootnotes = ["När ett sjukfall har flera intyg under samma månad hämtas uppgift om diagnos från det senaste intyget. För ett sjukfall som varar flera månader så hämtas diagnos för varje månad."];
@@ -331,8 +332,8 @@ angular.module('StatisticsApp').degreeOfSickLeaveConfig = function () {
         return "api/verksamhet/" + verksamhetId + "/getDegreeOfSickLeaveStatistics/csv";
     };
     conf.showDetailsOptions = false;
-    conf.title = function (period) {
-        return "Antal sjukfall per sjukskrivningsgrad " + period;
+    conf.title = function (period, enhetsCount) {
+        return "Antal sjukfall per sjukskrivningsgrad" + ControllerCommons.getEnhetCountText(enhetsCount, false) + period;
     };
     conf.tooltipHelpText = "Sjukskrivningsgrad visar hur stor del av patientens arbetsförmåga som är nedsatt. Sjukskrivningsgraden anges i procent i förhållande till patientens aktuella arbetstid.";
     conf.chartFootnotes = ["När ett sjukfall har flera intyg under samma månad hämtas uppgift om sjukskrivningsgrad från det senaste intyget. Om detta intyg innehåller flera olika sjukskrivningsgrader hämtas den senaste sjukskrivningsgraden för den månaden. För ett sjukfall som varar flera månader så hämtas sjukskrivningsgrad för varje månad."];
