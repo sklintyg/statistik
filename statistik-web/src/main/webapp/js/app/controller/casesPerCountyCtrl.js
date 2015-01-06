@@ -84,7 +84,7 @@ angular.module('StatisticsApp').controller('casesPerCountyCtrl', ['$scope', '$ti
         $scope.dataLoadingError = false;
         $scope.chartFootnotes = [messageService.getProperty('info.lan.information', null, "", null, true)];
         $scope.exportChart = function () {
-            ControllerCommons.exportChart(chart, $scope.pageName);
+            ControllerCommons.exportChart(chart, $scope.pageName, $scope.subTitle);
         };
 
         $scope.print = function (bwPrint) {

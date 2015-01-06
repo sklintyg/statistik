@@ -128,11 +128,25 @@ var ControllerCommons = new function(){
         return String(chartName).replace(/\s+/g, "_") + "_" + date + "_" + time;
     }
     
-    this.exportChart = function(chart, chartName, legendLayout) {
+    this.exportChart = function(chart, chartName, title, legendLayout) {
         var options = {filename: ControllerCommons.getFileName(chartName)};
         var chartOptions = { legend: { enabled: true } };
         if (legendLayout) {
             chartOptions.legend.layout = legendLayout;
+        }
+        if (title) {
+            chartOptions.title = {
+                text: title,
+                margin: 30
+            };
+            chartOptions.subtitle = {
+                text: " "
+            };
+            chartOptions.chart = {
+                marginTop: null,
+                backgroundColor : "#FFFFFF",
+                spacingLeft: 0
+            };
         }
         chart.exportChart(options, chartOptions);
     }

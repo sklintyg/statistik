@@ -113,7 +113,7 @@ angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl', [ '$sco
 
 
         $scope.exportChart = function () {
-            ControllerCommons.exportChart(chart, $scope.pageName);
+            ControllerCommons.exportChart(chart, $scope.pageName, $scope.subTitle);
         };
 
         $scope.print = function (bwPrint) {

@@ -82,7 +82,7 @@ angular.module('StatisticsApp').controller('singleLineChartCtrl', [ '$scope', '$
         };
 
         $scope.exportChart = function () {
-            ControllerCommons.exportChart(chart, $scope.pageName);
+            ControllerCommons.exportChart(chart, $scope.pageName, $scope.subTitle);
         };
 
         function refreshVerksamhet(samePage) {
