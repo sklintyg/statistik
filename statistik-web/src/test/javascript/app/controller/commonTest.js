@@ -65,9 +65,10 @@ describe("Test of common functions for controllers", function() {
                     expect(opt.filename).toMatch(/testName/);
                     expect(chartOpt.legend.enabled).toBe(true);
                     expect(chartOpt.legend.layout).toBe("MyLayout");
+                    expect(chartOpt.title.text).toBe("title text");
                 }
         };
-        ControllerCommons.exportChart(chart, name, "MyLayout");
+        ControllerCommons.exportChart(chart, name, "title text", "MyLayout");
         expect(callTimes).toBe(1);
     });
     
