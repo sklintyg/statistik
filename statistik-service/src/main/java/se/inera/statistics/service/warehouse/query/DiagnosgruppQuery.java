@@ -106,15 +106,7 @@ public class DiagnosgruppQuery {
     private DiagnosgruppResponse getUnderdiagnosgrupper(Aisle aisle, Predicate<Fact> filter, LocalDate start, int periods, int periodLength, Icd10.Range kapitel, Icd10RangeType rangeType) {
         List<ICDTyp> icdTyps = new ArrayList<>();
         for (Icd10.Id icdItem : kapitel.getSubItems()) {
-            switch (rangeType) {
-                case AVSNITT:   icdTyps.add(new Icd(icdItem.getId(), icdItem.getName()));
-                                break;
-
-                case KATEGORI:  icdTyps.add(new Icd(icdItem.getId(), icdItem.getName()));
-                                break;
-
-                default:        throw new RuntimeException("Unexpected range type: " + rangeType);
-            }
+            icdTyps.add(new Icd(icdItem.getId(), icdItem.getName()));
         }
         List<KonDataRow> rows = getKonDataRows(aisle, filter, start, periods, periodLength, kapitel.getSubItems(), rangeType);
         return new DiagnosgruppResponse(icdTyps, rows);

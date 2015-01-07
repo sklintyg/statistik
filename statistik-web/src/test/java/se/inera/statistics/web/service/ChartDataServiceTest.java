@@ -24,6 +24,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
+import se.inera.statistics.service.report.model.Icd;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.util.Icd10;
 import se.inera.statistics.service.warehouse.NationellData;
@@ -75,7 +76,7 @@ public class ChartDataServiceTest {
     @Test
     public void getDiagnosisGroupsTest() {
         Mockito.when(icd10.getKapitel()).thenReturn(Arrays.asList(new Icd10.Kapitel("A00-B99", "Vissa infektionssjukdomar och parasitsjukdomar"), new Icd10.Kapitel("C00-D48", "Tumörer")));
-        List<ChartDataService.Kapitel> kapitel = chartDataService.getDiagnoskapitel();
+        List<Icd> kapitel = chartDataService.getDiagnoskapitel();
         assertEquals(2, kapitel.size());
     }
 
