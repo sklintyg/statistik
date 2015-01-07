@@ -18,79 +18,16 @@
  */
 package se.inera.statistics.service.report.model;
 
-import se.inera.statistics.service.report.util.Icd10;
+import java.util.Collections;
 
-public class Kategori implements Comparable<Kategori>, ICDTyp {
-
-    private final String id;
-    private final String name;
-    private final int numericalId;
+public class Kategori extends Icd {
 
     public Kategori(String id, String name) {
-        this.id = id;
-        this.name = name;
-        this.numericalId = -1;
+        super(id, name);
     }
 
     public Kategori(String id, String name, int numericalId) {
-        this.id = id;
-        this.name = name;
-        this.numericalId = numericalId;
-    }
-
-    @Override
-    public String getId() {
-        return id;
-    }
-
-    @Override
-    public String getName() {
-        return asString();
-    }
-
-    @Override
-    public String asString() {
-        if (id.charAt(0) <= 'Z') {
-            return id + " " + name;
-        } else {
-            return name;
-        }
-    }
-
-    @Override
-    public int getNumericalId() {
-        return numericalId;
-    }
-
-    @Override
-    public String toString() {
-        return "{\"Avsnitt\":{" + "\"id\":\"" + id + '"' + ", \"name\":\"" + name + '"' + "}}";
-    }
-
-    @Override
-    public int compareTo(Kategori o) {
-        return id.compareTo(o.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return id.hashCode();
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (obj instanceof Kategori) {
-            return isEqual((Kategori) obj);
-        }
-        return false;
-    }
-
-    private boolean isEqual(Kategori other) {
-        return id.equals(other.id);
-    }
-
-    public static Kategori fromIcd10Kategori(Icd10.Kategori source) {
-        return new Kategori(source.getId(), source.getName(), source.toInt());
+        super(id, name, numericalId, Collections.EMPTY_LIST);
     }
 
 }
