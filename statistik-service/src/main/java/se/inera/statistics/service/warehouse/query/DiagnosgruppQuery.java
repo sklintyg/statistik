@@ -22,10 +22,9 @@ import com.google.common.base.Predicate;
 import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import se.inera.statistics.service.report.model.Avsnitt;
 import se.inera.statistics.service.report.model.DiagnosgruppResponse;
 import se.inera.statistics.service.report.model.ICDTyp;
-import se.inera.statistics.service.report.model.Kategori;
+import se.inera.statistics.service.report.model.Icd;
 import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.report.model.KonDataRow;
 import se.inera.statistics.service.report.model.KonField;
@@ -83,9 +82,9 @@ public class DiagnosgruppQuery {
     public DiagnosgruppResponse getDiagnosgrupper(Aisle aisle, Predicate<Fact> filter, LocalDate start, int periods, int periodLength) {
         List<Icd10.Kapitel> kapitel = icd10.getKapitel();
         List<KonDataRow> rows = getKonDataRows(aisle, filter, start, periods, periodLength, kapitel, Icd10RangeType.KAPITEL);
-        List<Avsnitt> avsnitt = new ArrayList<>(kapitel.size());
+        List<Icd> avsnitt = new ArrayList<>(kapitel.size());
         for (Icd10.Kapitel k: kapitel) {
-            avsnitt.add(new Avsnitt(k.getId(), k.getName()));
+            avsnitt.add(new Icd(k.getId(), k.getName()));
         }
         return new DiagnosgruppResponse(avsnitt, rows);
     }
@@ -108,10 +107,10 @@ public class DiagnosgruppQuery {
         List<ICDTyp> icdTyps = new ArrayList<>();
         for (Icd10.Id icdItem : kapitel.getSubItems()) {
             switch (rangeType) {
-                case AVSNITT:   icdTyps.add(new Avsnitt(icdItem.getId(), icdItem.getName()));
+                case AVSNITT:   icdTyps.add(new Icd(icdItem.getId(), icdItem.getName()));
                                 break;
 
-                case KATEGORI:  icdTyps.add(new Kategori(icdItem.getId(), icdItem.getName()));
+                case KATEGORI:  icdTyps.add(new Icd(icdItem.getId(), icdItem.getName()));
                                 break;
 
                 default:        throw new RuntimeException("Unexpected range type: " + rangeType);

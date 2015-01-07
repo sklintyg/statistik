@@ -18,20 +18,13 @@
  */
 package se.inera.statistics.service.report.model;
 
-import com.google.common.base.Function;
-import com.google.common.collect.Lists;
 import se.inera.statistics.service.report.util.Icd10;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public abstract class Icd implements Comparable<Icd>, ICDTyp {
+public class Icd implements Comparable<Icd>, ICDTyp {
 
     private final String id;
     private final String name;
     private final int numericalId;
-
-    private final List<Icd> subItems = new ArrayList<>();
 
     public Icd(String id, String name) {
         this.id = id;
@@ -39,11 +32,14 @@ public abstract class Icd implements Comparable<Icd>, ICDTyp {
         this.numericalId = -1;
     }
 
-    public Icd(String id, String name, int numericalId, List<? extends Icd> kategoriList) {
+    public Icd(String id, String name, int numericalId) {
         this.id = id;
         this.name = name;
         this.numericalId = numericalId;
-        this.subItems.addAll(kategoriList);
+    }
+
+    public Icd(Icd10.Id source) {
+        this(source.getId(), source.getName(), source.toInt());
     }
 
     @Override
@@ -54,10 +50,6 @@ public abstract class Icd implements Comparable<Icd>, ICDTyp {
     @Override
     public int getNumericalId() {
         return numericalId;
-    }
-
-    public List<Icd> getSubItems() {
-        return subItems;
     }
 
     @Override
@@ -99,30 +91,6 @@ public abstract class Icd implements Comparable<Icd>, ICDTyp {
 
     private boolean isEqual(Icd other) {
         return id.equals(other.id);
-    }
-
-    public static Avsnitt fromIcd10Avsnitt(Icd10.Avsnitt source) {
-        List<Kategori> kategoris = Lists.transform(source.getKategori(), new Function<Icd10.Kategori, Kategori>() {
-            @Override
-            public Kategori apply(Icd10.Kategori sourceKategori) {
-                return Kategori.fromIcd10Kategori(sourceKategori);
-            }
-        });
-        return new Avsnitt(source.getId(), source.getName(), source.toInt(), kategoris);
-    }
-
-    public static Kapitel fromIcd10Kapitel(Icd10.Kapitel source) {
-        List<Avsnitt> avsnitt = Lists.transform(source.getAvsnitt(), new Function<Icd10.Avsnitt, Avsnitt>() {
-            @Override
-            public Avsnitt apply(Icd10.Avsnitt sourceAvsnitt) {
-                return Avsnitt.fromIcd10Avsnitt(sourceAvsnitt);
-            }
-        });
-        return new Kapitel(source.getId(), source.getName(), source.toInt(), avsnitt);
-    }
-
-    public static Kategori fromIcd10Kategori(Icd10.Kategori source) {
-        return new Kategori(source.getId(), source.getName(), source.toInt());
     }
 
 }
