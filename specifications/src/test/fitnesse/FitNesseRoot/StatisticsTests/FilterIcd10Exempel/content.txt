@@ -13,23 +13,11 @@
 
 !3 Då gäller:
 
-| Sjukfall i rapporten enskilt diagnoskapitel |
-|inloggad som | filter kapitel          | filter avsnitt | filter kategorier | valt diagnoskapitel | år   | månad | grupp   | män? | kvinnor? |
-| user1       |                         |                |                   | F00-F99             | 2013 | feb   | F40-F48 | 1    | 1        |
-| user1       |                         |                |                   | A00-B99             | 2013 | feb   | A00-A09 | 0    | 1        |
-| user1       |                         |                |                   | J00-J99             | 2013 | feb   | J00-J06 | 1    | 0        |
-| user1       | F00-F99                 |                |                   | F00-F99             | 2013 | feb   | F40-F48 | 1    | 1        |
-| user1       | F00-F99                 |                |                   | A00-B99             | 2013 | feb   | A00-A09 | 0    | 0        |
-| user1       | F00-F99                 |                |                   | J00-J99             | 2013 | feb   | J00-J06 | 0    | 0        |
-| user1       | F00-F99,A00-B99         |                |                   | F00-F99             | 2013 | feb   | F40-F48 | 1    | 1        |
-| user1       | F00-F99,A00-B99         |                |                   | A00-B99             | 2013 | feb   | A00-A09 | 0    | 1        |
-| user1       | F00-F99,A00-B99         |                |                   | J00-J99             | 2013 | feb   | J00-J06 | 0    | 0        |
-| user1       | F00-F99,A00-B99,J00-J99 |                |                   | F00-F99             | 2013 | feb   | F40-F48 | 1    | 1        |
-| user1       | F00-F99,A00-B99,J00-J99 |                |                   | A00-B99             | 2013 | feb   | A00-A09 | 0    | 1        |
-| user1       | F00-F99,A00-B99,J00-J99 |                |                   | J00-J99             | 2013 | feb   | J00-J06 | 1    | 0        |
-| user1       |                         | J00-J06        |                   | F00-F99             | 2013 | feb   | F40-F48 | 0    | 0        |
-| user1       |                         | J00-J06        |                   | A00-B99             | 2013 | feb   | A00-A09 | 0    | 0        |
-| user1       |                         | J00-J06        |                   | J00-J99             | 2013 | feb   | J00-J06 | 1    | 0        |
-| user1       |                         |                | F41               | F00-F99             | 2013 | feb   | F40-F48 | 1    | 0        |
-| user1       |                         |                | F41               | A00-B99             | 2013 | feb   | A00-A09 | 0    | 0        |
-| user1       |                         |                | F41               | J00-J99             | 2013 | feb   | J00-J06 | 0    | 0        |
+| Sjukfall i rapporten sjukfall totalt |
+|inloggad som | filter kapitel          | filter avsnitt | filter kategorier | år   | månad | män? | kvinnor? |
+| user1       |                         |                |                   | 2013 | feb   | 2    | 2        |
+| user1       | F00-F99                 |                |                   | 2013 | feb   | 1    | 1        |
+| user1       | F00-F99,A00-B99         |                |                   | 2013 | feb   | 1    | 2        |
+| user1       | F00-F99,A00-B99,J00-J99 |                |                   | 2013 | feb   | 2    | 2        |
+| user1       |                         | J00-J06        |                   | 2013 | feb   | 1    | 0        |
+| user1       |                         |                | F41               | 2013 | feb   | 1    | 0        |
