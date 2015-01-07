@@ -127,7 +127,8 @@ angular.module('StatisticsApp').controller('doubleAreaChartsCtrl', [ '$scope', '
             $scope.series = chartSeriesMale;
         };
 
-        var populatePageWithData = function (result, enhetsIds) {
+        var populatePageWithData = function (result, enhetsIds, diagnosIds) {
+            ControllerCommons.populateActiveDiagnosFilter($scope, statisticsData, diagnosIds);
             $scope.doneLoading = true;
             $scope.enhetsCount = enhetsIds ? enhetsIds.length : null;
             $scope.subTitle = config.title(result.period, $scope.enhetsCount, $routeParams.groupId);

@@ -19,7 +19,7 @@ angular.module('StatisticsApp').factory('statisticsData', function ($http) {
         var param = getParamsAsJson(enhetsIds, diagnosIds);
         $http.post("api/verksamhet/" + verksamhetId + "/" + restFunctionName, param).success(function (result) {
             try {
-                successCallback(result, enhetsIds);
+                successCallback(result, enhetsIds, diagnosIds);
             } catch (e) {
                 failureCallback();
             }

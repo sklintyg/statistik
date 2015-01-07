@@ -281,6 +281,45 @@ var ControllerCommons = new function(){
         return enhetsCount && enhetsCount != 1 ? " baserat på " + enhetsCount + " antal enheter " : " ";
     };
 
+    function getIcdSubs(icd) {
+        if (icd.kapitel) {
+            return icd.kapitel;
+        }
+        if (icd.avsnitts) {
+            return icd.avsnitts;
+        }
+        if (icd.kategoris) {
+            return icd.kategoris;
+        }
+        return [];
+    }
+
+    function icdStructureAsArray(icdStructure) {
+        return _.map(icdStructure, function (icd) {
+            return icdStructureAsArray(getIcdSubs(icd)).concat(icd);
+        });
+    }
+
+    this.getDiagnosFilterInformationText = function(diagnosFilterIds, icdStructure) {
+        var icdStructureAsFlatArray = _.compose(_.flatten, icdStructureAsArray)(icdStructure);
+        var allDiagnosFilterIds = diagnosFilterIds.kapitel.concat(diagnosFilterIds.avsnitt).concat(diagnosFilterIds.kategorier);
+        return _.map(allDiagnosFilterIds, function(diagnosId){
+            var icdItem = _.find(icdStructureAsFlatArray, function(icd){
+                return icd.numericalId === diagnosId;
+            });
+            return icdItem.name;
+        });
+    };
+
+    this.populateActiveDiagnosFilter = function(scope, statisticsData, diagnosIds) {
+        statisticsData.getIcd10Structure(function (diagnoses) {
+            scope.activeDiagnosFilters = diagnoses ? ControllerCommons.getDiagnosFilterInformationText(diagnosIds, diagnoses) : null;
+        }, function () {
+            scope.activeDiagnosFilters = diagnosIds;
+        });
+    };
+
+
 };
 
 
