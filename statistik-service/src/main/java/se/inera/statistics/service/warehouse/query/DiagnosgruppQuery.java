@@ -22,10 +22,9 @@ import com.google.common.base.Predicate;
 import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import se.inera.statistics.service.report.model.Avsnitt;
 import se.inera.statistics.service.report.model.DiagnosgruppResponse;
 import se.inera.statistics.service.report.model.ICDTyp;
-import se.inera.statistics.service.report.model.Kategori;
+import se.inera.statistics.service.report.model.Icd;
 import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.report.model.KonDataRow;
 import se.inera.statistics.service.report.model.KonField;
@@ -50,8 +49,6 @@ import java.util.Map;
 
 @Component
 public class DiagnosgruppQuery {
-
-    public static final int MAX_DIAGNOS_ID = 15000;
 
     @Autowired
     private Icd10 icd10;
@@ -85,9 +82,9 @@ public class DiagnosgruppQuery {
     public DiagnosgruppResponse getDiagnosgrupper(Aisle aisle, Predicate<Fact> filter, LocalDate start, int periods, int periodLength) {
         List<Icd10.Kapitel> kapitel = icd10.getKapitel();
         List<KonDataRow> rows = getKonDataRows(aisle, filter, start, periods, periodLength, kapitel, Icd10RangeType.KAPITEL);
-        List<Avsnitt> avsnitt = new ArrayList<>(kapitel.size());
+        List<Icd> avsnitt = new ArrayList<>(kapitel.size());
         for (Icd10.Kapitel k: kapitel) {
-            avsnitt.add(new Avsnitt(k.getId(), k.getName()));
+            avsnitt.add(new Icd(k.getId(), k.getName()));
         }
         return new DiagnosgruppResponse(avsnitt, rows);
     }
@@ -109,15 +106,7 @@ public class DiagnosgruppQuery {
     private DiagnosgruppResponse getUnderdiagnosgrupper(Aisle aisle, Predicate<Fact> filter, LocalDate start, int periods, int periodLength, Icd10.Range kapitel, Icd10RangeType rangeType) {
         List<ICDTyp> icdTyps = new ArrayList<>();
         for (Icd10.Id icdItem : kapitel.getSubItems()) {
-            switch (rangeType) {
-                case AVSNITT:   icdTyps.add(new Avsnitt(icdItem.getId(), icdItem.getName()));
-                                break;
-
-                case KATEGORI:  icdTyps.add(new Kategori(icdItem.getId(), icdItem.getName()));
-                                break;
-
-                default:        throw new RuntimeException("Unexpected range type: " + rangeType);
-            }
+            icdTyps.add(new Icd(icdItem.getId(), icdItem.getName()));
         }
         List<KonDataRow> rows = getKonDataRows(aisle, filter, start, periods, periodLength, kapitel.getSubItems(), rangeType);
         return new DiagnosgruppResponse(icdTyps, rows);
@@ -126,23 +115,30 @@ public class DiagnosgruppQuery {
     private List<KonDataRow> getKonDataRows(Aisle aisle, Predicate<Fact> filter, LocalDate start, int periods, int periodLength, List<? extends Icd10.Id> kapitel, Icd10RangeType rangeType) {
         List<KonDataRow> rows = new ArrayList<>();
         for (SjukfallGroup sjukfallGroup: SjukfallUtil.sjukfallGrupper(start, periods, periodLength, aisle, filter)) {
-            int[] female = new int[MAX_DIAGNOS_ID];
-            int[] male = new int[MAX_DIAGNOS_ID];
+            Map<Integer, Integer> female = new HashMap<>();
+            Map<Integer, Integer> male = new HashMap<>();
             for (Sjukfall sjukfall: sjukfallGroup.getSjukfall()) {
-                if (sjukfall.getKon() == Kon.Female) {
-                    female[sjukfall.getIcd10CodeForType(rangeType)]++;
-                } else {
-                    male[sjukfall.getIcd10CodeForType(rangeType)]++;
-                }
+                final int icd10Code = sjukfall.getIcd10CodeForType(rangeType);
+                final Map<Integer, Integer> genderMap = sjukfall.getKon() == Kon.Female ? female : male;
+                final int currentCount = getCurrentCount(icd10Code, genderMap);
+                genderMap.put(icd10Code, currentCount + 1);
             }
 
             List<KonField> list = new ArrayList<>(kapitel.size());
             for (Icd10.Id icdItem : kapitel) {
-                list.add(new KonField(female[icdItem.toInt()], male[icdItem.toInt()]));
+                list.add(new KonField(getCurrentCount(icdItem.toInt(), female), getCurrentCount(icdItem.toInt(), male)));
             }
             rows.add(new KonDataRow(ReportUtil.toDiagramPeriod(sjukfallGroup.getRange().getFrom()), list));
         }
         return rows;
+    }
+
+    private int getCurrentCount(int icd10Code, Map<Integer, Integer> genderMap) {
+        final Integer integer = genderMap.get(icd10Code);
+        if (integer != null) {
+            return integer;
+        }
+        return 0;
     }
 
     public DiagnosgruppResponse getDiagnosavsnitts(Aisle aisle, Predicate<Fact> filter, LocalDate start, int periods, int periodLength, String kapitelId) {

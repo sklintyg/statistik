@@ -27,6 +27,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import se.inera.statistics.service.report.model.DiagnosgruppResponse;
+import se.inera.statistics.service.report.model.ICDTyp;
+import se.inera.statistics.service.report.model.Icd;
 import se.inera.statistics.service.report.model.OverviewResponse;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.SimpleKonDataRow;
@@ -207,13 +209,13 @@ public class ChartDataService {
     @GET
     @Path("getDiagnoskapitel")
     @Produces({ MediaType.APPLICATION_JSON })
-    public List<Kapitel> getDiagnoskapitel() {
+    public List<Icd> getDiagnoskapitel() {
         LOG.info("Calling getKapitel");
-        List<Kapitel> kapitel = new ArrayList<>();
+        List<Icd> kapitel = new ArrayList<>();
         for (Icd10.Kapitel k : icd10.getKapitel()) {
             String s = k.getId();
             if (s.charAt(0) <= 'Z') {
-                kapitel.add(new Kapitel(s, k.getName()));
+                kapitel.add(new Icd(s, k.getName()));
             }
         }
         return kapitel;
@@ -229,7 +231,7 @@ public class ChartDataService {
     @Produces({ MediaType.APPLICATION_JSON })
     public DiagnosisKapitelAndAvsnittResponse getDiagnosisKapitelAndAvsnitt() {
         LOG.info("Calling getDiagnosisKapitelAndAvsnitt");
-        Map<String, List<Avsnitt>> avsnitts = new LinkedHashMap<>();
+        Map<String, List<Icd>> avsnitts = new LinkedHashMap<>();
         List<Icd10.Kapitel> kapitels = icd10.getKapitel();
         for (Icd10.Kapitel k : kapitels) {
             avsnitts.put(k.getId(), convertToAvsnitts(k.getAvsnitt()));
@@ -237,10 +239,10 @@ public class ChartDataService {
         return new DiagnosisKapitelAndAvsnittResponse(avsnitts, getDiagnoskapitel());
     }
 
-    private List<Avsnitt> convertToAvsnitts(List<Icd10.Avsnitt> avsnitts) {
-        List<Avsnitt> converted = new ArrayList<>(avsnitts.size());
+    private List<Icd> convertToAvsnitts(List<Icd10.Avsnitt> avsnitts) {
+        List<Icd> converted = new ArrayList<>(avsnitts.size());
         for (Icd10.Avsnitt avsnitt : avsnitts) {
-            converted.add(new Avsnitt(avsnitt.getId(), avsnitt.getName()));
+            converted.add(new Icd(avsnitt.getId(), avsnitt.getName()));
         }
         return converted;
     }
@@ -455,58 +457,15 @@ public class ChartDataService {
     @GET
     @Path("getIcd10Structure")
     @Produces({ MediaType.APPLICATION_JSON })
-    public List<se.inera.statistics.service.report.model.Kapitel> getIcd10Structure() {
+    public List<ICDTyp> getIcd10Structure() {
         LOG.info("Calling getIcd10Structure");
         List<Icd10.Kapitel> kapitel = icd10.getKapitel();
-        return Lists.transform(kapitel, new Function<Icd10.Kapitel, se.inera.statistics.service.report.model.Kapitel>() {
+        return Lists.transform(kapitel, new Function<Icd10.Kapitel, ICDTyp>() {
             @Override
-            public se.inera.statistics.service.report.model.Kapitel apply(Icd10.Kapitel kapitel) {
-                return se.inera.statistics.service.report.model.Kapitel.fromIcd10Kapitel(kapitel);
+            public ICDTyp apply(Icd10.Kapitel kapitel) {
+                return new Icd(kapitel);
             }
         });
-    }
-
-    public static class Kapitel {
-        private final String id;
-        private final String name;
-
-        public Kapitel(String id, String name) {
-            this.id = id;
-            this.name = name;
-        }
-
-        public String getId() {
-            return id;
-        }
-
-        public String getName() {
-            return name;
-        }
-    }
-
-    public static class Avsnitt extends Kapitel {
-        public Avsnitt(String id, String name) {
-            super(id, name);
-        }
-    }
-
-    public static class DiagnosisKapitelAndAvsnittResponse {
-        private final Map<String, List<Avsnitt>> avsnitts;
-        private final List<Kapitel> kapitels;
-
-        public DiagnosisKapitelAndAvsnittResponse(Map<String, List<Avsnitt>> avsnitts, List<Kapitel> kapitels) {
-            this.avsnitts = avsnitts;
-            this.kapitels = kapitels;
-        }
-
-        public Map<String, List<Avsnitt>> getAvsnitts() {
-            return avsnitts;
-        }
-
-        public List<Kapitel> getKapitels() {
-            return kapitels;
-        }
-
     }
 
 }

@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2014 Inera AB (http://www.inera.se)
+ * Copyright (C) 2015 Inera AB (http://www.inera.se)
  *
  * This file is part of statistik (https://github.com/sklintyg/statistik).
  *
@@ -83,8 +83,8 @@ public class WidelineToWarehouseIntegrationTest {
         Assert.assertEquals(780, fact.getKommun());
         Assert.assertEquals(7, fact.getLan());
         Assert.assertEquals(0, fact.getDiagnoskapitel());
-        Assert.assertEquals(15, fact.getDiagnosavsnitt());
-        Assert.assertEquals(16, fact.getDiagnoskategori());
+        Assert.assertEquals(10015, fact.getDiagnosavsnitt());
+        Assert.assertEquals(20016, fact.getDiagnoskategori());
         Assert.assertArrayEquals(new int[]{201010}, fact.getLakarbefattnings());
         Assert.assertEquals(33, fact.getLakaralder());
         Assert.assertEquals(2, fact.getLakarkon());

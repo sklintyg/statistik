@@ -20,32 +20,41 @@ package se.inera.statistics.service.report.model;
 
 import se.inera.statistics.service.report.util.Icd10;
 
-public class Kategori implements Comparable<Kategori>, ICDTyp {
+public class Icd implements Comparable<Icd>, ICDTyp {
 
     private final String id;
     private final String name;
     private final int numericalId;
 
-    public Kategori(String id, String name) {
+    public Icd(String id, String name) {
         this.id = id;
         this.name = name;
         this.numericalId = -1;
     }
 
-    public Kategori(String id, String name, int numericalId) {
+    public Icd(String id, String name, int numericalId) {
         this.id = id;
         this.name = name;
         this.numericalId = numericalId;
     }
 
-    @Override
-    public String getId() {
-        return id;
+    public Icd(Icd10.Id source) {
+        this(source.getId(), source.getName(), source.toInt());
     }
 
     @Override
     public String getName() {
         return asString();
+    }
+
+    @Override
+    public int getNumericalId() {
+        return numericalId;
+    }
+
+    @Override
+    public String getId() {
+        return id;
     }
 
     @Override
@@ -58,17 +67,12 @@ public class Kategori implements Comparable<Kategori>, ICDTyp {
     }
 
     @Override
-    public int getNumericalId() {
-        return numericalId;
-    }
-
-    @Override
     public String toString() {
-        return "{\"Avsnitt\":{" + "\"id\":\"" + id + '"' + ", \"name\":\"" + name + '"' + "}}";
+        return "{\"Icd\":{" + "\"id\":\"" + id + '"' + ", \"name\":\"" + name + '"' + "}}";
     }
 
     @Override
-    public int compareTo(Kategori o) {
+    public int compareTo(Icd o) {
         return id.compareTo(o.id);
     }
 
@@ -79,18 +83,14 @@ public class Kategori implements Comparable<Kategori>, ICDTyp {
 
     @Override
     public boolean equals(Object obj) {
-        if (obj instanceof Kategori) {
-            return isEqual((Kategori) obj);
+        if (obj instanceof Icd) {
+            return isEqual((Icd) obj);
         }
         return false;
     }
 
-    private boolean isEqual(Kategori other) {
+    private boolean isEqual(Icd other) {
         return id.equals(other.id);
-    }
-
-    public static Kategori fromIcd10Kategori(Icd10.Kategori source) {
-        return new Kategori(source.getId(), source.getName(), source.toInt());
     }
 
 }
