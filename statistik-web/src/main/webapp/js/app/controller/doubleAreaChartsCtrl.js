@@ -271,7 +271,7 @@ angular.module('StatisticsApp').controller('doubleAreaChartsCtrl', [ '$scope', '
         $scope.useSpecialPrintTable = true;
 
         $scope.exportChart = function (chartName) {
-            ControllerCommons.exportChart(that[chartName], $scope.pageName, $scope.subTitle, 'vertical');
+            ControllerCommons.exportChart(that[chartName], $scope.pageName, $scope.subTitle, $scope.activeDiagnosFilters, 'vertical');
         };
 
         $scope.print = function (bwPrint) {

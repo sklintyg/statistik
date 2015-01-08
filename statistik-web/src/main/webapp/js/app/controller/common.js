@@ -110,7 +110,7 @@ var ControllerCommons = new function(){
             r.push(func(arr[i]));
         }
         return r;
-    }
+    };
     
     this.getFileName = function(chartName) {
         var d = new Date();
@@ -126,30 +126,60 @@ var ControllerCommons = new function(){
         var time = hour + minute + second;
 
         return String(chartName).replace(/\s+/g, "_") + "_" + date + "_" + time;
-    }
+    };
     
-    this.exportChart = function(chart, chartName, title, legendLayout) {
+    this.exportChart = function(chart, chartName, title, diagnosFilters, legendLayout) {
         var options = {filename: ControllerCommons.getFileName(chartName)};
-        var chartOptions = { legend: { enabled: true } };
+        var extendedChartOptions = { legend: { enabled: true } };
+        var chartHeight = 400;
+        extendedChartOptions.chart = {};
+        extendedChartOptions.chart.height = chartHeight;
+        extendedChartOptions.chart.width = 600;
         if (legendLayout) {
-            chartOptions.legend.layout = legendLayout;
+            extendedChartOptions.legend.layout = legendLayout;
         }
         if (title) {
-            chartOptions.title = {
+            extendedChartOptions.title = {
                 text: title,
                 margin: 30
             };
-            chartOptions.subtitle = {
+            extendedChartOptions.subtitle = {
                 text: " "
             };
-            chartOptions.chart = {
-                marginTop: null,
-                backgroundColor : "#FFFFFF",
-                spacingLeft: 0
+            extendedChartOptions.chart.marginTop = null;
+            extendedChartOptions.chart.backgroundColor = "#FFFFFF";
+            extendedChartOptions.chart.spacingLeft = 0;
+        }
+        extendedChartOptions.subtitle = {
+            text: " "
+        };
+        if (diagnosFilters) {
+            var fontSize = 12;
+            var fontSizeHeader = 15;
+            extendedChartOptions.chart.spacingBottom = (diagnosFilters.length + 2) * fontSize + fontSizeHeader + diagnosFilters.length * 2;
+            extendedChartOptions.chart.height = chartHeight + extendedChartOptions.chart.spacingBottom;
+            extendedChartOptions.chart.events = {
+                load: function () {
+                    this.renderer.text('Sammanställning av diagnosfilter', 10, chartHeight + fontSize / 2 + fontSizeHeader)
+                        .css({
+                            color: '#008391',
+                            fontSize: fontSizeHeader + 'px'
+                        })
+                        .add();
+                    var arrayLength = diagnosFilters.length;
+                    for (var i = 0; i < arrayLength; i++) {
+                        this.renderer.text(diagnosFilters[i], 10, chartHeight + (2 + i) * fontSize + fontSizeHeader + i * 2)
+                            .css({
+                                color: '#008391',
+                                fontSize: fontSize + 'px'
+                            })
+                            .add();
+                    }
+                }
             };
         }
-        chart.exportChart(options, chartOptions);
-    }
+        chart.exportChart(options, extendedChartOptions);
+    };
 
     this.getHighChartConfigBase = function(chartCategories, chartSeries) {
         return {
@@ -171,12 +201,9 @@ var ControllerCommons = new function(){
                 labels : {
                     rotation : 310,
                     align : 'right',
-                   
                     style: {
                     	whiteSpace: 'pre',
-                    	width: '120px',
-                        
-                    	
+                    	width: '120px'
                     }
                 },
                 categories : ControllerCommons.map(chartCategories, function(name) {

@@ -68,7 +68,7 @@ describe("Test of common functions for controllers", function() {
                     expect(chartOpt.title.text).toBe("title text");
                 }
         };
-        ControllerCommons.exportChart(chart, name, "title text", "MyLayout");
+        ControllerCommons.exportChart(chart, name, "title text", null, "MyLayout");
         expect(callTimes).toBe(1);
     });
     
