@@ -60,7 +60,7 @@ angular.module('StatisticsApp').controller('singleLineChartCtrl', [ '$scope', '$
         };
 
         var populatePageWithData = function (result, enhetsIds, diagnosIds) {
-            ControllerCommons.populateActiveDiagnosFilter($scope, statisticsData, diagnosIds);
+            ControllerCommons.populateActiveDiagnosFilter($scope, statisticsData, diagnosIds, $routeParams.printBw || $routeParams.print);
             $scope.subTitle = config.title(result.period, enhetsIds ? enhetsIds.length : null);
             $scope.doneLoading = true;
             $timeout(function () {

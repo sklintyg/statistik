@@ -56,7 +56,7 @@ angular.module('StatisticsApp').controller('casesPerCountyCtrl', ['$scope', '$ti
         };
 
         var populatePageWithData = function (result, enhetsIds, diagnosIds) {
-            ControllerCommons.populateActiveDiagnosFilter($scope, statisticsData, diagnosIds);
+            ControllerCommons.populateActiveDiagnosFilter($scope, statisticsData, diagnosIds, $routeParams.printBw || $routeParams.print);
             var enhetsCount = enhetsIds ? enhetsIds.length : null;
             $scope.subTitle = "Antal sjukfall per län" + ControllerCommons.getEnhetCountText(enhetsCount, false) + result.period;
             $scope.doneLoading = true;

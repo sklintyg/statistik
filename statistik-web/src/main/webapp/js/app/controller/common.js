@@ -338,11 +338,13 @@ var ControllerCommons = new function(){
         });
     };
 
-    this.populateActiveDiagnosFilter = function(scope, statisticsData, diagnosIds) {
+    this.populateActiveDiagnosFilter = function(scope, statisticsData, diagnosIds, isPrint) {
         statisticsData.getIcd10Structure(function (diagnoses) {
             scope.activeDiagnosFilters = diagnoses ? ControllerCommons.getDiagnosFilterInformationText(diagnosIds, diagnoses) : null;
+            scope.activeDiagnosFiltersForPrint = isPrint ? scope.activeDiagnosFilters : null;
         }, function () {
             scope.activeDiagnosFilters = diagnosIds;
+            scope.activeDiagnosFiltersForPrint = isPrint ? scope.activeDiagnosFilters : null;
         });
     };
 
