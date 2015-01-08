@@ -32,7 +32,10 @@ angular.module('StatisticsApp').factory('statisticsData', function ($http) {
     };
 
     var getParamsAsJson = function (enhetsIds, diagnosIds) {
-        return {"enhets": enhetsIds, "kapitels": diagnosIds.kapitel, "avsnitts": diagnosIds.avsnitt, "kategoris": diagnosIds.kategorier};
+        if (diagnosIds) {
+            return {"enhets": enhetsIds, "kapitels": diagnosIds.kapitel, "avsnitts": diagnosIds.avsnitt, "kategoris": diagnosIds.kategorier};
+        }
+        return {"enhets": enhetsIds, "kapitels": null, "avsnitts": null, "kategoris": null};
     };
 
     factory.getOverview = function (successCallback, failureCallback) {
