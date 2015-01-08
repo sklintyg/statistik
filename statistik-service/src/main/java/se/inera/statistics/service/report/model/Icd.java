@@ -20,11 +20,16 @@ package se.inera.statistics.service.report.model;
 
 import se.inera.statistics.service.report.util.Icd10;
 
-public class Icd implements Comparable<Icd>, ICDTyp {
+import java.util.ArrayList;
+import java.util.List;
+
+public class Icd implements Comparable<Icd> {
 
     private final String id;
     private final String name;
     private final int numericalId;
+
+    private final List<Icd> subItems = new ArrayList<>();
 
     public Icd(String id, String name) {
         this.id = id;
@@ -40,24 +45,27 @@ public class Icd implements Comparable<Icd>, ICDTyp {
 
     public Icd(Icd10.Id source) {
         this(source.getId(), source.getName(), source.toInt());
+        for (Icd10.Id subItem : source.getSubItems()) {
+            subItems.add(new Icd(subItem));
+        }
     }
 
-    @Override
     public String getName() {
-        return asString();
+        return name;
     }
 
-    @Override
     public int getNumericalId() {
         return numericalId;
     }
 
-    @Override
+    public List<Icd> getSubItems() {
+        return subItems;
+    }
+
     public String getId() {
         return id;
     }
 
-    @Override
     public String asString() {
         if (id.charAt(0) <= 'Z') {
             return id + " " + name;

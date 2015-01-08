@@ -27,7 +27,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import se.inera.statistics.service.report.model.DiagnosgruppResponse;
-import se.inera.statistics.service.report.model.ICDTyp;
 import se.inera.statistics.service.report.model.Icd;
 import se.inera.statistics.service.report.model.OverviewResponse;
 import se.inera.statistics.service.report.model.Range;
@@ -457,12 +456,12 @@ public class ChartDataService {
     @GET
     @Path("getIcd10Structure")
     @Produces({ MediaType.APPLICATION_JSON })
-    public List<ICDTyp> getIcd10Structure() {
+    public List<Icd> getIcd10Structure() {
         LOG.info("Calling getIcd10Structure");
         List<Icd10.Kapitel> kapitel = icd10.getKapitel();
-        return Lists.transform(kapitel, new Function<Icd10.Kapitel, ICDTyp>() {
+        return Lists.transform(kapitel, new Function<Icd10.Kapitel, Icd>() {
             @Override
-            public ICDTyp apply(Icd10.Kapitel kapitel) {
+            public Icd apply(Icd10.Kapitel kapitel) {
                 return new Icd(kapitel);
             }
         });
