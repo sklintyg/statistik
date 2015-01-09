@@ -13,7 +13,7 @@
 
 !3 Då gäller:
 
-| Sjukfall i rapporten valfria diagnoser diagram |
+| Sjukfall i rapporten jämför diagnoser diagram |
 |inloggad som | valda diagnoskategorier | diagnoskategori | män? | kvinnor? |
 | user1       | A00, F32, F40           | A00             | 0    | 1        |
 | user1       | A00, F32, F40           | F32             | 0    | 0        |
