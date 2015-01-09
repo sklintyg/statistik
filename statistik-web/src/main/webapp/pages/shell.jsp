@@ -334,6 +334,11 @@
                                                    ctrlname="VerksamhetDiagnosavsnittCtrl" navigationaware><span message key="nav.enskilt-diagnoskapitel"></span>
                                                 </a>
                                             </li>
+                                            <%--<li><a data-ng-href="#/verksamhet/{{businessId}}/jamforDiagnoser"--%>
+                                                   <%--id="navBusinessCompareDiagnosisLink"--%>
+                                                   <%--ctrlname="VerksamhetCompareDiagnosisCtrl" navigationaware><span message key="nav.jamfor-diagnoser"></span>--%>
+                                                <%--</a>--%>
+                                            <%--</li>--%>
                                         </ul>
                                         <li>
                                             <a data-ng-href="#/verksamhet/{{businessId}}/aldersgrupper"

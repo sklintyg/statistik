@@ -49,10 +49,12 @@ import se.inera.statistics.service.warehouse.query.RangeNotFoundException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -263,6 +265,19 @@ public class ProtectedChartDataService {
             return Response.serverError().entity(e.getMessage()).build();
         }
     }
+
+    @POST
+    @Path("{verksamhetId}/getJamforDiagnoserStatistik")
+    @Produces({ MediaType.APPLICATION_JSON })
+    @Consumes({ MediaType.APPLICATION_JSON })
+    @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request, #verksamhetId)")
+    @PostAuthorize(value = "@protectedChartDataService.userAccess(#request, #verksamhetId)")
+    public SimpleDetailsData getDiagnosisSubGroupStatistics(@Context HttpServletRequest request, @PathParam(VERKSAMHET_PATH_ID) String verksamhetId, @QueryParam("dx") List<String> diagnosis, ReportRequestFilter inFilter) {
+        LOG.info("Calling getDiagnosisSubGroupStatistics with verksamhetId: {} and groupId: {} and ids: {}", verksamhetId, diagnosis, inFilter.getEnhets());
+        return getAgeGroupsStatistics(request, verksamhetId, inFilter); //TODO This is just used as a mock response
+    }
+
+
 
     /**
      * Get overview. Includes total n:o of sjukfall, sex distribution, top lists for diagnosgrupp, aldersgrupp, sjukskrivningslangd,

@@ -18,6 +18,7 @@ var stMessages = {
         'nav.diagnos':'Diagnos',
         'nav.diagnosgrupp':'Diagnosgrupp',
         'nav.enskilt-diagnoskapitel':'Enskilt diagnoskapitel',
+        'nav.jamfor-diagnoser':'Jämför valfria diagnoser',
         'nav.tio-vanligaste-diagnoserna': 'Tio omfattande diagnoser',
         'nav.jamfor-vanliga-diagnoser': 'Jämför valfria diagnoser',
         'nav.aldersgrupp':'Åldersgrupp',
