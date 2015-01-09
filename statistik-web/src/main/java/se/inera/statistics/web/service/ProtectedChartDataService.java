@@ -272,12 +272,14 @@ public class ProtectedChartDataService {
     @Consumes({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request, #verksamhetId)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request, #verksamhetId)")
-    public SimpleDetailsData getDiagnosisSubGroupStatistics(@Context HttpServletRequest request, @PathParam(VERKSAMHET_PATH_ID) String verksamhetId, @QueryParam("dx") List<String> diagnosis, ReportRequestFilter inFilter) {
-        LOG.info("Calling getDiagnosisSubGroupStatistics with verksamhetId: {} and groupId: {} and ids: {}", verksamhetId, diagnosis, inFilter.getEnhets());
-        return getAgeGroupsStatistics(request, verksamhetId, inFilter); //TODO This is just used as a mock response
+    public SimpleDetailsData getCompareDiagnosisStatistics(@Context HttpServletRequest request, @PathParam(VERKSAMHET_PATH_ID) String verksamhetId, @QueryParam("dx") List<String> diagnosis, ReportRequestFilter inFilter) {
+        LOG.info("Calling getCompareDiagnosisStatistics with verksamhetId: {} and diagnosis: {} and ids: {}", verksamhetId, diagnosis, inFilter.getEnhets());
+        final Range range = new Range(12);
+        Verksamhet verksamhet = getVerksamhet(request, Verksamhet.decodeId(verksamhetId));
+        Predicate<Fact> filter = getFilter(request, verksamhet, inFilter);
+        SimpleKonResponse<SimpleKonDataRow> resultRows = warehouse.getJamforDiagnoser(filter, range, verksamhet.getVardgivarId(), diagnosis);
+        return new CompareDiagnosisConverter().convert(resultRows, range);
     }
-
-
 
     /**
      * Get overview. Includes total n:o of sjukfall, sex distribution, top lists for diagnosgrupp, aldersgrupp, sjukskrivningslangd,

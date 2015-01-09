@@ -80,10 +80,10 @@ class ReportsUtil {
         return response.data;
     }
 
-    private def post(String url, filter=new ReportRequestFilter()) {
+    private def post(String url, filter=new ReportRequestFilter(), queryString="") {
         def json = new JsonBuilder(filter)
         println("POSTING: " + json + " TO: " + url)
-        def response = statistik.post(path: url, body: json.toString(), requestContentType: JSON)
+        def response = statistik.post(path: url, body: json.toString(), requestContentType: JSON, queryString : queryString)
         assert response.status == 200
         return response.data;
     }
@@ -209,6 +209,10 @@ class ReportsUtil {
 
     def getReportCasesPerCounty() {
         return get("/api/getCountyStatistics")
+    }
+
+    def getReportJamforDiagnoserInloggad(String user, ReportRequestFilter filter, String diagnoserQueryString) {
+        return post("/api/verksamhet/" + getVardgivareForUser(user) + "/getJamforDiagnoserStatistik", filter, diagnoserQueryString)
     }
 
 }

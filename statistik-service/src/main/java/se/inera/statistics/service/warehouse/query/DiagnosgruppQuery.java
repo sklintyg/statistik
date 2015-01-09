@@ -18,7 +18,9 @@
  */
 package se.inera.statistics.service.warehouse.query;
 
+import com.google.common.base.Function;
 import com.google.common.base.Predicate;
+import com.google.common.collect.Lists;
 import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -28,6 +30,8 @@ import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.report.model.KonDataRow;
 import se.inera.statistics.service.report.model.KonField;
 import se.inera.statistics.service.report.model.OverviewChartRowExtended;
+import se.inera.statistics.service.report.model.SimpleKonDataRow;
+import se.inera.statistics.service.report.model.SimpleKonResponse;
 import se.inera.statistics.service.report.util.Icd10;
 import se.inera.statistics.service.report.util.Icd10RangeType;
 import se.inera.statistics.service.report.util.ReportUtil;
@@ -100,6 +104,24 @@ public class DiagnosgruppQuery {
         }
 
         throw new RangeNotFoundException("Could not find ICD10 range: " + rangeId);
+    }
+
+    public SimpleKonResponse<SimpleKonDataRow> getJamforDiagnoser(Aisle aisle, Predicate<Fact> filter, LocalDate start, int periods, int periodLength, List<String> diagnosis) {
+        List<Icd10.Kategori> kategoris = Lists.transform(diagnosis, new Function<String, Icd10.Kategori>() {
+            @Override
+            public Icd10.Kategori apply(String diagnos) {
+                return icd10.findKategori(diagnos);
+            }
+        });
+        List<KonDataRow> periodRows = getKonDataRows(aisle, filter, start, periods, periodLength, kategoris, Icd10RangeType.KATEGORI);
+        List<SimpleKonDataRow> rows = new ArrayList<>(kategoris.size());
+        List<KonField> data = periodRows.get(0).getData();
+        for (int i = 0; i < data.size(); i++) {
+            KonField row = data.get(i);
+            final Icd10.Kategori kategori = kategoris.get(i);
+            rows.add(new SimpleKonDataRow(kategori.getId() + " " + kategori.getName(), row));
+        }
+        return new SimpleKonResponse<>(rows, periods * periodLength);
     }
 
     private DiagnosgruppResponse getUnderdiagnosgrupper(Aisle aisle, Predicate<Fact> filter, LocalDate start, int periods, int periodLength, Icd10.Range kapitel, Icd10RangeType rangeType) {
