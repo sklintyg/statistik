@@ -72,12 +72,6 @@ describe("Test of common functions for controllers", function() {
         expect(callTimes).toBe(1);
     });
     
-    it("map", function() {
-        expect(ControllerCommons.map([], function(e){return e+1})).toEqual([]);
-        expect(ControllerCommons.map([1,2], function(e){return e+1})).toEqual([2,3]);
-        expect(ControllerCommons.map(["1","2"], function(e){return e+1})).toEqual(["11","21"]);
-    });
-    
     it("isNumber", function() {
         expect(ControllerCommons.isNumber()).toBe(false);
         expect(ControllerCommons.isNumber(0)).toBe(true);

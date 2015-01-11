@@ -104,14 +104,6 @@ var ControllerCommons = new function(){
         return ControllerCommons.isNumber(input) ? input.toString().split('').reverse().join('').match(/.{1,3}/g).join('\u00A0').split('').reverse().join('') : input;
     };
     
-    this.map = function(arr, func) {
-        var r=[];
-        for(var i=0; i<arr.length; i++) {
-            r.push(func(arr[i]));
-        }
-        return r;
-    };
-    
     this.getFileName = function(chartName) {
         var d = new Date();
 
@@ -206,7 +198,7 @@ var ControllerCommons = new function(){
                     	width: '120px'
                     }
                 },
-                categories : ControllerCommons.map(chartCategories, function(name) {
+                categories : _.map(chartCategories, function(name) {
                     return ControllerCommons.htmlsafe(name);
                 }),
                 title: { 

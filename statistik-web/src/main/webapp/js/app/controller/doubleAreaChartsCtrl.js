@@ -191,11 +191,11 @@ angular.module('StatisticsApp').controller('doubleAreaChartsCtrl', [ '$scope', '
             }
             $scope.subTitle = getSubtitle($scope.currentPeriod, $scope.selectedDetailsOption, $scope.selectedDetailsOption2);
 
-            $scope.detailsOptions = ControllerCommons.map(kapitels, function (e) {
+            $scope.detailsOptions = _.map(kapitels, function (e) {
                 e.url = basePath + "/" + e.id;
                 return e;
             });
-            $scope.detailsOptions2 = ControllerCommons.map(avsnitts, function (e) {
+            $scope.detailsOptions2 = _.map(avsnitts, function (e) {
                 e.url = basePath + "/" + $routeParams.groupId + "/kategori/" + e.id;
                 return e;
             });

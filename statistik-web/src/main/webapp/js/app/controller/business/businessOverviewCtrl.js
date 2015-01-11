@@ -169,13 +169,13 @@ angular.module('StatisticsApp').controller('businessOverviewCtrl', ['$scope', '$
             var series = [
                 {
                     name: "Antal",
-                    data: ControllerCommons.map(chartData, function (e) {
+                    data: _.map(chartData, function (e) {
                         return e.quantity;
                     }),
                     color: '#57843B'
                 }
             ];
-            var categories = ControllerCommons.map(chartData, function (e) {
+            var categories = _.map(chartData, function (e) {
                 return e.name;
             });
             var chartOptions = ControllerCommons.getHighChartConfigBase(categories, series);
