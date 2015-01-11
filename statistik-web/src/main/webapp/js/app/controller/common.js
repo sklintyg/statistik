@@ -326,7 +326,7 @@ var ControllerCommons = new function(){
             var icdItem = _.find(icdStructureAsFlatArray, function(icd){
                 return icd.numericalId === diagnosId;
             });
-            return icdItem.name;
+            return icdItem.id + " " + icdItem.name;
         });
     };
 
