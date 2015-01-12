@@ -21,7 +21,9 @@ package se.inera.statistics.service.warehouse;
 import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.report.util.Icd10RangeType;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public class Sjukfall {
@@ -35,9 +37,7 @@ public class Sjukfall {
     private int intygCount;
     private final int kon;
     private int alder;
-    private int diagnoskapitel;
-    private int diagnosavsnitt;
-    private int diagnoskategori;
+    private List<Diagnos> diagnoses = new ArrayList<>();
     private int sjukskrivningsgrad;
     private Set<Lakare> lakare = new HashSet<>();
     private Sjukfall extending;
@@ -49,9 +49,7 @@ public class Sjukfall {
         intygCount++;
         kon = line.getKon();
         alder = line.getAlder();
-        diagnoskapitel = line.getDiagnoskapitel();
-        diagnosavsnitt = line.getDiagnosavsnitt();
-        diagnoskategori = line.getDiagnoskategori();
+        diagnoses.add(new Diagnos(line.getDiagnoskapitel(), line.getDiagnosavsnitt(), line.getDiagnoskategori()));
         sjukskrivningsgrad = line.getSjukskrivningsgrad();
         lan = line.getLan();
         final int lakarid = line.getLakarid();
@@ -68,6 +66,7 @@ public class Sjukfall {
         intygCount += previous.getIntygCount();
         extending = previous;
         lakare.addAll(previous.getLakare());
+        diagnoses.addAll(0, previous.diagnoses);
     }
 
     Sjukfall(Sjukfall previous, Sjukfall sjukfall) {
@@ -76,6 +75,7 @@ public class Sjukfall {
         realDays += previous.getRealDays() + (sjukfall.getStart() - previous.getEnd());
         intygCount += previous.getIntygCount();
         lakare.addAll(previous.getLakare());
+        diagnoses.addAll(0, previous.diagnoses);
     }
 
     Sjukfall(Sjukfall sjukfall) {
@@ -85,9 +85,7 @@ public class Sjukfall {
         intygCount = sjukfall.getIntygCount();
         kon = sjukfall.kon;
         alder = sjukfall.getAlder();
-        diagnoskapitel = sjukfall.getDiagnoskapitel();
-        diagnosavsnitt = sjukfall.getDiagnosavsnitt();
-        diagnoskategori = sjukfall.getDiagnoskategori();
+        diagnoses.addAll(sjukfall.diagnoses);
         sjukskrivningsgrad = sjukfall.getSjukskrivningsgrad();
         lan = sjukfall.lan;
         lakare.addAll(sjukfall.getLakare());
@@ -152,7 +150,7 @@ public class Sjukfall {
     }
 
     public int getDiagnoskategori() {
-        return diagnoskategori;
+        return getLastDiagnosis().diagnoskategori;
     }
 
     public int getIcd10CodeForType(Icd10RangeType rangeType) {
@@ -162,6 +160,25 @@ public class Sjukfall {
             case KATEGORI: return getDiagnoskategori();
             default: throw new RuntimeException("Unknown range type: " + rangeType);
         }
+    }
+
+    public List<Integer> getAllIcd10OfType(Icd10RangeType icd10RangeType) {
+        List<Integer> result = new ArrayList<>();
+        for (Diagnos diagnose : diagnoses) {
+            switch (icd10RangeType) {
+                case KATEGORI:
+                    result.add(diagnose.diagnoskategori);
+                    break;
+                case AVSNITT:
+                    result.add(diagnose.diagnosavsnitt);
+                    break;
+                case KAPITEL:
+                    result.add(diagnose.diagnoskapitel);
+                    break;
+                default: throw new RuntimeException("Unknown icd range type: " + icd10RangeType);
+            }
+        }
+        return result;
     }
 
     public int getAlder() {
@@ -185,7 +202,7 @@ public class Sjukfall {
     }
 
     public int getDiagnoskapitel() {
-        return diagnoskapitel;
+        return getLastDiagnosis().diagnoskapitel;
     }
 
     public int getSjukskrivningsgrad() {
@@ -193,7 +210,11 @@ public class Sjukfall {
     }
 
     public int getDiagnosavsnitt() {
-        return diagnosavsnitt;
+        return getLastDiagnosis().diagnosavsnitt;
+    }
+
+    private Diagnos getLastDiagnosis() {
+        return diagnoses.get(diagnoses.size() - 1);
     }
 
     public boolean isExtended() {
@@ -206,6 +227,18 @@ public class Sjukfall {
 
     public Set<Lakare> getLakare() {
         return lakare;
+    }
+
+    private final class Diagnos {
+        private final int diagnoskapitel;
+        private final int diagnosavsnitt;
+        private final int diagnoskategori;
+
+        private Diagnos(int diagnoskapitel, int diagnosavsnitt, int diagnoskategori) {
+            this.diagnoskapitel = diagnoskapitel;
+            this.diagnosavsnitt = diagnosavsnitt;
+            this.diagnoskategori = diagnoskategori;
+        }
     }
 
 }
