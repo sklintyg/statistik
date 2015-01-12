@@ -90,9 +90,15 @@ public class WidelineLoader {
     private PreparedStatement prepareStatement(Connection connection) throws SQLException {
         connection.setAutoCommit(false);
         connection.setReadOnly(true);
-        PreparedStatement stmt = connection.prepareStatement("select id, correlationid, lkf, enhet, lakarintyg, patientid, startdatum,"
+        String sql = "select id, correlationid, lkf, enhet, lakarintyg, patientid, startdatum,"
                 + " slutdatum, kon, alder, diagnoskapitel, diagnosavsnitt, diagnoskategori, sjukskrivningsgrad, lakarkon, lakaralder,"
-                + " lakarbefattning, vardgivareid, lakareid from wideline w1 where w1.correlationid not in (select correlationid from wideline where intygtyp = " + EventType.REVOKED.ordinal() + " )", ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
+                + " lakarbefattning, vardgivareid, lakareid from wideline w1 where w1.correlationid not in (select correlationid from wideline where intygtyp = " + EventType.REVOKED.ordinal() + " )";
+        int maxIntyg = Integer.parseInt(System.getProperty("statistics.test.max.fact", "0"));
+        if (maxIntyg > 0) {
+            sql += " limit " + maxIntyg;
+            LOG.error("Only reading first " + maxIntyg + " intyg.");
+        }
+        PreparedStatement stmt = connection.prepareStatement(sql, ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
         stmt.setFetchSize(FETCH_SIZE);
         return stmt;
     }
