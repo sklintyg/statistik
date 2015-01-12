@@ -39,7 +39,8 @@ public class SjukfallIterator implements Iterator<SjukfallGroup> {
         this.from = from;
         this.periods = periods;
         this.periodSize = periodSize;
-        sjukfallCalculator = new SjukfallCalculator(aisle.getLines(), filter, useOriginalSjukfallStart);
+        boolean extendSjukfall = !SjukfallUtil.ALL_ENHETER.equals(filter);
+        sjukfallCalculator = new SjukfallCalculator(aisle.getLines(), filter, useOriginalSjukfallStart, extendSjukfall);
     }
 
     @Override
