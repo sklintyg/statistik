@@ -55,7 +55,8 @@ angular.module('StatisticsApp').controller('casesPerCountyCtrl', ['$scope', '$ti
             }
         };
 
-        var populatePageWithData = function (result, enhetsIds) {
+        var populatePageWithData = function (result, enhetsIds, diagnosIds) {
+            ControllerCommons.populateActiveDiagnosFilter($scope, statisticsData, diagnosIds, $routeParams.printBw || $routeParams.print);
             var enhetsCount = enhetsIds ? enhetsIds.length : null;
             $scope.subTitle = "Antal sjukfall per län" + ControllerCommons.getEnhetCountText(enhetsCount, false) + result.period;
             $scope.doneLoading = true;
@@ -84,7 +85,7 @@ angular.module('StatisticsApp').controller('casesPerCountyCtrl', ['$scope', '$ti
         $scope.dataLoadingError = false;
         $scope.chartFootnotes = [messageService.getProperty('info.lan.information', null, "", null, true)];
         $scope.exportChart = function () {
-            ControllerCommons.exportChart(chart, $scope.pageName);
+            ControllerCommons.exportChart(chart, $scope.pageName, $scope.subTitle, $scope.activeDiagnosFilters);
         };
 
         $scope.print = function (bwPrint) {

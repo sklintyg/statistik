@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2014 Inera AB (http://www.inera.se)
+ * Copyright (C) 2015 Inera AB (http://www.inera.se)
  *
  * This file is part of statistik (https://github.com/sklintyg/statistik).
  *
@@ -53,6 +53,7 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -262,6 +263,21 @@ public class ProtectedChartDataService {
         } catch (RangeNotFoundException e) {
             return Response.serverError().entity(e.getMessage()).build();
         }
+    }
+
+    @POST
+    @Path("{verksamhetId}/getJamforDiagnoserStatistik")
+    @Produces({ MediaType.APPLICATION_JSON })
+    @Consumes({ MediaType.APPLICATION_JSON })
+    @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request, #verksamhetId)")
+    @PostAuthorize(value = "@protectedChartDataService.userAccess(#request, #verksamhetId)")
+    public SimpleDetailsData getCompareDiagnosisStatistics(@Context HttpServletRequest request, @PathParam(VERKSAMHET_PATH_ID) String verksamhetId, @QueryParam("dx") List<String> diagnosis, ReportRequestFilter inFilter) {
+        LOG.info("Calling getCompareDiagnosisStatistics with verksamhetId: {} and diagnosis: {} and ids: {}", verksamhetId, diagnosis, inFilter.getEnhets());
+        final Range range = new Range(12);
+        Verksamhet verksamhet = getVerksamhet(request, Verksamhet.decodeId(verksamhetId));
+        Predicate<Fact> filter = getFilter(request, verksamhet, inFilter);
+        SimpleKonResponse<SimpleKonDataRow> resultRows = warehouse.getJamforDiagnoser(filter, range, verksamhet.getVardgivarId(), diagnosis);
+        return new CompareDiagnosisConverter().convert(resultRows, range);
     }
 
     /**

@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2014 Inera AB (http://www.inera.se)
+ * Copyright (C) 2015 Inera AB (http://www.inera.se)
  *
  * This file is part of statistik (https://github.com/sklintyg/statistik).
  *
@@ -23,15 +23,15 @@ import java.util.List;
 
 public class DiagnosgruppResponse {
 
-    private final List<? extends ICDTyp> icdTyps;
+    private final List<? extends Icd> icdTyps;
     private final List<KonDataRow> rows;
 
-    public DiagnosgruppResponse(List<? extends ICDTyp> icdTyps, List<KonDataRow> rows) {
+    public DiagnosgruppResponse(List<? extends Icd> icdTyps, List<KonDataRow> rows) {
         this.icdTyps = icdTyps;
         this.rows = rows;
     }
 
-    public List<? extends ICDTyp> getIcdTyps() {
+    public List<? extends Icd> getIcdTyps() {
         return icdTyps;
     }
 
@@ -40,7 +40,7 @@ public class DiagnosgruppResponse {
             return new ArrayList<>();
         }
         List<String> subGroupStrings = new ArrayList<>();
-        for (ICDTyp avsnitt : icdTyps) {
+        for (Icd avsnitt : icdTyps) {
             subGroupStrings.add(avsnitt.asString());
         }
         return subGroupStrings;

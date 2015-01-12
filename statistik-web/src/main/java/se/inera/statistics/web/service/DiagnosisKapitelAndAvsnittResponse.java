@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2014 Inera AB (http://www.inera.se)
+ * Copyright (C) 2015 Inera AB (http://www.inera.se)
  *
  * This file is part of statistik (https://github.com/sklintyg/statistik).
  *
@@ -16,16 +16,27 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package se.inera.statistics.service.report.model;
+package se.inera.statistics.web.service;
 
-public interface ICDTyp {
+import se.inera.statistics.service.report.model.Icd;
 
-    String asString();
+import java.util.List;
+import java.util.Map;
 
-    String getId();
+class DiagnosisKapitelAndAvsnittResponse {
+    private final Map<String, List<Icd>> avsnitts;
+    private final List<Icd> kapitels;
 
-    String getName();
+    public DiagnosisKapitelAndAvsnittResponse(Map<String, List<Icd>> avsnitts, List<Icd> kapitels) {
+        this.avsnitts = avsnitts;
+        this.kapitels = kapitels;
+    }
 
-    int getNumericalId();
+    public Map<String, List<Icd>> getAvsnitts() {
+        return avsnitts;
+    }
 
+    public List<Icd> getKapitels() {
+        return kapitels;
+    }
 }

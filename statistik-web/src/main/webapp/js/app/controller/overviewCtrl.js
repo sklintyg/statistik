@@ -129,13 +129,13 @@ angular.module('StatisticsApp').controller('overviewCtrl', [ '$scope', '$timeout
             var series = [
                 {
                     name: "Antal",
-                    data: ControllerCommons.map(chartData, function (e) {
+                    data: _.map(chartData, function (e) {
                         return e.quantity;
                     }),
                     color: '#57843B'
                 }
             ];
-            var categories = ControllerCommons.map(chartData, function (e) {
+            var categories = _.map(chartData, function (e) {
                 return e.name;
             });
             var chartOptions = ControllerCommons.getHighChartConfigBase(categories, series);
@@ -151,7 +151,7 @@ angular.module('StatisticsApp').controller('overviewCtrl', [ '$scope', '$timeout
         }
 
         function paintSickLeavePerCountyChart(containerId, chartData, tooltipHeaderPrefix) {
-            var series = ControllerCommons.map(chartData, function (e) {
+            var series = _.map(chartData, function (e) {
                 var coords = getCoordinates(e);
                 return {"data": [
                     [coords.x, coords.y, e.quantity]

@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2014 Inera AB (http://www.inera.se)
+ * Copyright (C) 2015 Inera AB (http://www.inera.se)
  *
  * This file is part of statistik (https://github.com/sklintyg/statistik).
  *
@@ -18,18 +18,20 @@
  */
 package se.inera.statistics.service.warehouse.query;
 
+import com.google.common.base.Function;
 import com.google.common.base.Predicate;
+import com.google.common.collect.Lists;
 import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import se.inera.statistics.service.report.model.Avsnitt;
 import se.inera.statistics.service.report.model.DiagnosgruppResponse;
-import se.inera.statistics.service.report.model.ICDTyp;
-import se.inera.statistics.service.report.model.Kategori;
+import se.inera.statistics.service.report.model.Icd;
 import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.report.model.KonDataRow;
 import se.inera.statistics.service.report.model.KonField;
 import se.inera.statistics.service.report.model.OverviewChartRowExtended;
+import se.inera.statistics.service.report.model.SimpleKonDataRow;
+import se.inera.statistics.service.report.model.SimpleKonResponse;
 import se.inera.statistics.service.report.util.Icd10;
 import se.inera.statistics.service.report.util.Icd10RangeType;
 import se.inera.statistics.service.report.util.ReportUtil;
@@ -41,17 +43,17 @@ import se.inera.statistics.service.warehouse.SjukfallUtil;
 
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 @Component
 public class DiagnosgruppQuery {
-
-    public static final int MAX_DIAGNOS_ID = 15000;
 
     @Autowired
     private Icd10 icd10;
@@ -84,10 +86,11 @@ public class DiagnosgruppQuery {
 
     public DiagnosgruppResponse getDiagnosgrupper(Aisle aisle, Predicate<Fact> filter, LocalDate start, int periods, int periodLength) {
         List<Icd10.Kapitel> kapitel = icd10.getKapitel();
-        List<KonDataRow> rows = getKonDataRows(aisle, filter, start, periods, periodLength, kapitel, Icd10RangeType.KAPITEL);
-        List<Avsnitt> avsnitt = new ArrayList<>(kapitel.size());
+        final Iterable<SjukfallGroup> sjukfallGroups = SjukfallUtil.sjukfallGrupper(start, periods, periodLength, aisle, filter);
+        List<KonDataRow> rows = getKonDataRows(sjukfallGroups, kapitel, Icd10RangeType.KAPITEL, false);
+        List<Icd> avsnitt = new ArrayList<>(kapitel.size());
         for (Icd10.Kapitel k: kapitel) {
-            avsnitt.add(new Avsnitt(k.getId(), k.getName()));
+            avsnitt.add(new Icd(k.getId(), k.getName()));
         }
         return new DiagnosgruppResponse(avsnitt, rows);
     }
@@ -106,43 +109,64 @@ public class DiagnosgruppQuery {
         throw new RangeNotFoundException("Could not find ICD10 range: " + rangeId);
     }
 
-    private DiagnosgruppResponse getUnderdiagnosgrupper(Aisle aisle, Predicate<Fact> filter, LocalDate start, int periods, int periodLength, Icd10.Range kapitel, Icd10RangeType rangeType) {
-        List<ICDTyp> icdTyps = new ArrayList<>();
-        for (Icd10.Id icdItem : kapitel.getSubItems()) {
-            switch (rangeType) {
-                case AVSNITT:   icdTyps.add(new Avsnitt(icdItem.getId(), icdItem.getName()));
-                                break;
-
-                case KATEGORI:  icdTyps.add(new Kategori(icdItem.getId(), icdItem.getName()));
-                                break;
-
-                default:        throw new RuntimeException("Unexpected range type: " + rangeType);
+    public SimpleKonResponse<SimpleKonDataRow> getJamforDiagnoser(Aisle aisle, Predicate<Fact> filter, LocalDate start, int periods, int periodLength, List<String> diagnosis) {
+        final List<Icd10.Kategori> kategoris = Lists.transform(diagnosis, new Function<String, Icd10.Kategori>() {
+            @Override
+            public Icd10.Kategori apply(String diagnos) {
+                return icd10.findKategori(diagnos);
             }
+        });
+        final Iterable<SjukfallGroup> sjukfallGroups = SjukfallUtil.sjukfallGrupper(start, periods, periodLength, aisle, filter);
+        final List<KonDataRow> periodRows = getKonDataRows(sjukfallGroups, kategoris, Icd10RangeType.KATEGORI, true);
+        final List<SimpleKonDataRow> rows = new ArrayList<>(kategoris.size());
+        final List<KonField> data = periodRows.get(0).getData();
+        for (int i = 0; i < data.size(); i++) {
+            final KonField row = data.get(i);
+            final Icd10.Kategori kategori = kategoris.get(i);
+            rows.add(new SimpleKonDataRow(kategori.getId() + " " + kategori.getName(), row));
         }
-        List<KonDataRow> rows = getKonDataRows(aisle, filter, start, periods, periodLength, kapitel.getSubItems(), rangeType);
+        return new SimpleKonResponse<>(rows, periods * periodLength);
+    }
+
+    private DiagnosgruppResponse getUnderdiagnosgrupper(Aisle aisle, Predicate<Fact> filter, LocalDate start, int periods, int periodLength, Icd10.Range kapitel, Icd10RangeType rangeType) {
+        final List<Icd> icdTyps = new ArrayList<>();
+        for (Icd10.Id icdItem : kapitel.getSubItems()) {
+            icdTyps.add(new Icd(icdItem.getId(), icdItem.getName()));
+        }
+        final Iterable<SjukfallGroup> sjukfallGroups = SjukfallUtil.sjukfallGrupper(start, periods, periodLength, aisle, filter);
+        final List<KonDataRow> rows = getKonDataRows(sjukfallGroups, kapitel.getSubItems(), rangeType, false);
         return new DiagnosgruppResponse(icdTyps, rows);
     }
 
-    private List<KonDataRow> getKonDataRows(Aisle aisle, Predicate<Fact> filter, LocalDate start, int periods, int periodLength, List<? extends Icd10.Id> kapitel, Icd10RangeType rangeType) {
+    private List<KonDataRow> getKonDataRows(Iterable<SjukfallGroup> sjukfallGroups, List<? extends Icd10.Id> kapitel, Icd10RangeType rangeType, boolean countAllDxs) {
         List<KonDataRow> rows = new ArrayList<>();
-        for (SjukfallGroup sjukfallGroup: SjukfallUtil.sjukfallGrupper(start, periods, periodLength, aisle, filter)) {
-            int[] female = new int[MAX_DIAGNOS_ID];
-            int[] male = new int[MAX_DIAGNOS_ID];
+        for (SjukfallGroup sjukfallGroup: sjukfallGroups) {
+            Map<Integer, Integer> female = new HashMap<>();
+            Map<Integer, Integer> male = new HashMap<>();
             for (Sjukfall sjukfall: sjukfallGroup.getSjukfall()) {
-                if (sjukfall.getKon() == Kon.Female) {
-                    female[sjukfall.getIcd10CodeForType(rangeType)]++;
-                } else {
-                    male[sjukfall.getIcd10CodeForType(rangeType)]++;
+                final Set<Integer> icd10Codes = new HashSet<>(countAllDxs ? sjukfall.getAllIcd10OfType(rangeType) : Arrays.asList(sjukfall.getIcd10CodeForType(rangeType)));
+                final Map<Integer, Integer> genderMap = sjukfall.getKon() == Kon.Female ? female : male;
+                for (Integer icd10Code : icd10Codes) {
+                    final int currentCount = getCurrentCount(icd10Code, genderMap);
+                    genderMap.put(icd10Code, currentCount + 1);
                 }
             }
 
             List<KonField> list = new ArrayList<>(kapitel.size());
             for (Icd10.Id icdItem : kapitel) {
-                list.add(new KonField(female[icdItem.toInt()], male[icdItem.toInt()]));
+                list.add(new KonField(getCurrentCount(icdItem.toInt(), female), getCurrentCount(icdItem.toInt(), male)));
             }
             rows.add(new KonDataRow(ReportUtil.toDiagramPeriod(sjukfallGroup.getRange().getFrom()), list));
         }
         return rows;
+    }
+
+    private int getCurrentCount(int icd10Code, Map<Integer, Integer> genderMap) {
+        final Integer integer = genderMap.get(icd10Code);
+        if (integer != null) {
+            return integer;
+        }
+        return 0;
     }
 
     public DiagnosgruppResponse getDiagnosavsnitts(Aisle aisle, Predicate<Fact> filter, LocalDate start, int periods, int periodLength, String kapitelId) {

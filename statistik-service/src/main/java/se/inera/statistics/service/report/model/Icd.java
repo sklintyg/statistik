@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2014 Inera AB (http://www.inera.se)
+ * Copyright (C) 2015 Inera AB (http://www.inera.se)
  *
  * This file is part of statistik (https://github.com/sklintyg/statistik).
  *
@@ -20,35 +20,52 @@ package se.inera.statistics.service.report.model;
 
 import se.inera.statistics.service.report.util.Icd10;
 
-public class Kategori implements Comparable<Kategori>, ICDTyp {
+import java.util.ArrayList;
+import java.util.List;
+
+public class Icd implements Comparable<Icd> {
 
     private final String id;
     private final String name;
     private final int numericalId;
 
-    public Kategori(String id, String name) {
+    private final List<Icd> subItems = new ArrayList<>();
+
+    public Icd(String id, String name) {
         this.id = id;
         this.name = name;
         this.numericalId = -1;
     }
 
-    public Kategori(String id, String name, int numericalId) {
+    public Icd(String id, String name, int numericalId) {
         this.id = id;
         this.name = name;
         this.numericalId = numericalId;
     }
 
-    @Override
+    public Icd(Icd10.Id source) {
+        this(source.getId(), source.getName(), source.toInt());
+        for (Icd10.Id subItem : source.getSubItems()) {
+            subItems.add(new Icd(subItem));
+        }
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getNumericalId() {
+        return numericalId;
+    }
+
+    public List<Icd> getSubItems() {
+        return subItems;
+    }
+
     public String getId() {
         return id;
     }
 
-    @Override
-    public String getName() {
-        return asString();
-    }
-
-    @Override
     public String asString() {
         if (id.charAt(0) <= 'Z') {
             return id + " " + name;
@@ -58,17 +75,12 @@ public class Kategori implements Comparable<Kategori>, ICDTyp {
     }
 
     @Override
-    public int getNumericalId() {
-        return numericalId;
-    }
-
-    @Override
     public String toString() {
-        return "{\"Avsnitt\":{" + "\"id\":\"" + id + '"' + ", \"name\":\"" + name + '"' + "}}";
+        return "{\"Icd\":{" + "\"id\":\"" + id + '"' + ", \"name\":\"" + name + '"' + "}}";
     }
 
     @Override
-    public int compareTo(Kategori o) {
+    public int compareTo(Icd o) {
         return id.compareTo(o.id);
     }
 
@@ -79,18 +91,14 @@ public class Kategori implements Comparable<Kategori>, ICDTyp {
 
     @Override
     public boolean equals(Object obj) {
-        if (obj instanceof Kategori) {
-            return isEqual((Kategori) obj);
+        if (obj instanceof Icd) {
+            return isEqual((Icd) obj);
         }
         return false;
     }
 
-    private boolean isEqual(Kategori other) {
+    private boolean isEqual(Icd other) {
         return id.equals(other.id);
-    }
-
-    public static Kategori fromIcd10Kategori(Icd10.Kategori source) {
-        return new Kategori(source.getId(), source.getName(), source.toInt());
     }
 
 }

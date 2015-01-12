@@ -31,7 +31,6 @@ angular.module('StatisticsApp').controller('pageCtrl', [ '$scope', '$rootScope',
         $rootScope.$on('$routeChangeSuccess', function (angularEvent, next, current) {
             var verksamhetId = next.params.verksamhetId;
             $scope.verksamhetIdParam = verksamhetId;
-
             $scope.currentUrl = window.location.href;
 
             var d = new Date();
@@ -50,15 +49,15 @@ angular.module('StatisticsApp').controller('pageCtrl', [ '$scope', '$rootScope',
                     $scope.businessId = $cookies.verksamhetId;
                 }
 
-                var diagnosExclusionPattern = /.*(oversikt|diagnosgrupp|diagnosavsnitt).*/
-                $scope.showDiagnosFilter = !diagnosExclusionPattern.test(next.$$route.originalPath)
+                var diagnosExclusionPattern = /.*(oversikt|diagnosgrupp|diagnosavsnitt).*/;
+                $scope.showDiagnosFilter = !diagnosExclusionPattern.test(next.$$route.originalPath);
 
                 businessFilter.resetSelections();
 
                 statisticsData.getLoginInfo(function (loginInfo) {
                     businessFilter.loggedIn(loginInfo.businesses);
                     var v = self.getSelectedVerksamhet($scope.businessId, loginInfo.businesses);
-                    $scope.verksamhetName = loginInfo.vgView ? ("- " + v.vardgivarName + (loginInfo.processledare ? "(alla enheter)" : "(vissa enheter)")) : v.name;
+                    $scope.verksamhetName = loginInfo.businesses && loginInfo.businesses.length == 1 ? v.name : v.vardgivarName;
                     $scope.userName = loginInfo.name;
                     $scope.userNameWithAccess = loginInfo.name;
 

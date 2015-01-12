@@ -106,6 +106,12 @@ var app = angular.module('StatisticsApp', [ 'ngRoute', 'ngCookies', 'ngSanitize'
             title: 'Enskilt diagnoskapitel'
         }).when('/verksamhet/:verksamhetId/diagnosavsnitt', {
             redirectTo: '/verksamhet/:verksamhetId/diagnosavsnitt/A00-B99'
+        }).when('/verksamhet/:verksamhetId/jamforDiagnoser', {
+            templateUrl: 'views/detailsView.html',
+            controller: 'columnChartDetailsViewCtrl',
+            controllerAs: 'VerksamhetCompareDiagnosisCtrl',
+            resolve: { config: app.compareDiagnosis },
+            title: 'Jämför valfria diagnoser'
         }).when('/verksamhet/:verksamhetId/aldersgrupper', {
             templateUrl: 'views/detailsView.html',
             controller: 'columnChartDetailsViewCtrl',

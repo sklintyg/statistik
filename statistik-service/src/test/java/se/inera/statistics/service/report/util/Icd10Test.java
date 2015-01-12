@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2014 Inera AB (http://www.inera.se)
+ * Copyright (C) 2015 Inera AB (http://www.inera.se)
  *
  * This file is part of statistik (https://github.com/sklintyg/statistik).
  *
@@ -26,6 +26,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import se.inera.statistics.service.report.util.Icd10.Avsnitt;
 import se.inera.statistics.service.report.util.Icd10.Kapitel;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -102,4 +104,20 @@ public class Icd10Test {
     public void kategoriIsFoundEvenIfBadlyFormatted() {
         assertEquals("G01", icd10.findKategori("-G 0, 1.1AndMore").getId());
     }
+
+    @Test
+    public void noDuplicateIcd10IntIds() {
+        final List<Integer> allIntIds = getAllIntIds(icd10.getKapitel());
+        assertEquals(allIntIds.size(), new HashSet<>(allIntIds).size());
+    }
+
+    private List<Integer> getAllIntIds(List<? extends Icd10.Id> icd10s) {
+        List<Integer> allIntIds = new ArrayList<>();
+        for (Icd10.Id icd10 : icd10s) {
+            allIntIds.add(icd10.toInt());
+            allIntIds.addAll(getAllIntIds(icd10.getSubItems()));
+        }
+        return allIntIds;
+    }
+
 }

@@ -65,16 +65,11 @@ describe("Test of common functions for controllers", function() {
                     expect(opt.filename).toMatch(/testName/);
                     expect(chartOpt.legend.enabled).toBe(true);
                     expect(chartOpt.legend.layout).toBe("MyLayout");
+                    expect(chartOpt.title.text).toBe("title text");
                 }
         };
-        ControllerCommons.exportChart(chart, name, "MyLayout");
+        ControllerCommons.exportChart(chart, name, "title text", null, "MyLayout");
         expect(callTimes).toBe(1);
-    });
-    
-    it("map", function() {
-        expect(ControllerCommons.map([], function(e){return e+1})).toEqual([]);
-        expect(ControllerCommons.map([1,2], function(e){return e+1})).toEqual([2,3]);
-        expect(ControllerCommons.map(["1","2"], function(e){return e+1})).toEqual(["11","21"]);
     });
     
     it("isNumber", function() {

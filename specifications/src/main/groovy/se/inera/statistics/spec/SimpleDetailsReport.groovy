@@ -7,20 +7,21 @@ abstract class SimpleDetailsReport extends Rapport {
 
     public void executeDiagram(report) {
         def categoryNameMatcher = getRowNameMatcher();
-        def index = report.chartData.categories.findIndexOf { item -> item == categoryNameMatcher }
+        def index = report.chartData.categories.findIndexOf { item -> item.contains(categoryNameMatcher) }
         def male = report.chartData.series.find { item -> "Male".equals(item.sex) }
-        män = male.data[index]
+        män = index < 0 ? -1 : male.data[index]
         def female = report.chartData.series.find { item -> "Female".equals(item.sex) }
-        kvinnor = female.data[index]
+        kvinnor = index < 0 ? -1 : female.data[index]
         def total = report.chartData.series.find { item -> item.sex == null }
-        totalt = total != null ? total.data[index] : -1
+        totalt = index < 0 ? -1 : (total != null ? total.data[index] : -1)
     }
 
     abstract def getRowNameMatcher()
 
     void executeTabell(report) {
         def rowNameMatcher = getRowNameMatcher();
-        def row = report.tableData.rows.find { currentRow -> currentRow.name == rowNameMatcher }
+        def row = report.tableData.rows.find { currentRow ->
+            currentRow.name == rowNameMatcher }
         if (row == null) {
             totalt = -1
             kvinnor = -1
@@ -58,6 +59,14 @@ abstract class SimpleDetailsReport extends Rapport {
             return reportsUtil.getReportAldersgruppInloggad(inloggadSom, filter);
         }
         return reportsUtil.getReportAldersgrupp();
+    }
+
+    def getReportJamforDiagnoser(String diagnoserString) {
+        def diagnoserQueryString = diagnoserString.trim().isEmpty() ? "" : "dx=" + diagnoserString.trim().replaceAll(" *, *", "&dx=")
+        if (inloggad) {
+            return reportsUtil.getReportJamforDiagnoserInloggad(inloggadSom, filter, diagnoserQueryString);
+        }
+        throw new RuntimeException("Report -Jämför diagnoser- is not available on national level");
     }
 
     def getReportAldersgruppPagaende() {
@@ -108,5 +117,13 @@ abstract class SimpleDetailsReport extends Rapport {
         }
         return reportsUtil.getReportCasesPerSex();
     }
+
+    def getReportEnskiltDiagnoskapitel(kapitel) {
+        if (inloggad) {
+            return reportsUtil.getReportEnskiltDiagnoskapitelInloggad(kapitel, inloggadSom, filter);
+        }
+        return reportsUtil.getReportEnskiltDiagnoskapitel(kapitel);
+    }
+
 
 }

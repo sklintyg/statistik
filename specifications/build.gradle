@@ -1,12 +1,20 @@
 buildscript {
     dependencies {
         classpath 'org.akhikhl.gretty:gretty:1.1.8'
+        classpath 'se.inera.intyg:gradle-fitnesse-plugin:1.0-SNAPSHOT'
     }
 }
 
 description = 'Inera Statistics Fitnesse specifications'
 
 apply plugin: 'groovy'
+apply plugin: 'inera-fitnesse'
+
+fitnesse {
+    port = 9125
+    root = "FitNesseRoot"
+    workingDir = "src/test/fitnesse"
+}
 
 if (project.hasProperty('runFitnesse')) {
     apply plugin: 'org.akhikhl.gretty'
@@ -28,53 +36,13 @@ if (project.hasProperty('runFitnesse')) {
         gretty "mysql:mysql-connector-java:5.1.29"
         gretty "org.apache.activemq:activemq-broker:5.8.0"
         gretty "org.apache.tomcat:tomcat-catalina:7.0.20"
-    }
-}
-
-ext.fitnessePort = "9125"
-ext.fitnesseRoot = "FitNesseRoot"
-ext.fitnesseDir = "src/test/fitnesse"
-
-configurations {
-    fitnesse
-}
-
-class FitnesseTask extends DefaultTask {
-    def clArgs = ['-p', project.fitnessePort, '-e', '0', '-d', project.fitnesseDir, '-r', project.fitnesseRoot, '-o']
-
-    @TaskAction
-    def runFitnesse() {
-        project.javaexec {
-            main = "fitnesse.FitNesse"
-            classpath = project.configurations.fitnesse
-            systemProperties(["maven.classpath": mavenPathAsWikiPaths()])
-            args = clArgs.toList()
-        }
-    }
-
-    def mavenPathAsWikiPaths() {
-        // All jars built in this project plus dependency jars
-        (project.configurations.archives.artifacts.files + project.configurations.runtime.asFileTree).collect { file ->
-            "!path ${file.path}"
-        }.join("\n")
-    }
-}
-
-task fitnesseWiki(type: FitnesseTask, dependsOn: build)
-
-task fitnesseTest(type: FitnesseTask, dependsOn: build) {
-    outputs.upToDateWhen { false }
-    clArgs += ['-c', 'StatisticsTests?suite&format=text']
+     }
 }
 
 dependencies {
-    def fitnesseDependency = "org.fitnesse:fitnesse:20140901"
-
     compile project(":statistik-web")
 
-    compile fitnesseDependency
+    compile "org.fitnesse:fitnesse:20140901"
     compile "org.codehaus.groovy:groovy-all:2.3.6"
     compile "org.codehaus.groovy.modules.http-builder:http-builder:0.7"
-
-    fitnesse fitnesseDependency
 }

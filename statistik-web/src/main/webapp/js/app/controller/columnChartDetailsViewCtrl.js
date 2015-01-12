@@ -62,8 +62,9 @@ angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl', [ '$sco
             }
         };
 
-        var populatePageWithData = function (result, enhetsIds) {
+        var populatePageWithData = function (result, enhetsIds, diagnosIds) {
             $scope.subTitle = config.title(result.period, enhetsIds ? enhetsIds.length : null);
+            ControllerCommons.populateActiveDiagnosFilter($scope, statisticsData, diagnosIds, $routeParams.printBw || $routeParams.print);
             $scope.doneLoading = true;
             $timeout(function () {
                 ControllerCommons.updateDataTable($scope, result.tableData);
@@ -75,10 +76,19 @@ angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl', [ '$sco
             }, 1);
         };
 
+        function getSelectedDiagnosis() {
+            if (!$scope.diagnosisSelectionText) {
+                return null;
+            }
+            return _.map($scope.diagnosisSelectionText.split(','), function(it){
+                return it.trim();
+            });
+        }
+
         function refreshVerksamhet(samePage) {
             statisticsData[config.dataFetcherVerksamhet]($routeParams.verksamhetId, businessFilter.getSelectedBusinesses(samePage), businessFilter.getSelectedDiagnoses(samePage), populatePageWithData, function () {
                 $scope.dataLoadingError = true;
-            });
+            }, getSelectedDiagnosis());
         }
 
         $scope.$on('filterChange', function (event, data) {
@@ -111,13 +121,20 @@ angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl', [ '$sco
             return messageService.getProperty(msgKey, null, "", null, true);
         });
 
+        $scope.showDiagnosisSelector = config.showDiagnosisSelector;
 
         $scope.exportChart = function () {
-            ControllerCommons.exportChart(chart, $scope.pageName);
+            ControllerCommons.exportChart(chart, $scope.pageName, $scope.subTitle, $scope.activeDiagnosFilters);
         };
 
         $scope.print = function (bwPrint) {
             window.open($window.location + (bwPrint ? "?printBw=true" : "?print=true"));
+        };
+
+        $scope.diagnosisSelected = function () {
+            if (isVerksamhet) {
+                refreshVerksamhet(true);
+            }
         };
 
     }
@@ -247,5 +264,21 @@ angular.module('StatisticsApp').casesPerLakarbefattningConfig = function () {
     };
     conf.chartXAxisTitle = "Läkarbefattning";
     conf.chartFootnotes = ["alert.lakare-befattning.information"];
+    return conf;
+};
+
+angular.module('StatisticsApp').compareDiagnosis = function () {
+    var conf = {};
+    conf.dataFetcherVerksamhet = "getCompareDiagnosisVerksamhet";
+    //conf.dataFetcherVerksamhet = "getSjukfallPerLakarbefattningVerksamhet";
+    conf.exportTableUrl = "api/getCompareDiagnosisStatistics/csv";
+    conf.exportTableUrlVerksamhet = function (verksamhetId) {
+        return "api/verksamhet/" + verksamhetId + "/getCompareDiagnosisStatistics/csv";
+    };
+    conf.title = function (period, enhetsCount) {
+        return "Jämförelse av valfria diagnoser" + ControllerCommons.getEnhetCountText(enhetsCount, false) + period;
+    };
+    conf.chartXAxisTitle = "Diagnos";
+    conf.showDiagnosisSelector = true;
     return conf;
 };

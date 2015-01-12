@@ -95,10 +95,15 @@ angular.module('StatisticsApp').factory('businessFilter', ['statisticsData', '_'
             businessFilter.icd10.subs = diagnoses;
             _.each(diagnoses, function (kapitel) {
                 kapitel.typ = 'kapitel';
-                kapitel.subs = kapitel.avsnitts;
-                _.each(kapitel.avsnitts, function (avsnitt) {
+                kapitel.subs = kapitel.subItems;
+                kapitel.name = kapitel.id + " " + kapitel.name;
+                _.each(kapitel.subItems, function (avsnitt) {
                     avsnitt.typ = 'avsnitt';
-                    avsnitt.subs = avsnitt.kategoris;
+                    avsnitt.subs = avsnitt.subItems;
+                    avsnitt.name = avsnitt.id + " " + avsnitt.name;
+                    _.each(avsnitt.subItems, function (kategori) {
+                        kategori.name = kategori.id + " " + kategori.name;
+                    });
                 });
             });
             businessFilter.selectAll(businessFilter.icd10, true);

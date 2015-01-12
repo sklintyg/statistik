@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2014 Inera AB (http://www.inera.se)
+ * Copyright (C) 2015 Inera AB (http://www.inera.se)
  *
  * This file is part of statistik (https://github.com/sklintyg/statistik).
  *
@@ -19,7 +19,7 @@
 package se.inera.statistics.web.service;
 
 import se.inera.statistics.service.report.model.DiagnosgruppResponse;
-import se.inera.statistics.service.report.model.ICDTyp;
+import se.inera.statistics.service.report.model.Icd;
 import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.report.model.KonDataRow;
 import se.inera.statistics.service.report.model.KonField;
@@ -106,7 +106,7 @@ public class DiagnosisGroupsConverter {
         List<KonDataRow> rows = diagnosisGroups.getRows();
         if (remove && rows.size() > 0) {
             List<KonDataRow> newRows = new ArrayList<>();
-            List<? extends ICDTyp> newAvsnitts = diagnosisGroups.getIcdTyps();
+            List<? extends Icd> newAvsnitts = diagnosisGroups.getIcdTyps();
             for (KonDataRow row : rows) {
                 List<KonField> col = row.getData();
                 col.remove(col.size() - 1);
@@ -207,7 +207,7 @@ public class DiagnosisGroupsConverter {
     private Map<String, List<Integer>> extractAllGroups(DiagnosgruppResponse resp, Kon sex) {
         Map<String, List<Integer>> allGroups = new HashMap<>();
         for (int i = 0; i < resp.getIcdTyps().size(); i++) {
-            ICDTyp groupName = resp.getIcdTyps().get(i);
+            Icd groupName = resp.getIcdTyps().get(i);
             allGroups.put(groupName.getId(), resp.getDataFromIndex(i, sex));
         }
         return allGroups;

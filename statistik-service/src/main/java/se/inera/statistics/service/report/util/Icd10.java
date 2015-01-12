@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2014 Inera AB (http://www.inera.se)
+ * Copyright (C) 2015 Inera AB (http://www.inera.se)
  *
  * This file is part of statistik (https://github.com/sklintyg/statistik).
  *
@@ -61,7 +61,10 @@ public class Icd10 {
     private IdMap<Avsnitt> idToAvsnittMap = new IdMap<>();
     private IdMap<Kapitel> idToKapitelMap = new IdMap<>();
 
-    public static int icd10ToInt(String id) {
+    public static int icd10ToInt(String id, Icd10RangeType rangeType) {
+        final int rangeTypeMultiplier = 10000;
+        final int rangeTypeAsNumber = rangeType.ordinal() * rangeTypeMultiplier;
+
         final int firstCharMultiplier = 100;
         final int firstCharAsNumber = (id.toUpperCase().charAt(0) - 'A') * firstCharMultiplier;
 
@@ -71,7 +74,7 @@ public class Icd10 {
         final int thirdCharMultiplier = 1;
         final int thirdCharAsNumber = (id.charAt(2) - '0') * thirdCharMultiplier;
 
-        return firstCharAsNumber + secondCharAsNumber + thirdCharAsNumber;
+        return rangeTypeAsNumber + firstCharAsNumber + secondCharAsNumber + thirdCharAsNumber;
     }
 
     @PostConstruct
@@ -168,9 +171,7 @@ public class Icd10 {
             return id;
         }
 
-        public int toInt() {
-            return icd10ToInt(id);
-        }
+        public abstract int toInt();
 
         public abstract List<? extends Id> getSubItems();
 
@@ -210,6 +211,11 @@ public class Icd10 {
 
         public List<Avsnitt> getAvsnitt() {
             return avsnitt;
+        }
+
+        @Override
+        public int toInt() {
+            return icd10ToInt(getId(), Icd10RangeType.KAPITEL);
         }
 
     }
@@ -258,6 +264,11 @@ public class Icd10 {
             return getKategori();
         }
 
+        @Override
+        public int toInt() {
+            return icd10ToInt(getId(), Icd10RangeType.AVSNITT);
+        }
+
     }
 
     public static class Kategori extends Id {
@@ -296,6 +307,11 @@ public class Icd10 {
         @Override
         public List<? extends Id> getSubItems() {
             return Collections.EMPTY_LIST;
+        }
+
+        @Override
+        public int toInt() {
+            return icd10ToInt(getId(), Icd10RangeType.KATEGORI);
         }
 
     }

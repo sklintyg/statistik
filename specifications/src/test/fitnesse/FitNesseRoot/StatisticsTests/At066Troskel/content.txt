@@ -1,0 +1,28 @@
+!contents -R2 -g -p -f -h
+
+!3 Givet att:
+| script | dagens datum | 2013-11-06 |
+
+| script | troskel varde | 4 |
+
+| Enbart foljande intyg finns |
+| personnr | diagnoskod | start    | slut       | enhet  |
+| 19790407-0220 | F40 | 2013-02-01 | 2013-02-14 | enhet1 |
+| 19790407-1220 | A00 | 2013-02-01 | 2013-02-14 | enhet1 |
+| 19790407-2210 | F41 | 2013-02-01 | 2013-02-14 | enhet1 |
+| 19790407-3210 | J01 | 2013-02-01 | 2013-02-14 | enhet1 |
+| 19890130-2466 | J01 | 2013-02-01 | 2013-02-14 | enhet1 |
+| 19790407-0220 | F40 | 2013-02-01 | 2013-02-14 | enhet3 |
+| 19790407-1220 | A00 | 2013-02-01 | 2013-02-14 | enhet3 |
+| 19790407-2210 | F41 | 2013-02-01 | 2013-02-14 | enhet3 |
+| 19790407-3210 | J01 | 2013-02-01 | 2013-02-14 | enhet3 |
+| 19890130-2466 | J01 | 2013-02-01 | 2013-02-14 | enhet3 |
+
+
+!3 Då gäller:
+Nationell:
+| Sjukfall i rapporten sjukfall totalt |
+| år   | månad | män? | kvinnor? |
+| 2013 | jan   | 0    | 0        |
+| 2013 | feb   | 4    | 6        |
+| 2013 | mar   | 0    | 0        |

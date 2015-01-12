@@ -19,7 +19,7 @@ angular.module('StatisticsApp').factory('statisticsData', function ($http) {
         var param = getParamsAsJson(enhetsIds, diagnosIds);
         $http.post("api/verksamhet/" + verksamhetId + "/" + restFunctionName, param).success(function (result) {
             try {
-                successCallback(result, enhetsIds);
+                successCallback(result, enhetsIds, diagnosIds);
             } catch (e) {
                 failureCallback();
             }
@@ -32,7 +32,10 @@ angular.module('StatisticsApp').factory('statisticsData', function ($http) {
     };
 
     var getParamsAsJson = function (enhetsIds, diagnosIds) {
-        return {"enhets": enhetsIds, "kapitels": diagnosIds.kapitel, "avsnitts": diagnosIds.avsnitt, "kategoris": diagnosIds.kategorier};
+        if (diagnosIds) {
+            return {"enhets": enhetsIds, "kapitels": diagnosIds.kapitel, "avsnitts": diagnosIds.avsnitt, "kategoris": diagnosIds.kategorier};
+        }
+        return {"enhets": enhetsIds, "kapitels": null, "avsnitts": null, "kategoris": null};
     };
 
     factory.getOverview = function (successCallback, failureCallback) {
@@ -137,6 +140,19 @@ angular.module('StatisticsApp').factory('statisticsData', function ($http) {
 
     factory.getSjukfallPerLakarbefattningVerksamhet = function (verksamhetId, enhetsIds, diagnosIds, successCallback, failureCallback) {
         makeRequestVerksamhet("getNumberOfCasesPerLakarbefattning", verksamhetId, enhetsIds, diagnosIds, successCallback, failureCallback);
+    };
+
+    function arrayToQueryParam(diagnosisToCompare, paramName) {
+        if (!diagnosisToCompare) {
+            return "";
+        }
+        return _.reduce(diagnosisToCompare, function(memo, diagnosis, index){
+            return memo + (index > 0 ? "&" : "") + paramName + "=" + diagnosis
+        }, "");
+    }
+
+    factory.getCompareDiagnosisVerksamhet = function (verksamhetId, enhetsIds, diagnosIds, successCallback, failureCallback, diagnosisToCompare) {
+        makeRequestVerksamhet("getJamforDiagnoserStatistik?" + arrayToQueryParam(diagnosisToCompare, "dx"), verksamhetId, enhetsIds, diagnosIds, successCallback, failureCallback);
     };
 
     return factory;

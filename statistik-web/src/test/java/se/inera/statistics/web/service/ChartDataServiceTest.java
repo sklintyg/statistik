@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2014 Inera AB (http://www.inera.se)
+ * Copyright (C) 2015 Inera AB (http://www.inera.se)
  *
  * This file is part of statistik (https://github.com/sklintyg/statistik).
  *
@@ -24,7 +24,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
-import se.inera.statistics.service.report.model.Avsnitt;
+import se.inera.statistics.service.report.model.Icd;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.util.Icd10;
 import se.inera.statistics.service.warehouse.NationellData;
@@ -34,7 +34,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
 
@@ -77,7 +76,7 @@ public class ChartDataServiceTest {
     @Test
     public void getDiagnosisGroupsTest() {
         Mockito.when(icd10.getKapitel()).thenReturn(Arrays.asList(new Icd10.Kapitel("A00-B99", "Vissa infektionssjukdomar och parasitsjukdomar"), new Icd10.Kapitel("C00-D48", "Tumörer")));
-        List<ChartDataService.Kapitel> kapitel = chartDataService.getDiagnoskapitel();
+        List<Icd> kapitel = chartDataService.getDiagnoskapitel();
         assertEquals(2, kapitel.size());
     }
 

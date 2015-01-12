@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2014 Inera AB (http://www.inera.se)
+ * Copyright (C) 2015 Inera AB (http://www.inera.se)
  *
  * This file is part of statistik (https://github.com/sklintyg/statistik).
  *
@@ -19,8 +19,8 @@
 package se.inera.statistics.web.service;
 
 import org.junit.Test;
-import se.inera.statistics.service.report.model.Avsnitt;
 import se.inera.statistics.service.report.model.DiagnosgruppResponse;
+import se.inera.statistics.service.report.model.Icd;
 import se.inera.statistics.service.report.model.KonDataRow;
 import se.inera.statistics.service.report.model.KonField;
 import se.inera.statistics.service.report.model.Range;
@@ -36,7 +36,7 @@ public class AvsnittConverterTest {
 
     @Test
     public void tableConverterTestEmptyInput() {
-        DiagnosgruppResponse resp = new DiagnosgruppResponse(new ArrayList<Avsnitt>(), new ArrayList<KonDataRow>());
+        DiagnosgruppResponse resp = new DiagnosgruppResponse(new ArrayList<Icd>(), new ArrayList<KonDataRow>());
         TableData tableData = DiagnosisGroupsConverter.convertTable(resp);
         assertEquals("[[;1, ;1, ;1], [Period;1, Antal sjukfall totalt;1]]", tableData.getHeaders().toString());
         assertEquals("[]", tableData.getRows().toString());
@@ -45,8 +45,8 @@ public class AvsnittConverterTest {
     @Test
     public void tableConverterTest() {
         //Given
-        ArrayList<Avsnitt> avsnitts = new ArrayList<Avsnitt>();
-        avsnitts.add(new Avsnitt("A01-B99", "name1"));
+        ArrayList<Icd> avsnitts = new ArrayList<>();
+        avsnitts.add(new Icd("A01-B99", "name1"));
         ArrayList<KonDataRow> rows = new ArrayList<KonDataRow>();
         ArrayList<KonField> diagnosisGroupData = new ArrayList<KonField>();
         // CHECKSTYLE:OFF MagicNumber
@@ -65,7 +65,7 @@ public class AvsnittConverterTest {
 
     @Test
     public void converterTestEmpty() {
-        DiagnosgruppResponse resp = new DiagnosgruppResponse(new ArrayList<Avsnitt>(), new ArrayList<KonDataRow>());
+        DiagnosgruppResponse resp = new DiagnosgruppResponse(new ArrayList<Icd>(), new ArrayList<KonDataRow>());
         DualSexStatisticsData data = new DiagnosisGroupsConverter().convert(resp, new Range());
         assertEquals("[]", data.getFemaleChart().getCategories().toString());
         assertEquals("[A00-E90, G00-L99, N00-N99 Somatiska sjukdomar: [], F00-F99 Psykiska sjukdomar: [], M00-M99 Muskuloskeletala sjukdomar: [], O00-O99 Graviditet och förlossning: [], P00-P96, Q00-Q99, S00-Y98 Övrigt: [], R00-R99 Symtomdiagnoser: [], Z00-Z99 Faktorer av betydelse för hälsotillståndet och för kontakter med hälso- och sjukvården: []]", data.getFemaleChart().getSeries().toString());
@@ -74,8 +74,8 @@ public class AvsnittConverterTest {
     @Test
     public void converterTest() {
         //Given
-        ArrayList<Avsnitt> avsnitts = new ArrayList<Avsnitt>();
-        avsnitts.add(new Avsnitt("A00-B99", "name1"));
+        ArrayList<Icd> avsnitts = new ArrayList<>();
+        avsnitts.add(new Icd("A00-B99", "name1"));
         ArrayList<KonDataRow> rows = new ArrayList<KonDataRow>();
         ArrayList<KonField> diagnosisGroupData = new ArrayList<KonField>();
         // CHECKSTYLE:OFF MagicNumber

@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2014 Inera AB (http://www.inera.se)
+ * Copyright (C) 2015 Inera AB (http://www.inera.se)
  *
  * This file is part of statistik (https://github.com/sklintyg/statistik).
  *
@@ -40,6 +40,7 @@ import se.inera.statistics.service.warehouse.query.SjukfallQuery;
 import se.inera.statistics.service.warehouse.query.SjukskrivningsgradQuery;
 import se.inera.statistics.service.warehouse.query.SjukskrivningslangdQuery;
 
+import java.util.List;
 import java.util.Map;
 
 public class WarehouseService {
@@ -90,6 +91,10 @@ public class WarehouseService {
 
     public DiagnosgruppResponse getUnderdiagnosgrupper(Predicate<Fact> filter, Range range, String kapitelId, String vardgivarId) throws RangeNotFoundException {
         return query.getUnderdiagnosgrupper(warehouse.get(vardgivarId), filter, range.getFrom(), range.getMonths(), 1, kapitelId);
+    }
+
+    public SimpleKonResponse<SimpleKonDataRow> getJamforDiagnoser(Predicate<Fact> filter, Range range, String vardgivarId, List<String> diagnosis) {
+        return query.getJamforDiagnoser(warehouse.get(vardgivarId), filter, range.getFrom(), 1, range.getMonths(), diagnosis);
     }
 
     public SimpleKonResponse<SimpleKonDataRow> getCasesPerEnhet(Predicate<Fact> filter, Map<String, String> idsToNames, Range range, String vardgivarId) {

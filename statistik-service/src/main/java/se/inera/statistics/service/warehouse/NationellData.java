@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2014 Inera AB (http://www.inera.se)
+ * Copyright (C) 2015 Inera AB (http://www.inera.se)
  *
  * This file is part of statistik (https://github.com/sklintyg/statistik).
  *
@@ -24,8 +24,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import se.inera.statistics.service.report.model.Avsnitt;
 import se.inera.statistics.service.report.model.DiagnosgruppResponse;
+import se.inera.statistics.service.report.model.Icd;
 import se.inera.statistics.service.report.model.KonDataRow;
 import se.inera.statistics.service.report.model.KonField;
 import se.inera.statistics.service.report.model.Lan;
@@ -216,7 +216,7 @@ public class NationellData {
             }
         }
         if (result == null) {
-            return new DiagnosgruppResponse(new ArrayList<Avsnitt>(), new ArrayList<KonDataRow>());
+            return new DiagnosgruppResponse(new ArrayList<Icd>(), new ArrayList<KonDataRow>());
         } else {
             return filterLow(result);
         }
@@ -247,7 +247,7 @@ public class NationellData {
             }
         }
         if (result == null) {
-            return new DiagnosgruppResponse(new ArrayList<Avsnitt>(), new ArrayList<KonDataRow>());
+            return new DiagnosgruppResponse(new ArrayList<Icd>(), new ArrayList<KonDataRow>());
         } else {
             return filterLow(result);
         }

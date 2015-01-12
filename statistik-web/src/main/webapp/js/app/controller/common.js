@@ -104,14 +104,6 @@ var ControllerCommons = new function(){
         return ControllerCommons.isNumber(input) ? input.toString().split('').reverse().join('').match(/.{1,3}/g).join('\u00A0').split('').reverse().join('') : input;
     };
     
-    this.map = function(arr, func) {
-        var r=[];
-        for(var i=0; i<arr.length; i++) {
-            r.push(func(arr[i]));
-        }
-        return r;
-    }
-    
     this.getFileName = function(chartName) {
         var d = new Date();
 
@@ -126,16 +118,60 @@ var ControllerCommons = new function(){
         var time = hour + minute + second;
 
         return String(chartName).replace(/\s+/g, "_") + "_" + date + "_" + time;
-    }
+    };
     
-    this.exportChart = function(chart, chartName, legendLayout) {
+    this.exportChart = function(chart, chartName, title, diagnosFilters, legendLayout) {
         var options = {filename: ControllerCommons.getFileName(chartName)};
-        var chartOptions = { legend: { enabled: true } };
+        var extendedChartOptions = { legend: { enabled: true } };
+        var chartHeight = 400;
+        extendedChartOptions.chart = {};
+        extendedChartOptions.chart.height = chartHeight;
+        extendedChartOptions.chart.width = 600;
         if (legendLayout) {
-            chartOptions.legend.layout = legendLayout;
+            extendedChartOptions.legend.layout = legendLayout;
         }
-        chart.exportChart(options, chartOptions);
-    }
+        if (title) {
+            extendedChartOptions.title = {
+                text: title,
+                margin: 30
+            };
+            extendedChartOptions.subtitle = {
+                text: " "
+            };
+            extendedChartOptions.chart.marginTop = null;
+            extendedChartOptions.chart.backgroundColor = "#FFFFFF";
+            extendedChartOptions.chart.spacingLeft = 0;
+        }
+        extendedChartOptions.subtitle = {
+            text: " "
+        };
+        if (diagnosFilters) {
+            var fontSize = 12;
+            var fontSizeHeader = 15;
+            extendedChartOptions.chart.spacingBottom = (diagnosFilters.length + 2) * fontSize + fontSizeHeader + diagnosFilters.length * 2;
+            extendedChartOptions.chart.height = chartHeight + extendedChartOptions.chart.spacingBottom;
+            extendedChartOptions.chart.events = {
+                load: function () {
+                    this.renderer.text('Sammanställning av diagnosfilter', 10, chartHeight + fontSize / 2 + fontSizeHeader)
+                        .css({
+                            color: '#008391',
+                            fontSize: fontSizeHeader + 'px'
+                        })
+                        .add();
+                    var arrayLength = diagnosFilters.length;
+                    for (var i = 0; i < arrayLength; i++) {
+                        this.renderer.text(diagnosFilters[i], 10, chartHeight + (2 + i) * fontSize + fontSizeHeader + i * 2)
+                            .css({
+                                color: '#008391',
+                                fontSize: fontSize + 'px'
+                            })
+                            .add();
+                    }
+                }
+            };
+        }
+        chart.exportChart(options, extendedChartOptions);
+    };
 
     this.getHighChartConfigBase = function(chartCategories, chartSeries) {
         return {
@@ -157,15 +193,12 @@ var ControllerCommons = new function(){
                 labels : {
                     rotation : 310,
                     align : 'right',
-                   
                     style: {
                     	whiteSpace: 'pre',
-                    	width: '120px',
-                        
-                    	
+                    	width: '120px'
                     }
                 },
-                categories : ControllerCommons.map(chartCategories, function(name) {
+                categories : _.map(chartCategories, function(name) {
                     return ControllerCommons.htmlsafe(name);
                 }),
                 title: { 
@@ -266,6 +299,34 @@ var ControllerCommons = new function(){
         }
         return enhetsCount && enhetsCount != 1 ? " baserat på " + enhetsCount + " antal enheter " : " ";
     };
+
+    function icdStructureAsArray(icdStructure) {
+        return _.map(icdStructure, function (icd) {
+            return icdStructureAsArray(icd.subItems).concat(icd);
+        });
+    }
+
+    this.getDiagnosFilterInformationText = function(diagnosFilterIds, icdStructure) {
+        var icdStructureAsFlatArray = _.compose(_.flatten, icdStructureAsArray)(icdStructure);
+        var allDiagnosFilterIds = diagnosFilterIds.kapitel.concat(diagnosFilterIds.avsnitt).concat(diagnosFilterIds.kategorier);
+        return _.map(allDiagnosFilterIds, function(diagnosId){
+            var icdItem = _.find(icdStructureAsFlatArray, function(icd){
+                return icd.numericalId === diagnosId;
+            });
+            return icdItem.id + " " + icdItem.name;
+        });
+    };
+
+    this.populateActiveDiagnosFilter = function(scope, statisticsData, diagnosIds, isPrint) {
+        statisticsData.getIcd10Structure(function (diagnoses) {
+            scope.activeDiagnosFilters = diagnoses ? ControllerCommons.getDiagnosFilterInformationText(diagnosIds, diagnoses) : null;
+            scope.activeDiagnosFiltersForPrint = isPrint ? scope.activeDiagnosFilters : null;
+        }, function () {
+            scope.activeDiagnosFilters = diagnosIds;
+            scope.activeDiagnosFiltersForPrint = isPrint ? scope.activeDiagnosFilters : null;
+        });
+    };
+
 
 };
 

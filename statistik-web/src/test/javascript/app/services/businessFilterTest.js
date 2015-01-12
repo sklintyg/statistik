@@ -13,37 +13,37 @@ describe("Tests for business overview controller", function () {
         A00A09 = {
             id: "A00-A09",
             name: "Infektionssjukdomar utgående från mag-tarmkanalen",
-            kategoris: [A00, A01],
+            subItems: [A00, A01],
             numericalId: 1
         };
         B00B09 = {
             id: "B00-B09",
             name: "Virussjukdomar med hudutslag och slemhinneutslag",
-            kategoris: [B07],
+            subItems: [B07],
             numericalId: 2
         };
         D50D53 = {
             id: "D50-D53",
             name: "Nutritionsanemier",
-            kategoris: [D50],
+            subItems: [D50],
             numericalId: 3};
         D70D77 = {
             id: "D70-D77",
             name: "Andra sjukdomar i blod och blodbildande organ",
-            kategoris: [D70],
+            subItems: [D70],
             numericalId: 4
         };
 
         A00B99 = {
             id: "A00-B99",
             name: "Vissa infektionssjukdomar och parasitsjukdomar",
-            avsnitts: [A00A09, B00B09],
+            subItems: [A00A09, B00B09],
             numericalId: 1
         };
         D50D89 = {
             id: "D50-D89",
             name: "Sjukdomar i blod och blodbildande organ samt vissa rubbningar i immunsystemet",
-            avsnitts: [D50D53, D70D77],
+            subItems: [D50D53, D70D77],
             numericalId: 2
         };
 
