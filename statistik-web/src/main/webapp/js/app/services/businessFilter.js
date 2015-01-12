@@ -96,9 +96,14 @@ angular.module('StatisticsApp').factory('businessFilter', ['statisticsData', '_'
             _.each(diagnoses, function (kapitel) {
                 kapitel.typ = 'kapitel';
                 kapitel.subs = kapitel.subItems;
+                kapitel.name = kapitel.id + " " + kapitel.name;
                 _.each(kapitel.subItems, function (avsnitt) {
                     avsnitt.typ = 'avsnitt';
                     avsnitt.subs = avsnitt.subItems;
+                    avsnitt.name = avsnitt.id + " " + avsnitt.name;
+                    _.each(avsnitt.subItems, function (kategori) {
+                        kategori.name = kategori.id + " " + kategori.name;
+                    });
                 });
             });
             businessFilter.selectAll(businessFilter.icd10, true);
