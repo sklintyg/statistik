@@ -15,7 +15,7 @@
 
 !3 Då gäller:
 
-| Sjukfall i rapporten jämför diagnoser diagram |
+| Sjukfall i rapporten jamfor diagnoser diagram |
 |inloggad som | valda diagnoskategorier | diagnoskategori | män? | kvinnor? |
 | user1       | A00, F32, F34, F40      | A00             | 0    | 0        |
 | user1       | A00, F32, F34, F40      | F32             | 0    | 1        |
