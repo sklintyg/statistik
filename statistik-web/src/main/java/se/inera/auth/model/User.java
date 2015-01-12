@@ -20,10 +20,11 @@ package se.inera.auth.model;
 
 import se.inera.statistics.hsa.model.Vardenhet;
 
+import java.io.Serializable;
 import java.util.Collections;
 import java.util.List;
 
-public class User {
+public class User implements Serializable {
 
     private final String hsaId;
     private final String name;
