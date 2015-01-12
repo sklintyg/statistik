@@ -300,22 +300,9 @@ var ControllerCommons = new function(){
         return enhetsCount && enhetsCount != 1 ? " baserat på " + enhetsCount + " antal enheter " : " ";
     };
 
-    function getIcdSubs(icd) {
-        if (icd.kapitel) {
-            return icd.kapitel;
-        }
-        if (icd.avsnitts) {
-            return icd.avsnitts;
-        }
-        if (icd.kategoris) {
-            return icd.kategoris;
-        }
-        return [];
-    }
-
     function icdStructureAsArray(icdStructure) {
         return _.map(icdStructure, function (icd) {
-            return icdStructureAsArray(getIcdSubs(icd)).concat(icd);
+            return icdStructureAsArray(icd.subItems).concat(icd);
         });
     }
 
