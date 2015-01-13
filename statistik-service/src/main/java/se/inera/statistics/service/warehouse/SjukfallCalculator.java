@@ -40,10 +40,20 @@ public class SjukfallCalculator {
     private final Predicate<Fact> filter;
     private final List<Fact> aisle;
     private final boolean useOriginalSjukfallStart;
+    private final boolean extendSjukfall;
 
-    public SjukfallCalculator(List<Fact> aisle, Predicate<Fact> filter, boolean useOriginalSjukfallStart) {
+    /**
+     *
+     * @param aisle aisle
+     * @param filter filter
+     * @param useOriginalSjukfallStart true = använd faktiskt startdatum, inte första datum på första intyget som är tillgängligt för anroparen
+     * @param extendSjukfall true = försök att komplettera sjukfall från andra enheter än de man har tillgång till, false = titta bara på tillgängliga enheter,
+     *                       lämplig att använda t ex om man vet att man har tillgång till alla enheter
+     */
+    public SjukfallCalculator(List<Fact> aisle, Predicate<Fact> filter, boolean useOriginalSjukfallStart, boolean extendSjukfall) {
         this.filter = filter;
         this.aisle = new ArrayList<>(aisle);
+        this.extendSjukfall = extendSjukfall;
         Collections.sort(this.aisle, Fact.TIME_ORDER);
         this.useOriginalSjukfallStart = useOriginalSjukfallStart;
     }
@@ -74,7 +84,11 @@ public class SjukfallCalculator {
         final Iterable<Fact> filteredFacts = getFilteredFactsToDate(filter, to);
         Map<Integer, Stack<Sjukfall>> sjukfallsPerPatient = getSjukfallsPerPatient(filteredFacts);
         Multimap<Integer, Sjukfall> result = filterPersonifiedSjukfallsFromDate(from, sjukfallsPerPatient);
-        return extendSjukfallConnectedByIntygOnOtherEnhets(result, from);
+        if (extendSjukfall) {
+            return extendSjukfallConnectedByIntygOnOtherEnhets(result, from);
+        } else {
+            return result.values();
+        }
     }
 
     private Iterable<Fact> getFilteredFactsToDate(final Predicate<Fact> filter, LocalDate to) {

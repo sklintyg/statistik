@@ -99,15 +99,6 @@ public final class SjukfallUtil {
         return calculateSjukfall(aisle, new EnhetFilter(enhetIds), Integer.MAX_VALUE);
     }
 
-    public static Iterable<SjukfallGroup> sjukfallGrupper(final LocalDate from, final int periods, final int periodSize, final Aisle aisle, final int... enhetIds) {
-        return new Iterable<SjukfallGroup>() {
-            @Override
-            public Iterator<SjukfallGroup> iterator() {
-                return new SjukfallIterator(from, periods, periodSize, aisle, new EnhetFilter(enhetIds), false);
-            }
-        };
-    }
-
     public static EnhetFilter createEnhetFilter(String... enhetIds) {
         int[] numericalIds = new int[enhetIds.length];
         for (int i = 0; i < enhetIds.length; i++) {
