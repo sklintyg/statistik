@@ -527,6 +527,7 @@
 <script type="text/javascript" src="<c:url value='/js/app/controller/loginCtrl.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/controller/navigationMenuCtrl.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/controller/filterCtrl.js'/>"></script>
+<script type="text/javascript" src="<c:url value='/js/app/controller/directiveTmsCtrl.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/directives.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/filters.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/messages.js'/>"></script>
