@@ -153,17 +153,12 @@ angular.module('StatisticsApp').directive('message',
 
             return {
                 restrict: 'EA',
-                scope: {
-                    'key': '@',
-                    'param': '=',
-                    'params': '='
-                },
+                scope: false,
                 replace: true,
-                template: '<span ng-bind-html="resultValue"></span>',
                 link: function(scope, element, attr) {
                     var result;
                     // observe changes to interpolated attribute
-                    attr.$observe('key', function(interpolatedKey) {
+                    function updateMessage(interpolatedKey) {
                         var normalizedKey = angular.lowercase(interpolatedKey);
                         var useLanguage;
                         if (typeof attr.lang !== 'undefined') {
@@ -175,21 +170,26 @@ angular.module('StatisticsApp').directive('message',
                         result = messageService.getProperty(normalizedKey, null, attr.fallback, useLanguage,
                             (typeof attr.fallbackDefaultLang !== 'undefined'));
 
-                        if (typeof scope.param !== 'undefined') {
-                            $log.debug(scope.param);
-                            result = result.replace('%0', scope.param);
+                        if (typeof attr.param !== 'undefined') {
+                            $log.debug(attr.param);
+                            result = result.replace('%0', attr.param);
                         } else {
-                            if (typeof scope.params !== 'undefined') {
-                                var myparams = scope.params;
+                            if (typeof attr.params !== 'undefined') {
+                                var myparams = attr.params;
                                 for (var i = 0; i < myparams.length; i++) {
                                     result = result.replace('%' + i, myparams[i]);
                                 }
                             }
                         }
 
-                        // now get the value to display..
-                        scope.resultValue = result;
+                        element.html('<span>' + result + '</span>')
+                    }
+
+                    attr.$observe('key', function(interpolatedKey) {
+                        updateMessage(interpolatedKey);
                     });
+
+                    updateMessage(attr.key);
                 }
             };
         }]);
