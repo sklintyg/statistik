@@ -4,7 +4,7 @@ angular.module('StatisticsApp').factory('statisticsData', function ($http) {
     var factory = {};
 
     var makeRequestNational = function (restFunctionName, successCallback, failureCallback) {
-        $http.get("api/" + restFunctionName).success(function (result) {
+        $http.get("api/" + restFunctionName, {cache: true}).success(function (result) {
             try {
                 successCallback(result);
             } catch (e) {
@@ -17,7 +17,7 @@ angular.module('StatisticsApp').factory('statisticsData', function ($http) {
 
     var makeRequestVerksamhet = function (restFunctionName, verksamhetId, enhetsIds, diagnosIds, successCallback, failureCallback) {
         var param = getParamsAsJson(enhetsIds, diagnosIds);
-        $http.post("api/verksamhet/" + verksamhetId + "/" + restFunctionName, param).success(function (result) {
+        $http.post("api/verksamhet/" + verksamhetId + "/" + restFunctionName, param, {cache: true}).success(function (result) {
             try {
                 successCallback(result, enhetsIds, diagnosIds);
             } catch (e) {
