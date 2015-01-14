@@ -91,8 +91,7 @@ angular.module('StatisticsApp').factory('businessFilter', ['statisticsData', '_'
             });
         }
 
-        businessFilter.setIcd10Structure = function (diagnoses) {
-            businessFilter.icd10.subs = diagnoses;
+        businessFilter.setupDiagnosisTreeForSelectionModal = function(diagnoses) {
             _.each(diagnoses, function (kapitel) {
                 kapitel.typ = 'kapitel';
                 kapitel.subs = kapitel.subItems;
@@ -106,6 +105,11 @@ angular.module('StatisticsApp').factory('businessFilter', ['statisticsData', '_'
                     });
                 });
             });
+        };
+
+        businessFilter.setIcd10Structure = function (diagnoses) {
+            businessFilter.setupDiagnosisTreeForSelectionModal(diagnoses);
+            businessFilter.icd10.subs = diagnoses;
             businessFilter.selectAll(businessFilter.icd10, true);
             businessFilter.updateDiagnoses();
         };
@@ -138,6 +142,7 @@ angular.module('StatisticsApp').factory('businessFilter', ['statisticsData', '_'
         };
 
         businessFilter.populateGeography = function (businesses) {
+            businessFilter.geography = {subs: []};
             _.each(businesses, function (business) {
                 var county = _.findWhere(businessFilter.geography.subs, { id: business.lansId });
                 if (!county) {
@@ -184,33 +189,6 @@ angular.module('StatisticsApp').factory('businessFilter', ['statisticsData', '_'
             businessFilter.verksamhetsTyper = sortSwedish(_.values(verksamhetsTypSet), "name");
         };
 
-        businessFilter.itemClicked = function (item, itemRoot) {
-            if (item.allSelected) {
-                businessFilter.deselectAll(item);
-            } else if (item.someSelected) {
-                businessFilter.selectAll(item);
-            } else {
-                businessFilter.selectAll(item);
-            }
-            businessFilter.updateState(itemRoot);
-        };
-
-        businessFilter.hideClicked = function (item) {
-            item.hideChildren = !item.hideChildren;
-        };
-
-        businessFilter.deselectAll = function (item) {
-            if (!item.hide) {
-                item.allSelected = false;
-                item.someSelected = false;
-                if (item.subs) {
-                    _.each(item.subs, function (sub) {
-                        businessFilter.deselectAll(sub);
-                    });
-                }
-            }
-        };
-
         businessFilter.selectAll = function (item, selectHidden) {
             if (!item.hide || selectHidden) {
                 item.allSelected = true;
@@ -221,89 +199,6 @@ angular.module('StatisticsApp').factory('businessFilter', ['statisticsData', '_'
                     });
                 }
             }
-        };
-
-        businessFilter.selectedTertiaryCount = function (node) {
-            return _.reduce(node.subs, function (memo, sub) {
-                return memo + (businessFilter.selectedLeavesCount(sub) > 0 ? 1 : 0);
-            }, 0);
-        };
-
-        businessFilter.selectedSecondaryCount = function (node) {
-            return _.reduce(node.subs, function (acc, item) {
-                var nodeSum = _.reduce(item.subs, function (memo, sub) {
-                    return memo + (businessFilter.selectedLeavesCount(sub) > 0 ? 1 : 0);
-                }, 0);
-                return acc + nodeSum;
-            }, 0);
-        };
-
-        businessFilter.selectedLeavesCount = function (node) {
-            if (node.subs) {
-                return _.reduce(node.subs, function (acc, item) {
-                    return acc + businessFilter.selectedLeavesCount(item);
-                }, 0);
-            } else {
-                return node.allSelected ? 1 : 0;
-            }
-        };
-
-        businessFilter.updateState = function (item) {
-            if (item.subs) {
-                var someSelected = false;
-                var allSelected = true;
-                _.each(item.subs, function (sub) {
-                    if (!sub.hide) {
-                        businessFilter.updateState(sub);
-                        someSelected = someSelected || sub.someSelected || sub.allSelected;
-                        allSelected = allSelected && sub.allSelected;
-                    }
-                });
-                if (allSelected) {
-                    item.allSelected = true;
-                    item.someSelected = false;
-                } else {
-                    item.allSelected = false;
-                    item.someSelected = someSelected ? true : false;
-                }
-            }
-        };
-
-        function expandIfOnlyOneVisible(items) {
-            var visibleItems = _.reject(items, function (item) {
-                return item.hide;
-            });
-            if (visibleItems.length === 1) {
-                var item = visibleItems[0];
-                item.hideChildren = false;
-                businessFilter.updateState(item);
-                expandIfOnlyOneVisible(item.subs);
-            }
-        }
-
-        businessFilter.filterMenuItems = function (items, text) {
-            var searchText = text.toLowerCase();
-            var mappingFunc = function (item) {
-                if (item.subs) {
-                    _.each(item.subs, mappingFunc);
-                }
-                item.hide = businessFilter.isItemHidden(item, searchText);
-            };
-            _.each(items, mappingFunc);
-            _.each(items, businessFilter.updateState);
-            expandIfOnlyOneVisible(items);
-        };
-
-        businessFilter.isItemHidden = function (item, searchText) {
-            if (item.name.toLowerCase().indexOf(searchText) >= 0) {
-                return false;
-            }
-            if (!item.subs) {
-                return true;
-            }
-            return _.all(item.subs, function (sub) {
-                return businessFilter.isItemHidden(sub, searchText);
-            });
         };
 
         businessFilter.collectGeographyIds = function (node) {
@@ -317,6 +212,16 @@ angular.module('StatisticsApp').factory('businessFilter', ['statisticsData', '_'
                 }
             } else {
                 return node.allSelected ? [node.id] : [];
+            }
+        };
+
+        businessFilter.getSelectedLeaves = function (node) {
+            if (node.subs && node.subs.length != 0) {
+                return _.reduce(node.subs, function (memo, item) {
+                    return memo.concat(businessFilter.getSelectedLeaves(item));
+                }, []);
+            } else {
+                return node.allSelected ? [node] : [];
             }
         };
 

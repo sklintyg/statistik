@@ -439,40 +439,12 @@
                                                 ng-options="business.id as business.name for business in businessFilter.businesses" multiselect-dropdown id="select-unit">
                                         </select>
                                     </div>
-	                                <div class="col-xs-6 col-sm-6 col-md-6 col-lg-3" data-ng-if="businessFilter.numberOfBusinesses() === 'large'">
-	                                	<label for="select-geo-unit"><span message key="lbl.filter.val-av-enheter"></span></label><br/>
-	                                    <button class="btn btn-default" data-toggle="modal" data-target="#myModal" id="select-geo-unit" >
-	                                        {{ businessFilter.geographyBusinessIds.length }} av {{ businessFilter.businesses.length }} valda
-	                                    </button>
-	                                    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-	                                        <div class="modal-dialog">
-	                                            <div class="modal-content">
-	                                                <div class="modal-header">
-	                                                    <span id="myModalLabel"><span message key="lbl.filter.val-av-enheter"></span></span>
-	                                                </div>
-	                                                <div class="modal-body">
-	                                                    <ul class="modal-list">
-	                                                        <li class="search-all-items input-group">
-	                                                        	<span class="input-group-addon glyphicon glyphicon-search"></span>
-	                                                            <input type="search" ng-model="multiMenuFilter" class="multiMenuFilterSearch form-control" ng-change="businessFilter.filterMenuItems(businessFilter.geography.subs, multiMenuFilter)" placeholder="Sök efter enhet"/>
-	                                                        </li>
-	                                                        <li class="select-all-items">
-	                                                            <input type="checkbox" ng-checked="businessFilter.geography.allSelected" id="select-all-units" class="multiMenuSelectAll" ng-click="itemClicked(businessFilter.geography, businessFilter.geography)"></input>
-	                                                            <label for="select-all-units"><span message key="lbl.filter.select-all"></span></label>
-	                                                        </li>
-	                                                        <li data-ng-repeat="item in businessFilter.geography.subs" class="multiMenuSelectKapitel" ng-init="itemRoot=businessFilter.geography; depth=0">
-	                                                            <submenu item="item" itemroot="itemRoot" depth="depth" recursionhelper="recursionhelper" ng-hide="item.hide" class="depth0" />
-	                                                        </li>
-	                                                    </ul>
-	                                                </div>
-	                                                <div class="modal-footer">
-	                                                    <label class="pull-left"><span message key="lbl.filter.modal.lan"></span>{{businessFilter.selectedTertiaryCount(businessFilter.geography)}} <span message key="lbl.filter.modal.kommuner"></span>{{businessFilter.selectedSecondaryCount(businessFilter.geography)}} <span message key="lbl.filter.modal.enheter"></span>{{businessFilter.selectedLeavesCount(businessFilter.geography)}}</label>
-	                                                    <button class="btn btn-success" data-dismiss="modal" aria-hidden="true" data-ng-click="businessFilter.updateGeography()"><span message key="lbl.filter.modal.spara-stang"></span></button>
-	                                                </div>
-	                                            </div>
-	                                        </div>
-	                                    </div>
-	                                </div>
+                                    <tree-multi-selector class="col-xs-6 col-sm-6 col-md-6 col-lg-3"
+                                                         menu-options="businessFilter.geography"
+                                                         done-clicked="businessFilter.updateGeography"
+                                                         data-ng-if="businessFilter.numberOfBusinesses() === 'large'"
+                                                         text-data="geographyFilterSelectorData">
+                                    </tree-multi-selector>
 	                                <div class="col-xs-8 col-sm-6 col-md-6 col-lg-3 check-permanent-filter-container">
                         				<input type="checkbox" id="check-permanent-filter" ng-model="businessFilter.permanentFilter">
                                         <label for="check-permanent-filter"><span message key="lbl.filter.anvand-filter-pa-alla"></span></label>
@@ -480,41 +452,11 @@
                                     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                                         <div class="divider"></div>
                                     </div>
-                                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" ng-show="showDiagnosFilter">
-                                        <label for="select-diagnoses"><span message key="lbl.filter.val-av-diagnoser"></span></label><br/>
-                                        <button class="btn btn-default" data-toggle="modal" data-target="#diagnosisModal" id="select-diagnoses" >
-                                            Diagnoser
-                                        </button>
-                                        <div class="modal fade" id="diagnosisModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                                            <div class="modal-dialog">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <span id="myModalLabel"><span message key="lbl.filter.val-av-diagnoser"></span></span>
-                                                    </div>
-                                                    <div class="modal-body">
-                                                        <ul class="modal-list">
-                                                            <li class="search-all-items input-group">
-                                                                <span class="input-group-addon glyphicon glyphicon-search"></span>
-                                                                <input type="search" ng-model="multiMenuFilter" class="multiMenuFilterSearch form-control" ng-change="businessFilter.filterMenuItems(businessFilter.icd10.subs, multiMenuFilter)" placeholder="Sök diagnos"/>
-                                                            </li>
-                                                            <li class="select-all-items">
-                                                                <input type="checkbox" ng-checked="businessFilter.icd10.allSelected" id="select-all-diagnoses" class="multiMenuSelectAll" ng-click="itemClicked(businessFilter.icd10, businessFilter.icd10)"></input>
-                                                                <label for="select-all-diagnoses"><span message key="lbl.filter.select-all"></span></label>
-                                                            </li>
-                                                            <li data-ng-repeat="item in businessFilter.icd10.subs" class="multiMenuSelectKapitel" ng-init="itemRoot=businessFilter.icd10; depth=0">
-                                                                <submenu item="item" itemroot="itemRoot" depth="depth" recursionhelper="recursionhelper" ng-hide="item.hide" class="depth0" />
-                                                            </li>
-                                                        </ul>
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <label class="pull-left"><span message key="lbl.filter.modal.kapitel"></span>{{businessFilter.selectedTertiaryCount(businessFilter.icd10)}} <span message key="lbl.filter.modal.avsnitt"></span>
-                                                            {{businessFilter.selectedSecondaryCount(businessFilter.icd10)}} <span message key="lbl.filter.modal.kategorier"></span>{{businessFilter.selectedLeavesCount(businessFilter.icd10)}}</label>
-                                                        <button class="btn btn-success" data-dismiss="modal" aria-hidden="true" data-ng-click="businessFilter.updateDiagnoses()"><span message key="lbl.filter.modal.spara-stang"></span></button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                                    <tree-multi-selector class="col-xs-12 col-sm-12 col-md-12 col-lg-12"
+                                            menu-options="icd10" done-clicked="businessFilter.updateDiagnoses"
+                                            data-ng-show="showDiagnosFilter"
+                                            text-data="diagnosisFilterSelectorData">
+                                    </tree-multi-selector>
                                 </div>
 	                            <div class="filter-level no-padding">
 	                            	<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">

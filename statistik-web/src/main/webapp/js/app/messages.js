@@ -58,6 +58,7 @@ var stMessages = {
         'lbl.filter.valj-verksamhetstyper': 'Välj verksamhetstyper:',
         'lbl.filter.val-av-enheter': 'Välj enheter:',
         'lbl.filter.val-av-diagnoser': 'Välj diagnoser:',
+        'lbl.filter.val-av-diagnoser-knapp': 'Diagnoser',
         'lbl.filter.select-all': 'Markera alla',
         'lbl.filter.modal.lan': 'Län: ',
         'lbl.filter.modal.kommuner': 'Kommuner: ',
