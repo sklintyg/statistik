@@ -77,11 +77,11 @@ angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl', [ '$sco
         };
 
         function getSelectedDiagnosis() {
-            if (!$scope.diagnosisSelectionText) {
+            if (!$scope.diagnosisOptionsTree) {
                 return null;
             }
-            return _.map($scope.diagnosisSelectionText.split(','), function(it){
-                return it.trim();
+            return _.map(businessFilter.getSelectedLeaves($scope.diagnosisOptionsTree), function(it){
+                return it.id;
             });
         }
 
@@ -122,6 +122,19 @@ angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl', [ '$sco
         });
 
         $scope.showDiagnosisSelector = config.showDiagnosisSelector;
+        if ($scope.showDiagnosisSelector) {
+            statisticsData.getIcd10Structure(function(diagnosisTree){
+                businessFilter.setupDiagnosisTreeForSelectionModal(diagnosisTree);
+                $scope.diagnosisOptionsTree = {subs: diagnosisTree};
+            }, function () { alert("Failed to fetch ICD10 structure tree from server") });
+            $scope.diagnosisSelectorData = {
+                titleText:messageService.getProperty("lbl.filter.val-av-diagnoser", null, "", null, true),
+                buttonLabelText:messageService.getProperty("lbl.filter.val-av-diagnoser-knapp", null, "", null, true),
+                firstLevelLabelText:messageService.getProperty("lbl.filter.modal.kapitel", null, "", null, true),
+                secondLevelLabelText:messageService.getProperty("lbl.filter.modal.avsnitt", null, "", null, true),
+                thirdLevelLabelText:messageService.getProperty("lbl.filter.modal.kategorier", null, "", null, true)
+            };
+        }
 
         $scope.exportChart = function () {
             ControllerCommons.exportChart(chart, $scope.pageName, $scope.subTitle, $scope.activeDiagnosFilters);
