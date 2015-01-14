@@ -49,7 +49,7 @@ angular.module('StatisticsApp').controller('pageCtrl', [ '$scope', '$rootScope',
                     $scope.businessId = $cookies.verksamhetId;
                 }
 
-                var diagnosExclusionPattern = /.*(oversikt|diagnosgrupp|diagnosavsnitt).*/;
+                var diagnosExclusionPattern = /.*(oversikt|diagnosgrupp|diagnosavsnitt|jamforDiagnoser).*/;
                 $scope.showDiagnosFilter = !diagnosExclusionPattern.test(next.$$route.originalPath);
 
                 businessFilter.resetSelections();
