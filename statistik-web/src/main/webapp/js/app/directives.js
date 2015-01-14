@@ -142,7 +142,7 @@ angular.module('StatisticsApp').directive("filterButton", function () {
 	    template:
 	        '<button id="show-hide-filter-btn" type="button" class="btn btn-small pull-right" data-toggle="collapse" data-target="#statistics-filter-container" ng-click="filter.open = !filter.open">' +
 	        '<i class="glyphicon" ng-class="{glyphiconDownSign: !filter.open, glyphiconUpSign: filter.open}"></i> {{filter.open ? "Dölj filter" : "Visa filter"}}' +
-	        '</button>',
+	        '</button>'
     };
 });
 
