@@ -61,23 +61,33 @@ public class SjukfallCalculator {
     private void extendSjukfallConnectedByIntygOnOtherEnhets(Multimap<Integer, Sjukfall> sjukfallForAvailableEnhets, LocalDate from) {
         final Set<Integer> patients = new HashSet<>(sjukfallForAvailableEnhets.keySet());
         for (int patient : patients) {
-            List<Fact> allIntygForPatient = getAllIntygForPatientInAisle(patient);
-            Collection<Sjukfall> sjukfallFromAllIntygForPatient = calculateSjukfallForIntyg(allIntygForPatient, from);
             final Collection<Sjukfall> sjukfalls = sjukfallForAvailableEnhets.get(patient);
-            for (Sjukfall sjukfall : sjukfallFromAllIntygForPatient) {
-                List<Sjukfall> mergableSjukfalls = filterSjukfallInPeriod(sjukfall.getStart(), sjukfall.getEnd(), sjukfalls);
-                Sjukfall mergedSjukfall = mergeAllSjukfallInList(mergableSjukfalls);
-                if (mergedSjukfall != null) {
-                    if (useOriginalSjukfallStart) {
-                        mergedSjukfall = getExtendedSjukfallStart(mergedSjukfall, allIntygForPatient);
+            final List<Fact> allIntygForPatient = getAllIntygForPatientInAisle(patient);
+            if (countIntyg(sjukfalls) != allIntygForPatient.size()) {
+                Collection<Sjukfall> sjukfallFromAllIntygForPatient = calculateSjukfallForIntyg(allIntygForPatient, from);
+                for (Sjukfall sjukfall : sjukfallFromAllIntygForPatient) {
+                    List<Sjukfall> mergableSjukfalls = filterSjukfallInPeriod(sjukfall.getStart(), sjukfall.getEnd(), sjukfalls);
+                    Sjukfall mergedSjukfall = mergeAllSjukfallInList(mergableSjukfalls);
+                    if (mergedSjukfall != null) {
+                        if (useOriginalSjukfallStart) {
+                            mergedSjukfall = getExtendedSjukfallStart(mergedSjukfall, allIntygForPatient);
+                        }
+                        for (Sjukfall mergableSjukfall : mergableSjukfalls) {
+                            sjukfalls.remove(mergableSjukfall);
+                        }
+                        sjukfalls.add(mergedSjukfall);
                     }
-                    for (Sjukfall mergableSjukfall : mergableSjukfalls) {
-                        sjukfalls.remove(mergableSjukfall);
-                    }
-                    sjukfalls.add(mergedSjukfall);
                 }
             }
         }
+    }
+
+    private int countIntyg(Collection<Sjukfall> sjukfalls) {
+        int counter = 0;
+        for (Sjukfall sjukfall : sjukfalls) {
+            counter += sjukfall.getIntygCount();
+        }
+        return counter;
     }
 
     Collection<Sjukfall> getSjukfalls(LocalDate from, LocalDate to) {
