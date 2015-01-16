@@ -295,9 +295,9 @@ var ControllerCommons = new function(){
     this.getEnhetCountText = function(enhetsCount, basedOnAlreadyInText) {
         'use strict';
         if (basedOnAlreadyInText) {
-            return enhetsCount && enhetsCount != 1 ? " och " + enhetsCount + " antal enheter " : " ";
+            return enhetsCount && enhetsCount != 1 ? " och " + enhetsCount + " enheter " : " ";
         }
-        return enhetsCount && enhetsCount != 1 ? " baserat på " + enhetsCount + " antal enheter " : " ";
+        return enhetsCount && enhetsCount != 1 ? " baserat på " + enhetsCount + " enheter " : " ";
     };
 
     function icdStructureAsArray(icdStructure) {
