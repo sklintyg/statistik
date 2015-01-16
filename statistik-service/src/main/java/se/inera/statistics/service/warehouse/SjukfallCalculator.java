@@ -85,7 +85,7 @@ public class SjukfallCalculator {
         final ArrayListMultimap<Integer, Sjukfall> sjukfallsPerPatient = getSjukfallsPerPatientInAisle(patients);
         for (int patient : patients) {
             final Collection<Sjukfall> sjukfalls = sjukfallForAvailableEnhets.get(patient);
-                Collection<Sjukfall> sjukfallFromAllIntygForPatient = sjukfallsPerPatient.get(patient);
+            Collection<Sjukfall> sjukfallFromAllIntygForPatient = sjukfallsPerPatient.get(patient);
             if (countIntyg(sjukfalls) != countIntyg(sjukfallFromAllIntygForPatient)) {
                 for (Sjukfall sjukfall : sjukfallFromAllIntygForPatient) {
                     List<Sjukfall> mergableSjukfalls = filterSjukfallInPeriod(sjukfall.getStart(), sjukfall.getEnd(), sjukfalls);
