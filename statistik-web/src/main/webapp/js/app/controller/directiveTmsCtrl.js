@@ -56,8 +56,6 @@ angular.module('StatisticsApp').controller('directiveTmsCtrl', [ '$scope', funct
     $scope.itemClicked = function (item) {
         if (item.allSelected) {
             $scope.deselectAll(item);
-        } else if (item.someSelected) {
-            $scope.selectAll(item);
         } else {
             $scope.selectAll(item);
         }
