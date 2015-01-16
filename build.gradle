@@ -112,5 +112,13 @@ if (project.hasProperty('runSonar')) {
             property "sonar.jdbc.username", project.sonarUser
             property "sonar.jdbc.password", project.sonarPassword
         }
+
+        project(":hsa-integration") {
+            sonarRunner {
+                sonarProperties {
+                    properties["sonar.sources"] -= project(":hsa-integration").file("build/generatedSource/java")
+                }
+            }
+        }
     }
 }
