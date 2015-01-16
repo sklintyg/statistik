@@ -18,13 +18,17 @@
  */
 package se.inera.statistics.service.warehouse;
 
-import com.google.common.base.Function;
 import com.google.common.base.Predicate;
+import com.google.common.cache.CacheBuilder;
+import com.google.common.cache.CacheLoader;
+import com.google.common.cache.LoadingCache;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Multimap;
 import org.joda.time.LocalDate;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -32,15 +36,33 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ExecutionException;
 
 public class SjukfallCalculator {
+
+    private static final Logger LOG = LoggerFactory.getLogger(SjukfallCalculator.class);
+    public static final int MAX_CACHE_SIZE = 10000;
 
     private final Predicate<Fact> filter;
     private final List<Fact> aisle;
     private final boolean useOriginalSjukfallStart;
     private final boolean extendSjukfall;
+    private ArrayListMultimap<Integer, Sjukfall> sjukfallsPerPatientInAisle;
+    private LoadingCache<Integer, List<Fact>> allIntygForPatientInAisle = null;
+
+    private LoadingCache<Integer, List<Fact>> getAllIntygForPatientInAisle() {
+        if (allIntygForPatientInAisle == null) {
+            allIntygForPatientInAisle = CacheBuilder.newBuilder()
+                    .maximumSize(MAX_CACHE_SIZE)
+                    .build(new CacheLoader<Integer, List<Fact>>() {
+                        public List<Fact> load(Integer key) {
+                            return getAllIntygForPatientInAisle(key);
+                        }
+                    });
+        }
+        return allIntygForPatientInAisle;
+    }
 
     /**
      *
@@ -60,17 +82,17 @@ public class SjukfallCalculator {
 
     private void extendSjukfallConnectedByIntygOnOtherEnhets(Multimap<Integer, Sjukfall> sjukfallForAvailableEnhets, LocalDate from) {
         final Set<Integer> patients = new HashSet<>(sjukfallForAvailableEnhets.keySet());
+        final ArrayListMultimap<Integer, Sjukfall> sjukfallsPerPatient = getSjukfallsPerPatientInAisle(patients);
         for (int patient : patients) {
             final Collection<Sjukfall> sjukfalls = sjukfallForAvailableEnhets.get(patient);
-            final List<Fact> allIntygForPatient = getAllIntygForPatientInAisle(patient);
-            if (countIntyg(sjukfalls) != allIntygForPatient.size()) {
-                Collection<Sjukfall> sjukfallFromAllIntygForPatient = calculateSjukfallForIntyg(allIntygForPatient, from);
+                Collection<Sjukfall> sjukfallFromAllIntygForPatient = sjukfallsPerPatient.get(patient);
+            if (countIntyg(sjukfalls) != countIntyg(sjukfallFromAllIntygForPatient)) {
                 for (Sjukfall sjukfall : sjukfallFromAllIntygForPatient) {
                     List<Sjukfall> mergableSjukfalls = filterSjukfallInPeriod(sjukfall.getStart(), sjukfall.getEnd(), sjukfalls);
                     Sjukfall mergedSjukfall = mergeAllSjukfallInList(mergableSjukfalls);
                     if (mergedSjukfall != null) {
                         if (useOriginalSjukfallStart) {
-                            mergedSjukfall = getExtendedSjukfallStart(mergedSjukfall, allIntygForPatient);
+                            mergedSjukfall = getExtendedSjukfallStart(mergedSjukfall, patient);
                         }
                         for (Sjukfall mergableSjukfall : mergableSjukfalls) {
                             sjukfalls.remove(mergableSjukfall);
@@ -80,6 +102,20 @@ public class SjukfallCalculator {
                 }
             }
         }
+    }
+
+    private ArrayListMultimap<Integer, Sjukfall> getSjukfallsPerPatientInAisle(Set<Integer> patients) {
+        if (sjukfallsPerPatientInAisle == null) {
+            sjukfallsPerPatientInAisle = getSjukfallsPerPatient(aisle, patients);
+            return sjukfallsPerPatientInAisle;
+        }
+        final Set<Integer> cachedPatients = sjukfallsPerPatientInAisle.keySet();
+        final HashSet<Integer> nonCachedPatients = new HashSet<>(patients);
+        nonCachedPatients.removeAll(cachedPatients);
+        if (!nonCachedPatients.isEmpty()) {
+            sjukfallsPerPatientInAisle.putAll(getSjukfallsPerPatient(aisle, nonCachedPatients));
+        }
+        return sjukfallsPerPatientInAisle;
     }
 
     private int countIntyg(Collection<Sjukfall> sjukfalls) {
@@ -125,9 +161,16 @@ public class SjukfallCalculator {
     }
 
     private ArrayListMultimap<Integer, Sjukfall> getSjukfallsPerPatient(Iterable<Fact> facts) {
+        return getSjukfallsPerPatient(facts, null);
+    }
+
+    private ArrayListMultimap<Integer, Sjukfall> getSjukfallsPerPatient(Iterable<Fact> facts, Collection<Integer> patientsFilter) {
         final ArrayListMultimap<Integer, Sjukfall> sjukfallsPerPatient = ArrayListMultimap.create();
         for (Fact line : facts) {
             int key = line.getPatient();
+            if (patientsFilter != null && !patientsFilter.contains(key)) {
+                continue;
+            }
             List<Sjukfall> sjukfallsForPatient = sjukfallsPerPatient.get(key);
 
             if (sjukfallsForPatient.isEmpty()) {
@@ -145,7 +188,14 @@ public class SjukfallCalculator {
         return sjukfallsPerPatient;
     }
 
-    private Sjukfall getExtendedSjukfallStart(final Sjukfall mergedSjukfall, List<Fact> allIntygForPatient) {
+    private Sjukfall getExtendedSjukfallStart(final Sjukfall mergedSjukfall, int patient) {
+        List<Fact> allIntygForPatient;
+        try {
+            allIntygForPatient = getAllIntygForPatientInAisle().get(patient);
+        } catch (ExecutionException e) {
+            LOG.error("Failed to get intygs on aisle for patient: " + patient);
+            allIntygForPatient = Collections.emptyList();
+        }
         final Collection<Fact> extendableIntyg = Collections2.filter(allIntygForPatient, new Predicate<Fact>() {
             @Override
             public boolean apply(Fact fact) {
@@ -160,7 +210,7 @@ public class SjukfallCalculator {
         final int sjukskrivningslangd = intygForExtending.getSjukskrivningslangd();
         final Sjukfall sjukfall = mergedSjukfall.extendSjukfallWithNewStart(startdatum, sjukskrivningslangd);
 
-        return getExtendedSjukfallStart(sjukfall, allIntygForPatient);
+        return getExtendedSjukfallStart(sjukfall, patient);
     }
 
     private Sjukfall mergeAllSjukfallInList(List<Sjukfall> sjukfalls) {
@@ -196,17 +246,6 @@ public class SjukfallCalculator {
             }
         });
         return new ArrayList<>(filteredSjukfalls);
-    }
-
-    private Collection<Sjukfall> calculateSjukfallForIntyg(List<Fact> intygs, LocalDate from) {
-        final Multimap<Integer, Sjukfall> sjukfallsPerPatient = getSjukfallsPerPatient(intygs);
-        final Multimap<Integer, Sjukfall> sjukfalls = filterPersonifiedSjukfallsFromDate(from, sjukfallsPerPatient);
-        return Collections2.transform(sjukfalls.entries(), new Function<Map.Entry<Integer, Sjukfall>, Sjukfall>() {
-            @Override
-            public Sjukfall apply(Map.Entry<Integer, Sjukfall> integerSjukfallEntry) {
-                return integerSjukfallEntry.getValue();
-            }
-        });
     }
 
     private List<Fact> getAllIntygForPatientInAisle(final int patient) {
