@@ -59,7 +59,7 @@ angular.module('StatisticsApp').controller('directiveTmsCtrl', [ '$scope', funct
         } else {
             $scope.selectAll(item);
         }
-        $scope.updateState($scope.menuOptions.subs);
+        $scope.updateState($scope.menuOptions);
     };
 
     $scope.hideClicked = function (item) {
