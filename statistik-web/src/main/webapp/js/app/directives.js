@@ -124,6 +124,7 @@ angular.module('StatisticsApp').directive('intermediate', function() {
 angular.module('StatisticsApp').directive("submenu", function (recursionService) {
     return {
         restrict: "E",
+        scope: { item: "=", itemroot: "=", depth: "=", recursionhelper: "=" },
         template:
             '<span ng-click="recursionhelper.hideclick(item)" class="ellipsis-text"><span class="glyphicon" ng-class="{glyphiconMinusSign: !item.hideChildren, glyphiconPlusSign: item.hideChildren}"/>{{item.name}}</span>' +
             '<input type="checkbox" ng-checked="item.allSelected" intermediate="item.someSelected" ng-click="recursionhelper.itemclick(item, itemroot)"/>' +
