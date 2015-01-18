@@ -116,7 +116,8 @@ angular.module('StatisticsApp').factory('businessFilter', ['statisticsData', '_'
 
         businessFilter.loggedIn = function (businesses) {
             if (!businessFilter.dataInitialized) {
-                statisticsData.getIcd10Structure(businessFilter.setIcd10Structure, function () { });
+                statisticsData.getIcd10Structure(businessFilter.setIcd10Structure,
+                    function () { alert("Failed to fetch ICD10 structure tree from server") });
                 businessFilter.businesses = sortSwedish(businesses, "name", "Okän");
                 if (businessFilter.numberOfBusinesses() === "large") {
                     businessFilter.populateGeography(businesses);
