@@ -44,10 +44,10 @@ public class SjukfallCalculator {
     private static final Logger LOG = LoggerFactory.getLogger(SjukfallCalculator.class);
     public static final int MAX_CACHE_SIZE = 10000;
 
-    private final Predicate<Fact> filter;
     private final List<Fact> aisle;
     private final boolean useOriginalSjukfallStart;
     private final boolean extendSjukfall;
+    private final Iterable<Fact> filteredAisle;
     private ArrayListMultimap<Integer, Sjukfall> sjukfallsPerPatientInAisle;
     private LoadingCache<Integer, List<Fact>> allIntygForPatientInAisle = null;
 
@@ -73,11 +73,11 @@ public class SjukfallCalculator {
      *                       lämplig att använda t ex om man vet att man har tillgång till alla enheter
      */
     public SjukfallCalculator(List<Fact> aisle, Predicate<Fact> filter, boolean useOriginalSjukfallStart, boolean extendSjukfall) {
-        this.filter = filter;
         this.aisle = new ArrayList<>(aisle);
         this.extendSjukfall = extendSjukfall;
         Collections.sort(this.aisle, Fact.TIME_ORDER);
         this.useOriginalSjukfallStart = useOriginalSjukfallStart;
+        filteredAisle = Iterables.filter(aisle, filter);
     }
 
     private void extendSjukfallConnectedByIntygOnOtherEnhets(Multimap<Integer, Sjukfall> sjukfallForAvailableEnhets, LocalDate from) {
@@ -127,7 +127,7 @@ public class SjukfallCalculator {
     }
 
     Collection<Sjukfall> getSjukfalls(LocalDate from, LocalDate to) {
-        final Iterable<Fact> filteredFacts = getFilteredFactsToDate(filter, to);
+        final Iterable<Fact> filteredFacts = getFilteredFactsToDate(to);
         Multimap<Integer, Sjukfall> sjukfallsPerPatient = getSjukfallsPerPatient(filteredFacts);
         if (extendSjukfall) {
             extendSjukfallConnectedByIntygOnOtherEnhets(sjukfallsPerPatient, from);
@@ -136,12 +136,12 @@ public class SjukfallCalculator {
         return result.values();
     }
 
-    private Iterable<Fact> getFilteredFactsToDate(final Predicate<Fact> filter, LocalDate to) {
+    private Iterable<Fact> getFilteredFactsToDate(LocalDate to) {
         final int cutoff = WidelineConverter.toDay(to);
-        return Iterables.filter(aisle, new Predicate<Fact>() {
+        return Iterables.filter(filteredAisle, new Predicate<Fact>() {
             @Override
             public boolean apply(Fact fact) {
-                return fact.getStartdatum() < cutoff && filter.apply(fact);
+                return fact.getStartdatum() < cutoff;
             }
         });
     }
