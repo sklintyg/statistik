@@ -34,7 +34,7 @@ angular.module('StatisticsApp').directive("spinner", function() {
         template :
             '<div>'
            +'  <div ng-show="showSpinner" class="spinner">'
-           +'    <img aria-labelledby="loading-message" src="/img/ajax-loader.gif"/>'
+           +'    <img aria-labelledby="loading-message" src="img/ajax-loader.gif"/>'
            +'    <p id="loading-message">'
            +'      <strong><span>{{ label }}</span></strong>'
            +'    </p>'
