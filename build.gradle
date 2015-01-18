@@ -116,7 +116,7 @@ if (project.hasProperty('runSonar')) {
         project(":hsa-integration") {
             sonarRunner {
                 sonarProperties {
-                    properties["sonar.sources"] -= project(":hsa-integration").file("build/generatedSource/java")
+                    properties["sonar.sources"] -= project(":hsa-integration").generatedJavaDir
                 }
             }
         }
