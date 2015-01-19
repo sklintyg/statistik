@@ -52,6 +52,8 @@ public class SjukfallCalculator {
     private ArrayListMultimap<Integer, Sjukfall> sjukfallsPerPatientInAisle;
     private LoadingCache<Integer, List<Fact>> allIntygForPatientInAisle = null;
     private List<ArrayListMultimap<Integer, Fact>> factsPerPatientAndPeriod;
+    private int period = 0;
+    private Multimap<Integer, Sjukfall> sjukfallsPerPatientInPreviousPeriod = ArrayListMultimap.create();
 
     /**
      *
@@ -161,25 +163,30 @@ public class SjukfallCalculator {
         return counter;
     }
 
-    Collection<Sjukfall> getSjukfalls(int period) {
-        Multimap<Integer, Sjukfall> sjukfallsPerPatient = getSjukfallsPerPatient(period);
+    Collection<Sjukfall> getSjukfallsForNextPeriod() {
+        Multimap<Integer, Sjukfall> sjukfallsPerPatient = getSjukfallsPerPatient();
         if (extendSjukfall) {
             extendSjukfallConnectedByIntygOnOtherEnhets(sjukfallsPerPatient);
         }
         Multimap<Integer, Sjukfall> result = filterPersonifiedSjukfallsFromDate(ranges.get(period).getFrom(), sjukfallsPerPatient);
+        period++;
         return result.values();
     }
 
-    private Multimap<Integer, Sjukfall> getSjukfallsPerPatient(int period) {
+    private Multimap<Integer, Sjukfall> getSjukfallsPerPatient() {
         final ArrayListMultimap<Integer, Fact> result = ArrayListMultimap.create();
         for (int i = 0; i <= (period + 1); i++) {
             result.putAll(factsPerPatientAndPeriod.get(i));
         }
-        //TODO Cacha beräknade sjukfall per patient och använd resultatet från senaste perioden om inga nya intyg fanns för patienten på denna period. Detta kräver att getSjukfalls-metoden ändras till en "next"-metod (dvs det kommer itne vara möjligt att hoppa in och hämta valfri period, utan de måste isf hämtas i ordning vilket inte bör ställa till något problem)
-        final ArrayListMultimap<Integer, Sjukfall> sjukfalls = ArrayListMultimap.create();
+        final ArrayListMultimap<Integer, Sjukfall> sjukfalls = ArrayListMultimap.create(sjukfallsPerPatientInPreviousPeriod);
+        final ArrayListMultimap<Integer, Fact> factsPerPatientInPeriod = factsPerPatientAndPeriod.get(period + 1);
         for (Integer key : result.keySet()) {
-            sjukfalls.putAll(getSjukfallsPerPatient(result.get(key)));
+            if (!factsPerPatientInPeriod.get(key).isEmpty() || !sjukfallsPerPatientInPreviousPeriod.containsKey(key)) {
+                sjukfalls.removeAll(key);
+                sjukfalls.putAll(getSjukfallsPerPatient(result.get(key)));
+            }
         }
+        sjukfallsPerPatientInPreviousPeriod = ArrayListMultimap.create(sjukfalls);
         return sjukfalls;
     }
 

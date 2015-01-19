@@ -63,7 +63,7 @@ public class SjukfallIterator implements Iterator<SjukfallGroup> {
 
     @Override
     public SjukfallGroup next() {
-        Collection<Sjukfall> result = sjukfallCalculator.getSjukfalls(period);
+        Collection<Sjukfall> result = sjukfallCalculator.getSjukfallsForNextPeriod();
         final LocalDate fromDate = from.plusMonths(period * periodSize);
         Range range = new Range(fromDate, from.plusMonths(period * periodSize + periodSize - 1));
         SjukfallGroup sjukfallGroup = new SjukfallGroup(range, result);
