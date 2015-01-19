@@ -117,13 +117,15 @@ configure(subprojects.findAll { ['liquibase-runner', 'statistik-web'].contains(i
         repositories {
             mavenDeployer {
                 configuration = configurations.deployerJars
-                repository(url: "dav:https://repository-callistasoftware.forge.cloudbees.com/snapshot/") {
+                repository(url: "dav:https://repository-callistasoftware.forge.cloudbees.com/release/") {
+                    authentication(userName: cloudbeesUsername, password: cloudbeesPassword)
+                }
+                snapshotRepository(url: "dav:https://repository-callistasoftware.forge.cloudbees.com/snapshot/") {
                     authentication(userName: cloudbeesUsername, password: cloudbeesPassword)
                 }
             }
         }
     }
-
 }
 
 if (project.hasProperty('runSonar')) {
