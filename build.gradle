@@ -99,6 +99,33 @@ configure(subprojects.findAll { ['hsa-integration', 'statistik-service', 'statis
     task testAll(dependsOn: [test, integrationTests, checkstyleMain])
 }
 
+configure(subprojects.findAll { ['liquibase-runner', 'statistik-web'].contains(it.name) }) {
+    apply plugin: 'maven'
+
+    configurations {
+        deployerJars
+    }
+
+    dependencies {
+        deployerJars "org.apache.maven.wagon:wagon-webdav:1.0-beta-2"
+    }
+
+    ext.cloudbeesUsername = System.properties['cloudbeesUsername']
+    ext.cloudbeesPassword = System.properties['cloudbeesPassword']
+
+    uploadArchives {
+        repositories {
+            mavenDeployer {
+                configuration = configurations.deployerJars
+                repository(url: "dav:https://repository-callistasoftware.forge.cloudbees.com/snapshot/") {
+                    authentication(userName: cloudbeesUsername, password: cloudbeesPassword)
+                }
+            }
+        }
+    }
+
+}
+
 if (project.hasProperty('runSonar')) {
     apply plugin: 'sonar-runner'
 
