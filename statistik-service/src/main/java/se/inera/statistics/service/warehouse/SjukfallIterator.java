@@ -21,8 +21,10 @@ package se.inera.statistics.service.warehouse;
 import com.google.common.base.Predicate;
 import org.joda.time.LocalDate;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
 
 import se.inera.statistics.service.report.model.Range;
 
@@ -40,7 +42,18 @@ public class SjukfallIterator implements Iterator<SjukfallGroup> {
         this.periods = periods;
         this.periodSize = periodSize;
         boolean extendSjukfall = !SjukfallUtil.ALL_ENHETER.equals(filter);
-        sjukfallCalculator = new SjukfallCalculator(aisle.getLines(), filter, useOriginalSjukfallStart, extendSjukfall);
+        List<Range> ranges = getRanges(from, periods, periodSize);
+        sjukfallCalculator = new SjukfallCalculator(aisle.getLines(), filter, ranges, useOriginalSjukfallStart, extendSjukfall);
+    }
+
+    private List<Range> getRanges(LocalDate from, int periods, int periodSize) {
+        final ArrayList<Range> ranges = new ArrayList<>();
+        for (int i = 0; i < periods; i++) {
+            final LocalDate fromDate = from.plusMonths(i * periodSize);
+            final LocalDate toDate = from.plusMonths((i + 1) * periodSize);
+            ranges.add(new Range(fromDate, toDate));
+        }
+        return ranges;
     }
 
     @Override
@@ -50,10 +63,8 @@ public class SjukfallIterator implements Iterator<SjukfallGroup> {
 
     @Override
     public SjukfallGroup next() {
+        Collection<Sjukfall> result = sjukfallCalculator.getSjukfalls(period);
         final LocalDate fromDate = from.plusMonths(period * periodSize);
-        final LocalDate toDate = from.plusMonths((period + 1) * periodSize);
-        Collection<Sjukfall> result = sjukfallCalculator.getSjukfalls(fromDate, toDate);
-
         Range range = new Range(fromDate, from.plusMonths(period * periodSize + periodSize - 1));
         SjukfallGroup sjukfallGroup = new SjukfallGroup(range, result);
         period++;

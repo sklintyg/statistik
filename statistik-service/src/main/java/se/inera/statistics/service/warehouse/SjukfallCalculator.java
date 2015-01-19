@@ -29,6 +29,7 @@ import com.google.common.collect.Multimap;
 import org.joda.time.LocalDate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import se.inera.statistics.service.report.model.Range;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -47,9 +48,28 @@ public class SjukfallCalculator {
     private final List<Fact> aisle;
     private final boolean useOriginalSjukfallStart;
     private final boolean extendSjukfall;
-    private final Iterable<Fact> filteredAisle;
+    private final List<Range> ranges;
     private ArrayListMultimap<Integer, Sjukfall> sjukfallsPerPatientInAisle;
     private LoadingCache<Integer, List<Fact>> allIntygForPatientInAisle = null;
+    private List<ArrayListMultimap<Integer, Fact>> factsPerPatientAndPeriod;
+
+    /**
+     *
+     * @param aisle aisle
+     * @param filter filter
+     * @param useOriginalSjukfallStart true = använd faktiskt startdatum, inte första datum på första intyget som är tillgängligt för anroparen
+     * @param extendSjukfall true = försök att komplettera sjukfall från andra enheter än de man har tillgång till, false = titta bara på tillgängliga enheter,
+     *                       lämplig att använda t ex om man vet att man har tillgång till alla enheter
+     */
+    public SjukfallCalculator(List<Fact> aisle, Predicate<Fact> filter, List<Range> ranges, boolean useOriginalSjukfallStart, boolean extendSjukfall) {
+        this.aisle = new ArrayList<>(aisle);
+        this.extendSjukfall = extendSjukfall;
+        Collections.sort(this.aisle, Fact.TIME_ORDER);
+        this.useOriginalSjukfallStart = useOriginalSjukfallStart;
+        final Iterable<Fact> filteredAisle = Iterables.filter(aisle, filter);
+        this.ranges = new ArrayList<>(ranges);
+        populateFactsPerPatientAndPeriod(filteredAisle, this.ranges);
+    }
 
     private LoadingCache<Integer, List<Fact>> getAllIntygForPatientInAisle() {
         if (allIntygForPatientInAisle == null) {
@@ -64,23 +84,38 @@ public class SjukfallCalculator {
         return allIntygForPatientInAisle;
     }
 
-    /**
-     *
-     * @param aisle aisle
-     * @param filter filter
-     * @param useOriginalSjukfallStart true = använd faktiskt startdatum, inte första datum på första intyget som är tillgängligt för anroparen
-     * @param extendSjukfall true = försök att komplettera sjukfall från andra enheter än de man har tillgång till, false = titta bara på tillgängliga enheter,
-     *                       lämplig att använda t ex om man vet att man har tillgång till alla enheter
-     */
-    public SjukfallCalculator(List<Fact> aisle, Predicate<Fact> filter, boolean useOriginalSjukfallStart, boolean extendSjukfall) {
-        this.aisle = new ArrayList<>(aisle);
-        this.extendSjukfall = extendSjukfall;
-        Collections.sort(this.aisle, Fact.TIME_ORDER);
-        this.useOriginalSjukfallStart = useOriginalSjukfallStart;
-        filteredAisle = Iterables.filter(aisle, filter);
+    private void populateFactsPerPatientAndPeriod(Iterable<Fact> facts, List<Range> ranges) {
+        final List<Integer> rangeEnds = new ArrayList<>(ranges.size() + 1);
+        rangeEnds.add(WidelineConverter.toDay(ranges.get(0).getFrom()));
+        for (Range range : ranges) {
+            rangeEnds.add(WidelineConverter.toDay(range.getTo()));
+        }
+
+        factsPerPatientAndPeriod = new ArrayList<>(rangeEnds.size());
+        for (int i = 0; i < rangeEnds.size(); i++) {
+            factsPerPatientAndPeriod.add(ArrayListMultimap.<Integer, Fact> create());
+        }
+
+        for (Fact fact : facts) {
+            final int rangeIndex = getRangeIndex(fact.getStartdatum(), rangeEnds);
+            if (rangeIndex >= 0) {
+                factsPerPatientAndPeriod.get(rangeIndex).put(fact.getPatient(), fact);
+            }
+        }
     }
 
-    private void extendSjukfallConnectedByIntygOnOtherEnhets(Multimap<Integer, Sjukfall> sjukfallForAvailableEnhets, LocalDate from) {
+    private int getRangeIndex(int date, List<Integer> rangeEnds) {
+        final int rangesSize = rangeEnds.size();
+        for (int i = 0; i < rangesSize; i++) {
+            final Integer rangeEnd = rangeEnds.get(i);
+            if (date < rangeEnd) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    private void extendSjukfallConnectedByIntygOnOtherEnhets(Multimap<Integer, Sjukfall> sjukfallForAvailableEnhets) {
         final Set<Integer> patients = new HashSet<>(sjukfallForAvailableEnhets.keySet());
         final ArrayListMultimap<Integer, Sjukfall> sjukfallsPerPatient = getSjukfallsPerPatientInAisle(patients);
         for (int patient : patients) {
@@ -126,24 +161,26 @@ public class SjukfallCalculator {
         return counter;
     }
 
-    Collection<Sjukfall> getSjukfalls(LocalDate from, LocalDate to) {
-        final Iterable<Fact> filteredFacts = getFilteredFactsToDate(to);
-        Multimap<Integer, Sjukfall> sjukfallsPerPatient = getSjukfallsPerPatient(filteredFacts);
+    Collection<Sjukfall> getSjukfalls(int period) {
+        Multimap<Integer, Sjukfall> sjukfallsPerPatient = getSjukfallsPerPatient(period);
         if (extendSjukfall) {
-            extendSjukfallConnectedByIntygOnOtherEnhets(sjukfallsPerPatient, from);
+            extendSjukfallConnectedByIntygOnOtherEnhets(sjukfallsPerPatient);
         }
-        Multimap<Integer, Sjukfall> result = filterPersonifiedSjukfallsFromDate(from, sjukfallsPerPatient);
+        Multimap<Integer, Sjukfall> result = filterPersonifiedSjukfallsFromDate(ranges.get(period).getFrom(), sjukfallsPerPatient);
         return result.values();
     }
 
-    private Iterable<Fact> getFilteredFactsToDate(LocalDate to) {
-        final int cutoff = WidelineConverter.toDay(to);
-        return Iterables.filter(filteredAisle, new Predicate<Fact>() {
-            @Override
-            public boolean apply(Fact fact) {
-                return fact.getStartdatum() < cutoff;
-            }
-        });
+    private Multimap<Integer, Sjukfall> getSjukfallsPerPatient(int period) {
+        final ArrayListMultimap<Integer, Fact> result = ArrayListMultimap.create();
+        for (int i = 0; i <= (period + 1); i++) {
+            result.putAll(factsPerPatientAndPeriod.get(i));
+        }
+        //TODO Cacha beräknade sjukfall per patient och använd resultatet från senaste perioden om inga nya intyg fanns för patienten på denna period. Detta kräver att getSjukfalls-metoden ändras till en "next"-metod (dvs det kommer itne vara möjligt att hoppa in och hämta valfri period, utan de måste isf hämtas i ordning vilket inte bör ställa till något problem)
+        final ArrayListMultimap<Integer, Sjukfall> sjukfalls = ArrayListMultimap.create();
+        for (Integer key : result.keySet()) {
+            sjukfalls.putAll(getSjukfallsPerPatient(result.get(key)));
+        }
+        return sjukfalls;
     }
 
     private Multimap<Integer, Sjukfall> filterPersonifiedSjukfallsFromDate(LocalDate from, Multimap<Integer, Sjukfall> sjukfallsPerPatient) {

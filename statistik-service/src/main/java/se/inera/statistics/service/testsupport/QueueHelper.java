@@ -141,7 +141,7 @@ public class QueueHelper {
         LOG.info("SLGL data: " + sjukfallslangdGruppLong2);
         JsonNode sjukfallslangdGruppLong2Node = JSONParser.parse(sjukfallslangdGruppLong2.toString());
         result.put("sjukfallslangdGruppLong2", new TestData(sjukfallslangdGruppLong2, sjukfallslangdGruppLong2Node));
-        SimpleKonResponse<SimpleKonDataRow> sjukfallslangdGruppLongNationell = nationell.getLangaSjukfall(range.getFrom(), 0, QUARTER);
+        SimpleKonResponse<SimpleKonDataRow> sjukfallslangdGruppLongNationell = nationell.getLangaSjukfall(range.getFrom(), 1, QUARTER);
         LOG.info("Nationell SLGL data: " + sjukfallslangdGruppLongNationell);
         JsonNode sjukfallslangdGruppLongNationellNode = JSONParser.parse(sjukfallslangdGruppLongNationell.toString());
         result.put("sjukfallslangdGruppLongNationell", new TestData(sjukfallslangdGruppLongNationell, sjukfallslangdGruppLongNationellNode));
