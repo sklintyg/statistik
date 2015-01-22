@@ -1,5 +1,6 @@
 !contents -R2 -g -p -f -h
 
+IGNORED: Waiting for STATISTIK-774
 
 !3 Givet att:
 | script | dagens datum | 2014-11-28 |
