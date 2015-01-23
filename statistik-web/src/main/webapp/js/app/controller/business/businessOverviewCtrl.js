@@ -210,10 +210,6 @@ angular.module('StatisticsApp').controller('businessOverviewCtrl', ['$scope', '$
             });
         }
 
-        $scope.$on('filterChange', function (event, data) {
-            refresh(true);
-        });
-
         refresh(false);
         $scope.spinnerText = "Laddar information...";
         $scope.doneLoading = false;

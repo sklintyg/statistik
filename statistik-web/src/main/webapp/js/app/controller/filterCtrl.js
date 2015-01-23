@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('StatisticsApp').controller('filterCtrl', ['$scope', '$rootScope', 'statisticsData', 'businessFilter', '$timeout', 'messageService',
-    function ($scope, $rootScope, statisticsData, businessFilter, $timeout, messageService) {
+angular.module('StatisticsApp').controller('filterCtrl', ['$scope', '$rootScope', '$location', 'statisticsData', 'businessFilter', '$timeout', 'messageService',
+    function ($scope, $rootScope, $location, statisticsData, businessFilter, $timeout, messageService) {
 
         $scope.businessFilter = businessFilter;
         function updateGeographyFilterSelectorDataButtonLabelText() {
@@ -38,7 +38,12 @@ angular.module('StatisticsApp').controller('filterCtrl', ['$scope', '$rootScope'
         };
 
         $scope.makeUnitSelection = function () {
-            $rootScope.$broadcast('filterChange', '');
+            var verksamhetsBusinessIds = businessFilter.verksamhetsTypIds;
+            var diagnoses = businessFilter.getSelectedDiagnoses(false);
+            var geoBusinesses = businessFilter.geographyBusinessIds;
+            statisticsData.getFilterHash(diagnoses, geoBusinesses, verksamhetsBusinessIds, function(filterHash){
+                $location.search({filter: filterHash});
+            }, function(){ throw new Error("Failed to get filter hash value"); });
         };
 
     }

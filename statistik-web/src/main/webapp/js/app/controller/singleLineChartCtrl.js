@@ -92,12 +92,6 @@ angular.module('StatisticsApp').controller('singleLineChartCtrl', [ '$scope', '$
             });
         }
 
-        $scope.$on('filterChange', function (event, data) {
-            if (isVerksamhet) {
-                refreshVerksamhet(true);
-            }
-        });
-
         if (isVerksamhet) {
             $scope.exportTableUrl = config.exportTableUrlVerksamhet($routeParams.verksamhetId);
             refreshVerksamhet(false);

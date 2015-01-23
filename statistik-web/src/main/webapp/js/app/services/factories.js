@@ -17,7 +17,8 @@ angular.module('StatisticsApp').factory('statisticsData', function ($http) {
 
     var makeRequestVerksamhet = function (restFunctionName, verksamhetId, enhetsIds, diagnosIds, successCallback, failureCallback) {
         var param = getParamsAsJson(enhetsIds, diagnosIds);
-        $http.post("api/verksamhet/" + verksamhetId + "/" + restFunctionName, param, {cache: true}).success(function (result) {
+        var url = "api/verksamhet/" + verksamhetId + "/" + restFunctionName;
+        $http.post(url, param, {cache: true}).success(function (result) {
             try {
                 successCallback(result, enhetsIds, diagnosIds);
             } catch (e) {
@@ -32,9 +33,9 @@ angular.module('StatisticsApp').factory('statisticsData', function ($http) {
     };
 
     var getParamsAsJson = function (enhetsIds, diagnosIds) {
-        if (diagnosIds) {
-            return {"enhets": enhetsIds, "kapitels": diagnosIds.kapitel, "avsnitts": diagnosIds.avsnitt, "kategoris": diagnosIds.kategorier};
-        }
+        //if (diagnosIds) {
+        //    return {"enhets": enhetsIds, "kapitels": diagnosIds.kapitel, "avsnitts": diagnosIds.avsnitt, "kategoris": diagnosIds.kategorier};
+        //}
         return {"enhets": enhetsIds, "kapitels": null, "avsnitts": null, "kategoris": null};
     };
 
@@ -136,6 +137,24 @@ angular.module('StatisticsApp').factory('statisticsData', function ($http) {
 
     factory.getIcd10Structure = function (successCallback, failureCallback) {
         makeRequestNational("getIcd10Structure", successCallback, failureCallback);
+    };
+
+    factory.getFilterHash = function (diagnosIds, enhetsIds, verksamhetstyps, successCallback, failureCallback) {
+        var diagnoser = _.reduce(_.values(diagnosIds), function (memo, val) { return memo.concat(val); }, []);
+        var param = {"enheter": enhetsIds, "verksamhetstyper": verksamhetstyps, "diagnoser": diagnoser };
+        $http.post("api/getFilterHash", param, {cache: true}).success(function (result) {
+            try {
+                successCallback(result);
+            } catch (e) {
+                throw new Error(e);
+            }
+        }).error(function () {
+            failureCallback();
+        });
+    };
+
+    factory.getFilterData = function (filterHash, successCallback, failureCallback) {
+        makeRequestNational("getFilterData/" + filterHash, successCallback, failureCallback);
     };
 
     factory.getSjukfallPerLakarbefattningVerksamhet = function (verksamhetId, enhetsIds, diagnosIds, successCallback, failureCallback) {

@@ -236,12 +236,6 @@ angular.module('StatisticsApp').controller('doubleAreaChartsCtrl', [ '$scope', '
             }, getMostSpecificGroupId());
         }
 
-        $scope.$on('filterChange', function (event, data) {
-            if (isVerksamhet) {
-                refreshVerksamhet(true);
-            }
-        });
-
         function getMostSpecificGroupId() {
             return $routeParams.kategoriId ? $routeParams.kategoriId : $routeParams.groupId;
         }

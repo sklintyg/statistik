@@ -94,12 +94,6 @@ angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl', [ '$sco
             }, getSelectedDiagnosis());
         }
 
-        $scope.$on('filterChange', function (event, data) {
-            if (isVerksamhet) {
-                refreshVerksamhet(true);
-            }
-        });
-
         if (isVerksamhet) {
             $scope.exportTableUrl = config.exportTableUrlVerksamhet($routeParams.verksamhetId);
             refreshVerksamhet(false);
