@@ -1,0 +1,11 @@
+---
+# This playbook provisions the Tomcat environment for Statistik
+
+- hosts: tomcat
+  sudo: yes 
+
+  roles:
+    - statistik-systemvariabler
+    - statistik-resurser
+    - statistik-jarfiler
+    - config-folder

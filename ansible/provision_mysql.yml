@@ -1,0 +1,8 @@
+---
+# This playbook provisions the mysql environment for Statistik
+
+- hosts: mysql
+  sudo: yes 
+
+  roles:
+    - statistik-mysql

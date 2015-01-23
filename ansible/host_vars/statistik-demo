@@ -1,0 +1,3 @@
+---
+# file: host_vars/statistik-demo
+config_etc_folder: "{{ config_folder }}/demo"
