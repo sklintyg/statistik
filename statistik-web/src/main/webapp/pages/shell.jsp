@@ -513,6 +513,7 @@
 <script type="text/javascript" src="<c:url value='/js/lib/bootstrap-multiselect/bootstrap-multiselect.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/app.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/services/factories.js'/>"></script>
+<script type="text/javascript" src="<c:url value='/js/app/services/treeMultiSelectUtil.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/services/businessFilter.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/services/messageService.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/controller/common.js'/>"></script>
