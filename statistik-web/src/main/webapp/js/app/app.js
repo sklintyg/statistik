@@ -206,14 +206,15 @@ app.run([ '$rootScope', '$route', 'messageService', function ($rootScope, $route
         lang: { thousandsSep: ' ' }
     });
 
-    // Update page title
     $rootScope.page_title = 'Titel';
     $rootScope.pageName = '';
     $rootScope.isLoggedIn = isLoggedIn;
-    $rootScope.$on('$routeChangeSuccess', function () {
+
+    $rootScope.$on('$routeChangeSuccess', function (e, current) {
         if ($route.current.$$route) {
             $rootScope.pageName = $route.current.$$route.title;
             $rootScope.page_title = $route.current.$$route.title + ' | Statistiktjänsten';
+            $rootScope.queryString = current.params.filter ? "?filter=" + current.params.filter : "";
         }
     });
 } ]);
