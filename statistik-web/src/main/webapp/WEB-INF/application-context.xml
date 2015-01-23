@@ -65,6 +65,7 @@
         <bean id="applicationContextProvider" class="se.inera.auth.ApplicationContextProvider"/>
 
         <bean class="se.inera.statistics.hsa.services.HsaOrganizationsServiceImpl"/>
+        <bean id="filterHashHandler" class="se.inera.statistics.web.service.FilterHashHandler"/>
         <bean id="chartDataService" class="se.inera.statistics.web.service.ChartDataService"/>
 
         <bean id="protectedChartDataService" class="se.inera.statistics.web.service.ProtectedChartDataService"/>

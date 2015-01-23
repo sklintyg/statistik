@@ -47,6 +47,7 @@ import se.inera.statistics.web.model.TableData;
 import se.inera.statistics.web.model.overview.OverviewData;
 
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -82,6 +83,9 @@ public class ChartDataService {
 
     @Autowired
     private NationellOverviewData overviewData;
+
+    @Autowired
+    private FilterHashHandler filterHashHandler;
 
     private volatile SimpleDetailsData numberOfCasesPerMonth;
     private volatile DualSexStatisticsData diagnosgrupper;
@@ -494,6 +498,20 @@ public class ChartDataService {
                 return new Icd(kapitel);
             }
         });
+    }
+
+    @POST
+    @Path("getFilterHash")
+    public String getFilterHash(String filterData) {
+        LOG.info("Calling getFilterHash");
+        return filterHashHandler.getHash(filterData);
+    }
+
+    @GET
+    @Path("getFilterData/{filterHash}")
+    public String getFilterData(@PathParam("filterHash") String filterHash) {
+        LOG.info("Calling getFilterData");
+        return filterHashHandler.getFilterData(filterHash);
     }
 
 }
