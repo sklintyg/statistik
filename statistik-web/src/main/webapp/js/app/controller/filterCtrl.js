@@ -8,16 +8,16 @@ angular.module('StatisticsApp').controller('filterCtrl', ['$scope', '$rootScope'
             $scope.geographyFilterSelectorData.buttonLabelText = $scope.businessFilter.geographyBusinessIds.length + " av " + $scope.businessFilter.businesses.length + " valda";
         }
 
-        $scope.$watch('businessFilter.geographyBusinessIds', function(newValue,oldValue,scope,d,e,f,g) {
+        $scope.$watch('businessFilter.geographyBusinessIds', function(newValue,oldValue,scope) {
             updateGeographyFilterSelectorDataButtonLabelText();
         });
-        $scope.$watch('businessFilter.businesses', function(newValue,oldValue,scope,d,e,f,g) {
+        $scope.$watch('businessFilter.businesses', function(newValue,oldValue,scope) {
             updateGeographyFilterSelectorDataButtonLabelText();
         });
-        $scope.$watch('businessFilter', function(newValue,oldValue,scope,d,e,f,g) {
+        $scope.$watch('businessFilter', function(newValue,oldValue,scope) {
             $scope.icd10 = newValue.icd10;
         });
-        $scope.$watch('businessFilter.geography', function(newValue,oldValue,scope,d,e,f,g) {
+        $scope.$watch('businessFilter.geography', function(newValue,oldValue,scope) {
             $scope.geography = newValue.geography;
         });
 
