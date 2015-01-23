@@ -16,7 +16,9 @@
     creates: "{{ releases_folder }}/liquibase-runner-{{ version }}/bin/liquibase-runner"
 
 - name: run liquibase update
-  command: "{{ releases_folder }}/liquibase-runner-{{ version }}/bin/liquibase-runner --url={{ database_url }} --username={{ database_username }} --password={{ database_password }}"
+  command: "{{ releases_folder }}/liquibase-runner-{{ version }}/bin/liquibase-runner --url={{ database_url }} --username={{ database_username }} --password={{ database_password }} update"
+  args:
+      chdir: "{{ releases_folder }}/liquibase-runner-{{ version }}"
   environment:
       JAVA_HOME: "{{ java_home }}"
 
