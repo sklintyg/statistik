@@ -17,7 +17,7 @@ gretty {
     contextPath = '/'
     contextConfigFile = "${projectDir}/src/main/webapp/WEB-INF/jetty-context.xml"
     logbackConfigFile = "${projectDir}/src/main/resources/statistics-logback.xml"
-    jvmArgs = ['-Dspring.profiles.active=dev,embedded,hsa-stub', '-Dstatistics.test.max.intyg=500', '-XX:MaxPermSize=256M']
+    jvmArgs = ['-Dspring.profiles.active=dev,embedded,hsa-stub,security-fake', '-Dstatistics.test.max.intyg=500', '-XX:MaxPermSize=256M']
     debugSuspend = false
     scanInterval=1
     managedClassReload=true

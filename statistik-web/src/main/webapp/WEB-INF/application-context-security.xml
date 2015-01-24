@@ -20,12 +20,8 @@
       <security:http security="none" pattern="/favicon.ico"/>
     </beans>
 
-    <beans profile="test">
-        <context:property-placeholder location="file:${statistics.config.file}" order="1" ignore-resource-not-found="true" ignore-unresolvable="true"/>
-        <context:property-placeholder location="classpath*:default.test.properties" order="2" ignore-resource-not-found="false" ignore-unresolvable="false"/>
-    </beans>
-    <beans profile="qa,prod">
-        <context:property-placeholder location="file:${statistics.config.file}" order="1" ignore-resource-not-found="false" ignore-unresolvable="true"/>
+    <beans profile="!dev">
+        <context:property-placeholder location="file:${statistics.config.file}" ignore-resource-not-found="false" ignore-unresolvable="true"/>
     </beans>
     <beans profile="dev">
         <context:property-placeholder location="classpath*:default.dev.properties" ignore-resource-not-found="true"/>
@@ -72,7 +68,7 @@
     <!-- =============================================================== -->
     <!-- Dev profile only supports Fake login                            -->
     <!-- =============================================================== -->
-    <beans profile="dev">
+    <beans profile="security-fake">
         <security:http entry-point-ref="http403ForbiddenEntryPoint" pattern="/api/verksamhet/**">
             <security:intercept-url pattern="/**" access="IS_AUTHENTICATED_FULLY"/>
             <security:custom-filter position="PRE_AUTH_FILTER" ref="fakeAuthFilter"/>
@@ -90,7 +86,7 @@
     <!-- =============================================================== -->
     <!-- Test and QA profile support both Säkerhetstjänst and Fake login -->
     <!-- =============================================================== -->
-    <beans profile="test,qa">
+    <beans profile="security-saml">
         <security:http entry-point-ref="http403ForbiddenEntryPoint" pattern="/api/verksamhet/**">
             <security:intercept-url pattern="/**" access="IS_AUTHENTICATED_FULLY"/>
             <security:custom-filter before="FIRST" ref="metadataGeneratorFilter"/>
@@ -112,7 +108,7 @@
     <!-- =============================================================== -->
     <!-- Prod profile only supports Säkerhetstjänst login                -->
     <!-- =============================================================== -->
-    <beans profile="prod">
+    <beans profile="security-saml">
         <security:http entry-point-ref="http403ForbiddenEntryPoint" pattern="/api/**">
             <security:intercept-url pattern="/**" access="IS_AUTHENTICATED_FULLY"/>
             <security:custom-filter before="FIRST" ref="metadataGeneratorFilter"/>
@@ -128,7 +124,7 @@
         </security:authentication-manager>
     </beans>
 
-    <beans profile="dev,test,qa">
+    <beans profile="security-fake">
         <bean id="fakeAuthFilter" class="se.inera.auth.FakeAuthenticationFilter">
             <property name="authenticationManager" ref="authenticationManager"/>
             <property name="authenticationSuccessHandler" ref="fakeSuccessHandler"/>
@@ -144,7 +140,7 @@
         </bean>
     </beans>
 
-    <beans profile="test,qa,prod">
+    <beans profile="security-saml">
         <bean id="samlFilter" class="org.springframework.security.web.FilterChainProxy">
             <security:filter-chain-map request-matcher="ant">
                 <security:filter-chain pattern="/saml/login/**" filters="samlEntryPoint"/>
