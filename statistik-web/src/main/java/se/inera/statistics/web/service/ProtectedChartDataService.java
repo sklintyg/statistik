@@ -19,9 +19,12 @@
 package se.inera.statistics.web.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
 import com.google.common.base.Splitter;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 import org.joda.time.LocalDate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -59,8 +62,9 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.io.IOException;
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -151,17 +155,24 @@ public class ProtectedChartDataService {
         final Range range = new Range(12);
         Verksamhet verksamhet = getVerksamhet(request, Verksamhet.decodeId(verksamhetId));
         Predicate<Fact> filter = getFilter(request, verksamhet, filterHash);
-        Map<String, String> idToNameMap = getEnhetNameMap(request, verksamhet, getEnhetsFilterIds(filterHash));
+        Map<String, String> idToNameMap = getEnhetNameMap(request, verksamhet, getEnhetsFilterIds(filterHash, request));
         SimpleKonResponse<SimpleKonDataRow> casesPerEnhet = warehouse.getCasesPerEnhet(filter, idToNameMap, range, verksamhet.getVardgivarId());
         return new GroupedSjukfallConverter("Vårdenhet").convert(casesPerEnhet, range);
     }
 
-    private List<String> getEnhetsFilterIds(String filterHash) {
-        //TODO Make sure all enhets are included (i.e. from both filters geographical and verksamhetstyps)
+    private List<String> getEnhetsFilterIds(String filterHash, HttpServletRequest request) {
         if (filterHash == null || filterHash.isEmpty()) {
-            return Collections.emptyList();
+            final LoginInfo info = loginServiceUtil.getLoginInfo(request);
+            final List<Verksamhet> businesses = info.getBusinesses();
+            return Lists.transform(businesses, new Function<Verksamhet, String>() {
+                @Override
+                public String apply(Verksamhet verksamhet) {
+                    return verksamhet.getId();
+                }
+            });
         }
-        return getFilterFromHash(filterHash).getEnheter();
+        final FilterData filterData = getFilterFromHash(filterHash);
+        return getEnhetsFiltered(request, filterData);
     }
 
     /**
@@ -661,9 +672,36 @@ public class ProtectedChartDataService {
             return Predicates.alwaysTrue();
         }
         FilterData inFilter = getFilterFromHash(filterHash);
-        Predicate<Fact> enhetFilter = getEnhetFilter(request, verksamhet, inFilter.getEnheter());
+        final ArrayList<String> enhetsIDs = getEnhetsFiltered(request, inFilter);
+        Predicate<Fact> enhetFilter = getEnhetFilter(request, verksamhet, enhetsIDs);
         Predicate<Fact> diagnosFilter = getDiagnosFilter(inFilter.getDiagnoser());
         return Predicates.and(enhetFilter, diagnosFilter);
+    }
+
+    private ArrayList<String> getEnhetsFiltered(HttpServletRequest request, FilterData inFilter) {
+        Set<String> enhetsMatchingVerksamhetstyp = getEnhetsForVerksamhetstyper(inFilter.getVerksamhetstyper(), request);
+        final HashSet<String> enhets = new HashSet<>(inFilter.getEnheter());
+        return new ArrayList<>(Sets.intersection(enhetsMatchingVerksamhetstyp, enhets));
+    }
+
+    private Set<String> getEnhetsForVerksamhetstyper(List<String> verksamhetstyper, HttpServletRequest request) {
+        Set<String> enhetsIds = new HashSet<>();
+        LoginInfo info = loginServiceUtil.getLoginInfo(request);
+        for (Verksamhet verksamhet : info.getBusinesses()) {
+            if (isOfVerksamhetsTyp(verksamhet, verksamhetstyper)) {
+                enhetsIds.add(verksamhet.getId());
+            }
+        }
+        return enhetsIds;
+    }
+
+    private boolean isOfVerksamhetsTyp(Verksamhet verksamhet, List<String> verksamhetstyper) {
+        for (Verksamhet.VerksamhetsTyp verksamhetsTyp : verksamhet.getVerksamhetsTyper()) {
+            if (verksamhetstyper.contains(verksamhetsTyp.getId())) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private FilterData getFilterFromHash(String filterHash) {
