@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('StatisticsApp').factory('statisticsData', function ($http) {
+angular.module('StatisticsApp').factory('statisticsData', function ($http, $rootScope) {
     var factory = {};
 
     var makeRequestNational = function (restFunctionName, successCallback, failureCallback) {
@@ -16,9 +16,8 @@ angular.module('StatisticsApp').factory('statisticsData', function ($http) {
     };
 
     var makeRequestVerksamhet = function (restFunctionName, verksamhetId, enhetsIds, diagnosIds, successCallback, failureCallback) {
-        var param = getParamsAsJson(enhetsIds, diagnosIds);
-        var url = "api/verksamhet/" + verksamhetId + "/" + restFunctionName;
-        $http.post(url, param, {cache: true}).success(function (result) {
+        var url = "api/verksamhet/" + verksamhetId + "/" + restFunctionName + $rootScope.queryString;
+        $http.post(url, {}, {cache: true}).success(function (result) {
             try {
                 successCallback(result, enhetsIds, diagnosIds);
             } catch (e) {
@@ -30,13 +29,6 @@ angular.module('StatisticsApp').factory('statisticsData', function ($http) {
             }
             failureCallback();
         });
-    };
-
-    var getParamsAsJson = function (enhetsIds, diagnosIds) {
-        //if (diagnosIds) {
-        //    return {"enhets": enhetsIds, "kapitels": diagnosIds.kapitel, "avsnitts": diagnosIds.avsnitt, "kategoris": diagnosIds.kategorier};
-        //}
-        return {"enhets": enhetsIds, "kapitels": null, "avsnitts": null, "kategoris": null};
     };
 
     factory.getOverview = function (successCallback, failureCallback) {

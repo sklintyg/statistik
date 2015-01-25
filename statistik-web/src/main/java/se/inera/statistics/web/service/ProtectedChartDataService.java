@@ -18,6 +18,7 @@
  */
 package se.inera.statistics.web.service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
 import com.google.common.base.Splitter;
@@ -57,6 +58,8 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.io.IOException;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -90,6 +93,9 @@ public class ProtectedChartDataService {
     @Autowired
     private LoginServiceUtil loginServiceUtil;
 
+    @Autowired
+    private FilterHashHandler filterHashHandler;
+
     /**
      * Gets sjukfall per manad for verksamhetId.
      *
@@ -103,11 +109,11 @@ public class ProtectedChartDataService {
     @Consumes({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request, #verksamhetId)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request, #verksamhetId)")
-    public SimpleDetailsData getNumberOfCasesPerMonth(@Context HttpServletRequest request, @PathParam(VERKSAMHET_PATH_ID) String verksamhetId, ReportRequestFilter inFilter) {
-        LOG.info("Calling getNumberOfCasesPerMonth with verksamhetId: {} and ids: {}", verksamhetId, inFilter.getEnhets());
+    public SimpleDetailsData getNumberOfCasesPerMonth(@Context HttpServletRequest request, @PathParam(VERKSAMHET_PATH_ID) String verksamhetId, @QueryParam("filter") String filterHash) {
+        LOG.info("Calling getNumberOfCasesPerMonth with verksamhetId: {} and filterHash: {}", verksamhetId, filterHash);
         final Range range = new Range(18);
         Verksamhet verksamhet = getVerksamhet(request, Verksamhet.decodeId(verksamhetId));
-        Predicate<Fact> filter = getFilter(request, verksamhet, inFilter);
+        Predicate<Fact> filter = getFilter(request, verksamhet, filterHash);
         SimpleKonResponse<SimpleKonDataRow> casesPerMonth = warehouse.getCasesPerMonth(filter, range, verksamhet.getVardgivarId());
         return new PeriodConverter().convert(casesPerMonth, range);
     }
@@ -125,9 +131,9 @@ public class ProtectedChartDataService {
     @Consumes({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request, #verksamhetId)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request, #verksamhetId)")
-    public Response getNumberOfCasesPerMonthAsCsv(@Context HttpServletRequest request, @PathParam(VERKSAMHET_PATH_ID) String verksamhetId, ReportRequestFilter inFilter) {
-        LOG.info("Calling getNumberOfCasesPerMonthAsCsv with verksamhetId: {} and ids: {}", verksamhetId, inFilter.getEnhets());
-        final TableData tableData = getNumberOfCasesPerMonth(request, verksamhetId, inFilter).getTableData();
+    public Response getNumberOfCasesPerMonthAsCsv(@Context HttpServletRequest request, @PathParam(VERKSAMHET_PATH_ID) String verksamhetId, @QueryParam("filter") String filterHash) {
+        LOG.info("Calling getNumberOfCasesPerMonthAsCsv with verksamhetId: {} and filterHash: {}", verksamhetId, filterHash);
+        final TableData tableData = getNumberOfCasesPerMonth(request, verksamhetId, filterHash).getTableData();
         return CsvConverter.getCsvResponse(tableData, "export.csv");
     }
 
@@ -140,14 +146,22 @@ public class ProtectedChartDataService {
     @Consumes({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request, #verksamhetId)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request, #verksamhetId)")
-    public SimpleDetailsData getNumberOfCasesPerEnhet(@Context HttpServletRequest request, @PathParam(VERKSAMHET_PATH_ID) String verksamhetId, ReportRequestFilter inFilter) {
-        LOG.info("Calling getNumberOfCasesPerEnhet with verksamhetId: {} and ids: {}", verksamhetId, inFilter.getEnhets());
+    public SimpleDetailsData getNumberOfCasesPerEnhet(@Context HttpServletRequest request, @PathParam(VERKSAMHET_PATH_ID) String verksamhetId, @QueryParam("filter") String filterHash) {
+        LOG.info("Calling getNumberOfCasesPerEnhet with verksamhetId: {} and filterHash: {}", verksamhetId, filterHash);
         final Range range = new Range(12);
         Verksamhet verksamhet = getVerksamhet(request, Verksamhet.decodeId(verksamhetId));
-        Predicate<Fact> filter = getFilter(request, verksamhet, inFilter);
-        Map<String, String> idToNameMap = getEnhetNameMap(request, verksamhet, inFilter.getEnhets());
+        Predicate<Fact> filter = getFilter(request, verksamhet, filterHash);
+        Map<String, String> idToNameMap = getEnhetNameMap(request, verksamhet, getEnhetsFilterIds(filterHash));
         SimpleKonResponse<SimpleKonDataRow> casesPerEnhet = warehouse.getCasesPerEnhet(filter, idToNameMap, range, verksamhet.getVardgivarId());
         return new GroupedSjukfallConverter("Vårdenhet").convert(casesPerEnhet, range);
+    }
+
+    private List<String> getEnhetsFilterIds(String filterHash) {
+        //TODO Make sure all enhets are included (i.e. from both filters geographical and verksamhetstyps)
+        if (filterHash == null || filterHash.isEmpty()) {
+            return Collections.emptyList();
+        }
+        return getFilterFromHash(filterHash).getEnheter();
     }
 
     /**
@@ -159,11 +173,11 @@ public class ProtectedChartDataService {
     @Consumes({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request, #verksamhetId)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request, #verksamhetId)")
-    public SimpleDetailsData getNumberOfCasesPerLakare(@Context HttpServletRequest request, @PathParam(VERKSAMHET_PATH_ID) String verksamhetId, ReportRequestFilter inFilter) {
-        LOG.info("Calling getNumberOfCasesPerLakare with verksamhetId: {} and ids: {}", verksamhetId, inFilter.getEnhets());
+    public SimpleDetailsData getNumberOfCasesPerLakare(@Context HttpServletRequest request, @PathParam(VERKSAMHET_PATH_ID) String verksamhetId, @QueryParam("filter") String filterHash) {
+        LOG.info("Calling getNumberOfCasesPerLakare with verksamhetId: {} and filterHash: {}", verksamhetId, filterHash);
         final Range range = new Range(12);
         Verksamhet verksamhet = getVerksamhet(request, Verksamhet.decodeId(verksamhetId));
-        Predicate<Fact> filter = getFilter(request, verksamhet, inFilter);
+        Predicate<Fact> filter = getFilter(request, verksamhet, filterHash);
         SimpleKonResponse<SimpleKonDataRow> casesPerLakare = warehouse.getCasesPerLakare(filter, range, verksamhet.getVardgivarId());
         return new GroupedSjukfallConverter("Läkare").convert(casesPerLakare, range);
     }
@@ -182,11 +196,11 @@ public class ProtectedChartDataService {
     @Consumes({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request, #verksamhetId)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request, #verksamhetId)")
-    public DualSexStatisticsData getDiagnosisGroupStatistics(@Context HttpServletRequest request, @PathParam(VERKSAMHET_PATH_ID) String verksamhetId, ReportRequestFilter inFilter) {
-        LOG.info("Calling getDiagnoskapitelstatistik with verksamhetId: {} and ids: {}", verksamhetId, inFilter.getEnhets());
+    public DualSexStatisticsData getDiagnosisGroupStatistics(@Context HttpServletRequest request, @PathParam(VERKSAMHET_PATH_ID) String verksamhetId, @QueryParam("filter") String filterHash) {
+        LOG.info("Calling getDiagnoskapitelstatistik with verksamhetId: {} and filterHash: {}", verksamhetId, filterHash);
         final Range range = new Range(18);
         Verksamhet verksamhet = getVerksamhet(request, Verksamhet.decodeId(verksamhetId));
-        Predicate<Fact> filter = getFilter(request, verksamhet, inFilter);
+        Predicate<Fact> filter = getFilter(request, verksamhet, filterHash);
         DiagnosgruppResponse diagnosisGroups = warehouse.getDiagnosgrupperPerMonth(filter, range, verksamhet.getVardgivarId());
         return new DiagnosisGroupsConverter().convert(diagnosisGroups, range);
     }
@@ -204,9 +218,9 @@ public class ProtectedChartDataService {
     @Consumes({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request, #verksamhetId)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request, #verksamhetId)")
-    public Response getDiagnosisGroupStatisticsAsCsv(@Context HttpServletRequest request, @PathParam(VERKSAMHET_PATH_ID) String verksamhetId, ReportRequestFilter inFilter) {
-        LOG.info("Calling getDiagnoskapitelstatistikAsCsv with verksamhetId: {} and ids: {}", verksamhetId, inFilter.getEnhets());
-        final TableData tableData = getDiagnosisGroupStatistics(request, verksamhetId, inFilter).getTableData();
+    public Response getDiagnosisGroupStatisticsAsCsv(@Context HttpServletRequest request, @PathParam(VERKSAMHET_PATH_ID) String verksamhetId, @QueryParam("filter") String filterHash) {
+        LOG.info("Calling getDiagnoskapitelstatistikAsCsv with verksamhetId: {} and filterHash: {}", verksamhetId, filterHash);
+        final TableData tableData = getDiagnosisGroupStatistics(request, verksamhetId, filterHash).getTableData();
         return CsvConverter.getCsvResponse(tableData, "export.csv");
     }
 
@@ -223,19 +237,19 @@ public class ProtectedChartDataService {
     @Consumes({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request, #verksamhetId)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request, #verksamhetId)")
-    public Response getDiagnosisSubGroupStatistics(@Context HttpServletRequest request, @PathParam(VERKSAMHET_PATH_ID) String verksamhetId, @PathParam("groupId") String groupId, ReportRequestFilter inFilter) {
-        LOG.info("Calling getDiagnosavsnittstatistik with verksamhetId: {} and groupId: {} and ids: {}", verksamhetId, groupId, inFilter.getEnhets());
+    public Response getDiagnosisSubGroupStatistics(@Context HttpServletRequest request, @PathParam(VERKSAMHET_PATH_ID) String verksamhetId, @PathParam("groupId") String groupId, @QueryParam("filter") String filterHash) {
+        LOG.info("Calling getDiagnosavsnittstatistik with verksamhetId: {} and groupId: {} and filterHash: {}", verksamhetId, groupId, filterHash);
         try {
-            return Response.ok(getDiagnosisSubGroupStatisticsEntity(request, verksamhetId, groupId, inFilter)).build();
+            return Response.ok(getDiagnosisSubGroupStatisticsEntity(request, verksamhetId, groupId, filterHash)).build();
         } catch (RangeNotFoundException e) {
             return Response.serverError().entity(e.getMessage()).build();
         }
     }
 
-    private DualSexStatisticsData getDiagnosisSubGroupStatisticsEntity(HttpServletRequest request, String verksamhetId, String groupId, ReportRequestFilter inFilter) throws RangeNotFoundException {
+    private DualSexStatisticsData getDiagnosisSubGroupStatisticsEntity(HttpServletRequest request, String verksamhetId, String groupId, @QueryParam("filter") String filterHash) throws RangeNotFoundException {
         final Range range = new Range(18);
         Verksamhet verksamhet = getVerksamhet(request, Verksamhet.decodeId(verksamhetId));
-        Predicate<Fact> filter = getFilter(request, verksamhet, inFilter);
+        Predicate<Fact> filter = getFilter(request, verksamhet, filterHash);
         final String vardgivarId = verksamhet.getVardgivarId();
         DiagnosgruppResponse diagnosavsnitt = warehouse.getUnderdiagnosgrupper(filter, range, groupId, vardgivarId);
         return new DiagnosisSubGroupsConverter().convert(diagnosavsnitt, range);
@@ -254,11 +268,11 @@ public class ProtectedChartDataService {
     @Consumes({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request, #verksamhetId)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request, #verksamhetId)")
-    public Response getDiagnosisSubGroupStatisticsAsCsv(@Context HttpServletRequest request, @PathParam(VERKSAMHET_PATH_ID) String verksamhetId, @PathParam("groupId") String groupId, ReportRequestFilter inFilter) {
-        LOG.info("Calling getDiagnosavsnittstatistikAsCsv with verksamhetId: {} and groupId: {} and ids: {}", verksamhetId, groupId, inFilter.getEnhets());
+    public Response getDiagnosisSubGroupStatisticsAsCsv(@Context HttpServletRequest request, @PathParam(VERKSAMHET_PATH_ID) String verksamhetId, @PathParam("groupId") String groupId, @QueryParam("filter") String filterHash) {
+        LOG.info("Calling getDiagnosavsnittstatistikAsCsv with verksamhetId: {} and groupId: {} and filterHash: {}", verksamhetId, groupId, filterHash);
         final TableData tableData;
         try {
-            tableData = getDiagnosisSubGroupStatisticsEntity(request, verksamhetId, groupId, inFilter).getTableData();
+            tableData = getDiagnosisSubGroupStatisticsEntity(request, verksamhetId, groupId, filterHash).getTableData();
             return CsvConverter.getCsvResponse(tableData, "export.csv");
         } catch (RangeNotFoundException e) {
             return Response.serverError().entity(e.getMessage()).build();
@@ -271,11 +285,11 @@ public class ProtectedChartDataService {
     @Consumes({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request, #verksamhetId)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request, #verksamhetId)")
-    public SimpleDetailsData getCompareDiagnosisStatistics(@Context HttpServletRequest request, @PathParam(VERKSAMHET_PATH_ID) String verksamhetId, @QueryParam("dx") List<String> diagnosis, ReportRequestFilter inFilter) {
-        LOG.info("Calling getCompareDiagnosisStatistics with verksamhetId: {} and diagnosis: {} and ids: {}", verksamhetId, diagnosis, inFilter.getEnhets());
+    public SimpleDetailsData getCompareDiagnosisStatistics(@Context HttpServletRequest request, @PathParam(VERKSAMHET_PATH_ID) String verksamhetId, @QueryParam("dx") List<String> diagnosis, @QueryParam("filter") String filterHash) {
+        LOG.info("Calling getCompareDiagnosisStatistics with verksamhetId: {} and diagnosis: {} and filterHash: {}", verksamhetId, diagnosis, filterHash);
         final Range range = new Range(12);
         Verksamhet verksamhet = getVerksamhet(request, Verksamhet.decodeId(verksamhetId));
-        Predicate<Fact> filter = getFilter(request, verksamhet, inFilter);
+        Predicate<Fact> filter = getFilter(request, verksamhet, filterHash);
         SimpleKonResponse<SimpleKonDataRow> resultRows = warehouse.getJamforDiagnoser(filter, range, verksamhet.getVardgivarId(), diagnosis);
         return new CompareDiagnosisConverter().convert(resultRows, range);
     }
@@ -294,11 +308,11 @@ public class ProtectedChartDataService {
     @Consumes({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request, #verksamhetId)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request, #verksamhetId)")
-    public VerksamhetOverviewData getOverviewData(@Context HttpServletRequest request, @PathParam(VERKSAMHET_PATH_ID) String verksamhetId, ReportRequestFilter inFilter) {
-        LOG.info("Calling getOverview with verksamhetId: {} and ids: {}", verksamhetId, inFilter.getEnhets());
+    public VerksamhetOverviewData getOverviewData(@Context HttpServletRequest request, @PathParam(VERKSAMHET_PATH_ID) String verksamhetId, @QueryParam("filter") String filterHash) {
+        LOG.info("Calling getOverview with verksamhetId: {} and filterHash: {}", verksamhetId, filterHash);
         Range range = Range.quarter();
         Verksamhet verksamhet = getVerksamhet(request, Verksamhet.decodeId(verksamhetId));
-        Predicate<Fact> filter = getFilter(request, verksamhet, inFilter);
+        Predicate<Fact> filter = getFilter(request, verksamhet, filterHash);
         VerksamhetOverviewResponse response = warehouse.getOverview(filter, range, verksamhet.getVardgivarId());
 
         return new VerksamhetOverviewConverter().convert(response, range);
@@ -317,12 +331,12 @@ public class ProtectedChartDataService {
     @Consumes({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request, #verksamhetId)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request, #verksamhetId)")
-    public SimpleDetailsData getAgeGroupsStatistics(@Context HttpServletRequest request, @PathParam(VERKSAMHET_PATH_ID) String verksamhetId, ReportRequestFilter inFilter) {
-        LOG.info("Calling getAgeGroupsStatistics with verksamhetId: {} and idString: {}", verksamhetId, inFilter.getEnhets());
+    public SimpleDetailsData getAgeGroupsStatistics(@Context HttpServletRequest request, @PathParam(VERKSAMHET_PATH_ID) String verksamhetId, @QueryParam("filter") String filterHash) {
+        LOG.info("Calling getAgeGroupsStatistics with verksamhetId: {} and filterHash: {}", verksamhetId, filterHash);
         final Range range = new Range(12);
 
         Verksamhet verksamhet = getVerksamhet(request, Verksamhet.decodeId(verksamhetId));
-        Predicate<Fact> filter = getFilter(request, verksamhet, inFilter);
+        Predicate<Fact> filter = getFilter(request, verksamhet, filterHash);
         SimpleKonResponse<SimpleKonDataRow> ageGroups = warehouse.getAldersgrupper(filter, range, verksamhet.getVardgivarId());
         return new AgeGroupsConverter().convert(ageGroups, range);
     }
@@ -340,9 +354,9 @@ public class ProtectedChartDataService {
     @Consumes({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request, #verksamhetId)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request, #verksamhetId)")
-    public Response getAgeGroupsStatisticsAsCsv(@Context HttpServletRequest request, @PathParam(VERKSAMHET_PATH_ID) String verksamhetId, ReportRequestFilter inFilter) {
-        LOG.info("Calling getAgeGroupsStatisticsAsCsv with verksamhetId: {} and idString: {}", verksamhetId, inFilter.getEnhets());
-        final TableData tableData = getAgeGroupsStatistics(request, verksamhetId, inFilter).getTableData();
+    public Response getAgeGroupsStatisticsAsCsv(@Context HttpServletRequest request, @PathParam(VERKSAMHET_PATH_ID) String verksamhetId, @QueryParam("filter") String filterHash) {
+        LOG.info("Calling getAgeGroupsStatisticsAsCsv with verksamhetId: {} and filterHash: {}", verksamhetId, filterHash);
+        final TableData tableData = getAgeGroupsStatistics(request, verksamhetId, filterHash).getTableData();
         return CsvConverter.getCsvResponse(tableData, "export.csv");
     }
 
@@ -359,12 +373,12 @@ public class ProtectedChartDataService {
     @Consumes({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request, #verksamhetId)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request, #verksamhetId)")
-    public SimpleDetailsData getCasesPerDoctorAgeAndGenderStatistics(@Context HttpServletRequest request, @PathParam(VERKSAMHET_PATH_ID) String verksamhetId, ReportRequestFilter inFilter) {
-        LOG.info("Calling getCasesPerDoctorAgeAndGenderStatistics with verksamhetId: {} and idString: {}", verksamhetId, inFilter.getEnhets());
+    public SimpleDetailsData getCasesPerDoctorAgeAndGenderStatistics(@Context HttpServletRequest request, @PathParam(VERKSAMHET_PATH_ID) String verksamhetId, @QueryParam("filter") String filterHash) {
+        LOG.info("Calling getCasesPerDoctorAgeAndGenderStatistics with verksamhetId: {} and filterHash: {}", verksamhetId, filterHash);
         final Range range = new Range(12);
 
         Verksamhet verksamhet = getVerksamhet(request, Verksamhet.decodeId(verksamhetId));
-        Predicate<Fact> filter = getFilter(request, verksamhet, inFilter);
+        Predicate<Fact> filter = getFilter(request, verksamhet, filterHash);
         SimpleKonResponse<SimpleKonDataRow> ageGroups = warehouse.getCasesPerDoctorAgeAndGender(filter, range, verksamhet.getVardgivarId());
         return new DoctorAgeGenderConverter().convert(ageGroups, range);
     }
@@ -382,9 +396,9 @@ public class ProtectedChartDataService {
     @Consumes({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request, #verksamhetId)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request, #verksamhetId)")
-    public Response getCasesPerDoctorAgeAndGenderStatisticsAsCsv(@Context HttpServletRequest request, @PathParam(VERKSAMHET_PATH_ID) String verksamhetId, ReportRequestFilter inFilter) {
-        LOG.info("Calling getCasesPerDoctorAgeAndGenderStatisticsAsCsv with verksamhetId: {} and idString: {}", verksamhetId, inFilter.getEnhets());
-        final TableData tableData = getCasesPerDoctorAgeAndGenderStatistics(request, verksamhetId, inFilter).getTableData();
+    public Response getCasesPerDoctorAgeAndGenderStatisticsAsCsv(@Context HttpServletRequest request, @PathParam(VERKSAMHET_PATH_ID) String verksamhetId, @QueryParam("filter") String filterHash) {
+        LOG.info("Calling getCasesPerDoctorAgeAndGenderStatisticsAsCsv with verksamhetId: {} and filterHash: {}", verksamhetId, filterHash);
+        final TableData tableData = getCasesPerDoctorAgeAndGenderStatistics(request, verksamhetId, filterHash).getTableData();
         return CsvConverter.getCsvResponse(tableData, "export.csv");
     }
 
@@ -401,12 +415,12 @@ public class ProtectedChartDataService {
     @Consumes({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request, #verksamhetId)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request, #verksamhetId)")
-    public SimpleDetailsData getNumberOfCasesPerLakarbefattning(@Context HttpServletRequest request, @PathParam(VERKSAMHET_PATH_ID) String verksamhetId, ReportRequestFilter inFilter) {
-        LOG.info("Calling getNumberOfCasesPerLakarbefattning with verksamhetId: {} and idString: {}", verksamhetId, inFilter.getEnhets());
+    public SimpleDetailsData getNumberOfCasesPerLakarbefattning(@Context HttpServletRequest request, @PathParam(VERKSAMHET_PATH_ID) String verksamhetId, @QueryParam("filter") String filterHash) {
+        LOG.info("Calling getNumberOfCasesPerLakarbefattning with verksamhetId: {} and filterHash: {}", verksamhetId, filterHash);
         final Range range = new Range(12);
 
         Verksamhet verksamhet = getVerksamhet(request, Verksamhet.decodeId(verksamhetId));
-        Predicate<Fact> filter = getFilter(request, verksamhet, inFilter);
+        Predicate<Fact> filter = getFilter(request, verksamhet, filterHash);
         SimpleKonResponse<SimpleKonDataRow> ageGroups = warehouse.getNumberOfCasesPerLakarbefattning(filter, range, verksamhet.getVardgivarId());
         return new LakarbefattningConverter().convert(ageGroups, range);
     }
@@ -424,9 +438,9 @@ public class ProtectedChartDataService {
     @Consumes({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request, #verksamhetId)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request, #verksamhetId)")
-    public Response getNumberOfCasesPerLakarbefattningAsCsv(@Context HttpServletRequest request, @PathParam(VERKSAMHET_PATH_ID) String verksamhetId, ReportRequestFilter inFilter) {
-        LOG.info("Calling getNumberOfCasesPerLakarbefattningAsCsv with verksamhetId: {} and idString: {}", verksamhetId, inFilter.getEnhets());
-        final TableData tableData = getNumberOfCasesPerLakarbefattning(request, verksamhetId, inFilter).getTableData();
+    public Response getNumberOfCasesPerLakarbefattningAsCsv(@Context HttpServletRequest request, @PathParam(VERKSAMHET_PATH_ID) String verksamhetId, @QueryParam("filter") String filterHash) {
+        LOG.info("Calling getNumberOfCasesPerLakarbefattningAsCsv with verksamhetId: {} and filterHash: {}", verksamhetId, filterHash);
+        final TableData tableData = getNumberOfCasesPerLakarbefattning(request, verksamhetId, filterHash).getTableData();
         return CsvConverter.getCsvResponse(tableData, "export.csv");
     }
 
@@ -443,14 +457,14 @@ public class ProtectedChartDataService {
     @Consumes({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request, #verksamhetId)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request, #verksamhetId)")
-    public SimpleDetailsData getAgeGroupsCurrentStatistics(@Context HttpServletRequest request, @PathParam(VERKSAMHET_PATH_ID) String verksamhetId, ReportRequestFilter inFilter) {
-        LOG.info("Calling getAgeGroupsCurrentStatistics with verksamhetId: {} and ids: {}", verksamhetId, inFilter.getEnhets());
+    public SimpleDetailsData getAgeGroupsCurrentStatistics(@Context HttpServletRequest request, @PathParam(VERKSAMHET_PATH_ID) String verksamhetId, @QueryParam("filter") String filterHash) {
+        LOG.info("Calling getAgeGroupsCurrentStatistics with verksamhetId: {} and filterHash: {}", verksamhetId, filterHash);
         LocalDate start = new LocalDate().withDayOfMonth(1);
         LocalDate end = new LocalDate().withDayOfMonth(1).plusMonths(1).minusDays(1);
         final Range range = new Range(start, end);
 
         Verksamhet verksamhet = getVerksamhet(request, Verksamhet.decodeId(verksamhetId));
-        Predicate<Fact> filter = getFilter(request, verksamhet, inFilter);
+        Predicate<Fact> filter = getFilter(request, verksamhet, filterHash);
         SimpleKonResponse<SimpleKonDataRow> ageGroups = warehouse.getAldersgrupper(filter, range, verksamhet.getVardgivarId());
         return new AgeGroupsConverter().convert(ageGroups, range);
 
@@ -469,9 +483,9 @@ public class ProtectedChartDataService {
     @Consumes({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request, #verksamhetId)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request, #verksamhetId)")
-    public Response getAgeGroupsCurrentStatisticsAsCsv(@Context HttpServletRequest request, @PathParam(VERKSAMHET_PATH_ID) String verksamhetId, ReportRequestFilter inFilter) {
-        LOG.info("Calling getAgeGroupsCurrentStatisticsAsCsv with verksamhetId: {} and ids: {}", verksamhetId, inFilter.getEnhets());
-        final TableData tableData = getAgeGroupsCurrentStatistics(request, verksamhetId, inFilter).getTableData();
+    public Response getAgeGroupsCurrentStatisticsAsCsv(@Context HttpServletRequest request, @PathParam(VERKSAMHET_PATH_ID) String verksamhetId, @QueryParam("filter") String filterHash) {
+        LOG.info("Calling getAgeGroupsCurrentStatisticsAsCsv with verksamhetId: {} and filterHash: {}", verksamhetId, filterHash);
+        final TableData tableData = getAgeGroupsCurrentStatistics(request, verksamhetId, filterHash).getTableData();
         return CsvConverter.getCsvResponse(tableData, "export.csv");
     }
 
@@ -488,11 +502,11 @@ public class ProtectedChartDataService {
     @Consumes({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request, #verksamhetId)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request, #verksamhetId)")
-    public DualSexStatisticsData getDegreeOfSickLeaveStatistics(@Context HttpServletRequest request, @PathParam(VERKSAMHET_PATH_ID) String verksamhetId, ReportRequestFilter inFilter) {
-        LOG.info("Calling getDegreeOfSickLeaveStatistics with verksamhetId: {} and ids: {}", verksamhetId, inFilter.getEnhets());
+    public DualSexStatisticsData getDegreeOfSickLeaveStatistics(@Context HttpServletRequest request, @PathParam(VERKSAMHET_PATH_ID) String verksamhetId, @QueryParam("filter") String filterHash) {
+        LOG.info("Calling getDegreeOfSickLeaveStatistics with verksamhetId: {} and filterHash: {}", verksamhetId, filterHash);
         final Range range = new Range(18);
         Verksamhet verksamhet = getVerksamhet(request, Verksamhet.decodeId(verksamhetId));
-        Predicate<Fact> filter = getFilter(request, verksamhet, inFilter);
+        Predicate<Fact> filter = getFilter(request, verksamhet, filterHash);
         SjukskrivningsgradResponse degreeOfSickLeaveStatistics = warehouse.getSjukskrivningsgradPerMonth(filter, range, verksamhet.getVardgivarId());
         return new DegreeOfSickLeaveConverter().convert(degreeOfSickLeaveStatistics, range);
     }
@@ -510,9 +524,9 @@ public class ProtectedChartDataService {
     @Consumes({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request, #verksamhetId)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request, #verksamhetId)")
-    public Response getDegreeOfSickLeaveStatisticsAsCsv(@Context HttpServletRequest request, @PathParam(VERKSAMHET_PATH_ID) String verksamhetId, ReportRequestFilter inFilter) {
-        LOG.info("Calling getDegreeOfSickLeaveStatisticsAsCsv with verksamhetId: {} and ids: {}", verksamhetId, inFilter.getEnhets());
-        final TableData tableData = getDegreeOfSickLeaveStatistics(request, verksamhetId, inFilter).getTableData();
+    public Response getDegreeOfSickLeaveStatisticsAsCsv(@Context HttpServletRequest request, @PathParam(VERKSAMHET_PATH_ID) String verksamhetId, @QueryParam("filter") String filterHash) {
+        LOG.info("Calling getDegreeOfSickLeaveStatisticsAsCsv with verksamhetId: {} and filterhash: {}", verksamhetId, filterHash);
+        final TableData tableData = getDegreeOfSickLeaveStatistics(request, verksamhetId, filterHash).getTableData();
         return CsvConverter.getCsvResponse(tableData, "export.csv");
     }
 
@@ -529,12 +543,12 @@ public class ProtectedChartDataService {
     @Consumes({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request, #verksamhetId)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request, #verksamhetId)")
-    public SickLeaveLengthData getSickLeaveLengthData(@Context HttpServletRequest request, @PathParam(VERKSAMHET_PATH_ID) String verksamhetId, ReportRequestFilter inFilter) {
-        LOG.info("Calling getSickLeaveLengthData with verksamhetId: {} and ids: {}", verksamhetId, inFilter.getEnhets());
+    public SickLeaveLengthData getSickLeaveLengthData(@Context HttpServletRequest request, @PathParam(VERKSAMHET_PATH_ID) String verksamhetId, @QueryParam("filter") String filterHash) {
+        LOG.info("Calling getSickLeaveLengthData with verksamhetId: {} and filterHash: {}", verksamhetId, filterHash);
         final RollingLength year = RollingLength.YEAR;
         Range range = new Range(year.getPeriods());
         Verksamhet verksamhet = getVerksamhet(request, Verksamhet.decodeId(verksamhetId));
-        Predicate<Fact> filter = getFilter(request, verksamhet, inFilter);
+        Predicate<Fact> filter = getFilter(request, verksamhet, filterHash);
         SjukfallslangdResponse sickLeaveLength = warehouse.getSjukskrivningslangd(filter, range, verksamhet.getVardgivarId());
         return new SickLeaveLengthConverter().convert(sickLeaveLength, range);
     }
@@ -552,9 +566,9 @@ public class ProtectedChartDataService {
     @Consumes({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request, #verksamhetId)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request, #verksamhetId)")
-    public Response getSickLeaveLengthDataAsCsv(@Context HttpServletRequest request, @PathParam(VERKSAMHET_PATH_ID) String verksamhetId, ReportRequestFilter inFilter) {
-        LOG.info("Calling getSickLeaveLengthDataAsCsv with verksamhetId: {} and ids: {}", verksamhetId, inFilter.getEnhets());
-        final TableData tableData = getSickLeaveLengthData(request, verksamhetId, inFilter).getTableData();
+    public Response getSickLeaveLengthDataAsCsv(@Context HttpServletRequest request, @PathParam(VERKSAMHET_PATH_ID) String verksamhetId, @QueryParam("filter") String filterHash) {
+        LOG.info("Calling getSickLeaveLengthDataAsCsv with verksamhetId: {} and filterHash: {}", verksamhetId, filterHash);
+        final TableData tableData = getSickLeaveLengthData(request, verksamhetId, filterHash).getTableData();
         return CsvConverter.getCsvResponse(tableData, "export.csv");
     }
 
@@ -571,13 +585,13 @@ public class ProtectedChartDataService {
     @Consumes({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request, #verksamhetId)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request, #verksamhetId)")
-    public SickLeaveLengthData getSickLeaveLengthCurrentData(@Context HttpServletRequest request, @PathParam(VERKSAMHET_PATH_ID) String verksamhetId, ReportRequestFilter inFilter) {
-        LOG.info("Calling getSickLeaveLengthCurrentData with verksamhetId: {} and ids: {}", verksamhetId, inFilter.getEnhets());
+    public SickLeaveLengthData getSickLeaveLengthCurrentData(@Context HttpServletRequest request, @PathParam(VERKSAMHET_PATH_ID) String verksamhetId, @QueryParam("filter") String filterHash) {
+        LOG.info("Calling getSickLeaveLengthCurrentData with verksamhetId: {} and filterHash: {}", verksamhetId, filterHash);
         Verksamhet verksamhet = getVerksamhet(request, Verksamhet.decodeId(verksamhetId));
         LocalDate start = new LocalDate().withDayOfMonth(1);
         LocalDate end = start.plusMonths(1).minusDays(1);
         final Range range = new Range(start, end);
-        Predicate<Fact> filter = getFilter(request, verksamhet, inFilter);
+        Predicate<Fact> filter = getFilter(request, verksamhet, filterHash);
         SjukfallslangdResponse sickLeaveLength = warehouse.getSjukskrivningslangd(filter, range, verksamhet.getVardgivarId());
         return new SickLeaveLengthConverter().convert(sickLeaveLength, range);
     }
@@ -595,9 +609,9 @@ public class ProtectedChartDataService {
     @Consumes({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request, #verksamhetId)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request, #verksamhetId)")
-    public Response getSickLeaveLengthCurrentDataAsCsv(@Context HttpServletRequest request, @PathParam(VERKSAMHET_PATH_ID) String verksamhetId, ReportRequestFilter inFilter) {
-        LOG.info("Calling getSickLeaveLengthCurrentDataAsCsv with verksamhetId: {} and ids: {}", verksamhetId, inFilter.getEnhets());
-        final TableData tableData = getSickLeaveLengthCurrentData(request, verksamhetId, inFilter).getTableData();
+    public Response getSickLeaveLengthCurrentDataAsCsv(@Context HttpServletRequest request, @PathParam(VERKSAMHET_PATH_ID) String verksamhetId, @QueryParam("filter") String filterHash) {
+        LOG.info("Calling getSickLeaveLengthCurrentDataAsCsv with verksamhetId: {} and filterHash: {}", verksamhetId, filterHash);
+        final TableData tableData = getSickLeaveLengthCurrentData(request, verksamhetId, filterHash).getTableData();
         return CsvConverter.getCsvResponse(tableData, "export.csv");
     }
 
@@ -614,11 +628,11 @@ public class ProtectedChartDataService {
     @Consumes({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request, #verksamhetId)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request, #verksamhetId)")
-    public SimpleDetailsData getLongSickLeavesData(@Context HttpServletRequest request, @PathParam(VERKSAMHET_PATH_ID) String verksamhetId, ReportRequestFilter inFilter) {
-        LOG.info("Calling getLongSickLeavesData with verksamhetId: {} and ids: {}", verksamhetId, inFilter.getEnhets());
+    public SimpleDetailsData getLongSickLeavesData(@Context HttpServletRequest request, @PathParam(VERKSAMHET_PATH_ID) String verksamhetId, @QueryParam("filter") String filterHash) {
+        LOG.info("Calling getLongSickLeavesData with verksamhetId: {} and filterHash: {}", verksamhetId, filterHash);
         final Range range = new Range(18);
         Verksamhet verksamhet = getVerksamhet(request, Verksamhet.decodeId(verksamhetId));
-        Predicate<Fact> filter = getFilter(request, verksamhet, inFilter);
+        Predicate<Fact> filter = getFilter(request, verksamhet, filterHash);
         SimpleKonResponse<SimpleKonDataRow> longSickLeaves = warehouse.getLangaSjukskrivningarPerManad(filter, range, verksamhet.getVardgivarId());
         return new PeriodConverter().convert(longSickLeaves, range);
     }
@@ -636,35 +650,50 @@ public class ProtectedChartDataService {
     @Consumes({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request, #verksamhetId)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request, #verksamhetId)")
-    public Response getLongSickLeavesDataAsCsv(@Context HttpServletRequest request, @PathParam(VERKSAMHET_PATH_ID) String verksamhetId, ReportRequestFilter inFilter) {
-        LOG.info("Calling getLongSickLeavesDataAsCsv with verksamhetId: {} and ids: {}", verksamhetId, inFilter.getEnhets());
-        final TableData tableData = getLongSickLeavesData(request, verksamhetId, inFilter).getTableData();
+    public Response getLongSickLeavesDataAsCsv(@Context HttpServletRequest request, @PathParam(VERKSAMHET_PATH_ID) String verksamhetId, @QueryParam("filter") String filterHash) {
+        LOG.info("Calling getLongSickLeavesDataAsCsv with verksamhetId: {} and filterHash: {}", verksamhetId, filterHash);
+        final TableData tableData = getLongSickLeavesData(request, verksamhetId, filterHash).getTableData();
         return CsvConverter.getCsvResponse(tableData, "export.csv");
     }
 
-    Predicate<Fact> getFilter(HttpServletRequest request, Verksamhet verksamhet, ReportRequestFilter inFilter) {
-        Predicate<Fact> enhetFilter = getEnhetFilter(request, verksamhet, inFilter.getEnhets());
-        Predicate<Fact> diagnosFilter = getDiagnosFilter(inFilter.getKapitels(), inFilter.getAvsnitts(), inFilter.getKategoris());
+    Predicate<Fact> getFilter(HttpServletRequest request, Verksamhet verksamhet, String filterHash) {
+        if (filterHash == null || filterHash.isEmpty()) {
+            return Predicates.alwaysTrue();
+        }
+        FilterData inFilter = getFilterFromHash(filterHash);
+        Predicate<Fact> enhetFilter = getEnhetFilter(request, verksamhet, inFilter.getEnheter());
+        Predicate<Fact> diagnosFilter = getDiagnosFilter(inFilter.getDiagnoser());
         return Predicates.and(enhetFilter, diagnosFilter);
     }
 
-    private Predicate<Fact> getDiagnosFilter(final List<String> kapitelIDs, final List<String> avsnittIDs, final List<String> kategoriIDs) {
+    private FilterData getFilterFromHash(String filterHash) {
+        final String filterDataString = filterHashHandler.getFilterData(filterHash);
+        final ObjectMapper mapper = new ObjectMapper();
+        try {
+            return mapper.readValue(filterDataString, FilterData.class);
+        } catch (IOException e) {
+            LOG.error("Failed to get filter data from hash: " + filterHash + ". Data: " + filterDataString, e);
+            throw new RuntimeException("Filter data failed");
+        }
+    }
+
+    private Predicate<Fact> getDiagnosFilter(final List<String> diagnosIds) {
         return new Predicate<Fact>() {
             @Override
             public boolean apply(Fact fact) {
-                if ((kapitelIDs == null || kapitelIDs.isEmpty()) && (avsnittIDs == null || avsnittIDs.isEmpty()) && (kategoriIDs == null || kategoriIDs.isEmpty())) {
+                if (diagnosIds == null || diagnosIds.isEmpty()) {
                     return true;
                 }
                 String diagnosKapitelString = String.valueOf(fact.getDiagnoskapitel());
-                if (kapitelIDs != null && !kapitelIDs.isEmpty() && kapitelIDs.contains(diagnosKapitelString)) {
+                if (diagnosIds.contains(diagnosKapitelString)) {
                     return true;
                 }
                 String diagnosAvsnittString = String.valueOf(fact.getDiagnosavsnitt());
-                if (avsnittIDs != null && !avsnittIDs.isEmpty() && avsnittIDs.contains(diagnosAvsnittString)) {
+                if (diagnosIds.contains(diagnosAvsnittString)) {
                     return true;
                 }
                 String diagnosKategoriString = String.valueOf(fact.getDiagnoskategori());
-                if (kategoriIDs != null && !kategoriIDs.isEmpty() && kategoriIDs.contains(diagnosKategoriString)) {
+                if (diagnosIds.contains(diagnosKategoriString)) {
                     return true;
                 }
                 return false;
@@ -685,7 +714,7 @@ public class ProtectedChartDataService {
         Map<String, String> enheter = new HashMap<>();
         for (Verksamhet userVerksamhet : info.getBusinesses()) {
             if (userVerksamhet.getVardgivarId().equals(verksamhet.getVardgivarId())) {
-                if (enhetsIDs == null || enhetsIDs.isEmpty() || enhetsIDs.contains(userVerksamhet.getId())) {
+                if (enhetsIDs != null && enhetsIDs.contains(userVerksamhet.getId())) {
                     enheter.put(userVerksamhet.getId(), userVerksamhet.getName());
                 }
             }
