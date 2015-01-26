@@ -48,7 +48,7 @@ public class DiagnosisSubGroupsConverter {
         List<Integer> topIndexes = getTopColumnIndexes(diagnosisGroups);
         ChartData maleChart = extractChartData(diagnosisGroups, topIndexes, Kon.Male);
         ChartData femaleChart = extractChartData(diagnosisGroups, topIndexes, Kon.Female);
-        final FilterDataResponse filterResponse = filter != null ? new FilterDataResponse(filter.getDiagnoser(), filter.getEnheter()) : null;
+        final FilterDataResponse filterResponse = new FilterDataResponse(filter.getDiagnoser(), filter.getEnheter());
         return new DualSexStatisticsData(tableData, maleChart, femaleChart, range.toString(), filterResponse);
     }
 

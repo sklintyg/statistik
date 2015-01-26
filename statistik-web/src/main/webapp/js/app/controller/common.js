@@ -318,6 +318,9 @@ var ControllerCommons = new function(){
     };
 
     this.populateActiveDiagnosFilter = function(scope, statisticsData, diagnosIds, isPrint) {
+        if (!diagnosIds) {
+            return;
+        }
         statisticsData.getIcd10Structure(function (diagnoses) {
             scope.activeDiagnosFilters = diagnoses ? ControllerCommons.getDiagnosFilterInformationText(diagnosIds, diagnoses) : null;
             scope.activeDiagnosFiltersForPrint = isPrint ? scope.activeDiagnosFilters : null;

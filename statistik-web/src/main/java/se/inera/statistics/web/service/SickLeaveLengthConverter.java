@@ -57,7 +57,7 @@ public class SickLeaveLengthConverter {
     SickLeaveLengthData convert(SjukfallslangdResponse resp, Range range, Filter filter) {
         TableData tableData = convertToTable(resp.getRows());
         ChartData chartData = convertToChart(resp);
-        final FilterDataResponse filterResponse = filter != null ? new FilterDataResponse(filter.getDiagnoser(), filter.getEnheter()) : null;
+        final FilterDataResponse filterResponse = new FilterDataResponse(filter.getDiagnoser(), filter.getEnheter());
         return new SickLeaveLengthData(tableData, chartData, range.getMonths(), range.toString(), filterResponse);
     }
 }

@@ -148,13 +148,13 @@ public class ChartDataService {
     public void buildNumberOfCasesPerMonth() {
         final Range range = new Range(EIGHTEEN_MONTHS);
         SimpleKonResponse<SimpleKonDataRow> casesPerMonth = data.getCasesPerMonth(range);
-        numberOfCasesPerMonth = new PeriodConverter().convert(casesPerMonth, range, null);
+        numberOfCasesPerMonth = new PeriodConverter().convert(casesPerMonth, range, Filter.empty());
     }
 
     public void buildDiagnosgrupper() {
         Range range = new Range(EIGHTEEN_MONTHS);
         DiagnosgruppResponse diagnosisGroups = data.getDiagnosgrupper(range);
-        diagnosgrupper = new DiagnosisGroupsConverter().convert(diagnosisGroups, range, null);
+        diagnosgrupper = new DiagnosisGroupsConverter().convert(diagnosisGroups, range, Filter.empty());
     }
 
     public void buildDiagnoskapitel() {
@@ -162,7 +162,7 @@ public class ChartDataService {
         for (Icd10.Kapitel kapitel : icd10.getKapitel()) {
             String id = kapitel.getId();
             DiagnosgruppResponse diagnosisGroups = data.getDiagnosavsnitt(range, id);
-            diagnoskapitel.put(id, new DiagnosisSubGroupsConverter().convert(diagnosisGroups, range, null));
+            diagnoskapitel.put(id, new DiagnosisSubGroupsConverter().convert(diagnosisGroups, range, Filter.empty()));
         }
     }
 
@@ -176,19 +176,19 @@ public class ChartDataService {
     public void buildAldersgrupper() {
         Range range = new Range(YEAR);
         SimpleKonResponse<SimpleKonDataRow> ageGroups = data.getHistoricalAgeGroups(range);
-        aldersgrupper = new AgeGroupsConverter().convert(ageGroups, new Range(range.getMonths()), null);
+        aldersgrupper = new AgeGroupsConverter().convert(ageGroups, new Range(range.getMonths()), Filter.empty());
     }
 
     public void buildSjukskrivningsgrad() {
         final Range range = new Range(EIGHTEEN_MONTHS);
         SjukskrivningsgradResponse degreeOfSickLeaveStatistics = data.getSjukskrivningsgrad(range);
-        sjukskrivningsgrad = new DegreeOfSickLeaveConverter().convert(degreeOfSickLeaveStatistics, range, null);
+        sjukskrivningsgrad = new DegreeOfSickLeaveConverter().convert(degreeOfSickLeaveStatistics, range, Filter.empty());
     }
 
     public void buildSjukfallslangd() {
         Range range = new Range(YEAR);
         SjukfallslangdResponse sickLeaveLength = data.getSjukfallslangd(range);
-        sjukfallslangd = new SickLeaveLengthConverter().convert(sickLeaveLength, range, null);
+        sjukfallslangd = new SickLeaveLengthConverter().convert(sickLeaveLength, range, Filter.empty());
     }
 
     public void buildSjukfallPerLan() {

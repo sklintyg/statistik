@@ -85,7 +85,7 @@ public class DiagnosisGroupsConverter {
         TableData tableData = convertTable(diagnosisGroups);
         ChartData maleChart = convertChart(diagnosisGroups, Kon.Male, empty);
         ChartData femaleChart = convertChart(diagnosisGroups, Kon.Female, empty);
-        final FilterDataResponse filterResponse = filter != null ? new FilterDataResponse(filter.getDiagnoser(), filter.getEnheter()) : null;
+        final FilterDataResponse filterResponse = new FilterDataResponse(filter.getDiagnoser(), filter.getEnheter());
         return new DualSexStatisticsData(tableData, maleChart, femaleChart, range.toString(), filterResponse);
     }
 

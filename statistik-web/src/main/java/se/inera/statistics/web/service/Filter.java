@@ -17,6 +17,10 @@ class Filter {
         this.diagnoser = diagnoser;
     }
 
+    static Filter empty() {
+        return new Filter(null, null, null);
+    }
+
     Predicate<Fact> getPredicate() {
         return predicate;
     }
