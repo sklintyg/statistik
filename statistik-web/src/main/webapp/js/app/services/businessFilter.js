@@ -5,7 +5,6 @@ angular.module('StatisticsApp').factory('businessFilter', ['statisticsData', '_'
         var businessFilter = {};
         businessFilter.reset = function () {
             businessFilter.dataInitialized = false;
-            businessFilter.permanentFilter = true;
 
             businessFilter.businesses = [];
             businessFilter.selectedBusinesses = [];
@@ -33,22 +32,20 @@ angular.module('StatisticsApp').factory('businessFilter', ['statisticsData', '_'
             treeMultiSelectUtil.updateSelectionState(businessFilter.geography);
         };
 
-        businessFilter.resetSelections = function (force) {
-            if (!businessFilter.permanentFilter || force) {
-                businessFilter.selectedBusinesses.length = 0;
-                businessFilter.geographyBusinessIds.length = 0;
-                businessFilter.verksamhetsTypIds.length = 0;
-                _.each(businessFilter.businesses, function (business) {
-                    businessFilter.selectedBusinesses.push(business.id);
-                    businessFilter.geographyBusinessIds.push(business.id);
-                });
-                _.each(businessFilter.verksamhetsTyper, function (verksamhetsTyp) {
-                    businessFilter.verksamhetsTypIds.push(verksamhetsTyp.id);
-                });
-                businessFilter.selectAll(businessFilter.geography, true);
-                businessFilter.selectAll(businessFilter.icd10, true);
-                businessFilter.updateDiagnoses();
-            }
+        businessFilter.resetSelections = function () {
+            businessFilter.selectedBusinesses.length = 0;
+            businessFilter.geographyBusinessIds.length = 0;
+            businessFilter.verksamhetsTypIds.length = 0;
+            _.each(businessFilter.businesses, function (business) {
+                businessFilter.selectedBusinesses.push(business.id);
+                businessFilter.geographyBusinessIds.push(business.id);
+            });
+            _.each(businessFilter.verksamhetsTyper, function (verksamhetsTyp) {
+                businessFilter.verksamhetsTypIds.push(verksamhetsTyp.id);
+            });
+            businessFilter.selectAll(businessFilter.geography, true);
+            businessFilter.selectAll(businessFilter.icd10, true);
+            businessFilter.updateDiagnoses();
         };
 
         var isSet = function (value) {
@@ -135,7 +132,7 @@ angular.module('StatisticsApp').factory('businessFilter', ['statisticsData', '_'
                         businessFilter.populateGeography(businesses);
                     }
                     businessFilter.populateVerksamhetsTyper(businesses);
-                    businessFilter.resetSelections(true);
+                    businessFilter.resetSelections();
                     businessFilter.dataInitialized = true;
                 }
                 if (preSelectedFilter) {

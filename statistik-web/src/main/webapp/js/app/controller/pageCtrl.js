@@ -51,8 +51,6 @@ angular.module('StatisticsApp').controller('pageCtrl', [ '$scope', '$rootScope',
                 var diagnosExclusionPattern = /.*(oversikt|diagnosgrupp|diagnosavsnitt|jamforDiagnoser).*/;
                 $scope.showDiagnosFilter = !diagnosExclusionPattern.test(next.$$route.originalPath);
 
-                businessFilter.resetSelections();
-
                 statisticsData.getLoginInfo(function (loginInfo) {
                     businessFilter.setup(loginInfo.businesses, $location.$$search.filter);
                     var v = self.getSelectedVerksamhet($scope.businessId, loginInfo.businesses);

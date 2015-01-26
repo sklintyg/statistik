@@ -47,7 +47,7 @@ angular.module('StatisticsApp').controller('filterCtrl', ['$scope', '$rootScope'
         };
 
         $scope.resetFilter = function() {
-            businessFilter.resetSelections(true);
+            businessFilter.resetSelections();
             updateGeographyFilterSelectorDataButtonLabelText();
             $location.search({});
         };

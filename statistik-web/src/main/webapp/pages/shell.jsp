@@ -445,10 +445,6 @@
                                                          data-ng-if="businessFilter.numberOfBusinesses() === 'large'"
                                                          text-data="geographyFilterSelectorData">
                                     </tree-multi-selector>
-	                                <div class="col-xs-8 col-sm-6 col-md-6 col-lg-3 check-permanent-filter-container">
-                        				<input type="checkbox" id="check-permanent-filter" ng-model="businessFilter.permanentFilter">
-                                        <label for="check-permanent-filter"><span message key="lbl.filter.anvand-filter-pa-alla"></span></label>
-                                    </div>
                                     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                                         <div class="divider"></div>
                                     </div>
