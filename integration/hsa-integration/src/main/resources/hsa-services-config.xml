@@ -33,15 +33,14 @@
         http://cxf.apache.org/schemas/configuration/http-conf.xsd
         http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd">
 
-  <jaxws:client id="hsaClient" serviceClass="se.inera.ifv.hsaws.v3.HsaWsResponderInterface" address="${hsa.ws.services.url}" />
-  
-  <bean id="wsCalls" class="se.inera.ifv.statistics.spi.authorization.impl.HSAWebServiceCalls">
-    <property name="hsaLogicalAddress" value="${hsa.ws.service.logicaladdress}"/>
-  </bean>
-
   <beans profile="!hsa-stub">
+      <jaxws:client id="hsaClient" serviceClass="se.inera.ifv.hsaws.v3.HsaWsResponderInterface" address="${hsa.ws.services.url}" />
 
-    <http:conduit name="{urn:riv:hsa:HsaWs:3}HsaWsResponderInterfacePort.http-conduit">
+      <bean id="wsCalls" class="se.inera.ifv.statistics.spi.authorization.impl.HSAWebServiceCalls">
+          <property name="hsaLogicalAddress" value="${hsa.ws.service.logicaladdress}"/>
+      </bean>
+
+      <http:conduit name="{urn:riv:hsa:HsaWs:3}HsaWsResponderInterfacePort.http-conduit">
       <http:client AllowChunking="false" AutoRedirect="true" Connection="Keep-Alive"/>
       <http:tlsClientParameters disableCNCheck="true">
         <sec:keyManagers keyPassword="${hsa.ws.key.manager.password}">
