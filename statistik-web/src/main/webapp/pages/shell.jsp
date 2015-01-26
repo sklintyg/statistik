@@ -263,7 +263,7 @@
                                         
                                     </li>
                                     <ul id="sub-menu-diagnostics" class="nav nav-list sub-nav-list accordion-body in collapse">
-                                        <li><a data-ng-href="#/nationell/diagnosavsnitt{{queryString}}{{queryString}}" id="navDiagnosisSubGroupsLink"
+                                        <li><a data-ng-href="#/nationell/diagnosavsnitt{{queryString}}" id="navDiagnosisSubGroupsLink"
                                                ctrlname="NationalDiagnosavsnittCtrl" navigationaware><span message key="nav.enskilt-diagnoskapitel"></span></a></li>
                                     </ul>
                                     <li><a data-ng-href="#/nationell/aldersgrupper{{queryString}}" id="navAgeGroupsLink"
