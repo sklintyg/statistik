@@ -22,6 +22,7 @@
     </jaxrs:server>
 
   </beans>
+
   <beans profile="dev">
     <bean id="restSupportService" class="se.inera.testsupport.RestSupportService" />
     <jaxrs:server id="restSupportContainer" address="/testsupport">
