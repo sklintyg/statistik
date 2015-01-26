@@ -49,7 +49,7 @@ public class SickLeaveLengthConverterTest {
         SjukfallslangdResponse sjukfallslangdResponse = new SjukfallslangdResponse(sjukfallslangdRows, 7);
 
         //When
-        SickLeaveLengthData result = converter.convert(sjukfallslangdResponse, new Range(7));
+        SickLeaveLengthData result = converter.convert(sjukfallslangdResponse, new Range(7), Filter.empty());
 
         //Then
         TableData tableDataResult = result.getTableData();
