@@ -85,7 +85,7 @@
            			<span>{{selectedDetailsOption.id}} {{selectedDetailsOption.name}}</span>
            		</a>
            		<ul class="dropdown-menu left overflow-menu-options">
-	               <li data-ng-repeat="detailsOption in detailsOptions"><a href="{{detailsOption.url}}">{{detailsOption.id}} {{detailsOption.name}}</a></li>
+	               <li data-ng-repeat="detailsOption in detailsOptions"><a href="{{detailsOption.url}}{{queryString}}">{{detailsOption.id}} {{detailsOption.name}}</a></li>
 	        	</ul>
          	</div>
        	</div>
@@ -100,7 +100,7 @@
            			<span>{{selectedDetailsOption2.id}} {{selectedDetailsOption2.name}}</span>
            		</a>
            		<ul class="dropdown-menu left overflow-menu-options">
-	               <li data-ng-repeat="detailsOption2 in detailsOptions2"><a href="{{detailsOption2.url}}">{{detailsOption2.id}} {{detailsOption2.name}}</a></li>
+	               <li data-ng-repeat="detailsOption2 in detailsOptions2"><a href="{{detailsOption2.url}}{{queryString}}">{{detailsOption2.id}} {{detailsOption2.name}}</a></li>
 	        	</ul>
          	</div>
        	</div>
