@@ -81,14 +81,8 @@ import java.util.Set;
 public class ProtectedChartDataService {
 
     private static final String VERKSAMHET_PATH_ID = "verksamhetId";
-
     private static final Logger LOG = LoggerFactory.getLogger(ProtectedChartDataService.class);
     private static final String TEXT_UTF_8 = "text/plain; charset=UTF-8";
-    private static final String ID_STRING = "ids";
-    private static final String KAPITEL_STRING = "kapitel";
-    private static final String AVSNITT_STRING = "avsnitt";
-    private static final String KATEGORI_STRING = "kategorier";
-
     private static final Splitter ID_SPLITTER = Splitter.on(',').trimResults().omitEmptyStrings();
 
     @Autowired
