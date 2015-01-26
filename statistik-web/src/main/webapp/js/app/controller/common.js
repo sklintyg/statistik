@@ -308,10 +308,9 @@ var ControllerCommons = new function(){
 
     this.getDiagnosFilterInformationText = function(diagnosFilterIds, icdStructure) {
         var icdStructureAsFlatArray = _.compose(_.flatten, icdStructureAsArray)(icdStructure);
-        var allDiagnosFilterIds = diagnosFilterIds.kapitel.concat(diagnosFilterIds.avsnitt).concat(diagnosFilterIds.kategorier);
-        return _.map(allDiagnosFilterIds, function(diagnosId){
+        return _.map(diagnosFilterIds, function(diagnosId){
             var icdItem = _.find(icdStructureAsFlatArray, function(icd){
-                return icd.numericalId === diagnosId;
+                return icd.numericalId == diagnosId;
             });
             return icdItem.id + " " + icdItem.name;
         });
