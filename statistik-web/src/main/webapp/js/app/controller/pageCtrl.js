@@ -31,7 +31,6 @@ angular.module('StatisticsApp').controller('pageCtrl', [ '$scope', '$rootScope',
         $rootScope.$on('$routeChangeSuccess', function (angularEvent, next, current) {
             var verksamhetId = next.params.verksamhetId;
             $scope.verksamhetIdParam = verksamhetId;
-            $scope.currentUrl = window.location.href;
 
             var d = new Date();
             var currDate = d.getDate();
