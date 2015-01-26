@@ -46,5 +46,11 @@ angular.module('StatisticsApp').controller('filterCtrl', ['$scope', '$rootScope'
             }, function(){ throw new Error("Failed to get filter hash value"); });
         };
 
+        $scope.resetFilter = function() {
+            businessFilter.resetSelections(true);
+            updateGeographyFilterSelectorDataButtonLabelText();
+            $location.search({});
+        };
+
     }
 ]);
