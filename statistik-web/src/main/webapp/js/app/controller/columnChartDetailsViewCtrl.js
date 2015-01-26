@@ -89,7 +89,7 @@ angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl', [ '$sco
         }
 
         function refreshVerksamhet(samePage) {
-            statisticsData[config.dataFetcherVerksamhet]($routeParams.verksamhetId, businessFilter.getSelectedBusinesses(samePage), businessFilter.getSelectedDiagnoses(samePage), populatePageWithData, function () {
+            statisticsData[config.dataFetcherVerksamhet]($routeParams.verksamhetId, populatePageWithData, function () {
                 $scope.dataLoadingError = true;
             }, getSelectedDiagnosis());
         }
@@ -280,7 +280,6 @@ angular.module('StatisticsApp').casesPerLakarbefattningConfig = function () {
 angular.module('StatisticsApp').compareDiagnosis = function () {
     var conf = {};
     conf.dataFetcherVerksamhet = "getCompareDiagnosisVerksamhet";
-    //conf.dataFetcherVerksamhet = "getSjukfallPerLakarbefattningVerksamhet";
     conf.exportTableUrl = "api/getCompareDiagnosisStatistics/csv";
     conf.exportTableUrlVerksamhet = function (verksamhetId) {
         return "api/verksamhet/" + verksamhetId + "/getCompareDiagnosisStatistics/csv";
