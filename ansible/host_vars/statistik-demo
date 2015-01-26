@@ -1,4 +1,4 @@
 ---
 # file: host_vars/statistik-demo
 config_etc_folder: "{{ config_folder }}/demo"
-profile: hsa-stub,security-fake,security-saml
+profile: hsa-stub,security-fake,security-saml,qm,db-resetter
