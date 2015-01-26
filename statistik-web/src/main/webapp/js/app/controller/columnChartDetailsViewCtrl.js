@@ -19,9 +19,9 @@
 
 'use strict';
 
-angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl', [ '$scope', '$rootScope', '$routeParams', '$window', '$timeout', 'statisticsData', 'businessFilter', 'config', 'messageService',
+angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl', [ '$scope', '$rootScope', '$routeParams', '$window', '$location', '$timeout', 'statisticsData', 'businessFilter', 'config', 'messageService',
 
-    function ($scope, $rootScope, $routeParams, $window, $timeout, statisticsData, businessFilter, config, messageService) {
+    function ($scope, $rootScope, $routeParams, $window, $location, $timeout, statisticsData, businessFilter, config, messageService) {
         var isVerksamhet = $routeParams.verksamhetId ? true : false;
         var chart = {};
 
@@ -91,7 +91,7 @@ angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl', [ '$sco
         function refreshVerksamhet() {
             statisticsData[config.dataFetcherVerksamhet]($routeParams.verksamhetId, populatePageWithData, function () {
                 $scope.dataLoadingError = true;
-            }, getSelectedDiagnosis());
+            }, $routeParams.diagnosHash);
         }
 
         if (isVerksamhet) {
@@ -142,9 +142,15 @@ angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl', [ '$sco
         };
 
         $scope.diagnosisSelected = function () {
-            if (isVerksamhet) {
-                refreshVerksamhet();
-            }
+            var diagnoses = getSelectedDiagnosis();
+            statisticsData.getFilterHash(diagnoses, null, null, function(selectionHash){
+
+                //Ugly fix from http://stackoverflow.com/questions/20827282/cant-dismiss-modal-and-change-page-location
+                $('#cancelModal').modal('toggle');
+                $('.modal-backdrop').remove();
+
+                $location.path("/verksamhet/vg1/jamforDiagnoser/" + selectionHash);
+            }, function(){ throw new Error("Failed to get filter hash value"); });
         };
 
     }

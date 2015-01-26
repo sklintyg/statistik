@@ -63,6 +63,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -285,16 +286,18 @@ public class ProtectedChartDataService {
     }
 
     @POST
-    @Path("{verksamhetId}/getJamforDiagnoserStatistik")
+    @Path("{verksamhetId}/getJamforDiagnoserStatistik/{diagnosHash}")
     @Produces({ MediaType.APPLICATION_JSON })
     @Consumes({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request, #verksamhetId)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request, #verksamhetId)")
-    public SimpleDetailsData getCompareDiagnosisStatistics(@Context HttpServletRequest request, @PathParam(VERKSAMHET_PATH_ID) String verksamhetId, @QueryParam("dx") List<String> diagnosis, @QueryParam("filter") String filterHash) {
-        LOG.info("Calling getCompareDiagnosisStatistics with verksamhetId: {} and diagnosis: {} and filterHash: {}", verksamhetId, diagnosis, filterHash);
+    public SimpleDetailsData getCompareDiagnosisStatistics(@Context HttpServletRequest request, @PathParam(VERKSAMHET_PATH_ID) String verksamhetId, @PathParam("diagnosHash") String diagnosisHash, @QueryParam("filter") String filterHash) {
+        LOG.info("Calling getCompareDiagnosisStatistics with verksamhetId: {} and diagnosis: {} and filterHash: {}", verksamhetId, diagnosisHash, filterHash);
         final Range range = new Range(12);
         Verksamhet verksamhet = getVerksamhet(request, Verksamhet.decodeId(verksamhetId));
         Filter filter = getFilter(request, verksamhet, filterHash);
+        final boolean emptyDiagnosisHash = diagnosisHash == null || diagnosisHash.isEmpty() || "-".equals(diagnosisHash);
+        final List<String> diagnosis = emptyDiagnosisHash ? Collections.<String>emptyList() : getFilterFromHash(diagnosisHash).getDiagnoser();
         SimpleKonResponse<SimpleKonDataRow> resultRows = warehouse.getJamforDiagnoser(filter.getPredicate(), range, verksamhet.getVardgivarId(), diagnosis);
         return new CompareDiagnosisConverter().convert(resultRows, range, filter);
     }

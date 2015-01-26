@@ -153,17 +153,8 @@ angular.module('StatisticsApp').factory('statisticsData', function ($http, $root
         makeRequestVerksamhet("getNumberOfCasesPerLakarbefattning", verksamhetId, successCallback, failureCallback);
     };
 
-    function arrayToQueryParam(diagnosisToCompare, paramName) {
-        if (!diagnosisToCompare) {
-            return "";
-        }
-        return _.reduce(diagnosisToCompare, function(memo, diagnosis, index){
-            return memo + (index > 0 ? "&" : "") + paramName + "=" + diagnosis
-        }, "");
-    }
-
     factory.getCompareDiagnosisVerksamhet = function (verksamhetId, successCallback, failureCallback, diagnosisToCompare) {
-        makeRequestVerksamhet("getJamforDiagnoserStatistik?" + arrayToQueryParam(diagnosisToCompare, "dx"), verksamhetId, successCallback, failureCallback);
+        makeRequestVerksamhet("getJamforDiagnoserStatistik/" + diagnosisToCompare, verksamhetId, successCallback, failureCallback);
     };
 
     return factory;
