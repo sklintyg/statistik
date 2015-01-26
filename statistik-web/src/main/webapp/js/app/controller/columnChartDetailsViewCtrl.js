@@ -88,7 +88,7 @@ angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl', [ '$sco
             });
         }
 
-        function refreshVerksamhet(samePage) {
+        function refreshVerksamhet() {
             statisticsData[config.dataFetcherVerksamhet]($routeParams.verksamhetId, populatePageWithData, function () {
                 $scope.dataLoadingError = true;
             }, getSelectedDiagnosis());
@@ -96,7 +96,7 @@ angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl', [ '$sco
 
         if (isVerksamhet) {
             $scope.exportTableUrl = config.exportTableUrlVerksamhet($routeParams.verksamhetId);
-            refreshVerksamhet(false);
+            refreshVerksamhet();
         } else {
             $scope.exportTableUrl = config.exportTableUrl;
             statisticsData[config.dataFetcher](populatePageWithData, function () {
@@ -143,7 +143,7 @@ angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl', [ '$sco
 
         $scope.diagnosisSelected = function () {
             if (isVerksamhet) {
-                refreshVerksamhet(true);
+                refreshVerksamhet();
             }
         };
 

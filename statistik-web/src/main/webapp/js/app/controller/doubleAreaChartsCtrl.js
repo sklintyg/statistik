@@ -230,7 +230,7 @@ angular.module('StatisticsApp').controller('doubleAreaChartsCtrl', [ '$scope', '
 
         $scope.popoverText = config.tooltipHelpText;
 
-        function refreshVerksamhet(samePage) {
+        function refreshVerksamhet() {
             statisticsData[config.dataFetcherVerksamhet]($routeParams.verksamhetId, populatePageWithData, function () {
                 $scope.dataLoadingError = true;
             }, getMostSpecificGroupId());
@@ -242,7 +242,7 @@ angular.module('StatisticsApp').controller('doubleAreaChartsCtrl', [ '$scope', '
 
         if (isVerksamhet) {
             $scope.exportTableUrl = config.exportTableUrlVerksamhet($routeParams.verksamhetId, $routeParams.groupId);
-            refreshVerksamhet(false);
+            refreshVerksamhet();
         } else {
             $scope.exportTableUrl = config.exportTableUrl($routeParams.groupId);
             statisticsData[config.dataFetcher](populatePageWithData, function () {

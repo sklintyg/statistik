@@ -21,26 +21,6 @@ angular.module('StatisticsApp').factory('businessFilter', ['statisticsData', '_'
         };
         businessFilter.reset();
 
-        businessFilter.getSelectedBusinesses = function (samePage) {
-            if (!businessFilter.dataInitialized) {
-                return null;
-            }
-            if (samePage || businessFilter.permanentFilter) {
-                return businessFilter.selectedBusinesses;
-            }
-            return null;
-        };
-
-        businessFilter.getSelectedDiagnoses = function (samePage) {
-            if (!businessFilter.dataInitialized) {
-                return null;
-            }
-            if (samePage || businessFilter.permanentFilter) {
-                return businessFilter.selectedDiagnoses;
-            }
-            return null;
-        };
-
         businessFilter.selectDiagnoses = function (diagnoses) {
             businessFilter.selectByAttribute(businessFilter.icd10, diagnoses, "numericalId");
             businessFilter.selectedDiagnoses = diagnoses;

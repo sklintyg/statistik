@@ -39,7 +39,7 @@ angular.module('StatisticsApp').controller('filterCtrl', ['$scope', '$rootScope'
 
         $scope.makeUnitSelection = function () {
             var verksamhetsBusinessIds = businessFilter.verksamhetsTypIds;
-            var diagnoses = businessFilter.getSelectedDiagnoses(false);
+            var diagnoses = businessFilter.selectedDiagnoses;
             var geoBusinesses = businessFilter.geographyBusinessIds;
             statisticsData.getFilterHash(diagnoses, geoBusinesses, verksamhetsBusinessIds, function(filterHash){
                 $location.search({filter: filterHash});

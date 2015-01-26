@@ -86,7 +86,7 @@ angular.module('StatisticsApp').controller('singleLineChartCtrl', [ '$scope', '$
             ControllerCommons.exportChart(chart, $scope.pageName, $scope.subTitle, $scope.activeDiagnosFilters);
         };
 
-        function refreshVerksamhet(samePage) {
+        function refreshVerksamhet() {
             statisticsData[config.dataFetcherVerksamhet]($routeParams.verksamhetId, populatePageWithData, function () {
                 $scope.dataLoadingError = true;
             });
@@ -94,7 +94,7 @@ angular.module('StatisticsApp').controller('singleLineChartCtrl', [ '$scope', '$
 
         if (isVerksamhet) {
             $scope.exportTableUrl = config.exportTableUrlVerksamhet($routeParams.verksamhetId);
-            refreshVerksamhet(false);
+            refreshVerksamhet();
         } else {
             $scope.exportTableUrl = config.exportTableUrl;
             statisticsData[config.dataFetcher](populatePageWithData, function () {
