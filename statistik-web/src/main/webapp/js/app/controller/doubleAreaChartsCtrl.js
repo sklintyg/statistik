@@ -127,10 +127,10 @@ angular.module('StatisticsApp').controller('doubleAreaChartsCtrl', [ '$scope', '
             $scope.series = chartSeriesMale;
         };
 
-        var populatePageWithData = function (result, enhetsIds, diagnosIds) {
-            ControllerCommons.populateActiveDiagnosFilter($scope, statisticsData, diagnosIds, $routeParams.printBw || $routeParams.print);
+        var populatePageWithData = function (result) {
+            ControllerCommons.populateActiveDiagnosFilter($scope, statisticsData, result.filter.diagnoser, $routeParams.printBw || $routeParams.print);
             $scope.doneLoading = true;
-            $scope.enhetsCount = enhetsIds ? enhetsIds.length : null;
+            $scope.enhetsCount = result.filter.enheter ? result.filter.enheter.length : null;
             $scope.subTitle = config.title(result.period, $scope.enhetsCount, $routeParams.groupId);
             if (config.showDetailsOptions) {
                 $scope.currentPeriod = result.period;

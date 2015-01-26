@@ -59,9 +59,9 @@ angular.module('StatisticsApp').controller('singleLineChartCtrl', [ '$scope', '$
             chart = paintChart(ajaxResult.categories, $scope.series);
         };
 
-        var populatePageWithData = function (result, enhetsIds, diagnosIds) {
-            ControllerCommons.populateActiveDiagnosFilter($scope, statisticsData, diagnosIds, $routeParams.printBw || $routeParams.print);
-            $scope.subTitle = config.title(result.period, enhetsIds ? enhetsIds.length : null);
+        var populatePageWithData = function (result) {
+            ControllerCommons.populateActiveDiagnosFilter($scope, statisticsData, result.filter.diagnoser, $routeParams.printBw || $routeParams.print);
+            $scope.subTitle = config.title(result.period, result.filter.enheter ? result.filter.enheter.length : null);
             $scope.doneLoading = true;
             $timeout(function () {
                 ControllerCommons.updateDataTable($scope, result.tableData);

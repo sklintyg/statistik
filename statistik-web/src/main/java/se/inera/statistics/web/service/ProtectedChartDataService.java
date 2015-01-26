@@ -117,9 +117,9 @@ public class ProtectedChartDataService {
         LOG.info("Calling getNumberOfCasesPerMonth with verksamhetId: {} and filterHash: {}", verksamhetId, filterHash);
         final Range range = new Range(18);
         Verksamhet verksamhet = getVerksamhet(request, Verksamhet.decodeId(verksamhetId));
-        Predicate<Fact> filter = getFilter(request, verksamhet, filterHash);
-        SimpleKonResponse<SimpleKonDataRow> casesPerMonth = warehouse.getCasesPerMonth(filter, range, verksamhet.getVardgivarId());
-        return new PeriodConverter().convert(casesPerMonth, range);
+        Filter filter = getFilter(request, verksamhet, filterHash);
+        SimpleKonResponse<SimpleKonDataRow> casesPerMonth = warehouse.getCasesPerMonth(filter.getPredicate(), range, verksamhet.getVardgivarId());
+        return new PeriodConverter().convert(casesPerMonth, range, filter);
     }
 
     /**
@@ -154,10 +154,10 @@ public class ProtectedChartDataService {
         LOG.info("Calling getNumberOfCasesPerEnhet with verksamhetId: {} and filterHash: {}", verksamhetId, filterHash);
         final Range range = new Range(12);
         Verksamhet verksamhet = getVerksamhet(request, Verksamhet.decodeId(verksamhetId));
-        Predicate<Fact> filter = getFilter(request, verksamhet, filterHash);
+        Filter filter = getFilter(request, verksamhet, filterHash);
         Map<String, String> idToNameMap = getEnhetNameMap(request, verksamhet, getEnhetsFilterIds(filterHash, request));
-        SimpleKonResponse<SimpleKonDataRow> casesPerEnhet = warehouse.getCasesPerEnhet(filter, idToNameMap, range, verksamhet.getVardgivarId());
-        return new GroupedSjukfallConverter("Vårdenhet").convert(casesPerEnhet, range);
+        SimpleKonResponse<SimpleKonDataRow> casesPerEnhet = warehouse.getCasesPerEnhet(filter.getPredicate(), idToNameMap, range, verksamhet.getVardgivarId());
+        return new GroupedSjukfallConverter("Vårdenhet").convert(casesPerEnhet, range, filter);
     }
 
     private List<String> getEnhetsFilterIds(String filterHash, HttpServletRequest request) {
@@ -188,9 +188,9 @@ public class ProtectedChartDataService {
         LOG.info("Calling getNumberOfCasesPerLakare with verksamhetId: {} and filterHash: {}", verksamhetId, filterHash);
         final Range range = new Range(12);
         Verksamhet verksamhet = getVerksamhet(request, Verksamhet.decodeId(verksamhetId));
-        Predicate<Fact> filter = getFilter(request, verksamhet, filterHash);
-        SimpleKonResponse<SimpleKonDataRow> casesPerLakare = warehouse.getCasesPerLakare(filter, range, verksamhet.getVardgivarId());
-        return new GroupedSjukfallConverter("Läkare").convert(casesPerLakare, range);
+        Filter filter = getFilter(request, verksamhet, filterHash);
+        SimpleKonResponse<SimpleKonDataRow> casesPerLakare = warehouse.getCasesPerLakare(filter.getPredicate(), range, verksamhet.getVardgivarId());
+        return new GroupedSjukfallConverter("Läkare").convert(casesPerLakare, range, filter);
     }
 
     /**
@@ -211,9 +211,9 @@ public class ProtectedChartDataService {
         LOG.info("Calling getDiagnoskapitelstatistik with verksamhetId: {} and filterHash: {}", verksamhetId, filterHash);
         final Range range = new Range(18);
         Verksamhet verksamhet = getVerksamhet(request, Verksamhet.decodeId(verksamhetId));
-        Predicate<Fact> filter = getFilter(request, verksamhet, filterHash);
-        DiagnosgruppResponse diagnosisGroups = warehouse.getDiagnosgrupperPerMonth(filter, range, verksamhet.getVardgivarId());
-        return new DiagnosisGroupsConverter().convert(diagnosisGroups, range);
+        Filter filter = getFilter(request, verksamhet, filterHash);
+        DiagnosgruppResponse diagnosisGroups = warehouse.getDiagnosgrupperPerMonth(filter.getPredicate(), range, verksamhet.getVardgivarId());
+        return new DiagnosisGroupsConverter().convert(diagnosisGroups, range, filter);
     }
 
     /**
@@ -260,10 +260,10 @@ public class ProtectedChartDataService {
     private DualSexStatisticsData getDiagnosisSubGroupStatisticsEntity(HttpServletRequest request, String verksamhetId, String groupId, @QueryParam("filter") String filterHash) throws RangeNotFoundException {
         final Range range = new Range(18);
         Verksamhet verksamhet = getVerksamhet(request, Verksamhet.decodeId(verksamhetId));
-        Predicate<Fact> filter = getFilter(request, verksamhet, filterHash);
+        Filter filter = getFilter(request, verksamhet, filterHash);
         final String vardgivarId = verksamhet.getVardgivarId();
-        DiagnosgruppResponse diagnosavsnitt = warehouse.getUnderdiagnosgrupper(filter, range, groupId, vardgivarId);
-        return new DiagnosisSubGroupsConverter().convert(diagnosavsnitt, range);
+        DiagnosgruppResponse diagnosavsnitt = warehouse.getUnderdiagnosgrupper(filter.getPredicate(), range, groupId, vardgivarId);
+        return new DiagnosisSubGroupsConverter().convert(diagnosavsnitt, range, filter);
     }
 
     /**
@@ -300,9 +300,9 @@ public class ProtectedChartDataService {
         LOG.info("Calling getCompareDiagnosisStatistics with verksamhetId: {} and diagnosis: {} and filterHash: {}", verksamhetId, diagnosis, filterHash);
         final Range range = new Range(12);
         Verksamhet verksamhet = getVerksamhet(request, Verksamhet.decodeId(verksamhetId));
-        Predicate<Fact> filter = getFilter(request, verksamhet, filterHash);
-        SimpleKonResponse<SimpleKonDataRow> resultRows = warehouse.getJamforDiagnoser(filter, range, verksamhet.getVardgivarId(), diagnosis);
-        return new CompareDiagnosisConverter().convert(resultRows, range);
+        Filter filter = getFilter(request, verksamhet, filterHash);
+        SimpleKonResponse<SimpleKonDataRow> resultRows = warehouse.getJamforDiagnoser(filter.getPredicate(), range, verksamhet.getVardgivarId(), diagnosis);
+        return new CompareDiagnosisConverter().convert(resultRows, range, filter);
     }
 
     /**
@@ -323,10 +323,10 @@ public class ProtectedChartDataService {
         LOG.info("Calling getOverview with verksamhetId: {} and filterHash: {}", verksamhetId, filterHash);
         Range range = Range.quarter();
         Verksamhet verksamhet = getVerksamhet(request, Verksamhet.decodeId(verksamhetId));
-        Predicate<Fact> filter = getFilter(request, verksamhet, filterHash);
-        VerksamhetOverviewResponse response = warehouse.getOverview(filter, range, verksamhet.getVardgivarId());
+        Filter filter = getFilter(request, verksamhet, filterHash);
+        VerksamhetOverviewResponse response = warehouse.getOverview(filter.getPredicate(), range, verksamhet.getVardgivarId());
 
-        return new VerksamhetOverviewConverter().convert(response, range);
+        return new VerksamhetOverviewConverter().convert(response, range, filter);
     }
 
     /**
@@ -347,9 +347,9 @@ public class ProtectedChartDataService {
         final Range range = new Range(12);
 
         Verksamhet verksamhet = getVerksamhet(request, Verksamhet.decodeId(verksamhetId));
-        Predicate<Fact> filter = getFilter(request, verksamhet, filterHash);
-        SimpleKonResponse<SimpleKonDataRow> ageGroups = warehouse.getAldersgrupper(filter, range, verksamhet.getVardgivarId());
-        return new AgeGroupsConverter().convert(ageGroups, range);
+        Filter filter = getFilter(request, verksamhet, filterHash);
+        SimpleKonResponse<SimpleKonDataRow> ageGroups = warehouse.getAldersgrupper(filter.getPredicate(), range, verksamhet.getVardgivarId());
+        return new AgeGroupsConverter().convert(ageGroups, range, filter);
     }
 
     /**
@@ -389,9 +389,9 @@ public class ProtectedChartDataService {
         final Range range = new Range(12);
 
         Verksamhet verksamhet = getVerksamhet(request, Verksamhet.decodeId(verksamhetId));
-        Predicate<Fact> filter = getFilter(request, verksamhet, filterHash);
-        SimpleKonResponse<SimpleKonDataRow> ageGroups = warehouse.getCasesPerDoctorAgeAndGender(filter, range, verksamhet.getVardgivarId());
-        return new DoctorAgeGenderConverter().convert(ageGroups, range);
+        Filter filter = getFilter(request, verksamhet, filterHash);
+        SimpleKonResponse<SimpleKonDataRow> ageGroups = warehouse.getCasesPerDoctorAgeAndGender(filter.getPredicate(), range, verksamhet.getVardgivarId());
+        return new DoctorAgeGenderConverter().convert(ageGroups, range, filter);
     }
 
     /**
@@ -431,9 +431,9 @@ public class ProtectedChartDataService {
         final Range range = new Range(12);
 
         Verksamhet verksamhet = getVerksamhet(request, Verksamhet.decodeId(verksamhetId));
-        Predicate<Fact> filter = getFilter(request, verksamhet, filterHash);
-        SimpleKonResponse<SimpleKonDataRow> ageGroups = warehouse.getNumberOfCasesPerLakarbefattning(filter, range, verksamhet.getVardgivarId());
-        return new LakarbefattningConverter().convert(ageGroups, range);
+        Filter filter = getFilter(request, verksamhet, filterHash);
+        SimpleKonResponse<SimpleKonDataRow> ageGroups = warehouse.getNumberOfCasesPerLakarbefattning(filter.getPredicate(), range, verksamhet.getVardgivarId());
+        return new LakarbefattningConverter().convert(ageGroups, range, filter);
     }
 
     /**
@@ -475,9 +475,9 @@ public class ProtectedChartDataService {
         final Range range = new Range(start, end);
 
         Verksamhet verksamhet = getVerksamhet(request, Verksamhet.decodeId(verksamhetId));
-        Predicate<Fact> filter = getFilter(request, verksamhet, filterHash);
-        SimpleKonResponse<SimpleKonDataRow> ageGroups = warehouse.getAldersgrupper(filter, range, verksamhet.getVardgivarId());
-        return new AgeGroupsConverter().convert(ageGroups, range);
+        Filter filter = getFilter(request, verksamhet, filterHash);
+        SimpleKonResponse<SimpleKonDataRow> ageGroups = warehouse.getAldersgrupper(filter.getPredicate(), range, verksamhet.getVardgivarId());
+        return new AgeGroupsConverter().convert(ageGroups, range, filter);
 
     }
 
@@ -517,9 +517,9 @@ public class ProtectedChartDataService {
         LOG.info("Calling getDegreeOfSickLeaveStatistics with verksamhetId: {} and filterHash: {}", verksamhetId, filterHash);
         final Range range = new Range(18);
         Verksamhet verksamhet = getVerksamhet(request, Verksamhet.decodeId(verksamhetId));
-        Predicate<Fact> filter = getFilter(request, verksamhet, filterHash);
-        SjukskrivningsgradResponse degreeOfSickLeaveStatistics = warehouse.getSjukskrivningsgradPerMonth(filter, range, verksamhet.getVardgivarId());
-        return new DegreeOfSickLeaveConverter().convert(degreeOfSickLeaveStatistics, range);
+        Filter filter = getFilter(request, verksamhet, filterHash);
+        SjukskrivningsgradResponse degreeOfSickLeaveStatistics = warehouse.getSjukskrivningsgradPerMonth(filter.getPredicate(), range, verksamhet.getVardgivarId());
+        return new DegreeOfSickLeaveConverter().convert(degreeOfSickLeaveStatistics, range, filter);
     }
 
     /**
@@ -559,9 +559,9 @@ public class ProtectedChartDataService {
         final RollingLength year = RollingLength.YEAR;
         Range range = new Range(year.getPeriods());
         Verksamhet verksamhet = getVerksamhet(request, Verksamhet.decodeId(verksamhetId));
-        Predicate<Fact> filter = getFilter(request, verksamhet, filterHash);
-        SjukfallslangdResponse sickLeaveLength = warehouse.getSjukskrivningslangd(filter, range, verksamhet.getVardgivarId());
-        return new SickLeaveLengthConverter().convert(sickLeaveLength, range);
+        Filter filter = getFilter(request, verksamhet, filterHash);
+        SjukfallslangdResponse sickLeaveLength = warehouse.getSjukskrivningslangd(filter.getPredicate(), range, verksamhet.getVardgivarId());
+        return new SickLeaveLengthConverter().convert(sickLeaveLength, range, filter);
     }
 
     /**
@@ -602,9 +602,9 @@ public class ProtectedChartDataService {
         LocalDate start = new LocalDate().withDayOfMonth(1);
         LocalDate end = start.plusMonths(1).minusDays(1);
         final Range range = new Range(start, end);
-        Predicate<Fact> filter = getFilter(request, verksamhet, filterHash);
-        SjukfallslangdResponse sickLeaveLength = warehouse.getSjukskrivningslangd(filter, range, verksamhet.getVardgivarId());
-        return new SickLeaveLengthConverter().convert(sickLeaveLength, range);
+        Filter filter = getFilter(request, verksamhet, filterHash);
+        SjukfallslangdResponse sickLeaveLength = warehouse.getSjukskrivningslangd(filter.getPredicate(), range, verksamhet.getVardgivarId());
+        return new SickLeaveLengthConverter().convert(sickLeaveLength, range, filter);
     }
 
     /**
@@ -643,9 +643,9 @@ public class ProtectedChartDataService {
         LOG.info("Calling getLongSickLeavesData with verksamhetId: {} and filterHash: {}", verksamhetId, filterHash);
         final Range range = new Range(18);
         Verksamhet verksamhet = getVerksamhet(request, Verksamhet.decodeId(verksamhetId));
-        Predicate<Fact> filter = getFilter(request, verksamhet, filterHash);
-        SimpleKonResponse<SimpleKonDataRow> longSickLeaves = warehouse.getLangaSjukskrivningarPerManad(filter, range, verksamhet.getVardgivarId());
-        return new PeriodConverter().convert(longSickLeaves, range);
+        Filter filter = getFilter(request, verksamhet, filterHash);
+        SimpleKonResponse<SimpleKonDataRow> longSickLeaves = warehouse.getLangaSjukskrivningarPerManad(filter.getPredicate(), range, verksamhet.getVardgivarId());
+        return new PeriodConverter().convert(longSickLeaves, range, filter);
     }
 
     /**
@@ -667,15 +667,16 @@ public class ProtectedChartDataService {
         return CsvConverter.getCsvResponse(tableData, "export.csv");
     }
 
-    Predicate<Fact> getFilter(HttpServletRequest request, Verksamhet verksamhet, String filterHash) {
+    Filter getFilter(HttpServletRequest request, Verksamhet verksamhet, String filterHash) {
         if (filterHash == null || filterHash.isEmpty()) {
-            return Predicates.alwaysTrue();
+            return new Filter(Predicates.<Fact>alwaysTrue(), null, null);
         }
         FilterData inFilter = getFilterFromHash(filterHash);
         final ArrayList<String> enhetsIDs = getEnhetsFiltered(request, inFilter);
         Predicate<Fact> enhetFilter = getEnhetFilter(request, verksamhet, enhetsIDs);
-        Predicate<Fact> diagnosFilter = getDiagnosFilter(inFilter.getDiagnoser());
-        return Predicates.and(enhetFilter, diagnosFilter);
+        final List<String> diagnoser = inFilter.getDiagnoser();
+        Predicate<Fact> diagnosFilter = getDiagnosFilter(diagnoser);
+        return new Filter(Predicates.and(enhetFilter, diagnosFilter), enhetsIDs, diagnoser);
     }
 
     private ArrayList<String> getEnhetsFiltered(HttpServletRequest request, FilterData inFilter) {

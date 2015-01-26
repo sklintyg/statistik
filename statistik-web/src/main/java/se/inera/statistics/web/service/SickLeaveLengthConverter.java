@@ -54,9 +54,10 @@ public class SickLeaveLengthConverter {
         return new ChartData(series, groups);
     }
 
-    SickLeaveLengthData convert(SjukfallslangdResponse resp, Range range) {
+    SickLeaveLengthData convert(SjukfallslangdResponse resp, Range range, Filter filter) {
         TableData tableData = convertToTable(resp.getRows());
         ChartData chartData = convertToChart(resp);
-        return new SickLeaveLengthData(tableData, chartData, range.getMonths(), range.toString());
+        final FilterDataResponse filterResponse = filter != null ? new FilterDataResponse(filter.getDiagnoser(), filter.getEnheter()) : null;
+        return new SickLeaveLengthData(tableData, chartData, range.getMonths(), range.toString(), filterResponse);
     }
 }

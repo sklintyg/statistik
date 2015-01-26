@@ -43,12 +43,13 @@ public class DiagnosisSubGroupsConverter {
 
     private static final int NUMBER_OF_CHART_SERIES = 6;
 
-    DualSexStatisticsData convert(DiagnosgruppResponse diagnosisGroups, Range range) {
+    DualSexStatisticsData convert(DiagnosgruppResponse diagnosisGroups, Range range, Filter filter) {
         TableData tableData = DiagnosisGroupsConverter.convertTable(diagnosisGroups);
         List<Integer> topIndexes = getTopColumnIndexes(diagnosisGroups);
         ChartData maleChart = extractChartData(diagnosisGroups, topIndexes, Kon.Male);
         ChartData femaleChart = extractChartData(diagnosisGroups, topIndexes, Kon.Female);
-        return new DualSexStatisticsData(tableData, maleChart, femaleChart, range.toString());
+        final FilterDataResponse filterResponse = filter != null ? new FilterDataResponse(filter.getDiagnoser(), filter.getEnheter()) : null;
+        return new DualSexStatisticsData(tableData, maleChart, femaleChart, range.toString(), filterResponse);
     }
 
     private ChartData extractChartData(DiagnosgruppResponse data, List<Integer> topIndexes, Kon sex) {
