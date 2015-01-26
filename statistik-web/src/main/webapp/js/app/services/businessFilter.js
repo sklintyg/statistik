@@ -235,7 +235,7 @@ angular.module('StatisticsApp').factory('businessFilter', ['statisticsData', '_'
         };
 
         businessFilter.selectByAttribute = function (item, listOfIdsToSelect, attribute) {
-            if (_.contains(listOfIdsToSelect, item[attribute] + '')) {
+            if (_.any(listOfIdsToSelect, function(val) { return item[attribute] == val; })) {
                 businessFilter.selectAll(item);
             } else {
                 item.allSelected = false;
