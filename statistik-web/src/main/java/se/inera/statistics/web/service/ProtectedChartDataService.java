@@ -691,7 +691,11 @@ public class ProtectedChartDataService {
     }
 
     private boolean isOfVerksamhetsTyp(Verksamhet verksamhet, List<String> verksamhetstyper) {
-        for (Verksamhet.VerksamhetsTyp verksamhetsTyp : verksamhet.getVerksamhetsTyper()) {
+        final Set<Verksamhet.VerksamhetsTyp> verksamhetstyperForCurrentVerksamhet = verksamhet.getVerksamhetsTyper();
+        if (verksamhetstyperForCurrentVerksamhet == null || verksamhetstyperForCurrentVerksamhet.isEmpty()) {
+            return true; //TODO This fix can be removed once STATISTIK-858 has been solved.
+        }
+        for (Verksamhet.VerksamhetsTyp verksamhetsTyp : verksamhetstyperForCurrentVerksamhet) {
             if (verksamhetstyper.contains(verksamhetsTyp.getId())) {
                 return true;
             }
