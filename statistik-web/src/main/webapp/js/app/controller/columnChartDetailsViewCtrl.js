@@ -19,9 +19,9 @@
 
 'use strict';
 
-angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl', [ '$scope', '$routeParams', '$window', '$timeout', 'statisticsData', 'businessFilter', 'config', 'messageService',
+angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl', [ '$scope', '$rootScope', '$routeParams', '$window', '$timeout', 'statisticsData', 'businessFilter', 'config', 'messageService',
 
-    function ($scope, $routeParams, $window, $timeout, statisticsData, businessFilter, config, messageService) {
+    function ($scope, $rootScope, $routeParams, $window, $timeout, statisticsData, businessFilter, config, messageService) {
         var isVerksamhet = $routeParams.verksamhetId ? true : false;
         var chart = {};
 
@@ -138,7 +138,7 @@ angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl', [ '$sco
         };
 
         $scope.print = function (bwPrint) {
-            window.open($window.location + (bwPrint ? "?printBw=true" : "?print=true"));
+            ControllerCommons.print(bwPrint, $rootScope, $window);
         };
 
         $scope.diagnosisSelected = function () {

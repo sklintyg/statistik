@@ -327,6 +327,11 @@ var ControllerCommons = new function(){
         });
     };
 
+    this.print = function(bwPrint, rootScope, windowParam) {
+        var printQuery = bwPrint ? "printBw=true" : "print=true";
+        var prefixChar = rootScope.queryString ? "&" : "?";
+        windowParam.open(windowParam.location + prefixChar + printQuery);
+    }
 
 };
 
