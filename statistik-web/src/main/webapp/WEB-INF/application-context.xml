@@ -26,11 +26,11 @@
 
     <beans profile="!dev">
         <context:property-placeholder location="file:${statistics.credentials.file}, file:${statistics.config.file}"
-                                      ignore-resource-not-found="false" ignore-unresolvable="true"/>
+                                      order="1" ignore-resource-not-found="false" ignore-unresolvable="true"/>
     </beans>
-
     <beans profile="dev">
-        <context:property-placeholder location="classpath*:default.dev.properties" order="1" ignore-resource-not-found="true" ignore-unresolvable="true"/>
+        <context:property-placeholder location="classpath*:default.dev.properties"
+                                      order="1" ignore-resource-not-found="true" ignore-unresolvable="true"/>
     </beans>
 
     <beans>
@@ -51,7 +51,7 @@
     </beans>
 
     <beans>
-        <context:property-placeholder location="classpath*:application-context.properties" order="3"
+        <context:property-placeholder location="classpath*:application-context.properties" order="2"
                                       ignore-resource-not-found="false" ignore-unresolvable="false"/>
 
         <bean id="loginVisibility" class="se.inera.auth.LoginVisibility"/>
