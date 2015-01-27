@@ -1,4 +1,4 @@
 ---
 # file: host_vars/statistik-local
 config_etc_folder: "{{ config_folder }}/local"
-profile: hsa-stub,security-fake,security-saml,qm,db-resetter
+profile: hsa-stub,security-both,qm,db-resetter
