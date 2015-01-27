@@ -40,6 +40,7 @@ import se.inera.statistics.service.report.model.SimpleKonResponse;
 import se.inera.statistics.service.report.model.SjukfallslangdResponse;
 import se.inera.statistics.service.report.model.SjukskrivningsgradResponse;
 import se.inera.statistics.service.report.model.VerksamhetOverviewResponse;
+import se.inera.statistics.service.warehouse.Warehouse;
 import se.inera.statistics.web.model.SimpleDetailsData;
 import se.inera.statistics.web.model.DualSexStatisticsData;
 import se.inera.statistics.web.model.overview.VerksamhetOverviewData;
@@ -666,7 +667,7 @@ public class ProtectedChartDataService {
 
     Filter getFilter(HttpServletRequest request, Verksamhet verksamhet, String filterHash) {
         if (filterHash == null || filterHash.isEmpty()) {
-            return new Filter(Predicates.<Fact>alwaysTrue(), null, null);
+            return getFilterForAllAvailableEnhets(request);
         }
         FilterData inFilter = getFilterFromHash(filterHash);
         final ArrayList<String> enhetsIDs = getEnhetsFiltered(request, inFilter);
@@ -674,6 +675,22 @@ public class ProtectedChartDataService {
         final List<String> diagnoser = inFilter.getDiagnoser();
         Predicate<Fact> diagnosFilter = getDiagnosFilter(diagnoser);
         return new Filter(Predicates.and(enhetFilter, diagnosFilter), enhetsIDs, diagnoser);
+    }
+
+    private Filter getFilterForAllAvailableEnhets(HttpServletRequest request) {
+        LoginInfo info = loginServiceUtil.getLoginInfo(request);
+        final List<Integer> availableEnhets = Lists.transform(info.getBusinesses(), new Function<Verksamhet, Integer>() {
+            @Override
+            public Integer apply(Verksamhet verksamhet) {
+                return Warehouse.getEnhet(verksamhet.getId());
+            }
+        });
+        return new Filter(new Predicate<Fact>() {
+            @Override
+            public boolean apply(Fact fact) {
+                return availableEnhets.contains(fact.getEnhet());
+            }
+        }, null, null);
     }
 
     private ArrayList<String> getEnhetsFiltered(HttpServletRequest request, FilterData inFilter) {
