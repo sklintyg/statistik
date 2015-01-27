@@ -1,21 +1,24 @@
 description = 'Inera Statistics Service - Service Module'
 
-buildscript {
-    dependencies {
-        // This plugin adds a "provided" scope to the project
-        classpath 'com.netflix.nebula:gradle-extra-configurations-plugin:1.12.+'
-    }
-}
-
 apply plugin: 'groovy'
 apply plugin: 'idea'
-apply plugin: 'provided-base'
+
+configurations {
+    provided
+}
 
 sourceSets {
+    main.compileClasspath += configurations.provided
     test {
         // compile everything in src/test with groovy (enables cross-compiling)
         java { srcDirs = [] }
         groovy { srcDirs = ["src/test/groovy", "src/test/java"] }
+    }
+}
+
+afterEvaluate {
+    idea {
+        module.scopes.PROVIDED.plus += [configurations.provided] // Adds the provided configuration to IntelliJs provided scope
     }
 }
 
@@ -27,7 +30,6 @@ jar.duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 dependencies {
     compile project(':hsa-integration')
 
-    compile "org.apache.cxf:cxf-rt-transports-http-jetty:${cxfVersion}"
     compile "org.hibernate.javax.persistence:hibernate-jpa-2.1-api:1.0.0.Final"
     compile "org.hibernate:hibernate-entitymanager:4.3.1.Final"
     compile "org.springframework:spring-orm:${springContextVersion}"
