@@ -88,8 +88,12 @@ class ReportsUtil {
         return response.data;
     }
 
+    private boolean isFilterEmpty(FilterData filter) {
+        return filter.diagnoser.isEmpty() && filter.enheter.isEmpty() && filter.verksamhetstyper.isEmpty();
+    }
+
     private String addFilterToQueryStringIfSet(FilterData filter, queryString) {
-        if (filter.isEmpty()) {
+        if (isFilterEmpty(filter)) {
             return queryString
         }
         def filterHash = getFilterHash(filter.enheter, filter.verksamhetstyper, filter.diagnoser)
@@ -225,10 +229,8 @@ class ReportsUtil {
     }
 
     String getFilterHash(enheter, verksamhetstyper, diagnoser) {
-        //TODO Använd objektet FilterData istället för att bygga en egen map
-        def filterObj = ["enheter":enheter, "verksamhetstyper":verksamhetstyper, "diagnoser":diagnoser]
-        def builder = new JsonBuilder(filterObj)
-        def filterJsonString = builder.toString()
+        def filterData = new FilterData(diagnoser, enheter, verksamhetstyper)
+        def filterJsonString = new JsonBuilder(filterData).toString()
         println("Filter to filterhash: " + filterJsonString)
         def response = statistik.post(path: "/api/filter", body: filterJsonString, requestContentType: JSON)
         assert response.status == 200

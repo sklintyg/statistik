@@ -52,8 +52,4 @@ public class FilterData {
         return verksamhetstyper;
     }
 
-    public boolean isEmpty() {
-        return diagnoser.isEmpty() && enheter.isEmpty() && verksamhetstyper.isEmpty();
-    }
-
 }
