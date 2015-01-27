@@ -1,0 +1,4 @@
+---
+# file: host_vars/statistik-test
+config_etc_folder: "{{ config_folder }}/test"
+profile: hsa-stub,security-fake,security-saml,qm,db-resetter
