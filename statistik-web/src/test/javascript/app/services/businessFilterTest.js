@@ -1,7 +1,7 @@
 describe("Tests for business overview controller", function () {
     var A00, A01, B07, D50, D70;
     var A00A09, B00B09, D50D53, D70D77, A00B99, D50D89;
-    var diagnoses, diagnosesTopItem;
+    var diagnoses;
 
     beforeEach(function () {
         A00 = {id: "A00", name: "Kolera", numericalId: 21};
@@ -48,7 +48,6 @@ describe("Tests for business overview controller", function () {
         };
 
         diagnoses = [A00B99, D50D89]
-        diagnosesTopItem = {subItems: diagnoses}
     });
 
     beforeEach(module('StatisticsApp'));
