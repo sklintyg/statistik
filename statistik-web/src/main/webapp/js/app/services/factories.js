@@ -134,7 +134,7 @@ angular.module('StatisticsApp').factory('statisticsData', function ($http, $root
     factory.getFilterHash = function (diagnosIds, enhetsIds, verksamhetstyps, successCallback, failureCallback) {
         var diagnoser = _.reduce(_.values(diagnosIds), function (memo, val) { return memo.concat(val); }, []);
         var param = {"enheter": enhetsIds, "verksamhetstyper": verksamhetstyps, "diagnoser": diagnoser };
-        $http.post("api/getFilterHash", param, {cache: true}).success(function (result) {
+        $http.post("api/filter", param, {cache: true}).success(function (result) {
             try {
                 successCallback(result);
             } catch (e) {
@@ -146,7 +146,7 @@ angular.module('StatisticsApp').factory('statisticsData', function ($http, $root
     };
 
     factory.getFilterData = function (filterHash, successCallback, failureCallback) {
-        makeRequestNational("getFilterData/" + filterHash, successCallback, failureCallback);
+        makeRequestNational("filter/" + filterHash, successCallback, failureCallback);
     };
 
     factory.getSjukfallPerLakarbefattningVerksamhet = function (verksamhetId, successCallback, failureCallback) {

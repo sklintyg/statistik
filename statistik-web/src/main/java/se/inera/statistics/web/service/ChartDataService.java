@@ -501,16 +501,16 @@ public class ChartDataService {
     }
 
     @POST
-    @Path("getFilterHash")
+    @Path("filter")
     public String getFilterHash(String filterData) {
-        LOG.info("Calling getFilterHash");
+        LOG.info("Calling post FilterHash: " + filterData);
         return filterHashHandler.getHash(filterData);
     }
 
     @GET
-    @Path("getFilterData/{filterHash}")
+    @Path("filter/{filterHash}")
     public String getFilterData(@PathParam("filterHash") String filterHash) {
-        LOG.info("Calling getFilterData");
+        LOG.info("Calling get FilterData: " + filterHash);
         return filterHashHandler.getFilterData(filterHash);
     }
 
