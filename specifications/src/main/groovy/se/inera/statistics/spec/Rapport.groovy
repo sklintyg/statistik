@@ -4,7 +4,6 @@ import se.inera.statistics.service.report.util.Icd10
 import se.inera.statistics.service.report.util.Icd10RangeType
 import se.inera.statistics.web.reports.ReportsUtil
 import se.inera.statistics.web.service.FilterData
-import se.inera.statistics.web.service.ReportRequestFilter
 
 abstract class Rapport {
 
