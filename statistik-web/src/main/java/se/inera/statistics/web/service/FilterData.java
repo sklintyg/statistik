@@ -31,9 +31,13 @@ public class FilterData {
     }
 
     public FilterData(List<String> diagnoser, List<String> enheter, List<String> verksamhetstyper) {
-        this.diagnoser = Collections.unmodifiableList(diagnoser);
-        this.enheter = Collections.unmodifiableList(enheter);
-        this.verksamhetstyper = Collections.unmodifiableList(verksamhetstyper);
+        this.diagnoser = diagnoser == null ? Collections.<String>emptyList() : Collections.unmodifiableList(diagnoser);
+        this.enheter = enheter == null ? Collections.<String>emptyList() : Collections.unmodifiableList(enheter);
+        this.verksamhetstyper = verksamhetstyper == null ? Collections.<String>emptyList() : Collections.unmodifiableList(verksamhetstyper);
+    }
+
+    public static FilterData empty() {
+        return new FilterData(Collections.<String>emptyList(), Collections.<String>emptyList(), Collections.<String>emptyList());
     }
 
     public List<String> getDiagnoser() {
@@ -46,6 +50,10 @@ public class FilterData {
 
     public List<String> getVerksamhetstyper() {
         return verksamhetstyper;
+    }
+
+    public boolean isEmpty() {
+        return diagnoser.isEmpty() && enheter.isEmpty() && verksamhetstyper.isEmpty();
     }
 
 }

@@ -3,6 +3,7 @@ package se.inera.statistics.spec
 import se.inera.statistics.service.report.util.Icd10
 import se.inera.statistics.service.report.util.Icd10RangeType
 import se.inera.statistics.web.reports.ReportsUtil
+import se.inera.statistics.web.service.FilterData
 import se.inera.statistics.web.service.ReportRequestFilter
 
 abstract class Rapport {
@@ -47,7 +48,7 @@ abstract class Rapport {
     void setFilterKapitel(String kapitelString) {
         if (kapitelString != null && !kapitelString.trim().isEmpty()) {
             this.filterKapitel = kapitelString.split(",")*.trim().collect{
-                Icd10.icd10ToInt(it, Icd10RangeType.KAPITEL)
+                String.valueOf(Icd10.icd10ToInt(it, Icd10RangeType.KAPITEL))
             }
         }
     }
@@ -55,7 +56,7 @@ abstract class Rapport {
     void setFilterAvsnitt(String avsnittString) {
         if (avsnittString != null && !avsnittString.trim().isEmpty()) {
             this.filterAvsnitt = avsnittString.split(",")*.trim().collect{
-                Icd10.icd10ToInt(it, Icd10RangeType.AVSNITT)
+                String.valueOf(Icd10.icd10ToInt(it, Icd10RangeType.AVSNITT))
             }
         }
     }
@@ -63,7 +64,7 @@ abstract class Rapport {
     void setFilterKategorier(String kategoriString) {
         if (kategoriString != null && !kategoriString.trim().isEmpty()) {
             this.filterKategorier = kategoriString.split(",")*.trim().collect{
-                Icd10.icd10ToInt(it, Icd10RangeType.KATEGORI)
+                String.valueOf(Icd10.icd10ToInt(it, Icd10RangeType.KATEGORI))
             }
         }
     }
@@ -81,7 +82,17 @@ abstract class Rapport {
     }
 
     def getFilter() {
-        return new ReportRequestFilter(filterKapitel, filterAvsnitt, filterKategorier, filterEnheter, filterVerksamhetstyper)
+        def diagnoser = new ArrayList<String>();
+        if (filterKapitel != null) {
+            diagnoser.addAll(filterKapitel)
+        }
+        if (filterAvsnitt != null) {
+            diagnoser.addAll(filterAvsnitt)
+        }
+        if (filterKategorier != null) {
+            diagnoser.addAll(filterKategorier)
+        }
+        return new FilterData(diagnoser, filterEnheter, filterVerksamhetstyper)
     }
 
     public void reset() {
