@@ -211,8 +211,19 @@ class ReportsUtil {
         return get("/api/getCountyStatistics")
     }
 
-    def getReportJamforDiagnoserInloggad(String user, ReportRequestFilter filter, String diagnoserQueryString) {
-        return post("/api/verksamhet/" + getVardgivareForUser(user) + "/getJamforDiagnoserStatistik", filter, diagnoserQueryString)
+    def getReportJamforDiagnoserInloggad(String user, filter, String diagnosHash) {
+        return post("/api/verksamhet/" + getVardgivareForUser(user) + "/getJamforDiagnoserStatistik/" + diagnosHash, filter)
+    }
+
+    String getFilterHash(enheter, verksamhetstyper, diagnoser) {
+        //TODO Använd objektet FilterData istället för att bygga en egen map
+        def filterObj = ["enheter":enheter, "verksamhetstyper":verksamhetstyper, "diagnoser":diagnoser]
+        def builder = new JsonBuilder(filterObj)
+        def filterJsonString = builder.toString()
+        println("Filter to filterhash: " + filterJsonString)
+        def response = statistik.post(path: "/api/filter", body: filterJsonString, requestContentType: JSON)
+        assert response.status == 200
+        return response.data;
     }
 
 }

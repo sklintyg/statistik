@@ -113,7 +113,7 @@ public class DiagnosgruppQuery {
         final List<Icd10.Kategori> kategoris = Lists.transform(diagnosis, new Function<String, Icd10.Kategori>() {
             @Override
             public Icd10.Kategori apply(String diagnos) {
-                return icd10.findKategori(diagnos);
+                return icd10.findKategoriFromNumericId(Integer.valueOf(diagnos));
             }
         });
         final Iterable<SjukfallGroup> sjukfallGroups = SjukfallUtil.sjukfallGrupper(start, periods, periodLength, aisle, filter);

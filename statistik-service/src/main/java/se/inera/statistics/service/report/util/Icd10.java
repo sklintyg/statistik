@@ -146,6 +146,15 @@ public class Icd10 {
         return getKategori(normalized);
     }
 
+    public Kategori findKategoriFromNumericId(int numId) {
+        for (Kategori kategori : idToKategoriMap.values()) {
+            if (kategori.toInt() == numId) {
+                return kategori;
+            }
+        }
+        throw new RuntimeException("Kategori with numerical id could not be found: " + numId);
+    }
+
     public static class IdMap<T extends Id> extends HashMap<String, T> {
         public void put(T id) {
             if (id != null) {

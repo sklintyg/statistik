@@ -1,5 +1,8 @@
 package se.inera.statistics.spec
 
+import se.inera.statistics.service.report.util.Icd10
+import se.inera.statistics.service.report.util.Icd10RangeType
+
 class SjukfallIRapportenJamforDiagnoser extends SimpleDetailsReport {
 
     def valdaDiagnoskategorier = ""
@@ -16,5 +19,12 @@ class SjukfallIRapportenJamforDiagnoser extends SimpleDetailsReport {
         return diagnoskategori
     }
 
+    void setValdaDiagnoskategorier(String kategoriString) {
+        if (kategoriString != null && !kategoriString.trim().isEmpty()) {
+            this.valdaDiagnoskategorier = kategoriString.split(",")*.trim().collect{
+                String.valueOf(Icd10.icd10ToInt(it, Icd10RangeType.KATEGORI))
+            }
+        }
+    }
 
 }
