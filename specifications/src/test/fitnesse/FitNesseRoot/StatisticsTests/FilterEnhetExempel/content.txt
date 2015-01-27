@@ -13,15 +13,15 @@
 
 !3 Då gäller:
 | Sjukfall i rapporten sjukfall per enhet |
-| inloggad som | vårdenhet    | vårdgivarnivå | filter enheter| totalt? | män? | kvinnor? |
-| user1        | Enhet enhet1 | false         | enhet1        | 1       | 1    | 0        |
-| user1        | Enhet enhet1 | false         |               | 1       | 1    | 0        |
-| user1        | Enhet enhet2 | false         |               | -1      | -1   | -1       |
-| user1        | Enhet enhet1 | true          |               | 1       | 1    | 0        |
-| user1        | Enhet enhet2 | true          |               | 1       | 0    | 1        |
-| user2        | Enhet enhet1 | false         | enhet1,enhet2 | 1       | 1    | 0        |
-| user2        | Enhet enhet1 | false         | enhet1        | 1       | 1    | 0        |
-| user2        | Enhet enhet2 | false         | enhet1        | -1      | -1   | -1       |
-| user2        | Enhet enhet2 | false         |               | 1       | 0    | 1        |
-| user2        | Enhet enhet1 | true          |               | 1       | 1    | 0        |
-| user2        | Enhet enhet2 | true          |               | 1       | 0    | 1        |
+| inloggad som | vårdenhet    | vårdgivarnivå | filter enheter | filter verksamhetstyper | filter kategorier | totalt? | män? | kvinnor? |
+| user1        | Enhet enhet1 | false         | enhet1         | 10                      | G01               | 1       | 1    | 0        |
+| user1        | Enhet enhet1 | false         |                |                         |                   | 1       | 1    | 0        |
+| user1        | Enhet enhet2 | false         |                |                         |                   | -1      | -1   | -1       |
+| user1        | Enhet enhet1 | true          |                |                         |                   | 1       | 1    | 0        |
+| user1        | Enhet enhet2 | true          |                |                         |                   | 1       | 0    | 1        |
+| user2        | Enhet enhet1 | false         | enhet1,enhet2  | 10                      | G01               | 1       | 1    | 0        |
+| user2        | Enhet enhet1 | false         | enhet1         | 10                      | G01               | 1       | 1    | 0        |
+| user2        | Enhet enhet2 | false         | enhet1         | 10                      | G01               | -1      | -1   | -1       |
+| user2        | Enhet enhet2 | false         |                |                         |                   | 1       | 0    | 1        |
+| user2        | Enhet enhet1 | true          |                |                         |                   | 1       | 1    | 0        |
+| user2        | Enhet enhet2 | true          |                |                         |                   | 1       | 0    | 1        |
