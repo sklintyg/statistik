@@ -1,26 +1,26 @@
 describe("Tests for business overview controller", function () {
     var A00, A01, B07, D50, D70;
     var A00A09, B00B09, D50D53, D70D77, A00B99, D50D89;
-    var diagnoses;
+    var diagnoses, diagnosesTopItem;
 
     beforeEach(function () {
-        A00 = {id: "A00", name: "Kolera", numericalId: 1};
-        A01 = {id: "A01", name: "Tyfoidfeber och paratyfoidfeber", numericalId: 2};
-        B07 = {id: "B07", name: "Virusvårtor", numericalId: 3};
-        D50 = {id: "D50", name: "Järnbristanemi", numericalId: 4};
-        D70 = {id: "D70", name: "Agranulocytos", numericalId: 5};
+        A00 = {id: "A00", name: "Kolera", numericalId: 21};
+        A01 = {id: "A01", name: "Tyfoidfeber och paratyfoidfeber", numericalId: 22};
+        B07 = {id: "B07", name: "Virusvårtor", numericalId: 23};
+        D50 = {id: "D50", name: "Järnbristanemi", numericalId: 24};
+        D70 = {id: "D70", name: "Agranulocytos", numericalId: 25};
 
         A00A09 = {
             id: "A00-A09",
             name: "Infektionssjukdomar utgående från mag-tarmkanalen",
             subItems: [A00, A01],
-            numericalId: 1
+            numericalId: 11
         };
         B00B09 = {
             id: "B00-B09",
             name: "Virussjukdomar med hudutslag och slemhinneutslag",
             subItems: [B07],
-            numericalId: 2
+            numericalId: 12
         };
         D50D53 = {
             id: "D50-D53",
@@ -31,7 +31,7 @@ describe("Tests for business overview controller", function () {
             id: "D70-D77",
             name: "Andra sjukdomar i blod och blodbildande organ",
             subItems: [D70],
-            numericalId: 4
+            numericalId: 14
         };
 
         A00B99 = {
@@ -48,6 +48,7 @@ describe("Tests for business overview controller", function () {
         };
 
         diagnoses = [A00B99, D50D89]
+        diagnosesTopItem = {subItems: diagnoses}
     });
 
     beforeEach(module('StatisticsApp'));
@@ -108,6 +109,42 @@ describe("Tests for business overview controller", function () {
         expect(A00A09.allSelected).toBeTruthy();
         expect(D70D77.allSelected).toBeTruthy();
         expect(A00B99.allSelected).toBeTruthy();
+
+    }));
+
+    it("selecting correct on id attribute", inject(function (businessFilter, _) {
+        // Given
+        businessFilter.setIcd10Structure(diagnoses);
+
+        // When
+        businessFilter.selectByAttribute(businessFilter.icd10, ["D50-D89", "B07"], "id");
+
+        //Then
+        expect(A00.allSelected).toBeFalsy();
+        expect(B07.allSelected).toBeTruthy();
+        expect(D50.allSelected).toBeTruthy();
+        expect(D70.allSelected).toBeTruthy();
+        expect(A00A09.allSelected).toBeFalsy();
+        expect(D70D77.allSelected).toBeTruthy();
+        expect(A00B99.allSelected).toBeFalsy();
+
+    }));
+
+    it("selecting correct on numericalId attribute", inject(function (businessFilter, _) {
+        // Given
+        businessFilter.setIcd10Structure(diagnoses);
+
+        // When
+        businessFilter.selectByAttribute(businessFilter.icd10, [2, 23], "numericalId");
+
+        //Then
+        expect(A00.allSelected).toBeFalsy();
+        expect(B07.allSelected).toBeTruthy();
+        expect(D50.allSelected).toBeTruthy();
+        expect(D70.allSelected).toBeTruthy();
+        expect(A00A09.allSelected).toBeFalsy();
+        expect(D70D77.allSelected).toBeTruthy();
+        expect(A00B99.allSelected).toBeFalsy();
 
     }));
 
