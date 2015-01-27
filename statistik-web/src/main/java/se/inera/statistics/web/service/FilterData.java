@@ -18,40 +18,34 @@
  */
 package se.inera.statistics.web.service;
 
+import java.util.Collections;
 import java.util.List;
 
-public class ReportRequestFilter {
-    private List<String> kapitels;
-    private List<String> avsnitts;
-    private List<String> kategoris;
-    private List<String> enhets;
+public class FilterData {
+    private List<String> diagnoser;
+    private List<String> enheter;
     private List<String> verksamhetstyper;
 
-    public ReportRequestFilter() {
+    //To be used by json converter
+    FilterData() {
     }
 
-    public ReportRequestFilter(List<String> kapitels, List<String> avsnitts, List<String> kategoris, List<String> enhets, List<String> verksamhetstyper) {
-        this.kapitels = kapitels;
-        this.avsnitts = avsnitts;
-        this.kategoris = kategoris;
-        this.enhets = enhets;
-        this.verksamhetstyper = verksamhetstyper;
+    public FilterData(List<String> diagnoser, List<String> enheter, List<String> verksamhetstyper) {
+        this.diagnoser = diagnoser == null ? Collections.<String>emptyList() : Collections.unmodifiableList(diagnoser);
+        this.enheter = enheter == null ? Collections.<String>emptyList() : Collections.unmodifiableList(enheter);
+        this.verksamhetstyper = verksamhetstyper == null ? Collections.<String>emptyList() : Collections.unmodifiableList(verksamhetstyper);
     }
 
-    public List<String> getKategoris() {
-        return kategoris;
+    public static FilterData empty() {
+        return new FilterData(Collections.<String>emptyList(), Collections.<String>emptyList(), Collections.<String>emptyList());
     }
 
-    public List<String> getKapitels() {
-        return kapitels;
+    public List<String> getDiagnoser() {
+        return diagnoser;
     }
 
-    public List<String> getAvsnitts() {
-        return avsnitts;
-    }
-
-    public List<String> getEnhets() {
-        return enhets;
+    public List<String> getEnheter() {
+        return enheter;
     }
 
     public List<String> getVerksamhetstyper() {

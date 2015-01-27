@@ -26,6 +26,7 @@ module.exports = function(config) {
             'src/main/**/common.js',
             'src/main/**/pageCtrl.js',
             'src/main/**/businessOverviewCtrl.js',
+            'src/main/**/treeMultiSelectUtil.js',
             'src/main/**/businessFilter.js',
             'src/test/javascript/**/angular-mocks.js',
             'src/test/javascript/**/pageCtrlTest.js',

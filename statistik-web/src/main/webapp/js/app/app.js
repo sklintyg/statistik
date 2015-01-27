@@ -106,12 +106,14 @@ var app = angular.module('StatisticsApp', [ 'ngRoute', 'ngCookies', 'ngSanitize'
             title: 'Enskilt diagnoskapitel'
         }).when('/verksamhet/:verksamhetId/diagnosavsnitt', {
             redirectTo: '/verksamhet/:verksamhetId/diagnosavsnitt/A00-B99'
-        }).when('/verksamhet/:verksamhetId/jamforDiagnoser', {
+        }).when('/verksamhet/:verksamhetId/jamforDiagnoser/:diagnosHash', {
             templateUrl: 'views/detailsView.html',
             controller: 'columnChartDetailsViewCtrl',
             controllerAs: 'VerksamhetCompareDiagnosisCtrl',
             resolve: { config: app.compareDiagnosis },
             title: 'Jämför valfria diagnoser'
+        }).when('/verksamhet/:verksamhetId/jamforDiagnoser', {
+            redirectTo: '/verksamhet/:verksamhetId/jamforDiagnoser/-'
         }).when('/verksamhet/:verksamhetId/aldersgrupper', {
             templateUrl: 'views/detailsView.html',
             controller: 'columnChartDetailsViewCtrl',
@@ -206,14 +208,15 @@ app.run([ '$rootScope', '$route', 'messageService', function ($rootScope, $route
         lang: { thousandsSep: ' ' }
     });
 
-    // Update page title
     $rootScope.page_title = 'Titel';
     $rootScope.pageName = '';
     $rootScope.isLoggedIn = isLoggedIn;
-    $rootScope.$on('$routeChangeSuccess', function () {
+
+    $rootScope.$on('$routeChangeSuccess', function (e, current) {
         if ($route.current.$$route) {
             $rootScope.pageName = $route.current.$$route.title;
             $rootScope.page_title = $route.current.$$route.title + ' | Statistiktjänsten';
+            $rootScope.queryString = current.params.filter ? "?filter=" + current.params.filter : "";
         }
     });
 } ]);

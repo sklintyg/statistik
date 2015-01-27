@@ -85,7 +85,7 @@
            			<span>{{selectedDetailsOption.id}} {{selectedDetailsOption.name}}</span>
            		</a>
            		<ul class="dropdown-menu left overflow-menu-options">
-	               <li data-ng-repeat="detailsOption in detailsOptions"><a href="{{detailsOption.url}}">{{detailsOption.id}} {{detailsOption.name}}</a></li>
+	               <li data-ng-repeat="detailsOption in detailsOptions"><a href="{{detailsOption.url}}{{queryString}}">{{detailsOption.id}} {{detailsOption.name}}</a></li>
 	        	</ul>
          	</div>
        	</div>
@@ -100,7 +100,7 @@
            			<span>{{selectedDetailsOption2.id}} {{selectedDetailsOption2.name}}</span>
            		</a>
            		<ul class="dropdown-menu left overflow-menu-options">
-	               <li data-ng-repeat="detailsOption2 in detailsOptions2"><a href="{{detailsOption2.url}}">{{detailsOption2.id}} {{detailsOption2.name}}</a></li>
+	               <li data-ng-repeat="detailsOption2 in detailsOptions2"><a href="{{detailsOption2.url}}{{queryString}}">{{detailsOption2.id}} {{detailsOption2.name}}</a></li>
 	        	</ul>
          	</div>
        	</div>
@@ -117,7 +117,7 @@
 			    <li><a data-ng-click="print(true)"><img src="img/dropdown-icons/sv_vit1b.png"/><span message key="dropdown.val.skrivut-svart-vitt"></span></a></li>
 			    <!-- li><a class="disabled"><img src="img/dropdown-icons/pdf-inactive.png"/> PDF-fil</a></li -->
 			    <li data-ng-repeat="chartContainer in chartContainers"><a data-ng-click="exportChart(chartContainer.id)"><img src="img/dropdown-icons/png1b.png"/><span message key="dropdown.val.spara-diagram-bild-1"></span>{{chartContainer.name}}<span message key="dropdown.val.spara-diagram-bild-2"></span></a></li>
-			  	<li><a data-ng-href="{{exportTableUrl}}" target="_self"><img src="img/dropdown-icons/xls1b.png"/><span message key="dropdown.val.spara-excel"></span></a></li>
+			  	<li><a data-ng-href="{{exportTableUrl}}{{queryString}}" target="_self"><img src="img/dropdown-icons/xls1b.png"/><span message key="dropdown.val.spara-excel"></span></a></li>
 			  </ul>
 			</div>
 		</div>

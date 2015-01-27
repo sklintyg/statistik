@@ -19,8 +19,8 @@
 
 'use strict';
 
-angular.module('StatisticsApp').controller('singleLineChartCtrl', [ '$scope', '$routeParams', '$timeout', '$window', 'statisticsData', 'businessFilter', 'config',
-    function ($scope, $routeParams, $timeout, $window, statisticsData, businessFilter, config) {
+angular.module('StatisticsApp').controller('singleLineChartCtrl', [ '$scope', '$rootScope', '$routeParams', '$timeout', '$window', 'statisticsData', 'businessFilter', 'config',
+    function ($scope, $rootScope, $routeParams, $timeout, $window, statisticsData, businessFilter, config) {
         var chart;
         $scope.chartContainers = [
             {id: "chart1", name: "diagram"}
@@ -59,9 +59,9 @@ angular.module('StatisticsApp').controller('singleLineChartCtrl', [ '$scope', '$
             chart = paintChart(ajaxResult.categories, $scope.series);
         };
 
-        var populatePageWithData = function (result, enhetsIds, diagnosIds) {
-            ControllerCommons.populateActiveDiagnosFilter($scope, statisticsData, diagnosIds, $routeParams.printBw || $routeParams.print);
-            $scope.subTitle = config.title(result.period, enhetsIds ? enhetsIds.length : null);
+        var populatePageWithData = function (result) {
+            ControllerCommons.populateActiveDiagnosFilter($scope, statisticsData, result.filter.diagnoser, $routeParams.printBw || $routeParams.print);
+            $scope.subTitle = config.title(result.period, result.filter.enheter ? result.filter.enheter.length : null);
             $scope.doneLoading = true;
             $timeout(function () {
                 ControllerCommons.updateDataTable($scope, result.tableData);
@@ -86,21 +86,15 @@ angular.module('StatisticsApp').controller('singleLineChartCtrl', [ '$scope', '$
             ControllerCommons.exportChart(chart, $scope.pageName, $scope.subTitle, $scope.activeDiagnosFilters);
         };
 
-        function refreshVerksamhet(samePage) {
-            statisticsData[config.dataFetcherVerksamhet]($routeParams.verksamhetId, businessFilter.getSelectedBusinesses(samePage), businessFilter.getSelectedDiagnoses(samePage), populatePageWithData, function () {
+        function refreshVerksamhet() {
+            statisticsData[config.dataFetcherVerksamhet]($routeParams.verksamhetId, populatePageWithData, function () {
                 $scope.dataLoadingError = true;
             });
         }
 
-        $scope.$on('filterChange', function (event, data) {
-            if (isVerksamhet) {
-                refreshVerksamhet(true);
-            }
-        });
-
         if (isVerksamhet) {
             $scope.exportTableUrl = config.exportTableUrlVerksamhet($routeParams.verksamhetId);
-            refreshVerksamhet(false);
+            refreshVerksamhet();
         } else {
             $scope.exportTableUrl = config.exportTableUrl;
             statisticsData[config.dataFetcher](populatePageWithData, function () {
@@ -119,7 +113,7 @@ angular.module('StatisticsApp').controller('singleLineChartCtrl', [ '$scope', '$
         $scope.popoverText = config.showPageHelpTooltip ? "Ett sjukfall innehåller en patients alla läkarintyg om intygen följer varandra med max fem dagars uppehåll. Läkarintygen måste också vara utfärdade av samma vårdgivare. Om det är fler än fem dagar mellan intygen räknas det nya intyget som ett nytt sjukfall." : "";
 
         $scope.print = function (bwPrint) {
-            window.open($window.location + (bwPrint ? "?printBw=true" : "?print=true"));
+            ControllerCommons.print(bwPrint, $rootScope, $window);
         };
 
     }

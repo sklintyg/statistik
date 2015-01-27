@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('StatisticsApp').controller('directiveTmsCtrl', [ '$scope', function ($scope) {
+angular.module('StatisticsApp').controller('directiveTmsCtrl', [ '$scope', 'treeMultiSelectUtil', function ($scope, treeMultiSelectUtil) {
     $scope.clickedDone = function(){
         $scope.doneClicked();
     };
@@ -134,24 +134,7 @@ angular.module('StatisticsApp').controller('directiveTmsCtrl', [ '$scope', funct
     };
 
     $scope.updateState = function (item) {
-        if (item.subs && item.subs.length != 0) {
-            var someSelected = false;
-            var allSelected = true;
-            _.each(item.subs, function (sub) {
-                if (!sub.hide) {
-                    $scope.updateState(sub);
-                    someSelected = someSelected || sub.someSelected || sub.allSelected;
-                    allSelected = allSelected && sub.allSelected;
-                }
-            });
-            if (allSelected) {
-                item.allSelected = true;
-                item.someSelected = false;
-            } else {
-                item.allSelected = false;
-                item.someSelected = someSelected ? true : false;
-            }
-        }
+        treeMultiSelectUtil.updateSelectionState(item);
         $scope.updateCounters();
     };
 

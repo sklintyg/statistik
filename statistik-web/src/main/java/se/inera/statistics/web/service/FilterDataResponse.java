@@ -16,14 +16,32 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package se.inera.statistics.web.model;
+package se.inera.statistics.web.service;
 
-import se.inera.statistics.web.service.FilterDataResponse;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
-public class SickLeaveLengthData extends SimpleDetailsData {
+public class FilterDataResponse {
+    private List<String> diagnoser;
+    private List<String> enheter;
 
-    public SickLeaveLengthData(TableData tableData, ChartData chartData, int monthsIncluded, String period, FilterDataResponse filter) {
-        super(tableData, chartData, monthsIncluded, period, filter);
+    //To be used by json converter
+    FilterDataResponse() {
+    }
+
+    public FilterDataResponse(Collection<String> diagnoser, Collection<String> enheter) {
+        this.diagnoser = diagnoser == null ? null : Collections.unmodifiableList(new ArrayList<>(diagnoser));
+        this.enheter = enheter == null ? null : Collections.unmodifiableList(new ArrayList<>(enheter));
+    }
+
+    public List<String> getDiagnoser() {
+        return diagnoser;
+    }
+
+    public List<String> getEnheter() {
+        return enheter;
     }
 
 }

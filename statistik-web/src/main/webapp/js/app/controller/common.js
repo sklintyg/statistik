@@ -308,16 +308,18 @@ var ControllerCommons = new function(){
 
     this.getDiagnosFilterInformationText = function(diagnosFilterIds, icdStructure) {
         var icdStructureAsFlatArray = _.compose(_.flatten, icdStructureAsArray)(icdStructure);
-        var allDiagnosFilterIds = diagnosFilterIds.kapitel.concat(diagnosFilterIds.avsnitt).concat(diagnosFilterIds.kategorier);
-        return _.map(allDiagnosFilterIds, function(diagnosId){
+        return _.map(diagnosFilterIds, function(diagnosId){
             var icdItem = _.find(icdStructureAsFlatArray, function(icd){
-                return icd.numericalId === diagnosId;
+                return icd.numericalId == diagnosId;
             });
             return icdItem.id + " " + icdItem.name;
         });
     };
 
     this.populateActiveDiagnosFilter = function(scope, statisticsData, diagnosIds, isPrint) {
+        if (!diagnosIds) {
+            return;
+        }
         statisticsData.getIcd10Structure(function (diagnoses) {
             scope.activeDiagnosFilters = diagnoses ? ControllerCommons.getDiagnosFilterInformationText(diagnosIds, diagnoses) : null;
             scope.activeDiagnosFiltersForPrint = isPrint ? scope.activeDiagnosFilters : null;
@@ -327,6 +329,11 @@ var ControllerCommons = new function(){
         });
     };
 
+    this.print = function(bwPrint, rootScope, windowParam) {
+        var printQuery = bwPrint ? "printBw=true" : "print=true";
+        var prefixChar = rootScope.queryString ? "&" : "?";
+        windowParam.open(windowParam.location + prefixChar + printQuery);
+    }
 
 };
 

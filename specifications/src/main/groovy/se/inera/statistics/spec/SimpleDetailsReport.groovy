@@ -61,10 +61,10 @@ abstract class SimpleDetailsReport extends Rapport {
         return reportsUtil.getReportAldersgrupp();
     }
 
-    def getReportJamforDiagnoser(String diagnoserString) {
-        def diagnoserQueryString = diagnoserString.trim().isEmpty() ? "" : "dx=" + diagnoserString.trim().replaceAll(" *, *", "&dx=")
+    def getReportJamforDiagnoser(diagnoser) {
+        def diagnosHash = reportsUtil.getFilterHash(null, null, diagnoser)
         if (inloggad) {
-            return reportsUtil.getReportJamforDiagnoserInloggad(inloggadSom, filter, diagnoserQueryString);
+            return reportsUtil.getReportJamforDiagnoserInloggad(inloggadSom, filter, diagnosHash);
         }
         throw new RuntimeException("Report -Jämför diagnoser- is not available on national level");
     }

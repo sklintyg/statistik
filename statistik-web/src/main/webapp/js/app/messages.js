@@ -67,7 +67,6 @@ var stMessages = {
         'lbl.filter.modal.avsnitt': 'Avsnitt: ',
         'lbl.filter.modal.kategorier': 'Kategorier: ',
         'lbl.filter.modal.spara-stang': 'Spara och stäng',
-        'lbl.filter.anvand-filter-pa-alla': 'Använd filtrering för alla rapporter',
         'lbl.filter.sum-progress-1': 'Genom filtreringen visas statistik från ',
         'lbl.filter.sum-progress-2': ' av totalt ',
         'lbl.filter.sum-progress-3': ' vårdenheter.',

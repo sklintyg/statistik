@@ -16,14 +16,39 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package se.inera.statistics.web.model;
+package se.inera.statistics.web.service;
 
-import se.inera.statistics.web.service.FilterDataResponse;
+import com.google.common.base.Predicate;
+import se.inera.statistics.service.warehouse.Fact;
 
-public class SickLeaveLengthData extends SimpleDetailsData {
+import java.util.Collection;
 
-    public SickLeaveLengthData(TableData tableData, ChartData chartData, int monthsIncluded, String period, FilterDataResponse filter) {
-        super(tableData, chartData, monthsIncluded, period, filter);
+class Filter {
+
+    private Predicate<Fact> predicate;
+    private Collection<String> enheter;
+    private Collection<String> diagnoser;
+
+    Filter(Predicate<Fact> predicate, Collection<String> enheter, Collection<String> diagnoser) {
+        this.predicate = predicate;
+        this.enheter = enheter;
+        this.diagnoser = diagnoser;
+    }
+
+    static Filter empty() {
+        return new Filter(null, null, null);
+    }
+
+    Predicate<Fact> getPredicate() {
+        return predicate;
+    }
+
+    Collection<String> getEnheter() {
+        return enheter;
+    }
+
+    Collection<String> getDiagnoser() {
+        return diagnoser;
     }
 
 }

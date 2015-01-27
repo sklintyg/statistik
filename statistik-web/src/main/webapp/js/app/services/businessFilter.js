@@ -1,11 +1,10 @@
 'use strict';
 
-angular.module('StatisticsApp').factory('businessFilter', ['statisticsData', '_',
-    function (statisticsData, _) {
+angular.module('StatisticsApp').factory('businessFilter', ['statisticsData', '_', 'treeMultiSelectUtil',
+    function (statisticsData, _, treeMultiSelectUtil) {
         var businessFilter = {};
         businessFilter.reset = function () {
             businessFilter.dataInitialized = false;
-            businessFilter.permanentFilter = true;
 
             businessFilter.businesses = [];
             businessFilter.selectedBusinesses = [];
@@ -21,42 +20,32 @@ angular.module('StatisticsApp').factory('businessFilter', ['statisticsData', '_'
         };
         businessFilter.reset();
 
-        businessFilter.getSelectedBusinesses = function (samePage) {
-            if (!businessFilter.dataInitialized) {
-                return null;
-            }
-            if (samePage || businessFilter.permanentFilter) {
-                return businessFilter.selectedBusinesses;
-            }
-            return null;
+        businessFilter.selectDiagnoses = function (diagnoses) {
+            businessFilter.selectByAttribute(businessFilter.icd10, diagnoses, "numericalId");
+            businessFilter.selectedDiagnoses = diagnoses;
+            treeMultiSelectUtil.updateSelectionState(businessFilter.icd10);
         };
 
-        businessFilter.getSelectedDiagnoses = function (samePage) {
-            if (!businessFilter.dataInitialized) {
-                return null;
-            }
-            if (samePage || businessFilter.permanentFilter) {
-                return businessFilter.selectedDiagnoses;
-            }
-            return null;
+        businessFilter.selectGeographyBusiness = function (businessIds) {
+            businessFilter.selectByAttribute(businessFilter.geography, businessIds, "id");
+            businessFilter.geographyBusinessIds = businessIds;
+            treeMultiSelectUtil.updateSelectionState(businessFilter.geography);
         };
 
-        businessFilter.resetSelections = function (force) {
-            if (!businessFilter.permanentFilter || force) {
-                businessFilter.selectedBusinesses.length = 0;
-                businessFilter.geographyBusinessIds.length = 0;
-                businessFilter.verksamhetsTypIds.length = 0;
-                _.each(businessFilter.businesses, function (business) {
-                    businessFilter.selectedBusinesses.push(business.id);
-                    businessFilter.geographyBusinessIds.push(business.id);
-                });
-                _.each(businessFilter.verksamhetsTyper, function (verksamhetsTyp) {
-                    businessFilter.verksamhetsTypIds.push(verksamhetsTyp.id);
-                });
-                businessFilter.selectAll(businessFilter.geography, true);
-                businessFilter.selectAll(businessFilter.icd10, true);
-                businessFilter.updateDiagnoses();
-            }
+        businessFilter.resetSelections = function () {
+            businessFilter.selectedBusinesses.length = 0;
+            businessFilter.geographyBusinessIds.length = 0;
+            businessFilter.verksamhetsTypIds.length = 0;
+            _.each(businessFilter.businesses, function (business) {
+                businessFilter.selectedBusinesses.push(business.id);
+                businessFilter.geographyBusinessIds.push(business.id);
+            });
+            _.each(businessFilter.verksamhetsTyper, function (verksamhetsTyp) {
+                businessFilter.verksamhetsTypIds.push(verksamhetsTyp.id);
+            });
+            businessFilter.selectAll(businessFilter.geography, true);
+            businessFilter.selectAll(businessFilter.icd10, true);
+            businessFilter.updateDiagnoses();
         };
 
         var isSet = function (value) {
@@ -114,22 +103,44 @@ angular.module('StatisticsApp').factory('businessFilter', ['statisticsData', '_'
             businessFilter.updateDiagnoses();
         };
 
-        businessFilter.loggedIn = function (businesses) {
-            if (!businessFilter.dataInitialized) {
-                statisticsData.getIcd10Structure(businessFilter.setIcd10Structure,
-                    function () { alert("Failed to fetch ICD10 structure tree from server") });
-                businessFilter.businesses = sortSwedish(businesses, "name", "Okän");
-                if (businessFilter.numberOfBusinesses() === "large") {
-                    businessFilter.populateGeography(businesses);
-                }
-                businessFilter.populateVerksamhetsTyper(businesses);
-                businessFilter.resetSelections(true);
-                businessFilter.dataInitialized = true;
-            }
-        };
+        function setPreselectedFilter(filterData) {
+            businessFilter.selectDiagnoses(filterData.diagnoser);
+            businessFilter.verksamhetsTypIds = filterData.verksamhetstyper;
+            businessFilter.selectGeographyBusiness(filterData.enheter);
+            businessFilter.filterChanged();
+        }
 
-        businessFilter.loggedOut = function () {
-            businessFilter.reset();
+        function updateIcd10StructureOnce(successCallback) {
+            if (businessFilter.icd10.subs.length > 0) {
+                successCallback();
+            } else {
+                statisticsData.getIcd10Structure(function (result) {
+                        businessFilter.setIcd10Structure(result)
+                        successCallback();
+                    },
+                    function () {
+                        throw new Error("Failed to fetch ICD10 structure tree from server")
+                    });
+                }
+        }
+
+        businessFilter.setup = function (businesses, preSelectedFilter) {
+            updateIcd10StructureOnce(function(){
+                if (!businessFilter.dataInitialized) {
+                    businessFilter.businesses = sortSwedish(businesses, "name", "Okän");
+                    if (businessFilter.numberOfBusinesses() === "large") {
+                        businessFilter.populateGeography(businesses);
+                    }
+                    businessFilter.populateVerksamhetsTyper(businesses);
+                    businessFilter.resetSelections();
+                    businessFilter.dataInitialized = true;
+                }
+                if (preSelectedFilter) {
+                    statisticsData.getFilterData(preSelectedFilter, function(filterData) {
+                        setPreselectedFilter(filterData);
+                    }, function(){ throw new Error("Could not parse filter"); });
+                }
+            });
         };
 
         businessFilter.numberOfBusinesses = function () {
@@ -190,13 +201,25 @@ angular.module('StatisticsApp').factory('businessFilter', ['statisticsData', '_'
             businessFilter.verksamhetsTyper = sortSwedish(_.values(verksamhetsTypSet), "name");
         };
 
-        businessFilter.selectAll = function (item, selectHidden) {
-            if (!item.hide || selectHidden) {
-                item.allSelected = true;
+        businessFilter.selectAll = function (item) {
+            item.allSelected = true;
+            item.someSelected = false;
+            if (item.subs) {
+                _.each(item.subs, function (sub) {
+                    businessFilter.selectAll(sub);
+                });
+            }
+        };
+
+        businessFilter.selectByAttribute = function (item, listOfIdsToSelect, attribute) {
+            if (_.any(listOfIdsToSelect, function(val) { return item[attribute] == val; })) {
+                businessFilter.selectAll(item);
+            } else {
+                item.allSelected = false;
                 item.someSelected = false;
                 if (item.subs) {
                     _.each(item.subs, function (sub) {
-                        businessFilter.selectAll(sub, selectHidden);
+                        businessFilter.selectByAttribute(sub, listOfIdsToSelect, attribute);
                     });
                 }
             }
@@ -230,9 +253,9 @@ angular.module('StatisticsApp').factory('businessFilter', ['statisticsData', '_'
             if (node.subs) { // Diagnoses, Kapitel or Avsnitt
                 if (node.allSelected) {
                     if (node.typ === 'kapitel') {
-                        acc.kapitel.push(node.numericalId);
+                        acc.push(node.numericalId);
                     } else if (node.typ === 'avsnitt') {
-                        acc.avsnitt.push(node.numericalId);
+                        acc.push(node.numericalId);
                     } else { // root node
                         _.each(node.subs, function (subItem) {
                             businessFilter.collectSummary(subItem, acc);
@@ -245,7 +268,7 @@ angular.module('StatisticsApp').factory('businessFilter', ['statisticsData', '_'
                 }
             } else { // Kategori
                 if (node.allSelected) {
-                    acc.kategorier.push(node.numericalId);
+                    acc.push(node.numericalId);
                 }
             }
         };
@@ -256,11 +279,7 @@ angular.module('StatisticsApp').factory('businessFilter', ['statisticsData', '_'
         };
 
         businessFilter.updateDiagnoses = function () {
-            businessFilter.selectedDiagnoses = {
-                kapitel: [],
-                avsnitt: [],
-                kategorier: []
-            };
+            businessFilter.selectedDiagnoses = [];
             businessFilter.collectSummary(businessFilter.icd10, businessFilter.selectedDiagnoses);
         };
 

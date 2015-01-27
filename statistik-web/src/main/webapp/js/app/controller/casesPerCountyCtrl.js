@@ -19,8 +19,8 @@
 
 'use strict';
 
-angular.module('StatisticsApp').controller('casesPerCountyCtrl', ['$scope', '$timeout', '$routeParams', '$window', 'statisticsData', 'messageService',
-    function ($scope, $timeout, $routeParams, $window, statisticsData, messageService) {
+angular.module('StatisticsApp').controller('casesPerCountyCtrl', ['$scope', '$rootScope', '$timeout', '$routeParams', '$window', 'statisticsData', 'messageService',
+    function ($scope, $rootScope, $timeout, $routeParams, $window, statisticsData, messageService) {
 
         var chart = {};
         $scope.chartContainers = [
@@ -89,7 +89,7 @@ angular.module('StatisticsApp').controller('casesPerCountyCtrl', ['$scope', '$ti
         };
 
         $scope.print = function (bwPrint) {
-            window.open($window.location + (bwPrint ? "?printBw=true" : "?print=true"));
+            ControllerCommons.print(bwPrint, $rootScope, $window);
         };
 
     }

@@ -19,9 +19,9 @@
 
 'use strict';
 
-angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl', [ '$scope', '$routeParams', '$window', '$timeout', 'statisticsData', 'businessFilter', 'config', 'messageService',
+angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl', [ '$scope', '$rootScope', '$routeParams', '$window', '$location', '$timeout', 'statisticsData', 'businessFilter', 'config', 'messageService',
 
-    function ($scope, $routeParams, $window, $timeout, statisticsData, businessFilter, config, messageService) {
+    function ($scope, $rootScope, $routeParams, $window, $location, $timeout, statisticsData, businessFilter, config, messageService) {
         var isVerksamhet = $routeParams.verksamhetId ? true : false;
         var chart = {};
 
@@ -65,9 +65,9 @@ angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl', [ '$sco
             }
         };
 
-        var populatePageWithData = function (result, enhetsIds, diagnosIds) {
-            $scope.subTitle = config.title(result.period, enhetsIds ? enhetsIds.length : null);
-            ControllerCommons.populateActiveDiagnosFilter($scope, statisticsData, diagnosIds, $routeParams.printBw || $routeParams.print);
+        var populatePageWithData = function (result) {
+            $scope.subTitle = config.title(result.period, result.filter.enheter ? result.filter.enheter.length : null);
+            ControllerCommons.populateActiveDiagnosFilter($scope, statisticsData, result.filter.diagnoser, $routeParams.printBw || $routeParams.print);
             $scope.doneLoading = true;
             $timeout(function () {
                 ControllerCommons.updateDataTable($scope, result.tableData);
@@ -88,21 +88,15 @@ angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl', [ '$sco
             });
         }
 
-        function refreshVerksamhet(samePage) {
-            statisticsData[config.dataFetcherVerksamhet]($routeParams.verksamhetId, businessFilter.getSelectedBusinesses(samePage), businessFilter.getSelectedDiagnoses(samePage), populatePageWithData, function () {
+        function refreshVerksamhet() {
+            statisticsData[config.dataFetcherVerksamhet]($routeParams.verksamhetId, populatePageWithData, function () {
                 $scope.dataLoadingError = true;
-            }, getSelectedDiagnosis());
+            }, $routeParams.diagnosHash);
         }
-
-        $scope.$on('filterChange', function (event, data) {
-            if (isVerksamhet) {
-                refreshVerksamhet(true);
-            }
-        });
 
         if (isVerksamhet) {
             $scope.exportTableUrl = config.exportTableUrlVerksamhet($routeParams.verksamhetId);
-            refreshVerksamhet(false);
+            refreshVerksamhet();
         } else {
             $scope.exportTableUrl = config.exportTableUrl;
             statisticsData[config.dataFetcher](populatePageWithData, function () {
@@ -144,13 +138,19 @@ angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl', [ '$sco
         };
 
         $scope.print = function (bwPrint) {
-            window.open($window.location + (bwPrint ? "?printBw=true" : "?print=true"));
+            ControllerCommons.print(bwPrint, $rootScope, $window);
         };
 
         $scope.diagnosisSelected = function () {
-            if (isVerksamhet) {
-                refreshVerksamhet(true);
-            }
+            var diagnoses = getSelectedDiagnosis();
+            statisticsData.getFilterHash(diagnoses, null, null, function(selectionHash){
+
+                //Ugly fix from http://stackoverflow.com/questions/20827282/cant-dismiss-modal-and-change-page-location
+                $('#cancelModal').modal('toggle');
+                $('.modal-backdrop').remove();
+
+                $location.path("/verksamhet/vg1/jamforDiagnoser/" + selectionHash);
+            }, function(){ throw new Error("Failed to get filter hash value"); });
         };
 
     }
@@ -286,7 +286,6 @@ angular.module('StatisticsApp').casesPerLakarbefattningConfig = function () {
 angular.module('StatisticsApp').compareDiagnosis = function () {
     var conf = {};
     conf.dataFetcherVerksamhet = "getCompareDiagnosisVerksamhet";
-    //conf.dataFetcherVerksamhet = "getSjukfallPerLakarbefattningVerksamhet";
     conf.exportTableUrl = "api/getCompareDiagnosisStatistics/csv";
     conf.exportTableUrlVerksamhet = function (verksamhetId) {
         return "api/verksamhet/" + verksamhetId + "/getCompareDiagnosisStatistics/csv";
