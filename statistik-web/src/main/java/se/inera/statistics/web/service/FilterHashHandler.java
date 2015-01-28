@@ -20,10 +20,6 @@ package se.inera.statistics.web.service;
 
 import org.apache.commons.codec.digest.DigestUtils;
 
-import java.io.UnsupportedEncodingException;
-import java.nio.charset.Charset;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.Map;
 
