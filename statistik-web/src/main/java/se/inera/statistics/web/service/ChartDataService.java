@@ -502,6 +502,7 @@ public class ChartDataService {
 
     @POST
     @Path("filter")
+    @Produces({ MediaType.TEXT_PLAIN })
     public String getFilterHash(String filterData) {
         LOG.info("Calling post FilterHash: " + filterData);
         return filterHashHandler.getHash(filterData);

@@ -9,6 +9,7 @@ import se.inera.testsupport.Intyg
 import se.inera.testsupport.Personal
 
 import static groovyx.net.http.ContentType.JSON
+import static groovyx.net.http.ContentType.TEXT
 
 class ReportsUtil {
 
@@ -232,9 +233,9 @@ class ReportsUtil {
         def filterData = new FilterData(diagnoser, enheter, verksamhetstyper)
         def filterJsonString = new JsonBuilder(filterData).toString()
         println("Filter to filterhash: " + filterJsonString)
-        def response = statistik.post(path: "/api/filter", body: filterJsonString, requestContentType: JSON)
+        def response = statistik.post(path: "/api/filter", body: filterJsonString, requestContentType: JSON, contentType: TEXT)
         assert response.status == 200
-        return response.data;
+        return response.data.getText();
     }
 
 }
