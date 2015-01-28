@@ -18,31 +18,37 @@
  */
 package se.inera.statistics.web.service;
 
+import com.google.common.base.Optional;
 import org.apache.commons.codec.digest.DigestUtils;
 
-import java.util.HashMap;
-import java.util.Map;
+import org.springframework.beans.factory.annotation.Autowired;
+import se.inera.statistics.service.userselection.UserSelection;
+import se.inera.statistics.service.userselection.UserSelectionManager;
 
 public class FilterHashHandler {
 
-    //TODO This is just a simple "mock". To be used until the real handler is implemented.
-
-    private static Map<String, String> filterHashes = new HashMap<>(); //<hash, filterData>
+    @Autowired
+    private UserSelectionManager userSelectionManager;
 
     synchronized String getHash(String filterData) {
         try {
-            final String s = DigestUtils.md5Hex(filterData);
-            if (!filterHashes.containsKey(s)) {
-                filterHashes.put(s, filterData);
+            final String hash = DigestUtils.md5Hex(filterData);
+            final UserSelection userSelection = userSelectionManager.find(hash);
+            if (userSelection == null) {
+                userSelectionManager.persist(hash, filterData);
             }
-            return s;
+            return hash;
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
 
-    String getFilterData(String hash) {
-        return filterHashes.get(hash);
+    Optional<String> getFilterData(String hash) {
+        final UserSelection userSelection = userSelectionManager.find(hash);
+        if (userSelection == null) {
+            return Optional.absent();
+        }
+        return Optional.of(userSelection.getValue());
     }
 
 }

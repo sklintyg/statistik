@@ -19,6 +19,7 @@
 package se.inera.statistics.web.service;
 
 import com.google.common.base.Function;
+import com.google.common.base.Optional;
 import com.google.common.collect.Lists;
 import org.joda.time.LocalDateTime;
 import org.slf4j.Logger;
@@ -510,9 +511,13 @@ public class ChartDataService {
 
     @GET
     @Path("filter/{filterHash}")
-    public String getFilterData(@PathParam("filterHash") String filterHash) {
+    public Response getFilterData(@PathParam("filterHash") String filterHash) {
         LOG.info("Calling get FilterData: " + filterHash);
-        return filterHashHandler.getFilterData(filterHash);
+        final Optional<String> filterData = filterHashHandler.getFilterData(filterHash);
+        if (filterData.isPresent()) {
+            return Response.ok(filterData.get()).build();
+        }
+        return Response.status(Response.Status.NOT_FOUND).build();
     }
 
 }

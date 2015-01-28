@@ -20,6 +20,7 @@ package se.inera.statistics.web.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Function;
+import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
 import com.google.common.base.Splitter;
@@ -724,12 +725,15 @@ public class ProtectedChartDataService {
     }
 
     private FilterData getFilterFromHash(String filterHash) {
-        final String filterDataString = filterHashHandler.getFilterData(filterHash);
+        final Optional<String> filterData = filterHashHandler.getFilterData(filterHash);
+        if (!filterData.isPresent()) {
+            throw new RuntimeException("Could not find filter with given hash");
+        }
         final ObjectMapper mapper = new ObjectMapper();
         try {
-            return mapper.readValue(filterDataString, FilterData.class);
+            return mapper.readValue(filterData.get(), FilterData.class);
         } catch (IOException e) {
-            LOG.error("Failed to get filter data from hash: " + filterHash + ". Data: " + filterDataString, e);
+            LOG.error("Failed to get filter data from hash: " + filterHash + ". Data: " + filterData.get(), e);
             throw new RuntimeException("Filter data failed");
         }
     }
