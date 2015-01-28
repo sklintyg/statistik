@@ -18,6 +18,12 @@
  */
 package se.inera.statistics.web.service;
 
+import org.apache.commons.codec.digest.DigestUtils;
+
+import java.io.UnsupportedEncodingException;
+import java.nio.charset.Charset;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -28,9 +34,15 @@ public class FilterHashHandler {
     private static Map<String, String> filterHashes = new HashMap<>(); //<hash, filterData>
 
     synchronized String getHash(String filterData) {
-        final String hashValue = String.valueOf(filterHashes.size());
-        filterHashes.put(hashValue, filterData);
-        return hashValue;
+        try {
+            final String s = DigestUtils.md5Hex(filterData);
+            if (!filterHashes.containsKey(s)) {
+                filterHashes.put(s, filterData);
+            }
+            return s;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     String getFilterData(String hash) {
