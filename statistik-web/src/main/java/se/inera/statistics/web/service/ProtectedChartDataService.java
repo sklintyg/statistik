@@ -55,6 +55,7 @@ import se.inera.statistics.service.warehouse.query.RangeNotFoundException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -126,7 +127,7 @@ public class ProtectedChartDataService {
      * @param verksamhetId verksamhetId
      * @return data
      */
-    @POST
+    @GET
     @Path("{verksamhetId}/getNumberOfCasesPerMonth/csv")
     @Produces({ TEXT_UTF_8 })
     @Consumes({ MediaType.APPLICATION_JSON })
@@ -220,7 +221,7 @@ public class ProtectedChartDataService {
      * @param verksamhetId verksamhetId
      * @return data
      */
-    @POST
+    @GET
     @Path("{verksamhetId}/getDiagnoskapitelstatistik/csv")
     @Produces({ TEXT_UTF_8 })
     @Consumes({ MediaType.APPLICATION_JSON })
@@ -270,7 +271,7 @@ public class ProtectedChartDataService {
      * @param verksamhetId verksamhetId
      * @return data
      */
-    @POST
+    @GET
     @Path("{verksamhetId}/getDiagnosavsnittstatistik/{groupId}/csv")
     @Produces({ TEXT_UTF_8 })
     @Consumes({ MediaType.APPLICATION_JSON })
@@ -358,7 +359,7 @@ public class ProtectedChartDataService {
      * @param verksamhetId verksamhetId
      * @return data
      */
-    @POST
+    @GET
     @Path("{verksamhetId}/getAgeGroupsStatistics/csv")
     @Produces({ TEXT_UTF_8 })
     @Consumes({ MediaType.APPLICATION_JSON })
@@ -400,7 +401,7 @@ public class ProtectedChartDataService {
      * @param verksamhetId verksamhetId
      * @return data
      */
-    @POST
+    @GET
     @Path("{verksamhetId}/getCasesPerDoctorAgeAndGenderStatistics/csv")
     @Produces({ TEXT_UTF_8 })
     @Consumes({ MediaType.APPLICATION_JSON })
@@ -442,7 +443,7 @@ public class ProtectedChartDataService {
      * @param verksamhetId verksamhetId
      * @return data
      */
-    @POST
+    @GET
     @Path("{verksamhetId}/getNumberOfCasesPerLakarbefattning/csv")
     @Produces({ TEXT_UTF_8 })
     @Consumes({ MediaType.APPLICATION_JSON })
@@ -487,7 +488,7 @@ public class ProtectedChartDataService {
      * @param verksamhetId verksamhetId
      * @return data
      */
-    @POST
+    @GET
     @Path("{verksamhetId}/getAgeGroupsCurrentStatistics/csv")
     @Produces({ TEXT_UTF_8 })
     @Consumes({ MediaType.APPLICATION_JSON })
@@ -528,7 +529,7 @@ public class ProtectedChartDataService {
      * @param verksamhetId verksamhetId
      * @return data
      */
-    @POST
+    @GET
     @Path("{verksamhetId}/getDegreeOfSickLeaveStatistics/csv")
     @Produces({ TEXT_UTF_8 })
     @Consumes({ MediaType.APPLICATION_JSON })
@@ -570,7 +571,7 @@ public class ProtectedChartDataService {
      * @param verksamhetId verksamhetId
      * @return data
      */
-    @POST
+    @GET
     @Path("{verksamhetId}/getSickLeaveLengthData/csv")
     @Produces({ TEXT_UTF_8 })
     @Consumes({ MediaType.APPLICATION_JSON })
@@ -613,7 +614,7 @@ public class ProtectedChartDataService {
      * @param verksamhetId verksamhetId
      * @return data
      */
-    @POST
+    @GET
     @Path("{verksamhetId}/getSickLeaveLengthCurrentData/csv")
     @Produces({ TEXT_UTF_8 })
     @Consumes({ MediaType.APPLICATION_JSON })
@@ -654,7 +655,7 @@ public class ProtectedChartDataService {
      * @param verksamhetId verksamhetId
      * @return data
      */
-    @POST
+    @GET
     @Path("{verksamhetId}/getLongSickLeavesData/csv")
     @Produces({ TEXT_UTF_8 })
     @Consumes({ MediaType.APPLICATION_JSON })
