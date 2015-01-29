@@ -450,7 +450,6 @@
                                     </div>
                                     <tree-multi-selector class="col-xs-12 col-sm-12 col-md-12 col-lg-12"
                                             menu-options="icd10" done-clicked="businessFilter.updateDiagnoses"
-                                            data-ng-show="showDiagnosFilter"
                                             text-data="diagnosisFilterSelectorData">
                                     </tree-multi-selector>
                                 </div>

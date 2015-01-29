@@ -48,9 +48,6 @@ angular.module('StatisticsApp').controller('pageCtrl', [ '$scope', '$rootScope',
                     $scope.businessId = $cookies.verksamhetId;
                 }
 
-                var diagnosExclusionPattern = /.*(oversikt|diagnosgrupp|diagnosavsnitt|jamforDiagnoser).*/;
-                $scope.showDiagnosFilter = !diagnosExclusionPattern.test(next.$$route.originalPath);
-
                 statisticsData.getLoginInfo(function (loginInfo) {
                     businessFilter.setup(loginInfo.businesses, $location.$$search.filter);
                     var v = self.getSelectedVerksamhet($scope.businessId, loginInfo.businesses);
