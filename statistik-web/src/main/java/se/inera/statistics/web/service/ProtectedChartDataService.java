@@ -744,7 +744,7 @@ public class ProtectedChartDataService {
             @Override
             public boolean apply(Fact fact) {
                 if (diagnosIds == null || diagnosIds.isEmpty()) {
-                    return true;
+                    return false;
                 }
                 String diagnosKapitelString = String.valueOf(fact.getDiagnoskapitel());
                 if (diagnosIds.contains(diagnosKapitelString)) {

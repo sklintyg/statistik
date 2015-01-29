@@ -15,7 +15,7 @@
 
 | Sjukfall i rapporten sjukfall totalt |
 |inloggad som | filter enheter | filter verksamhetstyper | filter kapitel          | filter avsnitt | filter kategorier | år   | månad | män? | kvinnor? |
-| user1       | enhet1         | 10                      |                         |                |                   | 2013 | feb   | 2    | 2        |
+| user1       |                |                         |                         |                |                   | 2013 | feb   | 2    | 2        |
 | user1       | enhet1         | 10                      | F00-F99                 |                |                   | 2013 | feb   | 1    | 1        |
 | user1       | enhet1         | 10                      | F00-F99,A00-B99         |                |                   | 2013 | feb   | 1    | 2        |
 | user1       | enhet1         | 10                      | F00-F99,A00-B99,J00-J99 |                |                   | 2013 | feb   | 2    | 2        |
