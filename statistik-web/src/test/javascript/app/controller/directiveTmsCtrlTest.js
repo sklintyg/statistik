@@ -1,14 +1,70 @@
 describe('Controller: directiveTmsCtrl', function() {
     beforeEach(module('StatisticsApp'));
 
+    beforeEach(module(function ($provide) {
+        var mockStatistics = {
+            getIcd10Structure: function () { }
+        };
+        $provide.value('statisticsData', mockStatistics);
+    }));
+
     var ctrl;
     var scope;
 
-    beforeEach(inject(function($controller) {
+    beforeEach(inject(function($controller, treeMultiSelectUtil) {
         scope = {};
-        ctrl = $controller('directiveTmsCtrl', {$scope: scope});
+        ctrl = $controller('directiveTmsCtrl', {$scope: scope, treeMultiSelectUtil: treeMultiSelectUtil});
     }));
-    
+
+    var diagnoses;
+
+    beforeEach(function () {
+        A00 = {id: "A00", name: "Kolera", numericalId: 21};
+        A01 = {id: "A01", name: "Tyfoidfeber och paratyfoidfeber", numericalId: 22};
+        B07 = {id: "B07", name: "Virusvårtor", numericalId: 23};
+        D50 = {id: "D50", name: "Järnbristanemi", numericalId: 24};
+        D70 = {id: "D70", name: "Agranulocytos", numericalId: 25};
+
+        A00A09 = {
+            id: "A00-A09",
+            name: "Infektionssjukdomar utgående från mag-tarmkanalen",
+            subItems: [A00, A01],
+            numericalId: 11
+        };
+        B00B09 = {
+            id: "B00-B09",
+            name: "Virussjukdomar med hudutslag och slemhinneutslag",
+            subItems: [B07],
+            numericalId: 12
+        };
+        D50D53 = {
+            id: "D50-D53",
+            name: "Nutritionsanemier",
+            subItems: [D50],
+            numericalId: 3};
+        D70D77 = {
+            id: "D70-D77",
+            name: "Andra sjukdomar i blod och blodbildande organ",
+            subItems: [D70],
+            numericalId: 14
+        };
+
+        A00B99 = {
+            id: "A00-B99",
+            name: "Vissa infektionssjukdomar och parasitsjukdomar",
+            subItems: [A00A09, B00B09],
+            numericalId: 1
+        };
+        D50D89 = {
+            id: "D50-D89",
+            name: "Sjukdomar i blod och blodbildande organ samt vissa rubbningar i immunsystemet",
+            subItems: [D50D53, D70D77],
+            numericalId: 2
+        };
+
+        diagnoses = [A00B99, D50D89]
+    });
+
     it("parents should be intermediate when some child is selected", inject(function () {
         //Given
         var sub121 = {name: "sub121"};
@@ -353,11 +409,9 @@ describe('Controller: directiveTmsCtrl', function() {
         businessFilter.updateDiagnoses();
 
         //Then
-        var diagnoser = businessFilter.getSelectedDiagnoses(true);
-        expect(diagnoser.kategorier.length).toBe(0);
-        expect(diagnoser.avsnitt.length).toBe(0);
-        expect(diagnoser.kapitel.length).toBe(1);
-        expect(diagnoser.kapitel).toContain(D50D89.numericalId);
+        var diagnoser = businessFilter.selectedDiagnoses;
+        expect(diagnoser.length).toBe(1);
+        expect(diagnoser).toContain(D50D89.numericalId);
     }));
 
     it("deselect all kategorier below unselected avsnitt", inject(function (businessFilter) {
@@ -371,12 +425,10 @@ describe('Controller: directiveTmsCtrl', function() {
         businessFilter.updateDiagnoses();
 
         //Then
-        var diagnoser = businessFilter.getSelectedDiagnoses(true);
-        expect(diagnoser.kategorier.length).toBe(0);
-        expect(diagnoser.avsnitt.length).toBe(1);
-        expect(diagnoser.kapitel.length).toBe(1);
-        expect(diagnoser.avsnitt).toContain(B00B09.numericalId);
-        expect(diagnoser.kapitel).toContain(D50D89.numericalId);
+        var diagnoser = businessFilter.selectedDiagnoses;
+        expect(diagnoser.length).toBe(2);
+        expect(diagnoser).toContain(B00B09.numericalId);
+        expect(diagnoser).toContain(D50D89.numericalId);
     }));
 
     it("report selected kategoris", inject(function (businessFilter) {
@@ -390,13 +442,11 @@ describe('Controller: directiveTmsCtrl', function() {
         businessFilter.updateDiagnoses();
 
         //Then
-        var diagnoser = businessFilter.getSelectedDiagnoses(true);
-        expect(diagnoser.kategorier.length).toBe(1);
-        expect(diagnoser.avsnitt.length).toBe(1);
-        expect(diagnoser.kapitel.length).toBe(1);
-        expect(diagnoser.kategorier).toContain(A00.numericalId);
-        expect(diagnoser.avsnitt).toContain(B00B09.numericalId);
-        expect(diagnoser.kapitel).toContain(D50D89.numericalId);
+        var diagnoser = businessFilter.selectedDiagnoses;
+        expect(diagnoser.length).toBe(3);
+        expect(diagnoser).toContain(A00.numericalId);
+        expect(diagnoser).toContain(B00B09.numericalId);
+        expect(diagnoser).toContain(D50D89.numericalId);
     }));
 
 });
