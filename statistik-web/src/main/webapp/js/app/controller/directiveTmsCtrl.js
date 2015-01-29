@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('StatisticsApp').controller('directiveTmsCtrl', [ '$scope', 'treeMultiSelectUtil', function ($scope, treeMultiSelectUtil) {
+angular.module('StatisticsApp').controller('directiveTmsCtrl', [ '$scope', 'treeMultiSelectUtil', '$timeout', function ($scope, treeMultiSelectUtil, $timeout) {
     $scope.clickedDone = function(){
         $scope.doneClicked();
     };
@@ -59,6 +59,7 @@ angular.module('StatisticsApp').controller('directiveTmsCtrl', [ '$scope', 'tree
         } else {
             $scope.selectAll(item);
         }
+        $scope.updateCounters();
         $scope.updateState($scope.menuOptions);
     };
 
@@ -93,15 +94,21 @@ angular.module('StatisticsApp').controller('directiveTmsCtrl', [ '$scope', 'tree
         if (visibleItems.length === 1) {
             var item = visibleItems[0];
             item.hideChildren = false;
-            $scope.updateState(item);
             expandIfOnlyOneVisible(item.subs);
         }
     }
 
+    var currentFiltering = null;
     $scope.filterMenuItems = function (items, text) {
-        _.each(items, function(item) {$scope.updateItemHiddenState(item, getIsMatchingFilterFunction(text))});
-        _.each(items, $scope.updateState);
-        expandIfOnlyOneVisible(items);
+        if (currentFiltering != null) {
+            $timeout.cancel(currentFiltering);
+        }
+        currentFiltering = $timeout(function() {
+            _.each(items, function(item) {$scope.updateItemHiddenState(item, getIsMatchingFilterFunction(text))});
+            expandIfOnlyOneVisible(items);
+            $scope.$evalAsync();
+            currentFiltering = null;
+        }, 0, false);
     };
 
     function getIsMatchingFilterFunction(searchText) {
@@ -132,7 +139,6 @@ angular.module('StatisticsApp').controller('directiveTmsCtrl', [ '$scope', 'tree
 
     $scope.updateState = function (item) {
         treeMultiSelectUtil.updateSelectionState(item);
-        $scope.updateCounters();
     };
 
     $scope.openDialogClicked = function(){
