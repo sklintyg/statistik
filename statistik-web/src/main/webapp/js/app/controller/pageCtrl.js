@@ -51,7 +51,7 @@ angular.module('StatisticsApp').controller('pageCtrl', [ '$scope', '$rootScope',
                 statisticsData.getLoginInfo(function (loginInfo) {
                     businessFilter.setup(loginInfo.businesses, $location.$$search.filter);
                     var v = self.getSelectedVerksamhet($scope.businessId, loginInfo.businesses);
-                    $scope.verksamhetName = loginInfo.businesses && loginInfo.businesses.length == 1 ? v.name : v.vardgivarName;
+                    $scope.verksamhetName = loginInfo.businesses && loginInfo.businesses.length == 1 ? v.name : (loginInfo.processledare ? v.vardgivarName : "");
                     $scope.userName = loginInfo.name;
                     $scope.userNameWithAccess = loginInfo.name;
 
