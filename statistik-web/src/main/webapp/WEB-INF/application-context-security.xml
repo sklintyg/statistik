@@ -79,7 +79,7 @@
     <!-- =============================================================== -->
     <!-- Test and QA profile support both Säkerhetstjänst and Fake login -->
     <!-- =============================================================== -->
-    <beans profile="security-saml">
+    <beans profile="security-both">
         <security:http entry-point-ref="http403ForbiddenEntryPoint" pattern="/api/verksamhet/**">
             <security:intercept-url pattern="/**" access="IS_AUTHENTICATED_FULLY"/>
             <security:custom-filter before="FIRST" ref="metadataGeneratorFilter"/>
@@ -117,7 +117,7 @@
         </security:authentication-manager>
     </beans>
 
-    <beans profile="security-fake">
+    <beans profile="security-fake,security-both">
         <bean id="fakeAuthFilter" class="se.inera.auth.FakeAuthenticationFilter">
             <property name="authenticationManager" ref="authenticationManager"/>
             <property name="authenticationSuccessHandler" ref="fakeSuccessHandler"/>
@@ -133,7 +133,7 @@
         </bean>
     </beans>
 
-    <beans profile="security-saml">
+    <beans profile="security-saml,security-both">
         <bean id="samlFilter" class="org.springframework.security.web.FilterChainProxy">
             <security:filter-chain-map request-matcher="ant">
                 <security:filter-chain pattern="/saml/login/**" filters="samlEntryPoint"/>
