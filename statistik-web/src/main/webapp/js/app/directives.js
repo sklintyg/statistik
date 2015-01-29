@@ -141,8 +141,8 @@ angular.module('StatisticsApp').directive("filterButton", function () {
     return {
     	restrict: "E",
 	    template:
-	        '<button id="show-hide-filter-btn" type="button" class="btn btn-small pull-right" data-toggle="collapse" data-target="#statistics-filter-container" ng-click="filter.open = !filter.open">' +
-	        '<i class="glyphicon" ng-class="{glyphiconDownSign: !filter.open, glyphiconUpSign: filter.open}"></i> {{filter.open ? "Dölj filter" : "Visa filter"}}' +
+	        '<button id="show-hide-filter-btn" type="button" class="btn btn-small pull-right" ng-class="{filterbtnactivefilter: filterIsActive}" data-toggle="collapse" data-target="#statistics-filter-container" ng-click="filter.open = !filter.open">' +
+	        '<i class="glyphicon" ng-class="{glyphiconDownSign: !filter.open, glyphiconUpSign: filter.open}"></i> {{filter.open ? "Dölj filter" : "Visa filter"}}<span ng-show="filterIsActive"><br/>Val gjorda</span>' +
 	        '</button>'
     };
 });

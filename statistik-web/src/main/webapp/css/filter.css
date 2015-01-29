@@ -39,6 +39,11 @@
 	background-color: #428bca;
 	border-color: #357ebd;
 }
+.filterbtnactivefilter {
+	background-color: #EA8025 !important;
+}
+.filterbtnactivefilter:hover { background-color: rgba(234, 128, 37, 0.80) !important;}
+
 #show-hide-filter-btn { 
 	padding: 5px 20px 5px 15px;
 	margin-right: 50%;
