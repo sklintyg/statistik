@@ -79,7 +79,7 @@ public class LoginServiceUtil {
     }
 
     private List<Verksamhet> getVerksamhetsList(User realUser, final List<Enhet> enhetsList) {
-        if (realUser.isProcessledare()) {
+        if (realUser.isProcessledare() && enhetsList != null && !enhetsList.isEmpty()) {
             return transform(enhetsList, new Function<Enhet, Verksamhet>() {
                 @Override
                 public Verksamhet apply(Enhet enhet) {
