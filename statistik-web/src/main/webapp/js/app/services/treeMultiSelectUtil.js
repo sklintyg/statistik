@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('StatisticsApp').factory('treeMultiSelectUtil', ['statisticsData', '_',
-    function (statisticsData, _) {
+angular.module('StatisticsApp').factory('treeMultiSelectUtil', ['_',
+    function (_) {
 
         var externalApi = {};
 
