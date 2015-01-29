@@ -23,7 +23,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "UserSelection")
+@Table(name = "userselection")
 public class UserSelection {
 
     @Id
