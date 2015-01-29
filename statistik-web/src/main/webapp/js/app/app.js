@@ -217,6 +217,7 @@ app.run([ '$rootScope', '$route', 'messageService', function ($rootScope, $route
             $rootScope.pageName = $route.current.$$route.title;
             $rootScope.page_title = $route.current.$$route.title + ' | Statistiktjänsten';
             $rootScope.queryString = current.params.filter ? "?filter=" + current.params.filter : "";
+            $rootScope.verksamhetViewShowing = current.$$route.originalPath.indexOf("/verksamhet") == 0
         }
     });
 } ]);
