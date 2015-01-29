@@ -10,11 +10,9 @@ angular.module('StatisticsApp').factory('treeMultiSelectUtil', ['_',
                 var someSelected = false;
                 var allSelected = true;
                 _.each(item.subs, function (sub) {
-                    if (!sub.hide) {
-                        externalApi.updateSelectionState(sub);
-                        someSelected = someSelected || sub.someSelected || sub.allSelected;
-                        allSelected = allSelected && sub.allSelected;
-                    }
+                    externalApi.updateSelectionState(sub);
+                    someSelected = someSelected || sub.someSelected || sub.allSelected;
+                    allSelected = allSelected && sub.allSelected;
                 });
                 if (allSelected) {
                     item.allSelected = true;

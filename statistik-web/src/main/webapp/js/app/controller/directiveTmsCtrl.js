@@ -67,26 +67,22 @@ angular.module('StatisticsApp').controller('directiveTmsCtrl', [ '$scope', 'tree
     };
 
     $scope.deselectAll = function (item) {
-        if (!item.hide) {
-            item.allSelected = false;
-            item.someSelected = false;
-            if (item.subs) {
-                _.each(item.subs, function (sub) {
-                    $scope.deselectAll(sub);
-                });
-            }
+        item.allSelected = false;
+        item.someSelected = false;
+        if (item.subs) {
+            _.each(item.subs, function (sub) {
+                $scope.deselectAll(sub);
+            });
         }
     };
 
-    $scope.selectAll = function (item, selectHidden) {
-        if (!item.hide || selectHidden) {
-            item.allSelected = true;
-            item.someSelected = false;
-            if (item.subs) {
-                _.each(item.subs, function (sub) {
-                    $scope.selectAll(sub, selectHidden);
-                });
-            }
+    $scope.selectAll = function (item) {
+        item.allSelected = true;
+        item.someSelected = false;
+        if (item.subs) {
+            _.each(item.subs, function (sub) {
+                $scope.selectAll(sub);
+            });
         }
     };
 
