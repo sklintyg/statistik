@@ -103,28 +103,29 @@ angular.module('StatisticsApp').controller('directiveTmsCtrl', [ '$scope', 'tree
     }
 
     $scope.filterMenuItems = function (items, text) {
-        var searchText = text.toLowerCase();
-        var mappingFunc = function (item) {
-            if (item.subs) {
-                _.each(item.subs, mappingFunc);
-            }
-            item.hide = $scope.isItemHidden(item, searchText);
-        };
-        _.each(items, mappingFunc);
+        _.each(items, function(item) {$scope.updateItemHiddenState(item, getIsMatchingFilterFunction(text))});
         _.each(items, $scope.updateState);
         expandIfOnlyOneVisible(items);
     };
 
-    $scope.isItemHidden = function (item, searchText) {
-        if (item.name.toLowerCase().indexOf(searchText) >= 0) {
-            return false;
+    function getIsMatchingFilterFunction(searchText) {
+        var text = searchText.toLowerCase();
+        return function isMatchingFilter(item) {
+            return item.name.toLowerCase().indexOf(text) >= 0;
         }
-        if (!item.subs) {
-            return true;
+    }
+
+    $scope.updateItemHiddenState = function (item, shouldItemBeVisibleFunction) {
+        var childVisibilityFunction = shouldItemBeVisibleFunction;
+        var hide = true;
+        if (shouldItemBeVisibleFunction(item)) {
+            hide = false;
+            childVisibilityFunction = function () { return true; }
         }
-        return _.all(item.subs, function (sub) {
-            return $scope.isItemHidden(sub, searchText);
-        });
+        item.hide = !!_.reduce(item.subs, function (mem, sub) {
+            return $scope.updateItemHiddenState(sub, childVisibilityFunction) && mem;
+        }, hide);
+        return item.hide;
     };
 
     $scope.updateCounters = function() {

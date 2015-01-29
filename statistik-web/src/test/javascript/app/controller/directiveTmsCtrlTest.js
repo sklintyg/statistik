@@ -230,6 +230,41 @@ describe('Controller: directiveTmsCtrl', function() {
         expect(menuItems[1].hide).toBe(true);
     }));
 
+    it("child items from matching node should be visible", inject(function () {
+        //Given
+        var sub121 = {name: "sub121", hide: true};
+        var sub122 = {name: "sub122", hide: true};
+        var sub12 = {name: "sub12", hide: true, subs: [sub121, sub122]};
+        var subs1 = [
+            {name: "sub11", hide: true},
+            sub12,
+            {name: "sub13", hide: true}
+        ];
+        var sub22 = {name: "sub5", hide: true};
+        var menuItems = [
+            {name: "Enhet1", hide: true, subs: subs1},
+            {
+                name: "Enhet2", hide: true, subs: [
+                {name: "sub4", hide: true},
+                sub22,
+                {name: "sub6", hide: true}
+            ]
+            }
+        ];
+
+        //When
+        scope.filterMenuItems(menuItems, "Enhet1");
+
+        //Then
+        expect(menuItems[0].hide).toBe(false);
+        expect(subs1[1].hide).toBe(false);
+        expect(sub12.hide).toBe(false);
+        expect(sub122.hide).toBe(false);
+        expect(menuItems[1].hide).toBe(true);
+        expect(sub22.hide).toBe(true);
+    }));
+
+
     it("node should be fully expanded if only one match is found", inject(function () {
         //Given
         var sub121 = {name: "sub121"};
