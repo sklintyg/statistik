@@ -1,8 +1,5 @@
 !contents -R2 -g -p -f -h
 
-IGNORED: Waiting for STATISTIK-771 to be solved.
-
-
 Två intyg för samma patient har uppehåll med 2 dagar. Intygen är utfärdade på olika vårdenheter. Inlogg som vårdgivare (där VE inte ingår). Det blir 0 sjukfall
 
 !3 Givet att:
