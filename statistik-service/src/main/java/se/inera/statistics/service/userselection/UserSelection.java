@@ -27,19 +27,19 @@ import javax.persistence.Table;
 public class UserSelection {
 
     @Id
-    private String key;
+    private String selectionkey;
     private String value;
 
     public UserSelection(String key, String value) {
-        this.key = key;
+        this.selectionkey = key;
         this.value = value;
     }
 
     UserSelection() {
     }
 
-    public String getKey() {
-        return key;
+    public String getSelectionkey() {
+        return selectionkey;
     }
 
     public String getValue() {
