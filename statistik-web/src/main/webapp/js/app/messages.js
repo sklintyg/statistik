@@ -104,7 +104,7 @@ var stMessages = {
         'overview.widget.fordelning-sjukskrivningslangd.overgar-90-3-manader': 'Procentuell förändring av antal sjukfall som är längre än 90 dagar jämfört med föregående tre månader.',
         
         //detail views
-        'lbl.valj-annat-diagnoskapitel': 'Välj annat diagnoskapitel:',
+        'lbl.valj-annat-diagnoskapitel': 'Välj diagnoskapitel:',
         'lbl.valj-annat-diagnosavsnitt': 'Välj diagnosavsnitt',
         'dropdown.val.rapport': 'Spara/Skriv ut',
         'dropdown.val.skrivut-farg': ' Skriv ut i färg',
