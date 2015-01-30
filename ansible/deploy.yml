@@ -3,7 +3,7 @@
 - hosts: all
   sudo: yes
   vars:
-    version: 1.5
+    version: 1.5.3
     config_version: master
 
   roles:
