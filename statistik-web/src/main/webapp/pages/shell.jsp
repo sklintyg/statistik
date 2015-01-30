@@ -73,18 +73,18 @@
 ================================================== -->
 <div class="container-fluid">
 	<div class="row">
-		<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 navbar dontprint">
+		<div class="col-xs-12 navbar dontprint">
 		    <div class="navbar-inner">
 		        <div class="container-fluid">
 		            <div class="row" id="navigation-container">
-		                <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 pull-left" style="width: auto !important;">
+		                <div class="col-xs-12 col-sm-3 pull-left" style="width: auto !important;">
 		                    <div class="headerbox-logo">
 		                        <a href="<c:url value='/'/>">
 		                            <img alt="Till startsidan" src="<c:url value='/img/statistiktjansten-logotype.png'/>"/>
 		                        </a>
 		                    </div>
 		                </div>
-		                <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2 pull-left">
+		                <div class="col-xs-12 col-sm-2 pull-left">
 		                    <span message key="statistics.header.extra-text"/>
 		                </div>
 		                <c:if test="${loginVisible}">
@@ -120,7 +120,7 @@
         <!-- Docs nav
         ================================================== -->
         <div class="row">
-            <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 bs-docs-sidebar dontprint" data-ng-controller="navigationMenuCtrl">
+            <div class="col-xs-12 col-sm-3 bs-docs-sidebar dontprint" data-ng-controller="navigationMenuCtrl">
                 <h1 class="hidden-header"><span message key="statistics.hidden-header.sidans-huvudnavigering"></span></h1>
 				<!-- MOBILE NAVIGATION START -->
 				<nav class="navbar navbar-default hidden-sm hidden-md hidden-lg" role="navigation">
@@ -421,9 +421,9 @@
                 </div>
             </div>
 
-            <div class="col-xs-12 col-sm-9 col-md-9 col-lg-9">
+            <div class="col-xs-12 col-sm-9">
                 <div class="row" ng-show="verksamhetIdParam" data-ng-controller="filterCtrl">
-                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <div class="col-xs-12">
                         <div id="statistics-filter-container" class="collapse dontprint" collapse="!isFilterCollapsed">
                         	<div class="row">
 				                <div class="filter-level" id="first-level-filter">
@@ -479,7 +479,7 @@
                     </div>
                 </div>
 				<div class="row">
-	                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+	                <div class="col-xs-12">
 	                    <%-- data-ng-view that holds dynamic content managed by angular app --%>
 	                    <div id="view" data-ng-view></div>
 	                </div>
