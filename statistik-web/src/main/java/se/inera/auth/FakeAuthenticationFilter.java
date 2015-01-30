@@ -50,7 +50,7 @@ public class FakeAuthenticationFilter extends AbstractAuthenticationProcessingFi
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
         // Hantera mer än en profil
-          if (!profiles.contains("dev") && !profiles.contains("test") && !profiles.contains("qa")) {
+        if (!profiles.contains("security-fake") && !profiles.contains("security-both")) {
             return null;
         }
 
