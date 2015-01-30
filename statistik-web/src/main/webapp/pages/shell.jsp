@@ -427,28 +427,25 @@
                         <div id="statistics-filter-container" class="collapse dontprint" collapse="!isFilterCollapsed">
                         	<div class="row">
 				                <div class="filter-level" id="first-level-filter">
-                                    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-3 clearfix" data-ng-if="businessFilter.numberOfBusinesses() === 'medium' || businessFilter.numberOfBusinesses() === 'large'">
+                                    <div class="col-xs-4 clearfix" data-ng-if="businessFilter.numberOfBusinesses() === 'medium' || businessFilter.numberOfBusinesses() === 'large'">
                                         <label for="select-unit"><span message key="lbl.filter.valj-verksamhetstyper"></span></label><br/>
                                         <select ng-model="businessFilter.verksamhetsTypIds" multiple="multiple"
                                                 ng-options="verksamhet.id as verksamhet.name for verksamhet in businessFilter.verksamhetsTyper" multiselect-dropdown id="select-verksamhet">
                                         </select>
                                     </div>
-                                    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-3 clearfix" data-ng-if="businessFilter.numberOfBusinesses() === 'medium'">
+                                    <div class="col-xs-4 clearfix" data-ng-if="businessFilter.numberOfBusinesses() === 'medium'">
                                         <label for="select-unit"><span message key="lbl.filter.val-av-enheter"></span></label><br/>
                                         <select ng-model="businessFilter.geographyBusinessIds" multiple="multiple"
                                                 ng-options="business.id as business.name for business in businessFilter.businesses" multiselect-dropdown id="select-unit">
                                         </select>
                                     </div>
-                                    <tree-multi-selector class="col-xs-6 col-sm-6 col-md-6 col-lg-3"
+                                    <tree-multi-selector class="col-xs-4 "
                                                          menu-options="businessFilter.geography"
                                                          done-clicked="businessFilter.updateGeography"
                                                          data-ng-if="businessFilter.numberOfBusinesses() === 'large'"
                                                          text-data="geographyFilterSelectorData">
                                     </tree-multi-selector>
-                                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                                        <div class="divider"></div>
-                                    </div>
-                                    <tree-multi-selector class="col-xs-12 col-sm-12 col-md-12 col-lg-12"
+                                    <tree-multi-selector class="col-xs-4"
                                             menu-options="icd10" done-clicked="businessFilter.updateDiagnoses"
                                             text-data="diagnosisFilterSelectorData">
                                     </tree-multi-selector>
@@ -463,7 +460,7 @@
 	                            		<div class="row">
 	                            			<div class="col-xs-12 pull-right">
                                                 <span ng-if="businessFilter.numberOfBusinesses() !== 'small'">
-                                                <span message key="lbl.filter.sum-progress-1"></span>{{ businessFilter.selectedBusinesses.length }}<span message key="lbl.filter.sum-progress-2"></span>{{ businessFilter.businesses.length }} <span message key="lbl.filter.sum-progress-3"></span> 
+                                                <span message key="lbl.filter.sum-progress-1"></span>{{ businessFilter.selectedBusinesses.length }}<span message key="lbl.filter.sum-progress-2"></span>{{ businessFilter.businesses.length }} <span message key="lbl.filter.sum-progress-3"></span>
                                                 <div class="progress">
                                                     <div class="progress-bar" role="progressbar" style="width: {{ 100 * (businessFilter.selectedBusinesses.length / businessFilter.businesses.length) }}%;">
                                                     </div>
