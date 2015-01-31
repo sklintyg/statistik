@@ -121,10 +121,12 @@ var stMessages = {
         'alert.lakarkon-alder.questionmark' : 'Diagrammet visar antalet sjukfall för olika grupper av läkare. Läkarna grupperas utifrån ålder och om de är kvinna eller man. Statistiken visar även antal sjukfall för män respektive kvinnor.',
         'alert.lakare-befattning.information' : 'Uppgift om vilken läkarbefattning som utfärdat ett intyg hämtas från HSA-katalogen. Uppgifterna i HSA är inte kvalitetssäkrade och information kan saknas då det inte är obligatoriskt för vårdenheten att ange befattning. En läkare kan även ha fler befattningar i HSA. Det gör att samma sjukfall kan visas flera gånger i graf och tabell. Om en läkare som sjukskrivit en patient har två eller fler läkarbefattningar visas sjukfallet en gång för varje läkarbefattning.',
         'alert.vardenhet.information' : 'Om ett sjukfall har flera intyg som utfärdats på olika vårdenheter räknas det en gång för respektive vårdenhet. Statistiken visas endast för den som har behörighet att följa upp statistik från dessa vårdenheter.',
+        'help.sickleavelength' : 'Sjukskrivningslängden räknas fram utifrån de tidsperioder som anges i sjukfallets läkarintyg. Oavsett om det är hel- eller deltidssjukskrivning räknas 1 dag alltid som 1 dag i statistiken.',
         	
         //info texts
         'info.lan.information' : 'Uppgift om vilket län ett sjukfall tillhör är hämtat från HSA-katalogen. Uppgifterna i HSA är inte kvalitetssäkrade och information kan saknas då det inte är obligatoriskt för vårdenheten att ange länstillhörighet.',
-        
+        'info.sickleavelength' : 'Om ett sjukfall startat på en annan vårdenhet (inom vårdgivaren) kommer den tiden läggas ihop med tiden som sjukfallet är på din vårdenhet. Däremot kommer inte en fortsättning på ett sjukfall efter att det lämnat din vårdenhet att synas i din statistik.',
+
         //login view
         'login.header': 'Logga in för verksamhetsstatistik',
         'login.for-att-fortsatta': 'För att fortsätta till de inloggade sidorna för verksamhetsstatistik måste du logga in med ditt SITHS-kort.',

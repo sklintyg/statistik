@@ -168,6 +168,8 @@ angular.module('StatisticsApp').nationalSickLeaveLengthConfig = function () {
         return "Antal sjukfall per sjukskrivningslängd" + ControllerCommons.getEnhetCountText(enhetsCount, false) + period;
     };
     conf.chartXAxisTitle = "Sjukskrivningslängd";
+    conf.chartFootnotes = ["info.sickleavelength"];
+    conf.pageHelpText = "help.sickleavelength";
     return conf;
 };
 
