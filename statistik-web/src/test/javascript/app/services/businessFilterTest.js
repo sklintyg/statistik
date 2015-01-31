@@ -74,19 +74,19 @@ describe("Tests for business overview controller", function () {
         expect(verksamheter.length).toBe(3);
         _.each(verksamheter, function (verksamhet) {
             if (verksamhet.id === 1) {
-                expect(verksamhet.name).toBe("v1 (2 enheter)");
+                expect(verksamhet.name).toBe("v1");
                 expect(verksamhet.units.length).toBe(2);
                 expect(_.findWhere(verksamhet.units, {id: 1})).toBeDefined();
                 expect(_.findWhere(verksamhet.units, {id: 2})).toBeDefined();
             }
             if (verksamhet.id === 2) {
-                expect(verksamhet.name).toBe("v2 (1 enhet)");
+                expect(verksamhet.name).toBe("v2");
                 expect(verksamhet.units.length).toBe(1);
                 expect(_.findWhere(verksamhet.units, {id: 1})).toBeDefined();
                 expect(_.findWhere(verksamhet.units, {id: 2})).toBeUndefined();
             }
             if (verksamhet.id === 3) {
-                expect(verksamhet.name).toBe("v3 (1 enhet)");
+                expect(verksamhet.name).toBe("v3");
                 expect(verksamhet.units.length).toBe(1);
                 expect(_.findWhere(verksamhet.units, {id: 1})).toBeUndefined();
                 expect(_.findWhere(verksamhet.units, {id: 2})).toBeDefined();
