@@ -24,6 +24,6 @@
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd"
                    logicalFilePath="liquibase/db.changelog-v24.0_change_user_selection_table.xml">
     <changeSet id="24_change_user_selection_table" author="fredrik.engstrom">
-        <renameColumn tableName="userselection" oldColumnName="key" newColumnName="selectionkey"/>
+        <renameColumn tableName="userselection" oldColumnName="key" newColumnName="selectionkey" columnDataType="varchar(32)"/>
     </changeSet>
 </databaseChangeLog>
