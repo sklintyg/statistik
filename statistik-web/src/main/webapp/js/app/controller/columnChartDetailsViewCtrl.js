@@ -125,7 +125,7 @@ angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl', [ '$sco
                 $scope.diagnosisOptionsTree = {subs: diagnosisTree};
             }, function () { alert("Failed to fetch ICD10 structure tree from server") });
             $scope.diagnosisSelectorData = {
-                titleText:messageService.getProperty("lbl.filter.val-av-diagnoser", null, "", null, true),
+                titleText:messageService.getProperty("comparediagnoses.lbl.val-av-diagnoser", null, "", null, true),
                 buttonLabelText:messageService.getProperty("lbl.filter.val-av-diagnoser-knapp", null, "", null, true),
                 firstLevelLabelText:messageService.getProperty("lbl.filter.modal.kapitel", null, "", null, true),
                 secondLevelLabelText:messageService.getProperty("lbl.filter.modal.avsnitt", null, "", null, true),
