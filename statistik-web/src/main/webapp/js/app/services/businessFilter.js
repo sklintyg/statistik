@@ -184,7 +184,7 @@ angular.module('StatisticsApp').factory('businessFilter', ['statisticsData', '_'
                     if (!previousType) {
                         verksamhetsTypSet[verksamhetsTyp.id] = {
                             id: verksamhetsTyp.id,
-                            name: verksamhetsTyp.name.concat(" (1 enhet)"),
+                            name: verksamhetsTyp.name,
                             units: [business]
                         };
                     } else {
@@ -192,7 +192,7 @@ angular.module('StatisticsApp').factory('businessFilter', ['statisticsData', '_'
                         newUnitList.push(business);
                         verksamhetsTypSet[verksamhetsTyp.id] = {
                             id: verksamhetsTyp.id,
-                            name: verksamhetsTyp.name.concat(" (", newUnitList.length.toString(), " enheter)"),
+                            name: verksamhetsTyp.name,
                             units: newUnitList
                         };
                     }
