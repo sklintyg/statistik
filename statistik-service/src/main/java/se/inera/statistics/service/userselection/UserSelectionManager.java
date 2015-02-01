@@ -34,11 +34,6 @@ public class UserSelectionManager {
     private EntityManager manager;
 
     @Transactional
-    public void persist(UserSelection userSelection) {
-        manager.persist(userSelection);
-    }
-
-    @Transactional
     public void persist(String key, String value) {
         final UserSelection userSelection = new UserSelection(key, value);
         manager.persist(userSelection);
@@ -49,4 +44,10 @@ public class UserSelectionManager {
         return manager.find(UserSelection.class, key);
     }
 
+    @Transactional
+    public void register(String key, String value) {
+        if (manager.find(UserSelection.class, key) == null) {
+            manager.persist(new UserSelection(key, value));
+        }
+    }
 }

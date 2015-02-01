@@ -30,13 +30,10 @@ public class FilterHashHandler {
     @Autowired
     private UserSelectionManager userSelectionManager;
 
-    synchronized String getHash(String filterData) {
+    String getHash(String filterData) {
         try {
             final String hash = DigestUtils.md5Hex(filterData);
-            final UserSelection userSelection = userSelectionManager.find(hash);
-            if (userSelection == null) {
-                userSelectionManager.persist(hash, filterData);
-            }
+            userSelectionManager.register(hash, filterData);
             return hash;
         } catch (Exception e) {
             throw new RuntimeException(e);
