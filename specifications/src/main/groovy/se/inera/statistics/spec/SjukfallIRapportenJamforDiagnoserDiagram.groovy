@@ -21,7 +21,9 @@ class SjukfallIRapportenJamforDiagnoserDiagram extends SimpleDetailsReport {
 
     void setValdaDiagnoskategorier(String kategoriString) {
         if (kategoriString != null && !kategoriString.trim().isEmpty()) {
-            this.valdaDiagnoskategorier = kategoriString.split(",")*.trim()
+            this.valdaDiagnoskategorier = kategoriString.split(",")*.trim().collect{
+                String.valueOf(Icd10.icd10ToInt(it, Icd10RangeType.KATEGORI))
+            }
         }
     }
 

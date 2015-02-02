@@ -84,7 +84,7 @@ angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl', [ '$sco
                 return null;
             }
             return _.map(businessFilter.getSelectedLeaves($scope.diagnosisOptionsTree), function(it){
-                return it.id;
+                return it.numericalId;
             });
         }
 
