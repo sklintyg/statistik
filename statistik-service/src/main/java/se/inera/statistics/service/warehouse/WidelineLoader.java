@@ -88,8 +88,6 @@ public class WidelineLoader {
     }
 
     private PreparedStatement prepareStatement(Connection connection) throws SQLException {
-        connection.setAutoCommit(false);
-        connection.setReadOnly(true);
         String sql = "select id, correlationid, lkf, enhet, lakarintyg, patientid, startdatum,"
                 + " slutdatum, kon, alder, diagnoskapitel, diagnosavsnitt, diagnoskategori, sjukskrivningsgrad, lakarkon, lakaralder,"
                 + " lakarbefattning, vardgivareid, lakareid from wideline w1 where w1.correlationid not in (select correlationid from wideline where intygtyp = " + EventType.REVOKED.ordinal() + " )";
