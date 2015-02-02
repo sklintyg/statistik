@@ -10,7 +10,6 @@ plugins {
 
 apply plugin: 'war'
 apply plugin: 'org.akhikhl.gretty'
-apply plugin: 'maven'
 
 description = 'Inera Statistics Service - Web Module'
 
@@ -18,7 +17,7 @@ gretty {
     contextPath = '/'
     contextConfigFile = "${projectDir}/src/main/webapp/WEB-INF/jetty-context.xml"
     logbackConfigFile = "${projectDir}/src/main/resources/statistics-logback.xml"
-    jvmArgs = ['-Dspring.profiles.active=dev,embedded', '-Dstatistics.test.max.intyg=500', '-XX:MaxPermSize=256M']
+    jvmArgs = ['-Dspring.profiles.active=dev,embedded,hsa-stub,security-fake,db-resetter', '-Dstatistics.test.max.intyg=500', '-XX:MaxPermSize=256M']
     debugSuspend = false
     scanInterval=1
     managedClassReload=true
@@ -47,31 +46,12 @@ task createVersionPropertyFile(dependsOn: processResources) << {
 
 jar.dependsOn createVersionPropertyFile
 
-configurations {
-    deployerJars
-}
-
-ext.cloudbeesUsername = System.properties['cloudbeesUsername']
-ext.cloudbeesPassword = System.properties['cloudbeesPassword']
-
-uploadArchives {
-    repositories {
-        mavenDeployer {
-            configuration = configurations.deployerJars
-            repository(url: "dav:https://repository-callistasoftware.forge.cloudbees.com/snapshot/") {
-                authentication(userName: cloudbeesUsername, password: cloudbeesPassword)
-            }
-        }
-    }
-}
-
 dependencies {
     compile project(':statistik-service')
 
     compile "org.springframework.security.extensions:spring-security-saml2-core:1.0.0.RC2"
     compile "xml-apis:xml-apis:1.4.01"
     compile "org.springframework:spring-webmvc:$springContextVersion"
-    compile "jstl:jstl:1.2"
     compile "org.apache.commons:commons-lang3:3.2.1"
     compile "org.springframework.security:spring-security-config:${springSecurityVersion}"
     compile "org.springframework.security:spring-security-taglibs:${springSecurityVersion}"
@@ -81,7 +61,5 @@ dependencies {
     gretty "org.apache.activemq:activemq-broker:5.8.0"
     gretty "org.apache.tomcat:tomcat-catalina:7.0.20"
 
-    providedCompile "javax.servlet:servlet-api:2.5"
-
-    deployerJars "org.apache.maven.wagon:wagon-webdav:1.0-beta-2"
+    providedCompile "javax.servlet:javax.servlet-api:3.1.0"
 }

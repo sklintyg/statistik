@@ -1,0 +1,33 @@
+!contents -R2 -g -p -f -h
+
+Testar att friska dagar mellan två intyg inte räknas med i sjukskrivningslängden.
+
+
+!3 Givet att:
+| script | dagens datum | 2013-11-06 |
+
+| script | troskel varde | 1 |
+
+| Enbart foljande intyg finns |
+| personnr | diagnoskod | start | slut | enhet | kommentar |
+| 19790407-1285 | G01 | 2013-02-01 | 2013-02-10 | enhet1 | |
+| 19790407-1285 | G01 | 2013-02-15 | 2013-02-17 | enhet1 | |
+
+
+!3 Då gäller:
+Nationell nivå
+| Sjukfall i rapporten sjukskrivningslangd |
+| sjukskrivningslängd | män? | kvinnor? |
+| Under 15 dagar      | 0    | 1        |
+| 15-30 dagar         | 0    | 0        |
+
+| Sjukfall i rapporten sjukskrivningslangd diagram |
+| sjukskrivningslängd | män? | kvinnor? |
+| Under 15 dagar      | 0    | 1        |
+| 15-30 dagar         | 0    | 0        |
+
+Inloggad nivå
+| Sjukfall i rapporten sjukskrivningslangd |
+| inloggad som | sjukskrivningslängd | män? | kvinnor? |
+| user1        | Under 15 dagar      | 0    | 1        |
+| user1        | 15-30 dagar         | 0    | 0        |

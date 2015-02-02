@@ -50,7 +50,7 @@ public class AldersgruppConverterTest {
         SimpleKonResponse<SimpleKonDataRow> ageGroupsResponse = new SimpleKonResponse<>(ageGroupsRows, 7);
 
         //When
-        SimpleDetailsData result = converter.convert(ageGroupsResponse, new Range(7));
+        SimpleDetailsData result = converter.convert(ageGroupsResponse, new Range(7), Filter.empty());
 
         //Then
         TableData tableDataResult = result.getTableData();

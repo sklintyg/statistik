@@ -57,7 +57,7 @@ public class VerksamhetOverviewConverterTest {
         //When
         VerksamhetOverviewResponse resp = new VerksamhetOverviewResponse(totalCases, overviewKonsfordelningNew, overviewKonsfordelningOld, diagnosisGroups, ageGroups, degreeOfSickLeaveGroups,
                 sickLeaveLengthGroups, longSickLeavesTotal, longSickLeavesAlternation);
-        VerksamhetOverviewData data = new VerksamhetOverviewConverter().convert(resp, new Range());
+        VerksamhetOverviewData data = new VerksamhetOverviewConverter().convert(resp, new Range(), Filter.empty());
 
         //Then
         assertEquals("[]", data.getAgeGroups().toString());
@@ -89,7 +89,7 @@ public class VerksamhetOverviewConverterTest {
         //When
         VerksamhetOverviewResponse resp = new VerksamhetOverviewResponse(totalCases, overviewKonsfordelningNew, overviewKonsfordelningOld, diagnosisGroups, ageGroups, degreeOfSickLeaveGroups,
                 sickLeaveLengthGroups, longSickLeavesTotal, longSickLeavesAlternation);
-        VerksamhetOverviewData data = new VerksamhetOverviewConverter().convert(resp, new Range());
+        VerksamhetOverviewData data = new VerksamhetOverviewConverter().convert(resp, new Range(), Filter.empty());
 
         //Then
         assertEquals(totalCases, data.getCasesPerMonth().getTotalCases());

@@ -79,13 +79,14 @@ public class DiagnosisGroupsConverter {
         return new ArrayList<>(DIAGNOSIS_CHART_GROUPS.keySet());
     }
 
-    DualSexStatisticsData convert(DiagnosgruppResponse diagnosisGroups, Range range) {
+    DualSexStatisticsData convert(DiagnosgruppResponse diagnosisGroups, Range range, Filter filter) {
         boolean empty = isUtanGiltigEmpty(diagnosisGroups);
         diagnosisGroups = removeUtanGiltigWhenEmpty(diagnosisGroups, empty);
         TableData tableData = convertTable(diagnosisGroups);
         ChartData maleChart = convertChart(diagnosisGroups, Kon.Male, empty);
         ChartData femaleChart = convertChart(diagnosisGroups, Kon.Female, empty);
-        return new DualSexStatisticsData(tableData, maleChart, femaleChart, range.toString());
+        final FilterDataResponse filterResponse = new FilterDataResponse(filter.getDiagnoser(), filter.getEnheter());
+        return new DualSexStatisticsData(tableData, maleChart, femaleChart, range.toString(), filterResponse);
     }
 
     private boolean isUtanGiltigEmpty(DiagnosgruppResponse diagnosisGroups) {

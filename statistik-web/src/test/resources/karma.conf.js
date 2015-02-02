@@ -24,12 +24,16 @@ module.exports = function(config) {
             'src/main/**/messages.js',
             'src/main/**/messageService.js',
             'src/main/**/common.js',
+            'src/main/**/treeMultiSelectUtil.js',
+            'src/main/**/directiveTmsCtrl.js',
             'src/main/**/pageCtrl.js',
             'src/main/**/businessOverviewCtrl.js',
+            'src/main/**/treeMultiSelectUtil.js',
             'src/main/**/businessFilter.js',
             'src/test/javascript/**/angular-mocks.js',
             'src/test/javascript/**/pageCtrlTest.js',
             'src/test/javascript/**/commonTest.js',
+            'src/test/javascript/**/directiveTmsCtrlTest.js',
             'src/test/javascript/**/businessFilterTest.js'
         ],
 

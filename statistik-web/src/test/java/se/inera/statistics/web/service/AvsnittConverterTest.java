@@ -66,7 +66,7 @@ public class AvsnittConverterTest {
     @Test
     public void converterTestEmpty() {
         DiagnosgruppResponse resp = new DiagnosgruppResponse(new ArrayList<Icd>(), new ArrayList<KonDataRow>());
-        DualSexStatisticsData data = new DiagnosisGroupsConverter().convert(resp, new Range());
+        DualSexStatisticsData data = new DiagnosisGroupsConverter().convert(resp, new Range(), Filter.empty());
         assertEquals("[]", data.getFemaleChart().getCategories().toString());
         assertEquals("[A00-E90, G00-L99, N00-N99 Somatiska sjukdomar: [], F00-F99 Psykiska sjukdomar: [], M00-M99 Muskuloskeletala sjukdomar: [], O00-O99 Graviditet och förlossning: [], P00-P96, Q00-Q99, S00-Y98 Övrigt: [], R00-R99 Symtomdiagnoser: [], Z00-Z99 Faktorer av betydelse för hälsotillståndet och för kontakter med hälso- och sjukvården: []]", data.getFemaleChart().getSeries().toString());
     }
@@ -86,7 +86,7 @@ public class AvsnittConverterTest {
 
         //When
         DiagnosisGroupsConverter converter = new DiagnosisGroupsConverter();
-        DualSexStatisticsData data = converter.convert(resp, new Range());
+        DualSexStatisticsData data = converter.convert(resp, new Range(), Filter.empty());
 
         //Then
         assertEquals("[period1]", data.getFemaleChart().getCategories().toString());

@@ -28,16 +28,16 @@
 		<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 pull-left dontprint right-2px-padding" style="width: auto !important;">
 			<h1 class="national-statistic-h1" data-ng-bind="viewHeader" style="line-height: 17px; margin-bottom: 0px;"></h1>
 		</div>
-    	<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 pull-left dontprint left-2px-padding" id="business-name-header-container" style="width: auto !important;">
+    	<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 pull-left dontprint left-2px-padding" ng-show="verksamhetViewShowing" id="business-name-header-container" style="width: auto !important;">
 			<h2 class="business-name-header" style="line-height: 16px;">{{ verksamhetName }}</h2> 
 		</div>
     </div>
 	<div class="row pull-left">
 		<span class="col-xs-12 col-sm-12 col-md-12 col-lg-12 graph-ingress pull-left" style="min-height: 5px;">
 			{{subTitle}}
-			<a class="dontprint pageHelpToolTip" tooltip-html-unsafe="<div class=popover-content>{{popoverText}}</div>" tooltip-trigger="mouseenter" tooltip-placement="right" data-ng-show="popoverText" style="position: relative; top: -2px;"><img src="img/questionmark2.png"></a>
-			<a class="dontprint" id="chart-footnote-trigger" data-toggle="collapse" data-target="#chart-footnote-text" data-ng-show="chartFootnotes" text="Information om diagrammet" style="position: relative; top: -2px;"><img src="img/information.png"></a>
-			<a class="dontprint" id="chart-diagnosfilterinfo-trigger" data-toggle="collapse" data-target="#chart-diagnosfilterinfo-text" data-ng-show="activeDiagnosFilters && showDiagnosFilter" text="Diagnosfilter" style="position: relative; color: #0b0b0b; font-weight: normal">Diagnosfilter &#x25BE</a>
+			<a class="dontprint pageHelpToolTip" tooltip-html-unsafe="<div class=popover-content>{{popoverText}}</div>" tooltip-trigger="mouseenter" tooltip-placement="right" data-ng-show="popoverText" style="position: relative; top: -2px; margin-left: 5px;"><img src="img/questionmark2.png"></a>
+			<a class="dontprint" id="chart-footnote-trigger" data-toggle="collapse" data-target="#chart-footnote-text" data-ng-show="chartFootnotes" text="Information om diagrammet" style="position: relative; top: -2px; margin-left: 5px;"><img src="img/information.png"></a>
+			<a class="dontprint" id="chart-diagnosfilterinfo-trigger" data-toggle="collapse" data-target="#chart-diagnosfilterinfo-text" data-ng-show="activeDiagnosFilters" text="Diagnosfilter" style="position: relative; color: #0b0b0b; font-weight: normal; margin-left: 5px;">Diagnosfilter &#x25BE</a>
 		</span>
 	</div>
 	<div class="row pull-left">
@@ -68,7 +68,7 @@
     	
     </div>
     <div class="row dontprint">
-		<tree-multi-selector
+		<tree-multi-selector style="margin-top: 20px;"
 			class="col-xs-6 col-sm-6 col-md-6 col-lg-6 pull-left"
 			menu-options="diagnosisOptionsTree"
 			done-clicked="diagnosisSelected"
@@ -85,7 +85,7 @@
            			<span>{{selectedDetailsOption.id}} {{selectedDetailsOption.name}}</span>
            		</a>
            		<ul class="dropdown-menu left overflow-menu-options">
-	               <li data-ng-repeat="detailsOption in detailsOptions"><a href="{{detailsOption.url}}">{{detailsOption.id}} {{detailsOption.name}}</a></li>
+	               <li data-ng-repeat="detailsOption in detailsOptions"><a href="{{detailsOption.url}}{{queryString}}">{{detailsOption.id}} {{detailsOption.name}}</a></li>
 	        	</ul>
          	</div>
        	</div>
@@ -100,7 +100,7 @@
            			<span>{{selectedDetailsOption2.id}} {{selectedDetailsOption2.name}}</span>
            		</a>
            		<ul class="dropdown-menu left overflow-menu-options">
-	               <li data-ng-repeat="detailsOption2 in detailsOptions2"><a href="{{detailsOption2.url}}">{{detailsOption2.id}} {{detailsOption2.name}}</a></li>
+	               <li data-ng-repeat="detailsOption2 in detailsOptions2"><a href="{{detailsOption2.url}}{{queryString}}">{{detailsOption2.id}} {{detailsOption2.name}}</a></li>
 	        	</ul>
          	</div>
        	</div>
@@ -117,7 +117,7 @@
 			    <li><a data-ng-click="print(true)"><img src="img/dropdown-icons/sv_vit1b.png"/><span message key="dropdown.val.skrivut-svart-vitt"></span></a></li>
 			    <!-- li><a class="disabled"><img src="img/dropdown-icons/pdf-inactive.png"/> PDF-fil</a></li -->
 			    <li data-ng-repeat="chartContainer in chartContainers"><a data-ng-click="exportChart(chartContainer.id)"><img src="img/dropdown-icons/png1b.png"/><span message key="dropdown.val.spara-diagram-bild-1"></span>{{chartContainer.name}}<span message key="dropdown.val.spara-diagram-bild-2"></span></a></li>
-			  	<li><a data-ng-href="{{exportTableUrl}}" target="_self"><img src="img/dropdown-icons/xls1b.png"/><span message key="dropdown.val.spara-excel"></span></a></li>
+			  	<li><a data-ng-href="{{exportTableUrl}}{{queryString}}" target="_self"><img src="img/dropdown-icons/xls1b.png"/><span message key="dropdown.val.spara-excel"></span></a></li>
 			  </ul>
 			</div>
 		</div>

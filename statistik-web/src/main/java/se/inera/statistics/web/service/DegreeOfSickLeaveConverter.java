@@ -34,11 +34,12 @@ import se.inera.statistics.web.model.TableHeader;
 
 public class DegreeOfSickLeaveConverter {
 
-    DualSexStatisticsData convert(SjukskrivningsgradResponse degreeOfSickLeave, Range range) {
+    DualSexStatisticsData convert(SjukskrivningsgradResponse degreeOfSickLeave, Range range, Filter filter) {
         TableData tableData = convertTable(degreeOfSickLeave);
         ChartData maleChart = extractChartData(degreeOfSickLeave, Kon.Male);
         ChartData femaleChart = extractChartData(degreeOfSickLeave, Kon.Female);
-        return new DualSexStatisticsData(tableData, maleChart, femaleChart, range.toString());
+        final FilterDataResponse filterResponse = new FilterDataResponse(filter.getDiagnoser(), filter.getEnheter());
+        return new DualSexStatisticsData(tableData, maleChart, femaleChart, range.toString(), filterResponse);
     }
 
     private ChartData extractChartData(SjukskrivningsgradResponse data, Kon sex) {

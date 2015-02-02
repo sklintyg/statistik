@@ -34,7 +34,7 @@ angular.module('StatisticsApp').directive("spinner", function() {
         template :
             '<div>'
            +'  <div ng-show="showSpinner" class="spinner">'
-           +'    <img aria-labelledby="loading-message" src="/img/ajax-loader.gif"/>'
+           +'    <img aria-labelledby="loading-message" src="img/ajax-loader.gif"/>'
            +'    <p id="loading-message">'
            +'      <strong><span>{{ label }}</span></strong>'
            +'    </p>'
@@ -124,6 +124,7 @@ angular.module('StatisticsApp').directive('intermediate', function() {
 angular.module('StatisticsApp').directive("submenu", function (recursionService) {
     return {
         restrict: "E",
+        scope: { item: "=", itemroot: "=", depth: "=", recursionhelper: "=" },
         template:
             '<span ng-click="recursionhelper.hideclick(item)" class="ellipsis-text"><span class="glyphicon" ng-class="{glyphiconMinusSign: !item.hideChildren, glyphiconPlusSign: item.hideChildren}"/>{{item.name}}</span>' +
             '<input type="checkbox" ng-checked="item.allSelected" intermediate="item.someSelected" ng-click="recursionhelper.itemclick(item, itemroot)"/>' +
@@ -140,8 +141,8 @@ angular.module('StatisticsApp').directive("filterButton", function () {
     return {
     	restrict: "E",
 	    template:
-	        '<button id="show-hide-filter-btn" type="button" class="btn btn-small pull-right" data-toggle="collapse" data-target="#statistics-filter-container" ng-click="filter.open = !filter.open">' +
-	        '<i class="glyphicon" ng-class="{glyphiconDownSign: !filter.open, glyphiconUpSign: filter.open}"></i> {{filter.open ? "Dölj filter" : "Visa filter"}}' +
+	        '<button id="show-hide-filter-btn" type="button" class="btn btn-small pull-right" ng-class="{filterbtnactivefilter: filterIsActive}" data-toggle="collapse" data-target="#statistics-filter-container" ng-click="filter.open = !filter.open">' +
+	        '<i class="glyphicon" ng-class="{glyphiconDownSign: !filter.open, glyphiconUpSign: filter.open}"></i> {{filter.open ? "Dölj filter" : "Visa filter"}}<span ng-show="filterIsActive" style="font-size: 12px; font-style: italic;"><br/>Val gjorda</span>' +
 	        '</button>'
     };
 });

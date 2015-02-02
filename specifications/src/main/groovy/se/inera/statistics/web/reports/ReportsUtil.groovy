@@ -4,11 +4,12 @@ import groovy.json.JsonBuilder
 import groovyx.net.http.RESTClient
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
-import se.inera.statistics.web.service.ReportRequestFilter
+import se.inera.statistics.web.service.FilterData
 import se.inera.testsupport.Intyg
 import se.inera.testsupport.Personal
 
 import static groovyx.net.http.ContentType.JSON
+import static groovyx.net.http.ContentType.TEXT
 
 class ReportsUtil {
 
@@ -80,12 +81,25 @@ class ReportsUtil {
         return response.data;
     }
 
-    private def post(String url, filter=new ReportRequestFilter(), queryString="") {
-        def json = new JsonBuilder(filter)
-        println("POSTING: " + json + " TO: " + url)
-        def response = statistik.post(path: url, body: json.toString(), requestContentType: JSON, queryString : queryString)
+    private def post(String url, FilterData filter=FilterData.empty(), String queryString="", String bodyString="") {
+        def queryWithFilter = addFilterToQueryStringIfSet(filter, queryString)
+        println("Calling url: " + url + " with query: " + queryWithFilter + " and body: " + bodyString)
+        def response = statistik.post(path: url, body: bodyString, requestContentType: JSON, queryString : queryWithFilter)
         assert response.status == 200
         return response.data;
+    }
+
+    private boolean isFilterEmpty(FilterData filter) {
+        return filter.diagnoser.isEmpty() && filter.enheter.isEmpty() && filter.verksamhetstyper.isEmpty();
+    }
+
+    private String addFilterToQueryStringIfSet(FilterData filter, queryString) {
+        if (isFilterEmpty(filter)) {
+            return queryString
+        }
+        def filterHash = getFilterHash(filter.enheter, filter.verksamhetstyper, filter.diagnoser)
+        def prefixChar = queryString.isEmpty() ? "" : "&"
+        return queryString + prefixChar + "filter=" + filterHash
     }
 
     def getReportEnskiltDiagnoskapitelInloggad(String kapitel, String user, filter) {
@@ -211,8 +225,17 @@ class ReportsUtil {
         return get("/api/getCountyStatistics")
     }
 
-    def getReportJamforDiagnoserInloggad(String user, ReportRequestFilter filter, String diagnoserQueryString) {
-        return post("/api/verksamhet/" + getVardgivareForUser(user) + "/getJamforDiagnoserStatistik", filter, diagnoserQueryString)
+    def getReportJamforDiagnoserInloggad(String user, filter, String diagnosHash) {
+        return post("/api/verksamhet/" + getVardgivareForUser(user) + "/getJamforDiagnoserStatistik/" + diagnosHash, filter)
+    }
+
+    String getFilterHash(enheter, verksamhetstyper, diagnoser) {
+        def filterData = new FilterData(diagnoser, enheter, verksamhetstyper)
+        def filterJsonString = new JsonBuilder(filterData).toString()
+        println("Filter to filterhash: " + filterJsonString)
+        def response = statistik.post(path: "/api/filter", body: filterJsonString, requestContentType: JSON, contentType: TEXT)
+        assert response.status == 200
+        return response.data.getText();
     }
 
 }

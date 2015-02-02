@@ -1,23 +1,23 @@
 'use strict';
 
-angular.module('StatisticsApp').controller('filterCtrl', ['$scope', '$rootScope', 'statisticsData', 'businessFilter', '$timeout', 'messageService',
-    function ($scope, $rootScope, statisticsData, businessFilter, $timeout, messageService) {
+angular.module('StatisticsApp').controller('filterCtrl', ['$scope', '$rootScope', '$location', 'statisticsData', 'businessFilter', '$timeout', 'messageService',
+    function ($scope, $rootScope, $location, statisticsData, businessFilter, $timeout, messageService) {
 
         $scope.businessFilter = businessFilter;
         function updateGeographyFilterSelectorDataButtonLabelText() {
             $scope.geographyFilterSelectorData.buttonLabelText = $scope.businessFilter.geographyBusinessIds.length + " av " + $scope.businessFilter.businesses.length + " valda";
         }
 
-        $scope.$watch('businessFilter.geographyBusinessIds', function(newValue,oldValue,scope,d,e,f,g) {
+        $scope.$watch('businessFilter.geographyBusinessIds', function(newValue,oldValue,scope) {
             updateGeographyFilterSelectorDataButtonLabelText();
         });
-        $scope.$watch('businessFilter.businesses', function(newValue,oldValue,scope,d,e,f,g) {
+        $scope.$watch('businessFilter.businesses', function(newValue,oldValue,scope) {
             updateGeographyFilterSelectorDataButtonLabelText();
         });
-        $scope.$watch('businessFilter', function(newValue,oldValue,scope,d,e,f,g) {
+        $scope.$watch('businessFilter', function(newValue,oldValue,scope) {
             $scope.icd10 = newValue.icd10;
         });
-        $scope.$watch('businessFilter.geography', function(newValue,oldValue,scope,d,e,f,g) {
+        $scope.$watch('businessFilter.geography', function(newValue,oldValue,scope) {
             $scope.geography = newValue.geography;
         });
 
@@ -38,7 +38,18 @@ angular.module('StatisticsApp').controller('filterCtrl', ['$scope', '$rootScope'
         };
 
         $scope.makeUnitSelection = function () {
-            $rootScope.$broadcast('filterChange', '');
+            var verksamhetsBusinessIds = businessFilter.verksamhetsTypIds;
+            var diagnoses = businessFilter.selectedDiagnoses;
+            var geoBusinesses = businessFilter.geographyBusinessIds;
+            statisticsData.getFilterHash(diagnoses, geoBusinesses, verksamhetsBusinessIds, function(filterHash){
+                $location.search({filter: filterHash});
+            }, function(){ throw new Error("Failed to get filter hash value"); });
+        };
+
+        $scope.resetFilter = function() {
+            businessFilter.resetSelections();
+            updateGeographyFilterSelectorDataButtonLabelText();
+            $location.search({});
         };
 
     }

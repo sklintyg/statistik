@@ -204,17 +204,13 @@ angular.module('StatisticsApp').controller('businessOverviewCtrl', ['$scope', '$
             return donutData;
         }
 
-        function refresh(samePage) {
-            statisticsData.getBusinessOverview($routeParams.verksamhetId, businessFilter.getSelectedBusinesses(samePage), businessFilter.getSelectedDiagnoses(samePage), dataReceived, function () {
+        function refresh() {
+            statisticsData.getBusinessOverview($routeParams.verksamhetId, dataReceived, function () {
                 $scope.dataLoadingError = true;
             });
         }
 
-        $scope.$on('filterChange', function (event, data) {
-            refresh(true);
-        });
-
-        refresh(false);
+        refresh();
         $scope.spinnerText = "Laddar information...";
         $scope.doneLoading = false;
         $scope.dataLoadingError = false;

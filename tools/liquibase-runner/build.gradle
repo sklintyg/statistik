@@ -15,7 +15,11 @@ startScripts << {
             "--driver=com.mysql.jdbc.Driver --classpath=lib/${statistikDependency} --changeLogFile=changelog/changelog.xml %CMD_LINE_ARGS%")
 }
 
-configurations.all {
+artifacts {
+    archives distZip
+}
+
+configurations.runtime {
     transitive = false
 }
 

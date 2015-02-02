@@ -19,6 +19,7 @@
 package se.inera.statistics.web.service;
 
 import com.google.common.base.Function;
+import com.google.common.base.Optional;
 import com.google.common.collect.Lists;
 import org.joda.time.LocalDateTime;
 import org.slf4j.Logger;
@@ -47,6 +48,7 @@ import se.inera.statistics.web.model.TableData;
 import se.inera.statistics.web.model.overview.OverviewData;
 
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -82,6 +84,9 @@ public class ChartDataService {
 
     @Autowired
     private NationellOverviewData overviewData;
+
+    @Autowired
+    private FilterHashHandler filterHashHandler;
 
     private volatile SimpleDetailsData numberOfCasesPerMonth;
     private volatile DualSexStatisticsData diagnosgrupper;
@@ -144,13 +149,13 @@ public class ChartDataService {
     public void buildNumberOfCasesPerMonth() {
         final Range range = new Range(EIGHTEEN_MONTHS);
         SimpleKonResponse<SimpleKonDataRow> casesPerMonth = data.getCasesPerMonth(range);
-        numberOfCasesPerMonth = new PeriodConverter().convert(casesPerMonth, range);
+        numberOfCasesPerMonth = new PeriodConverter().convert(casesPerMonth, range, Filter.empty());
     }
 
     public void buildDiagnosgrupper() {
         Range range = new Range(EIGHTEEN_MONTHS);
         DiagnosgruppResponse diagnosisGroups = data.getDiagnosgrupper(range);
-        diagnosgrupper = new DiagnosisGroupsConverter().convert(diagnosisGroups, range);
+        diagnosgrupper = new DiagnosisGroupsConverter().convert(diagnosisGroups, range, Filter.empty());
     }
 
     public void buildDiagnoskapitel() {
@@ -158,7 +163,7 @@ public class ChartDataService {
         for (Icd10.Kapitel kapitel : icd10.getKapitel()) {
             String id = kapitel.getId();
             DiagnosgruppResponse diagnosisGroups = data.getDiagnosavsnitt(range, id);
-            diagnoskapitel.put(id, new DiagnosisSubGroupsConverter().convert(diagnosisGroups, range));
+            diagnoskapitel.put(id, new DiagnosisSubGroupsConverter().convert(diagnosisGroups, range, Filter.empty()));
         }
     }
 
@@ -172,19 +177,19 @@ public class ChartDataService {
     public void buildAldersgrupper() {
         Range range = new Range(YEAR);
         SimpleKonResponse<SimpleKonDataRow> ageGroups = data.getHistoricalAgeGroups(range);
-        aldersgrupper = new AgeGroupsConverter().convert(ageGroups, new Range(range.getMonths()));
+        aldersgrupper = new AgeGroupsConverter().convert(ageGroups, new Range(range.getMonths()), Filter.empty());
     }
 
     public void buildSjukskrivningsgrad() {
         final Range range = new Range(EIGHTEEN_MONTHS);
         SjukskrivningsgradResponse degreeOfSickLeaveStatistics = data.getSjukskrivningsgrad(range);
-        sjukskrivningsgrad = new DegreeOfSickLeaveConverter().convert(degreeOfSickLeaveStatistics, range);
+        sjukskrivningsgrad = new DegreeOfSickLeaveConverter().convert(degreeOfSickLeaveStatistics, range, Filter.empty());
     }
 
     public void buildSjukfallslangd() {
         Range range = new Range(YEAR);
         SjukfallslangdResponse sickLeaveLength = data.getSjukfallslangd(range);
-        sjukfallslangd = new SickLeaveLengthConverter().convert(sickLeaveLength, range);
+        sjukfallslangd = new SickLeaveLengthConverter().convert(sickLeaveLength, range, Filter.empty());
     }
 
     public void buildSjukfallPerLan() {
@@ -494,6 +499,25 @@ public class ChartDataService {
                 return new Icd(kapitel);
             }
         });
+    }
+
+    @POST
+    @Path("filter")
+    @Produces({ MediaType.TEXT_PLAIN })
+    public String getFilterHash(String filterData) {
+        LOG.info("Calling post FilterHash: " + filterData);
+        return filterHashHandler.getHash(filterData);
+    }
+
+    @GET
+    @Path("filter/{filterHash}")
+    public Response getFilterData(@PathParam("filterHash") String filterHash) {
+        LOG.info("Calling get FilterData: " + filterHash);
+        final Optional<String> filterData = filterHashHandler.getFilterData(filterHash);
+        if (filterData.isPresent()) {
+            return Response.ok(filterData.get()).build();
+        }
+        return Response.status(Response.Status.NOT_FOUND).build();
     }
 
 }

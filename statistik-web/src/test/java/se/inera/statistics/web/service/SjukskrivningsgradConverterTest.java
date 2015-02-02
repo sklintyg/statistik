@@ -67,7 +67,7 @@ public class SjukskrivningsgradConverterTest {
     @Test
     public void converterTestEmpty() {
         SjukskrivningsgradResponse resp = new SjukskrivningsgradResponse(new ArrayList<String>(), new ArrayList<KonDataRow>());
-        DualSexStatisticsData data = new DegreeOfSickLeaveConverter().convert(resp, new Range());
+        DualSexStatisticsData data = new DegreeOfSickLeaveConverter().convert(resp, new Range(), Filter.empty());
         assertEquals("[]", data.getFemaleChart().getCategories().toString());
         assertEquals("[]", data.getFemaleChart().getSeries().toString());
     }
@@ -86,7 +86,7 @@ public class SjukskrivningsgradConverterTest {
 
         //When
         DegreeOfSickLeaveConverter converter = new DegreeOfSickLeaveConverter();
-        DualSexStatisticsData data = converter.convert(resp, new Range());
+        DualSexStatisticsData data = converter.convert(resp, new Range(), Filter.empty());
 
         //Then
         assertEquals("[period1]", data.getFemaleChart().getCategories().toString());

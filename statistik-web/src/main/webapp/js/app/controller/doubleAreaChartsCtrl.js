@@ -19,8 +19,8 @@
 
 'use strict';
 
-angular.module('StatisticsApp').controller('doubleAreaChartsCtrl', [ '$scope', '$routeParams', '$window', '$timeout', 'statisticsData', 'businessFilter', 'config', 'messageService',
-    function ($scope, $routeParams, $window, $timeout, statisticsData, businessFilter, config, messageService) {
+angular.module('StatisticsApp').controller('doubleAreaChartsCtrl', [ '$scope', '$rootScope', '$routeParams', '$window', '$timeout', 'statisticsData', 'businessFilter', 'config', 'messageService',
+    function ($scope, $rootScope, $routeParams, $window, $timeout, statisticsData, businessFilter, config, messageService) {
         var that = this;
         var chart1 = {};
         var chart2 = {};
@@ -127,10 +127,10 @@ angular.module('StatisticsApp').controller('doubleAreaChartsCtrl', [ '$scope', '
             $scope.series = chartSeriesMale;
         };
 
-        var populatePageWithData = function (result, enhetsIds, diagnosIds) {
-            ControllerCommons.populateActiveDiagnosFilter($scope, statisticsData, diagnosIds, $routeParams.printBw || $routeParams.print);
+        var populatePageWithData = function (result) {
+            ControllerCommons.populateActiveDiagnosFilter($scope, statisticsData, result.filter.diagnoser, $routeParams.printBw || $routeParams.print);
             $scope.doneLoading = true;
-            $scope.enhetsCount = enhetsIds ? enhetsIds.length : null;
+            $scope.enhetsCount = result.filter.enheter ? result.filter.enheter.length : null;
             $scope.subTitle = config.title(result.period, $scope.enhetsCount, $routeParams.groupId);
             if (config.showDetailsOptions) {
                 $scope.currentPeriod = result.period;
@@ -230,17 +230,11 @@ angular.module('StatisticsApp').controller('doubleAreaChartsCtrl', [ '$scope', '
 
         $scope.popoverText = config.tooltipHelpText;
 
-        function refreshVerksamhet(samePage) {
-            statisticsData[config.dataFetcherVerksamhet]($routeParams.verksamhetId, businessFilter.getSelectedBusinesses(samePage), businessFilter.getSelectedDiagnoses(samePage), populatePageWithData, function () {
+        function refreshVerksamhet() {
+            statisticsData[config.dataFetcherVerksamhet]($routeParams.verksamhetId, populatePageWithData, function () {
                 $scope.dataLoadingError = true;
             }, getMostSpecificGroupId());
         }
-
-        $scope.$on('filterChange', function (event, data) {
-            if (isVerksamhet) {
-                refreshVerksamhet(true);
-            }
-        });
 
         function getMostSpecificGroupId() {
             return $routeParams.kategoriId ? $routeParams.kategoriId : $routeParams.groupId;
@@ -248,7 +242,7 @@ angular.module('StatisticsApp').controller('doubleAreaChartsCtrl', [ '$scope', '
 
         if (isVerksamhet) {
             $scope.exportTableUrl = config.exportTableUrlVerksamhet($routeParams.verksamhetId, $routeParams.groupId);
-            refreshVerksamhet(false);
+            refreshVerksamhet();
         } else {
             $scope.exportTableUrl = config.exportTableUrl($routeParams.groupId);
             statisticsData[config.dataFetcher](populatePageWithData, function () {
@@ -275,7 +269,7 @@ angular.module('StatisticsApp').controller('doubleAreaChartsCtrl', [ '$scope', '
         };
 
         $scope.print = function (bwPrint) {
-            window.open($window.location + (bwPrint ? "?printBw=true" : "?print=true"));
+            ControllerCommons.print(bwPrint, $rootScope, $window);
         };
 
         return this;

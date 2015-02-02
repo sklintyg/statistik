@@ -6,7 +6,7 @@
 
     <bean id="jmsReceiver" class="se.inera.statistics.service.queue.JmsReceiver"/>
 
-    <beans profile="test,qa,prod">
+    <beans profile="qm">
       <bean id="jmsFactory" class="org.springframework.jndi.JndiObjectFactoryBean">
           <property name="jndiName" value="java:comp/env/jms/ConnectionFactory"/>
       </bean>

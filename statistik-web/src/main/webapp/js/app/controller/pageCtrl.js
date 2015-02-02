@@ -19,8 +19,8 @@
 
 'use strict';
 
-angular.module('StatisticsApp').controller('pageCtrl', [ '$scope', '$rootScope', '$window', '$cookies', 'statisticsData', 'businessFilter', '_',
-    function ($scope, $rootScope, $window, $cookies, statisticsData, businessFilter, _) {
+angular.module('StatisticsApp').controller('pageCtrl', [ '$scope', '$rootScope', '$window', '$location', '$cookies', 'statisticsData', 'businessFilter', '_',
+    function ($scope, $rootScope, $window, $location, $cookies, statisticsData, businessFilter, _) {
         var self = this;
 
         self.getSelectedVerksamhet = function (selectedVerksamhetId, verksamhets) {
@@ -31,7 +31,6 @@ angular.module('StatisticsApp').controller('pageCtrl', [ '$scope', '$rootScope',
         $rootScope.$on('$routeChangeSuccess', function (angularEvent, next, current) {
             var verksamhetId = next.params.verksamhetId;
             $scope.verksamhetIdParam = verksamhetId;
-            $scope.currentUrl = window.location.href;
 
             var d = new Date();
             var currDate = d.getDate();
@@ -49,15 +48,10 @@ angular.module('StatisticsApp').controller('pageCtrl', [ '$scope', '$rootScope',
                     $scope.businessId = $cookies.verksamhetId;
                 }
 
-                var diagnosExclusionPattern = /.*(oversikt|diagnosgrupp|diagnosavsnitt|jamforDiagnoser).*/;
-                $scope.showDiagnosFilter = !diagnosExclusionPattern.test(next.$$route.originalPath);
-
-                businessFilter.resetSelections();
-
                 statisticsData.getLoginInfo(function (loginInfo) {
-                    businessFilter.loggedIn(loginInfo.businesses);
+                    businessFilter.setup(loginInfo.businesses, $location.$$search.filter);
                     var v = self.getSelectedVerksamhet($scope.businessId, loginInfo.businesses);
-                    $scope.verksamhetName = loginInfo.businesses && loginInfo.businesses.length == 1 ? v.name : v.vardgivarName;
+                    $scope.verksamhetName = loginInfo.businesses && loginInfo.businesses.length == 1 ? v.name : (loginInfo.processledare ? v.vardgivarName : "");
                     $scope.userName = loginInfo.name;
                     $scope.userNameWithAccess = loginInfo.name;
 
@@ -66,8 +60,6 @@ angular.module('StatisticsApp').controller('pageCtrl', [ '$scope', '$rootScope',
                 }, function () {
                     $scope.dataLoadingError = true;
                 });
-            } else {
-                businessFilter.loggedOut();
             }
         });
 

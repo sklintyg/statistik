@@ -18,18 +18,22 @@
  */
 package se.inera.statistics.web.model;
 
+import se.inera.statistics.web.service.FilterDataResponse;
+
 public class DualSexStatisticsData {
 
     private final TableData tableData;
     private final ChartData maleChart;
     private final ChartData femaleChart;
     private final String period;
+    private final FilterDataResponse filter;
 
-    public DualSexStatisticsData(TableData tableData, ChartData maleChart, ChartData femaleChart, String period) {
+    public DualSexStatisticsData(TableData tableData, ChartData maleChart, ChartData femaleChart, String period, FilterDataResponse filter) {
         this.tableData = tableData;
         this.maleChart = maleChart;
         this.femaleChart = femaleChart;
         this.period = period;
+        this.filter = filter;
     }
 
     public TableData getTableData() {
@@ -46,6 +50,10 @@ public class DualSexStatisticsData {
 
     public String getPeriod() {
         return period;
+    }
+
+    public FilterDataResponse getFilter() {
+        return filter;
     }
 
 }

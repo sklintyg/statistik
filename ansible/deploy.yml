@@ -1,0 +1,10 @@
+# This playbook deploys Statistik
+
+- hosts: all
+  sudo: yes
+  vars:
+    version: 1.5
+    config_version: master
+
+  roles:
+    - statistik

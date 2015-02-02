@@ -951,7 +951,7 @@ M40    Kyfos och lordos
 M41    Skolios
 M42    Osteokondros (degenerativ brosk-bensjukdom) i kotpelaren
 M43    Andra deformerande ryggsjukdomar
-M45    Pelvospondylit [Bechterews sjukdom]
+M45    Ankyloserande spondylit [Bechterews sjukdom]
 M46    Andra inflammatoriska sjukdomar i ryggraden
 M47    Spondylos
 M48    Andra spondylopatier
@@ -1648,7 +1648,7 @@ W24    Kontakt med utrustning för kraftöverföring och lyft som ej klassificeras 
 V25    Motorcyklist skadad i kollision med tåg
 W25    Kontakt med vasst glasföremål
 V26    Motorcyklist skadad i kollision med annat ej motordrivet fordon
-W26    Kontakt med dolk, kniv eller svärd
+W26    Kontakt med andra vassa föremål
 V27    Motorcyklist skadad i kollision med fast eller stillastående föremål
 W27    Kontakt med ej motordrivet handverktyg
 V28    Motorcyklist skadad i transportolycka, ej kollision
@@ -1780,7 +1780,7 @@ W94    Exponering för högt och lågt lufttryck och för ändringar i lufttryck
 V95    Olycka med motordriven luftfarkost med skada på ombordvarande
 V96    Olycka med ej motordriven luftfarkost med skada på ombordvarande
 V97    Andra specificerade olyckor vid lufttransport
-v98    Andra specificerade transportolyckor
+V98    Andra specificerade transportolyckor
 V99    Transportolycka, ospecificerad
 W99    Exponering för andra och icke specificerade, av människa orsakade miljöfaktorer
 X00    Exponering för okontrollerad eld i byggnad eller byggnadskonstruktion

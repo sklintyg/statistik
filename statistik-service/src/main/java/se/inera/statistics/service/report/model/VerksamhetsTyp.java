@@ -25,7 +25,7 @@ import java.util.Map;
 public class VerksamhetsTyp implements Iterable<String> {
 
     public static final String OVRIGT_ID = "00";
-    public static final String OVRIGT = "Okänd verksamhet";
+    public static final String OVRIGT = "Okänd verksamhetstyp";
 
     private final Map<String, String> kodToName = new LinkedHashMap<>();
     private final Map<String, String> longKodToName = new LinkedHashMap<>();

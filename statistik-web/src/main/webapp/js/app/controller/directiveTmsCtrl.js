@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('StatisticsApp').controller('directiveTmsCtrl', [ '$scope', function ($scope) {
+angular.module('StatisticsApp').controller('directiveTmsCtrl', [ '$scope', 'treeMultiSelectUtil', '$timeout', function ($scope, treeMultiSelectUtil, $timeout) {
     $scope.clickedDone = function(){
         $scope.doneClicked();
     };
@@ -56,12 +56,11 @@ angular.module('StatisticsApp').controller('directiveTmsCtrl', [ '$scope', funct
     $scope.itemClicked = function (item) {
         if (item.allSelected) {
             $scope.deselectAll(item);
-        } else if (item.someSelected) {
-            $scope.selectAll(item);
         } else {
             $scope.selectAll(item);
         }
-        $scope.updateState($scope.menuOptions.subs);
+        $scope.updateCounters();
+        $scope.updateState($scope.menuOptions);
     };
 
     $scope.hideClicked = function (item) {
@@ -69,26 +68,22 @@ angular.module('StatisticsApp').controller('directiveTmsCtrl', [ '$scope', funct
     };
 
     $scope.deselectAll = function (item) {
-        if (!item.hide) {
-            item.allSelected = false;
-            item.someSelected = false;
-            if (item.subs) {
-                _.each(item.subs, function (sub) {
-                    $scope.deselectAll(sub);
-                });
-            }
+        item.allSelected = false;
+        item.someSelected = false;
+        if (item.subs) {
+            _.each(item.subs, function (sub) {
+                $scope.deselectAll(sub);
+            });
         }
     };
 
-    $scope.selectAll = function (item, selectHidden) {
-        if (!item.hide || selectHidden) {
-            item.allSelected = true;
-            item.someSelected = false;
-            if (item.subs) {
-                _.each(item.subs, function (sub) {
-                    $scope.selectAll(sub, selectHidden);
-                });
-            }
+    $scope.selectAll = function (item) {
+        item.allSelected = true;
+        item.someSelected = false;
+        if (item.subs) {
+            _.each(item.subs, function (sub) {
+                $scope.selectAll(sub);
+            });
         }
     };
 
@@ -99,34 +94,41 @@ angular.module('StatisticsApp').controller('directiveTmsCtrl', [ '$scope', funct
         if (visibleItems.length === 1) {
             var item = visibleItems[0];
             item.hideChildren = false;
-            $scope.updateState(item);
             expandIfOnlyOneVisible(item.subs);
         }
     }
 
+    var currentFiltering = null;
     $scope.filterMenuItems = function (items, text) {
-        var searchText = text.toLowerCase();
-        var mappingFunc = function (item) {
-            if (item.subs) {
-                _.each(item.subs, mappingFunc);
-            }
-            item.hide = $scope.isItemHidden(item, searchText);
-        };
-        _.each(items, mappingFunc);
-        _.each(items, $scope.updateState);
-        expandIfOnlyOneVisible(items);
+        if (currentFiltering != null) {
+            $timeout.cancel(currentFiltering);
+        }
+        currentFiltering = $timeout(function() {
+            _.each(items, function(item) {$scope.updateItemHiddenState(item, getIsMatchingFilterFunction(text))});
+            expandIfOnlyOneVisible(items);
+            $scope.$evalAsync();
+            currentFiltering = null;
+        }, 0, false);
     };
 
-    $scope.isItemHidden = function (item, searchText) {
-        if (item.name.toLowerCase().indexOf(searchText) >= 0) {
-            return false;
+    function getIsMatchingFilterFunction(searchText) {
+        var text = searchText.toLowerCase();
+        return function isMatchingFilter(item) {
+            return item.name.toLowerCase().indexOf(text) >= 0;
         }
-        if (!item.subs) {
-            return true;
+    }
+
+    $scope.updateItemHiddenState = function (item, shouldItemBeVisibleFunction) {
+        var childVisibilityFunction = shouldItemBeVisibleFunction;
+        var hide = true;
+        if (shouldItemBeVisibleFunction(item)) {
+            hide = false;
+            childVisibilityFunction = function () { return true; }
         }
-        return _.all(item.subs, function (sub) {
-            return $scope.isItemHidden(sub, searchText);
-        });
+        item.hide = !!_.reduce(item.subs, function (mem, sub) {
+            return $scope.updateItemHiddenState(sub, childVisibilityFunction) && mem;
+        }, hide);
+        return item.hide;
     };
 
     $scope.updateCounters = function() {
@@ -136,25 +138,7 @@ angular.module('StatisticsApp').controller('directiveTmsCtrl', [ '$scope', funct
     };
 
     $scope.updateState = function (item) {
-        if (item.subs && item.subs.length != 0) {
-            var someSelected = false;
-            var allSelected = true;
-            _.each(item.subs, function (sub) {
-                if (!sub.hide) {
-                    $scope.updateState(sub);
-                    someSelected = someSelected || sub.someSelected || sub.allSelected;
-                    allSelected = allSelected && sub.allSelected;
-                }
-            });
-            if (allSelected) {
-                item.allSelected = true;
-                item.someSelected = false;
-            } else {
-                item.allSelected = false;
-                item.someSelected = someSelected ? true : false;
-            }
-        }
-        $scope.updateCounters();
+        treeMultiSelectUtil.updateSelectionState(item);
     };
 
     $scope.openDialogClicked = function(){

@@ -18,6 +18,8 @@
  */
 package se.inera.statistics.web.model.overview;
 
+import se.inera.statistics.web.service.FilterDataResponse;
+
 import java.util.List;
 
 public class VerksamhetOverviewData {
@@ -28,16 +30,18 @@ public class VerksamhetOverviewData {
     private final List<DonutChartData> ageGroups;
     private final List<DonutChartData> degreeOfSickLeaveGroups;
     private final SickLeaveLengthOverview sickLeaveLength;
+    private final FilterDataResponse filter;
 
     public VerksamhetOverviewData(String periodText, VerksamhetNumberOfCasesPerMonthOverview casesPerMonth, List<DonutChartData> diagnosisGroups,
             List<DonutChartData> ageGroups, List<DonutChartData> degreeOfSickLeaveGroups,
-            SickLeaveLengthOverview sickLeaveLength) {
+            SickLeaveLengthOverview sickLeaveLength, FilterDataResponse filter) {
         this.periodText = periodText;
         this.casesPerMonth = casesPerMonth;
         this.diagnosisGroups = diagnosisGroups;
         this.ageGroups = ageGroups;
         this.degreeOfSickLeaveGroups = degreeOfSickLeaveGroups;
         this.sickLeaveLength = sickLeaveLength;
+        this.filter = filter;
     }
 
     public String getPeriodText() {
@@ -62,6 +66,10 @@ public class VerksamhetOverviewData {
 
     public SickLeaveLengthOverview getSickLeaveLength() {
         return sickLeaveLength;
+    }
+
+    public FilterDataResponse getFilter() {
+        return filter;
     }
 
 }

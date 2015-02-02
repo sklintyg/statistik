@@ -67,7 +67,6 @@ var stMessages = {
         'lbl.filter.modal.avsnitt': 'Avsnitt: ',
         'lbl.filter.modal.kategorier': 'Kategorier: ',
         'lbl.filter.modal.spara-stang': 'Spara och stäng',
-        'lbl.filter.anvand-filter-pa-alla': 'Använd filtrering för alla rapporter',
         'lbl.filter.sum-progress-1': 'Genom filtreringen visas statistik från ',
         'lbl.filter.sum-progress-2': ' av totalt ',
         'lbl.filter.sum-progress-3': ' vårdenheter.',
@@ -105,7 +104,7 @@ var stMessages = {
         'overview.widget.fordelning-sjukskrivningslangd.overgar-90-3-manader': 'Procentuell förändring av antal sjukfall som är längre än 90 dagar jämfört med föregående tre månader.',
         
         //detail views
-        'lbl.valj-annat-diagnoskapitel': 'Välj annat diagnoskapitel:',
+        'lbl.valj-annat-diagnoskapitel': 'Välj diagnoskapitel:',
         'lbl.valj-annat-diagnosavsnitt': 'Välj diagnosavsnitt',
         'dropdown.val.rapport': 'Spara/Skriv ut',
         'dropdown.val.skrivut-farg': ' Skriv ut i färg',
@@ -114,6 +113,7 @@ var stMessages = {
         'dropdown.val.spara-diagram-bild-2': ' som bild',
         'dropdown.val.spara-excel': ' Spara tabell till Excel',
         'alert.diagnosgrupp.information': 'För en given månad kan samma sjukfall visas fler än en gång i graf och tabell. Om ett sjukfall innehåller flera intyg under samma månad så hämtas diagnos från varje intyg. Om intygen har olika diagnosgrupper kommer sjukfallet finnas med en gång för varje diagnosgrupp för respektive månad. Exempel: Om ett sjukfall innehåller två intyg för maj månad, där intyg ett sätter diagnosen M54 och intyg två efter vidare utredning sätter diagnosen F32, så kommer sjukfallet både räknas med i gruppen för Muskuloskeleta sjukdomar (M00-M99) och i gruppen för Psykiska sjukdomar (F00-F99) i graf och tabell för maj månad.',
+        'comparediagnoses.lbl.val-av-diagnoser': 'Välj vilken eller vilka diagnoser som din rapport ska baseras på:',
 
         //help texts
         'help.sick-leave-length-current': 'Statistiken visar både pågående sjukfall och de sjukfall som har pågått någon gång under nuvarande månad.<br/>Exempel: Den 12 september visas alla pågående och de sjukfall som har avslutats under perioden 1-11 september.',
@@ -122,10 +122,12 @@ var stMessages = {
         'alert.lakarkon-alder.questionmark' : 'Diagrammet visar antalet sjukfall för olika grupper av läkare. Läkarna grupperas utifrån ålder och om de är kvinna eller man. Statistiken visar även antal sjukfall för män respektive kvinnor.',
         'alert.lakare-befattning.information' : 'Uppgift om vilken läkarbefattning som utfärdat ett intyg hämtas från HSA-katalogen. Uppgifterna i HSA är inte kvalitetssäkrade och information kan saknas då det inte är obligatoriskt för vårdenheten att ange befattning. En läkare kan även ha fler befattningar i HSA. Det gör att samma sjukfall kan visas flera gånger i graf och tabell. Om en läkare som sjukskrivit en patient har två eller fler läkarbefattningar visas sjukfallet en gång för varje läkarbefattning.',
         'alert.vardenhet.information' : 'Om ett sjukfall har flera intyg som utfärdats på olika vårdenheter räknas det en gång för respektive vårdenhet. Statistiken visas endast för den som har behörighet att följa upp statistik från dessa vårdenheter.',
+        'help.sickleavelength' : 'Sjukskrivningslängden räknas fram utifrån de tidsperioder som anges i sjukfallets läkarintyg. Oavsett om det är hel- eller deltidssjukskrivning räknas 1 dag alltid som 1 dag i statistiken.',
         	
         //info texts
         'info.lan.information' : 'Uppgift om vilket län ett sjukfall tillhör är hämtat från HSA-katalogen. Uppgifterna i HSA är inte kvalitetssäkrade och information kan saknas då det inte är obligatoriskt för vårdenheten att ange länstillhörighet.',
-        
+        'info.sickleavelength' : 'Om ett sjukfall startat på en annan vårdenhet (inom vårdgivaren) kommer den tiden läggas ihop med tiden som sjukfallet är på din vårdenhet. Däremot kommer inte en fortsättning på ett sjukfall efter att det lämnat din vårdenhet att synas i din statistik.',
+
         //login view
         'login.header': 'Logga in för verksamhetsstatistik',
         'login.for-att-fortsatta': 'För att fortsätta till de inloggade sidorna för verksamhetsstatistik måste du logga in med ditt SITHS-kort.',

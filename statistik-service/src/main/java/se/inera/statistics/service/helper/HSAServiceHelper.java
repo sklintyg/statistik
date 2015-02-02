@@ -140,7 +140,7 @@ public final class HSAServiceHelper {
             if (result == null) {
                 result = getVerksamhetsTyper(hsaData, "huvudenhet");
             }
-            return result != null ? result : VerksamhetsTyp.OVRIGT_ID;
+            return result != null && !result.isEmpty() ? result : VerksamhetsTyp.OVRIGT_ID;
         } else {
             return VerksamhetsTyp.OVRIGT_ID;
         }

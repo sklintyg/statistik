@@ -99,6 +99,35 @@ configure(subprojects.findAll { ['hsa-integration', 'statistik-service', 'statis
     task testAll(dependsOn: [test, integrationTests, checkstyleMain])
 }
 
+configure(subprojects.findAll { ['liquibase-runner', 'statistik-web'].contains(it.name) }) {
+    apply plugin: 'maven'
+
+    configurations {
+        deployerJars
+    }
+
+    dependencies {
+        deployerJars "org.apache.maven.wagon:wagon-webdav:1.0-beta-2"
+    }
+
+    ext.cloudbeesUsername = System.properties['cloudbeesUsername']
+    ext.cloudbeesPassword = System.properties['cloudbeesPassword']
+
+    uploadArchives {
+        repositories {
+            mavenDeployer {
+                configuration = configurations.deployerJars
+                repository(url: "dav:https://repository-callistasoftware.forge.cloudbees.com/release/") {
+                    authentication(userName: cloudbeesUsername, password: cloudbeesPassword)
+                }
+                snapshotRepository(url: "dav:https://repository-callistasoftware.forge.cloudbees.com/snapshot/") {
+                    authentication(userName: cloudbeesUsername, password: cloudbeesPassword)
+                }
+            }
+        }
+    }
+}
+
 if (project.hasProperty('runSonar')) {
     apply plugin: 'sonar-runner'
 
@@ -111,6 +140,14 @@ if (project.hasProperty('runSonar')) {
             property "sonar.jdbc.driverClassName", "com.mysql.jdbc.Driver"
             property "sonar.jdbc.username", project.sonarUser
             property "sonar.jdbc.password", project.sonarPassword
+        }
+
+        project(":hsa-integration") {
+            sonarRunner {
+                sonarProperties {
+                    properties["sonar.sources"] -= project(":hsa-integration").generatedJavaDir
+                }
+            }
         }
     }
 }

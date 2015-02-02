@@ -24,19 +24,13 @@
     http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd
     ">
 
-    <beans profile="test">
-        <context:property-placeholder location="file:${statistics.credentials.file}, file:${statistics.config.file}" order="1"
-                                      ignore-resource-not-found="true" ignore-unresolvable="true"/>
-        <context:property-placeholder location="classpath*:default.test.properties" order="2"
-                                      ignore-resource-not-found="false" ignore-unresolvable="true"/>
+    <beans profile="!dev">
+        <context:property-placeholder location="file:${statistics.credentials.file}, file:${statistics.config.file}"
+                                      order="1" ignore-resource-not-found="false" ignore-unresolvable="true"/>
     </beans>
-    <beans profile="qa,prod">
-        <context:property-placeholder location="file:${statistics.credentials.file}, file:${statistics.config.file}" order="1"
-                                      ignore-resource-not-found="false" ignore-unresolvable="true"/>
-    </beans>
-
-    <beans profile="dev,db">
-        <context:property-placeholder location="classpath*:default.dev.properties" order="1" ignore-resource-not-found="true" ignore-unresolvable="true"/>
+    <beans profile="dev">
+        <context:property-placeholder location="classpath*:default.dev.properties"
+                                      order="1" ignore-resource-not-found="true" ignore-unresolvable="true"/>
     </beans>
 
     <beans>
@@ -57,7 +51,7 @@
     </beans>
 
     <beans>
-        <context:property-placeholder location="classpath*:application-context.properties" order="3"
+        <context:property-placeholder location="classpath*:application-context.properties" order="2"
                                       ignore-resource-not-found="false" ignore-unresolvable="false"/>
 
         <bean id="loginVisibility" class="se.inera.auth.LoginVisibility"/>
@@ -65,6 +59,7 @@
         <bean id="applicationContextProvider" class="se.inera.auth.ApplicationContextProvider"/>
 
         <bean class="se.inera.statistics.hsa.services.HsaOrganizationsServiceImpl"/>
+        <bean id="filterHashHandler" class="se.inera.statistics.web.service.FilterHashHandler"/>
         <bean id="chartDataService" class="se.inera.statistics.web.service.ChartDataService"/>
 
         <bean id="protectedChartDataService" class="se.inera.statistics.web.service.ProtectedChartDataService"/>
@@ -78,6 +73,7 @@
         <import resource="application-context-cxf.xml"/>
         <import resource="application-context-security.xml"/>
         <import resource="application-context-jmx.xml"/>
+        <import resource="application-context-qm.xml"/>
 
         <context:annotation-config/>
         <context:component-scan base-package="se.inera.statistics.service"/>
@@ -105,11 +101,7 @@
         <bean class="se.inera.statistics.web.service.LoginServiceUtil" />
     </beans>
 
-    <beans profile="test,db,qa">
-        <import resource="application-context-qm.xml"/>
-    </beans>
-
-    <beans profile="test,db,qa,dev">
+    <beans profile="db-resetter">
         <bean class="se.inera.statistics.service.common.CommonPersistenceHandler" id="commonPersistenceHandler"/>
     </beans>
 

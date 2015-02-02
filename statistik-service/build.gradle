@@ -10,8 +10,9 @@ configurations {
 sourceSets {
     main.compileClasspath += configurations.provided
     test {
+        // compile everything in src/test with groovy (enables cross-compiling)
         java { srcDirs = [] }
-        groovy { srcDirs = [ "src/test/groovy", "src/test/java" ] } // compile everything in src/ with groovy (enables cross-compiling)
+        groovy { srcDirs = ["src/test/groovy", "src/test/java"] }
     }
 }
 
@@ -29,7 +30,6 @@ jar.duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 dependencies {
     compile project(':hsa-integration')
 
-    compile "org.apache.cxf:cxf-rt-transports-http-jetty:${cxfVersion}"
     compile "org.hibernate.javax.persistence:hibernate-jpa-2.1-api:1.0.0.Final"
     compile "org.hibernate:hibernate-entitymanager:4.3.1.Final"
     compile "org.springframework:spring-orm:${springContextVersion}"

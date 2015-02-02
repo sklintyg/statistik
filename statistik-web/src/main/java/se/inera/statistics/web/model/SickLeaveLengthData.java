@@ -18,10 +18,12 @@
  */
 package se.inera.statistics.web.model;
 
+import se.inera.statistics.web.service.FilterDataResponse;
+
 public class SickLeaveLengthData extends SimpleDetailsData {
 
-    public SickLeaveLengthData(TableData tableData, ChartData chartData, int monthsIncluded, String period) {
-        super(tableData, chartData, monthsIncluded, period);
+    public SickLeaveLengthData(TableData tableData, ChartData chartData, int monthsIncluded, String period, FilterDataResponse filter) {
+        super(tableData, chartData, monthsIncluded, period, filter);
     }
 
 }

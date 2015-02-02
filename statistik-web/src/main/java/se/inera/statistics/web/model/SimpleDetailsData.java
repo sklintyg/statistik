@@ -18,18 +18,22 @@
  */
 package se.inera.statistics.web.model;
 
+import se.inera.statistics.web.service.FilterDataResponse;
+
 public class SimpleDetailsData {
 
     private final TableData tableData;
     private final ChartData chartData;
     private final int monthsIncluded;
     private final String period;
+    private final FilterDataResponse filter;
 
-    public SimpleDetailsData(TableData tableData, ChartData chartData, int monthsIncluded, String period) {
+    public SimpleDetailsData(TableData tableData, ChartData chartData, int monthsIncluded, String period, FilterDataResponse filter) {
         this.tableData = tableData;
         this.chartData = chartData;
         this.monthsIncluded = monthsIncluded;
         this.period = period;
+        this.filter = filter;
     }
 
     public TableData getTableData() {
@@ -46,6 +50,10 @@ public class SimpleDetailsData {
 
     public String getPeriod() {
         return period;
+    }
+
+    public FilterDataResponse getFilter() {
+        return filter;
     }
 
 }

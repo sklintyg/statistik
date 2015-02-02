@@ -47,5 +47,8 @@
     <include file="changelog/db.changelog-v20.0_reset_handelsepekare.xml"/>
     <include file="changelog/db.changelog-v20.0_add_lakare_table.xml"/>
     <include file="changelog/db.changelog-v22.0_update_kon.xml"/>
+    <include file="changelog/db.changelog-v23.0_add_user_selection_table.xml"/>
+    <include file="changelog/db.changelog-v24.0_change_user_selection_table.xml"/>
+    <include file="changelog/db.changelog-v25.0_set_unknown_verksamhetstyp.xml"/>
 
 </databaseChangeLog>
