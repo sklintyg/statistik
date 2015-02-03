@@ -238,4 +238,8 @@ class ReportsUtil {
         return response.data.getText();
     }
 
+    def getVerksamhetsoversikt(String user, FilterData filter) {
+        return post("/api/verksamhet/" + getVardgivareForUser(user) + "/getOverview", filter)
+    }
+
 }

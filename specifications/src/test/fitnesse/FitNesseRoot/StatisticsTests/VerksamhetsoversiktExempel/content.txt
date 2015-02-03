@@ -1,0 +1,18 @@
+!contents -R2 -g -p -f -h
+
+!3 Givet att:
+| script | dagens datum | 2015-01-01 |
+
+| script | troskel varde | 1 |
+
+| Enbart foljande intyg finns |
+| personnr | diagnoskod | start    | slut       | enhet |
+| 19790407-0120 | F40 | 2014-12-01 | 2014-12-14 | enhet1 |
+| 19790407-1120 | M40 | 2014-12-01 | 2014-12-14 | enhet1 |
+
+!3 Då gäller:
+| Sjukfall i verksamhetsoversikt diagnos |
+|inloggad som | grupp                                         | antal? | förändring? |
+| user1       | F00-F99 Psykiska sjukdomar                    | 1      | 0           |
+| user1       | M00-M99 Muskuloskeletala sjukdomar            | 1      | 0           |
+| user1       | A00-E90, G00-L99, N00-N99 Somatiska sjukdomar | 0      | 0           |
