@@ -24,6 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import se.inera.statistics.service.helper.ConversionHelper;
 import se.inera.statistics.service.report.util.Icd10;
+import se.inera.statistics.service.report.util.Icd10RangeType;
 import se.inera.statistics.service.warehouse.model.db.WideLine;
 
 @Component
@@ -90,7 +91,7 @@ public class FactPopulator {
     private int extractKategori(String diagnoskategori) {
         Icd10.Kategori kategori = icd10.getKategori(diagnoskategori);
         if (kategori == null) {
-            return icd10.getKategori("Ö00").toInt();
+            return Icd10.icd10ToInt("Ö00", Icd10RangeType.KATEGORI);
         }
         return kategori.toInt();
     }
@@ -98,7 +99,7 @@ public class FactPopulator {
     private int extractAvsnitt(String diagnosavsnitt) {
         Icd10.Avsnitt avsnitt = icd10.getAvsnitt(diagnosavsnitt);
         if (avsnitt == null) {
-            return icd10.getAvsnitt("Ö00-Ö00").toInt();
+            return Icd10.icd10ToInt("Ö00-Ö00", Icd10RangeType.AVSNITT);
         }
         return avsnitt.toInt();
     }
@@ -106,7 +107,7 @@ public class FactPopulator {
     private int extractKapitel(String diagnoskapitel) {
         Icd10.Kapitel kapitel = icd10.getKapitel(diagnoskapitel);
         if (kapitel == null) {
-            return icd10.getKapitel("Ö00-Ö00").toInt();
+            return Icd10.icd10ToInt("Ö00-Ö00", Icd10RangeType.KAPITEL);
         }
         return kapitel.toInt();
     }

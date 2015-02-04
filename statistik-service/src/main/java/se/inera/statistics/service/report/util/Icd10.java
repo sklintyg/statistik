@@ -18,6 +18,10 @@
  */
 package se.inera.statistics.service.report.util;
 
+import com.google.common.base.Function;
+import com.google.common.base.Predicate;
+import com.google.common.collect.Collections2;
+import com.google.common.collect.Lists;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +33,7 @@ import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -46,6 +51,13 @@ public class Icd10 {
     private static final int STARTINDEX_DESCRIPTION = 7;
     public static final int MAX_CODE_LENGTH = 3;
 
+    public static final String OTHER_KAPITEL = "Ö00-Ö00";
+    public static final String OTHER_KATEGORI = "Ö00";
+    public static final List<Integer> INTERNAL_ICD10_INTIDS = Arrays.asList(
+                                                                        icd10ToInt(OTHER_KAPITEL, Icd10RangeType.KAPITEL),
+                                                                        icd10ToInt("Ö00-Ö00", Icd10RangeType.AVSNITT),
+                                                                        icd10ToInt(OTHER_KATEGORI, Icd10RangeType.KATEGORI));
+
     @Autowired
     private Resource icd10KategoriAnsiFile;
 
@@ -56,6 +68,8 @@ public class Icd10 {
     private Resource icd10KapitelAnsiFile;
 
     private List<Kapitel> kapitels;
+
+    private List<Id> internalIcd10 = new ArrayList<>();
 
     private IdMap<Kategori> idToKategoriMap = new IdMap<>();
     private IdMap<Avsnitt> idToAvsnittMap = new IdMap<>();
@@ -106,13 +120,36 @@ public class Icd10 {
                 }
             }
 
+            populateInternalIcd10();
         } catch (IOException e) {
             LOG.error("Could not parse ICD10: " + e);
         }
     }
 
-    public List<Kapitel> getKapitel() {
-        return kapitels;
+    private void populateInternalIcd10() {
+        final Kapitel kapitel = new Kapitel(OTHER_KAPITEL, "Utan giltig ICD-10 kod");
+        internalIcd10.add(kapitel);
+        final Avsnitt avsnitt = new Avsnitt(OTHER_KAPITEL, "Utan giltig ICD-10 kod", kapitel);
+        internalIcd10.add(avsnitt);
+        internalIcd10.add(new Kategori(OTHER_KATEGORI, "Utan giltig ICD-10 kod", avsnitt));
+    }
+
+    public List<Kapitel> getKapitel(boolean includeInternalKapitel) {
+        final ArrayList<Kapitel> allKapitels = new ArrayList<>(kapitels);
+        if (includeInternalKapitel) {
+            allKapitels.addAll(Collections2.transform(Collections2.filter(internalIcd10, new Predicate<Id>() {
+                @Override
+                public boolean apply(Id id) {
+                    return id instanceof Kapitel;
+                }
+            }), new Function<Id, Kapitel>() {
+                @Override
+                public Kapitel apply(Id id) {
+                    return (Kapitel) id;
+                }
+            }));
+        }
+        return allKapitels;
     }
 
     static String normalize(String icd10Code) {

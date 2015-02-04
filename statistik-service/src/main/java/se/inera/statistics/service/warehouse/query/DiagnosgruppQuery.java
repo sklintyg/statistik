@@ -85,7 +85,7 @@ public class DiagnosgruppQuery {
     }
 
     public DiagnosgruppResponse getDiagnosgrupper(Aisle aisle, Predicate<Fact> filter, LocalDate start, int periods, int periodLength) {
-        List<Icd10.Kapitel> kapitel = icd10.getKapitel();
+        List<Icd10.Kapitel> kapitel = icd10.getKapitel(true);
         final Iterable<SjukfallGroup> sjukfallGroups = SjukfallUtil.sjukfallGrupper(start, periods, periodLength, aisle, filter);
         List<KonDataRow> rows = getKonDataRows(sjukfallGroups, kapitel, Icd10RangeType.KAPITEL, false);
         List<Icd> avsnitt = new ArrayList<>(kapitel.size());

@@ -35,6 +35,7 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyBoolean;
 import static org.mockito.Matchers.eq;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -75,7 +76,7 @@ public class ChartDataServiceTest {
 
     @Test
     public void getDiagnosisGroupsTest() {
-        Mockito.when(icd10.getKapitel()).thenReturn(Arrays.asList(new Icd10.Kapitel("A00-B99", "Vissa infektionssjukdomar och parasitsjukdomar"), new Icd10.Kapitel("C00-D48", "Tumörer")));
+        Mockito.when(icd10.getKapitel(anyBoolean())).thenReturn(Arrays.asList(new Icd10.Kapitel("A00-B99", "Vissa infektionssjukdomar och parasitsjukdomar"), new Icd10.Kapitel("C00-D48", "Tumörer")));
         List<Icd> kapitel = chartDataService.getDiagnoskapitel();
         assertEquals(2, kapitel.size());
     }
@@ -91,7 +92,7 @@ public class ChartDataServiceTest {
 
     @Test
     public void getDiagnosisSubGroupStatisticsTest() {
-        Mockito.when(icd10.getKapitel()).thenReturn(Arrays.asList(new Icd10.Kapitel("A00-B99", "Vissa infektionssjukdomar och parasitsjukdomar"), new Icd10.Kapitel("C00-D48", "Tumörer")));
+        Mockito.when(icd10.getKapitel(anyBoolean())).thenReturn(Arrays.asList(new Icd10.Kapitel("A00-B99", "Vissa infektionssjukdomar och parasitsjukdomar"), new Icd10.Kapitel("C00-D48", "Tumörer")));
         try {
             chartDataService.buildDiagnoskapitel();
         } catch (NullPointerException e) {

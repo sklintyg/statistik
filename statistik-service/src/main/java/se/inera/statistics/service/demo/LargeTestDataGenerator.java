@@ -97,7 +97,7 @@ public class LargeTestDataGenerator {
 
     @PostConstruct
     public void init() {
-        for (Kapitel kapitel : icd10.getKapitel()) {
+        for (Kapitel kapitel : icd10.getKapitel(true)) {
             for (Avsnitt avsnitt : kapitel.getAvsnitt()) {
                 for (Kategori kategori : avsnitt.getKategori()) {
                     DIAGNOSER.add(kategori.getId());

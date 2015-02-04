@@ -47,38 +47,31 @@ public class Icd10Test {
 
     @Test
     public void hasKapitel() {
-        assertEquals(23, icd10.getKapitel().size());
+        assertEquals(23, icd10.getKapitel(true).size());
     }
 
     @Test
     public void kapitel1HasCorrectNameAndRange() {
-        Kapitel kapitel = icd10.getKapitel().get(0);
+        Kapitel kapitel = icd10.getKapitel(true).get(0);
         assertEquals("A00-B99", kapitel.getId());
         assertEquals("Vissa infektionssjukdomar och parasitsjukdomar", kapitel.getName());
     }
 
     @Test
     public void kapitel22HasCorrectNameAndRange() {
-        Kapitel kapitel = icd10.getKapitel().get(21);
+        Kapitel kapitel = icd10.getKapitel(true).get(21);
         assertEquals("Z00-Z99", kapitel.getId());
         assertEquals("Faktorer av betydelse för hälsotillståndet och för kontakter med hälso- och sjukvården", kapitel.getName());
     }
 
     @Test
-    public void unknownKapitelHasCorrectNameAndRange() {
-        Kapitel kapitel = icd10.getKapitel().get(22);
-        assertEquals("This kapitel must be added manually when replacing icd file.", "Ö00-Ö00", kapitel.getId());
-        assertEquals("Utan giltig ICD-10 kod", kapitel.getName());
-    }
-
-    @Test
     public void avsnitt() {
-        assertEquals(21, icd10.getKapitel().get(0).getAvsnitt().size());
+        assertEquals(21, icd10.getKapitel(true).get(0).getAvsnitt().size());
     }
 
     @Test
     public void avsnittInKapitel1() {
-        Kapitel kapitel = icd10.getKapitel().get(0);
+        Kapitel kapitel = icd10.getKapitel(true).get(0);
         List<Avsnitt> avsnitt = kapitel.getAvsnitt();
         assertEquals(21, avsnitt.size());
     }
@@ -107,7 +100,7 @@ public class Icd10Test {
 
     @Test
     public void noDuplicateIcd10IntIds() {
-        final List<Integer> allIntIds = getAllIntIds(icd10.getKapitel());
+        final List<Integer> allIntIds = getAllIntIds(icd10.getKapitel(true));
         assertEquals(allIntIds.size(), new HashSet<>(allIntIds).size());
     }
 

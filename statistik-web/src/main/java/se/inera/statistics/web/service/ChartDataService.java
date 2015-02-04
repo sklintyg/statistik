@@ -37,6 +37,7 @@ import se.inera.statistics.service.report.model.SimpleKonResponse;
 import se.inera.statistics.service.report.model.SjukfallslangdResponse;
 import se.inera.statistics.service.report.model.SjukskrivningsgradResponse;
 import se.inera.statistics.service.report.util.Icd10;
+import se.inera.statistics.service.report.util.Icd10RangeType;
 import se.inera.statistics.service.report.util.ReportUtil;
 import se.inera.statistics.service.warehouse.NationellData;
 import se.inera.statistics.service.warehouse.NationellOverviewData;
@@ -160,7 +161,7 @@ public class ChartDataService {
 
     public void buildDiagnoskapitel() {
         final Range range = new Range(EIGHTEEN_MONTHS);
-        for (Icd10.Kapitel kapitel : icd10.getKapitel()) {
+        for (Icd10.Kapitel kapitel : icd10.getKapitel(false)) {
             String id = kapitel.getId();
             DiagnosgruppResponse diagnosisGroups = data.getDiagnosavsnitt(range, id);
             diagnoskapitel.put(id, new DiagnosisSubGroupsConverter().convert(diagnosisGroups, range, Filter.empty()));
@@ -245,10 +246,10 @@ public class ChartDataService {
     public List<Icd> getDiagnoskapitel() {
         LOG.info("Calling getKapitel");
         List<Icd> kapitel = new ArrayList<>();
-        for (Icd10.Kapitel k : icd10.getKapitel()) {
+        for (Icd10.Kapitel k : icd10.getKapitel(false)) {
             String s = k.getId();
             if (s.charAt(0) <= 'Z') {
-                kapitel.add(new Icd(s, k.getName()));
+                kapitel.add(new Icd(s, k.getName(), k.toInt()));
             }
         }
         return kapitel;
@@ -265,7 +266,7 @@ public class ChartDataService {
     public DiagnosisKapitelAndAvsnittResponse getDiagnosisKapitelAndAvsnitt() {
         LOG.info("Calling getDiagnosisKapitelAndAvsnitt");
         Map<String, List<Icd>> avsnitts = new LinkedHashMap<>();
-        List<Icd10.Kapitel> kapitels = icd10.getKapitel();
+        List<Icd10.Kapitel> kapitels = icd10.getKapitel(false);
         for (Icd10.Kapitel k : kapitels) {
             avsnitts.put(k.getId(), convertToAvsnitts(k.getAvsnitt()));
         }
@@ -492,13 +493,15 @@ public class ChartDataService {
     @Produces({ MediaType.APPLICATION_JSON })
     public List<Icd> getIcd10Structure() {
         LOG.info("Calling getIcd10Structure");
-        List<Icd10.Kapitel> kapitel = icd10.getKapitel();
-        return Lists.transform(kapitel, new Function<Icd10.Kapitel, Icd>() {
+        List<Icd10.Kapitel> kapitel = icd10.getKapitel(false);
+        final List<Icd> icds = new ArrayList<>(Lists.transform(kapitel, new Function<Icd10.Kapitel, Icd>() {
             @Override
             public Icd apply(Icd10.Kapitel kapitel) {
                 return new Icd(kapitel);
             }
-        });
+        }));
+        icds.add(new Icd("", "Utan giltig ICD-10 kod", Icd10.icd10ToInt(Icd10.OTHER_KATEGORI, Icd10RangeType.KATEGORI)));
+        return icds;
     }
 
     @POST

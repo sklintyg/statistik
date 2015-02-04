@@ -98,7 +98,7 @@ public class InjectUtlatande {
 
     private List<String> getDiagnoser() {
         if (DIAGNOSER.isEmpty()) {
-            for (Icd10.Kapitel kapitel : icd10.getKapitel()) {
+            for (Icd10.Kapitel kapitel : icd10.getKapitel(true)) {
                 for (Icd10.Avsnitt avsnitt : kapitel.getAvsnitt()) {
                     for (Icd10.Kategori kategori : avsnitt.getKategori()) {
                         DIAGNOSER.add(kategori.getId());
