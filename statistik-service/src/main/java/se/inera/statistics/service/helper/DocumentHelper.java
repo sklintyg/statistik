@@ -55,7 +55,7 @@ public final class DocumentHelper {
         String personId = utlatande.path(PATIENT).path("id").path(EXTENSION).textValue();
         int alder;
         try {
-            alder = ConversionHelper.extractAlder(personId, ISODateTimeFormat.dateTimeParser().parseLocalDate(utlatande.path("signeringsdatum").textValue()));
+            alder = ConversionHelper.extractAlder(personId, ISODateTimeFormat.dateTimeParser().parseLocalDate(utlatande.path("observationer").findValue("observationsperiod").path("tom").textValue()));
         } catch (IllegalArgumentException e) {
             LOG.error("Personnummer cannot be parsed as a date, adjusting for samordningsnummer did not help: {}" , personId);
             alder = ConversionHelper.NO_AGE;

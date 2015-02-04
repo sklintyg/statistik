@@ -67,6 +67,7 @@ public class Sjukfall {
         extending = previous;
         lakare.addAll(previous.getLakare());
         diagnoses.addAll(0, previous.diagnoses);
+        alder = previous.alder > this.alder ? previous.alder : this.alder;
     }
 
     Sjukfall(Sjukfall previous, Sjukfall sjukfall) {
@@ -76,6 +77,7 @@ public class Sjukfall {
         intygCount += previous.getIntygCount();
         lakare.addAll(previous.getLakare());
         diagnoses.addAll(0, previous.diagnoses);
+        alder = previous.alder > this.alder ? previous.alder : this.alder;
     }
 
     Sjukfall(Sjukfall sjukfall) {
