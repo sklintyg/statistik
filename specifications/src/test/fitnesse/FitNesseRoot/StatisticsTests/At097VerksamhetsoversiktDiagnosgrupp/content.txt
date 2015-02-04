@@ -1,5 +1,7 @@
 !contents -R2 -g -p -f -h
 
+Testet är ignorerat i väntan på att STATISTIK-888 blir fixad.
+
 !3 Givet att:
 | script | dagens datum | 2015-01-01 |
 
