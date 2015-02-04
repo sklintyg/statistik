@@ -9,19 +9,25 @@ abstract class DiagnosRapport extends Rapport {
     public void executeDiagram(report) {
         def index = report.maleChart.categories.findIndexOf { item -> item == (månad + " " + år) }
         def male = report.maleChart.series.find { item -> item.name.contains(grupp) }
-        män = male.data[index]
+        män = index < 0 || male == null ? -1 : male.data[index]
         def female = report.femaleChart.series.find { item -> item.name.contains(grupp) }
-        kvinnor = female.data[index]
+        kvinnor = index < 0 || female == null ? -1 : female.data[index]
     }
 
     public void executeTabell(report) {
         def index = report.tableData.headers[0].findIndexOf { item -> item.text.contains(grupp) }
         def row = report.tableData.rows.find { currentRow -> currentRow.name == (månad + " " + år)  }
-        def womenIndex = ((index - 2) * 2) + 1
-        def menIndex = womenIndex + 1
-        totalt = row.data[0]
-        kvinnor = row.data[womenIndex]
-        män = row.data[menIndex]
+        if (index < 0 || row == null) {
+            totalt = -1
+            kvinnor = -1
+            män = -1
+        } else {
+            def womenIndex = ((index - 2) * 2) + 1
+            def menIndex = womenIndex + 1
+            totalt = row.data[0]
+            kvinnor = row.data[womenIndex]
+            män = row.data[menIndex]
+        }
     }
 
     def getReportEnskiltDiagnoskapitel(kapitel) {
