@@ -15,5 +15,6 @@ build
 statistik-web/node_modules
 statistik-web/node
 statistik-web/npm-debug.log
+generatedSource
 
 catalina.base_IS_UNDEFINED

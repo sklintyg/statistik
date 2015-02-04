@@ -1,11 +1,13 @@
 description = 'Inera Statistics HSA-Integration module'
 
 ext.wsdlFile = file("src/main/resources/schemas/wsdl/HsaWsInteraction_3.18.wsdl")
-ext.generatedJavaDir = file("build/generatedSource/java")
+ext.generatedJavaDir = file("generatedSource/java")
 
 sourceSets.main.java {
     srcDir generatedJavaDir
 }
+
+clean.doLast { ant.delete(dir: generatedJavaDir.parent) }
 
 configurations {
     wsdlgen
@@ -17,10 +19,10 @@ task wsdl2Java(type: JavaExec) {
     classpath configurations.wsdlgen
     main "org.apache.cxf.tools.wsdlto.WSDLToJava"
     args "-xjc-XhashCode", "-xjc-Xequals", "-xjc-XtoString", "-xjc-Xinheritance",
-    "-xjc-b,${projectDir}/src/main/resources/jaxb-bindings.xjb", "-validate", "-verbose",
-    "-p", "urn:riv:hsa:HsaWs:3=se.inera.ifv.hsaws.v3", 
-    "-p", "urn:riv:hsa:HsaWsResponder:3=se.inera.ifv.hsawsresponder.v3", 
-    "-p", "http://www.w3.org/2005/08/addressing=org.w3.wsaddressing10", '-d', generatedJavaDir.path, wsdlFile
+            "-xjc-b,${projectDir}/src/main/resources/jaxb-bindings.xjb", "-validate", "-verbose",
+            "-p", "urn:riv:hsa:HsaWs:3=se.inera.ifv.hsaws.v3",
+            "-p", "urn:riv:hsa:HsaWsResponder:3=se.inera.ifv.hsawsresponder.v3",
+            "-p", "http://www.w3.org/2005/08/addressing=org.w3.wsaddressing10", '-d', generatedJavaDir.path, wsdlFile
 }
 
 compileJava.dependsOn(wsdl2Java)
