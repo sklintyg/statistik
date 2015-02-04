@@ -45,7 +45,7 @@ public class Counter<T> implements Comparable<Counter> {
     @Override
     public int compareTo(Counter other) {
         int count = countFemale + countMale;
-        int otherCount = other.countFemale + countMale;
+        int otherCount = other.countFemale + other.countMale;
         if (count > otherCount) {
             return -1;
         } else if (count == otherCount) {
