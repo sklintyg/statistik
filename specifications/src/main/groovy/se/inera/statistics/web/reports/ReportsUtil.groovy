@@ -242,4 +242,8 @@ class ReportsUtil {
         return post("/api/verksamhet/" + getVardgivareForUser(user) + "/getOverview", filter)
     }
 
+    def getNationalOverview() {
+        return get("/api/getOverview")
+    }
+
 }
