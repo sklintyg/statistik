@@ -122,4 +122,11 @@ abstract class Rapport {
         }
     }
 
+    def getVerksamhetsoversikt() {
+        if (inloggad) {
+            return reportsUtil.getVerksamhetsoversikt(inloggadSom, filter);
+        }
+        throw new RuntimeException("Report -Verksamhetsöversikt- is not available on national level");
+    }
+
 }
