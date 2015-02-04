@@ -1,6 +1,6 @@
 package se.inera.statistics.spec
 
-class SjukfallIVerksamhetsoversiktSjukskrivningsgrad extends VerksamhetsoversiktDiagnosDonut {
+class SjukfallIOversiktSjukskrivningsgrad extends OversiktDiagnosDonut {
 
     def getData(report) {
         return report.degreeOfSickLeaveGroups

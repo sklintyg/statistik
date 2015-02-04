@@ -1,6 +1,6 @@
 package se.inera.statistics.spec
 
-class SjukfallIVerksamhetsoversiktSjukskrivningslangdVarden extends Rapport {
+class SjukfallIOversiktSjukskrivningslangdVarden extends Rapport {
 
     String field
     String value

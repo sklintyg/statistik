@@ -509,7 +509,7 @@
 | 19790330-9230 | A05 | enhet1 | 2014-02-22 | 2014-03-04 |
 
 !3 Då gäller:
-| Sjukfall i verksamhetsoversikt diagnos |
+| Sjukfall i oversikt diagnos |
 |inloggad som | grupp                                         | antal? | förändring? |
 | user2       | A00-E90, G00-L99, N00-N99 Somatiska sjukdomar | 45      | 4           |
 | user2       | F00-F99 Psykiska sjukdomar                    | 4      | -33           |
@@ -518,7 +518,7 @@
 | user2       | P00-P96, Q00-Q99, S00-Y98 Övrigt            | 36      | 33           |
 
 
-| Sjukfall i verksamhetsoversikt diagnos |
+| Sjukfall i oversikt diagnos |
 |inloggad som | grupp                                         | antal? | förändring? |
 | user1       | A00-E90, G00-L99, N00-N99 Somatiska sjukdomar | 25      | 31           |
 | user1       | F00-F99 Psykiska sjukdomar                    | 1      | -50           |
@@ -527,7 +527,7 @@
 | user1       | P00-P96, Q00-Q99, S00-Y98 Övrigt            | 14      | 16           |
 
 
-| Sjukfall i verksamhetsoversikt aldersgrupp |
+| Sjukfall i oversikt aldersgrupp |
 |inloggad som | grupp                                         | antal? | förändring? |
 | user2       | 31-35 år | 2      | 100           |
 | user2       | 46-50 år                    | 24      | 50           |
@@ -536,14 +536,14 @@
 | user2       | Över 60 år            | 27      | 17           |
 
 
-| Sjukfall i verksamhetsoversikt sjukskrivningsgrad |
+| Sjukfall i oversikt sjukskrivningsgrad |
 |inloggad som | grupp                                         | antal? | förändring? |
 | user2       | 25% | 0      | 0           |
 | user2       | 50%                    | 0      | 0           |
 | user2       | 75%            | 0      | 0           |
 | user2       | 100%            | 113      | 17           |
 
-| Sjukfall i verksamhetsoversikt per kon |
+| Sjukfall i oversikt per kon |
 |inloggad som | field          | value? |
 | user2       | totalCases     | 113      |
 | user2       | oldPeriod      | juli–september 2014      |
@@ -553,12 +553,12 @@
 | user2       | amountMaleNew  | 68    |
 | user2       | amountFemaleNew| 45    |
 
-| Sjukfall i verksamhetsoversikt sjukskrivningslangd varden |
+| Sjukfall i oversikt sjukskrivningslangd varden |
 |inloggad som | field          | value? |
 | user2       | longSickLeavesTotal     | 21      |
 | user2       | longSickLeavesAlternation      | 16      |
 
-| Sjukfall i verksamhetsoversikt sjukskrivningslangd |
+| Sjukfall i oversikt sjukskrivningslangd |
 |inloggad som | grupp          | antal? |
 | user2       | Under 15 dagar | 18      |
 | user2       | 15-30 dagar    | 53      |
@@ -572,7 +572,7 @@
 
 
 Nationell:
-| Sjukfall i verksamhetsoversikt diagnos |
+| Sjukfall i oversikt diagnos |
 | grupp                                         | antal? | förändring? |
 | A00-E90, G00-L99, N00-N99 Somatiska sjukdomar | 45      | 4           |
 | F00-F99 Psykiska sjukdomar                    | 4      | -33           |
@@ -581,7 +581,7 @@ Nationell:
 | P00-P96, Q00-Q99, S00-Y98 Övrigt            | 36      | 33           |
 
 
-| Sjukfall i verksamhetsoversikt diagnos |
+| Sjukfall i oversikt diagnos |
 | grupp                                         | antal? | förändring? |
 | A00-E90, G00-L99, N00-N99 Somatiska sjukdomar | 45      | 4           |
 | F00-F99 Psykiska sjukdomar                    | 4      | -33           |
@@ -590,7 +590,7 @@ Nationell:
 | P00-P96, Q00-Q99, S00-Y98 Övrigt            | 36      | 33           |
 
 
-| Sjukfall i verksamhetsoversikt aldersgrupp |
+| Sjukfall i oversikt aldersgrupp |
 | grupp                                         | antal? | förändring? |
 | 31-35 år | 2      | 100           |
 | 46-50 år                    | 24      | 50           |
@@ -599,26 +599,26 @@ Nationell:
 | Över 60 år            | 27      | 17           |
 
 
-| Sjukfall i verksamhetsoversikt sjukskrivningsgrad |
+| Sjukfall i oversikt sjukskrivningsgrad |
 | grupp                                         | antal? | förändring? |
 | 25 | 0      | 0           |
 | 50                    | 0      | 0           |
 | 75            | 0      | 0           |
 | 100            | 113      | 17           |
 
-| Sjukfall i verksamhetsoversikt per kon |
+| Sjukfall i oversikt per kon |
 | field          | value? |
 | proportionMale     | 60      |
 | proportionFemale      | 40      |
 | alteration  | 17      |
 | previousPeriodText| juli–september 2014    |
 
-| Sjukfall i verksamhetsoversikt sjukskrivningslangd varden |
+| Sjukfall i oversikt sjukskrivningslangd varden |
 | field          | value? |
 | longSickLeavesTotal     | 21      |
 | longSickLeavesAlternation      | 16      |
 
-| Sjukfall i verksamhetsoversikt sjukskrivningslangd |
+| Sjukfall i oversikt sjukskrivningslangd |
 | grupp          | antal? |
 | Under 15 dagar | 18      |
 | 15-30 dagar    | 53      |
@@ -627,7 +627,7 @@ Nationell:
 | 181-365 dagar  | 13    |
 | Över 365 dagar | 1    |
 
-| Sjukfall i verksamhetsoversikt per lan |
+| Sjukfall i oversikt per lan |
 | grupp                                         | antal? | förändring? |
 | Västra Götalands län | 113      | 17           |
 | Blekinge län                    | 0      | 0           |
