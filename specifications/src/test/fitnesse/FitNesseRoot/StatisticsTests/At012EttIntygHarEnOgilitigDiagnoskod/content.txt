@@ -10,14 +10,15 @@
 | Enbart foljande intyg finns |
 | personnr | diagnoskod | start    | slut       | enhet |
 | 19790407-0120 | Hejsan | 2013-02-01 | 2013-02-14 | enhet1 |
+| 19790407-0220 | P99    | 2013-02-01 | 2013-02-14 | enhet1 |
 
 !3 Då gäller:
 Inloggad:
 | Sjukfall i rapporten diagnosgrupp |
 |inloggad som | år   | månad | grupp             | män? | kvinnor? |
-| user1 | 2013 | feb   | Utan giltig ICD-10 kod  | 0    | 1        |
+| user1 | 2013 | feb   | Utan giltig ICD-10 kod  | 0    | 2        |
 
 Nationell:
 | Sjukfall i rapporten diagnosgrupp |
 | år   | månad | grupp                   | män? | kvinnor? |
-| 2013 | feb   | Utan giltig ICD-10 kod  | 0    | 1        |
+| 2013 | feb   | Utan giltig ICD-10 kod  | 0    | 2        |
