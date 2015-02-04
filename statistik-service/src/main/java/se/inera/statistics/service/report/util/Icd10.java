@@ -183,13 +183,37 @@ public class Icd10 {
         return getKategori(normalized);
     }
 
-    public Kategori findKategoriFromNumericId(int numId) {
-        for (Kategori kategori : idToKategoriMap.values()) {
+    public Id findIcd10FromNumericId(int numId) {
+        for (Id kategori : idToKategoriMap.values()) {
             if (kategori.toInt() == numId) {
                 return kategori;
             }
         }
-        throw new RuntimeException("Kategori with numerical id could not be found: " + numId);
+        for (Id avsnitt : idToAvsnittMap.values()) {
+            if (avsnitt.toInt() == numId) {
+                return avsnitt;
+            }
+        }
+        for (Id kapitel : idToKapitelMap.values()) {
+            if (kapitel.toInt() == numId) {
+                return kapitel;
+            }
+        }
+        for (Id internal : internalIcd10) {
+            if (internal.toInt() == numId) {
+                return internal;
+            }
+        }
+        throw new RuntimeException("ICD10 with numerical id could not be found: " + numId);
+    }
+
+    public static List<Integer> getKapitelIntIds(String... icdIds) {
+        return Lists.transform(Arrays.asList(icdIds), new Function<String, Integer>() {
+            @Override
+            public Integer apply(String icdId) {
+                return icd10ToInt(icdId, Icd10RangeType.KAPITEL);
+            }
+        });
     }
 
     public static class IdMap<T extends Id> extends HashMap<String, T> {
@@ -221,6 +245,13 @@ public class Icd10 {
 
         public abstract List<? extends Id> getSubItems();
 
+        public String getVisibleId() {
+            return isInternal() ? "" : getId();
+        }
+
+        public boolean isInternal() {
+            return INTERNAL_ICD10_INTIDS.contains(toInt());
+        }
     }
 
     public abstract static class Range extends Id {

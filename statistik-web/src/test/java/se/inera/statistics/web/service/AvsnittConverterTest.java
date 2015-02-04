@@ -24,6 +24,8 @@ import se.inera.statistics.service.report.model.Icd;
 import se.inera.statistics.service.report.model.KonDataRow;
 import se.inera.statistics.service.report.model.KonField;
 import se.inera.statistics.service.report.model.Range;
+import se.inera.statistics.service.report.util.Icd10;
+import se.inera.statistics.service.report.util.Icd10RangeType;
 import se.inera.statistics.web.model.DualSexStatisticsData;
 import se.inera.statistics.web.model.TableData;
 
@@ -46,7 +48,7 @@ public class AvsnittConverterTest {
     public void tableConverterTest() {
         //Given
         ArrayList<Icd> avsnitts = new ArrayList<>();
-        avsnitts.add(new Icd("A01-B99", "name1"));
+        avsnitts.add(new Icd("A01-B99", "name1", -1));
         ArrayList<KonDataRow> rows = new ArrayList<KonDataRow>();
         ArrayList<KonField> diagnosisGroupData = new ArrayList<KonField>();
         // CHECKSTYLE:OFF MagicNumber
@@ -75,7 +77,7 @@ public class AvsnittConverterTest {
     public void converterTest() {
         //Given
         ArrayList<Icd> avsnitts = new ArrayList<>();
-        avsnitts.add(new Icd("A00-B99", "name1"));
+        avsnitts.add(new Icd("A00-B99", "name1", Icd10.icd10ToInt("A00-B99", Icd10RangeType.KAPITEL)));
         ArrayList<KonDataRow> rows = new ArrayList<KonDataRow>();
         ArrayList<KonField> diagnosisGroupData = new ArrayList<KonField>();
         // CHECKSTYLE:OFF MagicNumber

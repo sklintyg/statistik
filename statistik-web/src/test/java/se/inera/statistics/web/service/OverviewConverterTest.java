@@ -24,6 +24,8 @@ import se.inera.statistics.service.report.model.OverviewChartRowExtended;
 import se.inera.statistics.service.report.model.OverviewResponse;
 import se.inera.statistics.service.report.model.OverviewKonsfordelning;
 import se.inera.statistics.service.report.model.Range;
+import se.inera.statistics.service.report.util.Icd10;
+import se.inera.statistics.service.report.util.Icd10RangeType;
 import se.inera.statistics.web.model.overview.DonutChartData;
 import se.inera.statistics.web.model.overview.SjukfallPerManadOverview;
 import se.inera.statistics.web.model.overview.OverviewData;
@@ -70,7 +72,7 @@ public class OverviewConverterTest {
         OverviewKonsfordelning overviewKonsfordelning = new OverviewKonsfordelning(casesPerMonthProportionMale, casesPerMonthProportionFemale, new Range());
         int casesPerMonthAlteration = 2;
         ArrayList<OverviewChartRowExtended> diagnosisGroups = new ArrayList<OverviewChartRowExtended>();
-        diagnosisGroups.add(new OverviewChartRowExtended("A00-B99", 1, -2));
+        diagnosisGroups.add(new OverviewChartRowExtended(String.valueOf(Icd10.icd10ToInt("A00-B99", Icd10RangeType.KAPITEL)), 1, -2));
         ArrayList<OverviewChartRowExtended> ageGroups = new ArrayList<OverviewChartRowExtended>();
         ageGroups.add(new OverviewChartRowExtended("ageName", 3, 4));
         ArrayList<OverviewChartRowExtended> degreeOfSickLeaveGroups = new ArrayList<OverviewChartRowExtended>();

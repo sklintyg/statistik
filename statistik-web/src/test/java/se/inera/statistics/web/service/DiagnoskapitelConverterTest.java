@@ -44,7 +44,7 @@ public class DiagnoskapitelConverterTest {
     public void converterTest() {
         //Given
         ArrayList<Icd> avsnitts = new ArrayList<>();
-        avsnitts.add(new Icd("A00-B99", "name1"));
+        avsnitts.add(new Icd("A00-B99", "name1", 1));
         ArrayList<KonDataRow> rows = new ArrayList<>();
         ArrayList<KonField> diagnosisGroupData = new ArrayList<>();
         // CHECKSTYLE:OFF MagicNumber
@@ -72,14 +72,14 @@ public class DiagnoskapitelConverterTest {
     public void converterTopColumnsTest() {
         //Given
         ArrayList<Icd> avsnitts = new ArrayList<>();
-        avsnitts.add(new Icd("A00-B90", "name1"));
-        avsnitts.add(new Icd("A00-B91", "name1"));
-        avsnitts.add(new Icd("A00-B92", "name1"));
-        avsnitts.add(new Icd("A00-B93", "name1"));
-        avsnitts.add(new Icd("A00-B94", "name1"));
-        avsnitts.add(new Icd("A00-B95", "name1"));
-        avsnitts.add(new Icd("A00-B96", "name1"));
-        avsnitts.add(new Icd("A00-B97", "name1"));
+        avsnitts.add(new Icd("A00-B90", "name1", -1));
+        avsnitts.add(new Icd("A00-B91", "name1", -1));
+        avsnitts.add(new Icd("A00-B92", "name1", -1));
+        avsnitts.add(new Icd("A00-B93", "name1", -1));
+        avsnitts.add(new Icd("A00-B94", "name1", -1));
+        avsnitts.add(new Icd("A00-B95", "name1", -1));
+        avsnitts.add(new Icd("A00-B96", "name1", -1));
+        avsnitts.add(new Icd("A00-B97", "name1", -1));
         ArrayList<KonDataRow> rows = new ArrayList<>();
         ArrayList<KonField> diagnosisGroupData = new ArrayList<>();
         // CHECKSTYLE:OFF MagicNumber

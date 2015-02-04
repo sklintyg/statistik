@@ -31,12 +31,6 @@ public class Icd implements Comparable<Icd> {
 
     private final List<Icd> subItems = new ArrayList<>();
 
-    public Icd(String id, String name) {
-        this.id = id;
-        this.name = name;
-        this.numericalId = -1;
-    }
-
     public Icd(String id, String name, int numericalId) {
         this.id = id;
         this.name = name;
@@ -44,9 +38,11 @@ public class Icd implements Comparable<Icd> {
     }
 
     public Icd(Icd10.Id source) {
-        this(source.getId(), source.getName(), source.toInt());
+        this(source.getVisibleId(), source.getName(), source.toInt());
         for (Icd10.Id subItem : source.getSubItems()) {
-            subItems.add(new Icd(subItem));
+            if (!subItem.isInternal()) {
+                subItems.add(new Icd(subItem));
+            }
         }
     }
 
@@ -67,7 +63,7 @@ public class Icd implements Comparable<Icd> {
     }
 
     public String asString() {
-        if (id.charAt(0) <= 'Z') {
+        if (!id.isEmpty() && id.charAt(0) <= 'Z') {
             return id + " " + name;
         } else {
             return name;

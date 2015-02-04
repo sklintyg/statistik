@@ -193,7 +193,7 @@ public class NationellOverviewData {
             for (int i = 0; i < previousData.size(); i++) {
                 int previous = previousData.get(i).getFemale() + previousData.get(i).getMale();
                 int current = currentData.get(i).getFemale() + currentData.get(i).getMale();
-                result.add(new OverviewChartRowExtended(periods.getIcdTyps().get(i).getId(), current, current - previous));
+                result.add(new OverviewChartRowExtended(String.valueOf(periods.getIcdTyps().get(i).getNumericalId()), current, current - previous));
             }
         }
         return result;

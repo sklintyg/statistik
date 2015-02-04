@@ -276,7 +276,7 @@ public class ChartDataService {
     private List<Icd> convertToAvsnitts(List<Icd10.Avsnitt> avsnitts) {
         List<Icd> converted = new ArrayList<>(avsnitts.size());
         for (Icd10.Avsnitt avsnitt : avsnitts) {
-            converted.add(new Icd(avsnitt.getId(), avsnitt.getName()));
+            converted.add(new Icd(avsnitt.getId(), avsnitt.getName(), avsnitt.toInt()));
         }
         return converted;
     }
