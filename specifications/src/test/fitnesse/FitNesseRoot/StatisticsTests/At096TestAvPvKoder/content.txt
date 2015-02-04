@@ -15,7 +15,7 @@
 
 !3 Då gäller:
 Inloggad:
-|Sjukfall i rapporten diagnosgrupp                                                                                                   |
+|Sjukfall i rapporten diagnosgrupp diagram                                                                                           |
 |inloggad som|år  |månad|grupp                                                                                         |män?|kvinnor?|
 |user1       |2013|feb  |A00-E90, G00-L99, N00-N99 Somatiska sjukdomar                                                 |0   |1       |
 |user1       |2013|feb  |F00-F99 Psykiska sjukdomar                                                                    |0   |0       |
@@ -24,5 +24,17 @@ Inloggad:
 |user1       |2013|feb  |P00-P96, Q00-Q99, S00-Y98 Övrigt                                                              |0   |0       |
 |user1       |2013|feb  |R00-R99 Symtomdiagnoser                                                                       |0   |0       |
 |user1       |2013|feb  |Z00-Z99 Faktorer av betydelse för hälsotillståndet och för kontakter med hälso- och sjukvården|0   |0       |
-|user1       |2013|feb  |Utan giltig ICD-10 kod                                                                        |0   |0       |
+|user1       |2013|feb  |Utan giltig ICD-10 kod                                                                        |-1  |-1      |
+
+Nationell:
+|Sjukfall i rapporten diagnosgrupp diagram |
+|år  |månad|grupp                                                                                         |män?|kvinnor?|
+|2013|feb  |A00-E90, G00-L99, N00-N99 Somatiska sjukdomar                                                 |0   |1       |
+|2013|feb  |F00-F99 Psykiska sjukdomar                                                                    |0   |0       |
+|2013|feb  |M00-M99 Muskuloskeletala sjukdomar                                                            |0   |0       |
+|2013|feb  |O00-O99 Graviditet och förlossning                                                            |0   |0       |
+|2013|feb  |P00-P96, Q00-Q99, S00-Y98 Övrigt                                                              |0   |0       |
+|2013|feb  |R00-R99 Symtomdiagnoser                                                                       |0   |0       |
+|2013|feb  |Z00-Z99 Faktorer av betydelse för hälsotillståndet och för kontakter med hälso- och sjukvården|0   |0       |
+|2013|feb  |Utan giltig ICD-10 kod                                                                        |-1  |-1      |
 
