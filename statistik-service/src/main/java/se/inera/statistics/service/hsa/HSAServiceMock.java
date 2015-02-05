@@ -40,7 +40,7 @@ import java.util.Map;
 import java.util.Set;
 
 @Component
-@Profile({"dev", "hsa-stub"})
+@Profile({ "dev", "hsa-stub" })
 @Primary
 public class HSAServiceMock implements HSAService, HsaDataInjectable {
     private static final int POSITIVE_MASK = 0x7fffffff;
