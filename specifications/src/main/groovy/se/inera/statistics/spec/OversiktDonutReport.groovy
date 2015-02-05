@@ -1,6 +1,6 @@
 package se.inera.statistics.spec
 
-abstract class OversiktDiagnosDonut extends Rapport {
+abstract class OversiktDonutReport extends Rapport {
 
     String grupp
     String antal
