@@ -1,6 +1,6 @@
 package se.inera.statistics.spec
 
-abstract class OversiktDiagnosDonut extends Rapport {
+abstract class OversiktDonutReport extends Rapport {
 
     String grupp
     String antal
@@ -26,8 +26,8 @@ abstract class OversiktDiagnosDonut extends Rapport {
 
     public void executeTabell(report) {
         def row = getData(report).find { item -> item.name.contains(grupp) }
-        antal = row.quantity
-        förändring = row.alternation
+        antal = row != null ? row.quantity : -1
+        förändring = row != null ? row.alternation : -1
     }
 
     abstract def getData(report);
