@@ -25,19 +25,19 @@
  		</div>
  	</div>
 	<div class="row">
-		<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 pull-left dontprint right-2px-padding" style="width: auto !important;">
+		<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 pull-left hidden-print right-2px-padding" style="width: auto !important;">
 			<h1 class="national-statistic-h1" data-ng-bind="viewHeader" style="line-height: 17px; margin-bottom: 0px;"></h1>
 		</div>
-    	<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 pull-left dontprint left-2px-padding" ng-show="verksamhetViewShowing" id="business-name-header-container" style="width: auto !important;">
+    	<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 pull-left hidden-print left-2px-padding" ng-show="verksamhetViewShowing" id="business-name-header-container" style="width: auto !important;">
 			<h2 class="business-name-header" style="line-height: 16px;">{{ verksamhetName }}</h2> 
 		</div>
     </div>
 	<div class="row">
 		<span class="col-xs-12 col-sm-12 col-md-12 col-lg-12 graph-ingress pull-left" style="min-height: 5px;">
 			{{subTitle}}
-			<a class="dontprint pageHelpToolTip" tooltip-html-unsafe="<div class=popover-content>{{popoverText}}</div>" tooltip-trigger="mouseenter" tooltip-placement="right" data-ng-show="popoverText" style="position: relative; top: -2px; margin-left: 5px;"><img src="img/questionmark2.png"></a>
-			<a class="dontprint" id="chart-footnote-trigger" data-toggle="collapse" data-target="#chart-footnote-text" data-ng-show="chartFootnotes" text="Information om diagrammet" style="position: relative; top: -2px; margin-left: 5px;"><img src="img/information.png"></a>
-			<a class="dontprint" id="chart-diagnosfilterinfo-trigger" data-toggle="collapse" data-target="#chart-diagnosfilterinfo-text" data-ng-show="activeDiagnosFilters" text="Diagnosfilter" style="position: relative; color: #0b0b0b; font-weight: normal; margin-left: 5px;">Diagnosfilter &#x25BE</a>
+			<a class="hidden-print pageHelpToolTip" tooltip-html-unsafe="<div class=popover-content>{{popoverText}}</div>" tooltip-trigger="mouseenter" tooltip-placement="right" data-ng-show="popoverText" style="position: relative; top: -2px; margin-left: 5px;"><img src="img/questionmark2.png"></a>
+			<a class="hidden-print" id="chart-footnote-trigger" data-toggle="collapse" data-target="#chart-footnote-text" data-ng-show="chartFootnotes" text="Information om diagrammet" style="position: relative; top: -2px; margin-left: 5px;"><img src="img/information.png"></a>
+			<a class="hidden-print" id="chart-diagnosfilterinfo-trigger" data-toggle="collapse" data-target="#chart-diagnosfilterinfo-text" data-ng-show="activeDiagnosFilters" text="Diagnosfilter" style="position: relative; color: #0b0b0b; font-weight: normal; margin-left: 5px;">Diagnosfilter &#x25BE</a>
 		</span>
 	</div>
 	<div class="row pull-left">
@@ -51,7 +51,7 @@
        		</div>
         </div>
 	</div>
-	<div class="row dontprint pull-left">
+	<div class="row hidden-print pull-left">
 		<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" data-ng-show="activeDiagnosFilters">
 			<div class="collapse" id="chart-diagnosfilterinfo-text">
        			<div class="alert alert-info" style="margin-top: 3px;">
@@ -64,10 +64,10 @@
 	</div>
 
 	<!-- Start detailsOptions if any -->
-    <div class="row dontprint" style="width: auto !important; margin-top: 10px;">
+    <div class="row hidden-print" style="width: auto !important; margin-top: 10px;">
     	
     </div>
-    <div class="row dontprint">
+    <div class="row hidden-print">
 		<tree-multi-selector style="margin-top: 20px;"
 			class="col-xs-6 col-sm-6 col-md-6 col-lg-6 pull-left"
 			menu-options="diagnosisOptionsTree"
@@ -137,7 +137,7 @@
 
 			</div>
 
-			<div class="row dontprint">
+			<div class="row hidden-print">
 				<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 					<div class="btn-group legend-btn-group">
 						<label data-ng-repeat="seriesData in series" class="col-xs-12 col-sm-6 col-md-6 col-lg-6" id="legend-label" style="white-space: nowrap;" legend-height>
@@ -165,7 +165,7 @@
             <p><!-- pagebreak --></p>
             
             <!-- Starting data-table -->
-            <div class="rotate-print browserTable" data-ng-class="{printTable: !useSpecialPrintTable, dontprint: useSpecialPrintTable}">
+            <div class="rotate-print browserTable" data-ng-class="{printTable: !useSpecialPrintTable, 'hidden-print': useSpecialPrintTable}">
 	            <div class="row">
 					<span class="col-xs-12 col-sm-12 col-md-12 col-lg-12 graph-ingress" id="data-table-print-header">
 						{{subTitle}}
@@ -175,7 +175,7 @@
 	            <div id="chart-data-table" class="col-xs-12 col-sm-12 col-md-12 col-lg-12" data-ng-init="tableVisible=true" data-ng-class="{collapsed: !tableVisible}">
                     <accordion id="accordion2">
                         <accordion-group is-open="$parent.tableVisible">
-                            <accordion-heading class="dontprint">
+                            <accordion-heading class="hidden-print">
                                 <i class="chart-table-expand-icon"></i>
                                 <span data-ng-if="tableVisible"><span message key="lbl.dolj-tabell"></span></span>
                                 <span data-ng-if="!tableVisible"><span message key="lbl.visa-tabell"></span></span>
@@ -204,7 +204,7 @@
 	            </div>
             </div>
             
-            <div data-ng-class="{printTable: useSpecialPrintTable, dontprint: !useSpecialPrintTable}" style="display:none;">
+            <div data-ng-class="{printTable: useSpecialPrintTable, 'hidden-print': !useSpecialPrintTable}" style="display:none;">
                 <div class="row">
                     <span class="col-xs-12 col-sm-12 col-md-12 col-lg-12 graph-ingress" id="data-table-print-header">
                         {{subTitle}}
