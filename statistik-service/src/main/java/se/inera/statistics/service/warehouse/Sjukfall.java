@@ -40,6 +40,7 @@ public class Sjukfall {
     private List<Diagnos> diagnoses = new ArrayList<>();
     private int sjukskrivningsgrad;
     private Set<Lakare> lakare = new HashSet<>();
+    private Set<Integer> enhets = new HashSet<>();
     private Sjukfall extending;
 
     public Sjukfall(Fact line) {
@@ -57,6 +58,7 @@ public class Sjukfall {
         final int lakaralder = line.getLakaralder();
         final int[] lakarbefattnings = line.getLakarbefattnings();
         this.lakare.add(new Lakare(lakarid, lakarKon, lakaralder, lakarbefattnings));
+        this.enhets.add(line.getEnhet());
     }
 
     public Sjukfall(Sjukfall previous, Fact line) {
@@ -68,6 +70,7 @@ public class Sjukfall {
         lakare.addAll(previous.getLakare());
         diagnoses.addAll(0, previous.diagnoses);
         alder = previous.alder > this.alder ? previous.alder : this.alder;
+        enhets.addAll(previous.getEnhets());
     }
 
     Sjukfall(Sjukfall previous, Sjukfall sjukfall) {
@@ -78,6 +81,7 @@ public class Sjukfall {
         lakare.addAll(previous.getLakare());
         diagnoses.addAll(0, previous.diagnoses);
         alder = previous.alder > this.alder ? previous.alder : this.alder;
+        enhets.addAll(previous.getEnhets());
     }
 
     Sjukfall(Sjukfall sjukfall) {
@@ -92,6 +96,7 @@ public class Sjukfall {
         lan = sjukfall.lan;
         lakare.addAll(sjukfall.getLakare());
         extending = sjukfall.extending;
+        enhets.addAll(sjukfall.getEnhets());
     }
 
     public Kon getKon() {
@@ -229,6 +234,10 @@ public class Sjukfall {
 
     public Set<Lakare> getLakare() {
         return lakare;
+    }
+
+    public Set<Integer> getEnhets() {
+        return enhets;
     }
 
     private final class Diagnos {

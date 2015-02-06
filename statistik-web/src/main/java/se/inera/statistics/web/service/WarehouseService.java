@@ -98,7 +98,7 @@ public class WarehouseService {
     }
 
     public SimpleKonResponse<SimpleKonDataRow> getCasesPerEnhet(Predicate<Fact> filter, Map<String, String> idsToNames, Range range, String vardgivarId) {
-        return sjukfallQuery.getSjukfallPerEnhet(warehouse.get(vardgivarId), filter, idsToNames, range, range.getMonths(), 1);
+        return SjukfallQuery.getSjukfallPerEnhet(warehouse.get(vardgivarId), filter, range.getFrom(), 1, range.getMonths(), idsToNames);
     }
 
     public SimpleKonResponse<SimpleKonDataRow> getCasesPerLakare(Predicate<Fact> filter, Range range, String vardgivarId) {

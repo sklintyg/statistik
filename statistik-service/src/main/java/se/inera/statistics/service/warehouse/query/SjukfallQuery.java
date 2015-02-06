@@ -20,7 +20,6 @@ package se.inera.statistics.service.warehouse.query;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Predicate;
-import com.google.common.base.Predicates;
 import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Multiset;
@@ -49,7 +48,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-
 @Component
 public final class SjukfallQuery {
 
@@ -68,15 +66,29 @@ public final class SjukfallQuery {
         return new SimpleKonResponse<>(result, perioder * periodlangd);
     }
 
-    public SimpleKonResponse<SimpleKonDataRow> getSjukfallPerEnhet(Aisle aisle, Predicate<Fact> filter, Map<String, String> idsToNames, Range range, int perioder, int periodlangd) {
-        ArrayList<SimpleKonDataRow> result = new ArrayList<>();
-        for (String enhetId : idsToNames.keySet()) {
-            Collection<Sjukfall> sjukfalls = SjukfallUtil.active(range, aisle, Predicates.and(filter, new SjukfallUtil.EnhetFilter(Warehouse.getEnhet(enhetId))));
-            int male = countMale(sjukfalls);
-            int female = sjukfalls.size() - male;
-            result.add(new SimpleKonDataRow(idsToNames.get(enhetId), female, male));
+    public static SimpleKonResponse<SimpleKonDataRow> getSjukfallPerEnhet(Aisle aisle, Predicate<Fact> filter, LocalDate from, int periods, int periodLength, Map<String, String> idsToNames) {
+        List<SimpleKonDataRow> rows = new ArrayList<>();
+        for (SjukfallGroup sjukfallGroup: SjukfallUtil.sjukfallGrupper(from, periods, periodLength, aisle, filter)) {
+            final Multiset<Integer> femaleSjukfallPerEnhet = HashMultiset.create();
+            final Multiset<Integer> maleSjukfallPerEnhet = HashMultiset.create();
+
+            for (Sjukfall sjukfall : sjukfallGroup.getSjukfall()) {
+                Multiset<Integer> sjukfallPerEnhet = sjukfall.getKon() == Kon.Female ? femaleSjukfallPerEnhet : maleSjukfallPerEnhet;
+                for (Integer enhetId : sjukfall.getEnhets()) {
+                    sjukfallPerEnhet.add(enhetId);
+                }
+            }
+            for (Map.Entry<String, String> enhetIdAndName : idsToNames.entrySet()) {
+                final int enhetIntId = Warehouse.getEnhet(enhetIdAndName.getKey());
+                if (enhetIntId >= 0) {
+                    final String enhetName = enhetIdAndName.getValue();
+                    final int femaleCount = femaleSjukfallPerEnhet.count(enhetIntId);
+                    final int maleCount = maleSjukfallPerEnhet.count(enhetIntId);
+                    rows.add(new SimpleKonDataRow(enhetName, femaleCount, maleCount));
+                }
+            }
         }
-        return new SimpleKonResponse<>(result, perioder * periodlangd);
+        return new SimpleKonResponse<>(rows, periodLength);
     }
 
     public static int countMale(Collection<Sjukfall> sjukfalls) {
