@@ -150,7 +150,7 @@ select, textarea, input[type="text"], input[type="password"], input[type="dateti
 .modal-body ul { list-style-type: none; }
 .modal-body .modal-list { padding: 0px; }
 .search-all-items, .select-all-items { margin-bottom: 10px; }
-.modal-body .modal-list li.search-all-items input[type=search] { width: 100%; height: 30px; top: 1px; }
+.modal-body .modal-list li.search-all-items input[type=search] { width: 100%; height: 35px; top: 1px; }
 .modal-body .modal-list li.select-all-items input[type=checkbox] { margin-left: 0px; }
 .modal-body .modal-list input[type=checkbox] { margin-left: 10px; top: 0px; position: relative; cursor: pointer; }
 /* STYLES FOR MULTI-MULTI*/
