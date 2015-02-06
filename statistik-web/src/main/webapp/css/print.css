@@ -86,14 +86,22 @@
         display: none;
     }
     .highcharts-tooltip, .highcharts-markers.highcharts-tracker { display: none; }
+
     .print-pagebreak-before {
         page-break-before: always;
         page-break-inside: avoid; /* Chrome needs this to do the page breaks correct */
     }
+
     .print-pagebreak-after {
         page-break-after: always;
         page-break-inside: avoid; /* Chrome needs this to do the page breaks correct */
     }
+
+    p {
+        page-break-after: always !important;
+        page-break-inside: avoid !important; /* Chrome needs this to do the page breaks correct */
+    }
+    
     #wrap {
         margin-top: 0px;
         width: 100%;
@@ -110,7 +118,6 @@
     }
     td {
         font-size: 12px;
-        /*max-width: 40px;*/
     }
 
     .printTable #datatable {
