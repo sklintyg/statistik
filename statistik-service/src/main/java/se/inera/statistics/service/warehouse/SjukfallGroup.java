@@ -20,6 +20,7 @@ package se.inera.statistics.service.warehouse;
 
 import se.inera.statistics.service.report.model.Range;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 public class SjukfallGroup {
@@ -28,7 +29,7 @@ public class SjukfallGroup {
 
     public SjukfallGroup(Range range, Collection<Sjukfall> sjukfall) {
         this.range = range;
-        this.sjukfall = sjukfall;
+        this.sjukfall = new ArrayList<>(sjukfall);
     }
 
     public Range getRange() {

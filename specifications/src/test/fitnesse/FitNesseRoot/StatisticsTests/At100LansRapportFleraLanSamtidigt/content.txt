@@ -1,0 +1,29 @@
+!contents -R2 -g -p -f -h
+
+Testar vad som händer om en enhet vid samma månad har flera olika län. Kontrollerar att intyget har sitt eget län hellre än att det hör till enheten över tid.
+
+!3 Givet att:
+
+| script | dagens datum | 2013-08-06 |
+
+| script | troskel varde | 1 |
+
+| Enbart foljande intyg finns |
+| personnr | diagnoskod | start    | slut       | enhet  | län |
+| 19790407-2295 | G01 | 2013-05-05 | 2013-06-06 | enhet1 | 01  |
+| 19790408-2295 | G01 | 2013-05-11 | 2013-09-12 | enhet3 | 00  |
+| 19790409-2295 | G01 | 2013-05-13 | 2013-10-12 | enhet1 | 03  |
+| 19790410-2295 | G01 | 2013-05-13 | 2013-11-12 | enhet1 | 48  |
+| 19790411-2295 | G01 | 2013-05-11 | 2013-09-12 | enhet3 | 99  |
+| 19790412-2295 | G01 | 2013-05-13 | 2013-10-12 | enhet2 | 01  |
+
+
+!3 Då gäller:
+
+Nationell:
+| Sjukfall i rapporten lan |
+| period       | län                  | totalt? | män? | kvinnor? |
+| maj–jul 2013 | Stockholms län       | 2       | 2    | 0        |
+| maj–jul 2013 | Uppsala län          | 1       | 1    | 0        |
+| maj–jul 2013 | Västra Götalands län | 0       | 0    | 0        |
+| maj–jul 2013 | Okänt län            | 3       | 3    | 0        |

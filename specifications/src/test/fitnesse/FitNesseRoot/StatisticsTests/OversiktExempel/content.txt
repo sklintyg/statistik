@@ -1,5 +1,7 @@
 !contents -R2 -g -p -f -h
 
+Teset är ignorerat pga STATISTIK-839
+
 !3 Givet att:
 | script | dagens datum | 2015-01-01 |
 

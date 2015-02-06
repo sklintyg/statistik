@@ -190,7 +190,7 @@ public class NationellOverviewData {
         if (periods.getRows().size() >= 2) {
             List<KonField> previousData = periods.getRows().get(0).getData();
             List<KonField> currentData = periods.getRows().get(1).getData();
-            for (int i = 0; i < previousData.size(); i++) {
+            for (int i = 0; i < currentData.size(); i++) {
                 int previous = previousData.get(i).getFemale() + previousData.get(i).getMale();
                 int current = currentData.get(i).getFemale() + currentData.get(i).getMale();
                 result.add(new OverviewChartRowExtended(String.valueOf(periods.getIcdTyps().get(i).getNumericalId()), current, current - previous));

@@ -34,6 +34,7 @@ import se.inera.statistics.web.model.TableData;
 import se.inera.statistics.web.model.TableHeader;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -122,6 +123,12 @@ public class DiagnosisGroupsConverter {
 
     public List<OverviewChartRowExtended> convert(List<OverviewChartRowExtended> diagnosisGroups) {
         List<OverviewChartRowExtended> merged = mergeOverviewChartGroups(diagnosisGroups);
+        Collections.sort(merged, new Comparator<OverviewChartRowExtended>() {
+            @Override
+            public int compare(OverviewChartRowExtended o1, OverviewChartRowExtended o2) {
+                return o2.getQuantity() - o1.getQuantity();
+            }
+        });
 
         List<OverviewChartRowExtended> result = new ArrayList<>();
         for (OverviewChartRowExtended row : merged.subList(0, DISPLAYED_DIAGNOSIS_GROUPS)) {
