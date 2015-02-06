@@ -88,6 +88,7 @@
     .highcharts-tooltip, .highcharts-markers.highcharts-tracker { display: none; }
     .print-pagebreak-before {
         page-break-before: always;
+        page-break-inside: avoid; /* Chrome needs this to do the page breaks correct */
     }
     .print-pagebreak-after {
         page-break-after: always;
