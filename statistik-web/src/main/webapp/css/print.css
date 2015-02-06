@@ -91,6 +91,7 @@
     }
     .print-pagebreak-after {
         page-break-after: always;
+        page-break-inside: avoid; /* Chrome needs this to do the page breaks correct */
     }
     #wrap {
         margin-top: 0px;
