@@ -140,10 +140,33 @@ public final class HSAServiceHelper {
             if (result == null) {
                 result = getVerksamhetsTyper(hsaData, "huvudenhet");
             }
+            final boolean isVardcentral = isVardcentral(hsaData, "enhet") || isVardcentral(hsaData, "huvudenhet");
+            result = isVardcentral ? (result != null && !result.isEmpty() ? result + ",02" : "02") : result;
             return result != null && !result.isEmpty() ? result : VerksamhetsTyp.OVRIGT_ID;
         } else {
             return VerksamhetsTyp.OVRIGT_ID;
         }
+    }
+
+    private static boolean isVardcentral(JsonNode hsaData, String enhet) {
+        final Iterator<String> enhetstyper = getEnhetstyper(hsaData, enhet);
+        while (enhetstyper.hasNext()) {
+            String enhetstyp = enhetstyper.next();
+            if ("02".equals(enhetstyp)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static Iterator<String> getEnhetstyper(JsonNode hsaData, String enhet) {
+        return Iterators.transform(hsaData.path(enhet).path("enhetstyp").elements(),
+        new Function<JsonNode, String>() {
+                    @Override
+                    public String apply(JsonNode node) {
+                        return node.asText();
+                    }
+                });
     }
 
     private static String getVerksamhetsTyper(JsonNode hsaData, String enhet) {

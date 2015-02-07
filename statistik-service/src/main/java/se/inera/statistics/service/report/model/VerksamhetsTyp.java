@@ -26,6 +26,8 @@ public class VerksamhetsTyp implements Iterable<String> {
 
     public static final String OVRIGT_ID = "00";
     public static final String OVRIGT = "Okänd verksamhetstyp";
+    public static final String VARDCENTRAL_ID = "02";
+    public static final String VARDCENTRAL = "Vårdcentral";
 
     private final Map<String, String> kodToName = new LinkedHashMap<>();
     private final Map<String, String> longKodToName = new LinkedHashMap<>();
@@ -33,6 +35,7 @@ public class VerksamhetsTyp implements Iterable<String> {
     // CHECKSTYLE:OFF MethodLength
     public VerksamhetsTyp() {
         kodToName.put(OVRIGT_ID, OVRIGT);
+        kodToName.put(VARDCENTRAL_ID, VARDCENTRAL);
         kodToName.put("10", "Barn- och ungdomsverksamhet");
         kodToName.put("11", "Medicinsk verksamhet");
         kodToName.put("12", "Laboratorieverksamhet");
