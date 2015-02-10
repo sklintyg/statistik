@@ -149,7 +149,7 @@ angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl', [ '$sco
                 $('#cancelModal').modal('toggle');
                 $('.modal-backdrop').remove();
 
-                $location.path("/verksamhet/vg1/jamforDiagnoser/" + selectionHash);
+                $location.path("/verksamhet/" + $routeParams.verksamhetId + "/jamforDiagnoser/" + selectionHash);
             }, function(){ throw new Error("Failed to get filter hash value"); });
         };
 
