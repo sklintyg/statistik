@@ -68,6 +68,7 @@ angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl', [ '$sco
         var populatePageWithData = function (result) {
             $scope.subTitle = config.title(result.period, result.filter.enheter ? result.filter.enheter.length : null);
             ControllerCommons.populateActiveDiagnosFilter($scope, statisticsData, result.filter.diagnoser, $routeParams.printBw || $routeParams.print);
+            $scope.resultMessage = result.message;
             $scope.doneLoading = true;
             $timeout(function () {
                 ControllerCommons.updateDataTable($scope, result.tableData);
