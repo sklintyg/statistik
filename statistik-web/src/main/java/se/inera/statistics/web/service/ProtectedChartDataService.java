@@ -166,6 +166,21 @@ public class ProtectedChartDataService {
         return new GroupedSjukfallConverter("Vårdenhet").convert(casesPerEnhet, range, filter);
     }
 
+    /**
+     * Gets sjukfall per enhet for verksamhetId, csv formatted.
+     */
+    @GET
+    @Path("{verksamhetId}/getNumberOfCasesPerEnhet/csv")
+    @Produces({ TEXT_UTF_8 })
+    @Consumes({ MediaType.APPLICATION_JSON })
+    @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request, #verksamhetId)")
+    @PostAuthorize(value = "@protectedChartDataService.userAccess(#request, #verksamhetId)")
+    public Response getNumberOfCasesPerEnhetAsCsv(@Context HttpServletRequest request, @PathParam(VERKSAMHET_PATH_ID) String verksamhetId, @QueryParam("filter") String filterHash) {
+        LOG.info("Calling getNumberOfCasesPerEnhetAsCsv with verksamhetId: {} and filterHash: {}", verksamhetId, filterHash);
+        final TableData tableData = getNumberOfCasesPerEnhet(request, verksamhetId, filterHash).getTableData();
+        return CsvConverter.getCsvResponse(tableData, "export.csv");
+    }
+
     private List<String> getEnhetsFilterIds(String filterHash, HttpServletRequest request) {
         if (filterHash == null || filterHash.isEmpty()) {
             final LoginInfo info = loginServiceUtil.getLoginInfo(request);
@@ -321,6 +336,18 @@ public class ProtectedChartDataService {
         final String message = emptyDiagnosisHash ? null : getCompareDiagnosisMessage(filter, diagnosis);
         SimpleKonResponse<SimpleKonDataRow> resultRows = warehouse.getJamforDiagnoser(filter.getPredicate(), range, verksamhet.getVardgivarId(), diagnosis);
         return new CompareDiagnosisConverter().convert(resultRows, range, filter, message);
+    }
+
+    @GET
+    @Path("{verksamhetId}/getJamforDiagnoserStatistik/{diagnosHash}/csv")
+    @Produces({ TEXT_UTF_8 })
+    @Consumes({ MediaType.APPLICATION_JSON })
+    @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request, #verksamhetId)")
+    @PostAuthorize(value = "@protectedChartDataService.userAccess(#request, #verksamhetId)")
+    public Response getCompareDiagnosisStatisticsAsCsv(@Context HttpServletRequest request, @PathParam(VERKSAMHET_PATH_ID) String verksamhetId, @QueryParam("filter") String filterHash, @PathParam("diagnosHash") String diagnosisHash) {
+        LOG.info("Calling getCompareDiagnosisStatisticsAsCsv with verksamhetId: {} and filterHash: {}", verksamhetId, filterHash);
+        final TableData tableData = getCompareDiagnosisStatistics(request, verksamhetId, diagnosisHash, filterHash).getTableData();
+        return CsvConverter.getCsvResponse(tableData, "export.csv");
     }
 
     private String getCompareDiagnosisMessage(Filter filter, List<String> diagnosis) {

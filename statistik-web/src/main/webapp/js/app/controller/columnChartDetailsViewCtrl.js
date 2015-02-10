@@ -96,7 +96,7 @@ angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl', [ '$sco
         }
 
         if (isVerksamhet) {
-            $scope.exportTableUrl = config.exportTableUrlVerksamhet($routeParams.verksamhetId);
+            $scope.exportTableUrl = config.exportTableUrlVerksamhet($routeParams.verksamhetId, $routeParams.diagnosHash);
             refreshVerksamhet();
         } else {
             $scope.exportTableUrl = config.exportTableUrl;
@@ -235,7 +235,7 @@ angular.module('StatisticsApp').casesPerBusinessConfig = function () {
     var conf = {};
     conf.dataFetcherVerksamhet = "getSjukfallPerBusinessVerksamhet";
     conf.exportTableUrlVerksamhet = function (verksamhetId) {
-        return "api/verksamhet/" + verksamhetId + "/getSjukfallPerBusinessVerksamhet/csv";
+        return "api/verksamhet/" + verksamhetId + "/getNumberOfCasesPerEnhet/csv";
     };
     conf.title = function (period, enhetsCount) {
         return "Antal sjukfall per vårdenhet" + ControllerCommons.getEnhetCountText(enhetsCount, false) + period;
@@ -262,7 +262,7 @@ angular.module('StatisticsApp').casesPerLakaresAlderOchKonConfig = function () {
     var conf = {};
     conf.dataFetcherVerksamhet = "getSjukfallPerLakaresAlderOchKonVerksamhet";
     conf.exportTableUrlVerksamhet = function (verksamhetId) {
-        return "api/verksamhet/" + verksamhetId + "/getSjukfallPerLakaresAlderOchKonVerksamhet/csv";
+        return "api/verksamhet/" + verksamhetId + "/getCasesPerDoctorAgeAndGenderStatistics/csv";
     };
     conf.title = function (period, enhetsCount) {
         return "Antal sjukfall baserat på läkares kön och ålder" + ControllerCommons.getEnhetCountText(enhetsCount, true) + period;
@@ -276,7 +276,7 @@ angular.module('StatisticsApp').casesPerLakarbefattningConfig = function () {
     var conf = {};
     conf.dataFetcherVerksamhet = "getSjukfallPerLakarbefattningVerksamhet";
     conf.exportTableUrlVerksamhet = function (verksamhetId) {
-        return "api/verksamhet/" + verksamhetId + "/getSjukfallPerLakarbefattningVerksamhet/csv";
+        return "api/verksamhet/" + verksamhetId + "/getNumberOfCasesPerLakarbefattning/csv";
     };
     conf.title = function (period, enhetsCount) {
         return "Antal sjukfall baserat på läkarbefattning" + ControllerCommons.getEnhetCountText(enhetsCount, true) + period;
@@ -289,9 +289,8 @@ angular.module('StatisticsApp').casesPerLakarbefattningConfig = function () {
 angular.module('StatisticsApp').compareDiagnosis = function () {
     var conf = {};
     conf.dataFetcherVerksamhet = "getCompareDiagnosisVerksamhet";
-    conf.exportTableUrl = "api/getCompareDiagnosisStatistics/csv";
-    conf.exportTableUrlVerksamhet = function (verksamhetId) {
-        return "api/verksamhet/" + verksamhetId + "/getCompareDiagnosisStatistics/csv";
+    conf.exportTableUrlVerksamhet = function (verksamhetId, diagnosisHash) {
+        return "api/verksamhet/" + verksamhetId + "/getJamforDiagnoserStatistik/" + diagnosisHash + "/csv";
     };
     conf.title = function (period, enhetsCount) {
         return "Jämförelse av valfria diagnoser" + ControllerCommons.getEnhetCountText(enhetsCount, false) + period;
