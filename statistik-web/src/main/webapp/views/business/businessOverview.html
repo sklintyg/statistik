@@ -23,20 +23,20 @@
 		<div class="row" id="print-logo-display">
 		    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 		        <img src="img/statistiktjansten-logotype-print.png">
-		        <h2 class="business-name-header print-only-no-display"><span class="dontprint">- </span>{{ verksamhetName }}</h2>
+		        <h2 class="business-name-header print-only-no-display"><span class="hidden-print">- </span>{{ verksamhetName }}</h2>
 		    </div>
 		</div>
 		<div class="row">
-			<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 pull-left dontprint right-2px-padding" style="width: auto !important; float: left;">
+			<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 pull-left hidden-print right-2px-padding" style="width: auto !important; float: left;">
 				<h1 class="national-statistic-h1" data-ng-bind="viewHeader"></h1>
 			</div>
-	    	<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 pull-left dontprint left-2px-padding business-name" id="business-name-header-container">
+	    	<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 pull-left hidden-print left-2px-padding business-name" id="business-name-header-container">
 				<h2 class="business-name-header">{{ verksamhetName }}</h2> 
 			</div>
 	    </div>
 		<div class="row">
 		    <span class="col-xs-12 col-sm-9 col-md-9 col-lg-9 overview-ingress pull-left" data-ng-bind="subTitle"></span>
-		    <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 pull-right margin-bottom dontprint" data-ng-class="{margin_top_button_group: showDetailsOptions}"
+		    <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 pull-right margin-bottom hidden-print" data-ng-class="{margin_top_button_group: showDetailsOptions}"
 		         style="width: auto;">
 		        <!-- PRINT BUTTON GROUP -->
 		        <div class="btn-group statistics-btn-group">
@@ -63,7 +63,7 @@
 									<h2 class="overview-widget-title pull-left">
 										<span message key="business.widget.header.total-antal"></span>
 									</h2>
-									<span class="dontprint pageHelpToolTip pull-right" style="padding: 8px 7px 7px 5px;"><img
+									<span class="hidden-print pageHelpToolTip pull-right" style="padding: 8px 7px 7px 5px;"><img
 					                    tooltip-html-unsafe="<div class=popover-content>{{popoverTextAmount}}</div>"
 					                    tooltip-trigger="mouseenter" tooltip-placement="left" src="img/question_white.png" alt=""></span>
 								</span>
@@ -80,7 +80,7 @@
 									<h2 class="overview-widget-title pull-left">
 										<span message key="business.widget.header.konsfordelning-sjukfall"></span>
 									</h2>
-									<span class="dontprint pageHelpToolTip pull-right" style="padding: 8px 7px 7px 5px;"><img
+									<span class="hidden-print pageHelpToolTip pull-right" style="padding: 8px 7px 7px 5px;"><img
 					                    tooltip-html-unsafe="<div class=popover-content>{{popoverTextSexDistribution}}{{popoverPreviousMonths}}</div>"
 					                    tooltip-trigger="mouseenter" tooltip-placement="left" src="img/question_white.png" alt=""></span>
 								</span>
@@ -101,7 +101,7 @@
 									<h2 class="overview-widget-title pull-left">
 										<span message key="business.widget.header.fordelning-diagnosgrupper"></span>
 									</h2>
-									<span class="dontprint pageHelpToolTip pull-right" style="padding: 8px 7px 7px 5px;"><img
+									<span class="hidden-print pageHelpToolTip pull-right" style="padding: 8px 7px 7px 5px;"><img
 					                    tooltip-html-unsafe="<div class=popover-content>{{popoverTextDiagnosisGroups1}}</div><div class=popover-content>{{popoverTextChangeCurrentVSPrevious}}{{popoverPreviousMonths}}</div>"
 					                    tooltip-trigger="mouseenter" tooltip-placement="left" src="img/question_white.png" alt=""></span>
 								</span>
@@ -136,7 +136,7 @@
 									<h2 class="overview-widget-title pull-left">
 										<span message key="business.widget.header.fordelning-aldersgrupper"></span>
 									</h2>
-									<span class="dontprint pageHelpToolTip pull-right" style="padding: 8px 7px 7px 5px;"><img
+									<span class="hidden-print pageHelpToolTip pull-right" style="padding: 8px 7px 7px 5px;"><img
 					                    tooltip-html-unsafe="<div class=popover-content>{{popoverTextAgeGroups1}}</div><div class=popover-content>{{popoverTextChangeCurrentVSPrevious}}{{popoverPreviousMonths}}</div>"
 					                    tooltip-trigger="mouseenter" tooltip-placement="left" src="img/question_white.png" alt=""></span>
 								</span>
@@ -174,7 +174,7 @@
 									<h2 class="overview-widget-title pull-left">
 										<span message key="business.widget.header.fordelning-sjukskrivningslangd"></span>
 									</h2>
-									<span class="dontprint pageHelpToolTip pull-right" style="padding: 8px 7px 7px 5px;"><img
+									<span class="hidden-print pageHelpToolTip pull-right" style="padding: 8px 7px 7px 5px;"><img
 					                    tooltip-html-unsafe="<div class=popover-content>{{popoverTextSickLeaveLength1}}</div><div class=popover-content>{{popoverTextSickLeaveLength2}}</div>"
 					                    tooltip-trigger="mouseenter" tooltip-placement="left" src="img/question_white.png" alt=""></span>
 								</span>
@@ -201,7 +201,7 @@
 									<h2 class="overview-widget-title pull-left">
 										<span message key="business.widget.header.fordelning-sjukskrivningsgrad"></span>
 									</h2>
-									<span class="dontprint pageHelpToolTip pull-right" style="padding: 8px 7px 7px 5px;"><img
+									<span class="hidden-print pageHelpToolTip pull-right" style="padding: 8px 7px 7px 5px;"><img
 					                    tooltip-html-unsafe="<div class=popover-content>{{popoverTextDegreeOfSickLeave1}}</div><div class=popover-content>{{popoverTextChangeCurrentVSPrevious}}{{popoverPreviousMonths}}</div>"
 					                    tooltip-trigger="mouseenter" tooltip-placement="left" src="img/question_white.png" alt=""></span>
 								</span>

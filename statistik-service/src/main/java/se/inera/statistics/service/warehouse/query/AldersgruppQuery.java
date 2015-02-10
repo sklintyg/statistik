@@ -119,8 +119,7 @@ public final class AldersgruppQuery {
                 rows.add(new SimpleKonDataRow(i.getName(), counter.getCountFemale(), counter.getCountMale()));
             }
         }
-
         return new SimpleKonResponse<>(rows, periodLength);
-
     }
+
 }

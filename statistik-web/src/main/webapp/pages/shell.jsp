@@ -74,7 +74,7 @@
 ================================================== -->
 <div class="container-fluid">
 	<div class="row">
-		<div class="col-xs-12 navbar dontprint">
+		<div class="col-xs-12 navbar hidden-print">
 		    <div class="navbar-inner">
 		        <div class="container-fluid">
 		            <div class="row" id="navigation-container">
@@ -121,7 +121,7 @@
         <!-- Docs nav
         ================================================== -->
         <div class="row">
-            <div class="col-xs-12 col-sm-3 bs-docs-sidebar dontprint" data-ng-controller="navigationMenuCtrl">
+            <div class="col-xs-12 col-sm-3 bs-docs-sidebar hidden-print" data-ng-controller="navigationMenuCtrl">
                 <h1 class="hidden-header"><span message key="statistics.hidden-header.sidans-huvudnavigering"></span></h1>
 				<!-- MOBILE NAVIGATION START -->
 				<nav class="navbar navbar-default hidden-sm hidden-md hidden-lg" role="navigation">
@@ -425,7 +425,7 @@
             <div class="col-xs-12 col-sm-9">
                 <div class="row" ng-show="verksamhetIdParam" data-ng-controller="filterCtrl">
                     <div class="col-xs-12">
-                        <div id="statistics-filter-container" class="collapse dontprint" collapse="!isFilterCollapsed">
+                        <div id="statistics-filter-container" class="collapse hidden-print" collapse="!isFilterCollapsed">
                         	<div class="row">
 				                <div class="filter-level" id="first-level-filter">
                                     <div class="col-xs-4 clearfix" data-ng-if="businessFilter.numberOfBusinesses() === 'medium' || businessFilter.numberOfBusinesses() === 'large'">
@@ -475,7 +475,7 @@
                                 </div>
 				        	</div>
 	                    </div>
-	                    <filter-button class="dontprint"/>
+	                    <filter-button class="hidden-print"/>
                     </div>
                 </div>
 				<div class="row">

@@ -147,17 +147,4 @@ public final class DocumentHelper {
         }
         return id;
     }
-
-    public static JsonNode prepare(JsonNode utlatande, JsonNode hsaInfo) {
-        String personId = utlatande.path("patient").path("id").path("extension").textValue();
-        int alder = ConversionHelper.extractAlder(personId, ISODateTimeFormat.dateTimeParser().parseLocalDate(utlatande.path("signeringsdatum").textValue()));
-        String kon = ConversionHelper.extractKon(personId);
-
-        ObjectNode prepared = utlatande.deepCopy();
-        ObjectNode patientNode = (ObjectNode) prepared.path("patient");
-        patientNode.put("alder", alder);
-        patientNode.put("kon", kon);
-        prepared.put("hsa", hsaInfo);
-        return prepared;
-    }
 }

@@ -46,7 +46,7 @@ public class LogConsumerImpl implements LogConsumer {
     private volatile boolean isRunning = false;
 
     @Transactional(noRollbackFor = Exception.class)
-    public int processBatch() {
+    public synchronized int processBatch() {
         try {
             setRunning(true);
             List<IntygEvent> result = processLog.getPending(BATCH_SIZE);

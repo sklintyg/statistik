@@ -515,19 +515,7 @@ Teset är ignorerat pga STATISTIK-839
 |inloggad som | grupp                                         | antal? | förändring? |
 | user2       | A00-E90, G00-L99, N00-N99 Somatiska sjukdomar | 45      | 4           |
 | user2       | F00-F99 Psykiska sjukdomar                    | 4      | -33           |
-| user2       | M00-M99 Muskuloskeletala sjukdomar            | 3      | 0           |
-| user2       | O00-O99 Graviditet och förlossning            | 2      | -33           |
 | user2       | P00-P96, Q00-Q99, S00-Y98 Övrigt            | 36      | 33           |
-
-
-| Sjukfall i oversikt diagnos |
-|inloggad som | grupp                                         | antal? | förändring? |
-| user1       | A00-E90, G00-L99, N00-N99 Somatiska sjukdomar | 25      | 31           |
-| user1       | F00-F99 Psykiska sjukdomar                    | 1      | -50           |
-| user1       | M00-M99 Muskuloskeletala sjukdomar            | 1      | 0           |
-| user1       | O00-O99 Graviditet och förlossning            | 1      | -50           |
-| user1       | P00-P96, Q00-Q99, S00-Y98 Övrigt            | 14      | 16           |
-
 
 | Sjukfall i oversikt aldersgrupp |
 |inloggad som | grupp                                         | antal? | förändring? |
@@ -578,19 +566,7 @@ Nationell:
 | grupp                                         | antal? | förändring? |
 | A00-E90, G00-L99, N00-N99 Somatiska sjukdomar | 45      | 4           |
 | F00-F99 Psykiska sjukdomar                    | 4      | -33           |
-| M00-M99 Muskuloskeletala sjukdomar            | 3      | 0           |
-| O00-O99 Graviditet och förlossning            | 2      | -33           |
 | P00-P96, Q00-Q99, S00-Y98 Övrigt            | 36      | 33           |
-
-
-| Sjukfall i oversikt diagnos |
-| grupp                                         | antal? | förändring? |
-| A00-E90, G00-L99, N00-N99 Somatiska sjukdomar | 45      | 4           |
-| F00-F99 Psykiska sjukdomar                    | 4      | -33           |
-| M00-M99 Muskuloskeletala sjukdomar            | 3      | 0           |
-| O00-O99 Graviditet och förlossning            | 2      | -33           |
-| P00-P96, Q00-Q99, S00-Y98 Övrigt            | 36      | 33           |
-
 
 | Sjukfall i oversikt aldersgrupp |
 | grupp                                         | antal? | förändring? |
