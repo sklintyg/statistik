@@ -706,12 +706,12 @@ public class ProtectedChartDataService {
 
     private Filter getFilterForAllAvailableEnhets(HttpServletRequest request) {
         LoginInfo info = loginServiceUtil.getLoginInfo(request);
-        final List<Integer> availableEnhets = Lists.transform(info.getBusinesses(), new Function<Verksamhet, Integer>() {
+        final Set<Integer> availableEnhets = new HashSet<>(Lists.transform(info.getBusinesses(), new Function<Verksamhet, Integer>() {
             @Override
             public Integer apply(Verksamhet verksamhet) {
                 return Warehouse.getEnhet(verksamhet.getId());
             }
-        });
+        }));
         return new Filter(new Predicate<Fact>() {
             @Override
             public boolean apply(Fact fact) {

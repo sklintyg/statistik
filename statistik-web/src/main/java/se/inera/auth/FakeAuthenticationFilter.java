@@ -49,11 +49,6 @@ public class FakeAuthenticationFilter extends AbstractAuthenticationProcessingFi
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
-        // Hantera mer än en profil
-        if (!profiles.contains("security-fake") && !profiles.contains("security-both")) {
-            return null;
-        }
-
         String parameter = request.getParameter("userJsonDisplay");
         // we manually encode the json parameter
         String json = URLDecoder.decode(parameter, "ISO-8859-1");
