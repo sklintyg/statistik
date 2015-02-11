@@ -294,10 +294,11 @@ var ControllerCommons = new function(){
 
     this.getEnhetCountText = function(enhetsCount, basedOnAlreadyInText) {
         'use strict';
+        var singleEnhet = enhetsCount == 1;
         if (basedOnAlreadyInText) {
-            return enhetsCount && enhetsCount != 1 ? " och " + enhetsCount + " enheter " : " ";
+            return enhetsCount ? " och " + enhetsCount + " enhet" + (singleEnhet ? "" : "er") + " " : " ";
         }
-        return enhetsCount && enhetsCount != 1 ? " baserat på " + enhetsCount + " enheter " : " ";
+        return enhetsCount ? " baserat på " + enhetsCount + " enhet" + (singleEnhet ? "" : "er") + " " : " ";
     };
 
     function icdStructureAsArray(icdStructure) {
