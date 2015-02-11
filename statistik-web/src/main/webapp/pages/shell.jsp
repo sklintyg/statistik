@@ -26,6 +26,7 @@
     <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title data-ng-bind="$root.page_title">Inera Statistics Service</title>
 
     <!--[if lte IE 8]>
@@ -41,17 +42,17 @@
         document.createElement('ng:view');
     </script>
     <link href="<c:url value='/css/inera-statistics.css'/>" rel="stylesheet">
-    <link href="<c:url value='/bootstrap/3.1.1/css/bootstrap.min.css'/>" rel="stylesheet">
+    <link href="<c:url value='/webjars/bootstrap/3.1.1/css/bootstrap.min.css'/>" rel="stylesheet">
     <link href="<c:url value='/css/inera-statistics-responsive.css'/>" rel="stylesheet">
     <![endif]-->
     <link href="<c:url value='/css/inera-statistics.css'/>" rel="stylesheet" media="not print">
     <link href="<c:url value='/css/inera-statistics-responsive.css'/>" rel="stylesheet" media="not print">
     <link href="<c:url value='/css/helperclasses.css'/>" rel="stylesheet" media="not print">
-    <link href="<c:url value='/css/bootstrap-multiselect.css'/>" rel="stylesheet" media="not print">
+    <link href="<c:url value='/webjars/bootstrap-multiselect/0.9.8/css/bootstrap-multiselect.css'/>" rel="stylesheet" media="not print">
     <link href="<c:url value='/css/filter.css'/>" rel="stylesheet" media="not print">
 
-    <link href="<c:url value='/bootstrap/3.1.1/css/bootstrap.min.css'/>" rel="stylesheet" media="all">
-    <link href="<c:url value='/bootstrap/3.1.1/css/bootstrap-theme.min.css'/>" rel="stylesheet" media="all">
+    <link href="<c:url value='/webjars/bootstrap/3.1.1/css/bootstrap.min.css'/>" rel="stylesheet" media="all">
+    <link href="<c:url value='/webjars/bootstrap/3.1.1/css/bootstrap-theme.min.css'/>" rel="stylesheet" media="all">
     <link href="<c:url value='/css/print.css'/>" rel="stylesheet" media="print">
 
     <link rel="icon" type="image/png" href="<c:url value='/img/favicon.ico'/>">
@@ -492,20 +493,20 @@
 <!-- Scripts -->
 <!-- Placed at the end of the document so the pages load faster -->
 <!--[if lt IE 9]>
-<script type="text/javascript" src="<c:url value='/js/lib/respond/1.3.0/respond.min.js'/>"></script>
+<script type="text/javascript" src="<c:url value='/webjars/respond/1.3.0/respond.min.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/html5shiv.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/css3-mediaqueries.js'/>"></script>
 <![endif]-->
-<script type="text/javascript" src="<c:url value='/js/lib/jquery/1.10.2/jquery.min.js'/>"></script>
-<script type="text/javascript" src="<c:url value='/bootstrap/3.1.1/js/bootstrap.min.js'/>"></script>
-<script type="text/javascript" src="<c:url value='/js/lib/underscore-1.7.0/underscore-min.js'/>"></script>
-<script type="text/javascript" src="<c:url value='/js/lib/angularjs/1.2.14/angular.min.js'/>"></script>
-<script type="text/javascript" src="<c:url value='/js/lib/angularjs/1.2.14/angular-cookies.min.js'/>"></script>
-<script type="text/javascript" src="<c:url value='/js/lib/angularjs/1.2.14/angular-route.min.js'/>"></script>
-<script type="text/javascript" src="<c:url value='/js/lib/angularjs/1.2.14/angular-sanitize.min.js'/>"></script>
-<script type="text/javascript" src="<c:url value='/js/lib/ui-bootstrap/0.10.0/ui-bootstrap-tpls-0.10.0.min.js'/>"></script>
-<script type="text/javascript" src="<c:url value='/js/lib/respond/1.3.0/respond.min.js'/>"></script>
-<script type="text/javascript" src="<c:url value='/js/lib/bootstrap-multiselect/bootstrap-multiselect.js'/>"></script>
+<script type="text/javascript" src="<c:url value='/webjars/jquery/1.10.2/jquery.min.js'/>"></script>
+<script type="text/javascript" src="<c:url value='/webjars/bootstrap/3.1.1/js/bootstrap.min.js'/>"></script>
+<script type="text/javascript" src="<c:url value='/webjars/underscorejs/1.7.0/underscore-min.js'/>"></script>
+<script type="text/javascript" src="<c:url value='/webjars/angularjs/1.2.14/angular.min.js'/>"></script>
+<script type="text/javascript" src="<c:url value='/webjars/angularjs/1.2.14/angular-cookies.min.js'/>"></script>
+<script type="text/javascript" src="<c:url value='/webjars/angularjs/1.2.14/angular-route.min.js'/>"></script>
+<script type="text/javascript" src="<c:url value='/webjars/angularjs/1.2.14/angular-sanitize.min.js'/>"></script>
+<script type="text/javascript" src="<c:url value='/webjars/angular-ui-bootstrap/0.10.0/ui-bootstrap-tpls.min.js'/>"></script>
+<script type="text/javascript" src="<c:url value='/webjars/respond/1.3.0/respond.min.js'/>"></script>
+<script type="text/javascript" src="<c:url value='/webjars/bootstrap-multiselect/0.9.8/js/bootstrap-multiselect.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/app.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/services/factories.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/services/treeMultiSelectUtil.js'/>"></script>

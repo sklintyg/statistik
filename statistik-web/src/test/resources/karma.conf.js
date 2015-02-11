@@ -2,8 +2,11 @@
 // Generated on Thu Oct 09 2014 12:29:43 GMT+0200 (CEST)
 
 module.exports = function(config) {
-    config.set({
+    'use strict';
 
+    var WEBJAR_DIR = 'build/webjars/META-INF/resources/webjars/';
+
+    config.set({
         // base path that will be used to resolve all patterns (eg. files, exclude)
         basePath: '../../../',
 
@@ -13,12 +16,13 @@ module.exports = function(config) {
 
         // list of files / patterns to load in the browser
         files: [
-            'src/main/**/angular.js',
-            'src/main/**/angular-route.js',
-            'src/main/**/angular-cookies.js',
-            'src/main/**/angular-sanitize.js',
-            'src/main/**/ui-bootstrap-tpls-0.10.0.min.js',
-            'src/main/**/underscore.js',
+            WEBJAR_DIR + 'angularjs/1.2.14/angular.js',
+            WEBJAR_DIR + 'angularjs/1.2.14/angular-route.js',
+            WEBJAR_DIR + 'angularjs/1.2.14/angular-cookies.js',
+            WEBJAR_DIR + 'angularjs/1.2.14/angular-sanitize.js',
+            WEBJAR_DIR + 'angularjs/1.2.14/angular-mocks.js',
+            WEBJAR_DIR + 'angular-ui-bootstrap/0.10.0/ui-bootstrap-tpls.min.js',
+            WEBJAR_DIR + 'underscorejs/1.7.0/underscore-min.js',
             'src/main/**/highcharts.js',
             'src/main/**/app.js',
             'src/main/**/messages.js',
