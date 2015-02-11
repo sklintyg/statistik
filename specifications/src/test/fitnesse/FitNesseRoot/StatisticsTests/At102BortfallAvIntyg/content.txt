@@ -4,6 +4,7 @@ Test visar att:
 - Intyg med personnummer på rätt form tas med. Giltiga/ogiltiga sista siffror spelar ingen roll.
 - Intyg med startdatum innan 2010-01-01 tas med.
 - Intyg med slutdatum mer än 5 år fram i tiden tas med.
+- Intyg med slutdatum före startdatum tas inte med.
 
 
 
