@@ -463,7 +463,7 @@
 	                            			<div class="col-xs-12 pull-right">
                                                 <span ng-if="businessFilter.numberOfBusinesses() !== 'small'">
                                                 <span message key="lbl.filter.sum-progress-1"></span>{{ businessFilter.selectedBusinesses.length }}<span message key="lbl.filter.sum-progress-2"></span>{{ businessFilter.businesses.length }} <span message key="lbl.filter.sum-progress-3"></span>
-                                                 <progressbar max="businessFilter.businesses.length" value="100 * (businessFilter.selectedBusinesses.length/businessFilter.businesses.length)"></progressbar>
+                                                 <progressbar max="businessFilter.businesses.length" value="businessFilter.selectedBusinesses.length"></progressbar>
                                                 </span>
 	                            				<button type="button" class="btn btn-default pull-right" data-ng-click="resetFilter()"><span message key="lbl.aterstall"></span></button>
 	                                        	<button class="btn btn-success pull-right" data-ng-click="makeUnitSelection()"><span message key="lbl.gor-urval" data-toggle="collapse" data-target="#statistics-filter-container" ng-click="filter.open = !filter.open"></span></button>
