@@ -27,13 +27,19 @@ public class SimpleDetailsData {
     private final int monthsIncluded;
     private final String period;
     private final FilterDataResponse filter;
+    private final String message;
 
-    public SimpleDetailsData(TableData tableData, ChartData chartData, int monthsIncluded, String period, FilterDataResponse filter) {
+    public SimpleDetailsData(TableData tableData, ChartData chartData, int monthsIncluded, String period, FilterDataResponse filter, String message) {
         this.tableData = tableData;
         this.chartData = chartData;
         this.monthsIncluded = monthsIncluded;
         this.period = period;
         this.filter = filter;
+        this.message = message;
+    }
+
+    public SimpleDetailsData(TableData tableData, ChartData chartData, int monthsIncluded, String period, FilterDataResponse filter) {
+        this(tableData, chartData, monthsIncluded, period, filter, null);
     }
 
     public TableData getTableData() {
@@ -54,6 +60,10 @@ public class SimpleDetailsData {
 
     public FilterDataResponse getFilter() {
         return filter;
+    }
+
+    public String getMessage() {
+        return message;
     }
 
 }

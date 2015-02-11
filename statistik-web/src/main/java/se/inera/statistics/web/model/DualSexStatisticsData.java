@@ -27,13 +27,19 @@ public class DualSexStatisticsData {
     private final ChartData femaleChart;
     private final String period;
     private final FilterDataResponse filter;
+    private final String message;
 
     public DualSexStatisticsData(TableData tableData, ChartData maleChart, ChartData femaleChart, String period, FilterDataResponse filter) {
+        this(tableData, maleChart, femaleChart, period, filter, null);
+    }
+
+    public DualSexStatisticsData(TableData tableData, ChartData maleChart, ChartData femaleChart, String period, FilterDataResponse filter, String message) {
         this.tableData = tableData;
         this.maleChart = maleChart;
         this.femaleChart = femaleChart;
         this.period = period;
         this.filter = filter;
+        this.message = message;
     }
 
     public TableData getTableData() {
@@ -54,6 +60,10 @@ public class DualSexStatisticsData {
 
     public FilterDataResponse getFilter() {
         return filter;
+    }
+
+    public String getMessage() {
+        return message;
     }
 
 }

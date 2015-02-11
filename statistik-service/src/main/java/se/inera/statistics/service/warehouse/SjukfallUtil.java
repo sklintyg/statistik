@@ -104,7 +104,6 @@ public final class SjukfallUtil {
         for (int i = 0; i < enhetIds.length; i++) {
             numericalIds[i] = Warehouse.getEnhet(enhetIds[i]);
         }
-        Arrays.sort(numericalIds);
         return new EnhetFilter(numericalIds);
     }
 

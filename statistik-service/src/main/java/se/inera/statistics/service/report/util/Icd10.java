@@ -216,6 +216,30 @@ public class Icd10 {
         });
     }
 
+    public Id findFromIcd10Code(String icd10) {
+        for (Id kategori : idToKategoriMap.values()) {
+            if (icd10.equals(kategori.getId())) {
+                return kategori;
+            }
+        }
+        for (Id avsnitt : idToAvsnittMap.values()) {
+            if (icd10.equals(avsnitt.getId())) {
+                return avsnitt;
+            }
+        }
+        for (Id kapitel : idToKapitelMap.values()) {
+            if (icd10.equals(kapitel.getId())) {
+                return kapitel;
+            }
+        }
+        for (Id internal : internalIcd10) {
+            if (icd10.equals(internal.getId())) {
+                return internal;
+            }
+        }
+        throw new RuntimeException("ICD10 with id could not be found: " + icd10);
+    }
+
     public static class IdMap<T extends Id> extends HashMap<String, T> {
         public void put(T id) {
             if (id != null) {

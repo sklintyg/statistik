@@ -119,7 +119,7 @@ public class LargeTestDataGenerator {
                 JsonNode utlatande = permutate(builder, id, now);
                 HSAKey hsaKey = extractHSAKey(utlatande);
                 JsonNode hsaInfo = hsaService.getHSAInfo(hsaKey);
-                JsonNode document = DocumentHelper.prepare(utlatande, hsaInfo);
+                JsonNode document = DocumentHelper.prepare(utlatande);
                 try {
                     for (WideLine wideLine : widelineConverter.toWideline(document, hsaInfo, count++, "" + count, EventType.CREATED)) {
                         factPopulator.accept(wideLine);

@@ -121,12 +121,14 @@
 			  </ul>
 			</div>
 		</div>
+    <div class="col-xs-12" data-ng-show="resultMessage">{{resultMessage}}</div>
     </div>
-	
-	<!-- Start ingress -->
+
+
+    <!-- Start ingress -->
     <div data-ng-include="errorPageUrl"></div>
     <div dataerrorview show-error="dataLoadingError">
-        <div spinner label="{{spinnerText}}" show-spinner="!doneLoading" show-content="doneLoading">
+        <div spinner label="{{spinnerText}}" show-spinner="!doneLoading" show-content="doneLoading && !resultMessage">
 			<!-- Start graph -->
 			<div class="row">
 				<div data-ng-repeat="chartContainer in chartContainers" data-ng-class="{'col-lg-12': chartContainers.length == 1, 'col-lg-6': chartContainers.length == 2}" class="left-2px-padding right-2px-padding">

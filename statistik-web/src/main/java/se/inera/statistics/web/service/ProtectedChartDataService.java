@@ -41,6 +41,7 @@ import se.inera.statistics.service.report.model.SimpleKonResponse;
 import se.inera.statistics.service.report.model.SjukfallslangdResponse;
 import se.inera.statistics.service.report.model.SjukskrivningsgradResponse;
 import se.inera.statistics.service.report.model.VerksamhetOverviewResponse;
+import se.inera.statistics.service.report.util.Icd10;
 import se.inera.statistics.service.warehouse.Warehouse;
 import se.inera.statistics.web.model.SimpleDetailsData;
 import se.inera.statistics.web.model.DualSexStatisticsData;
@@ -66,6 +67,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -97,6 +99,12 @@ public class ProtectedChartDataService {
 
     @Autowired
     private FilterHashHandler filterHashHandler;
+
+    @Autowired
+    private Icd10 icd10;
+
+    @Autowired
+    private ResultMessageHandler resultMessageHandler;
 
     /**
      * Gets sjukfall per manad for verksamhetId.
@@ -156,6 +164,21 @@ public class ProtectedChartDataService {
         Map<String, String> idToNameMap = getEnhetNameMap(request, verksamhet, getEnhetsFilterIds(filterHash, request));
         SimpleKonResponse<SimpleKonDataRow> casesPerEnhet = warehouse.getCasesPerEnhet(filter.getPredicate(), idToNameMap, range, verksamhet.getVardgivarId());
         return new GroupedSjukfallConverter("Vårdenhet").convert(casesPerEnhet, range, filter);
+    }
+
+    /**
+     * Gets sjukfall per enhet for verksamhetId, csv formatted.
+     */
+    @GET
+    @Path("{verksamhetId}/getNumberOfCasesPerEnhet/csv")
+    @Produces({ TEXT_UTF_8 })
+    @Consumes({ MediaType.APPLICATION_JSON })
+    @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request, #verksamhetId)")
+    @PostAuthorize(value = "@protectedChartDataService.userAccess(#request, #verksamhetId)")
+    public Response getNumberOfCasesPerEnhetAsCsv(@Context HttpServletRequest request, @PathParam(VERKSAMHET_PATH_ID) String verksamhetId, @QueryParam("filter") String filterHash) {
+        LOG.info("Calling getNumberOfCasesPerEnhetAsCsv with verksamhetId: {} and filterHash: {}", verksamhetId, filterHash);
+        final TableData tableData = getNumberOfCasesPerEnhet(request, verksamhetId, filterHash).getTableData();
+        return CsvConverter.getCsvResponse(tableData, "export.csv");
     }
 
     private List<String> getEnhetsFilterIds(String filterHash, HttpServletRequest request) {
@@ -261,8 +284,17 @@ public class ProtectedChartDataService {
         Filter filter = getFilter(request, verksamhet, filterHash);
         final String vardgivarId = verksamhet.getVardgivarId();
         DiagnosgruppResponse diagnosavsnitt = warehouse.getUnderdiagnosgrupper(filter.getPredicate(), range, groupId, vardgivarId);
-        return new DiagnosisSubGroupsConverter().convert(diagnosavsnitt, range, filter);
+        final String message = getDiagnosisSubGroupStatisticsMessage(filter, Arrays.asList(String.valueOf(icd10.findFromIcd10Code(groupId).toInt())));
+        return new DiagnosisSubGroupsConverter().convert(diagnosavsnitt, range, filter, message);
     }
+
+    private String getDiagnosisSubGroupStatisticsMessage(Filter filter, List<String> diagnosis) {
+        if (resultMessageHandler.isDxFilterDisableAllSelectedDxs(diagnosis, filter.getDiagnoser())) {
+            return "Du har gjort ett val av diagnoskapitel eller diagnosavsnitt som inte matchar det val du gjort i diagnosfilter (se Visa filter högst upp på sidan).";
+        }
+        return null;
+    }
+
 
     /**
      * Get sjukfall per diagnosavsnitt for given diagnoskapitel. Csv formatted.
@@ -301,8 +333,28 @@ public class ProtectedChartDataService {
         Filter filter = getFilter(request, verksamhet, filterHash);
         final boolean emptyDiagnosisHash = diagnosisHash == null || diagnosisHash.isEmpty() || "-".equals(diagnosisHash);
         final List<String> diagnosis = emptyDiagnosisHash ? Collections.<String>emptyList() : getFilterFromHash(diagnosisHash).getDiagnoser();
+        final String message = emptyDiagnosisHash ? null : getCompareDiagnosisMessage(filter, diagnosis);
         SimpleKonResponse<SimpleKonDataRow> resultRows = warehouse.getJamforDiagnoser(filter.getPredicate(), range, verksamhet.getVardgivarId(), diagnosis);
-        return new CompareDiagnosisConverter().convert(resultRows, range, filter);
+        return new CompareDiagnosisConverter().convert(resultRows, range, filter, message);
+    }
+
+    @GET
+    @Path("{verksamhetId}/getJamforDiagnoserStatistik/{diagnosHash}/csv")
+    @Produces({ TEXT_UTF_8 })
+    @Consumes({ MediaType.APPLICATION_JSON })
+    @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request, #verksamhetId)")
+    @PostAuthorize(value = "@protectedChartDataService.userAccess(#request, #verksamhetId)")
+    public Response getCompareDiagnosisStatisticsAsCsv(@Context HttpServletRequest request, @PathParam(VERKSAMHET_PATH_ID) String verksamhetId, @QueryParam("filter") String filterHash, @PathParam("diagnosHash") String diagnosisHash) {
+        LOG.info("Calling getCompareDiagnosisStatisticsAsCsv with verksamhetId: {} and filterHash: {}", verksamhetId, filterHash);
+        final TableData tableData = getCompareDiagnosisStatistics(request, verksamhetId, diagnosisHash, filterHash).getTableData();
+        return CsvConverter.getCsvResponse(tableData, "export.csv");
+    }
+
+    private String getCompareDiagnosisMessage(Filter filter, List<String> diagnosis) {
+        if (resultMessageHandler.isDxFilterDisableAllSelectedDxs(diagnosis, filter.getDiagnoser())) {
+            return "Du har gjort ett val av diagnos som inte matchar det val du gjort i diagnosfilter (se Visa filter högst upp på sidan).";
+        }
+        return null;
     }
 
     /**
@@ -681,12 +733,12 @@ public class ProtectedChartDataService {
 
     private Filter getFilterForAllAvailableEnhets(HttpServletRequest request) {
         LoginInfo info = loginServiceUtil.getLoginInfo(request);
-        final List<Integer> availableEnhets = Lists.transform(info.getBusinesses(), new Function<Verksamhet, Integer>() {
+        final Set<Integer> availableEnhets = new HashSet<>(Lists.transform(info.getBusinesses(), new Function<Verksamhet, Integer>() {
             @Override
             public Integer apply(Verksamhet verksamhet) {
                 return Warehouse.getEnhet(verksamhet.getId());
             }
-        });
+        }));
         return new Filter(new Predicate<Fact>() {
             @Override
             public boolean apply(Fact fact) {
@@ -782,13 +834,6 @@ public class ProtectedChartDataService {
             }
         }
         return enheter;
-    }
-
-    private List<String> getIdsFromIdString(String ids) {
-        if (ids != null) {
-            return ID_SPLITTER.splitToList(ids);
-        }
-        return null;
     }
 
     private Verksamhet getVerksamhet(HttpServletRequest request, String verksamhetId) {
