@@ -96,7 +96,9 @@ angular.module('StatisticsApp').directive('multiselectDropdown', function (busin
                 }
                 businessFilter.filterChanged();
                 element.change();
-            }
+            },
+            includeSelectAllOption: true,
+            selectAllText: "Markera alla"
         });
 
         // Watch for any changes to the length of our select element

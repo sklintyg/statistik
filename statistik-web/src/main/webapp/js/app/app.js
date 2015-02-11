@@ -89,7 +89,7 @@ var app = angular.module('StatisticsApp', [ 'ngRoute', 'ngCookies', 'ngSanitize'
         }).when('/verksamhet/:verksamhetId/diagnosgrupp', {
             templateUrl: 'views/detailsView.html',
             controller: 'doubleAreaChartsCtrl',
-            controllerAs: 'VerksamhetDiagnoskapitelCtrl',
+            controllerAs: 'VerksamhetDiagnosgruppCtrl',
             resolve: { config: app.diagnosisGroupConfig },
             title: 'Diagnosgrupper'
         }).when('/verksamhet/:verksamhetId/diagnosavsnitt/:groupId/kategori/:kategoriId', {
