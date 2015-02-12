@@ -2,6 +2,7 @@
 
 angular.module('StatisticsApp').controller('filterCtrl', ['$scope', '$rootScope', '$location', 'statisticsData', 'businessFilter', '$timeout', 'messageService',
     function ($scope, $rootScope, $location, statisticsData, businessFilter, $timeout, messageService) {
+
         $scope.businessFilter = businessFilter;
 
         function updateGeographyFilterSelectorDataButtonLabelText() {
@@ -12,11 +13,9 @@ angular.module('StatisticsApp').controller('filterCtrl', ['$scope', '$rootScope'
             updateGeographyFilterSelectorDataButtonLabelText();
         });
         $scope.$watch('businessFilter.businesses', function(newValue,oldValue,scope) {
-            console.log(businessFilter.businesses.length);
             updateGeographyFilterSelectorDataButtonLabelText();
         });
         $scope.$watch('businessFilter', function(newValue,oldValue,scope) {
-            console.log("heloo");
             $scope.icd10 = newValue.icd10;
         });
         $scope.$watch('businessFilter.geography', function(newValue,oldValue,scope) {
