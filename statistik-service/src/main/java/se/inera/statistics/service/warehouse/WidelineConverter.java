@@ -52,6 +52,8 @@ public class WidelineConverter {
     public static final int MAX_LENGTH_LAKARE_ID = 128;
     public static final int MAX_LENGTH_TILLTALSNAMN = 128;
     public static final int MAX_LENGTH_EFTERNAMN = 128;
+    private static final int DATE20100101 = 3653; // 365*10 + 3
+    private static final int MAX_YEARS_INTO_FUTURE = 5;
 
     @Autowired
     private Icd10 icd10;
@@ -143,6 +145,18 @@ public class WidelineConverter {
         }
     }
 
+    private void checkStartdatum(List<String> errors, int startdatum) {
+        if (startdatum < DATE20100101 || startdatum > toDay(LocalDate.now().plusYears(MAX_YEARS_INTO_FUTURE))) {
+            errors.add("Illegal startdatum: " + startdatum);
+        }
+    }
+
+    private void checkSlutdatum(List<String> errors, int slutdatum) {
+        if (slutdatum > toDay(LocalDate.now().plusYears(MAX_YEARS_INTO_FUTURE))) {
+            errors.add("Illegal slutdatum: " + slutdatum);
+        }
+    }
+
     private void checkField(List<String> errors, String field, String fieldName) {
         if (field == null || field.isEmpty()) {
             errors.add(fieldName + " not found.");
@@ -155,6 +169,7 @@ public class WidelineConverter {
             errors.add(fieldName + " input too long");
         }
     }
+
     private String getLkf(JsonNode hsa) {
         String lkf = HSAServiceHelper.getKommun(hsa);
         if (lkf.isEmpty()) {
@@ -177,6 +192,8 @@ public class WidelineConverter {
         checkField(errors, line.getPatientid(), "Patient");
         checkField(errors, line.getLakareId(), "LäkarID");
         checkSjukskrivningsgrad(errors, line.getSjukskrivningsgrad());
+        checkStartdatum(errors, line.getStartdatum());
+        checkSlutdatum(errors, line.getSlutdatum());
         return errors;
     }
 }

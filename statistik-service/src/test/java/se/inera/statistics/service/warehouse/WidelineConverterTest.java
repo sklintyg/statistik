@@ -99,10 +99,28 @@ public class WidelineConverterTest {
     }
 
     @Test
+    public void errorOnEarlyDate() throws Exception {
+        wideLine.setStartdatum(0);
+        List<String> errors = converter.validate(wideLine);
+
+        LOG.error("Error message: {}", errors);
+        assertEquals(1, errors.size());
+    }
+
+    @Test
+    public void errorOnLateDate() throws Exception {
+        wideLine.setSlutdatum(1000000);
+        List<String> errors = converter.validate(wideLine);
+
+        LOG.error("Error message: {}", errors);
+        assertEquals("N:o of errors: " +  errors.size(), 1, errors.size());
+    }
+
+    @Test
     public void allErrorsAreReported() throws Exception {
         List<String> errors = converter.validate(new WideLine());
 
         LOG.error("Error message: {}", errors);
-        assertEquals(6, errors.size());
+        assertEquals(7, errors.size());
     }
 }

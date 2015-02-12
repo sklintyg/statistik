@@ -2,8 +2,8 @@
 
 Test visar att:
 - Intyg med personnummer på rätt form tas med. Giltiga/ogiltiga sista siffror spelar ingen roll.
-- Intyg med startdatum innan 2010-01-01 tas med.
-- Intyg med slutdatum mer än 5 år fram i tiden tas med.
+- Intyg med startdatum innan 2010-01-01 tas inte med.
+- Intyg med slutdatum mer än 5 år fram i tiden tas inte med.
 - Intyg med slutdatum före startdatum tas inte med.
 
 
@@ -49,12 +49,12 @@ Nationell:
 Inloggad:
 | Sjukfall i rapporten sjukfall totalt |
 | inloggad som | år   | månad | män? | kvinnor? |
-| user1  | 2013 | feb   | 2    | 0        |
+| user1  | 2013 | feb   | 1    | 0        |
 
 Nationell:
 | Sjukfall i rapporten sjukfall totalt |
 | år   | månad | män? | kvinnor? |
-| 2013 | feb   | 2    | 0        |
+| 2013 | feb   | 1    | 0        |
 
 
 
@@ -65,7 +65,8 @@ Nationell:
 
 | Enbart foljande intyg finns |
 | personnr | diagnoskod | start    | slut       | enhet | kommentar |
-| 19790407-1295 | G01 | 2013-02-05 | 2021-02-06 | enhet1 | Slutdatum mer än 5 år fram i tiden |
+| 19790407-6457 | G01 | 2013-02-05 | 2018-11-07 | enhet1 | Slutdatum mer än 5 år fram i tiden |
+| 19790407-1295 | G01 | 2013-02-05 | 2018-11-06 | enhet1 | Slutdatum mindre än 5 år fram i tiden |
 
 !3 Då gäller:
 Inloggad:
