@@ -78,6 +78,4 @@
     <bean class="se.inera.statistics.service.report.model.Lan" id="lan"/>
 
     <bean class="se.inera.statistics.service.processlog.ProcessLogImpl"/>
-
-    <context:component-scan base-package="se.inera.statistics.service.report.repository"/>
 </beans>

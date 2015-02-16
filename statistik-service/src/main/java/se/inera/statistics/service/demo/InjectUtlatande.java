@@ -29,9 +29,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import se.inera.statistics.service.common.CommonPersistence;
 import se.inera.statistics.service.helper.UtlatandeBuilder;
 import se.inera.statistics.service.processlog.EventType;
+import se.inera.statistics.service.processlog.LogConsumer;
 import se.inera.statistics.service.processlog.Receiver;
 import se.inera.statistics.service.report.util.Icd10;
-import se.inera.statistics.service.scheduler.LogJob;
 import se.inera.statistics.service.warehouse.WarehouseManager;
 
 import javax.annotation.PostConstruct;
@@ -57,7 +57,7 @@ public class InjectUtlatande {
 
     private static final List<String> VG = Arrays.asList("vg1", "vg2", "vg3", "vg4", "vg5");
 
-    private static final List<String> LAKARE = new ArrayList();
+    private static final List<String> LAKARE = new ArrayList<>();
 
     private static final List<String> DIAGNOSER = new ArrayList<>();
     private static final Multimap<String, String> VARDGIVARE = ArrayListMultimap.create();
@@ -88,7 +88,7 @@ public class InjectUtlatande {
     private Receiver receiver;
 
     @Autowired
-    private LogJob logJob;
+    private LogConsumer consumer;
 
     @Autowired
     private Icd10 icd10;
@@ -113,7 +113,12 @@ public class InjectUtlatande {
     public void init() {
         cleanupDB();
         publishUtlatanden();
-        logJob.checkLog();
+        LOG.debug("Log Job");
+        int count;
+        do {
+            count = consumer.processBatch();
+            LOG.info("Processed batch with {} entries", count);
+        } while (count > 0);
         warehouseManager.loadWideLines();
     }
 

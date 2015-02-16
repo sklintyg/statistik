@@ -21,7 +21,6 @@ package se.inera.statistics.web.util;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import se.inera.ifv.statistics.spi.authorization.impl.HSAWebServiceCalls;
-import se.inera.statistics.service.scheduler.ReceiveHistoryJob;
 import se.inera.statistics.web.service.ChartDataService;
 
 public class HealthCheckUtil {
@@ -33,9 +32,6 @@ public class HealthCheckUtil {
 
     @Autowired
     private HSAWebServiceCalls hsaService;
-
-    @Autowired
-    private ReceiveHistoryJob receiveHistory;
 
     public Status getOverviewStatus() {
         boolean ok;
@@ -61,10 +57,6 @@ public class HealthCheckUtil {
         }
         long doneTime = System.nanoTime();
         return createStatus(ok, startTime, doneTime);
-    }
-
-    public Status getReceiveStatus() {
-        return new Status(receiveHistory.getCurrentRate(), true);
     }
 
     private Status createStatus(boolean ok, long startTime, long doneTime) {

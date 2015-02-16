@@ -7,8 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import se.inera.statistics.service.hsa.HsaDataInjectable;
+import se.inera.statistics.service.processlog.LogConsumer;
 import se.inera.statistics.service.processlog.Receiver;
-import se.inera.statistics.service.scheduler.LogJob;
 import se.inera.statistics.service.warehouse.NationellData;
 import se.inera.statistics.service.warehouse.Warehouse;
 import se.inera.statistics.service.warehouse.WarehouseManager;
@@ -46,7 +46,7 @@ public class RestSupportService {
     private WarehouseManager warehouseManager;
 
     @Autowired
-    private LogJob logJob;
+    private LogConsumer consumer;
 
     @Autowired
     private NationellData nationellData;
@@ -108,7 +108,12 @@ public class RestSupportService {
     @Path("processIntyg")
     @Produces({ MediaType.APPLICATION_JSON })
     public Response processIntyg() {
-        logJob.checkLog();
+        LOG.debug("Log Job");
+        int count;
+        do {
+            count = consumer.processBatch();
+            LOG.info("Processed batch with {} entries", count);
+        } while (count > 0);
         warehouseManager.loadWideLines();
         nationalChartDataService.buildCache();
         return Response.ok().build();

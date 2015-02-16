@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package se.inera.statistics.service.scheduler;
+package se.inera.statistics.scheduler;
 
 import static org.junit.Assert.assertEquals;
 
@@ -27,6 +27,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import se.inera.statistics.scheduler.active.ReceiveHistoryJob;
 import se.inera.statistics.service.processlog.Receiver;
 
 @RunWith(MockitoJUnitRunner.class)
