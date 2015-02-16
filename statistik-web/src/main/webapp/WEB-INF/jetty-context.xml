@@ -7,7 +7,7 @@
 
     <Call name="setAttribute">
         <Arg>org.eclipse.jetty.server.webapp.WebInfIncludeJarPattern</Arg>
-        <Arg>.*/.*jsp-api-[^/]\.jar$|./.*jsp-[^/]\.jar$|./.*taglibs[^/]*\.jar$|.*/.*bootstrap-.*\.jar$|.*/.*angularjs-.*\.jar$|.*/.*bootstrap-.*\.jar$|.*/.*underscore-.*\.jar$|.*/.*respond-.*\.jar$|.*/.*jquery-.*\.jar$</Arg>
+        <Arg>.*/.*jsp-api-[^/]\.jar$|./.*jsp-[^/]\.jar$|./.*taglibs[^/]*\.jar$|.*/.*bootstrap-.*\.jar$|.*/.*angularjs-.*\.jar$|.*/.*bootstrap-.*\.jar$|.*/.*underscorejs-.*\.jar$|.*/.*respond-.*\.jar$|.*/.*jquery-.*\.jar$</Arg>
     </Call>
 
   <New id="DataSource" class="org.eclipse.jetty.plus.jndi.Resource">
