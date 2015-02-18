@@ -426,7 +426,7 @@
             <div class="col-xs-12 col-sm-9">
                 <div class="row" ng-show="verksamhetIdParam" data-ng-controller="filterCtrl">
                     <div class="col-xs-12">
-                        <div id="statistics-filter-container" class="collapse hidden-print" collapse="!isFilterCollapsed">
+                        <div id="statistics-filter-container" class="hidden-print" collapse="isFilterCollapsed">
                         	<div class="row">
 				                <div class="filter-level" id="first-level-filter">
                                     <div class="col-xs-4 clearfix" data-ng-if="businessFilter.numberOfBusinesses() === 'medium' || businessFilter.numberOfBusinesses() === 'large'">
@@ -466,7 +466,7 @@
                                                  <progressbar max="businessFilter.businesses.length" value="businessFilter.selectedBusinesses.length"></progressbar>
                                                 </span>
 	                            				<button type="button" class="btn btn-default pull-right" data-ng-click="resetFilter()"><span message key="lbl.aterstall"></span></button>
-	                                        	<button class="btn btn-success pull-right" data-ng-click="makeUnitSelection()"><span message key="lbl.gor-urval" data-toggle="collapse" data-target="#statistics-filter-container" ng-click="filter.open = !filter.open"></span></button>
+	                                        	<button class="btn btn-success pull-right" message key="lbl.gor-urval" ng-click="makeUnitSelection()"></button>
 	                                        </div>
 			                            </div>
                                     </div>
