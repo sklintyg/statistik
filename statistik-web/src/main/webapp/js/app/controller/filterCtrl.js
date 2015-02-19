@@ -3,6 +3,9 @@
 angular.module('StatisticsApp').controller('filterCtrl', ['$scope', '$rootScope', '$location', 'statisticsData', 'businessFilter', '$timeout', 'messageService',
     function ($scope, $rootScope, $location, statisticsData, businessFilter, $timeout, messageService) {
 
+        //Initially we don't want to see the filter
+        $scope.isFilterCollapsed = true;
+        
         $scope.businessFilter = businessFilter;
 
         function updateGeographyFilterSelectorDataButtonLabelText() {
@@ -39,6 +42,7 @@ angular.module('StatisticsApp').controller('filterCtrl', ['$scope', '$rootScope'
         };
 
         $scope.makeUnitSelection = function () {
+            $scope.isFilterCollapsed = !$scope.isFilterCollapsed;
             var verksamhetsBusinessIds = businessFilter.verksamhetsTypIds;
             var diagnoses = businessFilter.selectedDiagnoses;
             var geoBusinesses = businessFilter.geographyBusinessIds;

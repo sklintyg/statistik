@@ -143,8 +143,8 @@ angular.module('StatisticsApp').directive("filterButton", function () {
     return {
     	restrict: "E",
 	    template:
-	        '<button id="show-hide-filter-btn" type="button" class="btn btn-small pull-right" ng-class="{filterbtnactivefilter: filterIsActive}" data-toggle="collapse" data-target="#statistics-filter-container" ng-click="filter.open = !filter.open">' +
-	        '<i class="glyphicon" ng-class="{glyphiconDownSign: !filter.open, glyphiconUpSign: filter.open}"></i> {{filter.open ? "Dölj filter" : "Visa filter"}}<span ng-show="filterIsActive" style="font-size: 12px; font-style: italic;"><br/>Val gjorda</span>' +
+	        '<button id="show-hide-filter-btn" type="button" class="btn btn-small pull-right" ng-class="{filterbtnactivefilter: filterIsActive}" ng-click="isFilterCollapsed = !isFilterCollapsed">' +
+	        '<i class="glyphicon" ng-class="{glyphiconDownSign: isFilterCollapsed, glyphiconUpSign: !isFilterCollapsed}"></i> {{!isFilterCollapsed ? "Dölj filter" : "Visa filter"}}<span ng-show="filterIsActive" style="font-size: 12px; font-style: italic;"><br/>Val gjorda</span>' +
 	        '</button>'
     };
 });
