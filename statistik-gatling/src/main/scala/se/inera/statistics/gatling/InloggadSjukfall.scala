@@ -1,0 +1,9 @@
+package se.inera.statistics.gatling
+
+import io.gatling.core.Predef._
+
+object InloggadSjukfall {
+  def exec(user: Login.User) = RestCall.post(
+    s"getNumberOfCasesPerMonth: ${user.vardgivare}",
+    s"${Conf.uri}/api/verksamhet/${user.vardgivare}/getNumberOfCasesPerMonth")
+}
