@@ -33,15 +33,22 @@ public class WarehouseManager {
     private WidelineLoader loader;
 
     @Autowired
+    private EnhetLoader enhetLoader;
+
+    @Autowired
     private Warehouse warehouse;
 
     @PostConstruct
-    public int loadWideLines() {
+    public int loadEnhetAndWideLines() {
         LOG.info("Reloading warehouse");
         int lines = loader.populateWarehouse();
         LOG.info("Reloaded warehouse {} lines", lines);
         warehouse.complete(LocalDateTime.now());
         LOG.info("Prepared warehouse with ailes {}", warehouse.getAllVardgivare().keySet());
+        LOG.info("Reloading enhet");
+        lines = enhetLoader.populateWarehouse();
+        warehouse.completeEnhets(LocalDateTime.now());
+        LOG.info("Reloaded enhet {} lines", lines);
         return lines;
     }
 

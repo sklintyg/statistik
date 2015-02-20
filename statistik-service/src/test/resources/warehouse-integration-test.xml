@@ -90,5 +90,6 @@
     <bean id="widelineConverter" class="se.inera.statistics.service.warehouse.WidelineConverter" />
     <bean class="se.inera.statistics.service.warehouse.WidelineManager" />
     <bean class="se.inera.statistics.service.warehouse.WidelineLoader" />
+    <bean class="se.inera.statistics.service.warehouse.EnhetLoader" />
 
 </beans>

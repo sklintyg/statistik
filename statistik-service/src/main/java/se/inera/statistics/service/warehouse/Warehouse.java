@@ -23,10 +23,13 @@ import com.google.common.collect.HashBiMap;
 import org.joda.time.LocalDateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import se.inera.statistics.service.processlog.Enhet;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 public class Warehouse implements Iterable<Aisle> {
@@ -35,17 +38,33 @@ public class Warehouse implements Iterable<Aisle> {
 
     private volatile Map<String, Aisle> aisles = new HashMap<>();
     private Map<String, Aisle> loadingAisles = new HashMap<>();
+    private volatile Map<String, List<Enhet>> enhets;
+    private Map<String, List<Enhet>> loadingEnhets = new HashMap<>();
     private static IdMap<String> enhetsMap = new IdMap<>();
     private static IdMap<String> lakareMap = new IdMap<>();
     private LocalDateTime lastUpdate = null;
+    private LocalDateTime lastEnhetUpdate = null;
 
     public void accept(Fact fact, String vardgivareId) {
         Aisle aisle = getAisle(vardgivareId, loadingAisles, true);
         aisle.addLine(fact);
     }
 
+    public void accept(Enhet enhet) {
+        List<Enhet> list = loadingEnhets.get(enhet.getVardgivareId());
+        if (list == null) {
+            list = new ArrayList<>();
+        }
+        list.add(enhet);
+        loadingEnhets.put(enhet.getVardgivareId(), list);
+    }
+
     public Aisle get(String vardgivarId) {
         return getAisle(vardgivarId, aisles, false);
+    }
+
+    public List<Enhet> getEnhets(String vardgivareId) {
+        return enhets.get(vardgivareId);
     }
 
     private Aisle getAisle(String vardgivareId, Map<String, Aisle> aisles, boolean add) {
@@ -103,6 +122,15 @@ public class Warehouse implements Iterable<Aisle> {
         aisles = Collections.unmodifiableMap(loadingAisles);
         this.lastUpdate = lastUpdate;
         loadingAisles = new HashMap<>();
+    }
+
+    public void completeEnhets(LocalDateTime lastUpdate) {
+        for (List<Enhet> enhetList: loadingEnhets.values()) {
+            Collections.sort(enhetList);
+        }
+        enhets = Collections.unmodifiableMap(loadingEnhets);
+        this.lastEnhetUpdate = lastEnhetUpdate;
+        loadingEnhets = new HashMap<>();
     }
 
     public void clear() {

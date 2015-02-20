@@ -32,8 +32,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 import se.inera.statistics.service.helper.UtlatandeBuilder;
 import se.inera.statistics.service.processlog.LogConsumer;
-import se.inera.statistics.service.report.api.SjukfallPerManad;
-import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.SimpleKonDataRow;
 import se.inera.statistics.service.report.model.SimpleKonResponse;
 import se.inera.statistics.service.warehouse.SjukfallUtil;
@@ -100,7 +98,7 @@ public class ReceiverIntegrationTest {
 
     @Transactional
     public void load() {
-        warehouseManager.loadWideLines();
+        warehouseManager.loadEnhetAndWideLines();
     }
 
     @Transactional

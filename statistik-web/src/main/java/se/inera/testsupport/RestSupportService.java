@@ -114,7 +114,7 @@ public class RestSupportService {
             count = consumer.processBatch();
             LOG.info("Processed batch with {} entries", count);
         } while (count > 0);
-        warehouseManager.loadWideLines();
+        warehouseManager.loadEnhetAndWideLines();
         nationalChartDataService.buildCache();
         return Response.ok().build();
     }

@@ -43,6 +43,9 @@ public class WarehouseManagerTest {
     @Mock
     private WidelineLoader loader;
 
+    @Mock
+    private EnhetLoader enhetLoader;
+
     @InjectMocks
     private WarehouseManager manager = new WarehouseManager();
 
@@ -50,7 +53,7 @@ public class WarehouseManagerTest {
     public void verifyOrderOfActionWhenLoadingData() {
         Mockito.when(warehouse.iterator()).thenReturn(Collections.singletonList(aisle).iterator());
 
-        manager.loadWideLines();
+        manager.loadEnhetAndWideLines();
 
         InOrder inOrder = Mockito.inOrder(loader, warehouse, aisle);
         inOrder.verify(loader).populateWarehouse();

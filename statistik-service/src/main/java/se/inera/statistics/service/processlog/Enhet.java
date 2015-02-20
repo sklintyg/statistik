@@ -26,7 +26,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "enhet")
-public class Enhet {
+public class Enhet implements Comparable<Enhet>{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
@@ -122,4 +122,8 @@ public class Enhet {
         this.verksamhetsTyper = verksamhetsTyper;
     }
 
+    @Override
+    public int compareTo(Enhet enhet) {
+        return enhetId.compareTo(enhet.getEnhetId());
+    }
 }

@@ -31,10 +31,10 @@ import org.springframework.stereotype.Component;
 import se.inera.auth.model.User;
 import se.inera.statistics.hsa.model.Vardenhet;
 import se.inera.statistics.service.processlog.Enhet;
-import se.inera.statistics.service.processlog.VardgivareManager;
 import se.inera.statistics.service.report.model.Kommun;
 import se.inera.statistics.service.report.model.Lan;
 import se.inera.statistics.service.report.model.VerksamhetsTyp;
+import se.inera.statistics.service.warehouse.Warehouse;
 import se.inera.statistics.web.model.LoginInfo;
 import se.inera.statistics.web.model.Verksamhet;
 
@@ -53,7 +53,7 @@ public class LoginServiceUtil {
     private static final Logger LOG = LoggerFactory.getLogger(LoginServiceUtil.class);
 
     @Autowired
-    private VardgivareManager vardgivareManager;
+    private Warehouse warehouse;
 
     private Kommun kommun = new Kommun();
 
@@ -69,7 +69,7 @@ public class LoginServiceUtil {
             AbstractAuthenticationToken token = (AbstractAuthenticationToken) user;
             if (token.getDetails() instanceof User) {
                 User realUser = (User) token.getDetails();
-                List<Enhet> enhetsList = vardgivareManager.getEnhets(realUser.getValdVardenhet().getVardgivarId());
+                List<Enhet> enhetsList = warehouse.getEnhets(realUser.getValdVardenhet().getVardgivarId());
                 Verksamhet defaultVerksamhet = toVerksamhet(realUser.getValdVardenhet(), enhetsList);
                 List<Verksamhet> verksamhets = getVerksamhetsList(realUser, enhetsList);
                 return new LoginInfo(realUser.getHsaId(), realUser.getName(), defaultVerksamhet, realUser.isVerksamhetschef(), realUser.isDelprocessledare(), realUser.isProcessledare(), verksamhets);

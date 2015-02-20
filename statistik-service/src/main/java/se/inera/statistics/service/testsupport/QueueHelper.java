@@ -93,7 +93,7 @@ public class QueueHelper {
 
     public Map<String, TestData> printAndGetPersistedData(String vardenhet1, String vardenhet2, Range range) {
         consumer.processBatch();
-        warehouseManager.loadWideLines();
+        warehouseManager.loadEnhetAndWideLines();
         Map<String, TestData> result = new HashMap<>();
         printAndGetCasesPerMonth(vardenhet1, vardenhet2, range, result);
         printAndGetDiagnosisGroups(vardenhet1, vardenhet2, range, result);

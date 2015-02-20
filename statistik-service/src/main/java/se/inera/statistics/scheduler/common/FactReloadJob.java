@@ -24,6 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StopWatch;
+import se.inera.statistics.service.processlog.VardgivareManager;
 import se.inera.statistics.service.warehouse.WarehouseManager;
 
 @Component
@@ -31,14 +32,14 @@ public class FactReloadJob {
     private static final Logger LOG = LoggerFactory.getLogger(FactReloadJob.class);
 
     @Autowired
-    private WarehouseManager manager;
+    private WarehouseManager warehouseManager;
 
     @Scheduled(cron = "${scheduler.factReloadJob.cron}")
     public void checkLog() {
         LOG.info("Fact Reload Job started");
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
-        int lines = manager.loadWideLines();
+        int lines = warehouseManager.loadEnhetAndWideLines();
         stopWatch.stop();
         LOG.info("Fact Reload Job completed. Line count: " + lines + " time: " + stopWatch.getTotalTimeMillis() + "ms");
     }
