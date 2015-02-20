@@ -43,6 +43,8 @@ import se.inera.statistics.service.report.model.SjukskrivningsgradResponse;
 import se.inera.statistics.service.report.model.VerksamhetOverviewResponse;
 import se.inera.statistics.service.report.util.Icd10;
 import se.inera.statistics.service.warehouse.Warehouse;
+import se.inera.statistics.service.warehouse.query.CalcCoordinator;
+import se.inera.statistics.service.warehouse.query.CalcException;
 import se.inera.statistics.web.model.SimpleDetailsData;
 import se.inera.statistics.web.model.DualSexStatisticsData;
 import se.inera.statistics.web.model.overview.VerksamhetOverviewData;
@@ -395,13 +397,24 @@ public class ProtectedChartDataService {
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request, #verksamhetId)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request, #verksamhetId)")
     public SimpleDetailsData getAgeGroupsStatistics(@Context HttpServletRequest request, @PathParam(VERKSAMHET_PATH_ID) String verksamhetId, @QueryParam("filter") String filterHash) {
-        LOG.info("Calling getAgeGroupsStatistics with verksamhetId: {} and filterHash: {}", verksamhetId, filterHash);
-        final Range range = new Range(12);
+        CalcCoordinator.Ticket ticket = null;
+        try {
+            ticket = CalcCoordinator.getTicket();
+            LOG.info("Calling getAgeGroupsStatistics with verksamhetId: {} and filterHash: {}", verksamhetId, filterHash);
+            final Range range = new Range(12);
 
-        Verksamhet verksamhet = getVerksamhet(request, Verksamhet.decodeId(verksamhetId));
-        Filter filter = getFilter(request, verksamhet, filterHash);
-        SimpleKonResponse<SimpleKonDataRow> ageGroups = warehouse.getAldersgrupper(filter.getPredicate(), range, verksamhet.getVardgivarId());
-        return new AgeGroupsConverter().convert(ageGroups, range, filter);
+            Verksamhet verksamhet = getVerksamhet(request, Verksamhet.decodeId(verksamhetId));
+            Filter filter = getFilter(request, verksamhet, filterHash);
+            SimpleKonResponse<SimpleKonDataRow> ageGroups = warehouse.getAldersgrupper(filter.getPredicate(), range, verksamhet.getVardgivarId());
+            SimpleDetailsData result = new AgeGroupsConverter().convert(ageGroups, range, filter);
+            CalcCoordinator.returnTicket(ticket);
+            return result;
+        } catch (CalcException c) {
+            LOG.warn("getAgeGroupsStatistics calculation failed.");
+            return new SickLeaveLengthData(null, null, 0, null, null);
+        } finally {
+            CalcCoordinator.returnTicket(ticket);
+        }
     }
 
     /**

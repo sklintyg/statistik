@@ -20,8 +20,13 @@ package se.inera.statistics.gatling
 
 import io.gatling.core.Predef._
 
-object InloggadSjukskrivningsgrad {
-  def exec(user: Login.User) = RestCall.post(
-    s"getDegreeOfSickLeaveStatistics: ${user.vardgivare}",
-    s"${Conf.uri}/api/verksamhet/${user.vardgivare}/getDegreeOfSickLeaveStatistics")
+object Filter {
+   def getFilterData(filterHash: String) = RestCall.get(
+     s"filter: hash = $filterHash",
+     s"${Conf.uri}/api/filter/$filterHash")
+
+  def getFilterHash(filterData: String) = RestCall.get(
+    s"filter: hash = $filterData",
+    s"${Conf.uri}/api/filter/$filterData")
+
 }
