@@ -41,7 +41,10 @@ var ControllerCommons = new function(){
     };
  
     var addBwColor = function(series, chartType) {
-    	var patterns = [ '/img/print-patterns/1.png', '/img/print-patterns/2.png', '/img/print-patterns/3.png', '/img/print-patterns/4.png', '/img/print-patterns/9.png', '/img/print-patterns/6.png', '/img/print-patterns/7.png' ];
+
+        var imagePath = window.location.pathname + 'img/print-patterns/';
+
+        var patterns = _.map(['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'], function(image) {return imagePath + image + '.png';});
         var dashStyles = [ 'shortdashdotdot', 'dashdot', 'dot', 'longdash', 'shortdot', 'solid', 'shortdash', 'shortdashdot', 'dash', 'longdashdot', 'longdashdotdot' ];
 
         for (var i = 0; i < series.length; i++) {
@@ -185,7 +188,7 @@ var ControllerCommons = new function(){
             },
             legend : {
                 align : 'top left',
-                x : 80,
+                x : 120,
                 y : 0,
                 borderWidth : 0
             },
@@ -333,6 +336,7 @@ var ControllerCommons = new function(){
     this.print = function(bwPrint, rootScope, windowParam) {
         var printQuery = bwPrint ? "printBw=true" : "print=true";
         var prefixChar = rootScope.queryString ? "&" : "?";
+        console.log(windowParam.location);
         windowParam.open(windowParam.location + prefixChar + printQuery);
     }
 

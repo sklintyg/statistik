@@ -121,9 +121,16 @@
 			  </ul>
 			</div>
 		</div>
-    <div class="col-xs-12" data-ng-show="resultMessage">{{resultMessage}}</div>
     </div>
 
+    <!-- Alert the user about specific conditions -->
+    <div class="row hidden-print">
+        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+            <div class="ng-binding alert alert-info" data-ng-show="resultMessage" role="alert">
+                <strong>Observera!</strong> {{resultMessage}}
+            </div>
+        </div>
+    </div>
 
     <!-- Start ingress -->
     <div data-ng-include="errorPageUrl"></div>
