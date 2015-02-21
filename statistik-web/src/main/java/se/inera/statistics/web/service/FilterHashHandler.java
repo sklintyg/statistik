@@ -18,25 +18,38 @@
  */
 package se.inera.statistics.web.service;
 
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Optional;
 import org.apache.commons.codec.digest.DigestUtils;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import se.inera.statistics.service.userselection.UserSelection;
 import se.inera.statistics.service.userselection.UserSelectionManager;
 
 public class FilterHashHandler {
+    private static final Logger LOG = LoggerFactory.getLogger(FilterHashHandler.class);
 
     @Autowired
     private UserSelectionManager userSelectionManager;
 
     String getHash(String filterData) {
         try {
+            final JsonParser parser = new ObjectMapper().getFactory().createParser(filterData);
+            while (parser.nextToken() != null) {
+            }
+
             final String hash = DigestUtils.md5Hex(filterData);
             userSelectionManager.register(hash, filterData);
             return hash;
+        } catch (JsonParseException parseException) {
+            LOG.warn("Attempt to store illegal json detected.");
+            return "";
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new FilterException("Illegal user selection", e);
         }
     }
 
