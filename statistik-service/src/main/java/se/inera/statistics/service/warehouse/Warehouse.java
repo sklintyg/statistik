@@ -64,7 +64,8 @@ public class Warehouse implements Iterable<Aisle> {
     }
 
     public List<Enhet> getEnhets(String vardgivareId) {
-        return enhets.get(vardgivareId);
+        List<Enhet> result = enhets.get(vardgivareId);
+        return result == null ? new ArrayList<Enhet>() : result;
     }
 
     private Aisle getAisle(String vardgivareId, Map<String, Aisle> aisles, boolean add) {
