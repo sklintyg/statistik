@@ -20,6 +20,7 @@ package se.inera.statistics.web.service;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonToken;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Optional;
 import org.apache.commons.codec.digest.DigestUtils;
@@ -39,8 +40,10 @@ public class FilterHashHandler {
     String getHash(String filterData) {
         try {
             final JsonParser parser = new ObjectMapper().getFactory().createParser(filterData);
-            while (parser.nextToken() != null) {
-            }
+            JsonToken token;
+            do {
+                token = parser.nextToken();
+            } while (token != null);
 
             final String hash = DigestUtils.md5Hex(filterData);
             userSelectionManager.register(hash, filterData);

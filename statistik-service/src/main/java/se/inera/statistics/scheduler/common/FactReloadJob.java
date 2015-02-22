@@ -24,7 +24,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StopWatch;
-import se.inera.statistics.service.processlog.VardgivareManager;
 import se.inera.statistics.service.warehouse.WarehouseManager;
 
 @Component
