@@ -20,7 +20,7 @@ package se.inera.statistics.gatling
 
 import io.gatling.core.Predef._
 
-class StandardSimulation extends Simulation {
+class StandardScenario extends Simulation {
   val pl = Login.processledare
   val dpl = Login.delprocessledare
   val vc = Login.verksamhetschef

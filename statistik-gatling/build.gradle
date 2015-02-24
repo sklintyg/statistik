@@ -1,37 +1,14 @@
-apply plugin: 'scala'
+apply plugin: 'gatling'
 
 repositories {
     mavenCentral()
 }
 
-dependencies {
-    compile 'io.gatling.highcharts:gatling-charts-highcharts:2.1.3'
-}
-
-sourceSets {
-    gatling {
-        java.srcDir file('src/main/java')
-        compileClasspath = sourceSets.main.output + sourceSets.test.output + configurations.testRuntime
-        runtimeClasspath = output + compileClasspath
+buildscript {
+    dependencies {
+        classpath group:'uk.gov', name:'gradle-gatling-plugin', version:'1.2-SNAPSHOT'
     }
-}
-
-task gatlingStandard(dependsOn: 'compileTestScala') << {
-    def gatlingScenarioClass = "se.inera.statistics.gatling.StandardSimulation.scala"
-
-    javaexec {
-        main = 'io.gatling.app.Gatling'
-        classpath = sourceSets.main.output + sourceSets.main.runtimeClasspath
-        args '-sf',
-                'src/main/scala',
-                //sourceSets.main.output.classesDir.canonicalFile,
-                '-s',
-                gatlingScenarioClass,
-                '-rf',
-                'build/reports/gatling',
-                '-on',
-                'build/reports/gatling',
-                '-bdf',
-                'build/reports/gatling'
+    repositories {
+        mavenLocal()
     }
 }
