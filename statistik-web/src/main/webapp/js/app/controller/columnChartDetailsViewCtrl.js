@@ -19,9 +19,9 @@
 
 'use strict';
 
-angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl', [ '$scope', '$rootScope', '$routeParams', '$window', '$location', '$timeout', 'statisticsData', 'businessFilter', 'config', 'messageService',
+angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl', [ '$scope', '$rootScope', '$routeParams', '$window', '$location', '$timeout', 'statisticsData', 'businessFilter', 'config', 'messageService', 'printFactory',
 
-    function ($scope, $rootScope, $routeParams, $window, $location, $timeout, statisticsData, businessFilter, config, messageService) {
+    function ($scope, $rootScope, $routeParams, $window, $location, $timeout, statisticsData, businessFilter, config, messageService, printFactory) {
         var isVerksamhet = $routeParams.verksamhetId ? true : false;
         var chart = {};
 
@@ -52,7 +52,7 @@ angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl', [ '$sco
         };
 
         var updateChart = function (ajaxResult) {
-            $scope.series = ControllerCommons.setupSeriesForDisplayType($routeParams.printBw, ajaxResult.series, "bar");
+            $scope.series = printFactory.setupSeriesForDisplayType($routeParams.printBw, ajaxResult.series, "bar");
             chart = paintChart(ajaxResult.categories, $scope.series);
         };
 
@@ -75,7 +75,7 @@ angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl', [ '$sco
                 updateChart(result.chartData);
 
                 if ($routeParams.printBw || $routeParams.print) {
-                    ControllerCommons.printAndCloseWindow($timeout, $window);
+                    printFactory.printAndCloseWindow($timeout, $window);
                 }
             }, 1);
         };
@@ -139,7 +139,7 @@ angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl', [ '$sco
         };
 
         $scope.print = function (bwPrint) {
-            ControllerCommons.print(bwPrint, $rootScope, $window);
+            printFactory.print(bwPrint, $rootScope, $window);
         };
 
         $scope.diagnosisSelected = function () {

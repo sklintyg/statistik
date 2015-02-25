@@ -19,8 +19,8 @@
 
 'use strict';
 
-angular.module('StatisticsApp').controller('doubleAreaChartsCtrl', [ '$scope', '$rootScope', '$routeParams', '$window', '$timeout', 'statisticsData', 'businessFilter', 'config', 'messageService',
-    function ($scope, $rootScope, $routeParams, $window, $timeout, statisticsData, businessFilter, config, messageService) {
+angular.module('StatisticsApp').controller('doubleAreaChartsCtrl', [ '$scope', '$rootScope', '$routeParams', '$window', '$timeout', 'statisticsData', 'businessFilter', 'config', 'messageService', 'printFactory',
+    function ($scope, $rootScope, $routeParams, $window, $timeout, statisticsData, businessFilter, config, messageService, printFactory) {
         var that = this;
         var chart1 = {};
         var chart2 = {};
@@ -115,11 +115,11 @@ angular.module('StatisticsApp').controller('doubleAreaChartsCtrl', [ '$scope', '
             var chartCategories = ajaxResult.femaleChart.categories;
 
             var chartSeriesFemale = ajaxResult.femaleChart.series;
-            ControllerCommons.setupSeriesForDisplayType($routeParams.printBw, chartSeriesFemale, "area");
+            printFactory.setupSeriesForDisplayType($routeParams.printBw, chartSeriesFemale, "area");
             that.chart1 = that.paintChart('chart1', 'Antal sjukfall för kvinnor', 118, chartCategories, chartSeriesFemale, -100);
 
             var chartSeriesMale = ajaxResult.maleChart.series;
-            ControllerCommons.setupSeriesForDisplayType($routeParams.printBw, chartSeriesMale, "area");
+            printFactory.setupSeriesForDisplayType($routeParams.printBw, chartSeriesMale, "area");
             that.chart2 = that.paintChart('chart2', 'Antal sjukfall för män', 97, chartCategories, chartSeriesMale, -80);
 
             updateChartsYAxisMaxValue();
@@ -145,7 +145,7 @@ angular.module('StatisticsApp').controller('doubleAreaChartsCtrl', [ '$scope', '
                 updateChart(result);
 
                 if ($routeParams.printBw || $routeParams.print) {
-                    ControllerCommons.printAndCloseWindow($timeout, $window);
+                    printFactory.printAndCloseWindow($timeout, $window);
                 }
             }, 1);
             $timeout(function () {
@@ -270,7 +270,7 @@ angular.module('StatisticsApp').controller('doubleAreaChartsCtrl', [ '$scope', '
         };
 
         $scope.print = function (bwPrint) {
-            ControllerCommons.print(bwPrint, $rootScope, $window);
+            printFactory.print(bwPrint, $rootScope, $window);
         };
 
         return this;

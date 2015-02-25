@@ -19,8 +19,8 @@
 
 'use strict';
 
-angular.module('StatisticsApp').controller('businessOverviewCtrl', ['$scope', '$timeout', 'statisticsData', 'businessFilter', '$routeParams', '$window',
-    function ($scope, $timeout, statisticsData, businessFilter, $routeParams) {
+angular.module('StatisticsApp').controller('businessOverviewCtrl', ['$scope', '$rootScope', '$window', '$timeout', 'statisticsData', 'businessFilter', '$routeParams', 'printFactory',
+    function ($scope, $rootScope, $window, $timeout, statisticsData, businessFilter, $routeParams, printFactory) {
 
         $scope.baseUrl = "#/verksamhet/" + $routeParams.verksamhetId;
         
@@ -48,131 +48,207 @@ angular.module('StatisticsApp').controller('businessOverviewCtrl', ['$scope', '$
             }
         };
 
-        var populatePageWithData = function (result) {
-
-            function paintPerMonthAlternationChart(alteration) {
-                var chartOptions = ControllerCommons.getHighChartConfigBase([], [
-                    { data: [
-                        [ 1 ]
-                    ] }
-                ]);
-                chartOptions.chart.renderTo = "alterationChart";
-                chartOptions.chart.type = "pie";
-                chartOptions.chart.height = 210;
-                chartOptions.chart.marginTop = 20;
-                chartOptions.chart.plotBorderWidth = 0;
-                chartOptions.title = {
-                    verticalAlign: 'middle',
-                    floating: true,
-                    text: alteration,
-                    style: {
-                        fontFamily: 'Helvetica, Arial, sans-serif',
-                        color: '#FFFFFF',
-                        fontSize: '2em',
-                        fontWeight: 'bold',
-                        textAlign: 'center'
-                    }
+        var paintPerMonthAlternationChart = function (alteration) {
+            var chartOptions, color = "#57843B", patternPath;
+            if ($routeParams.printBw) {
+                patternPath = window.location.pathname + 'img/print-patterns/1.png';
+                //Override the default color with a black and white pattern
+                color = {
+                    pattern: patternPath,
+                    width: 6,
+                    height: 6
                 };
-                chartOptions.tooltip = { enabled: false };
-                chartOptions.plotOptions.pie = {
-                    colors: [ "#57843B" ],
-                    animation: false,
-                    borderWidth: 0,
-                    dataLabels: { enabled: false },
-                    states: { hover: {enabled: false} }
-                };
-                new Highcharts.Chart(chartOptions);
             }
 
-            function paintSexProportionChart(containerId, male, female, period) {
-                var series = [
-                    {
-                        type: 'pie',
-                        name: 'Könsfördelning',
-                        showInLegend: true,
-                        useHTML: true,
-                        data: [
-                            {name: 'Kvinnor', y: female, color: "#EA8025"},
-                            {name: 'Män', y: male, color: "#008391"}
-                        ]
-                    }
-                ];
-                var chartOptions = ControllerCommons.getHighChartConfigBase([], series);
-                chartOptions.chart.type = 'pie';
-                chartOptions.chart.renderTo = containerId;
-                chartOptions.chart.height = 220;
-                chartOptions.chart.plotBorderWidth = 0;
-                chartOptions.title = {
-                    text: period,
-                    verticalAlign: 'bottom',
-                    x: -3,
-                    y: 5,
-                    style: {
-                        color: '#274b6d',
-                        fontWeight: 'bold',
-                        fontSize: '12px'
-                    }
+            chartOptions = ControllerCommons.getHighChartConfigBase([], [
+                {
+                    data: [
+                        [1]
+                    ]
+                }
+            ]);
 
+            chartOptions.chart.renderTo = "alterationChart";
+            chartOptions.chart.type = "pie";
+            chartOptions.chart.height = 210;
+            chartOptions.chart.marginTop = 20;
+            chartOptions.chart.plotBorderWidth = 0;
+            chartOptions.title = {
+                verticalAlign: 'middle',
+                floating: true,
+                text: alteration,
+                style: {
+                    fontFamily: 'Helvetica, Arial, sans-serif',
+                    color: '#FFFFFF',
+                    fontSize: '2em',
+                    fontWeight: 'bold',
+                    textAlign: 'center'
+                }
+            };
+            chartOptions.tooltip = {enabled: false};
+            chartOptions.plotOptions.pie = {
+                colors: [color],
+                animation: false,
+                borderWidth: 0,
+                dataLabels: {enabled: false},
+                states: {hover: {enabled: false}}
+            };
+
+            return new Highcharts.Chart(chartOptions);
+        };
+
+        var paintSexProportionChart = function(containerId, male, female, period) {
+            var femaleColor = "#EA8025", maleColor = "#008391", chartOptions, patternPathFemale, patternPathMale;
+
+            if ($routeParams.printBw) {
+                patternPathMale = window.location.pathname + 'img/print-patterns/5.png';
+                patternPathFemale = window.location.pathname + 'img/print-patterns/7.png';
+
+                //Override the default color with a black and white pattern
+                femaleColor = {
+                    pattern: patternPathFemale,
+                    width: 6,
+                    height: 6
                 };
-                chartOptions.legend = {
-                    labelFormat: '{name} {percentage:.0f}% (antal: {y})',
-                    align: 'top left',
-                    verticalAlign: 'top',
-                    borderWidth: 0,
+
+                maleColor = {
+                    pattern: patternPathMale,
+                    width: 6,
+                    height: 6
+                };
+            }
+
+            var series = [
+                {
+                    type: 'pie',
+                    name: 'Könsfördelning',
+                    showInLegend: true,
                     useHTML: true,
-                    layout: 'vertical'
-                };
-                chartOptions.tooltip.pointFormat = '{point.percentage:.0f}% (antal: {point.y})';
-                new Highcharts.Chart(chartOptions);
-            }
+                    data: [
+                        {name: 'Kvinnor', y: female, color: femaleColor},
+                        {name: 'Män', y: male, color: maleColor}
+                    ]
+                }
+            ];
 
-            function paintDonutChart(containerId, chartData, tooltipHeaderPrefix) {
-                var chartOptions = ControllerCommons.getHighChartConfigBase([], []);
-                chartOptions.chart.type = 'pie';
-                chartOptions.chart.renderTo = containerId;
-                chartOptions.chart.height = 180;
-                chartOptions.chart.plotBorderWidth = 0;
-                chartOptions.series = [
-                    {
-                        name: 'Antal',
-                        data: chartData,
-                        innerSize: '40%',
-                        dataLabels: {
-                            formatter: function () {
-                                return null;
-                            }
+            chartOptions = ControllerCommons.getHighChartConfigBase([], series);
+            chartOptions.chart.type = 'pie';
+            chartOptions.chart.renderTo = containerId;
+            chartOptions.chart.height = 220;
+            chartOptions.chart.plotBorderWidth = 0;
+            chartOptions.title = {
+                text: period,
+                verticalAlign: 'bottom',
+                x: -3,
+                y: 5,
+                style: {
+                    color: '#274b6d',
+                    fontWeight: 'bold',
+                    fontSize: '12px'
+                }
+
+            };
+            chartOptions.legend = {
+                labelFormat: '{name} {percentage:.0f}% (antal: {y})',
+                align: 'top left',
+                verticalAlign: 'top',
+                borderWidth: 0,
+                useHTML: true,
+                layout: 'vertical'
+            };
+            chartOptions.tooltip.pointFormat = '{point.percentage:.0f}% (antal: {point.y})';
+            new Highcharts.Chart(chartOptions);
+        };
+
+        var paintDonutChart = function(containerId, chartData, tooltipHeaderPrefix) {
+            var chartOptions = ControllerCommons.getHighChartConfigBase([], []);
+            chartOptions.chart.type = 'pie';
+            chartOptions.chart.renderTo = containerId;
+            chartOptions.chart.height = 180;
+            chartOptions.chart.plotBorderWidth = 0;
+            chartOptions.plotOptions.pie.showInLegend = $routeParams.printBw || $routeParams.print;
+            chartOptions.series = [
+                {
+                    name: 'Antal',
+                    data: chartData,
+                    innerSize: '40%',
+                    dataLabels: {
+                        formatter: function () {
+                            return null;
                         }
                     }
-                ];
-                chartOptions.tooltip.headerFormat = '<span style="font-size: 10px">' + (tooltipHeaderPrefix || "") + '{point.key}</span><br/>';
-                new Highcharts.Chart(chartOptions);
-            }
+                }
+            ];
+            chartOptions.tooltip.headerFormat = '<span style="font-size: 10px">' + (tooltipHeaderPrefix || "") + '{point.key}</span><br/>';
+            new Highcharts.Chart(chartOptions);
+        };
 
+        var updateCharts = function (result) {
+
+            printFactory.setupSeriesForDisplayType($routeParams.printBw, result.casesPerMonth.totalCases, "pie");
             paintPerMonthAlternationChart(result.casesPerMonth.totalCases);
 
+            printFactory.setupSeriesForDisplayType($routeParams.printBw, result.casesPerMonth.amountMaleOld, "pie");
             paintSexProportionChart("sexProportionChartOld", result.casesPerMonth.amountMaleOld, result.casesPerMonth.amountFemaleOld, result.casesPerMonth.oldPeriod);
+
+            printFactory.setupSeriesForDisplayType($routeParams.printBw, result.casesPerMonth.amountFemaleNew, "pie");
             paintSexProportionChart("sexProportionChartNew", result.casesPerMonth.amountMaleNew, result.casesPerMonth.amountFemaleNew, result.casesPerMonth.newPeriod);
 
-            paintDonutChart("diagnosisChart", extractDonutData(result.diagnosisGroups));
+            var diagnosisDonutData = extractDonutData(result.diagnosisGroups);
+            printFactory.setupSeriesForDisplayType($routeParams.printBw, diagnosisDonutData, "pie");
+            paintDonutChart("diagnosisChart", diagnosisDonutData);
             $scope.diagnosisGroups = result.diagnosisGroups;
-            paintDonutChart("ageChart", extractDonutData(result.ageGroups));
+
+            var ageGroupsDonutData = extractDonutData(result.ageGroups);
+            printFactory.setupSeriesForDisplayType($routeParams.printBw, ageGroupsDonutData, "pie");
+            paintDonutChart("ageChart", ageGroupsDonutData);
             $scope.ageGroups = result.ageGroups;
-            paintDonutChart("degreeOfSickLeaveChart", extractDonutData(result.degreeOfSickLeaveGroups));
+
+
+            var degreeOfSickLeaveDonutData = extractDonutData(result.degreeOfSickLeaveGroups);
+            printFactory.setupSeriesForDisplayType($routeParams.printBw, degreeOfSickLeaveDonutData, "pie");
+            var degreeOfSickLeaveChart = paintDonutChart("degreeOfSickLeaveChart", degreeOfSickLeaveDonutData);
+
             $scope.degreeOfSickLeaveGroups = result.degreeOfSickLeaveGroups;
 
+            printFactory.setupSeriesForDisplayType($routeParams.printBw, result.sickLeaveLength.chartData, "bar");
             paintBarChart("sickLeaveLengthChart", result.sickLeaveLength.chartData);
+
             $scope.longSickLeavesTotal = result.sickLeaveLength.longSickLeavesTotal;
             $scope.longSickLeavesAlteration = result.sickLeaveLength.longSickLeavesAlternation;
         };
 
+        var populatePageWithData = function (result) {
+            $timeout(function () {
+                updateCharts(result);
+
+                if ($routeParams.printBw || $routeParams.print) {
+                    printFactory.printAndCloseWindow($timeout, $window);
+                }
+            }, 1);
+        };
+
         function paintBarChart(containerId, chartData, tooltipHeaderPrefix) {
+            var color = '#57843B', chartOptions, patternPath;
+
+            if ($routeParams.printBw) {
+                patternPath = window.location.pathname + 'img/print-patterns/8.png';
+
+                //Override the default color with a black and white pattern
+                color = {
+                    pattern: patternPath,
+                    width: 6,
+                    height: 6
+                };
+            }
+
             var series = [
                 {
                     name: "Antal",
                     data: _.map(chartData, function (e) {
                         return e.quantity;
                     }),
-                    color: '#57843B'
+                    color: color
                 }
             ];
             var categories = _.map(chartData, function (e) {
@@ -192,7 +268,7 @@ angular.module('StatisticsApp').controller('businessOverviewCtrl', ['$scope', '$
         }
 
         function extractDonutData(rawData) {
-            ControllerCommons.addColor(rawData);
+            printFactory.addColor(rawData);
             var donutData = [];
             for (var i = 0; i < rawData.length; i++) {
                 donutData.push({
@@ -214,6 +290,9 @@ angular.module('StatisticsApp').controller('businessOverviewCtrl', ['$scope', '$
         $scope.spinnerText = "Laddar information...";
         $scope.doneLoading = false;
         $scope.dataLoadingError = false;
-        
+
+        $scope.print = function (bwPrint) {
+            printFactory.print(bwPrint, $rootScope, $window);
+        };
     }
 ]);

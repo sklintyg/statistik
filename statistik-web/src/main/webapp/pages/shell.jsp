@@ -506,6 +506,7 @@
 <script type="text/javascript" src="<c:url value='/webjars/bootstrap-multiselect/0.9.8/js/bootstrap-multiselect.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/app.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/services/factories.js'/>"></script>
+<script type="text/javascript" src="<c:url value='/js/app/services/printFactory.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/services/treeMultiSelectUtil.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/services/businessFilter.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/services/messageService.js'/>"></script>

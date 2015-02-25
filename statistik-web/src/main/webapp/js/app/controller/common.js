@@ -21,72 +21,6 @@
 
 var ControllerCommons = new function(){
 
-    this.addColor = function(rawData) {
-        var color = [ "#E40E62", "#00AEEF", "#57843B", "#002B54", "#F9B02D", "#724E86", "#34655e", "#8A6B61" ];
-        var maleColor = [ "#008391", "#90cad0" ];
-        var femaleColor = [ "#EA8025", "#f6c08d" ];
-        var colorSelector = 0;
-        var maleColorSelector = 0;
-        var femaleColorSelector = 0;
-        for (var i = 0; i < rawData.length; i++) {
-            if (rawData[i].sex === "Male") {
-                rawData[i].color = maleColor[maleColorSelector++];
-            } else if (rawData[i].sex === "Female") {
-                rawData[i].color = femaleColor[femaleColorSelector++];
-            } else {
-                rawData[i].color = color[colorSelector++];
-            }
-        }
-        return rawData;
-    };
- 
-    var addBwColor = function(series, chartType) {
-
-        var imagePath = window.location.pathname + 'img/print-patterns/';
-
-        var patterns = _.map(['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'], function(image) {return imagePath + image + '.png';});
-        var dashStyles = [ 'shortdashdotdot', 'dashdot', 'dot', 'longdash', 'shortdot', 'solid', 'shortdash', 'shortdashdot', 'dash', 'longdashdot', 'longdashdotdot' ];
-
-        for (var i = 0; i < series.length; i++) {
-            series[i].animation = false;
-            if (chartType === "bar" || chartType === "area") {
-                series[i].color = {
-                        pattern: patterns[i % patterns.length],
-                        width: 6,
-                        height: 6
-                    };
-                series[i].fillColor = {
-                        pattern: patterns[i % patterns.length],
-                        width: 6,
-                        height: 6
-                };
-            } else if (chartType === "line") {
-                series[i].color = 'black';
-                series[i].dashStyle = dashStyles[i % dashStyles.length];
-            }
-        }
-        return series;
-    };
-    
-    this.setupSeriesForDisplayType = function(setupForBwPrint, series, chartType) {
-        return setupForBwPrint ? addBwColor(series, chartType) : ControllerCommons.addColor(series);
-    };
-    
-    this.printAndCloseWindow = function($timeout, $window) {
-        $( document ).ready( function(){
-            $timeout(function() {
-                $window.print();
-                if ('afterprint' in window) {
-                    $(window).on('afterprint', function(){$window.close();});
-                } else {
-                    $timeout(function() {
-                        $window.close();
-                    }, 100);
-                }
-            }, 3000);
-          } );
-    };
-
     this.updateDataTable = function (scope, tableData) {
         scope.headerrows = tableData.headers;
         if (scope.headerrows.length > 1) {
@@ -332,13 +266,6 @@ var ControllerCommons = new function(){
             scope.activeDiagnosFiltersForPrint = isPrint ? scope.activeDiagnosFilters : null;
         });
     };
-
-    this.print = function(bwPrint, rootScope, windowParam) {
-        var printQuery = bwPrint ? "printBw=true" : "print=true";
-        var prefixChar = rootScope.queryString ? "&" : "?";
-        console.log(windowParam.location);
-        windowParam.open(windowParam.location + prefixChar + printQuery);
-    }
 
 };
 

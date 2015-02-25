@@ -19,13 +19,6 @@
 
 describe("Test of common functions for controllers", function() {
 
-    it("addColor", function() {
-        var list = [ { id : 1 }, { id : 2 } ];
-        ControllerCommons.addColor(list);
-        expect(list[0].color).toBe("#E40E62");
-        expect(list[1].color).toBe("#00AEEF");
-    });
-
     it("makeThousandSeparated", function() {
         expect(ControllerCommons.makeThousandSeparated()).toBe();
         expect(ControllerCommons.makeThousandSeparated(0)).toBe("0");
@@ -87,16 +80,6 @@ describe("Test of common functions for controllers", function() {
     it("htmlsafe", function() {
         expect(ControllerCommons.htmlsafe("f")).toBe("f");
         expect(ControllerCommons.htmlsafe("f&<")).toBe("f&amp;&lt;");
-    });
-    
-    it("setupSeriesForDisplayType BW", function() {
-        var result = ControllerCommons.setupSeriesForDisplayType(true, [{}], "line");
-        expect(result[0].color).toBe("black");
-    });
-    
-    it("setupSeriesForDisplayType color", function() {
-        var result = ControllerCommons.setupSeriesForDisplayType(false, [{}], "line");
-        expect(result[0].color).toBe("#E40E62");
     });
     
 });

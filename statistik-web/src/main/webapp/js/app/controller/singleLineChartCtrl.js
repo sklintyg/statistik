@@ -19,8 +19,8 @@
 
 'use strict';
 
-angular.module('StatisticsApp').controller('singleLineChartCtrl', [ '$scope', '$rootScope', '$routeParams', '$timeout', '$window', 'statisticsData', 'businessFilter', 'config',
-    function ($scope, $rootScope, $routeParams, $timeout, $window, statisticsData, businessFilter, config) {
+angular.module('StatisticsApp').controller('singleLineChartCtrl', [ '$scope', '$rootScope', '$routeParams', '$timeout', '$window', 'statisticsData', 'businessFilter', 'config', 'printFactory',
+    function ($scope, $rootScope, $routeParams, $timeout, $window, statisticsData, businessFilter, config, printFactory) {
         var chart;
         $scope.chartContainers = [
             {id: "chart1", name: "diagram"}
@@ -54,7 +54,7 @@ angular.module('StatisticsApp').controller('singleLineChartCtrl', [ '$scope', '$
         };
 
         var updateChart = function (ajaxResult) {
-            $scope.series = ControllerCommons.setupSeriesForDisplayType($routeParams.printBw, ajaxResult.series, "line");
+            $scope.series = printFactory.setupSeriesForDisplayType($routeParams.printBw, ajaxResult.series, "line");
             setColorToTotalCasesSeries($scope.series);
             chart = paintChart(ajaxResult.categories, $scope.series);
         };
@@ -68,7 +68,7 @@ angular.module('StatisticsApp').controller('singleLineChartCtrl', [ '$scope', '$
                 updateChart(result.chartData);
 
                 if ($routeParams.printBw || $routeParams.print) {
-                    ControllerCommons.printAndCloseWindow($timeout, $window);
+                    printFactory.printAndCloseWindow($timeout, $window);
                 }
             }, 1);
         };
@@ -113,7 +113,7 @@ angular.module('StatisticsApp').controller('singleLineChartCtrl', [ '$scope', '$
         $scope.popoverText = config.showPageHelpTooltip ? "Ett sjukfall innehåller en patients alla läkarintyg om intygen följer varandra med max fem dagars uppehåll. Läkarintygen måste också vara utfärdade av samma vårdgivare. Om det är fler än fem dagar mellan intygen räknas det nya intyget som ett nytt sjukfall." : "";
 
         $scope.print = function (bwPrint) {
-            ControllerCommons.print(bwPrint, $rootScope, $window);
+            printFactory.print(bwPrint, $rootScope, $window);
         };
 
     }

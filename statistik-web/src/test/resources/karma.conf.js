@@ -34,11 +34,13 @@ module.exports = function(config) {
             'src/main/**/businessOverviewCtrl.js',
             'src/main/**/treeMultiSelectUtil.js',
             'src/main/**/businessFilter.js',
+            'src/main/**/printFactory.js',
             'src/test/javascript/**/angular-mocks.js',
             'src/test/javascript/**/pageCtrlTest.js',
             'src/test/javascript/**/commonTest.js',
             'src/test/javascript/**/directiveTmsCtrlTest.js',
-            'src/test/javascript/**/businessFilterTest.js'
+            'src/test/javascript/**/businessFilterTest.js',
+            'src/test/javascript/**/printFactoryTest.js'
         ],
 
         // list of files to exclude

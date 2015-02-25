@@ -19,8 +19,8 @@
 
 'use strict';
 
-angular.module('StatisticsApp').controller('casesPerCountyCtrl', ['$scope', '$rootScope', '$timeout', '$routeParams', '$window', 'statisticsData', 'messageService',
-    function ($scope, $rootScope, $timeout, $routeParams, $window, statisticsData, messageService) {
+angular.module('StatisticsApp').controller('casesPerCountyCtrl', ['$scope', '$rootScope', '$timeout', '$routeParams', '$window', 'statisticsData', 'messageService', 'printFactory',
+    function ($scope, $rootScope, $timeout, $routeParams, $window, statisticsData, messageService, printFactory) {
 
         var chart = {};
         $scope.chartContainers = [
@@ -42,7 +42,7 @@ angular.module('StatisticsApp').controller('casesPerCountyCtrl', ['$scope', '$ro
         };
 
         var updateChart = function (ajaxResult) {
-            $scope.series = ControllerCommons.setupSeriesForDisplayType($routeParams.printBw, ajaxResult.series, "bar");
+            $scope.series = printFactory.setupSeriesForDisplayType($routeParams.printBw, ajaxResult.series, "bar");
             chart = paintChart(ajaxResult.categories, $scope.series);
         };
 
@@ -65,7 +65,7 @@ angular.module('StatisticsApp').controller('casesPerCountyCtrl', ['$scope', '$ro
                 updateChart(result.chartData);
 
                 if ($routeParams.printBw || $routeParams.print) {
-                    ControllerCommons.printAndCloseWindow($timeout, $window);
+                    printFactory.printAndCloseWindow($timeout, $window);
                 }
             }, 1);
         };
@@ -89,7 +89,7 @@ angular.module('StatisticsApp').controller('casesPerCountyCtrl', ['$scope', '$ro
         };
 
         $scope.print = function (bwPrint) {
-            ControllerCommons.print(bwPrint, $rootScope, $window);
+            printFactory.print(bwPrint, $rootScope, $window);
         };
 
     }

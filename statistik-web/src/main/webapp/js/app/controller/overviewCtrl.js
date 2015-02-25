@@ -19,8 +19,8 @@
 
 'use strict';
 
-angular.module('StatisticsApp').controller('overviewCtrl', [ '$scope', '$timeout', 'statisticsData',
-    function ($scope, $timeout, statisticsData) {
+angular.module('StatisticsApp').controller('overviewCtrl', [ '$scope', '$rootScope', '$window', '$timeout', 'statisticsData', '$routeParams', 'printFactory',
+    function ($scope, $rootScope, $window, $timeout, statisticsData, $routeParams, printFactory) {
 
         var setTooltipText = function (result) {
             $scope.popoverText = "Statistiktjänsten är en webbtjänst som visar samlad statistik för sjukskrivning som ordinerats av läkare. Tjänsten visar statistik för alla elektroniska läkarintyg. Statistiken är uppdelad i nationell statistik som är tillgänglig för alla, och verksamhetsstatistik som bara går att se med särskild behörighet inom hälso- och sjukvården.";
@@ -81,48 +81,72 @@ angular.module('StatisticsApp').controller('overviewCtrl', [ '$scope', '$timeout
             new Highcharts.Chart(chartOptions);
         }
 
-        var populatePageWithData = function (result) {
-            $scope.casesPerMonthMaleProportion = result.casesPerMonth.proportionMale;
-            $scope.casesPerMonthFemaleProportion = result.casesPerMonth.proportionFemale;
-            paintPerMonthAlternationChart(result.casesPerMonth.alteration);
-
-            function paintDonutChart(containerId, chartData, tooltipHeaderPrefix) {
-                var series = [
-                    {
-                        name: 'Antal',
-                        data: chartData,
-                        innerSize: '40%',
-                        dataLabels: {
-                            formatter: function () {
-                                return null;
-                            }
+        var paintDonutChart = function (containerId, chartData, tooltipHeaderPrefix) {
+            var series = [
+                {
+                    name: 'Antal',
+                    data: chartData,
+                    innerSize: '40%',
+                    dataLabels: {
+                        formatter: function () {
+                            return null;
                         }
                     }
-                ];
-                var chartOptions = ControllerCommons.getHighChartConfigBase([], series);
-                
-                chartOptions.chart.type = 'pie';
-                chartOptions.chart.renderTo = containerId;
-                chartOptions.chart.height = 180;
-                chartOptions.chart.plotBorderWidth = 0;
-                chartOptions.tooltip.headerFormat = '<span style="font-size: 10px">' + (tooltipHeaderPrefix || "") + '{point.key}</span><br/>';
-                new Highcharts.Chart(chartOptions);
-            }
+                }
+            ];
+            var chartOptions = ControllerCommons.getHighChartConfigBase([], series);
 
-            paintDonutChart("diagnosisChart", extractDonutData(result.diagnosisGroups));
+            chartOptions.chart.type = 'pie';
+            chartOptions.chart.renderTo = containerId;
+            chartOptions.chart.height = 180;
+            chartOptions.chart.plotBorderWidth = 0;
+            chartOptions.tooltip.headerFormat = '<span style="font-size: 10px">' + (tooltipHeaderPrefix || "") + '{point.key}</span><br/>';
+            chartOptions.plotOptions.pie.showInLegend = $routeParams.printBw || $routeParams.print;
+            new Highcharts.Chart(chartOptions);
+        };
+
+        var updateCharts = function (result) {
+
+            $scope.casesPerMonthMaleProportion = result.casesPerMonth.proportionMale;
+            $scope.casesPerMonthFemaleProportion = result.casesPerMonth.proportionFemale;
+
+            printFactory.setupSeriesForDisplayType($routeParams.printBw, result.casesPerMonth.alteration, "pie");
+            paintPerMonthAlternationChart(result.casesPerMonth.alteration);
+
+            var diagnosisDonutData = extractDonutData(result.diagnosisGroups);
+            printFactory.setupSeriesForDisplayType($routeParams.printBw, diagnosisDonutData, "pie");
+            paintDonutChart("diagnosisChart", diagnosisDonutData);
             $scope.diagnosisGroups = result.diagnosisGroups;
-            paintDonutChart("ageChart", extractDonutData(result.ageGroups));
+
+            var ageGroupsDonutData = extractDonutData(result.ageGroups);
+            printFactory.setupSeriesForDisplayType($routeParams.printBw, ageGroupsDonutData, "pie");
+            paintDonutChart("ageChart", ageGroupsDonutData);
             $scope.ageGroups = result.ageGroups;
-            paintDonutChart("degreeOfSickLeaveChart", extractDonutData(result.degreeOfSickLeaveGroups));
+
+            var degreeOfSickLeaveDonutData = extractDonutData(result.degreeOfSickLeaveGroups);
+            printFactory.setupSeriesForDisplayType($routeParams.printBw, degreeOfSickLeaveDonutData, "pie");
+            var degreeOfSickLeaveChart = paintDonutChart("degreeOfSickLeaveChart", degreeOfSickLeaveDonutData);
             $scope.degreeOfSickLeaveGroups = result.degreeOfSickLeaveGroups;
 
+            printFactory.setupSeriesForDisplayType($routeParams.printBw, result.sickLeaveLength.chartData, "bar");
             paintBarChart("sickLeaveLengthChart", result.sickLeaveLength.chartData);
+
             $scope.longSickLeavesTotal = result.sickLeaveLength.longSickLeavesTotal;
             $scope.longSickLeavesAlteration = result.sickLeaveLength.longSickLeavesAlternation;
 
-            ControllerCommons.addColor(result.perCounty);
+            printFactory.setupSeriesForDisplayType($routeParams.printBw, result.perCounty);
             paintSickLeavePerCountyChart("sickLeavePerCountyChart", result.perCounty);
             $scope.sickLeavePerCountyGroups = result.perCounty;
+        };
+
+        var populatePageWithData = function (result) {
+            $timeout(function () {
+                updateCharts(result);
+
+                if ($routeParams.printBw || $routeParams.print) {
+                    printFactory.printAndCloseWindow($timeout, $window);
+                }
+            }, 1);
         };
 
         function paintBarChart(containerId, chartData) {
@@ -166,7 +190,7 @@ angular.module('StatisticsApp').controller('overviewCtrl', [ '$scope', '$timeout
                 type: 'bubble',
                 backgroundColor: null //Transparent
             };
-            chartOptions.legend.enabled = false;
+            chartOptions.legend.enabled = $routeParams.printBw || $routeParams.print;
 
             chartOptions.plotOptions = {
                 bubble: {
@@ -287,7 +311,7 @@ angular.module('StatisticsApp').controller('overviewCtrl', [ '$scope', '$timeout
         }
 
         function extractDonutData(rawData) {
-            ControllerCommons.addColor(rawData);
+            printFactory.addColor(rawData);
             var donutData = [];
             for (var i = 0; i < rawData.length; i++) {
                 donutData.push({
@@ -305,6 +329,10 @@ angular.module('StatisticsApp').controller('overviewCtrl', [ '$scope', '$timeout
         $scope.spinnerText = "Laddar information...";
         $scope.doneLoading = false;
         $scope.dataLoadingError = false;
+
+        $scope.print = function (bwPrint) {
+            printFactory.print(bwPrint, $rootScope, $window);
+        };
 
     }
 ]);
