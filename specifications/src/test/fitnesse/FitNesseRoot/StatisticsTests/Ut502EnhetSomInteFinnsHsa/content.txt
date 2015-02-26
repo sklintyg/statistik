@@ -1,0 +1,25 @@
+!contents -R2 -g -p -f -h
+
+Ett intyg med ett enhetsid som saknas i hsa bör hanteras på ett korrekt sätt
+
+!3 Givet att:
+| script | dagens datum | 2013-11-06 |
+
+| script | troskel varde | 1 |
+
+| Enbart foljande intyg finns |
+| personnr      | diagnoskod | start      | slut       | enhet  | kommentar |
+| 19790407-1295 | G01        | 2013-02-01 | 2013-02-06 | EJHSA | |
+
+
+!3 Då gäller:
+Nationell nivå
+| Sjukfall i rapporten sjukfall totalt |
+| år   | månad | män? | kvinnor? |
+| 2013 | feb   | 1    | 0        |
+
+Inloggad nivå
+| Sjukfall i rapporten sjukfall totalt |
+| inloggad som | vårdgivarnivå | år   | månad | män? | kvinnor? |
+| user1        | false          | 2013 | feb   | 0    | 0        |
+| user2        | true          | 2013 | feb   | 1    | 0        |
