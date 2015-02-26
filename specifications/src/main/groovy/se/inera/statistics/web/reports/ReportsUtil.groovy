@@ -1,6 +1,7 @@
 package se.inera.statistics.web.reports
 
 import groovy.json.JsonBuilder
+import groovyx.net.http.HttpResponseException
 import groovyx.net.http.RESTClient
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -55,6 +56,16 @@ class ReportsUtil {
         assert response.status == 200
     }
 
+    def denyCalc() {
+        def response = statistik.post(path: '/api/testsupport/denyCalc')
+        assert response.status == 200
+    }
+
+    def allowCalc() {
+        def response = statistik.post(path: '/api/testsupport/allowCalc')
+        assert response.status == 200
+    }
+
     def getReportAntalIntyg() {
         return get("/api/getNumberOfCasesPerMonth")
     }
@@ -84,9 +95,19 @@ class ReportsUtil {
     private def post(String url, FilterData filter=FilterData.empty(), String queryString="", String bodyString="") {
         def queryWithFilter = addFilterToQueryStringIfSet(filter, queryString)
         println("Calling url: " + url + " with query: " + queryWithFilter + " and body: " + bodyString)
-        def response = statistik.post(path: url, body: bodyString, requestContentType: JSON, queryString : queryWithFilter)
-        assert response.status == 200
-        return response.data;
+        try {
+            def response = statistik.post(path: url, body: bodyString, requestContentType: JSON, queryString : queryWithFilter)
+            assert response.status == 200
+            println 'data =' + response.data
+            return response.data
+        } catch (HttpResponseException e) {
+            if ('Service Unavailable' == e.message) {
+                println 'error = 503'
+                return []
+            } else {
+                throw e
+            }
+        }
     }
 
     private boolean isFilterEmpty(FilterData filter) {

@@ -37,6 +37,8 @@ public final class CalcCoordinator {
         LOG.info("Using " +  NO_OF_TICKETS + " tickets.");
     }
 
+    private static boolean denyAll = false;
+
     private CalcCoordinator() {
     }
 
@@ -53,7 +55,8 @@ public final class CalcCoordinator {
                 }
             }
         }
-        if (returnTicket == null) {
+        if (returnTicket == null || denyAll) {
+            LOG.warn("No available executors");
             throw new CalcException("No available executors");
         }
         int counter = 0;
@@ -65,6 +68,7 @@ public final class CalcCoordinator {
             LOG.info("Waited for " + counter++ + " loops");
             if (System.currentTimeMillis() - start > MAX_WAIT) {
                 returnTicket(returnTicket);
+                LOG.warn("Max wait time exceeded");
                 throw new CalcException("Max wait time exceeded");
             }
             try {
@@ -86,6 +90,11 @@ public final class CalcCoordinator {
                 queueSize--;
             }
         }
+    }
+
+    public static void setDenyAll(boolean denyAll) {
+        LOG.info("Deny all = " + denyAll);
+        CalcCoordinator.denyAll = denyAll;
     }
 
     public static final class Ticket {

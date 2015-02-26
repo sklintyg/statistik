@@ -12,6 +12,7 @@ import se.inera.statistics.service.processlog.Receiver;
 import se.inera.statistics.service.warehouse.NationellData;
 import se.inera.statistics.service.warehouse.Warehouse;
 import se.inera.statistics.service.warehouse.WarehouseManager;
+import se.inera.statistics.service.warehouse.query.CalcCoordinator;
 import se.inera.statistics.web.service.ChartDataService;
 
 import javax.persistence.EntityManager;
@@ -116,6 +117,24 @@ public class RestSupportService {
         } while (count > 0);
         warehouseManager.loadEnhetAndWideLines();
         nationalChartDataService.buildCache();
+        return Response.ok().build();
+    }
+
+    @POST
+    @Path("denyCalc")
+    @Produces({ MediaType.APPLICATION_JSON })
+    public Response denyCalc() {
+        LOG.info("Deny calc");
+        CalcCoordinator.setDenyAll(true);
+        return Response.ok().build();
+    }
+
+    @POST
+    @Path("allowCalc")
+    @Produces({ MediaType.APPLICATION_JSON })
+    public Response allowCalc() {
+        LOG.info("Allow calc");
+        CalcCoordinator.setDenyAll(false);
         return Response.ok().build();
     }
 
