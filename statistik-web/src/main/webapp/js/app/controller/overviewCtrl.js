@@ -247,22 +247,29 @@ angular.module('StatisticsApp').controller('overviewCtrl', [ '$scope', '$rootSco
                 {name: 'västra götaland', xy: {"x": 12, "y": 22}}, {name: 'örebro', xy: {"x": 32, "y": 28}},
                 {name: 'östergötland', xy: {"x": 40, "y": 20}}];
 
-            var result = _.findWhere(counties, {name: perCountyObject.name.toLowerCase()});
+            var result = _.find(counties, function(c) {
+                if(contains(perCountyObject.name.toLowerCase(), c.name)) {
+                    return c;
+                }
+            });
 
             return result ? result.xy : defaultCoordinates;
         };
 
+        function contains(master, substring) {
+            return master.indexOf(substring) != -1;
+        }
+
         function extractDonutData(rawData) {
             printFactory.addColor(rawData);
-            var donutData = [];
-            for (var i = 0; i < rawData.length; i++) {
-                donutData.push({
-                    name: ControllerCommons.htmlsafe(rawData[i].name),
-                    y: rawData[i].quantity,
-                    color: rawData[i].color
-                });
-            }
-            return donutData;
+
+            return _.map(rawData, function(data) {
+                return {
+                    name: ControllerCommons.htmlsafe(data.name),
+                    y: data.quantity,
+                    color: data.color
+                }
+            });
         }
 
         statisticsData.getOverview(dataReceived, function () {
