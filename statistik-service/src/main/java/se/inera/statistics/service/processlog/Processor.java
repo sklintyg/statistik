@@ -39,7 +39,7 @@ public class Processor {
     public void accept(JsonNode utlatande, JsonNode hsa, long logId, String correlationId, EventType type) {
         ObjectNode preparedDoc = DocumentHelper.prepare(utlatande);
 
-        vardgivareManager.saveEnhet(hsa);
+        vardgivareManager.saveEnhet(hsa, preparedDoc);
 
         lakareManager.saveLakare(hsa);
 

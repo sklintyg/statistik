@@ -23,6 +23,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+import se.inera.statistics.service.helper.DocumentHelper;
 import se.inera.statistics.service.helper.HSAServiceHelper;
 import se.inera.statistics.service.warehouse.WidelineConverter;
 
@@ -39,8 +40,13 @@ public class VardgivareManager {
     private EntityManager manager;
 
     @Transactional
-    public void saveEnhet(JsonNode hsaInfo) {
+    public void saveEnhet(JsonNode hsaInfo, JsonNode document) {
+        boolean hsaEnhet = true;
         String enhet = HSAServiceHelper.getEnhetId(hsaInfo);
+        if (enhet == null) {
+            hsaEnhet = false;
+            enhet = DocumentHelper.getEnhetId(document);
+        }
         String vardgivare = HSAServiceHelper.getVardgivarId(hsaInfo);
         String enhetNamn = HSAServiceHelper.getEnhetNamn(hsaInfo);
         String vardgivareNamn = HSAServiceHelper.getVardgivarNamn(hsaInfo);
@@ -64,7 +70,7 @@ public class VardgivareManager {
 
             if (resultList.isEmpty()) {
                 manager.persist(new Enhet(vardgivare, vardgivareNamn, enhet, enhetNamn, lansId, kommunId, verksamhetsTyper));
-            } else {
+            } else if (hsaEnhet) {
                 Enhet updatedEnhet = resultList.get(0);
                 updatedEnhet.setVardgivareNamn(vardgivareNamn);
                 updatedEnhet.setNamn(enhetNamn);
