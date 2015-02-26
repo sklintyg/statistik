@@ -48,7 +48,7 @@ public class VardgivareManagerTest {
     public void saveOneEnhet() {
         JsonNode hsaInfo = hsaService.getHSAInfo(new HSAKey("vg", "enhet", "lakare"));
 
-        vardgivareManager.saveEnhet(hsaInfo);
+        vardgivareManager.saveEnhet(hsaInfo, null);
 
         List<Enhet> allEnhets = vardgivareManager.getAllEnhets();
         assertEquals(1, allEnhets.size());
@@ -59,7 +59,7 @@ public class VardgivareManagerTest {
     @Test
     public void getEnhetsForNonExistingVardgivare() {
         JsonNode hsaInfo = hsaService.getHSAInfo(new HSAKey("vg", "enhet", "lakare"));
-        vardgivareManager.saveEnhet(hsaInfo);
+        vardgivareManager.saveEnhet(hsaInfo, null);
 
         List<Enhet> enhets = vardgivareManager.getEnhets("jag finns inte");
 
@@ -71,9 +71,9 @@ public class VardgivareManagerTest {
     @Test
     public void getEnhetsForExistingVardgivare() {
         JsonNode hsaInfo = hsaService.getHSAInfo(new HSAKey("vg", "enhet", "lakare"));
-        vardgivareManager.saveEnhet(hsaInfo);
+        vardgivareManager.saveEnhet(hsaInfo, null);
         hsaInfo = hsaService.getHSAInfo(new HSAKey("other-vg", "other-enhet", "lakare"));
-        vardgivareManager.saveEnhet(hsaInfo);
+        vardgivareManager.saveEnhet(hsaInfo, null);
 
         List<Enhet> enhets = vardgivareManager.getEnhets("vg");
 
@@ -87,9 +87,9 @@ public class VardgivareManagerTest {
     @Test
     public void getVardgivareWithOneVardgivareTwoEnhets() {
         JsonNode hsaInfo = hsaService.getHSAInfo(new HSAKey("vg", "enhet1", "lakare"));
-        vardgivareManager.saveEnhet(hsaInfo);
+        vardgivareManager.saveEnhet(hsaInfo, null);
         hsaInfo = hsaService.getHSAInfo(new HSAKey("vg", "enhet2", "lakare"));
-        vardgivareManager.saveEnhet(hsaInfo);
+        vardgivareManager.saveEnhet(hsaInfo, null);
 
         List<Vardgivare> allVardgivares = vardgivareManager.getAllVardgivares();
 
