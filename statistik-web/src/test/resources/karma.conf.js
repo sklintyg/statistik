@@ -23,24 +23,8 @@ module.exports = function(config) {
             WEBJAR_DIR + 'angularjs/1.2.14/angular-mocks.js',
             WEBJAR_DIR + 'angular-ui-bootstrap/0.10.0/ui-bootstrap-tpls.min.js',
             WEBJAR_DIR + 'underscorejs/1.7.0/underscore-min.js',
-            'src/main/**/highcharts.js',
-            'src/main/**/app.js',
-            'src/main/**/messages.js',
-            'src/main/**/messageService.js',
-            'src/main/**/common.js',
-            'src/main/**/treeMultiSelectUtil.js',
-            'src/main/**/directiveTmsCtrl.js',
-            'src/main/**/pageCtrl.js',
-            'src/main/**/businessOverviewCtrl.js',
-            'src/main/**/treeMultiSelectUtil.js',
-            'src/main/**/businessFilter.js',
-            'src/main/**/printFactory.js',
-            'src/test/javascript/**/angular-mocks.js',
-            'src/test/javascript/**/pageCtrlTest.js',
-            'src/test/javascript/**/commonTest.js',
-            'src/test/javascript/**/directiveTmsCtrlTest.js',
-            'src/test/javascript/**/businessFilterTest.js',
-            'src/test/javascript/**/printFactoryTest.js'
+            'src/main/webapp/js/**/*.js',
+            'src/test/javascript/**/*.js'
         ],
 
         // list of files to exclude

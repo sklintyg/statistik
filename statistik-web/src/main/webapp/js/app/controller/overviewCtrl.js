@@ -22,6 +22,8 @@
 angular.module('StatisticsApp').controller('overviewCtrl', [ '$scope', '$rootScope', '$window', '$timeout', 'statisticsData', '$routeParams', 'printFactory',
     function ($scope, $rootScope, $window, $timeout, statisticsData, $routeParams, printFactory) {
 
+        var self = this;
+
         var setTooltipText = function (result) {
             $scope.popoverText = "Statistiktjänsten är en webbtjänst som visar samlad statistik för sjukskrivning som ordinerats av läkare. Tjänsten visar statistik för alla elektroniska läkarintyg. Statistiken är uppdelad i nationell statistik som är tillgänglig för alla, och verksamhetsstatistik som bara går att se med särskild behörighet inom hälso- och sjukvården.";
             $scope.popoverTextAmount = "Totala antalet sjukfall under perioden " + result.periodText;
@@ -176,7 +178,7 @@ angular.module('StatisticsApp').controller('overviewCtrl', [ '$scope', '$rootSco
 
         function paintSickLeavePerCountyChart(containerId, chartData, tooltipHeaderPrefix) {
             var series = _.map(chartData, function (e) {
-                var coords = getCoordinates(e);
+                var coords = self.getCoordinates(e);
                 return {"data": [
                     [coords.x, coords.y, e.quantity]
                 ], color: e.color, name: ControllerCommons.htmlsafe(e.name) };
@@ -230,85 +232,25 @@ angular.module('StatisticsApp').controller('overviewCtrl', [ '$scope', '$rootSco
             });
         }
 
-        function getCoordinates(perCountyObject) {
-            var county = perCountyObject.name.toLowerCase();
-            if (contains(county, "blekinge")) {
-                return {"x": 35, "y": 5};
-            } else if (contains(county, "dalarna")) {
-                return {"x": 31, "y": 40};
-            } else if (contains(county, "halland")) {
-                return {"x": 14, "y": 10};
-            } else if (contains(county, "kalmar")) {
-                return {"x": 40, "y": 10};
-            } else if (contains(county, "kronoberg")) {
-                return {"x": 32, "y": 9};
-            } else if (contains(county, "gotland")) {
-                return {"x": 55, "y": 12};
-            } else if (contains(county, "gävleborg")) {
-                return {"x": 45, "y": 40};
-            } else if (contains(county, "jämtland")) {
-                return {"x": 29, "y": 56};
-            } else if (contains(county, "jönköping")) {
-                return {"x": 28, "y": 14};
-            } else if (contains(county, "norrbotten")) {
-                return {"x": 59, "y": 84};
-            } else if (contains(county, "skåne")) {
-                return {"x": 21, "y": 1};
-            } else if (contains(county, "stockholm")) {
-                return {"x": 52, "y": 27};
-            } else if (contains(county, "södermanland")) {
-                return {"x": 44, "y": 24};
-            } else if (contains(county, "uppsala")) {
-                return {"x": 50, "y": 32};
-            } else if (contains(county, "värmland")) {
-                return {"x": 21, "y": 32};
-            } else if (contains(county, "västerbotten")) {
-                return {"x": 51, "y": 70};
-            } else if (contains(county, "västernorrland")) {
-                return {"x": 48, "y": 57};
-            } else if (contains(county, "västmanland")) {
-                return {"x": 42, "y": 32};
-            } else if (contains(county, "västra götaland")) {
-                return {"x": 12, "y": 22};
-            } else if (contains(county, "örebro")) {
-                return {"x": 32, "y": 28};
-            } else if (contains(county, "östergötland")) {
-                return {"x": 40, "y": 20};
-            } else {
-                return {"x": 12, "y": 84}; //Default point should not match any part of sweden
-            }
+        self.getCoordinates = function getCoordinates(perCountyObject) {
+            var defaultCoordinates = {"x": 12, "y": 84};
 
-        chartOptions.xAxis = {
-            min: 0,
-            max: 100,
-            minPadding: 0,
-            maxPadding: 0,
-            minorGridLineWidth : 0,
-            labels : {
-                enabled : false
-            },
-            gridLineWidth : 0
-        };
-        chartOptions.yAxis = {
-            min: 0,
-            max: 100,
-            minPadding: 0,
-            maxPadding: 0,
-            minorGridLineWidth : 0,
-            labels : {
-                enabled : false
-            },
-            gridLineWidth : 0,
-            title : ''
-        };
-        new Highcharts.Chart(chartOptions, function(chart) { // on complete
-            chart.renderer.image('img/sverige.png', 20, 10, 127, 300).add();
-        });
-    }
+            var counties = [{name: 'blekinge', xy: {"x": 35, "y": 5}} , {name: 'dalarna', xy: {"x": 31, "y": 40}},
+                {name: 'halland', xy: {"x": 14, "y": 10}}, {name: 'kalmar', xy: {"x": 40, "y": 10}},
+                {name: 'kronoberg', xy: {"x": 32, "y": 9}}, {name: 'gotland', xy: {"x": 55, "y": 12}},
+                {name: 'gävleborg', xy: {"x": 45, "y": 40}}, {name: 'jämtland', xy: {"x": 29, "y": 56}},
+                {name: 'jönköping', xy: {"x": 28, "y": 14}}, {name: 'norrbotten', xy: {"x": 59, "y": 84}},
+                {name: 'skåne', xy: {"x": 21, "y": 1}}, {name: 'stockholm', xy: {"x": 52, "y": 27}},
+                {name: 'södermanland', xy: {"x": 44, "y": 24}}, {name: 'uppsala', xy: {"x": 50, "y": 32}},
+                {name: 'värmland', xy: {"x": 21, "y": 32}}, {name: 'västerbotten', xy: {"x": 51, "y": 70}},
+                {name: 'västernorrland', xy: {"x": 48, "y": 57}}, {name: 'västmanland', xy: {"x": 42, "y": 32}},
+                {name: 'västra götaland', xy: {"x": 12, "y": 22}}, {name: 'örebro', xy: {"x": 32, "y": 28}},
+                {name: 'östergötland', xy: {"x": 40, "y": 20}}];
 
-        function contains(master, substring) {
-            return master.indexOf(substring) != -1;
-        }
+            var result = _.findWhere(counties, {name: perCountyObject.name.toLowerCase()});
+
+            return result ? result.xy : defaultCoordinates;
+        };
 
         function extractDonutData(rawData) {
             printFactory.addColor(rawData);
