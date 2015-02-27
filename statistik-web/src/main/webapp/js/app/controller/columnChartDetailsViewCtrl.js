@@ -34,6 +34,14 @@ angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl', [ '$sco
             chartOptions.chart.type = 'column';
             chartOptions.chart.marginLeft = 60;
             chartOptions.chart.marginTop = 27;
+
+            //Set the chart.width to a fixed width when we are about the print.
+            //It will prevent the chart from overflowing the printed page.
+            //Maybe there is some better way around this since this is not very responsive.
+            if($routeParams.printBw || $routeParams.print) {
+                chartOptions.chart.width = 768;
+            }
+
             chartOptions.legend.enabled = $routeParams.printBw || $routeParams.print;
             chartOptions.xAxis.title.text = config.chartXAxisTitle;
             chartOptions.yAxis.title.text = config.percentChart ? "Andel sjukfall i %" : 'Antal sjukfall';

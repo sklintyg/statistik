@@ -30,6 +30,14 @@ angular.module('StatisticsApp').controller('casesPerCountyCtrl', ['$scope', '$ro
         var paintChart = function (chartCategories, chartSeries) {
             var chartOptions = ControllerCommons.getHighChartConfigBase(chartCategories, chartSeries);
             chartOptions.chart.type = 'column';
+
+            //Set the chart.width to a fixed width when we are about the print.
+            //It will prevent the chart from overflowing the printed page.
+            //Maybe there is some better way around this since this is not very responsive.
+            if($routeParams.printBw || $routeParams.print) {
+                chartOptions.chart.width = 768;
+            }
+
             chartOptions.chart.marginTop = 27;
             chartOptions.chart.marginLeft = 60;
             chartOptions.yAxis.title.x = 30;

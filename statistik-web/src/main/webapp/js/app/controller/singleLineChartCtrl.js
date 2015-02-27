@@ -30,6 +30,14 @@ angular.module('StatisticsApp').controller('singleLineChartCtrl', [ '$scope', '$
         var paintChart = function (chartCategories, chartSeries) {
             var chartOptions = ControllerCommons.getHighChartConfigBase(chartCategories, chartSeries);
             chartOptions.chart.type = 'line';
+
+            //Set the chart.width to a fixed width when we are about the print.
+            //It will prevent the chart from overflowing the printed page.
+            //Maybe there is some better way around this since this is not very responsive.
+            if($routeParams.printBw || $routeParams.print) {
+                chartOptions.chart.width = 768;
+            }
+
             chartOptions.chart.marginLeft = 70;
             chartOptions.chart.marginTop = 27;
             chartOptions.legend.enabled = $routeParams.printBw || $routeParams.print;
