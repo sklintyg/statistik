@@ -103,7 +103,16 @@ angular.module('StatisticsApp').controller('overviewCtrl', [ '$scope', '$rootSco
             chartOptions.chart.height = 180;
             chartOptions.chart.plotBorderWidth = 0;
             chartOptions.tooltip.headerFormat = '<span style="font-size: 10px">' + (tooltipHeaderPrefix || "") + '{point.key}</span><br/>';
-            chartOptions.plotOptions.pie.showInLegend = $routeParams.printBw || $routeParams.print;
+
+            //Things we need to do when the chart is going to be printed
+            if($routeParams.printBw || $routeParams.print) {
+            chartOptions.chart.height = 240;
+                chartOptions.plotOptions.pie.showInLegend = true;
+                chartOptions.legend = {
+                    align: 'center',
+                    verticalAlign: 'bottom'
+                };
+            }
             new Highcharts.Chart(chartOptions);
         };
 
