@@ -192,7 +192,19 @@ angular.module('StatisticsApp').controller('overviewCtrl', [ '$scope', '$rootSco
                 type: 'bubble',
                 backgroundColor: null //Transparent
             };
-            chartOptions.legend.enabled = $routeParams.printBw || $routeParams.print;
+
+            if($routeParams.printBw || $routeParams.print) {
+                chartOptions.chart.width = 308; //Make the chart 120px wider than normal
+                chartOptions.chart.marginRight = 120; //Let the 120px be a margin to the right
+                //Enable the legend and put it to the right
+                chartOptions.legend = {
+                    enabled: true,
+                    align: 'right',
+                    layout: 'vertical'
+                };
+            } else {
+                chartOptions.legend = false;
+            }
 
             chartOptions.plotOptions = {
                 bubble: {
