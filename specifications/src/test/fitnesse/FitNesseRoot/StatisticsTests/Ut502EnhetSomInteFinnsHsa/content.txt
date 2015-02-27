@@ -10,7 +10,7 @@ Ett intyg med ett enhetsid som saknas i hsa bör hanteras på ett korrekt sätt
 | Enbart foljande intyg finns |
 | personnr      | diagnoskod | start      | slut       | enhet  | kommentar |
 | 19790407-1295 | G01        | 2013-02-01 | 2013-02-06 | EJHSA | |
-| 19790407-1295 | G01        | 2013-03-01 | 2013-03-06 | EJHSA_UUUU | |
+| 19790407-1295 | G01        | 2013-03-01 | 2013-03-06 | EJHSAUUUU | |
 
 
 !3 Då gäller:
