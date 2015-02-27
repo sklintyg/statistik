@@ -438,9 +438,9 @@ public class ProtectedChartDataService {
             final Range range = new Range(12);
             Verksamhet verksamhet = getVerksamhet(request, Verksamhet.decodeId(verksamhetId));
             Filter filter = getFilter(request, verksamhet, filterHash);
-            final boolean emptyDiagnosisHash = diagnosisHash == null || diagnosisHash.isEmpty() || "-".equals(diagnosisHash);
+            final boolean emptyDiagnosisHash = diagnosisHash == null || diagnosisHash.isEmpty();
             final List<String> diagnosis = emptyDiagnosisHash ? Collections.<String>emptyList() : getFilterFromHash(diagnosisHash).getDiagnoser();
-            final String message = emptyDiagnosisHash ? null : getCompareDiagnosisMessage(filter, diagnosis);
+            final String message = emptyDiagnosisHash ? "Inga diagnoser valda" : getCompareDiagnosisMessage(filter, diagnosis);
             SimpleKonResponse<SimpleKonDataRow> resultRows = warehouse.getJamforDiagnoser(filter.getPredicate(), range, verksamhet.getVardgivarId(), diagnosis);
             SimpleDetailsData result = new CompareDiagnosisConverter().convert(resultRows, range, filter, message);
             return Optional.of(result);

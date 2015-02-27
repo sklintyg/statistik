@@ -103,14 +103,21 @@ angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl', [ '$sco
             }, $routeParams.diagnosHash);
         }
 
-        if (isVerksamhet) {
-            $scope.exportTableUrl = config.exportTableUrlVerksamhet($routeParams.verksamhetId, $routeParams.diagnosHash);
-            refreshVerksamhet();
+        if ($routeParams.diagnosHash !== "-") {
+            $scope.spinnerText = "Laddar information...";
+            $scope.doneLoading = false;
+            $scope.dataLoadingError = false;
+            if (isVerksamhet) {
+                $scope.exportTableUrl = config.exportTableUrlVerksamhet($routeParams.verksamhetId, $routeParams.diagnosHash);
+                refreshVerksamhet();
+            } else {
+                $scope.exportTableUrl = config.exportTableUrl;
+                statisticsData[config.dataFetcher](populatePageWithData, function () {
+                    $scope.dataLoadingError = true;
+                });
+            }
         } else {
-            $scope.exportTableUrl = config.exportTableUrl;
-            statisticsData[config.dataFetcher](populatePageWithData, function () {
-                $scope.dataLoadingError = true;
-            });
+            $scope.doneLoading = true;
         }
 
         $scope.showHideDataTable = ControllerCommons.showHideDataTableDefault;
@@ -118,9 +125,6 @@ angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl', [ '$sco
             ControllerCommons.toggleTableVisibilityGeneric(event, $scope);
         };
 
-        $scope.spinnerText = "Laddar information...";
-        $scope.doneLoading = false;
-        $scope.dataLoadingError = false;
 
         $scope.popoverText = messageService.getProperty(config.pageHelpText, null, "", null, true);
         $scope.chartFootnotes = _.map(config.chartFootnotes, function(msgKey){
