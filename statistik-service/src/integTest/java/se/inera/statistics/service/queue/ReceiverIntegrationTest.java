@@ -114,7 +114,7 @@ public class ReceiverIntegrationTest {
 
     private void sleep() {
         try {
-            Thread.sleep(5000);
+            Thread.sleep(10000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
