@@ -130,21 +130,17 @@ var stMessages = {
 
         //login view
         'login.header': 'Logga in för verksamhetsstatistik',
-        'login.for-att-fortsatta': 'För att fortsätta till de inloggade sidorna för verksamhetsstatistik måste du logga in med ditt SITHS-kort.',
-        'login.alert-info.behorighet': 'Detta kan bero på att du inte har rätt behörighet för att se statistik för verksamheten.',
+        'login.alert-inaktivitet': 'Du har blivit utloggad på grund av inaktivitet.',
+        'login.alert-logga.in': 'Du måste logga in igen för att komma till sidorna för verksamhetsstatistik.',
         'login.lbl.gor-foljande': 'Gör följande:',
         'login.instruktioner-for-login': 'Sätt <span style="text-decoration: underline;">SITHS-kortet i din kortläsare</span> och klicka sedan på knappen "SITHS login"',
         'login.btn.siths-login': 'SITHS login',
 
         //about texts
-        'about.service': 'Allmänt om tjänsten',
+        'about.service': 'Om Statistiktjänsten',
         'about.cookies': '<h3>Om kakor (cookies)</h3><p>Så kallade kakor (cookies) används för att underlätta för besökaren på webbplatsen. En kaka är en textfil som lagras på din dator och som innehåller information. Denna webbplats använder så kallade sessionskakor. Sessionskakor lagras temporärt i din dators minne under tiden du är inne på en webbsida. Sessionskakor försvinner när du stänger din webbläsare. Ingen personlig information om dig sparas vid användning av sessionskakor.</p><p>Om du inte accepterar användandet av kakor kan du stänga av det via din webbläsares säkerhetsinställningar. Du kan även ställa in webbläsaren så att du får en varning varje gång webbplatsen försöker sätta en kaka på din dator.</p><p><strong>Observera!</strong> Om du stänger av kakor i din webbläsare kan du inte logga in i Webcert.</p><p>Allmän information om kakor (cookies) och lagen om elektronisk kommunikation finns på Post- och telestyrelsens webbplats.</p><p><a href="http://www.pts.se/sv/Bransch/Regler/Lagar/Lag-om-elektronisk-kommunikation/Cookies-kakor/" target="_blank">Mer om kakor (cookies) på Post- och telestyrelsens webbplats</a></p>',
 
         //error messages
-        'error.data-for-vald-rapport-kan-ej-visas': 'Data för vald rapport går ej att visa',
-        'error.data-for-vald-rapport-kan-ej-visas.information': 'Rapporten kan ej visas. Om felet kvarstår kan du kontakta <a ng-href="#/om/kontakt">support</a> eller gå till startsidan och försöka igen.',
-        'error.sidan-kan-inte-visas': 'Sidan du söker går ej att hitta (404)',
-        'error.sidan-kan-inte-visas.information': 'Kontrollera eventuella stavfel eller gå till <a ng-href="#/">startsidan</a>. Du kan även kontakta <a ng-href="#/om/kontakt">support</a>.',
         'error.unsignedcerts.couldnotbeloaded': '<strong>Kunde inte hämta ej signerade intyg.</strong>'
 
     },

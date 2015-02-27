@@ -63,6 +63,9 @@ public class WidelineConverter {
 
         String enhet = HSAServiceHelper.getEnhetId(hsa);
         String vardgivare = HSAServiceHelper.getVardgivarId(hsa);
+        if (enhet == null) {
+            enhet = DocumentHelper.getEnhetId(intyg);
+        }
 
         String patient = DocumentHelper.getPersonId(intyg);
 

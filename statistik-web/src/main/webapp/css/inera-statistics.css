@@ -1783,3 +1783,22 @@ li.subMenuItem.active .active-menu-item { display: block;  }
 .no-padding { padding: 0px !important; }
 .centeralign { text-align: center; }
 
+@-webkit-keyframes rotate {
+    from {
+        -webkit-transform: rotate(0deg);
+    }
+    to {
+        -webkit-transform: rotate(360deg);
+    }
+}
+
+.cssspinner {
+    width: 32px;
+    height: 32px;
+    margin: 20px auto;
+    background-image: url("../img/ajax-loader.gif");
+    -webkit-animation-name:             rotate;
+    -webkit-animation-duration:         1.5s;
+    -webkit-animation-iteration-count:  infinite;
+    -webkit-animation-timing-function:  linear;
+}

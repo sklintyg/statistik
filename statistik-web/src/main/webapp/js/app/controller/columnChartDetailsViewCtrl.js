@@ -152,12 +152,13 @@ angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl', [ '$sco
 
         $scope.diagnosisSelected = function () {
             var diagnoses = getSelectedDiagnosis();
+            $scope.doneLoading = false;
+
+            //Ugly fix from http://stackoverflow.com/questions/20827282/cant-dismiss-modal-and-change-page-location
+            $('#cancelModal').modal('toggle');
+            $('.modal-backdrop').remove();
+
             statisticsData.getFilterHash(diagnoses, null, null, function(selectionHash){
-
-                //Ugly fix from http://stackoverflow.com/questions/20827282/cant-dismiss-modal-and-change-page-location
-                $('#cancelModal').modal('toggle');
-                $('.modal-backdrop').remove();
-
                 $location.path("/verksamhet/" + $routeParams.verksamhetId + "/jamforDiagnoser/" + selectionHash);
             }, function(){ throw new Error("Failed to get filter hash value"); });
         };

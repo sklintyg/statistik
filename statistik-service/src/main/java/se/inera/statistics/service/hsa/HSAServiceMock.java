@@ -58,6 +58,8 @@ public class HSAServiceMock implements HSAService, HsaDataInjectable {
     private static final List<String> VERKSAMHET_CODES;
     private final Map<String, JsonNode> personals = new HashMap<>();
     private String nextLanCode = null;
+    private String nextEnhetName = null;
+
 
     static {
         LAN_CODES = new ArrayList<>();
@@ -77,10 +79,14 @@ public class HSAServiceMock implements HSAService, HsaDataInjectable {
     @Override
     public JsonNode getHSAInfo(HSAKey key) {
         ObjectNode root = factory.objectNode();
-        root.put("enhet", createEnhet(key));
-        root.put("huvudenhet", createEnhet(key));
+        if (!"EJHSA".equals(key.getEnhetId())) {
+            root.put("enhet", createEnhet(key));
+            root.put("huvudenhet", createEnhet(key));
+        }
         root.put("vardgivare", createVardgivare(key));
         root.put("personal", getOrCreatePersonal(key));
+        nextLanCode = null;
+        nextEnhetName = null;
         return root;
     }
 
@@ -120,6 +126,9 @@ public class HSAServiceMock implements HSAService, HsaDataInjectable {
     }
 
     private String getEnhetsNamn(String enhetId) {
+        if (nextEnhetName != null) {
+            return nextEnhetName;
+        }
         if (enhetId.startsWith("vg1-")) {
             String suffix = enhetId.substring(enhetId.lastIndexOf('-') + 1);
             return "Verksamhet " + suffix;
@@ -195,9 +204,7 @@ public class HSAServiceMock implements HSAService, HsaDataInjectable {
 
     private String createLan(HSAKey key) {
         if (nextLanCode != null) {
-            final String lan = nextLanCode;
-            nextLanCode = null;
-            return lan;
+            return nextLanCode;
         }
         int keyIndex = key != null && key.getVardgivareId() != null ? key.getVardgivareId().hashCode() & POSITIVE_MASK : 0;
         return LAN_CODES.get(keyIndex % LAN_CODES.size());
@@ -248,6 +255,11 @@ public class HSAServiceMock implements HSAService, HsaDataInjectable {
     @Override
     public void setCountyForNextIntyg(String countyCode) {
         nextLanCode = countyCode;
+    }
+
+    @Override
+    public void setEnhetNameForNextIntyg(String name) {
+        nextEnhetName = name;
     }
 
 }

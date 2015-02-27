@@ -149,3 +149,6 @@ Försöker man komma åt en verksamhet som man saknar behörighet till, så retu
 ###Icke existerande URL:er
 
 404 Not Found 
+##Övrigt
+###Söka i json-dokument i databasen
+Det finns inbyggt stöd för json i PostgreSQL 9.3 och senare, och det har vi använt när vi behövt göra adhoc-analyser. D v s, för att analysera innehåll i json-objekt lagrade i en tabell så har vi exporterat tabellen till PostgreSQL. Det finns ett exempelskript incheckat under tools/dbscripts/postgresql .
