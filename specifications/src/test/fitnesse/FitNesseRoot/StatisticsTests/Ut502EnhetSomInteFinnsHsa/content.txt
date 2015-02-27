@@ -10,6 +10,7 @@ Ett intyg med ett enhetsid som saknas i hsa bör hanteras på ett korrekt sätt
 | Enbart foljande intyg finns |
 | personnr      | diagnoskod | start      | slut       | enhet  | kommentar |
 | 19790407-1295 | G01        | 2013-02-01 | 2013-02-06 | EJHSA | |
+| 19790407-1295 | G01        | 2013-03-01 | 2013-03-06 | EJHSA_UUUU | |
 
 
 !3 Då gäller:
@@ -17,9 +18,12 @@ Nationell nivå
 | Sjukfall i rapporten sjukfall totalt |
 | år   | månad | män? | kvinnor? |
 | 2013 | feb   | 1    | 0        |
+| 2013 | mar   | 1    | 0        |
 
 Inloggad nivå
 | Sjukfall i rapporten sjukfall totalt |
 | inloggad som | vårdgivarnivå | år   | månad | män? | kvinnor? |
 | user1        | false          | 2013 | feb   | 0    | 0        |
 | user2        | true          | 2013 | feb   | 1    | 0        |
+| user1        | false          | 2013 | mar   | 0    | 0        |
+| user2        | true          | 2013 | mar   | 1    | 0        |
