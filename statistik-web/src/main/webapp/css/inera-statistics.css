@@ -1619,11 +1619,12 @@ div.scrolling {
 	margin-bottom: 15px;
 }
 .spinner {
-	position: relative;
+	position: absolute;
 	width: 100%;
 	left: 0%;
 	margin: 5% 0px 0px 0px;
 	text-align: center;
+    z-index: 1;
 }
 .spinner #loading-message {
 	margin-top: 10px;

@@ -39,9 +39,7 @@ angular.module('StatisticsApp').directive("spinner", function() {
            +'      <strong><span>{{ label }}</span></strong>'
            +'    </p>'
            +'  </div>'
-           +'  <div ng-show="showContent">'
            +'    <div ng-transclude></div>'
-           +'  </div>'
            +'</div>'
     }
 });

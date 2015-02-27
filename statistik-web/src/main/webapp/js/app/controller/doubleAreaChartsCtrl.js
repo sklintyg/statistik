@@ -129,7 +129,6 @@ angular.module('StatisticsApp').controller('doubleAreaChartsCtrl', [ '$scope', '
 
         var populatePageWithData = function (result) {
             ControllerCommons.populateActiveDiagnosFilter($scope, statisticsData, result.filter.diagnoser, $routeParams.printBw || $routeParams.print);
-            $scope.doneLoading = true;
             $scope.enhetsCount = result.filter.enheter ? result.filter.enheter.length : null;
             $scope.resultMessage = result.message;
             $scope.subTitle = config.title(result.period, $scope.enhetsCount, $routeParams.groupId);
@@ -143,6 +142,7 @@ angular.module('StatisticsApp').controller('doubleAreaChartsCtrl', [ '$scope', '
             $timeout(function () {
                 ControllerCommons.updateDataTable($scope, result.tableData);
                 updateChart(result);
+                $scope.doneLoading = true;
 
                 if ($routeParams.printBw || $routeParams.print) {
                     printFactory.printAndCloseWindow($timeout, $window);

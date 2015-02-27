@@ -67,10 +67,10 @@ angular.module('StatisticsApp').controller('casesPerCountyCtrl', ['$scope', '$ro
             ControllerCommons.populateActiveDiagnosFilter($scope, statisticsData, diagnosIds, $routeParams.printBw || $routeParams.print);
             var enhetsCount = enhetsIds ? enhetsIds.length : null;
             $scope.subTitle = "Antal sjukfall per län" + ControllerCommons.getEnhetCountText(enhetsCount, false) + result.period;
-            $scope.doneLoading = true;
             $timeout(function () {
                 ControllerCommons.updateDataTable($scope, result.tableData);
                 updateChart(result.chartData);
+                $scope.doneLoading = true;
 
                 if ($routeParams.printBw || $routeParams.print) {
                     printFactory.printAndCloseWindow($timeout, $window);

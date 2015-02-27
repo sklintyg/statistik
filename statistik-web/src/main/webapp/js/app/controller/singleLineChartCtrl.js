@@ -70,10 +70,10 @@ angular.module('StatisticsApp').controller('singleLineChartCtrl', [ '$scope', '$
         var populatePageWithData = function (result) {
             ControllerCommons.populateActiveDiagnosFilter($scope, statisticsData, result.filter.diagnoser, $routeParams.printBw || $routeParams.print);
             $scope.subTitle = config.title(result.period, result.filter.enheter ? result.filter.enheter.length : null);
-            $scope.doneLoading = true;
             $timeout(function () {
                 ControllerCommons.updateDataTable($scope, result.tableData);
                 updateChart(result.chartData);
+                $scope.doneLoading = true;
 
                 if ($routeParams.printBw || $routeParams.print) {
                     printFactory.printAndCloseWindow($timeout, $window);
