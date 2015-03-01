@@ -114,15 +114,52 @@ Vi nyttjar springprofiler för att styra konfiguration vid uppstart. I exemplet 
 
 som talar om att dev-profilen med en inbäddad databas ska användas.
 
-De huvudprofiler som finns är, exakt en av dessa måste finnas:
+*Detta stycke är fel, vi har ändrat till enbart featureflaggor*
+~~De huvudprofiler som finns är, exakt en av dessa måste finnas:
 dev	utvecklings-miljö
 test	test-miljö
 qa	qa-miljö
-prod	prod-miljö (finns endast i release-branchen)
+prod	prod-miljö (finns endast i release-branchen)~~
 
 Sedan finns ett antal modifierare:
+
 embedded	använd inbäddad databas (H2)
+
 generatetestdata	skapa tesdata vid uppstart
+
+##Deployment
+Vi använder ansible för att enkelt sätta upp servrar. Följande stämmer för min lokala miljö (Mac, Homebrew), komplettera gärna med andra miljöer.
+
+###Installera ansible
+
+    brew install ansible
+
+Installera ansible-plugin:er
+
+    ansible-galaxy install geerlingguy.apache
+    ansible-galaxy install geerlingguy.mysql
+
+###Tools
+
+Checka ut tools (och statistik härifrån, om du inte har det redan) från github, https://github.com/sklintyg/tools (och statistik härifrån, om du inte har det redan).
+
+##Deploy
+
+Följande beskriver hur man deployar till fitnesse-servern, https://fitnesse.inera.nordicmedtest.se
+Det är den enda servern som i skrivandes stund är definierad.
+
+Gå till .../tools/ansible och provitionera gemensamma kompnenter:
+
+    ansible-playbook -i hosts_test provision.yml -l statistik-fitnesse
+
+Gå till .../statistik/ansible och provitionera komponenter som ligger utanför applikationen:
+
+    ansible-playbook -i hosts_test provision.yml -l statistik-fitnesse
+
+Deploya själva applikationen:
+
+    ansible-playbook -i hosts_test provision.yml -l statistik-fitnesse
+
 
 ##Namngivning av klasser och metoder
 
