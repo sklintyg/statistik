@@ -58,7 +58,7 @@ public class VardgivareManager {
             enhet = vardgivare;
         }
         if (enhetNamn == null) {
-            enhetNamn = enhet;
+            enhetNamn = DocumentHelper.UTANENHETSID.equals(enhet) ? "Utan enhets-id" : enhet;
         }
         if (vardgivareNamn == null) {
             vardgivareNamn = vardgivare;

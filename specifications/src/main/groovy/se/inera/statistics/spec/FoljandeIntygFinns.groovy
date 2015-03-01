@@ -32,7 +32,7 @@ class FoljandeIntygFinns {
     public void setKommentar(String kommentar) {}
 
     void setEnhet(enhet) {
-        this.enhet = enhet
+        this.enhet = "UTANENHETSID".equalsIgnoreCase(enhet) ? null : enhet
         this.vardgivare = reportsUtil.getVardgivareForEnhet(enhet, ReportsUtil.VARDGIVARE)
     }
 
