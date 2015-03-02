@@ -37,7 +37,7 @@ angular.module('StatisticsApp').controller('overviewCtrl', [ '$scope', '$rootSco
             $scope.popoverTextDegreeOfSickLeave2 = "Flytta markören i cirkeln för att se antalet sjukfall per sjukskrivningsgrad.";
             $scope.popoverTextSickLeaveLength1 = "Diagrammet visar antal sjukfall per sjukskrivningslängd under perioden " + result.periodText + ".";
             $scope.popoverTextSickLeaveLength2 = "Ställ markören i respektive stapel för att se antalet sjukfall.";
-            $scope.popoverTextPerCountyDescription1 = "Ställ markören i en cirkel på kartan för att se antalet sjukfall i respektive län under " + result.periodText + ".";
+            $scope.popoverTextPerCountyDescription1 = "Kartan visar de län med flest antal sjukfall under " + result.periodText + ".";
         };
 
         var dataReceived = function (result) {
