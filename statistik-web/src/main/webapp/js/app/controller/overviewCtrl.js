@@ -187,7 +187,7 @@ angular.module('StatisticsApp').controller('overviewCtrl', [ '$scope', '$rootSco
             var chartOptions = ControllerCommons.getHighChartConfigBase([], series);
             chartOptions.chart = {
                 renderTo: containerId,
-                height: 320,
+                height: 350,
                 width: 188,
                 type: 'bubble',
                 backgroundColor: null //Transparent
@@ -235,17 +235,17 @@ angular.module('StatisticsApp').controller('overviewCtrl', [ '$scope', '$rootSco
         self.getCoordinates = function getCoordinates(perCountyObject) {
             var defaultCoordinates = {"x": 12, "y": 84};
 
-            var counties = [{name: 'blekinge', xy: {"x": 35, "y": 5}} , {name: 'dalarna', xy: {"x": 31, "y": 40}},
-                {name: 'halland', xy: {"x": 14, "y": 10}}, {name: 'kalmar', xy: {"x": 40, "y": 10}},
-                {name: 'kronoberg', xy: {"x": 32, "y": 9}}, {name: 'gotland', xy: {"x": 55, "y": 12}},
-                {name: 'gävleborg', xy: {"x": 45, "y": 40}}, {name: 'jämtland', xy: {"x": 29, "y": 56}},
-                {name: 'jönköping', xy: {"x": 28, "y": 14}}, {name: 'norrbotten', xy: {"x": 59, "y": 84}},
-                {name: 'skåne', xy: {"x": 21, "y": 1}}, {name: 'stockholm', xy: {"x": 52, "y": 27}},
-                {name: 'södermanland', xy: {"x": 44, "y": 24}}, {name: 'uppsala', xy: {"x": 50, "y": 32}},
-                {name: 'värmland', xy: {"x": 21, "y": 32}}, {name: 'västerbotten', xy: {"x": 51, "y": 70}},
-                {name: 'västernorrland', xy: {"x": 48, "y": 57}}, {name: 'västmanland', xy: {"x": 42, "y": 32}},
-                {name: 'västra götaland', xy: {"x": 12, "y": 22}}, {name: 'örebro', xy: {"x": 32, "y": 28}},
-                {name: 'östergötland', xy: {"x": 40, "y": 20}}];
+            var counties = [{name: 'blekinge', xy: {"x": 35, "y": 15}} , {name: 'dalarna', xy: {"x": 31, "y": 50}},
+                {name: 'halland', xy: {"x": 14, "y": 20}}, {name: 'kalmar', xy: {"x": 40, "y": 20}},
+                {name: 'kronoberg', xy: {"x": 32, "y": 19}}, {name: 'gotland', xy: {"x": 55, "y": 22}},
+                {name: 'gävleborg', xy: {"x": 45, "y": 50}}, {name: 'jämtland', xy: {"x": 29, "y": 66}},
+                {name: 'jönköping', xy: {"x": 28, "y": 24}}, {name: 'norrbotten', xy: {"x": 59, "y": 94}},
+                {name: 'skåne', xy: {"x": 21, "y": 11}}, {name: 'stockholm', xy: {"x": 52, "y": 37}},
+                {name: 'södermanland', xy: {"x": 44, "y": 34}}, {name: 'uppsala', xy: {"x": 50, "y": 42}},
+                {name: 'värmland', xy: {"x": 21, "y": 42}}, {name: 'västerbotten', xy: {"x": 51, "y": 80}},
+                {name: 'västernorrland', xy: {"x": 48, "y": 67}}, {name: 'västmanland', xy: {"x": 42, "y": 42}},
+                {name: 'västra götaland', xy: {"x": 12, "y": 32}}, {name: 'örebro', xy: {"x": 32, "y": 38}},
+                {name: 'östergötland', xy: {"x": 40, "y": 30}}];
 
             var result = _.find(counties, function(c) {
                 if(contains(perCountyObject.name.toLowerCase(), c.name)) {
