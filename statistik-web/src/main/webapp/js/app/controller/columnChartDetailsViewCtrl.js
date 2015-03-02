@@ -156,11 +156,16 @@ angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl', [ '$sco
 
         $scope.diagnosisSelected = function () {
             var diagnoses = getSelectedDiagnosis();
-            $scope.doneLoading = false;
 
-            //Ugly fix from http://stackoverflow.com/questions/20827282/cant-dismiss-modal-and-change-page-location
-            $('#cancelModal').modal('toggle');
-            $('.modal-backdrop').remove();
+            $timeout(function () {
+                //Ugly fix from http://stackoverflow.com/questions/20827282/cant-dismiss-modal-and-change-page-location
+                $('#cancelModal').modal('hide');
+                $('.modal-backdrop').remove();
+            }, 1);
+
+            $timeout(function () {
+                $scope.doneLoading = false;
+            }, 1);
 
             statisticsData.getFilterHash(diagnoses, null, null, function(selectionHash){
                 $location.path("/verksamhet/" + $routeParams.verksamhetId + "/jamforDiagnoser/" + selectionHash);
