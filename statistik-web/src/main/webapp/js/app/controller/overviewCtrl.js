@@ -233,7 +233,7 @@ angular.module('StatisticsApp').controller('overviewCtrl', [ '$scope', '$rootSco
         }
 
         self.getCoordinates = function getCoordinates(perCountyObject) {
-            var defaultCoordinates = {"x": 12, "y": 84};
+            var defaultCoordinates = {"x": 12, "y": 94};
 
             var counties = [{name: 'blekinge', xy: {"x": 35, "y": 15}} , {name: 'dalarna', xy: {"x": 31, "y": 50}},
                 {name: 'halland', xy: {"x": 14, "y": 20}}, {name: 'kalmar', xy: {"x": 40, "y": 20}},
