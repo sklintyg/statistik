@@ -23,7 +23,6 @@ import com.google.common.base.Function;
 import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
-import com.google.common.base.Splitter;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import org.joda.time.LocalDate;
@@ -89,7 +88,6 @@ public class ProtectedChartDataService {
     private static final String VERKSAMHET_PATH_ID = "verksamhetId";
     private static final Logger LOG = LoggerFactory.getLogger(ProtectedChartDataService.class);
     private static final String TEXT_UTF_8 = "text/plain; charset=UTF-8";
-    private static final Splitter ID_SPLITTER = Splitter.on(',').trimResults().omitEmptyStrings();
 
     @Autowired
     private WarehouseService warehouse;
@@ -252,20 +250,52 @@ public class ProtectedChartDataService {
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request, #verksamhetId)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request, #verksamhetId)")
     public Response getNumberOfCasesPerLakare(@Context HttpServletRequest request, @PathParam(VERKSAMHET_PATH_ID) String verksamhetId, @QueryParam("filter") String filterHash) {
+        LOG.info("Calling getNumberOfCasesPerLakare with verksamhetId: {} and filterHash: {}", verksamhetId, filterHash);
+        final Optional<SimpleDetailsData> result = getNumberOfCasesPerLakareData(request, verksamhetId, filterHash);
+        if (result.isPresent()) {
+            return Response.ok(result.get()).build();
+        } else {
+            return Response.status(Response.Status.SERVICE_UNAVAILABLE).build();
+        }
+    }
+
+    private Optional<SimpleDetailsData> getNumberOfCasesPerLakareData(HttpServletRequest request, String verksamhetId, String filterHash) {
         CalcCoordinator.Ticket ticket = null;
         try {
             ticket = CalcCoordinator.getTicket();
-            LOG.info("Calling getNumberOfCasesPerLakare with verksamhetId: {} and filterHash: {}", verksamhetId, filterHash);
             final Range range = new Range(12);
             Verksamhet verksamhet = getVerksamhet(request, Verksamhet.decodeId(verksamhetId));
             Filter filter = getFilter(request, verksamhet, filterHash);
             SimpleKonResponse<SimpleKonDataRow> casesPerLakare = warehouse.getCasesPerLakare(filter.getPredicate(), range, verksamhet.getVardgivarId());
             SimpleDetailsData result = new GroupedSjukfallConverter("Läkare").convert(casesPerLakare, range, filter);
-            return Response.ok(result).build();
+            return Optional.of(result);
         } catch (CalcException c) {
-            return Response.status(Response.Status.SERVICE_UNAVAILABLE).build();
+            return Optional.absent();
         } finally {
             CalcCoordinator.returnTicket(ticket);
+        }
+    }
+
+    /**
+     * Gets sjukfall per doctor for verksamhetId. Csv formatted.
+     *
+     * @param request      request
+     * @param verksamhetId verksamhetId
+     * @return data
+     */
+    @GET
+    @Path("{verksamhetId}/getSjukfallPerLakareVerksamhet/csv")
+    @Produces({ TEXT_UTF_8 })
+    @Consumes({ MediaType.APPLICATION_JSON })
+    @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request, #verksamhetId)")
+    @PostAuthorize(value = "@protectedChartDataService.userAccess(#request, #verksamhetId)")
+    public Response getNumberOfCasesPerLakareAsCsv(@Context HttpServletRequest request, @PathParam(VERKSAMHET_PATH_ID) String verksamhetId, @QueryParam("filter") String filterHash) {
+        LOG.info("Calling getNumberOfCasesPerLakareAsCsv with verksamhetId: {} and filterHash: {}", verksamhetId, filterHash);
+        final Optional<SimpleDetailsData> data = getNumberOfCasesPerLakareData(request, verksamhetId, filterHash);
+        if (data.isPresent()) {
+            return CsvConverter.getCsvResponse(data.get().getTableData(), "export.csv");
+        } else {
+            return Response.status(Response.Status.SERVICE_UNAVAILABLE).build();
         }
     }
 
