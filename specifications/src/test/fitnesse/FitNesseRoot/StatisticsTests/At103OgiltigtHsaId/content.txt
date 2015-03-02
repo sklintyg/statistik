@@ -48,4 +48,4 @@ Inloggad nivå
 | user1        | Enhet enhet1   | true           | enhet1,EJHSA,EJHSANR2,UTANENHETSID | 00                      | G00-G99        | -1      | -1   | -1       |
 | user1        | EJHSA          | true           | enhet1,EJHSA,EJHSANR2,UTANENHETSID | 00                      | G00-G99        | 1       | 0    | 1        |
 | user1        | EJHSANR2       | true           | enhet1,EJHSA,EJHSANR2,UTANENHETSID | 00                      | G00-G99        | 1       | 1    | 0        |
-| user1        | UTANENHETSID   | true           | enhet1,EJHSA,EJHSANR2,UTANENHETSID | 00                      | G00-G99        | 1       | 0    | 1        |
+| user1        | Utan enhets-id | true           | enhet1,EJHSA,EJHSANR2,UTANENHETSID | 00                      | G00-G99        | 1       | 0    | 1        |
