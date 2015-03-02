@@ -44,8 +44,8 @@ Inloggad nivå
 
 
 | Sjukfall i rapporten sjukfall per enhet |
-| inloggad som | vårdenhet      | vårdgivarnivå  | filter enheter | filter verksamhetstyper | totalt? | män? | kvinnor? |
-| user1        | Enhet enhet1   | true           | | 00                      | 0       | 0    | 0        |
-| user1        | EJHSA          | true           | | 00                      | 1       | 0    | 1        |
-| user1        | EJHSANR2       | true           | | 00                      | 1       | 1    | 0        |
-| user1        | Utan enhets-id | true           | | 00                      | 1       | 0    | 1        |
+| inloggad som | vårdenhet      | vårdgivarnivå  | filter enheter                     | filter verksamhetstyper | filter kapitel | totalt? | män? | kvinnor? |
+| user1        | Enhet enhet1   | true           | enhet1,EJHSA,EJHSANR2,UTANENHETSID | 00                      | G00-G99        | -1      | -1   | -1       |
+| user1        | EJHSA          | true           | enhet1,EJHSA,EJHSANR2,UTANENHETSID | 00                      | G00-G99        | 1       | 0    | 1        |
+| user1        | EJHSANR2       | true           | enhet1,EJHSA,EJHSANR2,UTANENHETSID | 00                      | G00-G99        | 1       | 1    | 0        |
+| user1        | UTANENHETSID   | true           | enhet1,EJHSA,EJHSANR2,UTANENHETSID | 00                      | G00-G99        | 1       | 0    | 1        |
