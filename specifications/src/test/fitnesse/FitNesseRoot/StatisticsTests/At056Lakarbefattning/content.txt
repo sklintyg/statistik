@@ -28,4 +28,4 @@ Inloggad nivå
 | Sjukfall i rapporten lakarbefattning |
 | inloggad som | vårdgivarnivå | läkarbefattning     | män? | kvinnor? |
 | user1        | false         | Överläkare          | 1    | 0        |
-| user1        | false         | Ej läkarbefattning  | 0    | 0        |
+| user1        | false         | Ej läkarbefattning  | -1   | -1       |
