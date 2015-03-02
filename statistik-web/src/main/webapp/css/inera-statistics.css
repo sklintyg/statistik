@@ -1793,6 +1793,15 @@ li.subMenuItem.active .active-menu-item { display: block;  }
     }
 }
 
+@keyframes rotate {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
 .cssspinner {
     width: 32px;
     height: 32px;
@@ -1802,4 +1811,8 @@ li.subMenuItem.active .active-menu-item { display: block;  }
     -webkit-animation-duration:         1.5s;
     -webkit-animation-iteration-count:  infinite;
     -webkit-animation-timing-function:  linear;
+    animation-name:             rotate;
+    animation-duration:         1.5s;
+    animation-iteration-count:  infinite;
+    animation-timing-function:  linear;
 }
