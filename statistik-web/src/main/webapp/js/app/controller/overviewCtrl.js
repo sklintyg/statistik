@@ -106,7 +106,8 @@ angular.module('StatisticsApp').controller('overviewCtrl', [ '$scope', '$rootSco
 
             //Things we need to do when the chart is going to be printed
             if($routeParams.printBw || $routeParams.print) {
-            chartOptions.chart.height = 240;
+                chartOptions.chart.height = 300; //Make it a little bigger to accomodate for the legend
+                chartOptions.chart.marginBottom = 120; //Give it a little bit of margin to put the legend in
                 chartOptions.plotOptions.pie.showInLegend = true;
                 chartOptions.legend = {
                     align: 'center',
