@@ -275,11 +275,11 @@ public class SjukfallCalculator {
         if (sjukfalls == null || sjukfalls.isEmpty()) {
             return null;
         }
+        if (sjukfalls.size() == 1) {
+            return sjukfalls.get(0);
+        }
         sortByEndDate(sjukfalls);
         Sjukfall sjukfall = sjukfalls.get(0);
-        if (sjukfalls.size() == 1) {
-            return sjukfall;
-        }
         for (int i = 1; i < sjukfalls.size(); i++) {
             final Sjukfall nextSjukfall = sjukfalls.get(i);
             sjukfall = sjukfall.extendSjukfall(nextSjukfall);
