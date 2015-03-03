@@ -87,7 +87,7 @@
 		                    </div>
 		                </div>
 		                <div class="col-xs-12 col-sm-2 pull-left">
-		                    <span message key="statistics.header.extra-text"/>
+		                    <span message key="statistics.header.extra-text"></span>
 		                </div>
 		                <c:if test="${loginVisible}">
 		                    <div class="hidden-xs col-sm-5 col-md-6 col-lg-4 pull-right">
@@ -104,7 +104,7 @@
 		                                <span>{{verksamhetName}}</span>
 		                                <br/>
 		                                <span class="user-logout pull-right">
-											<a href="saml/logout"><span message key="lbl.log-out"/></a>
+											<a href="saml/logout"><span message key="lbl.log-out"></span></a>
 										</span>
 		                            </div>
 		                        </div>
@@ -473,7 +473,7 @@
                                 </div>
 				        	</div>
 	                    </div>
-	                    <filter-button class="hidden-print"/>
+	                    <filter-button class="hidden-print"></filter-button>
                     </div>
                 </div>
 				<div class="row">

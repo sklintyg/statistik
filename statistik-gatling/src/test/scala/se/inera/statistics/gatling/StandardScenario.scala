@@ -19,13 +19,17 @@
 package se.inera.statistics.gatling
 
 import io.gatling.core.Predef._
+import scala.concurrent.duration._
+import scala.language.postfixOps
+
+import scala.util.Random
 
 class StandardScenario extends Simulation {
   val pl = Login.processledare
   val dpl = Login.delprocessledare
   val vc = Login.verksamhetschef
 
-  val userWait = 1
+  def userWait = { Random.nextDouble() * 10L seconds }
 
   val processledare = scenario("Standard, processledare")
     .exec(Login.login(pl))
@@ -102,10 +106,10 @@ class StandardScenario extends Simulation {
     .pause(userWait)
 
   setUp(
-    processledare.inject(rampUsers(5) over(300)),
-    delprocessledare.inject(rampUsers(10) over(300)),
-    medborgare.inject(rampUsers(100) over(300)),
-    verksamhetschef.inject(rampUsers(50) over(300))
+    processledare.inject(rampUsers(2) over 60),
+    delprocessledare.inject(rampUsers(6) over 60),
+    medborgare.inject(rampUsers(50) over 60 ),
+    verksamhetschef.inject(rampUsers(25) over 60)
   ).protocols(Conf.httpProtocol)
 
 }

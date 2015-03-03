@@ -124,11 +124,12 @@ public class SjukfallCalculator {
             final Collection<Sjukfall> sjukfalls = sjukfallForAvailableEnhets.get(patient);
             Collection<Sjukfall> sjukfallFromAllIntygForPatient = sjukfallsPerPatient.get(patient);
             if (countIntyg(sjukfalls) != countIntyg(sjukfallFromAllIntygForPatient)) {
+                Sjukfall firstSjukfall = useOriginalSjukfallStart ? getFirstSjukfall(sjukfalls) : null;
                 for (Sjukfall sjukfall : sjukfallFromAllIntygForPatient) {
                     List<Sjukfall> mergableSjukfalls = filterSjukfallInPeriod(sjukfall.getStart(), sjukfall.getEnd(), sjukfalls);
                     Sjukfall mergedSjukfall = mergeAllSjukfallInList(mergableSjukfalls);
                     if (mergedSjukfall != null) {
-                        if (useOriginalSjukfallStart) {
+                        if (useOriginalSjukfallStart && firstSjukfall != null && firstSjukfall.getStart() == mergedSjukfall.getStart()) {
                             mergedSjukfall = getExtendedSjukfallStart(mergedSjukfall, patient);
                         }
                         for (Sjukfall mergableSjukfall : mergableSjukfalls) {
@@ -139,6 +140,19 @@ public class SjukfallCalculator {
                 }
             }
         }
+    }
+
+    private Sjukfall getFirstSjukfall(Collection<Sjukfall> sjukfalls) {
+        if (sjukfalls == null) {
+            return null;
+        }
+        Sjukfall currentFirstSjukfall = null;
+        for (Sjukfall sjukfall : sjukfalls) {
+            if (currentFirstSjukfall == null || sjukfall.getStart() < currentFirstSjukfall.getStart()) {
+                currentFirstSjukfall = sjukfall;
+            }
+        }
+        return currentFirstSjukfall;
     }
 
     private ArrayListMultimap<Integer, Sjukfall> getSjukfallsPerPatientInAisle(Set<Integer> patients) {

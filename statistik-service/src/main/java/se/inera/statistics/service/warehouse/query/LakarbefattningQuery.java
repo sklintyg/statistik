@@ -73,7 +73,9 @@ public final class LakarbefattningQuery {
         for (Map.Entry<Integer, String> befattningCode : LAKARBEFATTNINGS.entrySet()) {
             final int femaleCount = Collections.frequency(lakarenAlderOchKonForSjukfalls.get(Kon.Female), befattningCode.getKey());
             final int maleCount = Collections.frequency(lakarenAlderOchKonForSjukfalls.get(Kon.Male), befattningCode.getKey());
-            result.add(new SimpleKonDataRow(befattningCode.getValue(), femaleCount, maleCount));
+            if (femaleCount + maleCount > 0) {
+                result.add(new SimpleKonDataRow(befattningCode.getValue(), femaleCount, maleCount));
+            }
         }
         return new SimpleKonResponse<>(result, perioder * periodlangd);
     }

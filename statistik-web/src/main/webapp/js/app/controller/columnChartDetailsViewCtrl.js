@@ -77,10 +77,10 @@ angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl', [ '$sco
             $scope.subTitle = config.title(result.period, result.filter.enheter ? result.filter.enheter.length : null);
             ControllerCommons.populateActiveDiagnosFilter($scope, statisticsData, result.filter.diagnoser, $routeParams.printBw || $routeParams.print);
             $scope.resultMessage = result.message;
-            $scope.doneLoading = true;
             $timeout(function () {
                 ControllerCommons.updateDataTable($scope, result.tableData);
                 updateChart(result.chartData);
+                $scope.doneLoading = true;
 
                 if ($routeParams.printBw || $routeParams.print) {
                     printFactory.printAndCloseWindow($timeout, $window);
@@ -103,14 +103,21 @@ angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl', [ '$sco
             }, $routeParams.diagnosHash);
         }
 
-        if (isVerksamhet) {
-            $scope.exportTableUrl = config.exportTableUrlVerksamhet($routeParams.verksamhetId, $routeParams.diagnosHash);
-            refreshVerksamhet();
+        if ($routeParams.diagnosHash !== "-") {
+            $scope.spinnerText = "Laddar information...";
+            $scope.doneLoading = false;
+            $scope.dataLoadingError = false;
+            if (isVerksamhet) {
+                $scope.exportTableUrl = config.exportTableUrlVerksamhet($routeParams.verksamhetId, $routeParams.diagnosHash);
+                refreshVerksamhet();
+            } else {
+                $scope.exportTableUrl = config.exportTableUrl;
+                statisticsData[config.dataFetcher](populatePageWithData, function () {
+                    $scope.dataLoadingError = true;
+                });
+            }
         } else {
-            $scope.exportTableUrl = config.exportTableUrl;
-            statisticsData[config.dataFetcher](populatePageWithData, function () {
-                $scope.dataLoadingError = true;
-            });
+            $scope.doneLoading = true;
         }
 
         $scope.showHideDataTable = ControllerCommons.showHideDataTableDefault;
@@ -118,9 +125,6 @@ angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl', [ '$sco
             ControllerCommons.toggleTableVisibilityGeneric(event, $scope);
         };
 
-        $scope.spinnerText = "Laddar information...";
-        $scope.doneLoading = false;
-        $scope.dataLoadingError = false;
 
         $scope.popoverText = messageService.getProperty(config.pageHelpText, null, "", null, true);
         $scope.chartFootnotes = _.map(config.chartFootnotes, function(msgKey){
@@ -152,11 +156,16 @@ angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl', [ '$sco
 
         $scope.diagnosisSelected = function () {
             var diagnoses = getSelectedDiagnosis();
-            $scope.doneLoading = false;
 
-            //Ugly fix from http://stackoverflow.com/questions/20827282/cant-dismiss-modal-and-change-page-location
-            $('#cancelModal').modal('toggle');
-            $('.modal-backdrop').remove();
+            $timeout(function () {
+                //Ugly fix from http://stackoverflow.com/questions/20827282/cant-dismiss-modal-and-change-page-location
+                $('#cancelModal').modal('hide');
+                $('.modal-backdrop').remove();
+            }, 1);
+
+            $timeout(function () {
+                $scope.doneLoading = false;
+            }, 1);
 
             statisticsData.getFilterHash(diagnoses, null, null, function(selectionHash){
                 $location.path("/verksamhet/" + $routeParams.verksamhetId + "/jamforDiagnoser/" + selectionHash);

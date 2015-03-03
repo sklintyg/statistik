@@ -34,12 +34,12 @@ import se.inera.statistics.service.report.model.SjukskrivningsgradResponse;
 import se.inera.statistics.service.report.util.ReportUtil;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
-import java.util.TreeSet;
 
 @Component
 public class NationellOverviewData {
@@ -161,7 +161,8 @@ public class NationellOverviewData {
     }
 
     private Set<String> getTop(int size, SimpleKonResponse<SimpleKonDataRow> currentData) {
-        TreeSet<SimpleKonDataRow> sorted = new TreeSet<>(new Comparator<SimpleKonDataRow>() {
+        List<SimpleKonDataRow> sorted = new ArrayList<>(currentData.getRows());
+        Collections.sort(sorted, new Comparator<SimpleKonDataRow>() {
             @Override
             public int compare(SimpleKonDataRow o1, SimpleKonDataRow o2) {
                 return (total(o2)) - (total(o1));

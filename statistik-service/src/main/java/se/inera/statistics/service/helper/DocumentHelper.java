@@ -38,6 +38,7 @@ public final class DocumentHelper {
     public static final Matcher DIAGNOS_MATCHER = Matcher.Builder.matcher("observationskategori").add(Matcher.Builder.matcher("code", "439401001")).add((Matcher.Builder.matcher("codeSystem", "1.2.752.116.2.1.1.1")));
     public static final Matcher ARBETSFORMAGA_MATCHER = Matcher.Builder.matcher("observationskod").add(Matcher.Builder.matcher("code", "302119000")).add((Matcher.Builder.matcher("codeSystem", "1.2.752.116.2.1.1.1")));
     public static final String DOCUMENT_ID = "1.2.752.129.2.1.2.1";
+    public static final String UTANENHETSID = "UTANENHETSID";
 
     private DocumentHelper() {
     }
@@ -78,7 +79,8 @@ public final class DocumentHelper {
     }
 
     public static String getEnhetId(JsonNode document) {
-        return document.path("skapadAv").path("vardenhet").path("id").path(EXTENSION).textValue();
+        final String result = document.path("skapadAv").path("vardenhet").path("id").path(EXTENSION).textValue();
+        return result != null ? result : UTANENHETSID;
     }
 
     public static String getLakarId(JsonNode document) {

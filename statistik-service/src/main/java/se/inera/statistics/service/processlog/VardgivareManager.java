@@ -54,11 +54,8 @@ public class VardgivareManager {
         String kommunId = HSAServiceHelper.getKommun(hsaInfo);
         String verksamhetsTyper = HSAServiceHelper.getVerksamhetsTyper(hsaInfo);
 
-        if (enhet == null) {
-            enhet = vardgivare;
-        }
         if (enhetNamn == null) {
-            enhetNamn = enhet;
+            enhetNamn = DocumentHelper.UTANENHETSID.equals(enhet) ? "Utan enhets-id" : enhet;
         }
         if (vardgivareNamn == null) {
             vardgivareNamn = vardgivare;
