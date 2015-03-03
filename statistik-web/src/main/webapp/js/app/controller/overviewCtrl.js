@@ -103,7 +103,17 @@ angular.module('StatisticsApp').controller('overviewCtrl', [ '$scope', '$rootSco
             chartOptions.chart.height = 180;
             chartOptions.chart.plotBorderWidth = 0;
             chartOptions.tooltip.headerFormat = '<span style="font-size: 10px">' + (tooltipHeaderPrefix || "") + '{point.key}</span><br/>';
-            chartOptions.plotOptions.pie.showInLegend = $routeParams.printBw || $routeParams.print;
+
+            //Things we need to do when the chart is going to be printed
+            if($routeParams.printBw || $routeParams.print) {
+                chartOptions.chart.height = 300; //Make it a little bigger to accomodate for the legend
+                chartOptions.chart.marginBottom = 120; //Give it a little bit of margin to put the legend in
+                chartOptions.plotOptions.pie.showInLegend = true;
+                chartOptions.legend = {
+                    align: 'center',
+                    verticalAlign: 'bottom'
+                };
+            }
             new Highcharts.Chart(chartOptions);
         };
 
@@ -192,7 +202,19 @@ angular.module('StatisticsApp').controller('overviewCtrl', [ '$scope', '$rootSco
                 type: 'bubble',
                 backgroundColor: null //Transparent
             };
-            chartOptions.legend.enabled = $routeParams.printBw || $routeParams.print;
+
+            if($routeParams.printBw || $routeParams.print) {
+                chartOptions.chart.width = 308; //Make the chart 120px wider than normal
+                chartOptions.chart.marginRight = 120; //Let the 120px be a margin to the right
+                //Enable the legend and put it to the right
+                chartOptions.legend = {
+                    enabled: true,
+                    align: 'right',
+                    layout: 'vertical'
+                };
+            } else {
+                chartOptions.legend = false;
+            }
 
             chartOptions.plotOptions = {
                 bubble: {
