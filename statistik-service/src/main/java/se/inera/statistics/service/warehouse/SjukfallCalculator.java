@@ -19,9 +19,6 @@
 package se.inera.statistics.service.warehouse;
 
 import com.google.common.base.Predicate;
-import com.google.common.cache.CacheBuilder;
-import com.google.common.cache.CacheLoader;
-import com.google.common.cache.LoadingCache;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Iterables;
@@ -38,22 +35,20 @@ import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.concurrent.ExecutionException;
 
 public class SjukfallCalculator {
 
     private static final Logger LOG = LoggerFactory.getLogger(SjukfallCalculator.class);
-    public static final int MAX_CACHE_SIZE = 10000;
 
     private final List<Fact> aisle;
     private final boolean useOriginalSjukfallStart;
     private final boolean extendSjukfall;
     private final List<Range> ranges;
     private ArrayListMultimap<Integer, Sjukfall> sjukfallsPerPatientInAisle;
-    private LoadingCache<Integer, List<Fact>> allIntygForPatientInAisle = null;
     private List<ArrayListMultimap<Integer, Fact>> factsPerPatientAndPeriod;
     private int period = 0;
     private Multimap<Integer, Sjukfall> sjukfallsPerPatientInPreviousPeriod = ArrayListMultimap.create();
+    private ArrayListMultimap<Integer, Fact> factsPerPatientInAisle;
 
     /**
      *
@@ -73,27 +68,18 @@ public class SjukfallCalculator {
         populateFactsPerPatientAndPeriod(filteredAisle, this.ranges);
     }
 
-    private LoadingCache<Integer, List<Fact>> getAllIntygForPatientInAisle() {
-        if (allIntygForPatientInAisle == null) {
-            allIntygForPatientInAisle = CacheBuilder.newBuilder()
-                    .maximumSize(MAX_CACHE_SIZE)
-                    .build(new CacheLoader<Integer, List<Fact>>() {
-                        public List<Fact> load(Integer key) {
-                            return getAllIntygForPatientInAisle(key);
-                        }
-                    });
-        }
-        return allIntygForPatientInAisle;
+    private void populateFactsPerPatientAndPeriod(Iterable<Fact> facts, List<Range> ranges) {
+        factsPerPatientAndPeriod = getFactsPerPatientAndPeriod(facts, ranges);
     }
 
-    private void populateFactsPerPatientAndPeriod(Iterable<Fact> facts, List<Range> ranges) {
+    private List<ArrayListMultimap<Integer, Fact>> getFactsPerPatientAndPeriod(Iterable<Fact> facts, List<Range> ranges) {
         final List<Integer> rangeEnds = new ArrayList<>(ranges.size() + 1);
         rangeEnds.add(WidelineConverter.toDay(ranges.get(0).getFrom()));
         for (Range range : ranges) {
             rangeEnds.add(WidelineConverter.toDay(range.getTo()));
         }
 
-        factsPerPatientAndPeriod = new ArrayList<>(rangeEnds.size());
+        List<ArrayListMultimap<Integer, Fact>> factsPerPatientAndPeriod = new ArrayList<>(rangeEnds.size());
         for (int i = 0; i < rangeEnds.size(); i++) {
             factsPerPatientAndPeriod.add(ArrayListMultimap.<Integer, Fact> create());
         }
@@ -104,6 +90,15 @@ public class SjukfallCalculator {
                 factsPerPatientAndPeriod.get(rangeIndex).put(fact.getPatient(), fact);
             }
         }
+        return factsPerPatientAndPeriod;
+    }
+
+    private ArrayListMultimap<Integer, Fact> getFactsPerPatient(Iterable<Fact> facts) {
+        ArrayListMultimap<Integer, Fact> factsPerPatient = ArrayListMultimap.create();
+        for (Fact fact : facts) {
+            factsPerPatient.put(fact.getPatient(), fact);
+        }
+        return factsPerPatient;
     }
 
     private int getRangeIndex(int date, List<Integer> rangeEnds) {
@@ -130,7 +125,7 @@ public class SjukfallCalculator {
                     Sjukfall mergedSjukfall = mergeAllSjukfallInList(mergableSjukfalls);
                     if (mergedSjukfall != null) {
                         if (useOriginalSjukfallStart && firstSjukfall != null && firstSjukfall.getStart() == mergedSjukfall.getStart()) {
-                            mergedSjukfall = getExtendedSjukfallStart(mergedSjukfall, patient);
+                            mergedSjukfall = getExtendedSjukfallStart(patient, mergedSjukfall);
                         }
                         for (Sjukfall mergableSjukfall : mergableSjukfalls) {
                             sjukfalls.remove(mergableSjukfall);
@@ -140,6 +135,13 @@ public class SjukfallCalculator {
                 }
             }
         }
+    }
+
+    private Sjukfall getExtendedSjukfallStart(int patient, Sjukfall mergedSjukfall) {
+        if (factsPerPatientInAisle == null) {
+            factsPerPatientInAisle = getFactsPerPatient(aisle);
+        }
+        return getExtendedSjukfallStart(mergedSjukfall, factsPerPatientInAisle.get(patient));
     }
 
     private Sjukfall getFirstSjukfall(Collection<Sjukfall> sjukfalls) {
@@ -246,14 +248,7 @@ public class SjukfallCalculator {
         return sjukfallsPerPatient;
     }
 
-    private Sjukfall getExtendedSjukfallStart(final Sjukfall mergedSjukfall, int patient) {
-        List<Fact> allIntygForPatient;
-        try {
-            allIntygForPatient = getAllIntygForPatientInAisle().get(patient);
-        } catch (ExecutionException e) {
-            LOG.error("Failed to get intygs on aisle for patient: " + patient);
-            allIntygForPatient = Collections.emptyList();
-        }
+    private Sjukfall getExtendedSjukfallStart(final Sjukfall mergedSjukfall, Collection<Fact> allIntygForPatient) {
         final Collection<Fact> extendableIntyg = Collections2.filter(allIntygForPatient, new Predicate<Fact>() {
             @Override
             public boolean apply(Fact fact) {
@@ -268,7 +263,7 @@ public class SjukfallCalculator {
         final int sjukskrivningslangd = intygForExtending.getSjukskrivningslangd();
         final Sjukfall sjukfall = mergedSjukfall.extendSjukfallWithNewStart(startdatum, sjukskrivningslangd);
 
-        return getExtendedSjukfallStart(sjukfall, patient);
+        return getExtendedSjukfallStart(sjukfall, allIntygForPatient);
     }
 
     private Sjukfall mergeAllSjukfallInList(List<Sjukfall> sjukfalls) {
