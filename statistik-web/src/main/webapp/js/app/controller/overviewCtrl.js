@@ -19,8 +19,8 @@
 
 'use strict';
 
-angular.module('StatisticsApp').controller('overviewCtrl', [ '$scope', '$rootScope', '$window', '$timeout', 'statisticsData', '$routeParams', 'printFactory',
-    function ($scope, $rootScope, $window, $timeout, statisticsData, $routeParams, printFactory) {
+angular.module('StatisticsApp').controller('overviewCtrl', [ '$scope', '$rootScope', '$window', '$timeout', 'statisticsData', '$routeParams', 'printFactory', 'COUNTY_COORDS',
+    function ($scope, $rootScope, $window, $timeout, statisticsData, $routeParams, printFactory, COUNTY_COORDS) {
 
         var self = this;
 
@@ -187,7 +187,7 @@ angular.module('StatisticsApp').controller('overviewCtrl', [ '$scope', '$rootSco
             new Highcharts.Chart(chartOptions);
         }
 
-        function paintSickLeavePerCountyChart(containerId, chartData, tooltipHeaderPrefix) {
+        function paintSickLeavePerCountyChart(containerId, chartData) {
             var series = _.map(chartData, function (e) {
                 var coords = self.getCoordinates(e);
                 return {"data": [
@@ -256,27 +256,13 @@ angular.module('StatisticsApp').controller('overviewCtrl', [ '$scope', '$rootSco
         }
 
         self.getCoordinates = function getCoordinates(perCountyObject) {
-            var defaultCoordinates = {"x": 12, "y": 94};
-
-            var counties = [{name: 'blekinge', xy: {"x": 35, "y": 15}} , {name: 'dalarna', xy: {"x": 31, "y": 50}},
-                {name: 'halland', xy: {"x": 14, "y": 20}}, {name: 'kalmar', xy: {"x": 40, "y": 20}},
-                {name: 'kronoberg', xy: {"x": 32, "y": 19}}, {name: 'gotland', xy: {"x": 55, "y": 22}},
-                {name: 'gävleborg', xy: {"x": 45, "y": 50}}, {name: 'jämtland', xy: {"x": 29, "y": 66}},
-                {name: 'jönköping', xy: {"x": 28, "y": 24}}, {name: 'norrbotten', xy: {"x": 59, "y": 94}},
-                {name: 'skåne', xy: {"x": 21, "y": 11}}, {name: 'stockholm', xy: {"x": 52, "y": 37}},
-                {name: 'södermanland', xy: {"x": 44, "y": 34}}, {name: 'uppsala', xy: {"x": 50, "y": 42}},
-                {name: 'värmland', xy: {"x": 21, "y": 42}}, {name: 'västerbotten', xy: {"x": 51, "y": 80}},
-                {name: 'västernorrland', xy: {"x": 48, "y": 67}}, {name: 'västmanland', xy: {"x": 42, "y": 42}},
-                {name: 'västra götaland', xy: {"x": 12, "y": 32}}, {name: 'örebro', xy: {"x": 32, "y": 38}},
-                {name: 'östergötland', xy: {"x": 40, "y": 30}}];
-
-            var result = _.find(counties, function(c) {
+            var result = _.find(COUNTY_COORDS, function(c) {
                 if(contains(perCountyObject.name.toLowerCase(), c.name)) {
                     return c;
                 }
             });
 
-            return result ? result.xy : defaultCoordinates;
+            return result ? result.xy : _.find(COUNTY_COORDS, function(c) { return c.name === "DEFAULT";}).xy;
         };
 
         function contains(master, substring) {
@@ -291,7 +277,7 @@ angular.module('StatisticsApp').controller('overviewCtrl', [ '$scope', '$rootSco
                     name: ControllerCommons.htmlsafe(data.name),
                     y: data.quantity,
                     color: data.color
-                }
+                };
             });
         }
 
