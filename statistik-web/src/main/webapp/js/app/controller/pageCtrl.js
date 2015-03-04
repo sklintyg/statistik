@@ -67,7 +67,7 @@ angular.module('StatisticsApp').controller('pageCtrl', [ '$scope', '$rootScope',
 
         $scope.loginClicked = function (url) {
             $window.location.href = "#/" + url;
-        }
+        };
 
     }
 ]);

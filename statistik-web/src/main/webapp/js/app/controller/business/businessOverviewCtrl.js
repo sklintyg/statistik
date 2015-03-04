@@ -251,10 +251,12 @@ angular.module('StatisticsApp').controller('businessOverviewCtrl', ['$scope', '$
                     color: color
                 }
             ];
+
             var categories = _.map(chartData, function (e) {
                 return e.name;
             });
-            var chartOptions = ControllerCommons.getHighChartConfigBase(categories, series);
+
+            chartOptions = ControllerCommons.getHighChartConfigBase(categories, series);
             chartOptions.chart.type = 'column';
             chartOptions.chart.renderTo = containerId;
             chartOptions.chart.height = 240;

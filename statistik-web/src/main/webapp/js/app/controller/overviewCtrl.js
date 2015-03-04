@@ -181,8 +181,9 @@ angular.module('StatisticsApp').controller('overviewCtrl', [ '$scope', '$rootSco
             chartOptions.xAxis.title = { text: 'Sjukskrivningslängd' };
             chartOptions.yAxis.title = { text: 'Antal' };
             
-            chartOptions.yAxis.tickPixelInterval = 30,
-                chartOptions.legend.enabled = false;
+            chartOptions.yAxis.tickPixelInterval = 30;
+            chartOptions.legend.enabled = false;
+
             new Highcharts.Chart(chartOptions);
         }
 
@@ -279,7 +280,7 @@ angular.module('StatisticsApp').controller('overviewCtrl', [ '$scope', '$rootSco
         };
 
         function contains(master, substring) {
-            return master.indexOf(substring) != -1;
+            return master.indexOf(substring) !== -1;
         }
 
         function extractDonutData(rawData) {

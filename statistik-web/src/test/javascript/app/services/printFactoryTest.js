@@ -18,6 +18,7 @@
  */
 
 describe("Test of common print services", function() {
+    "use strict";
 
     beforeEach(module('StatisticsApp'));
 
