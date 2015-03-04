@@ -108,7 +108,7 @@ angular.module('StatisticsApp')
             var printQuery = bwPrint ? "printBw=true" : "print=true";
             var prefixChar = rootScope.queryString ? "&" : "?";
             windowParam.open(windowParam.location + prefixChar + printQuery);
-        }
+        };
 
         //The public api of this factory
         return {
@@ -116,5 +116,5 @@ angular.module('StatisticsApp')
             setupSeriesForDisplayType: setupSeriesForDisplayType,
             printAndCloseWindow: printAndCloseWindow,
             print: print
-        }
+        };
     });

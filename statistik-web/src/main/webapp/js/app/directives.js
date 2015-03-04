@@ -1,10 +1,10 @@
 'use strict';
 
-angular.module('StatisticsApp').directive("navigationaware", function ($rootScope, $location) {
-    
+angular.module('StatisticsApp').directive("navigationaware", function ($rootScope) {
+
     var isActivePage = function(currentRoute, navLinkAttrs) {
         return currentRoute.controllerAs === navLinkAttrs.ctrlname || currentRoute.controller === navLinkAttrs.ctrlname;
-    }
+    };
     
     return {
         restrict: "A",
@@ -32,16 +32,16 @@ angular.module('StatisticsApp').directive("spinner", function() {
           showContent: "="
         },
         template :
-            '<div>'
-           +'  <div ng-show="showSpinner" class="spinner">'
-           +'    <div class="cssspinner"></div>'
-           +'    <p id="loading-message">'
-           +'      <strong><span>{{ label }}</span></strong>'
-           +'    </p>'
-           +'  </div>'
-           +'    <div ng-transclude></div>'
-           +'</div>'
-    }
+            '<div>' +
+           '  <div ng-show="showSpinner" class="spinner">' +
+           '    <div class="cssspinner"></div>' +
+           '    <p id="loading-message">' +
+           '      <strong><span>{{ label }}</span></strong>' +
+           '    </p>' +
+           '  </div>' +
+           '    <div ng-transclude></div>' +
+           '</div>'
+    };
 });
 
 angular.module('StatisticsApp').directive("dataerrorview", function() {
@@ -55,18 +55,18 @@ angular.module('StatisticsApp').directive("dataerrorview", function() {
         },
         template :
             '<div>'+
-                '<div ng-show="showError">'
-                    +'<div ng-include="\'views/error/failedToFetchData.html\'"></div>'
-                +'</div>'
-                +'  <div ng-show="!showError">'
-                +'    <div ng-transclude></div>'
-                +'  </div>'
-            +'</div>'
-    }
+                '<div ng-show="showError">' +
+                    '<div ng-include="\'views/error/failedToFetchData.html\'"></div>' +
+                '</div>' +
+                '  <div ng-show="!showError">' +
+                '    <div ng-transclude></div>' +
+                '  </div>' +
+            '</div>'
+    };
 });
 
 angular.module('StatisticsApp').directive('legendHeight', function() {
-    return function(scope, element, attrs) {
+    return function(scope, element) {
        if (scope.$last) {
           scope.$watch('seriesData', function(){
             var heights = _.map(element.parent().children(), function(e){return $(e).height();});
@@ -110,7 +110,7 @@ angular.module('StatisticsApp').directive('multiselectDropdown', function (busin
         scope.$watchCollection(attrs.ngModel, function () {
             element.multiselect('refresh');
         });
-    }
+    };
 });
 
 angular.module('StatisticsApp').directive('intermediate', function() {
@@ -118,7 +118,7 @@ angular.module('StatisticsApp').directive('intermediate', function() {
         scope.$watch(attrs.intermediate, function (newVal) {
             element[0].indeterminate = newVal;
         });
-    }
+    };
 });
 
 angular.module('StatisticsApp').directive("submenu", function (recursionService) {

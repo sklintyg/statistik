@@ -231,7 +231,7 @@ var ControllerCommons = new function(){
 
     this.getEnhetCountText = function(enhetsCount, basedOnAlreadyInText) {
         'use strict';
-        var singleEnhet = enhetsCount == 1;
+        var singleEnhet = enhetsCount === 1;
         if (basedOnAlreadyInText) {
             return enhetsCount ? " och " + enhetsCount + " enhet" + (singleEnhet ? "" : "er") + " " : " ";
         }

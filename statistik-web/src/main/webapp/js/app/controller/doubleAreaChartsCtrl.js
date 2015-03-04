@@ -60,7 +60,7 @@ angular.module('StatisticsApp').controller('doubleAreaChartsCtrl', [ '$scope', '
                 printTable.headers = [];
                 printTable.rows = [];
 
-                var totWidth = colWidth * 2; //total width of table frame (first and last column which should be used on all print tables)
+                totWidth = colWidth * 2; //total width of table frame (first and last column which should be used on all print tables)
 
                 //Add headers for first column
                 for (var i = 0; i < headers.length; i++) {
