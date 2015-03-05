@@ -4,9 +4,10 @@ profile: dev
 inera_root: /opt/inera
 releases_folder: "{{ inera_root }}/releases"
 java_home: "{{ inera_root }}/jre"
+environment_name: "test"
 config_repository: https://github.com/sklintyg/statistik-konfiguration.git
 config_folder: "{{ inera_root }}/statistik-konfiguration"
-config_etc_folder: "{{ config_folder }}/test"
+config_etc_folder: "{{ config_folder }}/{{ environment_name }}"
 tomcat_service: inera-tomcat
 inera_tomcat_folder: "/var/lib/{{ tomcat_service }}"
 tomcat_conf: "{{ inera_root }}/tomcat7/conf"
