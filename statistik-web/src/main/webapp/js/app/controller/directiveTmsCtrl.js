@@ -1,8 +1,14 @@
 'use strict';
 
 angular.module('StatisticsApp').controller('directiveTmsCtrl', [ '$scope', 'treeMultiSelectUtil', '$timeout', function ($scope, treeMultiSelectUtil, $timeout) {
+
     $scope.clickedDone = function(){
+        $scope.dialogOpen = false;
         $scope.doneClicked();
+    };
+
+    $scope.doneRenderingDialog = function() {
+        $scope.$parent.doneLoading = true;
     };
 
     $scope.recursionhelper = {
@@ -142,7 +148,16 @@ angular.module('StatisticsApp').controller('directiveTmsCtrl', [ '$scope', 'tree
     };
 
     $scope.openDialogClicked = function(){
-        $scope.updateCounters();
+        $scope.$parent.doneLoading = false;
+        $timeout(function () {
+            $scope.dialogOpen = true;
+            $scope.updateCounters();
+            $timeout(function () {
+                $scope.$parent.doneLoading = true;
+            }, 1, false);
+        }, 1);
     };
+
+    $scope.dialogOpen = false;
 
 }]);

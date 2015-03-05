@@ -121,12 +121,31 @@ angular.module('StatisticsApp').directive('intermediate', function() {
     };
 });
 
+angular.module('StatisticsApp').directive('bindonce', function () {
+    return {
+        link:function (scope, elem, attr, ctrl) {
+            elem.text(scope.$eval(attr.bindonce));
+        }
+    }
+});
+
+angular.module('StatisticsApp').directive('onFinishRender', function () {
+    return {
+        restrict: 'A',
+        link: function (scope, element, attr) {
+            if (scope.$last === true) {
+                scope.$evalAsync(attr.onFinishRender);
+            }
+        }
+    }
+});
+
 angular.module('StatisticsApp').directive("submenu", function (recursionService) {
     return {
         restrict: "E",
         scope: { item: "=", itemroot: "=", depth: "=", recursionhelper: "=" },
         template:
-            '<span ng-click="recursionhelper.hideclick(item)" class="ellipsis-text"><span class="glyphicon" ng-class="{glyphiconMinusSign: !item.hideChildren, glyphiconPlusSign: item.hideChildren}"/>{{item.name}}</span>' +
+            '<span ng-click="recursionhelper.hideclick(item)" class="ellipsis-text"><span class="glyphicon" ng-class="{glyphiconMinusSign: !item.hideChildren, glyphiconPlusSign: item.hideChildren}"/><span bindonce="item.name"></span></span>' +
             '<input type="checkbox" ng-checked="item.allSelected" intermediate="item.someSelected" ng-click="recursionhelper.itemclick(item, itemroot)"/>' +
             '<ul ng-init="item.hideChildren=true" ng-show="item.subs && !item.hideChildren" style="list-style-type: none;">' +
               '<li data-ng-init="depth=depth+1" data-ng-repeat="item in item.subs">' +
