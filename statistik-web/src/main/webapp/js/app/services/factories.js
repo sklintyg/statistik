@@ -17,7 +17,7 @@ angular.module('StatisticsApp').factory('statisticsData', function ($http, $root
 
     var makeRequestVerksamhet = function (restFunctionName, verksamhetId, successCallback, failureCallback) {
         var url = "api/verksamhet/" + verksamhetId + "/" + restFunctionName + $rootScope.queryString;
-        $http.post(url, {}, {}).success(function (result) {
+        $http.post(url, {}, {cache: false}).success(function (result) {
             try {
                 successCallback(result);
             } catch (e) {
