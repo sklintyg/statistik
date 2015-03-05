@@ -66,7 +66,7 @@ angular.module('StatisticsApp').controller('pageCtrl', [ '$scope', '$rootScope',
         $scope.isLoggedIn = $rootScope.isLoggedIn;
 
         $scope.loginClicked = function (url) {
-            $window.location.href = "#/" + url;
+            $location.path(url);
         };
 
     }

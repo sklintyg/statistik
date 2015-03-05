@@ -19,14 +19,15 @@
 
 'use strict';
 
-angular.module('StatisticsApp').controller('businessLandingPageCtrl', ['$scope', '$window', '$cookies', 'statisticsData',
-    function ($scope, $window, $cookies, statisticsData) {
+angular.module('StatisticsApp').controller('businessLandingPageCtrl', ['$scope', '$location', '$cookies', 'statisticsData',
+    function ($scope, $location, $cookies, statisticsData) {
 
         statisticsData.getLoginInfo(function (loginInfo) {
             if (loginInfo.businesses.length < 1) {
-                $window.location.href = "#/login";
+                $location.path("login");
+            } else {
+                $location.path("verksamhet/" + loginInfo.defaultVerksamhet.vardgivarId + "/oversikt");
             }
-            $window.location.href = "#/verksamhet/" + loginInfo.defaultVerksamhet.vardgivarId + "/oversikt";
         }, function () {
             $scope.dataLoadingError = true;
         });
