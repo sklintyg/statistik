@@ -20,7 +20,7 @@ var app = angular.module('StatisticsApp', [ 'ngRoute', 'ngCookies', 'ngSanitize'
         {name: 'östergötland', xy: {"x": 40, "y": 30}}, {name: 'DEFAULT', xy: {"x": 12, "y": 94}}]
     )
     .config(
-    [ '$routeProvider', '$httpProvider', function ($routeProvider, $httpProvider) {
+    [ '$routeProvider', function ($routeProvider) {
         $routeProvider.when('/login', {
             templateUrl: 'views/login.html',
             controller: 'loginCtrl',
@@ -231,7 +231,7 @@ app.run([ '$rootScope', '$route', 'messageService', function ($rootScope, $route
             $rootScope.page_title = $route.current.$$route.title + ' | Statistiktjänsten';
             $rootScope.queryString = current.params.filter ? "?filter=" + current.params.filter : "";
             $rootScope.filterIsActive = !!current.params.filter;
-            $rootScope.verksamhetViewShowing = current.$$route.originalPath.indexOf("/verksamhet") == 0
+            $rootScope.verksamhetViewShowing = current.$$route.originalPath.indexOf("/verksamhet") === 0;
         }
     });
 } ]);
