@@ -18,6 +18,7 @@
  */
 package se.inera.statistics.service.warehouse;
 
+import com.google.common.base.Optional;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import org.joda.time.LocalDateTime;
@@ -104,6 +105,10 @@ public class Warehouse implements Iterable<Aisle> {
         return enhetsMap.maybeGetId(id);
     }
 
+    public static Optional<String> getEnhetId(int enhetIntId) {
+        return enhetsMap.getKey(enhetIntId);
+    }
+
     public static int getNumLakarIdAndRemember(String id) {
         return lakareMap.getOrCreateId(id);
     }
@@ -159,6 +164,15 @@ public class Warehouse implements Iterable<Aisle> {
             } else {
                 return id;
             }
+        }
+
+        public synchronized Optional<T> getKey(int id) {
+            for (Map.Entry<T, Integer> entry : map.entrySet()) {
+                if (entry.getValue() == id) {
+                    return Optional.of(entry.getKey());
+                }
+            }
+            return Optional.absent();
         }
 
     }
