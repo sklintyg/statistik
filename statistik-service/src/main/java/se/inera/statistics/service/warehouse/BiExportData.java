@@ -28,7 +28,7 @@ public class BiExportData {
     private int forsamling;
     private int enhet;
     private long lakarintyg;
-    private int patient;
+//    private int patient;
     private int startdatum;
     private int kon;
     private int alder;
@@ -62,7 +62,7 @@ public class BiExportData {
         forsamling = fact.getForsamling();
         this.enhet = fact.getEnhet();
         lakarintyg = fact.getLakarintyg();
-        patient = fact.getPatient();
+//        patient = fact.getPatient();
         startdatum = fact.getStartdatum();
         kon = fact.getLakarkon();
         alder = fact.getAlder();
@@ -113,9 +113,9 @@ public class BiExportData {
         return lakarintyg;
     }
 
-    public int getPatient() {
-        return patient;
-    }
+//    public int getPatient() {
+//        return patient;
+//    }
 
     public int getStartdatum() {
         return startdatum;
