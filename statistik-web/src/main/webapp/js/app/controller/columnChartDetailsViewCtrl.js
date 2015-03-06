@@ -35,7 +35,7 @@ angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl', [ '$sco
             chartOptions.chart.marginLeft = 60;
             chartOptions.chart.marginTop = 27;
 
-            //Set the chart.width to a fixed width when we are about the print.
+            //Set the chart.width to a fixed width when we are about to print.
             //It will prevent the chart from overflowing the printed page.
             //Maybe there is some better way around this since this is not very responsive.
             if($routeParams.printBw || $routeParams.print) {

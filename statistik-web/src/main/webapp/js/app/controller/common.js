@@ -128,11 +128,15 @@ var ControllerCommons = new function(){
             },
             xAxis : {
                 labels : {
-                    rotation : 310,
+                    rotation : 320,
                     align : 'right',
                     style: {
                     	whiteSpace: 'pre',
-                    	width: '120px'
+                    	width: '200px'
+                    },
+                    formatter: function() {
+                        //If the label is more than 30 characters then cut the text and add ellipsis
+                        return this.value.length > 30 ? this.value.substring(0,30) + "..." : this.value;
                     }
                 },
                 categories : _.map(chartCategories, function(name) {
