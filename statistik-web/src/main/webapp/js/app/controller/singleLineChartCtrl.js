@@ -27,8 +27,8 @@ angular.module('StatisticsApp').controller('singleLineChartCtrl', [ '$scope', '$
         ];
         var isVerksamhet = $routeParams.verksamhetId ? true : false;
 
-        var paintChart = function (chartCategories, chartSeries) {
-            var chartOptions = ControllerCommons.getHighChartConfigBase(chartCategories, chartSeries);
+        var paintChart = function (chartCategories, chartSeries, doneLoadingCallback) {
+            var chartOptions = ControllerCommons.getHighChartConfigBase(chartCategories, chartSeries, doneLoadingCallback);
             chartOptions.chart.type = 'line';
 
             //Set the chart.width to a fixed width when we are about the print.
@@ -61,10 +61,10 @@ angular.module('StatisticsApp').controller('singleLineChartCtrl', [ '$scope', '$
             }
         };
 
-        var updateChart = function (ajaxResult) {
+        var updateChart = function (ajaxResult, doneLoadingCallback) {
             $scope.series = printFactory.setupSeriesForDisplayType($routeParams.printBw, ajaxResult.series, "line");
             setColorToTotalCasesSeries($scope.series);
-            chart = paintChart(ajaxResult.categories, $scope.series);
+            chart = paintChart(ajaxResult.categories, $scope.series, doneLoadingCallback);
         };
 
         var populatePageWithData = function (result) {
@@ -72,8 +72,7 @@ angular.module('StatisticsApp').controller('singleLineChartCtrl', [ '$scope', '$
             $scope.subTitle = config.title(result.period, result.filter.enheter ? result.filter.enheter.length : null);
             $timeout(function () {
                 ControllerCommons.updateDataTable($scope, result.tableData);
-                updateChart(result.chartData);
-                $scope.doneLoading = true;
+                updateChart(result.chartData, function() { $scope.doneLoading = true; });
 
                 if ($routeParams.printBw || $routeParams.print) {
                     printFactory.printAndCloseWindow($timeout, $window);

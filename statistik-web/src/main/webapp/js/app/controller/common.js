@@ -110,13 +110,14 @@ var ControllerCommons = new function(){
         chart.exportChart(options, extendedChartOptions);
     };
 
-    this.getHighChartConfigBase = function(chartCategories, chartSeries) {
+    this.getHighChartConfigBase = function(chartCategories, chartSeries, doneLoadingCallback) {
         return {
             chart : {
                 renderTo : 'chart1',
                 backgroundColor : null, //transparent
-                plotBorderWidth: 1
-            },
+                plotBorderWidth: 1,
+                events: { load: doneLoadingCallback }
+    },
             title : {
                 text : ''
             },
