@@ -27,6 +27,9 @@ angular.module('StatisticsApp').factory('statisticsData', function ($http, $root
             if (status == 403) {
                 window.location.replace("#/login");
             }
+            if (status == 503) {
+                window.location.replace("#/serverbusy");
+            }
             failureCallback();
         });
     };

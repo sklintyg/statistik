@@ -28,6 +28,9 @@ var app = angular.module('StatisticsApp', [ 'ngRoute', 'ngCookies', 'ngSanitize'
         }).when('/fakelogin', {
             templateUrl: 'views/fakelogin.html',
             title: 'Fake Login Page'
+        }).when('/serverbusy', {
+            templateUrl: 'views/error/serverBusy.html',
+            title: 'Tjänsten överbelastad'
         }).when('/nationell/oversikt', {
             templateUrl: 'views/overview.html',
             controller: 'overviewCtrl',
