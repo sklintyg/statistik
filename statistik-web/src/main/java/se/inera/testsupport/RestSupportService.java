@@ -15,6 +15,7 @@ import se.inera.statistics.service.processlog.Receiver;
 import se.inera.statistics.service.warehouse.BiExportData;
 import se.inera.statistics.service.warehouse.Fact;
 import se.inera.statistics.service.warehouse.NationellData;
+import se.inera.statistics.service.warehouse.SjukfallUtil;
 import se.inera.statistics.service.warehouse.Warehouse;
 import se.inera.statistics.service.warehouse.WarehouseManager;
 import se.inera.statistics.service.warehouse.query.BiExportQuery;
@@ -111,6 +112,7 @@ public class RestSupportService {
         manager.createQuery("DELETE FROM Lakare").executeUpdate();
         manager.createQuery("DELETE FROM HSAStore").executeUpdate();
         warehouse.clear();
+        SjukfallUtil.clearSjukfallGroupCache();
         nationalChartDataService.buildCache();
         return Response.ok().build();
     }

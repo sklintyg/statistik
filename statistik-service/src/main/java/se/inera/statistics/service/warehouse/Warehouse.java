@@ -72,7 +72,7 @@ public class Warehouse implements Iterable<Aisle> {
     private Aisle getAisle(String vardgivareId, Map<String, Aisle> aisles, boolean add) {
         Aisle aisle = aisles.get(vardgivareId);
         if (aisle == null) {
-            aisle = new Aisle();
+            aisle = new Aisle(vardgivareId);
             if (add) {
                 aisles.put(vardgivareId, aisle);
             }

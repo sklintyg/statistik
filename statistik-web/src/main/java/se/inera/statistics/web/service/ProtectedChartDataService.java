@@ -1063,6 +1063,9 @@ public class ProtectedChartDataService {
 
     private Filter getFilterForAllAvailableEnhets(HttpServletRequest request) {
         LoginInfo info = loginServiceUtil.getLoginInfo(request);
+        if (info.isProcessledare()) {
+            return new Filter(SjukfallUtil.ALL_ENHETER, null, null);
+        }
         final Set<Integer> availableEnhets = new HashSet<>(Lists.transform(info.getBusinesses(), new Function<Verksamhet, Integer>() {
             @Override
             public Integer apply(Verksamhet verksamhet) {
