@@ -20,17 +20,45 @@ package se.inera.statistics.service.warehouse;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Predicate;
+import com.google.common.cache.CacheBuilder;
+import com.google.common.cache.CacheLoader;
+import com.google.common.cache.LoadingCache;
+import com.google.common.collect.Lists;
 import org.joda.time.LocalDate;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import se.inera.statistics.service.report.model.Range;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
 
 public final class SjukfallUtil {
+
+    private static final Logger LOG = LoggerFactory.getLogger(SjukfallUtil.class);
+
+    public static final int MAX_CACHE_SIZE = 100;
+    private static LoadingCache<SjukfallGroupCacheKey, List<SjukfallGroup>> sjukfallGroupsCache = CacheBuilder.newBuilder()
+            .maximumSize(MAX_CACHE_SIZE)
+            .build(new CacheLoader<SjukfallGroupCacheKey, List<SjukfallGroup>>() {
+                public List<SjukfallGroup> load(SjukfallGroupCacheKey key) {
+                    final LocalDate from = key.getFrom();
+                    final int periods = key.getPeriods();
+                    final int periodSize = key.getPeriodSize();
+                    final Aisle aisle = key.getAisle();
+                    final Predicate<Fact> filter = key.getFilter();
+                    final boolean useOriginalSjukfallStart = key.isUseOriginalSjukfallStart();
+                    return Lists.newArrayList(new SjukfallIterator(from, periods, periodSize, aisle, filter, useOriginalSjukfallStart));
+                }
+            });
+
+    public static void clearSjukfallGroupCache() {
+        sjukfallGroupsCache.invalidateAll();
+    }
 
     public static final EnhetFilter ALL_ENHETER = new EnhetFilter() {
         @Override
@@ -108,21 +136,23 @@ public final class SjukfallUtil {
     }
 
     public static Iterable<SjukfallGroup> sjukfallGrupperUsingOriginalSjukfallStart(final LocalDate from, final int periods, final int periodSize, final Aisle aisle, final Predicate<Fact> filter) {
-        return new Iterable<SjukfallGroup>() {
-            @Override
-            public Iterator<SjukfallGroup> iterator() {
-                return new SjukfallIterator(from, periods, periodSize, aisle, filter, true);
-            }
-        };
+        return sjukfallGrupper(from, periods, periodSize, aisle, filter, true);
     }
 
     public static Iterable<SjukfallGroup> sjukfallGrupper(final LocalDate from, final int periods, final int periodSize, final Aisle aisle, final Predicate<Fact> filter) {
-        return new Iterable<SjukfallGroup>() {
-            @Override
-            public Iterator<SjukfallGroup> iterator() {
-                return new SjukfallIterator(from, periods, periodSize, aisle, filter, false);
+        return sjukfallGrupper(from, periods, periodSize, aisle, filter, false);
+    }
+
+    private static List<SjukfallGroup> sjukfallGrupper(LocalDate from, int periods, int periodSize, Aisle aisle, Predicate<Fact> filter, boolean useOriginalSjukfallStart) {
+        if (SjukfallUtil.ALL_ENHETER.equals(filter)) {
+            try {
+                return sjukfallGroupsCache.get(new SjukfallGroupCacheKey(from, periods, periodSize, aisle, filter, useOriginalSjukfallStart));
+            } catch (ExecutionException e) {
+                //Failed to get from cache. Do nothing and fall through.
+                LOG.warn("Failed to get value from cache");
             }
-        };
+        }
+        return Lists.newArrayList(new SjukfallIterator(from, periods, periodSize, aisle, filter, useOriginalSjukfallStart));
     }
 
     static LocalDate firstDayAfter(Range range) {

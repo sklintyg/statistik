@@ -10,7 +10,7 @@
                     <span id="myModalLabel">{{textData.titleText}}</span></span>
                 </div>
                 <div class="modal-body">
-                    <ul class="modal-list">
+                    <ul ng-if="dialogOpen" class="modal-list">
                         <li class="search-all-items input-group">
                             <span class="input-group-addon glyphicon glyphicon-search"></span>
                             <input type="search" ng-model="multiMenuFilter" class="multiMenuFilterSearch form-control" ng-change="filterMenuItems(menuOptions.subs, multiMenuFilter)" placeholder="Sök"/>
@@ -19,7 +19,7 @@
                             <input type="checkbox" ng-checked="menuOptions.allSelected" id="select-all-diagnoses" class="multiMenuSelectAll" ng-click="itemClicked(menuOptions)"></input>
                             <label for="select-all-diagnoses"><span message key="lbl.filter.select-all"></span></label>
                         </li>
-                        <li data-ng-repeat="item in menuOptions.subs" class="multiMenuSelectKapitel" ng-init="itemRoot=menuOptions; depth=0">
+                        <li data-ng-repeat="item in menuOptions.subs" class="multiMenuSelectKapitel" ng-init="itemRoot=menuOptions; depth=0" on-finish-render="doneRenderingDialog()">
                             <submenu item="item" itemroot="itemRoot" depth="depth" recursionhelper="recursionhelper" ng-hide="item.hide" class="depth0" />
                         </li>
                     </ul>

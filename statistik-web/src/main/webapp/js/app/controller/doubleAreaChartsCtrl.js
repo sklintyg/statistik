@@ -26,8 +26,8 @@ angular.module('StatisticsApp').controller('doubleAreaChartsCtrl', [ '$scope', '
         var chart2 = {};
         var isVerksamhet = $routeParams.verksamhetId ? true : false;
 
-        this.paintChart = function (containerId, yAxisTitle, yAxisTitleXPos, chartCategories, chartSeries, chartSpacingLeft) {
-            var chartOptions = ControllerCommons.getHighChartConfigBase(chartCategories, chartSeries);
+        this.paintChart = function (containerId, yAxisTitle, yAxisTitleXPos, chartCategories, chartSeries, chartSpacingLeft, doneLoadingCallback) {
+            var chartOptions = ControllerCommons.getHighChartConfigBase(chartCategories, chartSeries, doneLoadingCallback);
             chartOptions.chart.type = 'area';
             chartOptions.chart.marginTop = 27;
             chartOptions.chart.spacingLeft = chartSpacingLeft;
@@ -111,16 +111,16 @@ angular.module('StatisticsApp').controller('doubleAreaChartsCtrl', [ '$scope', '
             that.chart2.yAxis[0].setExtremes(0, yMax);
         }
 
-        var updateChart = function (ajaxResult) {
+        var updateChart = function (ajaxResult, doneLoadingCallback) {
             var chartCategories = ajaxResult.femaleChart.categories;
 
             var chartSeriesFemale = ajaxResult.femaleChart.series;
             printFactory.setupSeriesForDisplayType($routeParams.printBw, chartSeriesFemale, "area");
-            that.chart1 = that.paintChart('chart1', 'Antal sjukfall för kvinnor', 118, chartCategories, chartSeriesFemale, -100);
+            that.chart1 = that.paintChart('chart1', 'Antal sjukfall för kvinnor', 118, chartCategories, chartSeriesFemale, -100, doneLoadingCallback);
 
             var chartSeriesMale = ajaxResult.maleChart.series;
             printFactory.setupSeriesForDisplayType($routeParams.printBw, chartSeriesMale, "area");
-            that.chart2 = that.paintChart('chart2', 'Antal sjukfall för män', 97, chartCategories, chartSeriesMale, -80);
+            that.chart2 = that.paintChart('chart2', 'Antal sjukfall för män', 97, chartCategories, chartSeriesMale, -80, doneLoadingCallback);
 
             updateChartsYAxisMaxValue();
 
@@ -141,8 +141,7 @@ angular.module('StatisticsApp').controller('doubleAreaChartsCtrl', [ '$scope', '
 
             $timeout(function () {
                 ControllerCommons.updateDataTable($scope, result.tableData);
-                updateChart(result);
-                $scope.doneLoading = true;
+                updateChart(result, function() { $scope.doneLoading = true; });
 
                 if ($routeParams.printBw || $routeParams.print) {
                     printFactory.printAndCloseWindow($timeout, $window);

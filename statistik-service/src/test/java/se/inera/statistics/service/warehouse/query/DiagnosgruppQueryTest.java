@@ -102,7 +102,7 @@ public class DiagnosgruppQueryTest {
     @Test
     public void testGetUnderdiagnosGrupperForKapitel() throws Exception {
         //When
-        DiagnosgruppResponse result = query.getUnderdiagnosgrupper(new Aisle(), new Predicate<Fact>() {
+        DiagnosgruppResponse result = query.getUnderdiagnosgrupper(new Aisle("vgid"), new Predicate<Fact>() {
             @Override
             public boolean apply(Fact fact) {
                 return false;
@@ -117,7 +117,7 @@ public class DiagnosgruppQueryTest {
     @Test
     public void testGetUnderdiagnosGrupperForAvsnitt() throws Exception {
         //When
-        DiagnosgruppResponse result = query.getUnderdiagnosgrupper(new Aisle(), new Predicate<Fact>() {
+        DiagnosgruppResponse result = query.getUnderdiagnosgrupper(new Aisle("vgid"), new Predicate<Fact>() {
             @Override
             public boolean apply(Fact fact) {
                 return false;

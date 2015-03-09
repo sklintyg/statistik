@@ -25,6 +25,11 @@ import java.util.List;
 
 public class Aisle implements Iterable<Fact> {
     private final List<Fact> lines = new ArrayList<>();
+    private final String vardgivareId;
+
+    public Aisle(String vardgivareId) {
+        this.vardgivareId = vardgivareId;
+    }
 
     public void addLine(Fact line) {
         lines.add(line);
@@ -46,4 +51,9 @@ public class Aisle implements Iterable<Fact> {
     List<Fact> getLines() {
         return Collections.unmodifiableList(lines);
     }
+
+    public String getVardgivareId() {
+        return vardgivareId;
+    }
+
 }

@@ -49,6 +49,7 @@ public class WarehouseManager {
         lines = enhetLoader.populateWarehouse();
         warehouse.completeEnhets(LocalDateTime.now());
         LOG.info("Reloaded enhet {} lines", lines);
+        SjukfallUtil.clearSjukfallGroupCache();
         return lines;
     }
 

@@ -33,7 +33,7 @@ import static se.inera.statistics.service.report.model.Kon.Female;
 import static se.inera.statistics.service.warehouse.Fact.aFact;
 
 public class SjukfallUtilTest {
-    private Aisle aisle = new Aisle();
+    private Aisle aisle = new Aisle("vgid");
 
     @Test
     public void oneIntygIsOneSjukfall() throws Exception {

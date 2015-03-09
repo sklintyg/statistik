@@ -27,8 +27,8 @@ angular.module('StatisticsApp').controller('casesPerCountyCtrl', ['$scope', '$ro
             {id: "chart1", name: "diagram"}
         ];
 
-        var paintChart = function (chartCategories, chartSeries) {
-            var chartOptions = ControllerCommons.getHighChartConfigBase(chartCategories, chartSeries);
+        var paintChart = function (chartCategories, chartSeries, doneLoadingCallback) {
+            var chartOptions = ControllerCommons.getHighChartConfigBase(chartCategories, chartSeries, doneLoadingCallback);
             chartOptions.chart.type = 'column';
 
             //Set the chart.width to a fixed width when we are about the print.
@@ -49,9 +49,9 @@ angular.module('StatisticsApp').controller('casesPerCountyCtrl', ['$scope', '$ro
             return new Highcharts.Chart(chartOptions);
         };
 
-        var updateChart = function (ajaxResult) {
+        var updateChart = function (ajaxResult, doneLoadingCallback) {
             $scope.series = printFactory.setupSeriesForDisplayType($routeParams.printBw, ajaxResult.series, "bar");
-            chart = paintChart(ajaxResult.categories, $scope.series);
+            chart = paintChart(ajaxResult.categories, $scope.series, doneLoadingCallback);
         };
 
         $scope.toggleSeriesVisibility = function (index) {
@@ -69,8 +69,7 @@ angular.module('StatisticsApp').controller('casesPerCountyCtrl', ['$scope', '$ro
             $scope.subTitle = "Antal sjukfall per län" + ControllerCommons.getEnhetCountText(enhetsCount, false) + result.period;
             $timeout(function () {
                 ControllerCommons.updateDataTable($scope, result.tableData);
-                updateChart(result.chartData);
-                $scope.doneLoading = true;
+                updateChart(result.chartData, function() { $scope.doneLoading = true; });
 
                 if ($routeParams.printBw || $routeParams.print) {
                     printFactory.printAndCloseWindow($timeout, $window);
