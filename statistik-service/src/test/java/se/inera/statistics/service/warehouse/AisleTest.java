@@ -28,7 +28,7 @@ import static se.inera.statistics.service.warehouse.Fact.aFact;
 
 public class AisleTest {
 
-    private Aisle aisle = new Aisle();
+    private Aisle aisle = new Aisle("vgid");
 
     @Test
     public void outOfOrderFactsGetsSorted() {

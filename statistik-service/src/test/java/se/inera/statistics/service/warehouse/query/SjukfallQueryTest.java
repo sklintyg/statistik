@@ -77,7 +77,7 @@ public class SjukfallQueryTest {
         lakareManager = mockLakareManager();
         sjukfallQuery = new SjukfallQuery();
         sjukfallQuery.setLakareManager(lakareManager);
-        aisle = new Aisle();
+        aisle = new Aisle("vgid");
     }
 
     @Test
