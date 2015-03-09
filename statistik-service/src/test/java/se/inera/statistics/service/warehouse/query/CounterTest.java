@@ -30,9 +30,9 @@ public class CounterTest {
     @Test
     public void testCompareTo1() throws Exception {
         //Given
-        final Counter counter1 = new Counter("1");
+        final Counter<String> counter1 = new Counter<>("1");
         counter1.increase(createSjukfall(Kon.Female));
-        final Counter counter2 = new Counter("2");
+        final Counter<String> counter2 = new Counter<>("2");
         counter2.increase(createSjukfall(Kon.Male));
         counter2.increase(createSjukfall(Kon.Male));
         counter2.increase(createSjukfall(Kon.Male));
@@ -47,9 +47,9 @@ public class CounterTest {
     @Test
     public void testCompareTo2() throws Exception {
         //Given
-        final Counter counter1 = new Counter("1");
+        final Counter<String> counter1 = new Counter<>("1");
         counter1.increase(createSjukfall(Kon.Female));
-        final Counter counter2 = new Counter("2");
+        final Counter<String> counter2 = new Counter<>("2");
         counter2.increase(createSjukfall(Kon.Male));
         counter2.increase(createSjukfall(Kon.Male));
         counter2.increase(createSjukfall(Kon.Male));
@@ -64,7 +64,7 @@ public class CounterTest {
     @Test
     public void testCompareToSameEquals() throws Exception {
         //Given
-        final Counter counter = new Counter("2");
+        final Counter<String> counter = new Counter<>("2");
         counter.increase(createSjukfall(Kon.Female));
         counter.increase(createSjukfall(Kon.Male));
         counter.increase(createSjukfall(Kon.Male));

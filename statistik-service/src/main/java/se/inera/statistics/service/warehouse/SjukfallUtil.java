@@ -23,26 +23,27 @@ import com.google.common.base.Predicate;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
-import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import org.joda.time.LocalDate;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import se.inera.statistics.service.report.model.Range;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
 
 public final class SjukfallUtil {
 
+    private static final Logger LOG = LoggerFactory.getLogger(SjukfallUtil.class);
+
+    public static final int MAX_CACHE_SIZE = 100;
     private static LoadingCache<SjukfallGroupCacheKey, List<SjukfallGroup>> sjukfallGroupsCache = CacheBuilder.newBuilder()
-            .maximumSize(100)
-            .expireAfterWrite(1, TimeUnit.HOURS)
+            .maximumSize(MAX_CACHE_SIZE)
             .build(new CacheLoader<SjukfallGroupCacheKey, List<SjukfallGroup>>() {
                 public List<SjukfallGroup> load(SjukfallGroupCacheKey key) {
                     final LocalDate from = key.getFrom();
@@ -148,6 +149,7 @@ public final class SjukfallUtil {
                 return sjukfallGroupsCache.get(new SjukfallGroupCacheKey(from, periods, periodSize, aisle, filter, useOriginalSjukfallStart));
             } catch (ExecutionException e) {
                 //Failed to get from cache. Do nothing and fall through.
+                LOG.warn("Failed to get value from cache");
             }
         }
         return Lists.newArrayList(new SjukfallIterator(from, periods, periodSize, aisle, filter, useOriginalSjukfallStart));
