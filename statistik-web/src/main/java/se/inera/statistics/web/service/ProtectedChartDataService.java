@@ -41,6 +41,7 @@ import se.inera.statistics.service.report.model.SjukfallslangdResponse;
 import se.inera.statistics.service.report.model.SjukskrivningsgradResponse;
 import se.inera.statistics.service.report.model.VerksamhetOverviewResponse;
 import se.inera.statistics.service.report.util.Icd10;
+import se.inera.statistics.service.warehouse.SjukfallFilter;
 import se.inera.statistics.service.warehouse.Warehouse;
 import se.inera.statistics.service.warehouse.query.CalcCoordinator;
 import se.inera.statistics.service.warehouse.query.CalcException;
@@ -1058,7 +1059,8 @@ public class ProtectedChartDataService {
         Predicate<Fact> enhetFilter = getEnhetFilter(request, verksamhet, enhetsIDs);
         final List<String> diagnoser = inFilter.getDiagnoser();
         Predicate<Fact> diagnosFilter = getDiagnosFilter(diagnoser);
-        return new Filter(Predicates.and(enhetFilter, diagnosFilter), enhetsIDs, diagnoser);
+        final SjukfallFilter sjukfallFilter = new SjukfallFilter(Predicates.and(enhetFilter, diagnosFilter), filterHash);
+        return new Filter(sjukfallFilter, enhetsIDs, diagnoser);
     }
 
     private Filter getFilterForAllAvailableEnhets(HttpServletRequest request) {
@@ -1072,12 +1074,12 @@ public class ProtectedChartDataService {
                 return Warehouse.getEnhet(verksamhet.getId());
             }
         }));
-        return new Filter(new Predicate<Fact>() {
+        return new Filter(new SjukfallFilter(new Predicate<Fact>() {
             @Override
             public boolean apply(Fact fact) {
                 return availableEnhets.contains(fact.getEnhet());
             }
-        }, null, null);
+        }, SjukfallFilter.getHashValueForEnhets(availableEnhets.toArray())), null, null);
     }
 
     private ArrayList<String> getEnhetsFiltered(HttpServletRequest request, FilterData inFilter) {
@@ -1148,10 +1150,10 @@ public class ProtectedChartDataService {
         };
     }
 
-    SjukfallUtil.EnhetFilter getEnhetFilter(HttpServletRequest request, Verksamhet
+    Predicate<Fact> getEnhetFilter(HttpServletRequest request, Verksamhet
             verksamhet, List<String> enhetsIDs) {
         Set<String> enheter = getEnhetNameMap(request, verksamhet, enhetsIDs).keySet();
-        return SjukfallUtil.createEnhetFilter(enheter.toArray(new String[enheter.size()]));
+        return SjukfallUtil.createEnhetFilter(enheter.toArray(new String[enheter.size()])).getFilter();
     }
 
     private Map<String, String> getEnhetNameMap(HttpServletRequest request, Verksamhet

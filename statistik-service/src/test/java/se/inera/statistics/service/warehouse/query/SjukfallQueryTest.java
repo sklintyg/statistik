@@ -18,6 +18,7 @@
  */
 package se.inera.statistics.service.warehouse.query;
 
+import com.google.common.base.Predicate;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import org.joda.time.LocalDate;
@@ -31,6 +32,7 @@ import se.inera.statistics.service.report.model.SimpleKonDataRow;
 import se.inera.statistics.service.report.model.SimpleKonResponse;
 import se.inera.statistics.service.warehouse.Aisle;
 import se.inera.statistics.service.warehouse.Fact;
+import se.inera.statistics.service.warehouse.SjukfallFilter;
 import se.inera.statistics.service.warehouse.SjukfallUtil;
 import se.inera.statistics.service.warehouse.Warehouse;
 
@@ -69,7 +71,7 @@ public class SjukfallQueryTest {
 
     private BiMap<String, Integer> lakarIdMap = HashBiMap.create();
 
-    private SjukfallUtil.EnhetFilter enhetFilter = new SjukfallUtil.EnhetFilter(ENHET1_ID);
+    private Predicate<Fact> enhetFilter = SjukfallUtil.createEnhetFilterFromInternalIntValues(ENHET1_ID).getFilter();
 
     @Before
     public void setup() {
@@ -87,7 +89,7 @@ public class SjukfallQueryTest {
         aisle.addLine(fact(PATIENT2_ID, PATIENT2_KON, LAKARE2_ID));
 
         // When
-        enhetFilter = new SjukfallUtil.EnhetFilter(ENHET1_ID);
+        enhetFilter = SjukfallUtil.createEnhetFilterFromInternalIntValues(ENHET1_ID).getFilter();
         SimpleKonResponse<SimpleKonDataRow> result = sjukfallQuery.getSjukfallPerLakare(VG_1, aisle, enhetFilter, range, 12, 1);
 
         // Then
@@ -153,7 +155,7 @@ public class SjukfallQueryTest {
         aisle.addLine(fact(PATIENT1_ID, PATIENT1_KON, LAKARE3_ID));
 
         // When
-        SimpleKonResponse<SimpleKonDataRow> result = sjukfallQuery.getSjukfallPerLakare(VG_1, aisle, new SjukfallUtil.EnhetFilter(ENHET1_ID), range, 12, 1);
+        SimpleKonResponse<SimpleKonDataRow> result = sjukfallQuery.getSjukfallPerLakare(VG_1, aisle, SjukfallUtil.createEnhetFilterFromInternalIntValues(ENHET1_ID).getFilter(), range, 12, 1);
 
         // Then
         assertEquals(2, result.getRows().size());
@@ -195,11 +197,11 @@ public class SjukfallQueryTest {
 
     private Fact fact(int patientId, Kon patientKon, String lakareId) {
          return aFact().withLan(3).withKommun(380).withForsamling(38002).
-                withEnhet(ENHET1_ID).withLakarintyg(lakarIntygCounter++).
+                withEnhet(Integer.valueOf(ENHET1_ID)).withLakarintyg(lakarIntygCounter++).
                 withPatient(patientId).withKon(patientKon).withAlder(45).
                 withDiagnoskapitel(0).withDiagnosavsnitt(14).withDiagnoskategori(16).
                 withSjukskrivningsgrad(100).withStartdatum(toDay(sjukfallDate)).withSjukskrivningslangd(47).
-                withLakarkon(Kon.Female).withLakaralder(32).withLakarbefattning(new int[]{201010}).withLakarid(lakarIdMap.get(lakareId)).build();
+                 withLakarkon(Kon.Female).withLakaralder(32).withLakarbefattning(new int[]{201010}).withLakarid(lakarIdMap.get(lakareId)).build();
     }
 
 }

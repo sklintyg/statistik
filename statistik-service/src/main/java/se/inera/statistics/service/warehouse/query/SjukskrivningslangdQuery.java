@@ -18,7 +18,6 @@
  */
 package se.inera.statistics.service.warehouse.query;
 
-import com.google.common.base.Predicate;
 import org.joda.time.LocalDate;
 import se.inera.statistics.service.report.model.OverviewChartRow;
 import se.inera.statistics.service.report.model.SimpleKonDataRow;
@@ -29,8 +28,8 @@ import se.inera.statistics.service.report.util.Ranges;
 import se.inera.statistics.service.report.util.ReportUtil;
 import se.inera.statistics.service.report.util.SjukfallslangdUtil;
 import se.inera.statistics.service.warehouse.Aisle;
-import se.inera.statistics.service.warehouse.Fact;
 import se.inera.statistics.service.warehouse.Sjukfall;
+import se.inera.statistics.service.warehouse.SjukfallFilter;
 import se.inera.statistics.service.warehouse.SjukfallGroup;
 import se.inera.statistics.service.warehouse.SjukfallUtil;
 
@@ -102,7 +101,7 @@ public final class SjukskrivningslangdQuery {
         return counters;
     }
 
-    public static SimpleKonResponse<SimpleKonDataRow> getLangaSjukfall(Aisle aisle, Predicate<Fact> filter, LocalDate from, int periods, int periodLength) {
+    public static SimpleKonResponse<SimpleKonDataRow> getLangaSjukfall(Aisle aisle, SjukfallFilter filter, LocalDate from, int periods, int periodLength) {
         List<SimpleKonDataRow> rows = new ArrayList<>();
         for (SjukfallGroup sjukfallGroup: SjukfallUtil.sjukfallGrupperUsingOriginalSjukfallStart(from, periods, periodLength, aisle, filter)) {
             Counter counter = new Counter("");
@@ -117,7 +116,7 @@ public final class SjukskrivningslangdQuery {
         return new SimpleKonResponse<>(rows, periods);
     }
 
-    public static SjukfallslangdResponse getSjuksrivningslangd(Aisle aisle, Predicate<Fact> filter, LocalDate from, int periods, int periodLength) {
+    public static SjukfallslangdResponse getSjuksrivningslangd(Aisle aisle, SjukfallFilter filter, LocalDate from, int periods, int periodLength) {
         List<SjukfallslangdRow> rows = new ArrayList<>();
         for (SjukfallGroup sjukfallGroup: SjukfallUtil.sjukfallGrupperUsingOriginalSjukfallStart(from, periods, periodLength, aisle, filter)) {
             Map<Ranges.Range, Counter<Ranges.Range>> counterMap = SjukskrivningslangdQuery.count(sjukfallGroup.getSjukfall());

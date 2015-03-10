@@ -102,12 +102,12 @@ public class DiagnosgruppQueryTest {
     @Test
     public void testGetUnderdiagnosGrupperForKapitel() throws Exception {
         //When
-        DiagnosgruppResponse result = query.getUnderdiagnosgrupper(new Aisle("vgid"), new Predicate<Fact>() {
+        DiagnosgruppResponse result = query.getUnderdiagnosgrupper(new Aisle("vgid"), new SjukfallFilter(new Predicate<Fact>() {
             @Override
             public boolean apply(Fact fact) {
                 return false;
             }
-        }, new LocalDate(1416223845652L), 1, 1, "A00-B99");
+        }, "hash"), new LocalDate(1416223845652L), 1, 1, "A00-B99");
 
         //Then
         assertEquals(21, result.getIcdTyps().size());
@@ -117,12 +117,12 @@ public class DiagnosgruppQueryTest {
     @Test
     public void testGetUnderdiagnosGrupperForAvsnitt() throws Exception {
         //When
-        DiagnosgruppResponse result = query.getUnderdiagnosgrupper(new Aisle("vgid"), new Predicate<Fact>() {
+        DiagnosgruppResponse result = query.getUnderdiagnosgrupper(new Aisle("vgid"), new SjukfallFilter(new Predicate<Fact>() {
             @Override
             public boolean apply(Fact fact) {
                 return false;
             }
-        }, new LocalDate(1416223845652L), 1, 1, "A00-A09");
+        }, "hash"), new LocalDate(1416223845652L), 1, 1, "A00-A09");
 
         //Then
         assertEquals(10, result.getIcdTyps().size());

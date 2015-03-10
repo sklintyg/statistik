@@ -19,6 +19,7 @@
 package se.inera.statistics.service.warehouse;
 
 import com.google.common.annotations.VisibleForTesting;
+import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
@@ -33,15 +34,17 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ExecutionException;
 
 public final class SjukfallUtil {
 
     private static final Logger LOG = LoggerFactory.getLogger(SjukfallUtil.class);
 
-    public static final int MAX_CACHE_SIZE = 100;
+    public static final int MAX_CACHE_SIZE = 1000;
     private static LoadingCache<SjukfallGroupCacheKey, List<SjukfallGroup>> sjukfallGroupsCache = CacheBuilder.newBuilder()
             .maximumSize(MAX_CACHE_SIZE)
             .build(new CacheLoader<SjukfallGroupCacheKey, List<SjukfallGroup>>() {
@@ -60,12 +63,12 @@ public final class SjukfallUtil {
         sjukfallGroupsCache.invalidateAll();
     }
 
-    public static final EnhetFilter ALL_ENHETER = new EnhetFilter() {
+    public static final SjukfallFilter ALL_ENHETER = new SjukfallFilter(new Predicate<Fact>() {
         @Override
         public boolean apply(Fact fact) {
             return true;
         }
-    };
+    }, SjukfallFilter.HASH_EMPTY_FILTER);
 
     public static final int LONG_LIMIT = 90;
 
@@ -119,40 +122,57 @@ public final class SjukfallUtil {
 
     @VisibleForTesting
     public static Collection<Sjukfall> calculateSjukfall(Aisle aisle) {
-        return calculateSjukfall(aisle, ALL_ENHETER, Integer.MAX_VALUE);
+        return calculateSjukfall(aisle, ALL_ENHETER.getFilter(), Integer.MAX_VALUE);
     }
 
     @VisibleForTesting
-    static Collection<Sjukfall> calculateSjukfall(Aisle aisle, int... enhetIds) {
-        return calculateSjukfall(aisle, new EnhetFilter(enhetIds), Integer.MAX_VALUE);
+    static Collection<Sjukfall> calculateSjukfall(Aisle aisle, Integer... enhetIds) {
+        return calculateSjukfall(aisle, createEnhetFilterFromInternalIntValues(enhetIds).getFilter(), Integer.MAX_VALUE);
     }
 
-    public static EnhetFilter createEnhetFilter(String... enhetIds) {
-        int[] numericalIds = new int[enhetIds.length];
-        for (int i = 0; i < enhetIds.length; i++) {
-            numericalIds[i] = Warehouse.getEnhet(enhetIds[i]);
-        }
-        return new EnhetFilter(numericalIds);
+    public static SjukfallFilter createEnhetFilter(String... enhetIds) {
+        final Set<Integer> availableEnhets = new HashSet<>(Lists.transform(Arrays.asList(enhetIds), new Function<String, Integer>() {
+            @Override
+            public Integer apply(String enhetId) {
+                return Warehouse.getEnhet(enhetId);
+            }
+        }));
+        return new SjukfallFilter(new Predicate<Fact>() {
+            @Override
+            public boolean apply(Fact fact) {
+                return availableEnhets.contains(fact.getEnhet());
+            }
+        }, SjukfallFilter.getHashValueForEnhets(availableEnhets.toArray()));
     }
 
-    public static Iterable<SjukfallGroup> sjukfallGrupperUsingOriginalSjukfallStart(final LocalDate from, final int periods, final int periodSize, final Aisle aisle, final Predicate<Fact> filter) {
+    public static SjukfallFilter createEnhetFilterFromInternalIntValues(Integer... enhetIds) {
+        final HashSet<Integer> availableEnhets = new HashSet<>(Arrays.asList(enhetIds));
+        return new SjukfallFilter(new Predicate<Fact>() {
+            @Override
+            public boolean apply(Fact fact) {
+                return availableEnhets.contains(fact.getEnhet());
+            }
+        }, SjukfallFilter.getHashValueForEnhets(availableEnhets.toArray()));
+    }
+
+    public static Iterable<SjukfallGroup> sjukfallGrupperUsingOriginalSjukfallStart(final LocalDate from, final int periods, final int periodSize, final Aisle aisle, final SjukfallFilter filter) {
         return sjukfallGrupper(from, periods, periodSize, aisle, filter, true);
     }
 
-    public static Iterable<SjukfallGroup> sjukfallGrupper(final LocalDate from, final int periods, final int periodSize, final Aisle aisle, final Predicate<Fact> filter) {
+    public static Iterable<SjukfallGroup> sjukfallGrupper(final LocalDate from, final int periods, final int periodSize, final Aisle aisle, final SjukfallFilter filter) {
         return sjukfallGrupper(from, periods, periodSize, aisle, filter, false);
     }
 
-    private static List<SjukfallGroup> sjukfallGrupper(LocalDate from, int periods, int periodSize, Aisle aisle, Predicate<Fact> filter, boolean useOriginalSjukfallStart) {
-        if (SjukfallUtil.ALL_ENHETER.equals(filter)) {
+    private static List<SjukfallGroup> sjukfallGrupper(LocalDate from, int periods, int periodSize, Aisle aisle, SjukfallFilter sjukfallFilter, boolean useOriginalSjukfallStart) {
+        if (SjukfallFilter.HASH_EMPTY_FILTER.equals(sjukfallFilter.getHash())) {
             try {
-                return sjukfallGroupsCache.get(new SjukfallGroupCacheKey(from, periods, periodSize, aisle, filter, useOriginalSjukfallStart));
+                return sjukfallGroupsCache.get(new SjukfallGroupCacheKey(from, periods, periodSize, aisle, sjukfallFilter, useOriginalSjukfallStart));
             } catch (ExecutionException e) {
                 //Failed to get from cache. Do nothing and fall through.
                 LOG.warn("Failed to get value from cache");
             }
         }
-        return Lists.newArrayList(new SjukfallIterator(from, periods, periodSize, aisle, filter, useOriginalSjukfallStart));
+        return Lists.newArrayList(new SjukfallIterator(from, periods, periodSize, aisle, sjukfallFilter.getFilter(), useOriginalSjukfallStart));
     }
 
     static LocalDate firstDayAfter(Range range) {
@@ -167,25 +187,6 @@ public final class SjukfallUtil {
             }
         }
         return count;
-    }
-
-    public static class EnhetFilter implements Predicate<Fact> {
-        private final int[] enhetIds;
-
-        public EnhetFilter(int... enhetIds) {
-            this.enhetIds = enhetIds;
-            Arrays.sort(this.enhetIds);
-        }
-
-        @Override
-        public boolean apply(Fact fact) {
-            return Arrays.binarySearch(enhetIds, fact.getEnhet()) >= 0;
-        }
-
-        public int[] getEnhetIds() {
-            return enhetIds;
-        }
-
     }
 
 }

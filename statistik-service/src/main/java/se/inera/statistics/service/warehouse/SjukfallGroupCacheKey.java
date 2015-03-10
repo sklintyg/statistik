@@ -27,18 +27,18 @@ class SjukfallGroupCacheKey {
     private final int periods;
     private final int periodSize;
     private final Aisle aisle;
-    private final Predicate<Fact> filter;
+    private final SjukfallFilter filter;
     private final boolean useOriginalSjukfallStart;
     private final String key;
 
-    public SjukfallGroupCacheKey(LocalDate from, int periods, int periodSize, Aisle aisle, Predicate<Fact> filter, boolean useOriginalSjukfallStart) {
+    public SjukfallGroupCacheKey(LocalDate from, int periods, int periodSize, Aisle aisle, SjukfallFilter filter, boolean useOriginalSjukfallStart) {
         this.from = from;
         this.periods = periods;
         this.periodSize = periodSize;
         this.aisle = aisle;
         this.filter = filter;
         this.useOriginalSjukfallStart = useOriginalSjukfallStart;
-        this.key = from.toDate().getTime() + "_" + periods + "_" + periodSize + "_" + aisle.getVardgivareId() + "_" + useOriginalSjukfallStart;
+        this.key = from.toDate().getTime() + "_" + periods + "_" + periodSize + "_" + aisle.getVardgivareId() + "_" + useOriginalSjukfallStart + "_" + filter.getHash();
     }
 
     @Override
@@ -77,7 +77,7 @@ class SjukfallGroupCacheKey {
     }
 
     public Predicate<Fact> getFilter() {
-        return filter;
+        return filter.getFilter();
     }
 
     public boolean isUseOriginalSjukfallStart() {

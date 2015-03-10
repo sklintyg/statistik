@@ -18,18 +18,17 @@
  */
 package se.inera.statistics.web.service;
 
-import com.google.common.base.Predicate;
-import se.inera.statistics.service.warehouse.Fact;
+import se.inera.statistics.service.warehouse.SjukfallFilter;
 
 import java.util.Collection;
 
 class Filter {
 
-    private Predicate<Fact> predicate;
+    private SjukfallFilter predicate;
     private Collection<String> enheter;
     private Collection<String> diagnoser;
 
-    Filter(Predicate<Fact> predicate, Collection<String> enheter, Collection<String> diagnoser) {
+    Filter(SjukfallFilter predicate, Collection<String> enheter, Collection<String> diagnoser) {
         this.predicate = predicate;
         this.enheter = enheter;
         this.diagnoser = diagnoser;
@@ -39,7 +38,7 @@ class Filter {
         return new Filter(null, null, null);
     }
 
-    Predicate<Fact> getPredicate() {
+    SjukfallFilter getPredicate() {
         return predicate;
     }
 

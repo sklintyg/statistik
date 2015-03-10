@@ -108,14 +108,14 @@ public class SjukfallUtilTest {
 
         aisle.sort();
 
-        Iterator<SjukfallGroup> actives = SjukfallUtil.sjukfallGrupper(new LocalDate("2010-11-01"), 3, 1, aisle, new SjukfallUtil.EnhetFilter(2)).iterator();
+        Iterator<SjukfallGroup> actives = SjukfallUtil.sjukfallGrupper(new LocalDate("2010-11-01"), 3, 1, aisle, SjukfallUtil.createEnhetFilterFromInternalIntValues(2)).iterator();
         assertTrue(actives.next().getSjukfall().isEmpty());
 
         assertEquals(2, actives.next().getSjukfall().size());
         assertEquals(2, actives.next().getSjukfall().size());
         assertFalse(actives.hasNext());
 
-        actives = SjukfallUtil.sjukfallGrupper(new LocalDate("2010-11-01"), 2, 12, aisle, new SjukfallUtil.EnhetFilter(2)).iterator();
+        actives = SjukfallUtil.sjukfallGrupper(new LocalDate("2010-11-01"), 2, 12, aisle, SjukfallUtil.createEnhetFilterFromInternalIntValues(2)).iterator();
 
         assertEquals(2, actives.next().getSjukfall().size());
         assertEquals(0, actives.next().getSjukfall().size());
@@ -153,7 +153,7 @@ public class SjukfallUtilTest {
 
         aisle.sort();
 
-        Iterator<SjukfallGroup> actives = SjukfallUtil.sjukfallGrupper(monthStart, 1, 1, aisle, new SjukfallUtil.EnhetFilter(ENHET1)).iterator();
+        Iterator<SjukfallGroup> actives = SjukfallUtil.sjukfallGrupper(monthStart, 1, 1, aisle, SjukfallUtil.createEnhetFilterFromInternalIntValues(ENHET1)).iterator();
         assertEquals(1, actives.next().getSjukfall().size());
     }
 
@@ -166,7 +166,7 @@ public class SjukfallUtilTest {
 
         aisle.sort();
 
-        Iterator<SjukfallGroup> actives = SjukfallUtil.sjukfallGrupper(monthStart, 1, 1, aisle, new SjukfallUtil.EnhetFilter(ENHET1)).iterator();
+        Iterator<SjukfallGroup> actives = SjukfallUtil.sjukfallGrupper(monthStart, 1, 1, aisle, SjukfallUtil.createEnhetFilterFromInternalIntValues(ENHET1)).iterator();
         assertEquals(2, actives.next().getSjukfall().size());
     }
 
