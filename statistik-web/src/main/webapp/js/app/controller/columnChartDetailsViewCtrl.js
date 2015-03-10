@@ -19,11 +19,12 @@
 
 'use strict';
 
-angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl', [ '$scope', '$rootScope', '$routeParams', '$window', '$location', '$timeout', 'statisticsData', 'businessFilter', 'config', 'messageService', 'printFactory',
-
-    function ($scope, $rootScope, $routeParams, $window, $location, $timeout, statisticsData, businessFilter, config, messageService, printFactory) {
+angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl', [ '$scope', '$rootScope', '$routeParams', '$window', '$location', '$timeout', 'statisticsData', 'diagnosisTreeFilter', 'config', 'messageService', 'printFactory',
+    function ($scope, $rootScope, $routeParams, $window, $location, $timeout, statisticsData, diagnosisTreeFilter, config, messageService, printFactory) {
         var isVerksamhet = $routeParams.verksamhetId ? true : false;
         var chart = {};
+
+        $scope.diagnosisTreeFilter = diagnosisTreeFilter;
 
         $scope.chartContainers = [
             {id: "chart1", name: "diagram"}
@@ -88,22 +89,24 @@ angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl', [ '$sco
             }, 1);
         };
 
-        function getSelectedDiagnosis() {
-            if (!$scope.diagnosisOptionsTree) {
-                return null;
-            }
-            return _.map(businessFilter.getSelectedLeaves($scope.diagnosisOptionsTree), function(it){
-                return it.numericalId;
-            });
-        }
-
         function refreshVerksamhet() {
             statisticsData[config.dataFetcherVerksamhet]($routeParams.verksamhetId, populatePageWithData, function () {
                 $scope.dataLoadingError = true;
             }, $routeParams.diagnosHash);
         }
 
-        if ($routeParams.diagnosHash !== "-") {
+        var diagnosHashExists = function diagnosHashExists() {
+            return $routeParams.diagnosHash !== "-";
+        };
+
+
+        var populateTreeMultiSelectWithPrefilteredData = function populateTreeMultiSelectWithPrefilteredData() {
+            statisticsData.getFilterData($routeParams.diagnosHash, function(filterData) {
+                diagnosisTreeFilter.setPreselectedFilter(filterData);
+            }, function(){ throw new Error("Could not parse filter"); });
+        };
+
+        if (diagnosHashExists()) {
             $scope.spinnerText = "Laddar information...";
             $scope.doneLoading = false;
             $scope.dataLoadingError = false;
@@ -132,17 +135,41 @@ angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl', [ '$sco
         });
 
         $scope.showDiagnosisSelector = config.showDiagnosisSelector;
+
+        var hasDiagnosisOptionsTreeAnySubs = function hasDiagnosisOptionsTreeAnySubs() {
+            return diagnosisTreeFilter.diagnosisOptionsTree.subs.length > 0;
+        };
+
+        //This is the setup code that initiates the treemultiselect with diagnoses
+        //every time this controller is created
         if ($scope.showDiagnosisSelector) {
-            statisticsData.getIcd10Structure(function(diagnosisTree){
-                businessFilter.setupDiagnosisTreeForSelectionModal(diagnosisTree);
-                $scope.diagnosisOptionsTree = {subs: diagnosisTree};
-            }, function () { alert("Failed to fetch ICD10 structure tree from server") });
+            //First time setup
+            if (!hasDiagnosisOptionsTreeAnySubs()) {
+                //Get icd10 structure and populate the diagnosisOptionsTree every time the controller initiates.
+                statisticsData.getIcd10Structure(function (diagnosisTree) {
+                    diagnosisTreeFilter.setupDiagnosisTreeForSelectionModal(diagnosisTree);
+                    diagnosisTreeFilter.diagnosisOptionsTree = {subs: diagnosisTree};
+
+                    //If we do have a filter hash already then we very much want to apply it.
+                    if(diagnosHashExists()) {
+                        populateTreeMultiSelectWithPrefilteredData();
+                    }
+                }, function () {
+                    alert("Failed to fetch ICD10 structure tree from server");
+                });
+            } else if(hasDiagnosisOptionsTreeAnySubs() && !diagnosHashExists()) {
+                diagnosisTreeFilter.resetSelections();
+            } else if(hasDiagnosisOptionsTreeAnySubs() && diagnosHashExists()) {
+                diagnosisTreeFilter.resetSelections();
+                populateTreeMultiSelectWithPrefilteredData();
+            }
+
             $scope.diagnosisSelectorData = {
-                titleText:messageService.getProperty("comparediagnoses.lbl.val-av-diagnoser", null, "", null, true),
-                buttonLabelText:messageService.getProperty("lbl.filter.val-av-diagnoser-knapp", null, "", null, true),
-                firstLevelLabelText:messageService.getProperty("lbl.filter.modal.kapitel", null, "", null, true),
-                secondLevelLabelText:messageService.getProperty("lbl.filter.modal.avsnitt", null, "", null, true),
-                thirdLevelLabelText:messageService.getProperty("lbl.filter.modal.kategorier", null, "", null, true)
+                titleText: messageService.getProperty("comparediagnoses.lbl.val-av-diagnoser", null, "", null, true),
+                buttonLabelText: messageService.getProperty("lbl.filter.val-av-diagnoser-knapp", null, "", null, true),
+                firstLevelLabelText: messageService.getProperty("lbl.filter.modal.kapitel", null, "", null, true),
+                secondLevelLabelText: messageService.getProperty("lbl.filter.modal.avsnitt", null, "", null, true),
+                thirdLevelLabelText: messageService.getProperty("lbl.filter.modal.kategorier", null, "", null, true)
             };
         }
 
@@ -155,7 +182,7 @@ angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl', [ '$sco
         };
 
         $scope.diagnosisSelected = function () {
-            var diagnoses = getSelectedDiagnosis();
+            var diagnoses = diagnosisTreeFilter.getSelectedDiagnosis();
 
             $timeout(function () {
                 //Ugly fix from http://stackoverflow.com/questions/20827282/cant-dismiss-modal-and-change-page-location
@@ -171,7 +198,6 @@ angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl', [ '$sco
                 $location.path("/verksamhet/" + $routeParams.verksamhetId + "/jamforDiagnoser/" + selectionHash);
             }, function(){ throw new Error("Failed to get filter hash value"); });
         };
-
     }
 ]);
 
@@ -181,7 +207,7 @@ angular.module('StatisticsApp').nationalSickLeaveLengthConfig = function () {
     conf.dataFetcherVerksamhet = "getSickLeaveLengthDataVerksamhet";
     conf.exportTableUrl = "api/getSickLeaveLengthData/csv";
     conf.exportTableUrlVerksamhet = function (verksamhetId) {
-        return "api/verksamhet/" + verksamhetId + "/getSickLeaveLengthData/csv"
+        return "api/verksamhet/" + verksamhetId + "/getSickLeaveLengthData/csv";
     };
     conf.title = function (period, enhetsCount) {
         return "Antal sjukfall per sjukskrivningslängd" + ControllerCommons.getEnhetCountText(enhetsCount, false) + period;
@@ -202,7 +228,7 @@ angular.module('StatisticsApp').nationalSickLeaveLengthCurrentConfig = function 
         return "Antal pågående sjukfall per sjukskrivningslängd" + ControllerCommons.getEnhetCountText(enhetsCount, false) + month;
     };
     conf.chartXAxisTitle = "Sjukskrivningslängd";
-    conf.pageHelpText = "help.sick-leave-length-current"
+    conf.pageHelpText = "help.sick-leave-length-current";
     return conf;
 };
 

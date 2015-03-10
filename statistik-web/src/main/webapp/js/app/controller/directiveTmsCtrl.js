@@ -106,11 +106,11 @@ angular.module('StatisticsApp').controller('directiveTmsCtrl', [ '$scope', 'tree
 
     var currentFiltering = null;
     $scope.filterMenuItems = function (items, text) {
-        if (currentFiltering != null) {
+        if (currentFiltering !== null) {
             $timeout.cancel(currentFiltering);
         }
         currentFiltering = $timeout(function() {
-            _.each(items, function(item) {$scope.updateItemHiddenState(item, getIsMatchingFilterFunction(text))});
+            _.each(items, function(item) {$scope.updateItemHiddenState(item, getIsMatchingFilterFunction(text));});
             expandIfOnlyOneVisible(items);
             $scope.$evalAsync();
             currentFiltering = null;
@@ -121,7 +121,7 @@ angular.module('StatisticsApp').controller('directiveTmsCtrl', [ '$scope', 'tree
         var text = searchText.toLowerCase();
         return function isMatchingFilter(item) {
             return item.name.toLowerCase().indexOf(text) >= 0;
-        }
+        };
     }
 
     $scope.updateItemHiddenState = function (item, shouldItemBeVisibleFunction) {
@@ -129,7 +129,7 @@ angular.module('StatisticsApp').controller('directiveTmsCtrl', [ '$scope', 'tree
         var hide = true;
         if (shouldItemBeVisibleFunction(item)) {
             hide = false;
-            childVisibilityFunction = function () { return true; }
+            childVisibilityFunction = function () { return true; };
         }
         item.hide = !!_.reduce(item.subs, function (mem, sub) {
             return $scope.updateItemHiddenState(sub, childVisibilityFunction) && mem;

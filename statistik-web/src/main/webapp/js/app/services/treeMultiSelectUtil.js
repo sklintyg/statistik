@@ -6,7 +6,7 @@ angular.module('StatisticsApp').factory('treeMultiSelectUtil', ['_',
         var externalApi = {};
 
         externalApi.updateSelectionState = function(item) {
-            if (item.subs && item.subs.length != 0) {
+            if (item.subs && item.subs.length !== 0) {
                 var someSelected = false;
                 var allSelected = true;
                 _.each(item.subs, function (sub) {
