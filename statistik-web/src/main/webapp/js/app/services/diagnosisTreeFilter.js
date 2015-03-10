@@ -114,5 +114,45 @@ angular.module('StatisticsApp')
             diagnosisTreeFilter.resetSelections = function() {
                 diagnosisTreeFilter.deselectAll(diagnosisTreeFilter.diagnosisOptionsTree);
             };
+
+            var diagnosHashExists = function diagnosHashExists(routeParams) {
+                return routeParams.diagnosHash !== "-";
+            };
+
+            var populateTreeMultiSelectWithPrefilteredData = function populateTreeMultiSelectWithPrefilteredData(routeParams) {
+                statisticsData.getFilterData(routeParams.diagnosHash, function(filterData) {
+                    diagnosisTreeFilter.setPreselectedFilter(filterData);
+                }, function(){ throw new Error("Could not parse filter"); });
+            };
+
+            var hasDiagnosisOptionsTreeAnySubs = function hasDiagnosisOptionsTreeAnySubs() {
+                return diagnosisTreeFilter.diagnosisOptionsTree.subs.length > 0;
+            };
+
+            //This is the setup code that initiates the treemultiselect with diagnoses
+            //every time this controller is created
+            diagnosisTreeFilter.setup = function(routeParams) {
+                //First time setup
+                if (!hasDiagnosisOptionsTreeAnySubs()) {
+                    //Get icd10 structure and populate the diagnosisOptionsTree every time the controller initiates.
+                    statisticsData.getIcd10Structure(function (diagnosisTree) {
+                        diagnosisTreeFilter.setupDiagnosisTreeForSelectionModal(diagnosisTree);
+                        diagnosisTreeFilter.diagnosisOptionsTree = {subs: diagnosisTree};
+
+                        //If we do have a filter hash already then we very much want to apply it.
+                        if(diagnosHashExists(routeParams)) {
+                            populateTreeMultiSelectWithPrefilteredData();
+                        }
+                    }, function () {
+                        alert("Failed to fetch ICD10 structure tree from server");
+                    });
+                } else if(hasDiagnosisOptionsTreeAnySubs() && !diagnosHashExists(routeParams)) {
+                    diagnosisTreeFilter.resetSelections();
+                } else if(hasDiagnosisOptionsTreeAnySubs() && diagnosHashExists(routeParams)) {
+                    diagnosisTreeFilter.resetSelections();
+                    populateTreeMultiSelectWithPrefilteredData(routeParams);
+                }
+            };
+
             return diagnosisTreeFilter;
         }]);

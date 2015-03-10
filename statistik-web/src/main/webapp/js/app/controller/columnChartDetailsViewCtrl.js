@@ -99,13 +99,6 @@ angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl', [ '$sco
             return $routeParams.diagnosHash !== "-";
         };
 
-
-        var populateTreeMultiSelectWithPrefilteredData = function populateTreeMultiSelectWithPrefilteredData() {
-            statisticsData.getFilterData($routeParams.diagnosHash, function(filterData) {
-                diagnosisTreeFilter.setPreselectedFilter(filterData);
-            }, function(){ throw new Error("Could not parse filter"); });
-        };
-
         if (diagnosHashExists()) {
             $scope.spinnerText = "Laddar information...";
             $scope.doneLoading = false;
@@ -124,45 +117,22 @@ angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl', [ '$sco
         }
 
         $scope.showHideDataTable = ControllerCommons.showHideDataTableDefault;
+
         $scope.toggleTableVisibility = function (event) {
             ControllerCommons.toggleTableVisibilityGeneric(event, $scope);
         };
 
-
         $scope.popoverText = messageService.getProperty(config.pageHelpText, null, "", null, true);
+
         $scope.chartFootnotes = _.map(config.chartFootnotes, function(msgKey){
             return messageService.getProperty(msgKey, null, "", null, true);
         });
 
         $scope.showDiagnosisSelector = config.showDiagnosisSelector;
 
-        var hasDiagnosisOptionsTreeAnySubs = function hasDiagnosisOptionsTreeAnySubs() {
-            return diagnosisTreeFilter.diagnosisOptionsTree.subs.length > 0;
-        };
-
-        //This is the setup code that initiates the treemultiselect with diagnoses
-        //every time this controller is created
         if ($scope.showDiagnosisSelector) {
-            //First time setup
-            if (!hasDiagnosisOptionsTreeAnySubs()) {
-                //Get icd10 structure and populate the diagnosisOptionsTree every time the controller initiates.
-                statisticsData.getIcd10Structure(function (diagnosisTree) {
-                    diagnosisTreeFilter.setupDiagnosisTreeForSelectionModal(diagnosisTree);
-                    diagnosisTreeFilter.diagnosisOptionsTree = {subs: diagnosisTree};
-
-                    //If we do have a filter hash already then we very much want to apply it.
-                    if(diagnosHashExists()) {
-                        populateTreeMultiSelectWithPrefilteredData();
-                    }
-                }, function () {
-                    alert("Failed to fetch ICD10 structure tree from server");
-                });
-            } else if(hasDiagnosisOptionsTreeAnySubs() && !diagnosHashExists()) {
-                diagnosisTreeFilter.resetSelections();
-            } else if(hasDiagnosisOptionsTreeAnySubs() && diagnosHashExists()) {
-                diagnosisTreeFilter.resetSelections();
-                populateTreeMultiSelectWithPrefilteredData();
-            }
+            //Initiate the diagnosisTree if we need to.
+            diagnosisTreeFilter.setup($routeParams);
 
             $scope.diagnosisSelectorData = {
                 titleText: messageService.getProperty("comparediagnoses.lbl.val-av-diagnoser", null, "", null, true),
