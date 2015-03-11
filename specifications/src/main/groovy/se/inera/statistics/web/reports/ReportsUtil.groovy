@@ -141,6 +141,8 @@ class ReportsUtil {
             case "user2": return VARDGIVARE;
             case "user3": return VARDGIVARE3;
             case "user4": return VARDGIVARE;
+            case "user5_vg1": return VARDGIVARE;
+            case "user5_vg3": return VARDGIVARE3;
             default: throw new RuntimeException("Unknown user: " + user)
         }
     }
@@ -185,6 +187,22 @@ class ReportsUtil {
                 "\"efternamn\":\"Modig\"," +
                 "\"hsaId\":\"user4\"," +
                 "\"enhetId\":\"enhet2\"," +
+                "\"vardgivarId\":\"" + getVardgivareForUser(user) + "\"," +
+                "\"vardgivarniva\":\"" + vardgivarniva + "\"" +
+                "}"
+        logins["user5_vg1"] = "{" +
+                "\"fornamn\":\"Anna\"," +
+                "\"efternamn\":\"Modig\"," +
+                "\"hsaId\":\"user5\"," +
+                "\"enhetId\":\"enhet1\"," +
+                "\"vardgivarId\":\"" + getVardgivareForUser(user) + "\"," +
+                "\"vardgivarniva\":\"" + vardgivarniva + "\"" +
+                "}"
+        logins["user5_vg3"] = "{" +
+                "\"fornamn\":\"Anna\"," +
+                "\"efternamn\":\"Modig\"," +
+                "\"hsaId\":\"user5\"," +
+                "\"enhetId\":\"enhet3\"," +
                 "\"vardgivarId\":\"" + getVardgivareForUser(user) + "\"," +
                 "\"vardgivarniva\":\"" + vardgivarniva + "\"" +
                 "}"
