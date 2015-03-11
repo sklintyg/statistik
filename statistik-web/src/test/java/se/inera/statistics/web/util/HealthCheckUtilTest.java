@@ -106,4 +106,12 @@ public class HealthCheckUtilTest {
         assertTrue(status.getMeasurement() >= 0);
         assertFalse(status.isOk());
     }
+
+    @Test
+    public void testWorkloadStatus() throws Exception {
+        Status status = healthCheck.getWorkloadStatus();
+        assertTrue(status.getMeasurement() >= 0 && status.getMeasurement() <= 100);
+        assertTrue(status.isOk());
+    }
+
 }

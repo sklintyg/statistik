@@ -97,6 +97,10 @@ public final class CalcCoordinator {
         CalcCoordinator.denyAll = denyAll;
     }
 
+    public static int getWorkloadPercentage() {
+        return 100 * queueSize / NO_OF_TICKETS;
+    }
+
     public static final class Ticket {
         private boolean free = true;
     }

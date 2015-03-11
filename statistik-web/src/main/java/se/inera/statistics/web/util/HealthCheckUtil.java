@@ -27,6 +27,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 
 import se.inera.ifv.statistics.spi.authorization.impl.HSAWebServiceCalls;
+import se.inera.statistics.service.warehouse.query.CalcCoordinator;
 import se.inera.statistics.web.service.ChartDataService;
 
 public class HealthCheckUtil {
@@ -86,6 +87,10 @@ public class HealthCheckUtil {
         }
         long doneTime = System.nanoTime();
         return createStatus(ok, startTime, doneTime);
+    }
+
+    public Status getWorkloadStatus() {
+        return new Status(CalcCoordinator.getWorkloadPercentage(), true);
     }
 
     private Status createStatus(boolean ok, long startTime, long doneTime) {
