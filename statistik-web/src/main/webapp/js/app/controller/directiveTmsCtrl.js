@@ -2,6 +2,8 @@
 
 angular.module('StatisticsApp').controller('directiveTmsCtrl', [ '$scope', 'treeMultiSelectUtil', '$timeout', function ($scope, treeMultiSelectUtil, $timeout) {
 
+    var self = this;
+
     $scope.clickedDone = function(){
         $scope.dialogOpen = false;
         $scope.doneClicked();
@@ -21,38 +23,33 @@ angular.module('StatisticsApp').controller('directiveTmsCtrl', [ '$scope', 'tree
         }
     };
 
+    function hasNoMenuOptionsOrSubs() {
+        return !$scope.menuOptions || !$scope.menuOptions.subs || $scope.menuOptions.subs.length === 0;
+    }
+
     function selectedTertiaryCount() {
-        if (!$scope.menuOptions || !$scope.menuOptions.subs || $scope.menuOptions.subs.length == 0) {
-            return 0;
-        }
-        return _.reduce($scope.menuOptions.subs, function (memo, sub) {
-            return memo + ($scope.selectedLeavesCount(sub) > 0 ? 1 : 0);
+        return hasNoMenuOptionsOrSubs() ? 0 : _.reduce($scope.menuOptions.subs, function (memo, sub) {
+            return memo + (self.selectedLeavesCount(sub) > 0 ? 1 : 0);
         }, 0);
     }
 
     function selectedSecondaryCount() {
-        if (!$scope.menuOptions || !$scope.menuOptions.subs || $scope.menuOptions.subs.length == 0) {
-            return 0;
-        }
-        return _.reduce($scope.menuOptions.subs, function (acc, item) {
+        return hasNoMenuOptionsOrSubs() ? 0 : _.reduce($scope.menuOptions.subs, function (acc, item) {
             var nodeSum = _.reduce(item.subs, function (memo, sub) {
-                return memo + ($scope.selectedLeavesCount(sub) > 0 ? 1 : 0);
+                return memo + (self.selectedLeavesCount(sub) > 0 ? 1 : 0);
             }, 0);
             return acc + nodeSum;
         }, 0);
-    }
+    };
 
     function selectedLeavesCountAll() {
-        if (!$scope.menuOptions) {
-            return 0;
-        }
-        return $scope.selectedLeavesCount($scope.menuOptions);
+        return !$scope.menuOptions? 0 :self.selectedLeavesCount($scope.menuOptions);
     }
 
-    $scope.selectedLeavesCount = function (node) {
+    self.selectedLeavesCount = function selectedLeavesCount (node) {
         if (node.subs && node.subs.length > 0) {
             return _.reduce(node.subs, function (acc, item) {
-                return acc + $scope.selectedLeavesCount(item);
+                return acc + self.selectedLeavesCount(item);
             }, 0);
         } else {
             return node.allSelected ? 1 : 0;

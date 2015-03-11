@@ -24,6 +24,9 @@ angular.module('StatisticsApp').controller('overviewCtrl', [ '$scope', '$rootSco
 
         var self = this;
 
+        var perMonthAlterationChart = {}, sickLeavePerCountyChart = {},
+            ageDonutChart = {}, diagnosisDonutChart = {}, degreeOfSickLeaveChart = {}, sickLeaveLengthChart = {};
+
         var setTooltipText = function (result) {
             $scope.popoverText = "Statistiktjänsten är en webbtjänst som visar samlad statistik för sjukskrivning som ordinerats av läkare. Tjänsten visar statistik för alla elektroniska läkarintyg. Statistiken är uppdelad i nationell statistik som är tillgänglig för alla, och verksamhetsstatistik som bara går att se med särskild behörighet inom hälso- och sjukvården.";
             $scope.popoverTextAmount = "Totala antalet sjukfall under perioden " + result.periodText;
@@ -80,7 +83,7 @@ angular.module('StatisticsApp').controller('overviewCtrl', [ '$scope', '$rootSco
                 dataLabels: { enabled: false },
                 states: { hover: {enabled: false} }
             };
-            new Highcharts.Chart(chartOptions);
+            return new Highcharts.Chart(chartOptions);
         }
 
         var paintDonutChart = function (containerId, chartData, tooltipHeaderPrefix) {
@@ -114,7 +117,7 @@ angular.module('StatisticsApp').controller('overviewCtrl', [ '$scope', '$rootSco
                     verticalAlign: 'bottom'
                 };
             }
-            new Highcharts.Chart(chartOptions);
+            return new Highcharts.Chart(chartOptions);
         };
 
         var updateCharts = function (result) {
@@ -123,31 +126,31 @@ angular.module('StatisticsApp').controller('overviewCtrl', [ '$scope', '$rootSco
             $scope.casesPerMonthFemaleProportion = result.casesPerMonth.proportionFemale;
 
             printFactory.setupSeriesForDisplayType($routeParams.printBw, result.casesPerMonth.alteration, "pie");
-            paintPerMonthAlternationChart(result.casesPerMonth.alteration);
+            perMonthAlterationChart = paintPerMonthAlternationChart(result.casesPerMonth.alteration);
 
             var diagnosisDonutData = extractDonutData(result.diagnosisGroups);
             printFactory.setupSeriesForDisplayType($routeParams.printBw, diagnosisDonutData, "pie");
-            paintDonutChart("diagnosisChart", diagnosisDonutData);
+            diagnosisDonutChart = paintDonutChart("diagnosisChart", diagnosisDonutData);
             $scope.diagnosisGroups = result.diagnosisGroups;
 
             var ageGroupsDonutData = extractDonutData(result.ageGroups);
             printFactory.setupSeriesForDisplayType($routeParams.printBw, ageGroupsDonutData, "pie");
-            paintDonutChart("ageChart", ageGroupsDonutData);
+            ageDonutChart = paintDonutChart("ageChart", ageGroupsDonutData);
             $scope.ageGroups = result.ageGroups;
 
             var degreeOfSickLeaveDonutData = extractDonutData(result.degreeOfSickLeaveGroups);
             printFactory.setupSeriesForDisplayType($routeParams.printBw, degreeOfSickLeaveDonutData, "pie");
-            var degreeOfSickLeaveChart = paintDonutChart("degreeOfSickLeaveChart", degreeOfSickLeaveDonutData);
+            degreeOfSickLeaveChart = paintDonutChart("degreeOfSickLeaveChart", degreeOfSickLeaveDonutData);
             $scope.degreeOfSickLeaveGroups = result.degreeOfSickLeaveGroups;
 
             printFactory.setupSeriesForDisplayType($routeParams.printBw, result.sickLeaveLength.chartData, "bar");
-            paintBarChart("sickLeaveLengthChart", result.sickLeaveLength.chartData);
+            sickLeaveLengthChart = paintBarChart("sickLeaveLengthChart", result.sickLeaveLength.chartData);
 
             $scope.longSickLeavesTotal = result.sickLeaveLength.longSickLeavesTotal;
             $scope.longSickLeavesAlteration = result.sickLeaveLength.longSickLeavesAlternation;
 
             printFactory.setupSeriesForDisplayType($routeParams.printBw, result.perCounty);
-            paintSickLeavePerCountyChart("sickLeavePerCountyChart", result.perCounty);
+            sickLeavePerCountyChart = paintSickLeavePerCountyChart("sickLeavePerCountyChart", result.perCounty);
             $scope.sickLeavePerCountyGroups = result.perCounty;
         };
 
@@ -184,7 +187,7 @@ angular.module('StatisticsApp').controller('overviewCtrl', [ '$scope', '$rootSco
             chartOptions.yAxis.tickPixelInterval = 30;
             chartOptions.legend.enabled = false;
 
-            new Highcharts.Chart(chartOptions);
+            return new Highcharts.Chart(chartOptions);
         }
 
         function paintSickLeavePerCountyChart(containerId, chartData) {
@@ -250,7 +253,7 @@ angular.module('StatisticsApp').controller('overviewCtrl', [ '$scope', '$rootSco
                 title: ''
             };
             
-            new Highcharts.Chart(chartOptions, function (chart) { // on complete
+            return new Highcharts.Chart(chartOptions, function (chart) { // on complete
                 chart.renderer.image('img/sverige.png', 20, 10, 127, 300).add();
             });
         }
@@ -292,5 +295,30 @@ angular.module('StatisticsApp').controller('overviewCtrl', [ '$scope', '$rootSco
             printFactory.print(bwPrint, $rootScope, $window);
         };
 
+        $scope.$on('$destroy', function() {
+            if(typeof perMonthAlterationChart.destroy === 'function') {
+                perMonthAlterationChart.destroy();
+            }
+
+            if(typeof ageDonutChart.destroy === 'function') {
+                ageDonutChart.destroy();
+            }
+
+            if(typeof diagnosisDonutChart.destroy === 'function') {
+                diagnosisDonutChart.destroy();
+            }
+
+            if(typeof degreeOfSickLeaveChart.destroy === 'function') {
+                degreeOfSickLeaveChart.destroy();
+            }
+
+            if(typeof sickLeaveLengthChart.destroy === 'function') {
+                sickLeaveLengthChart.destroy();
+            }
+            
+            if(typeof sickLeavePerCountyChart.destroy === 'function') {
+                sickLeavePerCountyChart.destroy();
+            }
+        });
     }
 ]);

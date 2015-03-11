@@ -99,5 +99,10 @@ angular.module('StatisticsApp').controller('casesPerCountyCtrl', ['$scope', '$ro
             printFactory.print(bwPrint, $rootScope, $window);
         };
 
+        $scope.$on('$destroy', function() {
+            if(typeof chart.destroy === 'function') {
+                chart.destroy();
+            }
+        });
     }
 ]);

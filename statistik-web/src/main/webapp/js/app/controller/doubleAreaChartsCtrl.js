@@ -272,6 +272,16 @@ angular.module('StatisticsApp').controller('doubleAreaChartsCtrl', [ '$scope', '
             printFactory.print(bwPrint, $rootScope, $window);
         };
 
+        $scope.$on('$destroy', function() {
+            if(typeof chart1.destroy === 'function') {
+                chart1.destroy();
+            }
+
+            if(typeof chart2.destroy === 'function') {
+                chart2.destroy();
+            }
+        });
+
         return this;
 
     }
