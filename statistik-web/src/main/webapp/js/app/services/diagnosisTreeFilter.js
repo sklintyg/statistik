@@ -87,30 +87,6 @@ angular.module('StatisticsApp')
                 });
             };
 
-            diagnosisTreeFilter.collectSummary = function (node, acc) {
-                if (node.subs) { // Diagnoses, Kapitel or Avsnitt
-                    if (node.allSelected) {
-                        if (node.typ === 'kapitel') {
-                            acc.push(node.numericalId);
-                        } else if (node.typ === 'avsnitt') {
-                            acc.push(node.numericalId);
-                        } else { // root node
-                            _.each(node.subs, function (subItem) {
-                                businessFilter.collectSummary(subItem, acc);
-                            });
-                        }
-                    } else if (node.someSelected) {
-                        _.each(node.subs, function (subItem) {
-                            businessFilter.collectSummary(subItem, acc);
-                        });
-                    }
-                } else { // Kategori
-                    if (node.allSelected) {
-                        acc.push(node.numericalId);
-                    }
-                }
-            };
-
             diagnosisTreeFilter.resetSelections = function() {
                 diagnosisTreeFilter.deselectAll(diagnosisTreeFilter.diagnosisOptionsTree);
             };
@@ -129,23 +105,28 @@ angular.module('StatisticsApp')
                 return diagnosisTreeFilter.diagnosisOptionsTree.subs.length > 0;
             };
 
-            //This is the setup code that initiates the treemultiselect with diagnoses
-            //every time this controller is created
-            diagnosisTreeFilter.setup = function(routeParams) {
-                //First time setup
-                if (!hasDiagnosisOptionsTreeAnySubs()) {
-                    //Get icd10 structure and populate the diagnosisOptionsTree every time the controller initiates.
-                    statisticsData.getIcd10Structure(function (diagnosisTree) {
-                        diagnosisTreeFilter.setupDiagnosisTreeForSelectionModal(diagnosisTree);
-                        diagnosisTreeFilter.diagnosisOptionsTree = {subs: diagnosisTree};
+            var firstTimeInitiationOfDiagnosisTree = function firstTimeInitiation(routeParams) {
+                //Get icd10 structure and populate the diagnosisOptionsTree
+                statisticsData.getIcd10Structure(function (diagnosisTree) {
+                    diagnosisTreeFilter.setupDiagnosisTreeForSelectionModal(diagnosisTree);
+                    diagnosisTreeFilter.diagnosisOptionsTree = {subs: diagnosisTree};
 
-                        //If we do have a filter hash already then we very much want to apply it.
-                        if(diagnosHashExists(routeParams)) {
-                            populateTreeMultiSelectWithPrefilteredData();
-                        }
-                    }, function () {
-                        alert("Failed to fetch ICD10 structure tree from server");
-                    });
+                    //If we do have a filter hash already then we very much want to apply it.
+                    if(diagnosHashExists(routeParams)) {
+                        populateTreeMultiSelectWithPrefilteredData(routeParams);
+                    }
+                }, function () {
+                    alert("Failed to fetch ICD10 structure tree from server");
+                });
+            };
+
+            /*
+             *   This initiates or resets the treemultiselect with diagnoses
+             *    every time it is needed.
+             */
+            diagnosisTreeFilter.setup = function(routeParams) {
+                if (!hasDiagnosisOptionsTreeAnySubs()) {
+                    firstTimeInitiationOfDiagnosisTree(routeParams);
                 } else if(hasDiagnosisOptionsTreeAnySubs() && !diagnosHashExists(routeParams)) {
                     diagnosisTreeFilter.resetSelections();
                 } else if(hasDiagnosisOptionsTreeAnySubs() && diagnosHashExists(routeParams)) {
