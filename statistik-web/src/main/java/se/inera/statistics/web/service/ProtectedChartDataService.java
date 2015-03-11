@@ -105,6 +105,9 @@ public class ProtectedChartDataService {
     @Autowired
     private ResultMessageHandler resultMessageHandler;
 
+    @Autowired
+    private SjukfallUtil sjukfallUtil;
+
     /**
      * Gets sjukfall per manad for verksamhetId.
      *
@@ -1153,7 +1156,7 @@ public class ProtectedChartDataService {
     Predicate<Fact> getEnhetFilter(HttpServletRequest request, Verksamhet
             verksamhet, List<String> enhetsIDs) {
         Set<String> enheter = getEnhetNameMap(request, verksamhet, enhetsIDs).keySet();
-        return SjukfallUtil.createEnhetFilter(enheter.toArray(new String[enheter.size()])).getFilter();
+        return sjukfallUtil.createEnhetFilter(enheter.toArray(new String[enheter.size()])).getFilter();
     }
 
     private Map<String, String> getEnhetNameMap(HttpServletRequest request, Verksamhet

@@ -56,6 +56,9 @@ public class DiagnosgruppQuery {
     @Autowired
     private Icd10 icd10;
 
+    @Autowired
+    private SjukfallUtil sjukfallUtil;
+
     public List<OverviewChartRowExtended> getOverviewDiagnosgrupper(Collection<Sjukfall> currentSjukfall, Collection<Sjukfall> previousSjukfall, int noOfRows) {
         Map<Integer, Counter<Integer>> previousCount = count(previousSjukfall);
 
@@ -76,7 +79,7 @@ public class DiagnosgruppQuery {
 
     public DiagnosgruppResponse getDiagnosgrupper(Aisle aisle, SjukfallFilter filter, LocalDate start, int periods, int periodLength) {
         List<Icd10.Kapitel> kapitel = icd10.getKapitel(true);
-        final Iterable<SjukfallGroup> sjukfallGroups = SjukfallUtil.sjukfallGrupper(start, periods, periodLength, aisle, filter);
+        final Iterable<SjukfallGroup> sjukfallGroups = sjukfallUtil.sjukfallGrupper(start, periods, periodLength, aisle, filter);
         List<KonDataRow> rows = getKonDataRows(sjukfallGroups, kapitel, Icd10RangeType.KAPITEL, false);
         List<Icd> avsnitt = new ArrayList<>(kapitel.size());
         for (Icd10.Kapitel k: kapitel) {
@@ -106,7 +109,7 @@ public class DiagnosgruppQuery {
                 return icd10.findIcd10FromNumericId(Integer.valueOf(diagnos));
             }
         });
-        final Iterable<SjukfallGroup> sjukfallGroups = SjukfallUtil.sjukfallGrupper(start, periods, periodLength, aisle, filter);
+        final Iterable<SjukfallGroup> sjukfallGroups = sjukfallUtil.sjukfallGrupper(start, periods, periodLength, aisle, filter);
         final List<KonDataRow> periodRows = getKonDataRows(sjukfallGroups, kategoris, Icd10RangeType.KATEGORI, true);
         final List<SimpleKonDataRow> rows = new ArrayList<>(kategoris.size());
         final List<KonField> data = periodRows.get(0).getData();
@@ -123,7 +126,7 @@ public class DiagnosgruppQuery {
         for (Icd10.Id icdItem : kapitel.getSubItems()) {
             icdTyps.add(new Icd(icdItem.getVisibleId(), icdItem.getName(), icdItem.toInt()));
         }
-        final Iterable<SjukfallGroup> sjukfallGroups = SjukfallUtil.sjukfallGrupper(start, periods, periodLength, aisle, filter);
+        final Iterable<SjukfallGroup> sjukfallGroups = sjukfallUtil.sjukfallGrupper(start, periods, periodLength, aisle, filter);
         final List<KonDataRow> rows = getKonDataRows(sjukfallGroups, kapitel.getSubItems(), rangeType, false);
         return new DiagnosgruppResponse(icdTyps, rows);
     }

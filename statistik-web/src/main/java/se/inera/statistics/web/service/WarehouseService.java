@@ -28,6 +28,7 @@ import se.inera.statistics.service.report.model.SjukskrivningsgradResponse;
 import se.inera.statistics.service.report.model.VerksamhetOverviewResponse;
 import se.inera.statistics.service.report.util.ReportUtil;
 import se.inera.statistics.service.warehouse.SjukfallFilter;
+import se.inera.statistics.service.warehouse.SjukfallUtil;
 import se.inera.statistics.service.warehouse.Warehouse;
 import se.inera.statistics.service.warehouse.query.AldersgruppQuery;
 import se.inera.statistics.service.warehouse.query.DiagnosgruppQuery;
@@ -56,6 +57,9 @@ public class WarehouseService {
     @Autowired
     private SjukfallQuery sjukfallQuery;
 
+    @Autowired
+    private SjukfallUtil sjukfallUtil;
+
     public VerksamhetOverviewResponse getOverview(SjukfallFilter filter, Range range, String vardgivarId) {
         VerksamhetOverviewResponse overview = overviewQuery.getOverview(warehouse.get(vardgivarId), filter, ReportUtil.getPreviousPeriod(range).getFrom(), range.getMonths());
 
@@ -73,19 +77,19 @@ public class WarehouseService {
     }
 
     public SjukskrivningsgradResponse getSjukskrivningsgradPerMonth(SjukfallFilter filter, Range range, String vardgivarId) {
-        return SjukskrivningsgradQuery.getSjukskrivningsgrad(warehouse.get(vardgivarId), filter, range.getFrom(), range.getMonths(), 1);
+        return SjukskrivningsgradQuery.getSjukskrivningsgrad(warehouse.get(vardgivarId), filter, range.getFrom(), range.getMonths(), 1, sjukfallUtil);
     }
 
     public SjukfallslangdResponse getSjukskrivningslangd(SjukfallFilter filter, Range range, String vardgivarId) {
-        return SjukskrivningslangdQuery.getSjuksrivningslangd(warehouse.get(vardgivarId), filter, range.getFrom(), 1, range.getMonths());
+        return SjukskrivningslangdQuery.getSjuksrivningslangd(warehouse.get(vardgivarId), filter, range.getFrom(), 1, range.getMonths(), sjukfallUtil);
     }
 
     public SimpleKonResponse<SimpleKonDataRow> getLangaSjukskrivningarPerManad(SjukfallFilter filter, Range range, String vardgivarId) {
-        return SjukskrivningslangdQuery.getLangaSjukfall(warehouse.get(vardgivarId), filter, range.getFrom(), range.getMonths(), 1);
+        return SjukskrivningslangdQuery.getLangaSjukfall(warehouse.get(vardgivarId), filter, range.getFrom(), range.getMonths(), 1, sjukfallUtil);
     }
 
     public SimpleKonResponse<SimpleKonDataRow> getAldersgrupper(SjukfallFilter filter, Range range, String vardgivarId) {
-        return AldersgruppQuery.getAldersgrupper(warehouse.get(vardgivarId), filter, range.getFrom(), 1, range.getMonths());
+        return AldersgruppQuery.getAldersgrupper(warehouse.get(vardgivarId), filter, range.getFrom(), 1, range.getMonths(), sjukfallUtil);
     }
 
     public DiagnosgruppResponse getUnderdiagnosgrupper(SjukfallFilter filter, Range range, String kapitelId, String vardgivarId) throws RangeNotFoundException {
@@ -97,7 +101,7 @@ public class WarehouseService {
     }
 
     public SimpleKonResponse<SimpleKonDataRow> getCasesPerEnhet(SjukfallFilter filter, Map<String, String> idsToNames, Range range, String vardgivarId) {
-        return SjukfallQuery.getSjukfallPerEnhet(warehouse.get(vardgivarId), filter, range.getFrom(), 1, range.getMonths(), idsToNames);
+        return sjukfallQuery.getSjukfallPerEnhet(warehouse.get(vardgivarId), filter, range.getFrom(), 1, range.getMonths(), idsToNames);
     }
 
     public SimpleKonResponse<SimpleKonDataRow> getCasesPerLakare(SjukfallFilter filter, Range range, String vardgivarId) {
@@ -105,11 +109,11 @@ public class WarehouseService {
     }
 
     public SimpleKonResponse<SimpleKonDataRow> getCasesPerDoctorAgeAndGender(SjukfallFilter filter, Range range, String vardgivarId) {
-        return LakaresAlderOchKonQuery.getSjukfallPerLakaresAlderOchKon(warehouse.get(vardgivarId), filter.getFilter(), range, range.getMonths(), 1);
+        return LakaresAlderOchKonQuery.getSjukfallPerLakaresAlderOchKon(warehouse.get(vardgivarId), filter.getFilter(), range, range.getMonths(), 1, sjukfallUtil);
     }
 
     public SimpleKonResponse<SimpleKonDataRow> getNumberOfCasesPerLakarbefattning(SjukfallFilter filter, Range range, String vardgivarId) {
-        return LakarbefattningQuery.getSjukfall(warehouse.get(vardgivarId), filter.getFilter(), range, range.getMonths(), 1);
+        return LakarbefattningQuery.getSjukfall(warehouse.get(vardgivarId), filter.getFilter(), range, range.getMonths(), 1, sjukfallUtil);
     }
 
 }

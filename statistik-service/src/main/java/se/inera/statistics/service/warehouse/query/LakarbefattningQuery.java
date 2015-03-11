@@ -60,11 +60,14 @@ public final class LakarbefattningQuery {
         // CHECKSTYLE:ON MagicNumber
     }
 
-    private LakarbefattningQuery() {
+    private final SjukfallUtil sjukfallUtil;
+
+    private LakarbefattningQuery(SjukfallUtil sjukfallUtil) {
+        this.sjukfallUtil = sjukfallUtil;
     }
 
-    public static SimpleKonResponse<SimpleKonDataRow> getSjukfall(Aisle aisle, Predicate<Fact> filter, Range range, int perioder, int periodlangd) {
-        return new LakarbefattningQuery().getSjukfallResponse(aisle, filter, range, perioder, periodlangd);
+    public static SimpleKonResponse<SimpleKonDataRow> getSjukfall(Aisle aisle, Predicate<Fact> filter, Range range, int perioder, int periodlangd, SjukfallUtil sjukfallUtil) {
+        return new LakarbefattningQuery(sjukfallUtil).getSjukfallResponse(aisle, filter, range, perioder, periodlangd);
     }
 
     private SimpleKonResponse<SimpleKonDataRow> getSjukfallResponse(Aisle aisle, Predicate<Fact> filter, Range range, int perioder, int periodlangd) {
@@ -81,7 +84,7 @@ public final class LakarbefattningQuery {
     }
 
     private Multimap<Kon, Integer> getLakarbefattningsForAllSjukfall(Aisle aisle, Predicate<Fact> filter, Range range) {
-        Collection<Sjukfall> sjukfalls = SjukfallUtil.active(range, aisle, filter);
+        Collection<Sjukfall> sjukfalls = sjukfallUtil.active(range, aisle, filter);
         final Multimap<Kon, Integer> sjukfallPerLakarbefattning = ArrayListMultimap.create();
         for (Sjukfall sjukfall : sjukfalls) {
             final Kon kon = sjukfall.getKon();

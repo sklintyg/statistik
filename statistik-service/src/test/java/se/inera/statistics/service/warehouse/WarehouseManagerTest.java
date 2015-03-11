@@ -46,6 +46,9 @@ public class WarehouseManagerTest {
     @Mock
     private EnhetLoader enhetLoader;
 
+    @Mock
+    private SjukfallUtil sjukfallUtil;
+
     @InjectMocks
     private WarehouseManager manager = new WarehouseManager();
 

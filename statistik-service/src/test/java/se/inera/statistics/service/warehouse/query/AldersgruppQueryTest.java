@@ -43,11 +43,13 @@ public class AldersgruppQueryTest {
     private int intyg;
     private int patient;
 
+    private SjukfallUtil sjukfallUtil = new SjukfallUtil();
+
     @Test
     public void one() {
         fact(4010, 10, 45);
         warehouse.complete(LocalDateTime.now());
-        Collection<Sjukfall> sjukfall = SjukfallUtil.calculateSjukfall(warehouse.get(VARDGIVARE));
+        Collection<Sjukfall> sjukfall = sjukfallUtil.calculateSjukfall(warehouse.get(VARDGIVARE));
         Map<Ranges.Range,Counter<Ranges.Range>> count = AldersgruppQuery.count(sjukfall);
         assertEquals(1, count.get(AldersgroupUtil.RANGES.rangeFor("41-45 år")).getCount());
     }
@@ -67,7 +69,7 @@ public class AldersgruppQueryTest {
         fact(4010, 10, 50);
         fact(4010, 10, 100);
         warehouse.complete(LocalDateTime.now());
-        Collection<Sjukfall> sjukfall = SjukfallUtil.calculateSjukfall(warehouse.get(VARDGIVARE));
+        Collection<Sjukfall> sjukfall = sjukfallUtil.calculateSjukfall(warehouse.get(VARDGIVARE));
         List<Counter<Ranges.Range>> count = AldersgruppQuery.count(sjukfall, 4);
 
         assertEquals(4, count.size());

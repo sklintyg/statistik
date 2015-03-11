@@ -66,6 +66,9 @@ public class NationellData {
     @Autowired
     private DiagnosgruppQuery query;
 
+    @Autowired
+    private SjukfallUtil sjukfallUtil;
+
     @Value("${reports.nationell.cutoff:5}")
     private int cutoff;
 
@@ -77,7 +80,7 @@ public class NationellData {
         ArrayList<SimpleKonDataRow> result = new ArrayList<>();
         for (Aisle aisle : warehouse) {
             int index = 0;
-            for (SjukfallGroup sjukfallGroup : SjukfallUtil.sjukfallGrupper(start, perioder, periodlangd, aisle, SjukfallUtil.ALL_ENHETER)) {
+            for (SjukfallGroup sjukfallGroup : sjukfallUtil.sjukfallGrupper(start, perioder, periodlangd, aisle, SjukfallUtil.ALL_ENHETER)) {
                 int male = SjukfallQuery.countMale(sjukfallGroup.getSjukfall());
                 int female = sjukfallGroup.getSjukfall().size() - male;
                 String displayDate = ReportUtil.toDiagramPeriod(sjukfallGroup.getRange().getFrom());
@@ -100,7 +103,7 @@ public class NationellData {
     public SimpleKonResponse<SimpleKonDataRow> getAldersgrupper(LocalDate start, int perioder, int periodlangd) {
         SimpleKonResponse<SimpleKonDataRow> result = null;
         for (Aisle aisle : warehouse) {
-            SimpleKonResponse<SimpleKonDataRow> aldersgrupper = AldersgruppQuery.getAldersgrupper(aisle, SjukfallUtil.ALL_ENHETER, start, perioder, periodlangd);
+            SimpleKonResponse<SimpleKonDataRow> aldersgrupper = AldersgruppQuery.getAldersgrupper(aisle, SjukfallUtil.ALL_ENHETER, start, perioder, periodlangd, sjukfallUtil);
             if (result == null) {
                 result = aldersgrupper;
             } else {
@@ -130,7 +133,7 @@ public class NationellData {
     public SjukskrivningsgradResponse getSjukskrivningsgrad(LocalDate start, int perioder, int periodlangd) {
         SjukskrivningsgradResponse result = null;
         for (Aisle aisle : warehouse) {
-            SjukskrivningsgradResponse grader = SjukskrivningsgradQuery.getSjukskrivningsgrad(aisle, SjukfallUtil.ALL_ENHETER, start, perioder, periodlangd);
+            SjukskrivningsgradResponse grader = SjukskrivningsgradQuery.getSjukskrivningsgrad(aisle, SjukfallUtil.ALL_ENHETER, start, perioder, periodlangd, sjukfallUtil);
             if (result == null) {
                 result = grader;
             } else {
@@ -164,7 +167,7 @@ public class NationellData {
     public SjukfallslangdResponse getSjukfallslangd(LocalDate start, int perioder, int periodlangd) {
         SjukfallslangdResponse result = null;
         for (Aisle aisle : warehouse) {
-            SjukfallslangdResponse langder = SjukskrivningslangdQuery.getSjuksrivningslangd(aisle, SjukfallUtil.ALL_ENHETER, start, perioder, periodlangd);
+            SjukfallslangdResponse langder = SjukskrivningslangdQuery.getSjuksrivningslangd(aisle, SjukfallUtil.ALL_ENHETER, start, perioder, periodlangd, sjukfallUtil);
             if (result == null) {
                 result = langder;
             } else {
@@ -268,7 +271,7 @@ public class NationellData {
                 map.put(lanId, new Counter<>(lanId));
             }
 
-            for (SjukfallGroup sjukfallGroup : SjukfallUtil.sjukfallGrupper(start, perioder, periodlangd, aisle, SjukfallUtil.ALL_ENHETER)) {
+            for (SjukfallGroup sjukfallGroup : sjukfallUtil.sjukfallGrupper(start, perioder, periodlangd, aisle, SjukfallUtil.ALL_ENHETER)) {
                 for (Sjukfall sjukfall : sjukfallGroup.getSjukfall()) {
                     Counter counter = map.get(sjukfall.getLanskod());
                     if (counter != null) {
@@ -299,7 +302,7 @@ public class NationellData {
     public SimpleKonResponse<SimpleKonDataRow> getLangaSjukfall(LocalDate start, int perioder, int periodlangd) {
         SimpleKonResponse<SimpleKonDataRow> result = null;
         for (Aisle aisle : warehouse) {
-            SimpleKonResponse<SimpleKonDataRow> langder = SjukskrivningslangdQuery.getLangaSjukfall(aisle, SjukfallUtil.ALL_ENHETER, start, perioder, periodlangd);
+            SimpleKonResponse<SimpleKonDataRow> langder = SjukskrivningslangdQuery.getLangaSjukfall(aisle, SjukfallUtil.ALL_ENHETER, start, perioder, periodlangd, sjukfallUtil);
             if (result == null) {
                 result = langder;
             } else {

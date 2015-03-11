@@ -77,6 +77,9 @@ public class RestSupportService {
     @Autowired
     private LoginServiceUtil loginServiceUtil;
 
+    @Autowired
+    private SjukfallUtil sjukfallUtil;
+
     @POST
     @Path("cutoff")
     @Produces({ MediaType.APPLICATION_JSON })
@@ -112,7 +115,7 @@ public class RestSupportService {
         manager.createQuery("DELETE FROM Lakare").executeUpdate();
         manager.createQuery("DELETE FROM HSAStore").executeUpdate();
         warehouse.clear();
-        SjukfallUtil.clearSjukfallGroupCache();
+        sjukfallUtil.clearSjukfallGroupCache();
         nationalChartDataService.buildCache();
         return Response.ok().build();
     }

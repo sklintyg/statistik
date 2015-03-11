@@ -28,6 +28,8 @@ import com.google.common.collect.Lists;
 import org.joda.time.LocalDate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 import se.inera.statistics.service.report.model.Range;
 
 import java.util.ArrayList;
@@ -40,27 +42,18 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ExecutionException;
 
-public final class SjukfallUtil {
+@Component
+public class SjukfallUtil {
 
     private static final Logger LOG = LoggerFactory.getLogger(SjukfallUtil.class);
 
-    public static final int MAX_CACHE_SIZE = 1000;
-    private static LoadingCache<SjukfallGroupCacheKey, List<SjukfallGroup>> sjukfallGroupsCache = CacheBuilder.newBuilder()
-            .maximumSize(MAX_CACHE_SIZE)
-            .build(new CacheLoader<SjukfallGroupCacheKey, List<SjukfallGroup>>() {
-                public List<SjukfallGroup> load(SjukfallGroupCacheKey key) {
-                    final LocalDate from = key.getFrom();
-                    final int periods = key.getPeriods();
-                    final int periodSize = key.getPeriodSize();
-                    final Aisle aisle = key.getAisle();
-                    final Predicate<Fact> filter = key.getFilter();
-                    final boolean useOriginalSjukfallStart = key.isUseOriginalSjukfallStart();
-                    return Lists.newArrayList(new SjukfallIterator(from, periods, periodSize, aisle, filter, useOriginalSjukfallStart));
-                }
-            });
+    @Value("${max.sjukfall.cache.size:1000}")
+    private String maxCacheSize = "1000";
 
-    public static void clearSjukfallGroupCache() {
-        sjukfallGroupsCache.invalidateAll();
+    private LoadingCache<SjukfallGroupCacheKey, List<SjukfallGroup>> sjukfallGroupsCache;
+
+    public void clearSjukfallGroupCache() {
+        getSjukfallGroupsCache().invalidateAll();
     }
 
     public static final SjukfallFilter ALL_ENHETER = new SjukfallFilter(new Predicate<Fact>() {
@@ -72,14 +65,33 @@ public final class SjukfallUtil {
 
     public static final int LONG_LIMIT = 90;
 
-    private SjukfallUtil() {
+    public SjukfallUtil() {
     }
 
-    public static Collection<Sjukfall> active(Range range, Aisle aisle, Predicate<Fact> filter) {
+    private LoadingCache<SjukfallGroupCacheKey, List<SjukfallGroup>> getSjukfallGroupsCache() {
+        if (sjukfallGroupsCache == null) {
+            sjukfallGroupsCache = CacheBuilder.newBuilder()
+                    .maximumSize(Integer.valueOf(maxCacheSize))
+                    .build(new CacheLoader<SjukfallGroupCacheKey, List<SjukfallGroup>>() {
+                        public List<SjukfallGroup> load(SjukfallGroupCacheKey key) {
+                            final LocalDate from = key.getFrom();
+                            final int periods = key.getPeriods();
+                            final int periodSize = key.getPeriodSize();
+                            final Aisle aisle = key.getAisle();
+                            final Predicate<Fact> filter = key.getFilter();
+                            final boolean useOriginalSjukfallStart = key.isUseOriginalSjukfallStart();
+                            return Lists.newArrayList(new SjukfallIterator(from, periods, periodSize, aisle, filter, useOriginalSjukfallStart));
+                        }
+                    });
+        }
+        return sjukfallGroupsCache;
+    }
+
+    public Collection<Sjukfall> active(Range range, Aisle aisle, Predicate<Fact> filter) {
         return active(calculateSjukfall(aisle, filter, WidelineConverter.toDay(firstDayAfter(range))), range);
     }
 
-    private static Collection<Sjukfall> active(Collection<Sjukfall> all, Range range) {
+    private Collection<Sjukfall> active(Collection<Sjukfall> all, Range range) {
         int start = WidelineConverter.toDay(range.getFrom());
         int end = WidelineConverter.toDay(firstDayAfter(range));
         Collection<Sjukfall> active = new ArrayList<>();
@@ -91,7 +103,7 @@ public final class SjukfallUtil {
         return active;
     }
 
-    private static Collection<Sjukfall> calculateSjukfall(Aisle aisle, Predicate<Fact> filter, int cutoff) {
+    private Collection<Sjukfall> calculateSjukfall(Aisle aisle, Predicate<Fact> filter, int cutoff) {
         Collection<Sjukfall> sjukfalls = new ArrayList<>();
         Map<Integer, Sjukfall> active = new HashMap<>();
         for (Fact line : aisle) {
@@ -121,16 +133,16 @@ public final class SjukfallUtil {
     }
 
     @VisibleForTesting
-    public static Collection<Sjukfall> calculateSjukfall(Aisle aisle) {
+    public Collection<Sjukfall> calculateSjukfall(Aisle aisle) {
         return calculateSjukfall(aisle, ALL_ENHETER.getFilter(), Integer.MAX_VALUE);
     }
 
     @VisibleForTesting
-    static Collection<Sjukfall> calculateSjukfall(Aisle aisle, Integer... enhetIds) {
+    Collection<Sjukfall> calculateSjukfall(Aisle aisle, Integer... enhetIds) {
         return calculateSjukfall(aisle, createEnhetFilterFromInternalIntValues(enhetIds).getFilter(), Integer.MAX_VALUE);
     }
 
-    public static SjukfallFilter createEnhetFilter(String... enhetIds) {
+    public SjukfallFilter createEnhetFilter(String... enhetIds) {
         final Set<Integer> availableEnhets = new HashSet<>(Lists.transform(Arrays.asList(enhetIds), new Function<String, Integer>() {
             @Override
             public Integer apply(String enhetId) {
@@ -145,7 +157,7 @@ public final class SjukfallUtil {
         }, SjukfallFilter.getHashValueForEnhets(availableEnhets.toArray()));
     }
 
-    public static SjukfallFilter createEnhetFilterFromInternalIntValues(Integer... enhetIds) {
+    public SjukfallFilter createEnhetFilterFromInternalIntValues(Integer... enhetIds) {
         final HashSet<Integer> availableEnhets = new HashSet<>(Arrays.asList(enhetIds));
         return new SjukfallFilter(new Predicate<Fact>() {
             @Override
@@ -155,18 +167,18 @@ public final class SjukfallUtil {
         }, SjukfallFilter.getHashValueForEnhets(availableEnhets.toArray()));
     }
 
-    public static Iterable<SjukfallGroup> sjukfallGrupperUsingOriginalSjukfallStart(final LocalDate from, final int periods, final int periodSize, final Aisle aisle, final SjukfallFilter filter) {
+    public Iterable<SjukfallGroup> sjukfallGrupperUsingOriginalSjukfallStart(final LocalDate from, final int periods, final int periodSize, final Aisle aisle, final SjukfallFilter filter) {
         return sjukfallGrupper(from, periods, periodSize, aisle, filter, true);
     }
 
-    public static Iterable<SjukfallGroup> sjukfallGrupper(final LocalDate from, final int periods, final int periodSize, final Aisle aisle, final SjukfallFilter filter) {
+    public Iterable<SjukfallGroup> sjukfallGrupper(final LocalDate from, final int periods, final int periodSize, final Aisle aisle, final SjukfallFilter filter) {
         return sjukfallGrupper(from, periods, periodSize, aisle, filter, false);
     }
 
-    private static List<SjukfallGroup> sjukfallGrupper(LocalDate from, int periods, int periodSize, Aisle aisle, SjukfallFilter sjukfallFilter, boolean useOriginalSjukfallStart) {
+    private List<SjukfallGroup> sjukfallGrupper(LocalDate from, int periods, int periodSize, Aisle aisle, SjukfallFilter sjukfallFilter, boolean useOriginalSjukfallStart) {
         if (SjukfallFilter.HASH_EMPTY_FILTER.equals(sjukfallFilter.getHash())) {
             try {
-                return sjukfallGroupsCache.get(new SjukfallGroupCacheKey(from, periods, periodSize, aisle, sjukfallFilter, useOriginalSjukfallStart));
+                return getSjukfallGroupsCache().get(new SjukfallGroupCacheKey(from, periods, periodSize, aisle, sjukfallFilter, useOriginalSjukfallStart));
             } catch (ExecutionException e) {
                 //Failed to get from cache. Do nothing and fall through.
                 LOG.warn("Failed to get value from cache");
@@ -179,7 +191,7 @@ public final class SjukfallUtil {
         return range.getTo().plusMonths(1);
     }
 
-    public static int getLong(Collection<Sjukfall> sjukfalls) {
+    public int getLong(Collection<Sjukfall> sjukfalls) {
         int count = 0;
         for (Sjukfall sjukfall : sjukfalls) {
             if (sjukfall.getRealDays() > LONG_LIMIT) {

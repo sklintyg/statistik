@@ -109,9 +109,9 @@ public final class AldersgruppQuery {
         return counters;
     }
 
-    public static SimpleKonResponse<SimpleKonDataRow> getAldersgrupper(Aisle aisle, SjukfallFilter filter, LocalDate from, int periods, int periodLength) {
+    public static SimpleKonResponse<SimpleKonDataRow> getAldersgrupper(Aisle aisle, SjukfallFilter filter, LocalDate from, int periods, int periodLength, SjukfallUtil sjukfallUtil) {
         List<SimpleKonDataRow> rows = new ArrayList<>();
-        for (SjukfallGroup sjukfallGroup: SjukfallUtil.sjukfallGrupper(from, periods, periodLength, aisle, filter)) {
+        for (SjukfallGroup sjukfallGroup: sjukfallUtil.sjukfallGrupper(from, periods, periodLength, aisle, filter)) {
             Map<Ranges.Range, Counter<Ranges.Range>> counterMap = AldersgruppQuery.count(sjukfallGroup.getSjukfall());
             for (Ranges.Range i : AldersgroupUtil.RANGES) {
                 Counter<Ranges.Range> counter = counterMap.get(i);

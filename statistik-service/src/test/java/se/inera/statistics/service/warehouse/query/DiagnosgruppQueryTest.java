@@ -54,11 +54,14 @@ public class DiagnosgruppQueryTest {
     @Autowired
     private DiagnosgruppQuery query;
 
+    @Autowired
+    private SjukfallUtil sjukfallUtil;
+
     @Test
     public void one() {
         fact(4010, 0);
         warehouse.complete(LocalDateTime.now());
-        Collection<Sjukfall> sjukfall = SjukfallUtil.calculateSjukfall(warehouse.get(VARDGIVARE));
+        Collection<Sjukfall> sjukfall = sjukfallUtil.calculateSjukfall(warehouse.get(VARDGIVARE));
         Map<Integer,Counter<Integer>> count = query.count(sjukfall);
         assertEquals(1, count.get(icd10.getKapitel("A00-B99").toInt()).getCount());
     }
@@ -78,7 +81,7 @@ public class DiagnosgruppQueryTest {
         fact(4010, 500);
         fact(4010, 600);
         warehouse.complete(LocalDateTime.now());
-        Collection<Sjukfall> sjukfall = SjukfallUtil.calculateSjukfall(warehouse.get(VARDGIVARE));
+        Collection<Sjukfall> sjukfall = sjukfallUtil.calculateSjukfall(warehouse.get(VARDGIVARE));
         List<Counter<Integer>> count = query.count(sjukfall, 4);
 
         assertEquals(4, count.size());

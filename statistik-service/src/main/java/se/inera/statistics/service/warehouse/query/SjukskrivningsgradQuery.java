@@ -81,9 +81,9 @@ public final class SjukskrivningsgradQuery {
         return counters;
     }
 
-    public static SjukskrivningsgradResponse getSjukskrivningsgrad(Aisle aisle, SjukfallFilter filter, LocalDate start, int periods, int periodSize) {
+    public static SjukskrivningsgradResponse getSjukskrivningsgrad(Aisle aisle, SjukfallFilter filter, LocalDate start, int periods, int periodSize, SjukfallUtil sjukfallUtil) {
         List<KonDataRow> rows = new ArrayList<>();
-        for (SjukfallGroup sjukfallGroup: SjukfallUtil.sjukfallGrupper(start, periods, periodSize, aisle, filter)) {
+        for (SjukfallGroup sjukfallGroup: sjukfallUtil.sjukfallGrupper(start, periods, periodSize, aisle, filter)) {
             Map<Integer, Counter<Integer>> counters = Counter.mapFor(GRAD);
             for (Sjukfall sjukfall : sjukfallGroup.getSjukfall()) {
                 counters.get(sjukfall.getSjukskrivningsgrad()).increase(sjukfall);

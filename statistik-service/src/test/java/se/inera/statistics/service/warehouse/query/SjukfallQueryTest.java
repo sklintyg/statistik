@@ -24,6 +24,7 @@ import com.google.common.collect.HashBiMap;
 import org.joda.time.LocalDate;
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.test.util.ReflectionTestUtils;
 import se.inera.statistics.service.processlog.Lakare;
 import se.inera.statistics.service.processlog.LakareManager;
 import se.inera.statistics.service.report.model.Kon;
@@ -32,7 +33,6 @@ import se.inera.statistics.service.report.model.SimpleKonDataRow;
 import se.inera.statistics.service.report.model.SimpleKonResponse;
 import se.inera.statistics.service.warehouse.Aisle;
 import se.inera.statistics.service.warehouse.Fact;
-import se.inera.statistics.service.warehouse.SjukfallFilter;
 import se.inera.statistics.service.warehouse.SjukfallUtil;
 import se.inera.statistics.service.warehouse.Warehouse;
 
@@ -71,7 +71,9 @@ public class SjukfallQueryTest {
 
     private BiMap<String, Integer> lakarIdMap = HashBiMap.create();
 
-    private Predicate<Fact> enhetFilter = SjukfallUtil.createEnhetFilterFromInternalIntValues(ENHET1_ID).getFilter();
+    private SjukfallUtil sjukfallUtil = new SjukfallUtil();
+
+    private Predicate<Fact> enhetFilter = sjukfallUtil.createEnhetFilterFromInternalIntValues(ENHET1_ID).getFilter();
 
     @Before
     public void setup() {
@@ -79,6 +81,7 @@ public class SjukfallQueryTest {
         lakareManager = mockLakareManager();
         sjukfallQuery = new SjukfallQuery();
         sjukfallQuery.setLakareManager(lakareManager);
+        ReflectionTestUtils.setField(sjukfallQuery, "sjukfallUtil", sjukfallUtil);
         aisle = new Aisle("vgid");
     }
 
@@ -89,7 +92,7 @@ public class SjukfallQueryTest {
         aisle.addLine(fact(PATIENT2_ID, PATIENT2_KON, LAKARE2_ID));
 
         // When
-        enhetFilter = SjukfallUtil.createEnhetFilterFromInternalIntValues(ENHET1_ID).getFilter();
+        enhetFilter = sjukfallUtil.createEnhetFilterFromInternalIntValues(ENHET1_ID).getFilter();
         SimpleKonResponse<SimpleKonDataRow> result = sjukfallQuery.getSjukfallPerLakare(VG_1, aisle, enhetFilter, range, 12, 1);
 
         // Then
@@ -155,7 +158,7 @@ public class SjukfallQueryTest {
         aisle.addLine(fact(PATIENT1_ID, PATIENT1_KON, LAKARE3_ID));
 
         // When
-        SimpleKonResponse<SimpleKonDataRow> result = sjukfallQuery.getSjukfallPerLakare(VG_1, aisle, SjukfallUtil.createEnhetFilterFromInternalIntValues(ENHET1_ID).getFilter(), range, 12, 1);
+        SimpleKonResponse<SimpleKonDataRow> result = sjukfallQuery.getSjukfallPerLakare(VG_1, aisle, sjukfallUtil.createEnhetFilterFromInternalIntValues(ENHET1_ID).getFilter(), range, 12, 1);
 
         // Then
         assertEquals(2, result.getRows().size());

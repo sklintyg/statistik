@@ -57,6 +57,8 @@ public class WarehouseIntegrationTest {
     @Autowired 
     private LargeTestDataGenerator dataGenerator;
 
+    private SjukfallUtil sjukfallUtil = new SjukfallUtil();
+
     @Test
     public void addingManyIntyg() throws InterruptedException {
         dataGenerator.publishUtlatanden();
@@ -88,7 +90,7 @@ public class WarehouseIntegrationTest {
     }
 
     private void measureSjukfall(Aisle aisle) {
-        Collection<Sjukfall> sjukfalls = SjukfallUtil.calculateSjukfall(aisle);
+        Collection<Sjukfall> sjukfalls = sjukfallUtil.calculateSjukfall(aisle);
         int totalDays = 0;
         int realDays = 0;
         int totalIntyg = 0;
