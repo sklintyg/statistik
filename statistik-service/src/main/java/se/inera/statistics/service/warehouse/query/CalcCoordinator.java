@@ -98,7 +98,8 @@ public final class CalcCoordinator {
     }
 
     public static int getWorkloadPercentage() {
-        return 100 * queueSize / NO_OF_TICKETS;
+        final int percentageConstant = 100;
+        return percentageConstant * queueSize / NO_OF_TICKETS;
     }
 
     public static final class Ticket {
