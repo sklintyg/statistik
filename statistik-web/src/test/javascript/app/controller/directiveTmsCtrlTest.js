@@ -372,7 +372,7 @@ describe('Controller: directiveTmsCtrl', function() {
         ];
 
         //When
-        var leavesCount = scope.selectedLeavesCount({subs: menuItems});
+        var leavesCount = ctrl.selectedLeavesCount({subs: menuItems});
 
         //Then
         expect(leavesCount).toBe(0);
@@ -387,7 +387,7 @@ describe('Controller: directiveTmsCtrl', function() {
         ];
 
         //When
-        var leavesCount = scope.selectedLeavesCount({subs: menuItems});
+        var leavesCount = ctrl.selectedLeavesCount({subs: menuItems});
 
         //Then
         expect(leavesCount).toBe(1);
@@ -402,7 +402,7 @@ describe('Controller: directiveTmsCtrl', function() {
         ];
 
         //When
-        var leavesCount = scope.selectedLeavesCount({subs: menuItems});
+        var leavesCount = ctrl.selectedLeavesCount({subs: menuItems});
 
         //Then
         expect(leavesCount).toBe(2);

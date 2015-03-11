@@ -20,7 +20,6 @@
 'use strict';
 
 angular.module('StatisticsApp').controller('businessOverviewCtrl', ['$scope', '$rootScope', '$window', '$timeout', 'statisticsData', 'businessFilter', '$routeParams', 'printFactory',
-]);
 function ($scope, $rootScope, $window, $timeout, statisticsData, businessFilter, $routeParams, printFactory) {
 
     var perMonthAlterationChart = {}, newSexProportionChart = {}, oldSexProportionChart = {},
@@ -329,4 +328,4 @@ function ($scope, $rootScope, $window, $timeout, statisticsData, businessFilter,
             sickLeaveLengthChart.destroy();
         }
     });
-}
+}]);
