@@ -49,7 +49,7 @@ angular.module('StatisticsApp').factory('businessFilter', ['statisticsData', '_'
         };
 
         var isSet = function (value) {
-            return typeof value !== "undefined" && value != null;
+            return typeof value !== "undefined" && value !== null;
         };
 
         function sortSwedish(arrayToSort, propertyName, alwaysLast) {
@@ -119,7 +119,7 @@ angular.module('StatisticsApp').factory('businessFilter', ['statisticsData', '_'
                         successCallback();
                     },
                     function () {
-                        throw new Error("Failed to fetch ICD10 structure tree from server")
+                        throw new Error("Failed to fetch ICD10 structure tree from server");
                     });
                 }
         }
@@ -172,7 +172,7 @@ angular.module('StatisticsApp').factory('businessFilter', ['statisticsData', '_'
             });
             businessFilter.geography.subs = sortSwedish(businessFilter.geography.subs, "name", "Okän");
             _.each(businessFilter.geography.subs, function(county) {
-                county.subs = sortSwedish(county.subs, "name", "Okän")
+                county.subs = sortSwedish(county.subs, "name", "Okän");
             });
         };
 
