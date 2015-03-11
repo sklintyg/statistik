@@ -48,7 +48,7 @@ public class SjukfallUtil {
     private static final Logger LOG = LoggerFactory.getLogger(SjukfallUtil.class);
 
     @Value("${max.sjukfall.cache.size:1000}")
-    private String maxCacheSize;
+    private String maxCacheSize = "1000";
 
     private LoadingCache<SjukfallGroupCacheKey, List<SjukfallGroup>> sjukfallGroupsCache;
 

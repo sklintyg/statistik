@@ -21,7 +21,9 @@ package se.inera.statistics.service.warehouse;
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import org.joda.time.LocalDate;
+import org.junit.Before;
 import org.junit.Test;
+import org.springframework.test.util.ReflectionTestUtils;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -33,9 +35,15 @@ import static se.inera.statistics.service.report.model.Kon.Female;
 import static se.inera.statistics.service.warehouse.Fact.aFact;
 
 public class SjukfallUtilTest {
-    private Aisle aisle = new Aisle("vgid");
+    private Aisle aisle;
 
-    private SjukfallUtil sjukfallUtil = new SjukfallUtil();
+    private SjukfallUtil sjukfallUtil;
+
+    @Before
+    public void setup() {
+        sjukfallUtil = new SjukfallUtil();
+        aisle = new Aisle("vgid");
+    }
 
     @Test
     public void oneIntygIsOneSjukfall() throws Exception {
@@ -170,6 +178,47 @@ public class SjukfallUtilTest {
 
         Iterator<SjukfallGroup> actives = sjukfallUtil.sjukfallGrupper(monthStart, 1, 1, aisle, sjukfallUtil.createEnhetFilterFromInternalIntValues(ENHET1)).iterator();
         assertEquals(2, actives.next().getSjukfall().size());
+    }
+
+    @Test
+    public void testSjukfallCacheIsWorkingAndHasCorrectMaxSize() throws Exception {
+        //Given
+        LocalDate monthStart = new LocalDate("2015-03-11");
+        ReflectionTestUtils.setField(sjukfallUtil, "maxCacheSize", "1");
+
+        //When
+        final Iterable<SjukfallGroup> sjukfallGroups1 = sjukfallUtil.sjukfallGrupper(monthStart, 1, 1, aisle, SjukfallUtil.ALL_ENHETER);
+        final Iterable<SjukfallGroup> sjukfallGroups2 = sjukfallUtil.sjukfallGrupper(monthStart, 1, 1, aisle, SjukfallUtil.ALL_ENHETER);
+        final Iterable<SjukfallGroup> sjukfallGroups3 = sjukfallUtil.sjukfallGrupper(monthStart, 2, 1, aisle, SjukfallUtil.ALL_ENHETER);
+        final Iterable<SjukfallGroup> sjukfallGroups4 = sjukfallUtil.sjukfallGrupper(monthStart, 1, 1, aisle, SjukfallUtil.ALL_ENHETER);
+
+        //Then
+        assertSame(sjukfallGroups1, sjukfallGroups2);
+        assertNotSame(sjukfallGroups1, sjukfallGroups3);
+        assertNotSame(sjukfallGroups1, sjukfallGroups4);
+    }
+
+    @Test
+    public void testSjukfallCacheWillOnlyReturnValuesForTheCorrectVg() throws Exception {
+        //Given
+        LocalDate monthStart = new LocalDate("2015-03-11");
+        ReflectionTestUtils.setField(sjukfallUtil, "maxCacheSize", "10");
+        Aisle aisle1 = new Aisle("vgid1");
+        Aisle aisle2 = new Aisle("vgid2");
+
+        //When
+        final Iterable<SjukfallGroup> sjukfallGroups1 = sjukfallUtil.sjukfallGrupper(monthStart, 1, 1, aisle1, SjukfallUtil.ALL_ENHETER);
+        final Iterable<SjukfallGroup> sjukfallGroups2 = sjukfallUtil.sjukfallGrupper(monthStart, 2, 1, aisle2, SjukfallUtil.ALL_ENHETER);
+        final Iterable<SjukfallGroup> sjukfallGroups3 = sjukfallUtil.sjukfallGrupper(monthStart, 1, 1, aisle2, SjukfallUtil.ALL_ENHETER);
+        final Iterable<SjukfallGroup> sjukfallGroups4 = sjukfallUtil.sjukfallGrupper(monthStart, 2, 1, aisle1, SjukfallUtil.ALL_ENHETER);
+
+        //Then
+        assertNotSame(sjukfallGroups1, sjukfallGroups2);
+        assertNotSame(sjukfallGroups1, sjukfallGroups3);
+        assertNotSame(sjukfallGroups1, sjukfallGroups4);
+        assertNotSame(sjukfallGroups2, sjukfallGroups3);
+        assertNotSame(sjukfallGroups2, sjukfallGroups4);
+        assertNotSame(sjukfallGroups3, sjukfallGroups4);
     }
 
 }
