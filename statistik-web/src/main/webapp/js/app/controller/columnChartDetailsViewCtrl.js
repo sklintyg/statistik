@@ -168,6 +168,12 @@ angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl', [ '$sco
                 $location.path("/verksamhet/" + $routeParams.verksamhetId + "/jamforDiagnoser/" + selectionHash);
             }, function(){ throw new Error("Failed to get filter hash value"); });
         };
+
+        $scope.$on('$destroy', function() {
+            if(typeof chart.destroy === 'function') {
+                chart.destroy();
+            }
+        });
     }
 ]);
 

@@ -123,6 +123,12 @@ angular.module('StatisticsApp').controller('singleLineChartCtrl', [ '$scope', '$
             printFactory.print(bwPrint, $rootScope, $window);
         };
 
+        $scope.$on('$destroy', function() {
+            if(typeof chart.destroy === 'function') {
+                chart.destroy();
+            }
+        });
+
     }
 ]);
 
