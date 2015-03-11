@@ -55,9 +55,12 @@ public final class SjukfallQuery {
     @Autowired
     private LakareManager lakareManager;
 
-    public static SimpleKonResponse<SimpleKonDataRow> getSjukfall(Aisle aisle, SjukfallFilter filter, LocalDate start, int perioder, int periodlangd) {
+    @Autowired
+    private SjukfallUtil sjukfallUtil;
+
+    public SimpleKonResponse<SimpleKonDataRow> getSjukfall(Aisle aisle, SjukfallFilter filter, LocalDate start, int perioder, int periodlangd) {
         ArrayList<SimpleKonDataRow> result = new ArrayList<>();
-        for (SjukfallGroup sjukfallGroup : SjukfallUtil.sjukfallGrupper(start, perioder, periodlangd, aisle, filter)) {
+        for (SjukfallGroup sjukfallGroup : sjukfallUtil.sjukfallGrupper(start, perioder, periodlangd, aisle, filter)) {
             int male = countMale(sjukfallGroup.getSjukfall());
             int female = sjukfallGroup.getSjukfall().size() - male;
             String displayDate = ReportUtil.toDiagramPeriod(sjukfallGroup.getRange().getFrom());
@@ -67,9 +70,9 @@ public final class SjukfallQuery {
         return new SimpleKonResponse<>(result, perioder * periodlangd);
     }
 
-    public static SimpleKonResponse<SimpleKonDataRow> getSjukfallPerEnhet(Aisle aisle, SjukfallFilter filter, LocalDate from, int periods, int periodLength, Map<String, String> idsToNames) {
+    public SimpleKonResponse<SimpleKonDataRow> getSjukfallPerEnhet(Aisle aisle, SjukfallFilter filter, LocalDate from, int periods, int periodLength, Map<String, String> idsToNames) {
         List<SimpleKonDataRow> rows = new ArrayList<>();
-        for (SjukfallGroup sjukfallGroup: SjukfallUtil.sjukfallGrupper(from, periods, periodLength, aisle, filter)) {
+        for (SjukfallGroup sjukfallGroup: sjukfallUtil.sjukfallGrupper(from, periods, periodLength, aisle, filter)) {
             final Multiset<Integer> femaleSjukfallPerEnhet = HashMultiset.create();
             final Multiset<Integer> maleSjukfallPerEnhet = HashMultiset.create();
 
@@ -103,7 +106,7 @@ public final class SjukfallQuery {
     }
 
     public SimpleKonResponse<SimpleKonDataRow> getSjukfallPerLakare(String vardgivarId, Aisle aisle, Predicate<Fact> filter, Range range, int perioder, int periodlangd) {
-        Collection<Sjukfall> sjukfalls = SjukfallUtil.active(range, aisle, filter);
+        Collection<Sjukfall> sjukfalls = sjukfallUtil.active(range, aisle, filter);
         List<Lakare> allLakaresForVardgivare = lakareManager.getLakares(vardgivarId);
         // Two counters for sjukfall per sex
         final Multiset<Lakare> femaleSjukfallPerLakare = HashMultiset.create();

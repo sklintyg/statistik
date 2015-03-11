@@ -68,8 +68,14 @@ public class ReceiverIntegrationTest {
 
     @Autowired
     private WarehouseManager warehouseManager;
+
     @Autowired
     private Warehouse warehouse;
+
+    private SjukfallUtil sjukfallUtil = new SjukfallUtil();
+
+    @Autowired
+    private SjukfallQuery sjukfallQuery;
 
     @Before
     public void setup() {
@@ -80,7 +86,7 @@ public class ReceiverIntegrationTest {
     public void deliver_document_from_in_queue_to_statistics_repository() {
         populate();
         load();
-        SimpleKonResponse<SimpleKonDataRow> webData = SjukfallQuery.getSjukfall(warehouse.get("vardgivarId"), SjukfallUtil.createEnhetFilter("enhetId"), new LocalDate("2011-01"), 12, 1);
+        SimpleKonResponse<SimpleKonDataRow> webData = sjukfallQuery.getSjukfall(warehouse.get("vardgivarId"), sjukfallUtil.createEnhetFilter("enhetId"), new LocalDate("2011-01"), 12, 1);
 
         assertEquals(12, webData.getRows().size());
 

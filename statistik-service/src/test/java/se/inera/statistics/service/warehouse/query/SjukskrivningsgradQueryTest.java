@@ -44,7 +44,7 @@ public class SjukskrivningsgradQueryTest {
     public void one() {
         fact(4010, 100);
         warehouse.complete(LocalDateTime.now());
-        Collection<Sjukfall> sjukfall = SjukfallUtil.calculateSjukfall(warehouse.get(VARDGIVARE));
+        Collection<Sjukfall> sjukfall = new SjukfallUtil().calculateSjukfall(warehouse.get(VARDGIVARE));
         List<Counter<Integer>> count = SjukskrivningsgradQuery.count(sjukfall);
         assertEquals(1, count.get(3).getCount());
     }
@@ -63,7 +63,7 @@ public class SjukskrivningsgradQueryTest {
         fact(4010, 100);
         fact(4010, 100);
         warehouse.complete(LocalDateTime.now());
-        Collection<Sjukfall> sjukfall = SjukfallUtil.calculateSjukfall(warehouse.get(VARDGIVARE));
+        Collection<Sjukfall> sjukfall = new SjukfallUtil().calculateSjukfall(warehouse.get(VARDGIVARE));
         List<Counter<Integer>> count = SjukskrivningsgradQuery.count(sjukfall);
 
         assertEquals(4, count.size());

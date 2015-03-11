@@ -42,12 +42,14 @@ public final class LakaresAlderOchKonQuery {
 
     private static final Ranges RANGES_LAKARES_ALDER_OCH_KON = new Ranges(range("under 30 år", 30), range("30-39 år", 40), range("40-49 år", 50), range("50-59 år", 60), range("över 59 år", Integer.MAX_VALUE));
     private static final String UNKNOWN_AGE_RANGE = "UnknownAgeRange";
+    private final SjukfallUtil sjukfallUtil;
 
-    private LakaresAlderOchKonQuery() {
+    private LakaresAlderOchKonQuery(SjukfallUtil sjukfallUtil) {
+        this.sjukfallUtil = sjukfallUtil;
     }
 
-    public static SimpleKonResponse<SimpleKonDataRow> getSjukfallPerLakaresAlderOchKon(Aisle aisle, Predicate<Fact> filter, Range range, int perioder, int periodlangd) {
-        return new LakaresAlderOchKonQuery().getSjukfallPerLakaresAlderOchKonResponse(aisle, filter, range, perioder, periodlangd);
+    public static SimpleKonResponse<SimpleKonDataRow> getSjukfallPerLakaresAlderOchKon(Aisle aisle, Predicate<Fact> filter, Range range, int perioder, int periodlangd, SjukfallUtil sjukfallUtil) {
+        return new LakaresAlderOchKonQuery(sjukfallUtil).getSjukfallPerLakaresAlderOchKonResponse(aisle, filter, range, perioder, periodlangd);
     }
 
     private SimpleKonResponse<SimpleKonDataRow> getSjukfallPerLakaresAlderOchKonResponse(Aisle aisle, Predicate<Fact> filter, Range range, int perioder, int periodlangd) {
@@ -95,7 +97,7 @@ public final class LakaresAlderOchKonQuery {
     }
 
     private Multimap<Kon, String> getLakarensAlderOchKonForAllSjukfall(Aisle aisle, Predicate<Fact> filter, Range range) {
-        Collection<Sjukfall> sjukfalls = SjukfallUtil.active(range, aisle, filter);
+        Collection<Sjukfall> sjukfalls = sjukfallUtil.active(range, aisle, filter);
         final Multimap<Kon, String> sjukfallPerLakare = ArrayListMultimap.create();
         for (Sjukfall sjukfall : sjukfalls) {
             for (se.inera.statistics.service.warehouse.Lakare lakare : sjukfall.getLakare()) {

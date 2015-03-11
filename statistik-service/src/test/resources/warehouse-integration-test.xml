@@ -91,5 +91,6 @@
     <bean class="se.inera.statistics.service.warehouse.WidelineManager" />
     <bean class="se.inera.statistics.service.warehouse.WidelineLoader" />
     <bean class="se.inera.statistics.service.warehouse.EnhetLoader" />
+    <bean class="se.inera.statistics.service.warehouse.SjukfallUtil" />
 
 </beans>

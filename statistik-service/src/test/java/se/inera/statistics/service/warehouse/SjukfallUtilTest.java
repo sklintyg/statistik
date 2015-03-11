@@ -35,10 +35,12 @@ import static se.inera.statistics.service.warehouse.Fact.aFact;
 public class SjukfallUtilTest {
     private Aisle aisle = new Aisle("vgid");
 
+    private SjukfallUtil sjukfallUtil = new SjukfallUtil();
+
     @Test
     public void oneIntygIsOneSjukfall() throws Exception {
         aisle.addLine(createFact(1, 1, 4010, 1, 47));
-        Collection<Sjukfall> sjukfalls = SjukfallUtil.calculateSjukfall(aisle);
+        Collection<Sjukfall> sjukfalls = sjukfallUtil.calculateSjukfall(aisle);
         assertEquals(1, sjukfalls.size());
     }
 
@@ -46,7 +48,7 @@ public class SjukfallUtilTest {
     public void twoCloseIntygForSamePersonIsOneSjukfall() throws Exception {
         aisle.addLine(createFact(1, 1, 4010, 10, 1, 1));
         aisle.addLine(createFact(1, 1, 4025, 10, 1, 2));
-        Collection<Sjukfall> sjukfalls = SjukfallUtil.calculateSjukfall(aisle);
+        Collection<Sjukfall> sjukfalls = sjukfallUtil.calculateSjukfall(aisle);
         assertEquals(1, sjukfalls.size());
 
         Sjukfall sjukfall = sjukfalls.iterator().next();
@@ -67,7 +69,7 @@ public class SjukfallUtilTest {
     public void twoFarSeparatedIntygForSamePersonAreTwoSjukfall() throws Exception {
         aisle.addLine(createFact(1, 1, 4010));
         aisle.addLine(createFact(1, 1, 4026));
-        Collection<Sjukfall> sjukfalls = SjukfallUtil.calculateSjukfall(aisle);
+        Collection<Sjukfall> sjukfalls = sjukfallUtil.calculateSjukfall(aisle);
         assertEquals(2, sjukfalls.size());
     }
 
@@ -75,7 +77,7 @@ public class SjukfallUtilTest {
     public void twoIntygForTwoPersonsAreTwoSjukfall() throws Exception {
         aisle.addLine(createFact(1, 1, 4010));
         aisle.addLine(createFact(1, 2, 4010));
-        Collection<Sjukfall> sjukfalls = SjukfallUtil.calculateSjukfall(aisle);
+        Collection<Sjukfall> sjukfalls = sjukfallUtil.calculateSjukfall(aisle);
         assertEquals(2, sjukfalls.size());
     }
 
@@ -89,7 +91,7 @@ public class SjukfallUtilTest {
         aisle.addLine(createFact(3, 2, 4020));
         aisle.addLine(createFact(2, 2, 4030));
 
-        Collection<Sjukfall> sjukfalls = SjukfallUtil.calculateSjukfall(aisle, 1, 3);
+        Collection<Sjukfall> sjukfalls = sjukfallUtil.calculateSjukfall(aisle, 1, 3);
         assertEquals(2, sjukfalls.size());
         assertEquals(2, sjukfalls.iterator().next().getIntygCount());
         assertEquals(4020, sjukfalls.iterator().next().getStart());
@@ -108,14 +110,14 @@ public class SjukfallUtilTest {
 
         aisle.sort();
 
-        Iterator<SjukfallGroup> actives = SjukfallUtil.sjukfallGrupper(new LocalDate("2010-11-01"), 3, 1, aisle, SjukfallUtil.createEnhetFilterFromInternalIntValues(2)).iterator();
+        Iterator<SjukfallGroup> actives = sjukfallUtil.sjukfallGrupper(new LocalDate("2010-11-01"), 3, 1, aisle, sjukfallUtil.createEnhetFilterFromInternalIntValues(2)).iterator();
         assertTrue(actives.next().getSjukfall().isEmpty());
 
         assertEquals(2, actives.next().getSjukfall().size());
         assertEquals(2, actives.next().getSjukfall().size());
         assertFalse(actives.hasNext());
 
-        actives = SjukfallUtil.sjukfallGrupper(new LocalDate("2010-11-01"), 2, 12, aisle, SjukfallUtil.createEnhetFilterFromInternalIntValues(2)).iterator();
+        actives = sjukfallUtil.sjukfallGrupper(new LocalDate("2010-11-01"), 2, 12, aisle, sjukfallUtil.createEnhetFilterFromInternalIntValues(2)).iterator();
 
         assertEquals(2, actives.next().getSjukfall().size());
         assertEquals(0, actives.next().getSjukfall().size());
@@ -153,7 +155,7 @@ public class SjukfallUtilTest {
 
         aisle.sort();
 
-        Iterator<SjukfallGroup> actives = SjukfallUtil.sjukfallGrupper(monthStart, 1, 1, aisle, SjukfallUtil.createEnhetFilterFromInternalIntValues(ENHET1)).iterator();
+        Iterator<SjukfallGroup> actives = sjukfallUtil.sjukfallGrupper(monthStart, 1, 1, aisle, sjukfallUtil.createEnhetFilterFromInternalIntValues(ENHET1)).iterator();
         assertEquals(1, actives.next().getSjukfall().size());
     }
 
@@ -166,7 +168,7 @@ public class SjukfallUtilTest {
 
         aisle.sort();
 
-        Iterator<SjukfallGroup> actives = SjukfallUtil.sjukfallGrupper(monthStart, 1, 1, aisle, SjukfallUtil.createEnhetFilterFromInternalIntValues(ENHET1)).iterator();
+        Iterator<SjukfallGroup> actives = sjukfallUtil.sjukfallGrupper(monthStart, 1, 1, aisle, sjukfallUtil.createEnhetFilterFromInternalIntValues(ENHET1)).iterator();
         assertEquals(2, actives.next().getSjukfall().size());
     }
 

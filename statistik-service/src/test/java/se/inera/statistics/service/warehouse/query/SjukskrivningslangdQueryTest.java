@@ -47,7 +47,7 @@ public class SjukskrivningslangdQueryTest {
     public void one() {
         fact(4010, 45);
         warehouse.complete(LocalDateTime.now());
-        Collection<Sjukfall> sjukfall = SjukfallUtil.calculateSjukfall(warehouse.get(VARDGIVARE));
+        Collection<Sjukfall> sjukfall = new SjukfallUtil().calculateSjukfall(warehouse.get(VARDGIVARE));
         Map<Ranges.Range,Counter<Ranges.Range>> count = SjukskrivningslangdQuery.count(sjukfall);
         assertEquals(1, count.get(SjukfallslangdUtil.RANGES.rangeFor(45)).getCount());
     }
@@ -67,7 +67,7 @@ public class SjukskrivningslangdQueryTest {
         fact(4010, 50);
         fact(4010, 100);
         warehouse.complete(LocalDateTime.now());
-        Collection<Sjukfall> sjukfall = SjukfallUtil.calculateSjukfall(warehouse.get(VARDGIVARE));
+        Collection<Sjukfall> sjukfall = new SjukfallUtil().calculateSjukfall(warehouse.get(VARDGIVARE));
         List<Counter<Ranges.Range>> count = SjukskrivningslangdQuery.count(sjukfall,6);
 
         assertEquals(6, count.size());

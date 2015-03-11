@@ -38,6 +38,9 @@ public class WarehouseManager {
     @Autowired
     private Warehouse warehouse;
 
+    @Autowired
+    private SjukfallUtil sjukfallUtil;
+
     @PostConstruct
     public int loadEnhetAndWideLines() {
         LOG.info("Reloading warehouse");
@@ -49,7 +52,7 @@ public class WarehouseManager {
         lines = enhetLoader.populateWarehouse();
         warehouse.completeEnhets(LocalDateTime.now());
         LOG.info("Reloaded enhet {} lines", lines);
-        SjukfallUtil.clearSjukfallGroupCache();
+        sjukfallUtil.clearSjukfallGroupCache();
         return lines;
     }
 
