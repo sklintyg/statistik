@@ -21,7 +21,7 @@
 	<div class="row" id="print-logo-display">
  		<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
  			<img src="img/statistiktjansten-logotype-print.png">
- 			<h2 class="business-name-header print-only-no-display">- {{ verksamhetName }}</h2> 
+ 			<h2 class="business-name-header print-only-no-display">- <span bindonce="verksamhetName"></span></h2>
  		</div>
  	</div>
 	<div class="row">
@@ -29,7 +29,7 @@
 			<h1 class="national-statistic-h1" data-ng-bind="viewHeader" style="line-height: 17px; margin-bottom: 0px;"></h1>
 		</div>
     	<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 pull-left hidden-print left-2px-padding" ng-show="verksamhetViewShowing" id="business-name-header-container" style="width: auto !important;">
-			<h2 class="business-name-header" style="line-height: 16px;">{{ verksamhetName }}</h2> 
+			<h2 class="business-name-header" style="line-height: 16px;" bindonce="verksamhetName"></h2>
 		</div>
     </div>
 	<div class="row">
@@ -45,7 +45,7 @@
 			<div class="collapse" id="chart-footnote-text">
        			<div class="alert alert-info" style="margin-top: 3px;">
        				<div data-ng-repeat="chartFootnote in chartFootnotes">
-       					<p>{{chartFootnote}}</p>
+       					<p bindonce="chartFootnote"></p>
        				</div>
        			</div>
        		</div>
@@ -56,7 +56,7 @@
 			<div class="collapse" id="chart-diagnosfilterinfo-text">
        			<div class="alert alert-info" style="margin-top: 3px;">
        				<div data-ng-repeat="activeDiagnosFilter in activeDiagnosFilters">
-       					<p>{{activeDiagnosFilter}}</p>
+       					<p bindonce="activeDiagnosFilter"></p>
        				</div>
        			</div>
        		</div>
@@ -85,7 +85,7 @@
            			<span>{{selectedDetailsOption.id}} {{selectedDetailsOption.name}}</span>
            		</a>
            		<ul class="dropdown-menu left overflow-menu-options">
-	               <li data-ng-repeat="detailsOption in detailsOptions"><a href="{{detailsOption.url}}{{queryString}}">{{detailsOption.id}} {{detailsOption.name}}</a></li>
+	               <li data-ng-repeat="detailsOption in detailsOptions"><a href="{{detailsOption.url}}{{queryString}}"><span bindonce="detailsOption.id"></span> <span bindonce="detailsOption.name"></span></a></li>
 	        	</ul>
          	</div>
        	</div>
@@ -100,7 +100,7 @@
            			<span>{{selectedDetailsOption2.id}} {{selectedDetailsOption2.name}}</span>
            		</a>
            		<ul class="dropdown-menu left overflow-menu-options">
-	               <li data-ng-repeat="detailsOption2 in detailsOptions2"><a href="{{detailsOption2.url}}{{queryString}}">{{detailsOption2.id}} {{detailsOption2.name}}</a></li>
+	               <li data-ng-repeat="detailsOption2 in detailsOptions2"><a href="{{detailsOption2.url}}{{queryString}}"><span bindonce="detailsOption2.id"></span> <span bindonce="detailsOption2.name"></span></a></li>
 	        	</ul>
          	</div>
        	</div>
@@ -163,7 +163,7 @@
 				<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 					<div class="alert alert-info" style="margin-top: 3px; background: #FFFFFF">
 						<div data-ng-repeat="activeDiagnosFilter in activeDiagnosFiltersForPrint">
-							<p>{{activeDiagnosFilter}}</p>
+							<p bindonce="activeDiagnosFilter"></p>
 						</div>
 					</div>
 				</div>
@@ -195,13 +195,13 @@
                                 <table id="datatable" class="table table-striped">
 	                                <thead>
 	                                    <tr data-ng-repeat="headerrow in headerrows track by $index">
-											<td class="scrollable details-table-data ellipsis details-th" data-ng-class="{headcol: $first, centeralign: headerrow.centerAlign}" colspan="{{header.colspan}}" data-ng-repeat="header in headerrow" title="{{header.text}}">{{header.text}}</td>
+											<td class="scrollable details-table-data ellipsis details-th" data-ng-class="{headcol: $first, centeralign: headerrow.centerAlign}" colspan="{{header.colspan}}" data-ng-repeat="header in headerrow" title="{{header.text}}" bindonce="header.text"></td>
 	                                    </tr>
 	                                </thead>
                                     <tbody class="table-condensed">
                                     <tr data-ng-repeat="row in rows">
-                                        <td class="scrollable headcol"><span class="headcol-name">{{row.name}}</span></td>
-                                        <td class="scrollable" data-ng-repeat="fieldData in row.data track by $index">{{fieldData | thousandseparated}}</td>
+                                        <td class="scrollable headcol"><span class="headcol-name" bindonce="row.name"></span></td>
+                                        <td class="scrollable" data-ng-repeat="fieldData in row.data track by $index" bindonce="fieldData | thousandseparated"></td>
                                     </tr>
                                     </tbody>
                                 </table>
@@ -222,13 +222,13 @@
                 <table id="datatable" class="table table-striped print-pagebreak-after" data-ng-repeat="printTable in printDataTables">
                     <thead>
                         <tr class="table-print-header" data-ng-repeat="headerrow in printTable.headers">
-                            <td colspan="{{header.colspan}}" data-ng-repeat="header in headerrow track by $index" title="{{header.text}}">{{header.text}}</td>
+                            <td colspan="{{header.colspan}}" data-ng-repeat="header in headerrow track by $index" bindonce="header.text"></td>
                         </tr>
                     </thead>
                     <tbody>
                         <tr data-ng-repeat="row in printTable.rows">
-                            <td>{{row.name}}</td>
-                            <td data-ng-repeat="fieldData in row.data track by $index" >{{fieldData | thousandseparated}}</td>
+                            <td bindonce="row.name"></td>
+                            <td data-ng-repeat="fieldData in row.data track by $index" bindonce="fieldData | thousandseparated"></td>
                         </tr>
                     </tbody>
                 </table>
