@@ -114,18 +114,17 @@ Vi nyttjar springprofiler för att styra konfiguration vid uppstart. I exemplet 
 
 som talar om att dev-profilen med en inbäddad databas ska användas.
 
-*Detta stycke är fel, vi har ändrat till enbart featureflaggor*
-~~De huvudprofiler som finns är, exakt en av dessa måste finnas:
-dev	utvecklings-miljö
-test	test-miljö
-qa	qa-miljö
-prod	prod-miljö (finns endast i release-branchen)~~
+De profiler som finns är:
 
-Sedan finns ett antal modifierare:
-
-embedded	använd inbäddad databas (H2)
-
-generatetestdata	skapa tesdata vid uppstart
+dev             starta applikationen i utvecklingsläge
+embedded	    använd inbäddad databas (H2), och lägg in testintyg
+hsa-stub        gå inte mot hsa, utan använd en stub istället
+db-resetter     rensa databasen vid uppstart
+security-fake   stöd enbart simulerad inloggning
+security-both   stöd saml-inloggning och simulerad inloggning
+security-saml   stöd enbart saml-inloggning
+qm              starta inbäddad köhanterare
+active          processa inkommande intyg
 
 ##Deployment
 Vi använder ansible för att enkelt sätta upp servrar. Följande stämmer för min lokala miljö (Mac, Homebrew), komplettera gärna med andra miljöer.
@@ -143,7 +142,7 @@ Installera ansible-plugin:er
 
 Checka ut tools (och statistik härifrån, om du inte har det redan) från github, https://github.com/sklintyg/tools (och statistik härifrån, om du inte har det redan).
 
-##Deploy
+###Deploy
 
 Följande beskriver hur man deployar till fitnesse-servern, https://fitnesse.inera.nordicmedtest.se
 Det är den enda servern som i skrivandes stund är definierad.
