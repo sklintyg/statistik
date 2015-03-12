@@ -116,15 +116,17 @@ som talar om att dev-profilen med en inbäddad databas ska användas.
 
 De profiler som finns är:
 
+|Profilnamn     |Beskrivning|
+|---------------|-----------|
 |dev            |starta applikationen i utvecklingsläge|
 |embedded       |använd inbäddad databas (H2), och lägg in testintyg|
-|hsa-stub        |gå inte mot hsa, utan använd en stub istället|
-|db-resetter     |rensa databasen vid uppstart|
-|security-fake   |stöd enbart simulerad inloggning|
-|security-both   |stöd saml-inloggning och simulerad inloggning|
-|security-saml   |stöd enbart saml-inloggning|
-|qm              |starta inbäddad köhanterare|
-|active          |processa inkommande intyg|
+|hsa-stub       |gå inte mot hsa, utan använd en stub istället|
+|db-resetter    |rensa databasen vid uppstart|
+|security-fake  |stöd enbart simulerad inloggning|
+|security-both  |stöd saml-inloggning och simulerad inloggning|
+|security-saml  |stöd enbart saml-inloggning|
+|qm             |starta inbäddad köhanterare|
+|active         |processa inkommande intyg|
 
 ##Deployment
 Vi använder ansible för att enkelt sätta upp servrar. Följande stämmer för min lokala miljö (Mac, Homebrew), komplettera gärna med andra miljöer.
