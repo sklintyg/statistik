@@ -18,20 +18,32 @@
  */
 package se.inera.statistics.web.util;
 
+import java.io.IOException;
+
+import org.apache.commons.httpclient.HttpClient;
+import org.apache.commons.httpclient.methods.GetMethod;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 
 import se.inera.ifv.statistics.spi.authorization.impl.HSAWebServiceCalls;
+import se.inera.statistics.service.warehouse.query.CalcCoordinator;
 import se.inera.statistics.web.service.ChartDataService;
 
 public class HealthCheckUtil {
 
     private static final int NANOS_PER_MS = 1_000_000;
 
+    @Value("${highcharts.export.url}")
+    private String highchartsUrl;
+
     @Autowired
     private ChartDataService chartDataService;
 
     @Autowired
     private HSAWebServiceCalls hsaService;
+
+    private HttpClient client;
 
     public Status getOverviewStatus() {
         boolean ok;
@@ -57,6 +69,28 @@ public class HealthCheckUtil {
         }
         long doneTime = System.nanoTime();
         return createStatus(ok, startTime, doneTime);
+    }
+
+    public Status getHighchartsExportStatus() {
+        boolean ok;
+
+        if (client == null) {
+            client = new HttpClient();
+        }
+        long startTime = System.nanoTime();
+        try {
+            ok = client.executeMethod(new GetMethod(highchartsUrl)) == HttpStatus.METHOD_NOT_ALLOWED.value();
+        } catch (IOException e) {
+            // Squelch this as it is quite ok to throw IOException.
+            // It simply means that the service is not reachable
+            ok = false;
+        }
+        long doneTime = System.nanoTime();
+        return createStatus(ok, startTime, doneTime);
+    }
+
+    public Status getWorkloadStatus() {
+        return new Status(CalcCoordinator.getWorkloadPercentage(), true);
     }
 
     private Status createStatus(boolean ok, long startTime, long doneTime) {

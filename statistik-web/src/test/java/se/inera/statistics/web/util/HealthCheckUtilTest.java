@@ -21,12 +21,18 @@ package se.inera.statistics.web.util;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import java.io.IOException;
+
+import org.apache.commons.httpclient.HttpClient;
+import org.apache.commons.httpclient.HttpException;
+import org.apache.commons.httpclient.methods.GetMethod;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.springframework.http.HttpStatus;
 
 import se.inera.ifv.statistics.spi.authorization.impl.HSAWebServiceCalls;
 import se.inera.statistics.web.service.ChartDataService;
@@ -37,6 +43,9 @@ public class HealthCheckUtilTest {
 
     @Mock
     private ChartDataService dataService = Mockito.mock(ChartDataService.class);
+
+    @Mock
+    private HttpClient client = Mockito.mock(HttpClient.class);
 
     @Mock
     private HSAWebServiceCalls hsaCalls = Mockito.mock(HSAWebServiceCalls.class);
@@ -81,4 +90,28 @@ public class HealthCheckUtilTest {
         assertTrue(status.getMeasurement() >= 0);
         assertFalse(status.isOk());
     }
+
+    @Test
+    public void testMeasurementsForAccessingHighcharts() throws HttpException, IOException {
+        Mockito.when(client.executeMethod(Mockito.any(GetMethod.class))).thenReturn(HttpStatus.METHOD_NOT_ALLOWED.value());
+        Status status = healthCheck.getHighchartsExportStatus();
+        assertTrue(status.getMeasurement() >= 0);
+        assertTrue(status.isOk());
+    }
+
+    @Test
+    public void testMeasurementsForAccessingFailingHighcharts() throws HttpException, IOException {
+        Mockito.when(client.executeMethod(Mockito.any(GetMethod.class))).thenReturn(HttpStatus.ACCEPTED.value());
+        Status status = healthCheck.getHighchartsExportStatus();
+        assertTrue(status.getMeasurement() >= 0);
+        assertFalse(status.isOk());
+    }
+
+    @Test
+    public void testWorkloadStatus() throws Exception {
+        Status status = healthCheck.getWorkloadStatus();
+        assertTrue(status.getMeasurement() >= 0 && status.getMeasurement() <= 100);
+        assertTrue(status.isOk());
+    }
+
 }
