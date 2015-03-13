@@ -34,11 +34,8 @@ public class HealthCheckUtil {
 
     private static final int NANOS_PER_MS = 1_000_000;
 
-    @Value("${highcharts.export.url}")
-    private String highchartsUri;
-
-    @Value("${highcharts.export.host}")
-    private String highchartsHost;
+    @Value("${highcharts.export.url.pingdom}")
+    private String highchartsUrl;
 
     @Autowired
     private ChartDataService chartDataService;
@@ -82,7 +79,7 @@ public class HealthCheckUtil {
         }
         long startTime = System.nanoTime();
         try {
-            ok = client.executeMethod(new GetMethod(highchartsHost + highchartsUri)) == HttpStatus.METHOD_NOT_ALLOWED.value();
+            ok = client.executeMethod(new GetMethod(highchartsUrl)) == HttpStatus.METHOD_NOT_ALLOWED.value();
         } catch (IOException e) {
             // Squelch this as it is quite ok to throw IOException.
             // It simply means that the service is not reachable
