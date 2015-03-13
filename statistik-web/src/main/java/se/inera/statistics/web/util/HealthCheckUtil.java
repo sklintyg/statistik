@@ -75,7 +75,7 @@ public class HealthCheckUtil {
     }
 
     public Status getHighchartsExportStatus() {
-        boolean ok = false;
+        boolean ok;
 
         if (client == null) {
             client = new HttpClient();
@@ -86,6 +86,7 @@ public class HealthCheckUtil {
         } catch (IOException e) {
             // Squelch this as it is quite ok to throw IOException.
             // It simply means that the service is not reachable
+            ok = false;
         }
         long doneTime = System.nanoTime();
         return createStatus(ok, startTime, doneTime);
