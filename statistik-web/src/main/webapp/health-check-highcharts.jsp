@@ -17,9 +17,8 @@
   ~     You should have received a copy of the GNU LESSER GENERAL PUBLIC LICENSE
   ~     along with this program.  If not, see <http://www.gnu.org/licenses/>.
   --%>
-
-<c:set var="status" value="${healthcheckUtil.highchartsExportStatus}"
-/><pingdom_http_custom_check>
+<c:set var="status" value="${healthcheckUtil.highchartsExportStatus}"/>
+<pingdom_http_custom_check>
 	<status>${status.ok ? "OK" : "FAIL"}</status>
 	<response_time>${status.measurement}</response_time>
 </pingdom_http_custom_check>
