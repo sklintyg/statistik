@@ -6,6 +6,7 @@ buildscript {
 
 apply plugin: 'war'
 apply plugin: 'org.akhikhl.gretty'
+apply plugin: 'maven'
 
 description = 'highcharts-export-web'
 
@@ -31,4 +32,28 @@ dependencies {
     gretty "org.apache.tomcat:tomcat-catalina:7.0.20"
 
     providedCompile 'javax.servlet:javax.servlet-api:3.0.1'
+}
+
+uploadArchives {
+    ext.cloudbeesUsername = System.properties['cloudbeesUsername']
+    ext.cloudbeesPassword = System.properties['cloudbeesPassword']
+
+    configurations {
+        deployerJars
+    }
+    dependencies {
+        deployerJars "org.apache.maven.wagon:wagon-webdav:1.0-beta-2"
+    }
+
+    repositories {
+        mavenDeployer {
+            configuration = configurations.deployerJars
+            repository(url: "dav:https://repository-callistasoftware.forge.cloudbees.com/release/") {
+                authentication(userName: cloudbeesUsername, password: cloudbeesPassword)
+            }
+            snapshotRepository(url: "dav:https://repository-callistasoftware.forge.cloudbees.com/snapshot/") {
+                authentication(userName: cloudbeesUsername, password: cloudbeesPassword)
+            }
+        }
+    }
 }

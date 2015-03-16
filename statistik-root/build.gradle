@@ -20,24 +20,27 @@ description = 'Inera Statistics Service - Web ROOT Module'
 group = 'se.inera.statistik'
 version = '1.0'
 
-configurations {
-    deployerJars
-}
-
-ext.cloudbeesUsername = System.properties['cloudbeesUsername']
-ext.cloudbeesPassword = System.properties['cloudbeesPassword']
-
 uploadArchives {
+    ext.cloudbeesUsername = System.properties['cloudbeesUsername']
+    ext.cloudbeesPassword = System.properties['cloudbeesPassword']
+
+    configurations {
+        deployerJars
+    }
+    dependencies {
+        deployerJars "org.apache.maven.wagon:wagon-webdav:1.0-beta-2"
+    }
+
     repositories {
         mavenDeployer {
             configuration = configurations.deployerJars
-            repository(url: "dav:https://repository-callistasoftware.forge.cloudbees.com/snapshot/") {
+            repository(url: "dav:https://repository-callistasoftware.forge.cloudbees.com/release/") {
+                authentication(userName: cloudbeesUsername, password: cloudbeesPassword)
+            }
+            snapshotRepository(url: "dav:https://repository-callistasoftware.forge.cloudbees.com/snapshot/") {
                 authentication(userName: cloudbeesUsername, password: cloudbeesPassword)
             }
         }
     }
 }
 
-dependencies {
-    deployerJars "org.apache.maven.wagon:wagon-webdav:1.0-beta-2"
-}
