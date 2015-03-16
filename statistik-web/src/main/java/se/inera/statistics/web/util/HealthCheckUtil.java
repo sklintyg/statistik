@@ -34,7 +34,7 @@ public class HealthCheckUtil {
 
     private static final int NANOS_PER_MS = 1_000_000;
 
-    @Value("${highcharts.export.url}")
+    @Value("${highcharts.export.url.pingdom}")
     private String highchartsUrl;
 
     @Autowired
