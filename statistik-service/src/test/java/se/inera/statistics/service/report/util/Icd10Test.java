@@ -1,0 +1,116 @@
+/**
+ * Copyright (C) 2015 Inera AB (http://www.inera.se)
+ *
+ * This file is part of statistik (https://github.com/sklintyg/statistik).
+ *
+ * statistik is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * statistik is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+package se.inera.statistics.service.report.util;
+
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import se.inera.statistics.service.report.util.Icd10.Avsnitt;
+import se.inera.statistics.service.report.util.Icd10.Kapitel;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations = {"classpath:icd10.xml"})
+public class Icd10Test {
+
+    @Autowired
+    private Icd10 icd10;
+
+    @Test
+    public void start() {
+        assertNotNull(icd10);
+    }
+
+    @Test
+    public void hasKapitel() {
+        assertEquals(23, icd10.getKapitel(true).size());
+    }
+
+    @Test
+    public void kapitel1HasCorrectNameAndRange() {
+        Kapitel kapitel = icd10.getKapitel(true).get(0);
+        assertEquals("A00-B99", kapitel.getId());
+        assertEquals("Vissa infektionssjukdomar och parasitsjukdomar", kapitel.getName());
+    }
+
+    @Test
+    public void kapitel22HasCorrectNameAndRange() {
+        Kapitel kapitel = icd10.getKapitel(true).get(21);
+        assertEquals("Z00-Z99", kapitel.getId());
+        assertEquals("Faktorer av betydelse för hälsotillståndet och för kontakter med hälso- och sjukvården", kapitel.getName());
+    }
+
+    @Test
+    public void avsnitt() {
+        assertEquals(21, icd10.getKapitel(true).get(0).getAvsnitt().size());
+    }
+
+    @Test
+    public void avsnittInKapitel1() {
+        Kapitel kapitel = icd10.getKapitel(true).get(0);
+        List<Avsnitt> avsnitt = kapitel.getAvsnitt();
+        assertEquals(21, avsnitt.size());
+    }
+
+    @Test
+    public void normalizeIcd10Code() {
+        assertEquals("", icd10.normalize(". -_+?="));
+        assertEquals("A10", icd10.normalize("a 1.0"));
+        assertEquals("B12", icd10.normalize(" B12.3 # "));
+    }
+
+    @Test
+    public void hasKategoriG01() {
+        assertEquals("G01", icd10.getKategori("G01").getId());
+    }
+
+    @Test
+    public void kategoriIsTruncatedIfTooLong() {
+        assertEquals("G01", icd10.findKategori("G01.1").getId());
+    }
+
+    @Test
+    public void kategoriIsFoundEvenIfBadlyFormatted() {
+        assertEquals("G01", icd10.findKategori("-G 0, 1.1AndMore").getId());
+    }
+
+    @Test
+    public void noDuplicateIcd10IntIds() {
+        final List<Integer> allIntIds = getAllIntIds(icd10.getKapitel(true));
+        assertEquals(allIntIds.size(), new HashSet<>(allIntIds).size());
+    }
+
+    private List<Integer> getAllIntIds(List<? extends Icd10.Id> icd10s) {
+        List<Integer> allIntIds = new ArrayList<>();
+        for (Icd10.Id icd10 : icd10s) {
+            allIntIds.add(icd10.toInt());
+            allIntIds.addAll(getAllIntIds(icd10.getSubItems()));
+        }
+        return allIntIds;
+    }
+
+}

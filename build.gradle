@@ -1,0 +1,153 @@
+plugins {
+    id "com.github.hierynomus.license" version "0.11.0"
+}
+
+allprojects {
+    group = 'se.inera.statistik'
+    version = '2.0.0'
+
+    repositories {
+        mavenLocal()
+        mavenCentral()
+        maven { url "https://repository-callistasoftware.forge.cloudbees.com/release/" }
+        maven { url "https://repository-callistasoftware.forge.cloudbees.com/snapshot/" }
+        maven { url "https://repository-callistasoftware.forge.cloudbees.com/3rdparty/" }
+    }
+
+    buildscript {
+        repositories {
+            maven { url "https://repository-callistasoftware.forge.cloudbees.com/snapshot/" }
+            jcenter()
+        }
+    }
+}
+
+subprojects {
+    apply plugin: 'java'
+    apply plugin: 'license'
+    if (project.hasProperty('runSonar')) {
+        apply plugin: 'jacoco'
+    }
+
+    sourceCompatibility = "1.7"
+    targetCompatibility = "1.7"
+
+    tasks.withType(JavaCompile) {
+        options.encoding = 'UTF-8'
+    }
+
+    ext.cxfVersion = '2.7.10'
+    ext.springContextVersion = "4.0.8.RELEASE"
+    ext.springSecurityVersion = "3.2.0.RELEASE"
+    ext.liquibaseVersion = "2.0.5"
+
+    test {
+        exclude '**/*FunctionalTest.*'
+        reports.html.destination = file("$reports.html.destination/unit")
+        reports.junitXml.destination = file("$reports.junitXml.destination/unit")
+    }
+
+    license {
+        ext.url = 'https://github.com/sklintyg/statistik'
+        ext.name = rootProject.name
+        ext.year = Calendar.getInstance().get(Calendar.YEAR)
+        strictCheck true
+        header rootProject.file("header.txt")
+        includes(["**/*.xml", "**/se/inera/statistics/**/*.java", "**/se/inera/auth/**/*.java", "**/se/inera/ifv/statistics/**/*.java"])
+    }
+
+    dependencies {
+        compile 'ch.qos.logback:logback-classic:1.1.1'
+        compile 'com.google.guava:guava:18.0'
+        compile "joda-time:joda-time:2.3"
+
+        testCompile 'org.springframework:spring-test:4.0.2.RELEASE'
+        testCompile 'junit:junit:4.11'
+        testCompile 'org.mockito:mockito-core:1.9.5'
+    }
+}
+
+configure(subprojects.findAll { ['hsa-integration', 'statistik-service', 'statistik-web'].contains(it.name) }) {
+    apply plugin: 'checkstyle'
+
+    checkstyle {
+        config = resources.text.fromFile("${rootProject.projectDir}/build-tools/src/main/resources/checkstyle.xml")
+        ignoreFailures = false
+        // This is empty b/c we run checkstyle explicitly in the "testAll" task below
+        sourceSets = []
+    }
+    // Make sure we don't run checkstyle on generated source code
+    checkstyleMain.source = "src/main/java"
+
+    sourceSets {
+        integrationTest {
+            java.srcDir file('src/integTest/java')
+            resources.srcDir file('src/integTest/resources')
+            compileClasspath = sourceSets.main.output + sourceSets.test.output + configurations.testRuntime
+            runtimeClasspath = output + compileClasspath
+        }
+    }
+
+    task integrationTests(type: Test) {
+        outputs.upToDateWhen { false }
+        testClassesDir = sourceSets.integrationTest.output.classesDir
+        classpath = sourceSets.integrationTest.runtimeClasspath
+        reports.html.destination = file("$reports.html.destination/integration")
+        reports.junitXml.destination = file("$reports.junitXml.destination/integration")
+    }
+
+    task testAll(dependsOn: [test, integrationTests, checkstyleMain])
+}
+
+configure(subprojects.findAll { ['liquibase-runner', 'statistik-web'].contains(it.name) }) {
+    apply plugin: 'maven'
+
+    configurations {
+        deployerJars
+    }
+
+    dependencies {
+        deployerJars "org.apache.maven.wagon:wagon-webdav:1.0-beta-2"
+    }
+
+    ext.cloudbeesUsername = System.properties['cloudbeesUsername']
+    ext.cloudbeesPassword = System.properties['cloudbeesPassword']
+
+    uploadArchives {
+        repositories {
+            mavenDeployer {
+                configuration = configurations.deployerJars
+                repository(url: "dav:https://repository-callistasoftware.forge.cloudbees.com/release/") {
+                    authentication(userName: cloudbeesUsername, password: cloudbeesPassword)
+                }
+                snapshotRepository(url: "dav:https://repository-callistasoftware.forge.cloudbees.com/snapshot/") {
+                    authentication(userName: cloudbeesUsername, password: cloudbeesPassword)
+                }
+            }
+        }
+    }
+}
+
+if (project.hasProperty('runSonar')) {
+    apply plugin: 'sonar-runner'
+
+    sonarRunner {
+        sonarProperties {
+            property "sonar.host.url", "https://callistasoftware.sonar.cloudbees.com"
+            property "sonar.login", "cloudbees"
+            property "sonar.password", project.sonarPassword
+            property "sonar.jdbc.url", project.sonarJdbcUrl
+            property "sonar.jdbc.driverClassName", "com.mysql.jdbc.Driver"
+            property "sonar.jdbc.username", project.sonarUser
+            property "sonar.jdbc.password", project.sonarPassword
+        }
+
+        project(":hsa-integration") {
+            sonarRunner {
+                sonarProperties {
+                    properties["sonar.sources"] -= project(":hsa-integration").generatedJavaDir
+                }
+            }
+        }
+    }
+}

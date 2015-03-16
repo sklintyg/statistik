@@ -1,0 +1,102 @@
+!contents -R2 -g -p -f -h
+
+Test visar att:
+- Intyg med personnummer på rätt form tas med. Giltiga/ogiltiga sista siffror spelar ingen roll.
+- Intyg med startdatum innan 2010-01-01 tas inte med.
+- Intyg med slutdatum mer än 5 år fram i tiden tas inte med.
+- Intyg med slutdatum före startdatum tas inte med.
+
+
+
+!3 Givet att:
+| script | dagens datum | 2013-11-06 |
+
+| script | troskel varde | 1 |
+
+| Enbart foljande intyg finns |
+| personnr | diagnoskod | start    | slut       | enhet | kommentar |
+| 19790407-6457 | G01 | 2013-02-05 | 2013-02-06 | enhet1 | Giltigt personnummer, godkänd form |
+| 19790407-1295 | G01 | 2013-02-05 | 2013-02-06 | enhet1 | Ogiltigt personnummer, godkänd form |
+| 197904075533 | G01 | 2013-02-05 | 2013-02-06 | enhet1 | Giltigt personnummer, godkänd form |
+| 7904071295 | G01 | 2013-02-05 | 2013-02-06 | enhet1 | Fel form |
+| 904071295 | G01 | 2013-02-05 | 2013-02-06 | enhet1 | Fel form |
+
+!3 Då gäller:
+Inloggad:
+| Sjukfall i rapporten sjukfall totalt |
+| inloggad som | år   | månad | män? | kvinnor? |
+| user1  | 2013 | feb   | 3    | 0        |
+
+Nationell:
+| Sjukfall i rapporten sjukfall totalt |
+| år   | månad | män? | kvinnor? |
+| 2013 | feb   | 3    | 0        |
+
+
+
+!3 Givet att:
+| script | dagens datum | 2013-11-06 |
+
+| script | troskel varde | 1 |
+
+| Enbart foljande intyg finns |
+| personnr | diagnoskod | start    | slut       | enhet | kommentar |
+| 19790407-6457 | G01 | 2009-02-05 | 2013-02-06 | enhet1 | Startdatum innan 2010-01-01 |
+| 19790407-1295 | G01 | 2011-02-05 | 2013-02-06 | enhet1 | Startdatum efter 2010-01-01 |
+
+
+!3 Då gäller:
+Inloggad:
+| Sjukfall i rapporten sjukfall totalt |
+| inloggad som | år   | månad | män? | kvinnor? |
+| user1  | 2013 | feb   | 1    | 0        |
+
+Nationell:
+| Sjukfall i rapporten sjukfall totalt |
+| år   | månad | män? | kvinnor? |
+| 2013 | feb   | 1    | 0        |
+
+
+
+!3 Givet att:
+| script | dagens datum | 2013-11-06 |
+
+| script | troskel varde | 1 |
+
+| Enbart foljande intyg finns |
+| personnr | diagnoskod | start    | slut       | enhet | kommentar |
+| 19790407-6457 | G01 | 2013-02-05 | 2018-11-07 | enhet1 | Slutdatum mer än 5 år fram i tiden |
+| 19790407-1295 | G01 | 2013-02-05 | 2018-11-06 | enhet1 | Slutdatum mindre än 5 år fram i tiden |
+
+!3 Då gäller:
+Inloggad:
+| Sjukfall i rapporten sjukfall totalt |
+| inloggad som | år   | månad | män? | kvinnor? |
+| user1  | 2013 | feb   | 1    | 0        |
+
+Nationell:
+| Sjukfall i rapporten sjukfall totalt |
+| år   | månad | män? | kvinnor? |
+| 2013 | feb   | 1    | 0        |
+
+
+
+!3 Givet att:
+| script | dagens datum | 2013-11-06 |
+
+| script | troskel varde | 1 |
+
+| Enbart foljande intyg finns |
+| personnr | diagnoskod | start    | slut       | enhet | kommentar |
+| 19790407-1295 | G01 | 2013-02-05 | 2012-02-06 | enhet1 | Slutdatum infaller före startdatum |
+
+!3 Då gäller:
+Inloggad:
+| Sjukfall i rapporten sjukfall totalt |
+| inloggad som | år   | månad | män? | kvinnor? |
+| user1  | 2013 | feb   | 0    | 0        |
+
+Nationell:
+| Sjukfall i rapporten sjukfall totalt |
+| år   | månad | män? | kvinnor? |
+| 2013 | feb   | 0    | 0        |

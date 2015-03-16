@@ -1,0 +1,36 @@
+allprojects  {
+    apply plugin: 'maven'
+
+    group = 'com.highcharts.export'
+    version = '2.1.0'
+}
+
+subprojects {
+    apply plugin: 'java'
+
+    sourceCompatibility = 1.7
+    targetCompatibility = 1.7
+
+    repositories {
+        mavenLocal()
+        maven { url "http://repo.maven.apache.org/maven2" }
+    }
+
+    buildscript {
+        repositories {
+            maven { url "https://repository-callistasoftware.forge.cloudbees.com/release/" }
+            maven { url "https://repository-callistasoftware.forge.cloudbees.com/snapshot/" }
+            jcenter()
+        }
+    }
+
+    dependencies {
+        compile 'org.springframework:spring-context:4.0.8.RELEASE'
+        compile 'log4j:log4j:1.2.12'
+        compile 'commons-io:commons-io:1.3.2'
+        compile 'commons-fileupload:commons-fileupload:1.2.2'
+        compile 'javax.servlet:jstl:1.1.2'
+
+        testCompile 'junit:junit:4.8.1'
+    }
+}

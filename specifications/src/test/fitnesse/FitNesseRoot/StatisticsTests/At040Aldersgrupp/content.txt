@@ -1,0 +1,27 @@
+!contents -R2 -g -p -f -h
+
+!3 Givet att:
+| script | dagens datum | 2014-11-28 |
+
+| script | troskel varde | 1 |
+
+| Enbart foljande intyg finns |
+| personnr      | start      | slut       | enhet  | kommentar |
+| 19880701-0015 | 2014-06-01 | 2014-06-30 | enhet2 | |
+| 19880701-0015 | 2014-07-03 | 2014-07-31 | enhet2 | |
+
+
+!3 Då gäller:
+Nationell nivå
+| Sjukfall i rapporten aldersgrupp |
+| åldersgrupp | män? | kvinnor? |
+| 21-25 år    | 0    | 0        |
+| 26-30 år    | 1    | 0        |
+| 31-35 år    | 0    | 0        |
+
+Inloggad nivå
+| Sjukfall i rapporten aldersgrupp |
+| inloggad som | vårdgivarnivå | åldersgrupp | män? | kvinnor? |
+| user2        | false         | 21-25 år    | 0    | 0        |
+| user2        | false         | 26-30 år    | 1    | 0        |
+| user2        | false         | 31-35 år    | 0    | 0        |

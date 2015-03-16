@@ -1,0 +1,92 @@
+buildscript {
+    dependencies {
+        classpath 'org.akhikhl.gretty:gretty:1.1.8'
+    }
+}
+
+plugins {
+    id "com.moowork.node" version "0.8"
+}
+
+apply plugin: 'war'
+apply plugin: 'org.akhikhl.gretty'
+
+description = 'Inera Statistics Service - Web Module'
+
+
+gretty {
+    contextPath = '/'
+    contextConfigFile = "${projectDir}/src/main/webapp/WEB-INF/jetty-context.xml"
+    logbackConfigFile = "${projectDir}/src/main/resources/statistics-logback.xml"
+    jvmArgs = ['-Dspring.profiles.active=dev,embedded,hsa-stub,security-fake,db-resetter', '-Dstatistics.test.max.intyg=500', '-XX:MaxPermSize=256M']
+    debugSuspend = false
+    scanInterval=1
+    managedClassReload=true
+}
+
+node {
+    version = '0.10.32'
+    npmVersion = '2.0.0'
+    download = true
+}
+
+//Enter the webjars dependencies here. Its a bit akward, but it is a workaround to keep karma tests
+//and gretty/jetty happy
+List webjars = [[group: 'org.webjars', name: 'jquery', version: '1.10.2'],
+                [group: 'org.webjars', name: 'angularjs', version: '1.2.14'],
+                [group: 'org.webjars', name: 'angular-ui-bootstrap', version: '0.10.0'],
+                [group: 'org.webjars', name: 'bootstrap', version: '3.1.1'],
+                [group: 'org.webjars', name: 'bootstrap-multiselect', version: '0.9.8'],
+                [group: 'org.webjars', name: 'underscorejs', version: '1.7.0'],
+                [group: 'org.webjars', name: 'respond', version: '1.3.0']]
+
+task unzipWebjars(type: Copy) {
+    description 'Copies anything that is a webjar from the classpath and expands it so that we can use their static resources with karma'
+
+    into "$buildDir/webjars/"
+
+    from {
+        configurations.compile.filter{file ->
+            webjars.any{jar ->
+                file.name.startsWith(jar.name)
+            }
+        }.collect{zipTree(it)}
+    }
+}
+
+task jsTests(type: NodeTask, dependsOn: [npmInstall, unzipWebjars]) {
+    script = file('node_modules/grunt-cli/bin/grunt')
+    args = ['test']
+}
+
+test.dependsOn(jsTests)
+
+task createVersionPropertyFile(dependsOn: processResources) << {
+    def propertyFile = "${buildDir}/resources/main/version.properties"
+    ant.touch(file: propertyFile, mkdirs: "true")
+    ant.propertyfile(file: propertyFile) {
+        entry(key: 'project.version', default: project.version)
+    }
+}
+
+jar.dependsOn createVersionPropertyFile
+
+dependencies {
+    compile project(':statistik-service')
+
+    compile "org.springframework.security.extensions:spring-security-saml2-core:1.0.0.RC2"
+    compile "xml-apis:xml-apis:1.4.01"
+    compile "org.springframework:spring-webmvc:$springContextVersion"
+    compile "org.apache.commons:commons-lang3:3.2.1"
+    compile "org.springframework.security:spring-security-config:${springSecurityVersion}"
+    compile "org.springframework.security:spring-security-taglibs:${springSecurityVersion}"
+
+    compile webjars //Define your webjar in the list above
+
+    gretty "com.h2database:h2:1.3.171"
+    gretty "mysql:mysql-connector-java:5.1.29"
+    gretty "org.apache.activemq:activemq-broker:5.8.0"
+    gretty "org.apache.tomcat:tomcat-catalina:7.0.20"
+
+    providedCompile "javax.servlet:javax.servlet-api:3.1.0"
+}

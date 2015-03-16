@@ -1,0 +1,1120 @@
+!contents -R2 -g -p -f -h
+
+Teset är ignorerat pga STATISTIK-839
+
+!3 Givet att:
+| script | dagens datum | 2015-01-01 |
+
+| script | troskel varde | 1 |
+
+| Foljande lakare finns |
+| id      | förnamn | efternamn |
+| 1 | Fornamn1 | Efternamn1 |
+| 2 | Fornamn2 | Efternamn2 |
+| 3 | Fornamn3 | Efternamn3 |
+| 4 | Fornamn4 | Efternamn4 |
+| 5 | Fornamn5 | Efternamn5 |
+| 6 | Fornamn6 | Efternamn6 |
+| 7 | Fornamn7 | Efternamn7 |
+| 8 | Fornamn8 | Efternamn8 |
+| 9 | Fornamn9 | Efternamn9 |
+| 10 | Fornamn10 | Efternamn10 |
+| 11 | Fornamn11 | Efternamn11 |
+| 12 | Fornamn12 | Efternamn12 |
+| 13 | Fornamn13 | Efternamn13 |
+| 14 | Fornamn14 | Efternamn14 |
+| 15 | Fornamn15 | Efternamn15 |
+| 16 | Fornamn16 | Efternamn16 |
+| 17 | Fornamn17 | Efternamn17 |
+| 18 | Fornamn18 | Efternamn18 |
+| 19 | Fornamn19 | Efternamn19 |
+| 20 | Fornamn20 | Efternamn20 |
+| 21 | Fornamn21 | Efternamn21 |
+| 22 | Fornamn22 | Efternamn22 |
+| 23 | Fornamn23 | Efternamn23 |
+| 24 | Fornamn24 | Efternamn24 |
+| 25 | Fornamn25 | Efternamn25 |
+| 26 | Fornamn26 | Efternamn26 |
+| 27 | Fornamn27 | Efternamn27 |
+| 28 | Fornamn28 | Efternamn28 |
+| 29 | Fornamn29 | Efternamn29 |
+| 30 | Fornamn30 | Efternamn30 |
+| 31 | Fornamn31 | Efternamn31 |
+| 32 | Fornamn32 | Efternamn32 |
+| 33 | Fornamn33 | Efternamn33 |
+| 34 | Fornamn34 | Efternamn34 |
+| 35 | Fornamn35 | Efternamn35 |
+| 36 | Fornamn36 | Efternamn36 |
+| 37 | Fornamn37 | Efternamn37 |
+| 38 | Fornamn38 | Efternamn38 |
+| 39 | Fornamn39 | Efternamn39 |
+| 40 | Fornamn40 | Efternamn40 |
+| 41 | Fornamn41 | Efternamn41 |
+| 42 | Fornamn42 | Efternamn42 |
+| 43 | Fornamn43 | Efternamn43 |
+| 44 | Fornamn44 | Efternamn44 |
+| 45 | Fornamn45 | Efternamn45 |
+| 46 | Fornamn46 | Efternamn46 |
+| 47 | Fornamn47 | Efternamn47 |
+| 48 | Fornamn48 | Efternamn48 |
+| 49 | Fornamn49 | Efternamn49 |
+| 50 | Fornamn50 | Efternamn50 |
+| 51 | Fornamn51 | Efternamn51 |
+| 52 | Fornamn52 | Efternamn52 |
+| 53 | Fornamn53 | Efternamn53 |
+| 54 | Fornamn54 | Efternamn54 |
+| 55 | Fornamn55 | Efternamn55 |
+| 56 | Fornamn56 | Efternamn56 |
+| 57 | Fornamn57 | Efternamn57 |
+| 58 | Fornamn58 | Efternamn58 |
+| 59 | Fornamn59 | Efternamn59 |
+| 60 | Fornamn60 | Efternamn60 |
+| 61 | Fornamn61 | Efternamn61 |
+| 62 | Fornamn62 | Efternamn62 |
+| 63 | Fornamn63 | Efternamn63 |
+| 64 | Fornamn64 | Efternamn64 |
+| 65 | Fornamn65 | Efternamn65 |
+| 66 | Fornamn66 | Efternamn66 |
+| 67 | Fornamn67 | Efternamn67 |
+| 68 | Fornamn68 | Efternamn68 |
+| 69 | Fornamn69 | Efternamn69 |
+| 70 | Fornamn70 | Efternamn70 |
+| 71 | Fornamn71 | Efternamn71 |
+| 72 | Fornamn72 | Efternamn72 |
+| 73 | Fornamn73 | Efternamn73 |
+| 74 | Fornamn74 | Efternamn74 |
+| 75 | Fornamn75 | Efternamn75 |
+| 76 | Fornamn76 | Efternamn76 |
+| 77 | Fornamn77 | Efternamn77 |
+| 78 | Fornamn78 | Efternamn78 |
+| 79 | Fornamn79 | Efternamn79 |
+| 80 | Fornamn80 | Efternamn80 |
+| 81 | Fornamn81 | Efternamn81 |
+| 82 | Fornamn82 | Efternamn82 |
+| 83 | Fornamn83 | Efternamn83 |
+| 84 | Fornamn84 | Efternamn84 |
+| 85 | Fornamn85 | Efternamn85 |
+| 86 | Fornamn86 | Efternamn86 |
+| 87 | Fornamn87 | Efternamn87 |
+| 88 | Fornamn88 | Efternamn88 |
+| 89 | Fornamn89 | Efternamn89 |
+| 90 | Fornamn90 | Efternamn90 |
+| 91 | Fornamn91 | Efternamn91 |
+| 92 | Fornamn92 | Efternamn92 |
+| 93 | Fornamn93 | Efternamn93 |
+| 94 | Fornamn94 | Efternamn94 |
+| 95 | Fornamn95 | Efternamn95 |
+| 96 | Fornamn96 | Efternamn96 |
+| 97 | Fornamn97 | Efternamn97 |
+| 98 | Fornamn98 | Efternamn98 |
+| 99 | Fornamn99 | Efternamn99 |
+| 100 | Fornamn100 | Efternamn100 |
+| 101 | Fornamn101 | Efternamn101 |
+| 102 | Fornamn102 | Efternamn102 |
+| 103 | Fornamn103 | Efternamn103 |
+| 104 | Fornamn104 | Efternamn104 |
+| 105 | Fornamn105 | Efternamn105 |
+| 106 | Fornamn106 | Efternamn106 |
+| 107 | Fornamn107 | Efternamn107 |
+| 108 | Fornamn108 | Efternamn108 |
+| 109 | Fornamn109 | Efternamn109 |
+| 110 | Fornamn110 | Efternamn110 |
+| 111 | Fornamn111 | Efternamn111 |
+| 112 | Fornamn112 | Efternamn112 |
+| 113 | Fornamn113 | Efternamn113 |
+| 114 | Fornamn114 | Efternamn114 |
+| 115 | Fornamn115 | Efternamn115 |
+| 116 | Fornamn116 | Efternamn116 |
+| 117 | Fornamn117 | Efternamn117 |
+| 118 | Fornamn118 | Efternamn118 |
+| 119 | Fornamn119 | Efternamn119 |
+| 120 | Fornamn120 | Efternamn120 |
+| 121 | Fornamn121 | Efternamn121 |
+| 122 | Fornamn122 | Efternamn122 |
+| 123 | Fornamn123 | Efternamn123 |
+| 124 | Fornamn124 | Efternamn124 |
+| 125 | Fornamn125 | Efternamn125 |
+| 126 | Fornamn126 | Efternamn126 |
+| 127 | Fornamn127 | Efternamn127 |
+| 128 | Fornamn128 | Efternamn128 |
+| 129 | Fornamn129 | Efternamn129 |
+| 130 | Fornamn130 | Efternamn130 |
+| 131 | Fornamn131 | Efternamn131 |
+| 132 | Fornamn132 | Efternamn132 |
+| 133 | Fornamn133 | Efternamn133 |
+| 134 | Fornamn134 | Efternamn134 |
+| 135 | Fornamn135 | Efternamn135 |
+| 136 | Fornamn136 | Efternamn136 |
+| 137 | Fornamn137 | Efternamn137 |
+| 138 | Fornamn138 | Efternamn138 |
+| 139 | Fornamn139 | Efternamn139 |
+| 140 | Fornamn140 | Efternamn140 |
+| 141 | Fornamn141 | Efternamn141 |
+| 142 | Fornamn142 | Efternamn142 |
+| 143 | Fornamn143 | Efternamn143 |
+| 144 | Fornamn144 | Efternamn144 |
+| 145 | Fornamn145 | Efternamn145 |
+| 146 | Fornamn146 | Efternamn146 |
+| 147 | Fornamn147 | Efternamn147 |
+| 148 | Fornamn148 | Efternamn148 |
+| 149 | Fornamn149 | Efternamn149 |
+| 150 | Fornamn150 | Efternamn150 |
+| 151 | Fornamn151 | Efternamn151 |
+| 152 | Fornamn152 | Efternamn152 |
+| 153 | Fornamn153 | Efternamn153 |
+| 154 | Fornamn154 | Efternamn154 |
+| 155 | Fornamn155 | Efternamn155 |
+| 156 | Fornamn156 | Efternamn156 |
+| 157 | Fornamn157 | Efternamn157 |
+| 158 | Fornamn158 | Efternamn158 |
+| 159 | Fornamn159 | Efternamn159 |
+| 160 | Fornamn160 | Efternamn160 |
+| 161 | Fornamn161 | Efternamn161 |
+| 162 | Fornamn162 | Efternamn162 |
+| 163 | Fornamn163 | Efternamn163 |
+| 164 | Fornamn164 | Efternamn164 |
+| 165 | Fornamn165 | Efternamn165 |
+| 166 | Fornamn166 | Efternamn166 |
+| 167 | Fornamn167 | Efternamn167 |
+| 168 | Fornamn168 | Efternamn168 |
+| 169 | Fornamn169 | Efternamn169 |
+| 170 | Fornamn170 | Efternamn170 |
+| 171 | Fornamn171 | Efternamn171 |
+| 172 | Fornamn172 | Efternamn172 |
+| 173 | Fornamn173 | Efternamn173 |
+| 174 | Fornamn174 | Efternamn174 |
+| 175 | Fornamn175 | Efternamn175 |
+| 176 | Fornamn176 | Efternamn176 |
+| 177 | Fornamn177 | Efternamn177 |
+| 178 | Fornamn178 | Efternamn178 |
+| 179 | Fornamn179 | Efternamn179 |
+| 180 | Fornamn180 | Efternamn180 |
+| 181 | Fornamn181 | Efternamn181 |
+| 182 | Fornamn182 | Efternamn182 |
+| 183 | Fornamn183 | Efternamn183 |
+| 184 | Fornamn184 | Efternamn184 |
+| 185 | Fornamn185 | Efternamn185 |
+| 186 | Fornamn186 | Efternamn186 |
+| 187 | Fornamn187 | Efternamn187 |
+| 188 | Fornamn188 | Efternamn188 |
+| 189 | Fornamn189 | Efternamn189 |
+| 190 | Fornamn190 | Efternamn190 |
+| 191 | Fornamn191 | Efternamn191 |
+| 192 | Fornamn192 | Efternamn192 |
+| 193 | Fornamn193 | Efternamn193 |
+| 194 | Fornamn194 | Efternamn194 |
+| 195 | Fornamn195 | Efternamn195 |
+| 196 | Fornamn196 | Efternamn196 |
+| 197 | Fornamn197 | Efternamn197 |
+| 198 | Fornamn198 | Efternamn198 |
+| 199 | Fornamn199 | Efternamn199 |
+| 200 | Fornamn200 | Efternamn200 |
+| 201 | Fornamn201 | Efternamn201 |
+| 202 | Fornamn202 | Efternamn202 |
+| 203 | Fornamn203 | Efternamn203 |
+| 204 | Fornamn204 | Efternamn204 |
+| 205 | Fornamn205 | Efternamn205 |
+| 206 | Fornamn206 | Efternamn206 |
+| 207 | Fornamn207 | Efternamn207 |
+| 208 | Fornamn208 | Efternamn208 |
+| 209 | Fornamn209 | Efternamn209 |
+| 210 | Fornamn210 | Efternamn210 |
+| 211 | Fornamn211 | Efternamn211 |
+| 212 | Fornamn212 | Efternamn212 |
+| 213 | Fornamn213 | Efternamn213 |
+| 214 | Fornamn214 | Efternamn214 |
+| 215 | Fornamn215 | Efternamn215 |
+| 216 | Fornamn216 | Efternamn216 |
+| 217 | Fornamn217 | Efternamn217 |
+| 218 | Fornamn218 | Efternamn218 |
+| 219 | Fornamn219 | Efternamn219 |
+| 220 | Fornamn220 | Efternamn220 |
+| 221 | Fornamn221 | Efternamn221 |
+| 222 | Fornamn222 | Efternamn222 |
+| 223 | Fornamn223 | Efternamn223 |
+| 224 | Fornamn224 | Efternamn224 |
+| 225 | Fornamn225 | Efternamn225 |
+| 226 | Fornamn226 | Efternamn226 |
+| 227 | Fornamn227 | Efternamn227 |
+| 228 | Fornamn228 | Efternamn228 |
+| 229 | Fornamn229 | Efternamn229 |
+| 230 | Fornamn230 | Efternamn230 |
+| 231 | Fornamn231 | Efternamn231 |
+| 232 | Fornamn232 | Efternamn232 |
+| 233 | Fornamn233 | Efternamn233 |
+| 234 | Fornamn234 | Efternamn234 |
+| 235 | Fornamn235 | Efternamn235 |
+| 236 | Fornamn236 | Efternamn236 |
+| 237 | Fornamn237 | Efternamn237 |
+| 238 | Fornamn238 | Efternamn238 |
+| 239 | Fornamn239 | Efternamn239 |
+| 240 | Fornamn240 | Efternamn240 |
+| 241 | Fornamn241 | Efternamn241 |
+| 242 | Fornamn242 | Efternamn242 |
+| 243 | Fornamn243 | Efternamn243 |
+| 244 | Fornamn244 | Efternamn244 |
+| 245 | Fornamn245 | Efternamn245 |
+| 246 | Fornamn246 | Efternamn246 |
+| 247 | Fornamn247 | Efternamn247 |
+| 248 | Fornamn248 | Efternamn248 |
+| 249 | Fornamn249 | Efternamn249 |
+| 250 | Fornamn250 | Efternamn250 |
+| 251 | Fornamn251 | Efternamn251 |
+| 252 | Fornamn252 | Efternamn252 |
+| 253 | Fornamn253 | Efternamn253 |
+| 254 | Fornamn254 | Efternamn254 |
+| 255 | Fornamn255 | Efternamn255 |
+| 256 | Fornamn256 | Efternamn256 |
+| 257 | Fornamn257 | Efternamn257 |
+| 258 | Fornamn258 | Efternamn258 |
+| 259 | Fornamn259 | Efternamn259 |
+| 260 | Fornamn260 | Efternamn260 |
+| 261 | Fornamn261 | Efternamn261 |
+| 262 | Fornamn262 | Efternamn262 |
+| 263 | Fornamn263 | Efternamn263 |
+| 264 | Fornamn264 | Efternamn264 |
+| 265 | Fornamn265 | Efternamn265 |
+| 266 | Fornamn266 | Efternamn266 |
+| 267 | Fornamn267 | Efternamn267 |
+| 268 | Fornamn268 | Efternamn268 |
+| 269 | Fornamn269 | Efternamn269 |
+| 270 | Fornamn270 | Efternamn270 |
+| 271 | Fornamn271 | Efternamn271 |
+| 272 | Fornamn272 | Efternamn272 |
+| 273 | Fornamn273 | Efternamn273 |
+| 274 | Fornamn274 | Efternamn274 |
+| 275 | Fornamn275 | Efternamn275 |
+| 276 | Fornamn276 | Efternamn276 |
+| 277 | Fornamn277 | Efternamn277 |
+| 278 | Fornamn278 | Efternamn278 |
+| 279 | Fornamn279 | Efternamn279 |
+| 280 | Fornamn280 | Efternamn280 |
+| 281 | Fornamn281 | Efternamn281 |
+| 282 | Fornamn282 | Efternamn282 |
+| 283 | Fornamn283 | Efternamn283 |
+| 284 | Fornamn284 | Efternamn284 |
+| 285 | Fornamn285 | Efternamn285 |
+| 286 | Fornamn286 | Efternamn286 |
+| 287 | Fornamn287 | Efternamn287 |
+| 288 | Fornamn288 | Efternamn288 |
+| 289 | Fornamn289 | Efternamn289 |
+| 290 | Fornamn290 | Efternamn290 |
+| 291 | Fornamn291 | Efternamn291 |
+| 292 | Fornamn292 | Efternamn292 |
+| 293 | Fornamn293 | Efternamn293 |
+| 294 | Fornamn294 | Efternamn294 |
+| 295 | Fornamn295 | Efternamn295 |
+| 296 | Fornamn296 | Efternamn296 |
+| 297 | Fornamn297 | Efternamn297 |
+| 298 | Fornamn298 | Efternamn298 |
+| 299 | Fornamn299 | Efternamn299 |
+| 300 | Fornamn300 | Efternamn300 |
+| 301 | Fornamn301 | Efternamn301 |
+| 302 | Fornamn302 | Efternamn302 |
+| 303 | Fornamn303 | Efternamn303 |
+| 304 | Fornamn304 | Efternamn304 |
+| 305 | Fornamn305 | Efternamn305 |
+| 306 | Fornamn306 | Efternamn306 |
+| 307 | Fornamn307 | Efternamn307 |
+| 308 | Fornamn308 | Efternamn308 |
+| 309 | Fornamn309 | Efternamn309 |
+| 310 | Fornamn310 | Efternamn310 |
+| 311 | Fornamn311 | Efternamn311 |
+| 312 | Fornamn312 | Efternamn312 |
+| 313 | Fornamn313 | Efternamn313 |
+| 314 | Fornamn314 | Efternamn314 |
+| 315 | Fornamn315 | Efternamn315 |
+| 316 | Fornamn316 | Efternamn316 |
+| 317 | Fornamn317 | Efternamn317 |
+| 318 | Fornamn318 | Efternamn318 |
+| 319 | Fornamn319 | Efternamn319 |
+| 320 | Fornamn320 | Efternamn320 |
+| 321 | Fornamn321 | Efternamn321 |
+| 322 | Fornamn322 | Efternamn322 |
+| 323 | Fornamn323 | Efternamn323 |
+| 324 | Fornamn324 | Efternamn324 |
+| 325 | Fornamn325 | Efternamn325 |
+| 326 | Fornamn326 | Efternamn326 |
+| 327 | Fornamn327 | Efternamn327 |
+| 328 | Fornamn328 | Efternamn328 |
+| 329 | Fornamn329 | Efternamn329 |
+| 330 | Fornamn330 | Efternamn330 |
+| 331 | Fornamn331 | Efternamn331 |
+| 332 | Fornamn332 | Efternamn332 |
+| 333 | Fornamn333 | Efternamn333 |
+| 334 | Fornamn334 | Efternamn334 |
+| 335 | Fornamn335 | Efternamn335 |
+| 336 | Fornamn336 | Efternamn336 |
+| 337 | Fornamn337 | Efternamn337 |
+| 338 | Fornamn338 | Efternamn338 |
+| 339 | Fornamn339 | Efternamn339 |
+| 340 | Fornamn340 | Efternamn340 |
+| 341 | Fornamn341 | Efternamn341 |
+| 342 | Fornamn342 | Efternamn342 |
+| 343 | Fornamn343 | Efternamn343 |
+| 344 | Fornamn344 | Efternamn344 |
+| 345 | Fornamn345 | Efternamn345 |
+| 346 | Fornamn346 | Efternamn346 |
+| 347 | Fornamn347 | Efternamn347 |
+| 348 | Fornamn348 | Efternamn348 |
+| 349 | Fornamn349 | Efternamn349 |
+| 350 | Fornamn350 | Efternamn350 |
+| 351 | Fornamn351 | Efternamn351 |
+| 352 | Fornamn352 | Efternamn352 |
+| 353 | Fornamn353 | Efternamn353 |
+| 354 | Fornamn354 | Efternamn354 |
+| 355 | Fornamn355 | Efternamn355 |
+| 356 | Fornamn356 | Efternamn356 |
+| 357 | Fornamn357 | Efternamn357 |
+| 358 | Fornamn358 | Efternamn358 |
+| 359 | Fornamn359 | Efternamn359 |
+| 360 | Fornamn360 | Efternamn360 |
+| 361 | Fornamn361 | Efternamn361 |
+| 362 | Fornamn362 | Efternamn362 |
+| 363 | Fornamn363 | Efternamn363 |
+| 364 | Fornamn364 | Efternamn364 |
+| 365 | Fornamn365 | Efternamn365 |
+| 366 | Fornamn366 | Efternamn366 |
+| 367 | Fornamn367 | Efternamn367 |
+| 368 | Fornamn368 | Efternamn368 |
+| 369 | Fornamn369 | Efternamn369 |
+| 370 | Fornamn370 | Efternamn370 |
+| 371 | Fornamn371 | Efternamn371 |
+| 372 | Fornamn372 | Efternamn372 |
+| 373 | Fornamn373 | Efternamn373 |
+| 374 | Fornamn374 | Efternamn374 |
+| 375 | Fornamn375 | Efternamn375 |
+| 376 | Fornamn376 | Efternamn376 |
+| 377 | Fornamn377 | Efternamn377 |
+| 378 | Fornamn378 | Efternamn378 |
+| 379 | Fornamn379 | Efternamn379 |
+| 380 | Fornamn380 | Efternamn380 |
+| 381 | Fornamn381 | Efternamn381 |
+| 382 | Fornamn382 | Efternamn382 |
+| 383 | Fornamn383 | Efternamn383 |
+| 384 | Fornamn384 | Efternamn384 |
+| 385 | Fornamn385 | Efternamn385 |
+| 386 | Fornamn386 | Efternamn386 |
+| 387 | Fornamn387 | Efternamn387 |
+| 388 | Fornamn388 | Efternamn388 |
+| 389 | Fornamn389 | Efternamn389 |
+| 390 | Fornamn390 | Efternamn390 |
+| 391 | Fornamn391 | Efternamn391 |
+| 392 | Fornamn392 | Efternamn392 |
+| 393 | Fornamn393 | Efternamn393 |
+| 394 | Fornamn394 | Efternamn394 |
+| 395 | Fornamn395 | Efternamn395 |
+| 396 | Fornamn396 | Efternamn396 |
+| 397 | Fornamn397 | Efternamn397 |
+| 398 | Fornamn398 | Efternamn398 |
+| 399 | Fornamn399 | Efternamn399 |
+| 400 | Fornamn400 | Efternamn400 |
+| 401 | Fornamn401 | Efternamn401 |
+| 402 | Fornamn402 | Efternamn402 |
+| 403 | Fornamn403 | Efternamn403 |
+| 404 | Fornamn404 | Efternamn404 |
+| 405 | Fornamn405 | Efternamn405 |
+| 406 | Fornamn406 | Efternamn406 |
+| 407 | Fornamn407 | Efternamn407 |
+| 408 | Fornamn408 | Efternamn408 |
+| 409 | Fornamn409 | Efternamn409 |
+| 410 | Fornamn410 | Efternamn410 |
+| 411 | Fornamn411 | Efternamn411 |
+| 412 | Fornamn412 | Efternamn412 |
+| 413 | Fornamn413 | Efternamn413 |
+| 414 | Fornamn414 | Efternamn414 |
+| 415 | Fornamn415 | Efternamn415 |
+| 416 | Fornamn416 | Efternamn416 |
+| 417 | Fornamn417 | Efternamn417 |
+| 418 | Fornamn418 | Efternamn418 |
+| 419 | Fornamn419 | Efternamn419 |
+| 420 | Fornamn420 | Efternamn420 |
+| 421 | Fornamn421 | Efternamn421 |
+| 422 | Fornamn422 | Efternamn422 |
+| 423 | Fornamn423 | Efternamn423 |
+| 424 | Fornamn424 | Efternamn424 |
+| 425 | Fornamn425 | Efternamn425 |
+| 426 | Fornamn426 | Efternamn426 |
+| 427 | Fornamn427 | Efternamn427 |
+| 428 | Fornamn428 | Efternamn428 |
+| 429 | Fornamn429 | Efternamn429 |
+| 430 | Fornamn430 | Efternamn430 |
+| 431 | Fornamn431 | Efternamn431 |
+| 432 | Fornamn432 | Efternamn432 |
+| 433 | Fornamn433 | Efternamn433 |
+| 434 | Fornamn434 | Efternamn434 |
+| 435 | Fornamn435 | Efternamn435 |
+| 436 | Fornamn436 | Efternamn436 |
+| 437 | Fornamn437 | Efternamn437 |
+| 438 | Fornamn438 | Efternamn438 |
+| 439 | Fornamn439 | Efternamn439 |
+| 440 | Fornamn440 | Efternamn440 |
+| 441 | Fornamn441 | Efternamn441 |
+| 442 | Fornamn442 | Efternamn442 |
+| 443 | Fornamn443 | Efternamn443 |
+| 444 | Fornamn444 | Efternamn444 |
+| 445 | Fornamn445 | Efternamn445 |
+| 446 | Fornamn446 | Efternamn446 |
+| 447 | Fornamn447 | Efternamn447 |
+| 448 | Fornamn448 | Efternamn448 |
+| 449 | Fornamn449 | Efternamn449 |
+| 450 | Fornamn450 | Efternamn450 |
+| 451 | Fornamn451 | Efternamn451 |
+| 452 | Fornamn452 | Efternamn452 |
+| 453 | Fornamn453 | Efternamn453 |
+| 454 | Fornamn454 | Efternamn454 |
+| 455 | Fornamn455 | Efternamn455 |
+| 456 | Fornamn456 | Efternamn456 |
+| 457 | Fornamn457 | Efternamn457 |
+| 458 | Fornamn458 | Efternamn458 |
+| 459 | Fornamn459 | Efternamn459 |
+| 460 | Fornamn460 | Efternamn460 |
+| 461 | Fornamn461 | Efternamn461 |
+| 462 | Fornamn462 | Efternamn462 |
+| 463 | Fornamn463 | Efternamn463 |
+| 464 | Fornamn464 | Efternamn464 |
+| 465 | Fornamn465 | Efternamn465 |
+| 466 | Fornamn466 | Efternamn466 |
+| 467 | Fornamn467 | Efternamn467 |
+| 468 | Fornamn468 | Efternamn468 |
+| 469 | Fornamn469 | Efternamn469 |
+| 470 | Fornamn470 | Efternamn470 |
+| 471 | Fornamn471 | Efternamn471 |
+| 472 | Fornamn472 | Efternamn472 |
+| 473 | Fornamn473 | Efternamn473 |
+| 474 | Fornamn474 | Efternamn474 |
+| 475 | Fornamn475 | Efternamn475 |
+| 476 | Fornamn476 | Efternamn476 |
+| 477 | Fornamn477 | Efternamn477 |
+| 478 | Fornamn478 | Efternamn478 |
+| 479 | Fornamn479 | Efternamn479 |
+| 480 | Fornamn480 | Efternamn480 |
+| 481 | Fornamn481 | Efternamn481 |
+| 482 | Fornamn482 | Efternamn482 |
+| 483 | Fornamn483 | Efternamn483 |
+| 484 | Fornamn484 | Efternamn484 |
+| 485 | Fornamn485 | Efternamn485 |
+| 486 | Fornamn486 | Efternamn486 |
+| 487 | Fornamn487 | Efternamn487 |
+| 488 | Fornamn488 | Efternamn488 |
+| 489 | Fornamn489 | Efternamn489 |
+| 490 | Fornamn490 | Efternamn490 |
+| 491 | Fornamn491 | Efternamn491 |
+| 492 | Fornamn492 | Efternamn492 |
+| 493 | Fornamn493 | Efternamn493 |
+| 494 | Fornamn494 | Efternamn494 |
+| 495 | Fornamn495 | Efternamn495 |
+| 496 | Fornamn496 | Efternamn496 |
+| 497 | Fornamn497 | Efternamn497 |
+| 498 | Fornamn498 | Efternamn498 |
+| 499 | Fornamn499 | Efternamn499 |
+| 500 | Fornamn500 | Efternamn500 |
+
+
+
+
+
+
+
+| Enbart foljande intyg finns |
+| personnr | diagnoskod |  enhet | start    | slut       |  läkare   |
+| 19500118-2046 | C94 | enhet1 | 2014-06-04 | 2014-06-27 |      1   |
+| 19500118-2061 | unknown | enhet1 | 2014-06-15 | 2014-07-18 |  2   |
+| 19500123-2296 | P93 | enhet2 | 2014-12-28 | 2015-01-22 |      3   |
+| 19500213-2461 | D63 | enhet1 | 2014-12-07 | 2014-12-18 |      4   |
+| 19500219-2382 | C07 | enhet2 | 2013-10-19 | 2013-11-14 |      5   |
+| 19500228-1839 | S35 | enhet1 | 2014-05-29 | 2014-06-28 |      6   |
+| 19500304-2222 | E22 | enhet1 | 2013-10-09 | 2013-11-13 |      7   |
+| 19500307-2260 | F32 | enhet2 | 2014-08-15 | 2014-08-28 |      8   |
+| 19500315-1858 | S64 | enhet2 | 2013-10-16 | 2013-11-12 |      9   |
+| 19500328-2265 | Y09 | enhet2 | 2014-03-17 | 2014-03-26 |      10  |
+| 19500411-2354 | unknown | enhet1 | 2013-10-31 | 2013-11-13 |  11  |
+| 19500430-2120 | unknown | enhet1 | 2013-12-21 | 2014-12-06 |  12  |
+| 19500505-0975 | I77 | enhet2 | 2014-05-20 | 2014-06-05 |      13  |
+| 19500520-2360 | H95 | enhet2 | 2015-01-16 | 2015-02-08 |      14  |
+| 19500525-1599 | P25 | enhet2 | 2013-09-25 | 2013-10-27 |      15  |
+| 19500614-2524 | D04 | enhet2 | 2014-08-08 | 2014-11-07 |      16  |
+| 19500626-2546 | C17 | enhet1 | 2013-12-01 | 2013-12-27 |      17  |
+| 19500627-2354 | X31 | enhet1 | 2014-04-25 | 2014-05-20 |      18  |
+| 19500728-2162 | Z41 | enhet1 | 2013-10-02 | 2013-10-16 |      19  |
+| 19500729-2435 | P21 | enhet1 | 2014-07-07 | 2014-08-09 |      20  |
+| 19500731-2589 | F34 | enhet1 | 2013-12-17 | 2014-01-07 |      21  |
+| 19500807-2307 | W03 | enhet2 | 2014-10-07 | 2014-11-07 |      22  |
+| 19500812-1856 | F43 | enhet2 | 2013-11-04 | 2013-11-17 |      23  |
+| 19500818-2304 | F33 | enhet2 | 2013-12-31 | 2014-01-17 |      24  |
+| 19500821-2226 | Q33 | enhet1 | 2014-08-27 | 2014-09-07 |      25  |
+| 19500907-2553 | K06 | enhet2 | 2014-04-29 | 2014-05-31 |      26  |
+| 19500910-1824 | I69 | enhet1 | 2014-03-06 | 2014-04-06 |      27  |
+| 19500916-2040 | I81 | enhet2 | 2014-07-31 | 2014-08-17 |      28  |
+| 19500930-1770 | G44 | enhet1 | 2013-09-21 | 2013-10-01 |      29  |
+| 19501017-2483 | J37 | enhet2 | 2013-09-28 | 2013-10-21 |      30  |
+| 19501023-2618 | W03 | enhet2 | 2013-11-21 | 2013-12-23 |      31  |
+| 19501101-2365 | J60 | enhet1 | 2014-05-04 | 2014-06-06 |      32  |
+| 19501105-2478 | L63 | enhet1 | 2014-03-25 | 2014-04-25 |      33  |
+| 19501113-2098 | I77 | enhet2 | 2013-08-25 | 2013-09-18 |      34  |
+| 19501128-2182 | N20 | enhet2 | 2013-10-06 | 2013-10-31 |      35  |
+| 19501204-2130 | R78 | enhet1 | 2014-05-14 | 2014-06-04 |      36  |
+| 19501210-2165 | unknown | enhet1 | 2013-11-22 | 2013-11-30 |  37  |
+| 19510115-1818 | O62 | enhet2 | 2014-12-14 | 2015-04-15 |      38  |
+| 19510127-1848 | H73 | enhet2 | 2014-03-15 | 2015-01-07 |      39  |
+| 19510203-1753 | K52 | enhet1 | 2013-10-13 | 2013-11-13 |      40  |
+| 19510226-2267 | M88 | enhet2 | 2014-09-11 | 2014-09-27 |      41  |
+| 19510318-1870 | unknown | enhet1 | 2013-12-16 | 2014-01-06 |  42  |
+| 19510322-2641 | I37 | enhet1 | 2014-04-09 | 2014-05-01 |      43  |
+| 19510417-2555 | A27 | enhet2 | 2013-10-29 | 2013-11-15 |      44  |
+| 19510511-2584 | Z99 | enhet1 | 2014-02-16 | 2014-03-03 |      45  |
+| 19510522-2219 | B40 | enhet2 | 2014-04-17 | 2014-05-02 |      46  |
+| 19510529-2832 | S00 | enhet1 | 2015-01-29 | 2015-02-24 |      47  |
+| 19510606-2101 | D47 | enhet2 | 2014-12-13 | 2014-12-24 |      48  |
+| 19510609-2249 | T16 | enhet1 | 2013-12-16 | 2014-01-04 |      49  |
+| 19510617-2181 | unknown | enhet1 | 2013-11-11 | 2013-11-26 |  50  |
+| 19510713-2119 | Z80 | enhet2 | 2014-11-09 | 2014-12-10 |      51  |
+| 19510715-2166 | unknown | enhet1 | 2013-07-27 | 2013-08-26 |  52  |
+| 19510731-2323 | Q38 | enhet2 | 2013-10-04 | 2013-10-28 |      53  |
+| 19510801-2088 | R91 | enhet1 | 2014-05-17 | 2014-06-19 |      54  |
+| 19510812-2143 | X31 | enhet1 | 2014-09-23 | 2014-10-09 |      55  |
+| 19510819-1833 | A78 | enhet2 | 2014-07-08 | 2014-08-07 |      56  |
+| 19510908-1868 | D84 | enhet2 | 2013-12-18 | 2014-01-09 |      57  |
+| 19510918-2187 | V94 | enhet1 | 2013-08-15 | 2013-09-19 |      58  |
+| 19510921-2224 | L99 | enhet1 | 2014-06-11 | 2014-06-29 |      59  |
+| 19510926-1494 | Y51 | enhet1 | 2013-07-18 | 2013-07-26 |      60  |
+| 19511010-2166 | P39 | enhet1 | 2014-03-20 | 2014-04-03 |      61  |
+| 19511012-1695 | J05 | enhet1 | 2014-11-24 | 2014-12-13 |      62  |
+| 19511102-2249 | I36 | enhet2 | 2014-06-16 | 2014-07-13 |      63  |
+| 19511123-1873 | R93 | enhet1 | 2014-12-24 | 2015-01-27 |      64  |
+| 19511123-2079 | unknown | enhet2 | 2014-11-15 | 2014-12-13 |  65  |
+| 19511216-2143 | R99 | enhet1 | 2014-01-23 | 2014-02-22 |      66  |
+| 19520116-1857 | E27 | enhet2 | 2013-07-21 | 2013-07-28 |      67  |
+| 19520128-2232 | V39 | enhet1 | 2014-03-26 | 2014-05-01 |      68  |
+| 19520213-1578 | M67 | enhet2 | 2014-11-14 | 2014-11-25 |      69  |
+| 19520213-2303 | F70 | enhet2 | 2014-11-17 | 2015-03-27 |      70  |
+| 19520221-2857 | unknown | enhet2 | 2014-07-19 | 2014-08-08 |  71  |
+| 19520307-2227 | E00 | enhet2 | 2014-09-27 | 2014-10-28 |      72  |
+| 19520319-1852 | unknown | enhet1 | 2013-10-23 | 2013-11-08 |  73  |
+| 19520408-2308 | K62 | enhet1 | 2013-09-14 | 2013-10-08 |      74  |
+| 19520415-2192 | D42 | enhet2 | 2014-07-06 | 2015-07-07 |      75  |
+| 19520513-1575 | P10 | enhet1 | 2013-07-15 | 2013-08-01 |      76  |
+| 19520516-2331 | Z49 | enhet2 | 2014-02-13 | 2014-07-05 |      77  |
+| 19520529-2260 | C81 | enhet2 | 2014-01-27 | 2014-02-13 |      78  |
+| 19520614-2597 | F30 | enhet2 | 2015-01-28 | 2015-02-21 |      79  |
+| 19520617-2339 | unknown | enhet1 | 2014-12-12 | 2014-12-26 |  80  |
+| 19520712-2184 | unknown | enhet2 | 2014-05-26 | 2014-06-28 |  81  |
+| 19520727-2252 | P27 | enhet2 | 2014-03-08 | 2014-04-08 |      82  |
+| 19520729-1591 | unknown | enhet1 | 2014-10-26 | 2014-11-27 |  83  |
+| 19520806-2223 | C88 | enhet2 | 2014-03-16 | 2014-04-07 |      84  |
+| 19520913-2132 | N70 | enhet1 | 2015-01-06 | 2015-02-05 |      85  |
+| 19520924-2303 | E29 | enhet1 | 2014-11-08 | 2014-11-16 |      86  |
+| 19521009-2218 | L05 | enhet2 | 2014-05-12 | 2014-06-01 |      87  |
+| 19521031-2582 | C72 | enhet2 | 2014-11-14 | 2015-01-08 |      88  |
+| 19521118-2018 | S97 | enhet2 | 2014-02-13 | 2014-05-05 |      89  |
+| 19521123-1864 | S91 | enhet2 | 2013-07-05 | 2013-07-17 |      90  |
+| 19521222-2318 | J85 | enhet2 | 2014-07-05 | 2014-07-12 |      91  |
+| 19530101-0350 | V12 | enhet1 | 2014-03-16 | 2014-04-21 |      92  |
+| 19530122-1866 | M76 | enhet1 | 2013-11-09 | 2013-12-04 |      93  |
+| 19530202-2255 | S96 | enhet2 | 2013-12-08 | 2014-11-22 |      94  |
+| 19530206-2699 | K66 | enhet1 | 2014-02-26 | 2014-11-03 |      95  |
+| 19530219-2264 | T13 | enhet2 | 2014-11-23 | 2014-12-18 |      96  |
+| 19530301-2198 | Q32 | enhet2 | 2014-07-13 | 2014-07-24 |      97  |
+| 19530323-1855 | H65 | enhet1 | 2014-04-19 | 2015-01-01 |      98  |
+| 19530328-2387 | F12 | enhet2 | 2014-02-13 | 2014-03-21 |      99  |
+| 19530410-2352 | V05 | enhet2 | 2013-11-18 | 2013-12-04 |      100 |
+| 19530416-2349 | C83 | enhet1 | 2013-07-29 | 2013-08-05 |      101 |
+| 19530504-2367 | W66 | enhet2 | 2015-01-14 | 2015-01-29 |      102 |
+| 19530512-2623 | F51 | enhet2 | 2014-07-22 | 2014-08-27 |      103 |
+| 19530519-2626 | H01 | enhet1 | 2014-11-23 | 2015-07-26 |      104 |
+| 19530523-2570 | unknown | enhet2 | 2014-06-30 | 2014-07-18 |  105 |
+| 19530617-2460 | W33 | enhet1 | 2014-04-06 | 2014-05-06 |      106 |
+| 19530709-2691 | unknown | enhet2 | 2014-12-24 | 2015-02-03 |  107 |
+| 19530718-2187 | B48 | enhet2 | 2014-02-26 | 2014-03-27 |      108 |
+| 19530807-2395 | E43 | enhet2 | 2014-04-03 | 2014-04-23 |      109 |
+| 19530911-2489 | A41 | enhet2 | 2015-01-08 | 2015-09-26 |      110 |
+| 19530919-2382 | P61 | enhet2 | 2014-04-20 | 2014-05-04 |      111 |
+| 19530927-2119 | H28 | enhet1 | 2014-08-18 | 2014-08-26 |      112 |
+| 19531002-2107 | unknown | enhet1 | 2013-07-09 | 2013-08-06 |  113 |
+| 19531029-2379 | Z53 | enhet2 | 2014-07-18 | 2014-08-03 |      114 |
+| 19531103-2121 | K20 | enhet2 | 2013-12-29 | 2014-01-19 |      115 |
+| 19531120-2351 | Z64 | enhet2 | 2013-12-23 | 2014-01-12 |      116 |
+| 19531224-2067 | B37 | enhet1 | 2014-06-06 | 2014-06-13 |      117 |
+| 19531224-2083 | X84 | enhet1 | 2014-06-30 | 2014-07-14 |      118 |
+| 19540107-2284 | X29 | enhet2 | 2014-08-21 | 2014-08-30 |      119 |
+| 19540122-2178 | Q32 | enhet1 | 2013-09-29 | 2013-10-12 |      120 |
+| 19540123-2540 | F51 | enhet1 | 2015-01-24 | 2015-02-27 |      121 |
+| 19540209-2638 | A55 | enhet2 | 2013-08-28 | 2013-09-30 |      122 |
+| 19540219-2222 | S51 | enhet2 | 2013-07-20 | 2013-08-25 |      123 |
+| 19540224-1862 | F95 | enhet2 | 2014-11-03 | 2014-11-12 |      124 |
+| 19540310-2303 | C79 | enhet2 | 2014-10-02 | 2014-11-02 |      125 |
+| 19540317-2199 | W12 | enhet2 | 2015-01-21 | 2015-02-21 |      126 |
+| 19540404-2326 | C84 | enhet1 | 2014-02-26 | 2014-03-27 |      127 |
+| 19540413-2382 | unknown | enhet2 | 2014-05-15 | 2014-05-26 |  128 |
+| 19540506-2216 | T52 | enhet1 | 2014-11-04 | 2014-11-30 |      129 |
+| 19540516-2644 | V69 | enhet2 | 2014-11-18 | 2014-12-11 |      130 |
+| 19540527-2260 | X85 | enhet2 | 2013-12-30 | 2014-01-15 |      131 |
+| 19540528-3077 | W51 | enhet1 | 2014-04-04 | 2014-04-11 |      132 |
+| 19540611-2853 | I42 | enhet1 | 2014-07-31 | 2014-08-22 |      133 |
+| 19540617-2626 | E42 | enhet1 | 2013-12-11 | 2014-01-08 |      134 |
+| 19540705-2561 | Y31 | enhet1 | 2014-12-28 | 2015-01-07 |      135 |
+| 19540707-2767 | Q43 | enhet1 | 2013-11-13 | 2014-01-23 |      136 |
+| 19540731-2197 | C64 | enhet2 | 2013-09-25 | 2013-10-21 |      137 |
+| 19540818-2128 | T51 | enhet2 | 2013-09-21 | 2013-10-27 |      138 |
+| 19540904-2172 | C69 | enhet1 | 2013-11-18 | 2013-12-08 |      139 |
+| 19540918-2069 | E58 | enhet1 | 2014-06-24 | 2014-07-12 |      140 |
+| 19540927-2324 | O80 | enhet1 | 2014-07-18 | 2014-08-14 |      141 |
+| 19541006-2656 | Y26 | enhet2 | 2014-09-26 | 2014-10-24 |      142 |
+| 19541007-2572 | I83 | enhet1 | 2014-12-05 | 2015-03-14 |      143 |
+| 19541010-1801 | I60 | enhet2 | 2014-03-13 | 2014-04-18 |      144 |
+| 19541018-1969 | I98 | enhet2 | 2013-09-17 | 2013-10-12 |      145 |
+| 19541112-2590 | L97 | enhet1 | 2014-12-31 | 2015-01-29 |      146 |
+| 19541122-2267 | C88 | enhet1 | 2014-01-08 | 2014-09-18 |      147 |
+| 19541219-2097 | L71 | enhet2 | 2014-10-28 | 2014-11-05 |      148 |
+| 19550114-2284 | E61 | enhet2 | 2013-08-10 | 2013-09-07 |      149 |
+| 19550121-2137 | K36 | enhet1 | 2014-12-17 | 2015-01-05 |      150 |
+| 19550129-2303 | S43 | enhet2 | 2014-09-18 | 2014-10-16 |      151 |
+| 19550205-2656 | T43 | enhet2 | 2013-12-11 | 2013-12-20 |      152 |
+| 19550224-2687 | X46 | enhet2 | 2013-08-26 | 2013-09-13 |      153 |
+| 19550227-2684 | M82 | enhet1 | 2014-08-06 | 2014-08-19 |      154 |
+| 19550307-1739 | Z25 | enhet2 | 2014-12-08 | 2014-12-20 |      155 |
+| 19550307-1754 | R39 | enhet1 | 2014-12-09 | 2015-01-07 |      156 |
+| 19550307-1770 | P28 | enhet1 | 2014-05-31 | 2014-06-14 |      157 |
+| 19550307-1796 | I34 | enhet1 | 2014-05-03 | 2014-05-29 |      158 |
+| 19550307-1812 | Y87 | enhet2 | 2014-01-16 | 2014-04-15 |      159 |
+| 19550307-1887 | R31 | enhet2 | 2013-10-12 | 2013-11-07 |      160 |
+| 19550307-2026 | A33 | enhet2 | 2014-08-27 | 2014-09-25 |      161 |
+| 19550307-2042 | O74 | enhet1 | 2014-01-10 | 2014-01-18 |      162 |
+| 19550307-2067 | S50 | enhet2 | 2013-11-08 | 2014-06-24 |      163 |
+| 19550307-2083 | unknown | enhet1 | 2014-12-20 | 2015-01-12 |  164 |
+| 19550314-2027 | Y07 | enhet2 | 2013-11-09 | 2013-12-06 |      165 |
+| 19550317-2370 | F03 | enhet2 | 2014-05-15 | 2014-05-26 |      166 |
+| 19550326-2684 | K27 | enhet1 | 2014-05-17 | 2014-06-12 |      167 |
+| 19550416-2776 | K04 | enhet2 | 2013-09-21 | 2013-10-14 |      168 |
+| 19550507-2529 | H46 | enhet2 | 2013-12-12 | 2014-01-11 |      169 |
+| 19550510-3613 | M50 | enhet2 | 2014-02-15 | 2014-03-15 |      170 |
+| 19550528-2250 | O75 | enhet2 | 2014-01-04 | 2014-02-01 |      171 |
+| 19550607-2882 | P39 | enhet2 | 2014-11-17 | 2014-12-06 |      172 |
+| 19550630-2388 | L90 | enhet2 | 2014-01-16 | 2014-02-17 |      173 |
+| 19550712-2355 | X54 | enhet1 | 2013-08-30 | 2013-09-10 |      174 |
+| 19550725-2301 | W03 | enhet2 | 2014-05-02 | 2014-05-21 |      175 |
+| 19550801-2647 | B80 | enhet2 | 2015-01-23 | 2015-02-08 |      176 |
+| 19550811-2561 | Y06 | enhet2 | 2014-06-28 | 2014-07-23 |      177 |
+| 19550814-2592 | W42 | enhet2 | 2013-10-11 | 2013-11-03 |      178 |
+| 19550913-2386 | S79 | enhet1 | 2013-11-05 | 2013-12-09 |      179 |
+| 19550922-2526 | S58 | enhet2 | 2014-01-27 | 2014-02-14 |      180 |
+| 19550929-2891 | S29 | enhet2 | 2014-04-09 | 2014-04-24 |      181 |
+| 19551015-2167 | P13 | enhet1 | 2013-08-10 | 2013-09-02 |      182 |
+| 19551022-2259 | V30 | enhet2 | 2014-11-25 | 2014-12-30 |      183 |
+| 19551108-2660 | J04 | enhet2 | 2014-08-24 | 2014-09-15 |      184 |
+| 19551126-2213 | R93 | enhet2 | 2014-03-09 | 2014-04-14 |      185 |
+| 19551216-2784 | S75 | enhet1 | 2014-07-27 | 2014-08-14 |      186 |
+| 19551226-2667 | Q52 | enhet1 | 2014-11-15 | 2014-12-14 |      187 |
+| 19560113-2334 | T81 | enhet2 | 2013-09-01 | 2013-09-08 |      188 |
+| 19560122-2861 | L81 | enhet1 | 2014-07-21 | 2014-08-06 |      189 |
+| 19560207-2653 | unknown | enhet1 | 2014-04-03 | 2014-05-07 |  190 |
+| 19560219-2683 | I73 | enhet1 | 2013-10-11 | 2013-11-06 |      191 |
+| 19560303-2193 | T74 | enhet1 | 2014-11-01 | 2014-12-07 |      192 |
+| 19560321-2696 | W52 | enhet2 | 2014-09-10 | 2014-10-06 |      193 |
+| 19560331-3122 | B80 | enhet1 | 2013-10-19 | 2013-11-18 |      194 |
+| 19560406-2595 | N28 | enhet2 | 2015-01-22 | 2015-02-14 |      195 |
+| 19560412-2795 | G90 | enhet2 | 2013-07-12 | 2013-07-20 |      196 |
+| 19560508-2642 | unknown | enhet1 | 2014-02-21 | 2014-03-26 |  197 |
+| 19560523-2775 | A74 | enhet2 | 2013-11-12 | 2013-11-22 |      198 |
+| 19560604-1324 | O82 | enhet2 | 2014-07-28 | 2014-08-23 |      199 |
+| 19560617-2798 | V90 | enhet2 | 2014-11-27 | 2014-12-09 |      200 |
+| 19560618-2748 | T30 | enhet2 | 2013-10-15 | 2013-11-17 |      201 |
+| 19560722-2394 | S98 | enhet2 | 2014-03-18 | 2014-12-12 |      202 |
+| 19560730-2329 | W55 | enhet2 | 2014-01-06 | 2014-01-16 |      203 |
+| 19560808-2656 | Y41 | enhet1 | 2014-10-10 | 2014-10-28 |      204 |
+| 19560905-2385 | unknown | enhet2 | 2013-09-13 | 2013-09-25 |  205 |
+| 19560908-2895 | V97 | enhet2 | 2013-07-07 | 2013-08-12 |      206 |
+| 19560919-2819 | A08 | enhet1 | 2014-06-11 | 2014-07-08 |      207 |
+| 19560927-2819 | F28 | enhet2 | 2014-08-05 | 2014-08-21 |      208 |
+| 19561013-2382 | D05 | enhet2 | 2013-09-23 | 2013-10-11 |      209 |
+| 19561028-2476 | V60 | enhet1 | 2014-08-06 | 2014-10-04 |      210 |
+| 19561101-2765 | S59 | enhet2 | 2014-06-27 | 2014-07-23 |      211 |
+| 19561124-2859 | S49 | enhet2 | 2014-01-09 | 2014-01-17 |      212 |
+| 19561126-2857 | S72 | enhet2 | 2014-03-23 | 2014-04-25 |      213 |
+| 19561207-2545 | P81 | enhet1 | 2014-05-12 | 2014-10-15 |      214 |
+| 19570129-2897 | unknown | enhet2 | 2015-01-18 | 2015-02-19 |  215 |
+| 19570218-2568 | H54 | enhet2 | 2013-08-19 | 2013-09-15 |      216 |
+| 19570227-2872 | N29 | enhet1 | 2014-06-06 | 2014-06-23 |      217 |
+| 19570312-2621 | B46 | enhet2 | 2014-09-12 | 2014-09-26 |      218 |
+| 19570321-3032 | W76 | enhet1 | 2013-11-05 | 2013-12-03 |      219 |
+| 19570413-3106 | V91 | enhet1 | 2015-01-26 | 2015-02-20 |      220 |
+| 19570508-2633 | O66 | enhet1 | 2014-10-10 | 2014-10-31 |      221 |
+| 19570517-2590 | Q51 | enhet2 | 2014-09-26 | 2014-10-18 |      222 |
+| 19570601-2274 | H30 | enhet1 | 2014-02-11 | 2014-03-01 |      223 |
+| 19570620-2610 | R21 | enhet2 | 2014-12-19 | 2015-01-01 |      224 |
+| 19570626-2630 | S28 | enhet1 | 2014-07-12 | 2014-07-30 |      225 |
+| 19570818-2810 | G01 | enhet1 | 2014-02-18 | 2014-03-26 |      226 |
+| 19570911-2790 | unknown | enhet1 | 2014-05-20 | 2014-06-13 |  227 |
+| 19570926-3080 | S86 | enhet1 | 2014-01-11 | 2014-02-08 |      228 |
+| 19571014-2653 | unknown | enhet2 | 2014-03-17 | 2014-04-16 |  229 |
+| 19571015-2199 | H45 | enhet2 | 2014-02-08 | 2014-02-24 |      230 |
+| 19571031-2686 | D35 | enhet2 | 2013-08-07 | 2013-09-06 |      231 |
+| 19571109-2642 | M50 | enhet2 | 2014-06-22 | 2014-07-16 |      232 |
+| 19571121-2893 | K76 | enhet1 | 2014-10-11 | 2014-10-20 |      233 |
+| 19571230-2842 | M05 | enhet2 | 2014-02-21 | 2014-03-04 |      234 |
+| 19580108-2743 | C80 | enhet1 | 2014-09-17 | 2014-10-07 |      235 |
+| 19580112-2655 | T03 | enhet1 | 2014-04-25 | 2014-05-02 |      236 |
+| 19580126-3053 | Y23 | enhet2 | 2014-07-28 | 2014-08-10 |      237 |
+| 19580214-2785 | unknown | enhet2 | 2014-01-27 | 2014-02-23 |  238 |
+| 19580223-2636 | Q77 | enhet1 | 2015-01-16 | 2015-02-01 |      239 |
+| 19580301-2805 | K87 | enhet1 | 2014-08-07 | 2014-09-08 |      240 |
+| 19580319-3258 | M13 | enhet1 | 2014-10-30 | 2014-11-20 |      241 |
+| 19580404-3643 | H11 | enhet1 | 2014-12-29 | 2015-01-28 |      242 |
+| 19580513-3138 | D65 | enhet2 | 2013-08-30 | 2013-09-29 |      243 |
+| 19580522-3087 | S68 | enhet1 | 2014-02-10 | 2014-03-05 |      244 |
+| 19580607-3077 | Y02 | enhet2 | 2014-01-10 | 2014-02-06 |      245 |
+| 19580707-2813 | unknown | enhet1 | 2014-08-24 | 2014-09-10 |  246 |
+| 19580711-2643 | F66 | enhet1 | 2014-08-08 | 2014-09-08 |      247 |
+| 19580713-3052 | K73 | enhet2 | 2014-10-09 | 2014-11-08 |      248 |
+| 19580730-2996 | B74 | enhet2 | 2014-09-15 | 2014-10-06 |      249 |
+| 19580805-2384 | L57 | enhet1 | 2013-08-03 | 2013-08-28 |      250 |
+| 19580909-2652 | T96 | enhet2 | 2014-06-10 | 2014-06-22 |      251 |
+| 19580913-2896 | M79 | enhet1 | 2014-03-10 | 2014-03-25 |      252 |
+| 19580926-2743 | T12 | enhet1 | 2015-01-24 | 2015-02-28 |      253 |
+| 19581003-3356 | B81 | enhet2 | 2013-09-27 | 2013-10-08 |      254 |
+| 19581030-2868 | V89 | enhet1 | 2014-01-07 | 2014-01-23 |      255 |
+| 19581111-2217 | L26 | enhet2 | 2014-05-12 | 2014-05-27 |      256 |
+| 19581112-3073 | X01 | enhet2 | 2013-10-23 | 2013-11-19 |      257 |
+| 19581124-3269 | T08 | enhet2 | 2014-10-29 | 2014-11-06 |      258 |
+| 19581209-2830 | A77 | enhet2 | 2014-07-24 | 2014-08-15 |      259 |
+| 19581219-3091 | N41 | enhet2 | 2013-10-29 | 2013-12-04 |      260 |
+| 19590102-2995 | V93 | enhet2 | 2014-10-18 | 2014-11-17 |      261 |
+| 19590123-2602 | H02 | enhet1 | 2014-12-23 | 2015-01-07 |      262 |
+| 19590201-0353 | Y59 | enhet2 | 2013-09-18 | 2013-10-06 |      263 |
+| 19590217-3391 | P56 | enhet2 | 2013-08-08 | 2013-08-23 |      264 |
+| 19590226-2806 | Q45 | enhet2 | 2014-05-02 | 2014-05-26 |      265 |
+| 19590313-3279 | C02 | enhet1 | 2013-12-16 | 2014-01-02 |      266 |
+| 19590330-2783 | W89 | enhet2 | 2014-10-19 | 2014-11-10 |      267 |
+| 19590422-3350 | L65 | enhet1 | 2014-11-10 | 2014-12-10 |      268 |
+| 19590502-2876 | T71 | enhet2 | 2014-04-13 | 2014-05-16 |      269 |
+| 19590505-2881 | C03 | enhet2 | 2014-01-20 | 2014-02-07 |      270 |
+| 19590514-3391 | Z23 | enhet1 | 2014-09-10 | 2014-10-03 |      271 |
+| 19590611-3187 | D72 | enhet2 | 2014-12-13 | 2014-12-27 |      272 |
+| 19590711-3178 | I43 | enhet2 | 2014-06-09 | 2014-06-26 |      273 |
+| 19590714-2599 | I99 | enhet1 | 2014-04-22 | 2014-10-22 |      274 |
+| 19590715-3174 | Y85 | enhet1 | 2013-08-22 | 2013-09-11 |      275 |
+| 19590820-2673 | R68 | enhet2 | 2014-01-26 | 2014-02-25 |      276 |
+| 19590909-2990 | D13 | enhet2 | 2014-04-05 | 2014-05-10 |      277 |
+| 19590912-2821 | G30 | enhet2 | 2013-08-03 | 2013-08-31 |      278 |
+| 19590926-3070 | K86 | enhet2 | 2013-07-15 | 2013-08-07 |      279 |
+| 19591016-2642 | B75 | enhet2 | 2014-08-16 | 2014-08-31 |      280 |
+| 19591019-2631 | A64 | enhet2 | 2014-04-08 | 2014-05-12 |      281 |
+| 19591031-2577 | A02 | enhet2 | 2013-10-20 | 2013-11-01 |      282 |
+| 19591103-2620 | B35 | enhet1 | 2013-07-21 | 2013-08-21 |      283 |
+| 19591114-2817 | R74 | enhet2 | 2014-05-18 | 2014-06-19 |      284 |
+| 19591117-2939 | unknown | enhet2 | 2014-12-03 | 2015-01-03 |  285 |
+| 19591223-2849 | G31 | enhet2 | 2014-07-02 | 2014-07-26 |      286 |
+| 19600106-2626 | S00 | enhet2 | 2015-01-31 | 2015-03-06 |      287 |
+| 19600120-9136 | R35 | enhet2 | 2014-10-21 | 2014-11-17 |      288 |
+| 19600125-2532 | Y06 | enhet2 | 2014-05-12 | 2014-06-14 |      289 |
+| 19600128-2570 | G71 | enhet2 | 2014-07-28 | 2014-08-19 |      290 |
+| 19600214-2682 | N41 | enhet2 | 2015-01-22 | 2015-01-29 |      291 |
+| 19600226-2852 | R32 | enhet1 | 2013-09-06 | 2013-09-18 |      292 |
+| 19600310-2628 | J99 | enhet1 | 2014-07-18 | 2014-08-13 |      293 |
+| 19600318-0988 | C81 | enhet2 | 2013-12-01 | 2013-12-14 |      294 |
+| 19600324-2879 | G07 | enhet1 | 2014-02-23 | 2014-03-10 |      295 |
+| 19600418-2843 | G96 | enhet1 | 2013-07-19 | 2013-08-19 |      296 |
+| 19600503-2872 | T95 | enhet1 | 2015-01-04 | 2015-01-16 |      297 |
+| 19600504-3119 | J32 | enhet2 | 2015-01-11 | 2015-01-19 |      298 |
+| 19600527-2809 | N72 | enhet2 | 2015-01-01 | 2015-01-24 |      299 |
+| 19600617-2818 | J09 | enhet1 | 2013-10-23 | 2013-11-22 |      300 |
+| 19600708-3121 | T05 | enhet2 | 2014-04-01 | 2014-04-24 |      301 |
+| 19600721-2613 | M68 | enhet2 | 2013-09-23 | 2013-10-13 |      302 |
+| 19600813-3065 | D39 | enhet2 | 2014-03-23 | 2014-04-10 |      303 |
+| 19600905-2991 | G82 | enhet2 | 2014-11-17 | 2014-12-04 |      304 |
+| 19600917-2336 | unknown | enhet2 | 2013-08-19 | 2013-08-26 |  305 |
+| 19600930-2560 | D70 | enhet2 | 2014-05-17 | 2014-05-28 |      306 |
+| 19601011-3030 | R84 | enhet2 | 2014-07-26 | 2014-08-03 |      307 |
+| 19601019-2679 | S84 | enhet1 | 2014-05-30 | 2014-06-29 |      308 |
+| 19601027-2661 | R19 | enhet2 | 2014-02-26 | 2014-12-30 |      309 |
+| 19601111-2775 | B64 | enhet1 | 2014-10-09 | 2014-11-07 |      310 |
+| 19601124-2820 | S54 | enhet1 | 2014-11-24 | 2014-12-08 |      311 |
+| 19601128-2834 | unknown | enhet1 | 2014-08-28 | 2014-09-12 |  312 |
+| 19601217-2737 | J12 | enhet2 | 2013-10-31 | 2014-02-26 |      313 |
+| 19610112-2650 | S89 | enhet1 | 2014-05-13 | 2014-05-30 |      314 |
+| 19610118-2803 | S47 | enhet2 | 2014-03-18 | 2014-04-08 |      315 |
+| 19610124-2797 | Q85 | enhet2 | 2014-05-23 | 2014-06-08 |      316 |
+| 19610208-3141 | C33 | enhet1 | 2014-07-09 | 2014-07-22 |      317 |
+| 19610213-3177 | T92 | enhet1 | 2013-10-28 | 2013-11-14 |      318 |
+| 19610304-3698 | Z96 | enhet2 | 2013-11-29 | 2013-12-13 |      319 |
+| 19610312-3227 | O75 | enhet1 | 2014-07-19 | 2014-07-27 |      320 |
+| 19610321-3499 | A33 | enhet1 | 2014-12-27 | 2015-01-23 |      321 |
+| 19610403-2898 | X12 | enhet1 | 2014-05-29 | 2014-06-27 |      322 |
+| 19610415-3488 | S11 | enhet1 | 2015-01-16 | 2015-02-05 |      323 |
+| 19610516-2652 | Z42 | enhet1 | 2013-07-03 | 2013-08-04 |      324 |
+| 19610527-3269 | J35 | enhet2 | 2014-06-29 | 2014-08-04 |      325 |
+| 19610614-3495 | J38 | enhet2 | 2013-09-25 | 2013-10-15 |      326 |
+| 19610710-2862 | H65 | enhet1 | 2014-06-16 | 2014-06-25 |      327 |
+| 19610716-2791 | unknown | enhet1 | 2013-12-26 | 2014-01-27 |  328 |
+| 19610729-3059 | I65 | enhet2 | 2014-06-05 | 2014-06-24 |      329 |
+| 19610819-3175 | A22 | enhet1 | 2014-03-14 | 2014-03-24 |      330 |
+| 19610828-3166 | C21 | enhet1 | 2014-08-04 | 2014-09-08 |      331 |
+| 19610907-2972 | F64 | enhet2 | 2013-10-10 | 2013-11-15 |      332 |
+| 19610928-2829 | L03 | enhet2 | 2014-06-18 | 2014-07-21 |      333 |
+| 19611002-3055 | L10 | enhet2 | 2014-11-12 | 2014-11-20 |      334 |
+| 19611018-2547 | X88 | enhet2 | 2013-11-17 | 2013-12-20 |      335 |
+| 19611111-2956 | P26 | enhet2 | 2014-06-19 | 2014-06-28 |      336 |
+| 19611120-2989 | J82 | enhet1 | 2014-10-02 | 2014-10-09 |      337 |
+| 19611207-2654 | O45 | enhet2 | 2013-12-20 | 2014-01-24 |      338 |
+| 19611212-2871 | N30 | enhet1 | 2013-07-10 | 2013-07-28 |      339 |
+| 19620108-2697 | K64 | enhet2 | 2013-09-05 | 2013-09-16 |      340 |
+| 19620112-2808 | E73 | enhet2 | 2014-01-27 | 2014-03-03 |      341 |
+| 19620210-3138 | C43 | enhet2 | 2013-10-31 | 2013-11-11 |      342 |
+| 19620225-2760 | M92 | enhet2 | 2014-11-17 | 2014-12-05 |      343 |
+| 19620317-3056 | J17 | enhet1 | 2013-08-24 | 2013-09-09 |      344 |
+| 19620323-3066 | D46 | enhet2 | 2014-10-16 | 2014-11-10 |      345 |
+| 19620414-2852 | Q52 | enhet1 | 2013-09-16 | 2013-09-26 |      346 |
+| 19620514-3248 | K09 | enhet1 | 2014-12-21 | 2015-01-18 |      347 |
+| 19620526-2816 | W68 | enhet2 | 2013-10-05 | 2013-11-03 |      348 |
+| 19620619-3143 | K09 | enhet1 | 2014-12-22 | 2015-01-24 |      349 |
+| 19620714-2842 | unknown | enhet1 | 2014-03-10 | 2014-04-12 |  350 |
+| 19620721-3098 | W75 | enhet2 | 2013-10-17 | 2013-11-22 |      351 |
+| 19620723-2882 | B16 | enhet2 | 2013-11-08 | 2013-11-25 |      352 |
+| 19620723-3047 | C18 | enhet2 | 2014-01-18 | 2014-02-03 |      353 |
+| 19620813-2834 | F14 | enhet2 | 2014-07-17 | 2014-10-15 |      354 |
+| 19620827-2846 | W79 | enhet1 | 2013-10-15 | 2013-11-16 |      355 |
+| 19620913-2767 | N75 | enhet2 | 2013-11-01 | 2013-11-08 |      356 |
+| 19620922-3152 | E01 | enhet1 | 2014-03-05 | 2014-04-02 |      357 |
+| 19621001-2842 | unknown | enhet1 | 2013-10-27 | 2013-11-08 |  358 |
+| 19621005-3143 | I88 | enhet2 | 2013-11-18 | 2013-11-26 |      359 |
+| 19621031-3117 | V23 | enhet1 | 2014-10-11 | 2014-10-28 |      360 |
+| 19621102-2766 | B59 | enhet2 | 2014-08-17 | 2014-09-04 |      361 |
+| 19621117-3148 | S02 | enhet1 | 2014-05-16 | 2014-06-04 |      362 |
+| 19621126-2834 | N88 | enhet2 | 2013-07-24 | 2014-04-20 |      363 |
+| 19621202-3144 | F28 | enhet1 | 2014-04-18 | 2014-05-22 |      364 |
+| 19621228-2583 | F78 | enhet1 | 2014-06-07 | 2014-07-12 |      365 |
+| 19630102-2866 | Q84 | enhet1 | 2013-12-15 | 2014-01-06 |      366 |
+| 19630119-3121 | B44 | enhet2 | 2014-02-28 | 2014-03-08 |      367 |
+| 19630120-2633 | O28 | enhet2 | 2013-08-18 | 2013-09-10 |      368 |
+| 19630206-2846 | Z35 | enhet2 | 2013-12-08 | 2014-01-09 |      369 |
+| 19630227-3351 | R20 | enhet1 | 2015-02-01 | 2015-02-14 |      370 |
+| 19630311-3366 | Z71 | enhet2 | 2014-05-18 | 2014-06-09 |      371 |
+| 19630327-5793 | W27 | enhet2 | 2015-01-19 | 2015-02-07 |      372 |
+| 19630421-3389 | R54 | enhet1 | 2014-07-15 | 2014-08-13 |      373 |
+| 19630507-3345 | A17 | enhet2 | 2013-11-07 | 2013-11-17 |      374 |
+| 19630511-3174 | I37 | enhet1 | 2014-06-05 | 2014-07-07 |      375 |
+| 19630518-3144 | I85 | enhet2 | 2014-01-24 | 2014-02-15 |      376 |
+| 19630616-3400 | Y71 | enhet1 | 2014-10-22 | 2014-11-27 |      377 |
+| 19630625-3151 | K22 | enhet2 | 2014-11-18 | 2014-12-02 |      378 |
+| 19630731-2774 | B17 | enhet2 | 2013-07-31 | 2013-08-30 |      379 |
+| 19630814-2782 | B18 | enhet1 | 2014-02-20 | 2014-03-11 |      380 |
+| 19630821-2817 | D31 | enhet2 | 2013-08-13 | 2013-08-20 |      381 |
+| 19630923-2962 | I34 | enhet1 | 2015-01-25 | 2015-02-03 |      382 |
+| 19631007-2993 | T08 | enhet1 | 2014-09-03 | 2014-10-01 |      383 |
+| 19631026-2628 | Q55 | enhet1 | 2014-08-16 | 2014-09-09 |      384 |
+| 19631129-2608 | unknown | enhet1 | 2013-09-11 | 2013-10-13 |  385 |
+| 19631212-3240 | S36 | enhet2 | 2014-03-16 | 2015-01-18 |      386 |
+| 19640105-3076 | S65 | enhet2 | 2014-01-18 | 2014-02-10 |      387 |
+| 19640122-2861 | T34 | enhet1 | 2014-01-05 | 2014-01-14 |      388 |
+| 19640212-3191 | unknown | enhet1 | 2013-08-10 | 2013-08-19 |  389 |
+| 19640218-3377 | I44 | enhet1 | 2013-09-04 | 2013-09-26 |      390 |
+| 19640228-3367 | M10 | enhet1 | 2013-10-09 | 2013-10-16 |      391 |
+| 19640301-3417 | unknown | enhet1 | 2014-05-22 | 2014-06-21 |  392 |
+| 19640319-3771 | D82 | enhet2 | 2014-10-19 | 2014-11-11 |      393 |
+| 19640327-3169 | unknown | enhet1 | 2013-07-31 | 2013-08-15 |  394 |
+| 19640409-4739 | G73 | enhet2 | 2014-07-24 | 2014-08-26 |      395 |
+| 19640415-3832 | V68 | enhet1 | 2013-10-09 | 2013-11-08 |      396 |
+| 19640511-2985 | Z65 | enhet1 | 2013-09-25 | 2014-05-24 |      397 |
+| 19640518-3630 | A54 | enhet1 | 2014-12-28 | 2015-01-13 |      398 |
+| 19640610-3405 | unknown | enhet2 | 2014-10-08 | 2014-11-01 |  399 |
+| 19640713-3252 | unknown | enhet1 | 2014-11-10 | 2014-11-27 |  400 |
+| 19640731-3607 | R11 | enhet1 | 2014-03-31 | 2014-05-03 |      401 |
+| 19640807-3416 | I80 | enhet2 | 2014-04-17 | 2014-05-08 |      402 |
+| 19640810-2991 | C24 | enhet2 | 2014-07-17 | 2014-08-02 |      403 |
+| 19640823-3234 | W92 | enhet2 | 2014-09-07 | 2014-09-22 |      404 |
+| 19640905-3086 | E41 | enhet1 | 2013-08-23 | 2013-09-03 |      405 |
+| 19640929-4698 | N47 | enhet2 | 2014-03-04 | 2014-03-14 |      406 |
+| 19641010-2880 | X53 | enhet2 | 2014-11-13 | 2014-12-01 |      407 |
+| 19641024-3056 | X14 | enhet1 | 2014-02-06 | 2014-02-17 |      408 |
+| 19641119-3086 | P57 | enhet1 | 2013-11-09 | 2013-12-15 |      409 |
+| 19641128-3499 | R26 | enhet1 | 2013-11-15 | 2013-12-06 |      410 |
+| 19641228-3647 | R13 | enhet2 | 2013-12-04 | 2014-01-09 |      411 |
+| 19650102-2773 | U83 | enhet2 | 2013-09-10 | 2013-10-16 |      412 |
+| 19650113-3372 | W17 | enhet1 | 2014-09-05 | 2014-10-02 |      413 |
+| 19650125-3063 | V18 | enhet1 | 2014-11-14 | 2014-12-01 |      414 |
+| 19650201-3755 | R43 | enhet1 | 2014-10-26 | 2015-06-19 |      415 |
+| 19650202-3143 | M07 | enhet2 | 2015-01-11 | 2015-02-14 |      416 |
+| 19650210-3614 | V38 | enhet2 | 2014-12-06 | 2015-05-14 |      417 |
+| 19650314-3254 | T13 | enhet2 | 2013-08-26 | 2013-09-19 |      418 |
+| 19650318-4589 | N51 | enhet1 | 2013-11-05 | 2013-12-09 |      419 |
+| 19650420-3792 | D22 | enhet1 | 2013-09-10 | 2013-09-18 |      420 |
+| 19650509-2962 | X85 | enhet2 | 2013-11-07 | 2014-04-20 |      421 |
+| 19650515-3293 | B88 | enhet1 | 2014-06-24 | 2014-07-17 |      422 |
+| 19650623-2880 | L92 | enhet2 | 2014-05-05 | 2014-05-23 |      423 |
+| 19650713-2758 | unknown | enhet2 | 2014-11-23 | 2014-12-02 |  424 |
+| 19650718-2795 | R47 | enhet1 | 2014-06-23 | 2015-03-08 |      425 |
+| 19650723-3721 | M41 | enhet1 | 2013-09-09 | 2013-10-04 |      426 |
+| 19650812-2857 | C48 | enhet1 | 2014-08-16 | 2014-09-03 |      427 |
+| 19650816-3257 | V61 | enhet1 | 2013-11-15 | 2013-11-22 |      428 |
+| 19651011-3050 | S72 | enhet2 | 2014-09-20 | 2014-10-20 |      429 |
+| 19651031-3114 | Y13 | enhet1 | 2013-11-04 | 2013-11-25 |      430 |
+| 19651207-3245 | unknown | enhet1 | 2014-03-30 | 2014-06-29 |  431 |
+| 19651212-3339 | A52 | enhet2 | 2014-01-21 | 2014-02-01 |      432 |
+| 19660106-2620 | Q23 | enhet1 | 2013-10-06 | 2013-11-04 |      433 |
+| 19660114-2976 | F73 | enhet1 | 2014-12-07 | 2014-12-23 |      434 |
+| 19660210-3464 | B75 | enhet1 | 2014-03-16 | 2014-04-16 |      435 |
+| 19660223-3196 | unknown | enhet2 | 2013-07-22 | 2013-08-13 |  436 |
+| 19660314-3428 | F30 | enhet2 | 2013-10-25 | 2013-11-26 |      437 |
+| 19660319-3373 | R52 | enhet2 | 2013-08-14 | 2013-08-29 |      438 |
+| 19660323-3724 | D40 | enhet2 | 2014-10-30 | 2014-11-17 |      439 |
+| 19660407-2618 | D58 | enhet1 | 2014-04-10 | 2014-05-01 |      440 |
+| 19660407-2634 | X31 | enhet1 | 2013-07-11 | 2013-07-26 |      441 |
+| 19660407-2659 | J63 | enhet2 | 2015-01-03 | 2015-01-28 |      442 |
+| 19660407-2667 | I63 | enhet1 | 2013-10-22 | 2013-11-11 |      443 |
+| 19660407-2675 | S20 | enhet2 | 2014-03-31 | 2014-05-03 |      444 |
+| 19660407-2683 | I50 | enhet1 | 2014-05-25 | 2014-06-28 |      445 |
+| 19660407-2691 | L44 | enhet1 | 2014-12-31 | 2015-01-12 |      446 |
+| 19660407-2766 | R93 | enhet1 | 2013-07-22 | 2013-08-20 |      447 |
+| 19660407-2782 | unknown | enhet2 | 2013-07-31 | 2013-09-02 |  448 |
+| 19660407-2808 | B81 | enhet1 | 2013-07-20 | 2013-08-24 |      449 |
+| 19660427-3083 | S27 | enhet1 | 2013-08-29 | 2013-09-21 |      450 |
+| 19660518-3398 | K91 | enhet2 | 2014-09-27 | 2014-10-25 |      451 |
+| 19660525-3225 | N94 | enhet2 | 2014-02-13 | 2014-03-21 |      452 |
+| 19660606-3193 | Z65 | enhet1 | 2013-07-26 | 2013-08-20 |      453 |
+| 19660711-3146 | N12 | enhet2 | 2014-06-12 | 2014-06-22 |      454 |
+| 19660815-2846 | V69 | enhet1 | 2014-06-15 | 2014-07-04 |      455 |
+| 19660818-2942 | A18 | enhet2 | 2014-05-14 | 2014-06-14 |      456 |
+| 19660825-3081 | J41 | enhet2 | 2013-11-25 | 2013-12-22 |      457 |
+| 19670403-3452 | E12 | enhet2 | 2014-02-10 | 2014-02-21 |      458 |
+| 19670505-3723 | unknown | enhet1 | 2014-12-30 | 2015-01-24 |  459 |
+| 19670520-3252 | A66 | enhet2 | 2015-01-29 | 2015-02-17 |      460 |
+| 19670718-2991 | Q12 | enhet2 | 2014-05-16 | 2014-06-16 |      461 |
+| 19670729-3467 | unknown | enhet1 | 2014-01-31 | 2014-02-11 |  462 |
+| 19670813-3076 | T37 | enhet2 | 2014-11-24 | 2014-12-03 |      463 |
+| 19670828-2584 | C24 | enhet2 | 2013-11-28 | 2013-12-21 |      464 |
+| 19670913-2887 | A90 | enhet2 | 2014-01-13 | 2014-01-30 |      465 |
+| 19670919-2642 | L58 | enhet1 | 2014-02-27 | 2014-07-06 |      466 |
+| 19670927-2691 | unknown | enhet2 | 2014-09-21 | 2014-10-09 |  467 |
+| 19671008-3103 | E01 | enhet1 | 2014-11-14 | 2014-12-17 |      468 |
+| 19671031-3195 | A89 | enhet1 | 2014-05-03 | 2015-01-01 |      469 |
+| 19671109-2681 | D06 | enhet2 | 2014-03-27 | 2014-04-23 |      470 |
+| 19671122-2940 | unknown | enhet2 | 2013-10-14 | 2013-11-19 |  471 |
+| 19671127-3026 | D58 | enhet2 | 2015-01-20 | 2015-02-08 |      472 |
+| 19671130-2635 | L60 | enhet1 | 2014-02-10 | 2014-03-02 |      473 |
+| 19671203-2884 | Z09 | enhet1 | 2014-04-29 | 2014-05-17 |      474 |
+| 19671227-2647 | C69 | enhet1 | 2014-04-05 | 2014-04-17 |      475 |
+| 19680102-9288 | G02 | enhet2 | 2013-09-12 | 2013-09-26 |      476 |
+| 19680124-9290 | J70 | enhet2 | 2014-11-17 | 2014-12-04 |      477 |
+| 19680214-9283 | C90 | enhet2 | 2014-04-09 | 2014-05-10 |      478 |
+| 19680216-9265 | V58 | enhet2 | 2014-04-27 | 2014-05-17 |      479 |
+| 19680227-9296 | unknown | enhet1 | 2014-06-05 | 2014-06-16 |  480 |
+| 19680415-9264 | A42 | enhet1 | 2014-04-13 | 2014-04-24 |      481 |
+| 19680502-9268 | G41 | enhet1 | 2014-07-29 | 2014-08-10 |      482 |
+| 19680522-9272 | M25 | enhet2 | 2013-07-27 | 2013-08-12 |      483 |
+| 19680524-9288 | unknown | enhet1 | 2014-11-24 | 2014-12-15 |  484 |
+| 19700123-9297 | O64 | enhet2 | 2014-02-27 | 2014-03-17 |      485 |
+| 19700612-1144 | T43 | enhet2 | 2014-12-25 | 2015-01-03 |      486 |
+| 19710116-9295 | R33 | enhet2 | 2013-12-23 | 2014-01-02 |      487 |
+| 19710301-1032 | O20 | enhet2 | 2013-12-27 | 2014-01-18 |      488 |
+| 19710925-9288 | S46 | enhet2 | 2014-05-30 | 2014-06-18 |      489 |
+| 19711002-1834 | unknown | enhet1 | 2014-04-10 | 2014-05-05 |  490 |
+| 19750325-9280 | X59 | enhet2 | 2014-08-28 | 2014-09-19 |      491 |
+| 19750330-9176 | Z91 | enhet2 | 2013-10-03 | 2013-11-04 |      492 |
+| 19750404-9292 | M05 | enhet1 | 2013-08-16 | 2013-09-14 |      493 |
+| 19750424-9215 | I97 | enhet1 | 2014-01-03 | 2014-02-04 |      494 |
+| 19790104-9283 | O44 | enhet2 | 2014-01-24 | 2014-02-18 |      495 |
+| 19790124-9297 | N47 | enhet2 | 2014-08-11 | 2014-10-24 |      496 |
+| 19790206-9272 | N16 | enhet1 | 2014-12-14 | 2015-01-04 |      497 |
+| 19790219-9285 | R62 | enhet2 | 2014-01-05 | 2014-01-27 |      498 |
+| 19790316-9261 | Q68 | enhet2 | 2014-05-08 | 2014-05-24 |      499 |
+| 19790330-9230 | A05 | enhet1 | 2014-02-22 | 2014-03-04 |      500 |
+
+!3 Då gäller:
+| Sjukfall i oversikt diagnos |
+|inloggad som | grupp                                         | antal? | förändring? |
+| user2       | A00-E90, G00-L99, N00-N99 Somatiska sjukdomar | 45      | 4           |
+| user2       | F00-F99 Psykiska sjukdomar                    | 4      | -33           |
+| user2       | P00-P96, Q00-Q99, S00-Y98 Övrigt            | 36      | 33           |
+
+| Sjukfall i oversikt aldersgrupp |
+|inloggad som | grupp                                         | antal? | förändring? |
+| user2       | 31-35 år | 2      | 100           |
+| user2       | 46-50 år                    | 24      | 50           |
+| user2       | 51-55 år            | 26      | 23           |
+| user2       | 56-60 år            | 33      | -2           |
+| user2       | Över 60 år            | 27      | 17           |
+
+
+| Sjukfall i oversikt sjukskrivningsgrad |
+|inloggad som | grupp                                         | antal? | förändring? |
+| user2       | 25% | 0      | 0           |
+| user2       | 50%                    | 0      | 0           |
+| user2       | 75%            | 0      | 0           |
+| user2       | 100%            | 113      | 17           |
+
+| Sjukfall i oversikt per kon |
+|inloggad som | field          | value? |
+| user2       | totalCases     | 113      |
+| user2       | oldPeriod      | juli–september 2014      |
+| user2       | amountMaleOld  | 46      |
+| user2       | amountFemaleOld| 50    |
+| user2       | newPeriod      | oktober–december 2014    |
+| user2       | amountMaleNew  | 68    |
+| user2       | amountFemaleNew| 45    |
+
+| Sjukfall i oversikt sjukskrivningslangd varden |
+|inloggad som | field          | value? |
+| user2       | longSickLeavesTotal     | 21      |
+| user2       | longSickLeavesAlternation      | 16      |
+
+| Sjukfall i oversikt sjukskrivningslangd |
+|inloggad som | grupp          | antal? |
+| user2       | Under 15 dagar | 18      |
+| user2       | 15-30 dagar    | 53      |
+| user2       | 31-90 dagar    | 21      |
+| user2       | 91-180 dagar   | 7    |
+| user2       | 181-365 dagar  | 13    |
+| user2       | Över 365 dagar | 1    |
+
+
+
+
+
+Nationell:
+| Sjukfall i oversikt diagnos |
+| grupp                                         | antal? | förändring? |
+| A00-E90, G00-L99, N00-N99 Somatiska sjukdomar | 45      | 4           |
+| F00-F99 Psykiska sjukdomar                    | 4      | -33           |
+| P00-P96, Q00-Q99, S00-Y98 Övrigt            | 36      | 33           |
+
+| Sjukfall i oversikt aldersgrupp |
+| grupp                                         | antal? | förändring? |
+| 31-35 år | 2      | 100           |
+| 46-50 år                    | 24      | 50           |
+| 51-55 år            | 26      | 23           |
+| 56-60 år            | 33      | -2           |
+| Över 60 år            | 27      | 17           |
+
+
+| Sjukfall i oversikt sjukskrivningsgrad |
+| grupp                                         | antal? | förändring? |
+| 25 | 0      | 0           |
+| 50                    | 0      | 0           |
+| 75            | 0      | 0           |
+| 100            | 113      | 17           |
+
+| Sjukfall i oversikt per kon |
+| field          | value? |
+| proportionMale     | 60      |
+| proportionFemale      | 40      |
+| alteration  | 17      |
+| previousPeriodText| juli–september 2014    |
+
+| Sjukfall i oversikt sjukskrivningslangd varden |
+| field          | value? |
+| longSickLeavesTotal     | 21      |
+| longSickLeavesAlternation      | 16      |
+
+| Sjukfall i oversikt sjukskrivningslangd |
+| grupp          | antal? |
+| Under 15 dagar | 18      |
+| 15-30 dagar    | 53      |
+| 31-90 dagar    | 21      |
+| 91-180 dagar   | 7    |
+| 181-365 dagar  | 13    |
+| Över 365 dagar | 1    |
+
+| Sjukfall i oversikt per lan |
+| grupp                                         | antal? | förändring? |
+| Västra Götalands län | 113      | 17           |
+| Blekinge län                    | 0      | 0           |

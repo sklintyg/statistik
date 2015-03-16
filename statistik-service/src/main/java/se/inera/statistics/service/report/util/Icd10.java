@@ -1,0 +1,435 @@
+/**
+ * Copyright (C) 2015 Inera AB (http://www.inera.se)
+ *
+ * This file is part of statistik (https://github.com/sklintyg/statistik).
+ *
+ * statistik is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * statistik is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+package se.inera.statistics.service.report.util;
+
+import com.google.common.base.Function;
+import com.google.common.base.Predicate;
+import com.google.common.collect.Collections2;
+import com.google.common.collect.Lists;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+
+import javax.annotation.PostConstruct;
+import java.io.BufferedReader;
+import java.io.Closeable;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+
+public class Icd10 {
+
+    private static final Logger LOG = LoggerFactory.getLogger(Icd10.class);
+
+    private static final int STARTINDEX_LAST_KATEGORI = 4;
+
+    private static final int ENDINDEX_FIRST_KATEGORI = 3;
+
+    private static final int ENDINDEX_ID = 7;
+    private static final int STARTINDEX_DESCRIPTION = 7;
+    public static final int MAX_CODE_LENGTH = 3;
+
+    public static final String OTHER_KAPITEL = "Ö00-Ö00";
+    public static final String OTHER_KATEGORI = "Ö00";
+    public static final List<Integer> INTERNAL_ICD10_INTIDS = Arrays.asList(
+                                                                        icd10ToInt(OTHER_KAPITEL, Icd10RangeType.KAPITEL),
+                                                                        icd10ToInt("Ö00-Ö00", Icd10RangeType.AVSNITT),
+                                                                        icd10ToInt(OTHER_KATEGORI, Icd10RangeType.KATEGORI));
+
+    @Autowired
+    private Resource icd10KategoriAnsiFile;
+
+    @Autowired
+    private Resource icd10AvsnittAnsiFile;
+
+    @Autowired
+    private Resource icd10KapitelAnsiFile;
+
+    private List<Kapitel> kapitels;
+
+    private List<Id> internalIcd10 = new ArrayList<>();
+
+    private IdMap<Kategori> idToKategoriMap = new IdMap<>();
+    private IdMap<Avsnitt> idToAvsnittMap = new IdMap<>();
+    private IdMap<Kapitel> idToKapitelMap = new IdMap<>();
+
+    public static int icd10ToInt(String id, Icd10RangeType rangeType) {
+        final int rangeTypeMultiplier = 10000;
+        final int rangeTypeAsNumber = rangeType.ordinal() * rangeTypeMultiplier;
+
+        final int firstCharMultiplier = 100;
+        final int firstCharAsNumber = (id.toUpperCase().charAt(0) - 'A') * firstCharMultiplier;
+
+        final int secondCharMultiplier = 10;
+        final int secondCharAsNumber = (id.charAt(1) - '0') * secondCharMultiplier;
+
+        final int thirdCharMultiplier = 1;
+        final int thirdCharAsNumber = (id.charAt(2) - '0') * thirdCharMultiplier;
+
+        return rangeTypeAsNumber + firstCharAsNumber + secondCharAsNumber + thirdCharAsNumber;
+    }
+
+    @PostConstruct
+    private void init() {
+        try {
+            kapitels = new ArrayList<>();
+            try (LineReader lr = new LineReader(icd10KapitelAnsiFile)) {
+                String line;
+                while ((line = lr.next()) != null) {
+                    Kapitel kapitel = Kapitel.valueOf(line);
+                    kapitels.add(kapitel);
+                    idToKapitelMap.put(kapitel);
+                }
+            }
+
+            try (LineReader lr = new LineReader(icd10AvsnittAnsiFile)) {
+                String line;
+                while ((line = lr.next()) != null) {
+                    Avsnitt avsnitt = Avsnitt.valueOf(line, idToKapitelMap.values());
+                    idToAvsnittMap.put(avsnitt);
+                }
+            }
+
+            try (LineReader lr = new LineReader(icd10KategoriAnsiFile)) {
+                String line;
+                while ((line = lr.next()) != null) {
+                    Kategori kategori = Kategori.valueOf(line, idToAvsnittMap.values());
+                    idToKategoriMap.put(kategori);
+                }
+            }
+
+            populateInternalIcd10();
+        } catch (IOException e) {
+            LOG.error("Could not parse ICD10: " + e);
+        }
+    }
+
+    private void populateInternalIcd10() {
+        final Kapitel kapitel = new Kapitel(OTHER_KAPITEL, "Utan giltig ICD-10 kod");
+        internalIcd10.add(kapitel);
+        final Avsnitt avsnitt = new Avsnitt(OTHER_KAPITEL, "Utan giltig ICD-10 kod", kapitel);
+        internalIcd10.add(avsnitt);
+        internalIcd10.add(new Kategori(OTHER_KATEGORI, "Utan giltig ICD-10 kod", avsnitt));
+    }
+
+    public List<Kapitel> getKapitel(boolean includeInternalKapitel) {
+        final ArrayList<Kapitel> allKapitels = new ArrayList<>(kapitels);
+        if (includeInternalKapitel) {
+            allKapitels.addAll(Collections2.transform(Collections2.filter(internalIcd10, new Predicate<Id>() {
+                @Override
+                public boolean apply(Id id) {
+                    return id instanceof Kapitel;
+                }
+            }), new Function<Id, Kapitel>() {
+                @Override
+                public Kapitel apply(Id id) {
+                    return (Kapitel) id;
+                }
+            }));
+        }
+        return allKapitels;
+    }
+
+    static String normalize(String icd10Code) {
+        StringBuilder normalized = new StringBuilder(icd10Code.length());
+        for (char c : icd10Code.toUpperCase().toCharArray()) {
+            if ('A' <= c && c <= 'Z' || '0' <= c && c <= '9') {
+                normalized.append(c);
+            }
+        }
+
+        if (normalized.length() > MAX_CODE_LENGTH) {
+            normalized.setLength(MAX_CODE_LENGTH);
+        }
+        return normalized.toString();
+    }
+
+    public Kategori getKategori(String diagnoskategori) {
+        return idToKategoriMap.get(diagnoskategori);
+    }
+
+    public Avsnitt getAvsnitt(String diagnosavsnitt) {
+        return idToAvsnittMap.get(diagnosavsnitt);
+    }
+
+    public Kapitel getKapitel(String diagnoskapitel) {
+        return idToKapitelMap.get(diagnoskapitel);
+    }
+
+    public Kategori findKategori(String rawCode) {
+        String normalized = normalize(rawCode);
+        return getKategori(normalized);
+    }
+
+    public Id findIcd10FromNumericId(int numId) {
+        for (Id kategori : idToKategoriMap.values()) {
+            if (kategori.toInt() == numId) {
+                return kategori;
+            }
+        }
+        for (Id avsnitt : idToAvsnittMap.values()) {
+            if (avsnitt.toInt() == numId) {
+                return avsnitt;
+            }
+        }
+        for (Id kapitel : idToKapitelMap.values()) {
+            if (kapitel.toInt() == numId) {
+                return kapitel;
+            }
+        }
+        for (Id internal : internalIcd10) {
+            if (internal.toInt() == numId) {
+                return internal;
+            }
+        }
+        throw new RuntimeException("ICD10 with numerical id could not be found: " + numId);
+    }
+
+    public static List<Integer> getKapitelIntIds(String... icdIds) {
+        return Lists.transform(Arrays.asList(icdIds), new Function<String, Integer>() {
+            @Override
+            public Integer apply(String icdId) {
+                return icd10ToInt(icdId, Icd10RangeType.KAPITEL);
+            }
+        });
+    }
+
+    public Id findFromIcd10Code(String icd10) {
+        for (Id kategori : idToKategoriMap.values()) {
+            if (icd10.equals(kategori.getId())) {
+                return kategori;
+            }
+        }
+        for (Id avsnitt : idToAvsnittMap.values()) {
+            if (icd10.equals(avsnitt.getId())) {
+                return avsnitt;
+            }
+        }
+        for (Id kapitel : idToKapitelMap.values()) {
+            if (icd10.equals(kapitel.getId())) {
+                return kapitel;
+            }
+        }
+        for (Id internal : internalIcd10) {
+            if (icd10.equals(internal.getId())) {
+                return internal;
+            }
+        }
+        throw new RuntimeException("ICD10 with id could not be found: " + icd10);
+    }
+
+    public static class IdMap<T extends Id> extends HashMap<String, T> {
+        public void put(T id) {
+            if (id != null) {
+                put(id.getId(), id);
+            }
+        }
+    }
+
+    public abstract static class Id {
+        private final String id;
+        private final String name;
+
+        public Id(String id, String name) {
+            this.id = id;
+            this.name = name;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public String getId() {
+            return id;
+        }
+
+        public abstract int toInt();
+
+        public abstract List<? extends Id> getSubItems();
+
+        public String getVisibleId() {
+            return isInternal() ? "" : getId();
+        }
+
+        public boolean isInternal() {
+            return INTERNAL_ICD10_INTIDS.contains(toInt());
+        }
+    }
+
+    public abstract static class Range extends Id {
+        private final String firstId;
+        private final String lastId;
+
+        public Range(String range, String name) {
+            super(range, name);
+            firstId = range.substring(0, ENDINDEX_FIRST_KATEGORI);
+            lastId = range.substring(STARTINDEX_LAST_KATEGORI);
+        }
+
+        public boolean contains(String kategoriId) {
+            return firstId.compareTo(kategoriId) <= 0 && lastId.compareTo(kategoriId) >= 0;
+        }
+    }
+
+    public static class Kapitel extends Range {
+
+        private final List<Avsnitt> avsnitt = new ArrayList<>();
+
+        public Kapitel(String range, String name) {
+            super(range.toUpperCase(), name);
+        }
+
+        @Override
+        public List<? extends Id> getSubItems() {
+            return getAvsnitt();
+        }
+
+        public static Kapitel valueOf(String line) {
+            return new Kapitel(line.substring(0, ENDINDEX_ID), line.substring(STARTINDEX_DESCRIPTION));
+        }
+
+        public List<Avsnitt> getAvsnitt() {
+            return avsnitt;
+        }
+
+        @Override
+        public int toInt() {
+            return icd10ToInt(getId(), Icd10RangeType.KAPITEL);
+        }
+
+    }
+
+    public static class Avsnitt extends Range {
+
+        private final Kapitel kapitel;
+        private final List<Kategori> kategori;
+
+        public Avsnitt(String range, String name, Kapitel kapitel) {
+            super(range.toUpperCase(), name);
+            this.kapitel = kapitel;
+            kategori = new ArrayList<>();
+        }
+
+        public static Avsnitt valueOf(String line, Collection<Kapitel> kapitels) {
+            String id = line.substring(0, ENDINDEX_ID);
+            Kapitel kapitel = find(id.substring(0, ENDINDEX_FIRST_KATEGORI), kapitels);
+            if (kapitel == null) {
+                return null;
+            }
+
+            Avsnitt avsnitt = new Avsnitt(id, line.substring(STARTINDEX_DESCRIPTION), kapitel);
+            kapitel.avsnitt.add(avsnitt);
+            return avsnitt;
+        }
+
+        private static Kapitel find(String id, Collection<Kapitel> kapitels) {
+            for (Kapitel kapitel: kapitels) {
+                if (kapitel.contains(id)) {
+                    return kapitel;
+                }
+            }
+            return null;
+        }
+
+        public List<Kategori> getKategori() {
+            return kategori;
+        }
+
+        public Kapitel getKapitel() {
+            return kapitel;
+        }
+
+        public List<? extends Id> getSubItems() {
+            return getKategori();
+        }
+
+        @Override
+        public int toInt() {
+            return icd10ToInt(getId(), Icd10RangeType.AVSNITT);
+        }
+
+    }
+
+    public static class Kategori extends Id {
+
+        private final Avsnitt avsnitt;
+
+        public Kategori(String id, String name, Avsnitt avsnitt) {
+            super(id.toUpperCase(), name);
+            this.avsnitt = avsnitt;
+        }
+
+        public static Kategori valueOf(String line, Collection<Avsnitt> avsnitts) {
+            String id = line.substring(0, ENDINDEX_FIRST_KATEGORI);
+            Avsnitt avsnitt = find(id, avsnitts);
+            if (avsnitt == null) {
+                return null;
+            }
+            Kategori kategori = new Kategori(id, line.substring(STARTINDEX_DESCRIPTION), avsnitt);
+            avsnitt.kategori.add(kategori);
+            return kategori;
+        }
+
+        private static Avsnitt find(String id, Collection<Avsnitt> avsnitts) {
+            for (Avsnitt avsnitt: avsnitts) {
+                if (avsnitt.contains(id)) {
+                    return avsnitt;
+                }
+            }
+            return null;
+        }
+
+        public Avsnitt getAvsnitt() {
+            return avsnitt;
+        }
+
+        @Override
+        public List<? extends Id> getSubItems() {
+            return Collections.EMPTY_LIST;
+        }
+
+        @Override
+        public int toInt() {
+            return icd10ToInt(getId(), Icd10RangeType.KATEGORI);
+        }
+
+    }
+
+    private static class LineReader implements Closeable {
+        private final BufferedReader reader;
+        public LineReader(Resource resource) throws IOException {
+            reader = new BufferedReader(new InputStreamReader(resource.getInputStream(), "ISO-8859-1"));
+        }
+
+        public String next() throws IOException {
+            return reader.readLine();
+        }
+
+        @Override
+        public void close() throws IOException {
+            reader.close();
+        }
+    }
+}

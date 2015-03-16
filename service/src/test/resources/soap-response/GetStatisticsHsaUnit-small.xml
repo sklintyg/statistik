@@ -1,9 +1,0 @@
-<GetStatisticsHsaUnitResponse xmlns="urn:riv:hsa:HsaWsResponder:3" xmlns:ns2="http://www.w3.org/2005/08/addressing">
-   <statisticsUnit>
-      <hsaIdentity>IFV1239877878-103H</hsaIdentity>
-      <isHsaHealthCareUnit>true</isHsaHealthCareUnit>
-      <careGiverOrgNo>123987-7878</careGiverOrgNo>
-      <careGiverHsaIdentity>IFV1239877878-0001</careGiverHsaIdentity>
-      <startDate>2010-11-30T01:00:00.000+01:00</startDate>
-   </statisticsUnit>
-</GetStatisticsHsaUnitResponse>

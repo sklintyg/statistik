@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    Copyright (C) 2015 Inera AB (http://www.inera.se)
+
+    This file is part of statistik (https://github.com/sklintyg/statistik).
+
+    statistik is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    statistik is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+-->
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd"
+        logicalFilePath="liquibase/db.changelog-v13.0_create_wideline_table.xml">
+    <changeSet id="13a_create_wideline_table" author="roger.lindsjo">
+        <createTable tableName="wideline">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="lkf" type="varchar(6)"/>
+            <column name="enhet" type="varchar(128)"/>
+            <column name="lakarintyg" type="int"/>
+            <column name="patientid" type="varchar(128)"/>
+            <column name="startdatum" type="int"/>
+            <column name="slutdatum" type="int"/>
+            <column name="kon" type="int"/>
+            <column name="alder" type="int"/>
+            <column name="diagnoskapitel" type="varchar(128)"/>
+            <column name="diagnosavsnitt" type="varchar(128)"/>
+            <column name="diagnoskategori" type="varchar(128)"/>
+            <column name="sjukskrivningsgrad" type="int"/>
+            <column name="lakarkon" type="int"/>
+            <column name="lakaralder" type="int"/>
+            <column name="lakarbefattning" type="varchar(128)"/>
+            <column name="vardgivareid" type="varchar(128)"/>
+        </createTable>
+    </changeSet>
+
+</databaseChangeLog>

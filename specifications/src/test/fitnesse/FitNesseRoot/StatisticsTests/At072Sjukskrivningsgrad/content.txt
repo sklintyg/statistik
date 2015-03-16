@@ -1,0 +1,28 @@
+!contents -R2 -g -p -f -h
+
+Ett sjukfall börjar på enhet1 i mars (100%) och övergår sen till enhet2 i april (50%).
+
+Loggar in som user4 (enhet2), ser bara att det finns ett sjukfall i april för 50%
+
+Testar övergång mellan vårdenheter, vilken användare ser vilken del av sjukfallet
+
+
+!3 Givet att:
+| script | dagens datum | 2014-10-01 |
+
+| script | troskel varde | 1 |
+
+| Enbart foljande intyg finns |
+| personnr      | diagnoskod | start      | slut       | arbetsförmåga | enhet  |
+| 19790407-0220 | A00        | 2014-03-02 | 2014-03-30 | 0             | enhet1 |
+| 19790407-0220 | A00        | 2014-04-01 | 2014-04-30 | 50            | enhet2 |
+
+
+!3 Då gäller:
+
+| Sjukfall i rapporten sjukskrivningsgrad |
+| inloggad som | år   | månad | sjukskrivningsgrad   | män? | kvinnor? |
+| user1        | 2014 | mar   | 100%                 | 0    | 1        |
+| user1        | 2014 | apr   | 50%                  | 0    | 0        |
+| user4        | 2014 | mar   | 100%                 | 0    | 0        |
+| user4        | 2014 | apr   | 50%                  | 0    | 1        |

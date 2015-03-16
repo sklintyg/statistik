@@ -1,0 +1,48 @@
+!contents -R2 -g -p -f -h
+
+IGNORED: Waiting for STATISTIK-770
+
+Det finns två sjukfall med diagnos som faller inom avsnitt:
+- C00-C14Maligna tumörer i läpp, munhåla och svalg
+- C15-C26Maligna tumörer i matsmältningsorganen
+- C30-C39Maligna tumörer i andningsorganen och brösthålans organ
+- C40-C41Maligna tumörer i ben och ledbrosk
+Det finns ett sjukfall med diagnos som faller inom avsnitt:
+- C43-C44Melanom och andra maligna tumörer i huden
+- C45-C49Maligna tumörer i mesotelial (kroppshåletäckande) vävnad och mjukvävnad
+- C50-C50Malign tumör i bröstkörtel
+Det finns inga sjukfall med diagnos som faller inom övriga avsnitt.
+
+
+
+!3 Givet att:
+| script | dagens datum | 2013-11-06 |
+
+| Enbart foljande intyg finns |
+| personnr | diagnoskod | start    | slut       | enhet |
+| 19790407-0120 | C01 | 2013-02-01 | 2013-02-14 | enhet1 |
+| 19790407-0220 | C01 | 2013-02-01 | 2013-02-14 | enhet1 |
+| 19790407-0320 | C20 | 2013-02-01 | 2013-02-14 | enhet1 |
+| 19790407-0480 | C20 | 2013-02-01 | 2013-02-14 | enhet1 |
+| 19790407-0680 | C33 | 2013-02-01 | 2013-02-14 | enhet1 |
+| 19790407-0780 | C34 | 2013-02-01 | 2013-02-14 | enhet1 |
+| 19790407-0980 | C40 | 2013-02-01 | 2013-02-14 | enhet1 |
+| 19790407-1020 | C41 | 2013-02-01 | 2013-02-14 | enhet1 |
+| 19790407-1120 | C43 | 2013-02-01 | 2013-02-14 | enhet1 |
+| 19790407-1220 | C45 | 2013-02-01 | 2013-02-14 | enhet1 |
+| 19790407-1320 | C50 | 2013-02-01 | 2013-02-14 | enhet1 |
+
+
+!3 Då gäller:
+
+| Sjukfall i rapporten enskilt diagnoskapitel diagram |
+|inloggad som | valt diagnoskapitel | år   | månad | grupp   | män? | kvinnor? |
+| user1       | C00-D48             | 2013 | feb   | C00-C14 | 0    | 2        |
+| user1       | C00-D48             | 2013 | feb   | C15-C26 | 0    | 2        |
+| user1       | C00-D48             | 2013 | feb   | C30-C39 | 0    | 2        |
+| user1       | C00-D48             | 2013 | feb   | C40-C41 | 0    | 2        |
+| user1       | C00-D48             | 2013 | feb   | C43-C44 | 0    | 1        |
+| user1       | C00-D48             | 2013 | feb   | C45-C49 | 0    | 1        |
+| user1       | C00-D48             | 2013 | feb   | C50-C50 | 0    | 1        |
+
+

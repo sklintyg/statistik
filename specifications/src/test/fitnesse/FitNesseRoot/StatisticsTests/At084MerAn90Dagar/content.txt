@@ -1,0 +1,25 @@
+!contents -R2 -g -p -f -h
+
+Ett sjukfall består av 2 intyg som tillsammans blir exakt 91 dagar.
+
+Sjukfallet syns inte.
+
+
+!3 Givet att:
+| script | dagens datum | 2014-11-06 |
+
+| script | troskel varde | 1 |
+
+| Enbart foljande intyg finns |
+| personnr      | diagnoskod | start      | slut       | enhet  | kommentar |
+| 19790407-1285 | G01        | 2014-01-01 | 2014-02-28 | enhet1 | |
+| 19790407-1285 | G01        | 2014-03-04 | 2014-04-04 | enhet1 | |
+
+
+!3 Då gäller:
+| Sjukfall i rapporten langa sjukfall |
+| inloggad som | år   | månad | män? | kvinnor? |
+| user1  | 2014 | jan   | 0    | 0        |
+| user1  | 2014 | feb   | 0    | 0        |
+| user1  | 2014 | mar   | 0    | 1        |
+| user1  | 2014 | apr   | 0    | 1        |

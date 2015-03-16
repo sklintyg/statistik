@@ -1,0 +1,67 @@
+/**
+ * Copyright (C) 2015 Inera AB (http://www.inera.se)
+ *
+ * This file is part of statistik (https://github.com/sklintyg/statistik).
+ *
+ * statistik is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * statistik is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+package se.inera.statistics.web.service;
+
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonToken;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.base.Optional;
+import org.apache.commons.codec.digest.DigestUtils;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import se.inera.statistics.service.userselection.UserSelection;
+import se.inera.statistics.service.userselection.UserSelectionManager;
+
+public class FilterHashHandler {
+    private static final Logger LOG = LoggerFactory.getLogger(FilterHashHandler.class);
+
+    @Autowired
+    private UserSelectionManager userSelectionManager;
+
+    String getHash(String filterData) {
+        try {
+            final JsonParser parser = new ObjectMapper().getFactory().createParser(filterData);
+            JsonToken token;
+            do {
+                token = parser.nextToken();
+            } while (token != null);
+
+            final String hash = DigestUtils.md5Hex(filterData);
+            userSelectionManager.register(hash, filterData);
+            return hash;
+        } catch (JsonParseException parseException) {
+            LOG.warn("Attempt to store illegal json detected.");
+            return "";
+        } catch (Exception e) {
+            throw new FilterException("Illegal user selection", e);
+        }
+    }
+
+    Optional<String> getFilterData(String hash) {
+        final UserSelection userSelection = userSelectionManager.find(hash);
+        if (userSelection == null) {
+            return Optional.absent();
+        }
+        return Optional.of(userSelection.getValue());
+    }
+
+}

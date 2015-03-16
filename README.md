@@ -14,7 +14,7 @@ Det finns två olika typer av användare på statistikapplikationen:
 ##Komma igång med lokal installation
 Den här sektionen beskriver hur man bygger Inera Statistics för att kunna köras helt fristående.
 
-Vi använder Maven, för närvarande version 3.0.5, för att bygga applikationerna. OBS! Maven 3.1 fungerar inte i skrivandes stund!
+Vi använder Gradle, för närvarande version 2.2.1, för att bygga applikationerna.
 
 Börja med att skapa en lokal klon av källkodsrepositoryt:
 
@@ -22,60 +22,43 @@ Börja med att skapa en lokal klon av källkodsrepositoryt:
 
 Efter att man har klonat repository navigera till den klonade katalogen och kör följande kommando:
 
-mvn clean install
+    gradle clean build
 
-Det här kommandot kommer att bygga samtliga moduler i systemet. Om man inte vill köra testerna vid bygge använder man sig av skipTests-flaggan.
+Det här kommandot kommer att bygga samtliga moduler i systemet. Om man inte vill köra testerna vid bygge använder man sig av
+assemble istället för build
 
-    mvn clean install -DskipTests=true
+    gradle clean assemble
 
 Nu ska det gå att starta applikationen med:
 
-    mvn jetty:run -Dmaven.test.skip=true -DskipTests -Dspring.profiles.active=dev,embedded
+    gradle appRun
 
-Nu går det att öppna en webbläsare och surfa till http://localhost:8080/ Observera jetty körs i mavenprocessen, så maven "blir inte klar" förrän du stoppar servern med ^c, och applikationen är bara igång fram till dess.
-##Maven
-Vi använder Maven för att bygga, test, installera och köra statistiktjänsten. Maven spottar ur sig ganska mycket text, generellt sett har det gått bra om det sista som skrivs ut är något i stil med:
+Nu går det att öppna en webbläsare och surfa till http://localhost:8080/ Observera jetty körs i gradleprocessen, så gradle "blir
+inte klar" förrän du stoppar servern med ^c, och applikationen är bara igång fram till dess.
 
-[INFO] ------------------------------------------------------------------------
-[INFO] BUILD SUCCESS
-[INFO] ------------------------------------------------------------------------
-[INFO] Total time: 54.036s
-[INFO] Finished at: Wed Feb 12 11:04:43 CET 2014
-[INFO] Final Memory: 50M/420M
-[INFO] ------------------------------------------------------------------------
+##Gradle
+Vi använder Gradle för att bygga, test, installera och köra statistiktjänsten. Gradle spottar ur sig ganska mycket text, generellt sett har det gått bra om det sista som skrivs ut är något i stil med:
 
-Om man vill ange standardflaggor till maven så kan man använda miljövariablen MAVEN_OPTS t ex:
+    BUILD SUCCESSFUL
 
-    export MAVEN_OPTS="-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5007 -Xmx3192M -XX:MaxPermSize=500M"
+    Total time: 1 mins 4.842 secs
 
-Det är de inställningar jag använder, som gör att jag kan ansluta min IDE-debugger på port 5007, med gott om minne.
-
-|Några vanliga mavenkommandon|||
+|Några vanliga gradlekommandon|||
 |--------------|---------|---------|
-|mvn clean install -P integration|bygg om hela projektet 	|[projektrot]|
-|mvn verify -P wiki|starta fitnesse|[projektrot]/statistics-specification|
-|mvn verify -P auto|kör fitnesse-tester|[projektrot]/statistics-specification|
-|mvn jetty:run -Dmaven.test.skip=true -DskipTests -Dspring.profiles.active=dev,embedded|kör webbservern 	|[projektrot]/statistics-web|
-|mvn jetty:run -Dmaven.test.skip=true -DskipTests -Dspring.profiles.active=dev|kör webbservern mot mysql 	|[projektrot]/statistics-web|
+|./gradlew clean build integrationTests|bygg om hela projektet inklusive integrationstester|[projektrot]|
+|./gradlew licenseFormatMain licenseFormatTest|Lägg till licens-header till alla filer som saknar header|[projektrot]|
+|../gradlew appRunDebug|kör webbservern i debugläge|[projektrot]/statistik-web|
+|../gradlew fitnesseWiki |starta fitnesse|[projektrot]/specifications|
+|../gradlew fitnesseTest|kör fitnesse-tester|[projektrot]/specifications|
+
+## Licenser
+
+Vi använder en gradle-plugin som kontrollerar att alla relevanta filer har en korrekt licens-header. Om den hittar en fil som inte
+uppfyller detta krav så fallerar bygget. För att lägga till licens-header kör man
+
+    gradle licenseFormatMain licenseFormatTest
 
 ##Releasebyggen
-OBS! Den incheckade pom.xml:en kräver tillgång till privata servrar och måste konfigureras om om man inte har tillgång till dem.
-
-OBS2! Glöm inte att stoppa in de servrar som ska användas i [.m2]/settings.xml.
-
-Kör följande rad för rad och säkerställ att eventuella problem åtgärdas innan du kör nästa rad:
-
-    [gör vad som krävs (t ex git merge ...) för att uppdatera releasbranchen]
-    git checkout inera-statistics-[huvudversion]-RB
-    mvn release:prepare
-    git push origin
-    git push origin statistics-[version]
-    git checkout statistics-[version]
-    mvn clean deploy
-    git checkout inera-statistics-[huvudversion]-RB
-
-+ version = exakt version som ska byggas t ex 1.0.5
-+ huvudversion = den releasbranch man vill bygga den nya verionen på
 
 ##Liquibase
 Liquibase används för att skapa och underhålla underliggande databas. Alla ändringar av databasen måste reflekteras i liquibase-script. Vi använder H2 under utveckling och MySql i andra sammanhang, så scripten måste fungera för båda dessa alternativ.
@@ -85,18 +68,36 @@ Liquibase kontrollerar databasen varje gång applikationen startas, och startar 
 Skapa/Uppdatera databasen görs med en separat liquibase-runner. Se DatabasUppdatering.
 ###H2 embedded
 Liquibase kör, och modifierar vid behov databasen, varje gång applikationen startas.
+
+## Liquibase för externa miljöer
+
+För miljöer som utvecklingsteamet inte rår över behövs ett script som kan köra liquibase-förändringarna för en viss miljö. För att
+skapa ett sådant script kör man
+
+    gradle distZip
+
+Då skapas en zip-fil i [projektrot]/tools/liquibase-runner/build/distributions. Denna zip-fil kan distribueras till lämplig driftsoperatör. För at sedan köra scriptet packar man upp zip-filen, går ner i den
+katalog som skapats, och kör:
+
+    ./bin/liquibase-runner --url=jdbc:mysql://localhost/statistik --username=statistik --password=statistik update
+  
+Självklart behöver parametrarna "url", "username" och "password" ändras för att passa den aktuella miljön.
+
 ##Köhanterare
 ActiveMQ används för att ta emot sjukintyg. I koden är köhanteringen inte bunden till ActiveMQ, utan det bör gå att byta till någon annan köhanterare genom konfigurationsändringar.
+
 ##Test
 Vi använder tre typer av tester, Fitnesse/Slim, JUnit, Jasmine.
+
 ###JUnit
-JUnit används för enhetstester, funktionestester samt integrationstester. Normalt anses en testklass innehålla vanliga enhetstester, Maven kör dessa tester per default. Avslutas klassnamnet med IntegrationTest? så är det ett integrationstest, och Maven kör bara dessa tester om integrationsprofilen aktiveras (-P integration). Funktionella tester, dvs klasser som avslutas med FunctionalTest? körs aldrig från Maven, utan måste körast manuellt från en IDE eller dylikt.
+JUnit används för enhetstester, funktionestester samt integrationstester. Normalt anses en testklass innehålla vanliga
+enhetstester, Gradle kör dessa tester per default. Avslutas klassnamnet med IntegrationTest? så är det ett integrationstest, och
+Gradle kör bara dessa tester om man specifikt säger till (integrationTests). Funktionella tester, dvs klasser som avslutas med FunctionalTest? körs aldrig från Gradle, utan måste körast manuellt från en IDE eller dylikt.
 ###Fitnesse/Slim
-Det finns två separata moduler som använder Fitnesse, statistics-specification samt statistics-business-specification. Fitnesse kan antingen köras som automattest eller som en wiki. I wikiläge (-P wiki) startas en webserver på http://localhost:9125/StatisticsTests , och surfar man dit kan man skapa, redigera och köra individuella tester. I automatläge (-P auto) körs alla tester igenom och en rapport skapas (ungefär som motsvarande för JUnit-tester).
+Det finns en separat modul som använder Fitnesse, specifications. Fitnesse kan antingen köras som automattest eller som en wiki. I wikiläge startas en webserver på http://localhost:9125/StatisticsTests , och surfar man dit kan man skapa, redigera och köra individuella tester. I automatläge körs alla tester igenom och en rapport skapas (ungefär som motsvarande för JUnit-tester).
 ####statistics-specification
-Den här modulen testar frontenden m h a Geb och Selenium. Innan man kör måste man en webserver som snurrar. Fitnesse kommer att starta en webbläsare och navigera till olika delar av applikationen. I dagsläget är det inga avancerade tester som görs, det enda som görs är att klicka runt i gränssnittet, först utan inloggning, sedan som inloggad.
-####statistics-business-specification
-En serie tester där olika intygssekvenser stoppas in, varefter man verifierar att man får ut förväntad statistik för de givna sekvenserna. Här kan man göra end-to-end-tester som dokumenterar och verifierar de affärsregler som ska gälla.
+Den här modulen testar end-to-end-scenarior, där man kontrollerar att instoppade intyg ger korrekt statistik. Innan man kör måste
+man ha en webserver som snurrar.
 ###Jasmine/Karma
 Används för Javascripttester
 ##Spring
@@ -113,15 +114,53 @@ Vi nyttjar springprofiler för att styra konfiguration vid uppstart. I exemplet 
 
 som talar om att dev-profilen med en inbäddad databas ska användas.
 
-De huvudprofiler som finns är, exakt en av dessa måste finnas:
-dev	utvecklings-miljö
-test	test-miljö
-qa	qa-miljö
-prod	prod-miljö (finns endast i release-branchen)
+De profiler som finns är:
 
-Sedan finns ett antal modifierare:
-embedded	använd inbäddad databas (H2)
-generatetestdata	skapa tesdata vid uppstart
+|Profilnamn     |Beskrivning|
+|---------------|-----------|
+|dev            |starta applikationen i utvecklingsläge|
+|embedded       |använd inbäddad databas (H2), och lägg in testintyg|
+|hsa-stub       |gå inte mot hsa, utan använd en stub istället|
+|db-resetter    |rensa databasen vid uppstart|
+|security-fake  |stöd enbart simulerad inloggning|
+|security-both  |stöd saml-inloggning och simulerad inloggning|
+|security-saml  |stöd enbart saml-inloggning|
+|qm             |starta inbäddad köhanterare|
+|active         |processa inkommande intyg|
+
+##Deployment
+Vi använder ansible för att enkelt sätta upp servrar. Följande stämmer för min lokala miljö (Mac, Homebrew), komplettera gärna med andra miljöer.
+
+###Installera ansible
+
+    brew install ansible
+
+Installera ansible-plugin:er
+
+    ansible-galaxy install geerlingguy.apache
+    ansible-galaxy install geerlingguy.mysql
+
+###Tools
+
+Checka ut tools (och statistik härifrån, om du inte har det redan) från github, https://github.com/sklintyg/tools (och statistik härifrån, om du inte har det redan).
+
+###Deploy
+
+Följande beskriver hur man deployar till fitnesse-servern, https://fitnesse.inera.nordicmedtest.se
+Det är den enda servern som i skrivandes stund är definierad.
+
+Gå till .../tools/ansible och provitionera gemensamma kompnenter:
+
+    ansible-playbook -i hosts_test provision.yml -l statistik-fitnesse
+
+Gå till .../statistik/ansible och provitionera komponenter som ligger utanför applikationen:
+
+    ansible-playbook -i hosts_test provision.yml -l statistik-fitnesse
+
+Deploya själva applikationen:
+
+    ansible-playbook -i hosts_test provision.yml -l statistik-fitnesse
+
 
 ##Namngivning av klasser och metoder
 
@@ -148,3 +187,6 @@ Försöker man komma åt en verksamhet som man saknar behörighet till, så retu
 ###Icke existerande URL:er
 
 404 Not Found 
+##Övrigt
+###Söka i json-dokument i databasen
+Det finns inbyggt stöd för json i PostgreSQL 9.3 och senare, och det har vi använt när vi behövt göra adhoc-analyser. D v s, för att analysera innehåll i json-objekt lagrade i en tabell så har vi exporterat tabellen till PostgreSQL. Det finns ett exempelskript incheckat under tools/dbscripts/postgresql .

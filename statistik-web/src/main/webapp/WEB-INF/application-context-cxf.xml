@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jaxrs="http://cxf.apache.org/jaxrs"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+        http://cxf.apache.org/jaxrs http://cxf.apache.org/schemas/jaxrs.xsd">
+
+  <import resource="classpath:META-INF/cxf/cxf.xml" />
+  <import resource="classpath:META-INF/cxf/cxf-servlet.xml" />
+
+  <beans>
+
+    <bean id="jacksonJsonProvider" class="com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider" />
+
+    <jaxrs:server id="restContainer" address="/">
+      <jaxrs:serviceBeans>
+        <ref bean="chartDataService" />
+        <ref bean="protectedChartDataService" />
+        <ref bean="loginInfoService" />
+      </jaxrs:serviceBeans>
+      <jaxrs:providers>
+        <ref bean="jacksonJsonProvider" />
+      </jaxrs:providers>
+    </jaxrs:server>
+
+  </beans>
+
+  <beans profile="dev">
+    <bean id="restSupportService" class="se.inera.testsupport.RestSupportService" />
+    <jaxrs:server id="restSupportContainer" address="/testsupport">
+      <jaxrs:serviceBeans>
+        <ref bean="restSupportService" />
+      </jaxrs:serviceBeans>
+      <jaxrs:providers>
+        <ref bean="jacksonJsonProvider" />
+      </jaxrs:providers>
+    </jaxrs:server>
+  </beans>
+
+</beans>

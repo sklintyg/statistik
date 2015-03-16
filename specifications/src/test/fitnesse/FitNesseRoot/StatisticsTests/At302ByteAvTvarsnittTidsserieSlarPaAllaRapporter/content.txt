@@ -1,0 +1,514 @@
+!contents -R2 -g -p -f -h
+
+Gäller STATISTIK-940.
+
+!3 Givet att:
+| script | dagens datum | 2014-11-06 |
+
+| script | troskel varde | 1 |
+
+| Foljande lakare finns |
+| id      | förnamn | efternamn | kön    | ålder | befattningar |
+| lakare1 | Anna    | Andersson | FEMALE | 30    | 201010       |
+| lakare2 | Bo      | Bengtsson | MALE   | 40    | 201013       |
+| lakare3 | Carl    | Claesson  | MALE   | 50    | 101012       |
+
+| Enbart foljande intyg finns |
+| personnr | diagnoskod | start    | slut       | arbetsförmåga | enhet  | läkare |
+| 19890407-1245 | G01 | 2013-05-01 | 2013-11-30 | 0             | enhet1 | lakare1 |
+| 19790407-1225 | G02 | 2014-07-01 | 2014-10-30 | 50            | enhet1 | lakare2 |
+| 19690407-1295 | G03 | 2014-11-01 | 2014-11-30 | 75            | enhet2 | lakare3 |
+
+
+!3 Då gäller:
+
+| script | visasom | tvarsnitt |
+
+Byte till tvärsnitt gör att alla rapporter visas som tvärsnitt till dess att tidsserie väljs eller filtret återställs.
+
+| Sjukfall i rapporten sjukfall per enhet |
+| inloggad som | vårdenhet    | vårdgivarnivå | totalt? | män? | kvinnor? |
+| user2        | Enhet enhet1 | true          | 1       | 0    | 1        |
+| user2        | Enhet enhet2 | true          | 1       | 1    | 0        |
+
+| Sjukfall i rapporten sjukfall totalt |
+| inloggad som | grupp  | män? | kvinnor? |
+| user2        | Totalt | 1    | 1        |
+
+| Sjukfall i rapporten diagnosgrupp diagram |
+| inloggad som | grupp                     | män? | kvinnor? |
+| user2        | A00-E90, G00-L99, N00-N99 | 1    | 1        |
+
+| Sjukfall i rapporten enskilt diagnoskapitel diagram |
+| inloggad som | valt diagnoskapitel | grupp   | män? | kvinnor? |
+| user2        | G00-G99             | G00-G09 | 1    | 1        |
+
+| Sjukfall i rapporten jamfor diagnoser diagram |
+| inloggad som | valda diagnoskategorier | diagnoskategori | män? | kvinnor? |
+| user2        | G01, G02, G03           | G01             | 0    | 0        |
+| user2        | G01, G02, G03           | G02             | 0    | 1        |
+| user2        | G01, G02, G03           | G03             | 1    | 0        |
+
+| Sjukfall i rapporten aldersgrupp |
+| inloggad som | åldersgrupp | män? | kvinnor? |
+| user2        | 21-25 år    | 0    | 0        |
+| user2        | 31-35 år    | 0    | 1        |
+| user2        | 41-45 år    | 1    | 0        |
+
+| Sjukfall i rapporten sjukskrivningsgrad |
+| inloggad som | sjukskrivningsgrad | män? | kvinnor? |
+| user2        | 100%               | 0    | 0        |
+| user2        | 50%                | 0    | 1        |
+| user2        | 25%                | 1    | 0        |
+
+| Sjukfall i rapporten sjukskrivningslangd |
+| inloggad som | sjukskrivningslängd | män? | kvinnor? |
+| user2        | 15-30 dagar         | 1    | 0        |
+| user2        | 91-180 dagar        | 0    | 1        |
+| user2        | 181-365 dagar       | 0    | 0        |
+
+| Sjukfall i rapporten langa sjukfall |
+| inloggad som | grupp           | män? | kvinnor? |
+| user2        | Mer än 90 dagar | 0    | 1        |
+
+| Sjukfall i rapporten sjukfall per lakare |
+| inloggad som | läkare          | män? | kvinnor? |
+| user2        | Anna Andersson  | 0    | 0        |
+| user2        | Bo Bengtsson    | 0    | 1        |
+| user2        | Carl Claesson   | 1    | 0        |
+
+| Sjukfall i rapporten lakarkonalder |
+| inloggad som | läkargrupp               | män? | kvinnor? |
+| user2        | Kvinnlig läkare 30-39 år | 0    | 0        |
+| user2        | Manlig läkare 40-49 år   | 0    | 1        |
+| user2        | Manlig läkare 50-59 år   | 1    | 0        |
+
+| Sjukfall i rapporten lakarbefattning |
+| inloggad som | läkarbefattning    | män? | kvinnor? |
+| user2        | Överläkare         | 0    | 0        |
+| user2        | Företagsläkare     | 0    | 1        |
+| user2        | Ej läkarbefattning | 1    | 0        |
+
+| script | visasom | tidsserie |
+
+Byte till tidsserie gör att alla rapporter visas som tidsserie till dess att tvärsnitt väljs eller filtret återställs.
+
+| Sjukfall i rapporten sjukfall per enhet |
+| inloggad som | år   | månad | vårdenhet    | män? | kvinnor? |
+| user2        | 2013 | maj   | Enhet enhet1 | -1   | -1       |
+| user2        | 2013 | jun   | Enhet enhet1 | 0    | 1        |
+| user2        | 2013 | jul   | Enhet enhet1 | 0    | 1        |
+| user2        | 2013 | aug   | Enhet enhet1 | 0    | 1        |
+| user2        | 2013 | sep   | Enhet enhet1 | 0    | 1        |
+| user2        | 2013 | okt   | Enhet enhet1 | 0    | 1        |
+| user2        | 2013 | nov   | Enhet enhet1 | 0    | 1        |
+| user2        | 2013 | dec   | Enhet enhet1 | 0    | 0        |
+| user2        | 2014 | jan   | Enhet enhet1 | 0    | 0        |
+| user2        | 2014 | feb   | Enhet enhet1 | 0    | 0        |
+| user2        | 2014 | mar   | Enhet enhet1 | 0    | 0        |
+| user2        | 2014 | apr   | Enhet enhet1 | 0    | 0        |
+| user2        | 2014 | maj   | Enhet enhet1 | 0    | 0        |
+| user2        | 2014 | jun   | Enhet enhet1 | 0    | 1        |
+| user2        | 2014 | jul   | Enhet enhet1 | 0    | 1        |
+| user2        | 2014 | aug   | Enhet enhet1 | 0    | 1        |
+| user2        | 2014 | sep   | Enhet enhet1 | 0    | 1        |
+| user2        | 2014 | okt   | Enhet enhet1 | 0    | 1        |
+| user2        | 2014 | nov   | Enhet enhet1 | 0    | 0        |
+
+| Sjukfall i rapporten sjukfall totalt |
+| inloggad som | år   | månad | män? | kvinnor? | totalt? |
+| user2        | 2013 | maj   | -1   | -1       | -1 |
+| user2        | 2013 | jun   | 0    | 1        | 1 |
+| user2        | 2013 | jul   | 0    | 1        | 1 |
+| user2        | 2013 | aug   | 0    | 1        | 1 |
+| user2        | 2013 | sep   | 0    | 1        | 1 |
+| user2        | 2013 | okt   | 0    | 1        | 1 |
+| user2        | 2013 | nov   | 0    | 1        | 1 |
+| user2        | 2013 | dec   | 0    | 0        | 0 |
+| user2        | 2014 | jan   | 0    | 0        | 0 |
+| user2        | 2014 | feb   | 0    | 0        | 0 |
+| user2        | 2014 | mar   | 0    | 0        | 0 |
+| user2        | 2014 | apr   | 0    | 0        | 0 |
+| user2        | 2014 | maj   | 0    | 0        | 0 |
+| user2        | 2014 | jun   | 0    | 0        | 0 |
+| user2        | 2014 | jul   | 0    | 1        | 1 |
+| user2        | 2014 | aug   | 0    | 1        | 1 |
+| user2        | 2014 | sep   | 0    | 1        | 1 |
+| user2        | 2014 | okt   | 0    | 1        | 1 |
+| user2        | 2014 | nov   | 1    | 0        | 1 |
+
+| Sjukfall i rapporten diagnosgrupp diagram |
+| inloggad som | år   | månad | grupp                     | män? | kvinnor? |
+| user2        | 2013 | maj   | A00-E90, G00-L99, N00-N99 | -1   | -1       |
+| user2        | 2013 | jun   | A00-E90, G00-L99, N00-N99 | 0    | 1        |
+| user2        | 2013 | jul   | A00-E90, G00-L99, N00-N99 | 0    | 1        |
+| user2        | 2013 | aug   | A00-E90, G00-L99, N00-N99 | 0    | 1        |
+| user2        | 2013 | sep   | A00-E90, G00-L99, N00-N99 | 0    | 1        |
+| user2        | 2013 | okt   | A00-E90, G00-L99, N00-N99 | 0    | 1        |
+| user2        | 2013 | nov   | A00-E90, G00-L99, N00-N99 | 0    | 1        |
+| user2        | 2013 | dec   | A00-E90, G00-L99, N00-N99 | 0    | 0        |
+| user2        | 2014 | jan   | A00-E90, G00-L99, N00-N99 | 0    | 0        |
+| user2        | 2014 | feb   | A00-E90, G00-L99, N00-N99 | 0    | 0        |
+| user2        | 2014 | mar   | A00-E90, G00-L99, N00-N99 | 0    | 0        |
+| user2        | 2014 | apr   | A00-E90, G00-L99, N00-N99 | 0    | 0        |
+| user2        | 2014 | maj   | A00-E90, G00-L99, N00-N99 | 0    | 0        |
+| user2        | 2014 | jun   | A00-E90, G00-L99, N00-N99 | 0    | 1        |
+| user2        | 2014 | jul   | A00-E90, G00-L99, N00-N99 | 0    | 1        |
+| user2        | 2014 | aug   | A00-E90, G00-L99, N00-N99 | 0    | 1        |
+| user2        | 2014 | sep   | A00-E90, G00-L99, N00-N99 | 0    | 1        |
+| user2        | 2014 | okt   | A00-E90, G00-L99, N00-N99 | 0    | 1        |
+| user2        | 2014 | nov   | A00-E90, G00-L99, N00-N99 | 1    | 0        |
+
+| Sjukfall i rapporten enskilt diagnoskapitel diagram |
+| inloggad som | valt diagnoskapitel | år   | månad | grupp   | män? | kvinnor? |
+| user2        | G00-G99             | 2013 | maj   | G00-G09 | -1   | -1       |
+| user2        | G00-G99             | 2013 | jun   | G00-G09 | 0    | 1        |
+| user2        | G00-G99             | 2013 | jul   | G00-G09 | 0    | 1        |
+| user2        | G00-G99             | 2013 | aug   | G00-G09 | 0    | 1        |
+| user2        | G00-G99             | 2013 | sep   | G00-G09 | 0    | 1        |
+| user2        | G00-G99             | 2013 | okt   | G00-G09 | 0    | 1        |
+| user2        | G00-G99             | 2013 | nov   | G00-G09 | 0    | 1        |
+| user2        | G00-G99             | 2013 | dec   | G00-G09 | 0    | 0        |
+| user2        | G00-G99             | 2014 | jan   | G00-G09 | 0    | 0        |
+| user2        | G00-G99             | 2014 | feb   | G00-G09 | 0    | 0        |
+| user2        | G00-G99             | 2014 | mar   | G00-G09 | 0    | 0        |
+| user2        | G00-G99             | 2014 | apr   | G00-G09 | 0    | 0        |
+| user2        | G00-G99             | 2014 | maj   | G00-G09 | 0    | 0        |
+| user2        | G00-G99             | 2014 | jun   | G00-G09 | 0    | 1        |
+| user2        | G00-G99             | 2014 | jul   | G00-G09 | 0    | 1        |
+| user2        | G00-G99             | 2014 | aug   | G00-G09 | 0    | 1        |
+| user2        | G00-G99             | 2014 | sep   | G00-G09 | 0    | 1        |
+| user2        | G00-G99             | 2014 | okt   | G00-G09 | 0    | 1        |
+| user2        | G00-G99             | 2014 | nov   | G00-G09 | 1    | 0        |
+
+| Sjukfall i rapporten jamfor diagnoser diagram |
+| inloggad som | år   | månad | valda diagnoskategorier | diagnoskategori | män? | kvinnor? |
+| user2        | 2013 | maj   | G01, G02, G03           | G01             | -1   | -1       |
+| user2        | 2013 | jun   | G01, G02, G03           | G01             | 0    | 1        |
+| user2        | 2013 | jul   | G01, G02, G03           | G01             | 0    | 1        |
+| user2        | 2013 | aug   | G01, G02, G03           | G01             | 0    | 1        |
+| user2        | 2013 | sep   | G01, G02, G03           | G01             | 0    | 1        |
+| user2        | 2013 | okt   | G01, G02, G03           | G01             | 0    | 1        |
+| user2        | 2013 | nov   | G01, G02, G03           | G01             | 0    | 1        |
+| user2        | 2013 | dec   | G01, G02, G03           | G01             | 0    | 0        |
+| user2        | 2014 | jan   | G01, G02, G03           | G01             | 0    | 0        |
+| user2        | 2014 | feb   | G01, G02, G03           | G01             | 0    | 0        |
+| user2        | 2014 | mar   | G01, G02, G03           | G01             | 0    | 0        |
+| user2        | 2014 | apr   | G01, G02, G03           | G01             | 0    | 0        |
+| user2        | 2014 | maj   | G01, G02, G03           | G01             | 0    | 0        |
+| user2        | 2014 | jun   | G01, G02, G03           | G01             | 0    | 0        |
+| user2        | 2014 | jul   | G01, G02, G03           | G01             | 0    | 0        |
+| user2        | 2014 | aug   | G01, G02, G03           | G01             | 0    | 0        |
+| user2        | 2014 | sep   | G01, G02, G03           | G01             | 0    | 0        |
+| user2        | 2014 | okt   | G01, G02, G03           | G01             | 0    | 0        |
+| user2        | 2014 | nov   | G01, G02, G03           | G01             | 0    | 0        |
+
+| Sjukfall i rapporten aldersgrupp |
+| inloggad som | år   | månad | aldersgrupp | män? | kvinnor? |
+| user2        | 2013 | maj   | 31-35 år    | -1   | -1       |
+| user2        | 2013 | jun   | 31-35 år    | 0    | 0        |
+| user2        | 2013 | jul   | 31-35 år    | 0    | 0        |
+| user2        | 2013 | aug   | 31-35 år    | 0    | 0        |
+| user2        | 2013 | sep   | 31-35 år    | 0    | 0        |
+| user2        | 2013 | okt   | 31-35 år    | 0    | 0        |
+| user2        | 2013 | nov   | 31-35 år    | 0    | 0        |
+| user2        | 2013 | dec   | 31-35 år    | 0    | 0        |
+| user2        | 2014 | jan   | 31-35 år    | 0    | 0        |
+| user2        | 2014 | feb   | 31-35 år    | 0    | 0        |
+| user2        | 2014 | mar   | 31-35 år    | 0    | 0        |
+| user2        | 2014 | apr   | 31-35 år    | 0    | 0        |
+| user2        | 2014 | maj   | 31-35 år    | 0    | 0        |
+| user2        | 2014 | jun   | 31-35 år    | 0    | 0        |
+| user2        | 2014 | jul   | 31-35 år    | 0    | 1        |
+| user2        | 2014 | aug   | 31-35 år    | 0    | 1        |
+| user2        | 2014 | sep   | 31-35 år    | 0    | 1        |
+| user2        | 2014 | okt   | 31-35 år    | 0    | 1        |
+| user2        | 2014 | nov   | 31-35 år    | 0    | 0        |
+
+| Sjukfall i rapporten sjukskrivningsgrad |
+| inloggad som | år   | månad | sjukskrivningsgrad   | män? | kvinnor? |
+| user2        | 2013 | maj   | 100%                  | -1   | -1       |
+| user2        | 2013 | jun   | 100%                 | 0    | 1        |
+| user2        | 2013 | jul   | 100%                 | 0    | 1        |
+| user2        | 2013 | aug   | 100%                 | 0    | 1        |
+| user2        | 2013 | sep   | 100%                 | 0    | 1        |
+| user2        | 2013 | okt   | 100%                 | 0    | 1        |
+| user2        | 2013 | nov   | 100%                 | 0    | 1        |
+| user2        | 2013 | dec   | 100%                 | 0    | 0        |
+| user2        | 2014 | jan   | 100%                 | 0    | 0        |
+| user2        | 2014 | feb   | 100%                 | 0    | 0        |
+| user2        | 2014 | mar   | 100%                 | 0    | 0        |
+| user2        | 2014 | apr   | 100%                 | 0    | 0        |
+| user2        | 2014 | maj   | 100%                 | 0    | 0        |
+| user2        | 2014 | jun   | 100%                 | 0    | 0        |
+| user2        | 2014 | jul   | 100%                 | 0    | 0        |
+| user2        | 2014 | aug   | 100%                 | 0    | 0        |
+| user2        | 2014 | sep   | 100%                 | 0    | 0        |
+| user2        | 2014 | okt   | 100%                 | 0    | 0        |
+| user2        | 2014 | nov   | 100%                 | 0    | 0        |
+
+| Sjukfall i rapporten sjukskrivningslangd |
+| inloggad som | år   | månad | sjukskrivningslängd | män? | kvinnor? |
+| user2        | 2013 | maj   | 15-30 dagar    | -1   | -1       |
+| user2        | 2013 | jun   | 15-30 dagar    | 0    | 0        |
+| user2        | 2013 | jul   | 15-30 dagar    | 0    | 0        |
+| user2        | 2013 | aug   | 15-30 dagar    | 0    | 0        |
+| user2        | 2013 | sep   | 15-30 dagar    | 0    | 0        |
+| user2        | 2013 | okt   | 15-30 dagar    | 0    | 0        |
+| user2        | 2013 | nov   | 15-30 dagar    | 0    | 0        |
+| user2        | 2013 | dec   | 15-30 dagar    | 0    | 0        |
+| user2        | 2014 | jan   | 15-30 dagar    | 0    | 0        |
+| user2        | 2014 | feb   | 15-30 dagar    | 0    | 0        |
+| user2        | 2014 | mar   | 15-30 dagar    | 0    | 0        |
+| user2        | 2014 | apr   | 15-30 dagar    | 0    | 0        |
+| user2        | 2014 | maj   | 15-30 dagar    | 0    | 0        |
+| user2        | 2014 | jun   | 15-30 dagar    | 0    | 0        |
+| user2        | 2014 | jul   | 15-30 dagar    | 0    | 0        |
+| user2        | 2014 | aug   | 15-30 dagar    | 0    | 0        |
+| user2        | 2014 | sep   | 15-30 dagar    | 0    | 0        |
+| user2        | 2014 | okt   | 15-30 dagar    | 0    | 0        |
+| user2        | 2014 | nov   | 15-30 dagar    | 0    | 1        |
+
+| Sjukfall i rapporten langa sjukfall |
+| inloggad som | år   | månad | män? | kvinnor? |
+| user2        | 2013 | maj   | -1   | -1       |
+| user2        | 2013 | jun   | 0    | 1        |
+| user2        | 2013 | jul   | 0    | 1        |
+| user2        | 2013 | aug   | 0    | 1        |
+| user2        | 2013 | sep   | 0    | 1        |
+| user2        | 2013 | okt   | 0    | 1        |
+| user2        | 2013 | nov   | 0    | 1        |
+| user2        | 2013 | dec   | 0    | 0        |
+| user2        | 2014 | jan   | 0    | 0        |
+| user2        | 2014 | feb   | 0    | 0        |
+| user2        | 2014 | mar   | 0    | 0        |
+| user2        | 2014 | apr   | 0    | 0        |
+| user2        | 2014 | maj   | 0    | 0        |
+| user2        | 2014 | jun   | 0    | 0        |
+| user2        | 2014 | jul   | 0    | 1        |
+| user2        | 2014 | aug   | 0    | 1        |
+| user2        | 2014 | sep   | 0    | 1        |
+| user2        | 2014 | okt   | 0    | 1        |
+| user2        | 2014 | nov   | 0    | 0        |
+
+| Sjukfall i rapporten sjukfall per lakare |
+| inloggad som | år   | månad | läkare       | män? | kvinnor? |
+| user2        | 2013 | maj   | Bo Bengtsson | -1   | -1       |
+| user2        | 2013 | jun   | Bo Bengtsson | 0    | 0        |
+| user2        | 2013 | jul   | Bo Bengtsson | 0    | 0        |
+| user2        | 2013 | aug   | Bo Bengtsson | 0    | 0        |
+| user2        | 2013 | sep   | Bo Bengtsson | 0    | 0        |
+| user2        | 2013 | okt   | Bo Bengtsson | 0    | 0        |
+| user2        | 2013 | nov   | Bo Bengtsson | 0    | 0        |
+| user2        | 2013 | dec   | Bo Bengtsson | 0    | 0        |
+| user2        | 2014 | jan   | Bo Bengtsson | 0    | 0        |
+| user2        | 2014 | feb   | Bo Bengtsson | 0    | 0        |
+| user2        | 2014 | mar   | Bo Bengtsson | 0    | 0        |
+| user2        | 2014 | apr   | Bo Bengtsson | 0    | 0        |
+| user2        | 2014 | maj   | Bo Bengtsson | 0    | 0        |
+| user2        | 2014 | jun   | Bo Bengtsson | 0    | 0        |
+| user2        | 2014 | jul   | Bo Bengtsson | 0    | 1        |
+| user2        | 2014 | aug   | Bo Bengtsson | 0    | 1        |
+| user2        | 2014 | sep   | Bo Bengtsson | 0    | 1        |
+| user2        | 2014 | okt   | Bo Bengtsson | 0    | 1        |
+| user2        | 2014 | nov   | Bo Bengtsson | 0    | 0        |
+
+
+| Sjukfall i rapporten lakarkonalder |
+| inloggad som | år   | månad | läkargrupp  | män? | kvinnor? |
+| user2        | 2013 | maj   | Manlig läkare 40-49 år | -1   | -1       |
+| user2        | 2013 | jun   | Manlig läkare 40-49 år | 0    | 0        |
+| user2        | 2013 | jul   | Manlig läkare 40-49 år | 0    | 0        |
+| user2        | 2013 | aug   | Manlig läkare 40-49 år | 0    | 0        |
+| user2        | 2013 | sep   | Manlig läkare 40-49 år | 0    | 0        |
+| user2        | 2013 | okt   | Manlig läkare 40-49 år | 0    | 0        |
+| user2        | 2013 | nov   | Manlig läkare 40-49 år | 0    | 0        |
+| user2        | 2013 | dec   | Manlig läkare 40-49 år | 0    | 0        |
+| user2        | 2014 | jan   | Manlig läkare 40-49 år | 0    | 0        |
+| user2        | 2014 | feb   | Manlig läkare 40-49 år | 0    | 0        |
+| user2        | 2014 | mar   | Manlig läkare 40-49 år | 0    | 0        |
+| user2        | 2014 | apr   | Manlig läkare 40-49 år | 0    | 0        |
+| user2        | 2014 | maj   | Manlig läkare 40-49 år | 0    | 0        |
+| user2        | 2014 | jun   | Manlig läkare 40-49 år | 0    | 0        |
+| user2        | 2014 | jul   | Manlig läkare 40-49 år | 0    | 1        |
+| user2        | 2014 | aug   | Manlig läkare 40-49 år | 0    | 1        |
+| user2        | 2014 | sep   | Manlig läkare 40-49 år | 0    | 1        |
+| user2        | 2014 | okt   | Manlig läkare 40-49 år | 0    | 1        |
+| user2        | 2014 | nov   | Manlig läkare 40-49 år | 0    | 0        |
+
+| Sjukfall i rapporten lakarkonalder |
+| inloggad som | år   | månad | läkargrupp     | män? | kvinnor? |
+| user2        | 2013 | maj   | Företagsläkare | -1   | -1       |
+| user2        | 2013 | jun   | Företagsläkare | 0    | 0        |
+| user2        | 2013 | jul   | Företagsläkare | 0    | 0        |
+| user2        | 2013 | aug   | Företagsläkare | 0    | 0        |
+| user2        | 2013 | sep   | Företagsläkare | 0    | 0        |
+| user2        | 2013 | okt   | Företagsläkare | 0    | 0        |
+| user2        | 2013 | nov   | Företagsläkare | 0    | 0        |
+| user2        | 2013 | dec   | Företagsläkare | 0    | 0        |
+| user2        | 2014 | jan   | Företagsläkare | 0    | 0        |
+| user2        | 2014 | feb   | Företagsläkare | 0    | 0        |
+| user2        | 2014 | mar   | Företagsläkare | 0    | 0        |
+| user2        | 2014 | apr   | Företagsläkare | 0    | 0        |
+| user2        | 2014 | maj   | Företagsläkare | 0    | 0        |
+| user2        | 2014 | jun   | Företagsläkare | 0    | 0        |
+| user2        | 2014 | jul   | Företagsläkare | 0    | 1        |
+| user2        | 2014 | aug   | Företagsläkare | 0    | 1        |
+| user2        | 2014 | sep   | Företagsläkare | 0    | 1        |
+| user2        | 2014 | okt   | Företagsläkare | 0    | 1        |
+| user2        | 2014 | nov   | Företagsläkare | 0    | 0        |
+
+| script | filter | aterstall |
+
+Återställning av filtret gör att alla rapporter återgår till sin default visningsform.
+
+| Sjukfall i rapporten sjukfall per enhet |
+| inloggad som | vårdenhet    | vårdgivarnivå | totalt? | män? | kvinnor? |
+| user2        | Enhet enhet1 | true          | 1       | 0    | 1        |
+| user2        | Enhet enhet2 | true          | 1       | 1    | 0        |
+
+| Sjukfall i rapporten sjukfall totalt |
+| inloggad som | år   | månad | män? | kvinnor? | totalt? |
+| user2        | 2013 | maj   | -1   | -1       | -1 |
+| user2        | 2013 | jun   | 0    | 1        | 1 |
+| user2        | 2013 | jul   | 0    | 1        | 1 |
+| user2        | 2013 | aug   | 0    | 1        | 1 |
+| user2        | 2013 | sep   | 0    | 1        | 1 |
+| user2        | 2013 | okt   | 0    | 1        | 1 |
+| user2        | 2013 | nov   | 0    | 1        | 1 |
+| user2        | 2013 | dec   | 0    | 0        | 0 |
+| user2        | 2014 | jan   | 0    | 0        | 0 |
+| user2        | 2014 | feb   | 0    | 0        | 0 |
+| user2        | 2014 | mar   | 0    | 0        | 0 |
+| user2        | 2014 | apr   | 0    | 0        | 0 |
+| user2        | 2014 | maj   | 0    | 0        | 0 |
+| user2        | 2014 | jun   | 0    | 0        | 0 |
+| user2        | 2014 | jul   | 0    | 1        | 1 |
+| user2        | 2014 | aug   | 0    | 1        | 1 |
+| user2        | 2014 | sep   | 0    | 1        | 1 |
+| user2        | 2014 | okt   | 0    | 1        | 1 |
+| user2        | 2014 | nov   | 1    | 0        | 1 |
+
+| Sjukfall i rapporten diagnosgrupp diagram |
+| inloggad som | år   | månad | grupp                     | män? | kvinnor? |
+| user2        | 2013 | maj   | A00-E90, G00-L99, N00-N99 | -1   | -1       |
+| user2        | 2013 | jun   | A00-E90, G00-L99, N00-N99 | 0    | 1        |
+| user2        | 2013 | jul   | A00-E90, G00-L99, N00-N99 | 0    | 1        |
+| user2        | 2013 | aug   | A00-E90, G00-L99, N00-N99 | 0    | 1        |
+| user2        | 2013 | sep   | A00-E90, G00-L99, N00-N99 | 0    | 1        |
+| user2        | 2013 | okt   | A00-E90, G00-L99, N00-N99 | 0    | 1        |
+| user2        | 2013 | nov   | A00-E90, G00-L99, N00-N99 | 0    | 1        |
+| user2        | 2013 | dec   | A00-E90, G00-L99, N00-N99 | 0    | 0        |
+| user2        | 2014 | jan   | A00-E90, G00-L99, N00-N99 | 0    | 0        |
+| user2        | 2014 | feb   | A00-E90, G00-L99, N00-N99 | 0    | 0        |
+| user2        | 2014 | mar   | A00-E90, G00-L99, N00-N99 | 0    | 0        |
+| user2        | 2014 | apr   | A00-E90, G00-L99, N00-N99 | 0    | 0        |
+| user2        | 2014 | maj   | A00-E90, G00-L99, N00-N99 | 0    | 0        |
+| user2        | 2014 | jun   | A00-E90, G00-L99, N00-N99 | 0    | 1        |
+| user2        | 2014 | jul   | A00-E90, G00-L99, N00-N99 | 0    | 1        |
+| user2        | 2014 | aug   | A00-E90, G00-L99, N00-N99 | 0    | 1        |
+| user2        | 2014 | sep   | A00-E90, G00-L99, N00-N99 | 0    | 1        |
+| user2        | 2014 | okt   | A00-E90, G00-L99, N00-N99 | 0    | 1        |
+| user2        | 2014 | nov   | A00-E90, G00-L99, N00-N99 | 1    | 0        |
+
+| Sjukfall i rapporten enskilt diagnoskapitel diagram |
+| inloggad som | valt diagnoskapitel | år   | månad | grupp   | män? | kvinnor? |
+| user2        | G00-G99             | 2013 | maj   | G00-G09 | -1   | -1       |
+| user2        | G00-G99             | 2013 | jun   | G00-G09 | 0    | 1        |
+| user2        | G00-G99             | 2013 | jul   | G00-G09 | 0    | 1        |
+| user2        | G00-G99             | 2013 | aug   | G00-G09 | 0    | 1        |
+| user2        | G00-G99             | 2013 | sep   | G00-G09 | 0    | 1        |
+| user2        | G00-G99             | 2013 | okt   | G00-G09 | 0    | 1        |
+| user2        | G00-G99             | 2013 | nov   | G00-G09 | 0    | 1        |
+| user2        | G00-G99             | 2013 | dec   | G00-G09 | 0    | 0        |
+| user2        | G00-G99             | 2014 | jan   | G00-G09 | 0    | 0        |
+| user2        | G00-G99             | 2014 | feb   | G00-G09 | 0    | 0        |
+| user2        | G00-G99             | 2014 | mar   | G00-G09 | 0    | 0        |
+| user2        | G00-G99             | 2014 | apr   | G00-G09 | 0    | 0        |
+| user2        | G00-G99             | 2014 | maj   | G00-G09 | 0    | 0        |
+| user2        | G00-G99             | 2014 | jun   | G00-G09 | 0    | 1        |
+| user2        | G00-G99             | 2014 | jul   | G00-G09 | 0    | 1        |
+| user2        | G00-G99             | 2014 | aug   | G00-G09 | 0    | 1        |
+| user2        | G00-G99             | 2014 | sep   | G00-G09 | 0    | 1        |
+| user2        | G00-G99             | 2014 | okt   | G00-G09 | 0    | 1        |
+| user2        | G00-G99             | 2014 | nov   | G00-G09 | 1    | 0        |
+
+| Sjukfall i rapporten jamfor diagnoser diagram |
+| inloggad som | valda diagnoskategorier | diagnoskategori | män? | kvinnor? |
+| user2        | G01, G02, G03           | G01             | 0    | 0        |
+| user2        | G01, G02, G03           | G02             | 0    | 1        |
+| user2        | G01, G02, G03           | G03             | 1    | 0        |
+
+| Sjukfall i rapporten aldersgrupp |
+| inloggad som | åldersgrupp | män? | kvinnor? |
+| user2        | 21-25 år    | 0    | 0        |
+| user2        | 31-35 år    | 0    | 1        |
+| user2        | 41-45 år    | 1    | 0        |
+
+| Sjukfall i rapporten sjukskrivningsgrad |
+| inloggad som | år   | månad | sjukskrivningsgrad   | män? | kvinnor? |
+| user2        | 2013 | maj   | 50%                  | -1   | -1       |
+| user2        | 2013 | jun   | 100%                 | 0    | 1        |
+| user2        | 2013 | jul   | 100%                 | 0    | 1        |
+| user2        | 2013 | aug   | 100%                 | 0    | 1        |
+| user2        | 2013 | sep   | 100%                 | 0    | 1        |
+| user2        | 2013 | okt   | 100%                 | 0    | 1        |
+| user2        | 2013 | nov   | 100%                 | 0    | 1        |
+| user2        | 2013 | dec   | 100%                 | 0    | 0        |
+| user2        | 2014 | jan   | 100%                 | 0    | 0        |
+| user2        | 2014 | feb   | 100%                 | 0    | 0        |
+| user2        | 2014 | mar   | 100%                 | 0    | 0        |
+| user2        | 2014 | apr   | 100%                 | 0    | 0        |
+| user2        | 2014 | maj   | 100%                 | 0    | 0        |
+| user2        | 2014 | jun   | 100%                 | 0    | 0        |
+| user2        | 2014 | jul   | 100%                 | 0    | 1        |
+| user2        | 2014 | aug   | 100%                 | 0    | 1        |
+| user2        | 2014 | sep   | 100%                 | 0    | 1        |
+| user2        | 2014 | okt   | 100%                 | 0    | 1        |
+| user2        | 2014 | nov   | 100%                 | 1    | 0        |
+
+| Sjukfall i rapporten sjukskrivningslangd |
+| inloggad som | sjukskrivningslängd | män? | kvinnor? |
+| user2        | 15-30 dagar         | 1    | 0        |
+| user2        | 91-180 dagar        | 0    | 1        |
+| user2        | 181-365 dagar       | 0    | 0        |
+
+| Sjukfall i rapporten langa sjukfall |
+| inloggad som | år   | månad | män? | kvinnor? |
+| user2        | 2013 | maj   | -1   | -1       |
+| user2        | 2013 | jun   | 0    | 1        |
+| user2        | 2013 | jul   | 0    | 1        |
+| user2        | 2013 | aug   | 0    | 1        |
+| user2        | 2013 | sep   | 0    | 1        |
+| user2        | 2013 | okt   | 0    | 1        |
+| user2        | 2013 | nov   | 0    | 1        |
+| user2        | 2013 | dec   | 0    | 0        |
+| user2        | 2014 | jan   | 0    | 0        |
+| user2        | 2014 | feb   | 0    | 0        |
+| user2        | 2014 | mar   | 0    | 0        |
+| user2        | 2014 | apr   | 0    | 0        |
+| user2        | 2014 | maj   | 0    | 0        |
+| user2        | 2014 | jun   | 0    | 0        |
+| user2        | 2014 | jul   | 0    | 1        |
+| user2        | 2014 | aug   | 0    | 1        |
+| user2        | 2014 | sep   | 0    | 1        |
+| user2        | 2014 | okt   | 0    | 1        |
+| user2        | 2014 | nov   | 0    | 0        |
+
+| Sjukfall i rapporten sjukfall per lakare |
+| inloggad som | läkare          | män? | kvinnor? |
+| user2        | Anna Andersson  | 0    | 0        |
+| user2        | Bo Bengtsson    | 0    | 1        |
+| user2        | Carl Claesson   | 1    | 0        |
+
+| Sjukfall i rapporten lakarkonalder |
+| inloggad som | läkargrupp               | män? | kvinnor? |
+| user2        | Kvinnlig läkare 30-39 år | 0    | 0        |
+| user2        | Manlig läkare 40-49 år   | 0    | 1        |
+| user2        | Manlig läkare 50-59 år   | 1    | 0        |
+
+| Sjukfall i rapporten lakarbefattning |
+| inloggad som | läkarbefattning    | män? | kvinnor? |
+| user2        | Överläkare         | 0    | 0        |
+| user2        | Företagsläkare     | 0    | 1        |
+| user2        | Ej läkarbefattning | 1    | 0        |

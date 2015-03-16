@@ -5,17 +5,16 @@
 .gradle
 .idea
 *.iml
+classes
 
 .DS_Store
 
 bin
 target
 build
-web/.externalToolBuilders/org.eclipse.wst.jsdt.core.javascriptValidator.launch
-service/src/main/resources/rebel.xml
-web/src/main/resources/rebel.xml
-web/node_modules
-web/node
-web/npm-debug.log
+statistik-web/node_modules
+statistik-web/node
+statistik-web/npm-debug.log
+generatedSource
 
 catalina.base_IS_UNDEFINED

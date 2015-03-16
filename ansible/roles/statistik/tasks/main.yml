@@ -1,0 +1,49 @@
+---
+
+- name: stop tomcat
+  service: name={{ tomcat_service }} state=stopped pattern=org.apache.catalina.startup.Bootstrap
+
+- name: create release directory
+  file: path={{ releases_folder }} state=directory
+  
+- name: download liquibase-runner-{{ version }}.zip
+  get_url: url=http://repository-callistasoftware.forge.cloudbees.com/release/se/inera/statistik/liquibase-runner/{{ version }}/liquibase-runner-{{ version }}.zip
+      dest={{ releases_folder }}/liquibase-runner-{{ version }}.zip
+
+- name: Unzip liquibase-runner-{{ version }}.zip
+  command: unzip -d {{ releases_folder }} {{ releases_folder }}/liquibase-runner-{{ version }}.zip
+  args:
+    creates: "{{ releases_folder }}/liquibase-runner-{{ version }}/bin/liquibase-runner"
+
+- name: run liquibase update
+  command: "{{ releases_folder }}/liquibase-runner-{{ version }}/bin/liquibase-runner --url={{ database_url }} --username={{ database_username }} --password={{ database_password }} update"
+  args:
+      chdir: "{{ releases_folder }}/liquibase-runner-{{ version }}"
+  environment:
+      JAVA_HOME: "{{ java_home }}"
+
+- name: Download statistik-web-{{ version }}.war
+  get_url: url=http://repository-callistasoftware.forge.cloudbees.com/release/se/inera/statistik/statistik-web/{{ version }}/statistik-web-{{ version }}.war
+      dest={{ releases_folder }}
+
+- name: remove old version of unpacked ROOT war
+  file: state=absent
+      path={{ tomcat_webapps }}/ROOT
+
+- name: remove old version of ROOT war
+  file: state=absent
+      path={{ tomcat_webapps }}/ROOT.war
+
+- name: Deploy statistik-web-{{ version }}.war as ROOT.war
+  command: cp {{ releases_folder }}/statistik-web-{{ version }}.war {{ tomcat_webapps }}/ROOT.war
+
+- name: Create version file
+  template: src=version.txt.j2 dest={{ tomcat_webapps }}/version.txt
+
+- name: update configuration to {{ config_version }}
+  git: repo={{ config_repository }}
+       dest={{ config_folder }}
+       version={{ config_version }}
+
+- name: start tomcat
+  service: name={{ tomcat_service }} state=started pattern=org.apache.catalina.startup.Bootstrap

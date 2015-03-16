@@ -1,0 +1,75 @@
+/**
+ * Copyright (C) 2015 Inera AB (http://www.inera.se)
+ *
+ * This file is part of statistik (https://github.com/sklintyg/statistik).
+ *
+ * statistik is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * statistik is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+package se.inera.statistics.service.warehouse;
+
+import se.inera.statistics.service.report.model.Kon;
+
+public class Lakare {
+
+    private int id;
+    private Kon kon;
+    private int age;
+    private int[] befattnings;
+
+    public Lakare(int lakareId, Kon kon, int age, int[] befattnings) {
+        this.id = lakareId;
+        this.kon = kon;
+        this.age = age;
+        this.befattnings = befattnings;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public Kon getKon() {
+        return kon;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public int[] getBefattnings() {
+        return befattnings;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        Lakare lakare = (Lakare) o;
+
+        if (id != lakare.id) {
+            return false;
+        }
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        return id;
+    }
+}

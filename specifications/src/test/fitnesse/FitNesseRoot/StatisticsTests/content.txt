@@ -1,5 +1,39 @@
 !contents -R2 -g -p -f -h
-All tests
+
+Testmiljö:
+Existerande användare: user1, user2, user3, user4
+Existerande vårdgivare: vg1, vg3
+Existerande enheter: enhet1, enhet2, enhet3
+
+Namn:
+enhet1: Enhet enhet1
+enhet2: Enhet enhet2
+enhet3: Enhet enhet3
+
+Kopplingar:
+vg1 enheter: enhet1, enhet2
+vg3 enheter: enhet3
+user1 enheter: enhet1
+user1 vårdgivare: vg1
+user2 enheter: enhet1, enhet2
+user2 vårdgivare: vg1
+user3 enheter: enhet3
+user3 vårdgivare: vg3
+user4 enheter: enhet2
+user4 vårdgivare: vg1
+user5 enheter: enhet1, enhet2, enhet3
+user5 vårdgivare: Ange "user5_vg1" för vg1 eller "user5_vg3" för vg3
+
+Default:
+Vårdgivarnivå för inloggad användare: false
+Arbetsförmåga för intyg: 0
+
+Övrigt:
+Möjliga värden för kön på läkare: MALE, FEMALE, UNKNOWN
+Möjliga värden på intygstyp: REVOKED, CREATED
+Man kan sätta intygsid explicit. Bra t ex om man vill testa makulering. Använd exaktintygid som kolumn.
+Filter kan sättas på alla tester av inloggad användare. De kolumner som kan läggas till är: "filter kapitel", "filter avsnitt", "filter kategorier", "filter enheter", "filter verksamhetstyper". Samtliga dessa filter är tomma som default-värde.
+
 
 !*> '''Variables Defined'''
 !define TEST_SYSTEM {slim}

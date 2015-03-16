@@ -1,0 +1,10 @@
+rootProject.name = 'statistik'
+
+include ':hsa-integration'
+include ':statistik-service'
+include ':liquibase-runner'
+include ':statistik-web'
+include ':specifications'
+
+project(':hsa-integration').projectDir = "$rootDir/integration/hsa-integration" as File
+project(':liquibase-runner').projectDir = "$rootDir/tools/liquibase-runner" as File
