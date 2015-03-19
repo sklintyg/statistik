@@ -4,7 +4,11 @@ angular.module('StatisticsApp').factory('statisticsData', function ($http, $root
     var factory = {};
 
     var makeRequestNational = function (restFunctionName, successCallback, failureCallback) {
-        $http.get("api/" + restFunctionName, {cache: true}).success(function (result) {
+        makeRequestNational(restFunctionName, successCallback, failureCallback, true);
+    }
+
+    var makeRequestNational = function (restFunctionName, successCallback, failureCallback, cached) {
+        $http.get("api/" + restFunctionName, {cache: cached}).success(function (result) {
             try {
                 successCallback(result);
             } catch (e) {
@@ -119,7 +123,7 @@ angular.module('StatisticsApp').factory('statisticsData', function ($http, $root
     };
 
     factory.getLoginInfo = function (successCallback, failureCallback) {
-        makeRequestNational("login/getLoginInfo", successCallback, failureCallback);
+        makeRequestNational("login/getLoginInfo", successCallback, failureCallback, false);
     };
 
     factory.getSjukfallPerBusinessVerksamhet = function (verksamhetId, successCallback, failureCallback) {
