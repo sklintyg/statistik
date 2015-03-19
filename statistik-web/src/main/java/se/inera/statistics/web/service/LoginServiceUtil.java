@@ -72,7 +72,7 @@ public class LoginServiceUtil {
                 List<Enhet> enhetsList = warehouse.getEnhets(realUser.getValdVardenhet().getVardgivarId());
                 Verksamhet defaultVerksamhet = toVerksamhet(realUser.getValdVardenhet(), enhetsList);
                 List<Verksamhet> verksamhets = getVerksamhetsList(realUser, enhetsList);
-                return new LoginInfo(realUser.getHsaId(), realUser.getName(), defaultVerksamhet, realUser.isVerksamhetschef(), realUser.isDelprocessledare(), realUser.isProcessledare(), verksamhets);
+                return new LoginInfo(realUser.getHsaId(), realUser.getName(), defaultVerksamhet, realUser.isVerksamhetschef(), realUser.isDelprocessledare(), realUser.isProcessledare(), verksamhets, realUser.isProcessledareDenied());
             }
         }
         return new LoginInfo();

@@ -28,7 +28,9 @@ import se.inera.statistics.hsa.model.Vardenhet;
 import se.inera.statistics.hsa.services.HsaOrganizationsService;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class UserDetailsService implements SAMLUserDetailsService {
 
@@ -42,14 +44,34 @@ public class UserDetailsService implements SAMLUserDetailsService {
     public Object loadUserBySAML(SAMLCredential credential) {
         LOG.info("User authentication was successful. SAML credential is " + credential);
 
-        SakerhetstjanstAssertion assertion = new SakerhetstjanstAssertion(credential.getAuthenticationAssertion());
+        SakerhetstjanstAssertion assertion = getSakerhetstjanstAssertion(credential);
 
-        List<Vardenhet> authorizedVerksamhets = hsaOrganizationsService.getAuthorizedEnheterForHosPerson(assertion.getHsaId());
+        final String hsaId = assertion.getHsaId();
+        List<Vardenhet> authorizedVerksamhets = hsaOrganizationsService.getAuthorizedEnheterForHosPerson(hsaId);
 
         Vardenhet selectedVerksamhet = getLoginVerksamhet(authorizedVerksamhets, assertion.getEnhetHsaId());
         List<Vardenhet> filtered = filterByVardgivare(authorizedVerksamhets, selectedVerksamhet.getVardgivarId());
 
-        return new User(assertion.getHsaId(), assertion.getFornamn() + ' ' + assertion.getMellanOchEfternamn(), assertion.getSystemRoles().contains(GLOBAL_VG_ACCESS_FLAG), selectedVerksamhet, filtered);
+        final boolean processledareSystemRoleFlagSet = assertion.getSystemRoles().contains(GLOBAL_VG_ACCESS_FLAG);
+        final boolean processledare = isProcessledare(processledareSystemRoleFlagSet, authorizedVerksamhets);
+        final String name = assertion.getFornamn() + ' ' + assertion.getMellanOchEfternamn();
+        final boolean processledareDenied = processledareSystemRoleFlagSet != processledare;
+        return new User(hsaId, name, processledare, selectedVerksamhet, filtered, processledareDenied);
+    }
+
+    SakerhetstjanstAssertion getSakerhetstjanstAssertion(SAMLCredential credential) {
+        return new SakerhetstjanstAssertion(credential.getAuthenticationAssertion());
+    }
+
+    private boolean isProcessledare(boolean processledareSystemRoleFlagSet, List<Vardenhet> enhetsList) {
+        if (!processledareSystemRoleFlagSet) {
+            return false;
+        }
+        Set<String> uniqueVgids = new HashSet<>();
+        for (Vardenhet enhet : enhetsList) {
+            uniqueVgids.add(enhet.getVardgivarId());
+        }
+        return uniqueVgids.size() == 1;
     }
 
     private List<Vardenhet> filterByVardgivare(List<Vardenhet> vardenhets, String vardgivarId) {
@@ -62,7 +84,7 @@ public class UserDetailsService implements SAMLUserDetailsService {
         return filtered;
     }
 
-    private Vardenhet getLoginVerksamhet(List<Vardenhet> vardenhets, String enhetHsaId) {
+    Vardenhet getLoginVerksamhet(List<Vardenhet> vardenhets, String enhetHsaId) {
         for (Vardenhet vardenhet : vardenhets) {
             if (vardenhet.getId().equals(enhetHsaId)) {
                 return vardenhet;

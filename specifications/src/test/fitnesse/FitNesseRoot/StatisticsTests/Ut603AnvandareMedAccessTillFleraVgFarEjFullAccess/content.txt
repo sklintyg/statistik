@@ -1,0 +1,32 @@
+!contents -R2 -g -p -f -h
+
+Verifierar STATISTIK-961
+
+!3 Givet att:
+| script | dagens datum | 2013-11-06 |
+
+| script | troskel varde | 1 |
+
+| Enbart foljande intyg finns |
+| personnr      | diagnoskod | start      | slut       | enhet  |
+| 19790407-1295 | G01        | 2013-02-05 | 2013-02-06 | enhet1 |
+| 19790407-2285 | G02        | 2013-02-05 | 2013-02-06 | enhet2 |
+| 19790407-3285 | G03        | 2013-02-05 | 2013-02-06 | enhet3 |
+| 19790407-4285 | G04        | 2013-02-05 | 2013-02-06 | enhet4 |
+
+
+!3 Då gäller:
+| Sjukfall i rapporten sjukfall per enhet |
+| inloggad som | vårdgivarnivå | vårdenhet    | totalt? | män? | kvinnor? |
+| user5_vg1    | true          | Enhet enhet1 | 1       | 1    | 0        |
+| user5_vg1    | true          | Enhet enhet2 | 1       | 0    | 1        |
+| user5_vg1    | true          | Enhet enhet3 | -1      | -1   | -1       |
+| user5_vg1    | true          | Enhet enhet4 | -1      | -1   | -1       |
+| user5_vg3    | true          | Enhet enhet1 | -1      | -1   | -1       |
+| user5_vg3    | true          | Enhet enhet2 | -1      | -1   | -1       |
+| user5_vg3    | true          | Enhet enhet3 | 1       | 0    | 1        |
+| user5_vg3    | true          | Enhet enhet4 | -1      | -1   | -1       |
+| user1        | true          | Enhet enhet1 | 1       | 1    | 0        |
+| user1        | true          | Enhet enhet2 | 1       | 0    | 1        |
+| user1        | true          | Enhet enhet3 | -1      | -1   | -1       |
+| user1        | true          | Enhet enhet4 | 1       | 0    | 1        |
