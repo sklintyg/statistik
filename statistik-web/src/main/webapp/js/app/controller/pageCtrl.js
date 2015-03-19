@@ -40,7 +40,7 @@ angular.module('StatisticsApp').controller('pageCtrl', [ '$scope', '$rootScope',
 
             $scope.viewHeader = verksamhetId ? "Verksamhetsstatistik" : "Nationell statistik";
 
-            if ($rootScope.isLoggedIn) {
+            if ($rootScope.isLoggedIn && !$scope.isLoginInfoFetched) {
                 if (verksamhetId) {
                     $scope.businessId = verksamhetId;
                     $cookies.verksamhetId = verksamhetId;
@@ -57,13 +57,14 @@ angular.module('StatisticsApp').controller('pageCtrl', [ '$scope', '$rootScope',
 
                     $scope.isDelprocessledare = loginInfo.delprocessledare;
                     $scope.isProcessledare = loginInfo.processledare;
+
+                    $scope.isLoginInfoFetched = true;
                 }, function () {
                     $scope.dataLoadingError = true;
                 });
             }
         });
 
-        $scope.isLoggedIn = $rootScope.isLoggedIn;
 
         $scope.loginClicked = function (url) {
             $location.path(url);
