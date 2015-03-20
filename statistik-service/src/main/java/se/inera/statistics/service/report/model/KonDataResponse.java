@@ -21,7 +21,7 @@ package se.inera.statistics.service.report.model;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class KonDataResponse {
+public class KonDataResponse {
 
     private final List<String> groups;
     private final List<KonDataRow> rows;

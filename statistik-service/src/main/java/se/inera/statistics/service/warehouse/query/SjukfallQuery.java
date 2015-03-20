@@ -19,9 +19,11 @@
 package se.inera.statistics.service.warehouse.query;
 
 import com.google.common.annotations.VisibleForTesting;
+import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Iterables;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Multiset;
 import com.google.common.collect.Multisets;
 import org.joda.time.LocalDate;
@@ -30,6 +32,9 @@ import org.springframework.stereotype.Component;
 import se.inera.statistics.service.processlog.Lakare;
 import se.inera.statistics.service.processlog.LakareManager;
 import se.inera.statistics.service.report.model.Kon;
+import se.inera.statistics.service.report.model.KonDataResponse;
+import se.inera.statistics.service.report.model.KonDataRow;
+import se.inera.statistics.service.report.model.KonField;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.SimpleKonDataRow;
 import se.inera.statistics.service.report.model.SimpleKonResponse;
@@ -171,6 +176,41 @@ public final class SjukfallQuery {
     @VisibleForTesting
     public void setLakareManager(LakareManager lakareManager) {
         this.lakareManager = lakareManager;
+    }
+
+    public KonDataResponse getSjukfallPerEnhetSeries(Aisle aisle, SjukfallFilter filter, LocalDate start, int periods, int periodSize, Map<String, String> idsToNames) {
+        final ArrayList<Map.Entry<String, String>> groupEntries = new ArrayList<>(idsToNames.entrySet());
+        final List<String> names = Lists.transform(groupEntries, new Function<Map.Entry<String, String>, String>() {
+            @Override
+            public String apply(Map.Entry<String, String> entry) {
+                return entry.getValue();
+            }
+        });
+        final List<Integer> ids = Lists.transform(groupEntries, new Function<Map.Entry<String, String>, Integer>() {
+            @Override
+            public Integer apply(Map.Entry<String, String> entry) {
+                return Warehouse.getEnhet(entry.getKey());
+            }
+        });
+
+        List<KonDataRow> rows = new ArrayList<>();
+        for (SjukfallGroup sjukfallGroup: sjukfallUtil.sjukfallGrupper(start, periods, periodSize, aisle, filter)) {
+            final HashMultiset<Integer> maleCounter = HashMultiset.create();
+            final HashMultiset<Integer> femaleCounter = HashMultiset.create();
+            for (Sjukfall sjukfall : sjukfallGroup.getSjukfall()) {
+                final HashMultiset<Integer> currentCounter = Kon.Female.equals(sjukfall.getKon()) ? femaleCounter : maleCounter;
+                for (Integer enhetid : sjukfall.getEnhets()) {
+                    currentCounter.add(enhetid);
+                }
+            }
+            List<KonField> list = new ArrayList<>(ids.size());
+            for (Integer id : ids) {
+                list.add(new KonField(femaleCounter.count(id), maleCounter.count(id)));
+            }
+            rows.add(new KonDataRow(ReportUtil.toDiagramPeriod(sjukfallGroup.getRange().getFrom()), list));
+        }
+
+        return new KonDataResponse(names, rows);
     }
 
 }

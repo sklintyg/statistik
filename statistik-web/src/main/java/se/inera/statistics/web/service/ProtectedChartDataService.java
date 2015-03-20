@@ -34,11 +34,11 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import se.inera.statistics.service.report.api.RollingLength;
 import se.inera.statistics.service.report.model.DiagnosgruppResponse;
+import se.inera.statistics.service.report.model.KonDataResponse;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.SimpleKonDataRow;
 import se.inera.statistics.service.report.model.SimpleKonResponse;
 import se.inera.statistics.service.report.model.SjukfallslangdResponse;
-import se.inera.statistics.service.report.model.SjukskrivningsgradResponse;
 import se.inera.statistics.service.report.model.VerksamhetOverviewResponse;
 import se.inera.statistics.service.report.util.Icd10;
 import se.inera.statistics.service.warehouse.SjukfallFilter;
@@ -226,6 +226,45 @@ public class ProtectedChartDataService {
             return CsvConverter.getCsvResponse(data.get().getTableData(), "export.csv");
         } else {
             return Response.status(Response.Status.SERVICE_UNAVAILABLE).build();
+        }
+    }
+
+    /**
+     * Gets sjukfall per enhet for verksamhetId i tidsserie.
+     */
+    @POST
+    @Path("{verksamhetId}/getNumberOfCasesPerEnhetTimeSeries")
+    @Produces({ MediaType.APPLICATION_JSON })
+    @Consumes({ MediaType.APPLICATION_JSON })
+    @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request, #verksamhetId)")
+    @PostAuthorize(value = "@protectedChartDataService.userAccess(#request, #verksamhetId)")
+    public Response getNumberOfCasesPerEnhetTimeSeries(@Context HttpServletRequest request, @PathParam(VERKSAMHET_PATH_ID) String verksamhetId, @QueryParam("filter") String filterHash) {
+        LOG.info("Calling getNumberOfCasesPerEnhetTimeSeries with verksamhetId: {} and filterHash: {}", verksamhetId, filterHash);
+        Optional<DualSexStatisticsData> result = getNumberOfCasesPerEnhetDataTimeSeries(request, verksamhetId, filterHash);
+        if (result.isPresent()) {
+            return Response.ok(result.get()).build();
+        } else {
+            return Response.status(Response.Status.SERVICE_UNAVAILABLE).build();
+        }
+    }
+
+    private Optional<DualSexStatisticsData> getNumberOfCasesPerEnhetDataTimeSeries(HttpServletRequest request, String verksamhetId, String filterHash) {
+        CalcCoordinator.Ticket ticket = null;
+        try {
+            ticket = CalcCoordinator.getTicket();
+            LOG.info("Calling getNumberOfCasesPerEnhetTidsserie with verksamhetId: {} and filterHash: {}", verksamhetId, filterHash);
+            final Range range = new Range(18);
+            Verksamhet verksamhet = getVerksamhet(request, Verksamhet.decodeId(verksamhetId));
+            Filter filter = getFilter(request, verksamhet, filterHash);
+            Map<String, String> idToNameMap = getEnhetNameMap(request, verksamhet, getEnhetsFilterIds(filterHash, request));
+            KonDataResponse casesPerEnhet = warehouse.getCasesPerEnhetTimeSeries(filter.getPredicate(), idToNameMap, range, verksamhet.getVardgivarId());
+
+            DualSexStatisticsData result = new NumberOfCasesPerEnhetTimeSeriesConverter().convert(casesPerEnhet, range, filter);
+            return Optional.of(result);
+        } catch (CalcException c) {
+            return Optional.absent();
+        } finally {
+            CalcCoordinator.returnTicket(ticket);
         }
     }
 
@@ -828,7 +867,7 @@ public class ProtectedChartDataService {
             final Range range = new Range(18);
             Verksamhet verksamhet = getVerksamhet(request, Verksamhet.decodeId(verksamhetId));
             Filter filter = getFilter(request, verksamhet, filterHash);
-            SjukskrivningsgradResponse degreeOfSickLeaveStatistics = warehouse.getSjukskrivningsgradPerMonth(filter.getPredicate(), range, verksamhet.getVardgivarId());
+            KonDataResponse degreeOfSickLeaveStatistics = warehouse.getSjukskrivningsgradPerMonth(filter.getPredicate(), range, verksamhet.getVardgivarId());
             DualSexStatisticsData result = new DegreeOfSickLeaveConverter().convert(degreeOfSickLeaveStatistics, range, filter);
             return Optional.of(result);
         } catch (CalcException c) {
