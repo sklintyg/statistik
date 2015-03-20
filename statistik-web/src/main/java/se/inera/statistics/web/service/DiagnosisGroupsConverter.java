@@ -29,9 +29,7 @@ import se.inera.statistics.service.report.util.Icd10;
 import se.inera.statistics.web.model.ChartData;
 import se.inera.statistics.web.model.ChartSeries;
 import se.inera.statistics.web.model.DualSexStatisticsData;
-import se.inera.statistics.web.model.NamedData;
 import se.inera.statistics.web.model.TableData;
-import se.inera.statistics.web.model.TableHeader;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -43,7 +41,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.TreeMap;
 
-public class DiagnosisGroupsConverter {
+public class DiagnosisGroupsConverter extends DualSexConverter<DiagnosgruppResponse> {
 
     private static final Map<String, List<Integer>> DIAGNOSIS_CHART_GROUPS = createDiagnosisGroupsMap();
     private static final Map<Integer, String> DIAGNOSKAPITEL_TO_DIAGNOSGRUPP = map(DIAGNOSIS_CHART_GROUPS);
@@ -83,7 +81,7 @@ public class DiagnosisGroupsConverter {
     DualSexStatisticsData convert(DiagnosgruppResponse diagnosisGroups, Range range, Filter filter) {
         boolean empty = isUtanGiltigEmpty(diagnosisGroups);
         diagnosisGroups = removeUtanGiltigWhenEmpty(diagnosisGroups, empty);
-        TableData tableData = convertTable(diagnosisGroups);
+        TableData tableData = convertTable(diagnosisGroups, "%1$s");
         ChartData maleChart = convertChart(diagnosisGroups, Kon.Male, empty);
         ChartData femaleChart = convertChart(diagnosisGroups, Kon.Female, empty);
         final FilterDataResponse filterResponse = new FilterDataResponse(filter.getDiagnoser(), filter.getEnheter());
@@ -249,47 +247,4 @@ public class DiagnosisGroupsConverter {
         throw new RuntimeException("Unknown groupId: " + groupId);
     }
 
-    static TableData convertTable(DiagnosgruppResponse resp) {
-        List<NamedData> rows = getTableRows(resp);
-        List<List<TableHeader>> headers = getTableHeaders(resp);
-        return new TableData(rows, headers);
-    }
-
-    private static List<NamedData> getTableRows(DiagnosgruppResponse resp) {
-        List<NamedData> rows = new ArrayList<>();
-        for (KonDataRow row : resp.getRows()) {
-            List<Integer> mergedSexData = ServiceUtil.getMergedSexData(row);
-            int sum = 0;
-            for (Integer dataField : mergedSexData) {
-                sum += dataField;
-            }
-            mergedSexData.add(0, sum);
-            rows.add(new NamedData(row.getName(), mergedSexData));
-        }
-        return rows;
-    }
-
-    private static List<List<TableHeader>> getTableHeaders(DiagnosgruppResponse resp) {
-        List<TableHeader> topHeaderRow = new ArrayList<>();
-        topHeaderRow.add(new TableHeader(""));
-        topHeaderRow.add(new TableHeader(""));
-        List<String> diagnosisGroups = resp.getDiagnosisGroupsAsStrings();
-        for (String groupName : diagnosisGroups) {
-            topHeaderRow.add(new TableHeader(groupName, 2));
-        }
-        topHeaderRow.add(new TableHeader(""));
-
-        List<TableHeader> subHeaderRow = new ArrayList<>();
-        subHeaderRow.add(new TableHeader("Period"));
-        subHeaderRow.add(new TableHeader("Antal sjukfall totalt"));
-        for (String s : diagnosisGroups) {
-            subHeaderRow.add(new TableHeader("Kvinnor"));
-            subHeaderRow.add(new TableHeader("Män"));
-        }
-
-        List<List<TableHeader>> headers = new ArrayList<>();
-        headers.add(topHeaderRow);
-        headers.add(subHeaderRow);
-        return headers;
-    }
 }

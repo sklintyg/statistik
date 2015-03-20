@@ -137,7 +137,7 @@ public class NationellOverviewData {
             for (int i = 0; i < previousData.size(); i++) {
                 int previous = previousData.get(i).getFemale() + previousData.get(i).getMale();
                 int current = currentData.get(i).getFemale() + currentData.get(i).getMale();
-                result.add(new OverviewChartRowExtended(periods.getDegreesOfSickLeave().get(i), current, percentChange(current, previous)));
+                result.add(new OverviewChartRowExtended(periods.getGroups().get(i), current, percentChange(current, previous)));
             }
         }
         return result;

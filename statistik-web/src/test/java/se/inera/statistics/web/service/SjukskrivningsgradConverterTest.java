@@ -39,7 +39,7 @@ public class SjukskrivningsgradConverterTest {
     @Test
     public void tableConverterTestEmptyInput() {
         final SjukskrivningsgradResponse resp = new SjukskrivningsgradResponse(new ArrayList<String>(), new ArrayList<KonDataRow>());
-        TableData tableData = DegreeOfSickLeaveConverter.convertTable(resp);
+        TableData tableData = new DegreeOfSickLeaveConverter().convertTable(resp, "");
         assertEquals("[[;1, ;1], [Period;1, Antal sjukfall totalt;1]]", tableData.getHeaders().toString());
         assertEquals("[]", tableData.getRows().toString());
     }
@@ -57,7 +57,7 @@ public class SjukskrivningsgradConverterTest {
         final SjukskrivningsgradResponse resp = new SjukskrivningsgradResponse(degreesOfSickLeave, rows);
 
         //When
-        TableData tableData = DegreeOfSickLeaveConverter.convertTable(resp);
+        TableData tableData = new DegreeOfSickLeaveConverter().convertTable(resp, "Antal sjukfall med %1$s%% sjukskrivningsgrad");
 
         //Then
         assertEquals("[[;1, ;1, Antal sjukfall med 50% sjukskrivningsgrad;2], [Period;1, Antal sjukfall totalt;1, Kvinnor;1, Män;1]]", tableData.getHeaders().toString());

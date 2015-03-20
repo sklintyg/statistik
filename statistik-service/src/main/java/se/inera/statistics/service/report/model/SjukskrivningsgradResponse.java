@@ -18,60 +18,12 @@
  */
 package se.inera.statistics.service.report.model;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class SjukskrivningsgradResponse {
-
-    private final List<String> degreesOfSickLeave;
-    private final List<KonDataRow> rows;
+public class SjukskrivningsgradResponse extends KonDataResponse {
 
     public SjukskrivningsgradResponse(List<String> degreesOfSickLeave, List<KonDataRow> rows) {
-        this.degreesOfSickLeave = degreesOfSickLeave;
-        this.rows = rows;
+        super(degreesOfSickLeave, rows);
     }
 
-    public List<String> getDegreesOfSickLeave() {
-        return degreesOfSickLeave;
-    }
-
-    public List<KonDataRow> getRows() {
-        return rows;
-    }
-
-    public List<String> getPeriods() {
-        List<String> periods = new ArrayList<>();
-        for (KonDataRow row : rows) {
-            periods.add(row.getName());
-        }
-        return periods;
-    }
-
-    public List<Integer> getDataFromIndex(int index, Kon sex) {
-        List<Integer> indexData = new ArrayList<>();
-        for (KonDataRow row : rows) {
-            List<KonField> data = row.getData();
-            indexData.add(data.get(index).getValue(sex));
-        }
-        return indexData;
-    }
-
-    @Override
-    public String toString() {
-        return "{\"SjukskrivningsgradResponse\":{\"degreesOfSickLeave\":" + formattedDegreesOfSickLeave() + ", \"rows\":" + rows + "}}";
-    }
-
-    private String formattedDegreesOfSickLeave() {
-        StringBuilder sb = new StringBuilder("[");
-        for (String s : degreesOfSickLeave) {
-            sb.append('"');
-            sb.append(s);
-            sb.append("\", ");
-        }
-        if (sb.length() > 1) {
-            sb.deleteCharAt(sb.length() - 2);
-        }
-        sb.append(']');
-        return sb.toString();
-    }
 }
