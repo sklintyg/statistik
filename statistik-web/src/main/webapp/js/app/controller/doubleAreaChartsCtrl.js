@@ -208,7 +208,9 @@ angular.module('StatisticsApp').controller('doubleAreaChartsCtrl', [ '$scope', '
             }
         };
 
-        $scope.chartFootnotes = config.chartFootnotes;
+        $scope.chartFootnotes = _.map(config.chartFootnotes, function(msgKey){
+            return messageService.getProperty(msgKey, null, "", null, true);
+        });
 
         $scope.chartContainers = [
             {id: "chart1", name: "diagram för kvinnor"},
@@ -303,7 +305,7 @@ angular.module('StatisticsApp').diagnosisGroupConfig = function () {
         return "Antal sjukfall per diagnosgrupp" + ControllerCommons.getEnhetCountText(enhetsCount, false) + period;
     };
     conf.tooltipHelpText = "Diagnoskoder används för att gruppera sjukdomar för att kunna göra översiktliga statistiska sammanställningar och analyser. Statistiktjänsten är uppdelad i sju övergripande diagnosgrupper. I varje grupp ingår olika kapitel med diagnoskoder. Diagnoskoderna finns i klassificeringssystemet ICD-10-SE.";
-    conf.chartFootnotes = ["När ett sjukfall har flera intyg under samma månad hämtas uppgift om diagnos från det senaste intyget. För ett sjukfall som varar flera månader så hämtas diagnos för varje månad. I tabellen visas statistiken på diagnoskapitelnivå, men i grafen är statistiken aggregerad för att underlätta presentationen."];
+    conf.chartFootnotes = ["alert.diagnosisgroup.information"];
     return conf;
 };
 
@@ -323,7 +325,7 @@ angular.module('StatisticsApp').diagnosisSubGroupConfig = function () {
         return "Antal sjukfall för " + name + ControllerCommons.getEnhetCountText(enhetsCount, false) + period;
     };
     conf.tooltipHelpText = "Ett diagnoskapitel innehåller flera avsnitt med sjukdomar som i sin tur omfattar olika diagnoskoder. Det finns totalt 21 diagnoskapitel. Grafen visar endast de sex vanligaste förekommande avsnitten eller diagnoserna uppdelade på kvinnor respektive män. I tabellen visas samtliga inom valt kapitel eller avsnitt.";
-    conf.chartFootnotes = ["När ett sjukfall har flera intyg under samma månad hämtas uppgift om diagnos från det senaste intyget. För ett sjukfall som varar flera månader så hämtas diagnos för varje månad."];
+    conf.chartFootnotes = ["alert.diagnosissubgroup.information"];
     return conf;
 };
 
@@ -342,7 +344,7 @@ angular.module('StatisticsApp').degreeOfSickLeaveConfig = function () {
         return "Antal sjukfall per sjukskrivningsgrad" + ControllerCommons.getEnhetCountText(enhetsCount, false) + period;
     };
     conf.tooltipHelpText = "Sjukskrivningsgrad visar hur stor del av patientens arbetsförmåga som är nedsatt. Sjukskrivningsgraden anges i procent i förhållande till patientens aktuella arbetstid.";
-    conf.chartFootnotes = ["När ett sjukfall har flera intyg under samma månad hämtas uppgift om sjukskrivningsgrad från det senaste intyget. Om detta intyg innehåller flera olika sjukskrivningsgrader hämtas den senaste sjukskrivningsgraden för den månaden. För ett sjukfall som varar flera månader så hämtas sjukskrivningsgrad för varje månad."];
+    conf.chartFootnotes = ["alert.degreeofsickleave.information"];
     return conf;
 };
 
