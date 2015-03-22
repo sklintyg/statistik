@@ -255,6 +255,7 @@ angular.module('StatisticsApp').controller('doubleAreaChartsCtrl', [ '$scope', '
             ControllerCommons.toggleTableVisibilityGeneric(event, $scope);
         };
 
+        $scope.alternativeView = config.alternativeView;
         $scope.showDetailsOptions = config.showDetailsOptions;
         $scope.showDetailsOptions2 = config.showDetailsOptions2 && isVerksamhet;
 
@@ -344,3 +345,18 @@ angular.module('StatisticsApp').degreeOfSickLeaveConfig = function () {
     conf.chartFootnotes = ["När ett sjukfall har flera intyg under samma månad hämtas uppgift om sjukskrivningsgrad från det senaste intyget. Om detta intyg innehåller flera olika sjukskrivningsgrader hämtas den senaste sjukskrivningsgraden för den månaden. För ett sjukfall som varar flera månader så hämtas sjukskrivningsgrad för varje månad."];
     return conf;
 };
+
+angular.module('StatisticsApp').casesPerBusinessTimeSeriesConfig = function () {
+    var conf = {};
+    conf.dataFetcherVerksamhet = "getSjukfallPerBusinessTimeSeriesVerksamhet";
+    conf.exportTableUrlVerksamhet = function (verksamhetId) {
+        return "api/verksamhet/" + verksamhetId + "/getNumberOfCasesPerEnhetTimeSeries/csv";
+    };
+    conf.title = function (period, enhetsCount) {
+        return "Antal sjukfall per vårdenhet" + ControllerCommons.getEnhetCountText(enhetsCount, false) + period;
+    };
+    conf.chartFootnotes = ["alert.vardenhet.information"];
+    conf.alternativeView = "sjukfallperenhet"
+    return conf;
+};
+
