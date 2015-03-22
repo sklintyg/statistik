@@ -17,6 +17,7 @@
       <security:http security="none" pattern="/bootstrap/**"/>
       <security:http security="none" pattern="/js/**"/>
       <security:http security="none" pattern="/img/**"/>
+      <security:http security="none" pattern="/highcharts-export-web/**"/>
       <security:http security="none" pattern="/favicon.ico"/>
     </beans>
 
