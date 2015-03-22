@@ -150,7 +150,7 @@ public class NationellData {
                     }
                     list.add(new KonDataRow(a.getName(), c));
                 }
-                result = new SjukskrivningsgradResponse(result.getDegreesOfSickLeave(), list);
+                result = new SjukskrivningsgradResponse(result.getGroups(), list);
             }
         }
         if (result == null) {
@@ -341,7 +341,7 @@ public class NationellData {
         for (KonDataRow row : unfiltered.getRows()) {
             rows.add(new KonDataRow(row.getName(), filterLowKonFields(row.getData())));
         }
-        return new SjukskrivningsgradResponse(unfiltered.getDegreesOfSickLeave(), rows);
+        return new SjukskrivningsgradResponse(unfiltered.getGroups(), rows);
     }
 
     private DiagnosgruppResponse filterLow(DiagnosgruppResponse unfiltered) {

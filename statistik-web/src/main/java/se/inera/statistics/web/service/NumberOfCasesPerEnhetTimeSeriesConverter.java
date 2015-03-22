@@ -16,14 +16,16 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package se.inera.statistics.service.report.model;
+package se.inera.statistics.web.service;
 
-import java.util.List;
+import se.inera.statistics.service.report.model.KonDataResponse;
+import se.inera.statistics.service.report.model.Range;
+import se.inera.statistics.web.model.DualSexStatisticsData;
 
-public class SjukskrivningsgradResponse extends KonDataResponse {
+public class NumberOfCasesPerEnhetTimeSeriesConverter extends DualSexConverter<KonDataResponse> {
 
-    public SjukskrivningsgradResponse(List<String> degreesOfSickLeave, List<KonDataRow> rows) {
-        super(degreesOfSickLeave, rows);
+    DualSexStatisticsData convert(KonDataResponse data, Range range, Filter filter) {
+        return super.convert(data, range, filter, "%1$s");
     }
 
 }

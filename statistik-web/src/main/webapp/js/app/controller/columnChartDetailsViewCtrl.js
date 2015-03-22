@@ -116,6 +116,7 @@ angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl', [ '$sco
             $scope.doneLoading = true;
         }
 
+        $scope.alternativeView = config.alternativeView;
         $scope.showHideDataTable = ControllerCommons.showHideDataTableDefault;
 
         $scope.toggleTableVisibility = function (event) {
@@ -262,6 +263,7 @@ angular.module('StatisticsApp').casesPerBusinessConfig = function () {
     };
     conf.chartXAxisTitle = "Vårdenhet";
     conf.chartFootnotes = ["alert.vardenhet.information"];
+    conf.alternativeView = "sjukfallperenhettidsserie"
     return conf;
 };
 

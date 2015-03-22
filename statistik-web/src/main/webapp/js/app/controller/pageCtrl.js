@@ -70,5 +70,11 @@ angular.module('StatisticsApp').controller('pageCtrl', [ '$scope', '$rootScope',
             $location.path(url);
         };
 
+        $scope.showAlternativeView = function(name) {
+            var path = $location.path();
+            var newPath = path.replace(/\/[^\/]+\/?$/gm, "/" + name);
+            $location.path(newPath);
+        }
+
     }
 ]);

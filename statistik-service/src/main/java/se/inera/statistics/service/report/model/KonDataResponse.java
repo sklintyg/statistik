@@ -18,44 +18,47 @@
  */
 package se.inera.statistics.service.report.model;
 
-import com.google.common.base.Function;
-import com.google.common.collect.Lists;
-
 import java.util.ArrayList;
 import java.util.List;
 
-public class DiagnosgruppResponse extends KonDataResponse {
+public class KonDataResponse {
 
-    private final List<? extends Icd> icdTyps;
+    private final List<String> groups;
+    private final List<KonDataRow> rows;
 
-    public DiagnosgruppResponse(List<? extends Icd> icdTyps, List<KonDataRow> rows) {
-        super(getStringGroups(icdTyps), rows);
-        this.icdTyps = icdTyps;
+    public KonDataResponse(List<String> groups, List<KonDataRow> rows) {
+        this.groups = groups;
+        this.rows = rows;
     }
 
-    public List<? extends Icd> getIcdTyps() {
-        return icdTyps;
+    public List<String> getGroups() {
+        return groups;
     }
 
-    private static List<String> getStringGroups(List<? extends Icd> icdTyps) {
-        if (icdTyps == null) {
-            return new ArrayList<>();
+    public List<KonDataRow> getRows() {
+        return rows;
+    }
+
+    public List<String> getPeriods() {
+        List<String> periods = new ArrayList<>();
+        for (KonDataRow row : rows) {
+            periods.add(row.getName());
         }
-        return Lists.transform(icdTyps, new Function<Icd, String>() {
-            @Override
-            public String apply(Icd icd) {
-                return icd.asString();
-            }
-        });
+        return periods;
     }
 
-    public List<String> getDiagnosisGroupsAsStrings() {
-        return getStringGroups(icdTyps);
+    public List<Integer> getDataFromIndex(int index, Kon sex) {
+        List<Integer> indexData = new ArrayList<>();
+        for (KonDataRow row : rows) {
+            List<KonField> data = row.getData();
+            indexData.add(data.get(index).getValue(sex));
+        }
+        return indexData;
     }
 
     @Override
     public String toString() {
-        return "{\"DiagnosgruppResponse\":{" + "\"icdTyps\":" + icdTyps + ", \"rows\":" + getRows() + "}}";
+        return "{\"KonDataResponse\":{" + "\"groups\":" + groups + ", \"rows\":" + rows + "}}";
     }
 
 }

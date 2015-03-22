@@ -20,11 +20,11 @@ package se.inera.statistics.web.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import se.inera.statistics.service.report.model.DiagnosgruppResponse;
+import se.inera.statistics.service.report.model.KonDataResponse;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.SimpleKonDataRow;
 import se.inera.statistics.service.report.model.SimpleKonResponse;
 import se.inera.statistics.service.report.model.SjukfallslangdResponse;
-import se.inera.statistics.service.report.model.SjukskrivningsgradResponse;
 import se.inera.statistics.service.report.model.VerksamhetOverviewResponse;
 import se.inera.statistics.service.report.util.ReportUtil;
 import se.inera.statistics.service.warehouse.SjukfallFilter;
@@ -76,7 +76,7 @@ public class WarehouseService {
         return query.getDiagnosgrupper(warehouse.get(vardgivarId), filter, range.getFrom(), range.getMonths(), 1);
     }
 
-    public SjukskrivningsgradResponse getSjukskrivningsgradPerMonth(SjukfallFilter filter, Range range, String vardgivarId) {
+    public KonDataResponse getSjukskrivningsgradPerMonth(SjukfallFilter filter, Range range, String vardgivarId) {
         return SjukskrivningsgradQuery.getSjukskrivningsgrad(warehouse.get(vardgivarId), filter, range.getFrom(), range.getMonths(), 1, sjukfallUtil);
     }
 
@@ -102,6 +102,10 @@ public class WarehouseService {
 
     public SimpleKonResponse<SimpleKonDataRow> getCasesPerEnhet(SjukfallFilter filter, Map<String, String> idsToNames, Range range, String vardgivarId) {
         return sjukfallQuery.getSjukfallPerEnhet(warehouse.get(vardgivarId), filter, range.getFrom(), 1, range.getMonths(), idsToNames);
+    }
+
+    public KonDataResponse getCasesPerEnhetTimeSeries(SjukfallFilter filter, Map<String, String> idsToNames, Range range, String vardgivarId) {
+        return sjukfallQuery.getSjukfallPerEnhetSeries(warehouse.get(vardgivarId), filter, range.getFrom(), range.getMonths(), 1, idsToNames);
     }
 
     public SimpleKonResponse<SimpleKonDataRow> getCasesPerLakare(SjukfallFilter filter, Range range, String vardgivarId) {

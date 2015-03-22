@@ -130,6 +130,10 @@ angular.module('StatisticsApp').factory('statisticsData', function ($http, $root
         makeRequestVerksamhet("getNumberOfCasesPerEnhet", verksamhetId, successCallback, failureCallback);
     };
 
+    factory.getSjukfallPerBusinessTimeSeriesVerksamhet = function (verksamhetId, successCallback, failureCallback) {
+        makeRequestVerksamhet("getNumberOfCasesPerEnhetTimeSeries", verksamhetId, successCallback, failureCallback);
+    };
+
     factory.getSjukfallPerLakareVerksamhet = function (verksamhetId, successCallback, failureCallback) {
         makeRequestVerksamhet("getNumberOfCasesPerLakare", verksamhetId, successCallback, failureCallback);
     };
