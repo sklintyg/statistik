@@ -70,6 +70,6 @@ public class SakerhetstjanstAssertionTest {
 
     @Test
     public void getSystemRolls() throws ConfigurationException, ParserConfigurationException, IOException, SAXException, UnmarshallingException {
-        assertEquals(Arrays.asList("BIF;Loggadministratör", "INTYG;Statistik"), sakerhetstjanstAssertion.getSystemRoles());
+        assertEquals(Arrays.asList("BIF;Loggadministratör", "INTYG;Statistik-IFV1239877878-0001"), sakerhetstjanstAssertion.getSystemRoles());
     }
 }

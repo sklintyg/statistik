@@ -43,6 +43,7 @@ public class LoginInfo {
         processledare = false;
     }
 
+    //CHECKSTYLE:OFF ParameterNumberCheck
     public LoginInfo(String hsaId, String name, Verksamhet defaultVerksamhet, boolean verksamhetschef, boolean delprocessledare, boolean processledare, List<Verksamhet> businesses) {
         this.hsaId = hsaId;
         this.name = name;
@@ -53,6 +54,7 @@ public class LoginInfo {
         this.loggedIn = true;
         this.businesses = businesses;
     }
+    //CHECKSTYLE:ON
 
     public String getHsaId() {
         return hsaId;

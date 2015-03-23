@@ -101,7 +101,7 @@ public class FakeAuthenticationProvider implements AuthenticationProvider {
         attributeStatement.getAttributes().add(createAttribute(VARDGIVARE_HSA_ID_ATTRIBUTE, fakeCredentials.getVardgivarId()));
 
         if (fakeCredentials.isVardgivarniva()) {
-            attributeStatement.getAttributes().add(createAttribute(SYSTEM_ROLE_ATTRIBUTE, "INTYG;Statistik"));
+            attributeStatement.getAttributes().add(createAttribute(SYSTEM_ROLE_ATTRIBUTE, "INTYG;Statistik-" + fakeCredentials.getVardgivarId()));
         }
         NameID nameId = new NameIDBuilder().buildObject();
         nameId.setValue(token.getCredentials().toString());

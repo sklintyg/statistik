@@ -23,8 +23,6 @@ import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
 import com.google.common.base.Splitter;
 import com.google.common.collect.Lists;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.stereotype.Component;
@@ -50,7 +48,6 @@ import static com.google.common.collect.Lists.transform;
 
 @Component
 public class LoginServiceUtil {
-    private static final Logger LOG = LoggerFactory.getLogger(LoginServiceUtil.class);
 
     @Autowired
     private Warehouse warehouse;
