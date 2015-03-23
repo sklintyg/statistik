@@ -26,11 +26,9 @@ Gäller STATISTIK-935, 36, 42, 43.
 | user2        | Enhet enhet1 | true          | 1       | 0    | 1        |
 | user2        | Enhet enhet2 | true          | 1       | 1    | 0        |
 
-| script | visasom | tidsserie |
-
 Byte till tidsserie gör att ytdiagram 18 mån visas. Varje enhet blir en legend. Kvinnor och män visas i separata diagram.
 
-| Sjukfall i rapporten sjukfall per enhet |
+| Sjukfall i rapporten sjukfall per enhet som tidsserie |
 | inloggad som | år   | månad | vårdenhet    | män? | kvinnor? |
 | user2        | 2013 | maj   | Enhet enhet1 | -1   | -1       |
 | user2        | 2013 | jun   | Enhet enhet1 | 0    | 1        |
@@ -51,8 +49,6 @@ Byte till tidsserie gör att ytdiagram 18 mån visas. Varje enhet blir en legend
 | user2        | 2014 | sep   | Enhet enhet1 | 0    | 1        |
 | user2        | 2014 | okt   | Enhet enhet1 | 0    | 1        |
 | user2        | 2014 | nov   | Enhet enhet1 | 0    | 0        |
-
-| script | visasom | tvarsnitt |
 
 Byte tillbaka till tvärsnitt gör att allt går tillbaka till default.
 
