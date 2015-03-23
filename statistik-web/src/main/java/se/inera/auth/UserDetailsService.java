@@ -33,7 +33,7 @@ import java.util.List;
 public class UserDetailsService implements SAMLUserDetailsService {
 
     private static final Logger LOG = LoggerFactory.getLogger(UserDetailsService.class);
-    public static final String GLOBAL_VG_ACCESS_FLAG = "INTYG;Statistik";
+    public static final String GLOBAL_VG_ACCESS_PREFIX = "INTYG;Statistik-";
 
     @Autowired
     private HsaOrganizationsService hsaOrganizationsService;
@@ -42,14 +42,22 @@ public class UserDetailsService implements SAMLUserDetailsService {
     public Object loadUserBySAML(SAMLCredential credential) {
         LOG.info("User authentication was successful. SAML credential is " + credential);
 
-        SakerhetstjanstAssertion assertion = new SakerhetstjanstAssertion(credential.getAuthenticationAssertion());
+        SakerhetstjanstAssertion assertion = getSakerhetstjanstAssertion(credential);
 
-        List<Vardenhet> authorizedVerksamhets = hsaOrganizationsService.getAuthorizedEnheterForHosPerson(assertion.getHsaId());
+        final String hsaId = assertion.getHsaId();
+        List<Vardenhet> authorizedVerksamhets = hsaOrganizationsService.getAuthorizedEnheterForHosPerson(hsaId);
 
         Vardenhet selectedVerksamhet = getLoginVerksamhet(authorizedVerksamhets, assertion.getEnhetHsaId());
-        List<Vardenhet> filtered = filterByVardgivare(authorizedVerksamhets, selectedVerksamhet.getVardgivarId());
+        String vardgivare = selectedVerksamhet != null ? selectedVerksamhet.getVardgivarId() : null;
+        List<Vardenhet> filtered = filterByVardgivare(authorizedVerksamhets, vardgivare);
 
-        return new User(assertion.getHsaId(), assertion.getFornamn() + ' ' + assertion.getMellanOchEfternamn(), assertion.getSystemRoles().contains(GLOBAL_VG_ACCESS_FLAG), selectedVerksamhet, filtered);
+        final boolean processledare = assertion.getSystemRoles().contains(GLOBAL_VG_ACCESS_PREFIX + vardgivare);
+        final String name = assertion.getFornamn() + ' ' + assertion.getMellanOchEfternamn();
+        return new User(hsaId, name, processledare, selectedVerksamhet, filtered);
+    }
+
+    SakerhetstjanstAssertion getSakerhetstjanstAssertion(SAMLCredential credential) {
+        return new SakerhetstjanstAssertion(credential.getAuthenticationAssertion());
     }
 
     private List<Vardenhet> filterByVardgivare(List<Vardenhet> vardenhets, String vardgivarId) {
@@ -62,7 +70,7 @@ public class UserDetailsService implements SAMLUserDetailsService {
         return filtered;
     }
 
-    private Vardenhet getLoginVerksamhet(List<Vardenhet> vardenhets, String enhetHsaId) {
+    Vardenhet getLoginVerksamhet(List<Vardenhet> vardenhets, String enhetHsaId) {
         for (Vardenhet vardenhet : vardenhets) {
             if (vardenhet.getId().equals(enhetHsaId)) {
                 return vardenhet;

@@ -50,7 +50,6 @@ import static com.google.common.collect.Lists.transform;
 
 @Component
 public class LoginServiceUtil {
-    private static final Logger LOG = LoggerFactory.getLogger(LoginServiceUtil.class);
 
     @Autowired
     private Warehouse warehouse;

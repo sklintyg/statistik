@@ -28,14 +28,14 @@ public class User implements Serializable {
 
     private final String hsaId;
     private final String name;
-    private final boolean vgAccess;
+    private final boolean processledare;
     private final Vardenhet vardenhet;
     private final List<Vardenhet> vardenhetList;
 
-    public User(String hsaId, String name, boolean vgAccess, Vardenhet vardenhet, List<Vardenhet> vardenhetsList) {
+    public User(String hsaId, String name, boolean processledare, Vardenhet vardenhet, List<Vardenhet> vardenhetsList) {
         this.hsaId = hsaId;
         this.name = name;
-        this.vgAccess = vgAccess;
+        this.processledare = processledare;
         this.vardenhet = vardenhet;
         this.vardenhetList = Collections.unmodifiableList(vardenhetsList);
     }
@@ -61,11 +61,11 @@ public class User implements Serializable {
     }
 
     public boolean isDelprocessledare() {
-        return !vgAccess && vardenhetList.size() > 1;
+        return !processledare && vardenhetList.size() > 1;
     }
 
     public boolean isProcessledare() {
-        return vgAccess;
+        return processledare;
     }
 
 }

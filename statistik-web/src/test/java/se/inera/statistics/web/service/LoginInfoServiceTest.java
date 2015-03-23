@@ -21,6 +21,7 @@ package se.inera.statistics.web.service;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Ignore;
+import org.junit.Test;
 import org.mockito.Mockito;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import se.inera.auth.model.User;
@@ -48,6 +49,7 @@ public class LoginInfoServiceTest {
         Mockito.doNothing().when(session).setAttribute(anyString(), anyObject());
     }
 
+    @Test
     @Ignore
     public void getNotLoggedInLoginInfoTest() {
         LoginInfoService loginInfoService = new LoginInfoService();
@@ -57,10 +59,11 @@ public class LoginInfoServiceTest {
         Assert.assertEquals(false, info.isLoggedIn());
     }
 
+    @Test
     @Ignore
     public void getLoginInfoTest() {
         LoginInfoService loginInfoService = new LoginInfoService();
-        List<Vardenhet> vardenhets = Collections.<Vardenhet>singletonList(new Vardenhet("verksamhetid", "verksamhetnamn", "VG1"));
+        List<Vardenhet> vardenhets = Collections.singletonList(new Vardenhet("verksamhetid", "verksamhetnamn", "VG1"));
         User user = new User("hsaId", "name", false, vardenhets.get(0), vardenhets);
         UsernamePasswordAuthenticationToken principal = Mockito.mock(UsernamePasswordAuthenticationToken.class);
         Mockito.when(request.getUserPrincipal()).thenReturn(principal);

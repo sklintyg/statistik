@@ -40,7 +40,7 @@
     <saml:AttributeStatement>
         <saml:Attribute FriendlyName="systemRole" Name="urn:sambi:names:attribute:systemRole" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri">
             <saml:AttributeValue>BIF;Loggadministratör</saml:AttributeValue>
-            <saml:AttributeValue>INTYG;Statistik</saml:AttributeValue>
+            <saml:AttributeValue>INTYG;Statistik-IFV1239877878-0001</saml:AttributeValue>
         </saml:Attribute>
         <saml:Attribute FriendlyName="assignmentHsaId" Name="urn:sambi:names:attribute:assignmentHsaId" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri">
             <saml:AttributeValue>IFV1239877878-103N</saml:AttributeValue>
