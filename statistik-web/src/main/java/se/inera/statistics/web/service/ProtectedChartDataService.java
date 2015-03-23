@@ -43,8 +43,6 @@ import se.inera.statistics.service.report.model.VerksamhetOverviewResponse;
 import se.inera.statistics.service.report.util.Icd10;
 import se.inera.statistics.service.warehouse.SjukfallFilter;
 import se.inera.statistics.service.warehouse.Warehouse;
-import se.inera.statistics.service.warehouse.query.CalcCoordinator;
-import se.inera.statistics.service.warehouse.query.CalcException;
 import se.inera.statistics.web.model.SimpleDetailsData;
 import se.inera.statistics.web.model.DualSexStatisticsData;
 import se.inera.statistics.web.model.LoginInfo;
@@ -123,30 +121,18 @@ public class ProtectedChartDataService {
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request, #verksamhetId)")
     public Response getNumberOfCasesPerMonth(@Context HttpServletRequest request, @PathParam(VERKSAMHET_PATH_ID) String verksamhetId, @QueryParam("filter") String filterHash) {
         LOG.info("Calling getNumberOfCasesPerMonth with verksamhetId: {} and filterHash: {}", verksamhetId, filterHash);
-        Optional<SimpleDetailsData> result = getNumberOfCasesPerMonthData(request, verksamhetId, filterHash);
-        if (result.isPresent()) {
-            return Response.ok(result.get()).build();
-        } else {
-            return Response.status(Response.Status.SERVICE_UNAVAILABLE).build();
-        }
+        SimpleDetailsData result = getNumberOfCasesPerMonthData(request, verksamhetId, filterHash);
+        return Response.ok(result).build();
     }
 
-    private Optional<SimpleDetailsData> getNumberOfCasesPerMonthData(HttpServletRequest request, String verksamhetId, String filterHash) {
-        CalcCoordinator.Ticket ticket = null;
-        try {
-            ticket = CalcCoordinator.getTicket();
-            LOG.info("Calling getNumberOfCasesPerMonth with verksamhetId: {} and filterHash: {}", verksamhetId, filterHash);
-            final Range range = new Range(18);
-            Verksamhet verksamhet = getVerksamhet(request, Verksamhet.decodeId(verksamhetId));
-            Filter filter = getFilter(request, verksamhet, filterHash);
-            SimpleKonResponse<SimpleKonDataRow> casesPerMonth = warehouse.getCasesPerMonth(filter.getPredicate(), range, verksamhet.getVardgivarId());
-            SimpleDetailsData result = new PeriodConverter().convert(casesPerMonth, range, filter);
-            return Optional.of(result);
-        } catch (CalcException c) {
-            return Optional.absent();
-        } finally {
-            CalcCoordinator.returnTicket(ticket);
-        }
+    private SimpleDetailsData getNumberOfCasesPerMonthData(HttpServletRequest request, String verksamhetId, String filterHash) {
+        LOG.info("Calling getNumberOfCasesPerMonth with verksamhetId: {} and filterHash: {}", verksamhetId, filterHash);
+        final Range range = new Range(18);
+        Verksamhet verksamhet = getVerksamhet(request, Verksamhet.decodeId(verksamhetId));
+        Filter filter = getFilter(request, verksamhet, filterHash);
+        SimpleKonResponse<SimpleKonDataRow> casesPerMonth = warehouse.getCasesPerMonth(filter.getPredicate(), range, verksamhet.getVardgivarId());
+        SimpleDetailsData result = new PeriodConverter().convert(casesPerMonth, range, filter);
+        return result;
     }
 
     /**
@@ -164,12 +150,8 @@ public class ProtectedChartDataService {
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request, #verksamhetId)")
     public Response getNumberOfCasesPerMonthAsCsv(@Context HttpServletRequest request, @PathParam(VERKSAMHET_PATH_ID) String verksamhetId, @QueryParam("filter") String filterHash) {
         LOG.info("Calling getNumberOfCasesPerMonthAsCsv with verksamhetId: {} and filterHash: {}", verksamhetId, filterHash);
-        final Optional<SimpleDetailsData> data = getNumberOfCasesPerMonthData(request, verksamhetId, filterHash);
-        if (data.isPresent()) {
-            return CsvConverter.getCsvResponse(data.get().getTableData(), "export.csv");
-        } else {
-            return Response.status(Response.Status.SERVICE_UNAVAILABLE).build();
-        }
+        final SimpleDetailsData data = getNumberOfCasesPerMonthData(request, verksamhetId, filterHash);
+        return CsvConverter.getCsvResponse(data.getTableData(), "export.csv");
     }
 
     /**
@@ -183,31 +165,19 @@ public class ProtectedChartDataService {
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request, #verksamhetId)")
     public Response getNumberOfCasesPerEnhet(@Context HttpServletRequest request, @PathParam(VERKSAMHET_PATH_ID) String verksamhetId, @QueryParam("filter") String filterHash) {
         LOG.info("Calling getNumberOfCasesPerEnhet with verksamhetId: {} and filterHash: {}", verksamhetId, filterHash);
-        Optional<SimpleDetailsData> result = getNumberOfCasesPerEnhetData(request, verksamhetId, filterHash);
-        if (result.isPresent()) {
-            return Response.ok(result.get()).build();
-        } else {
-            return Response.status(Response.Status.SERVICE_UNAVAILABLE).build();
-        }
+        SimpleDetailsData result = getNumberOfCasesPerEnhetData(request, verksamhetId, filterHash);
+        return Response.ok(result).build();
     }
 
-    private Optional<SimpleDetailsData> getNumberOfCasesPerEnhetData(HttpServletRequest request, String verksamhetId, String filterHash) {
-        CalcCoordinator.Ticket ticket = null;
-        try {
-            ticket = CalcCoordinator.getTicket();
-            LOG.info("Calling getNumberOfCasesPerEnhet with verksamhetId: {} and filterHash: {}", verksamhetId, filterHash);
-            final Range range = new Range(12);
-            Verksamhet verksamhet = getVerksamhet(request, Verksamhet.decodeId(verksamhetId));
-            Filter filter = getFilter(request, verksamhet, filterHash);
-            Map<String, String> idToNameMap = getEnhetNameMap(request, verksamhet, getEnhetsFilterIds(filterHash, request));
-            SimpleKonResponse<SimpleKonDataRow> casesPerEnhet = warehouse.getCasesPerEnhet(filter.getPredicate(), idToNameMap, range, verksamhet.getVardgivarId());
-            SimpleDetailsData result = new GroupedSjukfallConverter("Vårdenhet").convert(casesPerEnhet, range, filter);
-            return Optional.of(result);
-        } catch (CalcException c) {
-            return Optional.absent();
-        } finally {
-            CalcCoordinator.returnTicket(ticket);
-        }
+    private SimpleDetailsData getNumberOfCasesPerEnhetData(HttpServletRequest request, String verksamhetId, String filterHash) {
+        LOG.info("Calling getNumberOfCasesPerEnhet with verksamhetId: {} and filterHash: {}", verksamhetId, filterHash);
+        final Range range = new Range(12);
+        Verksamhet verksamhet = getVerksamhet(request, Verksamhet.decodeId(verksamhetId));
+        Filter filter = getFilter(request, verksamhet, filterHash);
+        Map<String, String> idToNameMap = getEnhetNameMap(request, verksamhet, getEnhetsFilterIds(filterHash, request));
+        SimpleKonResponse<SimpleKonDataRow> casesPerEnhet = warehouse.getCasesPerEnhet(filter.getPredicate(), idToNameMap, range, verksamhet.getVardgivarId());
+        SimpleDetailsData result = new GroupedSjukfallConverter("Vårdenhet").convert(casesPerEnhet, range, filter);
+        return result;
     }
 
     /**
@@ -221,12 +191,8 @@ public class ProtectedChartDataService {
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request, #verksamhetId)")
     public Response getNumberOfCasesPerEnhetAsCsv(@Context HttpServletRequest request, @PathParam(VERKSAMHET_PATH_ID) String verksamhetId, @QueryParam("filter") String filterHash) {
         LOG.info("Calling getNumberOfCasesPerEnhetAsCsv with verksamhetId: {} and filterHash: {}", verksamhetId, filterHash);
-        final Optional<SimpleDetailsData> data = getNumberOfCasesPerEnhetData(request, verksamhetId, filterHash);
-        if (data.isPresent()) {
-            return CsvConverter.getCsvResponse(data.get().getTableData(), "export.csv");
-        } else {
-            return Response.status(Response.Status.SERVICE_UNAVAILABLE).build();
-        }
+        final SimpleDetailsData data = getNumberOfCasesPerEnhetData(request, verksamhetId, filterHash);
+        return CsvConverter.getCsvResponse(data.getTableData(), "export.csv");
     }
 
     /**
@@ -240,32 +206,20 @@ public class ProtectedChartDataService {
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request, #verksamhetId)")
     public Response getNumberOfCasesPerEnhetTimeSeries(@Context HttpServletRequest request, @PathParam(VERKSAMHET_PATH_ID) String verksamhetId, @QueryParam("filter") String filterHash) {
         LOG.info("Calling getNumberOfCasesPerEnhetTimeSeries with verksamhetId: {} and filterHash: {}", verksamhetId, filterHash);
-        Optional<DualSexStatisticsData> result = getNumberOfCasesPerEnhetDataTimeSeries(request, verksamhetId, filterHash);
-        if (result.isPresent()) {
-            return Response.ok(result.get()).build();
-        } else {
-            return Response.status(Response.Status.SERVICE_UNAVAILABLE).build();
-        }
+        DualSexStatisticsData result = getNumberOfCasesPerEnhetDataTimeSeries(request, verksamhetId, filterHash);
+        return Response.ok(result).build();
     }
 
-    private Optional<DualSexStatisticsData> getNumberOfCasesPerEnhetDataTimeSeries(HttpServletRequest request, String verksamhetId, String filterHash) {
-        CalcCoordinator.Ticket ticket = null;
-        try {
-            ticket = CalcCoordinator.getTicket();
-            LOG.info("Calling getNumberOfCasesPerEnhetTidsserie with verksamhetId: {} and filterHash: {}", verksamhetId, filterHash);
-            final Range range = new Range(18);
-            Verksamhet verksamhet = getVerksamhet(request, Verksamhet.decodeId(verksamhetId));
-            Filter filter = getFilter(request, verksamhet, filterHash);
-            Map<String, String> idToNameMap = getEnhetNameMap(request, verksamhet, getEnhetsFilterIds(filterHash, request));
-            KonDataResponse casesPerEnhet = warehouse.getCasesPerEnhetTimeSeries(filter.getPredicate(), idToNameMap, range, verksamhet.getVardgivarId());
+    private DualSexStatisticsData getNumberOfCasesPerEnhetDataTimeSeries(HttpServletRequest request, String verksamhetId, String filterHash) {
+        LOG.info("Calling getNumberOfCasesPerEnhetTidsserie with verksamhetId: {} and filterHash: {}", verksamhetId, filterHash);
+        final Range range = new Range(18);
+        Verksamhet verksamhet = getVerksamhet(request, Verksamhet.decodeId(verksamhetId));
+        Filter filter = getFilter(request, verksamhet, filterHash);
+        Map<String, String> idToNameMap = getEnhetNameMap(request, verksamhet, getEnhetsFilterIds(filterHash, request));
+        KonDataResponse casesPerEnhet = warehouse.getCasesPerEnhetTimeSeries(filter.getPredicate(), idToNameMap, range, verksamhet.getVardgivarId());
 
-            DualSexStatisticsData result = new NumberOfCasesPerEnhetTimeSeriesConverter().convert(casesPerEnhet, range, filter);
-            return Optional.of(result);
-        } catch (CalcException c) {
-            return Optional.absent();
-        } finally {
-            CalcCoordinator.returnTicket(ticket);
-        }
+        DualSexStatisticsData result = new NumberOfCasesPerEnhetTimeSeriesConverter().convert(casesPerEnhet, range, filter);
+        return result;
     }
 
     private List<String> getEnhetsFilterIds(String filterHash, HttpServletRequest request) {
@@ -294,29 +248,17 @@ public class ProtectedChartDataService {
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request, #verksamhetId)")
     public Response getNumberOfCasesPerLakare(@Context HttpServletRequest request, @PathParam(VERKSAMHET_PATH_ID) String verksamhetId, @QueryParam("filter") String filterHash) {
         LOG.info("Calling getNumberOfCasesPerLakare with verksamhetId: {} and filterHash: {}", verksamhetId, filterHash);
-        final Optional<SimpleDetailsData> result = getNumberOfCasesPerLakareData(request, verksamhetId, filterHash);
-        if (result.isPresent()) {
-            return Response.ok(result.get()).build();
-        } else {
-            return Response.status(Response.Status.SERVICE_UNAVAILABLE).build();
-        }
+        final SimpleDetailsData result = getNumberOfCasesPerLakareData(request, verksamhetId, filterHash);
+        return Response.ok(result).build();
     }
 
-    private Optional<SimpleDetailsData> getNumberOfCasesPerLakareData(HttpServletRequest request, String verksamhetId, String filterHash) {
-        CalcCoordinator.Ticket ticket = null;
-        try {
-            ticket = CalcCoordinator.getTicket();
-            final Range range = new Range(12);
-            Verksamhet verksamhet = getVerksamhet(request, Verksamhet.decodeId(verksamhetId));
-            Filter filter = getFilter(request, verksamhet, filterHash);
-            SimpleKonResponse<SimpleKonDataRow> casesPerLakare = warehouse.getCasesPerLakare(filter.getPredicate(), range, verksamhet.getVardgivarId());
-            SimpleDetailsData result = new GroupedSjukfallConverter("Läkare").convert(casesPerLakare, range, filter);
-            return Optional.of(result);
-        } catch (CalcException c) {
-            return Optional.absent();
-        } finally {
-            CalcCoordinator.returnTicket(ticket);
-        }
+    private SimpleDetailsData getNumberOfCasesPerLakareData(HttpServletRequest request, String verksamhetId, String filterHash) {
+        final Range range = new Range(12);
+        Verksamhet verksamhet = getVerksamhet(request, Verksamhet.decodeId(verksamhetId));
+        Filter filter = getFilter(request, verksamhet, filterHash);
+        SimpleKonResponse<SimpleKonDataRow> casesPerLakare = warehouse.getCasesPerLakare(filter.getPredicate(), range, verksamhet.getVardgivarId());
+        SimpleDetailsData result = new GroupedSjukfallConverter("Läkare").convert(casesPerLakare, range, filter);
+        return result;
     }
 
     /**
@@ -334,12 +276,8 @@ public class ProtectedChartDataService {
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request, #verksamhetId)")
     public Response getNumberOfCasesPerLakareAsCsv(@Context HttpServletRequest request, @PathParam(VERKSAMHET_PATH_ID) String verksamhetId, @QueryParam("filter") String filterHash) {
         LOG.info("Calling getNumberOfCasesPerLakareAsCsv with verksamhetId: {} and filterHash: {}", verksamhetId, filterHash);
-        final Optional<SimpleDetailsData> data = getNumberOfCasesPerLakareData(request, verksamhetId, filterHash);
-        if (data.isPresent()) {
-            return CsvConverter.getCsvResponse(data.get().getTableData(), "export.csv");
-        } else {
-            return Response.status(Response.Status.SERVICE_UNAVAILABLE).build();
-        }
+        final SimpleDetailsData data = getNumberOfCasesPerLakareData(request, verksamhetId, filterHash);
+        return CsvConverter.getCsvResponse(data.getTableData(), "export.csv");
     }
 
     /**
@@ -358,29 +296,17 @@ public class ProtectedChartDataService {
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request, #verksamhetId)")
     public Response getDiagnosisGroupStatistics(@Context HttpServletRequest request, @PathParam(VERKSAMHET_PATH_ID) String verksamhetId, @QueryParam("filter") String filterHash) {
         LOG.info("Calling getDiagnoskapitelstatistik with verksamhetId: {} and filterHash: {}", verksamhetId, filterHash);
-        Optional<DualSexStatisticsData> result = getDiagnosisGroupStatisticsData(request, verksamhetId, filterHash);
-        if (result.isPresent()) {
-            return Response.ok(result.get()).build();
-        } else {
-            return Response.status(Response.Status.SERVICE_UNAVAILABLE).build();
-        }
+        DualSexStatisticsData result = getDiagnosisGroupStatisticsData(request, verksamhetId, filterHash);
+        return Response.ok(result).build();
     }
 
-    private Optional<DualSexStatisticsData> getDiagnosisGroupStatisticsData(HttpServletRequest request, String verksamhetId, String filterHash) {
-        CalcCoordinator.Ticket ticket = null;
-        try {
-            ticket = CalcCoordinator.getTicket();
-            final Range range = new Range(18);
-            Verksamhet verksamhet = getVerksamhet(request, Verksamhet.decodeId(verksamhetId));
-            Filter filter = getFilter(request, verksamhet, filterHash);
-            DiagnosgruppResponse diagnosisGroups = warehouse.getDiagnosgrupperPerMonth(filter.getPredicate(), range, verksamhet.getVardgivarId());
-            DualSexStatisticsData result = new DiagnosisGroupsConverter().convert(diagnosisGroups, range, filter);
-            return Optional.of(result);
-        } catch (CalcException c) {
-            return Optional.absent();
-        } finally {
-            CalcCoordinator.returnTicket(ticket);
-        }
+    private DualSexStatisticsData getDiagnosisGroupStatisticsData(HttpServletRequest request, String verksamhetId, String filterHash) {
+        final Range range = new Range(18);
+        Verksamhet verksamhet = getVerksamhet(request, Verksamhet.decodeId(verksamhetId));
+        Filter filter = getFilter(request, verksamhet, filterHash);
+        DiagnosgruppResponse diagnosisGroups = warehouse.getDiagnosgrupperPerMonth(filter.getPredicate(), range, verksamhet.getVardgivarId());
+        DualSexStatisticsData result = new DiagnosisGroupsConverter().convert(diagnosisGroups, range, filter);
+        return result;
     }
 
     /**
@@ -398,12 +324,8 @@ public class ProtectedChartDataService {
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request, #verksamhetId)")
     public Response getDiagnosisGroupStatisticsAsCsv(@Context HttpServletRequest request, @PathParam(VERKSAMHET_PATH_ID) String verksamhetId, @QueryParam("filter") String filterHash) {
         LOG.info("Calling getDiagnoskapitelstatistikAsCsv with verksamhetId: {} and filterHash: {}", verksamhetId, filterHash);
-        final Optional<DualSexStatisticsData> data = getDiagnosisGroupStatisticsData(request, verksamhetId, filterHash);
-        if (data.isPresent()) {
-            return CsvConverter.getCsvResponse(data.get().getTableData(), "export.csv");
-        } else {
-            return Response.status(Response.Status.SERVICE_UNAVAILABLE).build();
-        }
+        final DualSexStatisticsData data = getDiagnosisGroupStatisticsData(request, verksamhetId, filterHash);
+        return CsvConverter.getCsvResponse(data.getTableData(), "export.csv");
     }
 
     /**
@@ -422,34 +344,22 @@ public class ProtectedChartDataService {
     public Response getDiagnosisSubGroupStatistics(@Context HttpServletRequest request, @PathParam(VERKSAMHET_PATH_ID) String verksamhetId, @PathParam("groupId") String groupId, @QueryParam("filter") String filterHash) {
         LOG.info("Calling getDiagnosavsnittstatistik with verksamhetId: {} and groupId: {} and filterHash: {}", verksamhetId, groupId, filterHash);
         try {
-            Optional<DualSexStatisticsData> data = getDiagnosisSubGroupStatisticsEntity(request, verksamhetId, groupId, filterHash);
-            if (data.isPresent()) {
-                return Response.ok(data.get()).build();
-            } else {
-                return Response.status(Response.Status.SERVICE_UNAVAILABLE).build();
-            }
+            DualSexStatisticsData data = getDiagnosisSubGroupStatisticsEntity(request, verksamhetId, groupId, filterHash);
+            return Response.ok(data).build();
         } catch (RangeNotFoundException e) {
             return Response.serverError().entity(e.getMessage()).build();
         }
     }
 
-    private Optional<DualSexStatisticsData> getDiagnosisSubGroupStatisticsEntity(HttpServletRequest request, String verksamhetId, String groupId, String filterHash) throws RangeNotFoundException {
-        CalcCoordinator.Ticket ticket = null;
-        try {
-            ticket = CalcCoordinator.getTicket();
-            final Range range = new Range(18);
-            Verksamhet verksamhet = getVerksamhet(request, Verksamhet.decodeId(verksamhetId));
-            Filter filter = getFilter(request, verksamhet, filterHash);
-            final String vardgivarId = verksamhet.getVardgivarId();
-            DiagnosgruppResponse diagnosavsnitt = warehouse.getUnderdiagnosgrupper(filter.getPredicate(), range, groupId, vardgivarId);
-            final String message = getDiagnosisSubGroupStatisticsMessage(filter, Arrays.asList(String.valueOf(icd10.findFromIcd10Code(groupId).toInt())));
-            DualSexStatisticsData result = new DiagnosisSubGroupsConverter().convert(diagnosavsnitt, range, filter, message);
-            return Optional.of(result);
-        } catch (CalcException c) {
-            return Optional.absent();
-        } finally {
-            CalcCoordinator.returnTicket(ticket);
-        }
+    private DualSexStatisticsData getDiagnosisSubGroupStatisticsEntity(HttpServletRequest request, String verksamhetId, String groupId, String filterHash) throws RangeNotFoundException {
+        final Range range = new Range(18);
+        Verksamhet verksamhet = getVerksamhet(request, Verksamhet.decodeId(verksamhetId));
+        Filter filter = getFilter(request, verksamhet, filterHash);
+        final String vardgivarId = verksamhet.getVardgivarId();
+        DiagnosgruppResponse diagnosavsnitt = warehouse.getUnderdiagnosgrupper(filter.getPredicate(), range, groupId, vardgivarId);
+        final String message = getDiagnosisSubGroupStatisticsMessage(filter, Arrays.asList(String.valueOf(icd10.findFromIcd10Code(groupId).toInt())));
+        DualSexStatisticsData result = new DiagnosisSubGroupsConverter().convert(diagnosavsnitt, range, filter, message);
+        return result;
     }
 
     private String getDiagnosisSubGroupStatisticsMessage(Filter filter, List<String> diagnosis) {
@@ -458,7 +368,6 @@ public class ProtectedChartDataService {
         }
         return null;
     }
-
 
     /**
      * Get sjukfall per diagnosavsnitt for given diagnoskapitel. Csv formatted.
@@ -475,14 +384,9 @@ public class ProtectedChartDataService {
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request, #verksamhetId)")
     public Response getDiagnosisSubGroupStatisticsAsCsv(@Context HttpServletRequest request, @PathParam(VERKSAMHET_PATH_ID) String verksamhetId, @PathParam("groupId") String groupId, @QueryParam("filter") String filterHash) {
         LOG.info("Calling getDiagnosavsnittstatistikAsCsv with verksamhetId: {} and groupId: {} and filterHash: {}", verksamhetId, groupId, filterHash);
-        final Optional<DualSexStatisticsData> data;
         try {
-            data = getDiagnosisSubGroupStatisticsEntity(request, verksamhetId, groupId, filterHash);
-            if (data.isPresent()) {
-                return CsvConverter.getCsvResponse(data.get().getTableData(), "export.csv");
-            } else {
-                return Response.status(Response.Status.SERVICE_UNAVAILABLE).build();
-            }
+            final DualSexStatisticsData data = getDiagnosisSubGroupStatisticsEntity(request, verksamhetId, groupId, filterHash);
+            return CsvConverter.getCsvResponse(data.getTableData(), "export.csv");
         } catch (RangeNotFoundException e) {
             return Response.serverError().entity(e.getMessage()).build();
         }
@@ -495,33 +399,21 @@ public class ProtectedChartDataService {
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request, #verksamhetId)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request, #verksamhetId)")
     public Response getCompareDiagnosisStatistics(@Context HttpServletRequest request, @PathParam(VERKSAMHET_PATH_ID) String verksamhetId, @PathParam("diagnosHash") String diagnosisHash, @QueryParam("filter") String filterHash) {
-        Optional<SimpleDetailsData> data = getCompareDiagnosisStatisticsData(request, verksamhetId, diagnosisHash, filterHash);
-        if (data.isPresent()) {
-            return Response.ok(data.get()).build();
-        } else {
-            return Response.status(Response.Status.SERVICE_UNAVAILABLE).build();
-        }
+        SimpleDetailsData data = getCompareDiagnosisStatisticsData(request, verksamhetId, diagnosisHash, filterHash);
+        return Response.ok(data).build();
     }
 
-    private Optional<SimpleDetailsData> getCompareDiagnosisStatisticsData(HttpServletRequest request, String verksamhetId, String diagnosisHash, String filterHash) {
-        CalcCoordinator.Ticket ticket = null;
-        try {
-            ticket = CalcCoordinator.getTicket();
-            LOG.info("Calling getCompareDiagnosisStatistics with verksamhetId: {} and diagnosis: {} and filterHash: {}", verksamhetId, diagnosisHash, filterHash);
-            final Range range = new Range(12);
-            Verksamhet verksamhet = getVerksamhet(request, Verksamhet.decodeId(verksamhetId));
-            Filter filter = getFilter(request, verksamhet, filterHash);
-            final boolean emptyDiagnosisHash = diagnosisHash == null || diagnosisHash.isEmpty();
-            final List<String> diagnosis = emptyDiagnosisHash ? Collections.<String>emptyList() : getFilterFromHash(diagnosisHash).getDiagnoser();
-            final String message = emptyDiagnosisHash ? "Inga diagnoser valda" : getCompareDiagnosisMessage(filter, diagnosis);
-            SimpleKonResponse<SimpleKonDataRow> resultRows = warehouse.getJamforDiagnoser(filter.getPredicate(), range, verksamhet.getVardgivarId(), diagnosis);
-            SimpleDetailsData result = new CompareDiagnosisConverter().convert(resultRows, range, filter, message);
-            return Optional.of(result);
-        } catch (CalcException c) {
-            return Optional.absent();
-        } finally {
-            CalcCoordinator.returnTicket(ticket);
-        }
+    private SimpleDetailsData getCompareDiagnosisStatisticsData(HttpServletRequest request, String verksamhetId, String diagnosisHash, String filterHash) {
+        LOG.info("Calling getCompareDiagnosisStatistics with verksamhetId: {} and diagnosis: {} and filterHash: {}", verksamhetId, diagnosisHash, filterHash);
+        final Range range = new Range(12);
+        Verksamhet verksamhet = getVerksamhet(request, Verksamhet.decodeId(verksamhetId));
+        Filter filter = getFilter(request, verksamhet, filterHash);
+        final boolean emptyDiagnosisHash = diagnosisHash == null || diagnosisHash.isEmpty();
+        final List<String> diagnosis = emptyDiagnosisHash ? Collections.<String>emptyList() : getFilterFromHash(diagnosisHash).getDiagnoser();
+        final String message = emptyDiagnosisHash ? "Inga diagnoser valda" : getCompareDiagnosisMessage(filter, diagnosis);
+        SimpleKonResponse<SimpleKonDataRow> resultRows = warehouse.getJamforDiagnoser(filter.getPredicate(), range, verksamhet.getVardgivarId(), diagnosis);
+        SimpleDetailsData result = new CompareDiagnosisConverter().convert(resultRows, range, filter, message);
+        return result;
     }
 
     @GET
@@ -532,12 +424,8 @@ public class ProtectedChartDataService {
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request, #verksamhetId)")
     public Response getCompareDiagnosisStatisticsAsCsv(@Context HttpServletRequest request, @PathParam(VERKSAMHET_PATH_ID) String verksamhetId, @QueryParam("filter") String filterHash, @PathParam("diagnosHash") String diagnosisHash) {
         LOG.info("Calling getCompareDiagnosisStatisticsAsCsv with verksamhetId: {} and filterHash: {}", verksamhetId, filterHash);
-        final Optional<SimpleDetailsData> data = getCompareDiagnosisStatisticsData(request, verksamhetId, diagnosisHash, filterHash);
-        if (data.isPresent()) {
-            return Response.ok(CsvConverter.getCsvResponse(data.get().getTableData(), "export.csv")).build();
-        } else {
-            return Response.status(Response.Status.SERVICE_UNAVAILABLE).build();
-        }
+        final SimpleDetailsData data = getCompareDiagnosisStatisticsData(request, verksamhetId, diagnosisHash, filterHash);
+        return Response.ok(CsvConverter.getCsvResponse(data.getTableData(), "export.csv")).build();
     }
 
     private String getCompareDiagnosisMessage(Filter filter, List<String> diagnosis) {
@@ -562,21 +450,12 @@ public class ProtectedChartDataService {
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request, #verksamhetId)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request, #verksamhetId)")
     public Response getOverviewData(@Context HttpServletRequest request, @PathParam(VERKSAMHET_PATH_ID) String verksamhetId, @QueryParam("filter") String filterHash) {
-        CalcCoordinator.Ticket ticket = null;
-        try {
-            ticket = CalcCoordinator.getTicket();
-            LOG.info("Calling getOverview with verksamhetId: {} and filterHash: {}", verksamhetId, filterHash);
-
-            final Range range = Range.quarter();
-            Verksamhet verksamhet = getVerksamhet(request, Verksamhet.decodeId(verksamhetId));
-            Filter filter = getFilter(request, verksamhet, filterHash);
-            VerksamhetOverviewResponse response = warehouse.getOverview(filter.getPredicate(), range, verksamhet.getVardgivarId());
-            return Response.ok(new VerksamhetOverviewConverter().convert(response, range, filter)).build();
-        } catch (CalcException c) {
-            return Response.status(Response.Status.SERVICE_UNAVAILABLE).build();
-        } finally {
-            CalcCoordinator.returnTicket(ticket);
-        }
+        LOG.info("Calling getOverview with verksamhetId: {} and filterHash: {}", verksamhetId, filterHash);
+        final Range range = Range.quarter();
+        Verksamhet verksamhet = getVerksamhet(request, Verksamhet.decodeId(verksamhetId));
+        Filter filter = getFilter(request, verksamhet, filterHash);
+        VerksamhetOverviewResponse response = warehouse.getOverview(filter.getPredicate(), range, verksamhet.getVardgivarId());
+        return Response.ok(new VerksamhetOverviewConverter().convert(response, range, filter)).build();
     }
 
     /**
@@ -593,31 +472,18 @@ public class ProtectedChartDataService {
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request, #verksamhetId)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request, #verksamhetId)")
     public Response getAgeGroupsStatistics(@Context HttpServletRequest request, @PathParam(VERKSAMHET_PATH_ID) String verksamhetId, @QueryParam("filter") String filterHash) {
-        Optional<SimpleDetailsData> data = getAgeGroupsStatisticsData(request, verksamhetId, filterHash);
-        if (data.isPresent()) {
-            return Response.ok(data.get()).build();
-        } else {
-            return Response.status(Response.Status.SERVICE_UNAVAILABLE).build();
-        }
+        SimpleDetailsData data = getAgeGroupsStatisticsData(request, verksamhetId, filterHash);
+        return Response.ok(data).build();
     }
 
-    private Optional<SimpleDetailsData> getAgeGroupsStatisticsData(HttpServletRequest request, String verksamhetId, String filterHash) {
-        CalcCoordinator.Ticket ticket = null;
-        try {
-            ticket = CalcCoordinator.getTicket();
+    private SimpleDetailsData getAgeGroupsStatisticsData(HttpServletRequest request, String verksamhetId, String filterHash) {
             LOG.info("Calling getAgeGroupsStatistics with verksamhetId: {} and filterHash: {}", verksamhetId, filterHash);
             final Range range = new Range(12);
-
             Verksamhet verksamhet = getVerksamhet(request, Verksamhet.decodeId(verksamhetId));
             Filter filter = getFilter(request, verksamhet, filterHash);
             SimpleKonResponse<SimpleKonDataRow> ageGroups = warehouse.getAldersgrupper(filter.getPredicate(), range, verksamhet.getVardgivarId());
             SimpleDetailsData result = new AgeGroupsConverter().convert(ageGroups, range, filter);
-            return Optional.of(result);
-        } catch (CalcException c) {
-            return Optional.absent();
-        } finally {
-            CalcCoordinator.returnTicket(ticket);
-        }
+            return result;
     }
 
     /**
@@ -635,12 +501,8 @@ public class ProtectedChartDataService {
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request, #verksamhetId)")
     public Response getAgeGroupsStatisticsAsCsv(@Context HttpServletRequest request, @PathParam(VERKSAMHET_PATH_ID) String verksamhetId, @QueryParam("filter") String filterHash) {
         LOG.info("Calling getAgeGroupsStatisticsAsCsv with verksamhetId: {} and filterHash: {}", verksamhetId, filterHash);
-        final Optional<SimpleDetailsData> simpleDetailsData = getAgeGroupsStatisticsData(request, verksamhetId, filterHash);
-        if (simpleDetailsData.isPresent()) {
-            return CsvConverter.getCsvResponse(simpleDetailsData.get().getTableData(), "export.csv");
-        } else {
-            return Response.status(Response.Status.SERVICE_UNAVAILABLE).build();
-        }
+        final SimpleDetailsData simpleDetailsData = getAgeGroupsStatisticsData(request, verksamhetId, filterHash);
+        return CsvConverter.getCsvResponse(simpleDetailsData.getTableData(), "export.csv");
     }
 
     /**
@@ -657,31 +519,18 @@ public class ProtectedChartDataService {
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request, #verksamhetId)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request, #verksamhetId)")
     public Response getCasesPerDoctorAgeAndGenderStatistics(@Context HttpServletRequest request, @PathParam(VERKSAMHET_PATH_ID) String verksamhetId, @QueryParam("filter") String filterHash) {
-        Optional<SimpleDetailsData> data = getCasesPerDoctorAgeAndGenderStatisticsData(request, verksamhetId, filterHash);
-        if (data.isPresent()) {
-            return Response.ok(data.get()).build();
-        } else {
-            return Response.status(Response.Status.SERVICE_UNAVAILABLE).build();
-        }
+        SimpleDetailsData data = getCasesPerDoctorAgeAndGenderStatisticsData(request, verksamhetId, filterHash);
+        return Response.ok(data).build();
     }
 
-    private Optional<SimpleDetailsData> getCasesPerDoctorAgeAndGenderStatisticsData(HttpServletRequest request, String verksamhetId, String filterHash) {
-        CalcCoordinator.Ticket ticket = null;
-        try {
-            ticket = CalcCoordinator.getTicket();
-            LOG.info("Calling getCasesPerDoctorAgeAndGenderStatistics with verksamhetId: {} and filterHash: {}", verksamhetId, filterHash);
-            final Range range = new Range(12);
-
-            Verksamhet verksamhet = getVerksamhet(request, Verksamhet.decodeId(verksamhetId));
-            Filter filter = getFilter(request, verksamhet, filterHash);
-            SimpleKonResponse<SimpleKonDataRow> ageGroups = warehouse.getCasesPerDoctorAgeAndGender(filter.getPredicate(), range, verksamhet.getVardgivarId());
-            SimpleDetailsData result = new DoctorAgeGenderConverter().convert(ageGroups, range, filter);
-            return Optional.of(result);
-        } catch (CalcException c) {
-            return Optional.absent();
-        } finally {
-            CalcCoordinator.returnTicket(ticket);
-        }
+    private SimpleDetailsData getCasesPerDoctorAgeAndGenderStatisticsData(HttpServletRequest request, String verksamhetId, String filterHash) {
+        LOG.info("Calling getCasesPerDoctorAgeAndGenderStatistics with verksamhetId: {} and filterHash: {}", verksamhetId, filterHash);
+        final Range range = new Range(12);
+        Verksamhet verksamhet = getVerksamhet(request, Verksamhet.decodeId(verksamhetId));
+        Filter filter = getFilter(request, verksamhet, filterHash);
+        SimpleKonResponse<SimpleKonDataRow> ageGroups = warehouse.getCasesPerDoctorAgeAndGender(filter.getPredicate(), range, verksamhet.getVardgivarId());
+        SimpleDetailsData result = new DoctorAgeGenderConverter().convert(ageGroups, range, filter);
+        return result;
     }
 
     /**
@@ -699,12 +548,8 @@ public class ProtectedChartDataService {
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request, #verksamhetId)")
     public Response getCasesPerDoctorAgeAndGenderStatisticsAsCsv(@Context HttpServletRequest request, @PathParam(VERKSAMHET_PATH_ID) String verksamhetId, @QueryParam("filter") String filterHash) {
         LOG.info("Calling getCasesPerDoctorAgeAndGenderStatisticsAsCsv with verksamhetId: {} and filterHash: {}", verksamhetId, filterHash);
-        final Optional<SimpleDetailsData> simpleDetailsData = getCasesPerDoctorAgeAndGenderStatisticsData(request, verksamhetId, filterHash);
-        if (simpleDetailsData.isPresent()) {
-            return CsvConverter.getCsvResponse(simpleDetailsData.get().getTableData(), "export.csv");
-        } else {
-            return Response.status(Response.Status.SERVICE_UNAVAILABLE).build();
-        }
+        final SimpleDetailsData simpleDetailsData = getCasesPerDoctorAgeAndGenderStatisticsData(request, verksamhetId, filterHash);
+        return CsvConverter.getCsvResponse(simpleDetailsData.getTableData(), "export.csv");
     }
 
     /**
@@ -721,31 +566,18 @@ public class ProtectedChartDataService {
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request, #verksamhetId)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request, #verksamhetId)")
     public Response getNumberOfCasesPerLakarbefattning(@Context HttpServletRequest request, @PathParam(VERKSAMHET_PATH_ID) String verksamhetId, @QueryParam("filter") String filterHash) {
-        Optional<SimpleDetailsData> data = getNumberOfCasesPerLakarbefattningData(request, verksamhetId, filterHash);
-        if (data.isPresent()) {
-            return Response.ok(data.get()).build();
-        } else {
-            return Response.status(Response.Status.SERVICE_UNAVAILABLE).build();
-        }
+        SimpleDetailsData data = getNumberOfCasesPerLakarbefattningData(request, verksamhetId, filterHash);
+        return Response.ok(data).build();
     }
 
-    private Optional<SimpleDetailsData> getNumberOfCasesPerLakarbefattningData(HttpServletRequest request, String verksamhetId, String filterHash) {
-        CalcCoordinator.Ticket ticket = null;
-        try {
-            ticket = CalcCoordinator.getTicket();
-            LOG.info("Calling getNumberOfCasesPerLakarbefattning with verksamhetId: {} and filterHash: {}", verksamhetId, filterHash);
-            final Range range = new Range(12);
-
-            Verksamhet verksamhet = getVerksamhet(request, Verksamhet.decodeId(verksamhetId));
-            Filter filter = getFilter(request, verksamhet, filterHash);
-            SimpleKonResponse<SimpleKonDataRow> ageGroups = warehouse.getNumberOfCasesPerLakarbefattning(filter.getPredicate(), range, verksamhet.getVardgivarId());
-            SimpleDetailsData result = new LakarbefattningConverter().convert(ageGroups, range, filter);
-            return Optional.of(result);
-        } catch (CalcException c) {
-            return Optional.absent();
-        } finally {
-            CalcCoordinator.returnTicket(ticket);
-        }
+    private SimpleDetailsData getNumberOfCasesPerLakarbefattningData(HttpServletRequest request, String verksamhetId, String filterHash) {
+        LOG.info("Calling getNumberOfCasesPerLakarbefattning with verksamhetId: {} and filterHash: {}", verksamhetId, filterHash);
+        final Range range = new Range(12);
+        Verksamhet verksamhet = getVerksamhet(request, Verksamhet.decodeId(verksamhetId));
+        Filter filter = getFilter(request, verksamhet, filterHash);
+        SimpleKonResponse<SimpleKonDataRow> ageGroups = warehouse.getNumberOfCasesPerLakarbefattning(filter.getPredicate(), range, verksamhet.getVardgivarId());
+        SimpleDetailsData result = new LakarbefattningConverter().convert(ageGroups, range, filter);
+        return result;
     }
 
     /**
@@ -763,12 +595,8 @@ public class ProtectedChartDataService {
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request, #verksamhetId)")
     public Response getNumberOfCasesPerLakarbefattningAsCsv(@Context HttpServletRequest request, @PathParam(VERKSAMHET_PATH_ID) String verksamhetId, @QueryParam("filter") String filterHash) {
         LOG.info("Calling getNumberOfCasesPerLakarbefattningAsCsv with verksamhetId: {} and filterHash: {}", verksamhetId, filterHash);
-        final Optional<SimpleDetailsData> simpleDetailsData = getNumberOfCasesPerLakarbefattningData(request, verksamhetId, filterHash);
-        if (simpleDetailsData.isPresent()) {
-            return CsvConverter.getCsvResponse(simpleDetailsData.get().getTableData(), "export.csv");
-        } else {
-            return Response.status(Response.Status.SERVICE_UNAVAILABLE).build();
-        }
+        final SimpleDetailsData simpleDetailsData = getNumberOfCasesPerLakarbefattningData(request, verksamhetId, filterHash);
+        return CsvConverter.getCsvResponse(simpleDetailsData.getTableData(), "export.csv");
     }
 
     /**
@@ -785,33 +613,21 @@ public class ProtectedChartDataService {
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request, #verksamhetId)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request, #verksamhetId)")
     public Response getAgeGroupsCurrentStatistics(@Context HttpServletRequest request, @PathParam(VERKSAMHET_PATH_ID) String verksamhetId, @QueryParam("filter") String filterHash) {
-        Optional<SimpleDetailsData> data = getAgeGroupsCurrentStatisticsData(request, verksamhetId, filterHash);
-        if (data.isPresent()) {
-            return Response.ok(data.get()).build();
-        } else {
-            return Response.status(Response.Status.SERVICE_UNAVAILABLE).build();
-        }
+        SimpleDetailsData data = getAgeGroupsCurrentStatisticsData(request, verksamhetId, filterHash);
+        return Response.ok(data).build();
     }
 
-    private Optional<SimpleDetailsData> getAgeGroupsCurrentStatisticsData(HttpServletRequest request, String verksamhetId, String filterHash) {
-        CalcCoordinator.Ticket ticket = null;
-        try {
-            ticket = CalcCoordinator.getTicket();
-            LOG.info("Calling getAgeGroupsCurrentStatistics with verksamhetId: {} and filterHash: {}", verksamhetId, filterHash);
-            LocalDate start = new LocalDate().withDayOfMonth(1);
-            LocalDate end = new LocalDate().withDayOfMonth(1).plusMonths(1).minusDays(1);
-            final Range range = new Range(start, end);
+    private SimpleDetailsData getAgeGroupsCurrentStatisticsData(HttpServletRequest request, String verksamhetId, String filterHash) {
+        LOG.info("Calling getAgeGroupsCurrentStatistics with verksamhetId: {} and filterHash: {}", verksamhetId, filterHash);
+        LocalDate start = new LocalDate().withDayOfMonth(1);
+        LocalDate end = new LocalDate().withDayOfMonth(1).plusMonths(1).minusDays(1);
+        final Range range = new Range(start, end);
 
-            Verksamhet verksamhet = getVerksamhet(request, Verksamhet.decodeId(verksamhetId));
-            Filter filter = getFilter(request, verksamhet, filterHash);
-            SimpleKonResponse<SimpleKonDataRow> ageGroups = warehouse.getAldersgrupper(filter.getPredicate(), range, verksamhet.getVardgivarId());
-            SimpleDetailsData result = new AgeGroupsConverter().convert(ageGroups, range, filter);
-            return Optional.of(result);
-        } catch (CalcException c) {
-            return Optional.absent();
-        } finally {
-            CalcCoordinator.returnTicket(ticket);
-        }
+        Verksamhet verksamhet = getVerksamhet(request, Verksamhet.decodeId(verksamhetId));
+        Filter filter = getFilter(request, verksamhet, filterHash);
+        SimpleKonResponse<SimpleKonDataRow> ageGroups = warehouse.getAldersgrupper(filter.getPredicate(), range, verksamhet.getVardgivarId());
+        SimpleDetailsData result = new AgeGroupsConverter().convert(ageGroups, range, filter);
+        return result;
     }
 
     /**
@@ -829,12 +645,8 @@ public class ProtectedChartDataService {
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request, #verksamhetId)")
     public Response getAgeGroupsCurrentStatisticsAsCsv(@Context HttpServletRequest request, @PathParam(VERKSAMHET_PATH_ID) String verksamhetId, @QueryParam("filter") String filterHash) {
         LOG.info("Calling getAgeGroupsCurrentStatisticsAsCsv with verksamhetId: {} and filterHash: {}", verksamhetId, filterHash);
-        final Optional<SimpleDetailsData> simpleDetailsData = getAgeGroupsCurrentStatisticsData(request, verksamhetId, filterHash);
-        if (simpleDetailsData.isPresent()) {
-            return CsvConverter.getCsvResponse(simpleDetailsData.get().getTableData(), "export.csv");
-        } else {
-            return Response.status(Response.Status.SERVICE_UNAVAILABLE).build();
-        }
+        final SimpleDetailsData simpleDetailsData = getAgeGroupsCurrentStatisticsData(request, verksamhetId, filterHash);
+        return CsvConverter.getCsvResponse(simpleDetailsData.getTableData(), "export.csv");
     }
 
     /**
@@ -851,30 +663,18 @@ public class ProtectedChartDataService {
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request, #verksamhetId)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request, #verksamhetId)")
     public Response getDegreeOfSickLeaveStatistics(@Context HttpServletRequest request, @PathParam(VERKSAMHET_PATH_ID) String verksamhetId, @QueryParam("filter") String filterHash) {
-        Optional<DualSexStatisticsData> data = getDegreeOfSickLeaveStatisticsData(request, verksamhetId, filterHash);
-        if (data.isPresent()) {
-            return Response.ok(data.get()).build();
-        } else {
-            return Response.status(Response.Status.SERVICE_UNAVAILABLE).build();
-        }
+        DualSexStatisticsData data = getDegreeOfSickLeaveStatisticsData(request, verksamhetId, filterHash);
+        return Response.ok(data).build();
     }
 
-    private Optional<DualSexStatisticsData> getDegreeOfSickLeaveStatisticsData(HttpServletRequest request, String verksamhetId, String filterHash) {
-        CalcCoordinator.Ticket ticket = null;
-        try {
-            ticket = CalcCoordinator.getTicket();
-            LOG.info("Calling getDegreeOfSickLeaveStatistics with verksamhetId: {} and filterHash: {}", verksamhetId, filterHash);
-            final Range range = new Range(18);
-            Verksamhet verksamhet = getVerksamhet(request, Verksamhet.decodeId(verksamhetId));
-            Filter filter = getFilter(request, verksamhet, filterHash);
-            KonDataResponse degreeOfSickLeaveStatistics = warehouse.getSjukskrivningsgradPerMonth(filter.getPredicate(), range, verksamhet.getVardgivarId());
-            DualSexStatisticsData result = new DegreeOfSickLeaveConverter().convert(degreeOfSickLeaveStatistics, range, filter);
-            return Optional.of(result);
-        } catch (CalcException c) {
-            return Optional.absent();
-        } finally {
-            CalcCoordinator.returnTicket(ticket);
-        }
+    private DualSexStatisticsData getDegreeOfSickLeaveStatisticsData(HttpServletRequest request, String verksamhetId, String filterHash) {
+        LOG.info("Calling getDegreeOfSickLeaveStatistics with verksamhetId: {} and filterHash: {}", verksamhetId, filterHash);
+        final Range range = new Range(18);
+        Verksamhet verksamhet = getVerksamhet(request, Verksamhet.decodeId(verksamhetId));
+        Filter filter = getFilter(request, verksamhet, filterHash);
+        KonDataResponse degreeOfSickLeaveStatistics = warehouse.getSjukskrivningsgradPerMonth(filter.getPredicate(), range, verksamhet.getVardgivarId());
+        DualSexStatisticsData result = new DegreeOfSickLeaveConverter().convert(degreeOfSickLeaveStatistics, range, filter);
+        return result;
     }
 
     /**
@@ -892,12 +692,8 @@ public class ProtectedChartDataService {
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request, #verksamhetId)")
     public Response getDegreeOfSickLeaveStatisticsAsCsv(@Context HttpServletRequest request, @PathParam(VERKSAMHET_PATH_ID) String verksamhetId, @QueryParam("filter") String filterHash) {
         LOG.info("Calling getDegreeOfSickLeaveStatisticsAsCsv with verksamhetId: {} and filterhash: {}", verksamhetId, filterHash);
-        final Optional<DualSexStatisticsData> simpleDetailsData = getDegreeOfSickLeaveStatisticsData(request, verksamhetId, filterHash);
-        if (simpleDetailsData.isPresent()) {
-            return CsvConverter.getCsvResponse(simpleDetailsData.get().getTableData(), "export.csv");
-        } else {
-            return Response.status(Response.Status.SERVICE_UNAVAILABLE).build();
-        }
+        final DualSexStatisticsData simpleDetailsData = getDegreeOfSickLeaveStatisticsData(request, verksamhetId, filterHash);
+        return CsvConverter.getCsvResponse(simpleDetailsData.getTableData(), "export.csv");
     }
 
     /**
@@ -914,31 +710,19 @@ public class ProtectedChartDataService {
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request, #verksamhetId)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request, #verksamhetId)")
     public Response getSickLeaveLengthData(@Context HttpServletRequest request, @PathParam(VERKSAMHET_PATH_ID) String verksamhetId, @QueryParam("filter") String filterHash) {
-        Optional<SickLeaveLengthData> data = getSickLeaveLengthDataData(request, verksamhetId, filterHash);
-        if (data.isPresent()) {
-            return Response.ok(data.get()).build();
-        } else {
-            return Response.status(Response.Status.SERVICE_UNAVAILABLE).build();
-        }
+        SickLeaveLengthData data = getSickLeaveLengthDataData(request, verksamhetId, filterHash);
+        return Response.ok(data).build();
     }
 
-    private Optional<SickLeaveLengthData> getSickLeaveLengthDataData(HttpServletRequest request, String verksamhetId, String filterHash) {
-        CalcCoordinator.Ticket ticket = null;
-        try {
-            ticket = CalcCoordinator.getTicket();
-            LOG.info("Calling getSickLeaveLengthData with verksamhetId: {} and filterHash: {}", verksamhetId, filterHash);
-            final RollingLength year = RollingLength.YEAR;
-            Range range = new Range(year.getPeriods());
-            Verksamhet verksamhet = getVerksamhet(request, Verksamhet.decodeId(verksamhetId));
-            Filter filter = getFilter(request, verksamhet, filterHash);
-            SjukfallslangdResponse sickLeaveLength = warehouse.getSjukskrivningslangd(filter.getPredicate(), range, verksamhet.getVardgivarId());
-            SickLeaveLengthData result = new SickLeaveLengthConverter().convert(sickLeaveLength, range, filter);
-            return Optional.of(result);
-        } catch (CalcException c) {
-            return Optional.absent();
-        } finally {
-            CalcCoordinator.returnTicket(ticket);
-        }
+    private SickLeaveLengthData getSickLeaveLengthDataData(HttpServletRequest request, String verksamhetId, String filterHash) {
+        LOG.info("Calling getSickLeaveLengthData with verksamhetId: {} and filterHash: {}", verksamhetId, filterHash);
+        final RollingLength year = RollingLength.YEAR;
+        Range range = new Range(year.getPeriods());
+        Verksamhet verksamhet = getVerksamhet(request, Verksamhet.decodeId(verksamhetId));
+        Filter filter = getFilter(request, verksamhet, filterHash);
+        SjukfallslangdResponse sickLeaveLength = warehouse.getSjukskrivningslangd(filter.getPredicate(), range, verksamhet.getVardgivarId());
+        SickLeaveLengthData result = new SickLeaveLengthConverter().convert(sickLeaveLength, range, filter);
+        return result;
     }
 
     /**
@@ -956,12 +740,8 @@ public class ProtectedChartDataService {
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request, #verksamhetId)")
     public Response getSickLeaveLengthDataAsCsv(@Context HttpServletRequest request, @PathParam(VERKSAMHET_PATH_ID) String verksamhetId, @QueryParam("filter") String filterHash) {
         LOG.info("Calling getSickLeaveLengthDataAsCsv with verksamhetId: {} and filterHash: {}", verksamhetId, filterHash);
-        final Optional<SickLeaveLengthData> simpleDetailsData = getSickLeaveLengthDataData(request, verksamhetId, filterHash);
-        if (simpleDetailsData.isPresent()) {
-            return CsvConverter.getCsvResponse(simpleDetailsData.get().getTableData(), "export.csv");
-        } else {
-            return Response.status(Response.Status.SERVICE_UNAVAILABLE).build();
-        }
+        final SickLeaveLengthData simpleDetailsData = getSickLeaveLengthDataData(request, verksamhetId, filterHash);
+        return CsvConverter.getCsvResponse(simpleDetailsData.getTableData(), "export.csv");
     }
 
     /**
@@ -978,32 +758,20 @@ public class ProtectedChartDataService {
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request, #verksamhetId)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request, #verksamhetId)")
     public Response getSickLeaveLengthCurrentData(@Context HttpServletRequest request, @PathParam(VERKSAMHET_PATH_ID) String verksamhetId, @QueryParam("filter") String filterHash) {
-        Optional<SickLeaveLengthData> data = getSickLeaveLengthCurrentDataData(request, verksamhetId, filterHash);
-        if (data.isPresent()) {
-            return Response.ok(data.get()).build();
-        } else {
-            return Response.status(Response.Status.SERVICE_UNAVAILABLE).build();
-        }
+        SickLeaveLengthData data = getSickLeaveLengthCurrentDataData(request, verksamhetId, filterHash);
+        return Response.ok(data).build();
     }
 
-    private Optional<SickLeaveLengthData> getSickLeaveLengthCurrentDataData(HttpServletRequest request, String verksamhetId, String filterHash) {
-        CalcCoordinator.Ticket ticket = null;
-        try {
-            ticket = CalcCoordinator.getTicket();
-            LOG.info("Calling getSickLeaveLengthCurrentData with verksamhetId: {} and filterHash: {}", verksamhetId, filterHash);
-            Verksamhet verksamhet = getVerksamhet(request, Verksamhet.decodeId(verksamhetId));
-            LocalDate start = new LocalDate().withDayOfMonth(1);
-            LocalDate end = start.plusMonths(1).minusDays(1);
-            final Range range = new Range(start, end);
-            Filter filter = getFilter(request, verksamhet, filterHash);
-            SjukfallslangdResponse sickLeaveLength = warehouse.getSjukskrivningslangd(filter.getPredicate(), range, verksamhet.getVardgivarId());
-            SickLeaveLengthData result = new SickLeaveLengthConverter().convert(sickLeaveLength, range, filter);
-            return Optional.of(result);
-        } catch (CalcException c) {
-            return Optional.absent();
-        } finally {
-            CalcCoordinator.returnTicket(ticket);
-        }
+    private SickLeaveLengthData getSickLeaveLengthCurrentDataData(HttpServletRequest request, String verksamhetId, String filterHash) {
+        LOG.info("Calling getSickLeaveLengthCurrentData with verksamhetId: {} and filterHash: {}", verksamhetId, filterHash);
+        Verksamhet verksamhet = getVerksamhet(request, Verksamhet.decodeId(verksamhetId));
+        LocalDate start = new LocalDate().withDayOfMonth(1);
+        LocalDate end = start.plusMonths(1).minusDays(1);
+        final Range range = new Range(start, end);
+        Filter filter = getFilter(request, verksamhet, filterHash);
+        SjukfallslangdResponse sickLeaveLength = warehouse.getSjukskrivningslangd(filter.getPredicate(), range, verksamhet.getVardgivarId());
+        SickLeaveLengthData result = new SickLeaveLengthConverter().convert(sickLeaveLength, range, filter);
+        return result;
     }
 
     /**
@@ -1021,12 +789,8 @@ public class ProtectedChartDataService {
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request, #verksamhetId)")
     public Response getSickLeaveLengthCurrentDataAsCsv(@Context HttpServletRequest request, @PathParam(VERKSAMHET_PATH_ID) String verksamhetId, @QueryParam("filter") String filterHash) {
         LOG.info("Calling getSickLeaveLengthCurrentDataAsCsv with verksamhetId: {} and filterHash: {}", verksamhetId, filterHash);
-        final Optional<SickLeaveLengthData> data = getSickLeaveLengthCurrentDataData(request, verksamhetId, filterHash);
-        if (data.isPresent()) {
-            return CsvConverter.getCsvResponse(data.get().getTableData(), "export.csv");
-        } else {
-            return Response.status(Response.Status.SERVICE_UNAVAILABLE).build();
-        }
+        final SickLeaveLengthData data = getSickLeaveLengthCurrentDataData(request, verksamhetId, filterHash);
+        return CsvConverter.getCsvResponse(data.getTableData(), "export.csv");
     }
 
     /**
@@ -1043,30 +807,18 @@ public class ProtectedChartDataService {
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request, #verksamhetId)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request, #verksamhetId)")
     public Response getLongSickLeavesData(@Context HttpServletRequest request, @PathParam(VERKSAMHET_PATH_ID) String verksamhetId, @QueryParam("filter") String filterHash) {
-        Optional<SimpleDetailsData> data = getLongSickLeavesDataData(request, verksamhetId, filterHash);
-        if (data.isPresent()) {
-            return Response.ok(data.get()).build();
-        } else {
-            return Response.status(Response.Status.SERVICE_UNAVAILABLE).build();
-        }
+        SimpleDetailsData data = getLongSickLeavesDataData(request, verksamhetId, filterHash);
+        return Response.ok(data).build();
     }
 
-    private Optional<SimpleDetailsData> getLongSickLeavesDataData(HttpServletRequest request, String verksamhetId, String filterHash) {
-        CalcCoordinator.Ticket ticket = null;
-        try {
-            ticket = CalcCoordinator.getTicket();
-            LOG.info("Calling getLongSickLeavesData with verksamhetId: {} and filterHash: {}", verksamhetId, filterHash);
-            final Range range = new Range(18);
-            Verksamhet verksamhet = getVerksamhet(request, Verksamhet.decodeId(verksamhetId));
-            Filter filter = getFilter(request, verksamhet, filterHash);
-            SimpleKonResponse<SimpleKonDataRow> longSickLeaves = warehouse.getLangaSjukskrivningarPerManad(filter.getPredicate(), range, verksamhet.getVardgivarId());
-            SimpleDetailsData result = new PeriodConverter().convert(longSickLeaves, range, filter);
-            return Optional.of(result);
-        } catch (CalcException c) {
-            return Optional.absent();
-        } finally {
-            CalcCoordinator.returnTicket(ticket);
-        }
+    private SimpleDetailsData getLongSickLeavesDataData(HttpServletRequest request, String verksamhetId, String filterHash) {
+        LOG.info("Calling getLongSickLeavesData with verksamhetId: {} and filterHash: {}", verksamhetId, filterHash);
+        final Range range = new Range(18);
+        Verksamhet verksamhet = getVerksamhet(request, Verksamhet.decodeId(verksamhetId));
+        Filter filter = getFilter(request, verksamhet, filterHash);
+        SimpleKonResponse<SimpleKonDataRow> longSickLeaves = warehouse.getLangaSjukskrivningarPerManad(filter.getPredicate(), range, verksamhet.getVardgivarId());
+        SimpleDetailsData result = new PeriodConverter().convert(longSickLeaves, range, filter);
+        return result;
     }
 
     /**
@@ -1084,12 +836,8 @@ public class ProtectedChartDataService {
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request, #verksamhetId)")
     public Response getLongSickLeavesDataAsCsv(@Context HttpServletRequest request, @PathParam(VERKSAMHET_PATH_ID) String verksamhetId, @QueryParam("filter") String filterHash) {
         LOG.info("Calling getLongSickLeavesDataAsCsv with verksamhetId: {} and filterHash: {}", verksamhetId, filterHash);
-        final Optional<SimpleDetailsData> data = getLongSickLeavesDataData(request, verksamhetId, filterHash);
-        if (data.isPresent()) {
-            return CsvConverter.getCsvResponse(data.get().getTableData(), "export.csv");
-        } else {
-            return Response.status(Response.Status.SERVICE_UNAVAILABLE).build();
-        }
+        final SimpleDetailsData data = getLongSickLeavesDataData(request, verksamhetId, filterHash);
+        return CsvConverter.getCsvResponse(data.getTableData(), "export.csv");
     }
 
     Filter getFilter(HttpServletRequest request, Verksamhet verksamhet, String filterHash) {
