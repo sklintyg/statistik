@@ -28,14 +28,12 @@ import se.inera.statistics.hsa.model.Vardenhet;
 import se.inera.statistics.hsa.services.HsaOrganizationsService;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 public class UserDetailsService implements SAMLUserDetailsService {
 
     private static final Logger LOG = LoggerFactory.getLogger(UserDetailsService.class);
-    public static final String GLOBAL_VG_ACCESS_FLAG = "INTYG;Statistik";
+    public static final String GLOBAL_VG_ACCESS_PREFIX = "INTYG;Statistik-";
 
     @Autowired
     private HsaOrganizationsService hsaOrganizationsService;
@@ -50,28 +48,16 @@ public class UserDetailsService implements SAMLUserDetailsService {
         List<Vardenhet> authorizedVerksamhets = hsaOrganizationsService.getAuthorizedEnheterForHosPerson(hsaId);
 
         Vardenhet selectedVerksamhet = getLoginVerksamhet(authorizedVerksamhets, assertion.getEnhetHsaId());
-        List<Vardenhet> filtered = filterByVardgivare(authorizedVerksamhets, selectedVerksamhet.getVardgivarId());
+        String vardgivare = selectedVerksamhet != null ? selectedVerksamhet.getVardgivarId() : null;
+        List<Vardenhet> filtered = filterByVardgivare(authorizedVerksamhets, vardgivare);
 
-        final boolean processledareSystemRoleFlagSet = assertion.getSystemRoles().contains(GLOBAL_VG_ACCESS_FLAG);
-        final boolean processledare = isProcessledare(processledareSystemRoleFlagSet, authorizedVerksamhets);
+        final boolean processledare = assertion.getSystemRoles().contains(GLOBAL_VG_ACCESS_PREFIX + vardgivare);
         final String name = assertion.getFornamn() + ' ' + assertion.getMellanOchEfternamn();
-        final boolean processledareDenied = processledareSystemRoleFlagSet != processledare;
-        return new User(hsaId, name, processledare, selectedVerksamhet, filtered, processledareDenied);
+        return new User(hsaId, name, processledare, selectedVerksamhet, filtered);
     }
 
     SakerhetstjanstAssertion getSakerhetstjanstAssertion(SAMLCredential credential) {
         return new SakerhetstjanstAssertion(credential.getAuthenticationAssertion());
-    }
-
-    private boolean isProcessledare(boolean processledareSystemRoleFlagSet, List<Vardenhet> enhetsList) {
-        if (!processledareSystemRoleFlagSet) {
-            return false;
-        }
-        Set<String> uniqueVgids = new HashSet<>();
-        for (Vardenhet enhet : enhetsList) {
-            uniqueVgids.add(enhet.getVardgivarId());
-        }
-        return uniqueVgids.size() == 1;
     }
 
     private List<Vardenhet> filterByVardgivare(List<Vardenhet> vardenhets, String vardgivarId) {

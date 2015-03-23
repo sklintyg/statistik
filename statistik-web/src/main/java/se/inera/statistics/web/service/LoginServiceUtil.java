@@ -50,7 +50,6 @@ import static com.google.common.collect.Lists.transform;
 
 @Component
 public class LoginServiceUtil {
-    private static final Logger LOG = LoggerFactory.getLogger(LoginServiceUtil.class);
 
     @Autowired
     private Warehouse warehouse;
@@ -72,7 +71,7 @@ public class LoginServiceUtil {
                 List<Enhet> enhetsList = warehouse.getEnhets(realUser.getValdVardenhet().getVardgivarId());
                 Verksamhet defaultVerksamhet = toVerksamhet(realUser.getValdVardenhet(), enhetsList);
                 List<Verksamhet> verksamhets = getVerksamhetsList(realUser, enhetsList);
-                return new LoginInfo(realUser.getHsaId(), realUser.getName(), defaultVerksamhet, realUser.isVerksamhetschef(), realUser.isDelprocessledare(), realUser.isProcessledare(), verksamhets, realUser.isProcessledareDenied());
+                return new LoginInfo(realUser.getHsaId(), realUser.getName(), defaultVerksamhet, realUser.isVerksamhetschef(), realUser.isDelprocessledare(), realUser.isProcessledare(), verksamhets);
             }
         }
         return new LoginInfo();
