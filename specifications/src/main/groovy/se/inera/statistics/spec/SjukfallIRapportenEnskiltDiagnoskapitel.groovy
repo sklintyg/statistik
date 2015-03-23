@@ -1,6 +1,6 @@
 package se.inera.statistics.spec
 
-class SjukfallIRapportenEnskiltDiagnoskapitel extends DiagnosRapport {
+class SjukfallIRapportenEnskiltDiagnoskapitel extends DualSexTimeSeriesReport {
 
     String valtDiagnoskapitel
 

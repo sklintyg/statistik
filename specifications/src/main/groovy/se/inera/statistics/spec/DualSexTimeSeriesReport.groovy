@@ -1,6 +1,6 @@
 package se.inera.statistics.spec
 
-abstract class DiagnosRapport extends Rapport {
+abstract class DualSexTimeSeriesReport extends Rapport {
 
     String år
     String månad

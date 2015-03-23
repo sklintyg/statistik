@@ -1,6 +1,6 @@
 package se.inera.statistics.spec
 
-class SjukfallIRapportenSjukfallPerEnhetSomTidssserieDiagram extends DiagnosRapport {
+class SjukfallIRapportenSjukfallPerEnhetSomTidssserieDiagram extends DualSexTimeSeriesReport {
 
     public void doExecute() {
         def report = getReportSjukfallPerEnhetSomTidsserie()
