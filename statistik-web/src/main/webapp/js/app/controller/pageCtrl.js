@@ -40,14 +40,14 @@ angular.module('StatisticsApp').controller('pageCtrl', [ '$scope', '$rootScope',
 
             $scope.viewHeader = verksamhetId ? "Verksamhetsstatistik" : "Nationell statistik";
 
-            if ($rootScope.isLoggedIn && !$scope.isLoginInfoFetched) {
-                if (verksamhetId) {
-                    $scope.businessId = verksamhetId;
-                    $cookies.verksamhetId = verksamhetId;
-                } else if ($cookies.verksamhetId) {
-                    $scope.businessId = $cookies.verksamhetId;
-                }
+            if (verksamhetId) {
+                $scope.businessId = verksamhetId;
+                $cookies.verksamhetId = verksamhetId;
+            } else if ($cookies.verksamhetId) {
+                $scope.businessId = $cookies.verksamhetId;
+            }
 
+            if ($rootScope.isLoggedIn && !$scope.isLoginInfoFetched) {
                 statisticsData.getLoginInfo(function (loginInfo) {
                     businessFilter.setup(loginInfo.businesses, $location.$$search.filter);
                     var v = self.getSelectedVerksamhet($scope.businessId, loginInfo.businesses);
@@ -64,7 +64,6 @@ angular.module('StatisticsApp').controller('pageCtrl', [ '$scope', '$rootScope',
                 });
             }
         });
-
 
         $scope.loginClicked = function (url) {
             $location.path(url);
