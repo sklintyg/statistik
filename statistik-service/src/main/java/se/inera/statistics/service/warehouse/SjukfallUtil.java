@@ -24,13 +24,20 @@ import com.google.common.base.Predicate;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
+import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Lists;
 import org.joda.time.LocalDate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import se.inera.statistics.service.report.model.Kon;
+import se.inera.statistics.service.report.model.KonDataResponse;
+import se.inera.statistics.service.report.model.KonDataRow;
+import se.inera.statistics.service.report.model.KonField;
 import se.inera.statistics.service.report.model.Range;
+import se.inera.statistics.service.report.util.ReportUtil;
+import se.inera.statistics.service.warehouse.query.CounterFunction;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -200,5 +207,26 @@ public class SjukfallUtil {
         }
         return count;
     }
+
+    //CHECKSTYLE:OFF ParameterNumberCheck
+    public <T> KonDataResponse calculateKonDataResponse(Aisle aisle, SjukfallFilter filter, LocalDate start, int periods, int periodSize, List<String> groupNames, List<T> groupIds, CounterFunction<Integer> counterFunction) {
+        List<KonDataRow> rows = new ArrayList<>();
+        for (SjukfallGroup sjukfallGroup : sjukfallGrupper(start, periods, periodSize, aisle, filter)) {
+            final HashMultiset<Integer> maleCounter = HashMultiset.create();
+            final HashMultiset<Integer> femaleCounter = HashMultiset.create();
+            for (Sjukfall sjukfall : sjukfallGroup.getSjukfall()) {
+                final HashMultiset<Integer> currentCounter = Kon.Female.equals(sjukfall.getKon()) ? femaleCounter : maleCounter;
+                counterFunction.addCount(sjukfall, currentCounter);
+            }
+            List<KonField> list = new ArrayList<>(groupIds.size());
+            for (T id : groupIds) {
+                list.add(new KonField(femaleCounter.count(id), maleCounter.count(id)));
+            }
+            rows.add(new KonDataRow(ReportUtil.toDiagramPeriod(sjukfallGroup.getRange().getFrom()), list));
+        }
+
+        return new KonDataResponse(groupNames, rows);
+    }
+    //CHECKSTYLE:ON
 
 }

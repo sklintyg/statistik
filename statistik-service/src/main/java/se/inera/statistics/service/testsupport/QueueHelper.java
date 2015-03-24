@@ -33,12 +33,12 @@ import se.inera.statistics.service.processlog.EventType;
 import se.inera.statistics.service.processlog.LogConsumer;
 import se.inera.statistics.service.report.api.RollingLength;
 import se.inera.statistics.service.report.model.DiagnosgruppResponse;
+import se.inera.statistics.service.report.model.KonDataResponse;
 import se.inera.statistics.service.report.model.OverviewResponse;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.SimpleKonDataRow;
 import se.inera.statistics.service.report.model.SimpleKonResponse;
 import se.inera.statistics.service.report.model.SjukfallslangdResponse;
-import se.inera.statistics.service.report.model.SjukskrivningsgradResponse;
 import se.inera.statistics.service.report.model.VerksamhetOverviewResponse;
 import se.inera.statistics.service.report.util.ReportUtil;
 
@@ -154,11 +154,11 @@ public class QueueHelper {
     }
 
     private void printAndGetDegreeOfSickLeave(String vardenhet1, String vardenhet2, Range range, Map<String, TestData> result) {
-        SjukskrivningsgradResponse degreeOfSickLeave1 = SjukskrivningsgradQuery.getSjukskrivningsgrad(warehouse.get("vg"), sjukfallUtil.createEnhetFilter(vardenhet1), range.getFrom(), 1, YEAR, sjukfallUtil);
+        KonDataResponse degreeOfSickLeave1 = SjukskrivningsgradQuery.getSjukskrivningsgrad(warehouse.get("vg"), sjukfallUtil.createEnhetFilter(vardenhet1), range.getFrom(), 1, YEAR, sjukfallUtil);
         LOG.info("DOSL data: " + degreeOfSickLeave1);
         JsonNode degreeOfSickLeave1Node = JSONParser.parse(degreeOfSickLeave1.toString());
         result.put("degreeOfSickLeave1", new TestData(degreeOfSickLeave1, degreeOfSickLeave1Node));
-        SjukskrivningsgradResponse degreeOfSickLeave2 = SjukskrivningsgradQuery.getSjukskrivningsgrad(warehouse.get("vg"), sjukfallUtil.createEnhetFilter(vardenhet2), range.getFrom(), 1, YEAR, sjukfallUtil);
+        KonDataResponse degreeOfSickLeave2 = SjukskrivningsgradQuery.getSjukskrivningsgrad(warehouse.get("vg"), sjukfallUtil.createEnhetFilter(vardenhet2), range.getFrom(), 1, YEAR, sjukfallUtil);
         LOG.info("DOSL data: " + degreeOfSickLeave2);
         JsonNode degreeOfSickLeave2Node = JSONParser.parse(degreeOfSickLeave2.toString());
         result.put("degreeOfSickLeave2", new TestData(degreeOfSickLeave2, degreeOfSickLeave2Node));

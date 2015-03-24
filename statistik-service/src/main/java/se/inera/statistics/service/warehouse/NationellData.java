@@ -26,6 +26,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import se.inera.statistics.service.report.model.DiagnosgruppResponse;
 import se.inera.statistics.service.report.model.Icd;
+import se.inera.statistics.service.report.model.KonDataResponse;
 import se.inera.statistics.service.report.model.KonDataRow;
 import se.inera.statistics.service.report.model.KonField;
 import se.inera.statistics.service.report.model.Lan;
@@ -131,9 +132,9 @@ public class NationellData {
     }
 
     public SjukskrivningsgradResponse getSjukskrivningsgrad(LocalDate start, int perioder, int periodlangd) {
-        SjukskrivningsgradResponse result = null;
+        KonDataResponse result = null;
         for (Aisle aisle : warehouse) {
-            SjukskrivningsgradResponse grader = SjukskrivningsgradQuery.getSjukskrivningsgrad(aisle, SjukfallUtil.ALL_ENHETER, start, perioder, periodlangd, sjukfallUtil);
+            KonDataResponse grader = SjukskrivningsgradQuery.getSjukskrivningsgrad(aisle, SjukfallUtil.ALL_ENHETER, start, perioder, periodlangd, sjukfallUtil);
             if (result == null) {
                 result = grader;
             } else {
@@ -336,7 +337,7 @@ public class NationellData {
         return new SjukfallslangdResponse(rows, unfiltered.getMonths());
     }
 
-    private SjukskrivningsgradResponse filterLow(SjukskrivningsgradResponse unfiltered) {
+    private SjukskrivningsgradResponse filterLow(KonDataResponse unfiltered) {
         List<KonDataRow> rows = new ArrayList<>();
         for (KonDataRow row : unfiltered.getRows()) {
             rows.add(new KonDataRow(row.getName(), filterLowKonFields(row.getData())));

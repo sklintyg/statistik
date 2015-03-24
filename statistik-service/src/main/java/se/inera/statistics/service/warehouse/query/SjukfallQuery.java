@@ -33,8 +33,6 @@ import se.inera.statistics.service.processlog.Lakare;
 import se.inera.statistics.service.processlog.LakareManager;
 import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.report.model.KonDataResponse;
-import se.inera.statistics.service.report.model.KonDataRow;
-import se.inera.statistics.service.report.model.KonField;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.SimpleKonDataRow;
 import se.inera.statistics.service.report.model.SimpleKonResponse;
@@ -193,24 +191,16 @@ public final class SjukfallQuery {
             }
         });
 
-        List<KonDataRow> rows = new ArrayList<>();
-        for (SjukfallGroup sjukfallGroup: sjukfallUtil.sjukfallGrupper(start, periods, periodSize, aisle, filter)) {
-            final HashMultiset<Integer> maleCounter = HashMultiset.create();
-            final HashMultiset<Integer> femaleCounter = HashMultiset.create();
-            for (Sjukfall sjukfall : sjukfallGroup.getSjukfall()) {
-                final HashMultiset<Integer> currentCounter = Kon.Female.equals(sjukfall.getKon()) ? femaleCounter : maleCounter;
+        final CounterFunction<Integer> counterFunction = new CounterFunction<Integer>() {
+            @Override
+            public void addCount(Sjukfall sjukfall, HashMultiset<Integer> counter) {
                 for (Integer enhetid : sjukfall.getEnhets()) {
-                    currentCounter.add(enhetid);
+                    counter.add(enhetid);
                 }
             }
-            List<KonField> list = new ArrayList<>(ids.size());
-            for (Integer id : ids) {
-                list.add(new KonField(femaleCounter.count(id), maleCounter.count(id)));
-            }
-            rows.add(new KonDataRow(ReportUtil.toDiagramPeriod(sjukfallGroup.getRange().getFrom()), list));
-        }
+        };
 
-        return new KonDataResponse(names, rows);
+        return sjukfallUtil.calculateKonDataResponse(aisle, filter, start, periods, periodSize, names, ids, counterFunction);
     }
 
 }

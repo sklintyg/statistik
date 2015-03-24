@@ -18,16 +18,13 @@
  */
 package se.inera.statistics.service.warehouse.query;
 
+import com.google.common.collect.HashMultiset;
 import org.joda.time.LocalDate;
-import se.inera.statistics.service.report.model.KonDataRow;
-import se.inera.statistics.service.report.model.KonField;
+import se.inera.statistics.service.report.model.KonDataResponse;
 import se.inera.statistics.service.report.model.OverviewChartRowExtended;
-import se.inera.statistics.service.report.model.SjukskrivningsgradResponse;
-import se.inera.statistics.service.report.util.ReportUtil;
 import se.inera.statistics.service.warehouse.Aisle;
 import se.inera.statistics.service.warehouse.Sjukfall;
 import se.inera.statistics.service.warehouse.SjukfallFilter;
-import se.inera.statistics.service.warehouse.SjukfallGroup;
 import se.inera.statistics.service.warehouse.SjukfallUtil;
 
 import java.util.ArrayList;
@@ -81,21 +78,13 @@ public final class SjukskrivningsgradQuery {
         return counters;
     }
 
-    public static SjukskrivningsgradResponse getSjukskrivningsgrad(Aisle aisle, SjukfallFilter filter, LocalDate start, int periods, int periodSize, SjukfallUtil sjukfallUtil) {
-        List<KonDataRow> rows = new ArrayList<>();
-        for (SjukfallGroup sjukfallGroup: sjukfallUtil.sjukfallGrupper(start, periods, periodSize, aisle, filter)) {
-            Map<Integer, Counter<Integer>> counters = Counter.mapFor(GRAD);
-            for (Sjukfall sjukfall : sjukfallGroup.getSjukfall()) {
-                counters.get(sjukfall.getSjukskrivningsgrad()).increase(sjukfall);
+    public static KonDataResponse getSjukskrivningsgrad(Aisle aisle, SjukfallFilter filter, LocalDate start, int periods, int periodSize, SjukfallUtil sjukfallUtil) {
+        return sjukfallUtil.calculateKonDataResponse(aisle, filter, start, periods, periodSize, GRAD_LABEL, GRAD, new CounterFunction<Integer>() {
+            @Override
+            public void addCount(Sjukfall sjukfall, HashMultiset<Integer> counter) {
+                counter.add(sjukfall.getSjukskrivningsgrad());
             }
-            List<KonField> list = new ArrayList<>(GRAD.size());
-            for (int i: GRAD) {
-                list.add(new KonField(counters.get(i).getCountFemale(), counters.get(i).getCountMale()));
-            }
-            rows.add(new KonDataRow(ReportUtil.toDiagramPeriod(sjukfallGroup.getRange().getFrom()), list));
-        }
-
-        return new SjukskrivningsgradResponse(GRAD_LABEL, rows);
+        });
     }
 
     private static int percentChange(int current, int previous) {
