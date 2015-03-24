@@ -30,12 +30,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StopWatch;
 import se.inera.statistics.service.report.model.DiagnosgruppResponse;
 import se.inera.statistics.service.report.model.Icd;
+import se.inera.statistics.service.report.model.KonDataResponse;
 import se.inera.statistics.service.report.model.OverviewResponse;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.SimpleKonDataRow;
 import se.inera.statistics.service.report.model.SimpleKonResponse;
 import se.inera.statistics.service.report.model.SjukfallslangdResponse;
-import se.inera.statistics.service.report.model.SjukskrivningsgradResponse;
 import se.inera.statistics.service.report.util.Icd10;
 import se.inera.statistics.service.report.util.Icd10RangeType;
 import se.inera.statistics.service.report.util.ReportUtil;
@@ -183,7 +183,7 @@ public class ChartDataService {
 
     public void buildSjukskrivningsgrad() {
         final Range range = new Range(EIGHTEEN_MONTHS);
-        SjukskrivningsgradResponse degreeOfSickLeaveStatistics = data.getSjukskrivningsgrad(range);
+        KonDataResponse degreeOfSickLeaveStatistics = data.getSjukskrivningsgrad(range);
         sjukskrivningsgrad = new DegreeOfSickLeaveConverter().convert(degreeOfSickLeaveStatistics, range, Filter.empty());
     }
 

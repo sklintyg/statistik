@@ -32,7 +32,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
-import se.inera.statistics.service.report.api.RollingLength;
 import se.inera.statistics.service.report.model.DiagnosgruppResponse;
 import se.inera.statistics.service.report.model.KonDataResponse;
 import se.inera.statistics.service.report.model.Range;
@@ -87,6 +86,7 @@ public class ProtectedChartDataService {
     private static final String VERKSAMHET_PATH_ID = "verksamhetId";
     private static final Logger LOG = LoggerFactory.getLogger(ProtectedChartDataService.class);
     private static final String TEXT_UTF_8 = "text/plain; charset=UTF-8";
+    public static final int YEAR = 12;
 
     @Autowired
     private WarehouseService warehouse;
@@ -716,8 +716,7 @@ public class ProtectedChartDataService {
 
     private SickLeaveLengthData getSickLeaveLengthDataData(HttpServletRequest request, String verksamhetId, String filterHash) {
         LOG.info("Calling getSickLeaveLengthData with verksamhetId: {} and filterHash: {}", verksamhetId, filterHash);
-        final RollingLength year = RollingLength.YEAR;
-        Range range = new Range(year.getPeriods());
+        Range range = new Range(YEAR);
         Verksamhet verksamhet = getVerksamhet(request, Verksamhet.decodeId(verksamhetId));
         Filter filter = getFilter(request, verksamhet, filterHash);
         SjukfallslangdResponse sickLeaveLength = warehouse.getSjukskrivningslangd(filter.getPredicate(), range, verksamhet.getVardgivarId());

@@ -35,7 +35,6 @@ import se.inera.statistics.service.report.model.SimpleKonDataRow;
 import se.inera.statistics.service.report.model.SimpleKonResponse;
 import se.inera.statistics.service.report.model.SjukfallslangdResponse;
 import se.inera.statistics.service.report.model.SjukfallslangdRow;
-import se.inera.statistics.service.report.model.SjukskrivningsgradResponse;
 import se.inera.statistics.service.report.util.ReportUtil;
 import se.inera.statistics.service.warehouse.query.AldersgruppQuery;
 import se.inera.statistics.service.warehouse.query.Counter;
@@ -127,11 +126,11 @@ public class NationellData {
         }
     }
 
-    public SjukskrivningsgradResponse getSjukskrivningsgrad(Range range) {
+    public KonDataResponse getSjukskrivningsgrad(Range range) {
         return getSjukskrivningsgrad(range.getFrom(), range.getMonths(), 1);
     }
 
-    public SjukskrivningsgradResponse getSjukskrivningsgrad(LocalDate start, int perioder, int periodlangd) {
+    public KonDataResponse getSjukskrivningsgrad(LocalDate start, int perioder, int periodlangd) {
         KonDataResponse result = null;
         for (Aisle aisle : warehouse) {
             KonDataResponse grader = SjukskrivningsgradQuery.getSjukskrivningsgrad(aisle, SjukfallUtil.ALL_ENHETER, start, perioder, periodlangd, sjukfallUtil);
@@ -151,11 +150,11 @@ public class NationellData {
                     }
                     list.add(new KonDataRow(a.getName(), c));
                 }
-                result = new SjukskrivningsgradResponse(result.getGroups(), list);
+                result = new KonDataResponse(result.getGroups(), list);
             }
         }
         if (result == null) {
-            return new SjukskrivningsgradResponse(new ArrayList<String>(), new ArrayList<KonDataRow>());
+            return new KonDataResponse(new ArrayList<String>(), new ArrayList<KonDataRow>());
         } else {
             return filterLow(result);
         }
@@ -337,12 +336,12 @@ public class NationellData {
         return new SjukfallslangdResponse(rows, unfiltered.getMonths());
     }
 
-    private SjukskrivningsgradResponse filterLow(KonDataResponse unfiltered) {
+    private KonDataResponse filterLow(KonDataResponse unfiltered) {
         List<KonDataRow> rows = new ArrayList<>();
         for (KonDataRow row : unfiltered.getRows()) {
             rows.add(new KonDataRow(row.getName(), filterLowKonFields(row.getData())));
         }
-        return new SjukskrivningsgradResponse(unfiltered.getGroups(), rows);
+        return new KonDataResponse(unfiltered.getGroups(), rows);
     }
 
     private DiagnosgruppResponse filterLow(DiagnosgruppResponse unfiltered) {

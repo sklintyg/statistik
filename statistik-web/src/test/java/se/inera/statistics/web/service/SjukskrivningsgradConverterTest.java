@@ -27,9 +27,9 @@ import java.util.List;
 
 import org.junit.Test;
 
+import se.inera.statistics.service.report.model.KonDataResponse;
 import se.inera.statistics.service.report.model.KonDataRow;
 import se.inera.statistics.service.report.model.KonField;
-import se.inera.statistics.service.report.model.SjukskrivningsgradResponse;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.web.model.DualSexStatisticsData;
 import se.inera.statistics.web.model.TableData;
@@ -38,7 +38,7 @@ public class SjukskrivningsgradConverterTest {
 
     @Test
     public void tableConverterTestEmptyInput() {
-        final SjukskrivningsgradResponse resp = new SjukskrivningsgradResponse(new ArrayList<String>(), new ArrayList<KonDataRow>());
+        final KonDataResponse resp = new KonDataResponse(new ArrayList<String>(), new ArrayList<KonDataRow>());
         TableData tableData = new DegreeOfSickLeaveConverter().convertTable(resp, "");
         assertEquals("[[;1, ;1], [Period;1, Antal sjukfall totalt;1]]", tableData.getHeaders().toString());
         assertEquals("[]", tableData.getRows().toString());
@@ -54,7 +54,7 @@ public class SjukskrivningsgradConverterTest {
         // CHECKSTYLE:ON MagicNumber
         rows.add(new KonDataRow("period1", diagnosisGroupData));
         final List<String> degreesOfSickLeave = Arrays.asList("50");
-        final SjukskrivningsgradResponse resp = new SjukskrivningsgradResponse(degreesOfSickLeave, rows);
+        final KonDataResponse resp = new KonDataResponse(degreesOfSickLeave, rows);
 
         //When
         TableData tableData = new DegreeOfSickLeaveConverter().convertTable(resp, "Antal sjukfall med %1$s%% sjukskrivningsgrad");
@@ -66,7 +66,7 @@ public class SjukskrivningsgradConverterTest {
 
     @Test
     public void converterTestEmpty() {
-        SjukskrivningsgradResponse resp = new SjukskrivningsgradResponse(new ArrayList<String>(), new ArrayList<KonDataRow>());
+        KonDataResponse resp = new KonDataResponse(new ArrayList<String>(), new ArrayList<KonDataRow>());
         DualSexStatisticsData data = new DegreeOfSickLeaveConverter().convert(resp, new Range(), Filter.empty());
         assertEquals("[]", data.getFemaleChart().getCategories().toString());
         assertEquals("[]", data.getFemaleChart().getSeries().toString());
@@ -82,7 +82,7 @@ public class SjukskrivningsgradConverterTest {
         // CHECKSTYLE:ON MagicNumber
         rows.add(new KonDataRow("period1", diagnosisGroupData));
         final List<String> degreesOfSickLeave = Arrays.asList("50");
-        final SjukskrivningsgradResponse resp = new SjukskrivningsgradResponse(degreesOfSickLeave, rows);
+        final KonDataResponse resp = new KonDataResponse(degreesOfSickLeave, rows);
 
         //When
         DegreeOfSickLeaveConverter converter = new DegreeOfSickLeaveConverter();

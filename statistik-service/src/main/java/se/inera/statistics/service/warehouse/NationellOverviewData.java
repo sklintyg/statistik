@@ -21,6 +21,7 @@ package se.inera.statistics.service.warehouse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import se.inera.statistics.service.report.model.DiagnosgruppResponse;
+import se.inera.statistics.service.report.model.KonDataResponse;
 import se.inera.statistics.service.report.model.KonField;
 import se.inera.statistics.service.report.model.OverviewChartRow;
 import se.inera.statistics.service.report.model.OverviewChartRowExtended;
@@ -30,7 +31,6 @@ import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.SimpleKonDataRow;
 import se.inera.statistics.service.report.model.SimpleKonResponse;
 import se.inera.statistics.service.report.model.SjukfallslangdResponse;
-import se.inera.statistics.service.report.model.SjukskrivningsgradResponse;
 import se.inera.statistics.service.report.util.ReportUtil;
 
 import java.util.ArrayList;
@@ -128,7 +128,7 @@ public class NationellOverviewData {
     }
 
     private List<OverviewChartRowExtended> getSjukskrivningsgrader(Range range) {
-        SjukskrivningsgradResponse periods = data.getSjukskrivningsgrad(ReportUtil.getPreviousPeriod(range).getFrom(), 2, KVARTAL);
+        KonDataResponse periods = data.getSjukskrivningsgrad(ReportUtil.getPreviousPeriod(range).getFrom(), 2, KVARTAL);
 
         List<OverviewChartRowExtended> result = new ArrayList<>();
         if (periods.getRows().size() >= 2) {

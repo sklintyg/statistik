@@ -31,7 +31,6 @@ import se.inera.statistics.service.helper.JSONParser;
 import se.inera.statistics.service.helper.UtlatandeBuilder;
 import se.inera.statistics.service.processlog.EventType;
 import se.inera.statistics.service.processlog.LogConsumer;
-import se.inera.statistics.service.report.api.RollingLength;
 import se.inera.statistics.service.report.model.DiagnosgruppResponse;
 import se.inera.statistics.service.report.model.KonDataResponse;
 import se.inera.statistics.service.report.model.OverviewResponse;
@@ -57,8 +56,8 @@ import se.inera.statistics.service.warehouse.query.SjukskrivningslangdQuery;
 
 public class QueueHelper {
     private static final Logger LOG = LoggerFactory.getLogger(QueueHelper.class);
-    public static final int QUARTER = 3;
     public static final int YEAR = 12;
+    public static final int QUARTER = 3;
 
     @Autowired
     private LogConsumer consumer;
@@ -127,23 +126,23 @@ public class QueueHelper {
     }
 
     private void printAndGetSjukfallslangdGrupp(String vardenhet1, String vardenhet2, Range range, Map<String, TestData> result) {
-        SjukfallslangdResponse sjukfallslangdGrupp1 = SjukskrivningslangdQuery.getSjuksrivningslangd(warehouse.get("vg"), sjukfallUtil.createEnhetFilter(vardenhet1), range.getFrom(), RollingLength.YEAR.getPeriods(), 1, sjukfallUtil);
+        SjukfallslangdResponse sjukfallslangdGrupp1 = SjukskrivningslangdQuery.getSjuksrivningslangd(warehouse.get("vg"), sjukfallUtil.createEnhetFilter(vardenhet1), range.getFrom(), YEAR, 1, sjukfallUtil);
         LOG.info("SLG data: " + sjukfallslangdGrupp1);
         JsonNode sjukfallslangdGrupp1Node = JSONParser.parse(sjukfallslangdGrupp1.toString());
         result.put("sjukfallslangdGrupp1", new TestData(sjukfallslangdGrupp1, sjukfallslangdGrupp1Node));
-        SjukfallslangdResponse sjukfallslangdGrupp2 = SjukskrivningslangdQuery.getSjuksrivningslangd(warehouse.get("vg"), sjukfallUtil.createEnhetFilter(vardenhet2), range.getFrom(), RollingLength.YEAR.getPeriods(), 1, sjukfallUtil);
+        SjukfallslangdResponse sjukfallslangdGrupp2 = SjukskrivningslangdQuery.getSjuksrivningslangd(warehouse.get("vg"), sjukfallUtil.createEnhetFilter(vardenhet2), range.getFrom(), YEAR, 1, sjukfallUtil);
         LOG.info("SLG data: " + sjukfallslangdGrupp2);
         JsonNode sjukfallslangdGrupp2Node = JSONParser.parse(sjukfallslangdGrupp2.toString());
         result.put("sjukfallslangdGrupp2", new TestData(sjukfallslangdGrupp2, sjukfallslangdGrupp2Node));
-        SjukfallslangdResponse sjukfallslangdGruppNationell = nationell.getSjukfallslangd(range.getFrom(), 1, RollingLength.YEAR.getPeriods());
+        SjukfallslangdResponse sjukfallslangdGruppNationell = nationell.getSjukfallslangd(range.getFrom(), 1, YEAR);
         LOG.info("Nationell SLG data: " + sjukfallslangdGruppNationell);
         JsonNode sjukfallslangdGruppNationellNode = JSONParser.parse(sjukfallslangdGruppNationell.toString());
         result.put("sjukfallslangdGruppNationell", new TestData(sjukfallslangdGruppNationell, sjukfallslangdGruppNationellNode));
-        SimpleKonResponse<SimpleKonDataRow> sjukfallslangdGruppLong1 = SjukskrivningslangdQuery.getLangaSjukfall(warehouse.get("vg"), sjukfallUtil.createEnhetFilter(vardenhet1), range.getFrom(), RollingLength.QUARTER.getPeriods(), 1, sjukfallUtil);
+        SimpleKonResponse<SimpleKonDataRow> sjukfallslangdGruppLong1 = SjukskrivningslangdQuery.getLangaSjukfall(warehouse.get("vg"), sjukfallUtil.createEnhetFilter(vardenhet1), range.getFrom(), QUARTER, 1, sjukfallUtil);
         LOG.info("SLGL data: " + sjukfallslangdGruppLong1);
         JsonNode sjukfallslangdGruppLong1Node = JSONParser.parse(sjukfallslangdGruppLong1.toString());
         result.put("sjukfallslangdGruppLong1", new TestData(sjukfallslangdGruppLong1, sjukfallslangdGruppLong1Node));
-        SimpleKonResponse<SimpleKonDataRow> sjukfallslangdGruppLong2 = SjukskrivningslangdQuery.getLangaSjukfall(warehouse.get("vg"), sjukfallUtil.createEnhetFilter(vardenhet2), range.getFrom(), RollingLength.QUARTER.getPeriods(), 1, sjukfallUtil);
+        SimpleKonResponse<SimpleKonDataRow> sjukfallslangdGruppLong2 = SjukskrivningslangdQuery.getLangaSjukfall(warehouse.get("vg"), sjukfallUtil.createEnhetFilter(vardenhet2), range.getFrom(), QUARTER, 1, sjukfallUtil);
         LOG.info("SLGL data: " + sjukfallslangdGruppLong2);
         JsonNode sjukfallslangdGruppLong2Node = JSONParser.parse(sjukfallslangdGruppLong2.toString());
         result.put("sjukfallslangdGruppLong2", new TestData(sjukfallslangdGruppLong2, sjukfallslangdGruppLong2Node));
