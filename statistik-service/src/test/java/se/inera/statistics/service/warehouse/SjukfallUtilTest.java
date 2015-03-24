@@ -19,13 +19,20 @@
 package se.inera.statistics.service.warehouse;
 
 import com.google.common.base.Function;
+import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Lists;
 import org.joda.time.LocalDate;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mockito;
 import org.springframework.test.util.ReflectionTestUtils;
+import se.inera.statistics.service.report.model.Kon;
+import se.inera.statistics.service.report.model.KonDataResponse;
+import se.inera.statistics.service.report.model.Range;
+import se.inera.statistics.service.warehouse.query.CounterFunction;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
@@ -219,6 +226,36 @@ public class SjukfallUtilTest {
         assertNotSame(sjukfallGroups2, sjukfallGroups3);
         assertNotSame(sjukfallGroups2, sjukfallGroups4);
         assertNotSame(sjukfallGroups3, sjukfallGroups4);
+    }
+
+    @Test
+    public void testCalculateKonDataResponse() throws Exception {
+        //Given
+        final SjukfallFilter filter = SjukfallUtil.ALL_ENHETER;
+        final LocalDate start = new LocalDate();
+        final int periods = 1;
+        final int periodSize = 2;
+
+        final SjukfallUtil spy = Mockito.spy(sjukfallUtil);
+        final ArrayList<SjukfallGroup> sjukfallGrupper = new ArrayList<>();
+        sjukfallGrupper.add(new SjukfallGroup(new Range(1), Arrays.asList(createSjukfall(Kon.Female), createSjukfall(Kon.Male), createSjukfall(Kon.Male))));
+        Mockito.when(spy.sjukfallGrupper(start, periods, periodSize, aisle, filter)).thenReturn(sjukfallGrupper);
+
+        //When
+        final KonDataResponse response = spy.calculateKonDataResponse(aisle, filter, start, periods, periodSize, Arrays.asList("G1"), Arrays.asList(1), new CounterFunction<Integer>() {
+            @Override
+            public void addCount(Sjukfall sjukfall, HashMultiset<Integer> counter) {
+                counter.add(1);
+            }
+        });
+
+        //Then
+        assertEquals(new Integer(1), response.getDataFromIndex(0, Kon.Female).get(0));
+        assertEquals(new Integer(2), response.getDataFromIndex(0, Kon.Male).get(0));
+    }
+
+    private Sjukfall createSjukfall(Kon kon) {
+        return new Sjukfall(new Fact(0, 1, 2, 3, 4, 1, 6, kon.getNumberRepresentation(), 30, 0, 0, 0, 100, 10, 1, 30, new int[0], 0));
     }
 
 }
