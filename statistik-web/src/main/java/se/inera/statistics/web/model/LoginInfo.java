@@ -28,7 +28,6 @@ public class LoginInfo {
     private final Verksamhet defaultVerksamhet;
     private final boolean loggedIn;
     private final List<Verksamhet> businesses;
-    private final boolean processledareDenied;
     private boolean verksamhetschef;
     private boolean delprocessledare;
     private boolean processledare;
@@ -42,11 +41,9 @@ public class LoginInfo {
         verksamhetschef = false;
         delprocessledare = false;
         processledare = false;
-        processledareDenied = false;
     }
 
-    //CHECKSTYLE:OFF ParameterNumberCheck
-    public LoginInfo(String hsaId, String name, Verksamhet defaultVerksamhet, boolean verksamhetschef, boolean delprocessledare, boolean processledare, List<Verksamhet> businesses, boolean processledareDenied) {
+    public LoginInfo(String hsaId, String name, Verksamhet defaultVerksamhet, boolean verksamhetschef, boolean delprocessledare, boolean processledare, List<Verksamhet> businesses) {
         this.hsaId = hsaId;
         this.name = name;
         this.defaultVerksamhet = defaultVerksamhet;
@@ -55,9 +52,7 @@ public class LoginInfo {
         this.processledare = processledare;
         this.loggedIn = true;
         this.businesses = businesses;
-        this.processledareDenied = processledareDenied;
     }
-    //CHECKSTYLE:ON
 
     public String getHsaId() {
         return hsaId;
@@ -89,10 +84,6 @@ public class LoginInfo {
 
     public boolean isProcessledare() {
         return processledare;
-    }
-
-    public boolean isProcessledareDenied() {
-        return processledareDenied;
     }
 
 }

@@ -98,6 +98,14 @@ public class UserDetailsServiceTest {
         assertTrue(user.isProcessledare());
     }
 
+    @Test
+    public void hasNoVgAccessBySystemRole() throws Exception {
+        auktoriseradeEnheter(VE2_VG1);
+        User user = (User) service.loadUserBySAML(credential);
+        assertFalse(user.isDelprocessledare());
+        assertFalse(user.isProcessledare());
+    }
+
     private void newCredentials(String samlTicketName) {
         Assertion assertion = SakerhetstjanstAssertionTest.getSamlAssertion(samlTicketName);
 
