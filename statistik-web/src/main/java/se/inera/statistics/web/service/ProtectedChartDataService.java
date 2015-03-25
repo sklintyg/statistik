@@ -435,6 +435,42 @@ public class ProtectedChartDataService {
         return null;
     }
 
+    @POST
+    @Path("{verksamhetId}/getJamforDiagnoserStatistikTidsserie/{diagnosHash}")
+    @Produces({ MediaType.APPLICATION_JSON })
+    @Consumes({ MediaType.APPLICATION_JSON })
+    @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request, #verksamhetId)")
+    @PostAuthorize(value = "@protectedChartDataService.userAccess(#request, #verksamhetId)")
+    public Response getCompareDiagnosisStatisticsTimeSeries(@Context HttpServletRequest request, @PathParam(VERKSAMHET_PATH_ID) String verksamhetId, @PathParam("diagnosHash") String diagnosisHash, @QueryParam("filter") String filterHash) {
+        DualSexStatisticsData data = getCompareDiagnosisStatisticsDataTimeSeries(request, verksamhetId, diagnosisHash, filterHash);
+        return Response.ok(data).build();
+    }
+
+    private DualSexStatisticsData getCompareDiagnosisStatisticsDataTimeSeries(HttpServletRequest request, String verksamhetId, String diagnosisHash, String filterHash) {
+        LOG.info("Calling getCompareDiagnosisStatisticsTimeSeries with verksamhetId: {} and diagnosis: {} and filterHash: {}", verksamhetId, diagnosisHash, filterHash);
+        final Range range = new Range(18);
+        Verksamhet verksamhet = getVerksamhet(request, Verksamhet.decodeId(verksamhetId));
+        Filter filter = getFilter(request, verksamhet, filterHash);
+        final boolean emptyDiagnosisHash = diagnosisHash == null || diagnosisHash.isEmpty();
+        final List<String> diagnosis = emptyDiagnosisHash ? Collections.<String>emptyList() : getFilterFromHash(diagnosisHash).getDiagnoser();
+        final String message = emptyDiagnosisHash ? "Inga diagnoser valda" : getCompareDiagnosisMessage(filter, diagnosis);
+        KonDataResponse resultRows = warehouse.getJamforDiagnoserTidsserie(filter.getPredicate(), range, verksamhet.getVardgivarId(), diagnosis);
+        DualSexStatisticsData result = new CompareDiagnosisTimeSeriesConverter().convert(resultRows, range, filter, message);
+        return result;
+    }
+
+    @GET
+    @Path("{verksamhetId}/getJamforDiagnoserStatistikTidsserie/{diagnosHash}/csv")
+    @Produces({ TEXT_UTF_8 })
+    @Consumes({ MediaType.APPLICATION_JSON })
+    @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request, #verksamhetId)")
+    @PostAuthorize(value = "@protectedChartDataService.userAccess(#request, #verksamhetId)")
+    public Response getCompareDiagnosisStatisticsTimeSeriesAsCsv(@Context HttpServletRequest request, @PathParam(VERKSAMHET_PATH_ID) String verksamhetId, @QueryParam("filter") String filterHash, @PathParam("diagnosHash") String diagnosisHash) {
+        LOG.info("Calling getCompareDiagnosisStatisticsTimeSeriesAsCsv with verksamhetId: {} and filterHash: {}", verksamhetId, filterHash);
+        final DualSexStatisticsData data = getCompareDiagnosisStatisticsDataTimeSeries(request, verksamhetId, diagnosisHash, filterHash);
+        return Response.ok(CsvConverter.getCsvResponse(data.getTableData(), "export.csv")).build();
+    }
+
     /**
      * Get overview. Includes total n:o of sjukfall, sex distribution, top lists for diagnosgrupp, aldersgrupp, sjukskrivningslangd,
      * sjukskrivningsgrad. Only chart formatted data.

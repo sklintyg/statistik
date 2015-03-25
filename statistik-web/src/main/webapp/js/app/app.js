@@ -130,6 +130,14 @@ var app = angular.module('StatisticsApp', [ 'ngRoute', 'ngCookies', 'ngSanitize'
             title: 'Jämför valfria diagnoser'
         }).when('/verksamhet/:verksamhetId/jamforDiagnoser', {
             redirectTo: '/verksamhet/:verksamhetId/jamforDiagnoser/-'
+        }).when('/verksamhet/:verksamhetId/jamforDiagnoserTidsserie/:diagnosHash', {
+            templateUrl: 'views/detailsView.html',
+            controller: 'doubleAreaChartsCtrl',
+            controllerAs: 'VerksamhetCompareDiagnosisCtrl',
+            resolve: { config: app.compareDiagnosisTimeSeriesConfig },
+            title: 'Jämför valfria diagnoser'
+        }).when('/verksamhet/:verksamhetId/jamforDiagnoserTidsserie', {
+            redirectTo: '/verksamhet/:verksamhetId/jamforDiagnoserTidsserie/-'
         }).when('/verksamhet/:verksamhetId/aldersgrupper', {
             templateUrl: 'views/detailsView.html',
             controller: 'columnChartDetailsViewCtrl',

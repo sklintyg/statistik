@@ -24,8 +24,6 @@ angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl', [ '$sco
         var isVerksamhet = $routeParams.verksamhetId ? true : false;
         var chart = {};
 
-        $scope.diagnosisTreeFilter = diagnosisTreeFilter;
-
         $scope.chartContainers = [
             {id: "chart1", name: "diagram"}
         ];
@@ -116,7 +114,7 @@ angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl', [ '$sco
             $scope.doneLoading = true;
         }
 
-        $scope.alternativeView = config.alternativeView;
+        $scope.alternativeView = config.alternativeView + ($routeParams.diagnosHash ? "/" + $routeParams.diagnosHash : "");
         $scope.showHideDataTable = ControllerCommons.showHideDataTableDefault;
 
         $scope.toggleTableVisibility = function (event) {
@@ -130,18 +128,8 @@ angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl', [ '$sco
         });
 
         $scope.showDiagnosisSelector = config.showDiagnosisSelector;
-
         if ($scope.showDiagnosisSelector) {
-            //Initiate the diagnosisTree if we need to.
-            diagnosisTreeFilter.setup($routeParams);
-
-            $scope.diagnosisSelectorData = {
-                titleText: messageService.getProperty("comparediagnoses.lbl.val-av-diagnoser", null, "", null, true),
-                buttonLabelText: messageService.getProperty("lbl.filter.val-av-diagnoser-knapp", null, "", null, true),
-                firstLevelLabelText: messageService.getProperty("lbl.filter.modal.kapitel", null, "", null, true),
-                secondLevelLabelText: messageService.getProperty("lbl.filter.modal.avsnitt", null, "", null, true),
-                thirdLevelLabelText: messageService.getProperty("lbl.filter.modal.kategorier", null, "", null, true)
-            };
+            ControllerCommons.setupDiagnosisSelector(diagnosisTreeFilter, $routeParams, $scope, messageService, $timeout, statisticsData, $location);
         }
 
         $scope.exportChart = function () {
@@ -150,24 +138,6 @@ angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl', [ '$sco
 
         $scope.print = function (bwPrint) {
             printFactory.print(bwPrint, $rootScope, $window);
-        };
-
-        $scope.diagnosisSelected = function () {
-            var diagnoses = diagnosisTreeFilter.getSelectedDiagnosis();
-
-            $timeout(function () {
-                //Ugly fix from http://stackoverflow.com/questions/20827282/cant-dismiss-modal-and-change-page-location
-                $('#cancelModal').modal('hide');
-                $('.modal-backdrop').remove();
-            }, 1);
-
-            $timeout(function () {
-                $scope.doneLoading = false;
-            }, 1);
-
-            statisticsData.getFilterHash(diagnoses, null, null, function(selectionHash){
-                $location.path("/verksamhet/" + $routeParams.verksamhetId + "/jamforDiagnoser/" + selectionHash);
-            }, function(){ throw new Error("Failed to get filter hash value"); });
         };
 
         $scope.$on('$destroy', function() {
@@ -263,7 +233,7 @@ angular.module('StatisticsApp').casesPerBusinessConfig = function () {
     };
     conf.chartXAxisTitle = "Vårdenhet";
     conf.chartFootnotes = ["alert.vardenhet.information"];
-    conf.alternativeView = "sjukfallperenhettidsserie"
+    conf.alternativeView = "sjukfallperenhettidsserie";
     return conf;
 };
 
@@ -319,5 +289,6 @@ angular.module('StatisticsApp').compareDiagnosis = function () {
     };
     conf.chartXAxisTitle = "Diagnos";
     conf.showDiagnosisSelector = true;
+    conf.alternativeView = "jamforDiagnoserTidsserie";
     return conf;
 };

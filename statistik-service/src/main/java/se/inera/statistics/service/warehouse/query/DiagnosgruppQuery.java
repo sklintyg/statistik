@@ -19,6 +19,7 @@
 package se.inera.statistics.service.warehouse.query;
 
 import com.google.common.base.Function;
+import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Lists;
 import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,7 @@ import org.springframework.stereotype.Component;
 import se.inera.statistics.service.report.model.DiagnosgruppResponse;
 import se.inera.statistics.service.report.model.Icd;
 import se.inera.statistics.service.report.model.Kon;
+import se.inera.statistics.service.report.model.KonDataResponse;
 import se.inera.statistics.service.report.model.KonDataRow;
 import se.inera.statistics.service.report.model.KonField;
 import se.inera.statistics.service.report.model.OverviewChartRowExtended;
@@ -119,6 +121,35 @@ public class DiagnosgruppQuery {
             rows.add(new SimpleKonDataRow((kategori.getVisibleId() + " " + kategori.getName()).trim(), row));
         }
         return new SimpleKonResponse<>(rows, periods * periodLength);
+    }
+
+    public KonDataResponse getJamforDiagnoserTidsserie(Aisle aisle, SjukfallFilter filter, LocalDate start, int periods, int periodLength, List<String> diagnosis) {
+        final List<Icd10.Id> kategoris = Lists.transform(diagnosis, new Function<String, Icd10.Id>() {
+            @Override
+            public Icd10.Id apply(String diagnos) {
+                return icd10.findIcd10FromNumericId(Integer.valueOf(diagnos));
+            }
+        });
+        final List<String> names = Lists.transform(kategoris, new Function<Icd10.Id, String>() {
+            @Override
+            public String apply(Icd10.Id id) {
+                return (id.getVisibleId() + " " + id.getName()).trim();
+            }
+        });
+        final List<Integer> ids = Lists.transform(kategoris, new Function<Icd10.Id, Integer>() {
+            @Override
+            public Integer apply(Icd10.Id id) {
+                return id.toInt();
+            }
+        });
+        final CounterFunction<Integer> counterFunction = new CounterFunction<Integer>() {
+            @Override
+            public void addCount(Sjukfall sjukfall, HashMultiset<Integer> counter) {
+                counter.add(sjukfall.getDiagnoskategori());
+            }
+        };
+
+        return sjukfallUtil.calculateKonDataResponse(aisle, filter, start, periods, periodLength, names, ids, counterFunction);
     }
 
     private DiagnosgruppResponse getUnderdiagnosgrupper(Aisle aisle, SjukfallFilter filter, LocalDate start, int periods, int periodLength, Icd10.Range kapitel, Icd10RangeType rangeType) {

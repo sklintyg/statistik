@@ -272,6 +272,46 @@ var ControllerCommons = new function(){
         });
     };
 
+    this.setupDiagnosisSelector = function(diagnosisTreeFilter, $routeParams, $scope, messageService, $timeout, statisticsData, $location) {
+        //Initiate the diagnosisTree if we need to.
+        diagnosisTreeFilter.setup($routeParams);
+        $scope.diagnosisTreeFilter = diagnosisTreeFilter;
+
+        $scope.diagnosisSelectorData = {
+            titleText: messageService.getProperty("comparediagnoses.lbl.val-av-diagnoser", null, "", null, true),
+            buttonLabelText: messageService.getProperty("lbl.filter.val-av-diagnoser-knapp", null, "", null, true),
+            firstLevelLabelText: messageService.getProperty("lbl.filter.modal.kapitel", null, "", null, true),
+            secondLevelLabelText: messageService.getProperty("lbl.filter.modal.avsnitt", null, "", null, true),
+            thirdLevelLabelText: messageService.getProperty("lbl.filter.modal.kategorier", null, "", null, true)
+        };
+
+        $scope.diagnosisSelected = function () {
+            ControllerCommons.diagnosisToCompareSelected(diagnosisTreeFilter, $timeout, $scope, statisticsData, $location);
+        };
+    };
+
+    this.diagnosisToCompareSelected = function(diagnosisTreeFilter, $timeout, $scope, statisticsData, $location) {
+        var diagnoses = diagnosisTreeFilter.getSelectedDiagnosis();
+
+        $timeout(function () {
+            //Ugly fix from http://stackoverflow.com/questions/20827282/cant-dismiss-modal-and-change-page-location
+            $('#cancelModal').modal('hide');
+            $('.modal-backdrop').remove();
+        }, 1);
+
+        $timeout(function () {
+            $scope.doneLoading = false;
+        }, 1);
+
+        statisticsData.getFilterHash(diagnoses, null, null, function (selectionHash) {
+            var path = $location.path();
+            var newPath = path.replace(/\/[^\/]+$/gm, "/" + selectionHash);
+            $location.path(newPath);
+        }, function () {
+            throw new Error("Failed to get filter hash value");
+        });
+    };
+
 };
 
 

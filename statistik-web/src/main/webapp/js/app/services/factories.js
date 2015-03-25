@@ -168,6 +168,10 @@ angular.module('StatisticsApp').factory('statisticsData', function ($http, $root
         makeRequestVerksamhet("getJamforDiagnoserStatistik/" + diagnosisToCompare, verksamhetId, successCallback, failureCallback);
     };
 
+    factory.getCompareDiagnosisTimeSeriesVerksamhet = function (verksamhetId, successCallback, failureCallback, diagnosisToCompare) {
+        makeRequestVerksamhet("getJamforDiagnoserStatistikTidsserie/" + diagnosisToCompare, verksamhetId, successCallback, failureCallback);
+    };
+
     return factory;
 });
 

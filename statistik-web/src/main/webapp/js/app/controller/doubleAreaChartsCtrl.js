@@ -19,8 +19,8 @@
 
 'use strict';
 
-angular.module('StatisticsApp').controller('doubleAreaChartsCtrl', [ '$scope', '$rootScope', '$routeParams', '$window', '$timeout', 'statisticsData', 'businessFilter', 'config', 'messageService', 'printFactory',
-    function ($scope, $rootScope, $routeParams, $window, $timeout, statisticsData, businessFilter, config, messageService, printFactory) {
+angular.module('StatisticsApp').controller('doubleAreaChartsCtrl', [ '$scope', '$rootScope', '$routeParams', '$window', '$timeout', 'statisticsData', 'businessFilter', 'config', 'messageService', 'printFactory', 'diagnosisTreeFilter', '$location',
+    function ($scope, $rootScope, $routeParams, $window, $timeout, statisticsData, businessFilter, config, messageService, printFactory, diagnosisTreeFilter, $location) {
         var that = this;
         var chart1 = {};
         var chart2 = {};
@@ -235,21 +235,33 @@ angular.module('StatisticsApp').controller('doubleAreaChartsCtrl', [ '$scope', '
         function refreshVerksamhet() {
             statisticsData[config.dataFetcherVerksamhet]($routeParams.verksamhetId, populatePageWithData, function () {
                 $scope.dataLoadingError = true;
-            }, getMostSpecificGroupId());
+            }, getExtraPathParam());
+        }
+
+        function getExtraPathParam() {
+            return $routeParams.diagnosHash ? $routeParams.diagnosHash : getMostSpecificGroupId();
         }
 
         function getMostSpecificGroupId() {
             return $routeParams.kategoriId ? $routeParams.kategoriId : $routeParams.groupId;
         }
 
-        if (isVerksamhet) {
-            $scope.exportTableUrl = config.exportTableUrlVerksamhet($routeParams.verksamhetId, $routeParams.groupId);
-            refreshVerksamhet();
+        var isExistingDiagnosisHashValid = $routeParams.diagnosHash !== "-";
+        if (isExistingDiagnosisHashValid) {
+            $scope.spinnerText = "Laddar information...";
+            $scope.doneLoading = false;
+            $scope.dataLoadingError = false;
+            if (isVerksamhet) {
+                $scope.exportTableUrl = config.exportTableUrlVerksamhet($routeParams.verksamhetId, $routeParams.groupId);
+                refreshVerksamhet();
+            } else {
+                $scope.exportTableUrl = config.exportTableUrl($routeParams.groupId);
+                statisticsData[config.dataFetcher](populatePageWithData, function () {
+                    $scope.dataLoadingError = true;
+                }, getMostSpecificGroupId());
+            }
         } else {
-            $scope.exportTableUrl = config.exportTableUrl($routeParams.groupId);
-            statisticsData[config.dataFetcher](populatePageWithData, function () {
-                $scope.dataLoadingError = true;
-            }, getMostSpecificGroupId());
+            $scope.doneLoading = true;
         }
 
         $scope.showHideDataTable = ControllerCommons.showHideDataTableDefault;
@@ -257,13 +269,17 @@ angular.module('StatisticsApp').controller('doubleAreaChartsCtrl', [ '$scope', '
             ControllerCommons.toggleTableVisibilityGeneric(event, $scope);
         };
 
-        $scope.alternativeView = config.alternativeView;
+        if (config.alternativeView) {
+            $scope.alternativeView = config.alternativeView + ($routeParams.diagnosHash ? "/" + $routeParams.diagnosHash : "");
+        }
+
+        $scope.showDiagnosisSelector = config.showDiagnosisSelector;
+        if ($scope.showDiagnosisSelector) {
+            ControllerCommons.setupDiagnosisSelector(diagnosisTreeFilter, $routeParams, $scope, messageService, $timeout, statisticsData, $location);
+        }
+
         $scope.showDetailsOptions = config.showDetailsOptions;
         $scope.showDetailsOptions2 = config.showDetailsOptions2 && isVerksamhet;
-
-        $scope.spinnerText = "Laddar information...";
-        $scope.doneLoading = false;
-        $scope.dataLoadingError = false;
 
         $scope.useSpecialPrintTable = true;
 
@@ -358,7 +374,20 @@ angular.module('StatisticsApp').casesPerBusinessTimeSeriesConfig = function () {
         return "Antal sjukfall per vårdenhet" + ControllerCommons.getEnhetCountText(enhetsCount, false) + period;
     };
     conf.chartFootnotes = ["alert.vardenhet.information"];
-    conf.alternativeView = "sjukfallperenhet"
+    conf.alternativeView = "sjukfallperenhet";
     return conf;
 };
 
+angular.module('StatisticsApp').compareDiagnosisTimeSeriesConfig = function () {
+    var conf = {};
+    conf.dataFetcherVerksamhet = "getCompareDiagnosisTimeSeriesVerksamhet";
+    conf.exportTableUrlVerksamhet = function (verksamhetId, diagnosisHash) {
+        return "api/verksamhet/" + verksamhetId + "/getJamforDiagnoserStatistikTidsserie/" + diagnosisHash + "/csv";
+    };
+    conf.title = function (period, enhetsCount) {
+        return "Jämförelse av valfria diagnoser" + ControllerCommons.getEnhetCountText(enhetsCount, false) + period;
+    };
+    conf.showDiagnosisSelector = true;
+    conf.alternativeView = "jamforDiagnoser";
+    return conf;
+};

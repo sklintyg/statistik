@@ -100,6 +100,10 @@ public class WarehouseService {
         return query.getJamforDiagnoser(warehouse.get(vardgivarId), filter, range.getFrom(), 1, range.getMonths(), diagnosis);
     }
 
+    public KonDataResponse getJamforDiagnoserTidsserie(SjukfallFilter filter, Range range, String vardgivarId, List<String> diagnosis) {
+        return query.getJamforDiagnoserTidsserie(warehouse.get(vardgivarId), filter, range.getFrom(), range.getMonths(), 1, diagnosis);
+    }
+
     public SimpleKonResponse<SimpleKonDataRow> getCasesPerEnhet(SjukfallFilter filter, Map<String, String> idsToNames, Range range, String vardgivarId) {
         return sjukfallQuery.getSjukfallPerEnhet(warehouse.get(vardgivarId), filter, range.getFrom(), 1, range.getMonths(), idsToNames);
     }
