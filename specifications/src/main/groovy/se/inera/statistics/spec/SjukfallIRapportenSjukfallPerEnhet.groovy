@@ -15,5 +15,4 @@ class SjukfallIRapportenSjukfallPerEnhet extends SimpleDetailsReport {
         return vårdenhet
     }
 
-
 }

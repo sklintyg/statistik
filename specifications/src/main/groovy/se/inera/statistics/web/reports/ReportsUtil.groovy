@@ -288,4 +288,8 @@ class ReportsUtil {
     def getReportSjukfallPerEnhetSomTidsserieInloggad(String user, FilterData filter) {
         return post("/api/verksamhet/" + getVardgivareForUser(user) + "/getNumberOfCasesPerEnhetTimeSeries", filter)
     }
+
+    def getReportJamforDiagnoserSomTidsserieInloggad(String user, FilterData filterData, String diagnosHash) {
+        return post("/api/verksamhet/" + getVardgivareForUser(user) + "/getJamforDiagnoserStatistikTidsserie/" + diagnosHash, filterData)
+    }
 }

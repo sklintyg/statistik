@@ -27,11 +27,9 @@ Gäller STATISTIK-935, 36, 42, 43.
 | user2        | G01, G02, G03           | G02             | 0    | 1        |
 | user2        | G01, G02, G03           | G03             | 1    | 0        |
 
-| script | visasom | tidsserie |
-
 Byte till tidsserie gör att ytdiagram 18 mån visas. Varje vald diagnos blir en legend. Kvinnor och män visas i separata diagram.
 
-| Sjukfall i rapporten jamfor diagnoser diagram |
+| Sjukfall i rapporten jamfor diagnoser som tidsserie diagram |
 | inloggad som | år   | månad | valda diagnoskategorier | diagnoskategori | män? | kvinnor? |
 | user2        | 2013 | maj   | G01, G02, G03           | G01             | -1   | -1       |
 | user2        | 2013 | jun   | G01, G02, G03           | G01             | 0    | 1        |
@@ -52,8 +50,6 @@ Byte till tidsserie gör att ytdiagram 18 mån visas. Varje vald diagnos blir en
 | user2        | 2014 | sep   | G01, G02, G03           | G01             | 0    | 0        |
 | user2        | 2014 | okt   | G01, G02, G03           | G01             | 0    | 0        |
 | user2        | 2014 | nov   | G01, G02, G03           | G01             | 0    | 0        |
-
-| script | visasom | tvarsnitt |
 
 Byte tillbaka till tvärsnitt gör att allt går tillbaka till default.
 
