@@ -21,7 +21,7 @@
 
 angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl', [ '$scope', '$rootScope', '$routeParams', '$window', '$location', '$timeout', 'statisticsData', 'diagnosisTreeFilter', 'config', 'messageService', 'printFactory',
     function ($scope, $rootScope, $routeParams, $window, $location, $timeout, statisticsData, diagnosisTreeFilter, config, messageService, printFactory) {
-        var isVerksamhet = $routeParams.verksamhetId ? true : false;
+        var isVerksamhet = ControllerCommons.isShowingVerksamhet($location);
         var chart = {};
 
         $scope.chartContainers = [
@@ -102,7 +102,7 @@ angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl', [ '$sco
             $scope.doneLoading = false;
             $scope.dataLoadingError = false;
             if (isVerksamhet) {
-                $scope.exportTableUrl = config.exportTableUrlVerksamhet($routeParams.verksamhetId, $routeParams.diagnosHash);
+                $scope.exportTableUrl = config.exportTableUrlVerksamhet($routeParams.diagnosHash);
                 refreshVerksamhet();
             } else {
                 $scope.exportTableUrl = config.exportTableUrl;
@@ -155,8 +155,8 @@ angular.module('StatisticsApp').nationalSickLeaveLengthConfig = function () {
     conf.dataFetcher = "getNationalSickLeaveLengthData";
     conf.dataFetcherVerksamhet = "getSickLeaveLengthDataVerksamhet";
     conf.exportTableUrl = "api/getSickLeaveLengthData/csv";
-    conf.exportTableUrlVerksamhet = function (verksamhetId) {
-        return "api/verksamhet/" + verksamhetId + "/getSickLeaveLengthData/csv";
+    conf.exportTableUrlVerksamhet = function () {
+        return "api/verksamhet/getSickLeaveLengthData/csv";
     };
     conf.title = function (period, enhetsCount) {
         return "Antal sjukfall per sjukskrivningslängd" + ControllerCommons.getEnhetCountText(enhetsCount, false) + period;
@@ -170,8 +170,8 @@ angular.module('StatisticsApp').nationalSickLeaveLengthConfig = function () {
 angular.module('StatisticsApp').nationalSickLeaveLengthCurrentConfig = function () {
     var conf = {};
     conf.dataFetcherVerksamhet = "getSickLeaveLengthCurrentDataVerksamhet";
-    conf.exportTableUrlVerksamhet = function (verksamhetId) {
-        return "api/verksamhet/" + verksamhetId + "/getSickLeaveLengthCurrentData/csv";
+    conf.exportTableUrlVerksamhet = function () {
+        return "api/verksamhet/getSickLeaveLengthCurrentData/csv";
     };
     conf.title = function (month, enhetsCount) {
         return "Antal pågående sjukfall per sjukskrivningslängd" + ControllerCommons.getEnhetCountText(enhetsCount, false) + month;
@@ -186,8 +186,8 @@ angular.module('StatisticsApp').nationalAgeGroupConfig = function () {
     conf.dataFetcher = "getAgeGroups";
     conf.dataFetcherVerksamhet = "getAgeGroupsVerksamhet";
     conf.exportTableUrl = "api/getAgeGroupsStatistics/csv";
-    conf.exportTableUrlVerksamhet = function (verksamhetId) {
-        return "api/verksamhet/" + verksamhetId + "/getAgeGroupsStatistics/csv";
+    conf.exportTableUrlVerksamhet = function () {
+        return "api/verksamhet/getAgeGroupsStatistics/csv";
     };
     conf.title = function (period, enhetsCount) {
         return "Antal sjukfall per åldersgrupp" + ControllerCommons.getEnhetCountText(enhetsCount, false) + period;
@@ -199,8 +199,8 @@ angular.module('StatisticsApp').nationalAgeGroupConfig = function () {
 angular.module('StatisticsApp').nationalAgeGroupCurrentConfig = function () {
     var conf = {};
     conf.dataFetcherVerksamhet = "getAgeGroupsCurrentVerksamhet";
-    conf.exportTableUrlVerksamhet = function (verksamhetId) {
-        return "api/verksamhet/" + verksamhetId + "/getAgeGroupsCurrentStatistics/csv";
+    conf.exportTableUrlVerksamhet = function () {
+        return "api/verksamhet/getAgeGroupsCurrentStatistics/csv";
     };
     conf.title = function (month, enhetsCount) {
         return "Antal pågående sjukfall per åldersgrupp" + ControllerCommons.getEnhetCountText(enhetsCount, false) + month;
@@ -227,8 +227,8 @@ angular.module('StatisticsApp').casesPerSexConfig = function () {
 angular.module('StatisticsApp').casesPerBusinessConfig = function () {
     var conf = {};
     conf.dataFetcherVerksamhet = "getSjukfallPerBusinessVerksamhet";
-    conf.exportTableUrlVerksamhet = function (verksamhetId) {
-        return "api/verksamhet/" + verksamhetId + "/getNumberOfCasesPerEnhet/csv";
+    conf.exportTableUrlVerksamhet = function () {
+        return "api/verksamhet/getNumberOfCasesPerEnhet/csv";
     };
     conf.title = function (period, enhetsCount) {
         return "Antal sjukfall per vårdenhet" + ControllerCommons.getEnhetCountText(enhetsCount, false) + period;
@@ -242,8 +242,8 @@ angular.module('StatisticsApp').casesPerBusinessConfig = function () {
 angular.module('StatisticsApp').casesPerLakareConfig = function () {
     var conf = {};
     conf.dataFetcherVerksamhet = "getSjukfallPerLakareVerksamhet";
-    conf.exportTableUrlVerksamhet = function (verksamhetId) {
-        return "api/verksamhet/" + verksamhetId + "/getSjukfallPerLakareVerksamhet/csv";
+    conf.exportTableUrlVerksamhet = function () {
+        return "api/verksamhet/getSjukfallPerLakareVerksamhet/csv";
     };
     conf.title = function (period, enhetsCount) {
         return "Antal sjukfall per läkare" + ControllerCommons.getEnhetCountText(enhetsCount, false) + period;
@@ -255,8 +255,8 @@ angular.module('StatisticsApp').casesPerLakareConfig = function () {
 angular.module('StatisticsApp').casesPerLakaresAlderOchKonConfig = function () {
     var conf = {};
     conf.dataFetcherVerksamhet = "getSjukfallPerLakaresAlderOchKonVerksamhet";
-    conf.exportTableUrlVerksamhet = function (verksamhetId) {
-        return "api/verksamhet/" + verksamhetId + "/getCasesPerDoctorAgeAndGenderStatistics/csv";
+    conf.exportTableUrlVerksamhet = function () {
+        return "api/verksamhet/getCasesPerDoctorAgeAndGenderStatistics/csv";
     };
     conf.title = function (period, enhetsCount) {
         return "Antal sjukfall baserat på läkares kön och ålder" + ControllerCommons.getEnhetCountText(enhetsCount, true) + period;
@@ -269,8 +269,8 @@ angular.module('StatisticsApp').casesPerLakaresAlderOchKonConfig = function () {
 angular.module('StatisticsApp').casesPerLakarbefattningConfig = function () {
     var conf = {};
     conf.dataFetcherVerksamhet = "getSjukfallPerLakarbefattningVerksamhet";
-    conf.exportTableUrlVerksamhet = function (verksamhetId) {
-        return "api/verksamhet/" + verksamhetId + "/getNumberOfCasesPerLakarbefattning/csv";
+    conf.exportTableUrlVerksamhet = function () {
+        return "api/verksamhet/getNumberOfCasesPerLakarbefattning/csv";
     };
     conf.title = function (period, enhetsCount) {
         return "Antal sjukfall baserat på läkarbefattning" + ControllerCommons.getEnhetCountText(enhetsCount, true) + period;
@@ -283,8 +283,8 @@ angular.module('StatisticsApp').casesPerLakarbefattningConfig = function () {
 angular.module('StatisticsApp').compareDiagnosis = function () {
     var conf = {};
     conf.dataFetcherVerksamhet = "getCompareDiagnosisVerksamhet";
-    conf.exportTableUrlVerksamhet = function (verksamhetId, diagnosisHash) {
-        return "api/verksamhet/" + verksamhetId + "/getJamforDiagnoserStatistik/" + diagnosisHash + "/csv";
+    conf.exportTableUrlVerksamhet = function (diagnosisHash) {
+        return "api/verksamhet/getJamforDiagnoserStatistik/" + diagnosisHash + "/csv";
     };
     conf.title = function (period, enhetsCount) {
         return "Jämförelse av valfria diagnoser" + ControllerCommons.getEnhetCountText(enhetsCount, false) + period;

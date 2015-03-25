@@ -19,8 +19,8 @@
 
 'use strict';
 
-angular.module('StatisticsApp').controller('pageCtrl', [ '$scope', '$rootScope', '$window', '$location', '$cookies', 'statisticsData', 'businessFilter', '_',
-    function ($scope, $rootScope, $window, $location, $cookies, statisticsData, businessFilter, _) {
+angular.module('StatisticsApp').controller('pageCtrl', [ '$scope', '$rootScope', '$window', '$location', 'statisticsData', 'businessFilter', '_',
+    function ($scope, $rootScope, $window, $location, statisticsData, businessFilter, _) {
         var self = this;
 
         self.getSelectedVerksamhet = function (selectedVerksamhetId, verksamhets) {
@@ -29,8 +29,7 @@ angular.module('StatisticsApp').controller('pageCtrl', [ '$scope', '$rootScope',
         };
 
         $rootScope.$on('$routeChangeSuccess', function (angularEvent, next, current) {
-            var verksamhetId = next.params.verksamhetId;
-            $scope.verksamhetIdParam = verksamhetId;
+            $scope.verksamhetIdParam = $scope.businessId;
 
             var d = new Date();
             var currDate = d.getDate();
@@ -38,19 +37,15 @@ angular.module('StatisticsApp').controller('pageCtrl', [ '$scope', '$rootScope',
             var currYear = d.getFullYear();
             $scope.currentTime = currYear + "-" + currMonth + "-" + currDate;
 
-            $scope.viewHeader = verksamhetId ? "Verksamhetsstatistik" : "Nationell statistik";
-
-            if (verksamhetId) {
-                $scope.businessId = verksamhetId;
-                $cookies.verksamhetId = verksamhetId;
-            } else if ($cookies.verksamhetId) {
-                $scope.businessId = $cookies.verksamhetId;
-            }
+            var isVerksamhet = ControllerCommons.isShowingVerksamhet($location);
+            $scope.viewHeader = isVerksamhet ? "Verksamhetsstatistik" : "Nationell statistik";
 
             if ($rootScope.isLoggedIn && !$scope.isLoginInfoFetched) {
                 statisticsData.getLoginInfo(function (loginInfo) {
                     businessFilter.setup(loginInfo.businesses, $location.$$search.filter);
-                    var v = self.getSelectedVerksamhet($scope.businessId, loginInfo.businesses);
+
+                    var v = loginInfo.defaultVerksamhet;
+                    $scope.businessId = v.vardgivarId;
                     $scope.verksamhetName = loginInfo.businesses && loginInfo.businesses.length == 1 ? v.name : (loginInfo.processledare ? v.vardgivarName : "");
                     $scope.userName = loginInfo.name;
                     $scope.userNameWithAccess = loginInfo.name;
@@ -70,7 +65,7 @@ angular.module('StatisticsApp').controller('pageCtrl', [ '$scope', '$rootScope',
         };
 
         $scope.showAlternativeView = function(name) {
-            $location.path("/verksamhet/" + $scope.businessId + "/" + name);
+            $location.path("/verksamhet/" + name);
         }
 
     }

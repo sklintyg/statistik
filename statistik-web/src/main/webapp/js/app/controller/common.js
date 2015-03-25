@@ -312,6 +312,10 @@ var ControllerCommons = new function(){
         });
     };
 
+    this.isShowingVerksamhet = function($location) {
+        return $location.path().indexOf("/verksamhet/") === 0;
+    }
+
 };
 
 

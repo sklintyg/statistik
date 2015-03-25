@@ -24,7 +24,7 @@ function ($scope, $rootScope, $window, $timeout, statisticsData, businessFilter,
 
     var perMonthAlterationChart = {}, newSexProportionChart = {}, oldSexProportionChart = {},
         ageDonutChart = {}, diagnosisDonutChart = {}, degreeOfSickLeaveChart = {}, sickLeaveLengthChart = {};
-    $scope.baseUrl = "#/verksamhet/" + $routeParams.verksamhetId;
+    $scope.baseUrl = "#/verksamhet";
 
     var dataReceived = function (result) {
         $scope.subTitle = "Utveckling för verksamheten de senaste tre månaderna, " + result.periodText;
