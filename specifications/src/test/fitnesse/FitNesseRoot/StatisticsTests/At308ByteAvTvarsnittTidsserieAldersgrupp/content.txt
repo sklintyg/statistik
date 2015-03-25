@@ -1,6 +1,6 @@
 !contents -R2 -g -p -f -h
 
-Gäller STATISTIK-935, 36, 42, 43.
+Gäller STATISTIK-935, 942.
 
 !3 Givet att:
 | script | dagens datum | 2014-11-06 |
@@ -11,29 +11,40 @@ Gäller STATISTIK-935, 36, 42, 43.
 | id      | förnamn | efternamn | kön    | ålder | befattningar |
 | lakare1 | Anna    | Andersson | FEMALE | 30    | 201010       |
 | lakare2 | Bo      | Bengtsson | MALE   | 40    | 201013       |
-| lakare3 | Carl    | Claesson  | MALE   | 50    | 101012       |
 
 | Enbart foljande intyg finns |
 | personnr | diagnoskod | start    | slut       | arbetsförmåga | enhet  | läkare |
-| 19890407-1245 | G01 | 2013-05-01 | 2013-11-30 | 0             | enhet1 | lakare1 |
-| 19790407-1225 | G02 | 2014-07-01 | 2014-10-30 | 50            | enhet1 | lakare2 |
-| 19690407-1295 | G03 | 2014-11-01 | 2014-11-30 | 75            | enhet2 | lakare3 |
+| 19890407-1245 | G01 | 2013-06-01 | 2013-10-30 | 0             | enhet1 | lakare1 |
+| 19790407-1255 | G02 | 2014-07-01 | 2014-10-30 | 50            | enhet2 | lakare2 |
 
 
 !3 Då gäller:
 | Sjukfall i rapporten aldersgrupp |
 | inloggad som | åldersgrupp | män? | kvinnor? |
 | user2        | 21-25 år    | 0    | 0        |
-| user2        | 31-35 år    | 0    | 1        |
-| user2        | 41-45 år    | 1    | 0        |
-
-| script | visasom | tidsserie |
+| user2        | 31-35 år    | 1    | 0        |
 
 Byte till tidsserie gör att ytdiagram 18 mån visas. Varje åldersgrupp blir en legend. Kvinnor och män visas i separata diagram.
 
-| Sjukfall i rapporten aldersgrupp |
+| Sjukfall i rapporten aldersgrupp som tidsserie |
 | inloggad som | år   | månad | aldersgrupp | män? | kvinnor? |
-| user2        | 2013 | maj   | 31-35 år    | -1   | -1       |
+| user2        | 2013 | jun   | 21-15 år    | 0    | 1        |
+| user2        | 2013 | jul   | 21-25 år    | 0    | 1        |
+| user2        | 2013 | aug   | 21-25 år    | 0    | 1        |
+| user2        | 2013 | sep   | 21-25 år    | 0    | 1        |
+| user2        | 2013 | okt   | 21-25 år    | 0    | 1        |
+| user2        | 2013 | nov   | 21-25 år    | 0    | 0        |
+| user2        | 2013 | dec   | 21-25 år    | 0    | 0        |
+| user2        | 2014 | jan   | 21-25 år    | 0    | 0        |
+| user2        | 2014 | feb   | 21-25 år    | 0    | 0        |
+| user2        | 2014 | mar   | 21-25 år    | 0    | 0        |
+| user2        | 2014 | apr   | 21-25 år    | 0    | 0        |
+| user2        | 2014 | maj   | 21-25 år    | 0    | 0        |
+| user2        | 2014 | jun   | 21-25 år    | 0    | 0        |
+| user2        | 2014 | jul   | 21-25 år    | 0    | 0        |
+| user2        | 2014 | aug   | 21-25 år    | 0    | 0        |
+| user2        | 2014 | sep   | 21-25 år    | 0    | 0        |
+| user2        | 2014 | okt   | 21-25 år    | 0    | 0        |
 | user2        | 2013 | jun   | 31-35 år    | 0    | 0        |
 | user2        | 2013 | jul   | 31-35 år    | 0    | 0        |
 | user2        | 2013 | aug   | 31-35 år    | 0    | 0        |
@@ -47,18 +58,7 @@ Byte till tidsserie gör att ytdiagram 18 mån visas. Varje åldersgrupp blir en
 | user2        | 2014 | apr   | 31-35 år    | 0    | 0        |
 | user2        | 2014 | maj   | 31-35 år    | 0    | 0        |
 | user2        | 2014 | jun   | 31-35 år    | 0    | 0        |
-| user2        | 2014 | jul   | 31-35 år    | 0    | 1        |
-| user2        | 2014 | aug   | 31-35 år    | 0    | 1        |
-| user2        | 2014 | sep   | 31-35 år    | 0    | 1        |
-| user2        | 2014 | okt   | 31-35 år    | 0    | 1        |
-| user2        | 2014 | nov   | 31-35 år    | 0    | 0        |
-
-| script | visasom | tvarsnitt |
-
-Byte tillbaka till tvärsnitt gör att allt går tillbaka till default.
-
-| Sjukfall i rapporten aldersgrupp |
-| inloggad som | åldersgrupp | män? | kvinnor? |
-| user2        | 21-25 år    | 0    | 0        |
-| user2        | 31-35 år    | 0    | 1        |
-| user2        | 41-45 år    | 1    | 0        |
+| user2        | 2014 | jul   | 31-35 år    | 1    | 0        |
+| user2        | 2014 | aug   | 31-35 år    | 1    | 0        |
+| user2        | 2014 | sep   | 31-35 år    | 1    | 0        |
+| user2        | 2014 | okt   | 31-35 år    | 1    | 0        |
