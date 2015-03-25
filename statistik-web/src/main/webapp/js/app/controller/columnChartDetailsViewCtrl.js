@@ -88,7 +88,7 @@ angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl', [ '$sco
         };
 
         function refreshVerksamhet() {
-            statisticsData[config.dataFetcherVerksamhet]($routeParams.verksamhetId, populatePageWithData, function () {
+            statisticsData[config.dataFetcherVerksamhet](populatePageWithData, function () {
                 $scope.dataLoadingError = true;
             }, $routeParams.diagnosHash);
         }
@@ -115,7 +115,7 @@ angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl', [ '$sco
         }
 
         if (config.alternativeView) {
-        $scope.alternativeView = config.alternativeView + ($routeParams.diagnosHash ? "/" + $routeParams.diagnosHash : "");
+            $scope.alternativeView = config.alternativeView + ($routeParams.diagnosHash ? "/" + $routeParams.diagnosHash : "");
         }
         $scope.showHideDataTable = ControllerCommons.showHideDataTableDefault;
 

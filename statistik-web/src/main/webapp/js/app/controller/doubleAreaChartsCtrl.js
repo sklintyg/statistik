@@ -233,7 +233,7 @@ angular.module('StatisticsApp').controller('doubleAreaChartsCtrl', [ '$scope', '
         $scope.popoverText = config.tooltipHelpText;
 
         function refreshVerksamhet() {
-            statisticsData[config.dataFetcherVerksamhet]($routeParams.verksamhetId, populatePageWithData, function () {
+            statisticsData[config.dataFetcherVerksamhet](populatePageWithData, function () {
                 $scope.dataLoadingError = true;
             }, getExtraPathParam());
         }

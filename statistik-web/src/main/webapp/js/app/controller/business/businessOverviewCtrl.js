@@ -285,7 +285,7 @@ function ($scope, $rootScope, $window, $timeout, statisticsData, businessFilter,
     }
 
     function refresh() {
-        statisticsData.getBusinessOverview($routeParams.verksamhetId, dataReceived, function () {
+        statisticsData.getBusinessOverview(dataReceived, function () {
             $scope.dataLoadingError = true;
         });
     }

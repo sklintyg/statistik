@@ -94,7 +94,7 @@ angular.module('StatisticsApp').controller('singleLineChartCtrl', [ '$scope', '$
         };
 
         function refreshVerksamhet() {
-            statisticsData[config.dataFetcherVerksamhet]($routeParams.verksamhetId, populatePageWithData, function () {
+            statisticsData[config.dataFetcherVerksamhet](populatePageWithData, function () {
                 $scope.dataLoadingError = true;
             });
         }
