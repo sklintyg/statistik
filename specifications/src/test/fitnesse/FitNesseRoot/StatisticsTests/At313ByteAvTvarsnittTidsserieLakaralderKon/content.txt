@@ -1,6 +1,6 @@
 !contents -R2 -g -p -f -h
 
-Gäller STATISTIK-935, 36, 42, 43.
+Gäller STATISTIK-935, 942.
 
 !3 Givet att:
 | script | dagens datum | 2014-11-06 |
@@ -11,29 +11,40 @@ Gäller STATISTIK-935, 36, 42, 43.
 | id      | förnamn | efternamn | kön    | ålder | befattningar |
 | lakare1 | Anna    | Andersson | FEMALE | 30    | 201010       |
 | lakare2 | Bo      | Bengtsson | MALE   | 40    | 201013       |
-| lakare3 | Carl    | Claesson  | MALE   | 50    | 101012       |
 
 | Enbart foljande intyg finns |
 | personnr | diagnoskod | start    | slut       | arbetsförmåga | enhet  | läkare |
-| 19890407-1245 | G01 | 2013-05-01 | 2013-11-30 | 0             | enhet1 | lakare1 |
-| 19790407-1225 | G02 | 2014-07-01 | 2014-10-30 | 50            | enhet1 | lakare2 |
-| 19690407-1295 | G03 | 2014-11-01 | 2014-11-30 | 75            | enhet2 | lakare3 |
+| 19890407-1245 | G01 | 2013-06-01 | 2013-10-30 | 0             | enhet1 | lakare1 |
+| 19790407-1255 | G02 | 2014-07-01 | 2014-10-30 | 50            | enhet2 | lakare2 |
 
 
 !3 Då gäller:
 | Sjukfall i rapporten lakarkonalder |
 | inloggad som | läkargrupp               | män? | kvinnor? |
 | user2        | Kvinnlig läkare 30-39 år | 0    | 0        |
-| user2        | Manlig läkare 40-49 år   | 0    | 1        |
-| user2        | Manlig läkare 50-59 år   | 1    | 0        |
-
-| script | visasom | tidsserie |
+| user2        | Manlig läkare 40-49 år   | 1    | 0        |
 
 Byte till tidsserie gör att ytdiagram 18 mån visas. Varje läkargrupp blir en legend. Kvinnor och män visas i separata diagram.
 
-| Sjukfall i rapporten lakarkonalder |
+| Sjukfall i rapporten lakarkonalder som tidsserie |
 | inloggad som | år   | månad | läkargrupp  | män? | kvinnor? |
-| user2        | 2013 | maj   | Manlig läkare 40-49 år | -1   | -1       |
+| user2        | 2013 | jun   | Kvinnlig läkare 30-39 år | 0    | 1        |
+| user2        | 2013 | jul   | Kvinnlig läkare 30-39 år | 0    | 1        |
+| user2        | 2013 | aug   | Kvinnlig läkare 30-39 år | 0    | 1        |
+| user2        | 2013 | sep   | Kvinnlig läkare 30-39 år | 0    | 1        |
+| user2        | 2013 | okt   | Kvinnlig läkare 30-39 år | 0    | 1        |
+| user2        | 2013 | nov   | Kvinnlig läkare 30-39 år | 0    | 0        |
+| user2        | 2013 | dec   | Kvinnlig läkare 30-39 år | 0    | 0        |
+| user2        | 2014 | jan   | Kvinnlig läkare 30-39 år | 0    | 0        |
+| user2        | 2014 | feb   | Kvinnlig läkare 30-39 år | 0    | 0        |
+| user2        | 2014 | mar   | Kvinnlig läkare 30-39 år | 0    | 0        |
+| user2        | 2014 | apr   | Kvinnlig läkare 30-39 år | 0    | 0        |
+| user2        | 2014 | maj   | Kvinnlig läkare 30-39 år | 0    | 0        |
+| user2        | 2014 | jun   | Kvinnlig läkare 30-39 år | 0    | 0        |
+| user2        | 2014 | jul   | Kvinnlig läkare 30-39 år | 0    | 0        |
+| user2        | 2014 | aug   | Kvinnlig läkare 30-39 år | 0    | 0        |
+| user2        | 2014 | sep   | Kvinnlig läkare 30-39 år | 0    | 0        |
+| user2        | 2014 | okt   | Kvinnlig läkare 30-39 år | 0    | 0        |
 | user2        | 2013 | jun   | Manlig läkare 40-49 år | 0    | 0        |
 | user2        | 2013 | jul   | Manlig läkare 40-49 år | 0    | 0        |
 | user2        | 2013 | aug   | Manlig läkare 40-49 år | 0    | 0        |
@@ -47,18 +58,7 @@ Byte till tidsserie gör att ytdiagram 18 mån visas. Varje läkargrupp blir en 
 | user2        | 2014 | apr   | Manlig läkare 40-49 år | 0    | 0        |
 | user2        | 2014 | maj   | Manlig läkare 40-49 år | 0    | 0        |
 | user2        | 2014 | jun   | Manlig läkare 40-49 år | 0    | 0        |
-| user2        | 2014 | jul   | Manlig läkare 40-49 år | 0    | 1        |
-| user2        | 2014 | aug   | Manlig läkare 40-49 år | 0    | 1        |
-| user2        | 2014 | sep   | Manlig läkare 40-49 år | 0    | 1        |
-| user2        | 2014 | okt   | Manlig läkare 40-49 år | 0    | 1        |
-| user2        | 2014 | nov   | Manlig läkare 40-49 år | 0    | 0        |
-
-| script | visasom | tvarsnitt |
-
-Byte tillbaka till tvärsnitt gör att allt går tillbaka till default.
-
-| Sjukfall i rapporten lakarkonalder |
-| inloggad som | läkargrupp               | män? | kvinnor? |
-| user2        | Kvinnlig läkare 30-39 år | 0    | 0        |
-| user2        | Manlig läkare 40-49 år   | 0    | 1        |
-| user2        | Manlig läkare 50-59 år   | 1    | 0        |
+| user2        | 2014 | jul   | Manlig läkare 40-49 år | 1    | 0        |
+| user2        | 2014 | aug   | Manlig läkare 40-49 år | 1    | 0        |
+| user2        | 2014 | sep   | Manlig läkare 40-49 år | 1    | 0        |
+| user2        | 2014 | okt   | Manlig läkare 40-49 år | 1    | 0        |
