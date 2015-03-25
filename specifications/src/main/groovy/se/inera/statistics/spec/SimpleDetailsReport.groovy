@@ -35,28 +35,28 @@ abstract class SimpleDetailsReport extends Rapport {
 
     def getReportSjukfallTotalt() {
         if (inloggad) {
-            return reportsUtil.getReportAntalIntygInloggad(inloggadSom, filter);
+            return reportsUtil.getReportAntalIntygInloggad(filter);
         }
         return reportsUtil.getReportAntalIntyg();
     }
 
     def getReportLangaSjukfall() {
         if (inloggad) {
-            return reportsUtil.getReportLangaSjukfallInloggad(inloggadSom, filter);
+            return reportsUtil.getReportLangaSjukfallInloggad(filter);
         }
         throw new RuntimeException("Report -Långa sjukfall- is not available on national level");
     }
 
     def getReportSjukfallPerEnhet() {
         if (inloggad) {
-            return reportsUtil.getReportSjukfallPerEnhet(inloggadSom, filter);
+            return reportsUtil.getReportSjukfallPerEnhet(filter);
         }
         throw new RuntimeException("Report -Sjukfall per enhet- is not available on national level");
     }
 
     def getReportAldersgrupp() {
         if (inloggad) {
-            return reportsUtil.getReportAldersgruppInloggad(inloggadSom, filter);
+            return reportsUtil.getReportAldersgruppInloggad(filter);
         }
         return reportsUtil.getReportAldersgrupp();
     }
@@ -64,49 +64,49 @@ abstract class SimpleDetailsReport extends Rapport {
     def getReportJamforDiagnoser(diagnoser) {
         def diagnosHash = reportsUtil.getFilterHash(null, null, diagnoser)
         if (inloggad) {
-            return reportsUtil.getReportJamforDiagnoserInloggad(inloggadSom, filter, diagnosHash);
+            return reportsUtil.getReportJamforDiagnoserInloggad(filter, diagnosHash);
         }
         throw new RuntimeException("Report -Jämför diagnoser- is not available on national level");
     }
 
     def getReportAldersgruppPagaende() {
         if (inloggad) {
-            return reportsUtil.getReportAldersgruppPagaendeInloggad(inloggadSom, filter);
+            return reportsUtil.getReportAldersgruppPagaendeInloggad(filter);
         }
         throw new RuntimeException("Report -Åldersgrupp pågående- is not available on national level");
     }
 
     def getReportSjukskrivningslangd() {
         if (inloggad) {
-            return reportsUtil.getReportSjukskrivningslangdInloggad(inloggadSom, filter);
+            return reportsUtil.getReportSjukskrivningslangdInloggad(filter);
         }
         return reportsUtil.getReportSjukskrivningslangd();
     }
 
     def getReportSjukskrivningslangdPagaende() {
         if (inloggad) {
-            return reportsUtil.getReportSjukskrivningslangdPagaendeInloggad(inloggadSom, filter);
+            return reportsUtil.getReportSjukskrivningslangdPagaendeInloggad(filter);
         }
         throw new RuntimeException("Report -Sjukskrivningslängd pågående- is not available on national level");
     }
 
     def getReportLakareAlderOchKon() {
         if (inloggad) {
-            return reportsUtil.getReportLakareAlderOchKonInloggad(inloggadSom, filter);
+            return reportsUtil.getReportLakareAlderOchKonInloggad(filter);
         }
         throw new RuntimeException("Report -Läkare ålder och kön- is not available on national level");
     }
 
     def getReportLakarBefattning() {
         if (inloggad) {
-            return reportsUtil.getReportLakarBefattningInloggad(inloggadSom, filter);
+            return reportsUtil.getReportLakarBefattningInloggad(filter);
         }
         throw new RuntimeException("Report -Läkarbefattning- is not available on national level");
     }
 
     def getReportSjukfallPerLakare() {
         if (inloggad) {
-            return reportsUtil.getReportSjukfallPerLakareInloggad(inloggadSom, filter);
+            return reportsUtil.getReportSjukfallPerLakareInloggad(filter);
         }
         throw new RuntimeException("Report -Sjukfall per läkare- is not available on national level");
     }
@@ -120,10 +120,9 @@ abstract class SimpleDetailsReport extends Rapport {
 
     def getReportEnskiltDiagnoskapitel(kapitel) {
         if (inloggad) {
-            return reportsUtil.getReportEnskiltDiagnoskapitelInloggad(kapitel, inloggadSom, filter);
+            return reportsUtil.getReportEnskiltDiagnoskapitelInloggad(kapitel, filter);
         }
         return reportsUtil.getReportEnskiltDiagnoskapitel(kapitel);
     }
-
 
 }
