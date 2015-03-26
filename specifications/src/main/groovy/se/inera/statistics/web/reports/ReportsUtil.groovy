@@ -220,6 +220,10 @@ class ReportsUtil {
         return post(getVerksamhetUrlPrefix() + "/getAgeGroupsStatistics", filter)
     }
 
+    def getReportAldersgruppSomTidsserieInloggad(FilterData filter) {
+        return post(getVerksamhetUrlPrefix() + "/getAgeGroupsStatisticsAsTimeSeries", filter)
+    }
+
     def getReportSjukskrivningslangd() {
         return get("/api/getSickLeaveLengthData")
     }
@@ -296,4 +300,5 @@ class ReportsUtil {
     def getReportJamforDiagnoserSomTidsserieInloggad(FilterData filterData, String diagnosHash) {
         return post(getVerksamhetUrlPrefix() + "/getJamforDiagnoserStatistikTidsserie/" + diagnosHash, filterData)
     }
+
 }
