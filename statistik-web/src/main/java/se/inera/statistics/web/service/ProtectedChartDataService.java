@@ -205,7 +205,7 @@ public class ProtectedChartDataService {
         Map<String, String> idToNameMap = getEnhetNameMap(request, getEnhetsFilterIds(filterHash, request));
         KonDataResponse casesPerEnhet = warehouse.getCasesPerEnhetTimeSeries(filter.getPredicate(), idToNameMap, range, getSelectedVgIdForLoggedInUser(request));
 
-        DualSexStatisticsData result = new NumberOfCasesPerEnhetTimeSeriesConverter().convert(casesPerEnhet, range, filter);
+        DualSexStatisticsData result = new SimpleMultiDualSexConverter().convert(casesPerEnhet, range, filter);
         return result;
     }
 
@@ -485,6 +485,40 @@ public class ProtectedChartDataService {
     public Response getAgeGroupsStatisticsAsCsv(@Context HttpServletRequest request, @QueryParam("filter") String filterHash) {
         LOG.info("Calling getAgeGroupsStatisticsAsCsv with filterHash: {}", filterHash);
         final SimpleDetailsData simpleDetailsData = getAgeGroupsStatisticsData(request, filterHash);
+        return CsvConverter.getCsvResponse(simpleDetailsData.getTableData(), "export.csv");
+    }
+
+    @POST
+    @Path("getAgeGroupsStatisticsAsTimeSeries")
+    @Produces({ MediaType.APPLICATION_JSON })
+    @Consumes({ MediaType.APPLICATION_JSON })
+    @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
+    @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
+    public Response getAgeGroupsStatisticsAsTimeSeries(@Context HttpServletRequest request, @QueryParam("filter") String filterHash) {
+        DualSexStatisticsData data = getAgeGroupsStatisticsAsTimeSeriesData(request, filterHash);
+        return Response.ok(data).build();
+    }
+
+    private DualSexStatisticsData getAgeGroupsStatisticsAsTimeSeriesData(HttpServletRequest request, String filterHash) {
+        LOG.info("Calling getAgeGroupsStatisticsAsTimeSeries with filterHash: {}", filterHash);
+        final Range range = new Range(18);
+        Filter filter = getFilter(request, filterHash);
+        KonDataResponse ageGroups = warehouse.getAldersgrupperSomTidsserie(filter.getPredicate(), range, getSelectedVgIdForLoggedInUser(request));
+        return new SimpleMultiDualSexConverter().convert(ageGroups, range, filter);
+    }
+
+    /**
+     * Get sjukfalls csv formatted.
+     */
+    @GET
+    @Path("getAgeGroupsStatisticsAsTimeSeries/csv")
+    @Produces({ TEXT_UTF_8 })
+    @Consumes({ MediaType.APPLICATION_JSON })
+    @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
+    @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
+    public Response getAgeGroupsStatisticsAsTimeSeriesAsCsv(@Context HttpServletRequest request, @QueryParam("filter") String filterHash) {
+        LOG.info("Calling getAgeGroupsStatisticsAsTimeSeriesAsCsv with filterHash: {}", filterHash);
+        final DualSexStatisticsData simpleDetailsData = getAgeGroupsStatisticsAsTimeSeriesData(request, filterHash);
         return CsvConverter.getCsvResponse(simpleDetailsData.getTableData(), "export.csv");
     }
 

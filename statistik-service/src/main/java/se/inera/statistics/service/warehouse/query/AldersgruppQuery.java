@@ -18,7 +18,11 @@
  */
 package se.inera.statistics.service.warehouse.query;
 
+import com.google.common.base.Function;
+import com.google.common.collect.HashMultiset;
+import com.google.common.collect.Lists;
 import org.joda.time.LocalDate;
+import se.inera.statistics.service.report.model.KonDataResponse;
 import se.inera.statistics.service.report.model.OverviewChartRowExtended;
 import se.inera.statistics.service.report.model.SimpleKonDataRow;
 import se.inera.statistics.service.report.model.SimpleKonResponse;
@@ -119,6 +123,43 @@ public final class AldersgruppQuery {
             }
         }
         return new SimpleKonResponse<>(rows, periodLength);
+    }
+
+    public static KonDataResponse getAldersgrupperSomTidsserie(Aisle aisle, SjukfallFilter filter, LocalDate start, int periods, int periodLength, SjukfallUtil sjukfallUtil) {
+        final ArrayList<Ranges.Range> ranges = Lists.newArrayList(AldersgroupUtil.RANGES);
+        final List<String> names = Lists.transform(ranges, new Function<Ranges.Range, String>() {
+            @Override
+            public String apply(Ranges.Range range) {
+                return range.getName();
+            }
+        });
+        final List<Integer> ids = Lists.transform(ranges, new Function<Ranges.Range, Integer>() {
+            @Override
+            public Integer apply(Ranges.Range range) {
+                return range.getCutoff();
+            }
+        });
+        final CounterFunction<Integer> counterFunction = new CounterFunction<Integer>() {
+            @Override
+            public void addCount(Sjukfall sjukfall, HashMultiset<Integer> counter) {
+                final int age = sjukfall.getAlder();
+                final int rangeId = getRangeIdForAge(age);
+                counter.add(rangeId);
+            }
+
+            private int getRangeIdForAge(int age) {
+                for (Ranges.Range range: ranges) {
+                    final int cutoff = range.getCutoff();
+                    if (cutoff > age) {
+                        return cutoff;
+                    }
+                }
+                throw new IllegalStateException("Ranges have not been defined correctly. No range includes " + age);
+            }
+
+        };
+
+        return sjukfallUtil.calculateKonDataResponse(aisle, filter, start, periods, periodLength, names, ids, counterFunction);
     }
 
 }

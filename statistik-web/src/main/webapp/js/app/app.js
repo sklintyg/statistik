@@ -144,6 +144,12 @@ var app = angular.module('StatisticsApp', [ 'ngRoute', 'ngCookies', 'ngSanitize'
             controllerAs: 'VerksamhetAgeGroupCtrl',
             resolve: { config: app.nationalAgeGroupConfig },
             title: 'Åldersgrupper'
+        }).when('/verksamhet/aldersgrupperTidsserie', {
+            templateUrl: 'views/detailsView.html',
+            controller: 'doubleAreaChartsCtrl',
+            controllerAs: 'VerksamhetAgeGroupCtrl',
+            resolve: { config: app.nationalAgeGroupTimeSeriesConfig },
+            title: 'Åldersgrupper'
         }).when('/verksamhet/aldersgrupperpagaende', {
             templateUrl: 'views/detailsView.html',
             controller: 'columnChartDetailsViewCtrl',

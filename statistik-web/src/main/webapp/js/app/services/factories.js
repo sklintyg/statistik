@@ -82,6 +82,10 @@ angular.module('StatisticsApp').factory('statisticsData', function ($http, $root
         makeRequestVerksamhet("getAgeGroupsStatistics", successCallback, failureCallback);
     };
 
+    factory.getAgeGroupsTimeSeriesVerksamhet = function (successCallback, failureCallback) {
+        makeRequestVerksamhet("getAgeGroupsStatisticsAsTimeSeries", successCallback, failureCallback);
+    };
+
     factory.getSjukfallPerLakaresAlderOchKonVerksamhet = function (successCallback, failureCallback) {
         makeRequestVerksamhet("getCasesPerDoctorAgeAndGenderStatistics", successCallback, failureCallback);
     };

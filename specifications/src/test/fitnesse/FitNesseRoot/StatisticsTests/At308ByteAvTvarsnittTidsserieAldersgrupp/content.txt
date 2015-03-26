@@ -27,8 +27,8 @@ Gäller STATISTIK-935, 942.
 Byte till tidsserie gör att ytdiagram 18 mån visas. Varje åldersgrupp blir en legend. Kvinnor och män visas i separata diagram.
 
 | Sjukfall i rapporten aldersgrupp som tidsserie |
-| inloggad som | år   | månad | aldersgrupp | män? | kvinnor? |
-| user2        | 2013 | jun   | 21-15 år    | 0    | 1        |
+| inloggad som | år   | månad | åldersgrupp | män? | kvinnor? |
+| user2        | 2013 | jun   | 21-25 år    | 0    | 1        |
 | user2        | 2013 | jul   | 21-25 år    | 0    | 1        |
 | user2        | 2013 | aug   | 21-25 år    | 0    | 1        |
 | user2        | 2013 | sep   | 21-25 år    | 0    | 1        |

@@ -269,7 +269,7 @@ angular.module('StatisticsApp').controller('doubleAreaChartsCtrl', [ '$scope', '
             ControllerCommons.toggleTableVisibilityGeneric(event, $scope);
         };
 
-        if (config.alternativeView) {
+        if (isVerksamhet && config.alternativeView) {
             $scope.alternativeView = config.alternativeView + ($routeParams.diagnosHash ? "/" + $routeParams.diagnosHash : "");
         }
 
@@ -389,5 +389,18 @@ angular.module('StatisticsApp').compareDiagnosisTimeSeriesConfig = function () {
     };
     conf.showDiagnosisSelector = true;
     conf.alternativeView = "jamforDiagnoser";
+    return conf;
+};
+
+angular.module('StatisticsApp').nationalAgeGroupTimeSeriesConfig = function () {
+    var conf = {};
+    conf.dataFetcherVerksamhet = "getAgeGroupsTimeSeriesVerksamhet";
+    conf.exportTableUrlVerksamhet = function () {
+        return "api/verksamhet/getAgeGroupsStatisticsAsTimeSeries/csv";
+    };
+    conf.title = function (period, enhetsCount) {
+        return "Antal sjukfall per åldersgrupp" + ControllerCommons.getEnhetCountText(enhetsCount, false) + period;
+    };
+    conf.alternativeView = "aldersgrupper";
     return conf;
 };

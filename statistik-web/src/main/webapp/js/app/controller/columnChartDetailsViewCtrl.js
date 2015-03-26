@@ -114,7 +114,7 @@ angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl', [ '$sco
             $scope.doneLoading = true;
         }
 
-        if (config.alternativeView) {
+        if (isVerksamhet && config.alternativeView) {
             $scope.alternativeView = config.alternativeView + ($routeParams.diagnosHash ? "/" + $routeParams.diagnosHash : "");
         }
         $scope.showHideDataTable = ControllerCommons.showHideDataTableDefault;
@@ -193,6 +193,7 @@ angular.module('StatisticsApp').nationalAgeGroupConfig = function () {
         return "Antal sjukfall per åldersgrupp" + ControllerCommons.getEnhetCountText(enhetsCount, false) + period;
     };
     conf.chartXAxisTitle = "Åldersgrupp";
+    conf.alternativeView = "aldersgrupperTidsserie";
     return conf;
 };
 

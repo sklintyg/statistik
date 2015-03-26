@@ -61,11 +61,19 @@ abstract class DualSexTimeSeriesReport extends Rapport {
         throw new RuntimeException("Report -Sjukfall per enhet som tidsserie- is not available on national level");
     }
 
-    Object getReportJamforDiagnoserSomTidsserie(diagnoser) {
+    def getReportJamforDiagnoserSomTidsserie(diagnoser) {
         def diagnosHash = reportsUtil.getFilterHash(null, null, diagnoser)
         if (inloggad) {
             return reportsUtil.getReportJamforDiagnoserSomTidsserieInloggad(filter, diagnosHash);
         }
         throw new RuntimeException("Report -Jämför diagnoser som tidsserie- is not available on national level");
     }
+
+    def getReportAldersgruppSomTidsserie() {
+        if (inloggad) {
+            return reportsUtil.getReportAldersgruppSomTidsserieInloggad(filter);
+        }
+        throw new RuntimeException("Report -åldersgrupp som tidsserie- is not available on national level");
+    }
+
 }
