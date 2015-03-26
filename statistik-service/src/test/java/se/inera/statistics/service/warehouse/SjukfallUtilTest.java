@@ -181,10 +181,9 @@ public class SjukfallUtilTest {
     }
 
     @Test
-    public void testSjukfallCacheIsWorkingAndHasCorrectMaxSize() throws Exception {
+    public void testSjukfallCacheIsWorking() throws Exception {
         //Given
         LocalDate monthStart = new LocalDate("2015-03-11");
-        ReflectionTestUtils.setField(sjukfallUtil, "maxCacheSize", "1");
 
         //When
         final Iterable<SjukfallGroup> sjukfallGroups1 = sjukfallUtil.sjukfallGrupper(monthStart, 1, 1, aisle, SjukfallUtil.ALL_ENHETER);
@@ -195,14 +194,13 @@ public class SjukfallUtilTest {
         //Then
         assertSame(sjukfallGroups1, sjukfallGroups2);
         assertNotSame(sjukfallGroups1, sjukfallGroups3);
-        assertNotSame(sjukfallGroups1, sjukfallGroups4);
+        assertSame(sjukfallGroups1, sjukfallGroups4);
     }
 
     @Test
     public void testSjukfallCacheWillOnlyReturnValuesForTheCorrectVg() throws Exception {
         //Given
         LocalDate monthStart = new LocalDate("2015-03-11");
-        ReflectionTestUtils.setField(sjukfallUtil, "maxCacheSize", "10");
         Aisle aisle1 = new Aisle("vgid1");
         Aisle aisle2 = new Aisle("vgid2");
 
