@@ -193,6 +193,7 @@ angular.module('StatisticsApp').nationalAgeGroupConfig = function () {
         return "Antal sjukfall per åldersgrupp" + ControllerCommons.getEnhetCountText(enhetsCount, false) + period;
     };
     conf.chartXAxisTitle = "Åldersgrupp";
+    conf.alternativeView = "aldersgrupperTidsserie";
     return conf;
 };
 

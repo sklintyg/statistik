@@ -92,6 +92,10 @@ public class WarehouseService {
         return AldersgruppQuery.getAldersgrupper(warehouse.get(vardgivarId), filter, range.getFrom(), 1, range.getMonths(), sjukfallUtil);
     }
 
+    public KonDataResponse getAldersgrupperSomTidsserie(SjukfallFilter filter, Range range, String vardgivarId) {
+        return AldersgruppQuery.getAldersgrupperSomTidsserie(warehouse.get(vardgivarId), filter, range.getFrom(), range.getMonths(), 1, sjukfallUtil);
+    }
+
     public DiagnosgruppResponse getUnderdiagnosgrupper(SjukfallFilter filter, Range range, String kapitelId, String vardgivarId) throws RangeNotFoundException {
         return query.getUnderdiagnosgrupper(warehouse.get(vardgivarId), filter, range.getFrom(), range.getMonths(), 1, kapitelId);
     }

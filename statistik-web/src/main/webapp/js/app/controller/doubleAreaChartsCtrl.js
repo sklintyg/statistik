@@ -391,3 +391,16 @@ angular.module('StatisticsApp').compareDiagnosisTimeSeriesConfig = function () {
     conf.alternativeView = "jamforDiagnoser";
     return conf;
 };
+
+angular.module('StatisticsApp').nationalAgeGroupTimeSeriesConfig = function () {
+    var conf = {};
+    conf.dataFetcherVerksamhet = "getAgeGroupsTimeSeriesVerksamhet";
+    conf.exportTableUrlVerksamhet = function () {
+        return "api/verksamhet/getAgeGroupsStatisticsAsTimeSeries/csv";
+    };
+    conf.title = function (period, enhetsCount) {
+        return "Antal sjukfall per åldersgrupp" + ControllerCommons.getEnhetCountText(enhetsCount, false) + period;
+    };
+    conf.alternativeView = "aldersgrupper";
+    return conf;
+};
