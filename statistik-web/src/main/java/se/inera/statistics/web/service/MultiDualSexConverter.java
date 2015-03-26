@@ -32,7 +32,7 @@ import se.inera.statistics.web.model.TableHeader;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class DualSexConverter<T extends KonDataResponse> {
+public abstract class MultiDualSexConverter<T extends KonDataResponse> {
 
     DualSexStatisticsData convert(T data, Range range, Filter filter, String message, String seriesNameTemplate) {
         TableData tableData = convertTable(data, seriesNameTemplate);

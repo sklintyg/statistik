@@ -41,7 +41,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.TreeMap;
 
-public class DiagnosisGroupsConverter extends DualSexConverter<DiagnosgruppResponse> {
+public class DiagnosisGroupsConverter extends MultiDualSexConverter<DiagnosgruppResponse> {
 
     private static final Map<String, List<Integer>> DIAGNOSIS_CHART_GROUPS = createDiagnosisGroupsMap();
     private static final Map<Integer, String> DIAGNOSKAPITEL_TO_DIAGNOSGRUPP = map(DIAGNOSIS_CHART_GROUPS);

@@ -22,7 +22,7 @@ import se.inera.statistics.service.report.model.KonDataResponse;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.web.model.DualSexStatisticsData;
 
-public class CompareDiagnosisTimeSeriesConverter extends DualSexConverter<KonDataResponse> {
+public class CompareDiagnosisTimeSeriesConverter extends MultiDualSexConverter<KonDataResponse> {
 
     DualSexStatisticsData convert(KonDataResponse data, Range range, Filter filter, String message) {
         return super.convert(data, range, filter, message, "%1$s");

@@ -32,7 +32,7 @@ import se.inera.statistics.web.model.NamedData;
 import se.inera.statistics.web.model.SimpleDetailsData;
 import se.inera.statistics.web.model.TableData;
 
-public class SimpleDualSexConverterTest {
+public class SimpleMultiDualSexConverterTest {
 
     // CHECKSTYLE:OFF MagicNumber
 
