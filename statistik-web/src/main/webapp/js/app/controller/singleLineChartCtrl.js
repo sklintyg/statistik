@@ -19,13 +19,13 @@
 
 'use strict';
 
-angular.module('StatisticsApp').controller('singleLineChartCtrl', [ '$scope', '$rootScope', '$routeParams', '$timeout', '$window', 'statisticsData', 'businessFilter', 'config', 'printFactory',
-    function ($scope, $rootScope, $routeParams, $timeout, $window, statisticsData, businessFilter, config, printFactory) {
+angular.module('StatisticsApp').controller('singleLineChartCtrl', [ '$scope', '$rootScope', '$routeParams', '$timeout', '$window', 'statisticsData', 'businessFilter', 'config', 'printFactory', '$location',
+    function ($scope, $rootScope, $routeParams, $timeout, $window, statisticsData, businessFilter, config, printFactory, $location) {
         var chart;
         $scope.chartContainers = [
             {id: "chart1", name: "diagram"}
         ];
-        var isVerksamhet = $routeParams.verksamhetId ? true : false;
+        var isVerksamhet = ControllerCommons.isShowingVerksamhet($location);
 
         var paintChart = function (chartCategories, chartSeries, doneLoadingCallback) {
             var chartOptions = ControllerCommons.getHighChartConfigBase(chartCategories, chartSeries, doneLoadingCallback);
@@ -94,13 +94,13 @@ angular.module('StatisticsApp').controller('singleLineChartCtrl', [ '$scope', '$
         };
 
         function refreshVerksamhet() {
-            statisticsData[config.dataFetcherVerksamhet]($routeParams.verksamhetId, populatePageWithData, function () {
+            statisticsData[config.dataFetcherVerksamhet](populatePageWithData, function () {
                 $scope.dataLoadingError = true;
             });
         }
 
         if (isVerksamhet) {
-            $scope.exportTableUrl = config.exportTableUrlVerksamhet($routeParams.verksamhetId);
+            $scope.exportTableUrl = config.exportTableUrlVerksamhet();
             refreshVerksamhet();
         } else {
             $scope.exportTableUrl = config.exportTableUrl;
@@ -137,8 +137,8 @@ angular.module('StatisticsApp').casesPerMonthConfig = function () {
     conf.dataFetcher = "getNumberOfCasesPerMonth";
     conf.dataFetcherVerksamhet = "getNumberOfCasesPerMonthVerksamhet";
     conf.exportTableUrl = "api/getNumberOfCasesPerMonth/csv";
-    conf.exportTableUrlVerksamhet = function (verksamhetId) {
-        return "api/verksamhet/" + verksamhetId + "/getNumberOfCasesPerMonth/csv";
+    conf.exportTableUrlVerksamhet = function () {
+        return "api/verksamhet/getNumberOfCasesPerMonth/csv";
     };
     conf.title = function (months, enhetsCount) {
         return "Antal sjukfall per månad" + ControllerCommons.getEnhetCountText(enhetsCount, false) + months;
@@ -150,8 +150,8 @@ angular.module('StatisticsApp').casesPerMonthConfig = function () {
 angular.module('StatisticsApp').longSickLeavesConfig = function () {
     var conf = {};
     conf.dataFetcherVerksamhet = "getLongSickLeavesDataVerksamhet";
-    conf.exportTableUrlVerksamhet = function (verksamhetId) {
-        return "api/verksamhet/" + verksamhetId + "/getLongSickLeavesData/csv";
+    conf.exportTableUrlVerksamhet = function () {
+        return "api/verksamhet/getLongSickLeavesData/csv";
     };
     conf.title = function (months, enhetsCount) {
         return "Antal långa sjukfall - mer än 90 dagar" + ControllerCommons.getEnhetCountText(enhetsCount, false) + months;

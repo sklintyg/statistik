@@ -8,7 +8,10 @@ abstract class DualSexTimeSeriesReport extends Rapport {
 
     public void executeDiagram(report) {
         def index = report.maleChart.categories.findIndexOf { item -> item == (månad + " " + år) }
-        def male = report.maleChart.series.find { item -> item.name.contains(grupp) }
+        def male = report.maleChart.series.find { item ->
+            println("item" + item + " : grupp: " + grupp)
+            item.name.contains(grupp)
+        }
         män = index < 0 || male == null ? -1 : male.data[index]
         def female = report.femaleChart.series.find { item -> item.name.contains(grupp) }
         kvinnor = index < 0 || female == null ? -1 : female.data[index]
@@ -32,30 +35,37 @@ abstract class DualSexTimeSeriesReport extends Rapport {
 
     def getReportEnskiltDiagnoskapitel(kapitel) {
         if (inloggad) {
-            return reportsUtil.getReportEnskiltDiagnoskapitelInloggad(kapitel, inloggadSom, filter);
+            return reportsUtil.getReportEnskiltDiagnoskapitelInloggad(kapitel, filter);
         }
         return reportsUtil.getReportEnskiltDiagnoskapitel(kapitel);
     }
 
     def getReportDiagnosgrupp() {
         if (inloggad) {
-            return reportsUtil.getReportDiagnosgruppInloggad(inloggadSom, filter);
+            return reportsUtil.getReportDiagnosgruppInloggad(filter);
         }
         return reportsUtil.getReportDiagnosgrupp();
     }
 
     def getReportSjukskrivningsgrad() {
         if (inloggad) {
-            return reportsUtil.getReportSjukskrivningsgradInloggad(inloggadSom, filter);
+            return reportsUtil.getReportSjukskrivningsgradInloggad(filter);
         }
         return reportsUtil.getReportSjukskrivningsgrad();
     }
 
     def getReportSjukfallPerEnhetSomTidsserie() {
         if (inloggad) {
-            return reportsUtil.getReportSjukfallPerEnhetSomTidsserieInloggad(inloggadSom, filter);
+            return reportsUtil.getReportSjukfallPerEnhetSomTidsserieInloggad(filter);
         }
         throw new RuntimeException("Report -Sjukfall per enhet som tidsserie- is not available on national level");
     }
 
+    Object getReportJamforDiagnoserSomTidsserie(diagnoser) {
+        def diagnosHash = reportsUtil.getFilterHash(null, null, diagnoser)
+        if (inloggad) {
+            return reportsUtil.getReportJamforDiagnoserSomTidsserieInloggad(filter, diagnosHash);
+        }
+        throw new RuntimeException("Report -Jämför diagnoser som tidsserie- is not available on national level");
+    }
 }

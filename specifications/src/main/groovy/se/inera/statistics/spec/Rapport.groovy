@@ -124,7 +124,7 @@ abstract class Rapport {
 
     def getVerksamhetsoversikt() {
         if (inloggad) {
-            return reportsUtil.getVerksamhetsoversikt(inloggadSom, filter);
+            return reportsUtil.getVerksamhetsoversikt(filter);
         }
         return reportsUtil.getNationalOverview();
     }

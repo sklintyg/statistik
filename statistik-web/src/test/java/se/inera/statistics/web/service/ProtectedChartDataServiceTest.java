@@ -77,7 +77,7 @@ public class ProtectedChartDataServiceTest {
         init();
 
         try {
-            chartDataService.getOverviewData(request, "VG2", null);
+            chartDataService.getOverviewData(request, null);
             fail("Current implementation can not use null data");
         } catch (NullPointerException e) {
             assertTrue(true);
@@ -87,13 +87,13 @@ public class ProtectedChartDataServiceTest {
 
     @Ignore
     public void checkDeniedAccessToVerksamhetTest() {
-        boolean result = chartDataService.hasAccessTo(request, "VG3");
+        boolean result = chartDataService.hasAccessTo(request);
         assertEquals(false, result);
     }
 
     @Ignore
     public void checkAllowedAccessToVerksamhetTest() {
-        boolean result = chartDataService.hasAccessTo(request, "VG2");
+        boolean result = chartDataService.hasAccessTo(request);
         assertEquals(true, result);
     }
 
