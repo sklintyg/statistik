@@ -495,7 +495,7 @@ public class ProtectedChartDataService {
         LOG.info("Calling getCompareDiagnosisStatisticsAsCsv with verksamhetId: {} and filterHash: {}", verksamhetId, filterHash);
         final Optional<SimpleDetailsData> data = getCompareDiagnosisStatisticsData(request, verksamhetId, diagnosisHash, filterHash);
         if (data.isPresent()) {
-            return Response.ok(CsvConverter.getCsvResponse(data.get().getTableData(), "export.csv")).build();
+            return CsvConverter.getCsvResponse(data.get().getTableData(), "export.csv");
         } else {
             return Response.status(Response.Status.SERVICE_UNAVAILABLE).build();
         }
