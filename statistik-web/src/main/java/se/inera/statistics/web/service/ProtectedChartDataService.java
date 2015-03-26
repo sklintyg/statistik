@@ -387,7 +387,7 @@ public class ProtectedChartDataService {
     public Response getCompareDiagnosisStatisticsAsCsv(@Context HttpServletRequest request, @QueryParam("filter") String filterHash, @PathParam("diagnosHash") String diagnosisHash) {
         LOG.info("Calling getCompareDiagnosisStatisticsAsCsv with filterHash: {}", filterHash);
         final SimpleDetailsData data = getCompareDiagnosisStatisticsData(request, diagnosisHash, filterHash);
-        return Response.ok(CsvConverter.getCsvResponse(data.getTableData(), "export.csv")).build();
+        return CsvConverter.getCsvResponse(data.getTableData(), "export.csv");
     }
 
     private String getCompareDiagnosisMessage(Filter filter, List<String> diagnosis) {
@@ -429,7 +429,7 @@ public class ProtectedChartDataService {
     public Response getCompareDiagnosisStatisticsTimeSeriesAsCsv(@Context HttpServletRequest request, @QueryParam("filter") String filterHash, @PathParam("diagnosHash") String diagnosisHash) {
         LOG.info("Calling getCompareDiagnosisStatisticsTimeSeriesAsCsv with filterHash: {}", filterHash);
         final DualSexStatisticsData data = getCompareDiagnosisStatisticsDataTimeSeries(request, diagnosisHash, filterHash);
-        return Response.ok(CsvConverter.getCsvResponse(data.getTableData(), "export.csv")).build();
+        return CsvConverter.getCsvResponse(data.getTableData(), "export.csv");
     }
 
     /**
