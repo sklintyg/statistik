@@ -114,7 +114,7 @@ angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl', [ '$sco
             $scope.doneLoading = true;
         }
 
-        if (config.alternativeView) {
+        if (isVerksamhet && config.alternativeView) {
             $scope.alternativeView = config.alternativeView + ($routeParams.diagnosHash ? "/" + $routeParams.diagnosHash : "");
         }
         $scope.showHideDataTable = ControllerCommons.showHideDataTableDefault;

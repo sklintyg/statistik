@@ -269,7 +269,7 @@ angular.module('StatisticsApp').controller('doubleAreaChartsCtrl', [ '$scope', '
             ControllerCommons.toggleTableVisibilityGeneric(event, $scope);
         };
 
-        if (config.alternativeView) {
+        if (isVerksamhet && config.alternativeView) {
             $scope.alternativeView = config.alternativeView + ($routeParams.diagnosHash ? "/" + $routeParams.diagnosHash : "");
         }
 
