@@ -158,6 +158,7 @@ angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl', [ '$sco
                 //Ugly fix from http://stackoverflow.com/questions/20827282/cant-dismiss-modal-and-change-page-location
                 $('#cancelModal').modal('hide');
                 $('.modal-backdrop').remove();
+                $('body').removeClass('modal-open');
             }, 1);
 
             $timeout(function () {
