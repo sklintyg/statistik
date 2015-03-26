@@ -252,7 +252,7 @@ angular.module('StatisticsApp').controller('doubleAreaChartsCtrl', [ '$scope', '
             $scope.doneLoading = false;
             $scope.dataLoadingError = false;
             if (isVerksamhet) {
-                $scope.exportTableUrl = config.exportTableUrlVerksamhet($routeParams.groupId);
+                $scope.exportTableUrl = config.exportTableUrlVerksamhet($routeParams.diagnosHash ? $routeParams.diagnosHash : $routeParams.groupId);
                 refreshVerksamhet();
             } else {
                 $scope.exportTableUrl = config.exportTableUrl($routeParams.groupId);
