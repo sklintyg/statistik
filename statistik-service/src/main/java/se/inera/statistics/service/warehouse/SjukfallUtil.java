@@ -29,7 +29,6 @@ import com.google.common.collect.Lists;
 import org.joda.time.LocalDate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.report.model.KonDataResponse;
@@ -54,9 +53,6 @@ public class SjukfallUtil {
 
     private static final Logger LOG = LoggerFactory.getLogger(SjukfallUtil.class);
 
-    @Value("${max.sjukfall.cache.size:1000}")
-    private String maxCacheSize = "1000";
-
     private LoadingCache<SjukfallGroupCacheKey, List<SjukfallGroup>> sjukfallGroupsCache;
 
     public void clearSjukfallGroupCache() {
@@ -78,7 +74,7 @@ public class SjukfallUtil {
     private LoadingCache<SjukfallGroupCacheKey, List<SjukfallGroup>> getSjukfallGroupsCache() {
         if (sjukfallGroupsCache == null) {
             sjukfallGroupsCache = CacheBuilder.newBuilder()
-                    .maximumSize(Integer.valueOf(maxCacheSize))
+                    .softValues()
                     .build(new CacheLoader<SjukfallGroupCacheKey, List<SjukfallGroup>>() {
                         public List<SjukfallGroup> load(SjukfallGroupCacheKey key) {
                             final LocalDate from = key.getFrom();
