@@ -84,6 +84,10 @@ public class WarehouseService {
         return SjukskrivningslangdQuery.getSjuksrivningslangd(warehouse.get(vardgivarId), filter, range.getFrom(), 1, range.getMonths(), sjukfallUtil);
     }
 
+    public KonDataResponse getSjukskrivningslangdTidsserie(SjukfallFilter filter, Range range, String vardgivarId) {
+        return SjukskrivningslangdQuery.getSjuksrivningslangdomTidsserie(warehouse.get(vardgivarId), filter, range.getFrom(), range.getMonths(), 1, sjukfallUtil);
+    }
+
     public SimpleKonResponse<SimpleKonDataRow> getLangaSjukskrivningarPerManad(SjukfallFilter filter, Range range, String vardgivarId) {
         return SjukskrivningslangdQuery.getLangaSjukfall(warehouse.get(vardgivarId), filter, range.getFrom(), range.getMonths(), 1, sjukfallUtil);
     }

@@ -164,6 +164,7 @@ angular.module('StatisticsApp').nationalSickLeaveLengthConfig = function () {
     conf.chartXAxisTitle = "Sjukskrivningslängd";
     conf.chartFootnotes = ["info.sickleavelength"];
     conf.pageHelpText = "help.sickleavelength";
+    conf.alternativeView = "sjukskrivningslangdTidsserie";
     return conf;
 };
 

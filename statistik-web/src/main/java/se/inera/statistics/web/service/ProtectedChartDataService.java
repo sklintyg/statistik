@@ -685,12 +685,12 @@ public class ProtectedChartDataService {
     @Consumes({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
-    public Response getSickLeaveLengthData(@Context HttpServletRequest request, @QueryParam("filter") String filterHash) {
-        SickLeaveLengthData data = getSickLeaveLengthDataData(request, filterHash);
+    public Response getSickLeaveLength(@Context HttpServletRequest request, @QueryParam("filter") String filterHash) {
+        SickLeaveLengthData data = getSickLeaveLengthData(request, filterHash);
         return Response.ok(data).build();
     }
 
-    private SickLeaveLengthData getSickLeaveLengthDataData(HttpServletRequest request, String filterHash) {
+    private SickLeaveLengthData getSickLeaveLengthData(HttpServletRequest request, String filterHash) {
         LOG.info("Calling getSickLeaveLengthData with filterHash: {}", filterHash);
         Range range = new Range(YEAR);
         Filter filter = getFilter(request, filterHash);
@@ -710,7 +710,39 @@ public class ProtectedChartDataService {
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
     public Response getSickLeaveLengthDataAsCsv(@Context HttpServletRequest request, @QueryParam("filter") String filterHash) {
         LOG.info("Calling getSickLeaveLengthDataAsCsv with filterHash: {}", filterHash);
-        final SickLeaveLengthData simpleDetailsData = getSickLeaveLengthDataData(request, filterHash);
+        final SickLeaveLengthData simpleDetailsData = getSickLeaveLengthData(request, filterHash);
+        return CsvConverter.getCsvResponse(simpleDetailsData.getTableData(), "export.csv");
+    }
+
+    @POST
+    @Path("getSickLeaveLengthTimeSeries")
+    @Produces({ MediaType.APPLICATION_JSON })
+    @Consumes({ MediaType.APPLICATION_JSON })
+    @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
+    @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
+    public Response getSickLeaveLengthTimeSeries(@Context HttpServletRequest request, @QueryParam("filter") String filterHash) {
+        DualSexStatisticsData data = getSickLeaveLengthTimeSeriesData(request, filterHash);
+        return Response.ok(data).build();
+    }
+
+    private DualSexStatisticsData getSickLeaveLengthTimeSeriesData(HttpServletRequest request, String filterHash) {
+        LOG.info("Calling getSickLeaveLengthTimeSeriesData with filterHash: {}", filterHash);
+        Range range = new Range(18);
+        Filter filter = getFilter(request, filterHash);
+        KonDataResponse sickLeaveLength = warehouse.getSjukskrivningslangdTidsserie(filter.getPredicate(), range, getSelectedVgIdForLoggedInUser(request));
+        DualSexStatisticsData result = new SimpleMultiDualSexConverter().convert(sickLeaveLength, range, filter);
+        return result;
+    }
+
+    @GET
+    @Path("getSickLeaveLengthTimeSeries/csv")
+    @Produces({ TEXT_UTF_8 })
+    @Consumes({ MediaType.APPLICATION_JSON })
+    @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
+    @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
+    public Response getSickLeaveLengthTimeSeriesAsCsv(@Context HttpServletRequest request, @QueryParam("filter") String filterHash) {
+        LOG.info("Calling getSickLeaveLengthTimeSeriesAsCsv with filterHash: {}", filterHash);
+        final DualSexStatisticsData simpleDetailsData = getSickLeaveLengthTimeSeriesData(request, filterHash);
         return CsvConverter.getCsvResponse(simpleDetailsData.getTableData(), "export.csv");
     }
 

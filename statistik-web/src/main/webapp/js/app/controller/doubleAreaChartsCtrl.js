@@ -211,6 +211,7 @@ angular.module('StatisticsApp').controller('doubleAreaChartsCtrl', [ '$scope', '
         $scope.chartFootnotes = _.map(config.chartFootnotes, function(msgKey){
             return messageService.getProperty(msgKey, null, "", null, true);
         });
+        $scope.popoverText = messageService.getProperty(config.pageHelpText, null, "", null, true);
 
         $scope.chartContainers = [
             {id: "chart1", name: "diagram för kvinnor"},
@@ -229,8 +230,6 @@ angular.module('StatisticsApp').controller('doubleAreaChartsCtrl', [ '$scope', '
             }
             updateChartsYAxisMaxValue();
         };
-
-        $scope.popoverText = config.tooltipHelpText;
 
         function refreshVerksamhet() {
             statisticsData[config.dataFetcherVerksamhet](populatePageWithData, function () {
@@ -320,7 +319,7 @@ angular.module('StatisticsApp').diagnosisGroupConfig = function () {
     conf.title = function (period, enhetsCount) {
         return "Antal sjukfall per diagnosgrupp" + ControllerCommons.getEnhetCountText(enhetsCount, false) + period;
     };
-    conf.tooltipHelpText = "Diagnoskoder används för att gruppera sjukdomar för att kunna göra översiktliga statistiska sammanställningar och analyser. Statistiktjänsten är uppdelad i sju övergripande diagnosgrupper. I varje grupp ingår olika kapitel med diagnoskoder. Diagnoskoderna finns i klassificeringssystemet ICD-10-SE.";
+    conf.pageHelpText = "help.diagnosisgroup";
     conf.chartFootnotes = ["alert.diagnosisgroup.information"];
     return conf;
 };
@@ -340,7 +339,7 @@ angular.module('StatisticsApp').diagnosisSubGroupConfig = function () {
     conf.title = function (period, enhetsCount, name) {
         return "Antal sjukfall för " + name + ControllerCommons.getEnhetCountText(enhetsCount, false) + period;
     };
-    conf.tooltipHelpText = "Ett diagnoskapitel innehåller flera avsnitt med sjukdomar som i sin tur omfattar olika diagnoskoder. Det finns totalt 21 diagnoskapitel. Grafen visar endast de sex vanligaste förekommande avsnitten eller diagnoserna uppdelade på kvinnor respektive män. I tabellen visas samtliga inom valt kapitel eller avsnitt.";
+    conf.pageHelpText = "help.diagnosissubgroup";
     conf.chartFootnotes = ["alert.diagnosissubgroup.information"];
     return conf;
 };
@@ -359,7 +358,7 @@ angular.module('StatisticsApp').degreeOfSickLeaveConfig = function () {
     conf.title = function (period, enhetsCount) {
         return "Antal sjukfall per sjukskrivningsgrad" + ControllerCommons.getEnhetCountText(enhetsCount, false) + period;
     };
-    conf.tooltipHelpText = "Sjukskrivningsgrad visar hur stor del av patientens arbetsförmåga som är nedsatt. Sjukskrivningsgraden anges i procent i förhållande till patientens aktuella arbetstid.";
+    conf.pageHelpText = "help.degreeofsickleave";
     conf.chartFootnotes = ["alert.degreeofsickleave.information"];
     return conf;
 };
@@ -402,5 +401,20 @@ angular.module('StatisticsApp').nationalAgeGroupTimeSeriesConfig = function () {
         return "Antal sjukfall per åldersgrupp" + ControllerCommons.getEnhetCountText(enhetsCount, false) + period;
     };
     conf.alternativeView = "aldersgrupper";
+    return conf;
+};
+
+angular.module('StatisticsApp').sickLeaveLengthTimeSeriesConfig = function () {
+    var conf = {};
+    conf.dataFetcherVerksamhet = "getSickLeaveLengthTimeSeriesDataVerksamhet";
+    conf.exportTableUrlVerksamhet = function () {
+        return "api/verksamhet/getSickLeaveLengthTimeSeries/csv";
+    };
+    conf.title = function (period, enhetsCount) {
+        return "Antal sjukfall per sjukskrivningslängd" + ControllerCommons.getEnhetCountText(enhetsCount, false) + period;
+    };
+    conf.chartFootnotes = ["info.sickleavelength"];
+    conf.pageHelpText = "help.sickleavelength";
+    conf.alternativeView = "sjukskrivningslangd";
     return conf;
 };

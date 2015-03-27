@@ -18,12 +18,17 @@
  */
 package se.inera.statistics.service.warehouse.query;
 
+import com.google.common.base.Function;
+import com.google.common.collect.HashMultiset;
+import com.google.common.collect.Lists;
 import org.joda.time.LocalDate;
+import se.inera.statistics.service.report.model.KonDataResponse;
 import se.inera.statistics.service.report.model.OverviewChartRow;
 import se.inera.statistics.service.report.model.SimpleKonDataRow;
 import se.inera.statistics.service.report.model.SimpleKonResponse;
 import se.inera.statistics.service.report.model.SjukfallslangdResponse;
 import se.inera.statistics.service.report.model.SjukfallslangdRow;
+import se.inera.statistics.service.report.util.AldersgroupUtil;
 import se.inera.statistics.service.report.util.Ranges;
 import se.inera.statistics.service.report.util.ReportUtil;
 import se.inera.statistics.service.report.util.SjukfallslangdUtil;
@@ -128,4 +133,42 @@ public final class SjukskrivningslangdQuery {
         return new SjukfallslangdResponse(rows, periodLength);
 
     }
+
+    public static KonDataResponse getSjuksrivningslangdomTidsserie(Aisle aisle, SjukfallFilter filter, LocalDate start, int periods, int periodLength, SjukfallUtil sjukfallUtil) {
+        final ArrayList<Ranges.Range> ranges = Lists.newArrayList(SjukfallslangdUtil.RANGES);
+        final List<String> names = Lists.transform(ranges, new Function<Ranges.Range, String>() {
+            @Override
+            public String apply(Ranges.Range range) {
+                return range.getName();
+            }
+        });
+        final List<Integer> ids = Lists.transform(ranges, new Function<Ranges.Range, Integer>() {
+            @Override
+            public Integer apply(Ranges.Range range) {
+                return range.getCutoff();
+            }
+        });
+        final CounterFunction<Integer> counterFunction = new CounterFunction<Integer>() {
+            @Override
+            public void addCount(Sjukfall sjukfall, HashMultiset<Integer> counter) {
+                final int length = sjukfall.getRealDays();
+                final int rangeId = getRangeIdForLength(length);
+                counter.add(rangeId);
+            }
+
+            private int getRangeIdForLength(int length) {
+                for (Ranges.Range range: ranges) {
+                    final int cutoff = range.getCutoff();
+                    if (cutoff > length) {
+                        return cutoff;
+                    }
+                }
+                throw new IllegalStateException("Ranges have not been defined correctly. No range includes " + length);
+            }
+
+        };
+
+        return sjukfallUtil.calculateKonDataResponse(aisle, filter, start, periods, periodLength, names, ids, counterFunction);
+    }
+
 }

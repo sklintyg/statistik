@@ -168,6 +168,12 @@ var app = angular.module('StatisticsApp', [ 'ngRoute', 'ngCookies', 'ngSanitize'
             controllerAs: 'VerksamhetSickLeaveLengthCtrl',
             resolve: { config: app.nationalSickLeaveLengthConfig },
             title: 'Sjukskrivningslängd'
+        }).when('/verksamhet/sjukskrivningslangdTidsserie', {
+            templateUrl: 'views/detailsView.html',
+            controller: 'doubleAreaChartsCtrl',
+            controllerAs: 'VerksamhetSickLeaveLengthCtrl',
+            resolve: { config: app.sickLeaveLengthTimeSeriesConfig },
+            title: 'Sjukskrivningslängd'
         }).when('/verksamhet/sjukskrivningslangdpagaende', {
             templateUrl: 'views/detailsView.html',
             controller: 'columnChartDetailsViewCtrl',

@@ -110,6 +110,10 @@ angular.module('StatisticsApp').factory('statisticsData', function ($http, $root
         makeRequestVerksamhet("getSickLeaveLengthData", successCallback, failureCallback);
     };
 
+    factory.getSickLeaveLengthTimeSeriesDataVerksamhet = function (successCallback, failureCallback) {
+        makeRequestVerksamhet("getSickLeaveLengthTimeSeries", successCallback, failureCallback);
+    };
+
     factory.getSickLeaveLengthCurrentDataVerksamhet = function (successCallback, failureCallback) {
         makeRequestVerksamhet("getSickLeaveLengthCurrentData", successCallback, failureCallback);
     };
