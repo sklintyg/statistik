@@ -301,4 +301,7 @@ class ReportsUtil {
         return post(getVerksamhetUrlPrefix() + "/getJamforDiagnoserStatistikTidsserie/" + diagnosHash, filterData)
     }
 
+    def getReportSjukskrivningslangdSomTidsserieInloggad(FilterData filter) {
+        return post(getVerksamhetUrlPrefix() + "/getSickLeaveLengthTimeSeries", filter)
+    }
 }
