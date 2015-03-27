@@ -125,7 +125,7 @@ De profiler som finns är:
 |security-fake  |stöd enbart simulerad inloggning|
 |security-both  |stöd saml-inloggning och simulerad inloggning|
 |security-saml  |stöd enbart saml-inloggning|
-|qm             |processa meddelanden på köhanterare|
+|qm             |läs meddelanden från kön|
 |active         |processa inkommande intyg|
 
 ##Deployment
