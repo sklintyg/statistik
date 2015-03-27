@@ -727,7 +727,7 @@ public class ProtectedChartDataService {
 
     private DualSexStatisticsData getSickLeaveLengthTimeSeriesData(HttpServletRequest request, String filterHash) {
         LOG.info("Calling getSickLeaveLengthTimeSeriesData with filterHash: {}", filterHash);
-        Range range = new Range(18);
+        final Range range = new Range(18);
         Filter filter = getFilter(request, filterHash);
         KonDataResponse sickLeaveLength = warehouse.getSjukskrivningslangdTidsserie(filter.getPredicate(), range, getSelectedVgIdForLoggedInUser(request));
         DualSexStatisticsData result = new SimpleMultiDualSexConverter().convert(sickLeaveLength, range, filter);
