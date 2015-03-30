@@ -20,9 +20,11 @@ package se.inera.statistics.service.helper;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import org.joda.time.LocalDate;
 import org.joda.time.format.ISODateTimeFormat;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import se.inera.statistics.service.processlog.Arbetsnedsattning;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,119 +36,186 @@ public final class DocumentHelper {
     private static final String EXTENSION = "extension";
     private static final String PATIENT = "patient";
     public static final int SEX_DIGIT = 11;
+    public static final int MAX_SJUKSKRIVNING = 100;
 
     public static final Matcher DIAGNOS_MATCHER = Matcher.Builder.matcher("observationskategori").add(Matcher.Builder.matcher("code", "439401001")).add((Matcher.Builder.matcher("codeSystem", "1.2.752.116.2.1.1.1")));
     public static final Matcher ARBETSFORMAGA_MATCHER = Matcher.Builder.matcher("observationskod").add(Matcher.Builder.matcher("code", "302119000")).add((Matcher.Builder.matcher("codeSystem", "1.2.752.116.2.1.1.1")));
     public static final String DOCUMENT_ID = "1.2.752.129.2.1.2.1";
     public static final String UTANENHETSID = "UTANENHETSID";
+    public static final int NEDSATT100 = 100;
+    public static final int NEDSATT25 = 25;
+    public static final int NEDSATT50 = 50;
+    public static final int NEDSATT75 = 75;
+
+    public enum IntygVersion {
+        VERSION1, VERSION2
+    }
 
     private DocumentHelper() {
     }
 
-    public static ObjectNode anonymize(JsonNode utlatande) {
-        ObjectNode anonymous = prepare(utlatande).deepCopy();
-        ObjectNode patientNode = (ObjectNode) anonymous.path(PATIENT);
-        patientNode.remove("id");
-        patientNode.remove("fornamn");
-        patientNode.remove("efternamn");
-        return anonymous;
-    }
-
-    public static ObjectNode prepare(JsonNode utlatande) {
-        String personId = utlatande.path(PATIENT).path("id").path(EXTENSION).textValue();
+    public static ObjectNode prepare(JsonNode intyg) {
+        final IntygVersion version = getIntygVersion(intyg);
+        String personId = getPersonId(intyg, version);
         int alder;
         try {
-            alder = ConversionHelper.extractAlder(personId, ISODateTimeFormat.dateTimeParser().parseLocalDate(utlatande.path("observationer").findValue("observationsperiod").path("tom").textValue()));
+            alder = ConversionHelper.extractAlder(personId, ISODateTimeFormat.dateTimeParser().parseLocalDate(getSistaNedsattningsdag(intyg, version)));
         } catch (IllegalArgumentException e) {
-            LOG.error("Personnummer cannot be parsed as a date, adjusting for samordningsnummer did not help: {}" , personId);
+            LOG.error("Personnummer cannot be parsed as a date, adjusting for samordningsnummer did not help: {}", personId);
             alder = ConversionHelper.NO_AGE;
         }
         String kon = ConversionHelper.extractKon(personId);
 
-        ObjectNode preparedDoc = utlatande.deepCopy();
+        ObjectNode preparedDoc = intyg.deepCopy();
+        if (version == IntygVersion.VERSION2) {
+            preparedDoc.put(PATIENT, preparedDoc.path("grundData").path("patient"));
+        }
         ObjectNode patientNode = (ObjectNode) preparedDoc.path(PATIENT);
         patientNode.put("alder", alder);
         patientNode.put("kon", kon);
         return preparedDoc;
     }
 
-    public static String getPersonId(JsonNode document) {
-        return document.path(PATIENT).path("id").path(EXTENSION).textValue();
+    public static IntygVersion getIntygVersion(JsonNode document) {
+        return document.has("grundData") ? IntygVersion.VERSION2 : IntygVersion.VERSION1;
     }
 
-    public static String getVardgivareId(JsonNode document) {
-        return document.path("skapadAv").path("vardenhet").path("vardgivare").path("id").path(EXTENSION).textValue();
+    public static String getPersonId(JsonNode document, IntygVersion version) {
+        if (IntygVersion.VERSION1 == version) {
+            return document.path(PATIENT).path("id").path(EXTENSION).textValue();
+        } else {
+            return document.path("grundData").path("patient").path("personId").textValue();
+        }
     }
 
-    public static String getEnhetId(JsonNode document) {
-        final String result = document.path("skapadAv").path("vardenhet").path("id").path(EXTENSION).textValue();
-        return result != null ? result : UTANENHETSID;
+    public static String getVardgivareId(JsonNode document, IntygVersion version) {
+        if (IntygVersion.VERSION1 == version) {
+            return document.path("skapadAv").path("vardenhet").path("vardgivare").path("id").path(EXTENSION).textValue();
+        } else {
+            return document.path("grundData").path("skapadAv").path("vardgivare").path("vardgivarid").textValue();
+        }
     }
 
-    public static String getLakarId(JsonNode document) {
-        return document.path("skapadAv").path("id").path(EXTENSION).textValue();
+    public static String getEnhetId(JsonNode document, IntygVersion version) {
+        if (IntygVersion.VERSION1 == version) {
+            final String result = document.path("skapadAv").path("vardenhet").path("id").path(EXTENSION).textValue();
+            return result != null ? result : UTANENHETSID;
+        } else {
+            return document.path("grundData").path("skapadAv").path("vardenhet").path("enhetsid").textValue();
+        }
     }
 
-    public static String getForstaNedsattningsdag(JsonNode document) {
-        String from = null;
-        for (JsonNode node: document.path(OBSERVATIONER)) {
-            if (ARBETSFORMAGA_MATCHER.match(node)) {
-                JsonNode varde = node.path("observationsperiod");
-                String candidate = varde.path("from").asText();
-                if (from == null || from.compareTo(candidate) > 0) {
-                    from = candidate;
+    public static String getLakarId(JsonNode document, IntygVersion version) {
+        if (IntygVersion.VERSION1 == version) {
+            return document.path("skapadAv").path("id").path(EXTENSION).textValue();
+        } else {
+            return document.path("grundData").path("skapadAv").path("personId").textValue();
+        }
+    }
+
+    public static String getForstaNedsattningsdag(JsonNode document, IntygVersion version) {
+        if (version == IntygVersion.VERSION1) {
+            String from = null;
+            for (JsonNode node : document.path(OBSERVATIONER)) {
+                if (ARBETSFORMAGA_MATCHER.match(node)) {
+                    JsonNode varde = node.path("observationsperiod");
+                    String candidate = varde.path("from").asText();
+                    if (from == null || from.compareTo(candidate) > 0) {
+                        from = candidate;
+                    }
                 }
             }
+            return from;
+        } else {
+            return document.path("giltighet").path("from").textValue();
         }
-        return from;
     }
 
-    public static String getSistaNedsattningsdag(JsonNode document) {
-        String to = null;
-        for (JsonNode node: document.path(OBSERVATIONER)) {
-            if (ARBETSFORMAGA_MATCHER.match(node)) {
-                JsonNode varde = node.path("observationsperiod");
-                String candidate = varde.path("tom").asText();
-                if (to == null || to.compareTo(candidate) < 0) {
-                    to = candidate;
+    public static String getSistaNedsattningsdag(JsonNode document, IntygVersion version) {
+        if (version == IntygVersion.VERSION1) {
+            String to = null;
+            for (JsonNode node : document.path(OBSERVATIONER)) {
+                if (ARBETSFORMAGA_MATCHER.match(node)) {
+                    JsonNode varde = node.path("observationsperiod");
+                    String candidate = varde.path("tom").asText();
+                    if (to == null || to.compareTo(candidate) < 0) {
+                        to = candidate;
+                    }
                 }
             }
+            return to;
+        } else {
+            return document.path("giltighet").path("tom").textValue();
         }
-        return to;
     }
 
     public static String getKon(JsonNode document) {
         return document.path(PATIENT).path("kon").textValue();
     }
 
-    public static String getDiagnos(JsonNode document) {
-        for (JsonNode node: document.path(OBSERVATIONER)) {
-            if (DIAGNOS_MATCHER.match(node)) {
-                return node.path("observationskod").path("code").textValue();
+    public static String getDiagnos(JsonNode document, IntygVersion version) {
+        if (version == IntygVersion.VERSION1) {
+            for (JsonNode node : document.path(OBSERVATIONER)) {
+                if (DIAGNOS_MATCHER.match(node)) {
+                    return node.path("observationskod").path("code").textValue();
+                }
             }
+            return null;
+        } else {
+            return document.path("diagnosKod").textValue();
         }
-        return null;
     }
 
-    public static List<JsonNode> getArbetsformaga(JsonNode document) {
-        List<JsonNode> result = new ArrayList<>();
-        for (JsonNode node: document.path(OBSERVATIONER)) {
-            if (ARBETSFORMAGA_MATCHER.match(node)) {
-                result.add(node);
+    public static List<Arbetsnedsattning> getArbetsnedsattning(JsonNode document, IntygVersion version) {
+        List<Arbetsnedsattning> result = new ArrayList<>();
+        if (version == IntygVersion.VERSION1) {
+            for (JsonNode node : document.path(OBSERVATIONER)) {
+                if (ARBETSFORMAGA_MATCHER.match(node)) {
+                    int varde = MAX_SJUKSKRIVNING - node.path("varde").path("quantity").asInt();
+                    LocalDate from = new LocalDate(node.path("observationsperiod").path("from").asText());
+                    LocalDate tom = new LocalDate(node.path("observationsperiod").path("tom").asText());
+                    result.add(new Arbetsnedsattning(varde, from, tom));
+                }
             }
+            return result;
+        } else {
+            if (document.has("nedsattMed25")) {
+                LocalDate from = new LocalDate(document.path("nedsattMed25").path("from").asText());
+                LocalDate tom = new LocalDate(document.path("nedsattMed25").path("tom").asText());
+                result.add(new Arbetsnedsattning(NEDSATT25, from, tom));
+            }
+            if (document.has("nedsattMed50")) {
+                LocalDate from = new LocalDate(document.path("nedsattMed50").path("from").asText());
+                LocalDate tom = new LocalDate(document.path("nedsattMed50").path("tom").asText());
+                result.add(new Arbetsnedsattning(NEDSATT50, from, tom));
+            }
+            if (document.has("nedsattMed75")) {
+                LocalDate from = new LocalDate(document.path("nedsattMed75").path("from").asText());
+                LocalDate tom = new LocalDate(document.path("nedsattMed75").path("tom").asText());
+                result.add(new Arbetsnedsattning(NEDSATT75, from, tom));
+            }
+            if (document.has("nedsattMed100")) {
+                LocalDate from = new LocalDate(document.path("nedsattMed100").path("from").asText());
+                LocalDate tom = new LocalDate(document.path("nedsattMed100").path("tom").asText());
+                result.add(new Arbetsnedsattning(NEDSATT100, from, tom));
+            }
+            return result;
         }
-        return result;
     }
 
     public static int getAge(JsonNode document) {
         return document.path(PATIENT).path("alder").intValue();
     }
 
-    public static String getIntygId(JsonNode document) {
-        String id = document.path("id").path("root").textValue();
-        if (DOCUMENT_ID.equals(id)) {
-            id = document.path("id").path("extension").textValue();
+    public static String getIntygId(JsonNode document, IntygVersion version) {
+        if (version == IntygVersion.VERSION1) {
+            String id = document.path("id").path("root").textValue();
+            if (DOCUMENT_ID.equals(id)) {
+                id = document.path("id").path("extension").textValue();
+            }
+            return id;
+        } else {
+            return document.path("id").textValue();
         }
-        return id;
     }
 }

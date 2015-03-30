@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode
 import groovy.json.JsonBuilder
 import org.junit.Before
 import org.junit.Test
+import se.inera.statistics.service.helper.DocumentHelper
 import se.inera.statistics.service.helper.JSONParser
 import se.inera.statistics.service.hsa.HSADecorator
 import se.inera.statistics.service.hsa.HSAKey
@@ -45,7 +46,7 @@ class HSADecoratorTest {
 
     @Test
     void hsa_decorator_extract_key_from_document() {
-        def doc = JSONParser.parse(JSONSource.readTemplateAsString().toString())
+        def doc = JSONParser.parse(JSONSource.readTemplateAsString(DocumentHelper.IntygVersion.VERSION1).toString())
 
         def key = hsaDecorator.extractHSAKey(doc)
 
