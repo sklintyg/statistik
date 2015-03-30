@@ -21,12 +21,12 @@ Gäller STATISTIK-935, 942.
 !3 Då gäller:
 | Sjukfall i rapporten lakarbefattning |
 | inloggad som | läkarbefattning    | män? | kvinnor? |
-| user2        | Överläkare         | 0    | 0        |
-| user2        | Företagsläkare     | 0    | 1        |
+| user2        | Överläkare         | -1   | -1       |
+| user2        | Företagsläkare     | 1    | 0        |
 
 Byte till tidsserie gör att ytdiagram 18 mån visas. Varje befattning blir en legend. Kvinnor och män visas i separata diagram.
 
-| Sjukfall i rapporten lakarkonalder |
+| Sjukfall i rapporten lakarbefattning som tidsserie |
 | inloggad som | år   | månad | läkargrupp     | män? | kvinnor? |
 | user2        | 2013 | jun   | Överläkare     | 0    | 1        |
 | user2        | 2013 | jul   | Överläkare     | 0    | 1        |

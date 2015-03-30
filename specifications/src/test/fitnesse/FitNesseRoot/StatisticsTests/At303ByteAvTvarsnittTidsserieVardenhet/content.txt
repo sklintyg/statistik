@@ -21,7 +21,6 @@ Gäller STATISTIK-935, 942.
 !3 Då gäller:
 | Sjukfall i rapporten sjukfall per enhet |
 | inloggad som | vårdenhet    | vårdgivarnivå | totalt? | män? | kvinnor? |
-| user2        | Enhet enhet1 | true          | 0       | 0    | 0        |
 | user2        | Enhet enhet2 | true          | 1       | 1    | 0        |
 
 Byte till tidsserie gör att ytdiagram 18 mån visas. Varje enhet blir en legend. Kvinnor och män visas i separata diagram.
