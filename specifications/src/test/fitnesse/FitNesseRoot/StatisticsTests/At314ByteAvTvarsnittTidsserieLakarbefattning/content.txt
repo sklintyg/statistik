@@ -27,7 +27,7 @@ Gäller STATISTIK-935, 942.
 Byte till tidsserie gör att ytdiagram 18 mån visas. Varje befattning blir en legend. Kvinnor och män visas i separata diagram.
 
 | Sjukfall i rapporten lakarbefattning som tidsserie |
-| inloggad som | år   | månad | läkargrupp     | män? | kvinnor? |
+| inloggad som | år   | månad | läkarbefattning| män? | kvinnor? |
 | user2        | 2013 | jun   | Överläkare     | 0    | 1        |
 | user2        | 2013 | jul   | Överläkare     | 0    | 1        |
 | user2        | 2013 | aug   | Överläkare     | 0    | 1        |

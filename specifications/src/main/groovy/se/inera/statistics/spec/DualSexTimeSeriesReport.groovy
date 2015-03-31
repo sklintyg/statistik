@@ -82,4 +82,12 @@ abstract class DualSexTimeSeriesReport extends Rapport {
         }
         throw new RuntimeException("Report -sjukskrivningslangd som tidsserie- is not available on national level");
     }
+
+    def getReportLakarBefattningSomTidsserie() {
+        if (inloggad) {
+            return reportsUtil.getReportLakarBefattningSomTidsserieInloggad(filter);
+        }
+        throw new RuntimeException("Report -läkarbefattning som tidsserie- is not available on national level");
+    }
+
 }

@@ -256,6 +256,10 @@ class ReportsUtil {
         return post(getVerksamhetUrlPrefix() + "/getNumberOfCasesPerLakarbefattning", filter)
     }
 
+    def getReportLakarBefattningSomTidsserieInloggad(filter) {
+        return post(getVerksamhetUrlPrefix() + "/getNumberOfCasesPerLakarbefattningSomTidsserie", filter)
+    }
+
     def getReportSjukfallPerLakareInloggad(filter) {
         return post(getVerksamhetUrlPrefix() + "/getNumberOfCasesPerLakare", filter)
     }
