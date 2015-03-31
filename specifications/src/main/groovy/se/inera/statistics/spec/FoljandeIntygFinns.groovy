@@ -51,41 +51,33 @@ class FoljandeIntygFinns {
 
     public void execute() {
         def slurper = new JsonSlurper()
-        String intygString = getClass().getResource('/intyg1.json').getText('UTF-8')
-        String observationKodString = getClass().getResource('/observationMedKod.json').getText('UTF-8')
+        String intygString = getClass().getResource('/maximalt-fk7263-internal.json').getText('UTF-8')
         def result = slurper.parseText(intygString)
 
-        result.patient.id.extension = personnr;
+        result.grundData.patient.personId = personnr;
 
-        result.skapadAv.id.extension = läkare
+        result.grundData.skapadAv.personId = läkare
+        result.grundData.skapadAv.vardenhet.enhetsid = enhet
+        result.grundData.skapadAv.vardenhet.vardgivare.vardgivarid = vardgivare
 
-        def observation = slurper.parseText(observationKodString)
-        observation.observationskod.code = diagnoskod
-        result.observationer.add(observation)
+        result.diagnosKod = diagnoskod
 
-        String observationFormagaString = getClass().getResource('/observationMedArbetsformaga.json').getText('UTF-8')
-        def observationFormaga = slurper.parseText(observationFormagaString)
-        observationFormaga.observationsperiod.from = start
-        observationFormaga.observationsperiod.tom = slut
-        observationFormaga.varde[0].quantity = arbetsförmåga
-        result.observationer.add(observationFormaga)
+        result["nedsattMed" + (100 - Integer.valueOf(arbetsförmåga))] = [
+            from: start,
+            tom: slut
+        ]
 
         if (!arbetsförmåga2.isEmpty()) {
-            def observationFormaga2 = slurper.parseText(observationFormagaString)
-            observationFormaga2.observationsperiod.from = start2
-            observationFormaga2.observationsperiod.tom = slut2
-            observationFormaga2.varde[0].quantity = arbetsförmåga2
-            result.observationer.add(observationFormaga2)
+            result["nedsattMed" + (100 - Integer.valueOf(arbetsförmåga2))] = [
+                from: start2,
+                tom: slut2
+            ]
         }
-
-        result.skapadAv.vardenhet.id.extension = enhet
-        result.skapadAv.vardenhet.vardgivare.id.extension = vardgivare
 
         def builder = new JsonBuilder(result)
         def finalIntygDataString = builder.toString()
 
         Intyg intyg = new Intyg(EventType.valueOf(intygstyp), finalIntygDataString, String.valueOf(exaktintygid), DateTimeUtils.currentTimeMillis(), län, enhetsnamn)
-
         reportsUtil.insertIntyg(intyg)
     }
 

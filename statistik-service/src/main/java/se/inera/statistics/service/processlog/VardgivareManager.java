@@ -45,7 +45,7 @@ public class VardgivareManager {
         String enhet = HSAServiceHelper.getEnhetId(hsaInfo);
         if (enhet == null) {
             hsaEnhet = false;
-            enhet = DocumentHelper.getEnhetId(document);
+            enhet = DocumentHelper.getEnhetId(document, DocumentHelper.getIntygVersion(document));
         }
         String vardgivare = HSAServiceHelper.getVardgivarId(hsaInfo);
         String enhetNamn = HSAServiceHelper.getEnhetNamn(hsaInfo);

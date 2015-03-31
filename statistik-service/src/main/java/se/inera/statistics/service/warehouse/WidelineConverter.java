@@ -25,6 +25,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import se.inera.statistics.service.helper.DocumentHelper;
 import se.inera.statistics.service.helper.HSAServiceHelper;
+import se.inera.statistics.service.processlog.Arbetsnedsattning;
 import se.inera.statistics.service.processlog.EventType;
 import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.report.util.Icd10;
@@ -42,7 +43,6 @@ public class WidelineConverter {
     public static final int HALF = 50;
     public static final int THREE_QUARTER = 75;
     public static final int FULL = 100;
-    public static final int MAX_SJUKSKRIVNING = 100;
     public static final int MAX_LENGTH_VGID = 50;
     public static final int MAX_LENGTH_ENHETNAME = 255;
     public static final int MAX_LENGTH_VARDGIVARE_NAMN = 255;
@@ -54,6 +54,7 @@ public class WidelineConverter {
     public static final int MAX_LENGTH_EFTERNAMN = 128;
     private static final int DATE20100101 = 3653; // 365*10 + 3
     private static final int MAX_YEARS_INTO_FUTURE = 5;
+    private static final int MAX_LENGTH_CORRELATION_ID = 50;
 
     @Autowired
     private Icd10 icd10;
@@ -63,16 +64,19 @@ public class WidelineConverter {
 
         String enhet = HSAServiceHelper.getEnhetId(hsa);
         String vardgivare = HSAServiceHelper.getVardgivarId(hsa);
+
+        final DocumentHelper.IntygVersion version = DocumentHelper.getIntygVersion(intyg);
+
         if (enhet == null) {
-            enhet = DocumentHelper.getEnhetId(intyg);
+            enhet = DocumentHelper.getEnhetId(intyg, version);
         }
 
-        String patient = DocumentHelper.getPersonId(intyg);
+        String patient = DocumentHelper.getPersonId(intyg, version);
 
         int kon = Kon.valueOf(DocumentHelper.getKon(intyg)).getNumberRepresentation();
         int alder = DocumentHelper.getAge(intyg);
 
-        String diagnos = DocumentHelper.getDiagnos(intyg);
+        String diagnos = DocumentHelper.getDiagnos(intyg, version);
         Kategori kategori = "unknown".equals(diagnos) ? null : icd10.findKategori(diagnos);
 
         String diagnoskapitel;
@@ -99,14 +103,14 @@ public class WidelineConverter {
 
         List<WideLine> lines = new ArrayList<>();
 
-        for (JsonNode arbetsformaga : DocumentHelper.getArbetsformaga(intyg)) {
+        for (Arbetsnedsattning arbetsnedsattning : DocumentHelper.getArbetsnedsattning(intyg, version)) {
 
             WideLine line = new WideLine();
 
-            int sjukskrivningsgrad = varde(arbetsformaga);
+            int sjukskrivningsgrad = arbetsnedsattning.getNedsattning();
 
-            LocalDate kalenderStart = new LocalDate(arbetsformaga.path("observationsperiod").path("from").asText());
-            LocalDate kalenderEnd = new LocalDate(arbetsformaga.path("observationsperiod").path("tom").asText());
+            LocalDate kalenderStart = arbetsnedsattning.getStart();
+            LocalDate kalenderEnd = arbetsnedsattning.getSlut();
 
             line.setCorrelationId(correlationId);
             line.setLakarintyg(logId);
@@ -133,13 +137,6 @@ public class WidelineConverter {
             lines.add(line);
         }
         return lines;
-    }
-
-    public int varde(JsonNode arbetsformaga) {
-        for (JsonNode varde: arbetsformaga.path("varde")) {
-            return MAX_SJUKSKRIVNING - varde.path("quantity").asInt();
-        }
-        return MAX_SJUKSKRIVNING;
     }
 
     private void checkSjukskrivningsgrad(List<String> errors, int grad) {
@@ -194,6 +191,7 @@ public class WidelineConverter {
         checkField(errors, line.getEnhet(), "Enhet");
         checkField(errors, line.getPatientid(), "Patient");
         checkField(errors, line.getLakareId(), "LäkarID");
+        checkField(errors, line.getCorrelationId(), "CorrelationId", MAX_LENGTH_CORRELATION_ID);
         checkSjukskrivningsgrad(errors, line.getSjukskrivningsgrad());
         checkStartdatum(errors, line.getStartdatum());
         checkSlutdatum(errors, line.getSlutdatum());

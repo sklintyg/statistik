@@ -1,6 +1,10 @@
 package se.inera.statistics.service
 
 import groovy.json.JsonSlurper
+import se.inera.statistics.service.helper.DocumentHelper.IntygVersion
+
+import static se.inera.statistics.service.helper.DocumentHelper.IntygVersion.VERSION1
+import static se.inera.statistics.service.helper.DocumentHelper.IntygVersion.VERSION2
 
 /**
  * Created with IntelliJ IDEA.
@@ -18,9 +22,16 @@ class JSONSource {
         result
     }
 
-    static String readTemplateAsString() {
-        def doc = new InputStreamReader(this.getClass().getResourceAsStream("/json/fk7263_M_template.json"))
-        doc.text
+    static String readTemplateAsString(IntygVersion version) {
+        if (version == VERSION1) {
+            def doc = new InputStreamReader(this.getClass().getResourceAsStream("/json/fk7263_M_template.json"))
+            doc.text
+        } else if (version == VERSION2) {
+            def doc = new InputStreamReader(this.getClass().getResourceAsStream("/json/maximalt-fk7263-internal.json"))
+            doc.text
+        } else {
+            return null
+        }
     }
 
     static String readHSASample() {

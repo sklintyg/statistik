@@ -31,6 +31,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import se.inera.statistics.service.helper.DocumentHelper;
 import se.inera.statistics.service.helper.JSONParser;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -80,9 +81,10 @@ public class HSADecorator {
     }
 
     protected HSAKey extractHSAKey(JsonNode document) {
-        String vardgivareId = getVardgivareId(document);
-        String enhetId = getEnhetId(document);
-        String lakareId = getLakarId(document);
+        final DocumentHelper.IntygVersion version = DocumentHelper.getIntygVersion(document);
+        String vardgivareId = getVardgivareId(document, version);
+        String enhetId = getEnhetId(document, version);
+        String lakareId = getLakarId(document, version);
         return new HSAKey(vardgivareId, enhetId, lakareId);
     }
 

@@ -53,7 +53,7 @@ public class WidelineManager {
             if (errors.isEmpty()) {
                 manager.persist(line);
             } else {
-                String intygid = DocumentHelper.getIntygId(intyg);
+                String intygid = DocumentHelper.getIntygId(intyg, DocumentHelper.getIntygVersion(intyg));
                 StringBuilder errorBuilder = new StringBuilder("Faulty intyg logid ").append(logId).append(" id ").append(intygid).append(" error count ").append(errCount++);
                 for (String error : errors) {
                     errorBuilder.append('\n').append(error);
