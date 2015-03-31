@@ -19,6 +19,7 @@
 package se.inera.statistics.service.queue;
 
 import org.apache.activemq.command.ActiveMQQueue;
+import org.joda.time.DateTimeUtils;
 import org.joda.time.LocalDate;
 import org.junit.Before;
 import org.junit.Test;
@@ -79,6 +80,7 @@ public class ReceiverIntegrationTest {
 
     @Before
     public void setup() {
+        DateTimeUtils.setCurrentMillisFixed(new LocalDate(2014, 3, 30).toDate().getTime());
         this.jmsTemplate = new JmsTemplate(connectionFactory);
     }
 

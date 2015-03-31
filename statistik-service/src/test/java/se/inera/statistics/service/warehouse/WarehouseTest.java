@@ -46,7 +46,7 @@ public class WarehouseTest {
 
     private HSAService hsaService = new HSAServiceMock();
 
-    private JsonNode rawDocument = JSONParser.parse(JSONSource.readTemplateAsString());
+    private JsonNode rawDocument = JSONParser.parse(JSONSource.readTemplateAsString(DocumentHelper.IntygVersion.VERSION1));
     private JsonNode hsaInfo = hsaService.getHSAInfo(new HSAKey("vardgivarid", "enhetid", "lakareid"));
     
     @Autowired

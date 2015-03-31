@@ -34,10 +34,10 @@ public class UtlatandeBuilderTest {
     }
 
     @Test
-    public void get_age() {
+    public void getAge() {
         JsonNode result = new UtlatandeBuilder().build("19121212-1212", new LocalDate("2012-12-12"), new LocalDate("2012-12-12"), "lakare", "vardenhet1", "vardgivare", "A01", 50);
 
-        assertEquals(100, DocumentHelper.getAge(DocumentHelper.anonymize(result)));
+        assertEquals(100, DocumentHelper.getAge(DocumentHelper.prepare(result)));
     }
 
 }

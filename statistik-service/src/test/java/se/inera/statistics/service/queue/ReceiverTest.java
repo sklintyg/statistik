@@ -30,6 +30,7 @@ import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import se.inera.statistics.service.JSONSource;
+import se.inera.statistics.service.helper.DocumentHelper;
 import se.inera.statistics.service.hsa.HSADecorator;
 import se.inera.statistics.service.processlog.EventType;
 import se.inera.statistics.service.processlog.ProcessLog;
@@ -54,7 +55,7 @@ public class ReceiverTest {
     // CHECKSTYLE:OFF MagicNumber
     @Test
     public void acceptedEventdataIsStored() {
-        String data = JSONSource.readTemplateAsString().toString();
+        String data = JSONSource.readTemplateAsString(DocumentHelper.IntygVersion.VERSION1).toString();
 
         receiver.accept(EventType.CREATED, data, "corr", 123L);
 

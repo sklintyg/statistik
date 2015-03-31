@@ -35,6 +35,7 @@ import se.inera.statistics.service.JSONSource;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import se.inera.statistics.service.helper.DocumentHelper;
 
 @RunWith(MockitoJUnitRunner.class)
 public class HSADecoratorTest {
@@ -51,7 +52,7 @@ public class HSADecoratorTest {
     @Test
     public void decorate_document() throws IOException {
         String docId = "aaa";
-        JsonNode doc = new ObjectMapper().readTree(JSONSource.readTemplateAsString().toString());
+        JsonNode doc = new ObjectMapper().readTree(JSONSource.readTemplateAsString(DocumentHelper.IntygVersion.VERSION1));
 
         hsaDecorator.decorate(doc, docId);
 

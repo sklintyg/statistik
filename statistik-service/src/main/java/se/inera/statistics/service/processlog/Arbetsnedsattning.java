@@ -16,28 +16,35 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package se.inera.statistics.service.demo;
+package se.inera.statistics.service.processlog;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import org.joda.time.LocalDate;
-import org.junit.Test;
-import se.inera.statistics.service.helper.DocumentHelper;
-import se.inera.statistics.service.helper.UtlatandeBuilder;
 
-import java.util.Arrays;
+public class Arbetsnedsattning {
+    private static final int MAX_NEDSATTNING = 100;
+    private final int nedsattning;
+    private final LocalDate start;
+    private final LocalDate slut;
 
-import static org.junit.Assert.assertEquals;
-
-public class UtlatandeBuilderTest {
-
-    @Test
-    public void permutateIntyg() {
-        UtlatandeBuilder builder = new UtlatandeBuilder();
-
-        final JsonNode result = builder.build("19121212-1212", new LocalDate("2013-01-01"), new LocalDate("2013-01-21"), "vardenhet", "diagnos", 50);
-
-        assertEquals("19121212-1212", result.path("patient").path("id").path("extension").asText());
-        assertEquals("diagnos", DocumentHelper.getDiagnos(result, DocumentHelper.IntygVersion.VERSION1));
+    public Arbetsnedsattning(int nedsattning, LocalDate start, LocalDate slut) {
+        this.nedsattning = nedsattning;
+        this.start = start;
+        this.slut = slut;
     }
 
+    public int getNedsattning() {
+        return nedsattning;
+    }
+
+    public int getSysselsattningsgrad() {
+        return MAX_NEDSATTNING - nedsattning;
+    }
+
+    public LocalDate getStart() {
+        return start;
+    }
+
+    public LocalDate getSlut() {
+        return slut;
+    }
 }
