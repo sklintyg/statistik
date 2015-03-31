@@ -215,7 +215,7 @@ angular.module('StatisticsApp').directive('message',
                             }
                         }
 
-                        element.html('<span>' + result + '</span>')
+                        element.html('<span>' + result + '</span>');
                     }
 
                     attr.$observe('key', function(interpolatedKey) {

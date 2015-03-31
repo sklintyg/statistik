@@ -28,19 +28,19 @@ var ControllerCommons = new function(){
         }
         scope.rows = tableData.rows;
     };
-    
+
     this.htmlsafe = function(string) {
         return string.replace(/&/g, '&amp;').replace(/</g, '&lt;');
     };
-    
+
     this.isNumber = function(n) {
         return !isNaN(parseFloat(n)) && isFinite(n);
     };
-    
+
     this.makeThousandSeparated = function(input) {
         return ControllerCommons.isNumber(input) ? input.toString().split('').reverse().join('').match(/.{1,3}/g).join('\u00A0').split('').reverse().join('') : input;
     };
-    
+
     this.getFileName = function(chartName) {
         var d = new Date();
 
@@ -48,7 +48,7 @@ var ControllerCommons = new function(){
         var month = d.getMonth() < 9 ? "0" + (d.getMonth() + 1) : "" + (d.getMonth() + 1);
         var day = d.getDate() < 10 ? "0" + d.getDate() : "" + d.getDate();
         var date = year + month + day;
-        
+
         var hour = d.getHours() < 10 ? "0" + d.getHours() : "" + d.getHours();
         var minute = d.getMinutes() < 10 ? "0" + d.getMinutes() : "" + d.getMinutes();
         var second = d.getSeconds() < 10 ? "0" + d.getSeconds() : "" + d.getSeconds();
@@ -56,7 +56,7 @@ var ControllerCommons = new function(){
 
         return String(chartName).replace(/\s+/g, "_") + "_" + date + "_" + time;
     };
-    
+
     this.exportChart = function(chart, chartName, title, diagnosFilters, legendLayout) {
         var options = {filename: ControllerCommons.getFileName(chartName)};
         var extendedChartOptions = { legend: { enabled: true } };
@@ -117,7 +117,7 @@ var ControllerCommons = new function(){
                 backgroundColor : null, //transparent
                 plotBorderWidth: 1,
                 events: { load: doneLoadingCallback }
-    },
+            },
             title : {
                 text : ''
             },
@@ -143,7 +143,7 @@ var ControllerCommons = new function(){
                 categories : _.map(chartCategories, function(name) {
                     return ControllerCommons.htmlsafe(name);
                 }),
-                title: { 
+                title: {
                 	align: 'high',
                 	style: {
                     	color: '#008391'
@@ -235,7 +235,6 @@ var ControllerCommons = new function(){
     };
 
     this.getEnhetCountText = function(enhetsCount, basedOnAlreadyInText) {
-        'use strict';
         var singleEnhet = enhetsCount === 1;
         if (basedOnAlreadyInText) {
             return enhetsCount ? " och " + enhetsCount + " enhet" + (singleEnhet ? "" : "er") + " " : " ";
@@ -253,7 +252,7 @@ var ControllerCommons = new function(){
         var icdStructureAsFlatArray = _.compose(_.flatten, icdStructureAsArray)(icdStructure);
         return _.map(diagnosFilterIds, function(diagnosId){
             var icdItem = _.find(icdStructureAsFlatArray, function(icd){
-                return icd.numericalId == diagnosId;
+                return icd.numericalId === diagnosId;
             });
             return icdItem.id + " " + icdItem.name;
         });
@@ -315,7 +314,7 @@ var ControllerCommons = new function(){
 
     this.isShowingVerksamhet = function($location) {
         return $location.path().indexOf("/verksamhet/") === 0;
-    }
+    };
 
 };
 

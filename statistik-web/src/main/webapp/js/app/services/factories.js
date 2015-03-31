@@ -28,10 +28,10 @@ angular.module('StatisticsApp').factory('statisticsData', function ($http, $root
                 failureCallback();
             }
         }).error(function (data, status, headers, config) {
-            if (status == 403) {
+            if (status === 403) {
                 window.location.replace("#/login");
             }
-            if (status == 503) {
+            if (status === 503) {
                 window.location.replace("#/serverbusy");
             }
             failureCallback();

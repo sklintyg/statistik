@@ -177,14 +177,14 @@ angular.module('StatisticsApp').controller('doubleAreaChartsCtrl', [ '$scope', '
 
             var kapitels = result.kapitels;
             for (var i = 0; i < kapitels.length; i++) {
-                if (kapitels[i].id == $routeParams.groupId) {
+                if (kapitels[i].id === $routeParams.groupId) {
                     $scope.selectedDetailsOption = kapitels[i];
                     break;
                 }
             }
             var avsnitts = result.avsnitts[$routeParams.groupId];
             for (var i = 0; i < avsnitts.length; i++) {
-                if (avsnitts[i].id == $routeParams.kategoriId) {
+                if (avsnitts[i].id === $routeParams.kategoriId) {
                     $scope.selectedDetailsOption2 = avsnitts[i];
                     break;
                 }

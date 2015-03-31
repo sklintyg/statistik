@@ -266,8 +266,8 @@ function ($scope, $rootScope, $window, $timeout, statisticsData, businessFilter,
         chartOptions.xAxis.labels.format = '{value}';
         chartOptions.yAxis.title = { text: 'Antal' };
         chartOptions.tooltip.headerFormat = '<span style="font-size: 10px">' + (tooltipHeaderPrefix || "") + '{point.key}</span><br/>';
-        chartOptions.yAxis.tickPixelInterval = 30,
-            chartOptions.legend.enabled = false;
+        chartOptions.yAxis.tickPixelInterval = 30;
+        chartOptions.legend.enabled = false;
         return new Highcharts.Chart(chartOptions);
     }
 

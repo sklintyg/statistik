@@ -40,7 +40,7 @@ angular.module('StatisticsApp').controller('directiveTmsCtrl', [ '$scope', 'tree
             }, 0);
             return acc + nodeSum;
         }, 0);
-    };
+    }
 
     function selectedLeavesCountAll() {
         return !$scope.menuOptions? 0 :self.selectedLeavesCount($scope.menuOptions);

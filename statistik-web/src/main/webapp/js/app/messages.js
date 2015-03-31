@@ -32,7 +32,6 @@ var stMessages = {
         'nav.vardenhet':'Vårdenhet',
         'nav.lakare':'Läkare',
         'nav.lakarbefattning':'Läkarbefattning',
-        'nav.lakare':'Läkare',
         'nav.lakaralder-kon':'Läkarålder och -kön',
         'nav.pagaende':'Pågående',
         'nav.sjukskrivningslangd-mer-an-90-dagar':'Mer än 90 dagar',

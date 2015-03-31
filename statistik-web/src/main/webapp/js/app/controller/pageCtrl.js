@@ -46,7 +46,7 @@ angular.module('StatisticsApp').controller('pageCtrl', [ '$scope', '$rootScope',
 
                     var v = loginInfo.defaultVerksamhet;
                     $scope.businessId = v.vardgivarId;
-                    $scope.verksamhetName = loginInfo.businesses && loginInfo.businesses.length == 1 ? v.name : (loginInfo.processledare ? v.vardgivarName : "");
+                    $scope.verksamhetName = loginInfo.businesses && loginInfo.businesses.length === 1 ? v.name : (loginInfo.processledare ? v.vardgivarName : "");
                     $scope.userName = loginInfo.name;
                     $scope.userNameWithAccess = loginInfo.name;
 
@@ -66,7 +66,7 @@ angular.module('StatisticsApp').controller('pageCtrl', [ '$scope', '$rootScope',
 
         $scope.showAlternativeView = function(name) {
             $location.path("/verksamhet/" + name);
-        }
+        };
 
     }
 ]);

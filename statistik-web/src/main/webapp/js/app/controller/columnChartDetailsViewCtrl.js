@@ -208,7 +208,7 @@ angular.module('StatisticsApp').nationalAgeGroupCurrentConfig = function () {
         return "Antal pågående sjukfall per åldersgrupp" + ControllerCommons.getEnhetCountText(enhetsCount, false) + month;
     };
     conf.chartXAxisTitle = "Åldersgrupp";
-    conf.pageHelpText = "help.age-group-current"
+    conf.pageHelpText = "help.age-group-current";
     return conf;
 };
 

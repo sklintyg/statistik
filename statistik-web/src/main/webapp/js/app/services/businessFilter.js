@@ -66,14 +66,14 @@ angular.module('StatisticsApp').factory('businessFilter', ['statisticsData', '_'
                 }
                 for (var i = 0; true; i++) {
                     if (first[propertyName].length <= i) {
-                        return -1
+                        return -1;
                     }
                     if (second[propertyName].length <= i) {
-                        return 1
+                        return 1;
                     }
                     var posFirst = swedishAlphabet.indexOf(first[propertyName][i]);
                     var posSecond = swedishAlphabet.indexOf(second[propertyName][i]);
-                    if (posFirst != posSecond) {
+                    if (posFirst !== posSecond) {
                         return posFirst - posSecond;
                     }
                 }
@@ -115,7 +115,7 @@ angular.module('StatisticsApp').factory('businessFilter', ['statisticsData', '_'
                 successCallback();
             } else {
                 statisticsData.getIcd10Structure(function (result) {
-                        businessFilter.setIcd10Structure(result)
+                        businessFilter.setIcd10Structure(result);
                         successCallback();
                     },
                     function () {
@@ -212,7 +212,7 @@ angular.module('StatisticsApp').factory('businessFilter', ['statisticsData', '_'
         };
 
         businessFilter.selectByAttribute = function (item, listOfIdsToSelect, attribute) {
-            if (_.any(listOfIdsToSelect, function(val) { return item[attribute] == val; })) {
+            if (_.any(listOfIdsToSelect, function(val) { return item[attribute] === val; })) {
                 businessFilter.selectAll(item);
             } else {
                 item.allSelected = false;
@@ -240,7 +240,7 @@ angular.module('StatisticsApp').factory('businessFilter', ['statisticsData', '_'
         };
 
         businessFilter.getSelectedLeaves = function (node) {
-            if (node.subs && node.subs.length != 0) {
+            if (node.subs && node.subs.length !== 0) {
                 return _.reduce(node.subs, function (memo, item) {
                     return memo.concat(businessFilter.getSelectedLeaves(item));
                 }, []);
