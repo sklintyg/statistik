@@ -171,7 +171,7 @@ public final class DocumentHelper {
         if (version == IntygVersion.VERSION1) {
             for (JsonNode node : document.path(OBSERVATIONER)) {
                 if (ARBETSFORMAGA_MATCHER.match(node)) {
-                    int varde = MAX_SJUKSKRIVNING - node.path("varde").path("quantity").asInt();
+                    int varde = MAX_SJUKSKRIVNING - node.path("varde").get(0).path("quantity").asInt();
                     LocalDate from = new LocalDate(node.path("observationsperiod").path("from").asText());
                     LocalDate tom = new LocalDate(node.path("observationsperiod").path("tom").asText());
                     result.add(new Arbetsnedsattning(varde, from, tom));

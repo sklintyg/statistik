@@ -210,7 +210,7 @@ public class DocumentHelperTest {
 
     @Test
     public void getArbetsnedsattning() {
-        assertEquals(100, DocumentHelper.getArbetsnedsattning(documentOldFormat, VERSION1).get(0).getNedsattning());
+        assertEquals(50, DocumentHelper.getArbetsnedsattning(documentOldFormat, VERSION1).get(0).getNedsattning());
     }
 
     // CHECKSTYLE:ON MagicNumber
