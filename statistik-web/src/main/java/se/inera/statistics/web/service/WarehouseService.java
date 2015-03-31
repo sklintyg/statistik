@@ -132,4 +132,8 @@ public class WarehouseService {
         return LakarbefattningQuery.getSjukfall(warehouse.get(vardgivarId), filter.getFilter(), range, range.getMonths(), 1, sjukfallUtil);
     }
 
+    public KonDataResponse getNumberOfCasesPerLakarbefattningSomTidsserie(SjukfallFilter filter, Range range, String vardgivarId) {
+        return LakarbefattningQuery.getSjukfallSomTidsserie(warehouse.get(vardgivarId), filter, range.getFrom(), range.getMonths(), 1, sjukfallUtil);
+    }
+
 }

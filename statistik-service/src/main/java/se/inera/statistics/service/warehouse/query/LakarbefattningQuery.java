@@ -18,10 +18,15 @@
  */
 package se.inera.statistics.service.warehouse.query;
 
+import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.HashMultiset;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Multimap;
+import org.joda.time.LocalDate;
 import se.inera.statistics.service.report.model.Kon;
+import se.inera.statistics.service.report.model.KonDataResponse;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.SimpleKonDataRow;
 import se.inera.statistics.service.report.model.SimpleKonResponse;
@@ -29,6 +34,7 @@ import se.inera.statistics.service.warehouse.Aisle;
 import se.inera.statistics.service.warehouse.Fact;
 import se.inera.statistics.service.warehouse.Lakare;
 import se.inera.statistics.service.warehouse.Sjukfall;
+import se.inera.statistics.service.warehouse.SjukfallFilter;
 import se.inera.statistics.service.warehouse.SjukfallUtil;
 
 import java.util.ArrayList;
@@ -111,6 +117,38 @@ public final class LakarbefattningQuery {
             }
         }
         return lakarbefattnings;
+    }
+
+    public static KonDataResponse getSjukfallSomTidsserie(Aisle aisle, SjukfallFilter filter, LocalDate start, int periods, int periodLength, SjukfallUtil sjukfallUtil) {
+        final ArrayList<Map.Entry<Integer, String>> ranges = new ArrayList<>(LAKARBEFATTNINGS.entrySet());
+        final List<String> names = Lists.transform(ranges, new Function<Map.Entry<Integer, String>, String>() {
+            @Override
+            public String apply(Map.Entry<Integer, String> entry) {
+                return entry.getValue();
+            }
+        });
+        final List<Integer> ids = Lists.transform(ranges, new Function<Map.Entry<Integer, String>, Integer>() {
+            @Override
+            public Integer apply(Map.Entry<Integer, String> entry) {
+                return entry.getKey();
+            }
+        });
+        final CounterFunction<Integer> counterFunction = new CounterFunction<Integer>() {
+            @Override
+            public void addCount(Sjukfall sjukfall, HashMultiset<Integer> counter) {
+                for (Lakare lakare : sjukfall.getLakare()) {
+                    final int[] befattnings = lakare.getBefattnings();
+                    for (int befattningId : befattnings) {
+                        counter.add(befattningId);
+                    }
+                    if (befattnings.length == 0) {
+                        counter.add(NO_BEFATTNING_CODE);
+                    }
+                }
+            }
+        };
+        final KonDataResponse response = sjukfallUtil.calculateKonDataResponse(aisle, filter, start, periods, periodLength, names, ids, counterFunction);
+        return KonDataResponse.createNewWithoutEmptyGroups(response.getGroups(), response.getRows());
     }
 
 }

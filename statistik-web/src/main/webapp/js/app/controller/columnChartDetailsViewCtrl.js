@@ -279,6 +279,7 @@ angular.module('StatisticsApp').casesPerLakarbefattningConfig = function () {
     };
     conf.chartXAxisTitle = "Läkarbefattning";
     conf.chartFootnotes = ["alert.lakare-befattning.information"];
+    conf.alternativeView = "sjukfallperlakarbefattningtidsserie";
     return conf;
 };
 

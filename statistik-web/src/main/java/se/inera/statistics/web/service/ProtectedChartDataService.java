@@ -598,6 +598,38 @@ public class ProtectedChartDataService {
         return CsvConverter.getCsvResponse(simpleDetailsData.getTableData(), "export.csv");
     }
 
+    @POST
+    @Path("getNumberOfCasesPerLakarbefattningSomTidsserie")
+    @Produces({MediaType.APPLICATION_JSON })
+    @Consumes({ MediaType.APPLICATION_JSON })
+    @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
+    @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
+    public Response getNumberOfCasesPerLakarbefattningSomTidsserie(@Context HttpServletRequest request, @QueryParam("filter") String filterHash) {
+        DualSexStatisticsData data = getNumberOfCasesPerLakarbefattningSomTidsserieData(request, filterHash);
+        return Response.ok(data).build();
+    }
+
+    private DualSexStatisticsData getNumberOfCasesPerLakarbefattningSomTidsserieData(HttpServletRequest request, String filterHash) {
+        LOG.info("Calling getNumberOfCasesPerLakarbefattningSomTidsserie with filterHash: {}", filterHash);
+        final Range range = new Range(18);
+        Filter filter = getFilter(request, filterHash);
+        KonDataResponse ageGroups = warehouse.getNumberOfCasesPerLakarbefattningSomTidsserie(filter.getPredicate(), range, getSelectedVgIdForLoggedInUser(request));
+        DualSexStatisticsData result = new SimpleMultiDualSexConverter().convert(ageGroups, range, filter);
+        return result;
+    }
+
+    @GET
+    @Path("getNumberOfCasesPerLakarbefattningSomTidsserie/csv")
+    @Produces({ TEXT_UTF_8 })
+    @Consumes({ MediaType.APPLICATION_JSON })
+    @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
+    @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
+    public Response getNumberOfCasesPerLakarbefattningSomTidsserieAsCsv(@Context HttpServletRequest request, @QueryParam("filter") String filterHash) {
+        LOG.info("Calling getNumberOfCasesPerLakarbefattningSomTidsserieAsCsv with filterHash: {}", filterHash);
+        final DualSexStatisticsData simpleDetailsData = getNumberOfCasesPerLakarbefattningSomTidsserieData(request, filterHash);
+        return CsvConverter.getCsvResponse(simpleDetailsData.getTableData(), "export.csv");
+    }
+
     /**
      * Get ongoing sjukfall grouped by age and sex.
      */

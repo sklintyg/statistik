@@ -418,3 +418,17 @@ angular.module('StatisticsApp').sickLeaveLengthTimeSeriesConfig = function () {
     conf.alternativeView = "sjukskrivningslangd";
     return conf;
 };
+
+angular.module('StatisticsApp').casesPerLakarbefattningTidsserieConfig = function () {
+    var conf = {};
+    conf.dataFetcherVerksamhet = "getSjukfallPerLakarbefattningTidsserieVerksamhet";
+    conf.exportTableUrlVerksamhet = function () {
+        return "api/verksamhet/getNumberOfCasesPerLakarbefattningSomTidsserie/csv";
+    };
+    conf.title = function (period, enhetsCount) {
+        return "Antal sjukfall baserat på läkarbefattning" + ControllerCommons.getEnhetCountText(enhetsCount, true) + period;
+    };
+    conf.chartFootnotes = ["alert.lakare-befattning.information"];
+    conf.alternativeView = "sjukfallperlakarbefattning";
+    return conf;
+};

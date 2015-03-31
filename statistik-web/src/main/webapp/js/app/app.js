@@ -216,6 +216,12 @@ var app = angular.module('StatisticsApp', [ 'ngRoute', 'ngCookies', 'ngSanitize'
             controllerAs: 'VerksamhetLakarbefattningCtrl',
             resolve: { config: app.casesPerLakarbefattningConfig },
             title: 'Sjukfall per läkarbefattning'
+        }).when('/verksamhet/sjukfallperlakarbefattningtidsserie', {
+            templateUrl: 'views/detailsView.html',
+            controller: 'doubleAreaChartsCtrl',
+            controllerAs: 'VerksamhetLakarbefattningCtrl',
+            resolve: { config: app.casesPerLakarbefattningTidsserieConfig },
+            title: 'Sjukfall per läkarbefattning'
         }).when('/om/tjansten', {
             templateUrl: 'views/about/about.html',
             controllerAs: 'AboutServiceCtrl',

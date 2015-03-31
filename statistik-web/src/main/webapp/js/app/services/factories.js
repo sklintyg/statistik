@@ -172,6 +172,10 @@ angular.module('StatisticsApp').factory('statisticsData', function ($http, $root
         makeRequestVerksamhet("getNumberOfCasesPerLakarbefattning", successCallback, failureCallback);
     };
 
+    factory.getSjukfallPerLakarbefattningTidsserieVerksamhet = function (successCallback, failureCallback) {
+        makeRequestVerksamhet("getNumberOfCasesPerLakarbefattningSomTidsserie", successCallback, failureCallback);
+    };
+
     factory.getCompareDiagnosisVerksamhet = function (successCallback, failureCallback, diagnosisToCompare) {
         makeRequestVerksamhet("getJamforDiagnoserStatistik/" + diagnosisToCompare, successCallback, failureCallback);
     };
