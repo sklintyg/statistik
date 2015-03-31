@@ -117,10 +117,19 @@ public class WidelineConverterTest {
     }
 
     @Test
+    public void errorOnLongCorrelationId() throws Exception {
+        wideLine.setCorrelationId("012345678901234567890123456789012345678901234567890");
+        List<String> errors = converter.validate(wideLine);
+
+        LOG.error("Error message: {}", errors);
+        assertEquals("N:o of errors: " +  errors.size(), 1, errors.size());
+    }
+
+    @Test
     public void allErrorsAreReported() throws Exception {
         List<String> errors = converter.validate(new WideLine());
 
         LOG.error("Error message: {}", errors);
-        assertEquals(7, errors.size());
+        assertEquals(8, errors.size());
     }
 }

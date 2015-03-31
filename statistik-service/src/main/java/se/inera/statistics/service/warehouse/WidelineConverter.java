@@ -54,6 +54,7 @@ public class WidelineConverter {
     public static final int MAX_LENGTH_EFTERNAMN = 128;
     private static final int DATE20100101 = 3653; // 365*10 + 3
     private static final int MAX_YEARS_INTO_FUTURE = 5;
+    private static final int MAX_LENGTH_CORRELATION_ID = 50;
 
     @Autowired
     private Icd10 icd10;
@@ -190,6 +191,7 @@ public class WidelineConverter {
         checkField(errors, line.getEnhet(), "Enhet");
         checkField(errors, line.getPatientid(), "Patient");
         checkField(errors, line.getLakareId(), "LäkarID");
+        checkField(errors, line.getCorrelationId(), "CorrelationId", MAX_LENGTH_CORRELATION_ID);
         checkSjukskrivningsgrad(errors, line.getSjukskrivningsgrad());
         checkStartdatum(errors, line.getStartdatum());
         checkSlutdatum(errors, line.getSlutdatum());

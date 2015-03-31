@@ -62,13 +62,13 @@ class FoljandeIntygFinns {
 
         result.diagnosKod = diagnoskod
 
-        result["nedsattMed" + (100 - arbetsförmåga)] = [
+        result["nedsattMed" + (100 - Integer.valueOf(arbetsförmåga))] = [
             from: start,
             tom: slut
         ]
 
         if (!arbetsförmåga2.isEmpty()) {
-            result["nedsattMed" + (100 - arbetsförmåga2)] = [
+            result["nedsattMed" + (100 - Integer.valueOf(arbetsförmåga2))] = [
                 from: start2,
                 tom: slut2
             ]

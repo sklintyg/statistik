@@ -92,7 +92,7 @@ public final class DocumentHelper {
         if (IntygVersion.VERSION1 == version) {
             return document.path("skapadAv").path("vardenhet").path("vardgivare").path("id").path(EXTENSION).textValue();
         } else {
-            return document.path("grundData").path("skapadAv").path("vardgivare").path("vardgivarid").textValue();
+            return document.path("grundData").path("skapadAv").path("vardenhet").path("vardgivare").path("vardgivarid").textValue();
         }
     }
 
@@ -101,7 +101,8 @@ public final class DocumentHelper {
             final String result = document.path("skapadAv").path("vardenhet").path("id").path(EXTENSION).textValue();
             return result != null ? result : UTANENHETSID;
         } else {
-            return document.path("grundData").path("skapadAv").path("vardenhet").path("enhetsid").textValue();
+            final String result = document.path("grundData").path("skapadAv").path("vardenhet").path("enhetsid").textValue();
+            return result != null ? result : UTANENHETSID;
         }
     }
 
@@ -145,7 +146,24 @@ public final class DocumentHelper {
             }
             return to;
         } else {
-            return document.path("giltighet").path("tom").textValue();
+            final int startYear = 2000;
+            LocalDate date = new LocalDate(startYear, 1, 1);
+            if (document.has("nedsattMed25")) {
+                date = new LocalDate(document.path("nedsattMed25").path("tom").asText());
+            }
+            if (document.has("nedsattMed50")) {
+                LocalDate tom = new LocalDate(document.path("nedsattMed50").path("tom").asText());
+                date = tom.isAfter(date) ? tom : date;
+            }
+            if (document.has("nedsattMed75")) {
+                LocalDate tom = new LocalDate(document.path("nedsattMed75").path("tom").asText());
+                date = tom.isAfter(date) ? tom : date;
+            }
+            if (document.has("nedsattMed100")) {
+                LocalDate tom = new LocalDate(document.path("nedsattMed100").path("tom").asText());
+                date = tom.isAfter(date) ? tom : date;
+            }
+            return date == null ? "2000-01-01" : date.toString();
         }
     }
 

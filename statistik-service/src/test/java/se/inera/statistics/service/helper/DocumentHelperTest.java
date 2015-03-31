@@ -73,13 +73,33 @@ public class DocumentHelperTest {
     }
 
     @Test
-    public void getEnhet() {
+    public void getEnhetOld() {
         assertEquals("enhetId", DocumentHelper.getEnhetId(documentOldFormat, VERSION1));
     }
 
     @Test
-    public void getDiagnos() {
+    public void getEnhetVersion2() {
+        assertEquals("VardenhetY", DocumentHelper.getEnhetId(documentVersion2, VERSION2));
+    }
+
+    @Test
+    public void getDiagnosOld() {
         assertEquals("H81", DocumentHelper.getDiagnos(documentOldFormat, VERSION1));
+    }
+
+    @Test
+    public void getDiagnosVersion2() {
+        assertEquals("S47", DocumentHelper.getDiagnos(documentVersion2, VERSION2));
+    }
+
+    @Test
+    public void getVardgivareIdOld() {
+        assertEquals("VardgivarId", DocumentHelper.getVardgivareId(documentOldFormat, VERSION1));
+    }
+
+    @Test
+    public void getVardgivareIdVersion2() {
+        assertEquals("VardgivarId", DocumentHelper.getVardgivareId(documentVersion2, VERSION2));
     }
 
     @Test
@@ -107,7 +127,7 @@ public class DocumentHelperTest {
     }
 
     @Test
-    public void processor_extract_alder_from_intyg_with_samordningsnummer() {
+    public void processorExtractAlderFromIntygWithSamordningsnummer() {
         String personId = "19121272-1212";
         LocalDate date = new LocalDate(0L); // 1970
 
@@ -117,7 +137,7 @@ public class DocumentHelperTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void processor_extract_alder_from_intyg_with_out_of_range_id_returns_no_age() {
+    public void processorExtractAlderFromIntygWithOutOfRangeIdReturnsNoAge() {
         String personId = "19121312-1212";
         LocalDate date = new LocalDate(0L); // 1970
 
@@ -162,14 +182,14 @@ public class DocumentHelperTest {
     }
 
     @Test
-    public void getForstaDag() {
+    public void getForstaDagOld() {
         String date = DocumentHelper.getForstaNedsattningsdag(documentOldFormat, VERSION1);
 
         assertEquals("2011-01-24", date);
     }
 
     @Test
-    public void getSistaDag() {
+    public void getSistaDagOld() {
         String date = DocumentHelper.getSistaNedsattningsdag(documentOldFormat, VERSION1);
 
         assertEquals("2011-02-20", date);
@@ -190,8 +210,13 @@ public class DocumentHelperTest {
     }
 
     @Test
-    public void getIntygId() {
+    public void getIntygIdOld() {
         assertEquals("80832895-5a9c-450a-bd74-08af43750788", DocumentHelper.getIntygId(documentOldFormat, VERSION1));
+    }
+
+    @Test
+    public void getIntygIdVersion2() {
+        assertEquals("80832895-5a9c-450a-bd74-08af43750788", DocumentHelper.getIntygId(documentVersion2, VERSION2));
     }
 
     @Test
@@ -206,6 +231,20 @@ public class DocumentHelperTest {
         String id = DocumentHelper.getPersonId(documentVersion2, VERSION2);
 
         assertEquals("19121212-1212", id);
+    }
+
+    @Test
+    public void getLakarIdOld() {
+        String id = DocumentHelper.getLakarId(documentOldFormat, VERSION1);
+
+        assertEquals("Personal HSA-ID", id);
+    }
+
+    @Test
+    public void getLakarIdVersion2() {
+        String id = DocumentHelper.getLakarId(documentVersion2, VERSION2);
+
+        assertEquals("Personal HSA-ID", id);
     }
 
     @Test
