@@ -211,18 +211,18 @@ public final class SjukfallQuery {
                 return lakarNamn(lakare);
             }
         });
-        final List<Long> ids = Lists.transform(allLakaresForVardgivare, new Function<Lakare, Long>() {
+        final List<Integer> ids = Lists.transform(allLakaresForVardgivare, new Function<Lakare, Integer>() {
             @Override
-            public Long apply(Lakare lakare) {
-                return lakare.getId();
+            public Integer apply(Lakare lakare) {
+                return Warehouse.getNumLakarId(lakare.getLakareId());
             }
         });
-        final CounterFunction<Long> counterFunction = new CounterFunction<Long>() {
+        final CounterFunction<Integer> counterFunction = new CounterFunction<Integer>() {
             @Override
-            public void addCount(Sjukfall sjukfall, HashMultiset<Long> counter) {
+            public void addCount(Sjukfall sjukfall, HashMultiset<Integer> counter) {
                 sjukfall.getLakare();
                 for (se.inera.statistics.service.warehouse.Lakare lakare : sjukfall.getLakare()) {
-                    counter.add((long) lakare.getId());
+                    counter.add(lakare.getId());
                 }
             }
         };
