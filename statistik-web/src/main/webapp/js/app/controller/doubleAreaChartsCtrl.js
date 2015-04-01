@@ -432,3 +432,17 @@ angular.module('StatisticsApp').casesPerLakarbefattningTidsserieConfig = functio
     conf.alternativeView = "sjukfallperlakarbefattning";
     return conf;
 };
+
+angular.module('StatisticsApp').casesPerLakareTimeSeriesConfig = function () {
+    var conf = {};
+    conf.dataFetcherVerksamhet = "getSjukfallPerLakareSomTidsserieVerksamhet";
+    conf.exportTableUrlVerksamhet = function () {
+        return "api/verksamhet/getSjukfallPerLakareSomTidsserie/csv";
+    };
+    conf.title = function (period, enhetsCount) {
+        return "Antal sjukfall per läkare" + ControllerCommons.getEnhetCountText(enhetsCount, false) + period;
+    };
+    conf.alternativeView = "sjukfallperlakare";
+    return conf;
+};
+

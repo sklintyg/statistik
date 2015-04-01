@@ -205,13 +205,13 @@ public class SjukfallUtil {
     }
 
     //CHECKSTYLE:OFF ParameterNumberCheck
-    public <T> KonDataResponse calculateKonDataResponse(Aisle aisle, SjukfallFilter filter, LocalDate start, int periods, int periodSize, List<String> groupNames, List<T> groupIds, CounterFunction<Integer> counterFunction) {
+    public <T, V> KonDataResponse calculateKonDataResponse(Aisle aisle, SjukfallFilter filter, LocalDate start, int periods, int periodSize, List<String> groupNames, List<T> groupIds, CounterFunction<V> counterFunction) {
         List<KonDataRow> rows = new ArrayList<>();
         for (SjukfallGroup sjukfallGroup : sjukfallGrupper(start, periods, periodSize, aisle, filter)) {
-            final HashMultiset<Integer> maleCounter = HashMultiset.create();
-            final HashMultiset<Integer> femaleCounter = HashMultiset.create();
+            final HashMultiset<V> maleCounter = HashMultiset.create();
+            final HashMultiset<V> femaleCounter = HashMultiset.create();
             for (Sjukfall sjukfall : sjukfallGroup.getSjukfall()) {
-                final HashMultiset<Integer> currentCounter = Kon.Female.equals(sjukfall.getKon()) ? femaleCounter : maleCounter;
+                final HashMultiset<V> currentCounter = Kon.Female.equals(sjukfall.getKon()) ? femaleCounter : maleCounter;
                 counterFunction.addCount(sjukfall, currentCounter);
             }
             List<KonField> list = new ArrayList<>(groupIds.size());

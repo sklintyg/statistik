@@ -262,6 +262,37 @@ public class ProtectedChartDataService {
         return CsvConverter.getCsvResponse(data.getTableData(), "export.csv");
     }
 
+    @POST
+    @Path("getSjukfallPerLakareSomTidsserie")
+    @Produces({ MediaType.APPLICATION_JSON })
+    @Consumes({ MediaType.APPLICATION_JSON })
+    @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
+    @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
+    public Response getNumberOfCasesPerLakareSomTidsserie(@Context HttpServletRequest request, @QueryParam("filter") String filterHash) {
+        LOG.info("Calling getNumberOfCasesPerLakareSomTidsserie with filterHash: {}", filterHash);
+        final DualSexStatisticsData result = getNumberOfCasesPerLakareSomTidsserieData(request, filterHash);
+        return Response.ok(result).build();
+    }
+
+    private DualSexStatisticsData getNumberOfCasesPerLakareSomTidsserieData(HttpServletRequest request, String filterHash) {
+        final Range range = new Range(18);
+        Filter filter = getFilter(request, filterHash);
+        KonDataResponse casesPerLakare = warehouse.getCasesPerLakareSomTidsserie(filter.getPredicate(), range, getSelectedVgIdForLoggedInUser(request));
+        return new SimpleMultiDualSexConverter().convert(casesPerLakare, range, filter);
+    }
+
+    @GET
+    @Path("getSjukfallPerLakareSomTidsserie/csv")
+    @Produces({ TEXT_UTF_8 })
+    @Consumes({ MediaType.APPLICATION_JSON })
+    @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
+    @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
+    public Response getNumberOfCasesPerLakareSomTidsserieAsCsv(@Context HttpServletRequest request, @QueryParam("filter") String filterHash) {
+        LOG.info("Calling getNumberOfCasesPerLakareAsCsv with filterHash: {}", filterHash);
+        final DualSexStatisticsData data = getNumberOfCasesPerLakareSomTidsserieData(request, filterHash);
+        return CsvConverter.getCsvResponse(data.getTableData(), "export.csv");
+    }
+
     /**
      * Get sjukfall per diagnoskapitel and per diagnosgrupp. The chart data is grouped by diagnosgrupp,
      * the table data by diagnoskapitel. Diagnosgrupp is a diagnoskapitel or a list of diagnoskapitel.

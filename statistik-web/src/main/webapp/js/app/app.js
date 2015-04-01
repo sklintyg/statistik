@@ -204,6 +204,12 @@ var app = angular.module('StatisticsApp', [ 'ngRoute', 'ngCookies', 'ngSanitize'
             controllerAs: 'VerksamhetCasesPerLakareCtrl',
             resolve: { config: app.casesPerLakareConfig },
             title: 'Antal sjukfall per läkare'
+        }).when('/verksamhet/sjukfallperlakaretidsserie', {
+            templateUrl: 'views/detailsView.html',
+            controller: 'doubleAreaChartsCtrl',
+            controllerAs: 'VerksamhetCasesPerLakareCtrl',
+            resolve: { config: app.casesPerLakareTimeSeriesConfig },
+            title: 'Antal sjukfall per läkare'
         }).when('/verksamhet/sjukfallperlakaresalderochkon', {
             templateUrl: 'views/detailsView.html',
             controller: 'columnChartDetailsViewCtrl',

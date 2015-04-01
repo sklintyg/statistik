@@ -251,6 +251,7 @@ angular.module('StatisticsApp').casesPerLakareConfig = function () {
         return "Antal sjukfall per läkare" + ControllerCommons.getEnhetCountText(enhetsCount, false) + period;
     };
     conf.chartXAxisTitle = "Läkare";
+    conf.alternativeView = "sjukfallperlakaretidsserie";
     return conf;
 };
 

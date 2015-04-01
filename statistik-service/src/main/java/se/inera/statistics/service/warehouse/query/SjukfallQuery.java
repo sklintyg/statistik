@@ -203,4 +203,31 @@ public final class SjukfallQuery {
         return sjukfallUtil.calculateKonDataResponse(aisle, filter, start, periods, periodSize, names, ids, counterFunction);
     }
 
+    public KonDataResponse getSjukfallPerLakareSomTidsserie(Aisle aisle, SjukfallFilter filter, LocalDate start, int periods, int periodLength) {
+        final List<Lakare> allLakaresForVardgivare = lakareManager.getLakares(aisle.getVardgivareId());
+        final List<String> names = Lists.transform(allLakaresForVardgivare, new Function<Lakare, String>() {
+            @Override
+            public String apply(Lakare lakare) {
+                return lakarNamn(lakare);
+            }
+        });
+        final List<Long> ids = Lists.transform(allLakaresForVardgivare, new Function<Lakare, Long>() {
+            @Override
+            public Long apply(Lakare lakare) {
+                return lakare.getId();
+            }
+        });
+        final CounterFunction<Long> counterFunction = new CounterFunction<Long>() {
+            @Override
+            public void addCount(Sjukfall sjukfall, HashMultiset<Long> counter) {
+                sjukfall.getLakare();
+                for (se.inera.statistics.service.warehouse.Lakare lakare : sjukfall.getLakare()) {
+                    counter.add((long) lakare.getId());
+                }
+            }
+        };
+
+        return sjukfallUtil.calculateKonDataResponse(aisle, filter, start, periods, periodLength, names, ids, counterFunction);
+    }
+
 }

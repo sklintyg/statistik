@@ -121,7 +121,11 @@ public class WarehouseService {
     }
 
     public SimpleKonResponse<SimpleKonDataRow> getCasesPerLakare(SjukfallFilter filter, Range range, String vardgivarId) {
-        return sjukfallQuery.getSjukfallPerLakare(vardgivarId, warehouse.get(vardgivarId), filter.getFilter(), range, range.getMonths(), 1);
+        return sjukfallQuery.getSjukfallPerLakare(vardgivarId, warehouse.get(vardgivarId), filter.getFilter(), range, 1, range.getMonths());
+    }
+
+    public KonDataResponse getCasesPerLakareSomTidsserie(SjukfallFilter filter, Range range, String vardgivarId) {
+        return sjukfallQuery.getSjukfallPerLakareSomTidsserie(warehouse.get(vardgivarId), filter, range.getFrom(), range.getMonths(), 1);
     }
 
     public SimpleKonResponse<SimpleKonDataRow> getCasesPerDoctorAgeAndGender(SjukfallFilter filter, Range range, String vardgivarId) {
