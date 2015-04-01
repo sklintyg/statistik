@@ -119,9 +119,11 @@ public class HSAServiceImpl implements HSAService {
         root.put("befattning", personal.getPaTitleCodes() != null ? personal.getPaTitleCodes().getPaTitleCode() : null);
         root.put("specialitet", personal.getSpecialityCodes() != null ? personal.getSpecialityCodes().getSpecialityCode() : null);
         root.put("yrkesgrupp", personal.getHsaTitles() != null ? personal.getHsaTitles().getHsaTitle() : null);
-        root.put("skyddad", personal.isIsProtectedPerson());
-        root.put("tilltalsnamn", getFornamn(names, personal.isIsProtectedPerson()));
-        root.put("efternamn", getMellanOchEfternamn(names, personal.isIsProtectedPerson()));
+
+        final boolean isProtectedPerson = personal.isIsProtectedPerson() == null ? false : personal.isIsProtectedPerson();
+        root.put("skyddad", isProtectedPerson);
+        root.put("tilltalsnamn", getFornamn(names, isProtectedPerson));
+        root.put("efternamn", getMellanOchEfternamn(names, isProtectedPerson));
         return root;
     }
 
