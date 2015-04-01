@@ -1,0 +1,23 @@
+!contents -R2 -g -p -f -h
+
+Testet visar att om det finns två intyg med exakt samma datum för samma patient, väljs sjukskrivningsgraden i intyget som står list i listan.
+
+!3 Givet att:
+| script | dagens datum | 2014-11-28 |
+
+| script | troskel varde | 0 |
+
+| Enbart foljande intyg finns |
+| personnr | diagnoskod | start    | slut       | arbetsförmåga | enhet |
+| 19790407-1295 | G01 | 2014-04-04 | 2014-05-16 | 0             | enhet1 |
+| 19790407-1295 | G01 | 2014-04-04 | 2014-05-16 | 50            | enhet1 |
+
+!3 Då gäller:
+
+
+| Sjukfall i rapporten sjukskrivningsgrad |
+| inloggad som | år   | månad | sjukskrivningsgrad | män? | kvinnor? | kommentar |
+| user1        | 2014 | apr   | 100                | 0    | 0        | |
+| user1        | 2014 | maj   | 100                | 0    | 0        | |
+| user1        | 2014 | apr   | 50                 | 1    | 0        | |
+| user1        | 2014 | maj   | 50                 | 1    | 0        | |
