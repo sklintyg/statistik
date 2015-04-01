@@ -308,4 +308,9 @@ class ReportsUtil {
     def getReportSjukskrivningslangdSomTidsserieInloggad(FilterData filter) {
         return post(getVerksamhetUrlPrefix() + "/getSickLeaveLengthTimeSeries", filter)
     }
+
+    def getReportSjukfallPerLakareSomTidsserieInloggad(FilterData filter) {
+        return post(getVerksamhetUrlPrefix() + "/getSjukfallPerLakareSomTidsserie", filter)
+    }
+
 }
