@@ -125,4 +125,10 @@ abstract class SimpleDetailsReport extends Rapport {
         return reportsUtil.getReportEnskiltDiagnoskapitel(kapitel);
     }
 
+    def getReportSjukfallTotaltTvarsnitt() {
+        if (inloggad) {
+            return reportsUtil.getReportAntalIntygSomTvarsnittInloggad(filter);
+        }
+        throw new RuntimeException("Report -Sjukfall per läkare- is not available on national level");
+    }
 }

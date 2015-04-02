@@ -317,4 +317,8 @@ class ReportsUtil {
         return post(getVerksamhetUrlPrefix() + "/getCasesPerDoctorAgeAndGenderTimeSeriesStatistics", filter)
     }
 
+    def getReportAntalIntygSomTvarsnittInloggad(FilterData filter) {
+        return post(getVerksamhetUrlPrefix() + "/getNumberOfCasesPerMonthTvarsnitt", filter)
+    }
+
 }
