@@ -216,6 +216,12 @@ var app = angular.module('StatisticsApp', [ 'ngRoute', 'ngCookies', 'ngSanitize'
             controllerAs: 'VerksamhetLakaresAlderOchKonCtrl',
             resolve: { config: app.casesPerLakaresAlderOchKonConfig },
             title: 'Sjukfall per läkarens ålder och kön'
+        }).when('/verksamhet/sjukfallperlakaresalderochkontidsserie', {
+            templateUrl: 'views/detailsView.html',
+            controller: 'doubleAreaChartsCtrl',
+            controllerAs: 'VerksamhetLakaresAlderOchKonCtrl',
+            resolve: { config: app.casesPerLakaresAlderOchKonTidsserieConfig },
+            title: 'Sjukfall per läkarens ålder och kön'
         }).when('/verksamhet/sjukfallperlakarbefattning', {
             templateUrl: 'views/detailsView.html',
             controller: 'columnChartDetailsViewCtrl',

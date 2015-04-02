@@ -62,7 +62,15 @@ public class KonDataResponse {
         return "{\"KonDataResponse\":{" + "\"groups\":" + groups + ", \"rows\":" + rows + "}}";
     }
 
-    public static KonDataResponse createNewWithoutEmptyGroups(List<String> groups, List<KonDataRow> rows) {
+    public static KonDataResponse createNewWithoutEmptyGroups(KonDataResponse konDataResponse) {
+        return createNewWithoutEmptyGroups(konDataResponse.getGroups(), konDataResponse.getRows(), Collections.<String>emptyList());
+    }
+
+    public static KonDataResponse createNewWithoutEmptyGroups(KonDataResponse konDataResponse, List<String> groupsToRetainEvenWhenEmpty) {
+        return createNewWithoutEmptyGroups(konDataResponse.getGroups(), konDataResponse.getRows(), groupsToRetainEvenWhenEmpty);
+    }
+
+    public static KonDataResponse createNewWithoutEmptyGroups(List<String> groups, List<KonDataRow> rows, List<String> groupsToRetainEvenWhenEmpty) {
         if (groups == null || rows == null) {
             return new KonDataResponse(Collections.<String>emptyList(), Collections.<KonDataRow>emptyList());
         }
@@ -70,7 +78,7 @@ public class KonDataResponse {
         final List<List<KonField>> rowsDataFiltered = initRowsDataFiltered(rows);
 
         for (int i = 0; i < groups.size(); i++) {
-            if (calculateSumForIndex(rows, i) > 0) {
+            if (groupsToRetainEvenWhenEmpty.contains(groups.get(i)) || calculateSumForIndex(rows, i) > 0) {
                 groupsFiltered.add(groups.get(i));
                 for (int j = 0; j < rows.size(); j++) {
                     final KonField konField = rows.get(j).getData().get(i);

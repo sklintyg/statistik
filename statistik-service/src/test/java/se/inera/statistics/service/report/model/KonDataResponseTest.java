@@ -21,6 +21,7 @@ package se.inera.statistics.service.report.model;
 import org.junit.Test;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -34,7 +35,7 @@ public class KonDataResponseTest {
         final List<KonDataRow> rows = null;
 
         //When
-        final KonDataResponse result = KonDataResponse.createNewWithoutEmptyGroups(groups, rows);
+        final KonDataResponse result = KonDataResponse.createNewWithoutEmptyGroups(groups, rows, Collections.<String>emptyList());
 
         //Then
         assertTrue(result.getGroups().isEmpty());
@@ -48,7 +49,7 @@ public class KonDataResponseTest {
         final List<KonDataRow> rows = Arrays.asList(new KonDataRow("KDR1", Arrays.asList(new KonField(2, 3))));
 
         //When
-        final KonDataResponse result = KonDataResponse.createNewWithoutEmptyGroups(groups, rows);
+        final KonDataResponse result = KonDataResponse.createNewWithoutEmptyGroups(groups, rows, Collections.<String>emptyList());
 
         //Then
         assertEquals(1, result.getGroups().size());
@@ -65,7 +66,7 @@ public class KonDataResponseTest {
                 new KonDataRow("KDR3", Arrays.asList(new KonField(2, 3), new KonField(0, 0), new KonField(4, 5))));
 
         //When
-        final KonDataResponse result = KonDataResponse.createNewWithoutEmptyGroups(groups, rows);
+        final KonDataResponse result = KonDataResponse.createNewWithoutEmptyGroups(groups, rows, Collections.<String>emptyList());
 
         //Then
         assertEquals(2, result.getGroups().size());
@@ -77,5 +78,27 @@ public class KonDataResponseTest {
         }
     }
 
+    @Test
+    public void testCreateNewWithoutEmptyGroupsEmptyGroupRemovedButSpecifiedEmptyGroupKept() throws Exception {
+        //Given
+        final List<String> groups = Arrays.asList("ett", "empty", "two", "empty2");
+        final List<KonDataRow> rows = Arrays.asList(
+                new KonDataRow("KDR1", Arrays.asList(new KonField(2, 3), new KonField(0, 0), new KonField(4, 5), new KonField(0, 0))),
+                new KonDataRow("KDR2", Arrays.asList(new KonField(2, 3), new KonField(0, 0), new KonField(4, 5), new KonField(0, 0))),
+                new KonDataRow("KDR3", Arrays.asList(new KonField(2, 3), new KonField(0, 0), new KonField(4, 5), new KonField(0, 0))));
+
+        //When
+        final KonDataResponse result = KonDataResponse.createNewWithoutEmptyGroups(groups, rows, Arrays.asList("empty2"));
+
+        //Then
+        assertEquals(3, result.getGroups().size());
+        assertEquals("ett", result.getGroups().get(0));
+        assertEquals("two", result.getGroups().get(1));
+        assertEquals("empty2", result.getGroups().get(2));
+        assertEquals(3, result.getRows().size());
+        for (KonDataRow konDataRow : result.getRows()) {
+            assertEquals(3, konDataRow.getData().size());
+        }
+    }
 
 }

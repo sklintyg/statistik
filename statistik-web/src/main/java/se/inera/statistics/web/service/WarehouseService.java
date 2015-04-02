@@ -132,6 +132,10 @@ public class WarehouseService {
         return LakaresAlderOchKonQuery.getSjukfallPerLakaresAlderOchKon(warehouse.get(vardgivarId), filter.getFilter(), range, range.getMonths(), 1, sjukfallUtil);
     }
 
+    public KonDataResponse getCasesPerDoctorAgeAndGenderTimeSeries(SjukfallFilter filter, Range range, String vardgivarId) {
+        return new LakaresAlderOchKonQuery(sjukfallUtil).getSjukfallPerLakaresAlderOchKonSomTidsserie(warehouse.get(vardgivarId), filter, range.getFrom(), range.getMonths(), 1);
+    }
+
     public SimpleKonResponse<SimpleKonDataRow> getNumberOfCasesPerLakarbefattning(SjukfallFilter filter, Range range, String vardgivarId) {
         return LakarbefattningQuery.getSjukfall(warehouse.get(vardgivarId), filter.getFilter(), range, range.getMonths(), 1, sjukfallUtil);
     }

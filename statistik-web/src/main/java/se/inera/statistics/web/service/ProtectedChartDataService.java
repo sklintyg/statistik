@@ -591,6 +591,37 @@ public class ProtectedChartDataService {
         return CsvConverter.getCsvResponse(simpleDetailsData.getTableData(), "export.csv");
     }
 
+    @POST
+    @Path("getCasesPerDoctorAgeAndGenderTimeSeriesStatistics")
+    @Produces({MediaType.APPLICATION_JSON })
+    @Consumes({ MediaType.APPLICATION_JSON })
+    @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
+    @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
+    public Response getCasesPerDoctorAgeAndGenderTimeSeriesStatistics(@Context HttpServletRequest request, @QueryParam("filter") String filterHash) {
+        DualSexStatisticsData data = getCasesPerDoctorAgeAndGenderTimeSeriesStatisticsData(request, filterHash);
+        return Response.ok(data).build();
+    }
+
+    private DualSexStatisticsData getCasesPerDoctorAgeAndGenderTimeSeriesStatisticsData(HttpServletRequest request, String filterHash) {
+        LOG.info("Calling getCasesPerDoctorAgeAndGenderTimeSeriesStatistics with filterHash: {}", filterHash);
+        final Range range = new Range(18);
+        Filter filter = getFilter(request, filterHash);
+        KonDataResponse ageGroups = warehouse.getCasesPerDoctorAgeAndGenderTimeSeries(filter.getPredicate(), range, getSelectedVgIdForLoggedInUser(request));
+        return new SimpleMultiDualSexConverter().convert(ageGroups, range, filter);
+    }
+
+    @GET
+    @Path("getCasesPerDoctorAgeAndGenderTimeSeriesStatistics/csv")
+    @Produces({ TEXT_UTF_8 })
+    @Consumes({ MediaType.APPLICATION_JSON })
+    @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
+    @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
+    public Response getCasesPerDoctorAgeAndGenderTimeSeriesStatisticsAsCsv(@Context HttpServletRequest request, @QueryParam("filter") String filterHash) {
+        LOG.info("Calling getCasesPerDoctorAgeAndGenderTimeSeriesStatisticsAsCsv with filterHash: {}", filterHash);
+        final DualSexStatisticsData simpleDetailsData = getCasesPerDoctorAgeAndGenderTimeSeriesStatisticsData(request, filterHash);
+        return CsvConverter.getCsvResponse(simpleDetailsData.getTableData(), "export.csv");
+    }
+
     /**
      * Get sjukfall grouped by doctor grade.
      */

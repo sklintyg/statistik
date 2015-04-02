@@ -148,7 +148,7 @@ public final class LakarbefattningQuery {
             }
         };
         final KonDataResponse response = sjukfallUtil.calculateKonDataResponse(aisle, filter, start, periods, periodLength, names, ids, counterFunction);
-        return KonDataResponse.createNewWithoutEmptyGroups(response.getGroups(), response.getRows());
+        return KonDataResponse.createNewWithoutEmptyGroups(response);
     }
 
 }

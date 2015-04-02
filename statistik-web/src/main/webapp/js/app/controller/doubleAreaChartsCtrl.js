@@ -446,3 +446,16 @@ angular.module('StatisticsApp').casesPerLakareTimeSeriesConfig = function () {
     return conf;
 };
 
+angular.module('StatisticsApp').casesPerLakaresAlderOchKonTidsserieConfig = function () {
+    var conf = {};
+    conf.dataFetcherVerksamhet = "getSjukfallPerLakaresAlderOchKonTidsserieVerksamhet";
+    conf.exportTableUrlVerksamhet = function () {
+        return "api/verksamhet/getCasesPerDoctorAgeAndGenderTimeSeriesStatistics/csv";
+    };
+    conf.title = function (period, enhetsCount) {
+        return "Antal sjukfall baserat på läkares kön och ålder" + ControllerCommons.getEnhetCountText(enhetsCount, true) + period;
+    };
+    conf.pageHelpText = "alert.lakarkon-alder.questionmark";
+    conf.alternativeView = "sjukfallperlakaresalderochkon";
+    return conf;
+};

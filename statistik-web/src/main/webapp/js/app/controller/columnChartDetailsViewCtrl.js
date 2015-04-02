@@ -266,6 +266,7 @@ angular.module('StatisticsApp').casesPerLakaresAlderOchKonConfig = function () {
     };
     conf.chartXAxisTitle = "Läkare";
     conf.pageHelpText = "alert.lakarkon-alder.questionmark";
+    conf.alternativeView = "sjukfallperlakaresalderochkontidsserie";
     return conf;
 };
 
