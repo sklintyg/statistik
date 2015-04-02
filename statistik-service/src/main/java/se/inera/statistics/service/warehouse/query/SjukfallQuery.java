@@ -62,12 +62,31 @@ public final class SjukfallQuery {
     private SjukfallUtil sjukfallUtil;
 
     public SimpleKonResponse<SimpleKonDataRow> getSjukfall(Aisle aisle, SjukfallFilter filter, LocalDate start, int perioder, int periodlangd) {
+        final Function<SjukfallGroup, String> rowNameFunction = new Function<SjukfallGroup, String>() {
+            @Override
+            public String apply(SjukfallGroup sjukfallGroup) {
+                return ReportUtil.toDiagramPeriod(sjukfallGroup.getRange().getFrom());
+            }
+        };
+        return getSjukfall(aisle, filter, start, perioder, periodlangd, rowNameFunction);
+    }
+
+    public SimpleKonResponse<SimpleKonDataRow> getSjukfallTvarsnitt(Aisle aisle, SjukfallFilter filter, LocalDate start, int perioder, int periodlangd) {
+        final Function<SjukfallGroup, String> rowNameFunction = new Function<SjukfallGroup, String>() {
+            @Override
+            public String apply(SjukfallGroup sjukfallGroup) {
+                return "Totalt";
+            }
+        };
+        return getSjukfall(aisle, filter, start, perioder, periodlangd, rowNameFunction);
+    }
+
+    private SimpleKonResponse<SimpleKonDataRow> getSjukfall(Aisle aisle, SjukfallFilter filter, LocalDate start, int perioder, int periodlangd, Function<SjukfallGroup, String> rowName) {
         ArrayList<SimpleKonDataRow> result = new ArrayList<>();
         for (SjukfallGroup sjukfallGroup : sjukfallUtil.sjukfallGrupper(start, perioder, periodlangd, aisle, filter)) {
             int male = countMale(sjukfallGroup.getSjukfall());
             int female = sjukfallGroup.getSjukfall().size() - male;
-            String displayDate = ReportUtil.toDiagramPeriod(sjukfallGroup.getRange().getFrom());
-            result.add(new SimpleKonDataRow(displayDate, female, male));
+            result.add(new SimpleKonDataRow(rowName.apply(sjukfallGroup), female, male));
         }
 
         return new SimpleKonResponse<>(result, perioder * periodlangd);

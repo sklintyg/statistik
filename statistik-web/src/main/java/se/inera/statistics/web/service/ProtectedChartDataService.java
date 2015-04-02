@@ -143,6 +143,38 @@ public class ProtectedChartDataService {
         return CsvConverter.getCsvResponse(data.getTableData(), "export.csv");
     }
 
+    @POST
+    @Path("getNumberOfCasesPerMonthTvarsnitt")
+    @Produces({ MediaType.APPLICATION_JSON })
+    @Consumes({ MediaType.APPLICATION_JSON })
+    @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
+    @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
+    public Response getNumberOfCasesPerMonthTvarsnitt(@Context HttpServletRequest request, @QueryParam("filter") String filterHash) {
+        LOG.info("Calling getNumberOfCasesPerMonthTvarsnitt with filterHash: {}", filterHash);
+        SimpleDetailsData result = getNumberOfCasesPerMonthTvarsnittData(request, filterHash);
+        return Response.ok(result).build();
+    }
+
+    private SimpleDetailsData getNumberOfCasesPerMonthTvarsnittData(HttpServletRequest request, String filterHash) {
+        LOG.info("Calling getNumberOfCasesPerMonthTvarsnittData with filterHash: {}", filterHash);
+        final Range range = new Range(12);
+        Filter filter = getFilter(request, filterHash);
+        SimpleKonResponse<SimpleKonDataRow> casesPerMonth = warehouse.getCasesPerMonthTvarsnitt(filter.getPredicate(), range, getSelectedVgIdForLoggedInUser(request));
+        return new TotalCasesPerMonthTvarsnittConverter().convert(casesPerMonth, range, filter);
+    }
+
+    @GET
+    @Path("getNumberOfCasesPerMonthTvarsnitt/csv")
+    @Produces({ TEXT_UTF_8 })
+    @Consumes({ MediaType.APPLICATION_JSON })
+    @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
+    @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
+    public Response getNumberOfCasesPerMonthTvarsnittAsCsv(@Context HttpServletRequest request, @QueryParam("filter") String filterHash) {
+        LOG.info("Calling getNumberOfCasesPerMonthTvarsnittAsCsv with filterHash: {}", filterHash);
+        final SimpleDetailsData data = getNumberOfCasesPerMonthTvarsnittData(request, filterHash);
+        return CsvConverter.getCsvResponse(data.getTableData(), "export.csv");
+    }
+
     /**
      * Gets sjukfall per enhet for verksamhetId.
      */

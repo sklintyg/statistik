@@ -19,8 +19,8 @@
 
 'use strict';
 
-angular.module('StatisticsApp').controller('singleLineChartCtrl', [ '$scope', '$rootScope', '$routeParams', '$timeout', '$window', 'statisticsData', 'businessFilter', 'config', 'printFactory', '$location',
-    function ($scope, $rootScope, $routeParams, $timeout, $window, statisticsData, businessFilter, config, printFactory, $location) {
+angular.module('StatisticsApp').controller('singleLineChartCtrl', [ '$scope', '$rootScope', '$routeParams', '$timeout', '$window', 'statisticsData', 'businessFilter', 'config', 'printFactory', '$location', 'messageService',
+    function ($scope, $rootScope, $routeParams, $timeout, $window, statisticsData, businessFilter, config, printFactory, $location, messageService) {
         var chart;
         $scope.chartContainers = [
             {id: "chart1", name: "diagram"}
@@ -117,7 +117,11 @@ angular.module('StatisticsApp').controller('singleLineChartCtrl', [ '$scope', '$
         $scope.spinnerText = "Laddar information...";
         $scope.doneLoading = false;
         $scope.dataLoadingError = false;
-        $scope.popoverText = config.showPageHelpTooltip ? "Ett sjukfall innehåller en patients alla läkarintyg om intygen följer varandra med max fem dagars uppehåll. Läkarintygen måste också vara utfärdade av samma vårdgivare. Om det är fler än fem dagar mellan intygen räknas det nya intyget som ett nytt sjukfall." : "";
+        $scope.popoverText = messageService.getProperty(config.pageHelpText, null, "", null, true);
+
+        if (isVerksamhet && config.alternativeView) {
+            $scope.alternativeView = config.alternativeView;
+        }
 
         $scope.print = function (bwPrint) {
             printFactory.print(bwPrint, $rootScope, $window);
@@ -143,7 +147,8 @@ angular.module('StatisticsApp').casesPerMonthConfig = function () {
     conf.title = function (months, enhetsCount) {
         return "Antal sjukfall per månad" + ControllerCommons.getEnhetCountText(enhetsCount, false) + months;
     };
-    conf.showPageHelpTooltip = true;
+    conf.pageHelpText = "help.casespermonth";
+    conf.alternativeView = "sjukfallPerManadTvarsnitt";
     return conf;
 };
 
@@ -156,6 +161,5 @@ angular.module('StatisticsApp').longSickLeavesConfig = function () {
     conf.title = function (months, enhetsCount) {
         return "Antal långa sjukfall - mer än 90 dagar" + ControllerCommons.getEnhetCountText(enhetsCount, false) + months;
     };
-    conf.showPageHelpTooltip = false;
     return conf;
 };

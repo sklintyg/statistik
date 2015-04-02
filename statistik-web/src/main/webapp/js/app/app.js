@@ -102,6 +102,12 @@ var app = angular.module('StatisticsApp', [ 'ngRoute', 'ngCookies', 'ngSanitize'
             controllerAs: 'VerksamhetCasesPerMonthCtrl',
             resolve: { config: app.casesPerMonthConfig },
             title: 'Sjukfall per månad'
+        }).when('/verksamhet/sjukfallPerManadTvarsnitt', {
+            templateUrl: 'views/detailsView.html',
+            controller: 'columnChartDetailsViewCtrl',
+            controllerAs: 'VerksamhetCasesPerMonthCtrl',
+            resolve: { config: app.casesPerMonthTvarsnittConfig },
+            title: 'Sjukfall per månad'
         }).when('/verksamhet/diagnosgrupp', {
             templateUrl: 'views/detailsView.html',
             controller: 'doubleAreaChartsCtrl',

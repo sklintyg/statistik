@@ -299,3 +299,19 @@ angular.module('StatisticsApp').compareDiagnosis = function () {
     conf.alternativeView = "jamforDiagnoserTidsserie";
     return conf;
 };
+
+angular.module('StatisticsApp').casesPerMonthTvarsnittConfig = function () {
+    var conf = {};
+    conf.dataFetcherVerksamhet = "getNumberOfCasesPerMonthTvarsnittVerksamhet";
+    conf.exportTableUrlVerksamhet = function () {
+        return "api/verksamhet/getNumberOfCasesPerMonthTvarsnitt/csv";
+    };
+    conf.title = function (months, enhetsCount) {
+        return "Antal sjukfall per månad" + ControllerCommons.getEnhetCountText(enhetsCount, false) + months;
+    };
+    conf.chartXAxisTitle = "";
+    conf.pageHelpText = "help.casespermonth";
+    conf.alternativeView = "sjukfallPerManad";
+    return conf;
+};
+

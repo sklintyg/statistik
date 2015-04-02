@@ -54,6 +54,10 @@ angular.module('StatisticsApp').factory('statisticsData', function ($http, $root
         makeRequestVerksamhet("getNumberOfCasesPerMonth", successCallback, failureCallback);
     };
 
+    factory.getNumberOfCasesPerMonthTvarsnittVerksamhet = function (successCallback, failureCallback) {
+        makeRequestVerksamhet("getNumberOfCasesPerMonthTvarsnitt", successCallback, failureCallback);
+    };
+
     factory.getDiagnosisGroupData = function (successCallback, failureCallback) {
         makeRequestNational("getDiagnoskapitelstatistik", successCallback, failureCallback);
     };

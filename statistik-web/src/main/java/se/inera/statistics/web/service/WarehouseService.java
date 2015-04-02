@@ -72,6 +72,10 @@ public class WarehouseService {
         return sjukfallQuery.getSjukfall(warehouse.get(vardgivarId), filter, range.getFrom(), range.getMonths(), 1);
     }
 
+    public SimpleKonResponse<SimpleKonDataRow> getCasesPerMonthTvarsnitt(SjukfallFilter filter, Range range, String vardgivarId) {
+        return sjukfallQuery.getSjukfallTvarsnitt(warehouse.get(vardgivarId), filter, range.getFrom(), 1, range.getMonths());
+    }
+
     public DiagnosgruppResponse getDiagnosgrupperPerMonth(SjukfallFilter filter, Range range, String vardgivarId) {
         return query.getDiagnosgrupper(warehouse.get(vardgivarId), filter, range.getFrom(), range.getMonths(), 1);
     }
