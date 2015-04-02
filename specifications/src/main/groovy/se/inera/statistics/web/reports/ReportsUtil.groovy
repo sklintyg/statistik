@@ -78,6 +78,10 @@ class ReportsUtil {
         return post(getVerksamhetUrlPrefix() + "/getLongSickLeavesData", filter)
     }
 
+    def getReportLangaSjukfallSomTvarsnittInloggad(FilterData filter) {
+        return post(getVerksamhetUrlPrefix() + "/getLongSickLeavesTvarsnitt", filter)
+    }
+
     def getReportSjukfallPerEnhet(filter) {
         return post(getVerksamhetUrlPrefix() + "/getNumberOfCasesPerEnhet", filter)
     }
