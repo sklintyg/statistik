@@ -130,6 +130,10 @@ angular.module('StatisticsApp').factory('statisticsData', function ($http, $root
         makeRequestVerksamhet("getLongSickLeavesData", successCallback, failureCallback);
     };
 
+    factory.getLongSickLeavesTvarsnittVerksamhet = function (successCallback, failureCallback) {
+        makeRequestVerksamhet("getLongSickLeavesTvarsnitt", successCallback, failureCallback);
+    };
+
     factory.getNationalCountyData = function (successCallback, failureCallback) {
         makeRequestNational("getCountyStatistics", successCallback, failureCallback);
     };

@@ -192,6 +192,12 @@ var app = angular.module('StatisticsApp', [ 'ngRoute', 'ngCookies', 'ngSanitize'
             controllerAs: 'VerksamhetLongSickLeavesCtrl',
             resolve: { config: app.longSickLeavesConfig },
             title: 'Sjukskrivningslängd mer än 90 dagar'
+        }).when('/verksamhet/langasjukskrivningartvarsnitt', {
+            templateUrl: 'views/detailsView.html',
+            controller: 'columnChartDetailsViewCtrl',
+            controllerAs: 'VerksamhetLongSickLeavesCtrl',
+            resolve: { config: app.longSickLeavesTvarsnittConfig },
+            title: 'Sjukskrivningslängd mer än 90 dagar'
         }).when('/verksamhet/sjukfallperenhet', {
             templateUrl: 'views/detailsView.html',
             controller: 'columnChartDetailsViewCtrl',

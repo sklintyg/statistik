@@ -931,8 +931,7 @@ public class ProtectedChartDataService {
         final Range range = new Range(18);
         Filter filter = getFilter(request, filterHash);
         SimpleKonResponse<SimpleKonDataRow> longSickLeaves = warehouse.getLangaSjukskrivningarPerManad(filter.getPredicate(), range, getSelectedVgIdForLoggedInUser(request));
-        SimpleDetailsData result = new PeriodConverter().convert(longSickLeaves, range, filter);
-        return result;
+        return new PeriodConverter().convert(longSickLeaves, range, filter);
     }
 
     /**
@@ -947,6 +946,37 @@ public class ProtectedChartDataService {
     public Response getLongSickLeavesDataAsCsv(@Context HttpServletRequest request, @QueryParam("filter") String filterHash) {
         LOG.info("Calling getLongSickLeavesDataAsCsv with filterHash: {}", filterHash);
         final SimpleDetailsData data = getLongSickLeavesDataData(request, filterHash);
+        return CsvConverter.getCsvResponse(data.getTableData(), "export.csv");
+    }
+
+    @POST
+    @Path("getLongSickLeavesTvarsnitt")
+    @Produces({ MediaType.APPLICATION_JSON })
+    @Consumes({ MediaType.APPLICATION_JSON })
+    @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
+    @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
+    public Response getLongSickLeavesTvarsnitt(@Context HttpServletRequest request, @QueryParam("filter") String filterHash) {
+        SimpleDetailsData data = getLongSickLeavesTvarsnittData(request, filterHash);
+        return Response.ok(data).build();
+    }
+
+    private SimpleDetailsData getLongSickLeavesTvarsnittData(HttpServletRequest request, String filterHash) {
+        LOG.info("Calling getLongSickLeavesData with filterHash: {}", filterHash);
+        final Range range = new Range(12);
+        Filter filter = getFilter(request, filterHash);
+        SimpleKonResponse<SimpleKonDataRow> longSickLeaves = warehouse.getLangaSjukskrivningarTvarsnitt(filter.getPredicate(), range, getSelectedVgIdForLoggedInUser(request));
+        return new LongSickLeaveTvarsnittConverter().convert(longSickLeaves, range, filter);
+    }
+
+    @GET
+    @Path("getLongSickLeavesTvarsnitt/csv")
+    @Produces({ TEXT_UTF_8 })
+    @Consumes({ MediaType.APPLICATION_JSON })
+    @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
+    @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
+    public Response getLongSickLeavesTvarsnittAsCsv(@Context HttpServletRequest request, @QueryParam("filter") String filterHash) {
+        LOG.info("Calling getLongSickLeavesTvarsnittAsCsv with filterHash: {}", filterHash);
+        final SimpleDetailsData data = getLongSickLeavesTvarsnittData(request, filterHash);
         return CsvConverter.getCsvResponse(data.getTableData(), "export.csv");
     }
 

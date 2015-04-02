@@ -315,3 +315,17 @@ angular.module('StatisticsApp').casesPerMonthTvarsnittConfig = function () {
     return conf;
 };
 
+
+angular.module('StatisticsApp').longSickLeavesTvarsnittConfig = function () {
+    var conf = {};
+    conf.dataFetcherVerksamhet = "getLongSickLeavesTvarsnittVerksamhet";
+    conf.exportTableUrlVerksamhet = function () {
+        return "api/verksamhet/getLongSickLeavesTvarsnitt/csv";
+    };
+    conf.title = function (months, enhetsCount) {
+        return "Antal långa sjukfall - mer än 90 dagar" + ControllerCommons.getEnhetCountText(enhetsCount, false) + months;
+    };
+    conf.chartXAxisTitle = "";
+    conf.alternativeView = "langasjukskrivningar";
+    return conf;
+};

@@ -161,5 +161,6 @@ angular.module('StatisticsApp').longSickLeavesConfig = function () {
     conf.title = function (months, enhetsCount) {
         return "Antal långa sjukfall - mer än 90 dagar" + ControllerCommons.getEnhetCountText(enhetsCount, false) + months;
     };
+    conf.alternativeView = "langasjukskrivningartvarsnitt";
     return conf;
 };

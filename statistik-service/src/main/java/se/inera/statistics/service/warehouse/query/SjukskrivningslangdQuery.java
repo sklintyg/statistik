@@ -106,15 +106,35 @@ public final class SjukskrivningslangdQuery {
     }
 
     public static SimpleKonResponse<SimpleKonDataRow> getLangaSjukfall(Aisle aisle, SjukfallFilter filter, LocalDate from, int periods, int periodLength, SjukfallUtil sjukfallUtil) {
+        final Function<SjukfallGroup, String> rowNameFunction = new Function<SjukfallGroup, String>() {
+            @Override
+            public String apply(SjukfallGroup sjukfallGroup) {
+                return ReportUtil.toPeriod(sjukfallGroup.getRange().getFrom());
+            }
+        };
+        return getLangaSjukfall(aisle, filter, from, periods, periodLength, sjukfallUtil, rowNameFunction);
+    }
+
+    public static SimpleKonResponse<SimpleKonDataRow> getLangaSjukfallTvarsnitt(Aisle aisle, SjukfallFilter filter, LocalDate from, int periods, int periodLength, SjukfallUtil sjukfallUtil) {
+        final Function<SjukfallGroup, String> rowNameFunction = new Function<SjukfallGroup, String>() {
+            @Override
+            public String apply(SjukfallGroup sjukfallGroup) {
+                return "Mer än 90 dagar";
+            }
+        };
+        return getLangaSjukfall(aisle, filter, from, periods, periodLength, sjukfallUtil, rowNameFunction);
+    }
+
+    private static SimpleKonResponse<SimpleKonDataRow> getLangaSjukfall(Aisle aisle, SjukfallFilter filter, LocalDate from, int periods, int periodLength, SjukfallUtil sjukfallUtil, Function<SjukfallGroup, String> rowNameFunction) {
         List<SimpleKonDataRow> rows = new ArrayList<>();
         for (SjukfallGroup sjukfallGroup: sjukfallUtil.sjukfallGrupperUsingOriginalSjukfallStart(from, periods, periodLength, aisle, filter)) {
-            Counter counter = new Counter("");
+            Counter counter = new Counter<>("");
             for (Sjukfall sjukfall: sjukfallGroup.getSjukfall()) {
                 if (sjukfall.getRealDays() > LONG_SJUKFALL) {
                     counter.increase(sjukfall);
                 }
             }
-            rows.add(new SimpleKonDataRow(ReportUtil.toPeriod(sjukfallGroup.getRange().getFrom()), counter.getCountFemale(), counter.getCountMale()));
+            rows.add(new SimpleKonDataRow(rowNameFunction.apply(sjukfallGroup), counter.getCountFemale(), counter.getCountMale()));
         }
 
         return new SimpleKonResponse<>(rows, periods);
