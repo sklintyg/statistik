@@ -313,4 +313,8 @@ class ReportsUtil {
         return post(getVerksamhetUrlPrefix() + "/getSjukfallPerLakareSomTidsserie", filter)
     }
 
+    def getReportLakareAlderOchKonSomTidsserieInloggad(FilterData filter) {
+        return post(getVerksamhetUrlPrefix() + "/getCasesPerDoctorAgeAndGenderTimeSeriesStatistics", filter)
+    }
+
 }
