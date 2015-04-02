@@ -74,8 +74,6 @@ public class SjukfallQueryTest {
 
     private int lakarIntygCounter;
 
-    private LakareManager lakareManager;
-
     private SjukfallQuery sjukfallQuery;
 
     private Aisle aisle;
@@ -95,7 +93,7 @@ public class SjukfallQueryTest {
     @Before
     public void setup() {
         populateLakare();
-        lakareManager = mockLakareManager();
+        LakareManager lakareManager = mockLakareManager();
         sjukfallQuery = new SjukfallQuery();
         sjukfallQuery.setLakareManager(lakareManager);
         ReflectionTestUtils.setField(sjukfallQuery, "sjukfallUtil", sjukfallUtil);
@@ -218,7 +216,7 @@ public class SjukfallQueryTest {
 
     private Fact fact(int patientId, Kon patientKon, String lakareId) {
          return aFact().withLan(3).withKommun(380).withForsamling(38002).
-                withEnhet(Integer.valueOf(ENHET1_ID)).withLakarintyg(lakarIntygCounter++).
+                withEnhet(ENHET1_ID).withLakarintyg(lakarIntygCounter++).
                 withPatient(patientId).withKon(patientKon).withAlder(45).
                 withDiagnoskapitel(0).withDiagnosavsnitt(14).withDiagnoskategori(16).
                 withSjukskrivningsgrad(100).withStartdatum(toDay(sjukfallDate)).withSjukskrivningslangd(47).
