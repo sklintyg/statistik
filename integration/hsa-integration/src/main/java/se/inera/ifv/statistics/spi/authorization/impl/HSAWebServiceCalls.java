@@ -125,7 +125,9 @@ public class HSAWebServiceCalls {
     public GetStatisticsNamesResponseType getStatisticsNames(String personId) {
         try {
             GetStatisticsNamesType parameters = new GetStatisticsNamesType();
-            parameters.getHsaIdentities().getHsaIdentity().add(personId);
+            GetStatisticsNamesType.HsaIdentities hsaIds = new GetStatisticsNamesType.HsaIdentities();
+            hsaIds.getHsaIdentity().add(personId);
+            parameters.setHsaIdentities(hsaIds);
             parameters.setSearchBase("c=SE");
             return serverInterface.getStatisticsNames(logicalAddressHeader, messageId, parameters);
         } catch (HsaWsFault hsaWsFault) {
