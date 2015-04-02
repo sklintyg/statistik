@@ -15,11 +15,13 @@ tomcat_bin: "{{ inera_root }}/tomcat7/bin"
 tomcat_lib: "{{ inera_root }}/tomcat7/lib"
 tomcat_etc: "{{ inera_root }}/tomcat7/etc"
 tomcat_webapps: "{{ inera_tomcat_folder }}/webapps"
+database_server: localhost
+database_port: 3306
 database_name: statistik
 database_username: statistik
 database_password: statistik
 database_driver: com.mysql.jdbc.Driver
-database_url: "jdbc:mysql://localhost:3306/statistik?useCompression=true"
+database_url: "jdbc:mysql://{{ database_server }}:{{ database_port }}/{{ database_name }}?useCompression=true"
 database_pool_maxActive: 20
 database_pool_maxIdle: 20
 database_pool_minIdle: 10
