@@ -21,7 +21,7 @@ abstract class SimpleDetailsReport extends Rapport {
     void executeTabell(report) {
         def rowNameMatcher = getRowNameMatcher();
         def row = report.tableData.rows.find { currentRow ->
-            currentRow.name == rowNameMatcher }
+            currentRow.name.contains(rowNameMatcher) }
         if (row == null) {
             totalt = -1
             kvinnor = -1
@@ -129,13 +129,21 @@ abstract class SimpleDetailsReport extends Rapport {
         if (inloggad) {
             return reportsUtil.getReportAntalIntygSomTvarsnittInloggad(filter);
         }
-        throw new RuntimeException("Report -Sjukfall totalt- is not available on national level");
+        throw new RuntimeException("Report -Sjukfall totalt som tvärsnitt- is not available on national level");
     }
 
     def getReportLangaSjukfallTvarsnitt() {
         if (inloggad) {
             return reportsUtil.getReportLangaSjukfallSomTvarsnittInloggad(filter);
         }
-        throw new RuntimeException("Report -Långa Sjukfall- is not available on national level");
+        throw new RuntimeException("Report -Långa Sjukfall som tvärsnitt- is not available on national level");
     }
+
+    def getReportSjukskrivningsgradTvarsnitt() {
+        if (inloggad) {
+            return reportsUtil.getReportSjukskrivningsgradSomTvarsnittInloggad(filter);
+        }
+        throw new RuntimeException("Report -Sjukskrivningsgrad som tvärsnitt- is not available on national level");
+    }
+
 }

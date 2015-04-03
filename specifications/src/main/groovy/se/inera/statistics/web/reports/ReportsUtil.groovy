@@ -248,6 +248,10 @@ class ReportsUtil {
         return post(getVerksamhetUrlPrefix() + "/getDegreeOfSickLeaveStatistics", filter)
     }
 
+    def getReportSjukskrivningsgradSomTvarsnittInloggad(FilterData filter) {
+        return post(getVerksamhetUrlPrefix() + "/getDegreeOfSickLeaveTvarsnitt", filter)
+    }
+
     def getReportSjukskrivningsgrad() {
         return get("/api/getDegreeOfSickLeaveStatistics")
     }
