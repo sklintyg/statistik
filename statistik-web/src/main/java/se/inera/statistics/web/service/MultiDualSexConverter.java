@@ -84,7 +84,7 @@ public abstract class MultiDualSexConverter<T extends KonDataResponse> {
         List<String> degreesOfSickLeave = resp.getGroups();
         for (String groupName : degreesOfSickLeave) {
             final String seriesName = String.format(seriesNameTemplate, groupName);
-                topHeaderRow.add(new TableHeader(seriesName, 2));
+            topHeaderRow.add(new TableHeader(seriesName, 2));
         }
 
         List<TableHeader> subHeaderRow = new ArrayList<>();

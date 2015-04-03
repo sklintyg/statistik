@@ -21,7 +21,7 @@ package se.inera.statistics.web.service;
 public class LongSickLeaveTvarsnittConverter extends SimpleDualSexConverter {
 
     public LongSickLeaveTvarsnittConverter() {
-        super("", false);
+        super("", false, "%1$s");
     }
 
 }

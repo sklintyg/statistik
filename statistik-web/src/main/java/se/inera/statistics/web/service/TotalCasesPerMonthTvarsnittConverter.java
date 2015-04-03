@@ -21,7 +21,7 @@ package se.inera.statistics.web.service;
 public class TotalCasesPerMonthTvarsnittConverter extends SimpleDualSexConverter {
 
     public TotalCasesPerMonthTvarsnittConverter() {
-        super("", false);
+        super("", false, "%1$s");
     }
 
 }
