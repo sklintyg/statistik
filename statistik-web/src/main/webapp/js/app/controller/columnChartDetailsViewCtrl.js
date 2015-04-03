@@ -329,3 +329,20 @@ angular.module('StatisticsApp').longSickLeavesTvarsnittConfig = function () {
     conf.alternativeView = "langasjukskrivningar";
     return conf;
 };
+
+angular.module('StatisticsApp').degreeOfSickLeaveTvarsnittConfig = function () {
+    var conf = {};
+    conf.dataFetcherVerksamhet = "getDegreeOfSickLeaveTvarsnittVerksamhet";
+    conf.exportTableUrlVerksamhet = function () {
+        return "api/verksamhet/getDegreeOfSickLeaveTvarsnitt/csv";
+    };
+    conf.showDetailsOptions = false;
+    conf.title = function (period, enhetsCount) {
+        return "Antal sjukfall per sjukskrivningsgrad" + ControllerCommons.getEnhetCountText(enhetsCount, false) + period;
+    };
+    conf.chartXAxisTitle = "";
+    conf.pageHelpText = "help.degreeofsickleave";
+    conf.chartFootnotes = ["alert.degreeofsickleave.information"];
+    conf.alternativeView = "sjukskrivningsgrad";
+    return conf;
+};

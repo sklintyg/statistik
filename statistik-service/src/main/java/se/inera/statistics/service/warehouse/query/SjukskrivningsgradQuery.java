@@ -18,10 +18,13 @@
  */
 package se.inera.statistics.service.warehouse.query;
 
+import com.google.common.base.Function;
 import com.google.common.collect.HashMultiset;
 import org.joda.time.LocalDate;
 import se.inera.statistics.service.report.model.KonDataResponse;
 import se.inera.statistics.service.report.model.OverviewChartRowExtended;
+import se.inera.statistics.service.report.model.SimpleKonDataRow;
+import se.inera.statistics.service.report.model.SimpleKonResponse;
 import se.inera.statistics.service.warehouse.Aisle;
 import se.inera.statistics.service.warehouse.Sjukfall;
 import se.inera.statistics.service.warehouse.SjukfallFilter;
@@ -94,4 +97,15 @@ public final class SjukskrivningsgradQuery {
             return (current - previous) * PERCENT / previous;
         }
     }
+
+    public static SimpleKonResponse<SimpleKonDataRow> getSjukskrivningsgradTvarsnitt(Aisle aisle, SjukfallFilter filter, LocalDate from, int periods, int periodLength, SjukfallUtil sjukfallUtil) {
+        final Function<Sjukfall, Integer> toCount = new Function<Sjukfall, Integer>() {
+            @Override
+            public Integer apply(Sjukfall sjukfall) {
+                return sjukfall.getSjukskrivningsgrad();
+            }
+        };
+        return sjukfallUtil.calculateSimpleKonResponse(aisle, filter, from, periods, periodLength, toCount, GRAD);
+    }
+
 }

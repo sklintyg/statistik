@@ -32,7 +32,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public abstract class SimpleDualSexConverter {
+public class SimpleDualSexConverter {
 
     private final String groupTitle;
     private final boolean totalSeriesInChart;

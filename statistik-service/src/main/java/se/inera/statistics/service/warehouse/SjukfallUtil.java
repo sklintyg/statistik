@@ -35,6 +35,8 @@ import se.inera.statistics.service.report.model.KonDataResponse;
 import se.inera.statistics.service.report.model.KonDataRow;
 import se.inera.statistics.service.report.model.KonField;
 import se.inera.statistics.service.report.model.Range;
+import se.inera.statistics.service.report.model.SimpleKonDataRow;
+import se.inera.statistics.service.report.model.SimpleKonResponse;
 import se.inera.statistics.service.report.util.ReportUtil;
 import se.inera.statistics.service.warehouse.query.CounterFunction;
 
@@ -224,5 +226,21 @@ public class SjukfallUtil {
         return new KonDataResponse(groupNames, rows);
     }
     //CHECKSTYLE:ON
+
+    public SimpleKonResponse<SimpleKonDataRow> calculateSimpleKonResponse(Aisle aisle, SjukfallFilter filter, LocalDate from, int periods, int periodLength, Function<Sjukfall, Integer> toCount, List<Integer> groups) {
+        List<SimpleKonDataRow> rows = new ArrayList<>();
+        HashMultiset<Integer> maleCounter = HashMultiset.create();
+        HashMultiset<Integer> femaleCounter = HashMultiset.create();
+        for (SjukfallGroup sjukfallGroup: sjukfallGrupper(from, periods, periodLength, aisle, filter)) {
+            for (Sjukfall sjukfall : sjukfallGroup.getSjukfall()) {
+                HashMultiset<Integer> counter = Kon.Male.equals(sjukfall.getKon()) ? maleCounter : femaleCounter;
+                counter.add(toCount.apply(sjukfall));
+            }
+        }
+        for (Integer group : groups) {
+            rows.add(new SimpleKonDataRow(String.valueOf(group), femaleCounter.count(group), maleCounter.count(group)));
+        }
+        return new SimpleKonResponse<>(rows, periodLength);
+    }
 
 }

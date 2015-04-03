@@ -84,6 +84,10 @@ public class WarehouseService {
         return SjukskrivningsgradQuery.getSjukskrivningsgrad(warehouse.get(vardgivarId), filter, range.getFrom(), range.getMonths(), 1, sjukfallUtil);
     }
 
+    public SimpleKonResponse<SimpleKonDataRow> getSjukskrivningsgradTvarsnitt(SjukfallFilter filter, Range range, String vardgivarId) {
+        return SjukskrivningsgradQuery.getSjukskrivningsgradTvarsnitt(warehouse.get(vardgivarId), filter, range.getFrom(), 1, range.getMonths(), sjukfallUtil);
+    }
+
     public SjukfallslangdResponse getSjukskrivningslangd(SjukfallFilter filter, Range range, String vardgivarId) {
         return SjukskrivningslangdQuery.getSjuksrivningslangd(warehouse.get(vardgivarId), filter, range.getFrom(), 1, range.getMonths(), sjukfallUtil);
     }

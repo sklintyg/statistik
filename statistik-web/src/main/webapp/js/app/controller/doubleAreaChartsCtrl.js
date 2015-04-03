@@ -360,6 +360,7 @@ angular.module('StatisticsApp').degreeOfSickLeaveConfig = function () {
     };
     conf.pageHelpText = "help.degreeofsickleave";
     conf.chartFootnotes = ["alert.degreeofsickleave.information"];
+    conf.alternativeView = "sjukskrivningsgradtvarsnitt";
     return conf;
 };
 

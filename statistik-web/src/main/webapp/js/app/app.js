@@ -168,6 +168,12 @@ var app = angular.module('StatisticsApp', [ 'ngRoute', 'ngCookies', 'ngSanitize'
             controllerAs: 'VerksamhetDegreeOfSickLeaveCtrl',
             resolve: { config: app.degreeOfSickLeaveConfig },
             title: 'Sjukskrivningsgrad'
+        }).when('/verksamhet/sjukskrivningsgradtvarsnitt', {
+            templateUrl: 'views/detailsView.html',
+            controller: 'columnChartDetailsViewCtrl',
+            controllerAs: 'VerksamhetDegreeOfSickLeaveCtrl',
+            resolve: { config: app.degreeOfSickLeaveTvarsnittConfig },
+            title: 'Sjukskrivningsgrad'
         }).when('/verksamhet/sjukskrivningslangd', {
             templateUrl: 'views/detailsView.html',
             controller: 'columnChartDetailsViewCtrl',

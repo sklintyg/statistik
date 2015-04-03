@@ -802,6 +802,37 @@ public class ProtectedChartDataService {
         return CsvConverter.getCsvResponse(simpleDetailsData.getTableData(), "export.csv");
     }
 
+    @POST
+    @Path("getDegreeOfSickLeaveTvarsnitt")
+    @Produces({ MediaType.APPLICATION_JSON })
+    @Consumes({ MediaType.APPLICATION_JSON })
+    @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
+    @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
+    public Response getDegreeOfSickLeaveTvarsnitt(@Context HttpServletRequest request, @QueryParam("filter") String filterHash) {
+        SimpleDetailsData data = getDegreeOfSickLeaveTvarsnittData(request, filterHash);
+        return Response.ok(data).build();
+    }
+
+    private SimpleDetailsData getDegreeOfSickLeaveTvarsnittData(HttpServletRequest request, String filterHash) {
+        LOG.info("Calling getDegreeOfSickLeaveTvarsnittData with filterHash: {}", filterHash);
+        final Range range = new Range(12);
+        Filter filter = getFilter(request, filterHash);
+        SimpleKonResponse<SimpleKonDataRow> degreeOfSickLeaveStatistics = warehouse.getSjukskrivningsgradTvarsnitt(filter.getPredicate(), range, getSelectedVgIdForLoggedInUser(request));
+        return new SimpleDualSexConverter("", false, "Antal sjukfall med %1$s%% sjukskrivningsgrad").convert(degreeOfSickLeaveStatistics, range, filter);
+    }
+
+    @GET
+    @Path("getDegreeOfSickLeaveTvarsnitt/csv")
+    @Produces({ TEXT_UTF_8 })
+    @Consumes({ MediaType.APPLICATION_JSON })
+    @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
+    @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
+    public Response getDegreeOfSickLeaveTvarsnittAsCsv(@Context HttpServletRequest request, @QueryParam("filter") String filterHash) {
+        LOG.info("Calling getDegreeOfSickLeaveTvarsnittAsCsv with filterhash: {}", filterHash);
+        final SimpleDetailsData simpleDetailsData = getDegreeOfSickLeaveTvarsnittData(request, filterHash);
+        return CsvConverter.getCsvResponse(simpleDetailsData.getTableData(), "export.csv");
+    }
+
     /**
      * Get sjukfallslangd (grouped).
      */
