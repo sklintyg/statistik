@@ -1,6 +1,8 @@
 describe('Controller: pageCtrl', function() {
-    beforeEach(module('StatisticsApp'));
-
+    beforeEach(function() {
+        module('StatisticsApp');
+        module('StatisticsApp.treeMultiSelector');
+    });
     // This global variable must be set since it is used (in a questionable way in the run time controllers).
     isLoggedIn = false;
     var ctrl;
