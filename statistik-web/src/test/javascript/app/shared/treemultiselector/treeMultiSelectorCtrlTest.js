@@ -1,19 +1,24 @@
-describe('Controller: directiveTmsCtrl', function() {
-    beforeEach(module('StatisticsApp'));
+describe('Controller: treeMultiSelectorCtrl', function() {
+    var ctrl, scope;
 
-    beforeEach(module(function ($provide) {
-        var mockStatistics = {
-            getIcd10Structure: function () { }
-        };
-        $provide.value('statisticsData', mockStatistics);
-    }));
+    beforeEach(function() {
+        angular.mock.module(function ($provide) {
+                var mockStatistics = {
+                    getIcd10Structure: function () {
+                    }
+                };
+                $provide.value('statisticsData', mockStatistics);
+            }
+        );
 
-    var ctrl;
-    var scope;
+        angular.mock.module('StatisticsApp.treeMultiSelector');
+        angular.mock.module('StatisticsApp'); //We need this for the businessFilter injection in some tests
 
-    beforeEach(inject(function($controller, treeMultiSelectUtil) {
+    });
+
+    beforeEach(inject(function($controller, treeMultiSelectorUtil) {
         scope = {};
-        ctrl = $controller('directiveTmsCtrl', {$scope: scope, treeMultiSelectUtil: treeMultiSelectUtil});
+        ctrl = $controller('treeMultiSelectorCtrl', {$scope: scope, treeMultiSelectorUtil: treeMultiSelectorUtil});
     }));
 
     var diagnoses;
@@ -62,7 +67,7 @@ describe('Controller: directiveTmsCtrl', function() {
             numericalId: 2
         };
 
-        diagnoses = [A00B99, D50D89]
+        diagnoses = [A00B99, D50D89];
     });
 
     it("parents should be intermediate when some child is selected", inject(function () {

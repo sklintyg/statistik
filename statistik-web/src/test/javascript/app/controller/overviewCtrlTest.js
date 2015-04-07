@@ -8,7 +8,7 @@ describe('Controller: overviewCtrl', function () {
 
         var mockDependency = {};
 
-        module('StatisticsApp', function ($provide) {
+        angular.mock.module('StatisticsApp', function ($provide) {
             $provide.value('statisticsData', mockDependency);
         });
 
