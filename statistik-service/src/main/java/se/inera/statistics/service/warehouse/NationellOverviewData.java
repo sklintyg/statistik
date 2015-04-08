@@ -21,6 +21,7 @@ package se.inera.statistics.service.warehouse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import se.inera.statistics.service.report.model.DiagnosgruppResponse;
+import se.inera.statistics.service.report.model.Icd;
 import se.inera.statistics.service.report.model.KonDataResponse;
 import se.inera.statistics.service.report.model.KonField;
 import se.inera.statistics.service.report.model.OverviewChartRow;
@@ -194,7 +195,12 @@ public class NationellOverviewData {
             for (int i = 0; i < currentData.size(); i++) {
                 int previous = previousData.get(i).getFemale() + previousData.get(i).getMale();
                 int current = currentData.get(i).getFemale() + currentData.get(i).getMale();
-                result.add(new OverviewChartRowExtended(String.valueOf(periods.getIcdTyps().get(i).getNumericalId()), current, current - previous));
+                final List<? extends Icd> icdTyps = periods.getIcdTyps();
+                final Icd icd = icdTyps.get(i);
+                final int numericalId = icd.getNumericalId();
+                final String rowName = String.valueOf(numericalId);
+                final OverviewChartRowExtended row = new OverviewChartRowExtended(rowName, current, current - previous);
+                result.add(row);
             }
         }
         return result;

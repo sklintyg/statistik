@@ -26,6 +26,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import se.inera.statistics.service.report.model.DiagnosgruppResponse;
 import se.inera.statistics.service.report.model.Icd;
+import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.report.model.KonDataResponse;
 import se.inera.statistics.service.report.model.KonDataRow;
 import se.inera.statistics.service.report.model.KonField;
@@ -210,12 +211,14 @@ public class NationellData {
                     KonDataRow b = rowsOld.next();
 
                     List<KonField> c = new ArrayList<>();
-                    for (int i = 0; i < a.getData().size(); i++) {
-                        c.add(new KonField(a.getData().get(i).getFemale() + b.getData().get(i).getFemale(), a.getData().get(i).getMale() + b.getData().get(i).getMale()));
+                    final int maxDataSize = Math.max(a.getData().size(), b.getData().size());
+                    for (int i = 0; i < maxDataSize; i++) {
+                        c.add(new KonField(safeSumForIndex(a, b, i, Kon.Female), safeSumForIndex(a, b, i, Kon.Male)));
                     }
                     list.add(new KonDataRow(a.getName(), c));
                 }
-                result = new DiagnosgruppResponse(result.getIcdTyps(), list);
+                final List<? extends Icd> icdTyps = result.getIcdTyps().size() < diagnosgrupper.getIcdTyps().size() ? diagnosgrupper.getIcdTyps() : result.getIcdTyps();
+                result = new DiagnosgruppResponse(icdTyps, list);
             }
         }
         if (result == null) {
@@ -223,6 +226,17 @@ public class NationellData {
         } else {
             return filterLow(result);
         }
+    }
+
+    private int safeSumForIndex(KonDataRow a, KonDataRow b, int index, Kon kon) {
+        return getValueSafe(a, index, kon) + getValueSafe(b, index, kon);
+    }
+
+    private int getValueSafe(KonDataRow a, int index, Kon kon) {
+        if (a == null || a.getData() == null || a.getData().size() <= index || a.getData().get(index) == null) {
+            return 0;
+        }
+        return a.getData().get(index).getValue(kon);
     }
 
     public DiagnosgruppResponse getDiagnosavsnitt(Range range, String kapitelId) {

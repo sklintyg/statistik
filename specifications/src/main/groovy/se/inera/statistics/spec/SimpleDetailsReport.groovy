@@ -146,4 +146,11 @@ abstract class SimpleDetailsReport extends Rapport {
         throw new RuntimeException("Report -Sjukskrivningsgrad som tvärsnitt- is not available on national level");
     }
 
+    def getReportDiagnosgruppTvarsnitt() {
+        if (inloggad) {
+            return reportsUtil.getReportDiagnosgruppSomTvarsnittInloggad(filter);
+        }
+        throw new RuntimeException("Report -Diagnosgrupp som tvärsnitt- is not available on national level");
+    }
+
 }

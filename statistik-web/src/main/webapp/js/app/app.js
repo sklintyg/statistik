@@ -114,6 +114,12 @@ var app = angular.module('StatisticsApp',['ngRoute', 'ngCookies', 'ngSanitize', 
             controllerAs: 'VerksamhetDiagnosgruppCtrl',
             resolve: { config: app.diagnosisGroupConfig },
             title: 'Diagnosgrupper'
+        }).when('/verksamhet/diagnosgrupptvarsnitt', {
+            templateUrl: 'views/detailsView.html',
+            controller: 'columnChartDetailsViewCtrl',
+            controllerAs: 'VerksamhetDiagnosgruppCtrl',
+            resolve: { config: app.diagnosisGroupTvarsnittConfig },
+            title: 'Diagnosgrupper'
         }).when('/verksamhet/diagnosavsnitt/:groupId/kategori/:kategoriId', {
             templateUrl: 'views/detailsView.html',
             controller: 'doubleAreaChartsCtrl',

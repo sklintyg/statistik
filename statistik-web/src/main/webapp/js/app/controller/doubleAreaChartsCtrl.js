@@ -321,6 +321,7 @@ angular.module('StatisticsApp').diagnosisGroupConfig = function () {
     };
     conf.pageHelpText = "help.diagnosisgroup";
     conf.chartFootnotes = ["alert.diagnosisgroup.information"];
+    conf.alternativeView = "diagnosgrupptvarsnitt";
     return conf;
 };
 

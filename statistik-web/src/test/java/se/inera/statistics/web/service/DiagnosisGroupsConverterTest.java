@@ -16,36 +16,18 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package se.inera.statistics.service.report.model;
+package se.inera.statistics.web.service;
 
-public class KonField {
+import org.junit.Test;
 
-    private final int female;
-    private final int male;
+import static org.junit.Assert.*;
 
-    public KonField(int female, int male) {
-        this.female = female;
-        this.male = male;
+public class DiagnosisGroupsConverterTest {
+
+    @Test
+    public void testCalculatePercentageSTATISTIK987() throws Exception {
+        final int percentage = new DiagnosisGroupsConverter().calculatePercentage(37 - 23, 23);
+        assertEquals(61, percentage);
     }
 
-    public int getFemale() {
-        return female;
-    }
-
-    public int getMale() {
-        return male;
-    }
-
-    public int getValue(Kon kon) {
-        if (Kon.Female.equals(kon)) {
-            return female;
-        } else {
-            return male;
-        }
-    }
-
-    @Override
-    public String toString() {
-        return "{\"KonField\":{\"female\":" + female + ", \"male\":" + male + "}}";
-    }
 }

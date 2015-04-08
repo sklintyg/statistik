@@ -364,6 +364,37 @@ public class ProtectedChartDataService {
         return CsvConverter.getCsvResponse(data.getTableData(), "export.csv");
     }
 
+    @POST
+    @Path("getDiagnosGruppTvarsnitt")
+    @Produces({ MediaType.APPLICATION_JSON })
+    @Consumes({ MediaType.APPLICATION_JSON })
+    @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
+    @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
+    public Response getDiagnosisGroupTvarsnitt(@Context HttpServletRequest request, @QueryParam("filter") String filterHash) {
+        LOG.info("Calling getDiagnosisGroupTvarsnitt with filterHash: {}", filterHash);
+        SimpleDetailsData result = getDiagnosisGroupTvarsnittData(request, filterHash);
+        return Response.ok(result).build();
+    }
+
+    private SimpleDetailsData getDiagnosisGroupTvarsnittData(HttpServletRequest request, String filterHash) {
+        final Range range = new Range(12);
+        Filter filter = getFilter(request, filterHash);
+        SimpleKonResponse<SimpleKonDataRow> diagnosisGroups = warehouse.getDiagnosgrupperTvarsnitt(filter.getPredicate(), range, getSelectedVgIdForLoggedInUser(request));
+        return new DiagnosisGroupsTvarsnittConverter().convert(diagnosisGroups, range, filter);
+    }
+
+    @GET
+    @Path("getDiagnosGruppTvarsnitt/csv")
+    @Produces({ TEXT_UTF_8 })
+    @Consumes({ MediaType.APPLICATION_JSON })
+    @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
+    @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
+    public Response getDiagnosisGroupTvarsnittAsCsv(@Context HttpServletRequest request, @QueryParam("filter") String filterHash) {
+        LOG.info("Calling getDiagnosisGroupTvarsnittAsCsv with filterHash: {}", filterHash);
+        final SimpleDetailsData data = getDiagnosisGroupTvarsnittData(request, filterHash);
+        return CsvConverter.getCsvResponse(data.getTableData(), "export.csv");
+    }
+
     /**
      * Get sjukfall per diagnosavsnitt for given diagnoskapitel.
      */
