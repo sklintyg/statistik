@@ -135,6 +135,10 @@ class ReportsUtil {
         return post(getVerksamhetUrlPrefix() + "/getDiagnoskapitelstatistik", filter)
     }
 
+    def getReportDiagnosgruppSomTvarsnittInloggad(FilterData filter) {
+        return post(getVerksamhetUrlPrefix() + "/getDiagnosGruppTvarsnitt", filter)
+    }
+
     def getReportDiagnosgrupp() {
         return get("/api/getDiagnoskapitelstatistik")
     }
