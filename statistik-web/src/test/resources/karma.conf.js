@@ -16,15 +16,17 @@ module.exports = function(config) {
 
         // list of files / patterns to load in the browser
         files: [
+            WEBJAR_DIR + 'jquery/1.10.2/jquery.js',
             WEBJAR_DIR + 'angularjs/1.2.14/angular.js',
             WEBJAR_DIR + 'angularjs/1.2.14/angular-route.js',
             WEBJAR_DIR + 'angularjs/1.2.14/angular-cookies.js',
             WEBJAR_DIR + 'angularjs/1.2.14/angular-sanitize.js',
             WEBJAR_DIR + 'angularjs/1.2.14/angular-mocks.js',
             WEBJAR_DIR + 'angular-ui-bootstrap/0.10.0/ui-bootstrap-tpls.min.js',
-            WEBJAR_DIR + 'underscorejs/1.7.0/underscore-min.js',
+            WEBJAR_DIR + 'underscorejs/1.7.0/underscore.js',
             'src/main/webapp/js/**/*.js',
-            'src/test/javascript/**/*.js'
+            'src/test/javascript/**/*.js',
+            '**/*.html'
         ],
 
         // list of files to exclude
@@ -34,6 +36,16 @@ module.exports = function(config) {
         // preprocess matching files before serving them to the browser
         // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
         preprocessors: {
+            '**/*.html': ['ng-html2js']
+        },
+
+        ngHtml2JsPreprocessor: {
+            // If your build process changes the path to your templates,
+            // use stripPrefix and prependPrefix to adjust it.
+            stripPrefix: "src/main/webapp/",
+
+            // the name of the Angular module to create
+            moduleName: 'htmlTemplates'
         },
 
         // test results reporter to use
@@ -70,7 +82,8 @@ module.exports = function(config) {
             'karma-chrome-launcher',
             'karma-firefox-launcher',
             'karma-phantomjs-launcher',
-            'karma-mocha-reporter'
+            'karma-mocha-reporter',
+            'karma-ng-html2js-preprocessor'
         ]
         
     });

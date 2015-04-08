@@ -121,6 +121,7 @@ angular.module('StatisticsApp').controller('singleLineChartCtrl', [ '$scope', '$
 
         if (isVerksamhet && config.alternativeView) {
             $scope.alternativeView = config.alternativeView;
+            $scope.exchangeableViews = config.exchangeableViews;
         }
 
         $scope.print = function (bwPrint) {
@@ -149,6 +150,11 @@ angular.module('StatisticsApp').casesPerMonthConfig = function () {
     };
     conf.pageHelpText = "help.casespermonth";
     conf.alternativeView = "sjukfallPerManadTvarsnitt";
+
+    conf.exchangeableViews = [
+        {description: 'Tidsserie', state: '#/verksamhet/sjukfallPerManad', active: true},
+        {description: 'Tvärsnitt', state: '#/verksamhet/sjukfallPerManadTvarsnitt', active: false}];
+
     return conf;
 };
 

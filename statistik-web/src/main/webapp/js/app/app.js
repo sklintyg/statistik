@@ -6,7 +6,7 @@ underscore.factory('_', function() {
 });
 
 /* App Module */
-var app = angular.module('StatisticsApp', ['ngRoute', 'ngCookies', 'ngSanitize', 'ui.bootstrap', 'underscore', 'StatisticsApp.treeMultiSelector'])
+var app = angular.module('StatisticsApp',['ngRoute', 'ngCookies', 'ngSanitize', 'ui.bootstrap', 'underscore', 'StatisticsApp.treeMultiSelector', 'StatisticsApp.chartSeriesButtonGroup'])
     .constant('COUNTY_COORDS', [{name: 'blekinge', xy: {"x": 35, "y": 15}}, {name: 'dalarna', xy: {"x": 31, "y": 50}},
         {name: 'halland', xy: {"x": 14, "y": 20}}, {name: 'kalmar', xy: {"x": 40, "y": 20}},
         {name: 'kronoberg', xy: {"x": 32, "y": 19}}, {name: 'gotland', xy: {"x": 55, "y": 22}},

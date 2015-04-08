@@ -116,7 +116,9 @@ angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl', [ '$sco
 
         if (isVerksamhet && config.alternativeView) {
             $scope.alternativeView = config.alternativeView + ($routeParams.diagnosHash ? "/" + $routeParams.diagnosHash : "");
+            $scope.exchangeableViews = config.exchangeableViews;
         }
+
         $scope.showHideDataTable = ControllerCommons.showHideDataTableDefault;
 
         $scope.toggleTableVisibility = function (event) {
@@ -312,6 +314,11 @@ angular.module('StatisticsApp').casesPerMonthTvarsnittConfig = function () {
     conf.chartXAxisTitle = "";
     conf.pageHelpText = "help.casespermonth";
     conf.alternativeView = "sjukfallPerManad";
+
+    conf.exchangeableViews = [
+        {description: 'Tidsserie', state: '#/verksamhet/sjukfallPerManad', active: false},
+        {description: 'Tvärsnitt', state: '#/verksamhet/sjukfallPerManadTvarsnitt', active: true}];
+
     return conf;
 };
 

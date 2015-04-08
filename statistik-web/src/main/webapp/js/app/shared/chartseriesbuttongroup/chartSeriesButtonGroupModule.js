@@ -1,0 +1,1 @@
+angular.module('StatisticsApp.chartSeriesButtonGroup', ['StatisticsApp.chartSeriesButtonGroup.directive']);
