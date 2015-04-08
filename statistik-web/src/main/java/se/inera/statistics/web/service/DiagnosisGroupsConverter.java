@@ -44,7 +44,6 @@ public class DiagnosisGroupsConverter extends MultiDualSexConverter<Diagnosgrupp
     private static final Map<String, List<Integer>> DIAGNOSIS_CHART_GROUPS = createDiagnosisGroupsMap(true);
     static final Map<Integer, String> DIAGNOSKAPITEL_TO_DIAGNOSGRUPP = map(DIAGNOSIS_CHART_GROUPS);
     private static final int DISPLAYED_DIAGNOSIS_GROUPS = 5;
-    public static final int PERCENT = 100;
 
     private static Map<Integer, String> map(Map<String, List<Integer>> diagnosisChartGroups) {
         Map<Integer, String> result = new HashMap<>();
@@ -97,11 +96,20 @@ public class DiagnosisGroupsConverter extends MultiDualSexConverter<Diagnosgrupp
 
         List<OverviewChartRowExtended> result = new ArrayList<>();
         for (OverviewChartRowExtended row : merged.subList(0, DISPLAYED_DIAGNOSIS_GROUPS)) {
-            int previous = row.getQuantity() - row.getAlternation();
-            int percentChange = previous != 0 ? row.getAlternation() * PERCENT / previous : 0;
+            final int alternation = row.getAlternation();
+            int previous = row.getQuantity() - alternation;
+            int percentChange = calculatePercentage(alternation, previous);
             result.add(new OverviewChartRowExtended(row.getName(), row.getQuantity(), percentChange));
         }
         return result;
+    }
+
+    int calculatePercentage(int part, int whole) {
+        if (whole == 0) {
+            return 0;
+        }
+        final double percentage = 100.0;
+        return (int) Math.round(part * percentage / whole);
     }
 
     private List<OverviewChartRowExtended> mergeOverviewChartGroups(List<OverviewChartRowExtended> allGroups) {
