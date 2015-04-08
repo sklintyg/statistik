@@ -91,4 +91,38 @@ public class SjukfallTest {
         assertEquals(true, result.isExtended());
     }
 
+    @Test
+    public void testJoinExtendWith5DaysGap() throws Exception {
+        //Given
+        final int gap = 5;
+        final int orgStart = 1;
+        final int orgSlut = 10;
+        final int newStart = orgSlut + gap + 1;
+        final Sjukfall orgSjukfall = new Sjukfall(new Fact(0, 0, 0, 0, 0, 0, orgStart, 0, 0, 0, 0, 0, 0, orgSlut - orgStart + 1, 0, 0, new int[0], 0));
+        final Fact fact = new Fact(0, 0, 0, 0, 0, 0, newStart, 0, 0, 0, 0, 0, 0, 1, 0, 0, new int[0], 0);
+
+        //When
+        final Sjukfall newSjukfall = orgSjukfall.join(fact);
+
+        //Then
+        assertEquals(true, newSjukfall.isExtended());
+    }
+
+    @Test
+    public void testJoinDoNotExtendWith6DaysGap() throws Exception {
+        //Given
+        final int gap = 6;
+        final int orgStart = 1;
+        final int orgSlut = 10;
+        final int newStart = orgSlut + gap + 1;
+        final Sjukfall orgSjukfall = new Sjukfall(new Fact(0, 0, 0, 0, 0, 0, orgStart, 0, 0, 0, 0, 0, 0, orgSlut - orgStart + 1, 0, 0, new int[0], 0));
+        final Fact fact = new Fact(0, 0, 0, 0, 0, 0, newStart, 0, 0, 0, 0, 0, 0, 1, 0, 0, new int[0], 0);
+
+        //When
+        final Sjukfall newSjukfall = orgSjukfall.join(fact);
+
+        //Then
+        assertEquals(false, newSjukfall.isExtended());
+    }
+
 }
