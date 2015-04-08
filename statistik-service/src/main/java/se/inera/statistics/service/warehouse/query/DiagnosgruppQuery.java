@@ -271,4 +271,9 @@ public class DiagnosgruppQuery {
         return counters;
     }
 
+    public SimpleKonResponse<SimpleKonDataRow> getDiagnosgrupperTvarsnitt(Aisle aisle, SjukfallFilter filter, LocalDate start, int periods, int periodLength) {
+        final DiagnosgruppResponse diagnosgruppResponse = getDiagnosgrupper(aisle, filter, start, periods, periodLength);
+        return SimpleKonResponse.create(diagnosgruppResponse, periods * periodLength);
+    }
+
 }

@@ -66,6 +66,10 @@ angular.module('StatisticsApp').factory('statisticsData', function ($http, $root
         makeRequestVerksamhet("getDiagnoskapitelstatistik", successCallback, failureCallback);
     };
 
+    factory.getDiagnosisGroupTvarsnittVerksamhet = function (successCallback, failureCallback) {
+        makeRequestVerksamhet("getDiagnosGruppTvarsnitt", successCallback, failureCallback);
+    };
+
     factory.getSubDiagnosisGroupData = function (successCallback, failureCallback, groupId) {
         makeRequestNational("getDiagnosavsnittstatistik/" + groupId, successCallback, failureCallback);
     };

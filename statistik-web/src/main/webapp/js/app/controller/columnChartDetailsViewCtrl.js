@@ -346,3 +346,19 @@ angular.module('StatisticsApp').degreeOfSickLeaveTvarsnittConfig = function () {
     conf.alternativeView = "sjukskrivningsgrad";
     return conf;
 };
+
+angular.module('StatisticsApp').diagnosisGroupTvarsnittConfig = function () {
+    var conf = {};
+    conf.dataFetcherVerksamhet = "getDiagnosisGroupTvarsnittVerksamhet";
+    conf.exportTableUrlVerksamhet = function () {
+        return "api/verksamhet/getDiagnosGruppTvarsnitt/csv";
+    };
+    conf.showDetailsOptions = false;
+    conf.title = function (period, enhetsCount) {
+        return "Antal sjukfall per diagnosgrupp" + ControllerCommons.getEnhetCountText(enhetsCount, false) + period;
+    };
+    conf.pageHelpText = "help.diagnosisgroup";
+    conf.chartFootnotes = ["alert.diagnosisgroup.information"];
+    conf.alternativeView = "diagnosgrupp";
+    return conf;
+};

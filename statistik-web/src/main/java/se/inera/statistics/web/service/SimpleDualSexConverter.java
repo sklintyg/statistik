@@ -67,7 +67,7 @@ public class SimpleDualSexConverter {
         return TableData.createWithSingleHeadersRow(data, Arrays.asList(groupTitle, "Antal sjukfall totalt", "Antal sjukfall för kvinnor", "Antal sjukfall för män"));
     }
 
-    private ChartData convertToChartData(SimpleKonResponse<SimpleKonDataRow> casesPerMonth) {
+    protected ChartData convertToChartData(SimpleKonResponse<SimpleKonDataRow> casesPerMonth) {
         final ArrayList<String> categories = new ArrayList<>();
         for (SimpleKonDataRow casesPerMonthRow : casesPerMonth.getRows()) {
             final String seriesName = String.format(seriesNameTemplate, casesPerMonthRow.getName());

@@ -80,6 +80,10 @@ public class WarehouseService {
         return query.getDiagnosgrupper(warehouse.get(vardgivarId), filter, range.getFrom(), range.getMonths(), 1);
     }
 
+    public SimpleKonResponse<SimpleKonDataRow> getDiagnosgrupperTvarsnitt(SjukfallFilter filter, Range range, String vardgivarId) {
+        return query.getDiagnosgrupperTvarsnitt(warehouse.get(vardgivarId), filter, range.getFrom(), 1, range.getMonths());
+    }
+
     public KonDataResponse getSjukskrivningsgradPerMonth(SjukfallFilter filter, Range range, String vardgivarId) {
         return SjukskrivningsgradQuery.getSjukskrivningsgrad(warehouse.get(vardgivarId), filter, range.getFrom(), range.getMonths(), 1, sjukfallUtil);
     }
