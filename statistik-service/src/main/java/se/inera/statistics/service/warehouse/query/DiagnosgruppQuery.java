@@ -83,11 +83,44 @@ public class DiagnosgruppQuery {
         List<Icd10.Kapitel> kapitel = icd10.getKapitel(true);
         final Iterable<SjukfallGroup> sjukfallGroups = sjukfallUtil.sjukfallGrupper(start, periods, periodLength, aisle, filter);
         List<KonDataRow> rows = getKonDataRows(sjukfallGroups, kapitel, Icd10RangeType.KAPITEL, false);
+        removeEmptyInternalIcd10Groups(kapitel, rows);
         List<Icd> avsnitt = new ArrayList<>(kapitel.size());
         for (Icd10.Kapitel k: kapitel) {
             avsnitt.add(new Icd(k.getVisibleId(), k.getName(), k.toInt()));
         }
         return new DiagnosgruppResponse(avsnitt, rows);
+    }
+
+    private void removeEmptyInternalIcd10Groups(List<Icd10.Kapitel> kapitel, List<KonDataRow> rows) {
+        int indexOfEmptyInternalIcd10Group = getIndexOfEmptyInternalIcd10Group(kapitel, rows);
+        while (indexOfEmptyInternalIcd10Group >= 0) {
+            removeGroupWithIndex(indexOfEmptyInternalIcd10Group, kapitel, rows);
+            indexOfEmptyInternalIcd10Group = getIndexOfEmptyInternalIcd10Group(kapitel, rows);
+        }
+    }
+
+    private void removeGroupWithIndex(int index, List<Icd10.Kapitel> kapitel, List<KonDataRow> rows) {
+        kapitel.remove(index);
+        for (KonDataRow row : rows) {
+            row.getData().remove(index);
+        }
+    }
+
+    private int getIndexOfEmptyInternalIcd10Group(List<Icd10.Kapitel> kapitels, List<KonDataRow> rows) {
+        for (int i = 0; i < kapitels.size(); i++) {
+            final Icd10.Kapitel kapitel = kapitels.get(i);
+            if (kapitel.isInternal()) {
+                int sum = 0;
+                for (KonDataRow row : rows) {
+                    final KonField konField = row.getData().get(i);
+                    sum += konField.getFemale() + konField.getMale();
+                }
+                if (sum == 0) {
+                    return i;
+                }
+            }
+        }
+        return -1;
     }
 
     public DiagnosgruppResponse getUnderdiagnosgrupper(Aisle aisle, SjukfallFilter filter, LocalDate start, int periods, int periodLength, String rangeId) throws RangeNotFoundException {
@@ -212,19 +245,16 @@ public class DiagnosgruppQuery {
                 break;
             }
         }
-
         return result;
     }
 
     public List<Counter<Integer>> count(Collection<Sjukfall> sjukfalls, int noOfRows) {
         Map<Integer, Counter<Integer>> map = count(sjukfalls);
         List<Counter<Integer>> result = new ArrayList<>();
-
         Collection<Integer> rowsToKeep = rowsToKeep(map, noOfRows);
         for (Integer intId : rowsToKeep) {
             result.add(map.get(intId));
         }
-
         return result;
     }
 
