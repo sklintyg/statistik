@@ -316,6 +316,11 @@ var ControllerCommons = new function(){
         return $location.path().indexOf("/verksamhet/") === 0;
     };
 
+    this.createQueryStringOfQueryParams = function (queryParams) {
+        return !_.isEmpty(queryParams) ? _.map(queryParams, function (value, key) {
+            return key + "=" + value;
+        }).join('&') : '';
+    };
 };
 
 

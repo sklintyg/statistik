@@ -119,8 +119,15 @@ angular.module('StatisticsApp').controller('singleLineChartCtrl', [ '$scope', '$
         $scope.dataLoadingError = false;
         $scope.popoverText = messageService.getProperty(config.pageHelpText, null, "", null, true);
 
-        if (isVerksamhet && config.alternativeView) {
-            $scope.alternativeView = config.alternativeView;
+        if (isVerksamhet && config.exchangeableViews) {
+            var queryParamsString = ControllerCommons.createQueryStringOfQueryParams($location.search());
+
+            if(queryParamsString) {
+                _.each(config.exchangeableViews, function (view) {
+                    view.state = view.state + "?" + queryParamsString;
+                });
+            }
+
             $scope.exchangeableViews = config.exchangeableViews;
         }
 
@@ -149,7 +156,6 @@ angular.module('StatisticsApp').casesPerMonthConfig = function () {
         return "Antal sjukfall per månad" + ControllerCommons.getEnhetCountText(enhetsCount, false) + months;
     };
     conf.pageHelpText = "help.casespermonth";
-    conf.alternativeView = "sjukfallPerManadTvarsnitt";
 
     conf.exchangeableViews = [
         {description: 'Tidsserie', state: '#/verksamhet/sjukfallPerManad', active: true},
@@ -167,6 +173,10 @@ angular.module('StatisticsApp').longSickLeavesConfig = function () {
     conf.title = function (months, enhetsCount) {
         return "Antal långa sjukfall - mer än 90 dagar" + ControllerCommons.getEnhetCountText(enhetsCount, false) + months;
     };
-    conf.alternativeView = "langasjukskrivningartvarsnitt";
+
+    conf.exchangeableViews = [
+        {description: 'Tidsserie', state: '#/verksamhet/langasjukskrivningar', active: true},
+        {description: 'Tvärsnitt', state: '#/verksamhet/langasjukskrivningartvarsnitt', active: false}];
+
     return conf;
 };

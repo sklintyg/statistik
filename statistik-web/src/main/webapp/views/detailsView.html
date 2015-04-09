@@ -106,10 +106,12 @@
        	</div>
 
 		<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 pull-right" data-ng-class="{margin_top_button_group: showDetailsOptions}" style="margin-bottom: 10px;">
-			<!-- PRINT BUTTON GROUP -->
+            <!-- toolbar -->
             <div class="btn-toolbar pull-right" role="toolbar">
-                <!--<h3>Visa som:</h3>-->
-                <!--<chart-series-bg views="exchangeableViews"></chart-series-bg>-->
+                <!-- Button group for viewing different series -->
+                <h3>Visa som:</h3>
+                <chart-series-bg views="exchangeableViews"></chart-series-bg>
+			    <!-- PRINT BUTTON GROUP -->
                 <div class="btn-group statistics-btn-group" role="group">
                     <a class="multiselect dropdown-toggle btn btn-default" data-toggle="dropdown" href="#">
                         <span message key="dropdown.val.rapport"></span>
@@ -126,8 +128,6 @@
             </div>
 		</div>
     </div>
-
-    <a data-ng-click="showAlternativeView(alternativeView)" data-ng-show="alternativeView">Byt mellan tidsserie och tvärsnitt</a>
 
     <!-- Alert the user about specific conditions -->
     <div class="row hidden-print">

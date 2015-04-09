@@ -81,5 +81,14 @@ describe("Test of common functions for controllers", function() {
         expect(ControllerCommons.htmlsafe("f")).toBe("f");
         expect(ControllerCommons.htmlsafe("f&<")).toBe("f&amp;&lt;");
     });
-    
+
+    it("create query string of query params", function() {
+        var emptyQueryParams = {}, queryParamsSingle = {filter: 'sjskdjdsk'},
+            queryParamsMultiple = {filter: '123345', another: '122114', more: '287218723'};
+
+        expect(ControllerCommons.createQueryStringOfQueryParams(emptyQueryParams)).toEqual('');
+        expect(ControllerCommons.createQueryStringOfQueryParams(queryParamsSingle)).toEqual('filter=sjskdjdsk');
+        expect(ControllerCommons.createQueryStringOfQueryParams(queryParamsMultiple)).toEqual('filter=123345&another=122114&more=287218723');
+    });
+
 });

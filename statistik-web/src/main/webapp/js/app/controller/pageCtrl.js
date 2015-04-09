@@ -63,10 +63,5 @@ angular.module('StatisticsApp').controller('pageCtrl', [ '$scope', '$rootScope',
         $scope.loginClicked = function (url) {
             $location.path(url);
         };
-
-        $scope.showAlternativeView = function(name) {
-            $location.path("/verksamhet/" + name);
-        };
-
     }
 ]);
