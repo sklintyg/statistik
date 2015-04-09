@@ -1,5 +1,7 @@
 !contents -R2 -g -p -f -h
 
+Test ignorerat pga att det inte längre gäller. 
+
 !3 Givet att:
 | script | dagens datum | 2013-11-06 |
 
