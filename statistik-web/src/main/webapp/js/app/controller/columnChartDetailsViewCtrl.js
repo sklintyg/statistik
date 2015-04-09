@@ -72,10 +72,21 @@ angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl', [ '$sco
             }
         };
 
+        var populateDetailsOptions = function (result) {
+            var basePath = isVerksamhet ? "#/verksamhet/diagnosavsnitttvarsnitt" : "#/nationell/diagnosavsnitttvarsnitt";
+            ControllerCommons.populateDetailsOptions(result, basePath, $scope, $routeParams, messageService, config);
+        };
+
         var populatePageWithData = function (result) {
             $scope.subTitle = config.title(result.period, result.filter.enheter ? result.filter.enheter.length : null);
             ControllerCommons.populateActiveDiagnosFilter($scope, statisticsData, result.filter.diagnoser, $routeParams.printBw || $routeParams.print);
             $scope.resultMessage = result.message;
+            if (config.showDetailsOptions) {
+                $scope.currentPeriod = result.period;
+                statisticsData.getDiagnosisKapitelAndAvsnitt(populateDetailsOptions, function () {
+                    alert("Kunde inte ladda data");
+                });
+            }
             $timeout(function () {
                 ControllerCommons.updateDataTable($scope, result.tableData);
                 updateChart(result.chartData, function() { $scope.doneLoading = true; });
@@ -90,7 +101,7 @@ angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl', [ '$sco
         function refreshVerksamhet() {
             statisticsData[config.dataFetcherVerksamhet](populatePageWithData, function () {
                 $scope.dataLoadingError = true;
-            }, $routeParams.diagnosHash);
+            }, ControllerCommons.getExtraPathParam($routeParams));
         }
 
         var diagnosHashExists = function diagnosHashExists() {
@@ -102,7 +113,7 @@ angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl', [ '$sco
             $scope.doneLoading = false;
             $scope.dataLoadingError = false;
             if (isVerksamhet) {
-                $scope.exportTableUrl = config.exportTableUrlVerksamhet($routeParams.diagnosHash);
+                $scope.exportTableUrl = config.exportTableUrlVerksamhet($routeParams.diagnosHash ? $routeParams.diagnosHash : $routeParams.groupId);
                 refreshVerksamhet();
             } else {
                 $scope.exportTableUrl = config.exportTableUrl;
@@ -115,7 +126,7 @@ angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl', [ '$sco
         }
 
         if (isVerksamhet && config.alternativeView) {
-            $scope.alternativeView = config.alternativeView + ($routeParams.diagnosHash ? "/" + $routeParams.diagnosHash : "");
+            $scope.alternativeView = config.alternativeView + ($routeParams.diagnosHash ? "/" + $routeParams.diagnosHash : ($routeParams.groupId ? "/" + $routeParams.groupId + ($routeParams.kategoriId ? "/kategori/" + $routeParams.kategoriId : "") : ""));
         }
         $scope.showHideDataTable = ControllerCommons.showHideDataTableDefault;
 
@@ -128,6 +139,9 @@ angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl', [ '$sco
         $scope.chartFootnotes = _.map(config.chartFootnotes, function(msgKey){
             return messageService.getProperty(msgKey, null, "", null, true);
         });
+
+        $scope.showDetailsOptions = config.showDetailsOptions;
+        $scope.showDetailsOptions2 = config.showDetailsOptions2 && isVerksamhet;
 
         $scope.showDiagnosisSelector = config.showDiagnosisSelector;
         if ($scope.showDiagnosisSelector) {
@@ -360,5 +374,22 @@ angular.module('StatisticsApp').diagnosisGroupTvarsnittConfig = function () {
     conf.pageHelpText = "help.diagnosisgroup";
     conf.chartFootnotes = ["alert.diagnosisgroup.information"];
     conf.alternativeView = "diagnosgrupp";
+    return conf;
+};
+
+angular.module('StatisticsApp').diagnosisSubGroupTvarsnittConfig = function () {
+    var conf = {};
+    conf.dataFetcherVerksamhet = "getSubDiagnosisGroupTvarsnittVerksamhet";
+    conf.exportTableUrlVerksamhet = function (subgroupId) {
+        return "api/verksamhet/getDiagnosavsnittTvarsnitt/" + subgroupId + "/csv";
+    };
+    conf.showDetailsOptions = true;
+    conf.showDetailsOptions2 = true;
+    conf.title = function (period, enhetsCount, name) {
+        return "Antal sjukfall för " + name + ControllerCommons.getEnhetCountText(enhetsCount, false) + period;
+    };
+    conf.pageHelpText = "help.diagnosissubgroup";
+    conf.chartFootnotes = ["alert.diagnosissubgroup.information"];
+    conf.alternativeView = "diagnosavsnitt";
     return conf;
 };

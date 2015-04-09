@@ -407,7 +407,7 @@ public class ProtectedChartDataService {
     public Response getDiagnosisSubGroupStatistics(@Context HttpServletRequest request, @PathParam("groupId") String groupId, @QueryParam("filter") String filterHash) {
         LOG.info("Calling getDiagnosavsnittstatistik with groupId: {} and filterHash: {}", groupId, filterHash);
         try {
-            DualSexStatisticsData data = getDiagnosisSubGroupStatisticsEntity(request, groupId, filterHash);
+            final DualSexStatisticsData data = getDiagnosisSubGroupStatisticsEntity(request, groupId, filterHash);
             return Response.ok(data).build();
         } catch (RangeNotFoundException e) {
             return Response.serverError().entity(e.getMessage()).build();
@@ -416,11 +416,10 @@ public class ProtectedChartDataService {
 
     private DualSexStatisticsData getDiagnosisSubGroupStatisticsEntity(HttpServletRequest request, String groupId, String filterHash) throws RangeNotFoundException {
         final Range range = new Range(18);
-        Filter filter = getFilter(request, filterHash);
-        DiagnosgruppResponse diagnosavsnitt = warehouse.getUnderdiagnosgrupper(filter.getPredicate(), range, groupId, getSelectedVgIdForLoggedInUser(request));
+        final Filter filter = getFilter(request, filterHash);
+        final DiagnosgruppResponse diagnosavsnitt = warehouse.getUnderdiagnosgrupper(filter.getPredicate(), range, groupId, getSelectedVgIdForLoggedInUser(request));
         final String message = getDiagnosisSubGroupStatisticsMessage(filter, Arrays.asList(String.valueOf(icd10.findFromIcd10Code(groupId).toInt())));
-        DualSexStatisticsData result = new DiagnosisSubGroupsConverter().convert(diagnosavsnitt, range, filter, message);
-        return result;
+        return new DiagnosisSubGroupsConverter().convert(diagnosavsnitt, range, filter, message);
     }
 
     private String getDiagnosisSubGroupStatisticsMessage(Filter filter, List<String> diagnosis) {
@@ -443,6 +442,46 @@ public class ProtectedChartDataService {
         LOG.info("Calling getDiagnosavsnittstatistikAsCsv with groupId: {} and filterHash: {}", groupId, filterHash);
         try {
             final DualSexStatisticsData data = getDiagnosisSubGroupStatisticsEntity(request, groupId, filterHash);
+            return CsvConverter.getCsvResponse(data.getTableData(), "export.csv");
+        } catch (RangeNotFoundException e) {
+            return Response.serverError().entity(e.getMessage()).build();
+        }
+    }
+
+    @POST
+    @Path("getDiagnosavsnittTvarsnitt/{groupId}")
+    @Produces({ MediaType.APPLICATION_JSON })
+    @Consumes({ MediaType.APPLICATION_JSON })
+    @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
+    @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
+    public Response getDiagnosisSubGroupTvarsnitt(@Context HttpServletRequest request, @PathParam("groupId") String groupId, @QueryParam("filter") String filterHash) {
+        LOG.info("Calling getDiagnosavsnittTvarsnitt with groupId: {} and filterHash: {}", groupId, filterHash);
+        try {
+            final SimpleDetailsData data = getDiagnosisSubGroupTvarsnittEntity(request, groupId, filterHash);
+            return Response.ok(data).build();
+        } catch (RangeNotFoundException e) {
+            return Response.serverError().entity(e.getMessage()).build();
+        }
+    }
+
+    private SimpleDetailsData getDiagnosisSubGroupTvarsnittEntity(HttpServletRequest request, String groupId, String filterHash) throws RangeNotFoundException {
+        final Range range = new Range(12);
+        final Filter filter = getFilter(request, filterHash);
+        final SimpleKonResponse<SimpleKonDataRow> diagnosavsnitt = warehouse.getUnderdiagnosgrupperTvarsnitt(filter.getPredicate(), range, groupId, getSelectedVgIdForLoggedInUser(request));
+        final String message = getDiagnosisSubGroupStatisticsMessage(filter, Arrays.asList(String.valueOf(icd10.findFromIcd10Code(groupId).toInt())));
+        return new SimpleDualSexConverter("", false, "%1$s").convert(diagnosavsnitt, range, filter, message);
+    }
+
+    @GET
+    @Path("getDiagnosavsnittTvarsnitt/{groupId}/csv")
+    @Produces({ TEXT_UTF_8 })
+    @Consumes({ MediaType.APPLICATION_JSON })
+    @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
+    @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
+    public Response getDiagnosisSubGroupTvarsnittAsCsv(@Context HttpServletRequest request, @PathParam("groupId") String groupId, @QueryParam("filter") String filterHash) {
+        LOG.info("Calling getDiagnosavsnittTvarsnittAsCsv with groupId: {} and filterHash: {}", groupId, filterHash);
+        try {
+            final SimpleDetailsData data = getDiagnosisSubGroupTvarsnittEntity(request, groupId, filterHash);
             return CsvConverter.getCsvResponse(data.getTableData(), "export.csv");
         } catch (RangeNotFoundException e) {
             return Response.serverError().entity(e.getMessage()).build();
