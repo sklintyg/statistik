@@ -131,6 +131,10 @@ class ReportsUtil {
         return post(getVerksamhetUrlPrefix() + "/getDiagnosavsnittstatistik/" + kapitel, filter)
     }
 
+    def getReportEnskiltDiagnoskapitelSomTvarsnittInloggad(String kapitel, filter) {
+        return post(getVerksamhetUrlPrefix() + "/getDiagnosavsnittTvarsnitt/" + kapitel, filter)
+    }
+
     def getReportDiagnosgruppInloggad(filter) {
         return post(getVerksamhetUrlPrefix() + "/getDiagnoskapitelstatistik", filter)
     }
