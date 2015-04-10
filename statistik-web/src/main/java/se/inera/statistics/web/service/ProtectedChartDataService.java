@@ -37,19 +37,17 @@ import se.inera.statistics.service.report.model.KonDataResponse;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.SimpleKonDataRow;
 import se.inera.statistics.service.report.model.SimpleKonResponse;
-import se.inera.statistics.service.report.model.SjukfallslangdResponse;
 import se.inera.statistics.service.report.model.VerksamhetOverviewResponse;
 import se.inera.statistics.service.report.util.Icd10;
+import se.inera.statistics.service.warehouse.Fact;
 import se.inera.statistics.service.warehouse.SjukfallFilter;
+import se.inera.statistics.service.warehouse.SjukfallUtil;
 import se.inera.statistics.service.warehouse.Warehouse;
-import se.inera.statistics.web.model.SimpleDetailsData;
+import se.inera.statistics.service.warehouse.query.RangeNotFoundException;
 import se.inera.statistics.web.model.DualSexStatisticsData;
 import se.inera.statistics.web.model.LoginInfo;
-import se.inera.statistics.web.model.SickLeaveLengthData;
+import se.inera.statistics.web.model.SimpleDetailsData;
 import se.inera.statistics.web.model.Verksamhet;
-import se.inera.statistics.service.warehouse.Fact;
-import se.inera.statistics.service.warehouse.SjukfallUtil;
-import se.inera.statistics.service.warehouse.query.RangeNotFoundException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
@@ -913,17 +911,16 @@ public class ProtectedChartDataService {
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
     public Response getSickLeaveLength(@Context HttpServletRequest request, @QueryParam("filter") String filterHash) {
-        SickLeaveLengthData data = getSickLeaveLengthData(request, filterHash);
+        SimpleDetailsData data = getSickLeaveLengthData(request, filterHash);
         return Response.ok(data).build();
     }
 
-    private SickLeaveLengthData getSickLeaveLengthData(HttpServletRequest request, String filterHash) {
+    private SimpleDetailsData getSickLeaveLengthData(HttpServletRequest request, String filterHash) {
         LOG.info("Calling getSickLeaveLengthData with filterHash: {}", filterHash);
         Range range = new Range(YEAR);
         Filter filter = getFilter(request, filterHash);
-        SjukfallslangdResponse sickLeaveLength = warehouse.getSjukskrivningslangd(filter.getPredicate(), range, getSelectedVgIdForLoggedInUser(request));
-        SickLeaveLengthData result = new SickLeaveLengthConverter().convert(sickLeaveLength, range, filter);
-        return result;
+        SimpleKonResponse<SimpleKonDataRow> sickLeaveLength = warehouse.getSjukskrivningslangd(filter.getPredicate(), range, getSelectedVgIdForLoggedInUser(request));
+        return new SickLeaveLengthConverter().convert(sickLeaveLength, range, filter);
     }
 
     /**
@@ -937,7 +934,7 @@ public class ProtectedChartDataService {
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
     public Response getSickLeaveLengthDataAsCsv(@Context HttpServletRequest request, @QueryParam("filter") String filterHash) {
         LOG.info("Calling getSickLeaveLengthDataAsCsv with filterHash: {}", filterHash);
-        final SickLeaveLengthData simpleDetailsData = getSickLeaveLengthData(request, filterHash);
+        final SimpleDetailsData simpleDetailsData = getSickLeaveLengthData(request, filterHash);
         return CsvConverter.getCsvResponse(simpleDetailsData.getTableData(), "export.csv");
     }
 
@@ -983,19 +980,18 @@ public class ProtectedChartDataService {
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
     public Response getSickLeaveLengthCurrentData(@Context HttpServletRequest request, @QueryParam("filter") String filterHash) {
-        SickLeaveLengthData data = getSickLeaveLengthCurrentDataData(request, filterHash);
+        SimpleDetailsData data = getSickLeaveLengthCurrentDataData(request, filterHash);
         return Response.ok(data).build();
     }
 
-    private SickLeaveLengthData getSickLeaveLengthCurrentDataData(HttpServletRequest request, String filterHash) {
+    private SimpleDetailsData getSickLeaveLengthCurrentDataData(HttpServletRequest request, String filterHash) {
         LOG.info("Calling getSickLeaveLengthCurrentData with filterHash: {}", filterHash);
         LocalDate start = new LocalDate().withDayOfMonth(1);
         LocalDate end = start.plusMonths(1).minusDays(1);
         final Range range = new Range(start, end);
         Filter filter = getFilter(request, filterHash);
-        SjukfallslangdResponse sickLeaveLength = warehouse.getSjukskrivningslangd(filter.getPredicate(), range, getSelectedVgIdForLoggedInUser(request));
-        SickLeaveLengthData result = new SickLeaveLengthConverter().convert(sickLeaveLength, range, filter);
-        return result;
+        SimpleKonResponse<SimpleKonDataRow> sickLeaveLength = warehouse.getSjukskrivningslangd(filter.getPredicate(), range, getSelectedVgIdForLoggedInUser(request));
+        return new SickLeaveLengthConverter().convert(sickLeaveLength, range, filter);
     }
 
     /**
@@ -1009,7 +1005,7 @@ public class ProtectedChartDataService {
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
     public Response getSickLeaveLengthCurrentDataAsCsv(@Context HttpServletRequest request, @QueryParam("filter") String filterHash) {
         LOG.info("Calling getSickLeaveLengthCurrentDataAsCsv with filterHash: {}", filterHash);
-        final SickLeaveLengthData data = getSickLeaveLengthCurrentDataData(request, filterHash);
+        final SimpleDetailsData data = getSickLeaveLengthCurrentDataData(request, filterHash);
         return CsvConverter.getCsvResponse(data.getTableData(), "export.csv");
     }
 

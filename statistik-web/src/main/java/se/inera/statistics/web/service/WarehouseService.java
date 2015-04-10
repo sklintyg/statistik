@@ -24,7 +24,6 @@ import se.inera.statistics.service.report.model.KonDataResponse;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.SimpleKonDataRow;
 import se.inera.statistics.service.report.model.SimpleKonResponse;
-import se.inera.statistics.service.report.model.SjukfallslangdResponse;
 import se.inera.statistics.service.report.model.VerksamhetOverviewResponse;
 import se.inera.statistics.service.report.util.ReportUtil;
 import se.inera.statistics.service.warehouse.SjukfallFilter;
@@ -92,7 +91,7 @@ public class WarehouseService {
         return SjukskrivningsgradQuery.getSjukskrivningsgradTvarsnitt(warehouse.get(vardgivarId), filter, range.getFrom(), 1, range.getMonths(), sjukfallUtil);
     }
 
-    public SjukfallslangdResponse getSjukskrivningslangd(SjukfallFilter filter, Range range, String vardgivarId) {
+    public SimpleKonResponse<SimpleKonDataRow> getSjukskrivningslangd(SjukfallFilter filter, Range range, String vardgivarId) {
         return SjukskrivningslangdQuery.getSjuksrivningslangd(warehouse.get(vardgivarId), filter, range.getFrom(), 1, range.getMonths(), sjukfallUtil);
     }
 

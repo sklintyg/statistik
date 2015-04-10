@@ -35,7 +35,6 @@ import se.inera.statistics.service.report.model.OverviewResponse;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.SimpleKonDataRow;
 import se.inera.statistics.service.report.model.SimpleKonResponse;
-import se.inera.statistics.service.report.model.SjukfallslangdResponse;
 import se.inera.statistics.service.report.util.Icd10;
 import se.inera.statistics.service.report.util.Icd10RangeType;
 import se.inera.statistics.service.report.util.ReportUtil;
@@ -43,7 +42,6 @@ import se.inera.statistics.service.warehouse.NationellData;
 import se.inera.statistics.service.warehouse.NationellOverviewData;
 import se.inera.statistics.web.model.CasesPerCountyData;
 import se.inera.statistics.web.model.DualSexStatisticsData;
-import se.inera.statistics.web.model.SickLeaveLengthData;
 import se.inera.statistics.web.model.SimpleDetailsData;
 import se.inera.statistics.web.model.TableData;
 import se.inera.statistics.web.model.overview.OverviewData;
@@ -95,7 +93,7 @@ public class ChartDataService {
     private volatile OverviewData overview;
     private volatile SimpleDetailsData aldersgrupper;
     private volatile DualSexStatisticsData sjukskrivningsgrad;
-    private volatile SickLeaveLengthData sjukfallslangd;
+    private volatile SimpleDetailsData sjukfallslangd;
     private volatile CasesPerCountyData sjukfallPerLan;
     private volatile SimpleDetailsData konsfordelningPerLan;
     private LocalDateTime lastUpdated;
@@ -189,7 +187,7 @@ public class ChartDataService {
 
     public void buildSjukfallslangd() {
         Range range = new Range(YEAR);
-        SjukfallslangdResponse sickLeaveLength = data.getSjukfallslangd(range);
+        SimpleKonResponse<SimpleKonDataRow> sickLeaveLength = data.getSjukfallslangd(range);
         sjukfallslangd = new SickLeaveLengthConverter().convert(sickLeaveLength, range, Filter.empty());
     }
 
@@ -416,7 +414,7 @@ public class ChartDataService {
     @GET
     @Path("getSickLeaveLengthData")
     @Produces({ MediaType.APPLICATION_JSON })
-    public SickLeaveLengthData getSickLeaveLengthData() {
+    public SimpleDetailsData getSickLeaveLengthData() {
         LOG.info("Calling getSickLeaveLengthData for national");
         return sjukfallslangd;
     }

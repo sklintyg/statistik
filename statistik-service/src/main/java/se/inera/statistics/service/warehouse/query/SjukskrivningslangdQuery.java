@@ -26,8 +26,6 @@ import se.inera.statistics.service.report.model.KonDataResponse;
 import se.inera.statistics.service.report.model.OverviewChartRow;
 import se.inera.statistics.service.report.model.SimpleKonDataRow;
 import se.inera.statistics.service.report.model.SimpleKonResponse;
-import se.inera.statistics.service.report.model.SjukfallslangdResponse;
-import se.inera.statistics.service.report.model.SjukfallslangdRow;
 import se.inera.statistics.service.report.util.Ranges;
 import se.inera.statistics.service.report.util.ReportUtil;
 import se.inera.statistics.service.report.util.SjukfallslangdUtil;
@@ -140,16 +138,16 @@ public final class SjukskrivningslangdQuery {
         return new SimpleKonResponse<>(rows, periods);
     }
 
-    public static SjukfallslangdResponse getSjuksrivningslangd(Aisle aisle, SjukfallFilter filter, LocalDate from, int periods, int periodLength, SjukfallUtil sjukfallUtil) {
-        List<SjukfallslangdRow> rows = new ArrayList<>();
+    public static SimpleKonResponse<SimpleKonDataRow> getSjuksrivningslangd(Aisle aisle, SjukfallFilter filter, LocalDate from, int periods, int periodLength, SjukfallUtil sjukfallUtil) {
+        List<SimpleKonDataRow> rows = new ArrayList<>();
         for (SjukfallGroup sjukfallGroup: sjukfallUtil.sjukfallGrupperUsingOriginalSjukfallStart(from, periods, periodLength, aisle, filter)) {
             Map<Ranges.Range, Counter<Ranges.Range>> counterMap = SjukskrivningslangdQuery.count(sjukfallGroup.getSjukfall());
             for (Ranges.Range i : SjukfallslangdUtil.RANGES) {
                 Counter<Ranges.Range> counter = counterMap.get(i);
-                rows.add(new SjukfallslangdRow(i.getName(), counter.getCountFemale(), counter.getCountMale()));
+                rows.add(new SimpleKonDataRow(i.getName(), counter.getCountFemale(), counter.getCountMale()));
             }
         }
-        return new SjukfallslangdResponse(rows, periodLength);
+        return new SimpleKonResponse<>(rows, periodLength);
 
     }
 

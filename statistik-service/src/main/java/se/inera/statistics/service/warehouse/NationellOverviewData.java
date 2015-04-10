@@ -31,7 +31,6 @@ import se.inera.statistics.service.report.model.OverviewResponse;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.SimpleKonDataRow;
 import se.inera.statistics.service.report.model.SimpleKonResponse;
-import se.inera.statistics.service.report.model.SjukfallslangdResponse;
 import se.inera.statistics.service.report.util.ReportUtil;
 
 import java.util.ArrayList;
@@ -115,14 +114,14 @@ public class NationellOverviewData {
     }
 
     private List<OverviewChartRow> getSjukskrivningsgrupper(Range range) {
-        SjukfallslangdResponse previousData = data.getSjukfallslangd(ReportUtil.getPreviousPeriod(range).getFrom(), 1, KVARTAL);
-        SjukfallslangdResponse currentData = data.getSjukfallslangd(range.getFrom(), 1, KVARTAL);
+        SimpleKonResponse<SimpleKonDataRow> previousData = data.getSjukfallslangd(ReportUtil.getPreviousPeriod(range).getFrom(), 1, KVARTAL);
+        SimpleKonResponse<SimpleKonDataRow> currentData = data.getSjukfallslangd(range.getFrom(), 1, KVARTAL);
 
         List<OverviewChartRow> result = new ArrayList<>();
         for (int i = 0; i < currentData.getRows().size(); i++) {
             int previous = previousData.getRows().get(i).getFemale() + previousData.getRows().get(i).getMale();
             int current = currentData.getRows().get(i).getFemale() + currentData.getRows().get(i).getMale();
-            result.add(new OverviewChartRowExtended(previousData.getRows().get(i).getGroup(), current, current - previous));
+            result.add(new OverviewChartRowExtended(previousData.getRows().get(i).getName(), current, current - previous));
         }
 
         return result;

@@ -34,8 +34,6 @@ import se.inera.statistics.service.report.model.Lan;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.SimpleKonDataRow;
 import se.inera.statistics.service.report.model.SimpleKonResponse;
-import se.inera.statistics.service.report.model.SjukfallslangdResponse;
-import se.inera.statistics.service.report.model.SjukfallslangdRow;
 import se.inera.statistics.service.report.util.ReportUtil;
 import se.inera.statistics.service.warehouse.query.AldersgruppQuery;
 import se.inera.statistics.service.warehouse.query.Counter;
@@ -159,41 +157,33 @@ public class NationellData {
         }
     }
 
-    public SjukfallslangdResponse getSjukfallslangd(Range range) {
+    public SimpleKonResponse<SimpleKonDataRow> getSjukfallslangd(Range range) {
         return getSjukfallslangd(range.getFrom(), 1, range.getMonths());
     }
 
-    public SjukfallslangdResponse getSjukfallslangd(LocalDate start, int perioder, int periodlangd) {
-        SjukfallslangdResponse result = null;
+    public SimpleKonResponse<SimpleKonDataRow> getSjukfallslangd(LocalDate start, int perioder, int periodlangd) {
+        SimpleKonResponse<SimpleKonDataRow> result = null;
         for (Aisle aisle : warehouse) {
-            SjukfallslangdResponse langder = SjukskrivningslangdQuery.getSjuksrivningslangd(aisle, SjukfallUtil.ALL_ENHETER, start, perioder, periodlangd, sjukfallUtil);
+            SimpleKonResponse<SimpleKonDataRow> langder = SjukskrivningslangdQuery.getSjuksrivningslangd(aisle, SjukfallUtil.ALL_ENHETER, start, perioder, periodlangd, sjukfallUtil);
             if (result == null) {
-                result = createEmptySjukfallslangdResponse(langder);
+                result = createEmptySimpleKonResponse(langder);
             }
-            Iterator<SjukfallslangdRow> rowsNew = langder.getRows().iterator();
-            Iterator<SjukfallslangdRow> rowsOld = result.getRows().iterator();
-            List<SjukfallslangdRow> list = new ArrayList<>(perioder);
+            Iterator<SimpleKonDataRow> rowsNew = langder.getRows().iterator();
+            Iterator<SimpleKonDataRow> rowsOld = result.getRows().iterator();
+            List<SimpleKonDataRow> list = new ArrayList<>(perioder);
             while (rowsNew.hasNext() && rowsOld.hasNext()) {
-                SjukfallslangdRow a = rowsNew.next();
-                SjukfallslangdRow b = rowsOld.next();
+                SimpleKonDataRow a = rowsNew.next();
+                SimpleKonDataRow b = rowsOld.next();
 
-                list.add(new SjukfallslangdRow(a.getGroup(), filterCutoff(a.getFemale()) + b.getFemale(), filterCutoff(a.getMale()) + b.getMale()));
+                list.add(new SimpleKonDataRow(a.getName(), filterCutoff(a.getFemale()) + b.getFemale(), filterCutoff(a.getMale()) + b.getMale()));
             }
-            result = new SjukfallslangdResponse(list, perioder * periodlangd);
+            result = new SimpleKonResponse<>(list, perioder * periodlangd);
         }
         if (result == null) {
-            return new SjukfallslangdResponse(new ArrayList<SjukfallslangdRow>(), 0);
+            return new SimpleKonResponse<>(new ArrayList<SimpleKonDataRow>(), 0);
         } else {
             return result;
         }
-    }
-
-    private SjukfallslangdResponse createEmptySjukfallslangdResponse(SjukfallslangdResponse langder) {
-        final ArrayList<SjukfallslangdRow> rows = new ArrayList<>();
-        for (SjukfallslangdRow existingRow : langder.getRows()) {
-            rows.add(new SjukfallslangdRow(existingRow.getGroup(), 0, 0));
-        }
-        return new SjukfallslangdResponse(rows, langder.getMonths());
     }
 
     public DiagnosgruppResponse getDiagnosgrupper(Range range) {
