@@ -163,7 +163,7 @@ angular.module('StatisticsApp').controller('doubleAreaChartsCtrl', [ '$scope', '
         };
 
         var populateDetailsOptions = function (result) {
-            var basePath = "#/verksamhet/diagnosavsnitt";
+            var basePath = isVerksamhet ? "#/verksamhet/diagnosavsnitt" : "#/nationell/diagnosavsnitt";
             ControllerCommons.populateDetailsOptions(result, basePath, $scope, $routeParams, messageService, config);
         };
 
@@ -203,13 +203,13 @@ angular.module('StatisticsApp').controller('doubleAreaChartsCtrl', [ '$scope', '
             $scope.doneLoading = false;
             $scope.dataLoadingError = false;
             if (isVerksamhet) {
-                $scope.exportTableUrl = config.exportTableUrlVerksamhet($routeParams.diagnosHash ? $routeParams.diagnosHash : $routeParams.groupId);
+                $scope.exportTableUrl = config.exportTableUrlVerksamhet(ControllerCommons.getExtraPathParam($routeParams));
                 refreshVerksamhet();
             } else {
                 $scope.exportTableUrl = config.exportTableUrl($routeParams.groupId);
                 statisticsData[config.dataFetcher](populatePageWithData, function () {
                     $scope.dataLoadingError = true;
-                }, ControllerCommons.getMostSpecificGroupId());
+                }, ControllerCommons.getMostSpecificGroupId($routeParams));
             }
         } else {
             $scope.doneLoading = true;
