@@ -321,6 +321,63 @@ var ControllerCommons = new function(){
             return key + "=" + value;
         }).join('&') : '';
     };
+
+    this.getExtraPathParam = function(routeParams) {
+        return routeParams.diagnosHash ? routeParams.diagnosHash : ControllerCommons.getMostSpecificGroupId(routeParams);
+    };
+
+    this.getMostSpecificGroupId = function(routeParams) {
+        return routeParams.kategoriId ? routeParams.kategoriId : routeParams.groupId;
+    };
+
+    this.populateDetailsOptions = function (result, basePath, $scope, $routeParams, messageService, config) {
+        var kapitels = result.kapitels;
+        for (var i = 0; i < kapitels.length; i++) {
+            if (kapitels[i].id === $routeParams.groupId) {
+                $scope.selectedDetailsOption = kapitels[i];
+                break;
+            }
+        }
+        var avsnitts = result.avsnitts[$routeParams.groupId];
+        for (var i = 0; i < avsnitts.length; i++) {
+            if (avsnitts[i].id === $routeParams.kategoriId) {
+                $scope.selectedDetailsOption2 = avsnitts[i];
+                break;
+            }
+        }
+
+        $scope.detailsOptions = _.map(kapitels, function (e) {
+            e.url = basePath + "/" + e.id;
+            return e;
+        });
+        $scope.detailsOptions2 = _.map(avsnitts, function (e) {
+            e.url = basePath + "/" + $routeParams.groupId + "/kategori/" + e.id;
+            return e;
+        });
+
+        //Add default option for detailsOptions2
+        var defaultId = messageService.getProperty("lbl.valj-annat-diagnosavsnitt", null, "", null, true);
+        $scope.detailsOptions2.unshift({"id": defaultId, "name":"", "url":basePath + "/" + $routeParams.groupId});
+        if (!$scope.selectedDetailsOption2) {
+            $scope.selectedDetailsOption2 = $scope.detailsOptions2[0];
+        }
+
+        $scope.subTitle = getSubtitle($scope.currentPeriod, $scope.selectedDetailsOption, $scope.selectedDetailsOption2, $scope, config);
+    };
+
+    function getSubtitle(period, selectedOption1, selectedOption2, $scope, config) {
+        if ((selectedOption2 && selectedOption2.name && selectedOption2.id)) {
+            return config.title(period, $scope.enhetsCount, selectedOption2.id + " " + selectedOption2.name);
+        }
+        if (selectedOption1 && selectedOption1.name && selectedOption1.id) {
+            return config.title(period, $scope.enhetsCount, selectedOption1.id + " " + selectedOption1.name);
+        }
+        return "";
+    }
+
+    this.createDiagnosHashPathOrAlternativePath = function($routeParams){
+        return ($routeParams.diagnosHash ? "/" + $routeParams.diagnosHash : ($routeParams.groupId ? "/" + $routeParams.groupId + ($routeParams.kategoriId ? "/kategori/" + $routeParams.kategoriId : "") : ""));
+    };
 };
 
 

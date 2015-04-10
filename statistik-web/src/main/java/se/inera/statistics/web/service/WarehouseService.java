@@ -120,6 +120,10 @@ public class WarehouseService {
         return query.getUnderdiagnosgrupper(warehouse.get(vardgivarId), filter, range.getFrom(), range.getMonths(), 1, kapitelId);
     }
 
+    public SimpleKonResponse<SimpleKonDataRow> getUnderdiagnosgrupperTvarsnitt(SjukfallFilter filter, Range range, String kapitelId, String vardgivarId) throws RangeNotFoundException {
+        return query.getUnderdiagnosgrupperTvarsnitt(warehouse.get(vardgivarId), filter, range.getFrom(), 1, range.getMonths(), kapitelId);
+    }
+
     public SimpleKonResponse<SimpleKonDataRow> getJamforDiagnoser(SjukfallFilter filter, Range range, String vardgivarId, List<String> diagnosis) {
         return query.getJamforDiagnoser(warehouse.get(vardgivarId), filter, range.getFrom(), 1, range.getMonths(), diagnosis);
     }

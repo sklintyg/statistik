@@ -134,6 +134,20 @@ var app = angular.module('StatisticsApp',['ngRoute', 'ngCookies', 'ngSanitize', 
             title: 'Enskilt diagnoskapitel'
         }).when('/verksamhet/diagnosavsnitt', {
             redirectTo: '/verksamhet/diagnosavsnitt/A00-B99'
+        }).when('/verksamhet/diagnosavsnitttvarsnitt/:groupId/kategori/:kategoriId', {
+            templateUrl: 'views/detailsView.html',
+            controller: 'columnChartDetailsViewCtrl',
+            controllerAs: 'VerksamhetDiagnoskategoriCtrl',
+            resolve: { config: app.diagnosisSubGroupTvarsnittConfig },
+            title: 'Enskilt diagnoskapitel'
+        }).when('/verksamhet/diagnosavsnitttvarsnitt/:groupId', {
+            templateUrl: 'views/detailsView.html',
+            controller: 'columnChartDetailsViewCtrl',
+            controllerAs: 'VerksamhetDiagnosavsnittCtrl',
+            resolve: { config: app.diagnosisSubGroupTvarsnittConfig },
+            title: 'Enskilt diagnoskapitel'
+        }).when('/verksamhet/diagnosavsnitttvarsnitt', {
+            redirectTo: '/verksamhet/diagnosavsnitttvarsnitt/A00-B99'
         }).when('/verksamhet/jamforDiagnoser/:diagnosHash', {
             templateUrl: 'views/detailsView.html',
             controller: 'columnChartDetailsViewCtrl',

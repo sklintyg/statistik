@@ -276,4 +276,8 @@ public class DiagnosgruppQuery {
         return SimpleKonResponse.create(diagnosgruppResponse, periods * periodLength);
     }
 
+    public SimpleKonResponse<SimpleKonDataRow> getUnderdiagnosgrupperTvarsnitt(Aisle aisle, SjukfallFilter filter, LocalDate start, int periods, int periodLength, String rangeId) throws RangeNotFoundException {
+        final DiagnosgruppResponse underdiagnosgrupper = getUnderdiagnosgrupper(aisle, filter, start, periods, periodLength, rangeId);
+        return SimpleKonResponse.create(underdiagnosgrupper, periods * periodLength);
+    }
 }
