@@ -23,6 +23,8 @@ import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
 import com.google.common.base.Splitter;
 import com.google.common.collect.Lists;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.stereotype.Component;
@@ -49,6 +51,8 @@ import static com.google.common.collect.Lists.transform;
 @Component
 public class LoginServiceUtil {
 
+    private static final Logger LOG = LoggerFactory.getLogger(LoginServiceUtil.class);
+
     @Autowired
     private Warehouse warehouse;
 
@@ -62,17 +66,27 @@ public class LoginServiceUtil {
 
     public LoginInfo getLoginInfo(HttpServletRequest request) {
         Principal user = request.getUserPrincipal();
-        if (user instanceof AbstractAuthenticationToken) {
-            AbstractAuthenticationToken token = (AbstractAuthenticationToken) user;
-            if (token.getDetails() instanceof User) {
-                User realUser = (User) token.getDetails();
-                List<Enhet> enhetsList = warehouse.getEnhets(realUser.getValdVardenhet().getVardgivarId());
-                Verksamhet defaultVerksamhet = toVerksamhet(realUser.getValdVardenhet(), enhetsList);
-                List<Verksamhet> verksamhets = getVerksamhetsList(realUser, enhetsList);
-                return new LoginInfo(realUser.getHsaId(), realUser.getName(), defaultVerksamhet, realUser.isVerksamhetschef(), realUser.isDelprocessledare(), realUser.isProcessledare(), verksamhets);
-            }
+        if (!(user instanceof AbstractAuthenticationToken)) {
+            LOG.error("user object is of wrong type: " + user);
+            return new LoginInfo();
         }
-        return new LoginInfo();
+        AbstractAuthenticationToken token = (AbstractAuthenticationToken) user;
+        final Object details = token.getDetails();
+        if (!(details instanceof User)) {
+            LOG.warn("details object is of wrong type: " + details);
+            return new LoginInfo();
+        }
+        User realUser = (User) details;
+        final Vardenhet valdVardenhet = realUser.getValdVardenhet();
+        if (valdVardenhet == null) {
+            LOG.warn("valdEnhet may not be null");
+            return new LoginInfo();
+        }
+        final String vardgivarId = valdVardenhet.getVardgivarId();
+        List<Enhet> enhetsList = warehouse.getEnhets(vardgivarId);
+        Verksamhet defaultVerksamhet = toVerksamhet(valdVardenhet, enhetsList);
+        List<Verksamhet> verksamhets = getVerksamhetsList(realUser, enhetsList);
+        return new LoginInfo(realUser.getHsaId(), realUser.getName(), defaultVerksamhet, realUser.isVerksamhetschef(), realUser.isDelprocessledare(), realUser.isProcessledare(), verksamhets);
     }
 
     private List<Verksamhet> getVerksamhetsList(User realUser, final List<Enhet> enhetsList) {
