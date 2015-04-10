@@ -378,6 +378,24 @@ var ControllerCommons = new function(){
     this.createDiagnosHashPathOrAlternativePath = function($routeParams){
         return ($routeParams.diagnosHash ? "/" + $routeParams.diagnosHash : ($routeParams.groupId ? "/" + $routeParams.groupId + ($routeParams.kategoriId ? "/kategori/" + $routeParams.kategoriId : "") : ""));
     };
+
+    this.updateExchangeableViewsUrl = function(isVerksamhet, config, $location, $scope, $routeParams) {
+        if (isVerksamhet && config.exchangeableViews) {
+            //If we have a diagnosisHash then added to the next route before anything else
+            _.each(config.exchangeableViews, function (view) {
+                view.state = view.state + ControllerCommons.createDiagnosHashPathOrAlternativePath($routeParams);
+            });
+            var queryParamsString = ControllerCommons.createQueryStringOfQueryParams($location.search());
+            //Add queryParams if any
+            if (queryParamsString) {
+                _.each(config.exchangeableViews, function (view) {
+                    view.state = view.state + "?" + queryParamsString;
+                });
+            }
+            $scope.exchangeableViews = config.exchangeableViews;
+        }
+    }
+
 };
 
 
