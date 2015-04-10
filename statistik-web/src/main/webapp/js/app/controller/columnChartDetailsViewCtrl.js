@@ -127,11 +127,9 @@ angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl', [ '$sco
 
         if (isVerksamhet && config.exchangeableViews) {
             //If we have a diagnosisHash then added to the next route before anything else
-            if($routeParams.diagnosHash) {
-                _.each(config.exchangeableViews, function(view) {
-                    view.state = view.state + ControllerCommons.createDiagnosHashPathOrAlternativePath();
-                });
-            }
+            _.each(config.exchangeableViews, function (view) {
+                view.state = view.state + ControllerCommons.createDiagnosHashPathOrAlternativePath($routeParams);
+            });
 
             var queryParamsString = ControllerCommons.createQueryStringOfQueryParams($location.search());
 
@@ -443,6 +441,9 @@ angular.module('StatisticsApp').diagnosisSubGroupTvarsnittConfig = function () {
     };
     conf.pageHelpText = "help.diagnosissubgroup";
     conf.chartFootnotes = ["alert.diagnosissubgroup.information"];
-    conf.alternativeView = "diagnosavsnitt";
+
+    conf.exchangeableViews = [
+        {description: 'Tidsserie', state: '#/verksamhet/diagnosavsnitt', active: false},
+        {description: 'Tvärsnitt', state: '#/verksamhet/diagnosavsnitttvarsnitt', active: true}];
     return conf;
 };
