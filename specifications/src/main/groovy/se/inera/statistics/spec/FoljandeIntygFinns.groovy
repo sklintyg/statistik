@@ -28,6 +28,7 @@ class FoljandeIntygFinns {
     def exaktintygid
     String intygstyp
     String enhetsnamn
+    String jsonformat
 
     public void setKommentar(String kommentar) {}
 
@@ -47,9 +48,18 @@ class FoljandeIntygFinns {
         intygstyp = EventType.CREATED.name();
         exaktintygid = intygIdCounter++;
         enhetsnamn = null;
+        jsonformat = "nytt"
     }
 
     public void execute() {
+        if ("gammalt".equalsIgnoreCase(jsonformat)) {
+            executeForOldJsonFormat();
+        } else {
+            executeForNewJsonFormat();
+        }
+    }
+
+    public void executeForNewJsonFormat() {
         def slurper = new JsonSlurper()
         String intygString = getClass().getResource('/maximalt-fk7263-internal.json').getText('UTF-8')
         def result = slurper.parseText(intygString)
@@ -78,6 +88,46 @@ class FoljandeIntygFinns {
         def finalIntygDataString = builder.toString()
 
         Intyg intyg = new Intyg(EventType.valueOf(intygstyp), finalIntygDataString, String.valueOf(exaktintygid), DateTimeUtils.currentTimeMillis(), län, enhetsnamn)
+        reportsUtil.insertIntyg(intyg)
+    }
+
+    public void executeForOldJsonFormat() {
+        def slurper = new JsonSlurper()
+        String intygString = getClass().getResource('/intyg1.json').getText('UTF-8')
+        String observationKodString = getClass().getResource('/observationMedKod.json').getText('UTF-8')
+        def result = slurper.parseText(intygString)
+
+        result.patient.id.extension = personnr;
+
+        result.skapadAv.id.extension = läkare
+
+        def observation = slurper.parseText(observationKodString)
+        observation.observationskod.code = diagnoskod
+        result.observationer.add(observation)
+
+        String observationFormagaString = getClass().getResource('/observationMedArbetsformaga.json').getText('UTF-8')
+        def observationFormaga = slurper.parseText(observationFormagaString)
+        observationFormaga.observationsperiod.from = start
+        observationFormaga.observationsperiod.tom = slut
+        observationFormaga.varde[0].quantity = arbetsförmåga
+        result.observationer.add(observationFormaga)
+
+        if (!arbetsförmåga2.isEmpty()) {
+            def observationFormaga2 = slurper.parseText(observationFormagaString)
+            observationFormaga2.observationsperiod.from = start2
+            observationFormaga2.observationsperiod.tom = slut2
+            observationFormaga2.varde[0].quantity = arbetsförmåga2
+            result.observationer.add(observationFormaga2)
+        }
+
+        result.skapadAv.vardenhet.id.extension = enhet
+        result.skapadAv.vardenhet.vardgivare.id.extension = vardgivare
+
+        def builder = new JsonBuilder(result)
+        def finalIntygDataString = builder.toString()
+
+        Intyg intyg = new Intyg(EventType.valueOf(intygstyp), finalIntygDataString, String.valueOf(exaktintygid), DateTimeUtils.currentTimeMillis(), län, enhetsnamn)
+
         reportsUtil.insertIntyg(intyg)
     }
 
