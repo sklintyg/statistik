@@ -91,4 +91,20 @@ describe("Test of common functions for controllers", function() {
         expect(ControllerCommons.createQueryStringOfQueryParams(queryParamsMultiple)).toEqual('filter=123345&another=122114&more=287218723');
     });
 
+    it("string with path is created either with diagnos hash or other", function() {
+        var routeParamsWithDiagnosHash = {diagnosHash: '12345'};
+        expect(ControllerCommons.createDiagnosHashPathOrAlternativePath(routeParamsWithDiagnosHash)).toEqual('/12345');
+
+        var routeParamsWithGroupId = {groupId: 'A00-B99'};
+        expect(ControllerCommons.createDiagnosHashPathOrAlternativePath(routeParamsWithGroupId)).toEqual('/A00-B99');
+
+        //Add a kategoriId to the routeparams with groupid
+        routeParamsWithGroupId.kategoriId = 'someId';
+        expect(ControllerCommons.createDiagnosHashPathOrAlternativePath(routeParamsWithGroupId)).toEqual('/A00-B99/kategori/someId');
+
+        //No route params will just produce an empty string
+        expect(ControllerCommons.createDiagnosHashPathOrAlternativePath({})).toEqual('');
+
+    });
+
 });
