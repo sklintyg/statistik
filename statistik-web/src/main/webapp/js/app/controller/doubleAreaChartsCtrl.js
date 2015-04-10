@@ -220,24 +220,7 @@ angular.module('StatisticsApp').controller('doubleAreaChartsCtrl', [ '$scope', '
             ControllerCommons.toggleTableVisibilityGeneric(event, $scope);
         };
 
-        if (isVerksamhet && config.exchangeableViews) {
-            //If we have a diagnosisHash then added to the next route before anything else
-            _.each(config.exchangeableViews, function (view) {
-                view.state = view.state + ControllerCommons.createDiagnosHashPathOrAlternativePath($routeParams);
-            });
-
-
-            var queryParamsString = ControllerCommons.createQueryStringOfQueryParams($location.search());
-
-            //Add queryParams if any
-            if(queryParamsString) {
-                _.each(config.exchangeableViews, function (view) {
-                    view.state = view.state + "?" + queryParamsString;
-                });
-            }
-
-            $scope.exchangeableViews = config.exchangeableViews;
-        }
+        ControllerCommons.updateExchangeableViewsUrl(isVerksamhet, config, $location, $scope, $routeParams);
 
         $scope.showDiagnosisSelector = config.showDiagnosisSelector;
         if ($scope.showDiagnosisSelector) {

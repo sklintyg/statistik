@@ -2,7 +2,7 @@
 
 Gäller STATISTIK-948.
 
-(kräver också att STATISTIK-975 är fixad för att Vårdenhetsrapporten ska gå igenom)
+(kräver också att STATISTIK-975 och 1006 är fixade för att Vårdenhet och Enskilt diagnoskapitel som tvärsnitt ska gå igenom)
 
 !3 Givet att:
 | script | dagens datum | 2014-11-06 |
@@ -17,6 +17,7 @@ Gäller STATISTIK-948.
 | Enbart foljande intyg finns |
 | personnr | diagnoskod | start    | slut       | arbetsförmåga | enhet  | läkare |
 | 19890407-1245 | P99 | 2013-06-01 | 2013-08-20 | 0             | enhet1 | lakare1 |
+| 19890407-0040 | G10 | 2013-06-01 | 2013-08-20 | 0             | enhet1 | lakare1 |
 | 19790407-1255 | G02 | 2014-07-01 | 2014-10-30 | 50            | enhet2 | lakare2 |
 
 
@@ -30,9 +31,9 @@ VÅRDENHET: Bara enheter med data på sig under tidsintervallet visas.
 
 | Sjukfall i rapporten sjukfall per enhet som tidsserie |
 | inloggad som | år   | månad | vårdenhet    | män? | kvinnor? |
-| user2        | 2013 | jun   | Enhet enhet1 | 0    | 1        |
-| user2        | 2013 | jul   | Enhet enhet1 | 0    | 1        |
-| user2        | 2013 | aug   | Enhet enhet1 | 0    | 1        |
+| user2        | 2013 | jun   | Enhet enhet1 | 0    | 2        |
+| user2        | 2013 | jul   | Enhet enhet1 | 0    | 2        |
+| user2        | 2013 | aug   | Enhet enhet1 | 0    | 2        |
 | user2        | 2013 | sep   | Enhet enhet1 | 0    | 0        |
 | user2        | 2013 | okt   | Enhet enhet1 | 0    | 0        |
 | user2        | 2013 | nov   | Enhet enhet1 | 0    | 0        |
@@ -85,9 +86,9 @@ DIAGNOSGRUPP: Alla grupper visas, UTOM "Utan giltig ICD-10 kod" som bara visas n
 | user2        | 2014 | aug   | Utan giltig ICD-10 kod | 0    | 0        |
 | user2        | 2014 | sep   | Utan giltig ICD-10 kod | 0    | 0        |
 | user2        | 2014 | okt   | Utan giltig ICD-10 kod | 0    | 0        |
-| user2        | 2013 | jun   | A00-E90, G00-L99, N00-N99 | 0    | 0        |
-| user2        | 2013 | jul   | A00-E90, G00-L99, N00-N99 | 0    | 0        |
-| user2        | 2013 | aug   | A00-E90, G00-L99, N00-N99 | 0    | 0        |
+| user2        | 2013 | jun   | A00-E90, G00-L99, N00-N99 | 0    | 1        |
+| user2        | 2013 | jul   | A00-E90, G00-L99, N00-N99 | 0    | 1        |
+| user2        | 2013 | aug   | A00-E90, G00-L99, N00-N99 | 0    | 1        |
 | user2        | 2013 | sep   | A00-E90, G00-L99, N00-N99 | 0    | 0        |
 | user2        | 2013 | okt   | A00-E90, G00-L99, N00-N99 | 0    | 0        |
 | user2        | 2013 | nov   | A00-E90, G00-L99, N00-N99 | 0    | 0        |
@@ -130,7 +131,24 @@ ENSKILT DIAGNOSKAPITEL: Bara avsnitt/kategorier som har data på sig under tidsi
 | user2        | G00-G99             | 2014 | aug   | G00-G09 | 1    | 0        |
 | user2        | G00-G99             | 2014 | sep   | G00-G09 | 1    | 0        |
 | user2        | G00-G99             | 2014 | okt   | G00-G09 | 1    | 0        |
-| user2        | G00-G99             | 2014 | jan   | G10-G14 | -1   | -1       |
+| user2        | G00-G99             | 2013 | jun   | G10-G14 | 0    | 1        |
+| user2        | G00-G99             | 2013 | jul   | G10-G14 | 0    | 1        |
+| user2        | G00-G99             | 2013 | aug   | G10-G14 | 0    | 1        |
+| user2        | G00-G99             | 2013 | sep   | G10-G14 | 0    | 0        |
+| user2        | G00-G99             | 2013 | okt   | G10-G14 | 0    | 0        |
+| user2        | G00-G99             | 2013 | nov   | G10-G14 | 0    | 0        |
+| user2        | G00-G99             | 2013 | dec   | G10-G14 | 0    | 0        |
+| user2        | G00-G99             | 2014 | jan   | G10-G14 | 0    | 0        |
+| user2        | G00-G99             | 2014 | feb   | G10-G14 | 0    | 0        |
+| user2        | G00-G99             | 2014 | mar   | G10-G14 | 0    | 0        |
+| user2        | G00-G99             | 2014 | apr   | G10-G14 | 0    | 0        |
+| user2        | G00-G99             | 2014 | maj   | G10-G14 | 0    | 0        |
+| user2        | G00-G99             | 2014 | jun   | G10-G14 | 0    | 0        |
+| user2        | G00-G99             | 2014 | jul   | G10-G14 | 0    | 0        |
+| user2        | G00-G99             | 2014 | aug   | G10-G14 | 0    | 0        |
+| user2        | G00-G99             | 2014 | sep   | G10-G14 | 0    | 0        |
+| user2        | G00-G99             | 2014 | okt   | G10-G14 | 0    | 0        |
+| user2        | G00-G99             | 2014 | jan   | G50-G59 | -1   | -1       |
 
 | Sjukfall i rapporten enskilt diagnoskapitel som tvarsnitt diagram |
 | inloggad som | valt diagnoskapitel | grupp   | män? | kvinnor? |
@@ -140,31 +158,49 @@ ENSKILT DIAGNOSKAPITEL: Bara avsnitt/kategorier som har data på sig under tidsi
 JÄMFÖR VALFRIA: Alla grupper som användaren har valt visas.
 | Sjukfall i rapporten jamfor diagnoser diagram |
 | inloggad som | valda diagnoskategorier | diagnoskategori | män? | kvinnor? |
-| user2        | G01, G02, G03            | G01             | 0    | 0        |
-| user2        | G01, G02, G03            | G02             | 1    | 0        |
-| user2        | G01, G02, G03            | G03             | 0    | 0        |
+| user2        | G01, G02, G03, G10       | G01             | 0    | 0        |
+| user2        | G01, G02, G03, G10       | G02             | 1    | 0        |
+| user2        | G01, G02, G03, G10       | G03             | 0    | 0        |
+| user2        | G01, G02, G03, G10       | G10             | 0    | 0        |
 
 | Sjukfall i rapporten jamfor diagnoser som tidsserie diagram |
 | inloggad som | år   | månad | valda diagnoskategorier | diagnoskategori | män? | kvinnor? |
-| user2        | 2013 | jun   | G01, G02, G03           | G02             | 0    | 0        |
-| user2        | 2013 | jul   | G01, G02, G03           | G02             | 0    | 0        |
-| user2        | 2013 | aug   | G01, G02, G03           | G02             | 0    | 0        |
-| user2        | 2013 | sep   | G01, G02, G03           | G02             | 0    | 0        |
-| user2        | 2013 | okt   | G01, G02, G03           | G02             | 0    | 0        |
-| user2        | 2013 | nov   | G01, G02, G03           | G02             | 0    | 0        |
-| user2        | 2013 | dec   | G01, G02, G03           | G02             | 0    | 0        |
-| user2        | 2014 | jan   | G01, G02, G03           | G02             | 0    | 0        |
-| user2        | 2014 | feb   | G01, G02, G03           | G02             | 0    | 0        |
-| user2        | 2014 | mar   | G01, G02, G03           | G02             | 0    | 0        |
-| user2        | 2014 | apr   | G01, G02, G03           | G02             | 0    | 0        |
-| user2        | 2014 | maj   | G01, G02, G03           | G02             | 0    | 0        |
-| user2        | 2014 | jun   | G01, G02, G03           | G02             | 0    | 0        |
-| user2        | 2014 | jul   | G01, G02, G03           | G02             | 1    | 0        |
-| user2        | 2014 | aug   | G01, G02, G03           | G02             | 1    | 0        |
-| user2        | 2014 | sep   | G01, G02, G03           | G02             | 1    | 0        |
-| user2        | 2014 | okt   | G01, G02, G03           | G02             | 1    | 0        |
-| user2        | 2014 | jan   | G01, G02, G03           | G01             | 0    | 0        |
-| user2        | 2014 | jan   | G01, G02, G03           | G03             | 0    | 0        |
+| user2        | 2013 | jun   | G01, G02, G03, G10      | G02             | 0    | 0        |
+| user2        | 2013 | jul   | G01, G02, G03, G10      | G02             | 0    | 0        |
+| user2        | 2013 | aug   | G01, G02, G03, G10      | G02             | 0    | 0        |
+| user2        | 2013 | sep   | G01, G02, G03, G10      | G02             | 0    | 0        |
+| user2        | 2013 | okt   | G01, G02, G03, G10      | G02             | 0    | 0        |
+| user2        | 2013 | nov   | G01, G02, G03, G10      | G02             | 0    | 0        |
+| user2        | 2013 | dec   | G01, G02, G03, G10      | G02             | 0    | 0        |
+| user2        | 2014 | jan   | G01, G02, G03, G10      | G02             | 0    | 0        |
+| user2        | 2014 | feb   | G01, G02, G03, G10      | G02             | 0    | 0        |
+| user2        | 2014 | mar   | G01, G02, G03, G10      | G02             | 0    | 0        |
+| user2        | 2014 | apr   | G01, G02, G03, G10      | G02             | 0    | 0        |
+| user2        | 2014 | maj   | G01, G02, G03, G10      | G02             | 0    | 0        |
+| user2        | 2014 | jun   | G01, G02, G03, G10      | G02             | 0    | 0        |
+| user2        | 2014 | jul   | G01, G02, G03, G10      | G02             | 1    | 0        |
+| user2        | 2014 | aug   | G01, G02, G03, G10      | G02             | 1    | 0        |
+| user2        | 2014 | sep   | G01, G02, G03, G10      | G02             | 1    | 0        |
+| user2        | 2014 | okt   | G01, G02, G03, G10      | G02             | 1    | 0        |
+| user2        | 2013 | jun   | G01, G02, G03, G10      | G10             | 0    | 1        |
+| user2        | 2013 | jul   | G01, G02, G03, G10      | G10             | 0    | 1        |
+| user2        | 2013 | aug   | G01, G02, G03, G10      | G10             | 0    | 1        |
+| user2        | 2013 | sep   | G01, G02, G03, G10      | G10             | 0    | 0        |
+| user2        | 2013 | okt   | G01, G02, G03, G10      | G10             | 0    | 0        |
+| user2        | 2013 | nov   | G01, G02, G03, G10      | G10             | 0    | 0        |
+| user2        | 2013 | dec   | G01, G02, G03, G10      | G10             | 0    | 0        |
+| user2        | 2014 | jan   | G01, G02, G03, G10      | G10             | 0    | 0        |
+| user2        | 2014 | feb   | G01, G02, G03, G10      | G10             | 0    | 0        |
+| user2        | 2014 | mar   | G01, G02, G03, G10      | G10             | 0    | 0        |
+| user2        | 2014 | apr   | G01, G02, G03, G10      | G10             | 0    | 0        |
+| user2        | 2014 | maj   | G01, G02, G03, G10      | G10             | 0    | 0        |
+| user2        | 2014 | jun   | G01, G02, G03, G10      | G10             | 0    | 0        |
+| user2        | 2014 | jul   | G01, G02, G03, G10      | G10             | 0    | 0        |
+| user2        | 2014 | aug   | G01, G02, G03, G10      | G10             | 0    | 0        |
+| user2        | 2014 | sep   | G01, G02, G03, G10      | G10             | 0    | 0        |
+| user2        | 2014 | okt   | G01, G02, G03, G10      | G10             | 0    | 0        |
+| user2        | 2014 | jan   | G01, G02, G03, G10      | G01             | 0    | 0        |
+| user2        | 2014 | jan   | G01, G02, G03, G10      | G03             | 0    | 0        |
 
 ÅLDERSGRUPP: Alla grupper visas alltid.
 | Sjukfall i rapporten aldersgrupp |
@@ -175,9 +211,9 @@ JÄMFÖR VALFRIA: Alla grupper som användaren har valt visas.
 
 | Sjukfall i rapporten aldersgrupp som tidsserie |
 | inloggad som | år   | månad | åldersgrupp | män? | kvinnor? |
-| user2        | 2013 | jun   | 21-25 år    | 0    | 1        |
-| user2        | 2013 | jul   | 21-25 år    | 0    | 1        |
-| user2        | 2013 | aug   | 21-25 år    | 0    | 1        |
+| user2        | 2013 | jun   | 21-25 år    | 0    | 2        |
+| user2        | 2013 | jul   | 21-25 år    | 0    | 2        |
+| user2        | 2013 | aug   | 21-25 år    | 0    | 2        |
 | user2        | 2013 | sep   | 21-25 år    | 0    | 0        |
 | user2        | 2013 | okt   | 21-25 år    | 0    | 0        |
 | user2        | 2013 | nov   | 21-25 år    | 0    | 0        |
@@ -214,9 +250,9 @@ JÄMFÖR VALFRIA: Alla grupper som användaren har valt visas.
 SJUKSKRIVNINGSGRAD: Alla grupper visas alltid.
 | Sjukfall i rapporten sjukskrivningsgrad |
 | inloggad som | år   | månad | sjukskrivningsgrad   | män? | kvinnor? |
-| user2        | 2013 | jun   | 100%                 | 0    | 1        |
-| user2        | 2013 | jul   | 100%                 | 0    | 1        |
-| user2        | 2013 | aug   | 100%                 | 0    | 1        |
+| user2        | 2013 | jun   | 100%                 | 0    | 2        |
+| user2        | 2013 | jul   | 100%                 | 0    | 2        |
+| user2        | 2013 | aug   | 100%                 | 0    | 2        |
 | user2        | 2013 | sep   | 100%                 | 0    | 0        |
 | user2        | 2013 | okt   | 100%                 | 0    | 0        |
 | user2        | 2013 | nov   | 100%                 | 0    | 0        |
@@ -265,9 +301,9 @@ SJUKSKRIVNINGSLANGD: Alla grupper visas alltid.
 
 | Sjukfall i rapporten sjukskrivningslangd som tidsserie |
 | inloggad som | år   | månad | sjukskrivningslängd | män? | kvinnor? |
-| user2        | 2013 | jun   | 31-90 dagar    | 0    | 1        |
-| user2        | 2013 | jul   | 31-90 dagar    | 0    | 1        |
-| user2        | 2013 | aug   | 31-90 dagar    | 0    | 1        |
+| user2        | 2013 | jun   | 31-90 dagar    | 0    | 2        |
+| user2        | 2013 | jul   | 31-90 dagar    | 0    | 2        |
+| user2        | 2013 | aug   | 31-90 dagar    | 0    | 2        |
 | user2        | 2013 | sep   | 31-90 dagar    | 0    | 0        |
 | user2        | 2013 | okt   | 31-90 dagar    | 0    | 0        |
 | user2        | 2013 | nov   | 31-90 dagar    | 0    | 0        |
@@ -310,9 +346,9 @@ LÄKARE: Bara de läkare som har data på sig under tidsintervallet visas.
 
 | Sjukfall i rapporten sjukfall per lakare som tidsserie |
 | inloggad som | år   | månad | läkare       | män? | kvinnor? |
-| user2        | 2013 | jun   | Anna Andersson | 0    | 1        |
-| user2        | 2013 | jul   | Anna Andersson | 0    | 1        |
-| user2        | 2013 | aug   | Anna Andersson | 0    | 1        |
+| user2        | 2013 | jun   | Anna Andersson | 0    | 2        |
+| user2        | 2013 | jul   | Anna Andersson | 0    | 2        |
+| user2        | 2013 | aug   | Anna Andersson | 0    | 2        |
 | user2        | 2013 | sep   | Anna Andersson | 0    | 0        |
 | user2        | 2013 | okt   | Anna Andersson | 0    | 0        |
 | user2        | 2013 | nov   | Anna Andersson | 0    | 0        |
@@ -355,9 +391,9 @@ LÄKARÅLDER- OCH KÖN: Alla grupper visas alltid, UTOM grupper där ålder/kön
 
 | Sjukfall i rapporten lakarkonalder som tidsserie |
 | inloggad som | år   | månad | läkargrupp  | män? | kvinnor? |
-| user2        | 2013 | jun   | Kvinnlig läkare 30-39 år | 0    | 1        |
-| user2        | 2013 | jul   | Kvinnlig läkare 30-39 år | 0    | 1        |
-| user2        | 2013 | aug   | Kvinnlig läkare 30-39 år | 0    | 1        |
+| user2        | 2013 | jun   | Kvinnlig läkare 30-39 år | 0    | 2        |
+| user2        | 2013 | jul   | Kvinnlig läkare 30-39 år | 0    | 2        |
+| user2        | 2013 | aug   | Kvinnlig läkare 30-39 år | 0    | 2        |
 | user2        | 2013 | sep   | Kvinnlig läkare 30-39 år | 0    | 0        |
 | user2        | 2013 | okt   | Kvinnlig läkare 30-39 år | 0    | 0        |
 | user2        | 2013 | nov   | Kvinnlig läkare 30-39 år | 0    | 0        |
@@ -391,7 +427,7 @@ LÄKARÅLDER- OCH KÖN: Alla grupper visas alltid, UTOM grupper där ålder/kön
 | user2        | 2014 | okt   | Manlig läkare 40-49 år | 1    | 0        |
 | user2        | 2014 | okt   | Okänt kön okänd ålder  | -1   | -1       |
 
-LÄKARBEFATTNING: Bara de befattningar som har data på sig visas.
+LÄKARBEFATTNING: Bara de befattningar som har data på sig under tidsintervallet visas.
 | Sjukfall i rapporten lakarbefattning |
 | inloggad som | läkarbefattning    | män? | kvinnor? |
 | user2        | Överläkare         | -1   | -1       |
@@ -399,10 +435,10 @@ LÄKARBEFATTNING: Bara de befattningar som har data på sig visas.
 | user2        | Skolläkare         | -1   | -1       |
 
 | Sjukfall i rapporten lakarbefattning som tidsserie |
-| inloggad som | år   | månad | läkargrupp     | män? | kvinnor? |
-| user2        | 2013 | jun   | Överläkare     | 0    | 1        |
-| user2        | 2013 | jul   | Överläkare     | 0    | 1        |
-| user2        | 2013 | aug   | Överläkare     | 0    | 1        |
+| inloggad som | år   | månad | läkarbefattning | män? | kvinnor? |
+| user2        | 2013 | jun   | Överläkare     | 0    | 2        |
+| user2        | 2013 | jul   | Överläkare     | 0    | 2        |
+| user2        | 2013 | aug   | Överläkare     | 0    | 2        |
 | user2        | 2013 | sep   | Överläkare     | 0    | 0        |
 | user2        | 2013 | okt   | Överläkare     | 0    | 0        |
 | user2        | 2013 | nov   | Överläkare     | 0    | 0        |
