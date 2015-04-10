@@ -2,7 +2,7 @@
 
 Gäller STATISTIK-948.
 
-(kräver också att STATISTIK-975 och 1006 är fixade för att Vårdenhet och Enskilt diagnoskapitel som tvärsnitt ska gå igenom)
+(kräver också att 1006 är fixad för att Enskilt diagnoskapitel som tvärsnitt ska gå igenom)
 
 !3 Givet att:
 | script | dagens datum | 2014-11-06 |
@@ -26,7 +26,7 @@ Gäller STATISTIK-948.
 VÅRDENHET: Bara enheter med data på sig under tidsintervallet visas.
 | Sjukfall i rapporten sjukfall per enhet |
 | inloggad som | vårdenhet    | vårdgivarnivå | män? | kvinnor? |
-| user2        | Enhet enhet1 | true          | -1   | -1       |
+| user2        | Enhet enhet1 | true          | 0    | 0       |
 | user2        | Enhet enhet2 | true          | 1    | 0        |
 
 | Sjukfall i rapporten sjukfall per enhet som tidsserie |
