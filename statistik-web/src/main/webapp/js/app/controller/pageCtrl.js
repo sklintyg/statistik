@@ -29,8 +29,6 @@ angular.module('StatisticsApp').controller('pageCtrl', [ '$scope', '$rootScope',
         };
 
         $rootScope.$on('$routeChangeSuccess', function (angularEvent, next, current) {
-            $scope.verksamhetIdParam = $scope.businessId;
-
             var d = new Date();
             var currDate = d.getDate();
             var currMonth = d.getMonth() + 1; //Months are zero based
