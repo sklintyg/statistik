@@ -35,8 +35,8 @@ angular.module('StatisticsApp').controller('pageCtrl', [ '$scope', '$rootScope',
             var currYear = d.getFullYear();
             $scope.currentTime = currYear + "-" + currMonth + "-" + currDate;
 
-            var isVerksamhet = ControllerCommons.isShowingVerksamhet($location);
-            $scope.viewHeader = isVerksamhet ? "Verksamhetsstatistik" : "Nationell statistik";
+            $scope.isVerksamhetShowing = ControllerCommons.isShowingVerksamhet($location);
+            $scope.viewHeader = $scope.isVerksamhetShowing ? "Verksamhetsstatistik" : "Nationell statistik";
 
             if ($rootScope.isLoggedIn && !$scope.isLoginInfoFetched) {
                 statisticsData.getLoginInfo(function (loginInfo) {
