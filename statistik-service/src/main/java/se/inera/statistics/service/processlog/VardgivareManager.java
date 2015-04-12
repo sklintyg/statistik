@@ -70,7 +70,7 @@ public class VardgivareManager {
             } else if (hsaEnhet) {
                 Enhet updatedEnhet = resultList.get(0);
                 updatedEnhet.setVardgivareNamn(vardgivareNamn);
-                updatedEnhet.setNamn(enhetNamn);
+                //updatedEnhet.setNamn(enhetNamn);
                 updatedEnhet.setLansId(lansId);
                 updatedEnhet.setKommunId(kommunId);
                 updatedEnhet.setVerksamhetsTyper(verksamhetsTyper);
