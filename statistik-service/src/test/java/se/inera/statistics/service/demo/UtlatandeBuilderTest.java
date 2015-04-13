@@ -36,8 +36,8 @@ public class UtlatandeBuilderTest {
 
         final JsonNode result = builder.build("19121212-1212", new LocalDate("2013-01-01"), new LocalDate("2013-01-21"), "vardenhet", "diagnos", 50);
 
-        assertEquals("19121212-1212", result.path("patient").path("id").path("extension").asText());
-        assertEquals("diagnos", DocumentHelper.getDiagnos(result, DocumentHelper.IntygVersion.VERSION1));
+        assertEquals("19121212-1212", result.path("grundData").path("patient").path("personId").asText());
+        assertEquals("diagnos", DocumentHelper.getDiagnos(result, DocumentHelper.IntygVersion.VERSION2));
     }
 
 }
