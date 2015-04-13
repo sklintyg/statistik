@@ -1,0 +1,36 @@
+!contents -R2 -g -p -f -h
+
+Testar att tröskelvärdet appliceras per vårdgivare och grupp.
+
+vg1
+3 kvinnor 51-55 år, 1962
+2 män 31-35 år, 1982
+
+vg2
+1 kvinna 51-55 år
+4 män 31-35 år
+
+!3 Givet att:
+| script | dagens datum | 2013-11-06 |
+
+| script | troskel varde | 3 |
+
+| Enbart foljande intyg finns |
+| personnr | diagnoskod | start    | slut       | enhet  |
+| 19610407-1000 | G40 | 2013-02-01 | 2013-02-14 | enhet1 |
+| 19610407-2000 | F41 | 2013-02-01 | 2013-02-14 | enhet1 |
+| 19610407-3000 | F40 | 2013-02-01 | 2013-02-14 | enhet1 |
+| 19810407-4010 | G41 | 2013-02-01 | 2013-02-14 | enhet1 |
+| 19810407-5010 | A40 | 2013-02-01 | 2013-02-14 | enhet1 |
+| 19610407-6000 | F40 | 2013-02-01 | 2013-02-14 | enhet3 |
+| 19810407-7010 | G00 | 2013-02-01 | 2013-02-14 | enhet3 |
+| 19810407-8010 | A41 | 2013-02-01 | 2013-02-14 | enhet3 |
+| 19810407-9010 | A41 | 2013-02-01 | 2013-02-14 | enhet3 |
+| 19810407-0010 | G41 | 2013-02-01 | 2013-02-14 | enhet3 |
+
+!3 Då gäller:
+Nationell:
+| Sjukfall i rapporten aldersgrupp |
+| åldersgrupp | män? | kvinnor? |
+| 31-35 år    | 4    | 0        |
+| 51-55 år    | 0    | 3        |
