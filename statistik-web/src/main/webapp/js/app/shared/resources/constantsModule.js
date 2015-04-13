@@ -53,7 +53,7 @@ constantModule.constant('COUNTY_COORDS',countyCoordinates);
 var colors = {
     male: ["#008391", "#90cad0"],
     female: ["#EA8025", "#f6c08d"],
-    other: ["#E40E62", "#00AEEF", "#57843B", "#002B54", "#F9B02D", "#724E86", "#34655e", "#8A6B61"]
+    other: ["#E11964", "#FB7F4D", "#FFBA3E", "#032C53", "#3CA3FF", "#5CC2BC", "#799745", "#2A5152", "#C37EB2", "#704F38"]
 };
 
 constantModule.constant('COLORS', colors);

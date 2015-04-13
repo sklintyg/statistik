@@ -33,6 +33,10 @@ angular.module('StatisticsApp')
                 } else if (data.sex === "Female") {
                     data.color = femaleColor[femaleColorSelector++];
                 } else {
+                    if(colorSelector === colors.length) {
+                        //Begin anew with colors array
+                        colorSelector = 0;
+                    }
                     data.color = colors[colorSelector++];
                 }
 
