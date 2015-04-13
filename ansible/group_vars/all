@@ -2,6 +2,7 @@
 # file: group_vars/all
 profile: dev
 inera_root: /opt/inera
+archive_dir: "{{ inera_root }}/archives"
 releases_folder: "{{ inera_root }}/releases"
 java_home: "{{ inera_root }}/jre"
 environment_name: "test"
@@ -29,3 +30,4 @@ database_pool_initialSize: 10
 activemq_username: ""
 activemq_password: ""
 activemq_broker_url: "tcp://localhost:61616"
+phantomjs_version: 1.9.8

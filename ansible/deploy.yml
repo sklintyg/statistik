@@ -8,7 +8,7 @@
 
     # latest release: XXX
     # latest snapshot: XXX
-    version: 1.5
+    version: 2.0.7
     config_version: master
 
   roles:
