@@ -99,7 +99,7 @@ configure(subprojects.findAll { ['hsa-integration', 'statistik-service', 'statis
     task testAll(dependsOn: [test, integrationTests, checkstyleMain])
 }
 
-configure(subprojects.findAll { ['liquibase-runner', 'statistik-web'].contains(it.name) }) {
+configure(subprojects.findAll { ['fileservice', 'liquibase-runner', 'statistik-web'].contains(it.name) }) {
     apply plugin: 'maven'
 
     configurations {
