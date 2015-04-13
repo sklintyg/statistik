@@ -29,16 +29,14 @@ angular.module('StatisticsApp').controller('pageCtrl', [ '$scope', '$rootScope',
         };
 
         $rootScope.$on('$routeChangeSuccess', function (angularEvent, next, current) {
-            $scope.verksamhetIdParam = $scope.businessId;
-
             var d = new Date();
             var currDate = d.getDate();
             var currMonth = d.getMonth() + 1; //Months are zero based
             var currYear = d.getFullYear();
             $scope.currentTime = currYear + "-" + currMonth + "-" + currDate;
 
-            var isVerksamhet = ControllerCommons.isShowingVerksamhet($location);
-            $scope.viewHeader = isVerksamhet ? "Verksamhetsstatistik" : "Nationell statistik";
+            $scope.isVerksamhetShowing = ControllerCommons.isShowingVerksamhet($location);
+            $scope.viewHeader = $scope.isVerksamhetShowing ? "Verksamhetsstatistik" : "Nationell statistik";
 
             if ($rootScope.isLoggedIn && !$scope.isLoginInfoFetched) {
                 statisticsData.getLoginInfo(function (loginInfo) {

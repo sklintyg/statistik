@@ -424,7 +424,7 @@
             </div>
 
             <div class="col-xs-12 col-sm-9">
-                <div class="row" ng-show="verksamhetIdParam" data-ng-controller="filterCtrl">
+                <div class="row ng-hide" ng-show="isVerksamhetShowing" data-ng-controller="filterCtrl">
                     <div class="col-xs-12">
                         <div id="statistics-filter-container" class="hidden-print" collapse="isFilterCollapsed">
                         	<div class="row">
