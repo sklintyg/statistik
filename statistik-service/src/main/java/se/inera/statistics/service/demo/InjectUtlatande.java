@@ -135,7 +135,7 @@ public class InjectUtlatande {
         LOG.info("Inserting " + personNummers.size() + " certificates");
         for (String id : personNummers) {
             JsonNode newPermutation = permutate(builder, id);
-            accept(newPermutation.toString(), newPermutation.path("id").path("root").textValue());
+            accept(newPermutation.toString(), newPermutation.path("id").textValue());
         }
         LOG.info("Inserting " + personNummers.size() + " certificates completed. Use -Dstatistics.test.max.intyg=<x> to limit inserts.");
     }
