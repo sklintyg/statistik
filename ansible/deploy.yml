@@ -3,6 +3,11 @@
 - hosts: all
   sudo: yes
   vars:
+    # repo - values: snapshot or release
+    repo: release
+
+    # latest release: XXX
+    # latest snapshot: XXX
     version: 1.5
     config_version: master
 
