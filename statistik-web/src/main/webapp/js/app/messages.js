@@ -52,7 +52,8 @@ var stMessages = {
         'lbl.gor-urval': 'Gör urval',
         'lbl.dolj-tabell': 'Dölj tabell',
         'lbl.visa-tabell': 'Visa tabell',
-        
+        'lbl.visa-knappgrupp-serier': 'Visa som:',
+
         //filter
         'lbl.filter.valj-verksamhetstyper': 'Välj verksamhetstyper:',
         'lbl.filter.val-av-enheter': 'Välj enheter:',
