@@ -467,7 +467,7 @@ public class ProtectedChartDataService {
         final Filter filter = getFilter(request, filterHash);
         final SimpleKonResponse<SimpleKonDataRow> diagnosavsnitt = warehouse.getUnderdiagnosgrupperTvarsnitt(filter.getPredicate(), range, groupId, getSelectedVgIdForLoggedInUser(request));
         final String message = getDiagnosisSubGroupStatisticsMessage(filter, Arrays.asList(String.valueOf(icd10.findFromIcd10Code(groupId).toInt())));
-        return new SimpleDualSexConverter("", false, "%1$s").convert(diagnosavsnitt, range, filter, message);
+        return new DiagnosisSubGroupsTvarsnittConverter().convert(diagnosavsnitt, range, filter, message);
     }
 
     @GET
