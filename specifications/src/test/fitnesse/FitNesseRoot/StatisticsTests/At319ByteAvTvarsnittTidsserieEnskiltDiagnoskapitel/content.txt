@@ -1,6 +1,6 @@
 !contents -R2 -g -p -f -h
 
-IGNORED: Waiting for STATISTIK-1007.
+Testar STATISTIK-1007.
 
 Det finns två sjukfall med diagnos som faller inom avsnitt:
 - C00-C14 Maligna tumörer i läpp, munhåla och svalg

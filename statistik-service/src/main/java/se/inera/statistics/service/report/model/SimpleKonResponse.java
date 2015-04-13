@@ -69,13 +69,13 @@ public class SimpleKonResponse<T extends SimpleKonDataRow> {
         return "{\"SimpleKonResponse\":{" + "\"rows\":" + rows + ", \"numberOfMonthsCalculated\":" + getNumberOfMonthsCalculated() + "}}";
     }
 
-    public static SimpleKonResponse<SimpleKonDataRow> create(KonDataResponse diagnosgruppResponse, int numberOfMonthsCalculated) {
-        if (diagnosgruppResponse == null) {
+    public static SimpleKonResponse<SimpleKonDataRow> create(KonDataResponse konDataResponse, int numberOfMonthsCalculated) {
+        if (konDataResponse == null) {
             return new SimpleKonResponse<>(Collections.<SimpleKonDataRow>emptyList(), numberOfMonthsCalculated);
         }
         final ArrayList<SimpleKonDataRow> simpleKonDataRows = new ArrayList<>();
-        for (int i = 0; i < diagnosgruppResponse.getGroups().size(); i++) {
-            simpleKonDataRows.add(createRowFromDataIndex(diagnosgruppResponse, i));
+        for (int i = 0; i < konDataResponse.getGroups().size(); i++) {
+            simpleKonDataRows.add(createRowFromDataIndex(konDataResponse, i));
         }
         return new SimpleKonResponse<>(simpleKonDataRows, numberOfMonthsCalculated);
     }
