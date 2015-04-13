@@ -1,6 +1,24 @@
+/*
+ * Copyright (C) 2013 - 2014 Inera AB (http://www.inera.se)
+ *
+ *     This file is part of Inera Statistics (http://code.google.com/p/inera-statistics/).
+ *
+ *     Inera Statistics is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU LESSER GENERAL PUBLIC LICENSE as published by
+ *     the Free Software Foundation, either version 3 of the License, or
+ *     (at your option) any later version.
+ *
+ *     Inera Statistics is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU LESSER GENERAL PUBLIC LICENSE for more details.
+ *
+ *     You should have received a copy of the GNU LESSER GENERAL PUBLIC LICENSE
+ *     along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 'use strict';
 angular.module('StatisticsApp')
-    .factory('printFactory', function() {
+    .factory('printFactory', ['COLORS', function(COLORS) {
 
         var addColor = function (rawData, bwPrint) {
             var colorSelector = 0, maleColorSelector = 0, femaleColorSelector = 0;
@@ -15,6 +33,10 @@ angular.module('StatisticsApp')
                 } else if (data.sex === "Female") {
                     data.color = femaleColor[femaleColorSelector++];
                 } else {
+                    if(colorSelector === colors.length) {
+                        //Begin anew with colors array
+                        colorSelector = 0;
+                    }
                     data.color = colors[colorSelector++];
                 }
 
@@ -26,7 +48,7 @@ angular.module('StatisticsApp')
         var getColorsOrBwPattern = function(bwPrint) {
             return bwPrint ? _.map(_.take(bwPatterns(), 8), function (pattern) {
                 return asColorObjectWithPattern(pattern);
-            }) : ["#E40E62", "#00AEEF", "#57843B", "#002B54", "#F9B02D", "#724E86", "#34655e", "#8A6B61"];
+            }) : COLORS.other;
         };
 
         //If bwPrint === true then return color objects with patterns otherwise the plain colors we use
@@ -36,7 +58,7 @@ angular.module('StatisticsApp')
                     return bwpattern.match(/.*[5|6]\.png/);
                 }), function (pattern) {
                     return asColorObjectWithPattern(pattern);
-                }) : ["#008391", "#90cad0"];
+                }) : COLORS.male;
         };
 
         //If bwPrint === true then return color objects with patterns otherwise the plain colors we use
@@ -46,7 +68,7 @@ angular.module('StatisticsApp')
                     return bwpattern.match(/.*[7|8]\.png/);
                 }), function (pattern) {
                     return asColorObjectWithPattern(pattern);
-                }) : ["#EA8025", "#f6c08d"];
+                }) : COLORS.female;
         };
 
         //This function will create a correct path to the pattern images used for black and white printing
@@ -117,4 +139,4 @@ angular.module('StatisticsApp')
             printAndCloseWindow: printAndCloseWindow,
             print: print
         };
-    });
+    }]);
