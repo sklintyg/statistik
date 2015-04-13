@@ -241,7 +241,7 @@ angular.module('StatisticsApp').controller('doubleAreaChartsCtrl', [ '$scope', '
         }
 
         if (isVerksamhet) {
-            $scope.exportTableUrl = config.exportTableUrlVerksamhet($routeParams.verksamhetId, $routeParams.groupId);
+            $scope.exportTableUrl = config.exportTableUrlVerksamhet($routeParams.verksamhetId, getMostSpecificGroupId());
             refreshVerksamhet();
         } else {
             $scope.exportTableUrl = config.exportTableUrl($routeParams.groupId);

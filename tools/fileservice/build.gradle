@@ -1,0 +1,51 @@
+/**
+ * Copyright (C) 2015 Inera AB (http://www.inera.se)
+ *
+ * This file is part of statistik (https://github.com/sklintyg/statistik).
+ *
+ * statistik is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * statistik is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+description = 'Update Enhet for statistik'
+
+apply plugin: 'application'
+apply plugin: 'java'
+apply plugin: 'groovy'
+
+mainClassName = "se.inera.statistik.tools.UpdateEnhetNamnFromHsaFileService"
+applicationDefaultJvmArgs = ["-Dfile.encoding=utf8"]
+
+startScripts << {
+    // Get hold of the file name of the statistik-service jar file
+    def statistikDependency = configurations.runtime.filter { it.name.startsWith("statistik-service") }.singleFile.name
+    // Insert our default script parameters into the script templates
+    unixScript.text = unixScript.text.replaceAll(/"\$@"$/,
+            "--classpath=lib/${statistikDependency} \"\\\$@\"")
+    windowsScript.text = windowsScript.text.replaceAll(/%CMD_LINE_ARGS%/,
+            "--classpath=lib/${statistikDependency} %CMD_LINE_ARGS%")
+}
+
+artifacts {
+    archives distZip
+}
+
+dependencies {
+    compile 'org.codehaus.groovy:groovy-all:2.3.6'
+    compile 'org.apache.commons:commons-dbcp2:2.0'
+//    compile 'org.apache.commons:commons-pool2:2.0'
+    compile 'org.codehaus.gpars:gpars:1.1.0'
+    compile 'joda-time:joda-time:2.3'
+
+    runtime 'mysql:mysql-connector-java:5.1.32'
+    runtime project(":statistik-service")
+}
