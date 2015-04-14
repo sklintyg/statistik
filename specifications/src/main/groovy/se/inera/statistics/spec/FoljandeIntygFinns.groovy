@@ -27,7 +27,6 @@ class FoljandeIntygFinns {
     def län
     def exaktintygid
     String intygstyp
-    String enhetsnamn
     String jsonformat
 
     public void setKommentar(String kommentar) {}
@@ -47,7 +46,6 @@ class FoljandeIntygFinns {
         län = null
         intygstyp = EventType.CREATED.name();
         exaktintygid = intygIdCounter++;
-        enhetsnamn = null;
         jsonformat = "nytt"
     }
 
@@ -87,7 +85,7 @@ class FoljandeIntygFinns {
         def builder = new JsonBuilder(result)
         def finalIntygDataString = builder.toString()
 
-        Intyg intyg = new Intyg(EventType.valueOf(intygstyp), finalIntygDataString, String.valueOf(exaktintygid), DateTimeUtils.currentTimeMillis(), län, enhetsnamn)
+        Intyg intyg = new Intyg(EventType.valueOf(intygstyp), finalIntygDataString, String.valueOf(exaktintygid), DateTimeUtils.currentTimeMillis(), län)
         reportsUtil.insertIntyg(intyg)
     }
 
@@ -126,7 +124,7 @@ class FoljandeIntygFinns {
         def builder = new JsonBuilder(result)
         def finalIntygDataString = builder.toString()
 
-        Intyg intyg = new Intyg(EventType.valueOf(intygstyp), finalIntygDataString, String.valueOf(exaktintygid), DateTimeUtils.currentTimeMillis(), län, enhetsnamn)
+        Intyg intyg = new Intyg(EventType.valueOf(intygstyp), finalIntygDataString, String.valueOf(exaktintygid), DateTimeUtils.currentTimeMillis(), län)
 
         reportsUtil.insertIntyg(intyg)
     }
