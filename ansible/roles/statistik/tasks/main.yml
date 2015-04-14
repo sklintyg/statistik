@@ -7,7 +7,7 @@
   file: path={{ releases_folder }} state=directory
   
 - name: download liquibase-runner-{{ version }}.zip
-  get_url: url=http://repository-callistasoftware.forge.cloudbees.com/release/se/inera/statistik/liquibase-runner/{{ version }}/liquibase-runner-{{ version }}.zip
+  get_url: url=http://repository-callistasoftware.forge.cloudbees.com/{{ repo }}/se/inera/statistik/liquibase-runner/{{ version }}/liquibase-runner-{{ version }}.zip
       dest={{ releases_folder }}/liquibase-runner-{{ version }}.zip
 
 - name: Unzip liquibase-runner-{{ version }}.zip
