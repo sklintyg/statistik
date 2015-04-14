@@ -252,7 +252,7 @@ var ControllerCommons = new function(){
         var icdStructureAsFlatArray = _.compose(_.flatten, icdStructureAsArray)(icdStructure);
         return _.map(diagnosFilterIds, function(diagnosId){
             var icdItem = _.find(icdStructureAsFlatArray, function(icd){
-                return icd.numericalId === diagnosId;
+                return icd.numericalId === parseInt(diagnosId, 10);
             });
             return icdItem.id + " " + icdItem.name;
         });
