@@ -23,7 +23,17 @@ describe("Test of common print services", function() {
     beforeEach(module('StatisticsApp'));
 
     var printFactory;
-    var nonFemaleOrMaleColors = ["#E11964", "#FB7F4D", "#FFBA3E", "#032C53", "#3CA3FF", "#5CC2BC", "#799745", "#2A5152", "#C37EB2", "#704F38"];
+    var nonFemaleOrMaleColors = [
+        "#E11964",
+        "#032C53",
+        "#FFBA3E",
+        "#799745",
+        "#3CA3FF",
+        "#C37EB2",
+        "#2A5152",
+        "#FB7F4D",
+        "#5CC2BC",
+        "#704F38"];
 
     beforeEach(inject(function(_printFactory_) {
         printFactory = _printFactory_;
