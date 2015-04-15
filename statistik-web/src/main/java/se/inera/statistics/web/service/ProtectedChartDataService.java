@@ -88,7 +88,7 @@ public class ProtectedChartDataService {
 
     private static final String VERKSAMHET_PATH_ID = "verksamhetId";
     private static final Logger LOG = LoggerFactory.getLogger(ProtectedChartDataService.class);
-    private static final String TEXT_UTF_8 = "text/plain; charset=UTF-8";
+    private static final String TEXT_CP1252 = ChartDataService.TEXT_CP1252;
 
     @Autowired
     private WarehouseService warehouse;
@@ -158,7 +158,7 @@ public class ProtectedChartDataService {
      */
     @GET
     @Path("{verksamhetId}/getNumberOfCasesPerMonth/csv")
-    @Produces({ TEXT_UTF_8 })
+    @Produces({TEXT_CP1252})
     @Consumes({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request, #verksamhetId)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request, #verksamhetId)")
@@ -215,7 +215,7 @@ public class ProtectedChartDataService {
      */
     @GET
     @Path("{verksamhetId}/getNumberOfCasesPerEnhet/csv")
-    @Produces({ TEXT_UTF_8 })
+    @Produces({TEXT_CP1252})
     @Consumes({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request, #verksamhetId)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request, #verksamhetId)")
@@ -289,7 +289,7 @@ public class ProtectedChartDataService {
      */
     @GET
     @Path("{verksamhetId}/getSjukfallPerLakareVerksamhet/csv")
-    @Produces({ TEXT_UTF_8 })
+    @Produces({TEXT_CP1252})
     @Consumes({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request, #verksamhetId)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request, #verksamhetId)")
@@ -353,7 +353,7 @@ public class ProtectedChartDataService {
      */
     @GET
     @Path("{verksamhetId}/getDiagnoskapitelstatistik/csv")
-    @Produces({ TEXT_UTF_8 })
+    @Produces({TEXT_CP1252})
     @Consumes({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request, #verksamhetId)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request, #verksamhetId)")
@@ -430,7 +430,7 @@ public class ProtectedChartDataService {
      */
     @GET
     @Path("{verksamhetId}/getDiagnosavsnittstatistik/{groupId}/csv")
-    @Produces({ TEXT_UTF_8 })
+    @Produces({TEXT_CP1252})
     @Consumes({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request, #verksamhetId)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request, #verksamhetId)")
@@ -487,7 +487,7 @@ public class ProtectedChartDataService {
 
     @GET
     @Path("{verksamhetId}/getJamforDiagnoserStatistik/{diagnosHash}/csv")
-    @Produces({ TEXT_UTF_8 })
+    @Produces({TEXT_CP1252})
     @Consumes({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request, #verksamhetId)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request, #verksamhetId)")
@@ -590,7 +590,7 @@ public class ProtectedChartDataService {
      */
     @GET
     @Path("{verksamhetId}/getAgeGroupsStatistics/csv")
-    @Produces({ TEXT_UTF_8 })
+    @Produces({TEXT_CP1252})
     @Consumes({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request, #verksamhetId)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request, #verksamhetId)")
@@ -654,7 +654,7 @@ public class ProtectedChartDataService {
      */
     @GET
     @Path("{verksamhetId}/getCasesPerDoctorAgeAndGenderStatistics/csv")
-    @Produces({ TEXT_UTF_8 })
+    @Produces({TEXT_CP1252})
     @Consumes({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request, #verksamhetId)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request, #verksamhetId)")
@@ -718,7 +718,7 @@ public class ProtectedChartDataService {
      */
     @GET
     @Path("{verksamhetId}/getNumberOfCasesPerLakarbefattning/csv")
-    @Produces({ TEXT_UTF_8 })
+    @Produces({TEXT_CP1252})
     @Consumes({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request, #verksamhetId)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request, #verksamhetId)")
@@ -784,7 +784,7 @@ public class ProtectedChartDataService {
      */
     @GET
     @Path("{verksamhetId}/getAgeGroupsCurrentStatistics/csv")
-    @Produces({ TEXT_UTF_8 })
+    @Produces({TEXT_CP1252})
     @Consumes({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request, #verksamhetId)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request, #verksamhetId)")
@@ -847,7 +847,7 @@ public class ProtectedChartDataService {
      */
     @GET
     @Path("{verksamhetId}/getDegreeOfSickLeaveStatistics/csv")
-    @Produces({ TEXT_UTF_8 })
+    @Produces({TEXT_CP1252})
     @Consumes({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request, #verksamhetId)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request, #verksamhetId)")
@@ -911,7 +911,7 @@ public class ProtectedChartDataService {
      */
     @GET
     @Path("{verksamhetId}/getSickLeaveLengthData/csv")
-    @Produces({ TEXT_UTF_8 })
+    @Produces({TEXT_CP1252})
     @Consumes({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request, #verksamhetId)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request, #verksamhetId)")
@@ -976,7 +976,7 @@ public class ProtectedChartDataService {
      */
     @GET
     @Path("{verksamhetId}/getSickLeaveLengthCurrentData/csv")
-    @Produces({ TEXT_UTF_8 })
+    @Produces({TEXT_CP1252})
     @Consumes({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request, #verksamhetId)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request, #verksamhetId)")
@@ -1039,7 +1039,7 @@ public class ProtectedChartDataService {
      */
     @GET
     @Path("{verksamhetId}/getLongSickLeavesData/csv")
-    @Produces({ TEXT_UTF_8 })
+    @Produces({TEXT_CP1252})
     @Consumes({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request, #verksamhetId)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request, #verksamhetId)")
