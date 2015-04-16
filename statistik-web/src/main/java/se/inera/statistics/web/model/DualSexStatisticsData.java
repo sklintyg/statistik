@@ -20,7 +20,7 @@ package se.inera.statistics.web.model;
 
 import se.inera.statistics.web.service.FilterDataResponse;
 
-public class DualSexStatisticsData {
+public class DualSexStatisticsData implements TableDataReport {
 
     private final TableData tableData;
     private final ChartData maleChart;
