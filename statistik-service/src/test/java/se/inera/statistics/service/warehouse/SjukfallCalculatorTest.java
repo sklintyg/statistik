@@ -18,16 +18,12 @@
  */
 package se.inera.statistics.service.warehouse;
 
-import com.google.common.base.Predicate;
 import com.google.common.collect.ArrayListMultimap;
 import org.joda.time.LocalDate;
 import org.junit.Test;
-import org.springframework.util.ReflectionUtils;
 import se.inera.statistics.service.report.model.Range;
 
-import java.lang.reflect.Field;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;

@@ -200,7 +200,7 @@ public class SjukfallCalculator {
         final ArrayListMultimap<Long, Sjukfall> sjukfalls = ArrayListMultimap.create(sjukfallsPerPatientInPreviousPeriod);
         final ArrayListMultimap<Long, Fact> factsPerPatientInPeriod = factsPerPatientAndPeriod.get(period + 1);
         for (Long key : result.keySet()) {
-            if (!factsPerPatientInPeriod.get(key).isEmpty() || !sjukfallsPerPatientInPreviousPeriod.containsKey(key)) {
+            if (period == 0 || !factsPerPatientInPeriod.get(key).isEmpty()) {
                 sjukfalls.removeAll(key);
                 sjukfalls.putAll(getSjukfallsPerPatient(result.get(key)));
             }
