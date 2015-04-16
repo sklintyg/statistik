@@ -41,12 +41,16 @@ public class SjukfallIterator implements Iterator<SjukfallGroup> {
         this.from = from;
         this.periods = periods;
         this.periodSize = periodSize;
-        boolean extendSjukfall = !SjukfallUtil.ALL_ENHETER.equals(filter);
+        boolean extendSjukfall = !SjukfallUtil.ALL_ENHETER.getFilter().equals(filter);
         List<Range> ranges = getRanges(from, periods, periodSize);
-        sjukfallCalculator = new SjukfallCalculator(aisle.getLines(), filter, ranges, useOriginalSjukfallStart, extendSjukfall);
+        sjukfallCalculator = createSjukfallCalculator(aisle, filter, useOriginalSjukfallStart, extendSjukfall, ranges);
     }
 
-    private List<Range> getRanges(LocalDate from, int periods, int periodSize) {
+    SjukfallCalculator createSjukfallCalculator(Aisle aisle, Predicate<Fact> filter, boolean useOriginalSjukfallStart, boolean extendSjukfall, List<Range> ranges) {
+        return new SjukfallCalculator(aisle.getLines(), filter, ranges, useOriginalSjukfallStart, extendSjukfall);
+    }
+
+    static List<Range> getRanges(LocalDate from, int periods, int periodSize) {
         final ArrayList<Range> ranges = new ArrayList<>();
         for (int i = 0; i < periods; i++) {
             final LocalDate fromDate = from.plusMonths(i * periodSize);
