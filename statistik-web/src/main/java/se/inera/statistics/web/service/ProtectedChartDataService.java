@@ -52,7 +52,6 @@ import se.inera.statistics.web.model.Verksamhet;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
-import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -106,7 +105,7 @@ public class ProtectedChartDataService {
     /**
      * Gets sjukfall per manad for verksamhetId.
      */
-    @POST
+    @GET
     @Path("getNumberOfCasesPerMonth")
     @Produces({ MediaType.APPLICATION_JSON })
     @Consumes({ MediaType.APPLICATION_JSON })
@@ -141,7 +140,7 @@ public class ProtectedChartDataService {
         return CsvConverter.getCsvResponse(data.getTableData(), "export.csv");
     }
 
-    @POST
+    @GET
     @Path("getNumberOfCasesPerMonthTvarsnitt")
     @Produces({ MediaType.APPLICATION_JSON })
     @Consumes({ MediaType.APPLICATION_JSON })
@@ -176,7 +175,7 @@ public class ProtectedChartDataService {
     /**
      * Gets sjukfall per enhet for verksamhetId.
      */
-    @POST
+    @GET
     @Path("getNumberOfCasesPerEnhet")
     @Produces({ MediaType.APPLICATION_JSON })
     @Consumes({ MediaType.APPLICATION_JSON })
@@ -216,7 +215,7 @@ public class ProtectedChartDataService {
     /**
      * Gets sjukfall per enhet for verksamhetId i tidsserie.
      */
-    @POST
+    @GET
     @Path("getNumberOfCasesPerEnhetTimeSeries")
     @Produces({ MediaType.APPLICATION_JSON })
     @Consumes({ MediaType.APPLICATION_JSON })
@@ -257,7 +256,7 @@ public class ProtectedChartDataService {
     /**
      * Gets sjukfall per doctor for verksamhetId.
      */
-    @POST
+    @GET
     @Path("getNumberOfCasesPerLakare")
     @Produces({ MediaType.APPLICATION_JSON })
     @Consumes({ MediaType.APPLICATION_JSON })
@@ -292,7 +291,7 @@ public class ProtectedChartDataService {
         return CsvConverter.getCsvResponse(data.getTableData(), "export.csv");
     }
 
-    @POST
+    @GET
     @Path("getSjukfallPerLakareSomTidsserie")
     @Produces({ MediaType.APPLICATION_JSON })
     @Consumes({ MediaType.APPLICATION_JSON })
@@ -327,7 +326,7 @@ public class ProtectedChartDataService {
      * Get sjukfall per diagnoskapitel and per diagnosgrupp. The chart data is grouped by diagnosgrupp,
      * the table data by diagnoskapitel. Diagnosgrupp is a diagnoskapitel or a list of diagnoskapitel.
      */
-    @POST
+    @GET
     @Path("getDiagnoskapitelstatistik")
     @Produces({ MediaType.APPLICATION_JSON })
     @Consumes({ MediaType.APPLICATION_JSON })
@@ -362,7 +361,7 @@ public class ProtectedChartDataService {
         return CsvConverter.getCsvResponse(data.getTableData(), "export.csv");
     }
 
-    @POST
+    @GET
     @Path("getDiagnosGruppTvarsnitt")
     @Produces({ MediaType.APPLICATION_JSON })
     @Consumes({ MediaType.APPLICATION_JSON })
@@ -396,7 +395,7 @@ public class ProtectedChartDataService {
     /**
      * Get sjukfall per diagnosavsnitt for given diagnoskapitel.
      */
-    @POST
+    @GET
     @Path("getDiagnosavsnittstatistik/{groupId}")
     @Produces({ MediaType.APPLICATION_JSON })
     @Consumes({ MediaType.APPLICATION_JSON })
@@ -446,7 +445,7 @@ public class ProtectedChartDataService {
         }
     }
 
-    @POST
+    @GET
     @Path("getDiagnosavsnittTvarsnitt/{groupId}")
     @Produces({ MediaType.APPLICATION_JSON })
     @Consumes({ MediaType.APPLICATION_JSON })
@@ -486,7 +485,7 @@ public class ProtectedChartDataService {
         }
     }
 
-    @POST
+    @GET
     @Path("getJamforDiagnoserStatistik/{diagnosHash}")
     @Produces({ MediaType.APPLICATION_JSON })
     @Consumes({ MediaType.APPLICATION_JSON })
@@ -528,7 +527,7 @@ public class ProtectedChartDataService {
         return null;
     }
 
-    @POST
+    @GET
     @Path("getJamforDiagnoserStatistikTidsserie/{diagnosHash}")
     @Produces({ MediaType.APPLICATION_JSON })
     @Consumes({ MediaType.APPLICATION_JSON })
@@ -567,7 +566,7 @@ public class ProtectedChartDataService {
      * Get overview. Includes total n:o of sjukfall, sex distribution, top lists for diagnosgrupp, aldersgrupp, sjukskrivningslangd,
      * sjukskrivningsgrad. Only chart formatted data.
      */
-    @POST
+    @GET
     @Path("getOverview")
     @Produces({ MediaType.APPLICATION_JSON })
     @Consumes({ MediaType.APPLICATION_JSON })
@@ -584,7 +583,7 @@ public class ProtectedChartDataService {
     /**
      * Get sjukfall grouped by age and sex.
      */
-    @POST
+    @GET
     @Path("getAgeGroupsStatistics")
     @Produces({ MediaType.APPLICATION_JSON })
     @Consumes({ MediaType.APPLICATION_JSON })
@@ -619,7 +618,7 @@ public class ProtectedChartDataService {
         return CsvConverter.getCsvResponse(simpleDetailsData.getTableData(), "export.csv");
     }
 
-    @POST
+    @GET
     @Path("getAgeGroupsStatisticsAsTimeSeries")
     @Produces({ MediaType.APPLICATION_JSON })
     @Consumes({ MediaType.APPLICATION_JSON })
@@ -656,7 +655,7 @@ public class ProtectedChartDataService {
     /**
      * Get sjukfall grouped by age and sex of the doctor.
      */
-    @POST
+    @GET
     @Path("getCasesPerDoctorAgeAndGenderStatistics")
     @Produces({MediaType.APPLICATION_JSON })
     @Consumes({ MediaType.APPLICATION_JSON })
@@ -691,7 +690,7 @@ public class ProtectedChartDataService {
         return CsvConverter.getCsvResponse(simpleDetailsData.getTableData(), "export.csv");
     }
 
-    @POST
+    @GET
     @Path("getCasesPerDoctorAgeAndGenderTimeSeriesStatistics")
     @Produces({MediaType.APPLICATION_JSON })
     @Consumes({ MediaType.APPLICATION_JSON })
@@ -725,7 +724,7 @@ public class ProtectedChartDataService {
     /**
      * Get sjukfall grouped by doctor grade.
      */
-    @POST
+    @GET
     @Path("getNumberOfCasesPerLakarbefattning")
     @Produces({MediaType.APPLICATION_JSON })
     @Consumes({ MediaType.APPLICATION_JSON })
@@ -760,7 +759,7 @@ public class ProtectedChartDataService {
         return CsvConverter.getCsvResponse(simpleDetailsData.getTableData(), "export.csv");
     }
 
-    @POST
+    @GET
     @Path("getNumberOfCasesPerLakarbefattningSomTidsserie")
     @Produces({MediaType.APPLICATION_JSON })
     @Consumes({ MediaType.APPLICATION_JSON })
@@ -795,7 +794,7 @@ public class ProtectedChartDataService {
     /**
      * Get ongoing sjukfall grouped by age and sex.
      */
-    @POST
+    @GET
     @Path("getAgeGroupsCurrentStatistics")
     @Produces({ MediaType.APPLICATION_JSON })
     @Consumes({ MediaType.APPLICATION_JSON })
@@ -835,7 +834,7 @@ public class ProtectedChartDataService {
     /**
      * Get sjukskrivningsgrad per calendar month.
      */
-    @POST
+    @GET
     @Path("getDegreeOfSickLeaveStatistics")
     @Produces({ MediaType.APPLICATION_JSON })
     @Consumes({ MediaType.APPLICATION_JSON })
@@ -870,7 +869,7 @@ public class ProtectedChartDataService {
         return CsvConverter.getCsvResponse(simpleDetailsData.getTableData(), "export.csv");
     }
 
-    @POST
+    @GET
     @Path("getDegreeOfSickLeaveTvarsnitt")
     @Produces({ MediaType.APPLICATION_JSON })
     @Consumes({ MediaType.APPLICATION_JSON })
@@ -904,7 +903,7 @@ public class ProtectedChartDataService {
     /**
      * Get sjukfallslangd (grouped).
      */
-    @POST
+    @GET
     @Path("getSickLeaveLengthData")
     @Produces({ MediaType.APPLICATION_JSON })
     @Consumes({ MediaType.APPLICATION_JSON })
@@ -938,7 +937,7 @@ public class ProtectedChartDataService {
         return CsvConverter.getCsvResponse(simpleDetailsData.getTableData(), "export.csv");
     }
 
-    @POST
+    @GET
     @Path("getSickLeaveLengthTimeSeries")
     @Produces({ MediaType.APPLICATION_JSON })
     @Consumes({ MediaType.APPLICATION_JSON })
@@ -973,7 +972,7 @@ public class ProtectedChartDataService {
     /**
      * Get sjukfallslangd (grouped) for current month.
      */
-    @POST
+    @GET
     @Path("getSickLeaveLengthCurrentData")
     @Produces({ MediaType.APPLICATION_JSON })
     @Consumes({ MediaType.APPLICATION_JSON })
@@ -1012,7 +1011,7 @@ public class ProtectedChartDataService {
     /**
      * Gets sjukfallslangd, grouped by sex, long / not long sjukfall.
      */
-    @POST
+    @GET
     @Path("getLongSickLeavesData")
     @Produces({ MediaType.APPLICATION_JSON })
     @Consumes({ MediaType.APPLICATION_JSON })
@@ -1046,7 +1045,7 @@ public class ProtectedChartDataService {
         return CsvConverter.getCsvResponse(data.getTableData(), "export.csv");
     }
 
-    @POST
+    @GET
     @Path("getLongSickLeavesTvarsnitt")
     @Produces({ MediaType.APPLICATION_JSON })
     @Consumes({ MediaType.APPLICATION_JSON })
