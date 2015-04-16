@@ -228,7 +228,7 @@ public class ChartDataService {
      */
     @GET
     @Path("getNumberOfCasesPerMonth/csv")
-    @Produces({TEXT_CP1252})
+    @Produces({ TEXT_CP1252 })
     public Response getNumberOfCasesPerMonthAsCsv() {
         LOG.info("Calling getNumberOfCasesPerMonthAsCsv for national");
         final TableData tableData = getNumberOfCasesPerMonth().getTableData();
@@ -304,7 +304,7 @@ public class ChartDataService {
      */
     @GET
     @Path("getDiagnoskapitelstatistik/csv")
-    @Produces({TEXT_CP1252})
+    @Produces({ TEXT_CP1252 })
     public Response getDiagnoskapitelstatistikAsCsv() {
         LOG.info("Calling getDiagnoskapitelstatistikAsCsv for national");
         final TableData tableData = getDiagnoskapitelstatistik().getTableData();
@@ -333,7 +333,7 @@ public class ChartDataService {
      */
     @GET
     @Path("getDiagnosavsnittstatistik/{groupId}/csv")
-    @Produces({TEXT_CP1252})
+    @Produces({ TEXT_CP1252 })
     public Response getDiagnosavsnittstatistikAsCsv(@PathParam("groupId") String groupId) {
         LOG.info("Calling getDiagnosavsnittstatistikAsCsv for national");
         final TableData tableData = getDiagnosavsnittstatistik(groupId).getTableData();
@@ -374,7 +374,7 @@ public class ChartDataService {
      */
     @GET
     @Path("getAgeGroupsStatistics/csv")
-    @Produces({TEXT_CP1252})
+    @Produces({ TEXT_CP1252 })
     public Response getAgeGroupsStatisticsAsCsv() {
         LOG.info("Calling getAgeGroupsStatisticsAsCsv for national");
         final TableData tableData = getAgeGroupsStatistics().getTableData();
@@ -401,7 +401,7 @@ public class ChartDataService {
      */
     @GET
     @Path("getDegreeOfSickLeaveStatistics/csv")
-    @Produces({TEXT_CP1252})
+    @Produces({ TEXT_CP1252 })
     public Response getDegreeOfSickLeaveStatisticsAsCsv() {
         LOG.info("Calling getDegreeOfSickLeaveStatisticsAsCsv for national");
         final TableData tableData = getDegreeOfSickLeaveStatistics().getTableData();
@@ -428,7 +428,7 @@ public class ChartDataService {
      */
     @GET
     @Path("getSickLeaveLengthData/csv")
-    @Produces({TEXT_CP1252})
+    @Produces({ TEXT_CP1252 })
     public Response getSickLeaveLengthDataAsCsv() {
         LOG.info("Calling getSickLeaveLengthDataAsCsv for national");
         final TableData tableData = getSickLeaveLengthData().getTableData();
@@ -454,7 +454,7 @@ public class ChartDataService {
      */
     @GET
     @Path("getCountyStatistics/csv")
-    @Produces({TEXT_CP1252})
+    @Produces({ TEXT_CP1252 })
     public Response getCountyStatisticsAsCsv() {
         LOG.info("Calling getCountyStatisticsAsCsv for national");
         final TableData tableData = getCountyStatistics().getTableData();
@@ -481,7 +481,7 @@ public class ChartDataService {
      */
     @GET
     @Path("getSjukfallPerSexStatistics/csv")
-    @Produces({TEXT_CP1252})
+    @Produces({ TEXT_CP1252 })
     public Response getSjukfallPerSexStatisticsAsCsv() {
         LOG.info("Calling getSjukfallPerSexStatisticsAsCsv for national");
         final TableData tableData = getSjukfallPerSexStatistics().getTableData();
