@@ -83,7 +83,6 @@ public class ProtectedChartDataService {
 
     private static final Logger LOG = LoggerFactory.getLogger(ProtectedChartDataService.class);
     public static final int YEAR = 12;
-    private static final String TEXT_CP1252 = ChartDataService.TEXT_CP1252;
 
     @Autowired
     private WarehouseService warehouse;
