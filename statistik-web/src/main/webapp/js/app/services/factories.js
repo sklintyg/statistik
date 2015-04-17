@@ -3,12 +3,10 @@
 angular.module('StatisticsApp').factory('statisticsData', function ($http, $rootScope) {
     var factory = {};
 
-    var makeRequestNational = function (restFunctionName, successCallback, failureCallback) {
-        makeRequestNational(restFunctionName, successCallback, failureCallback, true);
-    };
-
     var makeRequestNational = function (restFunctionName, successCallback, failureCallback, cached) {
-        $http.get("api/" + restFunctionName, {cache: cached}).success(function (result) {
+        var finalCached = (typeof cached !== 'undefined') ? cached : true;
+
+        $http.get("api/" + restFunctionName, {cache: finalCached}).success(function (result) {
             try {
                 successCallback(result);
             } catch (e) {
