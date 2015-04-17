@@ -19,27 +19,19 @@
 package se.inera.statistics.service.warehouse.query;
 
 import com.google.common.base.Function;
-import com.google.common.base.Predicate;
-import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Multimap;
 import org.joda.time.LocalDate;
-import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.report.model.KonDataResponse;
-import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.SimpleKonDataRow;
 import se.inera.statistics.service.report.model.SimpleKonResponse;
 import se.inera.statistics.service.warehouse.Aisle;
-import se.inera.statistics.service.warehouse.Fact;
 import se.inera.statistics.service.warehouse.Lakare;
 import se.inera.statistics.service.warehouse.Sjukfall;
 import se.inera.statistics.service.warehouse.SjukfallFilter;
 import se.inera.statistics.service.warehouse.SjukfallUtil;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -66,48 +58,15 @@ public final class LakarbefattningQuery {
         // CHECKSTYLE:ON MagicNumber
     }
 
-    private final SjukfallUtil sjukfallUtil;
-
-    private LakarbefattningQuery(SjukfallUtil sjukfallUtil) {
-        this.sjukfallUtil = sjukfallUtil;
+    private LakarbefattningQuery() {
     }
 
-    public static SimpleKonResponse<SimpleKonDataRow> getSjukfall(Aisle aisle, Predicate<Fact> filter, Range range, int perioder, int periodlangd, SjukfallUtil sjukfallUtil) {
-        return new LakarbefattningQuery(sjukfallUtil).getSjukfallResponse(aisle, filter, range, perioder, periodlangd);
+     public static SimpleKonResponse<SimpleKonDataRow> getSjukfall(Aisle aisle, SjukfallFilter filter, LocalDate start, int periods, int periodLength, SjukfallUtil sjukfallUtil) {
+        final KonDataResponse sjukfallSomTidsserie = getSjukfallSomTidsserie(aisle, filter, start, periods, periodLength, sjukfallUtil);
+        return SimpleKonResponse.create(sjukfallSomTidsserie, periods * periodLength);
     }
 
-    private SimpleKonResponse<SimpleKonDataRow> getSjukfallResponse(Aisle aisle, Predicate<Fact> filter, Range range, int perioder, int periodlangd) {
-        final Multimap<Kon, Integer> lakarenAlderOchKonForSjukfalls = getLakarbefattningsForAllSjukfall(aisle, filter, range);
-        List<SimpleKonDataRow> result = new ArrayList<>();
-        for (Map.Entry<Integer, String> befattningCode : LAKARBEFATTNINGS.entrySet()) {
-            final int femaleCount = Collections.frequency(lakarenAlderOchKonForSjukfalls.get(Kon.Female), befattningCode.getKey());
-            final int maleCount = Collections.frequency(lakarenAlderOchKonForSjukfalls.get(Kon.Male), befattningCode.getKey());
-            if (femaleCount + maleCount > 0) {
-                result.add(new SimpleKonDataRow(befattningCode.getValue(), femaleCount, maleCount));
-            }
-        }
-        return new SimpleKonResponse<>(result, perioder * periodlangd);
-    }
-
-    private Multimap<Kon, Integer> getLakarbefattningsForAllSjukfall(Aisle aisle, Predicate<Fact> filter, Range range) {
-        Collection<Sjukfall> sjukfalls = sjukfallUtil.active(range, aisle, filter);
-        final Multimap<Kon, Integer> sjukfallPerLakarbefattning = ArrayListMultimap.create();
-        for (Sjukfall sjukfall : sjukfalls) {
-            final Kon kon = sjukfall.getKon();
-            for (se.inera.statistics.service.warehouse.Lakare lakare : sjukfall.getLakare()) {
-                final List<Integer> lakarbefattnings = getLakarbefattnings(lakare);
-                for (int befattning : lakarbefattnings) {
-                    sjukfallPerLakarbefattning.put(kon, befattning);
-                }
-                if (lakarbefattnings.isEmpty()) {
-                    sjukfallPerLakarbefattning.put(kon, NO_BEFATTNING_CODE);
-                }
-            }
-        }
-        return sjukfallPerLakarbefattning;
-    }
-
-    private List<Integer> getLakarbefattnings(Lakare lakare) {
+    private static List<Integer> getLakarbefattnings(Lakare lakare) {
         final List<Integer> lakarbefattnings = new ArrayList<>();
         final int[] allBefattnings = lakare.getBefattnings();
         final Set<Integer> existingLakarebefattnings = LAKARBEFATTNINGS.keySet();
@@ -137,11 +96,11 @@ public final class LakarbefattningQuery {
             @Override
             public void addCount(Sjukfall sjukfall, HashMultiset<Integer> counter) {
                 for (Lakare lakare : sjukfall.getLakare()) {
-                    final int[] befattnings = lakare.getBefattnings();
-                    for (int befattningId : befattnings) {
+                    final List<Integer> lakarbefattnings = getLakarbefattnings(lakare);
+                    for (Integer befattningId : lakarbefattnings) {
                         counter.add(befattningId);
                     }
-                    if (befattnings.length == 0) {
+                    if (lakarbefattnings.isEmpty()) {
                         counter.add(NO_BEFATTNING_CODE);
                     }
                 }
