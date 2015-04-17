@@ -18,6 +18,7 @@
  */
 package se.inera.statistik.tools;
 
+import com.google.common.io.ByteStreams;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -32,8 +33,10 @@ import org.apache.http.params.HttpParams;
 import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.security.KeyManagementException;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
@@ -41,11 +44,12 @@ import java.security.NoSuchAlgorithmException;
 import java.security.UnrecoverableKeyException;
 import java.security.cert.CertificateException;
 import java.util.zip.ZipEntry;
-import java.util.zip.ZipInputStream;
+import java.util.zip.ZipFile;
 
 public final class HsaUnitSource {
 
     public static final int SSL_PORT = 443;
+    private static final int BUFFER_SIZE = 10000;
 
     private HsaUnitSource() {
     }
@@ -56,14 +60,14 @@ public final class HsaUnitSource {
             final KeyStore keystore = KeyStore.getInstance("pkcs12");
             InputStream keystoreInput;
             keystoreInput = new BufferedInputStream(new FileInputStream(certFileName));
-            keystore.load(keystoreInput, "keystorepassword".toCharArray());
+            keystore.load(keystoreInput, certPass.toCharArray());
             KeyStore truststore = KeyStore.getInstance("jks");
 
-            InputStream truststoreInput = new BufferedInputStream(new FileInputStream("hsa-truststore.jks"));
-            truststore.load(truststoreInput, "truststorepassword".toCharArray());
+            InputStream truststoreInput = new BufferedInputStream(new FileInputStream(trustStoreName));
+            truststore.load(truststoreInput, trustPass.toCharArray());
 
             final SchemeRegistry schemeRegistry = new SchemeRegistry();
-            schemeRegistry.register(new Scheme("https", SSL_PORT, new SSLSocketFactory(keystore, "keystorePassword", truststore)));
+            schemeRegistry.register(new Scheme("https", SSL_PORT, new SSLSocketFactory(keystore, certPass, truststore)));
 
             final DefaultHttpClient httpClient = new DefaultHttpClient(new PoolingClientConnectionManager(schemeRegistry), httpParams);
 
@@ -72,12 +76,19 @@ public final class HsaUnitSource {
             HttpEntity entity = response.getEntity();
             if (entity != null) {
                 try (InputStream instream = entity.getContent()) {
-                    ZipInputStream zipStream = new ZipInputStream(instream);
-                    final ZipEntry nextEntry = zipStream.getNextEntry();
-                    int len = (int) nextEntry.getSize();
-                    byte[] hsaUnitsBytes = new byte[len];
-                    if (instream.read(hsaUnitsBytes) != len) {
-                        throw new IOException("Reported file length does not match actual read bytes.");
+                    byte[] buffer = new byte[BUFFER_SIZE];
+                    OutputStream receivedZipFile = new FileOutputStream("hsazip.zip");
+                    int len;
+                    while ((len = instream.read(buffer)) != -1) {
+                        receivedZipFile.write(buffer, 0, len);
+                    }
+                    ZipFile zipFile = new ZipFile("hsazip.zip");
+                    final ZipEntry entry = zipFile.getEntry("hsaunits.xml");
+                    len = (int) entry.getSize();
+                    final InputStream stream = new BufferedInputStream(zipFile.getInputStream(entry));
+                    byte[] hsaUnitsBytes = ByteStreams.toByteArray(stream);
+                    if (hsaUnitsBytes.length != len) {
+                        throw new IOException("Reported file length does not match actual read bytes." + len + " vs. " + hsaUnitsBytes.length);
                     } else {
                         return new ByteArrayInputStream(hsaUnitsBytes);
                     }

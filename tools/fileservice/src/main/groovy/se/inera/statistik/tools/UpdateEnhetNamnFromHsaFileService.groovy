@@ -30,22 +30,24 @@ class UpdateEnhetNamnFromHsaFileService {
     static void main(String[] args) {
         long start = System.currentTimeMillis()
         def hsaProps = new Properties();
-        new File("hsaFileService.properties").withInputStream { stream ->
+        String hsaPath = System.properties.get("hsafileservice", "hsaFileService.properties")
+        new File(hsaPath).withInputStream { stream ->
             hsaProps.load(stream)
         }
-        def hsaConfig = new ConfigSlurper().parse(hsaProps)
+        def hsaConf = new ConfigSlurper().parse(hsaProps)
 
-        def props = new Properties()
-        new File("dataSource.properties").withInputStream { stream ->
-            props.load(stream)
+        def dbProps = new Properties()
+        String dbPath = System.properties.get("datasource", "dataSource.properties")
+        new File(dbPath).withInputStream { stream ->
+            dbProps.load(stream)
         }
-        def config = new ConfigSlurper().parse(props)
+        def dbConf = new ConfigSlurper().parse(dbProps)
         BasicDataSource dataSource =
-            new BasicDataSource(driverClassName: config.dataSource.driver, url: config.dataSource.url,
-                                username: config.dataSource.username, password: config.dataSource.password,
+            new BasicDataSource(driverClassName: dbConf.dataSource.driver, url: dbConf.dataSource.url,
+                                username: dbConf.dataSource.username, password: dbConf.dataSource.password,
                                 initialSize: 1, maxTotal: 1)
 
-        InputStream unitStream = HsaUnitSource.getUnits(hsaConfig.certificate.file, hsaConfig.certificate.password, hsaConfig.truststore.file, hsaConfig.truststore.file, hsaConfig.hsaunits.url)
+        InputStream unitStream = HsaUnitSource.getUnits(hsaConf.certificate.file, hsaConf.certificate.password, hsaConf.truststore.file, hsaConf.truststore.password, hsaConf.hsaunits.url)
         def enhetsXml = new XmlSlurper().parse(unitStream)
 
         Sql sql = new Sql(dataSource)
