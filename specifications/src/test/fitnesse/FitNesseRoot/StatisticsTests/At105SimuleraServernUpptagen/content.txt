@@ -13,7 +13,6 @@
 | 19790407-1295 | G01 | 2013-03-01 | 2013-03-30 | enhet1 |
 
 !3 Då gäller:
-Det blir 1 sjukfall
 
 Inloggad:
 | Sjukfall i rapporten sjukfall totalt |

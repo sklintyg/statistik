@@ -1,9 +1,9 @@
 !contents -R2 -g -p -f -h
 
-Stockholm:  2 kivnnor, varav 1 kvinna har 2 separata sjukfall totalt 3 fall. 3 män med varsitt sjukfall
-Blekinge: 1 man har 1 sjukfall (samtidigt som han har ett fall i Sthlm...
-
 !3 Givet att:
+
+I Stockholm finns följande sjukfall:  2 kvinnor, varav 1 kvinna har 2 separata sjukfall. 3 män med varsitt sjukfall.
+I Blekinge finns följande sjukfall: 1 man (som samtidigt har ett sjukfall i Stockholm)
 
 | script | dagens datum | 2015-01-06 |
 
@@ -21,6 +21,10 @@ Blekinge: 1 man har 1 sjukfall (samtidigt som han har ett fall i Sthlm...
 
 !3 Då gäller:
 
+Det visas tre sjukfall för män och tre för kvinnor i Stockholm, dvs. 50% kvinnor och 50% män.
+Det visas ett sjukfall för män i Blekinge, dvs. 100% män.
+Det spelar ingen roll att samma personnummer förekommer i två län samtidigt.
+
 Nationell:
 | Sjukfall i rapporten andel sjukfall per kon |
 | län            | totalt? | män?     | kvinnor? |
@@ -32,3 +36,4 @@ Nationell:
 | län            | män? | kvinnor? |
 | Samtliga län   | 4    | 3        |
 | Stockholms län | 3    | 3        |
+| Blekinge län | 1    | 0        |

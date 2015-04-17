@@ -1,6 +1,9 @@
 !contents -R2 -g -p -f -h
 
 !3 Givet att:
+
+Ett sjukfall består av tre intyg där det första och sista är utfärdat på enhet1 och det andra på enhet2.
+
 | script | dagens datum | 2013-11-06 |
 
 | Enbart foljande intyg finns |
@@ -9,8 +12,10 @@
 | 19790407-0210 | A00 | 2013-02-15 | 2013-03-28 | enhet2 |
 | 19790407-0210 | F41 | 2013-04-01 | 2013-04-14 | enhet1 |
 
-
 !3 Då gäller:
+
+Bara de sjukfall/delar av sjukfall vars enhet matchar val i enhetsfiltret visas. Bara enheter som användaren har behörighet till visas.
+
 | Sjukfall i rapporten sjukfall per enhet |
 | inloggad som | vårdenhet    | vårdgivarnivå | filter enheter | filter verksamhetstyper | filter kategorier | totalt? | män? | kvinnor? |
 | user1        | Enhet enhet1 | false         |                |                         |                   | 1       | 1    | 0        |

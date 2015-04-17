@@ -2,7 +2,7 @@
 
 !3 Givet att:
 
-
+Fyra olika sjukfall med olika länskoder. Tre av koderna tillhör inte län utan är ogiltiga.
 
 | script | dagens datum | 2013-11-06 |
 
@@ -17,14 +17,13 @@
 
 !3 Då gäller:
 
+Två sjukfall hamnar i "Okänt län" för maj-jul och tre för aug-okt.
+Ett sjukfall hamnar i "Stockholms län" för aug-okt.
+
 Nationell:
 | Sjukfall i rapporten lan |
 | period       | län            | totalt? | män? | kvinnor? |
 | maj–jul 2013 | Stockholms län | 0       | 0    | 0        |
-| maj–jul 2013 | Jönköpings län | 0       | 0    | 0        |
-| maj–jul 2013 | Västra Götalands län | 0       | 0    | 0        |
 | maj–jul 2013 | Okänt län      | 2       | 1    | 1        |
 | aug–okt 2013 | Stockholms län | 1       | 1    | 0        |
-| aug–okt 2013 | Jönköpings län | 0       | 0    | 0        |
-| aug–okt 2013 | Västra Götalands län | 0       | 0    | 0        |
 | aug–okt 2013 | Okänt län      | 3       | 2    | 1        |

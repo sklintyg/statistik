@@ -1,7 +1,9 @@
 !contents -R2 -g -p -f -h
 
-
 !3 Givet att:
+
+Ett sjukfall består av fem intyg med olika diagnoser utfärdade på olika enheter.
+
 | script | dagens datum | 2013-11-06 |
 
 | Enbart foljande intyg finns |
@@ -12,8 +14,9 @@
 | 19790407-0220 | F50 | 2013-04-02 | 2013-04-30 | enhet1 |
 | 19790407-0220 | F34 | 2013-05-01 | 2013-05-15 | enhet3 |
 
-
 !3 Då gäller:
+
+Beroende på vilka enheter som användaren har behörighet till, visas sjukfallet i olika kategorier. Bara det som hör till enheter användaren har behörighet till visas.
 
 | Sjukfall i rapporten jamfor diagnoser diagram |
 |inloggad som | valda diagnoskategorier | diagnoskategori | män? | kvinnor? |

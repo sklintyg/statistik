@@ -1,6 +1,9 @@
 !contents -R2 -g -p -f -h
 
 !3 Givet att:
+
+Det finns två exakt likadana intyg för en patient.
+
 | script | dagens datum | 2014-11-28 |
 
 | script | troskel varde | 0 |
@@ -12,6 +15,7 @@
 
 !3 Då gäller:
 
+Bara ett sjukfall visas.
 
 | Sjukfall i rapporten sjukfall totalt |
 | inloggad som | år   | månad | män? | kvinnor? | kommentar |
