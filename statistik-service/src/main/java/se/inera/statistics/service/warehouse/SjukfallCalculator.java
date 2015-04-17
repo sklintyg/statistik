@@ -42,7 +42,7 @@ public class SjukfallCalculator {
 
     private final List<Fact> aisle;
     private final boolean useOriginalSjukfallStart;
-    private final boolean extendSjukfall;
+    private final boolean extendSjukfall; //true = försök att komplettera sjukfall från andra enheter än de man har tillgång till, false = titta bara på tillgängliga enheter, lämplig att använda t ex om man vet att man har tillgång till alla enheter
     private final List<Range> ranges;
     private ArrayListMultimap<Integer, Sjukfall> sjukfallsPerPatientInAisle;
     private List<ArrayListMultimap<Integer, Fact>> factsPerPatientAndPeriod;
@@ -55,12 +55,10 @@ public class SjukfallCalculator {
      * @param aisle aisle
      * @param filter filter
      * @param useOriginalSjukfallStart true = använd faktiskt startdatum, inte första datum på första intyget som är tillgängligt för anroparen
-     * @param extendSjukfall true = försök att komplettera sjukfall från andra enheter än de man har tillgång till, false = titta bara på tillgängliga enheter,
-     *                       lämplig att använda t ex om man vet att man har tillgång till alla enheter
      */
-    public SjukfallCalculator(List<Fact> aisle, Predicate<Fact> filter, List<Range> ranges, boolean useOriginalSjukfallStart, boolean extendSjukfall) {
+    public SjukfallCalculator(List<Fact> aisle, Predicate<Fact> filter, List<Range> ranges, boolean useOriginalSjukfallStart) {
         this.aisle = new ArrayList<>(aisle);
-        this.extendSjukfall = extendSjukfall;
+        this.extendSjukfall = !SjukfallUtil.ALL_ENHETER.getFilter().equals(filter);
         Collections.sort(this.aisle, Fact.TIME_ORDER);
         this.useOriginalSjukfallStart = useOriginalSjukfallStart;
         final Iterable<Fact> filteredAisle = Iterables.filter(aisle, filter);
