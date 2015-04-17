@@ -1,8 +1,8 @@
 !contents -R2 -g -p -f -h
 
 !3 Givet att:
-Två intyg för samma patient har uppehåll med 5 hela dagar
 
+Två intyg för samma patient har uppehåll med 5 hela dagar.
 
 | script | dagens datum | 2013-11-06 |
 
@@ -15,11 +15,18 @@ Två intyg för samma patient har uppehåll med 5 hela dagar
 
 !3 Då gäller:
 
+Det blir ett sjukfall.
+
+Nationell:
+| Sjukfall i rapporten sjukfall totalt |
+| år   | månad | män? | kvinnor? |
+| 2013 | jan   | 0    | 0        |
+| 2013 | feb   | 1    | 0        |
+| 2013 | mar   | 0    | 0        |
+
+Inloggad:
 | Sjukfall i rapporten sjukfall totalt |
 | inloggad som | år   | månad | män? | kvinnor? |
-| user1  | 2013 | jan   | 0    | 0        |
-| user1  | 2013 | feb   | 1    | 0        |
-| user1  | 2013 | mar   | 0    | 0        |
-|   | 2013 | jan   | 0    | 0        |
-|   | 2013 | feb   | 1    | 0        |
-|   | 2013 | mar   | 0    | 0        |
+| user1        | 2013 | jan   | 0    | 0        |
+| user1        | 2013 | feb   | 1    | 0        |
+| user1        | 2013 | mar   | 0    | 0        |

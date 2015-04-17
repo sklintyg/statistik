@@ -2,8 +2,6 @@
 
 Gäller STATISTIK-948.
 
-(kräver också att 1006 är fixad för att Enskilt diagnoskapitel som tvärsnitt ska gå igenom)
-
 !3 Givet att:
 | script | dagens datum | 2014-11-06 |
 

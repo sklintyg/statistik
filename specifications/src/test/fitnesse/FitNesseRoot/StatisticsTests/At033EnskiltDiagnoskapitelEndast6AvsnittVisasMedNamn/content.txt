@@ -1,0 +1,74 @@
+!contents -R2 -g -p -f -h
+
+!3 Givet att:
+
+Det finns tre sjukfall med diagnos som faller inom avsnitt:
+- C15-C26 Maligna tumörer i matsmältningsorganen
+- C30-C39 Maligna tumörer i andningsorganen och brösthålans organ
+- C43-C44 Melanom och andra maligna tumörer i huden
+- C45-C49 Maligna tumörer i mesotelial (kroppshåletäckande) vävnad och mjukvävnad
+- C50-C50 Malign tumör i bröstkörtel
+- C51-C58 Maligna tumörer i de kvinnliga könsorganen
+
+Det finns två sjukfall med diagnos som faller inom avsnitt:
+- C00-C14 Maligna tumörer i läpp, munhåla och svalg
+- C64-C68 Maligna tumörer i urinorganen
+
+Det finns ett sjukfall med diagnos som faller inom avsnitt:
+- C40-C41 Maligna tumörer i ben och ledbrosk
+
+Det finns inga sjukfall med diagnos som faller inom övriga avsnitt.
+
+| script | dagens datum | 2013-11-06 |
+
+| Enbart foljande intyg finns |
+| personnr | diagnoskod | start    | slut       | enhet |
+| 19790407-0120 | C01 | 2013-02-01 | 2013-02-14 | enhet1 |
+| 19790407-0220 | C02 | 2013-02-01 | 2013-02-14 | enhet1 |
+| 19790407-0320 | C20 | 2013-02-01 | 2013-02-14 | enhet1 |
+| 19790407-0410 | C20 | 2013-02-01 | 2013-02-14 | enhet1 |
+| 19790407-0510 | C20 | 2013-02-01 | 2013-02-14 | enhet1 |
+| 19790407-0610 | C33 | 2013-02-01 | 2013-02-14 | enhet1 |
+| 19790407-0710 | C34 | 2013-02-01 | 2013-02-14 | enhet1 |
+| 19790407-0810 | C34 | 2013-02-01 | 2013-02-14 | enhet1 |
+| 19790407-0910 | C40 | 2013-02-01 | 2013-02-14 | enhet1 |
+| 19790407-1020 | C43 | 2013-02-01 | 2013-02-14 | enhet1 |
+| 19790407-1120 | C43 | 2013-02-01 | 2013-02-14 | enhet1 |
+| 19790407-1220 | C43 | 2013-02-01 | 2013-02-14 | enhet1 |
+| 19790407-1320 | C46 | 2013-02-01 | 2013-02-14 | enhet1 |
+| 19790407-1410 | C46 | 2013-02-01 | 2013-02-14 | enhet1 |
+| 19790407-1510 | C46 | 2013-02-01 | 2013-02-14 | enhet1 |
+| 19790407-1610 | C50 | 2013-02-01 | 2013-02-14 | enhet1 |
+| 19790407-1710 | C50 | 2013-02-01 | 2013-02-14 | enhet1 |
+| 19790407-1820 | C50 | 2013-02-01 | 2013-02-14 | enhet1 |
+| 19790407-1920 | C51 | 2013-02-01 | 2013-02-14 | enhet1 |
+| 19790407-2020 | C51 | 2013-02-01 | 2013-02-14 | enhet1 |
+| 19790407-2110 | C51 | 2013-02-01 | 2013-02-14 | enhet1 |
+| 19790407-2220 | C65 | 2013-02-01 | 2013-02-14 | enhet1 |
+| 19790407-2320 | C65 | 2013-02-01 | 2013-02-14 | enhet1 |
+
+!3 Då gäller:
+
+De sex diagnosavsnitt med flest totalt antal sjukfall visas. Samma diagnosavsnitt visas för både män och kvinnor. Sjukfall inom övriga diagnosavsnitt summeras i gruppen "Övriga".
+
+Nationell:
+| Sjukfall i rapporten enskilt diagnoskapitel diagram |
+| valt diagnoskapitel | år   | månad | grupp   | män? | kvinnor? |
+| C00-D48             | 2013 | feb   | C15-C26 | 2    | 1        |
+| C00-D48             | 2013 | feb   | C30-C39 | 3    | 0        |
+| C00-D48             | 2013 | feb   | C43-C44 | 0    | 3        |
+| C00-D48             | 2013 | feb   | C45-C49 | 2    | 1        |
+| C00-D48             | 2013 | feb   | C50-C50 | 2    | 1        |
+| C00-D48             | 2013 | feb   | C51-C58 | 1    | 2        |
+| C00-D48             | 2013 | feb   | Övriga  | 1    | 4        |
+
+Inloggad:
+| Sjukfall i rapporten enskilt diagnoskapitel diagram |
+|inloggad som | valt diagnoskapitel | år   | månad | grupp   | män? | kvinnor? |
+| user1       | C00-D48             | 2013 | feb   | C15-C26 | 2    | 1        |
+| user1       | C00-D48             | 2013 | feb   | C30-C39 | 3    | 0        |
+| user1       | C00-D48             | 2013 | feb   | C43-C44 | 0    | 3        |
+| user1       | C00-D48             | 2013 | feb   | C45-C49 | 2    | 1        |
+| user1       | C00-D48             | 2013 | feb   | C50-C50 | 2    | 1        |
+| user1       | C00-D48             | 2013 | feb   | C51-C58 | 1    | 2        |
+| user1       | C00-D48             | 2013 | feb   | Övriga  | 1    | 4        |
