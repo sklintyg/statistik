@@ -1,9 +1,11 @@
 !contents -R2 -g -p -f -h
 
-Testet visar att patienten hamnar i åldersgrupp efter ålder vid slut på sjukfall (även om det kan göra så att en högre ålder än den faktiska åldern visas). Efter diskussion i STATISTIK-889.
-
+Efter diskussion i STATISTIK-889.
 
 !3 Givet att:
+
+Ett sjukfall består av ett intyg. Patienten fyller år mellan dagens datum och slutdatum för sjukfall.
+
 | script | dagens datum | 2014-11-28 |
 
 | script | troskel varde | 1 |
@@ -12,16 +14,18 @@ Testet visar att patienten hamnar i åldersgrupp efter ålder vid slut på sjukf
 | personnr      | start      | slut       | enhet  | kommentar |
 | 19881201-0015 | 2014-10-01 | 2014-12-15 | enhet2 | |
 
-
 !3 Då gäller:
-Nationell nivå
+
+Sjukfallet hamnar i åldersgrupp efter patientens ålder vid sjukfallets slutdatum. Det innebär att en högre ålder än patientens ålder vid dagens datum kan visas.
+
+Nationell:
 | Sjukfall i rapporten aldersgrupp |
 | åldersgrupp | män? | kvinnor? |
 | 21-25 år    | 0    | 0        |
 | 26-30 år    | 1    | 0        |
 | 31-35 år    | 0    | 0        |
 
-Inloggad nivå
+Inloggad:
 | Sjukfall i rapporten aldersgrupp |
 | inloggad som | vårdgivarnivå | åldersgrupp | män? | kvinnor? |
 | user2        | false         | 21-25 år    | 0    | 0        |

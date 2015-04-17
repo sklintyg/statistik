@@ -1,8 +1,8 @@
 !contents -R2 -g -p -f -h
 
-Testar att tröskelvärdet appliceras per vårdgivare och grupp.
+!3 Givet att:
 
-F-kapitel valt.
+Följande sjukfall finns:
 
 vg1
 3 kvinnor, F40-diagnos
@@ -12,7 +12,8 @@ vg2
 1 kvinna, F40-diagnos
 4 män, F50-diagnos
 
-!3 Givet att:
+F-kapitlet är valt.
+
 | script | dagens datum | 2013-11-06 |
 
 | script | troskel varde | 3 |
@@ -31,6 +32,9 @@ vg2
 | 19790407-0010 | F50 | 2013-02-01 | 2013-02-14 | enhet3 |
 
 !3 Då gäller:
+
+Tröskelvärdet appliceras per vårdgivare, kön och diagnosavsnitt/kategori.
+
 Nationell:
 | Sjukfall i rapporten enskilt diagnoskapitel diagram |
 | valt diagnoskapitel | år   | månad | grupp   | män? | kvinnor? |

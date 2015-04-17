@@ -1,8 +1,9 @@
 !contents -R2 -g -p -f -h
 
-Testet visar att om det finns två intyg med exakt samma datum för samma patient, väljs sjukskrivningsgraden i intyget som står list i listan.
-
 !3 Givet att:
+
+Det finns två intyg med samma datum men olika arbetsförmåga för en patient.
+
 | script | dagens datum | 2014-11-28 |
 
 | script | troskel varde | 0 |
@@ -14,6 +15,7 @@ Testet visar att om det finns två intyg med exakt samma datum för samma patien
 
 !3 Då gäller:
 
+Sjukskrivningsgraden baseras på arbetsförmågan i intyget som står sist i listan.
 
 | Sjukfall i rapporten sjukskrivningsgrad |
 | inloggad som | år   | månad | sjukskrivningsgrad | män? | kvinnor? | kommentar |

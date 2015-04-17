@@ -1,6 +1,9 @@
 !contents -R2 -g -p -f -h
 
 !3 Givet att:
+
+Flera olika sjukfall med olika diagnoser.
+
 | script | dagens datum | 2013-11-06 |
 
 | Enbart foljande intyg finns |
@@ -10,8 +13,9 @@
 | 19790407-2210 | F41 | 2013-02-01 | 2013-02-14 | enhet1 |
 | 19790407-3210 | J01 | 2013-02-01 | 2013-02-14 | enhet1 |
 
-
 !3 Då gäller:
+
+Bara de sjukfall/delar av sjukfall vars diagnos matchar val i diagnosfiltret visas. Om val i diagnosfilter inte överlappar med valt diagnoskapitel visas inga sjukfall.
 
 | Sjukfall i rapporten enskilt diagnoskapitel |
 |inloggad som | filter enheter | filter verksamhetstyper | filter kapitel          | filter avsnitt | filter kategorier | valt diagnoskapitel | år   | månad | grupp   | män? | kvinnor? |

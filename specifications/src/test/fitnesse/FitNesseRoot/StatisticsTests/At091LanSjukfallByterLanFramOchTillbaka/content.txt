@@ -2,6 +2,9 @@
 
 !3 Givet att:
 
+Ett sjukfall byter vårdgivare och län fram och tillbaka mitt i fallet.
+Ett annat sjukfall har samma län hela fallet.
+
 | script | dagens datum | 2013-11-06 |
 
 | script | troskel varde | 1 |
@@ -14,6 +17,8 @@
 | 19790408-2285 | G01 | 2013-09-13 | 2013-11-12 | enhet1 | 14  |
 
 !3 Då gäller:
+
+Sjukfall som byter vårdgivare räknas som två separata sjukfall.
 
 Nationell:
 | Sjukfall i rapporten lan |
