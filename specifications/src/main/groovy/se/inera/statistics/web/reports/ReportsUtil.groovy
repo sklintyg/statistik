@@ -71,29 +71,39 @@ class ReportsUtil {
     }
 
     def getReportAntalIntygInloggad(filter) {
-        return post(getVerksamhetUrlPrefix() + "/getNumberOfCasesPerMonth", filter)
+        return get(getVerksamhetUrlPrefix() + "/getNumberOfCasesPerMonth", filter)
     }
 
     def getReportLangaSjukfallInloggad(filter) {
-        return post(getVerksamhetUrlPrefix() + "/getLongSickLeavesData", filter)
+        return get(getVerksamhetUrlPrefix() + "/getLongSickLeavesData", filter)
     }
 
     def getReportLangaSjukfallSomTvarsnittInloggad(FilterData filter) {
-        return post(getVerksamhetUrlPrefix() + "/getLongSickLeavesTvarsnitt", filter)
+        return get(getVerksamhetUrlPrefix() + "/getLongSickLeavesTvarsnitt", filter)
     }
 
     def getReportSjukfallPerEnhet(filter) {
-        return post(getVerksamhetUrlPrefix() + "/getNumberOfCasesPerEnhet", filter)
+        return get(getVerksamhetUrlPrefix() + "/getNumberOfCasesPerEnhet", filter)
     }
 
     def getReportEnskiltDiagnoskapitel(String kapitel) {
         return get("/api/getDiagnosavsnittstatistik/" + kapitel)
     }
 
-    private def get(String url) {
-        def response = statistik.get(path: url)
-        assert response.status == 200
-        return response.data;
+    private def get(String url, FilterData filter=FilterData.empty(), String queryString="") {
+        try {
+            def queryWithFilter = addFilterToQueryStringIfSet(filter, queryString)
+            def response = statistik.get(path: url, queryString : queryWithFilter)
+            assert response.status == 200
+            return response.data;
+        } catch (HttpResponseException e) {
+            if ('Service Unavailable' == e.message) {
+                println 'error = 503'
+                return []
+            } else {
+                throw e
+            }
+        }
     }
 
     private def post(String url, FilterData filter=FilterData.empty(), String queryString="", String bodyString="") {
@@ -128,19 +138,19 @@ class ReportsUtil {
     }
 
     def getReportEnskiltDiagnoskapitelInloggad(String kapitel, filter) {
-        return post(getVerksamhetUrlPrefix() + "/getDiagnosavsnittstatistik/" + kapitel, filter)
+        return get(getVerksamhetUrlPrefix() + "/getDiagnosavsnittstatistik/" + kapitel, filter)
     }
 
     def getReportEnskiltDiagnoskapitelSomTvarsnittInloggad(String kapitel, filter) {
-        return post(getVerksamhetUrlPrefix() + "/getDiagnosavsnittTvarsnitt/" + kapitel, filter)
+        return get(getVerksamhetUrlPrefix() + "/getDiagnosavsnittTvarsnitt/" + kapitel, filter)
     }
 
     def getReportDiagnosgruppInloggad(filter) {
-        return post(getVerksamhetUrlPrefix() + "/getDiagnoskapitelstatistik", filter)
+        return get(getVerksamhetUrlPrefix() + "/getDiagnoskapitelstatistik", filter)
     }
 
     def getReportDiagnosgruppSomTvarsnittInloggad(FilterData filter) {
-        return post(getVerksamhetUrlPrefix() + "/getDiagnosGruppTvarsnitt", filter)
+        return get(getVerksamhetUrlPrefix() + "/getDiagnosGruppTvarsnitt", filter)
     }
 
     def getReportDiagnosgrupp() {
@@ -229,11 +239,11 @@ class ReportsUtil {
     }
 
     def getReportAldersgruppInloggad(filter) {
-        return post(getVerksamhetUrlPrefix() + "/getAgeGroupsStatistics", filter)
+        return get(getVerksamhetUrlPrefix() + "/getAgeGroupsStatistics", filter)
     }
 
     def getReportAldersgruppSomTidsserieInloggad(FilterData filter) {
-        return post(getVerksamhetUrlPrefix() + "/getAgeGroupsStatisticsAsTimeSeries", filter)
+        return get(getVerksamhetUrlPrefix() + "/getAgeGroupsStatisticsAsTimeSeries", filter)
     }
 
     def getReportSjukskrivningslangd() {
@@ -241,23 +251,23 @@ class ReportsUtil {
     }
 
     def getReportSjukskrivningslangdInloggad(filter) {
-        return post(getVerksamhetUrlPrefix() + "/getSickLeaveLengthData", filter)
+        return get(getVerksamhetUrlPrefix() + "/getSickLeaveLengthData", filter)
     }
 
     def getReportAldersgruppPagaendeInloggad(filter) {
-        return post(getVerksamhetUrlPrefix() + "/getAgeGroupsCurrentStatistics", filter)
+        return get(getVerksamhetUrlPrefix() + "/getAgeGroupsCurrentStatistics", filter)
     }
 
     def getReportSjukskrivningslangdPagaendeInloggad(filter) {
-        return post(getVerksamhetUrlPrefix() + "/getSickLeaveLengthCurrentData", filter)
+        return get(getVerksamhetUrlPrefix() + "/getSickLeaveLengthCurrentData", filter)
     }
 
     def getReportSjukskrivningsgradInloggad(filter) {
-        return post(getVerksamhetUrlPrefix() + "/getDegreeOfSickLeaveStatistics", filter)
+        return get(getVerksamhetUrlPrefix() + "/getDegreeOfSickLeaveStatistics", filter)
     }
 
     def getReportSjukskrivningsgradSomTvarsnittInloggad(FilterData filter) {
-        return post(getVerksamhetUrlPrefix() + "/getDegreeOfSickLeaveTvarsnitt", filter)
+        return get(getVerksamhetUrlPrefix() + "/getDegreeOfSickLeaveTvarsnitt", filter)
     }
 
     def getReportSjukskrivningsgrad() {
@@ -265,19 +275,19 @@ class ReportsUtil {
     }
 
     def getReportLakareAlderOchKonInloggad(filter) {
-        return post(getVerksamhetUrlPrefix() + "/getCasesPerDoctorAgeAndGenderStatistics", filter)
+        return get(getVerksamhetUrlPrefix() + "/getCasesPerDoctorAgeAndGenderStatistics", filter)
     }
 
     def getReportLakarBefattningInloggad(filter) {
-        return post(getVerksamhetUrlPrefix() + "/getNumberOfCasesPerLakarbefattning", filter)
+        return get(getVerksamhetUrlPrefix() + "/getNumberOfCasesPerLakarbefattning", filter)
     }
 
     def getReportLakarBefattningSomTidsserieInloggad(filter) {
-        return post(getVerksamhetUrlPrefix() + "/getNumberOfCasesPerLakarbefattningSomTidsserie", filter)
+        return get(getVerksamhetUrlPrefix() + "/getNumberOfCasesPerLakarbefattningSomTidsserie", filter)
     }
 
     def getReportSjukfallPerLakareInloggad(filter) {
-        return post(getVerksamhetUrlPrefix() + "/getNumberOfCasesPerLakare", filter)
+        return get(getVerksamhetUrlPrefix() + "/getNumberOfCasesPerLakare", filter)
     }
 
     def getReportCasesPerSex() {
@@ -289,7 +299,7 @@ class ReportsUtil {
     }
 
     def getReportJamforDiagnoserInloggad(filter, String diagnosHash) {
-        return post(getVerksamhetUrlPrefix() + "/getJamforDiagnoserStatistik/" + diagnosHash, filter)
+        return get(getVerksamhetUrlPrefix() + "/getJamforDiagnoserStatistik/" + diagnosHash, filter)
     }
 
     String getFilterHash(enheter, verksamhetstyper, diagnoser) {
@@ -302,7 +312,7 @@ class ReportsUtil {
     }
 
     def getVerksamhetsoversikt(FilterData filter) {
-        return post(getVerksamhetUrlPrefix() + "/getOverview", filter)
+        return get(getVerksamhetUrlPrefix() + "/getOverview", filter)
     }
 
     private String getVerksamhetUrlPrefix() {
@@ -314,27 +324,27 @@ class ReportsUtil {
     }
 
     def getReportSjukfallPerEnhetSomTidsserieInloggad(FilterData filter) {
-        return post(getVerksamhetUrlPrefix() + "/getNumberOfCasesPerEnhetTimeSeries", filter)
+        return get(getVerksamhetUrlPrefix() + "/getNumberOfCasesPerEnhetTimeSeries", filter)
     }
 
     def getReportJamforDiagnoserSomTidsserieInloggad(FilterData filterData, String diagnosHash) {
-        return post(getVerksamhetUrlPrefix() + "/getJamforDiagnoserStatistikTidsserie/" + diagnosHash, filterData)
+        return get(getVerksamhetUrlPrefix() + "/getJamforDiagnoserStatistikTidsserie/" + diagnosHash, filterData)
     }
 
     def getReportSjukskrivningslangdSomTidsserieInloggad(FilterData filter) {
-        return post(getVerksamhetUrlPrefix() + "/getSickLeaveLengthTimeSeries", filter)
+        return get(getVerksamhetUrlPrefix() + "/getSickLeaveLengthTimeSeries", filter)
     }
 
     def getReportSjukfallPerLakareSomTidsserieInloggad(FilterData filter) {
-        return post(getVerksamhetUrlPrefix() + "/getSjukfallPerLakareSomTidsserie", filter)
+        return get(getVerksamhetUrlPrefix() + "/getSjukfallPerLakareSomTidsserie", filter)
     }
 
     def getReportLakareAlderOchKonSomTidsserieInloggad(FilterData filter) {
-        return post(getVerksamhetUrlPrefix() + "/getCasesPerDoctorAgeAndGenderTimeSeriesStatistics", filter)
+        return get(getVerksamhetUrlPrefix() + "/getCasesPerDoctorAgeAndGenderTimeSeriesStatistics", filter)
     }
 
     def getReportAntalIntygSomTvarsnittInloggad(FilterData filter) {
-        return post(getVerksamhetUrlPrefix() + "/getNumberOfCasesPerMonthTvarsnitt", filter)
+        return get(getVerksamhetUrlPrefix() + "/getNumberOfCasesPerMonthTvarsnitt", filter)
     }
 
 }

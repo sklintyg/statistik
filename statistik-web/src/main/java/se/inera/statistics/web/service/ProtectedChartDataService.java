@@ -47,12 +47,12 @@ import se.inera.statistics.service.warehouse.query.RangeNotFoundException;
 import se.inera.statistics.web.model.DualSexStatisticsData;
 import se.inera.statistics.web.model.LoginInfo;
 import se.inera.statistics.web.model.SimpleDetailsData;
+import se.inera.statistics.web.model.TableDataReport;
 import se.inera.statistics.web.model.Verksamhet;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
-import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -82,8 +82,8 @@ import java.util.Set;
 public class ProtectedChartDataService {
 
     private static final Logger LOG = LoggerFactory.getLogger(ProtectedChartDataService.class);
-    private static final String TEXT_UTF_8 = "text/plain; charset=UTF-8";
     public static final int YEAR = 12;
+    private static final String TEXT_CP1252 = ChartDataService.TEXT_CP1252;
 
     @Autowired
     private WarehouseService warehouse;
@@ -106,16 +106,23 @@ public class ProtectedChartDataService {
     /**
      * Gets sjukfall per manad for verksamhetId.
      */
-    @POST
-    @Path("getNumberOfCasesPerMonth")
+    @GET
+    @Path("getNumberOfCasesPerMonth{csv:(/csv)?}")
     @Produces({ MediaType.APPLICATION_JSON })
     @Consumes({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
-    public Response getNumberOfCasesPerMonth(@Context HttpServletRequest request, @QueryParam("filter") String filterHash) {
+    public Response getNumberOfCasesPerMonth(@Context HttpServletRequest request, @QueryParam("filter") String filterHash, @PathParam("csv") String csv) {
         LOG.info("Calling getNumberOfCasesPerMonth with filterHash: {}", filterHash);
         SimpleDetailsData result = getNumberOfCasesPerMonthData(request, filterHash);
-        return Response.ok(result).build();
+        return getResponse(result, csv);
+    }
+
+    private Response getResponse(TableDataReport result, String csv) {
+        if (csv == null || csv.isEmpty()) {
+            return Response.ok(result).build();
+        }
+        return CsvConverter.getCsvResponse(result.getTableData(), "export.csv");
     }
 
     private SimpleDetailsData getNumberOfCasesPerMonthData(HttpServletRequest request, String filterHash) {
@@ -126,31 +133,16 @@ public class ProtectedChartDataService {
         return new PeriodConverter().convert(casesPerMonth, range, filter);
     }
 
-    /**
-     * Gets sjukfall per manad for verksamhetId, csv formatted.
-     */
     @GET
-    @Path("getNumberOfCasesPerMonth/csv")
-    @Produces({ TEXT_UTF_8 })
-    @Consumes({ MediaType.APPLICATION_JSON })
-    @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
-    @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
-    public Response getNumberOfCasesPerMonthAsCsv(@Context HttpServletRequest request, @QueryParam("filter") String filterHash) {
-        LOG.info("Calling getNumberOfCasesPerMonthAsCsv with filterHash: {}", filterHash);
-        final SimpleDetailsData data = getNumberOfCasesPerMonthData(request, filterHash);
-        return CsvConverter.getCsvResponse(data.getTableData(), "export.csv");
-    }
-
-    @POST
-    @Path("getNumberOfCasesPerMonthTvarsnitt")
+    @Path("getNumberOfCasesPerMonthTvarsnitt{csv:(/csv)?}")
     @Produces({ MediaType.APPLICATION_JSON })
     @Consumes({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
-    public Response getNumberOfCasesPerMonthTvarsnitt(@Context HttpServletRequest request, @QueryParam("filter") String filterHash) {
+    public Response getNumberOfCasesPerMonthTvarsnitt(@Context HttpServletRequest request, @QueryParam("filter") String filterHash, @PathParam("csv") String csv) {
         LOG.info("Calling getNumberOfCasesPerMonthTvarsnitt with filterHash: {}", filterHash);
         SimpleDetailsData result = getNumberOfCasesPerMonthTvarsnittData(request, filterHash);
-        return Response.ok(result).build();
+        return getResponse(result, csv);
     }
 
     private SimpleDetailsData getNumberOfCasesPerMonthTvarsnittData(HttpServletRequest request, String filterHash) {
@@ -161,31 +153,19 @@ public class ProtectedChartDataService {
         return new TotalCasesPerMonthTvarsnittConverter().convert(casesPerMonth, range, filter);
     }
 
-    @GET
-    @Path("getNumberOfCasesPerMonthTvarsnitt/csv")
-    @Produces({ TEXT_UTF_8 })
-    @Consumes({ MediaType.APPLICATION_JSON })
-    @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
-    @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
-    public Response getNumberOfCasesPerMonthTvarsnittAsCsv(@Context HttpServletRequest request, @QueryParam("filter") String filterHash) {
-        LOG.info("Calling getNumberOfCasesPerMonthTvarsnittAsCsv with filterHash: {}", filterHash);
-        final SimpleDetailsData data = getNumberOfCasesPerMonthTvarsnittData(request, filterHash);
-        return CsvConverter.getCsvResponse(data.getTableData(), "export.csv");
-    }
-
     /**
      * Gets sjukfall per enhet for verksamhetId.
      */
-    @POST
-    @Path("getNumberOfCasesPerEnhet")
+    @GET
+    @Path("getNumberOfCasesPerEnhet{csv:(/csv)?}")
     @Produces({ MediaType.APPLICATION_JSON })
     @Consumes({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
-    public Response getNumberOfCasesPerEnhet(@Context HttpServletRequest request, @QueryParam("filter") String filterHash) {
+    public Response getNumberOfCasesPerEnhet(@Context HttpServletRequest request, @QueryParam("filter") String filterHash, @PathParam("csv") String csv) {
         LOG.info("Calling getNumberOfCasesPerEnhet with filterHash: {}", filterHash);
         SimpleDetailsData result = getNumberOfCasesPerEnhetData(request, filterHash);
-        return Response.ok(result).build();
+        return getResponse(result, csv);
     }
 
     private SimpleDetailsData getNumberOfCasesPerEnhetData(HttpServletRequest request, String filterHash) {
@@ -199,33 +179,18 @@ public class ProtectedChartDataService {
     }
 
     /**
-     * Gets sjukfall per enhet for verksamhetId, csv formatted.
-     */
-    @GET
-    @Path("getNumberOfCasesPerEnhet/csv")
-    @Produces({ TEXT_UTF_8 })
-    @Consumes({ MediaType.APPLICATION_JSON })
-    @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
-    @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
-    public Response getNumberOfCasesPerEnhetAsCsv(@Context HttpServletRequest request, @QueryParam("filter") String filterHash) {
-        LOG.info("Calling getNumberOfCasesPerEnhetAsCsv with filterHash: {}", filterHash);
-        final SimpleDetailsData data = getNumberOfCasesPerEnhetData(request, filterHash);
-        return CsvConverter.getCsvResponse(data.getTableData(), "export.csv");
-    }
-
-    /**
      * Gets sjukfall per enhet for verksamhetId i tidsserie.
      */
-    @POST
-    @Path("getNumberOfCasesPerEnhetTimeSeries")
+    @GET
+    @Path("getNumberOfCasesPerEnhetTimeSeries{csv:(/csv)?}")
     @Produces({ MediaType.APPLICATION_JSON })
     @Consumes({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
-    public Response getNumberOfCasesPerEnhetTimeSeries(@Context HttpServletRequest request, @QueryParam("filter") String filterHash) {
+    public Response getNumberOfCasesPerEnhetTimeSeries(@Context HttpServletRequest request, @QueryParam("filter") String filterHash, @PathParam("csv") String csv) {
         LOG.info("Calling getNumberOfCasesPerEnhetTimeSeries with filterHash: {}", filterHash);
         DualSexStatisticsData result = getNumberOfCasesPerEnhetDataTimeSeries(request, filterHash);
-        return Response.ok(result).build();
+        return getResponse(result, csv);
     }
 
     private DualSexStatisticsData getNumberOfCasesPerEnhetDataTimeSeries(HttpServletRequest request, String filterHash) {
@@ -257,16 +222,16 @@ public class ProtectedChartDataService {
     /**
      * Gets sjukfall per doctor for verksamhetId.
      */
-    @POST
-    @Path("getNumberOfCasesPerLakare")
+    @GET
+    @Path("getNumberOfCasesPerLakare{csv:(/csv)?}")
     @Produces({ MediaType.APPLICATION_JSON })
     @Consumes({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
-    public Response getNumberOfCasesPerLakare(@Context HttpServletRequest request, @QueryParam("filter") String filterHash) {
+    public Response getNumberOfCasesPerLakare(@Context HttpServletRequest request, @QueryParam("filter") String filterHash, @PathParam("csv") String csv) {
         LOG.info("Calling getNumberOfCasesPerLakare with filterHash: {}", filterHash);
         final SimpleDetailsData result = getNumberOfCasesPerLakareData(request, filterHash);
-        return Response.ok(result).build();
+        return getResponse(result, csv);
     }
 
     private SimpleDetailsData getNumberOfCasesPerLakareData(HttpServletRequest request, String filterHash) {
@@ -277,31 +242,16 @@ public class ProtectedChartDataService {
         return result;
     }
 
-    /**
-     * Gets sjukfall per doctor for verksamhetId. Csv formatted.
-     */
     @GET
-    @Path("getSjukfallPerLakareVerksamhet/csv")
-    @Produces({ TEXT_UTF_8 })
-    @Consumes({ MediaType.APPLICATION_JSON })
-    @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
-    @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
-    public Response getNumberOfCasesPerLakareAsCsv(@Context HttpServletRequest request, @QueryParam("filter") String filterHash) {
-        LOG.info("Calling getNumberOfCasesPerLakareAsCsv with filterHash: {}", filterHash);
-        final SimpleDetailsData data = getNumberOfCasesPerLakareData(request, filterHash);
-        return CsvConverter.getCsvResponse(data.getTableData(), "export.csv");
-    }
-
-    @POST
-    @Path("getSjukfallPerLakareSomTidsserie")
+    @Path("getSjukfallPerLakareSomTidsserie{csv:(/csv)?}")
     @Produces({ MediaType.APPLICATION_JSON })
     @Consumes({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
-    public Response getNumberOfCasesPerLakareSomTidsserie(@Context HttpServletRequest request, @QueryParam("filter") String filterHash) {
+    public Response getNumberOfCasesPerLakareSomTidsserie(@Context HttpServletRequest request, @QueryParam("filter") String filterHash, @PathParam("csv") String csv) {
         LOG.info("Calling getNumberOfCasesPerLakareSomTidsserie with filterHash: {}", filterHash);
         final DualSexStatisticsData result = getNumberOfCasesPerLakareSomTidsserieData(request, filterHash);
-        return Response.ok(result).build();
+        return getResponse(result, csv);
     }
 
     private DualSexStatisticsData getNumberOfCasesPerLakareSomTidsserieData(HttpServletRequest request, String filterHash) {
@@ -311,32 +261,20 @@ public class ProtectedChartDataService {
         return new SimpleMultiDualSexConverter().convert(casesPerLakare, range, filter);
     }
 
-    @GET
-    @Path("getSjukfallPerLakareSomTidsserie/csv")
-    @Produces({ TEXT_UTF_8 })
-    @Consumes({ MediaType.APPLICATION_JSON })
-    @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
-    @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
-    public Response getNumberOfCasesPerLakareSomTidsserieAsCsv(@Context HttpServletRequest request, @QueryParam("filter") String filterHash) {
-        LOG.info("Calling getNumberOfCasesPerLakareAsCsv with filterHash: {}", filterHash);
-        final DualSexStatisticsData data = getNumberOfCasesPerLakareSomTidsserieData(request, filterHash);
-        return CsvConverter.getCsvResponse(data.getTableData(), "export.csv");
-    }
-
     /**
      * Get sjukfall per diagnoskapitel and per diagnosgrupp. The chart data is grouped by diagnosgrupp,
      * the table data by diagnoskapitel. Diagnosgrupp is a diagnoskapitel or a list of diagnoskapitel.
      */
-    @POST
-    @Path("getDiagnoskapitelstatistik")
+    @GET
+    @Path("getDiagnoskapitelstatistik{csv:(/csv)?}")
     @Produces({ MediaType.APPLICATION_JSON })
     @Consumes({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
-    public Response getDiagnosisGroupStatistics(@Context HttpServletRequest request, @QueryParam("filter") String filterHash) {
+    public Response getDiagnosisGroupStatistics(@Context HttpServletRequest request, @QueryParam("filter") String filterHash, @PathParam("csv") String csv) {
         LOG.info("Calling getDiagnoskapitelstatistik with filterHash: {}", filterHash);
         DualSexStatisticsData result = getDiagnosisGroupStatisticsData(request, filterHash);
-        return Response.ok(result).build();
+        return getResponse(result, csv);
     }
 
     private DualSexStatisticsData getDiagnosisGroupStatisticsData(HttpServletRequest request, String filterHash) {
@@ -347,31 +285,16 @@ public class ProtectedChartDataService {
         return result;
     }
 
-    /**
-     * Get sjukfall per diagnoskapitel. Csv formatted.
-     */
     @GET
-    @Path("getDiagnoskapitelstatistik/csv")
-    @Produces({ TEXT_UTF_8 })
-    @Consumes({ MediaType.APPLICATION_JSON })
-    @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
-    @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
-    public Response getDiagnosisGroupStatisticsAsCsv(@Context HttpServletRequest request, @QueryParam("filter") String filterHash) {
-        LOG.info("Calling getDiagnoskapitelstatistikAsCsv with filterHash: {}", filterHash);
-        final DualSexStatisticsData data = getDiagnosisGroupStatisticsData(request, filterHash);
-        return CsvConverter.getCsvResponse(data.getTableData(), "export.csv");
-    }
-
-    @POST
-    @Path("getDiagnosGruppTvarsnitt")
+    @Path("getDiagnosGruppTvarsnitt{csv:(/csv)?}")
     @Produces({ MediaType.APPLICATION_JSON })
     @Consumes({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
-    public Response getDiagnosisGroupTvarsnitt(@Context HttpServletRequest request, @QueryParam("filter") String filterHash) {
+    public Response getDiagnosisGroupTvarsnitt(@Context HttpServletRequest request, @QueryParam("filter") String filterHash, @PathParam("csv") String csv) {
         LOG.info("Calling getDiagnosisGroupTvarsnitt with filterHash: {}", filterHash);
         SimpleDetailsData result = getDiagnosisGroupTvarsnittData(request, filterHash);
-        return Response.ok(result).build();
+        return getResponse(result, csv);
     }
 
     private SimpleDetailsData getDiagnosisGroupTvarsnittData(HttpServletRequest request, String filterHash) {
@@ -381,32 +304,20 @@ public class ProtectedChartDataService {
         return new DiagnosisGroupsTvarsnittConverter().convert(diagnosisGroups, range, filter);
     }
 
-    @GET
-    @Path("getDiagnosGruppTvarsnitt/csv")
-    @Produces({ TEXT_UTF_8 })
-    @Consumes({ MediaType.APPLICATION_JSON })
-    @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
-    @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
-    public Response getDiagnosisGroupTvarsnittAsCsv(@Context HttpServletRequest request, @QueryParam("filter") String filterHash) {
-        LOG.info("Calling getDiagnosisGroupTvarsnittAsCsv with filterHash: {}", filterHash);
-        final SimpleDetailsData data = getDiagnosisGroupTvarsnittData(request, filterHash);
-        return CsvConverter.getCsvResponse(data.getTableData(), "export.csv");
-    }
-
     /**
      * Get sjukfall per diagnosavsnitt for given diagnoskapitel.
      */
-    @POST
-    @Path("getDiagnosavsnittstatistik/{groupId}")
+    @GET
+    @Path("getDiagnosavsnittstatistik/{groupId}{csv:(/csv)?}")
     @Produces({ MediaType.APPLICATION_JSON })
     @Consumes({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
-    public Response getDiagnosisSubGroupStatistics(@Context HttpServletRequest request, @PathParam("groupId") String groupId, @QueryParam("filter") String filterHash) {
+    public Response getDiagnosisSubGroupStatistics(@Context HttpServletRequest request, @PathParam("groupId") String groupId, @QueryParam("filter") String filterHash, @PathParam("csv") String csv) {
         LOG.info("Calling getDiagnosavsnittstatistik with groupId: {} and filterHash: {}", groupId, filterHash);
         try {
             final DualSexStatisticsData data = getDiagnosisSubGroupStatisticsEntity(request, groupId, filterHash);
-            return Response.ok(data).build();
+            return getResponse(data, csv);
         } catch (RangeNotFoundException e) {
             return Response.serverError().entity(e.getMessage()).build();
         }
@@ -427,36 +338,17 @@ public class ProtectedChartDataService {
         return null;
     }
 
-    /**
-     * Get sjukfall per diagnosavsnitt for given diagnoskapitel. Csv formatted.
-     */
     @GET
-    @Path("getDiagnosavsnittstatistik/{groupId}/csv")
-    @Produces({ TEXT_UTF_8 })
-    @Consumes({ MediaType.APPLICATION_JSON })
-    @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
-    @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
-    public Response getDiagnosisSubGroupStatisticsAsCsv(@Context HttpServletRequest request, @PathParam("groupId") String groupId, @QueryParam("filter") String filterHash) {
-        LOG.info("Calling getDiagnosavsnittstatistikAsCsv with groupId: {} and filterHash: {}", groupId, filterHash);
-        try {
-            final DualSexStatisticsData data = getDiagnosisSubGroupStatisticsEntity(request, groupId, filterHash);
-            return CsvConverter.getCsvResponse(data.getTableData(), "export.csv");
-        } catch (RangeNotFoundException e) {
-            return Response.serverError().entity(e.getMessage()).build();
-        }
-    }
-
-    @POST
-    @Path("getDiagnosavsnittTvarsnitt/{groupId}")
+    @Path("getDiagnosavsnittTvarsnitt/{groupId}{csv:(/csv)?}")
     @Produces({ MediaType.APPLICATION_JSON })
     @Consumes({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
-    public Response getDiagnosisSubGroupTvarsnitt(@Context HttpServletRequest request, @PathParam("groupId") String groupId, @QueryParam("filter") String filterHash) {
+    public Response getDiagnosisSubGroupTvarsnitt(@Context HttpServletRequest request, @PathParam("groupId") String groupId, @QueryParam("filter") String filterHash, @PathParam("csv") String csv) {
         LOG.info("Calling getDiagnosavsnittTvarsnitt with groupId: {} and filterHash: {}", groupId, filterHash);
         try {
             final SimpleDetailsData data = getDiagnosisSubGroupTvarsnittEntity(request, groupId, filterHash);
-            return Response.ok(data).build();
+            return getResponse(data, csv);
         } catch (RangeNotFoundException e) {
             return Response.serverError().entity(e.getMessage()).build();
         }
@@ -471,30 +363,14 @@ public class ProtectedChartDataService {
     }
 
     @GET
-    @Path("getDiagnosavsnittTvarsnitt/{groupId}/csv")
-    @Produces({ TEXT_UTF_8 })
-    @Consumes({ MediaType.APPLICATION_JSON })
-    @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
-    @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
-    public Response getDiagnosisSubGroupTvarsnittAsCsv(@Context HttpServletRequest request, @PathParam("groupId") String groupId, @QueryParam("filter") String filterHash) {
-        LOG.info("Calling getDiagnosavsnittTvarsnittAsCsv with groupId: {} and filterHash: {}", groupId, filterHash);
-        try {
-            final SimpleDetailsData data = getDiagnosisSubGroupTvarsnittEntity(request, groupId, filterHash);
-            return CsvConverter.getCsvResponse(data.getTableData(), "export.csv");
-        } catch (RangeNotFoundException e) {
-            return Response.serverError().entity(e.getMessage()).build();
-        }
-    }
-
-    @POST
-    @Path("getJamforDiagnoserStatistik/{diagnosHash}")
+    @Path("getJamforDiagnoserStatistik/{diagnosHash}{csv:(/csv)?}")
     @Produces({ MediaType.APPLICATION_JSON })
     @Consumes({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
-    public Response getCompareDiagnosisStatistics(@Context HttpServletRequest request, @PathParam("diagnosHash") String diagnosisHash, @QueryParam("filter") String filterHash) {
+    public Response getCompareDiagnosisStatistics(@Context HttpServletRequest request, @PathParam("diagnosHash") String diagnosisHash, @QueryParam("filter") String filterHash, @PathParam("csv") String csv) {
         SimpleDetailsData data = getCompareDiagnosisStatisticsData(request, diagnosisHash, filterHash);
-        return Response.ok(data).build();
+        return getResponse(data, csv);
     }
 
     private SimpleDetailsData getCompareDiagnosisStatisticsData(HttpServletRequest request, String diagnosisHash, String filterHash) {
@@ -509,18 +385,6 @@ public class ProtectedChartDataService {
         return result;
     }
 
-    @GET
-    @Path("getJamforDiagnoserStatistik/{diagnosHash}/csv")
-    @Produces({ TEXT_UTF_8 })
-    @Consumes({ MediaType.APPLICATION_JSON })
-    @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
-    @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
-    public Response getCompareDiagnosisStatisticsAsCsv(@Context HttpServletRequest request, @QueryParam("filter") String filterHash, @PathParam("diagnosHash") String diagnosisHash) {
-        LOG.info("Calling getCompareDiagnosisStatisticsAsCsv with filterHash: {}", filterHash);
-        final SimpleDetailsData data = getCompareDiagnosisStatisticsData(request, diagnosisHash, filterHash);
-        return CsvConverter.getCsvResponse(data.getTableData(), "export.csv");
-    }
-
     private String getCompareDiagnosisMessage(Filter filter, List<String> diagnosis) {
         if (resultMessageHandler.isDxFilterDisableAllSelectedDxs(diagnosis, filter.getDiagnoser())) {
             return "Du har gjort ett val av diagnos som inte matchar det val du gjort i diagnosfilter (se Visa filter högst upp på sidan).";
@@ -528,15 +392,15 @@ public class ProtectedChartDataService {
         return null;
     }
 
-    @POST
-    @Path("getJamforDiagnoserStatistikTidsserie/{diagnosHash}")
+    @GET
+    @Path("getJamforDiagnoserStatistikTidsserie/{diagnosHash}{csv:(/csv)?}")
     @Produces({ MediaType.APPLICATION_JSON })
     @Consumes({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
-    public Response getCompareDiagnosisStatisticsTimeSeries(@Context HttpServletRequest request, @PathParam("diagnosHash") String diagnosisHash, @QueryParam("filter") String filterHash) {
+    public Response getCompareDiagnosisStatisticsTimeSeries(@Context HttpServletRequest request, @PathParam("diagnosHash") String diagnosisHash, @QueryParam("filter") String filterHash, @PathParam("csv") String csv) {
         DualSexStatisticsData data = getCompareDiagnosisStatisticsDataTimeSeries(request, diagnosisHash, filterHash);
-        return Response.ok(data).build();
+        return getResponse(data, csv);
     }
 
     private DualSexStatisticsData getCompareDiagnosisStatisticsDataTimeSeries(HttpServletRequest request, String diagnosisHash, String filterHash) {
@@ -551,23 +415,11 @@ public class ProtectedChartDataService {
         return result;
     }
 
-    @GET
-    @Path("getJamforDiagnoserStatistikTidsserie/{diagnosHash}/csv")
-    @Produces({ TEXT_UTF_8 })
-    @Consumes({ MediaType.APPLICATION_JSON })
-    @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
-    @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
-    public Response getCompareDiagnosisStatisticsTimeSeriesAsCsv(@Context HttpServletRequest request, @QueryParam("filter") String filterHash, @PathParam("diagnosHash") String diagnosisHash) {
-        LOG.info("Calling getCompareDiagnosisStatisticsTimeSeriesAsCsv with filterHash: {}", filterHash);
-        final DualSexStatisticsData data = getCompareDiagnosisStatisticsDataTimeSeries(request, diagnosisHash, filterHash);
-        return CsvConverter.getCsvResponse(data.getTableData(), "export.csv");
-    }
-
     /**
      * Get overview. Includes total n:o of sjukfall, sex distribution, top lists for diagnosgrupp, aldersgrupp, sjukskrivningslangd,
      * sjukskrivningsgrad. Only chart formatted data.
      */
-    @POST
+    @GET
     @Path("getOverview")
     @Produces({ MediaType.APPLICATION_JSON })
     @Consumes({ MediaType.APPLICATION_JSON })
@@ -584,15 +436,15 @@ public class ProtectedChartDataService {
     /**
      * Get sjukfall grouped by age and sex.
      */
-    @POST
-    @Path("getAgeGroupsStatistics")
+    @GET
+    @Path("getAgeGroupsStatistics{csv:(/csv)?}")
     @Produces({ MediaType.APPLICATION_JSON })
     @Consumes({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
-    public Response getAgeGroupsStatistics(@Context HttpServletRequest request, @QueryParam("filter") String filterHash) {
+    public Response getAgeGroupsStatistics(@Context HttpServletRequest request, @QueryParam("filter") String filterHash, @PathParam("csv") String csv) {
         SimpleDetailsData data = getAgeGroupsStatisticsData(request, filterHash);
-        return Response.ok(data).build();
+        return getResponse(data, csv);
     }
 
     private SimpleDetailsData getAgeGroupsStatisticsData(HttpServletRequest request, String filterHash) {
@@ -604,30 +456,15 @@ public class ProtectedChartDataService {
             return result;
     }
 
-    /**
-     * Get sjukfall grouped by age and sex. Csv formatted.
-     */
     @GET
-    @Path("getAgeGroupsStatistics/csv")
-    @Produces({ TEXT_UTF_8 })
-    @Consumes({ MediaType.APPLICATION_JSON })
-    @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
-    @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
-    public Response getAgeGroupsStatisticsAsCsv(@Context HttpServletRequest request, @QueryParam("filter") String filterHash) {
-        LOG.info("Calling getAgeGroupsStatisticsAsCsv with filterHash: {}", filterHash);
-        final SimpleDetailsData simpleDetailsData = getAgeGroupsStatisticsData(request, filterHash);
-        return CsvConverter.getCsvResponse(simpleDetailsData.getTableData(), "export.csv");
-    }
-
-    @POST
-    @Path("getAgeGroupsStatisticsAsTimeSeries")
+    @Path("getAgeGroupsStatisticsAsTimeSeries{csv:(/csv)?}")
     @Produces({ MediaType.APPLICATION_JSON })
     @Consumes({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
-    public Response getAgeGroupsStatisticsAsTimeSeries(@Context HttpServletRequest request, @QueryParam("filter") String filterHash) {
+    public Response getAgeGroupsStatisticsAsTimeSeries(@Context HttpServletRequest request, @QueryParam("filter") String filterHash, @PathParam("csv") String csv) {
         DualSexStatisticsData data = getAgeGroupsStatisticsAsTimeSeriesData(request, filterHash);
-        return Response.ok(data).build();
+        return getResponse(data, csv);
     }
 
     private DualSexStatisticsData getAgeGroupsStatisticsAsTimeSeriesData(HttpServletRequest request, String filterHash) {
@@ -639,32 +476,17 @@ public class ProtectedChartDataService {
     }
 
     /**
-     * Get sjukfalls csv formatted.
-     */
-    @GET
-    @Path("getAgeGroupsStatisticsAsTimeSeries/csv")
-    @Produces({ TEXT_UTF_8 })
-    @Consumes({ MediaType.APPLICATION_JSON })
-    @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
-    @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
-    public Response getAgeGroupsStatisticsAsTimeSeriesAsCsv(@Context HttpServletRequest request, @QueryParam("filter") String filterHash) {
-        LOG.info("Calling getAgeGroupsStatisticsAsTimeSeriesAsCsv with filterHash: {}", filterHash);
-        final DualSexStatisticsData simpleDetailsData = getAgeGroupsStatisticsAsTimeSeriesData(request, filterHash);
-        return CsvConverter.getCsvResponse(simpleDetailsData.getTableData(), "export.csv");
-    }
-
-    /**
      * Get sjukfall grouped by age and sex of the doctor.
      */
-    @POST
-    @Path("getCasesPerDoctorAgeAndGenderStatistics")
+    @GET
+    @Path("getCasesPerDoctorAgeAndGenderStatistics{csv:(/csv)?}")
     @Produces({MediaType.APPLICATION_JSON })
     @Consumes({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
-    public Response getCasesPerDoctorAgeAndGenderStatistics(@Context HttpServletRequest request, @QueryParam("filter") String filterHash) {
+    public Response getCasesPerDoctorAgeAndGenderStatistics(@Context HttpServletRequest request, @QueryParam("filter") String filterHash, @PathParam("csv") String csv) {
         SimpleDetailsData data = getCasesPerDoctorAgeAndGenderStatisticsData(request, filterHash);
-        return Response.ok(data).build();
+        return getResponse(data, csv);
     }
 
     private SimpleDetailsData getCasesPerDoctorAgeAndGenderStatisticsData(HttpServletRequest request, String filterHash) {
@@ -676,30 +498,15 @@ public class ProtectedChartDataService {
         return result;
     }
 
-    /**
-     * Get sjukfall grouped by age and sex of the doctor. Csv formatted.
-     */
     @GET
-    @Path("getCasesPerDoctorAgeAndGenderStatistics/csv")
-    @Produces({ TEXT_UTF_8 })
-    @Consumes({ MediaType.APPLICATION_JSON })
-    @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
-    @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
-    public Response getCasesPerDoctorAgeAndGenderStatisticsAsCsv(@Context HttpServletRequest request, @QueryParam("filter") String filterHash) {
-        LOG.info("Calling getCasesPerDoctorAgeAndGenderStatisticsAsCsv with filterHash: {}", filterHash);
-        final SimpleDetailsData simpleDetailsData = getCasesPerDoctorAgeAndGenderStatisticsData(request, filterHash);
-        return CsvConverter.getCsvResponse(simpleDetailsData.getTableData(), "export.csv");
-    }
-
-    @POST
-    @Path("getCasesPerDoctorAgeAndGenderTimeSeriesStatistics")
+    @Path("getCasesPerDoctorAgeAndGenderTimeSeriesStatistics{csv:(/csv)?}")
     @Produces({MediaType.APPLICATION_JSON })
     @Consumes({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
-    public Response getCasesPerDoctorAgeAndGenderTimeSeriesStatistics(@Context HttpServletRequest request, @QueryParam("filter") String filterHash) {
+    public Response getCasesPerDoctorAgeAndGenderTimeSeriesStatistics(@Context HttpServletRequest request, @QueryParam("filter") String filterHash, @PathParam("csv") String csv) {
         DualSexStatisticsData data = getCasesPerDoctorAgeAndGenderTimeSeriesStatisticsData(request, filterHash);
-        return Response.ok(data).build();
+        return getResponse(data, csv);
     }
 
     private DualSexStatisticsData getCasesPerDoctorAgeAndGenderTimeSeriesStatisticsData(HttpServletRequest request, String filterHash) {
@@ -710,30 +517,18 @@ public class ProtectedChartDataService {
         return new SimpleMultiDualSexConverter().convert(ageGroups, range, filter);
     }
 
-    @GET
-    @Path("getCasesPerDoctorAgeAndGenderTimeSeriesStatistics/csv")
-    @Produces({ TEXT_UTF_8 })
-    @Consumes({ MediaType.APPLICATION_JSON })
-    @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
-    @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
-    public Response getCasesPerDoctorAgeAndGenderTimeSeriesStatisticsAsCsv(@Context HttpServletRequest request, @QueryParam("filter") String filterHash) {
-        LOG.info("Calling getCasesPerDoctorAgeAndGenderTimeSeriesStatisticsAsCsv with filterHash: {}", filterHash);
-        final DualSexStatisticsData simpleDetailsData = getCasesPerDoctorAgeAndGenderTimeSeriesStatisticsData(request, filterHash);
-        return CsvConverter.getCsvResponse(simpleDetailsData.getTableData(), "export.csv");
-    }
-
     /**
      * Get sjukfall grouped by doctor grade.
      */
-    @POST
-    @Path("getNumberOfCasesPerLakarbefattning")
+    @GET
+    @Path("getNumberOfCasesPerLakarbefattning{csv:(/csv)?}")
     @Produces({MediaType.APPLICATION_JSON })
     @Consumes({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
-    public Response getNumberOfCasesPerLakarbefattning(@Context HttpServletRequest request, @QueryParam("filter") String filterHash) {
+    public Response getNumberOfCasesPerLakarbefattning(@Context HttpServletRequest request, @QueryParam("filter") String filterHash, @PathParam("csv") String csv) {
         SimpleDetailsData data = getNumberOfCasesPerLakarbefattningData(request, filterHash);
-        return Response.ok(data).build();
+        return getResponse(data, csv);
     }
 
     private SimpleDetailsData getNumberOfCasesPerLakarbefattningData(HttpServletRequest request, String filterHash) {
@@ -745,30 +540,15 @@ public class ProtectedChartDataService {
         return result;
     }
 
-    /**
-     * Get sjukfall grouped by doctor grade. Csv formatted.
-     */
     @GET
-    @Path("getNumberOfCasesPerLakarbefattning/csv")
-    @Produces({ TEXT_UTF_8 })
-    @Consumes({ MediaType.APPLICATION_JSON })
-    @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
-    @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
-    public Response getNumberOfCasesPerLakarbefattningAsCsv(@Context HttpServletRequest request, @QueryParam("filter") String filterHash) {
-        LOG.info("Calling getNumberOfCasesPerLakarbefattningAsCsv with filterHash: {}", filterHash);
-        final SimpleDetailsData simpleDetailsData = getNumberOfCasesPerLakarbefattningData(request, filterHash);
-        return CsvConverter.getCsvResponse(simpleDetailsData.getTableData(), "export.csv");
-    }
-
-    @POST
-    @Path("getNumberOfCasesPerLakarbefattningSomTidsserie")
+    @Path("getNumberOfCasesPerLakarbefattningSomTidsserie{csv:(/csv)?}")
     @Produces({MediaType.APPLICATION_JSON })
     @Consumes({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
-    public Response getNumberOfCasesPerLakarbefattningSomTidsserie(@Context HttpServletRequest request, @QueryParam("filter") String filterHash) {
+    public Response getNumberOfCasesPerLakarbefattningSomTidsserie(@Context HttpServletRequest request, @QueryParam("filter") String filterHash, @PathParam("csv") String csv) {
         DualSexStatisticsData data = getNumberOfCasesPerLakarbefattningSomTidsserieData(request, filterHash);
-        return Response.ok(data).build();
+        return getResponse(data, csv);
     }
 
     private DualSexStatisticsData getNumberOfCasesPerLakarbefattningSomTidsserieData(HttpServletRequest request, String filterHash) {
@@ -780,30 +560,18 @@ public class ProtectedChartDataService {
         return result;
     }
 
-    @GET
-    @Path("getNumberOfCasesPerLakarbefattningSomTidsserie/csv")
-    @Produces({ TEXT_UTF_8 })
-    @Consumes({ MediaType.APPLICATION_JSON })
-    @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
-    @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
-    public Response getNumberOfCasesPerLakarbefattningSomTidsserieAsCsv(@Context HttpServletRequest request, @QueryParam("filter") String filterHash) {
-        LOG.info("Calling getNumberOfCasesPerLakarbefattningSomTidsserieAsCsv with filterHash: {}", filterHash);
-        final DualSexStatisticsData simpleDetailsData = getNumberOfCasesPerLakarbefattningSomTidsserieData(request, filterHash);
-        return CsvConverter.getCsvResponse(simpleDetailsData.getTableData(), "export.csv");
-    }
-
     /**
      * Get ongoing sjukfall grouped by age and sex.
      */
-    @POST
-    @Path("getAgeGroupsCurrentStatistics")
+    @GET
+    @Path("getAgeGroupsCurrentStatistics{csv:(/csv)?}")
     @Produces({ MediaType.APPLICATION_JSON })
     @Consumes({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
-    public Response getAgeGroupsCurrentStatistics(@Context HttpServletRequest request, @QueryParam("filter") String filterHash) {
+    public Response getAgeGroupsCurrentStatistics(@Context HttpServletRequest request, @QueryParam("filter") String filterHash, @PathParam("csv") String csv) {
         SimpleDetailsData data = getAgeGroupsCurrentStatisticsData(request, filterHash);
-        return Response.ok(data).build();
+        return getResponse(data, csv);
     }
 
     private SimpleDetailsData getAgeGroupsCurrentStatisticsData(HttpServletRequest request, String filterHash) {
@@ -818,32 +586,17 @@ public class ProtectedChartDataService {
     }
 
     /**
-     * Get ongoing sjukfall grouped by age and sex. Csv formatted.
-     */
-    @GET
-    @Path("getAgeGroupsCurrentStatistics/csv")
-    @Produces({ TEXT_UTF_8 })
-    @Consumes({ MediaType.APPLICATION_JSON })
-    @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
-    @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
-    public Response getAgeGroupsCurrentStatisticsAsCsv(@Context HttpServletRequest request, @QueryParam("filter") String filterHash) {
-        LOG.info("Calling getAgeGroupsCurrentStatisticsAsCsv with filterHash: {}", filterHash);
-        final SimpleDetailsData simpleDetailsData = getAgeGroupsCurrentStatisticsData(request, filterHash);
-        return CsvConverter.getCsvResponse(simpleDetailsData.getTableData(), "export.csv");
-    }
-
-    /**
      * Get sjukskrivningsgrad per calendar month.
      */
-    @POST
-    @Path("getDegreeOfSickLeaveStatistics")
+    @GET
+    @Path("getDegreeOfSickLeaveStatistics{csv:(/csv)?}")
     @Produces({ MediaType.APPLICATION_JSON })
     @Consumes({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
-    public Response getDegreeOfSickLeaveStatistics(@Context HttpServletRequest request, @QueryParam("filter") String filterHash) {
+    public Response getDegreeOfSickLeaveStatistics(@Context HttpServletRequest request, @QueryParam("filter") String filterHash, @PathParam("csv") String csv) {
         DualSexStatisticsData data = getDegreeOfSickLeaveStatisticsData(request, filterHash);
-        return Response.ok(data).build();
+        return getResponse(data, csv);
     }
 
     private DualSexStatisticsData getDegreeOfSickLeaveStatisticsData(HttpServletRequest request, String filterHash) {
@@ -855,30 +608,15 @@ public class ProtectedChartDataService {
         return result;
     }
 
-    /**
-     * Get sjukskrivningsgrad per calendar month. Csv formatted.
-     */
     @GET
-    @Path("getDegreeOfSickLeaveStatistics/csv")
-    @Produces({ TEXT_UTF_8 })
-    @Consumes({ MediaType.APPLICATION_JSON })
-    @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
-    @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
-    public Response getDegreeOfSickLeaveStatisticsAsCsv(@Context HttpServletRequest request, @QueryParam("filter") String filterHash) {
-        LOG.info("Calling getDegreeOfSickLeaveStatisticsAsCsv with filterhash: {}", filterHash);
-        final DualSexStatisticsData simpleDetailsData = getDegreeOfSickLeaveStatisticsData(request, filterHash);
-        return CsvConverter.getCsvResponse(simpleDetailsData.getTableData(), "export.csv");
-    }
-
-    @POST
-    @Path("getDegreeOfSickLeaveTvarsnitt")
+    @Path("getDegreeOfSickLeaveTvarsnitt{csv:(/csv)?}")
     @Produces({ MediaType.APPLICATION_JSON })
     @Consumes({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
-    public Response getDegreeOfSickLeaveTvarsnitt(@Context HttpServletRequest request, @QueryParam("filter") String filterHash) {
+    public Response getDegreeOfSickLeaveTvarsnitt(@Context HttpServletRequest request, @QueryParam("filter") String filterHash, @PathParam("csv") String csv) {
         SimpleDetailsData data = getDegreeOfSickLeaveTvarsnittData(request, filterHash);
-        return Response.ok(data).build();
+        return getResponse(data, csv);
     }
 
     private SimpleDetailsData getDegreeOfSickLeaveTvarsnittData(HttpServletRequest request, String filterHash) {
@@ -889,30 +627,18 @@ public class ProtectedChartDataService {
         return new SimpleDualSexConverter("", false, "Antal sjukfall med %1$s%% sjukskrivningsgrad").convert(degreeOfSickLeaveStatistics, range, filter);
     }
 
-    @GET
-    @Path("getDegreeOfSickLeaveTvarsnitt/csv")
-    @Produces({ TEXT_UTF_8 })
-    @Consumes({ MediaType.APPLICATION_JSON })
-    @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
-    @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
-    public Response getDegreeOfSickLeaveTvarsnittAsCsv(@Context HttpServletRequest request, @QueryParam("filter") String filterHash) {
-        LOG.info("Calling getDegreeOfSickLeaveTvarsnittAsCsv with filterhash: {}", filterHash);
-        final SimpleDetailsData simpleDetailsData = getDegreeOfSickLeaveTvarsnittData(request, filterHash);
-        return CsvConverter.getCsvResponse(simpleDetailsData.getTableData(), "export.csv");
-    }
-
     /**
      * Get sjukfallslangd (grouped).
      */
-    @POST
-    @Path("getSickLeaveLengthData")
+    @GET
+    @Path("getSickLeaveLengthData{csv:(/csv)?}")
     @Produces({ MediaType.APPLICATION_JSON })
     @Consumes({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
-    public Response getSickLeaveLength(@Context HttpServletRequest request, @QueryParam("filter") String filterHash) {
+    public Response getSickLeaveLength(@Context HttpServletRequest request, @QueryParam("filter") String filterHash, @PathParam("csv") String csv) {
         SimpleDetailsData data = getSickLeaveLengthData(request, filterHash);
-        return Response.ok(data).build();
+        return getResponse(data, csv);
     }
 
     private SimpleDetailsData getSickLeaveLengthData(HttpServletRequest request, String filterHash) {
@@ -923,30 +649,15 @@ public class ProtectedChartDataService {
         return new SickLeaveLengthConverter().convert(sickLeaveLength, range, filter);
     }
 
-    /**
-     * Get sjukfallslangd (grouped). Csv formatted.
-     */
     @GET
-    @Path("getSickLeaveLengthData/csv")
-    @Produces({ TEXT_UTF_8 })
-    @Consumes({ MediaType.APPLICATION_JSON })
-    @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
-    @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
-    public Response getSickLeaveLengthDataAsCsv(@Context HttpServletRequest request, @QueryParam("filter") String filterHash) {
-        LOG.info("Calling getSickLeaveLengthDataAsCsv with filterHash: {}", filterHash);
-        final SimpleDetailsData simpleDetailsData = getSickLeaveLengthData(request, filterHash);
-        return CsvConverter.getCsvResponse(simpleDetailsData.getTableData(), "export.csv");
-    }
-
-    @POST
-    @Path("getSickLeaveLengthTimeSeries")
+    @Path("getSickLeaveLengthTimeSeries{csv:(/csv)?}")
     @Produces({ MediaType.APPLICATION_JSON })
     @Consumes({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
-    public Response getSickLeaveLengthTimeSeries(@Context HttpServletRequest request, @QueryParam("filter") String filterHash) {
+    public Response getSickLeaveLengthTimeSeries(@Context HttpServletRequest request, @QueryParam("filter") String filterHash, @PathParam("csv") String csv) {
         DualSexStatisticsData data = getSickLeaveLengthTimeSeriesData(request, filterHash);
-        return Response.ok(data).build();
+        return getResponse(data, csv);
     }
 
     private DualSexStatisticsData getSickLeaveLengthTimeSeriesData(HttpServletRequest request, String filterHash) {
@@ -958,30 +669,18 @@ public class ProtectedChartDataService {
         return result;
     }
 
-    @GET
-    @Path("getSickLeaveLengthTimeSeries/csv")
-    @Produces({ TEXT_UTF_8 })
-    @Consumes({ MediaType.APPLICATION_JSON })
-    @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
-    @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
-    public Response getSickLeaveLengthTimeSeriesAsCsv(@Context HttpServletRequest request, @QueryParam("filter") String filterHash) {
-        LOG.info("Calling getSickLeaveLengthTimeSeriesAsCsv with filterHash: {}", filterHash);
-        final DualSexStatisticsData simpleDetailsData = getSickLeaveLengthTimeSeriesData(request, filterHash);
-        return CsvConverter.getCsvResponse(simpleDetailsData.getTableData(), "export.csv");
-    }
-
     /**
      * Get sjukfallslangd (grouped) for current month.
      */
-    @POST
-    @Path("getSickLeaveLengthCurrentData")
+    @GET
+    @Path("getSickLeaveLengthCurrentData{csv:(/csv)?}")
     @Produces({ MediaType.APPLICATION_JSON })
     @Consumes({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
-    public Response getSickLeaveLengthCurrentData(@Context HttpServletRequest request, @QueryParam("filter") String filterHash) {
+    public Response getSickLeaveLengthCurrentData(@Context HttpServletRequest request, @QueryParam("filter") String filterHash, @PathParam("csv") String csv) {
         SimpleDetailsData data = getSickLeaveLengthCurrentDataData(request, filterHash);
-        return Response.ok(data).build();
+        return getResponse(data, csv);
     }
 
     private SimpleDetailsData getSickLeaveLengthCurrentDataData(HttpServletRequest request, String filterHash) {
@@ -995,32 +694,17 @@ public class ProtectedChartDataService {
     }
 
     /**
-     * Get sjukfallslangd (grouped) for current month. Csv formatted.
-     */
-    @GET
-    @Path("getSickLeaveLengthCurrentData/csv")
-    @Produces({ TEXT_UTF_8 })
-    @Consumes({ MediaType.APPLICATION_JSON })
-    @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
-    @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
-    public Response getSickLeaveLengthCurrentDataAsCsv(@Context HttpServletRequest request, @QueryParam("filter") String filterHash) {
-        LOG.info("Calling getSickLeaveLengthCurrentDataAsCsv with filterHash: {}", filterHash);
-        final SimpleDetailsData data = getSickLeaveLengthCurrentDataData(request, filterHash);
-        return CsvConverter.getCsvResponse(data.getTableData(), "export.csv");
-    }
-
-    /**
      * Gets sjukfallslangd, grouped by sex, long / not long sjukfall.
      */
-    @POST
-    @Path("getLongSickLeavesData")
+    @GET
+    @Path("getLongSickLeavesData{csv:(/csv)?}")
     @Produces({ MediaType.APPLICATION_JSON })
     @Consumes({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
-    public Response getLongSickLeavesData(@Context HttpServletRequest request, @QueryParam("filter") String filterHash) {
+    public Response getLongSickLeavesData(@Context HttpServletRequest request, @QueryParam("filter") String filterHash, @PathParam("csv") String csv) {
         SimpleDetailsData data = getLongSickLeavesDataData(request, filterHash);
-        return Response.ok(data).build();
+        return getResponse(data, csv);
     }
 
     private SimpleDetailsData getLongSickLeavesDataData(HttpServletRequest request, String filterHash) {
@@ -1031,30 +715,15 @@ public class ProtectedChartDataService {
         return new PeriodConverter().convert(longSickLeaves, range, filter);
     }
 
-    /**
-     * Gets sjukfallslangd, grouped by sex, long / not long sjukfall. Csv formatted
-     */
     @GET
-    @Path("getLongSickLeavesData/csv")
-    @Produces({ TEXT_UTF_8 })
-    @Consumes({ MediaType.APPLICATION_JSON })
-    @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
-    @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
-    public Response getLongSickLeavesDataAsCsv(@Context HttpServletRequest request, @QueryParam("filter") String filterHash) {
-        LOG.info("Calling getLongSickLeavesDataAsCsv with filterHash: {}", filterHash);
-        final SimpleDetailsData data = getLongSickLeavesDataData(request, filterHash);
-        return CsvConverter.getCsvResponse(data.getTableData(), "export.csv");
-    }
-
-    @POST
-    @Path("getLongSickLeavesTvarsnitt")
+    @Path("getLongSickLeavesTvarsnitt{csv:(/csv)?}")
     @Produces({ MediaType.APPLICATION_JSON })
     @Consumes({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
-    public Response getLongSickLeavesTvarsnitt(@Context HttpServletRequest request, @QueryParam("filter") String filterHash) {
+    public Response getLongSickLeavesTvarsnitt(@Context HttpServletRequest request, @QueryParam("filter") String filterHash, @PathParam("csv") String csv) {
         SimpleDetailsData data = getLongSickLeavesTvarsnittData(request, filterHash);
-        return Response.ok(data).build();
+        return getResponse(data, csv);
     }
 
     private SimpleDetailsData getLongSickLeavesTvarsnittData(HttpServletRequest request, String filterHash) {
@@ -1063,18 +732,6 @@ public class ProtectedChartDataService {
         Filter filter = getFilter(request, filterHash);
         SimpleKonResponse<SimpleKonDataRow> longSickLeaves = warehouse.getLangaSjukskrivningarTvarsnitt(filter.getPredicate(), range, getSelectedVgIdForLoggedInUser(request));
         return new LongSickLeaveTvarsnittConverter().convert(longSickLeaves, range, filter);
-    }
-
-    @GET
-    @Path("getLongSickLeavesTvarsnitt/csv")
-    @Produces({ TEXT_UTF_8 })
-    @Consumes({ MediaType.APPLICATION_JSON })
-    @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
-    @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
-    public Response getLongSickLeavesTvarsnittAsCsv(@Context HttpServletRequest request, @QueryParam("filter") String filterHash) {
-        LOG.info("Calling getLongSickLeavesTvarsnittAsCsv with filterHash: {}", filterHash);
-        final SimpleDetailsData data = getLongSickLeavesTvarsnittData(request, filterHash);
-        return CsvConverter.getCsvResponse(data.getTableData(), "export.csv");
     }
 
     Filter getFilter(HttpServletRequest request, String filterHash) {

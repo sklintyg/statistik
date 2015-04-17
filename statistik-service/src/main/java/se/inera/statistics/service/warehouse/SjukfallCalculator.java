@@ -72,7 +72,7 @@ public class SjukfallCalculator {
         factsPerPatientAndPeriod = getFactsPerPatientAndPeriod(facts, ranges);
     }
 
-    private List<ArrayListMultimap<Integer, Fact>> getFactsPerPatientAndPeriod(Iterable<Fact> facts, List<Range> ranges) {
+    static List<ArrayListMultimap<Integer, Fact>> getFactsPerPatientAndPeriod(Iterable<Fact> facts, List<Range> ranges) {
         final List<Integer> rangeEnds = new ArrayList<>(ranges.size() + 1);
         rangeEnds.add(WidelineConverter.toDay(ranges.get(0).getFrom()));
         for (Range range : ranges) {
@@ -101,7 +101,7 @@ public class SjukfallCalculator {
         return factsPerPatient;
     }
 
-    private int getRangeIndex(int date, List<Integer> rangeEnds) {
+    private static int getRangeIndex(int date, List<Integer> rangeEnds) {
         final int rangesSize = rangeEnds.size();
         for (int i = 0; i < rangesSize; i++) {
             final Integer rangeEnd = rangeEnds.get(i);
@@ -197,7 +197,7 @@ public class SjukfallCalculator {
         final ArrayListMultimap<Integer, Sjukfall> sjukfalls = ArrayListMultimap.create(sjukfallsPerPatientInPreviousPeriod);
         final ArrayListMultimap<Integer, Fact> factsPerPatientInPeriod = factsPerPatientAndPeriod.get(period + 1);
         for (Integer key : result.keySet()) {
-            if (!factsPerPatientInPeriod.get(key).isEmpty() || !sjukfallsPerPatientInPreviousPeriod.containsKey(key)) {
+            if (period == 0 || !factsPerPatientInPeriod.get(key).isEmpty()) {
                 sjukfalls.removeAll(key);
                 sjukfalls.putAll(getSjukfallsPerPatient(result.get(key)));
             }
