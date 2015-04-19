@@ -7,7 +7,7 @@
   file: path={{ releases_folder }} state=directory
   
 - name: download liquibase-runner-{{ version }}.zip
-  get_url: url=http://repository-callistasoftware.forge.cloudbees.com/release/se/inera/statistik/liquibase-runner/{{ version }}/liquibase-runner-{{ version }}.zip
+  get_url: url=http://repository-callistasoftware.forge.cloudbees.com/{{ repo }}/se/inera/statistik/liquibase-runner/{{ version }}/liquibase-runner-{{ version }}.zip
       dest={{ releases_folder }}/liquibase-runner-{{ version }}.zip
 
 - name: Unzip liquibase-runner-{{ version }}.zip
@@ -22,8 +22,12 @@
   environment:
       JAVA_HOME: "{{ java_home }}"
 
+- name: Download highcharts-export-web-{{ highcharts_version }}.war
+  get_url: url="http://repository-callistasoftware.forge.cloudbees.com/{{ repo }}/com/highcharts/export/highcharts-export-web/{{ highcharts_version }}/highcharts-export-web-{{ highcharts_version }}.war"
+      dest={{ releases_folder }}
+
 - name: Download statistik-web-{{ version }}.war
-  get_url: url=http://repository-callistasoftware.forge.cloudbees.com/release/se/inera/statistik/statistik-web/{{ version }}/statistik-web-{{ version }}.war
+  get_url: url=http://repository-callistasoftware.forge.cloudbees.com/{{ repo }}/se/inera/statistik/statistik-web/{{ version }}/statistik-web-{{ version }}.war
       dest={{ releases_folder }}
 
 - name: remove old version of unpacked ROOT war
@@ -34,8 +38,19 @@
   file: state=absent
       path={{ tomcat_webapps }}/ROOT.war
 
+- name: remove old version of unpacked highchart war
+  file: state=absent
+      path={{ tomcat_webapps }}/highcharts-export-web
+
+- name: remove old version of highchart war
+  file: state=absent
+      path={{ tomcat_webapps }}/highcharts-export-web.war
+
 - name: Deploy statistik-web-{{ version }}.war as ROOT.war
   command: cp {{ releases_folder }}/statistik-web-{{ version }}.war {{ tomcat_webapps }}/ROOT.war
+
+- name: Deploy highchart-export-web-{{ highchart_version }}.war
+  command: cp {{ releases_folder }}/highcharts-export-web-{{ highcharts_version }}.war {{ tomcat_webapps }}/highcharts-export-web.war
 
 - name: Create version file
   template: src=version.txt.j2 dest={{ tomcat_webapps }}/version.txt

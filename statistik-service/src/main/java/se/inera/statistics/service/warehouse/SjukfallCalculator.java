@@ -42,7 +42,7 @@ public class SjukfallCalculator {
 
     private final List<Fact> aisle;
     private final boolean useOriginalSjukfallStart;
-    private final boolean extendSjukfall;
+    private final boolean extendSjukfall; //true = försök att komplettera sjukfall från andra enheter än de man har tillgång till, false = titta bara på tillgängliga enheter, lämplig att använda t ex om man vet att man har tillgång till alla enheter
     private final List<Range> ranges;
     private ArrayListMultimap<Integer, Sjukfall> sjukfallsPerPatientInAisle;
     private List<ArrayListMultimap<Integer, Fact>> factsPerPatientAndPeriod;
@@ -55,12 +55,10 @@ public class SjukfallCalculator {
      * @param aisle aisle
      * @param filter filter
      * @param useOriginalSjukfallStart true = använd faktiskt startdatum, inte första datum på första intyget som är tillgängligt för anroparen
-     * @param extendSjukfall true = försök att komplettera sjukfall från andra enheter än de man har tillgång till, false = titta bara på tillgängliga enheter,
-     *                       lämplig att använda t ex om man vet att man har tillgång till alla enheter
      */
-    public SjukfallCalculator(List<Fact> aisle, Predicate<Fact> filter, List<Range> ranges, boolean useOriginalSjukfallStart, boolean extendSjukfall) {
+    public SjukfallCalculator(List<Fact> aisle, Predicate<Fact> filter, List<Range> ranges, boolean useOriginalSjukfallStart) {
         this.aisle = new ArrayList<>(aisle);
-        this.extendSjukfall = extendSjukfall;
+        this.extendSjukfall = !SjukfallUtil.ALL_ENHETER.getFilter().equals(filter);
         Collections.sort(this.aisle, Fact.TIME_ORDER);
         this.useOriginalSjukfallStart = useOriginalSjukfallStart;
         final Iterable<Fact> filteredAisle = Iterables.filter(aisle, filter);
@@ -72,7 +70,7 @@ public class SjukfallCalculator {
         factsPerPatientAndPeriod = getFactsPerPatientAndPeriod(facts, ranges);
     }
 
-    private List<ArrayListMultimap<Integer, Fact>> getFactsPerPatientAndPeriod(Iterable<Fact> facts, List<Range> ranges) {
+    static List<ArrayListMultimap<Integer, Fact>> getFactsPerPatientAndPeriod(Iterable<Fact> facts, List<Range> ranges) {
         final List<Integer> rangeEnds = new ArrayList<>(ranges.size() + 1);
         rangeEnds.add(WidelineConverter.toDay(ranges.get(0).getFrom()));
         for (Range range : ranges) {
@@ -101,7 +99,7 @@ public class SjukfallCalculator {
         return factsPerPatient;
     }
 
-    private int getRangeIndex(int date, List<Integer> rangeEnds) {
+    private static int getRangeIndex(int date, List<Integer> rangeEnds) {
         final int rangesSize = rangeEnds.size();
         for (int i = 0; i < rangesSize; i++) {
             final Integer rangeEnd = rangeEnds.get(i);
@@ -197,7 +195,7 @@ public class SjukfallCalculator {
         final ArrayListMultimap<Integer, Sjukfall> sjukfalls = ArrayListMultimap.create(sjukfallsPerPatientInPreviousPeriod);
         final ArrayListMultimap<Integer, Fact> factsPerPatientInPeriod = factsPerPatientAndPeriod.get(period + 1);
         for (Integer key : result.keySet()) {
-            if (!factsPerPatientInPeriod.get(key).isEmpty() || !sjukfallsPerPatientInPreviousPeriod.containsKey(key)) {
+            if (period == 0 || !factsPerPatientInPeriod.get(key).isEmpty()) {
                 sjukfalls.removeAll(key);
                 sjukfalls.putAll(getSjukfallsPerPatient(result.get(key)));
             }

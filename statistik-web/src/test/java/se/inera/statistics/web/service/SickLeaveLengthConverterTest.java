@@ -18,21 +18,20 @@
  */
 package se.inera.statistics.web.service;
 
-import static org.junit.Assert.assertEquals;
+import org.junit.Test;
+import se.inera.statistics.service.report.model.Range;
+import se.inera.statistics.service.report.model.SimpleKonDataRow;
+import se.inera.statistics.service.report.model.SimpleKonResponse;
+import se.inera.statistics.web.model.ChartData;
+import se.inera.statistics.web.model.ChartSeries;
+import se.inera.statistics.web.model.NamedData;
+import se.inera.statistics.web.model.SimpleDetailsData;
+import se.inera.statistics.web.model.TableData;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.Test;
-
-import se.inera.statistics.service.report.model.Range;
-import se.inera.statistics.service.report.model.SjukfallslangdResponse;
-import se.inera.statistics.service.report.model.SjukfallslangdRow;
-import se.inera.statistics.web.model.ChartData;
-import se.inera.statistics.web.model.ChartSeries;
-import se.inera.statistics.web.model.NamedData;
-import se.inera.statistics.web.model.SickLeaveLengthData;
-import se.inera.statistics.web.model.TableData;
+import static org.junit.Assert.assertEquals;
 
 public class SickLeaveLengthConverterTest {
 
@@ -42,14 +41,14 @@ public class SickLeaveLengthConverterTest {
     public void convertCasesPerMonthDataTest() {
         //Given
         SickLeaveLengthConverter converter = new SickLeaveLengthConverter();
-        ArrayList<SjukfallslangdRow> sjukfallslangdRows = new ArrayList<>();
-        sjukfallslangdRows.add(new SjukfallslangdRow("< 20 dagar", 13, 14));
-        sjukfallslangdRows.add(new SjukfallslangdRow("20-50 dagar", 24, 15));
-        sjukfallslangdRows.add(new SjukfallslangdRow("> 50 dagar", 3, 9));
-        SjukfallslangdResponse sjukfallslangdResponse = new SjukfallslangdResponse(sjukfallslangdRows, 7);
+        ArrayList<SimpleKonDataRow> sjukfallslangdRows = new ArrayList<>();
+        sjukfallslangdRows.add(new SimpleKonDataRow("< 20 dagar", 13, 14));
+        sjukfallslangdRows.add(new SimpleKonDataRow("20-50 dagar", 24, 15));
+        sjukfallslangdRows.add(new SimpleKonDataRow("> 50 dagar", 3, 9));
+        SimpleKonResponse<SimpleKonDataRow> sjukfallslangdResponse = new SimpleKonResponse<>(sjukfallslangdRows, 7);
 
         //When
-        SickLeaveLengthData result = converter.convert(sjukfallslangdResponse, new Range(7), Filter.empty());
+        SimpleDetailsData result = converter.convert(sjukfallslangdResponse, new Range(7), Filter.empty());
 
         //Then
         TableData tableDataResult = result.getTableData();

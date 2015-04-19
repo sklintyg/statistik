@@ -26,6 +26,4 @@ public interface HsaDataInjectable {
 
     void setCountyForNextIntyg(String countyCode);
 
-    void setEnhetNameForNextIntyg(String name);
-
 }

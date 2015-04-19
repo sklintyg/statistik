@@ -19,6 +19,7 @@
 package se.inera.statistics.service.helper;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.joda.time.LocalDate;
 import org.junit.Assert;
 import org.junit.Test;
@@ -30,14 +31,15 @@ public class UtlatandeBuilderTest {
     public void testgetSignerumsDatum() {
         JsonNode result = new UtlatandeBuilder().build("19121212-1212", new LocalDate("2012-12-12"), new LocalDate("2012-12-12"), "lakare", "vardenhet1", "vardgivare", "A01", 50);
 
-        Assert.assertEquals("2012-12-12T07:07:00.000", result.get("signeringsdatum").textValue());
+        Assert.assertEquals("2012-12-12T07:07:00.000", result.path("grundData").get("signeringsdatum").textValue());
     }
 
     @Test
     public void getAge() {
         JsonNode result = new UtlatandeBuilder().build("19121212-1212", new LocalDate("2012-12-12"), new LocalDate("2012-12-12"), "lakare", "vardenhet1", "vardgivare", "A01", 50);
+        final ObjectNode prepared = DocumentHelper.prepare(result);
 
-        assertEquals(100, DocumentHelper.getAge(DocumentHelper.prepare(result)));
+        assertEquals(100, DocumentHelper.getAge(prepared));
     }
 
 }

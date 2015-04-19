@@ -126,7 +126,7 @@ angular.module('StatisticsApp').directive('bindonce', function () {
         link:function (scope, elem, attr, ctrl) {
             elem.text(scope.$eval(attr.bindonce));
         }
-    }
+    };
 });
 
 angular.module('StatisticsApp').directive('onFinishRender', function () {
@@ -137,7 +137,7 @@ angular.module('StatisticsApp').directive('onFinishRender', function () {
                 scope.$evalAsync(attr.onFinishRender);
             }
         }
-    }
+    };
 });
 
 angular.module('StatisticsApp').directive("submenu", function (recursionService) {
@@ -163,19 +163,6 @@ angular.module('StatisticsApp').directive("filterButton", function () {
 	        '<button id="show-hide-filter-btn" type="button" class="btn btn-small pull-right" ng-class="{filterbtnactivefilter: filterIsActive}" ng-click="isFilterCollapsed = !isFilterCollapsed">' +
 	        '<i class="glyphicon" ng-class="{glyphiconDownSign: isFilterCollapsed, glyphiconUpSign: !isFilterCollapsed}"></i> {{!isFilterCollapsed ? "Dölj filter" : "Visa filter"}}<span ng-show="filterIsActive" style="font-size: 12px; font-style: italic;"><br/>Val gjorda</span>' +
 	        '</button>'
-    };
-});
-
-angular.module('StatisticsApp').directive("treeMultiSelector", function () {
-    return {
-        restrict: 'EA',
-        scope: {
-            menuOptions: '=', //Each item in the array has properties "name (for label) and "subs" (for sub items)
-            doneClicked: '=', //The function to call when the selection is accepted by the user
-            textData: '='
-        },
-        controller: 'directiveTmsCtrl',
-        templateUrl: 'views/treeMultiSelector.html'
     };
 });
 
@@ -215,7 +202,7 @@ angular.module('StatisticsApp').directive('message',
                             }
                         }
 
-                        element.html('<span>' + result + '</span>')
+                        element.html('<span>' + result + '</span>');
                     }
 
                     attr.$observe('key', function(interpolatedKey) {

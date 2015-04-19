@@ -21,17 +21,13 @@ package se.inera.statistics.web.service;
 import se.inera.statistics.service.report.model.DiagnosgruppResponse;
 import se.inera.statistics.service.report.model.Icd;
 import se.inera.statistics.service.report.model.Kon;
-import se.inera.statistics.service.report.model.KonDataRow;
-import se.inera.statistics.service.report.model.KonField;
 import se.inera.statistics.service.report.model.OverviewChartRowExtended;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.util.Icd10;
 import se.inera.statistics.web.model.ChartData;
 import se.inera.statistics.web.model.ChartSeries;
 import se.inera.statistics.web.model.DualSexStatisticsData;
-import se.inera.statistics.web.model.NamedData;
 import se.inera.statistics.web.model.TableData;
-import se.inera.statistics.web.model.TableHeader;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -43,12 +39,11 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.TreeMap;
 
-public class DiagnosisGroupsConverter {
+public class DiagnosisGroupsConverter extends MultiDualSexConverter<DiagnosgruppResponse> {
 
-    private static final Map<String, List<Integer>> DIAGNOSIS_CHART_GROUPS = createDiagnosisGroupsMap();
-    private static final Map<Integer, String> DIAGNOSKAPITEL_TO_DIAGNOSGRUPP = map(DIAGNOSIS_CHART_GROUPS);
+    private static final Map<String, List<Integer>> DIAGNOSIS_CHART_GROUPS = createDiagnosisGroupsMap(true);
+    static final Map<Integer, String> DIAGNOSKAPITEL_TO_DIAGNOSGRUPP = map(DIAGNOSIS_CHART_GROUPS);
     private static final int DISPLAYED_DIAGNOSIS_GROUPS = 5;
-    public static final int PERCENT = 100;
 
     private static Map<Integer, String> map(Map<String, List<Integer>> diagnosisChartGroups) {
         Map<Integer, String> result = new HashMap<>();
@@ -62,7 +57,7 @@ public class DiagnosisGroupsConverter {
 
     private static final String OVRIGT_CHART_GROUP = "P00-P96, Q00-Q99, S00-Y98 Övrigt";
 
-    private static Map<String, List<Integer>> createDiagnosisGroupsMap() {
+    private static Map<String, List<Integer>> createDiagnosisGroupsMap(boolean includeUnknownGroup) {
         final Map<String, List<Integer>> diagnosisGroups = new LinkedHashMap<>();
         diagnosisGroups.put("A00-E90, G00-L99, N00-N99 Somatiska sjukdomar", Icd10.getKapitelIntIds("A00-B99", "C00-D48", "D50-D89", "E00-E90", "G00-G99", "H00-H59",
                 "H00-H59", "H60-H95", "I00-I99", "J00-J99", "K00-K93", "L00-L99", "N00-N99"));
@@ -72,53 +67,22 @@ public class DiagnosisGroupsConverter {
         diagnosisGroups.put(OVRIGT_CHART_GROUP, Icd10.getKapitelIntIds("P00-P96", "Q00-Q99", "S00-T98", "U00-U99", "V01-Y98"));
         diagnosisGroups.put("R00-R99 Symtomdiagnoser", Icd10.getKapitelIntIds("R00-R99"));
         diagnosisGroups.put("Z00-Z99 Faktorer av betydelse för hälsotillståndet och för kontakter med hälso- och sjukvården", Icd10.getKapitelIntIds("Z00-Z99"));
-        diagnosisGroups.put("Utan giltig ICD-10 kod", Icd10.getKapitelIntIds(Icd10.OTHER_KAPITEL));
+        if (includeUnknownGroup) {
+            diagnosisGroups.put(Icd10.UNKNOWN_CODE_NAME, Icd10.getKapitelIntIds(Icd10.OTHER_KAPITEL));
+        }
         return diagnosisGroups;
     }
 
-    private static List<String> getDiagnosisChartGroupsAsList() {
-        return new ArrayList<>(DIAGNOSIS_CHART_GROUPS.keySet());
+    static List<String> getDiagnosisChartGroupsAsList(boolean includeUnknownGroup) {
+        return new ArrayList<>(createDiagnosisGroupsMap(includeUnknownGroup).keySet());
     }
 
     DualSexStatisticsData convert(DiagnosgruppResponse diagnosisGroups, Range range, Filter filter) {
-        boolean empty = isUtanGiltigEmpty(diagnosisGroups);
-        diagnosisGroups = removeUtanGiltigWhenEmpty(diagnosisGroups, empty);
-        TableData tableData = convertTable(diagnosisGroups);
-        ChartData maleChart = convertChart(diagnosisGroups, Kon.Male, empty);
-        ChartData femaleChart = convertChart(diagnosisGroups, Kon.Female, empty);
+        TableData tableData = convertTable(diagnosisGroups, "%1$s");
+        ChartData maleChart = convertChart(diagnosisGroups, Kon.Male);
+        ChartData femaleChart = convertChart(diagnosisGroups, Kon.Female);
         final FilterDataResponse filterResponse = new FilterDataResponse(filter.getDiagnoser(), filter.getEnheter());
         return new DualSexStatisticsData(tableData, maleChart, femaleChart, range.toString(), filterResponse);
-    }
-
-    private boolean isUtanGiltigEmpty(DiagnosgruppResponse diagnosisGroups) {
-        List<KonDataRow> rows = diagnosisGroups.getRows();
-        boolean empty = true;
-        for (KonDataRow row : rows) {
-            List<Integer> f = row.getDataForSex(Kon.Female);
-            List<Integer> m = row.getDataForSex(Kon.Male);
-            if (f.get(f.size() - 1) > 0 || m.get(m.size() - 1) > 0) {
-                empty = false;
-                break;
-            }
-        }
-        return empty;
-    }
-
-    private DiagnosgruppResponse removeUtanGiltigWhenEmpty(DiagnosgruppResponse diagnosisGroups, boolean remove) {
-        List<KonDataRow> rows = diagnosisGroups.getRows();
-        if (remove && rows.size() > 0) {
-            List<KonDataRow> newRows = new ArrayList<>();
-            List<? extends Icd> newAvsnitts = diagnosisGroups.getIcdTyps();
-            for (KonDataRow row : rows) {
-                List<KonField> col = row.getData();
-                col.remove(col.size() - 1);
-                newRows.add(new KonDataRow(row.getName(), col));
-            }
-            newAvsnitts.remove(newAvsnitts.size() - 1);
-            return new DiagnosgruppResponse(newAvsnitts, newRows);
-        } else {
-            return diagnosisGroups;
-        }
     }
 
     public List<OverviewChartRowExtended> convert(List<OverviewChartRowExtended> diagnosisGroups) {
@@ -132,11 +96,20 @@ public class DiagnosisGroupsConverter {
 
         List<OverviewChartRowExtended> result = new ArrayList<>();
         for (OverviewChartRowExtended row : merged.subList(0, DISPLAYED_DIAGNOSIS_GROUPS)) {
-            int previous = row.getQuantity() - row.getAlternation();
-            int percentChange = previous != 0 ? row.getAlternation() * PERCENT / previous : 0;
+            final int alternation = row.getAlternation();
+            int previous = row.getQuantity() - alternation;
+            int percentChange = calculatePercentage(alternation, previous);
             result.add(new OverviewChartRowExtended(row.getName(), row.getQuantity(), percentChange));
         }
         return result;
+    }
+
+    int calculatePercentage(int part, int whole) {
+        if (whole == 0) {
+            return 0;
+        }
+        final double percentage = 100.0;
+        return (int) Math.round(part * percentage / whole);
     }
 
     private List<OverviewChartRowExtended> mergeOverviewChartGroups(List<OverviewChartRowExtended> allGroups) {
@@ -144,12 +117,12 @@ public class DiagnosisGroupsConverter {
 
             @Override
             public int compare(String o1, String o2) {
-                return getDiagnosisChartGroupsAsList().indexOf(o1) - getDiagnosisChartGroupsAsList().indexOf(o2);
+                return getDiagnosisChartGroupsAsList(true).indexOf(o1) - getDiagnosisChartGroupsAsList(true).indexOf(o2);
             }
 
         });
 
-        for (String groupName : getDiagnosisChartGroupsAsList()) {
+        for (String groupName : getDiagnosisChartGroupsAsList(true)) {
             mergedGroups.put(groupName, new OverviewChartRowExtended(groupName, 0, 0));
         }
         for (OverviewChartRowExtended row : allGroups) {
@@ -166,9 +139,9 @@ public class DiagnosisGroupsConverter {
         return result;
     }
 
-    private ChartData convertChart(DiagnosgruppResponse resp, Kon sex, boolean empty) {
+    private ChartData convertChart(DiagnosgruppResponse resp, Kon sex) {
         Map<Integer, List<Integer>> allGroups = extractAllGroups(resp, sex);
-        Map<String, List<Integer>> mergedGroups = mergeChartGroups(allGroups, empty);
+        Map<String, List<Integer>> mergedGroups = mergeChartGroups(allGroups);
         ArrayList<ChartSeries> rows = new ArrayList<>();
         for (Entry<String, List<Integer>> entry : mergedGroups.entrySet()) {
             rows.add(new ChartSeries(entry.getKey(), entry.getValue(), true));
@@ -178,25 +151,19 @@ public class DiagnosisGroupsConverter {
         return new ChartData(rows, headers);
     }
 
-    private Map<String, List<Integer>> mergeChartGroups(Map<Integer, List<Integer>> allGroups, boolean empty) {
+    private Map<String, List<Integer>> mergeChartGroups(Map<Integer, List<Integer>> allGroups) {
         Map<String, List<Integer>> mergedGroups = new TreeMap<>(new Comparator<String>() {
 
             @Override
             public int compare(String o1, String o2) {
-                return getDiagnosisChartGroupsAsList().indexOf(o1) - getDiagnosisChartGroupsAsList().indexOf(o2);
+                return getDiagnosisChartGroupsAsList(true).indexOf(o1) - getDiagnosisChartGroupsAsList(true).indexOf(o2);
             }
 
         });
         List<List<Integer>> values = new ArrayList<>(allGroups.values());
         int listSize = values.isEmpty() ? 0 : values.get(0).toArray().length;
-        if (empty) {
-            for (int i = 0; i < getDiagnosisChartGroupsAsList().size() - 1; i++) {
-                mergedGroups.put(getDiagnosisChartGroupsAsList().get(i), createZeroFilledList(listSize));
-            }
-        } else {
-            for (String groupName : getDiagnosisChartGroupsAsList()) {
-                mergedGroups.put(groupName, createZeroFilledList(listSize));
-            }
+        for (String groupName : getDiagnosisChartGroupsAsList(false)) {
+            mergedGroups.put(groupName, createZeroFilledList(listSize));
         }
         for (Entry<Integer, List<Integer>> entry : allGroups.entrySet()) {
             addGroupToMergedChartGroups(mergedGroups, entry.getKey(), entry.getValue());
@@ -249,47 +216,4 @@ public class DiagnosisGroupsConverter {
         throw new RuntimeException("Unknown groupId: " + groupId);
     }
 
-    static TableData convertTable(DiagnosgruppResponse resp) {
-        List<NamedData> rows = getTableRows(resp);
-        List<List<TableHeader>> headers = getTableHeaders(resp);
-        return new TableData(rows, headers);
-    }
-
-    private static List<NamedData> getTableRows(DiagnosgruppResponse resp) {
-        List<NamedData> rows = new ArrayList<>();
-        for (KonDataRow row : resp.getRows()) {
-            List<Integer> mergedSexData = ServiceUtil.getMergedSexData(row);
-            int sum = 0;
-            for (Integer dataField : mergedSexData) {
-                sum += dataField;
-            }
-            mergedSexData.add(0, sum);
-            rows.add(new NamedData(row.getName(), mergedSexData));
-        }
-        return rows;
-    }
-
-    private static List<List<TableHeader>> getTableHeaders(DiagnosgruppResponse resp) {
-        List<TableHeader> topHeaderRow = new ArrayList<>();
-        topHeaderRow.add(new TableHeader(""));
-        topHeaderRow.add(new TableHeader(""));
-        List<String> diagnosisGroups = resp.getDiagnosisGroupsAsStrings();
-        for (String groupName : diagnosisGroups) {
-            topHeaderRow.add(new TableHeader(groupName, 2));
-        }
-        topHeaderRow.add(new TableHeader(""));
-
-        List<TableHeader> subHeaderRow = new ArrayList<>();
-        subHeaderRow.add(new TableHeader("Period"));
-        subHeaderRow.add(new TableHeader("Antal sjukfall totalt"));
-        for (String s : diagnosisGroups) {
-            subHeaderRow.add(new TableHeader("Kvinnor"));
-            subHeaderRow.add(new TableHeader("Män"));
-        }
-
-        List<List<TableHeader>> headers = new ArrayList<>();
-        headers.add(topHeaderRow);
-        headers.add(subHeaderRow);
-        return headers;
-    }
 }

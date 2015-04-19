@@ -1,14 +1,15 @@
 !contents -R2 -g -p -f -h
 
-Test visar att:
-- Intyg med personnummer på rätt form tas med. Giltiga/ogiltiga sista siffror spelar ingen roll.
-- Intyg med startdatum innan 2010-01-01 tas inte med.
-- Intyg med slutdatum mer än 5 år fram i tiden tas inte med.
-- Intyg med slutdatum före startdatum tas inte med.
+Följande fyra test visar i tur och ordning att:
+1. Intyg med personnummer på rätt form tas med. Giltiga/ogiltiga sista siffror spelar ingen roll.
+2. Intyg med startdatum innan 2010-01-01 tas inte med.
+3. Intyg med slutdatum mer än 5 år fram i tiden tas inte med.
+4. Intyg med slutdatum före startdatum tas inte med.
 
 
 
 !3 Givet att:
+
 | script | dagens datum | 2013-11-06 |
 
 | script | troskel varde | 1 |
@@ -31,7 +32,6 @@ Nationell:
 | Sjukfall i rapporten sjukfall totalt |
 | år   | månad | män? | kvinnor? |
 | 2013 | feb   | 3    | 0        |
-
 
 
 !3 Givet att:
@@ -57,7 +57,6 @@ Nationell:
 | 2013 | feb   | 1    | 0        |
 
 
-
 !3 Givet att:
 | script | dagens datum | 2013-11-06 |
 
@@ -78,7 +77,6 @@ Nationell:
 | Sjukfall i rapporten sjukfall totalt |
 | år   | månad | män? | kvinnor? |
 | 2013 | feb   | 1    | 0        |
-
 
 
 !3 Givet att:

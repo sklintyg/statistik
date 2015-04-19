@@ -50,7 +50,7 @@ public class WarehouseManager {
         LOG.info("Prepared warehouse with ailes {}", warehouse.getAllVardgivare().keySet());
         LOG.info("Reloading enhet");
         lines = enhetLoader.populateWarehouse();
-        warehouse.completeEnhets(LocalDateTime.now());
+        warehouse.completeEnhets();
         LOG.info("Reloaded enhet {} lines", lines);
         sjukfallUtil.clearSjukfallGroupCache();
         return lines;

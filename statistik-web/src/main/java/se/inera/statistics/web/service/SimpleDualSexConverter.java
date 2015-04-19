@@ -32,14 +32,16 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public abstract class SimpleDualSexConverter {
+public class SimpleDualSexConverter {
 
     private final String groupTitle;
     private final boolean totalSeriesInChart;
+    private String seriesNameTemplate;
 
-    public SimpleDualSexConverter(String groupTitle, boolean totalSeriesInChart) {
+    public SimpleDualSexConverter(String groupTitle, boolean totalSeriesInChart, String seriesNameTemplate) {
         this.groupTitle = groupTitle;
         this.totalSeriesInChart = totalSeriesInChart;
+        this.seriesNameTemplate = seriesNameTemplate;
     }
 
     public SimpleDetailsData convert(SimpleKonResponse<SimpleKonDataRow> casesPerMonth, Range range, Filter filter) {
@@ -58,16 +60,18 @@ public abstract class SimpleDualSexConverter {
         for (SimpleKonDataRow row : list) {
             final Integer female = row.getFemale();
             final Integer male = row.getMale();
-            data.add(new NamedData(row.getName(), Arrays.asList(female + male, female, male)));
+            final String seriesName = String.format(seriesNameTemplate, row.getName());
+            data.add(new NamedData(seriesName, Arrays.asList(female + male, female, male)));
         }
 
         return TableData.createWithSingleHeadersRow(data, Arrays.asList(groupTitle, "Antal sjukfall totalt", "Antal sjukfall för kvinnor", "Antal sjukfall för män"));
     }
 
-    private ChartData convertToChartData(SimpleKonResponse<SimpleKonDataRow> casesPerMonth) {
+    protected ChartData convertToChartData(SimpleKonResponse<SimpleKonDataRow> casesPerMonth) {
         final ArrayList<String> categories = new ArrayList<>();
         for (SimpleKonDataRow casesPerMonthRow : casesPerMonth.getRows()) {
-            categories.add(casesPerMonthRow.getName());
+            final String seriesName = String.format(seriesNameTemplate, casesPerMonthRow.getName());
+            categories.add(seriesName);
         }
 
         final ArrayList<ChartSeries> series = new ArrayList<>();

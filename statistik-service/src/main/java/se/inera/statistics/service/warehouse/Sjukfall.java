@@ -63,7 +63,8 @@ public class Sjukfall {
 
     public Sjukfall(Sjukfall previous, Fact line) {
         this(line);
-        start = previous.getStart();
+        start = Math.min(previous.getStart(), start);
+        end = Math.max(previous.getEnd(), end);
         realDays += previous.getRealDays();
         intygCount += previous.getIntygCount();
         extending = previous;

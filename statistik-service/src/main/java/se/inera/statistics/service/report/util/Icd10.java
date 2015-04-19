@@ -57,6 +57,7 @@ public class Icd10 {
                                                                         icd10ToInt(OTHER_KAPITEL, Icd10RangeType.KAPITEL),
                                                                         icd10ToInt("Ö00-Ö00", Icd10RangeType.AVSNITT),
                                                                         icd10ToInt(OTHER_KATEGORI, Icd10RangeType.KATEGORI));
+    public static final String UNKNOWN_CODE_NAME = "Utan giltig ICD-10 kod";
 
     @Autowired
     private Resource icd10KategoriAnsiFile;
@@ -127,11 +128,11 @@ public class Icd10 {
     }
 
     private void populateInternalIcd10() {
-        final Kapitel kapitel = new Kapitel(OTHER_KAPITEL, "Utan giltig ICD-10 kod");
+        final Kapitel kapitel = new Kapitel(OTHER_KAPITEL, UNKNOWN_CODE_NAME);
         internalIcd10.add(kapitel);
-        final Avsnitt avsnitt = new Avsnitt(OTHER_KAPITEL, "Utan giltig ICD-10 kod", kapitel);
+        final Avsnitt avsnitt = new Avsnitt(OTHER_KAPITEL, UNKNOWN_CODE_NAME, kapitel);
         internalIcd10.add(avsnitt);
-        internalIcd10.add(new Kategori(OTHER_KATEGORI, "Utan giltig ICD-10 kod", avsnitt));
+        internalIcd10.add(new Kategori(OTHER_KATEGORI, UNKNOWN_CODE_NAME, avsnitt));
     }
 
     public List<Kapitel> getKapitel(boolean includeInternalKapitel) {

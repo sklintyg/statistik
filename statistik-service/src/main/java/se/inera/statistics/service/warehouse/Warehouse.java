@@ -130,12 +130,11 @@ public class Warehouse implements Iterable<Aisle> {
         loadingAisles = new HashMap<>();
     }
 
-    public void completeEnhets(LocalDateTime lastUpdate) {
+    public void completeEnhets() {
         for (List<Enhet> enhetList: loadingEnhets.values()) {
             Collections.sort(enhetList);
         }
         enhets = Collections.unmodifiableMap(loadingEnhets);
-        this.lastEnhetUpdate = lastEnhetUpdate;
         loadingEnhets = new HashMap<>();
     }
 

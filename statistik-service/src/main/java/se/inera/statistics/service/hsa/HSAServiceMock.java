@@ -257,9 +257,4 @@ public class HSAServiceMock implements HSAService, HsaDataInjectable {
         nextLanCode = countyCode;
     }
 
-    @Override
-    public void setEnhetNameForNextIntyg(String name) {
-        nextEnhetName = name;
-    }
-
 }

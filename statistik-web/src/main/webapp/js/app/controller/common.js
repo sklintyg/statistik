@@ -28,19 +28,19 @@ var ControllerCommons = new function(){
         }
         scope.rows = tableData.rows;
     };
-    
+
     this.htmlsafe = function(string) {
         return string.replace(/&/g, '&amp;').replace(/</g, '&lt;');
     };
-    
+
     this.isNumber = function(n) {
         return !isNaN(parseFloat(n)) && isFinite(n);
     };
-    
+
     this.makeThousandSeparated = function(input) {
         return ControllerCommons.isNumber(input) ? input.toString().split('').reverse().join('').match(/.{1,3}/g).join('\u00A0').split('').reverse().join('') : input;
     };
-    
+
     this.getFileName = function(chartName) {
         var d = new Date();
 
@@ -48,7 +48,7 @@ var ControllerCommons = new function(){
         var month = d.getMonth() < 9 ? "0" + (d.getMonth() + 1) : "" + (d.getMonth() + 1);
         var day = d.getDate() < 10 ? "0" + d.getDate() : "" + d.getDate();
         var date = year + month + day;
-        
+
         var hour = d.getHours() < 10 ? "0" + d.getHours() : "" + d.getHours();
         var minute = d.getMinutes() < 10 ? "0" + d.getMinutes() : "" + d.getMinutes();
         var second = d.getSeconds() < 10 ? "0" + d.getSeconds() : "" + d.getSeconds();
@@ -56,7 +56,7 @@ var ControllerCommons = new function(){
 
         return String(chartName).replace(/\s+/g, "_") + "_" + date + "_" + time;
     };
-    
+
     this.exportChart = function(chart, chartName, title, diagnosFilters, legendLayout) {
         var options = {filename: ControllerCommons.getFileName(chartName)};
         var extendedChartOptions = { legend: { enabled: true } };
@@ -117,7 +117,7 @@ var ControllerCommons = new function(){
                 backgroundColor : null, //transparent
                 plotBorderWidth: 1,
                 events: { load: doneLoadingCallback }
-    },
+            },
             title : {
                 text : ''
             },
@@ -143,7 +143,7 @@ var ControllerCommons = new function(){
                 categories : _.map(chartCategories, function(name) {
                     return ControllerCommons.htmlsafe(name);
                 }),
-                title: { 
+                title: {
                 	align: 'high',
                 	style: {
                     	color: '#008391'
@@ -235,7 +235,6 @@ var ControllerCommons = new function(){
     };
 
     this.getEnhetCountText = function(enhetsCount, basedOnAlreadyInText) {
-        'use strict';
         var singleEnhet = enhetsCount === 1;
         if (basedOnAlreadyInText) {
             return enhetsCount ? " och " + enhetsCount + " enhet" + (singleEnhet ? "" : "er") + " " : " ";
@@ -253,7 +252,7 @@ var ControllerCommons = new function(){
         var icdStructureAsFlatArray = _.compose(_.flatten, icdStructureAsArray)(icdStructure);
         return _.map(diagnosFilterIds, function(diagnosId){
             var icdItem = _.find(icdStructureAsFlatArray, function(icd){
-                return icd.numericalId == diagnosId;
+                return icd.numericalId === parseInt(diagnosId, 10);
             });
             return icdItem.id + " " + icdItem.name;
         });
@@ -271,6 +270,131 @@ var ControllerCommons = new function(){
             scope.activeDiagnosFiltersForPrint = isPrint ? scope.activeDiagnosFilters : null;
         });
     };
+
+    this.setupDiagnosisSelector = function(diagnosisTreeFilter, $routeParams, $scope, messageService, $timeout, statisticsData, $location) {
+        //Initiate the diagnosisTree if we need to.
+        diagnosisTreeFilter.setup($routeParams);
+        $scope.diagnosisTreeFilter = diagnosisTreeFilter;
+
+        $scope.diagnosisSelectorData = {
+            titleText: messageService.getProperty("comparediagnoses.lbl.val-av-diagnoser", null, "", null, true),
+            buttonLabelText: messageService.getProperty("lbl.filter.val-av-diagnoser-knapp", null, "", null, true),
+            firstLevelLabelText: messageService.getProperty("lbl.filter.modal.kapitel", null, "", null, true),
+            secondLevelLabelText: messageService.getProperty("lbl.filter.modal.avsnitt", null, "", null, true),
+            thirdLevelLabelText: messageService.getProperty("lbl.filter.modal.kategorier", null, "", null, true)
+        };
+
+        $scope.diagnosisSelected = function () {
+            ControllerCommons.diagnosisToCompareSelected(diagnosisTreeFilter, $timeout, $scope, statisticsData, $location);
+        };
+    };
+
+    this.diagnosisToCompareSelected = function(diagnosisTreeFilter, $timeout, $scope, statisticsData, $location) {
+        var diagnoses = diagnosisTreeFilter.getSelectedDiagnosis();
+
+        $timeout(function () {
+            //Ugly fix from http://stackoverflow.com/questions/20827282/cant-dismiss-modal-and-change-page-location
+            $('#cancelModal').modal('hide');
+            $('.modal-backdrop').remove();
+            $('body').removeClass('modal-open');
+        }, 1);
+
+        $timeout(function () {
+            $scope.doneLoading = false;
+        }, 1);
+
+        statisticsData.getFilterHash(diagnoses, null, null, function (selectionHash) {
+            var path = $location.path();
+            var newPath = path.replace(/\/[^\/]+$/gm, "/" + selectionHash);
+            $location.path(newPath);
+        }, function () {
+            throw new Error("Failed to get filter hash value");
+        });
+    };
+
+    this.isShowingVerksamhet = function($location) {
+        return $location.path().indexOf("/verksamhet/") === 0;
+    };
+
+    this.createQueryStringOfQueryParams = function (queryParams) {
+        return !_.isEmpty(queryParams) ? _.map(queryParams, function (value, key) {
+            return key + "=" + value;
+        }).join('&') : '';
+    };
+
+    this.getExtraPathParam = function(routeParams) {
+        return routeParams.diagnosHash ? routeParams.diagnosHash : ControllerCommons.getMostSpecificGroupId(routeParams);
+    };
+
+    this.getMostSpecificGroupId = function(routeParams) {
+        return routeParams.kategoriId ? routeParams.kategoriId : routeParams.groupId;
+    };
+
+    this.populateDetailsOptions = function (result, basePath, $scope, $routeParams, messageService, config) {
+        var kapitels = result.kapitels;
+        for (var i = 0; i < kapitels.length; i++) {
+            if (kapitels[i].id === $routeParams.groupId) {
+                $scope.selectedDetailsOption = kapitels[i];
+                break;
+            }
+        }
+        var avsnitts = result.avsnitts[$routeParams.groupId];
+        for (var i = 0; i < avsnitts.length; i++) {
+            if (avsnitts[i].id === $routeParams.kategoriId) {
+                $scope.selectedDetailsOption2 = avsnitts[i];
+                break;
+            }
+        }
+
+        $scope.detailsOptions = _.map(kapitels, function (e) {
+            e.url = basePath + "/" + e.id;
+            return e;
+        });
+        $scope.detailsOptions2 = _.map(avsnitts, function (e) {
+            e.url = basePath + "/" + $routeParams.groupId + "/kategori/" + e.id;
+            return e;
+        });
+
+        //Add default option for detailsOptions2
+        var defaultId = messageService.getProperty("lbl.valj-annat-diagnosavsnitt", null, "", null, true);
+        $scope.detailsOptions2.unshift({"id": defaultId, "name":"", "url":basePath + "/" + $routeParams.groupId});
+        if (!$scope.selectedDetailsOption2) {
+            $scope.selectedDetailsOption2 = $scope.detailsOptions2[0];
+        }
+
+        $scope.subTitle = getSubtitle($scope.currentPeriod, $scope.selectedDetailsOption, $scope.selectedDetailsOption2, $scope, config);
+    };
+
+    function getSubtitle(period, selectedOption1, selectedOption2, $scope, config) {
+        if ((selectedOption2 && selectedOption2.name && selectedOption2.id)) {
+            return config.title(period, $scope.enhetsCount, selectedOption2.id + " " + selectedOption2.name);
+        }
+        if (selectedOption1 && selectedOption1.name && selectedOption1.id) {
+            return config.title(period, $scope.enhetsCount, selectedOption1.id + " " + selectedOption1.name);
+        }
+        return "";
+    }
+
+    this.createDiagnosHashPathOrAlternativePath = function($routeParams){
+        return ($routeParams.diagnosHash ? "/" + $routeParams.diagnosHash : ($routeParams.groupId ? "/" + $routeParams.groupId + ($routeParams.kategoriId ? "/kategori/" + $routeParams.kategoriId : "") : ""));
+    };
+
+    this.updateExchangeableViewsUrl = function(isVerksamhet, config, $location, $scope, $routeParams) {
+        if (isVerksamhet && config.exchangeableViews) {
+            //If we have a diagnosisHash then added to the next route before anything else
+            _.each(config.exchangeableViews, function (view) {
+                view.state = view.state + ControllerCommons.createDiagnosHashPathOrAlternativePath($routeParams);
+            });
+            var queryParamsString = ControllerCommons.createQueryStringOfQueryParams($location.search());
+            //Add queryParams if any
+            if (queryParamsString) {
+                _.each(config.exchangeableViews, function (view) {
+                    view.state = view.state + "?" + queryParamsString;
+                });
+            }
+            $scope.exchangeableViews = config.exchangeableViews;
+        }
+    }
 
 };
 

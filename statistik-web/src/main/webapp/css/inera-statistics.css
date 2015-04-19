@@ -1816,3 +1816,7 @@ li.subMenuItem.active .active-menu-item { display: block;  }
     animation-iteration-count:  infinite;
     animation-timing-function:  linear;
 }
+
+.ng-hide:not(.ng-hide-animate) {
+    display: none!important;
+}

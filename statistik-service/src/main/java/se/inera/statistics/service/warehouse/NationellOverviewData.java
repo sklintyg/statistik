@@ -21,6 +21,8 @@ package se.inera.statistics.service.warehouse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import se.inera.statistics.service.report.model.DiagnosgruppResponse;
+import se.inera.statistics.service.report.model.Icd;
+import se.inera.statistics.service.report.model.KonDataResponse;
 import se.inera.statistics.service.report.model.KonField;
 import se.inera.statistics.service.report.model.OverviewChartRow;
 import se.inera.statistics.service.report.model.OverviewChartRowExtended;
@@ -29,8 +31,6 @@ import se.inera.statistics.service.report.model.OverviewResponse;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.SimpleKonDataRow;
 import se.inera.statistics.service.report.model.SimpleKonResponse;
-import se.inera.statistics.service.report.model.SjukfallslangdResponse;
-import se.inera.statistics.service.report.model.SjukskrivningsgradResponse;
 import se.inera.statistics.service.report.util.ReportUtil;
 
 import java.util.ArrayList;
@@ -114,21 +114,21 @@ public class NationellOverviewData {
     }
 
     private List<OverviewChartRow> getSjukskrivningsgrupper(Range range) {
-        SjukfallslangdResponse previousData = data.getSjukfallslangd(ReportUtil.getPreviousPeriod(range).getFrom(), 1, KVARTAL);
-        SjukfallslangdResponse currentData = data.getSjukfallslangd(range.getFrom(), 1, KVARTAL);
+        SimpleKonResponse<SimpleKonDataRow> previousData = data.getSjukfallslangd(ReportUtil.getPreviousPeriod(range).getFrom(), 1, KVARTAL);
+        SimpleKonResponse<SimpleKonDataRow> currentData = data.getSjukfallslangd(range.getFrom(), 1, KVARTAL);
 
         List<OverviewChartRow> result = new ArrayList<>();
         for (int i = 0; i < currentData.getRows().size(); i++) {
             int previous = previousData.getRows().get(i).getFemale() + previousData.getRows().get(i).getMale();
             int current = currentData.getRows().get(i).getFemale() + currentData.getRows().get(i).getMale();
-            result.add(new OverviewChartRowExtended(previousData.getRows().get(i).getGroup(), current, current - previous));
+            result.add(new OverviewChartRowExtended(previousData.getRows().get(i).getName(), current, current - previous));
         }
 
         return result;
     }
 
     private List<OverviewChartRowExtended> getSjukskrivningsgrader(Range range) {
-        SjukskrivningsgradResponse periods = data.getSjukskrivningsgrad(ReportUtil.getPreviousPeriod(range).getFrom(), 2, KVARTAL);
+        KonDataResponse periods = data.getSjukskrivningsgrad(ReportUtil.getPreviousPeriod(range).getFrom(), 2, KVARTAL);
 
         List<OverviewChartRowExtended> result = new ArrayList<>();
         if (periods.getRows().size() >= 2) {
@@ -137,7 +137,7 @@ public class NationellOverviewData {
             for (int i = 0; i < previousData.size(); i++) {
                 int previous = previousData.get(i).getFemale() + previousData.get(i).getMale();
                 int current = currentData.get(i).getFemale() + currentData.get(i).getMale();
-                result.add(new OverviewChartRowExtended(periods.getDegreesOfSickLeave().get(i), current, percentChange(current, previous)));
+                result.add(new OverviewChartRowExtended(periods.getGroups().get(i), current, percentChange(current, previous)));
             }
         }
         return result;
@@ -194,7 +194,12 @@ public class NationellOverviewData {
             for (int i = 0; i < currentData.size(); i++) {
                 int previous = previousData.get(i).getFemale() + previousData.get(i).getMale();
                 int current = currentData.get(i).getFemale() + currentData.get(i).getMale();
-                result.add(new OverviewChartRowExtended(String.valueOf(periods.getIcdTyps().get(i).getNumericalId()), current, current - previous));
+                final List<? extends Icd> icdTyps = periods.getIcdTyps();
+                final Icd icd = icdTyps.get(i);
+                final int numericalId = icd.getNumericalId();
+                final String rowName = String.valueOf(numericalId);
+                final OverviewChartRowExtended row = new OverviewChartRowExtended(rowName, current, current - previous);
+                result.add(row);
             }
         }
         return result;

@@ -24,20 +24,31 @@ import com.google.common.collect.HashBiMap;
 import org.joda.time.LocalDate;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
+import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
 import org.springframework.test.util.ReflectionTestUtils;
 import se.inera.statistics.service.processlog.Lakare;
 import se.inera.statistics.service.processlog.LakareManager;
 import se.inera.statistics.service.report.model.Kon;
+import se.inera.statistics.service.report.model.KonDataResponse;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.SimpleKonDataRow;
 import se.inera.statistics.service.report.model.SimpleKonResponse;
 import se.inera.statistics.service.warehouse.Aisle;
 import se.inera.statistics.service.warehouse.Fact;
+import se.inera.statistics.service.warehouse.SjukfallFilter;
 import se.inera.statistics.service.warehouse.SjukfallUtil;
 import se.inera.statistics.service.warehouse.Warehouse;
 
+import java.util.HashMap;
+import java.util.List;
+
 import static java.util.Arrays.asList;
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static se.inera.statistics.service.warehouse.Fact.aFact;
@@ -63,8 +74,6 @@ public class SjukfallQueryTest {
 
     private int lakarIntygCounter;
 
-    private LakareManager lakareManager;
-
     private SjukfallQuery sjukfallQuery;
 
     private Aisle aisle;
@@ -75,14 +84,21 @@ public class SjukfallQueryTest {
 
     private Predicate<Fact> enhetFilter = sjukfallUtil.createEnhetFilterFromInternalIntValues(ENHET1_ID).getFilter();
 
+    @Captor
+    private ArgumentCaptor<List<Object>> ids;
+
+    @Captor
+    private ArgumentCaptor<List<String>> names;
+
     @Before
     public void setup() {
         populateLakare();
-        lakareManager = mockLakareManager();
+        LakareManager lakareManager = mockLakareManager();
         sjukfallQuery = new SjukfallQuery();
         sjukfallQuery.setLakareManager(lakareManager);
         ReflectionTestUtils.setField(sjukfallQuery, "sjukfallUtil", sjukfallUtil);
         aisle = new Aisle("vgid");
+        MockitoAnnotations.initMocks(this);
     }
 
     @Test
@@ -200,11 +216,33 @@ public class SjukfallQueryTest {
 
     private Fact fact(int patientId, Kon patientKon, String lakareId) {
          return aFact().withLan(3).withKommun(380).withForsamling(38002).
-                withEnhet(Integer.valueOf(ENHET1_ID)).withLakarintyg(lakarIntygCounter++).
+                withEnhet(ENHET1_ID).withLakarintyg(lakarIntygCounter++).
                 withPatient(patientId).withKon(patientKon).withAlder(45).
                 withDiagnoskapitel(0).withDiagnosavsnitt(14).withDiagnoskategori(16).
                 withSjukskrivningsgrad(100).withStartdatum(toDay(sjukfallDate)).withSjukskrivningslangd(47).
                  withLakarkon(Kon.Female).withLakaralder(32).withLakarbefattning(new int[]{201010}).withLakarid(lakarIdMap.get(lakareId)).build();
+    }
+
+    @Test
+    public void testGetSjukfallPerEnhetSeries() throws Exception {
+        //Given
+        final SjukfallUtil sjukfallUtilMock = Mockito.mock(SjukfallUtil.class);
+        ReflectionTestUtils.setField(sjukfallQuery, "sjukfallUtil", sjukfallUtilMock);
+
+        final SjukfallFilter filter = sjukfallUtil.createEnhetFilterFromInternalIntValues(ENHET1_ID);
+        final LocalDate start = new LocalDate();
+        final int periods = 1;
+        final int periodSize = 2;
+        final HashMap<String, String> idsToNames = new HashMap<>();
+        idsToNames.put("-1", "name1");
+
+        //When
+        final KonDataResponse sjukfallPerEnhetSeries = sjukfallQuery.getSjukfallPerEnhetSeries(aisle, filter, start, periods, periodSize, idsToNames);
+
+        //Then
+        Mockito.verify(sjukfallUtilMock).calculateKonDataResponse(eq(aisle), eq(filter), eq(start), eq(periods), eq(periodSize), names.capture(), ids.capture(), any(CounterFunction.class));
+        assertEquals("name1", names.getValue().get(0));
+        assertEquals(-1, ids.getValue().get(0));
     }
 
 }

@@ -6,19 +6,15 @@ underscore.factory('_', function() {
 });
 
 /* App Module */
-var app = angular.module('StatisticsApp', [ 'ngRoute', 'ngCookies', 'ngSanitize', 'ui.bootstrap', 'underscore' ])
-    .constant("COUNTY_COORDS", [{name: 'blekinge', xy: {"x": 35, "y": 15}} , {name: 'dalarna', xy: {"x": 31, "y": 50}},
-        {name: 'halland', xy: {"x": 14, "y": 20}}, {name: 'kalmar', xy: {"x": 40, "y": 20}},
-        {name: 'kronoberg', xy: {"x": 32, "y": 19}}, {name: 'gotland', xy: {"x": 55, "y": 22}},
-        {name: 'gävleborg', xy: {"x": 45, "y": 50}}, {name: 'jämtland', xy: {"x": 29, "y": 66}},
-        {name: 'jönköping', xy: {"x": 28, "y": 24}}, {name: 'norrbotten', xy: {"x": 59, "y": 94}},
-        {name: 'skåne', xy: {"x": 21, "y": 11}}, {name: 'stockholm', xy: {"x": 52, "y": 37}},
-        {name: 'södermanland', xy: {"x": 44, "y": 34}}, {name: 'uppsala', xy: {"x": 50, "y": 42}},
-        {name: 'värmland', xy: {"x": 21, "y": 42}}, {name: 'västerbotten', xy: {"x": 51, "y": 80}},
-        {name: 'västernorrland', xy: {"x": 48, "y": 67}}, {name: 'västmanland', xy: {"x": 42, "y": 42}},
-        {name: 'västra götaland', xy: {"x": 12, "y": 32}}, {name: 'örebro', xy: {"x": 32, "y": 38}},
-        {name: 'östergötland', xy: {"x": 40, "y": 30}}, {name: 'DEFAULT', xy: {"x": 12, "y": 94}}]
-    )
+var app = angular.module('StatisticsApp',
+    ['ngRoute',
+     'ngCookies',
+     'ngSanitize',
+     'ui.bootstrap',
+     'underscore',
+     'StatisticsApp.constants',
+     'StatisticsApp.treeMultiSelector',
+     'StatisticsApp.chartSeriesButtonGroup'])
     .config(
     [ '$routeProvider', function ($routeProvider) {
         $routeProvider.when('/login', {
@@ -89,106 +85,188 @@ var app = angular.module('StatisticsApp', [ 'ngRoute', 'ngCookies', 'ngSanitize'
             templateUrl: 'views/empty.html',
             controller: 'businessLandingPageCtrl',
             title: 'Verksamhet'
-        }).when('/verksamhet/:verksamhetId/oversikt', {
+        }).when('/verksamhet/oversikt', {
             templateUrl: 'views/business/businessOverview.html',
             controller: 'businessOverviewCtrl',
             title: 'Verksamhetsöversikt'
-        }).when('/verksamhet/:verksamhetId/nodata', {
+        }).when('/verksamhet/nodata', {
             templateUrl: 'views/business/noDataAvailable.html',
             title: 'Data saknas'
-        }).when('/verksamhet/:verksamhetId/sjukfallPerManad', {
+        }).when('/verksamhet/sjukfallPerManad', {
             templateUrl: 'views/detailsView.html',
             controller: 'singleLineChartCtrl',
             controllerAs: 'VerksamhetCasesPerMonthCtrl',
             resolve: { config: app.casesPerMonthConfig },
             title: 'Sjukfall per månad'
-        }).when('/verksamhet/:verksamhetId/diagnosgrupp', {
+        }).when('/verksamhet/sjukfallPerManadTvarsnitt', {
+            templateUrl: 'views/detailsView.html',
+            controller: 'columnChartDetailsViewCtrl',
+            controllerAs: 'VerksamhetCasesPerMonthCtrl',
+            resolve: { config: app.casesPerMonthTvarsnittConfig },
+            title: 'Sjukfall per månad'
+        }).when('/verksamhet/diagnosgrupp', {
             templateUrl: 'views/detailsView.html',
             controller: 'doubleAreaChartsCtrl',
             controllerAs: 'VerksamhetDiagnosgruppCtrl',
             resolve: { config: app.diagnosisGroupConfig },
             title: 'Diagnosgrupper'
-        }).when('/verksamhet/:verksamhetId/diagnosavsnitt/:groupId/kategori/:kategoriId', {
+        }).when('/verksamhet/diagnosgrupptvarsnitt', {
+            templateUrl: 'views/detailsView.html',
+            controller: 'columnChartDetailsViewCtrl',
+            controllerAs: 'VerksamhetDiagnosgruppCtrl',
+            resolve: { config: app.diagnosisGroupTvarsnittConfig },
+            title: 'Diagnosgrupper'
+        }).when('/verksamhet/diagnosavsnitt/:groupId/kategori/:kategoriId', {
             templateUrl: 'views/detailsView.html',
             controller: 'doubleAreaChartsCtrl',
             controllerAs: 'VerksamhetDiagnoskategoriCtrl',
             resolve: { config: app.diagnosisSubGroupConfig },
             title: 'Enskilt diagnoskapitel'
-        }).when('/verksamhet/:verksamhetId/diagnosavsnitt/:groupId', {
+        }).when('/verksamhet/diagnosavsnitt/:groupId', {
             templateUrl: 'views/detailsView.html',
             controller: 'doubleAreaChartsCtrl',
             controllerAs: 'VerksamhetDiagnosavsnittCtrl',
             resolve: { config: app.diagnosisSubGroupConfig },
             title: 'Enskilt diagnoskapitel'
-        }).when('/verksamhet/:verksamhetId/diagnosavsnitt', {
-            redirectTo: '/verksamhet/:verksamhetId/diagnosavsnitt/A00-B99'
-        }).when('/verksamhet/:verksamhetId/jamforDiagnoser/:diagnosHash', {
+        }).when('/verksamhet/diagnosavsnitt', {
+            redirectTo: '/verksamhet/diagnosavsnitt/A00-B99'
+        }).when('/verksamhet/diagnosavsnitttvarsnitt/:groupId/kategori/:kategoriId', {
+            templateUrl: 'views/detailsView.html',
+            controller: 'columnChartDetailsViewCtrl',
+            controllerAs: 'VerksamhetDiagnoskategoriCtrl',
+            resolve: { config: app.diagnosisSubGroupTvarsnittConfig },
+            title: 'Enskilt diagnoskapitel'
+        }).when('/verksamhet/diagnosavsnitttvarsnitt/:groupId', {
+            templateUrl: 'views/detailsView.html',
+            controller: 'columnChartDetailsViewCtrl',
+            controllerAs: 'VerksamhetDiagnosavsnittCtrl',
+            resolve: { config: app.diagnosisSubGroupTvarsnittConfig },
+            title: 'Enskilt diagnoskapitel'
+        }).when('/verksamhet/diagnosavsnitttvarsnitt', {
+            redirectTo: '/verksamhet/diagnosavsnitttvarsnitt/A00-B99'
+        }).when('/verksamhet/jamforDiagnoser/:diagnosHash', {
             templateUrl: 'views/detailsView.html',
             controller: 'columnChartDetailsViewCtrl',
             controllerAs: 'VerksamhetCompareDiagnosisCtrl',
             resolve: { config: app.compareDiagnosis },
             title: 'Jämför valfria diagnoser'
-        }).when('/verksamhet/:verksamhetId/jamforDiagnoser', {
-            redirectTo: '/verksamhet/:verksamhetId/jamforDiagnoser/-'
-        }).when('/verksamhet/:verksamhetId/aldersgrupper', {
+        }).when('/verksamhet/jamforDiagnoser', {
+            redirectTo: '/verksamhet/jamforDiagnoser/-'
+        }).when('/verksamhet/jamforDiagnoserTidsserie/:diagnosHash', {
+            templateUrl: 'views/detailsView.html',
+            controller: 'doubleAreaChartsCtrl',
+            controllerAs: 'VerksamhetCompareDiagnosisCtrl',
+            resolve: { config: app.compareDiagnosisTimeSeriesConfig },
+            title: 'Jämför valfria diagnoser'
+        }).when('/verksamhet/jamforDiagnoserTidsserie', {
+            redirectTo: '/verksamhet/jamforDiagnoserTidsserie/-'
+        }).when('/verksamhet/aldersgrupper', {
             templateUrl: 'views/detailsView.html',
             controller: 'columnChartDetailsViewCtrl',
             controllerAs: 'VerksamhetAgeGroupCtrl',
             resolve: { config: app.nationalAgeGroupConfig },
             title: 'Åldersgrupper'
-        }).when('/verksamhet/:verksamhetId/aldersgrupperpagaende', {
+        }).when('/verksamhet/aldersgrupperTidsserie', {
+            templateUrl: 'views/detailsView.html',
+            controller: 'doubleAreaChartsCtrl',
+            controllerAs: 'VerksamhetAgeGroupCtrl',
+            resolve: { config: app.nationalAgeGroupTimeSeriesConfig },
+            title: 'Åldersgrupper'
+        }).when('/verksamhet/aldersgrupperpagaende', {
             templateUrl: 'views/detailsView.html',
             controller: 'columnChartDetailsViewCtrl',
             controllerAs: 'VerksamhetAgeGroupCurrentCtrl',
             resolve: { config: app.nationalAgeGroupCurrentConfig },
             title: 'Åldersgrupper'
-        }).when('/verksamhet/:verksamhetId/sjukskrivningsgrad', {
+        }).when('/verksamhet/sjukskrivningsgrad', {
             templateUrl: 'views/detailsView.html',
             controller: 'doubleAreaChartsCtrl',
             controllerAs: 'VerksamhetDegreeOfSickLeaveCtrl',
             resolve: { config: app.degreeOfSickLeaveConfig },
             title: 'Sjukskrivningsgrad'
-        }).when('/verksamhet/:verksamhetId/sjukskrivningslangd', {
+        }).when('/verksamhet/sjukskrivningsgradtvarsnitt', {
+            templateUrl: 'views/detailsView.html',
+            controller: 'columnChartDetailsViewCtrl',
+            controllerAs: 'VerksamhetDegreeOfSickLeaveCtrl',
+            resolve: { config: app.degreeOfSickLeaveTvarsnittConfig },
+            title: 'Sjukskrivningsgrad'
+        }).when('/verksamhet/sjukskrivningslangd', {
             templateUrl: 'views/detailsView.html',
             controller: 'columnChartDetailsViewCtrl',
             controllerAs: 'VerksamhetSickLeaveLengthCtrl',
             resolve: { config: app.nationalSickLeaveLengthConfig },
             title: 'Sjukskrivningslängd'
-        }).when('/verksamhet/:verksamhetId/sjukskrivningslangdpagaende', {
+        }).when('/verksamhet/sjukskrivningslangdTidsserie', {
+            templateUrl: 'views/detailsView.html',
+            controller: 'doubleAreaChartsCtrl',
+            controllerAs: 'VerksamhetSickLeaveLengthCtrl',
+            resolve: { config: app.sickLeaveLengthTimeSeriesConfig },
+            title: 'Sjukskrivningslängd'
+        }).when('/verksamhet/sjukskrivningslangdpagaende', {
             templateUrl: 'views/detailsView.html',
             controller: 'columnChartDetailsViewCtrl',
             controllerAs: 'VerksamhetSickLeaveLengthCurrentCtrl',
             resolve: { config: app.nationalSickLeaveLengthCurrentConfig },
             title: 'Sjukskrivningslängd'
-        }).when('/verksamhet/:verksamhetId/langasjukskrivningar', {
+        }).when('/verksamhet/langasjukskrivningar', {
             templateUrl: 'views/detailsView.html',
             controller: 'singleLineChartCtrl',
             controllerAs: 'VerksamhetLongSickLeavesCtrl',
             resolve: { config: app.longSickLeavesConfig },
             title: 'Sjukskrivningslängd mer än 90 dagar'
-        }).when('/verksamhet/:verksamhetId/sjukfallperenhet', {
+        }).when('/verksamhet/langasjukskrivningartvarsnitt', {
+            templateUrl: 'views/detailsView.html',
+            controller: 'columnChartDetailsViewCtrl',
+            controllerAs: 'VerksamhetLongSickLeavesCtrl',
+            resolve: { config: app.longSickLeavesTvarsnittConfig },
+            title: 'Sjukskrivningslängd mer än 90 dagar'
+        }).when('/verksamhet/sjukfallperenhet', {
             templateUrl: 'views/detailsView.html',
             controller: 'columnChartDetailsViewCtrl',
             controllerAs: 'VerksamhetCasesPerBusinessCtrl',
             resolve: { config: app.casesPerBusinessConfig },
             title: 'Antal sjukfall per vårdenhet'
-        }).when('/verksamhet/:verksamhetId/sjukfallperlakare', {
+        }).when('/verksamhet/sjukfallperenhettidsserie', {
+            templateUrl: 'views/detailsView.html',
+            controller: 'doubleAreaChartsCtrl',
+            controllerAs: 'VerksamhetCasesPerBusinessCtrl',
+            resolve: { config: app.casesPerBusinessTimeSeriesConfig },
+            title: 'Antal sjukfall per vårdenhet'
+        }).when('/verksamhet/sjukfallperlakare', {
             templateUrl: 'views/detailsView.html',
             controller: 'columnChartDetailsViewCtrl',
             controllerAs: 'VerksamhetCasesPerLakareCtrl',
             resolve: { config: app.casesPerLakareConfig },
             title: 'Antal sjukfall per läkare'
-        }).when('/verksamhet/:verksamhetId/sjukfallperlakaresalderochkon', {
+        }).when('/verksamhet/sjukfallperlakaretidsserie', {
+            templateUrl: 'views/detailsView.html',
+            controller: 'doubleAreaChartsCtrl',
+            controllerAs: 'VerksamhetCasesPerLakareCtrl',
+            resolve: { config: app.casesPerLakareTimeSeriesConfig },
+            title: 'Antal sjukfall per läkare'
+        }).when('/verksamhet/sjukfallperlakaresalderochkon', {
             templateUrl: 'views/detailsView.html',
             controller: 'columnChartDetailsViewCtrl',
             controllerAs: 'VerksamhetLakaresAlderOchKonCtrl',
             resolve: { config: app.casesPerLakaresAlderOchKonConfig },
             title: 'Sjukfall per läkarens ålder och kön'
-        }).when('/verksamhet/:verksamhetId/sjukfallperlakarbefattning', {
+        }).when('/verksamhet/sjukfallperlakaresalderochkontidsserie', {
+            templateUrl: 'views/detailsView.html',
+            controller: 'doubleAreaChartsCtrl',
+            controllerAs: 'VerksamhetLakaresAlderOchKonCtrl',
+            resolve: { config: app.casesPerLakaresAlderOchKonTidsserieConfig },
+            title: 'Sjukfall per läkarens ålder och kön'
+        }).when('/verksamhet/sjukfallperlakarbefattning', {
             templateUrl: 'views/detailsView.html',
             controller: 'columnChartDetailsViewCtrl',
             controllerAs: 'VerksamhetLakarbefattningCtrl',
             resolve: { config: app.casesPerLakarbefattningConfig },
+            title: 'Sjukfall per läkarbefattning'
+        }).when('/verksamhet/sjukfallperlakarbefattningtidsserie', {
+            templateUrl: 'views/detailsView.html',
+            controller: 'doubleAreaChartsCtrl',
+            controllerAs: 'VerksamhetLakarbefattningCtrl',
+            resolve: { config: app.casesPerLakarbefattningTidsserieConfig },
             title: 'Sjukfall per läkarbefattning'
         }).when('/om/tjansten', {
             templateUrl: 'views/about/about.html',

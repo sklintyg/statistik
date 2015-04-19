@@ -24,7 +24,7 @@ function ($scope, $rootScope, $window, $timeout, statisticsData, businessFilter,
 
     var perMonthAlterationChart = {}, newSexProportionChart = {}, oldSexProportionChart = {},
         ageDonutChart = {}, diagnosisDonutChart = {}, degreeOfSickLeaveChart = {}, sickLeaveLengthChart = {};
-    $scope.baseUrl = "#/verksamhet/" + $routeParams.verksamhetId;
+    $scope.baseUrl = "#/verksamhet";
 
     var dataReceived = function (result) {
         $scope.subTitle = "Utveckling för verksamheten de senaste tre månaderna, " + result.periodText;
@@ -266,8 +266,8 @@ function ($scope, $rootScope, $window, $timeout, statisticsData, businessFilter,
         chartOptions.xAxis.labels.format = '{value}';
         chartOptions.yAxis.title = { text: 'Antal' };
         chartOptions.tooltip.headerFormat = '<span style="font-size: 10px">' + (tooltipHeaderPrefix || "") + '{point.key}</span><br/>';
-        chartOptions.yAxis.tickPixelInterval = 30,
-            chartOptions.legend.enabled = false;
+        chartOptions.yAxis.tickPixelInterval = 30;
+        chartOptions.legend.enabled = false;
         return new Highcharts.Chart(chartOptions);
     }
 
@@ -285,7 +285,7 @@ function ($scope, $rootScope, $window, $timeout, statisticsData, businessFilter,
     }
 
     function refresh() {
-        statisticsData.getBusinessOverview($routeParams.verksamhetId, dataReceived, function () {
+        statisticsData.getBusinessOverview(dataReceived, function () {
             $scope.dataLoadingError = true;
         });
     }
