@@ -58,7 +58,7 @@ class UpdateEnhetNamnFromHsaFileService {
         enhetsXml.hsaUnits.hsaUnit.each {
             def id = it.hsaIdentity.text()
             def namn = it.name.text()
-            def updated = sql.executeUpdate('update enhet set namn = :namn where enhetId = :id' , [namn: namn, id : id])
+            def updated = sql.executeUpdate('update enhet set namn = :namn where enhetId = :id and namn <> :namn' , [namn: namn, id : id])
             if (updated > 0) {
                 count += updated
                 LOG.info("Id: $id, Namn: $namn")
