@@ -140,7 +140,7 @@ public class WarehouseService {
     }
 
     public SimpleKonResponse<SimpleKonDataRow> getCasesPerLakare(SjukfallFilter filter, Range range, String vardgivarId) {
-        return sjukfallQuery.getSjukfallPerLakare(vardgivarId, warehouse.get(vardgivarId), filter.getFilter(), range, 1, range.getMonths());
+        return sjukfallQuery.getSjukfallPerLakare(warehouse.get(vardgivarId), filter, range.getFrom(), 1, range.getMonths());
     }
 
     public KonDataResponse getCasesPerLakareSomTidsserie(SjukfallFilter filter, Range range, String vardgivarId) {
