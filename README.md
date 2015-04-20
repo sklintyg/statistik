@@ -1,6 +1,6 @@
 #statistik
 ##Introduktion
-Systemet är logiskt uppdelat på två delsystem: Statistiktjänsten och Statistikapplikationen.
+Systemet är logiskt uppdelat på två delsystem: Statistiktjänsten och Statistikapplikationen. Därutöver finns mindra applikationer och stödsystem, t ex statistik-gatling för att göra lasttester och HSA fileservice för att hämta filer från HSA.
 ###Statistiktjänsten
 Statistiktjänsten beräknar statistik utifrån given rådata och gör denna statistik tillgängligt via ett api.
 ###Statistikapplikationen
@@ -10,6 +10,9 @@ Det finns två olika typer av användare på statistikapplikationen:
 
 + Ej inloggad användare som får tillgång till statistik på nationell nivå.
 + Inloggad användare från vårdenhet som både har tillgång till statistiken för sin enhet samt den övergripande på nationell nivå. 
+
+###HSA fileservice
+HSA fileservice hämta en lista över sjukvårdsenheter från HSA och uppdaterar statistiktjänsten med aktuella enhatsnamn. Listan som hämtas uppdateras varje dygn, så det finns ingen anledning att köra applikationen oftare än så.
 
 ##Komma igång med lokal installation
 Den här sektionen beskriver hur man bygger Inera Statistics för att kunna köras helt fristående.

@@ -1,0 +1,36 @@
+!contents -R2 -g -p -f -h
+
+!3 Givet att:
+
+Ett sjukfall består av två intyg, som överlappar varandra.
+
+| script | dagens datum | 2015-01-01 |
+
+| script | troskel varde | 1 |
+
+| Enbart foljande intyg finns |
+| personnr      | diagnoskod | start      | slut       | enhet  | kommentar |
+| 19790407-1285 | G01        | 2014-08-01 | 2014-09-15 | enhet1 | 46 dagar |
+| 19790407-1285 | G01        | 2014-09-01 | 2014-10-25 | enhet1 | 55 dagar |
+
+!3 Då gäller:
+
+Dagar då det finns två aktiva intyg i samma sjukfall räknas bara en gång.
+
+Nationell:
+| Sjukfall i rapporten sjukskrivningslangd |
+| sjukskrivningslängd | män? | kvinnor? |
+| 31-90 dagar         | 0    | 1        |
+| 91-180 dagar        | 0    | 0        |
+
+Inloggad:
+| Sjukfall i rapporten sjukskrivningslangd |
+| inloggad som | sjukskrivningslängd | män? | kvinnor? |
+| user1        | 31-90 dagar         | 0    | 1        |
+| user1        | 91-180 dagar        | 0    | 0        |
+
+| Sjukfall i rapporten langa sjukfall |
+| inloggad som | år   | månad | män? | kvinnor? |
+| user1  | 2014 | aug   | 0    | 0        |
+| user1  | 2014 | sep   | 0    | 0        |
+| user1  | 2014 | okt   | 0    | 0        |

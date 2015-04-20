@@ -106,6 +106,16 @@ public final class DocumentHelper {
         }
     }
 
+    public static String getEnhetNamn(JsonNode document, IntygVersion version) {
+        if (IntygVersion.VERSION1 == version) {
+            final String result = document.path("skapadAv").path("vardenhet").path("namn").textValue();
+            return result;
+        } else {
+            final String result = document.path("grundData").path("skapadAv").path("vardenhet").path("enhetsnamn").textValue();
+            return result;
+        }
+    }
+
     public static String getLakarId(JsonNode document, IntygVersion version) {
         if (IntygVersion.VERSION1 == version) {
             return document.path("skapadAv").path("id").path(EXTENSION).textValue();
