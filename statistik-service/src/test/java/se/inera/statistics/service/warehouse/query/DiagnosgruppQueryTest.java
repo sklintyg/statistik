@@ -21,9 +21,11 @@ package se.inera.statistics.service.warehouse.query;
 import com.google.common.base.Predicate;
 import org.joda.time.LocalDate;
 import org.joda.time.LocalDateTime;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import se.inera.statistics.service.report.model.DiagnosgruppResponse;
@@ -40,10 +42,12 @@ import static se.inera.statistics.service.warehouse.Fact.aFact;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:icd10.xml", "classpath:query-test.xml"})
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 public class DiagnosgruppQueryTest {
 
     public static final String VARDGIVARE = "vardgivare";
-    private Warehouse warehouse = new Warehouse();
+
+    private Warehouse warehouse;
 
     private int intyg;
     private int patient;
@@ -57,13 +61,22 @@ public class DiagnosgruppQueryTest {
     @Autowired
     private SjukfallUtil sjukfallUtil;
 
+    @Before
+    public void setUp() throws Exception {
+        warehouse = new Warehouse();
+    }
+
     @Test
     public void one() {
         fact(4010, 0);
         warehouse.complete(LocalDateTime.now());
-        Collection<Sjukfall> sjukfall = sjukfallUtil.calculateSjukfall(warehouse.get(VARDGIVARE));
+        Collection<Sjukfall> sjukfall = calculateSjukfallsHelper(warehouse.get(VARDGIVARE));
         Map<Integer,Counter<Integer>> count = query.count(sjukfall);
         assertEquals(1, count.get(icd10.getKapitel("A00-B99").toInt()).getCount());
+    }
+
+    private Collection<Sjukfall> calculateSjukfallsHelper(Aisle aisle) {
+        return sjukfallUtil.sjukfallGrupper(new LocalDate(2000, 1, 1), 1, 1000000, aisle, SjukfallUtil.ALL_ENHETER).iterator().next().getSjukfall();
     }
 
     @Test
@@ -81,7 +94,7 @@ public class DiagnosgruppQueryTest {
         fact(4010, 500);
         fact(4010, 600);
         warehouse.complete(LocalDateTime.now());
-        Collection<Sjukfall> sjukfall = sjukfallUtil.calculateSjukfall(warehouse.get(VARDGIVARE));
+        Collection<Sjukfall> sjukfall = calculateSjukfallsHelper(warehouse.get(VARDGIVARE));
         List<Counter<Integer>> count = query.count(sjukfall, 4);
 
         assertEquals(4, count.size());

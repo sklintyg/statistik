@@ -18,7 +18,6 @@
  */
 package se.inera.statistics.service.warehouse;
 
-import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.cache.CacheBuilder;
@@ -34,7 +33,6 @@ import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.report.model.KonDataResponse;
 import se.inera.statistics.service.report.model.KonDataRow;
 import se.inera.statistics.service.report.model.KonField;
-import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.SimpleKonDataRow;
 import se.inera.statistics.service.report.model.SimpleKonResponse;
 import se.inera.statistics.service.report.util.ReportUtil;
@@ -42,11 +40,8 @@ import se.inera.statistics.service.warehouse.query.CounterFunction;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ExecutionException;
 
@@ -67,8 +62,6 @@ public class SjukfallUtil {
             return true;
         }
     }, SjukfallFilter.HASH_EMPTY_FILTER);
-
-    public static final int LONG_LIMIT = 90;
 
     public SjukfallUtil() {
     }
@@ -92,61 +85,6 @@ public class SjukfallUtil {
         return sjukfallGroupsCache;
     }
 
-    public Collection<Sjukfall> active(Range range, Aisle aisle, Predicate<Fact> filter) {
-        return active(calculateSjukfall(aisle, filter, WidelineConverter.toDay(firstDayAfter(range))), range);
-    }
-
-    private Collection<Sjukfall> active(Collection<Sjukfall> all, Range range) {
-        int start = WidelineConverter.toDay(range.getFrom());
-        int end = WidelineConverter.toDay(firstDayAfter(range));
-        Collection<Sjukfall> active = new ArrayList<>();
-        for (Sjukfall sjukfall : all) {
-            if (sjukfall.in(start, end)) {
-                active.add(sjukfall);
-            }
-        }
-        return active;
-    }
-
-    private Collection<Sjukfall> calculateSjukfall(Aisle aisle, Predicate<Fact> filter, int cutoff) {
-        Collection<Sjukfall> sjukfalls = new ArrayList<>();
-        Map<Integer, Sjukfall> active = new HashMap<>();
-        for (Fact line : aisle) {
-            if (line.getStartdatum() >= cutoff) {
-                break;
-            }
-            int key = line.getPatient();
-            Sjukfall sjukfall = active.get(key);
-
-            if (sjukfall == null) {
-                if (filter.apply(line)) {
-                    sjukfall = new Sjukfall(line);
-                    active.put(key, sjukfall);
-                }
-            } else {
-                Sjukfall nextSjukfall = sjukfall.join(line);
-                active.put(key, nextSjukfall);
-                if (!nextSjukfall.isExtended()) {
-                    sjukfalls.add(sjukfall);
-                }
-            }
-        }
-        for (Sjukfall sjukfall : active.values()) {
-            sjukfalls.add(sjukfall);
-        }
-        return sjukfalls;
-    }
-
-    @VisibleForTesting
-    public Collection<Sjukfall> calculateSjukfall(Aisle aisle) {
-        return calculateSjukfall(aisle, ALL_ENHETER.getFilter(), Integer.MAX_VALUE);
-    }
-
-    @VisibleForTesting
-    Collection<Sjukfall> calculateSjukfall(Aisle aisle, Integer... enhetIds) {
-        return calculateSjukfall(aisle, createEnhetFilterFromInternalIntValues(enhetIds).getFilter(), Integer.MAX_VALUE);
-    }
-
     public SjukfallFilter createEnhetFilter(String... enhetIds) {
         final Set<Integer> availableEnhets = new HashSet<>(Lists.transform(Arrays.asList(enhetIds), new Function<String, Integer>() {
             @Override
@@ -154,16 +92,6 @@ public class SjukfallUtil {
                 return Warehouse.getEnhet(enhetId);
             }
         }));
-        return new SjukfallFilter(new Predicate<Fact>() {
-            @Override
-            public boolean apply(Fact fact) {
-                return availableEnhets.contains(fact.getEnhet());
-            }
-        }, SjukfallFilter.getHashValueForEnhets(availableEnhets.toArray()));
-    }
-
-    public SjukfallFilter createEnhetFilterFromInternalIntValues(Integer... enhetIds) {
-        final HashSet<Integer> availableEnhets = new HashSet<>(Arrays.asList(enhetIds));
         return new SjukfallFilter(new Predicate<Fact>() {
             @Override
             public boolean apply(Fact fact) {
@@ -190,20 +118,6 @@ public class SjukfallUtil {
             }
         }
         return Lists.newArrayList(new SjukfallIterator(from, periods, periodSize, aisle, sjukfallFilter.getFilter(), useOriginalSjukfallStart));
-    }
-
-    static LocalDate firstDayAfter(Range range) {
-        return range.getTo().plusMonths(1);
-    }
-
-    public int getLong(Collection<Sjukfall> sjukfalls) {
-        int count = 0;
-        for (Sjukfall sjukfall : sjukfalls) {
-            if (sjukfall.getRealDays() > LONG_LIMIT) {
-                count++;
-            }
-        }
-        return count;
     }
 
     //CHECKSTYLE:OFF ParameterNumberCheck

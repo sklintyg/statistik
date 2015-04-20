@@ -39,6 +39,7 @@ import se.inera.statistics.service.warehouse.Aisle;
 import se.inera.statistics.service.warehouse.Fact;
 import se.inera.statistics.service.warehouse.SjukfallFilter;
 import se.inera.statistics.service.warehouse.SjukfallUtil;
+import se.inera.statistics.service.warehouse.SjukfallUtilTest;
 import se.inera.statistics.service.warehouse.Warehouse;
 
 import java.util.HashMap;
@@ -81,7 +82,7 @@ public class SjukfallQueryTest {
 
     private SjukfallUtil sjukfallUtil = new SjukfallUtil();
 
-    private SjukfallFilter enhetFilter = sjukfallUtil.createEnhetFilterFromInternalIntValues(ENHET1_ID);
+    private SjukfallFilter enhetFilter = SjukfallUtilTest.createEnhetFilterFromInternalIntValues(ENHET1_ID);
 
     @Captor
     private ArgumentCaptor<List<Object>> ids;
@@ -107,7 +108,7 @@ public class SjukfallQueryTest {
         aisle.addLine(fact(PATIENT2_ID, PATIENT2_KON, LAKARE2_ID));
 
         // When
-        enhetFilter = sjukfallUtil.createEnhetFilterFromInternalIntValues(ENHET1_ID);
+        enhetFilter = SjukfallUtilTest.createEnhetFilterFromInternalIntValues(ENHET1_ID);
         SimpleKonResponse<SimpleKonDataRow> result = sjukfallQuery.getSjukfallPerLakare(aisle, enhetFilter, range.getFrom(), 1, 12);
 
         // Then
@@ -173,7 +174,7 @@ public class SjukfallQueryTest {
         aisle.addLine(fact(PATIENT1_ID, PATIENT1_KON, LAKARE3_ID));
 
         // When
-        SimpleKonResponse<SimpleKonDataRow> result = sjukfallQuery.getSjukfallPerLakare(aisle, sjukfallUtil.createEnhetFilterFromInternalIntValues(ENHET1_ID), range.getFrom(), 1, 12);
+        SimpleKonResponse<SimpleKonDataRow> result = sjukfallQuery.getSjukfallPerLakare(aisle, SjukfallUtilTest.createEnhetFilterFromInternalIntValues(ENHET1_ID), range.getFrom(), 1, 12);
 
         // Then
         assertEquals(2, result.getRows().size());
@@ -228,7 +229,7 @@ public class SjukfallQueryTest {
         final SjukfallUtil sjukfallUtilMock = Mockito.mock(SjukfallUtil.class);
         ReflectionTestUtils.setField(sjukfallQuery, "sjukfallUtil", sjukfallUtilMock);
 
-        final SjukfallFilter filter = sjukfallUtil.createEnhetFilterFromInternalIntValues(ENHET1_ID);
+        final SjukfallFilter filter = SjukfallUtilTest.createEnhetFilterFromInternalIntValues(ENHET1_ID);
         final LocalDate start = new LocalDate();
         final int periods = 1;
         final int periodSize = 2;

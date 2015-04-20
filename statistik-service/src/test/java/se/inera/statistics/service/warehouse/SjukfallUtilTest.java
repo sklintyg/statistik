@@ -19,13 +19,13 @@
 package se.inera.statistics.service.warehouse;
 
 import com.google.common.base.Function;
+import com.google.common.base.Predicate;
 import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Lists;
 import org.joda.time.LocalDate;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
-import org.springframework.test.util.ReflectionTestUtils;
 import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.report.model.KonDataResponse;
 import se.inera.statistics.service.report.model.Range;
@@ -34,10 +34,15 @@ import se.inera.statistics.service.warehouse.query.CounterFunction;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
 import static se.inera.statistics.service.report.model.Kon.Female;
 import static se.inera.statistics.service.warehouse.Fact.aFact;
 
@@ -55,7 +60,7 @@ public class SjukfallUtilTest {
     @Test
     public void oneIntygIsOneSjukfall() throws Exception {
         aisle.addLine(createFact(1, 1, 4010, 1, 47));
-        Collection<Sjukfall> sjukfalls = sjukfallUtil.calculateSjukfall(aisle);
+        Collection<Sjukfall> sjukfalls = calculateSjukfallsHelper();
         assertEquals(1, sjukfalls.size());
     }
 
@@ -63,7 +68,7 @@ public class SjukfallUtilTest {
     public void twoCloseIntygForSamePersonIsOneSjukfall() throws Exception {
         aisle.addLine(createFact(1, 1, 4010, 10, 1, 1));
         aisle.addLine(createFact(1, 1, 4025, 10, 1, 2));
-        Collection<Sjukfall> sjukfalls = sjukfallUtil.calculateSjukfall(aisle);
+        Collection<Sjukfall> sjukfalls = calculateSjukfallsHelper();
         assertEquals(1, sjukfalls.size());
 
         Sjukfall sjukfall = sjukfalls.iterator().next();
@@ -84,7 +89,7 @@ public class SjukfallUtilTest {
     public void twoFarSeparatedIntygForSamePersonAreTwoSjukfall() throws Exception {
         aisle.addLine(createFact(1, 1, 4010));
         aisle.addLine(createFact(1, 1, 4026));
-        Collection<Sjukfall> sjukfalls = sjukfallUtil.calculateSjukfall(aisle);
+        Collection<Sjukfall> sjukfalls = calculateSjukfallsHelper();
         assertEquals(2, sjukfalls.size());
     }
 
@@ -92,25 +97,8 @@ public class SjukfallUtilTest {
     public void twoIntygForTwoPersonsAreTwoSjukfall() throws Exception {
         aisle.addLine(createFact(1, 1, 4010));
         aisle.addLine(createFact(1, 2, 4010));
-        Collection<Sjukfall> sjukfalls = sjukfallUtil.calculateSjukfall(aisle);
+        Collection<Sjukfall> sjukfalls = calculateSjukfallsHelper();
         assertEquals(2, sjukfalls.size());
-    }
-
-    @Test
-    public void sjukfallStartOnlyOnSelectedEnhetsButContinuesOnAnyEnhet() throws Exception {
-        aisle.addLine(createFact(2, 1, 4010));
-        aisle.addLine(createFact(1, 1, 4020));
-        aisle.addLine(createFact(2, 1, 4030));
-
-        aisle.addLine(createFact(2, 2, 4010));
-        aisle.addLine(createFact(3, 2, 4020));
-        aisle.addLine(createFact(2, 2, 4030));
-
-        Collection<Sjukfall> sjukfalls = sjukfallUtil.calculateSjukfall(aisle, 1, 3);
-        assertEquals(2, sjukfalls.size());
-        assertEquals(2, sjukfalls.iterator().next().getIntygCount());
-        assertEquals(4020, sjukfalls.iterator().next().getStart());
-        assertEquals(20, sjukfalls.iterator().next().getRealDays());
     }
 
     @Test
@@ -125,14 +113,14 @@ public class SjukfallUtilTest {
 
         aisle.sort();
 
-        Iterator<SjukfallGroup> actives = sjukfallUtil.sjukfallGrupper(new LocalDate("2010-11-01"), 3, 1, aisle, sjukfallUtil.createEnhetFilterFromInternalIntValues(2)).iterator();
+        Iterator<SjukfallGroup> actives = sjukfallUtil.sjukfallGrupper(new LocalDate("2010-11-01"), 3, 1, aisle, createEnhetFilterFromInternalIntValues(2)).iterator();
         assertTrue(actives.next().getSjukfall().isEmpty());
 
         assertEquals(2, actives.next().getSjukfall().size());
         assertEquals(2, actives.next().getSjukfall().size());
         assertFalse(actives.hasNext());
 
-        actives = sjukfallUtil.sjukfallGrupper(new LocalDate("2010-11-01"), 2, 12, aisle, sjukfallUtil.createEnhetFilterFromInternalIntValues(2)).iterator();
+        actives = sjukfallUtil.sjukfallGrupper(new LocalDate("2010-11-01"), 2, 12, aisle, createEnhetFilterFromInternalIntValues(2)).iterator();
 
         assertEquals(2, actives.next().getSjukfall().size());
         assertEquals(0, actives.next().getSjukfall().size());
@@ -170,7 +158,7 @@ public class SjukfallUtilTest {
 
         aisle.sort();
 
-        Iterator<SjukfallGroup> actives = sjukfallUtil.sjukfallGrupper(monthStart, 1, 1, aisle, sjukfallUtil.createEnhetFilterFromInternalIntValues(ENHET1)).iterator();
+        Iterator<SjukfallGroup> actives = sjukfallUtil.sjukfallGrupper(monthStart, 1, 1, aisle, createEnhetFilterFromInternalIntValues(ENHET1)).iterator();
         assertEquals(1, actives.next().getSjukfall().size());
     }
 
@@ -183,7 +171,7 @@ public class SjukfallUtilTest {
 
         aisle.sort();
 
-        Iterator<SjukfallGroup> actives = sjukfallUtil.sjukfallGrupper(monthStart, 1, 1, aisle, sjukfallUtil.createEnhetFilterFromInternalIntValues(ENHET1)).iterator();
+        Iterator<SjukfallGroup> actives = sjukfallUtil.sjukfallGrupper(monthStart, 1, 1, aisle, createEnhetFilterFromInternalIntValues(ENHET1)).iterator();
         assertEquals(2, actives.next().getSjukfall().size());
     }
 
@@ -254,6 +242,20 @@ public class SjukfallUtilTest {
 
     private Sjukfall createSjukfall(Kon kon) {
         return new Sjukfall(new Fact(0, 1, 2, 3, 4, 1, 6, kon.getNumberRepresentation(), 30, 0, 0, 0, 100, 10, 1, 30, new int[0], 0));
+    }
+
+    public static SjukfallFilter createEnhetFilterFromInternalIntValues(Integer... enhetIds) {
+        final HashSet<Integer> availableEnhets = new HashSet<>(Arrays.asList(enhetIds));
+        return new SjukfallFilter(new Predicate<Fact>() {
+            @Override
+            public boolean apply(Fact fact) {
+                return availableEnhets.contains(fact.getEnhet());
+            }
+        }, SjukfallFilter.getHashValueForEnhets(availableEnhets.toArray()));
+    }
+
+    private Collection<Sjukfall> calculateSjukfallsHelper() {
+        return sjukfallUtil.sjukfallGrupper(new LocalDate(2000, 1, 1), 1, 1000000, aisle, SjukfallUtil.ALL_ENHETER).iterator().next().getSjukfall();
     }
 
 }

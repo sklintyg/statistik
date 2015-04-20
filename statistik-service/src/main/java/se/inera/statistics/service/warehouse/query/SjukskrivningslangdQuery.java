@@ -188,4 +188,14 @@ public final class SjukskrivningslangdQuery {
         return sjukfallUtil.calculateKonDataResponse(aisle, filter, start, periods, periodLength, names, ids, counterFunction);
     }
 
+    static int getLong(Collection<Sjukfall> sjukfalls) {
+        int count = 0;
+        for (Sjukfall sjukfall : sjukfalls) {
+            if (sjukfall.getRealDays() > LONG_SJUKFALL) {
+                count++;
+            }
+        }
+        return count;
+    }
+
 }

@@ -18,9 +18,11 @@
  */
 package se.inera.statistics.service.warehouse.query;
 
+import org.joda.time.LocalDate;
 import org.joda.time.LocalDateTime;
 import org.junit.Test;
 import se.inera.statistics.service.report.model.Kon;
+import se.inera.statistics.service.warehouse.Aisle;
 import se.inera.statistics.service.warehouse.Fact;
 import se.inera.statistics.service.warehouse.Sjukfall;
 import se.inera.statistics.service.warehouse.SjukfallUtil;
@@ -44,9 +46,13 @@ public class SjukskrivningsgradQueryTest {
     public void one() {
         fact(4010, 100);
         warehouse.complete(LocalDateTime.now());
-        Collection<Sjukfall> sjukfall = new SjukfallUtil().calculateSjukfall(warehouse.get(VARDGIVARE));
+        Collection<Sjukfall> sjukfall = calculateSjukfallsHelper(warehouse.get(VARDGIVARE));
         List<Counter<Integer>> count = SjukskrivningsgradQuery.count(sjukfall);
         assertEquals(1, count.get(3).getCount());
+    }
+
+    private Collection<Sjukfall> calculateSjukfallsHelper(Aisle aisle) {
+        return new SjukfallUtil().sjukfallGrupper(new LocalDate(2000, 1, 1), 1, 1000000, aisle, SjukfallUtil.ALL_ENHETER).iterator().next().getSjukfall();
     }
 
     @Test
@@ -63,7 +69,7 @@ public class SjukskrivningsgradQueryTest {
         fact(4010, 100);
         fact(4010, 100);
         warehouse.complete(LocalDateTime.now());
-        Collection<Sjukfall> sjukfall = new SjukfallUtil().calculateSjukfall(warehouse.get(VARDGIVARE));
+        Collection<Sjukfall> sjukfall = calculateSjukfallsHelper(warehouse.get(VARDGIVARE));
         List<Counter<Integer>> count = SjukskrivningsgradQuery.count(sjukfall);
 
         assertEquals(4, count.size());

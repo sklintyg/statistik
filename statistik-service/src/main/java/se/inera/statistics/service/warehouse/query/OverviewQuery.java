@@ -60,8 +60,8 @@ public class OverviewQuery {
         OverviewKonsfordelning currentKonsfordelning = getOverviewKonsfordelning(currentSjukfall.getRange(), currentSjukfall.getSjukfall());
 
 
-        int currentLongSjukfall = sjukfallUtil.getLong(currentSjukfall.getSjukfall());
-        int previousLongSjukfall = sjukfallUtil.getLong(previousSjukfall.getSjukfall());
+        int currentLongSjukfall = SjukskrivningslangdQuery.getLong(currentSjukfall.getSjukfall());
+        int previousLongSjukfall = SjukskrivningslangdQuery.getLong(previousSjukfall.getSjukfall());
 
         List<OverviewChartRowExtended> aldersgrupper = AldersgruppQuery.getOverviewAldersgrupper(currentSjukfall.getSjukfall(), previousSjukfall.getSjukfall(), DISPLAYED_AGE_GROUPS);
         List<OverviewChartRowExtended> diagnosgrupper = query.getOverviewDiagnosgrupper(currentSjukfall.getSjukfall(), previousSjukfall.getSjukfall(), Integer.MAX_VALUE);

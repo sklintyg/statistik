@@ -42,6 +42,7 @@ import java.util.Collection;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
+import org.joda.time.LocalDate;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -89,8 +90,12 @@ public class WarehouseIntegrationTest {
         assertTrue(result.length() > 0);
     }
 
+    private Collection<Sjukfall> calculateSjukfallsHelper(Aisle aisle) {
+        return sjukfallUtil.sjukfallGrupper(new LocalDate(2000, 1, 1), 1, 1000000, aisle, SjukfallUtil.ALL_ENHETER).iterator().next().getSjukfall();
+    }
+
     private void measureSjukfall(Aisle aisle) {
-        Collection<Sjukfall> sjukfalls = sjukfallUtil.calculateSjukfall(aisle);
+        Collection<Sjukfall> sjukfalls = calculateSjukfallsHelper(aisle);
         int totalDays = 0;
         int realDays = 0;
         int totalIntyg = 0;

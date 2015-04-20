@@ -18,11 +18,13 @@
  */
 package se.inera.statistics.service.warehouse.query;
 
+import org.joda.time.LocalDate;
 import org.joda.time.LocalDateTime;
 import org.junit.Test;
 import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.report.util.AldersgroupUtil;
 import se.inera.statistics.service.report.util.Ranges;
+import se.inera.statistics.service.warehouse.Aisle;
 import se.inera.statistics.service.warehouse.Fact;
 import se.inera.statistics.service.warehouse.Sjukfall;
 import se.inera.statistics.service.warehouse.SjukfallUtil;
@@ -49,9 +51,13 @@ public class AldersgruppQueryTest {
     public void one() {
         fact(4010, 10, 45);
         warehouse.complete(LocalDateTime.now());
-        Collection<Sjukfall> sjukfall = sjukfallUtil.calculateSjukfall(warehouse.get(VARDGIVARE));
+        Collection<Sjukfall> sjukfall = calculateSjukfallsHelper(warehouse.get(VARDGIVARE));
         Map<Ranges.Range,Counter<Ranges.Range>> count = AldersgruppQuery.count(sjukfall);
         assertEquals(1, count.get(AldersgroupUtil.RANGES.rangeFor("41-45 år")).getCount());
+    }
+
+    private Collection<Sjukfall> calculateSjukfallsHelper(Aisle aisle) {
+        return sjukfallUtil.sjukfallGrupper(new LocalDate(2000, 1, 1), 1, 1000000, aisle, SjukfallUtil.ALL_ENHETER).iterator().next().getSjukfall();
     }
 
     @Test
@@ -69,7 +75,7 @@ public class AldersgruppQueryTest {
         fact(4010, 10, 50);
         fact(4010, 10, 100);
         warehouse.complete(LocalDateTime.now());
-        Collection<Sjukfall> sjukfall = sjukfallUtil.calculateSjukfall(warehouse.get(VARDGIVARE));
+        Collection<Sjukfall> sjukfall = calculateSjukfallsHelper(warehouse.get(VARDGIVARE));
         List<Counter<Ranges.Range>> count = AldersgruppQuery.count(sjukfall, 4);
 
         assertEquals(4, count.size());
