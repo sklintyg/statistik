@@ -19,6 +19,7 @@
 package se.inera.statistics.service.report.model;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class SimpleKonResponse<T extends SimpleKonDataRow> {
@@ -67,4 +68,28 @@ public class SimpleKonResponse<T extends SimpleKonDataRow> {
     public String toString() {
         return "{\"SimpleKonResponse\":{" + "\"rows\":" + rows + ", \"numberOfMonthsCalculated\":" + getNumberOfMonthsCalculated() + "}}";
     }
+
+    public static SimpleKonResponse<SimpleKonDataRow> create(KonDataResponse konDataResponse, int numberOfMonthsCalculated) {
+        if (konDataResponse == null) {
+            return new SimpleKonResponse<>(Collections.<SimpleKonDataRow>emptyList(), numberOfMonthsCalculated);
+        }
+        final ArrayList<SimpleKonDataRow> simpleKonDataRows = new ArrayList<>();
+        for (int i = 0; i < konDataResponse.getGroups().size(); i++) {
+            simpleKonDataRows.add(createRowFromDataIndex(konDataResponse, i));
+        }
+        return new SimpleKonResponse<>(simpleKonDataRows, numberOfMonthsCalculated);
+    }
+
+    private static SimpleKonDataRow createRowFromDataIndex(KonDataResponse diagnosgruppResponse, int index) {
+        int sumFemale = 0;
+        int sumMale = 0;
+        for (KonDataRow konDataRow : diagnosgruppResponse.getRows()) {
+            final KonField konField = konDataRow.getData().get(index);
+            sumFemale += konField.getFemale();
+            sumMale += konField.getMale();
+        }
+        final String groupName = diagnosgruppResponse.getGroups().get(index);
+        return new SimpleKonDataRow(groupName, sumFemale, sumMale);
+    }
+
 }

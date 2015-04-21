@@ -105,15 +105,15 @@ public class WarehouseService {
     }
 
     public SimpleKonResponse<SimpleKonDataRow> getCasesPerLakare(SjukfallFilter filter, Range range, String vardgivarId) {
-        return sjukfallQuery.getSjukfallPerLakare(vardgivarId, warehouse.get(vardgivarId), filter.getFilter(), range, range.getMonths(), 1);
+        return sjukfallQuery.getSjukfallPerLakare(warehouse.get(vardgivarId), filter, range.getFrom(), 1, range.getMonths());
     }
 
     public SimpleKonResponse<SimpleKonDataRow> getCasesPerDoctorAgeAndGender(SjukfallFilter filter, Range range, String vardgivarId) {
-        return LakaresAlderOchKonQuery.getSjukfallPerLakaresAlderOchKon(warehouse.get(vardgivarId), filter.getFilter(), range, range.getMonths(), 1, sjukfallUtil);
+        return new LakaresAlderOchKonQuery(sjukfallUtil).getSjukfallPerLakaresAlderOchKon(warehouse.get(vardgivarId), filter, range.getFrom(), 1, range.getMonths());
     }
 
     public SimpleKonResponse<SimpleKonDataRow> getNumberOfCasesPerLakarbefattning(SjukfallFilter filter, Range range, String vardgivarId) {
-        return LakarbefattningQuery.getSjukfall(warehouse.get(vardgivarId), filter.getFilter(), range, range.getMonths(), 1, sjukfallUtil);
+        return LakarbefattningQuery.getSjukfall(warehouse.get(vardgivarId), filter, range.getFrom(), 1, range.getMonths(), sjukfallUtil);
     }
 
 }

@@ -24,12 +24,21 @@ import com.google.common.base.Predicate;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
+import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Lists;
 import org.joda.time.LocalDate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
+import se.inera.statistics.service.report.model.Kon;
+import se.inera.statistics.service.report.model.KonDataResponse;
+import se.inera.statistics.service.report.model.KonDataRow;
+import se.inera.statistics.service.report.model.KonField;
 import se.inera.statistics.service.report.model.Range;
+import se.inera.statistics.service.report.model.SimpleKonDataRow;
+import se.inera.statistics.service.report.model.SimpleKonResponse;
+import se.inera.statistics.service.report.util.ReportUtil;
+import se.inera.statistics.service.warehouse.query.CounterFunction;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -101,12 +110,12 @@ public class SjukfallUtil {
 
     private Collection<Sjukfall> calculateSjukfall(Aisle aisle, Predicate<Fact> filter, int cutoff) {
         Collection<Sjukfall> sjukfalls = new ArrayList<>();
-        Map<Integer, Sjukfall> active = new HashMap<>();
+        Map<Long, Sjukfall> active = new HashMap<>();
         for (Fact line : aisle) {
             if (line.getStartdatum() >= cutoff) {
                 break;
             }
-            int key = line.getPatient();
+            long key = line.getPatient();
             Sjukfall sjukfall = active.get(key);
 
             if (sjukfall == null) {
@@ -195,6 +204,43 @@ public class SjukfallUtil {
             }
         }
         return count;
+    }
+
+    //CHECKSTYLE:OFF ParameterNumberCheck
+    public <T> KonDataResponse calculateKonDataResponse(Aisle aisle, SjukfallFilter filter, LocalDate start, int periods, int periodSize, List<String> groupNames, List<T> groupIds, CounterFunction<T> counterFunction) {
+        List<KonDataRow> rows = new ArrayList<>();
+        for (SjukfallGroup sjukfallGroup : sjukfallGrupper(start, periods, periodSize, aisle, filter)) {
+            final HashMultiset<T> maleCounter = HashMultiset.create();
+            final HashMultiset<T> femaleCounter = HashMultiset.create();
+            for (Sjukfall sjukfall : sjukfallGroup.getSjukfall()) {
+                final HashMultiset<T> currentCounter = Kon.Female.equals(sjukfall.getKon()) ? femaleCounter : maleCounter;
+                counterFunction.addCount(sjukfall, currentCounter);
+            }
+            List<KonField> list = new ArrayList<>(groupIds.size());
+            for (T id : groupIds) {
+                list.add(new KonField(femaleCounter.count(id), maleCounter.count(id)));
+            }
+            rows.add(new KonDataRow(ReportUtil.toDiagramPeriod(sjukfallGroup.getRange().getFrom()), list));
+        }
+
+        return new KonDataResponse(groupNames, rows);
+    }
+    //CHECKSTYLE:ON
+
+    public SimpleKonResponse<SimpleKonDataRow> calculateSimpleKonResponse(Aisle aisle, SjukfallFilter filter, LocalDate from, int periods, int periodLength, Function<Sjukfall, Integer> toCount, List<Integer> groups) {
+        List<SimpleKonDataRow> rows = new ArrayList<>();
+        HashMultiset<Integer> maleCounter = HashMultiset.create();
+        HashMultiset<Integer> femaleCounter = HashMultiset.create();
+        for (SjukfallGroup sjukfallGroup: sjukfallGrupper(from, periods, periodLength, aisle, filter)) {
+            for (Sjukfall sjukfall : sjukfallGroup.getSjukfall()) {
+                HashMultiset<Integer> counter = Kon.Male.equals(sjukfall.getKon()) ? maleCounter : femaleCounter;
+                counter.add(toCount.apply(sjukfall));
+            }
+        }
+        for (Integer group : groups) {
+            rows.add(new SimpleKonDataRow(String.valueOf(group), femaleCounter.count(group), maleCounter.count(group)));
+        }
+        return new SimpleKonResponse<>(rows, periodLength);
     }
 
 }

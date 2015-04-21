@@ -43,7 +43,7 @@ public class Fact {
     private int forsamling;
     private int enhet;
     private long lakarintyg;
-    private int patient;
+    private long patient;
     private int startdatum;
     private int kon;
     private int alder;
@@ -58,7 +58,7 @@ public class Fact {
     private int lakarid;
 
     // CHECKSTYLE:OFF ParameterNumber
-    public Fact(int lan, int kommun, int forsamling, int enhet, long lakarintyg, int patient, int startdatum, int kon, int alder, int diagnoskapitel, int diagnosavsnitt, int diagnoskategori, int sjukskrivningsgrad, int sjukskrivningslangd, int lakarkon, int lakaralder, int[] lakarbefattnings, int lakarid) {
+    public Fact(int lan, int kommun, int forsamling, int enhet, long lakarintyg, long patient, int startdatum, int kon, int alder, int diagnoskapitel, int diagnosavsnitt, int diagnoskategori, int sjukskrivningsgrad, int sjukskrivningslangd, int lakarkon, int lakaralder, int[] lakarbefattnings, int lakarid) {
         this.lan = lan;
         this.kommun = kommun;
         this.forsamling = forsamling;
@@ -87,7 +87,7 @@ public class Fact {
         return lakarintyg;
     }
 
-    public int getPatient() {
+    public long getPatient() {
         return patient;
     }
 
