@@ -110,12 +110,12 @@ public class SjukfallUtil {
 
     private Collection<Sjukfall> calculateSjukfall(Aisle aisle, Predicate<Fact> filter, int cutoff) {
         Collection<Sjukfall> sjukfalls = new ArrayList<>();
-        Map<Integer, Sjukfall> active = new HashMap<>();
+        Map<Long, Sjukfall> active = new HashMap<>();
         for (Fact line : aisle) {
             if (line.getStartdatum() >= cutoff) {
                 break;
             }
-            int key = line.getPatient();
+            long key = line.getPatient();
             Sjukfall sjukfall = active.get(key);
 
             if (sjukfall == null) {

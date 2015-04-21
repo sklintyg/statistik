@@ -46,7 +46,7 @@ public class SjukfallIterator implements Iterator<SjukfallGroup> {
         sjukfallCalculator = new SjukfallCalculator(aisle.getLines(), filter, ranges, useOriginalSjukfallStart, extendSjukfall);
     }
 
-    private List<Range> getRanges(LocalDate from, int periods, int periodSize) {
+    static List<Range> getRanges(LocalDate from, int periods, int periodSize) {
         final ArrayList<Range> ranges = new ArrayList<>();
         for (int i = 0; i < periods; i++) {
             final LocalDate fromDate = from.plusMonths(i * periodSize);
