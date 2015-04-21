@@ -19,7 +19,6 @@
 package se.inera.statistics.web.service;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -32,6 +31,7 @@ import se.inera.statistics.hsa.model.Vardenhet;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.warehouse.SjukfallFilter;
 import se.inera.statistics.web.model.LoginInfo;
+import se.inera.statistics.web.model.Verksamhet;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
@@ -64,35 +64,18 @@ public class ProtectedChartDataServiceTest {
         UsernamePasswordAuthenticationToken principal = Mockito.mock(UsernamePasswordAuthenticationToken.class);
         when(request.getUserPrincipal()).thenReturn(principal);
         when(principal.getDetails()).thenReturn(user);
-        when(loginServiceUtil.getLoginInfo(any(HttpServletRequest.class))).thenReturn(new LoginInfo());
     }
 
     @Test
-    public void dummy() {
-       
-    }
-
-    @Ignore
-    public void getOverviewDataForSpecificVerksamhetTest() {
-        init();
-
-        try {
-            chartDataService.getOverviewData(request, null);
-            fail("Current implementation can not use null data");
-        } catch (NullPointerException e) {
-            assertTrue(true);
-        }
-        Mockito.verify(warehouse).getOverview(any(SjukfallFilter.class), any(Range.class), anyString());
-    }
-
-    @Ignore
     public void checkDeniedAccessToVerksamhetTest() {
+        Mockito.when(loginServiceUtil.getLoginInfo(request)).thenReturn(new LoginInfo());
         boolean result = chartDataService.hasAccessTo(request);
         assertEquals(false, result);
     }
 
-    @Ignore
+    @Test
     public void checkAllowedAccessToVerksamhetTest() {
+        Mockito.when(loginServiceUtil.getLoginInfo(request)).thenReturn(new LoginInfo("", "", null, false, false, false, null));
         boolean result = chartDataService.hasAccessTo(request);
         assertEquals(true, result);
     }
