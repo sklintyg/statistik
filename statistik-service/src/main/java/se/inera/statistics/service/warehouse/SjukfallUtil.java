@@ -109,13 +109,11 @@ public class SjukfallUtil {
     }
 
     private List<SjukfallGroup> sjukfallGrupper(LocalDate from, int periods, int periodSize, Aisle aisle, SjukfallFilter sjukfallFilter, boolean useOriginalSjukfallStart) {
-        if (SjukfallFilter.HASH_EMPTY_FILTER.equals(sjukfallFilter.getHash())) {
-            try {
-                return getSjukfallGroupsCache().get(new SjukfallGroupCacheKey(from, periods, periodSize, aisle, sjukfallFilter, useOriginalSjukfallStart));
-            } catch (ExecutionException e) {
-                //Failed to get from cache. Do nothing and fall through.
-                LOG.warn("Failed to get value from cache");
-            }
+        try {
+            return getSjukfallGroupsCache().get(new SjukfallGroupCacheKey(from, periods, periodSize, aisle, sjukfallFilter, useOriginalSjukfallStart));
+        } catch (ExecutionException e) {
+            //Failed to get from cache. Do nothing and fall through.
+            LOG.warn("Failed to get value from cache");
         }
         return Lists.newArrayList(new SjukfallIterator(from, periods, periodSize, aisle, sjukfallFilter.getFilter(), useOriginalSjukfallStart));
     }
