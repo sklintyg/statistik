@@ -424,56 +424,9 @@
             </div>
 
             <div class="col-xs-12 col-sm-9">
-                <div class="row ng-hide" ng-show="isVerksamhetShowing" data-ng-controller="filterCtrl">
+                <div class="row ng-hide" ng-show="isVerksamhetShowing">
                     <div class="col-xs-12">
-                        <div id="statistics-filter-container" class="hidden-print" collapse="isFilterCollapsed">
-                        	<div class="row">
-				                <div class="filter-level" id="first-level-filter">
-                                    <div class="col-xs-4 clearfix" data-ng-if="businessFilter.numberOfBusinesses() === 'medium' || businessFilter.numberOfBusinesses() === 'large'">
-                                        <label for="select-unit"><span message key="lbl.filter.valj-verksamhetstyper"></span></label><br/>
-                                        <select ng-model="businessFilter.verksamhetsTypIds" multiple="multiple"
-                                                ng-options="verksamhet.id as verksamhet.name for verksamhet in businessFilter.verksamhetsTyper" multiselect-dropdown id="select-verksamhet">
-                                        </select>
-                                    </div>
-                                    <div class="col-xs-4 clearfix" data-ng-if="businessFilter.numberOfBusinesses() === 'medium'">
-                                        <label for="select-unit"><span message key="lbl.filter.val-av-enheter"></span></label><br/>
-                                        <select ng-model="businessFilter.geographyBusinessIds" multiple="multiple"
-                                                ng-options="business.id as business.name for business in businessFilter.businesses" multiselect-dropdown id="select-unit">
-                                        </select>
-                                    </div>
-                                    <tree-multi-selector class="col-xs-4 "
-                                                         menu-options="businessFilter.geography"
-                                                         done-clicked="businessFilter.updateGeography"
-                                                         data-ng-if="businessFilter.numberOfBusinesses() === 'large'"
-                                                         text-data="geographyFilterSelectorData">
-                                    </tree-multi-selector>
-                                    <tree-multi-selector class="col-xs-4"
-                                            menu-options="icd10" done-clicked="businessFilter.updateDiagnoses"
-                                            text-data="diagnosisFilterSelectorData">
-                                    </tree-multi-selector>
-                                </div>
-	                            <div class="filter-level no-padding" ng-if="businessFilter.numberOfBusinesses() !== 'small'">
-	                            	<div class="col-xs-12">
-	                            		<div class="divider"></div>
-	                            	</div>
-	                            </div>
-	                            <div class="filter-level" id="actions-for-filter">
-	                            	<div class="col-xs-12 pull-right">
-	                            		<div class="row">
-	                            			<div class="col-xs-12 pull-right">
-                                                <span ng-if="businessFilter.numberOfBusinesses() !== 'small'">
-                                                <span message key="lbl.filter.sum-progress-1"></span>{{ businessFilter.selectedBusinesses.length }}<span message key="lbl.filter.sum-progress-2"></span>{{ businessFilter.businesses.length }} <span message key="lbl.filter.sum-progress-3"></span>
-                                                 <progressbar max="businessFilter.businesses.length" value="businessFilter.selectedBusinesses.length"></progressbar>
-                                                </span>
-	                            				<button type="button" class="btn btn-default pull-right" data-ng-click="resetFilter()"><span message key="lbl.aterstall"></span></button>
-	                                        	<button class="btn btn-success pull-right" message key="lbl.gor-urval" ng-click="makeUnitSelection()"></button>
-	                                        </div>
-			                            </div>
-                                    </div>
-                                </div>
-				        	</div>
-	                    </div>
-	                    <filter-button class="hidden-print"></filter-button>
+                        <business-filter></business-filter>
                     </div>
                 </div>
 				<div class="row">
@@ -497,18 +450,21 @@
 <script type="text/javascript" src="<c:url value='/webjars/jquery/1.10.2/jquery.min.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/webjars/bootstrap/3.1.1/js/bootstrap.min.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/webjars/underscorejs/1.7.0/underscore-min.js'/>"></script>
-<script type="text/javascript" src="<c:url value='/webjars/angularjs/1.2.14/angular.min.js'/>"></script>
-<script type="text/javascript" src="<c:url value='/webjars/angularjs/1.2.14/angular-cookies.min.js'/>"></script>
-<script type="text/javascript" src="<c:url value='/webjars/angularjs/1.2.14/angular-route.min.js'/>"></script>
-<script type="text/javascript" src="<c:url value='/webjars/angularjs/1.2.14/angular-sanitize.min.js'/>"></script>
-<script type="text/javascript" src="<c:url value='/webjars/angular-ui-bootstrap/0.10.0/ui-bootstrap-tpls.min.js'/>"></script>
+<script type="text/javascript" src="<c:url value='/webjars/angularjs/1.2.16/angular.min.js'/>"></script>
+<script type="text/javascript" src="<c:url value='/webjars/angularjs/1.2.16/i18n/angular-locale_sv.js'/>"></script>
+<script type="text/javascript" src="<c:url value='/webjars/angularjs/1.2.16/angular-cookies.min.js'/>"></script>
+<script type="text/javascript" src="<c:url value='/webjars/angularjs/1.2.16/angular-route.min.js'/>"></script>
+<script type="text/javascript" src="<c:url value='/webjars/angularjs/1.2.16/angular-sanitize.min.js'/>"></script>
+<script type="text/javascript" src="<c:url value='/webjars/angular-ui-bootstrap/0.12.1/ui-bootstrap-tpls.min.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/webjars/respond/1.3.0/respond.min.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/webjars/bootstrap-multiselect/0.9.8/js/bootstrap-multiselect.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/app.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/shared/resources/constantsModule.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/services/factories.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/services/printFactory.js'/>"></script>
-<script type="text/javascript" src="<c:url value='/js/app/services/businessFilter.js'/>"></script>
+<script type="text/javascript" src="<c:url value='/js/app/shared/businessfilter/businessFilterModule.js'/>"></script>
+<script type="text/javascript" src="<c:url value='/js/app/shared/businessfilter/businessFilterFactory.js'/>"></script>
+<script type="text/javascript" src="<c:url value='/js/app/shared/businessfilter/businessFilterDirective.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/services/diagnosisTreeFilter.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/services/messageService.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/controller/common.js'/>"></script>
@@ -522,7 +478,6 @@
 <script type="text/javascript" src="<c:url value='/js/app/controller/pageCtrl.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/controller/loginCtrl.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/controller/navigationMenuCtrl.js'/>"></script>
-<script type="text/javascript" src="<c:url value='/js/app/controller/filterCtrl.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/shared/treemultiselector/treeMultiSelectorModule.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/shared/treemultiselector/treeMultiSelectorUtil.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/shared/treemultiselector/treeMultiSelectorCtrl.js'/>"></script>

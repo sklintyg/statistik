@@ -5,24 +5,25 @@ module.exports = function(config) {
     'use strict';
 
     var WEBJAR_DIR = 'build/webjars/META-INF/resources/webjars/';
-
+    var angularVersion = '1.2.16';
     config.set({
         // base path that will be used to resolve all patterns (eg. files, exclude)
         basePath: '../../../',
 
         // frameworks to use
         // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
-        frameworks: ['jasmine'],
+        frameworks: ['jasmine', 'sinon'],
 
         // list of files / patterns to load in the browser
         files: [
             WEBJAR_DIR + 'jquery/1.10.2/jquery.js',
-            WEBJAR_DIR + 'angularjs/1.2.14/angular.js',
-            WEBJAR_DIR + 'angularjs/1.2.14/angular-route.js',
-            WEBJAR_DIR + 'angularjs/1.2.14/angular-cookies.js',
-            WEBJAR_DIR + 'angularjs/1.2.14/angular-sanitize.js',
-            WEBJAR_DIR + 'angularjs/1.2.14/angular-mocks.js',
-            WEBJAR_DIR + 'angular-ui-bootstrap/0.10.0/ui-bootstrap-tpls.min.js',
+            WEBJAR_DIR + 'angularjs/' + angularVersion + '/angular.js',
+            WEBJAR_DIR + 'angularjs/' + angularVersion + '/angular-route.js',
+            WEBJAR_DIR + 'angularjs/' + angularVersion + '/angular-cookies.js',
+            WEBJAR_DIR + 'angularjs/' + angularVersion + '/angular-sanitize.js',
+            WEBJAR_DIR + 'angularjs/' + angularVersion + '/angular-mocks.js',
+            WEBJAR_DIR + 'angularjs/' + angularVersion + '/i18n/angular-locale_sv.js',
+            WEBJAR_DIR + 'angular-ui-bootstrap/0.12.1/ui-bootstrap-tpls.min.js',
             WEBJAR_DIR + 'underscorejs/1.7.0/underscore.js',
             'src/main/webapp/js/**/*.js',
             'src/test/javascript/**/*.js',
@@ -83,7 +84,8 @@ module.exports = function(config) {
             'karma-firefox-launcher',
             'karma-phantomjs-launcher',
             'karma-mocha-reporter',
-            'karma-ng-html2js-preprocessor'
+            'karma-ng-html2js-preprocessor',
+            'karma-sinon'
         ]
         
     });

@@ -14,7 +14,8 @@ var app = angular.module('StatisticsApp',
      'underscore',
      'StatisticsApp.constants',
      'StatisticsApp.treeMultiSelector',
-     'StatisticsApp.chartSeriesButtonGroup'])
+     'StatisticsApp.chartSeriesButtonGroup',
+     'StatisticsApp.businessFilter'])
     .config(
     [ '$routeProvider', function ($routeProvider) {
         $routeProvider.when('/login', {

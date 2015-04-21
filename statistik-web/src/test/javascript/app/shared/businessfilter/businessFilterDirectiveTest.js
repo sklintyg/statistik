@@ -1,0 +1,190 @@
+/*
+ * Copyright (C) 2013 - 2014 Inera AB (http://www.inera.se)
+ *
+ *     This file is part of Inera Statistics (http://code.google.com/p/inera-statistics/).
+ *
+ *     Inera Statistics is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU LESSER GENERAL PUBLIC LICENSE as published by
+ *     the Free Software Foundation, either version 3 of the License, or
+ *     (at your option) any later version.
+ *
+ *     Inera Statistics is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU LESSER GENERAL PUBLIC LICENSE for more details.
+ *
+ *     You should have received a copy of the GNU LESSER GENERAL PUBLIC LICENSE
+ *     along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+describe('Tests for directive button-filter', function () {
+    'use strict';
+
+    var element, outerScope, innerScope, compiled;
+
+    //The module under test
+    beforeEach(module('StatisticsApp.businessFilter'));
+
+    //Needed to get serviceinjections from this namespace
+    beforeEach(module('StatisticsApp'));
+
+    //All htmlTemplates are wrapped in a module so that we can load them properly during test time, otherwise we get an:
+    // Error: Unexpected request: GET js/app/shared/businessfilter/businessFilterView.html
+    // No more request expected
+    beforeEach(module('htmlTemplates'));
+
+    beforeEach(module(function ($provide) {
+        var mockStatistics = {
+            getIcd10Structure: function () {
+            },
+            getFilterHash: function (params) {
+                return {
+                    then: function (success, error) {}
+                };
+            }
+        };
+
+        //Use $provide to mock a service before it is inject into the service, controller or directive that you want to test
+        $provide.value('statisticsData', mockStatistics);
+    }));
+
+    beforeEach(inject(function ($rootScope, $compile) {
+        /*
+         jqLite is really limited (ng 1.2) so if you need more expressive power you will
+         have to include jquery before angular in your karma config
+         */
+
+        //get the jqLite or jQuery element
+        element = angular.element('<business-filter></business-filter>');
+
+        //create a scope (you could use $rootScope.$new(); as well)
+        outerScope = $rootScope;
+
+        /*
+            $compile is your friend.
+            To test a directive, you're going to need to compile a view featuring the directive,
+            then probe DOM elements in that view to assert that they've been affected properly.
+        */
+
+        //compile the element into a function to
+        // process the view.
+        compiled = $compile(element);
+
+        //run the compiled view.
+        compiled(outerScope);
+
+        /*
+         IMPORTANT: Be sure to call scope.$digest() after you make changes to your scope and before you make your assertions!
+         */
+        outerScope.$digest();
+
+        //Get the isolate scope
+        innerScope = element.isolateScope();
+    }));
+
+    //STATISTIK-784
+    describe('Pick to and from dates in the filter component', function () {
+
+        var isDate = function(date) {
+            return ( (new Date(date) !== "Invalid Date" && !isNaN(new Date(date)) ));
+        };
+
+        it('has two datepickers', function () {
+            expect(element.find('#filterFromDate').length).toEqual(1);
+            expect(element.find('#filterToDate').length).toEqual(1);
+        });
+
+        it('has month as the basis for all dates', function () {
+            var dateFormat = 'yyyy-MM';
+
+            //Assert that the scope has the format function
+            expect(outerScope.format).toBeDefined();
+            expect(outerScope.format).toMatch(dateFormat);
+
+            //Assert that the format is reflected in the view
+            expect(element.find('#filterFromDate').attr('datepicker-popup')).toMatch(dateFormat);
+            expect(element.find('#filterToDate').attr('datepicker-popup')).toMatch(dateFormat);
+        });
+
+        it('has a minimum date set on the scope', inject(function (TIME_INTERVAL_MIN_DATE) {
+            expect(outerScope.minDate).toBeDefined('Min date must exist');
+            expect(outerScope.minDate).toEqual(TIME_INTERVAL_MIN_DATE, 'minDate did not match TIME_INTERVAL_MIN_DATE');
+        }));
+
+        it('has a maximum date set on the scope', inject(function (TIME_INTERVAL_MAX_DATE) {
+            expect(outerScope.maxDate).toBeDefined('Max date must exist');
+            expect(outerScope.maxDate).toEqual(TIME_INTERVAL_MAX_DATE, 'maxDate did not match TIME_INTERVAL_MAX_DATE');
+        }));
+
+        it("sets the state of the datepicker to open when it is clicked", function() {
+            expect(outerScope.isFromDateOpen).toBeDefined();
+            expect(outerScope.isToDateOpen).toBeDefined();
+
+            expect(outerScope.isFromDateOpen).not.toBeTruthy();
+            expect(outerScope.isToDateOpen).not.toBeTruthy();
+
+            //click the buttons to open the datepickers
+            element.find('#fromDatePickerBtn').click();
+            expect(outerScope.isFromDateOpen).toBeTruthy();
+            expect(element.find('#filterFromDate').attr('is-open')).toBeTruthy();
+
+            element.find('#toDatePickerBtn').click();
+            expect(outerScope.isToDateOpen).toBeTruthy();
+            expect(element.find('#filterToDate').attr('is-open')).toBeTruthy();
+
+        });
+
+    });
+
+    describe("Making selections", function() {
+        var statisticsData, businessFilter;
+
+        var createParamsObject = function createParamsObject(businessFilter) {
+            return {
+                diagnoser: businessFilter.selectedDiagnoses,
+                enheter: businessFilter.geographyBusinessIds,
+                verksamhetstyper: businessFilter.verksamhetsTypIds,
+                fromDate: businessFilter.fromDate,
+                toDate: businessFilter.fromDate,
+                useDefaultPeriod: businessFilter.useDefaultPeriod
+            };
+        };
+
+        beforeEach(inject(function (_statisticsData_, _businessFilter_) {
+            statisticsData = _statisticsData_;
+            businessFilter = _businessFilter_;
+        }));
+
+        it("sets all needed parameters on params object", function() {
+            //given
+            var spy = sinon.spy(statisticsData, 'getFilterHash');
+
+            businessFilter.selectedDiagnoses = ['A00B99', 'D50D89'];
+
+            var expectedParams = createParamsObject(businessFilter);
+
+            //when
+            outerScope.makeSelection();
+
+            //then
+            expect(spy.calledOnce).toBeTruthy();
+            expect(spy.calledWith(expectedParams)).toBeTruthy();
+
+            //then the parameters are defined in the params object sent to the server
+            expect(spy.getCall(0).args[0].enheter).toBeDefined('Enheter was not defined as expected');
+            expect(spy.getCall(0).args[0].diagnoser).toBeDefined('Diagnoser was not defined as expected');
+            expect(spy.getCall(0).args[0].verksamhetstyper).toBeDefined('Verksamhetstyper was not defined as expected');
+            expect(spy.getCall(0).args[0].fromDate).toBeDefined('fromDate was not defined as expected');
+            expect(spy.getCall(0).args[0].toDate).toBeDefined('toDate was not defined as expected');
+            expect(spy.getCall(0).args[0].useDefaultPeriod).toBeDefined('useDefault was not defined as expected');
+
+            expect(spy.getCall(0).args[0].enheter).toEqual(expectedParams.enheter);
+            expect(spy.getCall(0).args[0].diagnoser).toEqual(expectedParams.diagnoser);
+            expect(spy.getCall(0).args[0].verksamhetstyper).toEqual(expectedParams.verksamhetstyper);
+            expect(spy.getCall(0).args[0].fromDate).toEqual(expectedParams.fromDate);
+            expect(spy.getCall(0).args[0].toDate).toEqual(expectedParams.toDate);
+            expect(spy.getCall(0).args[0].useDefaultPeriod).toEqual(expectedParams.useDefaultPeriod);
+        });
+
+    });
+
+});

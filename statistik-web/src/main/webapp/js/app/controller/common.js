@@ -303,13 +303,21 @@ var ControllerCommons = new function(){
             $scope.doneLoading = false;
         }, 1);
 
-        statisticsData.getFilterHash(diagnoses, null, null, function (selectionHash) {
+        var params = {
+            diagnoser: diagnoses
+        };
+
+        var success = function (selectionHash) {
             var path = $location.path();
             var newPath = path.replace(/\/[^\/]+$/gm, "/" + selectionHash);
             $location.path(newPath);
-        }, function () {
+        };
+
+        var error = function () {
             throw new Error("Failed to get filter hash value");
-        });
+        };
+
+        statisticsData.getFilterHash(params).then(success, error);
     };
 
     this.isShowingVerksamhet = function($location) {

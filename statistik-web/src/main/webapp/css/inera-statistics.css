@@ -1674,9 +1674,7 @@ a.has-collapse {
 .margin-bottom {
 	margin-bottom: 15px !important;
 }
-/*.margin_top_button_group {
-	margin-top: 25px;
-}*/
+
 .dropdown-menu>li>a {
 	max-width: 490px;
 	overflow: hidden;
@@ -1819,4 +1817,71 @@ li.subMenuItem.active .active-menu-item { display: block;  }
 
 .ng-hide:not(.ng-hide-animate) {
     display: none!important;
+}
+
+/*Change the way the buttons look in the ui.bootstrap.datepicker*/
+
+/*Firefox fix for the datepicker */
+.datepicker .dropdown-menu {
+    min-width: 260px;
+}
+
+.input-group.datepicker td .btn-default,
+.input-group.datepicker th .btn-default {
+    background-image: none;
+    border-color: #ffffff;
+    border-radius: 0px;
+    box-shadow: none;
+}
+
+/*Change the way the buttons look in the ui.bootstrap.datepicker*/
+.input-group.datepicker .btn-info.active {
+    background-color: rgb(153, 153, 158);
+    border-color: rgb(153, 153, 158);
+}
+
+/*Add a bullet to the dropdown-menu */
+.input-group.datepicker .dropdown-menu{
+    margin-top: 8px;
+}
+
+.input-group.datepicker .dropdown-menu:before {
+    width: 0;
+    height: 0;
+    content: '';
+    display: inline-block;
+    position: absolute;
+    border-color: transparent;
+    border-style: solid;
+    -webkit-transform: rotate(360deg);
+    border-width: 0 7px 7px;
+    border-bottom-color: #cccccc;
+    border-bottom-color: rgba(0, 0, 0, 0.15);
+    top: -7px;
+    left: 9px;
+}
+.input-group.datepicker .dropdown-menu:after {
+    width: 0;
+    height: 0;
+    content: '';
+    display: inline-block;
+    position: absolute;
+    border-color: transparent;
+    border-style: solid;
+    -webkit-transform: rotate(360deg);
+    border-width: 0 6px 6px;
+    border-bottom-color: #ffffff;
+    top: -6px;
+    left: 10px;
+}
+
+/*Remove outline, maybe no the best for accesibility*/
+:focus {
+    outline: 0;
+}
+
+/*Adjust the inputbox size and font size for the datepicker*/
+.input-group-sm.datepicker>.form-control, .input-group-sm.datepicker>.input-group-addon, .input-group-sm.datepicker>.input-group-btn>.btn {
+    height: 34px;
+    font-size: 14px;
 }

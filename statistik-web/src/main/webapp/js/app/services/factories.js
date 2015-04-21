@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('StatisticsApp').factory('statisticsData', function ($http, $rootScope) {
+angular.module('StatisticsApp').factory('statisticsData', ['$http', '$rootScope', '$q', function ($http, $rootScope, $q) {
     var factory = {};
 
     var makeRequestNational = function (restFunctionName, successCallback, failureCallback, cached) {
@@ -176,18 +176,34 @@ angular.module('StatisticsApp').factory('statisticsData', function ($http, $root
         makeRequestNational("getIcd10Structure", successCallback, failureCallback);
     };
 
-    factory.getFilterHash = function (diagnosIds, enhetsIds, verksamhetstyps, successCallback, failureCallback) {
-        var diagnoser = _.reduce(_.values(diagnosIds), function (memo, val) { return memo.concat(val); }, []);
-        var param = {"enheter": enhetsIds, "verksamhetstyper": verksamhetstyps, "diagnoser": diagnoser };
-        $http.post("api/filter", param, {cache: true}).success(function (result) {
-            try {
-                successCallback(result);
-            } catch (e) {
-                throw new Error(e);
-            }
-        }).error(function () {
-            failureCallback();
-        });
+    factory.getFilterHash = function (params) {
+        var deferred = $q.defer();
+
+        var concatDiagnoser = function (diagnosIds) {
+            return _.reduce(_.values(diagnosIds), function (memo, val) {
+                return memo.concat(val);
+            }, []);
+        };
+
+        var param = {
+            "enheter": params.enheter || null,
+            "verksamhetstyper": params.verksamhetstyper || null,
+            "diagnoser": concatDiagnoser(params.diagnoser),
+            "fromDate": params.fromDate || null,
+            "toDate": params.toDate || null,
+            "useDefaultPeriod": !!params.useDefaultPeriod
+        };
+
+        $http.post("api/filter", param,
+            {
+                cache: true
+            }).success(function (data) {
+                deferred.resolve(data);
+            }).error(function (data, status, headers) {
+                deferred.reject(data);
+            });
+
+        return deferred.promise;
     };
 
     factory.getFilterData = function (filterHash, successCallback, failureCallback) {
@@ -211,7 +227,7 @@ angular.module('StatisticsApp').factory('statisticsData', function ($http, $root
     };
 
     return factory;
-});
+}]);
 
 /* Manually compiles the element, fixing the recursion loop. */
 angular.module('StatisticsApp').factory('recursionService', ['$compile', function ($compile) {
