@@ -61,17 +61,6 @@ public final class SjukskrivningsgradQuery {
         return result;
     }
 
-    public static List<Counter<Integer>> count(Collection<Sjukfall> sjukfalls) {
-        Map<Integer, Counter<Integer>> counters = count2(sjukfalls);
-
-        List<Counter<Integer>> result = new ArrayList<>();
-        for (Integer range : GRAD) {
-            result.add(counters.get(range));
-        }
-
-        return result;
-    }
-
     private static Map<Integer, Counter<Integer>> count2(Collection<Sjukfall> sjukfalls) {
         Map<Integer, Counter<Integer>> counters = Counter.mapFor(GRAD);
         for (Sjukfall sjukfall : sjukfalls) {
