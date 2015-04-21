@@ -43,21 +43,14 @@ public final class ConversionHelper {
     private ConversionHelper() {
     }
     //CHECKSTYLE:OFF MagicNumber
-    public static int patientIdToInt(String id) {
-        return Integer.parseInt(id.substring(2, DATE_PART_OF_PERSON_ID)) * 1000 + Integer.parseInt(id.substring(9, 12)) + (1_000_000_000 * (Integer.parseInt(id.substring(0, 2)) - 19));
+    public static long patientIdToInt(String id) {
+        final String onlyNumbers = id.replaceAll("[\\D]", "");
+        return Long.parseLong(onlyNumbers);
     }
 
-    /**
-     * @param id id
-     * @return personnummer med 0 som kontrollsiffra
-     */
-    public static String patientIdToString(int id) {
-        int centuryFactor = (19 + (id < 1_000_000_000 ? 0 : 1));
-        int idWoCentury = id - (id < 1_000_000_000 ? 0 : id - 1_000_000_000);
-        String century = "" + centuryFactor;
-        String date = "" + (idWoCentury / 1000);
-        String seq = "" + (idWoCentury % 1000);
-        return century + date + '-' + seq + '0';
+    public static String patientIdToString(long id) {
+        final String onlyNumberString = String.valueOf(id);
+        return onlyNumberString.replaceFirst("(........)(....)", "$1-$2");
     }
 
     protected static String extractKon(String personId) {

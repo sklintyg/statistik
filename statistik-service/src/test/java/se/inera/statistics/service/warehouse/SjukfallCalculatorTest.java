@@ -37,12 +37,12 @@ public class SjukfallCalculatorTest {
     @Test
     public void testGetFactsPerPatientAndPeriod() throws Exception {
         //Given
-        final int patient = 1;
+        final long patient = 1;
         final List<Fact> facts = Arrays.asList(createFact(patient, new LocalDate(2015, 2, 20)), createFact(patient, new LocalDate(2015, 3, 20)));
         final List<Range> ranges = SjukfallIterator.getRanges(new LocalDate(2015, 1, 1), 2, 1);
 
         //When
-        final List<ArrayListMultimap<Integer, Fact>> factsPerPatientAndPeriod = SjukfallCalculator.getFactsPerPatientAndPeriod(facts, ranges);
+        final List<ArrayListMultimap<Long, Fact>> factsPerPatientAndPeriod = SjukfallCalculator.getFactsPerPatientAndPeriod(facts, ranges);
 
         //Then
         assertEquals(3, factsPerPatientAndPeriod.size());
@@ -54,12 +54,12 @@ public class SjukfallCalculatorTest {
     @Test
     public void testGetFactsPerPatientAndPeriod2() throws Exception {
         //Given
-        final int patient = 1;
+        final long patient = 1;
         final List<Fact> facts = Arrays.asList(createFact(patient, new LocalDate(2015, 2, 20)), createFact(patient, new LocalDate(2015, 3, 20)));
         final List<Range> ranges = SjukfallIterator.getRanges(new LocalDate(2015, 2, 1), 2, 1);
 
         //When
-        final List<ArrayListMultimap<Integer, Fact>> factsPerPatientAndPeriod = SjukfallCalculator.getFactsPerPatientAndPeriod(facts, ranges);
+        final List<ArrayListMultimap<Long, Fact>> factsPerPatientAndPeriod = SjukfallCalculator.getFactsPerPatientAndPeriod(facts, ranges);
 
         //Then
         assertEquals(3, factsPerPatientAndPeriod.size());
@@ -71,12 +71,12 @@ public class SjukfallCalculatorTest {
     @Test
     public void testGetFactsPerPatientAndPeriod3() throws Exception {
         //Given
-        final int patient = 1;
+        final long patient = 1;
         final List<Fact> facts = Arrays.asList(createFact(patient, new LocalDate(2015, 2, 20)), createFact(patient, new LocalDate(2015, 3, 20)));
         final List<Range> ranges = SjukfallIterator.getRanges(new LocalDate(2015, 3, 1), 2, 1);
 
         //When
-        final List<ArrayListMultimap<Integer, Fact>> factsPerPatientAndPeriod = SjukfallCalculator.getFactsPerPatientAndPeriod(facts, ranges);
+        final List<ArrayListMultimap<Long, Fact>> factsPerPatientAndPeriod = SjukfallCalculator.getFactsPerPatientAndPeriod(facts, ranges);
 
         //Then
         assertEquals(3, factsPerPatientAndPeriod.size());
@@ -88,12 +88,12 @@ public class SjukfallCalculatorTest {
     @Test
     public void testGetFactsPerPatientAndPeriod4() throws Exception {
         //Given
-        final int patient = 1;
+        final long patient = 1;
         final List<Fact> facts = Arrays.asList(createFact(patient, new LocalDate(2015, 2, 20)), createFact(patient, new LocalDate(2015, 3, 20)));
         final List<Range> ranges = SjukfallIterator.getRanges(new LocalDate(2015, 4, 1), 2, 1);
 
         //When
-        final List<ArrayListMultimap<Integer, Fact>> factsPerPatientAndPeriod = SjukfallCalculator.getFactsPerPatientAndPeriod(facts, ranges);
+        final List<ArrayListMultimap<Long, Fact>> factsPerPatientAndPeriod = SjukfallCalculator.getFactsPerPatientAndPeriod(facts, ranges);
 
         //Then
         assertEquals(3, factsPerPatientAndPeriod.size());
@@ -102,7 +102,7 @@ public class SjukfallCalculatorTest {
         assertEquals(0, factsPerPatientAndPeriod.get(2).get(patient).size());
     }
 
-    private Fact createFact(int patient, LocalDate startDatum) {
+    private Fact createFact(long patient, LocalDate startDatum) {
         final int start = WidelineConverter.toDay(startDatum);
         return new Fact(1,1,1,1,1, patient, start,1,1,1,1,1,1,1,1,1,new int[0],1);
     }

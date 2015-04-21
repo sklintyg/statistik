@@ -47,7 +47,7 @@ public class FactPopulator {
         String lkf = wideline.getLkf();
         int enhet = Warehouse.getEnhetAndRemember(wideline.getEnhet());
         long intyg = wideline.getLakarintyg();
-        int patientid = ConversionHelper.patientIdToInt(wideline.getPatientid());
+        long patientid = ConversionHelper.patientIdToInt(wideline.getPatientid());
         int startdatum = wideline.getStartdatum();
         int slutdatum = wideline.getSlutdatum();
         int sjukskrivningslangd = slutdatum - startdatum + 1;
