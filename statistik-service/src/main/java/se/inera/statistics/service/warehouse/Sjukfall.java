@@ -18,13 +18,18 @@
  */
 package se.inera.statistics.service.warehouse;
 
+import com.google.common.base.Predicate;
+import com.google.common.collect.Sets;
 import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.report.util.Icd10RangeType;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 public class Sjukfall {
 
@@ -33,7 +38,6 @@ public class Sjukfall {
     private int start;
     private final int lan;
     private int end;
-    private int realDays;
     private int intygCount;
     private final int kon;
     private int alder;
@@ -42,11 +46,12 @@ public class Sjukfall {
     private Set<Lakare> lakare = new HashSet<>();
     private Set<Integer> enhets = new HashSet<>();
     private Sjukfall extending;
+    private List<Sjukskrivningsperiod> sjukskrivningsperiods = new ArrayList<>();
 
     public Sjukfall(Fact line) {
         start = line.getStartdatum();
         end = line.getStartdatum() + line.getSjukskrivningslangd() - 1;
-        realDays = line.getSjukskrivningslangd();
+        sjukskrivningsperiods.add(new Sjukskrivningsperiod(start, line.getSjukskrivningslangd()));
         intygCount++;
         kon = line.getKon();
         alder = line.getAlder();
@@ -65,7 +70,7 @@ public class Sjukfall {
         this(line);
         start = Math.min(previous.getStart(), start);
         end = Math.max(previous.getEnd(), end);
-        realDays += previous.getRealDays();
+        sjukskrivningsperiods.addAll(previous.sjukskrivningsperiods);
         intygCount += previous.getIntygCount();
         extending = previous;
         lakare.addAll(previous.getLakare());
@@ -77,7 +82,7 @@ public class Sjukfall {
     Sjukfall(Sjukfall previous, Sjukfall sjukfall) {
         this(sjukfall);
         start = previous.getStart();
-        realDays += previous.getRealDays() + (sjukfall.getStart() - previous.getEnd());
+        sjukskrivningsperiods.addAll(previous.sjukskrivningsperiods);
         intygCount += previous.getIntygCount();
         lakare.addAll(previous.getLakare());
         diagnoses.addAll(0, previous.diagnoses);
@@ -88,7 +93,7 @@ public class Sjukfall {
     Sjukfall(Sjukfall sjukfall) {
         start = sjukfall.getStart();
         end = sjukfall.getEnd();
-        realDays = sjukfall.getRealDays();
+        sjukskrivningsperiods.addAll(sjukfall.sjukskrivningsperiods);
         intygCount = sjukfall.getIntygCount();
         kon = sjukfall.kon;
         alder = sjukfall.getAlder();
@@ -135,7 +140,7 @@ public class Sjukfall {
     public Sjukfall extendSjukfallWithNewStart(int start, int sjukskrivningslangd) {
         final Sjukfall sjukfall = new Sjukfall(this);
         sjukfall.start = start;
-        sjukfall.realDays += sjukskrivningslangd;
+        sjukfall.sjukskrivningsperiods.add(new Sjukskrivningsperiod(start, sjukskrivningslangd));
         return sjukfall;
     }
 
@@ -148,7 +153,7 @@ public class Sjukfall {
         return "Sjukfall{"
                 + "start=" + start
                 + ", end=" + end
-                + ", realDays=" + realDays
+                + ", realDays=" + getRealDays()
                 + ", intygCount=" + intygCount
                 + '}';
     }
@@ -194,7 +199,15 @@ public class Sjukfall {
     }
 
     public int getRealDays() {
-        return realDays;
+        return getAllDates().size();
+    }
+
+    private HashSet<Integer> getAllDates() {
+        final HashSet<Integer> allDates = new HashSet<>();
+        for (Sjukskrivningsperiod sjukskrivningsperiod : sjukskrivningsperiods) {
+            allDates.addAll(sjukskrivningsperiod.getAllDatesInPeriod());
+        }
+        return allDates;
     }
 
     public int getIntygCount() {
@@ -239,6 +252,39 @@ public class Sjukfall {
 
     public Set<Integer> getEnhets() {
         return enhets;
+    }
+
+    public Sjukfall extendWithRealDaysWithinPeriod(Sjukfall previous) {
+        final Sjukfall sjukfall = new Sjukfall(this);
+        final Set<Integer> datesWithinPeriod = Sets.filter(previous.getAllDates(), new Predicate<Integer>() {
+            @Override
+            public boolean apply(Integer date) {
+                return date >= start && date <= end;
+            }
+        });
+        List<Sjukskrivningsperiod> newSjukskrivningsperiods = toSjukskrivningsperiods(datesWithinPeriod);
+        sjukfall.sjukskrivningsperiods.addAll(newSjukskrivningsperiods);
+        return sjukfall;
+    }
+
+    private List<Sjukskrivningsperiod> toSjukskrivningsperiods(Set<Integer> dates) {
+        if (dates.isEmpty()) {
+            return Collections.emptyList();
+        }
+        final ArrayList<Sjukskrivningsperiod> result = new ArrayList<>();
+        final SortedSet<Integer> sortedDates = new TreeSet<>(dates);
+        final List<Integer> currentPeriodDates = new ArrayList<>(sortedDates.size());
+        for (Integer date : sortedDates) {
+            if (!currentPeriodDates.isEmpty() && date > currentPeriodDates.get(currentPeriodDates.size() - 1) + 1) {
+                result.add(new Sjukskrivningsperiod(currentPeriodDates.get(0), currentPeriodDates.size()));
+                currentPeriodDates.clear();
+            }
+            currentPeriodDates.add(date);
+        }
+        if (!currentPeriodDates.isEmpty()) {
+            result.add(new Sjukskrivningsperiod(currentPeriodDates.get(0), currentPeriodDates.size()));
+        }
+        return result;
     }
 
     private final class Diagnos {

@@ -120,15 +120,18 @@ public class SjukfallCalculator {
                 Sjukfall firstSjukfall = useOriginalSjukfallStart ? getFirstSjukfall(sjukfalls) : null;
                 for (Sjukfall sjukfall : sjukfallFromAllIntygForPatient) {
                     List<Sjukfall> mergableSjukfalls = filterSjukfallInPeriod(sjukfall.getStart(), sjukfall.getEnd(), sjukfalls);
-                    Sjukfall mergedSjukfall = mergeAllSjukfallInList(mergableSjukfalls);
+                    final Sjukfall mergedSjukfall = mergeAllSjukfallInList(mergableSjukfalls);
                     if (mergedSjukfall != null) {
-                        if (useOriginalSjukfallStart && firstSjukfall != null && firstSjukfall.getStart() == mergedSjukfall.getStart()) {
-                            mergedSjukfall = getExtendedSjukfallStart(patient, mergedSjukfall);
+                        Sjukfall mergedSjukfallExtendedWithRealDays = mergedSjukfall.extendWithRealDaysWithinPeriod(sjukfall);
+                        if (mergedSjukfallExtendedWithRealDays != null) {
+                            if (useOriginalSjukfallStart && firstSjukfall != null && firstSjukfall.getStart() == mergedSjukfallExtendedWithRealDays.getStart()) {
+                                mergedSjukfallExtendedWithRealDays = getExtendedSjukfallStart(patient, mergedSjukfallExtendedWithRealDays);
+                            }
+                            for (Sjukfall mergableSjukfall : mergableSjukfalls) {
+                                sjukfalls.remove(mergableSjukfall);
+                            }
+                            sjukfalls.add(mergedSjukfallExtendedWithRealDays);
                         }
-                        for (Sjukfall mergableSjukfall : mergableSjukfalls) {
-                            sjukfalls.remove(mergableSjukfall);
-                        }
-                        sjukfalls.add(mergedSjukfall);
                     }
                 }
             }
@@ -290,6 +293,9 @@ public class SjukfallCalculator {
     }
 
     private List<Sjukfall> filterSjukfallInPeriod(final int start, final int end, Collection<Sjukfall> sjukfalls) {
+        if (sjukfalls == null || sjukfalls.isEmpty()) {
+            return Collections.emptyList();
+        }
         final Collection<Sjukfall> filteredSjukfalls = Collections2.filter(sjukfalls, new Predicate<Sjukfall>() {
             @Override
             public boolean apply(Sjukfall sjukfall) {

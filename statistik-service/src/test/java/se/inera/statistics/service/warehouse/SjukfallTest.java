@@ -125,4 +125,162 @@ public class SjukfallTest {
         assertEquals(false, newSjukfall.isExtended());
     }
 
+    @Test
+    public void testGetRealDaysExtendingSjukfall() throws Exception {
+        //When
+        final Sjukfall sjukfall1 = new Sjukfall(createFact(2, 4));
+        final Sjukfall sjukfall2 = sjukfall1.extendSjukfall(new Sjukfall(createFact(10, 4)));
+        final Sjukfall sjukfall3 = sjukfall2.extendSjukfall(new Sjukfall(createFact(6, 4)));
+
+        //Then
+        assertEquals(12, sjukfall3.getRealDays());
+    }
+
+    @Test
+    public void testGetRealDaysExtendingSjukfallWithGap() throws Exception {
+        //When
+        final Sjukfall sjukfall1 = new Sjukfall(createFact(2, 4));
+        final Sjukfall sjukfall2 = sjukfall1.extendSjukfall(new Sjukfall(createFact(10, 4)));
+
+        //Then
+        assertEquals(8, sjukfall2.getRealDays());
+    }
+
+    @Test
+    public void testGetRealDaysExtendingSjukfallOverlapping() throws Exception {
+        //When
+        final Sjukfall sjukfall1 = new Sjukfall(createFact(2, 4));
+        final Sjukfall sjukfall2 = sjukfall1.extendSjukfall(new Sjukfall(createFact(3, 4)));
+
+        //Then
+        assertEquals(5, sjukfall2.getRealDays());
+    }
+
+    @Test
+    public void testGetRealDaysExtendingFact() throws Exception {
+        //When
+        final Sjukfall sjukfall1 = new Sjukfall(createFact(2, 4));
+        final Sjukfall sjukfall2 = sjukfall1.extendSjukfall(createFact(10, 4));
+        final Sjukfall sjukfall3 = sjukfall2.extendSjukfall(createFact(6, 4));
+
+        //Then
+        assertEquals(12, sjukfall3.getRealDays());
+    }
+
+    @Test
+    public void testGetRealDaysExtendingFactWithGap() throws Exception {
+        //When
+        final Sjukfall sjukfall1 = new Sjukfall(createFact(2, 4));
+        final Sjukfall sjukfall2 = sjukfall1.extendSjukfall(createFact(10, 4));
+
+        //Then
+        assertEquals(8, sjukfall2.getRealDays());
+    }
+
+    @Test
+    public void testGetRealDaysExtendingFactOverlapping() throws Exception {
+        //When
+        final Sjukfall sjukfall1 = new Sjukfall(createFact(2, 4));
+        final Sjukfall sjukfall2 = sjukfall1.extendSjukfall(createFact(3, 4));
+
+        //Then
+        assertEquals(5, sjukfall2.getRealDays());
+    }
+
+    @Test
+    public void testGetRealDaysConstructExtendingSjukfall() throws Exception {
+        //When
+        final Sjukfall sjukfall1 = new Sjukfall(createFact(2, 4));
+        final Sjukfall sjukfall2 = new Sjukfall(sjukfall1, new Sjukfall(createFact(10, 4)));
+        final Sjukfall sjukfall3 = new Sjukfall(sjukfall2, new Sjukfall(createFact(6, 4)));
+
+        //Then
+        assertEquals(12, sjukfall3.getRealDays());
+    }
+
+    @Test
+    public void testGetRealDaysConstructExtendingSjukfallWithGap() throws Exception {
+        //When
+        final Sjukfall sjukfall1 = new Sjukfall(createFact(2, 4));
+        final Sjukfall sjukfall2 = new Sjukfall(sjukfall1, new Sjukfall(createFact(10, 4)));
+
+        //Then
+        assertEquals(8, sjukfall2.getRealDays());
+    }
+
+    @Test
+    public void testGetRealDaysConstructExtendingSjukfallOverlapping() throws Exception {
+        //When
+        final Sjukfall sjukfall1 = new Sjukfall(createFact(2, 4));
+        final Sjukfall sjukfall2 = new Sjukfall(sjukfall1, new Sjukfall(createFact(3, 4)));
+
+        //Then
+        assertEquals(5, sjukfall2.getRealDays());
+    }
+
+    @Test
+    public void testGetRealDaysConstructExtendingFact() throws Exception {
+        //When
+        final Sjukfall sjukfall1 = new Sjukfall(createFact(2, 4));
+        final Sjukfall sjukfall2 = new Sjukfall(sjukfall1, createFact(10, 4));
+        final Sjukfall sjukfall3 = new Sjukfall(sjukfall2, createFact(6, 4));
+
+        //Then
+        assertEquals(12, sjukfall3.getRealDays());
+    }
+
+    @Test
+    public void testGetRealDaysConstructExtendingFactWithGap() throws Exception {
+        //When
+        final Sjukfall sjukfall1 = new Sjukfall(createFact(2, 4));
+        final Sjukfall sjukfall2 = new Sjukfall(sjukfall1, createFact(10, 4));
+
+        //Then
+        assertEquals(8, sjukfall2.getRealDays());
+    }
+
+    @Test
+    public void testGetRealDaysConstructExtendingFactOverlapping() throws Exception {
+        //When
+        final Sjukfall sjukfall1 = new Sjukfall(createFact(2, 4));
+        final Sjukfall sjukfall2 = new Sjukfall(sjukfall1, createFact(3, 4));
+
+        //Then
+        assertEquals(5, sjukfall2.getRealDays());
+    }
+
+    @Test
+    public void testGetRealDaysExtendingWithNewStart() throws Exception {
+        //When
+        final Sjukfall sjukfall1 = new Sjukfall(createFact(2, 4));
+        final Sjukfall sjukfall2 = sjukfall1.extendSjukfallWithNewStart(10, 3);
+
+        //Then
+        assertEquals(7, sjukfall2.getRealDays());
+    }
+
+    @Test
+    public void testGetRealDaysExtendingWithNewStartOverlapping() throws Exception {
+        //When
+        final Sjukfall sjukfall1 = new Sjukfall(createFact(2, 4));
+        final Sjukfall sjukfall2 = sjukfall1.extendSjukfallWithNewStart(4, 3);
+
+        //Then
+        assertEquals(5, sjukfall2.getRealDays());
+    }
+
+    @Test
+    public void testExtendWithRealDaysWithinPeriod() throws Exception {
+        //When
+        final Sjukfall sjukfall1 = new Sjukfall(createFact(2, 4));
+        final Sjukfall sjukfall2 = new Sjukfall(sjukfall1, createFact(20, 4));
+        final Sjukfall sjukfall3 = sjukfall2.extendWithRealDaysWithinPeriod(new Sjukfall(createFact(10, 2)));
+
+        //Then
+        assertEquals(10, sjukfall3.getRealDays());
+    }
+
+    private Fact createFact(int startdatum, int sjukskrivningslangd) {
+        return new Fact(1,1,1,1,1,1, startdatum,1,1,1,1,1,1, sjukskrivningslangd,1,1,new int[0], 1);
+    }
 }
