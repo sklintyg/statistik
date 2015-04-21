@@ -10,7 +10,7 @@ Ett sjukfall består av ett intyg med diagnoskod A35-P som kommer från primärv
 
 |Enbart foljande intyg finns                          |
 |personnr     |diagnoskod|start     |slut      |enhet |
-|19790401-0120|A35-P     |2013-02-01|2013-02-14|enhet1|
+|19790401-0120|A 35-P     |2013-02-01|2013-02-14|enhet1|
 
 !3 Då gäller:
 

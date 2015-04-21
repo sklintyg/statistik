@@ -2,7 +2,7 @@
 
 !3 Givet att:
 
-Två intyg för samma patient  har uppehåll med 5 dagar. Intygen är utfärdade hos olika vårdgivare. 
+Ett sjukfall består av två intyg. Intygen är utfärdade hos olika vårdgivare. 
 
 
 | script | dagens datum | 2013-11-06 |
