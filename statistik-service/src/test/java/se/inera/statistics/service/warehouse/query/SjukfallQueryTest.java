@@ -25,6 +25,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
+import org.mockito.Matchers;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.test.util.ReflectionTestUtils;
@@ -37,6 +38,7 @@ import se.inera.statistics.service.report.model.SimpleKonDataRow;
 import se.inera.statistics.service.report.model.SimpleKonResponse;
 import se.inera.statistics.service.warehouse.Aisle;
 import se.inera.statistics.service.warehouse.Fact;
+import se.inera.statistics.service.warehouse.MutableAisle;
 import se.inera.statistics.service.warehouse.SjukfallFilter;
 import se.inera.statistics.service.warehouse.SjukfallUtil;
 import se.inera.statistics.service.warehouse.SjukfallUtilTest;
@@ -44,6 +46,7 @@ import se.inera.statistics.service.warehouse.Warehouse;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 
 import static java.util.Arrays.asList;
 import static org.junit.Assert.assertEquals;
@@ -76,7 +79,7 @@ public class SjukfallQueryTest {
 
     private SjukfallQuery sjukfallQuery;
 
-    private Aisle aisle;
+    private MutableAisle aisle;
 
     private BiMap<String, Integer> lakarIdMap = HashBiMap.create();
 
@@ -97,7 +100,7 @@ public class SjukfallQueryTest {
         sjukfallQuery = new SjukfallQuery();
         sjukfallQuery.setLakareManager(lakareManager);
         ReflectionTestUtils.setField(sjukfallQuery, "sjukfallUtil", sjukfallUtil);
-        aisle = new Aisle("vg1");
+        aisle = new MutableAisle("vg1");
         MockitoAnnotations.initMocks(this);
     }
 
@@ -109,7 +112,7 @@ public class SjukfallQueryTest {
 
         // When
         enhetFilter = SjukfallUtilTest.createEnhetFilterFromInternalIntValues(ENHET1_ID);
-        SimpleKonResponse<SimpleKonDataRow> result = sjukfallQuery.getSjukfallPerLakare(aisle, enhetFilter, range.getFrom(), 1, 12);
+        SimpleKonResponse<SimpleKonDataRow> result = sjukfallQuery.getSjukfallPerLakare(aisle.createAisle(), enhetFilter, range.getFrom(), 1, 12);
 
         // Then
         assertEquals(2, result.getRows().size());
@@ -142,7 +145,7 @@ public class SjukfallQueryTest {
         aisle.addLine(fact(PATIENT1_ID, PATIENT1_KON, LAKARE2_ID));
 
         // When
-        SimpleKonResponse<SimpleKonDataRow> result = sjukfallQuery.getSjukfallPerLakare(aisle, enhetFilter, range.getFrom(), 1, 12);
+        SimpleKonResponse<SimpleKonDataRow> result = sjukfallQuery.getSjukfallPerLakare(aisle.createAisle(), enhetFilter, range.getFrom(), 1, 12);
 
         // Then
         assertEquals(2, result.getRows().size());
@@ -174,7 +177,7 @@ public class SjukfallQueryTest {
         aisle.addLine(fact(PATIENT1_ID, PATIENT1_KON, LAKARE3_ID));
 
         // When
-        SimpleKonResponse<SimpleKonDataRow> result = sjukfallQuery.getSjukfallPerLakare(aisle, SjukfallUtilTest.createEnhetFilterFromInternalIntValues(ENHET1_ID), range.getFrom(), 1, 12);
+        SimpleKonResponse<SimpleKonDataRow> result = sjukfallQuery.getSjukfallPerLakare(aisle.createAisle(), SjukfallUtilTest.createEnhetFilterFromInternalIntValues(ENHET1_ID), range.getFrom(), 1, 12);
 
         // Then
         assertEquals(2, result.getRows().size());
@@ -237,10 +240,11 @@ public class SjukfallQueryTest {
         idsToNames.put("-1", "name1");
 
         //When
-        final KonDataResponse sjukfallPerEnhetSeries = sjukfallQuery.getSjukfallPerEnhetSeries(aisle, filter, start, periods, periodSize, idsToNames);
+        final Aisle currentAisle = aisle.createAisle();
+        sjukfallQuery.getSjukfallPerEnhetSeries(currentAisle, filter, start, periods, periodSize, idsToNames);
 
         //Then
-        Mockito.verify(sjukfallUtilMock).calculateKonDataResponse(eq(aisle), eq(filter), eq(start), eq(periods), eq(periodSize), names.capture(), ids.capture(), any(CounterFunction.class));
+        Mockito.verify(sjukfallUtilMock).calculateKonDataResponse(eq(currentAisle), eq(filter), eq(start), eq(periods), eq(periodSize), names.capture(), ids.capture(), Matchers.<CounterFunction<Object>>any());
         assertEquals("name1", names.getValue().get(0));
         assertEquals(-1, ids.getValue().get(0));
     }

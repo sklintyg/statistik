@@ -51,15 +51,11 @@ public class SjukfallCalculator {
     private ArrayListMultimap<Long, Fact> factsPerPatientInAisle;
 
     /**
-     *
-     * @param aisle aisle
-     * @param filter filter
      * @param useOriginalSjukfallStart true = använd faktiskt startdatum, inte första datum på första intyget som är tillgängligt för anroparen
      */
-    public SjukfallCalculator(List<Fact> aisle, Predicate<Fact> filter, List<Range> ranges, boolean useOriginalSjukfallStart) {
-        this.aisle = new ArrayList<>(aisle);
+    public SjukfallCalculator(Aisle aisle, Predicate<Fact> filter, List<Range> ranges, boolean useOriginalSjukfallStart) {
+        this.aisle = new ArrayList<>(aisle.getLines());
         this.extendSjukfall = !SjukfallUtil.ALL_ENHETER.getFilter().equals(filter);
-        Collections.sort(this.aisle, Fact.TIME_ORDER);
         this.useOriginalSjukfallStart = useOriginalSjukfallStart;
         final Iterable<Fact> filteredAisle = Iterables.filter(aisle, filter);
         this.ranges = new ArrayList<>(ranges);

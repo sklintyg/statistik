@@ -113,7 +113,7 @@ public class SjukfallCalculatorTest {
         final List<Range> ranges = SjukfallIterator.getRanges(new LocalDate(2015, 4, 1), 2, 1);
 
         //When
-        final SjukfallCalculator sjukfallCalculator = new SjukfallCalculator(Collections.<Fact>emptyList(), SjukfallUtil.ALL_ENHETER.getFilter(), ranges, false);
+        final SjukfallCalculator sjukfallCalculator = new SjukfallCalculator(new Aisle("", Collections.<Fact>emptyList()), SjukfallUtil.ALL_ENHETER.getFilter(), ranges, false);
 
         //Then
         final Boolean extendSjukfall = (Boolean) getField("extendSjukfall", sjukfallCalculator);
@@ -138,7 +138,7 @@ public class SjukfallCalculatorTest {
         };
 
         //When
-        final SjukfallCalculator sjukfallCalculator = new SjukfallCalculator(Collections.<Fact>emptyList(), filter, ranges, false);
+        final SjukfallCalculator sjukfallCalculator = new SjukfallCalculator(new Aisle("", Collections.<Fact>emptyList()), filter, ranges, false);
 
         //Then
         final Boolean extendSjukfall = (Boolean) getField("extendSjukfall", sjukfallCalculator);

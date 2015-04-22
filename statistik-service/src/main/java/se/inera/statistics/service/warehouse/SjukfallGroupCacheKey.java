@@ -21,6 +21,8 @@ package se.inera.statistics.service.warehouse;
 import com.google.common.base.Predicate;
 import org.joda.time.LocalDate;
 
+import java.util.Date;
+
 class SjukfallGroupCacheKey {
 
     private final LocalDate from;
@@ -38,7 +40,32 @@ class SjukfallGroupCacheKey {
         this.aisle = aisle;
         this.filter = filter;
         this.useOriginalSjukfallStart = useOriginalSjukfallStart;
-        this.key = from.toDate().getTime() + "_" + periods + "_" + periodSize + "_" + aisle.getVardgivareId() + "_" + useOriginalSjukfallStart + "_" + filter.getHash();
+        this.key = getToTimeNullSafe(from) + "_" + periods + "_" + periodSize + "_" + getVardgivareIdNullSafe(aisle) + "_" + useOriginalSjukfallStart + "_" + getHashNullSafe(filter);
+    }
+
+    private String getHashNullSafe(SjukfallFilter filter) {
+        if (filter == null) {
+            return null;
+        }
+        return filter.getHash();
+    }
+
+    private String getVardgivareIdNullSafe(Aisle aisle) {
+        if (aisle == null) {
+            return null;
+        }
+        return aisle.getVardgivareId();
+    }
+
+    private long getToTimeNullSafe(LocalDate from) {
+        if (from == null) {
+            return -1;
+        }
+        final Date date = from.toDate();
+        if (date == null) {
+            return -1;
+        }
+        return date.getTime();
     }
 
     @Override

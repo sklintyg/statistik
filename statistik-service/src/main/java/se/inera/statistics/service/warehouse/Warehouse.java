@@ -38,7 +38,7 @@ public class Warehouse implements Iterable<Aisle> {
     private static final Logger LOG = LoggerFactory.getLogger(Warehouse.class);
 
     private volatile Map<String, Aisle> aisles = new HashMap<>();
-    private Map<String, Aisle> loadingAisles = new HashMap<>();
+    private Map<String, MutableAisle> loadingAisles = new HashMap<>();
     private volatile Map<String, List<Enhet>> enhets;
     private Map<String, List<Enhet>> loadingEnhets = new HashMap<>();
     private static IdMap<String> enhetsMap = new IdMap<>();
@@ -47,7 +47,7 @@ public class Warehouse implements Iterable<Aisle> {
     private LocalDateTime lastEnhetUpdate = null;
 
     public void accept(Fact fact, String vardgivareId) {
-        Aisle aisle = getAisle(vardgivareId, loadingAisles, true);
+        MutableAisle aisle = getAisle(vardgivareId, loadingAisles, true);
         aisle.addLine(fact);
     }
 
@@ -61,7 +61,11 @@ public class Warehouse implements Iterable<Aisle> {
     }
 
     public Aisle get(String vardgivarId) {
-        return getAisle(vardgivarId, aisles, false);
+        final Aisle aisle = aisles.get(vardgivarId);
+        if (aisle == null) {
+            return new MutableAisle(vardgivarId).createAisle();
+        }
+        return aisle;
     }
 
     public List<Enhet> getEnhets(String vardgivareId) {
@@ -69,10 +73,10 @@ public class Warehouse implements Iterable<Aisle> {
         return result == null ? new ArrayList<Enhet>() : result;
     }
 
-    private Aisle getAisle(String vardgivareId, Map<String, Aisle> aisles, boolean add) {
-        Aisle aisle = aisles.get(vardgivareId);
+    private MutableAisle getAisle(String vardgivareId, Map<String, MutableAisle> aisles, boolean add) {
+        MutableAisle aisle = aisles.get(vardgivareId);
         if (aisle == null) {
-            aisle = new Aisle(vardgivareId);
+            aisle = new MutableAisle(vardgivareId);
             if (add) {
                 aisles.put(vardgivareId, aisle);
             }
@@ -122,10 +126,11 @@ public class Warehouse implements Iterable<Aisle> {
     }
 
     public void complete(LocalDateTime lastUpdate) {
-        for (Aisle aisle: loadingAisles.values()) {
-            aisle.sort();
+        Map<String, Aisle> newAisles = new HashMap<>();
+        for (Map.Entry<String, MutableAisle> entry : loadingAisles.entrySet()) {
+            newAisles.put(entry.getKey(), entry.getValue().createAisle());
         }
-        aisles = Collections.unmodifiableMap(loadingAisles);
+        aisles = Collections.unmodifiableMap(newAisles);
         this.lastUpdate = lastUpdate;
         loadingAisles = new HashMap<>();
     }

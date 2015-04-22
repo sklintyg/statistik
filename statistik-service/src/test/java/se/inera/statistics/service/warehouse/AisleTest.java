@@ -28,7 +28,7 @@ import static se.inera.statistics.service.warehouse.Fact.aFact;
 
 public class AisleTest {
 
-    private Aisle aisle = new Aisle("vgid");
+    private MutableAisle aisle = new MutableAisle("vgid");
 
     @Test
     public void outOfOrderFactsGetsSorted() {
@@ -46,8 +46,7 @@ public class AisleTest {
                 withSjukskrivningsgrad(100).withStartdatum(4000).withSjukskrivningslangd(47).
                 withLakarkon(Kon.Female).withLakaralder(32).withLakarbefattning(new int[]{201010}).withLakarid(1).build();
         aisle.addLine(fact2);
-        aisle.sort();
-        Iterator<Fact> iterator = aisle.iterator();
+        Iterator<Fact> iterator = aisle.createAisle().iterator();
         assertEquals(2, iterator.next().getLakarintyg());
         assertEquals(1, iterator.next().getLakarintyg());
     }

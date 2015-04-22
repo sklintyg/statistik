@@ -20,23 +20,22 @@ package se.inera.statistics.service.warehouse;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 
-public class Aisle implements Iterable<Fact> {
-    private final List<Fact> lines;
+public class MutableAisle {
+    private final List<Fact> lines = new ArrayList<>();
     private final String vardgivareId;
 
-    public Aisle(String vardgivareId, List<Fact> lines) {
+    public MutableAisle(String vardgivareId) {
         this.vardgivareId = vardgivareId;
-        final ArrayList<Fact> facts = new ArrayList<>(lines);
-        Collections.sort(facts, Fact.TIME_ORDER);
-        this.lines = Collections.unmodifiableList(facts);
     }
 
-    @Override
-    public Iterator<Fact> iterator() {
-        return lines.iterator();
+    public void addLine(Fact line) {
+        lines.add(line);
+    }
+
+    public Aisle createAisle() {
+        return new Aisle(vardgivareId, lines);
     }
 
     public int getSize() {
@@ -44,7 +43,7 @@ public class Aisle implements Iterable<Fact> {
     }
 
     List<Fact> getLines() {
-        return lines;
+        return Collections.unmodifiableList(lines);
     }
 
     public String getVardgivareId() {
