@@ -52,7 +52,7 @@ public class DiagnosisSubGroupsTvarsnittConverter extends SimpleDualSexConverter
                 simpleKonDataRows.add(new SimpleKonDataRow("Övriga", otherData));
             }
         }
-        return new SimpleKonResponse<>(simpleKonDataRows, skr.getNumberOfMonthsCalculated());
+        return new SimpleKonResponse<>(simpleKonDataRows);
     }
 
     private KonField getDataForOtherGroups(SimpleKonResponse<SimpleKonDataRow> skr, List<Integer> topIndexes) {

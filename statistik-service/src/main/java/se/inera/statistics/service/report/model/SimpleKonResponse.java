@@ -25,19 +25,13 @@ import java.util.List;
 public class SimpleKonResponse<T extends SimpleKonDataRow> {
 
     private final List<T> rows;
-    private final int numberOfMonthsCalculated;
 
-    public SimpleKonResponse(List<T> rows, int numberOfMonthsCalculated) {
+    public SimpleKonResponse(List<T> rows) {
         this.rows = rows;
-        this.numberOfMonthsCalculated = numberOfMonthsCalculated;
     }
 
     public List<T> getRows() {
         return rows;
-    }
-
-    public int getNumberOfMonthsCalculated() {
-        return numberOfMonthsCalculated;
     }
 
     public List<String> getGroups() {
@@ -66,18 +60,18 @@ public class SimpleKonResponse<T extends SimpleKonDataRow> {
 
     @Override
     public String toString() {
-        return "{\"SimpleKonResponse\":{" + "\"rows\":" + rows + ", \"numberOfMonthsCalculated\":" + getNumberOfMonthsCalculated() + "}}";
+        return "{\"SimpleKonResponse\":{" + "\"rows\":" + rows + "}}";
     }
 
-    public static SimpleKonResponse<SimpleKonDataRow> create(KonDataResponse konDataResponse, int numberOfMonthsCalculated) {
+    public static SimpleKonResponse<SimpleKonDataRow> create(KonDataResponse konDataResponse) {
         if (konDataResponse == null) {
-            return new SimpleKonResponse<>(Collections.<SimpleKonDataRow>emptyList(), numberOfMonthsCalculated);
+            return new SimpleKonResponse<>(Collections.<SimpleKonDataRow>emptyList());
         }
         final ArrayList<SimpleKonDataRow> simpleKonDataRows = new ArrayList<>();
         for (int i = 0; i < konDataResponse.getGroups().size(); i++) {
             simpleKonDataRows.add(createRowFromDataIndex(konDataResponse, i));
         }
-        return new SimpleKonResponse<>(simpleKonDataRows, numberOfMonthsCalculated);
+        return new SimpleKonResponse<>(simpleKonDataRows);
     }
 
     private static SimpleKonDataRow createRowFromDataIndex(KonDataResponse diagnosgruppResponse, int index) {

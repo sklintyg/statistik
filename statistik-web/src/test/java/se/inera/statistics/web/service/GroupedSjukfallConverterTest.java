@@ -42,7 +42,7 @@ public class GroupedSjukfallConverterTest {
         businessRows.add(new SimpleKonDataRow("enhet1", 12, 13));
         businessRows.add(new SimpleKonDataRow("enhet2", 20, 30));
         businessRows.add(new SimpleKonDataRow("enhet3", 5, 25));
-        SimpleKonResponse<SimpleKonDataRow> casesPerUnit = new SimpleKonResponse<>(businessRows, 2);
+        SimpleKonResponse<SimpleKonDataRow> casesPerUnit = new SimpleKonResponse<>(businessRows);
         SimpleDetailsData result = converter.convert(casesPerUnit, new Range(1), Filter.empty());
         TableData tableData = result.getTableData();
         assertEquals("[[Vårdenhet;1, Antal sjukfall totalt;1, Antal sjukfall för kvinnor;1, Antal sjukfall för män;1]]", tableData.getHeaders().toString());

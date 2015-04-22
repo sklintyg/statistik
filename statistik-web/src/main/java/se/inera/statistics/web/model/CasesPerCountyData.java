@@ -22,8 +22,8 @@ import se.inera.statistics.web.service.FilterDataResponse;
 
 public class CasesPerCountyData extends SimpleDetailsData {
 
-    public CasesPerCountyData(TableData tableData, ChartData chartData, int monthsIncluded, String period, FilterDataResponse filter) {
-        super(tableData, chartData, monthsIncluded, period, filter);
+    public CasesPerCountyData(TableData tableData, ChartData chartData, String period, FilterDataResponse filter) {
+        super(tableData, chartData, period, filter);
     }
 
 }

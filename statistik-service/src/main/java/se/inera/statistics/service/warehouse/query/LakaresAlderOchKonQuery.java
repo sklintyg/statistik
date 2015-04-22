@@ -64,7 +64,7 @@ public final class LakaresAlderOchKonQuery {
 
     public SimpleKonResponse<SimpleKonDataRow> getSjukfallPerLakaresAlderOchKon(Aisle aisle, SjukfallFilter filter, LocalDate start, int periods, int periodLength) {
         final KonDataResponse konDataResponse = getSjukfallPerLakaresAlderOchKonSomTidsserie(aisle, filter, start, periods, periodLength);
-        return SimpleKonResponse.create(konDataResponse, periods * periodLength);
+        return SimpleKonResponse.create(konDataResponse);
     }
 
     public KonDataResponse getSjukfallPerLakaresAlderOchKonSomTidsserie(Aisle aisle, SjukfallFilter filter, LocalDate start, int periods, int periodLength) {

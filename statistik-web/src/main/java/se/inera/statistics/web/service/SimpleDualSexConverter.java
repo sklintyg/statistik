@@ -52,7 +52,7 @@ public class SimpleDualSexConverter {
         TableData tableData = convertToTableData(casesPerMonth.getRows());
         ChartData chartData = convertToChartData(casesPerMonth);
         final FilterDataResponse filterResponse = new FilterDataResponse(filter.getDiagnoser(), filter.getEnheter());
-        return new SimpleDetailsData(tableData, chartData, range.getMonths(), range.toString(), filterResponse, message);
+        return new SimpleDetailsData(tableData, chartData, range.toString(), filterResponse, message);
     }
 
     private TableData convertToTableData(List<SimpleKonDataRow> list) {

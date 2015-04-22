@@ -45,10 +45,11 @@ public class SickLeaveLengthConverterTest {
         sjukfallslangdRows.add(new SimpleKonDataRow("< 20 dagar", 13, 14));
         sjukfallslangdRows.add(new SimpleKonDataRow("20-50 dagar", 24, 15));
         sjukfallslangdRows.add(new SimpleKonDataRow("> 50 dagar", 3, 9));
-        SimpleKonResponse<SimpleKonDataRow> sjukfallslangdResponse = new SimpleKonResponse<>(sjukfallslangdRows, 7);
+        SimpleKonResponse<SimpleKonDataRow> sjukfallslangdResponse = new SimpleKonResponse<>(sjukfallslangdRows);
 
         //When
-        SimpleDetailsData result = converter.convert(sjukfallslangdResponse, new Range(7), Filter.empty());
+        final Range range = new Range(7);
+        SimpleDetailsData result = converter.convert(sjukfallslangdResponse, range, Filter.empty());
 
         //Then
         TableData tableDataResult = result.getTableData();
@@ -71,7 +72,7 @@ public class SickLeaveLengthConverterTest {
         assertEquals("[14, 15, 9]", series.get(1).getData().toString());
         assertEquals("[13, 24, 3]", series.get(0).getData().toString());
 
-        assertEquals(7, result.getMonthsIncluded());
+        assertEquals(range.toString(), result.getPeriod());
     }
 
     // CHECKSTYLE:ON MagicNumber

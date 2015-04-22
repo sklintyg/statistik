@@ -135,7 +135,7 @@ public final class SjukskrivningslangdQuery {
             rows.add(new SimpleKonDataRow(rowNameFunction.apply(sjukfallGroup), counter.getCountFemale(), counter.getCountMale()));
         }
 
-        return new SimpleKonResponse<>(rows, periods);
+        return new SimpleKonResponse<>(rows);
     }
 
     public static SimpleKonResponse<SimpleKonDataRow> getSjuksrivningslangd(Aisle aisle, SjukfallFilter filter, LocalDate from, int periods, int periodLength, SjukfallUtil sjukfallUtil) {
@@ -147,7 +147,7 @@ public final class SjukskrivningslangdQuery {
                 rows.add(new SimpleKonDataRow(i.getName(), counter.getCountFemale(), counter.getCountMale()));
             }
         }
-        return new SimpleKonResponse<>(rows, periodLength);
+        return new SimpleKonResponse<>(rows);
 
     }
 

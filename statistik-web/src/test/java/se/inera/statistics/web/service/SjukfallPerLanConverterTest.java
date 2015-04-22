@@ -46,13 +46,13 @@ public class SjukfallPerLanConverterTest {
         perCountyRows1.add(new SimpleKonDataRow("<20", 13, 14));
         perCountyRows1.add(new SimpleKonDataRow("20-50", 24, 15));
         perCountyRows1.add(new SimpleKonDataRow(">50", 3, 9));
-        SimpleKonResponse<SimpleKonDataRow> ageGroupsResponseNew = new SimpleKonResponse<>(perCountyRows1, 1);
+        SimpleKonResponse<SimpleKonDataRow> ageGroupsResponseNew = new SimpleKonResponse<>(perCountyRows1);
 
         ArrayList<SimpleKonDataRow> perCountyRowsOld = new ArrayList<>();
         perCountyRowsOld.add(new SimpleKonDataRow("<20", 3, 4));
         perCountyRowsOld.add(new SimpleKonDataRow("20-50", 4, 5));
         perCountyRowsOld.add(new SimpleKonDataRow(">50", 2, 8));
-        SimpleKonResponse<SimpleKonDataRow> ageGroupsResponseOld = new SimpleKonResponse<>(perCountyRowsOld, 2);
+        SimpleKonResponse<SimpleKonDataRow> ageGroupsResponseOld = new SimpleKonResponse<>(perCountyRowsOld);
 
         LocalDate fromOld = new LocalDate(2013, 2, 1);
         LocalDate toOld = new LocalDate(2013, 4, 1);
@@ -89,7 +89,7 @@ public class SjukfallPerLanConverterTest {
         assertEquals("[13, 24, 3]", series.get(2).getData().toString());
         assertEquals("[14, 15, 9]", series.get(3).getData().toString());
 
-        assertEquals(6, result.getMonthsIncluded());
+        assertEquals(new Range(fromOld, toNew).toString(), result.getPeriod());
     }
 
     // CHECKSTYLE:ON MagicNumber

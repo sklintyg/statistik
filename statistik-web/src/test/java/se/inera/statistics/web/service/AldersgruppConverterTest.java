@@ -46,10 +46,11 @@ public class AldersgruppConverterTest {
         ageGroupsRows.add(new SimpleKonDataRow("<20", 13, 14));
         ageGroupsRows.add(new SimpleKonDataRow("20-50", 24, 15));
         ageGroupsRows.add(new SimpleKonDataRow(">50", 3, 9));
-        SimpleKonResponse<SimpleKonDataRow> ageGroupsResponse = new SimpleKonResponse<>(ageGroupsRows, 7);
+        SimpleKonResponse<SimpleKonDataRow> ageGroupsResponse = new SimpleKonResponse<>(ageGroupsRows);
 
         //When
-        SimpleDetailsData result = converter.convert(ageGroupsResponse, new Range(7), Filter.empty());
+        final Range range = new Range(7);
+        SimpleDetailsData result = converter.convert(ageGroupsResponse, range, Filter.empty());
 
         //Then
         TableData tableDataResult = result.getTableData();
@@ -72,7 +73,7 @@ public class AldersgruppConverterTest {
         assertEquals("[14, 15, 9]", series.get(1).getData().toString());
         assertEquals("[13, 24, 3]", series.get(0).getData().toString());
 
-        assertEquals(7, result.getMonthsIncluded());
+        assertEquals(range.toString(), result.getPeriod());
     }
 
     // CHECKSTYLE:ON MagicNumber

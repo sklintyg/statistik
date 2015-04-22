@@ -122,7 +122,7 @@ public final class AldersgruppQuery {
                 rows.add(new SimpleKonDataRow(i.getName(), counter.getCountFemale(), counter.getCountMale()));
             }
         }
-        return new SimpleKonResponse<>(rows, periodLength);
+        return new SimpleKonResponse<>(rows);
     }
 
     public static KonDataResponse getAldersgrupperSomTidsserie(Aisle aisle, SjukfallFilter filter, LocalDate start, int periods, int periodLength, SjukfallUtil sjukfallUtil) {

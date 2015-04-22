@@ -153,7 +153,7 @@ public class DiagnosgruppQuery {
             final Icd10.Id kategori = kategoris.get(i);
             rows.add(new SimpleKonDataRow((kategori.getVisibleId() + " " + kategori.getName()).trim(), row));
         }
-        return new SimpleKonResponse<>(rows, periods * periodLength);
+        return new SimpleKonResponse<>(rows);
     }
 
     public KonDataResponse getJamforDiagnoserTidsserie(Aisle aisle, SjukfallFilter filter, LocalDate start, int periods, int periodLength, List<String> diagnosis) {
@@ -273,11 +273,11 @@ public class DiagnosgruppQuery {
 
     public SimpleKonResponse<SimpleKonDataRow> getDiagnosgrupperTvarsnitt(Aisle aisle, SjukfallFilter filter, LocalDate start, int periods, int periodLength) {
         final DiagnosgruppResponse diagnosgruppResponse = getDiagnosgrupper(aisle, filter, start, periods, periodLength);
-        return SimpleKonResponse.create(diagnosgruppResponse, periods * periodLength);
+        return SimpleKonResponse.create(diagnosgruppResponse);
     }
 
     public SimpleKonResponse<SimpleKonDataRow> getUnderdiagnosgrupperTvarsnitt(Aisle aisle, SjukfallFilter filter, LocalDate start, int periods, int periodLength, String rangeId) throws RangeNotFoundException {
         final DiagnosgruppResponse underdiagnosgrupper = getUnderdiagnosgrupper(aisle, filter, start, periods, periodLength, rangeId);
-        return SimpleKonResponse.create(underdiagnosgrupper, periods * periodLength);
+        return SimpleKonResponse.create(underdiagnosgrupper);
     }
 }

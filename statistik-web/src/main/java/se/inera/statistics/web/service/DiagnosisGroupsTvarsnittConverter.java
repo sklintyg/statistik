@@ -41,7 +41,7 @@ public class DiagnosisGroupsTvarsnittConverter extends SimpleDualSexConverter {
     protected ChartData convertToChartData(SimpleKonResponse<SimpleKonDataRow> inputData) {
         HashMultimap<String, KonField> mergedGroups = getMergedGroups(inputData);
         final ArrayList<SimpleKonDataRow> mergedGroupSums = calculateMergedGroupSums(mergedGroups);
-        final SimpleKonResponse<SimpleKonDataRow> merged = new SimpleKonResponse<>(mergedGroupSums, inputData.getNumberOfMonthsCalculated());
+        final SimpleKonResponse<SimpleKonDataRow> merged = new SimpleKonResponse<>(mergedGroupSums);
         return super.convertToChartData(merged);
     }
 

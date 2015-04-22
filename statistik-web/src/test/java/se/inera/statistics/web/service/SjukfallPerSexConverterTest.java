@@ -42,7 +42,7 @@ public class SjukfallPerSexConverterTest {
         dualSexRows.add(new SimpleKonDataRow("län 1", 12, 13));
         dualSexRows.add(new SimpleKonDataRow("län 2", 20, 30));
         dualSexRows.add(new SimpleKonDataRow("län 3", 5, 25));
-        SimpleKonResponse<SimpleKonDataRow> casesPerMonth = new SimpleKonResponse<SimpleKonDataRow>(dualSexRows, 2);
+        SimpleKonResponse<SimpleKonDataRow> casesPerMonth = new SimpleKonResponse<SimpleKonDataRow>(dualSexRows);
         SimpleDetailsData result = converter.convert(casesPerMonth, new Range(1));
         TableData tableData = result.getTableData();
         assertEquals("[[Län;1, Antal sjukfall totalt;1, Andel sjukfall för kvinnor;1, Andel sjukfall för män;1]]", tableData.getHeaders().toString());

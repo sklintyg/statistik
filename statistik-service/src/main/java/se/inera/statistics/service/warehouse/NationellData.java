@@ -92,7 +92,7 @@ public class NationellData {
                 index++;
             }
         }
-        return new SimpleKonResponse<>(result, perioder * periodlangd);
+        return new SimpleKonResponse<>(result);
     }
 
     public SimpleKonResponse<SimpleKonDataRow> getHistoricalAgeGroups(Range range) {
@@ -115,10 +115,10 @@ public class NationellData {
 
                 list.add(new SimpleKonDataRow(a.getName(), filterCutoff(a.getFemale()) + b.getFemale(), filterCutoff(a.getMale()) + b.getMale()));
             }
-            result = new SimpleKonResponse<>(list, perioder * periodlangd);
+            result = new SimpleKonResponse<>(list);
         }
         if (result == null) {
-            return new SimpleKonResponse<>(new ArrayList<SimpleKonDataRow>(), 0);
+            return new SimpleKonResponse<>(new ArrayList<SimpleKonDataRow>());
         } else {
             return result;
         }
@@ -177,10 +177,10 @@ public class NationellData {
 
                 list.add(new SimpleKonDataRow(a.getName(), filterCutoff(a.getFemale()) + b.getFemale(), filterCutoff(a.getMale()) + b.getMale()));
             }
-            result = new SimpleKonResponse<>(list, perioder * periodlangd);
+            result = new SimpleKonResponse<>(list);
         }
         if (result == null) {
-            return new SimpleKonResponse<>(new ArrayList<SimpleKonDataRow>(), 0);
+            return new SimpleKonResponse<>(new ArrayList<SimpleKonDataRow>());
         } else {
             return result;
         }
@@ -301,7 +301,7 @@ public class NationellData {
                 LOG.info("Okänt län: " + okandLan);
             }
         }
-        return new SimpleKonResponse<>(result, perioder * periodlangd);
+        return new SimpleKonResponse<>(result);
     }
 
     public SimpleKonResponse<SimpleKonDataRow> getLangaSjukfall(LocalDate start, int perioder, int periodlangd) {
@@ -320,10 +320,10 @@ public class NationellData {
 
                 list.add(new SimpleKonDataRow(a.getName(), filterCutoff(a.getFemale()) + b.getFemale(), filterCutoff(a.getMale()) + b.getMale()));
             }
-            result = new SimpleKonResponse<>(list, perioder * periodlangd);
+            result = new SimpleKonResponse<>(list);
         }
         if (result == null) {
-            return new SimpleKonResponse<>(new ArrayList<SimpleKonDataRow>(), 0);
+            return new SimpleKonResponse<>(new ArrayList<SimpleKonDataRow>());
         } else {
             return result;
         }
@@ -368,7 +368,7 @@ public class NationellData {
         for (SimpleKonDataRow existingRow : base.getRows()) {
             rows.add(new SimpleKonDataRow(existingRow.getName(), 0, 0));
         }
-        return new SimpleKonResponse<>(rows, base.getNumberOfMonthsCalculated());
+        return new SimpleKonResponse<>(rows);
     }
 
 }

@@ -90,7 +90,7 @@ public final class SjukfallQuery {
             result.add(new SimpleKonDataRow(rowName.apply(sjukfallGroup), female, male));
         }
 
-        return new SimpleKonResponse<>(result, perioder * periodlangd);
+        return new SimpleKonResponse<>(result);
     }
 
     public SimpleKonResponse<SimpleKonDataRow> getSjukfallPerEnhet(Aisle aisle, SjukfallFilter filter, LocalDate from, int periods, int periodLength, Map<String, String> idsToNames) {
@@ -115,7 +115,7 @@ public final class SjukfallQuery {
                 }
             }
         }
-        return new SimpleKonResponse<>(rows, periodLength);
+        return new SimpleKonResponse<>(rows);
     }
 
     public static int countMale(Collection<Sjukfall> sjukfalls) {
@@ -130,7 +130,7 @@ public final class SjukfallQuery {
 
     public SimpleKonResponse<SimpleKonDataRow> getSjukfallPerLakare(Aisle aisle, SjukfallFilter filter, LocalDate start, int periods, int periodLength) {
         final KonDataResponse konDataResponse = getSjukfallPerLakareSomTidsserie(aisle, filter, start, periods, periodLength);
-        return SimpleKonResponse.create(konDataResponse, periodLength * periods);
+        return SimpleKonResponse.create(konDataResponse);
     }
 
     // Collect a list of all "läkar-namn" that exist more than once in the set of lakare

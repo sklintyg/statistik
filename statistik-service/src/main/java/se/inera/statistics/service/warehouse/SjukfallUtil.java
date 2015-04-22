@@ -152,7 +152,7 @@ public class SjukfallUtil {
         for (Integer group : groups) {
             rows.add(new SimpleKonDataRow(String.valueOf(group), femaleCounter.count(group), maleCounter.count(group)));
         }
-        return new SimpleKonResponse<>(rows, periodLength);
+        return new SimpleKonResponse<>(rows);
     }
 
 }

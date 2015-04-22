@@ -63,7 +63,7 @@ public final class LakarbefattningQuery {
 
      public static SimpleKonResponse<SimpleKonDataRow> getSjukfall(Aisle aisle, SjukfallFilter filter, LocalDate start, int periods, int periodLength, SjukfallUtil sjukfallUtil) {
         final KonDataResponse sjukfallSomTidsserie = getSjukfallSomTidsserie(aisle, filter, start, periods, periodLength, sjukfallUtil);
-        return SimpleKonResponse.create(sjukfallSomTidsserie, periods * periodLength);
+        return SimpleKonResponse.create(sjukfallSomTidsserie);
     }
 
     private static List<Integer> getLakarbefattnings(Lakare lakare) {

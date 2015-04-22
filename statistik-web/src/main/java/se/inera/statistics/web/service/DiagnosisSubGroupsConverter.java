@@ -109,7 +109,7 @@ public class DiagnosisSubGroupsConverter {
     }
 
     List<Integer> getTopColumnIndexes(KonDataResponse diagnosisGroups2) {
-        return getTopColumnIndexes(SimpleKonResponse.create(diagnosisGroups2, diagnosisGroups2.getPeriods().size()));
+        return getTopColumnIndexes(SimpleKonResponse.create(diagnosisGroups2));
     }
 
     static List<Integer> getTopColumnIndexes(SimpleKonResponse<SimpleKonDataRow> simpleKonDataRowSimpleKonResponse) {

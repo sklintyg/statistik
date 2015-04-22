@@ -32,10 +32,9 @@ public class SimpleKonResponseTest {
     public void testCreateWithNullInput() throws Exception {
         //Given
         final KonDataResponse diagnosgruppResponse = null;
-        final int numberOfMonthsCalculated = 0;
 
         //When
-        final SimpleKonResponse<SimpleKonDataRow> result = SimpleKonResponse.create(diagnosgruppResponse, numberOfMonthsCalculated);
+        final SimpleKonResponse<SimpleKonDataRow> result = SimpleKonResponse.create(diagnosgruppResponse);
 
         //Then
         assertEquals(0, result.getGroups().size());
@@ -46,10 +45,9 @@ public class SimpleKonResponseTest {
     public void testCreateWithEmptyInput() throws Exception {
         //Given
         final KonDataResponse diagnosgruppResponse = new KonDataResponse(new ArrayList<String>(), new ArrayList<KonDataRow>());
-        final int numberOfMonthsCalculated = 0;
 
         //When
-        final SimpleKonResponse<SimpleKonDataRow> result = SimpleKonResponse.create(diagnosgruppResponse, numberOfMonthsCalculated);
+        final SimpleKonResponse<SimpleKonDataRow> result = SimpleKonResponse.create(diagnosgruppResponse);
 
         //Then
         assertEquals(0, result.getGroups().size());
@@ -62,10 +60,9 @@ public class SimpleKonResponseTest {
         final List<String> groups = Arrays.asList("Group1");
         final List<KonDataRow> rows = Arrays.asList(new KonDataRow("rowname1", Arrays.asList(new KonField(1, 2))), new KonDataRow("rowname2", Arrays.asList(new KonField(3, 4))));
         final KonDataResponse diagnosgruppResponse = new KonDataResponse(groups, rows);
-        final int numberOfMonthsCalculated = 0;
 
         //When
-        final SimpleKonResponse<SimpleKonDataRow> result = SimpleKonResponse.create(diagnosgruppResponse, numberOfMonthsCalculated);
+        final SimpleKonResponse<SimpleKonDataRow> result = SimpleKonResponse.create(diagnosgruppResponse);
 
         //Then
         assertEquals(1, result.getGroups().size());
