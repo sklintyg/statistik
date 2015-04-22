@@ -34,12 +34,12 @@ import java.util.List;
 
 public class SimpleDualSexConverter {
 
-    private final String groupTitle;
+    private final String tableGroupTitle;
     private final boolean totalSeriesInChart;
     private String seriesNameTemplate;
 
-    public SimpleDualSexConverter(String groupTitle, boolean totalSeriesInChart, String seriesNameTemplate) {
-        this.groupTitle = groupTitle;
+    public SimpleDualSexConverter(String tableGroupTitle, boolean totalSeriesInChart, String seriesNameTemplate) {
+        this.tableGroupTitle = tableGroupTitle;
         this.totalSeriesInChart = totalSeriesInChart;
         this.seriesNameTemplate = seriesNameTemplate;
     }
@@ -64,7 +64,7 @@ public class SimpleDualSexConverter {
             data.add(new NamedData(seriesName, Arrays.asList(female + male, female, male)));
         }
 
-        return TableData.createWithSingleHeadersRow(data, Arrays.asList(groupTitle, "Antal sjukfall totalt", "Antal sjukfall för kvinnor", "Antal sjukfall för män"));
+        return TableData.createWithSingleHeadersRow(data, Arrays.asList(tableGroupTitle, "Antal sjukfall totalt", "Antal sjukfall för kvinnor", "Antal sjukfall för män"));
     }
 
     protected ChartData convertToChartData(SimpleKonResponse<SimpleKonDataRow> casesPerMonth) {
