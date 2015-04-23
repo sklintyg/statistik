@@ -47,8 +47,8 @@ public final class Range {
     }
 
     public Range(int months) {
-        to = new LocalDate().withDayOfMonth(1).minusMonths(1);
-        from = to.minusMonths(months - 1);
+        to = new LocalDate().withDayOfMonth(1).minusDays(1);
+        from = to.withDayOfMonth(1).minusMonths(months - 1);
     }
 
     public LocalDate getFrom() {

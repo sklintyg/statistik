@@ -21,6 +21,7 @@ package se.inera.statistics.service.warehouse;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Sets;
 import se.inera.statistics.service.report.model.Kon;
+import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.util.Icd10RangeType;
 
 import java.util.ArrayList;
@@ -55,7 +56,7 @@ public class Sjukfall {
         intygCount++;
         kon = line.getKon();
         alder = line.getAlder();
-        diagnoses.add(new Diagnos(line.getDiagnoskapitel(), line.getDiagnosavsnitt(), line.getDiagnoskategori()));
+        diagnoses.add(new Diagnos(start, end, line.getDiagnoskapitel(), line.getDiagnosavsnitt(), line.getDiagnoskategori()));
         sjukskrivningsgrad = line.getSjukskrivningsgrad();
         lan = line.getLan();
         final int lakarid = line.getLakarid();
@@ -162,15 +163,19 @@ public class Sjukfall {
         return !(this.end < start || this.start > end);
     }
 
-    public int getDiagnoskategori() {
-        return getLastDiagnosis().diagnoskategori;
+    public int getDiagnoskategori(Range range) {
+        return getLastDiagnosis(range).diagnoskategori;
     }
 
-    public int getIcd10CodeForType(Icd10RangeType rangeType) {
+    public int getDiagnoskategori() {
+        return getDiagnoskategori(null);
+    }
+
+    public int getIcd10CodeForType(Icd10RangeType rangeType, Range range) {
         switch (rangeType) {
-            case KAPITEL: return getDiagnoskapitel();
-            case AVSNITT: return getDiagnosavsnitt();
-            case KATEGORI: return getDiagnoskategori();
+            case KAPITEL: return getDiagnoskapitel(range);
+            case AVSNITT: return getDiagnosavsnitt(range);
+            case KATEGORI: return getDiagnoskategori(range);
             default: throw new RuntimeException("Unknown range type: " + rangeType);
         }
     }
@@ -222,20 +227,35 @@ public class Sjukfall {
         return end;
     }
 
+    public int getDiagnoskapitel(Range range) {
+        return getLastDiagnosis(range).diagnoskapitel;
+    }
+
     public int getDiagnoskapitel() {
-        return getLastDiagnosis().diagnoskapitel;
+        return getDiagnoskapitel(null);
     }
 
     public int getSjukskrivningsgrad() {
         return sjukskrivningsgrad;
     }
 
-    public int getDiagnosavsnitt() {
-        return getLastDiagnosis().diagnosavsnitt;
+    public int getDiagnosavsnitt(Range range) {
+        return getLastDiagnosis(range).diagnosavsnitt;
     }
 
-    private Diagnos getLastDiagnosis() {
-        return diagnoses.get(diagnoses.size() - 1);
+    public int getDiagnosavsnitt() {
+        return getDiagnosavsnitt(null);
+    }
+
+    private Diagnos getLastDiagnosis(Range range) {
+        final int rangeStart = range != null ? WidelineConverter.toDay(range.getFrom()) : 0;
+        Diagnos currentFoundDiagnos = null;
+        for (Diagnos diagnose : diagnoses) {
+            if (currentFoundDiagnos == null || (diagnose.slutDatum >= rangeStart && diagnose.startDatum > currentFoundDiagnos.startDatum)) {
+                currentFoundDiagnos = diagnose;
+            }
+        }
+        return currentFoundDiagnos;
     }
 
     public boolean isExtended() {
@@ -291,8 +311,12 @@ public class Sjukfall {
         private final int diagnoskapitel;
         private final int diagnosavsnitt;
         private final int diagnoskategori;
+        private final int startDatum;
+        private final int slutDatum;
 
-        private Diagnos(int diagnoskapitel, int diagnosavsnitt, int diagnoskategori) {
+        private Diagnos(int startDatum, int slutDatum, int diagnoskapitel, int diagnosavsnitt, int diagnoskategori) {
+            this.startDatum = startDatum;
+            this.slutDatum = slutDatum;
             this.diagnoskapitel = diagnoskapitel;
             this.diagnosavsnitt = diagnosavsnitt;
             this.diagnoskategori = diagnoskategori;
