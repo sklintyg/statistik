@@ -26,8 +26,10 @@ import se.inera.statistics.service.report.util.Icd10RangeType;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -43,7 +45,7 @@ public class Sjukfall {
     private final int kon;
     private int alder;
     private List<Diagnos> diagnoses = new ArrayList<>();
-    private int sjukskrivningsgrad;
+    private Map<Range, Integer> sjukskrivningsgrad = new HashMap<>();
     private Set<Lakare> lakare = new HashSet<>();
     private Set<Integer> enhets = new HashSet<>();
     private Sjukfall extending;
@@ -57,7 +59,7 @@ public class Sjukfall {
         kon = line.getKon();
         alder = line.getAlder();
         diagnoses.add(new Diagnos(start, end, line.getDiagnoskapitel(), line.getDiagnosavsnitt(), line.getDiagnoskategori()));
-        sjukskrivningsgrad = line.getSjukskrivningsgrad();
+        sjukskrivningsgrad.put(new Range(WidelineConverter.toDate(start), WidelineConverter.toDate(end)), line.getSjukskrivningsgrad());
         lan = line.getLan();
         final int lakarid = line.getLakarid();
         final Kon lakarKon = Kon.byNumberRepresentation(line.getLakarkon());
@@ -78,6 +80,7 @@ public class Sjukfall {
         diagnoses.addAll(0, previous.diagnoses);
         alder = previous.alder > this.alder ? previous.alder : this.alder;
         enhets.addAll(previous.getEnhets());
+        sjukskrivningsgrad.putAll(previous.sjukskrivningsgrad);
     }
 
     Sjukfall(Sjukfall previous, Sjukfall sjukfall) {
@@ -89,6 +92,7 @@ public class Sjukfall {
         diagnoses.addAll(0, previous.diagnoses);
         alder = previous.alder > this.alder ? previous.alder : this.alder;
         enhets.addAll(previous.getEnhets());
+        sjukskrivningsgrad.putAll(previous.sjukskrivningsgrad);
     }
 
     Sjukfall(Sjukfall sjukfall) {
@@ -99,7 +103,7 @@ public class Sjukfall {
         kon = sjukfall.kon;
         alder = sjukfall.getAlder();
         diagnoses.addAll(sjukfall.diagnoses);
-        sjukskrivningsgrad = sjukfall.getSjukskrivningsgrad();
+        sjukskrivningsgrad.putAll(sjukfall.sjukskrivningsgrad);
         lan = sjukfall.lan;
         lakare.addAll(sjukfall.getLakare());
         extending = sjukfall.extending;
@@ -235,8 +239,15 @@ public class Sjukfall {
         return getDiagnoskapitel(null);
     }
 
-    public int getSjukskrivningsgrad() {
-        return sjukskrivningsgrad;
+    public int getSjukskrivningsgrad(Range range) {
+        final int rangeStart = range != null ? WidelineConverter.toDay(range.getFrom()) : 0;
+        Map.Entry<Range, Integer> currentFound = null;
+        for (Map.Entry<Range, Integer> entry : sjukskrivningsgrad.entrySet()) {
+            if (WidelineConverter.toDay(entry.getKey().getTo()) >= rangeStart && (currentFound == null || entry.getKey().getFrom().isAfter(currentFound.getKey().getFrom()))) {
+                currentFound = entry;
+            }
+        }
+        return currentFound.getValue();
     }
 
     public int getDiagnosavsnitt(Range range) {
@@ -251,7 +262,7 @@ public class Sjukfall {
         final int rangeStart = range != null ? WidelineConverter.toDay(range.getFrom()) : 0;
         Diagnos currentFoundDiagnos = null;
         for (Diagnos diagnose : diagnoses) {
-            if (currentFoundDiagnos == null || (diagnose.slutDatum >= rangeStart && diagnose.startDatum > currentFoundDiagnos.startDatum)) {
+            if (diagnose.slutDatum >= rangeStart && (currentFoundDiagnos == null || diagnose.startDatum > currentFoundDiagnos.startDatum)) {
                 currentFoundDiagnos = diagnose;
             }
         }

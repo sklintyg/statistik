@@ -37,6 +37,7 @@ import se.inera.statistics.service.report.model.SimpleKonDataRow;
 import se.inera.statistics.service.report.model.SimpleKonResponse;
 import se.inera.statistics.service.report.util.ReportUtil;
 import se.inera.statistics.service.warehouse.query.CounterFunction;
+import se.inera.statistics.service.warehouse.query.CounterFunctionInput;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -126,7 +127,7 @@ public class SjukfallUtil {
             final HashMultiset<T> femaleCounter = HashMultiset.create();
             for (Sjukfall sjukfall : sjukfallGroup.getSjukfall()) {
                 final HashMultiset<T> currentCounter = Kon.Female.equals(sjukfall.getKon()) ? femaleCounter : maleCounter;
-                counterFunction.addCount(sjukfall, currentCounter);
+                counterFunction.addCount(new CounterFunctionInput(sjukfall, sjukfallGroup.getRange()), currentCounter);
             }
             List<KonField> list = new ArrayList<>(groupIds.size());
             for (T id : groupIds) {
@@ -139,14 +140,14 @@ public class SjukfallUtil {
     }
     //CHECKSTYLE:ON
 
-    public SimpleKonResponse<SimpleKonDataRow> calculateSimpleKonResponse(Aisle aisle, SjukfallFilter filter, LocalDate from, int periods, int periodLength, Function<Sjukfall, Integer> toCount, List<Integer> groups) {
+    public SimpleKonResponse<SimpleKonDataRow> calculateSimpleKonResponse(Aisle aisle, SjukfallFilter filter, LocalDate from, int periods, int periodLength, Function<CounterFunctionInput, Integer> toCount, List<Integer> groups) {
         List<SimpleKonDataRow> rows = new ArrayList<>();
         HashMultiset<Integer> maleCounter = HashMultiset.create();
         HashMultiset<Integer> femaleCounter = HashMultiset.create();
         for (SjukfallGroup sjukfallGroup: sjukfallGrupper(from, periods, periodLength, aisle, filter)) {
             for (Sjukfall sjukfall : sjukfallGroup.getSjukfall()) {
                 HashMultiset<Integer> counter = Kon.Male.equals(sjukfall.getKon()) ? maleCounter : femaleCounter;
-                counter.add(toCount.apply(sjukfall));
+                counter.add(toCount.apply(new CounterFunctionInput(sjukfall, sjukfallGroup.getRange())));
             }
         }
         for (Integer group : groups) {

@@ -23,12 +23,14 @@ import com.google.common.collect.HashMultiset;
 import org.joda.time.LocalDate;
 import se.inera.statistics.service.report.model.KonDataResponse;
 import se.inera.statistics.service.report.model.OverviewChartRowExtended;
+import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.SimpleKonDataRow;
 import se.inera.statistics.service.report.model.SimpleKonResponse;
 import se.inera.statistics.service.warehouse.Aisle;
 import se.inera.statistics.service.warehouse.Sjukfall;
 import se.inera.statistics.service.warehouse.SjukfallFilter;
 import se.inera.statistics.service.warehouse.SjukfallUtil;
+import se.inera.statistics.service.warehouse.WidelineConverter;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -64,7 +66,7 @@ public final class SjukskrivningsgradQuery {
     private static Map<Integer, Counter<Integer>> count2(Collection<Sjukfall> sjukfalls) {
         Map<Integer, Counter<Integer>> counters = Counter.mapFor(GRAD);
         for (Sjukfall sjukfall : sjukfalls) {
-            Counter counter = counters.get(sjukfall.getSjukskrivningsgrad());
+            Counter counter = counters.get(sjukfall.getSjukskrivningsgrad(new Range(WidelineConverter.toDate(0), WidelineConverter.toDate(Integer.MAX_VALUE))));
             counter.increase(sjukfall);
         }
         return counters;
@@ -73,8 +75,8 @@ public final class SjukskrivningsgradQuery {
     public static KonDataResponse getSjukskrivningsgrad(Aisle aisle, SjukfallFilter filter, LocalDate start, int periods, int periodSize, SjukfallUtil sjukfallUtil) {
         return sjukfallUtil.calculateKonDataResponse(aisle, filter, start, periods, periodSize, GRAD_LABEL, GRAD, new CounterFunction<Integer>() {
             @Override
-            public void addCount(Sjukfall sjukfall, HashMultiset<Integer> counter) {
-                counter.add(sjukfall.getSjukskrivningsgrad());
+            public void addCount(CounterFunctionInput input, HashMultiset<Integer> counter) {
+                counter.add(input.getSjukfall().getSjukskrivningsgrad(input.getRange()));
             }
         });
     }
@@ -88,10 +90,10 @@ public final class SjukskrivningsgradQuery {
     }
 
     public static SimpleKonResponse<SimpleKonDataRow> getSjukskrivningsgradTvarsnitt(Aisle aisle, SjukfallFilter filter, LocalDate from, int periods, int periodLength, SjukfallUtil sjukfallUtil) {
-        final Function<Sjukfall, Integer> toCount = new Function<Sjukfall, Integer>() {
+        final Function<CounterFunctionInput, Integer> toCount = new Function<CounterFunctionInput, Integer>() {
             @Override
-            public Integer apply(Sjukfall sjukfall) {
-                return sjukfall.getSjukskrivningsgrad();
+            public Integer apply(CounterFunctionInput input) {
+                return input.getSjukfall().getSjukskrivningsgrad(input.getRange());
             }
         };
         return sjukfallUtil.calculateSimpleKonResponse(aisle, filter, from, periods, periodLength, toCount, GRAD);

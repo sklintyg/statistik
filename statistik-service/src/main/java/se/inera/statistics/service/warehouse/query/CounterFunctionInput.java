@@ -18,10 +18,25 @@
  */
 package se.inera.statistics.service.warehouse.query;
 
-import com.google.common.collect.HashMultiset;
+import se.inera.statistics.service.report.model.Range;
+import se.inera.statistics.service.warehouse.Sjukfall;
 
-public interface CounterFunction <T> {
+public class CounterFunctionInput {
 
-    void addCount(CounterFunctionInput sjukfall, HashMultiset<T> counter);
+    private Sjukfall sjukfall;
+    private Range range;
+
+    public CounterFunctionInput(Sjukfall sjukfall, Range range) {
+        this.sjukfall = sjukfall;
+        this.range = range;
+    }
+
+    public Sjukfall getSjukfall() {
+        return sjukfall;
+    }
+
+    public Range getRange() {
+        return range;
+    }
 
 }
