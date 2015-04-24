@@ -22,22 +22,35 @@ import java.util.Collections;
 import java.util.List;
 
 public class FilterData {
+
+    public static final String DATE_FORMAT = "yyyy-MM-dd";
+
     private List<String> diagnoser;
     private List<String> enheter;
     private List<String> verksamhetstyper;
+    private String fromDate;
+    private String toDate;
+    private boolean useDefaultPeriod;
 
     //To be used by json converter
     FilterData() {
     }
 
-    public FilterData(List<String> diagnoser, List<String> enheter, List<String> verksamhetstyper) {
+    public FilterData(List<String> diagnoser, List<String> enheter, List<String> verksamhetstyper, String toDate, String fromDate, boolean useDefaultPeriod) {
         this.diagnoser = diagnoser == null ? Collections.<String>emptyList() : Collections.unmodifiableList(diagnoser);
         this.enheter = enheter == null ? Collections.<String>emptyList() : Collections.unmodifiableList(enheter);
         this.verksamhetstyper = verksamhetstyper == null ? Collections.<String>emptyList() : Collections.unmodifiableList(verksamhetstyper);
+        this.useDefaultPeriod = useDefaultPeriod;
+        this.toDate = toDate;
+        this.fromDate = fromDate;
     }
 
     public static FilterData empty() {
-        return new FilterData(Collections.<String>emptyList(), Collections.<String>emptyList(), Collections.<String>emptyList());
+        return new FilterData(Collections.<String>emptyList(), Collections.<String>emptyList(), Collections.<String>emptyList(), null, null, true);
+    }
+
+    public static FilterData createForDxsOnly(List<String> diagnoser) {
+        return new FilterData(diagnoser, Collections.<String>emptyList(), Collections.<String>emptyList(), null, null, true);
     }
 
     public List<String> getDiagnoser() {
@@ -52,4 +65,15 @@ public class FilterData {
         return verksamhetstyper;
     }
 
+    public String getFromDate() {
+        return fromDate;
+    }
+
+    public String getToDate() {
+        return toDate;
+    }
+
+    public boolean isUseDefaultPeriod() {
+        return useDefaultPeriod;
+    }
 }

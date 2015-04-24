@@ -18,6 +18,8 @@ abstract class Rapport {
     def filterKategorier
     def filterEnheter
     def filterVerksamhetstyper
+    def filterStartdatum
+    def filterSlutdatum
 
     ReportsUtil reportsUtil = new ReportsUtil()
 
@@ -91,7 +93,7 @@ abstract class Rapport {
         if (filterKategorier != null) {
             diagnoser.addAll(filterKategorier)
         }
-        return new FilterData(diagnoser, filterEnheter, filterVerksamhetstyper)
+        return new FilterData(diagnoser, filterEnheter, filterVerksamhetstyper, filterStartdatum, filterSlutdatum, filterStartdatum == null || filterSlutdatum == null)
     }
 
     public void reset() {
@@ -105,6 +107,8 @@ abstract class Rapport {
         filterKategorier = null
         filterEnheter = null
         filterVerksamhetstyper = null
+        filterStartdatum = null
+        filterSlutdatum = null
     }
 
     void setKommentar(String kommentar) {

@@ -25,7 +25,11 @@ import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
+import com.sun.istack.NotNull;
+import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -116,6 +120,10 @@ public class ProtectedChartDataService {
         Filter filter = getFilter(request, filterHash);
         SimpleKonResponse<SimpleKonDataRow> casesPerMonth = warehouse.getCasesPerMonth(filter.getPredicate(), range, getSelectedVgIdForLoggedInUser(request));
         SimpleDetailsData result = new PeriodConverter().convert(casesPerMonth, range, filter);
+        //TODO To be used by STATISTIK-954
+//        final FilterSettings filter = getFilter(request, filterHash, 18);
+//        SimpleKonResponse<SimpleKonDataRow> casesPerMonth = warehouse.getCasesPerMonth(filter.getFilter().getPredicate(), filter.getRange(), getSelectedVgIdForLoggedInUser(request));
+//        SimpleDetailsData result = new PeriodConverter().convert(casesPerMonth, filter.getRange(), filter.getFilter());
         return getResponse(result, csv);
     }
 
@@ -138,6 +146,12 @@ public class ProtectedChartDataService {
         SimpleKonResponse<SimpleKonDataRow> casesPerMonth = warehouse.getCasesPerMonthTvarsnitt(filter.getPredicate(), range, getSelectedVgIdForLoggedInUser(request));
         SimpleDetailsData result = new TotalCasesPerMonthTvarsnittConverter().convert(casesPerMonth, range, filter);
         return getResponse(result, csv);
+    }
+
+    @Deprecated //This is a helper method only to be used while implementing STATISTIK-954
+    private Filter getFilter(HttpServletRequest request, String filterHash) {
+        final int defaultRangeValue = 1;
+        return getFilter(request, filterHash, defaultRangeValue).getFilter();
     }
 
     /**
@@ -585,9 +599,9 @@ public class ProtectedChartDataService {
         return getResponse(data, csv);
     }
 
-    Filter getFilter(HttpServletRequest request, String filterHash) {
+    FilterSettings getFilter(HttpServletRequest request, String filterHash, int defaultRangeValue) {
         if (filterHash == null || filterHash.isEmpty()) {
-            return getFilterForAllAvailableEnhets(request);
+            return new FilterSettings(getFilterForAllAvailableEnhets(request), new Range(defaultRangeValue));
         }
         FilterData inFilter = getFilterFromHash(filterHash);
         final ArrayList<String> enhetsIDs = getEnhetsFiltered(request, inFilter);
@@ -595,7 +609,27 @@ public class ProtectedChartDataService {
         final List<String> diagnoser = inFilter.getDiagnoser();
         Predicate<Fact> diagnosFilter = getDiagnosFilter(diagnoser);
         final SjukfallFilter sjukfallFilter = new SjukfallFilter(Predicates.and(enhetFilter, diagnosFilter), filterHash);
-        return new Filter(sjukfallFilter, enhetsIDs, diagnoser);
+        final Filter filter = new Filter(sjukfallFilter, enhetsIDs, diagnoser);
+        final Range range = getRange(inFilter, defaultRangeValue);
+        return new FilterSettings(filter, range);
+    }
+
+    private Range getRange(@NotNull FilterData inFilter, int defaultRangeValue) {
+        if (inFilter.isUseDefaultPeriod()) {
+            return new Range(defaultRangeValue);
+        }
+        DateTimeFormatter dateStringFormat = DateTimeFormat.forPattern(FilterData.DATE_FORMAT);
+        final String fromDate = inFilter.getFromDate();
+        final String toDate = inFilter.getToDate();
+        LOG.warn("TESTING: From: $1, To: $2. .", fromDate, toDate);
+        try {
+            DateTime from = dateStringFormat.parseDateTime(fromDate);
+            DateTime to = dateStringFormat.parseDateTime(toDate);
+            return new Range(from.toLocalDate(), to.toLocalDate());
+        } catch (IllegalArgumentException e) {
+            LOG.warn("Could not parse range dates. From: $1, To: $2. Falling back to default range.", fromDate, toDate);
+        }
+        return new Range(defaultRangeValue);
     }
 
     private Filter getFilterForAllAvailableEnhets(HttpServletRequest request) {

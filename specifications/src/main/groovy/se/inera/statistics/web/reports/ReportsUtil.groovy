@@ -132,7 +132,7 @@ class ReportsUtil {
         if (isFilterEmpty(filter)) {
             return queryString
         }
-        def filterHash = getFilterHash(filter.enheter, filter.verksamhetstyper, filter.diagnoser)
+        def filterHash = getFilterHash(filter)
         def prefixChar = queryString.isEmpty() ? "" : "&"
         return queryString + prefixChar + "filter=" + filterHash
     }
@@ -302,8 +302,7 @@ class ReportsUtil {
         return get(getVerksamhetUrlPrefix() + "/getJamforDiagnoserStatistik/" + diagnosHash, filter)
     }
 
-    String getFilterHash(enheter, verksamhetstyper, diagnoser) {
-        def filterData = new FilterData(diagnoser, enheter, verksamhetstyper)
+    String getFilterHash(FilterData filterData) {
         def filterJsonString = new JsonBuilder(filterData).toString()
         println("Filter to filterhash: " + filterJsonString)
         def response = statistik.post(path: "/api/filter", body: filterJsonString, requestContentType: JSON, contentType: TEXT)

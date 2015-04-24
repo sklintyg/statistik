@@ -1,5 +1,7 @@
 package se.inera.statistics.spec
 
+import se.inera.statistics.web.service.FilterData
+
 abstract class DualSexTimeSeriesReport extends Rapport {
 
     String år
@@ -62,7 +64,7 @@ abstract class DualSexTimeSeriesReport extends Rapport {
     }
 
     def getReportJamforDiagnoserSomTidsserie(diagnoser) {
-        def diagnosHash = reportsUtil.getFilterHash(null, null, diagnoser)
+        def diagnosHash = reportsUtil.getFilterHash(FilterData.createForDxsOnly(diagnoser))
         if (inloggad) {
             return reportsUtil.getReportJamforDiagnoserSomTidsserieInloggad(filter, diagnosHash);
         }
