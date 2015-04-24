@@ -19,11 +19,10 @@
 package se.inera.statistics.service.warehouse;
 
 import com.google.common.base.Function;
-import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
 import org.junit.Test;
 import se.inera.statistics.service.report.model.Kon;
+import se.inera.statistics.service.report.model.Range;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -280,7 +279,45 @@ public class SjukfallTest {
         assertEquals(10, sjukfall3.getRealDays());
     }
 
-    private Fact createFact(int startdatum, int sjukskrivningslangd) {
-        return new Fact(1,1,1,1,1,1, startdatum,1,1,1,1,1,1, sjukskrivningslangd,1,1,new int[0], 1);
+    @Test
+    public void testGetDiagnoskapitelForOverlappingUnorderedIntygWithinPeriod() throws Exception {
+        //Given
+        final int diagnoskapitel1 = 2;
+        final Sjukfall sjukfall1 = new Sjukfall(createFact(2, 10, diagnoskapitel1));
+        final int diagnoskapitel2 = 3;
+        final Sjukfall sjukfall2 = new Sjukfall(sjukfall1, createFact(3, 4, diagnoskapitel2));
+        final int diagnoskapitel3 = 4;
+        final Sjukfall sjukfall3 = new Sjukfall(sjukfall2, createFact(1, 30, diagnoskapitel3));
+
+        //When
+        final int diagnoskapitel = sjukfall3.getDiagnoskapitel(new Range(WidelineConverter.toDate(6), WidelineConverter.toDate(20)));
+
+        //Then
+        assertEquals(diagnoskapitel2, diagnoskapitel);
     }
+
+    @Test
+    public void testGetDiagnoskapitelForOverlappingUnorderedIntygWithOneOutsidePeriod() throws Exception {
+        //Given
+        final int diagnoskapitel1 = 2;
+        final Sjukfall sjukfall1 = new Sjukfall(createFact(2, 10, diagnoskapitel1));
+        final int diagnoskapitel2 = 3;
+        final Sjukfall sjukfall2 = new Sjukfall(sjukfall1, createFact(3, 4, diagnoskapitel2));
+        final Sjukfall sjukfall3 = new Sjukfall(sjukfall2, createFact(1, 30, diagnoskapitel2));
+
+        //When
+        final int diagnoskapitel = sjukfall3.getDiagnoskapitel(new Range(WidelineConverter.toDate(10), WidelineConverter.toDate(20)));
+
+        //Then
+        assertEquals(diagnoskapitel1, diagnoskapitel);
+    }
+
+    private Fact createFact(int startdatum, int sjukskrivningslangd) {
+        return new Fact(1,1,1,1,1,1, startdatum,1,1, 1,1,1,1, sjukskrivningslangd,1,1,new int[0], 1);
+    }
+
+    private Fact createFact(int startdatum, int sjukskrivningslangd, int diagnoskapitel) {
+        return new Fact(1,1,1,1,1,1, startdatum,1,1, diagnoskapitel,1,1,1, sjukskrivningslangd,1,1,new int[0], 1);
+    }
+
 }

@@ -62,4 +62,18 @@ public class RangeTest {
         assertEquals(3, range.getMonths());
     }
     // CHECKSTYLE:ON MagicNumber
+
+    @Test
+    public void settingRangeMonthsCorrectStartAndEnd() {
+        //When
+        final Range range = new Range(3);
+
+        //Then
+        final LocalDate now = new LocalDate();
+        final int expectedFrom = now.minusMonths(3).withDayOfMonth(1).getDayOfYear();
+        assertEquals(expectedFrom, range.getFrom().getDayOfYear());
+        final int expectedTo = now.minusMonths(1).dayOfMonth().withMaximumValue().getDayOfYear();
+        assertEquals(expectedTo, range.getTo().getDayOfYear());
+    }
+
 }

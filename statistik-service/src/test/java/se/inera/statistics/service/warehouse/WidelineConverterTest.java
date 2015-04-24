@@ -18,6 +18,7 @@
  */
 package se.inera.statistics.service.warehouse;
 
+import org.joda.time.LocalDate;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
@@ -32,6 +33,7 @@ import se.inera.statistics.service.processlog.EventType;
 import se.inera.statistics.service.warehouse.model.db.WideLine;
 
 import java.util.List;
+import java.util.Random;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -132,4 +134,25 @@ public class WidelineConverterTest {
         LOG.error("Error message: {}", errors);
         assertEquals(8, errors.size());
     }
+
+    @Test
+    public void testToDay() throws Exception {
+        //Given
+        final int day = 5538;
+
+        //When
+        final LocalDate localDate = WidelineConverter.toDate(day);
+
+        //Then
+        assertEquals(2015, localDate.getYear());
+        assertEquals(3, localDate.getMonthOfYear());
+        assertEquals(1, localDate.getDayOfMonth());
+
+        //When
+        final int convertedDay = WidelineConverter.toDay(localDate);
+
+        //Then
+        assertEquals(day, convertedDay);
+    }
+
 }

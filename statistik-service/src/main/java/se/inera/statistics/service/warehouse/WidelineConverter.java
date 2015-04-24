@@ -184,6 +184,10 @@ public class WidelineConverter {
         return Days.daysBetween(ERA, dayDate).getDays();
     }
 
+    public static LocalDate toDate(int day) {
+        return ERA.plusDays(day);
+    }
+
     public List<String> validate(WideLine line) {
         List<String> errors = new ArrayList<>();
         checkField(errors, line.getLkf(), "LKF");

@@ -42,7 +42,11 @@ public class SjukfallIterator implements Iterator<SjukfallGroup> {
         this.periods = periods;
         this.periodSize = periodSize;
         List<Range> ranges = getRanges(from, periods, periodSize);
-        sjukfallCalculator = new SjukfallCalculator(aisle, filter, ranges, useOriginalSjukfallStart);
+        sjukfallCalculator = getSjukfallCalculator(aisle, filter, useOriginalSjukfallStart, ranges);
+    }
+
+    SjukfallCalculator getSjukfallCalculator(Aisle aisle, Predicate<Fact> filter, boolean useOriginalSjukfallStart, List<Range> ranges) {
+        return new SjukfallCalculator(aisle, filter, ranges, useOriginalSjukfallStart);
     }
 
     static List<Range> getRanges(LocalDate from, int periods, int periodSize) {
