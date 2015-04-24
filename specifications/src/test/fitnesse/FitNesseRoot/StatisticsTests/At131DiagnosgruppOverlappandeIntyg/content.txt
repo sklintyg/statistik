@@ -2,7 +2,7 @@
 
 !3 Givet att:
 
-
+Ett sjukfall består av två intyg, där det andra börjar efter det första och slutar innan det första. Månadsbrytning mellan det andra intygets start- och slutdatum.
 
 | script | dagens datum | 2013-11-06 |
 
@@ -15,7 +15,7 @@
 
 !3 Då gäller:
 
-
+Diagnosen väljs från det intyg som är aktivt minst en dag i perioden och som har det senaste startdatumet.
 
 Inloggad:
 | Sjukfall i rapporten diagnosgrupp diagram |

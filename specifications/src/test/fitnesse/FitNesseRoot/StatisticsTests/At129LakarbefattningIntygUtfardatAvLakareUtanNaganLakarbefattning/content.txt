@@ -1,7 +1,5 @@
 !contents -R2 -g -p -f -h
 
-IGNORED: Waiting for STATISTIK-1024.
-
 !3 Givet att:
 
 Ett sjukfall består av 1 intyg, utfärdat av en person med befattningen Ledning, personal (vilket inte är en läkarbefattning).
