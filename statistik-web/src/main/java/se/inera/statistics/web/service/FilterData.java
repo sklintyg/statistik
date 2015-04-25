@@ -36,7 +36,7 @@ public class FilterData {
     FilterData() {
     }
 
-    public FilterData(List<String> diagnoser, List<String> enheter, List<String> verksamhetstyper, String toDate, String fromDate, boolean useDefaultPeriod) {
+    public FilterData(List<String> diagnoser, List<String> enheter, List<String> verksamhetstyper, String fromDate, String toDate, boolean useDefaultPeriod) {
         this.diagnoser = diagnoser == null ? Collections.<String>emptyList() : Collections.unmodifiableList(diagnoser);
         this.enheter = enheter == null ? Collections.<String>emptyList() : Collections.unmodifiableList(enheter);
         this.verksamhetstyper = verksamhetstyper == null ? Collections.<String>emptyList() : Collections.unmodifiableList(verksamhetstyper);
