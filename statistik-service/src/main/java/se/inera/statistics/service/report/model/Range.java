@@ -46,9 +46,19 @@ public final class Range {
         this.to = to;
     }
 
-    public Range(int months) {
+    private Range(int months) {
         to = new LocalDate().withDayOfMonth(1).minusDays(1);
         from = to.withDayOfMonth(1).minusMonths(months - 1);
+    }
+
+    public static Range createForLastMonthsExcludingCurrent(int months) {
+        return new Range(months);
+    }
+
+    public static Range createForLastMonthsIncludingCurrent(int months) {
+        final LocalDate toDate = new LocalDate().dayOfMonth().withMaximumValue();
+        final LocalDate fromDate = toDate.withDayOfMonth(1).minusMonths(months - 1);
+        return new Range(fromDate, toDate);
     }
 
     public LocalDate getFrom() {

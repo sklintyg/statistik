@@ -48,7 +48,7 @@ public class SickLeaveLengthConverterTest {
         SimpleKonResponse<SimpleKonDataRow> sjukfallslangdResponse = new SimpleKonResponse<>(sjukfallslangdRows);
 
         //When
-        final Range range = new Range(7);
+        final Range range = Range.createForLastMonthsExcludingCurrent(7);
         SimpleDetailsData result = converter.convert(sjukfallslangdResponse, range, Filter.empty());
 
         //Then

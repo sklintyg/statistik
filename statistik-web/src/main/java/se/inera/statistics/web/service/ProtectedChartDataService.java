@@ -616,7 +616,7 @@ public class ProtectedChartDataService {
 
     FilterSettings getFilter(HttpServletRequest request, String filterHash, int defaultRangeValue) {
         if (filterHash == null || filterHash.isEmpty()) {
-            return new FilterSettings(getFilterForAllAvailableEnhets(request), new Range(defaultRangeValue));
+            return new FilterSettings(getFilterForAllAvailableEnhets(request), Range.createForLastMonthsIncludingCurrent(defaultRangeValue));
         }
         FilterData inFilter = getFilterFromHash(filterHash);
         final ArrayList<String> enhetsIDs = getEnhetsFiltered(request, inFilter);
@@ -631,7 +631,7 @@ public class ProtectedChartDataService {
 
     private Range getRange(@NotNull FilterData inFilter, int defaultRangeValue) {
         if (inFilter.isUseDefaultPeriod()) {
-            return new Range(defaultRangeValue);
+            return Range.createForLastMonthsIncludingCurrent(defaultRangeValue);
         }
         DateTimeFormatter dateStringFormat = DateTimeFormat.forPattern(FilterData.DATE_FORMAT);
         final String fromDate = inFilter.getFromDate();
@@ -643,7 +643,7 @@ public class ProtectedChartDataService {
         } catch (IllegalArgumentException e) {
             LOG.warn("Could not parse range dates. From: {}, To: {}. Falling back to default range.", fromDate, toDate);
         }
-        return new Range(defaultRangeValue);
+        return Range.createForLastMonthsIncludingCurrent(defaultRangeValue);
     }
 
     private Filter getFilterForAllAvailableEnhets(HttpServletRequest request) {

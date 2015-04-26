@@ -58,7 +58,7 @@ public class OverviewConverterTest {
         //When
         OverviewResponse resp = new OverviewResponse(overviewKonsfordelning, casesPerMonthAlteration, diagnosisGroups, ageGroups, degreeOfSickLeaveGroups,
                 sickLeaveLengthGroups, longSickLeavesTotal, longSickLeavesAlternation, perCounty);
-        OverviewData data = new OverviewConverter().convert(resp, new Range(3));
+        OverviewData data = new OverviewConverter().convert(resp, Range.createForLastMonthsExcludingCurrent(3));
 
         //Then
         assertEquals("[]", data.getAgeGroups().toString());
@@ -87,7 +87,7 @@ public class OverviewConverterTest {
         //When
         OverviewResponse resp = new OverviewResponse(overviewKonsfordelning, casesPerMonthAlteration, diagnosisGroups, ageGroups, degreeOfSickLeaveGroups,
                 sickLeaveLengthGroups, longSickLeavesTotal, longSickLeavesAlternation, perCounty);
-        OverviewData data = new OverviewConverter().convert(resp, new Range(3));
+        OverviewData data = new OverviewConverter().convert(resp, Range.createForLastMonthsExcludingCurrent(3));
 
         //Then
         SjukfallPerManadOverview casesPerMonth = data.getCasesPerMonth();

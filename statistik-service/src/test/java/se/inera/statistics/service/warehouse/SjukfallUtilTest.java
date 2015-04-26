@@ -219,7 +219,7 @@ public class SjukfallUtilTest {
 
         final SjukfallUtil spy = Mockito.spy(sjukfallUtil);
         final ArrayList<SjukfallGroup> sjukfallGrupper = new ArrayList<>();
-        sjukfallGrupper.add(new SjukfallGroup(new Range(1), Arrays.asList(createSjukfall(Kon.Female), createSjukfall(Kon.Male), createSjukfall(Kon.Male))));
+        sjukfallGrupper.add(new SjukfallGroup(Range.createForLastMonthsExcludingCurrent(1), Arrays.asList(createSjukfall(Kon.Female), createSjukfall(Kon.Male), createSjukfall(Kon.Male))));
         final Aisle currentAisle = aisle.createAisle();
         Mockito.when(spy.sjukfallGrupper(start, periods, periodSize, currentAisle, filter)).thenReturn(sjukfallGrupper);
 

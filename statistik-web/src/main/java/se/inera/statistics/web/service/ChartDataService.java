@@ -146,19 +146,19 @@ public class ChartDataService {
     }
 
     public void buildNumberOfCasesPerMonth() {
-        final Range range = new Range(EIGHTEEN_MONTHS);
+        final Range range = Range.createForLastMonthsExcludingCurrent(EIGHTEEN_MONTHS);
         SimpleKonResponse<SimpleKonDataRow> casesPerMonth = data.getCasesPerMonth(range);
         numberOfCasesPerMonth = new PeriodConverter().convert(casesPerMonth, range, Filter.empty());
     }
 
     public void buildDiagnosgrupper() {
-        Range range = new Range(EIGHTEEN_MONTHS);
+        Range range = Range.createForLastMonthsExcludingCurrent(EIGHTEEN_MONTHS);
         DiagnosgruppResponse diagnosisGroups = data.getDiagnosgrupper(range);
         diagnosgrupper = new DiagnosisGroupsConverter().convert(diagnosisGroups, range, Filter.empty());
     }
 
     public void buildDiagnoskapitel() {
-        final Range range = new Range(EIGHTEEN_MONTHS);
+        final Range range = Range.createForLastMonthsExcludingCurrent(EIGHTEEN_MONTHS);
         for (Icd10.Kapitel kapitel : icd10.getKapitel(false)) {
             String id = kapitel.getId();
             DiagnosgruppResponse diagnosisGroups = data.getDiagnosavsnitt(range, id);
@@ -174,19 +174,19 @@ public class ChartDataService {
     }
 
     public void buildAldersgrupper() {
-        Range range = new Range(YEAR);
+        Range range = Range.createForLastMonthsExcludingCurrent(YEAR);
         SimpleKonResponse<SimpleKonDataRow> ageGroups = data.getHistoricalAgeGroups(range);
-        aldersgrupper = new AgeGroupsConverter().convert(ageGroups, new Range(range.getMonths()), Filter.empty());
+        aldersgrupper = new AgeGroupsConverter().convert(ageGroups, Range.createForLastMonthsExcludingCurrent(range.getMonths()), Filter.empty());
     }
 
     public void buildSjukskrivningsgrad() {
-        final Range range = new Range(EIGHTEEN_MONTHS);
+        final Range range = Range.createForLastMonthsExcludingCurrent(EIGHTEEN_MONTHS);
         KonDataResponse degreeOfSickLeaveStatistics = data.getSjukskrivningsgrad(range);
         sjukskrivningsgrad = new DegreeOfSickLeaveConverter().convert(degreeOfSickLeaveStatistics, range, Filter.empty());
     }
 
     public void buildSjukfallslangd() {
-        Range range = new Range(YEAR);
+        Range range = Range.createForLastMonthsExcludingCurrent(YEAR);
         SimpleKonResponse<SimpleKonDataRow> sickLeaveLength = data.getSjukfallslangd(range);
         sjukfallslangd = new SickLeaveLengthConverter().convert(sickLeaveLength, range, Filter.empty());
     }
@@ -201,7 +201,7 @@ public class ChartDataService {
     }
 
     public void buildKonsfordelningPerLan() {
-        final Range range = new Range(YEAR);
+        final Range range = Range.createForLastMonthsExcludingCurrent(YEAR);
         SimpleKonResponse<SimpleKonDataRow> casesPerMonth = data.getSjukfallPerLan(range);
         konsfordelningPerLan = new SjukfallPerSexConverter().convert(casesPerMonth, range);
     }
