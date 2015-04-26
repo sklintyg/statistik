@@ -1,5 +1,7 @@
 !contents -R2 -g -p -f -h
 
+Ignorerad pga STATISTIK-951
+
 !3 Givet att:
 
 Ett sjukfall består av ett intyg som startar före tidsintervallet som visas i rapporten och slutar efter.

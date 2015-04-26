@@ -1,5 +1,7 @@
 !contents -R2 -g -p -f -h
 
+Igorerad i pga STATISTIK-951
+
 !3 Givet att:
 
 Det finns två exakt likadana intyg för en patient.
