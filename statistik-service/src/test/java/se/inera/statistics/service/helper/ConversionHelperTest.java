@@ -18,7 +18,9 @@
  */
 package se.inera.statistics.service.helper;
 
+import org.joda.time.LocalDate;
 import org.junit.Test;
+import se.inera.statistics.service.warehouse.WidelineConverter;
 
 import static org.junit.Assert.*;
 
@@ -34,6 +36,15 @@ public class ConversionHelperTest {
 
         //Then
         assertEquals("19800101-1234", pnr);
+    }
+
+    @Test
+    public void testExtractAlder() throws Exception {
+        //When
+        final int alder = ConversionHelper.extractAlder("19730420-9990", new LocalDate(2015, 4, 5));
+
+        //Then
+        assertEquals(41, alder);
     }
 
 }
