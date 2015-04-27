@@ -1,6 +1,8 @@
-!3 Givet att:
+!contents -R2 -g -p -f -h
 
 Gäller STATISTIK-936, 943.
+
+!3 Givet att:
 
 | script | dagens datum | 2014-11-06 |
 

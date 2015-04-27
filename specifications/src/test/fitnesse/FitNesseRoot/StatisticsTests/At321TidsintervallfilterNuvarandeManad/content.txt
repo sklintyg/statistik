@@ -2,9 +2,9 @@
 
 Gäller STATISTIK-954.
 
-Tidsintervallet ändras till bara nuvarande månad.
-
 !3 Givet att:
+
+Det finns tre sjukfall med olika start- och sluttider.
 
 | script | dagens datum | 2014-11-06 |
 
@@ -23,6 +23,9 @@ Tidsintervallet ändras till bara nuvarande månad.
 | 19690407-1295 | G03 | 2014-11-01 | 2015-02-28 | 75            | enhet2 | lakare3 |
 
 !3 Då gäller:
+
+Vid val i filter att bara visa innevarande månad, visas bara sjukfall som pågår under innevarande månad.
+
 Inloggad:
 | Sjukfall i rapporten sjukfall per enhet |
 | inloggad som | vårdenhet    | vårdgivarnivå | filter kapitel | filter enheter | filter verksamhetstyper | filter startdatum | filter slutdatum | totalt? | män? | kvinnor? |

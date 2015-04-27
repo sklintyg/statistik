@@ -3,6 +3,7 @@
 Gäller STATISTIK-935, 942.
 
 !3 Givet att:
+
 | script | dagens datum | 2014-11-06 |
 
 | script | troskel varde | 1 |
@@ -17,13 +18,11 @@ Gäller STATISTIK-935, 942.
 | 19890407-1245 | G01 | 2013-06-01 | 2013-10-30 | 0             | enhet1 | lakare1 |
 | 19790407-1255 | G02 | 2014-07-01 | 2014-10-30 | 50            | enhet2 | lakare2 |
 
-
 !3 Då gäller:
+
 | Sjukfall i rapporten sjukfall per enhet |
 | inloggad som | vårdenhet    | vårdgivarnivå | totalt? | män? | kvinnor? |
 | user2        | Enhet enhet2 | true          | 1       | 1    | 0        |
-
-Byte till tidsserie gör att ytdiagram 18 mån visas. Varje enhet blir en legend. Kvinnor och män visas i separata diagram.
 
 | Sjukfall i rapporten sjukfall per enhet som tidsserie |
 | inloggad som | år   | månad | vårdenhet    | män? | kvinnor? |
