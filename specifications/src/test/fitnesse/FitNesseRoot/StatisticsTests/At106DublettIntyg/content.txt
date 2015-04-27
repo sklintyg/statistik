@@ -1,7 +1,5 @@
 !contents -R2 -g -p -f -h
 
-Igorerad i pga STATISTIK-951
-
 !3 Givet att:
 
 Det finns två exakt likadana intyg för en patient.
@@ -21,7 +19,6 @@ Bara ett sjukfall visas.
 
 | Sjukfall i rapporten sjukfall totalt |
 | inloggad som | år   | månad | män? | kvinnor? | kommentar |
-| user1  | 2013 | maj   | 0    | 0        | |
 | user1  | 2013 | jun   | 0    | 0        | |
 | user1  | 2013 | jul   | 0    | 0        | |
 | user1  | 2013 | aug   | 0    | 0        | |
@@ -39,3 +36,4 @@ Bara ett sjukfall visas.
 | user1  | 2014 | aug   | 0    | 0        | |
 | user1  | 2014 | sep   | 0    | 0        | |
 | user1  | 2014 | okt   | 0    | 0        | |
+| user1  | 2014 | nov   | 0    | 0        | |
