@@ -154,7 +154,7 @@ Inloggad:
 
 | Sjukfall i rapporten sjukfall per lakare |
 | inloggad som | läkare          | män? | kvinnor? |
-| user2        | Anna Andersson  | 0    | 0        |
+| user2        | Anna Andersson  | -1   | -1       |
 | user2        | Bo Bengtsson    | 0    | 1        |
 | user2        | Carl Claesson   | 1    | 0        |
 
@@ -166,6 +166,6 @@ Inloggad:
 
 | Sjukfall i rapporten lakarbefattning |
 | inloggad som | läkarbefattning    | män? | kvinnor? |
-| user2        | Överläkare         | 0    | 0        |
+| user2        | Överläkare         | -1   | -1       |
 | user2        | Företagsläkare     | 0    | 1        |
 | user2        | Ej läkarbefattning | 1    | 0        |
