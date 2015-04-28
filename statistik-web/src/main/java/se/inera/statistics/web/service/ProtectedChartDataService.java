@@ -636,12 +636,15 @@ public class ProtectedChartDataService {
         DateTimeFormatter dateStringFormat = DateTimeFormat.forPattern(FilterData.DATE_FORMAT);
         final String fromDate = inFilter.getFromDate();
         final String toDate = inFilter.getToDate();
-        try {
-            DateTime from = dateStringFormat.parseDateTime(fromDate);
-            DateTime to = dateStringFormat.parseDateTime(toDate);
-            return new Range(from.toLocalDate().withDayOfMonth(1), to.toLocalDate().dayOfMonth().withMaximumValue());
-        } catch (IllegalArgumentException e) {
-            LOG.warn("Could not parse range dates. From: {}, To: {}. Falling back to default range.", fromDate, toDate);
+
+        if (fromDate != null && toDate != null) {
+            try {
+                DateTime from = dateStringFormat.parseDateTime(fromDate);
+                DateTime to = dateStringFormat.parseDateTime(toDate);
+                return new Range(from.toLocalDate().withDayOfMonth(1), to.toLocalDate().dayOfMonth().withMaximumValue());
+            } catch (IllegalArgumentException e) {
+                LOG.warn("Could not parse range dates. From: {}, To: {}. Falling back to default range.", fromDate, toDate);
+            }
         }
         return Range.createForLastMonthsIncludingCurrent(defaultRangeValue);
     }
