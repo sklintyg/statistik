@@ -266,7 +266,7 @@ public class DiagnosgruppQuery {
     public Map<Integer, Counter<Integer>> count(Collection<Sjukfall> sjukfalls) {
         Map<Integer, Counter<Integer>> counters = new HashMap<>();
         for (Sjukfall sjukfall : sjukfalls) {
-            Counter counter = counters.get(sjukfall.getDiagnoskapitel(null));
+            Counter<Integer> counter = counters.get(sjukfall.getDiagnoskapitel(null));
             if (counter == null) {
                 counter = new Counter<>(sjukfall.getDiagnoskapitel(null));
                 counters.put(sjukfall.getDiagnoskapitel(null), counter);
