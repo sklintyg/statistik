@@ -134,6 +134,11 @@ public class DiagnosgruppQuery {
             return getUnderdiagnosgrupper(aisle, filter, start, periods, periodLength, avsnitt, Icd10RangeType.KATEGORI);
         }
 
+        final Icd10.Kategori kategori = icd10.getKategori(rangeId);
+        if (kategori != null) {
+            return getUnderdiagnosgrupper(aisle, filter, start, periods, periodLength, kategori, Icd10RangeType.KOD);
+        }
+
         throw new RangeNotFoundException("Could not find ICD10 range: " + rangeId);
     }
 

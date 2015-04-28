@@ -31,6 +31,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import se.inera.statistics.service.report.model.DiagnosgruppResponse;
 import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.report.util.Icd10;
+import se.inera.statistics.service.report.util.Icd10RangeType;
 import se.inera.statistics.service.warehouse.*;
 
 import java.util.Collection;
@@ -68,11 +69,16 @@ public class DiagnosgruppQueryTest {
 
     @Test
     public void one() {
-        fact(4010, 0);
+        final String kapitelCode = "A00-B99";
+        fact(4010, Icd10.icd10ToInt(kapitelCode, Icd10RangeType.KAPITEL));
         warehouse.complete(LocalDateTime.now());
-        Collection<Sjukfall> sjukfall = calculateSjukfallsHelper(warehouse.get(VARDGIVARE));
-        Map<Integer,Counter<Integer>> count = query.count(sjukfall);
-        assertEquals(1, count.get(icd10.getKapitel("A00-B99").toInt()).getCount());
+        final Collection<Sjukfall> sjukfall = calculateSjukfallsHelper(warehouse.get(VARDGIVARE));
+        final Map<Integer,Counter<Integer>> count = query.count(sjukfall);
+        final Icd10.Kapitel kapitel = icd10.getKapitel(kapitelCode);
+        final int kapitelInt = kapitel.toInt();
+        final Counter<Integer> kapitelCounter = count.get(kapitelInt);
+        final int kapitelCount = kapitelCounter.getCount();
+        assertEquals(1, kapitelCount);
     }
 
     private Collection<Sjukfall> calculateSjukfallsHelper(Aisle aisle) {
@@ -108,7 +114,7 @@ public class DiagnosgruppQueryTest {
         Fact fact = aFact().withLan(3).withKommun(380).withForsamling(38002).
                 withEnhet(1).withLakarintyg(intyg++).
                 withPatient(patient++).withKon(Kon.Female).withAlder(45).
-                withDiagnoskapitel(diagnoskapitel).withDiagnosavsnitt(14).withDiagnoskategori(16).
+                withDiagnoskapitel(diagnoskapitel).withDiagnosavsnitt(14).withDiagnoskategori(16).withDiagnoskod(18).
                 withSjukskrivningsgrad(100).withStartdatum(startday).withSjukskrivningslangd(10).
                 withLakarkon(Kon.Female).withLakaralder(32).withLakarbefattning(new int[]{201010}).withLakarid(1).build();
 

@@ -101,7 +101,9 @@ public class InjectUtlatande {
             for (Icd10.Kapitel kapitel : icd10.getKapitel(true)) {
                 for (Icd10.Avsnitt avsnitt : kapitel.getAvsnitt()) {
                     for (Icd10.Kategori kategori : avsnitt.getKategori()) {
-                        DIAGNOSER.add(kategori.getId());
+                        for (Icd10.Id id : kategori.getKods()) {
+                            DIAGNOSER.add(id.getId());
+                        }
                     }
                 }
             }

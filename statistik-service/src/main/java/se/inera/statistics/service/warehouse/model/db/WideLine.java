@@ -48,6 +48,7 @@ public class WideLine {
     private String diagnoskapitel;
     private String diagnosavsnitt;
     private String diagnoskategori;
+    private String diagnoskod;
     private int sjukskrivningsgrad;
     private int lakarkon;
     private int lakaralder;
@@ -59,7 +60,7 @@ public class WideLine {
     }
 
     // CHECKSTYLE:OFF ParameterNumber
-    public WideLine(long id, String correlationId, String lkf, String enhet, long lakarintyg, EventType intygTyp, String patientid, int startdatum, int slutdatum, int kon, int alder, String diagnoskapitel, String diagnosavsnitt, String diagnoskategori, int sjukskrivningsgrad, int lakarkon, int lakaralder, String lakarbefattning, String vardgivareId, String lakareId) {
+    public WideLine(long id, String correlationId, String lkf, String enhet, long lakarintyg, EventType intygTyp, String patientid, int startdatum, int slutdatum, int kon, int alder, String diagnoskapitel, String diagnosavsnitt, String diagnoskategori, String diagnoskod, int sjukskrivningsgrad, int lakarkon, int lakaralder, String lakarbefattning, String vardgivareId, String lakareId) {
         this.id = id;
         this.correlationId = correlationId;
         this.lkf = lkf;
@@ -75,6 +76,7 @@ public class WideLine {
         this.diagnosavsnitt = diagnosavsnitt;
         this.diagnoskategori = diagnoskategori;
         this.sjukskrivningsgrad = sjukskrivningsgrad;
+        this.diagnoskod = diagnoskod;
         this.lakarkon = lakarkon;
         this.lakaralder = lakaralder;
         this.lakarbefattning = lakarbefattning;
@@ -201,6 +203,14 @@ public class WideLine {
 
     public void setDiagnoskategori(String diagnoskategori) {
         this.diagnoskategori = diagnoskategori;
+    }
+
+    public String getDiagnoskod() {
+        return diagnoskod;
+    }
+
+    public void setDiagnoskod(String diagnoskod) {
+        this.diagnoskod = diagnoskod;
     }
 
     public int getSjukskrivningsgrad() {

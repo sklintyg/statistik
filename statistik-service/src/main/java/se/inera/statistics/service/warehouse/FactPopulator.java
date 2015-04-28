@@ -56,13 +56,14 @@ public class FactPopulator {
         String diagnoskapitel = wideline.getDiagnoskapitel();
         String diagnosavsnitt = wideline.getDiagnosavsnitt();
         String diagnoskategori = wideline.getDiagnoskategori();
+        String diagnoskod = wideline.getDiagnoskod();
         int sjukskrivningsgrad = wideline.getSjukskrivningsgrad();
         int lakarkon = wideline.getLakarkon();
         int lakaralder = wideline.getLakaralder();
         int[] lakarbefattnings = parseBefattning(wideline);
         int lakare = Warehouse.getNumLakarIdAndRemember(wideline.getLakareId());
 
-        return new Fact(ConversionHelper.extractLan(lkf), ConversionHelper.extractKommun(lkf), ConversionHelper.extractForsamling(lkf), enhet, intyg, patientid, startdatum, kon, alder, extractKapitel(diagnoskapitel), extractAvsnitt(diagnosavsnitt), extractKategori(diagnoskategori), sjukskrivningsgrad, sjukskrivningslangd, lakarkon, lakaralder, lakarbefattnings, lakare);
+        return new Fact(ConversionHelper.extractLan(lkf), ConversionHelper.extractKommun(lkf), ConversionHelper.extractForsamling(lkf), enhet, intyg, patientid, startdatum, kon, alder, extractKapitel(diagnoskapitel), extractAvsnitt(diagnosavsnitt), extractKategori(diagnoskategori), extractKod(diagnoskod), sjukskrivningsgrad, sjukskrivningslangd, lakarkon, lakaralder, lakarbefattnings, lakare);
     }
 
     private int[] parseBefattning(WideLine wideline) {
@@ -91,15 +92,23 @@ public class FactPopulator {
     private int extractKategori(String diagnoskategori) {
         Icd10.Kategori kategori = icd10.getKategori(diagnoskategori);
         if (kategori == null) {
-            return Icd10.icd10ToInt("Ö00", Icd10RangeType.KATEGORI);
+            return Icd10.icd10ToInt(Icd10.OTHER_KATEGORI, Icd10RangeType.KATEGORI);
         }
         return kategori.toInt();
+    }
+
+    private int extractKod(String diagnoskod) {
+        Icd10.Kod kod = icd10.getKod(diagnoskod);
+        if (kod == null) {
+            return Icd10.icd10ToInt(Icd10.OTHER_KOD, Icd10RangeType.KOD);
+        }
+        return kod.toInt();
     }
 
     private int extractAvsnitt(String diagnosavsnitt) {
         Icd10.Avsnitt avsnitt = icd10.getAvsnitt(diagnosavsnitt);
         if (avsnitt == null) {
-            return Icd10.icd10ToInt("Ö00-Ö00", Icd10RangeType.AVSNITT);
+            return Icd10.icd10ToInt(Icd10.OTHER_AVSNITT, Icd10RangeType.AVSNITT);
         }
         return avsnitt.toInt();
     }
@@ -107,7 +116,7 @@ public class FactPopulator {
     private int extractKapitel(String diagnoskapitel) {
         Icd10.Kapitel kapitel = icd10.getKapitel(diagnoskapitel);
         if (kapitel == null) {
-            return Icd10.icd10ToInt("Ö00-Ö00", Icd10RangeType.KAPITEL);
+            return Icd10.icd10ToInt(Icd10.OTHER_KAPITEL, Icd10RangeType.KAPITEL);
         }
         return kapitel.toInt();
     }

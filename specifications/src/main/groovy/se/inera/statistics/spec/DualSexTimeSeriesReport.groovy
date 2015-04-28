@@ -20,7 +20,10 @@ abstract class DualSexTimeSeriesReport extends Rapport {
     }
 
     public void executeTabell(report) {
-        def index = report.tableData.headers[0].findIndexOf { item -> item.text != null && item.text.contains(grupp) }
+        def index = report.tableData.headers[0].findIndexOf { item ->
+            println("item" + item + " : grupp: " + grupp)
+            item.text != null && item.text.contains(grupp)
+        }
         def row = report.tableData.rows.find { currentRow -> currentRow.name == (månad + " " + år)  }
         if (index < 0 || row == null) {
             totalt = -1

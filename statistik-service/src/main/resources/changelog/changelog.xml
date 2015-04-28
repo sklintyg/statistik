@@ -50,5 +50,6 @@
     <include file="changelog/db.changelog-v23.0_add_user_selection_table.xml"/>
     <include file="changelog/db.changelog-v24.0_change_user_selection_table.xml"/>
     <include file="changelog/db.changelog-v25.0_set_unknown_verksamhetstyp.xml"/>
+    <include file="changelog/db.changelog-v26.0_add_diagnoskod_to_wideline.xml"/>
 
 </databaseChangeLog>

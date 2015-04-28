@@ -28,7 +28,9 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import se.inera.statistics.service.helper.ConversionHelper;
 import se.inera.statistics.service.processlog.EventType;
+import se.inera.statistics.service.report.util.Icd10RangeType;
 import se.inera.statistics.service.warehouse.model.db.WideLine;
+import se.inera.statistics.service.report.util.Icd10;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath:process-log-impl-test.xml", "classpath:icd10.xml" })
@@ -82,9 +84,9 @@ public class WidelineToWarehouseIntegrationTest {
         Assert.assertEquals(78002, fact.getForsamling());
         Assert.assertEquals(780, fact.getKommun());
         Assert.assertEquals(7, fact.getLan());
-        Assert.assertEquals(0, fact.getDiagnoskapitel());
-        Assert.assertEquals(10015, fact.getDiagnosavsnitt());
-        Assert.assertEquals(20016, fact.getDiagnoskategori());
+        Assert.assertEquals(Icd10.icd10ToInt("A00-B99", Icd10RangeType.KAPITEL), fact.getDiagnoskapitel());
+        Assert.assertEquals(Icd10.icd10ToInt("A15-A19", Icd10RangeType.AVSNITT), fact.getDiagnosavsnitt());
+        Assert.assertEquals(Icd10.icd10ToInt("A16", Icd10RangeType.KATEGORI), fact.getDiagnoskategori());
         Assert.assertArrayEquals(new int[]{201010}, fact.getLakarbefattnings());
         Assert.assertEquals(33, fact.getLakaralder());
         Assert.assertEquals(2, fact.getLakarkon());

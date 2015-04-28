@@ -141,7 +141,7 @@ public class SjukfallUtilTest {
     private Fact createFact(int enhet, int patient, int startdatum, int sjukskrivningslangd, int lakarintyg, int lakarId) {
         return aFact().withLan(3).withKommun(380).withForsamling(38002).withEnhet(enhet).
                     withLakarintyg(lakarintyg).withPatient(patient).withStartdatum(startdatum).withKon(Female).withAlder(45).
-                    withDiagnoskapitel(0).withDiagnosavsnitt(14).withDiagnoskategori(16).
+                    withDiagnoskapitel(0).withDiagnosavsnitt(14).withDiagnoskategori(16).withDiagnoskod(18).
                     withSjukskrivningsgrad(100).withSjukskrivningslangd(sjukskrivningslangd).
                     withLakarkon(Female).withLakaralder(32).withLakarbefattning(new int[]{201010}).withLakarid(lakarId).build();
     }
@@ -237,7 +237,7 @@ public class SjukfallUtilTest {
     }
 
     private Sjukfall createSjukfall(Kon kon) {
-        return new Sjukfall(new Fact(0, 1, 2, 3, 4, 1, 6, kon.getNumberRepresentation(), 30, 0, 0, 0, 100, 10, 1, 30, new int[0], 0));
+        return new Sjukfall(new Fact(0, 1, 2, 3, 4, 1, 6, kon.getNumberRepresentation(), 30, 0, 0, 0, 0, 100, 10, 1, 30, new int[0], 0));
     }
 
     public static SjukfallFilter createEnhetFilterFromInternalIntValues(Integer... enhetIds) {

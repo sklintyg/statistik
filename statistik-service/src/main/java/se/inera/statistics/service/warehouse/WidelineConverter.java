@@ -77,7 +77,9 @@ public class WidelineConverter {
         int alder = DocumentHelper.getAge(intyg);
 
         String diagnos = DocumentHelper.getDiagnos(intyg, version);
-        Kategori kategori = "unknown".equals(diagnos) ? null : icd10.findKategori(diagnos);
+        final Icd10.Kod kod = "unknown".equals(diagnos) ? null : icd10.findKod(diagnos);
+        final Kategori kategori = kod != null ? kod.getKategori() : "unknown".equals(diagnos) ? null : icd10.findKategori(diagnos);
+        String diagnoskod = kod != null ? kod.getId() : null;
 
         String diagnoskapitel;
         String diagnosavsnitt;
@@ -124,6 +126,7 @@ public class WidelineConverter {
             line.setDiagnoskapitel(diagnoskapitel);
             line.setDiagnosavsnitt(diagnosavsnitt);
             line.setDiagnoskategori(diagnoskategori);
+            line.setDiagnoskod(diagnoskod);
             line.setSjukskrivningsgrad(sjukskrivningsgrad);
 
             line.setPatientid(patient);

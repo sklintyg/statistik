@@ -50,6 +50,7 @@ public class Fact {
     private int diagnoskapitel;
     private int diagnosavsnitt;
     private int diagnoskategori;
+    private int diagnoskod;
     private int sjukskrivningsgrad;
     private int sjukskrivningslangd;
     private int lakarkon;
@@ -58,7 +59,7 @@ public class Fact {
     private int lakarid;
 
     // CHECKSTYLE:OFF ParameterNumber
-    public Fact(int lan, int kommun, int forsamling, int enhet, long lakarintyg, long patient, int startdatum, int kon, int alder, int diagnoskapitel, int diagnosavsnitt, int diagnoskategori, int sjukskrivningsgrad, int sjukskrivningslangd, int lakarkon, int lakaralder, int[] lakarbefattnings, int lakarid) {
+    public Fact(int lan, int kommun, int forsamling, int enhet, long lakarintyg, long patient, int startdatum, int kon, int alder, int diagnoskapitel, int diagnosavsnitt, int diagnoskategori, int diagnoskod, int sjukskrivningsgrad, int sjukskrivningslangd, int lakarkon, int lakaralder, int[] lakarbefattnings, int lakarid) {
         this.lan = lan;
         this.kommun = kommun;
         this.forsamling = forsamling;
@@ -71,6 +72,7 @@ public class Fact {
         this.diagnoskapitel = diagnoskapitel;
         this.diagnosavsnitt = diagnosavsnitt;
         this.diagnoskategori = diagnoskategori;
+        this.diagnoskod = diagnoskod;
         this.sjukskrivningsgrad = sjukskrivningsgrad;
         this.sjukskrivningslangd = sjukskrivningslangd;
         this.lakarkon = lakarkon;
@@ -125,6 +127,10 @@ public class Fact {
 
     public int getDiagnoskapitel() {
         return diagnoskapitel;
+    }
+
+    public int getDiagnoskod() {
+        return diagnoskod;
     }
 
     public int[] getLakarbefattnings() {
@@ -192,6 +198,7 @@ public class Fact {
                 .append(diagnoskapitel).append(c)
                 .append(diagnosavsnitt).append(c)
                 .append(diagnoskategori).append(c)
+                .append(diagnoskod).append(c)
                 .append(sjukskrivningsgrad).append(c)
                 .append(sjukskrivningslangd).append(c)
                 .append(lakarkon).append(c)
@@ -218,6 +225,7 @@ public class Fact {
         private int diagnoskapitel = -1;
         private int diagnosavsnitt = -1;
         private int diagnoskategori = -1;
+        private int diagnoskod = -1;
         private int sjukskrivningsgrad = -1;
         private int sjukskrivningslangd = -1;
         private int lakarkon = -1;
@@ -228,12 +236,12 @@ public class Fact {
         public Fact build() {
             if (lan == -1 || kommun == -1 || forsamling == -1 || enhet == -1 || lakarintyg == -1 || patient == -1
                     || startdatum == -1 || kon == -1 || alder == -1 || diagnoskapitel == -1 || diagnosavsnitt == -1
-                    || diagnoskategori == -1 || sjukskrivningsgrad == -1 || sjukskrivningslangd == -1 || lakarkon == -1
+                    || diagnoskategori == -1 || diagnoskod == -1 || sjukskrivningsgrad == -1 || sjukskrivningslangd == -1 || lakarkon == -1
                     || lakaralder == -1 || lakarbefattnings == null || lakarid == -1) {
                 throw new RuntimeException("unitialized values");
             }
             return new Fact(lan, kommun, forsamling, enhet, lakarintyg, patient, startdatum, kon, alder, diagnoskapitel,
-                    diagnosavsnitt, diagnoskategori, sjukskrivningsgrad, sjukskrivningslangd, lakarkon,
+                    diagnosavsnitt, diagnoskategori, diagnoskod, sjukskrivningsgrad, sjukskrivningslangd, lakarkon,
                     lakaralder, lakarbefattnings, lakarid);
         }
 
@@ -294,6 +302,11 @@ public class Fact {
 
         public FactBuilder withDiagnoskategori(int diagnoskategori) {
             this.diagnoskategori = diagnoskategori;
+            return this;
+        }
+
+        public FactBuilder withDiagnoskod(int diagnoskod) {
+            this.diagnoskod = diagnoskod;
             return this;
         }
 

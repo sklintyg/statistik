@@ -58,7 +58,7 @@ public class Sjukfall {
         intygCount++;
         kon = line.getKon();
         alder = line.getAlder();
-        diagnoses.add(new Diagnos(start, end, line.getDiagnoskapitel(), line.getDiagnosavsnitt(), line.getDiagnoskategori()));
+        diagnoses.add(new Diagnos(start, end, line.getDiagnoskapitel(), line.getDiagnosavsnitt(), line.getDiagnoskategori(), line.getDiagnoskod()));
         sjukskrivningsgrad.put(new Range(WidelineConverter.toDate(start), WidelineConverter.toDate(end)), line.getSjukskrivningsgrad());
         lan = line.getLan();
         final int lakarid = line.getLakarid();
@@ -171,6 +171,10 @@ public class Sjukfall {
         return getLastDiagnosis(range).diagnoskategori;
     }
 
+    public int getDiagnoskod(Range range) {
+        return getLastDiagnosis(range).diagnoskod;
+    }
+
     public int getDiagnoskategori() {
         return getDiagnoskategori(null);
     }
@@ -180,6 +184,7 @@ public class Sjukfall {
             case KAPITEL: return getDiagnoskapitel(range);
             case AVSNITT: return getDiagnosavsnitt(range);
             case KATEGORI: return getDiagnoskategori(range);
+            case KOD: return getDiagnoskod(range);
             default: throw new RuntimeException("Unknown range type: " + rangeType);
         }
     }
@@ -196,6 +201,9 @@ public class Sjukfall {
                     break;
                 case KAPITEL:
                     result.add(diagnose.diagnoskapitel);
+                    break;
+                case KOD:
+                    result.add(diagnose.diagnoskod);
                     break;
                 default: throw new RuntimeException("Unknown icd range type: " + icd10RangeType);
             }
@@ -322,15 +330,17 @@ public class Sjukfall {
         private final int diagnoskapitel;
         private final int diagnosavsnitt;
         private final int diagnoskategori;
+        private final int diagnoskod;
         private final int startDatum;
         private final int slutDatum;
 
-        private Diagnos(int startDatum, int slutDatum, int diagnoskapitel, int diagnosavsnitt, int diagnoskategori) {
+        private Diagnos(int startDatum, int slutDatum, int diagnoskapitel, int diagnosavsnitt, int diagnoskategori, int diagnoskod) {
             this.startDatum = startDatum;
             this.slutDatum = slutDatum;
             this.diagnoskapitel = diagnoskapitel;
             this.diagnosavsnitt = diagnosavsnitt;
             this.diagnoskategori = diagnoskategori;
+            this.diagnoskod = diagnoskod;
         }
     }
 
