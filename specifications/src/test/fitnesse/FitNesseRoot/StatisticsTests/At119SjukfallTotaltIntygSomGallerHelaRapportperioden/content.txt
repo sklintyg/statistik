@@ -1,7 +1,5 @@
 !contents -R2 -g -p -f -h
 
-Ignorerad pga STATISTIK-951
-
 !3 Givet att:
 
 Ett sjukfall består av ett intyg som startar före tidsintervallet som visas i rapporten och slutar efter.
@@ -45,8 +43,7 @@ Nationell:
 Inloggad:
 | Sjukfall i rapporten sjukfall totalt |
 | inloggad som | år | månad | män? | kvinnor? |
-| user1 | 2013 | jun | -1 | -1 |
-| user1 | 2013 | jul | 1 | 0 |
+| user1 | 2013 | jul | -1 | -1 |
 | user1 | 2013 | aug | 1 | 0 |
 | user1 | 2013 | sep | 1 | 0 |
 | user1 | 2013 | okt | 1 | 0 |
@@ -64,4 +61,5 @@ Inloggad:
 | user1 | 2014 | okt | 1 | 0 |
 | user1 | 2014 | nov | 1 | 0 |
 | user1 | 2014 | dec | 1 | 0 |
-| user1 | 2015 | jan | -1 | -1 |
+| user1 | 2015 | jan | 1 | 0 |
+| user1 | 2015 | feb | -1 | -1 |

@@ -5,6 +5,9 @@
 	position: relative;
 }
 .filter-level label { font-size: 12px; }
+
+label.btn {font-size: 14px;}
+
 .filter-level input[type=checkbox] { position: relative; top: 4px; }
 #statistics-filter-container { margin-top: 2px; }
 #statistics-filter-container table.table tbody td,

@@ -67,3 +67,12 @@ var colors = {
 };
 
 constantModule.constant('COLORS', colors);
+
+/* Beginning of time for the StatiscsApp*/
+var timeIntervalMinDate = new Date().setUTCFullYear(2013, 9, 1);
+constantModule.constant('TIME_INTERVAL_MIN_DATE', timeIntervalMinDate);
+
+/* Max selectable date will always be the current month*/
+var timeIntervalMaxDate = Date.now();
+constantModule.constant('TIME_INTERVAL_MAX_DATE', timeIntervalMaxDate);
+
