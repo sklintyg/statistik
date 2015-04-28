@@ -53,7 +53,7 @@ public class Sjukfall {
 
     public Sjukfall(Fact line) {
         start = line.getStartdatum();
-        end = line.getStartdatum() + line.getSjukskrivningslangd() - 1;
+        end = line.getSlutdatum();
         sjukskrivningsperiods.add(new Sjukskrivningsperiod(start, line.getSjukskrivningslangd()));
         intygCount++;
         kon = line.getKon();

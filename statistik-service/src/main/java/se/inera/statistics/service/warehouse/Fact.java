@@ -97,6 +97,10 @@ public class Fact {
         return startdatum;
     }
 
+    public int getSlutdatum() {
+        return getStartdatum() + getSjukskrivningslangd() - 1;
+    }
+
     public int getSjukskrivningsgrad() {
         return sjukskrivningsgrad;
     }
