@@ -17,7 +17,6 @@
 
 !3 Då gäller:
 
-Nationell:
 Inloggad:
 !| Sjukfall i rapporten enskilt diagnoskapitel |
 |inloggad som | valt diagnoskapitel | år   | månad | grupp   | män? | kvinnor? |
