@@ -185,7 +185,7 @@ public final class SjukskrivningslangdQuery {
 
         };
 
-        return sjukfallUtil.calculateKonDataResponse(aisle, filter, start, periods, periodLength, names, ids, counterFunction);
+        return sjukfallUtil.calculateKonDataResponseUsingOriginalSjukfallStart(aisle, filter, start, periods, periodLength, names, ids, counterFunction);
     }
 
     static int getLong(Collection<Sjukfall> sjukfalls) {

@@ -52,8 +52,8 @@ public class SjukfallIterator implements Iterator<SjukfallGroup> {
     static List<Range> getRanges(LocalDate from, int periods, int periodSize) {
         final ArrayList<Range> ranges = new ArrayList<>();
         for (int i = 0; i < periods; i++) {
-            final LocalDate fromDate = from.plusMonths(i * periodSize);
-            final LocalDate toDate = from.plusMonths((i + 1) * periodSize);
+            final LocalDate fromDate = from.plusMonths(i * periodSize).withDayOfMonth(1);
+            final LocalDate toDate = from.plusMonths((i + 1) * periodSize).withDayOfMonth(1).minusDays(1);
             ranges.add(new Range(fromDate, toDate));
         }
         return ranges;

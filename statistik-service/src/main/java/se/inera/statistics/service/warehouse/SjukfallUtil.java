@@ -109,7 +109,7 @@ public class SjukfallUtil {
         return sjukfallGrupper(from, periods, periodSize, aisle, filter, false);
     }
 
-    private List<SjukfallGroup> sjukfallGrupper(LocalDate from, int periods, int periodSize, Aisle aisle, SjukfallFilter sjukfallFilter, boolean useOriginalSjukfallStart) {
+    List<SjukfallGroup> sjukfallGrupper(LocalDate from, int periods, int periodSize, Aisle aisle, SjukfallFilter sjukfallFilter, boolean useOriginalSjukfallStart) {
         try {
             return getSjukfallGroupsCache().get(new SjukfallGroupCacheKey(from, periods, periodSize, aisle, sjukfallFilter, useOriginalSjukfallStart));
         } catch (ExecutionException e) {
@@ -120,9 +120,17 @@ public class SjukfallUtil {
     }
 
     //CHECKSTYLE:OFF ParameterNumberCheck
+    public <T> KonDataResponse calculateKonDataResponseUsingOriginalSjukfallStart(Aisle aisle, SjukfallFilter filter, LocalDate start, int periods, int periodSize, List<String> groupNames, List<T> groupIds, CounterFunction<T> counterFunction) {
+        return calculateKonDataResponse(aisle, filter, start, periods, periodSize, groupNames, groupIds, counterFunction, true);
+    }
+
     public <T> KonDataResponse calculateKonDataResponse(Aisle aisle, SjukfallFilter filter, LocalDate start, int periods, int periodSize, List<String> groupNames, List<T> groupIds, CounterFunction<T> counterFunction) {
+        return calculateKonDataResponse(aisle, filter, start, periods, periodSize, groupNames, groupIds, counterFunction, false);
+    }
+
+    private <T> KonDataResponse calculateKonDataResponse(Aisle aisle, SjukfallFilter filter, LocalDate start, int periods, int periodSize, List<String> groupNames, List<T> groupIds, CounterFunction<T> counterFunction, boolean useOriginalSjukfallStart) {
         List<KonDataRow> rows = new ArrayList<>();
-        for (SjukfallGroup sjukfallGroup : sjukfallGrupper(start, periods, periodSize, aisle, filter)) {
+        for (SjukfallGroup sjukfallGroup : sjukfallGrupper(start, periods, periodSize, aisle, filter, useOriginalSjukfallStart)) {
             final HashMultiset<T> maleCounter = HashMultiset.create();
             final HashMultiset<T> femaleCounter = HashMultiset.create();
             for (Sjukfall sjukfall : sjukfallGroup.getSjukfall()) {
