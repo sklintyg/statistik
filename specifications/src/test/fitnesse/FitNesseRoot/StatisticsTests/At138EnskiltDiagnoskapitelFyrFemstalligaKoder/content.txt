@@ -17,7 +17,6 @@
 | 19790407-9820 | F51-  | 2013-02-01 | 2013-02-14 | enhet1 | Existerande kod från PV-kodverk |
 | 19790407-9920 | F89-P | 2013-02-01 | 2013-02-14 | enhet1 | Existerande kod från PV-kodverk |
 | 19790407-1020 | F989P | 2013-02-01 | 2013-02-14 | enhet1 | Existerande kod från PV-kodverk |
-| 19790407-1120 | UA5104 | 2013-02-01 | 2013-02-14 | enhet1 |  |
 
 !3 Då gäller:
 
@@ -31,4 +30,3 @@ Inloggad:
 | user1       | F50-F59             | 2013 | feb   | F51     | 0    | 1        |
 | user1       | F80-F89             | 2013 | feb   | F89     | 0    | 1        |
 | user1       | F98                 | 2013 | feb   | F989    | 0    | 1        |
-| user1       | U00-U99             | 2013 | feb   |     | 0    | 1        |
