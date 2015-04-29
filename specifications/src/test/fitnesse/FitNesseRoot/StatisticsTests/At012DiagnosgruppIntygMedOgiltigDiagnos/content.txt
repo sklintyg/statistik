@@ -11,6 +11,7 @@ Ett intyg har diagnoskoden "Hejsan", vilken inte finns med i ICD-10.
 | Enbart foljande intyg finns |
 | personnr | diagnoskod | start    | slut       | enhet |
 | 19790407-0120 | Hejsan | 2013-02-01 | 2013-02-14 | enhet1 |
+| 19790407-0220 | UA5104 | 2013-02-01 | 2013-02-14 | enhet1 |
 
 !3 Då gäller:
 
@@ -19,17 +20,17 @@ Sjukfallet hamnar i gruppen "Utan giltig ICD-10 kod" både i diagram och tabell.
 Nationell:
 | Sjukfall i rapporten diagnosgrupp |
 | år   | månad | grupp                   | män? | kvinnor? |
-| 2013 | feb   | Utan giltig ICD-10 kod  | 0    | 1        |
+| 2013 | feb   | Utan giltig ICD-10 kod  | 0    | 2        |
 
 | Sjukfall i rapporten diagnosgrupp diagram |
 | år   | månad | grupp                   | män? | kvinnor? |
-| 2013 | feb   | Utan giltig ICD-10 kod  | 0    | 1        |
+| 2013 | feb   | Utan giltig ICD-10 kod  | 0    | 2        |
 
 Inloggad:
 | Sjukfall i rapporten diagnosgrupp |
 |inloggad som | år   | månad | grupp             | män? | kvinnor? |
-| user1 | 2013 | feb   | Utan giltig ICD-10 kod  | 0    | 1        |
+| user1 | 2013 | feb   | Utan giltig ICD-10 kod  | 0    | 2        |
 
 | Sjukfall i rapporten diagnosgrupp diagram |
 |inloggad som | år   | månad | grupp             | män? | kvinnor? |
-| user1 | 2013 | feb   | Utan giltig ICD-10 kod  | 0    | 1        |
+| user1 | 2013 | feb   | Utan giltig ICD-10 kod  | 0    | 2        |
