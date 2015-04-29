@@ -296,6 +296,15 @@ public class Icd10 {
         throw new RuntimeException("ICD10 with id could not be found: " + icd10);
     }
 
+    private static <T extends Range> T find(String id, Collection<T> ranges) {
+        for (T range: ranges) {
+            if (range.contains(id)) {
+                return range;
+            }
+        }
+        return null;
+    }
+
     public static class IdMap<T extends Id> extends HashMap<String, T> {
         public void put(T id) {
             if (id != null) {
@@ -410,15 +419,6 @@ public class Icd10 {
             return avsnitt;
         }
 
-        private static Kapitel find(String id, Collection<Kapitel> kapitels) {
-            for (Kapitel kapitel: kapitels) {
-                if (kapitel.contains(id)) {
-                    return kapitel;
-                }
-            }
-            return null;
-        }
-
         public List<Kategori> getKategori() {
             return kategori;
         }
@@ -458,15 +458,6 @@ public class Icd10 {
             Kategori kategori = new Kategori(id, line.substring(STARTINDEX_DESCRIPTION), avsnitt);
             avsnitt.kategori.add(kategori);
             return kategori;
-        }
-
-        private static Avsnitt find(String id, Collection<Avsnitt> avsnitts) {
-            for (Avsnitt avsnitt: avsnitts) {
-                if (avsnitt.contains(id)) {
-                    return avsnitt;
-                }
-            }
-            return null;
         }
 
         public Avsnitt getAvsnitt() {
@@ -513,15 +504,6 @@ public class Icd10 {
             Kod kod = new Kod(id, line.replaceAll("^[^\\s]*\\s*", ""), kategori);
             kategori.kods.add(kod);
             return kod;
-        }
-
-        private static Kategori find(String id, Collection<Kategori> avsnitts) {
-            for (Kategori avsnitt: avsnitts) {
-                if (avsnitt.contains(id)) {
-                    return avsnitt;
-                }
-            }
-            return null;
         }
 
         public Kategori getKategori() {
