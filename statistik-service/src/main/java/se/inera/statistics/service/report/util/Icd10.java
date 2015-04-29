@@ -515,7 +515,7 @@ public class Icd10 {
 
         @Override
         public List<? extends Id> getSubItems() {
-            return Collections.EMPTY_LIST;
+            return Collections.emptyList();
         }
 
         @Override
