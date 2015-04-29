@@ -131,7 +131,10 @@ public class Icd10 {
                 String line;
                 while ((line = lr.next()) != null) {
                     Avsnitt avsnitt = Avsnitt.valueOf(line, idToKapitelMap.values());
-                    idToAvsnittMap.put(avsnitt);
+                    if (avsnitt != null) {
+                        avsnitt.kapitel.avsnitt.add(avsnitt);
+                        idToAvsnittMap.put(avsnitt);
+                    }
                 }
             }
 
@@ -139,7 +142,10 @@ public class Icd10 {
                 String line;
                 while ((line = lr.next()) != null) {
                     Kategori kategori = Kategori.valueOf(line, idToAvsnittMap.values());
-                    idToKategoriMap.put(kategori);
+                    if (kategori != null) {
+                        kategori.avsnitt.kategori.add(kategori);
+                        idToKategoriMap.put(kategori);
+                    }
                 }
             }
 
@@ -147,7 +153,10 @@ public class Icd10 {
                 String line;
                 while ((line = lr.next()) != null) {
                     Kod kod = Kod.valueOf(line, idToKategoriMap.values());
-                    idToKodMap.put(kod);
+                    if (kod != null) {
+                        kod.kategori.kods.add(kod);
+                        idToKodMap.put(kod);
+                    }
                 }
             }
 
@@ -414,9 +423,7 @@ public class Icd10 {
                 return null;
             }
 
-            Avsnitt avsnitt = new Avsnitt(id, line.substring(STARTINDEX_DESCRIPTION), kapitel);
-            kapitel.avsnitt.add(avsnitt);
-            return avsnitt;
+            return new Avsnitt(id, line.substring(STARTINDEX_DESCRIPTION), kapitel);
         }
 
         public List<Kategori> getKategori() {
@@ -455,9 +462,7 @@ public class Icd10 {
             if (avsnitt == null) {
                 return null;
             }
-            Kategori kategori = new Kategori(id, line.substring(STARTINDEX_DESCRIPTION), avsnitt);
-            avsnitt.kategori.add(kategori);
-            return kategori;
+            return new Kategori(id, line.substring(STARTINDEX_DESCRIPTION), avsnitt);
         }
 
         public Avsnitt getAvsnitt() {
@@ -501,9 +506,7 @@ public class Icd10 {
             if (kategori == null) {
                 return null;
             }
-            Kod kod = new Kod(id, line.replaceAll("^[^\\s]*\\s*", ""), kategori);
-            kategori.kods.add(kod);
-            return kod;
+            return new Kod(id, line.replaceAll("^[^\\s]*\\s*", ""), kategori);
         }
 
         public Kategori getKategori() {
