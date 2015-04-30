@@ -44,7 +44,7 @@ public class SjukfallTest {
         assertEquals(1, result.getEnd());
         assertEquals(1, result.getIntygCount());
         assertEquals(1, result.getRealDays());
-        assertEquals(1, result.getSjukskrivningsgrad(null));
+        assertEquals(1, result.getSjukskrivningsgrad());
         assertEquals(1, result.getStart());
         assertEquals(Kon.Male, result.getKon());
         assertArrayEquals(new Object[]{1}, Lists.transform(new ArrayList<>(result.getLakare()), new Function<Lakare, Integer>() {
@@ -74,7 +74,7 @@ public class SjukfallTest {
         assertEquals(3, result.getEnd());
         assertEquals(2, result.getIntygCount());
         assertEquals(3, result.getRealDays());
-        assertEquals(2, result.getSjukskrivningsgrad(null));
+        assertEquals(2, result.getSjukskrivningsgrad());
         assertEquals(1, result.getStart());
         assertEquals(Kon.byNumberRepresentation(2), result.getKon());
         final List<Integer> lakare = Lists.transform(new ArrayList<>(result.getLakare()), new Function<Lakare, Integer>() {

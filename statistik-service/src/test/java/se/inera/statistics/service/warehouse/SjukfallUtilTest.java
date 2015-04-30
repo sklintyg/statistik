@@ -30,7 +30,6 @@ import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.report.model.KonDataResponse;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.warehouse.query.CounterFunction;
-import se.inera.statistics.service.warehouse.query.CounterFunctionInput;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -226,7 +225,7 @@ public class SjukfallUtilTest {
         //When
         final KonDataResponse response = spy.calculateKonDataResponse(currentAisle, filter, start, periods, periodSize, Arrays.asList("G1"), Arrays.asList(1), new CounterFunction<Integer>() {
             @Override
-            public void addCount(CounterFunctionInput input, HashMultiset<Integer> counter) {
+            public void addCount(Sjukfall sjukfall, HashMultiset<Integer> counter) {
                 counter.add(1);
             }
         });

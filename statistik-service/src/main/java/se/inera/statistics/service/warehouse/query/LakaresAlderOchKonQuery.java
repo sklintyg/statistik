@@ -29,6 +29,7 @@ import se.inera.statistics.service.report.model.SimpleKonResponse;
 import se.inera.statistics.service.report.util.Ranges;
 import se.inera.statistics.service.warehouse.Aisle;
 import se.inera.statistics.service.warehouse.Lakare;
+import se.inera.statistics.service.warehouse.Sjukfall;
 import se.inera.statistics.service.warehouse.SjukfallFilter;
 import se.inera.statistics.service.warehouse.SjukfallUtil;
 
@@ -86,8 +87,8 @@ public final class LakaresAlderOchKonQuery {
         });
         final CounterFunction<String> counterFunction = new CounterFunction<String>() {
             @Override
-            public void addCount(CounterFunctionInput input, HashMultiset<String> counter) {
-                final Set<Lakare> lakares = input.getSjukfall().getLakare();
+            public void addCount(Sjukfall sjukfall, HashMultiset<String> counter) {
+                final Set<Lakare> lakares = sjukfall.getLakare();
                 for (Lakare lakare : lakares) {
                     final String rangeName = getRangeNameForAge(lakare.getAge());
                     counter.add(getLakareAlderOchKonTitle(lakare.getKon(), rangeName));

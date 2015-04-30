@@ -182,8 +182,8 @@ public class DiagnosgruppQuery {
         });
         final CounterFunction<Integer> counterFunction = new CounterFunction<Integer>() {
             @Override
-            public void addCount(CounterFunctionInput input, HashMultiset<Integer> counter) {
-                counter.add(input.getSjukfall().getDiagnoskategori());
+            public void addCount(Sjukfall sjukfall, HashMultiset<Integer> counter) {
+                counter.add(sjukfall.getDiagnoskategori());
             }
         };
 

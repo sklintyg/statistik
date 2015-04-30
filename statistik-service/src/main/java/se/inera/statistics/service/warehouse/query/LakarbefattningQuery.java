@@ -27,6 +27,7 @@ import se.inera.statistics.service.report.model.SimpleKonDataRow;
 import se.inera.statistics.service.report.model.SimpleKonResponse;
 import se.inera.statistics.service.warehouse.Aisle;
 import se.inera.statistics.service.warehouse.Lakare;
+import se.inera.statistics.service.warehouse.Sjukfall;
 import se.inera.statistics.service.warehouse.SjukfallFilter;
 import se.inera.statistics.service.warehouse.SjukfallUtil;
 
@@ -93,8 +94,8 @@ public final class LakarbefattningQuery {
         });
         final CounterFunction<Integer> counterFunction = new CounterFunction<Integer>() {
             @Override
-            public void addCount(CounterFunctionInput input, HashMultiset<Integer> counter) {
-                for (Lakare lakare : input.getSjukfall().getLakare()) {
+            public void addCount(Sjukfall sjukfall, HashMultiset<Integer> counter) {
+                for (Lakare lakare : sjukfall.getLakare()) {
                     final List<Integer> lakarbefattnings = getLakarbefattnings(lakare);
                     for (Integer befattningId : lakarbefattnings) {
                         counter.add(befattningId);

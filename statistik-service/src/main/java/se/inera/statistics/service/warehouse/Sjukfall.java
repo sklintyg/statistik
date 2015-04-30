@@ -239,11 +239,10 @@ public class Sjukfall {
         return getLastDiagnosis().diagnoskapitel;
     }
 
-    public int getSjukskrivningsgrad(Range range) {
-        final int rangeStart = range != null ? WidelineConverter.toDay(range.getFrom()) : 0;
+    public int getSjukskrivningsgrad() {
         Map.Entry<Range, Integer> currentFound = null;
         for (Map.Entry<Range, Integer> entry : sjukskrivningsgrad.entrySet()) {
-            if (WidelineConverter.toDay(entry.getKey().getTo()) >= rangeStart && (currentFound == null || entry.getKey().getFrom().isAfter(currentFound.getKey().getFrom()))) {
+            if (currentFound == null || entry.getKey().getFrom().isAfter(currentFound.getKey().getFrom())) {
                 currentFound = entry;
             }
         }

@@ -173,8 +173,8 @@ public final class SjukfallQuery {
 
         final CounterFunction<Integer> counterFunction = new CounterFunction<Integer>() {
             @Override
-            public void addCount(CounterFunctionInput input, HashMultiset<Integer> counter) {
-                for (Integer enhetid : input.getSjukfall().getEnhets()) {
+            public void addCount(Sjukfall sjukfall, HashMultiset<Integer> counter) {
+                for (Integer enhetid : sjukfall.getEnhets()) {
                     counter.add(enhetid);
                 }
             }
@@ -199,8 +199,7 @@ public final class SjukfallQuery {
         });
         final CounterFunction<Integer> counterFunction = new CounterFunction<Integer>() {
             @Override
-            public void addCount(CounterFunctionInput input, HashMultiset<Integer> counter) {
-                final Sjukfall sjukfall = input.getSjukfall();
+            public void addCount(Sjukfall sjukfall, HashMultiset<Integer> counter) {
                 sjukfall.getLakare();
                 for (se.inera.statistics.service.warehouse.Lakare lakare : sjukfall.getLakare()) {
                     counter.add(lakare.getId());
