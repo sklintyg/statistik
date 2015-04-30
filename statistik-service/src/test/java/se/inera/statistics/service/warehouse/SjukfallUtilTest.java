@@ -30,7 +30,6 @@ import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.report.model.KonDataResponse;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.warehouse.query.CounterFunction;
-import se.inera.statistics.service.warehouse.query.CounterFunctionInput;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -164,7 +163,7 @@ public class SjukfallUtilTest {
         int ENHET1 = 1;
         LocalDate monthStart = new LocalDate("2010-11-01");
         aisle.addLine(createFact(ENHET1, 1, WidelineConverter.toDay(monthStart), 1));
-        aisle.addLine(createFact(ENHET1, 1, WidelineConverter.toDay(monthStart.plusDays(20)), 3));
+        aisle.addLine(createFact(ENHET1, 1, WidelineConverter.toDay(monthStart.plusDays(21)), 3));
 
         Iterator<SjukfallGroup> actives = sjukfallUtil.sjukfallGrupper(monthStart, 1, 1, aisle.createAisle(), createEnhetFilterFromInternalIntValues(ENHET1)).iterator();
         assertEquals(2, actives.next().getSjukfall().size());
@@ -221,12 +220,12 @@ public class SjukfallUtilTest {
         final ArrayList<SjukfallGroup> sjukfallGrupper = new ArrayList<>();
         sjukfallGrupper.add(new SjukfallGroup(Range.createForLastMonthsExcludingCurrent(1), Arrays.asList(createSjukfall(Kon.Female), createSjukfall(Kon.Male), createSjukfall(Kon.Male))));
         final Aisle currentAisle = aisle.createAisle();
-        Mockito.when(spy.sjukfallGrupper(start, periods, periodSize, currentAisle, filter)).thenReturn(sjukfallGrupper);
+        Mockito.when(spy.sjukfallGrupper(start, periods, periodSize, currentAisle, filter, false)).thenReturn(sjukfallGrupper);
 
         //When
         final KonDataResponse response = spy.calculateKonDataResponse(currentAisle, filter, start, periods, periodSize, Arrays.asList("G1"), Arrays.asList(1), new CounterFunction<Integer>() {
             @Override
-            public void addCount(CounterFunctionInput input, HashMultiset<Integer> counter) {
+            public void addCount(Sjukfall sjukfall, HashMultiset<Integer> counter) {
                 counter.add(1);
             }
         });

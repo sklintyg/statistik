@@ -37,7 +37,6 @@ import se.inera.statistics.service.report.model.SimpleKonDataRow;
 import se.inera.statistics.service.report.model.SimpleKonResponse;
 import se.inera.statistics.service.report.util.ReportUtil;
 import se.inera.statistics.service.warehouse.query.CounterFunction;
-import se.inera.statistics.service.warehouse.query.CounterFunctionInput;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -109,7 +108,7 @@ public class SjukfallUtil {
         return sjukfallGrupper(from, periods, periodSize, aisle, filter, false);
     }
 
-    private List<SjukfallGroup> sjukfallGrupper(LocalDate from, int periods, int periodSize, Aisle aisle, SjukfallFilter sjukfallFilter, boolean useOriginalSjukfallStart) {
+    List<SjukfallGroup> sjukfallGrupper(LocalDate from, int periods, int periodSize, Aisle aisle, SjukfallFilter sjukfallFilter, boolean useOriginalSjukfallStart) {
         try {
             return getSjukfallGroupsCache().get(new SjukfallGroupCacheKey(from, periods, periodSize, aisle, sjukfallFilter, useOriginalSjukfallStart));
         } catch (ExecutionException e) {
@@ -120,14 +119,22 @@ public class SjukfallUtil {
     }
 
     //CHECKSTYLE:OFF ParameterNumberCheck
+    public <T> KonDataResponse calculateKonDataResponseUsingOriginalSjukfallStart(Aisle aisle, SjukfallFilter filter, LocalDate start, int periods, int periodSize, List<String> groupNames, List<T> groupIds, CounterFunction<T> counterFunction) {
+        return calculateKonDataResponse(aisle, filter, start, periods, periodSize, groupNames, groupIds, counterFunction, true);
+    }
+
     public <T> KonDataResponse calculateKonDataResponse(Aisle aisle, SjukfallFilter filter, LocalDate start, int periods, int periodSize, List<String> groupNames, List<T> groupIds, CounterFunction<T> counterFunction) {
+        return calculateKonDataResponse(aisle, filter, start, periods, periodSize, groupNames, groupIds, counterFunction, false);
+    }
+
+    private <T> KonDataResponse calculateKonDataResponse(Aisle aisle, SjukfallFilter filter, LocalDate start, int periods, int periodSize, List<String> groupNames, List<T> groupIds, CounterFunction<T> counterFunction, boolean useOriginalSjukfallStart) {
         List<KonDataRow> rows = new ArrayList<>();
-        for (SjukfallGroup sjukfallGroup : sjukfallGrupper(start, periods, periodSize, aisle, filter)) {
+        for (SjukfallGroup sjukfallGroup : sjukfallGrupper(start, periods, periodSize, aisle, filter, useOriginalSjukfallStart)) {
             final HashMultiset<T> maleCounter = HashMultiset.create();
             final HashMultiset<T> femaleCounter = HashMultiset.create();
             for (Sjukfall sjukfall : sjukfallGroup.getSjukfall()) {
                 final HashMultiset<T> currentCounter = Kon.Female.equals(sjukfall.getKon()) ? femaleCounter : maleCounter;
-                counterFunction.addCount(new CounterFunctionInput(sjukfall, sjukfallGroup.getRange()), currentCounter);
+                counterFunction.addCount(sjukfall, currentCounter);
             }
             List<KonField> list = new ArrayList<>(groupIds.size());
             for (T id : groupIds) {
@@ -140,14 +147,14 @@ public class SjukfallUtil {
     }
     //CHECKSTYLE:ON
 
-    public SimpleKonResponse<SimpleKonDataRow> calculateSimpleKonResponse(Aisle aisle, SjukfallFilter filter, LocalDate from, int periods, int periodLength, Function<CounterFunctionInput, Integer> toCount, List<Integer> groups) {
+    public SimpleKonResponse<SimpleKonDataRow> calculateSimpleKonResponse(Aisle aisle, SjukfallFilter filter, LocalDate from, int periods, int periodLength, Function<Sjukfall, Integer> toCount, List<Integer> groups) {
         List<SimpleKonDataRow> rows = new ArrayList<>();
         HashMultiset<Integer> maleCounter = HashMultiset.create();
         HashMultiset<Integer> femaleCounter = HashMultiset.create();
         for (SjukfallGroup sjukfallGroup: sjukfallGrupper(from, periods, periodLength, aisle, filter)) {
             for (Sjukfall sjukfall : sjukfallGroup.getSjukfall()) {
                 HashMultiset<Integer> counter = Kon.Male.equals(sjukfall.getKon()) ? maleCounter : femaleCounter;
-                counter.add(toCount.apply(new CounterFunctionInput(sjukfall, sjukfallGroup.getRange())));
+                counter.add(toCount.apply(sjukfall));
             }
         }
         for (Integer group : groups) {

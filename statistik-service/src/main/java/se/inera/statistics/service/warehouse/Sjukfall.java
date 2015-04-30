@@ -167,24 +167,20 @@ public class Sjukfall {
         return !(this.end < start || this.start > end);
     }
 
-    public int getDiagnoskategori(Range range) {
-        return getLastDiagnosis(range).diagnoskategori;
-    }
-
-    public int getDiagnoskod(Range range) {
-        return getLastDiagnosis(range).diagnoskod;
-    }
-
     public int getDiagnoskategori() {
-        return getDiagnoskategori(null);
+        return getLastDiagnosis().diagnoskategori;
     }
 
-    public int getIcd10CodeForType(Icd10RangeType rangeType, Range range) {
+    public int getDiagnoskod() {
+        return getLastDiagnosis().diagnoskod;
+    }
+
+    public int getIcd10CodeForType(Icd10RangeType rangeType) {
         switch (rangeType) {
-            case KAPITEL: return getDiagnoskapitel(range);
-            case AVSNITT: return getDiagnosavsnitt(range);
-            case KATEGORI: return getDiagnoskategori(range);
-            case KOD: return getDiagnoskod(range);
+            case KAPITEL: return getDiagnoskapitel();
+            case AVSNITT: return getDiagnosavsnitt();
+            case KATEGORI: return getDiagnoskategori();
+            case KOD: return getDiagnoskod();
             default: throw new RuntimeException("Unknown range type: " + rangeType);
         }
     }
@@ -239,38 +235,28 @@ public class Sjukfall {
         return end;
     }
 
-    public int getDiagnoskapitel(Range range) {
-        return getLastDiagnosis(range).diagnoskapitel;
-    }
-
     public int getDiagnoskapitel() {
-        return getDiagnoskapitel(null);
+        return getLastDiagnosis().diagnoskapitel;
     }
 
-    public int getSjukskrivningsgrad(Range range) {
-        final int rangeStart = range != null ? WidelineConverter.toDay(range.getFrom()) : 0;
+    public int getSjukskrivningsgrad() {
         Map.Entry<Range, Integer> currentFound = null;
         for (Map.Entry<Range, Integer> entry : sjukskrivningsgrad.entrySet()) {
-            if (WidelineConverter.toDay(entry.getKey().getTo()) >= rangeStart && (currentFound == null || entry.getKey().getFrom().isAfter(currentFound.getKey().getFrom()))) {
+            if (currentFound == null || entry.getKey().getFrom().isAfter(currentFound.getKey().getFrom())) {
                 currentFound = entry;
             }
         }
         return currentFound.getValue();
     }
 
-    public int getDiagnosavsnitt(Range range) {
-        return getLastDiagnosis(range).diagnosavsnitt;
-    }
-
     public int getDiagnosavsnitt() {
-        return getDiagnosavsnitt(null);
+        return getLastDiagnosis().diagnosavsnitt;
     }
 
-    private Diagnos getLastDiagnosis(Range range) {
-        final int rangeStart = range != null ? WidelineConverter.toDay(range.getFrom()) : 0;
+    private Diagnos getLastDiagnosis() {
         Diagnos currentFoundDiagnos = null;
         for (Diagnos diagnose : diagnoses) {
-            if (diagnose.slutDatum >= rangeStart && (currentFoundDiagnos == null || diagnose.startDatum > currentFoundDiagnos.startDatum)) {
+            if (currentFoundDiagnos == null || diagnose.startDatum > currentFoundDiagnos.startDatum) {
                 currentFoundDiagnos = diagnose;
             }
         }

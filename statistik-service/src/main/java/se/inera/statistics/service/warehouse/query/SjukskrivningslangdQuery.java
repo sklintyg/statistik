@@ -167,8 +167,8 @@ public final class SjukskrivningslangdQuery {
         });
         final CounterFunction<Integer> counterFunction = new CounterFunction<Integer>() {
             @Override
-            public void addCount(CounterFunctionInput input, HashMultiset<Integer> counter) {
-                final int length = input.getSjukfall().getRealDays();
+            public void addCount(Sjukfall sjukfall, HashMultiset<Integer> counter) {
+                final int length = sjukfall.getRealDays();
                 final int rangeId = getRangeIdForLength(length);
                 counter.add(rangeId);
             }
@@ -185,7 +185,7 @@ public final class SjukskrivningslangdQuery {
 
         };
 
-        return sjukfallUtil.calculateKonDataResponse(aisle, filter, start, periods, periodLength, names, ids, counterFunction);
+        return sjukfallUtil.calculateKonDataResponseUsingOriginalSjukfallStart(aisle, filter, start, periods, periodLength, names, ids, counterFunction);
     }
 
     static int getLong(Collection<Sjukfall> sjukfalls) {

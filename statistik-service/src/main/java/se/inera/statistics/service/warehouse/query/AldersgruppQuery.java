@@ -141,8 +141,8 @@ public final class AldersgruppQuery {
         });
         final CounterFunction<Integer> counterFunction = new CounterFunction<Integer>() {
             @Override
-            public void addCount(CounterFunctionInput input, HashMultiset<Integer> counter) {
-                final int age = input.getSjukfall().getAlder();
+            public void addCount(Sjukfall sjukfall, HashMultiset<Integer> counter) {
+                final int age = sjukfall.getAlder();
                 final int rangeId = getRangeIdForAge(age);
                 counter.add(rangeId);
             }
