@@ -38,7 +38,8 @@ List webjars = [[group: 'org.webjars', name: 'jquery', version: '1.10.2'],
                 [group: 'org.webjars', name: 'bootstrap', version: '3.1.1'],
                 [group: 'org.webjars', name: 'bootstrap-multiselect', version: '0.9.8'],
                 [group: 'org.webjars', name: 'underscorejs', version: '1.7.0'],
-                [group: 'org.webjars', name: 'respond', version: '1.3.0']]
+                [group: 'org.webjars', name: 'respond', version: '1.3.0'],
+                [group: 'org.webjars', name: 'momentjs', version: '2.10.2']]
 
 task unzipWebjars(type: Copy) {
     description 'Copies anything that is a webjar from the classpath and expands it so that we can use their static resources with karma'

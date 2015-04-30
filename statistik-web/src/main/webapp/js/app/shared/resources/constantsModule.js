@@ -76,3 +76,5 @@ constantModule.constant('TIME_INTERVAL_MIN_DATE', timeIntervalMinDate);
 var timeIntervalMaxDate = Date.now();
 constantModule.constant('TIME_INTERVAL_MAX_DATE', timeIntervalMaxDate);
 
+/* Use momentjs http://momentjs.com/ This is a MIT license */
+constantModule.constant('moment', moment);
