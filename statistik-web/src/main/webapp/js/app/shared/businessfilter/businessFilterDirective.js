@@ -147,10 +147,6 @@ angular.module('StatisticsApp.businessFilter.directive', [])
                     }
                 });
 
-                scope.toDateDateDisabled = function(date, mode) {
-                    return (date < businessFilter.fromDate);
-                };
-
                 scope.timeIntervalRadioModel = 'preSet';
 
                 //The format of dates date we show in the GUI when the user selects something
