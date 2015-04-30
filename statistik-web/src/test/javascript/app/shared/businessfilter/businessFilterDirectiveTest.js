@@ -138,17 +138,6 @@ describe('Tests for directive button-filter', function () {
     describe("Making selections", function() {
         var statisticsData, businessFilter;
 
-        var createParamsObject = function createParamsObject(businessFilter) {
-            return {
-                diagnoser: businessFilter.selectedDiagnoses,
-                enheter: businessFilter.geographyBusinessIds,
-                verksamhetstyper: businessFilter.verksamhetsTypIds,
-                fromDate: businessFilter.fromDate,
-                toDate: businessFilter.fromDate,
-                useDefaultPeriod: businessFilter.useDefaultPeriod
-            };
-        };
-
         beforeEach(inject(function (_statisticsData_, _businessFilter_) {
             statisticsData = _statisticsData_;
             businessFilter = _businessFilter_;
@@ -158,16 +147,16 @@ describe('Tests for directive button-filter', function () {
             //given
             var spy = sinon.spy(statisticsData, 'getFilterHash');
 
+            var fromDate = new moment("2015-01-01"), toDate = new moment("2015-04-01");
             businessFilter.selectedDiagnoses = ['A00B99', 'D50D89'];
-
-            var expectedParams = createParamsObject(businessFilter);
+            businessFilter.fromDate = fromDate.toDate();
+            businessFilter.toDate = toDate.toDate();
 
             //when
             outerScope.makeSelection();
 
             //then
             expect(spy.calledOnce).toBeTruthy();
-            expect(spy.calledWith(expectedParams)).toBeTruthy();
 
             //then the parameters are defined in the params object sent to the server
             expect(spy.getCall(0).args[0].enheter).toBeDefined('Enheter was not defined as expected');
@@ -176,15 +165,44 @@ describe('Tests for directive button-filter', function () {
             expect(spy.getCall(0).args[0].fromDate).toBeDefined('fromDate was not defined as expected');
             expect(spy.getCall(0).args[0].toDate).toBeDefined('toDate was not defined as expected');
             expect(spy.getCall(0).args[0].useDefaultPeriod).toBeDefined('useDefault was not defined as expected');
-
-            expect(spy.getCall(0).args[0].enheter).toEqual(expectedParams.enheter);
-            expect(spy.getCall(0).args[0].diagnoser).toEqual(expectedParams.diagnoser);
-            expect(spy.getCall(0).args[0].verksamhetstyper).toEqual(expectedParams.verksamhetstyper);
-            expect(spy.getCall(0).args[0].fromDate).toEqual(expectedParams.fromDate);
-            expect(spy.getCall(0).args[0].toDate).toEqual(expectedParams.toDate);
-            expect(spy.getCall(0).args[0].useDefaultPeriod).toEqual(expectedParams.useDefaultPeriod);
         });
 
+        it("formats the internal date to a datestring with yyyy-mm-dd", inject(function(moment) {
+
+            //given
+            var spy = sinon.spy(statisticsData, 'getFilterHash');
+            var fromDate = new moment("2015-01-01"), toDate = new moment("2015-04-01");
+            businessFilter.selectedDiagnoses = ['A00B99', 'D50D89'];
+            businessFilter.fromDate = fromDate.toDate();
+            businessFilter.toDate = toDate.toDate();
+
+            //when
+            outerScope.makeSelection();
+
+            //Ensure that we sue the right format
+            expect(moment(spy.getCall(0).args[0].fromDate, 'YYYY-MM-DD').isValid()).toBeTruthy("From date doesn't have the right format");
+            expect(moment(spy.getCall(0).args[0].toDate, 'YYYY-MM-DD').isValid()).toBeTruthy("To date doesn't have the right format");
+
+        }));
+
+        it("sets toDate to the last of the month", function() {
+            //given
+            var spy = sinon.spy(statisticsData, 'getFilterHash');
+            var fromDate = new moment("2015-01-01"),
+                inputToDate = new moment("2015-04-01"),
+                expectedToDate = new moment("2015-04-30");
+
+            businessFilter.selectedDiagnoses = ['A00B99', 'D50D89'];
+            businessFilter.fromDate = fromDate.toDate();
+            businessFilter.toDate = inputToDate.toDate();
+
+            //when
+            outerScope.makeSelection();
+
+            //Ensure that we sue the right format
+            expect(spy.getCall(0).args[0].toDate).toEqual(expectedToDate.format('YYYY-MM-DD'), "To date wasn't set correctly");
+
+        });
     });
 
 });

@@ -18,7 +18,7 @@
  */
 'use strict';
 angular.module('StatisticsApp.businessFilter.directive', [])
-    .directive('businessFilter', ['businessFilter', '$location', 'messageService', 'statisticsData', 'TIME_INTERVAL_MIN_DATE', 'TIME_INTERVAL_MAX_DATE', function(businessFilter, $location, messageService, statisticsData, TIME_INTERVAL_MIN_DATE, TIME_INTERVAL_MAX_DATE) {
+    .directive('businessFilter', ['businessFilter', '$location', 'messageService', 'statisticsData', 'moment', 'TIME_INTERVAL_MIN_DATE', 'TIME_INTERVAL_MAX_DATE', function(businessFilter, $location, messageService, statisticsData, moment, TIME_INTERVAL_MIN_DATE, TIME_INTERVAL_MAX_DATE) {
         return {
             restrict: 'E',
             link: function(scope, element, attrs) {
@@ -27,7 +27,6 @@ angular.module('StatisticsApp.businessFilter.directive', [])
 
                 scope.businessFilter = businessFilter;
 
-                //Used for the datepickers
                 scope.useDefaultPeriod = true;
 
                 function updateGeographyFilterSelectorDataButtonLabelText() {
@@ -64,7 +63,16 @@ angular.module('StatisticsApp.businessFilter.directive', [])
                 };
 
                 scope.makeSelection = function () {
+                    var formattedFromDate, formattedToDate;
+
                     scope.isFilterCollapsed = !scope.isFilterCollapsed;
+
+                    //Be sure to format the date obejcts correctly before sending anything to the server
+                    if(businessFilter.fromDate && businessFilter.toDate) {
+                        formattedFromDate = moment(businessFilter.fromDate).format('YYYY-MM-DD');
+                        formattedToDate = moment(businessFilter.toDate);
+                        formattedToDate = formattedToDate.date(formattedToDate.daysInMonth()).format('YYYY-MM-DD');
+                    }
 
                     //Only use a non default period if everything is set as expected
                     if(scope.timeIntervalRadioModel !== 'preSet' && businessFilter.fromDate && businessFilter.toDate) {
@@ -75,8 +83,8 @@ angular.module('StatisticsApp.businessFilter.directive', [])
                         diagnoser: businessFilter.selectedDiagnoses,
                         enheter: businessFilter.geographyBusinessIds,
                         verksamhetstyper: businessFilter.verksamhetsTypIds,
-                        fromDate: businessFilter.fromDate,
-                        toDate: businessFilter.toDate,
+                        fromDate: formattedFromDate,
+                        toDate: formattedToDate,
                         useDefaultPeriod: businessFilter.useDefaultPeriod
                     };
 
@@ -104,6 +112,7 @@ angular.module('StatisticsApp.businessFilter.directive', [])
                 scope.maxDate = TIME_INTERVAL_MAX_DATE;
 
                 scope.minToDate = businessFilter.fromDate;
+                
                 //Is the datepicker dialogs open or not
                 scope.isFromDateOpen = false;
                 scope.isToDateOpen = false;
@@ -131,20 +140,12 @@ angular.module('StatisticsApp.businessFilter.directive', [])
                     }
                 };
 
-                //scope.$watch('businessFilter.fromDate', function() {
-                //
-                //}
-
                 scope.$watch('businessFilter.fromDate', function(newValue, oldValue) {
                     scope.minToDate = newValue;
                     if(businessFilter.toDate < newValue) {
                         businessFilter.toDate = null;
                     }
                 });
-
-                scope.toDateDateDisabled = function(date, mode) {
-                    return (date < businessFilter.fromDate);
-                };
 
                 scope.timeIntervalRadioModel = 'preSet';
 

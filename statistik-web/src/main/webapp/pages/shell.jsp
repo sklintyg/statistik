@@ -450,6 +450,7 @@
 <script type="text/javascript" src="<c:url value='/webjars/jquery/1.10.2/jquery.min.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/webjars/bootstrap/3.1.1/js/bootstrap.min.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/webjars/underscorejs/1.7.0/underscore-min.js'/>"></script>
+<script type="text/javascript" src="<c:url value='/webjars/momentjs/2.10.2/min/moment.min.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/webjars/angularjs/1.2.16/angular.min.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/webjars/angularjs/1.2.16/i18n/angular-locale_sv.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/webjars/angularjs/1.2.16/angular-cookies.min.js'/>"></script>
