@@ -280,7 +280,7 @@ public class SjukfallTest {
     }
 
     @Test
-    public void testGetDiagnoskapitelForOverlappingUnorderedIntygWithinPeriod() throws Exception {
+    public void testGetDiagnoskapitelForOverlappingUnorderedIntygSelectsDxWithLatestStartDate() throws Exception {
         //Given
         final int diagnoskapitel1 = 2;
         final Sjukfall sjukfall1 = new Sjukfall(createFact(2, 10, diagnoskapitel1));
@@ -290,26 +290,10 @@ public class SjukfallTest {
         final Sjukfall sjukfall3 = new Sjukfall(sjukfall2, createFact(1, 30, diagnoskapitel3));
 
         //When
-        final int diagnoskapitel = sjukfall3.getDiagnoskapitel(new Range(WidelineConverter.toDate(6), WidelineConverter.toDate(20)));
+        final int diagnoskapitel = sjukfall3.getDiagnoskapitel();
 
         //Then
         assertEquals(diagnoskapitel2, diagnoskapitel);
-    }
-
-    @Test
-    public void testGetDiagnoskapitelForOverlappingUnorderedIntygWithOneOutsidePeriod() throws Exception {
-        //Given
-        final int diagnoskapitel1 = 2;
-        final Sjukfall sjukfall1 = new Sjukfall(createFact(2, 10, diagnoskapitel1));
-        final int diagnoskapitel2 = 3;
-        final Sjukfall sjukfall2 = new Sjukfall(sjukfall1, createFact(3, 4, diagnoskapitel2));
-        final Sjukfall sjukfall3 = new Sjukfall(sjukfall2, createFact(1, 30, diagnoskapitel2));
-
-        //When
-        final int diagnoskapitel = sjukfall3.getDiagnoskapitel(new Range(WidelineConverter.toDate(10), WidelineConverter.toDate(20)));
-
-        //Then
-        assertEquals(diagnoskapitel1, diagnoskapitel);
     }
 
     private Fact createFact(int startdatum, int sjukskrivningslangd) {

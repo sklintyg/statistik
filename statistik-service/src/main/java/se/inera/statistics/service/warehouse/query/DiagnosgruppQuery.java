@@ -206,7 +206,7 @@ public class DiagnosgruppQuery {
             Map<Integer, Integer> female = new HashMap<>();
             Map<Integer, Integer> male = new HashMap<>();
             for (Sjukfall sjukfall: sjukfallGroup.getSjukfall()) {
-                final Set<Integer> icd10Codes = new HashSet<>(countAllDxs ? sjukfall.getAllIcd10OfType(rangeType) : Arrays.asList(sjukfall.getIcd10CodeForType(rangeType, sjukfallGroup.getRange())));
+                final Set<Integer> icd10Codes = new HashSet<>(countAllDxs ? sjukfall.getAllIcd10OfType(rangeType) : Arrays.asList(sjukfall.getIcd10CodeForType(rangeType)));
                 final Map<Integer, Integer> genderMap = sjukfall.getKon() == Kon.Female ? female : male;
                 for (Integer icd10Code : icd10Codes) {
                     final int currentCount = getCurrentCount(icd10Code, genderMap);
@@ -266,10 +266,10 @@ public class DiagnosgruppQuery {
     public Map<Integer, Counter<Integer>> count(Collection<Sjukfall> sjukfalls) {
         Map<Integer, Counter<Integer>> counters = new HashMap<>();
         for (Sjukfall sjukfall : sjukfalls) {
-            Counter<Integer> counter = counters.get(sjukfall.getDiagnoskapitel(null));
+            Counter<Integer> counter = counters.get(sjukfall.getDiagnoskapitel());
             if (counter == null) {
-                counter = new Counter<>(sjukfall.getDiagnoskapitel(null));
-                counters.put(sjukfall.getDiagnoskapitel(null), counter);
+                counter = new Counter<>(sjukfall.getDiagnoskapitel());
+                counters.put(sjukfall.getDiagnoskapitel(), counter);
             }
             counter.increase(sjukfall);
         }
