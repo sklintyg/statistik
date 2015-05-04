@@ -1,4 +1,5 @@
 #statistik
+#statistik
 ##Introduktion
 Systemet är logiskt uppdelat på två delsystem: Statistiktjänsten och Statistikapplikationen. Därutöver finns mindra applikationer och stödsystem, t ex statistik-gatling för att göra lasttester och HSA fileservice för att hämta filer från HSA.
 ###Statistiktjänsten
@@ -152,17 +153,17 @@ Checka ut tools (och statistik härifrån, om du inte har det redan) från githu
 Följande beskriver hur man deployar till fitnesse-servern, https://fitnesse.inera.nordicmedtest.se
 Det är den enda servern som i skrivandes stund är definierad.
 
-Gå till .../tools/ansible och provitionera gemensamma kompnenter:
+Gå till .../tools/ansible och provisionera gemensamma kompnenter:
 
     ansible-playbook -i hosts_test provision.yml -l statistik-fitnesse
 
-Gå till .../statistik/ansible och provitionera komponenter som ligger utanför applikationen:
+Gå till .../statistik/ansible och provisionera komponenter som ligger utanför applikationen:
 
     ansible-playbook -i hosts_test provision.yml -l statistik-fitnesse
 
 Deploya själva applikationen:
 
-    ansible-playbook -i hosts_test provision.yml -l statistik-fitnesse
+    ansible-playbook -i hosts_test deploy.yml -l statistik-fitnesse
 
 
 ##Namngivning av klasser och metoder
