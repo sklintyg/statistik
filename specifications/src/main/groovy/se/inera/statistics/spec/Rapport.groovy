@@ -20,12 +20,17 @@ abstract class Rapport {
     def filterVerksamhetstyper
     def filterStartdatum
     def filterSlutdatum
+    def meddelande
 
     ReportsUtil reportsUtil = new ReportsUtil()
 
     public final void execute() {
         doLoginIfRequested()
         doExecute()
+    }
+
+    public final void executeWithReport(report) {
+        meddelande = report.message
     }
 
     abstract void doExecute()
@@ -40,6 +45,10 @@ abstract class Rapport {
 
     def totalt() {
         return totalt
+    }
+
+    def meddelande() {
+        return meddelande
     }
 
     void setVårdgivarnivå(boolean vårdgivarnivå) {
@@ -109,6 +118,7 @@ abstract class Rapport {
         filterVerksamhetstyper = null
         filterStartdatum = null
         filterSlutdatum = null
+        meddelande = null
     }
 
     void setKommentar(String kommentar) {

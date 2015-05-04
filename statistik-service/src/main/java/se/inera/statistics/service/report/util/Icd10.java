@@ -19,6 +19,7 @@
 package se.inera.statistics.service.report.util;
 
 import com.google.common.base.Function;
+import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
@@ -343,6 +344,8 @@ public class Icd10 {
 
         public abstract List<? extends Id> getSubItems();
 
+        public abstract Optional<? extends Id> getParent();
+
         public String getVisibleId() {
             return isInternal() ? "" : getId();
         }
@@ -390,6 +393,11 @@ public class Icd10 {
             return getAvsnitt();
         }
 
+        @Override
+        public Optional<? extends Id> getParent() {
+            return Optional.absent();
+        }
+
         public static Kapitel valueOf(String line) {
             return new Kapitel(line.substring(0, ENDINDEX_ID), line.substring(STARTINDEX_DESCRIPTION));
         }
@@ -432,6 +440,10 @@ public class Icd10 {
 
         public Kapitel getKapitel() {
             return kapitel;
+        }
+
+        public Optional<? extends Id> getParent() {
+            return Optional.of(getKapitel());
         }
 
         public List<? extends Id> getSubItems() {
@@ -479,6 +491,11 @@ public class Icd10 {
         }
 
         @Override
+        public Optional<? extends Id> getParent() {
+            return Optional.of(getAvsnitt());
+        }
+
+        @Override
         public int toInt() {
             return icd10ToInt(getId(), Icd10RangeType.KATEGORI);
         }
@@ -511,6 +528,11 @@ public class Icd10 {
 
         public Kategori getKategori() {
             return kategori;
+        }
+
+        @Override
+        public Optional<? extends Id> getParent() {
+            return Optional.of(getKategori());
         }
 
         @Override

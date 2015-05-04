@@ -8,6 +8,7 @@ abstract class SimpleDetailsReport extends Rapport {
     String månad;
 
     public void executeDiagram(report) {
+        executeWithReport(report)
         def categoryNameMatcher = getRowNameMatcher();
         def index = report.chartData.categories.findIndexOf { item -> item.contains(categoryNameMatcher) }
         def male = report.chartData.series.find { item -> "Male".equals(item.sex) }
@@ -21,6 +22,7 @@ abstract class SimpleDetailsReport extends Rapport {
     abstract def getRowNameMatcher()
 
     void executeTabell(report) {
+        executeWithReport(report)
         def rowNameMatcher = getRowNameMatcher();
         def row = report.tableData.rows.find { currentRow ->
             currentRow.name.contains(rowNameMatcher) }
