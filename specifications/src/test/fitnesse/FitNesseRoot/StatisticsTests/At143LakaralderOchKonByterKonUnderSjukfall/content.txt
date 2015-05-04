@@ -33,5 +33,5 @@ Sjukfallet ska endast räknas till gruppen med läkarens senaste ålder.
 Inloggad:
 | Sjukfall i rapporten lakarkonalder |
 | inloggad som | vårdgivarnivå | läkargrupp                  | män? | kvinnor? |
-| user1        | false         | Manlig läkare 40-49 år      | 1    | 0        |
-| user1        | false         | Okänt kön 40-49 år          | -1   | -1       |
+| user1        | false         | Manlig läkare 40-49 år      | 0    | 0        |
+| user1        | false         | Okänt kön 40-49 år          | 1    | 0        |
