@@ -49,6 +49,11 @@
 - name: Deploy statistik-web-{{ version }}.war as ROOT.war
   command: cp {{ releases_folder }}/statistik-web-{{ version }}.war {{ tomcat_webapps }}/ROOT.war
 
+- name: Extract ROOT.war
+  command: unzip -d {{ tomcat_webapps }}/ROOT {{ tomcat_webapps }}/ROOT.war
+  args:
+    creates: "{{ tomcat_webapps }}/ROOT"
+
 - name: Deploy highchart-export-web-{{ highchart_version }}.war
   command: cp {{ releases_folder }}/highcharts-export-web-{{ highcharts_version }}.war {{ tomcat_webapps }}/highcharts-export-web.war
 
@@ -59,6 +64,18 @@
   git: repo={{ config_repository }}
        dest={{ config_folder }}
        version={{ config_version }}
+
+- name: Include host in login url
+  replace:
+    dest="{{ tomcat_webapps }}/ROOT/WEB-INF/application-context-security.xml"
+    regexp='<property name="defaultTargetUrl" value="/#/verksamhet"/>'
+    replace='<property name="defaultTargetUrl" value="{{ host_url }}/#/verksamhet"/>'
+
+- name: Include host in logout url
+  replace:
+    dest="{{ tomcat_webapps }}/ROOT/WEB-INF/application-context-security.xml"
+    regexp='<security:logout logout-url="/saml/logout" logout-success-url="/" invalidate-session="true"/>'
+    replace='<security:logout logout-url="/saml/logout" logout-success-url="{{ host_url }}/" invalidate-session="true"/>'
 
 - name: start tomcat
   service: name={{ tomcat_service }} state=started pattern=org.apache.catalina.startup.Bootstrap
