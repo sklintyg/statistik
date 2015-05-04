@@ -80,10 +80,10 @@
     	</div>
    		<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 pull-left" data-ng-show="showDetailsOptions">
        		<div class="btn-group margin-bottom" id="detailsOptionsDropdown">
-           		<a class="multiselect dropdown-toggle btn btn-default" id="selectDiagnosticChapter" data-toggle="dropdown" href="#" style="overflow: hidden; text-overflow: ellipsis; max-width: 350px;">
+           		<button class="multiselect dropdown-toggle btn btn-default" id="selectDiagnosticChapter" data-toggle="dropdown" style="overflow: hidden; text-overflow: ellipsis; max-width: 350px;">
            			<span class="caret pull-right" style="margin-top: 9px;"></span>
            			<span>{{selectedDetailsOption.id}} {{selectedDetailsOption.name}}</span>
-           		</a>
+           		</button>
            		<ul class="dropdown-menu left overflow-menu-options">
 	               <li data-ng-repeat="detailsOption in detailsOptions"><a href="{{detailsOption.url}}{{queryString}}"><span bindonce="detailsOption.id"></span> <span bindonce="detailsOption.name"></span></a></li>
 	        	</ul>
@@ -95,10 +95,10 @@
     	</span>
    		<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 pull-left" data-ng-show="showDetailsOptions2">
        		<div class="btn-group margin-bottom" id="detailsOptionsDropdown2">
-           		<a class="multiselect dropdown-toggle btn btn-default" id="selectDiagnosticCategory" data-toggle="dropdown" href="#" style="overflow: hidden; text-overflow: ellipsis; max-width: 350px;">
+           		<button class="multiselect dropdown-toggle btn btn-default" id="selectDiagnosticCategory" data-toggle="dropdown" style="overflow: hidden; text-overflow: ellipsis; max-width: 350px;">
            			<span class="caret pull-right" style="margin-top: 9px;"></span>
            			<span>{{selectedDetailsOption2.id}} {{selectedDetailsOption2.name}}</span>
-           		</a>
+           		</button>
            		<ul class="dropdown-menu left overflow-menu-options">
 	               <li data-ng-repeat="detailsOption2 in detailsOptions2"><a href="{{detailsOption2.url}}{{queryString}}"><span bindonce="detailsOption2.id"></span> <span bindonce="detailsOption2.name"></span></a></li>
 	        	</ul>
@@ -113,10 +113,10 @@
                 <chart-series-bg views="exchangeableViews"></chart-series-bg>
 			    <!-- PRINT BUTTON GROUP -->
                 <div class="btn-group statistics-btn-group" role="group">
-                    <a class="multiselect dropdown-toggle btn btn-default" data-toggle="dropdown" href="#">
+                    <button class="multiselect dropdown-toggle btn btn-default" data-toggle="dropdown">
                         <span message key="dropdown.val.rapport"></span>
                         <span class="caret"></span>
-                    </a>
+                    </button>
                     <ul class="dropdown-menu  detail-view-choice-dropdown">
                         <li><a data-ng-click="print(false)"><img src="img/dropdown-icons/farg1b.png"/><span message key="dropdown.val.skrivut-farg"></span></a></li>
                         <li><a data-ng-click="print(true)"><img src="img/dropdown-icons/sv_vit1b.png"/><span message key="dropdown.val.skrivut-svart-vitt"></span></a></li>

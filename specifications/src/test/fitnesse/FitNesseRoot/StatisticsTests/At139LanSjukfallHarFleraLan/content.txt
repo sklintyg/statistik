@@ -8,13 +8,21 @@
 
 | Enbart foljande intyg finns |
 | personnr | diagnoskod | start    | slut       | enhet  | län |
-| 19790407-2295 | G01 | 2013-05-05 | 2013-06-06 | enhet1 | 01  |
-| 19790408-2295 | G01 | 2013-05-11 | 2013-09-12 | enhet2 | 03  |
+| 19790408-2295 | G01 | 2013-05-05 | 2013-06-06 | enhet1 | 01  |
+| 19790408-2295 | G01 | 2013-06-07 | 2013-06-30 | enhet2 | 03  |
+| 19790408-2295 | G01 | 2013-07-01 | 2013-07-30 | enhet1 | 00  |
 
 !3 Då gäller:
 
 Nationell:
 | Sjukfall i rapporten lan |
 | period       | län            | män? | kvinnor? |
-| maj–jul 2013 | Stockholms län | 1    | 0        |
-| maj–jul 2013 | Uppsala län    | 1    | 0        |
+| maj–jul 2013 | Stockholms län | 0    | 0        |
+| maj–jul 2013 | Uppsala län    | 0    | 0        |
+| maj–jul 2013 | Okänt län      | 1    | 0        |
+
+| Sjukfall i rapporten andel sjukfall per kon |
+| län            | totalt? | män?     | kvinnor? |
+| Stockholms län | 0       | 0% (0)   | 0% (0)   |
+| Uppsala län    | 0       | 0% (0)   | 0% (0)   |
+| Okänt län      | 1       | 100% (1) | 0% (0)   |
