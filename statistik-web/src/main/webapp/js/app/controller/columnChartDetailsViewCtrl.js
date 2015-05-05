@@ -51,16 +51,29 @@ angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl', [ '$sco
             chartOptions.yAxis.labels.formatter = function () {
                 return ControllerCommons.makeThousandSeparated(this.value) + (config.percentChart ? "%" : "");
             };
+
             chartOptions.plotOptions.column.stacking = config.percentChart ? 'percent' : 'normal';
+
             if (config.percentChart) {
                 chartOptions.tooltip.pointFormat = '<span style="color:{series.color}">{series.name}</span>: <b>{point.percentage:.0f}%</b><br/>';
             }
+
             return new Highcharts.Chart(chartOptions);
         };
 
         var updateChart = function (ajaxResult, doneLoadingCallback) {
             $scope.series = printFactory.setupSeriesForDisplayType($routeParams.printBw, ajaxResult.series, "bar");
             chart = paintChart(ajaxResult.categories, $scope.series, doneLoadingCallback);
+        };
+
+        $scope.switchChartType = function (chartType) {
+            ControllerCommons.switchChartType(chart.series, chartType);
+
+            chart.redraw();
+        };
+
+        $scope.showInLegend = function(index) {
+            return ControllerCommons.showInLegend(chart.series, index);
         };
 
         $scope.toggleSeriesVisibility = function (index) {

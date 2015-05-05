@@ -90,10 +90,10 @@
          	</div>
        	</div>
 
-    	<span class="col-xs-12 col-sm-12 col-md-12 col-lg-12" data-ng-show="showDetailsOptions2">
+    	<span class="col-xs-12" data-ng-show="showDetailsOptions2">
     		<label class="dropdown-label" for="selectDiagnosticCategory"><span message key="lbl.valj-annat-diagnosavsnitt"></span>:</label>
     	</span>
-   		<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 pull-left" data-ng-show="showDetailsOptions2">
+   		<div class="col-xs-6 pull-left" data-ng-show="showDetailsOptions2">
        		<div class="btn-group margin-bottom" id="detailsOptionsDropdown2">
            		<button class="multiselect dropdown-toggle btn btn-default" id="selectDiagnosticCategory" data-toggle="dropdown" style="overflow: hidden; text-overflow: ellipsis; max-width: 350px;">
            			<span class="caret pull-right" style="margin-top: 9px;"></span>
@@ -105,19 +105,29 @@
          	</div>
        	</div>
 
-		<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 pull-right" data-ng-class="{margin_top_button_group: showDetailsOptions}" style="margin-bottom: 10px;">
+		<div class="col-xs-12 pull-right" data-ng-class="{margin_top_button_group: showDetailsOptions}" style="margin-bottom: 10px;">
             <!-- toolbar -->
             <div class="btn-toolbar pull-right" role="toolbar">
                 <!-- Button group for viewing different series -->
                 <h3 message key="lbl.visa-knappgrupp-serier" data-ng-if="exchangeableViews"></h3>
                 <chart-series-bg views="exchangeableViews"></chart-series-bg>
+
+                <div class="btn-group chart-icon-bar" data-ng-click="switchChartType('bar')"></div>
+
+                <div class="btn-group chart-icon-line" data-ng-click="switchChartType('line')"></div>
+
+                <!-- Disabled for now until we figure out how to make sure the series can be stacked-->
+                <div class="btn-group chart-icon-area" data-ng-click="switchChartType('area')"></div>
+
 			    <!-- PRINT BUTTON GROUP -->
                 <div class="btn-group statistics-btn-group" role="group">
+
                     <button class="multiselect dropdown-toggle btn btn-default" data-toggle="dropdown">
                         <span message key="dropdown.val.rapport"></span>
                         <span class="caret"></span>
                     </button>
-                    <ul class="dropdown-menu  detail-view-choice-dropdown">
+
+                    <ul class="dropdown-menu detail-view-choice-dropdown">
                         <li><a data-ng-click="print(false)"><img src="img/dropdown-icons/farg1b.png"/><span message key="dropdown.val.skrivut-farg"></span></a></li>
                         <li><a data-ng-click="print(true)"><img src="img/dropdown-icons/sv_vit1b.png"/><span message key="dropdown.val.skrivut-svart-vitt"></span></a></li>
                         <!-- li><a class="disabled"><img src="img/dropdown-icons/pdf-inactive.png"/> PDF-fil</a></li -->
@@ -126,7 +136,8 @@
                     </ul>
                 </div>
             </div>
-		</div>
+        </div>
+
     </div>
 
     <!-- Alert the user about specific conditions -->
@@ -155,7 +166,7 @@
 			<div class="row hidden-print">
 				<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 					<div class="btn-group legend-btn-group">
-						<label data-ng-repeat="seriesData in series" class="col-xs-12 col-sm-6 col-md-6 col-lg-6" id="legend-label" style="white-space: nowrap;" legend-height>
+						<label data-ng-repeat="seriesData in series" class="col-xs-12 col-sm-6 col-md-6 col-lg-6" id="legend-label" style="white-space: nowrap;" legend-height data-ng-show="showInLegend($index)">
 							<input type="checkbox" checked="" data-ng-click="toggleSeriesVisibility($index)" class="detail-checkbox"/>
 							<span class="legend-color-square" data-ng-style="{backgroundColor: seriesData.color}"></span>
 							<span class="legend-name">{{seriesData.name}}</span>

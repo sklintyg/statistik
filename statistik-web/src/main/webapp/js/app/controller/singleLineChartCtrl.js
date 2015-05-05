@@ -49,6 +49,7 @@ angular.module('StatisticsApp').controller('singleLineChartCtrl', [ '$scope', '$
             chartOptions.yAxis.title.offset = 0;
             chartOptions.text = "#008391";
             chartOptions.tooltip.text = "#000";
+
             return new Highcharts.Chart(chartOptions);
         };
 
@@ -65,6 +66,15 @@ angular.module('StatisticsApp').controller('singleLineChartCtrl', [ '$scope', '$
             $scope.series = printFactory.setupSeriesForDisplayType($routeParams.printBw, ajaxResult.series, "line");
             setColorToTotalCasesSeries($scope.series);
             chart = paintChart(ajaxResult.categories, $scope.series, doneLoadingCallback);
+        };
+
+        $scope.switchChartType = function (chartType) {
+            ControllerCommons.switchChartType(chart.series, chartType);
+            chart.redraw();
+        };
+
+        $scope.showInLegend = function(index) {
+            return ControllerCommons.showInLegend(chart.series, index);
         };
 
         var populatePageWithData = function (result) {
@@ -89,6 +99,7 @@ angular.module('StatisticsApp').controller('singleLineChartCtrl', [ '$scope', '$
                 series.show();
             }
         };
+
 
         $scope.exportChart = function () {
             ControllerCommons.exportChart(chart, $scope.pageName, $scope.subTitle, $scope.activeDiagnosFilters);

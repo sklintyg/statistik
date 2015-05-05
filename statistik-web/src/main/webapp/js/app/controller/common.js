@@ -402,7 +402,64 @@ var ControllerCommons = new function(){
             }
             $scope.exchangeableViews = config.exchangeableViews;
         }
-    }
+    };
+
+
+
+    /* Configure all existing series of a specific chart for a new chart type.
+     */
+    this.switchChartType = function (chartSeries, chartType, config) {
+
+        config = config || {
+            type: chartType,
+            stack: chartType === 'area'? 'stacked' : null,
+            stacking: chartType === 'area'? 'normal' : null
+        };
+
+        var hasSexSet = isSexSetOnChartSeries(chartSeries);
+
+        //This updates the chart object with new options
+        _.each(chartSeries, function (series) {
+            if(hasSexSet) {
+                showOrHideTotalSeries(chartType, series, config);
+            }
+
+            series.update(config, false);
+        });
+    };
+
+    /* This is just a very akward way of telling the cahrt not to dsiplay
+    a series with totals when the chart type is area. If the area chart uses stack and stacking the total will add to the other series
+    and the numbers will accumulate which isnt correct when show in the chart*/
+    var showOrHideTotalSeries = function showOrHideTotalSeries(chartType, series, config) {
+        if(chartType === "area" && series.options.sex === null) {
+            //Mark legend that it wont be shown.
+            // We don't actually use highcharts legends so this won't update the chart legends by itself
+            config.showInLegend = false;
+
+            series.hide();
+        } else if (chartType !== "area" && series.options.sex === null) {
+            config.showInLegend = true;
+            series.show();
+        } else {
+            config.showInLegend = true;
+        }
+    };
+
+    var isSexSetOnChartSeries = function isSexSetOnChartSeries(chartSeries) {
+        var maleSeries = _.find(chartSeries, function(series) {
+            return series.options.sex === 'Male';
+        });
+
+        var femaleSeries = _.find(chartSeries, function(series) {
+            return series.options.sex === 'Female';
+        });
+
+        return maleSeries && femaleSeries? true: false;
+    };
+    this.showInLegend = function(series, index) {
+        return series[index].options.showInLegend;
+    };
 
 };
 

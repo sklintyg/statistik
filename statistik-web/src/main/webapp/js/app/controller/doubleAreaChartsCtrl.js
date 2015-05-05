@@ -127,6 +127,17 @@ angular.module('StatisticsApp').controller('doubleAreaChartsCtrl', [ '$scope', '
             $scope.series = chartSeriesMale;
         };
 
+        $scope.switchChartType = function (chartType) {
+            ControllerCommons.switchChartType(that.chart1.series, chartType);
+            ControllerCommons.switchChartType(that.chart2.series, chartType);
+            that.chart1.redraw();
+            that.chart2.redraw();
+        };
+
+        $scope.showInLegend = function(index) {
+            return ControllerCommons.showInLegend(that.chart1.series, index) && ControllerCommons.showInLegend(that.chart2.series, index);
+        };
+
         var populatePageWithData = function (result) {
             ControllerCommons.populateActiveDiagnosFilter($scope, statisticsData, result.filter.diagnoser, $routeParams.printBw || $routeParams.print);
             $scope.enhetsCount = result.filter.enheter ? result.filter.enheter.length : null;

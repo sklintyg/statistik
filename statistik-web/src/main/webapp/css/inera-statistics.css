@@ -1885,3 +1885,26 @@ li.subMenuItem.active .active-menu-item { display: block;  }
     height: 34px;
     font-size: 14px;
 }
+
+/*Icons for charts*/
+
+.chart-icon-bar, .chart-icon-line, .chart-icon-area{
+    background-image: url("../img/chart-types/knappar_120_34.png");
+    background-repeat: no-repeat;
+    position: relative;
+    display: inline-block;
+    width: 37px;
+    height: 34px;
+}
+
+.chart-icon-bar {
+    background-position: left;
+}
+
+.chart-icon-line {
+    background-position: center;
+}
+
+.chart-icon-area {
+    background-position: right;
+}
