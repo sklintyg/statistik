@@ -106,6 +106,7 @@ public class RestSupportService {
     public Response insertIntyg(Intyg intyg) {
         LOG.info("Insert intyg. id: " + intyg.getDocumentId() + ", data: " + intyg.getData());
         hsaDataInjectable.setCountyForNextIntyg(intyg.getCounty());
+        hsaDataInjectable.setHuvudenhetIdForNextIntyg(intyg.getHuvudenhetId());
         receiver.accept(intyg.getType(), intyg.getData(), intyg.getDocumentId(), intyg.getTimestamp());
         return Response.ok().build();
     }

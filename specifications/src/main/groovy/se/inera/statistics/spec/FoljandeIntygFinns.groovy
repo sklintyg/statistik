@@ -18,6 +18,7 @@ class FoljandeIntygFinns {
     def start
     def slut
     def enhet
+    def huvudenhet
     def vardgivare
     def arbetsförmåga
     String arbetsförmåga2
@@ -44,12 +45,16 @@ class FoljandeIntygFinns {
         arbetsförmåga2 = ""
         läkare = "Personal HSA-ID"
         län = null
-        intygstyp = EventType.CREATED.name();
-        exaktintygid = intygIdCounter++;
+        intygstyp = EventType.CREATED.name()
+        exaktintygid = intygIdCounter++
         jsonformat = "nytt"
+        huvudenhet = null
     }
 
     public void execute() {
+        if (huvudenhet == null || huvudenhet.trim().isEmpty()) {
+            huvudenhet = enhet;
+        }
         if ("gammalt".equalsIgnoreCase(jsonformat)) {
             executeForOldJsonFormat();
         } else {
@@ -85,7 +90,7 @@ class FoljandeIntygFinns {
         def builder = new JsonBuilder(result)
         def finalIntygDataString = builder.toString()
 
-        Intyg intyg = new Intyg(EventType.valueOf(intygstyp), finalIntygDataString, String.valueOf(exaktintygid), DateTimeUtils.currentTimeMillis(), län)
+        Intyg intyg = new Intyg(EventType.valueOf(intygstyp), finalIntygDataString, String.valueOf(exaktintygid), DateTimeUtils.currentTimeMillis(), län, huvudenhet)
         reportsUtil.insertIntyg(intyg)
     }
 
@@ -124,7 +129,7 @@ class FoljandeIntygFinns {
         def builder = new JsonBuilder(result)
         def finalIntygDataString = builder.toString()
 
-        Intyg intyg = new Intyg(EventType.valueOf(intygstyp), finalIntygDataString, String.valueOf(exaktintygid), DateTimeUtils.currentTimeMillis(), län)
+        Intyg intyg = new Intyg(EventType.valueOf(intygstyp), finalIntygDataString, String.valueOf(exaktintygid), DateTimeUtils.currentTimeMillis(), län, huvudenhet)
 
         reportsUtil.insertIntyg(intyg)
     }

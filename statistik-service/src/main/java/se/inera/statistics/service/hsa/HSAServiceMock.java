@@ -59,7 +59,7 @@ public class HSAServiceMock implements HSAService, HsaDataInjectable {
     private final Map<String, JsonNode> personals = new HashMap<>();
     private String nextLanCode = null;
     private String nextEnhetName = null;
-
+    private String nextHuvudenhetId = null;
 
     static {
         LAN_CODES = new ArrayList<>();
@@ -80,13 +80,14 @@ public class HSAServiceMock implements HSAService, HsaDataInjectable {
     public JsonNode getHSAInfo(HSAKey key) {
         ObjectNode root = factory.objectNode();
         if (key.getEnhetId() != null && !key.getEnhetId().startsWith("EJHSA") && !"UTANENHETSID".equals(key.getEnhetId())) {
-            root.put("enhet", createEnhet(key));
-            root.put("huvudenhet", createEnhet(key));
+            root.put("enhet", createEnhet(key, false));
+            root.put("huvudenhet", createEnhet(key, true));
         }
         root.put("vardgivare", createVardgivare(key));
         root.put("personal", getOrCreatePersonal(key));
         nextLanCode = null;
         nextEnhetName = null;
+        nextHuvudenhetId = null;
         return root;
     }
 
@@ -108,10 +109,11 @@ public class HSAServiceMock implements HSAService, HsaDataInjectable {
         return root;
     }
 
-    public JsonNode createEnhet(HSAKey key) {
+    public JsonNode createEnhet(HSAKey key, boolean isHuvudenhet) {
         ObjectNode root = factory.objectNode();
-        root.put("id", key.getEnhetId());
-        root.put("namn", getEnhetsNamn(key.getEnhetId()));
+        final String enhetId = getEnhetId(key.getEnhetId(), isHuvudenhet);
+        root.put("id", enhetId);
+        root.put("namn", getEnhetsNamn(enhetId));
         root.put("enhetstyp", asList("02"));
         root.put("agarform", asList("Landsting/Region"));
         root.put("startdatum", "");
@@ -124,6 +126,14 @@ public class HSAServiceMock implements HSAService, HsaDataInjectable {
         root.put("verksamhet", asList(createVerksamhet(key)));
         return root;
     }
+
+    private String getEnhetId(String enhetId, boolean isHuvudenhet) {
+        if (isHuvudenhet && nextHuvudenhetId != null) {
+            return nextHuvudenhetId;
+        }
+        return enhetId;
+    }
+
 
     private String getEnhetsNamn(String enhetId) {
         if (nextEnhetName != null) {
@@ -255,6 +265,11 @@ public class HSAServiceMock implements HSAService, HsaDataInjectable {
     @Override
     public void setCountyForNextIntyg(String countyCode) {
         nextLanCode = countyCode;
+    }
+
+    @Override
+    public void setHuvudenhetIdForNextIntyg(String huvudenhetId) {
+        nextHuvudenhetId = huvudenhetId;
     }
 
 }
