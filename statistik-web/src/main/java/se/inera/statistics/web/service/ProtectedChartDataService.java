@@ -368,11 +368,12 @@ public class ProtectedChartDataService {
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
     public Response getOverviewData(@Context HttpServletRequest request, @QueryParam("filter") String filterHash) {
-        final FilterSettings filterSettings = getFilter(request, filterHash, -1);
+        final FilterSettings filterSettings = getFilter(request, filterHash, 3);
         final Filter filter = filterSettings.getFilter();
         final Range range = Range.quarter();
+        final String message = filterHash == null || filterHash.isEmpty() || getFilterFromHash(filterHash).isUseDefaultPeriod() ? null : "Valt tidsintervall i filtret gäller inte för översiktssidan";
         VerksamhetOverviewResponse response = warehouse.getOverview(filter.getPredicate(), range, getSelectedVgIdForLoggedInUser(request));
-        return Response.ok(new VerksamhetOverviewConverter().convert(response, range, filter)).build();
+        return Response.ok(new VerksamhetOverviewConverter().convert(response, range, filter, message)).build();
     }
 
     /**
