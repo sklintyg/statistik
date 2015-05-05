@@ -9,6 +9,7 @@ abstract class DualSexTimeSeriesReport extends Rapport {
     String grupp
 
     public void executeDiagram(report) {
+        executeWithReport(report)
         def index = report.maleChart.categories.findIndexOf { item -> item == (månad + " " + år) }
         def male = report.maleChart.series.find { item ->
             println("item" + item + " : grupp: " + grupp)
@@ -20,6 +21,7 @@ abstract class DualSexTimeSeriesReport extends Rapport {
     }
 
     public void executeTabell(report) {
+        executeWithReport(report)
         def index = report.tableData.headers[0].findIndexOf { item ->
             println("item" + item + " : grupp: " + grupp)
             item.text != null && item.text.contains(grupp)
