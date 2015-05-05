@@ -90,12 +90,12 @@ public class SjukskrivningsgradConverterTest {
 
         //Then
         assertEquals("[period1]", data.getFemaleChart().getCategories().toString());
-        assertTrue(data.getFemaleChart().getSeries().toString(), data.getFemaleChart().getSeries().toString().contains("Antal sjukfall med 50% sjukskrivningsgrad: [3]"));
+        assertTrue(data.getFemaleChart().getSeries().toString(), data.getFemaleChart().getSeries().toString().contains("50% sjukskrivningsgrad: [3]"));
 
         assertEquals("[period1]", data.getMaleChart().getCategories().toString());
-        assertTrue(data.getMaleChart().getSeries().toString(), data.getMaleChart().getSeries().toString().contains("Antal sjukfall med 50% sjukskrivningsgrad: [2]"));
+        assertTrue(data.getMaleChart().getSeries().toString(), data.getMaleChart().getSeries().toString().contains("50% sjukskrivningsgrad: [2]"));
 
-        assertEquals("[[;1, ;1, Antal sjukfall med 50% sjukskrivningsgrad;2], [Period;1, Antal sjukfall totalt;1, Kvinnor;1, Män;1]]", data.getTableData().getHeaders().toString());
+        assertEquals("[[;1, ;1, 50% sjukskrivningsgrad;2], [Period;1, Antal sjukfall totalt;1, Kvinnor;1, Män;1]]", data.getTableData().getHeaders().toString());
         assertEquals("[period1: [5, 3, 2]]", data.getTableData().getRows().toString());
     }
 
