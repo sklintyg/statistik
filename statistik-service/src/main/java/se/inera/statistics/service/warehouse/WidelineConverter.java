@@ -23,6 +23,7 @@ import org.joda.time.Days;
 import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import se.inera.statistics.service.helper.ConversionHelper;
 import se.inera.statistics.service.helper.DocumentHelper;
 import se.inera.statistics.service.helper.HSAServiceHelper;
 import se.inera.statistics.service.processlog.Arbetsnedsattning;
@@ -197,6 +198,7 @@ public class WidelineConverter {
         checkField(errors, line.getVardgivareId(), "Vårdgivare", MAX_LENGTH_VGID);
         checkField(errors, line.getEnhet(), "Enhet");
         checkField(errors, line.getPatientid(), "Patient");
+        checkAge(errors, line.getAlder());
         checkField(errors, line.getLakareId(), "LäkarID");
         checkField(errors, line.getCorrelationId(), "CorrelationId", MAX_LENGTH_CORRELATION_ID);
         checkSjukskrivningsgrad(errors, line.getSjukskrivningsgrad());
@@ -204,4 +206,11 @@ public class WidelineConverter {
         checkSlutdatum(errors, line.getSlutdatum());
         return errors;
     }
+
+    private void checkAge(List<String> errors, int alder) {
+        if (alder == ConversionHelper.NO_AGE) {
+            errors.add("Error in patient age");
+        }
+    }
+
 }
