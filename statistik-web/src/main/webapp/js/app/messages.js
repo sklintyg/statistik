@@ -33,10 +33,7 @@ var stMessages = {
         'nav.lakare':'Läkare',
         'nav.lakarbefattning':'Läkarbefattning',
         'nav.lakaralder-kon':'Läkarålder och -kön',
-        'nav.pagaende':'Pågående',
         'nav.sjukskrivningslangd-mer-an-90-dagar':'Mer än 90 dagar',
-        'nav.mobile.trigger.per-alder-pagaende-sjukfall': 'Per åldersgrupp eller pågående sjukfall',
-        'nav.mobile.trigger.sjukskrivningslangd-pagaende-90-dagar': 'Sjukskrivningslängd, pågående, över 90 dagar',
         'nav.allmant-om-tjansten': 'Allmänt om tjänsten',
         'nav.inloggning-behorighet': 'Inloggning och behörighet',
         'nav.faq': 'Vanliga frågor och svar',
@@ -121,9 +118,7 @@ var stMessages = {
         'comparediagnoses.lbl.val-av-diagnoser': 'Välj vilken eller vilka diagnoser som din rapport ska baseras på:',
 
         //help texts
-        'help.sick-leave-length-current': 'Statistiken visar både pågående sjukfall och de sjukfall som har pågått någon gång under nuvarande månad.<br/>Exempel: Den 12 september visas alla pågående och de sjukfall som har avslutats under perioden 1-11 september.',
-        'help.age-group-current'        : 'Statistiken visar både pågående sjukfall och de sjukfall som har pågått någon gång under nuvarande månad.<br/>Exempel: Den 12 september visas alla pågående och de sjukfall som har avslutats under perioden 1-11 september.',
-        'alert.lan-andel-sjukfall-per-kon.questionmark' : 'I tabellen visas andel sjukfall i procent per kön och län. Antal sjukfall anges inom parentes.', 
+        'alert.lan-andel-sjukfall-per-kon.questionmark' : 'I tabellen visas andel sjukfall i procent per kön och län. Antal sjukfall anges inom parentes.',
         'alert.lakarkon-alder.questionmark' : 'Diagrammet visar antalet sjukfall för olika grupper av läkare. Läkarna grupperas utifrån ålder och om de är kvinna eller man. Statistiken visar även antal sjukfall för män respektive kvinnor.',
         'alert.lakare-befattning.information' : 'Uppgift om vilken läkarbefattning som utfärdat ett intyg hämtas från HSA-katalogen. Uppgifterna i HSA är inte kvalitetssäkrade och information kan saknas då det inte är obligatoriskt för vårdenheten att ange befattning. En läkare kan även ha fler befattningar i HSA. Det gör att samma sjukfall kan visas flera gånger i graf och tabell. Om en läkare som sjukskrivit en patient har två eller fler läkarbefattningar visas sjukfallet en gång för varje läkarbefattning.',
         'alert.vardenhet.information' : 'Om ett sjukfall har flera intyg som utfärdats på olika vårdenheter räknas det en gång för respektive vårdenhet. Statistiken visas endast för den som har behörighet att följa upp statistik från dessa vårdenheter.',

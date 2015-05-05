@@ -173,12 +173,6 @@ var app = angular.module('StatisticsApp',
             controllerAs: 'VerksamhetAgeGroupCtrl',
             resolve: { config: app.nationalAgeGroupTimeSeriesConfig },
             title: 'Åldersgrupper'
-        }).when('/verksamhet/aldersgrupperpagaende', {
-            templateUrl: 'views/detailsView.html',
-            controller: 'columnChartDetailsViewCtrl',
-            controllerAs: 'VerksamhetAgeGroupCurrentCtrl',
-            resolve: { config: app.nationalAgeGroupCurrentConfig },
-            title: 'Åldersgrupper'
         }).when('/verksamhet/sjukskrivningsgrad', {
             templateUrl: 'views/detailsView.html',
             controller: 'doubleAreaChartsCtrl',
@@ -202,12 +196,6 @@ var app = angular.module('StatisticsApp',
             controller: 'doubleAreaChartsCtrl',
             controllerAs: 'VerksamhetSickLeaveLengthCtrl',
             resolve: { config: app.sickLeaveLengthTimeSeriesConfig },
-            title: 'Sjukskrivningslängd'
-        }).when('/verksamhet/sjukskrivningslangdpagaende', {
-            templateUrl: 'views/detailsView.html',
-            controller: 'columnChartDetailsViewCtrl',
-            controllerAs: 'VerksamhetSickLeaveLengthCurrentCtrl',
-            resolve: { config: app.nationalSickLeaveLengthCurrentConfig },
             title: 'Sjukskrivningslängd'
         }).when('/verksamhet/langasjukskrivningar', {
             templateUrl: 'views/detailsView.html',

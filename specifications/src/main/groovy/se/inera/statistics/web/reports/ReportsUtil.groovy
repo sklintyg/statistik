@@ -254,14 +254,6 @@ class ReportsUtil {
         return get(getVerksamhetUrlPrefix() + "/getSickLeaveLengthData", filter)
     }
 
-    def getReportAldersgruppPagaendeInloggad(filter) {
-        return get(getVerksamhetUrlPrefix() + "/getAgeGroupsCurrentStatistics", filter)
-    }
-
-    def getReportSjukskrivningslangdPagaendeInloggad(filter) {
-        return get(getVerksamhetUrlPrefix() + "/getSickLeaveLengthCurrentData", filter)
-    }
-
     def getReportSjukskrivningsgradInloggad(filter) {
         return get(getVerksamhetUrlPrefix() + "/getDegreeOfSickLeaveStatistics", filter)
     }

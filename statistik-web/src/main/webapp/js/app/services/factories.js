@@ -104,10 +104,6 @@ angular.module('StatisticsApp').factory('statisticsData', ['$http', '$rootScope'
         makeRequestVerksamhet("getCasesPerDoctorAgeAndGenderTimeSeriesStatistics", successCallback, failureCallback);
     };
 
-    factory.getAgeGroupsCurrentVerksamhet = function (successCallback, failureCallback) {
-        makeRequestVerksamhet("getAgeGroupsCurrentStatistics", successCallback, failureCallback);
-    };
-
     factory.getDegreeOfSickLeave = function (successCallback, failureCallback) {
         makeRequestNational("getDegreeOfSickLeaveStatistics", successCallback, failureCallback);
     };
@@ -130,10 +126,6 @@ angular.module('StatisticsApp').factory('statisticsData', ['$http', '$rootScope'
 
     factory.getSickLeaveLengthTimeSeriesDataVerksamhet = function (successCallback, failureCallback) {
         makeRequestVerksamhet("getSickLeaveLengthTimeSeries", successCallback, failureCallback);
-    };
-
-    factory.getSickLeaveLengthCurrentDataVerksamhet = function (successCallback, failureCallback) {
-        makeRequestVerksamhet("getSickLeaveLengthCurrentData", successCallback, failureCallback);
     };
 
     factory.getLongSickLeavesDataVerksamhet = function (successCallback, failureCallback) {

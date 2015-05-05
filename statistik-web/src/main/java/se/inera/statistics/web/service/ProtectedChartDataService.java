@@ -27,7 +27,6 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.sun.istack.NotNull;
 import org.joda.time.DateTime;
-import org.joda.time.LocalDate;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.slf4j.Logger;
@@ -476,26 +475,6 @@ public class ProtectedChartDataService {
     }
 
     /**
-     * Get ongoing sjukfall grouped by age and sex.
-     */
-    @GET
-    @Path("getAgeGroupsCurrentStatistics{csv:(/csv)?}")
-    @Produces({ MediaType.APPLICATION_JSON })
-    @Consumes({ MediaType.APPLICATION_JSON })
-    @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
-    @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
-    public Response getAgeGroupsCurrentStatistics(@Context HttpServletRequest request, @QueryParam("filter") String filterHash, @PathParam("csv") String csv) {
-        LocalDate start = new LocalDate().withDayOfMonth(1);
-        LocalDate end = new LocalDate().withDayOfMonth(1).plusMonths(1).minusDays(1);
-        final Range range = new Range(start, end);
-        final FilterSettings filterSettings = getFilter(request, filterHash, -1);
-        final Filter filter = filterSettings.getFilter();
-        SimpleKonResponse<SimpleKonDataRow> ageGroups = warehouse.getAldersgrupper(filter.getPredicate(), range, getSelectedVgIdForLoggedInUser(request));
-        SimpleDetailsData data = new AgeGroupsConverter().convert(ageGroups, range, filter);
-        return getResponse(data, csv);
-    }
-
-    /**
      * Get sjukskrivningsgrad per calendar month.
      */
     @GET
@@ -558,26 +537,6 @@ public class ProtectedChartDataService {
         final Range range = filterSettings.getRange();
         KonDataResponse sickLeaveLength = warehouse.getSjukskrivningslangdTidsserie(filter.getPredicate(), range, getSelectedVgIdForLoggedInUser(request));
         DualSexStatisticsData data = new SimpleMultiDualSexConverter().convert(sickLeaveLength, range, filter);
-        return getResponse(data, csv);
-    }
-
-    /**
-     * Get sjukfallslangd (grouped) for current month.
-     */
-    @GET
-    @Path("getSickLeaveLengthCurrentData{csv:(/csv)?}")
-    @Produces({ MediaType.APPLICATION_JSON })
-    @Consumes({ MediaType.APPLICATION_JSON })
-    @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
-    @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
-    public Response getSickLeaveLengthCurrentData(@Context HttpServletRequest request, @QueryParam("filter") String filterHash, @PathParam("csv") String csv) {
-        LocalDate start = new LocalDate().withDayOfMonth(1);
-        LocalDate end = start.plusMonths(1).minusDays(1);
-        final Range range = new Range(start, end);
-        final FilterSettings filterSettings = getFilter(request, filterHash, -1);
-        final Filter filter = filterSettings.getFilter();
-        SimpleKonResponse<SimpleKonDataRow> sickLeaveLength = warehouse.getSjukskrivningslangd(filter.getPredicate(), range, getSelectedVgIdForLoggedInUser(request));
-        SimpleDetailsData data = new SickLeaveLengthConverter().convert(sickLeaveLength, range, filter);
         return getResponse(data, csv);
     }
 

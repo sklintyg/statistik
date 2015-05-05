@@ -1,5 +1,7 @@
 !contents -R2 -g -p -f -h
 
+IGNORERAD EFTERSOM DENNA RAPPORT UTGÅTT, STATISTIK-952
+
 Ett sjukfall pågår oktober på enhet1 och i november på enhet 2.
 
 User1 - väljer pågående fall och månaden är november, ser 0 fall

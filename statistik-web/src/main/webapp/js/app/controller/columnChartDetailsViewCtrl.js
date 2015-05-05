@@ -184,20 +184,6 @@ angular.module('StatisticsApp').nationalSickLeaveLengthConfig = function () {
     return conf;
 };
 
-angular.module('StatisticsApp').nationalSickLeaveLengthCurrentConfig = function () {
-    var conf = {};
-    conf.dataFetcherVerksamhet = "getSickLeaveLengthCurrentDataVerksamhet";
-    conf.exportTableUrlVerksamhet = function () {
-        return "api/verksamhet/getSickLeaveLengthCurrentData/csv";
-    };
-    conf.title = function (month, enhetsCount) {
-        return "Antal pågående sjukfall per sjukskrivningslängd" + ControllerCommons.getEnhetCountText(enhetsCount, false) + month;
-    };
-    conf.chartXAxisTitle = "Sjukskrivningslängd";
-    conf.pageHelpText = "help.sick-leave-length-current";
-    return conf;
-};
-
 angular.module('StatisticsApp').nationalAgeGroupConfig = function () {
     var conf = {};
     conf.dataFetcher = "getAgeGroups";
@@ -214,20 +200,6 @@ angular.module('StatisticsApp').nationalAgeGroupConfig = function () {
     conf.exchangeableViews = [
         {description: 'Tvärsnitt', state: '#/verksamhet/aldersgrupper', active: true},
         {description: 'Tidsserie', state: '#/verksamhet/aldersgrupperTidsserie', active: false}];
-    return conf;
-};
-
-angular.module('StatisticsApp').nationalAgeGroupCurrentConfig = function () {
-    var conf = {};
-    conf.dataFetcherVerksamhet = "getAgeGroupsCurrentVerksamhet";
-    conf.exportTableUrlVerksamhet = function () {
-        return "api/verksamhet/getAgeGroupsCurrentStatistics/csv";
-    };
-    conf.title = function (month, enhetsCount) {
-        return "Antal pågående sjukfall per åldersgrupp" + ControllerCommons.getEnhetCountText(enhetsCount, false) + month;
-    };
-    conf.chartXAxisTitle = "Åldersgrupp";
-    conf.pageHelpText = "help.age-group-current";
     return conf;
 };
 

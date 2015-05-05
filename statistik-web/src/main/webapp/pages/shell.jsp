@@ -201,19 +201,12 @@
 						            <li class="subMenuItem"><a data-ng-href="#/verksamhet/diagnosavsnitt{{queryString}}" id="navBusinessDiagnosisSubGroupsLink" ctrlname="VerksamhetDiagnosavsnittCtrl" role="menuitem" ng-click="isCollapsed = !isCollapsed" navigationaware><span message key="nav.enskilt-diagnoskapitel"></span></a></li>
 						          </ul>
 						        </li>
-						        <li class="subMenuItem">
-						          <a class="dropdown-toggle subMenuItem" data-toggle="collapse in" data-target="#business-agegroup-ongoing" ng-click="isBusinessAgeOngoingCollapsed = !isBusinessAgeOngoingCollapsed"><span message key="nav.mobile.trigger.per-alder-pagaende-sjukfall"></span><span class="caret pull-right mobile-menu-caret mobile-sub-caret"></span></a>
-						          <ul class="collapse" id="business-agegroup-ongoing" collapse="isBusinessAgeOngoingCollapsed">
-						            <li class="subMenuItem"><a data-ng-href="#/verksamhet/aldersgrupper{{queryString}}" id="navBusinessAgeGroupsLink" ctrlname="VerksamhetAgeGroupCtrl" role="menuitem" ng-click="isCollapsed = !isCollapsed" navigationaware><span message key="nav.aldersgrupp"></span></a></li>
-						          	<li class="subMenuItem"><a data-ng-href="#/verksamhet/aldersgrupperpagaende{{queryString}}" id="navBusinessOngoingAndCompletedLink" ctrlname="VerksamhetAgeGroupCurrentCtrl" role="menuitem" ng-click="isCollapsed = !isCollapsed" navigationaware><span message key="nav.pagaende"></span></a></li>
-						          </ul>
-						        </li>
+                                <li class="subMenuItem"><a data-ng-href="#/verksamhet/aldersgrupper{{queryString}}" id="navBusinessAgeGroupsLink" ctrlname="VerksamhetAgeGroupCtrl" role="menuitem" ng-click="isCollapsed = !isCollapsed" navigationaware><span message key="nav.aldersgrupp"></span></a></li>
 						        <li class="subMenuItem"><a data-ng-href="#/verksamhet/sjukskrivningsgrad{{queryString}}" id="navBusinessSickLeaveDegreeLink" ctrlname="VerksamhetDegreeOfSickLeaveCtrl" role="menuitem" ng-click="isCollapsed = !isCollapsed" navigationaware><span message key="nav.sjukskrivningsgrad"></span></a></li>
 						        <li class="subMenuItem">
 						          <a class="dropdown-toggle subMenuItem" data-toggle="collapse in" data-target="#business-sicklength-ongoing-morethan90" ng-click="isBusinessSickOn90Collapsed = !isBusinessSickOn90Collapsed"><span message key="nav.mobile.trigger.sjukskrivningslangd-pagaende-90-dagar"></span><span class="caret pull-right mobile-menu-caret mobile-sub-caret"></span></a>
 						          <ul class="collapse" id="business-sicklength-ongoing-morethan90" collapse="isBusinessSickOn90Collapsed">
 						          	<li class="subMenuItem"><a data-ng-href="#/verksamhet/sjukskrivningslangd{{queryString}}" id="navBusinessSickLeaveLengthLink" ctrlname="VerksamhetSickLeaveLengthCtrl" role="menuitem" ng-click="isCollapsed = !isCollapsed" navigationaware><span message key="nav.sjukskrivningslangd"></span></a></li>
-						          	<li class="subMenuItem"><a data-ng-href="#/verksamhet/sjukskrivningslangdpagaende{{queryString}}" id="navBusinessOngoingAndCompletedSickLeaveLink" ctrlname="VerksamhetSickLeaveLengthCurrentCtrl" role="menuitem" ng-click="isCollapsed = !isCollapsed" navigationaware><span message key="nav.pagaende"></span></a></li>
 		                            <li class="subMenuItem"><a data-ng-href="#/verksamhet/langasjukskrivningar{{queryString}}" id="navBusinessMoreNinetyDaysSickLeaveLink" ctrlname="VerksamhetLongSickLeavesCtrl" role="menuitem" ng-click="isCollapsed = !isCollapsed" navigationaware><span message key="nav.sjukskrivningslangd-mer-an-90-dagar"></span></a></li>
 						          </ul>
 						        </li>
@@ -346,22 +339,14 @@
                                             <a data-ng-href="#/verksamhet/aldersgrupper{{queryString}}"
                                                id="navBusinessAgeGroupsLink" ctrlname="VerksamhetAgeGroupCtrl"
                                                navigationaware><span message key="nav.aldersgrupp"></span>
-                                               <i class="statistict-left-menu-expand-icon accordion-toggle" data-toggle="collapse" href="#sub-menu-business-age-group"></i>
                                             </a>
                                         </li>
-                                        <ul id="sub-menu-business-age-group"
-                                            class="nav nav-list sub-nav-list accordion-body in collapse">
-                                            <li><a data-ng-href="#/verksamhet/aldersgrupperpagaende{{queryString}}"
-                                                   id="navBusinessOngoingAndCompletedLink"
-                                                   ctrlname="VerksamhetAgeGroupCurrentCtrl" navigationaware><span message key="nav.pagaende"></span></a>
-                                            </li>
-                                        </ul>
                                         <li><a data-ng-href="#/verksamhet/sjukskrivningsgrad{{queryString}}"
                                                id="navBusinessSickLeaveDegreeLink"
                                                ctrlname="VerksamhetDegreeOfSickLeaveCtrl" navigationaware><span message key="nav.sjukskrivningsgrad"></span></a>
                                         </li>
                                         <li>
-                                            <a class="menu-item-has-childs has-collapse no-border-bottom"
+                                            <a class="menu-item-has-childs has-collapse"
                                                data-ng-href="#/verksamhet/sjukskrivningslangd{{queryString}}"
                                                id="navBusinessSickLeaveLengthLink"
                                                ctrlname="VerksamhetSickLeaveLengthCtrl" navigationaware><span message key="nav.sjukskrivningslangd"></span>
@@ -370,12 +355,7 @@
                                         </li>
                                         <ul id="sub-menu-business-sick-leave-length"
                                             class="nav nav-list sub-nav-list accordion-body in collapse">
-                                            <li><a class="border-top border-bottom"
-                                                   data-ng-href="#/verksamhet/sjukskrivningslangdpagaende{{queryString}}"
-                                                   id="navBusinessOngoingAndCompletedSickLeaveLink"
-                                                   ctrlname="VerksamhetSickLeaveLengthCurrentCtrl" navigationaware><span message key="nav.pagaende"></span></a>
-                                            </li>
-                                            <li><a class="last-item-in-menu border-bottom" data-ng-href="#/verksamhet/langasjukskrivningar{{queryString}}"
+                                            <li><a data-ng-href="#/verksamhet/langasjukskrivningar{{queryString}}"
                                                    id="navBusinessMoreNinetyDaysSickLeaveLink"
                                                    ctrlname="VerksamhetLongSickLeavesCtrl" navigationaware><span message key="nav.sjukskrivningslangd-mer-an-90-dagar"></span></a></li>
                                         </ul>
