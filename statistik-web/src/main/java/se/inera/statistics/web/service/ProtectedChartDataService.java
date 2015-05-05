@@ -26,7 +26,7 @@ import com.google.common.base.Predicates;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.sun.istack.NotNull;
-import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.slf4j.Logger;
@@ -584,11 +584,16 @@ public class ProtectedChartDataService {
         Predicate<Fact> diagnosFilter = getDiagnosFilter(diagnoser);
         final SjukfallFilter sjukfallFilter = new SjukfallFilter(Predicates.and(enhetFilter, diagnosFilter), filterHash);
         final Filter filter = new Filter(sjukfallFilter, enhetsIDs, diagnoser);
-        final Range range = getRange(inFilter, defaultRangeValue);
-        return new FilterSettings(filter, range);
+        try {
+            final Range range = getRange(inFilter, defaultRangeValue);
+            return new FilterSettings(filter, range);
+        } catch (FilterException e) {
+            LOG.warn("Could not use selected filter. Falling back to default filter", e);
+            return new FilterSettings(getFilterForAllAvailableEnhets(request), Range.createForLastMonthsIncludingCurrent(defaultRangeValue), "Kunde ej applicera valt filter. Vänligen kontrollera filterinställningarna.");
+        }
     }
 
-    private Range getRange(@NotNull FilterData inFilter, int defaultRangeValue) {
+    private Range getRange(@NotNull FilterData inFilter, int defaultRangeValue) throws FilterException {
         if (inFilter.isUseDefaultPeriod()) {
             return Range.createForLastMonthsIncludingCurrent(defaultRangeValue);
         }
@@ -596,16 +601,30 @@ public class ProtectedChartDataService {
         final String fromDate = inFilter.getFromDate();
         final String toDate = inFilter.getToDate();
 
-        if (fromDate != null && toDate != null) {
-            try {
-                DateTime from = dateStringFormat.parseDateTime(fromDate);
-                DateTime to = dateStringFormat.parseDateTime(toDate);
-                return new Range(from.toLocalDate().withDayOfMonth(1), to.toLocalDate().dayOfMonth().withMaximumValue());
-            } catch (IllegalArgumentException e) {
-                LOG.warn("Could not parse range dates. From: {}, To: {}. Falling back to default range.", fromDate, toDate);
-            }
+        if (fromDate == null || toDate == null) {
+            throw new FilterException(String.format("Can not parse null range dates. From: {}, To: {}", fromDate, toDate));
         }
-        return Range.createForLastMonthsIncludingCurrent(defaultRangeValue);
+        try {
+            final LocalDate from = dateStringFormat.parseLocalDate(fromDate);
+            final LocalDate to = dateStringFormat.parseLocalDate(toDate);
+            validateFilterRange(from, to);
+            return new Range(from.withDayOfMonth(1), to.dayOfMonth().withMaximumValue());
+        } catch (IllegalArgumentException e) {
+            throw new FilterException(String.format("Could not parse range dates. From: {}, To: {}", fromDate, toDate), e);
+        }
+    }
+
+    private void validateFilterRange(LocalDate from, LocalDate to) throws FilterException {
+        final LocalDate lowestAcceptedStartDate = new LocalDate(2013, 10, 1);
+        if (from.isBefore(lowestAcceptedStartDate)) {
+            throw new FilterException("Start date before 2013-10-01 is not allowed");
+        }
+        if (to.isBefore(from)) {
+            throw new FilterException("Start date must be before end date");
+        }
+        if (to.isAfter(new LocalDate().dayOfMonth().withMaximumValue())) {
+            throw new FilterException("End date may not be after the last day of current month");
+        }
     }
 
     private Filter getFilterForAllAvailableEnhets(HttpServletRequest request) {
