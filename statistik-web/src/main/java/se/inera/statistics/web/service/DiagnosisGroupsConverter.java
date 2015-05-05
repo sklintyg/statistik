@@ -77,12 +77,14 @@ public class DiagnosisGroupsConverter extends MultiDualSexConverter<Diagnosgrupp
         return new ArrayList<>(createDiagnosisGroupsMap(includeUnknownGroup).keySet());
     }
 
-    DualSexStatisticsData convert(DiagnosgruppResponse diagnosisGroups, Range range, Filter filter) {
+    DualSexStatisticsData convert(DiagnosgruppResponse diagnosisGroups, FilterSettings filterSettings) {
         TableData tableData = convertTable(diagnosisGroups, "%1$s");
         ChartData maleChart = convertChart(diagnosisGroups, Kon.Male);
         ChartData femaleChart = convertChart(diagnosisGroups, Kon.Female);
+        final Filter filter = filterSettings.getFilter();
         final FilterDataResponse filterResponse = new FilterDataResponse(filter.getDiagnoser(), filter.getEnheter());
-        return new DualSexStatisticsData(tableData, maleChart, femaleChart, range.toString(), filterResponse);
+        final Range range = filterSettings.getRange();
+        return new DualSexStatisticsData(tableData, maleChart, femaleChart, range.toString(), filterResponse, filterSettings.getMessage());
     }
 
     public List<OverviewChartRowExtended> convert(List<OverviewChartRowExtended> diagnosisGroups) {

@@ -148,13 +148,15 @@ public class ChartDataService {
     public void buildNumberOfCasesPerMonth() {
         final Range range = Range.createForLastMonthsExcludingCurrent(EIGHTEEN_MONTHS);
         SimpleKonResponse<SimpleKonDataRow> casesPerMonth = data.getCasesPerMonth(range);
-        numberOfCasesPerMonth = new PeriodConverter().convert(casesPerMonth, range, Filter.empty());
+        final FilterSettings filterSettings = new FilterSettings(Filter.empty(), range);
+        numberOfCasesPerMonth = new PeriodConverter().convert(casesPerMonth, filterSettings);
     }
 
     public void buildDiagnosgrupper() {
         Range range = Range.createForLastMonthsExcludingCurrent(EIGHTEEN_MONTHS);
         DiagnosgruppResponse diagnosisGroups = data.getDiagnosgrupper(range);
-        diagnosgrupper = new DiagnosisGroupsConverter().convert(diagnosisGroups, range, Filter.empty());
+        final FilterSettings filterSettings = new FilterSettings(Filter.empty(), range);
+        diagnosgrupper = new DiagnosisGroupsConverter().convert(diagnosisGroups, filterSettings);
     }
 
     public void buildDiagnoskapitel() {
@@ -162,7 +164,8 @@ public class ChartDataService {
         for (Icd10.Kapitel kapitel : icd10.getKapitel(false)) {
             String id = kapitel.getId();
             DiagnosgruppResponse diagnosisGroups = data.getDiagnosavsnitt(range, id);
-            diagnoskapitel.put(id, new DiagnosisSubGroupsConverter().convert(diagnosisGroups, range, Filter.empty()));
+            final FilterSettings filterSettings = new FilterSettings(Filter.empty(), range);
+            diagnoskapitel.put(id, new DiagnosisSubGroupsConverter().convert(diagnosisGroups, filterSettings));
         }
     }
 
@@ -176,19 +179,22 @@ public class ChartDataService {
     public void buildAldersgrupper() {
         Range range = Range.createForLastMonthsExcludingCurrent(YEAR);
         SimpleKonResponse<SimpleKonDataRow> ageGroups = data.getHistoricalAgeGroups(range);
-        aldersgrupper = new AgeGroupsConverter().convert(ageGroups, Range.createForLastMonthsExcludingCurrent(range.getMonths()), Filter.empty());
+        final FilterSettings filterSettings = new FilterSettings(Filter.empty(), Range.createForLastMonthsExcludingCurrent(range.getMonths()));
+        aldersgrupper = new AgeGroupsConverter().convert(ageGroups, filterSettings);
     }
 
     public void buildSjukskrivningsgrad() {
         final Range range = Range.createForLastMonthsExcludingCurrent(EIGHTEEN_MONTHS);
         KonDataResponse degreeOfSickLeaveStatistics = data.getSjukskrivningsgrad(range);
-        sjukskrivningsgrad = new DegreeOfSickLeaveConverter().convert(degreeOfSickLeaveStatistics, range, Filter.empty());
+        final FilterSettings filterSettings = new FilterSettings(Filter.empty(), range);
+        sjukskrivningsgrad = new DegreeOfSickLeaveConverter().convert(degreeOfSickLeaveStatistics, filterSettings);
     }
 
     public void buildSjukfallslangd() {
         Range range = Range.createForLastMonthsExcludingCurrent(YEAR);
         SimpleKonResponse<SimpleKonDataRow> sickLeaveLength = data.getSjukfallslangd(range);
-        sjukfallslangd = new SickLeaveLengthConverter().convert(sickLeaveLength, range, Filter.empty());
+        final FilterSettings filterSettings = new FilterSettings(Filter.empty(), range);
+        sjukfallslangd = new SickLeaveLengthConverter().convert(sickLeaveLength, filterSettings);
     }
 
     public void buildSjukfallPerLan() {
@@ -398,9 +404,14 @@ public class ChartDataService {
     @POST
     @Path("filter")
     @Produces({ MediaType.TEXT_PLAIN })
-    public String getFilterHash(String filterData) {
+    public Response getFilterHash(String filterData) {
         LOG.info("Calling post FilterHash: " + filterData);
-        return filterHashHandler.getHash(filterData);
+        try {
+            return Response.ok(filterHashHandler.getHash(filterData)).build();
+        } catch (FilterException e) {
+            LOG.warn("Failed to get filter hash", e);
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
     }
 
     @GET

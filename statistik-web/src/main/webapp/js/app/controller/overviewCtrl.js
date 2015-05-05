@@ -155,6 +155,7 @@ angular.module('StatisticsApp').controller('overviewCtrl', [ '$scope', '$rootSco
         };
 
         var populatePageWithData = function (result) {
+            $scope.resultMessage = result.message;
             $timeout(function () {
                 updateCharts(result);
 

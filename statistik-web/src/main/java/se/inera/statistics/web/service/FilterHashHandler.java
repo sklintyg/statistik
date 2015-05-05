@@ -37,7 +37,7 @@ public class FilterHashHandler {
     @Autowired
     private UserSelectionManager userSelectionManager;
 
-    String getHash(String filterData) {
+    String getHash(String filterData) throws FilterException {
         try {
             final JsonParser parser = new ObjectMapper().getFactory().createParser(filterData);
             JsonToken token;
@@ -49,8 +49,7 @@ public class FilterHashHandler {
             userSelectionManager.register(hash, filterData);
             return hash;
         } catch (JsonParseException parseException) {
-            LOG.warn("Attempt to store illegal json detected.");
-            return "";
+            throw new FilterException("Attempt to store illegal json detected.", parseException);
         } catch (Exception e) {
             throw new FilterException("Illegal user selection", e);
         }

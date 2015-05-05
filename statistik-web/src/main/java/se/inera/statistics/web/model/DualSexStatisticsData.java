@@ -29,10 +29,6 @@ public class DualSexStatisticsData implements TableDataReport {
     private final FilterDataResponse filter;
     private final String message;
 
-    public DualSexStatisticsData(TableData tableData, ChartData maleChart, ChartData femaleChart, String period, FilterDataResponse filter) {
-        this(tableData, maleChart, femaleChart, period, filter, null);
-    }
-
     public DualSexStatisticsData(TableData tableData, ChartData maleChart, ChartData femaleChart, String period, FilterDataResponse filter, String message) {
         this.tableData = tableData;
         this.maleChart = maleChart;

@@ -19,13 +19,12 @@
 package se.inera.statistics.web.service;
 
 import se.inera.statistics.service.report.model.KonDataResponse;
-import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.web.model.DualSexStatisticsData;
 
 public class DegreeOfSickLeaveConverter extends MultiDualSexConverter<KonDataResponse> {
 
-    DualSexStatisticsData convert(KonDataResponse degreeOfSickLeave, Range range, Filter filter) {
-        return super.convert(degreeOfSickLeave, range, filter, null, "%1$s%% sjukskrivningsgrad");
+    DualSexStatisticsData convert(KonDataResponse degreeOfSickLeave, FilterSettings filterSettings) {
+        return super.convert(degreeOfSickLeave, filterSettings, null, "%1$s%% sjukskrivningsgrad");
     }
 
 }

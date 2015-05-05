@@ -35,7 +35,8 @@ public class DiagnoskapitelConverterTest {
     @Test
     public void converterTestEmpty() {
         DiagnosgruppResponse resp = new DiagnosgruppResponse(new ArrayList<Icd>(), new ArrayList<KonDataRow>());
-        DualSexStatisticsData data = new DiagnosisSubGroupsConverter().convert(resp, new Range(), Filter.empty());
+        final FilterSettings filterSettings = new FilterSettings(Filter.empty(), new Range());
+        DualSexStatisticsData data = new DiagnosisSubGroupsConverter().convert(resp, filterSettings);
         assertEquals("[]", data.getFemaleChart().getCategories().toString());
         assertEquals("[Totalt: []]", data.getFemaleChart().getSeries().toString());
     }
@@ -55,7 +56,8 @@ public class DiagnoskapitelConverterTest {
 
         //When
         DiagnosisSubGroupsConverter converter = new DiagnosisSubGroupsConverter();
-        DualSexStatisticsData data = converter.convert(resp, new Range(), Filter.empty());
+        final FilterSettings filterSettings = new FilterSettings(Filter.empty(), new Range());
+        DualSexStatisticsData data = converter.convert(resp, filterSettings);
 
         //Then
         assertEquals("[period1]", data.getFemaleChart().getCategories().toString());
@@ -96,7 +98,8 @@ public class DiagnoskapitelConverterTest {
 
         //When
         DiagnosisSubGroupsConverter converter = new DiagnosisSubGroupsConverter();
-        DualSexStatisticsData data = converter.convert(resp, new Range(), Filter.empty());
+        final FilterSettings filterSettings = new FilterSettings(Filter.empty(), new Range());
+        DualSexStatisticsData data = converter.convert(resp, filterSettings);
 
         //Then
         assertEquals(7, data.getFemaleChart().getSeries().size());

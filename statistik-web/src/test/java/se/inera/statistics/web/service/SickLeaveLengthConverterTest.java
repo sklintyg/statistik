@@ -49,7 +49,8 @@ public class SickLeaveLengthConverterTest {
 
         //When
         final Range range = Range.createForLastMonthsExcludingCurrent(7);
-        SimpleDetailsData result = converter.convert(sjukfallslangdResponse, range, Filter.empty());
+        final FilterSettings filterSettings = new FilterSettings(Filter.empty(), range);
+        SimpleDetailsData result = converter.convert(sjukfallslangdResponse, filterSettings);
 
         //Then
         TableData tableDataResult = result.getTableData();

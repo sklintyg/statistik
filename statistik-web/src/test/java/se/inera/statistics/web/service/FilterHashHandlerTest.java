@@ -42,13 +42,18 @@ public class FilterHashHandlerTest {
     private FilterHashHandler handler = new FilterHashHandler();
 
     @Test
-    public void willSkipSaveOnNonJsonData() {
-        handler.getHash("not json");
+    public void willSkipSaveOnNonJsonData() throws Exception {
+        try {
+            handler.getHash("not json");
+            fail();
+        } catch (Exception e) {
+            //Do nothing
+        }
         Mockito.verify(userSelectionManager, never()).register(anyString(), anyString());
     }
 
     @Test
-    public void willSaveOnJsonData() {
+    public void willSaveOnJsonData() throws Exception {
         String hash = handler.getHash("{}");
 
         Mockito.verify(userSelectionManager, atLeastOnce()).register(anyString(), anyString());

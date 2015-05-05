@@ -41,7 +41,7 @@ public class GroupedSjukfallConverter {
         this.xAxisLabel = xAxisLabel;
     }
 
-    public SimpleDetailsData convert(SimpleKonResponse<SimpleKonDataRow> casesPerMonth, Range range, Filter filter) {
+    public SimpleDetailsData convert(SimpleKonResponse<SimpleKonDataRow> casesPerMonth, FilterSettings filterSettings) {
         Collections.sort(casesPerMonth.getRows(), new Comparator<SimpleKonDataRow>() {
             @Override
             public int compare(SimpleKonDataRow o1, SimpleKonDataRow o2) {
@@ -51,8 +51,10 @@ public class GroupedSjukfallConverter {
 
         TableData tableData = convertToTableData(casesPerMonth.getRows());
         ChartData chartData = convertToChartData(casesPerMonth);
+        final Filter filter = filterSettings.getFilter();
         final FilterDataResponse filterResponse = new FilterDataResponse(filter.getDiagnoser(), filter.getEnheter());
-        return new SimpleDetailsData(tableData, chartData, range.toString(), filterResponse);
+        final Range range = filterSettings.getRange();
+        return new SimpleDetailsData(tableData, chartData, range.toString(), filterResponse, filterSettings.getMessage());
     }
 
     private TableData convertToTableData(List<SimpleKonDataRow> list) {

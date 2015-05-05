@@ -18,14 +18,28 @@
  */
 package se.inera.statistics.web.service;
 
-public class FilterException extends Exception {
+import com.google.common.base.Joiner;
+import com.google.common.base.Predicate;
+import com.google.common.collect.Iterables;
 
-    public FilterException(String msg) {
-        super(msg);
+import java.util.Arrays;
+
+public final class Converters {
+
+    private Converters() {
     }
 
-    public FilterException(String msg, Exception e) {
-        super(msg, e);
+    public static String combineMessages(String... messages) {
+        final String message = Joiner.on(" : ").skipNulls().join(Iterables.filter(Arrays.asList(messages), new Predicate<String>() {
+            @Override
+            public boolean apply(String s) {
+                return s != null && !s.isEmpty();
+            }
+        }));
+        if (message.trim().isEmpty()) {
+            return null;
+        }
+        return message;
     }
 
 }

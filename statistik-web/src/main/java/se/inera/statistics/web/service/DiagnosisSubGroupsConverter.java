@@ -48,17 +48,20 @@ public class DiagnosisSubGroupsConverter {
 
     private DiagnosisGroupsConverter diagnosisGroupsConverter = new DiagnosisGroupsConverter();
 
-    DualSexStatisticsData convert(DiagnosgruppResponse diagnosisGroups, Range range, Filter filter) {
-        return convert(diagnosisGroups, range, filter, null);
+    DualSexStatisticsData convert(DiagnosgruppResponse diagnosisGroups, FilterSettings filterSettings) {
+        return convert(diagnosisGroups, filterSettings, null);
     }
 
-    DualSexStatisticsData convert(DiagnosgruppResponse diagnosisGroups, Range range, Filter filter, String message) {
+    DualSexStatisticsData convert(DiagnosgruppResponse diagnosisGroups, FilterSettings filterSettings, String message) {
         TableData tableData = diagnosisGroupsConverter.convertTable(diagnosisGroups, "%1$s");
         List<Integer> topIndexes = getTopColumnIndexes(diagnosisGroups);
         ChartData maleChart = extractChartData(diagnosisGroups, topIndexes, Kon.Male);
         ChartData femaleChart = extractChartData(diagnosisGroups, topIndexes, Kon.Female);
+        final Filter filter = filterSettings.getFilter();
         final FilterDataResponse filterResponse = new FilterDataResponse(filter.getDiagnoser(), filter.getEnheter());
-        return new DualSexStatisticsData(tableData, maleChart, femaleChart, range.toString(), filterResponse, message);
+        final Range range = filterSettings.getRange();
+        final String combinedMessage = Converters.combineMessages(filterSettings.getMessage(), message);
+        return new DualSexStatisticsData(tableData, maleChart, femaleChart, range.toString(), filterResponse, combinedMessage);
     }
 
     private ChartData extractChartData(DiagnosgruppResponse data, List<Integer> topIndexes, Kon sex) {

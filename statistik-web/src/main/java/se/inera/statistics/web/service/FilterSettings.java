@@ -22,12 +22,18 @@ import se.inera.statistics.service.report.model.Range;
 
 class FilterSettings {
 
-    private Filter filter;
-    private Range range;
+    private final Filter filter;
+    private final Range range;
+    private final String message;
 
     public FilterSettings(Filter filter, Range range) {
+        this(filter, range, null);
+    }
+
+    public FilterSettings(Filter filter, Range range, String message) {
         this.filter = filter;
         this.range = range;
+        this.message = message;
     }
 
     public Filter getFilter() {
@@ -36,6 +42,10 @@ class FilterSettings {
 
     public Range getRange() {
         return range;
+    }
+
+    public String getMessage() {
+        return message;
     }
 
 }

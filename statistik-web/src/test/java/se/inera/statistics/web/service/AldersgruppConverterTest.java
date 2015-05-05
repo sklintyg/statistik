@@ -50,7 +50,8 @@ public class AldersgruppConverterTest {
 
         //When
         final Range range = Range.createForLastMonthsExcludingCurrent(7);
-        SimpleDetailsData result = converter.convert(ageGroupsResponse, range, Filter.empty());
+        final FilterSettings filterSettings = new FilterSettings(Filter.empty(), range);
+        SimpleDetailsData result = converter.convert(ageGroupsResponse, filterSettings);
 
         //Then
         TableData tableDataResult = result.getTableData();
