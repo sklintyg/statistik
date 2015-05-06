@@ -2,6 +2,8 @@
 
 !3 Givet att:
 
+Ett sjukfall består av två intyg, där det andra börjar efter det första och slutar innan det första. Månadsbrytning mellan det andra intygens slutdatum.
+
 | script | dagens datum | 2015-03-06 |
 
 | script | troskel varde | 1 |
@@ -12,6 +14,8 @@
 | 19790408-2295 | G01 | 2015-02-20 | 2015-02-27 | enhet2 | 03  |
 
 !3 Då gäller:
+
+Sjukfallet visas för Uppsala, eftersom det är intyget med senast startdatum som också är aktivt i perioden.
 
 Nationell:
 | Sjukfall i rapporten lan |

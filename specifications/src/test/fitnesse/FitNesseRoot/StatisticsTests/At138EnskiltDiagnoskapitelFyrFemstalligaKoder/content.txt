@@ -2,6 +2,8 @@
 
 !3 Givet att:
 
+Flera sjukfall med diagnoskoder på olika nivåer.
+
 | script | dagens datum | 2013-11-06 |
 
 !| Enbart foljande intyg finns |
@@ -19,6 +21,8 @@
 | 19790407-1020 | F989P | 2013-02-01 | 2013-02-14 | enhet1 | Existerande kod från PV-kodverk |
 
 !3 Då gäller:
+
+Bara existerande koder visas. Koderna tvättas och sorteras in i ICD-10.
 
 Inloggad:
 !| Sjukfall i rapporten enskilt diagnoskapitel |

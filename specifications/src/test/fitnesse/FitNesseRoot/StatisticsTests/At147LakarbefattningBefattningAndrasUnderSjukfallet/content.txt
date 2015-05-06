@@ -2,7 +2,7 @@
 
 !3 Givet att:
 
-Ett sjukfall består av 2 intyg utfärdade av 1 läkare. Läkarens befattning ändras under sjukfallet.
+Ett sjukfall består av 3 intyg. De första två är utfärdade av samma läkare. Mellan intyg 1 och 2 har läkaren blivit av med sin befattning Företagsläkare.
 
 | script | dagens datum | 2014-11-28 |
 
@@ -21,17 +21,21 @@ Ett sjukfall består av 2 intyg utfärdade av 1 läkare. Läkarens befattning ä
 | Foljande lakare finns |
 | id      | befattningar | kommentar |
 | lakare1 | 201013       | Företagsläkare | 
+| lakare2 | 202010, 201012 | Specialistläkare, Skolläkare | 
 
 | Foljande intyg finns |
 | personnr      | start      | slut       | enhet  | läkare  | kommentar |
 | 19880701-0015 | 2014-06-16 | 2014-07-30 | enhet1 | lakare1 |           |
+| 19880701-0015 | 2014-07-30 | 2014-08-30 | enhet1 | lakare2 |           |
 
 !3 Då gäller:
 
-Sjukfallet ska endast räknas till gruppen med läkarens senaste ålder.
+Sjukfallet räknas bara till Företagsläkare för den första läkaren (eftersom det är det senaste vi vet) och till Specialistläkare och Skolläkare för den andra läkaren.
 
 Inloggad:
 | Sjukfall i rapporten lakarbefattning |
-| inloggad som | läkarbefattning | män? | kvinnor? |
-| user1        | Överläkare      | -1   | -1       |
-| user1        | Företagsläkare  | 1    | 0        |
+| inloggad som | läkarbefattning  | män? | kvinnor? |
+| user1        | Överläkare       | -1   | -1       |
+| user1        | Företagsläkare   | 1    | 0        |
+| user1        | Specialistläkare | 1    | 0        |
+| user1        | Skolläkare       | 1    | 0        |
