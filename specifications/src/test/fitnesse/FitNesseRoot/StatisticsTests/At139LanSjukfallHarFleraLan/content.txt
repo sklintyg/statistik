@@ -2,6 +2,8 @@
 
 !3 Givet att:
 
+Ett sjukfall består av tre intyg på två olika enheter. En enhet byter län mellan intygen.
+
 | script | dagens datum | 2013-08-06 |
 
 | script | troskel varde | 1 |
@@ -13,6 +15,8 @@
 | 19790408-2295 | G01 | 2013-07-01 | 2013-07-30 | enhet1 | 00  |
 
 !3 Då gäller:
+
+Ett sjukfall kan bara tillhöra ett län. Sjukfallet visas för länet i det senaste intyget.
 
 Nationell:
 | Sjukfall i rapporten lan |
