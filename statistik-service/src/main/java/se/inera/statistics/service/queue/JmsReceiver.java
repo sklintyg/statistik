@@ -41,6 +41,7 @@ public class JmsReceiver implements MessageListener {
     @Autowired
     private Receiver receiver;
 
+    @Override
     public void onMessage(Message rawMessage) {
         if (rawMessage instanceof TextMessage) {
             try {

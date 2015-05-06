@@ -55,14 +55,26 @@ class FoljandeIntygFinns {
         if (huvudenhet == null || huvudenhet.trim().isEmpty()) {
             huvudenhet = enhet;
         }
+        def finalIntygDataString = getIntygDataString()
+        Intyg intyg = new Intyg(EventType.valueOf(intygstyp), finalIntygDataString, String.valueOf(exaktintygid), DateTimeUtils.currentTimeMillis(), län, huvudenhet)
+        reportsUtil.insertIntyg(intyg)
+    }
+
+    Object getIntygDataString() {
         if ("gammalt".equalsIgnoreCase(jsonformat)) {
-            executeForOldJsonFormat();
+            return executeForOldJsonFormat();
+        } else if ("felaktigt".equalsIgnoreCase(jsonformat)) {
+            return executeForIllegalJsonFormat();
         } else {
-            executeForNewJsonFormat();
+            return executeForNewJsonFormat();
         }
     }
 
-    public void executeForNewJsonFormat() {
+    private String executeForIllegalJsonFormat() {
+        return "This intyg will not be possible to parse as json"
+    }
+
+    private String executeForNewJsonFormat() {
         def slurper = new JsonSlurper()
         String intygString = getClass().getResource('/maximalt-fk7263-internal.json').getText('UTF-8')
         def result = slurper.parseText(intygString)
@@ -88,13 +100,10 @@ class FoljandeIntygFinns {
         }
 
         def builder = new JsonBuilder(result)
-        def finalIntygDataString = builder.toString()
-
-        Intyg intyg = new Intyg(EventType.valueOf(intygstyp), finalIntygDataString, String.valueOf(exaktintygid), DateTimeUtils.currentTimeMillis(), län, huvudenhet)
-        reportsUtil.insertIntyg(intyg)
+        return builder.toString()
     }
 
-    public void executeForOldJsonFormat() {
+    private String executeForOldJsonFormat() {
         def slurper = new JsonSlurper()
         String intygString = getClass().getResource('/intyg1.json').getText('UTF-8')
         String observationKodString = getClass().getResource('/observationMedKod.json').getText('UTF-8')
@@ -127,11 +136,7 @@ class FoljandeIntygFinns {
         result.skapadAv.vardenhet.vardgivare.id.extension = vardgivare
 
         def builder = new JsonBuilder(result)
-        def finalIntygDataString = builder.toString()
-
-        Intyg intyg = new Intyg(EventType.valueOf(intygstyp), finalIntygDataString, String.valueOf(exaktintygid), DateTimeUtils.currentTimeMillis(), län, huvudenhet)
-
-        reportsUtil.insertIntyg(intyg)
+        return builder.toString()
     }
 
     public void endTable() {
