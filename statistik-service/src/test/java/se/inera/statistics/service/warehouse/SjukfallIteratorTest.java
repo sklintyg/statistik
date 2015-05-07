@@ -20,11 +20,15 @@ package se.inera.statistics.service.warehouse;
 
 import com.google.common.base.Predicate;
 import org.joda.time.LocalDate;
+import org.junit.Before;
 import org.junit.Test;
-import org.springframework.util.ReflectionUtils;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
 import se.inera.statistics.service.report.model.Range;
 
-import java.lang.reflect.Field;
+import java.util.Collections;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -32,37 +36,35 @@ import static org.junit.Assert.*;
 public class SjukfallIteratorTest {
 
     @Test
-    public void testExtendSjukfallIsCorrectlySetWhenUsingAllEnheterFilterConstant() throws Exception {
-        final int[] invocations = new int[]{0};
-        new SjukfallIterator(new LocalDate(), 1, 1, new Aisle(""), SjukfallUtil.ALL_ENHETER.getFilter(), false) {
+    public void testNext() throws Exception {
+        //Given
+        final LocalDate fromDate = new LocalDate(2015, 1, 1);
+        final int periodSize = 1;
+        final SjukfallIterator sjukfallIterator = new SjukfallIterator(fromDate, 2, periodSize, new Aisle(""), SjukfallUtil.ALL_ENHETER.getFilter(), false){
             @Override
-            SjukfallCalculator createSjukfallCalculator(Aisle aisle, Predicate<Fact> filter, boolean useOriginalSjukfallStart, boolean extendSjukfall, List<Range> ranges) {
-                assertEquals(false, extendSjukfall);
-                invocations[0] += 1;
-                return null;
+            SjukfallCalculator getSjukfallCalculator(Aisle aisle, Predicate<Fact> filter, boolean useOriginalSjukfallStart, List<Range> ranges) {
+                return Mockito.mock(SjukfallCalculator.class);
             }
         };
-        assertEquals(1, invocations[0]);
-    }
 
-    @Test
-    public void testExtendSjukfallIsCorrectlySetWhenUsingCustomFilter() throws Exception {
-        final int[] invocations = new int[]{0};
-        final Predicate<Fact> filter = new Predicate<Fact>() {
-            @Override
-            public boolean apply(Fact fact) {
-                return true;
-            }
-        };
-        new SjukfallIterator(new LocalDate(), 1, 1, new Aisle(""), filter, false) {
-            @Override
-            SjukfallCalculator createSjukfallCalculator(Aisle aisle, Predicate<Fact> filter, boolean useOriginalSjukfallStart, boolean extendSjukfall, List<Range> ranges) {
-                assertEquals(true, extendSjukfall);
-                invocations[0] += 1;
-                return null;
-            }
-        };
-        assertEquals(1, invocations[0]);
-    }
+        //When
+        final SjukfallGroup group = sjukfallIterator.next();
 
+        //Then
+        assertEquals(fromDate, group.getRange().getFrom());
+        assertEquals(fromDate.plusMonths(periodSize).minusDays(1), group.getRange().getTo());
+
+        //When
+        final SjukfallGroup group2 = sjukfallIterator.next();
+
+        //Then
+        assertEquals(fromDate.plusMonths(periodSize).withDayOfMonth(1), group2.getRange().getFrom());
+        assertEquals(fromDate.plusMonths(periodSize * 2).minusDays(1), group2.getRange().getTo());
+
+        //When
+        final boolean hasNext = sjukfallIterator.hasNext();
+
+        //Then
+        assertEquals(false, hasNext);
+    }
 }

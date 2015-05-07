@@ -41,20 +41,19 @@ public class SjukfallIterator implements Iterator<SjukfallGroup> {
         this.from = from;
         this.periods = periods;
         this.periodSize = periodSize;
-        boolean extendSjukfall = !SjukfallUtil.ALL_ENHETER.getFilter().equals(filter);
         List<Range> ranges = getRanges(from, periods, periodSize);
-        sjukfallCalculator = createSjukfallCalculator(aisle, filter, useOriginalSjukfallStart, extendSjukfall, ranges);
+        sjukfallCalculator = getSjukfallCalculator(aisle, filter, useOriginalSjukfallStart, ranges);
     }
 
-    SjukfallCalculator createSjukfallCalculator(Aisle aisle, Predicate<Fact> filter, boolean useOriginalSjukfallStart, boolean extendSjukfall, List<Range> ranges) {
-        return new SjukfallCalculator(aisle.getLines(), filter, ranges, useOriginalSjukfallStart, extendSjukfall);
+    SjukfallCalculator getSjukfallCalculator(Aisle aisle, Predicate<Fact> filter, boolean useOriginalSjukfallStart, List<Range> ranges) {
+        return new SjukfallCalculator(aisle, filter, ranges, useOriginalSjukfallStart);
     }
 
     static List<Range> getRanges(LocalDate from, int periods, int periodSize) {
         final ArrayList<Range> ranges = new ArrayList<>();
         for (int i = 0; i < periods; i++) {
-            final LocalDate fromDate = from.plusMonths(i * periodSize);
-            final LocalDate toDate = from.plusMonths((i + 1) * periodSize);
+            final LocalDate fromDate = from.plusMonths(i * periodSize).withDayOfMonth(1);
+            final LocalDate toDate = from.plusMonths((i + 1) * periodSize).withDayOfMonth(1).minusDays(1);
             ranges.add(new Range(fromDate, toDate));
         }
         return ranges;
@@ -69,7 +68,7 @@ public class SjukfallIterator implements Iterator<SjukfallGroup> {
     public SjukfallGroup next() {
         Collection<Sjukfall> result = sjukfallCalculator.getSjukfallsForNextPeriod();
         final LocalDate fromDate = from.plusMonths(period * periodSize);
-        Range range = new Range(fromDate, from.plusMonths(period * periodSize + periodSize - 1));
+        Range range = new Range(fromDate, from.plusMonths(period * periodSize + periodSize - 1).dayOfMonth().withMaximumValue());
         SjukfallGroup sjukfallGroup = new SjukfallGroup(range, result);
         period++;
         return sjukfallGroup;
