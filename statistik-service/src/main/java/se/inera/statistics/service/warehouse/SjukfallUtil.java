@@ -23,6 +23,7 @@ import com.google.common.base.Predicate;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
+import com.google.common.collect.Collections2;
 import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Lists;
 import org.joda.time.LocalDate;
@@ -40,7 +41,9 @@ import se.inera.statistics.service.warehouse.query.CounterFunction;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ExecutionException;
@@ -144,6 +147,38 @@ public class SjukfallUtil {
         }
 
         return new KonDataResponse(groupNames, rows);
+    }
+
+    public <T> KonDataResponse calculateKonDataResponse(Aisle aisle, SjukfallFilter filter, LocalDate start, int periods, int periodSize, Function<Sjukfall, Collection<T>> groupsFunction, CounterFunction<T> counterFunction) {
+        List<KonDataRow> rows = new ArrayList<>();
+        final Iterable<SjukfallGroup> sjukfallGroups = sjukfallGrupper(start, periods, periodSize, aisle, filter);
+        final HashSet<T> hashSet = new LinkedHashSet<>();
+        for (SjukfallGroup sjukfallGroup : sjukfallGroups) {
+            for (Sjukfall sjukfall : sjukfallGroup.getSjukfall()) {
+                hashSet.addAll(groupsFunction.apply(sjukfall));
+            }
+        }
+        for (SjukfallGroup sjukfallGroup : sjukfallGroups) {
+            final HashMultiset<T> maleCounter = HashMultiset.create();
+            final HashMultiset<T> femaleCounter = HashMultiset.create();
+            for (Sjukfall sjukfall : sjukfallGroup.getSjukfall()) {
+                final HashMultiset<T> currentCounter = Kon.Female.equals(sjukfall.getKon()) ? femaleCounter : maleCounter;
+                counterFunction.addCount(sjukfall, currentCounter);
+            }
+            List<KonField> list = new ArrayList<>();
+            for (T id : hashSet) {
+                list.add(new KonField(femaleCounter.count(id), maleCounter.count(id)));
+            }
+            rows.add(new KonDataRow(ReportUtil.toDiagramPeriod(sjukfallGroup.getRange().getFrom()), list));
+        }
+
+        final Collection<String> groupNames = Collections2.transform(hashSet, new Function<T, String>() {
+            @Override
+            public String apply(T integer) {
+                return String.valueOf(integer);
+            }
+        });
+        return new KonDataResponse(new ArrayList<>(groupNames), rows);
     }
     //CHECKSTYLE:ON
 
