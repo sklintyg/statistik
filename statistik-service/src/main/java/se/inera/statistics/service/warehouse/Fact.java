@@ -45,6 +45,7 @@ public class Fact {
     private long lakarintyg;
     private long patient;
     private int startdatum;
+    private int slutdatum;
     private int kon;
     private int alder;
     private int diagnoskapitel;
@@ -52,14 +53,13 @@ public class Fact {
     private int diagnoskategori;
     private int diagnoskod;
     private int sjukskrivningsgrad;
-    private int sjukskrivningslangd;
     private int lakarkon;
     private int lakaralder;
     private int[] lakarbefattnings;
     private int lakarid;
 
     // CHECKSTYLE:OFF ParameterNumber
-    public Fact(int lan, int kommun, int forsamling, int enhet, long lakarintyg, long patient, int startdatum, int kon, int alder, int diagnoskapitel, int diagnosavsnitt, int diagnoskategori, int diagnoskod, int sjukskrivningsgrad, int sjukskrivningslangd, int lakarkon, int lakaralder, int[] lakarbefattnings, int lakarid) {
+    public Fact(int lan, int kommun, int forsamling, int enhet, long lakarintyg, long patient, int startdatum, int slutdatum, int kon, int alder, int diagnoskapitel, int diagnosavsnitt, int diagnoskategori, int diagnoskod, int sjukskrivningsgrad, int lakarkon, int lakaralder, int[] lakarbefattnings, int lakarid) {
         this.lan = lan;
         this.kommun = kommun;
         this.forsamling = forsamling;
@@ -74,7 +74,7 @@ public class Fact {
         this.diagnoskategori = diagnoskategori;
         this.diagnoskod = diagnoskod;
         this.sjukskrivningsgrad = sjukskrivningsgrad;
-        this.sjukskrivningslangd = sjukskrivningslangd;
+        this.slutdatum = slutdatum;
         this.lakarkon = lakarkon;
         this.lakaralder = lakaralder;
         this.lakarbefattnings = lakarbefattnings;
@@ -98,7 +98,7 @@ public class Fact {
     }
 
     public int getSlutdatum() {
-        return getStartdatum() + getSjukskrivningslangd() - 1;
+        return slutdatum;
     }
 
     public int getSjukskrivningsgrad() {
@@ -171,13 +171,13 @@ public class Fact {
                 + ", lakarintyg=" + lakarintyg
                 + ", patient=" + patient
                 + ", startdatum=" + startdatum
+                + ", slutdatum=" + slutdatum
                 + ", kon=" + kon
                 + ", alder=" + alder
                 + ", diagnoskapitel=" + diagnoskapitel
                 + ", diagnosavsnitt=" + diagnosavsnitt
                 + ", diagnoskategori=" + diagnoskategori
                 + ", sjukskrivningsgrad=" + sjukskrivningsgrad
-                + ", sjukskrivningslangd=" + sjukskrivningslangd
                 + ", lakarkon=" + lakarkon
                 + ", lakaralder=" + lakaralder
                 + ", lakarbefattnings=" + lakarbefattnings
@@ -198,13 +198,13 @@ public class Fact {
                 .append(lakarintyg).append(c)
                 .append(patient).append(c)
                 .append(startdatum).append(c)
+                .append(slutdatum).append(c)
                 .append(alder).append(c)
                 .append(diagnoskapitel).append(c)
                 .append(diagnosavsnitt).append(c)
                 .append(diagnoskategori).append(c)
                 .append(diagnoskod).append(c)
                 .append(sjukskrivningsgrad).append(c)
-                .append(sjukskrivningslangd).append(c)
                 .append(lakarkon).append(c)
                 .append(lakaralder).append(c)
                 .append(lakarbefattnings).append(c)
@@ -213,7 +213,7 @@ public class Fact {
     }
 
     public int getSjukskrivningslangd() {
-        return sjukskrivningslangd;
+        return slutdatum - startdatum + 1;
     }
 
     public static class FactBuilder {
@@ -224,6 +224,7 @@ public class Fact {
         private long lakarintyg = -1;
         private int patient = -1;
         private int startdatum = -1;
+        private int slutdatum = -1;
         private int kon = -1;
         private int alder = -1;
         private int diagnoskapitel = -1;
@@ -231,7 +232,6 @@ public class Fact {
         private int diagnoskategori = -1;
         private int diagnoskod = -1;
         private int sjukskrivningsgrad = -1;
-        private int sjukskrivningslangd = -1;
         private int lakarkon = -1;
         private int lakaralder = -1;
         private int[] lakarbefattnings = null;
@@ -239,13 +239,13 @@ public class Fact {
 
         public Fact build() {
             if (lan == -1 || kommun == -1 || forsamling == -1 || enhet == -1 || lakarintyg == -1 || patient == -1
-                    || startdatum == -1 || kon == -1 || alder == -1 || diagnoskapitel == -1 || diagnosavsnitt == -1
-                    || diagnoskategori == -1 || diagnoskod == -1 || sjukskrivningsgrad == -1 || sjukskrivningslangd == -1 || lakarkon == -1
+                    || startdatum == -1 || slutdatum == -1 || kon == -1 || alder == -1 || diagnoskapitel == -1 || diagnosavsnitt == -1
+                    || diagnoskategori == -1 || diagnoskod == -1 || sjukskrivningsgrad == -1 || lakarkon == -1
                     || lakaralder == -1 || lakarbefattnings == null || lakarid == -1) {
                 throw new RuntimeException("unitialized values");
             }
-            return new Fact(lan, kommun, forsamling, enhet, lakarintyg, patient, startdatum, kon, alder, diagnoskapitel,
-                    diagnosavsnitt, diagnoskategori, diagnoskod, sjukskrivningsgrad, sjukskrivningslangd, lakarkon,
+            return new Fact(lan, kommun, forsamling, enhet, lakarintyg, patient, startdatum, slutdatum, kon, alder, diagnoskapitel,
+                    diagnosavsnitt, diagnoskategori, diagnoskod, sjukskrivningsgrad, lakarkon,
                     lakaralder, lakarbefattnings, lakarid);
         }
 
@@ -284,6 +284,11 @@ public class Fact {
             return this;
         }
 
+        public FactBuilder withSlutdatum(int slutdatum) {
+            this.slutdatum = slutdatum;
+            return this;
+        }
+
         public FactBuilder withKon(Kon kon) {
             this.kon = kon == null ? Kon.Unknown.getNumberRepresentation() : kon.getNumberRepresentation();
             return this;
@@ -316,11 +321,6 @@ public class Fact {
 
         public FactBuilder withSjukskrivningsgrad(int sjukskrivningsgrad) {
             this.sjukskrivningsgrad = sjukskrivningsgrad;
-            return this;
-        }
-
-        public FactBuilder withSjukskrivningslangd(int sjukskrivningslangd) {
-            this.sjukskrivningslangd = sjukskrivningslangd;
             return this;
         }
 

@@ -64,7 +64,7 @@ public class SjukfallTest {
         Sjukfall sjukfall = new Sjukfall(new Fact(1, 1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,new int[]{1},1));
 
         //When
-        Sjukfall result = new Sjukfall(sjukfall, new Fact(2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, new int[]{2}, 2));
+        Sjukfall result = new Sjukfall(sjukfall, new Fact(2, 2, 2, 2, 2, 2, 2, 3, 2, 2, 2, 2, 2, 2, 2, 2, 2, new int[]{2}, 2));
 
         //Then
         assertEquals(2, result.getAlder());
@@ -97,8 +97,8 @@ public class SjukfallTest {
         final int orgStart = 1;
         final int orgSlut = 10;
         final int newStart = orgSlut + gap + 1;
-        final Sjukfall orgSjukfall = new Sjukfall(new Fact(0, 0, 0, 0, 0, 0, orgStart, 0, 0, 0, 0, 0, 0, 0, orgSlut - orgStart + 1, 0, 0, new int[0], 0));
-        final Fact fact = new Fact(0, 0, 0, 0, 0, 0, newStart, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, new int[0], 0);
+        final Sjukfall orgSjukfall = new Sjukfall(new Fact(0, 0, 0, 0, 0, 0, orgStart, orgSlut, 0, 0, 0, 0, 0, 0, 0, 0, 0, new int[0], 0));
+        final Fact fact = new Fact(0, 0, 0, 0, 0, 0, newStart, newStart, 0, 0, 0, 0, 0, 0, 1, 0, 0, new int[0], 0);
 
         //When
         final Sjukfall newSjukfall = orgSjukfall.join(fact);
@@ -114,8 +114,8 @@ public class SjukfallTest {
         final int orgStart = 1;
         final int orgSlut = 10;
         final int newStart = orgSlut + gap + 1;
-        final Sjukfall orgSjukfall = new Sjukfall(new Fact(0, 0, 0, 0, 0, 0, orgStart, 0, 0, 0, 0, 0, 0, 0, orgSlut - orgStart + 1, 0, 0, new int[0], 0));
-        final Fact fact = new Fact(0, 0, 0, 0, 0, 0, newStart, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, new int[0], 0);
+        final Sjukfall orgSjukfall = new Sjukfall(new Fact(0, 0, 0, 0, 0, 0, orgStart, orgSlut, 0, 0, 0, 0, 0, 0, 0, 0, 0, new int[0], 0));
+        final Fact fact = new Fact(0, 0, 0, 0, 0, 0, newStart, newStart, 0, 0, 0, 0, 0, 0, 1, 0, 0, new int[0], 0);
 
         //When
         final Sjukfall newSjukfall = orgSjukfall.join(fact);
@@ -297,11 +297,11 @@ public class SjukfallTest {
     }
 
     private Fact createFact(int startdatum, int sjukskrivningslangd) {
-        return new Fact(1,1,1,1,1,1, startdatum,1,1,1,1,1,1,1, sjukskrivningslangd,1,1,new int[0], 1);
+        return new Fact(1,1,1,1,1,1, startdatum,startdatum + sjukskrivningslangd - 1,1,1,1,1,1,1,1,1,1,new int[0], 1);
     }
 
     private Fact createFact(int startdatum, int sjukskrivningslangd, int diagnoskapitel) {
-        return new Fact(1,1,1,1,1,1, startdatum,1,1, diagnoskapitel,1,1,1,1, sjukskrivningslangd,1,1,new int[0], 1);
+        return new Fact(1,1,1,1,1,1, startdatum,startdatum + sjukskrivningslangd - 1,1,1, diagnoskapitel,1,1,1,1,1,1,new int[0], 1);
     }
 
 }
