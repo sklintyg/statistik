@@ -138,36 +138,32 @@ public final class SjukfallQuery {
     }
 
     public KonDataResponse getSjukfallPerLakareSomTidsserie(Aisle aisle, SjukfallFilter filter, LocalDate start, int periods, int periodLength) {
-        final List<Lakare> allLakaresForVardgivare = lakareManager.getLakares(aisle.getVardgivareId());
-        final List<Integer> ids = Lists.transform(allLakaresForVardgivare, new Function<Lakare, Integer>() {
-            @Override
-            public Integer apply(Lakare lakare) {
-                return Warehouse.getNumLakarId(lakare.getLakareId());
-            }
-        });
-        final List<String> idNames = Lists.transform(ids, new Function<Integer, String>() {
-            @Override
-            public String apply(Integer id) {
-                return String.valueOf(id);
-            }
-        });
         final CounterFunction<Integer> counterFunction = new CounterFunction<Integer>() {
             @Override
             public void addCount(Sjukfall sjukfall, HashMultiset<Integer> counter) {
-                sjukfall.getLakare();
                 for (se.inera.statistics.service.warehouse.Lakare lakare : sjukfall.getLakare()) {
                     counter.add(lakare.getId());
                 }
             }
         };
+        final Function<Sjukfall, Collection<Integer>> groupsFunction = new Function<Sjukfall, Collection<Integer>>() {
+            @Override
+            public Collection<Integer> apply(Sjukfall sjukfall) {
+                final ArrayList<Integer> integers = new ArrayList<>();
+                for (se.inera.statistics.service.warehouse.Lakare lakare : sjukfall.getLakare()) {
+                    integers.add(lakare.getId());
+                }
+                return integers;
+            }
+        };
 
-        final KonDataResponse response = sjukfallUtil.calculateKonDataResponse(aisle, filter, start, periods, periodLength, idNames, ids, counterFunction);
+        final KonDataResponse response = sjukfallUtil.calculateKonDataResponse(aisle, filter, start, periods, periodLength, groupsFunction, counterFunction);
         final KonDataResponse filteredResponse = KonDataResponse.createNewWithoutEmptyGroups(response);
-        return changeLakareIdToLakarName(allLakaresForVardgivare, filteredResponse);
+        return changeLakareIdToLakarName(filteredResponse);
     }
 
-    private KonDataResponse changeLakareIdToLakarName(List<Lakare> allLakares, final KonDataResponse response) {
-        final Collection<Lakare> allLakareInResponse = Collections2.filter(allLakares, new Predicate<Lakare>() {
+    private KonDataResponse changeLakareIdToLakarName(final KonDataResponse response) {
+        final Collection<Lakare> allLakareInResponse = Collections2.filter(lakareManager.getAllLakares(), new Predicate<Lakare>() {
             @Override
             public boolean apply(Lakare lakare) {
                 return response.getGroups().contains(String.valueOf(Warehouse.getNumLakarId(lakare.getLakareId())));

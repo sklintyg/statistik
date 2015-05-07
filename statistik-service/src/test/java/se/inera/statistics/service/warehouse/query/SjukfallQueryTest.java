@@ -191,6 +191,7 @@ public class SjukfallQueryTest {
         Lakare lakare2 = new Lakare(VG_1, LAKARE2_ID, "Beata", "Bertilsson");
         Lakare lakare3 = new Lakare(VG_1, LAKARE3_ID, "Beata", "Bertilsson");
         when(lakareManager.getLakares(VG_1)).thenReturn(asList(lakare1, lakare2, lakare3));
+        when(lakareManager.getAllLakares()).thenReturn(asList(lakare1, lakare2, lakare3));
         return lakareManager;
     }
 
