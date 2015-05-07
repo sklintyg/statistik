@@ -428,9 +428,9 @@ var ControllerCommons = new function(){
         });
     };
 
-    /* This is just a very akward way of telling the cahrt not to dsiplay
+    /* This is just a very akward way of telling the chart not to display
     a series with totals when the chart type is area. If the area chart uses stack and stacking the total will add to the other series
-    and the numbers will accumulate which isnt correct when show in the chart*/
+    and the numbers will accumulate which isn't correct when show in the chart*/
     var showOrHideTotalSeries = function showOrHideTotalSeries(chartType, series, config) {
         if(chartType === "area" && series.options.sex === null) {
             //Mark legend that it wont be shown.
