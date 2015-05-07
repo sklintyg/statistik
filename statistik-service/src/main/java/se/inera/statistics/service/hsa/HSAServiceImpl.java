@@ -64,6 +64,7 @@ public class HSAServiceImpl implements HSAService {
 
             Builder root = new Builder();
             if (unit != null) {
+                //huvudenhet=vårdenhet och enhet kan vara vårdenhet, om det inte finns huvudenhet, annars motsvarar det kopplad/underliggande enhet
                 root.put("enhet", createUnit(unit.getStatisticsUnit()));
                 root.put("huvudenhet", createUnit(unit.getStatisticsCareUnit()));
             }
