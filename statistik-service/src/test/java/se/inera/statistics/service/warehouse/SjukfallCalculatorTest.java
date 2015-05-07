@@ -18,11 +18,14 @@
  */
 package se.inera.statistics.service.warehouse;
 
+import com.google.common.base.Predicate;
 import com.google.common.collect.ArrayListMultimap;
 import org.joda.time.LocalDate;
 import org.junit.Test;
+import org.springframework.util.ReflectionUtils;
 import se.inera.statistics.service.report.model.Range;
 
+import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.List;
 
@@ -38,10 +41,10 @@ public class SjukfallCalculatorTest {
         final List<Range> ranges = SjukfallIterator.getRanges(new LocalDate(2015, 1, 1), 2, 1);
 
         //When
-        final List<ArrayListMultimap<Long, Fact>> factsPerPatientAndPeriod = SjukfallCalculator.getFactsPerPatientAndPeriod(facts, ranges);
+        final List<ArrayListMultimap<Long, Fact>> factsPerPatientAndPeriod = SjukfallCalculator.getFactsPerPatientAndPeriod(facts, ranges, false);
 
         //Then
-        assertEquals(3, factsPerPatientAndPeriod.size());
+        assertEquals(4, factsPerPatientAndPeriod.size());
         assertEquals(0, factsPerPatientAndPeriod.get(0).get(patient).size());
         assertEquals(0, factsPerPatientAndPeriod.get(1).get(patient).size());
         assertEquals(1, factsPerPatientAndPeriod.get(2).get(patient).size());
@@ -55,10 +58,10 @@ public class SjukfallCalculatorTest {
         final List<Range> ranges = SjukfallIterator.getRanges(new LocalDate(2015, 2, 1), 2, 1);
 
         //When
-        final List<ArrayListMultimap<Long, Fact>> factsPerPatientAndPeriod = SjukfallCalculator.getFactsPerPatientAndPeriod(facts, ranges);
+        final List<ArrayListMultimap<Long, Fact>> factsPerPatientAndPeriod = SjukfallCalculator.getFactsPerPatientAndPeriod(facts, ranges, false);
 
         //Then
-        assertEquals(3, factsPerPatientAndPeriod.size());
+        assertEquals(4, factsPerPatientAndPeriod.size());
         assertEquals(0, factsPerPatientAndPeriod.get(0).get(patient).size());
         assertEquals(1, factsPerPatientAndPeriod.get(1).get(patient).size());
         assertEquals(1, factsPerPatientAndPeriod.get(2).get(patient).size());
@@ -72,10 +75,10 @@ public class SjukfallCalculatorTest {
         final List<Range> ranges = SjukfallIterator.getRanges(new LocalDate(2015, 3, 1), 2, 1);
 
         //When
-        final List<ArrayListMultimap<Long, Fact>> factsPerPatientAndPeriod = SjukfallCalculator.getFactsPerPatientAndPeriod(facts, ranges);
+        final List<ArrayListMultimap<Long, Fact>> factsPerPatientAndPeriod = SjukfallCalculator.getFactsPerPatientAndPeriod(facts, ranges, false);
 
         //Then
-        assertEquals(3, factsPerPatientAndPeriod.size());
+        assertEquals(4, factsPerPatientAndPeriod.size());
         assertEquals(1, factsPerPatientAndPeriod.get(0).get(patient).size());
         assertEquals(1, factsPerPatientAndPeriod.get(1).get(patient).size());
         assertEquals(0, factsPerPatientAndPeriod.get(2).get(patient).size());
@@ -89,10 +92,10 @@ public class SjukfallCalculatorTest {
         final List<Range> ranges = SjukfallIterator.getRanges(new LocalDate(2015, 4, 1), 2, 1);
 
         //When
-        final List<ArrayListMultimap<Long, Fact>> factsPerPatientAndPeriod = SjukfallCalculator.getFactsPerPatientAndPeriod(facts, ranges);
+        final List<ArrayListMultimap<Long, Fact>> factsPerPatientAndPeriod = SjukfallCalculator.getFactsPerPatientAndPeriod(facts, ranges, false);
 
         //Then
-        assertEquals(3, factsPerPatientAndPeriod.size());
+        assertEquals(4, factsPerPatientAndPeriod.size());
         assertEquals(2, factsPerPatientAndPeriod.get(0).get(patient).size());
         assertEquals(0, factsPerPatientAndPeriod.get(1).get(patient).size());
         assertEquals(0, factsPerPatientAndPeriod.get(2).get(patient).size());
@@ -101,6 +104,44 @@ public class SjukfallCalculatorTest {
     private Fact createFact(long patient, LocalDate startDatum) {
         final int start = WidelineConverter.toDay(startDatum);
         return new Fact(1,1,1,1,1, patient, start,1,1,1,1,1,1,1,1,1,new int[0],1);
+    }
+
+    @Test
+    public void testExtendSjukfallIsCorrectlySetWhenUsingAllEnheterFilterConstant() throws Exception {
+        //Given
+        final List<Range> ranges = SjukfallIterator.getRanges(new LocalDate(2015, 4, 1), 2, 1);
+
+        //When
+        final SjukfallCalculator sjukfallCalculator = new SjukfallCalculator(new Aisle(""), SjukfallUtil.ALL_ENHETER.getFilter(), ranges, false);
+
+        //Then
+        final Boolean extendSjukfall = (Boolean) getField("extendSjukfall", sjukfallCalculator);
+        assertEquals(false, extendSjukfall);
+    }
+
+    private Object getField(String name, Object obj) throws NoSuchFieldException {
+        final Field declaredField = SjukfallCalculator.class.getDeclaredField(name);
+        declaredField.setAccessible(true);
+        return ReflectionUtils.getField(declaredField, obj);
+    }
+
+    @Test
+    public void testExtendSjukfallIsCorrectlySetWhenUsingCustomFilter() throws Exception {
+        //Given
+        final List<Range> ranges = SjukfallIterator.getRanges(new LocalDate(2015, 4, 1), 2, 1);
+        final Predicate<Fact> filter = new Predicate<Fact>() {
+            @Override
+            public boolean apply(Fact fact) {
+                return true;
+            }
+        };
+
+        //When
+        final SjukfallCalculator sjukfallCalculator = new SjukfallCalculator(new Aisle(""), filter, ranges, false);
+
+        //Then
+        final Boolean extendSjukfall = (Boolean) getField("extendSjukfall", sjukfallCalculator);
+        assertEquals(true, extendSjukfall);
     }
 
 }
