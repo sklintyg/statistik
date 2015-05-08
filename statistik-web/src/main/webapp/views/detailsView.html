@@ -112,14 +112,14 @@
                 <h3 message key="lbl.visa-knappgrupp-serier" data-ng-if="exchangeableViews"></h3>
                 <chart-series-bg views="exchangeableViews"></chart-series-bg>
 
-                <div class="btn-group chart-icon-bar" data-ng-click="switchChartType('bar')"></div>
 
-                <div class="btn-group chart-icon-line" data-ng-click="switchChartType('line')"></div>
+                <div class="btn-group chart-icon-bar" data-ng-click="switchChartType('bar')" ng-show="isVerksamhetShowing"></div>
 
-                <!-- Disabled for now until we figure out how to make sure the series can be stacked-->
-                <div class="btn-group chart-icon-area" data-ng-click="switchChartType('area')"></div>
+                <div class="btn-group chart-icon-line" data-ng-click="switchChartType('line')" ng-show="isVerksamhetShowing"></div>
 
-			    <!-- PRINT BUTTON GROUP -->
+                <div class="btn-group chart-icon-area" data-ng-click="switchChartType('area')" ng-show="isVerksamhetShowing"></div>
+
+                <!-- PRINT BUTTON GROUP -->
                 <div class="btn-group statistics-btn-group" role="group">
 
                     <button class="multiselect dropdown-toggle btn btn-default" data-toggle="dropdown">
