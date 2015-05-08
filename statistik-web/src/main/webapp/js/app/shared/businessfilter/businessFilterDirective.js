@@ -67,7 +67,7 @@ angular.module('StatisticsApp.businessFilter.directive', [])
 
                     scope.isFilterCollapsed = !scope.isFilterCollapsed;
 
-                    //Be sure to format the date obejcts correctly before sending anything to the server
+                    //Be sure to format the date objects correctly before sending anything to the server
                     if(businessFilter.fromDate && businessFilter.toDate) {
                         formattedFromDate = moment(businessFilter.fromDate).format('YYYY-MM-DD');
                         formattedToDate = moment(businessFilter.toDate);
@@ -75,8 +75,10 @@ angular.module('StatisticsApp.businessFilter.directive', [])
                     }
 
                     //Only use a non default period if everything is set as expected
-                    if(scope.timeIntervalRadioModel !== 'preSet' && businessFilter.fromDate && businessFilter.toDate) {
+                    if(scope.timeIntervalChecked && businessFilter.fromDate && businessFilter.toDate) {
                         businessFilter.useDefaultPeriod = false;
+                    } else {
+                        businessFilter.useDefaultPeriod = true;
                     }
 
                     var params = {
@@ -101,8 +103,7 @@ angular.module('StatisticsApp.businessFilter.directive', [])
 
                 scope.resetFilter = function() {
                     businessFilter.resetSelections();
-                    scope.timeIntervalRadioModel = 'preSet';
-                    scope.isDatepickersCollapsed = true;
+                    scope.timeIntervalChecked = false;
                     updateGeographyFilterSelectorDataButtonLabelText();
                     $location.search({});
                 };
@@ -131,14 +132,6 @@ angular.module('StatisticsApp.businessFilter.directive', [])
                     scope.isToDateOpen = true;
                 };
 
-                scope.isDatepickersCollapsed = true;
-
-                scope.collapseDatepickers = function(collapsed) {
-                    scope.isDatepickersCollapsed = collapsed;
-                    if(collapsed) {
-                        businessFilter.useDefaultPeriod = true;
-                    }
-                };
 
                 scope.$watch('businessFilter.fromDate', function(newValue, oldValue) {
                     scope.minToDate = newValue;

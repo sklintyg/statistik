@@ -39,22 +39,16 @@
 
             <div class="col-xs-6 col-sm-8 col-md-8 col-lg-4 clearfix">
 
-                <label for="selectTimeInterval">
-                    <span message key="lbl.filter.val-av-tidsintervall"></span>
-                </label><br/>
-
-                <div id="selectTimeInterval" class="btn-group">
-                    <label class="btn btn-default btn" ng-model="timeIntervalRadioModel" btn-radio="'preSet'" ng-click="collapseDatepickers(true)">
-                        <span message key="lbl.filter.val-av-tidsintervall-forvalt"></span>
+                <div >
+                    <label>
+                        <input type="checkbox" ng-model="timeIntervalChecked" />
                     </label>
-                    <label class="btn btn-default btn" ng-model="timeIntervalRadioModel" btn-radio="'ownSelect'" ng-click="collapseDatepickers(false)">
-                        <span message key="lbl.filter.val-av-tidsintervall-eget"></span>
-                    </label>
+                    <label><span message key="lbl.filter.val-av-tidsintervall"></span></label>
                 </div>
 
-                <div class="row" collapse="isDatepickersCollapsed">
-
-                    <div class="col-xs-10 col-sm-4 col-md-4 col-lg-6 clearfix">
+                <div class="row">
+                    <!--From date datepicker-->
+                    <div class="col-xs-10 col-sm-6 clearfix">
                         <label for="filterFromDate">
                             <span message key="lbl.filter.val-av-tidsintervall-fran"></span>
                         </label><br/>
@@ -64,7 +58,7 @@
                                    type="text"
                                    class="form-control"
                                    ng-model="businessFilter.fromDate"
-                                   ng-required="true"
+                                   ng-disabled="!timeIntervalChecked"
                                    show-weeks="false"
                                    min-date="minDate"
                                    max-date="maxDate"
@@ -73,15 +67,20 @@
                                    datepicker-options="{minMode: 'month'}"
                                    datepicker-mode="'month'"
                                    show-button-bar="false"/>
-                        <span class="input-group-btn">
-                            <button id="fromDatePickerBtn" type="button" class="btn btn-default"
-                                    ng-click="openFromDate($event)"><i class="glyphicon glyphicon-calendar"></i>
-                            </button>
-                        </span>
+                                        <span class="input-group-btn">
+                                            <button id="fromDatePickerBtn"
+                                                    type="button"
+                                                    class="btn btn-default"
+                                                    ng-click="openFromDate($event)"
+                                                    ng-disabled="!timeIntervalChecked">
+                                                <i class="glyphicon glyphicon-calendar"></i>
+                                            </button>
+                                        </span>
                         </p>
                     </div>
 
-                    <div class="col-xs-10 col-sm-4 col-md-4 col-lg-6 clearfix">
+                    <!--To date datepicker-->
+                    <div class="col-xs-10 col-sm-6 clearfix">
                         <label for="filterToDate">
                             <span message key="lbl.filter.val-av-tidsintervall-till"></span>
                         </label><br/>
@@ -91,7 +90,7 @@
                                    type="text"
                                    class="form-control"
                                    ng-model="businessFilter.toDate"
-                                   ng-required="true"
+                                   ng-disabled="!timeIntervalChecked"
                                    show-weeks="false"
                                    min-date="minToDate"
                                    max-date="maxDate"
@@ -100,13 +99,16 @@
                                    datepicker-options="{minMode: 'month'}"
                                    datepicker-mode="'month'"
                                    show-button-bar="false"/>
-                        <span class="input-group-btn">
-                            <button id="toDatePickerBtn" type="button" class="btn btn-default"
-                                    ng-click="openToDate($event)"><i class="glyphicon glyphicon-calendar"></i></button>
-                        </span>
+                                        <span class="input-group-btn">
+                                            <button id="toDatePickerBtn"
+                                                    type="button"
+                                                    class="btn btn-default"
+                                                    ng-click="openToDate($event)"
+                                                    ng-disabled="!timeIntervalChecked">
+                                                <i class="glyphicon glyphicon-calendar"></i></button>
+                                        </span>
                         </p>
                     </div>
-
                 </div>
 
 
