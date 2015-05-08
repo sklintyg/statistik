@@ -221,6 +221,7 @@ function ($scope, $rootScope, $window, $timeout, statisticsData, businessFilter,
     };
 
     var populatePageWithData = function (result) {
+        $scope.resultMessage = result.message;
         $timeout(function () {
             updateCharts(result);
 
