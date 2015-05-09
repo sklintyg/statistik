@@ -72,7 +72,6 @@ public class SjukfallUtilTest {
         assertEquals(1, sjukfalls.size());
 
         Sjukfall sjukfall = sjukfalls.iterator().next();
-        assertEquals(2, sjukfall.getIntygCount());
         assertEquals(20, sjukfall.getRealDays());
         final List<Integer> lakare = Lists.transform(new ArrayList<>(sjukfall.getLakare()), new Function<Lakare, Integer>() {
             @Override
@@ -236,7 +235,7 @@ public class SjukfallUtilTest {
     }
 
     private Sjukfall createSjukfall(Kon kon) {
-        return new Sjukfall(new Fact(0, 1, 2, 3, 4, 1, 6, 15, kon.getNumberRepresentation(), 30, 0, 0, 0, 0, 100, 1, 30, new int[0], 0));
+        return Sjukfall.create(new SjukfallExtended(new Fact(0, 1, 2, 3, 4, 1, 6, 15, kon.getNumberRepresentation(), 30, 0, 0, 0, 0, 100, 1, 30, new int[0], 0)));
     }
 
     public static SjukfallFilter createEnhetFilterFromInternalIntValues(Integer... enhetIds) {

@@ -96,18 +96,14 @@ public class WarehouseIntegrationTest {
 
     private void measureSjukfall(Aisle aisle) {
         Collection<Sjukfall> sjukfalls = calculateSjukfallsHelper(aisle);
-        int totalDays = 0;
         int realDays = 0;
-        int totalIntyg = 0;
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
         for (Sjukfall sjukfall: sjukfalls) {
-            totalDays += (sjukfall.getEnd() - sjukfall.getStart());
             realDays += sjukfall.getRealDays();
-            totalIntyg += sjukfall.getIntygCount();
         }
         stopWatch.stop();
-        System.err.format("Sjukfall %1$s Real days %2$s Total days %3$s intyg %4$s %5$sms%n", sjukfalls.size(), realDays, totalDays, totalIntyg, stopWatch.getTotalTimeMillis());
+        System.err.format("Sjukfall %1$s Real days %2$s %4$sms%n", sjukfalls.size(), realDays, stopWatch.getTotalTimeMillis());
     }
 
     private void showMem() {
