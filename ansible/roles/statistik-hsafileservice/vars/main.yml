@@ -1,0 +1,6 @@
+---
+hsa_fileservice_home: "{{ inera_root }}/fileservice/fileservice-{{ version }}/"
+hsa_fileservice_executable: "{{ hsa_fileservice_home }}/bin/fileservice"
+hsaFileService_properties_file: "{{ hsa_fileservice_home }}/hsaFileService.properties"
+dataSource_properties_file: "{{ hsa_fileservice_home }}/dataSource.properties"
+configuration_credentials_properties: "{{ config_etc_folder }}/credentials.properties"

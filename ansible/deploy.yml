@@ -14,3 +14,4 @@
 
   roles:
     - statistik
+    - statistik-hsafileservice
