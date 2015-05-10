@@ -123,6 +123,7 @@ configure(subprojects.findAll { ['fileservice', 'liquibase-runner', 'statistik-w
                 snapshotRepository(url: "dav:https://repository-callistasoftware.forge.cloudbees.com/snapshot/") {
                     authentication(userName: cloudbeesUsername, password: cloudbeesPassword)
                 }
+                uniqueVersion = false
             }
         }
     }

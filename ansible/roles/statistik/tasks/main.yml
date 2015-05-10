@@ -6,6 +6,10 @@
 - name: create release directory
   file: path={{ releases_folder }} state=directory
   
+- name: Make sure liquibase runner file download is forced when using shapshot repo
+  file: state=absent  path={{ releases_folder }}/liquibase-runner-{{ version }}.zip
+  when: repo == "snapshot"
+
 - name: download liquibase-runner-{{ version }}.zip
   get_url: url=http://repository-callistasoftware.forge.cloudbees.com/{{ repo }}/se/inera/statistik/liquibase-runner/{{ version }}/liquibase-runner-{{ version }}.zip
       dest={{ releases_folder }}/liquibase-runner-{{ version }}.zip
@@ -23,8 +27,12 @@
       JAVA_HOME: "{{ java_home }}"
 
 - name: Download highcharts-export-web-{{ highcharts_version }}.war
-  get_url: url="http://repository-callistasoftware.forge.cloudbees.com/{{ repo }}/com/highcharts/export/highcharts-export-web/{{ highcharts_version }}/highcharts-export-web-{{ highcharts_version }}.war"
+  get_url: url="http://repository-callistasoftware.forge.cloudbees.com/release/com/highcharts/export/highcharts-export-web/{{ highcharts_version }}/highcharts-export-web-{{ highcharts_version }}.war"
       dest={{ releases_folder }}
+
+- name: Make sure statistik-web file download is forced when using shapshot repo
+  file: state=absent  path={{ releases_folder }}/statistik-web-{{ version }}.war
+  when: repo == "snapshot"
 
 - name: Download statistik-web-{{ version }}.war
   get_url: url=http://repository-callistasoftware.forge.cloudbees.com/{{ repo }}/se/inera/statistik/statistik-web/{{ version }}/statistik-web-{{ version }}.war
