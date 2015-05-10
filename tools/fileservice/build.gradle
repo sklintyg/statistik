@@ -45,6 +45,7 @@ dependencies {
     compile 'org.codehaus.gpars:gpars:1.1.0'
     compile 'joda-time:joda-time:2.3'
     compile 'org.apache.httpcomponents:httpclient:4.2.1'
+    compile 'commons-cli:commons-cli:1.2'
 
     runtime 'mysql:mysql-connector-java:5.1.32'
     runtime project(":statistik-service")

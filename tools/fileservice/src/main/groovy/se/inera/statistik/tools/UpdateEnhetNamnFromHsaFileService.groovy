@@ -23,21 +23,38 @@ import groovy.sql.Sql
 import org.apache.commons.dbcp2.BasicDataSource
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
+import groovy.util.CliBuilder
+import org.apache.commons.cli.Option
 
 class UpdateEnhetNamnFromHsaFileService {
     private static final Logger LOG = LoggerFactory.getLogger(UpdateEnhetNamnFromHsaFileService.class);
 
     static void main(String[] args) {
+        def cli = new CliBuilder(usage:'fileservice [options]',
+                header:'Options:', stopAtNonOption:false)
+        cli.cp(longOpt:"classpath", 'does nothing')
+        cli.f(longOpt:"hsafileservice", args:1, argName:'file', 'path to hsa fileservice properties (use this or "-u" option)')
+        cli.d(longOpt:"datasource", args:1, argName:'file', 'path to hsa datasource properties')
+        cli.u(longOpt:"units", args:1, argName:'file', 'path to hsa unit names xml file (use this or "-f" option)')
+        def options = cli.parse(args)
+
         long start = System.currentTimeMillis()
-        def hsaProps = new Properties();
-        String hsaPath = System.properties.get("hsafileservice", "hsaFileService.properties")
-        new File(hsaPath).withInputStream { stream ->
-            hsaProps.load(stream)
+        InputStream unitStream;
+        if (options.u) {
+            unitStream = new FileInputStream(options.u)
+        } else {
+            def hsaProps = new Properties();
+            String hsaPath = options.f ? options.f : System.properties.getProperty("hsafileservice", "hsaFileService.properties")
+            new File(hsaPath).withInputStream { stream ->
+                hsaProps.load(stream)
+            }
+            def hsaConf = new ConfigSlurper().parse(hsaProps)
+            unitStream = HsaUnitSource.getUnits(hsaConf.certificate.file, hsaConf.certificate.password, hsaConf.truststore.file, hsaConf.truststore.password, hsaConf.hsaunits.url)
         }
-        def hsaConf = new ConfigSlurper().parse(hsaProps)
+        def enhetsXml = new XmlSlurper().parse(unitStream)
 
         def dbProps = new Properties()
-        String dbPath = System.properties.get("datasource", "dataSource.properties")
+        String dbPath = options.d ? options.d : System.properties.getProperty("datasource", "dataSource.properties")
         new File(dbPath).withInputStream { stream ->
             dbProps.load(stream)
         }
@@ -47,8 +64,6 @@ class UpdateEnhetNamnFromHsaFileService {
                                 username: dbConf.dataSource.username, password: dbConf.dataSource.password,
                                 initialSize: 1, maxTotal: 1)
 
-        InputStream unitStream = HsaUnitSource.getUnits(hsaConf.certificate.file, hsaConf.certificate.password, hsaConf.truststore.file, hsaConf.truststore.password, hsaConf.hsaunits.url)
-        def enhetsXml = new XmlSlurper().parse(unitStream)
 
         Sql sql = new Sql(dataSource)
         def count = 0
