@@ -28,6 +28,9 @@ angular.module('StatisticsApp').controller('doubleAreaChartsCtrl', [ '$scope', '
 
         this.paintChart = function (containerId, yAxisTitle, yAxisTitleXPos, chartCategories, chartSeries, chartSpacingLeft, doneLoadingCallback) {
             var chartOptions = ControllerCommons.getHighChartConfigBase(chartCategories, chartSeries, doneLoadingCallback);
+
+            ControllerCommons.enableMarkerForSeriesWithOneDataPoint(chartOptions.series);
+
             chartOptions.chart.type = 'area';
             chartOptions.chart.marginTop = 27;
             chartOptions.chart.spacingLeft = chartSpacingLeft;

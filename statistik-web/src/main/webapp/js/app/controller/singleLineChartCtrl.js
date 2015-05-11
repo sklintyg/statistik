@@ -28,6 +28,7 @@ angular.module('StatisticsApp').controller('singleLineChartCtrl', [ '$scope', '$
         var isVerksamhet = ControllerCommons.isShowingVerksamhet($location);
 
         var paintChart = function (chartCategories, chartSeries, doneLoadingCallback) {
+
             var chartOptions = ControllerCommons.getHighChartConfigBase(chartCategories, chartSeries, doneLoadingCallback);
             chartOptions.chart.type = 'line';
 
@@ -37,6 +38,9 @@ angular.module('StatisticsApp').controller('singleLineChartCtrl', [ '$scope', '$
             if($routeParams.printBw || $routeParams.print) {
                 chartOptions.chart.width = 768;
             }
+
+
+            ControllerCommons.enableMarkerForSeriesWithOneDataPoint(chartOptions.series);
 
             chartOptions.chart.marginLeft = 70;
             chartOptions.chart.marginTop = 27;

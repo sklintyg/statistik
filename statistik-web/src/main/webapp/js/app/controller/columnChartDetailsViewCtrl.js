@@ -41,6 +41,8 @@ angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl', [ '$sco
                 chartOptions.chart.width = 768;
             }
 
+            ControllerCommons.enableMarkerForSeriesWithOneDataPoint(chartOptions.series);
+
             chartOptions.legend.enabled = $routeParams.printBw || $routeParams.print;
             chartOptions.xAxis.title.text = config.chartXAxisTitle;
             chartOptions.yAxis.title.text = config.percentChart ? "Andel sjukfall i %" : 'Antal sjukfall';

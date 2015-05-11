@@ -38,6 +38,8 @@ angular.module('StatisticsApp').controller('casesPerCountyCtrl', ['$scope', '$ro
                 chartOptions.chart.width = 768;
             }
 
+            ControllerCommons.enableMarkerForSeriesWithOneDataPoint(chartOptions.series);
+
             chartOptions.chart.marginTop = 27;
             chartOptions.chart.marginLeft = 60;
             chartOptions.yAxis.title.x = 30;

@@ -404,8 +404,6 @@ var ControllerCommons = new function(){
         }
     };
 
-
-
     /* Configure all existing series of a specific chart for a new chart type.
      */
     this.switchChartType = function (chartSeries, chartType, config) {
@@ -420,9 +418,15 @@ var ControllerCommons = new function(){
 
         //This updates the chart object with new options
         _.each(chartSeries, function (series) {
+
+            //If the sex property is available on the series object, then there is a series with sex === null that is a total series.
+            //We want this sereis to be hidden when the chart type is === area
             if(hasSexSet) {
                 showOrHideTotalSeries(chartType, series, config);
             }
+
+            //If the series only have one data point, then we enable the marker to make it visible in the gui
+            config.marker = series.data.length === 1 ? {enabled: true} : {enabled: false};
 
             series.update(config, false);
         });
@@ -457,9 +461,26 @@ var ControllerCommons = new function(){
 
         return maleSeries && femaleSeries? true: false;
     };
+
     this.showInLegend = function(series, index) {
         return series[index].options.showInLegend;
     };
+
+    this.enableMarkerForSeriesWithOneDataPoint = function(series) {
+        if (series) {
+            _.each(series, function (s) {
+                //If we only have one data point
+                if (s.data.length === 1) {
+                    if (s.marker) {
+                        s.marker.enabled = true;
+                    } else {
+                        s.marker = {enabled: true};
+                    }
+                }
+            });
+        }
+    };
+
 
 };
 
