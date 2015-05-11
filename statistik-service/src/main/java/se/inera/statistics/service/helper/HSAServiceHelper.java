@@ -95,9 +95,9 @@ public final class HSAServiceHelper {
             if (result == null) {
                 result = getKommun(hsaData, "huvudenhet");
             }
-            return result != null ? result : Kommun.OVRIGT_ID;
+            return result != null ? result : Kommun.OVRIGT_ID.substring(2);
         } else {
-            return Kommun.OVRIGT_ID;
+            return Kommun.OVRIGT_ID.substring(2);
         }
     }
 
