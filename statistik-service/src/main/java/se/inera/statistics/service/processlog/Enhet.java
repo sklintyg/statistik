@@ -18,6 +18,8 @@
  */
 package se.inera.statistics.service.processlog;
 
+import se.inera.statistics.service.report.model.Kommun;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -103,7 +105,11 @@ public class Enhet implements Comparable<Enhet> {
     }
 
     public String getKommunId() {
-        return kommunId;
+        final int length = kommunId != null ? kommunId.length() : 0;
+        if (length < 2) {
+            return Kommun.OVRIGT_ID.substring(2);
+        }
+        return kommunId.substring(length - 2, length);
     }
 
     public void setKommunId(String kommunId) {

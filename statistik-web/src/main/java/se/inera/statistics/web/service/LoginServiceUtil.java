@@ -111,7 +111,7 @@ public class LoginServiceUtil {
         Kommun kommun = new Kommun();
         Lan lan = new Lan();
         return new Verksamhet(enhet.getEnhetId(), enhet.getNamn(), enhet.getVardgivareId(), enhet.getVardgivareNamn(), enhet.getLansId(),
-                lan.getNamn(enhet.getLansId()), enhet.getKommunId(), kommun.getNamn(enhet.getKommunId()), getVerksamhetsTyper(enhet.getVerksamhetsTyper()));
+                lan.getNamn(enhet.getLansId()), enhet.getKommunId(), kommun.getNamn(enhet.getLansId() + enhet.getKommunId()), getVerksamhetsTyper(enhet.getVerksamhetsTyper()));
     }
 
     private Verksamhet toVerksamhet(final Vardenhet vardEnhet, List<Enhet> enhetsList) {
@@ -124,7 +124,7 @@ public class LoginServiceUtil {
 
         String lansId = enhetOpt.isPresent() ? enhetOpt.get().getLansId() : Lan.OVRIGT_ID;
         String lansNamn = lan.getNamn(lansId);
-        String kommunId = enhetOpt.isPresent() ? enhetOpt.get().getKommunId() : Kommun.OVRIGT_ID;
+        String kommunId = enhetOpt.isPresent() ? lansId + enhetOpt.get().getKommunId() : Kommun.OVRIGT_ID;
         String kommunNamn = kommun.getNamn(kommunId);
         Set<Verksamhet.VerksamhetsTyp> verksamhetsTyper = enhetOpt.isPresent() ? getVerksamhetsTyper(enhetOpt.get().getVerksamhetsTyper()) : Collections.<Verksamhet.VerksamhetsTyp>emptySet();
 
