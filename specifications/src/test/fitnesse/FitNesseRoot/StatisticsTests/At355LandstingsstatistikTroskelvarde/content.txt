@@ -1,0 +1,53 @@
+!contents -R2 -g -p -f -h
+
+Gäller STATISTIK-1028.
+
+!3 Givet att:
+
+user6 har medarbetaruppdrag på enhet6, som tillhör vg6.
+vg6 har skickat in en lista med följande enheter:
+
+* enhet6 (vg6), 110 listade
+* enhet7 (vg6)
+* enhet8 (vg8), 1100 listade
+
+| script | dagens datum | 2013-11-06 |
+
+| script | troskel varde | 3 |
+
+| Enbart foljande intyg finns |
+| personnr      | diagnoskod | start      | slut       | enhet  | kommentar |
+| 19790407-0015 | G01        | 2013-02-05 | 2013-02-06 | enhet6 |           |
+| 19790407-0115 | G01        | 2013-02-05 | 2013-02-06 | enhet6 |           |
+| 19790407-0125 | G01        | 2013-02-05 | 2013-02-06 | enhet6 |           |
+| 19790407-0215 | G01        | 2013-02-05 | 2013-02-06 | enhet7 |           |
+| 19790407-0315 | G01        | 2013-02-05 | 2013-02-06 | enhet7 |           |
+| 19790407-0415 | G01        | 2013-02-05 | 2013-02-06 | enhet7 |           |
+| 19790407-1215 | G01        | 2013-02-05 | 2013-02-06 | enhet7 |           |
+| 19790407-0525 | G01        | 2013-02-05 | 2013-02-06 | enhet7 |           |
+| 19790407-0615 | G01        | 2013-02-05 | 2013-02-06 | enhet8 |           |
+| 19790407-0715 | G01        | 2013-03-05 | 2013-03-06 | enhet8 |           |
+| 19790407-0925 | G01        | 2013-03-05 | 2013-03-06 | enhet8 |           |
+| 19790407-1025 | G01        | 2013-02-05 | 2013-02-06 | enhet8 |           |
+| 19790407-1125 | G01        | 2013-02-05 | 2013-02-06 | enhet8 |           |
+
+!3 Då gäller:
+
+Tröskelvärdet appliceras för alla vårdenheter. Tröskelappliceras per grupp (kön, enhet, månad osv. beroende på rapport).
+För rapporten "Listningsjämförelse" behöver bara antalet sjukfall vara över tröskelvärdet, inte det uträknade värdet sjukfall/1000 listningar.
+
+Inloggad:
+| Sjukfall i rapporten landsting sjukfall totalt |
+| inloggad som | år   | månad | män? | kvinnor? |
+| user6 | 2013 | jan   | 0    | 0        |
+| user6 | 2013 | feb   | 4    | 0        |
+| user6 | 2013 | mar   | 0    | 0        |
+| user6 | 2013 | apr   | 0    | 0        |
+
+| Sjukfall i rapporten landsting sjukfall per enhet |
+| inloggad som | vårdenhet    | totalt? | män? | kvinnor? |
+| user6        | Enhet enhet7 | 4       | 4    | 0        |
+| user6        | Enhet enhet8 | 3       | 0    | 3        |
+
+| inloggad som | vårdenhet    | totalt? |
+| user6        | Enhet enhet8 | 2,73    |
