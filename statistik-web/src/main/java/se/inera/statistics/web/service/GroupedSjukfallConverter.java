@@ -18,67 +18,28 @@
  */
 package se.inera.statistics.web.service;
 
-import se.inera.statistics.service.report.model.Kon;
-import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.SimpleKonDataRow;
 import se.inera.statistics.service.report.model.SimpleKonResponse;
-import se.inera.statistics.web.model.ChartData;
-import se.inera.statistics.web.model.ChartSeries;
-import se.inera.statistics.web.model.NamedData;
 import se.inera.statistics.web.model.SimpleDetailsData;
-import se.inera.statistics.web.model.TableData;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.List;
 
-public class GroupedSjukfallConverter {
-    private final String xAxisLabel;
+public class GroupedSjukfallConverter extends SimpleDualSexConverter {
 
-    public GroupedSjukfallConverter(String xAxisLabel) {
-        this.xAxisLabel = xAxisLabel;
+    public GroupedSjukfallConverter(String tableGroupTitle) {
+        super(tableGroupTitle, false, "%1$s");
     }
 
-    public SimpleDetailsData convert(SimpleKonResponse<SimpleKonDataRow> casesPerMonth, FilterSettings filterSettings) {
+    @Override
+    public SimpleDetailsData convert(SimpleKonResponse<SimpleKonDataRow> casesPerMonth, FilterSettings filterSettings, String message) {
         Collections.sort(casesPerMonth.getRows(), new Comparator<SimpleKonDataRow>() {
             @Override
             public int compare(SimpleKonDataRow o1, SimpleKonDataRow o2) {
                 return o1.getName().compareTo(o2.getName());
             }
         });
-
-        TableData tableData = convertToTableData(casesPerMonth.getRows());
-        ChartData chartData = convertToChartData(casesPerMonth);
-        final Filter filter = filterSettings.getFilter();
-        final FilterDataResponse filterResponse = new FilterDataResponse(filter.getDiagnoser(), filter.getEnheter());
-        final Range range = filterSettings.getRange();
-        return new SimpleDetailsData(tableData, chartData, range.toString(), filterResponse, filterSettings.getMessage());
-    }
-
-    private TableData convertToTableData(List<SimpleKonDataRow> list) {
-        List<NamedData> data = new ArrayList<>();
-        for (SimpleKonDataRow row : list) {
-            final Integer female = row.getFemale();
-            final Integer male = row.getMale();
-            data.add(new NamedData(row.getName(), Arrays.asList(female + male, female, male)));
-        }
-
-        return TableData.createWithSingleHeadersRow(data, Arrays.asList(xAxisLabel, "Antal sjukfall totalt", "Antal sjukfall för kvinnor", "Antal sjukfall för män"));
-    }
-
-    private ChartData convertToChartData(SimpleKonResponse<SimpleKonDataRow> casesPerMonth) {
-        final ArrayList<String> categories = new ArrayList<>();
-        for (SimpleKonDataRow casesPerMonthRow : casesPerMonth.getRows()) {
-            categories.add(casesPerMonthRow.getName());
-        }
-
-        final ArrayList<ChartSeries> series = new ArrayList<>();
-        series.add(new ChartSeries("Antal sjukfall för kvinnor", casesPerMonth.getDataForSex(Kon.Female), false, Kon.Female));
-        series.add(new ChartSeries("Antal sjukfall för män", casesPerMonth.getDataForSex(Kon.Male), false, Kon.Male));
-
-        return new ChartData(series, categories);
+        return super.convert(casesPerMonth, filterSettings, message);
     }
 
 }
