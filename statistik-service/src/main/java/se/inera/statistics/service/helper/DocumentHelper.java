@@ -47,6 +47,15 @@ public final class DocumentHelper {
     public static final int NEDSATT50 = 50;
     public static final int NEDSATT75 = 75;
 
+    public static String getIntygType(JsonNode intyg) {
+        final IntygVersion version = getIntygVersion(intyg);
+        if (IntygVersion.VERSION1 == version) {
+            return intyg.path("typ").path("code").textValue();
+        } else {
+            return intyg.path("typ").textValue();
+        }
+    }
+
     public enum IntygVersion {
         VERSION1, VERSION2
     }

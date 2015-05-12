@@ -156,13 +156,13 @@ angular.module('StatisticsApp').factory('businessFilter', ['statisticsData', '_'
         businessFilter.populateGeography = function (businesses) {
             businessFilter.geography = {subs: []};
             _.each(businesses, function (business) {
-                var county = _.findWhere(businessFilter.geography.subs, { id: business.lansId });
+                var county = _.findWhere(businessFilter.geography.subs, { name: business.lansName });
                 if (!county) {
                     county = { id: business.lansId, name: business.lansName, subs: [] };
                     businessFilter.geography.subs.push(county);
                 }
 
-                var munip = _.findWhere(county.subs, { id: business.kommunId });
+                var munip = _.findWhere(county.subs, { name: business.kommunName });
                 if (!munip) {
                     munip = { id: business.kommunId, name: business.kommunName, subs: [] };
                     county.subs.push(munip);

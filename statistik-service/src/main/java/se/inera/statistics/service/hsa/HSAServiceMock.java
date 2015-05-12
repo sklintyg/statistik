@@ -218,7 +218,7 @@ public class HSAServiceMock implements HSAService, HsaDataInjectable {
                 return s.startsWith(lan) || s.equals(Kommun.OVRIGT_ID);
             }
         }).toList();
-        return relevantKommuns.get(keyIndex % relevantKommuns.size());
+        return relevantKommuns.get(keyIndex % relevantKommuns.size()).substring(2);
     }
 
     private String[] createVerksamhet(HSAKey key) {
