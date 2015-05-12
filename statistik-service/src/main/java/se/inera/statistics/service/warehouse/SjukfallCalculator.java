@@ -68,7 +68,7 @@ public class SjukfallCalculator {
 
     static List<ArrayListMultimap<Long, Fact>> getFactsPerPatientAndPeriod(Iterable<Fact> facts, List<Range> ranges, boolean useOriginalSjukfallStart) {
         final List<Integer> rangeEnds = new ArrayList<>(ranges.size() + 1);
-        rangeEnds.add(WidelineConverter.toDay(ranges.get(0).getFrom()));
+        rangeEnds.add(WidelineConverter.toDay(ranges.get(0).getFrom().minusDays(1)));
         for (Range range : ranges) {
             rangeEnds.add(WidelineConverter.toDay(range.getTo()));
         }
@@ -123,7 +123,7 @@ public class SjukfallCalculator {
         final int rangesSize = rangeEnds.size();
         for (int i = 0; i < rangesSize; i++) {
             final Integer rangeEnd = rangeEnds.get(i);
-            if (date < rangeEnd) {
+            if (date <= rangeEnd) {
                 return i;
             }
         }
