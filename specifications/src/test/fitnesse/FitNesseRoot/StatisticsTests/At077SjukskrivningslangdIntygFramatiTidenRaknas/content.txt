@@ -23,8 +23,18 @@ Nationell:
 | 91-180 dagar        | 0    | 0        |
 | 181-365 dagar       | 0    | 1        |
 
+| Sjukfall i oversikt sjukskrivningslangd |
+| grupp          | antal? |
+| 91-180 dagar   | 0    |
+| 181-365 dagar  | 1    |
+
 Inloggad:
 | Sjukfall i rapporten sjukskrivningslangd |
 | inloggad som | sjukskrivningslängd | män? | kvinnor? |
 | user1        | 91-180 dagar        | 0    | 0        |
 | user1        | 181-365 dagar       | 0    | 1        |
+
+| Sjukfall i oversikt sjukskrivningslangd |
+|inloggad som | grupp          | antal? |
+| user1       | 91-180 dagar   | 0    |
+| user1       | 181-365 dagar  | 1    |

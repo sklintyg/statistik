@@ -4,7 +4,7 @@
 
 Ett sjukfall består av ett intyg med 74 dagars giltighetstid.
 
-| script | dagens datum | 2013-11-06 |
+| script | dagens datum | 2013-06-06 |
 
 | script | troskel varde | 1 |
 
@@ -23,9 +23,21 @@ Nationell:
 | 31-90 dagar         | 0    | 1        |
 | 91-180 dagar        | 0    | 0        |
 
+| Sjukfall i oversikt sjukskrivningslangd |
+| grupp          | antal? |
+| 15-30 dagar    | 0      |
+| 31-90 dagar    | 1      |
+| 91-180 dagar   | 0    |
+
 Inloggad:
 | Sjukfall i rapporten sjukskrivningslangd |
 | inloggad som | sjukskrivningslängd | män? | kvinnor? |
 | user1        | 15-30 dagar         | 0    | 0        |
 | user1        | 31-90 dagar         | 0    | 1        |
 | user1        | 91-180 dagar        | 0    | 0        |
+
+| Sjukfall i oversikt sjukskrivningslangd |
+|inloggad som | grupp          | antal? |
+| user1       | 15-30 dagar    | 0      |
+| user1       | 31-90 dagar    | 1     |
+| user1       | 91-180 dagar   | 0    |

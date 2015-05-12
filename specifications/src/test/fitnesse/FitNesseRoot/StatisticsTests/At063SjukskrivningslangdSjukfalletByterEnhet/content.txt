@@ -5,7 +5,7 @@
 Ett sjukfall består av 2 intyg, det första utfärdat på enhet1 och det andra av på enhet2.
 Det första intyget pågår i 74 dagar och det andra i 31 dagar.
 
-| script | dagens datum | 2013-11-06 |
+| script | dagens datum | 2013-05-06 |
 
 | script | troskel varde | 1 |
 
@@ -25,6 +25,11 @@ Nationell:
 | 31-90 dagar         | 0    | 0        |
 | 91-180 dagar        | 0    | 1        |
 
+| Sjukfall i oversikt sjukskrivningslangd |
+| grupp          | antal? |
+| 31-90 dagar    | 0      |
+| 91-180 dagar   | 1    |
+
 Inloggad:
 | Sjukfall i rapporten sjukskrivningslangd |
 | inloggad som | sjukskrivningslängd | män? | kvinnor? |
@@ -32,3 +37,10 @@ Inloggad:
 | user1        | 91-180 dagar        | 0    | 0        |
 | user4        | 31-90 dagar         | 0    | 0        |
 | user4        | 91-180 dagar        | 0    | 1        |
+
+| Sjukfall i oversikt sjukskrivningslangd |
+|inloggad som | grupp          | antal? |
+| user1       | 31-90 dagar    | 1     |
+| user1       | 91-180 dagar   | 0    |
+| user4       | 31-90 dagar    | 0     |
+| user4       | 91-180 dagar   | 1    |

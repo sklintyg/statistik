@@ -4,7 +4,7 @@
 
 Ett sjukfall består av två intyg med fyra dagars uppehåll. Det första intyget är 10 dagar och det andra 3 dagar.
 
-| script | dagens datum | 2013-11-06 |
+| script | dagens datum | 2013-04-06 |
 
 | script | troskel varde | 1 |
 
@@ -23,8 +23,18 @@ Nationell:
 | Under 15 dagar      | 0    | 1        |
 | 15-30 dagar         | 0    | 0        |
 
+| Sjukfall i oversikt sjukskrivningslangd |
+| grupp          | antal? |
+| Under 15 dagar | 1      |
+| 15-30 dagar    | 0      |
+
 Inloggad:
 | Sjukfall i rapporten sjukskrivningslangd |
 | inloggad som | sjukskrivningslängd | män? | kvinnor? |
 | user1        | Under 15 dagar      | 0    | 1        |
 | user1        | 15-30 dagar         | 0    | 0        |
+
+| Sjukfall i oversikt sjukskrivningslangd |
+|inloggad som | grupp          | antal? |
+| user1       | Under 15 dagar | 1      |
+| user1       | 15-30 dagar    | 0      |

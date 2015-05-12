@@ -4,7 +4,7 @@
 
 Ett sjukfall består av två intyg, utfärdade på två olika enheter inom samma vårdgivare. Sjukskrivningsgraden är 75% i det första intyget (74 dagar) och 50% i det andra (31 dagar).
 
-| script | dagens datum | 2014-11-06 |
+| script | dagens datum | 2014-05-06 |
 
 | script | troskel varde | 1 |
 
@@ -25,6 +25,10 @@ Nationell:
 | sjukskrivningslängd | män? | kvinnor? |
 | 91-180 dagar        | 0    | 1        |
 
+| Sjukfall i oversikt sjukskrivningslangd |
+| grupp          | antal? |
+| 91-180 dagar   | 1    |
+
 Inloggad:
 | Sjukfall i rapporten sjukskrivningslangd |
 | inloggad som | sjukskrivningslängd | män? | kvinnor? |
@@ -32,3 +36,10 @@ Inloggad:
 | user1        | 91-180 dagar        | 0    | 0        |
 | user4        | 31-90 dagar         | 0    | 0        |
 | user4        | 91-180 dagar        | 0    | 1        |
+
+| Sjukfall i oversikt sjukskrivningslangd |
+|inloggad som | grupp          | antal? |
+| user1       | 31-90 dagar    | 1     |
+| user1       | 91-180 dagar   | 0    |
+| user4       | 31-90 dagar    | 0     |
+| user4       | 91-180 dagar   | 1    |
