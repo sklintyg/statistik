@@ -28,6 +28,7 @@ class FoljandeIntygFinns {
     def exaktintygid
     String enhetsnamn
     String händelsetyp
+    String intygstyp
 
     public void setKommentar(String kommentar) {}
 
@@ -47,6 +48,7 @@ class FoljandeIntygFinns {
         händelsetyp = EventType.CREATED.name();
         exaktintygid = intygIdCounter++;
         enhetsnamn = null;
+        intygstyp = "fk7263"
     }
 
     public void execute() {
@@ -55,8 +57,8 @@ class FoljandeIntygFinns {
         String intygString = getClass().getResource('/maximalt-fk7263-internal.json').getText('UTF-8')
         def result = slurper.parseText(intygString)
 
-        result.grundData.patient.personId = personnr;
-
+        result.grundData.patient.personId = personnr
+        result.typ = intygstyp
         result.grundData.skapadAv.personId = läkare
         result.grundData.skapadAv.vardenhet.enhetsid = enhet
         result.grundData.skapadAv.vardenhet.vardgivare.vardgivarid = vardgivare
