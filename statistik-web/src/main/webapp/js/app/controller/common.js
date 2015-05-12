@@ -230,7 +230,18 @@ var ControllerCommons = new function(){
             credits : {
                 enabled : false
             },
-            series : chartSeries
+            series : _.map(chartSeries, function (series) {
+                //This enables the marker for series with single data points
+                if (series.data.length === 1) {
+                    if (series.marker) {
+                        series.marker.enabled = true;
+                    } else {
+                        series.marker = {enabled: true};
+                    }
+                }
+
+                return series;
+            })
         };
     };
 
@@ -425,9 +436,6 @@ var ControllerCommons = new function(){
                 showOrHideTotalSeries(chartType, series, config);
             }
 
-            //If the series only have one data point, then we enable the marker to make it visible in the gui
-            config.marker = series.data.length === 1 ? {enabled: true} : {enabled: false};
-
             series.update(config, false);
         });
     };
@@ -465,23 +473,6 @@ var ControllerCommons = new function(){
     this.showInLegend = function(series, index) {
         return series[index].options.showInLegend;
     };
-
-    this.enableMarkerForSeriesWithOneDataPoint = function(series) {
-        if (series) {
-            _.each(series, function (s) {
-                //If we only have one data point
-                if (s.data.length === 1) {
-                    if (s.marker) {
-                        s.marker.enabled = true;
-                    } else {
-                        s.marker = {enabled: true};
-                    }
-                }
-            });
-        }
-    };
-
-
 };
 
 
