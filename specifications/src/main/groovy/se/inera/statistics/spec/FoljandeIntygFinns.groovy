@@ -26,8 +26,8 @@ class FoljandeIntygFinns {
     def läkare
     def län
     def exaktintygid
-    String intygstyp
     String enhetsnamn
+    String händelsetyp
 
     public void setKommentar(String kommentar) {}
 
@@ -44,12 +44,13 @@ class FoljandeIntygFinns {
         arbetsförmåga2 = ""
         läkare = "Personal HSA-ID"
         län = null
-        intygstyp = EventType.CREATED.name();
+        händelsetyp = EventType.CREATED.name();
         exaktintygid = intygIdCounter++;
         enhetsnamn = null;
     }
 
     public void execute() {
+
         def slurper = new JsonSlurper()
         String intygString = getClass().getResource('/maximalt-fk7263-internal.json').getText('UTF-8')
         def result = slurper.parseText(intygString)
@@ -77,7 +78,7 @@ class FoljandeIntygFinns {
         def builder = new JsonBuilder(result)
         def finalIntygDataString = builder.toString()
 
-        Intyg intyg = new Intyg(EventType.valueOf(intygstyp), finalIntygDataString, String.valueOf(exaktintygid), DateTimeUtils.currentTimeMillis(), län, enhetsnamn)
+        Intyg intyg = new Intyg(EventType.valueOf(händelsetyp), finalIntygDataString, String.valueOf(exaktintygid), DateTimeUtils.currentTimeMillis(), län, enhetsnamn)
         reportsUtil.insertIntyg(intyg)
     }
 
