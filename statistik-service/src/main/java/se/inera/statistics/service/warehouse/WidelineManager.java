@@ -47,13 +47,17 @@ public class WidelineManager {
 
     @Transactional(noRollbackFor = Exception.class)
     public void accept(JsonNode intyg, JsonNode hsa, long logId, String correlationId, EventType type) {
+        String intygid = DocumentHelper.getIntygId(intyg, DocumentHelper.getIntygVersion(intyg));
+        if (!isSupportedIntygType(DocumentHelper.getIntygType(intyg))) {
+            LOG.info("Intygtype not supported. Ignoring intyg: " + intygid);
+            return;
+        }
         for (WideLine line : widelineConverter.toWideline(intyg, hsa, logId, correlationId, type)) {
             List<String> errors = widelineConverter.validate(line);
 
             if (errors.isEmpty()) {
                 manager.persist(line);
             } else {
-                String intygid = DocumentHelper.getIntygId(intyg, DocumentHelper.getIntygVersion(intyg));
                 StringBuilder errorBuilder = new StringBuilder("Faulty intyg logid ").append(logId).append(" id ").append(intygid).append(" error count ").append(errCount++);
                 for (String error : errors) {
                     errorBuilder.append('\n').append(error);
@@ -61,6 +65,10 @@ public class WidelineManager {
                 LOG.error(errorBuilder.toString());
             }
         }
+    }
+
+    private boolean isSupportedIntygType(String intygType) {
+        return "fk7263".equalsIgnoreCase(intygType);
     }
 
     @Transactional

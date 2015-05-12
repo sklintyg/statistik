@@ -29,6 +29,7 @@ class FoljandeIntygFinns {
     def exaktintygid
     String händelsetyp
     String jsonformat
+    String intygstyp
 
     public void setKommentar(String kommentar) {}
 
@@ -49,6 +50,7 @@ class FoljandeIntygFinns {
         exaktintygid = intygIdCounter++
         jsonformat = "nytt"
         huvudenhet = null
+        intygstyp = "fk7263"
     }
 
     public void execute() {
@@ -79,8 +81,8 @@ class FoljandeIntygFinns {
         String intygString = getClass().getResource('/maximalt-fk7263-internal.json').getText('UTF-8')
         def result = slurper.parseText(intygString)
 
-        result.grundData.patient.personId = personnr;
-
+        result.grundData.patient.personId = personnr
+        result.typ = intygstyp
         result.grundData.skapadAv.personId = läkare
         result.grundData.skapadAv.vardenhet.enhetsid = enhet
         result.grundData.skapadAv.vardenhet.vardgivare.vardgivarid = vardgivare
@@ -109,8 +111,8 @@ class FoljandeIntygFinns {
         String observationKodString = getClass().getResource('/observationMedKod.json').getText('UTF-8')
         def result = slurper.parseText(intygString)
 
-        result.patient.id.extension = personnr;
-
+        result.patient.id.extension = personnr
+        result.typ.code = intygstyp
         result.skapadAv.id.extension = läkare
 
         def observation = slurper.parseText(observationKodString)
