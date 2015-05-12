@@ -39,9 +39,6 @@ angular.module('StatisticsApp').controller('singleLineChartCtrl', [ '$scope', '$
                 chartOptions.chart.width = 768;
             }
 
-
-            ControllerCommons.enableMarkerForSeriesWithOneDataPoint(chartOptions.series);
-
             chartOptions.chart.marginLeft = 70;
             chartOptions.chart.marginTop = 27;
             chartOptions.legend.enabled = $routeParams.printBw || $routeParams.print;

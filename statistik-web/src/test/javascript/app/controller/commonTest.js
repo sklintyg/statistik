@@ -40,7 +40,7 @@ describe("Test of common functions for controllers", function() {
     it("getHighChartConfigBase", function() {
         highchartsExportUrl = "http://www.testurl.com:1234/exporttest";
         var categories = ["Namn 1", "Namn < 1"];
-        var series = [{b: 4}];
+        var series = [{b: 4, data: []}];
         var result = ControllerCommons.getHighChartConfigBase(categories, series);
         expect(result.xAxis.categories.length).toBe(2);
         expect(result.xAxis.categories[0]).toBe("Namn 1");
