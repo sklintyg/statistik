@@ -19,8 +19,8 @@
 
 'use strict';
 
-angular.module('StatisticsApp').controller('casesPerCountyCtrl', ['$scope', '$rootScope', '$timeout', '$routeParams', '$window', 'statisticsData', 'messageService', 'printFactory',
-    function ($scope, $rootScope, $timeout, $routeParams, $window, statisticsData, messageService, printFactory) {
+angular.module('StatisticsApp').controller('casesPerCountyCtrl', ['$scope', '$rootScope', '$timeout', '$routeParams', '$window', 'statisticsData', 'messageService', 'printFactory', 'chartFactory',
+    function ($scope, $rootScope, $timeout, $routeParams, $window, statisticsData, messageService, printFactory, chartFactory) {
 
         var chart = {};
         $scope.chartContainers = [
@@ -28,7 +28,7 @@ angular.module('StatisticsApp').controller('casesPerCountyCtrl', ['$scope', '$ro
         ];
 
         var paintChart = function (chartCategories, chartSeries, doneLoadingCallback) {
-            var chartOptions = ControllerCommons.getHighChartConfigBase(chartCategories, chartSeries, doneLoadingCallback);
+            var chartOptions = chartFactory.getHighChartConfigBase(chartCategories, chartSeries, doneLoadingCallback);
             chartOptions.chart.type = 'column';
 
             //Set the chart.width to a fixed width when we are about the print.
@@ -92,7 +92,7 @@ angular.module('StatisticsApp').controller('casesPerCountyCtrl', ['$scope', '$ro
         $scope.dataLoadingError = false;
         $scope.chartFootnotes = [messageService.getProperty('info.lan.information', null, "", null, true)];
         $scope.exportChart = function () {
-            ControllerCommons.exportChart(chart, $scope.pageName, $scope.subTitle, $scope.activeDiagnosFilters);
+            chartFactory.exportChart(chart, $scope.pageName, $scope.subTitle, $scope.activeDiagnosFilters);
         };
 
         $scope.print = function (bwPrint) {

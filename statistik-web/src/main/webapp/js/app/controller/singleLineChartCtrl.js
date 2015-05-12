@@ -19,17 +19,20 @@
 
 'use strict';
 
-angular.module('StatisticsApp').controller('singleLineChartCtrl', [ '$scope', '$rootScope', '$routeParams', '$timeout', '$window', 'statisticsData', 'businessFilter', 'config', 'printFactory', '$location', 'messageService',
-    function ($scope, $rootScope, $routeParams, $timeout, $window, statisticsData, businessFilter, config, printFactory, $location, messageService) {
+angular.module('StatisticsApp').controller('singleLineChartCtrl', [ '$scope', '$rootScope', '$routeParams', '$timeout', '$window', 'statisticsData', 'businessFilter', 'config', 'printFactory', '$location', 'messageService', 'chartFactory',
+    function ($scope, $rootScope, $routeParams, $timeout, $window, statisticsData, businessFilter, config, printFactory, $location, messageService, chartFactory) {
+
         var chart;
+
         $scope.chartContainers = [
             {id: "chart1", name: "diagram"}
         ];
+
         var isVerksamhet = ControllerCommons.isShowingVerksamhet($location);
 
         var paintChart = function (chartCategories, chartSeries, doneLoadingCallback) {
 
-            var chartOptions = ControllerCommons.getHighChartConfigBase(chartCategories, chartSeries, doneLoadingCallback);
+            var chartOptions = chartFactory.getHighChartConfigBase(chartCategories, chartSeries, doneLoadingCallback);
             chartOptions.chart.type = 'line';
 
             //Set the chart.width to a fixed width when we are about the print.
@@ -70,12 +73,12 @@ angular.module('StatisticsApp').controller('singleLineChartCtrl', [ '$scope', '$
         };
 
         $scope.switchChartType = function (chartType) {
-            ControllerCommons.switchChartType(chart.series, chartType);
+            chartFactory.switchChartType(chart.series, chartType);
             chart.redraw();
         };
 
         $scope.showInLegend = function(index) {
-            return ControllerCommons.showInLegend(chart.series, index);
+            return chartFactory.showInLegend(chart.series, index);
         };
 
         var populatePageWithData = function (result) {
@@ -103,7 +106,7 @@ angular.module('StatisticsApp').controller('singleLineChartCtrl', [ '$scope', '$
 
 
         $scope.exportChart = function () {
-            ControllerCommons.exportChart(chart, $scope.pageName, $scope.subTitle, $scope.activeDiagnosFilters);
+            chartFactory.exportChart(chart, $scope.pageName, $scope.subTitle, $scope.activeDiagnosFilters);
         };
 
         function refreshVerksamhet() {

@@ -449,6 +449,7 @@
 <script type="text/javascript" src="<c:url value='/js/app/services/diagnosisTreeFilter.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/services/messageService.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/controller/common.js'/>"></script>
+<script type="text/javascript" src="<c:url value='/js/app/shared/charts/chartModule.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/controller/singleLineChartCtrl.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/controller/doubleAreaChartsCtrl.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/controller/overviewCtrl.js'/>"></script>

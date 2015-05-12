@@ -19,15 +19,15 @@
 
 'use strict';
 
-angular.module('StatisticsApp').controller('doubleAreaChartsCtrl', [ '$scope', '$rootScope', '$routeParams', '$window', '$timeout', 'statisticsData', 'businessFilter', 'config', 'messageService', 'printFactory', 'diagnosisTreeFilter', '$location',
-    function ($scope, $rootScope, $routeParams, $window, $timeout, statisticsData, businessFilter, config, messageService, printFactory, diagnosisTreeFilter, $location) {
+angular.module('StatisticsApp').controller('doubleAreaChartsCtrl', [ '$scope', '$rootScope', '$routeParams', '$window', '$timeout', 'statisticsData', 'businessFilter', 'config', 'messageService', 'printFactory', 'diagnosisTreeFilter', '$location', 'chartFactory',
+    function ($scope, $rootScope, $routeParams, $window, $timeout, statisticsData, businessFilter, config, messageService, printFactory, diagnosisTreeFilter, $location ,chartFactory) {
         var that = this;
         var chart1 = {};
         var chart2 = {};
         var isVerksamhet = ControllerCommons.isShowingVerksamhet($location);
 
         this.paintChart = function (containerId, yAxisTitle, yAxisTitleXPos, chartCategories, chartSeries, chartSpacingLeft, doneLoadingCallback) {
-            var chartOptions = ControllerCommons.getHighChartConfigBase(chartCategories, chartSeries, doneLoadingCallback);
+            var chartOptions = chartFactory.getHighChartConfigBase(chartCategories, chartSeries, doneLoadingCallback);
 
             chartOptions.chart.type = 'area';
             chartOptions.chart.marginTop = 27;
@@ -129,14 +129,14 @@ angular.module('StatisticsApp').controller('doubleAreaChartsCtrl', [ '$scope', '
         };
 
         $scope.switchChartType = function (chartType) {
-            ControllerCommons.switchChartType(that.chart1.series, chartType);
-            ControllerCommons.switchChartType(that.chart2.series, chartType);
+            chartFactory.switchChartType(that.chart1.series, chartType);
+            chartFactory.switchChartType(that.chart2.series, chartType);
             that.chart1.redraw();
             that.chart2.redraw();
         };
 
         $scope.showInLegend = function(index) {
-            return ControllerCommons.showInLegend(that.chart1.series, index) && ControllerCommons.showInLegend(that.chart2.series, index);
+            return chartFactory.showInLegend(that.chart1.series, index) && chartFactory.showInLegend(that.chart2.series, index);
         };
 
         var populatePageWithData = function (result) {
@@ -245,7 +245,7 @@ angular.module('StatisticsApp').controller('doubleAreaChartsCtrl', [ '$scope', '
         $scope.useSpecialPrintTable = true;
 
         $scope.exportChart = function (chartName) {
-            ControllerCommons.exportChart(that[chartName], $scope.pageName, $scope.subTitle, $scope.activeDiagnosFilters, 'vertical');
+            chartFactory.exportChart(that[chartName], $scope.pageName, $scope.subTitle, $scope.activeDiagnosFilters, 'vertical');
         };
 
         $scope.print = function (bwPrint) {

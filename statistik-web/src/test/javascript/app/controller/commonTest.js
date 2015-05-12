@@ -37,34 +37,6 @@ describe("Test of common functions for controllers", function() {
         expect(ControllerCommons.getFileName("Mitt     Diagram")).toMatch(/^Mitt_Diagram_\d{8}_\d{6}$/);
     });
     
-    it("getHighChartConfigBase", function() {
-        highchartsExportUrl = "http://www.testurl.com:1234/exporttest";
-        var categories = ["Namn 1", "Namn < 1"];
-        var series = [{b: 4, data: []}];
-        var result = ControllerCommons.getHighChartConfigBase(categories, series);
-        expect(result.xAxis.categories.length).toBe(2);
-        expect(result.xAxis.categories[0]).toBe("Namn 1");
-        expect(result.xAxis.categories[1]).toBe("Namn &lt; 1");
-        expect(result.series.length).toBe(1);
-        expect(result.series[0].b).toBe(4);
-    });
-    
-    it("exportChart", function() {
-        var callTimes = 0;
-        var name = "testName";
-        var chart = {
-                exportChart: function(opt, chartOpt){
-                    callTimes++;
-                    expect(opt.filename).toMatch(/testName/);
-                    expect(chartOpt.legend.enabled).toBe(true);
-                    expect(chartOpt.legend.layout).toBe("MyLayout");
-                    expect(chartOpt.title.text).toBe("title text");
-                }
-        };
-        ControllerCommons.exportChart(chart, name, "title text", null, "MyLayout");
-        expect(callTimes).toBe(1);
-    });
-    
     it("isNumber", function() {
         expect(ControllerCommons.isNumber()).toBe(false);
         expect(ControllerCommons.isNumber(0)).toBe(true);

@@ -19,8 +19,8 @@
 
 'use strict';
 
-angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl', [ '$scope', '$rootScope', '$routeParams', '$window', '$location', '$timeout', 'statisticsData', 'diagnosisTreeFilter', 'config', 'messageService', 'printFactory',
-    function ($scope, $rootScope, $routeParams, $window, $location, $timeout, statisticsData, diagnosisTreeFilter, config, messageService, printFactory) {
+angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl', [ '$scope', '$rootScope', '$routeParams', '$window', '$location', '$timeout', 'statisticsData', 'diagnosisTreeFilter', 'config', 'messageService', 'printFactory', 'chartFactory',
+    function ($scope, $rootScope, $routeParams, $window, $location, $timeout, statisticsData, diagnosisTreeFilter, config, messageService, printFactory, chartFactory) {
         var isVerksamhet = ControllerCommons.isShowingVerksamhet($location);
         var chart = {};
 
@@ -29,7 +29,7 @@ angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl', [ '$sco
         ];
 
         var paintChart = function (chartCategories, chartSeries, doneLoadingCallback) {
-            var chartOptions = ControllerCommons.getHighChartConfigBase(chartCategories, chartSeries, doneLoadingCallback);
+            var chartOptions = chartFactory.getHighChartConfigBase(chartCategories, chartSeries, doneLoadingCallback);
             chartOptions.chart.type = 'column';
             chartOptions.chart.marginLeft = 60;
             chartOptions.chart.marginTop = 27;
@@ -67,13 +67,13 @@ angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl', [ '$sco
         };
 
         $scope.switchChartType = function (chartType) {
-            ControllerCommons.switchChartType(chart.series, chartType);
+            chartFactory.switchChartType(chart.series, chartType);
 
             chart.redraw();
         };
 
         $scope.showInLegend = function(index) {
-            return ControllerCommons.showInLegend(chart.series, index);
+            return chartFactory.showInLegend(chart.series, index);
         };
 
         $scope.toggleSeriesVisibility = function (index) {
@@ -161,7 +161,7 @@ angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl', [ '$sco
         }
 
         $scope.exportChart = function () {
-            ControllerCommons.exportChart(chart, $scope.pageName, $scope.subTitle, $scope.activeDiagnosFilters);
+            chartFactory.exportChart(chart, $scope.pageName, $scope.subTitle, $scope.activeDiagnosFilters);
         };
 
         $scope.print = function (bwPrint) {

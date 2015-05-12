@@ -19,8 +19,8 @@
 
 'use strict';
 
-angular.module('StatisticsApp').controller('businessOverviewCtrl', ['$scope', '$rootScope', '$window', '$timeout', 'statisticsData', 'businessFilter', '$routeParams', 'printFactory',
-function ($scope, $rootScope, $window, $timeout, statisticsData, businessFilter, $routeParams, printFactory) {
+angular.module('StatisticsApp').controller('businessOverviewCtrl', ['$scope', '$rootScope', '$window', '$timeout', 'statisticsData', 'businessFilter', '$routeParams', 'printFactory', 'chartFactory',
+function ($scope, $rootScope, $window, $timeout, statisticsData, businessFilter, $routeParams, printFactory, chartFactory) {
 
     var perMonthAlterationChart = {}, newSexProportionChart = {}, oldSexProportionChart = {},
         ageDonutChart = {}, diagnosisDonutChart = {}, degreeOfSickLeaveChart = {}, sickLeaveLengthChart = {};
@@ -62,7 +62,7 @@ function ($scope, $rootScope, $window, $timeout, statisticsData, businessFilter,
             };
         }
 
-        chartOptions = ControllerCommons.getHighChartConfigBase([], [
+        chartOptions = chartFactory.getHighChartConfigBase([], [
             {
                 data: [
                     [1]
@@ -133,7 +133,7 @@ function ($scope, $rootScope, $window, $timeout, statisticsData, businessFilter,
             }
         ];
 
-        chartOptions = ControllerCommons.getHighChartConfigBase([], series);
+        chartOptions = chartFactory.getHighChartConfigBase([], series);
         chartOptions.chart.type = 'pie';
         chartOptions.chart.renderTo = containerId;
         chartOptions.chart.height = 220;
@@ -164,7 +164,7 @@ function ($scope, $rootScope, $window, $timeout, statisticsData, businessFilter,
     };
 
     var paintDonutChart = function(containerId, chartData, tooltipHeaderPrefix) {
-        var chartOptions = ControllerCommons.getHighChartConfigBase([], []);
+        var chartOptions = chartFactory.getHighChartConfigBase([], []);
         chartOptions.chart.type = 'pie';
         chartOptions.chart.renderTo = containerId;
         chartOptions.chart.height = 180;
@@ -259,7 +259,7 @@ function ($scope, $rootScope, $window, $timeout, statisticsData, businessFilter,
             return e.name;
         });
 
-        chartOptions = ControllerCommons.getHighChartConfigBase(categories, series);
+        chartOptions = chartFactory.getHighChartConfigBase(categories, series);
         chartOptions.chart.type = 'column';
         chartOptions.chart.renderTo = containerId;
         chartOptions.chart.height = 240;
