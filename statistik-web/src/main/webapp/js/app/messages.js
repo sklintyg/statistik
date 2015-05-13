@@ -49,7 +49,9 @@ var stMessages = {
         'lbl.gor-urval': 'Gör urval',
         'lbl.dolj-tabell': 'Dölj tabell',
         'lbl.visa-tabell': 'Visa tabell',
-        'lbl.visa-knappgrupp-serier': 'Visa som:',
+        'lbl.visa-knappgrupp-serier': 'Visa som',
+        'lbl.diagramtyp-knappgrupp': 'Typ av diagram',
+
 
         //filter
         'lbl.filter.valj-verksamhetstyper': 'Välj verksamhetstyper:',

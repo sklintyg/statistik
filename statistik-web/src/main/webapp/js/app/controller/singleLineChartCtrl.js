@@ -96,12 +96,7 @@ angular.module('StatisticsApp').controller('singleLineChartCtrl', [ '$scope', '$
         };
 
         $scope.toggleSeriesVisibility = function (index) {
-            var series = chart.series[index];
-            if (series.visible) {
-                series.hide();
-            } else {
-                series.show();
-            }
+            chartFactory.toggleSeriesVisibility(chart.series[index]);
         };
 
 

@@ -77,12 +77,7 @@ angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl', [ '$sco
         };
 
         $scope.toggleSeriesVisibility = function (index) {
-            var series = chart.series[index];
-            if (series.visible) {
-                series.hide();
-            } else {
-                series.show();
-            }
+            chartFactory.toggleSeriesVisibility(chart.series[index]);
         };
 
         var populateDetailsOptions = function (result) {

@@ -133,6 +133,8 @@ angular.module('StatisticsApp').controller('doubleAreaChartsCtrl', [ '$scope', '
             chartFactory.switchChartType(that.chart2.series, chartType);
             that.chart1.redraw();
             that.chart2.redraw();
+
+            updateChartsYAxisMaxValue();
         };
 
         $scope.showInLegend = function(index) {
@@ -190,15 +192,9 @@ angular.module('StatisticsApp').controller('doubleAreaChartsCtrl', [ '$scope', '
         ];
 
         $scope.toggleSeriesVisibility = function (index) {
-            var s1 = that.chart1.series[index];
-            var s2 = that.chart2.series[index];
-            if (s1.visible) {
-                s1.hide();
-                s2.hide();
-            } else {
-                s1.show();
-                s2.show();
-            }
+            chartFactory.toggleSeriesVisibility(chart1.series[index]);
+            chartFactory.toggleSeriesVisibility(chart2.series[index]);
+
             updateChartsYAxisMaxValue();
         };
 

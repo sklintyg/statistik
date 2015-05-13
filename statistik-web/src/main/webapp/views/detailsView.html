@@ -105,37 +105,57 @@
          	</div>
        	</div>
 
-		<div class="col-xs-12 pull-right" data-ng-class="{margin_top_button_group: showDetailsOptions}" style="margin-bottom: 10px;">
+		<div class="row" data-ng-class="{margin_top_button_group: showDetailsOptions}" style="margin-bottom: 10px;">
             <!-- toolbar -->
-            <div class="btn-toolbar pull-right" role="toolbar">
+            <!--<div class="row">-->
                 <!-- Button group for viewing different series -->
-                <h3 message key="lbl.visa-knappgrupp-serier" data-ng-if="exchangeableViews"></h3>
-                <chart-series-bg views="exchangeableViews"></chart-series-bg>
 
+            <div class="col-sm-12 col-lg-8 pull-right">
+                <div class="pull-right">
+                    <div class="col-sm-5 col-sm-push-1">
+                        <h3 message key="lbl.visa-knappgrupp-serier" data-ng-if="exchangeableViews"></h3>
+                        <chart-series-bg views="exchangeableViews"></chart-series-bg>
+                    </div>
 
-                <div class="btn-group chart-icon-bar" data-ng-click="switchChartType('bar')" ng-show="isVerksamhetShowing"></div>
+                    <div class="col-sm-4" ng-show="isVerksamhetShowing">
+                        <h3 message key="lbl.diagramtyp-knappgrupp"></h3>
 
-                <div class="btn-group chart-icon-line" data-ng-click="switchChartType('line')" ng-show="isVerksamhetShowing"></div>
+                        <div class="chart-icon-bar" data-ng-click="switchChartType('bar')"></div>
 
-                <div class="btn-group chart-icon-area" data-ng-click="switchChartType('area')" ng-show="isVerksamhetShowing"></div>
+                        <div class="chart-icon-line" data-ng-click="switchChartType('line')"></div>
 
-                <!-- PRINT BUTTON GROUP -->
-                <div class="btn-group statistics-btn-group" role="group">
+                        <div class="chart-icon-area" data-ng-click="switchChartType('area')"></div>
+                    </div>
 
-                    <button class="multiselect dropdown-toggle btn btn-default" data-toggle="dropdown">
-                        <span message key="dropdown.val.rapport"></span>
-                        <span class="caret"></span>
-                    </button>
+                    <!-- PRINT BUTTON GROUP -->
+                    <div class="col-sm-3 col-sm-pull-1 top-45px-margin">
+                        <button class="multiselect dropdown-toggle btn btn-default" data-toggle="dropdown">
+                            <span message key="dropdown.val.rapport"></span>
+                            <span class="caret"></span>
+                        </button>
 
-                    <ul class="dropdown-menu detail-view-choice-dropdown">
-                        <li><a data-ng-click="print(false)"><img src="img/dropdown-icons/farg1b.png"/><span message key="dropdown.val.skrivut-farg"></span></a></li>
-                        <li><a data-ng-click="print(true)"><img src="img/dropdown-icons/sv_vit1b.png"/><span message key="dropdown.val.skrivut-svart-vitt"></span></a></li>
-                        <!-- li><a class="disabled"><img src="img/dropdown-icons/pdf-inactive.png"/> PDF-fil</a></li -->
-                        <li data-ng-repeat="chartContainer in chartContainers"><a data-ng-click="exportChart(chartContainer.id)"><img src="img/dropdown-icons/png1b.png"/><span message key="dropdown.val.spara-diagram-bild-1"></span>{{chartContainer.name}}<span message key="dropdown.val.spara-diagram-bild-2"></span></a></li>
-                        <li><a data-ng-href="{{exportTableUrl}}{{queryString}}" target="_self"><img src="img/dropdown-icons/csv_icon.png"/><span message key="dropdown.val.spara-excel"></span></a></li>
-                    </ul>
+                        <ul class="dropdown-menu detail-view-choice-dropdown">
+                            <li><a data-ng-click="print(false)"><img src="img/dropdown-icons/farg1b.png"/><span message
+                                                                                                                key="dropdown.val.skrivut-farg"></span></a>
+                            </li>
+                            <li><a data-ng-click="print(true)"><img src="img/dropdown-icons/sv_vit1b.png"/><span message
+                                                                                                                 key="dropdown.val.skrivut-svart-vitt"></span></a>
+                            </li>
+                            <!-- li><a class="disabled"><img src="img/dropdown-icons/pdf-inactive.png"/> PDF-fil</a></li -->
+                            <li data-ng-repeat="chartContainer in chartContainers"><a
+                                    data-ng-click="exportChart(chartContainer.id)"><img
+                                    src="img/dropdown-icons/png1b.png"/><span message
+                                                                              key="dropdown.val.spara-diagram-bild-1"></span>{{chartContainer.name}}<span
+                                    message key="dropdown.val.spara-diagram-bild-2"></span></a></li>
+                            <li><a data-ng-href="{{exportTableUrl}}{{queryString}}" target="_self"><img
+                                    src="img/dropdown-icons/csv_icon.png"/><span message
+                                                                                 key="dropdown.val.spara-excel"></span></a>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             </div>
+            <!--</div>-->
         </div>
 
     </div>
