@@ -133,6 +133,8 @@ angular.module('StatisticsApp').controller('doubleAreaChartsCtrl', [ '$scope', '
             chartFactory.switchChartType(that.chart2.series, chartType);
             that.chart1.redraw();
             that.chart2.redraw();
+
+            updateChartsYAxisMaxValue();
         };
 
         $scope.showInLegend = function(index) {
