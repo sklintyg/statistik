@@ -81,10 +81,21 @@ angular.module('StatisticsApp.businessFilter.directive', [])
                         businessFilter.useDefaultPeriod = true;
                     }
 
+                    var getVerksamhetstyper = function () {
+                        var selectedVerksamhettyps = _.filter(businessFilter.verksamhetsTyper, function(verksamhetstyp) {
+                            return _.contains(businessFilter.selectedVerksamhetTypIds, verksamhetstyp.id);
+                        });
+                        var selectedIdsFromVerksamhetstyps = _.map(selectedVerksamhettyps, function (verksamhetstyp) {
+                            return verksamhetstyp.ids;
+                        });
+                        var selectedIdsFromVerksamhetstypsFlattened = _.flatten(selectedIdsFromVerksamhetstyps);
+                        return _.uniq(selectedIdsFromVerksamhetstypsFlattened);
+                    };
+
                     var params = {
                         diagnoser: businessFilter.selectedDiagnoses,
                         enheter: businessFilter.geographyBusinessIds,
-                        verksamhetstyper: businessFilter.verksamhetsTypIds,
+                        verksamhetstyper: getVerksamhetstyper(),
                         fromDate: formattedFromDate,
                         toDate: formattedToDate,
                         useDefaultPeriod: businessFilter.useDefaultPeriod

@@ -8,7 +8,7 @@
                 <label for="select-unit">
                     <span message key="lbl.filter.valj-verksamhetstyper"></span>
                 </label><br/>
-                <select ng-model="businessFilter.verksamhetsTypIds" multiple="multiple"
+                <select ng-model="businessFilter.selectedVerksamhetTypIds" multiple="multiple"
                         ng-options="verksamhet.id as verksamhet.name for verksamhet in businessFilter.verksamhetsTyper"
                         multiselect-dropdown id="select-verksamhet">
                 </select>
