@@ -249,11 +249,20 @@ angular.module('StatisticsApp.charts', ['underscore'])
             return series[index].options.showInLegend;
         };
 
+        var toggleSeriesVisibility = function toggleSeriesVisibility(series) {
+            if (series.visible) {
+                series.hide();
+            } else {
+                series.show();
+            }
+        };
+
         //This is the public api accessible to customers of this factory
         return {
             getHighChartConfigBase: getHighChartConfigBase,
             exportChart: exportChart,
             switchChartType: switchChartType,
-            showInLegend: showInLegend
+            showInLegend: showInLegend,
+            toggleSeriesVisibility: toggleSeriesVisibility
         };
     }]);
