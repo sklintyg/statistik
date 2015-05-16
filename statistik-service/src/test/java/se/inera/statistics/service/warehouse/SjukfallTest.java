@@ -303,4 +303,44 @@ public class SjukfallTest {
         return new Fact(1,1,1,1,1,1, startdatum,startdatum + sjukskrivningslangd - 1,1,1, diagnoskapitel,1,1,1,1,1,1,new int[0], 1);
     }
 
+    @Test
+    public void testGetLastFactDifferentStartDateSTATISTIK1060() throws Exception {
+        //Given
+        final SjukfallExtended sjukfallExtended = new SjukfallExtended(createFact(2, 3, 2, 2)).extendSjukfall(createFact(2, 2, 1, 2));
+
+        //When
+        final Sjukfall sjukfall = Sjukfall.create(sjukfallExtended);
+
+        //Then
+        assertEquals(2, sjukfall.getDiagnosavsnitt());
+    }
+
+    @Test
+    public void testGetLastFactSameStartDateButDifferentLakarintygSTATISTIK1060() throws Exception {
+        //Given
+        final SjukfallExtended sjukfallExtended = new SjukfallExtended(createFact(2, 2, 2, 2)).extendSjukfall(createFact(1, 2, 1, 2));
+
+        //When
+        final Sjukfall sjukfall = Sjukfall.create(sjukfallExtended);
+
+        //Then
+        assertEquals(2, sjukfall.getDiagnosavsnitt());
+    }
+
+    @Test
+    public void testGetLastFactSameStartDateAndSameDifferentLakarintygButDifferentSjukskrivningsgradSTATISTIK1060() throws Exception {
+        //Given
+        final SjukfallExtended sjukfallExtended = new SjukfallExtended(createFact(2, 2, 2, 2)).extendSjukfall(createFact(2, 2, 1, 3));
+
+        //When
+        final Sjukfall sjukfall = Sjukfall.create(sjukfallExtended);
+
+        //Then
+        assertEquals(1, sjukfall.getDiagnosavsnitt());
+    }
+
+    private Fact createFact(int lakarintyg, int startdatum, int diagnosavsnitt, int sjukskrivningsgrad) {
+        return new Fact(1,1,1,1, lakarintyg,1, startdatum,1,1,1,1, diagnosavsnitt,1,1, sjukskrivningsgrad,1,1,new int[0],1);
+    }
+
 }

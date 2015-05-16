@@ -9,9 +9,9 @@ Ett sjukfall består av två intyg med samma startdatum.
 | script | troskel varde | 1 |
 
 | Enbart foljande intyg finns |
-| lakarintyg | personnr | diagnoskod | start    | slut       | arbetsförmåga | enhet | län |
-| 11         | 19820307-0120 | F40 | 2013-02-15 | 2013-03-16 | 50            | enhet1 | 03 |
-| 8          | 19820307-0120 | A00 | 2013-02-15 | 2013-03-02 | 0             | enhet1 | 01 |
+| personnr | diagnoskod | start    | slut       | arbetsförmåga | enhet  | län |
+| 19820307-0120 | A00 | 2013-02-15 | 2013-03-02 | 0             | enhet1 | 01 |
+| 19820307-0120 | F40 | 2013-02-15 | 2013-03-16 | 50            | enhet1 | 03 |
 
 !3 Då gäller:
 
@@ -21,10 +21,10 @@ Nationell:
 
 | Sjukfall i rapporten diagnosgrupp |
 | år   | månad | grupp   | män? | kvinnor? |
-| 2013 | feb   | A00-B99 | 0    | 1        |
-| 2013 | feb   | F00-F99 | 0    | 0        |
-| 2013 | mar   | A00-B99 | 0    | 1        |
-| 2013 | mar   | F00-F99 | 0    | 0        |
+| 2013 | feb   | A00-B99 | 0    | 0        |
+| 2013 | feb   | F00-F99 | 0    | 1        |
+| 2013 | mar   | A00-B99 | 0    | 0        |
+| 2013 | mar   | F00-F99 | 0    | 1        |
 
 | Sjukfall i rapporten aldersgrupp |
 | åldersgrupp | män? | kvinnor? |
@@ -54,10 +54,10 @@ Inloggad:
 
 | Sjukfall i rapporten diagnosgrupp |
 |inloggad som | år   | månad | grupp   | män? | kvinnor? |
-| user1       | 2013 | feb   | A00-B99 | 0    | 1        |
-| user1       | 2013 | feb   | F00-F99 | 0    | 0        |
-| user1       | 2013 | mar   | A00-B99 | 0    | 1        |
-| user1       | 2013 | mar   | F00-F99 | 0    | 0        |
+| user1       | 2013 | feb   | A00-B99 | 0    | 0        |
+| user1       | 2013 | feb   | F00-F99 | 0    | 1        |
+| user1       | 2013 | mar   | A00-B99 | 0    | 0        |
+| user1       | 2013 | mar   | F00-F99 | 0    | 1        |
 
 | Sjukfall i rapporten aldersgrupp |
 | inloggad som | åldersgrupp | män? | kvinnor? |

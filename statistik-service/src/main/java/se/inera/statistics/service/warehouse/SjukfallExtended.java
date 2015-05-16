@@ -40,7 +40,7 @@ public class SjukfallExtended {
     private int start;
     private final int lan;
     private int end;
-    private int intygCount;
+    private List<Fact> facts = new ArrayList<>();
     private final int kon;
     private int alder;
     private List<Diagnos> diagnoses = new ArrayList<>();
@@ -54,7 +54,7 @@ public class SjukfallExtended {
         start = line.getStartdatum();
         end = line.getSlutdatum();
         sjukskrivningsperiods.add(new Sjukskrivningsperiod(start, line.getSjukskrivningslangd()));
-        intygCount++;
+        facts.add(line);
         kon = line.getKon();
         alder = line.getAlder();
         diagnoses.add(new Diagnos(start, end, line.getDiagnoskapitel(), line.getDiagnosavsnitt(), line.getDiagnoskategori(), line.getDiagnoskod()));
@@ -73,7 +73,7 @@ public class SjukfallExtended {
         start = Math.min(previous.getStart(), start);
         end = Math.max(previous.getEnd(), end);
         sjukskrivningsperiods.addAll(previous.sjukskrivningsperiods);
-        intygCount += previous.getIntygCount();
+        facts.addAll(previous.facts);
         extending = previous;
         lakare.addAll(previous.getLakare());
         diagnoses.addAll(0, previous.diagnoses);
@@ -86,7 +86,7 @@ public class SjukfallExtended {
         this(sjukfall);
         start = previous.getStart();
         sjukskrivningsperiods.addAll(previous.sjukskrivningsperiods);
-        intygCount += previous.getIntygCount();
+        facts.addAll(previous.facts);
         lakare.addAll(previous.getLakare());
         diagnoses.addAll(0, previous.diagnoses);
         alder = previous.alder > this.alder ? previous.alder : this.alder;
@@ -98,7 +98,7 @@ public class SjukfallExtended {
         start = sjukfall.getStart();
         end = sjukfall.getEnd();
         sjukskrivningsperiods.addAll(sjukfall.sjukskrivningsperiods);
-        intygCount = sjukfall.getIntygCount();
+        facts.addAll(sjukfall.facts);
         kon = sjukfall.kon;
         alder = sjukfall.getAlder();
         diagnoses.addAll(sjukfall.diagnoses);
@@ -162,7 +162,7 @@ public class SjukfallExtended {
                 + "start=" + start
                 + ", end=" + end
                 + ", realDays=" + getRealDays()
-                + ", intygCount=" + intygCount
+                + ", intygCount=" + getIntygCount()
                 + '}';
     }
 
@@ -195,7 +195,7 @@ public class SjukfallExtended {
     }
 
     public int getIntygCount() {
-        return intygCount;
+        return facts.size();
     }
 
     public int getStart() {
@@ -211,13 +211,7 @@ public class SjukfallExtended {
     }
 
     public int getSjukskrivningsgrad() {
-        Map.Entry<Range, Integer> currentFound = null;
-        for (Map.Entry<Range, Integer> entry : sjukskrivningsgrad.entrySet()) {
-            if (currentFound == null || entry.getKey().getFrom().isAfter(currentFound.getKey().getFrom())) {
-                currentFound = entry;
-            }
-        }
-        return currentFound.getValue();
+        return getLastFact().getSjukskrivningsgrad();
     }
 
     public int getDiagnosavsnitt() {
@@ -225,13 +219,27 @@ public class SjukfallExtended {
     }
 
     Diagnos getLastDiagnosis() {
-        Diagnos currentFoundDiagnos = null;
-        for (Diagnos diagnose : diagnoses) {
-            if (currentFoundDiagnos == null || diagnose.startDatum > currentFoundDiagnos.startDatum) {
-                currentFoundDiagnos = diagnose;
+        return new Diagnos(getLastFact());
+    }
+
+    private Fact getLastFact() {
+        Fact currentLastFound = null;
+        for (Fact fact : facts) {
+            if (currentLastFound == null) {
+                currentLastFound = fact;
+            } else if (fact.getStartdatum() > currentLastFound.getStartdatum()) {
+                currentLastFound = fact;
+            } else if (fact.getStartdatum() == currentLastFound.getStartdatum()) {
+                if (fact.getLakarintyg() > currentLastFound.getLakarintyg()) {
+                    currentLastFound = fact;
+                } else if (fact.getLakarintyg() == currentLastFound.getLakarintyg()) {
+                    if (fact.getSjukskrivningsgrad() > currentLastFound.getSjukskrivningsgrad()) {
+                        currentLastFound = fact;
+                    }
+                }
             }
         }
-        return currentFoundDiagnos;
+        return currentLastFound;
     }
 
     public boolean isExtended() {
@@ -306,6 +314,10 @@ public class SjukfallExtended {
             this.diagnosavsnitt = diagnosavsnitt;
             this.diagnoskategori = diagnoskategori;
             this.diagnoskod = diagnoskod;
+        }
+
+        private Diagnos(Fact fact) {
+            this(fact.getStartdatum(), fact.getSlutdatum(), fact.getDiagnoskapitel(), fact.getDiagnosavsnitt(), fact.getDiagnoskategori(), fact.getDiagnoskod());
         }
 
         public int getDiagnoskapitel() {
