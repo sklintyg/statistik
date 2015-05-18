@@ -8,14 +8,27 @@ Ett sjukfall består av två intyg med samma startdatum.
 
 | script | troskel varde | 1 |
 
-| Enbart foljande intyg finns |
-| personnr | diagnoskod | start    | slut       | arbetsförmåga | enhet  | län |
-| 19820307-0120 | A00 | 2013-02-15 | 2013-03-02 | 0             | enhet1 | 01 |
-| 19820307-0120 | F40 | 2013-02-15 | 2013-03-16 | 50            | enhet1 | 03 |
+| script | ta bort existerande intyg |
+
+| Foljande lakare finns |
+| id      | förnamn | efternamn | kön | ålder | befattningar   | kommentar |
+| lakare1 | Bo      | Bengtsson | MALE | 50   | 201010, 201013 | Överläkare, Företagsläkare |
+
+| Foljande intyg finns |
+| personnr | diagnoskod | start    | slut       | arbetsförmåga | enhet  | läkare | län |
+| 19820307-0120 | A00 | 2013-02-15 | 2013-03-16 | 0             | enhet1 | lakare1 | 01 |
+
+| Foljande lakare finns |
+| id      | förnamn | efternamn | kön | ålder | befattningar | kommentar |
+| lakare1 | Bo      | B         | MALE | 49   | 201013       | Företagsläkare | 
+
+| Foljande intyg finns |
+| personnr | diagnoskod | start    | slut       | arbetsförmåga | enhet  | läkare | län |
+| 19820307-0120 | F40 | 2013-02-15 | 2013-03-02 | 50            | enhet1 | lakare1 | 03 |
 
 !3 Då gäller:
 
-Intyget med högst värde i kolumnen "lakarintyg" anses vara sjukfallets senaste.
+Intyget med högst värde i kolumnen "lakarintyg" (dvs. det som inkommit senast) anses vara sjukfallets senaste.
 
 Nationell:
 
@@ -70,3 +83,18 @@ Inloggad:
 | user1        | 2013 | feb   | 50%                  | 0    | 1        |
 | user1        | 2013 | mar   | 100%                 | 0    | 0        |
 | user1        | 2013 | mar   | 50%                  | 0    | 1        |
+
+| Sjukfall i rapporten sjukfall per lakare |
+| inloggad som | läkare         | män? | kvinnor? |
+| user1        | Bo B           | 0    | 1        |
+| user1        | Bo Bengtsson   | -1   | -1       |
+
+| Sjukfall i rapporten lakarkonalder |
+| inloggad som | läkargrupp                  | män? | kvinnor? |
+| user1        | Manlig läkare 40-49 år      | 0    | 1        |
+| user1        | Manlig läkare 50-59 år      | 0    | 0        |
+
+| Sjukfall i rapporten lakarbefattning |
+| inloggad som | läkarbefattning  | män? | kvinnor? |
+| user1        | Överläkare       | -1   | -1       |
+| user1        | Företagsläkare   | 0    | 1        |
