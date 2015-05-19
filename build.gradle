@@ -71,6 +71,7 @@ configure(subprojects.findAll { ['hsa-integration', 'statistik-service', 'statis
     apply plugin: 'checkstyle'
 
     checkstyle {
+        configProperties.checkstyleConfigDir = file("$rootProject.projectDir/build-tools/src/main/resources")
         config = resources.text.fromFile("${rootProject.projectDir}/build-tools/src/main/resources/checkstyle.xml")
         ignoreFailures = false
         // This is empty b/c we run checkstyle explicitly in the "testAll" task below
