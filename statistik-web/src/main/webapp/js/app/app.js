@@ -258,6 +258,11 @@ var app = angular.module('StatisticsApp',
             controllerAs: 'VerksamhetLakarbefattningCtrl',
             resolve: { config: app.casesPerLakarbefattningTidsserieConfig },
             title: 'Sjukfall per läkarbefattning'
+        }).when('/landsting/filuppladdning', {
+            templateUrl: 'views/landsting/fileupload.html',
+            controller: 'landstingFileUploadCtrl',
+            controllerAs: 'LandstingFileUploadCtrl',
+            title: 'Filuppladdning'
         }).when('/om/tjansten', {
             templateUrl: 'views/about/about.html',
             controllerAs: 'AboutServiceCtrl',

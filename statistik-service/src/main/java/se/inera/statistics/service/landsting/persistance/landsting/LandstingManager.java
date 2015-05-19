@@ -1,0 +1,57 @@
+/**
+ * Copyright (C) 2015 Inera AB (http://www.inera.se)
+ *
+ * This file is part of statistik (https://github.com/sklintyg/statistik).
+ *
+ * statistik is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * statistik is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+package se.inera.statistics.service.landsting.persistance.landsting;
+
+import com.google.common.base.Optional;
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
+import java.util.List;
+
+import static org.hibernate.annotations.common.util.StringHelper.toUpperCase;
+
+@Component
+public class LandstingManager {
+
+    @PersistenceContext(unitName = "IneraStatisticsLog")
+    private EntityManager manager;
+
+    @Transactional
+    public List<Landsting> getAll() {
+        TypedQuery<Landsting> query = manager.createQuery("SELECT l FROM Landsting l", Landsting.class);
+        return query.getResultList();
+    }
+
+    @Transactional
+    public Optional<Landsting> get(long id) {
+        final Landsting landsting = manager.find(Landsting.class, id);
+        return landsting == null ? Optional.<Landsting>absent() : Optional.of(landsting);
+    }
+
+    @Transactional
+    public Optional<Landsting> getForVg(String vgId) {
+        TypedQuery<Landsting> query = manager.createQuery("SELECT l FROM Landsting l where l.vardgivareId = :vgId", Landsting.class).setParameter("vgId", toUpperCase(vgId));
+        final List<Landsting> resultList = query.getResultList();
+        return resultList.isEmpty() ? Optional.<Landsting>absent() : Optional.of(resultList.get(0));
+    }
+
+}

@@ -26,6 +26,7 @@ import com.google.common.base.Predicates;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.sun.istack.NotNull;
+import org.apache.cxf.jaxrs.ext.multipart.MultipartBody;
 import org.joda.time.LocalDate;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
@@ -35,6 +36,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
+import se.inera.statistics.service.landsting.LandstingEnhetFileData;
+import se.inera.statistics.service.landsting.LandstingEnhetFileDataRow;
+import se.inera.statistics.service.landsting.LandstingEnhetHandler;
+import se.inera.statistics.service.landsting.NoLandstingSetForVgException;
 import se.inera.statistics.service.report.model.DiagnosgruppResponse;
 import se.inera.statistics.service.report.model.KonDataResponse;
 import se.inera.statistics.service.report.model.Range;
@@ -52,10 +57,14 @@ import se.inera.statistics.web.model.LoginInfo;
 import se.inera.statistics.web.model.SimpleDetailsData;
 import se.inera.statistics.web.model.TableDataReport;
 import se.inera.statistics.web.model.Verksamhet;
+import se.inera.statistics.web.service.landsting.LandstingEnhetFileParseException;
+import se.inera.statistics.web.service.landsting.LandstingFileReader;
 
+import javax.activation.DataSource;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -104,6 +113,11 @@ public class ProtectedChartDataService {
 
     @Autowired
     private SjukfallUtil sjukfallUtil;
+
+    @Autowired
+    private LandstingEnhetHandler landstingEnhetHandler;
+
+    private LandstingFileReader landstingFileReader = new LandstingFileReader();
 
     /**
      * Gets sjukfall per manad for verksamhetId.
@@ -572,6 +586,34 @@ public class ProtectedChartDataService {
         SimpleKonResponse<SimpleKonDataRow> longSickLeaves = warehouse.getLangaSjukskrivningarTvarsnitt(filter.getPredicate(), range, getSelectedVgIdForLoggedInUser(request));
         SimpleDetailsData data = new LongSickLeaveTvarsnittConverter().convert(longSickLeaves, filterSettings);
         return getResponse(data, csv);
+    }
+
+    @POST
+    @Path("landsting/fileupload")
+    @Produces({ "text/plain" })
+    @Consumes({ "multipart/form-data" })
+    @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
+    @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
+    public Response fileupload(@Context HttpServletRequest request, MultipartBody body) {
+        LoginInfo info = loginServiceUtil.getLoginInfo(request);
+        if (!info.isProcessledare()) {
+            LOG.warn("A user without processledar status tried to updated landstingsdata");
+            return Response.status(Response.Status.FORBIDDEN).entity("Data NOT updated").build();
+        }
+        final DataSource dataSource = body.getAttachment("file").getDataHandler().getDataSource();
+        try {
+            final List<LandstingEnhetFileDataRow> landstingFileRows = landstingFileReader.readExcelData(dataSource);
+            final String vardgivarId = info.getDefaultVerksamhet().getVardgivarId();
+            final LandstingEnhetFileData fileData = new LandstingEnhetFileData(vardgivarId, landstingFileRows);
+            landstingEnhetHandler.update(fileData);
+            return Response.ok("Data updated ok").build();
+        } catch (LandstingEnhetFileParseException e) {
+            LOG.warn("Failed to parse landstings file", e);
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Data NOT updated: " + e.getMessage()).build();
+        } catch (NoLandstingSetForVgException e) {
+            LOG.warn("Failed to update landsting settings", e);
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Data NOT updated: Current vårdgivare is not connected to a landsting").build();
+        }
     }
 
     FilterSettings getFilter(HttpServletRequest request, String filterHash, int defaultRangeValue) {

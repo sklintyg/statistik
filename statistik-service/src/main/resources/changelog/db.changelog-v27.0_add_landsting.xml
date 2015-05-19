@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    Copyright (C) 2015 Inera AB (http://www.inera.se)
+
+    This file is part of statistik (https://github.com/sklintyg/statistik).
+
+    statistik is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    statistik is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+-->
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd"
+                   logicalFilePath="liquibase/db.changelog-v27.0_add_landsting.xml">
+    <changeSet id="27_add_landsting_table" author="fredrik.engstrom">
+        <createTable tableName="Landsting">
+            <column name="id" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="namn" type="varchar(255)"/>
+            <column name="vardgivareId" type="varchar(128)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="27_populate_landsting_table" author="fredrik.engstrom">
+        <insert tableName="Landsting"> <column name="id" value="1"/> <column name="namn" value="Landstinget Blekinge"/> <column name="vardgivareId" value="SE2321000081-L001"/> </insert>
+        <insert tableName="Landsting"> <column name="id" value="2"/> <column name="namn" value="Landstinget Dalarna"/> <column name="vardgivareId" value="SE2321000180-1000"/> </insert>
+        <insert tableName="Landsting"> <column name="id" value="3"/> <column name="namn" value="Region Gävleborg"/> <column name="vardgivareId" value="SE2321000198-016965"/> </insert>
+        <insert tableName="Landsting"> <column name="id" value="4"/> <column name="namn" value="Region Halland"/> <column name="vardgivareId" value="SE2321000115-O00001"/> </insert>
+        <insert tableName="Landsting"> <column name="id" value="5"/> <column name="namn" value="Region Jämtland Härjedalen"/> <column name="vardgivareId" value="SE2321000214-E000002"/> </insert>
+        <insert tableName="Landsting"> <column name="id" value="6"/> <column name="namn" value="Region Jönköpings län"/> <column name="vardgivareId" value="SE2321000057-493K"/> </insert>
+        <insert tableName="Landsting"> <column name="id" value="7"/> <column name="namn" value="Landstinget i Kalmar Län"/> <column name="vardgivareId" value="SE2321000073-1000"/> </insert>
+        <insert tableName="Landsting"> <column name="id" value="8"/> <column name="namn" value="Region Kronoberg"/> <column name="vardgivareId" value="SE2321000065-7330028000014"/> </insert>
+        <insert tableName="Landsting"> <column name="id" value="9"/> <column name="namn" value="Norrbottens läns landsting"/> <column name="vardgivareId" value="SE2321000230-E00001"/> </insert>
+        <insert tableName="Landsting"> <column name="id" value="10"/> <column name="namn" value="Region Skåne"/> <column name="vardgivareId" value="SE162321000255-O00001"/> </insert>
+        <insert tableName="Landsting"> <column name="id" value="11"/> <column name="namn" value="Stockholms Läns Landsting"/> <column name="vardgivareId" value="SE2321000016-39KJ"/> </insert>
+        <insert tableName="Landsting"> <column name="id" value="12"/> <column name="namn" value="Gotland"/> <column name="vardgivareId" value="SE2321000016-4TM4"/> </insert>
+        <insert tableName="Landsting"> <column name="id" value="13"/> <column name="namn" value="Landstinget Sörmland"/> <column name="vardgivareId" value="SE2321000032-1000"/> </insert>
+        <insert tableName="Landsting"> <column name="id" value="14"/> <column name="namn" value="Landstinget i Uppsala Län"/> <column name="vardgivareId" value="SE162321000024-0001"/> </insert>
+        <insert tableName="Landsting"> <column name="id" value="15"/> <column name="namn" value="Landstinget i Värmland"/> <column name="vardgivareId" value="SE162321000156-400S"/> </insert>
+        <insert tableName="Landsting"> <column name="id" value="16"/> <column name="namn" value="Västerbottens läns landsting"/> <column name="vardgivareId" value="SE2321000222-0000001"/> </insert>
+        <insert tableName="Landsting"> <column name="id" value="17"/> <column name="namn" value="Landstinget Västernorrland"/> <column name="vardgivareId" value="SE2321000206-E00001"/> </insert>
+        <insert tableName="Landsting"> <column name="id" value="18"/> <column name="namn" value="Landstinget Västmanland"/> <column name="vardgivareId" value="SE2321000172-2DB3"/> </insert>
+        <insert tableName="Landsting"> <column name="id" value="19"/> <column name="namn" value="Västra Götalandsregionen"/> <column name="vardgivareId" value="SE2321000131-E000000000001"/> </insert>
+        <insert tableName="Landsting"> <column name="id" value="20"/> <column name="namn" value="Region Örebro län"/> <column name="vardgivareId" value="SE2321000164-7381037590003"/> </insert>
+        <insert tableName="Landsting"> <column name="id" value="21"/> <column name="namn" value="Region Östergötland"/> <column name="vardgivareId" value="SE2321000040-AAAA"/> </insert>
+    </changeSet>
+    <changeSet id="27_add_landstingenhet_table" author="fredrik.engstrom">
+        <createTable tableName="LandstingEnhet">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="landstingId" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="enhetsNamn" type="varchar(255)"/>
+            <column name="enhetensHsaId" type="varchar(128)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="listadePatienter" type="int"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="27_add_landstingenhet_index" author="fredrik.engstrom">
+        <createIndex tableName="LandstingEnhet" indexName="idx_landstingId" unique="false">
+            <column name="landstingId"/>
+        </createIndex>
+    </changeSet>
+</databaseChangeLog>
