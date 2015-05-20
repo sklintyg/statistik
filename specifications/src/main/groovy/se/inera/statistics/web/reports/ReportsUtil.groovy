@@ -375,5 +375,11 @@ class ReportsUtil {
         return response.data
     }
 
+    def insertLandsting(vgId) {
+        def url = "/api/testsupport/landsting/name/" + vgId + "/vgid/" + vgId
+        println("insertLandsting: " + url)
+        statistik.put(path: url)
+    }
+
 }
 

@@ -18,13 +18,16 @@
  */
 package se.inera.statistics.service.landsting.persistance.landsting;
 
+import com.google.common.base.Function;
 import com.google.common.base.Optional;
+import com.google.common.collect.Lists;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
+import java.util.Collections;
 import java.util.List;
 
 import static org.hibernate.annotations.common.util.StringHelper.toUpperCase;
@@ -45,6 +48,20 @@ public class LandstingManager {
     public Optional<Landsting> get(long id) {
         final Landsting landsting = manager.find(Landsting.class, id);
         return landsting == null ? Optional.<Landsting>absent() : Optional.of(landsting);
+    }
+
+    @Transactional
+    public void add(String name, String vgId) {
+        final List<Landsting> all = getAll();
+        List<Long> allIds = Lists.transform(all, new Function<Landsting, Long>() {
+            @Override
+            public Long apply(Landsting landsting) {
+                return landsting.getId();
+            }
+        });
+        final Long maxId = Collections.max(allIds);
+        final Landsting landsting = new Landsting(maxId + 1, name, vgId);
+        manager.persist(landsting);
     }
 
     @Transactional

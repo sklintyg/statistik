@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import se.inera.statistics.service.hsa.HsaDataInjectable;
+import se.inera.statistics.service.landsting.persistance.landsting.LandstingManager;
 import se.inera.statistics.service.processlog.LogConsumer;
 import se.inera.statistics.service.processlog.Receiver;
 import se.inera.statistics.service.warehouse.NationellData;
@@ -23,6 +24,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -58,6 +60,9 @@ public class RestSupportService {
 
     @Autowired
     private SjukfallUtil sjukfallUtil;
+
+    @Autowired
+    private LandstingManager landstingManager;
 
     @POST
     @Path("cutoff")
@@ -151,6 +156,18 @@ public class RestSupportService {
     public Response insertPersonal(Personal personal) {
         LOG.info("Insert personal: " + personal);
         hsaDataInjectable.addPersonal(personal.getId(), personal.getFirstName(), personal.getLastName(), personal.getKon(), personal.getAge(), personal.getBefattning());
+        return Response.ok().build();
+    }
+
+    @PUT
+    @Path("landsting/name/{name}/vgid/{vgid}")
+    @Consumes({ MediaType.APPLICATION_JSON })
+    @Produces({ MediaType.APPLICATION_JSON })
+    public Response insertLandsting(@PathParam("name") String name, @PathParam("vgid") String vgId) {
+        LOG.info("Insert landsting with name {} and vgid {}", name, vgId);
+        if (!landstingManager.getForVg(vgId.toUpperCase()).isPresent()) {
+            landstingManager.add(name, vgId.toUpperCase());
+        }
         return Response.ok().build();
     }
 

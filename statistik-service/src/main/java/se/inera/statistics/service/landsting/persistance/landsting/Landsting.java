@@ -36,7 +36,8 @@ public class Landsting {
     private Landsting() {
     }
 
-    public Landsting(String namn, String vardgivareId) {
+    Landsting(long id, String namn, String vardgivareId) {
+        this.id = id;
         this.namn = namn;
         this.vardgivareId = vardgivareId;
     }

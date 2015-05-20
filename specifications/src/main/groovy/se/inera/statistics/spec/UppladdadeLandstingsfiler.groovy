@@ -22,6 +22,9 @@ class UppladdadeLandstingsfiler {
     }
 
     public void execute() {
+        def vgId = reportsUtil.getVardgivareForUser(användare)
+        reportsUtil.insertLandsting(vgId)
+
         reportsUtil.login(användare, true)
         def file = getClass().getResourceAsStream('/' + filnamn)
         def result = reportsUtil.uploadFile(file, filnamn)
