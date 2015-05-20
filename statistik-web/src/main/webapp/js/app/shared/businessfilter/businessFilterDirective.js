@@ -29,6 +29,8 @@ angular.module('StatisticsApp.businessFilter.directive', [])
 
                 scope.useDefaultPeriod = true;
 
+                scope.showDateValidationError = false;
+
                 function updateGeographyFilterSelectorDataButtonLabelText() {
                     scope.geographyFilterSelectorData.buttonLabelText = scope.businessFilter.geographyBusinessIds.length + " av " + scope.businessFilter.businesses.length + " valda";
                 }
@@ -62,59 +64,105 @@ angular.module('StatisticsApp.businessFilter.directive', [])
                     thirdLevelLabelText: messageService.getProperty("lbl.filter.modal.kategorier", null, "", null, true)
                 };
 
-                scope.makeSelection = function () {
+
+                var getVerksamhetstyper = function () {
+                    var selectedVerksamhettyps = _.filter(businessFilter.verksamhetsTyper, function(verksamhetstyp) {
+                        return _.contains(businessFilter.selectedVerksamhetTypIds, verksamhetstyp.id);
+                    });
+                    var selectedIdsFromVerksamhetstyps = _.map(selectedVerksamhettyps, function (verksamhetstyp) {
+                        return verksamhetstyp.ids;
+                    });
+                    var selectedIdsFromVerksamhetstypsFlattened = _.flatten(selectedIdsFromVerksamhetstyps);
+                    return _.uniq(selectedIdsFromVerksamhetstypsFlattened);
+                };
+
+                var hasFromDateValidationError = function() {
+                    return !businessFilter.fromDate ||
+                           !moment(businessFilter.fromDate, 'yyyy-MM').isValid() ||
+                           moment(businessFilter.fromDate).isBefore(TIME_INTERVAL_MIN_DATE) ||
+                          moment(businessFilter.fromDate).isAfter(moment());
+                };
+
+                var hasToDateValidationError = function() {
+                    return !businessFilter.toDate ||
+                        !moment(businessFilter.toDate, 'yyyy-MM').isValid() ||
+                        moment(businessFilter.toDate).isBefore(businessFilter.fromDate) ||
+                        moment(businessFilter.toDate).isAfter(moment());
+                };
+
+                var hasDatepickersValidationError = function() {
+                    var fromDateValidationError, toDateValidationError;
+
+                    if (scope.timeIntervalChecked) {
+                        fromDateValidationError = hasFromDateValidationError();
+                        toDateValidationError = hasToDateValidationError();
+
+                        if(fromDateValidationError) {
+                            scope.fromDateValidationError = true;
+                        }
+                        if(toDateValidationError) {
+                            scope.toDateValidationError = true;
+                        }
+                    }
+
+                    return fromDateValidationError || toDateValidationError ;
+                };
+
+                scope.makeSelection = function ($event) {
                     var formattedFromDate, formattedToDate;
 
-                    scope.isFilterCollapsed = !scope.isFilterCollapsed;
-
-                    //Be sure to format the date objects correctly before sending anything to the server
-                    if(businessFilter.fromDate && businessFilter.toDate) {
-                        formattedFromDate = moment(businessFilter.fromDate).format('YYYY-MM-DD');
-                        formattedToDate = moment(businessFilter.toDate);
-                        formattedToDate = formattedToDate.date(formattedToDate.daysInMonth()).format('YYYY-MM-DD');
-                    }
-
-                    //Only use a non default period if everything is set as expected
-                    if(scope.timeIntervalChecked && businessFilter.fromDate && businessFilter.toDate) {
-                        businessFilter.useDefaultPeriod = false;
+                    if (hasDatepickersValidationError()) {
+                        scope.showDateValidationError = true;
                     } else {
-                        businessFilter.useDefaultPeriod = true;
+                        scope.isFilterCollapsed = !scope.isFilterCollapsed;
+                        scope.showDateValidationError = false;
+                        scope.toDateValidationError = false;
+                        scope.fromDateValidationError = false;
+
+                        //Be sure to format the date objects correctly before sending anything to the server
+                        if (businessFilter.fromDate && businessFilter.toDate) {
+                            formattedFromDate = moment(businessFilter.fromDate).format('YYYY-MM-DD');
+                            formattedToDate = moment(businessFilter.toDate);
+                            formattedToDate = formattedToDate.date(formattedToDate.daysInMonth()).format('YYYY-MM-DD');
+                        }
+                        //Only use a non default period if everything is set as expected
+                        if (scope.timeIntervalChecked && businessFilter.fromDate && businessFilter.toDate) {
+                            businessFilter.useDefaultPeriod = false;
+                        } else {
+                            businessFilter.useDefaultPeriod = true;
+                        }
+
+                        var params = {
+                            diagnoser: businessFilter.selectedDiagnoses,
+                            enheter: businessFilter.geographyBusinessIds,
+                            verksamhetstyper: getVerksamhetstyper(),
+                            fromDate: formattedFromDate,
+                            toDate: formattedToDate,
+                            useDefaultPeriod: businessFilter.useDefaultPeriod
+                        };
+
+                        var success = function (filterHash) {
+                            $location.search({filter: filterHash});
+                        };
+
+                        var error = function () {
+                            throw new Error("Failed to get filter hash value");
+                        };
+
+                        statisticsData.getFilterHash(params).then(success, error);
                     }
+                };
 
-                    var getVerksamhetstyper = function () {
-                        var selectedVerksamhettyps = _.filter(businessFilter.verksamhetsTyper, function(verksamhetstyp) {
-                            return _.contains(businessFilter.selectedVerksamhetTypIds, verksamhetstyp.id);
-                        });
-                        var selectedIdsFromVerksamhetstyps = _.map(selectedVerksamhettyps, function (verksamhetstyp) {
-                            return verksamhetstyp.ids;
-                        });
-                        var selectedIdsFromVerksamhetstypsFlattened = _.flatten(selectedIdsFromVerksamhetstyps);
-                        return _.uniq(selectedIdsFromVerksamhetstypsFlattened);
-                    };
-
-                    var params = {
-                        diagnoser: businessFilter.selectedDiagnoses,
-                        enheter: businessFilter.geographyBusinessIds,
-                        verksamhetstyper: getVerksamhetstyper(),
-                        fromDate: formattedFromDate,
-                        toDate: formattedToDate,
-                        useDefaultPeriod: businessFilter.useDefaultPeriod
-                    };
-
-                    var success = function(filterHash){
-                        $location.search({filter: filterHash});
-                    };
-
-                    var error = function(){
-                        throw new Error("Failed to get filter hash value");
-                    };
-
-                    statisticsData.getFilterHash(params).then(success, error);
+                var resetDatePickers = function() {
+                    scope.timeIntervalChecked = false;
+                    scope.showDateValidationError = false;
+                    scope.fromDateValidationError = false;
+                    scope.toDateValidationError = false;
                 };
 
                 scope.resetFilter = function() {
                     businessFilter.resetSelections();
-                    scope.timeIntervalChecked = false;
+                    resetDatePickers();
                     updateGeographyFilterSelectorDataButtonLabelText();
                     $location.search({});
                 };
@@ -143,15 +191,12 @@ angular.module('StatisticsApp.businessFilter.directive', [])
                     scope.isToDateOpen = true;
                 };
 
-
                 scope.$watch('businessFilter.fromDate', function(newValue, oldValue) {
                     scope.minToDate = newValue;
                     if(businessFilter.toDate < newValue) {
                         businessFilter.toDate = null;
                     }
                 });
-
-                scope.timeIntervalRadioModel = 'preSet';
 
                 //The format of dates date we show in the GUI when the user selects something
                 scope.format =  'yyyy-MM';

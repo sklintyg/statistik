@@ -1,0 +1,39 @@
+!contents -R2 -g -p -f -h
+
+!3 Givet att:
+
+user6 har medarbetaruppdrag på enhet6, som tillhör vg6.
+user4 har medarbetaruppdrag på enhet2, som tillhör vg1.
+
+Båda filerna innehåller enhet8.
+
+| script | fil | lista1vg6, lista2vg1 |
+
+| script | dagens datum | 2014-12-06 |
+
+| script | troskel varde | 1 |
+
+| script | ta bort existerande intyg |
+
+| Foljande intyg finns |
+| personnr      | diagnoskod | start      | slut       | enhet  | kommentar |
+| 19790407-0225 | G01        | 2014-02-05 | 2014-02-06 | enhet2 |           |
+
+!3 Då gäller:
+
+Att en enhet finns på två vårdgivares listor spelar ingen roll. Båda vårdgivarna får se den enheten.
+
+Inloggad:
+| Sjukfall i rapporten landsting sjukfall totalt |
+| inloggad som | år   | månad | män? | kvinnor? |
+| user6        | 2014 | feb   | 0    | 1        |
+| user4        | 2014 | feb   | 0    | 1        |
+
+| Sjukfall i rapporten landsting sjukfall per enhet |
+| inloggad som | vårdenhet    | totalt? | män? | kvinnor? |
+| user6        | Enhet enhet2 | 1       | 0    | 1        |
+| user4        | Enhet enhet2 | 1       | 0    | 1        |
+
+| inloggad som | vårdenhet    | totalt? |
+| user6        | Enhet enhet2 | 9,09    |
+| user4        | Enhet enhet2 | 9,09    |

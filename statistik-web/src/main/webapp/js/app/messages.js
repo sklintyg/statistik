@@ -72,7 +72,8 @@ var stMessages = {
         'lbl.filter.sum-progress-1': 'Genom filtreringen visas statistik från ',
         'lbl.filter.sum-progress-2': ' av totalt ',
         'lbl.filter.sum-progress-3': ' vårdenheter.',
-        
+        'alert.filter.date-invalid': 'Felaktigt tidsintervall har angetts',
+
         //national statistics overview
         'national.overview-header': 'Nationell statistik',
         'national.overview-header2': 'Utvecklingen i Sverige de senaste tre månaderna, ',

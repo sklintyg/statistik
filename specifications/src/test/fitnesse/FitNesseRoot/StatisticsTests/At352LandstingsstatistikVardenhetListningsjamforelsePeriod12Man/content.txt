@@ -4,14 +4,9 @@ Gäller STATISTIK-1081, 1020.
 
 !3 Givet att:
 
-user6 har medarbetaruppdrag på enhet6, som tillhör vg6.
-vg6 har skickat in en lista med följande enheter:
-
-* enhet6 (vg6), 110 listade
-* enhet7 (vg6)
-* enhet8 (vg8), 1100 listade
-
 Det finns två sjukfall, ett som pågått under det senaste året och ett som inte gjort det. 
+
+| script | fil | lista1vg6 |
 
 | script | dagens datum | 2014-12-06 |
 

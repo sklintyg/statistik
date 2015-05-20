@@ -4,12 +4,7 @@ Gäller STATISTIK-1082.
 
 !3 Givet att:
 
-user6 har medarbetaruppdrag på enhet6, som tillhör vg6.
-vg6 har skickat in en lista med följande enheter:
-
-* enhet6 (vg6), 110 listade
-* enhet7 (vg6)
-* enhet8 (vg8), 1100 listade
+| script | fil | lista1vg6 |
 
 | script | dagens datum | 2013-12-06 |
 

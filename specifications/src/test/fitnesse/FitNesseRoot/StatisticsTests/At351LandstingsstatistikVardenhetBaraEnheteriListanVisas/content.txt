@@ -4,14 +4,9 @@ Gäller STATISTIK-1081.
 
 !3 Givet att:
 
-user6 har medarbetaruppdrag på enhet6, som tillhör vg6.
-vg6 har skickat in en lista med följande enheter:
+Det finns fyra sjukfall på fyra olika enheter. Tre av dem ingår i den inskickade listan.
 
-* enhet6 (vg6), 110 listade
-* enhet7 (vg6)
-* enhet8 (vg8), 1100 listade
-
-Det finns fyra sjukfall på fyra olika enheter. Tre av dem är enheterna i listan.
+| script | fil | lista1vg6 |
 
 | script | dagens datum | 2013-11-06 |
 

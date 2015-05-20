@@ -18,18 +18,6 @@ Den högsta sjukskrivningsgraden visas.
 
 Nationell:
 
-| Sjukfall i rapporten diagnosgrupp |
-| år   | månad | grupp   | män? | kvinnor? |
-| 2013 | feb   | A00-B99 | 0    | 0        |
-| 2013 | feb   | F00-F99 | 0    | 1        |
-| 2013 | mar   | A00-B99 | 0    | 0        |
-| 2013 | mar   | F00-F99 | 0    | 1        |
-
-| Sjukfall i rapporten aldersgrupp |
-| åldersgrupp | män? | kvinnor? |
-| 26-30 år    | 0    | 0        |
-| 31-35 år    | 0    | 1        |
-
 | Sjukfall i rapporten sjukskrivningsgrad |
 | år   | månad | sjukskrivningsgrad   | män? | kvinnor? |
 | 2013 | feb   | 100%                 | 0    | 1        |
@@ -37,31 +25,7 @@ Nationell:
 | 2013 | mar   | 100%                 | 0    | 1        |
 | 2013 | mar   | 50%                  | 0    | 0        |
 
-| Sjukfall i rapporten lan |
-| period       | län            | män? | kvinnor? |
-| jan–mar 2013 | Stockholms län | 0    | 0        |
-| jan–mar 2013 | Uppsala län    | 0    | 1        |
-| jan–mar 2013 | Okänt län      | 0    | 0        |
-
-| Sjukfall i rapporten andel sjukfall per kon |
-| län            | totalt? | män?     | kvinnor? |
-| Stockholms län | 0       | 0% (0)   | 0% (0)   |
-| Uppsala län    | 1       | 0% (0)   | 100% (1) |
-| Okänt län      | 0       | 0% (0)   | 0% (0)   |
-
 Inloggad:
-
-| Sjukfall i rapporten diagnosgrupp |
-|inloggad som | år   | månad | grupp   | män? | kvinnor? |
-| user1       | 2013 | feb   | A00-B99 | 0    | 0        |
-| user1       | 2013 | feb   | F00-F99 | 0    | 1        |
-| user1       | 2013 | mar   | A00-B99 | 0    | 0        |
-| user1       | 2013 | mar   | F00-F99 | 0    | 1        |
-
-| Sjukfall i rapporten aldersgrupp |
-| inloggad som | åldersgrupp | män? | kvinnor? |
-| user1        | 26-30 år    | 0    | 0        |
-| user1        | 31-35 år    | 0    | 1        |
 
 | Sjukfall i rapporten sjukskrivningsgrad |
 | inloggad som | år   | månad | sjukskrivningsgrad   | män? | kvinnor? |

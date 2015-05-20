@@ -57,6 +57,7 @@
                             <input id="filterFromDate"
                                    type="text"
                                    class="form-control"
+                                   ng-class="{'alert-danger': fromDateValidationError}"
                                    ng-model="businessFilter.fromDate"
                                    ng-disabled="!timeIntervalChecked"
                                    show-weeks="false"
@@ -89,6 +90,7 @@
                             <input id="filterToDate"
                                    type="text"
                                    class="form-control"
+                                   ng-class="{'alert-danger': toDateValidationError}"
                                    ng-model="businessFilter.toDate"
                                    ng-disabled="!timeIntervalChecked"
                                    show-weeks="false"
@@ -109,6 +111,10 @@
                                         </span>
                         </p>
                     </div>
+                </div>
+
+                <div class="alert alert-danger" role="alert" ng-show="showDateValidationError">
+                    <span message key="alert.filter.date-invalid"></span>
                 </div>
 
 

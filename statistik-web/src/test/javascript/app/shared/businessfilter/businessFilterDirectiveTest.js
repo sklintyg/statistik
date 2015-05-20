@@ -205,4 +205,138 @@ describe('Tests for directive button-filter', function () {
         });
     });
 
+    describe("Validating dates on selection", function() {
+        var statisticsData, businessFilter;
+
+        beforeEach(inject(function (_statisticsData_, _businessFilter_) {
+            statisticsData = _statisticsData_;
+            businessFilter = _businessFilter_;
+        }));
+
+        it("will pass validation if we have both to and from date set correct", function() {
+            //given
+            var fromDate = moment("2015-01-01"),
+                inputToDate = moment("2015-04-01");
+
+            outerScope.timeIntervalChecked = true;
+            businessFilter.fromDate = fromDate.toDate();
+            businessFilter.toDate = inputToDate.toDate();
+
+            //when
+            outerScope.makeSelection();
+
+            //then
+            expect(outerScope.showDateValidationError).toBeDefined();
+            expect(outerScope.showDateValidationError).toBeFalsy("showDateValidationError wasn't false as expected");
+        });
+
+        it("will not pass validation if object is not a date", function() {
+            //given
+            outerScope.timeIntervalChecked = true;
+            businessFilter.fromDate = "!#€%&/()=?";
+            businessFilter.toDate = "!#€%&/()=?";
+
+            //when
+            outerScope.makeSelection();
+
+            //then
+            expect(outerScope.showDateValidationError).toBeTruthy("showDateValidationError wasn't true as expected");
+        });
+
+        it("will not pass validation if date is of correct format but improper input", function() {
+
+            var fromDate = moment("2015-13"),
+                inputToDate = moment("2015-13");
+
+            //given
+            outerScope.timeIntervalChecked = true;
+            businessFilter.fromDate = fromDate.toDate();
+            businessFilter.toDate = inputToDate.toDate();
+
+            //when
+            outerScope.makeSelection();
+
+            //then
+            expect(outerScope.showDateValidationError).toBeTruthy("showDateValidationError wasn't true as expected");
+        });
+
+        it("will pass validation if date follows the format yyyy-MM-DD", function() {
+            var fromDate = moment("2015-01-01"),
+                inputToDate = moment("2015-01-01");
+
+            //given
+            outerScope.timeIntervalChecked = true;
+            businessFilter.fromDate = fromDate.toDate();
+            businessFilter.toDate = inputToDate.toDate();
+
+            //when
+            outerScope.makeSelection();
+
+            //then
+            expect(outerScope.showDateValidationError).toBeFalsy("showDateValidationError wasn't true as expected");
+        });
+
+        it("will not pass validation if we have an empty from date", function() {
+            //given
+            outerScope.timeIntervalChecked = true;
+            businessFilter.fromDate = null;
+            //when
+            outerScope.makeSelection();
+            //then
+            expect(outerScope.showDateValidationError).toBeTruthy("showDateValidationError wasn't true as expected");
+        });
+
+        it("will not pass validation if we have an empty to date", function() {
+            //given
+            outerScope.timeIntervalChecked = true;
+            businessFilter.toDate = null;
+            //when
+            outerScope.makeSelection();
+            //then
+            expect(outerScope.showDateValidationError).toBeTruthy("showDateValidationError wasn't true as expected");
+        });
+
+        it("will not pass validation if from date is before 2013-10", function() {
+            var fromDate = moment("2013-09-01"),
+                inputToDate = moment("2015-12-01");
+
+            //given
+            outerScope.timeIntervalChecked = true;
+            businessFilter.fromDate = fromDate.toDate();
+            businessFilter.toDate = inputToDate.toDate();
+            //when
+            outerScope.makeSelection();
+            //then
+            expect(outerScope.showDateValidationError).toBeTruthy("showDateValidationError wasn't true as expected");
+        });
+
+        it("will not pass validation if to date is before the from date", function() {
+            var fromDate = moment("2015-05-01"),
+                inputToDate = moment("2015-04-01");
+
+            //given
+            outerScope.timeIntervalChecked = true;
+            businessFilter.fromDate = fromDate.toDate();
+            businessFilter.toDate = inputToDate.toDate();
+            //when
+            outerScope.makeSelection();
+            //then
+            expect(outerScope.showDateValidationError).toBeTruthy("showDateValidationError wasn't true as expected");
+        });
+
+        it("will not pass validation if to date is beyond the current month", function() {
+            var fromDate = moment().add(1, 'months').date(1).hours(0).minutes(0).seconds(0),
+                inputToDate = moment().add(2, 'months').date(1).hours(0).minutes(0).seconds(0);
+
+            //given
+            outerScope.timeIntervalChecked = true;
+            businessFilter.fromDate = fromDate.toDate();
+            businessFilter.toDate = inputToDate.toDate();
+            //when
+            outerScope.makeSelection();
+            //then
+            expect(outerScope.showDateValidationError).toBeTruthy("showDateValidationError wasn't true as expected");
+        });
+    });
+
 });
