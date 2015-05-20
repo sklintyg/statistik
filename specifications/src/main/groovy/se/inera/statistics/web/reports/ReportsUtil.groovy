@@ -18,6 +18,8 @@ import org.apache.http.entity.mime.content.InputStreamBody
 import javax.ws.rs.core.MediaType
 
 import static groovyx.net.http.ContentType.JSON
+import static groovyx.net.http.ContentType.TEXT
+
 class ReportsUtil {
 
     private static final Logger LOG = LoggerFactory.getLogger(ReportsUtil.class);
