@@ -3,22 +3,50 @@ package se.inera.statistics.web.reports
 import groovy.json.JsonBuilder
 import groovyx.net.http.HttpResponseException
 import groovyx.net.http.RESTClient
+import org.apache.http.HttpEntity
+import org.codehaus.groovy.runtime.MethodClosure
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import se.inera.statistics.web.service.FilterData
 import se.inera.testsupport.Intyg
 import se.inera.testsupport.Personal
+import org.apache.http.entity.mime.MultipartEntityBuilder
+
+import org.apache.http.entity.mime.HttpMultipartMode
+import org.apache.http.entity.mime.content.InputStreamBody
+
+import javax.ws.rs.core.MediaType
 
 import static groovyx.net.http.ContentType.JSON
-import static groovyx.net.http.ContentType.TEXT
-
 class ReportsUtil {
 
     private static final Logger LOG = LoggerFactory.getLogger(ReportsUtil.class);
     public static final VARDGIVARE = "vg1"
     public static final VARDGIVARE3 = "vg3"
+    public static final String HOST = 'http://localhost:8080/'
 
-    def statistik = new RESTClient('http://localhost:8080/', JSON)
+    def statistik = createClient()
+
+    private RESTClient createClient() {
+        def client = new RESTClient(HOST, JSON)
+        client.encoder.putAt(MediaType.MULTIPART_FORM_DATA, new MethodClosure(this, 'encodeMultiPart'));
+        return client
+    }
+
+    HttpEntity encodeMultiPart(MultipartBody body) {
+        return MultipartEntityBuilder.create()
+                .addBinaryBody(
+                'file',
+                body.file,
+                org.apache.http.entity.ContentType.MULTIPART_FORM_DATA,
+                body.filename
+        ).build()
+    }
+
+    class MultipartBody {
+        InputStream file
+        String filename
+    }
 
     long getCurrentDateTime() {
         return get('/api/testsupport/now')
@@ -338,4 +366,11 @@ class ReportsUtil {
         return get(getVerksamhetUrlPrefix() + "/getNumberOfCasesPerMonthTvarsnitt", filter)
     }
 
+    def uploadFile(InputStream file, filename) {
+        def body = new MultipartBody(file: file, filename: filename);
+        def response = statistik.post(requestContentType: "multipart/form-data", path: getVerksamhetUrlPrefix() + '/landsting/fileupload', body: body)
+        return response.data
+    }
+
 }
+

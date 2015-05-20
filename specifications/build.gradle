@@ -43,6 +43,8 @@ dependencies {
     compile project(":statistik-web")
 
     compile "org.fitnesse:fitnesse:20140901"
-    compile "org.codehaus.groovy:groovy-all:2.3.6"
+    compile "org.codehaus.groovy:groovy-all:2.4.0"
     compile "org.codehaus.groovy.modules.http-builder:http-builder:0.7"
+    compile "org.apache.httpcomponents:httpmime:4.4.1"
+    compile "org.apache.httpcomponents:httpcore:4.4.1"
 }
