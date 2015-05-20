@@ -68,11 +68,10 @@ public class LandstingFileReader {
                 }
 
                 Cell cellHsaId = row.getCell(1);
-                if (cellHsaId == null) {
-                    throw new LandstingEnhetFileParseException("hsaId cell is null");
-                }
-                if (Cell.CELL_TYPE_STRING == cellHsaId.getCellType()) {
-                    id = cellHsaId.getStringCellValue().trim();
+                if (cellHsaId != null) {
+                    if (Cell.CELL_TYPE_STRING == cellHsaId.getCellType()) {
+                        id = cellHsaId.getStringCellValue().trim();
+                    }
                 }
 
                 Cell cellPatients = row.getCell(2);
@@ -85,9 +84,6 @@ public class LandstingFileReader {
                     }
                 }
 
-                if (id.isEmpty() && (!name.isEmpty() || patients != null)) {
-                    throw new LandstingEnhetFileParseException("HsaId may not be empty");
-                }
                 if (!id.isEmpty()) {
                     rows.add(new LandstingEnhetFileDataRow(name, id, patients));
                 }

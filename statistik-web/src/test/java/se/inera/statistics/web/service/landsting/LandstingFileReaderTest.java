@@ -62,4 +62,23 @@ public class LandstingFileReaderTest {
         assertEquals(null, row192.getListadePatienter());
     }
 
+    @Test
+    public void testReadExcelData2() throws Exception {
+        //Given
+        URL url = LandstingFileReader.class.getResource("/landsting-test.xls");
+        File file = new File(url.getPath());
+        final FileDataSource dataSource = new FileDataSource(file);
+
+        //When
+        final List<LandstingEnhetFileDataRow> result = landstingFileReader.readExcelData(dataSource);
+
+        //Then
+        assertEquals(1, result.size());
+
+        final LandstingEnhetFileDataRow row0 = result.get(0);
+        assertEquals("Vårdcentralen Kurhälsan", row0.getEnhetsNamn());
+        assertEquals("SE2321000131-E000000007507", row0.getEnhetensHsaId());
+        assertEquals(Integer.valueOf(1072), row0.getListadePatienter());
+    }
+
 }
