@@ -14,13 +14,13 @@ Gäller STATISTIK-1020.
 | personnr      | diagnoskod | start      | slut       | enhet  | kommentar |
 | 19790407-2215 | G01        | 2013-02-05 | 2013-02-06 | enhet6 |           |
 | 19790407-2225 | G01        | 2013-02-05 | 2013-02-06 | enhet7 |           |
-| 19790407-2235 | G01        | 2013-02-05 | 2013-02-06 | enhet8 |           |
-| 19790407-2255 | G01        | 2013-02-05 | 2013-02-06 | enhet8 |           |
-| 19790407-2245 | G01        | 2013-02-05 | 2013-02-06 | enhet1 |           |
+| 19790407-2235 | G01        | 2013-02-05 | 2013-02-06 | enhet2 |           |
+| 19790407-2255 | G01        | 2013-02-05 | 2013-02-06 | enhet9 |           |
+| 19790407-2245 | G01        | 2013-02-05 | 2013-02-06 | enhet10 |          |
 
 !3 Då gäller:
 
-Bara enheter som finns med i listan och som angett listningar visas. Resultat visas som (antal sjukfall/antal listade)*1000, två decimaler, ej könsuppdelat.
+Bara enheter som har listningsvärden (i den inskickade listan) som är ett numeriskt värde över 0 visas upp i rapporten. Övriga visas inte.
 
 Inloggad:
 | Sjukfall i rapporten landsting listningsjamforelse |
@@ -28,4 +28,5 @@ Inloggad:
 | user6        | Enhet enhet6 | 9,09    |
 | user6        | Enhet enhet7 | -1      |
 | user6        | Enhet enhet2 | 1,82    |
-| user6        | Enhet enhet1 | -1      |
+| user6        | Enhet enhet9 | -1      |
+| user6        | Enhet enhet10 | -1      |

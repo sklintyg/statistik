@@ -4,12 +4,7 @@ Gäller STATISTIK-1031. (Går det skriva testet såhär? Jag vill testa att om i
 
 !3 Givet att:
 
-user6 har medarbetaruppdrag på enhet6, som tillhör vg6.
-vg6 har skickat in en lista med följande enheter:
-
-* enhet6 (vg6), 110 listade
-* enhet7 (vg6)
-* enhet8 (vg8), 1100 listade
+| script | fil | lista1vg6 |
 
 | script | dagens datum | 2014-12-06 |
 
@@ -19,8 +14,8 @@ vg6 har skickat in en lista med följande enheter:
 
 | Foljande intyg finns |
 | personnr      | diagnoskod | start      | slut       | enhet  | kommentar |
-| 19790407-0015 | G01        | 2013-10-05 | 2013-10-06 | enhet6 |           |
-| 19790407-0625 | G01        | 2014-02-05 | 2014-02-06 | enhet8 |           |
+| 19790407-0015 | G01        | 2013-10-05 | 2013-10-06 | enhet7 |           |
+| 19790407-0625 | G01        | 2014-02-05 | 2014-02-06 | enhet2 |           |
 
 !3 Då gäller:
 
@@ -35,17 +30,17 @@ Inloggad:
 | Sjukfall i rapporten landsting sjukfall per enhet |
 | inloggad som | vårdenhet    | totalt? | män? | kvinnor? |
 | user6        | Enhet enhet6 | -1      | -1   | -1       |
-| user6        | Enhet enhet7 | -1      | -1   | -1       |
-| user6        | Enhet enhet8 | 1       | 0    | 1        |
+| user6        | Enhet enhet7 | 1       | 1    | 0        |
+| user6        | Enhet enhet2 | 1       | 0    | 1        |
 
 | inloggad som | vårdenhet    | totalt? |
 | user6        | Enhet enhet6 | -1      |
 | user6        | Enhet enhet7 | -1      |
-| user6        | Enhet enhet8 | 0,91    |
+| user6        | Enhet enhet2 | 0,91    |
 
 | Foljande intyg finns |
 | personnr      | diagnoskod | start      | slut       | enhet  | kommentar |
-| 19790407-0615 | G01        | 2014-02-05 | 2014-02-06 | enhet7 |           |
+| 19790407-0615 | G01        | 2014-02-05 | 2014-02-06 | enhet6 |           |
 
 | Sjukfall i rapporten landsting sjukfall totalt |
 | inloggad som | år   | månad | män? | kvinnor? |
@@ -54,12 +49,11 @@ Inloggad:
 
 | Sjukfall i rapporten landsting sjukfall per enhet |
 | inloggad som | vårdenhet    | totalt? | män? | kvinnor? |
-| user6        | Enhet enhet6 | -1      | -1   | -1       |
+| user6        | Enhet enhet6 | 1       | 1    | 0        |
 | user6        | Enhet enhet7 | 1       | 1    | 0        |
-| user6        | Enhet enhet8 | 1       | 0    | 1        |
+| user6        | Enhet enhet2 | 1       | 0    | 1        |
 
 | inloggad som | vårdenhet    | totalt? |
-| user6        | Enhet enhet6 | -1      |
+| user6        | Enhet enhet6 | 9,09    |
 | user6        | Enhet enhet7 | -1      |
-| user6        | Enhet enhet8 | 0,91    |
-
+| user6        | Enhet enhet2 | 0,91    |
