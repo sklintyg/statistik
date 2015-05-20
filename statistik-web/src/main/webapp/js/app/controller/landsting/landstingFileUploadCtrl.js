@@ -22,13 +22,30 @@
 angular.module('StatisticsApp').controller('landstingFileUploadCtrl', [ '$scope', '$rootScope',
     function ($scope, $rootScope) {
 
-        //$scope.dropzoneConfig = {
-        //    parallelUploads: 1,
-        //    maxFileSize: 100,
-        //    url: "/upload",
-        //    paramName: "uploadfile"
-        //};
-
+        $scope.dropzoneConfig = {
+            'options': {
+                url: 'api/verksamhet/landsting/fileupload',
+                parallelUploads: 1,
+                maxFilesize: 10, //MB
+                paramName: "file",
+                uploadMultiple: false,
+                addRemoveLinks: false,
+                createImageThumbnails: false,
+                maxFiles: 1,
+                acceptedFiles: ".xls,.xlsx",
+                autoProcessQueue: true,
+                clickable: true,
+                previewTemplate: '<div id="preview-template" style="display: none;"></div>'
+            },
+            'eventHandlers': {
+                'success': function (file, response) {
+                    $scope.$apply(function(){$scope.uploadResultMessage = response.message});
+                },
+                'error': function (file, response) {
+                    $scope.$apply(function(){$scope.uploadResultMessage = response.message ? response.message : response});
+                }
+            }
+        };
 
     }
 ]);

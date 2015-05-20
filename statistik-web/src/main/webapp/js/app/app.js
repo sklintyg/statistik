@@ -16,7 +16,8 @@ var app = angular.module('StatisticsApp',
      'StatisticsApp.treeMultiSelector',
      'StatisticsApp.chartSeriesButtonGroup',
      'StatisticsApp.businessFilter',
-     'StatisticsApp.charts'])
+     'StatisticsApp.charts',
+     'dropzone'])
     .config(
     [ '$routeProvider', function ($routeProvider) {
         $routeProvider.when('/login', {

@@ -39,6 +39,7 @@ List webjars = [[group: 'org.webjars', name: 'jquery', version: '1.10.2'],
                 [group: 'org.webjars', name: 'bootstrap-multiselect', version: '0.9.8'],
                 [group: 'org.webjars', name: 'underscorejs', version: '1.7.0'],
                 [group: 'org.webjars', name: 'respond', version: '1.3.0'],
+                [group: 'org.webjars', name: 'dropzone', version: '4.0.1'],
                 [group: 'org.webjars', name: 'momentjs', version: '2.10.2']]
 
 task unzipWebjars(type: Copy) {

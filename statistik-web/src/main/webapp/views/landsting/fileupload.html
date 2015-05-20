@@ -20,12 +20,10 @@
 	<div class="container-fluid">
 	    <div class="row">
 	    	<div class="overview-content">
-	    		<div class="col-xs-12 col-sm-10 col-md-10 col-lg-10">
-                    <form method="post" action="api/verksamhet/landsting/fileupload" enctype="multipart/form-data">
-                        <input name="file" type="file" />
-                        <input type="submit"/>
-                    </form>
-		        </div>	
+                <div class="col-xs-12">
+                    <button dropzone="dropzoneConfig">Dra och släpp filen hit eller klicka för att ladda upp</button>
+                </div>
+                <span>{{uploadResultMessage}}</span>
 	    	</div>
 	    </div>
 	</div>

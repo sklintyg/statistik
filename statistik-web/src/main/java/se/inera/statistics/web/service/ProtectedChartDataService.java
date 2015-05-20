@@ -590,7 +590,7 @@ public class ProtectedChartDataService {
 
     @POST
     @Path("landsting/fileupload")
-    @Produces({ "text/plain" })
+    @Produces({ MediaType.APPLICATION_JSON })
     @Consumes({ "multipart/form-data" })
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
@@ -598,7 +598,7 @@ public class ProtectedChartDataService {
         LoginInfo info = loginServiceUtil.getLoginInfo(request);
         if (!info.isProcessledare()) {
             LOG.warn("A user without processledar status tried to updated landstingsdata");
-            return Response.status(Response.Status.FORBIDDEN).entity("Data NOT updated").build();
+            return Response.status(Response.Status.FORBIDDEN).entity(createResponseWithMessage("Data NOT updated")).build();
         }
         final DataSource dataSource = body.getAttachment("file").getDataHandler().getDataSource();
         try {
@@ -606,14 +606,20 @@ public class ProtectedChartDataService {
             final String vardgivarId = info.getDefaultVerksamhet().getVardgivarId();
             final LandstingEnhetFileData fileData = new LandstingEnhetFileData(vardgivarId, landstingFileRows);
             landstingEnhetHandler.update(fileData);
-            return Response.ok("Data updated ok").build();
+            return Response.ok(createResponseWithMessage("Data updated ok")).build();
         } catch (LandstingEnhetFileParseException e) {
             LOG.warn("Failed to parse landstings file", e);
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Data NOT updated: " + e.getMessage()).build();
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(createResponseWithMessage("Data NOT updated: " + e.getMessage())).build();
         } catch (NoLandstingSetForVgException e) {
             LOG.warn("Failed to update landsting settings", e);
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Data NOT updated: Current vårdgivare is not connected to a landsting").build();
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(createResponseWithMessage("Data NOT updated: Current vårdgivare is not connected to a landsting")).build();
         }
+    }
+
+    private Object createResponseWithMessage(String message) {
+        final HashMap<String, String> map = new HashMap<>();
+        map.put("message", message);
+        return map;
     }
 
     FilterSettings getFilter(HttpServletRequest request, String filterHash, int defaultRangeValue) {
