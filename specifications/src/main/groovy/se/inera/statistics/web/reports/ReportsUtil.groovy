@@ -121,6 +121,7 @@ class ReportsUtil {
     private def get(String url, FilterData filter=FilterData.empty(), String queryString="") {
         try {
             def queryWithFilter = addFilterToQueryStringIfSet(filter, queryString)
+            println("GET: " + url + " : " + queryWithFilter)
             def response = statistik.get(path: url, queryString : queryWithFilter)
             assert response.status == 200
             return response.data;

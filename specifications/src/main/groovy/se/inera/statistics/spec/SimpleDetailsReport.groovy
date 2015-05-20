@@ -10,7 +10,10 @@ abstract class SimpleDetailsReport extends Rapport {
     public void executeDiagram(report) {
         executeWithReport(report)
         def categoryNameMatcher = getRowNameMatcher();
-        def index = report.chartData.categories.findIndexOf { item -> item.contains(categoryNameMatcher) }
+        def index = report.chartData.categories.findIndexOf { item ->
+            println("item:" + item + " ; matcher: " + categoryNameMatcher)
+            item.contains(categoryNameMatcher)
+        }
         def male = report.chartData.series.find { item -> "Male".equals(item.sex) }
         män = index < 0 ? -1 : male.data[index]
         def female = report.chartData.series.find { item -> "Female".equals(item.sex) }
