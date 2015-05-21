@@ -24,9 +24,12 @@
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd"
         logicalFilePath="liquibase/db.changelog-v13.2_add_index_on_correlationid.xml">
     <changeSet id="13_2_add_index_on_correlationid" author="fredrik.engstrom">
-        <createIndex unique="false" tableName="intyghandelse" indexName="correlationId_index">
+        <createIndex unique="false" tableName="intyghandelse" indexName="correlationid_index">
             <column name="correlationId"/>
         </createIndex>
+        <modifySql dbms="mysql">
+            <replace replace="correlationId" with="correlationId(40)"/>
+        </modifySql>
     </changeSet>
 
 </databaseChangeLog>
