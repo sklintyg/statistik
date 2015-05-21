@@ -187,8 +187,8 @@ angular.module('StatisticsApp').nationalSickLeaveLengthConfig = function () {
     conf.pageHelpText = "help.sickleavelength";
 
     conf.exchangeableViews = [
-        {description: 'Tvärsnitt', state: '#/verksamhet/sjukskrivningslangd', active: true},
-        {description: 'Tidsserie', state: '#/verksamhet/sjukskrivningslangdTidsserie', active: false}];
+        {description: 'Tidsserie', state: '#/verksamhet/sjukskrivningslangdTidsserie', active: false},
+        {description: 'Tvärsnitt', state: '#/verksamhet/sjukskrivningslangd', active: true}];
     return conf;
 };
 
@@ -206,8 +206,8 @@ angular.module('StatisticsApp').nationalAgeGroupConfig = function () {
     conf.chartXAxisTitle = "Åldersgrupp";
 
     conf.exchangeableViews = [
-        {description: 'Tvärsnitt', state: '#/verksamhet/aldersgrupper', active: true},
-        {description: 'Tidsserie', state: '#/verksamhet/aldersgrupperTidsserie', active: false}];
+        {description: 'Tidsserie', state: '#/verksamhet/aldersgrupperTidsserie', active: false},
+        {description: 'Tvärsnitt', state: '#/verksamhet/aldersgrupper', active: true}];
     return conf;
 };
 
@@ -238,8 +238,8 @@ angular.module('StatisticsApp').casesPerBusinessConfig = function () {
     conf.chartFootnotes = ["alert.vardenhet.information"];
 
     conf.exchangeableViews = [
-        {description: 'Tvärsnitt', state: '#/verksamhet/sjukfallperenhet', active: true},
-        {description: 'Tidsserie', state: '#/verksamhet/sjukfallperenhettidsserie', active: false}];
+        {description: 'Tidsserie', state: '#/verksamhet/sjukfallperenhettidsserie', active: false},
+        {description: 'Tvärsnitt', state: '#/verksamhet/sjukfallperenhet', active: true}];
 
     return conf;
 };
@@ -256,8 +256,8 @@ angular.module('StatisticsApp').casesPerLakareConfig = function () {
     conf.chartXAxisTitle = "Läkare";
 
     conf.exchangeableViews = [
-        {description: 'Tvärsnitt', state: '#/verksamhet/sjukfallperlakare', active: true},
-        {description: 'Tidsserie', state: '#/verksamhet/sjukfallperlakaretidsserie', active: false}];
+        {description: 'Tidsserie', state: '#/verksamhet/sjukfallperlakaretidsserie', active: false},
+        {description: 'Tvärsnitt', state: '#/verksamhet/sjukfallperlakare', active: true}];
     return conf;
 };
 
@@ -274,8 +274,8 @@ angular.module('StatisticsApp').casesPerLakaresAlderOchKonConfig = function () {
     conf.pageHelpText = "alert.lakarkon-alder.questionmark";
 
     conf.exchangeableViews = [
-        {description: 'Tvärsnitt', state: '#/verksamhet/sjukfallperlakaresalderochkon', active: true},
-        {description: 'Tidsserie', state: '#/verksamhet/sjukfallperlakaresalderochkontidsserie', active: false}];
+        {description: 'Tidsserie', state: '#/verksamhet/sjukfallperlakaresalderochkontidsserie', active: false},
+        {description: 'Tvärsnitt', state: '#/verksamhet/sjukfallperlakaresalderochkon', active: true}];
     return conf;
 };
 
@@ -292,8 +292,8 @@ angular.module('StatisticsApp').casesPerLakarbefattningConfig = function () {
     conf.chartFootnotes = ["alert.lakare-befattning.information"];
 
     conf.exchangeableViews = [
-        {description: 'Tvärsnitt', state: '#/verksamhet/sjukfallperlakarbefattning', active: true},
-        {description: 'Tidsserie', state: '#/verksamhet/sjukfallperlakarbefattningtidsserie', active: false}];
+        {description: 'Tidsserie', state: '#/verksamhet/sjukfallperlakarbefattningtidsserie', active: false},
+        {description: 'Tvärsnitt', state: '#/verksamhet/sjukfallperlakarbefattning', active: true}];
     return conf;
 };
 
@@ -310,8 +310,8 @@ angular.module('StatisticsApp').compareDiagnosis = function () {
     conf.showDiagnosisSelector = true;
 
     conf.exchangeableViews = [
-        {description: 'Tvärsnitt', state: '#/verksamhet/jamforDiagnoser', active: true},
-        {description: 'Tidsserie', state: '#/verksamhet/jamforDiagnoserTidsserie', active: false}];
+        {description: 'Tidsserie', state: '#/verksamhet/jamforDiagnoserTidsserie', active: false},
+        {description: 'Tvärsnitt', state: '#/verksamhet/jamforDiagnoser', active: true}];
 
     return conf;
 };
