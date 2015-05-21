@@ -22,6 +22,11 @@
 angular.module('StatisticsApp').controller('landstingFileUploadCtrl', [ '$scope', '$rootScope',
     function ($scope, $rootScope) {
 
+        var updateStatus = function (response) {
+            $scope.uploadResultMessage = response.message ? response.message : response;
+            $scope.parsedRows = response.parsedRows;
+        };
+
         $scope.dropzoneConfig = {
             'options': {
                 url: 'api/verksamhet/landsting/fileupload',
@@ -39,10 +44,10 @@ angular.module('StatisticsApp').controller('landstingFileUploadCtrl', [ '$scope'
             },
             'eventHandlers': {
                 'success': function (file, response) {
-                    $scope.$apply(function(){$scope.uploadResultMessage = response.message});
+                    $scope.$apply(updateStatus(response));
                 },
                 'error': function (file, response) {
-                    $scope.$apply(function(){$scope.uploadResultMessage = response.message ? response.message : response});
+                    $scope.$apply(updateStatus(response));
                 }
             }
         };

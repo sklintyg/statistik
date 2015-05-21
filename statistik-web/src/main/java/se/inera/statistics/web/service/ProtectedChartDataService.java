@@ -598,7 +598,7 @@ public class ProtectedChartDataService {
         LoginInfo info = loginServiceUtil.getLoginInfo(request);
         if (!info.isProcessledare()) {
             LOG.warn("A user without processledar status tried to updated landstingsdata");
-            return Response.status(Response.Status.FORBIDDEN).entity(createResponseWithMessage("Data NOT updated")).build();
+            return createFileUploadResponse(Response.Status.FORBIDDEN, "Data NOT updated", null);
         }
         final DataSource dataSource = body.getAttachment("file").getDataHandler().getDataSource();
         try {
@@ -606,20 +606,27 @@ public class ProtectedChartDataService {
             final String vardgivarId = info.getDefaultVerksamhet().getVardgivarId();
             final LandstingEnhetFileData fileData = new LandstingEnhetFileData(vardgivarId, landstingFileRows);
             landstingEnhetHandler.update(fileData);
-            return Response.ok(createResponseWithMessage("Data updated ok")).build();
+            return createFileUploadResponse(Response.Status.OK, "Data updated ok", landstingFileRows);
         } catch (LandstingEnhetFileParseException e) {
             LOG.warn("Failed to parse landstings file", e);
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(createResponseWithMessage("Data NOT updated: " + e.getMessage())).build();
+            return createFileUploadResponse(Response.Status.INTERNAL_SERVER_ERROR, "Data NOT updated: " + e.getMessage(), null);
         } catch (NoLandstingSetForVgException e) {
             LOG.warn("Failed to update landsting settings", e);
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(createResponseWithMessage("Data NOT updated: Current vårdgivare is not connected to a landsting")).build();
+            return createFileUploadResponse(Response.Status.INTERNAL_SERVER_ERROR, "Data NOT updated: Current vårdgivare is not connected to a landsting", null);
         }
     }
 
-    private Object createResponseWithMessage(String message) {
-        final HashMap<String, String> map = new HashMap<>();
+    private Response createFileUploadResponse(Response.Status status, String message, List<LandstingEnhetFileDataRow> landstingFileRows) {
+        final HashMap<String, Object> map = new HashMap<>();
         map.put("message", message);
-        return map;
+        final List<String> parsedRowsStrings = landstingFileRows == null ? null : Lists.transform(landstingFileRows, new Function<LandstingEnhetFileDataRow, String>() {
+            @Override
+            public String apply(LandstingEnhetFileDataRow landstingEnhetFileDataRow) {
+                return "HSA-id: " + landstingEnhetFileDataRow.getEnhetensHsaId() + " -> Listade patienter: " + landstingEnhetFileDataRow.getListadePatienter();
+            }
+        });
+        map.put("parsedRows", parsedRowsStrings);
+        return Response.status(status).entity(map).build();
     }
 
     FilterSettings getFilter(HttpServletRequest request, String filterHash, int defaultRangeValue) {

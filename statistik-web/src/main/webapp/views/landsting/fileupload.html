@@ -24,6 +24,9 @@
                     <button dropzone="dropzoneConfig">Dra och släpp filen hit eller klicka för att ladda upp</button>
                 </div>
                 <span>{{uploadResultMessage}}</span>
+                <div data-ng-show="parsedRows">
+                  <div data-ng-repeat="row in parsedRows">{{row}}</div>
+                </div>
 	    	</div>
 	    </div>
 	</div>
