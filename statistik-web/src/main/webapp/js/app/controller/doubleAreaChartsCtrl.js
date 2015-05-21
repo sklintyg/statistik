@@ -346,8 +346,8 @@ angular.module('StatisticsApp').casesPerBusinessTimeSeriesConfig = function () {
     conf.chartFootnotes = ["alert.vardenhet.information"];
 
     conf.exchangeableViews = [
-        {description: 'Tvärsnitt', state: '#/verksamhet/sjukfallperenhet', active: false},
-        {description: 'Tidsserie', state: '#/verksamhet/sjukfallperenhettidsserie', active: true}];
+        {description: 'Tidsserie', state: '#/verksamhet/sjukfallperenhettidsserie', active: true},
+        {description: 'Tvärsnitt', state: '#/verksamhet/sjukfallperenhet', active: false}];
 
     return conf;
 };
@@ -364,8 +364,8 @@ angular.module('StatisticsApp').compareDiagnosisTimeSeriesConfig = function () {
     conf.showDiagnosisSelector = true;
 
     conf.exchangeableViews = [
-        {description: 'Tvärsnitt', state: '#/verksamhet/jamforDiagnoser', active: false},
-        {description: 'Tidsserie', state: '#/verksamhet/jamforDiagnoserTidsserie', active: true}];
+        {description: 'Tidsserie', state: '#/verksamhet/jamforDiagnoserTidsserie', active: true},
+        {description: 'Tvärsnitt', state: '#/verksamhet/jamforDiagnoser', active: false}];
     return conf;
 };
 
@@ -379,8 +379,8 @@ angular.module('StatisticsApp').nationalAgeGroupTimeSeriesConfig = function () {
         return "Antal sjukfall per åldersgrupp" + ControllerCommons.getEnhetCountText(enhetsCount, false) + period;
     };
     conf.exchangeableViews = [
-        {description: 'Tvärsnitt', state: '#/verksamhet/aldersgrupper', active: false},
-        {description: 'Tidsserie', state: '#/verksamhet/aldersgrupperTidsserie', active: true}];
+        {description: 'Tidsserie', state: '#/verksamhet/aldersgrupperTidsserie', active: true},
+        {description: 'Tvärsnitt', state: '#/verksamhet/aldersgrupper', active: false}];
     return conf;
 };
 
@@ -397,8 +397,8 @@ angular.module('StatisticsApp').sickLeaveLengthTimeSeriesConfig = function () {
     conf.pageHelpText = "help.sickleavelength";
 
     conf.exchangeableViews = [
-        {description: 'Tvärsnitt', state: '#/verksamhet/sjukskrivningslangd', active: false},
-        {description: 'Tidsserie', state: '#/verksamhet/sjukskrivningslangdTidsserie', active: true}];
+        {description: 'Tidsserie', state: '#/verksamhet/sjukskrivningslangdTidsserie', active: true},
+        {description: 'Tvärsnitt', state: '#/verksamhet/sjukskrivningslangd', active: false}];
     return conf;
 };
 
@@ -413,8 +413,8 @@ angular.module('StatisticsApp').casesPerLakarbefattningTidsserieConfig = functio
     };
     conf.chartFootnotes = ["alert.lakare-befattning.information"];
     conf.exchangeableViews = [
-        {description: 'Tvärsnitt', state: '#/verksamhet/sjukfallperlakarbefattning', active: false},
-        {description: 'Tidsserie', state: '#/verksamhet/sjukfallperlakarbefattningtidsserie', active: true}];
+        {description: 'Tidsserie', state: '#/verksamhet/sjukfallperlakarbefattningtidsserie', active: true},
+        {description: 'Tvärsnitt', state: '#/verksamhet/sjukfallperlakarbefattning', active: false}];
     return conf;
 };
 
@@ -428,8 +428,8 @@ angular.module('StatisticsApp').casesPerLakareTimeSeriesConfig = function () {
         return "Antal sjukfall per läkare" + ControllerCommons.getEnhetCountText(enhetsCount, false) + period;
     };
     conf.exchangeableViews = [
-        {description: 'Tvärsnitt', state: '#/verksamhet/sjukfallperlakare', active: false},
-        {description: 'Tidsserie', state: '#/verksamhet/sjukfallperlakaretidsserie', active: true}];
+        {description: 'Tidsserie', state: '#/verksamhet/sjukfallperlakaretidsserie', active: true},
+        {description: 'Tvärsnitt', state: '#/verksamhet/sjukfallperlakare', active: false}];
     return conf;
 };
 
@@ -444,7 +444,7 @@ angular.module('StatisticsApp').casesPerLakaresAlderOchKonTidsserieConfig = func
     };
     conf.pageHelpText = "alert.lakarkon-alder.questionmark";
     conf.exchangeableViews = [
-        {description: 'Tvärsnitt', state: '#/verksamhet/sjukfallperlakaresalderochkon', active: false},
-        {description: 'Tidsserie', state: '#/verksamhet/sjukfallperlakaresalderochkontidsserie', active: true}];
+        {description: 'Tidsserie', state: '#/verksamhet/sjukfallperlakaresalderochkontidsserie', active: true},
+        {description: 'Tvärsnitt', state: '#/verksamhet/sjukfallperlakaresalderochkon', active: false}];
     return conf;
 };
