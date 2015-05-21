@@ -52,7 +52,11 @@ public class LandstingFileReader {
             if (rowIterator.hasNext()) {
                 rowIterator.next(); //Skip title row
             }
+            int rowNumber = 1;
             while (rowIterator.hasNext()) {
+                rowNumber++;
+                final String messagePrefix = "Row #" + rowNumber + ": ";
+
                 String name = "";
                 String id = "";
                 Integer patients = null;
@@ -63,7 +67,7 @@ public class LandstingFileReader {
                     if (Cell.CELL_TYPE_STRING == cellName.getCellType()) {
                         name = cellName.getStringCellValue().trim();
                     } else {
-                        throw new LandstingEnhetFileParseException("Wrong name cell type");
+                        throw new LandstingEnhetFileParseException(messagePrefix + "Wrong name cell type");
                     }
                 }
 
@@ -80,7 +84,7 @@ public class LandstingFileReader {
                     if (DoubleMath.isMathematicalInteger(patientsDouble)) {
                         patients = (int) patientsDouble;
                     } else {
-                        throw new LandstingEnhetFileParseException("Patients cell is not an integer number: " + patientsDouble);
+                        throw new LandstingEnhetFileParseException(messagePrefix + "Patients cell is not an integer number: " + patientsDouble);
                     }
                 }
 
