@@ -107,6 +107,9 @@ public class LandstingFileReader {
                     if (!id.matches("^[a-zA-Z0-9-]+$")) {
                         throw new LandstingEnhetFileParseException(messagePrefix + "Illegal character(s) in HSA id cell");
                     }
+                    if (patients != null && patients < 0) {
+                        throw new LandstingEnhetFileParseException(messagePrefix + "Patients field may not be a negative number");
+                    }
                     rows.add(new LandstingEnhetFileDataRow(name, id, patients));
                 }
             }
