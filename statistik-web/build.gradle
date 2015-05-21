@@ -1,6 +1,6 @@
 buildscript {
     dependencies {
-        classpath 'org.akhikhl.gretty:gretty:1.2.1'
+        classpath 'org.akhikhl.gretty:gretty:1.2.3'
     }
 }
 
@@ -17,7 +17,7 @@ description = 'Inera Statistics Service - Web Module'
 gretty {
     contextPath = '/'
     contextConfigFile = "${projectDir}/src/main/webapp/WEB-INF/jetty-context.xml"
-    logbackConfigFile = "${projectDir}/src/main/resources/statistics-logback.xml"
+    logbackConfigFile = "${projectDir}/src/main/resources/logback.xml"
     jvmArgs = ['-Dspring.profiles.active=dev,embedded,hsa-stub,security-fake,db-resetter', '-Dstatistics.test.max.intyg=500', '-XX:MaxPermSize=256M']
     debugSuspend = false
     scanInterval=1
