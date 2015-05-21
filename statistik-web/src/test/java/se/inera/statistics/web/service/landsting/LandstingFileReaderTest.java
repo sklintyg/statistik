@@ -122,4 +122,21 @@ public class LandstingFileReaderTest {
         }
     }
 
+    @Test
+    public void testReadExcelDataWithErrorInHsaIdFieldThrowsErrorAndShowsCorrectRowNumberInMessage() throws Exception {
+        //Given
+        URL url = LandstingFileReader.class.getResource("/landsting-hsaid-felaktiga-tecken.xls");
+        File file = new File(url.getPath());
+        final FileDataSource dataSource = new FileDataSource(file);
+
+        //When
+        try {
+            landstingFileReader.readExcelData(dataSource);
+            fail();
+        } catch (LandstingEnhetFileParseException e) {
+            //Then
+            assertTrue(e.getMessage(), e.getMessage().startsWith("Row #3"));
+        }
+    }
+
 }
