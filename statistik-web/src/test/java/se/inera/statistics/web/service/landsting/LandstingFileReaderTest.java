@@ -106,9 +106,9 @@ public class LandstingFileReaderTest {
     }
 
     @Test
-    public void testReadExcelDataWithErrorInFileThrowsErrorAndShowsCorrectRowNumberInMessage() throws Exception {
+    public void testReadExcelDataWithErrorInPatientsFieldThrowsErrorAndShowsCorrectRowNumberInMessage() throws Exception {
         //Given
-        URL url = LandstingFileReader.class.getResource("/landsting-test-med-fel.xls");
+        URL url = LandstingFileReader.class.getResource("/landsting-test-med-patientfel.xls");
         File file = new File(url.getPath());
         final FileDataSource dataSource = new FileDataSource(file);
 
