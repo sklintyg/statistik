@@ -80,11 +80,26 @@ public class LandstingFileReader {
 
                 Cell cellPatients = row.getCell(2);
                 if (cellPatients != null) {
-                    double patientsDouble = cellPatients.getNumericCellValue();
-                    if (DoubleMath.isMathematicalInteger(patientsDouble)) {
-                        patients = (int) patientsDouble;
-                    } else {
-                        throw new LandstingEnhetFileParseException(messagePrefix + "Patients cell is not an integer number: " + patientsDouble);
+                    switch (cellPatients.getCellType()) {
+                        case Cell.CELL_TYPE_NUMERIC:
+                            double patientsDouble = cellPatients.getNumericCellValue();
+                            if (DoubleMath.isMathematicalInteger(patientsDouble)) {
+                                patients = (int) patientsDouble;
+                            } else {
+                                throw new LandstingEnhetFileParseException(messagePrefix + "Patients cell is not an integer number: " + patientsDouble);
+                            }
+                            break;
+                        case Cell.CELL_TYPE_STRING:
+                            final String patientsString = cellPatients.getStringCellValue();
+                            try {
+                                patients = Integer.parseInt(patientsString);
+                            } catch (NumberFormatException e) {
+                                throw new LandstingEnhetFileParseException(messagePrefix + "Patients cell is not an integer number");
+                            }
+                            break;
+                        default:
+                            patients = null;
+                            break;
                     }
                 }
 

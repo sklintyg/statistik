@@ -63,7 +63,7 @@ public class LandstingFileReaderTest {
     }
 
     @Test
-    public void testReadExcelData2() throws Exception {
+    public void testReadExcelDataWithOneRow() throws Exception {
         //Given
         URL url = LandstingFileReader.class.getResource("/landsting-test.xls");
         File file = new File(url.getPath());
@@ -79,6 +79,30 @@ public class LandstingFileReaderTest {
         assertEquals("Vårdcentralen Kurhälsan", row0.getEnhetsNamn());
         assertEquals("SE2321000131-E000000007507", row0.getEnhetensHsaId());
         assertEquals(Integer.valueOf(1072), row0.getListadePatienter());
+    }
+
+    @Test
+    public void testReadExcelDataWithListningarAsText() throws Exception {
+        //Given
+        URL url = LandstingFileReader.class.getResource("/landsting-test-text-listning.xls");
+        File file = new File(url.getPath());
+        final FileDataSource dataSource = new FileDataSource(file);
+
+        //When
+        final List<LandstingEnhetFileDataRow> result = landstingFileReader.readExcelData(dataSource);
+
+        //Then
+        assertEquals(2, result.size());
+
+        final LandstingEnhetFileDataRow row0 = result.get(0);
+        assertEquals("Vårdcentralen Kurhälsan", row0.getEnhetsNamn());
+        assertEquals("SE2321000131-E000000007507", row0.getEnhetensHsaId());
+        assertEquals(Integer.valueOf(1072), row0.getListadePatienter());
+
+        final LandstingEnhetFileDataRow row1 = result.get(1);
+        assertEquals("Vårdcentralen Kurhälsan2", row1.getEnhetsNamn());
+        assertEquals("SE2321000131-E000000007508", row1.getEnhetensHsaId());
+        assertEquals(Integer.valueOf(1073), row1.getListadePatienter());
     }
 
 }
