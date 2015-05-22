@@ -46,10 +46,9 @@ public class LandstingEnhetFileDataTest {
     public void testObjectIsCreatedWithCorrectValues() throws Exception {
         //Given
         final String vgId = "TestVgId";
-        final String testName = "TestName";
         final String testHsaId = "TestHsaId";
         final int listadePatienter = 2;
-        final List<LandstingEnhetFileDataRow> rows = Arrays.asList(new LandstingEnhetFileDataRow(testName, testHsaId, listadePatienter));
+        final List<LandstingEnhetFileDataRow> rows = Arrays.asList(new LandstingEnhetFileDataRow(testHsaId, listadePatienter));
 
         //When
         final LandstingEnhetFileData data = new LandstingEnhetFileData(vgId, rows);
@@ -58,7 +57,6 @@ public class LandstingEnhetFileDataTest {
         assertEquals(vgId, data.getVgId());
         assertEquals(1, data.getRows().size());
         final LandstingEnhetFileDataRow row = data.getRows().get(0);
-        assertEquals(testName, row.getEnhetsNamn());
         assertEquals(testHsaId, row.getEnhetensHsaId());
         assertEquals(Integer.valueOf(listadePatienter), row.getListadePatienter());
     }

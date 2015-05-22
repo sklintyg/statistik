@@ -65,7 +65,6 @@
             <column name="landstingId" type="bigint">
                 <constraints nullable="false"/>
             </column>
-            <column name="enhetsNamn" type="varchar(255)"/>
             <column name="enhetensHsaId" type="varchar(128)">
                 <constraints nullable="false"/>
             </column>

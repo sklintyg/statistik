@@ -20,18 +20,12 @@ package se.inera.statistics.service.landsting;
 
 public class LandstingEnhetFileDataRow {
 
-    private String enhetsNamn;
     private String enhetensHsaId;
     private Integer listadePatienter;
 
-    public LandstingEnhetFileDataRow(String enhetsNamn, String enhetensHsaId, Integer listadePatienter) {
-        this.enhetsNamn = enhetsNamn;
+    public LandstingEnhetFileDataRow(String enhetensHsaId, Integer listadePatienter) {
         this.enhetensHsaId = enhetensHsaId;
         this.listadePatienter = listadePatienter;
-    }
-
-    public String getEnhetsNamn() {
-        return enhetsNamn;
     }
 
     public String getEnhetensHsaId() {

@@ -67,7 +67,7 @@ public class LandstingEnhetManager {
         List<LandstingEnhet> landstingEnhets = Lists.transform(newData, new Function<LandstingEnhetFileDataRow, LandstingEnhet>() {
             @Override
             public LandstingEnhet apply(LandstingEnhetFileDataRow data) {
-                return new LandstingEnhet(landstingId, data.getEnhetsNamn(), data.getEnhetensHsaId(), data.getListadePatienter());
+                return new LandstingEnhet(landstingId, data.getEnhetensHsaId(), data.getListadePatienter());
             }
         });
         removeByLandstingId(landstingId);

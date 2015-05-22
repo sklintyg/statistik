@@ -34,8 +34,6 @@ public class LandstingEnhet {
 
     private long landstingId;
 
-    private String enhetsNamn;
-
     private String enhetensHsaId;
 
     private Integer listadePatienter;
@@ -43,9 +41,8 @@ public class LandstingEnhet {
     private LandstingEnhet() {
     }
 
-    public LandstingEnhet(long landstingId, String enhetsNamn, String enhetensHsaId, Integer listadePatienter) {
+    public LandstingEnhet(long landstingId, String enhetensHsaId, Integer listadePatienter) {
         this.landstingId = landstingId;
-        this.enhetsNamn = enhetsNamn;
         this.enhetensHsaId = enhetensHsaId;
         this.listadePatienter = listadePatienter;
     }
@@ -56,10 +53,6 @@ public class LandstingEnhet {
 
     public long getLandstingId() {
         return landstingId;
-    }
-
-    public String getEnhetsNamn() {
-        return enhetsNamn;
     }
 
     public String getEnhetensHsaId() {

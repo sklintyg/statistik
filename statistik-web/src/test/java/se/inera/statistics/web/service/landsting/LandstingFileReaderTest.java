@@ -47,17 +47,14 @@ public class LandstingFileReaderTest {
         assertEquals(204, result.size());
 
         final LandstingEnhetFileDataRow row0 = result.get(0);
-        assertEquals("Närhälsan Floby vårdcentral", row0.getEnhetsNamn());
         assertEquals("SE2321000131-E000000000455", row0.getEnhetensHsaId());
         assertEquals(Integer.valueOf(0), row0.getListadePatienter());
 
         final LandstingEnhetFileDataRow row3 = result.get(3);
-        assertEquals("Vårdcentralen Kurhälsan", row3.getEnhetsNamn());
         assertEquals("SE2321000131-E000000007507", row3.getEnhetensHsaId());
         assertEquals(Integer.valueOf(1072), result.get(3).getListadePatienter());
 
         final LandstingEnhetFileDataRow row192 = result.get(192);
-        assertEquals("", row192.getEnhetsNamn());
         assertEquals("SE2321000131-P000000015902", row192.getEnhetensHsaId());
         assertEquals(null, row192.getListadePatienter());
     }
@@ -76,7 +73,6 @@ public class LandstingFileReaderTest {
         assertEquals(1, result.size());
 
         final LandstingEnhetFileDataRow row0 = result.get(0);
-        assertEquals("Vårdcentralen Kurhälsan", row0.getEnhetsNamn());
         assertEquals("SE2321000131-E000000007507", row0.getEnhetensHsaId());
         assertEquals(Integer.valueOf(1072), row0.getListadePatienter());
     }
@@ -95,12 +91,10 @@ public class LandstingFileReaderTest {
         assertEquals(2, result.size());
 
         final LandstingEnhetFileDataRow row0 = result.get(0);
-        assertEquals("Vårdcentralen Kurhälsan", row0.getEnhetsNamn());
         assertEquals("SE2321000131-E000000007507", row0.getEnhetensHsaId());
         assertEquals(Integer.valueOf(1072), row0.getListadePatienter());
 
         final LandstingEnhetFileDataRow row1 = result.get(1);
-        assertEquals("Vårdcentralen Kurhälsan2", row1.getEnhetsNamn());
         assertEquals("SE2321000131-E000000007508", row1.getEnhetensHsaId());
         assertEquals(Integer.valueOf(1073), row1.getListadePatienter());
     }

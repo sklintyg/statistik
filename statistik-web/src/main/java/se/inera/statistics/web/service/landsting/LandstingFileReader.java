@@ -57,19 +57,10 @@ public class LandstingFileReader {
                 rowNumber++;
                 final String messagePrefix = "Row #" + rowNumber + ": ";
 
-                String name = "";
                 String id = "";
                 Integer patients = null;
 
                 Row row = rowIterator.next();
-                Cell cellName = row.getCell(0);
-                if (cellName != null) {
-                    if (Cell.CELL_TYPE_STRING == cellName.getCellType()) {
-                        name = cellName.getStringCellValue().trim();
-                    } else {
-                        throw new LandstingEnhetFileParseException(messagePrefix + "Wrong name cell type");
-                    }
-                }
 
                 Cell cellHsaId = row.getCell(1);
                 if (cellHsaId != null) {
@@ -110,7 +101,7 @@ public class LandstingFileReader {
                     if (patients != null && patients < 0) {
                         throw new LandstingEnhetFileParseException(messagePrefix + "Patients field may not be a negative number");
                     }
-                    rows.add(new LandstingEnhetFileDataRow(name, id, patients));
+                    rows.add(new LandstingEnhetFileDataRow(id, patients));
                 }
             }
         } catch (IOException e) {
