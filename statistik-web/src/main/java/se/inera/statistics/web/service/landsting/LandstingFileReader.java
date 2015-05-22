@@ -45,6 +45,8 @@ public class LandstingFileReader {
                 workbook = new XSSFWorkbook(fis);
             } else if (dataSource.getName().toLowerCase().endsWith("xls")) {
                 workbook = new HSSFWorkbook(fis);
+            } else {
+                throw new LandstingEnhetFileParseException("Unknown filetype");
             }
 
             Sheet sheet = workbook.getSheetAt(0);
