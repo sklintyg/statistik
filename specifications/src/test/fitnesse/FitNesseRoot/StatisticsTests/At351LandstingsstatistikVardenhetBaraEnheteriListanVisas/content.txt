@@ -6,18 +6,20 @@ Gäller STATISTIK-1081.
 
 Det finns fyra sjukfall på fyra olika enheter. Tre av dem ingår i den inskickade listan.
 
-| script | fil | lista1vg6 |
-
 | script | dagens datum | 2013-11-06 |
 
 | script | troskel varde | 1 |
 
 | Enbart foljande intyg finns |
 | personnr      | diagnoskod | start      | slut       | enhet  | kommentar |
-| 19790407-2215 | G01        | 2013-02-05 | 2013-02-06 | enhet6 |           |
-| 19790407-2225 | G01        | 2013-02-05 | 2013-02-06 | enhet7 |           |
-| 19790407-2235 | G01        | 2013-02-05 | 2013-02-06 | enhet8 |           |
-| 19790407-2245 | G01        | 2013-02-05 | 2013-02-06 | enhet1 |           |
+| 19790407-2215 | G01        | 2013-02-05 | 2013-02-06 | enhet1 |           |
+| 19790407-2225 | G01        | 2013-02-05 | 2013-02-06 | enhet2 |           |
+| 19790407-2235 | G01        | 2013-02-05 | 2013-02-06 | enhet3 |           |
+| 19790407-2245 | G01        | 2013-02-05 | 2013-02-06 | enhet4 |           |
+
+| Uppladdade landstingsfiler |
+| användare | filnamn        | statusmeddelande? |
+| user3     | vg3lista1.xls  | Data updated ok   |
 
 !3 Då gäller:
 
@@ -26,7 +28,7 @@ Bara enheter som ingår i listan visas med sina respektive sjukfall.
 Inloggad:
 | Sjukfall i rapporten landsting sjukfall per enhet |
 | inloggad som | vårdenhet    | totalt? | män? | kvinnor? |
-| user6        | Enhet enhet6 | 1       | 1    | 0        |
-| user6        | Enhet enhet7 | 1       | 0    | 1        |
-| user6        | Enhet enhet8 | 1       | 1    | 0        |
-| user6        | Enhet enhet1 | -1      | -1   | -1       |
+| user3        | Enhet enhet1 | 1       | 1    | 0        |
+| user3        | Enhet enhet2 | 1       | 0    | 1        |
+| user3        | Enhet enhet3 | 1       | 1    | 0        |
+| user3        | Enhet enhet4 | -1      | -1   | -1       |

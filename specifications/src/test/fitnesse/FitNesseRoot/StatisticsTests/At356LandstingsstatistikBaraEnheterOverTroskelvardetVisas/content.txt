@@ -4,27 +4,29 @@ Gäller STATISTIK-1027.
 
 !3 Givet att:
 
-| script | fil | lista1vg6 |
-
 | script | dagens datum | 2013-11-06 |
 
 | script | troskel varde | 3 |
 
 | Enbart foljande intyg finns |
 | personnr      | diagnoskod | start      | slut       | enhet  | kommentar |
-| 19790407-0015 | G01        | 2013-02-05 | 2013-02-06 | enhet6 |           |
-| 19790407-0115 | G01        | 2013-02-05 | 2013-02-06 | enhet6 |           |
-| 19790407-0125 | G01        | 2013-02-05 | 2013-02-06 | enhet6 |           |
-| 19790407-0215 | G01        | 2013-02-05 | 2013-02-06 | enhet7 |           |
-| 19790407-0315 | G01        | 2013-02-05 | 2013-02-06 | enhet7 |           |
-| 19790407-0415 | G01        | 2013-02-05 | 2013-02-06 | enhet7 |           |
-| 19790407-1215 | G01        | 2013-02-05 | 2013-02-06 | enhet7 |           |
-| 19790407-0525 | G01        | 2013-02-05 | 2013-02-06 | enhet7 |           |
-| 19790407-0615 | G01        | 2013-02-05 | 2013-02-06 | enhet2 |           |
-| 19790407-0715 | G01        | 2013-03-05 | 2013-03-06 | enhet2 |           |
-| 19790407-0925 | G01        | 2013-03-05 | 2013-03-06 | enhet2 |           |
-| 19790407-1025 | G01        | 2013-02-05 | 2013-02-06 | enhet2 |           |
-| 19790407-1125 | G01        | 2013-02-05 | 2013-02-06 | enhet2 |           |
+| 19790407-0015 | G01        | 2013-02-05 | 2013-02-06 | enhet1 |           |
+| 19790407-0115 | G01        | 2013-02-05 | 2013-02-06 | enhet1 |           |
+| 19790407-0125 | G01        | 2013-02-05 | 2013-02-06 | enhet1 |           |
+| 19790407-0215 | G01        | 2013-02-05 | 2013-02-06 | enhet2 |           |
+| 19790407-0315 | G01        | 2013-02-05 | 2013-02-06 | enhet2 |           |
+| 19790407-0415 | G01        | 2013-02-05 | 2013-02-06 | enhet2 |           |
+| 19790407-1215 | G01        | 2013-02-05 | 2013-02-06 | enhet2 |           |
+| 19790407-0525 | G01        | 2013-02-05 | 2013-02-06 | enhet2 |           |
+| 19790407-0615 | G01        | 2013-02-05 | 2013-02-06 | enhet3 |           |
+| 19790407-0715 | G01        | 2013-03-05 | 2013-03-06 | enhet3 |           |
+| 19790407-0925 | G01        | 2013-03-05 | 2013-03-06 | enhet3 |           |
+| 19790407-1025 | G01        | 2013-02-05 | 2013-02-06 | enhet3 |           |
+| 19790407-1125 | G01        | 2013-02-05 | 2013-02-06 | enhet3 |           |
+
+| Uppladdade landstingsfiler |
+| användare | filnamn        | statusmeddelande? |
+| user3     | vg3lista1.xls  | Data updated ok   |
 
 !3 Då gäller:
 
@@ -33,18 +35,18 @@ Bara enheter som har sjukfall efter att tröskelvärde applicerats visas.
 Inloggad:
 | Sjukfall i rapporten landsting sjukfall totalt |
 | inloggad som | år   | månad | män? | kvinnor? |
-| user6 | 2013 | jan   | 0    | 0        |
-| user6 | 2013 | feb   | 4    | 0        |
-| user6 | 2013 | mar   | 0    | 0        |
-| user6 | 2013 | apr   | 0    | 0        |
+| user3 | 2013 | jan   | 0    | 0        |
+| user3 | 2013 | feb   | 4    | 0        |
+| user3 | 2013 | mar   | 0    | 0        |
+| user3 | 2013 | apr   | 0    | 0        |
 
 | Sjukfall i rapporten landsting sjukfall per enhet |
 | inloggad som | vårdenhet    | totalt? | män? | kvinnor? |
-| user6        | Enhet enhet6 | -1      | -1   | -1       |
-| user6        | Enhet enhet7 | 4       | 4    | 0        |
-| user6        | Enhet enhet2 | 3       | 0    | 3        |
+| user3        | Enhet enhet1 | -1      | -1   | -1       |
+| user3        | Enhet enhet2 | 4       | 4    | 0        |
+| user3        | Enhet enhet3 | 3       | 0    | 3        |
 
 | inloggad som | vårdenhet    | totalt? |
-| user6        | Enhet enhet6 | -1      |
-| user6        | Enhet enhet7 | -1      |
-| user6        | Enhet enhet2 | 2,73    |
+| user3        | Enhet enhet1 | -1      |
+| user3        | Enhet enhet2 | -1      |
+| user3        | Enhet enhet3 | 2,73    |
