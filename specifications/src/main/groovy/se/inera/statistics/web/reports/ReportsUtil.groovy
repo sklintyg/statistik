@@ -205,6 +205,7 @@ class ReportsUtil {
             case "enhet1": return VARDGIVARE;
             case "enhet2": return VARDGIVARE;
             case "enhet3": return VARDGIVARE3;
+            case "enhet4": return VARDGIVARE3;
             default: return defaultVardgivare;
         }
     }
@@ -256,6 +257,14 @@ class ReportsUtil {
                 "\"efternamn\":\"Modig\"," +
                 "\"hsaId\":\"user5\"," +
                 "\"enhetId\":\"enhet3\"," +
+                "\"vardgivarId\":\"" + getVardgivareForUser(user) + "\"," +
+                "\"vardgivarniva\":\"" + vardgivarniva + "\"" +
+                "}"
+        logins["user6"] = "{" +
+                "\"fornamn\":\"Anna\"," +
+                "\"efternamn\":\"Modig\"," +
+                "\"hsaId\":\"user6\"," +
+                "\"enhetId\":\"enhet4\"," +
                 "\"vardgivarId\":\"" + getVardgivareForUser(user) + "\"," +
                 "\"vardgivarniva\":\"" + vardgivarniva + "\"" +
                 "}"
