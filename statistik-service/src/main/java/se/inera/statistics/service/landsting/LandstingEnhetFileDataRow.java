@@ -18,13 +18,15 @@
  */
 package se.inera.statistics.service.landsting;
 
+import java.util.Locale;
+
 public class LandstingEnhetFileDataRow {
 
     private String enhetensHsaId;
     private Integer listadePatienter;
 
     public LandstingEnhetFileDataRow(String enhetensHsaId, Integer listadePatienter) {
-        this.enhetensHsaId = enhetensHsaId;
+        this.enhetensHsaId = enhetensHsaId == null ? null : enhetensHsaId.toUpperCase(Locale.ENGLISH);
         this.listadePatienter = listadePatienter;
     }
 

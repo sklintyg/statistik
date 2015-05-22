@@ -57,7 +57,7 @@ public class LandstingEnhetFileDataTest {
         assertEquals(vgId, data.getVgId());
         assertEquals(1, data.getRows().size());
         final LandstingEnhetFileDataRow row = data.getRows().get(0);
-        assertEquals(testHsaId, row.getEnhetensHsaId());
+        assertEquals(testHsaId.toUpperCase(), row.getEnhetensHsaId());
         assertEquals(Integer.valueOf(listadePatienter), row.getListadePatienter());
     }
 

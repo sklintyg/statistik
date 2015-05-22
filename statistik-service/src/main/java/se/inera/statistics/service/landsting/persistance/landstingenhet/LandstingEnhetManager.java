@@ -29,6 +29,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import java.util.List;
+import java.util.Locale;
 
 @Component
 public class LandstingEnhetManager {
@@ -67,7 +68,8 @@ public class LandstingEnhetManager {
         List<LandstingEnhet> landstingEnhets = Lists.transform(newData, new Function<LandstingEnhetFileDataRow, LandstingEnhet>() {
             @Override
             public LandstingEnhet apply(LandstingEnhetFileDataRow data) {
-                return new LandstingEnhet(landstingId, data.getEnhetensHsaId(), data.getListadePatienter());
+                final String enhetensHsaId = data.getEnhetensHsaId().toUpperCase(Locale.ENGLISH);
+                return new LandstingEnhet(landstingId, enhetensHsaId, data.getListadePatienter());
             }
         });
         removeByLandstingId(landstingId);
