@@ -25,15 +25,14 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import org.springframework.beans.factory.annotation.Autowired;
 import se.inera.statistics.service.landsting.persistance.landsting.Landsting;
 import se.inera.statistics.service.landsting.persistance.landsting.LandstingManager;
 import se.inera.statistics.service.landsting.persistance.landstingenhet.LandstingEnhetManager;
 
 import java.util.ArrayList;
 
-import static org.junit.Assert.*;
-import static org.mockito.Matchers.anyList;
+import static org.junit.Assert.fail;
+import static org.mockito.Matchers.anyListOf;
 import static org.mockito.Matchers.anyLong;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.times;
@@ -70,7 +69,7 @@ public class LandstingEnhetHandlerTest {
         }
 
         //Then
-        Mockito.verify(landstingEnhetManager, times(0)).update(anyLong(), anyList());
+        Mockito.verify(landstingEnhetManager, times(0)).update(anyLong(), anyListOf(LandstingEnhetFileDataRow.class));
     }
 
     @Test
@@ -79,7 +78,7 @@ public class LandstingEnhetHandlerTest {
         final ArrayList<LandstingEnhetFileDataRow> rows = new ArrayList<>();
         final LandstingEnhetFileData data = new LandstingEnhetFileData("testVgId", rows);
         final Landsting landsting = Mockito.mock(Landsting.class);
-        final Long landtingsId = new Long(5);
+        final Long landtingsId = 5L;
         Mockito.when(landsting.getId()).thenReturn(landtingsId);
         Mockito.when(landstingManager.getForVg(anyString())).thenReturn(Optional.of(landsting));
 
