@@ -13,7 +13,7 @@ description = 'highcharts-export-web'
 gretty {
     contextPath = '/'
     contextConfigFile = "${projectDir}/src/main/webapp/WEB-INF/jetty-context.xml"
-    logbackConfigFile = "${projectDir}/src/main/resources/statistics-logback.xml"
+    logbackConfigFile = "${projectDir}/src/main/resources/logback.xml"
     jvmArgs = ['-Dspring.profiles.active=dev,hsa-stub,security-fake', '-Dstatistics.test.max.intyg=500', '-XX:MaxPermSize=256M']
     debugSuspend = false
     scanInterval=1
