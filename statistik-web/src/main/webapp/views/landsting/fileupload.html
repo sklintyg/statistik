@@ -18,21 +18,20 @@
   -->
 <div xmlns="http://www.w3.org/1999/html">
 	<div class="container-fluid">
-	    <div class="row">
-	    	<div class="overview-content">
-                <div class="col-xs-12">
-                    <button dropzone="dropzoneConfig">Dra och släpp filen hit eller klicka för att ladda upp</button>
-                </div>
-                <div><b>Senaste uppdatering: </b>{{lastLandstingUpdateMessage}}</div>
-                <br/>
-                <div data-ng-show="uploadResultMessage"><b>Status: </b>{{uploadResultMessage}}</div>
-                <br/>
-                <div data-ng-show="parsedRows">
-                  <div><b>Filen har tolkats enligt följande:</b></div>
-                  <div data-ng-repeat="row in parsedRows">{{row}}</div>
-                </div>
-	    	</div>
-	    </div>
+        <h2>Ladda upp</h2>
+        <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas congue maximus rutrum. Quisque rutrum felis aliquet neque vestibulum tristique. Nullam rhoncus eu nibh et efficitur. Integer ac dolor vel ante vulputate accumsan. Quisque quis erat odio. Nulla facilisi. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Aenean sollicitudin ornare mi, pretium facilisis est mattis nec.</div>
+        <br/>
+        <div class="col-xs-12">
+            <button dropzone="dropzoneConfig">Dra och släpp filen hit eller klicka för att ladda upp</button>
+        </div>
+        <div><b>Senaste uppdatering: </b>{{lastLandstingUpdateMessage}}</div>
+        <br/>
+        <div data-ng-show="uploadResultMessage"><b>Status: </b>{{uploadResultMessage}}</div>
+        <br/>
+        <div data-ng-show="parsedRows">
+          <div><b>Filen har tolkats enligt följande:</b></div>
+          <div data-ng-repeat="row in parsedRows">{{row}}</div>
+        </div>
 	</div>
 </div>
 
