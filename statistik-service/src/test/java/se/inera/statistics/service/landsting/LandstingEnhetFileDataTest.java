@@ -35,7 +35,7 @@ public class LandstingEnhetFileDataTest {
         final List<LandstingEnhetFileDataRow> rows = null;
 
         //When
-        final LandstingEnhetFileData data = new LandstingEnhetFileData(vgId, rows);
+        final LandstingEnhetFileData data = new LandstingEnhetFileData(vgId, rows, "", "", "");
 
         //Then
         assertEquals("", data.getVgId());
@@ -51,7 +51,7 @@ public class LandstingEnhetFileDataTest {
         final List<LandstingEnhetFileDataRow> rows = Arrays.asList(new LandstingEnhetFileDataRow(testHsaId, listadePatienter));
 
         //When
-        final LandstingEnhetFileData data = new LandstingEnhetFileData(vgId, rows);
+        final LandstingEnhetFileData data = new LandstingEnhetFileData(vgId, rows, "", "", "");
 
         //Then
         assertEquals(vgId, data.getVgId());

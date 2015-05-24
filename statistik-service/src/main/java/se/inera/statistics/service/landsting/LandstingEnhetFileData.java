@@ -25,10 +25,16 @@ public class LandstingEnhetFileData {
 
     private String vgId;
     private List<LandstingEnhetFileDataRow> rows;
+    private String userName;
+    private String userId;
+    private String fileName;
 
-    public LandstingEnhetFileData(String vgId, List<LandstingEnhetFileDataRow> rows) {
+    public LandstingEnhetFileData(String vgId, List<LandstingEnhetFileDataRow> rows, String userName, String userId, String fileName) {
         this.vgId = vgId == null ? "" : vgId;
         this.rows = rows == null ? Collections.<LandstingEnhetFileDataRow>emptyList() : Collections.unmodifiableList(rows);
+        this.userName = userName;
+        this.userId = userId;
+        this.fileName = fileName;
     }
 
     public String getVgId() {
@@ -39,4 +45,15 @@ public class LandstingEnhetFileData {
         return rows;
     }
 
+    public String getUserName() {
+        return userName;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public String getFileName() {
+        return fileName;
+    }
 }

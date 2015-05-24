@@ -26,6 +26,9 @@ import org.springframework.stereotype.Component;
 import se.inera.statistics.service.landsting.persistance.landsting.Landsting;
 import se.inera.statistics.service.landsting.persistance.landsting.LandstingManager;
 import se.inera.statistics.service.landsting.persistance.landstingenhet.LandstingEnhetManager;
+import se.inera.statistics.service.landsting.persistance.landstingenhetupdate.LandstingEnhetUpdate;
+import se.inera.statistics.service.landsting.persistance.landstingenhetupdate.LandstingEnhetUpdateManager;
+import se.inera.statistics.service.landsting.persistance.landstingenhetupdate.LandstingEnhetUpdateOperation;
 
 @Component
 public class LandstingEnhetHandler {
@@ -38,13 +41,29 @@ public class LandstingEnhetHandler {
     @Autowired
     private LandstingEnhetManager landstingEnhetManager;
 
+    @Autowired
+    private LandstingEnhetUpdateManager landstingEnhetUpdateManager;
+
     public void update(LandstingEnhetFileData data) throws NoLandstingSetForVgException {
         final Optional<Landsting> landstingOptional = landstingManager.getForVg(data.getVgId());
         if (!landstingOptional.isPresent()) {
             LOG.warn("There is no landsting connected to vg: " + data.getVgId());
             throw new NoLandstingSetForVgException();
         }
-        landstingEnhetManager.update(landstingOptional.get().getId(), data.getRows());
+        final long landstingId = landstingOptional.get().getId();
+        landstingEnhetManager.update(landstingId, data.getRows());
+        landstingEnhetUpdateManager.update(landstingId, data.getUserName(), data.getUserId(), removeInvalidChars(data.getFileName()), LandstingEnhetUpdateOperation.Update);
     }
 
+    private String removeInvalidChars(String fileName) {
+        return fileName.replaceAll("[^a-zA-Z0-9åäöÅÄÖ.]", "_");
+    }
+
+    public Optional<LandstingEnhetUpdate> getLastUpdateInfo(String vardgivarId) {
+        final Optional<Landsting> landstingOptional = landstingManager.getForVg(vardgivarId);
+        if (landstingOptional.isPresent()) {
+            return landstingEnhetUpdateManager.getByLandstingId(landstingOptional.get().getId());
+        }
+        return Optional.absent();
+    }
 }

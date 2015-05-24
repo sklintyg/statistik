@@ -218,6 +218,10 @@ angular.module('StatisticsApp').factory('statisticsData', ['$http', '$rootScope'
         makeRequestVerksamhet("getJamforDiagnoserStatistikTidsserie/" + diagnosisToCompare, successCallback, failureCallback);
     };
 
+    factory.getLastLandstingUpdateInfo = function (successCallback, failureCallback) {
+        makeRequestVerksamhet("landsting/lastUpdateInfo", successCallback, failureCallback);
+    };
+
     return factory;
 }]);
 

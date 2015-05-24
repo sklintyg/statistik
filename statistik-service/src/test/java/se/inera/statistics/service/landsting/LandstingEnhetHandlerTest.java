@@ -28,13 +28,17 @@ import org.mockito.MockitoAnnotations;
 import se.inera.statistics.service.landsting.persistance.landsting.Landsting;
 import se.inera.statistics.service.landsting.persistance.landsting.LandstingManager;
 import se.inera.statistics.service.landsting.persistance.landstingenhet.LandstingEnhetManager;
+import se.inera.statistics.service.landsting.persistance.landstingenhetupdate.LandstingEnhetUpdateManager;
+import se.inera.statistics.service.landsting.persistance.landstingenhetupdate.LandstingEnhetUpdateOperation;
 
 import java.util.ArrayList;
 
 import static org.junit.Assert.fail;
+import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyListOf;
 import static org.mockito.Matchers.anyLong;
 import static org.mockito.Matchers.anyString;
+import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.times;
 
 public class LandstingEnhetHandlerTest {
@@ -48,6 +52,8 @@ public class LandstingEnhetHandlerTest {
     @Mock
     private LandstingEnhetManager landstingEnhetManager;
 
+    @Mock
+    private LandstingEnhetUpdateManager landstingEnhetUpdateManager;
 
     @Before
     public void setUp() throws Exception {
@@ -57,7 +63,7 @@ public class LandstingEnhetHandlerTest {
     @Test
     public void testUpdateWhenNoLandstingIsFoundExceptionIsThrownAndNoUpdateIsPerformed() throws Exception {
         //Given
-        final LandstingEnhetFileData data = new LandstingEnhetFileData("testName", null);
+        final LandstingEnhetFileData data = new LandstingEnhetFileData("testName", null, "", "", "");
         Mockito.when(landstingManager.getForVg(anyString())).thenReturn(Optional.<Landsting>absent());
 
         //When
@@ -70,13 +76,17 @@ public class LandstingEnhetHandlerTest {
 
         //Then
         Mockito.verify(landstingEnhetManager, times(0)).update(anyLong(), anyListOf(LandstingEnhetFileDataRow.class));
+        Mockito.verify(landstingEnhetUpdateManager, times(0)).update(anyLong(), anyString(), anyString(), anyString(), any(LandstingEnhetUpdateOperation.class));
     }
 
     @Test
-    public void testUpdateIsCalledWithCorrectParams() throws Exception {
+    public void testUpdatesAreCalledWithCorrectParams() throws Exception {
         //Given
         final ArrayList<LandstingEnhetFileDataRow> rows = new ArrayList<>();
-        final LandstingEnhetFileData data = new LandstingEnhetFileData("testVgId", rows);
+        final String userName = "testUserName";
+        final String userId = "TestUserId";
+        final String fileName = "TestFileName";
+        final LandstingEnhetFileData data = new LandstingEnhetFileData("testVgId", rows, userName, userId, fileName);
         final Landsting landsting = Mockito.mock(Landsting.class);
         final Long landtingsId = 5L;
         Mockito.when(landsting.getId()).thenReturn(landtingsId);
@@ -87,6 +97,25 @@ public class LandstingEnhetHandlerTest {
 
         //Then
         Mockito.verify(landstingEnhetManager, times(1)).update(landtingsId, rows);
+        Mockito.verify(landstingEnhetUpdateManager, times(1)).update(landtingsId, userName, userId, fileName, LandstingEnhetUpdateOperation.Update);
+    }
+
+    @Test
+    public void testIllegalCharactersAreRemovedFromFilenameBeforeDatabaseUpdate() throws Exception {
+        //Given
+        final ArrayList<LandstingEnhetFileDataRow> rows = new ArrayList<>();
+        final String fileName = "TestFile<Name.xls";
+        final LandstingEnhetFileData data = new LandstingEnhetFileData("testVgId", null, "", "", fileName);
+        final Landsting landsting = Mockito.mock(Landsting.class);
+        final Long landtingsId = 5L;
+        Mockito.when(landsting.getId()).thenReturn(landtingsId);
+        Mockito.when(landstingManager.getForVg(anyString())).thenReturn(Optional.of(landsting));
+
+        //When
+        landstingEnhetHandler.update(data);
+
+        //Then
+        Mockito.verify(landstingEnhetUpdateManager, times(1)).update(anyLong(), anyString(), anyString(), eq("TestFile_Name.xls"), any(LandstingEnhetUpdateOperation.class));
     }
 
 }

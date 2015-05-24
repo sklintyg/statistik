@@ -19,8 +19,17 @@
 
 'use strict';
 
-angular.module('StatisticsApp').controller('landstingFileUploadCtrl', [ '$scope', '$rootScope',
-    function ($scope, $rootScope) {
+angular.module('StatisticsApp').controller('landstingFileUploadCtrl', [ '$scope', '$rootScope', '$timeout', 'statisticsData',
+    function ($scope, $rootScope, $timeout, statisticsData) {
+
+        var updateLastUpdateMessage = function() {
+            $scope.lastLandstingUpdateMessage = "";
+            $timeout(function () {
+                statisticsData.getLastLandstingUpdateInfo(function (result) {
+                    $scope.lastLandstingUpdateMessage = result;
+                });
+            }, 1);
+        };
 
         var updateStatus = function (response) {
             $scope.uploadResultMessage = response.message ? response.message : response;
@@ -44,13 +53,19 @@ angular.module('StatisticsApp').controller('landstingFileUploadCtrl', [ '$scope'
             },
             'eventHandlers': {
                 'success': function (file, response) {
-                    $scope.$apply(updateStatus(response));
+                    $scope.$apply(function() {
+                            updateStatus(response);
+                            updateLastUpdateMessage();
+                        }
+                    );
                 },
                 'error': function (file, response) {
                     $scope.$apply(updateStatus(response));
                 }
             }
         };
+
+        updateLastUpdateMessage();
 
     }
 ]);

@@ -40,6 +40,8 @@ import se.inera.statistics.service.landsting.LandstingEnhetFileData;
 import se.inera.statistics.service.landsting.LandstingEnhetFileDataRow;
 import se.inera.statistics.service.landsting.LandstingEnhetHandler;
 import se.inera.statistics.service.landsting.NoLandstingSetForVgException;
+import se.inera.statistics.service.landsting.persistance.landstingenhetupdate.LandstingEnhetUpdate;
+import se.inera.statistics.service.landsting.persistance.landstingenhetupdate.LandstingEnhetUpdateOperation;
 import se.inera.statistics.service.report.model.DiagnosgruppResponse;
 import se.inera.statistics.service.report.model.KonDataResponse;
 import se.inera.statistics.service.report.model.Range;
@@ -604,7 +606,7 @@ public class ProtectedChartDataService {
         try {
             final List<LandstingEnhetFileDataRow> landstingFileRows = landstingFileReader.readExcelData(dataSource);
             final String vardgivarId = info.getDefaultVerksamhet().getVardgivarId();
-            final LandstingEnhetFileData fileData = new LandstingEnhetFileData(vardgivarId, landstingFileRows);
+            final LandstingEnhetFileData fileData = new LandstingEnhetFileData(vardgivarId, landstingFileRows, info.getName(), info.getHsaId(), dataSource.getName());
             landstingEnhetHandler.update(fileData);
             return createFileUploadResponse(Response.Status.OK, "Data updated ok", landstingFileRows);
         } catch (LandstingEnhetFileParseException e) {
@@ -614,6 +616,29 @@ public class ProtectedChartDataService {
             LOG.warn("Failed to update landsting settings", e);
             return createFileUploadResponse(Response.Status.INTERNAL_SERVER_ERROR, "Data NOT updated: Current vårdgivare is not connected to a landsting", null);
         }
+    }
+
+    @GET
+    @Path("landsting/lastUpdateInfo")
+    @Produces({ MediaType.APPLICATION_JSON })
+    @Consumes({ "multipart/form-data" })
+    @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
+    @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
+    public Response getLastLandstingUpdateInfo(@Context HttpServletRequest request) {
+        LoginInfo info = loginServiceUtil.getLoginInfo(request);
+        final String vardgivarId = info.getDefaultVerksamhet().getVardgivarId();
+        return Response.ok(getLastLandstingUpdateInfoMessage(vardgivarId)).build();
+    }
+
+    private String getLastLandstingUpdateInfoMessage(String vardgivarId) {
+        final Optional<LandstingEnhetUpdate> lastUpdateInfo = landstingEnhetHandler.getLastUpdateInfo(vardgivarId);
+        if (lastUpdateInfo.isPresent()) {
+            final LandstingEnhetUpdate update = lastUpdateInfo.get();
+            final LandstingEnhetUpdateOperation operation = update.getOperation();
+            String dateTime = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new java.util.Date(update.getTimestamp().getTime()));
+            return operation.getMessage() + (LandstingEnhetUpdateOperation.Update.equals(operation) ? " (" + update.getFilename() + ")" : "") + " - " + dateTime + " av " + update.getUpdatedByName() + " (" + update.getUpdatedByHsaid() + ")";
+        }
+        return "";
     }
 
     private Response createFileUploadResponse(Response.Status status, String message, List<LandstingEnhetFileDataRow> landstingFileRows) {
