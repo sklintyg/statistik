@@ -65,11 +65,15 @@
             <column name="landstingId" type="bigint">
                 <constraints nullable="false"/>
             </column>
+            <column name="enhetsNamn" type="varchar(255)"/>
             <column name="enhetensHsaId" type="varchar(128)">
                 <constraints nullable="false"/>
             </column>
             <column name="listadePatienter" type="int"/>
         </createTable>
+    </changeSet>
+    <changeSet id="27_remove_enhetsName_from_landstingenhet_table" author="fredrik.engstrom">
+        <dropColumn tableName="LandstingEnhet" columnName="enhetsNamn"/>
     </changeSet>
     <changeSet id="27_add_landstingenhet_index" author="fredrik.engstrom">
         <createIndex tableName="LandstingEnhet" indexName="idx_landstingId" unique="false">
