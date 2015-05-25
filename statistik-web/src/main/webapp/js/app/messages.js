@@ -6,11 +6,13 @@ var stMessages = {
         'statistics.header.extra-text': 'Statistiktjänst för ordinerad sjukskrivning',
         'statistics.hidden-header.sidans-huvudnavigering': 'Sidans huvudnavigering',
         'statistics.hidden-header.nationell-navigering': 'Navigering för nationell statistik',
+        'statistics.hidden-header.landsting-navigering': 'Navigering för landstingsstatistik',
         'statistics.hidden-header.business-navigering': 'Navigering för verksamhetsstatistik',
         'statistics.hidden-header.about-navigering': 'Navigering för information om tjänsten',
         
         //navigation
         'nav.national-header': 'Nationell statistik',
+        'nav.landsting-header': 'Landstingsstatistik',
         'nav.business-header': 'Verksamhetsstatistik',
         'nav.about-header': 'Om tjänsten',
         'nav.oversikt': 'Översikt',
@@ -38,7 +40,8 @@ var stMessages = {
         'nav.inloggning-behorighet': 'Inloggning och behörighet',
         'nav.faq': 'Vanliga frågor och svar',
         'nav.kontakt-support': 'Kontakt till support',
-        
+        'nav.landsting.filuppladdning': 'Filuppladdning',
+
         //labels
         'lbl.mobile-menu': 'Meny',
         'lbl.log-in': 'Logga in',

@@ -66,4 +66,9 @@ public class LandstingEnhetHandler {
         }
         return Optional.absent();
     }
+
+    public boolean isLandstingsVardgivare(String vardgivarId) {
+        return landstingManager.getForVg(vardgivarId).isPresent();
+    }
+
 }

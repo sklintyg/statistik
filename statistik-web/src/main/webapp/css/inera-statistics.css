@@ -527,6 +527,7 @@ legend {
 }
 #statistics-menu-accordion #national-statistic-menu-content li.active a,
 #statistics-menu-accordion #business-statistic-menu-content li.active a,
+#statistics-menu-accordion #landsting-statistic-menu-content li.active a,
 #statistics-menu-accordion #about-statistic-menu-content li.active a {
 	background: #CCCCCC !important;
 	background-color: #CCCCCC !important;

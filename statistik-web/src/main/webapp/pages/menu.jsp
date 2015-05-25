@@ -58,6 +58,27 @@
       </div>
     </div>
   </div>
+  <!-- LANDSTING MENU -->
+  <c:if test="${landstingAvailable}">
+    <div class="accordion-group" id="landsting-statistics-menu-group">
+      <h2 class="hidden-header"><span message key="statistics.hidden-header.landsting-navigering"></span></h2>
+      <div class="accordion-heading statistics-menu">
+        <div class="accordion-toggle first-level-menu" id="landsting-statistics-toggle"
+             data-parent="#statistics-menu-accordion"
+             data-ng-class="{active: showLandsting, collapsed: !showLandsting}"
+             data-ng-click="toggleLandstingAccordion()">
+            <span class="statistics-menu-heading"><span message key="nav.landsting-header"></span></span><i class="statistict-left-menu-expand-icon"></i>
+        </div>
+      </div>
+      <div id="landsting-statistics-collapse" class="accordion-body collapse navigation-group" data-ng-class="{in: showLandsting}">
+        <div class="accordion-inner">
+          <ul id="landsting-statistic-menu-content" class="nav nav-list">
+            <li data-ng-show="isLandstingAdmin"><a data-ng-href="#/landsting/filuppladdning{{queryString}}" ctrlname="LandstingFileUploadCtrl" navigationaware><span message key="nav.landsting.filuppladdning"></span></a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </c:if>
   <c:if test="${loginVisible}">
     <div class="accordion-group" id="business-statistics-menu-group">
       <h2 class="hidden-header"><span message key="statistics.hidden-header.business-navigering"></span></h2>

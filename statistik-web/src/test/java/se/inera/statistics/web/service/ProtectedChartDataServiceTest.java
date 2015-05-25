@@ -94,7 +94,7 @@ public class ProtectedChartDataServiceTest {
 
     @Test
     public void checkAllowedAccessToVerksamhetTest() {
-        Mockito.when(loginServiceUtil.getLoginInfo(request)).thenReturn(new LoginInfo("", "", null, false, false, false, null));
+        Mockito.when(loginServiceUtil.getLoginInfo(request)).thenReturn(new LoginInfo("", "", null, false, false, false, null, false));
         boolean result = chartDataService.hasAccessTo(request);
         assertEquals(true, result);
     }
@@ -104,7 +104,7 @@ public class ProtectedChartDataServiceTest {
         //Given
         final MultipartBody mb = Mockito.mock(MultipartBody.class);
         final HttpServletRequest req = Mockito.mock(HttpServletRequest.class);
-        Mockito.when(loginServiceUtil.getLoginInfo(req)).thenReturn(new LoginInfo("", "", null, false, false, false, null));
+        Mockito.when(loginServiceUtil.getLoginInfo(req)).thenReturn(new LoginInfo("", "", null, false, false, false, null, false));
 
         //When
         final Response response = chartDataService.fileupload(req, mb);
@@ -125,7 +125,7 @@ public class ProtectedChartDataServiceTest {
         final DataSource ds = Mockito.mock(DataSource.class);
         Mockito.when(dh.getDataSource()).thenReturn(ds);
         final HttpServletRequest req = Mockito.mock(HttpServletRequest.class);
-        Mockito.when(loginServiceUtil.getLoginInfo(req)).thenReturn(new LoginInfo("", "", null, false, false, true, null));
+        Mockito.when(loginServiceUtil.getLoginInfo(req)).thenReturn(new LoginInfo("", "", null, false, false, true, null, false));
         Mockito.when(landstingFileReader.readExcelData(any(DataSource.class))).thenThrow(new LandstingEnhetFileParseException(""));
 
         //When
@@ -150,7 +150,7 @@ public class ProtectedChartDataServiceTest {
         final Verksamhet verksamhet = Mockito.mock(Verksamhet.class);
         final String testVgId = "TestVgId";
         Mockito.when(verksamhet.getVardgivarId()).thenReturn(testVgId);
-        Mockito.when(loginServiceUtil.getLoginInfo(req)).thenReturn(new LoginInfo("", "", verksamhet, false, false, true, null));
+        Mockito.when(loginServiceUtil.getLoginInfo(req)).thenReturn(new LoginInfo("", "", verksamhet, false, false, true, null, false));
         final ArrayList<LandstingEnhetFileDataRow> parseResult = new ArrayList<>();
         Mockito.when(landstingFileReader.readExcelData(any(DataSource.class))).thenReturn(parseResult);
 
