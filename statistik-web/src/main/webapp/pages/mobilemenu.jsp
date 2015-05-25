@@ -20,9 +20,9 @@
             <div class="header-box-user-profile pull-right">
               <span class="user-name pull-right" data-ng-bind="userNameWithAccess"></span>
               <br/>
-		                                <span class="user-logout pull-right">
-											<a href="/saml/logout"><span message key="lbl.log-out"></span></a>
-										</span>
+              <span class="user-logout pull-right">
+                  <a href="/saml/logout"><span message key="lbl.log-out"></span></a>
+              </span>
             </div>
           </div>
         </div>
@@ -55,6 +55,15 @@
                 <li><a data-ng-href="#/nationell/andelSjukfallPerKon{{queryString}}" id="navCasesPerSexLink" ctrlname="NationalCasesPerSexCtrl" role="menuitem" ng-click="isCollapsed = !isCollapsed" navigationaware><span message key="nav.lan-andel-sjukfall-per-kon"></span></a></li>
               </ul>
             </li>
+          </ul>
+        </li>
+        <li class="divider"></li>
+
+        <!-- Landting mobile menu -->
+        <li class="dropdown-landsting">
+          <a class="mobileMenuHeaderItem" data-toggle="collapse in" data-target="#landsting-menu" ng-click="isLandstingCollapsed = !isLandstingCollapsed"><span message key="nav.landsting-header"></span><span class="caret pull-right mobile-menu-caret"></span></a>
+          <ul class="collapse" id="landsting-menu" collapse="!isLandstingCollapsed">
+            <li class="subMenuItem"><a data-ng-href="#/landsting/filuppladdning{{queryString}}" ctrlname="LandstingFileUploadCtrl" role="menuitem" ng-click="isCollapsed = !isCollapsed" navigationaware><span message key="nav.landsting.filuppladdning"></span></a></li>
           </ul>
         </li>
         <li class="divider"></li>
