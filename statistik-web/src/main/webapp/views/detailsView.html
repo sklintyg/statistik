@@ -120,11 +120,14 @@
                     <div class="col-sm-4" ng-show="isVerksamhetShowing">
                         <h3 message key="lbl.diagramtyp-knappgrupp"></h3>
 
-                        <div class="chart-icon-bar" data-ng-click="switchChartType('bar')"></div>
+                        <span><div class="chart-icon-bar" data-ng-click="switchChartType('bar')"
+                                   tooltip="Stapeldiagram" tooltip-placement="bottom" tooltip-popup-delay="1000"></div></span>
 
-                        <div class="chart-icon-line" data-ng-click="switchChartType('line')"></div>
+                        <span><div class="chart-icon-line" data-ng-click="switchChartType('line')"
+                                   tooltip="Linjediagram" tooltip-placement="bottom" tooltip-popup-delay="1000"></div></span>
 
-                        <div class="chart-icon-area" data-ng-click="switchChartType('area')"></div>
+                        <span><div class="chart-icon-area" data-ng-click="switchChartType('area')"
+                                   tooltip="Ytdiagram" tooltip-placement="bottom" tooltip-popup-delay="1000"></div></span>
                     </div>
 
                     <!-- PRINT BUTTON GROUP -->
@@ -180,7 +183,6 @@
 					<div class="chart-page-chart" id="{{chartContainer.id}}" style="height: 400px; margin: 0 auto"></div>
                     <div class="visible-print" style="margin-bottom: 50px!important;"><!-- This is a div that adds margin in print mode to separate charts. Hardwired styles, otherwise won't work when printing --></div>
 				</div>
-
 			</div>
 
 			<div class="row hidden-print">
