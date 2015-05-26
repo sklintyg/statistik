@@ -120,13 +120,13 @@
                     <div class="col-sm-4" ng-show="isVerksamhetShowing">
                         <h3 message key="lbl.diagramtyp-knappgrupp"></h3>
 
-                        <span><div class="chart-icon-bar" data-ng-click="switchChartType('bar')"
+                        <span><div ng-class="{'chart-icon-column-active': activeChartType === 'column', 'chart-icon-column': activeChartType !== 'column'}" data-ng-click="switchChartType('column')"
                                    tooltip="Stapeldiagram" tooltip-placement="bottom" tooltip-popup-delay="1000"></div></span>
 
-                        <span><div class="chart-icon-line" data-ng-click="switchChartType('line')"
+                        <span><div ng-class="{'chart-icon-line-active': activeChartType === 'line', 'chart-icon-line': activeChartType !== 'line'}" data-ng-click="switchChartType('line')"
                                    tooltip="Linjediagram" tooltip-placement="bottom" tooltip-popup-delay="1000"></div></span>
 
-                        <span><div class="chart-icon-area" data-ng-click="switchChartType('area')"
+                        <span><div ng-class="{'chart-icon-area-active': activeChartType === 'area', 'chart-icon-area': activeChartType !== 'area'}" data-ng-click="switchChartType('area')"
                                    tooltip="Ytdiagram" tooltip-placement="bottom" tooltip-popup-delay="1000"></div></span>
                     </div>
 

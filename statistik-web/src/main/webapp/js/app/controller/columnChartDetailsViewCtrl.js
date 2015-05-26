@@ -23,6 +23,8 @@ angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl', [ '$sco
     function ($scope, $rootScope, $routeParams, $window, $location, $timeout, statisticsData, diagnosisTreeFilter, config, messageService, printFactory, chartFactory) {
         var isVerksamhet = ControllerCommons.isShowingVerksamhet($location);
         var chart = {};
+        var defaultChartType = 'column';
+        $scope.activeChartType = defaultChartType;
 
         $scope.chartContainers = [
             {id: "chart1", name: "diagram"}
@@ -30,7 +32,7 @@ angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl', [ '$sco
 
         var paintChart = function (chartCategories, chartSeries, doneLoadingCallback) {
             var chartOptions = chartFactory.getHighChartConfigBase(chartCategories, chartSeries, doneLoadingCallback);
-            chartOptions.chart.type = 'column';
+            chartOptions.chart.type = defaultChartType;
             chartOptions.chart.marginLeft = 60;
             chartOptions.chart.marginTop = 27;
 
@@ -68,6 +70,7 @@ angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl', [ '$sco
 
         $scope.switchChartType = function (chartType) {
             chartFactory.switchChartType(chart.series, chartType);
+            $scope.activeChartType = chartType;
 
             chart.redraw();
         };

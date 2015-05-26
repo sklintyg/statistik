@@ -24,6 +24,9 @@ angular.module('StatisticsApp').controller('singleLineChartCtrl', [ '$scope', '$
 
         var chart;
 
+        var defaultChartType = 'line';
+        $scope.activeChartType = defaultChartType;
+
         $scope.chartContainers = [
             {id: "chart1", name: "diagram"}
         ];
@@ -33,7 +36,7 @@ angular.module('StatisticsApp').controller('singleLineChartCtrl', [ '$scope', '$
         var paintChart = function (chartCategories, chartSeries, doneLoadingCallback) {
 
             var chartOptions = chartFactory.getHighChartConfigBase(chartCategories, chartSeries, doneLoadingCallback);
-            chartOptions.chart.type = 'line';
+            chartOptions.chart.type = defaultChartType;
 
             //Set the chart.width to a fixed width when we are about the print.
             //It will prevent the chart from overflowing the printed page.
@@ -74,6 +77,7 @@ angular.module('StatisticsApp').controller('singleLineChartCtrl', [ '$scope', '$
 
         $scope.switchChartType = function (chartType) {
             chartFactory.switchChartType(chart.series, chartType);
+            $scope.activeChartType = chartType;
             chart.redraw();
         };
 

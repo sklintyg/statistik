@@ -1889,23 +1889,49 @@ li.subMenuItem.active .active-menu-item { display: block;  }
 
 /*Icons for charts*/
 
-.chart-icon-bar, .chart-icon-line, .chart-icon-area{
-    background-image: url("../img/chart-types/knappar_120_34.png");
+.chart-icon-column, .chart-icon-line, .chart-icon-area,
+.chart-icon-area-active, .chart-icon-column-active,
+.chart-icon-line-active {
+    background-image: url("../img/chart-types/ikoner_statistik_state.png");
     background-repeat: no-repeat;
     position: relative;
     display: inline-block;
-    width: 37px;
+    width: 38px;
     height: 34px;
 }
 
-.chart-icon-bar {
-    background-position: left;
+.chart-icon-column {
+    background-position: left top;
+}
+
+.chart-icon-column:hover {
+    background-position: left center;
+}
+
+.chart-icon-column-active {
+    background-position: left bottom;
 }
 
 .chart-icon-line {
-    background-position: center;
+    background-position: center top;
+}
+
+.chart-icon-line:hover {
+    background-position: center center;
+}
+
+.chart-icon-line-active{
+    background-position: center bottom;
 }
 
 .chart-icon-area {
-    background-position: right;
+    background-position: right top;
+}
+
+.chart-icon-area:hover {
+    background-position: right center;
+}
+
+.chart-icon-area-active {
+    background-position: right bottom;
 }

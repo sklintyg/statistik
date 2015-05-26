@@ -24,12 +24,15 @@ angular.module('StatisticsApp').controller('doubleAreaChartsCtrl', [ '$scope', '
         var that = this;
         var chart1 = {};
         var chart2 = {};
+
+        var defaultChartType = 'area';
+        $scope.activeChartType = defaultChartType;
         var isVerksamhet = ControllerCommons.isShowingVerksamhet($location);
 
         this.paintChart = function (containerId, yAxisTitle, yAxisTitleXPos, chartCategories, chartSeries, chartSpacingLeft, doneLoadingCallback) {
             var chartOptions = chartFactory.getHighChartConfigBase(chartCategories, chartSeries, doneLoadingCallback);
 
-            chartOptions.chart.type = 'area';
+            chartOptions.chart.type = defaultChartType;
             chartOptions.chart.marginTop = 27;
             chartOptions.chart.spacingLeft = chartSpacingLeft;
             chartOptions.plotOptions.area.lineWidth = 1;
@@ -134,6 +137,7 @@ angular.module('StatisticsApp').controller('doubleAreaChartsCtrl', [ '$scope', '
             that.chart1.redraw();
             that.chart2.redraw();
 
+            $scope.activeChartType = chartType;
             updateChartsYAxisMaxValue();
         };
 
