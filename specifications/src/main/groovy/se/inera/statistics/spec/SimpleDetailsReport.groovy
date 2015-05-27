@@ -152,4 +152,12 @@ abstract class SimpleDetailsReport extends Rapport {
         }
         throw new RuntimeException("Report -Enskilt diagnoskapitel som tvärsnitt- is not available on national level");
     }
+
+    def getReportSjukfallTotaltLandsting() {
+        if (inloggad) {
+            return reportsUtil.getReportAntalIntygLandstingInloggad(filter);
+        }
+        throw new RuntimeException("Report -Landsting Sjukfall totalt- is not available on national level");
+    }
+
 }

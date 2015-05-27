@@ -390,5 +390,9 @@ class ReportsUtil {
         statistik.put(path: url)
     }
 
+    def getReportAntalIntygLandstingInloggad(filter) {
+        return get(getVerksamhetUrlPrefix() + "/landsting/getNumberOfCasesPerMonthLandsting", filter)
+    }
+
 }
 
