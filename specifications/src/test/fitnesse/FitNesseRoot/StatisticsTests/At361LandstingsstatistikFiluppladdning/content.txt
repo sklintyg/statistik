@@ -13,5 +13,4 @@
 | user1     | vg1lista6hsaidtecken.xlsx | Data NOT updated: Row #2: Illegal character(s) in HSA id cell | Kolumn för HSA-id innehåller otillåtet tecken |
 | user1     | vg1lista7tvafel.xlsx    | Data NOT updated: Row #2: Illegal character(s) in HSA id cell | Lista innehåller fel på två olika rader |
 | user1     | vg1lista8text.xlsx      | Data NOT updated: Row #3: Patients cell is not an integer number  | Kolumn för listningar innehåller text |
-| user1     | vg1lista9finnsej.xlsx   | File not found: vg1lista9finnsej.xlsx | Fil finns inte |
-| user1     | vg1lista10felformat.pdf | You can't upload files of this type. | Felaktigt filformat |
+| user1     | vg1lista10felformat.pdf | Data NOT updated: Unknown filetype | Felaktigt filformat |
