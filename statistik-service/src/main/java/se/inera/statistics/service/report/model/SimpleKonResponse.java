@@ -19,6 +19,7 @@
 package se.inera.statistics.service.report.model;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -84,6 +85,14 @@ public class SimpleKonResponse<T extends SimpleKonDataRow> {
         }
         final String groupName = diagnosgruppResponse.getGroups().get(index);
         return new SimpleKonDataRow(groupName, sumFemale, sumMale);
+    }
+
+    public static <T extends SimpleKonDataRow> SimpleKonResponse<T> merge(Collection<SimpleKonResponse<T>> resps) {
+        final ArrayList<T> rows = new ArrayList<>();
+        for (SimpleKonResponse<T> resp : resps) {
+            rows.addAll(resp.getRows());
+        }
+        return new SimpleKonResponse<>(rows);
     }
 
 }

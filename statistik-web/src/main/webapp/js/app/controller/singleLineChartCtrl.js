@@ -32,6 +32,7 @@ angular.module('StatisticsApp').controller('singleLineChartCtrl', [ '$scope', '$
         ];
 
         var isVerksamhet = ControllerCommons.isShowingVerksamhet($location);
+        var isLandsting = ControllerCommons.isShowingLandsting($location);
 
         var paintChart = function (chartCategories, chartSeries, doneLoadingCallback) {
 
@@ -114,9 +115,18 @@ angular.module('StatisticsApp').controller('singleLineChartCtrl', [ '$scope', '$
             });
         }
 
+        function refreshLandsting() {
+            statisticsData[config.dataFetcherLandsting](populatePageWithData, function () {
+                $scope.dataLoadingError = true;
+            });
+        }
+
         if (isVerksamhet) {
             $scope.exportTableUrl = config.exportTableUrlVerksamhet();
             refreshVerksamhet();
+        } else if (isLandsting) {
+            $scope.exportTableUrl = config.exportTableUrlLandsting();
+            refreshLandsting();
         } else {
             $scope.exportTableUrl = config.exportTableUrl;
             statisticsData[config.dataFetcher](populatePageWithData, function () {
@@ -163,9 +173,13 @@ angular.module('StatisticsApp').casesPerMonthConfig = function () {
     var conf = {};
     conf.dataFetcher = "getNumberOfCasesPerMonth";
     conf.dataFetcherVerksamhet = "getNumberOfCasesPerMonthVerksamhet";
+    conf.dataFetcherLandsting = "getNumberOfCasesPerMonthLandsting";
     conf.exportTableUrl = "api/getNumberOfCasesPerMonth/csv";
     conf.exportTableUrlVerksamhet = function () {
         return "api/verksamhet/getNumberOfCasesPerMonth/csv";
+    };
+    conf.exportTableUrlLandsting = function () {
+        return "api/verksamhet/landsting/getNumberOfCasesPerMonthLandsting/csv";
     };
     conf.title = function (months, enhetsCount) {
         return "Antal sjukfall per månad" + ControllerCommons.getEnhetCountText(enhetsCount, false) + months;

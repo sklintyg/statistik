@@ -18,17 +18,23 @@
  */
 package se.inera.statistics.service.landsting;
 
+import com.google.common.base.Function;
 import com.google.common.base.Optional;
+import com.google.common.collect.Lists;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import se.inera.statistics.service.landsting.persistance.landsting.Landsting;
 import se.inera.statistics.service.landsting.persistance.landsting.LandstingManager;
+import se.inera.statistics.service.landsting.persistance.landstingenhet.LandstingEnhet;
 import se.inera.statistics.service.landsting.persistance.landstingenhet.LandstingEnhetManager;
 import se.inera.statistics.service.landsting.persistance.landstingenhetupdate.LandstingEnhetUpdate;
 import se.inera.statistics.service.landsting.persistance.landstingenhetupdate.LandstingEnhetUpdateManager;
 import se.inera.statistics.service.landsting.persistance.landstingenhetupdate.LandstingEnhetUpdateOperation;
+
+import java.util.Collections;
+import java.util.List;
 
 @Component
 public class LandstingEnhetHandler {
@@ -69,6 +75,21 @@ public class LandstingEnhetHandler {
 
     public boolean isLandstingsVardgivare(String vardgivarId) {
         return landstingManager.getForVg(vardgivarId).isPresent();
+    }
+
+    public List<String> getAllEnhetsForVardgivare(String vgid) {
+        final Optional<Landsting> landsting = landstingManager.getForVg(vgid);
+        if (landsting.isPresent()) {
+            final long landstingId = landsting.get().getId();
+            final List<LandstingEnhet> landstingEnhets = landstingEnhetManager.getByLandstingId(landstingId);
+            return Lists.transform(landstingEnhets, new Function<LandstingEnhet, String>() {
+                @Override
+                public String apply(LandstingEnhet landstingEnhet) {
+                    return landstingEnhet.getEnhetensHsaId();
+                }
+            });
+        }
+        return Collections.emptyList();
     }
 
 }

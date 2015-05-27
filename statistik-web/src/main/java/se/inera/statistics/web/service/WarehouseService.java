@@ -18,7 +18,13 @@
  */
 package se.inera.statistics.web.service;
 
+import com.google.common.base.Function;
+import com.google.common.collect.Collections2;
+import com.google.common.collect.HashMultimap;
+import com.google.common.collect.Multimap;
 import org.springframework.beans.factory.annotation.Autowired;
+import se.inera.statistics.service.processlog.Enhet;
+import se.inera.statistics.service.processlog.EnhetManager;
 import se.inera.statistics.service.report.model.DiagnosgruppResponse;
 import se.inera.statistics.service.report.model.KonDataResponse;
 import se.inera.statistics.service.report.model.Range;
@@ -26,6 +32,7 @@ import se.inera.statistics.service.report.model.SimpleKonDataRow;
 import se.inera.statistics.service.report.model.SimpleKonResponse;
 import se.inera.statistics.service.report.model.VerksamhetOverviewResponse;
 import se.inera.statistics.service.report.util.ReportUtil;
+import se.inera.statistics.service.warehouse.Aisle;
 import se.inera.statistics.service.warehouse.SjukfallFilter;
 import se.inera.statistics.service.warehouse.SjukfallUtil;
 import se.inera.statistics.service.warehouse.Warehouse;
@@ -39,6 +46,7 @@ import se.inera.statistics.service.warehouse.query.SjukfallQuery;
 import se.inera.statistics.service.warehouse.query.SjukskrivningsgradQuery;
 import se.inera.statistics.service.warehouse.query.SjukskrivningslangdQuery;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -59,6 +67,9 @@ public class WarehouseService {
     @Autowired
     private SjukfallUtil sjukfallUtil;
 
+    @Autowired
+    private EnhetManager enhetManager;
+
     public VerksamhetOverviewResponse getOverview(SjukfallFilter filter, Range range, String vardgivarId) {
         VerksamhetOverviewResponse overview = overviewQuery.getOverview(warehouse.get(vardgivarId), filter, ReportUtil.getPreviousPeriod(range).getFrom(), range.getMonths());
 
@@ -68,11 +79,11 @@ public class WarehouseService {
     }
 
     public SimpleKonResponse<SimpleKonDataRow> getCasesPerMonth(SjukfallFilter filter, Range range, String vardgivarId) {
-        return sjukfallQuery.getSjukfall(warehouse.get(vardgivarId), filter, range.getFrom(), range.getMonths(), 1);
+        return sjukfallQuery.getSjukfall(warehouse.get(vardgivarId), filter, range.getFrom(), range.getMonths(), 1, false);
     }
 
     public SimpleKonResponse<SimpleKonDataRow> getCasesPerMonthTvarsnitt(SjukfallFilter filter, Range range, String vardgivarId) {
-        return sjukfallQuery.getSjukfallTvarsnitt(warehouse.get(vardgivarId), filter, range.getFrom(), 1, range.getMonths());
+        return sjukfallQuery.getSjukfallTvarsnitt(warehouse.get(vardgivarId), filter, range.getFrom(), 1, range.getMonths(), false);
     }
 
     public DiagnosgruppResponse getDiagnosgrupperPerMonth(SjukfallFilter filter, Range range, String vardgivarId) {
@@ -161,6 +172,28 @@ public class WarehouseService {
 
     public KonDataResponse getNumberOfCasesPerLakarbefattningSomTidsserie(SjukfallFilter filter, Range range, String vardgivarId) {
         return LakarbefattningQuery.getSjukfallSomTidsserie(warehouse.get(vardgivarId), filter, range.getFrom(), range.getMonths(), 1, sjukfallUtil);
+    }
+
+    public SimpleKonResponse<SimpleKonDataRow> getCasesPerMonthLandsting(final FilterSettings filterSettings) {
+        Map<String, Collection<String>> enhetsPerVgid = mapEnhetsToVgids(filterSettings.getFilter().getEnheter());
+        final Range range = filterSettings.getRange();
+        Collection<SimpleKonResponse<SimpleKonDataRow>> results = Collections2.transform(enhetsPerVgid.entrySet(), new Function<Map.Entry<String, Collection<String>>, SimpleKonResponse<SimpleKonDataRow>>() {
+            @Override
+            public SimpleKonResponse<SimpleKonDataRow> apply(Map.Entry<String, Collection<String>> entry) {
+                final Aisle aisle = warehouse.get(entry.getKey());
+                return sjukfallQuery.getSjukfall(aisle, filterSettings.getFilter().getPredicate(), range.getFrom(), range.getMonths(), 1, true);
+            }
+        });
+        return SimpleKonResponse.merge(results);
+    }
+
+    private Map<String, Collection<String>> mapEnhetsToVgids(Collection<String> enheter) {
+        final Multimap<String, String> map = HashMultimap.create();
+        final List<Enhet> enhets = enhetManager.getEnhets(enheter);
+        for (Enhet enhet : enhets) {
+            map.put(enhet.getVardgivareId(), enhet.getEnhetId());
+        }
+        return map.asMap();
     }
 
 }

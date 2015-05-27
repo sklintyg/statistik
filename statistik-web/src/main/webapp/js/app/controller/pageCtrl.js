@@ -36,7 +36,7 @@ angular.module('StatisticsApp').controller('pageCtrl', [ '$scope', '$rootScope',
             $scope.currentTime = currYear + "-" + currMonth + "-" + currDate;
 
             $scope.isVerksamhetShowing = ControllerCommons.isShowingVerksamhet($location);
-            $scope.viewHeader = $scope.isVerksamhetShowing ? "Verksamhetsstatistik" : "Nationell statistik";
+            $scope.viewHeader = $scope.isVerksamhetShowing ? "Verksamhetsstatistik" : ControllerCommons.isShowingLandsting($location) ? "Landstingsstatistik" : "Nationell statistik";
 
             if ($rootScope.isLoggedIn && !$scope.isLoginInfoFetched) {
                 statisticsData.getLoginInfo(function (loginInfo) {
@@ -52,7 +52,7 @@ angular.module('StatisticsApp').controller('pageCtrl', [ '$scope', '$rootScope',
                     $scope.isProcessledare = loginInfo.processledare;
 
                     $scope.landstingAvailable = loginInfo.landstingsvardgivare;
-                    $scope.isLandstingAdmin = $scope.landstingAvailable && loginInfo.processledare;
+                    $scope.isLandstingAdmin = loginInfo.landstingAdmin;
 
                     $scope.isLoginInfoFetched = true;
                 }, function () {

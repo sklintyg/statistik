@@ -29,6 +29,7 @@ import org.joda.time.LocalDate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import se.inera.statistics.service.processlog.Lakare;
 import se.inera.statistics.service.processlog.LakareManager;
@@ -62,31 +63,38 @@ public final class SjukfallQuery {
     @Autowired
     private SjukfallUtil sjukfallUtil;
 
-    public SimpleKonResponse<SimpleKonDataRow> getSjukfall(Aisle aisle, SjukfallFilter filter, LocalDate start, int perioder, int periodlangd) {
+    @Value("${reports.nationell.cutoff:5}")
+    private int cutoff;
+
+    public SimpleKonResponse<SimpleKonDataRow> getSjukfall(Aisle aisle, SjukfallFilter filter, LocalDate start, int perioder, int periodlangd, boolean applyCutoff) {
         final Function<SjukfallGroup, String> rowNameFunction = new Function<SjukfallGroup, String>() {
             @Override
             public String apply(SjukfallGroup sjukfallGroup) {
                 return ReportUtil.toDiagramPeriod(sjukfallGroup.getRange().getFrom());
             }
         };
-        return getSjukfall(aisle, filter, start, perioder, periodlangd, rowNameFunction);
+        return getSjukfall(aisle, filter, start, perioder, periodlangd, rowNameFunction, applyCutoff);
     }
 
-    public SimpleKonResponse<SimpleKonDataRow> getSjukfallTvarsnitt(Aisle aisle, SjukfallFilter filter, LocalDate start, int perioder, int periodlangd) {
+    public SimpleKonResponse<SimpleKonDataRow> getSjukfallTvarsnitt(Aisle aisle, SjukfallFilter filter, LocalDate start, int perioder, int periodlangd, boolean applyCutoff) {
         final Function<SjukfallGroup, String> rowNameFunction = new Function<SjukfallGroup, String>() {
             @Override
             public String apply(SjukfallGroup sjukfallGroup) {
                 return "Totalt";
             }
         };
-        return getSjukfall(aisle, filter, start, perioder, periodlangd, rowNameFunction);
+        return getSjukfall(aisle, filter, start, perioder, periodlangd, rowNameFunction, applyCutoff);
     }
 
-    private SimpleKonResponse<SimpleKonDataRow> getSjukfall(Aisle aisle, SjukfallFilter filter, LocalDate start, int perioder, int periodlangd, Function<SjukfallGroup, String> rowName) {
+    private SimpleKonResponse<SimpleKonDataRow> getSjukfall(Aisle aisle, SjukfallFilter filter, LocalDate start, int perioder, int periodlangd, Function<SjukfallGroup, String> rowName, boolean applyCutoff) {
         ArrayList<SimpleKonDataRow> result = new ArrayList<>();
         for (SjukfallGroup sjukfallGroup : sjukfallUtil.sjukfallGrupper(start, perioder, periodlangd, aisle, filter)) {
             int male = countMale(sjukfallGroup.getSjukfall());
             int female = sjukfallGroup.getSjukfall().size() - male;
+            if (applyCutoff) {
+                male = male >= cutoff ? male : 0;
+                female = female >= cutoff ? female : 0;
+            }
             result.add(new SimpleKonDataRow(rowName.apply(sjukfallGroup), female, male));
         }
 
@@ -230,6 +238,10 @@ public final class SjukfallQuery {
             }
         });
         return new KonDataResponse(updatedLakareNames, response.getRows());
+    }
+
+    public void setCutoff(int cutoff) {
+        this.cutoff = cutoff;
     }
 
 }

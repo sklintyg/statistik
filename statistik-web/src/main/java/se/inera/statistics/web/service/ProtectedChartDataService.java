@@ -42,6 +42,8 @@ import se.inera.statistics.service.landsting.LandstingEnhetHandler;
 import se.inera.statistics.service.landsting.NoLandstingSetForVgException;
 import se.inera.statistics.service.landsting.persistance.landstingenhetupdate.LandstingEnhetUpdate;
 import se.inera.statistics.service.landsting.persistance.landstingenhetupdate.LandstingEnhetUpdateOperation;
+import se.inera.statistics.service.processlog.Enhet;
+import se.inera.statistics.service.processlog.EnhetManager;
 import se.inera.statistics.service.report.model.DiagnosgruppResponse;
 import se.inera.statistics.service.report.model.KonDataResponse;
 import se.inera.statistics.service.report.model.Range;
@@ -118,6 +120,9 @@ public class ProtectedChartDataService {
 
     @Autowired
     private LandstingEnhetHandler landstingEnhetHandler;
+
+    @Autowired
+    private EnhetManager enhetManager;
 
     private LandstingFileReader landstingFileReader = new LandstingFileReader();
 
@@ -594,7 +599,7 @@ public class ProtectedChartDataService {
     @Path("landsting/fileupload")
     @Produces({ MediaType.APPLICATION_JSON })
     @Consumes({ "multipart/form-data" })
-    @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
+    @PreAuthorize(value = "@protectedChartDataService.hasAccessToLandstingAdmin(#request)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
     public Response fileupload(@Context HttpServletRequest request, MultipartBody body) {
         LoginInfo info = loginServiceUtil.getLoginInfo(request);
@@ -622,7 +627,7 @@ public class ProtectedChartDataService {
     @Path("landsting/lastUpdateInfo")
     @Produces({ MediaType.APPLICATION_JSON })
     @Consumes({ "multipart/form-data" })
-    @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
+    @PreAuthorize(value = "@protectedChartDataService.hasAccessToLandstingAdmin(#request)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
     public Response getLastLandstingUpdateInfo(@Context HttpServletRequest request) {
         LoginInfo info = loginServiceUtil.getLoginInfo(request);
@@ -654,20 +659,51 @@ public class ProtectedChartDataService {
         return Response.status(status).entity(map).build();
     }
 
+    @GET
+    @Path("landsting/getNumberOfCasesPerMonthLandsting{csv:(/csv)?}")
+    @Produces({ MediaType.APPLICATION_JSON })
+    @Consumes({ MediaType.APPLICATION_JSON })
+    @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
+    @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
+    public Response getNumberOfCasesPerMonthLandsting(@Context HttpServletRequest request, @QueryParam("landstingfilter") String filterHash, @PathParam("csv") String csv) {
+        final FilterSettings filterSettings = getFilterForLandsting(request, filterHash, 18);
+        SimpleKonResponse<SimpleKonDataRow> casesPerMonth = warehouse.getCasesPerMonthLandsting(filterSettings);
+        SimpleDetailsData result = new PeriodConverter().convert(casesPerMonth, filterSettings);
+        return getResponse(result, csv);
+    }
+
+    FilterSettings getFilterForLandsting(HttpServletRequest request, String filterHash, int defaultRangeValue) {
+        if (filterHash == null || filterHash.isEmpty()) {
+            return new FilterSettings(getFilterForAllAvailableEnhetsLandsting(request), Range.createForLastMonthsIncludingCurrent(defaultRangeValue));
+        }
+        final FilterData inFilter = getFilterFromHash(filterHash);
+        final ArrayList<String> enhetsIDs = getEnhetsFilteredLandsting(request, inFilter);
+        try {
+            return getFilterSettings(request, filterHash, defaultRangeValue, inFilter, enhetsIDs);
+        } catch (FilterException e) {
+            LOG.warn("Could not use selected filter. Falling back to default filter", e);
+            return new FilterSettings(getFilterForAllAvailableEnhetsLandsting(request), Range.createForLastMonthsIncludingCurrent(defaultRangeValue), "Kunde ej applicera valt filter. Vänligen kontrollera filterinställningarna.");
+        }
+    }
+
+    private FilterSettings getFilterSettings(HttpServletRequest request, String filterHash, int defaultRangeValue, FilterData inFilter, ArrayList<String> enhetsIDs) throws FilterException {
+        final Predicate<Fact> enhetFilter = getEnhetFilter(request, enhetsIDs);
+        final List<String> diagnoser = inFilter.getDiagnoser();
+        final Predicate<Fact> diagnosFilter = getDiagnosFilter(diagnoser);
+        final SjukfallFilter sjukfallFilter = new SjukfallFilter(Predicates.and(enhetFilter, diagnosFilter), filterHash);
+        final Filter filter = new Filter(sjukfallFilter, enhetsIDs, diagnoser);
+        final Range range = getRange(inFilter, defaultRangeValue);
+        return new FilterSettings(filter, range);
+    }
+
     FilterSettings getFilter(HttpServletRequest request, String filterHash, int defaultRangeValue) {
         if (filterHash == null || filterHash.isEmpty()) {
             return new FilterSettings(getFilterForAllAvailableEnhets(request), Range.createForLastMonthsIncludingCurrent(defaultRangeValue));
         }
-        FilterData inFilter = getFilterFromHash(filterHash);
+        final FilterData inFilter = getFilterFromHash(filterHash);
         final ArrayList<String> enhetsIDs = getEnhetsFiltered(request, inFilter);
-        Predicate<Fact> enhetFilter = getEnhetFilter(request, enhetsIDs);
-        final List<String> diagnoser = inFilter.getDiagnoser();
-        Predicate<Fact> diagnosFilter = getDiagnosFilter(diagnoser);
-        final SjukfallFilter sjukfallFilter = new SjukfallFilter(Predicates.and(enhetFilter, diagnosFilter), filterHash);
-        final Filter filter = new Filter(sjukfallFilter, enhetsIDs, diagnoser);
         try {
-            final Range range = getRange(inFilter, defaultRangeValue);
-            return new FilterSettings(filter, range);
+            return getFilterSettings(request, filterHash, defaultRangeValue, inFilter, enhetsIDs);
         } catch (FilterException e) {
             LOG.warn("Could not use selected filter. Falling back to default filter", e);
             return new FilterSettings(getFilterForAllAvailableEnhets(request), Range.createForLastMonthsIncludingCurrent(defaultRangeValue), "Kunde ej applicera valt filter. Vänligen kontrollera filterinställningarna.");
@@ -708,6 +744,28 @@ public class ProtectedChartDataService {
         }
     }
 
+    private Filter getFilterForAllAvailableEnhetsLandsting(HttpServletRequest request) {
+        LoginInfo info = loginServiceUtil.getLoginInfo(request);
+        final String vardgivarId = info.getDefaultVerksamhet().getVardgivarId();
+        final List<String> enhets = landstingEnhetHandler.getAllEnhetsForVardgivare(vardgivarId);
+        final Set<Integer> availableEnhets = new HashSet<>(Lists.transform(enhets, new Function<String, Integer>() {
+            @Override
+            public Integer apply(String enhetid) {
+                return Warehouse.getEnhet(enhetid);
+            }
+        }));
+        return getFilterForEnhets(availableEnhets, enhets);
+    }
+
+    private Filter getFilterForEnhets(final Set<Integer> enhetsIntIds, List<String> enhets) {
+        return new Filter(new SjukfallFilter(new Predicate<Fact>() {
+            @Override
+            public boolean apply(Fact fact) {
+                return enhetsIntIds.contains(fact.getEnhet());
+            }
+        }, SjukfallFilter.getHashValueForEnhets(enhetsIntIds.toArray())), enhets, null);
+    }
+
     private Filter getFilterForAllAvailableEnhets(HttpServletRequest request) {
         LoginInfo info = loginServiceUtil.getLoginInfo(request);
         if (info.isProcessledare()) {
@@ -719,18 +777,31 @@ public class ProtectedChartDataService {
                 return Warehouse.getEnhet(verksamhet.getId());
             }
         }));
-        return new Filter(new SjukfallFilter(new Predicate<Fact>() {
-            @Override
-            public boolean apply(Fact fact) {
-                return availableEnhets.contains(fact.getEnhet());
-            }
-        }, SjukfallFilter.getHashValueForEnhets(availableEnhets.toArray())), null, null);
+        return getFilterForEnhets(availableEnhets, null);
+    }
+
+    private ArrayList<String> getEnhetsFilteredLandsting(HttpServletRequest request, FilterData inFilter) {
+        Set<String> enhetsMatchingVerksamhetstyp = getEnhetsForVerksamhetstyperLandsting(inFilter, request);
+        final HashSet<String> enhets = new HashSet<>(inFilter.getEnheter());
+        return new ArrayList<>(Sets.intersection(enhetsMatchingVerksamhetstyp, enhets));
     }
 
     private ArrayList<String> getEnhetsFiltered(HttpServletRequest request, FilterData inFilter) {
         Set<String> enhetsMatchingVerksamhetstyp = getEnhetsForVerksamhetstyper(inFilter.getVerksamhetstyper(), request);
         final HashSet<String> enhets = new HashSet<>(inFilter.getEnheter());
         return new ArrayList<>(Sets.intersection(enhetsMatchingVerksamhetstyp, enhets));
+    }
+
+    private Set<String> getEnhetsForVerksamhetstyperLandsting(FilterData filterData, HttpServletRequest request) {
+        final List<Enhet> enhets = enhetManager.getEnhets(filterData.getEnheter());
+        Set<String> enhetsIds = new HashSet<>();
+        LoginInfo info = loginServiceUtil.getLoginInfo(request);
+        for (Enhet verksamhet : enhets) {
+            if (isOfVerksamhetsTypLandsting(verksamhet, filterData.getVerksamhetstyper())) {
+                enhetsIds.add(verksamhet.getEnhetId());
+            }
+        }
+        return enhetsIds;
     }
 
     private Set<String> getEnhetsForVerksamhetstyper(List<String> verksamhetstyper, HttpServletRequest request) {
@@ -744,8 +815,12 @@ public class ProtectedChartDataService {
         return enhetsIds;
     }
 
-    private boolean isOfVerksamhetsTyp(Verksamhet verksamhet, List<String> verksamhetstyper) {
-        final Set<Verksamhet.VerksamhetsTyp> verksamhetstyperForCurrentVerksamhet = verksamhet.getVerksamhetsTyper();
+    private boolean isOfVerksamhetsTypLandsting(Enhet verksamhet, List<String> verksamhetstyper) {
+        final Set<Verksamhet.VerksamhetsTyp> verksamhetstyperForCurrentVerksamhet = loginServiceUtil.getVerksamhetsTyper(verksamhet.getVerksamhetsTyper());
+        return isOfVerksamhetsTyp(verksamhetstyper, verksamhetstyperForCurrentVerksamhet);
+    }
+
+    private boolean isOfVerksamhetsTyp(List<String> verksamhetstyper, Set<Verksamhet.VerksamhetsTyp> verksamhetstyperForCurrentVerksamhet) {
         if (verksamhetstyperForCurrentVerksamhet == null || verksamhetstyperForCurrentVerksamhet.isEmpty()) {
             return true;
         }
@@ -755,6 +830,11 @@ public class ProtectedChartDataService {
             }
         }
         return false;
+    }
+
+    private boolean isOfVerksamhetsTyp(Verksamhet verksamhet, List<String> verksamhetstyper) {
+        final Set<Verksamhet.VerksamhetsTyp> verksamhetstyperForCurrentVerksamhet = verksamhet.getVerksamhetsTyper();
+        return isOfVerksamhetsTyp(verksamhetstyper, verksamhetstyperForCurrentVerksamhet);
     }
 
     private FilterData getFilterFromHash(String filterHash) {
@@ -823,6 +903,20 @@ public class ProtectedChartDataService {
             return false;
         }
         return loginServiceUtil.getLoginInfo(request).isLoggedIn();
+    }
+
+    public boolean hasAccessToLandstingAdmin(HttpServletRequest request) {
+        if (request == null) {
+            return false;
+        }
+        return loginServiceUtil.getLoginInfo(request).isLandstingAdmin();
+    }
+
+    public boolean hasAccessToLandsting(HttpServletRequest request) {
+        if (request == null) {
+            return false;
+        }
+        return loginServiceUtil.getLoginInfo(request).isLandstingsvardgivare();
     }
 
     public boolean userAccess(HttpServletRequest request) {

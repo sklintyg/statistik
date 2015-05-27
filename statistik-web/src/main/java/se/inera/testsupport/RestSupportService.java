@@ -15,6 +15,7 @@ import se.inera.statistics.service.warehouse.SjukfallUtil;
 import se.inera.statistics.service.warehouse.Warehouse;
 import se.inera.statistics.service.warehouse.WarehouseManager;
 import se.inera.statistics.service.warehouse.query.CalcCoordinator;
+import se.inera.statistics.service.warehouse.query.SjukfallQuery;
 import se.inera.statistics.web.service.ChartDataService;
 
 import javax.persistence.EntityManager;
@@ -64,11 +65,15 @@ public class RestSupportService {
     @Autowired
     private LandstingManager landstingManager;
 
+    @Autowired
+    private SjukfallQuery sjukfallQuery;
+
     @POST
     @Path("cutoff")
     @Produces({ MediaType.APPLICATION_JSON })
     public Response setCutoff(int cutoff) {
         nationellData.setCutoff(cutoff);
+        sjukfallQuery.setCutoff(cutoff);
         return Response.ok().build();
     }
 

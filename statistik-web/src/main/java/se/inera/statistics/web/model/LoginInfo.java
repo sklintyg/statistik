@@ -92,7 +92,11 @@ public class LoginInfo {
     }
 
     public boolean isLandstingsvardgivare() {
-        return landstingsvardgivare;
+        return loggedIn && landstingsvardgivare;
+    }
+
+    public boolean isLandstingAdmin() {
+        return isLandstingsvardgivare() && processledare;
     }
 
 }

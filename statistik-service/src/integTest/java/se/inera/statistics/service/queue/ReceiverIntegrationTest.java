@@ -88,7 +88,7 @@ public class ReceiverIntegrationTest {
     public void deliver_document_from_in_queue_to_statistics_repository() {
         populate();
         load();
-        SimpleKonResponse<SimpleKonDataRow> webData = sjukfallQuery.getSjukfall(warehouse.get("vardgivarId"), sjukfallUtil.createEnhetFilter("enhetId"), new LocalDate("2011-01"), 12, 1);
+        SimpleKonResponse<SimpleKonDataRow> webData = sjukfallQuery.getSjukfall(warehouse.get("vardgivarId"), sjukfallUtil.createEnhetFilter("enhetId"), new LocalDate("2011-01"), 12, 1, false);
 
         assertEquals(12, webData.getRows().size());
 

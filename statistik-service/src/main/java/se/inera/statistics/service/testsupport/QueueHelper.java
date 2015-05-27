@@ -208,11 +208,11 @@ public class QueueHelper {
     }
 
     private void printAndGetCasesPerMonth(String vardenhet1, String vardenhet2, Range range, Map<String, TestData> result) {
-        SimpleKonResponse<SimpleKonDataRow> casesPerMonth1 = sjukfallQuery.getSjukfall(warehouse.get("EnVG"), sjukfallUtil.createEnhetFilter(vardenhet1), range.getFrom(), range.getMonths(), 1);
+        SimpleKonResponse<SimpleKonDataRow> casesPerMonth1 = sjukfallQuery.getSjukfall(warehouse.get("EnVG"), sjukfallUtil.createEnhetFilter(vardenhet1), range.getFrom(), range.getMonths(), 1, false);
         LOG.info("CPM data: " + casesPerMonth1);
         JsonNode casesPerMonth1Node = JSONParser.parse(casesPerMonth1.toString());
         result.put("casesPerMonth1", new TestData(casesPerMonth1, casesPerMonth1Node));
-        SimpleKonResponse<SimpleKonDataRow> casesPerMonth2 = sjukfallQuery.getSjukfall(warehouse.get("EnVG"), sjukfallUtil.createEnhetFilter(vardenhet2), range.getFrom(), range.getMonths(), 1);
+        SimpleKonResponse<SimpleKonDataRow> casesPerMonth2 = sjukfallQuery.getSjukfall(warehouse.get("EnVG"), sjukfallUtil.createEnhetFilter(vardenhet2), range.getFrom(), range.getMonths(), 1, false);
         LOG.info("CPM data: " + casesPerMonth2);
         JsonNode casesPerMonth2Node = JSONParser.parse(casesPerMonth2.toString());
         result.put("casesPerMonth2", new TestData(casesPerMonth2, casesPerMonth2Node));

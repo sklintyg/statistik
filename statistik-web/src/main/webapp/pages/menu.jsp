@@ -59,8 +59,7 @@
     </div>
   </div>
   <!-- LANDSTING MENU -->
-  <c:if test="${landstingAvailable}">
-    <div class="accordion-group" id="landsting-statistics-menu-group">
+    <div class="accordion-group" id="landsting-statistics-menu-group" data-ng-show="landstingAvailable">
       <h2 class="hidden-header"><span message key="statistics.hidden-header.landsting-navigering"></span></h2>
       <div class="accordion-heading statistics-menu">
         <div class="accordion-toggle first-level-menu" id="landsting-statistics-toggle"
@@ -74,11 +73,11 @@
         <div class="accordion-inner">
           <ul id="landsting-statistic-menu-content" class="nav nav-list">
             <li data-ng-show="isLandstingAdmin"><a data-ng-href="#/landsting/filuppladdning{{queryString}}" ctrlname="LandstingFileUploadCtrl" navigationaware><span message key="nav.landsting.filuppladdning"></span></a></li>
+            <li><a data-ng-href="#/landsting/sjukfallPerManad{{queryString}}" id="navLandstingCasesPerMonthLink" ctrlname="LandstingCasesPerMonthCtrl" navigationaware><span message key="nav.sjukfall-totalt"></span></a></li>
           </ul>
         </div>
       </div>
     </div>
-  </c:if>
   <c:if test="${loginVisible}">
     <div class="accordion-group" id="business-statistics-menu-group">
       <h2 class="hidden-header"><span message key="statistics.hidden-header.business-navigering"></span></h2>

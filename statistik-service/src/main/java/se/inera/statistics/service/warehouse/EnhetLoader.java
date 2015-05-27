@@ -80,4 +80,5 @@ public class EnhetLoader {
         stmt.setFetchSize(FETCH_SIZE);
         return stmt;
     }
+
 }

@@ -264,6 +264,12 @@ var app = angular.module('StatisticsApp',
             controller: 'landstingFileUploadCtrl',
             controllerAs: 'LandstingFileUploadCtrl',
             title: 'Filuppladdning'
+        }).when('/landsting/sjukfallPerManad', {
+            templateUrl: 'views/detailsView.html',
+            controller: 'singleLineChartCtrl',
+            controllerAs: 'LandstingCasesPerMonthCtrl',
+            resolve: { config: app.casesPerMonthConfig },
+            title: 'Sjukfall per månad'
         }).when('/om/tjansten', {
             templateUrl: 'views/about/about.html',
             controllerAs: 'AboutServiceCtrl',

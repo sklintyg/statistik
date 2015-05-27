@@ -73,4 +73,27 @@ public class SimpleKonResponseTest {
         assertEquals(2+4, result.getRows().get(0).getData().getMale());
     }
 
+    @Test
+    public void testMerge() throws Exception {
+        //Given
+        final ArrayList<SimpleKonResponse<SimpleKonDataRow>> responses = new ArrayList<>();
+        responses.add(new SimpleKonResponse<SimpleKonDataRow>(Arrays.asList(new SimpleKonDataRow("First", 1, 2))));
+        responses.add(new SimpleKonResponse<SimpleKonDataRow>(Arrays.asList(new SimpleKonDataRow("Second", 10, 20))));
+
+        //When
+        final SimpleKonResponse<SimpleKonDataRow> mergedResp = SimpleKonResponse.merge(responses);
+
+        //Then
+        assertEquals(2, mergedResp.getGroups().size());
+
+        assertEquals("First", mergedResp.getGroups().get(0));
+        assertEquals("Second", mergedResp.getGroups().get(1));
+
+        assertEquals(1, mergedResp.getRows().get(0).getFemale());
+        assertEquals(2, mergedResp.getRows().get(0).getMale());
+
+        assertEquals(10, mergedResp.getRows().get(1).getFemale());
+        assertEquals(20, mergedResp.getRows().get(1).getMale());
+    }
+
 }
