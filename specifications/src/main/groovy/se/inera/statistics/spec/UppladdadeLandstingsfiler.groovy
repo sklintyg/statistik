@@ -27,6 +27,9 @@ class UppladdadeLandstingsfiler {
 
         reportsUtil.login(användare, true)
         def file = getClass().getResourceAsStream('/' + filnamn)
+        if (file == null) {
+            throw new RuntimeException("File not found: " + filnamn)
+        }
         def result = reportsUtil.uploadFile(file, filnamn)
         statusmeddelande = result.message
     }
