@@ -17,7 +17,7 @@ Det finns två sjukfall, ett som pågått under det senaste året och ett som in
 
 | Uppladdade landstingsfiler |
 | användare | filnamn        | statusmeddelande? |
-| user3     | vg3lista1.xls  | Data updated ok   |
+| user3     | vg3lista1.xlsx  | Data updated ok   |
 
 !3 Då gäller:
 

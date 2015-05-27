@@ -17,7 +17,7 @@ Gäller STATISTIK-1031. (Går det skriva testet såhär? Jag vill testa att om i
 
 | Uppladdade landstingsfiler |
 | användare | filnamn        | statusmeddelande? |
-| user3     | vg3lista1.xls  | Data updated ok   |
+| user3     | vg3lista1.xlsx  | Data updated ok   |
 
 !3 Då gäller:
 

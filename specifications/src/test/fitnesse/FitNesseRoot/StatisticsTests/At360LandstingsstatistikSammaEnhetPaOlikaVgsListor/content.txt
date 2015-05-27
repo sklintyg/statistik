@@ -19,8 +19,8 @@ Båda filerna innehåller enhet2 (som har olika enhetsnamn i listorna).
 
 | Uppladdade landstingsfiler |
 | användare | filnamn        | statusmeddelande? |
-| user3     | vg3lista1.xls  | Data updated ok   |
-| user1     | vg1lista1.xls  | Data updated ok   |
+| user3     | vg3lista1.xlsx  | Data updated ok   |
+| user1     | vg1lista1.xlsx  | Data updated ok   |
 
 !3 Då gäller:
 

@@ -19,7 +19,7 @@ Det finns fyra sjukfall på fyra olika enheter. Tre av dem ingår i den inskicka
 
 | Uppladdade landstingsfiler |
 | användare | filnamn        | statusmeddelande? |
-| user3     | vg3lista1.xls  | Data updated ok   |
+| user3     | vg3lista1.xlsx  | Data updated ok   |
 
 !3 Då gäller:
 

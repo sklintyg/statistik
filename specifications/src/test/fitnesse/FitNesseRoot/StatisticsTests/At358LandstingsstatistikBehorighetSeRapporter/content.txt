@@ -20,7 +20,7 @@ user6 har medarbetaruppdrag på enhet4, som tillhör vg3 men som inte finns med 
 
 | Uppladdade landstingsfiler |
 | användare | filnamn        | statusmeddelande? |
-| user3     | vg3lista1.xls  | Data updated ok   |
+| user3     | vg3lista1.xlsx  | Data updated ok   |
 
 !3 Då gäller:
 

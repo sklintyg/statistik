@@ -26,7 +26,7 @@ Gäller STATISTIK-1028.
 
 | Uppladdade landstingsfiler |
 | användare | filnamn        | statusmeddelande? |
-| user3     | vg3lista1.xls  | Data updated ok   |
+| user3     | vg3lista1.xlsx  | Data updated ok   |
 
 !3 Då gäller:
 
