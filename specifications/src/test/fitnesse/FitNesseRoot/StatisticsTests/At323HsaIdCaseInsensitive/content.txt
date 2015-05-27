@@ -1,22 +1,26 @@
 !contents -R2 -g -p -f -h
 
+IGNORERAD: Väntar på STATISTIK-1110
+
 !3 Givet att:
 
-Tre sjukfall tillhör enhet1, men på intygen har man skrivit enhetsid med både stora och små bokstäver.
+Tre sjukfall tillhör enhet1, men på intygen har man skrivit enhets-is och vårdgivar-id med både stora och små bokstäver.
+
+I databasen finns bara enhet1 lagrad.
 
 | script | dagens datum | 2013-11-06 |
 
 | script | troskel varde | 1 |
 
 | Enbart foljande intyg finns |
-| personnr | diagnoskod | start    | slut       | enhet |
-| 19790407-1295 | G01 | 2013-02-05 | 2013-02-06 | enhet1 |
-| 19790407-1285 | G01 | 2013-02-05 | 2013-02-06 | ENHET1 |
-| 19790408-1295 | G01 | 2013-02-11 | 2013-02-12 | enHEt1 |
+| personnr | diagnoskod | start    | slut       | enhet | vardgivare |
+| 19790407-1295 | G01 | 2013-02-05 | 2013-02-06 | enhet1 | vg1 |
+| 19790407-1285 | G01 | 2013-02-05 | 2013-02-06 | ENHET1 | VG1 |
+| 19790408-1295 | G01 | 2013-02-11 | 2013-02-12 | enHEt1 | vG1 |
 
 !3 Då gäller:
 
-Det spelar ingen roll om enhetsid är skrivet med stora eller små bokstäver, det är ändå samma enhet.
+Det spelar ingen roll om enhets-id och/eller vårdgivar-id är skrivet med stora eller små bokstäver, det är ändå samma enhet/vårdgivare.
 
 Inloggad:
 | Sjukfall i rapporten sjukfall totalt |
