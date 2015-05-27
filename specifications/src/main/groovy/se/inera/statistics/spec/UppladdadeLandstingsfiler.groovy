@@ -15,6 +15,12 @@ class UppladdadeLandstingsfiler {
     def filnamn
     def statusmeddelande
 
+    public void reset() {
+        användare = null
+        filnamn = null
+        statusmeddelande = null
+    }
+
     public void setKommentar(String kommentar) {}
 
     def statusmeddelande() {

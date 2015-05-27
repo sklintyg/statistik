@@ -380,8 +380,12 @@ class ReportsUtil {
 
     def uploadFile(InputStream file, filename) {
         def body = new MultipartBody(file: file, filename: filename);
+        try {
         def response = statistik.post(requestContentType: "multipart/form-data", path: getVerksamhetUrlPrefix() + '/landsting/fileupload', body: body)
         return response.data
+        } catch (HttpResponseException e) {
+            return e.getResponse().getData()
+        }
     }
 
     def insertLandsting(vgId) {
