@@ -18,6 +18,8 @@
  */
 package se.inera.statistics.web.model;
 
+import se.inera.statistics.service.landsting.LandstingsVardgivareStatus;
+
 import java.util.Collections;
 import java.util.List;
 
@@ -31,7 +33,7 @@ public class LoginInfo {
     private boolean verksamhetschef;
     private boolean delprocessledare;
     private boolean processledare;
-    private boolean landstingsvardgivare;
+    private LandstingsVardgivareStatus landstingsVardgivareStatus;
 
     public LoginInfo() {
         loggedIn = false;
@@ -42,11 +44,11 @@ public class LoginInfo {
         verksamhetschef = false;
         delprocessledare = false;
         processledare = false;
-        landstingsvardgivare = false;
+        landstingsVardgivareStatus = LandstingsVardgivareStatus.NO_LANDSTINGSVARDGIVARE;
     }
 
     // CHECKSTYLE:OFF ParameterNumberCheck
-    public LoginInfo(String hsaId, String name, Verksamhet defaultVerksamhet, boolean verksamhetschef, boolean delprocessledare, boolean processledare, List<Verksamhet> businesses, boolean landstingsvardgivare) {
+    public LoginInfo(String hsaId, String name, Verksamhet defaultVerksamhet, boolean verksamhetschef, boolean delprocessledare, boolean processledare, List<Verksamhet> businesses, LandstingsVardgivareStatus landstingsVardgivareStatus) {
         this.hsaId = hsaId;
         this.name = name;
         this.defaultVerksamhet = defaultVerksamhet;
@@ -55,7 +57,7 @@ public class LoginInfo {
         this.processledare = processledare;
         this.loggedIn = true;
         this.businesses = businesses;
-        this.landstingsvardgivare = landstingsvardgivare;
+        this.landstingsVardgivareStatus = landstingsVardgivareStatus;
     }
     // CHECKSTYLE:ON ParameterNumberCheck
 
@@ -92,7 +94,11 @@ public class LoginInfo {
     }
 
     public boolean isLandstingsvardgivare() {
-        return loggedIn && landstingsvardgivare;
+        return loggedIn && !LandstingsVardgivareStatus.NO_LANDSTINGSVARDGIVARE.equals(landstingsVardgivareStatus);
+    }
+
+    public boolean isLandstingsvardgivareWithUpload() {
+        return loggedIn && LandstingsVardgivareStatus.LANDSTINGSVARDGIVARE_WITH_UPLOAD.equals(landstingsVardgivareStatus);
     }
 
     public boolean isLandstingAdmin() {

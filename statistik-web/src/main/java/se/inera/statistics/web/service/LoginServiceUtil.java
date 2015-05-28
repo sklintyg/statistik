@@ -31,6 +31,7 @@ import org.springframework.stereotype.Component;
 import se.inera.auth.model.User;
 import se.inera.statistics.hsa.model.Vardenhet;
 import se.inera.statistics.service.landsting.LandstingEnhetHandler;
+import se.inera.statistics.service.landsting.LandstingsVardgivareStatus;
 import se.inera.statistics.service.processlog.Enhet;
 import se.inera.statistics.service.report.model.Kommun;
 import se.inera.statistics.service.report.model.Lan;
@@ -90,8 +91,8 @@ public class LoginServiceUtil {
         List<Enhet> enhetsList = warehouse.getEnhets(vardgivarId);
         Verksamhet defaultVerksamhet = toVerksamhet(valdVardenhet, enhetsList);
         List<Verksamhet> verksamhets = getVerksamhetsList(realUser, enhetsList);
-        final boolean landstingsvardgivare = landstingEnhetHandler.isLandstingsVardgivare(vardgivarId);
-        return new LoginInfo(realUser.getHsaId(), realUser.getName(), defaultVerksamhet, realUser.isVerksamhetschef(), realUser.isDelprocessledare(), realUser.isProcessledare(), verksamhets, landstingsvardgivare);
+        final LandstingsVardgivareStatus landstingsVardgivareStatus = landstingEnhetHandler.getLandstingsVardgivareStatus(vardgivarId);
+        return new LoginInfo(realUser.getHsaId(), realUser.getName(), defaultVerksamhet, realUser.isVerksamhetschef(), realUser.isDelprocessledare(), realUser.isProcessledare(), verksamhets, landstingsVardgivareStatus);
     }
 
     private List<Verksamhet> getVerksamhetsList(User realUser, final List<Enhet> enhetsList) {

@@ -56,6 +56,7 @@ angular.module('StatisticsApp').controller('landstingFileUploadCtrl', [ '$scope'
                     $scope.$apply(function() {
                             updateStatus(response);
                             updateLastUpdateMessage();
+                            $rootScope.landstingAvailable = response.parsedRows.length > 0;
                         }
                     );
                 },
