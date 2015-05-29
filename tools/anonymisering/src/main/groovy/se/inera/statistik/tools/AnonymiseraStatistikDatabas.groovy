@@ -1,19 +1,17 @@
-package se.inera.statistics.tools
+package se.inera.statistik.tools
 
 import com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException
 import groovy.json.JsonBuilder
 import groovy.json.JsonSlurper
 import groovy.sql.Sql
 import groovyx.gpars.GParsPool
+import org.apache.commons.dbcp2.BasicDataSource
+import se.inera.certificate.tools.anonymisering.AnonymiseraDatum
+import se.inera.certificate.tools.anonymisering.AnonymiseraHsaId
+import se.inera.certificate.tools.anonymisering.AnonymiseraJson
+import se.inera.certificate.tools.anonymisering.AnonymiseraPersonId
 
 import java.util.concurrent.atomic.AtomicInteger
-
-import org.apache.commons.dbcp2.BasicDataSource
-
-import se.inera.certificate.tools.anonymisering.AnonymiseraDatum;
-import se.inera.certificate.tools.anonymisering.AnonymiseraHsaId;
-import se.inera.certificate.tools.anonymisering.AnonymiseraJson;
-import se.inera.certificate.tools.anonymisering.AnonymiseraPersonId;
 
 class AnonymiseraStatistikDatabas {
 
@@ -38,13 +36,6 @@ class AnonymiseraStatistikDatabas {
         def bootstrapSql = new Sql(dataSource)
         def certificateIds = bootstrapSql.rows("select correlationId from intyghandelse")
         println "${certificateIds.size()} certificates found to anonymize"
-        def personIds
-        try {
-            personIds = bootstrapSql.rows("select id, personId from sjukfall")
-            println "${personIds.size()} sjukfall found to anonymize"
-        } catch (MySQLSyntaxErrorException e) {
-            personIds = null
-        }
         def hsaIds = bootstrapSql.rows("select id from hsa")
         println "${hsaIds.size()} hsa found to anonymize"
         bootstrapSql.close()
@@ -59,6 +50,7 @@ class AnonymiseraStatistikDatabas {
                 try {
                     def intyg = sql.firstRow( 'select data from intyghandelse where correlationId = :id' , [id : id])
                     String jsonDoc = intyg.data
+                    println jsonDoc
                     String anonymiseradJson = anonymiseraJson.anonymiseraIntygsJson(jsonDoc)
                     sql.executeUpdate('update intyghandelse set data = :document where correlationId = :id',
                                           [document: anonymiseradJson, id: id])
@@ -82,41 +74,28 @@ class AnonymiseraStatistikDatabas {
             if (line) println line
         }
         println "Done! ${count} certificates anonymized with ${errorCount} errors in ${(int)((end-start) / 1000)} seconds"
-        println "Proceeding to sjukfall"
-        if (personIds != null) {
-            count.set(0)
-            errorCount.set(0)
-            start = System.currentTimeMillis()
-            GParsPool.withPool(numberOfThreads) {
-                output = personIds.collectParallel {p ->
-                    StringBuffer result = new StringBuffer()
-                    def anonymPersonId = anonymiseraPersonId.anonymisera(p.personId)
-                    def id = p.id
-                    Sql sql = new Sql(dataSource)
-                    try {
-                        sql.executeUpdate('update sjukfall set personId = :personId where id = :id',
-                                [personId: anonymPersonId, id: id])
-                        int current = count.addAndGet(1)
-                        if (current % 10000 == 0) {
-                            println "${current} sjukfall anonymized in ${(int)((System.currentTimeMillis()-start) / 1000)} seconds"
-                        }
-                    } catch (Throwable t) {
-                        t.printStackTrace()
-                        result << "Anonymizing ${id} failed: ${t}"
-                        errorCount.incrementAndGet()
-                    } finally {
-                        sql.close()
-                    }
-                    result.toString()
-                }
-            }
-            end = System.currentTimeMillis()
-            output.each {line ->
-                if (line) println line
-            }
-            println "Done! ${count} sjukfall anonymized with ${errorCount} errors in ${(int)((end-start) / 1000)} seconds"
-        } else {
-            println "Sjukfall table missing, anonymization not necessary"
+        println "Proceeding to wideline"
+        Sql sql = new Sql(dataSource)
+        try {
+            sql.execute('delete from wideline')
+            println "Done! Wideline emptied."
+        } catch (Throwable t) {
+            t.printStackTrace()
+            println "Error! Check if wideline was emptied."
+        } finally {
+            sql.close()
+        }
+        println "Done! Wideline emptied."
+        println "Proceeding to handelsepekare"
+        sql = new Sql(dataSource)
+        try {
+            sql.execute('delete from handelsepekare')
+            println "Done! Handelsepekare reser."
+        } catch (Throwable t) {
+            t.printStackTrace()
+            println "Error! Check if handelsepekare was reset."
+        } finally {
+            sql.close()
         }
         println "Proceeding to hsa"
         count.set(0)
@@ -125,7 +104,7 @@ class AnonymiseraStatistikDatabas {
         GParsPool.withPool(numberOfThreads) {
             output = hsaIds.collectParallel {
                 StringBuffer result = new StringBuffer()
-                Sql sql = new Sql(dataSource)
+                sql = new Sql(dataSource)
                 def id = it.id
                 try {
                     def intyg = sql.firstRow( 'select data from hsa where id = :id' , [id : id])
