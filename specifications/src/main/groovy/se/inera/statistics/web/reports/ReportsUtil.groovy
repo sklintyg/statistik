@@ -398,5 +398,9 @@ class ReportsUtil {
         return get(getVerksamhetUrlPrefix() + "/landsting/getNumberOfCasesPerMonthLandsting", filter)
     }
 
+    def getReportSjukfallPerEnhetLandsting(filter) {
+        return get(getVerksamhetUrlPrefix() + "/landsting/getNumberOfCasesPerEnhetLandsting", filter)
+    }
+
 }
 

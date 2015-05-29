@@ -160,4 +160,11 @@ abstract class SimpleDetailsReport extends Rapport {
         throw new RuntimeException("Report -Landsting Sjukfall totalt- is not available on national level");
     }
 
+    def getReportSjukfallPerEnhetLandsting() {
+        if (inloggad) {
+            return reportsUtil.getReportSjukfallPerEnhetLandsting(filter);
+        }
+        throw new RuntimeException("Report -Landsting Sjukfall per enhet- is not available on national level");
+    }
+
 }
