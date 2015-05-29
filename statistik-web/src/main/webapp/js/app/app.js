@@ -270,6 +270,12 @@ var app = angular.module('StatisticsApp',
             controllerAs: 'LandstingCasesPerMonthCtrl',
             resolve: { config: app.casesPerMonthConfig },
             title: 'Sjukfall per månad'
+        }).when('/landsting/sjukfallPerEnhet', {
+            templateUrl: 'views/detailsView.html',
+            controller: 'columnChartDetailsViewCtrl',
+            controllerAs: 'LandstingCasesPerBusinessCtrl',
+            resolve: { config: app.casesPerBusinessConfig },
+            title: 'Antal sjukfall per vårdenhet'
         }).when('/om/tjansten', {
             templateUrl: 'views/about/about.html',
             controllerAs: 'AboutServiceCtrl',

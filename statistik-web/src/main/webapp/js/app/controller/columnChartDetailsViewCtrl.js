@@ -22,6 +22,7 @@
 angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl', [ '$scope', '$rootScope', '$routeParams', '$window', '$location', '$timeout', 'statisticsData', 'diagnosisTreeFilter', 'config', 'messageService', 'printFactory', 'chartFactory',
     function ($scope, $rootScope, $routeParams, $window, $location, $timeout, statisticsData, diagnosisTreeFilter, config, messageService, printFactory, chartFactory) {
         var isVerksamhet = ControllerCommons.isShowingVerksamhet($location);
+        var isLandsting = ControllerCommons.isShowingLandsting($location);
         var chart = {};
         var defaultChartType = 'column';
         $scope.activeChartType = defaultChartType;
@@ -115,6 +116,12 @@ angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl', [ '$sco
             }, ControllerCommons.getExtraPathParam($routeParams));
         }
 
+        function refreshLandsting() {
+            statisticsData[config.dataFetcherLandsting](populatePageWithData, function () {
+                $scope.dataLoadingError = true;
+            }, ControllerCommons.getExtraPathParam($routeParams));
+        }
+
         var diagnosHashExists = function diagnosHashExists() {
             return $routeParams.diagnosHash !== "-";
         };
@@ -126,6 +133,9 @@ angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl', [ '$sco
             if (isVerksamhet) {
                 $scope.exportTableUrl = config.exportTableUrlVerksamhet(ControllerCommons.getExtraPathParam($routeParams));
                 refreshVerksamhet();
+            } else if (isLandsting) {
+                $scope.exportTableUrl = config.exportTableUrlLandsting(ControllerCommons.getExtraPathParam($routeParams));
+                refreshLandsting();
             } else {
                 $scope.exportTableUrl = config.exportTableUrl;
                 statisticsData[config.dataFetcher](populatePageWithData, function () {
@@ -231,8 +241,12 @@ angular.module('StatisticsApp').casesPerSexConfig = function () {
 angular.module('StatisticsApp').casesPerBusinessConfig = function () {
     var conf = {};
     conf.dataFetcherVerksamhet = "getSjukfallPerBusinessVerksamhet";
+    conf.dataFetcherLandsting = "getSjukfallPerBusinessLandsting";
     conf.exportTableUrlVerksamhet = function () {
         return "api/verksamhet/getNumberOfCasesPerEnhet/csv";
+    };
+    conf.exportTableUrlLandsting = function () {
+        return "api/verksamhet/landsting/getNumberOfCasesPerEnhetLandsting/csv";
     };
     conf.title = function (period, enhetsCount) {
         return "Antal sjukfall per vårdenhet" + ControllerCommons.getEnhetCountText(enhetsCount, false) + period;

@@ -101,7 +101,7 @@ public final class SjukfallQuery {
         return new SimpleKonResponse<>(result);
     }
 
-    public SimpleKonResponse<SimpleKonDataRow> getSjukfallPerEnhet(Aisle aisle, SjukfallFilter filter, LocalDate from, int periods, int periodLength, Map<String, String> idsToNames) {
+    public SimpleKonResponse<SimpleKonDataRow> getSjukfallPerEnhet(Aisle aisle, SjukfallFilter filter, LocalDate from, int periods, int periodLength, Map<String, String> idsToNames, boolean applyCutoff) {
         List<SimpleKonDataRow> rows = new ArrayList<>();
         for (SjukfallGroup sjukfallGroup: sjukfallUtil.sjukfallGrupper(from, periods, periodLength, aisle, filter)) {
             final Multiset<Integer> femaleSjukfallPerEnhet = HashMultiset.create();
@@ -117,9 +117,13 @@ public final class SjukfallQuery {
                 final int enhetIntId = Warehouse.getEnhet(enhetIdAndName.getKey());
                 if (enhetIntId >= 0) {
                     final String enhetName = enhetIdAndName.getValue();
-                    final int femaleCount = femaleSjukfallPerEnhet.count(enhetIntId);
-                    final int maleCount = maleSjukfallPerEnhet.count(enhetIntId);
-                    rows.add(new SimpleKonDataRow(enhetName, femaleCount, maleCount));
+                    int female = femaleSjukfallPerEnhet.count(enhetIntId);
+                    int male = maleSjukfallPerEnhet.count(enhetIntId);
+                    if (applyCutoff) {
+                        male = male >= cutoff ? male : 0;
+                        female = female >= cutoff ? female : 0;
+                    }
+                    rows.add(new SimpleKonDataRow(enhetName, female, male));
                 }
             }
         }

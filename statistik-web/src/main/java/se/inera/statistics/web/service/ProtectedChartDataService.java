@@ -672,6 +672,19 @@ public class ProtectedChartDataService {
         return getResponse(result, csv);
     }
 
+    @GET
+    @Path("landsting/getNumberOfCasesPerEnhetLandsting{csv:(/csv)?}")
+    @Produces({ MediaType.APPLICATION_JSON })
+    @Consumes({ MediaType.APPLICATION_JSON })
+    @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
+    @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
+    public Response getNumberOfCasesPerEnhetLandsting(@Context HttpServletRequest request, @QueryParam("landstingfilter") String filterHash, @PathParam("csv") String csv) {
+        final FilterSettings filterSettings = getFilterForLandsting(request, filterHash, 12);
+        SimpleKonResponse<SimpleKonDataRow> casesPerEnhet = warehouse.getCasesPerEnhetLandsting(filterSettings);
+        SimpleDetailsData result = new GroupedSjukfallConverter("Vårdenhet").convert(casesPerEnhet, filterSettings);
+        return getResponse(result, csv);
+    }
+
     FilterSettings getFilterForLandsting(HttpServletRequest request, String filterHash, int defaultRangeValue) {
         if (filterHash == null || filterHash.isEmpty()) {
             return new FilterSettings(getFilterForAllAvailableEnhetsLandsting(request), Range.createForLastMonthsIncludingCurrent(defaultRangeValue));

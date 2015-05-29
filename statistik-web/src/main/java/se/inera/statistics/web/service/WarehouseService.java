@@ -21,6 +21,7 @@ package se.inera.statistics.web.service;
 import com.google.common.base.Function;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.HashMultimap;
+import com.google.common.collect.Maps;
 import com.google.common.collect.Multimap;
 import org.springframework.beans.factory.annotation.Autowired;
 import se.inera.statistics.service.processlog.Enhet;
@@ -47,6 +48,7 @@ import se.inera.statistics.service.warehouse.query.SjukskrivningsgradQuery;
 import se.inera.statistics.service.warehouse.query.SjukskrivningslangdQuery;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -143,7 +145,7 @@ public class WarehouseService {
     }
 
     public SimpleKonResponse<SimpleKonDataRow> getCasesPerEnhet(SjukfallFilter filter, Map<String, String> idsToNames, Range range, String vardgivarId) {
-        return sjukfallQuery.getSjukfallPerEnhet(warehouse.get(vardgivarId), filter, range.getFrom(), 1, range.getMonths(), idsToNames);
+        return sjukfallQuery.getSjukfallPerEnhet(warehouse.get(vardgivarId), filter, range.getFrom(), 1, range.getMonths(), idsToNames, false);
     }
 
     public KonDataResponse getCasesPerEnhetTimeSeries(SjukfallFilter filter, Map<String, String> idsToNames, Range range, String vardgivarId) {
@@ -175,23 +177,40 @@ public class WarehouseService {
     }
 
     public SimpleKonResponse<SimpleKonDataRow> getCasesPerMonthLandsting(final FilterSettings filterSettings) {
-        Map<String, Collection<String>> enhetsPerVgid = mapEnhetsToVgids(filterSettings.getFilter().getEnheter());
+        Map<String, Collection<Enhet>> enhetsPerVgid = mapEnhetsToVgids(filterSettings.getFilter().getEnheter());
         final Range range = filterSettings.getRange();
-        Collection<SimpleKonResponse<SimpleKonDataRow>> results = Collections2.transform(enhetsPerVgid.entrySet(), new Function<Map.Entry<String, Collection<String>>, SimpleKonResponse<SimpleKonDataRow>>() {
+        Collection<SimpleKonResponse<SimpleKonDataRow>> results = Collections2.transform(enhetsPerVgid.keySet(), new Function<String, SimpleKonResponse<SimpleKonDataRow>>() {
             @Override
-            public SimpleKonResponse<SimpleKonDataRow> apply(Map.Entry<String, Collection<String>> entry) {
-                final Aisle aisle = warehouse.get(entry.getKey());
+            public SimpleKonResponse<SimpleKonDataRow> apply(String vgid) {
+                final Aisle aisle = warehouse.get(vgid);
                 return sjukfallQuery.getSjukfall(aisle, filterSettings.getFilter().getPredicate(), range.getFrom(), range.getMonths(), 1, true);
             }
         });
         return SimpleKonResponse.merge(results);
     }
 
-    private Map<String, Collection<String>> mapEnhetsToVgids(Collection<String> enheter) {
-        final Multimap<String, String> map = HashMultimap.create();
+    public SimpleKonResponse<SimpleKonDataRow> getCasesPerEnhetLandsting(final FilterSettings filterSettings) {
+        Map<String, Collection<Enhet>> enhetsPerVgid = mapEnhetsToVgids(filterSettings.getFilter().getEnheter());
+        final Range range = filterSettings.getRange();
+        Collection<SimpleKonResponse<SimpleKonDataRow>> results = Collections2.transform(enhetsPerVgid.entrySet(), new Function<Map.Entry<String, Collection<Enhet>>, SimpleKonResponse<SimpleKonDataRow>>() {
+            @Override
+            public SimpleKonResponse<SimpleKonDataRow> apply(Map.Entry<String, Collection<Enhet>> entry) {
+                final HashMap<String, String> idsToNames = Maps.newHashMapWithExpectedSize(entry.getValue().size());
+                for (Enhet enhet : entry.getValue()) {
+                    idsToNames.put(enhet.getEnhetId(), enhet.getNamn());
+                }
+                final Aisle aisle = warehouse.get(entry.getKey());
+                return sjukfallQuery.getSjukfallPerEnhet(aisle, filterSettings.getFilter().getPredicate(), range.getFrom(), 1, range.getMonths(), idsToNames, true);
+            }
+        });
+        return SimpleKonResponse.merge(results);
+    }
+
+    private Map<String, Collection<Enhet>> mapEnhetsToVgids(Collection<String> enheter) {
+        final Multimap<String, Enhet> map = HashMultimap.create();
         final List<Enhet> enhets = enhetManager.getEnhets(enheter);
         for (Enhet enhet : enhets) {
-            map.put(enhet.getVardgivareId(), enhet.getEnhetId());
+            map.put(enhet.getVardgivareId(), enhet);
         }
         return map.asMap();
     }
