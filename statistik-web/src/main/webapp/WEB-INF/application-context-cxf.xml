@@ -30,7 +30,7 @@
     </beans>
 
     <beans>
-        <bean id="logInbound" class="org.apache.cxf.interceptor.LoggingInInterceptor"/>
+        <bean id="logInbound" class="se.inera.statistics.web.service.interceptor.LogInInterceptor"/>
         <bean id="logOutbound" class="org.apache.cxf.interceptor.LoggingOutInterceptor"/>
 
         <cxf:bus>

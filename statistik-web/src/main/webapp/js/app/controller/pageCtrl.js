@@ -51,7 +51,8 @@ angular.module('StatisticsApp').controller('pageCtrl', [ '$scope', '$rootScope',
                     $scope.isDelprocessledare = loginInfo.delprocessledare;
                     $scope.isProcessledare = loginInfo.processledare;
 
-                    $scope.landstingAvailable = loginInfo.landstingsvardgivare;
+                    $scope.hasLandstingAccess = loginInfo.landstingsvardgivare;
+                    $rootScope.landstingAvailable = loginInfo.landstingsvardgivareWithUpload;
                     $scope.isLandstingAdmin = loginInfo.landstingAdmin;
 
                     $scope.isLoginInfoFetched = true;

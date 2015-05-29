@@ -27,12 +27,17 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import se.inera.statistics.service.landsting.persistance.landsting.Landsting;
 import se.inera.statistics.service.landsting.persistance.landsting.LandstingManager;
+import se.inera.statistics.service.landsting.persistance.landstingenhet.LandstingEnhet;
 import se.inera.statistics.service.landsting.persistance.landstingenhet.LandstingEnhetManager;
 import se.inera.statistics.service.landsting.persistance.landstingenhetupdate.LandstingEnhetUpdateManager;
 import se.inera.statistics.service.landsting.persistance.landstingenhetupdate.LandstingEnhetUpdateOperation;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyListOf;
@@ -116,6 +121,55 @@ public class LandstingEnhetHandlerTest {
 
         //Then
         Mockito.verify(landstingEnhetUpdateManager, times(1)).update(anyLong(), anyString(), anyString(), eq("TestFile_Name.xls"), any(LandstingEnhetUpdateOperation.class));
+    }
+
+    @Test
+    public void testGetLandstingsVardgivareStatusWhenVgidNotConnectedToAnyLandsting() throws Exception {
+        //Given
+        final String vgid = "testvgid";
+        Mockito.when(landstingManager.getForVg(vgid)).thenReturn(Optional.<Landsting>absent());
+
+        //When
+        final LandstingsVardgivareStatus status = landstingEnhetHandler.getLandstingsVardgivareStatus(vgid);
+
+        //Then
+        assertEquals(LandstingsVardgivareStatus.NO_LANDSTINGSVARDGIVARE, status);
+    }
+
+    @Test
+    public void testGetLandstingsVardgivareStatusWhenVgidIsConnectedToALandstingButHasNoLandstingsenhetsConnected() throws Exception {
+        //Given
+        final String vgid = "testvgid";
+        final Landsting landsting = Mockito.mock(Landsting.class);
+        final long landstingsid = 4L;
+        Mockito.when(landsting.getId()).thenReturn(landstingsid);
+        final List<LandstingEnhet> landstingEnhets = Collections.emptyList();
+        Mockito.when(landstingEnhetManager.getByLandstingId(landstingsid)).thenReturn(landstingEnhets);
+        Mockito.when(landstingManager.getForVg(vgid)).thenReturn(Optional.of(landsting));
+
+        //When
+        final LandstingsVardgivareStatus status = landstingEnhetHandler.getLandstingsVardgivareStatus(vgid);
+
+        //Then
+        assertEquals(LandstingsVardgivareStatus.LANDSTINGSVARDGIVARE_WITHOUT_UPLOAD, status);
+    }
+
+    @Test
+    public void testGetLandstingsVardgivareStatusWhenVgidIsConnectedToALandstingAndHasLandstingsenhetsConnected() throws Exception {
+        //Given
+        final String vgid = "testvgid";
+        final Landsting landsting = Mockito.mock(Landsting.class);
+        final long landstingsid = 4L;
+        Mockito.when(landsting.getId()).thenReturn(landstingsid);
+        final List<LandstingEnhet> landstingEnhets = Arrays.asList(new LandstingEnhet(1L, "", 2));
+        Mockito.when(landstingEnhetManager.getByLandstingId(landstingsid)).thenReturn(landstingEnhets);
+        Mockito.when(landstingManager.getForVg(vgid)).thenReturn(Optional.of(landsting));
+
+        //When
+        final LandstingsVardgivareStatus status = landstingEnhetHandler.getLandstingsVardgivareStatus(vgid);
+
+        //Then
+        assertEquals(LandstingsVardgivareStatus.LANDSTINGSVARDGIVARE_WITH_UPLOAD, status);
     }
 
 }

@@ -73,8 +73,17 @@ public class LandstingEnhetHandler {
         return Optional.absent();
     }
 
-    public boolean isLandstingsVardgivare(String vardgivarId) {
-        return landstingManager.getForVg(vardgivarId).isPresent();
+    public LandstingsVardgivareStatus getLandstingsVardgivareStatus(String vardgivarId) {
+        final Optional<Landsting> landstingOptional = landstingManager.getForVg(vardgivarId);
+        if (landstingOptional.isPresent()) {
+            if (landstingEnhetManager.getByLandstingId(landstingOptional.get().getId()).isEmpty()) {
+                return LandstingsVardgivareStatus.LANDSTINGSVARDGIVARE_WITHOUT_UPLOAD;
+            } else {
+                return LandstingsVardgivareStatus.LANDSTINGSVARDGIVARE_WITH_UPLOAD;
+            }
+        } else {
+            return LandstingsVardgivareStatus.NO_LANDSTINGSVARDGIVARE;
+        }
     }
 
     public List<String> getAllEnhetsForVardgivare(String vgid) {

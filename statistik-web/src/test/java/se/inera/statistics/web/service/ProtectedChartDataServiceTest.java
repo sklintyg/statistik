@@ -34,6 +34,7 @@ import se.inera.statistics.hsa.model.Vardenhet;
 import se.inera.statistics.service.landsting.LandstingEnhetFileData;
 import se.inera.statistics.service.landsting.LandstingEnhetFileDataRow;
 import se.inera.statistics.service.landsting.LandstingEnhetHandler;
+import se.inera.statistics.service.landsting.LandstingsVardgivareStatus;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.warehouse.SjukfallFilter;
 import se.inera.statistics.web.model.LoginInfo;
@@ -94,7 +95,7 @@ public class ProtectedChartDataServiceTest {
 
     @Test
     public void checkAllowedAccessToVerksamhetTest() {
-        Mockito.when(loginServiceUtil.getLoginInfo(request)).thenReturn(new LoginInfo("", "", null, false, false, false, null, false));
+        Mockito.when(loginServiceUtil.getLoginInfo(request)).thenReturn(new LoginInfo("", "", null, false, false, false, null, LandstingsVardgivareStatus.NO_LANDSTINGSVARDGIVARE));
         boolean result = chartDataService.hasAccessTo(request);
         assertEquals(true, result);
     }
@@ -104,7 +105,7 @@ public class ProtectedChartDataServiceTest {
         //Given
         final MultipartBody mb = Mockito.mock(MultipartBody.class);
         final HttpServletRequest req = Mockito.mock(HttpServletRequest.class);
-        Mockito.when(loginServiceUtil.getLoginInfo(req)).thenReturn(new LoginInfo("", "", null, false, false, false, null, false));
+        Mockito.when(loginServiceUtil.getLoginInfo(req)).thenReturn(new LoginInfo("", "", null, false, false, false, null, LandstingsVardgivareStatus.NO_LANDSTINGSVARDGIVARE));
 
         //When
         final Response response = chartDataService.fileupload(req, mb);
@@ -125,7 +126,7 @@ public class ProtectedChartDataServiceTest {
         final DataSource ds = Mockito.mock(DataSource.class);
         Mockito.when(dh.getDataSource()).thenReturn(ds);
         final HttpServletRequest req = Mockito.mock(HttpServletRequest.class);
-        Mockito.when(loginServiceUtil.getLoginInfo(req)).thenReturn(new LoginInfo("", "", null, false, false, true, null, false));
+        Mockito.when(loginServiceUtil.getLoginInfo(req)).thenReturn(new LoginInfo("", "", null, false, false, true, null, LandstingsVardgivareStatus.NO_LANDSTINGSVARDGIVARE));
         Mockito.when(landstingFileReader.readExcelData(any(DataSource.class))).thenThrow(new LandstingEnhetFileParseException(""));
 
         //When
@@ -150,7 +151,7 @@ public class ProtectedChartDataServiceTest {
         final Verksamhet verksamhet = Mockito.mock(Verksamhet.class);
         final String testVgId = "TestVgId";
         Mockito.when(verksamhet.getVardgivarId()).thenReturn(testVgId);
-        Mockito.when(loginServiceUtil.getLoginInfo(req)).thenReturn(new LoginInfo("", "", verksamhet, false, false, true, null, false));
+        Mockito.when(loginServiceUtil.getLoginInfo(req)).thenReturn(new LoginInfo("", "", verksamhet, false, false, true, null, LandstingsVardgivareStatus.NO_LANDSTINGSVARDGIVARE));
         final ArrayList<LandstingEnhetFileDataRow> parseResult = new ArrayList<>();
         Mockito.when(landstingFileReader.readExcelData(any(DataSource.class))).thenReturn(parseResult);
 
