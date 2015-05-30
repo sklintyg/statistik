@@ -87,16 +87,20 @@ public class LandstingEnhetHandler {
     }
 
     public List<String> getAllEnhetsForVardgivare(String vgid) {
+        final List<LandstingEnhet> allLandstingEnhetsForVardgivare = getAllLandstingEnhetsForVardgivare(vgid);
+        return Lists.transform(allLandstingEnhetsForVardgivare, new Function<LandstingEnhet, String>() {
+            @Override
+            public String apply(LandstingEnhet landstingEnhet) {
+                return landstingEnhet.getEnhetensHsaId();
+            }
+        });
+    }
+
+    public List<LandstingEnhet> getAllLandstingEnhetsForVardgivare(String vgid) {
         final Optional<Landsting> landsting = landstingManager.getForVg(vgid);
         if (landsting.isPresent()) {
             final long landstingId = landsting.get().getId();
-            final List<LandstingEnhet> landstingEnhets = landstingEnhetManager.getByLandstingId(landstingId);
-            return Lists.transform(landstingEnhets, new Function<LandstingEnhet, String>() {
-                @Override
-                public String apply(LandstingEnhet landstingEnhet) {
-                    return landstingEnhet.getEnhetensHsaId();
-                }
-            });
+            return landstingEnhetManager.getByLandstingId(landstingId);
         }
         return Collections.emptyList();
     }

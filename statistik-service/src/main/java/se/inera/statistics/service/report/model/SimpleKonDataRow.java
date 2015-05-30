@@ -22,18 +22,26 @@ public class SimpleKonDataRow {
 
     private final String name;
     private final KonField data;
+    private final Object extras;
 
     public SimpleKonDataRow(String name, KonField data) {
         this.name = name;
         this.data = data;
+        this.extras = null;
     }
 
     public SimpleKonDataRow(String name, int female, int male) {
         this(name, new KonField(female, male));
     }
 
-    public SimpleKonDataRow(String name, long female, long male) {
-        this(name, new KonField((int) female, (int) male));
+    public SimpleKonDataRow(String name, KonField data, Object extras) {
+        this.name = name;
+        this.data = data;
+        this.extras = extras;
+    }
+
+    public SimpleKonDataRow(String name, int female, int male, Object extras) {
+        this(name, new KonField(female, male), extras);
     }
 
     public String getName() {
@@ -54,6 +62,10 @@ public class SimpleKonDataRow {
 
     public int getMale() {
         return data.getValue(Kon.Male);
+    }
+
+    public Object getExtras() {
+        return extras;
     }
 
     @Override

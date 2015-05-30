@@ -40,6 +40,7 @@ import se.inera.statistics.service.landsting.LandstingEnhetFileData;
 import se.inera.statistics.service.landsting.LandstingEnhetFileDataRow;
 import se.inera.statistics.service.landsting.LandstingEnhetHandler;
 import se.inera.statistics.service.landsting.NoLandstingSetForVgException;
+import se.inera.statistics.service.landsting.persistance.landstingenhet.LandstingEnhet;
 import se.inera.statistics.service.landsting.persistance.landstingenhetupdate.LandstingEnhetUpdate;
 import se.inera.statistics.service.landsting.persistance.landstingenhetupdate.LandstingEnhetUpdateOperation;
 import se.inera.statistics.service.processlog.Enhet;
@@ -630,8 +631,7 @@ public class ProtectedChartDataService {
     @PreAuthorize(value = "@protectedChartDataService.hasAccessToLandstingAdmin(#request)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
     public Response getLastLandstingUpdateInfo(@Context HttpServletRequest request) {
-        LoginInfo info = loginServiceUtil.getLoginInfo(request);
-        final String vardgivarId = info.getDefaultVerksamhet().getVardgivarId();
+        final String vardgivarId = getVardgivarId(request);
         return Response.ok(getLastLandstingUpdateInfoMessage(vardgivarId)).build();
     }
 
@@ -682,6 +682,20 @@ public class ProtectedChartDataService {
         final FilterSettings filterSettings = getFilterForLandsting(request, filterHash, 12);
         SimpleKonResponse<SimpleKonDataRow> casesPerEnhet = warehouse.getCasesPerEnhetLandsting(filterSettings);
         SimpleDetailsData result = new GroupedSjukfallConverter("Vårdenhet").convert(casesPerEnhet, filterSettings);
+        return getResponse(result, csv);
+    }
+
+    @GET
+    @Path("landsting/getNumberOfCasesPerPatientsPerEnhetLandsting{csv:(/csv)?}")
+    @Produces({ MediaType.APPLICATION_JSON })
+    @Consumes({ MediaType.APPLICATION_JSON })
+    @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
+    @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
+    public Response getNumberOfCasesPerPatientsPerEnhetLandsting(@Context HttpServletRequest request, @QueryParam("landstingfilter") String filterHash, @PathParam("csv") String csv) {
+        final FilterSettings filterSettings = getFilterForLandsting(request, filterHash, 12);
+        SimpleKonResponse<SimpleKonDataRow> casesPerEnhet = warehouse.getCasesPerEnhetLandsting(filterSettings);
+        final List<LandstingEnhet> landstingEnhets = landstingEnhetHandler.getAllLandstingEnhetsForVardgivare(getVardgivarId(request));
+        SimpleDetailsData result = new SjukfallPerPatientsPerEnhetConverter(landstingEnhets).convert(casesPerEnhet, filterSettings, null);
         return getResponse(result, csv);
     }
 
@@ -758,8 +772,7 @@ public class ProtectedChartDataService {
     }
 
     private Filter getFilterForAllAvailableEnhetsLandsting(HttpServletRequest request) {
-        LoginInfo info = loginServiceUtil.getLoginInfo(request);
-        final String vardgivarId = info.getDefaultVerksamhet().getVardgivarId();
+        final String vardgivarId = getVardgivarId(request);
         final List<String> enhets = landstingEnhetHandler.getAllEnhetsForVardgivare(vardgivarId);
         final Set<Integer> availableEnhets = new HashSet<>(Lists.transform(enhets, new Function<String, Integer>() {
             @Override
@@ -768,6 +781,11 @@ public class ProtectedChartDataService {
             }
         }));
         return getFilterForEnhets(availableEnhets, enhets);
+    }
+
+    private String getVardgivarId(HttpServletRequest request) {
+        LoginInfo info = loginServiceUtil.getLoginInfo(request);
+        return info.getDefaultVerksamhet().getVardgivarId();
     }
 
     private Filter getFilterForEnhets(final Set<Integer> enhetsIntIds, List<String> enhets) {

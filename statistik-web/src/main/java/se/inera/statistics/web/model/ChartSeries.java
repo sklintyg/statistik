@@ -28,22 +28,22 @@ public class ChartSeries {
     private static final String STACKED = "stacked";
 
     private final String name;
-    private final List<Integer> data;
+    private final List<? extends Number> data;
     private final String stack;
     private final Kon sex;
 
-    public ChartSeries(String name, List<Integer> data, String stack, Kon sex) {
+    public ChartSeries(String name, List<? extends Number> data, String stack, Kon sex) {
         this.name = name;
         this.data = data;
         this.stack = stack;
         this.sex = sex;
     }
 
-    public ChartSeries(String name, List<Integer> data, boolean stacked) {
+    public ChartSeries(String name, List<? extends Number> data, boolean stacked) {
         this(name, data, getStackValue(stacked), null);
     }
 
-    public ChartSeries(String name, List<Integer> data, String stack) {
+    public ChartSeries(String name, List<? extends Number> data, String stack) {
         this(name, data, stack, null);
     }
 
@@ -59,7 +59,7 @@ public class ChartSeries {
         return name;
     }
 
-    public List<Integer> getData() {
+    public List<? extends Number> getData() {
         return data;
     }
 

@@ -46,7 +46,7 @@ angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl', [ '$sco
 
             chartOptions.legend.enabled = $routeParams.printBw || $routeParams.print;
             chartOptions.xAxis.title.text = config.chartXAxisTitle;
-            chartOptions.yAxis.title.text = config.percentChart ? "Andel sjukfall i %" : 'Antal sjukfall';
+            chartOptions.yAxis.title.text = config.chartYAxisTitle ? config.chartYAxisTitle : (config.percentChart ? "Andel sjukfall i %" : 'Antal sjukfall');
             chartOptions.yAxis.title.x = config.percentChart ? 60 : 30;
             chartOptions.yAxis.title.y = -13;
             chartOptions.yAxis.title.align = 'high';
@@ -258,6 +258,20 @@ angular.module('StatisticsApp').casesPerBusinessConfig = function () {
         {description: 'Tidsserie', state: '#/verksamhet/sjukfallperenhettidsserie', active: false},
         {description: 'Tvärsnitt', state: '#/verksamhet/sjukfallperenhet', active: true}];
 
+    return conf;
+};
+
+angular.module('StatisticsApp').casesPerPatientsPerBusinessConfig = function () {
+    var conf = {};
+    conf.dataFetcherLandsting = "getSjukfallPerPatientsPerBusinessLandsting";
+    conf.exportTableUrlLandsting = function () {
+        return "api/verksamhet/landsting/getNumberOfCasesPerPatientsPerEnhetLandsting/csv";
+    };
+    conf.title = function (period, enhetsCount) {
+        return "Antal sjukfall per 1000 listningar" + ControllerCommons.getEnhetCountText(enhetsCount, false) + period;
+    };
+    conf.chartXAxisTitle = "Vårdenhet";
+    conf.chartYAxisTitle = "Antal sjukfall per 1000 listningar";
     return conf;
 };
 

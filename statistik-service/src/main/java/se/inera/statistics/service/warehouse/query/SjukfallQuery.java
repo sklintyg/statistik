@@ -114,7 +114,8 @@ public final class SjukfallQuery {
                 }
             }
             for (Map.Entry<String, String> enhetIdAndName : idsToNames.entrySet()) {
-                final int enhetIntId = Warehouse.getEnhet(enhetIdAndName.getKey());
+                final String enhetId = enhetIdAndName.getKey();
+                final int enhetIntId = Warehouse.getEnhet(enhetId);
                 if (enhetIntId >= 0) {
                     final String enhetName = enhetIdAndName.getValue();
                     int female = femaleSjukfallPerEnhet.count(enhetIntId);
@@ -123,7 +124,7 @@ public final class SjukfallQuery {
                         male = male >= cutoff ? male : 0;
                         female = female >= cutoff ? female : 0;
                     }
-                    rows.add(new SimpleKonDataRow(enhetName, female, male));
+                    rows.add(new SimpleKonDataRow(enhetName, female, male, enhetId));
                 }
             }
         }

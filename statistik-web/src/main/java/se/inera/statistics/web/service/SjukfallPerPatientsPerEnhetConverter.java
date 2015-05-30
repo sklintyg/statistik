@@ -1,0 +1,125 @@
+/**
+ * Copyright (C) 2015 Inera AB (http://www.inera.se)
+ *
+ * This file is part of statistik (https://github.com/sklintyg/statistik).
+ *
+ * statistik is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * statistik is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+package se.inera.statistics.web.service;
+
+import com.google.common.collect.Maps;
+import se.inera.statistics.service.landsting.persistance.landstingenhet.LandstingEnhet;
+import se.inera.statistics.service.report.model.Range;
+import se.inera.statistics.service.report.model.SimpleKonDataRow;
+import se.inera.statistics.service.report.model.SimpleKonResponse;
+import se.inera.statistics.web.model.ChartData;
+import se.inera.statistics.web.model.ChartSeries;
+import se.inera.statistics.web.model.NamedData;
+import se.inera.statistics.web.model.SimpleDetailsData;
+import se.inera.statistics.web.model.TableData;
+
+import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
+
+public class SjukfallPerPatientsPerEnhetConverter {
+
+    private final String seriesNameTemplate = "%1$s";
+    private final Map<String, Integer> listningarPerEnhet;
+
+    public SjukfallPerPatientsPerEnhetConverter(List<LandstingEnhet> landstingEnhets) {
+        if (landstingEnhets == null) {
+            listningarPerEnhet = Collections.emptyMap();
+            return;
+        }
+        listningarPerEnhet = Maps.newHashMapWithExpectedSize(landstingEnhets.size());
+        for (LandstingEnhet landstingEnhet : landstingEnhets) {
+            final Integer listadePatienterObj = landstingEnhet.getListadePatienter();
+            final int listadePatienter = listadePatienterObj == null ? 0 : listadePatienterObj;
+            if (listadePatienter > 0) {
+                listningarPerEnhet.put(landstingEnhet.getEnhetensHsaId(), listadePatienter);
+            }
+        }
+    }
+
+    public SimpleDetailsData convert(SimpleKonResponse<SimpleKonDataRow> casesPerMonth, FilterSettings filterSettings, String message) {
+        Collections.sort(casesPerMonth.getRows(), new Comparator<SimpleKonDataRow>() {
+            @Override
+            public int compare(SimpleKonDataRow o1, SimpleKonDataRow o2) {
+                return o1.getName().compareTo(o2.getName());
+            }
+        });
+        TableData tableData = convertToTableData(casesPerMonth.getRows());
+        ChartData chartData = convertToChartData(casesPerMonth);
+        final Filter filter = filterSettings.getFilter();
+        final FilterDataResponse filterResponse = new FilterDataResponse(filter.getDiagnoser(), filter.getEnheter());
+        final Range range = filterSettings.getRange();
+        final String combinedMessage = Converters.combineMessages(filterSettings.getMessage(), message);
+        return new SimpleDetailsData(tableData, chartData, range.toString(), filterResponse, combinedMessage);
+    }
+
+    private TableData convertToTableData(List<SimpleKonDataRow> list) {
+        List<NamedData> data = new ArrayList<>();
+        for (SimpleKonDataRow row : list) {
+            final String enhetId = (String) row.getExtras();
+            final Integer listadePatienter = listningarPerEnhet.get(enhetId);
+            if (listadePatienter != null) {
+                final Integer female = row.getFemale();
+                final Integer male = row.getMale();
+                final String seriesName = String.format(seriesNameTemplate, row.getName());
+                final int antalSjukfall = female + male;
+                final float thousand = 1000F;
+                final float sjukfallPerThousandListadePatienter = antalSjukfall / (listadePatienter / thousand);
+                final String sjukfallPerThousandListadePatienterRounded = roundToTwoDecimalsAndFormatToString(sjukfallPerThousandListadePatienter);
+                data.add(new NamedData(seriesName, Arrays.asList(antalSjukfall, listadePatienter, sjukfallPerThousandListadePatienterRounded)));
+            }
+        }
+        return TableData.createWithSingleHeadersRow(data, Arrays.asList("Vårdenhet", "Antal sjukfall", "Antal listningar", "Antal sjukfall per 1000 listningar"));
+    }
+
+    private String roundToTwoDecimalsAndFormatToString(float number) {
+        DecimalFormat twoDecimalsFormat = new DecimalFormat("#.##");
+        return twoDecimalsFormat.format(number);
+    }
+
+    private ChartData convertToChartData(SimpleKonResponse<SimpleKonDataRow> casesPerMonth) {
+        final ArrayList<String> categories = new ArrayList<>();
+        final List<Integer> summedData = casesPerMonth.getSummedData();
+        final List<Number> filteredSummedData = new ArrayList<>();
+        for (int i = 0; i < casesPerMonth.getRows().size(); i++) {
+            final SimpleKonDataRow dataRow = casesPerMonth.getRows().get(i);
+            final String enhetId = (String) dataRow.getExtras();
+            final Integer listadePatienter = listningarPerEnhet.get(enhetId);
+            if (listadePatienter != null) {
+                final String seriesName = String.format(seriesNameTemplate, dataRow.getName());
+                categories.add(seriesName);
+                final Integer antalSjukfall = summedData.get(i);
+                final float thousand = 1000F;
+                final float sjukfallPerThousandListadePatienter = antalSjukfall / (listadePatienter / thousand);
+                final String sjukfallPerThousandListadePatienterRounded = roundToTwoDecimalsAndFormatToString(sjukfallPerThousandListadePatienter);
+                filteredSummedData.add(Double.valueOf(sjukfallPerThousandListadePatienterRounded));
+            }
+        }
+
+        final ArrayList<ChartSeries> series = new ArrayList<>();
+        series.add(new ChartSeries("Antal sjukfall per 1000 listningar", filteredSummedData, false));
+
+        return new ChartData(series, categories);
+    }
+
+}
