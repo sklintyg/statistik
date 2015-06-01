@@ -23,7 +23,7 @@ Ett sjukfall går över tre enheter.
 
 Sjukfallet visas en gång för var och en av enheterna.
 
-| Sjukfall i rapporten sjukfall per enhet |
+| Sjukfall i rapporten landsting sjukfall per enhet |
 | inloggad som | vårdenhet    | totalt? | män? | kvinnor? |
 | user3        | Enhet enhet1 | 1       | 1    | 0        |
 | user3        | Enhet enhet2 | 1       | 1    | 0        |
