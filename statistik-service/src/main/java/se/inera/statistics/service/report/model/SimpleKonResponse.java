@@ -18,6 +18,9 @@
  */
 package se.inera.statistics.service.report.model;
 
+import com.google.common.collect.LinkedHashMultimap;
+import com.google.common.collect.Multimap;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -87,12 +90,35 @@ public class SimpleKonResponse<T extends SimpleKonDataRow> {
         return new SimpleKonDataRow(groupName, sumFemale, sumMale);
     }
 
-    public static <T extends SimpleKonDataRow> SimpleKonResponse<T> merge(Collection<SimpleKonResponse<T>> resps) {
-        final ArrayList<T> rows = new ArrayList<>();
-        for (SimpleKonResponse<T> resp : resps) {
-            rows.addAll(resp.getRows());
+    public static SimpleKonResponse<SimpleKonDataRow> merge(Collection<SimpleKonResponse<SimpleKonDataRow>> resps) {
+        Multimap<String, SimpleKonDataRow> mappedResps = LinkedHashMultimap.create();
+        for (SimpleKonResponse<SimpleKonDataRow> resp : resps) {
+            for (SimpleKonDataRow row : resp.getRows()) {
+                mappedResps.put(row.getName(), row);
+            }
+        }
+        final ArrayList<SimpleKonDataRow> rows = new ArrayList<>();
+        for (Collection<SimpleKonDataRow> sameRows : mappedResps.asMap().values()) {
+            rows.add(mergeRows(sameRows));
         }
         return new SimpleKonResponse<>(rows);
+    }
+
+    private static SimpleKonDataRow mergeRows(Collection<SimpleKonDataRow> rows) {
+        if (rows.size() == 1) {
+            return rows.iterator().next();
+        }
+        int male = 0;
+        int female = 0;
+        String name = "";
+        Object extras = null;
+        for (SimpleKonDataRow row : rows) {
+            male += row.getMale();
+            female += row.getFemale();
+            name = row.getName();
+            extras = row.getExtras();
+        }
+        return new SimpleKonDataRow(name, female, male, extras);
     }
 
 }
