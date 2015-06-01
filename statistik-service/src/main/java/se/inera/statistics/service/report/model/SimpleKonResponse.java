@@ -90,16 +90,22 @@ public class SimpleKonResponse<T extends SimpleKonDataRow> {
         return new SimpleKonDataRow(groupName, sumFemale, sumMale);
     }
 
-    public static SimpleKonResponse<SimpleKonDataRow> merge(Collection<SimpleKonResponse<SimpleKonDataRow>> resps) {
-        Multimap<String, SimpleKonDataRow> mappedResps = LinkedHashMultimap.create();
-        for (SimpleKonResponse<SimpleKonDataRow> resp : resps) {
-            for (SimpleKonDataRow row : resp.getRows()) {
-                mappedResps.put(row.getName(), row);
-            }
-        }
+    public static SimpleKonResponse<SimpleKonDataRow> merge(Collection<SimpleKonResponse<SimpleKonDataRow>> resps, boolean mergeEqualRows) {
         final ArrayList<SimpleKonDataRow> rows = new ArrayList<>();
-        for (Collection<SimpleKonDataRow> sameRows : mappedResps.asMap().values()) {
-            rows.add(mergeRows(sameRows));
+        if (mergeEqualRows) {
+            Multimap<String, SimpleKonDataRow> mappedResps = LinkedHashMultimap.create();
+            for (SimpleKonResponse<SimpleKonDataRow> resp : resps) {
+                for (SimpleKonDataRow row : resp.getRows()) {
+                    mappedResps.put(row.getName(), row);
+                }
+            }
+            for (Collection<SimpleKonDataRow> sameRows : mappedResps.asMap().values()) {
+                rows.add(mergeRows(sameRows));
+            }
+        } else {
+            for (SimpleKonResponse<SimpleKonDataRow> resp : resps) {
+                rows.addAll(resp.getRows());
+            }
         }
         return new SimpleKonResponse<>(rows);
     }

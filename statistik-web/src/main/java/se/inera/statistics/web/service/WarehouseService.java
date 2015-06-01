@@ -186,7 +186,7 @@ public class WarehouseService {
                 return sjukfallQuery.getSjukfall(aisle, filterSettings.getFilter().getPredicate(), range.getFrom(), range.getMonths(), 1, true);
             }
         });
-        return SimpleKonResponse.merge(results);
+        return SimpleKonResponse.merge(results, true);
     }
 
     public SimpleKonResponse<SimpleKonDataRow> getCasesPerEnhetLandsting(final FilterSettings filterSettings) {
@@ -203,7 +203,7 @@ public class WarehouseService {
                 return sjukfallQuery.getSjukfallPerEnhet(aisle, filterSettings.getFilter().getPredicate(), range.getFrom(), 1, range.getMonths(), idsToNames, true);
             }
         });
-        return SimpleKonResponse.merge(results);
+        return SimpleKonResponse.merge(results, false);
     }
 
     private Map<String, Collection<Enhet>> mapEnhetsToVgids(Collection<String> enheter) {

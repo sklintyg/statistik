@@ -81,7 +81,7 @@ public class SimpleKonResponseTest {
         responses.add(new SimpleKonResponse<SimpleKonDataRow>(Arrays.asList(new SimpleKonDataRow("Second", 10, 20))));
 
         //When
-        final SimpleKonResponse<SimpleKonDataRow> mergedResp = SimpleKonResponse.merge(responses);
+        final SimpleKonResponse<SimpleKonDataRow> mergedResp = SimpleKonResponse.merge(responses, false);
 
         //Then
         assertEquals(2, mergedResp.getGroups().size());
@@ -97,7 +97,7 @@ public class SimpleKonResponseTest {
     }
 
     @Test
-    public void testMergeWithEqualGroups() throws Exception {
+    public void testMergeWithEqualGroupsWithMergeEqualRowsFlag() throws Exception {
         //Given
         final ArrayList<SimpleKonResponse<SimpleKonDataRow>> responses = new ArrayList<>();
         responses.add(new SimpleKonResponse<SimpleKonDataRow>(Arrays.asList(new SimpleKonDataRow("First", 1, 2))));
@@ -106,7 +106,7 @@ public class SimpleKonResponseTest {
         responses.add(new SimpleKonResponse<SimpleKonDataRow>(Arrays.asList(new SimpleKonDataRow("Second", 10, 20))));
 
         //When
-        final SimpleKonResponse<SimpleKonDataRow> mergedResp = SimpleKonResponse.merge(responses);
+        final SimpleKonResponse<SimpleKonDataRow> mergedResp = SimpleKonResponse.merge(responses, true);
 
         //Then
         assertEquals(2, mergedResp.getGroups().size());
@@ -119,6 +119,39 @@ public class SimpleKonResponseTest {
 
         assertEquals(20, mergedResp.getRows().get(1).getFemale());
         assertEquals(40, mergedResp.getRows().get(1).getMale());
+    }
+
+    @Test
+    public void testMergeWithEqualGroupsWithoutMergeEqualRowsFlag() throws Exception {
+        //Given
+        final ArrayList<SimpleKonResponse<SimpleKonDataRow>> responses = new ArrayList<>();
+        responses.add(new SimpleKonResponse<SimpleKonDataRow>(Arrays.asList(new SimpleKonDataRow("First", 1, 2))));
+        responses.add(new SimpleKonResponse<SimpleKonDataRow>(Arrays.asList(new SimpleKonDataRow("Second", 10, 20))));
+        responses.add(new SimpleKonResponse<SimpleKonDataRow>(Arrays.asList(new SimpleKonDataRow("First", 1, 2))));
+        responses.add(new SimpleKonResponse<SimpleKonDataRow>(Arrays.asList(new SimpleKonDataRow("Second", 10, 20))));
+
+        //When
+        final SimpleKonResponse<SimpleKonDataRow> mergedResp = SimpleKonResponse.merge(responses, false);
+
+        //Then
+        assertEquals(4, mergedResp.getGroups().size());
+
+        assertEquals("First", mergedResp.getGroups().get(0));
+        assertEquals("Second", mergedResp.getGroups().get(1));
+        assertEquals("First", mergedResp.getGroups().get(2));
+        assertEquals("Second", mergedResp.getGroups().get(3));
+
+        assertEquals(1, mergedResp.getRows().get(0).getFemale());
+        assertEquals(2, mergedResp.getRows().get(0).getMale());
+
+        assertEquals(10, mergedResp.getRows().get(1).getFemale());
+        assertEquals(20, mergedResp.getRows().get(1).getMale());
+
+        assertEquals(1, mergedResp.getRows().get(2).getFemale());
+        assertEquals(2, mergedResp.getRows().get(2).getMale());
+
+        assertEquals(10, mergedResp.getRows().get(3).getFemale());
+        assertEquals(20, mergedResp.getRows().get(3).getMale());
     }
 
 }
