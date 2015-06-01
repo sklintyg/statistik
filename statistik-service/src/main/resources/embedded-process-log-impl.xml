@@ -35,7 +35,7 @@
 
     <tx:annotation-driven/>
 
-    <jdbc:embedded-database id="dataSource" type="H2"/>
+    <jdbc:embedded-database id="dataSource" type="H2"><jdbc:script location="classpath:mysqlModeEmbeddedH2StartScript.sql"></jdbc:script></jdbc:embedded-database>
 
     <bean id="org.h2.tools.Server"
           class="org.h2.tools.Server"
