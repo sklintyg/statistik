@@ -35,11 +35,11 @@ Inloggad:
 | user3        | Enhet enhet2 | 1       | 1    | 0        |
 | user3        | Enhet enhet3 | 1       | 0    | 1        |
 
-| Sjukfall i rapporten landsting listningsjamforelse |
-| inloggad som | vårdenhet    | totalt? |
+| Sjukfall i rapporten landsting sjukfall per listningar per enhet |
+| inloggad som | vårdenhet    | antal sjukfall per tusen listningar? |
 | user3        | Enhet enhet1 | -1      |
 | user3        | Enhet enhet2 | -1      |
-| user3        | Enhet enhet3 | 0,91    |
+| user3        | Enhet enhet3 | 0.91    |
 
 | Foljande intyg finns |
 | personnr      | diagnoskod | start      | slut       | enhet  | kommentar |
@@ -56,8 +56,8 @@ Inloggad:
 | user6        | Enhet enhet2 | 1       | 1    | 0        |
 | user6        | Enhet enhet3 | 1       | 0    | 1        |
 
-| Sjukfall i rapporten landsting listningsjamforelse |
-| inloggad som | vårdenhet    | totalt? |
-| user6        | Enhet enhet1 | 9,09    |
+| Sjukfall i rapporten landsting sjukfall per listningar per enhet |
+| inloggad som | vårdenhet    | antal sjukfall per tusen listningar? |
+| user6        | Enhet enhet1 | 9.09    |
 | user6        | Enhet enhet2 | -1      |
-| user6        | Enhet enhet3 | 0,91    |
+| user6        | Enhet enhet3 | 0.91    |

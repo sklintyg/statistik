@@ -46,7 +46,8 @@ Inloggad:
 | user3        | Enhet enhet2 | 4       | 4    | 0        |
 | user3        | Enhet enhet3 | 3       | 0    | 3        |
 
-| inloggad som | vårdenhet    | totalt? |
+| Sjukfall i rapporten landsting sjukfall per listningar per enhet |
+| inloggad som | vårdenhet    | antal sjukfall per tusen listningar? |
 | user3        | Enhet enhet1 | -1      |
 | user3        | Enhet enhet2 | -1      |
-| user3        | Enhet enhet3 | 2,73    |
+| user3        | Enhet enhet3 | 2.73    |
