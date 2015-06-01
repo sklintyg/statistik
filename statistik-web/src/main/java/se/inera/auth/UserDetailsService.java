@@ -51,9 +51,18 @@ public class UserDetailsService implements SAMLUserDetailsService {
         String vardgivare = selectedVerksamhet != null ? selectedVerksamhet.getVardgivarId() : null;
         List<Vardenhet> filtered = filterByVardgivare(authorizedVerksamhets, vardgivare);
 
-        final boolean processledare = assertion.getSystemRoles().contains(GLOBAL_VG_ACCESS_PREFIX + vardgivare);
+        final boolean processledare = isProcessledare(assertion, vardgivare);
         final String name = assertion.getFornamn() + ' ' + assertion.getMellanOchEfternamn();
         return new User(hsaId, name, processledare, selectedVerksamhet, filtered);
+    }
+
+    private boolean isProcessledare(SakerhetstjanstAssertion assertion, String vardgivare) {
+        for (String systemRole : assertion.getSystemRoles()) {
+            if ((GLOBAL_VG_ACCESS_PREFIX + vardgivare).equalsIgnoreCase(systemRole)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     SakerhetstjanstAssertion getSakerhetstjanstAssertion(SAMLCredential credential) {
@@ -72,7 +81,7 @@ public class UserDetailsService implements SAMLUserDetailsService {
 
     Vardenhet getLoginVerksamhet(List<Vardenhet> vardenhets, String enhetHsaId) {
         for (Vardenhet vardenhet : vardenhets) {
-            if (vardenhet.getId().equals(enhetHsaId)) {
+            if (vardenhet.getId().equalsIgnoreCase(enhetHsaId)) {
                 return vardenhet;
             }
         }

@@ -29,7 +29,6 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import java.util.Collections;
 import java.util.List;
-import java.util.Locale;
 
 import static org.hibernate.annotations.common.util.StringHelper.toUpperCase;
 
@@ -61,7 +60,7 @@ public class LandstingManager {
             }
         });
         final Long maxId = Collections.max(allIds);
-        final Landsting landsting = new Landsting(maxId + 1, name, vgId.toUpperCase(Locale.ENGLISH));
+        final Landsting landsting = new Landsting(maxId + 1, name, vgId);
         manager.persist(landsting);
     }
 

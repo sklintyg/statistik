@@ -25,6 +25,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.util.Locale;
 
 @Entity
 @Table(name = "enhet")
@@ -55,9 +56,9 @@ public class Enhet implements Comparable<Enhet> {
     }
 
     public Enhet(String vardgivareId, String vardgivareNamn, String enhetId, String namn, String lansId, String kommunId, String verksamhetsTyper) {
-        this.vardgivareId = vardgivareId;
+        setVardgivareId(vardgivareId);
         this.vardgivareNamn = vardgivareNamn;
-        this.enhetId = enhetId;
+        setEnhetId(enhetId);
         this.namn = namn;
         this.lansId = lansId;
         this.kommunId = kommunId;
@@ -73,7 +74,7 @@ public class Enhet implements Comparable<Enhet> {
     }
 
     public void setVardgivareId(String vardgivareId) {
-        this.vardgivareId = vardgivareId;
+        this.vardgivareId = vardgivareId == null ? null : vardgivareId.toUpperCase(Locale.ENGLISH);
     }
 
     public String getVardgivareNamn() {
@@ -89,7 +90,7 @@ public class Enhet implements Comparable<Enhet> {
     }
 
     public void setEnhetId(String enhetId) {
-        this.enhetId = enhetId;
+        this.enhetId = enhetId == null ? null : enhetId.toUpperCase(Locale.ENGLISH);
     }
 
     public String getNamn() {

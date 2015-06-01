@@ -62,9 +62,9 @@ public class SjukfallQueryTest {
     private static final String VG_1 = "vg1";
     private static final int ENHET1_ID = 1;
 
-    private static final String LAKARE1_ID = "lakare1";
-    private static final String LAKARE2_ID = "lakare2";
-    private static final String LAKARE3_ID = "lakare3";
+    private static final String LAKARE1_ID = "LAKARE1";
+    private static final String LAKARE2_ID = "LAKARE2";
+    private static final String LAKARE3_ID = "LAKARE3";
 
     private static final int PATIENT1_ID = 1;
     private static final Kon PATIENT1_KON = Kon.Female;
@@ -184,12 +184,12 @@ public class SjukfallQueryTest {
         int checksum = 0;
         for (SimpleKonDataRow lakareRow : result.getRows()) {
             switch (lakareRow.getName()) {
-                case "Beata Bertilsson lakare2":
+                case "Beata Bertilsson LAKARE2":
                     assertEquals(1, lakareRow.getDataForSex(Kon.Female));
                     assertEquals(0, lakareRow.getDataForSex(Kon.Male));
                     checksum +=1;
                     break;
-                case "Beata Bertilsson lakare3":
+                case "Beata Bertilsson LAKARE3":
                     assertEquals(1, lakareRow.getDataForSex(Kon.Female));
                     assertEquals(0, lakareRow.getDataForSex(Kon.Male));
                     checksum +=2;

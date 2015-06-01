@@ -25,6 +25,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.util.Locale;
 
 @Entity
 @Table(name = WideLine.TABLE)
@@ -64,7 +65,7 @@ public class WideLine {
         this.id = id;
         this.correlationId = correlationId;
         this.lkf = lkf;
-        this.enhet = enhet;
+        setEnhet(enhet);
         this.lakarintyg = lakarintyg;
         this.intygTyp = intygTyp;
         this.patientid = patientid;
@@ -80,8 +81,8 @@ public class WideLine {
         this.lakarkon = lakarkon;
         this.lakaralder = lakaralder;
         this.lakarbefattning = lakarbefattning;
-        this.vardgivareId = vardgivareId;
-        this.lakareId = lakareId;
+        setVardgivareId(vardgivareId);
+        setLakareId(lakareId);
     }
     // CHECKSTYLE:ON ParameterNumber
 
@@ -114,7 +115,7 @@ public class WideLine {
     }
 
     public void setEnhet(String enhet) {
-        this.enhet = enhet;
+        this.enhet = enhet == null ? null : enhet.toUpperCase(Locale.ENGLISH);
     }
 
     public String getVardgivareId() {
@@ -122,7 +123,7 @@ public class WideLine {
     }
 
     public void setVardgivareId(String vardgivareId) {
-        this.vardgivareId = vardgivareId;
+        this.vardgivareId = vardgivareId == null ? null : vardgivareId.toUpperCase(Locale.ENGLISH);
     }
 
     public long getLakarintyg() {
@@ -250,7 +251,7 @@ public class WideLine {
     }
 
     public void setLakareId(String lakareId) {
-        this.lakareId = lakareId;
+        this.lakareId = lakareId == null ? null : lakareId.toUpperCase(Locale.ENGLISH);
     }
 
 }

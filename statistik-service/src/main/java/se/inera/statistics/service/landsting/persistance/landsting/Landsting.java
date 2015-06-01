@@ -21,6 +21,7 @@ package se.inera.statistics.service.landsting.persistance.landsting;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.util.Locale;
 
 @Entity
 @Table(name = "Landsting")
@@ -39,7 +40,7 @@ public class Landsting {
     Landsting(long id, String namn, String vardgivareId) {
         this.id = id;
         this.namn = namn;
-        this.vardgivareId = vardgivareId;
+        this.vardgivareId = vardgivareId == null ? null : vardgivareId.toUpperCase(Locale.ENGLISH);
     }
 
     public long getId() {

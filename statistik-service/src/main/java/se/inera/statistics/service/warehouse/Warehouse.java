@@ -31,6 +31,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 public class Warehouse implements Iterable<Aisle> {
@@ -102,11 +103,11 @@ public class Warehouse implements Iterable<Aisle> {
     }
 
     public static int getEnhetAndRemember(String id) {
-        return enhetsMap.getOrCreateId(id);
+        return enhetsMap.getOrCreateId(id == null ? null : id.toUpperCase(Locale.ENGLISH));
     }
 
     public static int getEnhet(String id) {
-        return enhetsMap.maybeGetId(id);
+        return enhetsMap.maybeGetId(id == null ? null : id.toUpperCase(Locale.ENGLISH));
     }
 
     public static Optional<String> getEnhetId(int enhetIntId) {

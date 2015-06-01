@@ -19,6 +19,7 @@
 package se.inera.statistics.hsa.model;
 
 import java.io.Serializable;
+import java.util.Locale;
 
 /**
  * @author rlindsjo
@@ -49,11 +50,11 @@ public class Vardenhet implements Serializable {
     }
 
     public String getId() {
-        return id;
+        return id == null ? null : id.toUpperCase(Locale.ENGLISH);
     }
 
     public String getVardgivarId() {
-        return vardgivarId;
+        return vardgivarId == null ? null : vardgivarId.toUpperCase(Locale.ENGLISH);
     }
 
     public String getVardgivarNamn() {

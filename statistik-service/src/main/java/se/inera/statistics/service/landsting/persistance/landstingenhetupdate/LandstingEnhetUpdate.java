@@ -24,6 +24,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.sql.Timestamp;
+import java.util.Locale;
 
 @Entity
 @Table(name = "LandstingEnhetUpdate")
@@ -49,7 +50,7 @@ public class LandstingEnhetUpdate {
     public LandstingEnhetUpdate(long landstingId, String updatedByName, String updatedByHsaid, Timestamp timestamp, String filename, LandstingEnhetUpdateOperation operation) {
         this.landstingId = landstingId;
         this.updatedByName = updatedByName;
-        this.updatedByHsaid = updatedByHsaid;
+        setUpdatedByHsaid(updatedByHsaid);
         this.timestamp = timestamp;
         this.filename = filename;
         this.operation = operation;
@@ -76,7 +77,7 @@ public class LandstingEnhetUpdate {
     }
 
     public void setUpdatedByHsaid(String updatedByHsaid) {
-        this.updatedByHsaid = updatedByHsaid;
+        this.updatedByHsaid = updatedByHsaid == null ? null : updatedByHsaid.toUpperCase(Locale.ENGLISH);
     }
 
     public Timestamp getTimestamp() {

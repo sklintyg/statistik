@@ -18,7 +18,11 @@
  */
 package se.inera.statistics.hsa.stub;
 
+import com.google.common.base.Function;
+import com.google.common.collect.Lists;
+
 import java.util.List;
+import java.util.Locale;
 
 /**
  * @author andreaskaltenbach
@@ -46,7 +50,7 @@ public class Medarbetaruppdrag {
     }
 
     public String getHsaId() {
-        return hsaId;
+        return hsaId == null ? null : hsaId.toUpperCase(Locale.ENGLISH);
     }
 
     public void setHsaId(String hsaId) {
@@ -54,7 +58,12 @@ public class Medarbetaruppdrag {
     }
 
     public List<String> getEnhetIds() {
-        return enhetIds;
+        return enhetIds == null ? null : Lists.transform(enhetIds, new Function<String, String>() {
+            @Override
+            public String apply(String enhetId) {
+                return enhetId.toUpperCase(Locale.ENGLISH);
+            }
+        });
     }
 
     public void setEnhetIds(List<String> enhetIds) {

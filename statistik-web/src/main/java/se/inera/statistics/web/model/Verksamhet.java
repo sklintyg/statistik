@@ -23,6 +23,7 @@ import org.apache.commons.lang3.text.translate.UnicodeEscaper;
 import org.apache.commons.lang3.text.translate.UnicodeUnescaper;
 
 import java.io.Serializable;
+import java.util.Locale;
 import java.util.Set;
 
 import static org.apache.commons.lang3.text.translate.UnicodeEscaper.above;
@@ -62,7 +63,8 @@ public class Verksamhet implements Serializable {
     // CHECKSTYLE:ON ParameterNumber
 
     public String getId() {
-        return encodeId(id);
+        final String encodeId = encodeId(id);
+        return encodeId == null ? null : encodeId.toUpperCase(Locale.ENGLISH);
     }
 
     public String getName() {
@@ -70,7 +72,7 @@ public class Verksamhet implements Serializable {
     }
 
     public String getVardgivarId() {
-        return vardgivarId;
+        return vardgivarId == null ? null : vardgivarId.toUpperCase(Locale.ENGLISH);
     }
 
     public String getVardgivarName() {

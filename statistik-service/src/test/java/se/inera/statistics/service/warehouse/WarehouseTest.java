@@ -65,7 +65,7 @@ public class WarehouseTest {
             factPopulator.accept(wideLine);
         }
         warehouse.complete(LocalDateTime.now());
-        Aisle aisle = warehouse.get("vardgivarid");
+        Aisle aisle = warehouse.get("VARDGIVARID");
         assertEquals(1, aisle.getSize());
     }
 }

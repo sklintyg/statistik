@@ -53,5 +53,6 @@
     <include file="changelog/db.changelog-v25.0_set_unknown_verksamhetstyp.xml"/>
     <include file="changelog/db.changelog-v26.0_add_diagnoskod_to_wideline.xml"/>
     <include file="changelog/db.changelog-v27.0_add_landsting.xml"/>
+    <include file="changelog/db.changelog-v28.0_hsaid_to_same_case.xml"/>
 
 </databaseChangeLog>

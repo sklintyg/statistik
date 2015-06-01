@@ -23,6 +23,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.util.Locale;
 
 @Entity
 @Table(name = "LandstingEnhet")
@@ -43,7 +44,7 @@ public class LandstingEnhet {
 
     public LandstingEnhet(long landstingId, String enhetensHsaId, Integer listadePatienter) {
         this.landstingId = landstingId;
-        this.enhetensHsaId = enhetensHsaId;
+        this.enhetensHsaId = enhetensHsaId == null ? null : enhetensHsaId.toUpperCase(Locale.ENGLISH);
         this.listadePatienter = listadePatienter;
     }
 

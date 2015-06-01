@@ -23,6 +23,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.util.Locale;
 import java.util.Objects;
 
 @Entity
@@ -42,8 +43,8 @@ public class Lakare {
     private String efterNamn;
 
     public Lakare(String vardgivareId, String lakareId, String tilltalsNamn, String efterNamn) {
-        this.vardgivareId = vardgivareId;
-        this.lakareId = lakareId;
+        setVardgivareId(vardgivareId);
+        setLakareId(lakareId);
         this.tilltalsNamn = tilltalsNamn;
         this.efterNamn = efterNamn;
     }
@@ -64,7 +65,7 @@ public class Lakare {
     }
 
     public void setVardgivareId(String vardgivareId) {
-        this.vardgivareId = vardgivareId;
+        this.vardgivareId = vardgivareId == null ? null : vardgivareId.toUpperCase(Locale.ENGLISH);
     }
 
     public String getLakareId() {
@@ -72,7 +73,7 @@ public class Lakare {
     }
 
     public void setLakareId(String lakareId) {
-        this.lakareId = lakareId;
+        this.lakareId = lakareId == null ? null : lakareId.toUpperCase(Locale.ENGLISH);
     }
 
     public String getTilltalsNamn() {

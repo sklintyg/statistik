@@ -1,7 +1,5 @@
 !contents -R2 -g -p -f -h
 
-IGNORERAD: Väntar på STATISTIK-1110
-
 !3 Givet att:
 
 Tre sjukfall tillhör enhet1, men på intygen har man skrivit enhets-is och vårdgivar-id med både stora och små bokstäver.

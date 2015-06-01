@@ -50,12 +50,12 @@ public class WidelineToWarehouseIntegrationTest {
     public void testPopulateWarehouse() throws Exception {
         WideLine line1 = new WideLine();
         String patientId = "19121212-1210";
-        String enhet = "e1";
+        String enhet = "E1";
         line1.setAlder(23);
         line1.setDiagnoskapitel("A00-B99");
         line1.setDiagnosavsnitt("A15-A19");
         line1.setDiagnoskategori("A16");
-        line1.setEnhet("e1");
+        line1.setEnhet(enhet);
         line1.setKon(1);
         line1.setLkf("078002");
         line1.setLakareId("lid");
@@ -75,7 +75,7 @@ public class WidelineToWarehouseIntegrationTest {
         widelineLoader.populateWarehouse();
         warehouse.complete(LocalDateTime.now());
 
-        Aisle a = warehouse.get("vg1");
+        Aisle a = warehouse.get("VG1");
         Assert.assertEquals(1, a.getSize());
         Fact fact = a.iterator().next();
         Assert.assertEquals(23, fact.getAlder());

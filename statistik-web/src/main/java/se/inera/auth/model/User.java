@@ -23,6 +23,7 @@ import se.inera.statistics.hsa.model.Vardenhet;
 import java.io.Serializable;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 
 public class User implements Serializable {
 
@@ -33,7 +34,7 @@ public class User implements Serializable {
     private final List<Vardenhet> vardenhetList;
 
     public User(String hsaId, String name, boolean processledare, Vardenhet vardenhet, List<Vardenhet> vardenhetsList) {
-        this.hsaId = hsaId;
+        this.hsaId = hsaId == null ? null : hsaId.toUpperCase(Locale.ENGLISH);
         this.name = name;
         this.processledare = processledare;
         this.vardenhet = vardenhet;

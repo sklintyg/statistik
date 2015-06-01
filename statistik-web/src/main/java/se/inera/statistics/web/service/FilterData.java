@@ -18,8 +18,12 @@
  */
 package se.inera.statistics.web.service;
 
+import com.google.common.base.Function;
+import com.google.common.collect.Lists;
+
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 
 public class FilterData {
 
@@ -58,7 +62,12 @@ public class FilterData {
     }
 
     public List<String> getEnheter() {
-        return enheter;
+        return Lists.transform(enheter, new Function<String, String>() {
+            @Override
+            public String apply(String enhetId) {
+                return enhetId == null ? null : enhetId.toUpperCase(Locale.ENGLISH);
+            }
+        });
     }
 
     public List<String> getVerksamhetstyper() {

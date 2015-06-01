@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * @author andreaskaltenbach
@@ -147,7 +148,7 @@ public class SakerhetstjanstAssertion {
     }
 
     public String getHsaId() {
-        return hsaId;
+        return hsaId == null ? null : hsaId.toUpperCase(Locale.ENGLISH);
     }
 
     public String getFornamn() {
@@ -159,7 +160,7 @@ public class SakerhetstjanstAssertion {
     }
 
     public String getEnhetHsaId() {
-        return enhetHsaId;
+        return enhetHsaId == null ? null : enhetHsaId.toUpperCase(Locale.ENGLISH);
     }
 
     public String getEnhetNamn() {
@@ -167,7 +168,7 @@ public class SakerhetstjanstAssertion {
     }
 
     public String getVardgivareHsaId() {
-        return vardgivareHsaId;
+        return vardgivareHsaId == null ? null : vardgivareHsaId.toUpperCase(Locale.ENGLISH);
     }
 
     public String getVardgivareNamn() {
