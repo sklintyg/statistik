@@ -113,6 +113,7 @@ var stMessages = {
         //detail views
         'lbl.valj-annat-diagnoskapitel': 'Välj diagnoskapitel:',
         'lbl.valj-annat-diagnosavsnitt': 'Välj diagnosavsnitt',
+        'lbl.valj-annan-diagnoskategori': 'Välj diagnoskategori',
         'dropdown.val.rapport': 'Spara/Skriv ut',
         'dropdown.val.skrivut-farg': ' Skriv ut i färg',
         'dropdown.val.skrivut-svart-vitt': ' Skriv ut i svartvitt',

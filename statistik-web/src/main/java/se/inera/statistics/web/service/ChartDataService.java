@@ -258,22 +258,26 @@ public class ChartDataService {
      * @return data
      */
     @GET
-    @Path("getDiagnosisKapitelAndAvsnitt")
+    @Path("getDiagnosisKapitelAndAvsnittAndKod")
     @Produces({ MediaType.APPLICATION_JSON })
-    public DiagnosisKapitelAndAvsnittResponse getDiagnosisKapitelAndAvsnitt() {
-        LOG.info("Calling getDiagnosisKapitelAndAvsnitt");
+    public DiagnosisKapitelAndAvsnittAndKodResponse getDiagnosisKapitelAndAvsnittAndKod() {
+        LOG.info("Calling getDiagnosisKapitelAndAvsnittAndKod");
         Map<String, List<Icd>> avsnitts = new LinkedHashMap<>();
+        Map<String, List<Icd>> kods = new LinkedHashMap<>();
         List<Icd10.Kapitel> kapitels = icd10.getKapitel(false);
         for (Icd10.Kapitel k : kapitels) {
-            avsnitts.put(k.getId(), convertToAvsnitts(k.getAvsnitt()));
+            avsnitts.put(k.getId(), convertToIcds(k.getAvsnitt()));
+            for (Icd10.Avsnitt avsnitt : k.getAvsnitt()) {
+                kods.put(avsnitt.getId(), convertToIcds(avsnitt.getKategori()));
+            }
         }
-        return new DiagnosisKapitelAndAvsnittResponse(avsnitts, getDiagnoskapitel());
+        return new DiagnosisKapitelAndAvsnittAndKodResponse(kods, avsnitts, getDiagnoskapitel());
     }
 
-    private List<Icd> convertToAvsnitts(List<Icd10.Avsnitt> avsnitts) {
-        List<Icd> converted = new ArrayList<>(avsnitts.size());
-        for (Icd10.Avsnitt avsnitt : avsnitts) {
-            converted.add(new Icd(avsnitt.getId(), avsnitt.getName(), avsnitt.toInt()));
+    private List<Icd> convertToIcds(List<? extends Icd10.Id> ids) {
+        List<Icd> converted = new ArrayList<>(ids.size());
+        for (Icd10.Id icdId : ids) {
+            converted.add(new Icd(icdId.getId(), icdId.getName(), icdId.toInt()));
         }
         return converted;
     }

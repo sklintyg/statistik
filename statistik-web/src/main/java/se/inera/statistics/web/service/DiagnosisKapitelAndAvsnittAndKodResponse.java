@@ -23,13 +23,19 @@ import se.inera.statistics.service.report.model.Icd;
 import java.util.List;
 import java.util.Map;
 
-class DiagnosisKapitelAndAvsnittResponse {
+class DiagnosisKapitelAndAvsnittAndKodResponse {
     private final Map<String, List<Icd>> avsnitts;
     private final List<Icd> kapitels;
+    private final Map<String, List<Icd>> kods;
 
-    public DiagnosisKapitelAndAvsnittResponse(Map<String, List<Icd>> avsnitts, List<Icd> kapitels) {
+    public DiagnosisKapitelAndAvsnittAndKodResponse(Map<String, List<Icd>> kods, Map<String, List<Icd>> avsnitts, List<Icd> kapitels) {
+        this.kods = kods;
         this.avsnitts = avsnitts;
         this.kapitels = kapitels;
+    }
+
+    public Map<String, List<Icd>> getKods() {
+        return kods;
     }
 
     public Map<String, List<Icd>> getAvsnitts() {
@@ -39,4 +45,5 @@ class DiagnosisKapitelAndAvsnittResponse {
     public List<Icd> getKapitels() {
         return kapitels;
     }
+
 }

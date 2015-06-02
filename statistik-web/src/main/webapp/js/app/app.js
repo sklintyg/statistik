@@ -119,6 +119,12 @@ var app = angular.module('StatisticsApp',
             controllerAs: 'VerksamhetDiagnosgruppCtrl',
             resolve: { config: app.diagnosisGroupTvarsnittConfig },
             title: 'Diagnosgrupper'
+        }).when('/verksamhet/diagnosavsnitt/:groupId/kategori/:kategoriId/avsnitt/:avsnittId', {
+            templateUrl: 'views/detailsView.html',
+            controller: 'doubleAreaChartsCtrl',
+            controllerAs: 'VerksamhetDiagnoskategoriCtrl',
+            resolve: { config: app.diagnosisSubGroupConfig },
+            title: 'Enskilt diagnoskapitel'
         }).when('/verksamhet/diagnosavsnitt/:groupId/kategori/:kategoriId', {
             templateUrl: 'views/detailsView.html',
             controller: 'doubleAreaChartsCtrl',
@@ -133,6 +139,12 @@ var app = angular.module('StatisticsApp',
             title: 'Enskilt diagnoskapitel'
         }).when('/verksamhet/diagnosavsnitt', {
             redirectTo: '/verksamhet/diagnosavsnitt/A00-B99'
+        }).when('/verksamhet/diagnosavsnitttvarsnitt/:groupId/kategori/:kategoriId/avsnitt/:avsnittId', {
+            templateUrl: 'views/detailsView.html',
+            controller: 'columnChartDetailsViewCtrl',
+            controllerAs: 'VerksamhetDiagnoskategoriCtrl',
+            resolve: { config: app.diagnosisSubGroupTvarsnittConfig },
+            title: 'Enskilt diagnoskapitel'
         }).when('/verksamhet/diagnosavsnitttvarsnitt/:groupId/kategori/:kategoriId', {
             templateUrl: 'views/detailsView.html',
             controller: 'columnChartDetailsViewCtrl',

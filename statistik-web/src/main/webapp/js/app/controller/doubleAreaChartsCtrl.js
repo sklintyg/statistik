@@ -152,7 +152,7 @@ angular.module('StatisticsApp').controller('doubleAreaChartsCtrl', [ '$scope', '
             $scope.subTitle = config.title(result.period, $scope.enhetsCount, $routeParams.groupId);
             if (config.showDetailsOptions) {
                 $scope.currentPeriod = result.period;
-                statisticsData.getDiagnosisKapitelAndAvsnitt(populateDetailsOptions, function () {
+                statisticsData.getDiagnosisKapitelAndAvsnittAndKod(populateDetailsOptions, function () {
                     alert("Kunde inte ladda data");
                 });
             }
@@ -241,6 +241,7 @@ angular.module('StatisticsApp').controller('doubleAreaChartsCtrl', [ '$scope', '
 
         $scope.showDetailsOptions = config.showDetailsOptions;
         $scope.showDetailsOptions2 = config.showDetailsOptions2 && isVerksamhet;
+        $scope.showDetailsOptions3 = config.showDetailsOptions3 && isVerksamhet;
 
         $scope.useSpecialPrintTable = true;
 
@@ -302,6 +303,7 @@ angular.module('StatisticsApp').diagnosisSubGroupConfig = function () {
     };
     conf.showDetailsOptions = true;
     conf.showDetailsOptions2 = true;
+    conf.showDetailsOptions3 = true;
     conf.title = function (period, enhetsCount, name) {
         return "Antal sjukfall för " + name + ControllerCommons.getEnhetCountText(enhetsCount, false) + period;
     };

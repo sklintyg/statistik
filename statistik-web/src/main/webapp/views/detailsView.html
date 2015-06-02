@@ -105,6 +105,21 @@
          	</div>
        	</div>
 
+    	<span class="col-xs-12" data-ng-show="showDetailsOptions3">
+    		<label class="dropdown-label" for="selectDiagnosticKategori"><span message key="lbl.valj-annan-diagnoskategori"></span>:</label>
+    	</span>
+   		<div class="col-xs-6 pull-left" data-ng-show="showDetailsOptions3">
+       		<div class="btn-group margin-bottom" id="detailsOptionsDropdown3">
+           		<button class="multiselect dropdown-toggle btn btn-default" id="selectDiagnosticKategori" data-toggle="dropdown" style="overflow: hidden; text-overflow: ellipsis; max-width: 350px;">
+           			<span class="caret pull-right" style="margin-top: 9px;"></span>
+           			<span>{{selectedDetailsOption3.id}} {{selectedDetailsOption3.name}}</span>
+           		</button>
+           		<ul class="dropdown-menu left overflow-menu-options">
+	               <li data-ng-repeat="detailsOption3 in detailsOptions3"><a href="{{detailsOption3.url}}{{queryString}}"><span bindonce="detailsOption3.id"></span> <span bindonce="detailsOption3.name"></span></a></li>
+	        	</ul>
+         	</div>
+       	</div>
+
 		<div class="row" data-ng-class="{margin_top_button_group: showDetailsOptions}" style="margin-bottom: 10px;">
             <!-- toolbar -->
             <!--<div class="row">-->

@@ -170,7 +170,7 @@ var ControllerCommons = new function(){
     };
 
     this.getMostSpecificGroupId = function(routeParams) {
-        return routeParams.kategoriId ? routeParams.kategoriId : routeParams.groupId;
+        return routeParams.avsnittId ? routeParams.avsnittId : (routeParams.kategoriId ? routeParams.kategoriId : routeParams.groupId);
     };
 
     this.populateDetailsOptions = function (result, basePath, $scope, $routeParams, messageService, config) {
@@ -188,6 +188,15 @@ var ControllerCommons = new function(){
                 break;
             }
         }
+        var kods = result.kods[$routeParams.kategoriId];
+        if (kods) {
+            for (var i = 0; i < kods.length; i++) {
+                if (kods[i].id === $routeParams.avsnittId) {
+                    $scope.selectedDetailsOption3 = kods[i];
+                    break;
+                }
+            }
+        }
 
         $scope.detailsOptions = _.map(kapitels, function (e) {
             e.url = basePath + "/" + e.id;
@@ -195,6 +204,10 @@ var ControllerCommons = new function(){
         });
         $scope.detailsOptions2 = _.map(avsnitts, function (e) {
             e.url = basePath + "/" + $routeParams.groupId + "/kategori/" + e.id;
+            return e;
+        });
+        $scope.detailsOptions3 = _.map(kods, function (e) {
+            e.url = basePath + "/" + $routeParams.groupId + "/kategori/" + $routeParams.kategoriId + "/avsnitt/" + e.id;
             return e;
         });
 
@@ -205,10 +218,24 @@ var ControllerCommons = new function(){
             $scope.selectedDetailsOption2 = $scope.detailsOptions2[0];
         }
 
-        $scope.subTitle = getSubtitle($scope.currentPeriod, $scope.selectedDetailsOption, $scope.selectedDetailsOption2, $scope, config);
+        //Add default option for detailsOptions3
+        var defaultIdKategori = messageService.getProperty("lbl.valj-annan-diagnoskategori", null, "", null, true);
+        $scope.detailsOptions3.unshift({"id": defaultIdKategori, "name":"", "url":basePath + getDiagnosPathPart($routeParams)});
+        if (!$scope.selectedDetailsOption3) {
+            $scope.selectedDetailsOption3 = $scope.detailsOptions3[0];
+        }
+
+        $scope.subTitle = getSubtitle($scope.currentPeriod, $scope.selectedDetailsOption, $scope.selectedDetailsOption2, $scope.selectedDetailsOption3, $scope, config);
     };
 
-    function getSubtitle(period, selectedOption1, selectedOption2, $scope, config) {
+    function getDiagnosPathPart($routeParams) {
+        return $routeParams.groupId ? "/" + $routeParams.groupId + ($routeParams.kategoriId ? "/kategori/" + $routeParams.kategoriId + ($routeParams.avsnittId ? "/avsnitt/" + $routeParams.avsnittId : ""): "") : "";
+    }
+
+    function getSubtitle(period, selectedOption1, selectedOption2, selectedOption3, $scope, config) {
+        if ((selectedOption3 && selectedOption3.name && selectedOption3.id)) {
+            return config.title(period, $scope.enhetsCount, selectedOption3.id + " " + selectedOption3.name);
+        }
         if ((selectedOption2 && selectedOption2.name && selectedOption2.id)) {
             return config.title(period, $scope.enhetsCount, selectedOption2.id + " " + selectedOption2.name);
         }
@@ -219,7 +246,7 @@ var ControllerCommons = new function(){
     }
 
     this.createDiagnosHashPathOrAlternativePath = function($routeParams){
-        return ($routeParams.diagnosHash ? "/" + $routeParams.diagnosHash : ($routeParams.groupId ? "/" + $routeParams.groupId + ($routeParams.kategoriId ? "/kategori/" + $routeParams.kategoriId : "") : ""));
+        return ($routeParams.diagnosHash ? "/" + $routeParams.diagnosHash : getDiagnosPathPart($routeParams));
     };
 
     this.updateExchangeableViewsUrl = function(isVerksamhet, config, $location, $scope, $routeParams) {
