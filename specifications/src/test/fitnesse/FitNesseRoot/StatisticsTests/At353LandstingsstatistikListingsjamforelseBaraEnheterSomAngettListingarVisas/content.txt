@@ -30,4 +30,4 @@ Inloggad:
 | user3        | Enhet enhet1 | 9.09    |
 | user3        | Enhet enhet2 | -1      |
 | user3        | Enhet enhet3 | 1.82    |
-| user3        | Enhet enhet1 | -1      |
+| user3        | Enhet enhet4 | -1      |
