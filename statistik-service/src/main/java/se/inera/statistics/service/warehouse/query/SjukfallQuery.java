@@ -101,7 +101,7 @@ public final class SjukfallQuery {
         return new SimpleKonResponse<>(result);
     }
 
-    public SimpleKonResponse<SimpleKonDataRow> getSjukfallPerEnhet(Aisle aisle, SjukfallFilter filter, LocalDate from, int periods, int periodLength, Map<String, String> idsToNames, boolean applyCutoff) {
+    public SimpleKonResponse<SimpleKonDataRow> getSjukfallPerEnhet(Aisle aisle, SjukfallFilter filter, LocalDate from, int periods, int periodLength, Map<String, String> idsToNames, CutoffUsage cutoffUsage) {
         List<SimpleKonDataRow> rows = new ArrayList<>();
         for (SjukfallGroup sjukfallGroup: sjukfallUtil.sjukfallGrupper(from, periods, periodLength, aisle, filter)) {
             final Multiset<Integer> femaleSjukfallPerEnhet = HashMultiset.create();
@@ -120,9 +120,13 @@ public final class SjukfallQuery {
                     final String enhetName = enhetIdAndName.getValue();
                     int female = femaleSjukfallPerEnhet.count(enhetIntId);
                     int male = maleSjukfallPerEnhet.count(enhetIntId);
-                    if (applyCutoff) {
+                    if (CutoffUsage.APPLY_CUTOFF_PER_SEX.equals(cutoffUsage)) {
                         male = male >= cutoff ? male : 0;
                         female = female >= cutoff ? female : 0;
+                    } else if (CutoffUsage.APPLY_CUTOFF_ON_TOTAL.equals(cutoffUsage)) {
+                        final int totalSum = male + female;
+                        male = totalSum >= cutoff ? male : 0;
+                        female = totalSum >= cutoff ? female : 0;
                     }
                     rows.add(new SimpleKonDataRow(enhetName, female, male, enhetId));
                 }

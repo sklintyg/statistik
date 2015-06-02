@@ -38,6 +38,7 @@ import se.inera.statistics.service.warehouse.SjukfallFilter;
 import se.inera.statistics.service.warehouse.SjukfallUtil;
 import se.inera.statistics.service.warehouse.Warehouse;
 import se.inera.statistics.service.warehouse.query.AldersgruppQuery;
+import se.inera.statistics.service.warehouse.query.CutoffUsage;
 import se.inera.statistics.service.warehouse.query.DiagnosgruppQuery;
 import se.inera.statistics.service.warehouse.query.LakarbefattningQuery;
 import se.inera.statistics.service.warehouse.query.LakaresAlderOchKonQuery;
@@ -145,7 +146,7 @@ public class WarehouseService {
     }
 
     public SimpleKonResponse<SimpleKonDataRow> getCasesPerEnhet(SjukfallFilter filter, Map<String, String> idsToNames, Range range, String vardgivarId) {
-        return sjukfallQuery.getSjukfallPerEnhet(warehouse.get(vardgivarId), filter, range.getFrom(), 1, range.getMonths(), idsToNames, false);
+        return sjukfallQuery.getSjukfallPerEnhet(warehouse.get(vardgivarId), filter, range.getFrom(), 1, range.getMonths(), idsToNames, CutoffUsage.DO_NOT_APPLY_CUTOFF);
     }
 
     public KonDataResponse getCasesPerEnhetTimeSeries(SjukfallFilter filter, Map<String, String> idsToNames, Range range, String vardgivarId) {
@@ -190,6 +191,14 @@ public class WarehouseService {
     }
 
     public SimpleKonResponse<SimpleKonDataRow> getCasesPerEnhetLandsting(final FilterSettings filterSettings) {
+        return getCasesPerEnhetLandsting(filterSettings, CutoffUsage.APPLY_CUTOFF_PER_SEX);
+    }
+
+    public SimpleKonResponse<SimpleKonDataRow> getCasesPerPatientsPerEnhetLandsting(final FilterSettings filterSettings) {
+        return getCasesPerEnhetLandsting(filterSettings, CutoffUsage.APPLY_CUTOFF_ON_TOTAL);
+    }
+
+    private SimpleKonResponse<SimpleKonDataRow> getCasesPerEnhetLandsting(final FilterSettings filterSettings, final CutoffUsage cutoffUsage) {
         Map<String, Collection<Enhet>> enhetsPerVgid = mapEnhetsToVgids(filterSettings.getFilter().getEnheter());
         final Range range = filterSettings.getRange();
         Collection<SimpleKonResponse<SimpleKonDataRow>> results = Collections2.transform(enhetsPerVgid.entrySet(), new Function<Map.Entry<String, Collection<Enhet>>, SimpleKonResponse<SimpleKonDataRow>>() {
@@ -200,7 +209,7 @@ public class WarehouseService {
                     idsToNames.put(enhet.getEnhetId(), enhet.getNamn());
                 }
                 final Aisle aisle = warehouse.get(entry.getKey());
-                return sjukfallQuery.getSjukfallPerEnhet(aisle, filterSettings.getFilter().getPredicate(), range.getFrom(), 1, range.getMonths(), idsToNames, true);
+                return sjukfallQuery.getSjukfallPerEnhet(aisle, filterSettings.getFilter().getPredicate(), range.getFrom(), 1, range.getMonths(), idsToNames, cutoffUsage);
             }
         });
         return SimpleKonResponse.merge(results, false);

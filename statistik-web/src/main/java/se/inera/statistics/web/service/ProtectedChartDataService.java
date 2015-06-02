@@ -693,7 +693,7 @@ public class ProtectedChartDataService {
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
     public Response getNumberOfCasesPerPatientsPerEnhetLandsting(@Context HttpServletRequest request, @QueryParam("landstingfilter") String filterHash, @PathParam("csv") String csv) {
         final FilterSettings filterSettings = getFilterForLandsting(request, filterHash, 12);
-        SimpleKonResponse<SimpleKonDataRow> casesPerEnhet = warehouse.getCasesPerEnhetLandsting(filterSettings);
+        SimpleKonResponse<SimpleKonDataRow> casesPerEnhet = warehouse.getCasesPerPatientsPerEnhetLandsting(filterSettings);
         final List<LandstingEnhet> landstingEnhets = landstingEnhetHandler.getAllLandstingEnhetsForVardgivare(getVardgivarId(request));
         SimpleDetailsData result = new SjukfallPerPatientsPerEnhetConverter(landstingEnhets).convert(casesPerEnhet, filterSettings, null);
         return getResponse(result, csv);
