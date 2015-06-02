@@ -19,7 +19,7 @@
           <property name="connectionFactory" ref="jmsFactory"/>
           <property name="destination" ref="queue"/>
           <property name="messageListener" ref="jmsReceiver"/>
-          <property name="sessionAcknowledgeMode" value="#{T(javax.jms.Session).CLIENT_ACKNOWLEDGE}"/>
+          <property name="transactionManager" ref="transactionManager"/>
       </bean>
     </beans>
 </beans>
