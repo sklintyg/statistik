@@ -68,8 +68,6 @@ class UpdateEnhetNamnFromHsaFileService {
         Sql sql = new Sql(dataSource)
         def count = 0
         def totalEnheter = 0
-        println(enhetsXml)
-        println(enhetsXml.hsaUnits)
         enhetsXml.hsaUnits.hsaUnit.each {
             def id = it.hsaIdentity.text()
             def namn = it.name.text()
