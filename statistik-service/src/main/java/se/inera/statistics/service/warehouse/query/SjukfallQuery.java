@@ -63,7 +63,7 @@ public final class SjukfallQuery {
     @Autowired
     private SjukfallUtil sjukfallUtil;
 
-    @Value("${reports.nationell.cutoff:5}")
+    @Value("${reports.landsting.cutoff:5}")
     private int cutoff;
 
     public SimpleKonResponse<SimpleKonDataRow> getSjukfall(Aisle aisle, SjukfallFilter filter, LocalDate start, int perioder, int periodlangd, boolean applyCutoff) {
