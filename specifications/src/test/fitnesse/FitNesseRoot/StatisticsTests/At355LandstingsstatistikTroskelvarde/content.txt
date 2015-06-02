@@ -38,7 +38,7 @@ Inloggad:
 | Sjukfall i rapporten landsting sjukfall totalt |
 | inloggad som | år   | månad | män? | kvinnor? |
 | user3 | 2013 | jan   | 0    | 0        |
-| user3 | 2013 | feb   | 4    | 0        |
+| user3 | 2013 | feb   | 6    | 3        |
 | user3 | 2013 | mar   | 0    | 0        |
 | user3 | 2013 | apr   | 0    | 0        |
 
