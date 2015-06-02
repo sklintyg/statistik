@@ -38,7 +38,15 @@ var ControllerCommons = new function(){
     };
 
     this.makeThousandSeparated = function(input) {
-        return ControllerCommons.isNumber(input) ? input.toString().split('').reverse().join('').match(/.{1,3}/g).join('\u00A0').split('').reverse().join('') : input;
+        if (ControllerCommons.isNumber(input)) {
+            var splittedOnDot = input.toString().split('\.');
+            var integerPartThousandSeparated = splittedOnDot[0].split('').reverse().join('').match(/.{1,3}/g).join('\u00A0').split('').reverse().join('');
+            if (splittedOnDot.length === 1) {
+                return integerPartThousandSeparated;
+            }
+            return integerPartThousandSeparated + "," + splittedOnDot[1];
+        }
+        return input;
     };
 
     this.getFileName = function(chartName) {

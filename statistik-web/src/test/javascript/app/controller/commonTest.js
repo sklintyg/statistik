@@ -26,6 +26,9 @@ describe("Test of common functions for controllers", function() {
         expect(ControllerCommons.makeThousandSeparated(9999999)).toBe("9\u00A0999\u00A0999");
         expect(ControllerCommons.makeThousandSeparated(-5000)).toBe("-5\u00A0000");
         expect(ControllerCommons.makeThousandSeparated("Fiftysix")).toBe("Fiftysix");
+        expect(ControllerCommons.makeThousandSeparated(0.16)).toBe("0,16");
+        expect(ControllerCommons.makeThousandSeparated(45321.16)).toBe("45\u00A0321,16");
+        expect(ControllerCommons.makeThousandSeparated(0.123456)).toBe("0,123456");
     });
     
     it("getFileName", function() {
