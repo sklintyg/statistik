@@ -53,7 +53,6 @@ import java.util.Set;
 @Component
 public class NationellData {
     private static final Logger LOG = LoggerFactory.getLogger(NationellData.class);
-    public static final int DEFAULT_CUTOFF = 5;
 
     @Autowired
     private Warehouse warehouse;
@@ -69,18 +68,8 @@ public class NationellData {
     @Autowired
     private SjukfallUtil sjukfallUtil;
 
-    private int cutoff = DEFAULT_CUTOFF;
-
-    @Autowired
-    public void initProperty(@Value("${reports.nationell.cutoff}") int cutoff) {
-        final int minimumCutoffValue = 3;
-        if (cutoff < minimumCutoffValue) {
-            LOG.warn("National cutoff value is too low. Using minimum value: " + minimumCutoffValue);
-            this.cutoff = minimumCutoffValue;
-            return;
-        }
-        this.cutoff = cutoff;
-    }
+    @Value("${reports.nationell.cutoff:5}")
+    private int cutoff;
 
     public SimpleKonResponse<SimpleKonDataRow> getCasesPerMonth(Range range) {
         return getAntalIntyg(range.getFrom(), range.getMonths(), 1);

@@ -56,7 +56,6 @@ import java.util.Set;
 public final class SjukfallQuery {
 
     private static final Logger LOG = LoggerFactory.getLogger(SjukfallQuery.class);
-    public static final int DEFAULT_CUTOFF = 5;
 
     @Autowired
     private LakareManager lakareManager;
@@ -64,18 +63,8 @@ public final class SjukfallQuery {
     @Autowired
     private SjukfallUtil sjukfallUtil;
 
-    private int cutoff = DEFAULT_CUTOFF;
-
-    @Autowired
-    public void initProperty(@Value("${reports.landsting.cutoff}") int cutoff) {
-        final int minimumCutoffValue = 3;
-        if (cutoff < minimumCutoffValue) {
-            LOG.warn("Landsting cutoff value is too low. Using minimum value: " + minimumCutoffValue);
-            this.cutoff = minimumCutoffValue;
-            return;
-        }
-        this.cutoff = cutoff;
-    }
+    @Value("${reports.landsting.cutoff:5}")
+    private int cutoff;
 
     public SimpleKonResponse<SimpleKonDataRow> getSjukfall(Aisle aisle, SjukfallFilter filter, LocalDate start, int perioder, int periodlangd, boolean applyCutoff) {
         final Function<SjukfallGroup, String> rowNameFunction = new Function<SjukfallGroup, String>() {
