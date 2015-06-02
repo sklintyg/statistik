@@ -80,6 +80,7 @@
         <context:component-scan base-package="se.inera.statistics.service"/>
 
         <bean id="receiver" class="se.inera.statistics.service.processlog.Receiver"/>
+
         <bean class="org.springframework.web.context.support.ServletContextAttributeExporter">
             <property name="attributes">
                 <map>
@@ -89,6 +90,7 @@
                 </map>
             </property>
         </bean>
+
         <bean id="healthcheckUtil" class="se.inera.statistics.web.util.HealthCheckUtil"/>
 
         <bean id="warehouse" class="se.inera.statistics.service.warehouse.Warehouse" />

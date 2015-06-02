@@ -86,4 +86,9 @@
     <bean class="se.inera.statistics.service.processlog.LakareManager"/>
 
     <context:component-scan base-package="se.inera.statistics.service.warehouse"/>
+
+    <!--This profile is used when testing transactional aspects of the application, i.e. when receiving a message on a queue and storing it to the db-->
+    <beans profile="transactional-test-mock">
+        <bean id="processLog" class="se.inera.statistics.service.processlog.ProcessLogMock"/>
+    </beans>
 </beans>

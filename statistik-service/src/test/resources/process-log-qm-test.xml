@@ -63,5 +63,6 @@
         <property name="connectionFactory" ref="jmsFactory"/>
         <property name="destination" ref="queue"/>
         <property name="messageListener" ref="jmsreceiver"/>
+        <property name="transactionManager" ref="transactionManager"/>
     </bean>
 </beans>

@@ -26,14 +26,22 @@
         </Arg>
     </New>
 
+    <!--The pooled connection can't, for some reason, be used when we run the fitnesse tests locally
+    But we do need a pooled connection for those times when we want to run activemq embedded locally. This typically happens
+    when we run the app with the spring profiles qm and active.
+    -->
     <New id="jmsConnectionFactory" class="org.eclipse.jetty.plus.jndi.Resource">
         <Arg>
             <Ref refid="wac"/>
         </Arg>
         <Arg>jms/ConnectionFactory</Arg>
         <Arg>
-            <New class="org.apache.activemq.ActiveMQConnectionFactory">
-                <Arg>vm://localhost?broker.persistent=false</Arg>
+            <New class="org.apache.activemq.pool.PooledConnectionFactory">
+                <Arg>
+                    <New class="org.apache.activemq.ActiveMQConnectionFactory">
+                        <Arg>vm://localhost?broker.useJmx=true&amp;broker.persistent=false</Arg>
+                    </New>
+                </Arg>
             </New>
         </Arg>
     </New>
