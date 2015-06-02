@@ -196,6 +196,7 @@ class ReportsUtil {
             case "user4": return VARDGIVARE;
             case "user5_vg1": return VARDGIVARE;
             case "user5_vg3": return VARDGIVARE3;
+            case "user6": return VARDGIVARE3;
             default: throw new RuntimeException("Unknown user: " + user)
         }
     }
