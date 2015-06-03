@@ -33,6 +33,8 @@
     <jdbc:embedded-database id="dataSource" type="H2"/>
 
     <context:property-placeholder/>
+    <context:property-placeholder location="classpath*:application-context-test.properties" order="2"
+                                  ignore-resource-not-found="false" ignore-unresolvable="false"/>
 
     <bean id="org.h2.tools.Server"
           class="org.h2.tools.Server"
