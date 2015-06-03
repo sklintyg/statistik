@@ -19,8 +19,6 @@ Gäller STATISTIK-1028.
 | 19790407-1215 | G01        | 2013-02-05 | 2013-02-06 | enhet2 |           |
 | 19790407-0525 | G01        | 2013-02-05 | 2013-02-06 | enhet2 |           |
 | 19790407-0545 | G01        | 2013-02-05 | 2013-02-06 | enhet2 |           |
-| 19790407-0615 | G01        | 2013-02-05 | 2013-02-06 | enhet3 |           |
-| 19790407-0715 | G01        | 2013-03-05 | 2013-03-06 | enhet3 |           |
 | 19790407-0925 | G01        | 2013-03-05 | 2013-03-06 | enhet3 |           |
 | 19790407-1025 | G01        | 2013-02-05 | 2013-02-06 | enhet3 |           |
 | 19790407-1125 | G01        | 2013-02-05 | 2013-02-06 | enhet3 |           |
@@ -49,4 +47,5 @@ Inloggad:
 
 | Sjukfall i rapporten landsting sjukfall per listningar per enhet |
 | inloggad som | vårdenhet    | antal sjukfall per tusen listningar? |
+| user3        | Enhet enhet1 | 27.27   |
 | user3        | Enhet enhet3 | 2.73    |

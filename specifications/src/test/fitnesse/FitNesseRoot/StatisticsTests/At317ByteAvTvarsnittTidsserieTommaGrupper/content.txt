@@ -21,7 +21,7 @@ Gäller STATISTIK-948.
 
 !3 Då gäller:
 
-VÅRDENHET: Bara enheter med data på sig under tidsintervallet visas.
+VÅRDENHET: Bara enheter som utfärdat intyg någon gång visas.
 | Sjukfall i rapporten sjukfall per enhet |
 | inloggad som | vårdenhet    | vårdgivarnivå | män? | kvinnor? |
 | user2        | Enhet enhet1 | true          | 0    | 0       |
