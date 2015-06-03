@@ -41,7 +41,7 @@ var stMessages = {
         'nav.faq': 'Vanliga frågor och svar',
         'nav.kontakt-support': 'Kontakt till support',
         'nav.landsting.filuppladdning': 'Filuppladdning',
-        'nav.landsting.listningsjamforelse': 'Listningsjämförelse',
+        'nav.landsting.listningsjamforelse': 'Vårdenhet, listningar',
 
         //labels
         'lbl.mobile-menu': 'Meny',
