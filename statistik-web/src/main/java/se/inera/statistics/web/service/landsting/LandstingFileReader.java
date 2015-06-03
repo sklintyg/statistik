@@ -31,8 +31,10 @@ import javax.activation.DataSource;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 
 public class LandstingFileReader {
 
@@ -59,42 +61,9 @@ public class LandstingFileReader {
                 rowNumber++;
                 final String messagePrefix = "Row #" + rowNumber + ": ";
 
-                String id = "";
-                Integer patients = null;
-
                 Row row = rowIterator.next();
-
-                Cell cellHsaId = row.getCell(1);
-                if (cellHsaId != null) {
-                    if (Cell.CELL_TYPE_STRING == cellHsaId.getCellType()) {
-                        id = cellHsaId.getStringCellValue().trim();
-                    }
-                }
-
-                Cell cellPatients = row.getCell(2);
-                if (cellPatients != null) {
-                    switch (cellPatients.getCellType()) {
-                        case Cell.CELL_TYPE_NUMERIC:
-                            double patientsDouble = cellPatients.getNumericCellValue();
-                            if (DoubleMath.isMathematicalInteger(patientsDouble)) {
-                                patients = (int) patientsDouble;
-                            } else {
-                                throw new LandstingEnhetFileParseException(messagePrefix + "Patients cell is not an integer number: " + patientsDouble);
-                            }
-                            break;
-                        case Cell.CELL_TYPE_STRING:
-                            final String patientsString = cellPatients.getStringCellValue();
-                            try {
-                                patients = Integer.parseInt(patientsString);
-                            } catch (NumberFormatException e) {
-                                throw new LandstingEnhetFileParseException(messagePrefix + "Patients cell is not an integer number");
-                            }
-                            break;
-                        default:
-                            patients = null;
-                            break;
-                    }
-                }
+                final String id = getEnhetHsaId(row);
+                Integer patients = getListedPatients(messagePrefix, row);
 
                 if (!id.isEmpty()) {
                     if (!id.matches("^[a-zA-Z0-9-]+$")) {
@@ -110,6 +79,45 @@ public class LandstingFileReader {
             throw new LandstingEnhetFileParseException("Could not read file", e);
         }
         return rows;
+    }
+
+    private Integer getListedPatients(String messagePrefix, Row row) throws LandstingEnhetFileParseException {
+        Integer patients = null;
+        Cell cellPatients = row.getCell(2);
+        if (cellPatients != null) {
+            switch (cellPatients.getCellType()) {
+                case Cell.CELL_TYPE_NUMERIC:
+                    double patientsDouble = cellPatients.getNumericCellValue();
+                    if (DoubleMath.isMathematicalInteger(patientsDouble)) {
+                        patients = (int) patientsDouble;
+                    } else {
+                        throw new LandstingEnhetFileParseException(messagePrefix + "Patients cell is not an integer number: " + patientsDouble);
+                    }
+                    break;
+                case Cell.CELL_TYPE_STRING:
+                    final String patientsString = cellPatients.getStringCellValue();
+                    try {
+                        patients = Integer.parseInt(patientsString);
+                    } catch (NumberFormatException e) {
+                        throw new LandstingEnhetFileParseException(messagePrefix + "Patients cell is not an integer number");
+                    }
+                    break;
+                default:
+                    patients = null;
+                    break;
+            }
+        }
+        return patients;
+    }
+
+    private String getEnhetHsaId(Row row) {
+        Cell cellHsaId = row.getCell(1);
+        if (cellHsaId != null) {
+            if (Cell.CELL_TYPE_STRING == cellHsaId.getCellType()) {
+                return cellHsaId.getStringCellValue().trim();
+            }
+        }
+        return "";
     }
 
 }
