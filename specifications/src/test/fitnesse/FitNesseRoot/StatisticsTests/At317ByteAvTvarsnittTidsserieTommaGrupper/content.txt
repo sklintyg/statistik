@@ -21,10 +21,10 @@ Gäller STATISTIK-948.
 
 !3 Då gäller:
 
-VÅRDENHET: Bara enheter som utfärdat intyg någon gång visas.
+VÅRDENHET: Bara enheter som utfärdat intyg någon gång under tidsperioden visas.
 | Sjukfall i rapporten sjukfall per enhet |
 | inloggad som | vårdenhet    | vårdgivarnivå | män? | kvinnor? |
-| user2        | Enhet enhet1 | true          | 0    | 0       |
+| user2        | Enhet enhet1 | true          | -1   | -1       |
 | user2        | Enhet enhet2 | true          | 1    | 0        |
 
 | Sjukfall i rapporten sjukfall per enhet som tidsserie |
