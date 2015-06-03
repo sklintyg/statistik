@@ -294,6 +294,10 @@ var app = angular.module('StatisticsApp',
             controllerAs: 'LandstingCasesPerPatientsPerBusinessCtrl',
             resolve: { config: app.casesPerPatientsPerBusinessConfig },
             title: 'Antal sjukfall per 1000 listningar'
+        }).when('/landsting/om', {
+            templateUrl: 'views/landsting/aboutlandsting.html',
+            controllerAs: 'LandstingAboutCtrl',
+            title: 'Om Landstingsstatistik'
         }).when('/om/tjansten', {
             templateUrl: 'views/about/about.html',
             controllerAs: 'AboutServiceCtrl',

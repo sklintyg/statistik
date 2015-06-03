@@ -63,10 +63,11 @@
         <li class="dropdown-landsting" data-ng-show="hasLandstingAccess">
           <a class="mobileMenuHeaderItem" data-toggle="collapse in" data-target="#landsting-menu" ng-click="isLandstingCollapsed = !isLandstingCollapsed"><span message key="nav.landsting-header"></span><span class="caret pull-right mobile-menu-caret"></span></a>
           <ul class="collapse" id="landsting-menu" collapse="!isLandstingCollapsed">
-            <li class="subMenuItem"><a data-ng-href="#/landsting/filuppladdning{{queryString}}" ctrlname="LandstingFileUploadCtrl" role="menuitem" ng-click="isCollapsed = !isCollapsed" navigationaware><span message key="nav.landsting.filuppladdning"></span></a></li>
             <li class="subMenuItem"><a data-ng-href="#/landsting/sjukfallPerManad{{queryString}}" ctrlname="LandstingCasesPerMonthCtrl" role="menuitem" ng-click="isCollapsed = !isCollapsed" ng-class="{'not-active': !landstingAvailable}" navigationaware><span message key="nav.sjukfall-totalt"></span></a></li>
             <li class="subMenuItem"><a data-ng-href="#/landsting/sjukfallPerEnhet{{queryString}}" ctrlname="LandstingCasesPerBusinessCtrl" role="menuitem" ng-click="isCollapsed = !isCollapsed" ng-class="{'not-active': !landstingAvailable}" navigationaware><span message key="nav.vardenhet"></span></a></li>
             <li class="subMenuItem"><a data-ng-href="#/landsting/sjukfallPerListningarPerEnhet{{queryString}}" ctrlname="LandstingCasesPerPatientsPerBusinessCtrl" role="menuitem" ng-click="isCollapsed = !isCollapsed" ng-class="{'not-active': !landstingAvailable}" navigationaware><span message key="nav.landsting.listningsjamforelse"></span></a></li>
+            <li class="subMenuItem"><a data-ng-href="#/landsting/om{{queryString}}" ctrlname="LandstingAboutCtrl" role="menuitem" ng-click="isCollapsed = !isCollapsed" navigationaware><span message key="nav.landsting.om"></span></a></li>
+            <li class="subMenuItem"><a data-ng-href="#/landsting/filuppladdning{{queryString}}" ctrlname="LandstingFileUploadCtrl" role="menuitem" ng-click="isCollapsed = !isCollapsed" navigationaware><span message key="nav.landsting.filuppladdning"></span></a></li>
           </ul>
         </li>
         <li class="divider"></li>

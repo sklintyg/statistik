@@ -72,10 +72,11 @@
       <div id="landsting-statistics-collapse" class="accordion-body collapse navigation-group" data-ng-class="{in: showLandsting}">
         <div class="accordion-inner">
           <ul id="landsting-statistic-menu-content" class="nav nav-list">
-            <li data-ng-show="isLandstingAdmin"><a data-ng-href="#/landsting/filuppladdning{{queryString}}" ctrlname="LandstingFileUploadCtrl" navigationaware><span message key="nav.landsting.filuppladdning"></span></a></li>
             <li><a ng-class="{'not-active': !landstingAvailable}" data-ng-href="#/landsting/sjukfallPerManad{{queryString}}" id="navLandstingCasesPerMonthLink" ctrlname="LandstingCasesPerMonthCtrl" navigationaware><span message key="nav.sjukfall-totalt"></span></a></li>
             <li><a ng-class="{'not-active': !landstingAvailable}" data-ng-href="#/landsting/sjukfallPerEnhet{{queryString}}" id="navLandstingCasesPerEnhetLink" ctrlname="LandstingCasesPerBusinessCtrl" navigationaware><span message key="nav.vardenhet"></span></a></li>
             <li><a ng-class="{'not-active': !landstingAvailable}" data-ng-href="#/landsting/sjukfallPerListningarPerEnhet{{queryString}}" id="navLandstingCasesPerPatientsPerEnhetLink" ctrlname="LandstingCasesPerPatientsPerBusinessCtrl" navigationaware><span message key="nav.landsting.listningsjamforelse"></span></a></li>
+            <li><a data-ng-href="#/landsting/om{{queryString}}" id="navLandstingAboutLink" ctrlname="LandstingAboutCtrl" navigationaware><span message key="nav.landsting.om"></span></a></li>
+            <li data-ng-show="isLandstingAdmin"><a data-ng-href="#/landsting/filuppladdning{{queryString}}" ctrlname="LandstingFileUploadCtrl" navigationaware><span message key="nav.landsting.filuppladdning"></span></a></li>
           </ul>
         </div>
       </div>
