@@ -15,7 +15,7 @@ Migrering
 För att kunna köra anonymiseringsapplikationen för Statistik måste intygen vara migrerade till samma interna format som används av intygstjänsten. Det finns en applikation som gör den migreringen.
 Att köra applikationen
 
-    Hämta zip-filen i repot: https://repository-callistasoftware.forge.cloudbees.com/snapshot/se/inera/statistics/tools/statistics-MigreringIntyg/3.0.0/
+    Hämta zip-filen i repot: https://repository-callistasoftware.forge.cloudbees.com/snapshot/se/inera/statistik/migrering/3.0.0-SNAPSHOT/migrering-3.0.0-SNAPSHOT.zip
     packa up zip-filen, gå in i katalogen: 
     unzip migrering-3.0.0-SNAPSHOT.zip 
     cd migrering-3.0.0-SNAPSHOT    
