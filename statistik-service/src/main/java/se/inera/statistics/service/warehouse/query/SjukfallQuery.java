@@ -139,7 +139,9 @@ public final class SjukfallQuery {
                         male = totalSum >= cutoff ? male : 0;
                         female = totalSum >= cutoff ? female : 0;
                     }
-                    rows.add(new SimpleKonDataRow(enhetName, female, male, enhetId));
+                    if (male + female > 0) {
+                        rows.add(new SimpleKonDataRow(enhetName, female, male, enhetId));
+                    }
                 }
             }
         }
