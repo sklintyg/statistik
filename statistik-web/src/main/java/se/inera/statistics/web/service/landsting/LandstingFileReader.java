@@ -40,6 +40,7 @@ public class LandstingFileReader {
 
     public List<LandstingEnhetFileDataRow> readExcelData(DataSource dataSource) throws LandstingEnhetFileParseException {
         final List<LandstingEnhetFileDataRow> rows = new ArrayList<>();
+        final HashSet<String> addedEnhetIds = new HashSet<>();
         try {
             InputStream fis = dataSource.getInputStream();
             Workbook workbook = null;
@@ -66,6 +67,9 @@ public class LandstingFileReader {
                 Integer patients = getListedPatients(messagePrefix, row);
 
                 if (!id.isEmpty()) {
+                    if (!addedEnhetIds.add(id.toUpperCase(Locale.ENGLISH))) {
+                        throw new LandstingEnhetFileParseException(messagePrefix + "Duplicate HSA id");
+                    }
                     if (!id.matches("^[a-zA-Z0-9-]+$")) {
                         throw new LandstingEnhetFileParseException(messagePrefix + "Illegal character(s) in HSA id cell");
                     }
