@@ -10,7 +10,6 @@ Gäller STATISTIK-1027.
 
 | Enbart foljande intyg finns |
 | personnr      | diagnoskod | start      | slut       | enhet  | kommentar |
-| 19790407-0015 | G01        | 2013-02-05 | 2013-02-06 | enhet1 |           |
 | 19790407-0115 | G01        | 2013-02-05 | 2013-02-06 | enhet1 |           |
 | 19790407-0125 | G01        | 2013-02-05 | 2013-02-06 | enhet1 |           |
 | 19790407-0215 | G01        | 2013-02-05 | 2013-02-06 | enhet2 |           |
@@ -36,7 +35,7 @@ Inloggad:
 | Sjukfall i rapporten landsting sjukfall totalt |
 | inloggad som | år   | månad | män? | kvinnor? |
 | user3 | 2013 | jan   | 0    | 0        |
-| user3 | 2013 | feb   | 4    | 0        |
+| user3 | 2013 | feb   | 5    | 0        |
 | user3 | 2013 | mar   | 0    | 0        |
 | user3 | 2013 | apr   | 0    | 0        |
 
@@ -50,4 +49,4 @@ Inloggad:
 | inloggad som | vårdenhet    | antal sjukfall per tusen listningar? |
 | user3        | Enhet enhet1 | -1      |
 | user3        | Enhet enhet2 | -1      |
-| user3        | Enhet enhet3 | 2.73    |
+| user3        | Enhet enhet3 | 4.55    |
