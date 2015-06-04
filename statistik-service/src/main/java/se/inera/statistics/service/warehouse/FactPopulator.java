@@ -78,7 +78,7 @@ public class FactPopulator {
                 try {
                     befattnings[i] = Integer.parseInt(befattning);
                 } catch (NumberFormatException nfe) {
-                    LOG.error("Unknown befatnning: " + befattning);
+                    LOG.error("Unknown befattning: " + befattning);
                     return new int[0];
                 }
             }
