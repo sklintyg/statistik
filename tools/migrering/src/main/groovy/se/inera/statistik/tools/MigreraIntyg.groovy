@@ -37,7 +37,7 @@ class MigreraIntyg {
                 Sql intygSql = new Sql(dataSourceIntyg)
                 def row = sql.firstRow( 'select correlationId from intyghandelse where id = :id' , [id : id])
                 def correlationId = row.correlationId
-                def intygRow = intygSql.firstRow( 'select document from certificate where id = :id' , [id : correlationId])
+                def intygRow = intygSql.firstRow( 'SELECT document FROM CERTIFICATE WHERE ID = :id' , [id : correlationId])
                 def document
                 if (intygRow != null) {
                     document = new String(intygRow.document, "UTF-8")
