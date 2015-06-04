@@ -1947,3 +1947,39 @@ li.subMenuItem.active .active-menu-item { display: block;  }
     box-shadow: none;
     color: #333;
     background-color: #E6E6E6;}
+
+/*Styling for filuppladdning*/
+.dropzone, .dropzone-drag {
+    border: dashed;
+    border-color: grey;
+    border-width: 2px;
+    border-radius: 6px;
+    background-color: rgb(247, 247, 249);
+}
+
+.dropzone-drag {
+    background-color: rgb(225,225,232) !important;
+}
+
+.dropzone-info-area {
+    text-align: center;
+}
+
+.glyphicon-plus-sign, .glyphicon-plus-sign-drag, .glyphicon-ok-sign, .glyphicon-warning-sign {
+    font-size: 6em;
+    display: block;
+    color: rgb(191,191,207);
+}
+
+.glyphicon-plus-sign-drag{
+    color: rgb(2,2,3);
+}
+
+.glyphicon-ok-sign{
+    color: green;
+}
+
+.glyphicon-warning-sign {
+    color: red;
+}
+

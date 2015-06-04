@@ -21,12 +21,42 @@
         <h2>Ladda upp</h2>
         <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas congue maximus rutrum. Quisque rutrum felis aliquet neque vestibulum tristique. Nullam rhoncus eu nibh et efficitur. Integer ac dolor vel ante vulputate accumsan. Quisque quis erat odio. Nulla facilisi. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Aenean sollicitudin ornare mi, pretium facilisis est mattis nec.</div>
         <br/>
-        <div class="col-xs-12">
-            <button dropzone="dropzoneConfig">Dra och släpp filen hit eller klicka för att ladda upp</button>
+
+        <div class="jumbotron dropzone" dropzone="dropzoneConfig" ng-class="{'dropzone-drag': draggingIt}">
+            <div class="row">
+                <div class="col-md-5 col-md-push-3 dropzone-info-area">
+
+                    <span ng-show="!uploadCompleted" class="glyphicon glyphicon-plus-sign" ng-class="{'glyphicon-plus-sign-drag': draggingIt}"></span>
+                    <span ng-show="uploadCompleted" class="glyphicon" ng-class="{'glyphicon-ok-sign': uploadSuccess, 'glyphicon-warning-sign': !uploadSuccess}"></span>
+
+                    <progressbar ng-show="uploading" class="progress-striped active" value="uploadProgress" type="{{progressType}}"></progressbar>
+
+                    <div ng-show="uploadCompleted && !uploadSuccess">
+                        <h5>
+                            Uppladdningen misslyckades!
+                        </h5>
+                        <h5>{{uploadResultMessage}}</h5>
+                        <h5>
+                            Släpp fil här för att ladda upp eller tryck för att lägga till
+                        </h5>
+                    </div>
+                    <h5 ng-show="!uploading && !uploadCompleted">
+                        Släpp fil här för att ladda upp eller tryck för att lägga till
+                    </h5>
+                    <!-- Block -->
+
+                    <div ng-show="uploadCompleted && uploadSuccess">
+                        <h5>Uppladdningen lyckades!</h5>
+                        <h5>
+                            Släpp fil här för att ladda upp eller tryck för att lägga till
+                        </h5>
+                    </div>
+                </div>
+            </div>
         </div>
+
         <div><b>Senaste uppdatering: </b>{{lastLandstingUpdateMessage}}</div>
         <br/>
-        <div data-ng-show="uploadResultMessage"><b>Status: </b>{{uploadResultMessage}}</div>
         <br/>
         <div data-ng-show="parsedRows">
           <div><b>Filen har tolkats enligt följande:</b></div>
