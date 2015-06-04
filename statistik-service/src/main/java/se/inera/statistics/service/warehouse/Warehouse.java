@@ -172,12 +172,11 @@ public class Warehouse implements Iterable<Aisle> {
         }
 
         public synchronized Optional<T> getKey(int id) {
-            for (Map.Entry<T, Integer> entry : map.entrySet()) {
-                if (entry.getValue() == id) {
-                    return Optional.of(entry.getKey());
-                }
+            final T result = map.inverse().get(id);
+            if (result == null) {
+                return Optional.absent();
             }
-            return Optional.absent();
+            return Optional.of(result);
         }
 
     }
