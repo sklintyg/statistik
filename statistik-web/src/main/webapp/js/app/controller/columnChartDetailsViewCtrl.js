@@ -280,7 +280,7 @@ angular.module('StatisticsApp').casesPerLakareConfig = function () {
     var conf = {};
     conf.dataFetcherVerksamhet = "getSjukfallPerLakareVerksamhet";
     conf.exportTableUrlVerksamhet = function () {
-        return "api/verksamhet/getSjukfallPerLakareVerksamhet/csv";
+        return "api/verksamhet/getNumberOfCasesPerLakare/csv";
     };
     conf.title = function (period, enhetsCount) {
         return "Antal sjukfall per läkare" + ControllerCommons.getEnhetCountText(enhetsCount, false) + period;
