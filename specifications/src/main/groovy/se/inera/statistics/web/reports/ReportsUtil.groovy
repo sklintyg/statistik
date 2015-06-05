@@ -382,7 +382,7 @@ class ReportsUtil {
     def uploadFile(InputStream file, filename) {
         def body = new MultipartBody(file: file, filename: filename);
         try {
-        def response = statistik.post(requestContentType: "multipart/form-data", path: getVerksamhetUrlPrefix() + '/landsting/fileupload', body: body)
+        def response = statistik.post(requestContentType: "multipart/form-data", path: '/api/landsting/fileupload', body: body)
         return response.data
         } catch (HttpResponseException e) {
             return e.getResponse().getData()
@@ -396,15 +396,15 @@ class ReportsUtil {
     }
 
     def getReportAntalIntygLandstingInloggad(filter) {
-        return get(getVerksamhetUrlPrefix() + "/landsting/getNumberOfCasesPerMonthLandsting", filter)
+        return get("/api/landsting/getNumberOfCasesPerMonthLandsting", filter)
     }
 
     def getReportSjukfallPerEnhetLandsting(filter) {
-        return get(getVerksamhetUrlPrefix() + "/landsting/getNumberOfCasesPerEnhetLandsting", filter)
+        return get("/api/landsting/getNumberOfCasesPerEnhetLandsting", filter)
     }
 
     def getReportSjukfallPerListningarPerEnhetLandsting(filter) {
-        return get(getVerksamhetUrlPrefix() + "/landsting/getNumberOfCasesPerPatientsPerEnhetLandsting", filter)
+        return get("/api/landsting/getNumberOfCasesPerPatientsPerEnhetLandsting", filter)
     }
 
 }

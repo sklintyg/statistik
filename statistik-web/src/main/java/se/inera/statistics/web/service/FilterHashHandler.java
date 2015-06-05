@@ -31,6 +31,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import se.inera.statistics.service.userselection.UserSelection;
 import se.inera.statistics.service.userselection.UserSelectionManager;
 
+import java.io.IOException;
+
 public class FilterHashHandler {
     private static final Logger LOG = LoggerFactory.getLogger(FilterHashHandler.class);
 
@@ -61,6 +63,21 @@ public class FilterHashHandler {
             return Optional.absent();
         }
         return Optional.of(userSelection.getValue());
+    }
+
+
+    FilterData getFilterFromHash(String filterHash) {
+        final Optional<String> filterData = getFilterData(filterHash);
+        if (!filterData.isPresent()) {
+            throw new RuntimeException("Could not find filter with given hash");
+        }
+        final ObjectMapper mapper = new ObjectMapper();
+        try {
+            return mapper.readValue(filterData.get(), FilterData.class);
+        } catch (IOException e) {
+            LOG.error("Failed to get filter data from hash: " + filterHash + ". Data: " + filterData.get(), e);
+            throw new RuntimeException("Filter data failed");
+        }
     }
 
 }

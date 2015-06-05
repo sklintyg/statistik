@@ -20,6 +20,7 @@
             <jaxrs:serviceBeans>
                 <ref bean="chartDataService"/>
                 <ref bean="protectedChartDataService"/>
+                <ref bean="protectedLandstingService"/>
                 <ref bean="loginInfoService"/>
             </jaxrs:serviceBeans>
             <jaxrs:providers>

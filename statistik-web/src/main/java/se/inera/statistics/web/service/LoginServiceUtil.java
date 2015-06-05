@@ -148,4 +148,8 @@ public class LoginServiceUtil {
         }));
     }
 
+    String getSelectedVgIdForLoggedInUser(HttpServletRequest request) {
+        return getLoginInfo(request).getDefaultVerksamhet().getVardgivarId();
+    }
+
 }

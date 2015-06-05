@@ -67,12 +67,6 @@ public class ProtectedChartDataServiceTest {
     @Mock
     private LoginServiceUtil loginServiceUtil;
 
-    @Mock
-    private LandstingEnhetHandler landstingEnhetHandler;
-
-    @Mock
-    private LandstingFileReader landstingFileReader;
-
     @InjectMocks
     private ProtectedChartDataService chartDataService = new ProtectedChartDataService();
 
@@ -98,72 +92,6 @@ public class ProtectedChartDataServiceTest {
         Mockito.when(loginServiceUtil.getLoginInfo(request)).thenReturn(new LoginInfo("", "", null, false, false, false, null, LandstingsVardgivareStatus.NO_LANDSTINGSVARDGIVARE));
         boolean result = chartDataService.hasAccessTo(request);
         assertEquals(true, result);
-    }
-
-    @Test
-    public void testFileUploadWhenUserNotProcessledareShouldFail() throws Exception {
-        //Given
-        final MultipartBody mb = Mockito.mock(MultipartBody.class);
-        final HttpServletRequest req = Mockito.mock(HttpServletRequest.class);
-        Mockito.when(loginServiceUtil.getLoginInfo(req)).thenReturn(new LoginInfo("", "", null, false, false, false, null, LandstingsVardgivareStatus.NO_LANDSTINGSVARDGIVARE));
-
-        //When
-        final Response response = chartDataService.fileupload(req, mb);
-
-        //Then
-        assertEquals(Response.Status.FORBIDDEN.getStatusCode(), response.getStatus());
-        Mockito.verify(landstingEnhetHandler, times(0)).update(any(LandstingEnhetFileData.class));
-    }
-
-    @Test
-    public void testFileUploadWhenFileParseFailsThenNoUpdateShouldBeDone() throws Exception {
-        //Given
-        final MultipartBody mb = Mockito.mock(MultipartBody.class);
-        final Attachment attachment = Mockito.mock(Attachment.class);
-        Mockito.when(mb.getAttachment(anyString())).thenReturn(attachment);
-        final DataHandler dh = Mockito.mock(DataHandler.class);
-        Mockito.when(attachment.getDataHandler()).thenReturn(dh);
-        final DataSource ds = Mockito.mock(DataSource.class);
-        Mockito.when(dh.getDataSource()).thenReturn(ds);
-        final HttpServletRequest req = Mockito.mock(HttpServletRequest.class);
-        Mockito.when(loginServiceUtil.getLoginInfo(req)).thenReturn(new LoginInfo("", "", null, false, false, true, null, LandstingsVardgivareStatus.NO_LANDSTINGSVARDGIVARE));
-        Mockito.when(landstingFileReader.readExcelData(any(DataSource.class))).thenThrow(new LandstingEnhetFileParseException(""));
-
-        //When
-        final Response response = chartDataService.fileupload(req, mb);
-
-        //Then
-        assertEquals(Response.Status.INTERNAL_SERVER_ERROR.getStatusCode(), response.getStatus());
-        Mockito.verify(landstingEnhetHandler, times(0)).update(any(LandstingEnhetFileData.class));
-    }
-
-    @Test
-    public void testFileUploadUpdateIsUsingResultFromFileParsingAndCorrectVgId() throws Exception {
-        //Given
-        final MultipartBody mb = Mockito.mock(MultipartBody.class);
-        final Attachment attachment = Mockito.mock(Attachment.class);
-        Mockito.when(mb.getAttachment(anyString())).thenReturn(attachment);
-        final DataHandler dh = Mockito.mock(DataHandler.class);
-        Mockito.when(attachment.getDataHandler()).thenReturn(dh);
-        final DataSource ds = Mockito.mock(DataSource.class);
-        Mockito.when(dh.getDataSource()).thenReturn(ds);
-        final HttpServletRequest req = Mockito.mock(HttpServletRequest.class);
-        final Verksamhet verksamhet = Mockito.mock(Verksamhet.class);
-        final String testVgId = "TestVgId";
-        Mockito.when(verksamhet.getVardgivarId()).thenReturn(testVgId);
-        Mockito.when(loginServiceUtil.getLoginInfo(req)).thenReturn(new LoginInfo("", "", verksamhet, false, false, true, null, LandstingsVardgivareStatus.NO_LANDSTINGSVARDGIVARE));
-        final ArrayList<LandstingEnhetFileDataRow> parseResult = new ArrayList<>();
-        Mockito.when(landstingFileReader.readExcelData(any(DataSource.class))).thenReturn(parseResult);
-
-        //When
-        final Response response = chartDataService.fileupload(req, mb);
-
-        //Then
-        assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
-        final ArgumentCaptor<LandstingEnhetFileData> captor = ArgumentCaptor.forClass(LandstingEnhetFileData.class);
-        Mockito.verify(landstingEnhetHandler, times(1)).update(captor.capture());
-        assertEquals(parseResult, captor.getValue().getRows());
-        assertEquals(testVgId, captor.getValue().getVgId());
     }
 
 }

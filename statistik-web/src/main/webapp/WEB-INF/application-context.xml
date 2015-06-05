@@ -64,6 +64,7 @@
         <bean id="chartDataService" class="se.inera.statistics.web.service.ChartDataService"/>
 
         <bean id="protectedChartDataService" class="se.inera.statistics.web.service.ProtectedChartDataService"/>
+        <bean id="protectedLandstingService" class="se.inera.statistics.web.service.ProtectedLandstingService"/>
 
         <bean class="se.inera.statistics.service.report.model.Lan" id="lan"/>
         <bean id="loginInfoService" class="se.inera.statistics.web.service.LoginInfoService"/>
@@ -102,6 +103,7 @@
 
         <bean class="se.inera.statistics.service.processlog.Processor" />
         <bean class="se.inera.statistics.web.service.LoginServiceUtil" />
+        <bean class="se.inera.statistics.web.service.FilterHandler" />
     </beans>
 
     <beans profile="db-resetter">

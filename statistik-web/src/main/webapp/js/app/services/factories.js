@@ -19,6 +19,15 @@ angular.module('StatisticsApp').factory('statisticsData', ['$http', '$rootScope'
 
     var makeRequestVerksamhet = function (restFunctionName, successCallback, failureCallback) {
         var url = "api/verksamhet/" + restFunctionName + $rootScope.queryString;
+        makeRequest(url, successCallback, failureCallback);
+    };
+
+    var makeRequestLandsting = function (restFunctionName, successCallback, failureCallback) {
+        var url = "api/landsting/" + restFunctionName + $rootScope.queryString;
+        makeRequest(url, successCallback, failureCallback);
+    };
+
+    function makeRequest(url, successCallback, failureCallback) {
         $http.get(url, {}, {cache: false}).success(function (result) {
             try {
                 successCallback(result);
@@ -34,7 +43,7 @@ angular.module('StatisticsApp').factory('statisticsData', ['$http', '$rootScope'
             }
             failureCallback();
         });
-    };
+    }
 
     factory.getOverview = function (successCallback, failureCallback) {
         makeRequestNational("getOverview", successCallback, failureCallback);
@@ -53,7 +62,7 @@ angular.module('StatisticsApp').factory('statisticsData', ['$http', '$rootScope'
     };
 
     factory.getNumberOfCasesPerMonthLandsting = function (successCallback, failureCallback) {
-        makeRequestVerksamhet("landsting/getNumberOfCasesPerMonthLandsting", successCallback, failureCallback);
+        makeRequestLandsting("getNumberOfCasesPerMonthLandsting", successCallback, failureCallback);
     };
 
     factory.getNumberOfCasesPerMonthTvarsnittVerksamhet = function (successCallback, failureCallback) {
@@ -157,7 +166,7 @@ angular.module('StatisticsApp').factory('statisticsData', ['$http', '$rootScope'
     };
 
     factory.getSjukfallPerBusinessLandsting = function (successCallback, failureCallback) {
-        makeRequestVerksamhet("landsting/getNumberOfCasesPerEnhetLandsting", successCallback, failureCallback);
+        makeRequestLandsting("getNumberOfCasesPerEnhetLandsting", successCallback, failureCallback);
     };
 
     factory.getSjukfallPerBusinessTimeSeriesVerksamhet = function (successCallback, failureCallback) {
@@ -165,7 +174,7 @@ angular.module('StatisticsApp').factory('statisticsData', ['$http', '$rootScope'
     };
 
     factory.getSjukfallPerPatientsPerBusinessLandsting = function (successCallback, failureCallback) {
-        makeRequestVerksamhet("landsting/getNumberOfCasesPerPatientsPerEnhetLandsting", successCallback, failureCallback);
+        makeRequestLandsting("getNumberOfCasesPerPatientsPerEnhetLandsting", successCallback, failureCallback);
     };
 
     factory.getSjukfallPerLakareVerksamhet = function (successCallback, failureCallback) {
@@ -231,7 +240,7 @@ angular.module('StatisticsApp').factory('statisticsData', ['$http', '$rootScope'
     };
 
     factory.getLastLandstingUpdateInfo = function (successCallback, failureCallback) {
-        makeRequestVerksamhet("landsting/lastUpdateInfo", successCallback, failureCallback);
+        makeRequestLandsting("lastUpdateInfo", successCallback, failureCallback);
     };
 
     return factory;

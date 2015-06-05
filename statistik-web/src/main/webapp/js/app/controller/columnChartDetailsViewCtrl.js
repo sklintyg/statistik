@@ -247,7 +247,7 @@ angular.module('StatisticsApp').casesPerBusinessConfig = function () {
         return "api/verksamhet/getNumberOfCasesPerEnhet/csv";
     };
     conf.exportTableUrlLandsting = function () {
-        return "api/verksamhet/landsting/getNumberOfCasesPerEnhetLandsting/csv";
+        return "api/landsting/getNumberOfCasesPerEnhetLandsting/csv";
     };
     conf.title = function (period, enhetsCount) {
         return "Antal sjukfall per vårdenhet" + ControllerCommons.getEnhetCountText(enhetsCount, false) + period;
@@ -266,7 +266,7 @@ angular.module('StatisticsApp').casesPerPatientsPerBusinessConfig = function () 
     var conf = {};
     conf.dataFetcherLandsting = "getSjukfallPerPatientsPerBusinessLandsting";
     conf.exportTableUrlLandsting = function () {
-        return "api/verksamhet/landsting/getNumberOfCasesPerPatientsPerEnhetLandsting/csv";
+        return "api/landsting/getNumberOfCasesPerPatientsPerEnhetLandsting/csv";
     };
     conf.title = function (period, enhetsCount) {
         return "Antal sjukfall per 1000 listningar" + ControllerCommons.getEnhetCountText(enhetsCount, false) + period;

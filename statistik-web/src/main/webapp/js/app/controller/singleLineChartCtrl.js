@@ -179,7 +179,7 @@ angular.module('StatisticsApp').casesPerMonthConfig = function () {
         return "api/verksamhet/getNumberOfCasesPerMonth/csv";
     };
     conf.exportTableUrlLandsting = function () {
-        return "api/verksamhet/landsting/getNumberOfCasesPerMonthLandsting/csv";
+        return "api/landsting/getNumberOfCasesPerMonthLandsting/csv";
     };
     conf.title = function (months, enhetsCount) {
         return "Antal sjukfall per månad" + ControllerCommons.getEnhetCountText(enhetsCount, false) + months;

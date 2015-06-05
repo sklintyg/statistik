@@ -38,7 +38,7 @@ angular.module('StatisticsApp').controller('landstingFileUploadCtrl', [ '$scope'
 
         $scope.dropzoneConfig = {
             'options': {
-                url: 'api/verksamhet/landsting/fileupload',
+                url: 'api/landsting/fileupload',
                 parallelUploads: 1,
                 maxFilesize: 10, //MB
                 paramName: "file",
