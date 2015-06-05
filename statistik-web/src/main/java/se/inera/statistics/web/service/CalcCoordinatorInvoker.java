@@ -32,7 +32,7 @@ public class CalcCoordinatorInvoker extends JAXRSInvoker {
     @Override
     public Object invoke(Exchange exchange, Object requestParams, Object resourceObject) {
         Class<?> realClass = ClassHelper.getRealClass(resourceObject);
-        if (realClass != ProtectedChartDataService.class) {
+        if (realClass != ProtectedChartDataService.class && realClass != ProtectedLandstingService.class) {
             return super.invoke(exchange, requestParams, resourceObject);
         }
         CalcCoordinator.Ticket ticket = null;
