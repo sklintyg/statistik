@@ -1,5 +1,7 @@
 !contents -R2 -g -p -f -h
 
+Ersatt av At142 och At145.
+
 !3 Givet att:
 
 Det finns två intyg med samma datum men olika arbetsförmåga för en patient.
