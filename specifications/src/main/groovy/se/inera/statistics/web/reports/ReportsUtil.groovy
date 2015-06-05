@@ -1,8 +1,10 @@
 package se.inera.statistics.web.reports
 
 import groovy.json.JsonBuilder
+import groovy.json.JsonException
 import groovyx.net.http.HttpResponseException
 import groovyx.net.http.RESTClient
+import groovyx.net.http.ResponseParseException
 import org.apache.http.HttpEntity
 import org.codehaus.groovy.runtime.MethodClosure
 import org.slf4j.Logger
@@ -127,10 +129,14 @@ class ReportsUtil {
             def response = statistik.get(path: url, queryString : queryWithFilter)
             assert response.status == 200
             return response.data;
-        } catch (HttpResponseException e) {
+        } catch (Throwable e) {
+            println "e.message: " + e.message
             if ('Service Unavailable' == e.message) {
                 println 'error = 503'
                 return []
+            } else if ('Access is denied' == e.message) {
+                    println 'error: Access is denied'
+                    return []
             } else {
                 throw e
             }
