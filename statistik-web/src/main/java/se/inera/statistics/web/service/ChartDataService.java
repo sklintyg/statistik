@@ -258,20 +258,20 @@ public class ChartDataService {
      * @return data
      */
     @GET
-    @Path("getDiagnosisKapitelAndAvsnittAndKod")
+    @Path("getDiagnosisKapitelAndAvsnittAndKategori")
     @Produces({ MediaType.APPLICATION_JSON })
-    public DiagnosisKapitelAndAvsnittAndKodResponse getDiagnosisKapitelAndAvsnittAndKod() {
-        LOG.info("Calling getDiagnosisKapitelAndAvsnittAndKod");
+    public DiagnosisKapitelAndAvsnittAndKategoriResponse getDiagnosisKapitelAndAvsnittAndKod() {
+        LOG.info("Calling getDiagnosisKapitelAndAvsnittAndKategori");
         Map<String, List<Icd>> avsnitts = new LinkedHashMap<>();
-        Map<String, List<Icd>> kods = new LinkedHashMap<>();
+        Map<String, List<Icd>> kategoris = new LinkedHashMap<>();
         List<Icd10.Kapitel> kapitels = icd10.getKapitel(false);
         for (Icd10.Kapitel k : kapitels) {
             avsnitts.put(k.getId(), convertToIcds(k.getAvsnitt()));
             for (Icd10.Avsnitt avsnitt : k.getAvsnitt()) {
-                kods.put(avsnitt.getId(), convertToIcds(avsnitt.getKategori()));
+                kategoris.put(avsnitt.getId(), convertToIcds(avsnitt.getKategori()));
             }
         }
-        return new DiagnosisKapitelAndAvsnittAndKodResponse(kods, avsnitts, getDiagnoskapitel());
+        return new DiagnosisKapitelAndAvsnittAndKategoriResponse(kategoris, avsnitts, getDiagnoskapitel());
     }
 
     private List<Icd> convertToIcds(List<? extends Icd10.Id> ids) {

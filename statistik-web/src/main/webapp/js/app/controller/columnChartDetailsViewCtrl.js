@@ -95,7 +95,7 @@ angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl', [ '$sco
             $scope.resultMessage = result.message;
             if (config.showDetailsOptions) {
                 $scope.currentPeriod = result.period;
-                statisticsData.getDiagnosisKapitelAndAvsnittAndKod(populateDetailsOptions, function () {
+                statisticsData.getDiagnosisKapitelAndAvsnittAndKategori(populateDetailsOptions, function () {
                     alert("Kunde inte ladda data");
                 });
             }

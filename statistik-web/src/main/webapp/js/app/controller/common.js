@@ -188,11 +188,11 @@ var ControllerCommons = new function(){
                 break;
             }
         }
-        var kods = result.kods[$routeParams.kategoriId];
-        if (kods) {
-            for (var i = 0; i < kods.length; i++) {
-                if (kods[i].id === $routeParams.avsnittId) {
-                    $scope.selectedDetailsOption3 = kods[i];
+        var kategoris = result.kategoris[$routeParams.kategoriId];
+        if (kategoris) {
+            for (var i = 0; i < kategoris.length; i++) {
+                if (kategoris[i].id === $routeParams.avsnittId) {
+                    $scope.selectedDetailsOption3 = kategoris[i];
                     break;
                 }
             }
@@ -206,7 +206,7 @@ var ControllerCommons = new function(){
             e.url = basePath + "/" + $routeParams.groupId + "/kategori/" + e.id;
             return e;
         });
-        $scope.detailsOptions3 = _.map(kods, function (e) {
+        $scope.detailsOptions3 = _.map(kategoris, function (e) {
             e.url = basePath + "/" + $routeParams.groupId + "/kategori/" + $routeParams.kategoriId + "/avsnitt/" + e.id;
             return e;
         });

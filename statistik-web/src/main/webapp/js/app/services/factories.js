@@ -93,8 +93,8 @@ angular.module('StatisticsApp').factory('statisticsData', ['$http', '$rootScope'
         makeRequestVerksamhet("getDiagnosavsnittTvarsnitt/" + groupId, successCallback, failureCallback);
     };
 
-    factory.getDiagnosisKapitelAndAvsnittAndKod = function (successCallback, failureCallback) {
-        makeRequestNational("getDiagnosisKapitelAndAvsnittAndKod", successCallback, failureCallback);
+    factory.getDiagnosisKapitelAndAvsnittAndKategori = function (successCallback, failureCallback) {
+        makeRequestNational("getDiagnosisKapitelAndAvsnittAndKategori", successCallback, failureCallback);
     };
 
     factory.getAgeGroups = function (successCallback, failureCallback) {
