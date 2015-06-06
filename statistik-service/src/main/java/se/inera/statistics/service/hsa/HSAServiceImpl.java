@@ -168,7 +168,7 @@ public class HSAServiceImpl implements HSAService {
         Builder root = new Builder();
 
         root.put("id", unit.getHsaIdentity());
-        root.put("enhetsTyp", createEnhetsTyp(unit.getBusinessTypes()));
+        root.put(ENHETS_TYP, createEnhetsTyp(unit.getBusinessTypes()));
         root.put("agarform", createAgarTyp(unit.getManagements()));
         root.put("startdatum", unit.getStartDate());
         root.put("slutdatum", unit.getEndDate());

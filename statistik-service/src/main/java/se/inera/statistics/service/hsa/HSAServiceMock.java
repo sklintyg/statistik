@@ -114,7 +114,7 @@ public class HSAServiceMock implements HSAService, HsaDataInjectable {
         final String enhetId = getEnhetId(key.getEnhetId(), isHuvudenhet);
         root.put("id", enhetId);
         root.put("namn", getEnhetsNamn(enhetId));
-        root.put("enhetstyp", asList("02"));
+        root.put(HSAService.ENHETS_TYP, asList(VerksamhetsTyp.VARDCENTRAL_ID));
         root.put("agarform", asList("Landsting/Region"));
         root.put("startdatum", "");
         root.put("slutdatum", "");
