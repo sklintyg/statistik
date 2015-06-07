@@ -149,7 +149,7 @@ angular.module('StatisticsApp').controller('doubleAreaChartsCtrl', [ '$scope', '
             ControllerCommons.populateActiveDiagnosFilter($scope, statisticsData, result.filter.diagnoser, $routeParams.printBw || $routeParams.print);
             $scope.enhetsCount = result.filter.enheter ? result.filter.enheter.length : null;
             $scope.resultMessage = result.message;
-            $scope.subTitle = config.title(result.period, $scope.enhetsCount, $routeParams.groupId);
+            $scope.subTitle = config.title(result.period, $scope.enhetsCount, $routeParams.kapitelId);
             if (config.showDetailsOptions) {
                 $scope.currentPeriod = result.period;
                 statisticsData.getDiagnosisKapitelAndAvsnittAndKategori(populateDetailsOptions, function () {
@@ -218,7 +218,7 @@ angular.module('StatisticsApp').controller('doubleAreaChartsCtrl', [ '$scope', '
                 $scope.exportTableUrl = config.exportTableUrlVerksamhet(ControllerCommons.getExtraPathParam($routeParams));
                 refreshVerksamhet();
             } else {
-                $scope.exportTableUrl = config.exportTableUrl($routeParams.groupId);
+                $scope.exportTableUrl = config.exportTableUrl($routeParams.kapitelId);
                 statisticsData[config.dataFetcher](populatePageWithData, function () {
                     $scope.dataLoadingError = true;
                 }, ControllerCommons.getMostSpecificGroupId($routeParams));

@@ -70,12 +70,16 @@ describe("Test of common functions for controllers", function() {
         var routeParamsWithDiagnosHash = {diagnosHash: '12345'};
         expect(ControllerCommons.createDiagnosHashPathOrAlternativePath(routeParamsWithDiagnosHash)).toEqual('/12345');
 
-        var routeParamsWithGroupId = {groupId: 'A00-B99'};
-        expect(ControllerCommons.createDiagnosHashPathOrAlternativePath(routeParamsWithGroupId)).toEqual('/A00-B99');
+        var routeParamsWithGroupId = {kapitelId: 'A00-B99'};
+        expect(ControllerCommons.createDiagnosHashPathOrAlternativePath(routeParamsWithGroupId)).toEqual('/kapitel/A00-B99');
+
+        //Add a avsnittId to the routeparams with groupid
+        routeParamsWithGroupId.avsnittId = 'someId';
+        expect(ControllerCommons.createDiagnosHashPathOrAlternativePath(routeParamsWithGroupId)).toEqual('/kapitel/A00-B99/avsnitt/someId');
 
         //Add a kategoriId to the routeparams with groupid
-        routeParamsWithGroupId.kategoriId = 'someId';
-        expect(ControllerCommons.createDiagnosHashPathOrAlternativePath(routeParamsWithGroupId)).toEqual('/A00-B99/kategori/someId');
+        routeParamsWithGroupId.kategoriId = 'someKatId';
+        expect(ControllerCommons.createDiagnosHashPathOrAlternativePath(routeParamsWithGroupId)).toEqual('/kapitel/A00-B99/avsnitt/someId/kategori/someKatId');
 
         //No route params will just produce an empty string
         expect(ControllerCommons.createDiagnosHashPathOrAlternativePath({})).toEqual('');

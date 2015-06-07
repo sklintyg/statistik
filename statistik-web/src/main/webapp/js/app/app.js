@@ -64,14 +64,14 @@ var app = angular.module('StatisticsApp',
             controllerAs: 'NationalDiagnosgruppCtrl',
             resolve: { config: app.diagnosisGroupConfig },
             title: 'Diagnosgrupper'
-        }).when('/nationell/diagnosavsnitt/:groupId', {
+        }).when('/nationell/diagnosavsnitt/kapitel/:kapitelId', {
             templateUrl: 'views/detailsView.html',
             controller: 'doubleAreaChartsCtrl',
             controllerAs: 'NationalDiagnosavsnittCtrl',
             resolve: { config: app.diagnosisSubGroupConfig },
             title: 'Enskilt diagnoskapitel'
         }).when('/nationell/diagnosavsnitt', {
-            redirectTo: '/nationell/diagnosavsnitt/A00-B99'
+            redirectTo: '/nationell/diagnosavsnitt/kapitel/A00-B99'
         }).when('/nationell/sjukskrivningsgrad', {
             templateUrl: 'views/detailsView.html',
             controller: 'doubleAreaChartsCtrl',
@@ -119,46 +119,46 @@ var app = angular.module('StatisticsApp',
             controllerAs: 'VerksamhetDiagnosgruppCtrl',
             resolve: { config: app.diagnosisGroupTvarsnittConfig },
             title: 'Diagnosgrupper'
-        }).when('/verksamhet/diagnosavsnitt/:groupId/kategori/:kategoriId/avsnitt/:avsnittId', {
+        }).when('/verksamhet/diagnosavsnitt/kapitel/:kapitelId/avsnitt/:avsnittId/kategori/:kategoriId', {
             templateUrl: 'views/detailsView.html',
             controller: 'doubleAreaChartsCtrl',
             controllerAs: 'VerksamhetDiagnoskategoriCtrl',
             resolve: { config: app.diagnosisSubGroupConfig },
             title: 'Enskilt diagnoskapitel'
-        }).when('/verksamhet/diagnosavsnitt/:groupId/kategori/:kategoriId', {
+        }).when('/verksamhet/diagnosavsnitt/kapitel/:kapitelId/avsnitt/:avsnittId', {
             templateUrl: 'views/detailsView.html',
             controller: 'doubleAreaChartsCtrl',
             controllerAs: 'VerksamhetDiagnoskategoriCtrl',
             resolve: { config: app.diagnosisSubGroupConfig },
             title: 'Enskilt diagnoskapitel'
-        }).when('/verksamhet/diagnosavsnitt/:groupId', {
+        }).when('/verksamhet/diagnosavsnitt/kapitel/:kapitelId', {
             templateUrl: 'views/detailsView.html',
             controller: 'doubleAreaChartsCtrl',
             controllerAs: 'VerksamhetDiagnosavsnittCtrl',
             resolve: { config: app.diagnosisSubGroupConfig },
             title: 'Enskilt diagnoskapitel'
         }).when('/verksamhet/diagnosavsnitt', {
-            redirectTo: '/verksamhet/diagnosavsnitt/A00-B99'
-        }).when('/verksamhet/diagnosavsnitttvarsnitt/:groupId/kategori/:kategoriId/avsnitt/:avsnittId', {
+            redirectTo: '/verksamhet/diagnosavsnitt/kapitel/A00-B99'
+        }).when('/verksamhet/diagnosavsnitttvarsnitt/kapitel/:kapitelId/avsnitt/:avsnittId/kategori/:kategoriId', {
             templateUrl: 'views/detailsView.html',
             controller: 'columnChartDetailsViewCtrl',
             controllerAs: 'VerksamhetDiagnoskategoriCtrl',
             resolve: { config: app.diagnosisSubGroupTvarsnittConfig },
             title: 'Enskilt diagnoskapitel'
-        }).when('/verksamhet/diagnosavsnitttvarsnitt/:groupId/kategori/:kategoriId', {
+        }).when('/verksamhet/diagnosavsnitttvarsnitt/kapitel/:kapitelId/avsnitt/:avsnittId', {
             templateUrl: 'views/detailsView.html',
             controller: 'columnChartDetailsViewCtrl',
             controllerAs: 'VerksamhetDiagnoskategoriCtrl',
             resolve: { config: app.diagnosisSubGroupTvarsnittConfig },
             title: 'Enskilt diagnoskapitel'
-        }).when('/verksamhet/diagnosavsnitttvarsnitt/:groupId', {
+        }).when('/verksamhet/diagnosavsnitttvarsnitt/kapitel/:kapitelId', {
             templateUrl: 'views/detailsView.html',
             controller: 'columnChartDetailsViewCtrl',
             controllerAs: 'VerksamhetDiagnosavsnittCtrl',
             resolve: { config: app.diagnosisSubGroupTvarsnittConfig },
             title: 'Enskilt diagnoskapitel'
         }).when('/verksamhet/diagnosavsnitttvarsnitt', {
-            redirectTo: '/verksamhet/diagnosavsnitttvarsnitt/A00-B99'
+            redirectTo: '/verksamhet/diagnosavsnitttvarsnitt/kapitel/A00-B99'
         }).when('/verksamhet/jamforDiagnoser/:diagnosHash', {
             templateUrl: 'views/detailsView.html',
             controller: 'columnChartDetailsViewCtrl',

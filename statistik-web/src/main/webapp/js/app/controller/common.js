@@ -170,28 +170,28 @@ var ControllerCommons = new function(){
     };
 
     this.getMostSpecificGroupId = function(routeParams) {
-        return routeParams.avsnittId ? routeParams.avsnittId : (routeParams.kategoriId ? routeParams.kategoriId : routeParams.groupId);
+        return routeParams.kategoriId ? routeParams.kategoriId : (routeParams.avsnittId ? routeParams.avsnittId : routeParams.kapitelId);
     };
 
     this.populateDetailsOptions = function (result, basePath, $scope, $routeParams, messageService, config) {
         var kapitels = result.kapitels;
         for (var i = 0; i < kapitels.length; i++) {
-            if (kapitels[i].id === $routeParams.groupId) {
+            if (kapitels[i].id === $routeParams.kapitelId) {
                 $scope.selectedDetailsOption = kapitels[i];
                 break;
             }
         }
-        var avsnitts = result.avsnitts[$routeParams.groupId];
+        var avsnitts = result.avsnitts[$routeParams.kapitelId];
         for (var i = 0; i < avsnitts.length; i++) {
-            if (avsnitts[i].id === $routeParams.kategoriId) {
+            if (avsnitts[i].id === $routeParams.avsnittId) {
                 $scope.selectedDetailsOption2 = avsnitts[i];
                 break;
             }
         }
-        var kategoris = result.kategoris[$routeParams.kategoriId];
+        var kategoris = result.kategoris[$routeParams.avsnittId];
         if (kategoris) {
             for (var i = 0; i < kategoris.length; i++) {
-                if (kategoris[i].id === $routeParams.avsnittId) {
+                if (kategoris[i].id === $routeParams.kategoriId) {
                     $scope.selectedDetailsOption3 = kategoris[i];
                     break;
                 }
@@ -199,21 +199,21 @@ var ControllerCommons = new function(){
         }
 
         $scope.detailsOptions = _.map(kapitels, function (e) {
-            e.url = basePath + "/" + e.id;
+            e.url = basePath + "/kapitel/" + e.id;
             return e;
         });
         $scope.detailsOptions2 = _.map(avsnitts, function (e) {
-            e.url = basePath + "/" + $routeParams.groupId + "/kategori/" + e.id;
+            e.url = basePath + "/kapitel/" + $routeParams.kapitelId + "/avsnitt/" + e.id;
             return e;
         });
         $scope.detailsOptions3 = _.map(kategoris, function (e) {
-            e.url = basePath + "/" + $routeParams.groupId + "/kategori/" + $routeParams.kategoriId + "/avsnitt/" + e.id;
+            e.url = basePath + "/kapitel/" + $routeParams.kapitelId + "/avsnitt/" + $routeParams.avsnittId + "/kategori/" + e.id;
             return e;
         });
 
         //Add default option for detailsOptions2
         var defaultId = messageService.getProperty("lbl.valj-annat-diagnosavsnitt", null, "", null, true);
-        $scope.detailsOptions2.unshift({"id": defaultId, "name":"", "url":basePath + "/" + $routeParams.groupId});
+        $scope.detailsOptions2.unshift({"id": defaultId, "name":"", "url":basePath + "/kapitel/" + $routeParams.kapitelId});
         if (!$scope.selectedDetailsOption2) {
             $scope.selectedDetailsOption2 = $scope.detailsOptions2[0];
         }
@@ -229,7 +229,7 @@ var ControllerCommons = new function(){
     };
 
     function getDiagnosPathPart($routeParams) {
-        return $routeParams.groupId ? "/" + $routeParams.groupId + ($routeParams.kategoriId ? "/kategori/" + $routeParams.kategoriId + ($routeParams.avsnittId ? "/avsnitt/" + $routeParams.avsnittId : ""): "") : "";
+        return $routeParams.kapitelId ? "/kapitel/" + $routeParams.kapitelId + ($routeParams.avsnittId ? "/avsnitt/" + $routeParams.avsnittId + ($routeParams.kategoriId ? "/kategori/" + $routeParams.kategoriId : "") : "") : "";
     }
 
     function getSubtitle(period, selectedOption1, selectedOption2, selectedOption3, $scope, config) {
