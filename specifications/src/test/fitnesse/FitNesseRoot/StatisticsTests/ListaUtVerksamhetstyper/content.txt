@@ -1,0 +1,69 @@
+!contents -R2 -g -p -f -h
+
+!3 Givet att:
+
+| script | dagens datum | 2013-11-06 |
+
+| Enbart foljande intyg finns |
+| personnr | diagnoskod | start    | slut       | enhet  |
+| 19790407-0110 | F40 | 2013-02-01 | 2013-02-14 | enhet1 |
+| 19790407-0210 | F40 | 2013-02-01 | 2013-02-14 | enhet2 |
+| 19790407-0310 | F40 | 2013-02-01 | 2013-02-14 | enhet3 |
+| 19790407-0410 | F40 | 2013-02-01 | 2013-02-14 | enhet4 |
+
+!3 Då gäller:
+
+| Sjukfall i rapporten sjukfall per enhet |
+| inloggad som | vårdenhet    | filter enheter | filter verksamhetstyper | filter kategorier | totalt? | män? | kvinnor? |
+| user2        | Enhet enhet1 | enhet1         | 01                      | F40               | 0       | 0    | 0        |
+| user2        | Enhet enhet1 | enhet1         | 02                      | F40               | 0       | 0    | 0        |
+| user2        | Enhet enhet1 | enhet1         | 10                      | F40               | 0       | 0    | 0        |
+| user2        | Enhet enhet1 | enhet1         | 11                      | F40               | 0       | 0    | 0        |
+| user2        | Enhet enhet1 | enhet1         | 12                      | F40               | 0       | 0    | 0        |
+| user2        | Enhet enhet1 | enhet1         | 13                      | F40               | 0       | 0    | 0        |
+| user2        | Enhet enhet1 | enhet1         | 14                      | F40               | 0       | 0    | 0        |
+| user2        | Enhet enhet1 | enhet1         | 15                      | F40               | 0       | 0    | 0        |
+| user2        | Enhet enhet1 | enhet1         | 16                      | F40               | 0       | 0    | 0        |
+| user2        | Enhet enhet1 | enhet1         | 17                      | F40               | 0       | 0    | 0        |
+| user2        | Enhet enhet1 | enhet1         | 18                      | F40               | 0       | 0    | 0        |
+| user2        | Enhet enhet1 | enhet1         | 20                      | F40               | 0       | 0    | 0        |
+| user2        | Enhet enhet1 | enhet1         | 23                      | F40               | 0       | 0    | 0        |
+| user2        | Enhet enhet2 | enhet2         | 01                      | F40               | 0       | 0    | 0        |
+| user2        | Enhet enhet2 | enhet2         | 02                      | F40               | 0       | 0    | 0        |
+| user2        | Enhet enhet2 | enhet2         | 10                      | F40               | 0       | 0    | 0        |
+| user2        | Enhet enhet2 | enhet2         | 11                      | F40               | 0       | 0    | 0        |
+| user2        | Enhet enhet2 | enhet2         | 12                      | F40               | 0       | 0    | 0        |
+| user2        | Enhet enhet2 | enhet2         | 13                      | F40               | 0       | 0    | 0        |
+| user2        | Enhet enhet2 | enhet2         | 14                      | F40               | 0       | 0    | 0        |
+| user2        | Enhet enhet2 | enhet2         | 15                      | F40               | 0       | 0    | 0        |
+| user2        | Enhet enhet2 | enhet2         | 16                      | F40               | 0       | 0    | 0        |
+| user2        | Enhet enhet2 | enhet2         | 17                      | F40               | 0       | 0    | 0        |
+| user2        | Enhet enhet2 | enhet2         | 18                      | F40               | 0       | 0    | 0        |
+| user2        | Enhet enhet2 | enhet2         | 20                      | F40               | 0       | 0    | 0        |
+| user2        | Enhet enhet2 | enhet2         | 23                      | F40               | 0       | 0    | 0        |
+| user3        | Enhet enhet3 | enhet3         | 01                      | F40               | 0       | 0    | 0        |
+| user3        | Enhet enhet3 | enhet3         | 02                      | F40               | 0       | 0    | 0        |
+| user3        | Enhet enhet3 | enhet3         | 10                      | F40               | 0       | 0    | 0        |
+| user3        | Enhet enhet3 | enhet3         | 11                      | F40               | 0       | 0    | 0        |
+| user3        | Enhet enhet3 | enhet3         | 12                      | F40               | 0       | 0    | 0        |
+| user3        | Enhet enhet3 | enhet3         | 13                      | F40               | 0       | 0    | 0        |
+| user3        | Enhet enhet3 | enhet3         | 14                      | F40               | 0       | 0    | 0        |
+| user3        | Enhet enhet3 | enhet3         | 15                      | F40               | 0       | 0    | 0        |
+| user3        | Enhet enhet3 | enhet3         | 16                      | F40               | 0       | 0    | 0        |
+| user3        | Enhet enhet3 | enhet3         | 17                      | F40               | 0       | 0    | 0        |
+| user3        | Enhet enhet3 | enhet3         | 18                      | F40               | 0       | 0    | 0        |
+| user3        | Enhet enhet3 | enhet3         | 20                      | F40               | 0       | 0    | 0        |
+| user3        | Enhet enhet3 | enhet3         | 23                      | F40               | 0       | 0    | 0        |
+| user6        | Enhet enhet4 | enhet4         | 01                      | F40               | 0       | 0    | 0        |
+| user6        | Enhet enhet4 | enhet4         | 02                      | F40               | 0       | 0    | 0        |
+| user6        | Enhet enhet4 | enhet4         | 10                      | F40               | 0       | 0    | 0        |
+| user6        | Enhet enhet4 | enhet4         | 11                      | F40               | 0       | 0    | 0        |
+| user6        | Enhet enhet4 | enhet4         | 12                      | F40               | 0       | 0    | 0        |
+| user6        | Enhet enhet4 | enhet4         | 13                      | F40               | 0       | 0    | 0        |
+| user6        | Enhet enhet4 | enhet4         | 14                      | F40               | 0       | 0    | 0        |
+| user6        | Enhet enhet4 | enhet4         | 15                      | F40               | 0       | 0    | 0        |
+| user6        | Enhet enhet4 | enhet4         | 16                      | F40               | 0       | 0    | 0        |
+| user6        | Enhet enhet4 | enhet4         | 17                      | F40               | 0       | 0    | 0        |
+| user6        | Enhet enhet4 | enhet4         | 18                      | F40               | 0       | 0    | 0        |
+| user6        | Enhet enhet4 | enhet4         | 20                      | F40               | 0       | 0    | 0        |
+| user6        | Enhet enhet4 | enhet4         | 23                      | F40               | 0       | 0    | 0        |
