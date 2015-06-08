@@ -1,0 +1,57 @@
+!contents -R2 -g -p -f -h
+
+Gäller STATISTIK-1029.
+
+!3 Givet att:
+
+| script | dagens datum | 2013-12-06 |
+
+| script | troskel varde | 1 |
+
+| Enbart foljande intyg finns |
+| personnr      | diagnoskod | start      | slut       | enhet  | kommentar |
+| 19790407-2215 | A01        | 2013-02-05 | 2013-02-06 | enhet1 |           |
+| 19790407-2225 | C01        | 2013-04-05 | 2013-04-06 | enhet2 |           |
+| 19790407-2235 | F01        | 2013-06-05 | 2013-06-06 | enhet3 |           |
+
+| Uppladdade landstingsfiler |
+| användare | filnamn        | statusmeddelande? |
+| user3     | vg3lista1.xlsx  | Data updated ok   |
+
+!3 Då gäller:
+
+Bara de enheter och sjukfall som motsvarar val i filter visas.
+
+Inloggad:
+| Sjukfall i rapporten landsting sjukfall totalt |
+| inloggad som | filter kapitel | filter enheter | filter verksamhetstyper | filter startdatum | filter slutdatum | år   | månad | män? | kvinnor? |
+| user3        | A00-B99,C00-D48,F00-F99 | enhet2  | 02                    | 2013-02-01        | 2013-12-30       | 2013 | feb   | 1    | 0        |
+| user3        | A00-B99,C00-D48,F00-F99 | enhet2  | 02                    | 2013-02-01        | 2013-12-30       | 2013 | apr   | 0    | 1        |
+| user3        | A00-B99,C00-D48,F00-F99 | enhet2  | 02                    | 2013-02-01        | 2013-12-30       | 2013 | jun   | 0    | 0        |
+| user3        | F00-F99                 | enhet1,enhet2,enhet3  | 02      | 2013-02-01        | 2013-12-30       | 2013 | feb   | 0    | 0        |
+| user3        | F00-F99                 | enhet1,enhet2,enhet3  | 02      | 2013-02-01        | 2013-12-30       | 2013 | apr   | 0    | 0        |
+| user3        | F00-F99                 | enhet1,enhet2,enhet3  | 02      | 2013-02-01        | 2013-12-30       | 2013 | jun   | 1    | 0        |
+| user3        | A00-B99,C00-D48,F00-F99 | enhet1,enhet2,enhet3  | 02      | 2013-04-01        | 2013-12-30       | 2013 | feb   | -1   | -1       |
+| user3        | A00-B99,C00-D48,F00-F99 | enhet1,enhet2,enhet3  | 02      | 2013-04-01        | 2013-12-30       | 2013 | apr   | 0    | 1        |
+| user3        | A00-B99,C00-D48,F00-F99 | enhet1,enhet2,enhet3  | 02      | 2013-04-01        | 2013-12-30       | 2013 | jun   | 1    | 0        |
+
+| Sjukfall i rapporten landsting sjukfall per enhet |
+| inloggad som | vårdenhet    | filter kapitel | filter enheter | filter verksamhetstyper | filter startdatum | filter slutdatum | totalt? | män? | kvinnor? |
+| user3        | Enhet enhet1 | A00-B99,C00-D48,F00-F99 | enhet2  | 02                    | 2013-02-01        | 2013-12-30       | -1      | -1   | -1       |
+| user3        | Enhet enhet2 | A00-B99,C00-D48,F00-F99 | enhet2  | 02                    | 2013-02-01        | 2013-12-30       | 1       | 0    | 1        |
+| user3        | Enhet enhet3 | A00-B99,C00-D48,F00-F99 | enhet2  | 02                    | 2013-02-01        | 2012-12-30       | -1      | -1   | -1       |
+| user3        | Enhet enhet1 | F00-F99                 | enhet1,enhet2,enhet3  | 02      | 2013-02-01        | 2013-12-30       | -1      | -1   | -1       |
+| user3        | Enhet enhet2 | F00-F99                 | enhet1,enhet2,enhet3  | 02      | 2013-02-01        | 2013-12-30       | -1      | -1   | -1       |
+| user3        | Enhet enhet3 | F00-F99                 | enhet1,enhet2,enhet3  | 02      | 2013-02-01        | 2012-12-30       | 1       | 1    | 0        |
+| user3        | Enhet enhet1 | A00-B99,C00-D48,F00-F99 | enhet1,enhet2,enhet3  | 02      | 2013-04-01        | 2013-12-30       | -1      | -1   | -1       |
+| user3        | Enhet enhet2 | A00-B99,C00-D48,F00-F99 | enhet1,enhet2,enhet3  | 02      | 2013-04-01        | 2013-12-30       | 1       | 0    | 1        |
+| user3        | Enhet enhet3 | A00-B99,C00-D48,F00-F99 | enhet1,enhet2,enhet3  | 02      | 2013-04-01        | 2012-12-30       | 1       | 1    | 0        |
+
+| Sjukfall i rapporten landsting sjukfall per listningar per enhet |
+| inloggad som | vårdenhet    | filter kapitel | filter enheter | filter verksamhetstyper | filter startdatum | filter slutdatum | antal sjukfall per tusen listningar? |
+| user3        | Enhet enhet1 | A00-B99,C00-D48,F00-F99 | enhet2  | 02                    | 2013-02-01        | 2013-12-30       | 9.09    |
+| user3        | Enhet enhet3 | A00-B99,C00-D48,F00-F99 | enhet2  | 02                    | 2013-02-01        | 2013-12-30       | 0.91    |
+| user3        | Enhet enhet1 | F00-F99                 | enhet1,enhet2,enhet3  | 02      | 2013-02-01        | 2013-12-30       | -1      |
+| user3        | Enhet enhet3 | F00-F99                 | enhet1,enhet2,enhet3  | 02      | 2013-02-01        | 2012-12-30       | 0.91    |
+| user3        | Enhet enhet1 | A00-B99,C00-D48,F00-F99 | enhet1,enhet2,enhet3  | 02      | 2013-04-01        | 2013-12-30       | 9.09    |
+| user3        | Enhet enhet3 | A00-B99,C00-D48,F00-F99 | enhet1,enhet2,enhet3  | 02      | 2013-04-01        | 2012-12-30       | 0.91    |
