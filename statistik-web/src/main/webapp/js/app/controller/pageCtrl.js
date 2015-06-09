@@ -19,8 +19,8 @@
 
 'use strict';
 
-angular.module('StatisticsApp').controller('pageCtrl', [ '$scope', '$rootScope', '$window', '$location', 'statisticsData', 'businessFilter', '_',
-    function ($scope, $rootScope, $window, $location, statisticsData, businessFilter, _) {
+angular.module('StatisticsApp').controller('pageCtrl', [ '$scope', '$rootScope', '$window', '$location', 'statisticsData', 'businessFilter', 'landstingFilter', '_',
+    function ($scope, $rootScope, $window, $location, statisticsData, businessFilter, landstingFilter, _) {
         var self = this;
 
         self.getSelectedVerksamhet = function (selectedVerksamhetId, verksamhets) {
@@ -36,6 +36,7 @@ angular.module('StatisticsApp').controller('pageCtrl', [ '$scope', '$rootScope',
             $scope.currentTime = currYear + "-" + currMonth + "-" + currDate;
 
             $scope.isVerksamhetShowing = ControllerCommons.isShowingVerksamhet($location);
+            $scope.isLandstingShowing = ControllerCommons.isShowingLandsting($location);
             $scope.viewHeader = $scope.isVerksamhetShowing ? "Verksamhetsstatistik" : ControllerCommons.isShowingLandsting($location) ? "Landstingsstatistik" : "Nationell statistik";
 
             if ($rootScope.isLoggedIn && !$scope.isLoginInfoFetched) {
@@ -54,6 +55,12 @@ angular.module('StatisticsApp').controller('pageCtrl', [ '$scope', '$rootScope',
                     $scope.hasLandstingAccess = loginInfo.landstingsvardgivare;
                     $rootScope.landstingAvailable = loginInfo.landstingsvardgivareWithUpload;
                     $scope.isLandstingAdmin = loginInfo.landstingAdmin;
+
+                    if ($rootScope.landstingAvailable) {
+                        statisticsData.getLandstingFilterInfo(function (landstingFilterInfo) {
+                            landstingFilter.setup(landstingFilterInfo.businesses, $location.$$search.landstingfilter);
+                        });
+                    }
 
                     $scope.isLoginInfoFetched = true;
                 }, function () {

@@ -35,11 +35,14 @@ import se.inera.statistics.service.landsting.NoLandstingSetForVgException;
 import se.inera.statistics.service.landsting.persistance.landstingenhet.LandstingEnhet;
 import se.inera.statistics.service.landsting.persistance.landstingenhetupdate.LandstingEnhetUpdate;
 import se.inera.statistics.service.landsting.persistance.landstingenhetupdate.LandstingEnhetUpdateOperation;
+import se.inera.statistics.service.processlog.Enhet;
+import se.inera.statistics.service.processlog.EnhetManager;
 import se.inera.statistics.service.report.model.SimpleKonDataRow;
 import se.inera.statistics.service.report.model.SimpleKonResponse;
 import se.inera.statistics.web.model.LoginInfo;
 import se.inera.statistics.web.model.SimpleDetailsData;
 import se.inera.statistics.web.model.TableDataReport;
+import se.inera.statistics.web.model.Verksamhet;
 import se.inera.statistics.web.service.landsting.LandstingEnhetFileParseException;
 import se.inera.statistics.web.service.landsting.LandstingFileReader;
 
@@ -57,6 +60,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Statistics services that requires authorization to use. Unless otherwise noted, the data returned
@@ -83,6 +87,9 @@ public class ProtectedLandstingService {
 
     @Autowired
     private FilterHandler filterHandler;
+
+    @Autowired
+    private EnhetManager enhetManager;
 
     private LandstingFileReader landstingFileReader = new LandstingFileReader();
 
@@ -188,6 +195,26 @@ public class ProtectedLandstingService {
         final List<LandstingEnhet> landstingEnhets = landstingEnhetHandler.getAllLandstingEnhetsForVardgivare(vgIdForLoggedInUser);
         SimpleDetailsData result = new SjukfallPerPatientsPerEnhetConverter(landstingEnhets).convert(casesPerEnhet, filterSettings, null);
         return getResponse(result, csv);
+    }
+
+    @GET
+    @Path("landstingFilterInfo")
+    @Produces({ MediaType.APPLICATION_JSON })
+    @PreAuthorize(value = "@protectedLandstingService.hasAccessToLandsting(#request)")
+    @PostAuthorize(value = "@protectedLandstingService.userAccess(#request)")
+    public Response getLandstingFilterInfo(@Context HttpServletRequest request) {
+        final String vgIdForLoggedInUser = loginServiceUtil.getSelectedVgIdForLoggedInUser(request);
+        final List<String> allEnhets = landstingEnhetHandler.getAllEnhetsForVardgivare(vgIdForLoggedInUser);
+        final List<Enhet> enhets = enhetManager.getEnhets(allEnhets);
+        List<Verksamhet> businesses = Lists.transform(enhets, new Function<Enhet, Verksamhet>() {
+            @Override
+            public Verksamhet apply(Enhet enhet) {
+                return loginServiceUtil.toVerksamhet(enhet);
+            }
+        });
+        final Map<String, Object> result = new HashMap<>();
+        result.put("businesses", businesses);
+        return Response.ok(result).build();
     }
 
     private Response getResponse(TableDataReport result, String csv) {

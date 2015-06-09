@@ -113,7 +113,7 @@ public class LoginServiceUtil {
         }
     }
 
-    private Verksamhet toVerksamhet(Enhet enhet) {
+    Verksamhet toVerksamhet(Enhet enhet) {
         Kommun kommun = new Kommun();
         Lan lan = new Lan();
         return new Verksamhet(enhet.getEnhetId(), enhet.getNamn(), enhet.getVardgivareId(), enhet.getVardgivareNamn(), enhet.getLansId(),

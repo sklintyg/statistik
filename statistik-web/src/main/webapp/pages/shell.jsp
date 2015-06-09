@@ -134,6 +134,11 @@
                         <business-filter></business-filter>
                     </div>
                 </div>
+                <div class="row ng-hide" ng-show="isLandstingShowing">
+                    <div class="col-xs-12">
+                        <landsting-filter></landsting-filter>
+                    </div>
+                </div>
 				<div class="row">
 	                <div class="col-xs-12">
 	                    <%-- data-ng-view that holds dynamic content managed by angular app --%>

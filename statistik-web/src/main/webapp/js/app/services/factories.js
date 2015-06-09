@@ -243,6 +243,10 @@ angular.module('StatisticsApp').factory('statisticsData', ['$http', '$rootScope'
         makeRequestLandsting("lastUpdateInfo", successCallback, failureCallback);
     };
 
+    factory.getLandstingFilterInfo = function (successCallback, failureCallback) {
+        makeRequestLandsting("landstingFilterInfo", successCallback, failureCallback);
+    };
+
     return factory;
 }]);
 

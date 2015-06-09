@@ -16,4 +16,4 @@
  *     You should have received a copy of the GNU LESSER GENERAL PUBLIC LICENSE
  *     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-angular.module('StatisticsApp.businessFilter', ['StatisticsApp.businessFilter.directive', 'StatisticsApp.businessFilter.factory', 'underscore', 'StatisticsApp.treeMultiSelector']);
+angular.module('StatisticsApp.businessFilter', ['StatisticsApp.businessFilter.directive', 'StatisticsApp.landstingFilter.directive', 'StatisticsApp.businessFilter.factory', 'StatisticsApp.landstingFilter.factory', 'underscore', 'StatisticsApp.treeMultiSelector']);
