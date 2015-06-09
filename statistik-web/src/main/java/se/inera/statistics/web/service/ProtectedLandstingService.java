@@ -124,7 +124,6 @@ public class ProtectedLandstingService {
     @GET
     @Path("lastUpdateInfo")
     @Produces({ MediaType.APPLICATION_JSON })
-    @Consumes({ "multipart/form-data" })
     @PreAuthorize(value = "@protectedLandstingService.hasAccessToLandstingAdmin(#request)")
     @PostAuthorize(value = "@protectedLandstingService.userAccess(#request)")
     public Response getLastLandstingUpdateInfo(@Context HttpServletRequest request) {
@@ -159,7 +158,6 @@ public class ProtectedLandstingService {
     @GET
     @Path("getNumberOfCasesPerMonthLandsting{csv:(/csv)?}")
     @Produces({ MediaType.APPLICATION_JSON })
-    @Consumes({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedLandstingService.hasAccessToLandsting(#request)")
     @PostAuthorize(value = "@protectedLandstingService.userAccess(#request)")
     public Response getNumberOfCasesPerMonthLandsting(@Context HttpServletRequest request, @QueryParam("landstingfilter") String filterHash, @PathParam("csv") String csv) {
@@ -172,7 +170,6 @@ public class ProtectedLandstingService {
     @GET
     @Path("getNumberOfCasesPerEnhetLandsting{csv:(/csv)?}")
     @Produces({ MediaType.APPLICATION_JSON })
-    @Consumes({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedLandstingService.hasAccessToLandsting(#request)")
     @PostAuthorize(value = "@protectedLandstingService.userAccess(#request)")
     public Response getNumberOfCasesPerEnhetLandsting(@Context HttpServletRequest request, @QueryParam("landstingfilter") String filterHash, @PathParam("csv") String csv) {
@@ -185,7 +182,6 @@ public class ProtectedLandstingService {
     @GET
     @Path("getNumberOfCasesPerPatientsPerEnhetLandsting{csv:(/csv)?}")
     @Produces({ MediaType.APPLICATION_JSON })
-    @Consumes({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedLandstingService.hasAccessToLandsting(#request)")
     @PostAuthorize(value = "@protectedLandstingService.userAccess(#request)")
     public Response getNumberOfCasesPerPatientsPerEnhetLandsting(@Context HttpServletRequest request, @QueryParam("landstingfilter") String filterHash, @PathParam("csv") String csv) {
