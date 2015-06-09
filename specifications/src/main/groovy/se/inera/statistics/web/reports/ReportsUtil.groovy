@@ -122,9 +122,9 @@ class ReportsUtil {
         return get("/api/getDiagnosavsnittstatistik/" + kapitel)
     }
 
-    private def get(String url, FilterData filter=FilterData.empty(), String queryString="") {
+    private def get(String url, FilterData filter=FilterData.empty(), String queryString="", String filterQueryName="filter") {
         try {
-            def queryWithFilter = addFilterToQueryStringIfSet(filter, queryString)
+            def queryWithFilter = addFilterToQueryStringIfSet(filterQueryName, filter, queryString)
             println("GET: " + url + " : " + queryWithFilter)
             def response = statistik.get(path: url, queryString : queryWithFilter)
             assert response.status == 200
@@ -165,13 +165,13 @@ class ReportsUtil {
         return filter.diagnoser.isEmpty() && filter.enheter.isEmpty() && filter.verksamhetstyper.isEmpty();
     }
 
-    private String addFilterToQueryStringIfSet(FilterData filter, queryString) {
+    private String addFilterToQueryStringIfSet(filterQueryName, FilterData filter, queryString) {
         if (isFilterEmpty(filter)) {
             return queryString
         }
         def filterHash = getFilterHash(filter)
         def prefixChar = queryString.isEmpty() ? "" : "&"
-        return queryString + prefixChar + "filter=" + filterHash
+        return queryString + prefixChar + filterQueryName + "=" + filterHash
     }
 
     def getReportEnskiltDiagnoskapitelInloggad(String kapitel, filter) {
@@ -402,15 +402,15 @@ class ReportsUtil {
     }
 
     def getReportAntalIntygLandstingInloggad(filter) {
-        return get("/api/landsting/getNumberOfCasesPerMonthLandsting", filter)
+        return get("/api/landsting/getNumberOfCasesPerMonthLandsting", filter, "", "landstingfilter")
     }
 
     def getReportSjukfallPerEnhetLandsting(filter) {
-        return get("/api/landsting/getNumberOfCasesPerEnhetLandsting", filter)
+        return get("/api/landsting/getNumberOfCasesPerEnhetLandsting", filter, "", "landstingfilter")
     }
 
     def getReportSjukfallPerListningarPerEnhetLandsting(filter) {
-        return get("/api/landsting/getNumberOfCasesPerPatientsPerEnhetLandsting", filter)
+        return get("/api/landsting/getNumberOfCasesPerPatientsPerEnhetLandsting", filter, "", "landstingfilter")
     }
 
 }
