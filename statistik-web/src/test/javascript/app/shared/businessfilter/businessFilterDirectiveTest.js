@@ -16,7 +16,7 @@
  *     You should have received a copy of the GNU LESSER GENERAL PUBLIC LICENSE
  *     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-xdescribe('Tests for directive button-filter', function () {
+describe('Tests for directive button-filter', function () {
     'use strict';
 
     var element, outerScope, innerScope, compiled;
@@ -78,7 +78,7 @@ xdescribe('Tests for directive button-filter', function () {
         outerScope.$digest();
 
         //Get the isolate scope
-        innerScope = element.isolateScope();
+        innerScope = element.scope();
     }));
 
     //STATISTIK-784
@@ -97,8 +97,8 @@ xdescribe('Tests for directive button-filter', function () {
             var dateFormat = 'yyyy-MM';
 
             //Assert that the scope has the format function
-            expect(outerScope.format).toBeDefined();
-            expect(outerScope.format).toMatch(dateFormat);
+            expect(innerScope.format).toBeDefined();
+            expect(innerScope.format).toMatch(dateFormat);
 
             //Assert that the format is reflected in the view
             expect(element.find('#filterFromDate').attr('datepicker-popup')).toMatch(dateFormat);
@@ -106,29 +106,29 @@ xdescribe('Tests for directive button-filter', function () {
         });
 
         it('has a minimum date set on the scope', inject(function (TIME_INTERVAL_MIN_DATE) {
-            expect(outerScope.minDate).toBeDefined('Min date must exist');
-            expect(outerScope.minDate).toEqual(TIME_INTERVAL_MIN_DATE, 'minDate did not match TIME_INTERVAL_MIN_DATE');
+            expect(innerScope.minDate).toBeDefined('Min date must exist');
+            expect(innerScope.minDate).toEqual(TIME_INTERVAL_MIN_DATE, 'minDate did not match TIME_INTERVAL_MIN_DATE');
         }));
 
         it('has a maximum date set on the scope', inject(function (TIME_INTERVAL_MAX_DATE) {
-            expect(outerScope.maxDate).toBeDefined('Max date must exist');
-            expect(outerScope.maxDate).toEqual(TIME_INTERVAL_MAX_DATE, 'maxDate did not match TIME_INTERVAL_MAX_DATE');
+            expect(innerScope.maxDate).toBeDefined('Max date must exist');
+            expect(innerScope.maxDate).toEqual(TIME_INTERVAL_MAX_DATE, 'maxDate did not match TIME_INTERVAL_MAX_DATE');
         }));
 
         it("sets the state of the datepicker to open when it is clicked", function() {
-            expect(outerScope.isFromDateOpen).toBeDefined();
-            expect(outerScope.isToDateOpen).toBeDefined();
+            expect(innerScope.isFromDateOpen).toBeDefined();
+            expect(innerScope.isToDateOpen).toBeDefined();
 
-            expect(outerScope.isFromDateOpen).not.toBeTruthy();
-            expect(outerScope.isToDateOpen).not.toBeTruthy();
+            expect(innerScope.isFromDateOpen).not.toBeTruthy();
+            expect(innerScope.isToDateOpen).not.toBeTruthy();
 
             //click the buttons to open the datepickers
             element.find('#fromDatePickerBtn').click();
-            expect(outerScope.isFromDateOpen).toBeTruthy();
+            expect(innerScope.isFromDateOpen).toBeTruthy();
             expect(element.find('#filterFromDate').attr('is-open')).toBeTruthy();
 
             element.find('#toDatePickerBtn').click();
-            expect(outerScope.isToDateOpen).toBeTruthy();
+            expect(innerScope.isToDateOpen).toBeTruthy();
             expect(element.find('#filterToDate').attr('is-open')).toBeTruthy();
 
         });
@@ -153,7 +153,7 @@ xdescribe('Tests for directive button-filter', function () {
             businessFilter.toDate = toDate.toDate();
 
             //when
-            outerScope.makeSelection();
+            innerScope.makeSelection();
 
             //then
             expect(spy.calledOnce).toBeTruthy();
@@ -177,7 +177,7 @@ xdescribe('Tests for directive button-filter', function () {
             businessFilter.toDate = toDate.toDate();
 
             //when
-            outerScope.makeSelection();
+            innerScope.makeSelection();
 
             //Ensure that we sue the right format
             expect(moment(spy.getCall(0).args[0].fromDate, 'YYYY-MM-DD').isValid()).toBeTruthy("From date doesn't have the right format");
@@ -197,7 +197,7 @@ xdescribe('Tests for directive button-filter', function () {
             businessFilter.toDate = inputToDate.toDate();
 
             //when
-            outerScope.makeSelection();
+            innerScope.makeSelection();
 
             //Ensure that we sue the right format
             expect(spy.getCall(0).args[0].toDate).toEqual(expectedToDate.format('YYYY-MM-DD'), "To date wasn't set correctly");
@@ -218,29 +218,29 @@ xdescribe('Tests for directive button-filter', function () {
             var fromDate = moment("2015-01-01"),
                 inputToDate = moment("2015-04-01");
 
-            outerScope.timeIntervalChecked = true;
+            innerScope.timeIntervalChecked = true;
             businessFilter.fromDate = fromDate.toDate();
             businessFilter.toDate = inputToDate.toDate();
 
             //when
-            outerScope.makeSelection();
+            innerScope.makeSelection();
 
             //then
-            expect(outerScope.showDateValidationError).toBeDefined();
-            expect(outerScope.showDateValidationError).toBeFalsy("showDateValidationError wasn't false as expected");
+            expect(innerScope.showDateValidationError).toBeDefined();
+            expect(innerScope.showDateValidationError).toBeFalsy("showDateValidationError wasn't false as expected");
         });
 
         it("will not pass validation if object is not a date", function() {
             //given
-            outerScope.timeIntervalChecked = true;
+            innerScope.timeIntervalChecked = true;
             businessFilter.fromDate = "!#€%&/()=?";
             businessFilter.toDate = "!#€%&/()=?";
 
             //when
-            outerScope.makeSelection();
+            innerScope.makeSelection();
 
             //then
-            expect(outerScope.showDateValidationError).toBeTruthy("showDateValidationError wasn't true as expected");
+            expect(innerScope.showDateValidationError).toBeTruthy("showDateValidationError wasn't true as expected");
         });
 
         it("will not pass validation if date is of correct format but improper input", function() {
@@ -249,15 +249,15 @@ xdescribe('Tests for directive button-filter', function () {
                 inputToDate = moment("2015-13");
 
             //given
-            outerScope.timeIntervalChecked = true;
+            innerScope.timeIntervalChecked = true;
             businessFilter.fromDate = fromDate.toDate();
             businessFilter.toDate = inputToDate.toDate();
 
             //when
-            outerScope.makeSelection();
+            innerScope.makeSelection();
 
             //then
-            expect(outerScope.showDateValidationError).toBeTruthy("showDateValidationError wasn't true as expected");
+            expect(innerScope.showDateValidationError).toBeTruthy("showDateValidationError wasn't true as expected");
         });
 
         it("will pass validation if date follows the format yyyy-MM-DD", function() {
@@ -265,35 +265,35 @@ xdescribe('Tests for directive button-filter', function () {
                 inputToDate = moment("2015-01-01");
 
             //given
-            outerScope.timeIntervalChecked = true;
+            innerScope.timeIntervalChecked = true;
             businessFilter.fromDate = fromDate.toDate();
             businessFilter.toDate = inputToDate.toDate();
 
             //when
-            outerScope.makeSelection();
+            innerScope.makeSelection();
 
             //then
-            expect(outerScope.showDateValidationError).toBeFalsy("showDateValidationError wasn't true as expected");
+            expect(innerScope.showDateValidationError).toBeFalsy("showDateValidationError wasn't true as expected");
         });
 
         it("will not pass validation if we have an empty from date", function() {
             //given
-            outerScope.timeIntervalChecked = true;
+            innerScope.timeIntervalChecked = true;
             businessFilter.fromDate = null;
             //when
-            outerScope.makeSelection();
+            innerScope.makeSelection();
             //then
-            expect(outerScope.showDateValidationError).toBeTruthy("showDateValidationError wasn't true as expected");
+            expect(innerScope.showDateValidationError).toBeTruthy("showDateValidationError wasn't true as expected");
         });
 
         it("will not pass validation if we have an empty to date", function() {
             //given
-            outerScope.timeIntervalChecked = true;
+            innerScope.timeIntervalChecked = true;
             businessFilter.toDate = null;
             //when
-            outerScope.makeSelection();
+            innerScope.makeSelection();
             //then
-            expect(outerScope.showDateValidationError).toBeTruthy("showDateValidationError wasn't true as expected");
+            expect(innerScope.showDateValidationError).toBeTruthy("showDateValidationError wasn't true as expected");
         });
 
         it("will not pass validation if from date is before 2013-10", function() {
@@ -301,13 +301,13 @@ xdescribe('Tests for directive button-filter', function () {
                 inputToDate = moment("2015-12-01");
 
             //given
-            outerScope.timeIntervalChecked = true;
+            innerScope.timeIntervalChecked = true;
             businessFilter.fromDate = fromDate.toDate();
             businessFilter.toDate = inputToDate.toDate();
             //when
-            outerScope.makeSelection();
+            innerScope.makeSelection();
             //then
-            expect(outerScope.showDateValidationError).toBeTruthy("showDateValidationError wasn't true as expected");
+            expect(innerScope.showDateValidationError).toBeTruthy("showDateValidationError wasn't true as expected");
         });
 
         it("will not pass validation if to date is before the from date", function() {
@@ -315,13 +315,13 @@ xdescribe('Tests for directive button-filter', function () {
                 inputToDate = moment("2015-04-01");
 
             //given
-            outerScope.timeIntervalChecked = true;
+            innerScope.timeIntervalChecked = true;
             businessFilter.fromDate = fromDate.toDate();
             businessFilter.toDate = inputToDate.toDate();
             //when
-            outerScope.makeSelection();
+            innerScope.makeSelection();
             //then
-            expect(outerScope.showDateValidationError).toBeTruthy("showDateValidationError wasn't true as expected");
+            expect(innerScope.showDateValidationError).toBeTruthy("showDateValidationError wasn't true as expected");
         });
 
         it("will not pass validation if to date is beyond the current month", function() {
@@ -329,13 +329,13 @@ xdescribe('Tests for directive button-filter', function () {
                 inputToDate = moment().add(2, 'months').date(1).hours(0).minutes(0).seconds(0);
 
             //given
-            outerScope.timeIntervalChecked = true;
+            innerScope.timeIntervalChecked = true;
             businessFilter.fromDate = fromDate.toDate();
             businessFilter.toDate = inputToDate.toDate();
             //when
-            outerScope.makeSelection();
+            innerScope.makeSelection();
             //then
-            expect(outerScope.showDateValidationError).toBeTruthy("showDateValidationError wasn't true as expected");
+            expect(innerScope.showDateValidationError).toBeTruthy("showDateValidationError wasn't true as expected");
         });
     });
 
