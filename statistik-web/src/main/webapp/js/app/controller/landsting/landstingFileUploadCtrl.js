@@ -19,8 +19,8 @@
 
 'use strict';
 
-angular.module('StatisticsApp').controller('landstingFileUploadCtrl', [ '$scope', '$rootScope', '$timeout', 'statisticsData',
-    function ($scope, $rootScope, $timeout, statisticsData) {
+angular.module('StatisticsApp').controller('landstingFileUploadCtrl', [ '$scope', '$rootScope', '$timeout', 'statisticsData', 'messageService',
+    function ($scope, $rootScope, $timeout, statisticsData, messageService) {
 
         var updateLastUpdateMessage = function() {
             $scope.lastLandstingUpdateMessage = "";
@@ -49,11 +49,15 @@ angular.module('StatisticsApp').controller('landstingFileUploadCtrl', [ '$scope'
                 acceptedFiles: ".xls,.xlsx",
                 autoProcessQueue: true,
                 clickable: true,
-                previewTemplate: '<div id="preview-template" style="display: none;"></div>'
+                previewTemplate: '<div id="preview-template" style="display: none;"></div>',
+                dictDefaultMessage: '',
+                dictInvalidFileType: messageService.getProperty("upload.filetype.error", null, "", null, true),
+                dictFileTooBig: messageService.getProperty("upload.filesize.error", null, "", null, true)
             },
             'eventHandlers': {
                 'success': function (file, response) {
                     $scope.$apply(function() {
+                            $scope.uploadSuccess = true;
                             updateStatus(response);
                             updateLastUpdateMessage();
                             $rootScope.landstingAvailable = response.parsedRows.length > 0;
@@ -61,7 +65,51 @@ angular.module('StatisticsApp').controller('landstingFileUploadCtrl', [ '$scope'
                     );
                 },
                 'error': function (file, response) {
-                    $scope.$apply(updateStatus(response));
+                    $scope.$apply(function() {
+                        $scope.uploadSuccess = false;
+                        updateStatus(response);
+                    });
+                },
+                'dragenter': function() {
+                    $scope.$apply(function() {
+                        $scope.uploadCompleted = false;
+                        $scope.uploadSuccess = false;
+                        $scope.draggingIt = true;
+                    });
+                },
+                'dragleave': function() {
+                    $scope.$apply(function() {
+                            $scope.draggingIt = false;
+                        }
+                    );
+                },
+                'drop': function() {
+                    $scope.$apply(function () {
+                            $scope.draggingIt = false;
+                        }
+                    );
+                },
+                'processing': function() {
+                    $scope.$apply(function() {
+                            $scope.uploadProgress = 0;
+                            $scope.uploading = true;
+                            $scope.draggingIt = false;
+                        }
+                    );
+                },
+                'uploadprogress': function(file, progress, bytesSent) {
+                    $scope.$apply(function() {
+                            $scope.uploadProgress = progress;
+                        }
+                    );
+                },
+                'complete': function() {
+                    $scope.$apply(function() {
+                            //Remove the progessbar and handle errors
+                            $scope.uploadCompleted = true;
+                            $scope.uploading = false;
+                        }
+                    );
                 }
             }
         };

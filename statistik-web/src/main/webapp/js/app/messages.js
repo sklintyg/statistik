@@ -157,7 +157,12 @@ var stMessages = {
         'landsting.about.content': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas congue maximus rutrum. Quisque rutrum felis aliquet neque vestibulum tristique. Nullam rhoncus eu nibh et efficitur. Integer ac dolor vel ante vulputate accumsan. Quisque quis erat odio. Nulla facilisi. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Aenean sollicitudin ornare mi, pretium facilisis est mattis nec.',
 
         //error messages
-        'error.unsignedcerts.couldnotbeloaded': '<strong>Kunde inte hämta ej signerade intyg.</strong>'
+        'error.unsignedcerts.couldnotbeloaded': '<strong>Kunde inte hämta ej signerade intyg.</strong>',
+
+        //file upload
+        'upload.filesize.error': 'Filen är för stor. Max tillåten storlek är {{maxFilesize}}MB',
+        'upload.filetype.error': 'Felaktig filtyp. Formaten som stöds är .xls och .xlsx',
+
 
     },
     'en': {
