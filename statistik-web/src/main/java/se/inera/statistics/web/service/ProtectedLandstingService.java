@@ -102,8 +102,9 @@ public class ProtectedLandstingService {
     public Response fileupload(@Context HttpServletRequest request, MultipartBody body) {
         LoginInfo info = loginServiceUtil.getLoginInfo(request);
         if (!info.isProcessledare()) {
-            LOG.warn("A user without processledar status tried to updated landstingsdata");
-            return createFileUploadResponse(Response.Status.FORBIDDEN, null, null);
+            final String msg = "A user without processledar-status tried to update landstingsdata";
+            LOG.warn(msg + " : " + info.getHsaId());
+            return createFileUploadResponse(Response.Status.FORBIDDEN, msg, null);
         }
         final DataSource dataSource = body.getAttachment("file").getDataHandler().getDataSource();
         try {
@@ -111,7 +112,7 @@ public class ProtectedLandstingService {
             final String vardgivarId = info.getDefaultVerksamhet().getVardgivarId();
             final LandstingEnhetFileData fileData = new LandstingEnhetFileData(vardgivarId, landstingFileRows, info.getName(), info.getHsaId(), dataSource.getName());
             landstingEnhetHandler.update(fileData);
-            return createFileUploadResponse(Response.Status.OK, null, landstingFileRows);
+            return createFileUploadResponse(Response.Status.OK, "Data updated ok", landstingFileRows);
         } catch (LandstingEnhetFileParseException e) {
             LOG.warn("Failed to parse landstings file", e);
             return createFileUploadResponse(Response.Status.INTERNAL_SERVER_ERROR, e.getMessage(), null);
