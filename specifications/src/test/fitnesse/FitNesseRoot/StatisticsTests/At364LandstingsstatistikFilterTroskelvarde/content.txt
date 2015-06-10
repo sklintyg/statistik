@@ -39,7 +39,7 @@ Inloggad:
 
 | Sjukfall i rapporten landsting sjukfall per enhet |
 | inloggad som | vårdenhet    | filter kapitel | filter enheter | filter verksamhetstyper | filter startdatum | filter slutdatum | totalt? | män? | kvinnor? |
-| user3        | Enhet enhet3 | | | | | | 5       | 5    | 0        |
+| user3        | Enhet enhet3 | | | | | | 4       | 4    | 0        |
 | user3        | Enhet enhet3 | A00-B99,C00-D48,F00-F99 | enhet3  | 02                    | 2014-02-01        | 2014-12-30       | 4       | 4    | 0        |
 | user3        | Enhet enhet3 | F00-F99                 | enhet1,enhet3  | 02      | 2014-02-01        | 2014-12-30              | -1      | -1   | -1       |
 | user3        | Enhet enhet3 | A00-B99,C00-D48,F00-F99 | enhet1,enhet3  | 02      | 2014-02-01        | 2014-03-31              | 3       | 3    | 0        |
@@ -49,4 +49,4 @@ Inloggad:
 | user3        | Enhet enhet3 | | | | | | 3.64    |
 | user3        | Enhet enhet3 | A00-B99,C00-D48,F00-F99 | enhet3  | 02                    | 2014-02-01        | 2014-12-30       | 3.64    |
 | user3        | Enhet enhet3 | F00-F99                 | enhet1,enhet3  | 02             | 2014-02-01        | 2014-12-30       | -1      |
-| user3        | Enhet enhet3 | A00-B99,C00-D48,F00-F99 | enhet1,enhet3  | 02             | 2014-04-01        | 2014-12-30       | 2.73    |
+| user3        | Enhet enhet3 | A00-B99,C00-D48,F00-F99 | enhet1,enhet3  | 02             | 2014-04-01        | 2014-12-30       | -1      |
