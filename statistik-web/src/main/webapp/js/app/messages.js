@@ -42,7 +42,7 @@ var stMessages = {
         'nav.kontakt-support': 'Kontakt till support',
         'nav.landsting.filuppladdning': 'Filuppladdning',
         'nav.landsting.listningsjamforelse': 'Vårdenhet, listningar',
-        'nav.landsting.om': 'Om Landstingsstatistik',
+        'nav.landsting.om': 'Om landstingsstatistik',
 
         //labels
         'lbl.mobile-menu': 'Meny',
