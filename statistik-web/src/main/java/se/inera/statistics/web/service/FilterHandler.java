@@ -216,7 +216,6 @@ public class FilterHandler {
     private Set<String> getEnhetsForVerksamhetstyperLandsting(FilterData filterData, HttpServletRequest request) {
         final List<Enhet> enhets = enhetManager.getEnhets(filterData.getEnheter());
         Set<String> enhetsIds = new HashSet<>();
-        LoginInfo info = loginServiceUtil.getLoginInfo(request);
         for (Enhet verksamhet : enhets) {
             if (isOfVerksamhetsTypLandsting(verksamhet, filterData.getVerksamhetstyper())) {
                 enhetsIds.add(verksamhet.getEnhetId());
