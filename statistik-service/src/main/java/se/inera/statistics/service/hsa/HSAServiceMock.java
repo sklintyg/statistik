@@ -271,4 +271,9 @@ public class HSAServiceMock implements HSAService, HsaDataInjectable {
         nextHuvudenhetId = huvudenhetId;
     }
 
+    @Override
+    public void setEnhetNameForNextIntyg(String name) {
+        nextEnhetName = name;
+    }
+
 }

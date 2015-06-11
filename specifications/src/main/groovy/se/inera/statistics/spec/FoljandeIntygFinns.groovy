@@ -18,6 +18,7 @@ class FoljandeIntygFinns {
     def start
     def slut
     def enhet
+    String enhetsnamn
     def huvudenhet
     def vardgivare
     def arbetsförmåga
@@ -51,6 +52,7 @@ class FoljandeIntygFinns {
         jsonformat = "nytt"
         huvudenhet = null
         intygstyp = "fk7263"
+        enhetsnamn = null
     }
 
     public void execute() {
@@ -58,7 +60,7 @@ class FoljandeIntygFinns {
             huvudenhet = enhet;
         }
         def finalIntygDataString = getIntygDataString()
-        Intyg intyg = new Intyg(EventType.valueOf(händelsetyp), finalIntygDataString, String.valueOf(exaktintygid), DateTimeUtils.currentTimeMillis(), län, huvudenhet)
+        Intyg intyg = new Intyg(EventType.valueOf(händelsetyp), finalIntygDataString, String.valueOf(exaktintygid), DateTimeUtils.currentTimeMillis(), län, huvudenhet, enhetsnamn)
         reportsUtil.insertIntyg(intyg)
     }
 

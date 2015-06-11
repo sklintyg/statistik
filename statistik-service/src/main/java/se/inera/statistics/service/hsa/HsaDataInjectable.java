@@ -28,4 +28,6 @@ public interface HsaDataInjectable {
 
     void setHuvudenhetIdForNextIntyg(String huvudenhetId);
 
+    void setEnhetNameForNextIntyg(String name);
+
 }
