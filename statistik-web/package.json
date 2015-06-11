@@ -19,6 +19,6 @@
     "karma-ng-html2js-preprocessor": "^0.1.2",
     "karma-phantomjs-launcher": "^0.1.4",
     "karma-sinon": "^1.0.4",
-    "sinon": "^1.14.1"
+    "sinon": "1.14.1"
   }
 }
