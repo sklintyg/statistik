@@ -47,7 +47,7 @@ angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl', [ '$sco
             chartOptions.legend.enabled = $routeParams.printBw || $routeParams.print;
             chartOptions.xAxis.title.text = config.chartXAxisTitle;
             chartOptions.yAxis.title.text = config.chartYAxisTitle ? config.chartYAxisTitle : (config.percentChart ? "Andel sjukfall i %" : 'Antal sjukfall');
-            chartOptions.yAxis.title.x = config.percentChart ? 60 : 30;
+            chartOptions.yAxis.title.x = config.chartYAxisTitle ? 160 : (config.percentChart ? 60 : 30);
             chartOptions.yAxis.title.y = -13;
             chartOptions.yAxis.title.align = 'high';
             chartOptions.yAxis.title.offset = 0;
