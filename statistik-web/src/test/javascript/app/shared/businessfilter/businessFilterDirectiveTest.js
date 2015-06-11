@@ -310,7 +310,7 @@ describe('Tests for directive button-filter', function () {
             expect(innerScope.showDateValidationError).toBeTruthy("showDateValidationError wasn't true as expected");
         });
 
-        it("will pass validation if from date is variations of 2013-10", function() {
+        xit("will pass validation if from date is variations of 2013-10", function() {
             var fromDate = moment("2013-10-01"),
                 inputToDate = moment("2015-01-01");
 
