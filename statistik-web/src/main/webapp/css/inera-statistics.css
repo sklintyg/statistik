@@ -1594,7 +1594,7 @@ td.scrollable {
 thead tr td.headcol.scrollable:first-child { height: 30px; }
 .headcol.scrollable {
     position:absolute;
-    width: 17em;
+    width: 34em;
     top:auto;
     left:0;
     text-align: left !important;
@@ -1603,7 +1603,7 @@ thead tr td.headcol.scrollable:first-child { height: 30px; }
 .headcol-name {
 	overflow: hidden;
 	text-overflow: ellipsis;
-	max-width: 350px; 
+	max-width: 34em;
 }
 div.scrollable {
     position: relative;
@@ -1611,7 +1611,7 @@ div.scrollable {
 
 div.scrolling {
     overflow-x:auto;  
-    margin-left: 17em;
+    margin-left: 34em;
     overflow-y:visible;
     padding-bottom:1px;
     font-size: 12px;
