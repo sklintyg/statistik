@@ -213,7 +213,6 @@ class ReportsUtil {
             case "enhet2": return VARDGIVARE;
             case "enhet3": return VARDGIVARE3;
             case "enhet4": return VARDGIVARE3;
-            case "enhet5": return VARDGIVARE;
             default: return defaultVardgivare;
         }
     }

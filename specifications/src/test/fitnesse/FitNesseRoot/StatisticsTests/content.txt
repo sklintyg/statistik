@@ -3,14 +3,13 @@
 Testmiljö:
 Existerande användare: user1, user2, user3, user4, user5, user6
 Existerande vårdgivare: vg1, vg3
-Existerande enheter: enhet1, enhet2, enhet3, enhet4, enhet5
+Existerande enheter: enhet1, enhet2, enhet3, enhet4
 
 Namn:
-enhet1: "Enhet enhet1"
-enhet2: "Enhet enhet2"
-enhet3: "Enhet enhet3"
-enhet4: "Enhet enhet4"
-enhet5: "Enhet enhet1" (Har samma namn som enhet1 för att kunna verifiera hanteringen av enheter med samma namn)
+enhet1: Enhet enhet1
+enhet2: Enhet enhet2
+enhet3: Enhet enhet3
+enhet4: Enhet enhet4
 
 Kopplingar:
 vg1 enheter: enhet1, enhet2
@@ -31,7 +30,6 @@ enhet1 verksamhetstyp: 02, 10
 enhet2 verksamhetstyp: 02, 11
 enhet3 verksamhetstyp: 02, 23
 enhet4 verksamhetstyp: 02, 10
-enhet5 verksamhetstyp: ??
 
 Default:
 Vårdgivarnivå för inloggad användare: false
