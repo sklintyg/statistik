@@ -31,6 +31,7 @@ import se.inera.statistics.service.report.model.KonDataResponse;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.SimpleKonDataRow;
 import se.inera.statistics.service.report.model.SimpleKonResponse;
+import se.inera.statistics.service.report.model.SimpleKonResponses;
 import se.inera.statistics.service.report.model.VerksamhetOverviewResponse;
 import se.inera.statistics.service.report.util.ReportUtil;
 import se.inera.statistics.service.warehouse.Aisle;
@@ -146,7 +147,8 @@ public class WarehouseService {
     }
 
     public SimpleKonResponse<SimpleKonDataRow> getCasesPerEnhet(SjukfallFilter filter, Map<String, String> idsToNames, Range range, String vardgivarId) {
-        return sjukfallQuery.getSjukfallPerEnhet(warehouse.get(vardgivarId), filter, range.getFrom(), 1, range.getMonths(), idsToNames, CutoffUsage.DO_NOT_APPLY_CUTOFF);
+        final SimpleKonResponse<SimpleKonDataRow> sjukfallPerEnhet = sjukfallQuery.getSjukfallPerEnhet(warehouse.get(vardgivarId), filter, range.getFrom(), 1, range.getMonths(), idsToNames, CutoffUsage.DO_NOT_APPLY_CUTOFF);
+        return SimpleKonResponses.addExtrasToNameDuplicates(sjukfallPerEnhet);
     }
 
     public KonDataResponse getCasesPerEnhetTimeSeries(SjukfallFilter filter, Map<String, String> idsToNames, Range range, String vardgivarId) {
@@ -212,7 +214,8 @@ public class WarehouseService {
                 return sjukfallQuery.getSjukfallPerEnhet(aisle, filterSettings.getFilter().getPredicate(), range.getFrom(), 1, range.getMonths(), idsToNames, cutoffUsage);
             }
         });
-        return SimpleKonResponse.merge(results, false);
+        final SimpleKonResponse<SimpleKonDataRow> merged = SimpleKonResponse.merge(results, false);
+        return SimpleKonResponses.addExtrasToNameDuplicates(merged);
     }
 
     private Map<String, Collection<Enhet>> mapEnhetsToVgids(Collection<String> enheter) {

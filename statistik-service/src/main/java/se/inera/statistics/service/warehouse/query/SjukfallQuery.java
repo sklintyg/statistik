@@ -35,6 +35,7 @@ import se.inera.statistics.service.processlog.Lakare;
 import se.inera.statistics.service.processlog.LakareManager;
 import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.report.model.KonDataResponse;
+import se.inera.statistics.service.report.model.KonDataResponses;
 import se.inera.statistics.service.report.model.SimpleKonDataRow;
 import se.inera.statistics.service.report.model.SimpleKonResponse;
 import se.inera.statistics.service.report.util.ReportUtil;
@@ -53,7 +54,7 @@ import java.util.Map;
 import java.util.Set;
 
 @Component
-public final class SjukfallQuery {
+public class SjukfallQuery {
 
     private static final Logger LOG = LoggerFactory.getLogger(SjukfallQuery.class);
     public static final int DEFAULT_CUTOFF = 5;
@@ -191,7 +192,7 @@ public final class SjukfallQuery {
         final List<String> names = Lists.transform(groupEntries, new Function<Map.Entry<String, String>, String>() {
             @Override
             public String apply(Map.Entry<String, String> entry) {
-                return entry.getValue();
+                return entry.getKey();
             }
         });
         final List<Integer> ids = Lists.transform(groupEntries, new Function<Map.Entry<String, String>, Integer>() {
@@ -209,8 +210,8 @@ public final class SjukfallQuery {
                 }
             }
         };
-
-        return sjukfallUtil.calculateKonDataResponse(aisle, filter, start, periods, periodSize, names, ids, counterFunction);
+        final KonDataResponse response = sjukfallUtil.calculateKonDataResponse(aisle, filter, start, periods, periodSize, names, ids, counterFunction);
+        return KonDataResponses.changeIdGroupsToNamesAndAddIdsToDuplicates(response, idsToNames);
     }
 
     public KonDataResponse getSjukfallPerLakareSomTidsserie(Aisle aisle, SjukfallFilter filter, LocalDate start, int periods, int periodLength) {

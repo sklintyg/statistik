@@ -1,0 +1,61 @@
+/**
+ * Copyright (C) 2015 Inera AB (http://www.inera.se)
+ *
+ * This file is part of statistik (https://github.com/sklintyg/statistik).
+ *
+ * statistik is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * statistik is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+package se.inera.statistics.service.report.model;
+
+import org.junit.Test;
+
+import java.util.ArrayList;
+
+import static org.junit.Assert.*;
+
+public class SimpleKonResponsesTest {
+
+    @Test
+    public void testAddExtrasToNameDuplicatesEmptyInput() throws Exception {
+        //Given
+        final ArrayList<SimpleKonDataRow> skdr = new ArrayList<>();
+        final SimpleKonResponse<SimpleKonDataRow> skr = new SimpleKonResponse<>(skdr);
+
+        //When
+        final SimpleKonResponse<SimpleKonDataRow> result = SimpleKonResponses.addExtrasToNameDuplicates(skr);
+
+        //Then
+        assertEquals(0, result.getGroups().size());
+    }
+
+    @Test
+    public void testAddExtrasToNameDuplicates() throws Exception {
+        //Given
+        final ArrayList<SimpleKonDataRow> skdr = new ArrayList<>();
+        skdr.add(new SimpleKonDataRow("ABC", 0, 0, 1));
+        skdr.add(new SimpleKonDataRow("abc", 0, 0, 2));
+        skdr.add(new SimpleKonDataRow("CBA", 0, 0, 3));
+        final SimpleKonResponse<SimpleKonDataRow> skr = new SimpleKonResponse<>(skdr);
+
+        //When
+        final SimpleKonResponse<SimpleKonDataRow> result = SimpleKonResponses.addExtrasToNameDuplicates(skr);
+
+        //Then
+        assertEquals(3, result.getGroups().size());
+        assertEquals("ABC 1", result.getGroups().get(0));
+        assertEquals("abc 2", result.getGroups().get(1));
+        assertEquals("CBA", result.getGroups().get(2));
+    }
+
+}

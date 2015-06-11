@@ -33,6 +33,7 @@ import se.inera.statistics.service.processlog.Lakare;
 import se.inera.statistics.service.processlog.LakareManager;
 import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.report.model.KonDataResponse;
+import se.inera.statistics.service.report.model.KonDataRow;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.SimpleKonDataRow;
 import se.inera.statistics.service.report.model.SimpleKonResponse;
@@ -44,6 +45,8 @@ import se.inera.statistics.service.warehouse.SjukfallUtil;
 import se.inera.statistics.service.warehouse.SjukfallUtilTest;
 import se.inera.statistics.service.warehouse.Warehouse;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
@@ -51,6 +54,8 @@ import java.util.Objects;
 import static java.util.Arrays.asList;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyInt;
+import static org.mockito.Matchers.anyListOf;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -231,6 +236,7 @@ public class SjukfallQueryTest {
     public void testGetSjukfallPerEnhetSeries() throws Exception {
         //Given
         final SjukfallUtil sjukfallUtilMock = Mockito.mock(SjukfallUtil.class);
+        Mockito.when(sjukfallUtilMock.calculateKonDataResponse(any(Aisle.class), any(SjukfallFilter.class), any(LocalDate.class), anyInt(), anyInt(), anyListOf(String.class), anyListOf(Object.class), any(CounterFunction.class))).thenReturn(new KonDataResponse(Collections.<String>emptyList(), Collections.<KonDataRow>emptyList()));
         ReflectionTestUtils.setField(sjukfallQuery, "sjukfallUtil", sjukfallUtilMock);
 
         final SjukfallFilter filter = SjukfallUtilTest.createEnhetFilterFromInternalIntValues(ENHET1_ID);
@@ -246,8 +252,31 @@ public class SjukfallQueryTest {
 
         //Then
         Mockito.verify(sjukfallUtilMock).calculateKonDataResponse(eq(currentAisle), eq(filter), eq(start), eq(periods), eq(periodSize), names.capture(), ids.capture(), Matchers.<CounterFunction<Object>>any());
-        assertEquals("name1", names.getValue().get(0));
+        assertEquals("-1", names.getValue().get(0));
         assertEquals(-1, ids.getValue().get(0));
+    }
+
+    @Test
+    public void testGetSjukfallPerEnhetSeriesTwoEnhetsWthSameNameWillGetIdAsSuffixSTATISTIK1121() throws Exception {
+        //Given
+        final SjukfallUtil sjukfallUtilMock = Mockito.mock(SjukfallUtil.class);
+        final KonDataResponse konDataResponse = new KonDataResponse(Arrays.asList("1", "2", "3"), Collections.<KonDataRow>emptyList());
+        Mockito.when(sjukfallUtilMock.calculateKonDataResponse(any(Aisle.class), any(SjukfallFilter.class), any(LocalDate.class), anyInt(), anyInt(), anyListOf(String.class), anyListOf(Object.class), any(CounterFunction.class))).thenReturn(konDataResponse);
+        ReflectionTestUtils.setField(sjukfallQuery, "sjukfallUtil", sjukfallUtilMock);
+        final SjukfallFilter enhetFilterFromInternalIntValues = SjukfallUtilTest.createEnhetFilterFromInternalIntValues(ENHET1_ID);
+        final HashMap<String, String> idsToNames = new HashMap<>();
+        idsToNames.put("1", "ABC");
+        idsToNames.put("2", "CBA");
+        idsToNames.put("3", "ABC");
+
+        //When
+        final KonDataResponse result = sjukfallQuery.getSjukfallPerEnhetSeries(aisle.createAisle(), enhetFilterFromInternalIntValues, new LocalDate(), 1, 2, idsToNames);
+
+        //Then
+        assertEquals(3, result.getGroups().size());
+        assertEquals("ABC 1", result.getGroups().get(0));
+        assertEquals("CBA", result.getGroups().get(1));
+        assertEquals("ABC 3", result.getGroups().get(2));
     }
 
 }
