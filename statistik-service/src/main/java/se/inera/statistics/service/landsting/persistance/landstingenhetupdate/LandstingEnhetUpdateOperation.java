@@ -20,7 +20,7 @@ package se.inera.statistics.service.landsting.persistance.landstingenhetupdate;
 
 public enum LandstingEnhetUpdateOperation {
 
-    Update("Uppdaterat konfiguration"), Remove("Tagit bort konfiguration");
+    Update("Uppdaterat inställningar"), Remove("Tagit bort inställningar");
 
     private final String message;
 

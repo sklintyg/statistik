@@ -118,7 +118,7 @@ public class ProtectedLandstingService {
             return createFileUploadResponse(Response.Status.INTERNAL_SERVER_ERROR, e.getMessage(), null);
         } catch (NoLandstingSetForVgException e) {
             LOG.warn("Failed to update landsting settings", e);
-            return createFileUploadResponse(Response.Status.INTERNAL_SERVER_ERROR, "Current vårdgivare is not connected to a landsting", null);
+            return createFileUploadResponse(Response.Status.INTERNAL_SERVER_ERROR, "Din vårdgivare har inte tillgång till landstingsstatistik", null);
         }
     }
 
@@ -140,7 +140,7 @@ public class ProtectedLandstingService {
             String dateTime = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new java.util.Date(update.getTimestamp().getTime()));
             return operation.getMessage() + (LandstingEnhetUpdateOperation.Update.equals(operation) ? " (" + update.getFilename() + ")" : "") + " - " + dateTime + " av " + update.getUpdatedByName() + " (" + update.getUpdatedByHsaid() + ")";
         }
-        return "Finns ej...";
+        return "Ingen";
     }
 
     private Response createFileUploadResponse(Response.Status status, String message, List<LandstingEnhetFileDataRow> landstingFileRows) {
@@ -149,7 +149,9 @@ public class ProtectedLandstingService {
         final List<String> parsedRowsStrings = landstingFileRows == null ? null : Lists.transform(landstingFileRows, new Function<LandstingEnhetFileDataRow, String>() {
             @Override
             public String apply(LandstingEnhetFileDataRow landstingEnhetFileDataRow) {
-                return "HSA-id: " + landstingEnhetFileDataRow.getEnhetensHsaId() + " -> Listade patienter: " + landstingEnhetFileDataRow.getListadePatienter();
+                final Integer listadePatienter = landstingEnhetFileDataRow.getListadePatienter();
+                final String listadePatienterString = listadePatienter != null ? String.valueOf(listadePatienter) : "inte angivet";
+                return "HSA-id: " + landstingEnhetFileDataRow.getEnhetensHsaId() + " -> Listade patienter: " + listadePatienterString;
             }
         });
         map.put("parsedRows", parsedRowsStrings);

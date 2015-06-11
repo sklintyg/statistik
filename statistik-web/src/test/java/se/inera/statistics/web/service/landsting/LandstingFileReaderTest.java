@@ -112,7 +112,7 @@ public class LandstingFileReaderTest {
             fail();
         } catch (LandstingEnhetFileParseException e) {
             //Then
-            assertTrue(e.getMessage(), e.getMessage().startsWith("Row #2"));
+            assertTrue(e.getMessage(), e.getMessage().startsWith("Rad 2"));
         }
     }
 
@@ -129,7 +129,7 @@ public class LandstingFileReaderTest {
             fail();
         } catch (LandstingEnhetFileParseException e) {
             //Then
-            assertTrue(e.getMessage(), e.getMessage().startsWith("Row #3"));
+            assertTrue(e.getMessage(), e.getMessage().startsWith("Rad 3"));
         }
     }
 
@@ -146,7 +146,7 @@ public class LandstingFileReaderTest {
             fail();
         } catch (LandstingEnhetFileParseException e) {
             //Then
-            assertTrue(e.getMessage(), e.getMessage().startsWith("Row #3"));
+            assertTrue(e.getMessage(), e.getMessage().startsWith("Rad 3"));
         }
     }
 

@@ -49,7 +49,7 @@ public class LandstingFileReader {
             } else if (dataSource.getName().toLowerCase().endsWith("xls")) {
                 workbook = new HSSFWorkbook(fis);
             } else {
-                throw new LandstingEnhetFileParseException("Unknown filetype");
+                throw new LandstingEnhetFileParseException("Felaktigt filformat");
             }
 
             Sheet sheet = workbook.getSheetAt(0);
@@ -60,7 +60,7 @@ public class LandstingFileReader {
             int rowNumber = 1;
             while (rowIterator.hasNext()) {
                 rowNumber++;
-                final String messagePrefix = "Row #" + rowNumber + ": ";
+                final String messagePrefix = "Rad " + rowNumber + ": ";
 
                 Row row = rowIterator.next();
                 final String id = getEnhetHsaId(row);
@@ -68,19 +68,19 @@ public class LandstingFileReader {
 
                 if (!id.isEmpty()) {
                     if (!addedEnhetIds.add(id.toUpperCase(Locale.ENGLISH))) {
-                        throw new LandstingEnhetFileParseException(messagePrefix + "Duplicate HSA id");
+                        throw new LandstingEnhetFileParseException(messagePrefix + "Vårdenheten förekommer mer än en gång");
                     }
                     if (!id.matches("^[a-zA-Z0-9-]+$")) {
-                        throw new LandstingEnhetFileParseException(messagePrefix + "Illegal character(s) in HSA id cell");
+                        throw new LandstingEnhetFileParseException(messagePrefix + "Kolumn “HSA-id” innehåller otillåtna tecken");
                     }
                     if (patients != null && patients < 0) {
-                        throw new LandstingEnhetFileParseException(messagePrefix + "Patients field may not be a negative number");
+                        throw new LandstingEnhetFileParseException(messagePrefix + "Kolumn “Antal listade patienter” innehåller ett negativt tal");
                     }
                     rows.add(new LandstingEnhetFileDataRow(id, patients));
                 }
             }
         } catch (IOException e) {
-            throw new LandstingEnhetFileParseException("Could not read file", e);
+            throw new LandstingEnhetFileParseException("Kunde inte läsa fil", e);
         }
         return rows;
     }
@@ -95,7 +95,7 @@ public class LandstingFileReader {
                     if (DoubleMath.isMathematicalInteger(patientsDouble)) {
                         patients = (int) patientsDouble;
                     } else {
-                        throw new LandstingEnhetFileParseException(messagePrefix + "Patients cell is not an integer number: " + patientsDouble);
+                        throw new LandstingEnhetFileParseException(messagePrefix + "Kolumn “Antal listade patienter” innehåller inte ett heltal: " + patientsDouble);
                     }
                     break;
                 case Cell.CELL_TYPE_STRING:
@@ -103,7 +103,7 @@ public class LandstingFileReader {
                     try {
                         patients = Integer.parseInt(patientsString);
                     } catch (NumberFormatException e) {
-                        throw new LandstingEnhetFileParseException(messagePrefix + "Patients cell is not an integer number");
+                        throw new LandstingEnhetFileParseException(messagePrefix + "Kolumn “Antal listade patienter” innehåller inte ett heltal");
                     }
                     break;
                 default:
