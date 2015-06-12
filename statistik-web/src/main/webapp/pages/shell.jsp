@@ -122,16 +122,13 @@
         <!-- Docs nav
         ================================================== -->
         <div class="row">
-            <div class="col-xs-12 col-sm-4 hidden-xs bs-docs-sidebar hidden-print" data-ng-controller="navigationMenuCtrl" style="max-width: 260px;">
-                <h1 class="hidden-header"><span message key="statistics.hidden-header.sidans-huvudnavigering"></span></h1>
-                <jsp:include page="menu.jsp"/>
-            </div>
-            <div class="col-xs-12 hidden-sm hidden-md hidden-lg bs-docs-sidebar hidden-print" data-ng-controller="navigationMenuCtrl">
+            <div class="col-xs-12 col-sm-3 bs-docs-sidebar hidden-print" data-ng-controller="navigationMenuCtrl">
                 <h1 class="hidden-header"><span message key="statistics.hidden-header.sidans-huvudnavigering"></span></h1>
                 <jsp:include page="mobilemenu.jsp"/>
+                <jsp:include page="menu.jsp"/>
             </div>
 
-            <div class="col-xs-12 col-sm-8">
+            <div class="col-xs-12 col-sm-9">
                 <div class="row ng-hide" ng-show="isVerksamhetShowing">
                     <div class="col-xs-12">
                         <business-filter></business-filter>
