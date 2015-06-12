@@ -323,20 +323,7 @@ describe('Tests for directive button-filter', function () {
             innerScope.makeSelection();
 
             //then
-            expect(innerScope.showDateValidationError).toBeFalsy("First showDateValidationError wasn't true as expected");
-
-            //Test with just month
-            fromDate = moment("2013-10").utc().local();
-
-            //given
-            innerScope.timeIntervalChecked = true;
-            businessFilter.fromDate = fromDate.toDate();
-
-            //when
-            innerScope.makeSelection();
-
-            //then
-            expect(innerScope.showDateValidationError).toBeFalsy("Second showDateValidationError wasn't true as expected");
+            expect(innerScope.showDateValidationError).toBeFalsy("showDateValidationError wasn't true as expected");
         });
 
         it("will not pass validation if to date is before the from date", function() {
