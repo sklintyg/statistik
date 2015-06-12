@@ -22,12 +22,15 @@ import org.junit.Test;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.SimpleKonDataRow;
 import se.inera.statistics.service.report.model.SimpleKonResponse;
+import se.inera.statistics.web.model.ChartCategory;
 import se.inera.statistics.web.model.ChartData;
 import se.inera.statistics.web.model.NamedData;
 import se.inera.statistics.web.model.SimpleDetailsData;
 import se.inera.statistics.web.model.TableData;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -38,7 +41,7 @@ public class GroupedSjukfallWithLandstingSortingConverterTest {
     @Test
     public void convertTest() {
         //Given
-        GroupedSjukfallWithLandstingSortingConverter converter = new GroupedSjukfallWithLandstingSortingConverter("Vårdenhet");
+        GroupedSjukfallWithLandstingSortingConverter converter = new GroupedSjukfallWithLandstingSortingConverter("Vårdenhet", Collections.<String>emptyList());
         List<SimpleKonDataRow> businessRows = new ArrayList<>();
         businessRows.add(new SimpleKonDataRow("enhet1", 12, 13));
         businessRows.add(new SimpleKonDataRow("enhet2", 20, 30));
@@ -64,11 +67,11 @@ public class GroupedSjukfallWithLandstingSortingConverterTest {
 
         //STATISTIK-1034: Chart sorted by highest bar
         ChartData chartData = result.getChartData();
-        final List<String> categories = chartData.getCategories();
+        final List<ChartCategory> categories = chartData.getCategories();
         assertEquals(3, categories.size());
-        assertEquals("enhet2", categories.get(0));
-        assertEquals("enhet3", categories.get(1));
-        assertEquals("enhet1", categories.get(2));
+        assertEquals("enhet2", categories.get(0).getName());
+        assertEquals("enhet3", categories.get(1).getName());
+        assertEquals("enhet1", categories.get(2).getName());
     }
 
     // CHECKSTYLE:ON MagicNumber

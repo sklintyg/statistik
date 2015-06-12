@@ -257,7 +257,7 @@
                                             </thead>
                                             <tbody class="table-condensed">
                                             <tr data-ng-repeat="row in rows" title="{{row.name}}">
-                                                <td class="scrollable headcol"><span class="headcol-name"
+                                                <td class="scrollable headcol"><span class="headcol-name" ng-class="{bold: row.marked}"
                                                                                      bindonce="row.name"></span></td>
                                                 <td class="scrollable"
                                                     data-ng-repeat="fieldData in row.data track by $index"
@@ -287,7 +287,7 @@
                     </thead>
                     <tbody>
                         <tr data-ng-repeat="row in printTable.rows">
-                            <td bindonce="row.name"></td>
+                            <td ng-class="{bold: row.marked}" bindonce="row.name"></td>
                             <td data-ng-repeat="fieldData in row.data track by $index" bindonce="fieldData | thousandseparated"></td>
                         </tr>
                     </tbody>

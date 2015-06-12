@@ -176,7 +176,7 @@ angular.module('StatisticsApp').controller('overviewCtrl', [ '$scope', '$rootSco
                 }
             ];
             var categories = _.map(chartData, function (e) {
-                return e.name;
+                return {name: e.name};
             });
             var chartOptions = chartFactory.getHighChartConfigBase(categories, series);
             chartOptions.chart.type = 'column';

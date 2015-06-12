@@ -177,9 +177,20 @@ public class ProtectedLandstingService {
     @PostAuthorize(value = "@protectedLandstingService.userAccess(#request)")
     public Response getNumberOfCasesPerEnhetLandsting(@Context HttpServletRequest request, @QueryParam("landstingfilter") String filterHash, @PathParam("csv") String csv) {
         final FilterSettings filterSettings = filterHandler.getFilterForLandsting(request, filterHash, 12);
+        final List<String> connectedEnhetIds = getConnectedEnhetIds(request);
         SimpleKonResponse<SimpleKonDataRow> casesPerEnhet = warehouse.getCasesPerEnhetLandsting(filterSettings);
-        SimpleDetailsData result = new GroupedSjukfallWithLandstingSortingConverter("Vårdenhet").convert(casesPerEnhet, filterSettings);
+        SimpleDetailsData result = new GroupedSjukfallWithLandstingSortingConverter("Vårdenhet", connectedEnhetIds).convert(casesPerEnhet, filterSettings);
         return getResponse(result, csv);
+    }
+
+    private List<String> getConnectedEnhetIds(@Context HttpServletRequest request) {
+        final List<Verksamhet> businesses = loginServiceUtil.getLoginInfo(request).getBusinesses();
+        return Lists.transform(businesses, new Function<Verksamhet, String>() {
+            @Override
+            public String apply(Verksamhet verksamhet) {
+                return verksamhet.getId();
+            }
+        });
     }
 
     @GET
@@ -191,8 +202,9 @@ public class ProtectedLandstingService {
         final FilterSettings filterSettings = filterHandler.getFilterForLandsting(request, filterHash, 12);
         SimpleKonResponse<SimpleKonDataRow> casesPerEnhet = warehouse.getCasesPerPatientsPerEnhetLandsting(filterSettings);
         final String vgIdForLoggedInUser = loginServiceUtil.getSelectedVgIdForLoggedInUser(request);
+        final List<String> connectedEnhetIds = getConnectedEnhetIds(request);
         final List<LandstingEnhet> landstingEnhets = landstingEnhetHandler.getAllLandstingEnhetsForVardgivare(vgIdForLoggedInUser);
-        SimpleDetailsData result = new SjukfallPerPatientsPerEnhetConverter(landstingEnhets).convert(casesPerEnhet, filterSettings, null);
+        SimpleDetailsData result = new SjukfallPerPatientsPerEnhetConverter(landstingEnhets, connectedEnhetIds).convert(casesPerEnhet, filterSettings, null);
         return getResponse(result, csv);
     }
 

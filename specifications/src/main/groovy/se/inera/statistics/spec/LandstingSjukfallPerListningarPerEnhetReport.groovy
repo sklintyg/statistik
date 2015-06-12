@@ -29,10 +29,13 @@ abstract class LandstingSjukfallPerListningarPerEnhetReport extends Rapport {
         executeWithReport(report)
         def index = report.chartData.categories.findIndexOf { item ->
             println("item:" + item + " ; matcher: " + vårdenhet)
-            item.contains(vårdenhet)
+            item.name.contains(vårdenhet)
         }
-        def series = report.chartData.series[0]
-        antalSjukfallPerTusenListningar = index < 0 ? -1 : series.data[index]
+        if (index >= 0) {
+            markerad = report.chartData.categories[index].marked
+            def series = report.chartData.series[0]
+            antalSjukfallPerTusenListningar = series.data[index]
+        }
     }
 
     void executeTabell(report) {
@@ -47,6 +50,7 @@ abstract class LandstingSjukfallPerListningarPerEnhetReport extends Rapport {
             antalSjukfall = row.data[0]
             antalListningar = row.data[1]
             antalSjukfallPerTusenListningar = row.data[2]
+            markerad = row.marked
         }
     }
 

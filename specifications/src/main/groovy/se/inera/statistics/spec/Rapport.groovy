@@ -12,6 +12,7 @@ abstract class Rapport {
     def män
     def kvinnor
     def totalt
+    Boolean markerad
     boolean vårdgivarnivå
     def filterKapitel
     def filterAvsnitt
@@ -49,6 +50,13 @@ abstract class Rapport {
 
     def meddelande() {
         return meddelande
+    }
+
+    def markerad() {
+        if (markerad == null) {
+            return null
+        }
+        return markerad ? "ja" : "nej"
     }
 
     void setVårdgivarnivå(boolean vårdgivarnivå) {
@@ -111,6 +119,7 @@ abstract class Rapport {
         totalt = -1
         män = -1
         kvinnor = -1
+        markerad = null
         filterKapitel = null
         filterAvsnitt = null
         filterKategorier = null

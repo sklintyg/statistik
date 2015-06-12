@@ -256,7 +256,7 @@ function ($scope, $rootScope, $window, $timeout, statisticsData, businessFilter,
         ];
 
         var categories = _.map(chartData, function (e) {
-            return e.name;
+            return {name: e.name};
         });
 
         chartOptions = chartFactory.getHighChartConfigBase(categories, series);

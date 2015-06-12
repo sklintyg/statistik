@@ -23,6 +23,7 @@ import se.inera.statistics.service.landsting.persistance.landstingenhet.Landstin
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.SimpleKonDataRow;
 import se.inera.statistics.service.report.model.SimpleKonResponse;
+import se.inera.statistics.web.model.ChartCategory;
 import se.inera.statistics.web.model.ChartData;
 import se.inera.statistics.web.model.ChartSeries;
 import se.inera.statistics.web.model.NamedData;
@@ -41,8 +42,10 @@ public class SjukfallPerPatientsPerEnhetConverter {
 
     private final String seriesNameTemplate = "%1$s";
     private final Map<String, Integer> listningarPerEnhet;
+    private final List<String> connectedEnhetIds;
 
-    public SjukfallPerPatientsPerEnhetConverter(List<LandstingEnhet> landstingEnhets) {
+    public SjukfallPerPatientsPerEnhetConverter(List<LandstingEnhet> landstingEnhets, List<String> connectedEnhetIds) {
+        this.connectedEnhetIds = connectedEnhetIds;
         if (landstingEnhets == null) {
             listningarPerEnhet = Collections.emptyMap();
             return;
@@ -86,7 +89,7 @@ public class SjukfallPerPatientsPerEnhetConverter {
                 final float thousand = 1000F;
                 final float sjukfallPerThousandListadePatienter = antalSjukfall / (listadePatienter / thousand);
                 final String sjukfallPerThousandListadePatienterRounded = roundToTwoDecimalsAndFormatToString(sjukfallPerThousandListadePatienter);
-                data.add(new NamedData(seriesName, Arrays.asList(antalSjukfall, listadePatienter, sjukfallPerThousandListadePatienterRounded)));
+                data.add(new NamedData(seriesName, Arrays.asList(antalSjukfall, listadePatienter, sjukfallPerThousandListadePatienterRounded), isMarked(row)));
             }
         }
         return TableData.createWithSingleHeadersRow(data, Arrays.asList("Vårdenhet", "Antal sjukfall", "Antal listningar", "Antal sjukfall per 1000 listningar"));
@@ -104,7 +107,7 @@ public class SjukfallPerPatientsPerEnhetConverter {
                 return (o2.getMale() + o2.getFemale()) - (o1.getMale() + o1.getFemale());
             }
         });
-        final ArrayList<String> categories = new ArrayList<>();
+        final ArrayList<ChartCategory> categories = new ArrayList<>();
         final List<Integer> summedData = casesPerMonth.getSummedData();
         final List<Number> filteredSummedData = new ArrayList<>();
         for (int i = 0; i < casesPerMonth.getRows().size(); i++) {
@@ -113,7 +116,7 @@ public class SjukfallPerPatientsPerEnhetConverter {
             final Integer listadePatienter = listningarPerEnhet.get(enhetId);
             if (listadePatienter != null) {
                 final String seriesName = String.format(seriesNameTemplate, dataRow.getName());
-                categories.add(seriesName);
+                categories.add(new ChartCategory(seriesName, isMarked(dataRow)));
                 final Integer antalSjukfall = summedData.get(i);
                 final float thousand = 1000F;
                 final float sjukfallPerThousandListadePatienter = antalSjukfall / (listadePatienter / thousand);
@@ -126,6 +129,11 @@ public class SjukfallPerPatientsPerEnhetConverter {
         series.add(new ChartSeries("Antal sjukfall per 1000 listningar", filteredSummedData, false));
 
         return new ChartData(series, categories);
+    }
+
+    private boolean isMarked(SimpleKonDataRow row) {
+        final Object extras = row.getExtras();
+        return extras instanceof String && connectedEnhetIds.contains(extras);
     }
 
 }

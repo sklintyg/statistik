@@ -22,6 +22,7 @@ import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.SimpleKonDataRow;
 import se.inera.statistics.service.report.model.SimpleKonResponse;
+import se.inera.statistics.web.model.ChartCategory;
 import se.inera.statistics.web.model.ChartData;
 import se.inera.statistics.web.model.ChartSeries;
 import se.inera.statistics.web.model.NamedData;
@@ -57,10 +58,10 @@ public class SjukfallPerSexConverter {
     }
 
     private ChartData convertToChartData(SimpleKonResponse<SimpleKonDataRow> casesPerMonth) {
-        final ArrayList<String> categories = new ArrayList<>();
-        categories.add("Samtliga län");
+        final ArrayList<ChartCategory> categories = new ArrayList<>();
+        categories.add(new ChartCategory("Samtliga län"));
         for (SimpleKonDataRow casesPerMonthRow : casesPerMonth.getRows()) {
-            categories.add(casesPerMonthRow.getName());
+            categories.add(new ChartCategory(casesPerMonthRow.getName()));
         }
 
         final ArrayList<ChartSeries> series = new ArrayList<>();

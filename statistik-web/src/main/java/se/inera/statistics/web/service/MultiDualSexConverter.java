@@ -18,10 +18,13 @@
  */
 package se.inera.statistics.web.service;
 
+import com.google.common.base.Function;
+import com.google.common.collect.Lists;
 import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.report.model.KonDataResponse;
 import se.inera.statistics.service.report.model.KonDataRow;
 import se.inera.statistics.service.report.model.Range;
+import se.inera.statistics.web.model.ChartCategory;
 import se.inera.statistics.web.model.ChartData;
 import se.inera.statistics.web.model.ChartSeries;
 import se.inera.statistics.web.model.DualSexStatisticsData;
@@ -47,7 +50,13 @@ public abstract class MultiDualSexConverter<T extends KonDataResponse> {
 
     private ChartData extractChartData(T data, Kon sex, String seriesNameTemplate) {
         List<ChartSeries> series = getChartSeries(data, sex, seriesNameTemplate);
-        return new ChartData(series, data.getPeriods());
+        final List<ChartCategory> categories = Lists.transform(data.getPeriods(), new Function<String, ChartCategory>() {
+            @Override
+            public ChartCategory apply(String period) {
+                return new ChartCategory(period);
+            }
+        });
+        return new ChartData(series, categories);
     }
 
     private List<ChartSeries> getChartSeries(T data, Kon sex, String seriesNameTemplate) {

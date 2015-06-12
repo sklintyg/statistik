@@ -6,7 +6,8 @@ abstract class LanRapport extends Rapport {
     String län
 
     public void executeDiagram(report) {
-        def index = report.chartData.categories.findIndexOf { item -> item.equals(län) }
+        def index = report.chartData.categories.findIndexOf { item -> item.name.equals(län) }
+        markerad = report.chartData.categories[index].marked
         def male = report.chartData.series.find { item -> item.name.contains(period + " män") }
         män = male.data[index]
         def female = report.chartData.series.find { item -> item.name.contains(period + " kvinnor") }
@@ -22,6 +23,7 @@ abstract class LanRapport extends Rapport {
         totalt = row.data[totalIndex]
         kvinnor = row.data[womenIndex]
         män = row.data[menIndex]
+        markerad = row.marked
     }
 
     def getReport() {

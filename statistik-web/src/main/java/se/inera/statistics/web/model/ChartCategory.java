@@ -18,24 +18,32 @@
  */
 package se.inera.statistics.web.model;
 
-import java.util.List;
 
-public class ChartData {
+public class ChartCategory {
 
-    private final List<ChartSeries> series;
-    private final List<ChartCategory> categories;
+    private final String name;
+    private final boolean marked;
 
-    public ChartData(List<ChartSeries> series, List<ChartCategory> categories) {
-        this.series = series;
-        this.categories = categories;
+    public ChartCategory(String name, boolean marked) {
+        this.name = name;
+        this.marked = marked;
     }
 
-    public List<ChartSeries> getSeries() {
-        return series;
+    public ChartCategory(String name) {
+        this(name, false);
     }
 
-    public List<ChartCategory> getCategories() {
-        return categories;
+    public String getName() {
+        return name;
+    }
+
+    public boolean isMarked() {
+        return marked;
+    }
+
+    @Override
+    public String toString() {
+        return name;
     }
 
 }

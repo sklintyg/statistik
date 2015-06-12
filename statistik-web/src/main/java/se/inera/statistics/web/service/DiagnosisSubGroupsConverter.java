@@ -29,6 +29,7 @@ import se.inera.statistics.service.report.model.KonDataRow;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.SimpleKonDataRow;
 import se.inera.statistics.service.report.model.SimpleKonResponse;
+import se.inera.statistics.web.model.ChartCategory;
 import se.inera.statistics.web.model.ChartData;
 import se.inera.statistics.web.model.ChartSeries;
 import se.inera.statistics.web.model.DualSexStatisticsData;
@@ -66,7 +67,13 @@ public class DiagnosisSubGroupsConverter {
 
     private ChartData extractChartData(DiagnosgruppResponse data, List<Integer> topIndexes, Kon sex) {
         List<ChartSeries> topColumns = getTopColumns(data, topIndexes, sex);
-        return new ChartData(topColumns, data.getPeriods());
+        final List<ChartCategory> categories = Lists.transform(data.getPeriods(), new Function<String, ChartCategory>() {
+            @Override
+            public ChartCategory apply(String period) {
+                return new ChartCategory(period);
+            }
+        });
+        return new ChartData(topColumns, categories);
     }
 
     private List<ChartSeries> getTopColumns(KonDataResponse data, List<Integer> topIndexes, Kon sex) {

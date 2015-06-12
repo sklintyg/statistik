@@ -29,8 +29,11 @@ import java.util.List;
 
 public class GroupedSjukfallWithLandstingSortingConverter extends SimpleDualSexConverter {
 
-    public GroupedSjukfallWithLandstingSortingConverter(String tableGroupTitle) {
+    private final List<String> connectedEnhetIds;
+
+    public GroupedSjukfallWithLandstingSortingConverter(String tableGroupTitle, List<String> connectedEnhetIds) {
         super(tableGroupTitle, false, "%1$s");
+        this.connectedEnhetIds = connectedEnhetIds;
     }
 
     @Override
@@ -41,7 +44,9 @@ public class GroupedSjukfallWithLandstingSortingConverter extends SimpleDualSexC
                 return o1.getName().compareToIgnoreCase(o2.getName());
             }
         });
-        return super.convertToTableData(list);
+        final TableData tableData = super.convertToTableData(list);
+
+        return tableData;
     }
 
     @Override
@@ -54,4 +59,11 @@ public class GroupedSjukfallWithLandstingSortingConverter extends SimpleDualSexC
         });
         return super.convertToChartData(casesPerMonth);
     }
+
+    @Override
+    protected boolean isMarked(SimpleKonDataRow row) {
+        final Object extras = row.getExtras();
+        return extras instanceof String && connectedEnhetIds.contains(extras);
+    }
+
 }

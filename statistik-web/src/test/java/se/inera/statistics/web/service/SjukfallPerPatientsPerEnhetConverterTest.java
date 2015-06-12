@@ -19,11 +19,11 @@
 package se.inera.statistics.web.service;
 
 import org.junit.Test;
-import org.mockito.Mockito;
 import se.inera.statistics.service.landsting.persistance.landstingenhet.LandstingEnhet;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.SimpleKonDataRow;
 import se.inera.statistics.service.report.model.SimpleKonResponse;
+import se.inera.statistics.web.model.ChartCategory;
 import se.inera.statistics.web.model.ChartData;
 import se.inera.statistics.web.model.NamedData;
 import se.inera.statistics.web.model.SimpleDetailsData;
@@ -42,7 +42,7 @@ public class SjukfallPerPatientsPerEnhetConverterTest {
     public void testConvertNullLandstingsEnhetsInputGivesEmptyOutput() throws Exception {
         //Given
         final List<LandstingEnhet> landstingEnhets = null;
-        final SjukfallPerPatientsPerEnhetConverter sjukfallPerPatientsPerEnhetConverter = new SjukfallPerPatientsPerEnhetConverter(landstingEnhets);
+        final SjukfallPerPatientsPerEnhetConverter sjukfallPerPatientsPerEnhetConverter = new SjukfallPerPatientsPerEnhetConverter(landstingEnhets, Collections.<String>emptyList());
 
         //When
         final ArrayList<SimpleKonDataRow> simpleKonDataRows = new ArrayList<>();
@@ -59,7 +59,7 @@ public class SjukfallPerPatientsPerEnhetConverterTest {
     public void testConvertEmptyLandstingsEnhetsInputGivesEmptyOutput() throws Exception {
         //Given
         final List<LandstingEnhet> landstingEnhets = Collections.emptyList();
-        final SjukfallPerPatientsPerEnhetConverter sjukfallPerPatientsPerEnhetConverter = new SjukfallPerPatientsPerEnhetConverter(landstingEnhets);
+        final SjukfallPerPatientsPerEnhetConverter sjukfallPerPatientsPerEnhetConverter = new SjukfallPerPatientsPerEnhetConverter(landstingEnhets, Collections.<String>emptyList());
 
         //When
         final ArrayList<SimpleKonDataRow> simpleKonDataRows = new ArrayList<>();
@@ -76,7 +76,7 @@ public class SjukfallPerPatientsPerEnhetConverterTest {
     public void testConvertNonLandstingsEnhetsInputGivesNonEmptyOutputWhereEnhetsNotInListAreRemoved() throws Exception {
         //Given
         final List<LandstingEnhet> landstingEnhets = Arrays.asList(new LandstingEnhet(2L, "HSA2", 2));
-        final SjukfallPerPatientsPerEnhetConverter sjukfallPerPatientsPerEnhetConverter = new SjukfallPerPatientsPerEnhetConverter(landstingEnhets);
+        final SjukfallPerPatientsPerEnhetConverter sjukfallPerPatientsPerEnhetConverter = new SjukfallPerPatientsPerEnhetConverter(landstingEnhets, Collections.<String>emptyList());
 
         //When
         final ArrayList<SimpleKonDataRow> simpleKonDataRows = new ArrayList<>();
@@ -94,7 +94,7 @@ public class SjukfallPerPatientsPerEnhetConverterTest {
     public void testConvertEnhetsWithZeroPatientsAreNotPartOfResult() throws Exception {
         //Given
         final List<LandstingEnhet> landstingEnhets = Arrays.asList(new LandstingEnhet(1L, "HSA1", 1), new LandstingEnhet(2L, "HSA2", 0));
-        final SjukfallPerPatientsPerEnhetConverter sjukfallPerPatientsPerEnhetConverter = new SjukfallPerPatientsPerEnhetConverter(landstingEnhets);
+        final SjukfallPerPatientsPerEnhetConverter sjukfallPerPatientsPerEnhetConverter = new SjukfallPerPatientsPerEnhetConverter(landstingEnhets, Collections.<String>emptyList());
 
         //When
         final ArrayList<SimpleKonDataRow> simpleKonDataRows = new ArrayList<>();
@@ -112,7 +112,7 @@ public class SjukfallPerPatientsPerEnhetConverterTest {
     public void testConvertEnhetsWithLessThanZeroPatientsAreNotPartOfResult() throws Exception {
         //Given
         final List<LandstingEnhet> landstingEnhets = Arrays.asList(new LandstingEnhet(1L, "HSA1", -1), new LandstingEnhet(2L, "HSA2", 3));
-        final SjukfallPerPatientsPerEnhetConverter sjukfallPerPatientsPerEnhetConverter = new SjukfallPerPatientsPerEnhetConverter(landstingEnhets);
+        final SjukfallPerPatientsPerEnhetConverter sjukfallPerPatientsPerEnhetConverter = new SjukfallPerPatientsPerEnhetConverter(landstingEnhets, Collections.<String>emptyList());
 
         //When
         final ArrayList<SimpleKonDataRow> simpleKonDataRows = new ArrayList<>();
@@ -130,7 +130,7 @@ public class SjukfallPerPatientsPerEnhetConverterTest {
     public void testConvertEnhetsWithUnsetNumberOfPatientsAreNotPartOfResult() throws Exception {
         //Given
         final List<LandstingEnhet> landstingEnhets = Arrays.asList(new LandstingEnhet(1L, "HSA1", null), new LandstingEnhet(2L, "HSA2", 3));
-        final SjukfallPerPatientsPerEnhetConverter sjukfallPerPatientsPerEnhetConverter = new SjukfallPerPatientsPerEnhetConverter(landstingEnhets);
+        final SjukfallPerPatientsPerEnhetConverter sjukfallPerPatientsPerEnhetConverter = new SjukfallPerPatientsPerEnhetConverter(landstingEnhets, Collections.<String>emptyList());
 
         //When
         final ArrayList<SimpleKonDataRow> simpleKonDataRows = new ArrayList<>();
@@ -148,7 +148,7 @@ public class SjukfallPerPatientsPerEnhetConverterTest {
     public void testConvertResultIsUsingTwoDecimalsForBothTableAndChart() throws Exception {
         //Given
         final List<LandstingEnhet> landstingEnhets = Arrays.asList(new LandstingEnhet(1L, "HSA1", 3000));
-        final SjukfallPerPatientsPerEnhetConverter sjukfallPerPatientsPerEnhetConverter = new SjukfallPerPatientsPerEnhetConverter(landstingEnhets);
+        final SjukfallPerPatientsPerEnhetConverter sjukfallPerPatientsPerEnhetConverter = new SjukfallPerPatientsPerEnhetConverter(landstingEnhets, Collections.<String>emptyList());
 
         //When
         final ArrayList<SimpleKonDataRow> simpleKonDataRows = new ArrayList<>();
@@ -169,7 +169,7 @@ public class SjukfallPerPatientsPerEnhetConverterTest {
     public void testConvertEnhetsHasCorrectSortingSTATISTIK1034() throws Exception {
         //Given
         final List<LandstingEnhet> landstingEnhets = Arrays.asList(new LandstingEnhet(1L, "HSA1", 1), new LandstingEnhet(2L, "HSA2", 1));
-        final SjukfallPerPatientsPerEnhetConverter sjukfallPerPatientsPerEnhetConverter = new SjukfallPerPatientsPerEnhetConverter(landstingEnhets);
+        final SjukfallPerPatientsPerEnhetConverter sjukfallPerPatientsPerEnhetConverter = new SjukfallPerPatientsPerEnhetConverter(landstingEnhets, Collections.<String>emptyList());
 
         //When
         final ArrayList<SimpleKonDataRow> simpleKonDataRows = new ArrayList<>();
@@ -188,10 +188,10 @@ public class SjukfallPerPatientsPerEnhetConverterTest {
 
         //STATISTIK-1034: Chart sorted by highest bar
         ChartData chartData = result.getChartData();
-        final List<String> categories = chartData.getCategories();
+        final List<ChartCategory> categories = chartData.getCategories();
         assertEquals(2, categories.size());
-        assertEquals("tva", categories.get(0));
-        assertEquals("ett", categories.get(1));
+        assertEquals("tva", categories.get(0).getName());
+        assertEquals("ett", categories.get(1).getName());
 
     }
 

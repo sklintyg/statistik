@@ -32,8 +32,9 @@ angular.module('StatisticsApp.charts', ['underscore'])
                             return this.value.length > 30 ? this.value.substring(0,30) + "..." : this.value;
                         }
                     },
-                    categories : _.map(chartCategories, function(name) {
-                        return ControllerCommons.htmlsafe(name);
+                    categories : _.map(chartCategories, function(category) {
+                        var name = ControllerCommons.htmlsafe(category.name);
+                        return category.marked ? "<b>" + name + "</b>" : name;
                     }),
                     title: {
                         align: 'high',

@@ -22,6 +22,7 @@ import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.SimpleKonDataRow;
 import se.inera.statistics.service.report.model.SimpleKonResponse;
+import se.inera.statistics.web.model.ChartCategory;
 import se.inera.statistics.web.model.ChartData;
 import se.inera.statistics.web.model.ChartSeries;
 import se.inera.statistics.web.model.NamedData;
@@ -64,17 +65,21 @@ public class SimpleDualSexConverter {
             final Integer female = row.getFemale();
             final Integer male = row.getMale();
             final String seriesName = String.format(seriesNameTemplate, row.getName());
-            data.add(new NamedData(seriesName, Arrays.asList(female + male, female, male)));
+            data.add(new NamedData(seriesName, Arrays.asList(female + male, female, male), isMarked(row)));
         }
 
         return TableData.createWithSingleHeadersRow(data, Arrays.asList(tableGroupTitle, "Antal sjukfall totalt", "Antal sjukfall för kvinnor", "Antal sjukfall för män"));
     }
 
+    protected boolean isMarked(SimpleKonDataRow row) {
+        return false;
+    }
+
     protected ChartData convertToChartData(SimpleKonResponse<SimpleKonDataRow> casesPerMonth) {
-        final ArrayList<String> categories = new ArrayList<>();
+        final ArrayList<ChartCategory> categories = new ArrayList<>();
         for (SimpleKonDataRow casesPerMonthRow : casesPerMonth.getRows()) {
             final String seriesName = String.format(seriesNameTemplate, casesPerMonthRow.getName());
-            categories.add(seriesName);
+            categories.add(new ChartCategory(seriesName, isMarked(casesPerMonthRow)));
         }
 
         final ArrayList<ChartSeries> series = new ArrayList<>();

@@ -25,7 +25,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import org.springframework.beans.factory.annotation.Autowired;
 import se.inera.statistics.service.processlog.Enhet;
 import se.inera.statistics.service.processlog.EnhetManager;
 import se.inera.statistics.service.report.model.Range;
@@ -42,10 +41,9 @@ import se.inera.statistics.service.warehouse.query.SjukfallQuery;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.Map;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyInt;
 import static org.mockito.Matchers.eq;
@@ -109,7 +107,6 @@ public class WarehouseServiceTest {
         final Filter filter = new Filter(predicate1, enheter, diagnoser);
         final Range range = new Range();
         final FilterSettings filterSettings = new FilterSettings(filter, range);
-        final Aisle aisle = Mockito.mock(Aisle.class);
         final ArrayList<SimpleKonDataRow> rows = new ArrayList<>();
         rows.add(new SimpleKonDataRow("ABC", 0, 0, 1));
         rows.add(new SimpleKonDataRow("abc", 0, 0, 2));
@@ -138,7 +135,6 @@ public class WarehouseServiceTest {
         final Filter filter = new Filter(predicate1, enheter, diagnoser);
         final Range range = new Range();
         final FilterSettings filterSettings = new FilterSettings(filter, range);
-        final Aisle aisle = Mockito.mock(Aisle.class);
         final ArrayList<SimpleKonDataRow> rows = new ArrayList<>();
         rows.add(new SimpleKonDataRow("ABC", 0, 0, 1));
         rows.add(new SimpleKonDataRow("abc", 0, 0, 2));
