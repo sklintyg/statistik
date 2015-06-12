@@ -163,7 +163,10 @@ var stMessages = {
         //file upload
         'upload.filesize.error': 'Filen är för stor. Max tillåten storlek är {{maxFilesize}}MB',
         'upload.filetype.error': 'Felaktig filtyp. Formaten som stöds är .xls och .xlsx',
-
+        'alert.upload.failed': 'Uppladdningen misslyckades!',
+        'alert.upload.success': 'Uppladdningen lyckades!',
+        'info.upload.dropfile.here': 'Släpp fil här för att ladda upp eller ',
+        'info.upload.dropfile.here.add': 'lägg till',
 
     },
     'en': {

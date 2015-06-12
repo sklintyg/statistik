@@ -1949,6 +1949,13 @@ li.subMenuItem.active .active-menu-item { display: block;  }
     background-color: #E6E6E6;}
 
 /*Styling for filuppladdning*/
+.jumbotron.dropzone {
+    margin-bottom: 0px;
+}
+div.dropzone a{
+    color:dimgrey !important;
+    text-decoration: underline;
+}
 .dropzone, .dropzone-drag {
     border: dashed;
     border-color: grey;

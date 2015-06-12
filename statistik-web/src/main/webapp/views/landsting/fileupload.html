@@ -33,29 +33,43 @@
 
                     <div ng-show="uploadCompleted && !uploadSuccess">
                         <h5>
-                            Uppladdningen misslyckades!
+                            <span message
+                                  key="alert.upload.failed"></span>
                         </h5>
                         <h5>{{uploadResultMessage}}</h5>
                         <h5>
-                            Släpp fil här för att ladda upp eller tryck för att lägga till
+                            <span message
+                                  key="info.upload.dropfile.here"></span>
+                            <a>
+                                <span message key="info.upload.dropfile.here.add"></span>
+                            </a>
                         </h5>
                     </div>
+
                     <h5 ng-show="!uploading && !uploadCompleted">
-                        Släpp fil här för att ladda upp eller tryck för att lägga till
+                        <span message
+                              key="info.upload.dropfile.here"></span>
+                        <a>
+                            <span message key="info.upload.dropfile.here.add"></span>
+                        </a>
                     </h5>
-                    <!-- Block -->
 
                     <div ng-show="uploadCompleted && uploadSuccess">
-                        <h5>Uppladdningen lyckades!</h5>
+                        <h5><span message
+                                  key="alert.upload.success"></span></h5>
                         <h5>
-                            Släpp fil här för att ladda upp eller tryck för att lägga till
+                            <span message
+                                  key="info.upload.dropfile.here"></span>
+                            <a>
+                                <span message key="info.upload.dropfile.here.add"></span>
+                            </a>
                         </h5>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div><b>Senaste uppdatering: </b>{{lastLandstingUpdateMessage}}</div>
+        <div><h2>Senaste uppdatering: </h2>{{lastLandstingUpdateMessage}}</div>
         <br/>
         <br/>
         <div data-ng-show="parsedRows">
