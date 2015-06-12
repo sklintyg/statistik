@@ -273,6 +273,7 @@ angular.module('StatisticsApp').casesPerPatientsPerBusinessConfig = function () 
     };
     conf.chartXAxisTitle = "Vårdenhet";
     conf.chartYAxisTitle = "Antal sjukfall per 1000 listningar";
+    conf.pageHelpText = "help.landsting-enhet-listningar";
     return conf;
 };
 
