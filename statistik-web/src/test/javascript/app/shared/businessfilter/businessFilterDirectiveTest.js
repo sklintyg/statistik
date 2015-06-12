@@ -311,8 +311,8 @@ describe('Tests for directive button-filter', function () {
         });
 
         it("will pass validation if from date is variations of 2013-10", function() {
-            var fromDate = moment("2013-10-01"),
-                inputToDate = moment("2015-01-01");
+            var fromDate = moment("2013-10-01").utc(),
+                inputToDate = moment("2015-01-01").utc();
 
             //given
             innerScope.timeIntervalChecked = true;
@@ -326,7 +326,7 @@ describe('Tests for directive button-filter', function () {
             expect(innerScope.showDateValidationError).toBeFalsy("First showDateValidationError wasn't true as expected");
 
             //Test with just month
-            fromDate = moment("2013-10");
+            fromDate = moment("2013-10").utc();
 
             //given
             innerScope.timeIntervalChecked = true;
