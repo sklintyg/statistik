@@ -24,7 +24,10 @@ import se.inera.statistics.service.landsting.persistance.landstingenhet.Landstin
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.SimpleKonDataRow;
 import se.inera.statistics.service.report.model.SimpleKonResponse;
+import se.inera.statistics.web.model.ChartData;
+import se.inera.statistics.web.model.NamedData;
 import se.inera.statistics.web.model.SimpleDetailsData;
+import se.inera.statistics.web.model.TableData;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -160,6 +163,36 @@ public class SjukfallPerPatientsPerEnhetConverterTest {
         
         assertEquals("3.33", result.getTableData().getRows().get(0).getData().get(2));
         assertEquals(3.33, result.getChartData().getSeries().get(0).getData().get(0));
+    }
+
+    @Test
+    public void testConvertEnhetsHasCorrectSortingSTATISTIK1034() throws Exception {
+        //Given
+        final List<LandstingEnhet> landstingEnhets = Arrays.asList(new LandstingEnhet(1L, "HSA1", 1), new LandstingEnhet(2L, "HSA2", 1));
+        final SjukfallPerPatientsPerEnhetConverter sjukfallPerPatientsPerEnhetConverter = new SjukfallPerPatientsPerEnhetConverter(landstingEnhets);
+
+        //When
+        final ArrayList<SimpleKonDataRow> simpleKonDataRows = new ArrayList<>();
+        simpleKonDataRows.add(new SimpleKonDataRow("ett", 1, 2, "HSA1"));
+        simpleKonDataRows.add(new SimpleKonDataRow("tva", 10, 20, "HSA2"));
+        final SimpleKonResponse<SimpleKonDataRow> casesPerMonth = new SimpleKonResponse<>(simpleKonDataRows);
+        final SimpleDetailsData result = sjukfallPerPatientsPerEnhetConverter.convert(casesPerMonth, new FilterSettings(Filter.empty(), Range.createForLastMonthsIncludingCurrent(12)), "");
+
+        //Then
+        //STATISTIK-1034: Table sorted by name
+        TableData tableData = result.getTableData();
+        List<NamedData> tableRows = tableData.getRows();
+        assertEquals(2, tableRows.size());
+        assertEquals("ett", tableRows.get(0).getName());
+        assertEquals("tva", tableRows.get(1).getName());
+
+        //STATISTIK-1034: Chart sorted by highest bar
+        ChartData chartData = result.getChartData();
+        final List<String> categories = chartData.getCategories();
+        assertEquals(2, categories.size());
+        assertEquals("tva", categories.get(0));
+        assertEquals("ett", categories.get(1));
+
     }
 
 }

@@ -58,12 +58,6 @@ public class SjukfallPerPatientsPerEnhetConverter {
     }
 
     public SimpleDetailsData convert(SimpleKonResponse<SimpleKonDataRow> casesPerMonth, FilterSettings filterSettings, String message) {
-        Collections.sort(casesPerMonth.getRows(), new Comparator<SimpleKonDataRow>() {
-            @Override
-            public int compare(SimpleKonDataRow o1, SimpleKonDataRow o2) {
-                return o1.getName().compareTo(o2.getName());
-            }
-        });
         TableData tableData = convertToTableData(casesPerMonth.getRows());
         ChartData chartData = convertToChartData(casesPerMonth);
         final Filter filter = filterSettings.getFilter();
@@ -74,6 +68,12 @@ public class SjukfallPerPatientsPerEnhetConverter {
     }
 
     private TableData convertToTableData(List<SimpleKonDataRow> list) {
+        Collections.sort(list, new Comparator<SimpleKonDataRow>() {
+            @Override
+            public int compare(SimpleKonDataRow o1, SimpleKonDataRow o2) {
+                return o1.getName().compareToIgnoreCase(o2.getName());
+            }
+        });
         List<NamedData> data = new ArrayList<>();
         for (SimpleKonDataRow row : list) {
             final String enhetId = (String) row.getExtras();
@@ -98,6 +98,12 @@ public class SjukfallPerPatientsPerEnhetConverter {
     }
 
     private ChartData convertToChartData(SimpleKonResponse<SimpleKonDataRow> casesPerMonth) {
+        Collections.sort(casesPerMonth.getRows(), new Comparator<SimpleKonDataRow>() {
+            @Override
+            public int compare(SimpleKonDataRow o1, SimpleKonDataRow o2) {
+                return (o2.getMale() + o2.getFemale()) - (o1.getMale() + o1.getFemale());
+            }
+        });
         final ArrayList<String> categories = new ArrayList<>();
         final List<Integer> summedData = casesPerMonth.getSummedData();
         final List<Number> filteredSummedData = new ArrayList<>();

@@ -58,7 +58,7 @@ public class SimpleDualSexConverter {
         return new SimpleDetailsData(tableData, chartData, range.toString(), filterResponse, combinedMessage);
     }
 
-    private TableData convertToTableData(List<SimpleKonDataRow> list) {
+    protected TableData convertToTableData(List<SimpleKonDataRow> list) {
         List<NamedData> data = new ArrayList<>();
         for (SimpleKonDataRow row : list) {
             final Integer female = row.getFemale();

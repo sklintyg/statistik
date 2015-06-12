@@ -178,7 +178,7 @@ public class ProtectedLandstingService {
     public Response getNumberOfCasesPerEnhetLandsting(@Context HttpServletRequest request, @QueryParam("landstingfilter") String filterHash, @PathParam("csv") String csv) {
         final FilterSettings filterSettings = filterHandler.getFilterForLandsting(request, filterHash, 12);
         SimpleKonResponse<SimpleKonDataRow> casesPerEnhet = warehouse.getCasesPerEnhetLandsting(filterSettings);
-        SimpleDetailsData result = new GroupedSjukfallConverter("Vårdenhet").convert(casesPerEnhet, filterSettings);
+        SimpleDetailsData result = new GroupedSjukfallWithLandstingSortingConverter("Vårdenhet").convert(casesPerEnhet, filterSettings);
         return getResponse(result, csv);
     }
 
