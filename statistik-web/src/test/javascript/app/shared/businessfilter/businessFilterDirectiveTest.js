@@ -326,7 +326,7 @@ describe('Tests for directive button-filter', function () {
             expect(innerScope.showDateValidationError).toBeFalsy("First showDateValidationError wasn't true as expected");
 
             //Test with just month
-            fromDate = moment("2013-10").utc();
+            fromDate = moment("2013-10").utc().local();
 
             //given
             innerScope.timeIntervalChecked = true;
