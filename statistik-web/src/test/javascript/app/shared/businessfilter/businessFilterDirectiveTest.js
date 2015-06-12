@@ -310,7 +310,7 @@ describe('Tests for directive button-filter', function () {
             expect(innerScope.showDateValidationError).toBeTruthy("showDateValidationError wasn't true as expected");
         });
 
-        xit("will pass validation if from date is variations of 2013-10", function() {
+        it("will pass validation if from date is variations of 2013-10", function() {
             var fromDate = moment("2013-10-01"),
                 inputToDate = moment("2015-01-01");
 
@@ -323,7 +323,7 @@ describe('Tests for directive button-filter', function () {
             innerScope.makeSelection();
 
             //then
-            expect(innerScope.showDateValidationError).toBeFalsy("showDateValidationError wasn't true as expected");
+            expect(innerScope.showDateValidationError).toBeFalsy("First showDateValidationError wasn't true as expected");
 
             //Test with just month
             fromDate = moment("2013-10");
@@ -336,7 +336,7 @@ describe('Tests for directive button-filter', function () {
             innerScope.makeSelection();
 
             //then
-            expect(innerScope.showDateValidationError).toBeFalsy("showDateValidationError wasn't true as expected");
+            expect(innerScope.showDateValidationError).toBeFalsy("Second showDateValidationError wasn't true as expected");
         });
 
         it("will not pass validation if to date is before the from date", function() {
