@@ -101,6 +101,14 @@ function linkFunction(scope, businessFilter, $location, messageService, statisti
     };
 
     var hasFromDateValidationError = function() {
+        console.log("*** Start of validation of from date ***");
+        console.log('The from date: ' + businessFilter.fromDate);
+        console.log('Now: ' + moment());
+
+        console.log('Is the from date valid, yyyy-MM? ' + moment(businessFilter.fromDate, 'yyyy-MM').isValid() );
+        console.log('Is from date before 2013-10? ' + moment(businessFilter.fromDate).isBefore(TIME_INTERVAL_MIN_DATE));
+        console.log('Is from date after now? ' + moment(businessFilter.toDate).isAfter(moment()));
+
         return !businessFilter.fromDate ||
             !moment(businessFilter.fromDate, 'yyyy-MM').isValid() ||
             moment(businessFilter.fromDate).isBefore(TIME_INTERVAL_MIN_DATE) ||
@@ -108,6 +116,14 @@ function linkFunction(scope, businessFilter, $location, messageService, statisti
     };
 
     var hasToDateValidationError = function() {
+        console.log("*** Start of validation of to date ***");
+        console.log('The to date: ' + businessFilter.toDate);
+        console.log('Now: ' + moment());
+
+        console.log('Is the to date valid, yyyy-MM? ' + moment(businessFilter.toDate, 'yyyy-MM').isValid() );
+        console.log('Is to date before the fromdate? ' + moment(businessFilter.toDate).isBefore(businessFilter.fromDate));
+        console.log('Is to date after now? ' + moment(businessFilter.toDate).isAfter(moment()));
+
         return !businessFilter.toDate ||
             !moment(businessFilter.toDate, 'yyyy-MM').isValid() ||
             moment(businessFilter.toDate).isBefore(businessFilter.fromDate) ||
@@ -201,7 +217,7 @@ function linkFunction(scope, businessFilter, $location, messageService, statisti
 
     scope.minToDate = businessFilter.fromDate;
 
-    //Is the datepicker dialogs open or not
+    //Are the datepicker dialogs open or not
     scope.isFromDateOpen = false;
     scope.isToDateOpen = false;
 
