@@ -14,7 +14,9 @@ angular.module('StatisticsApp').directive("navigationaware", function ($rootScop
                 if (isActivePage(current, $attrs)){
                     elem.parent().addClass("active");
                     var groupId = elem.closest(".navigation-group").attr('id');
-                    $rootScope.$broadcast('navigationUpdate', groupId);
+                    if (groupId) {
+                        $rootScope.$broadcast('navigationUpdate', groupId);
+                    }
                 }
             });
         }
