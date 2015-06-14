@@ -92,6 +92,7 @@ dependencies {
     compile "org.springframework.security:spring-security-taglibs:${springSecurityVersion}"
     compile "org.apache.poi:poi:3.11"
     compile "org.apache.poi:poi-ooxml:3.11"
+    compile "xalan:xalan:2.7.2"
 
     compile webjars //Define your webjar in the list above
 

@@ -35,20 +35,27 @@ import se.inera.statistics.service.landsting.LandstingEnhetFileData;
 import se.inera.statistics.service.landsting.LandstingEnhetFileDataRow;
 import se.inera.statistics.service.landsting.LandstingEnhetHandler;
 import se.inera.statistics.service.landsting.LandstingsVardgivareStatus;
+import se.inera.statistics.service.processlog.Enhet;
+import se.inera.statistics.service.processlog.EnhetManager;
 import se.inera.statistics.web.model.LoginInfo;
 import se.inera.statistics.web.model.Verksamhet;
 import se.inera.statistics.web.service.landsting.LandstingEnhetFileParseException;
+import se.inera.statistics.web.service.landsting.LandstingFileGenerationException;
 import se.inera.statistics.web.service.landsting.LandstingFileReader;
+import se.inera.statistics.web.service.landsting.LandstingFileWriter;
 
 import javax.activation.DataHandler;
 import javax.activation.DataSource;
 import javax.servlet.http.HttpServletRequest;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.times;
@@ -71,6 +78,12 @@ public class ProtectedLandstingServiceTest {
 
     @Mock
     private LandstingFileReader landstingFileReader;
+
+    @Mock
+    private LandstingFileWriter landstingFileWriter;
+
+    @Mock
+    private EnhetManager enhetManager;
 
     @InjectMocks
     private ProtectedLandstingService chartDataService = new ProtectedLandstingService();
@@ -149,6 +162,54 @@ public class ProtectedLandstingServiceTest {
         Mockito.verify(landstingEnhetHandler, times(1)).update(captor.capture());
         assertEquals(parseResult, captor.getValue().getRows());
         assertEquals(testVgId, captor.getValue().getVgId());
+    }
+
+    @Test
+    public void testGetPrepopulatedLandstingFileHappyPath() throws Exception {
+        //Given
+        final HttpServletRequest req = Mockito.mock(HttpServletRequest.class);
+
+        final String vgid = "VgidTest";
+        Mockito.when(loginServiceUtil.getSelectedVgIdForLoggedInUser(req)).thenReturn(vgid);
+
+        final ArrayList<Enhet> enhets = new ArrayList<>();
+        Mockito.when(enhetManager.getAllEnhetsForVardgivareId(vgid)).thenReturn(enhets);
+
+        final ByteArrayOutputStream outputStream = Mockito.mock(ByteArrayOutputStream.class);
+        Mockito.when(landstingFileWriter.generateExcelFile(enhets)).thenReturn(outputStream);
+
+        final String resultContent = "TestResultContent";
+        Mockito.when(outputStream.toByteArray()).thenReturn(resultContent.getBytes());
+
+        //When
+        final Response response = chartDataService.getPrepopulatedLandstingFile(req);
+
+        //Then
+        assertArrayEquals(resultContent.getBytes(), (byte[]) response.getEntity());
+        assertEquals("attachment; filename=\"" + vgid + "_landsting.xlsx\"", response.getHeaderString("Content-Disposition"));
+        assertEquals(MediaType.APPLICATION_OCTET_STREAM_TYPE, response.getMediaType());
+        assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
+    }
+
+    @Test
+    public void testGetPrepopulatedLandstingFileGenerationFailure() throws Exception {
+        //Given
+        final HttpServletRequest req = Mockito.mock(HttpServletRequest.class);
+
+        final String vgid = "VgidTest";
+        Mockito.when(loginServiceUtil.getSelectedVgIdForLoggedInUser(req)).thenReturn(vgid);
+
+        final ArrayList<Enhet> enhets = new ArrayList<>();
+        Mockito.when(enhetManager.getAllEnhetsForVardgivareId(vgid)).thenReturn(enhets);
+
+        final ByteArrayOutputStream outputStream = Mockito.mock(ByteArrayOutputStream.class);
+        Mockito.when(landstingFileWriter.generateExcelFile(enhets)).thenThrow(new LandstingFileGenerationException());
+
+        //When
+        final Response response = chartDataService.getPrepopulatedLandstingFile(req);
+
+        //Then
+        assertEquals(Response.Status.INTERNAL_SERVER_ERROR.getStatusCode(), response.getStatus());
     }
 
 }

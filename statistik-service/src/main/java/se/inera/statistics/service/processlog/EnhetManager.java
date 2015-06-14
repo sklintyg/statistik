@@ -42,4 +42,10 @@ public class EnhetManager {
         return query.getResultList();
     }
 
+    public List<Enhet> getAllEnhetsForVardgivareId(String vgId) {
+        final Query query = manager.createQuery("SELECT e FROM Enhet e WHERE e.vardgivareId IN :vgId");
+        query.setParameter("vgId", vgId);
+        return query.getResultList();
+    }
+
 }

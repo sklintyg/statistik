@@ -44,7 +44,9 @@ import se.inera.statistics.web.model.SimpleDetailsData;
 import se.inera.statistics.web.model.TableDataReport;
 import se.inera.statistics.web.model.Verksamhet;
 import se.inera.statistics.web.service.landsting.LandstingEnhetFileParseException;
+import se.inera.statistics.web.service.landsting.LandstingFileGenerationException;
 import se.inera.statistics.web.service.landsting.LandstingFileReader;
+import se.inera.statistics.web.service.landsting.LandstingFileWriter;
 
 import javax.activation.DataSource;
 import javax.servlet.http.HttpServletRequest;
@@ -58,6 +60,7 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.io.ByteArrayOutputStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -93,6 +96,8 @@ public class ProtectedLandstingService {
 
     private LandstingFileReader landstingFileReader = new LandstingFileReader();
 
+    private LandstingFileWriter landstingFileWriter = new LandstingFileWriter();
+
     @POST
     @Path("fileupload")
     @Produces({ MediaType.APPLICATION_JSON })
@@ -119,6 +124,23 @@ public class ProtectedLandstingService {
         } catch (NoLandstingSetForVgException e) {
             LOG.warn("Failed to update landsting settings", e);
             return createFileUploadResponse(Response.Status.INTERNAL_SERVER_ERROR, "Din vårdgivare har inte tillgång till landstingsstatistik", null);
+        }
+    }
+
+    @GET
+    @Path("prepopulatedLandstingFile")
+    @Produces(MediaType.APPLICATION_OCTET_STREAM)
+    @PreAuthorize(value = "@protectedLandstingService.hasAccessToLandstingAdmin(#request)")
+    @PostAuthorize(value = "@protectedLandstingService.userAccess(#request)")
+    public Response getPrepopulatedLandstingFile(@Context HttpServletRequest request) {
+        final String vardgivarId = loginServiceUtil.getSelectedVgIdForLoggedInUser(request);
+        final List<Enhet> enhets = enhetManager.getAllEnhetsForVardgivareId(vardgivarId);
+        try {
+            final ByteArrayOutputStream generatedFile = landstingFileWriter.generateExcelFile(enhets);
+            return Response.ok(generatedFile.toByteArray(), MediaType.APPLICATION_OCTET_STREAM)
+                    .header("Content-Disposition", "attachment; filename=\"" + vardgivarId + "_landsting.xlsx\"").build();
+        } catch (LandstingFileGenerationException e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Could not generate excel file").build();
         }
     }
 
