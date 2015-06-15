@@ -18,9 +18,35 @@
   -->
 <div xmlns="http://www.w3.org/1999/html">
 	<div class="container-fluid">
-        <h2>Ladda upp</h2>
-        <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas congue maximus rutrum. Quisque rutrum felis aliquet neque vestibulum tristique. Nullam rhoncus eu nibh et efficitur. Integer ac dolor vel ante vulputate accumsan. Quisque quis erat odio. Nulla facilisi. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Aenean sollicitudin ornare mi, pretium facilisis est mattis nec.</div>
-        <br/>
+
+        <div id="about-content">
+            <section id="about">
+                <div class="row">
+                    <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
+                        <h1 style="margin-bottom: 0px;">Filuppladdning</h1>
+                        <p> Denna sida ser du eftersom du har statistikbehörighet för hela vårdgivaren {{verksamhetName}}.</p>
+                        <p>Om ditt landsting vill kunna använda landstingsstatistiken, behöver du (eller någon annan med vårdgivarbehörighet för samma vårdgivare) rapportera in vilka vårdenheter som ingår i landstinget. Det gör du genom att:</p>
+                        <ol>
+                            <li>Ladda ned Excelfilen som är mallen för listan: (Här ska finnas en länk till en excel-mall)</li>
+                            <li>Fylla i den nedladdade filen med de vårdenheter som ska ingå i landstingsstatistiken. För varje enhet anger du:
+                                <ol type="a">
+                                    <li>Vårdenhetsnamn</li>
+                                    <li>HSA-id för vårdenhet</li>
+                                    <li>Antal listade patienter (om tillämpligt)</li>
+                                </ol>
+                            </li>
+                            <li>Spara filen på din dator.</li>
+                            <li>Ladda upp filen här nedanför.</li>
+                            <li>Landstingsstatistiken visas nu för de angivna enheterna.</li>
+                        </ol>
+
+                        <p>För att uppdatera vilka enheter som ingår i landstingsstatistiken eller enheternas listningar, redigerar du filen och laddar upp den på nytt. Det är alltid informationen i den senast uppladdade filen som gäller.</p>
+                        <p>Observera att ditt landsting endast får anmäla uppföljning av vårdenheter hos annan vårdgivare som landstinget har ett samarbete med. Landstinget ansvarar för att informera anmälda vårdenheter om uppföljningen.</p>
+                        <p> Mer utförliga instruktioner för hur du administrerar listan av enheter finns här: (Här ska finnas en länk till en PDF med instruktioner)</p>
+                    </div>
+                </div>
+            </section>
+        </div>
 
         <div class="jumbotron dropzone" dropzone="dropzoneConfig" ng-class="{'dropzone-drag': draggingIt}">
             <div class="row">
