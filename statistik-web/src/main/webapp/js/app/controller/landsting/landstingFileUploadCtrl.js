@@ -19,8 +19,8 @@
 
 'use strict';
 
-angular.module('StatisticsApp').controller('landstingFileUploadCtrl', [ '$scope', '$rootScope', '$timeout', 'statisticsData', 'messageService',
-    function ($scope, $rootScope, $timeout, statisticsData, messageService) {
+angular.module('StatisticsApp').controller('landstingFileUploadCtrl', [ '$scope', '$rootScope', '$timeout', 'statisticsData', 'messageService', '$location',
+    function ($scope, $rootScope, $timeout, statisticsData, messageService, $location) {
 
         var updateLastUpdateMessage = function() {
             $scope.lastLandstingUpdateMessage = "";
@@ -64,8 +64,11 @@ angular.module('StatisticsApp').controller('landstingFileUploadCtrl', [ '$scope'
                         }
                     );
                 },
-                'error': function (file, response) {
+                'error': function (file, response, xhr) {
                     $scope.$apply(function() {
+                        if(xhr.status === 403) {
+                            $location.path("/login");
+                        }
                         $scope.uploadSuccess = false;
                         updateStatus(response);
                     });
