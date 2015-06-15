@@ -215,3 +215,19 @@ angular.module('StatisticsApp').directive('message',
                 }
             };
         }]);
+
+angular.module('StatisticsApp').directive('confirmClick', [
+    function(){
+        return {
+            link: function (scope, element, attr) {
+                var msg = attr.confirmMessage || "Är du säker?";
+                var clickAction = attr.confirmedClickAction;
+                element.bind('click',function (event) {
+                    if ( window.confirm(msg) ) {
+                        scope.$eval(clickAction)
+                    }
+                });
+            }
+        };
+    }]);
+

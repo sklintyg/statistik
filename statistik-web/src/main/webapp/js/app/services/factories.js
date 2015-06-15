@@ -22,13 +22,14 @@ angular.module('StatisticsApp').factory('statisticsData', ['$http', '$rootScope'
         makeRequest(url, successCallback, failureCallback);
     };
 
-    var makeRequestLandsting = function (restFunctionName, successCallback, failureCallback) {
+    var makeRequestLandsting = function (restFunctionName, successCallback, failureCallback, httpMethod) {
         var url = "api/landsting/" + restFunctionName + $rootScope.queryString;
-        makeRequest(url, successCallback, failureCallback);
+        makeRequest(url, successCallback, failureCallback, httpMethod);
     };
 
-    function makeRequest(url, successCallback, failureCallback) {
-        $http.get(url, {}, {cache: false}).success(function (result) {
+    function makeRequest(url, successCallback, failureCallback, httpMethod) {
+        httpMethod = httpMethod ? httpMethod : "get";
+        $http[httpMethod](url, {}, {cache: false}).success(function (result) {
             try {
                 successCallback(result);
             } catch (e) {
@@ -245,6 +246,10 @@ angular.module('StatisticsApp').factory('statisticsData', ['$http', '$rootScope'
 
     factory.getLandstingFilterInfo = function (successCallback, failureCallback) {
         makeRequestLandsting("landstingFilterInfo", successCallback, failureCallback);
+    };
+
+    factory.clearLandstingEnhets = function (successCallback, failureCallback) {
+        makeRequestLandsting("landstingEnhets", successCallback, failureCallback, "delete");
     };
 
     return factory;

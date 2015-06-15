@@ -51,6 +51,7 @@ import se.inera.statistics.web.service.landsting.LandstingFileWriter;
 import javax.activation.DataSource;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -123,6 +124,23 @@ public class ProtectedLandstingService {
             return createFileUploadResponse(Response.Status.INTERNAL_SERVER_ERROR, e.getMessage(), null);
         } catch (NoLandstingSetForVgException e) {
             LOG.warn("Failed to update landsting settings", e);
+            return createFileUploadResponse(Response.Status.INTERNAL_SERVER_ERROR, "Din vårdgivare har inte tillgång till landstingsstatistik", null);
+        }
+    }
+
+    @DELETE
+    @Path("landstingEnhets")
+    @Consumes({ MediaType.WILDCARD })
+    @PreAuthorize(value = "@protectedLandstingService.hasAccessToLandstingAdmin(#request)")
+    @PostAuthorize(value = "@protectedLandstingService.userAccess(#request)")
+    public Response clearLandstingEnhets(@Context HttpServletRequest request) {
+        LoginInfo info = loginServiceUtil.getLoginInfo(request);
+        final String vgId = info.getDefaultVerksamhet().getVardgivarId();
+        try {
+            landstingEnhetHandler.clear(vgId, info.getName(), info.getHsaId());
+            return Response.ok().build();
+        } catch (NoLandstingSetForVgException e) {
+            LOG.warn("Failed to clear landsting settings", e);
             return createFileUploadResponse(Response.Status.INTERNAL_SERVER_ERROR, "Din vårdgivare har inte tillgång till landstingsstatistik", null);
         }
     }

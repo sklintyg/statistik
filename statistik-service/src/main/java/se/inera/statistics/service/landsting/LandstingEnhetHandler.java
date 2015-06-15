@@ -61,6 +61,17 @@ public class LandstingEnhetHandler {
         landstingEnhetUpdateManager.update(landstingId, data.getUserName(), data.getUserId(), removeInvalidChars(data.getFileName()), LandstingEnhetUpdateOperation.Update);
     }
 
+    public void clear(String vgId, String username, String userId) throws NoLandstingSetForVgException {
+        final Optional<Landsting> landstingOptional = landstingManager.getForVg(vgId);
+        if (!landstingOptional.isPresent()) {
+            LOG.warn("There is no landsting connected to vg: " + vgId);
+            throw new NoLandstingSetForVgException();
+        }
+        final long landstingId = landstingOptional.get().getId();
+        landstingEnhetManager.update(landstingId, Collections.<LandstingEnhetFileDataRow>emptyList());
+        landstingEnhetUpdateManager.update(landstingId, username, userId, "-", LandstingEnhetUpdateOperation.Remove);
+    }
+
     private String removeInvalidChars(String fileName) {
         return fileName.replaceAll("[^a-zA-Z0-9åäöÅÄÖ.]", "_");
     }

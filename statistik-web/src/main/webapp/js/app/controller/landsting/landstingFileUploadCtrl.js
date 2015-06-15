@@ -114,6 +114,17 @@ angular.module('StatisticsApp').controller('landstingFileUploadCtrl', [ '$scope'
             }
         };
 
+        $scope.clearLandstingEnhets = function() {
+            $timeout(function () {
+                statisticsData.clearLandstingEnhets(function (result) {
+                    $scope.lastLandstingUpdateMessage = "";
+                    $scope.parsedRows = [];
+                    $rootScope.landstingAvailable = false;
+                    updateLastUpdateMessage();
+                });
+            }, 1);
+        };
+
         updateLastUpdateMessage();
 
     }

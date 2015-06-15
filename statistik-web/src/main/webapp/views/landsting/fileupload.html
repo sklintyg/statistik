@@ -71,6 +71,8 @@
 
         <div><h2>Senaste uppdatering: </h2>{{lastLandstingUpdateMessage}}</div>
         <br/>
+        <button confirm-click confirmed-click-action="clearLandstingEnhets()"
+           confirm-message="Rapporter för landstingsstatistik kommer inte vara tillgängliga ifall du rensar. Vill du rensa data?">Rensa data</button>
         <br/>
         <div data-ng-show="parsedRows">
           <div><b>Detta är den just nu gällande konfigurationen för enheter kopplade till mitt landsting:</b></div>

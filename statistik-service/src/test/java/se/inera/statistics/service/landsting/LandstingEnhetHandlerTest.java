@@ -21,6 +21,7 @@ package se.inera.statistics.service.landsting;
 import com.google.common.base.Optional;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -103,6 +104,30 @@ public class LandstingEnhetHandlerTest {
         //Then
         Mockito.verify(landstingEnhetManager, times(1)).update(landtingsId, rows);
         Mockito.verify(landstingEnhetUpdateManager, times(1)).update(landtingsId, userName, userId, fileName, LandstingEnhetUpdateOperation.Update);
+    }
+
+    @Test
+    public void testClear() throws Exception {
+        //Given
+        final ArrayList<LandstingEnhetFileDataRow> rows = new ArrayList<>();
+        final String userName = "testUserName";
+        final String userId = "TestUserId";
+        final String fileName = "TestFileName";
+        final String vgId = "testVgId";
+        final LandstingEnhetFileData data = new LandstingEnhetFileData(vgId, rows, userName, userId, fileName);
+        final Landsting landsting = Mockito.mock(Landsting.class);
+        final Long landtingsId = 5L;
+        Mockito.when(landsting.getId()).thenReturn(landtingsId);
+        Mockito.when(landstingManager.getForVg(anyString())).thenReturn(Optional.of(landsting));
+
+        //When
+        landstingEnhetHandler.clear(vgId, userName, userId);
+
+        //Then
+        final ArgumentCaptor<List> listArgumentCaptor = ArgumentCaptor.forClass(List.class);
+        Mockito.verify(landstingEnhetManager, times(1)).update(eq(landtingsId), listArgumentCaptor.capture());
+        assertEquals(0, listArgumentCaptor.getValue().size());
+        Mockito.verify(landstingEnhetUpdateManager, times(1)).update(landtingsId, userName, userId, "-", LandstingEnhetUpdateOperation.Remove);
     }
 
     @Test

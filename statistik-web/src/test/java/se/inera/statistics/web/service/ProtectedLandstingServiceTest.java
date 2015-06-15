@@ -66,6 +66,7 @@ import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -250,6 +251,29 @@ public class ProtectedLandstingServiceTest {
         assertTrue(infoMessage.contains("TestFile.xls"));
         assertTrue(infoMessage.contains("Test Name"));
         assertTrue(infoMessage.contains("TESTHSAID"));
+    }
+
+    @Test
+    public void testClearLandstingEnhets() throws Exception {
+        //Given
+        final HttpServletRequest req = Mockito.mock(HttpServletRequest.class);
+
+        final Verksamhet verksamhet = Mockito.mock(Verksamhet.class);
+        final String vgId = "testvgid";
+        Mockito.when(verksamhet.getVardgivarId()).thenReturn(vgId);
+        final String hsaId = "testhsaid";
+        final String name = "test name";
+        Mockito.when(loginServiceUtil.getLoginInfo(req)).thenReturn(new LoginInfo(hsaId, name, verksamhet, false, false, false, null, LandstingsVardgivareStatus.NO_LANDSTINGSVARDGIVARE));
+
+        final String vgid = "VgidTest";
+        Mockito.when(loginServiceUtil.getSelectedVgIdForLoggedInUser(req)).thenReturn(vgid);
+
+        //When
+        final Response response = chartDataService.clearLandstingEnhets(req);
+
+        //Then
+        assertEquals(200, response.getStatus());
+        verify(landstingEnhetHandler, times(1)).clear(vgId, name, hsaId);
     }
 
 }
