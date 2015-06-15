@@ -1952,6 +1952,11 @@ li.subMenuItem.active .active-menu-item { display: block;  }
 .jumbotron.dropzone {
     margin-bottom: 0px;
 }
+
+/* The left property of the jumbtron disturbed links in som kind of weird way*/
+.dropzone.jumbotron:after {
+    left: inherit;
+}
 div.dropzone a{
     color:dimgrey !important;
     text-decoration: underline;
