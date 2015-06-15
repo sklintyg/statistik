@@ -62,6 +62,7 @@ import java.util.List;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.times;
@@ -246,7 +247,9 @@ public class ProtectedLandstingServiceTest {
         assertEquals("HSA-id: HSAID9 -> Listade patienter: 79", parsedRows.get(1));
 
         final String infoMessage = (String) entity.get("infoMessage");
-        assertEquals("Uppdaterat inställningar (TestFile.xls) - 1970-01-01 01:00:00 av Test Name (TESTHSAID)", infoMessage);
+        assertTrue(infoMessage.contains("TestFile.xls"));
+        assertTrue(infoMessage.contains("Test Name"));
+        assertTrue(infoMessage.contains("TESTHSAID"));
     }
 
 }
