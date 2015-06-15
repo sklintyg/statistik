@@ -18,6 +18,7 @@
  */
 package se.inera.statistics.web.service;
 
+import com.google.common.base.Optional;
 import org.apache.cxf.jaxrs.ext.multipart.Attachment;
 import org.apache.cxf.jaxrs.ext.multipart.MultipartBody;
 import org.junit.Before;
@@ -35,6 +36,9 @@ import se.inera.statistics.service.landsting.LandstingEnhetFileData;
 import se.inera.statistics.service.landsting.LandstingEnhetFileDataRow;
 import se.inera.statistics.service.landsting.LandstingEnhetHandler;
 import se.inera.statistics.service.landsting.LandstingsVardgivareStatus;
+import se.inera.statistics.service.landsting.persistance.landstingenhet.LandstingEnhet;
+import se.inera.statistics.service.landsting.persistance.landstingenhetupdate.LandstingEnhetUpdate;
+import se.inera.statistics.service.landsting.persistance.landstingenhetupdate.LandstingEnhetUpdateOperation;
 import se.inera.statistics.service.processlog.Enhet;
 import se.inera.statistics.service.processlog.EnhetManager;
 import se.inera.statistics.web.model.LoginInfo;
@@ -50,8 +54,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.io.ByteArrayOutputStream;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 import static org.junit.Assert.assertArrayEquals;
@@ -210,6 +216,37 @@ public class ProtectedLandstingServiceTest {
 
         //Then
         assertEquals(Response.Status.INTERNAL_SERVER_ERROR.getStatusCode(), response.getStatus());
+    }
+
+    @Test
+    public void testGetLastLandstingUpdateInfo() throws Exception {
+        //Given
+        final HttpServletRequest req = Mockito.mock(HttpServletRequest.class);
+
+        final String vgid = "VgidTest";
+        Mockito.when(loginServiceUtil.getSelectedVgIdForLoggedInUser(req)).thenReturn(vgid);
+
+        final LandstingEnhetUpdate landstingEnhetUpdate = new LandstingEnhetUpdate(123L, "Test Name", "TESTHSAID", new Timestamp(5L), "TestFile.xls", LandstingEnhetUpdateOperation.Update);
+        Mockito.when(landstingEnhetHandler.getLastUpdateInfo(vgid)).thenReturn(Optional.of(landstingEnhetUpdate));
+
+        final ArrayList<LandstingEnhet> landstingEnhets = new ArrayList<>();
+        landstingEnhets.add(new LandstingEnhet(3L, "HSAID3", 73));
+        landstingEnhets.add(new LandstingEnhet(9L, "HSAID9", 79));
+        Mockito.when(landstingEnhetHandler.getAllLandstingEnhetsForVardgivare(vgid)).thenReturn(landstingEnhets);
+
+        //When
+        final Response response = chartDataService.getLastLandstingUpdateInfo(req);
+
+        //Then
+        final HashMap<String, Object> entity = (HashMap<String, Object>) response.getEntity();
+
+        final List<String> parsedRows = (List<String>) entity.get("parsedRows");
+        assertEquals(2, parsedRows.size());
+        assertEquals("HSA-id: HSAID3 -> Listade patienter: 73", parsedRows.get(0));
+        assertEquals("HSA-id: HSAID9 -> Listade patienter: 79", parsedRows.get(1));
+
+        final String infoMessage = (String) entity.get("infoMessage");
+        assertEquals("Uppdaterat inställningar (TestFile.xls) - 1970-01-01 01:00:00 av Test Name (TESTHSAID)", infoMessage);
     }
 
 }

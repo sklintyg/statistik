@@ -26,14 +26,15 @@ angular.module('StatisticsApp').controller('landstingFileUploadCtrl', [ '$scope'
             $scope.lastLandstingUpdateMessage = "";
             $timeout(function () {
                 statisticsData.getLastLandstingUpdateInfo(function (result) {
-                    $scope.lastLandstingUpdateMessage = result;
+                    $scope.lastLandstingUpdateMessage = result.infoMessage;
+                    $scope.parsedRows = result.parsedRows;
+                    $rootScope.landstingAvailable = result.parsedRows.length > 0;
                 });
             }, 1);
         };
 
         var updateStatus = function (response) {
             $scope.uploadResultMessage = response.message ? response.message : response;
-            $scope.parsedRows = response.parsedRows;
         };
 
         $scope.dropzoneConfig = {
@@ -60,7 +61,6 @@ angular.module('StatisticsApp').controller('landstingFileUploadCtrl', [ '$scope'
                             $scope.uploadSuccess = true;
                             updateStatus(response);
                             updateLastUpdateMessage();
-                            $rootScope.landstingAvailable = response.parsedRows.length > 0;
                         }
                     );
                 },

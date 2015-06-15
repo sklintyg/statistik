@@ -151,7 +151,22 @@ public class ProtectedLandstingService {
     @PostAuthorize(value = "@protectedLandstingService.userAccess(#request)")
     public Response getLastLandstingUpdateInfo(@Context HttpServletRequest request) {
         final String vardgivarId = loginServiceUtil.getSelectedVgIdForLoggedInUser(request);
-        return Response.ok(getLastLandstingUpdateInfoMessage(vardgivarId)).build();
+        final HashMap<String, Object> result = new HashMap<>();
+
+        result.put("infoMessage", getLastLandstingUpdateInfoMessage(vardgivarId));
+
+        final List<LandstingEnhet> landstingEnhets = landstingEnhetHandler.getAllLandstingEnhetsForVardgivare(vardgivarId);
+        final List<String> parsedRowsStrings = Lists.transform(landstingEnhets, new Function<LandstingEnhet, String>() {
+            @Override
+            public String apply(LandstingEnhet landstingEnhetFileDataRow) {
+                final Integer listadePatienter = landstingEnhetFileDataRow.getListadePatienter();
+                final String listadePatienterString = listadePatienter != null ? String.valueOf(listadePatienter) : "inte angivet";
+                return "HSA-id: " + landstingEnhetFileDataRow.getEnhetensHsaId() + " -> Listade patienter: " + listadePatienterString;
+            }
+        });
+        result.put("parsedRows", parsedRowsStrings);
+
+        return Response.ok(result).build();
     }
 
     private String getLastLandstingUpdateInfoMessage(String vardgivarId) {
@@ -168,15 +183,6 @@ public class ProtectedLandstingService {
     private Response createFileUploadResponse(Response.Status status, String message, List<LandstingEnhetFileDataRow> landstingFileRows) {
         final HashMap<String, Object> map = new HashMap<>();
         map.put("message", message);
-        final List<String> parsedRowsStrings = landstingFileRows == null ? null : Lists.transform(landstingFileRows, new Function<LandstingEnhetFileDataRow, String>() {
-            @Override
-            public String apply(LandstingEnhetFileDataRow landstingEnhetFileDataRow) {
-                final Integer listadePatienter = landstingEnhetFileDataRow.getListadePatienter();
-                final String listadePatienterString = listadePatienter != null ? String.valueOf(listadePatienter) : "inte angivet";
-                return "HSA-id: " + landstingEnhetFileDataRow.getEnhetensHsaId() + " -> Listade patienter: " + listadePatienterString;
-            }
-        });
-        map.put("parsedRows", parsedRowsStrings);
         return Response.status(status).entity(map).build();
     }
 
