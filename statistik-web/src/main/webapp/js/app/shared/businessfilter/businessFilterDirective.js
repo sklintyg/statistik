@@ -125,6 +125,7 @@ function linkFunction(scope, businessFilter, $location, messageService, statisti
         console.log('Now: ' + moment());
 
         console.log('Is the to date valid, yyyy-MM? ' + moment(businessFilter.toDate, 'yyyy-MM').isValid() );
+        console.log('Invalid at? ' + moment(businessFilter.toDate, 'yyyy-MM').invalidAt() );
         console.log('Is to date before the fromdate? ' + moment(businessFilter.toDate).isBefore(businessFilter.fromDate));
         console.log('Is to date after now? ' + moment(businessFilter.toDate).isAfter(moment()));
 
