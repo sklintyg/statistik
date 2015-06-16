@@ -1,0 +1,39 @@
+!contents -R2 -g -p -f -h
+
+Gäller STATISTIK-1034.
+
+!3 Givet att:
+
+| script | dagens datum | 2013-12-06 |
+
+| script | troskel varde | 1 |
+
+| Enbart foljande intyg finns |
+| personnr      | diagnoskod | start      | slut       | enhet  | kommentar |
+| 19790407-2215 | G01        | 2013-02-05 | 2013-02-06 | enhet1 |           |
+| 19790407-2216 | G01        | 2013-02-05 | 2013-02-06 | enhet3 |           |
+| 19790407-2217 | G01        | 2013-02-05 | 2013-02-06 | enhet3 |           |
+| 19790407-2218 | G01        | 2013-02-05 | 2013-02-06 | enhet3 |           |
+| 19790407-2219 | G01        | 2013-02-05 | 2013-02-06 | enhet3 |           |
+| 19790407-2233 | G01        | 2013-02-05 | 2013-02-06 | enhet3 |           |
+| 19790407-2234 | G01        | 2013-02-05 | 2013-02-06 | enhet3 |           |
+| 19790407-2235 | G01        | 2013-02-05 | 2013-02-06 | enhet3 |           |
+| 19790407-2212 | G01        | 2013-02-05 | 2013-02-06 | enhet3 |           |
+| 19790407-2213 | G01        | 2013-02-05 | 2013-02-06 | enhet3 |           |
+| 19790407-2214 | G01        | 2013-02-05 | 2013-02-06 | enhet3 |           |
+| 19790407-2231 | G01        | 2013-02-05 | 2013-02-06 | enhet3 |           |
+
+
+| Uppladdade landstingsfiler |
+| användare | filnamn        | statusmeddelande? |
+| user3     | vg3lista1.xlsx  | Data updated ok   |
+
+!3 Då gäller:
+
+Enheterna visas i rapporten för Listningar sorterade utifrån antal sjukfall/1000listningar
+
+Inloggad:
+| Sjukfall i rapporten landsting sjukfall per listningar per enhet |
+| inloggad som | vårdenhet    | antal sjukfall per tusen listningar? |
+| user3        | Enhet enhet3 | 10    |
+| user3        | Enhet enhet1 | 9.09    |
