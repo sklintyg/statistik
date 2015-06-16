@@ -49,7 +49,7 @@
         </div>
 
         <div class="jumbotron dropzone" dropzone="dropzoneConfig" ng-class="{'dropzone-drag': draggingIt}">
-            <div class="row">
+            <div class="row dz-message">
                 <div class="col-md-5 col-md-push-3 dropzone-info-area">
 
                     <span ng-show="!uploadCompleted" class="glyphicon glyphicon-plus-sign" ng-class="{'glyphicon-plus-sign-drag': draggingIt}"></span>
@@ -97,7 +97,7 @@
 
         <div><h2>Senaste uppdatering: </h2>{{lastLandstingUpdateMessage}}</div>
         <br/>
-        <button confirm-click confirmed-click-action="clearLandstingEnhets()"
+        <button class="btn btn-default" confirm-click confirmed-click-action="clearLandstingEnhets()"
            confirm-message="Rapporter för landstingsstatistik kommer inte vara tillgängliga ifall du rensar. Vill du rensa data?">Rensa data</button>
         <br/>
         <div data-ng-show="parsedRows">
