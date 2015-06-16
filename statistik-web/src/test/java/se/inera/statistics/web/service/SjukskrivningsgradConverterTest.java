@@ -69,8 +69,8 @@ public class SjukskrivningsgradConverterTest {
         KonDataResponse resp = new KonDataResponse(new ArrayList<String>(), new ArrayList<KonDataRow>());
         final FilterSettings filterSettings = new FilterSettings(Filter.empty(), new Range());
         DualSexStatisticsData data = new DegreeOfSickLeaveConverter().convert(resp, filterSettings);
-        assertEquals("[]", data.getFemaleChart().getCategories().toString());
-        assertEquals("[]", data.getFemaleChart().getSeries().toString());
+        assertEquals("[Totalt]", data.getFemaleChart().getCategories().toString());
+        assertEquals("[Totalt% sjukskrivningsgrad: [0]]", data.getFemaleChart().getSeries().toString());
     }
 
     @Test
