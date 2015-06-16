@@ -127,6 +127,7 @@ public class SjukfallPerPatientsPerEnhetConverter {
 
         if (filteredSummedData.isEmpty()) {
             filteredSummedData.add(0);
+            categories.add(new ChartCategory("Totalt"));
         }
 
         final ArrayList<ChartSeries> series = new ArrayList<>();
