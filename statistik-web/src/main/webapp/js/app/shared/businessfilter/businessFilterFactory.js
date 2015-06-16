@@ -256,7 +256,7 @@ function createBusinessFilter(statisticsData, _, treeMultiSelectorUtil) {
                 }
             });
         });
-        businessFilter.verksamhetsTyper = sortSwedish(_.values(verksamhetsTypSet), "name");
+        businessFilter.verksamhetsTyper = sortSwedish(_.values(verksamhetsTypSet), "name", "Okän");
     };
 
     businessFilter.selectAll = function (item) {

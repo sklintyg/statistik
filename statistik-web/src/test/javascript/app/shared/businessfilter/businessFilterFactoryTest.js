@@ -100,6 +100,23 @@ describe("Tests for business filter factory", function () {
                 }
             });
         });
+        it("populated verksamheter are sorted correctly STATISTIK1103", function () {
+            //Given
+            var verksamhetsTyper1 = [{id: 3, name: "Okänd verksamhetstyp"}];
+            var verksamhetsTyper2 = [{id: 1, name: "ÅÄÖ"}, {id: 2, name: "Abc"}];
+            var business1 = {id: 1, name: "b1", verksamhetsTyper: verksamhetsTyper1};
+            var business2 = {id: 2, name: "b2", verksamhetsTyper: verksamhetsTyper2};
+
+            //When
+            businessFilter.populateVerksamhetsTyper([business1, business2]);
+
+            //Then
+            var verksamheter = businessFilter.verksamhetsTyper;
+            expect(verksamheter.length).toBe(3);
+            expect(verksamheter[0].name).toBe("Abc");
+            expect(verksamheter[1].name).toBe("ÅÄÖ");
+            expect(verksamheter[2].name).toBe("Okänd verksamhetstyp");
+        });
     });
 
     describe("Setting Icd10 structure and selections on that structure", function () {
