@@ -102,6 +102,8 @@ function linkFunction(scope, businessFilter, $location, messageService, statisti
 
     var hasFromDateValidationError = function() {
         console.log("*** Start of validation of from date ***");
+        console.log("Locale: " + moment.locale());
+        console.log("Locale of to date: " + moment(businessFilter.toDate).locale());
         console.log('The from date: ' + businessFilter.fromDate);
         console.log('Now: ' + moment());
 
@@ -117,6 +119,8 @@ function linkFunction(scope, businessFilter, $location, messageService, statisti
 
     var hasToDateValidationError = function() {
         console.log("*** Start of validation of to date ***");
+        console.log("Locale: " + moment.locale());
+        console.log("Locale of to date: " + moment(businessFilter.toDate).locale());
         console.log('The to date: ' + businessFilter.toDate);
         console.log('Now: ' + moment());
 
