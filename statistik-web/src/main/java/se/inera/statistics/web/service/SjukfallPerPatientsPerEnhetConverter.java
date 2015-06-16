@@ -40,7 +40,6 @@ import java.util.Map;
 
 public class SjukfallPerPatientsPerEnhetConverter {
 
-    private final String seriesNameTemplate = "%1$s";
     private final Map<String, Integer> listningarPerEnhet;
     private final List<String> connectedEnhetIds;
 
@@ -84,12 +83,11 @@ public class SjukfallPerPatientsPerEnhetConverter {
             if (listadePatienter != null) {
                 final Integer female = row.getFemale();
                 final Integer male = row.getMale();
-                final String seriesName = String.format(seriesNameTemplate, row.getName());
                 final int antalSjukfall = female + male;
                 final float thousand = 1000F;
                 final float sjukfallPerThousandListadePatienter = antalSjukfall / (listadePatienter / thousand);
                 final String sjukfallPerThousandListadePatienterRounded = roundToTwoDecimalsAndFormatToString(sjukfallPerThousandListadePatienter);
-                data.add(new NamedData(seriesName, Arrays.asList(antalSjukfall, listadePatienter, sjukfallPerThousandListadePatienterRounded), isMarked(row)));
+                data.add(new NamedData(row.getName(), Arrays.asList(antalSjukfall, listadePatienter, sjukfallPerThousandListadePatienterRounded), isMarked(row)));
             }
         }
         return TableData.createWithSingleHeadersRow(data, Arrays.asList("Vårdenhet", "Antal sjukfall", "Antal listningar", "Antal sjukfall per 1000 listningar"));
@@ -101,28 +99,19 @@ public class SjukfallPerPatientsPerEnhetConverter {
     }
 
     private ChartData convertToChartData(SimpleKonResponse<SimpleKonDataRow> casesPerMonth) {
-        Collections.sort(casesPerMonth.getRows(), new Comparator<SimpleKonDataRow>() {
-            @Override
-            public int compare(SimpleKonDataRow o1, SimpleKonDataRow o2) {
-                return (o2.getMale() + o2.getFemale()) - (o1.getMale() + o1.getFemale());
-            }
-        });
         final ArrayList<ChartCategory> categories = new ArrayList<>();
-        final List<Integer> summedData = casesPerMonth.getSummedData();
         final List<Number> filteredSummedData = new ArrayList<>();
-        for (int i = 0; i < casesPerMonth.getRows().size(); i++) {
-            final SimpleKonDataRow dataRow = casesPerMonth.getRows().get(i);
-            final String enhetId = (String) dataRow.getExtras();
-            final Integer listadePatienter = listningarPerEnhet.get(enhetId);
-            if (listadePatienter != null) {
-                final String seriesName = String.format(seriesNameTemplate, dataRow.getName());
-                categories.add(new ChartCategory(seriesName, isMarked(dataRow)));
-                final Integer antalSjukfall = summedData.get(i);
-                final float thousand = 1000F;
-                final float sjukfallPerThousandListadePatienter = antalSjukfall / (listadePatienter / thousand);
-                final String sjukfallPerThousandListadePatienterRounded = roundToTwoDecimalsAndFormatToString(sjukfallPerThousandListadePatienter);
-                filteredSummedData.add(Double.valueOf(sjukfallPerThousandListadePatienterRounded));
-            }
+
+        final ArrayList<EnhetWithPatients> enhetsWithPatients = toSortedEnhetsWithPatients(casesPerMonth);
+
+        for (EnhetWithPatients enhet : enhetsWithPatients) {
+            final SimpleKonDataRow dataRow = enhet.getRow();
+            final String name = dataRow.getName();
+            categories.add(new ChartCategory(name, isMarked(dataRow)));
+
+            final float sjukfallPerThousandListadePatienter = enhet.getSjukfallPerThousandListadePatienter();
+            final String sjukfallPerThousandListadePatienterRounded = roundToTwoDecimalsAndFormatToString(sjukfallPerThousandListadePatienter);
+            filteredSummedData.add(Double.valueOf(sjukfallPerThousandListadePatienterRounded));
         }
 
         if (filteredSummedData.isEmpty()) {
@@ -134,6 +123,34 @@ public class SjukfallPerPatientsPerEnhetConverter {
         series.add(new ChartSeries("Antal sjukfall per 1000 listningar", filteredSummedData, false));
 
         return new ChartData(series, categories);
+    }
+
+    private ArrayList<EnhetWithPatients> toSortedEnhetsWithPatients(SimpleKonResponse<SimpleKonDataRow> casesPerMonth) {
+        final ArrayList<EnhetWithPatients> enhetsWithPatients = toEnhetsWithPatients(casesPerMonth);
+        Collections.sort(enhetsWithPatients, new Comparator<EnhetWithPatients>() {
+            @Override
+            public int compare(EnhetWithPatients o1, EnhetWithPatients o2) {
+                return Float.compare(o2.getSjukfallPerThousandListadePatienter(), o1.getSjukfallPerThousandListadePatienter());
+            }
+        });
+        return enhetsWithPatients;
+    }
+
+    private ArrayList<EnhetWithPatients> toEnhetsWithPatients(SimpleKonResponse<SimpleKonDataRow> casesPerMonth) {
+        final ArrayList<EnhetWithPatients> enhetsWithPatients = new ArrayList<>();
+        final List<Integer> summedData = casesPerMonth.getSummedData();
+        for (int i = 0; i < casesPerMonth.getRows().size(); i++) {
+            final SimpleKonDataRow dataRow = casesPerMonth.getRows().get(i);
+            final String enhetId = (String) dataRow.getExtras();
+            final Integer listadePatienter = listningarPerEnhet.get(enhetId);
+            if (listadePatienter != null) {
+                final Integer antalSjukfall = summedData.get(i);
+                final float thousand = 1000F;
+                final float sjukfallPerThousandListadePatienter = antalSjukfall / (listadePatienter / thousand);
+                enhetsWithPatients.add(new EnhetWithPatients(dataRow, sjukfallPerThousandListadePatienter));
+            }
+        }
+        return enhetsWithPatients;
     }
 
     private boolean isMarked(SimpleKonDataRow row) {

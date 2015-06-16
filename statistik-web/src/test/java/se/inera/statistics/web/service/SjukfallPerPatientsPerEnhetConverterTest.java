@@ -168,13 +168,14 @@ public class SjukfallPerPatientsPerEnhetConverterTest {
     @Test
     public void testConvertEnhetsHasCorrectSortingSTATISTIK1034() throws Exception {
         //Given
-        final List<LandstingEnhet> landstingEnhets = Arrays.asList(new LandstingEnhet(1L, "HSA1", 1), new LandstingEnhet(2L, "HSA2", 1));
+        final List<LandstingEnhet> landstingEnhets = Arrays.asList(new LandstingEnhet(1L, "HSA1", 1000), new LandstingEnhet(2L, "HSA2", 1000), new LandstingEnhet(3L, "HSA3", 1000));
         final SjukfallPerPatientsPerEnhetConverter sjukfallPerPatientsPerEnhetConverter = new SjukfallPerPatientsPerEnhetConverter(landstingEnhets, Collections.<String>emptyList());
 
         //When
         final ArrayList<SimpleKonDataRow> simpleKonDataRows = new ArrayList<>();
-        simpleKonDataRows.add(new SimpleKonDataRow("ett", 1, 2, "HSA1"));
-        simpleKonDataRows.add(new SimpleKonDataRow("tva", 10, 20, "HSA2"));
+        simpleKonDataRows.add(new SimpleKonDataRow("ett", 5, 5, "HSA1"));
+        simpleKonDataRows.add(new SimpleKonDataRow("tva", 5, 1, "HSA2"));
+        simpleKonDataRows.add(new SimpleKonDataRow("tre", 10, 5, "HSA3"));
         final SimpleKonResponse<SimpleKonDataRow> casesPerMonth = new SimpleKonResponse<>(simpleKonDataRows);
         final SimpleDetailsData result = sjukfallPerPatientsPerEnhetConverter.convert(casesPerMonth, new FilterSettings(Filter.empty(), Range.createForLastMonthsIncludingCurrent(12)), "");
 
@@ -182,17 +183,18 @@ public class SjukfallPerPatientsPerEnhetConverterTest {
         //STATISTIK-1034: Table sorted by name
         TableData tableData = result.getTableData();
         List<NamedData> tableRows = tableData.getRows();
-        assertEquals(2, tableRows.size());
+        assertEquals(3, tableRows.size());
         assertEquals("ett", tableRows.get(0).getName());
-        assertEquals("tva", tableRows.get(1).getName());
+        assertEquals("tre", tableRows.get(1).getName());
+        assertEquals("tva", tableRows.get(2).getName());
 
         //STATISTIK-1034: Chart sorted by highest bar
         ChartData chartData = result.getChartData();
         final List<ChartCategory> categories = chartData.getCategories();
-        assertEquals(2, categories.size());
-        assertEquals("tva", categories.get(0).getName());
+        assertEquals(3, categories.size());
+        assertEquals("tre", categories.get(0).getName());
         assertEquals("ett", categories.get(1).getName());
-
+        assertEquals("tva", categories.get(2).getName());
     }
 
 }
