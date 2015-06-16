@@ -172,11 +172,21 @@ angular.module('StatisticsApp.treeMultiSelector.controller', [])
             $timeout(function () {
                 $scope.dialogOpen = true;
                 $scope.updateCounters();
+                resetFilter();
                 $timeout(function () {
                     $scope.$parent.doneLoading = true;
                 }, 1, false);
             }, 1);
         };
+
+        function resetFilter() {
+            $scope.multiMenuFilter = "";
+            _.each($scope.menuOptions.subs, function (item) {
+                $scope.updateItemHiddenState(item, function () {
+                    return true;
+                });
+            });
+        }
 
         $scope.dialogOpen = false;
 
