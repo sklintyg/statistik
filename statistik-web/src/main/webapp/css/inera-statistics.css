@@ -1953,17 +1953,15 @@ li.subMenuItem.active .active-menu-item { display: block;  }
     margin-bottom: 0px;
 }
 
-/* The postion property of the jumbtron disturbed links in som kind of weird way*/
+/* The left property of the jumbtron disturbed links in som kind of weird way*/
 .dropzone.jumbotron:after {
-    position: inherit;
+    left: inherit;
 }
-
 div.dropzone a{
     color:dimgrey !important;
     text-decoration: underline;
 }
-
-.dropzone {
+.dropzone, .dropzone-drag {
     border: dashed;
     border-color: grey;
     border-width: 2px;

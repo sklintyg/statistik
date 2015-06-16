@@ -73,7 +73,7 @@ angular.module('StatisticsApp').controller('landstingFileUploadCtrl', [ '$scope'
                         updateStatus(response);
                     });
                 },
-                'dragover': function() {
+                'dragenter': function() {
                     $scope.$apply(function() {
                         $scope.uploadCompleted = false;
                         $scope.uploadSuccess = false;
