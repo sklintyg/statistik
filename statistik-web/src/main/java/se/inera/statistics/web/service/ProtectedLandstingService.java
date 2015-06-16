@@ -141,7 +141,7 @@ public class ProtectedLandstingService {
             return Response.ok().build();
         } catch (NoLandstingSetForVgException e) {
             LOG.warn("Failed to clear landsting settings", e);
-            return createFileUploadResponse(Response.Status.INTERNAL_SERVER_ERROR, "Din vårdgivare har inte tillgång till landstingsstatistik", null);
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Din vårdgivare har inte tillgång till landstingsstatistik").build();
         }
     }
 
