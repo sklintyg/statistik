@@ -1,0 +1,48 @@
+!contents -R2 -g -p -f -h
+
+Gäller STATISTIK-1025.
+
+!3 Givet att:
+
+user1 har medarbetaruppdrag på enhet1.
+user2 har medarbetaruppdrag på enhet1 och enhet2.
+
+| script | dagens datum | 2014-12-06 |
+
+| script | troskel varde | 1 |
+
+| Enbart foljande intyg finns |
+| personnr      | diagnoskod | start      | slut       | enhet  | kommentar |
+| 19790407-0015 | G01        | 2014-02-05 | 2014-02-06 | enhet1 |           |
+| 19790407-0115 | G01        | 2014-02-05 | 2014-02-06 | enhet2 |           |
+| 19790407-0225 | G01        | 2014-02-05 | 2014-02-06 | enhet3 |           |
+
+| Uppladdade landstingsfiler |
+| användare | filnamn        | statusmeddelande? |
+| user1     | vg3lista1.xlsx  | Data updated ok   |
+
+!3 Då gäller:
+
+Alla användare som har uppdrag statistik på minst en enhet inom en vårdgivare som skickat in lista (vg6 i detta fall) får se landstingsstatistiken, oavsett om deras enhet finns med i listan.
+
+Inloggad:
+| Sjukfall i rapporten landsting sjukfall per enhet |
+| inloggad som | vårdgivarnivå | vårdenhet    | totalt? | män? | kvinnor? |  markerad? |
+| user1        | false         | Enhet enhet1 | 1       | 1    | 0        | ja |
+| user1        | false         | Enhet enhet2 | 1       | 1    | 0        | nej |
+| user1        | false         | Enhet enhet3 | 1       | 0    | 1        | nej |
+| user2        | false         | Enhet enhet1 | 1       | 1    | 0        | ja |
+| user2        | false         | Enhet enhet2 | 1       | 1    | 0        | ja |
+| user2        | false         | Enhet enhet3 | 1       | 0    | 1        | nej |
+| user2        | true          | Enhet enhet1 | 1       | 1    | 0        | nej |
+| user2        | true          | Enhet enhet2 | 1       | 1    | 0        | nej |
+| user2        | true          | Enhet enhet3 | 1       | 0    | 1        | nej |
+
+| Sjukfall i rapporten landsting sjukfall per listningar per enhet |
+| inloggad som | vårdgivarnivå | vårdenhet    | antal sjukfall per tusen listningar? | markerad? |
+| user1        | false         | Enhet enhet1 | 9.09    | ja |
+| user1        | false         | Enhet enhet3 | 0.91    | nej |
+| user2        | false         | Enhet enhet1 | 9.09    | ja |
+| user2        | false         | Enhet enhet3 | 0.91    | nej |
+| user2        | true          | Enhet enhet1 | 9.09    | nej |
+| user2        | true          | Enhet enhet3 | 0.91    | nej |
