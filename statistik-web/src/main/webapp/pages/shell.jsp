@@ -117,34 +117,50 @@
 	</div>
 </div>
 
-<div id="wrap">
-    <div class="container-fluid">
-        <!-- Docs nav
-        ================================================== -->
-        <div class="row">
-            <div class="col-xs-12 col-sm-3 bs-docs-sidebar hidden-print" data-ng-controller="navigationMenuCtrl">
-                <h1 class="hidden-header"><span message key="statistics.hidden-header.sidans-huvudnavigering"></span></h1>
-                <jsp:include page="mobilemenu.jsp"/>
-                <jsp:include page="menu.jsp"/>
-            </div>
 
-            <div class="col-xs-12 col-sm-9">
-                <div class="row ng-hide" ng-show="isVerksamhetShowing">
-                    <div class="col-xs-12">
-                        <business-filter></business-filter>
+<div id="wrapper">
+    <%-- Sidebar --%>
+    <div id="sidebar-wrapper" class="" data-ng-controller="navigationMenuCtrl">
+        <h1 class="hidden-header"><span message key="statistics.hidden-header.sidans-huvudnavigering"></span></h1>
+        <jsp:include page="menu.jsp"/>
+    </div>
+    <%-- Sidebar end--%>
+
+    <%-- The mobile menu must be outside of the sidebar-wrapper --%>
+    <jsp:include page="mobilemenu.jsp"/>
+
+    <div id="page-content-wrapper">
+        <div class="container-fluid">
+            <!-- Docs nav
+            ================================================== -->
+            <div class="row">
+
+                <div class="col-xs-12">
+
+                    <%-- Filter component start--%>
+                    <div class="row ng-hide" ng-show="isVerksamhetShowing">
+                        <div class="col-xs-12">
+                            <business-filter></business-filter>
+                        </div>
                     </div>
-                </div>
-                <div class="row ng-hide" ng-show="isLandstingShowing">
-                    <div class="col-xs-12">
-                        <landsting-filter></landsting-filter>
+
+                    <div class="row ng-hide" ng-show="isLandstingShowing">
+                        <div class="col-xs-12">
+                            <landsting-filter></landsting-filter>
+                        </div>
                     </div>
+                    <%-- Filter component end --%>
+
+                    <%-- Main outlet --%>
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <%-- data-ng-view that holds dynamic content managed by angular app --%>
+                            <div id="view" data-ng-view></div>
+                        </div>
+                    </div>
+                    <%-- Main outlet end --%>
+
                 </div>
-				<div class="row">
-	                <div class="col-xs-12">
-	                    <%-- data-ng-view that holds dynamic content managed by angular app --%>
-	                    <div id="view" data-ng-view></div>
-	                </div>
-	        	</div>
             </div>
         </div>
     </div>
