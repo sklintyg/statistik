@@ -24,6 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import se.inera.statistics.hsa.model.HsaId;
 import se.inera.statistics.service.processlog.EventType;
 import se.inera.statistics.service.warehouse.model.db.WideLine;
 
@@ -39,7 +40,7 @@ import static org.junit.Assert.*;
 
     @Test
     public void toFactWithBasicWideline() {
-        WideLine wideLine = new WideLine(1L, "correlationId", "088080", "enhet", 2L, EventType.CREATED, "19121212-1210", 1000, 1002, 1, 20, "diagnoskapitel", "diagnosavsnitt", "diagnoskategori", "diagnoskod", 100, 1, 50, "", "vardgivareId", "lakareId");
+        WideLine wideLine = new WideLine(1L, "correlationId", "088080", new HsaId("enhet"), 2L, EventType.CREATED, "19121212-1210", 1000, 1002, 1, 20, "diagnoskapitel", "diagnosavsnitt", "diagnoskategori", "diagnoskod", 100, 1, 50, "", new HsaId("vardgivareId"), new HsaId("lakareId"));
 
         Fact fact = factPopulator.toFact(wideLine);
 
@@ -48,7 +49,7 @@ import static org.junit.Assert.*;
 
     @Test
     public void toFactWithDashBefattning() {
-        WideLine wideLine = new WideLine(1L, "correlationId", "088080", "enhet", 2L, EventType.CREATED, "19121212-1210", 1000, 1002, 1, 20, "diagnoskapitel", "diagnosavsnitt", "diagnoskategori", "diagnoskod", 100, 1, 50, "-", "vardgivareId", "lakareId");
+        WideLine wideLine = new WideLine(1L, "correlationId", "088080", new HsaId("enhet"), 2L, EventType.CREATED, "19121212-1210", 1000, 1002, 1, 20, "diagnoskapitel", "diagnosavsnitt", "diagnoskategori", "diagnoskod", 100, 1, 50, "-", new HsaId("vardgivareId"), new HsaId("lakareId"));
 
         Fact fact = factPopulator.toFact(wideLine);
 
@@ -57,7 +58,7 @@ import static org.junit.Assert.*;
 
     @Test
     public void toFactWithFaultyBefattning() {
-        WideLine wideLine = new WideLine(1L, "correlationId", "088080", "enhet", 2L, EventType.CREATED, "19121212-1210", 1000, 1002, 1, 20, "diagnoskapitel", "diagnosavsnitt", "diagnoskategori", "diagnoskod", 100, 1, 50, "xyz123", "vardgivareId", "lakareId");
+        WideLine wideLine = new WideLine(1L, "correlationId", "088080", new HsaId("enhet"), 2L, EventType.CREATED, "19121212-1210", 1000, 1002, 1, 20, "diagnoskapitel", "diagnosavsnitt", "diagnoskategori", "diagnoskod", 100, 1, 50, "xyz123", new HsaId("vardgivareId"), new HsaId("lakareId"));
 
         Fact fact = factPopulator.toFact(wideLine);
 

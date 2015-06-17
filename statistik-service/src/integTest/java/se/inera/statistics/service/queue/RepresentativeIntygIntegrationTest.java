@@ -28,8 +28,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.transaction.TransactionConfiguration;
-import org.springframework.transaction.annotation.Transactional;
+import se.inera.statistics.hsa.model.HsaId;
 import se.inera.statistics.service.helper.UtlatandeBuilder;
 import se.inera.statistics.service.processlog.LogConsumer;
 import se.inera.statistics.service.report.model.Range;
@@ -129,8 +128,8 @@ public class RepresentativeIntygIntegrationTest {
         List<LocalDate> stop = Arrays.asList(new LocalDate("2012-02-06"), new LocalDate("2013-03-31"), new LocalDate("2012-02-07"),
                 new LocalDate("2013-01-29"), new LocalDate("2013-02-08"), new LocalDate("2013-01-30"), new LocalDate("2013-02-09"),
                 new LocalDate("2013-01-31"), new LocalDate("2013-02-10"));
-        List<String> vardgivares = Arrays.asList("EnVG", "TvaVG", "EnVG", "TvaVG", "EnVG", "TvaVG", "EnVG", "TvaVG", "EnVG");
-        List<String> vardenhet = Arrays.asList(getVardenhet(ENVE), getVardenhet(TVAVE), getVardenhet(ENVE), getVardenhet(TVAVE), getVardenhet(ENVE),
+        List<HsaId> vardgivares = Arrays.asList(new HsaId("EnVG"), new HsaId("TvaVG"), new HsaId("EnVG"), new HsaId("TvaVG"), new HsaId("EnVG"), new HsaId("TvaVG"), new HsaId("EnVG"), new HsaId("TvaVG"), new HsaId("EnVG"));
+        List<HsaId> vardenhet = Arrays.asList(getVardenhet(ENVE), getVardenhet(TVAVE), getVardenhet(ENVE), getVardenhet(TVAVE), getVardenhet(ENVE),
                 getVardenhet(TVAVE), getVardenhet(ENVE), getVardenhet(TVAVE), getVardenhet(ENVE));
         List<TestIntyg> intygs = getIntygWithHelsjukAndSingelmanadAndDiagnosList(persons, diagnosKods, start, stop, vardgivares, vardenhet);
         int i = 1000;
@@ -183,15 +182,15 @@ public class RepresentativeIntygIntegrationTest {
     }
 
     private List<TestIntyg> getIntygWithHelsjukAndSingelmanadAndDiagnosList(List<String> personNummers, List<String> diagnosKods, List<LocalDate> starts,
-            List<LocalDate> stops, List<String> vardgivares, List<String> vardenhets) {
+            List<LocalDate> stops, List<HsaId> vardgivares, List<HsaId> vardenhets) {
         List<TestIntyg> testIntygs = new ArrayList<>();
         for (String person : personNummers) {
             for (int i = 0; i < diagnosKods.size(); i++) {
                 String diagnosKod = diagnosKods.get(i);
                 LocalDate start = starts.get(i);
                 LocalDate stop = stops.get(i);
-                String vardgivare = vardgivares.get(i);
-                String vardenhet = vardenhets.get(i);
+                HsaId vardgivare = vardgivares.get(i);
+                HsaId vardenhet = vardenhets.get(i);
                 testIntygs.add(new TestIntyg(person, getGrads(0), start, stop, vardenhet, vardgivare, diagnosKod));
 
             }
@@ -214,13 +213,13 @@ public class RepresentativeIntygIntegrationTest {
         return dates[i];
     }
 
-    private String getVardenhet(int i) {
-        String[] enheter = {"ENVE", "TVAVE"};
+    private HsaId getVardenhet(int i) {
+        HsaId[] enheter = {new HsaId("ENVE"), new HsaId("TVAVE")};
         return enheter[i];
     }
 
-    private String getVardgivare(int i) {
-        String[] givare = {"Vardgivare"};
+    private HsaId getVardgivare(int i) {
+        HsaId[] givare = {new HsaId("Vardgivare")};
         return givare[i];
     }
 
@@ -237,11 +236,11 @@ public class RepresentativeIntygIntegrationTest {
         private final List<String> grads;
         private final LocalDate startDate;
         private final LocalDate endDate;
-        private final String vardenhet;
-        private final String vardgivare;
+        private final HsaId vardenhet;
+        private final HsaId vardgivare;
         private final String diagnos;
 
-        public TestIntyg(String personNr, List<String> grads, LocalDate startDate, LocalDate endDate, String vardenhet, String vardgivare, String diagnos) {
+        public TestIntyg(String personNr, List<String> grads, LocalDate startDate, LocalDate endDate, HsaId vardenhet, HsaId vardgivare, String diagnos) {
             this.personNr = personNr;
             this.grads = grads;
             this.startDate = startDate;

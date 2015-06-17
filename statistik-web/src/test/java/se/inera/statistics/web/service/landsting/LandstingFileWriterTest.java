@@ -23,6 +23,7 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.junit.Test;
+import se.inera.statistics.hsa.model.HsaId;
 import se.inera.statistics.service.processlog.Enhet;
 
 import java.io.ByteArrayInputStream;
@@ -57,10 +58,10 @@ public class LandstingFileWriterTest {
     public void testGenerateExcelFileRowsAreCorrectlyAdded() throws Exception {
         //Given
         final ArrayList<Enhet> enhets = new ArrayList<>();
-        enhets.add(new Enhet("", "", "id1", "name1", "", "", ""));
-        enhets.add(new Enhet("", "", "id43", "name fdsa wqer5", "", "", ""));
-        enhets.add(new Enhet("", "", "id6", "farsrG", "", "", ""));
-        enhets.add(new Enhet("", "", "id123445", "VrVRwr", "", "", ""));
+        enhets.add(new Enhet(new HsaId(""), "", new HsaId("id1"), "name1", "", "", ""));
+        enhets.add(new Enhet(new HsaId(""), "", new HsaId("id43"), "name fdsa wqer5", "", "", ""));
+        enhets.add(new Enhet(new HsaId(""), "", new HsaId("id6"), "farsrG", "", "", ""));
+        enhets.add(new Enhet(new HsaId(""), "", new HsaId("id123445"), "VrVRwr", "", "", ""));
 
         //When
         final ByteArrayOutputStream outputStream = new LandstingFileWriter().generateExcelFile(enhets);
@@ -74,7 +75,7 @@ public class LandstingFileWriterTest {
             final Enhet enhet = enhets.get(i);
             final Row row = sheet.getRow(i + 1);
             assertEquals(enhet.getNamn(), row.getCell(0, Row.RETURN_BLANK_AS_NULL).getStringCellValue());
-            assertEquals(enhet.getEnhetId(), row.getCell(1, Row.RETURN_BLANK_AS_NULL).getStringCellValue());
+            assertEquals(enhet.getEnhetId().getId(), row.getCell(1, Row.RETURN_BLANK_AS_NULL).getStringCellValue());
             assertNull(row.getCell(2, Row.RETURN_BLANK_AS_NULL));
         }
     }

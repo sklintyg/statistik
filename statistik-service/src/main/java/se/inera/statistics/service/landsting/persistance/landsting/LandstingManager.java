@@ -23,14 +23,13 @@ import com.google.common.base.Optional;
 import com.google.common.collect.Lists;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+import se.inera.statistics.hsa.model.HsaId;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import java.util.Collections;
 import java.util.List;
-
-import static org.hibernate.annotations.common.util.StringHelper.toUpperCase;
 
 @Component
 public class LandstingManager {
@@ -51,7 +50,7 @@ public class LandstingManager {
     }
 
     @Transactional
-    public void add(String name, String vgId) {
+    public void add(String name, HsaId vgId) {
         final List<Landsting> all = getAll();
         List<Long> allIds = Lists.transform(all, new Function<Landsting, Long>() {
             @Override
@@ -65,8 +64,8 @@ public class LandstingManager {
     }
 
     @Transactional
-    public Optional<Landsting> getForVg(String vgId) {
-        TypedQuery<Landsting> query = manager.createQuery("SELECT l FROM Landsting l where l.vardgivareId = :vgId", Landsting.class).setParameter("vgId", toUpperCase(vgId));
+    public Optional<Landsting> getForVg(HsaId vgId) {
+        TypedQuery<Landsting> query = manager.createQuery("SELECT l FROM Landsting l where l.vardgivareId = :vgId", Landsting.class).setParameter("vgId", vgId.getId());
         final List<Landsting> resultList = query.getResultList();
         return resultList.isEmpty() ? Optional.<Landsting>absent() : Optional.of(resultList.get(0));
     }

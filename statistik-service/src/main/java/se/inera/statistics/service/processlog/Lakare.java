@@ -18,12 +18,13 @@
  */
 package se.inera.statistics.service.processlog;
 
+import se.inera.statistics.hsa.model.HsaId;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import java.util.Locale;
 import java.util.Objects;
 
 @Entity
@@ -42,7 +43,7 @@ public class Lakare {
 
     private String efterNamn;
 
-    public Lakare(String vardgivareId, String lakareId, String tilltalsNamn, String efterNamn) {
+    public Lakare(HsaId vardgivareId, HsaId lakareId, String tilltalsNamn, String efterNamn) {
         setVardgivareId(vardgivareId);
         setLakareId(lakareId);
         this.tilltalsNamn = tilltalsNamn;
@@ -60,20 +61,20 @@ public class Lakare {
         return id;
     }
 
-    public String getVardgivareId() {
-        return vardgivareId;
+    public HsaId getVardgivareId() {
+        return new HsaId(vardgivareId);
     }
 
-    public void setVardgivareId(String vardgivareId) {
-        this.vardgivareId = vardgivareId == null ? null : vardgivareId.toUpperCase(Locale.ENGLISH);
+    public void setVardgivareId(HsaId vardgivareId) {
+        this.vardgivareId = vardgivareId.getId();
     }
 
-    public String getLakareId() {
-        return lakareId;
+    public HsaId getLakareId() {
+        return new HsaId(lakareId);
     }
 
-    public void setLakareId(String lakareId) {
-        this.lakareId = lakareId == null ? null : lakareId.toUpperCase(Locale.ENGLISH);
+    public void setLakareId(HsaId lakareId) {
+        this.lakareId = lakareId.getId();
     }
 
     public String getTilltalsNamn() {

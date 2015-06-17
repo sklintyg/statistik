@@ -19,6 +19,7 @@
 package se.inera.statistics.web.service;
 
 import com.google.common.collect.Maps;
+import se.inera.statistics.hsa.model.HsaId;
 import se.inera.statistics.service.landsting.persistance.landstingenhet.LandstingEnhet;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.SimpleKonDataRow;
@@ -40,10 +41,10 @@ import java.util.Map;
 
 public class SjukfallPerPatientsPerEnhetConverter {
 
-    private final Map<String, Integer> listningarPerEnhet;
-    private final List<String> connectedEnhetIds;
+    private final Map<HsaId, Integer> listningarPerEnhet;
+    private final List<HsaId> connectedEnhetIds;
 
-    public SjukfallPerPatientsPerEnhetConverter(List<LandstingEnhet> landstingEnhets, List<String> connectedEnhetIds) {
+    public SjukfallPerPatientsPerEnhetConverter(List<LandstingEnhet> landstingEnhets, List<HsaId> connectedEnhetIds) {
         this.connectedEnhetIds = connectedEnhetIds;
         if (landstingEnhets == null) {
             listningarPerEnhet = Collections.emptyMap();
@@ -78,7 +79,7 @@ public class SjukfallPerPatientsPerEnhetConverter {
         });
         List<NamedData> data = new ArrayList<>();
         for (SimpleKonDataRow row : list) {
-            final String enhetId = (String) row.getExtras();
+            final HsaId enhetId = (HsaId) row.getExtras();
             final Integer listadePatienter = listningarPerEnhet.get(enhetId);
             if (listadePatienter != null) {
                 final Integer female = row.getFemale();
@@ -141,7 +142,7 @@ public class SjukfallPerPatientsPerEnhetConverter {
         final List<Integer> summedData = casesPerMonth.getSummedData();
         for (int i = 0; i < casesPerMonth.getRows().size(); i++) {
             final SimpleKonDataRow dataRow = casesPerMonth.getRows().get(i);
-            final String enhetId = (String) dataRow.getExtras();
+            final HsaId enhetId = (HsaId) dataRow.getExtras();
             final Integer listadePatienter = listningarPerEnhet.get(enhetId);
             if (listadePatienter != null) {
                 final Integer antalSjukfall = summedData.get(i);
@@ -155,7 +156,7 @@ public class SjukfallPerPatientsPerEnhetConverter {
 
     private boolean isMarked(SimpleKonDataRow row) {
         final Object extras = row.getExtras();
-        return extras instanceof String && connectedEnhetIds.contains(extras);
+        return extras instanceof HsaId && connectedEnhetIds.contains(extras);
     }
 
 }

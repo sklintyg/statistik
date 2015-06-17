@@ -18,9 +18,12 @@
  */
 package se.inera.statistics.service.processlog;
 
+import com.google.common.base.Function;
+import com.google.common.collect.Collections2;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
+import se.inera.statistics.hsa.model.HsaId;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -36,15 +39,20 @@ public class EnhetManager {
     @PersistenceContext(unitName = "IneraStatisticsLog")
     private EntityManager manager;
 
-    public List<Enhet> getEnhets(Collection<String> enhetIds) {
+    public List<Enhet> getEnhets(Collection<HsaId> enhetIds) {
         final Query query = manager.createQuery("SELECT e FROM Enhet e WHERE e.enhetId IN :enhetids");
-        query.setParameter("enhetids", enhetIds);
+        query.setParameter("enhetids", Collections2.transform(enhetIds, new Function<HsaId, String>() {
+            @Override
+            public String apply(HsaId hsaId) {
+                return hsaId.getId();
+            }
+        }));
         return query.getResultList();
     }
 
-    public List<Enhet> getAllEnhetsForVardgivareId(String vgId) {
+    public List<Enhet> getAllEnhetsForVardgivareId(HsaId vgId) {
         final Query query = manager.createQuery("SELECT e FROM Enhet e WHERE e.vardgivareId IN :vgId");
-        query.setParameter("vgId", vgId);
+        query.setParameter("vgId", vgId.getId());
         return query.getResultList();
     }
 

@@ -31,6 +31,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import se.inera.statistics.hsa.model.HsaId;
 import se.inera.statistics.service.landsting.LandstingEnhetHandler;
 import se.inera.statistics.service.processlog.Enhet;
 import se.inera.statistics.service.processlog.EnhetManager;
@@ -70,13 +71,13 @@ public class FilterHandler {
     @Autowired
     private EnhetManager enhetManager;
 
-    List<String> getEnhetsFilterIds(String filterHash, HttpServletRequest request) {
+    List<HsaId> getEnhetsFilterIds(String filterHash, HttpServletRequest request) {
         if (filterHash == null || filterHash.isEmpty()) {
             final LoginInfo info = loginServiceUtil.getLoginInfo(request);
             final List<Verksamhet> businesses = info.getBusinesses();
-            return Lists.transform(businesses, new Function<Verksamhet, String>() {
+            return Lists.transform(businesses, new Function<Verksamhet, HsaId>() {
                 @Override
-                public String apply(Verksamhet verksamhet) {
+                public HsaId apply(Verksamhet verksamhet) {
                     return verksamhet.getId();
                 }
             });
@@ -90,7 +91,7 @@ public class FilterHandler {
             return new FilterSettings(getFilterForAllAvailableEnhetsLandsting(request), Range.createForLastMonthsIncludingCurrent(defaultRangeValue));
         }
         final FilterData inFilter = filterHashHandler.getFilterFromHash(filterHash);
-        final ArrayList<String> enhetsIDs = getEnhetsFilteredLandsting(request, inFilter);
+        final ArrayList<HsaId> enhetsIDs = getEnhetsFilteredLandsting(request, inFilter);
         try {
             return getFilterSettingsLandsting(request, filterHash, defaultRangeValue, inFilter, enhetsIDs);
         } catch (FilterException e) {
@@ -104,7 +105,7 @@ public class FilterHandler {
             return new FilterSettings(getFilterForAllAvailableEnhets(request), Range.createForLastMonthsIncludingCurrent(defaultRangeValue));
         }
         final FilterData inFilter = filterHashHandler.getFilterFromHash(filterHash);
-        final ArrayList<String> enhetsIDs = getEnhetsFiltered(request, inFilter);
+        final ArrayList<HsaId> enhetsIDs = getEnhetsFiltered(request, inFilter);
         try {
             return getFilterSettings(request, filterHash, defaultRangeValue, inFilter, enhetsIDs);
         } catch (FilterException e) {
@@ -113,17 +114,17 @@ public class FilterHandler {
         }
     }
 
-    private FilterSettings getFilterSettings(HttpServletRequest request, String filterHash, int defaultRangeValue, FilterData inFilter, ArrayList<String> enhetsIDs) throws FilterException {
+    private FilterSettings getFilterSettings(HttpServletRequest request, String filterHash, int defaultRangeValue, FilterData inFilter, ArrayList<HsaId> enhetsIDs) throws FilterException {
         final Predicate<Fact> enhetFilter = getEnhetFilter(request, enhetsIDs);
         return getFilterSettings(filterHash, defaultRangeValue, inFilter, enhetsIDs, enhetFilter);
     }
 
-    private FilterSettings getFilterSettingsLandsting(HttpServletRequest request, String filterHash, int defaultRangeValue, FilterData inFilter, ArrayList<String> enhetsIDs) throws FilterException {
+    private FilterSettings getFilterSettingsLandsting(HttpServletRequest request, String filterHash, int defaultRangeValue, FilterData inFilter, ArrayList<HsaId> enhetsIDs) throws FilterException {
         final Predicate<Fact> enhetFilter = getEnhetFilterLandsting(request, enhetsIDs);
         return getFilterSettings(filterHash, defaultRangeValue, inFilter, enhetsIDs, enhetFilter);
     }
 
-    private FilterSettings getFilterSettings(String filterHash, int defaultRangeValue, FilterData inFilter, ArrayList<String> enhetsIDs, Predicate<Fact> enhetFilter) throws FilterException {
+    private FilterSettings getFilterSettings(String filterHash, int defaultRangeValue, FilterData inFilter, ArrayList<HsaId> enhetsIDs, Predicate<Fact> enhetFilter) throws FilterException {
         final List<String> diagnoser = inFilter.getDiagnoser();
         final Predicate<Fact> diagnosFilter = getDiagnosFilter(diagnoser);
         final SjukfallFilter sjukfallFilter = new SjukfallFilter(Predicates.and(enhetFilter, diagnosFilter), filterHash);
@@ -167,18 +168,18 @@ public class FilterHandler {
     }
 
     private Filter getFilterForAllAvailableEnhetsLandsting(HttpServletRequest request) {
-        final String vardgivarId = getSelectedVgIdForLoggedInUser(request);
-        final List<String> enhets = landstingEnhetHandler.getAllEnhetsForVardgivare(vardgivarId);
-        final Set<Integer> availableEnhets = new HashSet<>(Lists.transform(enhets, new Function<String, Integer>() {
+        final HsaId vardgivarId = getSelectedVgIdForLoggedInUser(request);
+        final List<HsaId> enhets = landstingEnhetHandler.getAllEnhetsForVardgivare(vardgivarId);
+        final Set<Integer> availableEnhets = new HashSet<>(Lists.transform(enhets, new Function<HsaId, Integer>() {
             @Override
-            public Integer apply(String enhetid) {
+            public Integer apply(HsaId enhetid) {
                 return Warehouse.getEnhet(enhetid);
             }
         }));
         return getFilterForEnhets(availableEnhets, enhets);
     }
 
-    private Filter getFilterForEnhets(final Set<Integer> enhetsIntIds, List<String> enhets) {
+    private Filter getFilterForEnhets(final Set<Integer> enhetsIntIds, List<HsaId> enhets) {
         return new Filter(new SjukfallFilter(new Predicate<Fact>() {
             @Override
             public boolean apply(Fact fact) {
@@ -201,21 +202,30 @@ public class FilterHandler {
         return getFilterForEnhets(availableEnhets, null);
     }
 
-    private ArrayList<String> getEnhetsFilteredLandsting(HttpServletRequest request, FilterData inFilter) {
-        Set<String> enhetsMatchingVerksamhetstyp = getEnhetsForVerksamhetstyperLandsting(inFilter, request);
-        final HashSet<String> enhets = new HashSet<>(inFilter.getEnheter());
+    private ArrayList<HsaId> getEnhetsFilteredLandsting(HttpServletRequest request, FilterData inFilter) {
+        Set<HsaId> enhetsMatchingVerksamhetstyp = getEnhetsForVerksamhetstyperLandsting(inFilter, request);
+        final HashSet<HsaId> enhets = new HashSet<>(toHsaIds(inFilter.getEnheter()));
         return new ArrayList<>(Sets.intersection(enhetsMatchingVerksamhetstyp, enhets));
     }
 
-    private ArrayList<String> getEnhetsFiltered(HttpServletRequest request, FilterData inFilter) {
-        Set<String> enhetsMatchingVerksamhetstyp = getEnhetsForVerksamhetstyper(inFilter.getVerksamhetstyper(), request);
-        final HashSet<String> enhets = new HashSet<>(inFilter.getEnheter());
+    private List<HsaId> toHsaIds(List<String> enheter) {
+        return Lists.transform(enheter, new Function<String, HsaId>() {
+            @Override
+            public HsaId apply(String id) {
+                return new HsaId(id);
+            }
+        });
+    }
+
+    private ArrayList<HsaId> getEnhetsFiltered(HttpServletRequest request, FilterData inFilter) {
+        Set<HsaId> enhetsMatchingVerksamhetstyp = getEnhetsForVerksamhetstyper(inFilter.getVerksamhetstyper(), request);
+        final HashSet<HsaId> enhets = new HashSet<>(toHsaIds(inFilter.getEnheter()));
         return new ArrayList<>(Sets.intersection(enhetsMatchingVerksamhetstyp, enhets));
     }
 
-    private Set<String> getEnhetsForVerksamhetstyperLandsting(FilterData filterData, HttpServletRequest request) {
-        final List<Enhet> enhets = enhetManager.getEnhets(filterData.getEnheter());
-        Set<String> enhetsIds = new HashSet<>();
+    private Set<HsaId> getEnhetsForVerksamhetstyperLandsting(FilterData filterData, HttpServletRequest request) {
+        final List<Enhet> enhets = enhetManager.getEnhets(toHsaIds(filterData.getEnheter()));
+        Set<HsaId> enhetsIds = new HashSet<>();
         for (Enhet verksamhet : enhets) {
             if (isOfVerksamhetsTypLandsting(verksamhet, filterData.getVerksamhetstyper())) {
                 enhetsIds.add(verksamhet.getEnhetId());
@@ -224,8 +234,8 @@ public class FilterHandler {
         return enhetsIds;
     }
 
-    private Set<String> getEnhetsForVerksamhetstyper(List<String> verksamhetstyper, HttpServletRequest request) {
-        Set<String> enhetsIds = new HashSet<>();
+    private Set<HsaId> getEnhetsForVerksamhetstyper(List<String> verksamhetstyper, HttpServletRequest request) {
+        Set<HsaId> enhetsIds = new HashSet<>();
         LoginInfo info = loginServiceUtil.getLoginInfo(request);
         for (Verksamhet verksamhet : info.getBusinesses()) {
             if (isOfVerksamhetsTyp(verksamhet, verksamhetstyper)) {
@@ -281,15 +291,15 @@ public class FilterHandler {
         };
     }
 
-    private Predicate<Fact> getEnhetFilter(HttpServletRequest request, List<String> enhetsIDs) {
-        Set<String> enheter = getEnhetNameMap(request, enhetsIDs).keySet();
-        return sjukfallUtil.createEnhetFilter(enheter.toArray(new String[enheter.size()])).getFilter();
+    private Predicate<Fact> getEnhetFilter(HttpServletRequest request, List<HsaId> enhetsIDs) {
+        Set<HsaId> enheter = getEnhetNameMap(request, enhetsIDs).keySet();
+        return sjukfallUtil.createEnhetFilter(enheter.toArray(new HsaId[enheter.size()])).getFilter();
     }
 
-    Map<String, String> getEnhetNameMap(HttpServletRequest request, List<String> enhetsIDs) {
-        final String vgid = getSelectedVgIdForLoggedInUser(request);
+    Map<HsaId, String> getEnhetNameMap(HttpServletRequest request, List<HsaId> enhetsIDs) {
+        final HsaId vgid = getSelectedVgIdForLoggedInUser(request);
         LoginInfo info = loginServiceUtil.getLoginInfo(request);
-        Map<String, String> enheter = new HashMap<>();
+        Map<HsaId, String> enheter = new HashMap<>();
         for (Verksamhet userVerksamhet : info.getBusinesses()) {
             if (userVerksamhet.getVardgivarId().equals(vgid)) {
                 if (enhetsIDs != null && enhetsIDs.contains(userVerksamhet.getId())) {
@@ -300,15 +310,15 @@ public class FilterHandler {
         return enheter;
     }
 
-    private Predicate<Fact> getEnhetFilterLandsting(HttpServletRequest request, List<String> enhetsIDs) {
-        Set<String> enheter = getEnhetNameMapLandsting(request, enhetsIDs).keySet();
-        return sjukfallUtil.createEnhetFilter(enheter.toArray(new String[enheter.size()])).getFilter();
+    private Predicate<Fact> getEnhetFilterLandsting(HttpServletRequest request, List<HsaId> enhetsIDs) {
+        Set<HsaId> enheter = getEnhetNameMapLandsting(request, enhetsIDs).keySet();
+        return sjukfallUtil.createEnhetFilter(enheter.toArray(new HsaId[enheter.size()])).getFilter();
     }
 
-    private Map<String, String> getEnhetNameMapLandsting(HttpServletRequest request, List<String> filteredEnhetsIds) {
-        final String vgid = getSelectedVgIdForLoggedInUser(request);
-        Map<String, String> enheter = new HashMap<>();
-        final List<String> availableEnhetIds = landstingEnhetHandler.getAllEnhetsForVardgivare(vgid);
+    private Map<HsaId, String> getEnhetNameMapLandsting(HttpServletRequest request, List<HsaId> filteredEnhetsIds) {
+        final HsaId vgid = getSelectedVgIdForLoggedInUser(request);
+        Map<HsaId, String> enheter = new HashMap<>();
+        final List<HsaId> availableEnhetIds = landstingEnhetHandler.getAllEnhetsForVardgivare(vgid);
         final List<Enhet> enhets = enhetManager.getEnhets(availableEnhetIds);
         for (Enhet enhet : enhets) {
             if (filteredEnhetsIds != null && filteredEnhetsIds.contains(enhet.getEnhetId())) {
@@ -318,7 +328,7 @@ public class FilterHandler {
         return enheter;
     }
 
-    private String getSelectedVgIdForLoggedInUser(HttpServletRequest request) {
+    private HsaId getSelectedVgIdForLoggedInUser(HttpServletRequest request) {
         return loginServiceUtil.getLoginInfo(request).getDefaultVerksamhet().getVardgivarId();
     }
 

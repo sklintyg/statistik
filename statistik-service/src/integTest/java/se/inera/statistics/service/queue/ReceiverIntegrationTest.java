@@ -31,6 +31,7 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
+import se.inera.statistics.hsa.model.HsaId;
 import se.inera.statistics.service.helper.UtlatandeBuilder;
 import se.inera.statistics.service.processlog.LogConsumer;
 import se.inera.statistics.service.report.model.SimpleKonDataRow;
@@ -88,7 +89,7 @@ public class ReceiverIntegrationTest {
     public void deliver_document_from_in_queue_to_statistics_repository() {
         populate();
         load();
-        SimpleKonResponse<SimpleKonDataRow> webData = sjukfallQuery.getSjukfall(warehouse.get("VARDGIVARID"), sjukfallUtil.createEnhetFilter("ENHETID"), new LocalDate("2011-01"), 12, 1, false);
+        SimpleKonResponse<SimpleKonDataRow> webData = sjukfallQuery.getSjukfall(warehouse.get(new HsaId("VARDGIVARID")), sjukfallUtil.createEnhetFilter(new HsaId("ENHETID")), new LocalDate("2011-01"), 12, 1, false);
 
         assertEquals(12, webData.getRows().size());
 
@@ -112,8 +113,8 @@ public class ReceiverIntegrationTest {
     @Transactional
     public void populate() {
         UtlatandeBuilder builder = new UtlatandeBuilder();
-        simpleSend(builder.build("19121212-0010", new LocalDate("2011-01-20"), new LocalDate("2011-03-11"), "enhetId", "A00", 0).toString(), "001");
-        simpleSend(builder.build("19121212-0110", new LocalDate("2011-01-20"), new LocalDate("2011-03-11"), "enhetId", "A00", 0).toString(), "002");
+        simpleSend(builder.build("19121212-0010", new LocalDate("2011-01-20"), new LocalDate("2011-03-11"), new HsaId("enhetId"), "A00", 0).toString(), "001");
+        simpleSend(builder.build("19121212-0110", new LocalDate("2011-01-20"), new LocalDate("2011-03-11"), new HsaId("enhetId"), "A00", 0).toString(), "002");
 
         sleep();
 

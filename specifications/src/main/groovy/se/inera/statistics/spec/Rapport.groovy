@@ -1,5 +1,6 @@
 package se.inera.statistics.spec
 
+import se.inera.statistics.hsa.model.HsaId
 import se.inera.statistics.service.report.util.Icd10
 import se.inera.statistics.service.report.util.Icd10RangeType
 import se.inera.statistics.web.reports.ReportsUtil

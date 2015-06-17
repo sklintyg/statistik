@@ -84,7 +84,7 @@ public class HsaWebServiceStub implements HsaWsResponderInterface {
 
         Vardenhet enhet = hsaService.getVardenhet(parameters.getHsaIdentity());
         if (enhet != null) {
-            response.setHsaIdentity(enhet.getId());
+            response.setHsaIdentity(enhet.getId().getId());
             response.setName(enhet.getNamn());
             return response;
         }
@@ -101,7 +101,7 @@ public class HsaWebServiceStub implements HsaWsResponderInterface {
         GetMiuForPersonResponseType response = new GetMiuForPersonResponseType();
 
         for (Medarbetaruppdrag medarbetaruppdrag : hsaService.getMedarbetaruppdrag()) {
-            if (medarbetaruppdrag.getHsaId().equals(parameters.getHsaIdentity())) {
+            if (medarbetaruppdrag.getHsaId().getId().equals(parameters.getHsaIdentity())) {
                 response.getMiuInformation().addAll(
                         miuInformationTypesForEnhetsIds(medarbetaruppdrag));
             }
@@ -122,11 +122,11 @@ public class HsaWebServiceStub implements HsaWsResponderInterface {
         for (Vardenhet enhet : hsaService.getVardenhets()) {
             if (medarbetaruppdrag.getEnhetIds().contains(enhet.getId())) {
                 MiuInformationType miuInfo = new MiuInformationType();
-                miuInfo.setHsaIdentity(medarbetaruppdrag.getHsaId());
+                miuInfo.setHsaIdentity(medarbetaruppdrag.getHsaId().getId());
                 miuInfo.setMiuPurpose(medarbetaruppdrag.getAndamal());
-                miuInfo.setCareUnitHsaIdentity(enhet.getId());
+                miuInfo.setCareUnitHsaIdentity(enhet.getId().getId());
                 miuInfo.setCareUnitName(enhet.getNamn());
-                miuInfo.setCareGiver(enhet.getVardgivarId());
+                miuInfo.setCareGiver(enhet.getVardgivarId().getId());
                 miuInfo.setCareGiverName(enhet.getVardgivarNamn());
                 informationTypes.add(miuInfo);
             }
@@ -209,7 +209,7 @@ public class HsaWebServiceStub implements HsaWsResponderInterface {
             if (enhet.getId().equals(parameters.getSearchBase())) {
 
                 CareUnitType careUnit = new CareUnitType();
-                careUnit.setHsaIdentity(enhet.getId());
+                careUnit.setHsaIdentity(enhet.getId().getId());
                 careUnit.setCareUnitName(enhet.getNamn());
                 response.setCareUnits(new GetCareUnitListResponseType.CareUnits());
                 response.getCareUnits().getCareUnit().add(careUnit);

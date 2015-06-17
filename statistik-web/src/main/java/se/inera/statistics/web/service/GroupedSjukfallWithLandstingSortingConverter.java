@@ -18,6 +18,7 @@
  */
 package se.inera.statistics.web.service;
 
+import se.inera.statistics.hsa.model.HsaId;
 import se.inera.statistics.service.report.model.SimpleKonDataRow;
 import se.inera.statistics.service.report.model.SimpleKonResponse;
 import se.inera.statistics.web.model.ChartData;
@@ -29,9 +30,9 @@ import java.util.List;
 
 public class GroupedSjukfallWithLandstingSortingConverter extends SimpleDualSexConverter {
 
-    private final List<String> connectedEnhetIds;
+    private final List<HsaId> connectedEnhetIds;
 
-    public GroupedSjukfallWithLandstingSortingConverter(String tableGroupTitle, List<String> connectedEnhetIds) {
+    public GroupedSjukfallWithLandstingSortingConverter(String tableGroupTitle, List<HsaId> connectedEnhetIds) {
         super(tableGroupTitle, false, "%1$s");
         this.connectedEnhetIds = connectedEnhetIds;
     }
@@ -63,7 +64,7 @@ public class GroupedSjukfallWithLandstingSortingConverter extends SimpleDualSexC
     @Override
     protected boolean isMarked(SimpleKonDataRow row) {
         final Object extras = row.getExtras();
-        return extras instanceof String && connectedEnhetIds.contains(extras);
+        return extras instanceof HsaId && connectedEnhetIds.contains(extras);
     }
 
 }

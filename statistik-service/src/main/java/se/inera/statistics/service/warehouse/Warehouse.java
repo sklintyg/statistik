@@ -24,6 +24,7 @@ import com.google.common.collect.HashBiMap;
 import org.joda.time.LocalDateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import se.inera.statistics.hsa.model.HsaId;
 import se.inera.statistics.service.processlog.Enhet;
 
 import java.util.ArrayList;
@@ -31,23 +32,22 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
 public class Warehouse implements Iterable<Aisle> {
 
     private static final Logger LOG = LoggerFactory.getLogger(Warehouse.class);
 
-    private volatile Map<String, Aisle> aisles = new HashMap<>();
-    private Map<String, MutableAisle> loadingAisles = new HashMap<>();
-    private volatile Map<String, List<Enhet>> enhets;
-    private Map<String, List<Enhet>> loadingEnhets = new HashMap<>();
-    private static IdMap<String> enhetsMap = new IdMap<>();
-    private static IdMap<String> lakareMap = new IdMap<>();
+    private volatile Map<HsaId, Aisle> aisles = new HashMap<>();
+    private Map<HsaId, MutableAisle> loadingAisles = new HashMap<>();
+    private volatile Map<HsaId, List<Enhet>> enhets;
+    private Map<HsaId, List<Enhet>> loadingEnhets = new HashMap<>();
+    private static IdMap<HsaId> enhetsMap = new IdMap<>();
+    private static IdMap<HsaId> lakareMap = new IdMap<>();
     private LocalDateTime lastUpdate = null;
     private LocalDateTime lastEnhetUpdate = null;
 
-    public void accept(Fact fact, String vardgivareId) {
+    public void accept(Fact fact, HsaId vardgivareId) {
         MutableAisle aisle = getAisle(vardgivareId, loadingAisles, true);
         aisle.addLine(fact);
     }
@@ -61,7 +61,7 @@ public class Warehouse implements Iterable<Aisle> {
         loadingEnhets.put(enhet.getVardgivareId(), list);
     }
 
-    public Aisle get(String vardgivarId) {
+    public Aisle get(HsaId vardgivarId) {
         final Aisle aisle = aisles.get(vardgivarId);
         if (aisle == null) {
             return new MutableAisle(vardgivarId).createAisle();
@@ -69,12 +69,12 @@ public class Warehouse implements Iterable<Aisle> {
         return aisle;
     }
 
-    public List<Enhet> getEnhets(String vardgivareId) {
+    public List<Enhet> getEnhets(HsaId vardgivareId) {
         List<Enhet> result = enhets.get(vardgivareId);
         return result == null ? new ArrayList<Enhet>() : result;
     }
 
-    private MutableAisle getAisle(String vardgivareId, Map<String, MutableAisle> aisles, boolean add) {
+    private MutableAisle getAisle(HsaId vardgivareId, Map<HsaId, MutableAisle> aisles, boolean add) {
         MutableAisle aisle = aisles.get(vardgivareId);
         if (aisle == null) {
             aisle = new MutableAisle(vardgivareId);
@@ -93,7 +93,7 @@ public class Warehouse implements Iterable<Aisle> {
         return "Warehouse [" + aisles.size() + " aisles, " + total + " lines]";
     }
 
-    public Map<String, Aisle> getAllVardgivare() {
+    public Map<HsaId, Aisle> getAllVardgivare() {
         return aisles;
     }
 
@@ -102,23 +102,23 @@ public class Warehouse implements Iterable<Aisle> {
         return aisles.values().iterator();
     }
 
-    public static int getEnhetAndRemember(String id) {
-        return enhetsMap.getOrCreateId(id == null ? null : id.toUpperCase(Locale.ENGLISH));
+    public static int getEnhetAndRemember(HsaId id) {
+        return enhetsMap.getOrCreateId(id);
     }
 
-    public static int getEnhet(String id) {
-        return enhetsMap.maybeGetId(id == null ? null : id.toUpperCase(Locale.ENGLISH));
+    public static int getEnhet(HsaId id) {
+        return enhetsMap.maybeGetId(id);
     }
 
-    public static Optional<String> getEnhetId(int enhetIntId) {
+    public static Optional<HsaId> getEnhetId(int enhetIntId) {
         return enhetsMap.getKey(enhetIntId);
     }
 
-    public static int getNumLakarIdAndRemember(String id) {
+    public static int getNumLakarIdAndRemember(HsaId id) {
         return lakareMap.getOrCreateId(id);
     }
 
-    public static int getNumLakarId(String id) {
+    public static int getNumLakarId(HsaId id) {
         return lakareMap.maybeGetId(id);
     }
 
@@ -127,8 +127,8 @@ public class Warehouse implements Iterable<Aisle> {
     }
 
     public void complete(LocalDateTime lastUpdate) {
-        Map<String, Aisle> newAisles = new HashMap<>();
-        for (Map.Entry<String, MutableAisle> entry : loadingAisles.entrySet()) {
+        Map<HsaId, Aisle> newAisles = new HashMap<>();
+        for (Map.Entry<HsaId, MutableAisle> entry : loadingAisles.entrySet()) {
             newAisles.put(entry.getKey(), entry.getValue().createAisle());
         }
         aisles = Collections.unmodifiableMap(newAisles);

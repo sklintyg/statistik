@@ -18,6 +18,7 @@
  */
 package se.inera.statistics.service.warehouse.model.db;
 
+import se.inera.statistics.hsa.model.HsaId;
 import se.inera.statistics.service.processlog.EventType;
 
 import javax.persistence.Entity;
@@ -25,7 +26,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import java.util.Locale;
 
 @Entity
 @Table(name = WideLine.TABLE)
@@ -61,7 +61,7 @@ public class WideLine {
     }
 
     // CHECKSTYLE:OFF ParameterNumber
-    public WideLine(long id, String correlationId, String lkf, String enhet, long lakarintyg, EventType intygTyp, String patientid, int startdatum, int slutdatum, int kon, int alder, String diagnoskapitel, String diagnosavsnitt, String diagnoskategori, String diagnoskod, int sjukskrivningsgrad, int lakarkon, int lakaralder, String lakarbefattning, String vardgivareId, String lakareId) {
+    public WideLine(long id, String correlationId, String lkf, HsaId enhet, long lakarintyg, EventType intygTyp, String patientid, int startdatum, int slutdatum, int kon, int alder, String diagnoskapitel, String diagnosavsnitt, String diagnoskategori, String diagnoskod, int sjukskrivningsgrad, int lakarkon, int lakaralder, String lakarbefattning, HsaId vardgivareId, HsaId lakareId) {
         this.id = id;
         this.correlationId = correlationId;
         this.lkf = lkf;
@@ -110,20 +110,20 @@ public class WideLine {
         this.lkf = lkf;
     }
 
-    public String getEnhet() {
-        return enhet;
+    public HsaId getEnhet() {
+        return enhet == null ? HsaId.empty() : new HsaId(enhet);
     }
 
-    public void setEnhet(String enhet) {
-        this.enhet = enhet == null ? null : enhet.toUpperCase(Locale.ENGLISH);
+    public void setEnhet(HsaId enhet) {
+        this.enhet = enhet == null ? null : enhet.getId();
     }
 
-    public String getVardgivareId() {
-        return vardgivareId;
+    public HsaId getVardgivareId() {
+        return vardgivareId == null ? HsaId.empty() : new HsaId(vardgivareId);
     }
 
-    public void setVardgivareId(String vardgivareId) {
-        this.vardgivareId = vardgivareId == null ? null : vardgivareId.toUpperCase(Locale.ENGLISH);
+    public void setVardgivareId(HsaId vardgivareId) {
+        this.vardgivareId = vardgivareId == null ? null : vardgivareId.getId();
     }
 
     public long getLakarintyg() {
@@ -246,12 +246,12 @@ public class WideLine {
         this.lakarbefattning = lakarbefattning;
     }
 
-    public String getLakareId() {
-        return lakareId;
+    public HsaId getLakareId() {
+        return lakareId == null ? HsaId.empty() : new HsaId(lakareId);
     }
 
-    public void setLakareId(String lakareId) {
-        this.lakareId = lakareId == null ? null : lakareId.toUpperCase(Locale.ENGLISH);
+    public void setLakareId(HsaId lakareId) {
+        this.lakareId = lakareId == null ? null : lakareId.getId();
     }
 
 }

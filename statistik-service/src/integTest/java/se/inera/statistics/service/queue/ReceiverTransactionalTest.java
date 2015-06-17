@@ -18,8 +18,6 @@
  */
 package se.inera.statistics.service.queue;
 
-import org.apache.activemq.command.ActiveMQQueue;
-import org.joda.time.DateTimeUtils;
 import org.joda.time.LocalDate;
 import org.junit.Before;
 import org.junit.Test;
@@ -29,36 +27,24 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.core.BrowserCallback;
 import org.springframework.jms.core.JmsTemplate;
-import org.springframework.jms.core.MessageCreator;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.transaction.annotation.Transactional;
+import se.inera.statistics.hsa.model.HsaId;
 import se.inera.statistics.service.helper.UtlatandeBuilder;
 import se.inera.statistics.service.processlog.LogConsumer;
-import se.inera.statistics.service.report.model.Range;
-import se.inera.statistics.service.report.model.SimpleKonDataRow;
-import se.inera.statistics.service.report.model.SimpleKonResponse;
-import se.inera.statistics.service.testsupport.*;
-import se.inera.statistics.service.warehouse.SjukfallUtil;
-import se.inera.statistics.service.warehouse.Warehouse;
-import se.inera.statistics.service.warehouse.WarehouseManager;
-import se.inera.statistics.service.warehouse.WidelineManager;
-import se.inera.statistics.service.warehouse.query.SjukfallQuery;
 
-import javax.jms.*;
-
+import javax.jms.ConnectionFactory;
+import javax.jms.JMSException;
+import javax.jms.QueueBrowser;
+import javax.jms.Session;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
-import java.util.Map;
-import javax.jms.Message;
-import javax.jms.Session;
-import javax.jms.TextMessage;
 
 import static org.junit.Assert.assertEquals;
 
@@ -167,8 +153,8 @@ public class ReceiverTransactionalTest {
         return persons.get(id);
     }
 
-    private String getVardenhet(int i) {
-        String[] enheter = {"ENVE", "TVAVE"};
+    private HsaId getVardenhet(int i) {
+        HsaId[] enheter = {new HsaId("ENVE"), new HsaId("TVAVE")};
         return enheter[i];
     }
 
@@ -195,8 +181,8 @@ public class ReceiverTransactionalTest {
         return diagnoser[i];
     }
 
-    private String getVardgivare(int i) {
-        String[] givare = {"Vardgivare"};
+    private HsaId getVardgivare(int i) {
+        HsaId[] givare = {new HsaId("Vardgivare")};
         return givare[i];
     }
 
@@ -205,11 +191,11 @@ public class ReceiverTransactionalTest {
         private final List<String> grads;
         private final LocalDate startDate;
         private final LocalDate endDate;
-        private final String vardenhet;
-        private final String vardgivare;
+        private final HsaId vardenhet;
+        private final HsaId vardgivare;
         private final String diagnos;
 
-        public TestIntyg(String personNr, List<String> grads, LocalDate startDate, LocalDate endDate, String vardenhet, String vardgivare, String diagnos) {
+        public TestIntyg(String personNr, List<String> grads, LocalDate startDate, LocalDate endDate, HsaId vardenhet, HsaId vardgivare, String diagnos) {
             this.personNr = personNr;
             this.grads = grads;
             this.startDate = startDate;

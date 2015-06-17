@@ -24,19 +24,16 @@ import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import se.inera.statistics.hsa.model.HsaId;
 import se.inera.statistics.service.processlog.EventType;
 import se.inera.statistics.service.warehouse.model.db.WideLine;
 
 import java.util.List;
-import java.util.Random;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:warehouse-integration-test.xml", "classpath:icd10.xml" })
@@ -45,7 +42,7 @@ public class WidelineConverterTest {
 
     private static final Logger LOG = LoggerFactory.getLogger(WidelineConverterTest.class);
 
-    WideLine wideLine = new WideLine(1, "{id}", "256002", "enhet", 1, EventType.CREATED, "19121212-1212", 4000, 4021, 0, 45, "A00", "A00-A09", "A00-B99", "A0000", 100, 0, 32, "201010", "vardgivare", "lakare");
+    WideLine wideLine = new WideLine(1, "{id}", "256002", new HsaId("enhet"), 1, EventType.CREATED, "19121212-1212", 4000, 4021, 0, 45, "A00", "A00-A09", "A00-B99", "A0000", 100, 0, 32, "201010", new HsaId("vardgivare"), new HsaId("lakare"));
     @Autowired
     private WidelineConverter converter;
 
@@ -66,7 +63,7 @@ public class WidelineConverterTest {
 
     @Test
     public void errorOnMissingVardgivare() throws Exception {
-        wideLine.setVardgivareId("");
+        wideLine.setVardgivareId(new HsaId(""));
         List<String> errors = converter.validate(wideLine);
 
         LOG.error("Error message: {}", errors);

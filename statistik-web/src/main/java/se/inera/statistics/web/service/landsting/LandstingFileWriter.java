@@ -46,7 +46,7 @@ public class LandstingFileWriter {
                 final Enhet enhet = enhets.get(i);
                 final Row row = sheet.getRow(i + startRow);
                 row.createCell(0, Cell.CELL_TYPE_STRING).setCellValue(enhet.getNamn());
-                row.createCell(1, Cell.CELL_TYPE_STRING).setCellValue(enhet.getEnhetId());
+                row.createCell(1, Cell.CELL_TYPE_STRING).setCellValue(enhet.getEnhetId().getId());
             }
             final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
             workbook.write(outputStream);

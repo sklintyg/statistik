@@ -26,6 +26,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import se.inera.statistics.hsa.model.HsaId;
 import se.inera.statistics.service.landsting.persistance.landsting.Landsting;
 import se.inera.statistics.service.landsting.persistance.landsting.LandstingManager;
 import se.inera.statistics.service.landsting.persistance.landstingenhet.LandstingEnhet;
@@ -69,8 +70,8 @@ public class LandstingEnhetHandlerTest {
     @Test
     public void testUpdateWhenNoLandstingIsFoundExceptionIsThrownAndNoUpdateIsPerformed() throws Exception {
         //Given
-        final LandstingEnhetFileData data = new LandstingEnhetFileData("testName", null, "", "", "");
-        Mockito.when(landstingManager.getForVg(anyString())).thenReturn(Optional.<Landsting>absent());
+        final LandstingEnhetFileData data = new LandstingEnhetFileData(new HsaId("testName"), null, "", new HsaId(""), "");
+        Mockito.when(landstingManager.getForVg(any(HsaId.class))).thenReturn(Optional.<Landsting>absent());
 
         //When
         try {
@@ -82,7 +83,7 @@ public class LandstingEnhetHandlerTest {
 
         //Then
         Mockito.verify(landstingEnhetManager, times(0)).update(anyLong(), anyListOf(LandstingEnhetFileDataRow.class));
-        Mockito.verify(landstingEnhetUpdateManager, times(0)).update(anyLong(), anyString(), anyString(), anyString(), any(LandstingEnhetUpdateOperation.class));
+        Mockito.verify(landstingEnhetUpdateManager, times(0)).update(anyLong(), anyString(), any(HsaId.class), anyString(), any(LandstingEnhetUpdateOperation.class));
     }
 
     @Test
@@ -90,20 +91,20 @@ public class LandstingEnhetHandlerTest {
         //Given
         final ArrayList<LandstingEnhetFileDataRow> rows = new ArrayList<>();
         final String userName = "testUserName";
-        final String userId = "TestUserId";
         final String fileName = "TestFileName";
-        final LandstingEnhetFileData data = new LandstingEnhetFileData("testVgId", rows, userName, userId, fileName);
+        final HsaId userHsaId = new HsaId("TestUserId");
+        final LandstingEnhetFileData data = new LandstingEnhetFileData(new HsaId("testVgId"), rows, userName, userHsaId, fileName);
         final Landsting landsting = Mockito.mock(Landsting.class);
         final Long landtingsId = 5L;
         Mockito.when(landsting.getId()).thenReturn(landtingsId);
-        Mockito.when(landstingManager.getForVg(anyString())).thenReturn(Optional.of(landsting));
+        Mockito.when(landstingManager.getForVg(any(HsaId.class))).thenReturn(Optional.of(landsting));
 
         //When
         landstingEnhetHandler.update(data);
 
         //Then
         Mockito.verify(landstingEnhetManager, times(1)).update(landtingsId, rows);
-        Mockito.verify(landstingEnhetUpdateManager, times(1)).update(landtingsId, userName, userId, fileName, LandstingEnhetUpdateOperation.Update);
+        Mockito.verify(landstingEnhetUpdateManager, times(1)).update(landtingsId, userName, userHsaId, fileName, LandstingEnhetUpdateOperation.Update);
     }
 
     @Test
@@ -111,14 +112,14 @@ public class LandstingEnhetHandlerTest {
         //Given
         final ArrayList<LandstingEnhetFileDataRow> rows = new ArrayList<>();
         final String userName = "testUserName";
-        final String userId = "TestUserId";
+        final HsaId userId = new HsaId("TestUserId");
         final String fileName = "TestFileName";
-        final String vgId = "testVgId";
+        final HsaId vgId = new HsaId("testVgId");
         final LandstingEnhetFileData data = new LandstingEnhetFileData(vgId, rows, userName, userId, fileName);
         final Landsting landsting = Mockito.mock(Landsting.class);
         final Long landtingsId = 5L;
         Mockito.when(landsting.getId()).thenReturn(landtingsId);
-        Mockito.when(landstingManager.getForVg(anyString())).thenReturn(Optional.of(landsting));
+        Mockito.when(landstingManager.getForVg(any(HsaId.class))).thenReturn(Optional.of(landsting));
 
         //When
         landstingEnhetHandler.clear(vgId, userName, userId);
@@ -135,23 +136,23 @@ public class LandstingEnhetHandlerTest {
         //Given
         final ArrayList<LandstingEnhetFileDataRow> rows = new ArrayList<>();
         final String fileName = "TestFile<Name.xls";
-        final LandstingEnhetFileData data = new LandstingEnhetFileData("testVgId", null, "", "", fileName);
+        final LandstingEnhetFileData data = new LandstingEnhetFileData(new HsaId("testVgId"), null, "", new HsaId(""), fileName);
         final Landsting landsting = Mockito.mock(Landsting.class);
         final Long landtingsId = 5L;
         Mockito.when(landsting.getId()).thenReturn(landtingsId);
-        Mockito.when(landstingManager.getForVg(anyString())).thenReturn(Optional.of(landsting));
+        Mockito.when(landstingManager.getForVg(any(HsaId.class))).thenReturn(Optional.of(landsting));
 
         //When
         landstingEnhetHandler.update(data);
 
         //Then
-        Mockito.verify(landstingEnhetUpdateManager, times(1)).update(anyLong(), anyString(), anyString(), eq("TestFile_Name.xls"), any(LandstingEnhetUpdateOperation.class));
+        Mockito.verify(landstingEnhetUpdateManager, times(1)).update(anyLong(), anyString(), any(HsaId.class), eq("TestFile_Name.xls"), any(LandstingEnhetUpdateOperation.class));
     }
 
     @Test
     public void testGetLandstingsVardgivareStatusWhenVgidNotConnectedToAnyLandsting() throws Exception {
         //Given
-        final String vgid = "testvgid";
+        final HsaId vgid = new HsaId("testvgid");
         Mockito.when(landstingManager.getForVg(vgid)).thenReturn(Optional.<Landsting>absent());
 
         //When
@@ -164,7 +165,7 @@ public class LandstingEnhetHandlerTest {
     @Test
     public void testGetLandstingsVardgivareStatusWhenVgidIsConnectedToALandstingButHasNoLandstingsenhetsConnected() throws Exception {
         //Given
-        final String vgid = "testvgid";
+        final HsaId vgid = new HsaId("testvgid");
         final Landsting landsting = Mockito.mock(Landsting.class);
         final long landstingsid = 4L;
         Mockito.when(landsting.getId()).thenReturn(landstingsid);
@@ -182,11 +183,11 @@ public class LandstingEnhetHandlerTest {
     @Test
     public void testGetLandstingsVardgivareStatusWhenVgidIsConnectedToALandstingAndHasLandstingsenhetsConnected() throws Exception {
         //Given
-        final String vgid = "testvgid";
+        final HsaId vgid = new HsaId("testvgid");
         final Landsting landsting = Mockito.mock(Landsting.class);
         final long landstingsid = 4L;
         Mockito.when(landsting.getId()).thenReturn(landstingsid);
-        final List<LandstingEnhet> landstingEnhets = Arrays.asList(new LandstingEnhet(1L, "", 2));
+        final List<LandstingEnhet> landstingEnhets = Arrays.asList(new LandstingEnhet(1L, new HsaId(""), 2));
         Mockito.when(landstingEnhetManager.getByLandstingId(landstingsid)).thenReturn(landstingEnhets);
         Mockito.when(landstingManager.getForVg(vgid)).thenReturn(Optional.of(landsting));
 

@@ -35,6 +35,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import se.inera.statistics.hsa.model.HsaId;
 import se.inera.statistics.service.helper.DocumentHelper;
 import se.inera.statistics.service.hsa.HSAKey;
 import se.inera.statistics.service.hsa.HSAService;
@@ -136,10 +137,10 @@ public class LargeTestDataGenerator {
     }
 
     public String exportUtlatanden() {
-        Map<String, Aisle> allVardgivare = warehouse.getAllVardgivare();
+        Map<HsaId, Aisle> allVardgivare = warehouse.getAllVardgivare();
         StringBuilder result = new StringBuilder("vg;").append(Fact.HEADING).append('\n');
-        for (Map.Entry<String, Aisle> entry : allVardgivare.entrySet()) {
-            String vg = entry.getKey();
+        for (Map.Entry<HsaId, Aisle> entry : allVardgivare.entrySet()) {
+            HsaId vg = entry.getKey();
             for (Fact line : entry.getValue()) {
                 result.append(vg).append(line.toCSVString(';'));
             }
@@ -166,8 +167,8 @@ public class LargeTestDataGenerator {
         // CHECKSTYLE:ON MagicNumber
 
         int vardId = random.nextInt(NUMBER_OF_UNITS);
-        String vardenhet = "verksamhet" + vardId;
-        String vardgivare = "vardgivare" + (vardId % 2);
+        HsaId vardenhet = new HsaId("verksamhet" + vardId);
+        HsaId vardgivare = new HsaId("vardgivare" + (vardId % 2));
 
         String diagnos = random(DIAGNOSER);
 

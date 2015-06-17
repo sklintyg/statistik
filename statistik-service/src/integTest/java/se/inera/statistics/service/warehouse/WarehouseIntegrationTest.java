@@ -27,6 +27,7 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.util.StopWatch;
+import se.inera.statistics.hsa.model.HsaId;
 import se.inera.statistics.service.JSONSource;
 import se.inera.statistics.service.demo.LargeTestDataGenerator;
 import se.inera.statistics.service.helper.DocumentHelper;
@@ -63,7 +64,7 @@ public class WarehouseIntegrationTest {
     @Test
     public void addingManyIntyg() throws InterruptedException {
         dataGenerator.publishUtlatanden();
-        final Aisle aisle = warehouse.get("vardgivare1");
+        final Aisle aisle = warehouse.get(new HsaId("vardgivare1"));
 
         ExecutorService pool = Executors.newFixedThreadPool(10);
         for (int i = 0; i < 100; i++) {

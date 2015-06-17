@@ -21,10 +21,9 @@ package se.inera.statistics.service.demo;
 import com.fasterxml.jackson.databind.JsonNode;
 import org.joda.time.LocalDate;
 import org.junit.Test;
+import se.inera.statistics.hsa.model.HsaId;
 import se.inera.statistics.service.helper.DocumentHelper;
 import se.inera.statistics.service.helper.UtlatandeBuilder;
-
-import java.util.Arrays;
 
 import static org.junit.Assert.assertEquals;
 
@@ -34,7 +33,7 @@ public class UtlatandeBuilderTest {
     public void permutateIntyg() {
         UtlatandeBuilder builder = new UtlatandeBuilder();
 
-        final JsonNode result = builder.build("19121212-1212", new LocalDate("2013-01-01"), new LocalDate("2013-01-21"), "vardenhet", "diagnos", 50);
+        final JsonNode result = builder.build("19121212-1212", new LocalDate("2013-01-01"), new LocalDate("2013-01-21"), new HsaId("vardenhet"), "diagnos", 50);
 
         assertEquals("19121212-1212", result.path("grundData").path("patient").path("personId").asText());
         assertEquals("diagnos", DocumentHelper.getDiagnos(result, DocumentHelper.IntygVersion.VERSION2));

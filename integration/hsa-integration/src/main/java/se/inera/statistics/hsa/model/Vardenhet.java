@@ -19,26 +19,25 @@
 package se.inera.statistics.hsa.model;
 
 import java.io.Serializable;
-import java.util.Locale;
 
 /**
  * @author rlindsjo
  */
 public class Vardenhet implements Serializable {
 
-    private String id;
+    private HsaId id;
     private String namn;
-    private String vardgivarId;
+    private HsaId vardgivarId;
     private String vardgivarNamn;
 
     public Vardenhet() {
     }
 
-    public Vardenhet(String id, String namn, String vardgivarId) {
-        this(id, namn, vardgivarId, vardgivarId);
+    public Vardenhet(HsaId id, String namn, HsaId vardgivarId) {
+        this(id, namn, vardgivarId, vardgivarId.getId());
     }
 
-    public Vardenhet(String id, String namn, String vardgivarId, String vardgivarNamn) {
+    public Vardenhet(HsaId id, String namn, HsaId vardgivarId, String vardgivarNamn) {
         this.id = id;
         this.namn = namn;
         this.vardgivarId = vardgivarId;
@@ -49,12 +48,12 @@ public class Vardenhet implements Serializable {
         return namn;
     }
 
-    public String getId() {
-        return id == null ? null : id.toUpperCase(Locale.ENGLISH);
+    public HsaId getId() {
+        return id;
     }
 
-    public String getVardgivarId() {
-        return vardgivarId == null ? null : vardgivarId.toUpperCase(Locale.ENGLISH);
+    public HsaId getVardgivarId() {
+        return vardgivarId;
     }
 
     public String getVardgivarNamn() {

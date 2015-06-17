@@ -18,12 +18,13 @@
  */
 package se.inera.statistics.service.landsting.persistance.landstingenhet;
 
+import se.inera.statistics.hsa.model.HsaId;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import java.util.Locale;
 
 @Entity
 @Table(name = "LandstingEnhet")
@@ -42,9 +43,9 @@ public class LandstingEnhet {
     private LandstingEnhet() {
     }
 
-    public LandstingEnhet(long landstingId, String enhetensHsaId, Integer listadePatienter) {
+    public LandstingEnhet(long landstingId, HsaId enhetensHsaId, Integer listadePatienter) {
         this.landstingId = landstingId;
-        this.enhetensHsaId = enhetensHsaId == null ? null : enhetensHsaId.toUpperCase(Locale.ENGLISH);
+        this.enhetensHsaId = enhetensHsaId.getId();
         this.listadePatienter = listadePatienter;
     }
 
@@ -56,8 +57,8 @@ public class LandstingEnhet {
         return landstingId;
     }
 
-    public String getEnhetensHsaId() {
-        return enhetensHsaId;
+    public HsaId getEnhetensHsaId() {
+        return new HsaId(enhetensHsaId);
     }
 
     public Integer getListadePatienter() {

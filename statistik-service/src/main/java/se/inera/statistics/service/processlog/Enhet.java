@@ -18,6 +18,7 @@
  */
 package se.inera.statistics.service.processlog;
 
+import se.inera.statistics.hsa.model.HsaId;
 import se.inera.statistics.service.report.model.Kommun;
 
 import javax.persistence.Entity;
@@ -25,7 +26,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import java.util.Locale;
 
 @Entity
 @Table(name = "enhet")
@@ -55,7 +55,7 @@ public class Enhet implements Comparable<Enhet> {
         return id;
     }
 
-    public Enhet(String vardgivareId, String vardgivareNamn, String enhetId, String namn, String lansId, String kommunId, String verksamhetsTyper) {
+    public Enhet(HsaId vardgivareId, String vardgivareNamn, HsaId enhetId, String namn, String lansId, String kommunId, String verksamhetsTyper) {
         setVardgivareId(vardgivareId);
         this.vardgivareNamn = vardgivareNamn;
         setEnhetId(enhetId);
@@ -69,12 +69,12 @@ public class Enhet implements Comparable<Enhet> {
         this.id = id;
     }
 
-    public String getVardgivareId() {
-        return vardgivareId;
+    public HsaId getVardgivareId() {
+        return new HsaId(vardgivareId);
     }
 
-    public void setVardgivareId(String vardgivareId) {
-        this.vardgivareId = vardgivareId == null ? null : vardgivareId.toUpperCase(Locale.ENGLISH);
+    public void setVardgivareId(HsaId vardgivareId) {
+        this.vardgivareId = vardgivareId.getId();
     }
 
     public String getVardgivareNamn() {
@@ -85,12 +85,12 @@ public class Enhet implements Comparable<Enhet> {
         this.vardgivareNamn = namn;
     }
 
-    public String getEnhetId() {
-        return enhetId;
+    public HsaId getEnhetId() {
+        return new HsaId(enhetId);
     }
 
-    public void setEnhetId(String enhetId) {
-        this.enhetId = enhetId == null ? null : enhetId.toUpperCase(Locale.ENGLISH);
+    public void setEnhetId(HsaId enhetId) {
+        this.enhetId = enhetId.getId();
     }
 
     public String getNamn() {
@@ -127,6 +127,6 @@ public class Enhet implements Comparable<Enhet> {
 
     @Override
     public int compareTo(Enhet enhet) {
-        return enhetId.compareTo(enhet.getEnhetId());
+        return enhetId.compareTo(enhet.enhetId);
     }
 }

@@ -25,6 +25,7 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import se.inera.statistics.hsa.model.HsaId;
 import se.inera.statistics.service.landsting.LandstingEnhetFileDataRow;
 
 import javax.activation.DataSource;
@@ -34,16 +35,15 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Locale;
 
 public class LandstingFileReader {
 
     public List<LandstingEnhetFileDataRow> readExcelData(DataSource dataSource) throws LandstingEnhetFileParseException {
         final List<LandstingEnhetFileDataRow> rows = new ArrayList<>();
-        final HashSet<String> addedEnhetIds = new HashSet<>();
+        final HashSet<HsaId> addedEnhetIds = new HashSet<>();
         try {
             InputStream fis = dataSource.getInputStream();
-            Workbook workbook = null;
+            Workbook workbook;
             if (dataSource.getName().toLowerCase().endsWith("xlsx")) {
                 workbook = new XSSFWorkbook(fis);
             } else if (dataSource.getName().toLowerCase().endsWith("xls")) {
@@ -63,14 +63,14 @@ public class LandstingFileReader {
                 final String messagePrefix = "Rad " + rowNumber + ": ";
 
                 Row row = rowIterator.next();
-                final String id = getEnhetHsaId(row);
+                final HsaId id = getEnhetHsaId(row);
                 Integer patients = getListedPatients(messagePrefix, row);
 
-                if (!id.isEmpty()) {
-                    if (!addedEnhetIds.add(id.toUpperCase(Locale.ENGLISH))) {
+                if (!id.getId().isEmpty()) {
+                    if (!addedEnhetIds.add(id)) {
                         throw new LandstingEnhetFileParseException(messagePrefix + "Vårdenheten förekommer mer än en gång");
                     }
-                    if (!id.matches("^[a-zA-Z0-9-]+$")) {
+                    if (!id.getId().matches("^[a-zA-Z0-9-]+$")) {
                         throw new LandstingEnhetFileParseException(messagePrefix + "Kolumn “HSA-id” innehåller otillåtna tecken");
                     }
                     if (patients != null && patients < 0) {
@@ -114,14 +114,15 @@ public class LandstingFileReader {
         return patients;
     }
 
-    private String getEnhetHsaId(Row row) {
+    private HsaId getEnhetHsaId(Row row) {
         Cell cellHsaId = row.getCell(1);
         if (cellHsaId != null) {
             if (Cell.CELL_TYPE_STRING == cellHsaId.getCellType()) {
-                return cellHsaId.getStringCellValue().trim();
+                final String cellValue = cellHsaId.getStringCellValue().trim();
+                return new HsaId(cellValue);
             }
         }
-        return "";
+        return new HsaId("");
     }
 
 }

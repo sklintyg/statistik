@@ -31,6 +31,7 @@ import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import se.inera.auth.model.User;
+import se.inera.statistics.hsa.model.HsaId;
 import se.inera.statistics.hsa.model.Vardenhet;
 import se.inera.statistics.service.landsting.LandstingEnhetFileData;
 import se.inera.statistics.service.landsting.LandstingEnhetFileDataRow;
@@ -98,9 +99,9 @@ public class ProtectedLandstingServiceTest {
 
     @Before
     public void init() {
-        List<Vardenhet> vardenhets = Arrays.asList(new Vardenhet("verksamhet1", "Närhälsan i Småmåla", "VG1"), new Vardenhet("verksamhet2", "Småmålas akutmottagning", "VG2"));
+        List<Vardenhet> vardenhets = Arrays.asList(new Vardenhet(new HsaId("verksamhet1"), "Närhälsan i Småmåla", new HsaId("VG1")), new Vardenhet(new HsaId("verksamhet2"), "Småmålas akutmottagning", new HsaId("VG2")));
 
-        User user = new User("hsaId", "name", false, vardenhets.get(0), vardenhets);
+        User user = new User(new HsaId("hsaId"), "name", false, vardenhets.get(0), vardenhets);
         UsernamePasswordAuthenticationToken principal = Mockito.mock(UsernamePasswordAuthenticationToken.class);
         when(request.getUserPrincipal()).thenReturn(principal);
         when(principal.getDetails()).thenReturn(user);
@@ -111,7 +112,7 @@ public class ProtectedLandstingServiceTest {
         //Given
         final MultipartBody mb = Mockito.mock(MultipartBody.class);
         final HttpServletRequest req = Mockito.mock(HttpServletRequest.class);
-        Mockito.when(loginServiceUtil.getLoginInfo(req)).thenReturn(new LoginInfo("", "", null, false, false, false, null, LandstingsVardgivareStatus.NO_LANDSTINGSVARDGIVARE));
+        Mockito.when(loginServiceUtil.getLoginInfo(req)).thenReturn(new LoginInfo(new HsaId(""), "", null, false, false, false, null, LandstingsVardgivareStatus.NO_LANDSTINGSVARDGIVARE));
 
         //When
         final Response response = chartDataService.fileupload(req, mb);
@@ -132,7 +133,7 @@ public class ProtectedLandstingServiceTest {
         final DataSource ds = Mockito.mock(DataSource.class);
         Mockito.when(dh.getDataSource()).thenReturn(ds);
         final HttpServletRequest req = Mockito.mock(HttpServletRequest.class);
-        Mockito.when(loginServiceUtil.getLoginInfo(req)).thenReturn(new LoginInfo("", "", null, false, false, true, null, LandstingsVardgivareStatus.NO_LANDSTINGSVARDGIVARE));
+        Mockito.when(loginServiceUtil.getLoginInfo(req)).thenReturn(new LoginInfo(new HsaId(""), "", null, false, false, true, null, LandstingsVardgivareStatus.NO_LANDSTINGSVARDGIVARE));
         Mockito.when(landstingFileReader.readExcelData(any(DataSource.class))).thenThrow(new LandstingEnhetFileParseException(""));
 
         //When
@@ -155,9 +156,9 @@ public class ProtectedLandstingServiceTest {
         Mockito.when(dh.getDataSource()).thenReturn(ds);
         final HttpServletRequest req = Mockito.mock(HttpServletRequest.class);
         final Verksamhet verksamhet = Mockito.mock(Verksamhet.class);
-        final String testVgId = "TestVgId";
+        final HsaId testVgId = new HsaId("TestVgId");
         Mockito.when(verksamhet.getVardgivarId()).thenReturn(testVgId);
-        Mockito.when(loginServiceUtil.getLoginInfo(req)).thenReturn(new LoginInfo("", "", verksamhet, false, false, true, null, LandstingsVardgivareStatus.NO_LANDSTINGSVARDGIVARE));
+        Mockito.when(loginServiceUtil.getLoginInfo(req)).thenReturn(new LoginInfo(new HsaId(""), "", verksamhet, false, false, true, null, LandstingsVardgivareStatus.NO_LANDSTINGSVARDGIVARE));
         final ArrayList<LandstingEnhetFileDataRow> parseResult = new ArrayList<>();
         Mockito.when(landstingFileReader.readExcelData(any(DataSource.class))).thenReturn(parseResult);
 
@@ -177,7 +178,7 @@ public class ProtectedLandstingServiceTest {
         //Given
         final HttpServletRequest req = Mockito.mock(HttpServletRequest.class);
 
-        final String vgid = "VgidTest";
+        final HsaId vgid = new HsaId("VgidTest");
         Mockito.when(loginServiceUtil.getSelectedVgIdForLoggedInUser(req)).thenReturn(vgid);
 
         final ArrayList<Enhet> enhets = new ArrayList<>();
@@ -204,13 +205,12 @@ public class ProtectedLandstingServiceTest {
         //Given
         final HttpServletRequest req = Mockito.mock(HttpServletRequest.class);
 
-        final String vgid = "VgidTest";
+        final HsaId vgid = new HsaId("VgidTest");
         Mockito.when(loginServiceUtil.getSelectedVgIdForLoggedInUser(req)).thenReturn(vgid);
 
         final ArrayList<Enhet> enhets = new ArrayList<>();
         Mockito.when(enhetManager.getAllEnhetsForVardgivareId(vgid)).thenReturn(enhets);
 
-        final ByteArrayOutputStream outputStream = Mockito.mock(ByteArrayOutputStream.class);
         Mockito.when(landstingFileWriter.generateExcelFile(enhets)).thenThrow(new LandstingFileGenerationException());
 
         //When
@@ -225,15 +225,15 @@ public class ProtectedLandstingServiceTest {
         //Given
         final HttpServletRequest req = Mockito.mock(HttpServletRequest.class);
 
-        final String vgid = "VgidTest";
+        final HsaId vgid = new HsaId("VgidTest");
         Mockito.when(loginServiceUtil.getSelectedVgIdForLoggedInUser(req)).thenReturn(vgid);
 
-        final LandstingEnhetUpdate landstingEnhetUpdate = new LandstingEnhetUpdate(123L, "Test Name", "TESTHSAID", new Timestamp(5L), "TestFile.xls", LandstingEnhetUpdateOperation.Update);
+        final LandstingEnhetUpdate landstingEnhetUpdate = new LandstingEnhetUpdate(123L, "Test Name", new HsaId("TESTHSAID"), new Timestamp(5L), "TestFile.xls", LandstingEnhetUpdateOperation.Update);
         Mockito.when(landstingEnhetHandler.getLastUpdateInfo(vgid)).thenReturn(Optional.of(landstingEnhetUpdate));
 
         final ArrayList<LandstingEnhet> landstingEnhets = new ArrayList<>();
-        landstingEnhets.add(new LandstingEnhet(3L, "HSAID3", 73));
-        landstingEnhets.add(new LandstingEnhet(9L, "HSAID9", 79));
+        landstingEnhets.add(new LandstingEnhet(3L, new HsaId("HSAID3"), 73));
+        landstingEnhets.add(new LandstingEnhet(9L, new HsaId("HSAID9"), 79));
         Mockito.when(landstingEnhetHandler.getAllLandstingEnhetsForVardgivare(vgid)).thenReturn(landstingEnhets);
 
         //When
@@ -259,13 +259,13 @@ public class ProtectedLandstingServiceTest {
         final HttpServletRequest req = Mockito.mock(HttpServletRequest.class);
 
         final Verksamhet verksamhet = Mockito.mock(Verksamhet.class);
-        final String vgId = "testvgid";
+        final HsaId vgId = new HsaId("testvgid");
         Mockito.when(verksamhet.getVardgivarId()).thenReturn(vgId);
-        final String hsaId = "testhsaid";
+        final HsaId hsaId = new HsaId("testhsaid");
         final String name = "test name";
         Mockito.when(loginServiceUtil.getLoginInfo(req)).thenReturn(new LoginInfo(hsaId, name, verksamhet, false, false, false, null, LandstingsVardgivareStatus.NO_LANDSTINGSVARDGIVARE));
 
-        final String vgid = "VgidTest";
+        final HsaId vgid = new HsaId("VgidTest");
         Mockito.when(loginServiceUtil.getSelectedVgIdForLoggedInUser(req)).thenReturn(vgid);
 
         //When

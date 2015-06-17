@@ -18,13 +18,14 @@
  */
 package se.inera.statistics.service.landsting.persistance.landstingenhetupdate;
 
+import se.inera.statistics.hsa.model.HsaId;
+
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.sql.Timestamp;
-import java.util.Locale;
 
 @Entity
 @Table(name = "LandstingEnhetUpdate")
@@ -47,7 +48,7 @@ public class LandstingEnhetUpdate {
     private LandstingEnhetUpdate() {
     }
 
-    public LandstingEnhetUpdate(long landstingId, String updatedByName, String updatedByHsaid, Timestamp timestamp, String filename, LandstingEnhetUpdateOperation operation) {
+    public LandstingEnhetUpdate(long landstingId, String updatedByName, HsaId updatedByHsaid, Timestamp timestamp, String filename, LandstingEnhetUpdateOperation operation) {
         this.landstingId = landstingId;
         this.updatedByName = updatedByName;
         setUpdatedByHsaid(updatedByHsaid);
@@ -76,8 +77,8 @@ public class LandstingEnhetUpdate {
         return updatedByHsaid;
     }
 
-    public void setUpdatedByHsaid(String updatedByHsaid) {
-        this.updatedByHsaid = updatedByHsaid == null ? null : updatedByHsaid.toUpperCase(Locale.ENGLISH);
+    public void setUpdatedByHsaid(HsaId updatedByHsaid) {
+        this.updatedByHsaid = updatedByHsaid == null ? null : updatedByHsaid.getId();
     }
 
     public Timestamp getTimestamp() {

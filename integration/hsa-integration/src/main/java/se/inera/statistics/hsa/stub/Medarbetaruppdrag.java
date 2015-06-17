@@ -18,11 +18,9 @@
  */
 package se.inera.statistics.hsa.stub;
 
-import com.google.common.base.Function;
-import com.google.common.collect.Lists;
+import se.inera.statistics.hsa.model.HsaId;
 
 import java.util.List;
-import java.util.Locale;
 
 /**
  * @author andreaskaltenbach
@@ -31,42 +29,37 @@ public class Medarbetaruppdrag {
 
     public static final String STATISTIK = "Statistik";
 
-    private String hsaId;
-    private List<String> enhetIds;
+    private HsaId hsaId;
+    private List<HsaId> enhetIds;
 
     private String andamal = STATISTIK;
 
     public Medarbetaruppdrag() {
     }
 
-    public Medarbetaruppdrag(String hsaId, List<String> enhetIds) {
+    public Medarbetaruppdrag(HsaId hsaId, List<HsaId> enhetIds) {
         this(hsaId, enhetIds, STATISTIK);
     }
 
-    public Medarbetaruppdrag(String hsaId, List<String> enhetIds, String andamal) {
+    public Medarbetaruppdrag(HsaId hsaId, List<HsaId> enhetIds, String andamal) {
         this.hsaId = hsaId;
         this.enhetIds = enhetIds;
         this.andamal = andamal;
     }
 
-    public String getHsaId() {
-        return hsaId == null ? null : hsaId.toUpperCase(Locale.ENGLISH);
+    public HsaId getHsaId() {
+        return hsaId;
     }
 
-    public void setHsaId(String hsaId) {
+    public void setHsaId(HsaId hsaId) {
         this.hsaId = hsaId;
     }
 
-    public List<String> getEnhetIds() {
-        return enhetIds == null ? null : Lists.transform(enhetIds, new Function<String, String>() {
-            @Override
-            public String apply(String enhetId) {
-                return enhetId.toUpperCase(Locale.ENGLISH);
-            }
-        });
+    public List<HsaId> getEnhetIds() {
+        return enhetIds;
     }
 
-    public void setEnhetIds(List<String> enhetIds) {
+    public void setEnhetIds(List<HsaId> enhetIds) {
         this.enhetIds = enhetIds;
     }
 

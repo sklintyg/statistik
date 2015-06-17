@@ -24,6 +24,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.core.io.Resource;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.jms.core.MessageCreator;
+import se.inera.statistics.hsa.model.HsaId;
 import se.inera.statistics.service.helper.UtlatandeBuilder;
 import se.inera.statistics.service.queue.JmsReceiver;
 
@@ -82,11 +83,11 @@ public class RemoteSender {
 
     public void send() {
         UtlatandeBuilder builder = new UtlatandeBuilder();
-        simpleSend(builder.build("20121212-1212", new LocalDate("2013-10-20"), new LocalDate("2013-11-11"), "TST5565594230-106J", "IFV1239877878-103H", "IFV1239877878-0001", "D01", 0).toString(), UUID.randomUUID().toString());
-        simpleSend(builder.build("20121212-1212", new LocalDate("2013-10-20"), new LocalDate("2013-11-11"), "TST5565594230-106J", "IFV1239877878-103H", "IFV1239877878-0001", "INVALID", 0).toString(), UUID.randomUUID().toString());
-        simpleSend(builder.build("20121262-1212", new LocalDate("2013-10-20"), new LocalDate("2013-11-11"), "TST5565594230-106J", "IFV1239877878-103H", "IFV1239877878-0001", "D01", 0).toString(), UUID.randomUUID().toString());
-        simpleSend(builder.build("20126212-1212", new LocalDate("2013-10-20"), new LocalDate("2013-11-11"), "TST5565594230-106J", "IFV1239877878-103H", "IFV1239877878-0001", "D01", 0).toString(), UUID.randomUUID().toString());
-        simpleSend(builder.build("20126212-1212", new LocalDate("2013-10-20"), new LocalDate("2013-11-11"), "TST5565594230-106J", longify("IFV1239877878-103H", 100), longify("IFV1239877878-0001", 100), "D01", 0).toString(), UUID.randomUUID().toString());
+        simpleSend(builder.build("20121212-1212", new LocalDate("2013-10-20"), new LocalDate("2013-11-11"), new HsaId("TST5565594230-106J"), new HsaId("IFV1239877878-103H"), new HsaId("IFV1239877878-0001"), "D01", 0).toString(), UUID.randomUUID().toString());
+        simpleSend(builder.build("20121212-1212", new LocalDate("2013-10-20"), new LocalDate("2013-11-11"), new HsaId("TST5565594230-106J"), new HsaId("IFV1239877878-103H"), new HsaId("IFV1239877878-0001"), "INVALID", 0).toString(), UUID.randomUUID().toString());
+        simpleSend(builder.build("20121262-1212", new LocalDate("2013-10-20"), new LocalDate("2013-11-11"), new HsaId("TST5565594230-106J"), new HsaId("IFV1239877878-103H"), new HsaId("IFV1239877878-0001"), "D01", 0).toString(), UUID.randomUUID().toString());
+        simpleSend(builder.build("20126212-1212", new LocalDate("2013-10-20"), new LocalDate("2013-11-11"), new HsaId("TST5565594230-106J"), new HsaId("IFV1239877878-103H"), new HsaId("IFV1239877878-0001"), "D01", 0).toString(), UUID.randomUUID().toString());
+        simpleSend(builder.build("20126212-1212", new LocalDate("2013-10-20"), new LocalDate("2013-11-11"), new HsaId("TST5565594230-106J"), new HsaId(longify("IFV1239877878-103H", 100)), new HsaId(longify("IFV1239877878-0001", 100)), "D01", 0).toString(), UUID.randomUUID().toString());
     }
 
     private String longify(String base, int length) {
@@ -107,7 +108,7 @@ public class RemoteSender {
             String enhetid = enheter.getRandom();
             String vargivarid = vardgivare.getRandom();
             String uuid = UUID.randomUUID().toString();
-            simpleSend(builder.build(personid, new LocalDate("2013-10-20"), new LocalDate("2013-11-11"), lakarid, enhetid, vargivarid, "D01", 0).toString(), uuid);
+            simpleSend(builder.build(personid, new LocalDate("2013-10-20"), new LocalDate("2013-11-11"), new HsaId(lakarid), new HsaId(enhetid), new HsaId(vargivarid), "D01", 0).toString(), uuid);
             if (i % 100 == 0) { System.err.println(i);};
         }
     }

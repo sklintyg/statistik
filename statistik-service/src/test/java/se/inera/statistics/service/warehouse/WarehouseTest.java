@@ -28,6 +28,7 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import se.inera.statistics.hsa.model.HsaId;
 import se.inera.statistics.service.JSONSource;
 import se.inera.statistics.service.helper.DocumentHelper;
 import se.inera.statistics.service.helper.JSONParser;
@@ -65,7 +66,7 @@ public class WarehouseTest {
             factPopulator.accept(wideLine);
         }
         warehouse.complete(LocalDateTime.now());
-        Aisle aisle = warehouse.get("VARDGIVARID");
+        Aisle aisle = warehouse.get(new HsaId("VARDGIVARID"));
         assertEquals(1, aisle.getSize());
     }
 }

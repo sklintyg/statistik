@@ -19,6 +19,7 @@
 package se.inera.statistics.service.warehouse;
 
 import org.junit.Test;
+import se.inera.statistics.hsa.model.HsaId;
 import se.inera.statistics.service.report.model.Kon;
 
 import java.util.Iterator;
@@ -28,7 +29,7 @@ import static se.inera.statistics.service.warehouse.Fact.aFact;
 
 public class AisleTest {
 
-    private MutableAisle aisle = new MutableAisle("vgid");
+    private MutableAisle aisle = new MutableAisle(new HsaId("vgid"));
 
     @Test
     public void outOfOrderFactsGetsSorted() {

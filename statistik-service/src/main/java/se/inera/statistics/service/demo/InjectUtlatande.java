@@ -26,6 +26,7 @@ import org.joda.time.LocalDate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import se.inera.statistics.hsa.model.HsaId;
 import se.inera.statistics.service.common.CommonPersistence;
 import se.inera.statistics.service.helper.UtlatandeBuilder;
 import se.inera.statistics.service.processlog.EventType;
@@ -55,12 +56,12 @@ public class InjectUtlatande {
 
     private static final LocalDate BASE = new LocalDate().minusMonths(MONTHS);
 
-    private static final List<String> VG = Arrays.asList("vg1", "vg2", "vg3", "vg4", "vg5");
+    private static final List<HsaId> VG = Arrays.asList(new HsaId("vg1"), new HsaId("vg2"), new HsaId("vg3"), new HsaId("vg4"), new HsaId("vg5"));
 
-    private static final List<String> LAKARE = new ArrayList<>();
+    private static final List<HsaId> LAKARE = new ArrayList<>();
 
     private static final List<String> DIAGNOSER = new ArrayList<>();
-    private static final Multimap<String, String> VARDGIVARE = ArrayListMultimap.create();
+    private static final Multimap<HsaId, HsaId> VARDGIVARE = ArrayListMultimap.create();
     private static final List<Integer> ARBETSFORMAGOR = Arrays.asList(0, 25, 50, 75);
     public static final float FEL_DIAGNOS_THRESHOLD = 0.1f;
 
@@ -71,13 +72,13 @@ public class InjectUtlatande {
     public static final int NUMBER_OF_LAKARE_TO_ADD = 100;
 
     static {
-        for (String vardgivare : VG) {
+        for (HsaId vardgivare : VG) {
             for (int i = 1; i <= VARDGIVARE_ANTAL; i++) {
-                VARDGIVARE.put(vardgivare, vardgivare + "-enhet-" + i);
+                VARDGIVARE.put(vardgivare, new HsaId(vardgivare + "-enhet-" + i));
             }
         }
         for (int i = 1; i < NUMBER_OF_LAKARE_TO_ADD; i++) {
-            LAKARE.add("hsa-" + i);
+            LAKARE.add(new HsaId("hsa-" + i));
         }
     }
 
@@ -148,11 +149,11 @@ public class InjectUtlatande {
         LocalDate end = random.nextFloat() < LONG_PERIOD_FRACTION ? start.plusDays(random.nextInt(LONG_PERIOD_DAYS) + 7) : start.plusDays(random.nextInt(SHORT_PERIOD_DAYS) + 7);
         // CHECKSTYLE:ON MagicNumber
 
-        String vardgivare = random(VG);
+        HsaId vardgivare = random(VG);
 
-        String vardenhet = random(Lists.newArrayList((VARDGIVARE.get(vardgivare))));
+        HsaId vardenhet = random(Lists.newArrayList((VARDGIVARE.get(vardgivare))));
 
-        String lakare = random(LAKARE);
+        HsaId lakare = random(LAKARE);
 
         String diagnos = random(getDiagnoser());
         if (random.nextFloat() < FEL_DIAGNOS_THRESHOLD) {

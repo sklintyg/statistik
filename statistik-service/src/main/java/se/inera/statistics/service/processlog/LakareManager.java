@@ -23,6 +23,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+import se.inera.statistics.hsa.model.HsaId;
 import se.inera.statistics.service.helper.HSAServiceHelper;
 import se.inera.statistics.service.warehouse.WidelineConverter;
 
@@ -54,11 +55,11 @@ public class LakareManager {
 
         if (validate(vardgivareId, lakareId, tilltalsNamn, efterNamn)) {
             if (resultList.isEmpty()) {
-                manager.persist(new Lakare(vardgivareId, lakareId, tilltalsNamn, efterNamn));
+                manager.persist(new Lakare(new HsaId(vardgivareId), new HsaId(lakareId), tilltalsNamn, efterNamn));
             } else {
                 Lakare updatedLakare = resultList.get(0);
-                updatedLakare.setVardgivareId(vardgivareId);
-                updatedLakare.setLakareId(lakareId);
+                updatedLakare.setVardgivareId(new HsaId(vardgivareId));
+                updatedLakare.setLakareId(new HsaId(lakareId));
                 updatedLakare.setTilltalsNamn(tilltalsNamn);
                 updatedLakare.setEfterNamn(efterNamn);
                 manager.merge(updatedLakare);
@@ -73,8 +74,8 @@ public class LakareManager {
     }
 
     @Transactional
-    public List<Lakare> getLakares(String vardgivare) {
-        TypedQuery<Lakare> query = manager.createQuery("SELECT l FROM Lakare l WHERE l.vardgivareId = :vardgivareId", Lakare.class).setParameter("vardgivareId", vardgivare);
+    public List<Lakare> getLakares(HsaId vardgivare) {
+        TypedQuery<Lakare> query = manager.createQuery("SELECT l FROM Lakare l WHERE l.vardgivareId = :vardgivareId", Lakare.class).setParameter("vardgivareId", vardgivare.getId());
         return query.getResultList();
     }
 

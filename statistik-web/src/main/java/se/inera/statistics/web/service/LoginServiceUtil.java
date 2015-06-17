@@ -37,6 +37,7 @@ import se.inera.statistics.service.report.model.Kommun;
 import se.inera.statistics.service.report.model.Lan;
 import se.inera.statistics.service.report.model.VerksamhetsTyp;
 import se.inera.statistics.service.warehouse.Warehouse;
+import se.inera.statistics.hsa.model.HsaId;
 import se.inera.statistics.web.model.LoginInfo;
 import se.inera.statistics.web.model.Verksamhet;
 
@@ -87,7 +88,7 @@ public class LoginServiceUtil {
             LOG.warn("valdEnhet may not be null");
             return new LoginInfo();
         }
-        final String vardgivarId = valdVardenhet.getVardgivarId();
+        final HsaId vardgivarId = valdVardenhet.getVardgivarId();
         List<Enhet> enhetsList = warehouse.getEnhets(vardgivarId);
         Verksamhet defaultVerksamhet = toVerksamhet(valdVardenhet, enhetsList);
         List<Verksamhet> verksamhets = getVerksamhetsList(realUser, enhetsList);
@@ -148,7 +149,7 @@ public class LoginServiceUtil {
         }));
     }
 
-    String getSelectedVgIdForLoggedInUser(HttpServletRequest request) {
+    HsaId getSelectedVgIdForLoggedInUser(HttpServletRequest request) {
         return getLoginInfo(request).getDefaultVerksamhet().getVardgivarId();
     }
 

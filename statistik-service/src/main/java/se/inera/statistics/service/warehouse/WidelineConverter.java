@@ -23,6 +23,7 @@ import org.joda.time.Days;
 import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import se.inera.statistics.hsa.model.HsaId;
 import se.inera.statistics.service.helper.ConversionHelper;
 import se.inera.statistics.service.helper.DocumentHelper;
 import se.inera.statistics.service.helper.HSAServiceHelper;
@@ -119,8 +120,8 @@ public class WidelineConverter {
             line.setLakarintyg(logId);
             line.setIntygTyp(type);
             line.setLkf(lkf);
-            line.setEnhet(enhet);
-            line.setVardgivareId(vardgivare);
+            line.setEnhet(new HsaId(enhet));
+            line.setVardgivareId(new HsaId(vardgivare));
 
             line.setStartdatum(toDay(kalenderStart));
             line.setSlutdatum(toDay(kalenderEnd));
@@ -137,7 +138,7 @@ public class WidelineConverter {
             line.setLakaralder(lakaralder);
             line.setLakarkon(lakarkon);
             line.setLakarbefattning(lakarbefattning);
-            line.setLakareId(lakareid);
+            line.setLakareId(new HsaId(lakareid));
             lines.add(line);
         }
         return lines;
@@ -167,9 +168,22 @@ public class WidelineConverter {
         }
     }
 
+    private void checkField(List<String> errors, HsaId field, String fieldName) {
+        if (field == null || field.getId().isEmpty()) {
+            errors.add(fieldName + " not found.");
+        }
+    }
+
     private void checkField(List<String> errors, String field, String fieldName, int max) {
         checkField(errors, field, fieldName);
         if (field != null && field.length() > max) {
+            errors.add(fieldName + " input too long");
+        }
+    }
+
+    private void checkField(List<String> errors, HsaId field, String fieldName, int max) {
+        checkField(errors, field, fieldName);
+        if (field != null && field.getId().length() > max) {
             errors.add(fieldName + " input too long");
         }
     }

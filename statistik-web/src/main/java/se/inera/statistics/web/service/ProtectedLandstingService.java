@@ -28,6 +28,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
+import se.inera.statistics.hsa.model.HsaId;
 import se.inera.statistics.service.landsting.LandstingEnhetFileData;
 import se.inera.statistics.service.landsting.LandstingEnhetFileDataRow;
 import se.inera.statistics.service.landsting.LandstingEnhetHandler;
@@ -115,7 +116,7 @@ public class ProtectedLandstingService {
         final DataSource dataSource = body.getAttachment("file").getDataHandler().getDataSource();
         try {
             final List<LandstingEnhetFileDataRow> landstingFileRows = landstingFileReader.readExcelData(dataSource);
-            final String vardgivarId = info.getDefaultVerksamhet().getVardgivarId();
+            final HsaId vardgivarId = info.getDefaultVerksamhet().getVardgivarId();
             final LandstingEnhetFileData fileData = new LandstingEnhetFileData(vardgivarId, landstingFileRows, info.getName(), info.getHsaId(), dataSource.getName());
             landstingEnhetHandler.update(fileData);
             return createFileUploadResponse(Response.Status.OK, "Data updated ok", landstingFileRows);
@@ -135,7 +136,7 @@ public class ProtectedLandstingService {
     @PostAuthorize(value = "@protectedLandstingService.userAccess(#request)")
     public Response clearLandstingEnhets(@Context HttpServletRequest request) {
         LoginInfo info = loginServiceUtil.getLoginInfo(request);
-        final String vgId = info.getDefaultVerksamhet().getVardgivarId();
+        final HsaId vgId = info.getDefaultVerksamhet().getVardgivarId();
         try {
             landstingEnhetHandler.clear(vgId, info.getName(), info.getHsaId());
             return Response.ok().build();
@@ -151,7 +152,7 @@ public class ProtectedLandstingService {
     @PreAuthorize(value = "@protectedLandstingService.hasAccessToLandstingAdmin(#request)")
     @PostAuthorize(value = "@protectedLandstingService.userAccess(#request)")
     public Response getPrepopulatedLandstingFile(@Context HttpServletRequest request) {
-        final String vardgivarId = loginServiceUtil.getSelectedVgIdForLoggedInUser(request);
+        final HsaId vardgivarId = loginServiceUtil.getSelectedVgIdForLoggedInUser(request);
         final List<Enhet> enhets = enhetManager.getAllEnhetsForVardgivareId(vardgivarId);
         try {
             final ByteArrayOutputStream generatedFile = landstingFileWriter.generateExcelFile(enhets);
@@ -168,7 +169,7 @@ public class ProtectedLandstingService {
     @PreAuthorize(value = "@protectedLandstingService.hasAccessToLandstingAdmin(#request)")
     @PostAuthorize(value = "@protectedLandstingService.userAccess(#request)")
     public Response getLastLandstingUpdateInfo(@Context HttpServletRequest request) {
-        final String vardgivarId = loginServiceUtil.getSelectedVgIdForLoggedInUser(request);
+        final HsaId vardgivarId = loginServiceUtil.getSelectedVgIdForLoggedInUser(request);
         final HashMap<String, Object> result = new HashMap<>();
 
         result.put("infoMessage", getLastLandstingUpdateInfoMessage(vardgivarId));
@@ -187,7 +188,7 @@ public class ProtectedLandstingService {
         return Response.ok(result).build();
     }
 
-    private String getLastLandstingUpdateInfoMessage(String vardgivarId) {
+    private String getLastLandstingUpdateInfoMessage(HsaId vardgivarId) {
         final Optional<LandstingEnhetUpdate> lastUpdateInfo = landstingEnhetHandler.getLastUpdateInfo(vardgivarId);
         if (lastUpdateInfo.isPresent()) {
             final LandstingEnhetUpdate update = lastUpdateInfo.get();
@@ -223,17 +224,17 @@ public class ProtectedLandstingService {
     @PostAuthorize(value = "@protectedLandstingService.userAccess(#request)")
     public Response getNumberOfCasesPerEnhetLandsting(@Context HttpServletRequest request, @QueryParam("landstingfilter") String filterHash, @PathParam("csv") String csv) {
         final FilterSettings filterSettings = filterHandler.getFilterForLandsting(request, filterHash, 12);
-        final List<String> connectedEnhetIds = getConnectedEnhetIds(request);
+        final List<HsaId> connectedEnhetIds = getConnectedEnhetIds(request);
         SimpleKonResponse<SimpleKonDataRow> casesPerEnhet = warehouse.getCasesPerEnhetLandsting(filterSettings);
         SimpleDetailsData result = new GroupedSjukfallWithLandstingSortingConverter("Vårdenhet", connectedEnhetIds).convert(casesPerEnhet, filterSettings);
         return getResponse(result, csv);
     }
 
-    private List<String> getConnectedEnhetIds(@Context HttpServletRequest request) {
+    private List<HsaId> getConnectedEnhetIds(@Context HttpServletRequest request) {
         final List<Verksamhet> businesses = loginServiceUtil.getLoginInfo(request).getBusinesses();
-        return Lists.transform(businesses, new Function<Verksamhet, String>() {
+        return Lists.transform(businesses, new Function<Verksamhet, HsaId>() {
             @Override
-            public String apply(Verksamhet verksamhet) {
+            public HsaId apply(Verksamhet verksamhet) {
                 return verksamhet.getId();
             }
         });
@@ -247,8 +248,8 @@ public class ProtectedLandstingService {
     public Response getNumberOfCasesPerPatientsPerEnhetLandsting(@Context HttpServletRequest request, @QueryParam("landstingfilter") String filterHash, @PathParam("csv") String csv) {
         final FilterSettings filterSettings = filterHandler.getFilterForLandsting(request, filterHash, 12);
         SimpleKonResponse<SimpleKonDataRow> casesPerEnhet = warehouse.getCasesPerPatientsPerEnhetLandsting(filterSettings);
-        final String vgIdForLoggedInUser = loginServiceUtil.getSelectedVgIdForLoggedInUser(request);
-        final List<String> connectedEnhetIds = getConnectedEnhetIds(request);
+        final HsaId vgIdForLoggedInUser = loginServiceUtil.getSelectedVgIdForLoggedInUser(request);
+        final List<HsaId> connectedEnhetIds = getConnectedEnhetIds(request);
         final List<LandstingEnhet> landstingEnhets = landstingEnhetHandler.getAllLandstingEnhetsForVardgivare(vgIdForLoggedInUser);
         SimpleDetailsData result = new SjukfallPerPatientsPerEnhetConverter(landstingEnhets, connectedEnhetIds).convert(casesPerEnhet, filterSettings, null);
         return getResponse(result, csv);
@@ -260,8 +261,8 @@ public class ProtectedLandstingService {
     @PreAuthorize(value = "@protectedLandstingService.hasAccessToLandsting(#request)")
     @PostAuthorize(value = "@protectedLandstingService.userAccess(#request)")
     public Response getLandstingFilterInfo(@Context HttpServletRequest request) {
-        final String vgIdForLoggedInUser = loginServiceUtil.getSelectedVgIdForLoggedInUser(request);
-        final List<String> allEnhets = landstingEnhetHandler.getAllEnhetsForVardgivare(vgIdForLoggedInUser);
+        final HsaId vgIdForLoggedInUser = loginServiceUtil.getSelectedVgIdForLoggedInUser(request);
+        final List<HsaId> allEnhets = landstingEnhetHandler.getAllEnhetsForVardgivare(vgIdForLoggedInUser);
         final List<Enhet> enhets = enhetManager.getEnhets(allEnhets);
         List<Verksamhet> businesses = Lists.transform(enhets, new Function<Enhet, Verksamhet>() {
             @Override

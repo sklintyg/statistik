@@ -19,6 +19,7 @@
 package se.inera.statistics.service.report.model;
 
 import org.junit.Test;
+import se.inera.statistics.hsa.model.HsaId;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -35,7 +36,7 @@ public class KonDataResponsesTest {
         final ArrayList<String> groups = new ArrayList<>();
         final ArrayList<KonDataRow> rows = new ArrayList<>();
         final KonDataResponse response = new KonDataResponse(groups, rows);
-        final HashMap<String, String> idsToNames = new HashMap<>();
+        final HashMap<HsaId, String> idsToNames = new HashMap<>();
 
         //When
         final KonDataResponse result = KonDataResponses.changeIdGroupsToNamesAndAddIdsToDuplicates(response, idsToNames);
@@ -51,10 +52,10 @@ public class KonDataResponsesTest {
         final List<String> groups = Arrays.asList("1", "2", "3");
         final List<KonDataRow> rows = new ArrayList<>();
         final KonDataResponse response = new KonDataResponse(groups, rows);
-        final HashMap<String, String> idsToNames = new HashMap<>();
-        idsToNames.put("1", "abc");
-        idsToNames.put("2", "Abc");
-        idsToNames.put("3", "Abcd");
+        final HashMap<HsaId, String> idsToNames = new HashMap<>();
+        idsToNames.put(new HsaId("1"), "abc");
+        idsToNames.put(new HsaId("2"), "Abc");
+        idsToNames.put(new HsaId("3"), "Abcd");
 
         //When
         final KonDataResponse result = KonDataResponses.changeIdGroupsToNamesAndAddIdsToDuplicates(response, idsToNames);

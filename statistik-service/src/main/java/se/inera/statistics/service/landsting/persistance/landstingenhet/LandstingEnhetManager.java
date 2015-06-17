@@ -23,13 +23,13 @@ import com.google.common.base.Optional;
 import com.google.common.collect.Lists;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+import se.inera.statistics.hsa.model.HsaId;
 import se.inera.statistics.service.landsting.LandstingEnhetFileDataRow;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import java.util.List;
-import java.util.Locale;
 
 @Component
 public class LandstingEnhetManager {
@@ -68,7 +68,7 @@ public class LandstingEnhetManager {
         List<LandstingEnhet> landstingEnhets = Lists.transform(newData, new Function<LandstingEnhetFileDataRow, LandstingEnhet>() {
             @Override
             public LandstingEnhet apply(LandstingEnhetFileDataRow data) {
-                final String enhetensHsaId = data.getEnhetensHsaId().toUpperCase(Locale.ENGLISH);
+                final HsaId enhetensHsaId = data.getEnhetensHsaId();
                 return new LandstingEnhet(landstingId, enhetensHsaId, data.getListadePatienter());
             }
         });

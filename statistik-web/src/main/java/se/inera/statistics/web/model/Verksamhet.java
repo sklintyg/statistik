@@ -21,9 +21,9 @@ package se.inera.statistics.web.model;
 import org.apache.commons.lang3.text.translate.CharSequenceTranslator;
 import org.apache.commons.lang3.text.translate.UnicodeEscaper;
 import org.apache.commons.lang3.text.translate.UnicodeUnescaper;
+import se.inera.statistics.hsa.model.HsaId;
 
 import java.io.Serializable;
-import java.util.Locale;
 import java.util.Set;
 
 import static org.apache.commons.lang3.text.translate.UnicodeEscaper.above;
@@ -49,10 +49,10 @@ public class Verksamhet implements Serializable {
     }
 
     // CHECKSTYLE:OFF ParameterNumber
-    public Verksamhet(String id, String name, String vardgivarId, String vardgivarName, String lansId, String lansName, String kommunId, String kommunName, Set<VerksamhetsTyp> verksamhetsTyper) {
-        this.id = id;
+    public Verksamhet(HsaId id, String name, HsaId vardgivarId, String vardgivarName, String lansId, String lansName, String kommunId, String kommunName, Set<VerksamhetsTyp> verksamhetsTyper) {
+        this.id = id.getId();
         this.name = name;
-        this.vardgivarId = vardgivarId;
+        this.vardgivarId = vardgivarId.getId();
         this.vardgivarName = vardgivarName;
         this.lansId = lansId;
         this.lansName = lansName;
@@ -62,17 +62,17 @@ public class Verksamhet implements Serializable {
     }
     // CHECKSTYLE:ON ParameterNumber
 
-    public String getId() {
+    public HsaId getId() {
         final String encodeId = encodeId(id);
-        return encodeId == null ? null : encodeId.toUpperCase(Locale.ENGLISH);
+        return new HsaId(encodeId);
     }
 
     public String getName() {
         return name;
     }
 
-    public String getVardgivarId() {
-        return vardgivarId == null ? null : vardgivarId.toUpperCase(Locale.ENGLISH);
+    public HsaId getVardgivarId() {
+        return new HsaId(vardgivarId);
     }
 
     public String getVardgivarName() {
@@ -100,7 +100,7 @@ public class Verksamhet implements Serializable {
     }
 
     public static String encodeId(String id) {
-        return ESCAPER .translate(id).replace('\\', '_');
+        return ESCAPER.translate(id).replace('\\', '_');
     }
 
     public static String decodeId(String encodedId) {

@@ -23,6 +23,7 @@ import org.joda.time.LocalDate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import se.inera.statistics.hsa.model.HsaId;
 import se.inera.statistics.service.common.CommonPersistence;
 import se.inera.statistics.service.helper.UtlatandeBuilder;
 import se.inera.statistics.service.processlog.EventType;
@@ -124,8 +125,8 @@ public class InjectUtlatande2 {
         LocalDate end = random.nextFloat() < LONG_PERIOD_FRACTION ? start.plusDays(random.nextInt(LONG_PERIOD_DAYS) + 7) : start.plusDays(random.nextInt(SHORT_PERIOD_DAYS) + 7);
 
         int vardId = random.nextInt(NUMBER_OF_UNITS);
-        String vardenhet = "verksamhet" + vardId;
-        String vardgivare = "vardgivare" + (vardId / 3);
+        HsaId vardenhet = new HsaId("verksamhet" + vardId);
+        HsaId vardgivare = new HsaId("vardgivare" + (vardId / 3));
         // CHECKSTYLE:ON MagicNumber
 
         String diagnos = random(DIAGNOSER);

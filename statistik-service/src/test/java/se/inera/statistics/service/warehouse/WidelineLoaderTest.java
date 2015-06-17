@@ -18,14 +18,13 @@
  */
 package se.inera.statistics.service.warehouse;
 
-import org.joda.time.LocalDateTime;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import se.inera.statistics.hsa.model.HsaId;
 import se.inera.statistics.service.processlog.EventType;
 import se.inera.statistics.service.warehouse.model.db.WideLine;
 
@@ -82,7 +81,7 @@ public class WidelineLoaderTest {
         line1.setDiagnoskapitel("A00-B99");
         line1.setDiagnosavsnitt("A15-A19");
         line1.setDiagnoskategori("A16");
-        line1.setEnhet("e1");
+        line1.setEnhet(new HsaId("e1"));
         line1.setKon(1);
         line1.setLkf("078002");
         line1.setLakaralder(33);
@@ -94,8 +93,8 @@ public class WidelineLoaderTest {
         line1.setSjukskrivningsgrad(100);
         line1.setSlutdatum(4999);
         line1.setStartdatum(4997);
-        line1.setVardgivareId("vg1");
-        line1.setLakareId("lakare");
+        line1.setVardgivareId(new HsaId("vg1"));
+        line1.setLakareId(new HsaId("lakare"));
         line1.setCorrelationId(correlationId);
         widelineManager.saveWideline(line1);
     }

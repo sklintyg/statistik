@@ -31,6 +31,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import se.inera.statistics.hsa.model.HsaId;
 import se.inera.statistics.service.processlog.Lakare;
 import se.inera.statistics.service.processlog.LakareManager;
 import se.inera.statistics.service.report.model.Kon;
@@ -113,7 +114,7 @@ public class SjukfallQuery {
         return new SimpleKonResponse<>(result);
     }
 
-    public SimpleKonResponse<SimpleKonDataRow> getSjukfallPerEnhet(Aisle aisle, SjukfallFilter filter, LocalDate from, int periods, int periodLength, Map<String, String> idsToNames, CutoffUsage cutoffUsage) {
+    public SimpleKonResponse<SimpleKonDataRow> getSjukfallPerEnhet(Aisle aisle, SjukfallFilter filter, LocalDate from, int periods, int periodLength, Map<HsaId, String> idsToNames, CutoffUsage cutoffUsage) {
         List<SimpleKonDataRow> rows = new ArrayList<>();
         for (SjukfallGroup sjukfallGroup: sjukfallUtil.sjukfallGrupper(from, periods, periodLength, aisle, filter)) {
             final Multiset<Integer> femaleSjukfallPerEnhet = HashMultiset.create();
@@ -125,8 +126,8 @@ public class SjukfallQuery {
                     sjukfallPerEnhet.add(enhetId);
                 }
             }
-            for (Map.Entry<String, String> enhetIdAndName : idsToNames.entrySet()) {
-                final String enhetId = enhetIdAndName.getKey();
+            for (Map.Entry<HsaId, String> enhetIdAndName : idsToNames.entrySet()) {
+                final HsaId enhetId = enhetIdAndName.getKey();
                 final int enhetIntId = Warehouse.getEnhet(enhetId);
                 if (enhetIntId >= 0) {
                     final String enhetName = enhetIdAndName.getValue();
@@ -187,17 +188,17 @@ public class SjukfallQuery {
         this.lakareManager = lakareManager;
     }
 
-    public KonDataResponse getSjukfallPerEnhetSeries(Aisle aisle, SjukfallFilter filter, LocalDate start, int periods, int periodSize, Map<String, String> idsToNames) {
-        final ArrayList<Map.Entry<String, String>> groupEntries = new ArrayList<>(idsToNames.entrySet());
-        final List<String> names = Lists.transform(groupEntries, new Function<Map.Entry<String, String>, String>() {
+    public KonDataResponse getSjukfallPerEnhetSeries(Aisle aisle, SjukfallFilter filter, LocalDate start, int periods, int periodSize, Map<HsaId, String> idsToNames) {
+        final ArrayList<Map.Entry<HsaId, String>> groupEntries = new ArrayList<>(idsToNames.entrySet());
+        final List<String> names = Lists.transform(groupEntries, new Function<Map.Entry<HsaId, String>, String>() {
             @Override
-            public String apply(Map.Entry<String, String> entry) {
-                return entry.getKey();
+            public String apply(Map.Entry<HsaId, String> entry) {
+                return entry.getKey().getId();
             }
         });
-        final List<Integer> ids = Lists.transform(groupEntries, new Function<Map.Entry<String, String>, Integer>() {
+        final List<Integer> ids = Lists.transform(groupEntries, new Function<Map.Entry<HsaId, String>, Integer>() {
             @Override
-            public Integer apply(Map.Entry<String, String> entry) {
+            public Integer apply(Map.Entry<HsaId, String> entry) {
                 return Warehouse.getEnhet(entry.getKey());
             }
         });

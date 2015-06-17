@@ -18,15 +18,17 @@
  */
 package se.inera.statistics.service.warehouse;
 
+import se.inera.statistics.hsa.model.HsaId;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 public class MutableAisle {
     private final List<Fact> lines = new ArrayList<>();
-    private final String vardgivareId;
+    private final HsaId vardgivareId;
 
-    public MutableAisle(String vardgivareId) {
+    public MutableAisle(HsaId vardgivareId) {
         this.vardgivareId = vardgivareId;
     }
 
@@ -46,7 +48,7 @@ public class MutableAisle {
         return Collections.unmodifiableList(lines);
     }
 
-    public String getVardgivareId() {
+    public HsaId getVardgivareId() {
         return vardgivareId;
     }
 

@@ -18,7 +18,10 @@
  */
 package se.inera.statistics.service.report.model;
 
+import com.google.common.base.Function;
 import com.google.common.collect.HashMultimap;
+import com.google.common.collect.Lists;
+import se.inera.statistics.hsa.model.HsaId;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -31,29 +34,36 @@ public final class KonDataResponses {
     private KonDataResponses() {
     }
 
-    public static KonDataResponse changeIdGroupsToNamesAndAddIdsToDuplicates(final KonDataResponse response, Map<String, String> idsToNames) {
-        final HashMap<String, Integer> duplicatesPerId = getDuplicatesPerId(idsToNames, response.getGroups());
+    public static KonDataResponse changeIdGroupsToNamesAndAddIdsToDuplicates(final KonDataResponse response, Map<HsaId, String> idsToNames) {
+        final List<HsaId> idsToCompare = Lists.transform(response.getGroups(), new Function<String, HsaId>() {
+            @Override
+            public HsaId apply(String id) {
+                return new HsaId(id);
+            }
+        });
+        final HashMap<HsaId, Integer> duplicatesPerId = getDuplicatesPerId(idsToNames, idsToCompare);
 
         final ArrayList<String> finalNames = new ArrayList<>();
         for (String id : response.getGroups()) {
-            final Integer duplicates = duplicatesPerId.get(id);
+            final HsaId key = new HsaId(id);
+            final Integer duplicates = duplicatesPerId.get(key);
             final String nameSuffix = duplicates != null && duplicates > 1 ? " " + id : "";
-            finalNames.add(idsToNames.get(id) + nameSuffix);
+            finalNames.add(idsToNames.get(key) + nameSuffix);
         }
 
         return new KonDataResponse(finalNames, response.getRows());
     }
 
-    private static HashMap<String, Integer> getDuplicatesPerId(Map<String, String> idsToNames, List<String> idsToCompare) {
-        HashMultimap<CaseInsensiviteString, String> namesToIdsForIdsToCompare = HashMultimap.create();
-        for (String id : idsToCompare) {
+    private static HashMap<HsaId, Integer> getDuplicatesPerId(Map<HsaId, String> idsToNames, List<HsaId> idsToCompare) {
+        HashMultimap<CaseInsensiviteString, HsaId> namesToIdsForIdsToCompare = HashMultimap.create();
+        for (HsaId id : idsToCompare) {
             final String name = idsToNames.get(id);
             namesToIdsForIdsToCompare.put(new CaseInsensiviteString(name), id);
         }
-        final HashMap<String, Integer> duplicatesPerId = new HashMap<>();
-        for (Map.Entry<CaseInsensiviteString, Collection<String>> entry : namesToIdsForIdsToCompare.asMap().entrySet()) {
-            final Collection<String> ids = entry.getValue();
-            for (String id : ids) {
+        final HashMap<HsaId, Integer> duplicatesPerId = new HashMap<>();
+        for (Map.Entry<CaseInsensiviteString, Collection<HsaId>> entry : namesToIdsForIdsToCompare.asMap().entrySet()) {
+            final Collection<HsaId> ids = entry.getValue();
+            for (HsaId id : ids) {
                 duplicatesPerId.put(id, ids.size());
             }
         }

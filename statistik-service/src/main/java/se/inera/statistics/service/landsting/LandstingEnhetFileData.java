@@ -18,26 +18,28 @@
  */
 package se.inera.statistics.service.landsting;
 
+import se.inera.statistics.hsa.model.HsaId;
+
 import java.util.Collections;
 import java.util.List;
 
 public class LandstingEnhetFileData {
 
-    private String vgId;
+    private HsaId vgId;
     private List<LandstingEnhetFileDataRow> rows;
     private String userName;
-    private String userId;
+    private HsaId userId;
     private String fileName;
 
-    public LandstingEnhetFileData(String vgId, List<LandstingEnhetFileDataRow> rows, String userName, String userId, String fileName) {
-        this.vgId = vgId == null ? "" : vgId;
+    public LandstingEnhetFileData(HsaId vgId, List<LandstingEnhetFileDataRow> rows, String userName, HsaId userId, String fileName) {
+        this.vgId = vgId == null ? new HsaId("") : vgId;
         this.rows = rows == null ? Collections.<LandstingEnhetFileDataRow>emptyList() : Collections.unmodifiableList(rows);
         this.userName = userName;
         this.userId = userId;
         this.fileName = fileName;
     }
 
-    public String getVgId() {
+    public HsaId getVgId() {
         return vgId;
     }
 
@@ -49,7 +51,7 @@ public class LandstingEnhetFileData {
         return userName;
     }
 
-    public String getUserId() {
+    public HsaId getUserId() {
         return userId;
     }
 

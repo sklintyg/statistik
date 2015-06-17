@@ -24,6 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.saml.SAMLCredential;
 import org.springframework.security.saml.userdetails.SAMLUserDetailsService;
 import se.inera.auth.model.User;
+import se.inera.statistics.hsa.model.HsaId;
 import se.inera.statistics.hsa.model.Vardenhet;
 import se.inera.statistics.hsa.services.HsaOrganizationsService;
 
@@ -44,11 +45,11 @@ public class UserDetailsService implements SAMLUserDetailsService {
 
         SakerhetstjanstAssertion assertion = getSakerhetstjanstAssertion(credential);
 
-        final String hsaId = assertion.getHsaId();
+        final HsaId hsaId = new HsaId(assertion.getHsaId());
         List<Vardenhet> authorizedVerksamhets = hsaOrganizationsService.getAuthorizedEnheterForHosPerson(hsaId);
 
-        Vardenhet selectedVerksamhet = getLoginVerksamhet(authorizedVerksamhets, assertion.getEnhetHsaId());
-        String vardgivare = selectedVerksamhet != null ? selectedVerksamhet.getVardgivarId() : null;
+        Vardenhet selectedVerksamhet = getLoginVerksamhet(authorizedVerksamhets, new HsaId(assertion.getEnhetHsaId()));
+        HsaId vardgivare = selectedVerksamhet != null ? selectedVerksamhet.getVardgivarId() : null;
         List<Vardenhet> filtered = filterByVardgivare(authorizedVerksamhets, vardgivare);
 
         final boolean processledare = isProcessledare(assertion, vardgivare);
@@ -56,7 +57,7 @@ public class UserDetailsService implements SAMLUserDetailsService {
         return new User(hsaId, name, processledare, selectedVerksamhet, filtered);
     }
 
-    private boolean isProcessledare(SakerhetstjanstAssertion assertion, String vardgivare) {
+    private boolean isProcessledare(SakerhetstjanstAssertion assertion, HsaId vardgivare) {
         for (String systemRole : assertion.getSystemRoles()) {
             if ((GLOBAL_VG_ACCESS_PREFIX + vardgivare).equalsIgnoreCase(systemRole)) {
                 return true;
@@ -69,7 +70,7 @@ public class UserDetailsService implements SAMLUserDetailsService {
         return new SakerhetstjanstAssertion(credential.getAuthenticationAssertion());
     }
 
-    private List<Vardenhet> filterByVardgivare(List<Vardenhet> vardenhets, String vardgivarId) {
+    private List<Vardenhet> filterByVardgivare(List<Vardenhet> vardenhets, HsaId vardgivarId) {
         ArrayList<Vardenhet> filtered = new ArrayList<>();
         for (Vardenhet vardenhet: vardenhets) {
             if (vardenhet.getVardgivarId() != null && vardenhet.getVardgivarId().equals(vardgivarId)) {
@@ -79,9 +80,9 @@ public class UserDetailsService implements SAMLUserDetailsService {
         return filtered;
     }
 
-    Vardenhet getLoginVerksamhet(List<Vardenhet> vardenhets, String enhetHsaId) {
+    Vardenhet getLoginVerksamhet(List<Vardenhet> vardenhets, HsaId enhetHsaId) {
         for (Vardenhet vardenhet : vardenhets) {
-            if (vardenhet.getId().equalsIgnoreCase(enhetHsaId)) {
+            if (vardenhet.getId().equals(enhetHsaId)) {
                 return vardenhet;
             }
         }
