@@ -1,6 +1,6 @@
 !contents -R2 -g -p -f -h
 
-Gäller STATISTIK-1025.
+Gäller STATISTIK-1035.
 
 !3 Givet att:
 
@@ -27,22 +27,22 @@ Alla användare som har uppdrag statistik på minst en enhet inom en vårdgivare
 
 Inloggad:
 | Sjukfall i rapporten landsting sjukfall per enhet |
-| inloggad som | vårdgivarnivå | vårdenhet    | totalt? | män? | kvinnor? |  markerad? |
-| user1        | false         | Enhet enhet1 | 1       | 1    | 0        | ja |
-| user1        | false         | Enhet enhet2 | 1       | 1    | 0        | nej |
-| user1        | false         | Enhet enhet3 | 1       | 0    | 1        | nej |
-| user2        | false         | Enhet enhet1 | 1       | 1    | 0        | ja |
-| user2        | false         | Enhet enhet2 | 1       | 1    | 0        | ja |
-| user2        | false         | Enhet enhet3 | 1       | 0    | 1        | nej |
-| user2        | true          | Enhet enhet1 | 1       | 1    | 0        | nej |
-| user2        | true          | Enhet enhet2 | 1       | 1    | 0        | nej |
-| user2        | true          | Enhet enhet3 | 1       | 0    | 1        | nej |
+| inloggad som | vårdgivarnivå | vårdenhet    |  markerad? |
+| user1        | false         | Enhet enhet1 | ja |
+| user1        | false         | Enhet enhet2 | nej |
+| user1        | false         | Enhet enhet3 | nej |
+| user2        | false         | Enhet enhet1 | ja |
+| user2        | false         | Enhet enhet2 | ja |
+| user2        | false         | Enhet enhet3 | nej |
+| user2        | true          | Enhet enhet1 | nej |
+| user2        | true          | Enhet enhet2 | nej |
+| user2        | true          | Enhet enhet3 | nej |
 
 | Sjukfall i rapporten landsting sjukfall per listningar per enhet |
-| inloggad som | vårdgivarnivå | vårdenhet    | antal sjukfall per tusen listningar? | markerad? |
-| user1        | false         | Enhet enhet1 | 9.09    | ja |
-| user1        | false         | Enhet enhet3 | 0.91    | nej |
-| user2        | false         | Enhet enhet1 | 9.09    | ja |
-| user2        | false         | Enhet enhet3 | 0.91    | nej |
-| user2        | true          | Enhet enhet1 | 9.09    | nej |
-| user2        | true          | Enhet enhet3 | 0.91    | nej |
+| inloggad som | vårdgivarnivå | vårdenhet    | markerad? |
+| user1        | false         | Enhet enhet1 | ja |
+| user1        | false         | Enhet enhet3 | nej |
+| user2        | false         | Enhet enhet1 | ja |
+| user2        | false         | Enhet enhet3 | nej |
+| user2        | true          | Enhet enhet1 | nej |
+| user2        | true          | Enhet enhet3 | nej |
