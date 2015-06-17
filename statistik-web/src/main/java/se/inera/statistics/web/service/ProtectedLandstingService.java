@@ -63,6 +63,7 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.io.ByteArrayOutputStream;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -224,14 +225,18 @@ public class ProtectedLandstingService {
     @PostAuthorize(value = "@protectedLandstingService.userAccess(#request)")
     public Response getNumberOfCasesPerEnhetLandsting(@Context HttpServletRequest request, @QueryParam("landstingfilter") String filterHash, @PathParam("csv") String csv) {
         final FilterSettings filterSettings = filterHandler.getFilterForLandsting(request, filterHash, 12);
-        final List<HsaId> connectedEnhetIds = getConnectedEnhetIds(request);
+        final List<HsaId> connectedEnhetIds = getEnhetIdsToMark(request);
         SimpleKonResponse<SimpleKonDataRow> casesPerEnhet = warehouse.getCasesPerEnhetLandsting(filterSettings);
         SimpleDetailsData result = new GroupedSjukfallWithLandstingSortingConverter("Vårdenhet", connectedEnhetIds).convert(casesPerEnhet, filterSettings);
         return getResponse(result, csv);
     }
 
-    private List<HsaId> getConnectedEnhetIds(@Context HttpServletRequest request) {
-        final List<Verksamhet> businesses = loginServiceUtil.getLoginInfo(request).getBusinesses();
+    private List<HsaId> getEnhetIdsToMark(@Context HttpServletRequest request) {
+        final LoginInfo loginInfo = loginServiceUtil.getLoginInfo(request);
+        if (loginInfo.isProcessledare()) {
+            return Collections.emptyList();
+        }
+        final List<Verksamhet> businesses = loginInfo.getBusinesses();
         return Lists.transform(businesses, new Function<Verksamhet, HsaId>() {
             @Override
             public HsaId apply(Verksamhet verksamhet) {
@@ -249,7 +254,7 @@ public class ProtectedLandstingService {
         final FilterSettings filterSettings = filterHandler.getFilterForLandsting(request, filterHash, 12);
         SimpleKonResponse<SimpleKonDataRow> casesPerEnhet = warehouse.getCasesPerPatientsPerEnhetLandsting(filterSettings);
         final HsaId vgIdForLoggedInUser = loginServiceUtil.getSelectedVgIdForLoggedInUser(request);
-        final List<HsaId> connectedEnhetIds = getConnectedEnhetIds(request);
+        final List<HsaId> connectedEnhetIds = getEnhetIdsToMark(request);
         final List<LandstingEnhet> landstingEnhets = landstingEnhetHandler.getAllLandstingEnhetsForVardgivare(vgIdForLoggedInUser);
         SimpleDetailsData result = new SjukfallPerPatientsPerEnhetConverter(landstingEnhets, connectedEnhetIds).convert(casesPerEnhet, filterSettings, null);
         return getResponse(result, csv);
