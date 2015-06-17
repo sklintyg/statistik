@@ -25,7 +25,7 @@
 		        	<p ng-show="loggedInWithoutStatistikuppdrag" class="alert alert-info">
                         <span message key="login.alert-info.behorighet"></span>
                     </p>
-                    <p ng-show="!loggedInWithoutStatistikuppdrag" class="alert alert-info">
+                    <p ng-show="isLoggedIn && !loggedInWithoutStatistikuppdrag" class="alert alert-info">
                         <span message key="login.alert-inaktivitet"></span>
                         <br/>
                         <span message key="login.alert-logga.in"></span>
