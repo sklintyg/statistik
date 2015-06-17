@@ -49,6 +49,8 @@ angular.module('StatisticsApp').controller('pageCtrl', [ '$scope', '$rootScope',
                     $scope.userName = loginInfo.name;
                     $scope.userNameWithAccess = loginInfo.name;
 
+                    $scope.loggedInWithoutStatistikuppdrag = !(loginInfo.businesses && loginInfo.businesses.length >= 1);
+
                     $scope.isDelprocessledare = loginInfo.delprocessledare;
                     $scope.isProcessledare = loginInfo.processledare;
 

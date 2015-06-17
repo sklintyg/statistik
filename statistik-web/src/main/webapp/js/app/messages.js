@@ -146,6 +146,7 @@ var stMessages = {
 
         //login view
         'login.header': 'Logga in för verksamhetsstatistik',
+        'login.alert-info.behorighet': 'Detta kan bero på att du inte har rätt behörighet för att se statistik för verksamheten.',
         'login.alert-inaktivitet': 'Du har blivit utloggad på grund av inaktivitet.',
         'login.alert-logga.in': 'Du måste logga in igen för att komma till sidorna för verksamhetsstatistik.',
         'login.lbl.gor-foljande': 'Gör följande:',
