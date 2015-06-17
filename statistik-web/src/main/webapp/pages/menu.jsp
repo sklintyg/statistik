@@ -58,6 +58,7 @@
       </div>
     </div>
   </div>
+
   <!-- LANDSTING MENU -->
     <div class="accordion-group" id="landsting-statistics-menu-group" data-ng-show="hasLandstingAccess">
       <h2 class="hidden-header"><span message key="statistics.hidden-header.landsting-navigering"></span></h2>
@@ -84,6 +85,7 @@
   <c:if test="${loginVisible}">
     <div class="accordion-group" id="business-statistics-menu-group">
       <h2 class="hidden-header"><span message key="statistics.hidden-header.business-navigering"></span></h2>
+
       <!-- BUSINESS STATISTIC MENU -->
       <div class="accordion-heading statistics-menu">
         <div class="accordion-toggle first-level-menu" id="business-statistics-toggle"

@@ -29,8 +29,6 @@ var stMessages = {
         'nav.lan':'Län',
         'nav.andel-per-kon': 'Andel per kön',
         'nav.lan-andel-sjukfall-per-kon':'Andel sjukfall per kön',
-        'nav.mobile.trigger.diagnosgrupp-diagnoskapitel': 'Diagnosgrupp och enskilt diagnoskapitel',
-        'nav.mobile.trigger.lan-andel-per-kon': 'Län och andel sjukfall per kön',
         'nav.vardenhet':'Vårdenhet',
         'nav.lakare':'Läkare',
         'nav.lakarbefattning':'Läkarbefattning',
@@ -43,6 +41,9 @@ var stMessages = {
         'nav.landsting.filuppladdning': 'Filuppladdning',
         'nav.landsting.listningsjamforelse': 'Vårdenhet, listningar',
         'nav.landsting.om': 'Om landstingsstatistik',
+        'nav.mobile.trigger.diagnosgrupp-diagnoskapitel': 'Diagnosgrupp, enskilt diagnoskapitel och jämför valfria diagnoser',
+        'nav.mobile.trigger.lan-andel-per-kon': 'Län och andel sjukfall per kön',
+        'nav.mobile.trigger.sjukskrivningslangd-90-dagar': 'Sjukskrivningslängd och mer än 90 dagar',
 
         //labels
         'lbl.mobile-menu': 'Meny',
