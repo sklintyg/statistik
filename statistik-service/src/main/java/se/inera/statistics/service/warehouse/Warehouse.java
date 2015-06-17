@@ -122,6 +122,10 @@ public class Warehouse implements Iterable<Aisle> {
         return lakareMap.maybeGetId(id);
     }
 
+    public static Optional<HsaId> getLakarId(int lakarIntId) {
+        return lakareMap.getKey(lakarIntId);
+    }
+
     public LocalDateTime getLastUpdate() {
         return lastUpdate;
     }

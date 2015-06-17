@@ -19,6 +19,8 @@
 package se.inera.statistics.service.processlog;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.google.common.base.Function;
+import com.google.common.collect.Collections2;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -30,6 +32,7 @@ import se.inera.statistics.service.warehouse.WidelineConverter;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
+import java.util.Collection;
 import java.util.List;
 
 @Component
@@ -70,6 +73,18 @@ public class LakareManager {
     @Transactional
     public List<Lakare> getAllLakares() {
         TypedQuery<Lakare> query = manager.createQuery("SELECT l FROM Lakare l", Lakare.class);
+        return query.getResultList();
+    }
+
+    @Transactional
+    public List<Lakare> getAllSpecifiedLakares(Collection<HsaId> lakares) {
+        TypedQuery<Lakare> query = manager.createQuery("SELECT l FROM Lakare l WHERE l.lakareId IN :hsaIds", Lakare.class);
+        query.setParameter("hsaIds", Collections2.transform(lakares, new Function<HsaId, String>() {
+            @Override
+            public String apply(HsaId hsaId) {
+                return hsaId.getId();
+            }
+        }));
         return query.getResultList();
     }
 

@@ -18,8 +18,10 @@
  */
 package se.inera.statistics.service.warehouse.query;
 
+import com.google.common.base.Function;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
+import com.google.common.collect.Lists;
 import org.joda.time.LocalDate;
 import org.junit.Before;
 import org.junit.Test;
@@ -28,6 +30,8 @@ import org.mockito.Captor;
 import org.mockito.Matchers;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
 import org.springframework.test.util.ReflectionTestUtils;
 import se.inera.statistics.hsa.model.HsaId;
 import se.inera.statistics.service.processlog.Lakare;
@@ -47,6 +51,7 @@ import se.inera.statistics.service.warehouse.SjukfallUtilTest;
 import se.inera.statistics.service.warehouse.Warehouse;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -210,11 +215,31 @@ public class SjukfallQueryTest {
 
     private LakareManager mockLakareManager() {
         LakareManager lakareManager = mock(LakareManager.class);
-        Lakare lakare1 = new Lakare(VG_1, LAKARE1_ID, "Agata", "Adamsson");
-        Lakare lakare2 = new Lakare(VG_1, LAKARE2_ID, "Beata", "Bertilsson");
-        Lakare lakare3 = new Lakare(VG_1, LAKARE3_ID, "Beata", "Bertilsson");
+        final Lakare lakare1 = new Lakare(VG_1, LAKARE1_ID, "Agata", "Adamsson");
+        final Lakare lakare2 = new Lakare(VG_1, LAKARE2_ID, "Beata", "Bertilsson");
+        final Lakare lakare3 = new Lakare(VG_1, LAKARE3_ID, "Beata", "Bertilsson");
         when(lakareManager.getLakares(VG_1)).thenReturn(asList(lakare1, lakare2, lakare3));
         when(lakareManager.getAllLakares()).thenReturn(asList(lakare1, lakare2, lakare3));
+        when(lakareManager.getAllSpecifiedLakares(any(Collection.class))).thenAnswer(new Answer<Object>() {
+            @Override
+            public List<Lakare> answer(InvocationOnMock invocationOnMock) throws Throwable {
+                final Object[] arguments = invocationOnMock.getArguments();
+                final List<HsaId> hsaIds = (List<HsaId>) arguments[0];
+                return Lists.transform(hsaIds, new Function<HsaId, Lakare>() {
+                    @Override
+                    public Lakare apply(HsaId hsaId) {
+                        if (LAKARE1_ID.equals(hsaId)) {
+                            return lakare1;
+                        } else if (LAKARE2_ID.equals(hsaId)) {
+                            return lakare2;
+                        } else if (LAKARE3_ID.equals(hsaId)) {
+                            return lakare3;
+                        }
+                        throw new RuntimeException("Lakare does not exist: " + hsaId);
+                    }
+                });
+            }
+        });
         return lakareManager;
     }
 

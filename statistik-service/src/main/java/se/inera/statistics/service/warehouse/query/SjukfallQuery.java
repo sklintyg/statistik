@@ -20,8 +20,7 @@ package se.inera.statistics.service.warehouse.query;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Function;
-import com.google.common.base.Predicate;
-import com.google.common.collect.Collections2;
+import com.google.common.base.Optional;
 import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Multiset;
@@ -241,12 +240,18 @@ public class SjukfallQuery {
     }
 
     private KonDataResponse changeLakareIdToLakarName(final KonDataResponse response) {
-        final Collection<Lakare> allLakareInResponse = Collections2.filter(lakareManager.getAllLakares(), new Predicate<Lakare>() {
+        List<HsaId> lakares = Lists.transform(response.getGroups(), new Function<String, HsaId>() {
             @Override
-            public boolean apply(Lakare lakare) {
-                return response.getGroups().contains(String.valueOf(Warehouse.getNumLakarId(lakare.getLakareId())));
+            public HsaId apply(String group) {
+                final Optional<HsaId> lakarId = Warehouse.getLakarId(Integer.parseInt(group));
+                if (!lakarId.isPresent()) {
+                    LOG.error("Could not find lakare with internal id: " + group);
+                    return HsaId.empty();
+                }
+                return lakarId.get();
             }
         });
+        final List<Lakare> allLakareInResponse = lakareManager.getAllSpecifiedLakares(lakares);
         final Set<String> nameDuplicates = findDuplicates(allLakareInResponse);
         final List<String> updatedLakareNames = Lists.transform(response.getGroups(), new Function<String, String>() {
             @Override

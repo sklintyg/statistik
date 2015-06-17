@@ -73,7 +73,8 @@ public abstract class MultiDualSexConverter<T extends KonDataResponse> {
         List<ChartSeries> series = new ArrayList<>();
         for (int i = 0; i < data.getGroups().size(); i++) {
             List<Integer> indexData = data.getDataFromIndex(i, sex);
-            final String seriesName = String.format(seriesNameTemplate, data.getGroups().get(i));
+            final String groupName = data.getGroups().get(i);
+            final String seriesName = "%1$s".equals(seriesNameTemplate) ? groupName : String.format(seriesNameTemplate, groupName);
             series.add(new ChartSeries(seriesName, indexData, true));
         }
         return series;
@@ -105,7 +106,7 @@ public abstract class MultiDualSexConverter<T extends KonDataResponse> {
         topHeaderRow.add(new TableHeader(""));
         List<String> degreesOfSickLeave = resp.getGroups();
         for (String groupName : degreesOfSickLeave) {
-            final String seriesName = String.format(seriesNameTemplate, groupName);
+            final String seriesName = "%1$s".equals(seriesNameTemplate) ? groupName : String.format(seriesNameTemplate, groupName);
             topHeaderRow.add(new TableHeader(seriesName, 2));
         }
 
