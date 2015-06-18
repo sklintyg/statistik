@@ -21,6 +21,7 @@ package se.inera.statistics.web.service;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Optional;
 import org.apache.commons.codec.digest.DigestUtils;
@@ -31,6 +32,7 @@ import se.inera.statistics.service.userselection.UserSelection;
 import se.inera.statistics.service.userselection.UserSelectionManager;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class FilterHashHandler {
     private static final Logger LOG = LoggerFactory.getLogger(FilterHashHandler.class);
@@ -68,15 +70,38 @@ public class FilterHashHandler {
     FilterData getFilterFromHash(String filterHash) {
         final Optional<String> filterData = getFilterData(filterHash);
         if (!filterData.isPresent()) {
-            throw new RuntimeException("Could not find filter with given hash");
+            throw new RuntimeException("Could not find filter with given hash: " + filterHash);
         }
-        final ObjectMapper mapper = new ObjectMapper();
+        final String filterDataString = filterData.get();
+        return parseFilterData(filterDataString);
+    }
+
+    private FilterData parseFilterData(String filterDataString) {
         try {
-            return mapper.readValue(filterData.get(), FilterData.class);
+            ObjectMapper m = new ObjectMapper();
+            JsonNode rootNode = null;
+            rootNode = m.readTree(filterDataString);
+            final ArrayList<String> diagnoser = getJsonArray(rootNode.path("diagnoser"));
+            final ArrayList<String> enheter = getJsonArray(rootNode.path("enheter"));
+            final ArrayList<String> verksamhetstyper = getJsonArray(rootNode.path("verksamhetstyper"));
+            final String fromDate = rootNode.path("fromDate").asText().isEmpty() ? null : rootNode.path("fromDate").asText();
+            final String toDate = rootNode.path("toDate").asText().isEmpty() ? null : rootNode.path("toDate").asText();
+            final boolean useDefaultPeriod = rootNode.path("useDefaultPeriod").asBoolean(true);
+            return new FilterData(diagnoser, enheter, verksamhetstyper, fromDate, toDate, useDefaultPeriod);
         } catch (IOException e) {
-            LOG.error("Failed to get filter data from hash: " + filterHash + ". Data: " + filterData.get(), e);
+            LOG.error("Failed to parse filter data: " + filterDataString, e);
             throw new RuntimeException("Filter data failed");
         }
+    }
+
+    private ArrayList<String> getJsonArray(JsonNode jsonArrayNode) {
+        final ArrayList<String> values = new ArrayList<>();
+        if (jsonArrayNode.isArray()) {
+            for (JsonNode value : jsonArrayNode) {
+                values.add(value.asText());
+            }
+        }
+        return values;
     }
 
 }
