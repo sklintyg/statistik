@@ -165,6 +165,21 @@ public class ProtectedLandstingService {
     }
 
     @GET
+    @Path("emptyLandstingFile")
+    @Produces(MediaType.APPLICATION_OCTET_STREAM)
+    @PreAuthorize(value = "@protectedLandstingService.hasAccessToLandstingAdmin(#request)")
+    @PostAuthorize(value = "@protectedLandstingService.userAccess(#request)")
+    public Response getEmptyLandstingFile(@Context HttpServletRequest request) {
+        try {
+            final ByteArrayOutputStream generatedFile = landstingFileWriter.generateExcelFile(Collections.<Enhet>emptyList());
+            return Response.ok(generatedFile.toByteArray(), MediaType.APPLICATION_OCTET_STREAM)
+                    .header("Content-Disposition", "attachment; filename=\"mall_landsting.xlsx\"").build();
+        } catch (LandstingFileGenerationException e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Could generate empty landsting excel file").build();
+        }
+    }
+
+    @GET
     @Path("lastUpdateInfo")
     @Produces({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedLandstingService.hasAccessToLandstingAdmin(#request)")

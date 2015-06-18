@@ -27,8 +27,13 @@
                         <p> Denna sida ser du eftersom du har statistikbehörighet för hela vårdgivaren {{verksamhetName}}.</p>
                         <p>Om ditt landsting vill kunna använda landstingsstatistiken, behöver du (eller någon annan med vårdgivarbehörighet för samma vårdgivare) rapportera in vilka vårdenheter som ingår i landstinget. Det gör du genom att:</p>
                         <ol>
-                            <li>Ladda ned Excelfilen som är mallen för listan: <a href="/api/landsting/prepopulatedLandstingFile">Mall</a></li>
-                            <li>Fylla i den nedladdade filen med de vårdenheter som ska ingå i landstingsstatistiken. För varje enhet anger du:
+                            <li>Ladda ner en av följande Excel-mallar:
+                                <ul>
+                                    <li><a href="/api/landsting/prepopulatedLandstingFile">Fil som är förifylld med de vårdenheter som Statistiktjänsten känner till inom din vårdgivare (Excel)</a></li>
+                                    <li><a href="/api/landsting/emptyLandstingFile">Tom fil (Excel)</a></li>
+                                </ul>
+                            </li>
+                            <li>Ange följande för alla de vårdenheter som som ska ingå i landstingsstatistiken:
                                 <ol type="a">
                                     <li>Vårdenhetsnamn</li>
                                     <li>HSA-id för vårdenhet</li>
