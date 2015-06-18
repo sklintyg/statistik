@@ -33,6 +33,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 @Component
@@ -78,6 +79,9 @@ public class LakareManager {
 
     @Transactional
     public List<Lakare> getAllSpecifiedLakares(Collection<HsaId> lakares) {
+        if (lakares == null || lakares.isEmpty()) {
+            return Collections.emptyList();
+        }
         TypedQuery<Lakare> query = manager.createQuery("SELECT l FROM Lakare l WHERE l.lakareId IN :hsaIds", Lakare.class);
         query.setParameter("hsaIds", Collections2.transform(lakares, new Function<HsaId, String>() {
             @Override

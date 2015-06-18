@@ -29,6 +29,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 @Component
@@ -40,6 +41,9 @@ public class EnhetManager {
     private EntityManager manager;
 
     public List<Enhet> getEnhets(Collection<HsaId> enhetIds) {
+        if (enhetIds == null || enhetIds.isEmpty()) {
+            return Collections.emptyList();
+        }
         final Query query = manager.createQuery("SELECT e FROM Enhet e WHERE e.enhetId IN :enhetids");
         query.setParameter("enhetids", Collections2.transform(enhetIds, new Function<HsaId, String>() {
             @Override
@@ -51,7 +55,7 @@ public class EnhetManager {
     }
 
     public List<Enhet> getAllEnhetsForVardgivareId(HsaId vgId) {
-        final Query query = manager.createQuery("SELECT e FROM Enhet e WHERE e.vardgivareId IN :vgId");
+        final Query query = manager.createQuery("SELECT e FROM Enhet e WHERE e.vardgivareId = :vgId");
         query.setParameter("vgId", vgId.getId());
         return query.getResultList();
     }
