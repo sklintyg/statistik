@@ -44,7 +44,7 @@ public class LandstingFileWriter {
             final int startRow = 1;
             for (int i = 0; i < enhets.size(); i++) {
                 final Enhet enhet = enhets.get(i);
-                final Row row = sheet.getRow(i + startRow);
+                final Row row = sheet.createRow(i + startRow);
                 row.createCell(0, Cell.CELL_TYPE_STRING).setCellValue(enhet.getNamn());
                 row.createCell(1, Cell.CELL_TYPE_STRING).setCellValue(enhet.getEnhetId().getId());
             }
