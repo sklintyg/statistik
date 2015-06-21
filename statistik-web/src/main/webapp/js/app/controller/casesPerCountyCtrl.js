@@ -99,5 +99,9 @@ angular.module('StatisticsApp').controller('casesPerCountyCtrl', ['$scope', '$ro
                 chart.destroy();
             }
         });
+
+        $scope.showInLegend = function(index) {
+            return true;
+        };
     }
 ]);
