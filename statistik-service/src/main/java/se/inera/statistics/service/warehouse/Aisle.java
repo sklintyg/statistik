@@ -18,7 +18,7 @@
  */
 package se.inera.statistics.service.warehouse;
 
-import se.inera.statistics.hsa.model.HsaId;
+import se.inera.statistics.hsa.model.HsaIdVardgivare;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -27,9 +27,9 @@ import java.util.List;
 
 public class Aisle implements Iterable<Fact> {
     private final List<Fact> lines;
-    private final HsaId vardgivareId;
+    private final HsaIdVardgivare vardgivareId;
 
-    public Aisle(HsaId vardgivareId, List<Fact> lines) {
+    public Aisle(HsaIdVardgivare vardgivareId, List<Fact> lines) {
         this.vardgivareId = vardgivareId;
         final ArrayList<Fact> facts = new ArrayList<>(lines);
         Collections.sort(facts, Fact.TIME_ORDER);
@@ -49,7 +49,7 @@ public class Aisle implements Iterable<Fact> {
         return lines;
     }
 
-    public HsaId getVardgivareId() {
+    public HsaIdVardgivare getVardgivareId() {
         return vardgivareId;
     }
 

@@ -22,7 +22,7 @@ import com.google.common.base.Predicate;
 import org.joda.time.LocalDate;
 import org.junit.Test;
 import org.mockito.Mockito;
-import se.inera.statistics.hsa.model.HsaId;
+import se.inera.statistics.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.service.report.model.Range;
 
 import java.util.Collections;
@@ -37,7 +37,7 @@ public class SjukfallIteratorTest {
         //Given
         final LocalDate fromDate = new LocalDate(2015, 1, 1);
         final int periodSize = 1;
-        final SjukfallIterator sjukfallIterator = new SjukfallIterator(fromDate, 2, periodSize, new Aisle(new HsaId(""), Collections.<Fact>emptyList()), SjukfallUtil.ALL_ENHETER.getFilter(), false){
+        final SjukfallIterator sjukfallIterator = new SjukfallIterator(fromDate, 2, periodSize, new Aisle(new HsaIdVardgivare(""), Collections.<Fact>emptyList()), SjukfallUtil.ALL_ENHETER.getFilter(), false){
             @Override
             SjukfallCalculator getSjukfallCalculator(Aisle aisle, Predicate<Fact> filter, boolean useOriginalSjukfallStart, List<Range> ranges) {
                 return Mockito.mock(SjukfallCalculator.class);

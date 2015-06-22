@@ -34,21 +34,25 @@ public final class KonDataResponses {
     private KonDataResponses() {
     }
 
-    public static KonDataResponse changeIdGroupsToNamesAndAddIdsToDuplicates(final KonDataResponse response, Map<HsaId, String> idsToNames) {
+    public static KonDataResponse changeIdGroupsToNamesAndAddIdsToDuplicates(final KonDataResponse response, Map<? extends HsaId, String> idsToNames) {
         final List<HsaId> idsToCompare = Lists.transform(response.getGroups(), new Function<String, HsaId>() {
             @Override
             public HsaId apply(String id) {
                 return new HsaId(id);
             }
         });
-        final HashMap<HsaId, Integer> duplicatesPerId = getDuplicatesPerId(idsToNames, idsToCompare);
+        final Map<HsaId, String> hsaIdsToNames = new HashMap<>();
+        for (Map.Entry<? extends HsaId, String> entry : idsToNames.entrySet()) {
+            hsaIdsToNames.put(new HsaId(entry.getKey().getId()), entry.getValue());
+        }
+        final HashMap<HsaId, Integer> duplicatesPerId = getDuplicatesPerId(hsaIdsToNames, idsToCompare);
 
         final ArrayList<String> finalNames = new ArrayList<>();
         for (String id : response.getGroups()) {
             final HsaId key = new HsaId(id);
             final Integer duplicates = duplicatesPerId.get(key);
             final String nameSuffix = duplicates != null && duplicates > 1 ? " " + id : "";
-            finalNames.add(idsToNames.get(key) + nameSuffix);
+            finalNames.add(hsaIdsToNames.get(key) + nameSuffix);
         }
 
         return new KonDataResponse(finalNames, response.getRows());

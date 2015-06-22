@@ -26,7 +26,9 @@ import org.joda.time.LocalDate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import se.inera.statistics.hsa.model.HsaId;
+import se.inera.statistics.hsa.model.HsaIdEnhet;
+import se.inera.statistics.hsa.model.HsaIdLakare;
+import se.inera.statistics.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.service.common.CommonPersistence;
 import se.inera.statistics.service.helper.UtlatandeBuilder;
 import se.inera.statistics.service.processlog.EventType;
@@ -56,12 +58,12 @@ public class InjectUtlatande {
 
     private static final LocalDate BASE = new LocalDate().minusMonths(MONTHS);
 
-    private static final List<HsaId> VG = Arrays.asList(new HsaId("vg1"), new HsaId("vg2"), new HsaId("vg3"), new HsaId("vg4"), new HsaId("vg5"));
+    private static final List<HsaIdVardgivare> VG = Arrays.asList(new HsaIdVardgivare("vg1"), new HsaIdVardgivare("vg2"), new HsaIdVardgivare("vg3"), new HsaIdVardgivare("vg4"), new HsaIdVardgivare("vg5"));
 
-    private static final List<HsaId> LAKARE = new ArrayList<>();
+    private static final List<HsaIdLakare> LAKARE = new ArrayList<>();
 
     private static final List<String> DIAGNOSER = new ArrayList<>();
-    private static final Multimap<HsaId, HsaId> VARDGIVARE = ArrayListMultimap.create();
+    private static final Multimap<HsaIdVardgivare, HsaIdEnhet> VARDGIVARE = ArrayListMultimap.create();
     private static final List<Integer> ARBETSFORMAGOR = Arrays.asList(0, 25, 50, 75);
     public static final float FEL_DIAGNOS_THRESHOLD = 0.1f;
 
@@ -72,13 +74,13 @@ public class InjectUtlatande {
     public static final int NUMBER_OF_LAKARE_TO_ADD = 100;
 
     static {
-        for (HsaId vardgivare : VG) {
+        for (HsaIdVardgivare vardgivare : VG) {
             for (int i = 1; i <= VARDGIVARE_ANTAL; i++) {
-                VARDGIVARE.put(vardgivare, new HsaId(vardgivare + "-enhet-" + i));
+                VARDGIVARE.put(vardgivare, new HsaIdEnhet(vardgivare + "-enhet-" + i));
             }
         }
         for (int i = 1; i < NUMBER_OF_LAKARE_TO_ADD; i++) {
-            LAKARE.add(new HsaId("hsa-" + i));
+            LAKARE.add(new HsaIdLakare("hsa-" + i));
         }
     }
 
@@ -149,11 +151,11 @@ public class InjectUtlatande {
         LocalDate end = random.nextFloat() < LONG_PERIOD_FRACTION ? start.plusDays(random.nextInt(LONG_PERIOD_DAYS) + 7) : start.plusDays(random.nextInt(SHORT_PERIOD_DAYS) + 7);
         // CHECKSTYLE:ON MagicNumber
 
-        HsaId vardgivare = random(VG);
+        HsaIdVardgivare vardgivare = random(VG);
 
-        HsaId vardenhet = random(Lists.newArrayList((VARDGIVARE.get(vardgivare))));
+        HsaIdEnhet vardenhet = random(Lists.newArrayList((VARDGIVARE.get(vardgivare))));
 
-        HsaId lakare = random(LAKARE);
+        HsaIdLakare lakare = random(LAKARE);
 
         String diagnos = random(getDiagnoser());
         if (random.nextFloat() < FEL_DIAGNOS_THRESHOLD) {

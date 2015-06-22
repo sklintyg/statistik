@@ -19,6 +19,7 @@
 package se.inera.statistics.web.service;
 
 import se.inera.statistics.hsa.model.HsaId;
+import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.service.report.model.SimpleKonDataRow;
 import se.inera.statistics.service.report.model.SimpleKonResponse;
 import se.inera.statistics.web.model.ChartData;
@@ -30,9 +31,9 @@ import java.util.List;
 
 public class GroupedSjukfallWithLandstingSortingConverter extends SimpleDualSexConverter {
 
-    private final List<HsaId> connectedEnhetIds;
+    private final List<HsaIdEnhet> connectedEnhetIds;
 
-    public GroupedSjukfallWithLandstingSortingConverter(String tableGroupTitle, List<HsaId> connectedEnhetIds) {
+    public GroupedSjukfallWithLandstingSortingConverter(String tableGroupTitle, List<HsaIdEnhet> connectedEnhetIds) {
         super(tableGroupTitle, false, "%1$s");
         this.connectedEnhetIds = connectedEnhetIds;
     }

@@ -19,7 +19,7 @@
 package se.inera.statistics.web.service;
 
 import org.junit.Test;
-import se.inera.statistics.hsa.model.HsaId;
+import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.SimpleKonDataRow;
 import se.inera.statistics.service.report.model.SimpleKonResponse;
@@ -41,7 +41,7 @@ public class GroupedSjukfallWithLandstingSortingConverterTest {
     @Test
     public void convertTest() {
         //Given
-        GroupedSjukfallWithLandstingSortingConverter converter = new GroupedSjukfallWithLandstingSortingConverter("Vårdenhet", Collections.<HsaId>emptyList());
+        GroupedSjukfallWithLandstingSortingConverter converter = new GroupedSjukfallWithLandstingSortingConverter("Vårdenhet", Collections.<HsaIdEnhet>emptyList());
         List<SimpleKonDataRow> businessRows = new ArrayList<>();
         businessRows.add(new SimpleKonDataRow("enhet1", 12, 13));
         businessRows.add(new SimpleKonDataRow("enhet2", 20, 30));

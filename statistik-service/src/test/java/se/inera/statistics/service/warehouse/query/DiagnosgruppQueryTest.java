@@ -28,12 +28,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import se.inera.statistics.hsa.model.HsaId;
+import se.inera.statistics.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.service.report.model.DiagnosgruppResponse;
 import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.report.util.Icd10;
 import se.inera.statistics.service.report.util.Icd10RangeType;
-import se.inera.statistics.service.warehouse.*;
+import se.inera.statistics.service.warehouse.Aisle;
+import se.inera.statistics.service.warehouse.Fact;
+import se.inera.statistics.service.warehouse.MutableAisle;
+import se.inera.statistics.service.warehouse.Sjukfall;
+import se.inera.statistics.service.warehouse.SjukfallFilter;
+import se.inera.statistics.service.warehouse.SjukfallUtil;
+import se.inera.statistics.service.warehouse.Warehouse;
 
 import java.util.Collection;
 import java.util.List;
@@ -47,7 +53,7 @@ import static se.inera.statistics.service.warehouse.Fact.aFact;
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 public class DiagnosgruppQueryTest {
 
-    public static final HsaId VARDGIVARE = new HsaId("vardgivare");
+    public static final HsaIdVardgivare VARDGIVARE = new HsaIdVardgivare("vardgivare");
 
     private Warehouse warehouse;
 
@@ -125,7 +131,7 @@ public class DiagnosgruppQueryTest {
     @Test
     public void testGetUnderdiagnosGrupperForKapitel() throws Exception {
         //When
-        DiagnosgruppResponse result = query.getUnderdiagnosgrupper(new MutableAisle(new HsaId("vgid")).createAisle(), new SjukfallFilter(new Predicate<Fact>() {
+        DiagnosgruppResponse result = query.getUnderdiagnosgrupper(new MutableAisle(new HsaIdVardgivare("vgid")).createAisle(), new SjukfallFilter(new Predicate<Fact>() {
             @Override
             public boolean apply(Fact fact) {
                 return false;
@@ -140,7 +146,7 @@ public class DiagnosgruppQueryTest {
     @Test
     public void testGetUnderdiagnosGrupperForAvsnitt() throws Exception {
         //When
-        DiagnosgruppResponse result = query.getUnderdiagnosgrupper(new MutableAisle(new HsaId("vgid")).createAisle(), new SjukfallFilter(new Predicate<Fact>() {
+        DiagnosgruppResponse result = query.getUnderdiagnosgrupper(new MutableAisle(new HsaIdVardgivare("vgid")).createAisle(), new SjukfallFilter(new Predicate<Fact>() {
             @Override
             public boolean apply(Fact fact) {
                 return false;

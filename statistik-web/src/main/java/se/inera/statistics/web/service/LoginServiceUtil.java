@@ -29,6 +29,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.stereotype.Component;
 import se.inera.auth.model.User;
+import se.inera.statistics.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.hsa.model.Vardenhet;
 import se.inera.statistics.service.landsting.LandstingEnhetHandler;
 import se.inera.statistics.service.landsting.LandstingsVardgivareStatus;
@@ -37,7 +38,6 @@ import se.inera.statistics.service.report.model.Kommun;
 import se.inera.statistics.service.report.model.Lan;
 import se.inera.statistics.service.report.model.VerksamhetsTyp;
 import se.inera.statistics.service.warehouse.Warehouse;
-import se.inera.statistics.hsa.model.HsaId;
 import se.inera.statistics.web.model.LoginInfo;
 import se.inera.statistics.web.model.Verksamhet;
 
@@ -88,7 +88,7 @@ public class LoginServiceUtil {
             LOG.warn("valdEnhet may not be null");
             return new LoginInfo();
         }
-        final HsaId vardgivarId = valdVardenhet.getVardgivarId();
+        final HsaIdVardgivare vardgivarId = valdVardenhet.getVardgivarId();
         List<Enhet> enhetsList = warehouse.getEnhets(vardgivarId);
         Verksamhet defaultVerksamhet = toVerksamhet(valdVardenhet, enhetsList);
         List<Verksamhet> verksamhets = getVerksamhetsList(realUser, enhetsList);
@@ -149,7 +149,7 @@ public class LoginServiceUtil {
         }));
     }
 
-    HsaId getSelectedVgIdForLoggedInUser(HttpServletRequest request) {
+    HsaIdVardgivare getSelectedVgIdForLoggedInUser(HttpServletRequest request) {
         return getLoginInfo(request).getDefaultVerksamhet().getVardgivarId();
     }
 

@@ -21,7 +21,7 @@ package se.inera.statistics.service.landsting.persistance.landstingenhetupdate;
 import com.google.common.base.Optional;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-import se.inera.statistics.hsa.model.HsaId;
+import se.inera.statistics.hsa.model.HsaIdUser;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -40,7 +40,7 @@ public class LandstingEnhetUpdateManager {
     }
 
     @Transactional
-    public void update(long landstingId, String updatedByName, HsaId updatedByHsaid, String filename, LandstingEnhetUpdateOperation operation) {
+    public void update(long landstingId, String updatedByName, HsaIdUser updatedByHsaid, String filename, LandstingEnhetUpdateOperation operation) {
         final Optional<LandstingEnhetUpdate> existing = getByLandstingId(landstingId);
         if (existing.isPresent()) {
             manager.remove(existing.get());

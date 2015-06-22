@@ -6,7 +6,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import se.inera.statistics.hsa.model.HsaId;
+import se.inera.statistics.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.service.hsa.HsaDataInjectable;
 import se.inera.statistics.service.landsting.persistance.landsting.LandstingManager;
 import se.inera.statistics.service.processlog.LogConsumer;
@@ -172,8 +172,8 @@ public class RestSupportService {
     @Produces({ MediaType.APPLICATION_JSON })
     public Response insertLandsting(@PathParam("name") String name, @PathParam("vgid") String vgId) {
         LOG.info("Insert landsting with name {} and vgid {}", name, vgId);
-        if (!landstingManager.getForVg(new HsaId(vgId)).isPresent()) {
-            landstingManager.add(name, new HsaId(vgId));
+        if (!landstingManager.getForVg(new HsaIdVardgivare(vgId)).isPresent()) {
+            landstingManager.add(name, new HsaIdVardgivare(vgId));
         }
         return Response.ok().build();
     }

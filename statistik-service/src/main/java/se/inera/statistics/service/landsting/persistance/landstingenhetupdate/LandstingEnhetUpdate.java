@@ -18,7 +18,7 @@
  */
 package se.inera.statistics.service.landsting.persistance.landstingenhetupdate;
 
-import se.inera.statistics.hsa.model.HsaId;
+import se.inera.statistics.hsa.model.HsaIdUser;
 
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -48,7 +48,7 @@ public class LandstingEnhetUpdate {
     private LandstingEnhetUpdate() {
     }
 
-    public LandstingEnhetUpdate(long landstingId, String updatedByName, HsaId updatedByHsaid, Timestamp timestamp, String filename, LandstingEnhetUpdateOperation operation) {
+    public LandstingEnhetUpdate(long landstingId, String updatedByName, HsaIdUser updatedByHsaid, Timestamp timestamp, String filename, LandstingEnhetUpdateOperation operation) {
         this.landstingId = landstingId;
         this.updatedByName = updatedByName;
         setUpdatedByHsaid(updatedByHsaid);
@@ -77,7 +77,7 @@ public class LandstingEnhetUpdate {
         return updatedByHsaid;
     }
 
-    public void setUpdatedByHsaid(HsaId updatedByHsaid) {
+    public void setUpdatedByHsaid(HsaIdUser updatedByHsaid) {
         this.updatedByHsaid = updatedByHsaid == null ? null : updatedByHsaid.getId();
     }
 

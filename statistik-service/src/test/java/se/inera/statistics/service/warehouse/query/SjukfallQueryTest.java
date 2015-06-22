@@ -33,7 +33,9 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 import org.springframework.test.util.ReflectionTestUtils;
-import se.inera.statistics.hsa.model.HsaId;
+import se.inera.statistics.hsa.model.HsaIdEnhet;
+import se.inera.statistics.hsa.model.HsaIdLakare;
+import se.inera.statistics.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.service.processlog.Lakare;
 import se.inera.statistics.service.processlog.LakareManager;
 import se.inera.statistics.service.report.model.Kon;
@@ -55,7 +57,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Objects;
 
 import static java.util.Arrays.asList;
 import static org.junit.Assert.assertEquals;
@@ -70,12 +71,12 @@ import static se.inera.statistics.service.warehouse.WidelineConverter.toDay;
 
 public class SjukfallQueryTest {
 
-    private static final HsaId VG_1 = new HsaId("vg1");
+    private static final HsaIdVardgivare VG_1 = new HsaIdVardgivare("vg1");
     private static final int ENHET1_ID = 1;
 
-    private static final HsaId LAKARE1_ID = new HsaId("LAKARE1");
-    private static final HsaId LAKARE2_ID = new HsaId("LAKARE2");
-    private static final HsaId LAKARE3_ID = new HsaId("LAKARE3");
+    private static final HsaIdLakare LAKARE1_ID = new HsaIdLakare("LAKARE1");
+    private static final HsaIdLakare LAKARE2_ID = new HsaIdLakare("LAKARE2");
+    private static final HsaIdLakare LAKARE3_ID = new HsaIdLakare("LAKARE3");
 
     private static final int PATIENT1_ID = 1;
     private static final Kon PATIENT1_KON = Kon.Female;
@@ -92,7 +93,7 @@ public class SjukfallQueryTest {
 
     private MutableAisle aisle;
 
-    private BiMap<HsaId, Integer> lakarIdMap = HashBiMap.create();
+    private BiMap<HsaIdLakare, Integer> lakarIdMap = HashBiMap.create();
 
     private SjukfallUtil sjukfallUtil = new SjukfallUtil();
 
@@ -111,7 +112,7 @@ public class SjukfallQueryTest {
         sjukfallQuery = new SjukfallQuery();
         sjukfallQuery.setLakareManager(lakareManager);
         ReflectionTestUtils.setField(sjukfallQuery, "sjukfallUtil", sjukfallUtil);
-        aisle = new MutableAisle(new HsaId("vg1"));
+        aisle = new MutableAisle(new HsaIdVardgivare("vg1"));
         MockitoAnnotations.initMocks(this);
     }
 
@@ -224,10 +225,10 @@ public class SjukfallQueryTest {
             @Override
             public List<Lakare> answer(InvocationOnMock invocationOnMock) throws Throwable {
                 final Object[] arguments = invocationOnMock.getArguments();
-                final List<HsaId> hsaIds = (List<HsaId>) arguments[0];
-                return Lists.transform(hsaIds, new Function<HsaId, Lakare>() {
+                final List<HsaIdLakare> hsaIds = (List<HsaIdLakare>) arguments[0];
+                return Lists.transform(hsaIds, new Function<HsaIdLakare, Lakare>() {
                     @Override
-                    public Lakare apply(HsaId hsaId) {
+                    public Lakare apply(HsaIdLakare hsaId) {
                         if (LAKARE1_ID.equals(hsaId)) {
                             return lakare1;
                         } else if (LAKARE2_ID.equals(hsaId)) {
@@ -249,7 +250,7 @@ public class SjukfallQueryTest {
         lakarIdMap.put(LAKARE3_ID, Warehouse.getNumLakarIdAndRemember(LAKARE3_ID));
     }
 
-    private Fact fact(int patientId, Kon patientKon, HsaId lakareId) {
+    private Fact fact(int patientId, Kon patientKon, HsaIdLakare lakareId) {
          return aFact().withLan(3).withKommun(380).withForsamling(38002).
                 withEnhet(ENHET1_ID).withLakarintyg(lakarIntygCounter++).
                 withPatient(patientId).withKon(patientKon).withAlder(45).
@@ -269,8 +270,8 @@ public class SjukfallQueryTest {
         final LocalDate start = new LocalDate();
         final int periods = 1;
         final int periodSize = 2;
-        final HashMap<HsaId, String> idsToNames = new HashMap<>();
-        idsToNames.put(new HsaId("-1"), "name1");
+        final HashMap<HsaIdEnhet, String> idsToNames = new HashMap<>();
+        idsToNames.put(new HsaIdEnhet("-1"), "name1");
 
         //When
         final Aisle currentAisle = aisle.createAisle();
@@ -290,10 +291,10 @@ public class SjukfallQueryTest {
         Mockito.when(sjukfallUtilMock.calculateKonDataResponse(any(Aisle.class), any(SjukfallFilter.class), any(LocalDate.class), anyInt(), anyInt(), anyListOf(String.class), anyListOf(Object.class), any(CounterFunction.class))).thenReturn(konDataResponse);
         ReflectionTestUtils.setField(sjukfallQuery, "sjukfallUtil", sjukfallUtilMock);
         final SjukfallFilter enhetFilterFromInternalIntValues = SjukfallUtilTest.createEnhetFilterFromInternalIntValues(ENHET1_ID);
-        final HashMap<HsaId, String> idsToNames = new HashMap<>();
-        idsToNames.put(new HsaId("1"), "ABC");
-        idsToNames.put(new HsaId("2"), "CBA");
-        idsToNames.put(new HsaId("3"), "ABC");
+        final HashMap<HsaIdEnhet, String> idsToNames = new HashMap<>();
+        idsToNames.put(new HsaIdEnhet("1"), "ABC");
+        idsToNames.put(new HsaIdEnhet("2"), "CBA");
+        idsToNames.put(new HsaIdEnhet("3"), "ABC");
 
         //When
         final KonDataResponse result = sjukfallQuery.getSjukfallPerEnhetSeries(aisle.createAisle(), enhetFilterFromInternalIntValues, new LocalDate(), 1, 2, idsToNames);

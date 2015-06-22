@@ -26,7 +26,7 @@ import org.joda.time.LocalDate;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
-import se.inera.statistics.hsa.model.HsaId;
+import se.inera.statistics.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.report.model.KonDataResponse;
 import se.inera.statistics.service.report.model.Range;
@@ -55,7 +55,7 @@ public class SjukfallUtilTest {
     @Before
     public void setup() {
         sjukfallUtil = new SjukfallUtil();
-        aisle = new MutableAisle(new HsaId("vgid"));
+        aisle = new MutableAisle(new HsaIdVardgivare("vgid"));
     }
 
     @Test
@@ -190,8 +190,8 @@ public class SjukfallUtilTest {
     public void testSjukfallCacheWillOnlyReturnValuesForTheCorrectVg() throws Exception {
         //Given
         LocalDate monthStart = new LocalDate("2015-03-11");
-        MutableAisle aisle1 = new MutableAisle(new HsaId("vgid1"));
-        MutableAisle aisle2 = new MutableAisle(new HsaId("vgid2"));
+        MutableAisle aisle1 = new MutableAisle(new HsaIdVardgivare("vgid1"));
+        MutableAisle aisle2 = new MutableAisle(new HsaIdVardgivare("vgid2"));
 
         //When
         final Iterable<SjukfallGroup> sjukfallGroups1 = sjukfallUtil.sjukfallGrupper(monthStart, 1, 1, aisle1.createAisle(), SjukfallUtil.ALL_ENHETER);

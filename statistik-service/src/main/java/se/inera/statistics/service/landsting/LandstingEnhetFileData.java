@@ -18,28 +18,29 @@
  */
 package se.inera.statistics.service.landsting;
 
-import se.inera.statistics.hsa.model.HsaId;
+import se.inera.statistics.hsa.model.HsaIdUser;
+import se.inera.statistics.hsa.model.HsaIdVardgivare;
 
 import java.util.Collections;
 import java.util.List;
 
 public class LandstingEnhetFileData {
 
-    private HsaId vgId;
+    private HsaIdVardgivare vgId;
     private List<LandstingEnhetFileDataRow> rows;
     private String userName;
-    private HsaId userId;
+    private HsaIdUser userId;
     private String fileName;
 
-    public LandstingEnhetFileData(HsaId vgId, List<LandstingEnhetFileDataRow> rows, String userName, HsaId userId, String fileName) {
-        this.vgId = vgId == null ? new HsaId("") : vgId;
+    public LandstingEnhetFileData(HsaIdVardgivare vgId, List<LandstingEnhetFileDataRow> rows, String userName, HsaIdUser userId, String fileName) {
+        this.vgId = vgId == null ? new HsaIdVardgivare("") : vgId;
         this.rows = rows == null ? Collections.<LandstingEnhetFileDataRow>emptyList() : Collections.unmodifiableList(rows);
         this.userName = userName;
         this.userId = userId;
         this.fileName = fileName;
     }
 
-    public HsaId getVgId() {
+    public HsaIdVardgivare getVgId() {
         return vgId;
     }
 
@@ -51,7 +52,7 @@ public class LandstingEnhetFileData {
         return userName;
     }
 
-    public HsaId getUserId() {
+    public HsaIdUser getUserId() {
         return userId;
     }
 

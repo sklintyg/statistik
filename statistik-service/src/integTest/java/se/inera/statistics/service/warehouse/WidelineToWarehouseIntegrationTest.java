@@ -26,12 +26,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import se.inera.statistics.hsa.model.HsaId;
+import se.inera.statistics.hsa.model.HsaIdEnhet;
+import se.inera.statistics.hsa.model.HsaIdLakare;
+import se.inera.statistics.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.service.helper.ConversionHelper;
 import se.inera.statistics.service.processlog.EventType;
+import se.inera.statistics.service.report.util.Icd10;
 import se.inera.statistics.service.report.util.Icd10RangeType;
 import se.inera.statistics.service.warehouse.model.db.WideLine;
-import se.inera.statistics.service.report.util.Icd10;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath:process-log-impl-test.xml", "classpath:icd10.xml" })
@@ -51,7 +53,7 @@ public class WidelineToWarehouseIntegrationTest {
     public void testPopulateWarehouse() throws Exception {
         WideLine line1 = new WideLine();
         String patientId = "19121212-1210";
-        HsaId enhet = new HsaId("E1");
+        HsaIdEnhet enhet = new HsaIdEnhet("E1");
         line1.setAlder(23);
         line1.setDiagnoskapitel("A00-B99");
         line1.setDiagnosavsnitt("A15-A19");
@@ -59,7 +61,7 @@ public class WidelineToWarehouseIntegrationTest {
         line1.setEnhet(enhet);
         line1.setKon(1);
         line1.setLkf("078002");
-        line1.setLakareId(new HsaId("lid"));
+        line1.setLakareId(new HsaIdLakare("lid"));
         line1.setLakaralder(33);
         line1.setLakarbefattning("201010");
         line1.setLakarintyg(1L);
@@ -69,14 +71,14 @@ public class WidelineToWarehouseIntegrationTest {
         line1.setSjukskrivningsgrad(100);
         line1.setSlutdatum(4999);
         line1.setStartdatum(4997);
-        line1.setVardgivareId(new HsaId("vg1"));
+        line1.setVardgivareId(new HsaIdVardgivare("vg1"));
         line1.setCorrelationId("{1}");
         widelineManager.saveWideline(line1);
 
         widelineLoader.populateWarehouse();
         warehouse.complete(LocalDateTime.now());
 
-        Aisle a = warehouse.get(new HsaId("VG1"));
+        Aisle a = warehouse.get(new HsaIdVardgivare("VG1"));
         Assert.assertEquals(1, a.getSize());
         Fact fact = a.iterator().next();
         Assert.assertEquals(23, fact.getAlder());

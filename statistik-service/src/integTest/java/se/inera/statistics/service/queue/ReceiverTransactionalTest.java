@@ -31,7 +31,8 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import se.inera.statistics.hsa.model.HsaId;
+import se.inera.statistics.hsa.model.HsaIdEnhet;
+import se.inera.statistics.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.service.helper.UtlatandeBuilder;
 import se.inera.statistics.service.processlog.LogConsumer;
 
@@ -153,8 +154,8 @@ public class ReceiverTransactionalTest {
         return persons.get(id);
     }
 
-    private HsaId getVardenhet(int i) {
-        HsaId[] enheter = {new HsaId("ENVE"), new HsaId("TVAVE")};
+    private HsaIdEnhet getVardenhet(int i) {
+        HsaIdEnhet[] enheter = {new HsaIdEnhet("ENVE"), new HsaIdEnhet("TVAVE")};
         return enheter[i];
     }
 
@@ -181,8 +182,8 @@ public class ReceiverTransactionalTest {
         return diagnoser[i];
     }
 
-    private HsaId getVardgivare(int i) {
-        HsaId[] givare = {new HsaId("Vardgivare")};
+    private HsaIdVardgivare getVardgivare(int i) {
+        HsaIdVardgivare[] givare = {new HsaIdVardgivare("Vardgivare")};
         return givare[i];
     }
 
@@ -191,11 +192,11 @@ public class ReceiverTransactionalTest {
         private final List<String> grads;
         private final LocalDate startDate;
         private final LocalDate endDate;
-        private final HsaId vardenhet;
-        private final HsaId vardgivare;
+        private final HsaIdEnhet vardenhet;
+        private final HsaIdVardgivare vardgivare;
         private final String diagnos;
 
-        public TestIntyg(String personNr, List<String> grads, LocalDate startDate, LocalDate endDate, HsaId vardenhet, HsaId vardgivare, String diagnos) {
+        public TestIntyg(String personNr, List<String> grads, LocalDate startDate, LocalDate endDate, HsaIdEnhet vardenhet, HsaIdVardgivare vardgivare, String diagnos) {
             this.personNr = personNr;
             this.grads = grads;
             this.startDate = startDate;

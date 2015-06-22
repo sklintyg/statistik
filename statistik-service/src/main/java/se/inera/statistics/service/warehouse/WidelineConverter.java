@@ -24,6 +24,9 @@ import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import se.inera.statistics.hsa.model.HsaId;
+import se.inera.statistics.hsa.model.HsaIdEnhet;
+import se.inera.statistics.hsa.model.HsaIdLakare;
+import se.inera.statistics.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.service.helper.ConversionHelper;
 import se.inera.statistics.service.helper.DocumentHelper;
 import se.inera.statistics.service.helper.HSAServiceHelper;
@@ -120,8 +123,8 @@ public class WidelineConverter {
             line.setLakarintyg(logId);
             line.setIntygTyp(type);
             line.setLkf(lkf);
-            line.setEnhet(new HsaId(enhet));
-            line.setVardgivareId(new HsaId(vardgivare));
+            line.setEnhet(new HsaIdEnhet(enhet));
+            line.setVardgivareId(new HsaIdVardgivare(vardgivare));
 
             line.setStartdatum(toDay(kalenderStart));
             line.setSlutdatum(toDay(kalenderEnd));
@@ -138,7 +141,7 @@ public class WidelineConverter {
             line.setLakaralder(lakaralder);
             line.setLakarkon(lakarkon);
             line.setLakarbefattning(lakarbefattning);
-            line.setLakareId(new HsaId(lakareid));
+            line.setLakareId(new HsaIdLakare(lakareid));
             lines.add(line);
         }
         return lines;

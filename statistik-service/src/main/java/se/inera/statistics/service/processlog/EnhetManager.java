@@ -23,7 +23,8 @@ import com.google.common.collect.Collections2;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
-import se.inera.statistics.hsa.model.HsaId;
+import se.inera.statistics.hsa.model.HsaIdEnhet;
+import se.inera.statistics.hsa.model.HsaIdVardgivare;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -40,21 +41,21 @@ public class EnhetManager {
     @PersistenceContext(unitName = "IneraStatisticsLog")
     private EntityManager manager;
 
-    public List<Enhet> getEnhets(Collection<HsaId> enhetIds) {
+    public List<Enhet> getEnhets(Collection<HsaIdEnhet> enhetIds) {
         if (enhetIds == null || enhetIds.isEmpty()) {
             return Collections.emptyList();
         }
         final Query query = manager.createQuery("SELECT e FROM Enhet e WHERE e.enhetId IN :enhetids");
-        query.setParameter("enhetids", Collections2.transform(enhetIds, new Function<HsaId, String>() {
+        query.setParameter("enhetids", Collections2.transform(enhetIds, new Function<HsaIdEnhet, String>() {
             @Override
-            public String apply(HsaId hsaId) {
+            public String apply(HsaIdEnhet hsaId) {
                 return hsaId.getId();
             }
         }));
         return query.getResultList();
     }
 
-    public List<Enhet> getAllEnhetsForVardgivareId(HsaId vgId) {
+    public List<Enhet> getAllEnhetsForVardgivareId(HsaIdVardgivare vgId) {
         final Query query = manager.createQuery("SELECT e FROM Enhet e WHERE e.vardgivareId = :vgId");
         query.setParameter("vgId", vgId.getId());
         return query.getResultList();

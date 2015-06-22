@@ -25,7 +25,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-import se.inera.statistics.hsa.model.HsaId;
+import se.inera.statistics.hsa.model.HsaIdLakare;
+import se.inera.statistics.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.service.helper.HSAServiceHelper;
 import se.inera.statistics.service.warehouse.WidelineConverter;
 
@@ -59,11 +60,11 @@ public class LakareManager {
 
         if (validate(vardgivareId, lakareId, tilltalsNamn, efterNamn)) {
             if (resultList.isEmpty()) {
-                manager.persist(new Lakare(new HsaId(vardgivareId), new HsaId(lakareId), tilltalsNamn, efterNamn));
+                manager.persist(new Lakare(new HsaIdVardgivare(vardgivareId), new HsaIdLakare(lakareId), tilltalsNamn, efterNamn));
             } else {
                 Lakare updatedLakare = resultList.get(0);
-                updatedLakare.setVardgivareId(new HsaId(vardgivareId));
-                updatedLakare.setLakareId(new HsaId(lakareId));
+                updatedLakare.setVardgivareId(new HsaIdVardgivare(vardgivareId));
+                updatedLakare.setLakareId(new HsaIdLakare(lakareId));
                 updatedLakare.setTilltalsNamn(tilltalsNamn);
                 updatedLakare.setEfterNamn(efterNamn);
                 manager.merge(updatedLakare);
@@ -78,14 +79,14 @@ public class LakareManager {
     }
 
     @Transactional
-    public List<Lakare> getAllSpecifiedLakares(Collection<HsaId> lakares) {
+    public List<Lakare> getAllSpecifiedLakares(Collection<HsaIdLakare> lakares) {
         if (lakares == null || lakares.isEmpty()) {
             return Collections.emptyList();
         }
         TypedQuery<Lakare> query = manager.createQuery("SELECT l FROM Lakare l WHERE l.lakareId IN :hsaIds", Lakare.class);
-        query.setParameter("hsaIds", Collections2.transform(lakares, new Function<HsaId, String>() {
+        query.setParameter("hsaIds", Collections2.transform(lakares, new Function<HsaIdLakare, String>() {
             @Override
-            public String apply(HsaId hsaId) {
+            public String apply(HsaIdLakare hsaId) {
                 return hsaId.getId();
             }
         }));
@@ -93,7 +94,7 @@ public class LakareManager {
     }
 
     @Transactional
-    public List<Lakare> getLakares(HsaId vardgivare) {
+    public List<Lakare> getLakares(HsaIdVardgivare vardgivare) {
         TypedQuery<Lakare> query = manager.createQuery("SELECT l FROM Lakare l WHERE l.vardgivareId = :vardgivareId", Lakare.class).setParameter("vardgivareId", vardgivare.getId());
         return query.getResultList();
     }

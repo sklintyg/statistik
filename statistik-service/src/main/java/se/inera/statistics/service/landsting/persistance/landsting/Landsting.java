@@ -18,7 +18,7 @@
  */
 package se.inera.statistics.service.landsting.persistance.landsting;
 
-import se.inera.statistics.hsa.model.HsaId;
+import se.inera.statistics.hsa.model.HsaIdVardgivare;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -38,7 +38,7 @@ public class Landsting {
     private Landsting() {
     }
 
-    Landsting(long id, String namn, HsaId vardgivareId) {
+    Landsting(long id, String namn, HsaIdVardgivare vardgivareId) {
         this.id = id;
         this.namn = namn;
         this.vardgivareId = vardgivareId.getId();
@@ -52,8 +52,8 @@ public class Landsting {
         return namn;
     }
 
-    public HsaId getVardgivareId() {
-        return new HsaId(vardgivareId);
+    public HsaIdVardgivare getVardgivareId() {
+        return new HsaIdVardgivare(vardgivareId);
     }
 
 }

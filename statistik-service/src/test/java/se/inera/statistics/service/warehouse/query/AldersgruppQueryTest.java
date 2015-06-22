@@ -21,7 +21,7 @@ package se.inera.statistics.service.warehouse.query;
 import org.joda.time.LocalDate;
 import org.joda.time.LocalDateTime;
 import org.junit.Test;
-import se.inera.statistics.hsa.model.HsaId;
+import se.inera.statistics.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.report.util.AldersgroupUtil;
 import se.inera.statistics.service.report.util.Ranges;
@@ -40,7 +40,7 @@ import static se.inera.statistics.service.warehouse.Fact.aFact;
 
 public class AldersgruppQueryTest {
 
-    public static final HsaId VARDGIVARE = new HsaId("vardgivare");
+    public static final HsaIdVardgivare VARDGIVARE = new HsaIdVardgivare("vardgivare");
     private Warehouse warehouse = new Warehouse();
 
     private int intyg;

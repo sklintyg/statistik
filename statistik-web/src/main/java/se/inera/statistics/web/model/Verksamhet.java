@@ -21,7 +21,8 @@ package se.inera.statistics.web.model;
 import org.apache.commons.lang3.text.translate.CharSequenceTranslator;
 import org.apache.commons.lang3.text.translate.UnicodeEscaper;
 import org.apache.commons.lang3.text.translate.UnicodeUnescaper;
-import se.inera.statistics.hsa.model.HsaId;
+import se.inera.statistics.hsa.model.HsaIdEnhet;
+import se.inera.statistics.hsa.model.HsaIdVardgivare;
 
 import java.io.Serializable;
 import java.util.Set;
@@ -49,7 +50,7 @@ public class Verksamhet implements Serializable {
     }
 
     // CHECKSTYLE:OFF ParameterNumber
-    public Verksamhet(HsaId id, String name, HsaId vardgivarId, String vardgivarName, String lansId, String lansName, String kommunId, String kommunName, Set<VerksamhetsTyp> verksamhetsTyper) {
+    public Verksamhet(HsaIdEnhet id, String name, HsaIdVardgivare vardgivarId, String vardgivarName, String lansId, String lansName, String kommunId, String kommunName, Set<VerksamhetsTyp> verksamhetsTyper) {
         this.id = id.getId();
         this.name = name;
         this.vardgivarId = vardgivarId.getId();
@@ -62,17 +63,17 @@ public class Verksamhet implements Serializable {
     }
     // CHECKSTYLE:ON ParameterNumber
 
-    public HsaId getId() {
+    public HsaIdEnhet getId() {
         final String encodeId = encodeId(id);
-        return new HsaId(encodeId);
+        return new HsaIdEnhet(encodeId);
     }
 
     public String getName() {
         return name;
     }
 
-    public HsaId getVardgivarId() {
-        return new HsaId(vardgivarId);
+    public HsaIdVardgivare getVardgivarId() {
+        return new HsaIdVardgivare(vardgivarId);
     }
 
     public String getVardgivarName() {

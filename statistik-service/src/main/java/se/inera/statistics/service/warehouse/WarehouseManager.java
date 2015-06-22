@@ -22,7 +22,7 @@ import org.joda.time.LocalDateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import se.inera.statistics.hsa.model.HsaId;
+import se.inera.statistics.hsa.model.HsaIdVardgivare;
 
 import javax.annotation.PostConstruct;
 
@@ -61,7 +61,7 @@ public class WarehouseManager {
         return warehouse.getAllVardgivare().size();
     }
 
-    public int getAisleSize(HsaId vardgivareId) {
+    public int getAisleSize(HsaIdVardgivare vardgivareId) {
         Aisle aisle = warehouse.get(vardgivareId);
         return aisle.getSize();
     }

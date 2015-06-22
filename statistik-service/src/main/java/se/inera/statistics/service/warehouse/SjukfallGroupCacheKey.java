@@ -20,7 +20,7 @@ package se.inera.statistics.service.warehouse;
 
 import com.google.common.base.Predicate;
 import org.joda.time.LocalDate;
-import se.inera.statistics.hsa.model.HsaId;
+import se.inera.statistics.hsa.model.HsaIdVardgivare;
 
 import java.util.Date;
 
@@ -51,7 +51,7 @@ class SjukfallGroupCacheKey {
         return filter.getHash();
     }
 
-    private HsaId getVardgivareIdNullSafe(Aisle aisle) {
+    private HsaIdVardgivare getVardgivareIdNullSafe(Aisle aisle) {
         if (aisle == null) {
             return null;
         }

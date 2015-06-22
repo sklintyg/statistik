@@ -18,7 +18,8 @@
  */
 package se.inera.statistics.service.processlog;
 
-import se.inera.statistics.hsa.model.HsaId;
+import se.inera.statistics.hsa.model.HsaIdEnhet;
+import se.inera.statistics.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.service.report.model.Kommun;
 
 import javax.persistence.Entity;
@@ -55,7 +56,7 @@ public class Enhet implements Comparable<Enhet> {
         return id;
     }
 
-    public Enhet(HsaId vardgivareId, String vardgivareNamn, HsaId enhetId, String namn, String lansId, String kommunId, String verksamhetsTyper) {
+    public Enhet(HsaIdVardgivare vardgivareId, String vardgivareNamn, HsaIdEnhet enhetId, String namn, String lansId, String kommunId, String verksamhetsTyper) {
         setVardgivareId(vardgivareId);
         this.vardgivareNamn = vardgivareNamn;
         setEnhetId(enhetId);
@@ -69,11 +70,11 @@ public class Enhet implements Comparable<Enhet> {
         this.id = id;
     }
 
-    public HsaId getVardgivareId() {
-        return new HsaId(vardgivareId);
+    public HsaIdVardgivare getVardgivareId() {
+        return new HsaIdVardgivare(vardgivareId);
     }
 
-    public void setVardgivareId(HsaId vardgivareId) {
+    public void setVardgivareId(HsaIdVardgivare vardgivareId) {
         this.vardgivareId = vardgivareId.getId();
     }
 
@@ -85,11 +86,11 @@ public class Enhet implements Comparable<Enhet> {
         this.vardgivareNamn = namn;
     }
 
-    public HsaId getEnhetId() {
-        return new HsaId(enhetId);
+    public HsaIdEnhet getEnhetId() {
+        return new HsaIdEnhet(enhetId);
     }
 
-    public void setEnhetId(HsaId enhetId) {
+    public void setEnhetId(HsaIdEnhet enhetId) {
         this.enhetId = enhetId.getId();
     }
 

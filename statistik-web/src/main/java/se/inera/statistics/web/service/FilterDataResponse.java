@@ -20,7 +20,7 @@ package se.inera.statistics.web.service;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
-import se.inera.statistics.hsa.model.HsaId;
+import se.inera.statistics.hsa.model.HsaIdEnhet;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -35,11 +35,11 @@ public class FilterDataResponse {
     FilterDataResponse() {
     }
 
-    public FilterDataResponse(Collection<String> diagnoser, Collection<HsaId> enheter) {
+    public FilterDataResponse(Collection<String> diagnoser, Collection<HsaIdEnhet> enheter) {
         this.diagnoser = diagnoser == null ? null : Collections.unmodifiableList(new ArrayList<>(diagnoser));
-        this.enheter = enheter == null ? null : Lists.transform(new ArrayList<>(enheter), new Function<HsaId, String>() {
+        this.enheter = enheter == null ? null : Lists.transform(new ArrayList<>(enheter), new Function<HsaIdEnhet, String>() {
             @Override
-            public String apply(HsaId hsaId) {
+            public String apply(HsaIdEnhet hsaId) {
                 return hsaId.getId();
             }
         });

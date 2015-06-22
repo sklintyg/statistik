@@ -23,7 +23,7 @@ import com.google.common.base.Optional;
 import com.google.common.collect.Lists;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-import se.inera.statistics.hsa.model.HsaId;
+import se.inera.statistics.hsa.model.HsaIdVardgivare;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -50,7 +50,7 @@ public class LandstingManager {
     }
 
     @Transactional
-    public void add(String name, HsaId vgId) {
+    public void add(String name, HsaIdVardgivare vgId) {
         final List<Landsting> all = getAll();
         List<Long> allIds = Lists.transform(all, new Function<Landsting, Long>() {
             @Override
@@ -64,7 +64,7 @@ public class LandstingManager {
     }
 
     @Transactional
-    public Optional<Landsting> getForVg(HsaId vgId) {
+    public Optional<Landsting> getForVg(HsaIdVardgivare vgId) {
         TypedQuery<Landsting> query = manager.createQuery("SELECT l FROM Landsting l where l.vardgivareId = :vgId", Landsting.class).setParameter("vgId", vgId.getId());
         final List<Landsting> resultList = query.getResultList();
         return resultList.isEmpty() ? Optional.<Landsting>absent() : Optional.of(resultList.get(0));

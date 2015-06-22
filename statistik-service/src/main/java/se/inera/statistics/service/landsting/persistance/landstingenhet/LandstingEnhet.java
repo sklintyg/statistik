@@ -18,7 +18,7 @@
  */
 package se.inera.statistics.service.landsting.persistance.landstingenhet;
 
-import se.inera.statistics.hsa.model.HsaId;
+import se.inera.statistics.hsa.model.HsaIdEnhet;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -43,7 +43,7 @@ public class LandstingEnhet {
     private LandstingEnhet() {
     }
 
-    public LandstingEnhet(long landstingId, HsaId enhetensHsaId, Integer listadePatienter) {
+    public LandstingEnhet(long landstingId, HsaIdEnhet enhetensHsaId, Integer listadePatienter) {
         this.landstingId = landstingId;
         this.enhetensHsaId = enhetensHsaId.getId();
         this.listadePatienter = listadePatienter;
@@ -57,8 +57,8 @@ public class LandstingEnhet {
         return landstingId;
     }
 
-    public HsaId getEnhetensHsaId() {
-        return new HsaId(enhetensHsaId);
+    public HsaIdEnhet getEnhetensHsaId() {
+        return new HsaIdEnhet(enhetensHsaId);
     }
 
     public Integer getListadePatienter() {

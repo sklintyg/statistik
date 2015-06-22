@@ -18,7 +18,7 @@
  */
 package se.inera.statistics.web.model;
 
-import se.inera.statistics.hsa.model.HsaId;
+import se.inera.statistics.hsa.model.HsaIdUser;
 import se.inera.statistics.service.landsting.LandstingsVardgivareStatus;
 
 import java.util.Collections;
@@ -49,7 +49,7 @@ public class LoginInfo {
     }
 
     // CHECKSTYLE:OFF ParameterNumberCheck
-    public LoginInfo(HsaId hsaId, String name, Verksamhet defaultVerksamhet, boolean verksamhetschef, boolean delprocessledare, boolean processledare, List<Verksamhet> businesses, LandstingsVardgivareStatus landstingsVardgivareStatus) {
+    public LoginInfo(HsaIdUser hsaId, String name, Verksamhet defaultVerksamhet, boolean verksamhetschef, boolean delprocessledare, boolean processledare, List<Verksamhet> businesses, LandstingsVardgivareStatus landstingsVardgivareStatus) {
         this.hsaId = hsaId == null ? null : hsaId.getId();
         this.name = name;
         this.defaultVerksamhet = defaultVerksamhet;
@@ -62,8 +62,8 @@ public class LoginInfo {
     }
     // CHECKSTYLE:ON ParameterNumberCheck
 
-    public HsaId getHsaId() {
-        return new HsaId(hsaId);
+    public HsaIdUser getHsaId() {
+        return new HsaIdUser(hsaId);
     }
 
     public String getName() {

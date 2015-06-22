@@ -22,7 +22,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import se.inera.statistics.hsa.model.HsaId;
+import se.inera.statistics.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.service.helper.ConversionHelper;
 import se.inera.statistics.service.report.util.Icd10;
 import se.inera.statistics.service.report.util.Icd10RangeType;
@@ -40,7 +40,7 @@ public class FactPopulator {
 
     public void accept(WideLine wideline) {
         Fact fact = toFact(wideline);
-        HsaId vardgivare = wideline.getVardgivareId();
+        HsaIdVardgivare vardgivare = wideline.getVardgivareId();
         warehouse.accept(fact, vardgivare);
     }
 

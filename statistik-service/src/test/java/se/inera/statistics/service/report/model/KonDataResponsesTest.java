@@ -19,14 +19,14 @@
 package se.inera.statistics.service.report.model;
 
 import org.junit.Test;
-import se.inera.statistics.hsa.model.HsaId;
+import se.inera.statistics.hsa.model.HsaIdEnhet;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class KonDataResponsesTest {
 
@@ -36,7 +36,7 @@ public class KonDataResponsesTest {
         final ArrayList<String> groups = new ArrayList<>();
         final ArrayList<KonDataRow> rows = new ArrayList<>();
         final KonDataResponse response = new KonDataResponse(groups, rows);
-        final HashMap<HsaId, String> idsToNames = new HashMap<>();
+        final HashMap<HsaIdEnhet, String> idsToNames = new HashMap<>();
 
         //When
         final KonDataResponse result = KonDataResponses.changeIdGroupsToNamesAndAddIdsToDuplicates(response, idsToNames);
@@ -52,10 +52,10 @@ public class KonDataResponsesTest {
         final List<String> groups = Arrays.asList("1", "2", "3");
         final List<KonDataRow> rows = new ArrayList<>();
         final KonDataResponse response = new KonDataResponse(groups, rows);
-        final HashMap<HsaId, String> idsToNames = new HashMap<>();
-        idsToNames.put(new HsaId("1"), "abc");
-        idsToNames.put(new HsaId("2"), "Abc");
-        idsToNames.put(new HsaId("3"), "Abcd");
+        final HashMap<HsaIdEnhet, String> idsToNames = new HashMap<>();
+        idsToNames.put(new HsaIdEnhet("1"), "abc");
+        idsToNames.put(new HsaIdEnhet("2"), "Abc");
+        idsToNames.put(new HsaIdEnhet("3"), "Abcd");
 
         //When
         final KonDataResponse result = KonDataResponses.changeIdGroupsToNamesAndAddIdsToDuplicates(response, idsToNames);

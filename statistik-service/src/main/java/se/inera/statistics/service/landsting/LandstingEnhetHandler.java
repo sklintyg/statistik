@@ -25,7 +25,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import se.inera.statistics.hsa.model.HsaId;
+import se.inera.statistics.hsa.model.HsaIdEnhet;
+import se.inera.statistics.hsa.model.HsaIdUser;
+import se.inera.statistics.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.service.landsting.persistance.landsting.Landsting;
 import se.inera.statistics.service.landsting.persistance.landsting.LandstingManager;
 import se.inera.statistics.service.landsting.persistance.landstingenhet.LandstingEnhet;
@@ -62,7 +64,7 @@ public class LandstingEnhetHandler {
         landstingEnhetUpdateManager.update(landstingId, data.getUserName(), data.getUserId(), removeInvalidChars(data.getFileName()), LandstingEnhetUpdateOperation.Update);
     }
 
-    public void clear(HsaId vgId, String username, HsaId userId) throws NoLandstingSetForVgException {
+    public void clear(HsaIdVardgivare vgId, String username, HsaIdUser userId) throws NoLandstingSetForVgException {
         final Optional<Landsting> landstingOptional = landstingManager.getForVg(vgId);
         if (!landstingOptional.isPresent()) {
             LOG.warn("There is no landsting connected to vg: " + vgId);
@@ -77,7 +79,7 @@ public class LandstingEnhetHandler {
         return fileName.replaceAll("[^a-zA-Z0-9åäöÅÄÖ.]", "_");
     }
 
-    public Optional<LandstingEnhetUpdate> getLastUpdateInfo(HsaId vardgivarId) {
+    public Optional<LandstingEnhetUpdate> getLastUpdateInfo(HsaIdVardgivare vardgivarId) {
         final Optional<Landsting> landstingOptional = landstingManager.getForVg(vardgivarId);
         if (landstingOptional.isPresent()) {
             return landstingEnhetUpdateManager.getByLandstingId(landstingOptional.get().getId());
@@ -85,7 +87,7 @@ public class LandstingEnhetHandler {
         return Optional.absent();
     }
 
-    public LandstingsVardgivareStatus getLandstingsVardgivareStatus(HsaId vardgivarId) {
+    public LandstingsVardgivareStatus getLandstingsVardgivareStatus(HsaIdVardgivare vardgivarId) {
         final Optional<Landsting> landstingOptional = landstingManager.getForVg(vardgivarId);
         if (landstingOptional.isPresent()) {
             if (landstingEnhetManager.getByLandstingId(landstingOptional.get().getId()).isEmpty()) {
@@ -98,17 +100,17 @@ public class LandstingEnhetHandler {
         }
     }
 
-    public List<HsaId> getAllEnhetsForVardgivare(HsaId vgid) {
+    public List<HsaIdEnhet> getAllEnhetsForVardgivare(HsaIdVardgivare vgid) {
         final List<LandstingEnhet> allLandstingEnhetsForVardgivare = getAllLandstingEnhetsForVardgivare(vgid);
-        return Lists.transform(allLandstingEnhetsForVardgivare, new Function<LandstingEnhet, HsaId>() {
+        return Lists.transform(allLandstingEnhetsForVardgivare, new Function<LandstingEnhet, HsaIdEnhet>() {
             @Override
-            public HsaId apply(LandstingEnhet landstingEnhet) {
+            public HsaIdEnhet apply(LandstingEnhet landstingEnhet) {
                 return landstingEnhet.getEnhetensHsaId();
             }
         });
     }
 
-    public List<LandstingEnhet> getAllLandstingEnhetsForVardgivare(HsaId vgid) {
+    public List<LandstingEnhet> getAllLandstingEnhetsForVardgivare(HsaIdVardgivare vgid) {
         final Optional<Landsting> landsting = landstingManager.getForVg(vgid);
         if (landsting.isPresent()) {
             final long landstingId = landsting.get().getId();

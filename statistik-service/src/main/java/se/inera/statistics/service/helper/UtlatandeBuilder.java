@@ -18,22 +18,23 @@
  */
 package se.inera.statistics.service.helper;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import org.joda.time.LocalDate;
+import org.joda.time.LocalDateTime;
+import org.joda.time.LocalTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
+import se.inera.statistics.hsa.model.HsaIdEnhet;
+import se.inera.statistics.hsa.model.HsaIdLakare;
+import se.inera.statistics.hsa.model.HsaIdVardgivare;
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
-
-import org.joda.time.LocalDate;
-import org.joda.time.LocalDateTime;
-import org.joda.time.LocalTime;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
-
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
-import se.inera.statistics.hsa.model.HsaId;
 
 public class UtlatandeBuilder {
     private static final LocalTime SIGN_TIME_OF_DAY = new LocalTime(7, 7);
@@ -50,32 +51,32 @@ public class UtlatandeBuilder {
         template = JSONParser.parse(readTemplate(templateFile));
     }
 
-    public JsonNode build(String patientId, LocalDate start, LocalDate end, HsaId vardenhet, String diagnos, int arbetsformaga) {
-        return build(patientId, start, end, vardenhet, new HsaId("vardgivarId"), diagnos, arbetsformaga);
+    public JsonNode build(String patientId, LocalDate start, LocalDate end, HsaIdEnhet vardenhet, String diagnos, int arbetsformaga) {
+        return build(patientId, start, end, vardenhet, new HsaIdVardgivare("vardgivarId"), diagnos, arbetsformaga);
     }
 
-    public JsonNode build(String patientId, LocalDate start, LocalDate end, HsaId vardenhet, HsaId vardgivare, String diagnos, int arbetsformaga) {
-        return build(patientId, start, end, new HsaId("Personal HSA-ID"), vardenhet, vardgivare, diagnos, Collections.singletonList(String.valueOf(arbetsformaga)));
+    public JsonNode build(String patientId, LocalDate start, LocalDate end, HsaIdEnhet vardenhet, HsaIdVardgivare vardgivare, String diagnos, int arbetsformaga) {
+        return build(patientId, start, end, new HsaIdLakare("Personal HSA-ID"), vardenhet, vardgivare, diagnos, Collections.singletonList(String.valueOf(arbetsformaga)));
     }
 
-    public JsonNode build(String patientId, LocalDate start, LocalDate end, HsaId vardenhet, HsaId vardgivare, String diagnos, List<String> arbetsformaga) {
-        return build(patientId, start, end, new HsaId("Personal HSA-ID"), vardenhet, vardgivare, diagnos, arbetsformaga);
+    public JsonNode build(String patientId, LocalDate start, LocalDate end, HsaIdEnhet vardenhet, HsaIdVardgivare vardgivare, String diagnos, List<String> arbetsformaga) {
+        return build(patientId, start, end, new HsaIdLakare("Personal HSA-ID"), vardenhet, vardgivare, diagnos, arbetsformaga);
     }
 
     //CHECKSTYLE:OFF ParameterNumberCheck
-    public JsonNode build(String patientId, LocalDate start, LocalDate end, HsaId personal, HsaId vardenhet, HsaId vardgivare, String diagnos, int arbetsformaga) {
+    public JsonNode build(String patientId, LocalDate start, LocalDate end, HsaIdLakare personal, HsaIdEnhet vardenhet, HsaIdVardgivare vardgivare, String diagnos, int arbetsformaga) {
         return build(patientId, start, end, personal, vardenhet, vardgivare, diagnos, Collections.singletonList(String.valueOf(arbetsformaga)));
     }
 
-    public JsonNode build(String patientId, LocalDate start, LocalDate end, HsaId personal, HsaId vardenhet, HsaId vardgivare, String diagnos, List<String> arbetsformaga) {
+    public JsonNode build(String patientId, LocalDate start, LocalDate end, HsaIdLakare personal, HsaIdEnhet vardenhet, HsaIdVardgivare vardgivare, String diagnos, List<String> arbetsformaga) {
         return build(patientId, list(start), list(end), personal, vardenhet, vardgivare, diagnos, arbetsformaga);
     }
 
-    public JsonNode build(String person, List<LocalDate> starts, List<LocalDate> stops, HsaId enhet, HsaId vardgivare, String diagnos, List<String> grads) {
-        return build(person, starts, stops, new HsaId("personalId"), enhet, vardgivare, diagnos, grads);
+    public JsonNode build(String person, List<LocalDate> starts, List<LocalDate> stops, HsaIdEnhet enhet, HsaIdVardgivare vardgivare, String diagnos, List<String> grads) {
+        return build(person, starts, stops, new HsaIdLakare("personalId"), enhet, vardgivare, diagnos, grads);
     }
 
-    public JsonNode build(String person, List<LocalDate> starts, List<LocalDate> stops, HsaId personal, HsaId enhet, HsaId vardgivare, String diagnos, List<String> grads) {
+    public JsonNode build(String person, List<LocalDate> starts, List<LocalDate> stops, HsaIdLakare personal, HsaIdEnhet enhet, HsaIdVardgivare vardgivare, String diagnos, List<String> grads) {
         ObjectNode intyg = template.deepCopy();
         ObjectNode patientIdNode = (ObjectNode) intyg.path("grundData").path("patient");
         patientIdNode.put("personId", person);

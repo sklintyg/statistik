@@ -30,7 +30,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import se.inera.statistics.hsa.model.HsaId;
+import se.inera.statistics.hsa.model.HsaIdEnhet;
+import se.inera.statistics.hsa.model.HsaIdLakare;
 import se.inera.statistics.service.processlog.Lakare;
 import se.inera.statistics.service.processlog.LakareManager;
 import se.inera.statistics.service.report.model.Kon;
@@ -113,7 +114,7 @@ public class SjukfallQuery {
         return new SimpleKonResponse<>(result);
     }
 
-    public SimpleKonResponse<SimpleKonDataRow> getSjukfallPerEnhet(Aisle aisle, SjukfallFilter filter, LocalDate from, int periods, int periodLength, Map<HsaId, String> idsToNames, CutoffUsage cutoffUsage) {
+    public SimpleKonResponse<SimpleKonDataRow> getSjukfallPerEnhet(Aisle aisle, SjukfallFilter filter, LocalDate from, int periods, int periodLength, Map<HsaIdEnhet, String> idsToNames, CutoffUsage cutoffUsage) {
         List<SimpleKonDataRow> rows = new ArrayList<>();
         for (SjukfallGroup sjukfallGroup: sjukfallUtil.sjukfallGrupper(from, periods, periodLength, aisle, filter)) {
             final Multiset<Integer> femaleSjukfallPerEnhet = HashMultiset.create();
@@ -125,8 +126,8 @@ public class SjukfallQuery {
                     sjukfallPerEnhet.add(enhetId);
                 }
             }
-            for (Map.Entry<HsaId, String> enhetIdAndName : idsToNames.entrySet()) {
-                final HsaId enhetId = enhetIdAndName.getKey();
+            for (Map.Entry<HsaIdEnhet, String> enhetIdAndName : idsToNames.entrySet()) {
+                final HsaIdEnhet enhetId = enhetIdAndName.getKey();
                 final int enhetIntId = Warehouse.getEnhet(enhetId);
                 if (enhetIntId >= 0) {
                     final String enhetName = enhetIdAndName.getValue();
@@ -187,17 +188,17 @@ public class SjukfallQuery {
         this.lakareManager = lakareManager;
     }
 
-    public KonDataResponse getSjukfallPerEnhetSeries(Aisle aisle, SjukfallFilter filter, LocalDate start, int periods, int periodSize, Map<HsaId, String> idsToNames) {
-        final ArrayList<Map.Entry<HsaId, String>> groupEntries = new ArrayList<>(idsToNames.entrySet());
-        final List<String> names = Lists.transform(groupEntries, new Function<Map.Entry<HsaId, String>, String>() {
+    public KonDataResponse getSjukfallPerEnhetSeries(Aisle aisle, SjukfallFilter filter, LocalDate start, int periods, int periodSize, Map<HsaIdEnhet, String> idsToNames) {
+        final ArrayList<Map.Entry<HsaIdEnhet, String>> groupEntries = new ArrayList<>(idsToNames.entrySet());
+        final List<String> names = Lists.transform(groupEntries, new Function<Map.Entry<HsaIdEnhet, String>, String>() {
             @Override
-            public String apply(Map.Entry<HsaId, String> entry) {
+            public String apply(Map.Entry<HsaIdEnhet, String> entry) {
                 return entry.getKey().getId();
             }
         });
-        final List<Integer> ids = Lists.transform(groupEntries, new Function<Map.Entry<HsaId, String>, Integer>() {
+        final List<Integer> ids = Lists.transform(groupEntries, new Function<Map.Entry<HsaIdEnhet, String>, Integer>() {
             @Override
-            public Integer apply(Map.Entry<HsaId, String> entry) {
+            public Integer apply(Map.Entry<HsaIdEnhet, String> entry) {
                 return Warehouse.getEnhet(entry.getKey());
             }
         });
@@ -240,13 +241,13 @@ public class SjukfallQuery {
     }
 
     private KonDataResponse changeLakareIdToLakarName(final KonDataResponse response) {
-        List<HsaId> lakares = Lists.transform(response.getGroups(), new Function<String, HsaId>() {
+        List<HsaIdLakare> lakares = Lists.transform(response.getGroups(), new Function<String, HsaIdLakare>() {
             @Override
-            public HsaId apply(String group) {
-                final Optional<HsaId> lakarId = Warehouse.getLakarId(Integer.parseInt(group));
+            public HsaIdLakare apply(String group) {
+                final Optional<HsaIdLakare> lakarId = Warehouse.getLakarId(Integer.parseInt(group));
                 if (!lakarId.isPresent()) {
                     LOG.error("Could not find lakare with internal id: " + group);
-                    return HsaId.empty();
+                    return HsaIdLakare.empty();
                 }
                 return lakarId.get();
             }

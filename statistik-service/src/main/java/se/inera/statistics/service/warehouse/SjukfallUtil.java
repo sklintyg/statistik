@@ -30,7 +30,7 @@ import org.joda.time.LocalDate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
-import se.inera.statistics.hsa.model.HsaId;
+import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.report.model.KonDataResponse;
 import se.inera.statistics.service.report.model.KonDataRow;
@@ -89,10 +89,10 @@ public class SjukfallUtil {
         return sjukfallGroupsCache;
     }
 
-    public SjukfallFilter createEnhetFilter(HsaId... enhetIds) {
-        final Set<Integer> availableEnhets = new HashSet<>(Lists.transform(Arrays.asList(enhetIds), new Function<HsaId, Integer>() {
+    public SjukfallFilter createEnhetFilter(HsaIdEnhet... enhetIds) {
+        final Set<Integer> availableEnhets = new HashSet<>(Lists.transform(Arrays.asList(enhetIds), new Function<HsaIdEnhet, Integer>() {
             @Override
-            public Integer apply(HsaId enhetId) {
+            public Integer apply(HsaIdEnhet enhetId) {
                 return Warehouse.getEnhet(enhetId);
             }
         }));

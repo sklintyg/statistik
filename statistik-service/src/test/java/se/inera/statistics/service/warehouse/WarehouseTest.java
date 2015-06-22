@@ -18,8 +18,7 @@
  */
 package se.inera.statistics.service.warehouse;
 
-import static org.junit.Assert.assertEquals;
-
+import com.fasterxml.jackson.databind.JsonNode;
 import org.joda.time.LocalDateTime;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -27,18 +26,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-
-import se.inera.statistics.hsa.model.HsaId;
+import se.inera.statistics.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.service.JSONSource;
 import se.inera.statistics.service.helper.DocumentHelper;
 import se.inera.statistics.service.helper.JSONParser;
 import se.inera.statistics.service.hsa.HSAKey;
 import se.inera.statistics.service.hsa.HSAService;
 import se.inera.statistics.service.hsa.HSAServiceMock;
-
-import com.fasterxml.jackson.databind.JsonNode;
 import se.inera.statistics.service.processlog.EventType;
 import se.inera.statistics.service.warehouse.model.db.WideLine;
+
+import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath:warehouse-integration-test.xml", "classpath:icd10.xml"  })
@@ -66,7 +64,7 @@ public class WarehouseTest {
             factPopulator.accept(wideLine);
         }
         warehouse.complete(LocalDateTime.now());
-        Aisle aisle = warehouse.get(new HsaId("VARDGIVARID"));
+        Aisle aisle = warehouse.get(new HsaIdVardgivare("VARDGIVARID"));
         assertEquals(1, aisle.getSize());
     }
 }

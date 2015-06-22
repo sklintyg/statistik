@@ -16,26 +16,16 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package se.inera.statistics.service.landsting;
+package se.inera.statistics.hsa.model;
 
-import se.inera.statistics.hsa.model.HsaIdEnhet;
+public class HsaIdEnhet extends HsaId {
 
-public class LandstingEnhetFileDataRow {
-
-    private HsaIdEnhet enhetensHsaId;
-    private Integer listadePatienter;
-
-    public LandstingEnhetFileDataRow(HsaIdEnhet enhetensHsaId, Integer listadePatienter) {
-        this.enhetensHsaId = enhetensHsaId;
-        this.listadePatienter = listadePatienter;
+    public HsaIdEnhet(String id) {
+        super(id);
     }
 
-    public HsaIdEnhet getEnhetensHsaId() {
-        return enhetensHsaId;
-    }
-
-    public Integer getListadePatienter() {
-        return listadePatienter;
+    public static HsaIdEnhet empty() {
+        return new HsaIdEnhet("");
     }
 
 }

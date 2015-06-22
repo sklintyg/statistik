@@ -19,7 +19,9 @@
 package se.inera.statistics.service.landsting;
 
 import org.junit.Test;
-import se.inera.statistics.hsa.model.HsaId;
+import se.inera.statistics.hsa.model.HsaIdEnhet;
+import se.inera.statistics.hsa.model.HsaIdUser;
+import se.inera.statistics.hsa.model.HsaIdVardgivare;
 
 import java.util.Arrays;
 import java.util.List;
@@ -32,11 +34,11 @@ public class LandstingEnhetFileDataTest {
     @Test
     public void testNullInputCreatesEmptyObject() throws Exception {
         //Given
-        final HsaId vgId = null;
+        final HsaIdVardgivare vgId = null;
         final List<LandstingEnhetFileDataRow> rows = null;
 
         //When
-        final LandstingEnhetFileData data = new LandstingEnhetFileData(vgId, rows, "", new HsaId(""), "");
+        final LandstingEnhetFileData data = new LandstingEnhetFileData(vgId, rows, "", new HsaIdUser(""), "");
 
         //Then
         assertEquals("", data.getVgId().getId());
@@ -46,13 +48,13 @@ public class LandstingEnhetFileDataTest {
     @Test
     public void testObjectIsCreatedWithCorrectValues() throws Exception {
         //Given
-        final HsaId vgId = new HsaId("TestVgId");
-        final HsaId testHsaId = new HsaId("TestHsaId");
+        final HsaIdVardgivare vgId = new HsaIdVardgivare("TestVgId");
+        final HsaIdEnhet testHsaId = new HsaIdEnhet("TestHsaId");
         final int listadePatienter = 2;
         final List<LandstingEnhetFileDataRow> rows = Arrays.asList(new LandstingEnhetFileDataRow(testHsaId, listadePatienter));
 
         //When
-        final LandstingEnhetFileData data = new LandstingEnhetFileData(vgId, rows, "", new HsaId(""), "");
+        final LandstingEnhetFileData data = new LandstingEnhetFileData(vgId, rows, "", new HsaIdUser(""), "");
 
         //Then
         assertEquals(vgId, data.getVgId());

@@ -18,8 +18,7 @@
  */
 package se.inera.statistics.service.warehouse;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import org.junit.Ignore;
+import org.joda.time.LocalDate;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,14 +26,8 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.util.StopWatch;
-import se.inera.statistics.hsa.model.HsaId;
-import se.inera.statistics.service.JSONSource;
+import se.inera.statistics.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.service.demo.LargeTestDataGenerator;
-import se.inera.statistics.service.helper.DocumentHelper;
-import se.inera.statistics.service.helper.JSONParser;
-import se.inera.statistics.service.hsa.HSAService;
-import se.inera.statistics.service.hsa.HSAServiceMock;
-import se.inera.statistics.service.warehouse.model.db.WideLine;
 
 import java.io.FileNotFoundException;
 import java.lang.management.GarbageCollectorMXBean;
@@ -43,9 +36,7 @@ import java.util.Collection;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
-import org.joda.time.LocalDate;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -64,7 +55,7 @@ public class WarehouseIntegrationTest {
     @Test
     public void addingManyIntyg() throws InterruptedException {
         dataGenerator.publishUtlatanden();
-        final Aisle aisle = warehouse.get(new HsaId("vardgivare1"));
+        final Aisle aisle = warehouse.get(new HsaIdVardgivare("vardgivare1"));
 
         ExecutorService pool = Executors.newFixedThreadPool(10);
         for (int i = 0; i < 100; i++) {

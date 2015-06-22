@@ -25,7 +25,7 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import se.inera.statistics.hsa.model.HsaId;
+import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.service.landsting.LandstingEnhetFileDataRow;
 
 import javax.activation.DataSource;
@@ -40,7 +40,7 @@ public class LandstingFileReader {
 
     public List<LandstingEnhetFileDataRow> readExcelData(DataSource dataSource) throws LandstingEnhetFileParseException {
         final List<LandstingEnhetFileDataRow> rows = new ArrayList<>();
-        final HashSet<HsaId> addedEnhetIds = new HashSet<>();
+        final HashSet<HsaIdEnhet> addedEnhetIds = new HashSet<>();
         try {
             InputStream fis = dataSource.getInputStream();
             Workbook workbook;
@@ -63,7 +63,7 @@ public class LandstingFileReader {
                 final String messagePrefix = "Rad " + rowNumber + ": ";
 
                 Row row = rowIterator.next();
-                final HsaId id = getEnhetHsaId(row);
+                final HsaIdEnhet id = getEnhetHsaId(row);
                 Integer patients = getListedPatients(messagePrefix, row);
 
                 if (!id.getId().isEmpty()) {
@@ -114,15 +114,15 @@ public class LandstingFileReader {
         return patients;
     }
 
-    private HsaId getEnhetHsaId(Row row) {
+    private HsaIdEnhet getEnhetHsaId(Row row) {
         Cell cellHsaId = row.getCell(1);
         if (cellHsaId != null) {
             if (Cell.CELL_TYPE_STRING == cellHsaId.getCellType()) {
                 final String cellValue = cellHsaId.getStringCellValue().trim();
-                return new HsaId(cellValue);
+                return new HsaIdEnhet(cellValue);
             }
         }
-        return new HsaId("");
+        return new HsaIdEnhet("");
     }
 
 }
