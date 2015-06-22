@@ -18,6 +18,7 @@
  */
 package se.inera.statistics.web.model;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import org.apache.commons.lang3.text.translate.CharSequenceTranslator;
 import org.apache.commons.lang3.text.translate.UnicodeEscaper;
 import org.apache.commons.lang3.text.translate.UnicodeUnescaper;
@@ -30,6 +31,10 @@ import java.util.Set;
 import static org.apache.commons.lang3.text.translate.UnicodeEscaper.above;
 import static org.apache.commons.lang3.text.translate.UnicodeEscaper.between;
 
+@JsonAutoDetect(
+        fieldVisibility = JsonAutoDetect.Visibility.ANY,
+        getterVisibility = JsonAutoDetect.Visibility.NONE,
+        setterVisibility = JsonAutoDetect.Visibility.NONE)
 public class Verksamhet implements Serializable {
 
     private static final long serialVersionUID = 1L;
