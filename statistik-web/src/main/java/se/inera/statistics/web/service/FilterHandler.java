@@ -92,7 +92,7 @@ public class FilterHandler {
             return new FilterSettings(getFilterForAllAvailableEnhetsLandsting(request), Range.createForLastMonthsIncludingCurrent(defaultRangeValue));
         }
         final FilterData inFilter = filterHashHandler.getFilterFromHash(filterHash);
-        final ArrayList<HsaIdEnhet> enhetsIDs = getEnhetsFilteredLandsting(request, inFilter);
+        final ArrayList<HsaIdEnhet> enhetsIDs = getEnhetsFilteredLandsting(inFilter);
         try {
             return getFilterSettingsLandsting(request, filterHash, defaultRangeValue, inFilter, enhetsIDs);
         } catch (FilterException e) {
@@ -203,8 +203,8 @@ public class FilterHandler {
         return getFilterForEnhets(availableEnhets, null);
     }
 
-    private ArrayList<HsaIdEnhet> getEnhetsFilteredLandsting(HttpServletRequest request, FilterData inFilter) {
-        Set<HsaIdEnhet> enhetsMatchingVerksamhetstyp = getEnhetsForVerksamhetstyperLandsting(inFilter, request);
+    private ArrayList<HsaIdEnhet> getEnhetsFilteredLandsting(FilterData inFilter) {
+        Set<HsaIdEnhet> enhetsMatchingVerksamhetstyp = getEnhetsForVerksamhetstyperLandsting(inFilter);
         final HashSet<HsaIdEnhet> enhets = new HashSet<>(toHsaIds(inFilter.getEnheter()));
         return new ArrayList<>(Sets.intersection(enhetsMatchingVerksamhetstyp, enhets));
     }
@@ -224,7 +224,7 @@ public class FilterHandler {
         return new ArrayList<>(Sets.intersection(enhetsMatchingVerksamhetstyp, enhets));
     }
 
-    private Set<HsaIdEnhet> getEnhetsForVerksamhetstyperLandsting(FilterData filterData, HttpServletRequest request) {
+    private Set<HsaIdEnhet> getEnhetsForVerksamhetstyperLandsting(FilterData filterData) {
         final List<Enhet> enhets = enhetManager.getEnhets(toHsaIds(filterData.getEnheter()));
         Set<HsaIdEnhet> enhetsIds = new HashSet<>();
         for (Enhet verksamhet : enhets) {
