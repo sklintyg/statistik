@@ -21,7 +21,7 @@ package se.inera.statistics.service.report.model;
 import com.google.common.base.Function;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Lists;
-import se.inera.statistics.hsa.model.HsaId;
+import se.inera.statistics.hsa.model.HsaIdAny;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -34,22 +34,22 @@ public final class KonDataResponses {
     private KonDataResponses() {
     }
 
-    public static KonDataResponse changeIdGroupsToNamesAndAddIdsToDuplicates(final KonDataResponse response, Map<? extends HsaId, String> idsToNames) {
-        final List<HsaId> idsToCompare = Lists.transform(response.getGroups(), new Function<String, HsaId>() {
+    public static KonDataResponse changeIdGroupsToNamesAndAddIdsToDuplicates(final KonDataResponse response, Map<? extends HsaIdAny, String> idsToNames) {
+        final List<HsaIdAny> idsToCompare = Lists.transform(response.getGroups(), new Function<String, HsaIdAny>() {
             @Override
-            public HsaId apply(String id) {
-                return new HsaId(id);
+            public HsaIdAny apply(String id) {
+                return HsaIdAny.createEvenThoughSubclassesArePreferred(id);
             }
         });
-        final Map<HsaId, String> hsaIdsToNames = new HashMap<>();
-        for (Map.Entry<? extends HsaId, String> entry : idsToNames.entrySet()) {
-            hsaIdsToNames.put(new HsaId(entry.getKey().getId()), entry.getValue());
+        final Map<HsaIdAny, String> hsaIdsToNames = new HashMap<>();
+        for (Map.Entry<? extends HsaIdAny, String> entry : idsToNames.entrySet()) {
+            hsaIdsToNames.put(HsaIdAny.createEvenThoughSubclassesArePreferred(entry.getKey().getId()), entry.getValue());
         }
-        final HashMap<HsaId, Integer> duplicatesPerId = getDuplicatesPerId(hsaIdsToNames, idsToCompare);
+        final HashMap<HsaIdAny, Integer> duplicatesPerId = getDuplicatesPerId(hsaIdsToNames, idsToCompare);
 
         final ArrayList<String> finalNames = new ArrayList<>();
         for (String id : response.getGroups()) {
-            final HsaId key = new HsaId(id);
+            final HsaIdAny key = HsaIdAny.createEvenThoughSubclassesArePreferred(id);
             final Integer duplicates = duplicatesPerId.get(key);
             final String nameSuffix = duplicates != null && duplicates > 1 ? " " + id : "";
             finalNames.add(hsaIdsToNames.get(key) + nameSuffix);
@@ -58,16 +58,16 @@ public final class KonDataResponses {
         return new KonDataResponse(finalNames, response.getRows());
     }
 
-    private static HashMap<HsaId, Integer> getDuplicatesPerId(Map<HsaId, String> idsToNames, List<HsaId> idsToCompare) {
-        HashMultimap<CaseInsensiviteString, HsaId> namesToIdsForIdsToCompare = HashMultimap.create();
-        for (HsaId id : idsToCompare) {
+    private static HashMap<HsaIdAny, Integer> getDuplicatesPerId(Map<HsaIdAny, String> idsToNames, List<HsaIdAny> idsToCompare) {
+        HashMultimap<CaseInsensiviteString, HsaIdAny> namesToIdsForIdsToCompare = HashMultimap.create();
+        for (HsaIdAny id : idsToCompare) {
             final String name = idsToNames.get(id);
             namesToIdsForIdsToCompare.put(new CaseInsensiviteString(name), id);
         }
-        final HashMap<HsaId, Integer> duplicatesPerId = new HashMap<>();
-        for (Map.Entry<CaseInsensiviteString, Collection<HsaId>> entry : namesToIdsForIdsToCompare.asMap().entrySet()) {
-            final Collection<HsaId> ids = entry.getValue();
-            for (HsaId id : ids) {
+        final HashMap<HsaIdAny, Integer> duplicatesPerId = new HashMap<>();
+        for (Map.Entry<CaseInsensiviteString, Collection<HsaIdAny>> entry : namesToIdsForIdsToCompare.asMap().entrySet()) {
+            final Collection<HsaIdAny> ids = entry.getValue();
+            for (HsaIdAny id : ids) {
                 duplicatesPerId.put(id, ids.size());
             }
         }

@@ -18,7 +18,7 @@
  */
 package se.inera.statistics.web.service;
 
-import se.inera.statistics.hsa.model.HsaId;
+import se.inera.statistics.hsa.model.HsaIdAny;
 import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.service.report.model.SimpleKonDataRow;
 import se.inera.statistics.service.report.model.SimpleKonResponse;
@@ -65,7 +65,7 @@ public class GroupedSjukfallWithLandstingSortingConverter extends SimpleDualSexC
     @Override
     protected boolean isMarked(SimpleKonDataRow row) {
         final Object extras = row.getExtras();
-        return extras instanceof HsaId && connectedEnhetIds.contains(extras);
+        return extras instanceof HsaIdAny && connectedEnhetIds.contains(extras);
     }
 
 }

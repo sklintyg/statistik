@@ -18,7 +18,7 @@
  */
 package se.inera.statistics.hsa.model;
 
-public class HsaIdLakare extends HsaId {
+public class HsaIdLakare extends HsaIdAny {
 
     public HsaIdLakare(String id) {
         super(id);

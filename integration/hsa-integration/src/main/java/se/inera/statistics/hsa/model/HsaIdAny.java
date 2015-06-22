@@ -24,17 +24,24 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.Locale;
 
-public class HsaId implements Serializable {
+public class HsaIdAny implements Serializable {
 
     private String id;
 
-    public HsaId(String id) {
+    HsaIdAny(String id) {
         assert id != null : "HSA id may not be null";
         this.id = id == null ? "" : id.toUpperCase(Locale.ENGLISH);
     }
 
-    public static HsaId empty() {
-        return new HsaId("");
+    /**
+     * Instances of this class should only be created in the rare cases when one of the subclasses can not be used.
+     */
+    public static HsaIdAny createEvenThoughSubclassesArePreferred(String id) {
+        return new HsaIdAny(id);
+    }
+
+    public static HsaIdAny empty() {
+        return new HsaIdAny("");
     }
 
     public String getId() {
@@ -49,7 +56,7 @@ public class HsaId implements Serializable {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        HsaId hsaId = (HsaId) o;
+        HsaIdAny hsaId = (HsaIdAny) o;
         return Objects.equal(id, hsaId.id);
     }
 

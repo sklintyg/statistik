@@ -23,7 +23,7 @@ import org.joda.time.Days;
 import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import se.inera.statistics.hsa.model.HsaId;
+import se.inera.statistics.hsa.model.HsaIdAny;
 import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.hsa.model.HsaIdLakare;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
@@ -171,7 +171,7 @@ public class WidelineConverter {
         }
     }
 
-    private void checkField(List<String> errors, HsaId field, String fieldName) {
+    private void checkField(List<String> errors, HsaIdAny field, String fieldName) {
         if (field == null || field.getId().isEmpty()) {
             errors.add(fieldName + " not found.");
         }
@@ -184,7 +184,7 @@ public class WidelineConverter {
         }
     }
 
-    private void checkField(List<String> errors, HsaId field, String fieldName, int max) {
+    private void checkField(List<String> errors, HsaIdAny field, String fieldName, int max) {
         checkField(errors, field, fieldName);
         if (field != null && field.getId().length() > max) {
             errors.add(fieldName + " input too long");
