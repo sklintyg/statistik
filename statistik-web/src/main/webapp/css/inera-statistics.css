@@ -2017,7 +2017,6 @@ div.dropzone a{
     position: absolute;
     left: 265px;
     width: 0;
-    height: 100%;
     margin-left: -265px;
     padding-left: 15px;
     overflow-y: auto;
