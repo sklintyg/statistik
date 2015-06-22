@@ -167,13 +167,13 @@ public class RestSupportService {
     }
 
     @PUT
-    @Path("landsting/name/{name}/vgid/{vgid}")
+    @Path("landsting/vgid/{vgid}")
     @Consumes({ MediaType.APPLICATION_JSON })
     @Produces({ MediaType.APPLICATION_JSON })
-    public Response insertLandsting(@PathParam("name") String name, @PathParam("vgid") String vgId) {
-        LOG.info("Insert landsting with name {} and vgid {}", name, vgId);
+    public Response insertLandsting(@PathParam("vgid") String vgId) {
+        LOG.info("Insert landsting with vgid {}", vgId);
         if (!landstingManager.getForVg(new HsaIdVardgivare(vgId)).isPresent()) {
-            landstingManager.add(name, new HsaIdVardgivare(vgId));
+            landstingManager.add(vgId, new HsaIdVardgivare(vgId));
         }
         return Response.ok().build();
     }
