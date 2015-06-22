@@ -13,8 +13,8 @@ describe("Tests for business filter factory", function () {
         $provide.value('statisticsData', mockStatistics);
     }));
 
-    beforeEach(inject(function(_businessFilter_, ___) {
-        businessFilter = _businessFilter_;
+    beforeEach(inject(function(_businessFilterFactory_, ___) {
+        businessFilter = _businessFilterFactory_;
         _ = ___; //This set the local underscore variable
     }));
 

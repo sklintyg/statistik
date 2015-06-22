@@ -79,42 +79,6 @@ angular.module('StatisticsApp').directive('legendHeight', function() {
     };
 });
 
-angular.module('StatisticsApp').directive('multiselectDropdown', function (businessFilter) {
-    function multiselectSize($el) {
-        return $('option', $el).length;
-    }
-
-    return function(scope, element, attrs) {
-        element.multiselect({
-            buttonText: function (options, select) {
-                return options.length + ' av ' + multiselectSize(select) + ' valda <b class="caret"></b>';
-            },
-            onChange: function (optionElement, checked) {
-                optionElement.removeAttr('selected');
-                if (checked) {
-                    optionElement.prop('selected', 'selected');
-                }
-                businessFilter.filterChanged();
-                element.change();
-            },
-            includeSelectAllOption: true,
-            selectAllText: "Markera alla"
-        });
-
-        // Watch for any changes to the length of our select element
-        scope.$watch(function () {
-            return element[0].length;
-        }, function () {
-            element.multiselect('rebuild');
-        });
-
-        // Watch for any changes from outside the directive and refresh
-        scope.$watchCollection(attrs.ngModel, function () {
-            element.multiselect('refresh');
-        });
-    };
-});
-
 angular.module('StatisticsApp').directive('intermediate', function() {
     return function(scope, element, attrs) {
         scope.$watch(attrs.intermediate, function (newVal) {

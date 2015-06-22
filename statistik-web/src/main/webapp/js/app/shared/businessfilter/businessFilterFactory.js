@@ -18,15 +18,15 @@
  */
 'use strict';
 
-angular.module('StatisticsApp.businessFilter.factory', [])
-    .factory('businessFilter', ['statisticsData', '_', 'treeMultiSelectorUtil',
+angular.module('StatisticsApp.businessFilterFactory.factory', [])
+    .factory('businessFilterFactory', ['statisticsData', '_', 'treeMultiSelectorUtil',
         function (statisticsData, _, treeMultiSelectorUtil) {
             return createBusinessFilter(statisticsData, _, treeMultiSelectorUtil);
         }
     ]);
 
-angular.module('StatisticsApp.landstingFilter.factory', [])
-    .factory('landstingFilter', ['statisticsData', '_', 'treeMultiSelectorUtil',
+angular.module('StatisticsApp.landstingFilterFactory.factory', [])
+    .factory('landstingFilterFactory', ['statisticsData', '_', 'treeMultiSelectorUtil',
         function (statisticsData, _, treeMultiSelectorUtil) {
             return createBusinessFilter(statisticsData, _, treeMultiSelectorUtil);
         }

@@ -413,51 +413,51 @@ describe('Controller: treeMultiSelectorCtrl', function() {
         expect(leavesCount).toBe(2);
     }));
 
-    it("deselect all levels when kapitel is deselected", inject(function (businessFilter) {
+    it("deselect all levels when kapitel is deselected", inject(function (businessFilterFactory) {
         // Given
 
         // When
-        businessFilter.setIcd10Structure(diagnoses);
-        businessFilter.dataInitialized = true;
-        scope.menuOptions = businessFilter.icd10;
-        scope.itemClicked(A00B99, businessFilter.icd10);
-        businessFilter.updateDiagnoses();
+        businessFilterFactory.setIcd10Structure(diagnoses);
+        businessFilterFactory.dataInitialized = true;
+        scope.menuOptions = businessFilterFactory.icd10;
+        scope.itemClicked(A00B99, businessFilterFactory.icd10);
+        businessFilterFactory.updateDiagnoses();
 
         //Then
-        var diagnoser = businessFilter.selectedDiagnoses;
+        var diagnoser = businessFilterFactory.selectedDiagnoses;
         expect(diagnoser.length).toBe(1);
         expect(diagnoser).toContain(D50D89.numericalId);
     }));
 
-    it("deselect all kategorier below unselected avsnitt", inject(function (businessFilter) {
+    it("deselect all kategorier below unselected avsnitt", inject(function (businessFilterFactory) {
         // Given
 
         // When
-        businessFilter.setIcd10Structure(diagnoses);
-        businessFilter.dataInitialized = true;
-        scope.menuOptions = businessFilter.icd10;
-        scope.itemClicked(A00A09, businessFilter.icd10);
-        businessFilter.updateDiagnoses();
+        businessFilterFactory.setIcd10Structure(diagnoses);
+        businessFilterFactory.dataInitialized = true;
+        scope.menuOptions = businessFilterFactory.icd10;
+        scope.itemClicked(A00A09, businessFilterFactory.icd10);
+        businessFilterFactory.updateDiagnoses();
 
         //Then
-        var diagnoser = businessFilter.selectedDiagnoses;
+        var diagnoser = businessFilterFactory.selectedDiagnoses;
         expect(diagnoser.length).toBe(2);
         expect(diagnoser).toContain(B00B09.numericalId);
         expect(diagnoser).toContain(D50D89.numericalId);
     }));
 
-    it("report selected kategoris", inject(function (businessFilter) {
+    it("report selected kategoris", inject(function (businessFilterFactory) {
         // Given
 
         // When
-        businessFilter.setIcd10Structure(diagnoses);
-        businessFilter.dataInitialized = true;
-        scope.menuOptions = businessFilter.icd10;
-        scope.itemClicked(A01, businessFilter.icd10);
-        businessFilter.updateDiagnoses();
+        businessFilterFactory.setIcd10Structure(diagnoses);
+        businessFilterFactory.dataInitialized = true;
+        scope.menuOptions = businessFilterFactory.icd10;
+        scope.itemClicked(A01, businessFilterFactory.icd10);
+        businessFilterFactory.updateDiagnoses();
 
         //Then
-        var diagnoser = businessFilter.selectedDiagnoses;
+        var diagnoser = businessFilterFactory.selectedDiagnoses;
         expect(diagnoser.length).toBe(3);
         expect(diagnoser).toContain(A00.numericalId);
         expect(diagnoser).toContain(B00B09.numericalId);

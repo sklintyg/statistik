@@ -19,8 +19,8 @@
 
 'use strict';
 
-angular.module('StatisticsApp').controller('pageCtrl', [ '$scope', '$rootScope', '$window', '$location', 'statisticsData', 'businessFilter', 'landstingFilter', '_',
-    function ($scope, $rootScope, $window, $location, statisticsData, businessFilter, landstingFilter, _) {
+angular.module('StatisticsApp').controller('pageCtrl', [ '$scope', '$rootScope', '$window', '$location', 'statisticsData', 'businessFilterFactory', 'landstingFilterFactory', '_',
+    function ($scope, $rootScope, $window, $location, statisticsData, businessFilterFactory, landstingFilterFactory, _) {
         var self = this;
 
         self.getSelectedVerksamhet = function (selectedVerksamhetId, verksamhets) {
@@ -41,7 +41,7 @@ angular.module('StatisticsApp').controller('pageCtrl', [ '$scope', '$rootScope',
 
             if ($rootScope.isLoggedIn && !$scope.isLoginInfoFetched) {
                 statisticsData.getLoginInfo(function (loginInfo) {
-                    businessFilter.setup(loginInfo.businesses, $location.$$search.filter);
+                    businessFilterFactory.setup(loginInfo.businesses, $location.$$search.filter);
 
                     var v = loginInfo.defaultVerksamhet;
                     $scope.businessId = v.vardgivarId;
@@ -60,7 +60,7 @@ angular.module('StatisticsApp').controller('pageCtrl', [ '$scope', '$rootScope',
 
                     if ($rootScope.landstingAvailable) {
                         statisticsData.getLandstingFilterInfo(function (landstingFilterInfo) {
-                            landstingFilter.setup(landstingFilterInfo.businesses, $location.$$search.landstingfilter);
+                            landstingFilterFactory.setup(landstingFilterInfo.businesses, $location.$$search.landstingfilter);
                         });
                     }
 

@@ -138,9 +138,9 @@ describe('Tests for directive button-filter', function () {
     describe("Making selections", function() {
         var statisticsData, businessFilter;
 
-        beforeEach(inject(function (_statisticsData_, _businessFilter_) {
+        beforeEach(inject(function (_statisticsData_, _businessFilterFactory_) {
             statisticsData = _statisticsData_;
-            businessFilter = _businessFilter_;
+            businessFilter = _businessFilterFactory_;
         }));
 
         it("sets all needed parameters on params object", function() {
@@ -208,9 +208,9 @@ describe('Tests for directive button-filter', function () {
     describe("Validating dates on selection", function() {
         var statisticsData, businessFilter;
 
-        beforeEach(inject(function (_statisticsData_, _businessFilter_) {
+        beforeEach(inject(function (_statisticsData_, _businessFilterFactory_) {
             statisticsData = _statisticsData_;
-            businessFilter = _businessFilter_;
+            businessFilter = _businessFilterFactory_;
         }));
 
         it("will pass validation if we have both to and from date set correct", function() {

@@ -18,28 +18,28 @@
  */
 'use strict';
 angular.module('StatisticsApp.businessFilter.directive', [])
-    .directive('businessFilter', ['businessFilter', '$location', 'messageService', 'statisticsData', 'moment', 'TIME_INTERVAL_MIN_DATE', 'TIME_INTERVAL_MAX_DATE', function(businessFilter, $location, messageService, statisticsData, moment, TIME_INTERVAL_MIN_DATE, TIME_INTERVAL_MAX_DATE) {
+    .directive('businessFilter', ['businessFilterFactory', '$location', 'messageService', 'statisticsData', 'moment', 'TIME_INTERVAL_MIN_DATE', 'TIME_INTERVAL_MAX_DATE', function(businessFilterFactory, $location, messageService, statisticsData, moment, TIME_INTERVAL_MIN_DATE, TIME_INTERVAL_MAX_DATE) {
         return {
             scope: true,
             restrict: 'E',
             link: function(scope, element, attrs) {
                 scope.filterButtonIdText = "Verksamhet";
                 scope.filterHashParamName = "filter";
-                linkFunction(scope, businessFilter, $location, messageService, statisticsData, moment, TIME_INTERVAL_MIN_DATE, TIME_INTERVAL_MAX_DATE);
+                linkFunction(scope, businessFilterFactory, $location, messageService, statisticsData, moment, TIME_INTERVAL_MIN_DATE, TIME_INTERVAL_MAX_DATE);
             },
             templateUrl: 'js/app/shared/businessfilter/businessFilterView.html'
         };
     }]);
 
 angular.module('StatisticsApp.landstingFilter.directive', [])
-    .directive('landstingFilter', ['landstingFilter', '$location', 'messageService', 'statisticsData', 'moment', 'TIME_INTERVAL_MIN_DATE', 'TIME_INTERVAL_MAX_DATE', function(landstingFilter, $location, messageService, statisticsData, moment, TIME_INTERVAL_MIN_DATE, TIME_INTERVAL_MAX_DATE) {
+    .directive('landstingFilter', ['landstingFilterFactory', '$location', 'messageService', 'statisticsData', 'moment', 'TIME_INTERVAL_MIN_DATE', 'TIME_INTERVAL_MAX_DATE', function(landstingFilterFactory, $location, messageService, statisticsData, moment, TIME_INTERVAL_MIN_DATE, TIME_INTERVAL_MAX_DATE) {
         return {
             scope: true,
             restrict: 'E',
             link: function(scope, element, attrs) {
                 scope.filterButtonIdText = "Landsting";
                 scope.filterHashParamName = "landstingfilter";
-                linkFunction(scope, landstingFilter, $location, messageService, statisticsData, moment, TIME_INTERVAL_MIN_DATE, TIME_INTERVAL_MAX_DATE);
+                linkFunction(scope, landstingFilterFactory, $location, messageService, statisticsData, moment, TIME_INTERVAL_MIN_DATE, TIME_INTERVAL_MAX_DATE);
             },
             templateUrl: 'js/app/shared/businessfilter/businessFilterView.html'
         };
@@ -256,3 +256,41 @@ function linkFunction(scope, businessFilter, $location, messageService, statisti
     scope.format =  'yyyy-MM';
 
 }
+
+angular.module('StatisticsApp').directive('multiselectDropdown', function () {
+    function multiselectSize($el) {
+        return $('option', $el).length;
+    }
+
+    return function(scope, element, attrs) {
+        var bf = scope.$parent.businessFilter;
+        element.multiselect({
+            buttonText: function (options, select) {
+                return options.length + ' av ' + multiselectSize(select) + ' valda <b class="caret"></b>';
+            },
+            onChange: function (optionElement, checked) {
+                optionElement.removeAttr('selected');
+                if (checked) {
+                    optionElement.prop('selected', 'selected');
+                }
+                bf.filterChanged();
+
+                element.change();
+            },
+            includeSelectAllOption: true,
+            selectAllText: "Markera alla"
+        });
+
+        // Watch for any changes to the length of our select element
+        scope.$watch(function () {
+            return element[0].length;
+        }, function () {
+            element.multiselect('rebuild');
+        });
+
+        // Watch for any changes from outside the directive and refresh
+        scope.$watchCollection(attrs.ngModel, function () {
+            element.multiselect('refresh');
+        });
+    };
+});
