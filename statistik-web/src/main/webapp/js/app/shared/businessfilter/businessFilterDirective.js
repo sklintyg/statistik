@@ -17,7 +17,9 @@
  *     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 'use strict';
-angular.module('StatisticsApp.businessFilter.directive', [])
+angular.module('StatisticsApp.filter.directive', []);
+
+angular.module('StatisticsApp.filter.directive')
     .directive('businessFilter', ['businessFilterFactory', '$location', 'messageService', 'statisticsData', 'moment', 'TIME_INTERVAL_MIN_DATE', 'TIME_INTERVAL_MAX_DATE', function(businessFilterFactory, $location, messageService, statisticsData, moment, TIME_INTERVAL_MIN_DATE, TIME_INTERVAL_MAX_DATE) {
         return {
             scope: true,
@@ -31,7 +33,7 @@ angular.module('StatisticsApp.businessFilter.directive', [])
         };
     }]);
 
-angular.module('StatisticsApp.landstingFilter.directive', [])
+angular.module('StatisticsApp.filter.directive')
     .directive('landstingFilter', ['landstingFilterFactory', '$location', 'messageService', 'statisticsData', 'moment', 'TIME_INTERVAL_MIN_DATE', 'TIME_INTERVAL_MAX_DATE', function(landstingFilterFactory, $location, messageService, statisticsData, moment, TIME_INTERVAL_MIN_DATE, TIME_INTERVAL_MAX_DATE) {
         return {
             scope: true,
@@ -244,7 +246,7 @@ function linkFunction(scope, businessFilter, $location, messageService, statisti
 
 }
 
-angular.module('StatisticsApp').directive('multiselectDropdown', function () {
+angular.module('StatisticsApp.filter.directive').directive('multiselectDropdown', function () {
     function multiselectSize($el) {
         return $('option', $el).length;
     }
@@ -282,7 +284,7 @@ angular.module('StatisticsApp').directive('multiselectDropdown', function () {
     };
 });
 
-angular.module('StatisticsApp').directive("filterButton", function () {
+angular.module('StatisticsApp.filter.directive').directive("filterButton", function () {
     return {
         restrict: "E",
         template:

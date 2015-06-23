@@ -18,14 +18,16 @@
  */
 'use strict';
 
-angular.module('StatisticsApp.businessFilterFactory.factory', [])
+angular.module('StatisticsApp.filterFactory.factory', []);
+
+angular.module('StatisticsApp.filterFactory.factory')
     .factory('businessFilterFactory', ['statisticsData', '_', 'treeMultiSelectorUtil',
         function (statisticsData, _, treeMultiSelectorUtil) {
             return createBusinessFilter(statisticsData, _, treeMultiSelectorUtil);
         }
     ]);
 
-angular.module('StatisticsApp.landstingFilterFactory.factory', [])
+angular.module('StatisticsApp.filterFactory.factory')
     .factory('landstingFilterFactory', ['statisticsData', '_', 'treeMultiSelectorUtil',
         function (statisticsData, _, treeMultiSelectorUtil) {
             return createBusinessFilter(statisticsData, _, treeMultiSelectorUtil);
