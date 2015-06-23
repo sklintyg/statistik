@@ -22,7 +22,7 @@
         <div id="about-content">
             <section id="about">
                 <div class="row">
-                    <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
+                    <div class="col-sm-12 col-md-8">
                         <h1 style="margin-bottom: 0px;">Filuppladdning</h1>
                         <p> Denna sida ser du eftersom du har statistikbehörighet för hela vårdgivaren {{verksamhetName}}.</p>
                         <p>Om ditt landsting vill kunna använda landstingsstatistiken, behöver du (eller någon annan med vårdgivarbehörighet för samma vårdgivare) rapportera in vilka vårdenheter som ingår i landstinget. Det gör du genom att:</p>
@@ -53,48 +53,55 @@
             </section>
         </div>
 
-        <div class="jumbotron dropzone" dropzone="dropzoneConfig" ng-class="{'dropzone-drag': draggingIt}">
-            <div class="row dz-message">
-                <div class="col-md-5 col-md-push-3 dropzone-info-area">
+        <div class="row">
+            <div class="col-md-8">
+                <div class="jumbotron dropzone" dropzone="dropzoneConfig" ng-class="{'dropzone-drag': draggingIt}">
+                    <div class="row dz-message">
+                        <div class="col-md-5 col-md-push-3 dropzone-info-area">
 
-                    <span ng-show="!uploadCompleted" class="glyphicon glyphicon-plus-sign" ng-class="{'glyphicon-plus-sign-drag': draggingIt}"></span>
-                    <span ng-show="uploadCompleted" class="glyphicon" ng-class="{'glyphicon-ok-sign': uploadSuccess, 'glyphicon-warning-sign': !uploadSuccess}"></span>
+                                    <span ng-show="!uploadCompleted" class="glyphicon glyphicon-plus-sign"
+                                          ng-class="{'glyphicon-plus-sign-drag': draggingIt}"></span>
+                                    <span ng-show="uploadCompleted" class="glyphicon"
+                                          ng-class="{'glyphicon-ok-sign': uploadSuccess, 'glyphicon-warning-sign': !uploadSuccess}"></span>
 
-                    <progressbar ng-show="uploading" class="progress-striped active" value="uploadProgress" type="{{progressType}}"></progressbar>
+                            <progressbar ng-show="uploading" class="progress-striped active" value="uploadProgress"
+                                         type="{{progressType}}"></progressbar>
 
-                    <div ng-show="uploadCompleted && !uploadSuccess">
-                        <h5>
-                            <span message
-                                  key="alert.upload.failed"></span>
-                        </h5>
-                        <h5>{{uploadResultMessage}}</h5>
-                        <h5>
-                            <span message
-                                  key="info.upload.dropfile.here"></span>
-                            <a>
-                                <span message key="info.upload.dropfile.here.add"></span>
-                            </a>
-                        </h5>
-                    </div>
+                            <div ng-show="uploadCompleted && !uploadSuccess">
+                                <h5>
+                                            <span message
+                                                  key="alert.upload.failed"></span>
+                                </h5>
+                                <h5>{{uploadResultMessage}}</h5>
+                                <h5>
+                                            <span message
+                                                  key="info.upload.dropfile.here"></span>
+                                    <a>
+                                        <span message key="info.upload.dropfile.here.add"></span>
+                                    </a>
+                                </h5>
+                            </div>
 
-                    <h5 ng-show="!uploading && !uploadCompleted">
-                        <span message
-                              key="info.upload.dropfile.here"></span>
-                        <a>
-                            <span message key="info.upload.dropfile.here.add"></span>
-                        </a>
-                    </h5>
+                            <h5 ng-show="!uploading && !uploadCompleted">
+                                        <span message
+                                              key="info.upload.dropfile.here"></span>
+                                <a>
+                                    <span message key="info.upload.dropfile.here.add"></span>
+                                </a>
+                            </h5>
 
-                    <div ng-show="uploadCompleted && uploadSuccess">
-                        <h5><span message
-                                  key="alert.upload.success"></span></h5>
-                        <h5>
-                            <span message
-                                  key="info.upload.dropfile.here"></span>
-                            <a>
-                                <span message key="info.upload.dropfile.here.add"></span>
-                            </a>
-                        </h5>
+                            <div ng-show="uploadCompleted && uploadSuccess">
+                                <h5><span message
+                                          key="alert.upload.success"></span></h5>
+                                <h5>
+                                            <span message
+                                                  key="info.upload.dropfile.here"></span>
+                                    <a>
+                                        <span message key="info.upload.dropfile.here.add"></span>
+                                    </a>
+                                </h5>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
