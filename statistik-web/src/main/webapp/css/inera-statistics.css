@@ -1952,6 +1952,7 @@ li.subMenuItem.active .active-menu-item { display: block;  }
 /*Styling for filuppladdning*/
 .jumbotron.dropzone {
     margin-bottom: 0px;
+    margin-top: 10px;
 }
 
 /* The postion property of the jumbtron disturbed links in som kind of weird way*/
