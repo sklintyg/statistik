@@ -19,8 +19,8 @@
 
 'use strict';
 
-angular.module('StatisticsApp').controller('singleLineChartCtrl', [ '$scope', '$rootScope', '$routeParams', '$timeout', '$window', 'statisticsData', 'businessFilter', 'config', 'printFactory', '$location', 'messageService', 'chartFactory',
-    function ($scope, $rootScope, $routeParams, $timeout, $window, statisticsData, businessFilter, config, printFactory, $location, messageService, chartFactory) {
+angular.module('StatisticsApp').controller('singleLineChartCtrl', [ '$scope', '$rootScope', '$routeParams', '$timeout', '$window', 'statisticsData', 'config', 'printFactory', '$location', 'messageService', 'chartFactory',
+    function ($scope, $rootScope, $routeParams, $timeout, $window, statisticsData, config, printFactory, $location, messageService, chartFactory) {
 
         var chart;
 

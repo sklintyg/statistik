@@ -19,8 +19,8 @@
 
 'use strict';
 
-angular.module('StatisticsApp').controller('doubleAreaChartsCtrl', [ '$scope', '$rootScope', '$routeParams', '$window', '$timeout', 'statisticsData', 'businessFilter', 'config', 'messageService', 'printFactory', 'diagnosisTreeFilter', '$location', 'chartFactory',
-    function ($scope, $rootScope, $routeParams, $window, $timeout, statisticsData, businessFilter, config, messageService, printFactory, diagnosisTreeFilter, $location ,chartFactory) {
+angular.module('StatisticsApp').controller('doubleAreaChartsCtrl', [ '$scope', '$rootScope', '$routeParams', '$window', '$timeout', 'statisticsData', 'config', 'messageService', 'printFactory', 'diagnosisTreeFilter', '$location', 'chartFactory',
+    function ($scope, $rootScope, $routeParams, $window, $timeout, statisticsData, config, messageService, printFactory, diagnosisTreeFilter, $location ,chartFactory) {
         var that = this;
         var chart1 = {};
         var chart2 = {};
