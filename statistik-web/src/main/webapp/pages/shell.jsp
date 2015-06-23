@@ -27,7 +27,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title data-ng-bind="$root.page_title">Inera Statistics Service</title>
+    <title data-ng-bind="$root.page_title">Statistiktjänsten</title>
 
     <!--[if lte IE 8]>
     <script src="/js/app/json2.js"></script>

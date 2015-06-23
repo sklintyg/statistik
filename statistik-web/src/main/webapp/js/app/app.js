@@ -332,7 +332,7 @@ app.run([ '$rootScope', '$route', 'messageService', function ($rootScope, $route
         lang: { thousandsSep: ' ' }
     });
 
-    $rootScope.page_title = 'Titel';
+    $rootScope.page_title = 'Statistiktjänsten';
     $rootScope.pageName = '';
     $rootScope.isLoggedIn = isLoggedIn;
 
