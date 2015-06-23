@@ -70,6 +70,11 @@ public class LoginServiceUtil {
 
     private static final Splitter ID_SPLITTER = Splitter.on(',').trimResults().omitEmptyStrings();
 
+    public boolean isLoggedIn(HttpServletRequest request) {
+        return (request.getUserPrincipal() != null)
+                && (((AbstractAuthenticationToken) request.getUserPrincipal()).getDetails() != null);
+    }
+
     public LoginInfo getLoginInfo(HttpServletRequest request) {
         Principal user = request.getUserPrincipal();
         if (!(user instanceof AbstractAuthenticationToken)) {

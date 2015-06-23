@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('StatisticsApp').factory('statisticsData', ['$http', '$rootScope', '$q', function ($http, $rootScope, $q) {
+angular.module('StatisticsApp').factory('statisticsData', ['$http', '$rootScope', '$q', '$location', function ($http, $rootScope, $q, $location) {
     var factory = {};
 
     var makeRequestNational = function (restFunctionName, successCallback, failureCallback, cached) {
@@ -250,6 +250,13 @@ angular.module('StatisticsApp').factory('statisticsData', ['$http', '$rootScope'
 
     factory.clearLandstingEnhets = function (successCallback, failureCallback) {
         makeRequestLandsting("landstingEnhets", successCallback, failureCallback, "delete");
+    };
+
+    factory.logOnServer = function (message) {
+        $http.post("api/logging/log", {message: message, url: $location.url()}, {cache: false}).success(function (result) {
+        }).error(function (data, status, headers, config) {
+            console.log("Could not log to server: " + message);
+        });
     };
 
     return factory;

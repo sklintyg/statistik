@@ -68,6 +68,7 @@
 
         <bean class="se.inera.statistics.service.report.model.Lan" id="lan"/>
         <bean id="loginInfoService" class="se.inera.statistics.web.service.LoginInfoService"/>
+        <bean id="loggingService" class="se.inera.statistics.web.service.LoggingService"/>
 
         <import resource="classpath*:hsa-services-config.xml"/>
         <import resource="classpath*:hsa-stub-context.xml"/>

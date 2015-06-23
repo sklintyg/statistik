@@ -18,7 +18,7 @@
  */
 'use strict';
 angular.module('StatisticsApp')
-    .factory('printFactory', ['COLORS', function(COLORS) {
+    .factory('printFactory', ['COLORS', 'statisticsData', '$routeParams', '$location', function(COLORS, statisticsData, $routeParams, $location) {
 
         var addColor = function (rawData, bwPrint) {
             var colorSelector = 0, maleColorSelector = 0, femaleColorSelector = 0;
@@ -111,7 +111,13 @@ angular.module('StatisticsApp')
             return setupForBwPrint && chartType ? addBwPatternForChart(series, chartType) : this.addColor(series, setupForBwPrint);
         };
 
+        function logPrintToServer() {
+            var printType = $routeParams.printBw ? "BlackWhite" : ($routeParams.print ? "Color" : "Unknown");
+            statisticsData.logOnServer("Printing " + printType + " on " + $location.path());
+        }
+
         var printAndCloseWindow = function($timeout, $window) {
+            logPrintToServer();
             $( document ).ready( function(){
                 $timeout(function() {
                     $window.print();
