@@ -19,8 +19,8 @@
 
 'use strict';
 
-angular.module('StatisticsApp').controller('businessOverviewCtrl', ['$scope', '$rootScope', '$window', '$timeout', 'statisticsData', '$routeParams', 'printFactory', 'chartFactory',
-function ($scope, $rootScope, $window, $timeout, statisticsData, $routeParams, printFactory, chartFactory) {
+angular.module('StatisticsApp').controller('businessOverviewCtrl', ['$scope', '$rootScope', '$window', '$timeout', 'statisticsData', '$routeParams', 'printFactory', 'chartFactory', 'messageService',
+function ($scope, $rootScope, $window, $timeout, statisticsData, $routeParams, printFactory, chartFactory, messageService) {
 
     var perMonthAlterationChart = {}, newSexProportionChart = {}, oldSexProportionChart = {},
         ageDonutChart = {}, diagnosisDonutChart = {}, degreeOfSickLeaveChart = {}, sickLeaveLengthChart = {};
@@ -221,7 +221,7 @@ function ($scope, $rootScope, $window, $timeout, statisticsData, $routeParams, p
     };
 
     var populatePageWithData = function (result) {
-        $scope.resultMessage = result.message;
+        $scope.resultMessage = ControllerCommons.getResultMessage(result, messageService);
         $timeout(function () {
             updateCharts(result);
 

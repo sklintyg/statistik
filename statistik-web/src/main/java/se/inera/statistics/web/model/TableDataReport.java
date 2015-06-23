@@ -18,8 +18,37 @@
  */
 package se.inera.statistics.web.model;
 
-public interface TableDataReport {
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import se.inera.statistics.web.service.FilterDataResponse;
 
-    TableData getTableData();
+import java.util.List;
+
+public abstract class TableDataReport {
+
+    public abstract TableData getTableData();
+    public abstract String getPeriod();
+    public abstract FilterDataResponse getFilter();
+    public abstract String getMessage();
+
+    @JsonIgnore
+    public abstract List<ChartData> getChartDatas();
+
+    public boolean isEmpty() {
+        double sum = 0;
+        for (ChartData chartData : getChartDatas()) {
+            sum += sum(chartData.getSeries());
+        }
+        return sum == 0;
+    }
+
+    private double sum(List<ChartSeries> series) {
+        double sum = 0;
+        for (ChartSeries serie : series) {
+            for (Number number : serie.getData()) {
+                sum += number.doubleValue();
+            }
+        }
+        return sum;
+    }
 
 }

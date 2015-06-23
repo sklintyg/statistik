@@ -263,8 +263,14 @@ var ControllerCommons = new function(){
                 });
             }
             $scope.exchangeableViews = config.exchangeableViews;
+
         }
     };
+
+    this.getResultMessage = function(result, messageService) {
+        return (result.empty ? messageService.getProperty("info.emptyreponse", null, "", null, true) : "") + (result.message ? result.message : "");
+    }
+
 };
 
 

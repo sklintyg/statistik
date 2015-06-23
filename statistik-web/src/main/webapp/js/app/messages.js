@@ -143,6 +143,7 @@ var stMessages = {
         //info texts
         'info.lan.information' : 'Uppgift om vilket län ett sjukfall tillhör är hämtat från HSA-katalogen. Uppgifterna i HSA är inte kvalitetssäkrade och information kan saknas då det inte är obligatoriskt för vårdenheten att ange länstillhörighet.',
         'info.sickleavelength' : 'Om ett sjukfall startat på en annan vårdenhet (inom vårdgivaren) kommer den tiden läggas ihop med tiden som sjukfallet är på din vårdenhet. Däremot kommer inte en fortsättning på ett sjukfall efter att det lämnat din vårdenhet att synas i din statistik.',
+        'info.emptyreponse' : 'Ingen data tillgänglig. Det kan bero på att det inte finns någon data för verksamheten eller att du har angivit en alltför restriktiv filtrering.',
 
         //login view
         'login.header': 'Logga in för verksamhetsstatistik',

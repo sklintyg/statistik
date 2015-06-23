@@ -148,7 +148,7 @@ angular.module('StatisticsApp').controller('doubleAreaChartsCtrl', [ '$scope', '
         var populatePageWithData = function (result) {
             ControllerCommons.populateActiveDiagnosFilter($scope, statisticsData, result.filter.diagnoser, $routeParams.printBw || $routeParams.print);
             $scope.enhetsCount = result.filter.enheter ? result.filter.enheter.length : null;
-            $scope.resultMessage = result.message;
+            $scope.resultMessage = ControllerCommons.getResultMessage(result, messageService);
             $scope.subTitle = config.title(result.period, $scope.enhetsCount, $routeParams.kapitelId);
             if (config.showDetailsOptions) {
                 $scope.currentPeriod = result.period;

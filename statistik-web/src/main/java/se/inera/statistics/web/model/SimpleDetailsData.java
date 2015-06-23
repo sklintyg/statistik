@@ -20,7 +20,10 @@ package se.inera.statistics.web.model;
 
 import se.inera.statistics.web.service.FilterDataResponse;
 
-public class SimpleDetailsData implements TableDataReport {
+import java.util.Arrays;
+import java.util.List;
+
+public class SimpleDetailsData extends TableDataReport {
 
     private final TableData tableData;
     private final ChartData chartData;
@@ -58,6 +61,11 @@ public class SimpleDetailsData implements TableDataReport {
 
     public String getMessage() {
         return message;
+    }
+
+    @Override
+    public List<ChartData> getChartDatas() {
+        return Arrays.asList(chartData);
     }
 
 }
