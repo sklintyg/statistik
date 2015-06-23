@@ -25,7 +25,7 @@ module.exports = function(config) {
             WEBJAR_DIR + 'angularjs/' + angularVersion + '/i18n/angular-locale_sv.js',
             WEBJAR_DIR + 'angular-ui-bootstrap/0.12.1/ui-bootstrap-tpls.min.js',
             WEBJAR_DIR + 'underscorejs/1.7.0/underscore.js',
-            WEBJAR_DIR + 'momentjs/2.10.2/moment.js',
+            WEBJAR_DIR + 'momentjs/2.10.3/moment.js',
             'src/main/webapp/js/**/*.js',
             'src/test/javascript/**/*.js',
             '**/*.html'

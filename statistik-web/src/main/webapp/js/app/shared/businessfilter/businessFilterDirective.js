@@ -100,37 +100,24 @@ function linkFunction(scope, businessFilter, $location, messageService, statisti
         return _.uniq(selectedIdsFromVerksamhetstypsFlattened);
     };
 
+    var isValidDate = function isValidDate(date) {
+        if(date === 'undefined' || !(date instanceof Date)) {
+            return false;
+        }
+
+        return moment(date, 'yyyy-MM').isValid() || moment(date.getUTCDate(), 'yyyy-MM').isValid();
+    };
+
     var hasFromDateValidationError = function() {
-        console.log("*** Start of validation of from date ***");
-        console.log("Locale: " + moment.locale());
-        console.log("Locale of to date: " + moment(businessFilter.toDate).locale());
-        console.log('The from date: ' + businessFilter.fromDate);
-        console.log('Now: ' + moment());
-
-        console.log('Is the from date valid, yyyy-MM? ' + moment(businessFilter.fromDate, 'yyyy-MM').isValid() );
-        console.log('Is from date before 2013-10? ' + moment(businessFilter.fromDate).isBefore(TIME_INTERVAL_MIN_DATE));
-        console.log('Is from date after now? ' + moment(businessFilter.toDate).isAfter(moment()));
-
         return !businessFilter.fromDate ||
-            !moment(businessFilter.fromDate, 'yyyy-MM').isValid() ||
+            !isValidDate(businessFilter.fromDate) ||
             moment(businessFilter.fromDate).isBefore(TIME_INTERVAL_MIN_DATE) ||
             moment(businessFilter.fromDate).isAfter(moment());
     };
 
     var hasToDateValidationError = function() {
-        console.log("*** Start of validation of to date ***");
-        console.log("Locale: " + moment.locale());
-        console.log("Locale of to date: " + moment(businessFilter.toDate).locale());
-        console.log('The to date: ' + businessFilter.toDate);
-        console.log('Now: ' + moment());
-
-        console.log('Is the to date valid, yyyy-MM? ' + moment(businessFilter.toDate, 'yyyy-MM').isValid() );
-        console.log('Invalid at? ' + moment(businessFilter.toDate, 'yyyy-MM').invalidAt() );
-        console.log('Is to date before the fromdate? ' + moment(businessFilter.toDate).isBefore(businessFilter.fromDate));
-        console.log('Is to date after now? ' + moment(businessFilter.toDate).isAfter(moment()));
-
         return !businessFilter.toDate ||
-            !moment(businessFilter.toDate, 'yyyy-MM').isValid() ||
+            !isValidDate(businessFilter.toDate) ||
             moment(businessFilter.toDate).isBefore(businessFilter.fromDate) ||
             moment(businessFilter.toDate).isAfter(moment());
     };
