@@ -123,6 +123,7 @@ angular.module('StatisticsApp').controller('landstingFileUploadCtrl', [ '$scope'
                     $scope.lastLandstingUpdateMessage = "";
                     $scope.parsedRows = [];
                     $rootScope.landstingAvailable = false;
+                    $scope.uploadCompleted = false;
                     updateLastUpdateMessage();
                 });
             }, 1);
