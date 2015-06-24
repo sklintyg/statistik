@@ -268,7 +268,7 @@ var ControllerCommons = new function(){
     };
 
     this.getResultMessage = function(result, messageService) {
-        return (result.empty ? messageService.getProperty("info.emptyreponse", null, "", null, true) : "") + (result.message ? result.message : "");
+        return result.message ? result.message : (result.empty ? messageService.getProperty("info.emptyreponse", null, "", null, true) : "");
     }
 
 };
