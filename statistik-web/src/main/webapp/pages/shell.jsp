@@ -91,13 +91,13 @@
 		                </div>
 		                <c:if test="${loginVisible}">
 		                    <div class="hidden-xs col-sm-5 col-md-6 col-lg-4 pull-right">
-		                        <div id="business-login-container" ng-hide="isLoggedIn">
+		                        <div class="ng-hide" id="business-login-container" ng-hide="isLoggedIn">
 		                            <span id="business-login-span"><span message key="lbl.for-verksamhetsstatistik"></span></span>
 		                            <button class="btn" data-ng-click="loginClicked('${applicationScope.loginUrl}')"
 		                                    type="button" id="business-login-btn" value="Logga in"><span message key="lbl.log-in"></span>
 		                            </button>
 		                        </div>
-		                        <div id="business-logged-in-user-container" ng-show="isLoggedIn">
+		                        <div class="ng-hide" id="business-logged-in-user-container" ng-show="isLoggedIn">
 		                            <div class="header-box-user-profile pull-right">
 		                                <span class="user-name pull-right" data-ng-bind="userNameWithAccess"></span>
 		                                <br>
@@ -116,7 +116,6 @@
 		</div>
 	</div>
 </div>
-
 
 <div id="wrapper">
     <%-- Sidebar --%>
