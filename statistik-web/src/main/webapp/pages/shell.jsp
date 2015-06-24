@@ -54,6 +54,7 @@
     <link href="<c:url value='/webjars/bootstrap/3.1.1/css/bootstrap.min.css'/>" rel="stylesheet" media="all">
     <link href="<c:url value='/webjars/bootstrap/3.1.1/css/bootstrap-theme.min.css'/>" rel="stylesheet" media="all">
     <link href="<c:url value='/css/print.css'/>" rel="stylesheet" media="print">
+    <link href="<c:url value='/webjars/outdated-browser/1.1.0/outdatedbrowser.min.css'/>" rel="stylesheet" media="all">
 
     <link rel="icon" type="image/png" href="<c:url value='/img/favicon.ico'/>">
 
@@ -185,6 +186,7 @@
 <script type="text/javascript" src="<c:url value='/webjars/dropzone/4.0.1/dropzone.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/webjars/respond/1.3.0/respond.min.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/webjars/bootstrap-multiselect/0.9.8/js/bootstrap-multiselect.js'/>"></script>
+<script type="text/javascript" src="<c:url value='/webjars/outdated-browser/1.1.0/outdatedbrowser.min.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/app.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/shared/resources/constantsModule.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/services/factories.js'/>"></script>
@@ -226,5 +228,35 @@
     $('.dropdown-toggle').dropdown();
 </script>
 
+<div id="outdated">
+    <h3>Din webbläsare stöds inte av Statistiktjänsten och kan göra att den inte fungerar korrekt. Statistiktjänsten stöds officiellt av Internet Explorer 9 och nyare, även om andra webbläsare kan fungera.</h3>
+    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
+</div>
+
+
+<script type="text/javascript">
+    function addLoadEvent(func) {
+        var oldonload = window.onload;
+        if (typeof window.onload != 'function') {
+            window.onload = func;
+        } else {
+            window.onload = function() {
+                if (oldonload) {
+                    oldonload();
+                }
+                func();
+            }
+        }
+    }
+    //call plugin function after DOM ready
+    addLoadEvent(function(){
+        outdatedBrowser({
+            bgColor: '#b9def0',
+            color: '#ffffff',
+            lowerThan: 'IE9',
+            languagePath: ''
+        })
+    });
+</script>
 </body>
 </html>
