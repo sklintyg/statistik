@@ -66,7 +66,7 @@ angular.module('StatisticsApp').controller('landstingFileUploadCtrl', [ '$scope'
                 },
                 'error': function (file, response, xhr) {
                     $scope.$apply(function() {
-                        if(xhr.status === 403) {
+                        if(xhr && xhr.status === 403) {
                             $location.path("/login");
                         }
                         $scope.uploadSuccess = false;
