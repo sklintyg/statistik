@@ -39,37 +39,43 @@ angular.module('StatisticsApp').controller('pageCtrl', [ '$scope', '$rootScope',
             $scope.isLandstingShowing = ControllerCommons.isShowingLandsting($location);
             $scope.viewHeader = $scope.isVerksamhetShowing ? "Verksamhetsstatistik" : ControllerCommons.isShowingLandsting($location) ? "Landstingsstatistik" : "Nationell statistik";
 
-            if ($rootScope.isLoggedIn && !$scope.isLoginInfoFetched) {
-                statisticsData.getLoginInfo(function (loginInfo) {
-                    businessFilterFactory.setup(loginInfo.businesses, $location.$$search.filter);
+            if ($rootScope.isLoggedIn) {
+                if (!$scope.isLoginInfoFetched) {
+                    statisticsData.getLoginInfo(function (loginInfo) {
+                        businessFilterFactory.setup(loginInfo.businesses, $location.$$search.filter);
 
-                    var v = loginInfo.defaultVerksamhet;
-                    $scope.businessId = v.vardgivarId;
-                    $scope.verksamhetName = loginInfo.businesses && loginInfo.businesses.length === 1 ? v.name : (loginInfo.processledare ? v.vardgivarName : "");
-                    $scope.userName = loginInfo.name;
-                    $scope.userNameWithAccess = loginInfo.name;
+                        var v = loginInfo.defaultVerksamhet;
+                        $scope.businessId = v.vardgivarId;
+                        $scope.verksamhetName = loginInfo.businesses && loginInfo.businesses.length === 1 ? v.name : (loginInfo.processledare ? v.vardgivarName : "");
+                        $scope.userName = loginInfo.name;
+                        $scope.userNameWithAccess = loginInfo.name;
 
-                    $scope.loggedInWithoutStatistikuppdrag = !(loginInfo.businesses && loginInfo.businesses.length >= 1);
+                        $scope.loggedInWithoutStatistikuppdrag = !(loginInfo.businesses && loginInfo.businesses.length >= 1);
 
-                    $scope.isDelprocessledare = loginInfo.delprocessledare;
-                    $scope.isProcessledare = loginInfo.processledare;
+                        $scope.isDelprocessledare = loginInfo.delprocessledare;
+                        $scope.isProcessledare = loginInfo.processledare;
 
-                    $scope.hasLandstingAccess = loginInfo.landstingsvardgivare;
-                    $rootScope.landstingAvailable = loginInfo.landstingsvardgivareWithUpload;
-                    $scope.isLandstingAdmin = loginInfo.landstingAdmin;
+                        $scope.hasLandstingAccess = loginInfo.landstingsvardgivare;
+                        $rootScope.landstingAvailable = loginInfo.landstingsvardgivareWithUpload;
+                        $scope.isLandstingAdmin = loginInfo.landstingAdmin;
 
-                    if ($rootScope.landstingAvailable) {
-                        statisticsData.getLandstingFilterInfo(function (landstingFilterInfo) {
-                            landstingFilterFactory.setup(landstingFilterInfo.businesses, $location.$$search.landstingfilter);
-                        });
+                        if ($rootScope.landstingAvailable) {
+                            statisticsData.getLandstingFilterInfo(function (landstingFilterInfo) {
+                                landstingFilterFactory.setup(landstingFilterInfo.businesses, $location.$$search.landstingfilter);
+                                $scope.isLandstingInfoFetched = true;
+                            });
+                        }
+
+                        $scope.isLoginInfoFetched = true;
+                    }, function () {
+                        $scope.dataLoadingError = true;
+                    });
+                } else {
+                    businessFilterFactory.selectPreselectedFilter($location.$$search.filter);
+                    if ($scope.isLandstingInfoFetched) {
+                        landstingFilterFactory.selectPreselectedFilter($location.$$search.landstingfilter);
                     }
-
-                    $scope.isLoginInfoFetched = true;
-                }, function () {
-                    $scope.dataLoadingError = true;
-                });
-            } else if ($rootScope.isLoggedIn) {
-                businessFilterFactory.setup(null, $location.$$search.filter);
+                }
             }
         });
 

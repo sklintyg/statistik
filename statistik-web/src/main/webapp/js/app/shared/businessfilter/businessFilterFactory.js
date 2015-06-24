@@ -178,6 +178,18 @@ function createBusinessFilter(statisticsData, _, treeMultiSelectorUtil) {
         }
     }
 
+    businessFilter.selectPreselectedFilter = function(preSelectedFilter) {
+        if (preSelectedFilter) {
+            statisticsData.getFilterData(preSelectedFilter, function (filterData) {
+                setPreselectedFilter(filterData);
+            }, function () {
+                throw new Error("Could not parse filter");
+            });
+        } else {
+            businessFilter.resetSelections();
+        }
+    };
+
     businessFilter.setup = function (businesses, preSelectedFilter) {
         updateIcd10StructureOnce(function () {
             if (!businessFilter.dataInitialized) {
@@ -189,13 +201,7 @@ function createBusinessFilter(statisticsData, _, treeMultiSelectorUtil) {
                 businessFilter.resetSelections();
                 businessFilter.dataInitialized = true;
             }
-            if (preSelectedFilter) {
-                statisticsData.getFilterData(preSelectedFilter, function (filterData) {
-                    setPreselectedFilter(filterData);
-                }, function () {
-                    throw new Error("Could not parse filter");
-                });
-            }
+            businessFilter.selectPreselectedFilter(preSelectedFilter);
         });
     };
 
