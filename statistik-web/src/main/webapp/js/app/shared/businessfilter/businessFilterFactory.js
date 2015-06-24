@@ -154,7 +154,7 @@ function createBusinessFilter(statisticsData, _, treeMultiSelectorUtil) {
     function setPreselectedFilter(filterData) {
         businessFilter.selectDiagnoses(filterData.diagnoser);
         businessFilter.selectedVerksamhetTypIds = _.uniq(_.map(filterData.verksamhetstyper, function(verksamhetstyp) {
-            return _.find(businessFilter.verksamhetsTyper, function(verksamhet) { return _.contains(verksamhet.ids, verksamhetstyp) }).id;
+            return _.find(businessFilter.verksamhetsTyper, function(verksamhet) { return _.contains(verksamhet.ids, verksamhetstyp); }).id;
         }));
         businessFilter.selectGeographyBusiness(filterData.enheter);
         businessFilter.toDate = Date.parse(filterData.toDate);

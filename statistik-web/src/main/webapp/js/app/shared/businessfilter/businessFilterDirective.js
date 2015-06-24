@@ -74,6 +74,14 @@ function linkFunction(scope, businessFilter, $location, messageService, statisti
         scope.geography = newValue.geography;
     });
 
+    scope.$watch('businessFilter.useDefaultPeriod', function(newValue, oldvalue, scope) {
+        if(!newValue && businessFilter.toDate && businessFilter.fromDate) {
+            scope.timeIntervalChecked = true;
+        } else {
+            scope.timeIntervalChecked = false;
+        }
+    });
+
     scope.geographyFilterSelectorData = {
         titleText: messageService.getProperty("lbl.filter.val-av-enheter", null, "", null, true),
         buttonLabelText:"Enheter",

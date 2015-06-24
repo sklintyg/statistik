@@ -68,6 +68,8 @@ angular.module('StatisticsApp').controller('pageCtrl', [ '$scope', '$rootScope',
                 }, function () {
                     $scope.dataLoadingError = true;
                 });
+            } else if ($rootScope.isLoggedIn) {
+                businessFilterFactory.setup(null, $location.$$search.filter);
             }
         });
 
