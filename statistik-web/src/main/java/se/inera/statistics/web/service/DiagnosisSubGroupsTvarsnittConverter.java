@@ -38,7 +38,7 @@ public class DiagnosisSubGroupsTvarsnittConverter extends SimpleDualSexConverter
         return super.convertToChartData(getTopColumns(casesPerMonth, topColumnIndexes));
     }
 
-    public SimpleKonResponse<SimpleKonDataRow> getTopColumns(SimpleKonResponse<SimpleKonDataRow> skr, List<Integer> topIndexes) {
+    private SimpleKonResponse<SimpleKonDataRow> getTopColumns(SimpleKonResponse<SimpleKonDataRow> skr, List<Integer> topIndexes) {
         final ArrayList<SimpleKonDataRow> simpleKonDataRows = new ArrayList<>();
         if (topIndexes.isEmpty()) {
             simpleKonDataRows.add(new SimpleKonDataRow("Totalt", 0, 0));

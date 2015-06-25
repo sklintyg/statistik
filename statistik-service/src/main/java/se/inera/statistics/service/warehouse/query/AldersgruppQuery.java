@@ -43,7 +43,7 @@ import java.util.Map;
 
 public final class AldersgruppQuery {
     private static final Ranges RANGES = AldersgroupUtil.RANGES;
-    public static final int PERCENT = 100;
+    private static final int PERCENT = 100;
 
     private AldersgruppQuery() {
     }
@@ -74,7 +74,7 @@ public final class AldersgruppQuery {
 
     private static Collection<Ranges.Range> rowsToKeep(Map<Ranges.Range, Counter<Ranges.Range>> count, int noOfRows) {
         List<Counter<Ranges.Range>> sorted = new ArrayList<>();
-        for (Counter counter : count.values()) {
+        for (Counter<Ranges.Range> counter : count.values()) {
             sorted.add(counter);
         }
         Collections.sort(sorted);

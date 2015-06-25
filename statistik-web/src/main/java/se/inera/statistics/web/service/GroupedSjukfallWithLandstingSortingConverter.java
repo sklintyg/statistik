@@ -46,9 +46,7 @@ public class GroupedSjukfallWithLandstingSortingConverter extends SimpleDualSexC
                 return o1.getName().compareToIgnoreCase(o2.getName());
             }
         });
-        final TableData tableData = super.convertToTableData(list);
-
-        return tableData;
+        return super.convertToTableData(list);
     }
 
     @Override

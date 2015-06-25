@@ -28,11 +28,11 @@ public final class CalcCoordinator {
     private static final Object LOCK = new Object();
     private static final long POLL_TIME = 100L;
     private static final int MAX_WAIT = 5_000;
-    private static Ticket[] tickets = new Ticket[NO_OF_TICKETS];
+    private static final Ticket[] TICKETS = new Ticket[NO_OF_TICKETS];
     private static int queueSize;
     static {
-        for (int i = 0; i < tickets.length; i++) {
-            tickets[i] = new Ticket();
+        for (int i = 0; i < TICKETS.length; i++) {
+            TICKETS[i] = new Ticket();
         }
         LOG.info("Using " +  NO_OF_TICKETS + " tickets.");
     }
@@ -46,7 +46,7 @@ public final class CalcCoordinator {
         Ticket returnTicket = null;
         int size = 0;
         synchronized (LOCK) {
-            for (Ticket ticket : tickets) {
+            for (Ticket ticket : TICKETS) {
                 if (ticket.free) {
                     ticket.free = false;
                     returnTicket = ticket;

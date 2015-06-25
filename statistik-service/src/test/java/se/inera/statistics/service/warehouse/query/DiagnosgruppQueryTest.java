@@ -53,7 +53,7 @@ import static se.inera.statistics.service.warehouse.Fact.aFact;
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 public class DiagnosgruppQueryTest {
 
-    public static final HsaIdVardgivare VARDGIVARE = new HsaIdVardgivare("vardgivare");
+    private static final HsaIdVardgivare VARDGIVARE = new HsaIdVardgivare("vardgivare");
 
     private Warehouse warehouse;
 

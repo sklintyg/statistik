@@ -29,7 +29,7 @@ import static se.inera.statistics.service.warehouse.Fact.aFact;
 
 public class AisleTest {
 
-    private MutableAisle aisle = new MutableAisle(new HsaIdVardgivare("vgid"));
+    private final MutableAisle aisle = new MutableAisle(new HsaIdVardgivare("vgid"));
 
     @Test
     public void outOfOrderFactsGetsSorted() {

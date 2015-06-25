@@ -48,7 +48,6 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -243,7 +242,7 @@ public class ProtectedChartDataService {
             final Filter filter = filterSettings.getFilter();
             final Range range = filterSettings.getRange();
             final DiagnosgruppResponse diagnosavsnitt = warehouse.getUnderdiagnosgrupper(filter.getPredicate(), range, groupId, loginServiceUtil.getSelectedVgIdForLoggedInUser(request));
-            final String message = getDiagnosisSubGroupStatisticsMessage(filter, Arrays.asList(String.valueOf(icd10.findFromIcd10Code(groupId).toInt())));
+            final String message = getDiagnosisSubGroupStatisticsMessage(filter, Collections.singletonList(String.valueOf(icd10.findFromIcd10Code(groupId).toInt())));
             final DualSexStatisticsData data = new DiagnosisSubGroupsConverter().convert(diagnosavsnitt, filterSettings, message);
             return getResponse(data, csv);
         } catch (RangeNotFoundException e) {
@@ -270,7 +269,7 @@ public class ProtectedChartDataService {
             final Filter filter = filterSettings.getFilter();
             final Range range = filterSettings.getRange();
             final SimpleKonResponse<SimpleKonDataRow> diagnosavsnitt = warehouse.getUnderdiagnosgrupperTvarsnitt(filter.getPredicate(), range, groupId, loginServiceUtil.getSelectedVgIdForLoggedInUser(request));
-            final String message = getDiagnosisSubGroupStatisticsMessage(filter, Arrays.asList(String.valueOf(icd10.findFromIcd10Code(groupId).toInt())));
+            final String message = getDiagnosisSubGroupStatisticsMessage(filter, Collections.singletonList(String.valueOf(icd10.findFromIcd10Code(groupId).toInt())));
             final SimpleDetailsData data = new DiagnosisSubGroupsTvarsnittConverter().convert(diagnosavsnitt, filterSettings, message);
             return getResponse(data, csv);
         } catch (RangeNotFoundException e) {
@@ -292,8 +291,7 @@ public class ProtectedChartDataService {
         final List<String> diagnosis = emptyDiagnosisHash ? Collections.<String>emptyList() : filterHashHandler.getFilterFromHash(diagnosisHash).getDiagnoser();
         final String message = emptyDiagnosisHash ? "Inga diagnoser valda" : getCompareDiagnosisMessage(filter, diagnosis);
         SimpleKonResponse<SimpleKonDataRow> resultRows = warehouse.getJamforDiagnoser(filter.getPredicate(), range, loginServiceUtil.getSelectedVgIdForLoggedInUser(request), diagnosis);
-        SimpleDetailsData result = new CompareDiagnosisConverter().convert(resultRows, filterSettings, message);
-        SimpleDetailsData data = result;
+        SimpleDetailsData data = new CompareDiagnosisConverter().convert(resultRows, filterSettings, message);
         return getResponse(data, csv);
     }
 
@@ -545,6 +543,7 @@ public class ProtectedChartDataService {
         }
         return loginServiceUtil.getLoginInfo(request).isLoggedIn();
     }
+
 
     public boolean userAccess(HttpServletRequest request) {
         final LoginInfo loginInfo = loginServiceUtil.getLoginInfo(request);

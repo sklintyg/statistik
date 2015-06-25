@@ -40,13 +40,13 @@ import static se.inera.statistics.service.warehouse.Fact.aFact;
 
 public class AldersgruppQueryTest {
 
-    public static final HsaIdVardgivare VARDGIVARE = new HsaIdVardgivare("vardgivare");
-    private Warehouse warehouse = new Warehouse();
+    private static final HsaIdVardgivare VARDGIVARE = new HsaIdVardgivare("vardgivare");
+    private final Warehouse warehouse = new Warehouse();
 
     private int intyg;
     private int patient;
 
-    private SjukfallUtil sjukfallUtil = new SjukfallUtil();
+    private final SjukfallUtil sjukfallUtil = new SjukfallUtil();
 
     @Test
     public void one() {

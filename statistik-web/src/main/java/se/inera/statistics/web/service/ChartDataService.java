@@ -70,10 +70,10 @@ import java.util.Map;
 public class ChartDataService {
 
     private static final Logger LOG = LoggerFactory.getLogger(ChartDataService.class);
-    public static final int YEAR = 12;
+    private static final int YEAR = 12;
     public static final String TEXT_CP1252 = "text/plain; charset=cp1252";
-    public static final int DELAY_BETWEEN_RELOADS = 30 * 60 * 1000;
-    public static final int EIGHTEEN_MONTHS = 18;
+    private static final int DELAY_BETWEEN_RELOADS = 30 * 60 * 1000;
+    private static final int EIGHTEEN_MONTHS = 18;
 
     @Autowired
     private NationellData data;
@@ -176,28 +176,28 @@ public class ChartDataService {
 
     }
 
-    public void buildAldersgrupper() {
+    private void buildAldersgrupper() {
         Range range = Range.createForLastMonthsExcludingCurrent(YEAR);
         SimpleKonResponse<SimpleKonDataRow> ageGroups = data.getHistoricalAgeGroups(range);
         final FilterSettings filterSettings = new FilterSettings(Filter.empty(), Range.createForLastMonthsExcludingCurrent(range.getMonths()));
         aldersgrupper = new AgeGroupsConverter().convert(ageGroups, filterSettings);
     }
 
-    public void buildSjukskrivningsgrad() {
+    private void buildSjukskrivningsgrad() {
         final Range range = Range.createForLastMonthsExcludingCurrent(EIGHTEEN_MONTHS);
         KonDataResponse degreeOfSickLeaveStatistics = data.getSjukskrivningsgrad(range);
         final FilterSettings filterSettings = new FilterSettings(Filter.empty(), range);
         sjukskrivningsgrad = new DegreeOfSickLeaveConverter().convert(degreeOfSickLeaveStatistics, filterSettings);
     }
 
-    public void buildSjukfallslangd() {
+    private void buildSjukfallslangd() {
         Range range = Range.createForLastMonthsExcludingCurrent(YEAR);
         SimpleKonResponse<SimpleKonDataRow> sickLeaveLength = data.getSjukfallslangd(range);
         final FilterSettings filterSettings = new FilterSettings(Filter.empty(), range);
         sjukfallslangd = new SickLeaveLengthConverter().convert(sickLeaveLength, filterSettings);
     }
 
-    public void buildSjukfallPerLan() {
+    private void buildSjukfallPerLan() {
         Range range1 = Range.quarter();
         Range range2 = ReportUtil.getPreviousPeriod(range1);
 
@@ -206,7 +206,7 @@ public class ChartDataService {
         sjukfallPerLan = new CasesPerCountyConverter(countyStatRange1, countyStatRange2, range1, range2).convert();
     }
 
-    public void buildKonsfordelningPerLan() {
+    private void buildKonsfordelningPerLan() {
         final Range range = Range.createForLastMonthsExcludingCurrent(YEAR);
         SimpleKonResponse<SimpleKonDataRow> casesPerMonth = data.getSjukfallPerLan(range);
         konsfordelningPerLan = new SjukfallPerSexConverter().convert(casesPerMonth, range);
