@@ -4,7 +4,7 @@ plugins {
 
 allprojects {
     group = 'se.inera.statistik'
-    version = '2.0.14'
+    version = '3.0.0'
 
     repositories {
         mavenLocal()
@@ -16,6 +16,7 @@ allprojects {
 
     buildscript {
         repositories {
+            mavenLocal()
             maven { url "https://repository-callistasoftware.forge.cloudbees.com/snapshot/" }
             jcenter()
         }
@@ -71,6 +72,7 @@ configure(subprojects.findAll { ['hsa-integration', 'statistik-service', 'statis
     apply plugin: 'checkstyle'
 
     checkstyle {
+        configProperties.checkstyleConfigDir = file("$rootProject.projectDir/build-tools/src/main/resources")
         config = resources.text.fromFile("${rootProject.projectDir}/build-tools/src/main/resources/checkstyle.xml")
         ignoreFailures = false
         // This is empty b/c we run checkstyle explicitly in the "testAll" task below
@@ -123,6 +125,7 @@ configure(subprojects.findAll { ['fileservice', 'liquibase-runner', 'statistik-w
                 snapshotRepository(url: "dav:https://repository-callistasoftware.forge.cloudbees.com/snapshot/") {
                     authentication(userName: cloudbeesUsername, password: cloudbeesPassword)
                 }
+                uniqueVersion = false
             }
         }
     }

@@ -18,6 +18,9 @@
  */
 package se.inera.statistics.web.model;
 
+import se.inera.statistics.hsa.model.HsaIdUser;
+import se.inera.statistics.service.landsting.LandstingsVardgivareStatus;
+
 import java.util.Collections;
 import java.util.List;
 
@@ -31,6 +34,7 @@ public class LoginInfo {
     private boolean verksamhetschef;
     private boolean delprocessledare;
     private boolean processledare;
+    private LandstingsVardgivareStatus landstingsVardgivareStatus;
 
     public LoginInfo() {
         loggedIn = false;
@@ -41,11 +45,12 @@ public class LoginInfo {
         verksamhetschef = false;
         delprocessledare = false;
         processledare = false;
+        landstingsVardgivareStatus = LandstingsVardgivareStatus.NO_LANDSTINGSVARDGIVARE;
     }
 
-    //CHECKSTYLE:OFF ParameterNumberCheck
-    public LoginInfo(String hsaId, String name, Verksamhet defaultVerksamhet, boolean verksamhetschef, boolean delprocessledare, boolean processledare, List<Verksamhet> businesses) {
-        this.hsaId = hsaId;
+    // CHECKSTYLE:OFF ParameterNumberCheck
+    public LoginInfo(HsaIdUser hsaId, String name, Verksamhet defaultVerksamhet, boolean verksamhetschef, boolean delprocessledare, boolean processledare, List<Verksamhet> businesses, LandstingsVardgivareStatus landstingsVardgivareStatus) {
+        this.hsaId = hsaId == null ? null : hsaId.getId();
         this.name = name;
         this.defaultVerksamhet = defaultVerksamhet;
         this.verksamhetschef = verksamhetschef;
@@ -53,11 +58,12 @@ public class LoginInfo {
         this.processledare = processledare;
         this.loggedIn = true;
         this.businesses = businesses;
+        this.landstingsVardgivareStatus = landstingsVardgivareStatus;
     }
-    //CHECKSTYLE:ON
+    // CHECKSTYLE:ON ParameterNumberCheck
 
-    public String getHsaId() {
-        return hsaId;
+    public HsaIdUser getHsaId() {
+        return new HsaIdUser(hsaId);
     }
 
     public String getName() {
@@ -86,6 +92,18 @@ public class LoginInfo {
 
     public boolean isProcessledare() {
         return processledare;
+    }
+
+    public boolean isLandstingsvardgivare() {
+        return loggedIn && !LandstingsVardgivareStatus.NO_LANDSTINGSVARDGIVARE.equals(landstingsVardgivareStatus);
+    }
+
+    public boolean isLandstingsvardgivareWithUpload() {
+        return loggedIn && LandstingsVardgivareStatus.LANDSTINGSVARDGIVARE_WITH_UPLOAD.equals(landstingsVardgivareStatus);
+    }
+
+    public boolean isLandstingAdmin() {
+        return isLandstingsvardgivare() && processledare;
     }
 
 }

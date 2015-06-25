@@ -58,8 +58,35 @@ public class RangeTest {
 
     @Test
     public void settingRangeMonths() {
-        final Range range = new Range(3);
+        final Range range = Range.createForLastMonthsExcludingCurrent(3);
         assertEquals(3, range.getMonths());
     }
     // CHECKSTYLE:ON MagicNumber
+
+    @Test
+    public void settingRangeMonthsCorrectStartAndEnd() {
+        //When
+        final Range range = Range.createForLastMonthsExcludingCurrent(3);
+
+        //Then
+        final LocalDate now = new LocalDate();
+        final int expectedFrom = now.minusMonths(3).withDayOfMonth(1).getDayOfYear();
+        assertEquals(expectedFrom, range.getFrom().getDayOfYear());
+        final int expectedTo = now.minusMonths(1).dayOfMonth().withMaximumValue().getDayOfYear();
+        assertEquals(expectedTo, range.getTo().getDayOfYear());
+    }
+
+    @Test
+    public void settingRangeMonthsIncludingCurrentCorrectStartAndEnd() {
+        //When
+        final Range range = Range.createForLastMonthsIncludingCurrent(3);
+
+        //Then
+        final LocalDate now = new LocalDate();
+        final int expectedFrom = now.minusMonths(2).withDayOfMonth(1).getDayOfYear();
+        assertEquals(expectedFrom, range.getFrom().getDayOfYear());
+        final int expectedTo = now.dayOfMonth().withMaximumValue().getDayOfYear();
+        assertEquals(expectedTo, range.getTo().getDayOfYear());
+    }
+
 }

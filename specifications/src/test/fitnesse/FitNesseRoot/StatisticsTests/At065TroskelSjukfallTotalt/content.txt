@@ -1,0 +1,35 @@
+!contents -R2 -g -p -f -h
+
+!3 Givet att:
+
+Det finns 5 sjukfall för vg1; 3 kvinnor och 2 män.
+Det finns 5 sjukfall för vg3; 1 kvinna och 4 män.
+
+| script | dagens datum | 2013-11-06 |
+
+| script | troskel varde | 3 |
+
+| Enbart foljande intyg finns |
+| personnr | diagnoskod | start    | slut       | enhet  |
+| 19790407-1000 | F40 | 2013-02-01 | 2013-02-14 | enhet1 |
+| 19790407-2000 | F41 | 2013-02-01 | 2013-02-14 | enhet1 |
+| 19790407-3000 | F40 | 2013-02-01 | 2013-02-14 | enhet1 |
+| 19790407-4010 | F41 | 2013-02-01 | 2013-02-14 | enhet1 |
+| 19790407-5010 | F40 | 2013-02-01 | 2013-02-14 | enhet1 |
+| 19790407-6000 | F40 | 2013-02-01 | 2013-02-14 | enhet3 |
+| 19790407-7010 | A00 | 2013-02-01 | 2013-02-14 | enhet3 |
+| 19790407-8010 | F41 | 2013-02-01 | 2013-02-14 | enhet3 |
+| 19790407-9010 | F41 | 2013-02-01 | 2013-02-14 | enhet3 |
+| 19790407-0010 | F41 | 2013-02-01 | 2013-02-14 | enhet3 |
+
+!3 Då gäller:
+
+För vg1 visas inga sjukfall för män. För vg3 visas inga sjukfall för kvinnor.
+Tröskelvärdet appliceras per vårdgivare, kön och månad.
+
+Nationell:
+| Sjukfall i rapporten sjukfall totalt |
+| år   | månad | män? | kvinnor? |
+| 2013 | jan   | 0    | 0        |
+| 2013 | feb   | 4    | 3        |
+| 2013 | mar   | 0    | 0        |

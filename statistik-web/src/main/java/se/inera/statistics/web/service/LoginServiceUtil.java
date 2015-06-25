@@ -29,7 +29,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.stereotype.Component;
 import se.inera.auth.model.User;
+import se.inera.statistics.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.hsa.model.Vardenhet;
+import se.inera.statistics.service.landsting.LandstingEnhetHandler;
+import se.inera.statistics.service.landsting.LandstingsVardgivareStatus;
 import se.inera.statistics.service.processlog.Enhet;
 import se.inera.statistics.service.report.model.Kommun;
 import se.inera.statistics.service.report.model.Lan;
@@ -56,6 +59,9 @@ public class LoginServiceUtil {
     @Autowired
     private Warehouse warehouse;
 
+    @Autowired
+    private LandstingEnhetHandler landstingEnhetHandler;
+
     private Kommun kommun = new Kommun();
 
     private Lan lan = new Lan();
@@ -63,6 +69,11 @@ public class LoginServiceUtil {
     private VerksamhetsTyp verksamheter = new VerksamhetsTyp();
 
     private static final Splitter ID_SPLITTER = Splitter.on(',').trimResults().omitEmptyStrings();
+
+    public boolean isLoggedIn(HttpServletRequest request) {
+        return (request.getUserPrincipal() != null)
+                && (((AbstractAuthenticationToken) request.getUserPrincipal()).getDetails() != null);
+    }
 
     public LoginInfo getLoginInfo(HttpServletRequest request) {
         Principal user = request.getUserPrincipal();
@@ -82,11 +93,12 @@ public class LoginServiceUtil {
             LOG.warn("valdEnhet may not be null");
             return new LoginInfo();
         }
-        final String vardgivarId = valdVardenhet.getVardgivarId();
+        final HsaIdVardgivare vardgivarId = valdVardenhet.getVardgivarId();
         List<Enhet> enhetsList = warehouse.getEnhets(vardgivarId);
         Verksamhet defaultVerksamhet = toVerksamhet(valdVardenhet, enhetsList);
         List<Verksamhet> verksamhets = getVerksamhetsList(realUser, enhetsList);
-        return new LoginInfo(realUser.getHsaId(), realUser.getName(), defaultVerksamhet, realUser.isVerksamhetschef(), realUser.isDelprocessledare(), realUser.isProcessledare(), verksamhets);
+        final LandstingsVardgivareStatus landstingsVardgivareStatus = landstingEnhetHandler.getLandstingsVardgivareStatus(vardgivarId);
+        return new LoginInfo(realUser.getHsaId(), realUser.getName(), defaultVerksamhet, realUser.isVerksamhetschef(), realUser.isDelprocessledare(), realUser.isProcessledare(), verksamhets, landstingsVardgivareStatus);
     }
 
     private List<Verksamhet> getVerksamhetsList(User realUser, final List<Enhet> enhetsList) {
@@ -107,7 +119,7 @@ public class LoginServiceUtil {
         }
     }
 
-    private Verksamhet toVerksamhet(Enhet enhet) {
+    Verksamhet toVerksamhet(Enhet enhet) {
         Kommun kommun = new Kommun();
         Lan lan = new Lan();
         return new Verksamhet(enhet.getEnhetId(), enhet.getNamn(), enhet.getVardgivareId(), enhet.getVardgivareNamn(), enhet.getLansId(),
@@ -131,7 +143,7 @@ public class LoginServiceUtil {
         return new Verksamhet(vardEnhet.getId(), vardEnhet.getNamn(), vardEnhet.getVardgivarId(), vardEnhet.getVardgivarNamn(), lansId, lansNamn, kommunId, kommunNamn, verksamhetsTyper);
     }
 
-    private Set<Verksamhet.VerksamhetsTyp> getVerksamhetsTyper(String verksamhetsTyper) {
+    Set<Verksamhet.VerksamhetsTyp> getVerksamhetsTyper(String verksamhetsTyper) {
         return new HashSet<>(Lists.transform(ID_SPLITTER.splitToList(verksamhetsTyper), new Function<String, Verksamhet.VerksamhetsTyp>() {
             @Override
             public Verksamhet.VerksamhetsTyp apply(String verksamhetsId) {
@@ -140,6 +152,10 @@ public class LoginServiceUtil {
                 return new Verksamhet.VerksamhetsTyp(groupId, verksamhetsName);
             }
         }));
+    }
+
+    HsaIdVardgivare getSelectedVgIdForLoggedInUser(HttpServletRequest request) {
+        return getLoginInfo(request).getDefaultVerksamhet().getVardgivarId();
     }
 
 }

@@ -1,8 +1,9 @@
 !contents -R2 -g -p -f -h
 
-Kontrollerar att intyg med inget eller ogiltigt enhets-id hanteras som förväntat.
+Följande test visat att intyg med inget eller ogiltigt enhets-id hanteras som förväntat (de visas för användare med vårdgivarbehörighet för den vårdgivare som enheten tillhör, men inte för användare med behörighet på specifika enheter).
 
 !3 Givet att:
+
 | script | dagens datum | 2013-11-06 |
 
 | script | troskel varde | 1 |
@@ -13,7 +14,6 @@ Kontrollerar att intyg med inget eller ogiltigt enhets-id hanteras som förvänt
 | 19790407-0020 | G01        | 2013-02-01 | 2013-02-06 | EJHSA | |
 | 19790407-0030 | G01        | 2013-02-01 | 2013-03-06 | EJHSANR2 | |
 | 19790407-0040 | G01        | 2013-02-01 | 2013-03-06 | UTANENHETSID | |
-
 
 !3 Då gäller:
 Nationell nivå
@@ -30,7 +30,6 @@ Inloggad nivå
 | user1        | false         | 2013 | mar   | 0    | 0        |
 | user2        | true          | 2013 | mar   | 1    | 1        |
 
-
 | Sjukfall i rapporten sjukfall per enhet |
 | inloggad som | vårdenhet      | vårdgivarnivå  | totalt? | män? | kvinnor? |
 | user1        | Enhet enhet1   | false          | 1       | 1    | 0        |
@@ -41,7 +40,6 @@ Inloggad nivå
 | user1        | EJHSA          | true           | 1       | 0    | 1        |
 | user1        | EJHSANR2       | true           | 1       | 1    | 0        |
 | user1        | Utan enhets-id | true           | 1       | 0    | 1        |
-
 
 | Sjukfall i rapporten sjukfall per enhet |
 | inloggad som | vårdenhet      | vårdgivarnivå  | filter enheter                     | filter verksamhetstyper | filter kapitel | totalt? | män? | kvinnor? |

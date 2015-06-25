@@ -19,8 +19,8 @@
 
 'use strict';
 
-angular.module('StatisticsApp').controller('casesPerCountyCtrl', ['$scope', '$rootScope', '$timeout', '$routeParams', '$window', 'statisticsData', 'messageService', 'printFactory',
-    function ($scope, $rootScope, $timeout, $routeParams, $window, statisticsData, messageService, printFactory) {
+angular.module('StatisticsApp').controller('casesPerCountyCtrl', ['$scope', '$rootScope', '$timeout', '$routeParams', '$window', 'statisticsData', 'messageService', 'printFactory', 'chartFactory',
+    function ($scope, $rootScope, $timeout, $routeParams, $window, statisticsData, messageService, printFactory, chartFactory) {
 
         var chart = {};
         $scope.chartContainers = [
@@ -28,7 +28,7 @@ angular.module('StatisticsApp').controller('casesPerCountyCtrl', ['$scope', '$ro
         ];
 
         var paintChart = function (chartCategories, chartSeries, doneLoadingCallback) {
-            var chartOptions = ControllerCommons.getHighChartConfigBase(chartCategories, chartSeries, doneLoadingCallback);
+            var chartOptions = chartFactory.getHighChartConfigBase(chartCategories, chartSeries, doneLoadingCallback);
             chartOptions.chart.type = 'column';
 
             //Set the chart.width to a fixed width when we are about the print.
@@ -55,16 +55,12 @@ angular.module('StatisticsApp').controller('casesPerCountyCtrl', ['$scope', '$ro
         };
 
         $scope.toggleSeriesVisibility = function (index) {
-            var series = chart.series[index];
-            if (series.visible) {
-                series.hide();
-            } else {
-                series.show();
-            }
+            chartFactory.toggleSeriesVisibility(chart.series[index]);
         };
 
         var populatePageWithData = function (result, enhetsIds, diagnosIds) {
             ControllerCommons.populateActiveDiagnosFilter($scope, statisticsData, diagnosIds, $routeParams.printBw || $routeParams.print);
+            $scope.resultMessage = ControllerCommons.getResultMessage(result, messageService);
             var enhetsCount = enhetsIds ? enhetsIds.length : null;
             $scope.subTitle = "Antal sjukfall per län" + ControllerCommons.getEnhetCountText(enhetsCount, false) + result.period;
             $timeout(function () {
@@ -92,7 +88,7 @@ angular.module('StatisticsApp').controller('casesPerCountyCtrl', ['$scope', '$ro
         $scope.dataLoadingError = false;
         $scope.chartFootnotes = [messageService.getProperty('info.lan.information', null, "", null, true)];
         $scope.exportChart = function () {
-            ControllerCommons.exportChart(chart, $scope.pageName, $scope.subTitle, $scope.activeDiagnosFilters);
+            chartFactory.exportChart(chart, $scope.pageName, $scope.subTitle, $scope.activeDiagnosFilters);
         };
 
         $scope.print = function (bwPrint) {
@@ -104,5 +100,9 @@ angular.module('StatisticsApp').controller('casesPerCountyCtrl', ['$scope', '$ro
                 chart.destroy();
             }
         });
+
+        $scope.showInLegend = function(index) {
+            return true;
+        };
     }
 ]);

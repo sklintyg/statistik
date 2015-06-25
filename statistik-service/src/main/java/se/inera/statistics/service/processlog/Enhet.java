@@ -18,6 +18,8 @@
  */
 package se.inera.statistics.service.processlog;
 
+import se.inera.statistics.hsa.model.HsaIdEnhet;
+import se.inera.statistics.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.service.report.model.Kommun;
 
 import javax.persistence.Entity;
@@ -54,10 +56,10 @@ public class Enhet implements Comparable<Enhet> {
         return id;
     }
 
-    public Enhet(String vardgivareId, String vardgivareNamn, String enhetId, String namn, String lansId, String kommunId, String verksamhetsTyper) {
-        this.vardgivareId = vardgivareId;
+    public Enhet(HsaIdVardgivare vardgivareId, String vardgivareNamn, HsaIdEnhet enhetId, String namn, String lansId, String kommunId, String verksamhetsTyper) {
+        setVardgivareId(vardgivareId);
         this.vardgivareNamn = vardgivareNamn;
-        this.enhetId = enhetId;
+        setEnhetId(enhetId);
         this.namn = namn;
         this.lansId = lansId;
         this.kommunId = kommunId;
@@ -68,12 +70,12 @@ public class Enhet implements Comparable<Enhet> {
         this.id = id;
     }
 
-    public String getVardgivareId() {
-        return vardgivareId;
+    public HsaIdVardgivare getVardgivareId() {
+        return new HsaIdVardgivare(vardgivareId);
     }
 
-    public void setVardgivareId(String vardgivareId) {
-        this.vardgivareId = vardgivareId;
+    public void setVardgivareId(HsaIdVardgivare vardgivareId) {
+        this.vardgivareId = vardgivareId.getId();
     }
 
     public String getVardgivareNamn() {
@@ -84,20 +86,16 @@ public class Enhet implements Comparable<Enhet> {
         this.vardgivareNamn = namn;
     }
 
-    public String getEnhetId() {
-        return enhetId;
+    public HsaIdEnhet getEnhetId() {
+        return new HsaIdEnhet(enhetId);
     }
 
-    public void setEnhetId(String enhetId) {
-        this.enhetId = enhetId;
+    public void setEnhetId(HsaIdEnhet enhetId) {
+        this.enhetId = enhetId.getId();
     }
 
     public String getNamn() {
         return namn;
-    }
-
-    public void setNamn(String namn) {
-        this.namn = namn;
     }
 
     public String getLansId() {
@@ -130,6 +128,6 @@ public class Enhet implements Comparable<Enhet> {
 
     @Override
     public int compareTo(Enhet enhet) {
-        return enhetId.compareTo(enhet.getEnhetId());
+        return enhetId.compareTo(enhet.enhetId);
     }
 }

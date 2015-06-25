@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    Copyright (C) 2015 Inera AB (http://www.inera.se)
+
+    This file is part of statistik (https://github.com/sklintyg/statistik).
+
+    statistik is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    statistik is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+-->
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd"
+                   logicalFilePath="liquibase/db.changelog-v28.0_hsaid_to_same_case.xml">
+    <changeSet id="28_wideline_enhet_to_upper_case.xml" author="fredrik.engstrom">
+        <update tableName="wideline">
+            <column name="enhet" valueComputed="upper(enhet)"/>
+        </update>
+    </changeSet>
+    <changeSet id="28_wideline_vardgivareid_to_upper_case.xml" author="fredrik.engstrom">
+        <update tableName="wideline">
+            <column name="vardgivareid" valueComputed="upper(vardgivareid)"/>
+        </update>
+    </changeSet>
+    <changeSet id="28_wideline_lakareid_to_upper_case.xml" author="fredrik.engstrom">
+        <update tableName="wideline">
+            <column name="lakareid" valueComputed="upper(lakareid)"/>
+        </update>
+    </changeSet>
+    <changeSet id="28_enhet_enhetid_to_upper_case.xml" author="fredrik.engstrom">
+        <update tableName="enhet">
+            <column name="enhetId" valueComputed="upper(enhetId)"/>
+        </update>
+    </changeSet>
+    <changeSet id="28_enhet_vardgivareid_to_upper_case.xml" author="fredrik.engstrom">
+        <update tableName="enhet">
+            <column name="vardgivareId" valueComputed="upper(vardgivareId)"/>
+        </update>
+    </changeSet>
+    <changeSet id="28_lakare_lakareid_to_upper_case.xml" author="fredrik.engstrom">
+        <update tableName="lakare">
+            <column name="lakareid" valueComputed="upper(lakareid)"/>
+        </update>
+    </changeSet>
+    <changeSet id="28_lakare_vardgivareid_to_upper_case.xml" author="fredrik.engstrom">
+        <update tableName="lakare">
+            <column name="vardgivareid" valueComputed="upper(vardgivareid)"/>
+        </update>
+    </changeSet>
+</databaseChangeLog>

@@ -19,6 +19,7 @@
 package se.inera.statistics.service.report.util;
 
 import com.google.common.base.Function;
+import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
@@ -38,6 +39,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 
 public class Icd10 {
 
@@ -52,11 +54,15 @@ public class Icd10 {
     public static final int MAX_CODE_LENGTH = 3;
 
     public static final String OTHER_KAPITEL = "Ö00-Ö00";
+    public static final String OTHER_AVSNITT = "Ö00-Ö00";
     public static final String OTHER_KATEGORI = "Ö00";
+    public static final String OTHER_KOD = "Ö000";
     public static final List<Integer> INTERNAL_ICD10_INTIDS = Arrays.asList(
                                                                         icd10ToInt(OTHER_KAPITEL, Icd10RangeType.KAPITEL),
-                                                                        icd10ToInt("Ö00-Ö00", Icd10RangeType.AVSNITT),
-                                                                        icd10ToInt(OTHER_KATEGORI, Icd10RangeType.KATEGORI));
+                                                                        icd10ToInt(OTHER_AVSNITT, Icd10RangeType.AVSNITT),
+                                                                        icd10ToInt(OTHER_KATEGORI, Icd10RangeType.KATEGORI),
+                                                                        icd10ToInt(OTHER_KOD, Icd10RangeType.KOD));
+    public static final String UNKNOWN_CODE_NAME = "Utan giltig ICD-10 kod";
 
     @Autowired
     private Resource icd10KategoriAnsiFile;
@@ -67,6 +73,9 @@ public class Icd10 {
     @Autowired
     private Resource icd10KapitelAnsiFile;
 
+    @Autowired
+    private Resource icd10KodAnsiFile;
+
     private List<Kapitel> kapitels;
 
     private List<Id> internalIcd10 = new ArrayList<>();
@@ -74,21 +83,36 @@ public class Icd10 {
     private IdMap<Kategori> idToKategoriMap = new IdMap<>();
     private IdMap<Avsnitt> idToAvsnittMap = new IdMap<>();
     private IdMap<Kapitel> idToKapitelMap = new IdMap<>();
+    private IdMap<Kod> idToKodMap = new IdMap<>();
 
     public static int icd10ToInt(String id, Icd10RangeType rangeType) {
-        final int rangeTypeMultiplier = 10000;
-        final int rangeTypeAsNumber = rangeType.ordinal() * rangeTypeMultiplier;
+        final String upperCaseId = id.toUpperCase().trim();
+        int code = 0;
+        final int firstCharMultiplier = 10_000_000;
+        code += (upperCaseId.charAt(0) - '0' + 1) * firstCharMultiplier;
 
-        final int firstCharMultiplier = 100;
-        final int firstCharAsNumber = (id.toUpperCase().charAt(0) - 'A') * firstCharMultiplier;
+        final int secondCharMultiplier = 100_000;
+        code += (upperCaseId.charAt(1) - '0' + 1) * secondCharMultiplier;
 
-        final int secondCharMultiplier = 10;
-        final int secondCharAsNumber = (id.charAt(1) - '0') * secondCharMultiplier;
+        final int thirdCharMultiplier = 10_000;
+        code += (upperCaseId.charAt(2) - '0' + 1) * thirdCharMultiplier;
 
-        final int thirdCharMultiplier = 1;
-        final int thirdCharAsNumber = (id.charAt(2) - '0') * thirdCharMultiplier;
+        final int three = 3;
+        if (upperCaseId.length() > three) {
+            final int fourthCharMultiplier = 1000;
+            code += (upperCaseId.charAt(three) - '0' + 1) * fourthCharMultiplier;
 
-        return rangeTypeAsNumber + firstCharAsNumber + secondCharAsNumber + thirdCharAsNumber;
+            final int four = 4;
+            if (upperCaseId.length() > four) {
+                final int fifthCharMultiplier = 10;
+                code += (upperCaseId.toUpperCase().charAt(four) - '0' + 1) * fifthCharMultiplier;
+            }
+        }
+
+        final int rangeTypeMultiplier = 1;
+        code += rangeType.ordinal() * rangeTypeMultiplier;
+
+        return code;
     }
 
     @PostConstruct
@@ -108,7 +132,10 @@ public class Icd10 {
                 String line;
                 while ((line = lr.next()) != null) {
                     Avsnitt avsnitt = Avsnitt.valueOf(line, idToKapitelMap.values());
-                    idToAvsnittMap.put(avsnitt);
+                    if (avsnitt != null) {
+                        avsnitt.kapitel.avsnitt.add(avsnitt);
+                        idToAvsnittMap.put(avsnitt);
+                    }
                 }
             }
 
@@ -116,7 +143,21 @@ public class Icd10 {
                 String line;
                 while ((line = lr.next()) != null) {
                     Kategori kategori = Kategori.valueOf(line, idToAvsnittMap.values());
-                    idToKategoriMap.put(kategori);
+                    if (kategori != null) {
+                        kategori.avsnitt.kategori.add(kategori);
+                        idToKategoriMap.put(kategori);
+                    }
+                }
+            }
+
+            try (LineReader lr = new LineReader(icd10KodAnsiFile)) {
+                String line;
+                while ((line = lr.next()) != null) {
+                    Kod kod = Kod.valueOf(line, idToKategoriMap.values());
+                    if (kod != null) {
+                        kod.kategori.kods.add(kod);
+                        idToKodMap.put(kod);
+                    }
                 }
             }
 
@@ -127,11 +168,13 @@ public class Icd10 {
     }
 
     private void populateInternalIcd10() {
-        final Kapitel kapitel = new Kapitel(OTHER_KAPITEL, "Utan giltig ICD-10 kod");
+        final Kapitel kapitel = new Kapitel(OTHER_KAPITEL, UNKNOWN_CODE_NAME);
         internalIcd10.add(kapitel);
-        final Avsnitt avsnitt = new Avsnitt(OTHER_KAPITEL, "Utan giltig ICD-10 kod", kapitel);
+        final Avsnitt avsnitt = new Avsnitt(OTHER_KAPITEL, UNKNOWN_CODE_NAME, kapitel);
         internalIcd10.add(avsnitt);
-        internalIcd10.add(new Kategori(OTHER_KATEGORI, "Utan giltig ICD-10 kod", avsnitt));
+        final Kategori kategori = new Kategori(OTHER_KATEGORI, UNKNOWN_CODE_NAME, avsnitt);
+        internalIcd10.add(kategori);
+        internalIcd10.add(new Kod(OTHER_KOD, UNKNOWN_CODE_NAME, kategori));
     }
 
     public List<Kapitel> getKapitel(boolean includeInternalKapitel) {
@@ -178,9 +221,22 @@ public class Icd10 {
         return idToKapitelMap.get(diagnoskapitel);
     }
 
+    public Kod getKod(String diagnoskod) {
+        return idToKodMap.get(diagnoskod);
+    }
+
     public Kategori findKategori(String rawCode) {
         String normalized = normalize(rawCode);
         return getKategori(normalized);
+    }
+
+    public Kod findKod(String rawCode) {
+        final String normalized = rawCode.toUpperCase(Locale.ENGLISH).replaceAll("[^A-Z0-9]", "");
+        final Kod kod = getKod(normalized);
+        if (kod == null && !normalized.isEmpty()) {
+            return findKod(normalized.substring(0, normalized.length() - 1));
+        }
+        return kod;
     }
 
     public Id findIcd10FromNumericId(int numId) {
@@ -197,6 +253,11 @@ public class Icd10 {
         for (Id kapitel : idToKapitelMap.values()) {
             if (kapitel.toInt() == numId) {
                 return kapitel;
+            }
+        }
+        for (Id kod : idToKodMap.values()) {
+            if (kod.toInt() == numId) {
+                return kod;
             }
         }
         for (Id internal : internalIcd10) {
@@ -232,12 +293,26 @@ public class Icd10 {
                 return kapitel;
             }
         }
+        for (Id kod : idToKodMap.values()) {
+            if (icd10.equals(kod.getId())) {
+                return kod;
+            }
+        }
         for (Id internal : internalIcd10) {
             if (icd10.equals(internal.getId())) {
                 return internal;
             }
         }
         throw new RuntimeException("ICD10 with id could not be found: " + icd10);
+    }
+
+    private static <T extends Range> T find(String id, Collection<T> ranges) {
+        for (T range: ranges) {
+            if (range.contains(id)) {
+                return range;
+            }
+        }
+        return null;
     }
 
     public static class IdMap<T extends Id> extends HashMap<String, T> {
@@ -269,6 +344,8 @@ public class Icd10 {
 
         public abstract List<? extends Id> getSubItems();
 
+        public abstract Optional<? extends Id> getParent();
+
         public String getVisibleId() {
             return isInternal() ? "" : getId();
         }
@@ -279,10 +356,20 @@ public class Icd10 {
     }
 
     public abstract static class Range extends Id {
+
+        public Range(String id, String name) {
+            super(id, name);
+        }
+
+        abstract boolean contains(String id);
+
+    }
+
+    public abstract static class RangeType extends Range {
         private final String firstId;
         private final String lastId;
 
-        public Range(String range, String name) {
+        public RangeType(String range, String name) {
             super(range, name);
             firstId = range.substring(0, ENDINDEX_FIRST_KATEGORI);
             lastId = range.substring(STARTINDEX_LAST_KATEGORI);
@@ -293,7 +380,7 @@ public class Icd10 {
         }
     }
 
-    public static class Kapitel extends Range {
+    public static class Kapitel extends RangeType {
 
         private final List<Avsnitt> avsnitt = new ArrayList<>();
 
@@ -304,6 +391,11 @@ public class Icd10 {
         @Override
         public List<? extends Id> getSubItems() {
             return getAvsnitt();
+        }
+
+        @Override
+        public Optional<? extends Id> getParent() {
+            return Optional.absent();
         }
 
         public static Kapitel valueOf(String line) {
@@ -321,7 +413,7 @@ public class Icd10 {
 
     }
 
-    public static class Avsnitt extends Range {
+    public static class Avsnitt extends RangeType {
 
         private final Kapitel kapitel;
         private final List<Kategori> kategori;
@@ -339,18 +431,7 @@ public class Icd10 {
                 return null;
             }
 
-            Avsnitt avsnitt = new Avsnitt(id, line.substring(STARTINDEX_DESCRIPTION), kapitel);
-            kapitel.avsnitt.add(avsnitt);
-            return avsnitt;
-        }
-
-        private static Kapitel find(String id, Collection<Kapitel> kapitels) {
-            for (Kapitel kapitel: kapitels) {
-                if (kapitel.contains(id)) {
-                    return kapitel;
-                }
-            }
-            return null;
+            return new Avsnitt(id, line.substring(STARTINDEX_DESCRIPTION), kapitel);
         }
 
         public List<Kategori> getKategori() {
@@ -359,6 +440,10 @@ public class Icd10 {
 
         public Kapitel getKapitel() {
             return kapitel;
+        }
+
+        public Optional<? extends Id> getParent() {
+            return Optional.of(getKapitel());
         }
 
         public List<? extends Id> getSubItems() {
@@ -372,13 +457,15 @@ public class Icd10 {
 
     }
 
-    public static class Kategori extends Id {
+    public static class Kategori extends Range {
 
         private final Avsnitt avsnitt;
+        private final List<Kod> kods;
 
         public Kategori(String id, String name, Avsnitt avsnitt) {
             super(id.toUpperCase(), name);
             this.avsnitt = avsnitt;
+            this.kods = new ArrayList<>();
         }
 
         public static Kategori valueOf(String line, Collection<Avsnitt> avsnitts) {
@@ -387,32 +474,75 @@ public class Icd10 {
             if (avsnitt == null) {
                 return null;
             }
-            Kategori kategori = new Kategori(id, line.substring(STARTINDEX_DESCRIPTION), avsnitt);
-            avsnitt.kategori.add(kategori);
-            return kategori;
-        }
-
-        private static Avsnitt find(String id, Collection<Avsnitt> avsnitts) {
-            for (Avsnitt avsnitt: avsnitts) {
-                if (avsnitt.contains(id)) {
-                    return avsnitt;
-                }
-            }
-            return null;
+            return new Kategori(id, line.substring(STARTINDEX_DESCRIPTION), avsnitt);
         }
 
         public Avsnitt getAvsnitt() {
             return avsnitt;
         }
 
+        public List<Kod> getKods() {
+            return kods;
+        }
+
         @Override
         public List<? extends Id> getSubItems() {
-            return Collections.EMPTY_LIST;
+            return getKods();
+        }
+
+        @Override
+        public Optional<? extends Id> getParent() {
+            return Optional.of(getAvsnitt());
         }
 
         @Override
         public int toInt() {
             return icd10ToInt(getId(), Icd10RangeType.KATEGORI);
+        }
+
+        @Override
+        public boolean contains(String kodId) {
+            return this.getId().equals(kodId.substring(0, MAX_CODE_LENGTH));
+        }
+
+
+    }
+
+    public static class Kod extends Id {
+
+        private final Kategori kategori;
+
+        public Kod(String id, String name, Kategori kategori) {
+            super(id.toUpperCase(), name);
+            this.kategori = kategori;
+        }
+
+        public static Kod valueOf(String line, Collection<Kategori> kategoris) {
+            String id = line.replaceAll("\\s.*", ""); //line.substring(0, );
+            Kategori kategori = find(id, kategoris);
+            if (kategori == null) {
+                return null;
+            }
+            return new Kod(id, line.replaceAll("^[^\\s]*\\s*", ""), kategori);
+        }
+
+        public Kategori getKategori() {
+            return kategori;
+        }
+
+        @Override
+        public Optional<? extends Id> getParent() {
+            return Optional.of(getKategori());
+        }
+
+        @Override
+        public List<? extends Id> getSubItems() {
+            return Collections.emptyList();
+        }
+
+        @Override
+        public int toInt() {
+            return icd10ToInt(getId(), Icd10RangeType.KOD);
         }
 
     }

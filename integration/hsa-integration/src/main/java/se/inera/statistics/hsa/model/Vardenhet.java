@@ -25,19 +25,19 @@ import java.io.Serializable;
  */
 public class Vardenhet implements Serializable {
 
-    private String id;
+    private HsaIdEnhet id;
     private String namn;
-    private String vardgivarId;
+    private HsaIdVardgivare vardgivarId;
     private String vardgivarNamn;
 
     public Vardenhet() {
     }
 
-    public Vardenhet(String id, String namn, String vardgivarId) {
-        this(id, namn, vardgivarId, vardgivarId);
+    public Vardenhet(HsaIdEnhet id, String namn, HsaIdVardgivare vardgivarId) {
+        this(id, namn, vardgivarId, vardgivarId.getId());
     }
 
-    public Vardenhet(String id, String namn, String vardgivarId, String vardgivarNamn) {
+    public Vardenhet(HsaIdEnhet id, String namn, HsaIdVardgivare vardgivarId, String vardgivarNamn) {
         this.id = id;
         this.namn = namn;
         this.vardgivarId = vardgivarId;
@@ -48,11 +48,11 @@ public class Vardenhet implements Serializable {
         return namn;
     }
 
-    public String getId() {
+    public HsaIdEnhet getId() {
         return id;
     }
 
-    public String getVardgivarId() {
+    public HsaIdVardgivare getVardgivarId() {
         return vardgivarId;
     }
 

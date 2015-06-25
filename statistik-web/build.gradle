@@ -1,6 +1,6 @@
 buildscript {
     dependencies {
-        classpath 'org.akhikhl.gretty:gretty:1.1.8'
+        classpath 'org.akhikhl.gretty:gretty:1.2.4'
     }
 }
 
@@ -15,13 +15,23 @@ description = 'Inera Statistics Service - Web Module'
 
 
 gretty {
+    def jvmArgSpringProfiles = '-Dspring.profiles.active=dev,embedded,hsa-stub,security-fake,db-resetter'
+
+    servletContainer = 'jetty9'
     contextPath = '/'
-    contextConfigFile = "${projectDir}/src/main/webapp/WEB-INF/jetty-context.xml"
-    logbackConfigFile = "${projectDir}/src/main/resources/statistics-logback.xml"
-    jvmArgs = ['-Dspring.profiles.active=dev,embedded,hsa-stub,security-fake,db-resetter', '-Dstatistics.test.max.intyg=500', '-XX:MaxPermSize=256M']
+
+    if(project.hasProperty('runWithActiveMQ')) {
+        contextConfigFile = "${projectDir}/src/main/webapp/WEB-INF/jetty-activemq-context.xml"
+        serverConfigFile = "${projectDir}/src/main/webapp/WEB-INF/jetty.xml" //Configures the jetty server with an mbean server.
+        jvmArgSpringProfiles += ',qm,active' //Add the needed spring profiles to start up an embedded activemq and hook it up to jmx
+    } else {
+        contextConfigFile = "${projectDir}/src/main/webapp/WEB-INF/jetty-context.xml"
+    }
+    logbackConfigFile = "${projectDir}/src/main/resources/logback.xml"
     debugSuspend = false
     scanInterval=1
     managedClassReload=true
+    jvmArgs = [jvmArgSpringProfiles, '-Dstatistics.test.max.intyg=500', '-XX:MaxPermSize=256M']
 }
 
 node {
@@ -33,12 +43,15 @@ node {
 //Enter the webjars dependencies here. Its a bit akward, but it is a workaround to keep karma tests
 //and gretty/jetty happy
 List webjars = [[group: 'org.webjars', name: 'jquery', version: '1.10.2'],
-                [group: 'org.webjars', name: 'angularjs', version: '1.2.14'],
-                [group: 'org.webjars', name: 'angular-ui-bootstrap', version: '0.10.0'],
+                [group: 'org.webjars', name: 'angularjs', version: '1.2.16'],
+                [group: 'org.webjars', name: 'angular-ui-bootstrap', version: '0.12.1'],
                 [group: 'org.webjars', name: 'bootstrap', version: '3.1.1'],
                 [group: 'org.webjars', name: 'bootstrap-multiselect', version: '0.9.8'],
                 [group: 'org.webjars', name: 'underscorejs', version: '1.7.0'],
-                [group: 'org.webjars', name: 'respond', version: '1.3.0']]
+                [group: 'org.webjars', name: 'respond', version: '1.3.0'],
+                [group: 'org.webjars', name: 'dropzone', version: '4.0.1'],
+                [group: 'org.webjars', name: 'momentjs', version: '2.10.3'],
+                [group: 'org.webjars', name: 'outdated-browser', version: '1.1.0']]
 
 task unzipWebjars(type: Copy) {
     description 'Copies anything that is a webjar from the classpath and expands it so that we can use their static resources with karma'
@@ -47,9 +60,7 @@ task unzipWebjars(type: Copy) {
 
     from {
         configurations.compile.filter{file ->
-            webjars.any{jar ->
-                file.name.startsWith(jar.name)
-            }
+            webjars.any{jar -> file.name.startsWith(jar.name) }
         }.collect{zipTree(it)}
     }
 }
@@ -80,13 +91,17 @@ dependencies {
     compile "org.apache.commons:commons-lang3:3.2.1"
     compile "org.springframework.security:spring-security-config:${springSecurityVersion}"
     compile "org.springframework.security:spring-security-taglibs:${springSecurityVersion}"
+    compile "org.apache.poi:poi:3.11"
+    compile "org.apache.poi:poi-ooxml:3.11"
+    compile "xalan:xalan:2.7.2"
 
     compile webjars //Define your webjar in the list above
 
     gretty "com.h2database:h2:1.3.171"
     gretty "mysql:mysql-connector-java:5.1.29"
     gretty "org.apache.activemq:activemq-broker:5.8.0"
+    gretty 'org.apache.activemq:activemq-pool:5.8.0'
     gretty "org.apache.tomcat:tomcat-catalina:7.0.20"
-
+    gretty 'org.eclipse.jetty:jetty-jmx:9.2.10.v20150310'
     providedCompile "javax.servlet:javax.servlet-api:3.1.0"
 }

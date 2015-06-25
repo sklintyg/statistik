@@ -19,12 +19,12 @@
 
 'use strict';
 
-angular.module('StatisticsApp').controller('businessOverviewCtrl', ['$scope', '$rootScope', '$window', '$timeout', 'statisticsData', 'businessFilter', '$routeParams', 'printFactory',
-function ($scope, $rootScope, $window, $timeout, statisticsData, businessFilter, $routeParams, printFactory) {
+angular.module('StatisticsApp').controller('businessOverviewCtrl', ['$scope', '$rootScope', '$window', '$timeout', 'statisticsData', '$routeParams', 'printFactory', 'chartFactory', 'messageService',
+function ($scope, $rootScope, $window, $timeout, statisticsData, $routeParams, printFactory, chartFactory, messageService) {
 
     var perMonthAlterationChart = {}, newSexProportionChart = {}, oldSexProportionChart = {},
         ageDonutChart = {}, diagnosisDonutChart = {}, degreeOfSickLeaveChart = {}, sickLeaveLengthChart = {};
-    $scope.baseUrl = "#/verksamhet/" + $routeParams.verksamhetId;
+    $scope.baseUrl = "#/verksamhet";
 
     var dataReceived = function (result) {
         $scope.subTitle = "Utveckling för verksamheten de senaste tre månaderna, " + result.periodText;
@@ -62,7 +62,7 @@ function ($scope, $rootScope, $window, $timeout, statisticsData, businessFilter,
             };
         }
 
-        chartOptions = ControllerCommons.getHighChartConfigBase([], [
+        chartOptions = chartFactory.getHighChartConfigBase([], [
             {
                 data: [
                     [1]
@@ -133,7 +133,7 @@ function ($scope, $rootScope, $window, $timeout, statisticsData, businessFilter,
             }
         ];
 
-        chartOptions = ControllerCommons.getHighChartConfigBase([], series);
+        chartOptions = chartFactory.getHighChartConfigBase([], series);
         chartOptions.chart.type = 'pie';
         chartOptions.chart.renderTo = containerId;
         chartOptions.chart.height = 220;
@@ -164,7 +164,7 @@ function ($scope, $rootScope, $window, $timeout, statisticsData, businessFilter,
     };
 
     var paintDonutChart = function(containerId, chartData, tooltipHeaderPrefix) {
-        var chartOptions = ControllerCommons.getHighChartConfigBase([], []);
+        var chartOptions = chartFactory.getHighChartConfigBase([], []);
         chartOptions.chart.type = 'pie';
         chartOptions.chart.renderTo = containerId;
         chartOptions.chart.height = 180;
@@ -221,6 +221,7 @@ function ($scope, $rootScope, $window, $timeout, statisticsData, businessFilter,
     };
 
     var populatePageWithData = function (result) {
+        $scope.resultMessage = ControllerCommons.getResultMessage(result, messageService);
         $timeout(function () {
             updateCharts(result);
 
@@ -255,10 +256,10 @@ function ($scope, $rootScope, $window, $timeout, statisticsData, businessFilter,
         ];
 
         var categories = _.map(chartData, function (e) {
-            return e.name;
+            return {name: e.name};
         });
 
-        chartOptions = ControllerCommons.getHighChartConfigBase(categories, series);
+        chartOptions = chartFactory.getHighChartConfigBase(categories, series);
         chartOptions.chart.type = 'column';
         chartOptions.chart.renderTo = containerId;
         chartOptions.chart.height = 240;
@@ -266,8 +267,8 @@ function ($scope, $rootScope, $window, $timeout, statisticsData, businessFilter,
         chartOptions.xAxis.labels.format = '{value}';
         chartOptions.yAxis.title = { text: 'Antal' };
         chartOptions.tooltip.headerFormat = '<span style="font-size: 10px">' + (tooltipHeaderPrefix || "") + '{point.key}</span><br/>';
-        chartOptions.yAxis.tickPixelInterval = 30,
-            chartOptions.legend.enabled = false;
+        chartOptions.yAxis.tickPixelInterval = 30;
+        chartOptions.legend.enabled = false;
         return new Highcharts.Chart(chartOptions);
     }
 
@@ -285,7 +286,7 @@ function ($scope, $rootScope, $window, $timeout, statisticsData, businessFilter,
     }
 
     function refresh() {
-        statisticsData.getBusinessOverview($routeParams.verksamhetId, dataReceived, function () {
+        statisticsData.getBusinessOverview(dataReceived, function () {
             $scope.dataLoadingError = true;
         });
     }

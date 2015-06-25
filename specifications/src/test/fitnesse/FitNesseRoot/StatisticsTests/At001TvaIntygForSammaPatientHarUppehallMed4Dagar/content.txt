@@ -1,8 +1,8 @@
 !contents -R2 -g -p -f -h
 
 !3 Givet att:
-Två intyg för samma patient har uppehåll med 4 hela dagar
 
+Två intyg för samma patient har uppehåll med 4 hela dagar.
 
 | script | dagens datum | 2013-11-06 |
 
@@ -14,7 +14,8 @@ Två intyg för samma patient har uppehåll med 4 hela dagar
 | 19790407-1295 | G01 | 2013-02-11 | 2013-02-12 | enhet1 |
 
 !3 Då gäller:
-Det blir 1 sjukfall
+
+Det blir ett sjukfall.
 
 Inloggad:
 | Sjukfall i rapporten sjukfall totalt |

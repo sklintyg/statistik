@@ -21,7 +21,9 @@ package se.inera.statistics.service.warehouse.query;
 import org.junit.Test;
 import org.mockito.Mockito;
 import se.inera.statistics.service.report.model.Kon;
+import se.inera.statistics.service.warehouse.Fact;
 import se.inera.statistics.service.warehouse.Sjukfall;
+import se.inera.statistics.service.warehouse.SjukfallExtended;
 
 import static org.junit.Assert.*;
 
@@ -78,8 +80,7 @@ public class CounterTest {
     }
 
     private Sjukfall createSjukfall(Kon kon) {
-        final Sjukfall sjukfall = Mockito.mock(Sjukfall.class);
-        Mockito.when(sjukfall.getKon()).thenReturn(kon);
-        return sjukfall;
+        final SjukfallExtended sjukfall = new SjukfallExtended(new Fact(1,1,1,1,1,1,1,1,kon.getNumberRepresentation(),1,1,1,1,1,1,1,1,new int[0],1));
+        return Sjukfall.create(sjukfall);
     }
 }

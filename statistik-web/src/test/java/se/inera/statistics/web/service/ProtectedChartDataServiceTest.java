@@ -19,7 +19,6 @@
 package se.inera.statistics.web.service;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -28,18 +27,18 @@ import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import se.inera.auth.model.User;
+import se.inera.statistics.hsa.model.HsaIdEnhet;
+import se.inera.statistics.hsa.model.HsaIdUser;
+import se.inera.statistics.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.hsa.model.Vardenhet;
-import se.inera.statistics.service.report.model.Range;
-import se.inera.statistics.service.warehouse.SjukfallFilter;
+import se.inera.statistics.service.landsting.LandstingsVardgivareStatus;
 import se.inera.statistics.web.model.LoginInfo;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.Assert.*;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyString;
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -58,42 +57,27 @@ public class ProtectedChartDataServiceTest {
 
     @Before
     public void init() {
-        List<Vardenhet> vardenhets = Arrays.asList(new Vardenhet("verksamhet1", "Närhälsan i Småmåla", "VG1"), new Vardenhet("verksamhet2", "Småmålas akutmottagning", "VG2"));
+        final Vardenhet vardenhet1 = new Vardenhet(new HsaIdEnhet("verksamhet1"), "Närhälsan i Småmåla", new HsaIdVardgivare("VG1"));
+        final Vardenhet vardenhet2 = new Vardenhet(new HsaIdEnhet("verksamhet2"), "Småmålas akutmottagning", new HsaIdVardgivare("VG2"));
+        List<Vardenhet> vardenhets = Arrays.asList(vardenhet1, vardenhet2);
 
-        User user = new User("hsaId", "name", false, vardenhets.get(0), vardenhets);
+        User user = new User(new HsaIdUser("hsaId"), "name", false, vardenhets.get(0), vardenhets);
         UsernamePasswordAuthenticationToken principal = Mockito.mock(UsernamePasswordAuthenticationToken.class);
         when(request.getUserPrincipal()).thenReturn(principal);
         when(principal.getDetails()).thenReturn(user);
-        when(loginServiceUtil.getLoginInfo(any(HttpServletRequest.class))).thenReturn(new LoginInfo());
     }
 
     @Test
-    public void dummy() {
-       
-    }
-
-    @Ignore
-    public void getOverviewDataForSpecificVerksamhetTest() {
-        init();
-
-        try {
-            chartDataService.getOverviewData(request, "VG2", null);
-            fail("Current implementation can not use null data");
-        } catch (NullPointerException e) {
-            assertTrue(true);
-        }
-        Mockito.verify(warehouse).getOverview(any(SjukfallFilter.class), any(Range.class), anyString());
-    }
-
-    @Ignore
     public void checkDeniedAccessToVerksamhetTest() {
-        boolean result = chartDataService.hasAccessTo(request, "VG3");
+        Mockito.when(loginServiceUtil.getLoginInfo(request)).thenReturn(new LoginInfo());
+        boolean result = chartDataService.hasAccessTo(request);
         assertEquals(false, result);
     }
 
-    @Ignore
+    @Test
     public void checkAllowedAccessToVerksamhetTest() {
-        boolean result = chartDataService.hasAccessTo(request, "VG2");
+        Mockito.when(loginServiceUtil.getLoginInfo(request)).thenReturn(new LoginInfo(new HsaIdUser(""), "", null, false, false, false, null, LandstingsVardgivareStatus.NO_LANDSTINGSVARDGIVARE));
+        boolean result = chartDataService.hasAccessTo(request);
         assertEquals(true, result);
     }
 

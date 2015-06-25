@@ -19,28 +19,17 @@ Om tidsintervall väljs och sedan byte av tvärsnitt/tidsserie gäller fortsatt 
 | 19790407-1225 | G02 | 2014-07-01 | 2014-10-30 | 50            | enhet1 | lakare2 |
 | 19690407-1295 | G03 | 2014-11-01 | 2014-11-30 | 75            | enhet2 | lakare3 |
 
-
 !3 Då gäller:
 | Sjukfall i rapporten sjukfall per enhet |
-| inloggad som | vårdenhet    | vårdgivarnivå | totalt? | män? | kvinnor? |
-| user2        | Enhet enhet1 | true          | 1       | 0    | 1        |
-| user2        | Enhet enhet2 | true          | 1       | 1    | 0        |
+| inloggad som | vårdenhet    | vårdgivarnivå | filter kapitel | filter enheter | filter verksamhetstyper | filter startdatum | filter slutdatum | totalt? | män? | kvinnor? |
+| user2        | Enhet enhet1 | true          | G00-G99        | enhet1,enhet2  | 02                      | 2014-06-01        | 2014-09-30       | 1       | 0    | 1        |
+| user2        | Enhet enhet2 | true          | G00-G99        | enhet1,enhet2  | 02                      | 2014-06-01        | 2014-09-30       | -1      | -1   | -1       |
 
-| script | tidsintervall start | jun 2014 |
-| script | tidsintervall slut | sep 2014 |
-
-| Sjukfall i rapporten sjukfall per enhet |
-| inloggad som | vårdenhet    | vårdgivarnivå | totalt? | män? | kvinnor? |
-| user2        | Enhet enhet1 | true          | 1       | 0    | 1        |
-| user2        | Enhet enhet2 | true          | 0       | 0    | 0        |
-
-| script | visasom | tidsserie |
-
-| Sjukfall i rapporten sjukfall per enhet |
-| inloggad som | år   | månad | vårdenhet    | män? | kvinnor? |
-| user2        | 2014 | maj   | Enhet enhet1 | -1   | -1       |
-| user2        | 2014 | jun   | Enhet enhet1 | 0    | 0        |
-| user2        | 2014 | jul   | Enhet enhet1 | 0    | 1        |
-| user2        | 2014 | aug   | Enhet enhet1 | 0    | 1        |
-| user2        | 2014 | sep   | Enhet enhet1 | 0    | 1        |
-| user2        | 2014 | okt   | Enhet enhet1 | -1   | -1        |
+| Sjukfall i rapporten sjukfall per enhet som tidsserie |
+| inloggad som | år   | månad | vårdenhet    | filter kapitel | filter enheter | filter verksamhetstyper | filter startdatum | filter slutdatum | män? | kvinnor? |
+| user2        | 2014 | maj   | Enhet enhet1 | G00-G99        | enhet1,enhet2  | 02                      | 2014-06-01        | 2014-09-30       | -1   | -1       |
+| user2        | 2014 | jun   | Enhet enhet1 | G00-G99        | enhet1,enhet2  | 02                      | 2014-06-01        | 2014-09-30       | 0    | 0        |
+| user2        | 2014 | jul   | Enhet enhet1 | G00-G99        | enhet1,enhet2  | 02                      | 2014-06-01        | 2014-09-30       | 0    | 1        |
+| user2        | 2014 | aug   | Enhet enhet1 | G00-G99        | enhet1,enhet2  | 02                      | 2014-06-01        | 2014-09-30       | 0    | 1        |
+| user2        | 2014 | sep   | Enhet enhet1 | G00-G99        | enhet1,enhet2  | 02                      | 2014-06-01        | 2014-09-30       | 0    | 1        |
+| user2        | 2014 | okt   | Enhet enhet1 | G00-G99        | enhet1,enhet2  | 02                      | 2014-06-01        | 2014-09-30       | -1   | -1        |

@@ -1,0 +1,5 @@
+---
+# file: host_vars/statistik-test
+config_etc_folder: "{{ config_folder }}/test"
+profile: hsa-stub,security-fake,qm,db-resetter
+host_url: https://fitnesse.inera.nordicmedtest.se

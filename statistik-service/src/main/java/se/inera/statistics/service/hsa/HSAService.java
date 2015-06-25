@@ -22,5 +22,8 @@ import com.fasterxml.jackson.databind.JsonNode;
 
 public interface HSAService {
 
+    String ENHETS_TYP = "enhetsTyp";
+
     JsonNode getHSAInfo(HSAKey key);
+
 }

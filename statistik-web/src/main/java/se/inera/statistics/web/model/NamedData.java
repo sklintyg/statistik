@@ -25,10 +25,16 @@ public class NamedData {
 
     private final String name;
     private final List<Object> data;
+    private final boolean marked;
 
-    public NamedData(String name, List<? extends Object> data) {
+    public NamedData(String name, List<? extends Object> data, boolean marked) {
         this.name = name;
         this.data = Collections.unmodifiableList(data);
+        this.marked = marked;
+    }
+
+    public NamedData(String name, List<? extends Object> data) {
+        this(name, data, false);
     }
 
     public String getName() {
@@ -39,8 +45,13 @@ public class NamedData {
         return data;
     }
 
+    public boolean isMarked() {
+        return marked;
+    }
+
     @Override
     public String toString() {
         return name + ": " + data.toString();
     }
+
 }

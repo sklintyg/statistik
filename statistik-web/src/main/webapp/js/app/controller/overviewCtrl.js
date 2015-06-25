@@ -19,8 +19,8 @@
 
 'use strict';
 
-angular.module('StatisticsApp').controller('overviewCtrl', [ '$scope', '$rootScope', '$window', '$timeout', 'statisticsData', '$routeParams', 'printFactory', 'COUNTY_COORDS',
-    function ($scope, $rootScope, $window, $timeout, statisticsData, $routeParams, printFactory, COUNTY_COORDS) {
+angular.module('StatisticsApp').controller('overviewCtrl', [ '$scope', '$rootScope', '$window', '$timeout', 'statisticsData', '$routeParams', 'printFactory', 'COUNTY_COORDS', 'chartFactory', 'messageService',
+    function ($scope, $rootScope, $window, $timeout, statisticsData, $routeParams, printFactory, COUNTY_COORDS, chartFactory, messageService) {
 
         var self = this;
 
@@ -53,7 +53,7 @@ angular.module('StatisticsApp').controller('overviewCtrl', [ '$scope', '$rootSco
         };
 
         function paintPerMonthAlternationChart(alteration) {
-            var chartOptions = ControllerCommons.getHighChartConfigBase([], [
+            var chartOptions = chartFactory.getHighChartConfigBase([], [
                 { data: [
                     [ 1 ]
                 ] }
@@ -99,7 +99,7 @@ angular.module('StatisticsApp').controller('overviewCtrl', [ '$scope', '$rootSco
                     }
                 }
             ];
-            var chartOptions = ControllerCommons.getHighChartConfigBase([], series);
+            var chartOptions = chartFactory.getHighChartConfigBase([], series);
 
             chartOptions.chart.type = 'pie';
             chartOptions.chart.renderTo = containerId;
@@ -155,6 +155,7 @@ angular.module('StatisticsApp').controller('overviewCtrl', [ '$scope', '$rootSco
         };
 
         var populatePageWithData = function (result) {
+            $scope.resultMessage = ControllerCommons.getResultMessage(result, messageService);
             $timeout(function () {
                 updateCharts(result);
 
@@ -175,9 +176,9 @@ angular.module('StatisticsApp').controller('overviewCtrl', [ '$scope', '$rootSco
                 }
             ];
             var categories = _.map(chartData, function (e) {
-                return e.name;
+                return {name: e.name};
             });
-            var chartOptions = ControllerCommons.getHighChartConfigBase(categories, series);
+            var chartOptions = chartFactory.getHighChartConfigBase(categories, series);
             chartOptions.chart.type = 'column';
             chartOptions.chart.renderTo = containerId;
             chartOptions.chart.height = 240;
@@ -198,7 +199,7 @@ angular.module('StatisticsApp').controller('overviewCtrl', [ '$scope', '$rootSco
                 ], color: e.color, name: ControllerCommons.htmlsafe(e.name) };
             });
 
-            var chartOptions = ControllerCommons.getHighChartConfigBase([], series);
+            var chartOptions = chartFactory.getHighChartConfigBase([], series);
             chartOptions.chart = {
                 renderTo: containerId,
                 height: 350,

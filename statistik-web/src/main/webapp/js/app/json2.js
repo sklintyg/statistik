@@ -175,8 +175,7 @@ if (typeof JSON !== 'object') {
 
         Date.prototype.toJSON = function () {
 
-            return isFinite(this.valueOf())
-                ? this.getUTCFullYear()     + '-' +
+            return isFinite(this.valueOf()) ? this.getUTCFullYear()     + '-' +
                     f(this.getUTCMonth() + 1) + '-' +
                     f(this.getUTCDate())      + 'T' +
                     f(this.getUTCHours())     + ':' +
@@ -217,11 +216,9 @@ if (typeof JSON !== 'object') {
 
         escapable.lastIndex = 0;
         return escapable.test(string) ? '"' + string.replace(escapable, function (a) {
-            var c = meta[a];
-            return typeof c === 'string'
-                ? c
-                : '\\u' + ('0000' + a.charCodeAt(0).toString(16)).slice(-4);
-        }) + '"' : '"' + string + '"';
+                var c = meta[a];
+                return typeof c === 'string' ? c : '\\u' + ('0000' + a.charCodeAt(0).toString(16)).slice(-4);
+            }) + '"' : '"' + string + '"';
     }
 
 
@@ -304,11 +301,7 @@ if (typeof JSON !== 'object') {
 // Join all of the elements together, separated with commas, and wrap them in
 // brackets.
 
-                v = partial.length === 0
-                    ? '[]'
-                    : gap
-                    ? '[\n' + gap + partial.join(',\n' + gap) + '\n' + mind + ']'
-                    : '[' + partial.join(',') + ']';
+                v = partial.length === 0 ? '[]' : gap ? '[\n' + gap + partial.join(',\n' + gap) + '\n' + mind + ']' : '[' + partial.join(',') + ']';
                 gap = mind;
                 return v;
             }
@@ -343,11 +336,7 @@ if (typeof JSON !== 'object') {
 // Join all of the member texts together, separated with commas,
 // and wrap them in braces.
 
-            v = partial.length === 0
-                ? '{}'
-                : gap
-                ? '{\n' + gap + partial.join(',\n' + gap) + '\n' + mind + '}'
-                : '{' + partial.join(',') + '}';
+            v = partial.length === 0 ? '{}' : gap ? '{\n' + gap + partial.join(',\n' + gap) + '\n' + mind + '}' : '{' + partial.join(',') + '}';
             gap = mind;
             return v;
         }
@@ -473,9 +462,7 @@ if (typeof JSON !== 'object') {
 // In the optional fourth stage, we recursively walk the new structure, passing
 // each name/value pair to a reviver function for possible transformation.
 
-                return typeof reviver === 'function'
-                    ? walk({'': j}, '')
-                    : j;
+                return typeof reviver === 'function' ? walk({'': j}, '') : j;
             }
 
 // If the text is not JSON parseable, then a SyntaxError is thrown.

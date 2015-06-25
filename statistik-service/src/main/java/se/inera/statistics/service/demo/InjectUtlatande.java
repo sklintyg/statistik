@@ -26,6 +26,9 @@ import org.joda.time.LocalDate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import se.inera.statistics.hsa.model.HsaIdEnhet;
+import se.inera.statistics.hsa.model.HsaIdLakare;
+import se.inera.statistics.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.service.common.CommonPersistence;
 import se.inera.statistics.service.helper.UtlatandeBuilder;
 import se.inera.statistics.service.processlog.EventType;
@@ -55,12 +58,12 @@ public class InjectUtlatande {
 
     private static final LocalDate BASE = new LocalDate().minusMonths(MONTHS);
 
-    private static final List<String> VG = Arrays.asList("vg1", "vg2", "vg3", "vg4", "vg5");
+    private static final List<HsaIdVardgivare> VG = Arrays.asList(new HsaIdVardgivare("vg1"), new HsaIdVardgivare("vg2"), new HsaIdVardgivare("vg3"), new HsaIdVardgivare("vg4"), new HsaIdVardgivare("vg5"));
 
-    private static final List<String> LAKARE = new ArrayList<>();
+    private static final List<HsaIdLakare> LAKARE = new ArrayList<>();
 
     private static final List<String> DIAGNOSER = new ArrayList<>();
-    private static final Multimap<String, String> VARDGIVARE = ArrayListMultimap.create();
+    private static final Multimap<HsaIdVardgivare, HsaIdEnhet> VARDGIVARE = ArrayListMultimap.create();
     private static final List<Integer> ARBETSFORMAGOR = Arrays.asList(0, 25, 50, 75);
     public static final float FEL_DIAGNOS_THRESHOLD = 0.1f;
 
@@ -71,13 +74,13 @@ public class InjectUtlatande {
     public static final int NUMBER_OF_LAKARE_TO_ADD = 100;
 
     static {
-        for (String vardgivare : VG) {
+        for (HsaIdVardgivare vardgivare : VG) {
             for (int i = 1; i <= VARDGIVARE_ANTAL; i++) {
-                VARDGIVARE.put(vardgivare, vardgivare + "-enhet-" + i);
+                VARDGIVARE.put(vardgivare, new HsaIdEnhet(vardgivare + "-enhet-" + i));
             }
         }
         for (int i = 1; i < NUMBER_OF_LAKARE_TO_ADD; i++) {
-            LAKARE.add("hsa-" + i);
+            LAKARE.add(new HsaIdLakare("hsa-" + i));
         }
     }
 
@@ -101,7 +104,9 @@ public class InjectUtlatande {
             for (Icd10.Kapitel kapitel : icd10.getKapitel(true)) {
                 for (Icd10.Avsnitt avsnitt : kapitel.getAvsnitt()) {
                     for (Icd10.Kategori kategori : avsnitt.getKategori()) {
-                        DIAGNOSER.add(kategori.getId());
+                        for (Icd10.Id id : kategori.getKods()) {
+                            DIAGNOSER.add(id.getId());
+                        }
                     }
                 }
             }
@@ -135,7 +140,7 @@ public class InjectUtlatande {
         LOG.info("Inserting " + personNummers.size() + " certificates");
         for (String id : personNummers) {
             JsonNode newPermutation = permutate(builder, id);
-            accept(newPermutation.toString(), newPermutation.path("id").path("root").textValue());
+            accept(newPermutation.toString(), newPermutation.path("id").textValue());
         }
         LOG.info("Inserting " + personNummers.size() + " certificates completed. Use -Dstatistics.test.max.intyg=<x> to limit inserts.");
     }
@@ -146,11 +151,11 @@ public class InjectUtlatande {
         LocalDate end = random.nextFloat() < LONG_PERIOD_FRACTION ? start.plusDays(random.nextInt(LONG_PERIOD_DAYS) + 7) : start.plusDays(random.nextInt(SHORT_PERIOD_DAYS) + 7);
         // CHECKSTYLE:ON MagicNumber
 
-        String vardgivare = random(VG);
+        HsaIdVardgivare vardgivare = random(VG);
 
-        String vardenhet = random(Lists.newArrayList((VARDGIVARE.get(vardgivare))));
+        HsaIdEnhet vardenhet = random(Lists.newArrayList((VARDGIVARE.get(vardgivare))));
 
-        String lakare = random(LAKARE);
+        HsaIdLakare lakare = random(LAKARE);
 
         String diagnos = random(getDiagnoser());
         if (random.nextFloat() < FEL_DIAGNOS_THRESHOLD) {

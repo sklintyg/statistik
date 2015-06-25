@@ -23,6 +23,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+import se.inera.statistics.hsa.model.HsaIdEnhet;
+import se.inera.statistics.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.service.helper.DocumentHelper;
 import se.inera.statistics.service.helper.HSAServiceHelper;
 import se.inera.statistics.service.warehouse.WidelineConverter;
@@ -66,11 +68,10 @@ public class VardgivareManager {
             List<Enhet> resultList = vardgivareQuery.setParameter("enhetId", enhet).setParameter("vardgivareId", vardgivare).getResultList();
 
             if (resultList.isEmpty()) {
-                manager.persist(new Enhet(vardgivare, vardgivareNamn, enhet, enhetNamn, lansId, kommunId, verksamhetsTyper));
+                manager.persist(new Enhet(new HsaIdVardgivare(vardgivare), vardgivareNamn, new HsaIdEnhet(enhet), enhetNamn, lansId, kommunId, verksamhetsTyper));
             } else if (hsaEnhet) {
                 Enhet updatedEnhet = resultList.get(0);
                 updatedEnhet.setVardgivareNamn(vardgivareNamn);
-                //updatedEnhet.setNamn(enhetNamn);
                 updatedEnhet.setLansId(lansId);
                 updatedEnhet.setKommunId(kommunId);
                 updatedEnhet.setVerksamhetsTyper(verksamhetsTyper);

@@ -21,15 +21,25 @@ package se.inera.statistics.service.warehouse.query;
 import com.google.common.base.Predicate;
 import org.joda.time.LocalDate;
 import org.joda.time.LocalDateTime;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import se.inera.statistics.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.service.report.model.DiagnosgruppResponse;
 import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.report.util.Icd10;
-import se.inera.statistics.service.warehouse.*;
+import se.inera.statistics.service.report.util.Icd10RangeType;
+import se.inera.statistics.service.warehouse.Aisle;
+import se.inera.statistics.service.warehouse.Fact;
+import se.inera.statistics.service.warehouse.MutableAisle;
+import se.inera.statistics.service.warehouse.Sjukfall;
+import se.inera.statistics.service.warehouse.SjukfallFilter;
+import se.inera.statistics.service.warehouse.SjukfallUtil;
+import se.inera.statistics.service.warehouse.Warehouse;
 
 import java.util.Collection;
 import java.util.List;
@@ -40,10 +50,12 @@ import static se.inera.statistics.service.warehouse.Fact.aFact;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:icd10.xml", "classpath:query-test.xml"})
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 public class DiagnosgruppQueryTest {
 
-    public static final String VARDGIVARE = "vardgivare";
-    private Warehouse warehouse = new Warehouse();
+    private static final HsaIdVardgivare VARDGIVARE = new HsaIdVardgivare("vardgivare");
+
+    private Warehouse warehouse;
 
     private int intyg;
     private int patient;
@@ -57,13 +69,27 @@ public class DiagnosgruppQueryTest {
     @Autowired
     private SjukfallUtil sjukfallUtil;
 
+    @Before
+    public void setUp() throws Exception {
+        warehouse = new Warehouse();
+    }
+
     @Test
     public void one() {
-        fact(4010, 0);
+        final String kapitelCode = "A00-B99";
+        fact(4010, Icd10.icd10ToInt(kapitelCode, Icd10RangeType.KAPITEL));
         warehouse.complete(LocalDateTime.now());
-        Collection<Sjukfall> sjukfall = sjukfallUtil.calculateSjukfall(warehouse.get(VARDGIVARE));
-        Map<Integer,Counter<Integer>> count = query.count(sjukfall);
-        assertEquals(1, count.get(icd10.getKapitel("A00-B99").toInt()).getCount());
+        final Collection<Sjukfall> sjukfall = calculateSjukfallsHelper(warehouse.get(VARDGIVARE));
+        final Map<Integer,Counter<Integer>> count = query.count(sjukfall);
+        final Icd10.Kapitel kapitel = icd10.getKapitel(kapitelCode);
+        final int kapitelInt = kapitel.toInt();
+        final Counter<Integer> kapitelCounter = count.get(kapitelInt);
+        final int kapitelCount = kapitelCounter.getCount();
+        assertEquals(1, kapitelCount);
+    }
+
+    private Collection<Sjukfall> calculateSjukfallsHelper(Aisle aisle) {
+        return sjukfallUtil.sjukfallGrupper(new LocalDate(2000, 1, 1), 1, 1000000, aisle, SjukfallUtil.ALL_ENHETER).iterator().next().getSjukfall();
     }
 
     @Test
@@ -81,7 +107,7 @@ public class DiagnosgruppQueryTest {
         fact(4010, 500);
         fact(4010, 600);
         warehouse.complete(LocalDateTime.now());
-        Collection<Sjukfall> sjukfall = sjukfallUtil.calculateSjukfall(warehouse.get(VARDGIVARE));
+        Collection<Sjukfall> sjukfall = calculateSjukfallsHelper(warehouse.get(VARDGIVARE));
         List<Counter<Integer>> count = query.count(sjukfall, 4);
 
         assertEquals(4, count.size());
@@ -95,8 +121,8 @@ public class DiagnosgruppQueryTest {
         Fact fact = aFact().withLan(3).withKommun(380).withForsamling(38002).
                 withEnhet(1).withLakarintyg(intyg++).
                 withPatient(patient++).withKon(Kon.Female).withAlder(45).
-                withDiagnoskapitel(diagnoskapitel).withDiagnosavsnitt(14).withDiagnoskategori(16).
-                withSjukskrivningsgrad(100).withStartdatum(startday).withSjukskrivningslangd(10).
+                withDiagnoskapitel(diagnoskapitel).withDiagnosavsnitt(14).withDiagnoskategori(16).withDiagnoskod(18).
+                withSjukskrivningsgrad(100).withStartdatum(startday).withSlutdatum(startday + 9).
                 withLakarkon(Kon.Female).withLakaralder(32).withLakarbefattning(new int[]{201010}).withLakarid(1).build();
 
         warehouse.accept(fact, VARDGIVARE);
@@ -105,7 +131,7 @@ public class DiagnosgruppQueryTest {
     @Test
     public void testGetUnderdiagnosGrupperForKapitel() throws Exception {
         //When
-        DiagnosgruppResponse result = query.getUnderdiagnosgrupper(new Aisle("vgid"), new SjukfallFilter(new Predicate<Fact>() {
+        DiagnosgruppResponse result = query.getUnderdiagnosgrupper(new MutableAisle(new HsaIdVardgivare("vgid")).createAisle(), new SjukfallFilter(new Predicate<Fact>() {
             @Override
             public boolean apply(Fact fact) {
                 return false;
@@ -120,7 +146,7 @@ public class DiagnosgruppQueryTest {
     @Test
     public void testGetUnderdiagnosGrupperForAvsnitt() throws Exception {
         //When
-        DiagnosgruppResponse result = query.getUnderdiagnosgrupper(new Aisle("vgid"), new SjukfallFilter(new Predicate<Fact>() {
+        DiagnosgruppResponse result = query.getUnderdiagnosgrupper(new MutableAisle(new HsaIdVardgivare("vgid")).createAisle(), new SjukfallFilter(new Predicate<Fact>() {
             @Override
             public boolean apply(Fact fact) {
                 return false;

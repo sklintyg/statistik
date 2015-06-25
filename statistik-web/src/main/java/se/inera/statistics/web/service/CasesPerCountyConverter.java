@@ -22,11 +22,14 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import com.google.common.base.Function;
+import com.google.common.collect.Lists;
 import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.SimpleKonDataRow;
 import se.inera.statistics.service.report.model.SimpleKonResponse;
 import se.inera.statistics.web.model.CasesPerCountyData;
+import se.inera.statistics.web.model.ChartCategory;
 import se.inera.statistics.web.model.ChartData;
 import se.inera.statistics.web.model.ChartSeries;
 import se.inera.statistics.web.model.NamedData;
@@ -75,7 +78,12 @@ public class CasesPerCountyConverter {
 
     private ChartData convertToChart() {
         assert respNewest.getGroups().equals(respOldest.getGroups());
-        List<String> groups = respNewest.getGroups();
+        final List<ChartCategory> groups = Lists.transform(respNewest.getGroups(), new Function<String, ChartCategory>() {
+            @Override
+            public ChartCategory apply(String period) {
+                return new ChartCategory(period);
+            }
+        });
         List<ChartSeries> series = new ArrayList<>();
         List<Integer> femaleDataOld = respOldest.getDataForSex(Kon.Female);
         series.add(new ChartSeries("Sjukfall " + rangeOld.toStringAbbreviated() + " kvinnor", femaleDataOld, "old", Kon.Female));
@@ -92,6 +100,6 @@ public class CasesPerCountyConverter {
         TableData tableData = convertToTable();
         ChartData chartData = convertToChart();
         Range fullRange = new Range(rangeOld.getFrom(), rangeNew.getTo());
-        return new CasesPerCountyData(tableData, chartData, fullRange.getMonths(), fullRange.toString(), new FilterDataResponse(null, null));
+        return new CasesPerCountyData(tableData, chartData, fullRange.toString(), new FilterDataResponse(null, null));
     }
 }

@@ -18,6 +18,9 @@
  */
 package se.inera.statistics.hsa.stub;
 
+import se.inera.statistics.hsa.model.HsaIdEnhet;
+import se.inera.statistics.hsa.model.HsaIdUser;
+
 import java.util.List;
 
 /**
@@ -27,37 +30,37 @@ public class Medarbetaruppdrag {
 
     public static final String STATISTIK = "Statistik";
 
-    private String hsaId;
-    private List<String> enhetIds;
+    private HsaIdUser hsaId;
+    private List<HsaIdEnhet> enhetIds;
 
     private String andamal = STATISTIK;
 
     public Medarbetaruppdrag() {
     }
 
-    public Medarbetaruppdrag(String hsaId, List<String> enhetIds) {
+    public Medarbetaruppdrag(HsaIdUser hsaId, List<HsaIdEnhet> enhetIds) {
         this(hsaId, enhetIds, STATISTIK);
     }
 
-    public Medarbetaruppdrag(String hsaId, List<String> enhetIds, String andamal) {
+    public Medarbetaruppdrag(HsaIdUser hsaId, List<HsaIdEnhet> enhetIds, String andamal) {
         this.hsaId = hsaId;
         this.enhetIds = enhetIds;
         this.andamal = andamal;
     }
 
-    public String getHsaId() {
+    public HsaIdUser getHsaId() {
         return hsaId;
     }
 
-    public void setHsaId(String hsaId) {
+    public void setHsaId(HsaIdUser hsaId) {
         this.hsaId = hsaId;
     }
 
-    public List<String> getEnhetIds() {
+    public List<HsaIdEnhet> getEnhetIds() {
         return enhetIds;
     }
 
-    public void setEnhetIds(List<String> enhetIds) {
+    public void setEnhetIds(List<HsaIdEnhet> enhetIds) {
         this.enhetIds = enhetIds;
     }
 

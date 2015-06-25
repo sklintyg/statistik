@@ -22,6 +22,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import se.inera.statistics.hsa.model.HsaIdEnhet;
+import se.inera.statistics.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.service.processlog.Enhet;
 
 import javax.sql.DataSource;
@@ -71,7 +73,7 @@ public class EnhetLoader {
         String kommunId = resultSet.getString("kommunId");
         String verksamhetsTyper = resultSet.getString("verksamhetsTyper");
 
-        return new Enhet(vardgivareId, vardgivareNamn, enhetId, enhetNamn, lansId, kommunId, verksamhetsTyper);
+        return new Enhet(new HsaIdVardgivare(vardgivareId), vardgivareNamn, new HsaIdEnhet(enhetId), enhetNamn, lansId, kommunId, verksamhetsTyper);
     }
 
     private PreparedStatement prepareStatement(Connection connection) throws SQLException {
@@ -80,4 +82,5 @@ public class EnhetLoader {
         stmt.setFetchSize(FETCH_SIZE);
         return stmt;
     }
+
 }

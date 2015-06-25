@@ -2,3 +2,4 @@
 # file: host_vars/statistik-test
 config_etc_folder: "{{ config_folder }}/test"
 profile: hsa-stub,security-both,qm,db-resetter
+host_url: https://statistik.inera.nordicmedtest.se

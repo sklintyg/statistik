@@ -19,20 +19,21 @@
 
 'use strict';
 
-angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl', [ '$scope', '$rootScope', '$routeParams', '$window', '$location', '$timeout', 'statisticsData', 'diagnosisTreeFilter', 'config', 'messageService', 'printFactory',
-    function ($scope, $rootScope, $routeParams, $window, $location, $timeout, statisticsData, diagnosisTreeFilter, config, messageService, printFactory) {
-        var isVerksamhet = $routeParams.verksamhetId ? true : false;
+angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl', [ '$scope', '$rootScope', '$routeParams', '$window', '$location', '$timeout', 'statisticsData', 'diagnosisTreeFilter', 'config', 'messageService', 'printFactory', 'chartFactory',
+    function ($scope, $rootScope, $routeParams, $window, $location, $timeout, statisticsData, diagnosisTreeFilter, config, messageService, printFactory, chartFactory) {
+        var isVerksamhet = ControllerCommons.isShowingVerksamhet($location);
+        var isLandsting = ControllerCommons.isShowingLandsting($location);
         var chart = {};
-
-        $scope.diagnosisTreeFilter = diagnosisTreeFilter;
+        var defaultChartType = 'column';
+        $scope.activeChartType = defaultChartType;
 
         $scope.chartContainers = [
             {id: "chart1", name: "diagram"}
         ];
 
         var paintChart = function (chartCategories, chartSeries, doneLoadingCallback) {
-            var chartOptions = ControllerCommons.getHighChartConfigBase(chartCategories, chartSeries, doneLoadingCallback);
-            chartOptions.chart.type = 'column';
+            var chartOptions = chartFactory.getHighChartConfigBase(chartCategories, chartSeries, doneLoadingCallback);
+            chartOptions.chart.type = defaultChartType;
             chartOptions.chart.marginLeft = 60;
             chartOptions.chart.marginTop = 27;
 
@@ -45,18 +46,21 @@ angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl', [ '$sco
 
             chartOptions.legend.enabled = $routeParams.printBw || $routeParams.print;
             chartOptions.xAxis.title.text = config.chartXAxisTitle;
-            chartOptions.yAxis.title.text = config.percentChart ? "Andel sjukfall i %" : 'Antal sjukfall';
-            chartOptions.yAxis.title.x = config.percentChart ? 60 : 30;
+            chartOptions.yAxis.title.text = config.chartYAxisTitle ? config.chartYAxisTitle : (config.percentChart ? "Andel sjukfall i %" : 'Antal sjukfall');
+            chartOptions.yAxis.title.x = config.chartYAxisTitle ? 160 : (config.percentChart ? 60 : 30);
             chartOptions.yAxis.title.y = -13;
             chartOptions.yAxis.title.align = 'high';
             chartOptions.yAxis.title.offset = 0;
             chartOptions.yAxis.labels.formatter = function () {
                 return ControllerCommons.makeThousandSeparated(this.value) + (config.percentChart ? "%" : "");
             };
+
             chartOptions.plotOptions.column.stacking = config.percentChart ? 'percent' : 'normal';
+
             if (config.percentChart) {
                 chartOptions.tooltip.pointFormat = '<span style="color:{series.color}">{series.name}</span>: <b>{point.percentage:.0f}%</b><br/>';
             }
+
             return new Highcharts.Chart(chartOptions);
         };
 
@@ -65,19 +69,36 @@ angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl', [ '$sco
             chart = paintChart(ajaxResult.categories, $scope.series, doneLoadingCallback);
         };
 
+        $scope.switchChartType = function (chartType) {
+            chartFactory.switchChartType(chart.series, chartType);
+            $scope.activeChartType = chartType;
+
+            chart.redraw();
+        };
+
+        $scope.showInLegend = function(index) {
+            return chartFactory.showInLegend(chart.series, index);
+        };
+
         $scope.toggleSeriesVisibility = function (index) {
-            var series = chart.series[index];
-            if (series.visible) {
-                series.hide();
-            } else {
-                series.show();
-            }
+            chartFactory.toggleSeriesVisibility(chart.series[index]);
+        };
+
+        var populateDetailsOptions = function (result) {
+            var basePath = isVerksamhet ? "#/verksamhet/diagnosavsnitttvarsnitt" : "#/nationell/diagnosavsnitttvarsnitt";
+            ControllerCommons.populateDetailsOptions(result, basePath, $scope, $routeParams, messageService, config);
         };
 
         var populatePageWithData = function (result) {
             $scope.subTitle = config.title(result.period, result.filter.enheter ? result.filter.enheter.length : null);
             ControllerCommons.populateActiveDiagnosFilter($scope, statisticsData, result.filter.diagnoser, $routeParams.printBw || $routeParams.print);
-            $scope.resultMessage = result.message;
+            $scope.resultMessage = ControllerCommons.getResultMessage(result, messageService);
+            if (config.showDetailsOptions) {
+                $scope.currentPeriod = result.period;
+                statisticsData.getDiagnosisKapitelAndAvsnittAndKategori(populateDetailsOptions, function () {
+                    alert("Kunde inte ladda data");
+                });
+            }
             $timeout(function () {
                 ControllerCommons.updateDataTable($scope, result.tableData);
                 updateChart(result.chartData, function() { $scope.doneLoading = true; });
@@ -90,9 +111,15 @@ angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl', [ '$sco
         };
 
         function refreshVerksamhet() {
-            statisticsData[config.dataFetcherVerksamhet]($routeParams.verksamhetId, populatePageWithData, function () {
+            statisticsData[config.dataFetcherVerksamhet](populatePageWithData, function () {
                 $scope.dataLoadingError = true;
-            }, $routeParams.diagnosHash);
+            }, ControllerCommons.getExtraPathParam($routeParams));
+        }
+
+        function refreshLandsting() {
+            statisticsData[config.dataFetcherLandsting](populatePageWithData, function () {
+                $scope.dataLoadingError = true;
+            }, ControllerCommons.getExtraPathParam($routeParams));
         }
 
         var diagnosHashExists = function diagnosHashExists() {
@@ -104,8 +131,11 @@ angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl', [ '$sco
             $scope.doneLoading = false;
             $scope.dataLoadingError = false;
             if (isVerksamhet) {
-                $scope.exportTableUrl = config.exportTableUrlVerksamhet($routeParams.verksamhetId, $routeParams.diagnosHash);
+                $scope.exportTableUrl = config.exportTableUrlVerksamhet(ControllerCommons.getExtraPathParam($routeParams));
                 refreshVerksamhet();
+            } else if (isLandsting) {
+                $scope.exportTableUrl = config.exportTableUrlLandsting(ControllerCommons.getExtraPathParam($routeParams));
+                refreshLandsting();
             } else {
                 $scope.exportTableUrl = config.exportTableUrl;
                 statisticsData[config.dataFetcher](populatePageWithData, function () {
@@ -115,6 +145,8 @@ angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl', [ '$sco
         } else {
             $scope.doneLoading = true;
         }
+
+        ControllerCommons.updateExchangeableViewsUrl(isVerksamhet, config, $location, $scope, $routeParams);
 
         $scope.showHideDataTable = ControllerCommons.showHideDataTableDefault;
 
@@ -128,46 +160,21 @@ angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl', [ '$sco
             return messageService.getProperty(msgKey, null, "", null, true);
         });
 
+        $scope.showDetailsOptions = config.showDetailsOptions;
+        $scope.showDetailsOptions2 = config.showDetailsOptions2 && isVerksamhet;
+        $scope.showDetailsOptions3 = config.showDetailsOptions3 && isVerksamhet;
+
         $scope.showDiagnosisSelector = config.showDiagnosisSelector;
-
         if ($scope.showDiagnosisSelector) {
-            //Initiate the diagnosisTree if we need to.
-            diagnosisTreeFilter.setup($routeParams);
-
-            $scope.diagnosisSelectorData = {
-                titleText: messageService.getProperty("comparediagnoses.lbl.val-av-diagnoser", null, "", null, true),
-                buttonLabelText: messageService.getProperty("lbl.filter.val-av-diagnoser-knapp", null, "", null, true),
-                firstLevelLabelText: messageService.getProperty("lbl.filter.modal.kapitel", null, "", null, true),
-                secondLevelLabelText: messageService.getProperty("lbl.filter.modal.avsnitt", null, "", null, true),
-                thirdLevelLabelText: messageService.getProperty("lbl.filter.modal.kategorier", null, "", null, true)
-            };
+            ControllerCommons.setupDiagnosisSelector(diagnosisTreeFilter, $routeParams, $scope, messageService, $timeout, statisticsData, $location);
         }
 
         $scope.exportChart = function () {
-            ControllerCommons.exportChart(chart, $scope.pageName, $scope.subTitle, $scope.activeDiagnosFilters);
+            chartFactory.exportChart(chart, $scope.pageName, $scope.subTitle, $scope.activeDiagnosFilters);
         };
 
         $scope.print = function (bwPrint) {
             printFactory.print(bwPrint, $rootScope, $window);
-        };
-
-        $scope.diagnosisSelected = function () {
-            var diagnoses = diagnosisTreeFilter.getSelectedDiagnosis();
-
-            $timeout(function () {
-                //Ugly fix from http://stackoverflow.com/questions/20827282/cant-dismiss-modal-and-change-page-location
-                $('#cancelModal').modal('hide');
-                $('.modal-backdrop').remove();
-                $('body').removeClass('modal-open');
-            }, 1);
-
-            $timeout(function () {
-                $scope.doneLoading = false;
-            }, 1);
-
-            statisticsData.getFilterHash(diagnoses, null, null, function(selectionHash){
-                $location.path("/verksamhet/" + $routeParams.verksamhetId + "/jamforDiagnoser/" + selectionHash);
-            }, function(){ throw new Error("Failed to get filter hash value"); });
         };
 
         $scope.$on('$destroy', function() {
@@ -183,8 +190,8 @@ angular.module('StatisticsApp').nationalSickLeaveLengthConfig = function () {
     conf.dataFetcher = "getNationalSickLeaveLengthData";
     conf.dataFetcherVerksamhet = "getSickLeaveLengthDataVerksamhet";
     conf.exportTableUrl = "api/getSickLeaveLengthData/csv";
-    conf.exportTableUrlVerksamhet = function (verksamhetId) {
-        return "api/verksamhet/" + verksamhetId + "/getSickLeaveLengthData/csv";
+    conf.exportTableUrlVerksamhet = function () {
+        return "api/verksamhet/getSickLeaveLengthData/csv";
     };
     conf.title = function (period, enhetsCount) {
         return "Antal sjukfall per sjukskrivningslängd" + ControllerCommons.getEnhetCountText(enhetsCount, false) + period;
@@ -192,20 +199,10 @@ angular.module('StatisticsApp').nationalSickLeaveLengthConfig = function () {
     conf.chartXAxisTitle = "Sjukskrivningslängd";
     conf.chartFootnotes = ["info.sickleavelength"];
     conf.pageHelpText = "help.sickleavelength";
-    return conf;
-};
 
-angular.module('StatisticsApp').nationalSickLeaveLengthCurrentConfig = function () {
-    var conf = {};
-    conf.dataFetcherVerksamhet = "getSickLeaveLengthCurrentDataVerksamhet";
-    conf.exportTableUrlVerksamhet = function (verksamhetId) {
-        return "api/verksamhet/" + verksamhetId + "/getSickLeaveLengthCurrentData/csv";
-    };
-    conf.title = function (month, enhetsCount) {
-        return "Antal pågående sjukfall per sjukskrivningslängd" + ControllerCommons.getEnhetCountText(enhetsCount, false) + month;
-    };
-    conf.chartXAxisTitle = "Sjukskrivningslängd";
-    conf.pageHelpText = "help.sick-leave-length-current";
+    conf.exchangeableViews = [
+        {description: 'Tidsserie', state: '#/verksamhet/sjukskrivningslangdTidsserie', active: false},
+        {description: 'Tvärsnitt', state: '#/verksamhet/sjukskrivningslangd', active: true}];
     return conf;
 };
 
@@ -214,27 +211,17 @@ angular.module('StatisticsApp').nationalAgeGroupConfig = function () {
     conf.dataFetcher = "getAgeGroups";
     conf.dataFetcherVerksamhet = "getAgeGroupsVerksamhet";
     conf.exportTableUrl = "api/getAgeGroupsStatistics/csv";
-    conf.exportTableUrlVerksamhet = function (verksamhetId) {
-        return "api/verksamhet/" + verksamhetId + "/getAgeGroupsStatistics/csv";
+    conf.exportTableUrlVerksamhet = function () {
+        return "api/verksamhet/getAgeGroupsStatistics/csv";
     };
     conf.title = function (period, enhetsCount) {
         return "Antal sjukfall per åldersgrupp" + ControllerCommons.getEnhetCountText(enhetsCount, false) + period;
     };
     conf.chartXAxisTitle = "Åldersgrupp";
-    return conf;
-};
 
-angular.module('StatisticsApp').nationalAgeGroupCurrentConfig = function () {
-    var conf = {};
-    conf.dataFetcherVerksamhet = "getAgeGroupsCurrentVerksamhet";
-    conf.exportTableUrlVerksamhet = function (verksamhetId) {
-        return "api/verksamhet/" + verksamhetId + "/getAgeGroupsCurrentStatistics/csv";
-    };
-    conf.title = function (month, enhetsCount) {
-        return "Antal pågående sjukfall per åldersgrupp" + ControllerCommons.getEnhetCountText(enhetsCount, false) + month;
-    };
-    conf.chartXAxisTitle = "Åldersgrupp";
-    conf.pageHelpText = "help.age-group-current"
+    conf.exchangeableViews = [
+        {description: 'Tidsserie', state: '#/verksamhet/aldersgrupperTidsserie', active: false},
+        {description: 'Tvärsnitt', state: '#/verksamhet/aldersgrupper', active: true}];
     return conf;
 };
 
@@ -255,68 +242,206 @@ angular.module('StatisticsApp').casesPerSexConfig = function () {
 angular.module('StatisticsApp').casesPerBusinessConfig = function () {
     var conf = {};
     conf.dataFetcherVerksamhet = "getSjukfallPerBusinessVerksamhet";
-    conf.exportTableUrlVerksamhet = function (verksamhetId) {
-        return "api/verksamhet/" + verksamhetId + "/getNumberOfCasesPerEnhet/csv";
+    conf.dataFetcherLandsting = "getSjukfallPerBusinessLandsting";
+    conf.exportTableUrlVerksamhet = function () {
+        return "api/verksamhet/getNumberOfCasesPerEnhet/csv";
+    };
+    conf.exportTableUrlLandsting = function () {
+        return "api/landsting/getNumberOfCasesPerEnhetLandsting/csv";
     };
     conf.title = function (period, enhetsCount) {
         return "Antal sjukfall per vårdenhet" + ControllerCommons.getEnhetCountText(enhetsCount, false) + period;
     };
     conf.chartXAxisTitle = "Vårdenhet";
     conf.chartFootnotes = ["alert.vardenhet.information"];
+
+    conf.exchangeableViews = [
+        {description: 'Tidsserie', state: '#/verksamhet/sjukfallperenhettidsserie', active: false},
+        {description: 'Tvärsnitt', state: '#/verksamhet/sjukfallperenhet', active: true}];
+
+    return conf;
+};
+
+angular.module('StatisticsApp').casesPerPatientsPerBusinessConfig = function () {
+    var conf = {};
+    conf.dataFetcherLandsting = "getSjukfallPerPatientsPerBusinessLandsting";
+    conf.exportTableUrlLandsting = function () {
+        return "api/landsting/getNumberOfCasesPerPatientsPerEnhetLandsting/csv";
+    };
+    conf.title = function (period, enhetsCount) {
+        return "Antal sjukfall per 1000 listningar" + ControllerCommons.getEnhetCountText(enhetsCount, false) + period;
+    };
+    conf.chartXAxisTitle = "Vårdenhet";
+    conf.chartYAxisTitle = "Antal sjukfall per 1000 listningar";
+    conf.pageHelpText = "help.landsting-enhet-listningar";
     return conf;
 };
 
 angular.module('StatisticsApp').casesPerLakareConfig = function () {
     var conf = {};
     conf.dataFetcherVerksamhet = "getSjukfallPerLakareVerksamhet";
-    conf.exportTableUrlVerksamhet = function (verksamhetId) {
-        return "api/verksamhet/" + verksamhetId + "/getSjukfallPerLakareVerksamhet/csv";
+    conf.exportTableUrlVerksamhet = function () {
+        return "api/verksamhet/getNumberOfCasesPerLakare/csv";
     };
     conf.title = function (period, enhetsCount) {
         return "Antal sjukfall per läkare" + ControllerCommons.getEnhetCountText(enhetsCount, false) + period;
     };
     conf.chartXAxisTitle = "Läkare";
+
+    conf.exchangeableViews = [
+        {description: 'Tidsserie', state: '#/verksamhet/sjukfallperlakaretidsserie', active: false},
+        {description: 'Tvärsnitt', state: '#/verksamhet/sjukfallperlakare', active: true}];
     return conf;
 };
 
 angular.module('StatisticsApp').casesPerLakaresAlderOchKonConfig = function () {
     var conf = {};
     conf.dataFetcherVerksamhet = "getSjukfallPerLakaresAlderOchKonVerksamhet";
-    conf.exportTableUrlVerksamhet = function (verksamhetId) {
-        return "api/verksamhet/" + verksamhetId + "/getCasesPerDoctorAgeAndGenderStatistics/csv";
+    conf.exportTableUrlVerksamhet = function () {
+        return "api/verksamhet/getCasesPerDoctorAgeAndGenderStatistics/csv";
     };
     conf.title = function (period, enhetsCount) {
         return "Antal sjukfall baserat på läkares kön och ålder" + ControllerCommons.getEnhetCountText(enhetsCount, true) + period;
     };
     conf.chartXAxisTitle = "Läkare";
     conf.pageHelpText = "alert.lakarkon-alder.questionmark";
+
+    conf.exchangeableViews = [
+        {description: 'Tidsserie', state: '#/verksamhet/sjukfallperlakaresalderochkontidsserie', active: false},
+        {description: 'Tvärsnitt', state: '#/verksamhet/sjukfallperlakaresalderochkon', active: true}];
     return conf;
 };
 
 angular.module('StatisticsApp').casesPerLakarbefattningConfig = function () {
     var conf = {};
     conf.dataFetcherVerksamhet = "getSjukfallPerLakarbefattningVerksamhet";
-    conf.exportTableUrlVerksamhet = function (verksamhetId) {
-        return "api/verksamhet/" + verksamhetId + "/getNumberOfCasesPerLakarbefattning/csv";
+    conf.exportTableUrlVerksamhet = function () {
+        return "api/verksamhet/getNumberOfCasesPerLakarbefattning/csv";
     };
     conf.title = function (period, enhetsCount) {
         return "Antal sjukfall baserat på läkarbefattning" + ControllerCommons.getEnhetCountText(enhetsCount, true) + period;
     };
     conf.chartXAxisTitle = "Läkarbefattning";
     conf.chartFootnotes = ["alert.lakare-befattning.information"];
+
+    conf.exchangeableViews = [
+        {description: 'Tidsserie', state: '#/verksamhet/sjukfallperlakarbefattningtidsserie', active: false},
+        {description: 'Tvärsnitt', state: '#/verksamhet/sjukfallperlakarbefattning', active: true}];
     return conf;
 };
 
 angular.module('StatisticsApp').compareDiagnosis = function () {
     var conf = {};
     conf.dataFetcherVerksamhet = "getCompareDiagnosisVerksamhet";
-    conf.exportTableUrlVerksamhet = function (verksamhetId, diagnosisHash) {
-        return "api/verksamhet/" + verksamhetId + "/getJamforDiagnoserStatistik/" + diagnosisHash + "/csv";
+    conf.exportTableUrlVerksamhet = function (diagnosisHash) {
+        return "api/verksamhet/getJamforDiagnoserStatistik/" + diagnosisHash + "/csv";
     };
     conf.title = function (period, enhetsCount) {
         return "Jämförelse av valfria diagnoser" + ControllerCommons.getEnhetCountText(enhetsCount, false) + period;
     };
     conf.chartXAxisTitle = "Diagnos";
     conf.showDiagnosisSelector = true;
+
+    conf.exchangeableViews = [
+        {description: 'Tidsserie', state: '#/verksamhet/jamforDiagnoserTidsserie', active: false},
+        {description: 'Tvärsnitt', state: '#/verksamhet/jamforDiagnoser', active: true}];
+
+    return conf;
+};
+
+angular.module('StatisticsApp').casesPerMonthTvarsnittConfig = function () {
+    var conf = {};
+    conf.dataFetcherVerksamhet = "getNumberOfCasesPerMonthTvarsnittVerksamhet";
+    conf.exportTableUrlVerksamhet = function () {
+        return "api/verksamhet/getNumberOfCasesPerMonthTvarsnitt/csv";
+    };
+    conf.title = function (months, enhetsCount) {
+        return "Antal sjukfall per månad" + ControllerCommons.getEnhetCountText(enhetsCount, false) + months;
+    };
+    conf.chartXAxisTitle = "";
+    conf.pageHelpText = "help.casespermonth";
+
+    conf.exchangeableViews = [
+        {description: 'Tidsserie', state: '#/verksamhet/sjukfallPerManad', active: false},
+        {description: 'Tvärsnitt', state: '#/verksamhet/sjukfallPerManadTvarsnitt', active: true}];
+
+    return conf;
+};
+
+
+angular.module('StatisticsApp').longSickLeavesTvarsnittConfig = function () {
+    var conf = {};
+    conf.dataFetcherVerksamhet = "getLongSickLeavesTvarsnittVerksamhet";
+    conf.exportTableUrlVerksamhet = function () {
+        return "api/verksamhet/getLongSickLeavesTvarsnitt/csv";
+    };
+    conf.title = function (months, enhetsCount) {
+        return "Antal långa sjukfall - mer än 90 dagar" + ControllerCommons.getEnhetCountText(enhetsCount, false) + months;
+    };
+    conf.chartXAxisTitle = "";
+    conf.exchangeableViews = [
+        {description: 'Tidsserie', state: '#/verksamhet/langasjukskrivningar', active: false},
+        {description: 'Tvärsnitt', state: '#/verksamhet/langasjukskrivningartvarsnitt', active: true}];
+    return conf;
+};
+
+angular.module('StatisticsApp').degreeOfSickLeaveTvarsnittConfig = function () {
+    var conf = {};
+    conf.dataFetcherVerksamhet = "getDegreeOfSickLeaveTvarsnittVerksamhet";
+    conf.exportTableUrlVerksamhet = function () {
+        return "api/verksamhet/getDegreeOfSickLeaveTvarsnitt/csv";
+    };
+    conf.showDetailsOptions = false;
+    conf.title = function (period, enhetsCount) {
+        return "Antal sjukfall per sjukskrivningsgrad" + ControllerCommons.getEnhetCountText(enhetsCount, false) + period;
+    };
+    conf.chartXAxisTitle = "";
+    conf.pageHelpText = "help.degreeofsickleave";
+    conf.chartFootnotes = ["alert.degreeofsickleave.information"];
+
+    conf.exchangeableViews = [
+        {description: 'Tidsserie', state: '#/verksamhet/sjukskrivningsgrad', active: false},
+        {description: 'Tvärsnitt', state: '#/verksamhet/sjukskrivningsgradtvarsnitt', active: true}];
+
+    return conf;
+};
+
+angular.module('StatisticsApp').diagnosisGroupTvarsnittConfig = function () {
+    var conf = {};
+    conf.dataFetcherVerksamhet = "getDiagnosisGroupTvarsnittVerksamhet";
+    conf.exportTableUrlVerksamhet = function () {
+        return "api/verksamhet/getDiagnosGruppTvarsnitt/csv";
+    };
+    conf.showDetailsOptions = false;
+    conf.title = function (period, enhetsCount) {
+        return "Antal sjukfall per diagnosgrupp" + ControllerCommons.getEnhetCountText(enhetsCount, false) + period;
+    };
+    conf.pageHelpText = "help.diagnosisgroup";
+    conf.chartFootnotes = ["alert.diagnosisgroup.information"];
+
+    conf.exchangeableViews = [
+        {description: 'Tidsserie', state: '#/verksamhet/diagnosgrupp', active: false},
+        {description: 'Tvärsnitt', state: '#/verksamhet/diagnosgrupptvarsnitt', active: true}];
+    return conf;
+};
+
+angular.module('StatisticsApp').diagnosisSubGroupTvarsnittConfig = function () {
+    var conf = {};
+    conf.dataFetcherVerksamhet = "getSubDiagnosisGroupTvarsnittVerksamhet";
+    conf.exportTableUrlVerksamhet = function (subgroupId) {
+        return "api/verksamhet/getDiagnosavsnittTvarsnitt/" + subgroupId + "/csv";
+    };
+    conf.showDetailsOptions = true;
+    conf.showDetailsOptions2 = true;
+    conf.showDetailsOptions3 = true;
+    conf.title = function (period, enhetsCount, name) {
+        return "Antal sjukfall för " + name + ControllerCommons.getEnhetCountText(enhetsCount, false) + period;
+    };
+    conf.pageHelpText = "help.diagnosissubgroup";
+    conf.chartFootnotes = ["alert.diagnosissubgroup.information"];
+
+    conf.exchangeableViews = [
+        {description: 'Tidsserie', state: '#/verksamhet/diagnosavsnitt', active: false},
+        {description: 'Tvärsnitt', state: '#/verksamhet/diagnosavsnitttvarsnitt', active: true}];
     return conf;
 };

@@ -18,9 +18,12 @@
  */
 package se.inera.statistics.web.model;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import org.apache.commons.lang3.text.translate.CharSequenceTranslator;
 import org.apache.commons.lang3.text.translate.UnicodeEscaper;
 import org.apache.commons.lang3.text.translate.UnicodeUnescaper;
+import se.inera.statistics.hsa.model.HsaIdEnhet;
+import se.inera.statistics.hsa.model.HsaIdVardgivare;
 
 import java.io.Serializable;
 import java.util.Set;
@@ -28,6 +31,10 @@ import java.util.Set;
 import static org.apache.commons.lang3.text.translate.UnicodeEscaper.above;
 import static org.apache.commons.lang3.text.translate.UnicodeEscaper.between;
 
+@JsonAutoDetect(
+        fieldVisibility = JsonAutoDetect.Visibility.ANY,
+        getterVisibility = JsonAutoDetect.Visibility.NONE,
+        setterVisibility = JsonAutoDetect.Visibility.NONE)
 public class Verksamhet implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -48,10 +55,10 @@ public class Verksamhet implements Serializable {
     }
 
     // CHECKSTYLE:OFF ParameterNumber
-    public Verksamhet(String id, String name, String vardgivarId, String vardgivarName, String lansId, String lansName, String kommunId, String kommunName, Set<VerksamhetsTyp> verksamhetsTyper) {
-        this.id = id;
+    public Verksamhet(HsaIdEnhet id, String name, HsaIdVardgivare vardgivarId, String vardgivarName, String lansId, String lansName, String kommunId, String kommunName, Set<VerksamhetsTyp> verksamhetsTyper) {
+        this.id = id.getId();
         this.name = name;
-        this.vardgivarId = vardgivarId;
+        this.vardgivarId = vardgivarId.getId();
         this.vardgivarName = vardgivarName;
         this.lansId = lansId;
         this.lansName = lansName;
@@ -61,16 +68,17 @@ public class Verksamhet implements Serializable {
     }
     // CHECKSTYLE:ON ParameterNumber
 
-    public String getId() {
-        return encodeId(id);
+    public HsaIdEnhet getId() {
+        final String encodeId = encodeId(id);
+        return new HsaIdEnhet(encodeId);
     }
 
     public String getName() {
         return name;
     }
 
-    public String getVardgivarId() {
-        return vardgivarId;
+    public HsaIdVardgivare getVardgivarId() {
+        return new HsaIdVardgivare(vardgivarId);
     }
 
     public String getVardgivarName() {
@@ -98,7 +106,7 @@ public class Verksamhet implements Serializable {
     }
 
     public static String encodeId(String id) {
-        return ESCAPER .translate(id).replace('\\', '_');
+        return ESCAPER.translate(id).replace('\\', '_');
     }
 
     public static String decodeId(String encodedId) {

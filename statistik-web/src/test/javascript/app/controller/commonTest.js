@@ -26,6 +26,9 @@ describe("Test of common functions for controllers", function() {
         expect(ControllerCommons.makeThousandSeparated(9999999)).toBe("9\u00A0999\u00A0999");
         expect(ControllerCommons.makeThousandSeparated(-5000)).toBe("-5\u00A0000");
         expect(ControllerCommons.makeThousandSeparated("Fiftysix")).toBe("Fiftysix");
+        expect(ControllerCommons.makeThousandSeparated(0.16)).toBe("0,16");
+        expect(ControllerCommons.makeThousandSeparated(45321.16)).toBe("45\u00A0321,16");
+        expect(ControllerCommons.makeThousandSeparated(0.123456)).toBe("0,123456");
     });
     
     it("getFileName", function() {
@@ -35,34 +38,6 @@ describe("Test of common functions for controllers", function() {
         expect(ControllerCommons.getFileName("MittDiagram")).toMatch(/^MittDiagram_\d{8}_\d{6}$/);
         expect(ControllerCommons.getFileName("Mitt Diagram")).toMatch(/^Mitt_Diagram_\d{8}_\d{6}$/);
         expect(ControllerCommons.getFileName("Mitt     Diagram")).toMatch(/^Mitt_Diagram_\d{8}_\d{6}$/);
-    });
-    
-    it("getHighChartConfigBase", function() {
-        highchartsExportUrl = "http://www.testurl.com:1234/exporttest";
-        var categories = ["Namn 1", "Namn < 1"];
-        var series = [{b: 4}];
-        var result = ControllerCommons.getHighChartConfigBase(categories, series);
-        expect(result.xAxis.categories.length).toBe(2);
-        expect(result.xAxis.categories[0]).toBe("Namn 1");
-        expect(result.xAxis.categories[1]).toBe("Namn &lt; 1");
-        expect(result.series.length).toBe(1);
-        expect(result.series[0].b).toBe(4);
-    });
-    
-    it("exportChart", function() {
-        var callTimes = 0;
-        var name = "testName";
-        var chart = {
-                exportChart: function(opt, chartOpt){
-                    callTimes++;
-                    expect(opt.filename).toMatch(/testName/);
-                    expect(chartOpt.legend.enabled).toBe(true);
-                    expect(chartOpt.legend.layout).toBe("MyLayout");
-                    expect(chartOpt.title.text).toBe("title text");
-                }
-        };
-        ControllerCommons.exportChart(chart, name, "title text", null, "MyLayout");
-        expect(callTimes).toBe(1);
     });
     
     it("isNumber", function() {
@@ -81,5 +56,34 @@ describe("Test of common functions for controllers", function() {
         expect(ControllerCommons.htmlsafe("f")).toBe("f");
         expect(ControllerCommons.htmlsafe("f&<")).toBe("f&amp;&lt;");
     });
-    
+
+    it("create query string of query params", function() {
+        var emptyQueryParams = {}, queryParamsSingle = {filter: 'sjskdjdsk'},
+            queryParamsMultiple = {filter: '123345', another: '122114', more: '287218723'};
+
+        expect(ControllerCommons.createQueryStringOfQueryParams(emptyQueryParams)).toEqual('');
+        expect(ControllerCommons.createQueryStringOfQueryParams(queryParamsSingle)).toEqual('filter=sjskdjdsk');
+        expect(ControllerCommons.createQueryStringOfQueryParams(queryParamsMultiple)).toEqual('filter=123345&another=122114&more=287218723');
+    });
+
+    it("string with path is created either with diagnos hash or other", function() {
+        var routeParamsWithDiagnosHash = {diagnosHash: '12345'};
+        expect(ControllerCommons.createDiagnosHashPathOrAlternativePath(routeParamsWithDiagnosHash)).toEqual('/12345');
+
+        var routeParamsWithGroupId = {kapitelId: 'A00-B99'};
+        expect(ControllerCommons.createDiagnosHashPathOrAlternativePath(routeParamsWithGroupId)).toEqual('/kapitel/A00-B99');
+
+        //Add a avsnittId to the routeparams with groupid
+        routeParamsWithGroupId.avsnittId = 'someId';
+        expect(ControllerCommons.createDiagnosHashPathOrAlternativePath(routeParamsWithGroupId)).toEqual('/kapitel/A00-B99/avsnitt/someId');
+
+        //Add a kategoriId to the routeparams with groupid
+        routeParamsWithGroupId.kategoriId = 'someKatId';
+        expect(ControllerCommons.createDiagnosHashPathOrAlternativePath(routeParamsWithGroupId)).toEqual('/kapitel/A00-B99/avsnitt/someId/kategori/someKatId');
+
+        //No route params will just produce an empty string
+        expect(ControllerCommons.createDiagnosHashPathOrAlternativePath({})).toEqual('');
+
+    });
+
 });

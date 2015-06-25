@@ -18,9 +18,10 @@
  */
 package se.inera.statistics.hsa.services;
 
-import java.util.List;
-
+import se.inera.statistics.hsa.model.HsaIdUser;
 import se.inera.statistics.hsa.model.Vardenhet;
+
+import java.util.List;
 
 /**
  * @author andreaskaltenbach
@@ -30,5 +31,5 @@ public interface HsaOrganizationsService {
     /**
      * Returns a list of Vardenheter where the HoS person is authorized to get statistics information.
      */
-    List<Vardenhet> getAuthorizedEnheterForHosPerson(String hosPersonHsaId);
+    List<Vardenhet> getAuthorizedEnheterForHosPerson(HsaIdUser hosPersonHsaId);
 }

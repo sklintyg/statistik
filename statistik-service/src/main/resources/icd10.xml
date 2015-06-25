@@ -33,5 +33,9 @@
         <constructor-arg value="icd10/KSH97_KAT.ANS"/>
     </bean>
     
+    <bean class="org.springframework.core.io.ClassPathResource" id="icd10KodAnsiFile" >
+        <constructor-arg value="icd10/KSH97_KOD.ANS"/>
+    </bean>
+
     <bean class="se.inera.statistics.service.report.util.Icd10" />
 </beans>

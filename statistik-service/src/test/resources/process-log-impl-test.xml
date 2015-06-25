@@ -33,6 +33,8 @@
     <jdbc:embedded-database id="dataSource" type="H2"/>
 
     <context:property-placeholder/>
+    <context:property-placeholder location="classpath*:application-context-test.properties" order="2"
+                                  ignore-resource-not-found="false" ignore-unresolvable="false"/>
 
     <bean id="org.h2.tools.Server"
           class="org.h2.tools.Server"
@@ -86,4 +88,9 @@
     <bean class="se.inera.statistics.service.processlog.LakareManager"/>
 
     <context:component-scan base-package="se.inera.statistics.service.warehouse"/>
+
+    <!--This profile is used when testing transactional aspects of the application, i.e. when receiving a message on a queue and storing it to the db-->
+    <beans profile="transactional-test-mock">
+        <bean id="processLog" class="se.inera.statistics.service.processlog.ProcessLogMock"/>
+    </beans>
 </beans>

@@ -22,6 +22,7 @@ import org.joda.time.LocalDateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import se.inera.statistics.hsa.model.HsaIdVardgivare;
 
 import javax.annotation.PostConstruct;
 
@@ -50,7 +51,7 @@ public class WarehouseManager {
         LOG.info("Prepared warehouse with ailes {}", warehouse.getAllVardgivare().keySet());
         LOG.info("Reloading enhet");
         lines = enhetLoader.populateWarehouse();
-        warehouse.completeEnhets(LocalDateTime.now());
+        warehouse.completeEnhets();
         LOG.info("Reloaded enhet {} lines", lines);
         sjukfallUtil.clearSjukfallGroupCache();
         return lines;
@@ -60,7 +61,7 @@ public class WarehouseManager {
         return warehouse.getAllVardgivare().size();
     }
 
-    public int getAisleSize(String vardgivareId) {
+    public int getAisleSize(HsaIdVardgivare vardgivareId) {
         Aisle aisle = warehouse.get(vardgivareId);
         return aisle.getSize();
     }

@@ -18,6 +18,9 @@
  */
 package se.inera.statistics.service.processlog;
 
+import se.inera.statistics.hsa.model.HsaIdLakare;
+import se.inera.statistics.hsa.model.HsaIdVardgivare;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -41,9 +44,9 @@ public class Lakare {
 
     private String efterNamn;
 
-    public Lakare(String vardgivareId, String lakareId, String tilltalsNamn, String efterNamn) {
-        this.vardgivareId = vardgivareId;
-        this.lakareId = lakareId;
+    public Lakare(HsaIdVardgivare vardgivareId, HsaIdLakare lakareId, String tilltalsNamn, String efterNamn) {
+        setVardgivareId(vardgivareId);
+        setLakareId(lakareId);
         this.tilltalsNamn = tilltalsNamn;
         this.efterNamn = efterNamn;
     }
@@ -59,20 +62,20 @@ public class Lakare {
         return id;
     }
 
-    public String getVardgivareId() {
-        return vardgivareId;
+    public HsaIdVardgivare getVardgivareId() {
+        return new HsaIdVardgivare(vardgivareId);
     }
 
-    public void setVardgivareId(String vardgivareId) {
-        this.vardgivareId = vardgivareId;
+    public void setVardgivareId(HsaIdVardgivare vardgivareId) {
+        this.vardgivareId = vardgivareId.getId();
     }
 
-    public String getLakareId() {
-        return lakareId;
+    public HsaIdLakare getLakareId() {
+        return new HsaIdLakare(lakareId);
     }
 
-    public void setLakareId(String lakareId) {
-        this.lakareId = lakareId;
+    public void setLakareId(HsaIdLakare lakareId) {
+        this.lakareId = lakareId.getId();
     }
 
     public String getTilltalsNamn() {

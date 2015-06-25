@@ -24,6 +24,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
+import se.inera.statistics.service.userselection.UserSelection;
 import se.inera.statistics.service.userselection.UserSelectionManager;
 
 import static org.junit.Assert.*;
@@ -42,17 +43,58 @@ public class FilterHashHandlerTest {
     private FilterHashHandler handler = new FilterHashHandler();
 
     @Test
-    public void willSkipSaveOnNonJsonData() {
-        handler.getHash("not json");
+    public void willSkipSaveOnNonJsonData() throws Exception {
+        try {
+            handler.getHash("not json");
+            fail();
+        } catch (Exception e) {
+            //Do nothing
+        }
         Mockito.verify(userSelectionManager, never()).register(anyString(), anyString());
     }
 
     @Test
-    public void willSaveOnJsonData() {
+    public void willSaveOnJsonData() throws Exception {
         String hash = handler.getHash("{}");
 
         Mockito.verify(userSelectionManager, atLeastOnce()).register(anyString(), anyString());
 
         assertEquals("99914b932bd37a50b983c5e7c90ae93b", hash);
     }
+
+    @Test
+    public void testGetFilterFromHash() throws Exception {
+        //Given
+        Mockito.when(userSelectionManager.find(anyString())).thenReturn(new UserSelection("mykey", "{\"fromDate\": 1234}"));
+
+        //When
+        final FilterData filterFromHash = handler.getFilterFromHash("");
+
+        //Then
+        assertEquals("1234", filterFromHash.getFromDate());
+        assertEquals(null, filterFromHash.getToDate());
+    }
+
+    @Test (expected = RuntimeException.class)
+    public void testGetFilterFromHashUnparsableData() throws Exception {
+        //Given
+        Mockito.when(userSelectionManager.find(anyString())).thenReturn(new UserSelection("mykey", "UnparsableData"));
+
+        //When
+        final FilterData filterFromHash = handler.getFilterFromHash("");
+
+        //Then Exception is thrown
+    }
+
+    @Test (expected = RuntimeException.class)
+    public void testGetFilterFromHashDataNotFound() throws Exception {
+        //Given
+        Mockito.when(userSelectionManager.find(anyString())).thenReturn(null);
+
+        //When
+        final FilterData filterFromHash = handler.getFilterFromHash("");
+
+        //Then Exception is thrown
+    }
+
 }

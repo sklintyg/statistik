@@ -44,8 +44,7 @@ public class Receiver  {
 
     public void accept(EventType type, String data, String documentId, long timestamp) {
         processLog.store(type, data, documentId, timestamp);
-        JsonNode utlatande = JSONParser.parse(data);
-        hsa(documentId, utlatande);
+        hsa(documentId, data);
         accepted++;
     }
 
@@ -53,8 +52,9 @@ public class Receiver  {
         return accepted;
     }
 
-    private void hsa(String documentId, JsonNode utlatande) {
+    private void hsa(String documentId, String data) {
         try {
+            JsonNode utlatande = JSONParser.parse(data);
             hsaDecorator.decorate(utlatande, documentId);
         } catch (Exception e) {
             LOG.error("Failed decorating intyg {}", documentId, e.getMessage());

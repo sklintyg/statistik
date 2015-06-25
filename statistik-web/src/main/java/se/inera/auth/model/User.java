@@ -18,6 +18,7 @@
  */
 package se.inera.auth.model;
 
+import se.inera.statistics.hsa.model.HsaIdUser;
 import se.inera.statistics.hsa.model.Vardenhet;
 
 import java.io.Serializable;
@@ -26,13 +27,13 @@ import java.util.List;
 
 public class User implements Serializable {
 
-    private final String hsaId;
+    private final HsaIdUser hsaId;
     private final String name;
     private final boolean processledare;
     private final Vardenhet vardenhet;
     private final List<Vardenhet> vardenhetList;
 
-    public User(String hsaId, String name, boolean processledare, Vardenhet vardenhet, List<Vardenhet> vardenhetsList) {
+    public User(HsaIdUser hsaId, String name, boolean processledare, Vardenhet vardenhet, List<Vardenhet> vardenhetsList) {
         this.hsaId = hsaId;
         this.name = name;
         this.processledare = processledare;
@@ -40,7 +41,7 @@ public class User implements Serializable {
         this.vardenhetList = Collections.unmodifiableList(vardenhetsList);
     }
 
-    public String getHsaId() {
+    public HsaIdUser getHsaId() {
         return hsaId;
     }
 

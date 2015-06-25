@@ -491,6 +491,7 @@ legend {
 	background: #eeeeee;
 }
 #about-content .panel-heading h4 { font-size: 14px; }
+
 #statistics-menu-accordion .nav-list,
 #statistics-about-menu-accordion .nav-list {
 	padding-left: 0px;
@@ -527,6 +528,7 @@ legend {
 }
 #statistics-menu-accordion #national-statistic-menu-content li.active a,
 #statistics-menu-accordion #business-statistic-menu-content li.active a,
+#statistics-menu-accordion #landsting-statistic-menu-content li.active a,
 #statistics-menu-accordion #about-statistic-menu-content li.active a {
 	background: #CCCCCC !important;
 	background-color: #CCCCCC !important;
@@ -1593,7 +1595,7 @@ td.scrollable {
 thead tr td.headcol.scrollable:first-child { height: 30px; }
 .headcol.scrollable {
     position:absolute;
-    width: 17em;
+    width: 34em;
     top:auto;
     left:0;
     text-align: left !important;
@@ -1602,7 +1604,7 @@ thead tr td.headcol.scrollable:first-child { height: 30px; }
 .headcol-name {
 	overflow: hidden;
 	text-overflow: ellipsis;
-	max-width: 350px; 
+	max-width: 34em;
 }
 div.scrollable {
     position: relative;
@@ -1610,7 +1612,7 @@ div.scrollable {
 
 div.scrolling {
     overflow-x:auto;  
-    margin-left: 17em;
+    margin-left: 34em;
     overflow-y:visible;
     padding-bottom:1px;
     font-size: 12px;
@@ -1674,9 +1676,7 @@ a.has-collapse {
 .margin-bottom {
 	margin-bottom: 15px !important;
 }
-/*.margin_top_button_group {
-	margin-top: 25px;
-}*/
+
 .dropdown-menu>li>a {
 	max-width: 490px;
 	overflow: hidden;
@@ -1816,3 +1816,235 @@ li.subMenuItem.active .active-menu-item { display: block;  }
     animation-iteration-count:  infinite;
     animation-timing-function:  linear;
 }
+
+.ng-hide:not(.ng-hide-animate) {
+    display: none!important;
+}
+
+/*Change the way the buttons look in the ui.bootstrap.datepicker*/
+
+/*Firefox fix for the datepicker */
+.datepicker .dropdown-menu {
+    min-width: 260px;
+}
+
+.input-group.datepicker td .btn-default,
+.input-group.datepicker th .btn-default {
+    background-image: none;
+    border-color: #ffffff;
+    border-radius: 0px;
+    box-shadow: none;
+}
+
+/*Change the way the buttons look in the ui.bootstrap.datepicker*/
+.input-group.datepicker .btn-info.active {
+    background-color: rgb(153, 153, 158);
+    border-color: rgb(153, 153, 158);
+}
+
+/*Add a bullet to the dropdown-menu */
+.input-group.datepicker .dropdown-menu{
+    margin-top: 8px;
+}
+
+.input-group.datepicker .dropdown-menu:before {
+    width: 0;
+    height: 0;
+    content: '';
+    display: inline-block;
+    position: absolute;
+    border-color: transparent;
+    border-style: solid;
+    -webkit-transform: rotate(360deg);
+    border-width: 0 7px 7px;
+    border-bottom-color: #cccccc;
+    border-bottom-color: rgba(0, 0, 0, 0.15);
+    top: -7px;
+    left: 9px;
+}
+.input-group.datepicker .dropdown-menu:after {
+    width: 0;
+    height: 0;
+    content: '';
+    display: inline-block;
+    position: absolute;
+    border-color: transparent;
+    border-style: solid;
+    -webkit-transform: rotate(360deg);
+    border-width: 0 6px 6px;
+    border-bottom-color: #ffffff;
+    top: -6px;
+    left: 10px;
+}
+
+/*Remove outline, maybe no the best for accesibility*/
+:focus {
+    outline: 0;
+}
+
+/*Adjust the inputbox size and font size for the datepicker*/
+.input-group-sm.datepicker>.form-control, .input-group-sm.datepicker>.input-group-addon, .input-group-sm.datepicker>.input-group-btn>.btn {
+    height: 34px;
+    font-size: 14px;
+}
+
+/*Icons for charts*/
+
+.chart-icon-column, .chart-icon-line, .chart-icon-area,
+.chart-icon-area-active, .chart-icon-column-active,
+.chart-icon-line-active {
+    background-image: url("../img/chart-types/ikoner_statistik_state.png");
+    background-repeat: no-repeat;
+    position: relative;
+    display: inline-block;
+    width: 38px;
+    height: 34px;
+}
+
+.chart-icon-column {
+    background-position: left top;
+}
+
+.chart-icon-column:hover {
+    background-position: left center;
+}
+
+.chart-icon-column-active {
+    background-position: left bottom;
+}
+
+.chart-icon-line {
+    background-position: center top;
+}
+
+.chart-icon-line:hover {
+    background-position: center center;
+}
+
+.chart-icon-line-active{
+    background-position: center bottom;
+}
+
+.chart-icon-area {
+    background-position: right top;
+}
+
+.chart-icon-area:hover {
+    background-position: right center;
+}
+
+.chart-icon-area-active {
+    background-position: right bottom;
+}
+
+.not-active {
+    pointer-events: none;
+    cursor: default;
+    background-image: none;
+    opacity: 0.65;
+    filter: alpha(opacity=65);
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+    color: #333;
+    background-color: #E6E6E6;}
+
+/*Styling for filuppladdning*/
+.jumbotron.dropzone {
+    margin-bottom: 0px;
+    margin-top: 10px;
+}
+
+/* The postion property of the jumbtron disturbed links in som kind of weird way*/
+.dropzone.jumbotron:after {
+    position: inherit;
+}
+
+div.dropzone a{
+    color:dimgrey !important;
+    text-decoration: underline;
+}
+
+.dropzone {
+    border: dashed;
+    border-color: grey;
+    border-width: 2px;
+    border-radius: 6px;
+    background-color: rgb(247, 247, 249);
+}
+
+.dropzone-drag {
+    background-color: rgb(225,225,232) !important;
+}
+
+.dropzone-info-area {
+    text-align: center;
+}
+
+.glyphicon-plus-sign, .glyphicon-plus-sign-drag, .glyphicon-ok-sign, .glyphicon-warning-sign {
+    font-size: 6em;
+    display: block;
+    color: rgb(191,191,207);
+}
+
+.glyphicon-plus-sign-drag{
+    color: rgb(2,2,3);
+}
+
+.glyphicon-ok-sign{
+    color: green;
+}
+
+.glyphicon-warning-sign {
+    color: red;
+}
+
+.bold {
+    font-weight: bold;
+}
+
+
+/* Styling for the sidebar start */
+#wrapper {
+    padding-left: 0;
+    -webkit-transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    -o-transition: all 0.5s ease;
+    transition: all 0.5s ease;
+}
+
+#sidebar-wrapper {
+    z-index: 1000;
+    position: absolute;
+    left: 265px;
+    width: 0;
+    margin-left: -265px;
+    padding-left: 15px;
+    overflow-y: auto;
+    -webkit-transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    -o-transition: all 0.5s ease;
+    transition: all 0.5s ease;
+}
+
+#page-content-wrapper {
+    width: 100%;
+    position: absolute;
+    padding: 0px 15px 15px 15px;
+}
+
+@media (min-width: 768px) {
+    #wrapper {
+        padding-left: 265px;
+    }
+
+    #sidebar-wrapper {
+        width: 250px;
+    }
+
+    #page-content-wrapper {
+        padding: 0px 15px 15px 15px;
+        position: relative;
+    }
+}
+/* Styling for the sidebar end*/

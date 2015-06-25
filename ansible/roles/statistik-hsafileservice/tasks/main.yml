@@ -1,0 +1,74 @@
+---
+
+- name: Make sure hsa fileservice updater file download is forced when using shapshot repo
+  file: state=absent  path={{ archive_dir }}/fileservice-{{ version }}.zip
+  when: repo == "snapshot"
+
+- name: Download hsa fileservice updater for statistik
+  get_url: url=http://repository-callistasoftware.forge.cloudbees.com/{{ repo }}/se/inera/statistik/fileservice/{{ version }}/fileservice-{{ version }}.zip
+           dest={{ archive_dir }}/fileservice-{{ version }}.zip
+
+- name: Remove old fileservice
+  command: rm -Rf {{ inera_root }}/fileservice
+
+- name: Create fileservice folder
+  command: mkdir -p {{ inera_root }}/fileservice
+
+- name: Extract fileservice
+  unarchive: src={{ archive_dir }}/fileservice-{{ version }}.zip
+             dest={{ inera_root }}/fileservice copy=no
+
+
+
+# Create file dataSource.properties
+- name: Setup datasource file
+  shell: echo "dataSource.url={{ database_url }}" > "{{ dataSource_properties_file }}"
+
+- name: Setup datasource file
+  shell: echo "dataSource.driver={{ database_driver }}" >> "{{ dataSource_properties_file }}"
+
+- name: Setup datasource file
+  shell: echo "dataSource.username={{ database_username }}" >> "{{ dataSource_properties_file }}"
+
+- name: Setup datasource file
+  shell: echo "dataSource.password={{ database_password }}" >> "{{ dataSource_properties_file }}"
+
+
+
+# Create file hsaFileService.properties
+- name: Fetching hsa certificate password
+  shell: grep "hsa.ws.certificate.password" {{ configuration_credentials_properties }} | tail -1 | cut -d '=' -f 2
+  register: hsa_certificate_password_result
+
+- name: Fetching hsa truststore password
+  shell: grep "hsa.ws.truststore.password" {{ configuration_credentials_properties }} | tail -1 | cut -d '=' -f 2
+  register: hsa_truststore_password_result
+
+- name: Setup hsaFileService properties file
+  shell: echo "certificate.file={{ hsa_certificate_file }}" > "{{ hsaFileService_properties_file }}"
+
+- name: Setup hsaFileService properties file
+  shell: echo "certificate.password={{ hsa_certificate_password_result.stdout }}" >> "{{ hsaFileService_properties_file }}"
+
+- name: Setup hsaFileService properties file
+  shell: echo "certificate.type={{ hsa_certificate_type }}" >> "{{ hsaFileService_properties_file }}"
+
+- name: Setup hsaFileService properties file
+  shell: echo "truststore.file={{ hsa_truststore_file }}" >> "{{ hsaFileService_properties_file }}"
+
+- name: Setup hsaFileService properties file
+  shell: echo "truststore.password={{ hsa_truststore_password_result.stdout }}" >> "{{ hsaFileService_properties_file }}"
+
+- name: Setup hsaFileService properties file
+  shell: echo "truststore.type={{ hsa_truststore_type }}" >> "{{ hsaFileService_properties_file }}"
+
+- name: Setup hsaFileService properties file
+  shell: echo "hsaunits.url={{ hsaunits_url }}" >> "{{ hsaFileService_properties_file }}"
+
+
+
+- name: Add fileservice execution as daily cron job
+  cron: name="hsa fileservice" user="inera" minute="0" hour="4" job="{{ hsa_fileservice_executable }} --hsafileservice={{ hsaFileService_properties_file }} --datasource={{ dataSource_properties_file }}"
+
+- name: Execute hsaFileService
+  shell: "{{ hsa_fileservice_executable }} --hsafileservice={{ hsaFileService_properties_file }} --datasource={{ dataSource_properties_file }}"

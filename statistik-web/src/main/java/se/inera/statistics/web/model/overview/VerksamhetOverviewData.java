@@ -31,10 +31,12 @@ public class VerksamhetOverviewData {
     private final List<DonutChartData> degreeOfSickLeaveGroups;
     private final SickLeaveLengthOverview sickLeaveLength;
     private final FilterDataResponse filter;
+    private final String message;
 
+    // CHECKSTYLE:OFF ParameterNumber
     public VerksamhetOverviewData(String periodText, VerksamhetNumberOfCasesPerMonthOverview casesPerMonth, List<DonutChartData> diagnosisGroups,
             List<DonutChartData> ageGroups, List<DonutChartData> degreeOfSickLeaveGroups,
-            SickLeaveLengthOverview sickLeaveLength, FilterDataResponse filter) {
+            SickLeaveLengthOverview sickLeaveLength, FilterDataResponse filter, String message) {
         this.periodText = periodText;
         this.casesPerMonth = casesPerMonth;
         this.diagnosisGroups = diagnosisGroups;
@@ -42,7 +44,9 @@ public class VerksamhetOverviewData {
         this.degreeOfSickLeaveGroups = degreeOfSickLeaveGroups;
         this.sickLeaveLength = sickLeaveLength;
         this.filter = filter;
+        this.message = message;
     }
+    // CHECKSTYLE:ON ParameterNumber
 
     public String getPeriodText() {
         return periodText;
@@ -70,6 +74,10 @@ public class VerksamhetOverviewData {
 
     public FilterDataResponse getFilter() {
         return filter;
+    }
+
+    public String getMessage() {
+        return message;
     }
 
 }

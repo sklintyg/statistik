@@ -18,6 +18,7 @@
  */
 package se.inera.statistics.web.service;
 
+import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.service.warehouse.SjukfallFilter;
 
 import java.util.Collection;
@@ -25,10 +26,10 @@ import java.util.Collection;
 class Filter {
 
     private SjukfallFilter predicate;
-    private Collection<String> enheter;
+    private Collection<HsaIdEnhet> enheter;
     private Collection<String> diagnoser;
 
-    Filter(SjukfallFilter predicate, Collection<String> enheter, Collection<String> diagnoser) {
+    Filter(SjukfallFilter predicate, Collection<HsaIdEnhet> enheter, Collection<String> diagnoser) {
         this.predicate = predicate;
         this.enheter = enheter;
         this.diagnoser = diagnoser;
@@ -42,7 +43,7 @@ class Filter {
         return predicate;
     }
 
-    Collection<String> getEnheter() {
+    Collection<HsaIdEnhet> getEnheter() {
         return enheter;
     }
 

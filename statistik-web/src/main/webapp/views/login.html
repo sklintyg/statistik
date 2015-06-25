@@ -22,7 +22,10 @@
 	    	<div class="overview-content">
 	    		<div class="col-xs-12 col-sm-10 col-md-10 col-lg-10">
                     <h1><span message key="login.header"></span></h1>
-                    <p class="alert alert-info">
+		        	<p ng-show="loggedInWithoutStatistikuppdrag" class="alert alert-info">
+                        <span message key="login.alert-info.behorighet"></span>
+                    </p>
+                    <p ng-show="isLoggedIn && !loggedInWithoutStatistikuppdrag" class="alert alert-info">
                         <span message key="login.alert-inaktivitet"></span>
                         <br/>
                         <span message key="login.alert-logga.in"></span>
@@ -37,4 +40,3 @@
 	    </div>
 	</div>
 </div>
-

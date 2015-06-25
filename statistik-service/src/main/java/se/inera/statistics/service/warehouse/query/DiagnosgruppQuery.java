@@ -19,6 +19,7 @@
 package se.inera.statistics.service.warehouse.query;
 
 import com.google.common.base.Function;
+import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Lists;
 import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,7 @@ import org.springframework.stereotype.Component;
 import se.inera.statistics.service.report.model.DiagnosgruppResponse;
 import se.inera.statistics.service.report.model.Icd;
 import se.inera.statistics.service.report.model.Kon;
+import se.inera.statistics.service.report.model.KonDataResponse;
 import se.inera.statistics.service.report.model.KonDataRow;
 import se.inera.statistics.service.report.model.KonField;
 import se.inera.statistics.service.report.model.OverviewChartRowExtended;
@@ -81,11 +83,44 @@ public class DiagnosgruppQuery {
         List<Icd10.Kapitel> kapitel = icd10.getKapitel(true);
         final Iterable<SjukfallGroup> sjukfallGroups = sjukfallUtil.sjukfallGrupper(start, periods, periodLength, aisle, filter);
         List<KonDataRow> rows = getKonDataRows(sjukfallGroups, kapitel, Icd10RangeType.KAPITEL, false);
+        removeEmptyInternalIcd10Groups(kapitel, rows);
         List<Icd> avsnitt = new ArrayList<>(kapitel.size());
         for (Icd10.Kapitel k: kapitel) {
             avsnitt.add(new Icd(k.getVisibleId(), k.getName(), k.toInt()));
         }
         return new DiagnosgruppResponse(avsnitt, rows);
+    }
+
+    private void removeEmptyInternalIcd10Groups(List<Icd10.Kapitel> kapitel, List<KonDataRow> rows) {
+        int indexOfEmptyInternalIcd10Group = getIndexOfEmptyInternalIcd10Group(kapitel, rows);
+        while (indexOfEmptyInternalIcd10Group >= 0) {
+            removeGroupWithIndex(indexOfEmptyInternalIcd10Group, kapitel, rows);
+            indexOfEmptyInternalIcd10Group = getIndexOfEmptyInternalIcd10Group(kapitel, rows);
+        }
+    }
+
+    private void removeGroupWithIndex(int index, List<Icd10.Kapitel> kapitel, List<KonDataRow> rows) {
+        kapitel.remove(index);
+        for (KonDataRow row : rows) {
+            row.getData().remove(index);
+        }
+    }
+
+    private int getIndexOfEmptyInternalIcd10Group(List<Icd10.Kapitel> kapitels, List<KonDataRow> rows) {
+        for (int i = 0; i < kapitels.size(); i++) {
+            final Icd10.Kapitel kapitel = kapitels.get(i);
+            if (kapitel.isInternal()) {
+                int sum = 0;
+                for (KonDataRow row : rows) {
+                    final KonField konField = row.getData().get(i);
+                    sum += konField.getFemale() + konField.getMale();
+                }
+                if (sum == 0) {
+                    return i;
+                }
+            }
+        }
+        return -1;
     }
 
     public DiagnosgruppResponse getUnderdiagnosgrupper(Aisle aisle, SjukfallFilter filter, LocalDate start, int periods, int periodLength, String rangeId) throws RangeNotFoundException {
@@ -97,6 +132,11 @@ public class DiagnosgruppQuery {
         final Icd10.Avsnitt avsnitt = icd10.getAvsnitt(rangeId);
         if (avsnitt != null) {
             return getUnderdiagnosgrupper(aisle, filter, start, periods, periodLength, avsnitt, Icd10RangeType.KATEGORI);
+        }
+
+        final Icd10.Kategori kategori = icd10.getKategori(rangeId);
+        if (kategori != null) {
+            return getUnderdiagnosgrupper(aisle, filter, start, periods, periodLength, kategori, Icd10RangeType.KOD);
         }
 
         throw new RangeNotFoundException("Could not find ICD10 range: " + rangeId);
@@ -118,7 +158,36 @@ public class DiagnosgruppQuery {
             final Icd10.Id kategori = kategoris.get(i);
             rows.add(new SimpleKonDataRow((kategori.getVisibleId() + " " + kategori.getName()).trim(), row));
         }
-        return new SimpleKonResponse<>(rows, periods * periodLength);
+        return new SimpleKonResponse<>(rows);
+    }
+
+    public KonDataResponse getJamforDiagnoserTidsserie(Aisle aisle, SjukfallFilter filter, LocalDate start, int periods, int periodLength, List<String> diagnosis) {
+        final List<Icd10.Id> kategoris = Lists.transform(diagnosis, new Function<String, Icd10.Id>() {
+            @Override
+            public Icd10.Id apply(String diagnos) {
+                return icd10.findIcd10FromNumericId(Integer.valueOf(diagnos));
+            }
+        });
+        final List<String> names = Lists.transform(kategoris, new Function<Icd10.Id, String>() {
+            @Override
+            public String apply(Icd10.Id id) {
+                return (id.getVisibleId() + " " + id.getName()).trim();
+            }
+        });
+        final List<Integer> ids = Lists.transform(kategoris, new Function<Icd10.Id, Integer>() {
+            @Override
+            public Integer apply(Icd10.Id id) {
+                return id.toInt();
+            }
+        });
+        final CounterFunction<Integer> counterFunction = new CounterFunction<Integer>() {
+            @Override
+            public void addCount(Sjukfall sjukfall, HashMultiset<Integer> counter) {
+                counter.add(sjukfall.getDiagnoskategori());
+            }
+        };
+
+        return sjukfallUtil.calculateKonDataResponse(aisle, filter, start, periods, periodLength, names, ids, counterFunction);
     }
 
     private DiagnosgruppResponse getUnderdiagnosgrupper(Aisle aisle, SjukfallFilter filter, LocalDate start, int periods, int periodLength, Icd10.Range kapitel, Icd10RangeType rangeType) {
@@ -181,26 +250,23 @@ public class DiagnosgruppQuery {
                 break;
             }
         }
-
         return result;
     }
 
     public List<Counter<Integer>> count(Collection<Sjukfall> sjukfalls, int noOfRows) {
         Map<Integer, Counter<Integer>> map = count(sjukfalls);
         List<Counter<Integer>> result = new ArrayList<>();
-
         Collection<Integer> rowsToKeep = rowsToKeep(map, noOfRows);
         for (Integer intId : rowsToKeep) {
             result.add(map.get(intId));
         }
-
         return result;
     }
 
     public Map<Integer, Counter<Integer>> count(Collection<Sjukfall> sjukfalls) {
         Map<Integer, Counter<Integer>> counters = new HashMap<>();
         for (Sjukfall sjukfall : sjukfalls) {
-            Counter counter = counters.get(sjukfall.getDiagnoskapitel());
+            Counter<Integer> counter = counters.get(sjukfall.getDiagnoskapitel());
             if (counter == null) {
                 counter = new Counter<>(sjukfall.getDiagnoskapitel());
                 counters.put(sjukfall.getDiagnoskapitel(), counter);
@@ -210,4 +276,13 @@ public class DiagnosgruppQuery {
         return counters;
     }
 
+    public SimpleKonResponse<SimpleKonDataRow> getDiagnosgrupperTvarsnitt(Aisle aisle, SjukfallFilter filter, LocalDate start, int periods, int periodLength) {
+        final DiagnosgruppResponse diagnosgruppResponse = getDiagnosgrupper(aisle, filter, start, periods, periodLength);
+        return SimpleKonResponse.create(diagnosgruppResponse);
+    }
+
+    public SimpleKonResponse<SimpleKonDataRow> getUnderdiagnosgrupperTvarsnitt(Aisle aisle, SjukfallFilter filter, LocalDate start, int periods, int periodLength, String rangeId) throws RangeNotFoundException {
+        final DiagnosgruppResponse underdiagnosgrupper = getUnderdiagnosgrupper(aisle, filter, start, periods, periodLength, rangeId);
+        return SimpleKonResponse.create(underdiagnosgrupper);
+    }
 }

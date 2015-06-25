@@ -18,139 +18,73 @@
  */
 package se.inera.statistics.service.warehouse;
 
-import com.google.common.base.Predicate;
-import com.google.common.collect.Sets;
 import se.inera.statistics.service.report.model.Kon;
-import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.util.Icd10RangeType;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
-import java.util.SortedSet;
-import java.util.TreeSet;
 
-public class Sjukfall {
+public final class Sjukfall {
 
     public static final int MAX_GAP = 5;
 
     private int start;
-    private final int lan;
+    private int lan;
     private int end;
-    private int intygCount;
-    private final int kon;
+    private int kon;
     private int alder;
-    private List<Diagnos> diagnoses = new ArrayList<>();
-    private Map<Range, Integer> sjukskrivningsgrad = new HashMap<>();
+    private int sjukskrivningsgrad;
     private Set<Lakare> lakare = new HashSet<>();
-    private Set<Integer> enhets = new HashSet<>();
-    private Sjukfall extending;
-    private List<Sjukskrivningsperiod> sjukskrivningsperiods = new ArrayList<>();
+    private int[] enhets;
+    private int realDays;
+    private List<Diagnos> diagnoses = new ArrayList<>();
+    private Diagnos diagnos;
 
-    public Sjukfall(Fact line) {
-        start = line.getStartdatum();
-        end = line.getStartdatum() + line.getSjukskrivningslangd() - 1;
-        sjukskrivningsperiods.add(new Sjukskrivningsperiod(start, line.getSjukskrivningslangd()));
-        intygCount++;
-        kon = line.getKon();
-        alder = line.getAlder();
-        diagnoses.add(new Diagnos(start, end, line.getDiagnoskapitel(), line.getDiagnosavsnitt(), line.getDiagnoskategori()));
-        sjukskrivningsgrad.put(new Range(WidelineConverter.toDate(start), WidelineConverter.toDate(end)), line.getSjukskrivningsgrad());
-        lan = line.getLan();
-        final int lakarid = line.getLakarid();
-        final Kon lakarKon = Kon.byNumberRepresentation(line.getLakarkon());
-        final int lakaralder = line.getLakaralder();
-        final int[] lakarbefattnings = line.getLakarbefattnings();
-        this.lakare.add(new Lakare(lakarid, lakarKon, lakaralder, lakarbefattnings));
-        this.enhets.add(line.getEnhet());
+    private Sjukfall() {
     }
 
-    public Sjukfall(Sjukfall previous, Fact line) {
-        this(line);
-        start = Math.min(previous.getStart(), start);
-        end = Math.max(previous.getEnd(), end);
-        sjukskrivningsperiods.addAll(previous.sjukskrivningsperiods);
-        intygCount += previous.getIntygCount();
-        extending = previous;
-        lakare.addAll(previous.getLakare());
-        diagnoses.addAll(0, previous.diagnoses);
-        alder = previous.alder > this.alder ? previous.alder : this.alder;
-        enhets.addAll(previous.getEnhets());
-        sjukskrivningsgrad.putAll(previous.sjukskrivningsgrad);
+    public static Sjukfall create(SjukfallExtended extendedSjukfall) {
+        final Sjukfall sjukfall = new Sjukfall();
+        sjukfall.start = extendedSjukfall.getStart();
+        sjukfall.end = extendedSjukfall.getEnd();
+        sjukfall.diagnoses = toDiagnoses(extendedSjukfall.getAllDxs());
+        sjukfall.diagnos = toDiagnos(extendedSjukfall.getLastDiagnosis());
+        sjukfall.realDays = extendedSjukfall.getRealDays();
+        sjukfall.kon = extendedSjukfall.getKonInt();
+        sjukfall.alder = extendedSjukfall.getAlder();
+        sjukfall.sjukskrivningsgrad = extendedSjukfall.getSjukskrivningsgrad();
+        sjukfall.lan = extendedSjukfall.getLan();
+        sjukfall.lakare = extendedSjukfall.getLakare();
+        sjukfall.enhets = toArray(extendedSjukfall.getEnhets());
+        return sjukfall;
     }
 
-    Sjukfall(Sjukfall previous, Sjukfall sjukfall) {
-        this(sjukfall);
-        start = previous.getStart();
-        sjukskrivningsperiods.addAll(previous.sjukskrivningsperiods);
-        intygCount += previous.getIntygCount();
-        lakare.addAll(previous.getLakare());
-        diagnoses.addAll(0, previous.diagnoses);
-        alder = previous.alder > this.alder ? previous.alder : this.alder;
-        enhets.addAll(previous.getEnhets());
-        sjukskrivningsgrad.putAll(previous.sjukskrivningsgrad);
+    private static int[] toArray(Set<Integer> integers) {
+        final int[] ints = new int[integers.size()];
+        final ArrayList<Integer> integersList = new ArrayList<>(integers);
+        for (int i = 0; i < integersList.size(); i++) {
+            int nextInt = integersList.get(i);
+            ints[i] = nextInt;
+        }
+        return ints;
     }
 
-    Sjukfall(Sjukfall sjukfall) {
-        start = sjukfall.getStart();
-        end = sjukfall.getEnd();
-        sjukskrivningsperiods.addAll(sjukfall.sjukskrivningsperiods);
-        intygCount = sjukfall.getIntygCount();
-        kon = sjukfall.kon;
-        alder = sjukfall.getAlder();
-        diagnoses.addAll(sjukfall.diagnoses);
-        sjukskrivningsgrad.putAll(sjukfall.sjukskrivningsgrad);
-        lan = sjukfall.lan;
-        lakare.addAll(sjukfall.getLakare());
-        extending = sjukfall.extending;
-        enhets.addAll(sjukfall.getEnhets());
+    private static List<Diagnos> toDiagnoses(List<SjukfallExtended.Diagnos> dxs) {
+        final ArrayList<Diagnos> newDxs = new ArrayList<>();
+        for (SjukfallExtended.Diagnos dx : dxs) {
+            newDxs.add(toDiagnos(dx));
+        }
+        return newDxs;
+    }
+
+    private static Diagnos toDiagnos(SjukfallExtended.Diagnos dx) {
+        return new Diagnos(dx.getDiagnoskapitel(), dx.getDiagnosavsnitt(), dx.getDiagnoskategori(), dx.getDiagnoskod());
     }
 
     public Kon getKon() {
         return Kon.byNumberRepresentation(kon);
-    }
-
-    /**
-     * Checks if the given Fact is part of this Sjukfall.
-     * If so, this sjukfall is updated and return,
-     * otherwise a new sjukfall is created.
-     *
-     * @param line line
-     * @return join will either return the same, possibly modified (i.e. this), Sjukfall-object, or a new object
-     */
-    public Sjukfall join(Fact line) {
-        if (isExpired(line.getStartdatum())) {
-            return newSjukfall(line);
-        } else {
-            return extendSjukfall(line);
-        }
-    }
-
-    public Sjukfall newSjukfall(Fact line) {
-        return new Sjukfall(line);
-    }
-
-    public Sjukfall extendSjukfall(Fact line) {
-        return new Sjukfall(this, line);
-    }
-
-    public Sjukfall extendSjukfall(Sjukfall sjukfall) {
-        return new Sjukfall(this, sjukfall);
-    }
-
-    public Sjukfall extendSjukfallWithNewStart(int start, int sjukskrivningslangd) {
-        final Sjukfall sjukfall = new Sjukfall(this);
-        sjukfall.start = start;
-        sjukfall.sjukskrivningsperiods.add(new Sjukskrivningsperiod(start, sjukskrivningslangd));
-        return sjukfall;
-    }
-
-    private boolean isExpired(int datum) {
-        return end + MAX_GAP + 1 < datum;
     }
 
     @Override
@@ -159,16 +93,15 @@ public class Sjukfall {
                 + "start=" + start
                 + ", end=" + end
                 + ", realDays=" + getRealDays()
-                + ", intygCount=" + intygCount
                 + '}';
     }
 
-    public boolean in(int start, int end) {
-        return !(this.end < start || this.start > end);
+    public int getDiagnoskategori() {
+        return diagnos.diagnoskategori;
     }
 
-    public int getDiagnoskategori() {
-        return getLastDiagnosis().diagnoskategori;
+    public int getDiagnoskod() {
+        return diagnos.diagnoskod;
     }
 
     public int getIcd10CodeForType(Icd10RangeType rangeType) {
@@ -176,6 +109,7 @@ public class Sjukfall {
             case KAPITEL: return getDiagnoskapitel();
             case AVSNITT: return getDiagnosavsnitt();
             case KATEGORI: return getDiagnoskategori();
+            case KOD: return getDiagnoskod();
             default: throw new RuntimeException("Unknown range type: " + rangeType);
         }
     }
@@ -193,6 +127,9 @@ public class Sjukfall {
                 case KAPITEL:
                     result.add(diagnose.diagnoskapitel);
                     break;
+                case KOD:
+                    result.add(diagnose.diagnoskod);
+                    break;
                 default: throw new RuntimeException("Unknown icd range type: " + icd10RangeType);
             }
         }
@@ -204,23 +141,7 @@ public class Sjukfall {
     }
 
     public int getRealDays() {
-        return getAllDates().size();
-    }
-
-    private HashSet<Integer> getAllDates() {
-        final HashSet<Integer> allDates = new HashSet<>();
-        for (Sjukskrivningsperiod sjukskrivningsperiod : sjukskrivningsperiods) {
-            allDates.addAll(sjukskrivningsperiod.getAllDatesInPeriod());
-        }
-        return allDates;
-    }
-
-    public int getIntygCount() {
-        return intygCount;
-    }
-
-    public int getStart() {
-        return start;
+        return realDays;
     }
 
     public int getEnd() {
@@ -228,35 +149,15 @@ public class Sjukfall {
     }
 
     public int getDiagnoskapitel() {
-        return getLastDiagnosis().diagnoskapitel;
+        return diagnos.diagnoskapitel;
     }
 
     public int getSjukskrivningsgrad() {
-        Map.Entry<Range, Integer> currentFound = null;
-        for (Map.Entry<Range, Integer> entry : sjukskrivningsgrad.entrySet()) {
-            if (currentFound == null || entry.getKey().getFrom().isAfter(currentFound.getKey().getFrom())) {
-                currentFound = entry;
-            }
-        }
-        return currentFound.getValue();
+        return sjukskrivningsgrad;
     }
 
     public int getDiagnosavsnitt() {
-        return getLastDiagnosis().diagnosavsnitt;
-    }
-
-    private Diagnos getLastDiagnosis() {
-        Diagnos currentFoundDiagnos = null;
-        for (Diagnos diagnose : diagnoses) {
-            if (currentFoundDiagnos == null || diagnose.startDatum > currentFoundDiagnos.startDatum) {
-                currentFoundDiagnos = diagnose;
-            }
-        }
-        return currentFoundDiagnos;
-    }
-
-    public boolean isExtended() {
-        return extending != null;
+        return diagnos.diagnosavsnitt;
     }
 
     public String getLanskod() {
@@ -267,56 +168,21 @@ public class Sjukfall {
         return lakare;
     }
 
-    public Set<Integer> getEnhets() {
+    public int[] getEnhets() {
         return enhets;
     }
 
-    public Sjukfall extendWithRealDaysWithinPeriod(Sjukfall previous) {
-        final Sjukfall sjukfall = new Sjukfall(this);
-        final Set<Integer> datesWithinPeriod = Sets.filter(previous.getAllDates(), new Predicate<Integer>() {
-            @Override
-            public boolean apply(Integer date) {
-                return date >= start && date <= end;
-            }
-        });
-        List<Sjukskrivningsperiod> newSjukskrivningsperiods = toSjukskrivningsperiods(datesWithinPeriod);
-        sjukfall.sjukskrivningsperiods.addAll(newSjukskrivningsperiods);
-        return sjukfall;
-    }
-
-    private List<Sjukskrivningsperiod> toSjukskrivningsperiods(Set<Integer> dates) {
-        if (dates.isEmpty()) {
-            return Collections.emptyList();
-        }
-        final ArrayList<Sjukskrivningsperiod> result = new ArrayList<>();
-        final SortedSet<Integer> sortedDates = new TreeSet<>(dates);
-        final List<Integer> currentPeriodDates = new ArrayList<>(sortedDates.size());
-        for (Integer date : sortedDates) {
-            if (!currentPeriodDates.isEmpty() && date > currentPeriodDates.get(currentPeriodDates.size() - 1) + 1) {
-                result.add(new Sjukskrivningsperiod(currentPeriodDates.get(0), currentPeriodDates.size()));
-                currentPeriodDates.clear();
-            }
-            currentPeriodDates.add(date);
-        }
-        if (!currentPeriodDates.isEmpty()) {
-            result.add(new Sjukskrivningsperiod(currentPeriodDates.get(0), currentPeriodDates.size()));
-        }
-        return result;
-    }
-
-    private final class Diagnos {
+    private static final class Diagnos {
         private final int diagnoskapitel;
         private final int diagnosavsnitt;
         private final int diagnoskategori;
-        private final int startDatum;
-        private final int slutDatum;
+        private final int diagnoskod;
 
-        private Diagnos(int startDatum, int slutDatum, int diagnoskapitel, int diagnosavsnitt, int diagnoskategori) {
-            this.startDatum = startDatum;
-            this.slutDatum = slutDatum;
+        private Diagnos(int diagnoskapitel, int diagnosavsnitt, int diagnoskategori, int diagnoskod) {
             this.diagnoskapitel = diagnoskapitel;
             this.diagnosavsnitt = diagnosavsnitt;
             this.diagnoskategori = diagnoskategori;
+            this.diagnoskod = diagnoskod;
         }
     }
 

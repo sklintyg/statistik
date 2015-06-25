@@ -1,14 +1,15 @@
 !contents -R2 -g -p -f -h
 
 Testmiljö:
-Existerande användare: user1, user2, user3, user4
+Existerande användare: user1, user2, user3, user4, user5, user6
 Existerande vårdgivare: vg1, vg3
-Existerande enheter: enhet1, enhet2, enhet3
+Existerande enheter: enhet1, enhet2, enhet3, enhet4
 
 Namn:
 enhet1: Enhet enhet1
 enhet2: Enhet enhet2
 enhet3: Enhet enhet3
+enhet4: Enhet enhet4
 
 Kopplingar:
 vg1 enheter: enhet1, enhet2
@@ -23,6 +24,12 @@ user4 enheter: enhet2
 user4 vårdgivare: vg1
 user5 enheter: enhet1, enhet2, enhet3
 user5 vårdgivare: Ange "user5_vg1" för vg1 eller "user5_vg3" för vg3
+user6 enheter: enhet4
+user6 vårdgivare: vg3
+enhet1 verksamhetstyp: 02, 10
+enhet2 verksamhetstyp: 02, 11
+enhet3 verksamhetstyp: 02, 23
+enhet4 verksamhetstyp: 02, 10
 
 Default:
 Vårdgivarnivå för inloggad användare: false

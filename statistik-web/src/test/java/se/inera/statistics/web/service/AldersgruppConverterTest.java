@@ -28,7 +28,6 @@ import org.junit.Test;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.SimpleKonDataRow;
 import se.inera.statistics.service.report.model.SimpleKonResponse;
-import se.inera.statistics.web.model.AgeGroupsData;
 import se.inera.statistics.web.model.ChartData;
 import se.inera.statistics.web.model.ChartSeries;
 import se.inera.statistics.web.model.NamedData;
@@ -47,10 +46,12 @@ public class AldersgruppConverterTest {
         ageGroupsRows.add(new SimpleKonDataRow("<20", 13, 14));
         ageGroupsRows.add(new SimpleKonDataRow("20-50", 24, 15));
         ageGroupsRows.add(new SimpleKonDataRow(">50", 3, 9));
-        SimpleKonResponse<SimpleKonDataRow> ageGroupsResponse = new SimpleKonResponse<>(ageGroupsRows, 7);
+        SimpleKonResponse<SimpleKonDataRow> ageGroupsResponse = new SimpleKonResponse<>(ageGroupsRows);
 
         //When
-        SimpleDetailsData result = converter.convert(ageGroupsResponse, new Range(7), Filter.empty());
+        final Range range = Range.createForLastMonthsExcludingCurrent(7);
+        final FilterSettings filterSettings = new FilterSettings(Filter.empty(), range);
+        SimpleDetailsData result = converter.convert(ageGroupsResponse, filterSettings);
 
         //Then
         TableData tableDataResult = result.getTableData();
@@ -73,7 +74,7 @@ public class AldersgruppConverterTest {
         assertEquals("[14, 15, 9]", series.get(1).getData().toString());
         assertEquals("[13, 24, 3]", series.get(0).getData().toString());
 
-        assertEquals(7, result.getMonthsIncluded());
+        assertEquals(range.toString(), result.getPeriod());
     }
 
     // CHECKSTYLE:ON MagicNumber

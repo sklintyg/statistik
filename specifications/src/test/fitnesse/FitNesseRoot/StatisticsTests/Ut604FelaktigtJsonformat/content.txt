@@ -1,0 +1,18 @@
+!contents -R2 -g -p -f -h
+
+!3 Givet att:
+| script | dagens datum | 2013-11-06 |
+
+| script | troskel varde | 1 |
+
+| Enbart foljande intyg finns |
+| personnr | diagnoskod | start    | slut       | enhet  | jsonformat |
+| 19790407-1120 | F40 | 2013-02-17 | 2013-02-28 | enhet1 | nytt       |
+| 19790407-2120 | F32 | 2013-02-01 | 2013-02-14 | enhet1 | felaktigt  |
+| 19790407-3120 | F40 | 2013-02-17 | 2013-02-28 | enhet1 | nytt       |
+
+!3 Då gäller:
+Inloggad:
+| Sjukfall i rapporten diagnosgrupp diagram |
+|inloggad som | år   | månad | grupp   | män? | kvinnor? |
+| user1       | 2013 | feb   | F00-F99 | 0    | 2        |

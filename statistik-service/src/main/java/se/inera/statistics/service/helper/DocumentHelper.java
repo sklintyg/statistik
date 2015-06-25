@@ -36,16 +36,16 @@ public final class DocumentHelper {
     private static final String EXTENSION = "extension";
     private static final String PATIENT = "patient";
     public static final int SEX_DIGIT = 11;
-    public static final int MAX_SJUKSKRIVNING = 100;
+    private static final int MAX_SJUKSKRIVNING = 100;
 
-    public static final Matcher DIAGNOS_MATCHER = Matcher.Builder.matcher("observationskategori").add(Matcher.Builder.matcher("code", "439401001")).add((Matcher.Builder.matcher("codeSystem", "1.2.752.116.2.1.1.1")));
-    public static final Matcher ARBETSFORMAGA_MATCHER = Matcher.Builder.matcher("observationskod").add(Matcher.Builder.matcher("code", "302119000")).add((Matcher.Builder.matcher("codeSystem", "1.2.752.116.2.1.1.1")));
-    public static final String DOCUMENT_ID = "1.2.752.129.2.1.2.1";
+    private static final Matcher DIAGNOS_MATCHER = Matcher.Builder.matcher("observationskategori").add(Matcher.Builder.matcher("code", "439401001")).add((Matcher.Builder.matcher("codeSystem", "1.2.752.116.2.1.1.1")));
+    private static final Matcher ARBETSFORMAGA_MATCHER = Matcher.Builder.matcher("observationskod").add(Matcher.Builder.matcher("code", "302119000")).add((Matcher.Builder.matcher("codeSystem", "1.2.752.116.2.1.1.1")));
+    private static final String DOCUMENT_ID = "1.2.752.129.2.1.2.1";
     public static final String UTANENHETSID = "UTANENHETSID";
-    public static final int NEDSATT100 = 100;
-    public static final int NEDSATT25 = 25;
-    public static final int NEDSATT50 = 50;
-    public static final int NEDSATT75 = 75;
+    private static final int NEDSATT100 = 100;
+    private static final int NEDSATT25 = 25;
+    private static final int NEDSATT50 = 50;
+    private static final int NEDSATT75 = 75;
 
     public static String getIntygType(JsonNode intyg) {
         final IntygVersion version = getIntygVersion(intyg);
@@ -112,6 +112,16 @@ public final class DocumentHelper {
         } else {
             final String result = document.path("grundData").path("skapadAv").path("vardenhet").path("enhetsid").textValue();
             return result != null ? result : UTANENHETSID;
+        }
+    }
+
+    public static String getEnhetNamn(JsonNode document, IntygVersion version) {
+        if (IntygVersion.VERSION1 == version) {
+            final String result = document.path("skapadAv").path("vardenhet").path("namn").textValue();
+            return result;
+        } else {
+            final String result = document.path("grundData").path("skapadAv").path("vardenhet").path("enhetsnamn").textValue();
+            return result;
         }
     }
 

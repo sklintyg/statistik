@@ -1,5 +1,5 @@
 angular.module('StatisticsApp')
-    .factory('diagnosisTreeFilter', ['statisticsData', '_', 'treeMultiSelectUtil',
+    .factory('diagnosisTreeFilter', ['statisticsData', '_', 'treeMultiSelectorUtil',
         function (statisticsData, _, treeMultiSelectUtil) {
             'use strict';
 

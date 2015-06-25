@@ -39,8 +39,8 @@ public class AvsnittConverterTest {
     @Test
     public void tableConverterTestEmptyInput() {
         DiagnosgruppResponse resp = new DiagnosgruppResponse(new ArrayList<Icd>(), new ArrayList<KonDataRow>());
-        TableData tableData = DiagnosisGroupsConverter.convertTable(resp);
-        assertEquals("[[;1, ;1, ;1], [Period;1, Antal sjukfall totalt;1]]", tableData.getHeaders().toString());
+        TableData tableData = new DiagnosisGroupsConverter().convertTable(resp, "");
+        assertEquals("[[;1, ;1], [Period;1, Antal sjukfall totalt;1]]", tableData.getHeaders().toString());
         assertEquals("[]", tableData.getRows().toString());
     }
 
@@ -58,17 +58,18 @@ public class AvsnittConverterTest {
         DiagnosgruppResponse resp = new DiagnosgruppResponse(avsnitts, rows);
 
         //When
-        TableData tableData = DiagnosisGroupsConverter.convertTable(resp);
+        TableData tableData = new DiagnosisGroupsConverter().convertTable(resp, "%1$s");
 
         //Then
-        assertEquals("[[;1, ;1, A01-B99 name1;2, ;1], [Period;1, Antal sjukfall totalt;1, Kvinnor;1, Män;1]]", tableData.getHeaders().toString());
+        assertEquals("[[;1, ;1, A01-B99 name1;2], [Period;1, Antal sjukfall totalt;1, Kvinnor;1, Män;1]]", tableData.getHeaders().toString());
         assertEquals("[period1: [5, 3, 2]]", tableData.getRows().toString());
     }
 
     @Test
     public void converterTestEmpty() {
         DiagnosgruppResponse resp = new DiagnosgruppResponse(new ArrayList<Icd>(), new ArrayList<KonDataRow>());
-        DualSexStatisticsData data = new DiagnosisGroupsConverter().convert(resp, new Range(), Filter.empty());
+        final FilterSettings filterSettings = new FilterSettings(Filter.empty(), new Range());
+        DualSexStatisticsData data = new DiagnosisGroupsConverter().convert(resp, filterSettings);
         assertEquals("[]", data.getFemaleChart().getCategories().toString());
         assertEquals("[A00-E90, G00-L99, N00-N99 Somatiska sjukdomar: [], F00-F99 Psykiska sjukdomar: [], M00-M99 Muskuloskeletala sjukdomar: [], O00-O99 Graviditet och förlossning: [], P00-P96, Q00-Q99, S00-Y98 Övrigt: [], R00-R99 Symtomdiagnoser: [], Z00-Z99 Faktorer av betydelse för hälsotillståndet och för kontakter med hälso- och sjukvården: []]", data.getFemaleChart().getSeries().toString());
     }
@@ -88,7 +89,8 @@ public class AvsnittConverterTest {
 
         //When
         DiagnosisGroupsConverter converter = new DiagnosisGroupsConverter();
-        DualSexStatisticsData data = converter.convert(resp, new Range(), Filter.empty());
+        final FilterSettings filterSettings = new FilterSettings(Filter.empty(), new Range());
+        DualSexStatisticsData data = converter.convert(resp, filterSettings);
 
         //Then
         assertEquals("[period1]", data.getFemaleChart().getCategories().toString());
@@ -97,7 +99,7 @@ public class AvsnittConverterTest {
         assertEquals("[period1]", data.getMaleChart().getCategories().toString());
         assertTrue(data.getMaleChart().getSeries().toString(), data.getMaleChart().getSeries().toString().contains("A00-E90, G00-L99, N00-N99 Somatiska sjukdomar: [2]"));
 
-        assertEquals("[[;1, ;1, A00-B99 name1;2, ;1], [Period;1, Antal sjukfall totalt;1, Kvinnor;1, Män;1]]", data.getTableData().getHeaders().toString());
+        assertEquals("[[;1, ;1, A00-B99 name1;2], [Period;1, Antal sjukfall totalt;1, Kvinnor;1, Män;1]]", data.getTableData().getHeaders().toString());
         assertEquals("[period1: [5, 3, 2]]", data.getTableData().getRows().toString());
     }
 

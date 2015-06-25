@@ -20,26 +20,27 @@ package se.inera.statistics.web.model;
 
 import se.inera.statistics.web.service.FilterDataResponse;
 
-public class SimpleDetailsData {
+import java.util.Arrays;
+import java.util.List;
+
+public class SimpleDetailsData extends TableDataReport {
 
     private final TableData tableData;
     private final ChartData chartData;
-    private final int monthsIncluded;
     private final String period;
     private final FilterDataResponse filter;
     private final String message;
 
-    public SimpleDetailsData(TableData tableData, ChartData chartData, int monthsIncluded, String period, FilterDataResponse filter, String message) {
+    public SimpleDetailsData(TableData tableData, ChartData chartData, String period, FilterDataResponse filter, String message) {
         this.tableData = tableData;
         this.chartData = chartData;
-        this.monthsIncluded = monthsIncluded;
         this.period = period;
         this.filter = filter;
         this.message = message;
     }
 
-    public SimpleDetailsData(TableData tableData, ChartData chartData, int monthsIncluded, String period, FilterDataResponse filter) {
-        this(tableData, chartData, monthsIncluded, period, filter, null);
+    public SimpleDetailsData(TableData tableData, ChartData chartData, String period, FilterDataResponse filter) {
+        this(tableData, chartData, period, filter, null);
     }
 
     public TableData getTableData() {
@@ -48,10 +49,6 @@ public class SimpleDetailsData {
 
     public ChartData getChartData() {
         return chartData;
-    }
-
-    public int getMonthsIncluded() {
-        return monthsIncluded;
     }
 
     public String getPeriod() {
@@ -64,6 +61,11 @@ public class SimpleDetailsData {
 
     public String getMessage() {
         return message;
+    }
+
+    @Override
+    public List<ChartData> getChartDatas() {
+        return Arrays.asList(chartData);
     }
 
 }

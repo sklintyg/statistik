@@ -18,8 +18,7 @@
  */
 package se.inera.statistics.service.warehouse;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import org.junit.Ignore;
+import org.joda.time.LocalDate;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,13 +26,8 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.util.StopWatch;
-import se.inera.statistics.service.JSONSource;
+import se.inera.statistics.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.service.demo.LargeTestDataGenerator;
-import se.inera.statistics.service.helper.DocumentHelper;
-import se.inera.statistics.service.helper.JSONParser;
-import se.inera.statistics.service.hsa.HSAService;
-import se.inera.statistics.service.hsa.HSAServiceMock;
-import se.inera.statistics.service.warehouse.model.db.WideLine;
 
 import java.io.FileNotFoundException;
 import java.lang.management.GarbageCollectorMXBean;
@@ -43,7 +37,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -62,7 +55,7 @@ public class WarehouseIntegrationTest {
     @Test
     public void addingManyIntyg() throws InterruptedException {
         dataGenerator.publishUtlatanden();
-        final Aisle aisle = warehouse.get("vardgivare1");
+        final Aisle aisle = warehouse.get(new HsaIdVardgivare("vardgivare1"));
 
         ExecutorService pool = Executors.newFixedThreadPool(10);
         for (int i = 0; i < 100; i++) {
@@ -89,20 +82,20 @@ public class WarehouseIntegrationTest {
         assertTrue(result.length() > 0);
     }
 
+    private Collection<Sjukfall> calculateSjukfallsHelper(Aisle aisle) {
+        return sjukfallUtil.sjukfallGrupper(new LocalDate(2000, 1, 1), 1, 1000000, aisle, SjukfallUtil.ALL_ENHETER).iterator().next().getSjukfall();
+    }
+
     private void measureSjukfall(Aisle aisle) {
-        Collection<Sjukfall> sjukfalls = sjukfallUtil.calculateSjukfall(aisle);
-        int totalDays = 0;
+        Collection<Sjukfall> sjukfalls = calculateSjukfallsHelper(aisle);
         int realDays = 0;
-        int totalIntyg = 0;
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
         for (Sjukfall sjukfall: sjukfalls) {
-            totalDays += (sjukfall.getEnd() - sjukfall.getStart());
             realDays += sjukfall.getRealDays();
-            totalIntyg += sjukfall.getIntygCount();
         }
         stopWatch.stop();
-        System.err.format("Sjukfall %1$s Real days %2$s Total days %3$s intyg %4$s %5$sms%n", sjukfalls.size(), realDays, totalDays, totalIntyg, stopWatch.getTotalTimeMillis());
+        System.err.format("Sjukfall %1$s Real days %2$s %4$sms%n", sjukfalls.size(), realDays, stopWatch.getTotalTimeMillis());
     }
 
     private void showMem() {

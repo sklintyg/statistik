@@ -1,0 +1,47 @@
+!contents -R2 -g -p -f -h
+
+!3 Givet att:
+
+Följande sjukfall finns:
+
+vg1
+3 kvinnor, F40-diagnos
+2 män, F50-diagnos
+
+vg2
+1 kvinna, F40-diagnos
+4 män, F50-diagnos
+
+F-kapitlet är valt.
+
+| script | dagens datum | 2013-11-06 |
+
+| script | troskel varde | 3 |
+
+| Enbart foljande intyg finns |
+| personnr | diagnoskod | start    | slut       | enhet  |
+| 19790407-1000 | F40 | 2013-02-01 | 2013-02-14 | enhet1 |
+| 19790407-2000 | F40 | 2013-02-01 | 2013-02-14 | enhet1 |
+| 19790407-3000 | F40 | 2013-02-01 | 2013-02-14 | enhet1 |
+| 19790407-4010 | F50 | 2013-02-01 | 2013-02-14 | enhet1 |
+| 19790407-5010 | F50 | 2013-02-01 | 2013-02-14 | enhet1 |
+| 19790407-6000 | F40 | 2013-02-01 | 2013-02-14 | enhet3 |
+| 19790407-7010 | F50 | 2013-02-01 | 2013-02-14 | enhet3 |
+| 19790407-8010 | F50 | 2013-02-01 | 2013-02-14 | enhet3 |
+| 19790407-9010 | F50 | 2013-02-01 | 2013-02-14 | enhet3 |
+| 19790407-0010 | F50 | 2013-02-01 | 2013-02-14 | enhet3 |
+
+!3 Då gäller:
+
+Tröskelvärdet appliceras per vårdgivare, kön och diagnosavsnitt/kategori.
+
+Nationell:
+| Sjukfall i rapporten enskilt diagnoskapitel diagram |
+| valt diagnoskapitel | år   | månad | grupp   | män? | kvinnor? |
+| F00-F99             | 2013 | feb   | F40-F48 | 0    | 3        |
+| F00-F99             | 2013 | feb   | F50-F59 | 4    | 0        |
+
+| Sjukfall i rapporten enskilt diagnoskapitel |
+| valt diagnoskapitel | år   | månad | grupp   | män? | kvinnor? |
+| F00-F99             | 2013 | feb   | F40-F48 | 0    | 3        |
+| F00-F99             | 2013 | feb   | F50-F59 | 4    | 0        |

@@ -1,14 +1,10 @@
 !contents -R2 -g -p -f -h
 
-Gäller STATISTIK-951 och STATISTIK-952.
-
-Testar att sjukfall som pågår under nuvarande månad visas i alla rapporter på verksamhetsstatistik.
-I diagram över tidsserier visas som default (så länge inget tidsintervall valts i filter) 18 månader inklusive den nuvarande.
-I diagram över tvärsnitt visas som default (så länge inget tidsintervall valts i filter) 12 månader inklusive den nuvarande.
-
-Testar att Pågående-rapporter utgår.
+Gäller STATISTIK-951.
 
 !3 Givet att:
+
+Det finns tre sjukfall med olika start- och sluttider.
 
 | script | dagens datum | 2014-11-06 |
 
@@ -27,6 +23,32 @@ Testar att Pågående-rapporter utgår.
 | 19690407-1295 | G03 | 2014-11-01 | 2014-11-30 | 75            | enhet2 | lakare3 |
 
 !3 Då gäller:
+
+På nationell nivå visas inte nuvarande månad. På inloggad nivå visas 12 eller 18 månader inklusive nuvarande månad.
+
+Nationell:
+| Sjukfall i rapporten sjukfall totalt |
+| år   | månad | män? | kvinnor? |
+| 2013 | maj   | 0    | 1        |
+| 2013 | jun   | 0    | 1        |
+| 2013 | jul   | 0    | 1        |
+| 2013 | aug   | 0    | 1        |
+| 2013 | sep   | 0    | 1        |
+| 2013 | okt   | 0    | 1        |
+| 2013 | nov   | 0    | 1        |
+| 2013 | dec   | 0    | 0        |
+| 2014 | jan   | 0    | 0        |
+| 2014 | feb   | 0    | 0        |
+| 2014 | mar   | 0    | 0        |
+| 2014 | apr   | 0    | 0        |
+| 2014 | maj   | 0    | 0        |
+| 2014 | jun   | 0    | 0        |
+| 2014 | jul   | 0    | 1        |
+| 2014 | aug   | 0    | 1        |
+| 2014 | sep   | 0    | 1        |
+| 2014 | okt   | 0    | 1        |
+| 2014 | nov   | -1   | -1       |
+
 Inloggad:
 | Sjukfall i rapporten sjukfall per enhet |
 | inloggad som | vårdenhet    | vårdgivarnivå | totalt? | män? | kvinnor? |
@@ -111,9 +133,6 @@ Inloggad:
 | user2        | 31-35 år    | 0    | 1        |
 | user2        | 41-45 år    | 1    | 0        |
 
-| Sjukfall i rapporten aldersgrupp pagaende |
-RAPPORTEN FINNS INTE.
-
 | Sjukfall i rapporten sjukskrivningsgrad |
 | inloggad som | år   | månad | sjukskrivningsgrad   | män? | kvinnor? |
 | user2        | 2013 | maj   | 50%                  | -1   | -1       |
@@ -134,9 +153,6 @@ RAPPORTEN FINNS INTE.
 | user2        | 15-30 dagar         | 1    | 0        |
 | user2        | 91-180 dagar        | 0    | 1        |
 | user2        | 181-365 dagar       | 0    | 0        |
-
-| Sjukfall i rapporten sjukskrivningslangd pagaende |
-RAPPORTEN FINNS INTE.
 
 | Sjukfall i rapporten langa sjukfall |
 | inloggad som | år   | månad | män? | kvinnor? |
@@ -162,7 +178,7 @@ RAPPORTEN FINNS INTE.
 
 | Sjukfall i rapporten sjukfall per lakare |
 | inloggad som | läkare          | män? | kvinnor? |
-| user2        | Anna Andersson  | 0    | 0        |
+| user2        | Anna Andersson  | -1   | -1       |
 | user2        | Bo Bengtsson    | 0    | 1        |
 | user2        | Carl Claesson   | 1    | 0        |
 
@@ -174,6 +190,6 @@ RAPPORTEN FINNS INTE.
 
 | Sjukfall i rapporten lakarbefattning |
 | inloggad som | läkarbefattning    | män? | kvinnor? |
-| user2        | Överläkare         | 0    | 0        |
+| user2        | Överläkare         | -1   | -1       |
 | user2        | Företagsläkare     | 0    | 1        |
 | user2        | Ej läkarbefattning | 1    | 0        |

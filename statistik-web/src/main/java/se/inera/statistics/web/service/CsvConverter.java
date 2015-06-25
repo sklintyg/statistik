@@ -66,7 +66,7 @@ public final class CsvConverter {
     }
 
     static Response getCsvResponse(final TableData tableData, final String fileName) {
-        ResponseBuilder response = Response.ok((Object) new CsvConverter(tableData).getCsv());
+        ResponseBuilder response = Response.ok((Object) new CsvConverter(tableData).getCsv(), ChartDataService.TEXT_CP1252);
         response.header("Content-Disposition", "attachment; filename=" + fileName);
         return response.build();
     }

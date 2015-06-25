@@ -36,7 +36,7 @@ public class KonField {
         return male;
     }
 
-    int getValue(Kon kon) {
+    public int getValue(Kon kon) {
         if (Kon.Female.equals(kon)) {
             return female;
         } else {

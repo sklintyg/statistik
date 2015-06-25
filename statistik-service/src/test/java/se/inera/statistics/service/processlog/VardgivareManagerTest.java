@@ -52,7 +52,7 @@ public class VardgivareManagerTest {
 
         List<Enhet> allEnhets = vardgivareManager.getAllEnhets();
         assertEquals(1, allEnhets.size());
-        assertEquals("enhet", allEnhets.get(0).getEnhetId());
+        assertEquals("ENHET", allEnhets.get(0).getEnhetId().getId());
         assertEquals("Enhet enhet", allEnhets.get(0).getNamn());
     }
 
@@ -75,12 +75,12 @@ public class VardgivareManagerTest {
         hsaInfo = hsaService.getHSAInfo(new HSAKey("other-vg", "other-enhet", "lakare"));
         vardgivareManager.saveEnhet(hsaInfo, null);
 
-        List<Enhet> enhets = vardgivareManager.getEnhets("vg");
+        List<Enhet> enhets = vardgivareManager.getEnhets("VG");
 
         List<Enhet> allEnhets = vardgivareManager.getAllEnhets();
         assertEquals(2, allEnhets.size());
         assertEquals(1, enhets.size());
-        assertEquals("enhet", enhets.get(0).getEnhetId());
+        assertEquals("ENHET", enhets.get(0).getEnhetId().getId());
         assertEquals("Enhet enhet", enhets.get(0).getNamn());
     }
 
@@ -96,7 +96,7 @@ public class VardgivareManagerTest {
         List<Enhet> allEnhets = vardgivareManager.getAllEnhets();
         assertEquals(2, allEnhets.size());
         assertEquals(1, allVardgivares.size());
-        assertEquals("vg", allVardgivares.get(0).getId());
+        assertEquals("VG", allVardgivares.get(0).getId());
         assertEquals("vardgivarnamn", allVardgivares.get(0).getNamn());
     }
 }

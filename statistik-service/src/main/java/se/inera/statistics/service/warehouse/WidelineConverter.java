@@ -23,6 +23,11 @@ import org.joda.time.Days;
 import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import se.inera.statistics.hsa.model.HsaIdAny;
+import se.inera.statistics.hsa.model.HsaIdEnhet;
+import se.inera.statistics.hsa.model.HsaIdLakare;
+import se.inera.statistics.hsa.model.HsaIdVardgivare;
+import se.inera.statistics.service.helper.ConversionHelper;
 import se.inera.statistics.service.helper.DocumentHelper;
 import se.inera.statistics.service.helper.HSAServiceHelper;
 import se.inera.statistics.service.processlog.Arbetsnedsattning;
@@ -77,7 +82,9 @@ public class WidelineConverter {
         int alder = DocumentHelper.getAge(intyg);
 
         String diagnos = DocumentHelper.getDiagnos(intyg, version);
-        Kategori kategori = "unknown".equals(diagnos) ? null : icd10.findKategori(diagnos);
+        final Icd10.Kod kod = "unknown".equals(diagnos) ? null : icd10.findKod(diagnos);
+        final Kategori kategori = kod != null ? kod.getKategori() : "unknown".equals(diagnos) ? null : icd10.findKategori(diagnos);
+        String diagnoskod = kod != null ? kod.getId() : null;
 
         String diagnoskapitel;
         String diagnosavsnitt;
@@ -116,14 +123,15 @@ public class WidelineConverter {
             line.setLakarintyg(logId);
             line.setIntygTyp(type);
             line.setLkf(lkf);
-            line.setEnhet(enhet);
-            line.setVardgivareId(vardgivare);
+            line.setEnhet(new HsaIdEnhet(enhet));
+            line.setVardgivareId(new HsaIdVardgivare(vardgivare));
 
             line.setStartdatum(toDay(kalenderStart));
             line.setSlutdatum(toDay(kalenderEnd));
             line.setDiagnoskapitel(diagnoskapitel);
             line.setDiagnosavsnitt(diagnosavsnitt);
             line.setDiagnoskategori(diagnoskategori);
+            line.setDiagnoskod(diagnoskod);
             line.setSjukskrivningsgrad(sjukskrivningsgrad);
 
             line.setPatientid(patient);
@@ -133,7 +141,7 @@ public class WidelineConverter {
             line.setLakaralder(lakaralder);
             line.setLakarkon(lakarkon);
             line.setLakarbefattning(lakarbefattning);
-            line.setLakareId(lakareid);
+            line.setLakareId(new HsaIdLakare(lakareid));
             lines.add(line);
         }
         return lines;
@@ -163,9 +171,22 @@ public class WidelineConverter {
         }
     }
 
+    private void checkField(List<String> errors, HsaIdAny field, String fieldName) {
+        if (field == null || field.getId().isEmpty()) {
+            errors.add(fieldName + " not found.");
+        }
+    }
+
     private void checkField(List<String> errors, String field, String fieldName, int max) {
         checkField(errors, field, fieldName);
         if (field != null && field.length() > max) {
+            errors.add(fieldName + " input too long");
+        }
+    }
+
+    private void checkField(List<String> errors, HsaIdAny field, String fieldName, int max) {
+        checkField(errors, field, fieldName);
+        if (field != null && field.getId().length() > max) {
             errors.add(fieldName + " input too long");
         }
     }
@@ -194,6 +215,7 @@ public class WidelineConverter {
         checkField(errors, line.getVardgivareId(), "Vårdgivare", MAX_LENGTH_VGID);
         checkField(errors, line.getEnhet(), "Enhet");
         checkField(errors, line.getPatientid(), "Patient");
+        checkAge(errors, line.getAlder());
         checkField(errors, line.getLakareId(), "LäkarID");
         checkField(errors, line.getCorrelationId(), "CorrelationId", MAX_LENGTH_CORRELATION_ID);
         checkSjukskrivningsgrad(errors, line.getSjukskrivningsgrad());
@@ -201,4 +223,11 @@ public class WidelineConverter {
         checkSlutdatum(errors, line.getSlutdatum());
         return errors;
     }
+
+    private void checkAge(List<String> errors, int alder) {
+        if (alder == ConversionHelper.NO_AGE) {
+            errors.add("Error in patient age");
+        }
+    }
+
 }

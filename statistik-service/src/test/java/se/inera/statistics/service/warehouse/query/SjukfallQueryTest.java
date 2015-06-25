@@ -18,27 +18,52 @@
  */
 package se.inera.statistics.service.warehouse.query;
 
+import com.google.common.base.Function;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
+import com.google.common.collect.Lists;
 import org.joda.time.LocalDate;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
+import org.mockito.Matchers;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
 import org.springframework.test.util.ReflectionTestUtils;
+import se.inera.statistics.hsa.model.HsaIdEnhet;
+import se.inera.statistics.hsa.model.HsaIdLakare;
+import se.inera.statistics.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.service.processlog.Lakare;
 import se.inera.statistics.service.processlog.LakareManager;
 import se.inera.statistics.service.report.model.Kon;
+import se.inera.statistics.service.report.model.KonDataResponse;
+import se.inera.statistics.service.report.model.KonDataRow;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.SimpleKonDataRow;
 import se.inera.statistics.service.report.model.SimpleKonResponse;
 import se.inera.statistics.service.warehouse.Aisle;
 import se.inera.statistics.service.warehouse.Fact;
+import se.inera.statistics.service.warehouse.MutableAisle;
 import se.inera.statistics.service.warehouse.SjukfallFilter;
 import se.inera.statistics.service.warehouse.SjukfallUtil;
+import se.inera.statistics.service.warehouse.SjukfallUtilTest;
 import se.inera.statistics.service.warehouse.Warehouse;
+
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
 
 import static java.util.Arrays.asList;
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyInt;
+import static org.mockito.Matchers.anyListOf;
+import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static se.inera.statistics.service.warehouse.Fact.aFact;
@@ -46,12 +71,12 @@ import static se.inera.statistics.service.warehouse.WidelineConverter.toDay;
 
 public class SjukfallQueryTest {
 
-    private static final String VG_1 = "vg1";
+    private static final HsaIdVardgivare VG_1 = new HsaIdVardgivare("vg1");
     private static final int ENHET1_ID = 1;
 
-    private static final String LAKARE1_ID = "lakare1";
-    private static final String LAKARE2_ID = "lakare2";
-    private static final String LAKARE3_ID = "lakare3";
+    private static final HsaIdLakare LAKARE1_ID = new HsaIdLakare("LAKARE1");
+    private static final HsaIdLakare LAKARE2_ID = new HsaIdLakare("LAKARE2");
+    private static final HsaIdLakare LAKARE3_ID = new HsaIdLakare("LAKARE3");
 
     private static final int PATIENT1_ID = 1;
     private static final Kon PATIENT1_KON = Kon.Female;
@@ -64,26 +89,30 @@ public class SjukfallQueryTest {
 
     private int lakarIntygCounter;
 
-    private LakareManager lakareManager;
-
     private SjukfallQuery sjukfallQuery;
 
-    private Aisle aisle;
+    private MutableAisle aisle;
 
-    private BiMap<String, Integer> lakarIdMap = HashBiMap.create();
+    private BiMap<HsaIdLakare, Integer> lakarIdMap = HashBiMap.create();
 
     private SjukfallUtil sjukfallUtil = new SjukfallUtil();
 
-    private SjukfallFilter enhetFilter = sjukfallUtil.createEnhetFilterFromInternalIntValues(ENHET1_ID);
+    private SjukfallFilter enhetFilter = SjukfallUtilTest.createEnhetFilterFromInternalIntValues(ENHET1_ID);
+
+    @Captor
+    private ArgumentCaptor<List<Object>> ids;
+
+    @Captor
+    private ArgumentCaptor<List<String>> names;
 
     @Before
     public void setup() {
         populateLakare();
-        lakareManager = mockLakareManager();
+        LakareManager lakareManager = mockLakareManager();
         sjukfallQuery = new SjukfallQuery();
         sjukfallQuery.setLakareManager(lakareManager);
         ReflectionTestUtils.setField(sjukfallQuery, "sjukfallUtil", sjukfallUtil);
-        aisle = new Aisle("vg1");
+        aisle = new MutableAisle(new HsaIdVardgivare("vg1"));
         MockitoAnnotations.initMocks(this);
     }
 
@@ -94,8 +123,8 @@ public class SjukfallQueryTest {
         aisle.addLine(fact(PATIENT2_ID, PATIENT2_KON, LAKARE2_ID));
 
         // When
-        enhetFilter = sjukfallUtil.createEnhetFilterFromInternalIntValues(ENHET1_ID);
-        SimpleKonResponse<SimpleKonDataRow> result = sjukfallQuery.getSjukfallPerLakare(aisle, enhetFilter, range.getFrom(), 1, 12);
+        enhetFilter = SjukfallUtilTest.createEnhetFilterFromInternalIntValues(ENHET1_ID);
+        SimpleKonResponse<SimpleKonDataRow> result = sjukfallQuery.getSjukfallPerLakare(aisle.createAisle(), enhetFilter, range.getFrom(), 1, 12);
 
         // Then
         assertEquals(2, result.getRows().size());
@@ -128,7 +157,7 @@ public class SjukfallQueryTest {
         aisle.addLine(fact(PATIENT1_ID, PATIENT1_KON, LAKARE2_ID));
 
         // When
-        SimpleKonResponse<SimpleKonDataRow> result = sjukfallQuery.getSjukfallPerLakare(aisle, enhetFilter, range.getFrom(), 1, 12);
+        SimpleKonResponse<SimpleKonDataRow> result = sjukfallQuery.getSjukfallPerLakare(aisle.createAisle(), enhetFilter, range.getFrom(), 1, 12);
 
         // Then
         assertEquals(2, result.getRows().size());
@@ -160,19 +189,19 @@ public class SjukfallQueryTest {
         aisle.addLine(fact(PATIENT1_ID, PATIENT1_KON, LAKARE3_ID));
 
         // When
-        SimpleKonResponse<SimpleKonDataRow> result = sjukfallQuery.getSjukfallPerLakare(aisle, sjukfallUtil.createEnhetFilterFromInternalIntValues(ENHET1_ID), range.getFrom(), 1, 12);
+        SimpleKonResponse<SimpleKonDataRow> result = sjukfallQuery.getSjukfallPerLakare(aisle.createAisle(), SjukfallUtilTest.createEnhetFilterFromInternalIntValues(ENHET1_ID), range.getFrom(), 1, 12);
 
         // Then
         assertEquals(2, result.getRows().size());
         int checksum = 0;
         for (SimpleKonDataRow lakareRow : result.getRows()) {
             switch (lakareRow.getName()) {
-                case "Beata Bertilsson lakare2":
+                case "Beata Bertilsson LAKARE2":
                     assertEquals(1, lakareRow.getDataForSex(Kon.Female));
                     assertEquals(0, lakareRow.getDataForSex(Kon.Male));
                     checksum +=1;
                     break;
-                case "Beata Bertilsson lakare3":
+                case "Beata Bertilsson LAKARE3":
                     assertEquals(1, lakareRow.getDataForSex(Kon.Female));
                     assertEquals(0, lakareRow.getDataForSex(Kon.Male));
                     checksum +=2;
@@ -187,11 +216,31 @@ public class SjukfallQueryTest {
 
     private LakareManager mockLakareManager() {
         LakareManager lakareManager = mock(LakareManager.class);
-        Lakare lakare1 = new Lakare(VG_1, LAKARE1_ID, "Agata", "Adamsson");
-        Lakare lakare2 = new Lakare(VG_1, LAKARE2_ID, "Beata", "Bertilsson");
-        Lakare lakare3 = new Lakare(VG_1, LAKARE3_ID, "Beata", "Bertilsson");
+        final Lakare lakare1 = new Lakare(VG_1, LAKARE1_ID, "Agata", "Adamsson");
+        final Lakare lakare2 = new Lakare(VG_1, LAKARE2_ID, "Beata", "Bertilsson");
+        final Lakare lakare3 = new Lakare(VG_1, LAKARE3_ID, "Beata", "Bertilsson");
         when(lakareManager.getLakares(VG_1)).thenReturn(asList(lakare1, lakare2, lakare3));
         when(lakareManager.getAllLakares()).thenReturn(asList(lakare1, lakare2, lakare3));
+        when(lakareManager.getAllSpecifiedLakares(any(Collection.class))).thenAnswer(new Answer<Object>() {
+            @Override
+            public List<Lakare> answer(InvocationOnMock invocationOnMock) throws Throwable {
+                final Object[] arguments = invocationOnMock.getArguments();
+                final List<HsaIdLakare> hsaIds = (List<HsaIdLakare>) arguments[0];
+                return Lists.transform(hsaIds, new Function<HsaIdLakare, Lakare>() {
+                    @Override
+                    public Lakare apply(HsaIdLakare hsaId) {
+                        if (LAKARE1_ID.equals(hsaId)) {
+                            return lakare1;
+                        } else if (LAKARE2_ID.equals(hsaId)) {
+                            return lakare2;
+                        } else if (LAKARE3_ID.equals(hsaId)) {
+                            return lakare3;
+                        }
+                        throw new RuntimeException("Lakare does not exist: " + hsaId);
+                    }
+                });
+            }
+        });
         return lakareManager;
     }
 
@@ -201,13 +250,60 @@ public class SjukfallQueryTest {
         lakarIdMap.put(LAKARE3_ID, Warehouse.getNumLakarIdAndRemember(LAKARE3_ID));
     }
 
-    private Fact fact(int patientId, Kon patientKon, String lakareId) {
+    private Fact fact(int patientId, Kon patientKon, HsaIdLakare lakareId) {
          return aFact().withLan(3).withKommun(380).withForsamling(38002).
-                withEnhet(Integer.valueOf(ENHET1_ID)).withLakarintyg(lakarIntygCounter++).
+                withEnhet(ENHET1_ID).withLakarintyg(lakarIntygCounter++).
                 withPatient(patientId).withKon(patientKon).withAlder(45).
-                withDiagnoskapitel(0).withDiagnosavsnitt(14).withDiagnoskategori(16).
-                withSjukskrivningsgrad(100).withStartdatum(toDay(sjukfallDate)).withSjukskrivningslangd(47).
+                withDiagnoskapitel(0).withDiagnosavsnitt(14).withDiagnoskategori(16).withDiagnoskod(18).
+                withSjukskrivningsgrad(100).withStartdatum(toDay(sjukfallDate)).withSlutdatum(toDay(sjukfallDate) + 46).
                  withLakarkon(Kon.Female).withLakaralder(32).withLakarbefattning(new int[]{201010}).withLakarid(lakarIdMap.get(lakareId)).build();
+    }
+
+    @Test
+    public void testGetSjukfallPerEnhetSeries() throws Exception {
+        //Given
+        final SjukfallUtil sjukfallUtilMock = Mockito.mock(SjukfallUtil.class);
+        Mockito.when(sjukfallUtilMock.calculateKonDataResponse(any(Aisle.class), any(SjukfallFilter.class), any(LocalDate.class), anyInt(), anyInt(), anyListOf(String.class), anyListOf(Object.class), any(CounterFunction.class))).thenReturn(new KonDataResponse(Collections.<String>emptyList(), Collections.<KonDataRow>emptyList()));
+        ReflectionTestUtils.setField(sjukfallQuery, "sjukfallUtil", sjukfallUtilMock);
+
+        final SjukfallFilter filter = SjukfallUtilTest.createEnhetFilterFromInternalIntValues(ENHET1_ID);
+        final LocalDate start = new LocalDate();
+        final int periods = 1;
+        final int periodSize = 2;
+        final HashMap<HsaIdEnhet, String> idsToNames = new HashMap<>();
+        idsToNames.put(new HsaIdEnhet("-1"), "name1");
+
+        //When
+        final Aisle currentAisle = aisle.createAisle();
+        sjukfallQuery.getSjukfallPerEnhetSeries(currentAisle, filter, start, periods, periodSize, idsToNames);
+
+        //Then
+        Mockito.verify(sjukfallUtilMock).calculateKonDataResponse(eq(currentAisle), eq(filter), eq(start), eq(periods), eq(periodSize), names.capture(), ids.capture(), Matchers.<CounterFunction<Object>>any());
+        assertEquals("-1", names.getValue().get(0));
+        assertEquals(-1, ids.getValue().get(0));
+    }
+
+    @Test
+    public void testGetSjukfallPerEnhetSeriesTwoEnhetsWthSameNameWillGetIdAsSuffixSTATISTIK1121() throws Exception {
+        //Given
+        final SjukfallUtil sjukfallUtilMock = Mockito.mock(SjukfallUtil.class);
+        final KonDataResponse konDataResponse = new KonDataResponse(Arrays.asList("1", "2", "3"), Collections.<KonDataRow>emptyList());
+        Mockito.when(sjukfallUtilMock.calculateKonDataResponse(any(Aisle.class), any(SjukfallFilter.class), any(LocalDate.class), anyInt(), anyInt(), anyListOf(String.class), anyListOf(Object.class), any(CounterFunction.class))).thenReturn(konDataResponse);
+        ReflectionTestUtils.setField(sjukfallQuery, "sjukfallUtil", sjukfallUtilMock);
+        final SjukfallFilter enhetFilterFromInternalIntValues = SjukfallUtilTest.createEnhetFilterFromInternalIntValues(ENHET1_ID);
+        final HashMap<HsaIdEnhet, String> idsToNames = new HashMap<>();
+        idsToNames.put(new HsaIdEnhet("1"), "ABC");
+        idsToNames.put(new HsaIdEnhet("2"), "CBA");
+        idsToNames.put(new HsaIdEnhet("3"), "ABC");
+
+        //When
+        final KonDataResponse result = sjukfallQuery.getSjukfallPerEnhetSeries(aisle.createAisle(), enhetFilterFromInternalIntValues, new LocalDate(), 1, 2, idsToNames);
+
+        //Then
+        assertEquals(3, result.getGroups().size());
+        assertEquals("ABC 1", result.getGroups().get(0));
+        assertEquals("CBA", result.getGroups().get(1));
+        assertEquals("ABC 3", result.getGroups().get(2));
     }
 
 }

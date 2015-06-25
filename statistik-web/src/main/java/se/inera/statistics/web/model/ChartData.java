@@ -23,9 +23,9 @@ import java.util.List;
 public class ChartData {
 
     private final List<ChartSeries> series;
-    private final List<String> categories;
+    private final List<ChartCategory> categories;
 
-    public ChartData(List<ChartSeries> series, List<String> categories) {
+    public ChartData(List<ChartSeries> series, List<ChartCategory> categories) {
         this.series = series;
         this.categories = categories;
     }
@@ -34,7 +34,7 @@ public class ChartData {
         return series;
     }
 
-    public List<String> getCategories() {
+    public List<ChartCategory> getCategories() {
         return categories;
     }
 

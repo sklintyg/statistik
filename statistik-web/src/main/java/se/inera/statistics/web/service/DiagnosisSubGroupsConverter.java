@@ -24,8 +24,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import se.inera.statistics.service.report.model.DiagnosgruppResponse;
 import se.inera.statistics.service.report.model.Kon;
+import se.inera.statistics.service.report.model.KonDataResponse;
 import se.inera.statistics.service.report.model.KonDataRow;
 import se.inera.statistics.service.report.model.Range;
+import se.inera.statistics.service.report.model.SimpleKonDataRow;
+import se.inera.statistics.service.report.model.SimpleKonResponse;
+import se.inera.statistics.web.model.ChartCategory;
 import se.inera.statistics.web.model.ChartData;
 import se.inera.statistics.web.model.ChartSeries;
 import se.inera.statistics.web.model.DualSexStatisticsData;
@@ -41,27 +45,38 @@ public class DiagnosisSubGroupsConverter {
 
     private static final Logger LOG = LoggerFactory.getLogger(DiagnosisGroupsConverter.class);
 
-    private static final int NUMBER_OF_CHART_SERIES = 6;
+    static final int NUMBER_OF_CHART_SERIES = 6;
 
-    DualSexStatisticsData convert(DiagnosgruppResponse diagnosisGroups, Range range, Filter filter) {
-        return convert(diagnosisGroups, range, filter, null);
+    private DiagnosisGroupsConverter diagnosisGroupsConverter = new DiagnosisGroupsConverter();
+
+    DualSexStatisticsData convert(DiagnosgruppResponse diagnosisGroups, FilterSettings filterSettings) {
+        return convert(diagnosisGroups, filterSettings, null);
     }
 
-    DualSexStatisticsData convert(DiagnosgruppResponse diagnosisGroups, Range range, Filter filter, String message) {
-        TableData tableData = DiagnosisGroupsConverter.convertTable(diagnosisGroups);
+    DualSexStatisticsData convert(DiagnosgruppResponse diagnosisGroups, FilterSettings filterSettings, String message) {
+        TableData tableData = diagnosisGroupsConverter.convertTable(diagnosisGroups, "%1$s");
         List<Integer> topIndexes = getTopColumnIndexes(diagnosisGroups);
         ChartData maleChart = extractChartData(diagnosisGroups, topIndexes, Kon.Male);
         ChartData femaleChart = extractChartData(diagnosisGroups, topIndexes, Kon.Female);
+        final Filter filter = filterSettings.getFilter();
         final FilterDataResponse filterResponse = new FilterDataResponse(filter.getDiagnoser(), filter.getEnheter());
-        return new DualSexStatisticsData(tableData, maleChart, femaleChart, range.toString(), filterResponse, message);
+        final Range range = filterSettings.getRange();
+        final String combinedMessage = Converters.combineMessages(filterSettings.getMessage(), message);
+        return new DualSexStatisticsData(tableData, maleChart, femaleChart, range.toString(), filterResponse, combinedMessage);
     }
 
     private ChartData extractChartData(DiagnosgruppResponse data, List<Integer> topIndexes, Kon sex) {
         List<ChartSeries> topColumns = getTopColumns(data, topIndexes, sex);
-        return new ChartData(topColumns, data.getPeriods());
+        final List<ChartCategory> categories = Lists.transform(data.getPeriods(), new Function<String, ChartCategory>() {
+            @Override
+            public ChartCategory apply(String period) {
+                return new ChartCategory(period);
+            }
+        });
+        return new ChartData(topColumns, categories);
     }
 
-    private List<ChartSeries> getTopColumns(DiagnosgruppResponse data, List<Integer> topIndexes, Kon sex) {
+    private List<ChartSeries> getTopColumns(KonDataResponse data, List<Integer> topIndexes, Kon sex) {
         List<ChartSeries> topColumns = new ArrayList<>();
         if (topIndexes.isEmpty()) {
             topColumns.add(new ChartSeries("Totalt", createList(data.getRows().size(), 0), true));
@@ -69,16 +84,16 @@ public class DiagnosisSubGroupsConverter {
         }
         for (Integer index : topIndexes) {
             List<Integer> indexData = data.getDataFromIndex(index, sex);
-            topColumns.add(new ChartSeries(data.getDiagnosisGroupsAsStrings().get(index), indexData, true));
+            topColumns.add(new ChartSeries(data.getGroups().get(index), indexData, true));
         }
-        if (data.getDiagnosisGroupsAsStrings().size() > NUMBER_OF_CHART_SERIES) {
+        if (data.getGroups().size() > NUMBER_OF_CHART_SERIES) {
             List<Integer> remainingData = sumRemaining(topIndexes, data, sex);
             topColumns.add(new ChartSeries("Övriga", remainingData, true));
         }
         return topColumns;
     }
 
-    private List<Integer> createList(int size, int value) {
+    private static List<Integer> createList(int size, int value) {
         ArrayList<Integer> list = new ArrayList<>();
         for (int i = 0; i < size; i++) {
              list.add(value);
@@ -86,7 +101,7 @@ public class DiagnosisSubGroupsConverter {
         return list;
     }
 
-    private List<Integer> sumRemaining(List<Integer> topIndexes, DiagnosgruppResponse data, Kon sex) {
+    private static List<Integer> sumRemaining(List<Integer> topIndexes, KonDataResponse data, Kon sex) {
         List<Integer> remaining = new ArrayList<>();
         for (int i = 0; i < data.getRows().size(); i++) {
             remaining.add(0);
@@ -103,27 +118,24 @@ public class DiagnosisSubGroupsConverter {
         return remaining;
     }
 
-    List<Integer> getTopColumnIndexes(DiagnosgruppResponse diagnosisGroups) {
-        if (diagnosisGroups.getRows().isEmpty()) {
+    List<Integer> getTopColumnIndexes(KonDataResponse diagnosisGroups2) {
+        return getTopColumnIndexes(SimpleKonResponse.create(diagnosisGroups2));
+    }
+
+    static List<Integer> getTopColumnIndexes(SimpleKonResponse<SimpleKonDataRow> simpleKonDataRowSimpleKonResponse) {
+        if (simpleKonDataRowSimpleKonResponse.getRows().isEmpty()) {
             return new ArrayList<>();
         }
-        List<Pair<Integer, Integer>> columnSums = new ArrayList<>();
-        int dataSize = diagnosisGroups.getRows().get(0).getData().size();
-        for (int i = 0; i < dataSize; i++) {
-            int totalSum = sum(diagnosisGroups.getDataFromIndex(i, Kon.Male)) + sum(diagnosisGroups.getDataFromIndex(i, Kon.Female));
-            if (totalSum > 0) {
-                columnSums.add(new Pair<>(i, totalSum));
-            }
-        }
-        LOG.debug("Columns: " + diagnosisGroups.getDiagnosisGroupsAsStrings());
-        LOG.debug("TopColumnIndexes: " + columnSums);
-        Collections.sort(columnSums, new Comparator<Pair<Integer, Integer>>() {
+        final List<Pair<Integer, Integer>> indexedSums = getIndexedSums(simpleKonDataRowSimpleKonResponse);
+        LOG.debug("Columns: " + simpleKonDataRowSimpleKonResponse.getGroups());
+        LOG.debug("TopColumnIndexes: " + indexedSums);
+        Collections.sort(indexedSums, new Comparator<Pair<Integer, Integer>>() {
             @Override
             public int compare(Pair<Integer, Integer> o1, Pair<Integer, Integer> o2) {
                 return o2.getValue() - o1.getValue();
             }
         });
-        List<Integer> sortedIndexes = Lists.transform(columnSums, new Function<Pair<Integer, Integer>, Integer>() {
+        final List<Integer> sortedIndexes = Lists.transform(indexedSums, new Function<Pair<Integer, Integer>, Integer>() {
             @Override
             public Integer apply(Pair<Integer, Integer> integerIntegerPair) {
                 return integerIntegerPair.getKey();
@@ -132,11 +144,16 @@ public class DiagnosisSubGroupsConverter {
         return sortedIndexes.subList(0, Math.min(NUMBER_OF_CHART_SERIES, sortedIndexes.size()));
     }
 
-    private int sum(List<Integer> numbers) {
-        int sum = 0;
-        for (Integer number : numbers) {
-            sum += number;
+    private static List<Pair<Integer, Integer>> getIndexedSums(SimpleKonResponse<SimpleKonDataRow> simpleKonDataRowSimpleKonResponse) {
+        final List<Pair<Integer, Integer>> indexedSums = new ArrayList<>();
+        final List<Integer> rowSums = simpleKonDataRowSimpleKonResponse.getSummedData();
+        for (int i = 0; i < rowSums.size(); i++) {
+            final Integer rowSum = rowSums.get(i);
+            if (rowSum > 0) {
+                indexedSums.add(new Pair<>(i, rowSum));
+            }
         }
-        return sum;
+        return indexedSums;
     }
+
 }

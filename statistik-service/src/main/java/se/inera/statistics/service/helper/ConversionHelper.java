@@ -32,11 +32,11 @@ import se.inera.statistics.service.report.model.Kon;
 public final class ConversionHelper {
     private static final Logger LOG = LoggerFactory.getLogger(ConversionHelper.class);
 
-    public static final int UNKNOWN = 0;
-    public static final int DATE_PART_OF_PERSON_ID = 8;
-    public static final int DAY_PART_OF_DATE_PART = 6;
-    public static final int MONTH_PART_OF_DATE_PART = 4;
-    public static final int SAMORDNINGSNUMMER_DAY_CONSTANT = 60;
+    private static final int UNKNOWN = 0;
+    private static final int DATE_PART_OF_PERSON_ID = 8;
+    private static final int DAY_PART_OF_DATE_PART = 6;
+    private static final int MONTH_PART_OF_DATE_PART = 4;
+    private static final int SAMORDNINGSNUMMER_DAY_CONSTANT = 60;
     private static final DateTimeFormatter MONTHDAY_FORMATTER = DateTimeFormat.forPattern("MMdd");
     public static final int NO_AGE = -1;
 

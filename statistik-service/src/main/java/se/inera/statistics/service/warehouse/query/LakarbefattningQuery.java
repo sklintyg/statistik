@@ -39,22 +39,25 @@ import java.util.Set;
 
 public final class LakarbefattningQuery {
 
-    private static final Map<Integer, String> LAKARBEFATTNINGS = new LinkedHashMap<>();
-    private static final Integer NO_BEFATTNING_CODE = -1;
+    public static final Integer NO_BEFATTNING_CODE = -1;
     private static final String NO_BEFATTNING_TEXT = "Ej läkarbefattning";
 
-    static {
+    private static Map<Integer, String> getAllLakarbefattnings(boolean includeInternalBefattnings) {
+        Map<Integer, String> lakarbefattnings = new LinkedHashMap<>();
         // CHECKSTYLE:OFF MagicNumber
-        LAKARBEFATTNINGS.put(201010, "Överläkare");
-        LAKARBEFATTNINGS.put(201011, "Distriktsläkare/Specialist allmänmedicin");
-        LAKARBEFATTNINGS.put(201012, "Skolläkare");
-        LAKARBEFATTNINGS.put(201013, "Företagsläkare");
-        LAKARBEFATTNINGS.put(202010, "Specialistläkare");
-        LAKARBEFATTNINGS.put(203010, "Läkare legitimerad, specialiseringstjänstgöring");
-        LAKARBEFATTNINGS.put(203090, "Läkare legitimerad, annan");
-        LAKARBEFATTNINGS.put(204010, "Läkare ej legitimerad, allmäntjänstgöring");
-        LAKARBEFATTNINGS.put(204090, "Läkare ej legitimerad, annan");
-        LAKARBEFATTNINGS.put(NO_BEFATTNING_CODE, NO_BEFATTNING_TEXT);
+        lakarbefattnings.put(201010, "Överläkare");
+        lakarbefattnings.put(201011, "Distriktsläkare/Specialist allmänmedicin");
+        lakarbefattnings.put(201012, "Skolläkare");
+        lakarbefattnings.put(201013, "Företagsläkare");
+        lakarbefattnings.put(202010, "Specialistläkare");
+        lakarbefattnings.put(203010, "Läkare legitimerad, specialiseringstjänstgöring");
+        lakarbefattnings.put(203090, "Läkare legitimerad, annan");
+        lakarbefattnings.put(204010, "Läkare ej legitimerad, allmäntjänstgöring");
+        lakarbefattnings.put(204090, "Läkare ej legitimerad, annan");
+        if (includeInternalBefattnings) {
+            lakarbefattnings.put(NO_BEFATTNING_CODE, NO_BEFATTNING_TEXT);
+        }
+        return lakarbefattnings;
         // CHECKSTYLE:ON MagicNumber
     }
 
@@ -63,13 +66,13 @@ public final class LakarbefattningQuery {
 
      public static SimpleKonResponse<SimpleKonDataRow> getSjukfall(Aisle aisle, SjukfallFilter filter, LocalDate start, int periods, int periodLength, SjukfallUtil sjukfallUtil) {
         final KonDataResponse sjukfallSomTidsserie = getSjukfallSomTidsserie(aisle, filter, start, periods, periodLength, sjukfallUtil);
-        return SimpleKonResponse.create(sjukfallSomTidsserie, periods * periodLength);
+        return SimpleKonResponse.create(sjukfallSomTidsserie);
     }
 
     private static List<Integer> getLakarbefattnings(Lakare lakare) {
         final List<Integer> lakarbefattnings = new ArrayList<>();
         final int[] allBefattnings = lakare.getBefattnings();
-        final Set<Integer> existingLakarebefattnings = LAKARBEFATTNINGS.keySet();
+        final Set<Integer> existingLakarebefattnings = getAllLakarbefattnings(false).keySet();
         for (int befattning : allBefattnings) {
             if (existingLakarebefattnings.contains(befattning)) {
                 lakarbefattnings.add(befattning);
@@ -79,7 +82,7 @@ public final class LakarbefattningQuery {
     }
 
     public static KonDataResponse getSjukfallSomTidsserie(Aisle aisle, SjukfallFilter filter, LocalDate start, int periods, int periodLength, SjukfallUtil sjukfallUtil) {
-        final ArrayList<Map.Entry<Integer, String>> ranges = new ArrayList<>(LAKARBEFATTNINGS.entrySet());
+        final ArrayList<Map.Entry<Integer, String>> ranges = new ArrayList<>(getAllLakarbefattnings(true).entrySet());
         final List<String> names = Lists.transform(ranges, new Function<Map.Entry<Integer, String>, String>() {
             @Override
             public String apply(Map.Entry<Integer, String> entry) {

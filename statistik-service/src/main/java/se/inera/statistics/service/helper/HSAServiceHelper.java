@@ -22,6 +22,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.google.common.base.Function;
 import com.google.common.base.Joiner;
 import com.google.common.collect.Iterators;
+import se.inera.statistics.service.hsa.HSAService;
 import se.inera.statistics.service.report.model.Kommun;
 import se.inera.statistics.service.report.model.Lan;
 import se.inera.statistics.service.report.model.VerksamhetsTyp;
@@ -141,7 +142,7 @@ public final class HSAServiceHelper {
                 result = getVerksamhetsTyper(hsaData, "huvudenhet");
             }
             final boolean isVardcentral = isVardcentral(hsaData, "enhet") || isVardcentral(hsaData, "huvudenhet");
-            result = isVardcentral ? (result != null && !result.isEmpty() ? result + ",02" : "02") : result;
+            result = isVardcentral ? (result != null && !result.isEmpty() ? result + "," : "") + VerksamhetsTyp.VARDCENTRAL_ID : result;
             return result != null && !result.isEmpty() ? result : VerksamhetsTyp.OVRIGT_ID;
         } else {
             return VerksamhetsTyp.OVRIGT_ID;
@@ -152,7 +153,7 @@ public final class HSAServiceHelper {
         final Iterator<String> enhetstyper = getEnhetstyper(hsaData, enhet);
         while (enhetstyper.hasNext()) {
             String enhetstyp = enhetstyper.next();
-            if ("02".equals(enhetstyp)) {
+            if (VerksamhetsTyp.VARDCENTRAL_ID.equals(enhetstyp)) {
                 return true;
             }
         }
@@ -160,7 +161,7 @@ public final class HSAServiceHelper {
     }
 
     public static Iterator<String> getEnhetstyper(JsonNode hsaData, String enhet) {
-        return Iterators.transform(hsaData.path(enhet).path("enhetstyp").elements(),
+        return Iterators.transform(hsaData.path(enhet).path(HSAService.ENHETS_TYP).elements(),
         new Function<JsonNode, String>() {
                     @Override
                     public String apply(JsonNode node) {

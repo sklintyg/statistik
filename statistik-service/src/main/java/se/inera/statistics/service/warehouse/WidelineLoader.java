@@ -22,6 +22,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import se.inera.statistics.hsa.model.HsaIdEnhet;
+import se.inera.statistics.hsa.model.HsaIdLakare;
+import se.inera.statistics.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.service.processlog.EventType;
 import se.inera.statistics.service.warehouse.model.db.WideLine;
 
@@ -77,6 +80,7 @@ public class WidelineLoader {
         String diagnoskapitel = resultSet.getString("diagnoskapitel");
         String diagnosavsnitt = resultSet.getString("diagnosavsnitt");
         String diagnoskategori = resultSet.getString("diagnoskategori");
+        String diagnoskod = resultSet.getString("diagnoskod");
         int sjukskrivningsgrad = resultSet.getInt("sjukskrivningsgrad");
         int lakarkon = resultSet.getInt("lakarkon");
         int lakaralder = resultSet.getInt("lakaralder");
@@ -84,12 +88,12 @@ public class WidelineLoader {
         String vardgivare = resultSet.getString("vardgivareid");
         String lakareId = resultSet.getString("lakareid");
 
-        return new WideLine(id, correlationId, lkf, enhet, intyg, EventType.CREATED, patientid, startdatum, slutdatum, kon, alder, diagnoskapitel, diagnosavsnitt, diagnoskategori, sjukskrivningsgrad, lakarkon, lakaralder, lakarbefattning, vardgivare, lakareId);
+        return new WideLine(id, correlationId, lkf, new HsaIdEnhet(enhet), intyg, EventType.CREATED, patientid, startdatum, slutdatum, kon, alder, diagnoskapitel, diagnosavsnitt, diagnoskategori, diagnoskod, sjukskrivningsgrad, lakarkon, lakaralder, lakarbefattning, new HsaIdVardgivare(vardgivare), new HsaIdLakare(lakareId));
     }
 
     private PreparedStatement prepareStatement(Connection connection) throws SQLException {
         String sql = "select id, correlationid, lkf, enhet, lakarintyg, patientid, startdatum,"
-                + " slutdatum, kon, alder, diagnoskapitel, diagnosavsnitt, diagnoskategori, sjukskrivningsgrad, lakarkon, lakaralder,"
+                + " slutdatum, kon, alder, diagnoskapitel, diagnosavsnitt, diagnoskategori, diagnoskod, sjukskrivningsgrad, lakarkon, lakaralder,"
                 + " lakarbefattning, vardgivareid, lakareid from wideline w1 where w1.correlationid not in (select correlationid from wideline where intygtyp = " + EventType.REVOKED.ordinal() + " )";
         int maxIntyg = Integer.parseInt(System.getProperty("statistics.test.max.fact", "0"));
         if (maxIntyg > 0) {

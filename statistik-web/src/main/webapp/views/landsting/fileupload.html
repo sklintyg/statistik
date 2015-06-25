@@ -1,0 +1,122 @@
+<!--
+  ~ Copyright (C) 2013 - 2014 Inera AB (http://www.inera.se)
+  ~
+  ~     This file is part of Inera Statistics (http://code.google.com/p/inera-statistics/).
+  ~
+  ~     Inera Statistics is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU LESSER GENERAL PUBLIC LICENSE as published by
+  ~     the Free Software Foundation, either version 3 of the License, or
+  ~     (at your option) any later version.
+  ~
+  ~     Inera Statistics is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU LESSER GENERAL PUBLIC LICENSE for more details.
+  ~
+  ~     You should have received a copy of the GNU LESSER GENERAL PUBLIC LICENSE
+  ~     along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  -->
+<div xmlns="http://www.w3.org/1999/html">
+	<div class="container-fluid">
+
+        <div id="about-content">
+            <section id="about">
+                <div class="row">
+                    <div class="col-sm-12 col-md-8">
+                        <h1 style="margin-bottom: 0px;">Filuppladdning</h1>
+                        <p> Denna sida ser du eftersom du har statistikbehörighet för hela vårdgivaren {{verksamhetName}}.</p>
+                        <p>Om ditt landsting vill kunna använda landstingsstatistiken, behöver du (eller någon annan med vårdgivarbehörighet för samma vårdgivare) rapportera in vilka vårdenheter som ingår i landstinget. Det gör du genom att:</p>
+                        <ol>
+                            <li>Ladda ner en av följande Excel-mallar:
+                                <ul>
+                                    <li><a href="/api/landsting/prepopulatedLandstingFile">Fil som är förifylld med de vårdenheter som Statistiktjänsten känner till inom din vårdgivare (Excel)</a></li>
+                                    <li><a href="/api/landsting/emptyLandstingFile">Tom fil (Excel)</a></li>
+                                </ul>
+                            </li>
+                            <li>Ange följande för alla de vårdenheter som som ska ingå i landstingsstatistiken:
+                                <ol type="a">
+                                    <li>Vårdenhetsnamn</li>
+                                    <li>HSA-id för vårdenhet</li>
+                                    <li>Antal listade patienter (om tillämpligt)</li>
+                                </ol>
+                            </li>
+                            <li>Spara filen på din dator.</li>
+                            <li>Ladda upp filen här nedanför.</li>
+                            <li>Landstingsstatistiken visas nu för de angivna enheterna.</li>
+                        </ol>
+
+                        <p>För att uppdatera vilka enheter som ingår i landstingsstatistiken eller enheternas listningar, redigerar du filen och laddar upp den på nytt. Det är alltid informationen i den senast uppladdade filen som gäller.</p>
+                        <p><b>Observera att ditt landsting endast får anmäla uppföljning av vårdenheter hos annan vårdgivare som landstinget har ett samarbete med. Landstinget ansvarar för att informera anmälda vårdenheter om uppföljningen.</b></p>
+                        <p> Mer utförliga instruktioner för hur du administrerar listan av enheter finns här: <a href="http://www.inera.se/Documents/TJANSTER_PROJEKT/Statistiktjansten/administration_av_landsting.pdf">Instruktioner</a></p>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <div class="row">
+            <div class="col-md-8">
+                <div class="jumbotron dropzone" dropzone="dropzoneConfig" ng-class="{'dropzone-drag': draggingIt}">
+                    <div class="row dz-message">
+                        <div class="col-md-5 col-md-push-3 dropzone-info-area">
+
+                                    <span ng-show="!uploadCompleted" class="glyphicon glyphicon-plus-sign"
+                                          ng-class="{'glyphicon-plus-sign-drag': draggingIt}"></span>
+                                    <span ng-show="uploadCompleted" class="glyphicon"
+                                          ng-class="{'glyphicon-ok-sign': uploadSuccess, 'glyphicon-warning-sign': !uploadSuccess}"></span>
+
+                            <progressbar ng-show="uploading" class="progress-striped active" value="uploadProgress"
+                                         type="{{progressType}}"></progressbar>
+
+                            <div ng-show="uploadCompleted && !uploadSuccess">
+                                <h5>
+                                            <span message
+                                                  key="alert.upload.failed"></span>
+                                </h5>
+                                <h5>{{uploadResultMessage}}</h5>
+                                <h5>
+                                            <span message
+                                                  key="info.upload.dropfile.here"></span>
+                                    <a>
+                                        <span message key="info.upload.dropfile.here.add"></span>
+                                    </a>
+                                </h5>
+                            </div>
+
+                            <h5 ng-show="!uploading && !uploadCompleted">
+                                        <span message
+                                              key="info.upload.dropfile.here"></span>
+                                <a>
+                                    <span message key="info.upload.dropfile.here.add"></span>
+                                </a>
+                            </h5>
+
+                            <div ng-show="uploadCompleted && uploadSuccess">
+                                <h5><span message
+                                          key="alert.upload.success"></span></h5>
+                                <h5>
+                                            <span message
+                                                  key="info.upload.dropfile.here"></span>
+                                    <a>
+                                        <span message key="info.upload.dropfile.here.add"></span>
+                                    </a>
+                                </h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div><h2><b>Senaste händelse: </b></h2>{{lastLandstingUpdateMessage}}</div>
+        <br/>
+        <button class="btn btn-default" confirm-click confirmed-click-action="clearLandstingEnhets()"
+           confirm-message="Rapporter för landstingsstatistik kommer inte vara tillgängliga ifall du rensar. Vill du rensa data?">Rensa data</button>
+        <br/>
+        <div data-ng-show="parsedRows">
+          <div><h2><b>Just nu finns följande information inrapporterad till landstingsstatistiken:</b></h2></div>
+          <div data-ng-repeat="row in parsedRows">{{row}}</div>
+        </div>
+        <br/>
+	</div>
+</div>
+

@@ -74,7 +74,6 @@ public class ReceiverQueueFunctionalTest {
      * pudding. Check output for "Received intyg" and inspect its
      * representation.
      */
-    @Ignore
     @Test
     public void send() {
         simpleSend();

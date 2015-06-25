@@ -23,10 +23,12 @@ import com.google.common.collect.ArrayListMultimap;
 import org.joda.time.LocalDate;
 import org.junit.Test;
 import org.springframework.util.ReflectionUtils;
+import se.inera.statistics.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.service.report.model.Range;
 
 import java.lang.reflect.Field;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -103,7 +105,7 @@ public class SjukfallCalculatorTest {
 
     private Fact createFact(long patient, LocalDate startDatum) {
         final int start = WidelineConverter.toDay(startDatum);
-        return new Fact(1,1,1,1,1, patient, start,1,1,1,1,1,1,1,1,1,new int[0],1);
+        return new Fact(1,1,1,1,1, patient, start,start,1,1,1,1,1,1,1,1,1,new int[0],1);
     }
 
     @Test
@@ -112,7 +114,7 @@ public class SjukfallCalculatorTest {
         final List<Range> ranges = SjukfallIterator.getRanges(new LocalDate(2015, 4, 1), 2, 1);
 
         //When
-        final SjukfallCalculator sjukfallCalculator = new SjukfallCalculator(new Aisle(""), SjukfallUtil.ALL_ENHETER.getFilter(), ranges, false);
+        final SjukfallCalculator sjukfallCalculator = new SjukfallCalculator(new Aisle(new HsaIdVardgivare(""), Collections.<Fact>emptyList()), SjukfallUtil.ALL_ENHETER.getFilter(), ranges, false);
 
         //Then
         final Boolean extendSjukfall = (Boolean) getField("extendSjukfall", sjukfallCalculator);
@@ -137,7 +139,7 @@ public class SjukfallCalculatorTest {
         };
 
         //When
-        final SjukfallCalculator sjukfallCalculator = new SjukfallCalculator(new Aisle(""), filter, ranges, false);
+        final SjukfallCalculator sjukfallCalculator = new SjukfallCalculator(new Aisle(new HsaIdVardgivare(""), Collections.<Fact>emptyList()), filter, ranges, false);
 
         //Then
         final Boolean extendSjukfall = (Boolean) getField("extendSjukfall", sjukfallCalculator);

@@ -3,3 +3,4 @@
 environment_name: "demo"
 config_etc_folder: "{{ config_folder }}/{{ environment_name }}"
 profile: hsa-stub,security-both,qm,db-resetter
+host_url: https://demo.inera.nordicmedtest.se

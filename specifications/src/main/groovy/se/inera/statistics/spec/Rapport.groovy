@@ -12,18 +12,26 @@ abstract class Rapport {
     def män
     def kvinnor
     def totalt
+    Boolean markerad
     boolean vårdgivarnivå
     def filterKapitel
     def filterAvsnitt
     def filterKategorier
     def filterEnheter
     def filterVerksamhetstyper
+    def filterStartdatum
+    def filterSlutdatum
+    def meddelande
 
     ReportsUtil reportsUtil = new ReportsUtil()
 
     public final void execute() {
         doLoginIfRequested()
         doExecute()
+    }
+
+    public final void executeWithReport(report) {
+        meddelande = report.message
     }
 
     abstract void doExecute()
@@ -38,6 +46,17 @@ abstract class Rapport {
 
     def totalt() {
         return totalt
+    }
+
+    def meddelande() {
+        return meddelande
+    }
+
+    def markerad() {
+        if (markerad == null) {
+            return null
+        }
+        return markerad ? "ja" : "nej"
     }
 
     void setVårdgivarnivå(boolean vårdgivarnivå) {
@@ -91,7 +110,7 @@ abstract class Rapport {
         if (filterKategorier != null) {
             diagnoser.addAll(filterKategorier)
         }
-        return new FilterData(diagnoser, filterEnheter, filterVerksamhetstyper)
+        return new FilterData(diagnoser, filterEnheter, filterVerksamhetstyper, filterStartdatum, filterSlutdatum, filterStartdatum == null || filterSlutdatum == null)
     }
 
     public void reset() {
@@ -100,11 +119,15 @@ abstract class Rapport {
         totalt = -1
         män = -1
         kvinnor = -1
+        markerad = null
         filterKapitel = null
         filterAvsnitt = null
         filterKategorier = null
         filterEnheter = null
         filterVerksamhetstyper = null
+        filterStartdatum = null
+        filterSlutdatum = null
+        meddelande = null
     }
 
     void setKommentar(String kommentar) {
@@ -124,7 +147,7 @@ abstract class Rapport {
 
     def getVerksamhetsoversikt() {
         if (inloggad) {
-            return reportsUtil.getVerksamhetsoversikt(inloggadSom, filter);
+            return reportsUtil.getVerksamhetsoversikt(filter);
         }
         return reportsUtil.getNationalOverview();
     }

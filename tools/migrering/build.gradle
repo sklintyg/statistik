@@ -1,12 +1,52 @@
+apply plugin: 'application'
 apply plugin: 'groovy'
+apply plugin: 'maven'
 
-description = 'statistics-MigreringIntyg'
+description = 'statistik-MigreringIntyg'
+
+group = 'se.inera.statistik'
+version = '3.0.0-SNAPSHOT'
+
+mainClassName = "se.inera.statistik.tools.MigreraIntyg"
+applicationDefaultJvmArgs = ["-Dfile.encoding=utf8"]
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+
+artifacts {
+    archives distZip
+}
+
+configurations {
+    deployerJars
+}
 
 dependencies {
     compile 'org.codehaus.groovy:groovy-all:2.3.6'
     compile 'org.apache.commons:commons-dbcp2:2.0'
     compile 'org.codehaus.gpars:gpars:1.1.0'
+    compile 'mysql:mysql-connector-java:5.1.32'
 
-    runtime 'mysql:mysql-connector-java:5.1.32'
-    runtime 'com.h2database:h2:1.3.171'
+    deployerJars "org.apache.maven.wagon:wagon-webdav:1.0-beta-2"
+}
+
+
+ext.cloudbeesUsername = System.properties['cloudbeesUsername']
+ext.cloudbeesPassword = System.properties['cloudbeesPassword']
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            configuration = configurations.deployerJars
+            repository(url: "dav:https://repository-callistasoftware.forge.cloudbees.com/release/") {
+                authentication(userName: cloudbeesUsername, password: cloudbeesPassword)
+            }
+            snapshotRepository(url: "dav:https://repository-callistasoftware.forge.cloudbees.com/snapshot/") {
+                authentication(userName: cloudbeesUsername, password: cloudbeesPassword)
+            }
+            uniqueVersion = false
+        }
+    }
 }

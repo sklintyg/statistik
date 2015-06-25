@@ -18,12 +18,14 @@
  */
 package se.inera.statistics.web.service;
 
+import com.google.common.base.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import se.inera.statistics.service.report.util.Icd10;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 public class ResultMessageHandler {
@@ -65,13 +67,19 @@ public class ResultMessageHandler {
         List<String> icd10Ints = new ArrayList<>();
         icd10Ints.add(dx);
         final Icd10.Id icd = icd10.findIcd10FromNumericId(Integer.valueOf(dx));
-        if (icd instanceof Icd10.Kategori) {
-            final Icd10.Avsnitt avsnitt = ((Icd10.Kategori) icd).getAvsnitt();
-            icd10Ints.add(String.valueOf(avsnitt.toInt()));
-            icd10Ints.add(String.valueOf(avsnitt.getKapitel().toInt()));
-        } else if (icd instanceof Icd10.Avsnitt) {
-            icd10Ints.add(String.valueOf(((Icd10.Avsnitt) icd).getKapitel().toInt()));
+        icd10Ints.addAll(getAllParents(icd));
+        return icd10Ints;
+    }
+
+    private Collection<String> getAllParents(Icd10.Id icd) {
+        final Optional<? extends Icd10.Id> parent = icd.getParent();
+        if (!parent.isPresent()) {
+            return Collections.emptyList();
         }
+        final ArrayList<String> icd10Ints = new ArrayList<>();
+        final Icd10.Id id = parent.get();
+        icd10Ints.add(String.valueOf(id.toInt()));
+        icd10Ints.addAll(getAllParents(id));
         return icd10Ints;
     }
 

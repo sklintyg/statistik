@@ -45,7 +45,7 @@ public class LogConsumerImpl implements LogConsumer {
 
     private volatile boolean isRunning = false;
 
-    @Transactional(noRollbackFor = Exception.class)
+    @Transactional
     public synchronized int processBatch() {
         try {
             setRunning(true);
@@ -55,20 +55,21 @@ public class LogConsumerImpl implements LogConsumer {
                 return 0;
             }
             for (IntygEvent event: result) {
-                EventType type = event.getType();
-                JsonNode intyg = JSONParser.parse(event.getData());
-                JsonNode hsaInfo = hsa.decorate(intyg, event.getCorrelationId());
-                if (hsaInfo != null || type.equals(EventType.REVOKED)) {
-                    try {
+                try {
+                    EventType type = event.getType();
+                    JsonNode intyg = JSONParser.parse(event.getData());
+                    JsonNode hsaInfo = hsa.decorate(intyg, event.getCorrelationId());
+                    if (hsaInfo != null || type.equals(EventType.REVOKED)) {
                         processor.accept(intyg, hsaInfo, event.getId(), event.getCorrelationId(), type);
-                    } catch (Exception e) {
-                        LOG.error("Could not process intyg {} ({}). {}", event.getId(), event.getCorrelationId(), e.getMessage());
+                    } else {
+                        return processed;
                     }
+                } catch (Exception e) {
+                    LOG.error("Could not process intyg {} ({}). {}", event.getId(), event.getCorrelationId(), e.getMessage());
+                } finally {
                     processLog.confirm(event.getId());
                     processed++;
                     LOG.info("Processed log id {}", event.getId());
-                } else {
-                    return processed;
                 }
             }
             return processed;

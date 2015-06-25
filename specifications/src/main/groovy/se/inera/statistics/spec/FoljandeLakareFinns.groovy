@@ -1,6 +1,7 @@
 package se.inera.statistics.spec
 
 import se.inera.statistics.service.hsa.HsaKon
+import se.inera.statistics.service.warehouse.query.LakarbefattningQuery
 import se.inera.statistics.web.reports.ReportsUtil
 import se.inera.testsupport.Personal
 
@@ -29,7 +30,7 @@ class FoljandeLakareFinns {
 
         def befattningarEmpty = befattningar == null || befattningar.isEmpty()
         def befattningarList = befattningarEmpty ? Collections.emptyList() : Arrays.asList(befattningar.split(","))
-        def personal = new Personal(id, förnamn, efternamn, hsaKon, ålder, befattningarList)
+        def personal = new Personal(id, förnamn, efternamn, hsaKon, ålder, befattningarList.collect { it.isInteger() ? it : LakarbefattningQuery.NO_BEFATTNING_CODE })
         reportsUtil.insertPersonal(personal)
     }
 

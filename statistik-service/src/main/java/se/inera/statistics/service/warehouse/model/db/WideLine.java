@@ -18,6 +18,9 @@
  */
 package se.inera.statistics.service.warehouse.model.db;
 
+import se.inera.statistics.hsa.model.HsaIdEnhet;
+import se.inera.statistics.hsa.model.HsaIdLakare;
+import se.inera.statistics.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.service.processlog.EventType;
 
 import javax.persistence.Entity;
@@ -48,6 +51,7 @@ public class WideLine {
     private String diagnoskapitel;
     private String diagnosavsnitt;
     private String diagnoskategori;
+    private String diagnoskod;
     private int sjukskrivningsgrad;
     private int lakarkon;
     private int lakaralder;
@@ -59,11 +63,11 @@ public class WideLine {
     }
 
     // CHECKSTYLE:OFF ParameterNumber
-    public WideLine(long id, String correlationId, String lkf, String enhet, long lakarintyg, EventType intygTyp, String patientid, int startdatum, int slutdatum, int kon, int alder, String diagnoskapitel, String diagnosavsnitt, String diagnoskategori, int sjukskrivningsgrad, int lakarkon, int lakaralder, String lakarbefattning, String vardgivareId, String lakareId) {
+    public WideLine(long id, String correlationId, String lkf, HsaIdEnhet enhet, long lakarintyg, EventType intygTyp, String patientid, int startdatum, int slutdatum, int kon, int alder, String diagnoskapitel, String diagnosavsnitt, String diagnoskategori, String diagnoskod, int sjukskrivningsgrad, int lakarkon, int lakaralder, String lakarbefattning, HsaIdVardgivare vardgivareId, HsaIdLakare lakareId) {
         this.id = id;
         this.correlationId = correlationId;
         this.lkf = lkf;
-        this.enhet = enhet;
+        setEnhet(enhet);
         this.lakarintyg = lakarintyg;
         this.intygTyp = intygTyp;
         this.patientid = patientid;
@@ -75,11 +79,12 @@ public class WideLine {
         this.diagnosavsnitt = diagnosavsnitt;
         this.diagnoskategori = diagnoskategori;
         this.sjukskrivningsgrad = sjukskrivningsgrad;
+        this.diagnoskod = diagnoskod;
         this.lakarkon = lakarkon;
         this.lakaralder = lakaralder;
         this.lakarbefattning = lakarbefattning;
-        this.vardgivareId = vardgivareId;
-        this.lakareId = lakareId;
+        setVardgivareId(vardgivareId);
+        setLakareId(lakareId);
     }
     // CHECKSTYLE:ON ParameterNumber
 
@@ -107,20 +112,20 @@ public class WideLine {
         this.lkf = lkf;
     }
 
-    public String getEnhet() {
-        return enhet;
+    public HsaIdEnhet getEnhet() {
+        return enhet == null ? HsaIdEnhet.empty() : new HsaIdEnhet(enhet);
     }
 
-    public void setEnhet(String enhet) {
-        this.enhet = enhet;
+    public void setEnhet(HsaIdEnhet enhet) {
+        this.enhet = enhet == null ? null : enhet.getId();
     }
 
-    public String getVardgivareId() {
-        return vardgivareId;
+    public HsaIdVardgivare getVardgivareId() {
+        return vardgivareId == null ? HsaIdVardgivare.empty() : new HsaIdVardgivare(vardgivareId);
     }
 
-    public void setVardgivareId(String vardgivareId) {
-        this.vardgivareId = vardgivareId;
+    public void setVardgivareId(HsaIdVardgivare vardgivareId) {
+        this.vardgivareId = vardgivareId == null ? null : vardgivareId.getId();
     }
 
     public long getLakarintyg() {
@@ -203,6 +208,14 @@ public class WideLine {
         this.diagnoskategori = diagnoskategori;
     }
 
+    public String getDiagnoskod() {
+        return diagnoskod;
+    }
+
+    public void setDiagnoskod(String diagnoskod) {
+        this.diagnoskod = diagnoskod;
+    }
+
     public int getSjukskrivningsgrad() {
         return sjukskrivningsgrad;
     }
@@ -235,12 +248,12 @@ public class WideLine {
         this.lakarbefattning = lakarbefattning;
     }
 
-    public String getLakareId() {
-        return lakareId;
+    public HsaIdLakare getLakareId() {
+        return lakareId == null ? HsaIdLakare.empty() : new HsaIdLakare(lakareId);
     }
 
-    public void setLakareId(String lakareId) {
-        this.lakareId = lakareId;
+    public void setLakareId(HsaIdLakare lakareId) {
+        this.lakareId = lakareId == null ? null : lakareId.getId();
     }
 
 }

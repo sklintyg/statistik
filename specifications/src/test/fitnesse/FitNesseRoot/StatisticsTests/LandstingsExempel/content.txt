@@ -1,0 +1,8 @@
+!contents -R2 -g -p -f -h
+
+!3 Givet att:
+| script | dagens datum | 2013-11-06 |
+
+| Uppladdade landstingsfiler |
+| användare | filnamn        | statusmeddelande? |
+| user1     | landsting1.xls | Data updated ok   |

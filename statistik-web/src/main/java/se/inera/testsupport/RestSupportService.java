@@ -6,7 +6,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import se.inera.statistics.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.service.hsa.HsaDataInjectable;
+import se.inera.statistics.service.landsting.persistance.landsting.LandstingManager;
 import se.inera.statistics.service.processlog.LogConsumer;
 import se.inera.statistics.service.processlog.Receiver;
 import se.inera.statistics.service.warehouse.NationellData;
@@ -14,6 +16,7 @@ import se.inera.statistics.service.warehouse.SjukfallUtil;
 import se.inera.statistics.service.warehouse.Warehouse;
 import se.inera.statistics.service.warehouse.WarehouseManager;
 import se.inera.statistics.service.warehouse.query.CalcCoordinator;
+import se.inera.statistics.service.warehouse.query.SjukfallQuery;
 import se.inera.statistics.web.service.ChartDataService;
 
 import javax.persistence.EntityManager;
@@ -23,6 +26,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -59,11 +63,18 @@ public class RestSupportService {
     @Autowired
     private SjukfallUtil sjukfallUtil;
 
+    @Autowired
+    private LandstingManager landstingManager;
+
+    @Autowired
+    private SjukfallQuery sjukfallQuery;
+
     @POST
     @Path("cutoff")
     @Produces({ MediaType.APPLICATION_JSON })
     public Response setCutoff(int cutoff) {
         nationellData.setCutoff(cutoff);
+        sjukfallQuery.setCutoff(cutoff);
         return Response.ok().build();
     }
 
@@ -106,6 +117,7 @@ public class RestSupportService {
     public Response insertIntyg(Intyg intyg) {
         LOG.info("Insert intyg. id: " + intyg.getDocumentId() + ", data: " + intyg.getData());
         hsaDataInjectable.setCountyForNextIntyg(intyg.getCounty());
+        hsaDataInjectable.setHuvudenhetIdForNextIntyg(intyg.getHuvudenhetId());
         hsaDataInjectable.setEnhetNameForNextIntyg(intyg.getEnhetName());
         receiver.accept(intyg.getType(), intyg.getData(), intyg.getDocumentId(), intyg.getTimestamp());
         return Response.ok().build();
@@ -151,6 +163,18 @@ public class RestSupportService {
     public Response insertPersonal(Personal personal) {
         LOG.info("Insert personal: " + personal);
         hsaDataInjectable.addPersonal(personal.getId(), personal.getFirstName(), personal.getLastName(), personal.getKon(), personal.getAge(), personal.getBefattning());
+        return Response.ok().build();
+    }
+
+    @PUT
+    @Path("landsting/vgid/{vgid}")
+    @Consumes({ MediaType.APPLICATION_JSON })
+    @Produces({ MediaType.APPLICATION_JSON })
+    public Response insertLandsting(@PathParam("vgid") String vgId) {
+        LOG.info("Insert landsting with vgid {}", vgId);
+        if (!landstingManager.getForVg(new HsaIdVardgivare(vgId)).isPresent()) {
+            landstingManager.add(vgId, new HsaIdVardgivare(vgId));
+        }
         return Response.ok().build();
     }
 

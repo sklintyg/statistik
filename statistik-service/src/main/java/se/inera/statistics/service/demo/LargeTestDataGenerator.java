@@ -18,40 +18,39 @@
  */
 package se.inera.statistics.service.demo;
 
-import static se.inera.statistics.service.helper.DocumentHelper.getEnhetId;
-import static se.inera.statistics.service.helper.DocumentHelper.getLakarId;
-import static se.inera.statistics.service.helper.DocumentHelper.getVardgivareId;
+import com.fasterxml.jackson.databind.JsonNode;
+import org.joda.time.LocalDate;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import se.inera.statistics.hsa.model.HsaIdEnhet;
+import se.inera.statistics.hsa.model.HsaIdVardgivare;
+import se.inera.statistics.service.helper.DocumentHelper;
+import se.inera.statistics.service.helper.UtlatandeBuilder;
+import se.inera.statistics.service.hsa.HSAKey;
+import se.inera.statistics.service.hsa.HSAService;
+import se.inera.statistics.service.processlog.EventType;
+import se.inera.statistics.service.report.util.Icd10;
+import se.inera.statistics.service.report.util.Icd10.Avsnitt;
+import se.inera.statistics.service.report.util.Icd10.Kapitel;
+import se.inera.statistics.service.report.util.Icd10.Kategori;
+import se.inera.statistics.service.warehouse.Aisle;
+import se.inera.statistics.service.warehouse.Fact;
+import se.inera.statistics.service.warehouse.FactPopulator;
+import se.inera.statistics.service.warehouse.Warehouse;
+import se.inera.statistics.service.warehouse.WidelineConverter;
+import se.inera.statistics.service.warehouse.model.db.WideLine;
 
+import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-import javax.annotation.PostConstruct;
-
-import org.joda.time.LocalDate;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import se.inera.statistics.service.helper.DocumentHelper;
-import se.inera.statistics.service.hsa.HSAKey;
-import se.inera.statistics.service.hsa.HSAService;
-import se.inera.statistics.service.processlog.EventType;
-import se.inera.statistics.service.report.util.Icd10;
-import se.inera.statistics.service.report.util.Icd10.Kapitel;
-import se.inera.statistics.service.report.util.Icd10.Avsnitt;
-import se.inera.statistics.service.report.util.Icd10.Kategori;
-import se.inera.statistics.service.warehouse.Aisle;
-import se.inera.statistics.service.warehouse.FactPopulator;
-import se.inera.statistics.service.warehouse.Warehouse;
-import se.inera.statistics.service.helper.UtlatandeBuilder;
-
-import com.fasterxml.jackson.databind.JsonNode;
-import se.inera.statistics.service.warehouse.Fact;
-import se.inera.statistics.service.warehouse.WidelineConverter;
-import se.inera.statistics.service.warehouse.model.db.WideLine;
+import static se.inera.statistics.service.helper.DocumentHelper.getEnhetId;
+import static se.inera.statistics.service.helper.DocumentHelper.getLakarId;
+import static se.inera.statistics.service.helper.DocumentHelper.getVardgivareId;
 
 public class LargeTestDataGenerator {
     private static final int NUMBER_OF_UNITS = 3000;
@@ -136,10 +135,10 @@ public class LargeTestDataGenerator {
     }
 
     public String exportUtlatanden() {
-        Map<String, Aisle> allVardgivare = warehouse.getAllVardgivare();
+        Map<HsaIdVardgivare, Aisle> allVardgivare = warehouse.getAllVardgivare();
         StringBuilder result = new StringBuilder("vg;").append(Fact.HEADING).append('\n');
-        for (Map.Entry<String, Aisle> entry : allVardgivare.entrySet()) {
-            String vg = entry.getKey();
+        for (Map.Entry<HsaIdVardgivare, Aisle> entry : allVardgivare.entrySet()) {
+            HsaIdVardgivare vg = entry.getKey();
             for (Fact line : entry.getValue()) {
                 result.append(vg).append(line.toCSVString(';'));
             }
@@ -166,8 +165,8 @@ public class LargeTestDataGenerator {
         // CHECKSTYLE:ON MagicNumber
 
         int vardId = random.nextInt(NUMBER_OF_UNITS);
-        String vardenhet = "verksamhet" + vardId;
-        String vardgivare = "vardgivare" + (vardId % 2);
+        HsaIdEnhet vardenhet = new HsaIdEnhet("verksamhet" + vardId);
+        HsaIdVardgivare vardgivare = new HsaIdVardgivare("vardgivare" + (vardId % 2));
 
         String diagnos = random(DIAGNOSER);
 

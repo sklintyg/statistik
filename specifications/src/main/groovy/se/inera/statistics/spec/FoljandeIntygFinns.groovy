@@ -18,6 +18,8 @@ class FoljandeIntygFinns {
     def start
     def slut
     def enhet
+    String enhetsnamn
+    def huvudenhet
     def vardgivare
     def arbetsförmåga
     String arbetsförmåga2
@@ -26,8 +28,8 @@ class FoljandeIntygFinns {
     def läkare
     def län
     def exaktintygid
-    String enhetsnamn
     String händelsetyp
+    String jsonformat
     String intygstyp
 
     public void setKommentar(String kommentar) {}
@@ -45,14 +47,38 @@ class FoljandeIntygFinns {
         arbetsförmåga2 = ""
         läkare = "Personal HSA-ID"
         län = null
-        händelsetyp = EventType.CREATED.name();
-        exaktintygid = intygIdCounter++;
-        enhetsnamn = null;
+        händelsetyp = EventType.CREATED.name()
+        exaktintygid = intygIdCounter++
+        jsonformat = "nytt"
+        huvudenhet = null
         intygstyp = "fk7263"
+        enhetsnamn = null
     }
 
     public void execute() {
+        if (huvudenhet == null || huvudenhet.trim().isEmpty()) {
+            huvudenhet = enhet;
+        }
+        def finalIntygDataString = getIntygDataString()
+        Intyg intyg = new Intyg(EventType.valueOf(händelsetyp), finalIntygDataString, String.valueOf(exaktintygid), DateTimeUtils.currentTimeMillis(), län, huvudenhet, enhetsnamn)
+        reportsUtil.insertIntyg(intyg)
+    }
 
+    Object getIntygDataString() {
+        if ("gammalt".equalsIgnoreCase(jsonformat)) {
+            return executeForOldJsonFormat();
+        } else if ("felaktigt".equalsIgnoreCase(jsonformat)) {
+            return executeForIllegalJsonFormat();
+        } else {
+            return executeForNewJsonFormat();
+        }
+    }
+
+    private String executeForIllegalJsonFormat() {
+        return "This intyg will not be possible to parse as json"
+    }
+
+    private String executeForNewJsonFormat() {
         def slurper = new JsonSlurper()
         String intygString = getClass().getResource('/maximalt-fk7263-internal.json').getText('UTF-8')
         def result = slurper.parseText(intygString)
@@ -78,10 +104,43 @@ class FoljandeIntygFinns {
         }
 
         def builder = new JsonBuilder(result)
-        def finalIntygDataString = builder.toString()
+        return builder.toString()
+    }
 
-        Intyg intyg = new Intyg(EventType.valueOf(händelsetyp), finalIntygDataString, String.valueOf(exaktintygid), DateTimeUtils.currentTimeMillis(), län, enhetsnamn)
-        reportsUtil.insertIntyg(intyg)
+    private String executeForOldJsonFormat() {
+        def slurper = new JsonSlurper()
+        String intygString = getClass().getResource('/intyg1.json').getText('UTF-8')
+        String observationKodString = getClass().getResource('/observationMedKod.json').getText('UTF-8')
+        def result = slurper.parseText(intygString)
+
+        result.patient.id.extension = personnr
+        result.typ.code = intygstyp
+        result.skapadAv.id.extension = läkare
+
+        def observation = slurper.parseText(observationKodString)
+        observation.observationskod.code = diagnoskod
+        result.observationer.add(observation)
+
+        String observationFormagaString = getClass().getResource('/observationMedArbetsformaga.json').getText('UTF-8')
+        def observationFormaga = slurper.parseText(observationFormagaString)
+        observationFormaga.observationsperiod.from = start
+        observationFormaga.observationsperiod.tom = slut
+        observationFormaga.varde[0].quantity = arbetsförmåga
+        result.observationer.add(observationFormaga)
+
+        if (!arbetsförmåga2.isEmpty()) {
+            def observationFormaga2 = slurper.parseText(observationFormagaString)
+            observationFormaga2.observationsperiod.from = start2
+            observationFormaga2.observationsperiod.tom = slut2
+            observationFormaga2.varde[0].quantity = arbetsförmåga2
+            result.observationer.add(observationFormaga2)
+        }
+
+        result.skapadAv.vardenhet.id.extension = enhet
+        result.skapadAv.vardenhet.vardgivare.id.extension = vardgivare
+
+        def builder = new JsonBuilder(result)
+        return builder.toString()
     }
 
     public void endTable() {

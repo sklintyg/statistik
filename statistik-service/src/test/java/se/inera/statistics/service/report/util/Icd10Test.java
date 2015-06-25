@@ -29,6 +29,7 @@ import se.inera.statistics.service.report.util.Icd10.Kapitel;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -101,7 +102,20 @@ public class Icd10Test {
     @Test
     public void noDuplicateIcd10IntIds() {
         final List<Integer> allIntIds = getAllIntIds(icd10.getKapitel(true));
-        assertEquals(allIntIds.size(), new HashSet<>(allIntIds).size());
+        final Set<Integer> duplicates = findDuplicates(allIntIds);
+        assertEquals(0, duplicates.size());
+    }
+
+    public static <T> Set<T> findDuplicates(List<T> listContainingDuplicates) {
+        final Set<T> setToReturn = new HashSet<>();
+        final Set<T> set1 = new HashSet<>();
+
+        for (T yourInt : listContainingDuplicates) {
+            if (!set1.add(yourInt)) {
+                setToReturn.add(yourInt);
+            }
+        }
+        return setToReturn;
     }
 
     private List<Integer> getAllIntIds(List<? extends Icd10.Id> icd10s) {

@@ -58,7 +58,7 @@ public class OverviewConverterTest {
         //When
         OverviewResponse resp = new OverviewResponse(overviewKonsfordelning, casesPerMonthAlteration, diagnosisGroups, ageGroups, degreeOfSickLeaveGroups,
                 sickLeaveLengthGroups, longSickLeavesTotal, longSickLeavesAlternation, perCounty);
-        OverviewData data = new OverviewConverter().convert(resp, new Range(3));
+        OverviewData data = new OverviewConverter().convert(resp, Range.createForLastMonthsExcludingCurrent(3));
 
         //Then
         assertEquals("[]", data.getAgeGroups().toString());
@@ -87,7 +87,7 @@ public class OverviewConverterTest {
         //When
         OverviewResponse resp = new OverviewResponse(overviewKonsfordelning, casesPerMonthAlteration, diagnosisGroups, ageGroups, degreeOfSickLeaveGroups,
                 sickLeaveLengthGroups, longSickLeavesTotal, longSickLeavesAlternation, perCounty);
-        OverviewData data = new OverviewConverter().convert(resp, new Range(3));
+        OverviewData data = new OverviewConverter().convert(resp, Range.createForLastMonthsExcludingCurrent(3));
 
         //Then
         SjukfallPerManadOverview casesPerMonth = data.getCasesPerMonth();
@@ -99,7 +99,7 @@ public class OverviewConverterTest {
         assertEquals(5, diagnosisGroupsResult.size());
         assertEquals("A00-E90, G00-L99, N00-N99 Somatiska sjukdomar", diagnosisGroupsResult.get(0).getName());
         assertEquals(1, diagnosisGroupsResult.get(0).getQuantity());
-        assertEquals(-66, diagnosisGroupsResult.get(0).getAlternation());
+        assertEquals(-67, diagnosisGroupsResult.get(0).getAlternation());
 
         List<DonutChartData> ageGroupsResult = data.getAgeGroups();
         assertEquals(1, ageGroupsResult.size());

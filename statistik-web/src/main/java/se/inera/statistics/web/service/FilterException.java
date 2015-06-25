@@ -18,8 +18,14 @@
  */
 package se.inera.statistics.web.service;
 
-public class FilterException extends RuntimeException {
+public class FilterException extends Exception {
+
+    public FilterException(String msg) {
+        super(msg);
+    }
+
     public FilterException(String msg, Exception e) {
         super(msg, e);
     }
+
 }

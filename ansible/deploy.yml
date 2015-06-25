@@ -3,8 +3,15 @@
 - hosts: all
   sudo: yes
   vars:
-    version: 1.5
+    # repo - values: snapshot or release
+    repo: release
+
+    # latest release: XXX
+    # latest snapshot: XXX
+    version: 2.0.10
     config_version: master
+    highcharts_version: 2.1.0
 
   roles:
     - statistik
+    - statistik-hsafileservice

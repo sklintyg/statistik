@@ -40,10 +40,10 @@
 		         style="width: auto;">
 		        <!-- PRINT BUTTON GROUP -->
 		        <div class="btn-group statistics-btn-group">
-		            <a class="multiselect dropdown-toggle btn btn-default" data-toggle="dropdown" href="#">
+		            <button class="multiselect dropdown-toggle btn btn-default" data-toggle="dropdown">
 						<span message key="dropdown.val.oversikt"></span>
 						<span class="caret"></span>
-					</a>
+					</button>
                     <ul class="dropdown-menu pull-right">
                         <li><a data-ng-click="print(false)"><img src="img/dropdown-icons/farg1b.png"/><span message key="dropdown.val.skrivut-farg"></span></a></li>
                         <li><a data-ng-click="print(true)"><img src="img/dropdown-icons/sv_vit1b.png"/><span message key="dropdown.val.skrivut-svart-vitt"></span></a></li>
@@ -51,7 +51,16 @@
 		        </div>
 		    </div>
 		</div>
-	
+
+        <!-- Alert the user about specific conditions -->
+        <div class="row hidden-print">
+            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                <div class="ng-binding top-20px-margin alert alert-info" data-ng-show="resultMessage" role="alert">
+                    <strong>Observera!</strong> {{resultMessage}}
+                </div>
+            </div>
+        </div>
+
 		<div dataerrorview show-error="dataLoadingError">
 			<div spinner label="{{spinnerText}}" show-spinner="!doneLoading" show-content="doneLoading">
 				<!-- Start business overview boxes -->

@@ -21,8 +21,9 @@ if (project.hasProperty('runFitnesse')) {
     gretty {
         contextPath = '/'
         contextConfigFile = project(":statistik-web").projectDir.path + "/src/main/webapp/WEB-INF/jetty-context.xml"
-        logbackConfigFile = "${projectDir}/src/main/resources/statistics-logback.xml"
+        logbackConfigFile = "${projectDir}/src/main/resources/logback-test.xml"
         jvmArgs = ['-Dspring.profiles.active=dev,embedded,hsa-stub,security-fake,db-resetter', '-XX:MaxPermSize=256M']
+        jvmArgs = ['-Dspring.profiles.active=dev,embedded,hsa-stub,security-fake,db-resetter', '-Dstatistics.test.max.intyg=1', '-XX:MaxPermSize=256M']
     }
 
     farm {
@@ -43,6 +44,8 @@ dependencies {
     compile project(":statistik-web")
 
     compile "org.fitnesse:fitnesse:20140901"
-    compile "org.codehaus.groovy:groovy-all:2.3.6"
+    compile "org.codehaus.groovy:groovy-all:2.4.0"
     compile "org.codehaus.groovy.modules.http-builder:http-builder:0.7"
+    compile "org.apache.httpcomponents:httpmime:4.4.1"
+    compile "org.apache.httpcomponents:httpcore:4.4.1"
 }

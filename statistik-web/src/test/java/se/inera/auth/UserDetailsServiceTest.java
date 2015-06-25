@@ -32,6 +32,9 @@ import org.opensaml.xml.io.UnmarshallingException;
 import org.springframework.security.saml.SAMLCredential;
 import org.xml.sax.SAXException;
 import se.inera.auth.model.User;
+import se.inera.statistics.hsa.model.HsaIdEnhet;
+import se.inera.statistics.hsa.model.HsaIdUser;
+import se.inera.statistics.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.hsa.model.Vardenhet;
 import se.inera.statistics.hsa.services.HsaOrganizationsService;
 
@@ -42,15 +45,15 @@ import java.util.Arrays;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Matchers.anyString;
+import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class UserDetailsServiceTest {
-    private static final Vardenhet VE1_VG1 = new Vardenhet("IFV1239877878-103F", "Enhetsnamn", "IFV1239877878-0001");
-    private static final Vardenhet VE2_VG1 = new Vardenhet("Vardenhet2", "Enhetsnamn2", "IFV1239877878-0001");
-    private static final Vardenhet VE3_VG2 = new Vardenhet("Vardenhet3", "Enhetsnamn3", "VG2");
-    private static final Vardenhet VE4_VG2 = new Vardenhet("Vardenhet4", "Enhetsnamn4", "VG2");
+    private static final Vardenhet VE1_VG1 = new Vardenhet(new HsaIdEnhet("IFV1239877878-103F"), "Enhetsnamn", new HsaIdVardgivare("IFV1239877878-0001"));
+    private static final Vardenhet VE2_VG1 = new Vardenhet(new HsaIdEnhet("Vardenhet2"), "Enhetsnamn2", new HsaIdVardgivare("IFV1239877878-0001"));
+    private static final Vardenhet VE3_VG2 = new Vardenhet(new HsaIdEnhet("Vardenhet3"), "Enhetsnamn3", new HsaIdVardgivare("VG2"));
+    private static final Vardenhet VE4_VG2 = new Vardenhet(new HsaIdEnhet("Vardenhet4"), "Enhetsnamn4", new HsaIdVardgivare("VG2"));
 
     @Mock
     private HsaOrganizationsService hsaOrganizationsService;
@@ -69,7 +72,7 @@ public class UserDetailsServiceTest {
     public void correctVardenhetIsChosen() throws Exception {
         auktoriseradeEnheter(VE1_VG1, VE2_VG1);
         User user = (User) service.loadUserBySAML(credential);
-        assertEquals("IFV1239877878-103F", user.getValdVardenhet().getId());
+        assertEquals(new HsaIdEnhet("IFV1239877878-103F"), user.getValdVardenhet().getId());
         assertEquals(2, user.getVardenhetList().size());
     }
 
@@ -114,7 +117,7 @@ public class UserDetailsServiceTest {
     }
 
     private void auktoriseradeEnheter(Vardenhet...enheter) {
-        when(hsaOrganizationsService.getAuthorizedEnheterForHosPerson(anyString())).thenReturn(Arrays.asList(enheter));
+        when(hsaOrganizationsService.getAuthorizedEnheterForHosPerson(any(HsaIdUser.class))).thenReturn(Arrays.asList(enheter));
     }
 
 }

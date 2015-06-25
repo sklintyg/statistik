@@ -1,6 +1,8 @@
-!3 Givet att:
+!contents -R2 -g -p -f -h
 
-Gäller STATISTIK-935, 36, 42, 43.
+Gäller STATISTIK-936, 943.
+
+!3 Givet att:
 
 | script | dagens datum | 2014-11-06 |
 
@@ -10,25 +12,22 @@ Gäller STATISTIK-935, 36, 42, 43.
 | id      | förnamn | efternamn | kön    | ålder | befattningar |
 | lakare1 | Anna    | Andersson | FEMALE | 30    | 201010       |
 | lakare2 | Bo      | Bengtsson | MALE   | 40    | 201013       |
-| lakare3 | Carl    | Claesson  | MALE   | 50    | 101012       |
 
 | Enbart foljande intyg finns |
 | personnr | diagnoskod | start    | slut       | arbetsförmåga | enhet  | läkare |
-| 19890407-1245 | G01 | 2013-05-01 | 2013-11-30 | 0             | enhet1 | lakare1 |
-| 19790407-1225 | G02 | 2014-07-01 | 2014-10-30 | 50            | enhet1 | lakare2 |
-| 19690407-1295 | G03 | 2014-11-01 | 2014-11-30 | 75            | enhet2 | lakare3 |
+| 19890407-1245 | G01 | 2013-06-01 | 2013-10-30 | 0             | enhet1 | lakare1 |
+| 19790407-1255 | G02 | 2014-07-01 | 2014-10-30 | 50            | enhet2 | lakare2 |
 
 !3 Då gäller:
 Inloggad:
 | Sjukfall i rapporten enskilt diagnoskapitel diagram |
 | inloggad som | valt diagnoskapitel | år   | månad | grupp   | män? | kvinnor? |
-| user2        | G00-G99             | 2013 | maj   | G00-G09 | -1   | -1       |
 | user2        | G00-G99             | 2013 | jun   | G00-G09 | 0    | 1        |
 | user2        | G00-G99             | 2013 | jul   | G00-G09 | 0    | 1        |
 | user2        | G00-G99             | 2013 | aug   | G00-G09 | 0    | 1        |
 | user2        | G00-G99             | 2013 | sep   | G00-G09 | 0    | 1        |
 | user2        | G00-G99             | 2013 | okt   | G00-G09 | 0    | 1        |
-| user2        | G00-G99             | 2013 | nov   | G00-G09 | 0    | 1        |
+| user2        | G00-G99             | 2013 | nov   | G00-G09 | 0    | 0        |
 | user2        | G00-G99             | 2013 | dec   | G00-G09 | 0    | 0        |
 | user2        | G00-G99             | 2014 | jan   | G00-G09 | 0    | 0        |
 | user2        | G00-G99             | 2014 | feb   | G00-G09 | 0    | 0        |
@@ -36,68 +35,37 @@ Inloggad:
 | user2        | G00-G99             | 2014 | apr   | G00-G09 | 0    | 0        |
 | user2        | G00-G99             | 2014 | maj   | G00-G09 | 0    | 0        |
 | user2        | G00-G99             | 2014 | jun   | G00-G09 | 0    | 0        |
-| user2        | G00-G99             | 2014 | jul   | G00-G09 | 0    | 1        |
-| user2        | G00-G99             | 2014 | aug   | G00-G09 | 0    | 1        |
-| user2        | G00-G99             | 2014 | sep   | G00-G09 | 0    | 1        |
-| user2        | G00-G99             | 2014 | okt   | G00-G09 | 0    | 1        |
-| user2        | G00-G99             | 2014 | nov   | G00-G09 | 1    | 0        |
+| user2        | G00-G99             | 2014 | jul   | G00-G09 | 1    | 0        |
+| user2        | G00-G99             | 2014 | aug   | G00-G09 | 1    | 0        |
+| user2        | G00-G99             | 2014 | sep   | G00-G09 | 1    | 0        |
+| user2        | G00-G99             | 2014 | okt   | G00-G09 | 1    | 0        |
 
-| script | visasom | tvarsnitt |
+| Sjukfall i rapporten enskilt diagnoskapitel |
+| inloggad som | valt diagnoskapitel | år   | månad | grupp   | män? | kvinnor? |
+| user2        | G00-G99             | 2013 | jun   | G00-G09 | 0    | 1        |
+| user2        | G00-G99             | 2013 | jul   | G00-G09 | 0    | 1        |
+| user2        | G00-G99             | 2013 | aug   | G00-G09 | 0    | 1        |
+| user2        | G00-G99             | 2013 | sep   | G00-G09 | 0    | 1        |
+| user2        | G00-G99             | 2013 | okt   | G00-G09 | 0    | 1        |
+| user2        | G00-G99             | 2013 | nov   | G00-G09 | 0    | 0        |
+| user2        | G00-G99             | 2013 | dec   | G00-G09 | 0    | 0        |
+| user2        | G00-G99             | 2014 | jan   | G00-G09 | 0    | 0        |
+| user2        | G00-G99             | 2014 | feb   | G00-G09 | 0    | 0        |
+| user2        | G00-G99             | 2014 | mar   | G00-G09 | 0    | 0        |
+| user2        | G00-G99             | 2014 | apr   | G00-G09 | 0    | 0        |
+| user2        | G00-G99             | 2014 | maj   | G00-G09 | 0    | 0        |
+| user2        | G00-G99             | 2014 | jun   | G00-G09 | 0    | 0        |
+| user2        | G00-G99             | 2014 | jul   | G00-G09 | 1    | 0        |
+| user2        | G00-G99             | 2014 | aug   | G00-G09 | 1    | 0        |
+| user2        | G00-G99             | 2014 | sep   | G00-G09 | 1    | 0        |
+| user2        | G00-G99             | 2014 | okt   | G00-G09 | 1    | 0        |
 
 Byte till tvärsnitt gör att stapeldiagram 12 mån visas. Varje avsnitt/kategori blir en grupp på x-axeln. Varje grupp visar en stapel för män och en för kvinnor.
 
-| Sjukfall i rapporten enskilt diagnoskapitel diagram |
+| Sjukfall i rapporten enskilt diagnoskapitel som tvarsnitt diagram |
 | inloggad som | valt diagnoskapitel | grupp   | män? | kvinnor? |
-| user2        | G00-G99             | G00-G09 | 1    | 1        |
+| user2        | G00-G99             | G00-G09 | 1    | 0        |
 
-| Sjukfall i rapporten enskilt diagnoskapitel |
+| Sjukfall i rapporten enskilt diagnoskapitel som tvarsnitt |
 | inloggad som | valt diagnoskapitel | grupp   | män? | kvinnor? |
-| user2        | G00-G99             | G00-G09 | 1    | 1        |
-
-| script | visasom | tidsserie |
-
-Byte tillbaka till tidsserie gör att allt går tillbaka till default (ytdiagram 18 mån).
-
-| Sjukfall i rapporten enskilt diagnoskapitel diagram |
-| inloggad som | valt diagnoskapitel | år   | månad | grupp   | män? | kvinnor? |
-| user2        | G00-G99             | 2013 | maj   | G00-G09 | -1   | -1       |
-| user2        | G00-G99             | 2013 | jun   | G00-G09 | 0    | 1        |
-| user2        | G00-G99             | 2013 | jul   | G00-G09 | 0    | 1        |
-| user2        | G00-G99             | 2013 | aug   | G00-G09 | 0    | 1        |
-| user2        | G00-G99             | 2013 | sep   | G00-G09 | 0    | 1        |
-| user2        | G00-G99             | 2013 | okt   | G00-G09 | 0    | 1        |
-| user2        | G00-G99             | 2013 | nov   | G00-G09 | 0    | 1        |
-| user2        | G00-G99             | 2013 | dec   | G00-G09 | 0    | 0        |
-| user2        | G00-G99             | 2014 | jan   | G00-G09 | 0    | 0        |
-| user2        | G00-G99             | 2014 | feb   | G00-G09 | 0    | 0        |
-| user2        | G00-G99             | 2014 | mar   | G00-G09 | 0    | 0        |
-| user2        | G00-G99             | 2014 | apr   | G00-G09 | 0    | 0        |
-| user2        | G00-G99             | 2014 | maj   | G00-G09 | 0    | 0        |
-| user2        | G00-G99             | 2014 | jun   | G00-G09 | 0    | 0        |
-| user2        | G00-G99             | 2014 | jul   | G00-G09 | 0    | 1        |
-| user2        | G00-G99             | 2014 | aug   | G00-G09 | 0    | 1        |
-| user2        | G00-G99             | 2014 | sep   | G00-G09 | 0    | 1        |
-| user2        | G00-G99             | 2014 | okt   | G00-G09 | 0    | 1        |
-| user2        | G00-G99             | 2014 | nov   | G00-G09 | 1    | 0        |
-
-| Sjukfall i rapporten enskilt diagnoskapitel |
-| inloggad som | valt diagnoskapitel | år   | månad | grupp   | män? | kvinnor? |
-| user2        | G00-G99             | 2013 | maj   | G00-G09 | -1   | -1       |
-| user2        | G00-G99             | 2013 | jun   | G00-G09 | 0    | 1        |
-| user2        | G00-G99             | 2013 | jul   | G00-G09 | 0    | 1        |
-| user2        | G00-G99             | 2013 | aug   | G00-G09 | 0    | 1        |
-| user2        | G00-G99             | 2013 | sep   | G00-G09 | 0    | 1        |
-| user2        | G00-G99             | 2013 | okt   | G00-G09 | 0    | 1        |
-| user2        | G00-G99             | 2013 | nov   | G00-G09 | 0    | 1        |
-| user2        | G00-G99             | 2013 | dec   | G00-G09 | 0    | 0        |
-| user2        | G00-G99             | 2014 | jan   | G00-G09 | 0    | 0        |
-| user2        | G00-G99             | 2014 | feb   | G00-G09 | 0    | 0        |
-| user2        | G00-G99             | 2014 | mar   | G00-G09 | 0    | 0        |
-| user2        | G00-G99             | 2014 | apr   | G00-G09 | 0    | 0        |
-| user2        | G00-G99             | 2014 | maj   | G00-G09 | 0    | 0        |
-| user2        | G00-G99             | 2014 | jun   | G00-G09 | 0    | 0        |
-| user2        | G00-G99             | 2014 | jul   | G00-G09 | 0    | 1        |
-| user2        | G00-G99             | 2014 | aug   | G00-G09 | 0    | 1        |
-| user2        | G00-G99             | 2014 | sep   | G00-G09 | 0    | 1        |
-| user2        | G00-G99             | 2014 | okt   | G00-G09 | 0    | 1        |
-| user2        | G00-G99             | 2014 | nov   | G00-G09 | 1    | 0        |
+| user2        | G00-G99             | G00-G09 | 1    | 0        |

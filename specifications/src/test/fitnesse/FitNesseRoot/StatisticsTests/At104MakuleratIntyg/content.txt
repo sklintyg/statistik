@@ -1,6 +1,9 @@
 !contents -R2 -g -p -f -h
 
 !3 Givet att:
+
+Ett sjukfall består av tre intyg, varav mittenintyget har blivit makulerat.
+
 | script | dagens datum | 2013-11-06 |
 
 | script | troskel varde | 1 |
@@ -13,6 +16,8 @@
 | 19790407-1295 | CREATED   |1002         | G01        | 2013-02-21 | 2013-02-28 | enhet1 |
 
 !3 Då gäller:
+
+Två sjukfall visas (eftersom det är mer än 5 dagar mellan första och sista intyget).
 
 | Sjukfall i rapporten sjukfall per enhet |
 | inloggad som | vårdenhet    | vårdgivarnivå  | totalt? | män? | kvinnor? |

@@ -41,6 +41,7 @@ public class JmsReceiver implements MessageListener {
     @Autowired
     private Receiver receiver;
 
+    @Override
     public void onMessage(Message rawMessage) {
         if (rawMessage instanceof TextMessage) {
             try {
@@ -60,6 +61,10 @@ public class JmsReceiver implements MessageListener {
     }
 
     private static EventType typeEvent(String typeName) {
+        if (typeName == null) {
+            LOG.error("Type should not be null for message");
+            return EventType.TEST;
+        }
         switch (typeName.toLowerCase()) {
         case CREATED:
             return EventType.CREATED;

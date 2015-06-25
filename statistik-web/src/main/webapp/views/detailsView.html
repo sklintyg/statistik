@@ -80,47 +80,102 @@
     	</div>
    		<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 pull-left" data-ng-show="showDetailsOptions">
        		<div class="btn-group margin-bottom" id="detailsOptionsDropdown">
-           		<a class="multiselect dropdown-toggle btn btn-default" id="selectDiagnosticChapter" data-toggle="dropdown" href="#" style="overflow: hidden; text-overflow: ellipsis; max-width: 350px;">
+           		<button class="multiselect dropdown-toggle btn btn-default" id="selectDiagnosticChapter" data-toggle="dropdown" style="overflow: hidden; text-overflow: ellipsis; max-width: 350px;">
            			<span class="caret pull-right" style="margin-top: 9px;"></span>
            			<span>{{selectedDetailsOption.id}} {{selectedDetailsOption.name}}</span>
-           		</a>
+           		</button>
            		<ul class="dropdown-menu left overflow-menu-options">
 	               <li data-ng-repeat="detailsOption in detailsOptions"><a href="{{detailsOption.url}}{{queryString}}"><span bindonce="detailsOption.id"></span> <span bindonce="detailsOption.name"></span></a></li>
 	        	</ul>
          	</div>
        	</div>
 
-    	<span class="col-xs-12 col-sm-12 col-md-12 col-lg-12" data-ng-show="showDetailsOptions2">
+    	<span class="col-xs-12" data-ng-show="showDetailsOptions2">
     		<label class="dropdown-label" for="selectDiagnosticCategory"><span message key="lbl.valj-annat-diagnosavsnitt"></span>:</label>
     	</span>
-   		<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 pull-left" data-ng-show="showDetailsOptions2">
+   		<div class="col-xs-6 pull-left" data-ng-show="showDetailsOptions2">
        		<div class="btn-group margin-bottom" id="detailsOptionsDropdown2">
-           		<a class="multiselect dropdown-toggle btn btn-default" id="selectDiagnosticCategory" data-toggle="dropdown" href="#" style="overflow: hidden; text-overflow: ellipsis; max-width: 350px;">
+           		<button class="multiselect dropdown-toggle btn btn-default" id="selectDiagnosticCategory" data-toggle="dropdown" style="overflow: hidden; text-overflow: ellipsis; max-width: 350px;">
            			<span class="caret pull-right" style="margin-top: 9px;"></span>
            			<span>{{selectedDetailsOption2.id}} {{selectedDetailsOption2.name}}</span>
-           		</a>
+           		</button>
            		<ul class="dropdown-menu left overflow-menu-options">
 	               <li data-ng-repeat="detailsOption2 in detailsOptions2"><a href="{{detailsOption2.url}}{{queryString}}"><span bindonce="detailsOption2.id"></span> <span bindonce="detailsOption2.name"></span></a></li>
 	        	</ul>
          	</div>
        	</div>
 
-		<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 pull-right" data-ng-class="{margin_top_button_group: showDetailsOptions}" style="margin-bottom: 10px;">
-			<!-- PRINT BUTTON GROUP -->
-			<div class="btn-group statistics-btn-group">
-			  <a class="multiselect dropdown-toggle btn btn-default" data-toggle="dropdown" href="#">
-			    <span message key="dropdown.val.rapport"></span>
-			    <span class="caret"></span>
-			  </a>
-			  <ul class="dropdown-menu pull-right detail-view-choice-dropdown">
-			    <li><a data-ng-click="print(false)"><img src="img/dropdown-icons/farg1b.png"/><span message key="dropdown.val.skrivut-farg"></span></a></li>
-			    <li><a data-ng-click="print(true)"><img src="img/dropdown-icons/sv_vit1b.png"/><span message key="dropdown.val.skrivut-svart-vitt"></span></a></li>
-			    <!-- li><a class="disabled"><img src="img/dropdown-icons/pdf-inactive.png"/> PDF-fil</a></li -->
-			    <li data-ng-repeat="chartContainer in chartContainers"><a data-ng-click="exportChart(chartContainer.id)"><img src="img/dropdown-icons/png1b.png"/><span message key="dropdown.val.spara-diagram-bild-1"></span>{{chartContainer.name}}<span message key="dropdown.val.spara-diagram-bild-2"></span></a></li>
-			  	<li><a data-ng-href="{{exportTableUrl}}{{queryString}}" target="_self"><img src="img/dropdown-icons/csv_icon.png"/><span message key="dropdown.val.spara-excel"></span></a></li>
-			  </ul>
-			</div>
-		</div>
+    	<span class="col-xs-12" data-ng-show="showDetailsOptions3">
+    		<label class="dropdown-label" for="selectDiagnosticKategori"><span message key="lbl.valj-annan-diagnoskategori"></span>:</label>
+    	</span>
+   		<div class="col-xs-6 pull-left" data-ng-show="showDetailsOptions3">
+       		<div class="btn-group margin-bottom" id="detailsOptionsDropdown3">
+           		<button class="multiselect dropdown-toggle btn btn-default" id="selectDiagnosticKategori" data-toggle="dropdown" style="overflow: hidden; text-overflow: ellipsis; max-width: 350px;">
+           			<span class="caret pull-right" style="margin-top: 9px;"></span>
+           			<span>{{selectedDetailsOption3.id}} {{selectedDetailsOption3.name}}</span>
+           		</button>
+           		<ul class="dropdown-menu left overflow-menu-options">
+	               <li data-ng-repeat="detailsOption3 in detailsOptions3"><a href="{{detailsOption3.url}}{{queryString}}"><span bindonce="detailsOption3.id"></span> <span bindonce="detailsOption3.name"></span></a></li>
+	        	</ul>
+         	</div>
+       	</div>
+
+		<div class="row" data-ng-class="{margin_top_button_group: showDetailsOptions}" style="margin-bottom: 10px;">
+            <!-- toolbar -->
+            <!--<div class="row">-->
+                <!-- Button group for viewing different series -->
+
+            <div class="col-sm-12 col-lg-8 pull-right">
+                <div class="pull-right">
+                    <div class="col-sm-5 col-sm-push-1" ng-show="isVerksamhetShowing">
+                        <h3 message key="lbl.visa-knappgrupp-serier" data-ng-if="exchangeableViews"></h3>
+                        <chart-series-bg views="exchangeableViews"></chart-series-bg>
+                    </div>
+
+                    <div class="col-sm-4" ng-show="isVerksamhetShowing">
+                        <h3 message key="lbl.diagramtyp-knappgrupp"></h3>
+
+                        <span><div ng-class="{'chart-icon-column-active': activeChartType === 'column', 'chart-icon-column': activeChartType !== 'column'}" data-ng-click="switchChartType('column')"
+                                   tooltip="Stapeldiagram" tooltip-placement="bottom" tooltip-popup-delay="1000"></div></span>
+
+                        <span><div ng-class="{'chart-icon-line-active': activeChartType === 'line', 'chart-icon-line': activeChartType !== 'line'}" data-ng-click="switchChartType('line')"
+                                   tooltip="Linjediagram" tooltip-placement="bottom" tooltip-popup-delay="1000"></div></span>
+
+                        <span><div ng-class="{'chart-icon-area-active': activeChartType === 'area', 'chart-icon-area': activeChartType !== 'area'}" data-ng-click="switchChartType('area')"
+                                   tooltip="Ytdiagram" tooltip-placement="bottom" tooltip-popup-delay="1000"></div></span>
+                    </div>
+
+                    <!-- PRINT BUTTON GROUP -->
+                    <div class="col-sm-3 col-sm-pull-1 top-45px-margin">
+                        <button class="multiselect dropdown-toggle btn btn-default" data-toggle="dropdown">
+                            <span message key="dropdown.val.rapport"></span>
+                            <span class="caret"></span>
+                        </button>
+
+                        <ul class="dropdown-menu detail-view-choice-dropdown dropdown-menu-right">
+                            <li><a data-ng-click="print(false)"><img src="img/dropdown-icons/farg1b.png"/><span message
+                                                                                                                key="dropdown.val.skrivut-farg"></span></a>
+                            </li>
+                            <li><a data-ng-click="print(true)"><img src="img/dropdown-icons/sv_vit1b.png"/><span message
+                                                                                                                 key="dropdown.val.skrivut-svart-vitt"></span></a>
+                            </li>
+                            <!-- li><a class="disabled"><img src="img/dropdown-icons/pdf-inactive.png"/> PDF-fil</a></li -->
+                            <li data-ng-repeat="chartContainer in chartContainers"><a
+                                    data-ng-click="exportChart(chartContainer.id)"><img
+                                    src="img/dropdown-icons/png1b.png"/><span message
+                                                                              key="dropdown.val.spara-diagram-bild-1"></span>{{chartContainer.name}}<span
+                                    message key="dropdown.val.spara-diagram-bild-2"></span></a></li>
+                            <li><a data-ng-href="{{exportTableUrl}}{{queryString}}" target="_self"><img
+                                    src="img/dropdown-icons/csv_icon.png"/><span message
+                                                                                 key="dropdown.val.spara-excel"></span></a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <!--</div>-->
+        </div>
+
     </div>
 
     <!-- Alert the user about specific conditions -->
@@ -143,13 +198,12 @@
 					<div class="chart-page-chart" id="{{chartContainer.id}}" style="height: 400px; margin: 0 auto"></div>
                     <div class="visible-print" style="margin-bottom: 50px!important;"><!-- This is a div that adds margin in print mode to separate charts. Hardwired styles, otherwise won't work when printing --></div>
 				</div>
-
 			</div>
 
 			<div class="row hidden-print">
 				<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 					<div class="btn-group legend-btn-group">
-						<label data-ng-repeat="seriesData in series" class="col-xs-12 col-sm-6 col-md-6 col-lg-6" id="legend-label" style="white-space: nowrap;" legend-height>
+						<label data-ng-repeat="seriesData in series" class="col-xs-12 col-sm-6 col-md-6 col-lg-6" id="legend-label" style="white-space: nowrap;" legend-height data-ng-show="showInLegend($index)">
 							<input type="checkbox" checked="" data-ng-click="toggleSeriesVisibility($index)" class="detail-checkbox"/>
 							<span class="legend-color-square" data-ng-style="{backgroundColor: seriesData.color}"></span>
 							<span class="legend-name">{{seriesData.name}}</span>
@@ -169,7 +223,6 @@
 				</div>
 			</div>
 
-
 			<!-- Page break for print -->
             <p><!-- pagebreak --></p>
             
@@ -181,36 +234,43 @@
 					</span>
 				</div>
                 <div class="row">
-	            <div id="chart-data-table" class="col-xs-12 col-sm-12 col-md-12 col-lg-12" data-ng-init="tableVisible=true" data-ng-class="{collapsed: !tableVisible}">
-                    <accordion id="accordion2">
-                        <accordion-group is-open="$parent.tableVisible">
-                            <accordion-heading class="hidden-print">
-                                <i class="chart-table-expand-icon"></i>
-                                <span data-ng-if="tableVisible"><span message key="lbl.dolj-tabell"></span></span>
-                                <span data-ng-if="!tableVisible"><span message key="lbl.visa-tabell"></span></span>
-                            </accordion-heading>
-                            <div class="scrollable">
+                    <div id="chart-data-table" class="col-xs-12 col-sm-12 col-md-12 col-lg-12"
+                         data-ng-init="tableVisible=true" data-ng-class="{collapsed: !tableVisible}">
+                        <accordion id="accordion2">
+                            <accordion-group is-open="$parent.tableVisible">
+                                <accordion-heading class="hidden-print">
+                                    <i class="chart-table-expand-icon"></i>
+                                    <span data-ng-if="tableVisible"><span message key="lbl.dolj-tabell"></span></span>
+                                    <span data-ng-if="!tableVisible"><span message key="lbl.visa-tabell"></span></span>
+                                </accordion-heading>
+                                <div class="scrollable">
 
-                            <div class="scrolling">
-                                <table id="datatable" class="table table-striped">
-	                                <thead>
-	                                    <tr data-ng-repeat="headerrow in headerrows track by $index">
-											<td class="scrollable details-table-data ellipsis details-th" data-ng-class="{headcol: $first, centeralign: headerrow.centerAlign}" colspan="{{header.colspan}}" data-ng-repeat="header in headerrow" title="{{header.text}}" bindonce="header.text"></td>
-	                                    </tr>
-	                                </thead>
-                                    <tbody class="table-condensed">
-                                    <tr data-ng-repeat="row in rows">
-                                        <td class="scrollable headcol"><span class="headcol-name" bindonce="row.name"></span></td>
-                                        <td class="scrollable" data-ng-repeat="fieldData in row.data track by $index" bindonce="fieldData | thousandseparated"></td>
-                                    </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                            </div>
-                        </accordion-group>
-                    </accordion>
+                                    <div class="scrolling">
+                                        <table id="datatable" class="table table-striped">
+                                            <thead>
+                                            <tr data-ng-repeat="headerrow in headerrows track by $index">
+                                                <td class="scrollable details-table-data ellipsis details-th"
+                                                    data-ng-class="{headcol: $first, centeralign: headerrow.centerAlign}"
+                                                    colspan="{{header.colspan}}" data-ng-repeat="header in headerrow"
+                                                    title="{{header.text}}" bindonce="header.text"></td>
+                                            </tr>
+                                            </thead>
+                                            <tbody class="table-condensed">
+                                            <tr data-ng-repeat="row in rows" title="{{row.name}}">
+                                                <td class="scrollable headcol"><span class="headcol-name" ng-class="{bold: row.marked}"
+                                                                                     bindonce="row.name"></span></td>
+                                                <td class="scrollable"
+                                                    data-ng-repeat="fieldData in row.data track by $index"
+                                                    bindonce="fieldData | thousandseparated"></td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </accordion-group>
+                        </accordion>
+                    </div>
                 </div>
-	            </div>
             </div>
             
             <div data-ng-class="{printTable: useSpecialPrintTable, 'hidden-print': !useSpecialPrintTable}" style="display:none;">
@@ -227,7 +287,7 @@
                     </thead>
                     <tbody>
                         <tr data-ng-repeat="row in printTable.rows">
-                            <td bindonce="row.name"></td>
+                            <td ng-class="{bold: row.marked}" bindonce="row.name"></td>
                             <td data-ng-repeat="fieldData in row.data track by $index" bindonce="fieldData | thousandseparated"></td>
                         </tr>
                     </tbody>

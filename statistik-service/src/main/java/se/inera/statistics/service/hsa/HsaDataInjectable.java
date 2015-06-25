@@ -26,6 +26,8 @@ public interface HsaDataInjectable {
 
     void setCountyForNextIntyg(String countyCode);
 
+    void setHuvudenhetIdForNextIntyg(String huvudenhetId);
+
     void setEnhetNameForNextIntyg(String name);
 
 }

@@ -22,7 +22,10 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import se.inera.auth.model.User;
 import se.inera.statistics.hsa.model.Vardenhet;
@@ -37,45 +40,26 @@ import static org.mockito.Matchers.anyObject;
 import static org.mockito.Matchers.anyString;
 
 public class LoginInfoServiceTest {
-    private HttpServletRequest request;
-    private HttpSession session;
+
+    @Mock
+    private LoginServiceUtil loginServiceUtil;
+
+    @InjectMocks
+    LoginInfoService loginInfoService;
+
 
     @Before
     public void init() {
-        request = Mockito.mock(HttpServletRequest.class);
-        session = Mockito.mock(HttpSession.class);
-
-        Mockito.when(request.getSession(true)).thenReturn(session);
-        Mockito.doNothing().when(session).setAttribute(anyString(), anyObject());
+        MockitoAnnotations.initMocks(this);
     }
 
     @Test
-    @Ignore
-    public void getNotLoggedInLoginInfoTest() {
-        LoginInfoService loginInfoService = new LoginInfoService();
-
-        LoginInfo info = loginInfoService.getLoginInfo(request);
-
-        Assert.assertEquals(false, info.isLoggedIn());
-    }
-
-    @Test
-    @Ignore
     public void getLoginInfoTest() {
-        LoginInfoService loginInfoService = new LoginInfoService();
-        List<Vardenhet> vardenhets = Collections.singletonList(new Vardenhet("verksamhetid", "verksamhetnamn", "VG1"));
-        User user = new User("hsaId", "name", false, vardenhets.get(0), vardenhets);
-        UsernamePasswordAuthenticationToken principal = Mockito.mock(UsernamePasswordAuthenticationToken.class);
-        Mockito.when(request.getUserPrincipal()).thenReturn(principal);
-        Mockito.when(principal.getDetails()).thenReturn(user);
-
+        HttpServletRequest request = null;
+        final LoginInfo loginInfo = new LoginInfo();
+        Mockito.when(loginServiceUtil.getLoginInfo(request)).thenReturn(loginInfo);
         LoginInfo info = loginInfoService.getLoginInfo(request);
-
-        Assert.assertEquals(true, info.isLoggedIn());
-        Assert.assertEquals("hsaId", info.getHsaId());
-        Assert.assertEquals("name", info.getName());
-        Assert.assertEquals(1, info.getBusinesses().size());
-        Assert.assertEquals("verksamhetid", info.getBusinesses().get(0).getId());
-        Assert.assertEquals("verksamhetnamn", info.getBusinesses().get(0).getName());
+        Assert.assertEquals(loginInfo, info);
     }
+
 }

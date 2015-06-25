@@ -19,17 +19,25 @@
 
 'use strict';
 
-angular.module('StatisticsApp').controller('singleLineChartCtrl', [ '$scope', '$rootScope', '$routeParams', '$timeout', '$window', 'statisticsData', 'businessFilter', 'config', 'printFactory',
-    function ($scope, $rootScope, $routeParams, $timeout, $window, statisticsData, businessFilter, config, printFactory) {
+angular.module('StatisticsApp').controller('singleLineChartCtrl', [ '$scope', '$rootScope', '$routeParams', '$timeout', '$window', 'statisticsData', 'config', 'printFactory', '$location', 'messageService', 'chartFactory',
+    function ($scope, $rootScope, $routeParams, $timeout, $window, statisticsData, config, printFactory, $location, messageService, chartFactory) {
+
         var chart;
+
+        var defaultChartType = 'line';
+        $scope.activeChartType = defaultChartType;
+
         $scope.chartContainers = [
             {id: "chart1", name: "diagram"}
         ];
-        var isVerksamhet = $routeParams.verksamhetId ? true : false;
+
+        var isVerksamhet = ControllerCommons.isShowingVerksamhet($location);
+        var isLandsting = ControllerCommons.isShowingLandsting($location);
 
         var paintChart = function (chartCategories, chartSeries, doneLoadingCallback) {
-            var chartOptions = ControllerCommons.getHighChartConfigBase(chartCategories, chartSeries, doneLoadingCallback);
-            chartOptions.chart.type = 'line';
+
+            var chartOptions = chartFactory.getHighChartConfigBase(chartCategories, chartSeries, doneLoadingCallback);
+            chartOptions.chart.type = defaultChartType;
 
             //Set the chart.width to a fixed width when we are about the print.
             //It will prevent the chart from overflowing the printed page.
@@ -49,6 +57,7 @@ angular.module('StatisticsApp').controller('singleLineChartCtrl', [ '$scope', '$
             chartOptions.yAxis.title.offset = 0;
             chartOptions.text = "#008391";
             chartOptions.tooltip.text = "#000";
+
             return new Highcharts.Chart(chartOptions);
         };
 
@@ -67,8 +76,19 @@ angular.module('StatisticsApp').controller('singleLineChartCtrl', [ '$scope', '$
             chart = paintChart(ajaxResult.categories, $scope.series, doneLoadingCallback);
         };
 
+        $scope.switchChartType = function (chartType) {
+            chartFactory.switchChartType(chart.series, chartType);
+            $scope.activeChartType = chartType;
+            chart.redraw();
+        };
+
+        $scope.showInLegend = function(index) {
+            return chartFactory.showInLegend(chart.series, index);
+        };
+
         var populatePageWithData = function (result) {
             ControllerCommons.populateActiveDiagnosFilter($scope, statisticsData, result.filter.diagnoser, $routeParams.printBw || $routeParams.print);
+            $scope.resultMessage = ControllerCommons.getResultMessage(result, messageService);
             $scope.subTitle = config.title(result.period, result.filter.enheter ? result.filter.enheter.length : null);
             $timeout(function () {
                 ControllerCommons.updateDataTable($scope, result.tableData);
@@ -81,27 +101,32 @@ angular.module('StatisticsApp').controller('singleLineChartCtrl', [ '$scope', '$
         };
 
         $scope.toggleSeriesVisibility = function (index) {
-            var series = chart.series[index];
-            if (series.visible) {
-                series.hide();
-            } else {
-                series.show();
-            }
+            chartFactory.toggleSeriesVisibility(chart.series[index]);
         };
 
+
         $scope.exportChart = function () {
-            ControllerCommons.exportChart(chart, $scope.pageName, $scope.subTitle, $scope.activeDiagnosFilters);
+            chartFactory.exportChart(chart, $scope.pageName, $scope.subTitle, $scope.activeDiagnosFilters);
         };
 
         function refreshVerksamhet() {
-            statisticsData[config.dataFetcherVerksamhet]($routeParams.verksamhetId, populatePageWithData, function () {
+            statisticsData[config.dataFetcherVerksamhet](populatePageWithData, function () {
+                $scope.dataLoadingError = true;
+            });
+        }
+
+        function refreshLandsting() {
+            statisticsData[config.dataFetcherLandsting](populatePageWithData, function () {
                 $scope.dataLoadingError = true;
             });
         }
 
         if (isVerksamhet) {
-            $scope.exportTableUrl = config.exportTableUrlVerksamhet($routeParams.verksamhetId);
+            $scope.exportTableUrl = config.exportTableUrlVerksamhet();
             refreshVerksamhet();
+        } else if (isLandsting) {
+            $scope.exportTableUrl = config.exportTableUrlLandsting();
+            refreshLandsting();
         } else {
             $scope.exportTableUrl = config.exportTableUrl;
             statisticsData[config.dataFetcher](populatePageWithData, function () {
@@ -117,7 +142,19 @@ angular.module('StatisticsApp').controller('singleLineChartCtrl', [ '$scope', '$
         $scope.spinnerText = "Laddar information...";
         $scope.doneLoading = false;
         $scope.dataLoadingError = false;
-        $scope.popoverText = config.showPageHelpTooltip ? "Ett sjukfall innehåller en patients alla läkarintyg om intygen följer varandra med max fem dagars uppehåll. Läkarintygen måste också vara utfärdade av samma vårdgivare. Om det är fler än fem dagar mellan intygen räknas det nya intyget som ett nytt sjukfall." : "";
+        $scope.popoverText = messageService.getProperty(config.pageHelpText, null, "", null, true);
+
+        if (isVerksamhet && config.exchangeableViews) {
+            var queryParamsString = ControllerCommons.createQueryStringOfQueryParams($location.search());
+
+            if(queryParamsString) {
+                _.each(config.exchangeableViews, function (view) {
+                    view.state = view.state + "?" + queryParamsString;
+                });
+            }
+
+            $scope.exchangeableViews = config.exchangeableViews;
+        }
 
         $scope.print = function (bwPrint) {
             printFactory.print(bwPrint, $rootScope, $window);
@@ -136,26 +173,39 @@ angular.module('StatisticsApp').casesPerMonthConfig = function () {
     var conf = {};
     conf.dataFetcher = "getNumberOfCasesPerMonth";
     conf.dataFetcherVerksamhet = "getNumberOfCasesPerMonthVerksamhet";
+    conf.dataFetcherLandsting = "getNumberOfCasesPerMonthLandsting";
     conf.exportTableUrl = "api/getNumberOfCasesPerMonth/csv";
-    conf.exportTableUrlVerksamhet = function (verksamhetId) {
-        return "api/verksamhet/" + verksamhetId + "/getNumberOfCasesPerMonth/csv";
+    conf.exportTableUrlVerksamhet = function () {
+        return "api/verksamhet/getNumberOfCasesPerMonth/csv";
+    };
+    conf.exportTableUrlLandsting = function () {
+        return "api/landsting/getNumberOfCasesPerMonthLandsting/csv";
     };
     conf.title = function (months, enhetsCount) {
         return "Antal sjukfall per månad" + ControllerCommons.getEnhetCountText(enhetsCount, false) + months;
     };
-    conf.showPageHelpTooltip = true;
+    conf.pageHelpText = "help.casespermonth";
+
+    conf.exchangeableViews = [
+        {description: 'Tidsserie', state: '#/verksamhet/sjukfallPerManad', active: true},
+        {description: 'Tvärsnitt', state: '#/verksamhet/sjukfallPerManadTvarsnitt', active: false}];
+
     return conf;
 };
 
 angular.module('StatisticsApp').longSickLeavesConfig = function () {
     var conf = {};
     conf.dataFetcherVerksamhet = "getLongSickLeavesDataVerksamhet";
-    conf.exportTableUrlVerksamhet = function (verksamhetId) {
-        return "api/verksamhet/" + verksamhetId + "/getLongSickLeavesData/csv";
+    conf.exportTableUrlVerksamhet = function () {
+        return "api/verksamhet/getLongSickLeavesData/csv";
     };
     conf.title = function (months, enhetsCount) {
         return "Antal långa sjukfall - mer än 90 dagar" + ControllerCommons.getEnhetCountText(enhetsCount, false) + months;
     };
-    conf.showPageHelpTooltip = false;
+
+    conf.exchangeableViews = [
+        {description: 'Tidsserie', state: '#/verksamhet/langasjukskrivningar', active: true},
+        {description: 'Tvärsnitt', state: '#/verksamhet/langasjukskrivningartvarsnitt', active: false}];
+
     return conf;
 };

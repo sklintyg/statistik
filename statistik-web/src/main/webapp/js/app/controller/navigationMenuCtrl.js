@@ -25,19 +25,31 @@ angular.module('StatisticsApp').controller('navigationMenuCtrl', [ '$scope', '$r
         $scope.organisationMenuLabel = $rootScope.isLoggedIn ? "Verksamhetsstatistik" : "Logga in för verksamhetsstatistik";
 
         $scope.showNational = false;
+        $scope.showLandsting = false;
         $scope.showOperation = false;
         $scope.showAbout = false;
         $scope.isLoggedIn = $rootScope.isLoggedIn;
 
         $scope.toggleNationalAccordion = function () {
             $scope.showNational = !$scope.showNational;
+            $scope.showLandsting = false;
             $scope.showOperation = false;
             $scope.showAbout = false;
+        };
+
+        $scope.toggleLandstingAccordion = function () {
+            if ($rootScope.isLoggedIn) {
+                $scope.showLandsting = !$scope.showLandsting;
+                $scope.showOperation = false;
+                $scope.showNational = false;
+                $scope.showAbout = false;
+            }
         };
 
         $scope.toggleOperationAccordion = function () {
             if ($rootScope.isLoggedIn) {
                 $scope.showOperation = !$scope.showOperation;
+                $scope.showLandsting = false;
                 $scope.showNational = false;
                 $scope.showAbout = false;
             }
@@ -45,6 +57,7 @@ angular.module('StatisticsApp').controller('navigationMenuCtrl', [ '$scope', '$r
 
         $scope.toggleAboutAccordion = function () {
             $scope.showAbout = !$scope.showAbout;
+            $scope.showLandsting = false;
             $scope.showNational = false;
             $scope.showOperation = false;
         };
@@ -52,14 +65,22 @@ angular.module('StatisticsApp').controller('navigationMenuCtrl', [ '$scope', '$r
         $scope.$on('navigationUpdate', function (event, navigationGroupId) {
             if (navigationGroupId === "about-statistics-collapse") {
                 $scope.showNational = false;
+                $scope.showLandsting = false;
                 $scope.showOperation = false;
                 $scope.showAbout = true;
             } else if (navigationGroupId === "national-statistics-collapse") {
                 $scope.showNational = true;
+                $scope.showLandsting = false;
+                $scope.showOperation = false;
+                $scope.showAbout = false;
+            } else if (navigationGroupId === "landsting-statistics-collapse") {
+                $scope.showNational = false;
+                $scope.showLandsting = true;
                 $scope.showOperation = false;
                 $scope.showAbout = false;
             } else if (navigationGroupId === "business-statistics-collapse") {
                 $scope.showNational = false;
+                $scope.showLandsting = false;
                 $scope.showOperation = true;
                 $scope.showAbout = false;
             } else {

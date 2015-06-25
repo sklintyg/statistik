@@ -18,26 +18,24 @@
  */
 package se.inera.statistics.service.report.model;
 
+import com.google.common.collect.LinkedHashMultimap;
+import com.google.common.collect.Multimap;
+
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
 public class SimpleKonResponse<T extends SimpleKonDataRow> {
 
     private final List<T> rows;
-    private final int numberOfMonthsCalculated;
 
-    public SimpleKonResponse(List<T> rows, int numberOfMonthsCalculated) {
+    public SimpleKonResponse(List<T> rows) {
         this.rows = rows;
-        this.numberOfMonthsCalculated = numberOfMonthsCalculated;
     }
 
     public List<T> getRows() {
         return rows;
-    }
-
-    public int getNumberOfMonthsCalculated() {
-        return numberOfMonthsCalculated;
     }
 
     public List<String> getGroups() {
@@ -66,18 +64,18 @@ public class SimpleKonResponse<T extends SimpleKonDataRow> {
 
     @Override
     public String toString() {
-        return "{\"SimpleKonResponse\":{" + "\"rows\":" + rows + ", \"numberOfMonthsCalculated\":" + getNumberOfMonthsCalculated() + "}}";
+        return "{\"SimpleKonResponse\":{" + "\"rows\":" + rows + "}}";
     }
 
-    public static SimpleKonResponse<SimpleKonDataRow> create(KonDataResponse konDataResponse, int numberOfMonthsCalculated) {
+    public static SimpleKonResponse<SimpleKonDataRow> create(KonDataResponse konDataResponse) {
         if (konDataResponse == null) {
-            return new SimpleKonResponse<>(Collections.<SimpleKonDataRow>emptyList(), numberOfMonthsCalculated);
+            return new SimpleKonResponse<>(Collections.<SimpleKonDataRow>emptyList());
         }
         final ArrayList<SimpleKonDataRow> simpleKonDataRows = new ArrayList<>();
         for (int i = 0; i < konDataResponse.getGroups().size(); i++) {
             simpleKonDataRows.add(createRowFromDataIndex(konDataResponse, i));
         }
-        return new SimpleKonResponse<>(simpleKonDataRows, numberOfMonthsCalculated);
+        return new SimpleKonResponse<>(simpleKonDataRows);
     }
 
     private static SimpleKonDataRow createRowFromDataIndex(KonDataResponse diagnosgruppResponse, int index) {
@@ -90,6 +88,43 @@ public class SimpleKonResponse<T extends SimpleKonDataRow> {
         }
         final String groupName = diagnosgruppResponse.getGroups().get(index);
         return new SimpleKonDataRow(groupName, sumFemale, sumMale);
+    }
+
+    public static SimpleKonResponse<SimpleKonDataRow> merge(Collection<SimpleKonResponse<SimpleKonDataRow>> resps, boolean mergeEqualRows) {
+        final ArrayList<SimpleKonDataRow> rows = new ArrayList<>();
+        if (mergeEqualRows) {
+            Multimap<String, SimpleKonDataRow> mappedResps = LinkedHashMultimap.create();
+            for (SimpleKonResponse<SimpleKonDataRow> resp : resps) {
+                for (SimpleKonDataRow row : resp.getRows()) {
+                    mappedResps.put(row.getName(), row);
+                }
+            }
+            for (Collection<SimpleKonDataRow> sameRows : mappedResps.asMap().values()) {
+                rows.add(mergeRows(sameRows));
+            }
+        } else {
+            for (SimpleKonResponse<SimpleKonDataRow> resp : resps) {
+                rows.addAll(resp.getRows());
+            }
+        }
+        return new SimpleKonResponse<>(rows);
+    }
+
+    private static SimpleKonDataRow mergeRows(Collection<SimpleKonDataRow> rows) {
+        if (rows.size() == 1) {
+            return rows.iterator().next();
+        }
+        int male = 0;
+        int female = 0;
+        String name = "";
+        Object extras = null;
+        for (SimpleKonDataRow row : rows) {
+            male += row.getMale();
+            female += row.getFemale();
+            name = row.getName();
+            extras = row.getExtras();
+        }
+        return new SimpleKonDataRow(name, female, male, extras);
     }
 
 }
