@@ -137,7 +137,7 @@
     <beans profile="security-saml,security-both">
         <bean id="samlFilter" class="org.springframework.security.web.FilterChainProxy">
             <security:filter-chain-map request-matcher="ant">
-                <security:filter-chain pattern="/saml/login/**" filters="samlEntryPoint"/>
+                <security:filter-chain pattern="/saml/login/**" filters="forceLocalLogoutFilter, samlEntryPoint"/>
                 <security:filter-chain pattern="/saml/logout/**" filters="samlLogoutFilter"/>
                 <security:filter-chain pattern="/saml/metadata/**" filters="metadataDisplayFilter"/>
                 <security:filter-chain pattern="/saml/SSO/**" filters="samlWebSSOProcessingFilter"/>
@@ -316,6 +316,8 @@
             <constructor-arg ref="logoutHandler"/>
             <constructor-arg ref="logoutHandler"/>
         </bean>
+
+        <bean id="forceLocalLogoutFilter" class="se.inera.auth.ForceLocalLogoutFilter"/>
 
         <!-- Filter processing incoming logout messages -->
         <!-- First argument determines URL user will be redirected to after successful global logout -->
