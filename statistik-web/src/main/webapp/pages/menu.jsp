@@ -90,7 +90,7 @@
       <div class="accordion-heading statistics-menu">
         <div class="accordion-toggle first-level-menu" id="business-statistics-toggle"
              data-parent="#statistics-menu-accordion"
-             data-ng-class="{active: showOperation, collapsed: !showOperation, disabled: !isLoggedIn}"
+             data-ng-class="{active: showOperation, collapsed: !showOperation, disabled: !enableVerksamhetMenu}"
              data-ng-click="toggleOperationAccordion()">
           <span class="statistics-menu-heading" data-ng-bind="organisationMenuLabel"></span>
           <i class="statistict-left-menu-expand-icon"></i>

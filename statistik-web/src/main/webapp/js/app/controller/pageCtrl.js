@@ -59,6 +59,8 @@ angular.module('StatisticsApp').controller('pageCtrl', [ '$scope', '$rootScope',
                         $rootScope.landstingAvailable = loginInfo.landstingsvardgivareWithUpload;
                         $scope.isLandstingAdmin = loginInfo.landstingAdmin;
 
+                        $scope.enableVerksamhetMenu = loginInfo.businesses && loginInfo.businesses.length >= 1;
+
                         if ($rootScope.landstingAvailable) {
                             statisticsData.getLandstingFilterInfo(function (landstingFilterInfo) {
                                 landstingFilterFactory.setup(landstingFilterInfo.businesses, $location.$$search.landstingfilter);
