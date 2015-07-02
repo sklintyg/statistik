@@ -106,6 +106,16 @@ angular.module('StatisticsApp').directive('onFinishRender', function () {
     };
 });
 
+angular.module('StatisticsApp').directive('sortableTable', function () {
+    return {
+        link: function(scope, elm, attrs) {
+            scope.$on('pageDataPopulated', function (event) {
+                elm.tablesorter({sortReset: true, sortInitialOrder: 'desc'});
+            });
+        }
+    }
+});
+
 angular.module('StatisticsApp').directive("submenu", function (recursionService) {
     return {
         restrict: "E",

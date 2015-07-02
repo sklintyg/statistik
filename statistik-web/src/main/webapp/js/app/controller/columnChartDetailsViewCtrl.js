@@ -102,8 +102,9 @@ angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl', [ '$sco
             $timeout(function () {
                 ControllerCommons.updateDataTable($scope, result.tableData);
                 updateChart(result.chartData, function() { $scope.doneLoading = true; });
-
-
+                $timeout(function () {
+                    $rootScope.$broadcast('pageDataPopulated');
+                });
                 if ($routeParams.printBw || $routeParams.print) {
                     printFactory.printAndCloseWindow($timeout, $window);
                 }

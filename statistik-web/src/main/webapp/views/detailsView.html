@@ -246,13 +246,13 @@
                                 <div class="scrollable">
 
                                     <div class="scrolling">
-                                        <table id="datatable" class="table table-striped">
+                                        <table id="datatable" class="table table-striped" sortable-table>
                                             <thead>
                                             <tr data-ng-repeat="headerrow in headerrows track by $index">
                                                 <td class="scrollable details-table-data ellipsis details-th"
-                                                    data-ng-class="{headcol: $first, centeralign: headerrow.centerAlign}"
+                                                    data-ng-class="{headcol: $first, centeralign: headerrow.centerAlign, 'sorter-false': !$parent.$last}"
                                                     colspan="{{header.colspan}}" data-ng-repeat="header in headerrow"
-                                                    title="{{header.text}}" bindonce="header.text"></td>
+                                                    title="{{header.text}}" bindonce="header.text" style="padding-right: 20px; white-space: nowrap;"></td>
                                             </tr>
                                             </thead>
                                             <tbody class="table-condensed">
