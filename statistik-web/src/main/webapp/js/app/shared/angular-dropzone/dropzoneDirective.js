@@ -3,6 +3,10 @@ angular.module('dropzone', []).directive('dropzone', function () {
         var config, dropzone;
 
         config = scope[attrs.dropzone];
+        config.options.fallback = function () {
+            document.getElementById('uploadZone').style.display="none";
+            document.getElementById('fallbackUploadZone').style.display='block';
+        };
 
         // create a Dropzone for the element with the given options
         dropzone = new Dropzone(element[0], config.options);

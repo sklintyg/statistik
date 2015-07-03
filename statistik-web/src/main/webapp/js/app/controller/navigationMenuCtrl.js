@@ -47,7 +47,7 @@ angular.module('StatisticsApp').controller('navigationMenuCtrl', [ '$scope', '$r
         };
 
         $scope.toggleOperationAccordion = function () {
-            if ($rootScope.isLoggedIn) {
+            if ($rootScope.isLoggedIn && $scope.enableVerksamhetMenu) {
                 $scope.showOperation = !$scope.showOperation;
                 $scope.showLandsting = false;
                 $scope.showNational = false;

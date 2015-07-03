@@ -55,6 +55,7 @@
     <link href="<c:url value='/webjars/bootstrap/3.1.1/css/bootstrap-theme.min.css'/>" rel="stylesheet" media="all">
     <link href="<c:url value='/css/print.css'/>" rel="stylesheet" media="print">
     <link href="<c:url value='/webjars/outdated-browser/1.1.0/outdatedbrowser.min.css'/>" rel="stylesheet" media="all">
+    <link href="<c:url value='/webjars/tablesorter/2.17.8/css/theme.default.css'/>" rel="stylesheet" media="all">
 
     <link rel="icon" type="image/png" href="<c:url value='/img/favicon.ico'/>">
 
@@ -187,6 +188,7 @@
 <script type="text/javascript" src="<c:url value='/webjars/respond/1.3.0/respond.min.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/webjars/bootstrap-multiselect/0.9.8/js/bootstrap-multiselect.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/webjars/outdated-browser/1.1.0/outdatedbrowser.min.js'/>"></script>
+<script type="text/javascript" src="<c:url value='/webjars/tablesorter/2.17.8/js/jquery.tablesorter.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/app.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/shared/resources/constantsModule.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/services/factories.js'/>"></script>
