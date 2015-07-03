@@ -61,7 +61,6 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
-import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.io.ByteArrayOutputStream;
@@ -105,17 +104,19 @@ public class ProtectedLandstingService {
 
     @POST
     @Path("fileupload")
-    @Produces({ MediaType.APPLICATION_JSON })
+    @Produces({ MediaType.APPLICATION_JSON, MediaType.TEXT_HTML })
     @Consumes({ "multipart/form-data" })
     @PreAuthorize(value = "@protectedLandstingService.hasAccessToLandstingAdmin(#request)")
     @PostAuthorize(value = "@protectedLandstingService.userAccess(#request)")
     public Response fileupload(@Context HttpServletRequest request, MultipartBody body) {
         LoginInfo info = loginServiceUtil.getLoginInfo(request);
-        final String forwardUrl = body.getAttachmentObject("forwardUrl", String.class);
+        final String fallbackUpload = body.getAttachmentObject("fallbackUpload", String.class);
+        final boolean isUsingClassicFormFileUpload = fallbackUpload != null;
+        final UploadResultFormat resultFormat = isUsingClassicFormFileUpload ? UploadResultFormat.HTML : UploadResultFormat.JSON;
         if (!info.isProcessledare()) {
             final String msg = "A user without processledar-status tried to update landstingsdata";
             LOG.warn(msg + " : " + info.getHsaId());
-            return Response.status(Response.Status.FORBIDDEN).entity(createFileUploadResponseEntity(msg)).build();
+            return createFileUploadResponse(Response.Status.FORBIDDEN, msg, resultFormat);
         }
         final DataSource dataSource = body.getAttachment("file").getDataHandler().getDataSource();
         try {
@@ -123,23 +124,13 @@ public class ProtectedLandstingService {
             final HsaIdVardgivare vardgivarId = info.getDefaultVerksamhet().getVardgivarId();
             final LandstingEnhetFileData fileData = new LandstingEnhetFileData(vardgivarId, landstingFileRows, info.getName(), info.getHsaId(), dataSource.getName());
             landstingEnhetHandler.update(fileData);
-            final boolean isUsingClassicFormFileUpload = forwardUrl != null;
-            if (isUsingClassicFormFileUpload) {
-                return Response.status(Response.Status.SEE_OTHER)
-                        .header(HttpHeaders.LOCATION, forwardUrl)
-                        .entity(createFileUploadResponseEntity("Data updated ok"))
-                        .build();
-            } else {
-                return Response.status(Response.Status.OK).entity(createFileUploadResponseEntity("Data updated ok")).build();
-            }
+            return createFileUploadResponse(Response.Status.OK, "Data updated ok", resultFormat);
         } catch (LandstingEnhetFileParseException e) {
             LOG.warn("Failed to parse landstings file", e);
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(createFileUploadResponseEntity(e.getMessage())).build();
+            return createFileUploadResponse(Response.Status.INTERNAL_SERVER_ERROR, e.getMessage(), resultFormat);
         } catch (NoLandstingSetForVgException e) {
             LOG.warn("Failed to update landsting settings", e);
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-                    .entity(createFileUploadResponseEntity("Din vårdgivare har inte tillgång till landstingsstatistik"))
-                    .build();
+            return createFileUploadResponse(Response.Status.INTERNAL_SERVER_ERROR, "Din vårdgivare har inte tillgång till landstingsstatistik", resultFormat);
         }
     }
 
@@ -228,10 +219,19 @@ public class ProtectedLandstingService {
         return "Ingen";
     }
 
-    private Object createFileUploadResponseEntity(String message) {
-        final HashMap<String, Object> map = new HashMap<>();
-        map.put("message", message);
-        return map;
+    private Response createFileUploadResponse(Response.Status status, String message, UploadResultFormat format) {
+        switch (format) {
+            case HTML:
+                final String statusText = Response.Status.OK.equals(status) ? "Uppladdningen lyckades" : "Uppladdningen misslyckades";
+                String html = "<html><body><h1>" + statusText + "</h1><div>" + message + "</div><br/><input type='button' onclick='history.back();' value='Tillbaka'></body></html>";
+                return Response.status(status).type(MediaType.TEXT_HTML + "; charset=utf-8").entity(html).build();
+            case JSON:
+                final HashMap<String, Object> map = new HashMap<>();
+                map.put("message", message);
+                return Response.status(status).entity(map).build();
+            default:
+                throw new RuntimeException("Unhandled upload result format: " + format);
+        }
     }
 
     @GET
@@ -340,6 +340,10 @@ public class ProtectedLandstingService {
             return "!NoRequest!";
         }
         return request.getRequestURI();
+    }
+
+    private enum UploadResultFormat {
+        HTML, JSON;
     }
 
 }

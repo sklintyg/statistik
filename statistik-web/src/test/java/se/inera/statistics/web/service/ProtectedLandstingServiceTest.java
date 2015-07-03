@@ -147,6 +147,32 @@ public class ProtectedLandstingServiceTest {
     }
 
     @Test
+    public void testFileUploadIsReturningAnHtmlPageWithCorrectMessageWhenRequired() throws Exception {
+        //Given
+        final MultipartBody mb = Mockito.mock(MultipartBody.class);
+        final Attachment attachment = Mockito.mock(Attachment.class);
+        Mockito.when(mb.getAttachment(anyString())).thenReturn(attachment);
+        Mockito.when(mb.getAttachmentObject(anyString(), any(Class.class))).thenReturn("true");
+        final DataHandler dh = Mockito.mock(DataHandler.class);
+        Mockito.when(attachment.getDataHandler()).thenReturn(dh);
+        final DataSource ds = Mockito.mock(DataSource.class);
+        Mockito.when(dh.getDataSource()).thenReturn(ds);
+        final HttpServletRequest req = Mockito.mock(HttpServletRequest.class);
+        Mockito.when(loginServiceUtil.getLoginInfo(req)).thenReturn(new LoginInfo(new HsaIdUser(""), "", null, false, false, true, null, LandstingsVardgivareStatus.NO_LANDSTINGSVARDGIVARE));
+        final String msg = "This is a test message";
+        Mockito.when(landstingFileReader.readExcelData(any(DataSource.class))).thenThrow(new LandstingEnhetFileParseException(msg));
+
+        //When
+        final Response response = chartDataService.fileupload(req, mb);
+
+        //Then
+        assertEquals(Response.Status.INTERNAL_SERVER_ERROR.getStatusCode(), response.getStatus());
+        assertTrue(((String) response.getEntity()).startsWith("<html>"));
+        assertTrue(((String) response.getEntity()).contains(msg));
+        Mockito.verify(landstingEnhetHandler, times(0)).update(any(LandstingEnhetFileData.class));
+    }
+
+    @Test
     public void testFileUploadUpdateIsUsingResultFromFileParsingAndCorrectVgId() throws Exception {
         //Given
         final MultipartBody mb = Mockito.mock(MultipartBody.class);

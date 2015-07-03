@@ -129,8 +129,6 @@ angular.module('StatisticsApp').controller('landstingFileUploadCtrl', [ '$scope'
             }, 1);
         };
 
-        $scope.currentPath = $location.absUrl();
-
         updateLastUpdateMessage();
 
     }
