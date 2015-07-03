@@ -61,6 +61,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
+import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.io.ByteArrayOutputStream;
@@ -110,10 +111,11 @@ public class ProtectedLandstingService {
     @PostAuthorize(value = "@protectedLandstingService.userAccess(#request)")
     public Response fileupload(@Context HttpServletRequest request, MultipartBody body) {
         LoginInfo info = loginServiceUtil.getLoginInfo(request);
+        final String forwardUrl = body.getAttachmentObject("forwardUrl", String.class);
         if (!info.isProcessledare()) {
             final String msg = "A user without processledar-status tried to update landstingsdata";
             LOG.warn(msg + " : " + info.getHsaId());
-            return createFileUploadResponse(Response.Status.FORBIDDEN, msg, null);
+            return Response.status(Response.Status.FORBIDDEN).entity(createFileUploadResponseEntity(msg)).build();
         }
         final DataSource dataSource = body.getAttachment("file").getDataHandler().getDataSource();
         try {
@@ -121,13 +123,23 @@ public class ProtectedLandstingService {
             final HsaIdVardgivare vardgivarId = info.getDefaultVerksamhet().getVardgivarId();
             final LandstingEnhetFileData fileData = new LandstingEnhetFileData(vardgivarId, landstingFileRows, info.getName(), info.getHsaId(), dataSource.getName());
             landstingEnhetHandler.update(fileData);
-            return createFileUploadResponse(Response.Status.OK, "Data updated ok", landstingFileRows);
+            final boolean isUsingClassicFormFileUpload = forwardUrl != null;
+            if (isUsingClassicFormFileUpload) {
+                return Response.status(Response.Status.SEE_OTHER)
+                        .header(HttpHeaders.LOCATION, forwardUrl)
+                        .entity(createFileUploadResponseEntity("Data updated ok"))
+                        .build();
+            } else {
+                return Response.status(Response.Status.OK).entity(createFileUploadResponseEntity("Data updated ok")).build();
+            }
         } catch (LandstingEnhetFileParseException e) {
             LOG.warn("Failed to parse landstings file", e);
-            return createFileUploadResponse(Response.Status.INTERNAL_SERVER_ERROR, e.getMessage(), null);
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(createFileUploadResponseEntity(e.getMessage())).build();
         } catch (NoLandstingSetForVgException e) {
             LOG.warn("Failed to update landsting settings", e);
-            return createFileUploadResponse(Response.Status.INTERNAL_SERVER_ERROR, "Din vårdgivare har inte tillgång till landstingsstatistik", null);
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity(createFileUploadResponseEntity("Din vårdgivare har inte tillgång till landstingsstatistik"))
+                    .build();
         }
     }
 
@@ -216,10 +228,10 @@ public class ProtectedLandstingService {
         return "Ingen";
     }
 
-    private Response createFileUploadResponse(Response.Status status, String message, List<LandstingEnhetFileDataRow> landstingFileRows) {
+    private Object createFileUploadResponseEntity(String message) {
         final HashMap<String, Object> map = new HashMap<>();
         map.put("message", message);
-        return Response.status(status).entity(map).build();
+        return map;
     }
 
     @GET

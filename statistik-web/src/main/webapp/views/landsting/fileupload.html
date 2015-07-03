@@ -55,7 +55,7 @@
 
         <div class="row">
             <div class="col-md-8">
-                <div class="jumbotron dropzone" dropzone="dropzoneConfig" ng-class="{'dropzone-drag': draggingIt}">
+                <div id="uploadZone" class="jumbotron dropzone" dropzone="dropzoneConfig" ng-class="{'dropzone-drag': draggingIt}">
                     <div class="row dz-message">
                         <div class="col-md-5 col-md-push-3 dropzone-info-area">
 
@@ -103,6 +103,14 @@
                             </div>
                         </div>
                     </div>
+                </div>
+                <div id="fallbackUploadZone" style="display: none;">
+                    <form method="POST" action="api/landsting/fileupload" enctype="multipart/form-data" class="dropzone" style="padding: 12px;">
+                        <span message key="info.upload.fallbackText"></span>
+                        <input type="file" name="file" />
+                        <input type="hidden" name="forwardUrl" value="{{currentPath}}">
+                        <input type="submit" />
+                    </form>
                 </div>
             </div>
         </div>

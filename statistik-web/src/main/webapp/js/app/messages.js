@@ -168,7 +168,7 @@ var stMessages = {
         'alert.upload.success': 'Uppladdningen lyckades!',
         'info.upload.dropfile.here': 'Släpp fil här för att ladda upp eller ',
         'info.upload.dropfile.here.add': 'lägg till',
-
+        'info.upload.fallbacktext': 'Din webläsare stödjer inte filuppladdning via "dra och släpp". Vänligen använd knappen nedan för att ladda upp filen.'
     },
     'en': {
         'webcert.header': 'Statistics Application (en)'
