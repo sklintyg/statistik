@@ -21,21 +21,21 @@
 angular.module('StatisticsApp.filterFactory.factory', []);
 
 angular.module('StatisticsApp.filterFactory.factory')
-    .factory('businessFilterFactory', ['statisticsData', '_', 'treeMultiSelectorUtil',
-        function (statisticsData, _, treeMultiSelectorUtil) {
-            return createBusinessFilter(statisticsData, _, treeMultiSelectorUtil);
+    .factory('businessFilterFactory', ['statisticsData', '_', 'treeMultiSelectorUtil', 'moment',
+        function (statisticsData, _, treeMultiSelectorUtil, moment) {
+            return createBusinessFilter(statisticsData, _, treeMultiSelectorUtil, moment);
         }
     ]);
 
 angular.module('StatisticsApp.filterFactory.factory')
-    .factory('landstingFilterFactory', ['statisticsData', '_', 'treeMultiSelectorUtil',
-        function (statisticsData, _, treeMultiSelectorUtil) {
-            return createBusinessFilter(statisticsData, _, treeMultiSelectorUtil);
+    .factory('landstingFilterFactory', ['statisticsData', '_', 'treeMultiSelectorUtil', 'moment',
+        function (statisticsData, _, treeMultiSelectorUtil, moment) {
+            return createBusinessFilter(statisticsData, _, treeMultiSelectorUtil, moment);
         }
     ]);
 
 
-function createBusinessFilter(statisticsData, _, treeMultiSelectorUtil) {
+function createBusinessFilter(statisticsData, _, treeMultiSelectorUtil, moment) {
     //The businessFilter object holds all methods and properties that are part of the public API
     var businessFilter = {};
 
@@ -157,8 +157,8 @@ function createBusinessFilter(statisticsData, _, treeMultiSelectorUtil) {
             return _.find(businessFilter.verksamhetsTyper, function(verksamhet) { return _.contains(verksamhet.ids, verksamhetstyp); }).id;
         }));
         businessFilter.selectGeographyBusiness(filterData.enheter);
-        businessFilter.toDate = Date.parse(filterData.toDate);
-        businessFilter.fromDate = Date.parse(filterData.fromDate);
+        businessFilter.toDate = moment(filterData.toDate).utc().toDate();
+        businessFilter.fromDate = moment(filterData.fromDate).utc().toDate();
         businessFilter.useDefaultPeriod = filterData.useDefaultPeriod;
 
         businessFilter.filterChanged();
