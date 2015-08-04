@@ -78,6 +78,8 @@ task createVersionPropertyFile(dependsOn: processResources) << {
     ant.touch(file: propertyFile, mkdirs: "true")
     ant.propertyfile(file: propertyFile) {
         entry(key: 'project.version', default: project.version)
+        entry(key: 'project.buildtime', default: new Date())
+        entry(key: 'project.buildhost', default: InetAddress.localHost.hostName)
     }
 }
 
