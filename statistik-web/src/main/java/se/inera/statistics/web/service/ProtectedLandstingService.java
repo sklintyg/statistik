@@ -119,9 +119,6 @@ public class ProtectedLandstingService {
             return createFileUploadResponse(Response.Status.FORBIDDEN, msg, resultFormat);
         }
         final DataSource dataSource = body.getAttachment("file").getDataHandler().getDataSource();
-        if (dataSource.getName() == null) {
-            return createFileUploadResponse(Response.Status.INTERNAL_SERVER_ERROR, "Fil saknas", resultFormat);
-        }
         try {
             final List<LandstingEnhetFileDataRow> landstingFileRows = landstingFileReader.readExcelData(dataSource);
             final HsaIdVardgivare vardgivarId = info.getDefaultVerksamhet().getVardgivarId();

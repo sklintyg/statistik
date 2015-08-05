@@ -156,7 +156,6 @@ public class ProtectedLandstingServiceTest {
         final DataHandler dh = Mockito.mock(DataHandler.class);
         Mockito.when(attachment.getDataHandler()).thenReturn(dh);
         final DataSource ds = Mockito.mock(DataSource.class);
-        Mockito.when(ds.getName()).thenReturn("testfilename");
         Mockito.when(dh.getDataSource()).thenReturn(ds);
         final HttpServletRequest req = Mockito.mock(HttpServletRequest.class);
         Mockito.when(loginServiceUtil.getLoginInfo(req)).thenReturn(new LoginInfo(new HsaIdUser(""), "", null, false, false, true, null, LandstingsVardgivareStatus.NO_LANDSTINGSVARDGIVARE));
@@ -167,7 +166,7 @@ public class ProtectedLandstingServiceTest {
         final Response response = chartDataService.fileupload(req, mb);
 
         //Then
-        assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
+        assertEquals(Response.Status.INTERNAL_SERVER_ERROR.getStatusCode(), response.getStatus());
         assertTrue(((String) response.getEntity()).startsWith("<html>"));
         assertTrue(((String) response.getEntity()).contains(msg));
         Mockito.verify(landstingEnhetHandler, times(0)).update(any(LandstingEnhetFileData.class));
@@ -182,7 +181,6 @@ public class ProtectedLandstingServiceTest {
         final DataHandler dh = Mockito.mock(DataHandler.class);
         Mockito.when(attachment.getDataHandler()).thenReturn(dh);
         final DataSource ds = Mockito.mock(DataSource.class);
-        Mockito.when(ds.getName()).thenReturn("testfilename");
         Mockito.when(dh.getDataSource()).thenReturn(ds);
         final HttpServletRequest req = Mockito.mock(HttpServletRequest.class);
         final Verksamhet verksamhet = Mockito.mock(Verksamhet.class);
