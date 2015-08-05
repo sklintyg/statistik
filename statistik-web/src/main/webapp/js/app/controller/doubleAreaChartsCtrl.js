@@ -198,8 +198,8 @@ angular.module('StatisticsApp').controller('doubleAreaChartsCtrl', [ '$scope', '
         ];
 
         $scope.toggleSeriesVisibility = function (index) {
-            chartFactory.toggleSeriesVisibility(chart1.series[index]);
-            chartFactory.toggleSeriesVisibility(chart2.series[index]);
+            chartFactory.toggleSeriesVisibility(that.chart1.series[index]);
+            chartFactory.toggleSeriesVisibility(that.chart2.series[index]);
 
             updateChartsYAxisMaxValue();
         };
