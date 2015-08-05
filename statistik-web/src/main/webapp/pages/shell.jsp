@@ -187,7 +187,6 @@
 <script type="text/javascript" src="<c:url value='/webjars/dropzone/4.0.1/dropzone.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/webjars/respond/1.3.0/respond.min.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/webjars/bootstrap-multiselect/0.9.8/js/bootstrap-multiselect.js'/>"></script>
-<script type="text/javascript" src="<c:url value='/webjars/outdated-browser/1.1.0/outdatedbrowser.min.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/webjars/tablesorter/2.17.8/js/jquery.tablesorter.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/app.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/shared/resources/constantsModule.js'/>"></script>
@@ -230,11 +229,16 @@
     $('.dropdown-toggle').dropdown();
 </script>
 
+<!-- This sections will give users of not so modern browsers a message that their browser is too old to run this thing. -->
 <div id="outdated">
-    <h3>Din webbläsare stöds inte av Statistiktjänsten och kan göra att den inte fungerar korrekt. Statistiktjänsten stöds officiellt av Internet Explorer 9 och nyare, även om andra webbläsare kan fungera.</h3>
+    <h1><b>Din webbläsare stöds inte av Statistiktjänsten och kan göra att den inte fungerar korrekt.</b></h1>
+    <h1><b>Statistiktjänsten stöds officiellt av Internet Explorer 9 och nyare, även om andra webbläsare kan fungera.</b></h1>
     <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
+    <!-- It seems like a div called btnUpdateBrowser need to exist, otherwise the outdated browser plugin will bug us with console warning messages on every reload -->
+    <div id="btnUpdateBrowser" style="display: none;"></div>
 </div>
 
+<script type="text/javascript" src="<c:url value='/webjars/outdated-browser/1.1.0/outdatedbrowser.min.js'/>"></script>
 
 <script type="text/javascript">
     function addLoadEvent(func) {
@@ -253,7 +257,7 @@
     //call plugin function after DOM ready
     addLoadEvent(function(){
         outdatedBrowser({
-            bgColor: '#b9def0',
+            bgColor: '#31708F',
             color: '#ffffff',
             lowerThan: 'IE9',
             languagePath: ''

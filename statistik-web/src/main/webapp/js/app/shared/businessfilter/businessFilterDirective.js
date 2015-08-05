@@ -111,11 +111,11 @@ function linkFunction(scope, businessFilter, $location, messageService, statisti
     };
 
     var isValidDate = function isValidDate(date) {
-        if(date === 'undefined' || !(date instanceof Date)) {
+        if(date === 'undefined') {
             return false;
         }
 
-        return moment(date, 'yyyy-MM').isValid() || moment(date.getUTCDate(), 'yyyy-MM').isValid();
+        return moment(new Date(date)).isValid() || moment(new Date(date).getUTCDate()).isValid();
     };
 
     var hasFromDateValidationError = function() {
@@ -129,7 +129,7 @@ function linkFunction(scope, businessFilter, $location, messageService, statisti
         return !businessFilter.toDate ||
             !isValidDate(businessFilter.toDate) ||
             moment(businessFilter.toDate).isBefore(businessFilter.fromDate) ||
-            moment(businessFilter.toDate).isAfter(moment());
+            moment(businessFilter.toDate).isAfter(moment().date(moment().daysInMonth()).toDate());
     };
 
     var hasDatepickersValidationError = function() {
