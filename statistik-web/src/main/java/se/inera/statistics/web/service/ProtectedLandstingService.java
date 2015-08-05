@@ -223,8 +223,8 @@ public class ProtectedLandstingService {
         switch (format) {
             case HTML:
                 final String statusText = Response.Status.OK.equals(status) ? "Uppladdningen lyckades" : "Uppladdningen misslyckades";
-                String html = "<html><body><h1>" + statusText + "</h1><div>" + message + "</div><br/><input type='button' onclick='history.back();' value='Tillbaka'></body></html>";
-                return Response.status(status).type(MediaType.TEXT_HTML + "; charset=utf-8").entity(html).build();
+                String html = "<html><body><h1>" + statusText + "</h1><div>" + message + "</div><br/><input type='button' onclick='history.back();' value='Åter till statistiktjänsten'></body></html>";
+                return Response.status(Response.Status.OK).type(MediaType.TEXT_HTML + "; charset=utf-8").entity(html).build();
             case JSON:
                 final HashMap<String, Object> map = new HashMap<>();
                 map.put("message", message);
