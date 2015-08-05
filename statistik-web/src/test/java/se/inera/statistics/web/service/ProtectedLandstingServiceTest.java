@@ -167,7 +167,7 @@ public class ProtectedLandstingServiceTest {
         final Response response = chartDataService.fileupload(req, mb);
 
         //Then
-        assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
+        assertEquals(Response.Status.OK.getStatusCode(), response.getStatus()); //Returns OK even for failures since IE9 will not show the html-page when status code is 500
         assertTrue(((String) response.getEntity()).startsWith("<html>"));
         assertTrue(((String) response.getEntity()).contains(msg));
         Mockito.verify(landstingEnhetHandler, times(0)).update(any(LandstingEnhetFileData.class));
