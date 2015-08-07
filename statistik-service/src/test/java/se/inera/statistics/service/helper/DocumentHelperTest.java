@@ -27,6 +27,8 @@ import se.inera.statistics.service.JSONSource;
 import se.inera.statistics.service.report.model.Kon;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 import static se.inera.statistics.service.helper.DocumentHelper.IntygVersion.VERSION1;
 import static se.inera.statistics.service.helper.DocumentHelper.IntygVersion.VERSION2;
@@ -250,6 +252,27 @@ public class DocumentHelperTest {
     @Test
     public void getArbetsnedsattning() {
         assertEquals(50, DocumentHelper.getArbetsnedsattning(documentOldFormat, VERSION1).get(0).getNedsattning());
+    }
+
+    @Test
+    public void testIsAnyFieldIndicatingEnkeltIntyg() throws Exception {
+        assertTrue(DocumentHelper.isAnyFieldIndicatingEnkeltIntyg("e"));
+        assertTrue(DocumentHelper.isAnyFieldIndicatingEnkeltIntyg("E"));
+        assertTrue(DocumentHelper.isAnyFieldIndicatingEnkeltIntyg("Enkel"));
+        assertTrue(DocumentHelper.isAnyFieldIndicatingEnkeltIntyg("ENKEL"));
+        assertTrue(DocumentHelper.isAnyFieldIndicatingEnkeltIntyg("enkel"));
+        assertTrue(DocumentHelper.isAnyFieldIndicatingEnkeltIntyg("Enkelt"));
+        assertTrue(DocumentHelper.isAnyFieldIndicatingEnkeltIntyg("ENKELT"));
+        assertTrue(DocumentHelper.isAnyFieldIndicatingEnkeltIntyg("enkelt"));
+
+        assertTrue(DocumentHelper.isAnyFieldIndicatingEnkeltIntyg("enkøelt"));
+        assertFalse(DocumentHelper.isAnyFieldIndicatingEnkeltIntyg("enköelt"));
+        assertTrue(DocumentHelper.isAnyFieldIndicatingEnkeltIntyg("Ée"));
+        assertFalse(DocumentHelper.isAnyFieldIndicatingEnkeltIntyg("enkla"));
+        assertTrue(DocumentHelper.isAnyFieldIndicatingEnkeltIntyg("en-kel"));
+
+        assertTrue(DocumentHelper.isAnyFieldIndicatingEnkeltIntyg("svår", "enkel"));
+        assertFalse(DocumentHelper.isAnyFieldIndicatingEnkeltIntyg("svår", "medium"));
     }
 
     // CHECKSTYLE:ON MagicNumber

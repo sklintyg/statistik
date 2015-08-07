@@ -87,14 +87,15 @@ public class WidelineLoader {
         String lakarbefattning = resultSet.getString("lakarbefattning");
         String vardgivare = resultSet.getString("vardgivareid");
         String lakareId = resultSet.getString("lakareid");
+        boolean enkeltIntyg = resultSet.getBoolean("enkelt");
 
-        return new WideLine(id, correlationId, lkf, new HsaIdEnhet(enhet), intyg, EventType.CREATED, patientid, startdatum, slutdatum, kon, alder, diagnoskapitel, diagnosavsnitt, diagnoskategori, diagnoskod, sjukskrivningsgrad, lakarkon, lakaralder, lakarbefattning, new HsaIdVardgivare(vardgivare), new HsaIdLakare(lakareId));
+        return new WideLine(id, correlationId, lkf, new HsaIdEnhet(enhet), intyg, EventType.CREATED, patientid, startdatum, slutdatum, kon, alder, diagnoskapitel, diagnosavsnitt, diagnoskategori, diagnoskod, sjukskrivningsgrad, lakarkon, lakaralder, lakarbefattning, new HsaIdVardgivare(vardgivare), new HsaIdLakare(lakareId), enkeltIntyg);
     }
 
     private PreparedStatement prepareStatement(Connection connection) throws SQLException {
         String sql = "select id, correlationid, lkf, enhet, lakarintyg, patientid, startdatum,"
                 + " slutdatum, kon, alder, diagnoskapitel, diagnosavsnitt, diagnoskategori, diagnoskod, sjukskrivningsgrad, lakarkon, lakaralder,"
-                + " lakarbefattning, vardgivareid, lakareid from wideline w1 where w1.correlationid not in (select correlationid from wideline where intygtyp = " + EventType.REVOKED.ordinal() + " )";
+                + " lakarbefattning, vardgivareid, lakareid, enkelt from wideline w1 where w1.correlationid not in (select correlationid from wideline where intygtyp = " + EventType.REVOKED.ordinal() + " )";
         int maxIntyg = Integer.parseInt(System.getProperty("statistics.test.max.fact", "0"));
         if (maxIntyg > 0) {
             sql += " limit " + maxIntyg;

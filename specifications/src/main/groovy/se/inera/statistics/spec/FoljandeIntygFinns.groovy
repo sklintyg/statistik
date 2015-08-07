@@ -31,6 +31,8 @@ class FoljandeIntygFinns {
     String händelsetyp
     String jsonformat
     String intygstyp
+    String funktionsnedsättning
+    String aktivitetsbegränsning
 
     public void setKommentar(String kommentar) {}
 
@@ -53,6 +55,8 @@ class FoljandeIntygFinns {
         huvudenhet = null
         intygstyp = "fk7263"
         enhetsnamn = null
+        funktionsnedsättning = ""
+        aktivitetsbegränsning = ""
     }
 
     public void execute() {
@@ -90,6 +94,9 @@ class FoljandeIntygFinns {
         result.grundData.skapadAv.vardenhet.vardgivare.vardgivarid = vardgivare
 
         result.diagnosKod = diagnoskod
+
+        result.funktionsnedsattning = funktionsnedsättning
+        result.aktivitetsbegransning = aktivitetsbegränsning
 
         result["nedsattMed" + (100 - Integer.valueOf(arbetsförmåga))] = [
             from: start,

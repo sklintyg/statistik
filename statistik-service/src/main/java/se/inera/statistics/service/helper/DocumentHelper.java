@@ -255,4 +255,29 @@ public final class DocumentHelper {
             return document.path("id").textValue();
         }
     }
+
+    public static boolean isEnkeltIntyg(JsonNode intyg, IntygVersion version) {
+        if (version == IntygVersion.VERSION1) {
+            LOG.warn("'Enkelt intyg' parsing has not been implemented for old intyg format. Defaulting to false.");
+            return false;
+        }
+        final String funktionsnedsattning = intyg.path("funktionsnedsattning").toString();
+        final String aktivitetsbegransning = intyg.path("aktivitetsbegransning").toString();
+        return isAnyFieldIndicatingEnkeltIntyg(funktionsnedsattning, aktivitetsbegransning);
+    }
+
+    static boolean isAnyFieldIndicatingEnkeltIntyg(String... fields) {
+        for (String field : fields) {
+            if (isFieldIndicatingEnkeltIntyg(field)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private static boolean isFieldIndicatingEnkeltIntyg(String field) {
+        final String cleanedField = field.replaceAll("[^A-Za-zåäöÅÄÖ]", "");
+        return "E".equalsIgnoreCase(cleanedField) || "Enkel".equalsIgnoreCase(cleanedField) || "Enkelt".equalsIgnoreCase(cleanedField);
+    }
+
 }
