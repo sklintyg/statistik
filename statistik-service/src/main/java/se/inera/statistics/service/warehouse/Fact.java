@@ -57,9 +57,10 @@ public class Fact {
     private int lakaralder;
     private int[] lakarbefattnings;
     private int lakarid;
+    private boolean enkelt;
 
     // CHECKSTYLE:OFF ParameterNumber
-    public Fact(int lan, int kommun, int forsamling, int enhet, long lakarintyg, long patient, int startdatum, int slutdatum, int kon, int alder, int diagnoskapitel, int diagnosavsnitt, int diagnoskategori, int diagnoskod, int sjukskrivningsgrad, int lakarkon, int lakaralder, int[] lakarbefattnings, int lakarid) {
+    public Fact(int lan, int kommun, int forsamling, int enhet, long lakarintyg, long patient, int startdatum, int slutdatum, int kon, int alder, int diagnoskapitel, int diagnosavsnitt, int diagnoskategori, int diagnoskod, int sjukskrivningsgrad, int lakarkon, int lakaralder, int[] lakarbefattnings, int lakarid, boolean enkeltIntyg) {
         this.lan = lan;
         this.kommun = kommun;
         this.forsamling = forsamling;
@@ -79,6 +80,7 @@ public class Fact {
         this.lakaralder = lakaralder;
         this.lakarbefattnings = lakarbefattnings;
         this.lakarid = lakarid;
+        this.enkelt = enkeltIntyg;
     }
     // CHECKSTYLE:ON ParameterNumber
 
@@ -161,6 +163,10 @@ public class Fact {
         return lakarid;
     }
 
+    public boolean isEnkelt() {
+        return enkelt;
+    }
+
     @Override
     public String toString() {
         return "Fact{"
@@ -182,6 +188,7 @@ public class Fact {
                 + ", lakaralder=" + lakaralder
                 + ", lakarbefattnings=" + lakarbefattnings
                 + ", lakarid=" + lakarid
+                + ", enkelt=" + enkelt
                 + '}';
     }
 
@@ -208,7 +215,8 @@ public class Fact {
                 .append(lakarkon).append(c)
                 .append(lakaralder).append(c)
                 .append(lakarbefattnings).append(c)
-                .append(lakarid).append('\n');
+                .append(lakarid).append(c)
+                .append(enkelt).append('\n');
         return sb.toString();
     }
 
@@ -236,17 +244,18 @@ public class Fact {
         private int lakaralder = -1;
         private int[] lakarbefattnings = null;
         private int lakarid = -1;
+        private Boolean enkelt = null;
 
         public Fact build() {
             if (lan == -1 || kommun == -1 || forsamling == -1 || enhet == -1 || lakarintyg == -1 || patient == -1
                     || startdatum == -1 || slutdatum == -1 || kon == -1 || alder == -1 || diagnoskapitel == -1 || diagnosavsnitt == -1
                     || diagnoskategori == -1 || diagnoskod == -1 || sjukskrivningsgrad == -1 || lakarkon == -1
-                    || lakaralder == -1 || lakarbefattnings == null || lakarid == -1) {
+                    || lakaralder == -1 || lakarbefattnings == null || lakarid == -1 || enkelt == null) {
                 throw new RuntimeException("unitialized values");
             }
             return new Fact(lan, kommun, forsamling, enhet, lakarintyg, patient, startdatum, slutdatum, kon, alder, diagnoskapitel,
                     diagnosavsnitt, diagnoskategori, diagnoskod, sjukskrivningsgrad, lakarkon,
-                    lakaralder, lakarbefattnings, lakarid);
+                    lakaralder, lakarbefattnings, lakarid, enkelt.booleanValue());
         }
 
         public FactBuilder withLan(int lan) {
@@ -343,6 +352,12 @@ public class Fact {
             this.lakarid = lakarid;
             return this;
         }
+
+        public FactBuilder withEnkeltIntyg(boolean enkeltIntyg) {
+            this.enkelt = enkeltIntyg;
+            return this;
+        }
+
     }
 
     public static FactBuilder aFact() {

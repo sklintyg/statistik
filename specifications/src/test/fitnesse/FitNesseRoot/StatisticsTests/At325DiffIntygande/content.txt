@@ -9,7 +9,7 @@ Det finns flera olika intyg; enkla och övriga med olika längder.
 | script | troskel varde | 1 |
 
 | Enbart foljande intyg finns |
-| personnr | diagnoskod | start    | slut       | enhet  | fält4 | fält5 | kommentar |
+| personnr | diagnoskod | start    | slut       | enhet  | funktionsnedsättning | aktivitetsbegränsning | kommentar |
 | 19790407-0120 | F32 | 2015-02-01 | 2015-05-28 | enhet2 | E | E | Enkelt intyg över 60 dagar |
 | 19790407-0210 | F32 | 2015-03-01 | 2015-03-28 | enhet2 | E | E | |
 | 19790407-0210 | F32 | 2015-04-01 | 2015-05-28 | enhet2 | E | E | Enkelt intyg som förlänger sjukfall till över 60 dagar |

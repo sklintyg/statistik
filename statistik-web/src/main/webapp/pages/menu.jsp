@@ -166,6 +166,10 @@
                    id="navBusinessCasesPerLakarbefattningLink" ctrlname="VerksamhetLakarbefattningCtrl"
                    navigationaware><span message key="nav.lakarbefattning"></span></a>
             </li>
+            <li><a class="last-item-in-menu rounded-bottom" data-ng-href="#/verksamhet/differentieratintygande{{queryString}}"
+                   id="navBusinessDifferentieratIntygandeLink" ctrlname="VerksamhetDifferentieratIntygandeCtrl"
+                   navigationaware><span message key="nav.differentieratintygande"></span></a>
+            </li>
           </ul>
         </div>
       </div>

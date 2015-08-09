@@ -199,6 +199,18 @@ var app = angular.module('StatisticsApp',
             controllerAs: 'VerksamhetDegreeOfSickLeaveCtrl',
             resolve: { config: app.degreeOfSickLeaveTvarsnittConfig },
             title: 'Sjukskrivningsgrad'
+        }).when('/verksamhet/differentieratintygande', {
+            templateUrl: 'views/detailsView.html',
+            controller: 'doubleAreaChartsCtrl',
+            controllerAs: 'VerksamhetDifferentieratIntygandeCtrl',
+            resolve: { config: app.differentieratIntygandeConfig },
+            title: 'Differentierat intygande'
+        }).when('/verksamhet/differentieratintygandetvarsnitt', {
+            templateUrl: 'views/detailsView.html',
+            controller: 'columnChartDetailsViewCtrl',
+            controllerAs: 'VerksamhetDifferentieratIntygandeCtrl',
+            resolve: { config: app.differentieratIntygandeTvarsnittConfig },
+            title: 'Differentierat intygande'
         }).when('/verksamhet/sjukskrivningslangd', {
             templateUrl: 'views/detailsView.html',
             controller: 'columnChartDetailsViewCtrl',

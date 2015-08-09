@@ -29,7 +29,7 @@ angular.module('StatisticsApp').controller('doubleAreaChartsCtrl', [ '$scope', '
         $scope.activeChartType = defaultChartType;
         var isVerksamhet = ControllerCommons.isShowingVerksamhet($location);
 
-        this.paintChart = function (containerId, yAxisTitle, yAxisTitleXPos, chartCategories, chartSeries, chartSpacingLeft, doneLoadingCallback) {
+        this.paintChart = function (containerId, yAxisTitle, yAxisTitleXPos, chartCategories, chartSeries, chartSpacingLeft, doneLoadingCallback, percentChart) {
             var chartOptions = chartFactory.getHighChartConfigBase(chartCategories, chartSeries, doneLoadingCallback);
 
             chartOptions.chart.type = defaultChartType;
@@ -41,11 +41,19 @@ angular.module('StatisticsApp').controller('doubleAreaChartsCtrl', [ '$scope', '
             chartOptions.legend.enabled = $routeParams.printBw || $routeParams.print;
             chartOptions.xAxis.title.text = "Period";
             chartOptions.tooltip.useHTML = true;
-            chartOptions.yAxis.title.text = yAxisTitle;
+            chartOptions.yAxis.title.text = (config.percentChart ? "Andel " : "Antal ") + yAxisTitle;
             chartOptions.yAxis.title.x = yAxisTitleXPos;
             chartOptions.yAxis.title.y = -13;
             chartOptions.yAxis.title.align = 'high';
             chartOptions.yAxis.title.offset = 0;
+            chartOptions.yAxis.labels.formatter = function () {
+                return ControllerCommons.makeThousandSeparated(this.value) + (percentChart ? "%" : "");
+            };
+            chartOptions.plotOptions.area.stacking = percentChart ? 'percent' : 'normal';
+            if (percentChart) {
+                chartOptions.tooltip.pointFormat = '<span style="color:{series.color}">{series.name}</span>: <b>{point.percentage:.0f}%</b><br/>';
+            }
+
             return new Highcharts.Chart(chartOptions);
         };
 
@@ -120,11 +128,11 @@ angular.module('StatisticsApp').controller('doubleAreaChartsCtrl', [ '$scope', '
 
             var chartSeriesFemale = ajaxResult.femaleChart.series;
             printFactory.setupSeriesForDisplayType($routeParams.printBw, chartSeriesFemale, "area");
-            that.chart1 = that.paintChart('chart1', 'Antal sjukfall för kvinnor', 118, chartCategories, chartSeriesFemale, -100, doneLoadingCallback);
+            that.chart1 = that.paintChart('chart1', 'sjukfall för kvinnor', 118, chartCategories, chartSeriesFemale, -100, doneLoadingCallback, config.percentChart);
 
             var chartSeriesMale = ajaxResult.maleChart.series;
             printFactory.setupSeriesForDisplayType($routeParams.printBw, chartSeriesMale, "area");
-            that.chart2 = that.paintChart('chart2', 'Antal sjukfall för män', 97, chartCategories, chartSeriesMale, -80, doneLoadingCallback);
+            that.chart2 = that.paintChart('chart2', 'sjukfall för män', 97, chartCategories, chartSeriesMale, -80, doneLoadingCallback, config.percentChart);
 
             updateChartsYAxisMaxValue();
 
@@ -338,6 +346,27 @@ angular.module('StatisticsApp').degreeOfSickLeaveConfig = function () {
     conf.exchangeableViews = [
         {description: 'Tidsserie', state: '#/verksamhet/sjukskrivningsgrad', active: true},
         {description: 'Tvärsnitt', state: '#/verksamhet/sjukskrivningsgradtvarsnitt', active: false}];
+
+    return conf;
+};
+
+angular.module('StatisticsApp').differentieratIntygandeConfig = function () {
+    var conf = {};
+    conf.dataFetcherVerksamhet = "getDifferentieratIntygandeVerksamhet";
+    conf.exportTableUrlVerksamhet = function () {
+        return "api/verksamhet/getDifferentieratIntygandeStatistics/csv";
+    };
+    conf.showDetailsOptions = false;
+    conf.title = function (period, enhetsCount) {
+        return "Andel sjukfall för differentierat intygande" + ControllerCommons.getEnhetCountText(enhetsCount, false) + period;
+    };
+    conf.pageHelpText = "help.differentieratintygande";
+
+    conf.exchangeableViews = [
+        {description: 'Tidsserie', state: '#/verksamhet/differentieratintygande', active: true},
+        {description: 'Tvärsnitt', state: '#/verksamhet/differentieratintygandetvarsnitt', active: false}];
+
+    conf.percentChart = true;
 
     return conf;
 };

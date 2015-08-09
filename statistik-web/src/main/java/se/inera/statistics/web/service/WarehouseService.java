@@ -229,4 +229,12 @@ public class WarehouseService {
         return map.asMap();
     }
 
+    public KonDataResponse getDifferentieratIntygande(SjukfallFilter filter, Range range, HsaIdVardgivare vardgivarId) {
+        return SjukskrivningslangdQuery.getEnklaSjukfall(warehouse.get(vardgivarId), filter, range.getFrom(), range.getMonths(), 1, sjukfallUtil);
+    }
+
+    public SimpleKonResponse<SimpleKonDataRow> getDifferentieratIntygandeTvarsnitt(SjukfallFilter filter, Range range, HsaIdVardgivare vardgivarId) {
+        return SjukskrivningslangdQuery.getEnklaSjukfallTvarsnitt(warehouse.get(vardgivarId), filter, range.getFrom(), 1, range.getMonths(), sjukfallUtil);
+    }
+
 }

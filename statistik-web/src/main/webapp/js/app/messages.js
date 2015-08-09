@@ -32,6 +32,7 @@ var stMessages = {
         'nav.vardenhet':'Vårdenhet',
         'nav.lakare':'Läkare',
         'nav.lakarbefattning':'Läkarbefattning',
+        'nav.differentieratintygande':'Differentierat intygande',
         'nav.lakaralder-kon':'Läkarålder och -kön',
         'nav.sjukskrivningslangd-mer-an-90-dagar':'Mer än 90 dagar',
         'nav.allmant-om-tjansten': 'Allmänt om tjänsten',
@@ -137,6 +138,7 @@ var stMessages = {
         'help.diagnosisgroup' : 'Diagnoskoder används för att gruppera sjukdomar för att kunna göra översiktliga statistiska sammanställningar och analyser. Statistiktjänsten är uppdelad i sju övergripande diagnosgrupper. I varje grupp ingår olika kapitel med diagnoskoder. Diagnoskoderna finns i klassificeringssystemet ICD-10-SE.',
         'help.diagnosissubgroup' : 'Ett diagnoskapitel innehåller flera avsnitt med sjukdomar som i sin tur omfattar olika diagnoskoder. Det finns totalt 21 diagnoskapitel. Grafen visar endast de sex vanligaste förekommande avsnitten eller diagnoserna uppdelade på kvinnor respektive män. I tabellen visas samtliga inom valt kapitel eller avsnitt.',
         'help.degreeofsickleave' : 'Sjukskrivningsgrad visar hur stor del av patientens arbetsförmåga som är nedsatt. Sjukskrivningsgraden anges i procent i förhållande till patientens aktuella arbetstid.',
+        'help.differentieratintygande' : 'Ett sjukfall räknas som enkelt om det innehåller minst ett enkelt intyg.',
         'help.casespermonth' : 'Ett sjukfall innehåller en patients alla läkarintyg om intygen följer varandra med max fem dagars uppehåll. Läkarintygen måste också vara utfärdade av samma vårdgivare. Om det är fler än fem dagar mellan intygen räknas det nya intyget som ett nytt sjukfall.',
         'help.landsting-enhet-listningar' : 'Antal sjukfall per 1000 listningar är ett mått som gör att det går att jämföra antalet sjukfall på olika vårdenheter trots att vårdenheterna inte är lika stora. Detta eftersom antalet sjukfall sätts i relation till antalet listade patienter. Information om antal listade patienter på respektive vårdenhet har rapporterats in av landstinget.',
 

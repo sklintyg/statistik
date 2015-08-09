@@ -90,7 +90,7 @@ public class SjukskrivningslangdQueryTest {
                 withPatient(patient++).withKon(Kon.Female).withAlder(45).
                 withDiagnoskapitel(0).withDiagnosavsnitt(14).withDiagnoskategori(16).withDiagnoskod(18).
                 withSjukskrivningsgrad(100).withStartdatum(startday).withSlutdatum(startday + length - 1).
-                withLakarkon(Kon.Female).withLakaralder(32).withLakarbefattning(new int[]{201010}).withLakarid(1).build();
+                withLakarkon(Kon.Female).withLakaralder(32).withLakarbefattning(new int[]{201010}).withLakarid(1).withEnkeltIntyg(false).build();
         warehouse.accept(fact, VARDGIVARE);
     }
 

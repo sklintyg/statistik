@@ -407,6 +407,26 @@ angular.module('StatisticsApp').degreeOfSickLeaveTvarsnittConfig = function () {
     return conf;
 };
 
+angular.module('StatisticsApp').differentieratIntygandeTvarsnittConfig = function () {
+    var conf = {};
+    conf.dataFetcherVerksamhet = "getDifferentieratIntygandeTvarsnittVerksamhet";
+    conf.exportTableUrlVerksamhet = function () {
+        return "api/verksamhet/getDifferentieratIntygandeTvarsnitt/csv";
+    };
+    conf.showDetailsOptions = false;
+    conf.title = function (period, enhetsCount) {
+        return "Andel sjukfall för differentierat intygande" + ControllerCommons.getEnhetCountText(enhetsCount, false) + period;
+    };
+    conf.chartXAxisTitle = "";
+    conf.pageHelpText = "help.differentieratintygande";
+
+    conf.exchangeableViews = [
+        {description: 'Tidsserie', state: '#/verksamhet/differentieratintygande', active: false},
+        {description: 'Tvärsnitt', state: '#/verksamhet/differentieratintygandetvarsnitt', active: true}];
+
+    return conf;
+};
+
 angular.module('StatisticsApp').diagnosisGroupTvarsnittConfig = function () {
     var conf = {};
     conf.dataFetcherVerksamhet = "getDiagnosisGroupTvarsnittVerksamhet";

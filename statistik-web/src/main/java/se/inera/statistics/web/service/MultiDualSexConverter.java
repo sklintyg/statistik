@@ -86,7 +86,7 @@ public abstract class MultiDualSexConverter<T extends KonDataResponse> {
         return new TableData(rows, headers);
     }
 
-    private List<NamedData> getTableRows(T resp) {
+    List<NamedData> getTableRows(T resp) {
         List<NamedData> rows = new ArrayList<>();
         for (KonDataRow row : resp.getRows()) {
             List<Integer> mergedSexData = ServiceUtil.getMergedSexData(row);
