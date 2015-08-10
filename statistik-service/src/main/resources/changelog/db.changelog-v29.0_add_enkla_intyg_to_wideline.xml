@@ -22,7 +22,7 @@
 <databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd"
-                   logicalFilePath="liquibase/db.changelog-v29_add_enkla_intyg_to_wideline.xml">
+                   logicalFilePath="liquibase/db.changelog-v29_0_add_enkla_intyg_to_wideline.xml">
     <changeSet id="29_add_enkla_intyg_to_wideline" author="fredrik.engstrom">
         <addColumn tableName="wideline">
             <column name="enkelt" type="BOOLEAN">
