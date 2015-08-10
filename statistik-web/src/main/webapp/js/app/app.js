@@ -23,7 +23,7 @@ var app = angular.module('StatisticsApp',
         $routeProvider.when('/login', {
             templateUrl: 'views/login.html',
             controller: 'loginCtrl',
-            title: 'Login Page'
+            title: 'Inloggning'
         }).when('/fakelogin', {
             templateUrl: 'views/fakelogin.html',
             title: 'Fake Login Page'
