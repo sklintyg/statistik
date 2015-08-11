@@ -81,6 +81,9 @@ var stMessages = {
         'lbl.filter.sum-progress-3': ' vårdenheter.',
         'alert.filter.date-invalid': 'Felaktigt tidsintervall har angetts',
 
+        //Multi-select
+        'info.multiselect.loading': 'Laddar information, var god vänta.',
+
         //national statistics overview
         'national.overview-header': 'Nationell statistik',
         'national.overview-header2': 'Utvecklingen i Sverige de senaste tre månaderna, ',
