@@ -55,7 +55,8 @@ import static org.junit.Assert.assertEquals;
 
         Fact fact = factPopulator.toFact(wideLine);
 
-        assertEquals(0, fact.getLakarbefattnings().length);
+        assertEquals(1, fact.getLakarbefattnings().length);
+        assertEquals(-1, fact.getLakarbefattnings()[0]);
     }
 
     @Test
@@ -64,6 +65,20 @@ import static org.junit.Assert.assertEquals;
 
         Fact fact = factPopulator.toFact(wideLine);
 
-        assertEquals(0, fact.getLakarbefattnings().length);
+        assertEquals(1, fact.getLakarbefattnings().length);
+        assertEquals(-1, fact.getLakarbefattnings()[0]);
     }
+
+    @Test
+    public void toFactWithFaultyBefattnings() {
+        WideLine wideLine = new WideLine(1L, "correlationId", "088080", new HsaIdEnhet("enhet"), 2L, EventType.CREATED, "19121212-1210", 1000, 1002, 1, 20, "diagnoskapitel", "diagnosavsnitt", "diagnoskategori", "diagnoskod", 100, 1, 50, "123,-,456", new HsaIdVardgivare("vardgivareId"), new HsaIdLakare("lakareId"), false);
+
+        Fact fact = factPopulator.toFact(wideLine);
+
+        assertEquals(3, fact.getLakarbefattnings().length);
+        assertEquals(123, fact.getLakarbefattnings()[0]);
+        assertEquals(-1, fact.getLakarbefattnings()[1]);
+        assertEquals(456, fact.getLakarbefattnings()[2]);
+    }
+
 }

@@ -11,9 +11,9 @@ public class Personal {
     private String lastName;
     private HsaKon kon;
     private int age;
-    private List<Integer> befattning;
+    private List<String> befattning;
 
-    public Personal(String id, String firstName, String lastName, HsaKon kon, int age, List<Integer> befattning) {
+    public Personal(String id, String firstName, String lastName, HsaKon kon, int age, List<String> befattning) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -47,7 +47,7 @@ public class Personal {
         return age;
     }
 
-    public List<Integer> getBefattning() {
+    public List<String> getBefattning() {
         return befattning;
     }
 

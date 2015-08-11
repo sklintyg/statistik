@@ -27,6 +27,7 @@ import se.inera.statistics.service.helper.ConversionHelper;
 import se.inera.statistics.service.report.util.Icd10;
 import se.inera.statistics.service.report.util.Icd10RangeType;
 import se.inera.statistics.service.warehouse.model.db.WideLine;
+import se.inera.statistics.service.warehouse.query.LakarbefattningQuery;
 
 @Component
 public class FactPopulator {
@@ -75,13 +76,13 @@ public class FactPopulator {
             for (int i = 0; i < befattningStrings.length; i++) {
                 String befattning = befattningStrings[i].trim();
                 if (befattning.equals("-")) {
-                    return new int[0];
+                    befattnings[i] = LakarbefattningQuery.NO_BEFATTNING_CODE;
                 }
                 try {
                     befattnings[i] = Integer.parseInt(befattning);
                 } catch (NumberFormatException nfe) {
-                    LOG.error("Unknown befattning: " + befattning);
-                    return new int[0];
+                    LOG.info("Unknown befattning: '" + befattning + "' for doctor in intyg: " + wideline.getCorrelationId());
+                    befattnings[i] = LakarbefattningQuery.NO_BEFATTNING_CODE;
                 }
             }
             return befattnings;
