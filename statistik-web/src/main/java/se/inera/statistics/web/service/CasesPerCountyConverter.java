@@ -68,7 +68,7 @@ public class CasesPerCountyConverter {
 
         final int topHeaderSpan = 3;
         List<TableHeader> topHeaders = Arrays.asList(new TableHeader("", 1), new TableHeader(rangeOld.toStringAbbreviated(), topHeaderSpan), new TableHeader(rangeNew.toStringAbbreviated(), topHeaderSpan));
-        final List<String> subHeaderTexts = Arrays.asList("Län", "Antal sjukfall totalt", "Antal sjukfall för kvinnor", "Antal sjukfall för män", "Antal sjukfall", "Antal sjukfall för kvinnor", "Antal sjukfall för män");
+        final List<String> subHeaderTexts = Arrays.asList("Län", "Antal sjukfall totalt", "Antal sjukfall för kvinnor", "Antal sjukfall för män", "Antal sjukfall totalt", "Antal sjukfall för kvinnor", "Antal sjukfall för män");
         List<TableHeader> subHeaders = TableData.toTableHeaderList(subHeaderTexts, 1);
         List<List<TableHeader>> headerRows = new ArrayList<>();
         headerRows.add(topHeaders);
