@@ -32,14 +32,14 @@ Det räcker att det räcker att ett av fält 4 och 5 är ifyllt på detta sätt 
 | Sjukfall i rapporten differentierat intygande |
 | inloggad som | år   | månad | typ                     | totalt? | män?     | kvinnor? |
 | user2        | 2015 | feb   | Övriga                  | 1       | 0% (0)   | 100% (1) |
-| user2        | 2015 | feb   | Enkla upp till 60 dagar | 0       | 0% (0)   | 0% (0)   |
-| user2        | 2015 | mar   | Övriga                  | 0       | 0% (0)   | 0% (0)   |
+| user2        | 2015 | feb   | Enkla upp till 60 dagar | 1       | 0% (0)   | 0% (0)   |
+| user2        | 2015 | mar   | Övriga                  | 1       | 0% (0)   | 0% (0)   |
 | user2        | 2015 | mar   | Enkla upp till 60 dagar | 1       | 0% (0)   | 100% (1) |
-| user2        | 2015 | apr   | Övriga                  | 0       | 0% (0)   | 0% (0)   |
+| user2        | 2015 | apr   | Övriga                  | 1       | 0% (0)   | 0% (0)   |
 | user2        | 2015 | apr   | Enkla upp till 60 dagar | 1       | 0% (0)   | 100% (1) |
-| user2        | 2015 | maj   | Övriga                  | 0       | 0% (0)   | 0% (0)   |
+| user2        | 2015 | maj   | Övriga                  | 2       | 0% (0)   | 0% (0)   |
 | user2        | 2015 | maj   | Enkla upp till 60 dagar | 2       | 100% (1) | 100% (1) |
-| user2        | 2015 | jun   | Övriga                  | 0       | 0% (0)   | 0% (0)   |
+| user2        | 2015 | jun   | Övriga                  | 2       | 0% (0)   | 0% (0)   |
 | user2        | 2015 | jun   | Enkla upp till 60 dagar | 2       | 100% (1) | 100% (1) |
-| user2        | 2015 | jul   | Övriga                  | 0       | 0% (0)   | 0% (0)   |
+| user2        | 2015 | jul   | Övriga                  | 3       | 0% (0)   | 0% (0)   |
 | user2        | 2015 | jul   | Enkla upp till 60 dagar | 3       | 100% (1) | 100% (2) |
