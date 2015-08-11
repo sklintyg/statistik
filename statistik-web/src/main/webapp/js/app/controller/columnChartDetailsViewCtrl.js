@@ -415,7 +415,7 @@ angular.module('StatisticsApp').differentieratIntygandeTvarsnittConfig = functio
     };
     conf.showDetailsOptions = false;
     conf.title = function (period, enhetsCount) {
-        return "Andel sjukfall för differentierat intygande" + ControllerCommons.getEnhetCountText(enhetsCount, false) + period;
+        return "Antal sjukfall för differentierat intygande" + ControllerCommons.getEnhetCountText(enhetsCount, false) + period;
     };
     conf.chartXAxisTitle = "";
     conf.pageHelpText = "help.differentieratintygande";
