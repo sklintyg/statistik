@@ -218,13 +218,19 @@ var ControllerCommons = new function(){
             $scope.selectedDetailsOption2 = $scope.detailsOptions2[0];
         }
 
-        //Add default option for detailsOptions3
-        var defaultIdKategori = messageService.getProperty("lbl.valj-annan-diagnoskategori", null, "", null, true);
-        $scope.detailsOptions3.unshift({"id": defaultIdKategori, "name":"", "url":basePath + getDiagnosPathPart($routeParams)});
-        if (!$scope.selectedDetailsOption3) {
-            $scope.selectedDetailsOption3 = $scope.detailsOptions3[0];
+        if ($routeParams.avsnittId) {
+            //Add default option for detailsOptions3
+            var defaultIdKategori = messageService.getProperty("lbl.valj-annan-diagnoskategori", null, "", null, true);
+            $scope.detailsOptions3.unshift({
+                "id": defaultIdKategori,
+                "name": "",
+                "url": basePath + "/kapitel/" + $routeParams.kapitelId + "/avsnitt/" + $routeParams.avsnittId
+            });
+            if (!$scope.selectedDetailsOption3) {
+                $scope.selectedDetailsOption3 = $scope.detailsOptions3[0];
+            }
         }
-
+        
         $scope.subTitle = getSubtitle($scope.currentPeriod, $scope.selectedDetailsOption, $scope.selectedDetailsOption2, $scope.selectedDetailsOption3, $scope, config);
     };
 
