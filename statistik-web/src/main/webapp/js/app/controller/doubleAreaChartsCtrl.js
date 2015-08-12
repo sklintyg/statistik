@@ -49,7 +49,8 @@ angular.module('StatisticsApp').controller('doubleAreaChartsCtrl', [ '$scope', '
             chartOptions.yAxis.labels.formatter = function () {
                 return ControllerCommons.makeThousandSeparated(this.value) + (percentChart ? "%" : "");
             };
-            chartOptions.plotOptions.area.stacking = percentChart ? 'percent' : 'normal';
+            chartOptions.plotOptions.series.stacking = percentChart ? 'percent' : 'normal';
+
             if (percentChart) {
                 chartOptions.tooltip.pointFormat = '<span style="color:{series.color}">{series.name}</span>: <b>{point.percentage:.0f}%</b><br/>';
             }
@@ -140,8 +141,8 @@ angular.module('StatisticsApp').controller('doubleAreaChartsCtrl', [ '$scope', '
         };
 
         $scope.switchChartType = function (chartType) {
-            chartFactory.switchChartType(that.chart1.series, chartType);
-            chartFactory.switchChartType(that.chart2.series, chartType);
+            chartFactory.switchChartType(that.chart1, chartType);
+            chartFactory.switchChartType(that.chart2, chartType);
             that.chart1.redraw();
             that.chart2.redraw();
 

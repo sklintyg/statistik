@@ -94,8 +94,10 @@ angular.module('StatisticsApp.charts', ['underscore'])
                     column : {
                         stacking : 'normal'
                     },
+                    series: {
+                      stacking: null
+                    },
                     area : {
-                        stacking : 'normal',
                         lineColor : '#666666',
                         lineWidth : 1,
                         marker : {
@@ -191,20 +193,26 @@ angular.module('StatisticsApp.charts', ['underscore'])
             chart.exportChart(options, extendedChartOptions);
         };
 
+        var calculateSeriesStacking = function calculateSeriesStacking(chart, chartType) {
+            //Figure out if we stacking should be percent, normal or null when we switch the type of the diagram
+            var seriesStacking = chart.options.plotOptions.series.stacking;
+            return seriesStacking === 'percent'? seriesStacking : chartType === 'area'? 'normal' : null;
+        };
+
         /* Configure all existing series of a specific chart for a new chart type.
          */
-        var switchChartType = function (chartSeries, chartType, config) {
+        var switchChartType = function (chart, chartType) {
 
-            config = config || {
+            var config = config || {
                 type: chartType,
                 stack: chartType === 'area'? 'stacked' : null,
-                stacking: chartType === 'area'? 'normal' : null
+                stacking: calculateSeriesStacking(chart, chartType)
             };
 
-            var hasSexSet = isSexSetOnChartSeries(chartSeries);
+            var hasSexSet = isSexSetOnChartSeries(chart.series);
 
             //This updates the chart object with new options
-            _.each(chartSeries, function (series) {
+            _.each(chart.series, function (series) {
 
                 //If the sex property is available on the series object, then there is a series with sex === null that is a total series.
                 //We want this sereis to be hidden when the chart type is === area
