@@ -2048,3 +2048,8 @@ div.dropzone a{
     }
 }
 /* Styling for the sidebar end*/
+
+/*Override the spinner margin when it is placed within a modal-body*/
+.modal-body>.spinner {
+    margin: 0px;
+}

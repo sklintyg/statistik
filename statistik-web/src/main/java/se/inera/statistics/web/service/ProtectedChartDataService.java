@@ -537,6 +537,36 @@ public class ProtectedChartDataService {
         return getResponse(data, csv);
     }
 
+    @GET
+    @Path("getDifferentieratIntygandeStatistics{csv:(/csv)?}")
+    @Produces({ MediaType.APPLICATION_JSON })
+    @Consumes({ MediaType.APPLICATION_JSON })
+    @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
+    @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
+    public Response getDifferentieratIntygandeStatistics(@Context HttpServletRequest request, @QueryParam("filter") String filterHash, @PathParam("csv") String csv) {
+        final FilterSettings filterSettings = filterHandler.getFilter(request, filterHash, 18);
+        final Filter filter = filterSettings.getFilter();
+        final Range range = filterSettings.getRange();
+        KonDataResponse statisticsData = warehouse.getDifferentieratIntygande(filter.getPredicate(), range, loginServiceUtil.getSelectedVgIdForLoggedInUser(request));
+        DualSexStatisticsData data = new DifferentieratIntygandeConverter().convert(statisticsData, filterSettings);
+        return getResponse(data, csv);
+    }
+
+    @GET
+    @Path("getDifferentieratIntygandeTvarsnitt{csv:(/csv)?}")
+    @Produces({ MediaType.APPLICATION_JSON })
+    @Consumes({ MediaType.APPLICATION_JSON })
+    @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
+    @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
+    public Response getDifferentieratIntygandeTvarsnitt(@Context HttpServletRequest request, @QueryParam("filter") String filterHash, @PathParam("csv") String csv) {
+        final FilterSettings filterSettings = filterHandler.getFilter(request, filterHash, 12);
+        final Filter filter = filterSettings.getFilter();
+        final Range range = filterSettings.getRange();
+        SimpleKonResponse<SimpleKonDataRow> statisticsData = warehouse.getDifferentieratIntygandeTvarsnitt(filter.getPredicate(), range, loginServiceUtil.getSelectedVgIdForLoggedInUser(request));
+        SimpleDetailsData data = new SimpleDualSexConverter("", false, "%1$s").convert(statisticsData, filterSettings);
+        return getResponse(data, csv);
+    }
+
     public boolean hasAccessTo(HttpServletRequest request) {
         if (request == null) {
             return false;

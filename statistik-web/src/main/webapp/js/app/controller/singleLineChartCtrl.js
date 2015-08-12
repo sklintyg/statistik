@@ -77,7 +77,7 @@ angular.module('StatisticsApp').controller('singleLineChartCtrl', [ '$scope', '$
         };
 
         $scope.switchChartType = function (chartType) {
-            chartFactory.switchChartType(chart.series, chartType);
+            chartFactory.switchChartType(chart, chartType);
             $scope.activeChartType = chartType;
             chart.redraw();
         };

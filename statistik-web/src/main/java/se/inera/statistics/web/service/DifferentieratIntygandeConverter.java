@@ -16,18 +16,15 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package se.inera.statistics.service.hsa;
+package se.inera.statistics.web.service;
 
-import java.util.List;
+import se.inera.statistics.service.report.model.KonDataResponse;
+import se.inera.statistics.web.model.DualSexStatisticsData;
 
-public interface HsaDataInjectable {
+public class DifferentieratIntygandeConverter extends MultiDualSexConverter<KonDataResponse> {
 
-    void addPersonal(String id, String firstName, String lastName, HsaKon kon, int age, List<String> befattning);
-
-    void setCountyForNextIntyg(String countyCode);
-
-    void setHuvudenhetIdForNextIntyg(String huvudenhetId);
-
-    void setEnhetNameForNextIntyg(String name);
+    DualSexStatisticsData convert(KonDataResponse statisticsData, FilterSettings filterSettings) {
+        return super.convert(statisticsData, filterSettings, null, "%1$s");
+    }
 
 }

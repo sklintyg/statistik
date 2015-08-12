@@ -23,7 +23,7 @@ var app = angular.module('StatisticsApp',
         $routeProvider.when('/login', {
             templateUrl: 'views/login.html',
             controller: 'loginCtrl',
-            title: 'Login Page'
+            title: 'Inloggning'
         }).when('/fakelogin', {
             templateUrl: 'views/fakelogin.html',
             title: 'Fake Login Page'
@@ -199,6 +199,18 @@ var app = angular.module('StatisticsApp',
             controllerAs: 'VerksamhetDegreeOfSickLeaveCtrl',
             resolve: { config: app.degreeOfSickLeaveTvarsnittConfig },
             title: 'Sjukskrivningsgrad'
+        }).when('/verksamhet/differentieratintygande', {
+            templateUrl: 'views/detailsView.html',
+            controller: 'doubleAreaChartsCtrl',
+            controllerAs: 'VerksamhetDifferentieratIntygandeCtrl',
+            resolve: { config: app.differentieratIntygandeConfig },
+            title: 'Differentierat intygande'
+        }).when('/verksamhet/differentieratintygandetvarsnitt', {
+            templateUrl: 'views/detailsView.html',
+            controller: 'columnChartDetailsViewCtrl',
+            controllerAs: 'VerksamhetDifferentieratIntygandeCtrl',
+            resolve: { config: app.differentieratIntygandeTvarsnittConfig },
+            title: 'Differentierat intygande'
         }).when('/verksamhet/sjukskrivningslangd', {
             templateUrl: 'views/detailsView.html',
             controller: 'columnChartDetailsViewCtrl',
@@ -346,3 +358,15 @@ app.run([ '$rootScope', '$route', 'messageService', function ($rootScope, $route
         }
     });
 } ]);
+
+app.config(['$httpProvider', function($httpProvider) {
+    if (!$httpProvider.defaults.headers.get) {
+        $httpProvider.defaults.headers.get = {};
+    }
+
+    //disable IE ajax request caching
+    $httpProvider.defaults.headers.get['If-Modified-Since'] = 'Mon, 26 Jul 1997 05:00:00 GMT';
+
+    $httpProvider.defaults.headers.get['Cache-Control'] = 'no-cache';
+    $httpProvider.defaults.headers.get['Pragma'] = 'no-cache';
+}]);

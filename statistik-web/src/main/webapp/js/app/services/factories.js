@@ -3,10 +3,20 @@
 angular.module('StatisticsApp').factory('statisticsData', ['$http', '$rootScope', '$q', '$location', function ($http, $rootScope, $q, $location) {
     var factory = {};
 
-    var makeRequestNational = function (restFunctionName, successCallback, failureCallback, cached) {
-        var finalCached = (typeof cached !== 'undefined') ? cached : true;
+    var pendingAbortableRequest;
 
-        $http.get("api/" + restFunctionName, {cache: finalCached}).success(function (result) {
+    function newAbortable() {
+        if (pendingAbortableRequest) {
+            pendingAbortableRequest.resolve();
+        }
+        pendingAbortableRequest = $q.defer();
+        return pendingAbortableRequest.promise;
+    }
+
+    var makeRequestNational = function (restFunctionName, successCallback, failureCallback, cached, notAbortable) {
+        var finalCached = (typeof cached !== 'undefined') ? cached : true;
+        var timeoutFunction = notAbortable ? null : newAbortable();
+        $http.get("api/" + restFunctionName, {cache: finalCached, timeout: timeoutFunction}).success(function (result) {
             try {
                 successCallback(result);
             } catch (e) {
@@ -17,19 +27,20 @@ angular.module('StatisticsApp').factory('statisticsData', ['$http', '$rootScope'
         });
     };
 
-    var makeRequestVerksamhet = function (restFunctionName, successCallback, failureCallback) {
+    var makeRequestVerksamhet = function (restFunctionName, successCallback, failureCallback, notAbortable) {
         var url = "api/verksamhet/" + restFunctionName + $rootScope.queryString;
-        makeRequest(url, successCallback, failureCallback);
+        makeRequest(url, successCallback, failureCallback, notAbortable);
     };
 
-    var makeRequestLandsting = function (restFunctionName, successCallback, failureCallback, httpMethod) {
+    var makeRequestLandsting = function (restFunctionName, successCallback, failureCallback, httpMethod, notAbortable) {
         var url = "api/landsting/" + restFunctionName + $rootScope.queryString;
-        makeRequest(url, successCallback, failureCallback, httpMethod);
+        makeRequest(url, successCallback, failureCallback, httpMethod, notAbortable);
     };
 
-    function makeRequest(url, successCallback, failureCallback, httpMethod) {
+    function makeRequest(url, successCallback, failureCallback, httpMethod, notAbortable) {
         httpMethod = httpMethod ? httpMethod : "get";
-        $http[httpMethod](url, {}, {cache: false}).success(function (result) {
+        var timeoutFunction = notAbortable ? null : newAbortable();
+        $http[httpMethod](url, {}, {cache: false, timeout: timeoutFunction}).success(function (result) {
             try {
                 successCallback(result);
             } catch (e) {
@@ -95,7 +106,7 @@ angular.module('StatisticsApp').factory('statisticsData', ['$http', '$rootScope'
     };
 
     factory.getDiagnosisKapitelAndAvsnittAndKategori = function (successCallback, failureCallback) {
-        makeRequestNational("getDiagnosisKapitelAndAvsnittAndKategori", successCallback, failureCallback);
+        makeRequestNational("getDiagnosisKapitelAndAvsnittAndKategori", successCallback, failureCallback, true, true);
     };
 
     factory.getAgeGroups = function (successCallback, failureCallback) {
@@ -130,6 +141,14 @@ angular.module('StatisticsApp').factory('statisticsData', ['$http', '$rootScope'
         makeRequestVerksamhet("getDegreeOfSickLeaveTvarsnitt", successCallback, failureCallback);
     };
 
+    factory.getDifferentieratIntygandeVerksamhet = function (successCallback, failureCallback) {
+        makeRequestVerksamhet("getDifferentieratIntygandeStatistics", successCallback, failureCallback);
+    };
+
+    factory.getDifferentieratIntygandeTvarsnittVerksamhet = function (successCallback, failureCallback) {
+        makeRequestVerksamhet("getDifferentieratIntygandeTvarsnitt", successCallback, failureCallback);
+    };
+
     factory.getNationalSickLeaveLengthData = function (successCallback, failureCallback) {
         makeRequestNational("getSickLeaveLengthData", successCallback, failureCallback);
     };
@@ -159,7 +178,7 @@ angular.module('StatisticsApp').factory('statisticsData', ['$http', '$rootScope'
     };
 
     factory.getLoginInfo = function (successCallback, failureCallback) {
-        makeRequestNational("login/getLoginInfo", successCallback, failureCallback, false);
+        makeRequestNational("login/getLoginInfo", successCallback, failureCallback, false, true);
     };
 
     factory.getSjukfallPerBusinessVerksamhet = function (successCallback, failureCallback) {
@@ -187,7 +206,7 @@ angular.module('StatisticsApp').factory('statisticsData', ['$http', '$rootScope'
     };
 
     factory.getIcd10Structure = function (successCallback, failureCallback) {
-        makeRequestNational("getIcd10Structure", successCallback, failureCallback);
+        makeRequestNational("getIcd10Structure", successCallback, failureCallback, true, true);
     };
 
     factory.getFilterHash = function (params) {
@@ -221,7 +240,7 @@ angular.module('StatisticsApp').factory('statisticsData', ['$http', '$rootScope'
     };
 
     factory.getFilterData = function (filterHash, successCallback, failureCallback) {
-        makeRequestNational("filter/" + filterHash, successCallback, failureCallback);
+        makeRequestNational("filter/" + filterHash, successCallback, failureCallback, true, true);
     };
 
     factory.getSjukfallPerLakarbefattningVerksamhet = function (successCallback, failureCallback) {
@@ -241,15 +260,15 @@ angular.module('StatisticsApp').factory('statisticsData', ['$http', '$rootScope'
     };
 
     factory.getLastLandstingUpdateInfo = function (successCallback, failureCallback) {
-        makeRequestLandsting("lastUpdateInfo", successCallback, failureCallback);
+        makeRequestLandsting("lastUpdateInfo", successCallback, failureCallback, "get", true);
     };
 
     factory.getLandstingFilterInfo = function (successCallback, failureCallback) {
-        makeRequestLandsting("landstingFilterInfo", successCallback, failureCallback);
+        makeRequestLandsting("landstingFilterInfo", successCallback, failureCallback, "get", true);
     };
 
     factory.clearLandstingEnhets = function (successCallback, failureCallback) {
-        makeRequestLandsting("landstingEnhets", successCallback, failureCallback, "delete");
+        makeRequestLandsting("landstingEnhets", successCallback, failureCallback, "delete", true);
     };
 
     factory.logOnServer = function (message) {

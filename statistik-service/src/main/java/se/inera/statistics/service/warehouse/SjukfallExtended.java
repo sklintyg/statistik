@@ -299,6 +299,15 @@ public class SjukfallExtended {
         return diagnoses;
     }
 
+    public boolean isEnkelt() {
+        for (Fact fact : facts) {
+            if (fact.isEnkelt()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     final class Diagnos {
         private final int diagnoskapitel;
         private final int diagnosavsnitt;

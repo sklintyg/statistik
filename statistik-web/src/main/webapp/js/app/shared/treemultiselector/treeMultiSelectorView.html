@@ -3,12 +3,22 @@
     <button class="btn btn-default" data-toggle="modal" data-target="#diagnosisModal{{$id}}" id="select-diagnoses{{$id}}" ng-click="openDialogClicked()">
         {{textData.buttonLabelText}}
     </button>
-    <div class="modal fade" id="diagnosisModal{{$id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal" id="diagnosisModal{{$id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
+
+
                 <div class="modal-header">
-                    <span id="myModalLabel">{{textData.titleText}}</span></span>
+                    <span id="myModalLabel">{{textData.titleText}}</span>
                 </div>
+
+                <div class="modal-body" spinner label="{{spinnerText}}" show-spinner="!doneLoading && transitionsSupported" show-content="!doneLoading" data-ng-show="!doneLoading && transitionsSupported">
+                </div>
+
+                <div class="modal-body" data-ng-show="!doneLoading && !transitionsSupported">
+                    <h2><b><span message key="info.multiselect.loading"></span></b></h2>
+                </div>
+
                 <div class="modal-body">
                     <ul ng-if="dialogOpen" class="modal-list">
                         <li class="search-all-items input-group">
@@ -24,10 +34,12 @@
                         </li>
                     </ul>
                 </div>
+
                 <div class="modal-footer">
                     <label class="pull-left">{{textData.firstLevelLabelText}}{{selectedTertiaryCount}} {{textData.secondLevelLabelText}}{{selectedSecondaryCount}} {{textData.thirdLevelLabelText}}{{selectedLeavesCountAll}}</label>
                     <button class="btn btn-success" data-dismiss="modal" aria-hidden="true" data-ng-click="clickedDone()"><span message key="lbl.filter.modal.spara-stang"></span></button>
                 </div>
+
             </div>
         </div>
     </div>

@@ -162,9 +162,13 @@
                    id="navBusinessCasesPerLakaresAlderOchKonLink" ctrlname="VerksamhetLakaresAlderOchKonCtrl"
                    navigationaware><span message key="nav.lakaralder-kon"></span></a>
             </li>
-            <li><a class="last-item-in-menu rounded-bottom" data-ng-href="#/verksamhet/sjukfallperlakarbefattning{{queryString}}"
+            <li><a class="last-item-in-menu border-bottom" data-ng-href="#/verksamhet/sjukfallperlakarbefattning{{queryString}}"
                    id="navBusinessCasesPerLakarbefattningLink" ctrlname="VerksamhetLakarbefattningCtrl"
                    navigationaware><span message key="nav.lakarbefattning"></span></a>
+            </li>
+            <li><a class="last-item-in-menu rounded-bottom" data-ng-href="#/verksamhet/differentieratintygande{{queryString}}"
+                   id="navBusinessDifferentieratIntygandeLink" ctrlname="VerksamhetDifferentieratIntygandeCtrl"
+                   navigationaware><span message key="nav.differentieratintygande"></span></a>
             </li>
           </ul>
         </div>

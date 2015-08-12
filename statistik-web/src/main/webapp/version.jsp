@@ -29,12 +29,14 @@
 <body>
 <div style="padding-left:20px">
   <div class="page-header">
-    <h3>Statistiktj�nsten</h3>
+    <h3>Statistiktjänsten</h3>
   </div>
   <div class="alert alert-block alert-info" style="width:50%">
     <h4 style="padding-bottom:5px;">Configuration info</h4>
 
     <div>Application version: <span class="label label-info"><spring:message code="project.version"/></span></div>
+    <div>Application build time: <span class="label label-info"><spring:message code="project.buildtime"/></span></div>
+    <div>Application build host: <span class="label label-info"><spring:message code="project.buildhost"/></span></div>
     <div>Spring profiles: <span class="label label-info"><%= System.getProperty("spring.profiles.active") %></span></div>
   </div>
   <div class="muted">Server now time: <%= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()) %></div>

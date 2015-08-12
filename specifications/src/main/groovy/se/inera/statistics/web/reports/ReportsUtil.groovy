@@ -313,6 +313,14 @@ class ReportsUtil {
         return get("/api/getDegreeOfSickLeaveStatistics")
     }
 
+    def getReportDifferentieratIntygandeSomTidsserieInloggad(FilterData filter) {
+        return get(getVerksamhetUrlPrefix() + "/getDifferentieratIntygandeStatistics", filter)
+    }
+
+    def getReportDifferentieratIntygandeTvarsnittSomTvarsnittInloggad(FilterData filter) {
+        return get(getVerksamhetUrlPrefix() + "/getDifferentieratIntygandeTvarsnitt", filter)
+    }
+
     def getReportLakareAlderOchKonInloggad(filter) {
         return get(getVerksamhetUrlPrefix() + "/getCasesPerDoctorAgeAndGenderStatistics", filter)
     }

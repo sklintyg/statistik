@@ -41,6 +41,7 @@ public final class Sjukfall {
     private int realDays;
     private List<Diagnos> diagnoses = new ArrayList<>();
     private Diagnos diagnos;
+    private boolean enkelt;
 
     private Sjukfall() {
     }
@@ -58,6 +59,7 @@ public final class Sjukfall {
         sjukfall.lan = extendedSjukfall.getLan();
         sjukfall.lakare = extendedSjukfall.getLakare();
         sjukfall.enhets = toArray(extendedSjukfall.getEnhets());
+        sjukfall.enkelt = extendedSjukfall.isEnkelt();
         return sjukfall;
     }
 
@@ -170,6 +172,10 @@ public final class Sjukfall {
 
     public int[] getEnhets() {
         return enhets;
+    }
+
+    public boolean isEnkelt() {
+        return enkelt;
     }
 
     private static final class Diagnos {

@@ -93,4 +93,15 @@ public class SimpleDualSexConverter {
         return new ChartData(series, categories);
     }
 
+    String getTableGroupTitle() {
+        return tableGroupTitle;
+    }
+
+    boolean isTotalSeriesInChart() {
+        return totalSeriesInChart;
+    }
+
+    String getSeriesNameTemplate() {
+        return seriesNameTemplate;
+    }
 }

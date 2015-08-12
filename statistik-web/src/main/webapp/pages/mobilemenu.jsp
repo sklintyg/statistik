@@ -118,6 +118,13 @@
                 <span message key="nav.lakarbefattning"></span>
               </a>
             </li>
+            <li class="subMenuItem">
+              <a data-ng-href="#/verksamhet/differentieratintygande{{queryString}}"
+                   id="navBusinessDifferentieratIntygandeLink" ctrlname="VerksamhetDifferentieratIntygandeCtrl"
+                 role="menuitem" ng-click="isCollapsed = !isCollapsed" navigationaware>
+                <span message key="nav.differentieratintygande"></span>
+              </a>
+            </li>
           </ul>
         </li>
         <li class="divider"></li>

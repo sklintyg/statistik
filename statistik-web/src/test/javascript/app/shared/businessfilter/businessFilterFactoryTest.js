@@ -5,6 +5,9 @@ describe("Tests for business filter factory", function () {
 
     beforeEach(module('StatisticsApp.businessFilter'));
 
+    //Needed to get serviceinjections from this namespace
+    beforeEach(module('StatisticsApp'));
+
     beforeEach(module(function ($provide) {
         mockStatistics = {
             getIcd10Structure: function () { }

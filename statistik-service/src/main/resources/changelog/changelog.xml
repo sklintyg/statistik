@@ -54,5 +54,6 @@
     <include file="changelog/db.changelog-v26.0_add_diagnoskod_to_wideline.xml"/>
     <include file="changelog/db.changelog-v27.0_add_landsting.xml"/>
     <include file="changelog/db.changelog-v28.0_hsaid_to_same_case.xml"/>
+    <include file="changelog/db.changelog-v29.0_add_enkla_intyg_to_wideline.xml"/>
 
 </databaseChangeLog>

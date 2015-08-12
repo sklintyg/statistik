@@ -81,6 +81,8 @@ public class WidelineConverter {
         int kon = Kon.valueOf(DocumentHelper.getKon(intyg)).getNumberRepresentation();
         int alder = DocumentHelper.getAge(intyg);
 
+        final boolean enkeltIntyg = DocumentHelper.isEnkeltIntyg(intyg, version);
+
         String diagnos = DocumentHelper.getDiagnos(intyg, version);
         final Icd10.Kod kod = "unknown".equals(diagnos) ? null : icd10.findKod(diagnos);
         final Kategori kategori = kod != null ? kod.getKategori() : "unknown".equals(diagnos) ? null : icd10.findKategori(diagnos);
@@ -133,6 +135,7 @@ public class WidelineConverter {
             line.setDiagnoskategori(diagnoskategori);
             line.setDiagnoskod(diagnoskod);
             line.setSjukskrivningsgrad(sjukskrivningsgrad);
+            line.setEnkelt(enkeltIntyg);
 
             line.setPatientid(patient);
             line.setAlder(alder);

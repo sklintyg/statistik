@@ -55,7 +55,7 @@ angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl', [ '$sco
                 return ControllerCommons.makeThousandSeparated(this.value) + (config.percentChart ? "%" : "");
             };
 
-            chartOptions.plotOptions.column.stacking = config.percentChart ? 'percent' : 'normal';
+            chartOptions.plotOptions.series.stacking = config.percentChart ? 'percent' : 'normal';
 
             if (config.percentChart) {
                 chartOptions.tooltip.pointFormat = '<span style="color:{series.color}">{series.name}</span>: <b>{point.percentage:.0f}%</b><br/>';
@@ -70,7 +70,7 @@ angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl', [ '$sco
         };
 
         $scope.switchChartType = function (chartType) {
-            chartFactory.switchChartType(chart.series, chartType);
+            chartFactory.switchChartType(chart, chartType);
             $scope.activeChartType = chartType;
 
             chart.redraw();
@@ -156,6 +156,7 @@ angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl', [ '$sco
         };
 
         $scope.popoverText = messageService.getProperty(config.pageHelpText, null, "", null, true);
+        $scope.showDetailOptions3PopoverText = messageService.getProperty(config.pageHelpTextShowDetailOptions, null, "", null, true);
 
         $scope.chartFootnotes = _.map(config.chartFootnotes, function(msgKey){
             return messageService.getProperty(msgKey, null, "", null, true);
@@ -407,6 +408,26 @@ angular.module('StatisticsApp').degreeOfSickLeaveTvarsnittConfig = function () {
     return conf;
 };
 
+angular.module('StatisticsApp').differentieratIntygandeTvarsnittConfig = function () {
+    var conf = {};
+    conf.dataFetcherVerksamhet = "getDifferentieratIntygandeTvarsnittVerksamhet";
+    conf.exportTableUrlVerksamhet = function () {
+        return "api/verksamhet/getDifferentieratIntygandeTvarsnitt/csv";
+    };
+    conf.showDetailsOptions = false;
+    conf.title = function (period, enhetsCount) {
+        return "Antal sjukfall för differentierat intygande" + ControllerCommons.getEnhetCountText(enhetsCount, false) + period;
+    };
+    conf.chartXAxisTitle = "";
+    conf.pageHelpText = "help.differentieratintygande";
+
+    conf.exchangeableViews = [
+        {description: 'Tidsserie', state: '#/verksamhet/differentieratintygande', active: false},
+        {description: 'Tvärsnitt', state: '#/verksamhet/differentieratintygandetvarsnitt', active: true}];
+
+    return conf;
+};
+
 angular.module('StatisticsApp').diagnosisGroupTvarsnittConfig = function () {
     var conf = {};
     conf.dataFetcherVerksamhet = "getDiagnosisGroupTvarsnittVerksamhet";
@@ -439,6 +460,7 @@ angular.module('StatisticsApp').diagnosisSubGroupTvarsnittConfig = function () {
         return "Antal sjukfall för " + name + ControllerCommons.getEnhetCountText(enhetsCount, false) + period;
     };
     conf.pageHelpText = "help.diagnosissubgroup";
+    conf.pageHelpTextShowDetailOptions = "help.diagnosissubgroup.showdetailoptions";
     conf.chartFootnotes = ["alert.diagnosissubgroup.information"];
 
     conf.exchangeableViews = [

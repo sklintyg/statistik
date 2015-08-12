@@ -30,7 +30,7 @@ class FoljandeLakareFinns {
 
         def befattningarEmpty = befattningar == null || befattningar.isEmpty()
         def befattningarList = befattningarEmpty ? Collections.emptyList() : Arrays.asList(befattningar.split(","))
-        def personal = new Personal(id, förnamn, efternamn, hsaKon, ålder, befattningarList.collect { it.isInteger() ? it : LakarbefattningQuery.NO_BEFATTNING_CODE })
+        def personal = new Personal(id, förnamn, efternamn, hsaKon, ålder, befattningarList)
         reportsUtil.insertPersonal(personal)
     }
 
