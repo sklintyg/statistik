@@ -24,6 +24,7 @@
  			<h2 class="business-name-header print-only-no-display">- <span bindonce="verksamhetName"></span></h2>
  		</div>
  	</div>
+
 	<div class="row">
 		<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 pull-left hidden-print right-2px-padding" style="width: auto !important;">
 			<h1 class="national-statistic-h1" data-ng-bind="viewHeader" style="line-height: 17px; margin-bottom: 0px;"></h1>
@@ -32,6 +33,7 @@
 			<h2 class="business-name-header" style="line-height: 16px;" bindonce="verksamhetName"></h2>
 		</div>
     </div>
+
 	<div class="row">
 		<span class="col-xs-12 col-sm-12 col-md-12 col-lg-12 graph-ingress pull-left" style="min-height: 5px;">
 			{{subTitle}}
@@ -40,6 +42,7 @@
 			<a class="hidden-print" id="chart-diagnosfilterinfo-trigger" data-toggle="collapse" data-target="#chart-diagnosfilterinfo-text" data-ng-show="activeDiagnosFilters" text="Diagnosfilter" style="position: relative; color: #0b0b0b; font-weight: normal; margin-left: 5px;">Diagnosfilter &#x25BE</a>
 		</span>
 	</div>
+
 	<div class="row pull-left">
 		<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" data-ng-show="chartFootnotes">
 			<div class="collapse" id="chart-footnote-text">
@@ -51,6 +54,7 @@
        		</div>
         </div>
 	</div>
+
 	<div class="row hidden-print pull-left">
 		<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" data-ng-show="activeDiagnosFilters">
 			<div class="collapse" id="chart-diagnosfilterinfo-text">
@@ -107,7 +111,9 @@
 
     	<span class="col-xs-12" data-ng-show="showDetailsOptions3">
     		<label class="dropdown-label" for="selectDiagnosticKategori"><span message key="lbl.valj-annan-diagnoskategori"></span>:</label>
+            <a class="hidden-print pageHelpToolTip" tooltip-html-unsafe="<div class=popover-content>{{showDetailOptions3PopoverText}}</div>" tooltip-trigger="mouseenter" tooltip-placement="right" data-ng-show="popoverText" style="position: relative; top: -2px; margin-left: 5px;"><img src="img/questionmark2.png"></a>
     	</span>
+
    		<div class="col-xs-6 pull-left" data-ng-show="showDetailsOptions3">
        		<div class="btn-group margin-bottom" id="detailsOptionsDropdown3">
            		<button class="multiselect dropdown-toggle btn btn-default" id="selectDiagnosticKategori" data-toggle="dropdown" style="overflow: hidden; text-overflow: ellipsis; max-width: 350px;">

@@ -200,6 +200,7 @@ angular.module('StatisticsApp').controller('doubleAreaChartsCtrl', [ '$scope', '
             return messageService.getProperty(msgKey, null, "", null, true);
         });
         $scope.popoverText = messageService.getProperty(config.pageHelpText, null, "", null, true);
+        $scope.showDetailOptions3PopoverText = messageService.getProperty(config.pageHelpTextShowDetailOptions, null, "", null, true);
 
         $scope.chartContainers = [
             {id: "chart1", name: "diagram för kvinnor"},
@@ -319,6 +320,7 @@ angular.module('StatisticsApp').diagnosisSubGroupConfig = function () {
         return "Antal sjukfall för " + name + ControllerCommons.getEnhetCountText(enhetsCount, false) + period;
     };
     conf.pageHelpText = "help.diagnosissubgroup";
+    conf.pageHelpTextShowDetailOptions = "help.diagnosissubgroup.showdetailoptions";
     conf.chartFootnotes = ["alert.diagnosissubgroup.information"];
     conf.exchangeableViews = [
         {description: 'Tidsserie', state: '#/verksamhet/diagnosavsnitt', active: true},

@@ -156,6 +156,7 @@ angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl', [ '$sco
         };
 
         $scope.popoverText = messageService.getProperty(config.pageHelpText, null, "", null, true);
+        $scope.showDetailOptions3PopoverText = messageService.getProperty(config.pageHelpTextShowDetailOptions, null, "", null, true);
 
         $scope.chartFootnotes = _.map(config.chartFootnotes, function(msgKey){
             return messageService.getProperty(msgKey, null, "", null, true);
@@ -459,6 +460,7 @@ angular.module('StatisticsApp').diagnosisSubGroupTvarsnittConfig = function () {
         return "Antal sjukfall för " + name + ControllerCommons.getEnhetCountText(enhetsCount, false) + period;
     };
     conf.pageHelpText = "help.diagnosissubgroup";
+    conf.pageHelpTextShowDetailOptions = "help.diagnosissubgroup.showdetailoptions";
     conf.chartFootnotes = ["alert.diagnosissubgroup.information"];
 
     conf.exchangeableViews = [
