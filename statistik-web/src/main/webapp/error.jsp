@@ -17,7 +17,7 @@
   ~     along with this program.  If not, see <http://www.gnu.org/licenses/>.
   --%>
 <%@ page language="java" isErrorPage="true" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"
-         trimDirectiveWhitespaces="true" %>
+         trimDirectiveWhitespaces="true" session="true" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
@@ -109,7 +109,13 @@
               <c:out value="${element}" />,
               </c:forEach>
              </c:catch>
+
+             Spring security exception:
+             <c:out value="${sessionScope.SPRING_SECURITY_LAST_EXCEPTION.message}"/>
+             <c:out value="${sessionScope.SPRING_SECURITY_LAST_EXCEPTION}"/>
           -->
+
+
 
         </div>
     </div>
