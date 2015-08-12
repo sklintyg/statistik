@@ -14,7 +14,7 @@ angular.module('StatisticsApp').factory('statisticsData', ['$http', '$rootScope'
     }
 
     var makeRequestNational = function (restFunctionName, successCallback, failureCallback, cached, notAbortable) {
-        var finalCached = (typeof cached !== 'undefined') ? cached : false;
+        var finalCached = (typeof cached !== 'undefined') ? cached : true;
         var timeoutFunction = notAbortable ? null : newAbortable();
         $http.get("api/" + restFunctionName, {cache: finalCached, timeout: timeoutFunction}).success(function (result) {
             try {
