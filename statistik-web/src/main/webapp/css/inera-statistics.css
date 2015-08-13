@@ -865,8 +865,6 @@ div.accordion-body.in.collapse > div.accordion-heading a.accordion-toggle{
 	font-size: 12px;
 	line-height: 20px;
 	text-align: left;
-	max-width: 480px;
-	min-width: 250px;
 }
 .overflow-menu-options {
 	max-height: 255px;
