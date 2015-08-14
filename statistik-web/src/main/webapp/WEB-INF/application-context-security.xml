@@ -304,7 +304,11 @@
         </bean>
 
         <!-- Provider of default SAML Context -->
-        <bean id="contextProvider" class="org.springframework.security.saml.context.SAMLContextProviderImpl"/>
+        <bean id="contextProvider" class="org.springframework.security.saml.context.SAMLContextProviderImpl">
+            <property name="storageFactory">
+                <bean class="org.springframework.security.saml.storage.EmptyStorageFactory"/>
+            </property>
+        </bean>
 
         <!-- Logout handler terminating local session -->
         <bean id="logoutHandler" class="org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler">
