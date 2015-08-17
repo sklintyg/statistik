@@ -95,7 +95,6 @@ angular.module('StatisticsApp.charts', ['underscore'])
                         stacking : 'normal'
                     },
                     series: {
-                      stacking: null
                     },
                     area : {
                         lineColor : '#666666',
