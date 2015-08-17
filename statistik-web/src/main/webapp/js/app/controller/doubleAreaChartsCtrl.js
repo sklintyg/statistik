@@ -266,11 +266,11 @@ angular.module('StatisticsApp').controller('doubleAreaChartsCtrl', [ '$scope', '
         };
 
         $scope.$on('$destroy', function() {
-            if(typeof chart1.destroy === 'function') {
+            if(chart1 && typeof chart1.destroy === 'function') {
                 chart1.destroy();
             }
 
-            if(typeof chart2.destroy === 'function') {
+            if(chart2 && typeof chart2.destroy === 'function') {
                 chart2.destroy();
             }
         });

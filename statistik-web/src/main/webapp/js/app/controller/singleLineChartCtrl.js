@@ -163,7 +163,7 @@ angular.module('StatisticsApp').controller('singleLineChartCtrl', [ '$scope', '$
         };
 
         $scope.$on('$destroy', function() {
-            if(typeof chart.destroy === 'function') {
+            if(chart && typeof chart.destroy === 'function') {
                 chart.destroy();
             }
         });
