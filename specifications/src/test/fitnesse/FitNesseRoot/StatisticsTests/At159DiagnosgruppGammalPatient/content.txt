@@ -19,16 +19,15 @@ Intyget tas med i statistiken.
 Inloggad:
 | Sjukfall i rapporten diagnosgrupp diagram |
 |inloggad som | år   | månad | grupp   | män? | kvinnor? |
-| user1       | 2013 | maj   | Övrigt  | 1    | 0        |
-| user1       | 2013 | jun   | Övrigt  | 1    | 0        |
-| user1       | 2013 | jul   | Övrigt  | 1    | 0        |
-| user1       | 2013 | aug   | Övrigt  | 1    | 0        |
+| user1       | 2015 | maj   | Övrigt  | 1    | 0        |
+| user1       | 2015 | jun   | Övrigt  | 1    | 0        |
+| user1       | 2015 | jul   | Övrigt  | 1    | 0        |
+| user1       | 2015 | aug   | Övrigt  | 1    | 0        |
 
 
 Nationell:
 | Sjukfall i rapporten diagnosgrupp diagram |
 | år   | månad | grupp   | män? | kvinnor? |
-| 2013 | maj   | Övrigt  | 1    | 0        |
-| 2013 | jun   | Övrigt  | 1    | 0        |
-| 2013 | jul   | Övrigt  | 1    | 0        |
-| 2013 | aug   | Övrigt  | 1    | 0        |
+| 2015 | maj   | Övrigt  | 1    | 0        |
+| 2015 | jun   | Övrigt  | 1    | 0        |
+| 2015 | jul   | Övrigt  | 1    | 0        |
