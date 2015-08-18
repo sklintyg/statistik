@@ -150,6 +150,7 @@
         <bean id="successRedirectHandler"
               class="org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler">
             <property name="defaultTargetUrl" value="/#/verksamhet"/>
+            <property name="alwaysUseDefaultTargetUrl" value="true"/>
         </bean>
 
         <!-- Central storage of cryptographic keys -->
