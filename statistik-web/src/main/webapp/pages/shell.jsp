@@ -231,8 +231,8 @@
 
 <!-- This sections will give users of not so modern browsers a message that their browser is too old to run this thing. -->
 <div id="outdated">
-    <h1><b>Din webbläsare stöds inte av Statistiktjänsten och kan göra att den inte fungerar korrekt.</b></h1>
-    <h1><b>Statistiktjänsten stöds officiellt av Internet Explorer 9 och nyare, även om andra webbläsare kan fungera.</b></h1>
+    <h1><b>Din webbläsare stöds inte av Statistiktjänsten och det kan göra att den inte fungerar korrekt.</b></h1>
+    <h1><b>Statistiktjänsten stöds av Internet Explorer 9 och nyare, även om andra webbläsare kan fungera.</b></h1>
     <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
     <!-- It seems like a div called btnUpdateBrowser need to exist, otherwise the outdated browser plugin will bug us with console warning messages on every reload -->
     <div id="btnUpdateBrowser" style="display: none;"></div>

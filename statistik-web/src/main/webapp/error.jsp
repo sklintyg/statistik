@@ -110,9 +110,21 @@
               </c:forEach>
              </c:catch>
 
-             Spring security exception:
+             Spring security exception message:
              <c:out value="${sessionScope.SPRING_SECURITY_LAST_EXCEPTION.message}"/>
-             <c:out value="${sessionScope.SPRING_SECURITY_LAST_EXCEPTION}"/>
+
+            Spring security exceptions recursive:
+            <c:set var="current_exception" value="${sessionScope.SPRING_SECURITY_LAST_EXCEPTION}" />
+            <c:forEach begin="0" end="10" step="1" var="i">
+                <c:if test="${not empty current_exception}">
+                    <c:out value="" />
+                    <c:out value="${current_exception.message}" />
+                    <c:forEach items="${current_exception.stackTrace}" var="element">
+                        <c:out value="${element}" />
+                    </c:forEach>
+                    <c:set var="current_exception" value="${current_exception.cause}" />
+                </c:if>
+            </c:forEach>
           -->
 
 

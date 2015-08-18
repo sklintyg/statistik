@@ -301,31 +301,31 @@ function ($scope, $rootScope, $window, $timeout, statisticsData, $routeParams, p
     };
 
     $scope.$on('$destroy', function() {
-        if(typeof perMonthAlterationChart.destroy === 'function') {
+        if(perMonthAlterationChart && typeof perMonthAlterationChart.destroy === 'function') {
             perMonthAlterationChart.destroy();
         }
 
-        if(typeof newSexProportionChart.destroy === 'function') {
+        if(newSexProportionChart && typeof newSexProportionChart.destroy === 'function') {
             newSexProportionChart.destroy();
         }
 
-        if(typeof oldSexProportionChart.destroy === 'function') {
+        if(oldSexProportionChart && typeof oldSexProportionChart.destroy === 'function') {
             oldSexProportionChart.destroy();
         }
 
-        if(typeof ageDonutChart.destroy === 'function') {
+        if(ageDonutChart && typeof ageDonutChart.destroy === 'function') {
             ageDonutChart.destroy();
         }
 
-        if(typeof diagnosisDonutChart.destroy === 'function') {
+        if(diagnosisDonutChart && typeof diagnosisDonutChart.destroy === 'function') {
             diagnosisDonutChart.destroy();
         }
 
-        if(typeof degreeOfSickLeaveChart.destroy === 'function') {
+        if(degreeOfSickLeaveChart && typeof degreeOfSickLeaveChart.destroy === 'function') {
             degreeOfSickLeaveChart.destroy();
         }
 
-        if(typeof sickLeaveLengthChart.destroy === 'function') {
+        if(sickLeaveLengthChart && typeof sickLeaveLengthChart.destroy === 'function') {
             sickLeaveLengthChart.destroy();
         }
     });

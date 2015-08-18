@@ -77,7 +77,7 @@ task createVersionPropertyFile(dependsOn: processResources) << {
     def propertyFile = "${buildDir}/resources/main/version.properties"
     ant.touch(file: propertyFile, mkdirs: "true")
     ant.propertyfile(file: propertyFile) {
-        entry(key: 'project.version', default: project.version)
+        entry(key: 'project.version', default: rootProject.version)
         entry(key: 'project.buildtime', default: new Date())
         entry(key: 'project.buildhost', default: InetAddress.localHost.hostName)
     }

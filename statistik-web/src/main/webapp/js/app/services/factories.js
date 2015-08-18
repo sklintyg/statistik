@@ -48,10 +48,10 @@ angular.module('StatisticsApp').factory('statisticsData', ['$http', '$rootScope'
             }
         }).error(function (data, status, headers, config) {
             if (status === 403) {
-                window.location.replace("#/login");
+                $location.path("/login");
             }
             if (status === 503) {
-                window.location.replace("#/serverbusy");
+                $location.path("/serverbusy");
             }
             failureCallback();
         });

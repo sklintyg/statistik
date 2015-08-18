@@ -21,9 +21,9 @@
 angular.module('StatisticsApp.treeMultiSelector.controller', [])
     .controller('treeMultiSelectorCtrl', ['$scope', 'treeMultiSelectorUtil', '$timeout', function ($scope, treeMultiSelectorUtil, $timeout) {
 
-        $scope.transitionsSupported = supportsTransitions();
-
         var self = this;
+        
+        $scope.transitionsSupported = supportsTransitions();
 
         $scope.clickedDone = function () {
             $scope.dialogOpen = false;
@@ -172,6 +172,7 @@ angular.module('StatisticsApp.treeMultiSelector.controller', [])
 
         $scope.openDialogClicked = function () {
             $scope.$parent.doneLoading = false;
+            $scope.doneLoading = false;
             $timeout(function () {
                 $scope.dialogOpen = true;
                 $scope.updateCounters();

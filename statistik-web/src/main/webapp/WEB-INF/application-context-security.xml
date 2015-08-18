@@ -137,7 +137,7 @@
     <beans profile="security-saml,security-both">
         <bean id="samlFilter" class="org.springframework.security.web.FilterChainProxy">
             <security:filter-chain-map request-matcher="ant">
-                <security:filter-chain pattern="/saml/login/**" filters="forceLocalLogoutFilter, samlEntryPoint"/>
+                <security:filter-chain pattern="/saml/login/**" filters="samlEntryPoint"/>
                 <security:filter-chain pattern="/saml/logout/**" filters="samlLogoutFilter"/>
                 <security:filter-chain pattern="/saml/metadata/**" filters="metadataDisplayFilter"/>
                 <security:filter-chain pattern="/saml/SSO/**" filters="samlWebSSOProcessingFilter"/>
@@ -150,6 +150,7 @@
         <bean id="successRedirectHandler"
               class="org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler">
             <property name="defaultTargetUrl" value="/#/verksamhet"/>
+            <property name="alwaysUseDefaultTargetUrl" value="true"/>
         </bean>
 
         <!-- Central storage of cryptographic keys -->
@@ -169,6 +170,7 @@
             <property name="defaultProfileOptions">
                 <bean class="org.springframework.security.saml.websso.WebSSOProfileOptions">
                     <property name="includeScoping" value="false"/>
+                    <property name="forceAuthN" value="true"/>
                     <property name="authnContexts">
                         <list>
                             <value>urn:oasis:names:tc:SAML:2.0:ac:classes:TLSClient</value>
@@ -303,7 +305,11 @@
         </bean>
 
         <!-- Provider of default SAML Context -->
-        <bean id="contextProvider" class="org.springframework.security.saml.context.SAMLContextProviderImpl"/>
+        <bean id="contextProvider" class="org.springframework.security.saml.context.SAMLContextProviderImpl">
+            <property name="storageFactory">
+                <bean class="org.springframework.security.saml.storage.EmptyStorageFactory"/>
+            </property>
+        </bean>
 
         <!-- Logout handler terminating local session -->
         <bean id="logoutHandler" class="org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler">
@@ -316,8 +322,6 @@
             <constructor-arg ref="logoutHandler"/>
             <constructor-arg ref="logoutHandler"/>
         </bean>
-
-        <bean id="forceLocalLogoutFilter" class="se.inera.auth.ForceLocalLogoutFilter"/>
 
         <!-- Filter processing incoming logout messages -->
         <!-- First argument determines URL user will be redirected to after successful global logout -->

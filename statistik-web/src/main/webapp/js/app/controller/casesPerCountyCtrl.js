@@ -98,7 +98,7 @@ angular.module('StatisticsApp').controller('casesPerCountyCtrl', ['$scope', '$ro
         };
 
         $scope.$on('$destroy', function() {
-            if(typeof chart.destroy === 'function') {
+            if(chart && typeof chart.destroy === 'function') {
                 chart.destroy();
             }
         });
