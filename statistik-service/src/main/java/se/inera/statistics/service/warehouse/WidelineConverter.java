@@ -84,8 +84,9 @@ public class WidelineConverter {
         final boolean enkeltIntyg = DocumentHelper.isEnkeltIntyg(intyg, version);
 
         String diagnos = DocumentHelper.getDiagnos(intyg, version);
-        final Icd10.Kod kod = "unknown".equals(diagnos) ? null : icd10.findKod(diagnos);
-        final Kategori kategori = kod != null ? kod.getKategori() : "unknown".equals(diagnos) ? null : icd10.findKategori(diagnos);
+        boolean isUnknownDiagnos = diagnos == null || "unknown".equals(diagnos);
+        final Icd10.Kod kod = isUnknownDiagnos ? null : icd10.findKod(diagnos);
+        final Kategori kategori = kod != null ? kod.getKategori() : isUnknownDiagnos ? null : icd10.findKategori(diagnos);
         String diagnoskod = kod != null ? kod.getId() : null;
 
         String diagnoskapitel;

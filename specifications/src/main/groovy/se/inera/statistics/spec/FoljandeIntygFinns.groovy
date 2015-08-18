@@ -41,6 +41,10 @@ class FoljandeIntygFinns {
         this.vardgivare = reportsUtil.getVardgivareForEnhet(enhet, ReportsUtil.VARDGIVARE)
     }
 
+    void setDiagnoskod(kod) {
+        this.diagnoskod = "NULLDIAGNOSKOD".equalsIgnoreCase(kod) ? null : kod
+    }
+
     public void reset() {
         personnr = "19790407-1295"
         diagnoskod = "A01"
@@ -93,7 +97,11 @@ class FoljandeIntygFinns {
         result.grundData.skapadAv.vardenhet.enhetsid = enhet
         result.grundData.skapadAv.vardenhet.vardgivare.vardgivarid = vardgivare
 
-        result.diagnosKod = diagnoskod
+        if ("UTANDIAGNOSKOD".equalsIgnoreCase(diagnoskod)) {
+            result.remove("diagnosKod")
+        } else {
+            result.diagnosKod = diagnoskod
+        }
 
         result.funktionsnedsattning = funktionsnedsättning
         result.aktivitetsbegransning = aktivitetsbegränsning
