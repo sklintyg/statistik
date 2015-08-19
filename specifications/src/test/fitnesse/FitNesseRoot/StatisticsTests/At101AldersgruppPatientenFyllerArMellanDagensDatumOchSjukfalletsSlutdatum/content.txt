@@ -12,7 +12,7 @@ Ett sjukfall består av ett intyg. Patienten fyller år mellan dagens datum och 
 
 | Enbart foljande intyg finns |
 | personnr      | start      | slut       | enhet  | kommentar |
-| 19881201-0015 | 2014-10-01 | 2014-12-15 | enhet2 | |
+| ${person36.personnummer} | 2014-10-01 | 2014-12-15 | enhet2 | |
 
 !3 Då gäller:
 

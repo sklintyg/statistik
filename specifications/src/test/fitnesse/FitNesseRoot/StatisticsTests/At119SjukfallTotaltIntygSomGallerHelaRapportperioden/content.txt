@@ -10,7 +10,7 @@ Ett sjukfall består av ett intyg som startar före tidsintervallet som visas i 
 
 | Enbart foljande intyg finns |
 | personnr | diagnoskod | start    | slut       | enhet |
-| 19790407-1295 | G01 | 2013-06-15 | 2015-01-15 | enhet1 |
+| ${person3.personnummer} | G01 | 2013-06-15 | 2015-01-15 | enhet1 |
 
 !3 Då gäller:
 

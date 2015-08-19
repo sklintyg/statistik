@@ -10,10 +10,10 @@ Fyra olika sjukfall med olika länskoder. Tre av koderna tillhör inte län utan
 
 | Enbart foljande intyg finns |
 | personnr | diagnoskod | start    | slut       | enhet  | län |
-| 19790407-1295 | G01 | 2013-09-05 | 2013-09-06 | enhet1 | 01  |
-| 19790407-2295 | G01 | 2013-05-11 | 2013-09-12 | enhet1 | 42  |
-| 19890130-2466 | G01 | 2013-05-11 | 2013-09-12 | enhet1 | 00  |
-| 19890627-0692 | G01 | 2013-08-11 | 2013-09-12 | enhet1 | 99  |
+| ${person3.personnummer} | G01 | 2013-09-05 | 2013-09-06 | enhet1 | 01  |
+| ${person4.personnummer} | G01 | 2013-05-11 | 2013-09-12 | enhet1 | 42  |
+| ${person23.personnummer} | G01 | 2013-05-11 | 2013-09-12 | enhet1 | 00  |
+| ${person31.personnummer} | G01 | 2013-08-11 | 2013-09-12 | enhet1 | 99  |
 
 !3 Då gäller:
 

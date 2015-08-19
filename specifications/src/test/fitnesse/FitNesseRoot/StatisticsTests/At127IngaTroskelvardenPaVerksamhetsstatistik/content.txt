@@ -11,16 +11,26 @@ Det finns 5 sjukfall för vg3; 1 kvinna och 4 män.
 
 | Enbart foljande intyg finns |
 | personnr | diagnoskod | start    | slut       | enhet  |
-| 19790407-1000 | F40 | 2013-02-01 | 2013-02-14 | enhet1 |
-| 19790407-2000 | F41 | 2013-02-01 | 2013-02-14 | enhet1 |
-| 19790407-3000 | F40 | 2013-02-01 | 2013-02-14 | enhet1 |
-| 19790407-4010 | F41 | 2013-02-01 | 2013-02-14 | enhet1 |
-| 19790407-5010 | F40 | 2013-02-01 | 2013-02-14 | enhet1 |
-| 19790407-6000 | F40 | 2013-02-01 | 2013-02-14 | enhet3 |
-| 19790407-7010 | A00 | 2013-02-01 | 2013-02-14 | enhet3 |
-| 19790407-8010 | F41 | 2013-02-01 | 2013-02-14 | enhet3 |
-| 19790407-9010 | F41 | 2013-02-01 | 2013-02-14 | enhet3 |
-| 19790407-0010 | F41 | 2013-02-01 | 2013-02-14 | enhet3 |
+| ${person106.personnummer}
+${person113.personnummer} | F40 | 2013-02-01 | 2013-02-14 | enhet1 |
+| ${person106.personnummer}
+${person114.personnummer} | F41 | 2013-02-01 | 2013-02-14 | enhet1 |
+| ${person106.personnummer}
+${person115.personnummer} | F40 | 2013-02-01 | 2013-02-14 | enhet1 |
+| ${person106.personnummer}
+${person116.personnummer} | F41 | 2013-02-01 | 2013-02-14 | enhet1 |
+| ${person106.personnummer}
+${person117.personnummer} | F40 | 2013-02-01 | 2013-02-14 | enhet1 |
+| ${person106.personnummer}
+${person118.personnummer} | F40 | 2013-02-01 | 2013-02-14 | enhet3 |
+| ${person106.personnummer}
+${person119.personnummer} | A00 | 2013-02-01 | 2013-02-14 | enhet3 |
+| ${person106.personnummer}
+${person120.personnummer} | F41 | 2013-02-01 | 2013-02-14 | enhet3 |
+| ${person106.personnummer}
+${person121.personnummer} | F41 | 2013-02-01 | 2013-02-14 | enhet3 |
+| ${person106.personnummer}
+${person122.personnummer} | F41 | 2013-02-01 | 2013-02-14 | enhet3 |
 
 !3 Då gäller:
 

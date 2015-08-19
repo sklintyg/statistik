@@ -19,17 +19,17 @@ vg2
 
 | Enbart foljande intyg finns |
 | personnr | diagnoskod | start    | slut       | enhet  |
-| 19790407-1000 | F40 | 2013-02-01 | 2013-02-14 | enhet1 |
-| 19790407-2000 | F41 | 2013-02-01 | 2013-02-14 | enhet1 |
-| 19790407-3000 | F40 | 2013-02-01 | 2013-02-14 | enhet1 |
-| 19790407-4010 | A41 | 2013-02-01 | 2013-02-14 | enhet1 |
-| 19790407-5010 | A40 | 2013-02-01 | 2013-02-14 | enhet1 |
-| 19790407-0050 | G40 | 2013-02-01 | 2013-02-14 | enhet1 |
-| 19790407-6000 | F40 | 2013-02-01 | 2013-02-14 | enhet3 |
-| 19790407-7010 | A00 | 2013-02-01 | 2013-02-14 | enhet3 |
-| 19790407-8010 | A41 | 2013-02-01 | 2013-02-14 | enhet3 |
-| 19790407-9010 | A41 | 2013-02-01 | 2013-02-14 | enhet3 |
-| 19790407-0010 | A41 | 2013-02-01 | 2013-02-14 | enhet3 |
+| ${person113.personnummer} | F40 | 2013-02-01 | 2013-02-14 | enhet1 |
+| ${person114.personnummer} | F41 | 2013-02-01 | 2013-02-14 | enhet1 |
+| ${person115.personnummer} | F40 | 2013-02-01 | 2013-02-14 | enhet1 |
+| ${person116.personnummer} | A41 | 2013-02-01 | 2013-02-14 | enhet1 |
+| ${person117.personnummer} | A40 | 2013-02-01 | 2013-02-14 | enhet1 |
+| ${person123.personnummer} | G40 | 2013-02-01 | 2013-02-14 | enhet1 |
+| ${person118.personnummer} | F40 | 2013-02-01 | 2013-02-14 | enhet3 |
+| ${person119.personnummer} | A00 | 2013-02-01 | 2013-02-14 | enhet3 |
+| ${person120.personnummer} | A41 | 2013-02-01 | 2013-02-14 | enhet3 |
+| ${person121.personnummer} | A41 | 2013-02-01 | 2013-02-14 | enhet3 |
+| ${person122.personnummer} | A41 | 2013-02-01 | 2013-02-14 | enhet3 |
 
 !3 Då gäller:
 

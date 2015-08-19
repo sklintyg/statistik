@@ -8,9 +8,9 @@ Ett sjukfall består av tre intyg där det första och sista är utfärdat på e
 
 | Enbart foljande intyg finns |
 | personnr | diagnoskod | start    | slut       | enhet  |
-| 19790407-0210 | F40 | 2013-02-01 | 2013-02-14 | enhet1 |
-| 19790407-0210 | A00 | 2013-02-15 | 2013-03-28 | enhet2 |
-| 19790407-0210 | F41 | 2013-04-01 | 2013-04-14 | enhet1 |
+| ${person52.personnummer} | F40 | 2013-02-01 | 2013-02-14 | enhet1 |
+| ${person52.personnummer} | A00 | 2013-02-15 | 2013-03-28 | enhet2 |
+| ${person52.personnummer} | F41 | 2013-04-01 | 2013-04-14 | enhet1 |
 
 !3 Då gäller:
 

@@ -10,8 +10,8 @@ Två sjukfall består av ett intyg vardera. Ett av sjukfallen är 7 månader lå
 
 | Enbart foljande intyg finns |
 | personnr | diagnoskod | start | slut | enhet | kommentar |
-| 19790407-1295 | G01 | 2013-02-05 | 2013-09-06 | enhet1 | |
-| 19790407-2295 | G01 | 2013-02-05 | 2013-02-06 | enhet1 | |
+| ${person3.personnummer} | G01 | 2013-02-05 | 2013-09-06 | enhet1 | |
+| ${person4.personnummer} | G01 | 2013-02-05 | 2013-02-06 | enhet1 | |
 
 !3 Då gäller:
 

@@ -21,17 +21,17 @@ Det finns inga sjukfall med diagnos som faller inom övriga avsnitt.
 
 | Enbart foljande intyg finns |
 | personnr | diagnoskod | start    | slut       | enhet |
-| 19790407-0120 | C01 | 2013-02-01 | 2013-02-14 | enhet1 |
-| 19790407-0220 | C01 | 2013-02-01 | 2013-02-14 | enhet1 |
-| 19790407-0320 | C20 | 2013-02-01 | 2013-02-14 | enhet1 |
-| 19790407-0480 | C20 | 2013-02-01 | 2013-02-14 | enhet1 |
-| 19790407-0680 | C33 | 2013-02-01 | 2013-02-14 | enhet1 |
-| 19790407-0780 | C34 | 2013-02-01 | 2013-02-14 | enhet1 |
-| 19790407-0980 | C40 | 2013-02-01 | 2013-02-14 | enhet1 |
-| 19790407-1020 | C41 | 2013-02-01 | 2013-02-14 | enhet1 |
-| 19790407-1120 | C43 | 2013-02-01 | 2013-02-14 | enhet1 |
-| 19790407-1220 | C45 | 2013-02-01 | 2013-02-14 | enhet1 |
-| 19790407-1320 | C50 | 2013-02-01 | 2013-02-14 | enhet1 |
+| ${person5.personnummer} | C01 | 2013-02-01 | 2013-02-14 | enhet1 |
+| ${person6.personnummer} | C01 | 2013-02-01 | 2013-02-14 | enhet1 |
+| ${person85.personnummer} | C20 | 2013-02-01 | 2013-02-14 | enhet1 |
+| ${person86.personnummer} | C20 | 2013-02-01 | 2013-02-14 | enhet1 |
+| ${person86.personnummer} | C33 | 2013-02-01 | 2013-02-14 | enhet1 |
+| ${person87.personnummer} | C34 | 2013-02-01 | 2013-02-14 | enhet1 |
+| ${person88.personnummer} | C40 | 2013-02-01 | 2013-02-14 | enhet1 |
+| ${person95.personnummer} | C41 | 2013-02-01 | 2013-02-14 | enhet1 |
+| ${person27.personnummer} | C43 | 2013-02-01 | 2013-02-14 | enhet1 |
+| ${person22.personnummer} | C45 | 2013-02-01 | 2013-02-14 | enhet1 |
+| ${person90.personnummer} | C50 | 2013-02-01 | 2013-02-14 | enhet1 |
 
 
 !3 Då gäller:

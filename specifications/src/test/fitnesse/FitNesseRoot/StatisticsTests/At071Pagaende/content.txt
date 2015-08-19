@@ -13,8 +13,8 @@ User4 - väljer pågående fall och månaden är november, ser 1 fall
 
 | Enbart foljande intyg finns |
 | personnr      | diagnoskod | start      | slut       | enhet  | kommentar |
-| 19890130-2466 | G01        | 2014-10-01 | 2014-10-30 | enhet1 |  |
-| 19890130-2466 | G01        | 2014-11-01 | 2014-11-30 | enhet2 |  |
+| ${person23.personnummer} | G01        | 2014-10-01 | 2014-10-30 | enhet1 |  |
+| ${person23.personnummer} | G01        | 2014-11-01 | 2014-11-30 | enhet2 |  |
 
 
 !3 Då gäller:

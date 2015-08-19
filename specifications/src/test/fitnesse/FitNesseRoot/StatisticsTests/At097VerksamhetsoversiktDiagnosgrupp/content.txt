@@ -10,21 +10,21 @@ Flera olika sjukfall med olika diagnoser och datum.
 
 | Enbart foljande intyg finns |
 | personnr | diagnoskod | start    | slut       | enhet |
-| 19790407-0010 | hej | 2014-09-01 | 2014-09-14 | enhet1 |
-| 19790407-0020 | P99 | 2014-09-01 | 2014-09-14 | enhet1 |
-| 19790407-0030 | F40 | 2014-09-01 | 2014-09-14 | enhet1 |
-| 19790407-0040 | F40 | 2014-09-01 | 2014-09-14 | enhet1 |
-| 19790407-0050 | M40 | 2014-09-01 | 2014-09-14 | enhet1 |
-| 19790407-0060 | R00 | 2014-09-01 | 2014-12-14 | enhet1 |
-| 19790407-0070 | L40 | 2014-09-01 | 2014-12-14 | enhet1 |
-| 19790407-0080 | P99 | 2014-12-01 | 2014-12-14 | enhet1 |
-| 19790407-0090 | P99 | 2014-12-01 | 2014-12-14 | enhet1 |
-| 19790407-0100 | bla | 2014-12-01 | 2014-12-14 | enhet1 |
-| 19790407-0110 | P99 | 2014-12-01 | 2014-12-14 | enhet1 |
-| 19790407-0120 | F40 | 2014-12-01 | 2014-12-14 | enhet1 |
-| 19790407-0130 | M40 | 2014-12-01 | 2014-12-14 | enhet1 |
-| 19790407-0140 | M40 | 2014-12-01 | 2014-12-14 | enhet1 |
-| 19790407-0150 | M40 | 2014-12-01 | 2014-12-14 | enhet1 |
+| ${person122.personnummer} | hej | 2014-09-01 | 2014-09-14 | enhet1 |
+| ${person91.personnummer} | P99 | 2014-09-01 | 2014-09-14 | enhet1 |
+| ${person92.personnummer} | F40 | 2014-09-01 | 2014-09-14 | enhet1 |
+| ${person93.personnummer} | F40 | 2014-09-01 | 2014-09-14 | enhet1 |
+| ${person123.personnummer} | M40 | 2014-09-01 | 2014-09-14 | enhet1 |
+| ${person124.personnummer} | R00 | 2014-09-01 | 2014-12-14 | enhet1 |
+| ${person125.personnummer} | L40 | 2014-09-01 | 2014-12-14 | enhet1 |
+| ${person126.personnummer} | P99 | 2014-12-01 | 2014-12-14 | enhet1 |
+| ${person127.personnummer} | P99 | 2014-12-01 | 2014-12-14 | enhet1 |
+| ${person128.personnummer} | bla | 2014-12-01 | 2014-12-14 | enhet1 |
+| ${person55.personnummer} | P99 | 2014-12-01 | 2014-12-14 | enhet1 |
+| ${person5.personnummer} | F40 | 2014-12-01 | 2014-12-14 | enhet1 |
+| ${person129.personnummer} | M40 | 2014-12-01 | 2014-12-14 | enhet1 |
+| ${person130.personnummer} | M40 | 2014-12-01 | 2014-12-14 | enhet1 |
+| ${person131.personnummer} | M40 | 2014-12-01 | 2014-12-14 | enhet1 |
 
 !3 Då gäller:
 

@@ -10,9 +10,9 @@ Ett intyg har ingen diagnoskod angiven (t.ex. ett smittskyddsintyg).
 
 | Enbart foljande intyg finns |
 | personnr | diagnoskod | start    | slut       | enhet |
-| 19790407-0120 | | 2013-02-01 | 2013-02-14 | enhet1 |
-| 19790407-1120 | NULLDIAGNOSKOD | 2013-02-01 | 2013-02-14 | enhet1 |
-| 19790407-2120 | UTANDIAGNOSKOD | 2013-02-01 | 2013-02-14 | enhet1 |
+| ${person5.personnummer} | | 2013-02-01 | 2013-02-14 | enhet1 |
+| ${person27.personnummer} | NULLDIAGNOSKOD | 2013-02-01 | 2013-02-14 | enhet1 |
+| ${person28.personnummer} | UTANDIAGNOSKOD | 2013-02-01 | 2013-02-14 | enhet1 |
 
 !3 Då gäller:
 
