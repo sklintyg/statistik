@@ -10,12 +10,12 @@ Flera olika sjukfall där samma enhet har olika angivelse om län vid olika tidp
 
 | Enbart foljande intyg finns |
 | personnr | diagnoskod | start    | slut       | enhet  | län |
-| 19790407-2295 | G01 | 2013-05-05 | 2013-06-06 | enhet1 | 01  |
-| 19790408-2295 | G01 | 2013-05-11 | 2013-09-12 | enhet3 | 00  |
-| 19790409-2295 | G01 | 2013-05-13 | 2013-10-12 | enhet1 | 03  |
-| 19790410-2295 | G01 | 2013-05-13 | 2013-11-12 | enhet1 | 48  |
-| 19790411-2295 | G01 | 2013-05-11 | 2013-09-12 | enhet3 | 99  |
-| 19790412-2295 | G01 | 2013-05-13 | 2013-10-12 | enhet2 | 01  |
+| ${person4.personnummer} | G01 | 2013-05-05 | 2013-06-06 | enhet1 | 01  |
+| ${person46.personnummer} | G01 | 2013-05-11 | 2013-09-12 | enhet3 | 00  |
+| ${person132.personnummer} | G01 | 2013-05-13 | 2013-10-12 | enhet1 | 03  |
+| ${person133.personnummer} | G01 | 2013-05-13 | 2013-11-12 | enhet1 | 48  |
+| ${person83.personnummer} | G01 | 2013-05-11 | 2013-09-12 | enhet3 | 99  |
+| ${person134.personnummer} | G01 | 2013-05-13 | 2013-10-12 | enhet2 | 01  |
 
 !3 Då gäller:
 

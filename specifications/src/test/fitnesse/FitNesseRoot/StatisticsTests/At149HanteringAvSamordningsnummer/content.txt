@@ -10,8 +10,8 @@ Det finns två sjukfall, ett med godkänt samordningsnummer och ett med samordni
 
 | Enbart foljande intyg finns |
 | personnr | diagnoskod | start    | slut       | enhet  | kommentar |
-| 19790490-4586 | G01 | 2013-02-05 | 2013-02-06 | enhet1 | Födelsedatum motsvarar 19790430 - giltigt datum |
-| 19690491-4586 | G01 | 2013-02-11 | 2013-02-12 | enhet1 | Födelsedatum motsvarar 19790431 - ogiltigt datum |
+| ${person94.personnummer} | G01 | 2013-02-05 | 2013-02-06 | enhet1 | Födelsedatum motsvarar 19790430 - giltigt datum |
+| ${person89.personnummer} | G01 | 2013-02-11 | 2013-02-12 | enhet1 | Födelsedatum motsvarar 19790431 - ogiltigt datum |
 
 !3 Då gäller:
 

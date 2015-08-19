@@ -12,9 +12,9 @@ I databasen finns bara enhet1 lagrad.
 
 | Enbart foljande intyg finns |
 | personnr | diagnoskod | start    | slut       | enhet | vardgivare |
-| 19790407-1295 | G01 | 2013-02-05 | 2013-02-06 | enhet1 | vg1 |
-| 19790407-1285 | G01 | 2013-02-05 | 2013-02-06 | ENHET1 | VG1 |
-| 19790408-1295 | G01 | 2013-02-11 | 2013-02-12 | enHEt1 | vG1 |
+| ${person3.personnummer} | G01 | 2013-02-05 | 2013-02-06 | enhet1 | vg1 |
+| ${person7.personnummer} | G01 | 2013-02-05 | 2013-02-06 | ENHET1 | VG1 |
+| ${person14.personnummer} | G01 | 2013-02-11 | 2013-02-12 | enHEt1 | vG1 |
 
 !3 Då gäller:
 

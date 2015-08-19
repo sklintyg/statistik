@@ -10,9 +10,9 @@ Testar att sjukskrivningslängd räknar med andra intyg mellan intyg som använd
 
 | Enbart foljande intyg finns |
 | personnr | diagnoskod | start | slut | enhet | kommentar |
-| 19790407-1285 | G01 | 2014-03-01 | 2014-03-06 | enhet1 | |
-| 19790407-1285 | G01 | 2014-03-11 | 2014-03-16 | enhet2 | |
-| 19790407-1285 | G01 | 2014-03-21 | 2014-03-26 | enhet1 | |
+| ${person7.personnummer} | G01 | 2014-03-01 | 2014-03-06 | enhet1 | |
+| ${person7.personnummer} | G01 | 2014-03-11 | 2014-03-16 | enhet2 | |
+| ${person7.personnummer} | G01 | 2014-03-21 | 2014-03-26 | enhet1 | |
 
 
 !3 Då gäller:

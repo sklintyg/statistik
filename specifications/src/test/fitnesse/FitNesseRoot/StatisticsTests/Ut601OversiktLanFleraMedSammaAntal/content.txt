@@ -8,10 +8,10 @@
 
 | Enbart foljande intyg finns |
 | personnr | diagnoskod | start    | slut       | enhet  | län |
-| 19790407-1295 | G01 | 2013-09-05 | 2013-09-06 | enhet1 | 10  |
-| 19790407-2295 | G01 | 2013-09-05 | 2013-09-06 | enhet1 | 10  |
-| 19790407-3295 | G01 | 2013-09-05 | 2013-09-06 | enhet1 | 20  |
-| 19790407-4295 | G01 | 2013-09-05 | 2013-09-06 | enhet1 | 20  |
+| ${person3.personnummer} | G01 | 2013-09-05 | 2013-09-06 | enhet1 | 10  |
+| ${person4.personnummer} | G01 | 2013-09-05 | 2013-09-06 | enhet1 | 10  |
+| ${person24.personnummer} | G01 | 2013-09-05 | 2013-09-06 | enhet1 | 20  |
+| ${person25.personnummer} | G01 | 2013-09-05 | 2013-09-06 | enhet1 | 20  |
 
 
 

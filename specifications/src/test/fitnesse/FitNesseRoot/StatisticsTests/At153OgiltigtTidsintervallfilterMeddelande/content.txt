@@ -10,10 +10,10 @@ Det finns två sjukfall.
 
 | Enbart foljande intyg finns |
 | personnr | diagnoskod | start    | slut       | enhet  |
-| 19890407-1245 | G01 | 2014-04-01 | 2014-06-28 | enhet1 |
-| 19890407-1255 | G01 | 2014-10-01 | 2014-11-28 | enhet1 |
-| 19890407-1265 | G01 | 2013-09-01 | 2013-10-28 | enhet1 |
-| 19890407-1295 | G01 | 2014-12-01 | 2014-12-28 | enhet1 |
+| ${person13.personnummer} | G01 | 2014-04-01 | 2014-06-28 | enhet1 |
+| ${person77.personnummer} | G01 | 2014-10-01 | 2014-11-28 | enhet1 |
+| ${person78.personnummer} | G01 | 2013-09-01 | 2013-10-28 | enhet1 |
+| ${person79.personnummer} | G01 | 2014-12-01 | 2014-12-28 | enhet1 |
 
 !3 Då gäller:
 

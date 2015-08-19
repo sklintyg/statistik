@@ -14,9 +14,9 @@ user6 har medarbetaruppdrag på enhet4, som tillhör vg3 men som inte finns med 
 
 | Enbart foljande intyg finns |
 | personnr      | diagnoskod | start      | slut       | enhet  | kommentar |
-| 19790407-0015 | G01        | 2014-02-05 | 2014-02-06 | enhet1 |           |
-| 19790407-0115 | G01        | 2014-02-05 | 2014-02-06 | enhet2 |           |
-| 19790407-0225 | G01        | 2014-02-05 | 2014-02-06 | enhet3 |           |
+| ${person51.personnummer} | G01        | 2014-02-05 | 2014-02-06 | enhet1 |           |
+| ${person54.personnummer} | G01        | 2014-02-05 | 2014-02-06 | enhet2 |           |
+| ${person50.personnummer} | G01        | 2014-02-05 | 2014-02-06 | enhet3 |           |
 
 | Uppladdade landstingsfiler |
 | användare | filnamn        | statusmeddelande? |

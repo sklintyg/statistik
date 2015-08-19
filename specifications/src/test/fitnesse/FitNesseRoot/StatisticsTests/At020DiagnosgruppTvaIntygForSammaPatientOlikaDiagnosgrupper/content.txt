@@ -10,8 +10,8 @@ Två intyg för samma patient med två dagars uppehåll. Intygens diagnos faller
 
 | Enbart foljande intyg finns |
 | personnr | diagnoskod | start    | slut       | enhet |
-| 19790407-0120 | F40 | 2013-02-01 | 2013-02-14 | enhet1 |
-| 19790407-0120 | A00 | 2013-02-17 | 2013-04-01 | enhet1 |
+| ${person5.personnummer} | F40 | 2013-02-01 | 2013-02-14 | enhet1 |
+| ${person5.personnummer} | A00 | 2013-02-17 | 2013-04-01 | enhet1 |
 
 !3 Då gäller:
 

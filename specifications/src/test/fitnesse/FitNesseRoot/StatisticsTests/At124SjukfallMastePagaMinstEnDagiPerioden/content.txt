@@ -10,8 +10,8 @@ Två sjukfall för två olika patienter. Ett slutar först februari, och ett bö
 
 | Enbart foljande intyg finns |
 | personnr | diagnoskod | start    | slut       | enhet |
-| 19790407-1295 | G01 | 2013-01-01 | 2013-02-01 | enhet1 |
-| 19790407-1285 | G01 | 2013-02-28 | 2013-03-31 | enhet1 |
+| ${person3.personnummer} | G01 | 2013-01-01 | 2013-02-01 | enhet1 |
+| ${person7.personnummer} | G01 | 2013-02-28 | 2013-03-31 | enhet1 |
 
 !3 Då gäller:
 

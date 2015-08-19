@@ -10,7 +10,7 @@ Ett sjukfall består av ett intyg som pågått ända sedan 2012.
 
 | Enbart foljande intyg finns |
 | personnr      | diagnoskod | start      | slut       | enhet  |
-| 19790407-0220 | A01        | 2012-01-02 | 2015-03-30 | enhet1 |
+| ${person6.personnummer} | A01        | 2012-01-02 | 2015-03-30 | enhet1 |
 
 !3 Då gäller:
 

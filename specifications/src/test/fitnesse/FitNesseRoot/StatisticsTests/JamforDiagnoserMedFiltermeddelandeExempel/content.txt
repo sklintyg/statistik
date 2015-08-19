@@ -5,7 +5,7 @@
 
 | Enbart foljande intyg finns |
 | personnr | diagnoskod | start    | slut       | enhet |
-| 19790407-0220 | F40 | 2013-02-01 | 2013-03-14 | enhet1 |
+| ${person6.personnummer} | F40 | 2013-02-01 | 2013-03-14 | enhet1 |
 
 !3 Då gäller:
 

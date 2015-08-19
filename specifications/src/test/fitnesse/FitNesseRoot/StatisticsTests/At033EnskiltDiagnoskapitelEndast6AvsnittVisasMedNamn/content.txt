@@ -23,29 +23,29 @@ Det finns inga sjukfall med diagnos som faller inom övriga avsnitt.
 
 | Enbart foljande intyg finns |
 | personnr | diagnoskod | start    | slut       | enhet |
-| 19790407-0120 | C01 | 2013-02-01 | 2013-02-14 | enhet1 |
-| 19790407-0220 | C02 | 2013-02-01 | 2013-02-14 | enhet1 |
-| 19790407-0320 | C20 | 2013-02-01 | 2013-02-14 | enhet1 |
-| 19790407-0410 | C20 | 2013-02-01 | 2013-02-14 | enhet1 |
-| 19790407-0510 | C20 | 2013-02-01 | 2013-02-14 | enhet1 |
-| 19790407-0610 | C33 | 2013-02-01 | 2013-02-14 | enhet1 |
-| 19790407-0710 | C34 | 2013-02-01 | 2013-02-14 | enhet1 |
-| 19790407-0810 | C34 | 2013-02-01 | 2013-02-14 | enhet1 |
-| 19790407-0910 | C40 | 2013-02-01 | 2013-02-14 | enhet1 |
-| 19790407-1020 | C43 | 2013-02-01 | 2013-02-14 | enhet1 |
-| 19790407-1120 | C43 | 2013-02-01 | 2013-02-14 | enhet1 |
-| 19790407-1220 | C43 | 2013-02-01 | 2013-02-14 | enhet1 |
-| 19790407-1320 | C46 | 2013-02-01 | 2013-02-14 | enhet1 |
-| 19790407-1410 | C46 | 2013-02-01 | 2013-02-14 | enhet1 |
-| 19790407-1510 | C46 | 2013-02-01 | 2013-02-14 | enhet1 |
-| 19790407-1610 | C50 | 2013-02-01 | 2013-02-14 | enhet1 |
-| 19790407-1710 | C50 | 2013-02-01 | 2013-02-14 | enhet1 |
-| 19790407-1820 | C50 | 2013-02-01 | 2013-02-14 | enhet1 |
-| 19790407-1920 | C51 | 2013-02-01 | 2013-02-14 | enhet1 |
-| 19790407-2020 | C51 | 2013-02-01 | 2013-02-14 | enhet1 |
-| 19790407-2110 | C51 | 2013-02-01 | 2013-02-14 | enhet1 |
-| 19790407-2220 | C65 | 2013-02-01 | 2013-02-14 | enhet1 |
-| 19790407-2320 | C65 | 2013-02-01 | 2013-02-14 | enhet1 |
+| ${person5.personnummer} | C01 | 2013-02-01 | 2013-02-14 | enhet1 |
+| ${person6.personnummer} | C02 | 2013-02-01 | 2013-02-14 | enhet1 |
+| ${person85.personnummer} | C20 | 2013-02-01 | 2013-02-14 | enhet1 |
+| ${person59.personnummer} | C20 | 2013-02-01 | 2013-02-14 | enhet1 |
+| ${person96.personnummer} | C20 | 2013-02-01 | 2013-02-14 | enhet1 |
+| ${person97.personnummer} | C33 | 2013-02-01 | 2013-02-14 | enhet1 |
+| ${person98.personnummer} | C34 | 2013-02-01 | 2013-02-14 | enhet1 |
+| ${person99.personnummer} | C34 | 2013-02-01 | 2013-02-14 | enhet1 |
+| ${person100.personnummer} | C40 | 2013-02-01 | 2013-02-14 | enhet1 |
+| ${person95.personnummer} | C43 | 2013-02-01 | 2013-02-14 | enhet1 |
+| ${person27.personnummer} | C43 | 2013-02-01 | 2013-02-14 | enhet1 |
+| ${person22.personnummer} | C43 | 2013-02-01 | 2013-02-14 | enhet1 |
+| ${person102.personnummer} | C46 | 2013-02-01 | 2013-02-14 | enhet1 |
+| ${person103.personnummer} | C46 | 2013-02-01 | 2013-02-14 | enhet1 |
+| ${person104.personnummer} | C46 | 2013-02-01 | 2013-02-14 | enhet1 |
+| ${person105.personnummer} | C50 | 2013-02-01 | 2013-02-14 | enhet1 |
+| ${person106.personnummer} | C50 | 2013-02-01 | 2013-02-14 | enhet1 |
+| ${person107.personnummer} | C50 | 2013-02-01 | 2013-02-14 | enhet1 |
+| ${person108.personnummer} | C51 | 2013-02-01 | 2013-02-14 | enhet1 |
+| ${person109.personnummer} | C51 | 2013-02-01 | 2013-02-14 | enhet1 |
+| ${person110.personnummer} | C51 | 2013-02-01 | 2013-02-14 | enhet1 |
+| ${person111.personnummer} | C65 | 2013-02-01 | 2013-02-14 | enhet1 |
+| ${person112.personnummer} | C65 | 2013-02-01 | 2013-02-14 | enhet1 |
 
 !3 Då gäller:
 

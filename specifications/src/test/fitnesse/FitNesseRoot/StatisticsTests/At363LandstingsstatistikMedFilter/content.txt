@@ -10,9 +10,9 @@ Gäller STATISTIK-1029.
 
 | Enbart foljande intyg finns |
 | personnr      | diagnoskod | start      | slut       | enhet  | kommentar |
-| 19790407-2215 | A01        | 2014-02-05 | 2014-02-06 | enhet1 |           |
-| 19790407-2225 | C01        | 2014-04-05 | 2014-04-06 | enhet2 |           |
-| 19790407-2235 | F01        | 2014-06-05 | 2014-06-06 | enhet3 |           |
+| ${person17.personnummer} | A01        | 2014-02-05 | 2014-02-06 | enhet1 |           |
+| ${person18.personnummer} | C01        | 2014-04-05 | 2014-04-06 | enhet2 |           |
+| ${person19.personnummer} | F01        | 2014-06-05 | 2014-06-06 | enhet3 |           |
 
 | Uppladdade landstingsfiler |
 | användare | filnamn        | statusmeddelande? |

@@ -10,8 +10,8 @@ Ett sjukfall består av två intyg med fyra dagars mellanrum.
 
 | Enbart foljande intyg finns |
 | personnr      | diagnoskod | start      | slut       | enhet  | kommentar |
-| 19790407-1285 | G01        | 2014-08-01 | 2014-09-15 | enhet1 | 46 dagar |
-| 19790407-1285 | G01        | 2014-09-20 | 2014-10-31 | enhet1 | 42 dagar |
+| ${person7.personnummer} | G01        | 2014-08-01 | 2014-09-15 | enhet1 | 46 dagar |
+| ${person7.personnummer} | G01        | 2014-09-20 | 2014-10-31 | enhet1 | 42 dagar |
 
 !3 Då gäller:
 

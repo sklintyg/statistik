@@ -20,16 +20,16 @@ F-kapitlet är valt.
 
 | Enbart foljande intyg finns |
 | personnr | diagnoskod | start    | slut       | enhet  |
-| 19790407-1000 | F40 | 2013-02-01 | 2013-02-14 | enhet1 |
-| 19790407-2000 | F40 | 2013-02-01 | 2013-02-14 | enhet1 |
-| 19790407-3000 | F40 | 2013-02-01 | 2013-02-14 | enhet1 |
-| 19790407-4010 | F50 | 2013-02-01 | 2013-02-14 | enhet1 |
-| 19790407-5010 | F50 | 2013-02-01 | 2013-02-14 | enhet1 |
-| 19790407-6000 | F40 | 2013-02-01 | 2013-02-14 | enhet3 |
-| 19790407-7010 | F50 | 2013-02-01 | 2013-02-14 | enhet3 |
-| 19790407-8010 | F50 | 2013-02-01 | 2013-02-14 | enhet3 |
-| 19790407-9010 | F50 | 2013-02-01 | 2013-02-14 | enhet3 |
-| 19790407-0010 | F50 | 2013-02-01 | 2013-02-14 | enhet3 |
+| ${person113.personnummer} | F40 | 2013-02-01 | 2013-02-14 | enhet1 |
+| ${person114.personnummer} | F40 | 2013-02-01 | 2013-02-14 | enhet1 |
+| ${person115.personnummer} | F40 | 2013-02-01 | 2013-02-14 | enhet1 |
+| ${person116.personnummer} | F50 | 2013-02-01 | 2013-02-14 | enhet1 |
+| ${person117.personnummer} | F50 | 2013-02-01 | 2013-02-14 | enhet1 |
+| ${person118.personnummer} | F40 | 2013-02-01 | 2013-02-14 | enhet3 |
+| ${person119.personnummer} | F50 | 2013-02-01 | 2013-02-14 | enhet3 |
+| ${person120.personnummer} | F50 | 2013-02-01 | 2013-02-14 | enhet3 |
+| ${person121.personnummer} | F50 | 2013-02-01 | 2013-02-14 | enhet3 |
+| ${person122.personnummer} | F50 | 2013-02-01 | 2013-02-14 | enhet3 |
 
 !3 Då gäller:
 

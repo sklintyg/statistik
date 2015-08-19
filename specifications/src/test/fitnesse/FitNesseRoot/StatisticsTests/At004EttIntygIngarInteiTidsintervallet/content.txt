@@ -10,7 +10,7 @@ Ett intyg är utfärdat för mer än 18 månader sedan.
 
 | Enbart foljande intyg finns |
 | personnr | diagnoskod | start    | slut       | enhet |
-| 19790407-1295 | G01 | 2013-04-05 | 2013-04-16 | enhet1 |
+| ${person3.personnummer} | G01 | 2013-04-05 | 2013-04-16 | enhet1 |
 
 !3 Då gäller:
 
