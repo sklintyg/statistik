@@ -176,7 +176,7 @@ public class DocumentHelperTest {
 
     @Test
     public void processorExtractKonKvinnaFromIntyg() {
-        String personId = "19121212-0000";
+        String personId = "19790104-9283";
 
         String kon = ConversionHelper.extractKon(personId);
 

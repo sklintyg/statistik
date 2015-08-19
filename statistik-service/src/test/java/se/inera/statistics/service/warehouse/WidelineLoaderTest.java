@@ -78,7 +78,7 @@ public class WidelineLoaderTest {
 
     private void insertLine(EventType event, String correlationId) {
         WideLine line1 = new WideLine();
-        String patientId = "19121212-1210";
+        String patientId = "19121212-1212";
         line1.setAlder(23);
         line1.setDiagnoskapitel("A00-B99");
         line1.setDiagnosavsnitt("A15-A19");

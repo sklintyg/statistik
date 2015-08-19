@@ -29,22 +29,22 @@ public class ConversionHelperTest {
     @Test
     public void testPatientIdToString() throws Exception {
         //Given
-        final long id = 198001011234L;
+        final long id = 197503259280L;
 
         //When
         final String pnr = ConversionHelper.patientIdToString(id);
 
         //Then
-        assertEquals("19800101-1234", pnr);
+        assertEquals("19750325-9280", pnr);
     }
 
     @Test
     public void testExtractAlder() throws Exception {
         //When
-        final int alder = ConversionHelper.extractAlder("19730420-9990", new LocalDate(2015, 4, 5));
+        final int alder = ConversionHelper.extractAlder("19750325-9280", new LocalDate(2015, 3, 5));
 
         //Then
-        assertEquals(41, alder);
+        assertEquals(39, alder);
     }
 
 }
