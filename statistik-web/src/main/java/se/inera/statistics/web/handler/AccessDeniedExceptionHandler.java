@@ -26,12 +26,12 @@ import javax.ws.rs.ext.Provider;
 
 @Provider
 public final class AccessDeniedExceptionHandler implements
-		ExceptionMapper<AccessDeniedException> {
+        ExceptionMapper<AccessDeniedException> {
 
-	@Override
-	public Response toResponse(final AccessDeniedException exception) {
-		return Response.status(Response.Status.FORBIDDEN)
-				.entity(exception.getMessage()).build();
-	}
+    @Override
+    public Response toResponse(final AccessDeniedException exception) {
+        return Response.status(Response.Status.FORBIDDEN)
+                .entity(exception.getMessage()).build();
+    }
 
 }
