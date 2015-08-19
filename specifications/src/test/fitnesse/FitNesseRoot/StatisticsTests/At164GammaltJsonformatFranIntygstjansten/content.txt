@@ -1,5 +1,7 @@
 !contents -R2 -g -p -f -h
 
+Testar hantering av det gamla intygsformatet i Intygstjänsten. 
+
 !3 Givet att:
 | script | dagens datum | 2013-11-06 |
 

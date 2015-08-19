@@ -1,5 +1,9 @@
 !contents -R2 -g -p -f -h
 
+Verifierar STATISTIK-977.
+
+Testar att ett felaktigt intyg inte stoppar senare intyg från att processas. 
+
 !3 Givet att:
 | script | dagens datum | 2013-11-06 |
 

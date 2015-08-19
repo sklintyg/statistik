@@ -1,6 +1,8 @@
 !contents -R2 -g -p -f -h
 
-Testar STATISTIK-1083
+Verifierar STATISTIK-1083.
+
+Testar att bara fk7263-intyg tas med i statistiken.
 
 !3 Givet att:
 | script | dagens datum | 2013-11-06 |

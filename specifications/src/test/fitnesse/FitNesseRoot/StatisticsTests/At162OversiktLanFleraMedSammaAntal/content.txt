@@ -1,5 +1,9 @@
 !contents -R2 -g -p -f -h
 
+Verifierar en buggfix.
+
+Testar att om två län har samma antal sjukfall, så visas båda två på översikten.
+
 !3 Givet att:
 
 | script | dagens datum | 2013-11-06 |
@@ -12,8 +16,6 @@
 | 19790407-2295 | G01 | 2013-09-05 | 2013-09-06 | enhet1 | 10  |
 | 19790407-3295 | G01 | 2013-09-05 | 2013-09-06 | enhet1 | 20  |
 | 19790407-4295 | G01 | 2013-09-05 | 2013-09-06 | enhet1 | 20  |
-
-
 
 !3 Då gäller:
 

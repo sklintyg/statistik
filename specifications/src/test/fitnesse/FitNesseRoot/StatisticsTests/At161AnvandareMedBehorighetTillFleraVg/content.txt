@@ -1,6 +1,8 @@
 !contents -R2 -g -p -f -h
 
-Verifierar STATISTIK-930
+Verifierar STATISTIK-930.
+
+Testar att användare med behörighet till fler än en vårdgivare, bara får se det som tillhör den vårdgivare som de väljer vid inloggning.
 
 !3 Givet att:
 | script | dagens datum | 2013-11-06 |
