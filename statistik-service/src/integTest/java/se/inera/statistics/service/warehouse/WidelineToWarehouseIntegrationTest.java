@@ -52,7 +52,7 @@ public class WidelineToWarehouseIntegrationTest {
     @Test
     public void testPopulateWarehouse() throws Exception {
         WideLine line1 = new WideLine();
-        String patientId = "19121212-1210";
+        String patientId = "19121212-1212";
         HsaIdEnhet enhet = new HsaIdEnhet("E1");
         line1.setAlder(23);
         line1.setDiagnoskapitel("A00-B99");

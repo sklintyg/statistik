@@ -19,9 +19,11 @@
 package se.inera.statistics.web.service;
 
 import org.apache.cxf.common.util.ClassHelper;
+import org.apache.cxf.interceptor.Fault;
 import org.apache.cxf.jaxrs.JAXRSInvoker;
 import org.apache.cxf.message.Exchange;
 import org.apache.cxf.message.MessageContentsList;
+import org.springframework.security.access.AccessDeniedException;
 import se.inera.statistics.service.warehouse.query.CalcCoordinator;
 import se.inera.statistics.service.warehouse.query.CalcException;
 
@@ -41,8 +43,14 @@ public class CalcCoordinatorInvoker extends JAXRSInvoker {
             return super.invoke(exchange, requestParams, resourceObject);
         } catch (CalcException c) {
             return new MessageContentsList(Response.status(Response.Status.SERVICE_UNAVAILABLE).build());
+        } catch (Fault f) {
+            if (f.getCause() instanceof AccessDeniedException) {
+                throw (AccessDeniedException) f.getCause();
+            }
+            throw f;
         } finally {
             CalcCoordinator.returnTicket(ticket);
         }
     }
+
 }

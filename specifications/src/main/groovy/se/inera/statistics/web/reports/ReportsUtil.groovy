@@ -127,7 +127,6 @@ class ReportsUtil {
             def queryWithFilter = addFilterToQueryStringIfSet(filterQueryName, filter, queryString)
             println("GET: " + url + " : " + queryWithFilter)
             def response = statistik.get(path: url, queryString : queryWithFilter)
-            assert response.status == 200
             return response.data;
         } catch (Throwable e) {
             println "e.message: " + e.message
@@ -136,6 +135,9 @@ class ReportsUtil {
                 return []
             } else if ('Access is denied' == e.message) {
                     println 'error: Access is denied'
+                    return []
+            } else if ('Forbidden' == e.message) {
+                    println 'error: Forbidden'
                     return []
             } else {
                 throw e

@@ -15,6 +15,7 @@ import se.inera.statistics.service.warehouse.NationellData;
 import se.inera.statistics.service.warehouse.SjukfallUtil;
 import se.inera.statistics.service.warehouse.Warehouse;
 import se.inera.statistics.service.warehouse.WarehouseManager;
+import se.inera.statistics.service.warehouse.WidelineConverter;
 import se.inera.statistics.service.warehouse.query.CalcCoordinator;
 import se.inera.statistics.service.warehouse.query.SjukfallQuery;
 import se.inera.statistics.web.service.ChartDataService;
@@ -68,6 +69,13 @@ public class RestSupportService {
 
     @Autowired
     private SjukfallQuery sjukfallQuery;
+
+    @GET
+    @Path("converteddate/{internalDate}")
+    @Produces({ MediaType.APPLICATION_JSON })
+    public Response getConvertedDate(@PathParam("internalDate") int internalDate) {
+        return Response.ok(WidelineConverter.toDate(internalDate).toString()).build();
+    }
 
     @POST
     @Path("cutoff")

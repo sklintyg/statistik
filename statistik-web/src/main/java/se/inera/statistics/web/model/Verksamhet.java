@@ -73,6 +73,10 @@ public class Verksamhet implements Serializable {
         return new HsaIdEnhet(encodeId);
     }
 
+    public HsaIdEnhet getIdUnencoded() {
+        return new HsaIdEnhet(id);
+    }
+
     public String getName() {
         return name;
     }

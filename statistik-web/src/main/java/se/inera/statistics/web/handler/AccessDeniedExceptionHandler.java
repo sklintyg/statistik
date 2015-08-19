@@ -16,35 +16,22 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package se.inera.statistics.service.helper;
+package se.inera.statistics.web.handler;
 
-import org.joda.time.LocalDate;
-import org.junit.Test;
-import se.inera.statistics.service.warehouse.WidelineConverter;
+import org.springframework.security.access.AccessDeniedException;
 
-import static org.junit.Assert.*;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.ext.ExceptionMapper;
+import javax.ws.rs.ext.Provider;
 
-public class ConversionHelperTest {
+@Provider
+public final class AccessDeniedExceptionHandler implements
+        ExceptionMapper<AccessDeniedException> {
 
-    @Test
-    public void testPatientIdToString() throws Exception {
-        //Given
-        final long id = 197503259280L;
-
-        //When
-        final String pnr = ConversionHelper.patientIdToString(id);
-
-        //Then
-        assertEquals("19750325-9280", pnr);
-    }
-
-    @Test
-    public void testExtractAlder() throws Exception {
-        //When
-        final int alder = ConversionHelper.extractAlder("19750325-9280", new LocalDate(2015, 3, 5));
-
-        //Then
-        assertEquals(39, alder);
+    @Override
+    public Response toResponse(final AccessDeniedException exception) {
+        return Response.status(Response.Status.FORBIDDEN)
+                .entity(exception.getMessage()).build();
     }
 
 }

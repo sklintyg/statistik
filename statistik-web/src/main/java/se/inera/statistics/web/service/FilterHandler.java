@@ -240,7 +240,7 @@ public class FilterHandler {
         LoginInfo info = loginServiceUtil.getLoginInfo(request);
         for (Verksamhet verksamhet : info.getBusinesses()) {
             if (isOfVerksamhetsTyp(verksamhet, verksamhetstyper)) {
-                enhetsIds.add(verksamhet.getId());
+                enhetsIds.add(verksamhet.getIdUnencoded());
             }
         }
         return enhetsIds;
