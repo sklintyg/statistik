@@ -10,10 +10,10 @@ Gäller STATISTIK-1082.
 
 | Enbart foljande intyg finns |
 | personnr      | diagnoskod | start      | slut       | enhet  | kommentar |
-| ${person18.personnummer} | G01        | 2013-02-05 | 2013-02-06 | enhet1 |           |
-| ${person19.personnummer} | G01        | 2013-02-05 | 2013-02-06 | enhet2 |           |
-| ${person21.personnummer} | G01        | 2013-02-05 | 2013-03-06 | enhet2 |           |
-| ${person20.personnummer} | G01        | 2013-02-05 | 2013-02-06 | enhet4 |           |
+| 19790407-2225 | G01        | 2013-02-05 | 2013-02-06 | enhet1 |           |
+| 19790407-2235 | G01        | 2013-02-05 | 2013-02-06 | enhet2 |           |
+| 19790407-2255 | G01        | 2013-02-05 | 2013-03-06 | enhet2 |           |
+| 19790407-2245 | G01        | 2013-02-05 | 2013-02-06 | enhet4 |           |
 
 | Uppladdade landstingsfiler |
 | användare | filnamn        | statusmeddelande? |

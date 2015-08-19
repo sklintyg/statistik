@@ -10,7 +10,7 @@ Ett intyg utfärdat på en vårdenhet. Inloggad med behörighet för en annan v�
 
 | Enbart foljande intyg finns |
 | personnr      | diagnoskod | start      | slut       | enhet  | kommentar |
-| ${person3.personnummer} | G01        | 2013-02-01 | 2013-02-06 | enhet2 | user1 har inte behörighet till enhet2 |
+| 19790407-1295 | G01        | 2013-02-01 | 2013-02-06 | enhet2 | user1 har inte behörighet till enhet2 |
 
 !3 Då gäller:
 

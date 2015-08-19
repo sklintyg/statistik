@@ -10,7 +10,7 @@ Ett intyg är utfärdat för en patient som är 113 år gammal.
 
 | Enbart foljande intyg finns |
 | personnr | diagnoskod | start    | slut       | enhet |
-| ${person48.personnummer} | P14 | 2015-05-01 | 2015-08-14 | enhet1 |
+| 19000925-9813 | P14 | 2015-05-01 | 2015-08-14 | enhet1 |
 
 !3 Då gäller:
 

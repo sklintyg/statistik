@@ -8,17 +8,17 @@ Flera sjukfall med diagnoskoder på olika nivåer.
 
 !| Enbart foljande intyg finns |
 | personnr | diagnoskod | start    | slut       | enhet  | kommentar |
-| ${person140.personnummer} | F401  | 2013-02-01 | 2013-02-14 | enhet1 | En existerande kod|
-| ${person141.personnummer} | f401  | 2013-02-01 | 2013-02-14 | enhet1 | En existerande kod, gemen |
-| ${person142.personnummer} | F40.1 | 2013-02-01 | 2013-02-14 | enhet1 | En existerande kod, formaterad med punkt |
-| ${person143.personnummer} | F40-1 | 2013-02-01 | 2013-02-14 | enhet1 | En existerande kod, formaterad med bindestreck |
-| ${person144.personnummer} | F40 1 | 2013-02-01 | 2013-02-14 | enhet1 | En existerande kod, formaterad med mellanslag |
-| ${person145.personnummer} | F403  | 2013-02-01 | 2013-02-14 | enhet1 | Icke existerande kod |
-| ${person146.personnummer} | F402B | 2013-02-01 | 2013-02-14 | enhet1 | Existerande femställig kod |
-| ${person147.personnummer} | F402b | 2013-02-01 | 2013-02-14 | enhet1 | Existerande femställig kod, gemen |
-| ${person148.personnummer} | F51-  | 2013-02-01 | 2013-02-14 | enhet1 | Existerande kod från PV-kodverk |
-| ${person149.personnummer} | F89-P | 2013-02-01 | 2013-02-14 | enhet1 | Existerande kod från PV-kodverk |
-| ${person101.personnummer} | F989P | 2013-02-01 | 2013-02-14 | enhet1 | Existerande kod från PV-kodverk |
+| 19790407-9020 | F401  | 2013-02-01 | 2013-02-14 | enhet1 | En existerande kod|
+| 19790407-9120 | f401  | 2013-02-01 | 2013-02-14 | enhet1 | En existerande kod, gemen |
+| 19790407-9220 | F40.1 | 2013-02-01 | 2013-02-14 | enhet1 | En existerande kod, formaterad med punkt |
+| 19790407-9320 | F40-1 | 2013-02-01 | 2013-02-14 | enhet1 | En existerande kod, formaterad med bindestreck |
+| 19790407-9420 | F40 1 | 2013-02-01 | 2013-02-14 | enhet1 | En existerande kod, formaterad med mellanslag |
+| 19790407-9520 | F403  | 2013-02-01 | 2013-02-14 | enhet1 | Icke existerande kod |
+| 19790407-9620 | F402B | 2013-02-01 | 2013-02-14 | enhet1 | Existerande femställig kod |
+| 19790407-9720 | F402b | 2013-02-01 | 2013-02-14 | enhet1 | Existerande femställig kod, gemen |
+| 19790407-9820 | F51-  | 2013-02-01 | 2013-02-14 | enhet1 | Existerande kod från PV-kodverk |
+| 19790407-9920 | F89-P | 2013-02-01 | 2013-02-14 | enhet1 | Existerande kod från PV-kodverk |
+| 19790407-1020 | F989P | 2013-02-01 | 2013-02-14 | enhet1 | Existerande kod från PV-kodverk |
 
 !3 Då gäller:
 

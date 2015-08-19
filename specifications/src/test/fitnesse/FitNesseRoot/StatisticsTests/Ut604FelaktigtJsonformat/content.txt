@@ -7,9 +7,9 @@
 
 | Enbart foljande intyg finns |
 | personnr | diagnoskod | start    | slut       | enhet  | jsonformat |
-| ${person27.personnummer} | F40 | 2013-02-17 | 2013-02-28 | enhet1 | nytt       |
-| ${person28.personnummer} | F32 | 2013-02-01 | 2013-02-14 | enhet1 | felaktigt  |
-| ${person29.personnummer} | F40 | 2013-02-17 | 2013-02-28 | enhet1 | nytt       |
+| 19790407-1120 | F40 | 2013-02-17 | 2013-02-28 | enhet1 | nytt       |
+| 19790407-2120 | F32 | 2013-02-01 | 2013-02-14 | enhet1 | felaktigt  |
+| 19790407-3120 | F40 | 2013-02-17 | 2013-02-28 | enhet1 | nytt       |
 
 !3 Då gäller:
 Inloggad:

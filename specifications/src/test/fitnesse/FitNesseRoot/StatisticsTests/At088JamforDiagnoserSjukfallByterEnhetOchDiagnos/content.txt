@@ -8,11 +8,11 @@ Ett sjukfall består av fem intyg med olika diagnoser utfärdade på olika enhet
 
 | Enbart foljande intyg finns |
 | personnr | diagnoskod | start    | slut       | enhet |
-| ${person6.personnummer} | F40 | 2013-02-01 | 2013-03-11 | enhet1 |
-| ${person6.personnummer} | F32 | 2013-03-12 | 2013-03-16 | enhet1 |
-| ${person6.personnummer} | A00 | 2013-03-17 | 2013-04-01 | enhet2 |
-| ${person6.personnummer} | F50 | 2013-04-02 | 2013-04-30 | enhet1 |
-| ${person6.personnummer} | F34 | 2013-05-01 | 2013-05-15 | enhet3 |
+| 19790407-0220 | F40 | 2013-02-01 | 2013-03-11 | enhet1 |
+| 19790407-0220 | F32 | 2013-03-12 | 2013-03-16 | enhet1 |
+| 19790407-0220 | A00 | 2013-03-17 | 2013-04-01 | enhet2 |
+| 19790407-0220 | F50 | 2013-04-02 | 2013-04-30 | enhet1 |
+| 19790407-0220 | F34 | 2013-05-01 | 2013-05-15 | enhet3 |
 
 !3 Då gäller:
 

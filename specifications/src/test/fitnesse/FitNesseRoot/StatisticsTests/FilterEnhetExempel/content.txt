@@ -7,8 +7,8 @@
 
 | Enbart foljande intyg finns |
 | personnr      | diagnoskod | start      | slut       | enhet  | kommentar |
-| ${person3.personnummer} | G01        | 2013-02-05 | 2013-02-06 | enhet1 |           |
-| ${person9.personnummer} | G01        | 2013-02-05 | 2013-02-06 | enhet2 |           |
+| 19790407-1295 | G01        | 2013-02-05 | 2013-02-06 | enhet1 |           |
+| 19790407-2285 | G01        | 2013-02-05 | 2013-02-06 | enhet2 |           |
 
 
 !3 Då gäller:

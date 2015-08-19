@@ -6,8 +6,8 @@
 
 | Enbart foljande intyg finns |
 | personnr      | start      | slut       | enhet  | kommentar |
-| ${person1.personnummer} | 2014-06-01 | 2014-06-15 | enhet1 | |
-| ${person2.personnummer} | 2014-11-01 | 2014-12-01 | enhet1 | |
+| 19880701-0015 | 2014-06-01 | 2014-06-15 | enhet1 | |
+| 19880701-1015 | 2014-11-01 | 2014-12-01 | enhet1 | |
 
 
 !3 Då gäller:

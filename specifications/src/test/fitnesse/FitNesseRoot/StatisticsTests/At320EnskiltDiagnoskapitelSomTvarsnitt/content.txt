@@ -12,8 +12,8 @@
 
 | Enbart foljande intyg finns |
 | personnr | diagnoskod | start    | slut       | arbetsförmåga | enhet  | läkare |
-| ${person13.personnummer} | G10 | 2013-06-01 | 2013-08-20 | 0             | enhet1 | lakare1 |
-| ${person15.personnummer} | G02 | 2014-07-01 | 2014-10-30 | 50            | enhet2 | lakare2 |
+| 19890407-1245 | G10 | 2013-06-01 | 2013-08-20 | 0             | enhet1 | lakare1 |
+| 19790407-1255 | G02 | 2014-07-01 | 2014-10-30 | 50            | enhet2 | lakare2 |
 
 !3 Då gäller:
 | Sjukfall i rapporten enskilt diagnoskapitel som tvarsnitt diagram |

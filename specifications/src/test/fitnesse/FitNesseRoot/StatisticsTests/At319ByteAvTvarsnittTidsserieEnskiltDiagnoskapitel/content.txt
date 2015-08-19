@@ -20,20 +20,20 @@ Det två sistnämnda ska hamna under "Övriga", oavsett visning som tvärsnitt e
 
 | Enbart foljande intyg finns |
 | personnr | diagnoskod | start    | slut       | enhet |
-| ${person5.personnummer} | C01 | 2013-02-01 | 2013-02-14 | enhet1 |
-| ${person6.personnummer} | C01 | 2013-02-01 | 2013-02-14 | enhet1 |
-| ${person84.personnummer} | C20 | 2013-02-01 | 2013-02-14 | enhet1 |
-| ${person85.personnummer} | C20 | 2013-02-01 | 2013-02-14 | enhet1 |
-| ${person86.personnummer} | C33 | 2013-02-01 | 2013-02-14 | enhet1 |
-| ${person87.personnummer} | C34 | 2013-02-01 | 2013-02-14 | enhet1 |
-| ${person88.personnummer} | C40 | 2013-02-01 | 2013-02-14 | enhet1 |
-| ${person101.personnummer}| C41 | 2013-02-01 | 2013-02-14 | enhet1 |
-| ${person109.personnummer}| C43 | 2013-02-01 | 2013-02-14 | enhet1 |
-| ${person150.personnummer}| C43 | 2013-02-01 | 2013-02-14 | enhet1 |
-| ${person151.personnummer} | C45 | 2013-02-01 | 2013-02-14 | enhet1 |
-| ${person152.personnummer} | C45 | 2013-02-01 | 2013-02-14 | enhet1 |
-| ${person153.personnummer} | C50 | 2013-02-01 | 2013-02-14 | enhet1 |
-| ${person154.personnummer} | C55 | 2013-02-01 | 2013-02-14 | enhet1 |
+| 19790407-0120 | C01 | 2013-02-01 | 2013-02-14 | enhet1 |
+| 19790407-0220 | C01 | 2013-02-01 | 2013-02-14 | enhet1 |
+| 19790407-0320 | C20 | 2013-02-01 | 2013-02-14 | enhet1 |
+| 19790407-0480 | C20 | 2013-02-01 | 2013-02-14 | enhet1 |
+| 19790407-0680 | C33 | 2013-02-01 | 2013-02-14 | enhet1 |
+| 19790407-0780 | C34 | 2013-02-01 | 2013-02-14 | enhet1 |
+| 19790407-0980 | C40 | 2013-02-01 | 2013-02-14 | enhet1 |
+| 19790407-1020 | C41 | 2013-02-01 | 2013-02-14 | enhet1 |
+| 19790407-2020 | C43 | 2013-02-01 | 2013-02-14 | enhet1 |
+| 19790407-3020 | C43 | 2013-02-01 | 2013-02-14 | enhet1 |
+| 19790407-4220 | C45 | 2013-02-01 | 2013-02-14 | enhet1 |
+| 19790407-5220 | C45 | 2013-02-01 | 2013-02-14 | enhet1 |
+| 19790407-5320 | C50 | 2013-02-01 | 2013-02-14 | enhet1 |
+| 19790407-6320 | C55 | 2013-02-01 | 2013-02-14 | enhet1 |
 
 !3 Då gäller:
 | Sjukfall i rapporten enskilt diagnoskapitel diagram |

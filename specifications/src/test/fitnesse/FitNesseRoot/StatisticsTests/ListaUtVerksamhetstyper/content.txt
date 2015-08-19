@@ -6,10 +6,10 @@
 
 | Enbart foljande intyg finns |
 | personnr | diagnoskod | start    | slut       | enhet  |
-| ${person55.personnummer} | F40 | 2013-02-01 | 2013-02-14 | enhet1 |
-| ${person52.personnummer} | F40 | 2013-02-01 | 2013-02-14 | enhet2 |
-| ${person60.personnummer} | F40 | 2013-02-01 | 2013-02-14 | enhet3 |
-| ${person59.personnummer} | F40 | 2013-02-01 | 2013-02-14 | enhet4 |
+| 19790407-0110 | F40 | 2013-02-01 | 2013-02-14 | enhet1 |
+| 19790407-0210 | F40 | 2013-02-01 | 2013-02-14 | enhet2 |
+| 19790407-0310 | F40 | 2013-02-01 | 2013-02-14 | enhet3 |
+| 19790407-0410 | F40 | 2013-02-01 | 2013-02-14 | enhet4 |
 
 !3 Då gäller:
 

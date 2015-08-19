@@ -10,10 +10,10 @@ Ett sjukfall består av tre intyg, varav mittenintyget har blivit makulerat.
 
 | Enbart foljande intyg finns |
 | personnr      | händelsetyp | exaktintygid| diagnoskod | start      | slut       | enhet  |
-| ${person3.personnummer} | CREATED   |1000         | G01        | 2013-02-01 | 2013-02-10 | enhet1 |
-| ${person3.personnummer} | CREATED   |1001         | G01        | 2013-02-11 | 2013-02-20 | enhet1 |
-| ${person3.personnummer} | REVOKED   |1001         | G01        | 2013-02-11 | 2013-02-20 | enhet1 |
-| ${person3.personnummer} | CREATED   |1002         | G01        | 2013-02-21 | 2013-02-28 | enhet1 |
+| 19790407-1295 | CREATED   |1000         | G01        | 2013-02-01 | 2013-02-10 | enhet1 |
+| 19790407-1295 | CREATED   |1001         | G01        | 2013-02-11 | 2013-02-20 | enhet1 |
+| 19790407-1295 | REVOKED   |1001         | G01        | 2013-02-11 | 2013-02-20 | enhet1 |
+| 19790407-1295 | CREATED   |1002         | G01        | 2013-02-21 | 2013-02-28 | enhet1 |
 
 !3 Då gäller:
 

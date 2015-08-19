@@ -10,9 +10,9 @@ Ett sjukfall består av tre intyg som inte kommer i kronologisk ordning.
 
 | Enbart foljande intyg finns |
 | personnr | diagnoskod | start    | slut       | enhet |
-| ${person3.personnummer} | G01 | 2014-02-05 | 2014-02-06 | enhet1 |
-| ${person3.personnummer} | G01 | 2014-02-25 | 2014-03-01 | enhet1 |
-| ${person3.personnummer} | G01 | 2014-02-07 | 2014-03-08 | enhet1 |
+| 19790407-1295 | G01 | 2014-02-05 | 2014-02-06 | enhet1 |
+| 19790407-1295 | G01 | 2014-02-25 | 2014-03-01 | enhet1 |
+| 19790407-1295 | G01 | 2014-02-07 | 2014-03-08 | enhet1 |
 
 !3 Då gäller:
 

@@ -10,17 +10,17 @@ Det finns flera olika intyg; enkla och övriga med olika längder.
 
 | Enbart foljande intyg finns |
 | personnr | diagnoskod | start    | slut       | enhet  | funktionsnedsättning | aktivitetsbegränsning | kommentar |
-| ${person5.personnummer} | F32 | 2015-02-01 | 2015-05-28 | enhet2 | E | E | Enkelt intyg över 60 dagar |
-| ${person52.personnummer} | F32 | 2015-03-01 | 2015-03-28 | enhet2 | E | E | |
-| ${person52.personnummer} | F32 | 2015-04-01 | 2015-05-28 | enhet2 | E | E | Enkelt intyg som förlänger sjukfall till över 60 dagar |
-| ${person84.personnummer} | F32 | 2015-02-01 | 2015-02-28 | enhet2 | E | E | Enkelt intyg under 60 dagar  |
-| ${person155.personnummer} | F32 | 2015-02-01 | 2015-02-28 | enhet2 | E | E | Enkelt intyg under 60 dagar  |
-| ${person96.personnummer} | F32 | 2015-02-01 | 2015-05-28 | enhet2 | Patienten har smärta i benet | Patienten kan inte gå | Övrigt intyg  |
-| ${person157.personnummer} | F32 | 2015-02-01 | 2015-02-28 | enhet2 | Patienten har smärta i benet | Patienten kan inte gå | Övrigt intyg  |
-| ${person98.personnummer} | F32 | 2015-03-01 | 2015-04-29 | enhet2 | E | E | Enkelt intyg exakt 60 dagar  |
-| ${person99.personnummer} | F32 | 2015-03-01 | 2015-04-30 | enhet2 | E | E | Enkelt intyg exakt 61 dagar  |
-| ${person158.personnummer} | F32 | 2015-02-01 | 2015-02-28 | enhet2 | E | E |  |
-| ${person158.personnummer} | F32 | 2015-03-01 | 2015-03-15 | enhet2 | Patienten har smärta i benet | Patienten kan inte gå | Övrigt intyg som förlänger ett enkelt intyg |
+| 19790407-0120 | F32 | 2015-02-01 | 2015-05-28 | enhet2 | E | E | Enkelt intyg över 60 dagar |
+| 19790407-0210 | F32 | 2015-03-01 | 2015-03-28 | enhet2 | E | E | |
+| 19790407-0210 | F32 | 2015-04-01 | 2015-05-28 | enhet2 | E | E | Enkelt intyg som förlänger sjukfall till över 60 dagar |
+| 19790407-0320 | F32 | 2015-02-01 | 2015-02-28 | enhet2 | E | E | Enkelt intyg under 60 dagar  |
+| 19790407-0420 | F32 | 2015-02-01 | 2015-02-28 | enhet2 | E | E | Enkelt intyg under 60 dagar  |
+| 19790407-0510 | F32 | 2015-02-01 | 2015-05-28 | enhet2 | Patienten har smärta i benet | Patienten kan inte gå | Övrigt intyg  |
+| 19790407-0620 | F32 | 2015-02-01 | 2015-02-28 | enhet2 | Patienten har smärta i benet | Patienten kan inte gå | Övrigt intyg  |
+| 19790407-0710 | F32 | 2015-03-01 | 2015-04-29 | enhet2 | E | E | Enkelt intyg exakt 60 dagar  |
+| 19790407-0810 | F32 | 2015-03-01 | 2015-04-30 | enhet2 | E | E | Enkelt intyg exakt 61 dagar  |
+| 19790407-0920 | F32 | 2015-02-01 | 2015-02-28 | enhet2 | E | E | |
+| 19790407-0920 | F32 | 2015-03-01 | 2015-03-15 | enhet2 | Patienten har smärta i benet | Patienten kan inte gå | Övrigt intyg som förlänger ett enkelt intyg |
 
 !3 Då gäller:
 

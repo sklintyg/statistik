@@ -8,8 +8,8 @@
 
 | Enbart foljande intyg finns |
 | personnr | diagnoskod | start    | slut       | enhet  | län |
-| ${person3.personnummer} | G01 | 2013-09-05 | 2013-09-06 | enhet1 | 01  |
-| ${person4.personnummer} | G01 | 2013-09-11 | 2013-09-12 | enhet1 | 10  |
+| 19790407-1295 | G01 | 2013-09-05 | 2013-09-06 | enhet1 | 01  |
+| 19790407-2295 | G01 | 2013-09-11 | 2013-09-12 | enhet1 | 10  |
 
 !3 Då gäller:
 

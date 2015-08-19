@@ -18,9 +18,9 @@ Det finns tre sjukfall med olika start- och sluttider.
 
 | Enbart foljande intyg finns |
 | personnr | diagnoskod | start    | slut       | arbetsförmåga | enhet  | läkare |
-| ${person13.personnummer} | G01 | 2013-01-01 | 2013-02-28 | 0             | enhet1 | lakare1 |
-| ${person43.personnummer} | G02 | 2014-07-01 | 2014-10-30 | 50            | enhet1 | lakare2 |
-| ${person49.personnummer} | G03 | 2014-11-01 | 2015-02-28 | 75            | enhet2 | lakare3 |
+| 19890407-1245 | G01 | 2013-01-01 | 2013-02-28 | 0             | enhet1 | lakare1 |
+| 19790407-1225 | G02 | 2014-07-01 | 2014-10-30 | 50            | enhet1 | lakare2 |
+| 19690407-1295 | G03 | 2014-11-01 | 2015-02-28 | 75            | enhet2 | lakare3 |
 
 !3 Då gäller:
 

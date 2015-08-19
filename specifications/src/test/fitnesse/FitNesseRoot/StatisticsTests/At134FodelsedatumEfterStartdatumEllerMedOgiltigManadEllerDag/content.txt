@@ -10,12 +10,12 @@ Det finns intyg som har personnummer med födelsedatum som inte motsvarar ett ri
 
 | Enbart foljande intyg finns |
 | personnr | diagnoskod | start    | slut       | enhet |
-| ${person135.personnummer} | G01 | 2013-02-05 | 2013-02-06 | enhet1 |
-| ${person136.personnummer} | G01 | 2013-02-11 | 2013-02-12 | enhet1 |
-| ${person137.personnummer} | G01 | 2013-02-11 | 2013-02-12 | enhet1 |
-| ${person138.personnummer} | G01 | 2013-02-11 | 2013-02-12 | enhet1 |
-| ${person139.personnummer} | G01 | 2013-02-11 | 2013-02-12 | enhet1 |
-| ${person166.personnummer} | G01 | 2013-02-11 | 2013-02-12 | enhet1 |
+| 19790007-1295 | G01 | 2013-02-05 | 2013-02-06 | enhet1 |
+| 19791307-1295 | G01 | 2013-02-11 | 2013-02-12 | enhet1 |
+| 19790100-1295 | G01 | 2013-02-11 | 2013-02-12 | enhet1 |
+| 19790132-1295 | G01 | 2013-02-11 | 2013-02-12 | enhet1 |
+| 19790230-1295 | G01 | 2013-02-11 | 2013-02-12 | enhet1 |
+| 20150101-1295 | G01 | 2013-02-11 | 2013-02-12 | enhet1 |
 
 !3 Då gäller:
 

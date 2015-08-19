@@ -10,9 +10,9 @@ Ett sjukfall går över tre enheter.
 
 | Enbart foljande intyg finns |
 | personnr      | diagnoskod | start      | slut       | enhet  | kommentar |
-| ${person3.personnummer} | G01        | 2013-02-05 | 2013-02-10 | enhet1 |           |
-| ${person3.personnummer} | G01        | 2013-02-12 | 2013-02-20 | enhet2 |           |
-| ${person3.personnummer} | G01        | 2013-02-21 | 2013-03-20 | enhet3 |           |
+| 19790407-1295 | G01        | 2013-02-05 | 2013-02-10 | enhet1 |           |
+| 19790407-1295 | G01        | 2013-02-12 | 2013-02-20 | enhet2 |           |
+| 19790407-1295 | G01        | 2013-02-21 | 2013-03-20 | enhet3 |           |
 
 | Uppladdade landstingsfiler |
 | användare | filnamn        | statusmeddelande? |

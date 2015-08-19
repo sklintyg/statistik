@@ -9,9 +9,9 @@ Testar STATISTIK-1083
 
 | Enbart foljande intyg finns |
 | personnr      | diagnoskod | start      | slut       | enhet  | intygstyp |
-| ${person7.personnummer} | G01        | 2013-02-05 | 2013-02-06 | enhet1 | fk7263    |
-| ${person9.personnummer} | G01        | 2013-02-05 | 2013-02-06 | enhet1 | ts-bas    |
-| ${person26.personnummer} | G01        | 2013-02-05 | 2013-02-06 | enhet1 | unknown   |
+| 19790407-1285 | G01        | 2013-02-05 | 2013-02-06 | enhet1 | fk7263    |
+| 19790407-2285 | G01        | 2013-02-05 | 2013-02-06 | enhet1 | ts-bas    |
+| 19790407-3285 | G01        | 2013-02-05 | 2013-02-06 | enhet1 | unknown   |
 
 
 !3 Då gäller:

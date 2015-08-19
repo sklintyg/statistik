@@ -10,9 +10,9 @@ Ett sjukfall består av tre intyg på två olika enheter. En enhet byter län me
 
 | Enbart foljande intyg finns |
 | personnr | diagnoskod | start    | slut       | enhet  | län |
-| ${person46.personnummer} | G01 | 2013-05-05 | 2013-06-06 | enhet1 | 01  |
-| ${person46.personnummer} | G01 | 2013-06-07 | 2013-06-30 | enhet2 | 03  |
-| ${person46.personnummer} | G01 | 2013-07-01 | 2013-07-30 | enhet1 | 00  |
+| 19790408-2295 | G01 | 2013-05-05 | 2013-06-06 | enhet1 | 01  |
+| 19790408-2295 | G01 | 2013-06-07 | 2013-06-30 | enhet2 | 03  |
+| 19790408-2295 | G01 | 2013-07-01 | 2013-07-30 | enhet1 | 00  |
 
 !3 Då gäller:
 

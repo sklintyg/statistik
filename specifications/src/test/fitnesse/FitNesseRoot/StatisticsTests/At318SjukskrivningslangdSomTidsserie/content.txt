@@ -10,10 +10,10 @@ Om det först är i 31-90 dagar och förlängs med ett intyg på 60 dagar, hamna
 
 | Enbart foljande intyg finns |
 | personnr | diagnoskod | start    | slut       | enhet  |
-| ${person13.personnummer} | G01 | 2013-06-10 | 2013-08-30 | enhet1 |
-| ${person13.personnummer} | G02 | 2013-09-01 | 2013-10-30 | enhet1 |
-| ${person15.personnummer} | G01 | 2014-06-01 | 2014-08-15 | enhet1 |
-| ${person15.personnummer} | G02 | 2014-08-17 | 2014-10-30 | enhet1 |
+| 19890407-1245 | G01 | 2013-06-10 | 2013-08-30 | enhet1 |
+| 19890407-1245 | G02 | 2013-09-01 | 2013-10-30 | enhet1 |
+| 19790407-1255 | G01 | 2014-06-01 | 2014-08-15 | enhet1 |
+| 19790407-1255 | G02 | 2014-08-17 | 2014-10-30 | enhet1 |
 
 
 !3 Då gäller:

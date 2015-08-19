@@ -10,8 +10,8 @@ Två intyg för två olika patienter utfärdade på två olika enheter.
 
 | Enbart foljande intyg finns |
 | personnr | diagnoskod | start | slut | enhet | kommentar |
-| ${person3.personnummer} | G01 | 2013-02-05 | 2013-02-06 | enhet1 | user2 har behörighet till både enhet1 och enhet2 |
-| ${person4.personnummer} | G01 | 2013-02-05 | 2013-02-06 | enhet2 | user2 har behörighet till både enhet1 och enhet2 |
+| 19790407-1295 | G01 | 2013-02-05 | 2013-02-06 | enhet1 | user2 har behörighet till både enhet1 och enhet2 |
+| 19790407-2295 | G01 | 2013-02-05 | 2013-02-06 | enhet2 | user2 har behörighet till både enhet1 och enhet2 |
 
 
 !3 Då gäller:

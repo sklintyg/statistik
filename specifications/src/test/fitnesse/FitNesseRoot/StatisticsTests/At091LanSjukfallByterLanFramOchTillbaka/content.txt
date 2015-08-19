@@ -11,10 +11,10 @@ Ett annat sjukfall har samma län hela fallet.
 
 | Enbart foljande intyg finns |
 | personnr | diagnoskod | start    | slut       | enhet  | län |
-| ${person4.personnummer} | G01 | 2013-05-05 | 2013-06-06 | enhet1 | 01  |
-| ${person4.personnummer} | G01 | 2013-06-11 | 2013-09-12 | enhet3 | 06  |
-| ${person4.personnummer} | G01 | 2013-09-13 | 2013-10-12 | enhet1 | 01  |
-| ${person32.personnummer} | G01 | 2013-09-13 | 2013-11-12 | enhet1 | 14  |
+| 19790407-2295 | G01 | 2013-05-05 | 2013-06-06 | enhet1 | 01  |
+| 19790407-2295 | G01 | 2013-06-11 | 2013-09-12 | enhet3 | 06  |
+| 19790407-2295 | G01 | 2013-09-13 | 2013-10-12 | enhet1 | 01  |
+| 19790408-2285 | G01 | 2013-09-13 | 2013-11-12 | enhet1 | 14  |
 
 !3 Då gäller:
 

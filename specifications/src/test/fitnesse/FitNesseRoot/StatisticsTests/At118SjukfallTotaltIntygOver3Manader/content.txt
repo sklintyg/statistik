@@ -10,7 +10,7 @@ Ett sjukfall består av ett intyg som är över tre månader långt.
 
 | Enbart foljande intyg finns |
 | personnr | diagnoskod | start    | slut       | enhet |
-| ${person3.personnummer} | G01 | 2013-02-05 | 2013-06-06 | enhet1 |
+| 19790407-1295 | G01 | 2013-02-05 | 2013-06-06 | enhet1 |
 
 !3 Då gäller:
 

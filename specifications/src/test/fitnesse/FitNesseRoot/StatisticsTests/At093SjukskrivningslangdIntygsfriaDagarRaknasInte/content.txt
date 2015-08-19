@@ -10,8 +10,8 @@ Ett sjukfall består av två intyg med fyra dagars uppehåll. Det första intyge
 
 | Enbart foljande intyg finns |
 | personnr | diagnoskod | start | slut | enhet | kommentar |
-| ${person7.personnummer} | G01 | 2013-02-01 | 2013-02-10 | enhet1 | |
-| ${person7.personnummer} | G01 | 2013-02-15 | 2013-02-17 | enhet1 | |
+| 19790407-1285 | G01 | 2013-02-01 | 2013-02-10 | enhet1 | |
+| 19790407-1285 | G01 | 2013-02-15 | 2013-02-17 | enhet1 | |
 
 !3 Då gäller:
 

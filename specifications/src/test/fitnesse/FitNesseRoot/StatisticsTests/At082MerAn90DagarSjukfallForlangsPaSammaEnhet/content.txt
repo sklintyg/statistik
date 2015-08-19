@@ -10,8 +10,8 @@ Ett sjukfall består av två intyg utfärdade på samma enhet. Det första intyg
 
 | Enbart foljande intyg finns |
 | personnr      | diagnoskod | start      | slut       | enhet  | kommentar |
-| ${person7.personnummer} | G01        | 2014-01-01 | 2014-03-15 | enhet1 | 74 dagar |
-| ${person7.personnummer} | G01        | 2014-03-16 | 2014-04-15 | enhet1 | 31 dagar |
+| 19790407-1285 | G01        | 2014-01-01 | 2014-03-15 | enhet1 | 74 dagar |
+| 19790407-1285 | G01        | 2014-03-16 | 2014-04-15 | enhet1 | 31 dagar |
 
 !3 Då gäller:
 

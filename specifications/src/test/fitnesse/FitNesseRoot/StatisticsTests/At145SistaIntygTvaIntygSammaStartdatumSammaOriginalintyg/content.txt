@@ -10,7 +10,7 @@ Ett sjukfall består av ett intyg med två sjukskrivningsgrader (som båda har s
 
 | Enbart foljande intyg finns |
 | personnr | diagnoskod | start    | slut       | arbetsförmåga | start2     | slut2      | arbetsförmåga2 | enhet  | län |
-| ${person47.personnummer} | F40 | 2013-02-15 | 2013-03-16 | 50            | 2013-02-15 | 2013-03-02 | 0              | enhet1 | 03  |
+| 19820307-0120 | F40 | 2013-02-15 | 2013-03-16 | 50            | 2013-02-15 | 2013-03-02 | 0              | enhet1 | 03  |
 
 !3 Då gäller:
 

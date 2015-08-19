@@ -10,8 +10,8 @@ Ett sjukfall består av 2 intyg som tillsammans blir exakt 90 dagar. Det är ett
 
 | Enbart foljande intyg finns |
 | personnr      | diagnoskod | start      | slut       | enhet  | kommentar |
-| ${person7.personnummer} | G01        | 2014-01-01 | 2014-02-28 | enhet1 | 59 dagar |
-| ${person7.personnummer} | G01        | 2014-03-04 | 2014-04-03 | enhet1 | 31 dagar |
+| 19790407-1285 | G01        | 2014-01-01 | 2014-02-28 | enhet1 | 59 dagar |
+| 19790407-1285 | G01        | 2014-03-04 | 2014-04-03 | enhet1 | 31 dagar |
 
 !3 Då gäller:
 

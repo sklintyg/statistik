@@ -11,13 +11,13 @@ I Blekinge finns följande sjukfall: 1 man (som samtidigt har ett sjukfall i Sto
 
 | Enbart foljande intyg finns|
 | personnr | diagnoskod | start    | slut       | enhet  | län |
-| ${person80.personnummer} | G01 | 2014-02-05 | 2014-02-06 | enhet1 | 01  |
-| ${person81.personnummer} | Goj | 2014-02-05 | 2014-02-02 | enhet1 | 01  |
-| ${person81.personnummer} | Xor | 2014-03-05 | 2014-04-20 | enhet1 | 01  |
-| ${person4.personnummer} | G01 | 2014-02-11 | 2014-02-12 | enhet1 | 01  |
-| ${person83.personnummer} | G01 | 2014-02-11 | 2014-02-12 | enhet1 | 01  |
-| ${person82.personnummer} | G01 | 2014-02-11 | 2014-02-12 | enhet1 | 01  |
-| ${person82.personnummer} | G01 | 2014-02-11 | 2014-02-12 | enhet3 | 10  |
+| 19790407-0326 | G01 | 2014-02-05 | 2014-02-06 | enhet1 | 01  |
+| 19790404-0326 | Goj | 2014-02-05 | 2014-02-02 | enhet1 | 01  |
+| 19790404-0326 | Xor | 2014-03-05 | 2014-04-20 | enhet1 | 01  |
+| 19790407-2295 | G01 | 2014-02-11 | 2014-02-12 | enhet1 | 01  |
+| 19790411-2295 | G01 | 2014-02-11 | 2014-02-12 | enhet1 | 01  |
+| 19790413-2295 | G01 | 2014-02-11 | 2014-02-12 | enhet1 | 01  |
+| 19790413-2295 | G01 | 2014-02-11 | 2014-02-12 | enhet3 | 10  |
 
 !3 Då gäller:
 

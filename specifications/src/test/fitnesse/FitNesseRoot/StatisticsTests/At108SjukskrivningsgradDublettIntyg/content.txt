@@ -12,8 +12,8 @@ Det finns två intyg med samma datum men olika arbetsförmåga för en patient.
 
 | Enbart foljande intyg finns |
 | personnr | diagnoskod | start    | slut       | arbetsförmåga | enhet |
-| ${person3.personnummer} | G01 | 2014-04-04 | 2014-05-16 | 0             | enhet1 |
-| ${person3.personnummer} | G01 | 2014-04-04 | 2014-05-16 | 50            | enhet1 |
+| 19790407-1295 | G01 | 2014-04-04 | 2014-05-16 | 0             | enhet1 |
+| 19790407-1295 | G01 | 2014-04-04 | 2014-05-16 | 50            | enhet1 |
 
 !3 Då gäller:
 

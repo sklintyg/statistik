@@ -10,10 +10,10 @@ Följande test visat att intyg med inget eller ogiltigt enhets-id hanteras som f
 
 | Enbart foljande intyg finns |
 | personnr      | diagnoskod | start      | slut       | enhet  | kommentar |
-| ${person122.personnummer} | G01        | 2013-02-01 | 2013-02-06 | enhet1 | |
-| ${person91.personnummer} | G01        | 2013-02-01 | 2013-02-06 | EJHSA | |
-| ${person92.personnummer} | G01        | 2013-02-01 | 2013-03-06 | EJHSANR2 | |
-| ${person93.personnummer} | G01        | 2013-02-01 | 2013-03-06 | UTANENHETSID | |
+| 19790407-0010 | G01        | 2013-02-01 | 2013-02-06 | enhet1 | |
+| 19790407-0020 | G01        | 2013-02-01 | 2013-02-06 | EJHSA | |
+| 19790407-0030 | G01        | 2013-02-01 | 2013-03-06 | EJHSANR2 | |
+| 19790407-0040 | G01        | 2013-02-01 | 2013-03-06 | UTANENHETSID | |
 
 !3 Då gäller:
 Nationell nivå

@@ -10,24 +10,18 @@ Gäller STATISTIK-1027.
 
 | Enbart foljande intyg finns |
 | personnr      | diagnoskod | start      | slut       | enhet  | kommentar |
-| ${person54.personnummer} | G01        | 2013-02-05 | 2013-02-06 | enhet1 |           |
-| ${person159.personnummer}
-${person145.personnummer} | G01        | 2013-02-05 | 2013-02-06 | enhet1 |           |
-| ${person73.personnummer} | G01        | 2013-02-05 | 2013-02-06 | enhet2 |           |
-| ${person74.personnummer} | G01        | 2013-02-05 | 2013-02-06 | enhet2 |           |
-| ${person75.personnummer} | G01        | 2013-02-05 | 2013-02-06 | enhet2 |           |
-| ${person76.personnummer} | G01        | 2013-02-05 | 2013-02-06 | enhet2 |           |
-| ${person160.personnummer}
-${person145.personnummer} | G01        | 2013-02-05 | 2013-02-06 | enhet2 |           |
-| ${person71.personnummer} | G01        | 2013-02-05 | 2013-02-06 | enhet3 |           |
-| ${person165.personnummer}
-${person145.personnummer} | G01        | 2013-03-05 | 2013-03-06 | enhet3 |           |
-| ${person162.personnummer}
-${person145.personnummer} | G01        | 2013-03-05 | 2013-03-06 | enhet3 |           |
-| ${person163.personnummer}
-${person145.personnummer} | G01        | 2013-02-05 | 2013-02-06 | enhet3 |           |
-| ${person164.personnummer}
-${person145.personnummer} | G01        | 2013-02-05 | 2013-02-06 | enhet3 |           |
+| 19790407-0115 | G01        | 2013-02-05 | 2013-02-06 | enhet1 |           |
+| 19790407-0125 | G01        | 2013-02-05 | 2013-02-06 | enhet1 |           |
+| 19790407-0215 | G01        | 2013-02-05 | 2013-02-06 | enhet2 |           |
+| 19790407-0315 | G01        | 2013-02-05 | 2013-02-06 | enhet2 |           |
+| 19790407-0415 | G01        | 2013-02-05 | 2013-02-06 | enhet2 |           |
+| 19790407-1215 | G01        | 2013-02-05 | 2013-02-06 | enhet2 |           |
+| 19790407-0525 | G01        | 2013-02-05 | 2013-02-06 | enhet2 |           |
+| 19790407-0615 | G01        | 2013-02-05 | 2013-02-06 | enhet3 |           |
+| 19790407-0715 | G01        | 2013-03-05 | 2013-03-06 | enhet3 |           |
+| 19790407-0925 | G01        | 2013-03-05 | 2013-03-06 | enhet3 |           |
+| 19790407-1025 | G01        | 2013-02-05 | 2013-02-06 | enhet3 |           |
+| 19790407-1125 | G01        | 2013-02-05 | 2013-02-06 | enhet3 |           |
 
 | Uppladdade landstingsfiler |
 | användare | filnamn        | statusmeddelande? |

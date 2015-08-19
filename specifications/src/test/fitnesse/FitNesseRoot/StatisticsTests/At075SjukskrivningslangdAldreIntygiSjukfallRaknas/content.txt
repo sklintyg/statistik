@@ -10,8 +10,8 @@ Ett sjukfall består av två intyg, där det första intyget inte varit giltigt 
 
 | Enbart foljande intyg finns |
 | personnr      | diagnoskod | start      | slut       | enhet  | kommentar |
-| ${person7.personnummer} | G01        | 2013-08-01 | 2013-12-01 | enhet1 | intyg äldre än 1 år, 5 månader långt |
-| ${person7.personnummer} | G01        | 2013-12-02 | 2014-02-01 | enhet1 | 2 månader långt |
+| 19790407-1285 | G01        | 2013-08-01 | 2013-12-01 | enhet1 | intyg äldre än 1 år, 5 månader långt |
+| 19790407-1285 | G01        | 2013-12-02 | 2014-02-01 | enhet1 | 2 månader långt |
 
 !3 Då gäller:
 

@@ -10,11 +10,11 @@ Gäller STATISTIK-1020.
 
 | Enbart foljande intyg finns |
 | personnr      | diagnoskod | start      | slut       | enhet  | kommentar |
-| ${person17.personnummer} | G01        | 2013-02-05 | 2013-02-06 | enhet1 |           |
-| ${person18.personnummer} | G01        | 2013-02-05 | 2013-02-06 | enhet2 |           |
-| ${person19.personnummer} | G01        | 2013-02-05 | 2013-02-06 | enhet3 |           |
-| ${person21.personnummer} | G01        | 2013-02-05 | 2013-02-06 | enhet3 |           |
-| ${person20.personnummer} | G01        | 2013-02-05 | 2013-02-06 | enhet4 |           |
+| 19790407-2215 | G01        | 2013-02-05 | 2013-02-06 | enhet1 |           |
+| 19790407-2225 | G01        | 2013-02-05 | 2013-02-06 | enhet2 |           |
+| 19790407-2235 | G01        | 2013-02-05 | 2013-02-06 | enhet3 |           |
+| 19790407-2255 | G01        | 2013-02-05 | 2013-02-06 | enhet3 |           |
+| 19790407-2245 | G01        | 2013-02-05 | 2013-02-06 | enhet4 |           |
 
 | Uppladdade landstingsfiler |
 | användare | filnamn        | statusmeddelande? |

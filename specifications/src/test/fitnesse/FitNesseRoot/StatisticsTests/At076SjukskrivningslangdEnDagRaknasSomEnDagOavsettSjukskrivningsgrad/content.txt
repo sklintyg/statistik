@@ -10,8 +10,8 @@ Ett sjukfall består av två intyg, utfärdade på två olika enheter inom samma
 
 | Enbart foljande intyg finns |
 | personnr      | diagnoskod | start      | slut       | arbetsförmåga | enhet  | kommentar |
-| ${person7.personnummer} | G01        | 2014-01-01 | 2014-03-15 | 25            | enhet1 | |
-| ${person7.personnummer} | G01        | 2014-03-16 | 2014-04-15 | 50            | enhet2 | |
+| 19790407-1285 | G01        | 2014-01-01 | 2014-03-15 | 25            | enhet1 | |
+| 19790407-1285 | G01        | 2014-03-16 | 2014-04-15 | 50            | enhet2 | |
 
 !3 Då gäller:
 

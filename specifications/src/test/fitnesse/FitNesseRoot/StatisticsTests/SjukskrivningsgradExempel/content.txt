@@ -7,8 +7,8 @@
 
 | Enbart foljande intyg finns |
 | personnr      | diagnoskod | start      | slut       | arbetsförmåga | start2     | slut2      | arbetsförmåga2 | enhet  |
-| ${person6.personnummer} | A00        | 2013-02-02 | 2013-03-01 | 0             | 2013-03-02 | 2013-03-20 | 75             | enhet1 |
-| ${person22.personnummer} | A00        | 2013-02-02 | 2013-02-27 | 75            |            |            |                | enhet1 |
+| 19790407-0220 | A00        | 2013-02-02 | 2013-03-01 | 0             | 2013-03-02 | 2013-03-20 | 75             | enhet1 |
+| 19790407-1220 | A00        | 2013-02-02 | 2013-02-27 | 75            |            |            |                | enhet1 |
 
 
 !3 Då gäller:
