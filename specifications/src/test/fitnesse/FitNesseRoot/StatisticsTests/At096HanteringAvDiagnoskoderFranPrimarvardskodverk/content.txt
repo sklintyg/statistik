@@ -2,7 +2,7 @@
 
 !3 Givet att:
 
-Ett sjukfall består av ett intyg med diagnoskod A35-P som kommer från primärvårdskodverket.
+Sjukfall består av intyg med diagnoskod som kommer från primärvårdskodverket.
 
 |script|dagens datum|2013-11-06|
 
@@ -11,15 +11,16 @@ Ett sjukfall består av ett intyg med diagnoskod A35-P som kommer från primärv
 |Enbart foljande intyg finns                          |
 |personnr     |diagnoskod|start     |slut      |enhet |
 |19790401-0120|A 35-P     |2013-02-01|2013-02-14|enhet1|
+|19790401-0130|G30-     |2013-02-01|2013-02-14|enhet1|
 
 !3 Då gäller:
 
-Sjukfallet hamnar i gruppen A00-E90, G00-L99, N00-N99 eftersom primärvårdskoder (och alla koder) tvättas och matchas till vanliga ICD-10-kodverket.
+Primärvårdskoder (och alla koder) tvättas och matchas till vanliga ICD-10-kodverket.
 
 Nationell:
 |Sjukfall i rapporten diagnosgrupp diagram |
 |år  |månad|grupp                                                                                         |män?|kvinnor?|
-|2013|feb  |A00-E90, G00-L99, N00-N99 Somatiska sjukdomar                                                 |0   |1       |
+|2013|feb  |A00-E90, G00-L99, N00-N99 Somatiska sjukdomar                                                 |1   |1       |
 |2013|feb  |F00-F99 Psykiska sjukdomar                                                                    |0   |0       |
 |2013|feb  |M00-M99 Muskuloskeletala sjukdomar                                                            |0   |0       |
 |2013|feb  |O00-O99 Graviditet och förlossning                                                            |0   |0       |
@@ -31,7 +32,7 @@ Nationell:
 Inloggad:
 |Sjukfall i rapporten diagnosgrupp diagram                                                                                           |
 |inloggad som|år  |månad|grupp                                                                                         |män?|kvinnor?|
-|user1       |2013|feb  |A00-E90, G00-L99, N00-N99 Somatiska sjukdomar                                                 |0   |1       |
+|user1       |2013|feb  |A00-E90, G00-L99, N00-N99 Somatiska sjukdomar                                                 |1   |1       |
 |user1       |2013|feb  |F00-F99 Psykiska sjukdomar                                                                    |0   |0       |
 |user1       |2013|feb  |M00-M99 Muskuloskeletala sjukdomar                                                            |0   |0       |
 |user1       |2013|feb  |O00-O99 Graviditet och förlossning                                                            |0   |0       |
