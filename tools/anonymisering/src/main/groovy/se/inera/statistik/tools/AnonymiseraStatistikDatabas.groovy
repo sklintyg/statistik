@@ -1,6 +1,5 @@
 package se.inera.statistik.tools
 
-import com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException
 import groovy.json.JsonBuilder
 import groovy.json.JsonSlurper
 import groovy.sql.Sql
@@ -8,7 +7,7 @@ import groovyx.gpars.GParsPool
 import org.apache.commons.dbcp2.BasicDataSource
 import se.inera.certificate.tools.anonymisering.AnonymiseraDatum
 import se.inera.certificate.tools.anonymisering.AnonymiseraHsaId
-import se.inera.certificate.tools.anonymisering.AnonymiseraJson
+import se.inera.statistik.tools.anonymisering.AnonymiseraJson
 import se.inera.certificate.tools.anonymisering.AnonymiseraPersonId
 
 import java.util.concurrent.atomic.AtomicInteger
@@ -46,11 +45,12 @@ class AnonymiseraStatistikDatabas {
             output = certificateIds.collectParallel {
                 StringBuffer result = new StringBuffer()
                 def id = it.correlationId
+
+                println "Correlation ID: $id"
                 Sql sql = new Sql(dataSource)
                 try {
                     def intyg = sql.firstRow( 'select data from intyghandelse where correlationId = :id' , [id : id])
                     String jsonDoc = intyg.data
-                    println jsonDoc
                     String anonymiseradJson = anonymiseraJson.anonymiseraIntygsJson(jsonDoc)
                     sql.executeUpdate('update intyghandelse set data = :document where correlationId = :id',
                                           [document: anonymiseradJson, id: id])

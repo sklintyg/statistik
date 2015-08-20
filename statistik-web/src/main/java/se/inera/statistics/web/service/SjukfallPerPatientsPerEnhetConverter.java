@@ -32,11 +32,13 @@ import se.inera.statistics.web.model.SimpleDetailsData;
 import se.inera.statistics.web.model.TableData;
 
 import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 public class SjukfallPerPatientsPerEnhetConverter {
@@ -95,8 +97,15 @@ public class SjukfallPerPatientsPerEnhetConverter {
     }
 
     private String roundToTwoDecimalsAndFormatToString(float number) {
-        DecimalFormat twoDecimalsFormat = new DecimalFormat("#.##");
+        DecimalFormatSymbols decimalFormatSymbols = new DecimalFormatSymbols(Locale.ENGLISH);
+        decimalFormatSymbols.setDecimalSeparator(',');
+        DecimalFormat twoDecimalsFormat = new DecimalFormat("#.##", decimalFormatSymbols);
         return twoDecimalsFormat.format(number);
+    }
+
+    private double roundToTwoDecimals(double number) {
+        DecimalFormat twoDecimalsFormat = new DecimalFormat("#.##");
+        return Double.valueOf(twoDecimalsFormat.format(number));
     }
 
     private ChartData convertToChartData(SimpleKonResponse<SimpleKonDataRow> casesPerMonth) {
@@ -111,8 +120,7 @@ public class SjukfallPerPatientsPerEnhetConverter {
             categories.add(new ChartCategory(name, isMarked(dataRow)));
 
             final float sjukfallPerThousandListadePatienter = enhet.getSjukfallPerThousandListadePatienter();
-            final String sjukfallPerThousandListadePatienterRounded = roundToTwoDecimalsAndFormatToString(sjukfallPerThousandListadePatienter);
-            filteredSummedData.add(Double.valueOf(sjukfallPerThousandListadePatienterRounded));
+            filteredSummedData.add(roundToTwoDecimals(sjukfallPerThousandListadePatienter));
         }
 
         if (filteredSummedData.isEmpty()) {

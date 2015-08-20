@@ -162,7 +162,7 @@ public class SjukfallPerPatientsPerEnhetConverterTest {
         assertEquals(10, result.getTableData().getRows().get(0).getData().get(0));
         assertEquals(3000, result.getTableData().getRows().get(0).getData().get(1));
         
-        assertEquals("3.33", result.getTableData().getRows().get(0).getData().get(2));
+        assertEquals("3,33", result.getTableData().getRows().get(0).getData().get(2));
         assertEquals(3.33, result.getChartData().getSeries().get(0).getData().get(0));
     }
 

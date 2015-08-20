@@ -30,3 +30,8 @@ Inloggad:
 | user3        | 2013 | feb   | 2    | 1        |
 | user3        | 2013 | mar   | 1    | 0        |
 | user3        | 2013 | apr   | 0    | 0        |
+
+!3 Uppstädning efter testet
+| Uppladdade landstingsfiler |
+| användare | filnamn                  | statusmeddelande? |
+| user3     | tomlandstingslista.xlsx  | Data updated ok   |

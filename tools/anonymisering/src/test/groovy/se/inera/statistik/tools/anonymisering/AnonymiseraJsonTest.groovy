@@ -12,7 +12,9 @@ import se.inera.certificate.tools.anonymisering.AnonymiseraHsaId
 class AnonymiseraJsonTest {
 
     def JSON_TEMPLATE_PATH = '/fk7263_L_template.json'
+    def JSON_TEMPLATE_NO_ENKELT_FIELDS_PATH = '/fk7263_L_template_no_fields_for_enkelt.json'
     def JSON_ANONYMIZED_TEMPLATE_PATH = '/fk7263_L_anonymized.json'
+    def JSON_ANONYMIZED_TEMPLATE_NO_FIELDS_FOR_ENKELT_PATH = '/fk7263_L_anonymized_no_fields_for_enkelt.json'
     AnonymiseraHsaId anonymiseraHsaId = [anonymisera:{"SE1010"}] as AnonymiseraHsaId
     AnonymiseraDatum anonymiseraDatum = new AnonymiseraDatum()
     AnonymiseraJson anonymiseraJson = new AnonymiseraJson(anonymiseraHsaId, anonymiseraDatum)
@@ -77,6 +79,18 @@ class AnonymiseraJsonTest {
 
         JSONAssert.assertEquals(expected, actual, true);
     }
+
+    @Test
+    void test_intyg_when_fields_do_not_exist() {
+        String json = buildJsonIntyg JSON_TEMPLATE_NO_ENKELT_FIELDS_PATH
+
+        String expected = buildJsonIntyg JSON_ANONYMIZED_TEMPLATE_NO_FIELDS_FOR_ENKELT_PATH
+
+        String actual = anonymiseraJson.anonymiseraIntygsJson(json, "10101010-1010")
+
+        JSONAssert.assertEquals(expected, actual, true);
+    }
+
 
     def buildJsonIntyg(def file, def clos = null) {
         def intygString = getClass().getResource( file ).getText( 'UTF-8' )

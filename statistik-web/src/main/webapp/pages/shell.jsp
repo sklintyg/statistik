@@ -121,7 +121,7 @@
 
 <div id="wrapper">
     <%-- Sidebar --%>
-    <div id="sidebar-wrapper" class="" data-ng-controller="navigationMenuCtrl">
+    <div id="sidebar-wrapper" class="hidden-print" data-ng-controller="navigationMenuCtrl">
         <h1 class="hidden-header"><span message key="statistics.hidden-header.sidans-huvudnavigering"></span></h1>
         <jsp:include page="menu.jsp"/>
     </div>
