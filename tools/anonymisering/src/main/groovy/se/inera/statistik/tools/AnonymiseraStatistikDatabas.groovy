@@ -45,11 +45,12 @@ class AnonymiseraStatistikDatabas {
             output = certificateIds.collectParallel {
                 StringBuffer result = new StringBuffer()
                 def id = it.correlationId
+
+                println "Correlation ID: $id"
                 Sql sql = new Sql(dataSource)
                 try {
                     def intyg = sql.firstRow( 'select data from intyghandelse where correlationId = :id' , [id : id])
                     String jsonDoc = intyg.data
-                    println jsonDoc
                     String anonymiseradJson = anonymiseraJson.anonymiseraIntygsJson(jsonDoc)
                     sql.executeUpdate('update intyghandelse set data = :document where correlationId = :id',
                                           [document: anonymiseradJson, id: id])
