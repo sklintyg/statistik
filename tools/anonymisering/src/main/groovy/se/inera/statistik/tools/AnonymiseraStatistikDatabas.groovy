@@ -1,6 +1,5 @@
 package se.inera.statistik.tools
 
-import com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException
 import groovy.json.JsonBuilder
 import groovy.json.JsonSlurper
 import groovy.sql.Sql
@@ -8,7 +7,7 @@ import groovyx.gpars.GParsPool
 import org.apache.commons.dbcp2.BasicDataSource
 import se.inera.certificate.tools.anonymisering.AnonymiseraDatum
 import se.inera.certificate.tools.anonymisering.AnonymiseraHsaId
-import se.inera.certificate.tools.anonymisering.AnonymiseraJson
+import se.inera.statistik.tools.anonymisering.AnonymiseraJson
 import se.inera.certificate.tools.anonymisering.AnonymiseraPersonId
 
 import java.util.concurrent.atomic.AtomicInteger
