@@ -25,8 +25,9 @@ class AnonymiseraJson extends IntygJsonAnonymizer {
         intyg.anonymize('sjukdomsforlopp')
         intyg.anonymize('nuvarandeArbetsuppgifter')
 
-        isFieldIndicatingEnkeltIntyg(intyg.funktionsnedsattning)?:intyg.anonymize('funktionsnedsattning')
-        isFieldIndicatingEnkeltIntyg(intyg.aktivitetsbegransning)?:intyg.anonymize('aktivitetsbegransning')
+
+        intyg.funktionsnedsattning && isFieldIndicatingEnkeltIntyg(intyg.funktionsnedsattning)?:intyg.anonymize('funktionsnedsattning')
+        intyg.aktivitetsbegransning && isFieldIndicatingEnkeltIntyg(intyg.aktivitetsbegransning)?:intyg.anonymize('aktivitetsbegransning')
 
         intyg.anonymize('arbetsformagaPrognos')
         intyg.anonymize('namnfortydligandeOchAdress')

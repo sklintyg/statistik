@@ -11,10 +11,10 @@ Anonymiserings-applikationen anonymiserar intygsinnehåll i en statistikdatabas.
 Anonymisering
 Att köra applikationen
 
-    Hämta zip-filen i repot: http://repository-callistasoftware.forge.cloudbees.com/release/se/inera/statistik/anonymisering/3.0.4/
+    Hämta zip-filen i repot: http://repository-callistasoftware.forge.cloudbees.com/release/se/inera/statistik/anonymisering/3.0.5/
     packa up zip-filen, gå in i katalogen: 
-    unzip anonymisering-3.0.4.zip
-    cd anonymisering-3.0.4
+    unzip anonymisering-3.0.5.zip
+    cd anonymisering-3.0.5
     
     Hämta inställningsfilen: https://raw.githubusercontent.com/sklintyg/statistik/master/tools/anonymisering/dataSource.properties
     Redigera inställningsfilen
