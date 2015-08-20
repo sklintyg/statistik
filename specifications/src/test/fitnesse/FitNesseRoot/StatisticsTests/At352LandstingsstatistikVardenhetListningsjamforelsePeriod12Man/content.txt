@@ -32,3 +32,7 @@ Inloggad:
 | inloggad som | vårdenhet    | antal sjukfall per tusen listningar? |
 | user3        | Enhet enhet3 | 0.91    |
 
+!3 Uppstädning efter testet
+| Uppladdade landstingsfiler |
+| användare | filnamn                  | statusmeddelande? |
+| user3     | tomlandstingslista.xlsx  | Data updated ok   |

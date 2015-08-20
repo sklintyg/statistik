@@ -53,3 +53,8 @@ Inloggad:
 | user1        | Enhet enhet3 | -1      |
 | user6        | Enhet enhet1 | 9.09    |
 | user6        | Enhet enhet3 | 0.91    |
+
+!3 Uppstädning efter testet
+| Uppladdade landstingsfiler |
+| användare | filnamn                  | statusmeddelande? |
+| user3     | tomlandstingslista.xlsx  | Data updated ok   |
