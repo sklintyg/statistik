@@ -1,6 +1,6 @@
 !contents -R2 -g -p -f -h
 
-IGNORERAD: Väntar på STATISTIK-1219
+Testar STATISTIK-1219
 
 !3 Givet att:
 
