@@ -10,7 +10,7 @@ Ett sjukfall består av ett intyg med 74 dagars giltighetstid.
 
 | Enbart foljande intyg finns |
 | personnr | diagnoskod | start | slut | enhet | kommentar |
-| 19790407-1285 | G01 | 2013-01-01 | 2013-03-15 | enhet1 | |
+| 19671122-2940 | G01 | 2013-01-01 | 2013-03-15 | enhet1 | |
 
 !3 Då gäller:
 

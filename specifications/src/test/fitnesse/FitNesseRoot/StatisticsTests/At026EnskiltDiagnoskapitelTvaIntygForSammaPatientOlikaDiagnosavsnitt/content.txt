@@ -8,8 +8,8 @@ Två intyg för samma patient under samma månad. Intygens giltighetsdatum över
 
 | Enbart foljande intyg finns |
 | personnr | diagnoskod | start    | slut       | enhet  |
-| 19790407-0220 | F40 | 2013-02-01 | 2013-02-14 | enhet1 |
-| 19790407-0220 | A00 | 2013-02-02 | 2013-02-28 | enhet1 |
+| 19790219-9285 | F40 | 2013-02-01 | 2013-02-14 | enhet1 |
+| 19790219-9285 | A00 | 2013-02-02 | 2013-02-28 | enhet1 |
 
 !3 Då gäller:
 

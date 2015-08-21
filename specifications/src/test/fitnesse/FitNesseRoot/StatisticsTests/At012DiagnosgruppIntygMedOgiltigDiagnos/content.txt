@@ -10,8 +10,8 @@ Ett intyg har diagnoskoden "Hejsan", vilken inte finns med i ICD-10.
 
 | Enbart foljande intyg finns |
 | personnr | diagnoskod | start    | slut       | enhet |
-| 19790407-0120 | Hejsan | 2013-02-01 | 2013-02-14 | enhet1 |
-| 19790407-0220 | UA5104 | 2013-02-01 | 2013-02-14 | enhet1 |
+| 19790316-9261 | Hejsan | 2013-02-01 | 2013-02-14 | enhet1 |
+| 19790219-9285 | UA5104 | 2013-02-01 | 2013-02-14 | enhet1 |
 
 !3 Då gäller:
 

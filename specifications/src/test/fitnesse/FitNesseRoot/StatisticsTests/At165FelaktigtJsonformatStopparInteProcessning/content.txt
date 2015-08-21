@@ -11,9 +11,9 @@ Testar att ett felaktigt intyg inte stoppar senare intyg från att processas.
 
 | Enbart foljande intyg finns |
 | personnr | diagnoskod | start    | slut       | enhet  | jsonformat |
-| 19790407-1120 | F40 | 2013-02-17 | 2013-02-28 | enhet1 | nytt       |
-| 19790407-2120 | F32 | 2013-02-01 | 2013-02-14 | enhet1 | felaktigt  |
-| 19790407-3120 | F40 | 2013-02-17 | 2013-02-28 | enhet1 | nytt       |
+| 19680524-9288 | F40 | 2013-02-17 | 2013-02-28 | enhet1 | nytt       |
+| 19671109-2681 | F32 | 2013-02-01 | 2013-02-14 | enhet1 | felaktigt  |
+| 19671127-3026 | F40 | 2013-02-17 | 2013-02-28 | enhet1 | nytt       |
 
 !3 Då gäller:
 Inloggad:

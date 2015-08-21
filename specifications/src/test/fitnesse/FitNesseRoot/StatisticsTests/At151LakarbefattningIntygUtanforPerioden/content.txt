@@ -15,8 +15,8 @@ Ett sjukfall består av två intyg, varav det första är inte giltigt under 201
 
 | Foljande intyg finns |
 | personnr      | start      | slut       | enhet  | läkare  | kommentar |
-| 19880701-0015 | 2013-09-16 | 2013-12-30 | enhet1 | lakare1 |           |
-| 19880701-0015 | 2014-01-01 | 2014-03-30 | enhet1 | lakare2 |           |
+| 19881224-2397 | 2013-09-16 | 2013-12-30 | enhet1 | lakare1 |           |
+| 19881224-2397 | 2014-01-01 | 2014-03-30 | enhet1 | lakare2 |           |
 
 !3 Då gäller:
 

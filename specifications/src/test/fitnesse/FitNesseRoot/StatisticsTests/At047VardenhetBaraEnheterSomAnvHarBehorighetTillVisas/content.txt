@@ -10,8 +10,8 @@ Två intyg för samma patient med en dags uppehåll, utfärdade på två olika e
 
 | Enbart foljande intyg finns |
 | personnr      | diagnoskod | start      | slut       | enhet  | kommentar |
-| 19790407-1295 | G01        | 2013-02-05 | 2013-02-10 | enhet1 |           |
-| 19790407-1295 | G01        | 2013-02-12 | 2013-02-20 | enhet2 |           |
+| 19800820-9275 | G01        | 2013-02-05 | 2013-02-10 | enhet1 |           |
+| 19800820-9275 | G01        | 2013-02-12 | 2013-02-20 | enhet2 |           |
 
 !3 Då gäller:
 

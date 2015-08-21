@@ -8,8 +8,8 @@ Två intyg för samma patient utan någon dags uppehåll. Intygen är giltiga un
 
 | Enbart foljande intyg finns |
 | personnr | diagnoskod | start    | slut       | enhet |
-| 19790407-0220 | F32 | 2013-02-01 | 2013-02-28 | enhet1 |
-| 19790407-0220 | F40 | 2013-03-01 | 2013-03-28 | enhet1 |
+| 19790219-9285 | F32 | 2013-02-01 | 2013-02-28 | enhet1 |
+| 19790219-9285 | F40 | 2013-03-01 | 2013-03-28 | enhet1 |
 
 !3 Då gäller:
 

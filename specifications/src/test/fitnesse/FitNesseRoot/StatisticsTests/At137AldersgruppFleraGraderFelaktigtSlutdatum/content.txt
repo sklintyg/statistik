@@ -10,7 +10,7 @@ Ett sjukfall består av två intyg som överlappar varandra. Det andra intyget b
 
 | Enbart foljande intyg finns |
 | personnr      | start      | slut       | arbetsförmåga | start2     | slut2      | arbetsförmåga2 | enhet  | kommentar |
-| 19890303-1698 | 2015-01-17 | 2015-04-05 | 50            | 2015-04-06 | 2215-05-15 | 75             | enhet2 | Fyller 26 år under första delen, andra delen har ett slutdatum mer än 5 år framåt i tiden |
+| 19890315-2398 | 2015-01-17 | 2015-04-05 | 50            | 2015-04-06 | 2215-05-15 | 75             | enhet2 | Fyller 26 år under första delen, andra delen har ett slutdatum mer än 5 år framåt i tiden |
 
 !3 Då gäller:
 

@@ -15,9 +15,9 @@ Om tidsintervall väljs och sedan byte av tvärsnitt/tidsserie gäller fortsatt 
 
 | Enbart foljande intyg finns |
 | personnr | diagnoskod | start    | slut       | arbetsförmåga | enhet  | läkare |
-| 19890407-1245 | G01 | 2013-05-01 | 2013-11-30 | 0             | enhet1 | lakare1 |
-| 19790407-1225 | G02 | 2014-07-01 | 2014-10-30 | 50            | enhet1 | lakare2 |
-| 19690407-1295 | G03 | 2014-11-01 | 2014-11-30 | 75            | enhet2 | lakare3 |
+| 19790429-9281 | G01 | 2013-05-01 | 2013-11-30 | 0             | enhet1 | lakare1 |
+| 19790709-9282 | G02 | 2014-07-01 | 2014-10-30 | 50            | enhet1 | lakare2 |
+| 19790717-9191 | G03 | 2014-11-01 | 2014-11-30 | 75            | enhet2 | lakare3 |
 
 !3 Då gäller:
 | Sjukfall i rapporten sjukfall per enhet |

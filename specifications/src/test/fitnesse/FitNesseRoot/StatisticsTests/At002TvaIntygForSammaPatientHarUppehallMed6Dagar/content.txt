@@ -10,8 +10,8 @@ Två intyg för samma patient har uppehåll med 6 hela dagar.
 
 | Enbart foljande intyg finns |
 | personnr | diagnoskod | start    | slut       | enhet |
-| 19790407-1295 | G01 | 2013-02-05 | 2013-02-06 | enhet1 |
-| 19790407-1295 | G01 | 2013-02-13 | 2013-02-14 | enhet1 |
+| 19790219-9285 | G01 | 2013-02-05 | 2013-02-06 | enhet1 |
+| 19790219-9285 | G01 | 2013-02-13 | 2013-02-14 | enhet1 |
 
 !3 Då gäller:
 

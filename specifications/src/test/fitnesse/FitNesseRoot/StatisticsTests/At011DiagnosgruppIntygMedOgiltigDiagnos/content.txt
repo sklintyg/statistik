@@ -10,7 +10,7 @@ Ett intyg har diagnoskoden P99, vilken inte finns med i ICD-10.
 
 | Enbart foljande intyg finns |
 | personnr | diagnoskod | start    | slut       | enhet |
-| 19790407-0120 | P99 | 2013-02-01 | 2013-02-14 | enhet1 |
+| 19790316-9261 | P99 | 2013-02-01 | 2013-02-14 | enhet1 |
 
 !3 Då gäller:
 

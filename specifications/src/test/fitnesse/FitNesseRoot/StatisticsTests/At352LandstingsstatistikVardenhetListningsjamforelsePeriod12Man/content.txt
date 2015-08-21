@@ -12,8 +12,8 @@ Det finns två sjukfall, ett som pågått under det senaste året och ett som in
 
 | Enbart foljande intyg finns |
 | personnr      | diagnoskod | start      | slut       | enhet  | kommentar |
-| 19790407-2215 | G01        | 2013-11-05 | 2013-12-31 | enhet3 |           |
-| 19790407-2225 | G01        | 2014-01-05 | 2014-01-30 | enhet3 |           |
+| 19790717-9191 | G01        | 2013-11-05 | 2013-12-31 | enhet3 |           |
+| 19790219-9285 | G01        | 2014-01-05 | 2014-01-30 | enhet3 |           |
 
 | Uppladdade landstingsfiler |
 | användare | filnamn        | statusmeddelande? |

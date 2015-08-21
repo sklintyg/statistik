@@ -16,7 +16,7 @@ Ett sjukfall består av två intyg med samma startdatum.
 
 | Foljande intyg finns |
 | personnr | diagnoskod | start    | slut       | arbetsförmåga | enhet  | läkare | län |
-| 19820307-0120 | A00 | 2013-02-15 | 2013-03-16 | 0             | enhet1 | lakare1 | 01 |
+| 19790810-9288 | A00 | 2013-02-15 | 2013-03-16 | 0             | enhet1 | lakare1 | 01 |
 
 | Foljande lakare finns |
 | id      | förnamn | efternamn | kön | ålder | befattningar | kommentar |
@@ -24,7 +24,7 @@ Ett sjukfall består av två intyg med samma startdatum.
 
 | Foljande intyg finns |
 | personnr | diagnoskod | start    | slut       | arbetsförmåga | enhet  | läkare | län |
-| 19820307-0120 | F40 | 2013-02-15 | 2013-03-02 | 50            | enhet1 | lakare1 | 03 |
+| 19790810-9288 | F40 | 2013-02-15 | 2013-03-02 | 50            | enhet1 | lakare1 | 03 |
 
 !3 Då gäller:
 

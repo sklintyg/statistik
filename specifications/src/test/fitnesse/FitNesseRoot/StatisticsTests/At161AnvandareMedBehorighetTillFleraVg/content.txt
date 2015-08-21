@@ -11,9 +11,9 @@ Testar att användare med behörighet till fler än en vårdgivare, bara får se
 
 | Enbart foljande intyg finns |
 | personnr      | diagnoskod | start      | slut       | enhet  | kommentar |
-| 19790407-1295 | G01        | 2013-02-05 | 2013-02-06 | enhet1 |           |
-| 19790407-2285 | G02        | 2013-02-05 | 2013-02-06 | enhet2 |           |
-| 19790407-3285 | G03        | 2013-02-05 | 2013-02-06 | enhet3 |           |
+| 19790717-9191 | G01        | 2013-02-05 | 2013-02-06 | enhet1 |           |
+| 19671109-2681 | G02        | 2013-02-05 | 2013-02-06 | enhet2 |           |
+| 19671127-3026 | G03        | 2013-02-05 | 2013-02-06 | enhet3 |           |
 
 
 !3 Då gäller:

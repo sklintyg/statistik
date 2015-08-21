@@ -8,8 +8,8 @@
 
 | Enbart foljande intyg finns |
 | personnr      | diagnoskod | start      | slut       | enhet  | kommentar |
-| 19790407-1295 | G01        | 2013-09-05 | 2013-12-30 | enhet1 |           |
-| 19790407-1295 | G01        | 2014-01-01 | 2014-02-20 | enhet2 |           |
+| 19791230-9296 | G01        | 2013-09-05 | 2013-12-30 | enhet1 |           |
+| 19791230-9296 | G01        | 2014-01-01 | 2014-02-20 | enhet2 |           |
 
 !3 Då gäller:
 
