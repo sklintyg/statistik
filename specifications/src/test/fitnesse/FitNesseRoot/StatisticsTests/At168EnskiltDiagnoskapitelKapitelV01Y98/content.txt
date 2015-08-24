@@ -11,8 +11,8 @@ Ett sjukfall består av ett intyg med diagnosen F32.3A (för referens).
 
 !| Enbart foljande intyg finns |
 | personnr | diagnoskod  | start    | slut       | enhet  | kommentar |
-| 19790407-9020 | W0000  | 2013-02-01 | 2013-02-14 | enhet1 |  |
-| 19790407-9010 | F323A  | 2013-02-01 | 2013-02-14 | enhet1 |  |
+| 19790810-9288 | W0000  | 2013-02-01 | 2013-02-14 | enhet1 |  |
+| 19790717-9191 | F323A  | 2013-02-01 | 2013-02-14 | enhet1 |  |
 
 !3 Då gäller:
 
