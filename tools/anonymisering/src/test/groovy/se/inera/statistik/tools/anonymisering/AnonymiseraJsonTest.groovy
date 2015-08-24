@@ -91,6 +91,35 @@ class AnonymiseraJsonTest {
         JSONAssert.assertEquals(expected, actual, true);
     }
 
+    @Test
+    void testaAnonymiseringAvTSIntyg() {
+        String json = buildJsonIntyg("/fk7263_L_template.json") { result ->
+            result.funktionsnedsattning = [funktionsnedsattning: false, beskrivning: 'en liten text', ]
+        }
+
+        String expected = buildJsonIntyg("/fk7263_L_anonymized.json") { result ->
+            result.funktionsnedsattning = [funktionsnedsattning: false, beskrivning: 'xx xxxxx xxxx', ]
+        }
+
+        String actual = anonymiseraJson.anonymiseraIntygsJson(json, "10101010-1010")
+
+        JSONAssert.assertEquals(expected, actual, true);
+    }
+
+    @Test
+    void testaAnonymiseringAvTSIntyg2() {
+        String json = buildJsonIntyg("/fk7263_L_template.json") { result ->
+            result.funktionsnedsattning = null
+        }
+
+        String expected = buildJsonIntyg("/fk7263_L_anonymized.json") { result ->
+            result.funktionsnedsattning = null
+        }
+
+        String actual = anonymiseraJson.anonymiseraIntygsJson(json, "10101010-1010")
+
+        JSONAssert.assertEquals(expected, actual, true);
+    }
 
     def buildJsonIntyg(def file, def clos = null) {
         def intygString = getClass().getResource( file ).getText( 'UTF-8' )
