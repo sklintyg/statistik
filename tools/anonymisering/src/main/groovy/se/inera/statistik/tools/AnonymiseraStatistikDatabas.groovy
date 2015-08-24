@@ -101,32 +101,33 @@ class AnonymiseraStatistikDatabas {
         count.set(0)
         errorCount.set(0)
         start = System.currentTimeMillis()
-        GParsPool.withPool(numberOfThreads) {
-            output = hsaIds.collectParallel {
-                StringBuffer result = new StringBuffer()
-                sql = new Sql(dataSource)
-                def id = it.id
-                try {
-                    def intyg = sql.firstRow( 'select data from hsa where id = :id' , [id : id])
-                    String jsonDoc = intyg.data
-                    String anonymiseradJson = anonymizeHsaJson(jsonDoc, anonymiseraHsaId)
-                    sql.executeUpdate('update hsa set data = :document where id = :id',
-                            [document: anonymiseradJson, id: id])
-                    int current = count.addAndGet(1)
-                    if (current % 10000 == 0) {
-                        println "${current} hsa:s anonymized in ${(int)((System.currentTimeMillis()-start) / 1000)} seconds"
-                    }
-                } catch (Throwable t) {
-                    t.printStackTrace()
 
-                    result << "Anonymizing ${id} failed: ${t}"
-                    errorCount.incrementAndGet()
-                } finally {
-                    sql.close()
+
+        output = hsaIds.collect {
+            StringBuffer result = new StringBuffer()
+            sql = new Sql(dataSource)
+            def id = it.id
+            try {
+                def intyg = sql.firstRow( 'select data from hsa where id = :id' , [id : id])
+                String jsonDoc = intyg.data
+                String anonymiseradJson = anonymizeHsaJson(jsonDoc, anonymiseraHsaId)
+                sql.executeUpdate('update hsa set data = :document where id = :id',
+                        [document: anonymiseradJson, id: id])
+                int current = count.addAndGet(1)
+                if (current % 10000 == 0) {
+                    println "${current} hsa:s anonymized in ${(int)((System.currentTimeMillis()-start) / 1000)} seconds"
                 }
-                result.toString()
+            } catch (Throwable t) {
+                t.printStackTrace()
+
+                result << "Anonymizing ${id} failed: ${t}"
+                errorCount.incrementAndGet()
+            } finally {
+                sql.close()
             }
+            result.toString()
         }
+
         end = System.currentTimeMillis()
         output.each {line ->
             if (line) println line
