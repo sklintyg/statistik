@@ -90,6 +90,17 @@ public final class DocumentHelper {
     }
 
     public static String getPersonId(JsonNode document, IntygVersion version) {
+        String personIdRaw = getPersonIdFromIntyg(document, version);
+        if (personIdRaw.matches("[0-9]{8}-[0-9]{4}")) {
+            return personIdRaw;
+        } else if (personIdRaw.matches("[0-9]{12}")) {
+            return personIdRaw.substring(0, ConversionHelper.DATE_PART_OF_PERSON_ID) + "-" + personIdRaw.substring(ConversionHelper.DATE_PART_OF_PERSON_ID);
+        } else {
+            throw new RuntimeException("Failed to parse person id");
+        }
+    }
+
+    private static String getPersonIdFromIntyg(JsonNode document, IntygVersion version) {
         if (IntygVersion.VERSION1 == version) {
             return document.path(PATIENT).path("id").path(EXTENSION).textValue();
         } else {
