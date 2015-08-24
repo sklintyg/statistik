@@ -10,7 +10,7 @@
 
 | Enbart foljande intyg finns |
 | personnr | diagnoskod | start    | slut       | enhet |
-| 19790316-9261 | G01 | 2013-03-01 | 2013-03-30 | enhet1 |
+| 19790717-9191 | G01 | 2013-03-01 | 2013-03-30 | enhet1 |
 
 !3 Då gäller:
 

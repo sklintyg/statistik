@@ -10,8 +10,8 @@ Det finns två exakt likadana intyg för en patient.
 
 | Enbart foljande intyg finns |
 | personnr | diagnoskod | start    | slut       | enhet |
-| 19790316-9261 | G01 | 2014-04-05 | 2014-05-16 | enhet1 |
-| 19790316-9261 | G01 | 2014-04-05 | 2014-05-16 | enhet1 |
+| 19790717-9191 | G01 | 2014-04-05 | 2014-05-16 | enhet1 |
+| 19790717-9191 | G01 | 2014-04-05 | 2014-05-16 | enhet1 |
 
 !3 Då gäller:
 

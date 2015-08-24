@@ -41,8 +41,8 @@ Nationell:
 
 | Enbart foljande intyg finns |
 | personnr | diagnoskod | start    | slut       | enhet | kommentar |
-| 19790407-6457 | G01 | 2009-02-05 | 2013-02-06 | enhet1 | Startdatum innan 2010-01-01 |
-| 19790407-1295 | G01 | 2011-02-05 | 2013-02-06 | enhet1 | Startdatum efter 2010-01-01 |
+| 19800926-9252 | G01 | 2009-02-05 | 2013-02-06 | enhet1 | Startdatum innan 2010-01-01 |
+| 19810217-9291 | G01 | 2011-02-05 | 2013-02-06 | enhet1 | Startdatum efter 2010-01-01 |
 
 
 !3 Då gäller:
@@ -64,8 +64,8 @@ Nationell:
 
 | Enbart foljande intyg finns |
 | personnr | diagnoskod | start    | slut       | enhet | kommentar |
-| 19790407-6457 | G01 | 2013-02-05 | 2018-11-07 | enhet1 | Slutdatum mer än 5 år fram i tiden |
-| 19790407-1295 | G01 | 2013-02-05 | 2018-11-06 | enhet1 | Slutdatum mindre än 5 år fram i tiden |
+| 19800926-9252 | G01 | 2013-02-05 | 2018-11-07 | enhet1 | Slutdatum mer än 5 år fram i tiden |
+| 19810217-9291 | G01 | 2013-02-05 | 2018-11-06 | enhet1 | Slutdatum mindre än 5 år fram i tiden |
 
 !3 Då gäller:
 Inloggad:
@@ -86,7 +86,7 @@ Nationell:
 
 | Enbart foljande intyg finns |
 | personnr | diagnoskod | start    | slut       | enhet | kommentar |
-| 19790407-1295 | G01 | 2013-02-05 | 2012-02-06 | enhet1 | Slutdatum infaller före startdatum |
+| 19810217-9291 | G01 | 2013-02-05 | 2012-02-06 | enhet1 | Slutdatum infaller före startdatum |
 
 !3 Då gäller:
 Inloggad:
