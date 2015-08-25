@@ -11,7 +11,7 @@ Det finns två intyg för två personnummer som bara skiljer sig på sista siffr
 | Enbart foljande intyg finns |
 | personnr | diagnoskod | start    | slut       | enhet |
 | 19790219-9285 | G01 | 2013-02-05 | 2013-02-06 | enhet1 |
-| 19790219-9285 | G01 | 2013-02-11 | 2013-02-12 | enhet1 |
+| 19790219-9286 | G01 | 2013-02-11 | 2013-02-12 | enhet1 |
 
 !3 Då gäller:
 
