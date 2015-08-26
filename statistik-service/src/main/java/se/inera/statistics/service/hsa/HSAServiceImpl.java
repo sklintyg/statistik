@@ -18,14 +18,14 @@
  */
 package se.inera.statistics.service.hsa;
 
-import java.util.List;
-
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.JsonNodeFactory;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.joda.time.LocalDateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
 import se.inera.ifv.hsawsresponder.v3.GeoCoord;
 import se.inera.ifv.hsawsresponder.v3.GeoCoordEnum;
 import se.inera.ifv.hsawsresponder.v3.GetStatisticsCareGiverResponseType;
@@ -39,10 +39,7 @@ import se.inera.ifv.hsawsresponder.v3.StatisticsHsaUnit.CareTypes;
 import se.inera.ifv.hsawsresponder.v3.StatisticsHsaUnit.Managements;
 import se.inera.ifv.statistics.spi.authorization.impl.HSAWebServiceCalls;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.ArrayNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
+import java.util.List;
 
 @Component
 public class HSAServiceImpl implements HSAService {
@@ -55,7 +52,7 @@ public class HSAServiceImpl implements HSAService {
     private HSAWebServiceCalls service;
 
     @Override
-    public JsonNode getHSAInfo(HSAKey key) {
+    public ObjectNode getHSAInfo(HSAKey key) {
         try {
             GetStatisticsHsaUnitResponseType unit = getStatisticsHsaUnit(key.getEnhetId());
             GetStatisticsCareGiverResponseType caregiver = getStatisticsCareGiver(key.getVardgivareId());
@@ -65,11 +62,11 @@ public class HSAServiceImpl implements HSAService {
             Builder root = new Builder();
             if (unit != null) {
                 //huvudenhet=vårdenhet och enhet kan vara vårdenhet, om det inte finns huvudenhet, annars motsvarar det kopplad/underliggande enhet
-                root.put("enhet", createUnit(unit.getStatisticsUnit()));
-                root.put("huvudenhet", createUnit(unit.getStatisticsCareUnit()));
+                root.put(HSA_INFO_ENHET, createUnit(unit.getStatisticsUnit()));
+                root.put(HSA_INFO_HUVUDENHET, createUnit(unit.getStatisticsCareUnit()));
             }
-            root.put("vardgivare", createCareGiver(caregiver));
-            root.put("personal", createPersonal(personal, names));
+            root.put(HSA_INFO_VARDGIVARE, createCareGiver(caregiver));
+            root.put(HSA_INFO_PERSONAL, createPersonal(personal, names));
             return root.root;
         } catch (RuntimeException e) {
             LOG.error("Unexpected error fetching HSA data", e);

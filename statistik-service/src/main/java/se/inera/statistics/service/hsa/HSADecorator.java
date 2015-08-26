@@ -25,6 +25,7 @@ import static se.inera.statistics.service.helper.DocumentHelper.getVardgivareId;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +36,9 @@ import se.inera.statistics.service.helper.DocumentHelper;
 import se.inera.statistics.service.helper.JSONParser;
 
 import com.fasterxml.jackson.databind.JsonNode;
+
+import java.util.Iterator;
+import java.util.Map;
 
 @Component
 public class HSADecorator {
@@ -48,26 +52,46 @@ public class HSADecorator {
 
     @Transactional
     public JsonNode decorate(JsonNode doc, String documentId) {
-        JsonNode info = getHSAInfo(documentId);
-        if (info == null) {
+        final JsonNode info = getHSAInfo(documentId);
+        if (missingData(info)) {
             HSAKey key = extractHSAKey(doc);
             LOG.debug(key.toString());
             LOG.info("Fetching HSA data for " + documentId);
-            info = service.getHSAInfo(key);
+            final ObjectNode updatedHsaInfo = getUpdatedHsaInfo(info, key);
             try {
-                storeHSAInfo(documentId, info);
+                storeHSAInfo(documentId, updatedHsaInfo);
             } catch (javax.persistence.PersistenceException e) {
                 // Expected error if multiple HSA is fetched for same key. Ignore.
                 LOG.debug("Ignoring expected error", e);
             }
+            return updatedHsaInfo;
         }
         return info;
+    }
+
+    private ObjectNode getUpdatedHsaInfo(JsonNode cachedHsaInfo, HSAKey key) {
+        final ObjectNode currentInfo = service.getHSAInfo(key);
+        if (cachedHsaInfo != null) {
+            Iterator<Map.Entry<String, JsonNode>> fields = cachedHsaInfo.fields();
+            while (fields.hasNext()) {
+                Map.Entry<String, JsonNode> next = fields.next();
+                currentInfo.replace(next.getKey(), next.getValue());
+            }
+        }
+        return currentInfo;
+    }
+
+    private boolean missingData(JsonNode info) {
+        return info == null || !(info.has(HSAService.HSA_INFO_ENHET)
+                && info.has(HSAService.HSA_INFO_HUVUDENHET)
+                && info.has(HSAService.HSA_INFO_PERSONAL)
+                && info.has(HSAService.HSA_INFO_VARDGIVARE));
     }
 
     protected void storeHSAInfo(String documentId, JsonNode info) {
         if (info != null) {
             HSAStore entity = new HSAStore(documentId, info.toString());
-            manager.persist(entity);
+            manager.merge(entity);
         }
     }
 
