@@ -9,8 +9,8 @@ Testar hantering av det gamla intygsformatet i Intygstjänsten.
 
 | Enbart foljande intyg finns |
 | personnr | diagnoskod | start    | slut       | enhet  | jsonformat |
-| 19790407-0120 | F32 | 2013-02-01 | 2013-02-14 | enhet1 | gammalt    |
-| 19790407-0120 | F40 | 2013-02-17 | 2013-02-28 | enhet1 | gammalt    |
+| 19680524-9288 | F32 | 2013-02-01 | 2013-02-14 | enhet1 | gammalt    |
+| 19680524-9288 | F40 | 2013-02-17 | 2013-02-28 | enhet1 | gammalt    |
 
 !3 Då gäller:
 Inloggad:

@@ -15,8 +15,8 @@ Gäller STATISTIK-936, 943.
 
 | Enbart foljande intyg finns |
 | personnr | diagnoskod | start    | slut       | arbetsförmåga | enhet  | läkare |
-| 19890407-1245 | P99 | 2013-06-01 | 2013-10-30 | 0             | enhet1 | lakare1 |
-| 19790407-1255 | G02 | 2014-07-01 | 2014-10-30 | 50            | enhet2 | lakare2 |
+| 19790219-9285 | P99 | 2013-06-01 | 2013-10-30 | 0             | enhet1 | lakare1 |
+| 19790717-9191 | G02 | 2014-07-01 | 2014-10-30 | 50            | enhet2 | lakare2 |
 
 !3 Då gäller:
 Inloggad:

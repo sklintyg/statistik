@@ -8,7 +8,7 @@ Ett intyg har diagnos P14.
 
 | Enbart foljande intyg finns |
 | personnr | diagnoskod | start    | slut       | enhet |
-| 19790407-0120 | P14 | 2013-02-01 | 2013-02-14 | enhet1 |
+| 19790219-9285 | P14 | 2013-02-01 | 2013-02-14 | enhet1 |
 
 !3 Då gäller:
 

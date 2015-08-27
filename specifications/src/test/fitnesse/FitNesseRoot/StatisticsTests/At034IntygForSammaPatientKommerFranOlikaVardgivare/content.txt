@@ -11,8 +11,8 @@ Ett sjukfall består av två intyg. Intygen är utfärdade hos olika vårdgivare
 
 | Enbart foljande intyg finns |
 | personnr      | diagnoskod | start      | slut       | enhet  | kommentar |
-| 19790407-1295 | G01        | 2013-02-01 | 2013-02-27 | enhet1 | user3 har inte behörighet till enhet1 |
-| 19790407-1295 | G01        | 2013-02-28 | 2013-03-24 | enhet3 | user1 har inte behörighet till enhet3 |
+| 19810217-9291 | G01        | 2013-02-01 | 2013-02-27 | enhet1 | user3 har inte behörighet till enhet1 |
+| 19810217-9291 | G01        | 2013-02-28 | 2013-03-24 | enhet3 | user1 har inte behörighet till enhet3 |
 
 
 !3 Då gäller:

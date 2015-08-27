@@ -19,11 +19,24 @@
 package se.inera.statistics.service.hsa;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 public interface HSAService {
 
     String ENHETS_TYP = "enhetsTyp";
+    String HSA_INFO_ENHET = "enhet";
+    String HSA_INFO_HUVUDENHET = "huvudenhet";
+    String HSA_INFO_VARDGIVARE = "vardgivare";
+    String HSA_INFO_PERSONAL = "personal";
 
-    JsonNode getHSAInfo(HSAKey key);
+    /**
+     * Get HSA info using fields from baseHsaInfo when available.
+     */
+    ObjectNode getHSAInfo(HSAKey key, JsonNode baseHsaInfo);
+
+    /**
+     * Get full HSA info.
+     */
+    ObjectNode getHSAInfo(HSAKey key);
 
 }

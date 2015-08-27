@@ -13,9 +13,9 @@ user2 har medarbetaruppdrag på enhet1 och enhet2.
 
 | Enbart foljande intyg finns |
 | personnr      | diagnoskod | start      | slut       | enhet  | kommentar |
-| 19790407-0015 | G01        | 2014-02-05 | 2014-02-06 | enhet1 |           |
-| 19790407-0115 | G01        | 2014-02-05 | 2014-02-06 | enhet2 |           |
-| 19790407-0225 | G01        | 2014-02-05 | 2014-02-06 | enhet3 |           |
+| 19790717-9191 | G01        | 2014-02-05 | 2014-02-06 | enhet1 |           |
+| 19790717-9191 | G01        | 2014-02-05 | 2014-02-06 | enhet2 |           |
+| 19790219-9285 | G01        | 2014-02-05 | 2014-02-06 | enhet3 |           |
 
 | Uppladdade landstingsfiler |
 | användare | filnamn        | statusmeddelande? |

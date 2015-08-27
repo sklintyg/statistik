@@ -9,9 +9,9 @@ Ett sjukfall består av tre intyg under mars. Det första är utfärdat på enhe
 
 | Enbart foljande intyg finns |
 | personnr | diagnoskod | start    | slut       | enhet |
-| 19790407-1295 | G01 | 2013-03-01 | 2013-03-10 | enhet1 |
-| 19790407-1295 | G01 | 2013-03-11 | 2013-03-20 | enhet2 |
-| 19790407-1295 | G01 | 2013-03-21 | 2013-03-30 | enhet1 |
+| 19790717-9191 | G01 | 2013-03-01 | 2013-03-10 | enhet1 |
+| 19790717-9191 | G01 | 2013-03-11 | 2013-03-20 | enhet2 |
+| 19790717-9191 | G01 | 2013-03-21 | 2013-03-30 | enhet1 |
 
 !3 Då gäller:
 

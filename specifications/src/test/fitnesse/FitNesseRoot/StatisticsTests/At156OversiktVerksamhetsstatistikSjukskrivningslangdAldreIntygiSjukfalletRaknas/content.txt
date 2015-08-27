@@ -7,8 +7,8 @@
 
 | Enbart foljande intyg finns |
 | personnr | diagnoskod | start | slut | enhet | kommentar |
-| 19790407-1285 | G01 | 2014-01-15 | 2014-01-31 | enhet1 | |
-| 19790407-1285 | G01 | 2014-02-05 | 2014-02-16 | enhet1 | |
+| 19671109-2681 | G01 | 2014-01-15 | 2014-01-31 | enhet1 | |
+| 19671109-2681 | G01 | 2014-02-05 | 2014-02-16 | enhet1 | |
 
 !3 Då gäller:
 

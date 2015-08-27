@@ -77,7 +77,12 @@ public class HSAServiceMock implements HSAService, HsaDataInjectable {
     }
 
     @Override
-    public JsonNode getHSAInfo(HSAKey key) {
+    public ObjectNode getHSAInfo(HSAKey key) {
+        return getHSAInfo(key, null);
+    }
+
+    @Override
+    public ObjectNode getHSAInfo(HSAKey key, JsonNode baseHsaInfo) {
         ObjectNode root = factory.objectNode();
         if (key.getEnhetId() != null && !key.getEnhetId().startsWith("EJHSA") && !"UTANENHETSID".equals(key.getEnhetId())) {
             root.put("enhet", createEnhet(key, false));

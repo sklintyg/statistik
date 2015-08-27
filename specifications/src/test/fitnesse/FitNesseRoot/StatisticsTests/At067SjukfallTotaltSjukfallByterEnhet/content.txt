@@ -10,8 +10,8 @@ Ett sjukfall består av två intyg för samma patient. Sjukfallet börjar på en
 
 | Enbart foljande intyg finns |
 | personnr | diagnoskod | start    | slut       | enhet |
-| 19790407-1295 | G01 | 2013-03-01 | 2013-03-30 | enhet1 |
-| 19790407-1295 | G01 | 2013-04-01 | 2013-04-30 | enhet2 |
+| 19791020-9290 | G01 | 2013-03-01 | 2013-03-30 | enhet1 |
+| 19791020-9290 | G01 | 2013-04-01 | 2013-04-30 | enhet2 |
 
 !3 Då gäller:
 

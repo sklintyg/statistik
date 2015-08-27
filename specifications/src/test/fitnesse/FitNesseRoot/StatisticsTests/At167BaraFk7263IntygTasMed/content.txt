@@ -11,9 +11,9 @@ Testar att bara fk7263-intyg tas med i statistiken.
 
 | Enbart foljande intyg finns |
 | personnr      | diagnoskod | start      | slut       | enhet  | intygstyp |
-| 19790407-1285 | G01        | 2013-02-05 | 2013-02-06 | enhet1 | fk7263    |
-| 19790407-2285 | G01        | 2013-02-05 | 2013-02-06 | enhet1 | ts-bas    |
-| 19790407-3285 | G01        | 2013-02-05 | 2013-02-06 | enhet1 | unknown   |
+| 19790219-9285 | G01        | 2013-02-05 | 2013-02-06 | enhet1 | fk7263    |
+| 19790429-9281 | G01        | 2013-02-05 | 2013-02-06 | enhet1 | ts-bas    |
+| 19790709-9282 | G01        | 2013-02-05 | 2013-02-06 | enhet1 | unknown   |
 
 
 !3 Då gäller:

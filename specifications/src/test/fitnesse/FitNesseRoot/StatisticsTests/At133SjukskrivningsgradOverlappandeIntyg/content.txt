@@ -10,8 +10,8 @@ Ett sjukfall består av två intyg, där det andra börjar efter det första och
 
 | Enbart foljande intyg finns |
 | personnr      | diagnoskod | start      | slut       | arbetsförmåga | enhet  |
-| 19790407-0220 | A00        | 2014-03-15 | 2014-04-15 | 0             | enhet1 |
-| 19790407-0220 | A00        | 2014-03-20 | 2014-04-10 | 50            | enhet1 |
+| 19790429-9281 | A00        | 2014-03-15 | 2014-04-15 | 0             | enhet1 |
+| 19790429-9281 | A00        | 2014-03-20 | 2014-04-10 | 50            | enhet1 |
 
 !3 Då gäller:
 

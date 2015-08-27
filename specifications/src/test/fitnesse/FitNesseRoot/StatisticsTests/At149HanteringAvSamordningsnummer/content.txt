@@ -10,8 +10,8 @@ Det finns två sjukfall, ett med godkänt samordningsnummer och ett med samordni
 
 | Enbart foljande intyg finns |
 | personnr | diagnoskod | start    | slut       | enhet  | kommentar |
-| 19790490-4586 | G01 | 2013-02-05 | 2013-02-06 | enhet1 | Födelsedatum motsvarar 19790430 - giltigt datum |
-| 19690491-4586 | G01 | 2013-02-11 | 2013-02-12 | enhet1 | Födelsedatum motsvarar 19790431 - ogiltigt datum |
+| 19540187-5769 | G01 | 2013-02-05 | 2013-02-06 | enhet1 | Födelsedatum motsvarar 19540127 - giltigt datum |
+| 19540192-5769 | G01 | 2013-02-11 | 2013-02-12 | enhet1 | Födelsedatum motsvarar 19540132 - ogiltigt datum |
 
 !3 Då gäller:
 
@@ -24,4 +24,4 @@ Inloggad:
 
 | Sjukfall i rapporten aldersgrupp |
 | inloggad som | åldersgrupp | män? | kvinnor? |
-| user1        | 31-35 år    | 0    | 1        |
+| user1        | 56-60 år    | 0    | 1        |

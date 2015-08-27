@@ -15,7 +15,7 @@ Båda filerna innehåller enhet2 (som har olika enhetsnamn i listorna).
 
 | Foljande intyg finns |
 | personnr      | diagnoskod | start      | slut       | enhet  | kommentar |
-| 19790407-0225 | G01        | 2014-02-05 | 2014-02-06 | enhet2 |           |
+| 19790219-9285 | G01        | 2014-02-05 | 2014-02-06 | enhet2 |           |
 
 | Uppladdade landstingsfiler |
 | användare | filnamn        | statusmeddelande? |

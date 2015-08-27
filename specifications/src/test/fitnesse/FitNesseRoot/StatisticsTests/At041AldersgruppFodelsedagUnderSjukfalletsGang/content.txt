@@ -10,9 +10,9 @@ Tre intyg för samma patient. Patienten fyller år under sjukfallets gång.
 
 | Enbart foljande intyg finns |
 | personnr      | start      | slut       | enhet  | kommentar |
-| 19870101-0015 | 2012-06-01 | 2012-06-15 | enhet2 | |
-| 19870101-0015 | 2012-06-17 | 2014-06-15 | enhet2 | |
-| 19870101-0015 | 2014-06-16 | 2014-06-30 | enhet2 | |
+| 19870109-2390 | 2012-06-01 | 2012-06-15 | enhet2 | |
+| 19870109-2390 | 2012-06-17 | 2014-06-15 | enhet2 | |
+| 19870109-2390 | 2014-06-16 | 2014-06-30 | enhet2 | |
 
 
 !3 Då gäller:

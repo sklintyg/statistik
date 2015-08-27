@@ -17,8 +17,8 @@ Ett sjukfall består av två intyg. Det ena intyget har inte varit aktivt de sen
 
 | Foljande intyg finns |
 | personnr      | diagnoskod | start      | slut       | enhet  | läkare  | kommentar |
-| 19880701-0015 | F32        | 2013-10-16 | 2013-12-30 | enhet1 | lakare1 |           |
-| 19880701-0015 | M54        | 2014-01-01 | 2014-03-30 | enhet2 | lakare2 |           |
+| 19880713-2397 | F32        | 2013-10-16 | 2013-12-30 | enhet1 | lakare1 |           |
+| 19880713-2397| M54        | 2014-01-01 | 2014-03-30 | enhet2 | lakare2 |           |
 
 !3 Då gäller:
 

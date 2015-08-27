@@ -76,6 +76,9 @@ public class Icd10 {
     @Autowired
     private Resource icd10KodAnsiFile;
 
+    @Autowired
+    private Resource icd10VwxyKodAnsiFile;
+
     private List<Kapitel> kapitels;
 
     private List<Id> internalIcd10 = new ArrayList<>();
@@ -151,6 +154,17 @@ public class Icd10 {
             }
 
             try (LineReader lr = new LineReader(icd10KodAnsiFile)) {
+                String line;
+                while ((line = lr.next()) != null) {
+                    Kod kod = Kod.valueOf(line, idToKategoriMap.values());
+                    if (kod != null) {
+                        kod.kategori.kods.add(kod);
+                        idToKodMap.put(kod);
+                    }
+                }
+            }
+
+            try (LineReader lr = new LineReader(icd10VwxyKodAnsiFile)) {
                 String line;
                 while ((line = lr.next()) != null) {
                     Kod kod = Kod.valueOf(line, idToKategoriMap.values());

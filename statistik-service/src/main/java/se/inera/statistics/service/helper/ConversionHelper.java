@@ -33,7 +33,7 @@ public final class ConversionHelper {
     private static final Logger LOG = LoggerFactory.getLogger(ConversionHelper.class);
 
     private static final int UNKNOWN = 0;
-    private static final int DATE_PART_OF_PERSON_ID = 8;
+    static final int DATE_PART_OF_PERSON_ID = 8;
     private static final int DAY_PART_OF_DATE_PART = 6;
     private static final int MONTH_PART_OF_DATE_PART = 4;
     private static final int SAMORDNINGSNUMMER_DAY_CONSTANT = 60;

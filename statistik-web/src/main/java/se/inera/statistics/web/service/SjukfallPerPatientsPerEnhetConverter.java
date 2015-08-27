@@ -104,7 +104,8 @@ public class SjukfallPerPatientsPerEnhetConverter {
     }
 
     private double roundToTwoDecimals(double number) {
-        DecimalFormat twoDecimalsFormat = new DecimalFormat("#.##");
+        DecimalFormatSymbols decimalFormatSymbols = new DecimalFormatSymbols(Locale.ENGLISH);
+        DecimalFormat twoDecimalsFormat = new DecimalFormat("#.##", decimalFormatSymbols);
         return Double.valueOf(twoDecimalsFormat.format(number));
     }
 

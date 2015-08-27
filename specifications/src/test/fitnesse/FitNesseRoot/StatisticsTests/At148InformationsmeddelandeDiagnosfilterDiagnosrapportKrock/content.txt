@@ -8,7 +8,7 @@ Ett sjukfall med diagnos F40.
 
 | Enbart foljande intyg finns |
 | personnr | diagnoskod | start    | slut       | enhet |
-| 19790407-0220 | F40 | 2013-02-01 | 2013-03-14 | enhet1 |
+| 19680524-9288 | F40 | 2013-02-01 | 2013-03-14 | enhet1 |
 
 !3 Då gäller:
 

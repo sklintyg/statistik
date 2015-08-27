@@ -10,7 +10,7 @@ Ett sjukfall som sträcker sig över tre månader.
 
 | Enbart foljande intyg finns |
 | personnr | diagnoskod | start    | slut       | arbetsförmåga | enhet |
-| 19790407-1295 | F32 | 2013-01-01 | 2013-07-31 | 50            | enhet1 |
+| 19790717-9191| F32 | 2013-01-01 | 2013-07-31 | 50            | enhet1 |
 
 !3 Då gäller:
 
