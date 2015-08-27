@@ -18,6 +18,7 @@
  */
 package se.inera.statistics.service.hsa;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -39,7 +40,9 @@ import se.inera.ifv.hsawsresponder.v3.StatisticsHsaUnit.CareTypes;
 import se.inera.ifv.hsawsresponder.v3.StatisticsHsaUnit.Managements;
 import se.inera.ifv.statistics.spi.authorization.impl.HSAWebServiceCalls;
 
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 @Component
 public class HSAServiceImpl implements HSAService {
@@ -53,20 +56,41 @@ public class HSAServiceImpl implements HSAService {
 
     @Override
     public ObjectNode getHSAInfo(HSAKey key) {
-        try {
-            GetStatisticsHsaUnitResponseType unit = getStatisticsHsaUnit(key.getEnhetId());
-            GetStatisticsCareGiverResponseType caregiver = getStatisticsCareGiver(key.getVardgivareId());
-            GetStatisticsPersonResponseType personal = getStatisticsPerson(key.getLakareId());
-            GetStatisticsNamesResponseType names = getStatisticsNames(key.getLakareId());
+        return getHSAInfo(key, null);
+    }
 
+    @Override
+    public ObjectNode getHSAInfo(HSAKey key, JsonNode baseHsaInfo) {
+        try {
             Builder root = new Builder();
-            if (unit != null) {
-                //huvudenhet=vårdenhet och enhet kan vara vårdenhet, om det inte finns huvudenhet, annars motsvarar det kopplad/underliggande enhet
-                root.put(HSA_INFO_ENHET, createUnit(unit.getStatisticsUnit()));
-                root.put(HSA_INFO_HUVUDENHET, createUnit(unit.getStatisticsCareUnit()));
+            if (baseHsaInfo == null || !baseHsaInfo.has(HSA_INFO_ENHET) || !baseHsaInfo.has(HSA_INFO_HUVUDENHET)) {
+                GetStatisticsHsaUnitResponseType unit = getStatisticsHsaUnit(key.getEnhetId());
+                if (unit != null) {
+                    //huvudenhet=vårdenhet och enhet kan vara vårdenhet, om det inte finns huvudenhet, annars motsvarar det kopplad/underliggande enhet
+                    root.put(HSA_INFO_ENHET, createUnit(unit.getStatisticsUnit()));
+                    root.put(HSA_INFO_HUVUDENHET, createUnit(unit.getStatisticsCareUnit()));
+                }
             }
-            root.put(HSA_INFO_VARDGIVARE, createCareGiver(caregiver));
-            root.put(HSA_INFO_PERSONAL, createPersonal(personal, names));
+
+            if (baseHsaInfo == null || !baseHsaInfo.has(HSA_INFO_VARDGIVARE)) {
+                GetStatisticsCareGiverResponseType caregiver = getStatisticsCareGiver(key.getVardgivareId());
+                root.put(HSA_INFO_VARDGIVARE, createCareGiver(caregiver));
+            }
+
+            if (baseHsaInfo == null || !baseHsaInfo.has(HSA_INFO_PERSONAL)) {
+                GetStatisticsPersonResponseType personal = getStatisticsPerson(key.getLakareId());
+                GetStatisticsNamesResponseType names = getStatisticsNames(key.getLakareId());
+                root.put(HSA_INFO_PERSONAL, createPersonal(personal, names));
+            }
+
+            if (baseHsaInfo != null) {
+                Iterator<Map.Entry<String, JsonNode>> fields = baseHsaInfo.fields();
+                while (fields.hasNext()) {
+                    Map.Entry<String, JsonNode> next = fields.next();
+                    root.root.replace(next.getKey(), next.getValue());
+                }
+            }
+
             return root.root;
         } catch (RuntimeException e) {
             LOG.error("Unexpected error fetching HSA data", e);

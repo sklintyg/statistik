@@ -18,27 +18,22 @@
  */
 package se.inera.statistics.service.hsa;
 
-import static se.inera.statistics.service.helper.DocumentHelper.getEnhetId;
-import static se.inera.statistics.service.helper.DocumentHelper.getLakarId;
-import static se.inera.statistics.service.helper.DocumentHelper.getVardgivareId;
-
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-
 import se.inera.statistics.service.helper.DocumentHelper;
 import se.inera.statistics.service.helper.JSONParser;
 
-import com.fasterxml.jackson.databind.JsonNode;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
-import java.util.Iterator;
-import java.util.Map;
+import static se.inera.statistics.service.helper.DocumentHelper.getEnhetId;
+import static se.inera.statistics.service.helper.DocumentHelper.getLakarId;
+import static se.inera.statistics.service.helper.DocumentHelper.getVardgivareId;
 
 @Component
 public class HSADecorator {
@@ -57,7 +52,7 @@ public class HSADecorator {
             HSAKey key = extractHSAKey(doc);
             LOG.debug(key.toString());
             LOG.info("Fetching HSA data for " + documentId);
-            final ObjectNode updatedHsaInfo = getUpdatedHsaInfo(info, key);
+            final ObjectNode updatedHsaInfo = service.getHSAInfo(key, info);
             try {
                 storeHSAInfo(documentId, updatedHsaInfo);
             } catch (javax.persistence.PersistenceException e) {
@@ -67,18 +62,6 @@ public class HSADecorator {
             return updatedHsaInfo;
         }
         return info;
-    }
-
-    private ObjectNode getUpdatedHsaInfo(JsonNode cachedHsaInfo, HSAKey key) {
-        final ObjectNode currentInfo = service.getHSAInfo(key);
-        if (cachedHsaInfo != null) {
-            Iterator<Map.Entry<String, JsonNode>> fields = cachedHsaInfo.fields();
-            while (fields.hasNext()) {
-                Map.Entry<String, JsonNode> next = fields.next();
-                currentInfo.replace(next.getKey(), next.getValue());
-            }
-        }
-        return currentInfo;
     }
 
     private boolean missingData(JsonNode info) {
