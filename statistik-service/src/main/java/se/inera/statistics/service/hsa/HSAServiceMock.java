@@ -128,6 +128,7 @@ public class HSAServiceMock implements HSAService, HsaDataInjectable {
         root.put("vardform", (JsonNode) null);
         root.put("geografi", createGeografiskIndelning(key));
         root.put("verksamhet", asList(createVerksamhet(key)));
+        root.put("vgid", key.getVardgivareId());
         return root;
     }
 
