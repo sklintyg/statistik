@@ -29,7 +29,7 @@ import se.inera.ifv.hsawsresponder.v3.GetStatisticsPersonResponseType;
 import se.inera.ifv.statistics.spi.authorization.impl.HSAWebServiceCalls;
 
  /**
- * This implementation will simply delegate all calls directly to HSA
+ * This implementation will simply delegate all calls directly to HSA.
  */
 public class HsaWebServiceDirect implements HsaWebService {
 

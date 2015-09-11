@@ -96,7 +96,7 @@ public class HSAServiceImplTest {
     }
 
     @Mock
-    private HSAWebServiceCalls wsCalls;
+    private HsaWebService wsCalls;
 
     @InjectMocks
     private HSAServiceImpl serviceImpl = new HSAServiceImpl();
