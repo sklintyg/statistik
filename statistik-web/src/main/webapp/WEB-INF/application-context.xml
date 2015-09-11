@@ -109,6 +109,13 @@
         <bean class="se.inera.statistics.web.service.FilterHandler" />
     </beans>
 
+    <beans profile="hsacached">
+        <bean class="se.inera.statistics.service.hsa.HsaWebServiceCached" />
+    </beans>
+    <beans profile="!hsacached">
+        <bean class="se.inera.statistics.service.hsa.HsaWebServiceDirect" />
+    </beans>
+
     <beans profile="db-resetter">
         <bean class="se.inera.statistics.service.common.CommonPersistenceHandler" id="commonPersistenceHandler"/>
     </beans>

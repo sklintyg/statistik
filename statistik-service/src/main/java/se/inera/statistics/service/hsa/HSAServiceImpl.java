@@ -38,7 +38,6 @@ import se.inera.ifv.hsawsresponder.v3.StatisticsHsaUnit.BusinessClassificationCo
 import se.inera.ifv.hsawsresponder.v3.StatisticsHsaUnit.BusinessTypes;
 import se.inera.ifv.hsawsresponder.v3.StatisticsHsaUnit.CareTypes;
 import se.inera.ifv.hsawsresponder.v3.StatisticsHsaUnit.Managements;
-import se.inera.ifv.statistics.spi.authorization.impl.HSAWebServiceCalls;
 
 import java.util.Iterator;
 import java.util.List;
@@ -52,7 +51,7 @@ public class HSAServiceImpl implements HSAService {
     private JsonNodeFactory factory = JsonNodeFactory.instance;
 
     @Autowired
-    private HSAWebServiceCalls service;
+    private HsaWebService service;
 
     @Override
     public ObjectNode getHSAInfo(HSAKey key) {
