@@ -22,9 +22,6 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import se.inera.statistics.service.JSONSource;
-import se.inera.statistics.service.hsa.HSAKey;
-import se.inera.statistics.service.hsa.HSAService;
-import se.inera.statistics.service.hsa.HSAServiceMock;
 
 import com.fasterxml.jackson.databind.JsonNode;
 

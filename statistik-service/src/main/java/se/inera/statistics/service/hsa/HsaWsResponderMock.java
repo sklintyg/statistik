@@ -92,7 +92,7 @@ import com.google.common.collect.FluentIterable;
 @Component
 @Profile({ "dev", "hsa-stub" })
 @Primary
-public class HSAServiceMock implements HsaWsResponderInterface, HsaDataInjectable {
+public class HsaWsResponderMock implements HsaWsResponderInterface, HsaDataInjectable {
     private static final int POSITIVE_MASK = 0x7fffffff;
     public static final int VERKSAMHET_MODULO = 7;
 

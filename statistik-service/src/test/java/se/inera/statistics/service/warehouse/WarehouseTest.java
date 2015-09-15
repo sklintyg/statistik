@@ -30,9 +30,6 @@ import se.inera.statistics.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.service.JSONSource;
 import se.inera.statistics.service.helper.DocumentHelper;
 import se.inera.statistics.service.helper.JSONParser;
-import se.inera.statistics.service.hsa.HSAKey;
-import se.inera.statistics.service.hsa.HSAService;
-import se.inera.statistics.service.hsa.HSAServiceMock;
 import se.inera.statistics.service.processlog.EventType;
 import se.inera.statistics.service.warehouse.model.db.WideLine;
 

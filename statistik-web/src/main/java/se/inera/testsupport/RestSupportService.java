@@ -23,7 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.service.hsa.HSAKey;
-import se.inera.statistics.service.hsa.HSAServiceMock;
+import se.inera.statistics.service.hsa.HsaWsResponderMock;
 import se.inera.statistics.service.hsa.HsaDataInjectable;
 import se.inera.statistics.service.landsting.persistance.landsting.LandstingManager;
 import se.inera.statistics.service.processlog.Enhet;
@@ -140,7 +140,7 @@ public class RestSupportService {
     }
 
     private void setEnhetName(Intyg intyg) {
-        if (intyg.getEnhetId() == null || intyg.getEnhetId().isEmpty() || !HSAServiceMock.shouldEnhetExistInHsa(intyg.getEnhetId())) {
+        if (intyg.getEnhetId() == null || intyg.getEnhetId().isEmpty() || !HsaWsResponderMock.shouldEnhetExistInHsa(intyg.getEnhetId())) {
             return;
         }
         String name = intyg.getEnhetName() != null && !intyg.getEnhetName().isEmpty() ? intyg.getEnhetName() : intyg.getEnhetId();

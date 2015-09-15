@@ -27,7 +27,7 @@
 
     <context:property-placeholder/>
 
-    <bean class="se.inera.statistics.service.hsa.HSAServiceMock" id="hsaService" />
+    <bean class="se.inera.statistics.service.hsa.HsaWsResponderMock" id="hsaService" />
     <bean class="se.inera.statistics.service.report.model.Lan" id="lan" />
 
     <bean id="warehouse" class="se.inera.statistics.service.warehouse.Warehouse" />
