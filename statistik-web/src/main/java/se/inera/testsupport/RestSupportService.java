@@ -1,14 +1,32 @@
 package se.inera.testsupport;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+
 import org.joda.time.DateTimeUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
+import se.inera.statistics.service.hsa.HSAKey;
+import se.inera.statistics.service.hsa.HSAServiceMock;
 import se.inera.statistics.service.hsa.HsaDataInjectable;
 import se.inera.statistics.service.landsting.persistance.landsting.LandstingManager;
+import se.inera.statistics.service.processlog.Enhet;
 import se.inera.statistics.service.processlog.LogConsumer;
 import se.inera.statistics.service.processlog.Receiver;
 import se.inera.statistics.service.warehouse.NationellData;
@@ -19,18 +37,6 @@ import se.inera.statistics.service.warehouse.WidelineConverter;
 import se.inera.statistics.service.warehouse.query.CalcCoordinator;
 import se.inera.statistics.service.warehouse.query.SjukfallQuery;
 import se.inera.statistics.web.service.ChartDataService;
-
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
 
 @Service("restSupportService")
 public class RestSupportService {
@@ -122,13 +128,30 @@ public class RestSupportService {
     @Path("intyg")
     @Consumes({ MediaType.APPLICATION_JSON })
     @Produces({ MediaType.APPLICATION_JSON })
+    @Transactional
     public Response insertIntyg(Intyg intyg) {
         LOG.info("Insert intyg. id: " + intyg.getDocumentId() + ", data: " + intyg.getData());
         hsaDataInjectable.setCountyForNextIntyg(intyg.getCounty());
         hsaDataInjectable.setHuvudenhetIdForNextIntyg(intyg.getHuvudenhetId());
-        hsaDataInjectable.setEnhetNameForNextIntyg(intyg.getEnhetName());
+        hsaDataInjectable.setHsaKey(new HSAKey(intyg.getVardgivareId(), intyg.getEnhetId(), intyg.getLakareId()));
         receiver.accept(intyg.getType(), intyg.getData(), intyg.getDocumentId(), intyg.getTimestamp());
+        setEnhetName(intyg);
         return Response.ok().build();
+    }
+
+    private void setEnhetName(Intyg intyg) {
+        if (intyg.getEnhetId() == null || intyg.getEnhetId().isEmpty() || !HSAServiceMock.shouldEnhetExistInHsa(intyg.getEnhetId())) {
+            return;
+        }
+        String name = intyg.getEnhetName() != null && !intyg.getEnhetName().isEmpty() ? intyg.getEnhetName() : intyg.getEnhetId();
+        final Query query = manager.createNativeQuery("UPDATE enhet SET namn=:enhetName where enhetId=:enhetId");
+        query.setParameter("enhetName", name);
+        query.setParameter("enhetId", intyg.getEnhetId());
+        int executeUpdate = query.executeUpdate();
+        if (executeUpdate < 1) {
+            Enhet enhet = new Enhet(new HsaIdVardgivare(intyg.getVardgivareId()), "", new HsaIdEnhet(intyg.getEnhetId()), name, "", "", "");
+            manager.persist(enhet);
+        }
     }
 
     @POST

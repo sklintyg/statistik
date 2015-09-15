@@ -18,31 +18,81 @@
  */
 package se.inera.statistics.service.hsa;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Primary;
+import org.springframework.context.annotation.Profile;
+import org.springframework.stereotype.Component;
+import org.w3.wsaddressing10.AttributedURIType;
+
+import se.inera.ifv.hsaws.v3.HsaWsFault;
+import se.inera.ifv.hsaws.v3.HsaWsResponderInterface;
+import se.inera.ifv.hsawsresponder.v3.GeoCoord;
+import se.inera.ifv.hsawsresponder.v3.GeoCoordEnum;
+import se.inera.ifv.hsawsresponder.v3.GetCareUnitListResponseType;
+import se.inera.ifv.hsawsresponder.v3.GetCareUnitMembersResponseType;
+import se.inera.ifv.hsawsresponder.v3.GetCareUnitResponseType;
+import se.inera.ifv.hsawsresponder.v3.GetHospLastUpdateResponseType;
+import se.inera.ifv.hsawsresponder.v3.GetHospLastUpdateType;
+import se.inera.ifv.hsawsresponder.v3.GetHospPersonResponseType;
+import se.inera.ifv.hsawsresponder.v3.GetHospPersonType;
+import se.inera.ifv.hsawsresponder.v3.GetHsaPersonResponseType;
+import se.inera.ifv.hsawsresponder.v3.GetHsaPersonType;
+import se.inera.ifv.hsawsresponder.v3.GetHsaUnitResponseType;
+import se.inera.ifv.hsawsresponder.v3.GetInformationListResponseType;
+import se.inera.ifv.hsawsresponder.v3.GetInformationListType;
+import se.inera.ifv.hsawsresponder.v3.GetMiuForPersonResponseType;
+import se.inera.ifv.hsawsresponder.v3.GetMiuForPersonType;
+import se.inera.ifv.hsawsresponder.v3.GetPriceUnitsForAuthResponseType;
+import se.inera.ifv.hsawsresponder.v3.GetPriceUnitsForAuthType;
+import se.inera.ifv.hsawsresponder.v3.GetStatisticsCareGiverResponseType;
+import se.inera.ifv.hsawsresponder.v3.GetStatisticsCareGiverType;
+import se.inera.ifv.hsawsresponder.v3.GetStatisticsHsaUnitResponseType;
+import se.inera.ifv.hsawsresponder.v3.GetStatisticsHsaUnitType;
+import se.inera.ifv.hsawsresponder.v3.GetStatisticsNamesResponseType;
+import se.inera.ifv.hsawsresponder.v3.GetStatisticsNamesType;
+import se.inera.ifv.hsawsresponder.v3.GetStatisticsPersonResponseType;
+import se.inera.ifv.hsawsresponder.v3.GetStatisticsPersonType;
+import se.inera.ifv.hsawsresponder.v3.HandleCertifierResponseType;
+import se.inera.ifv.hsawsresponder.v3.HandleCertifierType;
+import se.inera.ifv.hsawsresponder.v3.HsawsSimpleLookupResponseType;
+import se.inera.ifv.hsawsresponder.v3.HsawsSimpleLookupType;
+import se.inera.ifv.hsawsresponder.v3.IsAuthorizedToSystemResponseType;
+import se.inera.ifv.hsawsresponder.v3.IsAuthorizedToSystemType;
+import se.inera.ifv.hsawsresponder.v3.LookupHsaObjectType;
+import se.inera.ifv.hsawsresponder.v3.MiuInformationType;
+import se.inera.ifv.hsawsresponder.v3.PingResponseType;
+import se.inera.ifv.hsawsresponder.v3.PingType;
+import se.inera.ifv.hsawsresponder.v3.StatisticsHsaUnit;
+import se.inera.ifv.hsawsresponder.v3.StatisticsNameInfo;
+import se.inera.ifv.hsawsresponder.v3.VpwGetPublicUnitsResponseType;
+import se.inera.ifv.hsawsresponder.v3.VpwGetPublicUnitsType;
+import se.inera.statistics.hsa.model.Vardenhet;
+import se.inera.statistics.hsa.stub.HsaServiceStub;
+import se.inera.statistics.hsa.stub.Medarbetaruppdrag;
+import se.inera.statistics.service.report.model.Kommun;
+import se.inera.statistics.service.report.model.Lan;
+import se.inera.statistics.service.report.model.VerksamhetsTyp;
+
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.google.common.base.Predicate;
 import com.google.common.collect.FluentIterable;
-import org.springframework.context.annotation.Primary;
-import org.springframework.context.annotation.Profile;
-import org.springframework.stereotype.Component;
-import se.inera.statistics.service.report.model.Kommun;
-import se.inera.statistics.service.report.model.Lan;
-import se.inera.statistics.service.report.model.VerksamhetsTyp;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 @Component
 @Profile({ "dev", "hsa-stub" })
 @Primary
-public class HSAServiceMock implements HSAService, HsaDataInjectable {
+public class HSAServiceMock implements HsaWsResponderInterface, HsaDataInjectable {
     private static final int POSITIVE_MASK = 0x7fffffff;
     public static final int VERKSAMHET_MODULO = 7;
 
@@ -60,6 +110,10 @@ public class HSAServiceMock implements HSAService, HsaDataInjectable {
     private String nextLanCode = null;
     private String nextEnhetName = null;
     private String nextHuvudenhetId = null;
+    private HSAKey hsaKey = null;
+
+    @Autowired
+    private HsaServiceStub hsaServiceStub;
 
     static {
         LAN_CODES = new ArrayList<>();
@@ -76,42 +130,11 @@ public class HSAServiceMock implements HSAService, HsaDataInjectable {
         }
     }
 
-    @Override
-    public ObjectNode getHSAInfo(HSAKey key) {
-        return getHSAInfo(key, null);
-    }
-
-    @Override
-    public ObjectNode getHSAInfo(HSAKey key, JsonNode baseHsaInfo) {
-        ObjectNode root = factory.objectNode();
-        if (key.getEnhetId() != null && !key.getEnhetId().startsWith("EJHSA") && !"UTANENHETSID".equals(key.getEnhetId())) {
-            root.put("enhet", createEnhet(key, false));
-            root.put("huvudenhet", createEnhet(key, true));
-        }
-        root.put("vardgivare", createVardgivare(key));
-        root.put("personal", getOrCreatePersonal(key));
-        nextLanCode = null;
-        nextEnhetName = null;
-        nextHuvudenhetId = null;
-        return root;
-    }
-
     private JsonNode getOrCreatePersonal(HSAKey key) {
         if (personals.containsKey(key.getLakareId())) {
             return personals.get(key.getLakareId());
         }
         return createPersonal(key);
-    }
-
-    private JsonNode createVardgivare(HSAKey key) {
-        ObjectNode root = factory.objectNode();
-        root.put("id", key.getVardgivareId());
-        root.put("orgnr", (JsonNode) null);
-        root.put("namn", "vardgivarnamn");
-        root.put("startdatum", (JsonNode) null);
-        root.put("slutdatum", (JsonNode) null);
-        root.put("arkiverad", (JsonNode) null);
-        return root;
     }
 
     public JsonNode createEnhet(HSAKey key, boolean isHuvudenhet) {
@@ -138,7 +161,6 @@ public class HSAServiceMock implements HSAService, HsaDataInjectable {
         }
         return enhetId;
     }
-
 
     private String getEnhetsNamn(String enhetId) {
         if (nextEnhetName != null) {
@@ -280,6 +302,218 @@ public class HSAServiceMock implements HSAService, HsaDataInjectable {
     @Override
     public void setEnhetNameForNextIntyg(String name) {
         nextEnhetName = name;
+    }
+
+    @Override
+    public void setHsaKey(HSAKey hsaKey) {
+        this.hsaKey = hsaKey;
+    }
+
+    @Override
+    public VpwGetPublicUnitsResponseType vpwGetPublicUnits(AttributedURIType logicalAddress, AttributedURIType id, VpwGetPublicUnitsType parameters) throws HsaWsFault {
+        throw new RuntimeException("This method is not used by Statistiktjansten and has therefore not been implemented");
+    }
+
+    @Override
+    public GetCareUnitResponseType getCareUnit(AttributedURIType logicalAddress, AttributedURIType id, LookupHsaObjectType parameters) throws HsaWsFault {
+        throw new RuntimeException("This method is not used by Statistiktjansten and has therefore not been implemented");
+    }
+
+    @Override
+    public GetStatisticsPersonResponseType getStatisticsPerson(AttributedURIType logicalAddress, AttributedURIType id, GetStatisticsPersonType parameters) throws HsaWsFault {
+        GetStatisticsPersonResponseType resp = new GetStatisticsPersonResponseType();
+        String hsaId = parameters.getHsaIdentity();
+        resp.setHsaIdentity(hsaId);
+        JsonNode personal = getOrCreatePersonal(getHsaKey(hsaId));
+        resp.setGender(personal.get("kon").textValue());
+        resp.setAge(personal.get("alder").textValue());
+        GetStatisticsPersonResponseType.PaTitleCodes titleCodes = new GetStatisticsPersonResponseType.PaTitleCodes();
+        Iterator<JsonNode> befattnings = personal.get("befattning").iterator();
+        while (befattnings.hasNext()) {
+            JsonNode befattning = befattnings.next();
+            titleCodes.getPaTitleCode().add(befattning.textValue());
+        }
+        resp.setPaTitleCodes(titleCodes);
+        return resp;
+    }
+
+    @Override
+    public IsAuthorizedToSystemResponseType isAuthorizedToSystem(AttributedURIType logicalAddress, AttributedURIType id, IsAuthorizedToSystemType parameters) throws HsaWsFault {
+        throw new RuntimeException("This method is not used by Statistiktjansten and has therefore not been implemented");
+    }
+
+    @Override
+    public GetCareUnitListResponseType getCareUnitList(AttributedURIType logicalAddress, AttributedURIType id, LookupHsaObjectType parameters) throws HsaWsFault {
+        throw new RuntimeException("This method is not used by Statistiktjansten and has therefore not been implemented");
+    }
+
+    @Override
+    public GetHospLastUpdateResponseType getHospLastUpdate(AttributedURIType logicalAddress, AttributedURIType id, GetHospLastUpdateType parameters) throws HsaWsFault {
+        throw new RuntimeException("This method is not used by Statistiktjansten and has therefore not been implemented");
+    }
+
+    @Override
+    public GetHsaUnitResponseType getHsaUnit(AttributedURIType logicalAddress, AttributedURIType id, LookupHsaObjectType parameters) throws HsaWsFault {
+        throw new RuntimeException("This method is not used by Statistiktjansten and has therefore not been implemented");
+    }
+
+    @Override
+    public GetPriceUnitsForAuthResponseType getPriceUnitsForAuth(AttributedURIType logicalAddress, AttributedURIType id, GetPriceUnitsForAuthType parameters) throws HsaWsFault {
+        throw new RuntimeException("This method is not used by Statistiktjansten and has therefore not been implemented");
+    }
+
+    @Override
+    public GetHsaPersonResponseType getHsaPerson(AttributedURIType logicalAddress, AttributedURIType id, GetHsaPersonType parameters) throws HsaWsFault {
+        throw new RuntimeException("This method is not used by Statistiktjansten and has therefore not been implemented");
+    }
+
+    @Override
+    public GetStatisticsNamesResponseType getStatisticsNames(AttributedURIType logicalAddress, AttributedURIType id, GetStatisticsNamesType parameters) throws HsaWsFault {
+        String hsaid = parameters.getHsaIdentities().getHsaIdentity().get(0);
+        GetStatisticsNamesResponseType resp = new GetStatisticsNamesResponseType();
+        GetStatisticsNamesResponseType.StatisticsNameInfos nameInfos = new GetStatisticsNamesResponseType.StatisticsNameInfos();
+        StatisticsNameInfo nameInfo = new StatisticsNameInfo();
+        JsonNode personal = getOrCreatePersonal(getHsaKey(hsaid));
+        nameInfo.setPersonGivenName(personal.get("tilltalsnamn").textValue());
+        nameInfo.setPersonMiddleAndSurName(personal.get("efternamn").textValue());
+        nameInfo.setHsaIdentity(hsaid);
+        nameInfos.getStatisticsNameInfo().add(nameInfo);
+        resp.setStatisticsNameInfos(nameInfos);
+        return resp;
+    }
+
+    private HSAKey getHsaKey(String hsaid) {
+        if (this.hsaKey != null) {
+            return this.hsaKey;
+        }
+        return new HSAKey(hsaid, hsaid, hsaid);
+    }
+
+    @Override
+    public PingResponseType ping(AttributedURIType logicalAddress, AttributedURIType id, PingType parameters) throws HsaWsFault {
+        // Is part of HSAWebServiceCalls but is never used
+        throw new RuntimeException("This method is not used by Statistiktjansten and has therefore not been implemented");
+    }
+
+    @Override
+    public GetMiuForPersonResponseType getMiuForPerson(AttributedURIType logicalAddress, AttributedURIType id, GetMiuForPersonType parameters) throws HsaWsFault {
+        GetMiuForPersonResponseType response = new GetMiuForPersonResponseType();
+
+        for (Medarbetaruppdrag medarbetaruppdrag : hsaServiceStub.getMedarbetaruppdrag()) {
+            if (medarbetaruppdrag.getHsaId().getId().equals(parameters.getHsaIdentity())) {
+                response.getMiuInformation().addAll(
+                        miuInformationTypesForEnhetsIds(medarbetaruppdrag));
+            }
+        }
+        return response;
+    }
+
+    private List<MiuInformationType> miuInformationTypesForEnhetsIds(Medarbetaruppdrag medarbetaruppdrag) {
+        List<MiuInformationType> informationTypes = new ArrayList<>();
+
+        for (Vardenhet enhet : hsaServiceStub.getVardenhets()) {
+            if (medarbetaruppdrag.getEnhetIds().contains(enhet.getId())) {
+                MiuInformationType miuInfo = new MiuInformationType();
+                miuInfo.setHsaIdentity(medarbetaruppdrag.getHsaId().getId());
+                miuInfo.setMiuPurpose(medarbetaruppdrag.getAndamal());
+                miuInfo.setCareUnitHsaIdentity(enhet.getId().getId());
+                miuInfo.setCareUnitName(enhet.getNamn());
+                miuInfo.setCareGiver(enhet.getVardgivarId().getId());
+                miuInfo.setCareGiverName(enhet.getVardgivarNamn());
+                informationTypes.add(miuInfo);
+            }
+        }
+
+        return informationTypes;
+    }
+
+    @Override
+    public GetStatisticsCareGiverResponseType getStatisticsCareGiver(AttributedURIType logicalAddress, AttributedURIType id, GetStatisticsCareGiverType parameters) throws HsaWsFault {
+        String hsaid = parameters.getHsaIdentity();
+        GetStatisticsCareGiverResponseType resp = new GetStatisticsCareGiverResponseType();
+        resp.setHsaIdentity(hsaid);
+        return resp;
+    }
+
+    @Override
+    public HsawsSimpleLookupResponseType hsawsSimpleLookup(AttributedURIType logicalAddress, AttributedURIType id, HsawsSimpleLookupType parameters) throws HsaWsFault {
+        throw new RuntimeException("This method is not used by Statistiktjansten and has therefore not been implemented");
+    }
+
+    @Override
+    public GetStatisticsHsaUnitResponseType getStatisticsHsaUnit(AttributedURIType logicalAddress, AttributedURIType id, GetStatisticsHsaUnitType parameters) throws HsaWsFault {
+        String hsaid = parameters.getHsaIdentity();
+        HSAKey key = getHsaKey(hsaid);
+        if (shouldEnhetExistInHsa(hsaid)) {
+            GetStatisticsHsaUnitResponseType resp = new GetStatisticsHsaUnitResponseType();
+            resp.setStatisticsUnit(createHsaUnit(key, false));
+            resp.setStatisticsCareUnit(createHsaUnit(key, true));
+            nextLanCode = null;
+            nextEnhetName = null;
+            nextHuvudenhetId = null;
+            return resp;
+        }
+
+        nextLanCode = null;
+        nextEnhetName = null;
+        nextHuvudenhetId = null;
+        return null;
+    }
+
+    public static boolean shouldEnhetExistInHsa(String enhetId) {
+        return enhetId != null && !enhetId.startsWith("EJHSA") && !"UTANENHETSID".equals(enhetId);
+    }
+
+    private StatisticsHsaUnit createHsaUnit(HSAKey key, boolean isHuvudenhet) {
+        JsonNode enhet = createEnhet(key, isHuvudenhet);
+        StatisticsHsaUnit unit = new StatisticsHsaUnit();
+        unit.setHsaIdentity(enhet.get("id").textValue());
+        StatisticsHsaUnit.BusinessTypes businessTypes = new StatisticsHsaUnit.BusinessTypes();
+        businessTypes.getBusinessType().add(VerksamhetsTyp.VARDCENTRAL_ID);
+        unit.setBusinessTypes(businessTypes);
+        StatisticsHsaUnit.Managements value = new StatisticsHsaUnit.Managements();
+        value.getManagement().add("Landsting/Region");
+        unit.setManagements(value);
+        GeoCoord geoCoord = new GeoCoord();
+        geoCoord.setType(GeoCoordEnum.RT_90);
+        geoCoord.setE("1");
+        geoCoord.setN("1");
+        geoCoord.setX("1");
+        geoCoord.setY("1");
+        unit.setGeographicalCoordinatesRt90(geoCoord);
+        String lan = createLan(key);
+        unit.setCountyCode(lan);
+        unit.setCounty(LAN.getNamn(lan));
+        String kommun = createKommun(key, lan);
+        unit.setMunicipalityCode(kommun);
+        unit.setMunicipality(KOMMUN.getNamn(kommun));
+        unit.setCareGiverHsaIdentity(enhet.get("vgid").textValue());
+        StatisticsHsaUnit.CareTypes careTypes = new StatisticsHsaUnit.CareTypes();
+        String[] verksamhet = createVerksamhet(key);
+        StatisticsHsaUnit.BusinessClassificationCodes classificationCodes = new StatisticsHsaUnit.BusinessClassificationCodes();
+        classificationCodes.getBusinessClassificationCode().addAll(Arrays.asList(verksamhet));
+        unit.setBusinessClassificationCodes(classificationCodes);
+        return unit;
+    }
+
+    @Override
+    public GetCareUnitMembersResponseType getCareUnitMembers(AttributedURIType logicalAddress, AttributedURIType id, LookupHsaObjectType parameters) throws HsaWsFault {
+        throw new RuntimeException("This method is not used by Statistiktjansten and has therefore not been implemented");
+    }
+
+    @Override
+    public GetHospPersonResponseType getHospPerson(AttributedURIType logicalAddress, AttributedURIType id, GetHospPersonType parameters) throws HsaWsFault {
+        throw new RuntimeException("This method is not used by Statistiktjansten and has therefore not been implemented");
+    }
+
+    @Override
+    public GetInformationListResponseType getInformationList(AttributedURIType logicalAddress, AttributedURIType id, GetInformationListType parameters) throws HsaWsFault {
+        throw new RuntimeException("This method is not used by Statistiktjansten and has therefore not been implemented");
+    }
+
+    @Override
+    public HandleCertifierResponseType handleCertifier(AttributedURIType logicalAddress, AttributedURIType id, HandleCertifierType parameters) throws HsaWsFault {
+        throw new RuntimeException("This method is not used by Statistiktjansten and has therefore not been implemented");
     }
 
 }

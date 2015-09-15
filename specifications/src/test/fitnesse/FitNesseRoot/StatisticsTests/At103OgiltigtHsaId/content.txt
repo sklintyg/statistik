@@ -32,11 +32,11 @@ Inloggad nivå
 
 | Sjukfall i rapporten sjukfall per enhet |
 | inloggad som | vårdenhet      | vårdgivarnivå  | totalt? | män? | kvinnor? |
-| user1        | Enhet enhet1   | false          | 1       | 1    | 0        |
+| user1        | enhet1         | false          | 1       | 1    | 0        |
 | user1        | EJHSA          | false          | -1      | -1   | -1       |
 | user1        | EJHSANR2       | false          | -1      | -1   | -1       |
 | user1        | Utan enhets-id | false          | -1      | -1   | -1       |
-| user1        | Enhet enhet1   | true           | 1       | 1    | 0        |
+| user1        | enhet1         | true           | 1       | 1    | 0        |
 | user1        | EJHSA          | true           | -1      | -1   | -1       |
 | user1        | EJHSANR2       | true           | -1      | -1   | -1       |
 | user1        | Utan enhets-id | true           | -1      | -1   | -1       |

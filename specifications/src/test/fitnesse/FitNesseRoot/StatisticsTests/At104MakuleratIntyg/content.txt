@@ -21,4 +21,4 @@ Två sjukfall visas (eftersom det är mer än 5 dagar mellan första och sista i
 
 | Sjukfall i rapporten sjukfall per enhet |
 | inloggad som | vårdenhet    | vårdgivarnivå  | totalt? | män? | kvinnor? |
-| user1        | Enhet enhet1 | false          | 2       | 2    | 0        |
+| user1        | enhet1 | false          | 2       | 2    | 0        |

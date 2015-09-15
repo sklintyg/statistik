@@ -22,41 +22,41 @@ Gäller STATISTIK-935, 942.
 
 | Sjukfall i rapporten sjukfall per enhet |
 | inloggad som | vårdenhet    | vårdgivarnivå | totalt? | män? | kvinnor? |
-| user2        | Enhet enhet2 | true          | 1       | 1    | 0        |
+| user2        | enhet2 | true          | 1       | 1    | 0        |
 
 | Sjukfall i rapporten sjukfall per enhet som tidsserie |
 | inloggad som | år   | månad | vårdenhet    | män? | kvinnor? |
-| user2        | 2013 | jun   | Enhet enhet1 | 0    | 1        |
-| user2        | 2013 | jul   | Enhet enhet1 | 0    | 1        |
-| user2        | 2013 | aug   | Enhet enhet1 | 0    | 1        |
-| user2        | 2013 | sep   | Enhet enhet1 | 0    | 1        |
-| user2        | 2013 | okt   | Enhet enhet1 | 0    | 1        |
-| user2        | 2013 | nov   | Enhet enhet1 | 0    | 0        |
-| user2        | 2013 | dec   | Enhet enhet1 | 0    | 0        |
-| user2        | 2014 | jan   | Enhet enhet1 | 0    | 0        |
-| user2        | 2014 | feb   | Enhet enhet1 | 0    | 0        |
-| user2        | 2014 | mar   | Enhet enhet1 | 0    | 0        |
-| user2        | 2014 | apr   | Enhet enhet1 | 0    | 0        |
-| user2        | 2014 | maj   | Enhet enhet1 | 0    | 0        |
-| user2        | 2014 | jun   | Enhet enhet1 | 0    | 0        |
-| user2        | 2014 | jul   | Enhet enhet1 | 0    | 0        |
-| user2        | 2014 | aug   | Enhet enhet1 | 0    | 0        |
-| user2        | 2014 | sep   | Enhet enhet1 | 0    | 0        |
-| user2        | 2014 | okt   | Enhet enhet1 | 0    | 0        |
-| user2        | 2013 | jun   | Enhet enhet2 | 0    | 0        |
-| user2        | 2013 | jul   | Enhet enhet2 | 0    | 0        |
-| user2        | 2013 | aug   | Enhet enhet2 | 0    | 0        |
-| user2        | 2013 | sep   | Enhet enhet2 | 0    | 0        |
-| user2        | 2013 | okt   | Enhet enhet2 | 0    | 0        |
-| user2        | 2013 | nov   | Enhet enhet2 | 0    | 0        |
-| user2        | 2013 | dec   | Enhet enhet2 | 0    | 0        |
-| user2        | 2014 | jan   | Enhet enhet2 | 0    | 0        |
-| user2        | 2014 | feb   | Enhet enhet2 | 0    | 0        |
-| user2        | 2014 | mar   | Enhet enhet2 | 0    | 0        |
-| user2        | 2014 | apr   | Enhet enhet2 | 0    | 0        |
-| user2        | 2014 | maj   | Enhet enhet2 | 0    | 0        |
-| user2        | 2014 | jun   | Enhet enhet2 | 0    | 0        |
-| user2        | 2014 | jul   | Enhet enhet2 | 1    | 0        |
-| user2        | 2014 | aug   | Enhet enhet2 | 1    | 0        |
-| user2        | 2014 | sep   | Enhet enhet2 | 1    | 0        |
-| user2        | 2014 | okt   | Enhet enhet2 | 1    | 0        |
+| user2        | 2013 | jun   | enhet1 | 0    | 1        |
+| user2        | 2013 | jul   | enhet1 | 0    | 1        |
+| user2        | 2013 | aug   | enhet1 | 0    | 1        |
+| user2        | 2013 | sep   | enhet1 | 0    | 1        |
+| user2        | 2013 | okt   | enhet1 | 0    | 1        |
+| user2        | 2013 | nov   | enhet1 | 0    | 0        |
+| user2        | 2013 | dec   | enhet1 | 0    | 0        |
+| user2        | 2014 | jan   | enhet1 | 0    | 0        |
+| user2        | 2014 | feb   | enhet1 | 0    | 0        |
+| user2        | 2014 | mar   | enhet1 | 0    | 0        |
+| user2        | 2014 | apr   | enhet1 | 0    | 0        |
+| user2        | 2014 | maj   | enhet1 | 0    | 0        |
+| user2        | 2014 | jun   | enhet1 | 0    | 0        |
+| user2        | 2014 | jul   | enhet1 | 0    | 0        |
+| user2        | 2014 | aug   | enhet1 | 0    | 0        |
+| user2        | 2014 | sep   | enhet1 | 0    | 0        |
+| user2        | 2014 | okt   | enhet1 | 0    | 0        |
+| user2        | 2013 | jun   | enhet2 | 0    | 0        |
+| user2        | 2013 | jul   | enhet2 | 0    | 0        |
+| user2        | 2013 | aug   | enhet2 | 0    | 0        |
+| user2        | 2013 | sep   | enhet2 | 0    | 0        |
+| user2        | 2013 | okt   | enhet2 | 0    | 0        |
+| user2        | 2013 | nov   | enhet2 | 0    | 0        |
+| user2        | 2013 | dec   | enhet2 | 0    | 0        |
+| user2        | 2014 | jan   | enhet2 | 0    | 0        |
+| user2        | 2014 | feb   | enhet2 | 0    | 0        |
+| user2        | 2014 | mar   | enhet2 | 0    | 0        |
+| user2        | 2014 | apr   | enhet2 | 0    | 0        |
+| user2        | 2014 | maj   | enhet2 | 0    | 0        |
+| user2        | 2014 | jun   | enhet2 | 0    | 0        |
+| user2        | 2014 | jul   | enhet2 | 1    | 0        |
+| user2        | 2014 | aug   | enhet2 | 1    | 0        |
+| user2        | 2014 | sep   | enhet2 | 1    | 0        |
+| user2        | 2014 | okt   | enhet2 | 1    | 0        |

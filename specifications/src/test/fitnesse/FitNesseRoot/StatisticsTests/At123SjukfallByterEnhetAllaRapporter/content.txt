@@ -25,12 +25,12 @@ Bara det som hör till enheterna som användaren har behörighet till syns.
 Inloggad:
 | Sjukfall i rapporten sjukfall per enhet |
 | inloggad som | vårdenhet    | män? | kvinnor? |
-| user1        | Enhet enhet1 | 1    | 0        |
-| user1        | Enhet enhet2 | -1   | -1       |
-| user4        | Enhet enhet1 | -1   | -1       |
-| user4        | Enhet enhet2 | 1    | 0        |
-| user2        | Enhet enhet1 | 1    | 0        |
-| user2        | Enhet enhet2 | 1    | 0        |
+| user1        | enhet1 | 1    | 0        |
+| user1        | enhet2 | -1   | -1       |
+| user4        | enhet1 | -1   | -1       |
+| user4        | enhet2 | 1    | 0        |
+| user2        | enhet1 | 1    | 0        |
+| user2        | enhet2 | 1    | 0        |
 
 | Sjukfall i rapporten sjukfall totalt |
 | inloggad som | år   | månad | män? | kvinnor? |

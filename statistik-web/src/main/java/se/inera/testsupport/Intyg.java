@@ -10,9 +10,12 @@ public class Intyg {
     private String county;
     private String huvudenhetId;
     private String enhetName;
+    private String vardgivareId;
+    private String enhetId;
+    private String lakareId;
 
-
-    public Intyg(EventType type, String data, String documentId, long timestamp, String county, String huvudenhetId, String enhetName) {
+    // CHECKSTYLE:OFF ParameterNumberCheck
+    public Intyg(EventType type, String data, String documentId, long timestamp, String county, String huvudenhetId, String enhetName, String vgId, String enhetId, String lakareId) {
         this.type = type;
         this.data = data;
         this.documentId = documentId;
@@ -20,7 +23,11 @@ public class Intyg {
         this.county = county;
         this.huvudenhetId = huvudenhetId;
         this.enhetName = enhetName;
+        this.vardgivareId = vgId;
+        this.enhetId = enhetId;
+        this.lakareId = lakareId;
     }
+    // CHECKSTYLE:ON
 
     /**
      * For json mapper.
@@ -53,6 +60,18 @@ public class Intyg {
 
     public String getEnhetName() {
         return enhetName;
+    }
+
+    public String getVardgivareId() {
+        return vardgivareId;
+    }
+
+    public String getEnhetId() {
+        return enhetId;
+    }
+
+    public String getLakareId() {
+        return lakareId;
     }
 
 }

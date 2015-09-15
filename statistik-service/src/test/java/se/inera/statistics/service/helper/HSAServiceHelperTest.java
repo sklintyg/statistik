@@ -29,12 +29,12 @@ import se.inera.statistics.service.hsa.HSAServiceMock;
 import com.fasterxml.jackson.databind.JsonNode;
 
 public class HSAServiceHelperTest {
+
+    public static final JsonNode JSON_NODE = JSONParser.parse("{\"enhet\":{\"id\":\"enhetId\",\"namn\":\"Enhet enhetId\",\"enhetsTyp\":[\"02\"],\"agarform\":[\"Landsting/Region\"],\"startdatum\":\"\",\"slutdatum\":\"\",\"arkiverad\":null,\"organisationsnamn\":\"Organisationsnamn\",\"vardform\":null,\"geografi\":{\"koordinat\":\"nagonsortskoordinat\",\"plats\":\"Plats\",\"kommundelskod\":\"0\",\"kommundelsnamn\":\"Centrum\",\"lan\":\"20\",\"kommun\":\"62\"},\"verksamhet\":[\"1217\",\"1218\",\"1219\"],\"vgid\":\"vardgivarid\"},\"huvudenhet\":{\"id\":\"enhetId\",\"namn\":\"Enhet enhetId\",\"enhetsTyp\":[\"02\"],\"agarform\":[\"Landsting/Region\"],\"startdatum\":\"\",\"slutdatum\":\"\",\"arkiverad\":null,\"organisationsnamn\":\"Organisationsnamn\",\"vardform\":null,\"geografi\":{\"koordinat\":\"nagonsortskoordinat\",\"plats\":\"Plats\",\"kommundelskod\":\"0\",\"kommundelsnamn\":\"Centrum\",\"lan\":\"20\",\"kommun\":\"62\"},\"verksamhet\":[\"1217\",\"1218\",\"1219\"],\"vgid\":\"vardgivarid\"},\"vardgivare\":{\"id\":\"vardgivarid\",\"orgnr\":null,\"namn\":\"vardgivarnamn\",\"startdatum\":null,\"slutdatum\":null,\"arkiverad\":null},\"personal\":{\"id\":\"lakareId\",\"initial\":null,\"kon\":null,\"alder\":null,\"befattning\":null,\"specialitet\":null,\"yrkesgrupp\":null,\"skyddad\":null,\"tilltalsnamn\":\"Sirkka\",\"efternamn\":\"Isaac\"}}");
+
     @Test
     public void getLanTest() {
-        HSAService hsaService = new HSAServiceMock();
-        JsonNode info = hsaService.getHSAInfo(new HSAKey("vardgivarid", "enhetId", "lakareId"));
-
-        String lan = HSAServiceHelper.getLan(info);
+        String lan = HSAServiceHelper.getLan(JSON_NODE);
         Assert.assertEquals("20", lan);
     }
 
@@ -58,19 +58,13 @@ public class HSAServiceHelperTest {
 
     @Test
     public void getKommunTest() {
-        HSAService hsaService = new HSAServiceMock();
-        JsonNode info = hsaService.getHSAInfo(new HSAKey("vardgivarid", "enhetId", "lakareId"));
-
-        String kommun = HSAServiceHelper.getKommun(info);
+        String kommun = HSAServiceHelper.getKommun(JSON_NODE);
         Assert.assertEquals("62", kommun);
     }
 
     @Test
     public void getVerksamhetTyperTest() {
-        HSAService hsaService = new HSAServiceMock();
-        JsonNode info = hsaService.getHSAInfo(new HSAKey("vardgivarid", "enhetId", "lakareId"));
-
-        String verksamhetsTyper = HSAServiceHelper.getVerksamhetsTyper(info);
+        String verksamhetsTyper = HSAServiceHelper.getVerksamhetsTyper(JSON_NODE);
         Assert.assertEquals("1217,1218,1219,02", verksamhetsTyper);
     }
 
