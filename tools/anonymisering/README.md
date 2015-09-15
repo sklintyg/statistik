@@ -12,10 +12,10 @@ Anonymisering
 Att köra applikationen
 
     Hämta zip-filen i repot: http://repository-callistasoftware.forge.cloudbees.com/release/se/inera/statistik/anonymisering/3.0.5/
-    packa up zip-filen, gå in i katalogen: 
+    packa up zip-filen, gå in i katalogen:
     unzip anonymisering-3.0.5.zip
     cd anonymisering-3.0.5
-    
+
     Hämta inställningsfilen: https://raw.githubusercontent.com/sklintyg/statistik/master/tools/anonymisering/dataSource.properties
     Redigera inställningsfilen
     Kör programmet: bin/anonymisering (det kan ta en bra stund innan det blir klart)
@@ -23,5 +23,5 @@ Att köra applikationen
 Anonymisering görs på original-meddelandet (intyghandelse.data) samt för (hsa.personal.id).
 Implementation
 
-Källkoden ligger i statistikprojektet (https://github.com/sklintyg/statistik/tree/master/tools/anonymisering). Applikationen itererar över intygs-id, och anonymiserar ursprungligt intygs-meddelande (data) i steg 1. Därefter itererar applikationen över hsa och anonymiserar personid-kolumnen.
+Källkoden ligger i statistikprojektet (https://github.com/sklintyg/statistik/tree/master/tools/anonymisering). Applikationen itererar över intygs-id, och anonymiserar ursprungligt intygs-meddelande (data) i steg 1. Därefter itererar applikationen över hsa och anonymiserar personid-kolumnen för att slutligen anonymisera läkare genom att anonymisera kolumnerna lakareid, tilltalsnamn och efternamn.
 wideline och handelsepekare nollställs. När statistikapplikationen startas kommer wideline populeras från början.
