@@ -19,16 +19,16 @@ Följande test visat att intyg med inget eller ogiltigt enhets-id hanteras som f
 Nationell nivå
 | Sjukfall i rapporten sjukfall totalt |
 | år   | månad | män? | kvinnor? |
-| 2013 | feb   | 2    | 2        |
-| 2013 | mar   | 1    | 1        |
+| 2013 | feb   | 1    | 0        |
+| 2013 | mar   | 0    | 0        |
 
 Inloggad nivå
 | Sjukfall i rapporten sjukfall totalt |
 | inloggad som | vårdgivarnivå | år   | månad | män? | kvinnor? |
 | user1        | false         | 2013 | feb   | 1    | 0        |
-| user2        | true          | 2013 | feb   | 2    | 2        |
+| user2        | true          | 2013 | feb   | 1    | 0        |
 | user1        | false         | 2013 | mar   | 0    | 0        |
-| user2        | true          | 2013 | mar   | 1    | 1        |
+| user2        | true          | 2013 | mar   | 0    | 0        |
 
 | Sjukfall i rapporten sjukfall per enhet |
 | inloggad som | vårdenhet      | vårdgivarnivå  | totalt? | män? | kvinnor? |
@@ -37,13 +37,6 @@ Inloggad nivå
 | user1        | EJHSANR2       | false          | -1      | -1   | -1       |
 | user1        | Utan enhets-id | false          | -1      | -1   | -1       |
 | user1        | Enhet enhet1   | true           | 1       | 1    | 0        |
-| user1        | EJHSA          | true           | 1       | 0    | 1        |
-| user1        | EJHSANR2       | true           | 1       | 1    | 0        |
-| user1        | Utan enhets-id | true           | 1       | 0    | 1        |
-
-| Sjukfall i rapporten sjukfall per enhet |
-| inloggad som | vårdenhet      | vårdgivarnivå  | filter enheter                     | filter verksamhetstyper | filter kapitel | totalt? | män? | kvinnor? |
-| user1        | Enhet enhet1   | true           | enhet1,EJHSA,EJHSANR2,UTANENHETSID | 00                      | G00-G99        | -1      | -1   | -1       |
-| user1        | EJHSA          | true           | enhet1,EJHSA,EJHSANR2,UTANENHETSID | 00                      | G00-G99        | 1       | 0    | 1        |
-| user1        | EJHSANR2       | true           | enhet1,EJHSA,EJHSANR2,UTANENHETSID | 00                      | G00-G99        | 1       | 1    | 0        |
-| user1        | Utan enhets-id | true           | enhet1,EJHSA,EJHSANR2,UTANENHETSID | 00                      | G00-G99        | 1       | 0    | 1        |
+| user1        | EJHSA          | true           | -1      | -1   | -1       |
+| user1        | EJHSANR2       | true           | -1      | -1   | -1       |
+| user1        | Utan enhets-id | true           | -1      | -1   | -1       |
