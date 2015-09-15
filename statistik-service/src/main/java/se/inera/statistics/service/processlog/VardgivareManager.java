@@ -64,7 +64,8 @@ public class VardgivareManager {
         }
 
         if (validate(vardgivare, enhetNamn, vardgivareNamn, lansId, kommunId, verksamhetsTyper, hsaInfo)) {
-            TypedQuery<Enhet> vardgivareQuery = manager.createQuery("SELECT v FROM Enhet v WHERE v.enhetId = :enhetId AND v.vardgivareId = :vardgivareId", Enhet.class);
+            //Must use 'LIKE' instead of '=' due to STATISTIK-1231
+            TypedQuery<Enhet> vardgivareQuery = manager.createQuery("SELECT v FROM Enhet v WHERE v.enhetId LIKE :enhetId AND v.vardgivareId = :vardgivareId", Enhet.class);
             List<Enhet> resultList = vardgivareQuery.setParameter("enhetId", enhet).setParameter("vardgivareId", vardgivare).getResultList();
 
             if (resultList.isEmpty()) {

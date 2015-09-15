@@ -41,15 +41,15 @@ Inloggad:
 
 | Sjukfall i rapporten landsting sjukfall per enhet |
 | inloggad som | vårdenhet    | totalt? | män? | kvinnor? |
-| user3        | Enhet enhet1 | -1      | -1   | -1       |
-| user3        | Enhet enhet2 | 4       | 4    | 0        |
-| user3        | Enhet enhet3 | 3       | 0    | 3        |
+| user3        | enhet1 | -1      | -1   | -1       |
+| user3        | enhet2 | 4       | 4    | 0        |
+| user3        | enhet3 | 3       | 0    | 3        |
 
 | Sjukfall i rapporten landsting sjukfall per listningar per enhet |
 | inloggad som | vårdenhet    | antal sjukfall per tusen listningar? |
-| user3        | Enhet enhet1 | -1      |
-| user3        | Enhet enhet2 | -1      |
-| user3        | Enhet enhet3 | 4,55    |
+| user3        | enhet1 | -1      |
+| user3        | enhet2 | -1      |
+| user3        | enhet3 | 4,55    |
 
 !3 Uppstädning efter testet
 | Uppladdade landstingsfiler |

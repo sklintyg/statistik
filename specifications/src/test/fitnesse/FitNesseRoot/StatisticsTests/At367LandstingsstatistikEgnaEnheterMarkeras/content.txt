@@ -28,24 +28,24 @@ Alla användare som har uppdrag statistik på minst en enhet inom en vårdgivare
 Inloggad:
 | Sjukfall i rapporten landsting sjukfall per enhet |
 | inloggad som | vårdgivarnivå | vårdenhet    |  markerad? |
-| user1        | false         | Enhet enhet1 | ja |
-| user1        | false         | Enhet enhet2 | nej |
-| user1        | false         | Enhet enhet3 | nej |
-| user2        | false         | Enhet enhet1 | ja |
-| user2        | false         | Enhet enhet2 | ja |
-| user2        | false         | Enhet enhet3 | nej |
-| user2        | true          | Enhet enhet1 | nej |
-| user2        | true          | Enhet enhet2 | nej |
-| user2        | true          | Enhet enhet3 | nej |
+| user1        | false         | enhet1 | ja |
+| user1        | false         | enhet2 | nej |
+| user1        | false         | enhet3 | nej |
+| user2        | false         | enhet1 | ja |
+| user2        | false         | enhet2 | ja |
+| user2        | false         | enhet3 | nej |
+| user2        | true          | enhet1 | nej |
+| user2        | true          | enhet2 | nej |
+| user2        | true          | enhet3 | nej |
 
 | Sjukfall i rapporten landsting sjukfall per listningar per enhet |
 | inloggad som | vårdgivarnivå | vårdenhet    | markerad? |
-| user1        | false         | Enhet enhet1 | ja |
-| user1        | false         | Enhet enhet3 | nej |
-| user2        | false         | Enhet enhet1 | ja |
-| user2        | false         | Enhet enhet3 | nej |
-| user2        | true          | Enhet enhet1 | nej |
-| user2        | true          | Enhet enhet3 | nej |
+| user1        | false         | enhet1 | ja |
+| user1        | false         | enhet3 | nej |
+| user2        | false         | enhet1 | ja |
+| user2        | false         | enhet3 | nej |
+| user2        | true          | enhet1 | nej |
+| user2        | true          | enhet3 | nej |
 
 !3 Uppstädning efter testet
 | Uppladdade landstingsfiler |

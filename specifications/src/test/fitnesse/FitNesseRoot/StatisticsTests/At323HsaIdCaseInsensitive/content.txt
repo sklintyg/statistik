@@ -29,7 +29,7 @@ Inloggad:
 
 | Sjukfall i rapporten sjukfall per enhet |
 | inloggad som | vårdenhet    | totalt? | män? | kvinnor? |
-| user1        | Enhet enhet1 | 3       | 2    | 1        |
+| user1        | enhet1 | 3       | 2    | 1        |
 
 Nationell:
 | Sjukfall i rapporten sjukfall totalt |

@@ -1,0 +1,67 @@
+/**
+ * Copyright (C) 2015 Inera AB (http://www.inera.se)
+ *
+ * This file is part of statistik (https://github.com/sklintyg/statistik).
+ *
+ * statistik is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * statistik is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+package se.inera.statistics.service.hsa;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
+import se.inera.ifv.hsawsresponder.v3.GetMiuForPersonResponseType;
+import se.inera.ifv.hsawsresponder.v3.GetMiuForPersonType;
+import se.inera.ifv.hsawsresponder.v3.GetStatisticsCareGiverResponseType;
+import se.inera.ifv.hsawsresponder.v3.GetStatisticsHsaUnitResponseType;
+import se.inera.ifv.hsawsresponder.v3.GetStatisticsNamesResponseType;
+import se.inera.ifv.hsawsresponder.v3.GetStatisticsPersonResponseType;
+import se.inera.ifv.statistics.spi.authorization.impl.HSAWebServiceCalls;
+
+ /**
+ * This implementation will simply delegate all calls directly to HSA.
+ */
+public class HsaWebServiceDirect implements HsaWebService {
+
+    @Autowired
+    private HSAWebServiceCalls service;
+
+    public void setHsaLogicalAddress(String hsaLogicalAddress) {
+        service.setHsaLogicalAddress(hsaLogicalAddress);
+    }
+
+    public void callPing() {
+        service.callPing();
+    }
+
+    public GetStatisticsHsaUnitResponseType getStatisticsHsaUnit(String unitId) {
+        return service.getStatisticsHsaUnit(unitId);
+    }
+
+    public GetStatisticsNamesResponseType getStatisticsNames(String personId) {
+        return service.getStatisticsNames(personId);
+    }
+
+    public GetStatisticsPersonResponseType getStatisticsPerson(String personId) {
+        return service.getStatisticsPerson(personId);
+    }
+
+    public GetMiuForPersonResponseType callMiuRights(GetMiuForPersonType parameters) {
+        return service.callMiuRights(parameters);
+    }
+
+    public GetStatisticsCareGiverResponseType getStatisticsCareGiver(String careGiverId) {
+        return service.getStatisticsCareGiver(careGiverId);
+    }
+
+}

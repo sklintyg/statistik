@@ -19,8 +19,8 @@
 
 'use strict';
 
-angular.module('StatisticsApp').controller('doubleAreaChartsCtrl', [ '$scope', '$rootScope', '$routeParams', '$window', '$timeout', 'statisticsData', 'config', 'messageService', 'printFactory', 'diagnosisTreeFilter', '$location', 'chartFactory',
-    function ($scope, $rootScope, $routeParams, $window, $timeout, statisticsData, config, messageService, printFactory, diagnosisTreeFilter, $location ,chartFactory) {
+angular.module('StatisticsApp').controller('doubleAreaChartsCtrl', [ '$scope', '$rootScope', '$routeParams', '$window', '$timeout', 'statisticsData', 'config', 'messageService', 'printFactory', 'diagnosisTreeFilter', '$location', 'chartFactory', '_',
+    function ($scope, $rootScope, $routeParams, $window, $timeout, statisticsData, config, messageService, printFactory, diagnosisTreeFilter, $location ,chartFactory, _) {
         var that = this;
         var chart1 = {};
         var chart2 = {};
@@ -58,64 +58,60 @@ angular.module('StatisticsApp').controller('doubleAreaChartsCtrl', [ '$scope', '
             return new Highcharts.Chart(chartOptions);
         };
 
-        //Expects the table to consist of two headers where the first header has a colspan of two
-        var updatePrintDataTable = function ($scope, ajaxResult) {
-            var headers = ajaxResult.tableData.headers;
-            var rows = ajaxResult.tableData.rows;
-            var printTables = [];
-            var totWidth = 0;
-            var maxWidth = 500;
-            var colWidth = 50;
-            var currentDataColumn = 1;
+        var updatePrintDataTable = function (ajaxResult) {
+            var headers = ajaxResult.tableData.headers,
+            rows = ajaxResult.tableData.rows,
+            printTables = [], currentDataColumn = 1, maxHeadersPerPage = 7;
 
-            for (var c = 1; c < headers[0].length - 2;) {
-                var printTable = {};
-                printTable.headers = [];
-                printTable.rows = [];
+            var topLevelHeaders = _.rest(headers[0]); //Take all headers but the first, the first is handled separately
+            var totalNumberOfPrintPages = Math.ceil(topLevelHeaders.length/maxHeadersPerPage); //Calculate how many print pages we will have
 
-                totWidth = colWidth * 2; //total width of table frame (first and last column which should be used on all print tables)
+            /*
+                This block takes care of everything we need to do for each and every page
+                we need to print, effectively splitting every page in its own print table
+             */
+            _.each(_.range(0, totalNumberOfPrintPages), function() {
+                    //For every print page we need to set up an new printTable
+                    var printTable = {headers: [], rows: []};
 
-                //Add headers for first column
-                for (var i = 0; i < headers.length; i++) {
-                    printTable.headers[i] = [];
-                    printTable.headers[i].push(headers[i][0]);
+                    //Add headers for first column
+                    _.each(headers, function(header, headerIndex) {
+                        printTable.headers[headerIndex] = [header[0]];
+                    });
+
+                    //Add row name for each row
+                    _.each(rows, function(row) {
+                        printTable.rows.push({name: row.name, data: []});
+                    });
+
+                    //Add the data for the print page
+                    //Start by taking a maxHeadersPerPage chunk of all the toplevel headers
+                    _.each(_.take(topLevelHeaders, maxHeadersPerPage), function(topLevelHeader) {
+
+                        //Add the top level topLevelHeader
+                        printTable.headers[0].push(topLevelHeader);
+
+                        //Add the sub level headers, the colspan of the top level header
+                        //decides how many sub level columns we have.
+                        _.each(_.range(topLevelHeader.colspan), function() {
+                            printTable.headers[1].push(headers[1][currentDataColumn]);
+
+                            //Add the data that goes into the sublevel
+                            _.each(rows, function(row, rowindex) {
+                                printTable.rows[rowindex].data.push(row.data[currentDataColumn - 1]);
+                            });
+
+                            currentDataColumn++;
+                        });
+                    });
+
+                    //Taking a new chunk of the top level headers for the next iteration
+                    topLevelHeaders = _.rest(topLevelHeaders, maxHeadersPerPage);
+                    printTables.push(printTable);
                 }
+            );
 
-                //Add all row names (first column)
-                for (var r = 0; r < rows.length; r++) {
-                    var row = {};
-                    row.name = rows[r].name;
-                    row.data = [];
-                    printTable.rows.push(row);
-                }
-
-                //Add columns until table is too wide or all columns has been added
-                for (var i = 0; (c < headers[0].length - 2) && ((totWidth + colWidth) < maxWidth); i++) {
-                    printTable.headers[0].push(headers[0][c]);
-                    for (var s = 0; s < 2; s++) {
-                        printTable.headers[1].push(headers[1][currentDataColumn]);
-                        for (var r = 0; r < rows.length; r++) {
-                            printTable.rows[r].data.push(rows[r].data[currentDataColumn]);
-                        }
-                        currentDataColumn++;
-                    }
-                    c++;
-                    totWidth += colWidth;
-                }
-
-                //Add headers for last column (sum)
-                for (var i = 0; i < headers.length; i++) {
-                    printTable.headers[i].push(headers[i][headers[i].length - 1]);
-                }
-
-                //Add all row sum (last column)
-                for (var r = 0; r < rows.length; r++) {
-                    printTable.rows[r].data.push(rows[r].data[rows[r].data.length - 1]);
-                }
-
-                printTables.push(printTable);
-            }
-            $scope.printDataTables = printTables;
+            return printTables;
         };
 
         function updateChartsYAxisMaxValue() {
@@ -177,7 +173,7 @@ angular.module('StatisticsApp').controller('doubleAreaChartsCtrl', [ '$scope', '
                 }
             }, 1);
             $timeout(function () {
-                updatePrintDataTable($scope, result);
+                $scope.printDataTables = updatePrintDataTable(result);
             }, 100);
         };
 

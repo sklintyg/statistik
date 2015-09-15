@@ -18,11 +18,11 @@ Bara de sjukfall/delar av sjukfall vars enhet matchar val i enhetsfiltret visas.
 
 | Sjukfall i rapporten sjukfall per enhet |
 | inloggad som | vårdenhet    | filter enheter | filter verksamhetstyper | filter kategorier | totalt? | män? | kvinnor? |
-| user2        | Enhet enhet1 |                |                         |                   | 1       | 1    | 0        |
-| user2        | Enhet enhet1 | enhet1         | 10                      | F40, A00, F41     | 1       | 1    | 0        |
-| user2        | Enhet enhet1 | enhet2         | 02                      | F40, A00, F41     | -1      | -1   | -1       |
-| user2        | Enhet enhet1 | enhet1,enhet2  | 10                      | F40, A00, F41     | 1       | 1    | 0        |
-| user2        | Enhet enhet2 |                |                         |                   | 1       | 1    | 0        |
-| user2        | Enhet enhet2 | enhet1         | 10                      | F40, A00, F41     | -1      | -1   | -1       |
-| user2        | Enhet enhet2 | enhet2         | 02                      | F40, A00, F41     | 1       | 1    | 0        |
-| user2        | Enhet enhet2 | enhet1,enhet2  | 02                      | F40, A00, F41     | 1       | 1    | 0        |
+| user2        | enhet1 |                |                         |                   | 1       | 1    | 0        |
+| user2        | enhet1 | enhet1         | 10                      | F40, A00, F41     | 1       | 1    | 0        |
+| user2        | enhet1 | enhet2         | 02                      | F40, A00, F41     | -1      | -1   | -1       |
+| user2        | enhet1 | enhet1,enhet2  | 10                      | F40, A00, F41     | 1       | 1    | 0        |
+| user2        | enhet2 |                |                         |                   | 1       | 1    | 0        |
+| user2        | enhet2 | enhet1         | 10                      | F40, A00, F41     | -1      | -1   | -1       |
+| user2        | enhet2 | enhet2         | 02                      | F40, A00, F41     | 1       | 1    | 0        |
+| user2        | enhet2 | enhet1,enhet2  | 02                      | F40, A00, F41     | 1       | 1    | 0        |

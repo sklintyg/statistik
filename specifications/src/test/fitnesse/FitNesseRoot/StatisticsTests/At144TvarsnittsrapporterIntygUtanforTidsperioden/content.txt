@@ -38,8 +38,8 @@ Inloggad:
 
 | Sjukfall i rapporten sjukfall per enhet |
 | inloggad som | vårdenhet    | män? | kvinnor? |
-| user2        | Enhet enhet1 | -1   | -1       |
-| user2        | Enhet enhet2 | 1    | 0        |
+| user2        | enhet1 | -1   | -1       |
+| user2        | enhet2 | 1    | 0        |
 
 | Sjukfall i rapporten jamfor diagnoser diagram |
 |inloggad som | valda diagnoskategorier | diagnoskategori | män? | kvinnor? |

@@ -1,0 +1,63 @@
+apply plugin: 'application'
+apply plugin: 'groovy'
+apply plugin: 'maven'
+
+description = 'Reset av vårdgivare för statistik'
+
+group = 'se.inera.statistik'
+version = '1.1.0-SNAPSHOT'
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+    maven { url "https://repository-callistasoftware.forge.cloudbees.com/release/" }
+    maven { url "https://repository-callistasoftware.forge.cloudbees.com/snapshot/" }
+    maven { url "https://repository-callistasoftware.forge.cloudbees.com/3rdparty/" }
+    maven { url "https://build-inera.nordicmedtest.se/nexus/content/repositories/releases/" }
+}
+
+mainClassName = "se.inera.statistik.tools.ResetVardgivare"
+applicationDefaultJvmArgs = ["-Dfile.encoding=utf8"]
+
+artifacts {
+    archives distZip
+}
+
+configurations {
+    deployerJars
+}
+
+dependencies {
+    compile 'org.codehaus.groovy:groovy-all:2.3.6'
+    compile 'joda-time:joda-time:2.3'
+    compile 'org.codehaus.gpars:gpars:1.1.0'
+    compile 'org.apache.commons:commons-dbcp2:2.0'
+
+    compile 'mysql:mysql-connector-java:5.1.29'
+
+    deployerJars "org.apache.maven.wagon:wagon-webdav:1.0-beta-2"
+
+    testCompile 'xmlunit:xmlunit:1.4'
+    testCompile 'org.skyscreamer:jsonassert:1.2.0'
+    testCompile 'commons-io:commons-io:2.4'
+    testCompile 'org.springframework:spring-core:4.0.2.RELEASE'
+    testCompile 'junit:junit:4.11'
+}
+
+ext.cloudbeesUsername = System.properties['cloudbeesUsername']
+ext.cloudbeesPassword = System.properties['cloudbeesPassword']
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            configuration = configurations.deployerJars
+            repository(url: "dav:https://repository-callistasoftware.forge.cloudbees.com/release/") {
+                authentication(userName: cloudbeesUsername, password: cloudbeesPassword)
+            }
+            snapshotRepository(url: "dav:https://repository-callistasoftware.forge.cloudbees.com/snapshot/") {
+                authentication(userName: cloudbeesUsername, password: cloudbeesPassword)
+            }
+            uniqueVersion = false
+        }
+    }
+}

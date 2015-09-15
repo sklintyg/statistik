@@ -20,11 +20,11 @@ En användare med behörighet till bara enhet1 ser inte enhet2 och dess sjukfall
 Inloggad:
 | Sjukfall i rapporten sjukfall per enhet |
 | inloggad som | vårdenhet    | vårdgivarnivå | totalt? | män? | kvinnor? |
-| user1        | Enhet enhet1 | false         | 1       | 1    | 0        |
-| user1        | Enhet enhet2 | false         | -1      | -1   | -1       |
-| user1        | Enhet enhet1 | true          | 1       | 1    | 0        |
-| user1        | Enhet enhet2 | true          | 1       | 0    | 1        |
-| user2        | Enhet enhet1 | false         | 1       | 1    | 0        |
-| user2        | Enhet enhet2 | false         | 1       | 0    | 1        |
-| user2        | Enhet enhet1 | true          | 1       | 1    | 0        |
-| user2        | Enhet enhet2 | true          | 1       | 0    | 1        |
+| user1        | enhet1 | false         | 1       | 1    | 0        |
+| user1        | enhet2 | false         | -1      | -1   | -1       |
+| user1        | enhet1 | true          | 1       | 1    | 0        |
+| user1        | enhet2 | true          | 1       | 0    | 1        |
+| user2        | enhet1 | false         | 1       | 1    | 0        |
+| user2        | enhet2 | false         | 1       | 0    | 1        |
+| user2        | enhet1 | true          | 1       | 1    | 0        |
+| user2        | enhet2 | true          | 1       | 0    | 1        |

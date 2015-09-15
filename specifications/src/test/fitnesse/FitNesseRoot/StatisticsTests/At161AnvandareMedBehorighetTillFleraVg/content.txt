@@ -19,9 +19,9 @@ Testar att användare med behörighet till fler än en vårdgivare, bara får se
 !3 Då gäller:
 | Sjukfall i rapporten sjukfall per enhet |
 | inloggad som | vårdenhet   | vårdgivarnivå | totalt? | män? | kvinnor? |
-| user5_vg1        | Enhet enhet1      | true          | 1       | 1    | 0        |
-| user5_vg1        | Enhet enhet2      | true          | 1       | 0    | 1        |
-| user5_vg1        | Enhet enhet3      | true          | -1       | -1    | -1        |
-| user5_vg3        | Enhet enhet1      | true          | -1       | -1    | -1        |
-| user5_vg3        | Enhet enhet2      | true          | -1       | -1    | -1        |
-| user5_vg3        | Enhet enhet3      | true          | 1       | 0    | 1        |
+| user5_vg1        | enhet1      | true          | 1       | 1    | 0        |
+| user5_vg1        | enhet2      | true          | 1       | 0    | 1        |
+| user5_vg1        | enhet3      | true          | -1       | -1    | -1        |
+| user5_vg3        | enhet1      | true          | -1       | -1    | -1        |
+| user5_vg3        | enhet2      | true          | -1       | -1    | -1        |
+| user5_vg3        | enhet3      | true          | 1       | 0    | 1        |

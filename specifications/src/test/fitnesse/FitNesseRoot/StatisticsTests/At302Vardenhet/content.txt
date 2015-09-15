@@ -19,5 +19,5 @@
 !3 Då gäller:
 | Sjukfall i rapporten sjukfall per enhet |
 | inloggad som | vårdenhet    | vårdgivarnivå | män? | kvinnor? |
-| user2        | Enhet enhet1 | true          | -1   | -1       |
-| user2        | Enhet enhet2 | true          | 1    | 0        |
+| user2        | enhet1 | true          | -1   | -1       |
+| user2        | enhet2 | true          | 1    | 0        |

@@ -38,7 +38,6 @@ import se.inera.ifv.hsawsresponder.v3.StatisticsHsaUnit.BusinessClassificationCo
 import se.inera.ifv.hsawsresponder.v3.StatisticsHsaUnit.BusinessTypes;
 import se.inera.ifv.hsawsresponder.v3.StatisticsHsaUnit.CareTypes;
 import se.inera.ifv.hsawsresponder.v3.StatisticsHsaUnit.Managements;
-import se.inera.ifv.statistics.spi.authorization.impl.HSAWebServiceCalls;
 
 import java.util.Iterator;
 import java.util.List;
@@ -52,7 +51,7 @@ public class HSAServiceImpl implements HSAService {
     private JsonNodeFactory factory = JsonNodeFactory.instance;
 
     @Autowired
-    private HSAWebServiceCalls service;
+    private HsaWebService service;
 
     @Override
     public ObjectNode getHSAInfo(HSAKey key) {
@@ -63,25 +62,6 @@ public class HSAServiceImpl implements HSAService {
     public ObjectNode getHSAInfo(HSAKey key, JsonNode baseHsaInfo) {
         try {
             Builder root = new Builder();
-            if (baseHsaInfo == null || !baseHsaInfo.has(HSA_INFO_ENHET) || !baseHsaInfo.has(HSA_INFO_HUVUDENHET)) {
-                GetStatisticsHsaUnitResponseType unit = getStatisticsHsaUnit(key.getEnhetId());
-                if (unit != null) {
-                    //huvudenhet=vårdenhet och enhet kan vara vårdenhet, om det inte finns huvudenhet, annars motsvarar det kopplad/underliggande enhet
-                    root.put(HSA_INFO_ENHET, createUnit(unit.getStatisticsUnit()));
-                    root.put(HSA_INFO_HUVUDENHET, createUnit(unit.getStatisticsCareUnit()));
-                }
-            }
-
-            if (baseHsaInfo == null || !baseHsaInfo.has(HSA_INFO_VARDGIVARE)) {
-                GetStatisticsCareGiverResponseType caregiver = getStatisticsCareGiver(key.getVardgivareId());
-                root.put(HSA_INFO_VARDGIVARE, createCareGiver(caregiver));
-            }
-
-            if (baseHsaInfo == null || !baseHsaInfo.has(HSA_INFO_PERSONAL)) {
-                GetStatisticsPersonResponseType personal = getStatisticsPerson(key.getLakareId());
-                GetStatisticsNamesResponseType names = getStatisticsNames(key.getLakareId());
-                root.put(HSA_INFO_PERSONAL, createPersonal(personal, names));
-            }
 
             if (baseHsaInfo != null) {
                 Iterator<Map.Entry<String, JsonNode>> fields = baseHsaInfo.fields();
@@ -91,11 +71,49 @@ public class HSAServiceImpl implements HSAService {
                 }
             }
 
+            if (!root.has(HSA_INFO_ENHET) || (!root.root.get(HSA_INFO_ENHET).has("vgid") && !root.has(HSA_INFO_HUVUDENHET))) {
+                GetStatisticsHsaUnitResponseType unit = getStatisticsHsaUnit(key.getEnhetId());
+                if (unit != null) {
+                    //huvudenhet=vårdenhet och enhet kan vara vårdenhet, om det inte finns huvudenhet, annars motsvarar det kopplad/underliggande enhet
+                    root.put(HSA_INFO_ENHET, createUnit(unit.getStatisticsUnit()));
+                    root.put(HSA_INFO_HUVUDENHET, createUnit(unit.getStatisticsCareUnit()));
+                }
+            }
+
+            if (!root.has(HSA_INFO_VARDGIVARE)) {
+                final String vgId = getVardgivareHsaId(root, HSA_INFO_ENHET, HSA_INFO_HUVUDENHET);
+                if (vgId == null || !vgId.equalsIgnoreCase(key.getVardgivareId())) {
+                    LOG.info("VardgivarId mismatch found for enhet: {}. Was {} in HSA but expected {} from intyg", key.getEnhetId(), key.getVardgivareId(), vgId);
+                }
+                if (vgId != null && !vgId.isEmpty()) {
+                    GetStatisticsCareGiverResponseType caregiver = getStatisticsCareGiver(vgId);
+                    root.put(HSA_INFO_VARDGIVARE, createCareGiver(caregiver));
+                }
+            }
+
+            if (!root.has(HSA_INFO_PERSONAL)) {
+                GetStatisticsPersonResponseType personal = getStatisticsPerson(key.getLakareId());
+                GetStatisticsNamesResponseType names = getStatisticsNames(key.getLakareId());
+                root.put(HSA_INFO_PERSONAL, createPersonal(personal, names));
+            }
+
             return root.root;
         } catch (RuntimeException e) {
             LOG.error("Unexpected error fetching HSA data", e);
             return null;
         }
+    }
+
+    private String getVardgivareHsaId(Builder root, String... enhetNodeNames) {
+        for (String enhetNodeName : enhetNodeNames) {
+            if (root.has(enhetNodeName)) {
+                JsonNode enhetJsonNode = root.root.get(enhetNodeName);
+                if (enhetJsonNode.has("vgid")) {
+                    return enhetJsonNode.get("vgid").textValue();
+                }
+            }
+        }
+        return null;
     }
 
     private GetStatisticsPersonResponseType getStatisticsPerson(String key) {
@@ -197,6 +215,7 @@ public class HSAServiceImpl implements HSAService {
         root.put("verksamhet", createVerksamhet(unit.getBusinessClassificationCodes()));
         root.put("vardform", createVardform(unit.getCareTypes()));
         root.put("geografi", createGeografiskIndelning(unit));
+        root.put("vgid", unit.getCareGiverHsaIdentity());
         return root;
     }
 
@@ -279,5 +298,10 @@ public class HSAServiceImpl implements HSAService {
             }
             return this;
         }
+
+        public boolean has(String entryName) {
+            return root.has(entryName);
+        }
+
     }
 }

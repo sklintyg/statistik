@@ -28,10 +28,10 @@ Bara enheter som ingår i listan visas med sina respektive sjukfall.
 Inloggad:
 | Sjukfall i rapporten landsting sjukfall per enhet |
 | inloggad som | vårdenhet    | totalt? | män? | kvinnor? |
-| user3        | Enhet enhet1 | 1       | 1    | 0        |
-| user3        | Enhet enhet2 | 1       | 0    | 1        |
-| user3        | Enhet enhet3 | 1       | 1    | 0        |
-| user3        | Enhet enhet4 | -1      | -1   | -1       |
+| user3        | enhet1 | 1       | 1    | 0        |
+| user3        | enhet2 | 1       | 0    | 1        |
+| user3        | enhet3 | 1       | 1    | 0        |
+| user3        | enhet4 | -1      | -1   | -1       |
 
 !3 Uppstädning efter testet
 | Uppladdade landstingsfiler |

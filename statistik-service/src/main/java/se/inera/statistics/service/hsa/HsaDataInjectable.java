@@ -30,4 +30,6 @@ public interface HsaDataInjectable {
 
     void setEnhetNameForNextIntyg(String name);
 
+    void setHsaKey(HSAKey hsaKey);
+
 }

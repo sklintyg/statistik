@@ -19,6 +19,7 @@
 package se.inera.statistics.service.processlog;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,13 +54,14 @@ public class LakareManagerTest {
         List<Lakare> allLakares = lakareManager.getAllLakares();
         assertEquals(1, allLakares.size());
         assertEquals("LAKARE", allLakares.get(0).getLakareId().getId());
-        assertEquals("Sirkka", allLakares.get(0).getTilltalsNamn());
-        assertEquals("Uddhammar", allLakares.get(0).getEfterNamn());
+        assertEquals("Cecilia", allLakares.get(0).getTilltalsNamn());
+        assertEquals("Juhanen", allLakares.get(0).getEfterNamn());
     }
 
     @Test
     public void saveOneLakareWithoutVGFailsWithoutError() {
-        JsonNode hsaInfo = hsaService.getHSAInfo(new HSAKey(null, "enhet", "lakare"));
+        ObjectNode hsaInfo = hsaService.getHSAInfo(new HSAKey(null, "enhet", "lakare"));
+        hsaInfo.remove(HSAService.HSA_INFO_VARDGIVARE);
 
         lakareManager.saveLakare(hsaInfo);
 
@@ -77,11 +79,11 @@ public class LakareManagerTest {
         List<Lakare> allLakares = lakareManager.getAllLakares();
         assertEquals(2, allLakares.size());
         assertEquals("LAKARE1", allLakares.get(0).getLakareId().getId());
-        assertEquals("Ibrahim", allLakares.get(0).getTilltalsNamn());
-        assertEquals("Lazar", allLakares.get(0).getEfterNamn());
+        assertEquals("Fredrika", allLakares.get(0).getTilltalsNamn());
+        assertEquals("En", allLakares.get(0).getEfterNamn());
         assertEquals("LAKARE2", allLakares.get(1).getLakareId().getId());
-        assertEquals("David", allLakares.get(1).getTilltalsNamn());
-        assertEquals("Andersson", allLakares.get(1).getEfterNamn());
+        assertEquals("My", allLakares.get(1).getTilltalsNamn());
+        assertEquals("Manard", allLakares.get(1).getEfterNamn());
     }
 
 }

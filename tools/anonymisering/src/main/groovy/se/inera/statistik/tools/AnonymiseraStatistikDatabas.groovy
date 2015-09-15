@@ -9,6 +9,7 @@ import se.inera.certificate.tools.anonymisering.AnonymiseraDatum
 import se.inera.certificate.tools.anonymisering.AnonymiseraHsaId
 import se.inera.statistik.tools.anonymisering.AnonymiseraJson
 import se.inera.certificate.tools.anonymisering.AnonymiseraPersonId
+import se.inera.certificate.tools.anonymisering.AnonymizeString
 
 import java.util.concurrent.atomic.AtomicInteger
 
@@ -97,11 +98,11 @@ class AnonymiseraStatistikDatabas {
         } finally {
             sql.close()
         }
+
         println "Proceeding to hsa"
         count.set(0)
         errorCount.set(0)
         start = System.currentTimeMillis()
-
 
         output = hsaIds.collect {
             StringBuffer result = new StringBuffer()
@@ -133,6 +134,46 @@ class AnonymiseraStatistikDatabas {
             if (line) println line
         }
         println "Done! ${count} hsa:s anonymized with ${errorCount} errors in ${(int)((end-start) / 1000)} seconds"
+
+
+        println "Proceeding to lakare"
+        count.set(0)
+        errorCount.set(0)
+        start = System.currentTimeMillis()
+
+        output = hsaIds.collect {
+            StringBuffer result = new StringBuffer()
+            sql = new Sql(dataSource)
+            def id = it.id
+            try {
+                def lakare = sql.firstRow( 'select lakareid, tilltalsnamn, efternamn from lakare where id = :id' , [id : id])
+                def lakareid = anonymiseraHsaId.anonymisera(lakare.lakareid)
+                def tilltalsnamn = AnonymizeString.anonymize(lakare.tilltalsnamn)
+                def efternamn = AnonymizeString.anonymize(lakare.efternamn)
+                sql.executeUpdate('update lakare set lakareid = :lakareid, tilltalsnamn = :tilltalsnamn, efternamn = :efternamn where id = :id',
+                        [lakareid: lakareid, tilltalsnamn: tilltalsnamn, efternamn: efternamn, id: id])
+                int current = count.addAndGet(1)
+                if (current % 10000 == 0) {
+                    println "${current} lakare anonymized in ${(int)((System.currentTimeMillis()-start) / 1000)} seconds"
+                }
+            } catch (Throwable t) {
+                t.printStackTrace()
+
+                result << "Lakare anonymizing ${id} failed: ${t}"
+                errorCount.incrementAndGet()
+            } finally {
+                sql.close()
+            }
+            result.toString()
+        }
+
+        end = System.currentTimeMillis()
+        output.each {line ->
+            if (line) println line
+        }
+        println "Done! ${count} lakare anonymized with ${errorCount} errors in ${(int)((end-start) / 1000)} seconds"
+
+
     }
 
     static def anonymizeHsaJson(def s, def anonymiseraHsaId) {

@@ -30,9 +30,6 @@ import se.inera.statistics.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.service.JSONSource;
 import se.inera.statistics.service.helper.DocumentHelper;
 import se.inera.statistics.service.helper.JSONParser;
-import se.inera.statistics.service.hsa.HSAKey;
-import se.inera.statistics.service.hsa.HSAService;
-import se.inera.statistics.service.hsa.HSAServiceMock;
 import se.inera.statistics.service.processlog.EventType;
 import se.inera.statistics.service.warehouse.model.db.WideLine;
 
@@ -43,11 +40,9 @@ import static org.junit.Assert.assertEquals;
 @DirtiesContext
 public class WarehouseTest {
 
-    private HSAService hsaService = new HSAServiceMock();
-
     private JsonNode rawDocument = JSONParser.parse(JSONSource.readTemplateAsString(DocumentHelper.IntygVersion.VERSION1));
-    private JsonNode hsaInfo = hsaService.getHSAInfo(new HSAKey("vardgivarid", "enhetid", "lakareid"));
-    
+    public static final JsonNode JSON_NODE = JSONParser.parse("{\"enhet\":{\"id\":\"enhetId\",\"namn\":\"Enhet enhetId\",\"enhetsTyp\":[\"02\"],\"agarform\":[\"Landsting/Region\"],\"startdatum\":\"\",\"slutdatum\":\"\",\"arkiverad\":null,\"organisationsnamn\":\"Organisationsnamn\",\"vardform\":null,\"geografi\":{\"koordinat\":\"nagonsortskoordinat\",\"plats\":\"Plats\",\"kommundelskod\":\"0\",\"kommundelsnamn\":\"Centrum\",\"lan\":\"20\",\"kommun\":\"62\"},\"verksamhet\":[\"1217\",\"1218\",\"1219\"],\"vgid\":\"vardgivarid\"},\"huvudenhet\":{\"id\":\"enhetId\",\"namn\":\"Enhet enhetId\",\"enhetsTyp\":[\"02\"],\"agarform\":[\"Landsting/Region\"],\"startdatum\":\"\",\"slutdatum\":\"\",\"arkiverad\":null,\"organisationsnamn\":\"Organisationsnamn\",\"vardform\":null,\"geografi\":{\"koordinat\":\"nagonsortskoordinat\",\"plats\":\"Plats\",\"kommundelskod\":\"0\",\"kommundelsnamn\":\"Centrum\",\"lan\":\"20\",\"kommun\":\"62\"},\"verksamhet\":[\"1217\",\"1218\",\"1219\"],\"vgid\":\"vardgivarid\"},\"vardgivare\":{\"id\":\"vardgivarid\",\"orgnr\":null,\"namn\":\"vardgivarnamn\",\"startdatum\":null,\"slutdatum\":null,\"arkiverad\":null},\"personal\":{\"id\":\"lakareId\",\"initial\":null,\"kon\":null,\"alder\":null,\"befattning\":null,\"specialitet\":null,\"yrkesgrupp\":null,\"skyddad\":null,\"tilltalsnamn\":\"Sirkka\",\"efternamn\":\"Isaac\"}}");
+
     @Autowired
     private Warehouse warehouse;
 
@@ -60,7 +55,7 @@ public class WarehouseTest {
     @Test
     public void addingIntygAddsToCorrectAisle() {
         JsonNode document = DocumentHelper.prepare(rawDocument);
-        for (WideLine wideLine : widelineConverter.toWideline(document, hsaInfo, 0, "0", EventType.CREATED)) {
+        for (WideLine wideLine : widelineConverter.toWideline(document, JSON_NODE, 0, "0", EventType.CREATED)) {
             factPopulator.accept(wideLine);
         }
         warehouse.complete(LocalDateTime.now());

@@ -31,6 +31,8 @@
     <beans profile="dev">
         <context:property-placeholder location="classpath*:default.dev.properties"
                                       order="1" ignore-resource-not-found="true" ignore-unresolvable="true"/>
+      <bean class="se.inera.statistics.service.hsa.HsaWsResponderMock"/>
+      <bean class="se.inera.statistics.hsa.stub.BootstrapBean"/>
     </beans>
 
     <beans>
@@ -107,6 +109,13 @@
         <bean class="se.inera.statistics.service.processlog.Processor" />
         <bean class="se.inera.statistics.web.service.LoginServiceUtil" />
         <bean class="se.inera.statistics.web.service.FilterHandler" />
+    </beans>
+
+    <beans profile="hsacached">
+        <bean class="se.inera.statistics.service.hsa.HsaWebServiceCached" />
+    </beans>
+    <beans profile="!hsacached">
+        <bean class="se.inera.statistics.service.hsa.HsaWebServiceDirect" />
     </beans>
 
     <beans profile="db-resetter">

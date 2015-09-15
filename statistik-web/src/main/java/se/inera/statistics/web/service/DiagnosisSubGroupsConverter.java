@@ -43,7 +43,7 @@ import java.util.List;
 
 public class DiagnosisSubGroupsConverter {
 
-    private static final Logger LOG = LoggerFactory.getLogger(DiagnosisGroupsConverter.class);
+    private static final Logger LOG = LoggerFactory.getLogger(DiagnosisSubGroupsConverter.class);
 
     static final int NUMBER_OF_CHART_SERIES = 6;
 

@@ -76,9 +76,8 @@
     </bean>
 
     <bean class="se.inera.ifv.statistics.spi.authorization.impl.HSAWebServiceCalls" id="hsaWebServiceCalls"/>
-    <bean class="se.inera.statistics.hsa.stub.HsaWebServiceStub" id="hsaWebServiceStub"/>
     <bean class="se.inera.statistics.hsa.stub.HsaServiceStub" id="hsaServiceStub"/>
-    <bean class="se.inera.statistics.service.hsa.HSAServiceMock"/>
+    <bean class="se.inera.statistics.service.hsa.HsaWsResponderMock"/>
     <bean class="se.inera.statistics.service.report.model.Lan" id="lan"/>
     <bean class="se.inera.statistics.service.processlog.Processor"/>
     <bean class="se.inera.statistics.service.warehouse.FactPopulator"/>
@@ -86,6 +85,8 @@
     <bean class="se.inera.statistics.service.warehouse.WarehouseManager"/>
     <bean class="se.inera.statistics.service.processlog.VardgivareManager"/>
     <bean class="se.inera.statistics.service.processlog.LakareManager"/>
+    <bean class="se.inera.statistics.service.hsa.HSAServiceImpl"/>
+    <bean class="se.inera.statistics.service.hsa.HsaWebServiceDirect"/>
 
     <context:component-scan base-package="se.inera.statistics.service.warehouse"/>
 
