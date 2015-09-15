@@ -42,7 +42,7 @@ import java.util.concurrent.TimeUnit;
  */
 public class HsaWebServiceCached implements HsaWebService {
 
-    private static final Logger LOG = LoggerFactory.getLogger(HSAServiceImpl.class);
+    private static final Logger LOG = LoggerFactory.getLogger(HsaWebServiceCached.class);
     private static final int MAX_SIZE = 10000;
 
     @Autowired
