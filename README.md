@@ -131,7 +131,7 @@ De profiler som finns är:
 |security-saml  |stöd enbart saml-inloggning|
 |qm             |läs meddelanden från kön|
 |active         |processa inkommande intyg|
-|hsa-cache      |Cachar hsa-anrop för att ej överlasta hsa vid omprocessning|
+|hsacached      |Cachar hsa-anrop för att ej överlasta hsa vid omprocessning|
 
 ##Deployment
 Vi använder ansible för att enkelt sätta upp servrar. Följande stämmer för min lokala miljö (Mac, Homebrew), komplettera gärna med andra miljöer.
