@@ -137,6 +137,10 @@ class AnonymiseraStatistikDatabas {
 
 
         println "Proceeding to lakare"
+
+        hsaIds = bootstrapSql.rows("select id from lakare")
+        println "${hsaIds.size()} lakare found to anonymize"
+
         count.set(0)
         errorCount.set(0)
         start = System.currentTimeMillis()
