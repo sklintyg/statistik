@@ -18,9 +18,8 @@
  */
 package se.inera.statistics.service.hsa;
 
-import com.google.common.cache.CacheBuilder;
-import com.google.common.cache.CacheLoader;
-import com.google.common.cache.LoadingCache;
+import java.util.concurrent.TimeUnit;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,8 +32,10 @@ import se.inera.ifv.hsawsresponder.v3.GetStatisticsNamesResponseType;
 import se.inera.ifv.hsawsresponder.v3.GetStatisticsPersonResponseType;
 import se.inera.ifv.statistics.spi.authorization.impl.HSAWebServiceCalls;
 
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
+import com.google.common.base.Optional;
+import com.google.common.cache.CacheBuilder;
+import com.google.common.cache.CacheLoader;
+import com.google.common.cache.LoadingCache;
 
 /**
  * This class is meant to be used when a lot of calls to HSA is expected during a short period of time,
@@ -56,101 +57,101 @@ public class HsaWebServiceCached implements HsaWebService {
         service.callPing();
     }
 
-    private LoadingCache<String, GetStatisticsHsaUnitResponseType> units = CacheBuilder.newBuilder()
+    private LoadingCache<String, Optional<GetStatisticsHsaUnitResponseType>> units = CacheBuilder.newBuilder()
             .maximumSize(MAX_SIZE)
             .expireAfterAccess(1, TimeUnit.DAYS)
             .build(
-                    new CacheLoader<String, GetStatisticsHsaUnitResponseType>() {
-                        public GetStatisticsHsaUnitResponseType load(String key) throws Exception {
+                    new CacheLoader<String, Optional<GetStatisticsHsaUnitResponseType>>() {
+                        public Optional<GetStatisticsHsaUnitResponseType> load(String key) throws Exception {
                             LOG.info("HSA call was not cached. Making remote call getStatisticsHsaUnit for: " + key);
-                            return service.getStatisticsHsaUnit(key);
+                            return Optional.fromNullable(service.getStatisticsHsaUnit(key));
                         }
                     });
 
     public GetStatisticsHsaUnitResponseType getStatisticsHsaUnit(String unitId) {
         try {
-            return units.get(unitId);
-        } catch (ExecutionException e) {
+            return units.get(unitId).orNull();
+        } catch (Exception e) {
             LOG.error("Failed to use cache for HSA unit call", e);
             return service.getStatisticsHsaUnit(unitId);
         }
     }
 
-    private LoadingCache<String, GetStatisticsNamesResponseType> names = CacheBuilder.newBuilder()
+    private LoadingCache<String, Optional<GetStatisticsNamesResponseType>> names = CacheBuilder.newBuilder()
             .maximumSize(MAX_SIZE)
             .expireAfterAccess(1, TimeUnit.DAYS)
             .build(
-                    new CacheLoader<String, GetStatisticsNamesResponseType>() {
-                        public GetStatisticsNamesResponseType load(String key) throws Exception {
+                    new CacheLoader<String, Optional<GetStatisticsNamesResponseType>>() {
+                        public Optional<GetStatisticsNamesResponseType> load(String key) throws Exception {
                             LOG.info("HSA call was not cached. Making remote call getStatisticsNames for: " + key);
-                            return service.getStatisticsNames(key);
+                            return Optional.fromNullable(service.getStatisticsNames(key));
                         }
                     });
 
     public GetStatisticsNamesResponseType getStatisticsNames(String personId) {
         try {
-            return names.get(personId);
-        } catch (ExecutionException e) {
+            return names.get(personId).orNull();
+        } catch (Exception e) {
             LOG.error("Failed to use cache for HSA statisticsNames call", e);
             return service.getStatisticsNames(personId);
         }
     }
 
-    private LoadingCache<String, GetStatisticsPersonResponseType> persons = CacheBuilder.newBuilder()
+    private LoadingCache<String, Optional<GetStatisticsPersonResponseType>> persons = CacheBuilder.newBuilder()
             .maximumSize(MAX_SIZE)
             .expireAfterAccess(1, TimeUnit.DAYS)
             .build(
-                    new CacheLoader<String, GetStatisticsPersonResponseType>() {
-                        public GetStatisticsPersonResponseType load(String key) throws Exception {
+                    new CacheLoader<String, Optional<GetStatisticsPersonResponseType>>() {
+                        public Optional<GetStatisticsPersonResponseType> load(String key) throws Exception {
                             LOG.info("HSA call was not cached. Making remote call getStatisticsPerson for: " + key);
-                            return service.getStatisticsPerson(key);
+                            return Optional.fromNullable(service.getStatisticsPerson(key));
                         }
                     });
 
     public GetStatisticsPersonResponseType getStatisticsPerson(String personId) {
         try {
-            return persons.get(personId);
-        } catch (ExecutionException e) {
+            return persons.get(personId).orNull();
+        } catch (Exception e) {
             LOG.error("Failed to use cache for HSA statisticsPerson call", e);
             return service.getStatisticsPerson(personId);
         }
     }
 
-    private LoadingCache<GetMiuForPersonType, GetMiuForPersonResponseType> muiRights = CacheBuilder.newBuilder()
+    private LoadingCache<GetMiuForPersonType, Optional<GetMiuForPersonResponseType>> muiRights = CacheBuilder.newBuilder()
             .maximumSize(MAX_SIZE)
             .expireAfterAccess(1, TimeUnit.DAYS)
             .build(
-                    new CacheLoader<GetMiuForPersonType, GetMiuForPersonResponseType>() {
-                        public GetMiuForPersonResponseType load(GetMiuForPersonType key) throws Exception {
+                    new CacheLoader<GetMiuForPersonType, Optional<GetMiuForPersonResponseType>>() {
+                        public Optional<GetMiuForPersonResponseType> load(GetMiuForPersonType key) throws Exception {
                             LOG.info("HSA call was not cached. Making remote call callMiuRights for: " + key);
-                            return service.callMiuRights(key);
+                            return Optional.fromNullable(service.callMiuRights(key));
                         }
                     });
 
     public GetMiuForPersonResponseType callMiuRights(GetMiuForPersonType parameters) {
         try {
-            return muiRights.get(parameters);
-        } catch (ExecutionException e) {
+            return muiRights.get(parameters).orNull();
+        } catch (Exception e) {
             LOG.error("Failed to use cache for HSA muiRights call", e);
             return service.callMiuRights(parameters);
         }
     }
 
-    private LoadingCache<String, GetStatisticsCareGiverResponseType> careGivers = CacheBuilder.newBuilder()
+    private LoadingCache<String, Optional<GetStatisticsCareGiverResponseType>> careGivers = CacheBuilder.newBuilder()
             .maximumSize(MAX_SIZE)
             .expireAfterAccess(1, TimeUnit.DAYS)
             .build(
-                    new CacheLoader<String, GetStatisticsCareGiverResponseType>() {
-                        public GetStatisticsCareGiverResponseType load(String key) throws Exception {
+                    new CacheLoader<String, Optional<GetStatisticsCareGiverResponseType>>() {
+                        public Optional<GetStatisticsCareGiverResponseType> load(String key) throws Exception {
                             LOG.info("HSA call was not cached. Making remote call getStatisticsCareGiver for: " + key);
-                            return service.getStatisticsCareGiver(key);
+                            return Optional.fromNullable(service.getStatisticsCareGiver(key));
                         }
                     });
 
     public GetStatisticsCareGiverResponseType getStatisticsCareGiver(String careGiverId) {
         try {
-            return careGivers.get(careGiverId);
-        } catch (ExecutionException e) {
+            return careGivers.get(careGiverId).orNull();
+        } catch (Exception e) {
             LOG.error("Failed to use cache for HSA caregiver call", e);
             return service.getStatisticsCareGiver(careGiverId);
         }

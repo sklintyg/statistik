@@ -54,14 +54,16 @@ public class HsaOrganizationsServiceImpl implements HsaOrganizationsService {
         GetMiuForPersonType parameters = new GetMiuForPersonType();
         parameters.setHsaIdentity(hosPersonHsaId.getId());
         GetMiuForPersonResponseType response = client.callMiuRights(parameters);
-        LOG.debug("User with HSA-Id " + hosPersonHsaId + " has " + response.getMiuInformation().size() + " medarbetaruppdrag");
+        if (response != null && response.getMiuInformation() != null) {
+            LOG.debug("User with HSA-Id " + hosPersonHsaId + " has " + response.getMiuInformation().size() + " medarbetaruppdrag");
 
-        for (MiuInformationType info: response.getMiuInformation()) {
-            if (Medarbetaruppdrag.STATISTIK.equalsIgnoreCase(info.getMiuPurpose())) {
-                vardenhetList.add(new Vardenhet(new HsaIdEnhet(info.getCareUnitHsaIdentity()), info.getCareUnitName(), new HsaIdVardgivare(info.getCareGiver()), info.getCareGiverName()));
+            for (MiuInformationType info : response.getMiuInformation()) {
+                if (Medarbetaruppdrag.STATISTIK.equalsIgnoreCase(info.getMiuPurpose())) {
+                    vardenhetList.add(new Vardenhet(new HsaIdEnhet(info.getCareUnitHsaIdentity()), info.getCareUnitName(), new HsaIdVardgivare(info.getCareGiver()), info.getCareGiverName()));
+                }
             }
         }
-        LOG.debug("User with HSA-Id has active 'Vård och behandling' for " + vardenhetList.size() + " enheter");
+        LOG.debug("User with HSA-Id " + hosPersonHsaId + " has active 'Vård och behandling' for " + vardenhetList.size() + " enheter");
 
         return vardenhetList;
     }
