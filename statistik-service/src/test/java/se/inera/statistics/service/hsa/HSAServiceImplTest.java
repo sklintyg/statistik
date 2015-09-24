@@ -67,6 +67,18 @@ public class HSAServiceImplTest {
         return responseType;
     }
 
+    private static GetStatisticsHsaUnitResponseType createGetStatisticsHsaUnitResponseTypeWhereHuvudenhetHasVg() {
+        GetStatisticsHsaUnitResponseType responseType = new GetStatisticsHsaUnitResponseType();
+        StatisticsHsaUnit unit = new StatisticsHsaUnit();
+        unit.setHsaIdentity("UnitId");
+        responseType.setStatisticsUnit(unit);
+        StatisticsHsaUnit careUnit = new StatisticsHsaUnit();
+        careUnit.setHsaIdentity("UnitId2");
+        careUnit.setCareGiverHsaIdentity("vgId");
+        responseType.setStatisticsCareUnit(careUnit);
+        return responseType;
+    }
+
     public static final GetStatisticsCareGiverResponseType WS_VG = createGetStatisticsCareGiverResponseType();
 
     private static GetStatisticsCareGiverResponseType createGetStatisticsCareGiverResponseType() {
@@ -152,6 +164,15 @@ public class HSAServiceImplTest {
         return jsonNode;
     }
 
+    private ObjectNode getFullJsonNodeWithoutVg() {
+        ObjectNode jsonNode = JsonNodeFactory.instance.objectNode();
+        jsonNode.put(HSAService.HSA_INFO_ENHET, HSAService.HSA_INFO_ENHET);
+        jsonNode.put(HSAService.HSA_INFO_HUVUDENHET, HSAService.HSA_INFO_HUVUDENHET);
+        jsonNode.put(HSAService.HSA_INFO_VARDGIVARE, HSAService.HSA_INFO_VARDGIVARE);
+        jsonNode.put(HSAService.HSA_INFO_PERSONAL, HSAService.HSA_INFO_PERSONAL);
+        return jsonNode;
+    }
+
     @Test
     public void testGetHsaInfoCorrectResultAndDoesNotCallWsWhenBaseInfoIsFull() throws Exception {
         //Given
@@ -196,6 +217,25 @@ public class HSAServiceImplTest {
         Mockito.verify(wsCalls, times(1)).getStatisticsHsaUnit(anyString());
         Mockito.verify(wsCalls, times(0)).getStatisticsNames(anyString());
         Mockito.verify(wsCalls, times(0)).getStatisticsPerson(anyString());
+    }
+
+    @Test
+    public void testGetHsaInfoDoesCallWsWhenBaseInfoIsMissingEnhetAndHuvudenhetIsMissingVg() throws Exception {
+        //Given
+        String enhetId = "b";
+        setupHsaWsCalls();
+        Mockito.doReturn(createGetStatisticsHsaUnitResponseTypeWhereHuvudenhetHasVg()).when(wsCalls).getStatisticsHsaUnit(anyString());
+        ObjectNode baseHsaInfo = getFullJsonNodeWithoutVg();
+        baseHsaInfo.remove(HSAService.HSA_INFO_VARDGIVARE);
+
+        //When
+        ObjectNode result = serviceImpl.getHSAInfo(new HSAKey("a", enhetId, "c"), baseHsaInfo);
+
+        //Then
+        assertEquals(null, result.get(HSAService.HSA_INFO_ENHET).get("vgid"));
+        assertEquals("\"vgId\"", result.get(HSAService.HSA_INFO_HUVUDENHET).get("vgid").toString());
+        Mockito.verify(wsCalls, times(1)).getStatisticsHsaUnit(enhetId);
+        Mockito.verify(wsCalls, times(1)).getStatisticsCareGiver("vgId");
     }
 
     @Test
@@ -286,11 +326,14 @@ public class HSAServiceImplTest {
     }
 
     @Test
-    public void testGetHsaInfoForHuvudenhetIsNotCalledWhenHuvudenhetExists() throws Exception {
+    public void testGetHsaInfoForHuvudenhetIsNotCalledWhenHuvudenhetWithVgExists() throws Exception {
         //Given
         setupHsaWsCalls();
         ObjectNode baseHsaInfo = getFullJsonNode();
         baseHsaInfo.put(HSAService.HSA_INFO_ENHET, "nodeWithoutVgid");
+        ObjectNode node = JsonNodeFactory.instance.objectNode();
+        node.put("vgid", "cachedvgid");
+        baseHsaInfo.put(HSAService.HSA_INFO_HUVUDENHET, node);
 
         //When
         ObjectNode result = serviceImpl.getHSAInfo(new HSAKey("a", "b", "c"), baseHsaInfo);

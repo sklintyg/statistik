@@ -71,7 +71,10 @@ public class HSAServiceImpl implements HSAService {
                 }
             }
 
-            if (!root.has(HSA_INFO_ENHET) || (!root.root.get(HSA_INFO_ENHET).has("vgid") && !root.has(HSA_INFO_HUVUDENHET))) {
+            if (!root.has(HSA_INFO_ENHET)
+                    || (!root.root.get(HSA_INFO_ENHET).has("vgid") && !root.has(HSA_INFO_HUVUDENHET))
+                    || (!root.root.get(HSA_INFO_ENHET).has("vgid") && root.has(HSA_INFO_HUVUDENHET) && !root.root.get(HSA_INFO_HUVUDENHET).has("vgid"))
+                    ) {
                 GetStatisticsHsaUnitResponseType unit = getStatisticsHsaUnit(key.getEnhetId());
                 if (unit != null) {
                     //huvudenhet=vårdenhet och enhet kan vara vårdenhet, om det inte finns huvudenhet, annars motsvarar det kopplad/underliggande enhet
