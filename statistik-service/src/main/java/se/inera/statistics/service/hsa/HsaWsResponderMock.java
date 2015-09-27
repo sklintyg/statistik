@@ -448,15 +448,8 @@ public class HsaWsResponderMock implements HsaWsResponderInterface, HsaDataInjec
             GetStatisticsHsaUnitResponseType resp = new GetStatisticsHsaUnitResponseType();
             resp.setStatisticsUnit(createHsaUnit(key, false));
             resp.setStatisticsCareUnit(createHsaUnit(key, true));
-            nextLanCode = null;
-            nextEnhetName = null;
-            nextHuvudenhetId = null;
             return resp;
         }
-
-        nextLanCode = null;
-        nextEnhetName = null;
-        nextHuvudenhetId = null;
         return null;
     }
 

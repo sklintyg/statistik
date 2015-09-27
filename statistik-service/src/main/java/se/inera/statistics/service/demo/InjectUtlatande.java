@@ -31,6 +31,8 @@ import se.inera.statistics.hsa.model.HsaIdLakare;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.service.common.CommonPersistence;
 import se.inera.statistics.service.helper.UtlatandeBuilder;
+import se.inera.statistics.service.hsa.HSAKey;
+import se.inera.statistics.service.hsa.HsaDataInjectable;
 import se.inera.statistics.service.processlog.EventType;
 import se.inera.statistics.service.processlog.LogConsumer;
 import se.inera.statistics.service.processlog.Receiver;
@@ -99,6 +101,9 @@ public class InjectUtlatande {
     @Autowired
     private WarehouseManager warehouseManager;
 
+    @Autowired
+    private HsaDataInjectable hsaDataInjectable;
+
     private List<String> getDiagnoser() {
         if (DIAGNOSER.isEmpty()) {
             for (Icd10.Kapitel kapitel : icd10.getKapitel(true)) {
@@ -139,13 +144,13 @@ public class InjectUtlatande {
 
         LOG.info("Inserting " + personNummers.size() + " certificates");
         for (String id : personNummers) {
-            JsonNode newPermutation = permutate(builder, id);
+            JsonNode newPermutation = permutateAndInitHsaCache(builder, id);
             accept(newPermutation.toString(), newPermutation.path("id").textValue());
         }
         LOG.info("Inserting " + personNummers.size() + " certificates completed. Use -Dstatistics.test.max.intyg=<x> to limit inserts.");
     }
 
-    public JsonNode permutate(UtlatandeBuilder builder, String patientId) {
+    public JsonNode permutateAndInitHsaCache(UtlatandeBuilder builder, String patientId) {
         // CHECKSTYLE:OFF MagicNumber
         LocalDate start = BASE.plusMonths(random.nextInt(MONTHS)).plusDays(random.nextInt(SHORT_PERIOD_DAYS));
         LocalDate end = random.nextFloat() < LONG_PERIOD_FRACTION ? start.plusDays(random.nextInt(LONG_PERIOD_DAYS) + 7) : start.plusDays(random.nextInt(SHORT_PERIOD_DAYS) + 7);
@@ -164,6 +169,7 @@ public class InjectUtlatande {
 
         int arbetsformaga = random(ARBETSFORMAGOR);
 
+        hsaDataInjectable.setHsaKey(new HSAKey(vardgivare.getId(), vardenhet.getId(), lakare.getId()));
         return builder.build(patientId, start, end, lakare, vardenhet, vardgivare, diagnos, arbetsformaga);
     }
 
