@@ -71,7 +71,7 @@ public final class HsaUnitSource {
 
             final DefaultHttpClient httpClient = new DefaultHttpClient(new PoolingClientConnectionManager(schemeRegistry), httpParams);
 
-            HttpGet httpget = new HttpGet("https://wstest.hsa.sjunet.org/hsafileservice/informationlist/hsaunits.zip");
+            HttpGet httpget = new HttpGet(url);
             HttpResponse response = httpClient.execute(httpget);
             HttpEntity entity = response.getEntity();
             if (entity != null) {
