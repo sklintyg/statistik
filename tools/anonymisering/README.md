@@ -1,6 +1,6 @@
 Statistiktjänsten anonymisering
 
-Anonymiserings-applikationen anonymiserar intygsinnehåll i en statistikdatabas. Den används för att skapa anonymiserade kopior av produktions-databasen för Statistik enligt följande flöde:
+Anonymiserings-applikationen anonymiserar intygsinne3håll i en statistikdatabas. Den används för att skapa anonymiserade kopior av produktions-databasen för Statistik enligt följande flöde:
 
     Exportera produktions-databasen till fil
     Importera den exporterade databasen till ny, temporär databas
@@ -11,10 +11,10 @@ Anonymiserings-applikationen anonymiserar intygsinnehåll i en statistikdatabas.
 Anonymisering
 Att köra applikationen
 
-    Hämta zip-filen i repot: http://repository-callistasoftware.forge.cloudbees.com/release/se/inera/statistik/anonymisering/3.0.5/
+    Hämta zip-filen i repot: http://repository-callistasoftware.forge.cloudbees.com/release/se/inera/statistik/anonymisering/3.0.7/
     packa up zip-filen, gå in i katalogen:
-    unzip anonymisering-3.0.5.zip
-    cd anonymisering-3.0.5
+    unzip anonymisering-3.0.7.zip
+    cd anonymisering-3.0.7
 
     Hämta inställningsfilen: https://raw.githubusercontent.com/sklintyg/statistik/master/tools/anonymisering/dataSource.properties
     Redigera inställningsfilen
