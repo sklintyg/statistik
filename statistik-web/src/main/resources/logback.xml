@@ -120,11 +120,12 @@
     </logger>
 
     <!-- Enable monitoring logging -->
-    <logger name="se.inera.statistics.web.service.monitoring" level="INFO"/>
+    <logger name="se.inera.statistics.web.service.monitoring" level="INFO" additivity="false">
+      <appender-ref ref="MONITORING" />
+    </logger>
 
     <root level="INFO">
       <appender-ref ref="STDOUT"/>
-      <appender-ref ref="MONITORING" />
     </root>
 
 </configuration>
