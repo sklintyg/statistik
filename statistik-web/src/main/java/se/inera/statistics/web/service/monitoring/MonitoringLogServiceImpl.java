@@ -14,8 +14,8 @@ public class MonitoringLogServiceImpl implements MonitoringLogService {
     private static final Logger LOG = LoggerFactory.getLogger(MonitoringLogService.class);
 
     @Override
-    public void logUserDeleted(String id) {
-        logEvent(MonitoringEvent.USER_DELETED, HashUtility.hash(id));
+    public void logUserLogin(String id) {
+        logEvent(MonitoringEvent.USER_LOGIN, HashUtility.hash(id));
     }
 
     private void logEvent(MonitoringEvent logEvent, Object... logMsgArgs) {
@@ -29,7 +29,7 @@ public class MonitoringLogServiceImpl implements MonitoringLogService {
     }
 
     private enum MonitoringEvent {
-        USER_DELETED("User '{}' deleted");
+        USER_LOGIN("Login user '{}'");
 
         private String message;
 

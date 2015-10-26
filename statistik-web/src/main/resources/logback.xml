@@ -24,11 +24,33 @@
     <property name="LOG_BASE" value="${statistics.log.base:-${catalina.base}/logs}"/>
 
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+      <filter class="se.inera.certificate.logging.MarkerFilter">
+        <marker>Monitoring</marker>
+        <onMatch>DENY</onMatch>
+        <onMismatch>ACCEPT</onMismatch>
+      </filter>
       <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
         <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
       </encoder>
     </appender>
 
+    <!-- Daily rolling file appender for logging monitoring events -->
+    <appender name="MONITORING" class="ch.qos.logback.core.rolling.RollingFileAppender">
+      <filter class="se.inera.certificate.logging.MarkerFilter">
+        <marker>Monitoring</marker>
+        <onMatch>ACCEPT</onMatch>
+        <onMismatch>DENY</onMismatch>
+      </filter>
+      <file>${LOG_BASE}/statistics-monitoring.log</file>
+      <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+        <fileNamePattern>${LOG_BASE}/statistics-monitoring.%d{yyyy-MM-dd}.log
+        </fileNamePattern>
+      </rollingPolicy>
+      <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+        <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+      </encoder>
+    </appender>
+  
   <!--Daily rolling file appender -->
   <appender name="PROCESS_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
     <file>${LOG_BASE}/statistics-process.log</file>
@@ -97,8 +119,12 @@
       <appender-ref ref="ACCESS_FILE" />
     </logger>
 
+    <!-- Enable monitoring logging -->
+    <logger name="se.inera.statistics.web.service.monitoring" level="INFO"/>
+
     <root level="INFO">
-        <appender-ref ref="STDOUT"/>
+      <appender-ref ref="STDOUT"/>
+      <appender-ref ref="MONITORING" />
     </root>
 
 </configuration>

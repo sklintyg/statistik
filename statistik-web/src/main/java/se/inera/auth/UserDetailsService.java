@@ -23,12 +23,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.saml.SAMLCredential;
 import org.springframework.security.saml.userdetails.SAMLUserDetailsService;
+
 import se.inera.auth.model.User;
 import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.hsa.model.HsaIdUser;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.hsa.model.Vardenhet;
 import se.inera.statistics.hsa.services.HsaOrganizationsService;
+import se.inera.statistics.web.service.monitoring.MonitoringLogService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,11 +42,13 @@ public class UserDetailsService implements SAMLUserDetailsService {
 
     @Autowired
     private HsaOrganizationsService hsaOrganizationsService;
+    
+    @Autowired
+    private MonitoringLogService monitoringLogService;
 
     @Override
     public Object loadUserBySAML(SAMLCredential credential) {
         LOG.info("User authentication was successful. SAML credential is " + credential);
-
         SakerhetstjanstAssertion assertion = getSakerhetstjanstAssertion(credential);
 
         final HsaIdUser hsaId = new HsaIdUser(assertion.getHsaId());
@@ -56,6 +60,10 @@ public class UserDetailsService implements SAMLUserDetailsService {
 
         final boolean processledare = isProcessledare(assertion, vardgivare);
         final String name = assertion.getFornamn() + ' ' + assertion.getMellanOchEfternamn();
+
+        // EKKLOT
+        monitoringLogService.logUserLogin(name);
+
         return new User(hsaId, name, processledare, selectedVerksamhet, filtered);
     }
 

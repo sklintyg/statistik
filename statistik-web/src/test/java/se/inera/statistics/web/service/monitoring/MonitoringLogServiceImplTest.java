@@ -46,9 +46,9 @@ public class MonitoringLogServiceImplTest {
     }
     
     @Test
-    public void shouldLogUserDeleted() {
-        logService.logUserDeleted(USER_ID);
-        verifyLog(Level.INFO, "USER_DELETED User 'e5bb97d1792ff76e360cd8e928b6b9b53bda3e4fe88b026e961c2facf963a361' deleted");
+    public void shouldLogUserLogin() {
+        logService.logUserLogin(USER_ID);
+        verifyLog(Level.INFO, "USER_LOGIN Login user 'e5bb97d1792ff76e360cd8e928b6b9b53bda3e4fe88b026e961c2facf963a361'");
     }
 
     private void verifyLog(Level logLevel, String logMessage) {

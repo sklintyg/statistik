@@ -5,5 +5,5 @@ package se.inera.statistics.web.service.monitoring;
  */
 public interface MonitoringLogService {
 
-    void logUserDeleted(String id);
+    void logUserLogin(String id);
 }
