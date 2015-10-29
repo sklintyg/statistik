@@ -56,13 +56,14 @@ public class UserDetailsService implements SAMLUserDetailsService {
 
         Vardenhet selectedVerksamhet = getLoginVerksamhet(authorizedVerksamhets, new HsaIdEnhet(assertion.getEnhetHsaId()));
         HsaIdVardgivare vardgivare = selectedVerksamhet != null ? selectedVerksamhet.getVardgivarId() : null;
+
+        HsaIdEnhet vardEnhet = selectedVerksamhet != null ? selectedVerksamhet.getId() : null;
+        monitoringLogService.logUserLogin(hsaId, vardgivare, vardEnhet);
+
         List<Vardenhet> filtered = filterByVardgivare(authorizedVerksamhets, vardgivare);
 
         final boolean processledare = isProcessledare(assertion, vardgivare);
         final String name = assertion.getFornamn() + ' ' + assertion.getMellanOchEfternamn();
-
-        // EKKLOT
-        monitoringLogService.logUserLogin(name);
 
         return new User(hsaId, name, processledare, selectedVerksamhet, filtered);
     }

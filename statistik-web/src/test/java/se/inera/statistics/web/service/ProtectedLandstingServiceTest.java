@@ -50,12 +50,14 @@ import se.inera.statistics.web.service.landsting.LandstingEnhetFileParseExceptio
 import se.inera.statistics.web.service.landsting.LandstingFileGenerationException;
 import se.inera.statistics.web.service.landsting.LandstingFileReader;
 import se.inera.statistics.web.service.landsting.LandstingFileWriter;
+import se.inera.statistics.web.service.monitoring.MonitoringLogService;
 
 import javax.activation.DataHandler;
 import javax.activation.DataSource;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+
 import java.io.ByteArrayOutputStream;
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -95,6 +97,9 @@ public class ProtectedLandstingServiceTest {
 
     @Mock
     private EnhetManager enhetManager;
+    
+    @Mock
+    private MonitoringLogService monitoringLogService;
 
     @InjectMocks
     private ProtectedLandstingService chartDataService = new ProtectedLandstingService();

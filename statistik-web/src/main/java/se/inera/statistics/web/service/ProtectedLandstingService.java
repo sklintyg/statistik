@@ -49,6 +49,7 @@ import se.inera.statistics.web.service.landsting.LandstingEnhetFileParseExceptio
 import se.inera.statistics.web.service.landsting.LandstingFileGenerationException;
 import se.inera.statistics.web.service.landsting.LandstingFileReader;
 import se.inera.statistics.web.service.landsting.LandstingFileWriter;
+import se.inera.statistics.web.service.monitoring.MonitoringLogService;
 
 import javax.activation.DataSource;
 import javax.servlet.http.HttpServletRequest;
@@ -98,6 +99,9 @@ public class ProtectedLandstingService {
     @Autowired
     private EnhetManager enhetManager;
 
+    @Autowired
+    private MonitoringLogService monitoringLogService;
+
     private LandstingFileReader landstingFileReader = new LandstingFileReader();
 
     private LandstingFileWriter landstingFileWriter = new LandstingFileWriter();
@@ -127,6 +131,9 @@ public class ProtectedLandstingService {
             final HsaIdVardgivare vardgivarId = info.getDefaultVerksamhet().getVardgivarId();
             final LandstingEnhetFileData fileData = new LandstingEnhetFileData(vardgivarId, landstingFileRows, info.getName(), info.getHsaId(), dataSource.getName());
             landstingEnhetHandler.update(fileData);
+
+            monitoringLogService.logFileUpload(info.getHsaId(), vardgivarId, dataSource.getName(), landstingFileRows != null ? landstingFileRows.size() : null);
+
             return createFileUploadResponse(Response.Status.OK, "Data updated ok", resultFormat);
         } catch (LandstingEnhetFileParseException e) {
             LOG.warn("Failed to parse landstings file", e);
