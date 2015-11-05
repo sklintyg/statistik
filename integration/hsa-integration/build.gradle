@@ -17,6 +17,7 @@ task wsdl2Java(type: JavaExec) {
     inputs.files wsdlFile
     outputs.dir generatedJavaDir
     classpath configurations.wsdlgen
+    jvmArgs "-Djavax.xml.accessExternalSchema=all"
     main "org.apache.cxf.tools.wsdlto.WSDLToJava"
     args "-xjc-XhashCode", "-xjc-Xequals", "-xjc-XtoString", "-xjc-Xinheritance",
             "-xjc-b,${projectDir}/src/main/resources/jaxb-bindings.xjb", "-validate", "-verbose",
