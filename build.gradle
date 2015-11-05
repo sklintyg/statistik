@@ -41,6 +41,7 @@ subprojects {
     ext.springContextVersion = "4.2.2.RELEASE"
     ext.springSecurityVersion = "4.0.3.RELEASE"
     ext.liquibaseVersion = "2.0.5"
+    ext.jaxb2Version = "0.9.5"
 
     test {
         exclude '**/*FunctionalTest.*'

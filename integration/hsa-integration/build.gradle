@@ -28,7 +28,7 @@ task wsdl2Java(type: JavaExec) {
 compileJava.dependsOn(wsdl2Java)
 
 dependencies {
-    compile "org.jvnet.jaxb2_commons:jaxb2-basics:0.6.4"
+    compile "org.jvnet.jaxb2_commons:jaxb2-basics:${jaxb2Version}"
     compile "com.fasterxml.jackson.jaxrs:jackson-jaxrs-json-provider:2.2.3"
     compile "org.apache.cxf:cxf-rt-frontend-jaxrs:${cxfVersion}"
     compile "org.apache.cxf:cxf-rt-frontend-jaxws:${cxfVersion}"
@@ -37,5 +37,5 @@ dependencies {
 
     wsdlgen "org.apache.cxf:cxf-tools-wsdlto-frontend-jaxws:${cxfVersion}"
     wsdlgen "org.apache.cxf:cxf-tools-wsdlto-databinding-jaxb:${cxfVersion}"
-    wsdlgen "org.jvnet.jaxb2_commons:jaxb2-basics:0.6.4"
+    wsdlgen "org.jvnet.jaxb2_commons:jaxb2-basics:${jaxb2Version}"
 }
