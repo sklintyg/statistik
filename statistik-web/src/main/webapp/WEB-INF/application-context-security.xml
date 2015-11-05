@@ -3,8 +3,8 @@
        xmlns:security="http://www.springframework.org/schema/security"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
-              http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.2.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd">
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
+              http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.2.xsd">
 
 
     <!-- Enable auto-wiring -->
@@ -63,11 +63,13 @@
     <!-- Dev profile only supports Fake login                            -->
     <!-- =============================================================== -->
     <beans profile="security-fake">
-        <security:http entry-point-ref="http403ForbiddenEntryPoint" pattern="/api/verksamhet/**">
+        <security:http use-expressions="false" entry-point-ref="http403ForbiddenEntryPoint" pattern="/api/verksamhet/**">
+            <security:csrf disabled="true"/>
             <security:intercept-url pattern="/**" access="IS_AUTHENTICATED_FULLY"/>
             <security:custom-filter position="PRE_AUTH_FILTER" ref="fakeAuthFilter"/>
         </security:http>
-        <security:http entry-point-ref="http403ForbiddenEntryPoint" use-expressions="true">
+        <security:http entry-point-ref="http403ForbiddenEntryPoint">
+            <security:csrf disabled="true"/>
             <security:logout logout-url="/saml/logout" logout-success-url="/" invalidate-session="true"/>
             <security:intercept-url pattern="/**" access="permitAll"/>
             <security:custom-filter position="PRE_AUTH_FILTER" ref="fakeAuthFilter"/>
@@ -81,13 +83,15 @@
     <!-- Test and QA profile support both Säkerhetstjänst and Fake login -->
     <!-- =============================================================== -->
     <beans profile="security-both">
-        <security:http entry-point-ref="http403ForbiddenEntryPoint" pattern="/api/verksamhet/**">
+        <security:http use-expressions="false" entry-point-ref="http403ForbiddenEntryPoint" pattern="/api/verksamhet/**">
+            <security:csrf disabled="true"/>
             <security:intercept-url pattern="/**" access="IS_AUTHENTICATED_FULLY"/>
             <security:custom-filter before="FIRST" ref="metadataGeneratorFilter"/>
             <security:custom-filter position="PRE_AUTH_FILTER" ref="fakeAuthFilter"/>
             <security:custom-filter after="BASIC_AUTH_FILTER" ref="samlFilter"/>
         </security:http>
-        <security:http entry-point-ref="samlEntryPoint" use-expressions="true">
+        <security:http entry-point-ref="samlEntryPoint">
+            <security:csrf disabled="true"/>
             <security:intercept-url pattern="/login.jsp*" access="isAnonymous()"/>
             <security:custom-filter before="FIRST" ref="metadataGeneratorFilter"/>
             <security:custom-filter position="PRE_AUTH_FILTER" ref="fakeAuthFilter"/>
@@ -103,12 +107,14 @@
     <!-- Prod profile only supports Säkerhetstjänst login                -->
     <!-- =============================================================== -->
     <beans profile="security-saml">
-        <security:http entry-point-ref="http403ForbiddenEntryPoint" pattern="/api/verksamhet/**">
+        <security:http use-expressions="false" entry-point-ref="http403ForbiddenEntryPoint" pattern="/api/verksamhet/**">
+            <security:csrf disabled="true"/>
             <security:intercept-url pattern="/**" access="IS_AUTHENTICATED_FULLY"/>
             <security:custom-filter before="FIRST" ref="metadataGeneratorFilter"/>
             <security:custom-filter after="BASIC_AUTH_FILTER" ref="samlFilter"/>
         </security:http>
-        <security:http entry-point-ref="samlEntryPoint">
+        <security:http use-expressions="false" entry-point-ref="samlEntryPoint">
+            <security:csrf disabled="true"/>
             <security:intercept-url pattern="/**" access="IS_AUTHENTICATED_FULLY"/>
             <security:custom-filter before="FIRST" ref="metadataGeneratorFilter"/>
             <security:custom-filter after="BASIC_AUTH_FILTER" ref="samlFilter"/>
