@@ -33,6 +33,7 @@ import se.inera.statistics.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.hsa.model.Vardenhet;
 import se.inera.statistics.service.landsting.LandstingsVardgivareStatus;
 import se.inera.statistics.web.model.LoginInfo;
+import se.inera.statistics.web.service.monitoring.MonitoringLogService;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
@@ -51,6 +52,9 @@ public class ProtectedChartDataServiceTest {
 
     @Mock
     private LoginServiceUtil loginServiceUtil;
+
+    @Mock
+    private MonitoringLogService monitoringLogService;
 
     @InjectMocks
     private ProtectedChartDataService chartDataService = new ProtectedChartDataService();
@@ -81,4 +85,9 @@ public class ProtectedChartDataServiceTest {
         assertEquals(true, result);
     }
 
+    @Test
+    public void userAccessShouldLog() {
+        Mockito.when(loginServiceUtil.getLoginInfo(request)).thenReturn(new LoginInfo(new HsaIdUser(""), "", null, false, false, false, null, LandstingsVardgivareStatus.NO_LANDSTINGSVARDGIVARE));
+        chartDataService.userAccess(request);
+    }
 }

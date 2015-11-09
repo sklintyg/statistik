@@ -47,8 +47,10 @@ public class MonitoringLogServiceImplTest {
     private static final String FILE_NAME = "FILE_NAME";
     private static final int ROWS = 99;
     private static final HsaIdUser HSA_USER = new HsaIdUser("HSA_USER");
-    private static final HsaIdVardgivare HSA_VARDGIVAR = new HsaIdVardgivare("HSA_VARDGIVAR");
+    private static final HsaIdVardgivare HSA_VARDGIVARE = new HsaIdVardgivare("HSA_VARDGIVARE");
     private static final HsaIdEnhet HSA_ENHET = new HsaIdEnhet("HSA_ENHET");
+    private static final String URI = "URI";
+    private static final String SESSION_ID = "SESSION_ID";
     
     @Mock
     private Appender<ILoggingEvent> mockAppender;
@@ -72,14 +74,26 @@ public class MonitoringLogServiceImplTest {
     
     @Test
     public void shouldLogUserLogin() {
-        logService.logUserLogin(HSA_USER, HSA_VARDGIVAR, HSA_ENHET);
-        verifyLog(Level.INFO, "USER_LOGIN Login user hsaId 'HSA_USER', vardgivarId 'HSA_VARDGIVAR', vardenhetsId 'HSA_ENHET'");
+        logService.logUserLogin(HSA_USER, HSA_VARDGIVARE, HSA_ENHET);
+        verifyLog(Level.INFO, "USER_LOGIN Login user hsaId 'HSA_USER', vardgivarId 'HSA_VARDGIVARE', vardenhetsId 'HSA_ENHET'");
     }
 
     @Test
     public void shouldLogFileUpload() {
-        logService.logFileUpload(HSA_USER, HSA_VARDGIVAR, FILE_NAME, ROWS);
-        verifyLog(Level.INFO, "FILE_UPLOAD User hsaId 'HSA_USER', vardgivarId 'HSA_VARDGIVAR' uploaded file 'FILE_NAME' with '99' rows");
+        logService.logFileUpload(HSA_USER, HSA_VARDGIVARE, FILE_NAME, ROWS);
+        verifyLog(Level.INFO, "FILE_UPLOAD User hsaId 'HSA_USER', vardgivarId 'HSA_VARDGIVARE' uploaded file 'FILE_NAME' with '99' rows");
+    }
+
+    @Test
+    public void shouldLogTrackAccessProtectedChartData() {
+        logService.logTrackAccessProtectedChartData(SESSION_ID, HSA_USER, HSA_VARDGIVARE, URI);
+        verifyLog(Level.INFO, "TRACK_ACCESS_PROTECTED_CHART_DATA SessionId 'SESSION_ID', user hsaId 'HSA_USER', vardgivarId 'HSA_VARDGIVARE' accessed uri 'URI'");
+    }
+
+    @Test
+    public void shouldLogTrackAccessAnonymousChartData() {
+        logService.logTrackAccessAnonymousChartData(SESSION_ID, URI);
+        verifyLog(Level.INFO, "TRACK_ACCESS_ANONYMOUS_CHART_DATA SessionId 'SESSION_ID' accessed uri 'URI'");
     }
 
     private void verifyLog(Level logLevel, String logMessage) {

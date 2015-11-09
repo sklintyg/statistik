@@ -30,4 +30,8 @@ public interface MonitoringLogService {
     void logUserLogin(HsaIdUser hsaUser, HsaIdVardgivare hsaVardgivare, HsaIdEnhet hsaVardenhet);
 
     void logFileUpload(HsaIdUser hsaUser, HsaIdVardgivare hsaVardgivare, String fileName, Integer rows);
+
+    void logTrackAccessProtectedChartData(String sessionId, HsaIdUser hsaUser, HsaIdVardgivare hsaVardgivare, String uri);
+
+    void logTrackAccessAnonymousChartData(String sessionId, String uri);
 }

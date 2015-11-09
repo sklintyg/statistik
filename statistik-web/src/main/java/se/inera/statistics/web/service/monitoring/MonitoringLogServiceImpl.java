@@ -50,6 +50,19 @@ public class MonitoringLogServiceImpl implements MonitoringLogService {
         logEvent(MonitoringEvent.FILE_UPLOAD, hsaUserId, vardgivarId, fileName, rows);
     }
     
+    @Override
+    public void logTrackAccessProtectedChartData(String sessionId, HsaIdUser hsaUser, HsaIdVardgivare hsaVardgivare, String uri) {
+        String hsaUserId = hsaUser != null ? hsaUser.getId() : null;
+        String vardgivarId = hsaVardgivare != null ? hsaVardgivare.getId() : null; 
+
+        logEvent(MonitoringEvent.TRACK_ACCESS_PROTECTED_CHART_DATA, sessionId, hsaUserId, vardgivarId, uri);
+    }
+    
+    @Override
+    public void logTrackAccessAnonymousChartData(String sessionId, String uri) {
+        logEvent(MonitoringEvent.TRACK_ACCESS_ANONYMOUS_CHART_DATA, sessionId, uri);
+    }
+    
     private void logEvent(MonitoringEvent logEvent, Object... logMsgArgs) {
         LOG.info(LogMarkers.MONITORING, buildMessage(logEvent), logMsgArgs);
     }
@@ -62,8 +75,10 @@ public class MonitoringLogServiceImpl implements MonitoringLogService {
 
     private enum MonitoringEvent {
         USER_LOGIN("Login user hsaId '{}', vardgivarId '{}', vardenhetsId '{}'"),
-        FILE_UPLOAD("User hsaId '{}', vardgivarId '{}' uploaded file '{}' with '{}' rows");
-
+        FILE_UPLOAD("User hsaId '{}', vardgivarId '{}' uploaded file '{}' with '{}' rows"),
+        TRACK_ACCESS_PROTECTED_CHART_DATA("SessionId '{}', user hsaId '{}', vardgivarId '{}' accessed uri '{}'"),
+        TRACK_ACCESS_ANONYMOUS_CHART_DATA("SessionId '{}' accessed uri '{}'");
+    	
         private String message;
 
         private MonitoringEvent(String msg) {

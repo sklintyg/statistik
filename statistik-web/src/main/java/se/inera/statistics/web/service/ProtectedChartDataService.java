@@ -25,6 +25,7 @@ import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import se.inera.statistics.hsa.model.HsaIdEnhet;
+import se.inera.statistics.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.service.report.model.DiagnosgruppResponse;
 import se.inera.statistics.service.report.model.KonDataResponse;
 import se.inera.statistics.service.report.model.Range;
@@ -37,6 +38,7 @@ import se.inera.statistics.web.model.DualSexStatisticsData;
 import se.inera.statistics.web.model.LoginInfo;
 import se.inera.statistics.web.model.SimpleDetailsData;
 import se.inera.statistics.web.model.TableDataReport;
+import se.inera.statistics.web.service.monitoring.MonitoringLogService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
@@ -83,6 +85,9 @@ public class ProtectedChartDataService {
 
     @Autowired
     private FilterHandler filterHandler;
+    
+    @Autowired
+    private MonitoringLogService monitoringLogService; 
 
     /**
      * Gets sjukfall per manad for verksamhetId.
@@ -577,7 +582,12 @@ public class ProtectedChartDataService {
 
     public boolean userAccess(HttpServletRequest request) {
         final LoginInfo loginInfo = loginServiceUtil.getLoginInfo(request);
-        LOG.info("User " + loginInfo.getHsaId() + " accessed verksamhet " + loginInfo.getDefaultVerksamhet().getVardgivarId() + " (" + getUriSafe(request) + ") session " + request.getSession().getId());
+        if (loginInfo != null) {
+            HsaIdVardgivare hsaIdVardgivare = loginInfo.getDefaultVerksamhet() != null ? loginInfo.getDefaultVerksamhet().getVardgivarId() : null;
+            String sessionId = request.getSession() != null ? request.getSession().getId() : null;
+            LOG.info("User " + loginInfo.getHsaId() + " accessed verksamhet " + hsaIdVardgivare + " (" + getUriSafe(request) + ") session " + sessionId);
+            monitoringLogService.logTrackAccessProtectedChartData(sessionId, loginInfo.getHsaId(), hsaIdVardgivare, getUriSafe(request));
+        }
         return true;
     }
 

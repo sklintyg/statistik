@@ -29,9 +29,12 @@ import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.util.Icd10;
 import se.inera.statistics.service.warehouse.NationellData;
 import se.inera.statistics.service.warehouse.NationellOverviewData;
+import se.inera.statistics.web.service.monitoring.MonitoringLogService;
 
 import java.util.Arrays;
 import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
@@ -49,6 +52,9 @@ public class ChartDataServiceTest {
 
     @Mock
     private Icd10 icd10;
+
+    @Mock
+    private MonitoringLogService monitoringLogService;
 
     @InjectMocks
     private ChartDataService chartDataService = new ChartDataService();
@@ -77,7 +83,8 @@ public class ChartDataServiceTest {
     @Test
     public void getDiagnosisGroupsTest() {
         Mockito.when(icd10.getKapitel(anyBoolean())).thenReturn(Arrays.asList(new Icd10.Kapitel("A00-B99", "Vissa infektionssjukdomar och parasitsjukdomar"), new Icd10.Kapitel("C00-D48", "Tumörer")));
-        List<Icd> kapitel = chartDataService.getDiagnoskapitel();
+        HttpServletRequest request = null;
+        List<Icd> kapitel = chartDataService.getDiagnoskapitel(request);
         assertEquals(2, kapitel.size());
     }
 
