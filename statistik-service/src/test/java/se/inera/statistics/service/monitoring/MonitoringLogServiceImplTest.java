@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package se.inera.statistics.web.service.monitoring;
+package se.inera.statistics.service.monitoring;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertThat;
@@ -32,9 +32,6 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.slf4j.LoggerFactory;
 
-import se.inera.statistics.hsa.model.HsaIdEnhet;
-import se.inera.statistics.hsa.model.HsaIdUser;
-import se.inera.statistics.hsa.model.HsaIdVardgivare;
 import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.Logger;
 import ch.qos.logback.classic.spi.ILoggingEvent;
@@ -44,16 +41,10 @@ import ch.qos.logback.core.Appender;
 @RunWith(MockitoJUnitRunner.class)
 public class MonitoringLogServiceImplTest {
     
-    private static final int ROWS = 99;
+    private static final int NBR_CERTIFICATES = 98;
 
-    private static final String FILE_NAME = "FILE_NAME";
-    private static final String URI = "URI";
-    private static final String SESSION_ID = "SESSION_ID";
+    private static final String CERTIFICATE_ID = "CERTIFICATE_ID";
     
-    private static final HsaIdUser HSA_USER = new HsaIdUser("HSA_USER");
-    private static final HsaIdEnhet HSA_ENHET = new HsaIdEnhet("HSA_ENHET");
-    private static final HsaIdVardgivare HSA_VARDGIVARE = new HsaIdVardgivare("HSA_VARDGIVARE");
-
     @Mock
     private Appender<ILoggingEvent> mockAppender;
 
@@ -75,27 +66,15 @@ public class MonitoringLogServiceImplTest {
     }
     
     @Test
-    public void shouldLogUserLogin() {
-        logService.logUserLogin(HSA_USER, HSA_VARDGIVARE, HSA_ENHET);
-        verifyLog(Level.INFO, "USER_LOGIN Login user hsaId 'HSA_USER', vardgivarId 'HSA_VARDGIVARE', vardenhetsId 'HSA_ENHET'");
+    public void shouldLogCertificateReceivedFromQueue() {
+        logService.logCertificateReceivedFromQueue(CERTIFICATE_ID);
+        verifyLog(Level.INFO, "CERTIFICATE_RECEIVED_FROM_QUEUE Received certificateId 'CERTIFICATE_ID' from queue");
     }
 
     @Test
-    public void shouldLogFileUpload() {
-        logService.logFileUpload(HSA_USER, HSA_VARDGIVARE, FILE_NAME, ROWS);
-        verifyLog(Level.INFO, "FILE_UPLOAD User hsaId 'HSA_USER', vardgivarId 'HSA_VARDGIVARE' uploaded file 'FILE_NAME' with '99' rows");
-    }
-
-    @Test
-    public void shouldLogTrackAccessProtectedChartData() {
-        logService.logTrackAccessProtectedChartData(SESSION_ID, HSA_USER, HSA_VARDGIVARE, URI);
-        verifyLog(Level.INFO, "TRACK_ACCESS_PROTECTED_CHART_DATA SessionId 'SESSION_ID', user hsaId 'HSA_USER', vardgivarId 'HSA_VARDGIVARE' accessed uri 'URI'");
-    }
-
-    @Test
-    public void shouldLogTrackAccessAnonymousChartData() {
-        logService.logTrackAccessAnonymousChartData(SESSION_ID, URI);
-        verifyLog(Level.INFO, "TRACK_ACCESS_ANONYMOUS_CHART_DATA SessionId 'SESSION_ID' accessed uri 'URI'");
+    public void shouldLogCertificateBatchProcessedFromTable() {
+        logService.logCertificateBatchProcessedFromTable(NBR_CERTIFICATES);
+        verifyLog(Level.INFO, "CERTIFICATE_BATCH_PROCESSED_FROM_TABLE Processed batch with '98' certificates");
     }
 
     private void verifyLog(Level logLevel, String logMessage) {
