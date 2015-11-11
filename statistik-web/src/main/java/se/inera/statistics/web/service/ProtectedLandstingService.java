@@ -25,6 +25,7 @@ import org.apache.cxf.jaxrs.ext.multipart.MultipartBody;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
@@ -100,6 +101,7 @@ public class ProtectedLandstingService {
     private EnhetManager enhetManager;
 
     @Autowired
+    @Qualifier("webMonitoringLogService")
     private MonitoringLogService monitoringLogService;
 
     private LandstingFileReader landstingFileReader = new LandstingFileReader();

@@ -26,7 +26,9 @@ import javax.jms.TextMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 
+import se.inera.statistics.service.monitoring.MonitoringLogService;
 import se.inera.statistics.service.processlog.EventType;
 import se.inera.statistics.service.processlog.Receiver;
 
@@ -41,6 +43,10 @@ public class JmsReceiver implements MessageListener {
     @Autowired
     private Receiver receiver;
 
+    @Autowired
+    @Qualifier("serviceMonitoringLogService")
+    private MonitoringLogService monitoringLogService;
+
     @Override
     public void onMessage(Message rawMessage) {
         if (rawMessage instanceof TextMessage) {
@@ -51,6 +57,7 @@ public class JmsReceiver implements MessageListener {
                 String certificateId = rawMessage.getStringProperty(CERTIFICATE_ID);
                 receiver.accept(typeEvent(typeName), doc, certificateId, timestamp);
                 LOG.info("Received intyg {}", certificateId);
+                monitoringLogService.logCertificateReceivedFromQueue(certificateId);
             } catch (JMSException e) {
                 throw new StatisticsJMSException("JMS error", e);
             }

@@ -24,7 +24,7 @@ import org.springframework.stereotype.Service;
 
 import se.inera.certificate.logging.LogMarkers;
 
-@Service
+@Service("serviceMonitoringLogService")
 public class MonitoringLogServiceImpl implements MonitoringLogService {
 
     private static final Object SPACE = " ";

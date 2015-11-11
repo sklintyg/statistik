@@ -27,7 +27,7 @@ import se.inera.statistics.hsa.model.HsaIdVardgivare;
  */
 public interface MonitoringLogService {
 
-    void logUserLogin(HsaIdUser hsaUser, HsaIdVardgivare hsaVardgivare, HsaIdEnhet hsaVardenhet);
+    void logUserLogin(HsaIdUser hsaUser, HsaIdVardgivare hsaVardgivare, HsaIdEnhet hsaVardenhet, boolean isVardgivarProcessledare);
 
     void logFileUpload(HsaIdUser hsaUser, HsaIdVardgivare hsaVardgivare, String fileName, Integer rows);
 

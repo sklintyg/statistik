@@ -54,6 +54,8 @@ public class MonitoringLogServiceImplTest {
     private static final HsaIdEnhet HSA_ENHET = new HsaIdEnhet("HSA_ENHET");
     private static final HsaIdVardgivare HSA_VARDGIVARE = new HsaIdVardgivare("HSA_VARDGIVARE");
 
+    private static final boolean IS_VARDGIVAR_PROCESSLEDARE = true;
+
     @Mock
     private Appender<ILoggingEvent> mockAppender;
 
@@ -76,8 +78,8 @@ public class MonitoringLogServiceImplTest {
     
     @Test
     public void shouldLogUserLogin() {
-        logService.logUserLogin(HSA_USER, HSA_VARDGIVARE, HSA_ENHET);
-        verifyLog(Level.INFO, "USER_LOGIN Login user hsaId 'HSA_USER', vardgivarId 'HSA_VARDGIVARE', vardenhetsId 'HSA_ENHET'");
+        logService.logUserLogin(HSA_USER, HSA_VARDGIVARE, HSA_ENHET, IS_VARDGIVAR_PROCESSLEDARE);
+        verifyLog(Level.INFO, "USER_LOGIN Login user hsaId 'HSA_USER', vardgivarId 'HSA_VARDGIVARE', vardenhetsId 'HSA_ENHET', isVardgivarProcessledare 'true'");
     }
 
     @Test

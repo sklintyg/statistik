@@ -21,6 +21,7 @@ package se.inera.auth;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.saml.SAMLCredential;
 import org.springframework.security.saml.userdetails.SAMLUserDetailsService;
 
@@ -44,6 +45,7 @@ public class UserDetailsService implements SAMLUserDetailsService {
     private HsaOrganizationsService hsaOrganizationsService;
     
     @Autowired
+    @Qualifier("webMonitoringLogService")
     private MonitoringLogService monitoringLogService;
 
     @Override
@@ -58,11 +60,11 @@ public class UserDetailsService implements SAMLUserDetailsService {
         HsaIdVardgivare vardgivare = selectedVerksamhet != null ? selectedVerksamhet.getVardgivarId() : null;
 
         HsaIdEnhet vardEnhet = selectedVerksamhet != null ? selectedVerksamhet.getId() : null;
-        monitoringLogService.logUserLogin(hsaId, vardgivare, vardEnhet);
-
         List<Vardenhet> filtered = filterByVardgivare(authorizedVerksamhets, vardgivare);
 
         final boolean processledare = isProcessledare(assertion, vardgivare);
+        monitoringLogService.logUserLogin(hsaId, vardgivare, vardEnhet, processledare);
+
         final String name = assertion.getFornamn() + ' ' + assertion.getMellanOchEfternamn();
 
         return new User(hsaId, name, processledare, selectedVerksamhet, filtered);

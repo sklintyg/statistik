@@ -21,9 +21,11 @@ package se.inera.statistics.scheduler.active;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import se.inera.statistics.service.monitoring.MonitoringLogService;
 import se.inera.statistics.service.processlog.LogConsumer;
 
 @Component
@@ -33,6 +35,10 @@ public class LogJob {
     @Autowired
     private LogConsumer consumer;
 
+    @Autowired
+    @Qualifier("serviceMonitoringLogService")
+    private MonitoringLogService monitoringLogService;
+
     @Scheduled(cron = "${scheduler.logJob.cron}")
     public void checkLog() {
         LOG.debug("Log Job");
@@ -40,6 +46,9 @@ public class LogJob {
         do {
             count = consumer.processBatch();
             LOG.info("Processed batch with {} entries", count);
+            if (count > 0) {
+                monitoringLogService.logCertificateBatchProcessedFromTable(count);
+            }
         } while (count > 0);
     }
 }
