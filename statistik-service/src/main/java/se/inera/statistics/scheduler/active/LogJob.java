@@ -47,7 +47,7 @@ public class LogJob {
             count = consumer.processBatch();
             LOG.info("Processed batch with {} entries", count);
             if (count > 0) {
-                monitoringLogService.logCertificateBatchProcessedFromTable(count);
+                monitoringLogService.logInFromTable(count);
             }
         } while (count > 0);
     }

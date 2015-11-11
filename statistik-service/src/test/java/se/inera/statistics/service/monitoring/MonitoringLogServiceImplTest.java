@@ -66,15 +66,15 @@ public class MonitoringLogServiceImplTest {
     }
     
     @Test
-    public void shouldLogCertificateReceivedFromQueue() {
-        logService.logCertificateReceivedFromQueue(CERTIFICATE_ID);
-        verifyLog(Level.INFO, "CERTIFICATE_RECEIVED_FROM_QUEUE Received certificateId 'CERTIFICATE_ID' from queue");
+    public void shouldLogInFromQueue() {
+        logService.logInFromQueue(CERTIFICATE_ID);
+        verifyLog(Level.INFO, "IN_FROM_QUEUE Received certificateId 'CERTIFICATE_ID' from queue");
     }
 
     @Test
-    public void shouldLogCertificateBatchProcessedFromTable() {
-        logService.logCertificateBatchProcessedFromTable(NBR_CERTIFICATES);
-        verifyLog(Level.INFO, "CERTIFICATE_BATCH_PROCESSED_FROM_TABLE Processed batch with '98' certificates");
+    public void shouldLogInFromTable() {
+        logService.logInFromTable(NBR_CERTIFICATES);
+        verifyLog(Level.INFO, "IN_FROM_TABLE Processed batch with '98' certificates");
     }
 
     private void verifyLog(Level logLevel, String logMessage) {

@@ -23,7 +23,7 @@ package se.inera.statistics.service.monitoring;
  */
 public interface MonitoringLogService {
 
-    void logCertificateReceivedFromQueue(String certificateId);
+    void logInFromQueue(String certificateId);
 
-    void logCertificateBatchProcessedFromTable(int nbrCertificates);
+    void logInFromTable(int nbrCertificates);
 }

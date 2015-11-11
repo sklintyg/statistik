@@ -588,7 +588,7 @@ public class ProtectedChartDataService {
             HsaIdVardgivare hsaIdVardgivare = loginInfo.getDefaultVerksamhet() != null ? loginInfo.getDefaultVerksamhet().getVardgivarId() : null;
             String sessionId = request.getSession() != null ? request.getSession().getId() : null;
             LOG.info("User " + loginInfo.getHsaId() + " accessed verksamhet " + hsaIdVardgivare + " (" + getUriSafe(request) + ") session " + sessionId);
-            monitoringLogService.logTrackAccessProtectedChartData(sessionId, loginInfo.getHsaId(), hsaIdVardgivare, getUriSafe(request));
+            monitoringLogService.logTrackAccessProtectedChartData(loginInfo.getHsaId(), hsaIdVardgivare, getUriSafe(request));
         }
         return true;
     }

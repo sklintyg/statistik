@@ -237,16 +237,8 @@ public class ChartDataService {
     @Produces({ MediaType.APPLICATION_JSON })
     public Response getNumberOfCasesPerMonth(@Context HttpServletRequest request, @PathParam("csv") String csv) {
         LOG.info("Calling getNumberOfCasesPerMonth for national");
-        logTrackAccessAnonymousChartData(request, "getNumberOfCasesPerMonth");
+        monitoringLogService.logTrackAccessAnonymousChartData("getNumberOfCasesPerMonth");
         return getResponse(numberOfCasesPerMonth, csv);
-    }
-
-    private void logTrackAccessAnonymousChartData(HttpServletRequest request, String uri) {
-        String sessionId = null;
-        if (request != null && request.getSession() != null) {
-            sessionId = request.getSession().getId();
-        }
-        monitoringLogService.logTrackAccessAnonymousChartData(sessionId, uri);
     }
 
     /**
@@ -259,7 +251,7 @@ public class ChartDataService {
     @Produces({ MediaType.APPLICATION_JSON })
     public List<Icd> getDiagnoskapitel(@Context HttpServletRequest request) {
         LOG.info("Calling getKapitel");
-        logTrackAccessAnonymousChartData(request, "getKapitel");
+        monitoringLogService.logTrackAccessAnonymousChartData("getKapitel");
         List<Icd> kapitel = new ArrayList<>();
         for (Icd10.Kapitel k : icd10.getKapitel(false)) {
             String s = k.getId();
@@ -280,7 +272,7 @@ public class ChartDataService {
     @Produces({ MediaType.APPLICATION_JSON })
     public DiagnosisKapitelAndAvsnittAndKategoriResponse getDiagnosisKapitelAndAvsnittAndKod(@Context HttpServletRequest request) {
         LOG.info("Calling getDiagnosisKapitelAndAvsnittAndKategori");
-        logTrackAccessAnonymousChartData(request, "getDiagnosisKapitelAndAvsnittAndKategori");
+        monitoringLogService.logTrackAccessAnonymousChartData("getDiagnosisKapitelAndAvsnittAndKategori");
         Map<String, List<Icd>> avsnitts = new LinkedHashMap<>();
         Map<String, List<Icd>> kategoris = new LinkedHashMap<>();
         List<Icd10.Kapitel> kapitels = icd10.getKapitel(false);
@@ -313,7 +305,7 @@ public class ChartDataService {
     @Produces({ MediaType.APPLICATION_JSON })
     public Response getDiagnoskapitelstatistik(@Context HttpServletRequest request, @PathParam("csv") String csv) {
         LOG.info("Calling getDiagnoskapitelstatistik for national");
-        logTrackAccessAnonymousChartData(request, "getDiagnoskapitelstatistik");
+        monitoringLogService.logTrackAccessAnonymousChartData("getDiagnoskapitelstatistik");
         return getResponse(diagnosgrupper, csv);
     }
 
@@ -328,7 +320,7 @@ public class ChartDataService {
     @Produces({ MediaType.APPLICATION_JSON })
     public Response getDiagnosavsnittstatistik(@Context HttpServletRequest request, @PathParam("groupId") String groupId, @PathParam("csv") String csv) {
         LOG.info("Calling getDiagnosavsnittstatistik for national with groupId: " + groupId);
-        logTrackAccessAnonymousChartData(request, "getDiagnosavsnittstatistik");
+        monitoringLogService.logTrackAccessAnonymousChartData("getDiagnosavsnittstatistik");
         return getResponse(diagnoskapitel.get(groupId), csv);
     }
 
@@ -356,7 +348,7 @@ public class ChartDataService {
     @Produces({MediaType.APPLICATION_JSON })
     public Response getAgeGroupsStatistics(@Context HttpServletRequest request, @PathParam("csv") String csv) {
         LOG.info("Calling getAgeGroupsStatistics for national");
-        logTrackAccessAnonymousChartData(request, "getAgeGroupsStatistics");
+        monitoringLogService.logTrackAccessAnonymousChartData("getAgeGroupsStatistics");
         return getResponse(aldersgrupper, csv);
     }
 
@@ -370,7 +362,7 @@ public class ChartDataService {
     @Produces({ MediaType.APPLICATION_JSON })
     public Response getDegreeOfSickLeaveStatistics(@Context HttpServletRequest request, @PathParam("csv") String csv) {
         LOG.info("Calling getDegreeOfSickLeaveStatistics for national");
-        logTrackAccessAnonymousChartData(request, "getDegreeOfSickLeaveStatistics");
+        monitoringLogService.logTrackAccessAnonymousChartData("getDegreeOfSickLeaveStatistics");
         return getResponse(sjukskrivningsgrad, csv);
     }
 
@@ -384,7 +376,7 @@ public class ChartDataService {
     @Produces({ MediaType.APPLICATION_JSON })
     public Response getSickLeaveLengthData(@Context HttpServletRequest request, @PathParam("csv") String csv) {
         LOG.info("Calling getSickLeaveLengthData for national");
-        logTrackAccessAnonymousChartData(request, "getSickLeaveLengthData");
+        monitoringLogService.logTrackAccessAnonymousChartData("getSickLeaveLengthData");
         return getResponse(sjukfallslangd, csv);
     }
 
@@ -410,7 +402,7 @@ public class ChartDataService {
     @Produces({ MediaType.APPLICATION_JSON })
     public Response getSjukfallPerSexStatistics(@Context HttpServletRequest request, @PathParam("csv") String csv) {
         LOG.info("Calling getSjukfallPerSexStatistics for national");
-        logTrackAccessAnonymousChartData(request, "getSjukfallPerSexStatistics");
+        monitoringLogService.logTrackAccessAnonymousChartData("getSjukfallPerSexStatistics");
         return getResponse(konsfordelningPerLan, csv);
     }
 
@@ -419,7 +411,7 @@ public class ChartDataService {
     @Produces({ MediaType.APPLICATION_JSON })
     public List<Icd> getIcd10Structure(@Context HttpServletRequest request) {
         LOG.info("Calling getIcd10Structure");
-        logTrackAccessAnonymousChartData(request, "getIcd10Structure");
+        monitoringLogService.logTrackAccessAnonymousChartData("getIcd10Structure");
         List<Icd10.Kapitel> kapitel = icd10.getKapitel(false);
         final List<Icd> icds = new ArrayList<>(Lists.transform(kapitel, new Function<Icd10.Kapitel, Icd>() {
             @Override
@@ -436,7 +428,7 @@ public class ChartDataService {
     @Produces({ MediaType.TEXT_PLAIN })
     public Response getFilterHash(@Context HttpServletRequest request, String filterData) {
         LOG.info("Calling post FilterHash: " + filterData);
-        logTrackAccessAnonymousChartData(request, "getFilterHash");
+        monitoringLogService.logTrackAccessAnonymousChartData("getFilterHash");
         try {
             return Response.ok(filterHashHandler.getHash(filterData)).build();
         } catch (FilterException e) {
@@ -449,7 +441,7 @@ public class ChartDataService {
     @Path("filter/{filterHash}")
     public Response getFilterData(@Context HttpServletRequest request, @PathParam("filterHash") String filterHash) {
         LOG.info("Calling get FilterData: " + filterHash);
-        logTrackAccessAnonymousChartData(request, "getFilterData");
+        monitoringLogService.logTrackAccessAnonymousChartData("getFilterData");
         final Optional<String> filterData = filterHashHandler.getFilterData(filterHash);
         if (filterData.isPresent()) {
             return Response.ok(filterData.get()).build();

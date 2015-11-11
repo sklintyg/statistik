@@ -48,7 +48,6 @@ public class MonitoringLogServiceImplTest {
 
     private static final String FILE_NAME = "FILE_NAME";
     private static final String URI = "URI";
-    private static final String SESSION_ID = "SESSION_ID";
     
     private static final HsaIdUser HSA_USER = new HsaIdUser("HSA_USER");
     private static final HsaIdEnhet HSA_ENHET = new HsaIdEnhet("HSA_ENHET");
@@ -90,14 +89,14 @@ public class MonitoringLogServiceImplTest {
 
     @Test
     public void shouldLogTrackAccessProtectedChartData() {
-        logService.logTrackAccessProtectedChartData(SESSION_ID, HSA_USER, HSA_VARDGIVARE, URI);
-        verifyLog(Level.INFO, "TRACK_ACCESS_PROTECTED_CHART_DATA SessionId 'SESSION_ID', user hsaId 'HSA_USER', vardgivarId 'HSA_VARDGIVARE' accessed uri 'URI'");
+        logService.logTrackAccessProtectedChartData(HSA_USER, HSA_VARDGIVARE, URI);
+        verifyLog(Level.INFO, "TRACK_ACCESS_PROTECTED_CHART_DATA User hsaId 'HSA_USER', vardgivarId 'HSA_VARDGIVARE' accessed uri 'URI'");
     }
 
     @Test
     public void shouldLogTrackAccessAnonymousChartData() {
-        logService.logTrackAccessAnonymousChartData(SESSION_ID, URI);
-        verifyLog(Level.INFO, "TRACK_ACCESS_ANONYMOUS_CHART_DATA SessionId 'SESSION_ID' accessed uri 'URI'");
+        logService.logTrackAccessAnonymousChartData(URI);
+        verifyLog(Level.INFO, "TRACK_ACCESS_ANONYMOUS_CHART_DATA Accessed uri 'URI'");
     }
 
     private void verifyLog(Level logLevel, String logMessage) {

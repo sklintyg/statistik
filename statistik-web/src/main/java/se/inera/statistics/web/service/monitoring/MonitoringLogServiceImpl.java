@@ -51,16 +51,16 @@ public class MonitoringLogServiceImpl implements MonitoringLogService {
     }
     
     @Override
-    public void logTrackAccessProtectedChartData(String sessionId, HsaIdUser hsaUser, HsaIdVardgivare hsaVardgivare, String uri) {
+    public void logTrackAccessProtectedChartData(HsaIdUser hsaUser, HsaIdVardgivare hsaVardgivare, String uri) {
         String hsaUserId = hsaUser != null ? hsaUser.getId() : null;
         String vardgivarId = hsaVardgivare != null ? hsaVardgivare.getId() : null; 
 
-        logEvent(MonitoringEvent.TRACK_ACCESS_PROTECTED_CHART_DATA, sessionId, hsaUserId, vardgivarId, uri);
+        logEvent(MonitoringEvent.TRACK_ACCESS_PROTECTED_CHART_DATA, hsaUserId, vardgivarId, uri);
     }
     
     @Override
-    public void logTrackAccessAnonymousChartData(String sessionId, String uri) {
-        logEvent(MonitoringEvent.TRACK_ACCESS_ANONYMOUS_CHART_DATA, sessionId, uri);
+    public void logTrackAccessAnonymousChartData(String uri) {
+        logEvent(MonitoringEvent.TRACK_ACCESS_ANONYMOUS_CHART_DATA, uri);
     }
     
     private void logEvent(MonitoringEvent logEvent, Object... logMsgArgs) {
@@ -76,8 +76,8 @@ public class MonitoringLogServiceImpl implements MonitoringLogService {
     private enum MonitoringEvent {
         USER_LOGIN("Login user hsaId '{}', vardgivarId '{}', vardenhetsId '{}', isVardgivarProcessledare '{}'"),
         FILE_UPLOAD("User hsaId '{}', vardgivarId '{}' uploaded file '{}' with '{}' rows"),
-        TRACK_ACCESS_PROTECTED_CHART_DATA("SessionId '{}', user hsaId '{}', vardgivarId '{}' accessed uri '{}'"),
-        TRACK_ACCESS_ANONYMOUS_CHART_DATA("SessionId '{}' accessed uri '{}'");
+        TRACK_ACCESS_PROTECTED_CHART_DATA("User hsaId '{}', vardgivarId '{}' accessed uri '{}'"),
+        TRACK_ACCESS_ANONYMOUS_CHART_DATA("Accessed uri '{}'");
     	
         private String message;
 

@@ -57,7 +57,7 @@ public class JmsReceiver implements MessageListener {
                 String certificateId = rawMessage.getStringProperty(CERTIFICATE_ID);
                 receiver.accept(typeEvent(typeName), doc, certificateId, timestamp);
                 LOG.info("Received intyg {}", certificateId);
-                monitoringLogService.logCertificateReceivedFromQueue(certificateId);
+                monitoringLogService.logInFromQueue(certificateId);
             } catch (JMSException e) {
                 throw new StatisticsJMSException("JMS error", e);
             }
