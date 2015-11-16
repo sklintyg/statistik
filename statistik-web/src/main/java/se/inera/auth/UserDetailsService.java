@@ -43,7 +43,7 @@ public class UserDetailsService implements SAMLUserDetailsService {
 
     @Autowired
     private HsaOrganizationsService hsaOrganizationsService;
-    
+
     @Autowired
     @Qualifier("webMonitoringLogService")
     private MonitoringLogService monitoringLogService;

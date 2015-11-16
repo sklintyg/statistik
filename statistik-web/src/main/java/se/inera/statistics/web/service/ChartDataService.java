@@ -93,8 +93,8 @@ public class ChartDataService {
 
     @Autowired
     @Qualifier("webMonitoringLogService")
-    private MonitoringLogService monitoringLogService; 
-    
+    private MonitoringLogService monitoringLogService;
+
     private volatile SimpleDetailsData numberOfCasesPerMonth;
     private volatile DualSexStatisticsData diagnosgrupper;
     private volatile Map<String, DualSexStatisticsData> diagnoskapitel = new HashMap<>();

@@ -86,10 +86,10 @@ public class ProtectedChartDataService {
 
     @Autowired
     private FilterHandler filterHandler;
-    
+
     @Autowired
     @Qualifier("webMonitoringLogService")
-    private MonitoringLogService monitoringLogService; 
+    private MonitoringLogService monitoringLogService;
 
     /**
      * Gets sjukfall per manad for verksamhetId.
