@@ -34,12 +34,12 @@ public class MonitoringLogServiceImpl implements MonitoringLogService {
     public void logInFromQueue(String certificateId) {
         logEvent(MonitoringEvent.IN_FROM_QUEUE, certificateId);
     }
-    
+
     @Override
     public void logInFromTable(int nbrCertificates) {
         logEvent(MonitoringEvent.IN_FROM_TABLE, nbrCertificates);
     }
-    
+
     private void logEvent(MonitoringEvent logEvent, Object... logMsgArgs) {
         LOG.info(LogMarkers.MONITORING, buildMessage(logEvent), logMsgArgs);
     }
@@ -53,7 +53,7 @@ public class MonitoringLogServiceImpl implements MonitoringLogService {
     private enum MonitoringEvent {
         IN_FROM_QUEUE("Received certificateId '{}' from queue"),
         IN_FROM_TABLE("Processed batch with '{}' certificates");
-    	
+
         private String message;
 
         private MonitoringEvent(String msg) {
