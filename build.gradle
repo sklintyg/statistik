@@ -138,19 +138,26 @@ if (project.hasProperty('runSonar')) {
 
     sonarRunner {
         sonarProperties {
-            property "sonar.host.url", "https://callistasoftware.sonar.cloudbees.com"
-            property "sonar.login", "cloudbees"
-            property "sonar.password", project.sonarPassword
-            property "sonar.jdbc.url", project.sonarJdbcUrl
-            property "sonar.jdbc.driverClassName", "com.mysql.jdbc.Driver"
-            property "sonar.jdbc.username", project.sonarUser
-            property "sonar.jdbc.password", project.sonarPassword
-        }
+            property "sonar.jacoco.reportPath", "$buildDir/jacoco/test.exec"
+            property "sonar.projectName", projectName
+            property "sonar.projectKey", projectId
 
-        project(":hsa-integration") {
-            sonarRunner {
-                sonarProperties {
-                    properties["sonar.sources"] -= project(":hsa-integration").generatedJavaDir
+            // Address of SonarQube server
+            property "sonar.host.url", "https://build-inera.nordicmedtest.se/sonar"
+
+            ext.sonarPassword = System.properties['sonarPassword']
+
+            // Database config
+            property "sonar.jdbc.url", "jdbc:mysql://localhost:3306/sonar"
+            property "sonar.jdbc.driverClassName", "com.mysql.jdbc.Driver"
+            property "sonar.jdbc.username", "sonar"
+            property "sonar.jdbc.password", sonarPassword
+
+            project(":hsa-integration") {
+                sonarRunner {
+                    sonarProperties {
+                        properties["sonar.sources"] -= project(":hsa-integration").generatedJavaDir
+                    }
                 }
             }
         }
