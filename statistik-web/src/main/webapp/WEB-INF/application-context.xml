@@ -34,7 +34,6 @@
         <context:property-placeholder location="classpath*:default.dev.properties"
                                       order="1" ignore-resource-not-found="true" ignore-unresolvable="true"/>
       <bean class="se.inera.statistics.service.hsa.HsaWsResponderMock"/>
-      <bean class="se.inera.statistics.hsa.stub.BootstrapBean"/>
     </beans>
 
     <beans>
