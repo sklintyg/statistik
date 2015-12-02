@@ -21,7 +21,7 @@ package se.inera.statistics.gatling
 import io.gatling.core.Predef._
 
 object InloggadLakarbefattning {
-  def exec(user: Login.User) = RestCall.post(
+  def exec(user: Login.User) = RestCall.get(
     s"getNumberOfCasesPerLakarbefattning: ${user}",
-    s"${Conf.uri}/api/verksamhet/${user.vardgivare}/getNumberOfCasesPerLakarbefattning")
+    s"${Conf.uri}/api/verksamhet/getNumberOfCasesPerLakarbefattning")
 }

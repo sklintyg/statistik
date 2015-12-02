@@ -44,19 +44,19 @@ public class LandstingEnhetManager {
     }
 
     @Transactional
-    public Optional<LandstingEnhet> get(long id) {
+    public Optional<LandstingEnhet> get(Long id) {
         final LandstingEnhet landstingEnhet = manager.find(LandstingEnhet.class, id);
         return landstingEnhet == null ? Optional.<LandstingEnhet>absent() : Optional.of(landstingEnhet);
     }
 
     @Transactional
-    public List<LandstingEnhet> getByLandstingId(long landstingId) {
+    public List<LandstingEnhet> getByLandstingId(Long landstingId) {
         TypedQuery<LandstingEnhet> query = manager.createQuery("SELECT l FROM LandstingEnhet l where l.landstingId = :landstingId", LandstingEnhet.class).setParameter("landstingId", landstingId);
         return query.getResultList();
     }
 
     @Transactional
-    public void removeByLandstingId(long landstingId) {
+    public void removeByLandstingId(Long landstingId) {
         final List<LandstingEnhet> landstingEnhets = getByLandstingId(landstingId);
         for (LandstingEnhet landstingEnhet : landstingEnhets) {
             manager.remove(landstingEnhet);
@@ -64,7 +64,7 @@ public class LandstingEnhetManager {
     }
 
     @Transactional
-    public void update(final long landstingId, final List<LandstingEnhetFileDataRow> newData) {
+    public void update(final Long landstingId, final List<LandstingEnhetFileDataRow> newData) {
         List<LandstingEnhet> landstingEnhets = Lists.transform(newData, new Function<LandstingEnhetFileDataRow, LandstingEnhet>() {
             @Override
             public LandstingEnhet apply(LandstingEnhetFileDataRow data) {

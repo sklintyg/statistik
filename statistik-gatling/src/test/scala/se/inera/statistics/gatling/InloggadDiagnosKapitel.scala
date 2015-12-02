@@ -21,7 +21,7 @@ package se.inera.statistics.gatling
 import io.gatling.core.Predef._
 
 object InloggadDiagnosKapitel {
-  def exec(user: Login.User, kapitel: String) = RestCall.post(
+  def exec(user: Login.User, kapitel: String) = RestCall.get(
     s"getDiagnosavsnittstatistik: ${user.vardgivare}",
-    s"${Conf.uri}/api/verksamhet/${user.vardgivare}/getDiagnosavsnittstatistik/${kapitel}")
+    s"${Conf.uri}/api/verksamhet/getDiagnosavsnittstatistik/${kapitel}")
 }

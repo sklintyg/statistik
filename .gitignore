@@ -18,3 +18,5 @@ statistik-web/npm-debug.log
 generatedSource
 
 catalina.base_IS_UNDEFINED
+statistik-gatling/logs
+statistik-gatling/results
