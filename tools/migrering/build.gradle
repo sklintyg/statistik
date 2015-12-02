@@ -33,18 +33,18 @@ dependencies {
 }
 
 
-ext.cloudbeesUsername = System.properties['cloudbeesUsername']
-ext.cloudbeesPassword = System.properties['cloudbeesPassword']
+ext.nexusUsername = System.properties['nexusUsername']
+ext.nexusPassword = System.properties['nexusPassword']
 
 uploadArchives {
     repositories {
         mavenDeployer {
             configuration = configurations.deployerJars
-            repository(url: "dav:https://repository-callistasoftware.forge.cloudbees.com/release/") {
-                authentication(userName: cloudbeesUsername, password: cloudbeesPassword)
+            repository(url: "https://build-inera.nordicmedtest.se/nexus/content/repositories/releases") {
+                authentication(userName: nexusUsername, password: nexusPassword)
             }
-            snapshotRepository(url: "dav:https://repository-callistasoftware.forge.cloudbees.com/snapshot/") {
-                authentication(userName: cloudbeesUsername, password: cloudbeesPassword)
+            snapshotRepository(url: "https://build-inera.nordicmedtest.se/nexus/content/repositories/snapshots") {
+                authentication(userName: nexusUsername, password: nexusPassword)
             }
             uniqueVersion = false
         }

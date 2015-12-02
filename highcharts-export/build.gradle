@@ -18,8 +18,8 @@ subprojects {
 
     buildscript {
         repositories {
-            maven { url "https://repository-callistasoftware.forge.cloudbees.com/release/" }
-            maven { url "https://repository-callistasoftware.forge.cloudbees.com/snapshot/" }
+            maven { url "https://build-inera.nordicmedtest.se/nexus/content/repositories/releases/" }
+            maven { url "https://build-inera.nordicmedtest.se/nexus/content/repositories/snapshots/" }
             jcenter()
         }
     }

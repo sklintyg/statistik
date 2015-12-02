@@ -44,6 +44,7 @@
     <logger name="org.springframework.core.env.PropertySourcesPropertyResolver" level="WARN"/>
     <logger name="org.springframework.web" level="WARN"/>
     <logger name="org.springframework.http" level="WARN"/>
+    <logger name="se.inera.statistics.service.monitoring" level="INFO"/>
 
     <root level="ERROR">
         <appender-ref ref="STDOUT"/>

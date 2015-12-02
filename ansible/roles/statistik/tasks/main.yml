@@ -11,7 +11,7 @@
   when: repo == "snapshot"
 
 - name: download liquibase-runner-{{ version }}.zip
-  get_url: url=http://repository-callistasoftware.forge.cloudbees.com/{{ repo }}/se/inera/statistik/liquibase-runner/{{ version }}/liquibase-runner-{{ version }}.zip
+  get_url: url=https://build-inera.nordicmedtest.se/nexus/content/repositories/{{ repo }}/se/inera/statistik/liquibase-runner/{{ version }}/liquibase-runner-{{ version }}.zip
       dest={{ releases_folder }}/liquibase-runner-{{ version }}.zip
 
 - name: Unzip liquibase-runner-{{ version }}.zip
@@ -27,7 +27,7 @@
       JAVA_HOME: "{{ java_home }}"
 
 - name: Download highcharts-export-web-{{ highcharts_version }}.war
-  get_url: url="http://repository-callistasoftware.forge.cloudbees.com/release/com/highcharts/export/highcharts-export-web/{{ highcharts_version }}/highcharts-export-web-{{ highcharts_version }}.war"
+  get_url: url="https://build-inera.nordicmedtest.se/nexus/content/repositories/releases/com/highcharts/export/highcharts-export-web/{{ highcharts_version }}/highcharts-export-web-{{ highcharts_version }}.war"
       dest={{ releases_folder }}
 
 - name: Make sure statistik-web file download is forced when using shapshot repo
@@ -35,7 +35,7 @@
   when: repo == "snapshot"
 
 - name: Download statistik-web-{{ version }}.war
-  get_url: url=http://repository-callistasoftware.forge.cloudbees.com/{{ repo }}/se/inera/statistik/statistik-web/{{ version }}/statistik-web-{{ version }}.war
+  get_url: url=https://build-inera.nordicmedtest.se/nexus/content/repositories/{{ repo }}/se/inera/statistik/statistik-web/{{ version }}/statistik-web-{{ version }}.war
       dest={{ releases_folder }}
 
 - name: remove old version of unpacked ROOT war

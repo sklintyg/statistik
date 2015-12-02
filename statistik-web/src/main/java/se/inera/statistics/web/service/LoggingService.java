@@ -49,7 +49,7 @@ public class LoggingService {
     @Path("log")
     @Consumes({ MediaType.APPLICATION_JSON })
     @Produces({ MediaType.APPLICATION_JSON })
-    public Response getLoginInfo(@Context HttpServletRequest request, LogData logData) {
+    public Response frontendLogging(@Context HttpServletRequest request, LogData logData) {
         String user = loginServiceUtil.isLoggedIn(request) ? getHsaIdForLoggedInUser(request).getId() : "Anonymous";
         LOG.info(user + " : " + logData.getMessage() + " [" + logData.getUrl() + "]");
         return Response.ok().build();

@@ -9,15 +9,16 @@ allprojects {
     repositories {
         mavenLocal()
         mavenCentral()
-        maven { url "https://repository-callistasoftware.forge.cloudbees.com/release/" }
-        maven { url "https://repository-callistasoftware.forge.cloudbees.com/snapshot/" }
+        maven { url "https://build-inera.nordicmedtest.se/nexus/content/repositories/releases/" }
+        maven { url "https://build-inera.nordicmedtest.se/nexus/content/repositories/snapshots/" }
+        maven { url "https://build-inera.nordicmedtest.se/nexus/content/repositories/thirdparty/" }
         maven { url "https://repository-callistasoftware.forge.cloudbees.com/3rdparty/" }
     }
 
     buildscript {
         repositories {
             mavenLocal()
-            maven { url "https://repository-callistasoftware.forge.cloudbees.com/snapshot/" }
+            maven { url "https://build-inera.nordicmedtest.se/nexus/content/repositories/snapshots/" }
             jcenter()
         }
     }
@@ -113,18 +114,18 @@ configure(subprojects.findAll { ['fileservice', 'liquibase-runner', 'statistik-w
         deployerJars "org.apache.maven.wagon:wagon-webdav:1.0-beta-2"
     }
 
-    ext.cloudbeesUsername = System.properties['cloudbeesUsername']
-    ext.cloudbeesPassword = System.properties['cloudbeesPassword']
+    ext.nexusUsername = System.properties['nexusUsername']
+    ext.nexusPassword = System.properties['nexusPassword']
 
     uploadArchives {
         repositories {
             mavenDeployer {
                 configuration = configurations.deployerJars
-                repository(url: "dav:https://repository-callistasoftware.forge.cloudbees.com/release/") {
-                    authentication(userName: cloudbeesUsername, password: cloudbeesPassword)
+                repository(url: "https://build-inera.nordicmedtest.se/nexus/content/repositories/releases") {
+                    authentication(userName: nexusUsername, password: nexusPassword)
                 }
-                snapshotRepository(url: "dav:https://repository-callistasoftware.forge.cloudbees.com/snapshot/") {
-                    authentication(userName: cloudbeesUsername, password: cloudbeesPassword)
+                snapshotRepository(url: "https://build-inera.nordicmedtest.se/nexus/content/repositories/snapshots") {
+                    authentication(userName: nexusUsername, password: nexusPassword)
                 }
                 uniqueVersion = false
             }
@@ -137,19 +138,26 @@ if (project.hasProperty('runSonar')) {
 
     sonarRunner {
         sonarProperties {
-            property "sonar.host.url", "https://callistasoftware.sonar.cloudbees.com"
-            property "sonar.login", "cloudbees"
-            property "sonar.password", project.sonarPassword
-            property "sonar.jdbc.url", project.sonarJdbcUrl
-            property "sonar.jdbc.driverClassName", "com.mysql.jdbc.Driver"
-            property "sonar.jdbc.username", project.sonarUser
-            property "sonar.jdbc.password", project.sonarPassword
-        }
+            property "sonar.jacoco.reportPath", "$buildDir/jacoco/test.exec"
+            property "sonar.projectName", projectName
+            property "sonar.projectKey", projectId
 
-        project(":hsa-integration") {
-            sonarRunner {
-                sonarProperties {
-                    properties["sonar.sources"] -= project(":hsa-integration").generatedJavaDir
+            // Address of SonarQube server
+            property "sonar.host.url", "https://build-inera.nordicmedtest.se/sonar"
+
+            ext.sonarPassword = System.properties['sonarPassword']
+
+            // Database config
+            property "sonar.jdbc.url", "jdbc:mysql://localhost:3306/sonar"
+            property "sonar.jdbc.driverClassName", "com.mysql.jdbc.Driver"
+            property "sonar.jdbc.username", "sonar"
+            property "sonar.jdbc.password", sonarPassword
+
+            project(":hsa-integration") {
+                sonarRunner {
+                    sonarProperties {
+                        properties["sonar.sources"] -= project(":hsa-integration").generatedJavaDir
+                    }
                 }
             }
         }

@@ -88,7 +88,7 @@
     <bean class="se.inera.statistics.service.hsa.HSAServiceImpl"/>
     <bean class="se.inera.statistics.service.hsa.HsaWebServiceDirect"/>
 
-    <context:component-scan base-package="se.inera.statistics.service.warehouse"/>
+    <context:component-scan base-package="se.inera.statistics.service.warehouse, se.inera.statistics.service.monitoring"/>
 
     <!--This profile is used when testing transactional aspects of the application, i.e. when receiving a message on a queue and storing it to the db-->
     <beans profile="transactional-test-mock">

@@ -31,14 +31,17 @@ import org.opensaml.xml.ConfigurationException;
 import org.opensaml.xml.io.UnmarshallingException;
 import org.springframework.security.saml.SAMLCredential;
 import org.xml.sax.SAXException;
+
 import se.inera.auth.model.User;
 import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.hsa.model.HsaIdUser;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.hsa.model.Vardenhet;
 import se.inera.statistics.hsa.services.HsaOrganizationsService;
+import se.inera.statistics.web.service.monitoring.MonitoringLogService;
 
 import javax.xml.parsers.ParserConfigurationException;
+
 import java.io.IOException;
 import java.util.Arrays;
 
@@ -57,6 +60,9 @@ public class UserDetailsServiceTest {
 
     @Mock
     private HsaOrganizationsService hsaOrganizationsService;
+    
+    @Mock
+    private MonitoringLogService monitoringLogService; 
 
     @InjectMocks
     private UserDetailsService service = new UserDetailsService();

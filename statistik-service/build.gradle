@@ -35,6 +35,7 @@ dependencies {
     compile "org.springframework:spring-orm:${springContextVersion}"
     compile "org.springframework:spring-jms:${springContextVersion}"
     compile "org.liquibase:liquibase-core:${liquibaseVersion}"
+    compile 'se.inera.intyg.common:logging-util:2.4.0-RC1'
 
     testCompile 'org.codehaus.groovy:groovy-all:2.3.6'
     testCompile "org.apache.activemq:activemq-spring:5.8.0"
