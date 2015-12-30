@@ -229,8 +229,6 @@ public class ChartDataService {
 
     /**
      * Get sjukfall per manad.
-     *
-     * @return data
      */
     @GET
     @Path("getNumberOfCasesPerMonth{csv:(/csv)?}")
@@ -243,8 +241,6 @@ public class ChartDataService {
 
     /**
      * Get the list of diagnoskapitel.
-     *
-     * @return data
      */
     @GET
     @Path("getDiagnoskapitel")
@@ -264,8 +260,6 @@ public class ChartDataService {
 
     /**
      * Get the list of diagnoskapitel.
-     *
-     * @return data
      */
     @GET
     @Path("getDiagnosisKapitelAndAvsnittAndKategori")
@@ -297,8 +291,6 @@ public class ChartDataService {
      * Get sjukfall per diagnoskapitel and per diagnosgrupp. The chart data is grouped by diagnosgrupp,
      * the table data by diagnoskapitel. Diagnosgrupp is a diagnoskapitel or a list of diagnoskapitel.
      * Csv formatted.
-     *
-     * @return data
      */
     @GET
     @Path("getDiagnoskapitelstatistik{csv:(/csv)?}")
@@ -311,9 +303,6 @@ public class ChartDataService {
 
     /**
      * Get sjukfall per diagnosavsnitt for given diagnoskapitel.
-     *
-     * @param groupId diagnosgruppid
-     * @return data
      */
     @GET
     @Path("getDiagnosavsnittstatistik/{groupId}{csv:(/csv)?}")
@@ -328,8 +317,6 @@ public class ChartDataService {
      * Get overview. Sex distribution, change comparing lastUpdated three months to previous three months,
      * top lists for diagnosgrupp, aldersgrupp, sjukskrivningslangd,
      * sjukskrivningsgrad, lan. Only chart formatted data.
-     *
-     * @return data
      */
     @GET
     @Path("getOverview")
@@ -340,12 +327,10 @@ public class ChartDataService {
 
     /**
      * Get sjukfall grouped by age and sex.
-     *
-     * @return data
      */
     @GET
     @Path("getAgeGroupsStatistics{csv:(/csv)?}")
-    @Produces({MediaType.APPLICATION_JSON })
+    @Produces({ MediaType.APPLICATION_JSON })
     public Response getAgeGroupsStatistics(@Context HttpServletRequest request, @PathParam("csv") String csv) {
         LOG.info("Calling getAgeGroupsStatistics for national");
         monitoringLogService.logTrackAccessAnonymousChartData("getAgeGroupsStatistics");
@@ -354,8 +339,6 @@ public class ChartDataService {
 
     /**
      * Get sjukskrivningsgrad per calendar month.
-     *
-     * @return data
      */
     @GET
     @Path("getDegreeOfSickLeaveStatistics{csv:(/csv)?}")
@@ -368,8 +351,6 @@ public class ChartDataService {
 
     /**
      * Get sjukfallslangd (grouped).
-     *
-     * @return data
      */
     @GET
     @Path("getSickLeaveLengthData{csv:(/csv)?}")
@@ -382,8 +363,6 @@ public class ChartDataService {
 
     /**
      * Get sjukfall per lan.
-     *
-     * @return data
      */
     @GET
     @Path("getCountyStatistics{csv:(/csv)?}")
@@ -394,8 +373,6 @@ public class ChartDataService {
 
     /**
      * Get sjukfall per sex.
-     *
-     * @return data
      */
     @GET
     @Path("getSjukfallPerSexStatistics{csv:(/csv)?}")
