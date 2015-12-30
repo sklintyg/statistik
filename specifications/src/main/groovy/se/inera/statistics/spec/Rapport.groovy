@@ -22,6 +22,7 @@ abstract class Rapport {
     def filterStartdatum
     def filterSlutdatum
     def meddelande
+    def allaDiagnosfilterValda
 
     ReportsUtil reportsUtil = new ReportsUtil()
 
@@ -32,6 +33,7 @@ abstract class Rapport {
 
     public final void executeWithReport(report) {
         meddelande = report.message
+        allaDiagnosfilterValda = report.allAvailableDxsSelectedInFilter
     }
 
     abstract void doExecute()
@@ -50,6 +52,10 @@ abstract class Rapport {
 
     def meddelande() {
         return meddelande
+    }
+
+    def allaDiagnosfilterValda() {
+        return allaDiagnosfilterValda
     }
 
     def markerad() {

@@ -18,6 +18,21 @@
  */
 package se.inera.statistics.web.service;
 
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +40,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
+
 import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.service.report.model.DiagnosgruppResponse;
@@ -40,20 +56,6 @@ import se.inera.statistics.web.model.LoginInfo;
 import se.inera.statistics.web.model.SimpleDetailsData;
 import se.inera.statistics.web.model.TableDataReport;
 import se.inera.statistics.web.service.monitoring.MonitoringLogService;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Statistics services that requires authorization to use. Unless otherwise noted, the data returned
@@ -91,6 +93,9 @@ public class ProtectedChartDataService {
     @Qualifier("webMonitoringLogService")
     private MonitoringLogService monitoringLogService;
 
+    @Autowired
+    private ResponseHandler responseHandler;
+
     /**
      * Gets sjukfall per manad for verksamhetId.
      */
@@ -108,10 +113,7 @@ public class ProtectedChartDataService {
     }
 
     private Response getResponse(TableDataReport result, String csv) {
-        if (csv == null || csv.isEmpty()) {
-            return Response.ok(result).build();
-        }
-        return CsvConverter.getCsvResponse(result.getTableData(), "export.csv");
+        return responseHandler.getResponse(result, csv);
     }
 
     @GET

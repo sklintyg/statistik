@@ -104,6 +104,9 @@ public class ProtectedLandstingService {
     @Qualifier("webMonitoringLogService")
     private MonitoringLogService monitoringLogService;
 
+    @Autowired
+    private ResponseHandler responseHandler;
+
     private LandstingFileReader landstingFileReader = new LandstingFileReader();
 
     private LandstingFileWriter landstingFileWriter = new LandstingFileWriter();
@@ -321,10 +324,7 @@ public class ProtectedLandstingService {
     }
 
     private Response getResponse(TableDataReport result, String csv) {
-        if (csv == null || csv.isEmpty()) {
-            return Response.ok(result).build();
-        }
-        return CsvConverter.getCsvResponse(result.getTableData(), "export.csv");
+        return responseHandler.getResponse(result, csv);
     }
 
     public boolean hasAccessToLandstingAdmin(HttpServletRequest request) {

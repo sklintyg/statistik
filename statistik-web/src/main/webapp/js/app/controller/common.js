@@ -89,7 +89,10 @@ var ControllerCommons = new function(){
         });
     };
 
-    this.populateActiveDiagnosFilter = function(scope, statisticsData, diagnosIds, isPrint) {
+    this.populateActiveDiagnosFilter = function(scope, statisticsData, diagnosIds, isPrint, isAllAvailableDxsSelectedInFilter) {
+        if (isAllAvailableDxsSelectedInFilter) {
+            return;
+        }
         if (!diagnosIds) {
             return;
         }

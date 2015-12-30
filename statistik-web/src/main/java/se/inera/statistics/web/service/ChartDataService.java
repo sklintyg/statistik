@@ -18,35 +18,11 @@
  */
 package se.inera.statistics.web.service;
 
-import com.google.common.base.Function;
-import com.google.common.base.Optional;
-import com.google.common.collect.Lists;
-import org.joda.time.LocalDateTime;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.stereotype.Service;
-import org.springframework.util.StopWatch;
-import se.inera.statistics.service.report.model.DiagnosgruppResponse;
-import se.inera.statistics.service.report.model.Icd;
-import se.inera.statistics.service.report.model.KonDataResponse;
-import se.inera.statistics.service.report.model.OverviewResponse;
-import se.inera.statistics.service.report.model.Range;
-import se.inera.statistics.service.report.model.SimpleKonDataRow;
-import se.inera.statistics.service.report.model.SimpleKonResponse;
-import se.inera.statistics.service.report.util.Icd10;
-import se.inera.statistics.service.report.util.Icd10RangeType;
-import se.inera.statistics.service.report.util.ReportUtil;
-import se.inera.statistics.service.warehouse.NationellData;
-import se.inera.statistics.service.warehouse.NationellOverviewData;
-import se.inera.statistics.web.model.CasesPerCountyData;
-import se.inera.statistics.web.model.DualSexStatisticsData;
-import se.inera.statistics.web.model.SimpleDetailsData;
-import se.inera.statistics.web.model.TableDataReport;
-import se.inera.statistics.web.model.overview.OverviewData;
-import se.inera.statistics.web.service.monitoring.MonitoringLogService;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.GET;
@@ -57,11 +33,35 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+
+import org.joda.time.LocalDateTime;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Service;
+import org.springframework.util.StopWatch;
+
+import se.inera.statistics.service.report.model.DiagnosgruppResponse;
+import se.inera.statistics.service.report.model.Icd;
+import se.inera.statistics.service.report.model.KonDataResponse;
+import se.inera.statistics.service.report.model.OverviewResponse;
+import se.inera.statistics.service.report.model.Range;
+import se.inera.statistics.service.report.model.SimpleKonDataRow;
+import se.inera.statistics.service.report.model.SimpleKonResponse;
+import se.inera.statistics.service.report.util.Icd10;
+import se.inera.statistics.service.report.util.ReportUtil;
+import se.inera.statistics.service.warehouse.NationellData;
+import se.inera.statistics.service.warehouse.NationellOverviewData;
+import se.inera.statistics.web.model.CasesPerCountyData;
+import se.inera.statistics.web.model.DualSexStatisticsData;
+import se.inera.statistics.web.model.SimpleDetailsData;
+import se.inera.statistics.web.model.TableDataReport;
+import se.inera.statistics.web.model.overview.OverviewData;
+import se.inera.statistics.web.service.monitoring.MonitoringLogService;
+
+import com.google.common.base.Optional;
 
 /**
  * Statistics services that does not require authentication. Unless otherwise noted, the data returned
@@ -389,15 +389,7 @@ public class ChartDataService {
     public List<Icd> getIcd10Structure(@Context HttpServletRequest request) {
         LOG.info("Calling getIcd10Structure");
         monitoringLogService.logTrackAccessAnonymousChartData("getIcd10Structure");
-        List<Icd10.Kapitel> kapitel = icd10.getKapitel(false);
-        final List<Icd> icds = new ArrayList<>(Lists.transform(kapitel, new Function<Icd10.Kapitel, Icd>() {
-            @Override
-            public Icd apply(Icd10.Kapitel kapitel) {
-                return new Icd(kapitel);
-            }
-        }));
-        icds.add(new Icd("", "Utan giltig ICD-10 kod", Icd10.icd10ToInt(Icd10.OTHER_KATEGORI, Icd10RangeType.KATEGORI)));
-        return icds;
+        return icd10.getIcdStructure();
     }
 
     @POST

@@ -27,6 +27,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
+import se.inera.statistics.service.report.model.Icd;
 
 import javax.annotation.PostConstruct;
 import java.io.BufferedReader;
@@ -221,6 +222,18 @@ public class Icd10 {
             normalized.setLength(MAX_CODE_LENGTH);
         }
         return normalized.toString();
+    }
+
+    public List<Icd> getIcdStructure() {
+        List<Icd10.Kapitel> kapitel = getKapitel(false);
+        final List<Icd> icds = new ArrayList<>(Lists.transform(kapitel, new Function<Icd10.Kapitel, Icd>() {
+            @Override
+            public Icd apply(Icd10.Kapitel kapitel) {
+                return new Icd(kapitel);
+            }
+        }));
+        icds.add(new Icd("", "Utan giltig ICD-10 kod", Icd10.icd10ToInt(Icd10.OTHER_KATEGORI, Icd10RangeType.KATEGORI)));
+        return icds;
     }
 
     public Kategori getKategori(String diagnoskategori) {
