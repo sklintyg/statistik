@@ -67,7 +67,7 @@ import com.google.common.base.Optional;
  * Statistics services that does not require authentication. Unless otherwise noted, the data returned
  * contains two data sets, one suitable for chart display, and one suited for tables. Csv variants
  * only contains one data set.
- * <p/>
+ *
  * Csv files are semicolon separated, otherwise json is used.
  */
 @Service("chartService")
