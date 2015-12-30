@@ -45,6 +45,10 @@ public class FilterDataResponse {
         });
     }
 
+    public static FilterDataResponse empty() {
+        return new FilterDataResponse(null, null);
+    }
+
     public List<String> getDiagnoser() {
         return diagnoser;
     }

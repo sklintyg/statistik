@@ -100,6 +100,6 @@ public class CasesPerCountyConverter {
         TableData tableData = convertToTable();
         ChartData chartData = convertToChart();
         Range fullRange = new Range(rangeOld.getFrom(), rangeNew.getTo());
-        return new CasesPerCountyData(tableData, chartData, fullRange.toString(), new FilterDataResponse(null, null));
+        return new CasesPerCountyData(tableData, chartData, fullRange.toString(), FilterDataResponse.empty());
     }
 }
