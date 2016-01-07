@@ -16,10 +16,9 @@ Det värdet används i guit för att avgöra om listan över valda diagnoser ska
 
 !3 Då gäller:
 
-
-Vid ogiltigt tidsintervall i backendkontroll (vilket kan "undslippa" GUI-kontrollen om man t.ex. sparat ett bokmärke med en tidsintervallinställning som inte längre är giltig) visas meddelande och rapportens standard tidsintervall (i detta fall jan-dec 2014) används.
+När inget diagnosfilter ställts in, så ska värdet på allaDiagnosfilterValda vara sant, även om andra filter än diagnosfiltret använts.
 
 | Sjukfall i rapporten sjukfall per enhet |
-| inloggad som | vårdenhet    | vårdgivarnivå | filter kapitel | filter enheter | filter verksamhetstyper | filter startdatum | filter slutdatum | allaDiagnosfilterValda? |
-| user2        | enhet1 | true          | G00-G99        | enhet1,enhet2  | 02                      | 2014-06-01        | 2014-09-30       | false        |
-| user2        | enhet1 | true          |         |   |                       | | | true        |
+| inloggad som | vårdenhet | vårdgivarnivå | filter kapitel | filter enheter | filter verksamhetstyper | filter startdatum | filter slutdatum | allaDiagnosfilterValda? |
+| user2        | enhet1    | true          | G00-G99        | enhet1,enhet2  | 02                      | 2014-06-01        | 2014-09-30       | false        |
+| user2        | enhet1    | true          |                |                | 02                      | 2014-06-01        | 2014-10-30       | true         |
